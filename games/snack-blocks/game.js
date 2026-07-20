@@ -1473,7 +1473,6 @@
     }
   });
   window.addEventListener("load", () => {
-    if (window.WonderI18n?.locale?.() !== state.locale) window.WonderI18n?.setLocale?.(state.locale);
     applyText();
   }, { once: true });
   window.addEventListener("pagehide", suspendBoardTasks);
@@ -1483,7 +1482,7 @@
     else resumeBoardTasks();
   });
 
-  setLocale(readStorage(canonicalLocaleKey) || readStorage(legacyLocaleKey) || window.WonderI18n?.locale?.() || "en");
+  setLocale(window.WonderI18n?.actualLocale?.() || readStorage(canonicalLocaleKey) || readStorage(legacyLocaleKey) || window.WonderI18n?.locale?.() || "en");
   installStageDrag();
   installStageCenterCue();
   installLoading();

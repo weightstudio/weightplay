@@ -119,6 +119,8 @@
     // Language names are self-identifying UI labels. Keep the owner-approved
     // spelling stable in every locale instead of translating the option text.
     if (node.parentElement.tagName === "OPTION" && node.parentElement.closest("select")) return;
+    const previousSource = translatedNodes.get(node);
+    if (previousSource !== undefined && node.data === translate(previousSource)) return;
     const next = translate(node.data);
     if (next === node.data) return;
     translatedNodes.set(node, node.data);
@@ -131,6 +133,8 @@
     attributes.forEach((name) => {
       if (!element.hasAttribute(name)) return;
       const current = element.getAttribute(name) || "";
+      const previousSource = records?.get(name);
+      if (previousSource !== undefined && current === translate(previousSource)) return;
       const next = translate(current);
       if (next === current) return;
       records ||= new Map();

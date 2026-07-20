@@ -305,6 +305,10 @@ body.has-game-page-info :is(.level-list, .level-grid, .stage-list, .stage-grid, 
 }
 
 .game-info-related-copy span {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   color: #5a6679;
   font-size: 0.78rem;
   font-weight: 800;

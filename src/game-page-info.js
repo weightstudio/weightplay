@@ -6614,8 +6614,8 @@
 
   function shortDescription(game) {
     const sentenceSplit = new RegExp("(?<=[.!?\\u3002\\uff01\\uff1f])\\s*", "u");
-    const firstSentence = String(game.intro || "").split(sentenceSplit)[0] || game.gameplay || game.title;
-    return firstSentence.length > 88 ? `${firstSentence.slice(0, 86)}...` : firstSentence;
+    const source = String(game.intro || "").split(sentenceSplit)[0] || game.gameplay || game.title;
+    return window.WeightPlayGameRuntimeLocalizer?.translate?.(source) || source;
   }
 
   function relatedCard(gameId) {

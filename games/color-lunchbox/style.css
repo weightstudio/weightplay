@@ -659,9 +659,9 @@ body.lunch-stage .stage-card.locked.is-centered {
   align-items: center;
   justify-content: flex-start;
   flex-direction: column;
-  padding: 20px;
+  padding: 10px;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
   overscroll-behavior: contain;
   background: rgba(85, 55, 20, 0.34);
   backdrop-filter: blur(8px);
@@ -671,9 +671,10 @@ body.lunch-stage .stage-card.locked.is-centered {
 .result-card {
   flex: 0 0 auto;
   display: grid;
-  gap: 12px;
+  gap: 7px;
   width: min(100%, 370px);
-  padding: 24px;
+  max-height: calc(100% - 8px);
+  padding: 14px;
   border: 4px solid #7f5a23;
   border-radius: 8px;
   background: #fff9dc;
@@ -822,11 +823,11 @@ body.lunch-stage .stage-card.locked.is-centered {
 }
 
 .result-panel::after {
-  min-height: 20px;
+  min-height: 0;
 }
 
 .result-card h2 {
-  font-size: 34px;
+  font-size: 30px;
   font-weight: 1000;
   margin: 0;
 }
@@ -836,7 +837,7 @@ body.lunch-stage .stage-card.locked.is-centered {
   grid-template-columns: 64px minmax(0, 1fr);
   align-items: center;
   gap: 10px;
-  min-height: 70px;
+  min-height: 60px;
   padding: 4px 12px 4px 6px;
   border: 3px solid #c27720;
   border-radius: 16px;
@@ -851,8 +852,8 @@ body.lunch-stage .stage-card.locked.is-centered {
 }
 
 .result-guardian img {
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
   object-fit: contain;
   filter: drop-shadow(0 5px 3px rgba(87, 50, 14, 0.25));
   animation: result-guardian-arrive 0.72s cubic-bezier(0.2, 0.8, 0.25, 1.2) both;
@@ -870,13 +871,13 @@ body.lunch-stage .stage-card.locked.is-centered {
   justify-content: center;
   gap: 4px;
   width: 100%;
-  min-height: 58px;
+  min-height: 46px;
   overflow: hidden;
 }
 
 .reward-parade img {
-  width: 52px;
-  height: 52px;
+  width: 44px;
+  height: 44px;
   object-fit: contain;
   animation: reward-food-hop 0.72s cubic-bezier(0.2, 0.8, 0.25, 1.25) both;
   animation-delay: calc(var(--reward-order) * 90ms);
@@ -885,8 +886,8 @@ body.lunch-stage .stage-card.locked.is-centered {
 
 .result-report {
   display: grid;
-  gap: 10px;
-  margin: 4px 0 8px;
+  gap: 6px;
+  margin: 0;
   color: #704f1f;
 }
 
@@ -904,8 +905,8 @@ body.lunch-stage .stage-card.locked.is-centered {
 .result-stats span {
   display: grid;
   place-items: center;
-  min-height: 48px;
-  padding: 6px;
+  min-height: 40px;
+  padding: 4px;
   border: 2px solid #c99b44;
   border-radius: 8px;
   background: #fff3b6;
@@ -917,8 +918,8 @@ body.lunch-stage .stage-card.locked.is-centered {
 
 .skill-report {
   display: grid;
-  gap: 6px;
-  padding: 10px;
+  gap: 3px;
+  padding: 7px;
   border: 3px solid #7f5a23;
   border-radius: 8px;
   background: #fffdf0;
@@ -964,7 +965,7 @@ body.lunch-stage .stage-card.locked.is-centered {
 .result-actions {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
   width: 100%;
 }
 
@@ -984,6 +985,66 @@ body.lunch-stage .stage-card.locked.is-centered {
   transition: transform 0.1s ease, box-shadow 0.1s ease;
   display: grid;
   place-items: center;
+}
+
+@media (max-height: 560px) {
+  .result-card {
+    width: min(100%, 1120px);
+    gap: 6px;
+    padding: 12px;
+  }
+
+  .result-card h2 {
+    font-size: 40px;
+  }
+
+  .reward-parade {
+    min-height: 60px;
+  }
+
+  .reward-parade img {
+    width: 58px;
+    height: 58px;
+  }
+
+  .result-summary {
+    font-size: 28px;
+  }
+
+  .result-stats span {
+    font-size: 20px;
+  }
+
+  .skill-report > strong {
+    font-size: 24px;
+  }
+
+  .skill-report-row {
+    font-size: 22px;
+  }
+
+  .skill-report-row b {
+    font-size: 22px;
+  }
+
+  .progress-message {
+    font-size: 22px;
+  }
+
+  .result-report small {
+    font-size: 18px;
+  }
+
+  .result-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .result-actions button,
+  .result-actions a {
+    min-height: 90px;
+    font-size: 30px;
+  }
 }
 
 .result-actions button:active,

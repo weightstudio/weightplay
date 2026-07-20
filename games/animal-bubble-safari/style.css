@@ -130,9 +130,7 @@ body:not(.safari-main) .screen.is-active.weightplay-active-viewport {
 .secondary-row { display: grid; grid-template-columns: 112px 1fr; gap: 10px; }
 .secondary-row > button, .language-switch { border-radius: 8px; background: rgba(255,255,255,.9); box-shadow: 0 3px 0 rgba(50,93,85,.18); }
 .secondary-row > button { font-weight: 800; }
-.language-switch { display: grid; grid-template-columns: 1fr 1fr; padding: 4px; }
-.language-switch button { border-radius: 6px; background: transparent; font-weight: 800; }
-.language-switch button.is-selected { background: #1aa8c7; color: #fff; }
+.language-switch { min-width: 0; padding: 4px 10px; border: 0; color: #173f4b; font-weight: 800; }
 
 .stage-screen { color: #f8fafc; background: var(--shell); }
 .stage-art { position: absolute; inset: 0; background: linear-gradient(rgba(15,30,47,.7), rgba(15,30,47,.9)), url("../../assets/animal-bubble-safari-cover.webp") center/cover; }

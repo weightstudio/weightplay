@@ -1729,6 +1729,9 @@
 
   function translateTextNode(node) {
     if (!node?.parentElement || ["SCRIPT", "STYLE", "NOSCRIPT"].includes(node.parentElement.tagName)) return;
+    // Locale names are self-identifying labels and must keep the approved
+    // spelling in every language selector, including Simplified Chinese.
+    if (node.parentElement.tagName === "OPTION" && node.parentElement.closest("select")) return;
     const previousSource = translatedTextNodes.get(node);
     if (previousSource !== undefined && node.data === simplifyChineseText(previousSource)) return;
     const source = node.data;

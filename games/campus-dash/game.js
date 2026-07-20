@@ -959,6 +959,8 @@
         duration: config.duration,
         bossEn: config.bossEn,
       })),
+      nextRouteLabels: () => Object.fromEntries(["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru"]
+        .map((code) => [code, dictionary[code]?.nextRouteAction || ""])),
       restoreProgress: (snapshot = {}) => {
         progress = {
           unlocked: Math.max(1, Math.min(30, Number(snapshot.unlocked) || 1)),

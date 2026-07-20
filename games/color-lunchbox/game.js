@@ -373,6 +373,26 @@
     color_red: "roja", color_yellow: "amarilla", color_blue: "azul", color_green: "verde", color_orange: "naranja", color_purple: "morada", color_white: "blanca", color_brown: "marrón", color_gray: "gris", color_pink: "rosa", color_black: "negra", color_cyan: "cian",
   };
 
+  dictionary["pt-BR"] = {
+    title: "Marmita Colorida dos Animais", language: "Idioma", chooseLevel: "Escolher nível",
+    scoreLabel: "Pontos", roundLabel: "Progresso", levelLabel: "Nível",
+    ready: "Arraste o alimento até a marmita da mesma cor.", voicePrompt: "Coloque {food} na marmita {color}.", picturePrompt: "Combine a imagem!", lunchboxChoice: "Marmita {color}",
+    correct: "Muito bem!", wrong: "Tente outra marmita!", boxesMoving: "As marmitas estão mudando de lugar.", guardianCheckpoint: "Desafio amigável do Guardião",
+    winTitle: "Nível concluído!", winDesc: "Pontos: {score}. Você desbloqueou a próxima marmita.", perfectDesc: "Combinação perfeita! Pontos: {score}. Você desbloqueou a próxima marmita.",
+    allClearTitle: "Tudo concluído!", allClearDesc: "Você completou todos os níveis. Parabéns!", perfectAllClearDesc: "Combinação perfeita! Você completou todos os níveis. Parabéns!",
+    nextStage: "Próximo nível", again: "Jogar de novo", levels: "Níveis", lobby: "Jogos", locked: "Bloqueado", lockedFeedback: "{stage} está bloqueado. Conclua primeiro o Nível {required}.", play: "Jogar", loading: "Carregando",
+    stageMeta: "{foods} alimentos / {colors} cores", resultScore: "Pontos: {score}", previousBest: "Melhor anterior: {score}", newBest: "Novo recorde!", improvement: "Melhora: {value}%",
+    skillReport: "Relatório de habilidades", colorRecognition: "Reconhecimento de cores", focusSkill: "Atenção", handEye: "Coordenação motora",
+    progressMessageNew: "Que progresso! Você superou sua melhor pontuação.", progressMessageSteady: "Bom trabalho! Jogue novamente para praticar a atenção e as cores.", progressNote: "A pontuação serve apenas para diversão e acompanhamento do progresso.",
+    food_strawberry: "Morango", food_tomato: "Tomate", food_banana: "Banana", food_cheese: "Queijo", food_milk: "Leite", food_blueberry: "Mirtilo", food_broccoli: "Brócolis", food_apple: "Maçã",
+    food_carrot: "Cenoura", food_orange: "Laranja", food_eggplant: "Berinjela", food_grapes: "Uvas", food_rice: "Arroz", food_yogurt: "Iogurte", food_bread: "Pão", food_chocolate: "Chocolate",
+    food_watermelon: "Melancia", food_corn: "Milho", food_cucumber: "Pepino", food_fish: "Peixe", food_peach: "Pêssego", food_black_sesame: "Gergelim preto", food_soda: "Bebida azul", food_purple_potato: "Batata-roxa",
+    color_red: "vermelha", color_yellow: "amarela", color_blue: "azul", color_green: "verde", color_orange: "laranja", color_purple: "roxa", color_white: "branca", color_brown: "marrom", color_gray: "cinza", color_pink: "rosa", color_black: "preta", color_cyan: "ciano",
+    leaveTitle: "Sair deste nível?", leaveText: "O progresso e os pontos deste nível serão reiniciados.", keepSorting: "Continuar organizando", leaveLevel: "Sair do nível",
+    helpAria: "Como jogar", helpTitle: "Como preparar a marmita", helpLook: "Observe o alimento e sua cor.", helpChoose: "Toque nele ou arraste-o até a marmita da mesma cor.", helpFinish: "Guarde os cinco alimentos para concluir o nível.", helpClose: "Continuar organizando",
+    guardianCelebration: "{guardian} comemora com você!",
+  };
+
   Object.assign(dictionary.en, {
     leaveTitle: "Leave this lunchbox?",
     leaveText: "Your sorting progress and score in this level will reset.",
@@ -429,6 +449,11 @@
       metaTitle: "Fiambrera de Colores Animales - Juego de clasificación",
       description: "Completa 30 niveles breves de clasificación por color con pistas visuales, cajas móviles seguras, guardianes animales amistosos y reintentos amables.",
     },
+    "pt-BR": {
+      title: "Marmita Colorida dos Animais - WeightPlay",
+      metaTitle: "Marmita Colorida dos Animais - Jogo de combinar cores",
+      description: "Complete 30 níveis curtos de combinação de cores com pistas visuais, marmitas que se movem com segurança, Guardiões amigáveis e novas tentativas sem punição.",
+    },
   };
 
   const guardians = Object.freeze({
@@ -439,6 +464,13 @@
     taro: { nameEn: "Moss Shell Taro", nameZh: "苔殼塔羅", nameEs: "Taro Caparazón de Musgo", image: "../../assets/weightplay-character-moss-shell-turtle-cutout.webp" },
     fia: { nameEn: "Spark Paw Fia", nameZh: "星爪菲亞", nameEs: "Fia Pata Chispa", image: "../../assets/weightplay-character-spark-paw-fox-cutout.webp" },
   });
+
+  Object.assign(guardians.mimi, { namePt: "Mimi Salto Arco-Íris" });
+  Object.assign(guardians.orla, { namePt: "Orla Chapéu Lunar" });
+  Object.assign(guardians.nori, { namePt: "Nori Nadadeira de Bolhas" });
+  Object.assign(guardians.pogo, { namePt: "Pogo Barriga de Tambor" });
+  Object.assign(guardians.taro, { namePt: "Taro Casco de Musgo" });
+  Object.assign(guardians.fia, { namePt: "Fia Pata Cintilante" });
 
   const stage = (id, nameEn, nameZh, descEn, descZh, colors, foods, rules = {}) => ({ id, nameEn, nameZh, descEn, descZh, colors, foods, rounds: 5, ...rules });
 
@@ -512,6 +544,43 @@
     [item.nameEs, item.descEs] = spanishStageCopy[index];
   });
 
+  const portugueseStageCopy = [
+    ["Primeiras frutas", "Quatro cores bem diferentes e marmitas em posições fixas."],
+    ["Marmita do café da manhã", "Conheça as cores laranja, roxa, branca e marrom."],
+    ["Piquenique no jardim", "Frutas e verduras compartilham quatro marmitas."],
+    ["Lanche doce", "Compare alimentos rosa, pretos, brancos e marrons."],
+    ["Desafio de piquenique da Mimi", "Mimi troca as marmitas de lugar uma vez, depois do terceiro alimento."],
+    ["Mesa de cores quentes", "Vermelho, rosa, laranja e amarelo aparecem juntos."],
+    ["Mesa de bebidas em cores frias", "Azul, ciano, branco e roxo aparecem juntos."],
+    ["Claro e escuro", "Organize alimentos brancos, cinza, marrons e pretos."],
+    ["Piquenique só com imagens", "Use imagens e amostras de cor em vez de nomes escritos."],
+    ["Desafio matinal da Orla", "Orla acomoda as marmitas em novos lugares depois de cada acerto."],
+    ["Vermelho ou rosa?", "Observe com atenção as cores quentes parecidas."],
+    ["Azul ou ciano?", "Seis marmitas incluem cores frias parecidas."],
+    ["Cores neutras da despensa", "Compare alimentos brancos, cinza, marrons e pretos."],
+    ["Uma marmita vazia a mais", "Uma das marmitas visíveis não combina com nenhum alimento."],
+    ["Desafio de cores frias do Nori", "Nori usa primeiro as imagens de cores frias e inclui uma marmita que não será usada."],
+    ["Cesta de verduras", "Os formatos das verduras se tornam a pista principal."],
+    ["Cesta de frutas", "Cinco formatos de frutas passam por cores quentes e verdes."],
+    ["Cesta do café da manhã", "Os alimentos do café da manhã misturam cinco grupos de cores."],
+    ["Cesta de lanches", "Os lanches misturam cores claras, escuras e quentes."],
+    ["Desafio do bufê do Pogo", "Pogo acrescenta duas marmitas extras que não precisam ser usadas."],
+    ["Marmitas em movimento", "As marmitas se acomodam em novos lugares depois de cada acerto."],
+    ["Imagens de cores quentes", "Combine cores quentes usando primeiro as imagens."],
+    ["Imagens de cores frias", "Combine pela imagem as cores frias e neutras."],
+    ["Espere as marmitas pararem", "As cores parecidas só mudam de lugar depois de uma resposta correta."],
+    ["Desafio do jardim do Taro", "Taro inverte a ordem das marmitas uma vez, na metade do nível."],
+    ["Arco-íris de seis marmitas", "Seis marmitas ampliam as escolhas sem deixar a partida mais longa."],
+    ["Revezamento quente e frio", "Os alimentos alternam entre grupos de cores quentes e frias."],
+    ["Marmitas extras para observar", "Duas marmitas não utilizadas ficam visíveis para incentivar a observação cuidadosa."],
+    ["Treino para o festival", "Seis marmitas de cores parecidas se acomodam depois de cada acerto."],
+    ["Festival Arco-Íris da Fia", "Fia combina imagens, uma marmita extra e mudanças de lugar seguras."],
+  ];
+  if (portugueseStageCopy.length !== stages.length) throw new Error("Portuguese lunchbox-stage coverage must match all stages.");
+  stages.forEach((item, index) => {
+    [item.namePt, item.descPt] = portugueseStageCopy[index];
+  });
+
   validateStageData();
 
   const state = {
@@ -533,6 +602,8 @@
   let helpReturnTarget = null;
 
   function locale() {
+    const requested = window.WonderI18n?.actualLocale?.();
+    if (requested && dictionary[requested]) return requested;
     return window.WonderI18n?.locale() || "en";
   }
 
@@ -593,12 +664,14 @@
   function stageName(stage) {
     if (locale() === "zh-Hant") return stage.nameZh;
     if (locale() === "es") return stage.nameEs;
+    if (locale() === "pt-BR") return stage.namePt;
     return stage.nameEn;
   }
 
   function stageDescription(stage) {
     if (locale() === "zh-Hant") return stage.descZh;
     if (locale() === "es") return stage.descEs;
+    if (locale() === "pt-BR") return stage.descPt;
     return stage.descEn;
   }
 
@@ -631,7 +704,9 @@
       ? "把彩色食物放進相同顏色的便當盒，完成 30 個短篇關卡與六次友善守護員檢查。"
       : locale() === "es"
         ? "Clasifica alimentos de colores en 30 niveles breves y seis pruebas amistosas de guardianes."
-        : "Sort colorful foods through 30 short levels and six friendly Guardian checks.";
+        : locale() === "pt-BR"
+          ? "Organize alimentos coloridos em 30 níveis curtos e seis desafios amigáveis dos Guardiões."
+          : "Sort colorful foods through 30 short levels and six friendly Guardian checks.";
     startBtn.textContent = t("chooseLevel");
     stageSelectTitle.textContent = t("chooseLevel");
     document.querySelector("#scoreLabel").textContent = t("scoreLabel");
@@ -1014,7 +1089,7 @@
     stats.className = "result-stats";
     const statItems = [
       t("resultScore", { score: progress.lastScore }),
-      progress.previousBest > 0 ? t("previousBest", { score: progress.previousBest }) : t("newBest"),
+      t("previousBest", { score: progress.previousBest }),
       progress.improved ? t("newBest") : t("improvement", { value: progress.improvementPercent }),
     ];
     statItems.forEach((text) => {
@@ -1083,6 +1158,7 @@
   function localizedGuardianName(guardian) {
     if (locale() === "zh-Hant") return guardian.nameZh;
     if (locale() === "es") return guardian.nameEs;
+    if (locale() === "pt-BR") return guardian.namePt;
     return guardian.nameEn;
   }
 

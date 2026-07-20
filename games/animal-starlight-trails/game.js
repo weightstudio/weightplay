@@ -53,7 +53,15 @@
     strings.title = key === "zh-Hant" ? "Starlink 星鏈" : key === "zh-Hans" ? "Starlink 星链" : "Starlink";
   });
 
-  const routeLocale = ({ en:"en", "zh-tw":"zh-Hant", "zh-cn":"zh-Hans", es:"es", ja:"ja" })[location.pathname.split("/").filter(Boolean)[0]];
+  Object.assign(STRINGS.ko, {
+    title:"동물 별빛 한붓그리기",language:"언어",eyebrow:"달모자 올라의 별자리 공방",pitch:"모든 별길을 정확히 한 번씩 지나 동물 별지도를 다시 밝혀 주세요.",start:"게임 시작",chooseStage:"별자리 선택",stage:"스테이지",trails:"별길",stars:"별",undo:"되돌리기",restart:"다시 시작",hint:"힌트",retry:"다시 도전",stages:"스테이지",next:"다음 스테이지",skillReport:"플레이 리포트",loading:"별지도를 불러오는 중…",progress:"{cleared} / 30개 별자리 복원",bestStars:"별 {stars}개 수집",
+    ready:"시작할 별을 선택하세요.",continue:"빛나는 별에서 계속하세요.",deadEnd:"이 경로로는 남은 별길을 모두 지날 수 없습니다. 되돌리거나 다시 시작하세요.",wrongStart:"빛나는 시작 별에서 출발하세요.",usedTrail:"이미 지나간 별길입니다.",notConnected:"현재 빛나는 별과 이어진 별을 선택하세요.",wrongWay:"이 혜성 별길은 화살표 방향으로만 지날 수 있습니다.",checkpoint:"다음에는 번호 {number} 별에 도착하세요.",gateLocked:"장밋빛 문을 지나기 전에 황금 열쇠 별을 찾으세요.",keyFound:"황금 별의 문이 열렸습니다!",complete:"별자리를 복원했습니다!",hintStart:"강조된 별에서 시작해 보세요.",hintNext:"완성 가능한 다음 별을 강조했습니다.",assist:"힌트 {hints}회 · 수정 {mistakes}회",
+    resultTitle:"별길 복원 완료",resultText:"{time} 동안 모든 별길 {edges}개를 밝혔습니다.",newBest:"이 별자리의 새로운 최고 기록입니다!",previousBest:"최고 기록: {time}",logic:"논리",focus:"집중",problem:"문제 해결",logicValue:"별길 {edges}개 계획",focusValue:"수정 {mistakes}회",problemValue:"힌트 {hints}회 사용",
+    chapter1:"열린 별길",chapter2:"시작 봉인",chapter3:"혜성 화살표",chapter4:"번호 별",chapter5:"열쇠와 문",chapter6:"대별자리 도전",rule1:"모든 별길을 정확히 한 번씩 지나세요. 별은 다시 방문할 수 있습니다.",rule2:"표시된 시작 별에서 출발해 모든 별길을 한 번씩 지나세요.",rule3:"보라색 혜성 별길을 화살표 방향으로 지나세요.",rule4:"번호가 매겨진 별에 순서대로 도착하세요.",rule5:"장밋빛 문을 지나기 전에 황금 열쇠 별을 방문하세요.",rule6:"시작 봉인, 화살표, 별 순서, 열쇠와 문 규칙을 함께 해결하세요.",locked:"잠김",cleared:"완료",available:"도전 가능",chapter:"관측소 {number}",stageSummary:"{cleared}개 완료 · 별 {stars}개",ruleClassic:"기본 별길",ruleStart:"시작 봉인",ruleArrow:"혜성 화살표",ruleOrder:"별 순서",ruleGate:"별의 문",ruleMaster:"종합 도전",
+    node:"별 {number}",startNode:"시작 별 {number}",keyNode:"열쇠 별 {number}",checkpointNode:"번호 {order} 별",edgeLabel:"별 {from}에서 별 {to}로 가는 길",backToMain:"메인으로 돌아가기",backToStage:"스테이지로 돌아가기",stageRailLabel:"별자리",puzzleLabel:"별자리 퍼즐",graphLabel:"한붓그리기 별자리",leaveTitle:"이 별자리를 일시정지할까요?",leaveText:"현재 경로를 계속하거나 스테이지로 돌아가 이번 시도를 포기합니다. 저장된 잠금 해제와 최고 기록은 유지됩니다.",continueBattle:"경로 계속하기",returnStages:"스테이지로 돌아가기"
+  });
+
+  const routeLocale = ({en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru"})[location.pathname.split("/").filter(Boolean)[0]];
   let locale = routeLocale || readStorage(LOCALE_KEY) || "en";
   if (!STRINGS[locale]) locale = "en";
   const format = (text, vars={}) => String(text).replace(/\{(\w+)\}/g, (_, key) => vars[key] ?? "");

@@ -123,7 +123,7 @@
   }
 
   const dom = Object.fromEntries([
-    "viewport","gameCanvas","loadingScreen","loadingCover","loadingPanel","loadingFill","loadingProgress","mainScreen","stageScreen","battleLive","pauseButton","pauseOverlay","pauseResume","resultScreen","guideModal","stageRail","stageStatus","playCanvas",
+    "viewport","gameCanvas","loadingScreen","loadingCover","loadingPanel","loadingFill","loadingProgress","mainScreen","stageScreen","battleLive","pauseButton","pauseOverlay","pauseResume","resultScreen","guideModal","stageRail","stageStatus","playCanvas","localeSelect",
     "mainProgress","albumCount","starCount","stageSkill","stageGoal","battleStageName","shotsLeft","rescueProgress","scoreValue","battleMessage","battleGoal",
     "currentPreview","nextPreview","resultTitle","resultStars","resultScore","resultShots","resultRescued","rewardStars","rewardCoins","rewardAlbum","skillText","nextStage"
   ].map(id => [id, document.getElementById(id)]));
@@ -212,7 +212,7 @@
     document.title = `${t("title")} - WeightPlay`;
     document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
     document.querySelectorAll("[data-i18n-aria]").forEach(el => { el.setAttribute("aria-label", t(el.dataset.i18nAria)); });
-    document.querySelectorAll("[data-locale]").forEach(button => button.classList.toggle("is-selected", button.dataset.locale === activeLocale));
+    if (dom.localeSelect) dom.localeSelect.value = activeLocale;
     renderStageRail();
     updateMainProgress();
     if (game) updateHud();
@@ -1068,7 +1068,7 @@
   document.getElementById("guideDone").addEventListener("click", closeGuide);
   document.getElementById("soundMain").addEventListener("click", toggleSound);
   document.getElementById("soundStage").addEventListener("click", toggleSound);
-  document.querySelectorAll("[data-locale]").forEach(button => button.addEventListener("click", () => { const requested=button.dataset.locale; window.WonderI18n?.setLocale?.(requested); const resolved=window.WonderI18n?.locale?.()||requested; locale=copy[resolved]?resolved:"en"; writeStorage(canonicalLocaleKey,requested); applyLocale(); }));
+  dom.localeSelect?.addEventListener("change", () => { const requested=dom.localeSelect.value; window.WonderI18n?.setLocale?.(requested); const resolved=window.WonderI18n?.locale?.()||requested; locale=copy[resolved]?resolved:"en"; writeStorage(canonicalLocaleKey,requested); applyLocale(); });
   dom.playCanvas.addEventListener("pointerdown", beginAim);
   dom.playCanvas.addEventListener("pointermove", updateAim);
   dom.playCanvas.addEventListener("keydown", handleBattleKey);
