@@ -1,8 +1,28 @@
 (function () {
   const canonicalLocaleKey = "weightPlayLocale";
   const legacyLocaleKey = "weightplayLocale";
-  const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
-  const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
+  const sessionStorageFallback = new Map();
+  function readStorage(key) {
+    try {
+      const value = localStorage.getItem(key);
+      if (value !== null) sessionStorageFallback.set(key, value);
+      return value ?? sessionStorageFallback.get(key) ?? null;
+    } catch {
+      return sessionStorageFallback.get(key) ?? null;
+    }
+  }
+  function writeStorage(key, value) {
+    const serialized = String(value);
+    sessionStorageFallback.set(key, serialized);
+    try {
+      localStorage.setItem(key, serialized);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  const canonicalSavedLocale = readStorage(canonicalLocaleKey);
+  const legacySavedLocale = readStorage(legacyLocaleKey);
   if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) {
     window.WonderI18n?.setLocale?.(legacySavedLocale);
   }
@@ -543,54 +563,34 @@
 
   // Load and save localStorage stats
   function loadProgress() {
-    try {
-      const saved = Number(localStorage.getItem(UNLOCK_KEY));
-      state.unlockedLevel = Number.isFinite(saved) && saved >= 1 ? Math.min(saved, stages.length) : 1;
-    } catch {
-      state.unlockedLevel = 1;
-    }
+    const saved = Number(readStorage(UNLOCK_KEY));
+    state.unlockedLevel = Number.isFinite(saved) && saved >= 1 ? Math.min(saved, stages.length) : 1;
   }
 
   function saveProgress(unlockedLevel) {
     state.unlockedLevel = Math.max(state.unlockedLevel, unlockedLevel);
-    try {
-      localStorage.setItem(UNLOCK_KEY, String(state.unlockedLevel));
-    } catch {
-      // LocalStorage is optional.
-    }
+    writeStorage(UNLOCK_KEY, state.unlockedLevel);
   }
 
   function getLevelHighScore(levelId) {
-    try {
-      return Number(localStorage.getItem(SCORE_KEY_PREFIX + levelId)) || 0;
-    } catch {
-      return 0;
-    }
+    return Number(readStorage(SCORE_KEY_PREFIX + levelId)) || 0;
   }
 
   function saveLevelHighScore(levelId, score) {
     const currentHigh = getLevelHighScore(levelId);
     if (score > currentHigh) {
-      try {
-        localStorage.setItem(SCORE_KEY_PREFIX + levelId, String(score));
-      } catch {}
+      writeStorage(SCORE_KEY_PREFIX + levelId, score);
     }
   }
 
   function getLevelStars(levelId) {
-    try {
-      return Number(localStorage.getItem(STARS_KEY_PREFIX + levelId)) || 0;
-    } catch {
-      return 0;
-    }
+    return Number(readStorage(STARS_KEY_PREFIX + levelId)) || 0;
   }
 
   function saveLevelStars(levelId, stars) {
     const currentStars = getLevelStars(levelId);
     if (stars > currentStars) {
-      try {
-        localStorage.setItem(STARS_KEY_PREFIX + levelId, String(stars));
-      } catch {}
+      writeStorage(STARS_KEY_PREFIX + levelId, stars);
     }
   }
 

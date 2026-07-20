@@ -4,6 +4,8 @@
   const GAME_ID = "animal-starlight-trails";
   const SAVE_KEY = "weightplay_animal_starlight_trails_v1";
   const LOCALE_KEY = "weightPlayLocale";
+  function readStorage(key){try{return localStorage.getItem(key);}catch{return null;}}
+  function writeStorage(key,value){try{localStorage.setItem(key,value);return true;}catch{return false;}}
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
 
@@ -52,7 +54,7 @@
   });
 
   const routeLocale = ({ en:"en", "zh-tw":"zh-Hant", "zh-cn":"zh-Hans", es:"es", ja:"ja" })[location.pathname.split("/").filter(Boolean)[0]];
-  let locale = routeLocale || localStorage.getItem(LOCALE_KEY) || "en";
+  let locale = routeLocale || readStorage(LOCALE_KEY) || "en";
   if (!STRINGS[locale]) locale = "en";
   const format = (text, vars={}) => String(text).replace(/\{(\w+)\}/g, (_, key) => vars[key] ?? "");
   const t = (key, vars) => format(STRINGS[locale]?.[key] ?? EN[key] ?? key, vars);
@@ -121,9 +123,9 @@
     if(Array.isArray(raw.cleared))clean.cleared=clean.cleared.map((_,index)=>raw.cleared[index]===true);
     return clean;
   }
-  function loadSave(){let raw=null;try{raw=JSON.parse(localStorage.getItem(SAVE_KEY)||"null");}catch{}const clean=normalizeSave(raw);localStorage.setItem(SAVE_KEY,JSON.stringify(clean));return clean;}
+  function loadSave(){let raw=null;try{raw=JSON.parse(readStorage(SAVE_KEY)||"null");}catch{}const clean=normalizeSave(raw);writeStorage(SAVE_KEY,JSON.stringify(clean));return clean;}
   let save = loadSave();
-  const persist = () => localStorage.setItem(SAVE_KEY,JSON.stringify(save));
+  const persist = () => writeStorage(SAVE_KEY,JSON.stringify(save));
 
   $(".trail-battle-canvas")?.insertAdjacentHTML("beforeend",`<section id="battleLeavePanel" class="battle-leave-overlay" role="dialog" aria-modal="true" aria-labelledby="battleLeaveTitle" aria-describedby="battleLeaveText" hidden><div class="battle-leave-card"><h2 id="battleLeaveTitle"></h2><p id="battleLeaveText"></p><div class="battle-leave-actions"><button id="battleContinueBtn" type="button"></button><button id="battleLeaveBtn" type="button"></button></div></div></section>`);
 
@@ -160,7 +162,7 @@
   function applyLocale() {
     document.documentElement.lang = locale;
     dom.locale.value = locale;
-    localStorage.setItem(LOCALE_KEY,locale);
+    writeStorage(LOCALE_KEY,locale);
     $$('[data-i18n]').forEach(node => {node.textContent=t(node.dataset.i18n);});
     dom.stageBack.setAttribute("aria-label",t("backToMain"));
     dom.battleBack.setAttribute("aria-label",t("backToStage"));

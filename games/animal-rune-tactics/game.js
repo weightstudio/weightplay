@@ -2,6 +2,8 @@
   const GAME_ID = "animal-rune-tactics";
   const saveKey = "weightplay_animal_rune_tactics_v1";
   const localeKey = "weightPlayLocale";
+  function readStorage(key) { try { return localStorage.getItem(key); } catch { return null; } }
+  function writeStorage(key, value) { try { localStorage.setItem(key, value); return true; } catch { return false; } }
   const trainingCost = 18;
   const rerollCost = 3;
   const cols = 3;
@@ -930,7 +932,7 @@
     [definition.nameEs, definition.tacticEs] = missionCopyEs[index];
   });
 
-  let locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
+  let locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || readStorage(localeKey) || "en";
 
   function updateBattleScale() {
     const viewport = window.visualViewport;
@@ -1084,7 +1086,7 @@
 
   function loadProfile() {
     try {
-      const parsed = JSON.parse(localStorage.getItem(saveKey) || "{}");
+      const parsed = JSON.parse(readStorage(saveKey) || "{}");
       const source = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
       const wholeNumber = (value, fallback, minimum = 0, maximum = Number.MAX_SAFE_INTEGER) => {
         const number = Number(value);
@@ -1135,7 +1137,7 @@
   }
 
   function saveProfile() {
-    localStorage.setItem(saveKey, JSON.stringify(profile));
+    return writeStorage(saveKey, JSON.stringify(profile));
   }
 
   function wallet() {
@@ -2446,8 +2448,8 @@
         return { ...profile };
       },
       restoreProfile(snapshot) {
-        const previous = localStorage.getItem(saveKey);
-        localStorage.setItem(saveKey, JSON.stringify(snapshot || {}));
+        const previous = readStorage(saveKey);
+        writeStorage(saveKey, JSON.stringify(snapshot || {}));
         profile = loadProfile();
         selectedMission = Math.min(profile.unlockedMission, MISSION_COUNT);
         saveProfile();
@@ -2576,7 +2578,7 @@
       const requested = nodes.localeSelect.value;
       window.WonderI18n?.setLocale?.(requested);
       locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || requested;
-      localStorage.setItem(localeKey, requested);
+      writeStorage(localeKey, requested);
       applyLocale();
       window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
     });

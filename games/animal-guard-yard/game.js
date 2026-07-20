@@ -637,8 +637,31 @@
   nodes.menuPanel.dataset.wpCanvasMaxWidth = "viewport";
   nodes.playPanel.dataset.wpCanvasMaxWidth = "viewport";
 
-  let locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
-  let unlocked = clamp(Number(localStorage.getItem(unlockKey)) || 1, 1, stages.length);
+  const sessionStorageFallback = new Map();
+
+  function readStorage(key) {
+    try {
+      const value = localStorage.getItem(key);
+      if (value !== null) sessionStorageFallback.set(key, value);
+      return value ?? sessionStorageFallback.get(key) ?? null;
+    } catch {
+      return sessionStorageFallback.get(key) ?? null;
+    }
+  }
+
+  function writeStorage(key, value) {
+    const serialized = String(value);
+    sessionStorageFallback.set(key, serialized);
+    try {
+      localStorage.setItem(key, serialized);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  let locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || readStorage(localeKey) || "en";
+  let unlocked = clamp(Number(readStorage(unlockKey)) || 1, 1, stages.length);
   let profile = loadProfile();
   let currentStage = 0;
   let selectedUnit = units[0].id;
@@ -739,7 +762,7 @@
       levels: { cat: 1, dog: 1, owl: 1, fox: 1 },
     };
     try {
-      const saved = JSON.parse(localStorage.getItem(profileKey) || "{}");
+      const saved = JSON.parse(readStorage(profileKey) || "{}");
       return {
         coins: Math.max(0, Number(saved.coins) || 0),
         owned: { ...defaults.owned, ...(saved.owned || {}) },
@@ -751,12 +774,12 @@
   }
 
   function saveProfile() {
-    localStorage.setItem(profileKey, JSON.stringify(profile));
+    writeStorage(profileKey, JSON.stringify(profile));
   }
 
   function loadProgress() {
     try {
-      return JSON.parse(localStorage.getItem(progressKey) || "{}");
+      return JSON.parse(readStorage(progressKey) || "{}");
     } catch {
       return {};
     }
@@ -796,11 +819,7 @@
       stageRecords,
       masteryMilestones: masteryMilestonesClaimed,
     };
-    try {
-      localStorage.setItem(progressKey, JSON.stringify(record));
-    } catch {
-      // Local progress is optional.
-    }
+    writeStorage(progressKey, JSON.stringify(record));
     return {
       ...record,
       previousBest,
@@ -1012,7 +1031,7 @@
     nodes.stageGrid.innerHTML = "";
     const progress = loadProgress();
     const stageRecords = typeof progress.stageRecords === "object" && progress.stageRecords ? progress.stageRecords : {};
-    const legacyBestStage = Number(localStorage.getItem(bestKey)) || 0;
+    const legacyBestStage = Number(readStorage(bestKey)) || 0;
     const selectedStageIndex = clamp(Math.max(currentStage, unlocked - 1), 0, stages.length - 1);
     stages.forEach((stage, index) => {
       const stageNo = index + 1;
@@ -2129,9 +2148,9 @@
       const clearBonus = 18 + currentStage * 10 + Math.max(0, baseHp) * 4;
       coinsEarned += clearBonus + perfectBonus;
       unlocked = Math.max(unlocked, Math.min(stages.length, currentStage + 2));
-      localStorage.setItem(unlockKey, String(unlocked));
-      const best = Math.max(Number(localStorage.getItem(bestKey)) || 0, currentStage + 1);
-      localStorage.setItem(bestKey, String(best));
+      writeStorage(unlockKey, String(unlocked));
+      const best = Math.max(Number(readStorage(bestKey)) || 0, currentStage + 1);
+      writeStorage(bestKey, String(best));
       nodes.resultTitle.textContent = t("victory");
       resultMessage = `${t("resultWin", { n: currentStage + 1, hp: Math.max(0, baseHp) })} ${t("reward", { coins: coinsEarned })}`;
       if (perfectBonus > 0) resultMessage = `${t("perfectClear")} ${resultMessage} ${t("perfectBonus", { coins: perfectBonus })}`;
@@ -2241,7 +2260,7 @@
     const requested = nodes.localeSelect.value;
     window.WonderI18n?.setLocale?.(requested);
     locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || requested;
-    localStorage.setItem(localeKey, requested);
+    writeStorage(localeKey, requested);
     localizeStatic();
     renderStageGrid();
     renderKennel();
@@ -2307,6 +2326,11 @@
   if (new URLSearchParams(location.search).has("test")) {
     window.__AnimalGuardYardTest = {
       finish,
+      storageSnapshot: () => ({
+        unlocked: Number(readStorage(unlockKey)) || 1,
+        progress: JSON.parse(readStorage(progressKey) || "{}"),
+        profile: JSON.parse(readStorage(profileKey) || "{}"),
+      }),
       campaign: stages.map((stage, index) => ({
         stage: index + 1,
         title: stage.title.en,

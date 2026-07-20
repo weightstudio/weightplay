@@ -84,6 +84,9 @@ const accessibleNames = {
     levelProgress: "Level progress",
     battleBack: "Back to stages",
     answerChoices: "Answer choices",
+    sound: "Sound",
+    soundEnable: "Enable sound",
+    soundDisable: "Disable sound",
   },
   "zh-Hant": {
     language: "\u8a9e\u8a00",
@@ -92,6 +95,9 @@ const accessibleNames = {
     levelProgress: "\u95dc\u5361\u9032\u5ea6",
     battleBack: "\u8fd4\u56de\u95dc\u5361\u9078\u64c7",
     answerChoices: "\u7b54\u6848\u9078\u9805",
+    sound: "\u97f3\u6548",
+    soundEnable: "\u958b\u555f\u97f3\u6548",
+    soundDisable: "\u95dc\u9589\u97f3\u6548",
   },
   "zh-Hans": {
     language: "\u8bed\u8a00",
@@ -100,6 +106,9 @@ const accessibleNames = {
     levelProgress: "\u5173\u5361\u8fdb\u5ea6",
     battleBack: "\u8fd4\u56de\u5173\u5361\u9009\u62e9",
     answerChoices: "\u7b54\u6848\u9009\u9879",
+    sound: "\u58f0\u97f3",
+    soundEnable: "\u5f00\u542f\u58f0\u97f3",
+    soundDisable: "\u5173\u95ed\u58f0\u97f3",
   },
   es: {
     language: "Idioma",
@@ -108,6 +117,9 @@ const accessibleNames = {
     levelProgress: "Progreso del nivel",
     battleBack: "Volver a los niveles",
     answerChoices: "Opciones de respuesta",
+    sound: "Sonido",
+    soundEnable: "Activar sonido",
+    soundDisable: "Desactivar sonido",
   },
 };
 
@@ -633,6 +645,18 @@ function accessibleName(key) {
   return accessibleNames[actualLocale()]?.[key] || accessibleNames.en[key] || key;
 }
 
+function syncSoundAccessibleName() {
+  const toggle = document.querySelector("button[data-sound-toggle]");
+  if (!toggle) return;
+  const muted = Boolean(window.WonderSound?.isMuted?.());
+  toggle.title = accessibleName("sound");
+  toggle.setAttribute("aria-label", accessibleName(muted ? "soundEnable" : "soundDisable"));
+  if (toggle.dataset.quizSoundLocaleOwner === "true") return;
+  toggle.dataset.quizSoundLocaleOwner = "true";
+  toggle.addEventListener("click", () => queueMicrotask(syncSoundAccessibleName));
+  new MutationObserver(syncSoundAccessibleName).observe(toggle, { attributes: true, attributeFilter: ["class"] });
+}
+
 function shuffle(items) {
   return [...items].sort(() => Math.random() - 0.5);
 }
@@ -781,6 +805,7 @@ function renderStaticText() {
   levelLine.setAttribute("aria-label", accessibleName("levelProgress"));
   backToStagesBtn.setAttribute("aria-label", accessibleName("battleBack"));
   choiceGrid.setAttribute("aria-label", accessibleName("answerChoices"));
+  syncSoundAccessibleName();
   titleText.textContent = t("title");
   mainTitle.textContent = t("title");
   mainIntro.textContent = t("mainIntro");
