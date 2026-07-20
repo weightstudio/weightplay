@@ -10,5 +10,7 @@
 @media(max-width:600px){.locale-control select{max-width:106px;font-size:.86rem}.main-header>strong{font-size:.92rem}}
 .orb.transfer-source{opacity:0}
 .orb.flying-orb{position:fixed!important;z-index:80!important;display:block!important;margin:0!important;pointer-events:none!important;animation:none!important;will-change:transform;transform-origin:center}
+.stage-canvas,.battle-canvas{max-width:920px!important}
+.stage-rail{padding-left:calc(50% - 132px)!important;padding-right:calc(50% - 132px)!important}
 .vessel.transfer-target{filter:drop-shadow(0 0 12px #ffd260) drop-shadow(0 9px 5px rgba(0,0,0,.55))}
 .battle-screen[data-transferring="true"] .vessel-board,.battle-screen[data-transferring="true"] .battle-actions,.battle-screen[data-transferring="true"] .battle-header{pointer-events:none}

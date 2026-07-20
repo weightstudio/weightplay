@@ -489,6 +489,13 @@
     report_skill_partial: "La ruta sigue abierta: observa el ciclo de avisos y reserva la carrera o el doble salto para responder.",
   };
 
+  // Keep Result-owned coaching copy local to the game. The shared runtime
+  // catalog translates the remaining Japanese UI, but this dynamic sentence
+  // is created only after settlement and must never fall back to English.
+  text.ja = {
+    report_skill_partial: "ルートはまだ開いています。警告の周期を見極め、反撃のタイミングまでダッシュか二段ジャンプを温存しましょう。",
+  };
+
   const stageCopyEs = [
     ["Puerta de Sombra Lunar", "Ritmo de patrulla y una zona de pinchos"],
     ["Cornisa Dividida", "Doble salto entre cornisas separadas"],

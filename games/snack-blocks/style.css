@@ -169,6 +169,19 @@ button {
   font-size: 1.05rem;
 }
 
+.result-card button:not(.primary-action) {
+  color: #fff4c8;
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: none;
+}
+
+.result-card .primary-action {
+  color: #2f1b08;
+  background: linear-gradient(180deg, #ffe98a, #f7b84b);
+  box-shadow: 0 4px 0 #a85f1e, 0 0 0 3px rgba(255, 255, 255, 0.72);
+  font-weight: 1000;
+}
+
 .stage-panel {
   flex: 1;
   min-height: 0;

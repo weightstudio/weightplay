@@ -208,6 +208,8 @@
   function save(){return persistState(state)}
   function wallet(){return window.WeightPlayWallet?.read?.()||{diamonds:0}}
   function spendDiamonds(cost){return Boolean(window.WeightPlayWallet?.spendDiamonds?.(cost))}
+  function playSound(name){window.WonderSound?.play?.(name)}
+  function syncSoundToggle(){const button=$("#soundToggle");if(!button)return;const muted=Boolean(window.WonderSound?.isMuted?.());button.setAttribute("aria-pressed",String(muted));window.dispatchEvent(new Event("wonder:locale-change"))}
   function createOffers(){return Object.keys(gadgets).map(id=>({id,level:1+Math.floor(Math.random()*3)}))}
   function selectedOffer(){return gadgetOffers.find(offer=>offer.id===gadget)||gadgetOffers[0]}
   let economyFeedbackTimer=0,pendingEconomy="",pendingEconomyTimer=0,pendingEconomyDeadline=0,pendingEconomyRemaining=0;
@@ -249,17 +251,17 @@
     if(pendingEconomy!=="reroll"){armEconomy("reroll",3,"rerollDecision");return}
     clearPendingEconomy({render:false});
     if(!spendDiamonds(3)){renderEconomy();economyMessage(t("notEnough"));return}
-    gadgetOffers=createOffers();gadget=gadgetOffers[0].id;economyMessage(t("rerolled"));renderGadgets();renderEconomy();updateGadget();
+    gadgetOffers=createOffers();gadget=gadgetOffers[0].id;economyMessage(t("rerolled"));renderGadgets();renderEconomy();updateGadget();playSound("upgrade");
   }
   function buyInsurance(){
     if(insuranceActive){clearPendingEconomy();economyMessage(t("alreadyInsured"));return}
     if(pendingEconomy!=="insurance"){armEconomy("insurance",5,"insuranceDecision");return}
     clearPendingEconomy({render:false});
     if(!spendDiamonds(5)){renderEconomy();economyMessage(t("notEnough"));return}
-    insuranceActive=true;state.insuranceReady=true;save();economyMessage(t("insuranceReady"));renderEconomy();
+    insuranceActive=true;state.insuranceReady=true;save();economyMessage(t("insuranceReady"));renderEconomy();playSound("upgrade");
   }
   function t(key,vars={}){let value=copy[locale]?.[key]||copy.en[key]||key;Object.entries(vars).forEach(([k,v])=>value=value.replace(`{${k}}`,v));return value}
-  function localize(){if(window.WonderI18n?.locale?.()!==locale)window.WonderI18n?.setLocale?.(locale);document.documentElement.lang=locale;const internal=document.querySelector('meta[name="robots"]')?.content.includes("noindex");document.title=`${t("title")} - ${internal?"Internal Trial":"WeightPlay"}`;document.querySelectorAll("[data-i18n]").forEach(n=>n.textContent=t(n.dataset.i18n));$("#localeSelect").setAttribute("aria-label",t("languageLabel"));$(".main-poster").alt=t("posterAlt");$(".planner > img").alt=t("orlaAlt");nodes.rail.setAttribute("aria-label",t("missionRailLabel"));nodes.fia.alt=t("fiaAlt");$("#stageBackBtn").setAttribute("aria-label",t("stageBackLabel"));$("#battleBackBtn").setAttribute("aria-label",t("battleBackLabel"));renderSummary();renderStage();renderGadgets();renderEconomy();updateGadget();renderGadgetSummary();updatePauseControl()}
+  function localize(){if(window.WonderI18n?.locale?.()!==locale)window.WonderI18n?.setLocale?.(locale);document.documentElement.lang=locale;const internal=document.querySelector('meta[name="robots"]')?.content.includes("noindex");document.title=`${t("title")} - ${internal?"Internal Trial":"WeightPlay"}`;document.querySelectorAll("[data-i18n]").forEach(n=>n.textContent=t(n.dataset.i18n));$("#localeSelect").setAttribute("aria-label",t("languageLabel"));$(".main-poster").alt=t("posterAlt");$(".planner > img").alt=t("orlaAlt");nodes.rail.setAttribute("aria-label",t("missionRailLabel"));nodes.fia.alt=t("fiaAlt");$("#stageBackBtn").setAttribute("aria-label",t("stageBackLabel"));$("#battleBackBtn").setAttribute("aria-label",t("battleBackLabel"));renderSummary();renderStage();renderGadgets();renderEconomy();updateGadget();renderGadgetSummary();updatePauseControl();syncSoundToggle()}
   function stopBattleLoop(){if(animationFrame){cancelAnimationFrame(animationFrame);animationFrame=0}}
   function startBattleLoop(){if(!playing||paused||animationFrame)return;lastTime=performance.now();animationFrame=requestAnimationFrame(loop)}
   function show(name){document.body.dataset.screen=name;nodes.main.hidden=name!=="main";nodes.stage.hidden=name!=="stage";nodes.battle.hidden=name!=="battle";if(name!=="battle"){playing=false;paused=false;stopBattleLoop();cancelPendingMovement();updatePauseControl()}}
@@ -311,7 +313,7 @@
     (m.safeZones||[]).forEach(([x,y,size])=>{const zone=document.createElement("span");zone.className="safe-zone";zone.style.left=`${x}%`;zone.style.top=`${y}%`;zone.style.setProperty("--zone-size",`${size*2}%`);zone.setAttribute("aria-hidden","true");nodes.patrolLayer.append(zone)});
     patrols=m.patrols.map((path,i)=>createPatrol(path,`../../assets/animal-moonlight-heist-patrol-${patrolArt[i%3]}.webp`,i*.23));
     if(m.guardian){const guardian=createPatrol(m.guardian.path,`../../assets/animal-moonlight-heist-guardian-${m.guardian.id}.webp`,.12,m.guardian);guardian.img.alt=m.guardian.name[localeArrayIndex()];patrols.push(guardian)}
-    nodes.feedback.textContent=t("holdRoute");nodes.alert.style.width="0";$("#coinBattle").textContent=`${t("coins")}: ${state.coins}`;show("battle");playing=true;missionStartedAt=performance.now();startBattleLoop();
+    nodes.feedback.textContent=t("holdRoute");nodes.alert.style.width="0";$("#coinBattle").textContent=`${t("coins")}: ${state.coins}`;show("battle");playing=true;missionStartedAt=performance.now();playSound("start");startBattleLoop();
     requestAnimationFrame(()=>nodes.field.focus({preventScroll:true}));
   }
   function createPatrol(path,src,progress=0,guardian=null){
@@ -370,19 +372,19 @@
   function routeTo(clientX,clientY,commit=false){const r=nodes.field.getBoundingClientRect();const x=Math.max(6,Math.min(94,(clientX-r.left)/r.width*100));const y=Math.max(8,Math.min(92,(clientY-r.top)/r.height*100));const start=point(nodes.fia);const dx=(x-start[0])/100*r.width,dy=(y-start[1])/100*r.height;const len=Math.hypot(dx,dy);nodes.route.hidden=false;nodes.route.style.left=`${start[0]}%`;nodes.route.style.top=`${start[1]}%`;nodes.route.style.width=`${len}px`;nodes.route.style.transform=`rotate(${Math.atan2(dy,dx)}rad)`;const exposed=patrols.some(p=>distance([x,y],point(p.img))<22);nodes.route.classList.toggle("route-exposed",exposed);nodes.feedback.textContent=t(commit?"holdRoute":"move");preview=[x,y];if(commit){const level=selectedOffer().level,dashTime=gadget==="dash"?Math.max(180,320-level*45):650;nodes.route.hidden=true;nodes.fia.style.transitionDuration=`${dashTime}ms`;place(nodes.fia,preview);scheduleArrival(dashTime+20)}}
   function resolveArrival(){
     const p=point(nodes.fia),m=activeMission();
-    if(!treasureFound&&distance(p,point(nodes.treasure))<12){treasureFound=true;nodes.treasure.hidden=true;showFx("pickup");nodes.feedback.textContent=t("treasureFound")}
+    if(!treasureFound&&distance(p,point(nodes.treasure))<12){treasureFound=true;nodes.treasure.hidden=true;showFx("pickup");nodes.feedback.textContent=t("treasureFound");playSound("coin")}
     if(!objectFound&&distance(p,point(nodes.objective))<12){
       if(m.order==="treasure-first"&&!treasureFound){nodes.feedback.textContent=t("firstSeal");showFx("warning");return}
       objectFound=true;nodes.objective.hidden=true;nodes.exit.style.opacity=1;if(m.phaseExit)place(nodes.exit,m.phaseExit);
       if(m.guardian?.behavior==="eclipse"){guardianPhase=2;patrols.forEach(p=>p.direction*=-1);alert=Math.max(alert,28)}
-      $("#objectiveLabel").textContent=t("extraction");showFx("pickup");nodes.feedback.textContent=t("found");
+      $("#objectiveLabel").textContent=t("extraction");showFx("pickup");nodes.feedback.textContent=t("found");playSound("success");
     }
     if(objectFound&&distance(p,point(nodes.exit))<13)win();
   }
   function showFx(type){nodes.fx.src=`../../assets/animal-moonlight-heist-fx-${type}.webp`;place(nodes.fx,point(nodes.fia));nodes.fx.hidden=false;nodes.fx.classList.remove("fx-show");void nodes.fx.offsetWidth;nodes.fx.classList.add("fx-show");setTimeout(()=>nodes.fx.hidden=true,650)}
-  function useGadget(){if(!playing||paused||gadget==="dash")return;const level=selectedOffer().level;if(gadget==="decoy"){freezeUntil=performance.now()+(2500+level*650);showFx("pickup")}else{alert=0;smokeUntil=performance.now()+(800+level*500);showFx("shadow")}}
-  function fail(){if(caught||performance.now()<smokeUntil)return;caught=true;playing=false;stopBattleLoop();if(insuranceActive&&treasureFound)preservedTreasure=true;insuranceActive=false;state.insuranceReady=false;save();showFx("warning");nodes.fia.classList.add("caught");openResult(false)}
-  function win(){playing=false;stopBattleLoop();insuranceActive=false;state.insuranceReady=false;const m=activeMission(),medals=1+(!caught?1:0)+(treasureFound?1:0);const reward=20+selectedMission*4+(treasureFound?12:0)+(m.guardian?30:0);state.coins+=reward;state.cleared[selectedMission]=Math.max(state.cleared[selectedMission]||0,medals);state.unlocked=Math.max(state.unlocked,Math.min(campaign.length,selectedMission+2));state.safehouse=1+Math.floor(Object.keys(state.cleared).length/5);save();openResult(true,medals,reward)}
+  function useGadget(){if(!playing||paused||gadget==="dash")return;const level=selectedOffer().level;if(gadget==="decoy"){freezeUntil=performance.now()+(2500+level*650);showFx("pickup")}else{alert=0;smokeUntil=performance.now()+(800+level*500);showFx("shadow")}playSound("shoot")}
+  function fail(){if(caught||performance.now()<smokeUntil)return;caught=true;playing=false;stopBattleLoop();if(insuranceActive&&treasureFound)preservedTreasure=true;insuranceActive=false;state.insuranceReady=false;save();showFx("warning");nodes.fia.classList.add("caught");playSound("wrong");openResult(false)}
+  function win(){playing=false;stopBattleLoop();insuranceActive=false;state.insuranceReady=false;const m=activeMission(),medals=1+(!caught?1:0)+(treasureFound?1:0);const reward=20+selectedMission*4+(treasureFound?12:0)+(m.guardian?30:0);state.coins+=reward;state.cleared[selectedMission]=Math.max(state.cleared[selectedMission]||0,medals);state.unlocked=Math.max(state.unlocked,Math.min(campaign.length,selectedMission+2));state.safehouse=1+Math.floor(Object.keys(state.cleared).length/5);save();playSound("win");openResult(true,medals,reward)}
   function openResult(ok,medals=0,reward=0){
     $("#resultTitle").textContent=t(ok?"victory":"captured");
     $("#resultText").textContent=ok
@@ -417,6 +419,11 @@
   $(".home-link").setAttribute("data-wp-return","main");$("#stageBackBtn").setAttribute("data-wp-return","stage");$("#battleBackBtn").setAttribute("data-wp-return","battle");
   function bind(){
     $("#localeSelect").value=locale;
+    const soundToggle=$("#soundToggle");
+    if(soundToggle){
+      soundToggle.addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
+      soundToggle.addEventListener("click",()=>{window.WonderSound?.unlock?.();window.WonderSound?.setMuted?.(!window.WonderSound?.isMuted?.());syncSoundToggle()});
+    }
     $("#localeSelect").addEventListener("change",e=>{const requested=e.target.value;window.WonderI18n?.setLocale?.(requested);locale=window.WonderI18n?.locale?.()||requested;localStorage.setItem(localeKey,requested);localize()});
     $("#startBtn").addEventListener("click",()=>{show("stage");renderStage();focusMission()});
     $("#stageBackBtn").addEventListener("click",()=>{show("main");focusMain()});

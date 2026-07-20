@@ -1,0 +1,774 @@
+:root {
+  color-scheme: dark;
+  font-family: Inter, "Noto Sans TC", system-ui, sans-serif;
+  background: #031327;
+  color: #f8fbff;
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: #031327;
+}
+button,
+select {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+}
+[hidden] {
+  display: none !important;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+.primary {
+  border: 0 !important;
+  background: linear-gradient(135deg, #fff083, #ffb522) !important;
+  color: #1b1606 !important;
+  font-weight: 1000;
+  box-shadow: 0 4px 0 #9b5d0c;
+}
+.main-group {
+  min-height: 100vh;
+  background:
+    linear-gradient(#07305da8, #061a36df),
+    url("../../assets/animal-skybridge-rivals/arena.webp") center/cover fixed;
+}
+.main-screen {
+  width: min(100%, 920px);
+  min-height: min(844px, 100vh);
+  margin: auto;
+  padding: 12px;
+  display: grid;
+  grid-template-rows: 60px minmax(0, 1fr);
+  gap: 12px;
+}
+.main-header {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr) 158px;
+  align-items: center;
+  gap: 8px;
+  background: #071d38e8;
+  border: 1px solid #55dff1;
+  border-radius: 17px;
+  padding: 6px;
+}
+.main-header > strong {
+  text-align: center;
+  font-size: clamp(16px, 3vw, 25px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lobby-return {
+  width: 60px;
+  height: 48px;
+  border-radius: 12px;
+  background: #fbfdff;
+  color: #126b8d;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 25px;
+  font-weight: 1000;
+}
+.lobby-return img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+.locale-control select {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid #52adc4;
+  border-radius: 11px;
+  background: #0b3155;
+  color: #fff;
+  padding: 0 8px;
+}
+.main-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(285px, 0.85fr);
+  gap: 18px;
+  align-items: center;
+  overflow: hidden;
+  background: #061b37e8;
+  border: 1px solid #5dcbe0;
+  border-radius: 24px;
+  padding: 18px;
+}
+.poster {
+  width: 100%;
+  height: min(69vh, 640px);
+  object-fit: cover;
+  object-position: center 55%;
+  border: 2px solid #85f7ff;
+  border-radius: 19px;
+  box-shadow: 0 16px 44px #000b;
+}
+.main-copy {
+  display: grid;
+  gap: 11px;
+  align-content: center;
+}
+.main-copy small,
+.public-guide > small {
+  color: #ffe36c;
+  font-weight: 1000;
+  letter-spacing: 0.08em;
+}
+.main-copy h1 {
+  font-size: clamp(30px, 5vw, 54px);
+  line-height: 1;
+  margin: 0;
+}
+.main-copy p {
+  margin: 0;
+  color: #e3f5ff;
+  line-height: 1.55;
+  font-size: 18px;
+}
+.main-copy > span {
+  color: #77ffe3;
+  font-weight: 900;
+}
+.main-copy button {
+  min-height: 58px;
+  border-radius: 14px;
+  font-size: 21px;
+}
+.public-guide {
+  width: min(100%, 920px);
+  margin: auto;
+  padding: 30px 20px 52px;
+  background: #eff9f8;
+  color: #132c38;
+}
+.public-guide h2 {
+  font-size: 31px;
+  margin: 8px 0;
+}
+.public-guide p,
+.public-guide li {
+  line-height: 1.68;
+}
+.guide-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+.guide-grid article {
+  background: #fff;
+  border: 1px solid #bddede;
+  border-radius: 17px;
+  padding: 17px;
+}
+.active-screen {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) 56px;
+  background:
+    linear-gradient(#03162c9c, #05152edb),
+    url("../../assets/animal-skybridge-rivals/arena.webp") center/cover;
+}
+.stage-canvas,
+.battle-canvas {
+  position: relative;
+  width: min(100%, 920px);
+  height: 100%;
+  min-height: 0;
+  margin: auto;
+  overflow: hidden;
+  border-inline: 1px solid #3f9db2;
+  background: #061a34ec;
+}
+.ad-reserve {
+  width: min(100%, 920px);
+  height: 56px;
+  margin: auto;
+  background: #020a18;
+  border-top: 1px solid #274a63;
+  pointer-events: none;
+}
+.stage-canvas {
+  display: grid;
+  grid-template-rows: 68px 48px minmax(0, 1fr);
+  gap: 8px;
+  padding: 8px;
+  background:
+    linear-gradient(#06264ad0, #06182eed),
+    url("../../assets/animal-skybridge-rivals/arena.webp") center/cover;
+}
+.stage-header,
+.battle-header {
+  display: grid;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #50c8de;
+  border-radius: 15px;
+  background: #061a34e8;
+  padding: 6px;
+}
+.stage-header {
+  grid-template-columns: 54px minmax(0, 1fr) 54px;
+}
+.stage-header button,
+.battle-header > button {
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 11px;
+  background: #fbfdff;
+  color: #137093;
+  font-size: 27px;
+  font-weight: 1000;
+}
+.stage-header > div:not(.fia-portrait) {
+  display: grid;
+  min-width: 0;
+}
+.stage-header strong {
+  font-size: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.stage-header span {
+  color: #7cffde;
+}
+.fia-portrait,
+.orla-portrait,
+.panko-portrait,
+.result-racer {
+  background-image: url("../../assets/animal-skybridge-rivals/racer-atlas.webp");
+  background-repeat: no-repeat;
+  background-size: 200% 200%;
+}
+.fia-portrait {
+  width: 52px;
+  height: 52px;
+  background-position: 0 0;
+}
+.orla-portrait {
+  width: 96px;
+  height: 96px;
+  background-position: 0 100%;
+}
+.panko-portrait {
+  width: 78px;
+  height: 78px;
+  background-position: 100% 100%;
+}
+.stage-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.stage-tabs button {
+  border: 1px solid #44a9c1;
+  border-radius: 11px;
+  background: #0b3154;
+  color: #dff8ff;
+  font-weight: 900;
+}
+.stage-tabs button.active {
+  background: #13718a;
+  box-shadow: inset 0 0 0 2px #7cffe0;
+}
+.tab-panel {
+  min-height: 0;
+}
+.races-tab {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) 32px;
+  gap: 5px;
+}
+.stage-rail {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-inline: calc(50% - 132px);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  touch-action: pan-y;
+}
+.stage-rail::-webkit-scrollbar {
+  display: none;
+}
+.stage-card {
+  width: 264px;
+  flex: 0 0 264px;
+  height: 190px;
+  scroll-snap-align: center;
+  border: 2px solid #4d8da7;
+  border-radius: 21px;
+  padding: 15px;
+  color: #fff;
+  text-align: left;
+  display: grid;
+  align-content: end;
+  gap: 5px;
+  background:
+    linear-gradient(#06224638, #06172eea),
+    url("../../assets/animal-skybridge-rivals/arena.webp") center/cover;
+  box-shadow: 0 10px 24px #0007;
+}
+.stage-card strong {
+  font-size: 27px;
+}
+.stage-card span {
+  color: #d0f7ff;
+}
+.stage-card small {
+  color: #8affe2;
+}
+.stage-card.locked {
+  filter: saturate(0.25) brightness(0.55);
+}
+.stage-card.centered {
+  filter: none;
+  border-color: #fff176;
+  box-shadow:
+    0 0 0 3px #67f7df,
+    0 0 30px #4ee9ff;
+}
+.races-tab > p {
+  text-align: center;
+  margin: 0;
+  color: #d9f2f7;
+}
+.workshop-tab {
+  overflow: auto;
+  padding: 10px;
+}
+.workshop-intro {
+  display: grid;
+  grid-template-columns: 105px 1fr;
+  align-items: center;
+  border: 1px solid #45a8c1;
+  border-radius: 18px;
+  background: #071d38e8;
+  padding: 12px;
+}
+.workshop-intro h2,
+.workshop-intro p {
+  margin: 3px;
+}
+.workshop-intro strong {
+  color: #ffe176;
+}
+.upgrades {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 12px;
+}
+.upgrade {
+  min-height: 154px;
+  border: 1px solid #45a8c1;
+  border-radius: 16px;
+  background: #092845;
+  color: #fff;
+  padding: 13px;
+  display: grid;
+  align-content: space-between;
+  gap: 8px;
+  text-align: left;
+}
+.upgrade.maxed {
+  border-color: #74f7d9;
+}
+.upgrade-icon {
+  font-size: 34px;
+}
+.upgrade small {
+  color: #c0e3ee;
+}
+.upgrade b {
+  color: #ffe176;
+}
+.champion-card {
+  display: grid;
+  grid-template-columns: 82px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  margin-top: 11px;
+  padding: 10px;
+  border: 1px solid #c484ff;
+  border-radius: 17px;
+  background: #231548e8;
+}
+.champion-card p {
+  margin: 4px 0;
+  color: #e6d7ff;
+}
+.champion-card button {
+  min-height: 48px;
+  border: 1px solid #ffe176;
+  border-radius: 11px;
+  background: #6b4a10;
+  color: #fff;
+  font-weight: 900;
+  padding: 0 14px;
+}
+.battle-canvas {
+  background: #05172f;
+  display: grid;
+}
+.battle-live {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: 70px 38px minmax(0, 1fr) 28px;
+  gap: 6px;
+  padding: 7px;
+}
+.battle-header {
+  grid-template-columns: 52px minmax(0, 1fr) minmax(210px, 42%) 52px;
+}
+.race-block {
+  display: grid;
+  text-align: center;
+}
+.race-block small {
+  color: #83f2db;
+}
+.race-block strong {
+  font-size: 23px;
+}
+.battle-status {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+}
+.battle-status span {
+  display: grid;
+  text-align: center;
+  background: #0e3556;
+  border-radius: 9px;
+  padding: 3px;
+}
+.battle-status b {
+  font-size: 10px;
+  color: #acd2df;
+}
+.objective-row,
+.feedback {
+  margin: 0;
+  border: 1px solid #3d99b2;
+  border-radius: 10px;
+  background: #08243edc;
+  text-align: center;
+  overflow: hidden;
+}
+.objective-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 8px;
+  white-space: normal;
+  line-height: 1.12;
+  font-size: clamp(12px, 3.5vw, 15px);
+}
+.arena-wrap {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid #53d3e7;
+  border-radius: 18px;
+  background: #071c32;
+}
+.arena-wrap canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+.control-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 7px;
+  transform: translateX(-50%);
+  padding: 3px 12px;
+  border-radius: 14px;
+  background: #041a31c9;
+  color: #e3fbff;
+  font-size: 13px;
+  pointer-events: none;
+}
+.arena-wrap > #dash {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  min-width: 118px;
+  min-height: 52px;
+  border: 2px solid #5fe7ef;
+  border-radius: 15px;
+  background: #092e50e8;
+  color: #fff;
+  font-weight: 900;
+  display: grid;
+  box-shadow: 0 0 20px #37d7ff66;
+}
+.arena-wrap > #dash.ready {
+  border-color: #ffe176;
+  background: #6b430ee8;
+  box-shadow: 0 0 26px #ffd55c;
+}
+.arena-wrap > #dash b {
+  color: #73f3db;
+}
+.feedback {
+  padding: 4px;
+  color: #8affe2;
+  font-size: 13px;
+}
+.modal-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  background: #020817df;
+  padding: 18px;
+}
+.dialog-card,
+.result-card {
+  width: min(100%, 560px);
+  max-height: 100%;
+  overflow: auto;
+  border: 2px solid #58d9ed;
+  border-radius: 23px;
+  background: #082441;
+  padding: 20px;
+  text-align: center;
+}
+.dialog-card ol {
+  text-align: left;
+  line-height: 1.6;
+}
+.result-racer {
+  width: 142px;
+  height: 142px;
+  margin: auto;
+  background-position: 0 0;
+}
+.result-card h2,
+.dialog-card h2 {
+  font-size: 31px;
+  margin: 5px;
+}
+.result-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.result-stats span {
+  display: grid;
+  background: #0e3556;
+  border-radius: 12px;
+  padding: 9px;
+}
+.modal-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 15px;
+}
+.dialog-card .modal-actions {
+  grid-template-columns: 1fr 1fr;
+}
+.dialog-card .modal-actions.one {
+  grid-template-columns: 1fr;
+}
+.modal-actions button {
+  min-height: 52px;
+  border: 1px solid #47a9c2;
+  border-radius: 12px;
+  background: #103b5e;
+  color: #fff;
+  font-weight: 900;
+}
+.modal-layer button:focus-visible,
+.stage-card:focus-visible,
+.upgrade:focus-visible,
+.champion-card button:focus-visible {
+  outline: 4px solid #fff176;
+  outline-offset: 2px;
+}
+.loading-panel {
+  z-index: 99;
+}
+@media (max-width: 640px) {
+  .main-screen {
+    padding: 7px;
+    grid-template-rows: 56px auto;
+    min-height: auto;
+  }
+  .main-header {
+    grid-template-columns: 60px minmax(0, 1fr) 116px;
+  }
+  .main-hero {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    align-content: start;
+    padding: 8px;
+    gap: 8px;
+  }
+  .poster {
+    height: min(47vh, 400px);
+  }
+  .main-copy {
+    gap: 5px;
+  }
+  .main-copy h1 {
+    font-size: 25px;
+  }
+  .main-copy p {
+    font-size: 14px;
+    line-height: 1.35;
+  }
+  .main-copy button {
+    min-height: 50px;
+  }
+  .public-guide {
+    padding: 24px 12px;
+  }
+  .guide-grid {
+    grid-template-columns: 1fr;
+  }
+  .upgrades {
+    grid-template-columns: 1fr;
+  }
+  .champion-card {
+    grid-template-columns: 68px 1fr;
+  }
+  .champion-card button {
+    grid-column: 1/-1;
+  }
+  .panko-portrait {
+    width: 64px;
+    height: 64px;
+  }
+  .battle-live {
+    grid-template-rows: 66px 36px minmax(0, 1fr) 25px;
+    padding: 5px;
+    gap: 4px;
+  }
+  .battle-header {
+    grid-template-columns: 50px minmax(0, 1fr) 164px 48px;
+    gap: 4px;
+    padding: 4px;
+  }
+  .battle-status {
+    gap: 2px;
+  }
+  .battle-status span {
+    padding: 2px;
+  }
+  .race-block strong {
+    font-size: 18px;
+  }
+  .arena-wrap > #dash {
+    min-width: 102px;
+    min-height: 46px;
+    font-size: 12px;
+  }
+  .modal-actions {
+    grid-template-columns: 1fr;
+  }
+  .dialog-card .modal-actions {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-height: 500px) and (min-aspect-ratio: 3/2) {
+  .main-screen {
+    min-height: 720px;
+  }
+  .stage-canvas {
+    grid-template-rows: 58px 40px minmax(0, 1fr);
+  }
+  .races-tab {
+    grid-template-rows: minmax(0, 1fr);
+  }
+  #stageHint {
+    display: none;
+  }
+  .battle-live {
+    grid-template-rows: 52px 28px minmax(0, 1fr) 18px;
+  }
+  .battle-header {
+    grid-column: 1;
+    grid-row: 1;
+    grid-template-columns: 52px minmax(0, 1fr) 220px 52px;
+  }
+  .objective-row {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .arena-wrap {
+    grid-column: 1;
+    grid-row: 3/5;
+  }
+  .feedback {
+    grid-column: 1;
+    grid-row: 4;
+    z-index: 2;
+    align-self: center;
+    margin: 1px 132px 1px 2px;
+    pointer-events: none;
+  }
+  .arena-wrap > #dash {
+    right: 8px;
+    bottom: 8px;
+  }
+  .result-card {
+    width: min(760px, 100%);
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 3px 12px;
+    padding: 9px;
+  }
+  .result-racer {
+    grid-row: 1/5;
+    width: 125px;
+    height: 125px;
+  }
+  .result-card .modal-actions {
+    grid-column: 1/-1;
+    margin-top: 5px;
+  }
+  .workshop-intro {
+    grid-template-columns: 70px 1fr;
+  }
+  .orla-portrait {
+    width: 64px;
+    height: 64px;
+  }
+  .upgrades {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .upgrade {
+    min-height: 110px;
+  }
+  .champion-card {
+    grid-template-columns: 58px 1fr auto;
+  }
+  .panko-portrait {
+    width: 56px;
+    height: 56px;
+  }
+}

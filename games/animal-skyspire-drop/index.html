@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Animal Skyspire Drop | Internal WeightPlay Trial</title>
+  <meta name="description" content="Rotate a crystal skyspire, guide Fia through thirty fast descents, and break cursed rings with a charged comet combo.">
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-screen="main">
+  <div id="loading" class="loading-panel"><img src="../../assets/animal-skyspire-drop/fia-orb.webp" alt=""><strong data-t="loading">Opening the skyspire…</strong></div>
+
+  <div id="mainGroup" class="main-group">
+    <main id="mainScreen" class="main-screen">
+      <header class="main-header">
+        <a class="lobby-return" href="/" aria-label="Back to WeightPlay"><span>←</span><img src="../../assets/weightplay-logo.png" alt="W"></a>
+        <strong data-t="title">Animal Skyspire Drop</strong>
+        <label class="locale-control"><span class="sr-only" data-t="language">Language</span><select id="localeSelect"></select></label>
+      </header>
+      <section class="main-hero">
+        <img class="poster" src="../../assets/animal-skyspire-drop/cover.webp" alt="Fia descending through a crystal skyspire" data-t-alt="posterAlt">
+        <div class="main-copy">
+          <small data-t="eyebrow">Crystal drop arcade</small>
+          <h1 data-t="title">Animal Skyspire Drop</h1>
+          <p data-t="pitch">Rotate the tower, line up each opening, and charge Fia's comet fall before the cursed rings stop her.</p>
+          <span id="mainProgress">0 / 30</span>
+          <button id="start" class="primary" type="button" data-t="start">Start Game</button>
+        </div>
+      </section>
+    </main>
+    <section class="public-guide" aria-label="Game guide" data-t-aria="guideLabel">
+      <small data-t="guideKicker">Original WeightPlay action arcade</small>
+      <h2 data-t="guideTitle">Turn the tower. Read the landing. Keep the fall alive.</h2>
+      <p data-t="guideIntro">Fia is sealed inside a protective comet sphere while descending thirty unstable skyspires. Drag left or right to rotate every ring. Pass through openings, bounce on safe turquoise stone, and avoid violet cursed sectors.</p>
+      <div class="guide-grid">
+        <article><h3 data-t="howTitle">How to play</h3><ol><li data-t="how1">Drag across the tower or use Left and Right to rotate the rings.</li><li data-t="how2">Place an opening beneath Fia before her next landing.</li><li data-t="how3">Fall through consecutive rings to charge Comet Break and smash one danger.</li></ol></article>
+        <article><h3 data-t="growthTitle">Thirty different descents</h3><p data-t="growthText">Six chapters introduce fragile glass, drifting rings, reversed controls, charge crystals, shield gates, and Crownfall towers that combine every rule.</p></article>
+        <article><h3 data-t="strategyTitle">Reading the spiral</h3><p data-t="strategyText">A short safe bounce creates time to rotate. Long falls build power, but the next platform arrives faster. Decide when to aim for a gap and when to land deliberately.</p></article>
+        <article><h3 data-t="saveTitle">Save and privacy</h3><p data-t="saveText">Stars, best times, shards, and upgrades stay in this browser. No login or personal information is required.</p></article>
+      </div>
+    </section>
+  </div>
+
+  <section id="stageScreen" class="active-screen" hidden>
+    <div class="stage-canvas" data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/animal-skyspire-drop/cover.webp" style="--wp-stage-art:url('../../assets/animal-skyspire-drop/cover.webp')">
+      <header class="stage-header"><button id="stageBack" type="button" aria-label="Back">←</button><div><strong data-t="chooseStage">Choose a Skyspire</strong><span id="stageSummary"></span></div><img src="../../assets/animal-skyspire-drop/fia-orb.webp" alt=""></header>
+      <nav class="stage-tabs"><button id="racesTab" class="active" type="button" data-t="towers">Skyspires</button><button id="forgeTab" type="button" data-t="forge">Comet Forge</button></nav>
+      <section id="towerPanel" class="tab-panel tower-panel"><div id="stageRail" class="stage-rail" aria-label="Skyspire stage selector" data-t-aria="stageRailLabel"></div><p id="stageHint" data-t="stageHint">Drag the rail and choose an unlocked tower.</p></section>
+      <section id="forgePanel" class="tab-panel forge-panel" hidden>
+        <div class="forge-intro"><img src="../../assets/animal-skyspire-drop/fia-orb.webp" alt=""><div><h2 data-t="forgeTitle">Comet Forge</h2><p data-t="forgeIntro">Spend saved sky shards on permanent control and survival upgrades.</p><strong id="shardCount"></strong></div></div>
+        <div id="upgrades" class="upgrades"></div>
+        <div class="aura-card"><img src="../../assets/animal-skyspire-drop/fia-orb.webp" alt=""><div><strong data-t="auraTitle">Champion Trail</strong><p data-t="auraText">A violet-gold trail cosmetic. It does not change tower balance.</p></div><button id="auraButton" type="button"></button></div>
+      </section>
+    </div>
+    <div class="ad-reserve" aria-hidden="true"></div>
+  </section>
+
+  <section id="battleScreen" class="active-screen" hidden>
+    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <div id="battleLive" class="battle-live">
+        <header class="battle-header"><button id="battleBack" type="button" aria-label="Back">←</button><div class="tower-block"><small id="towerLabel"></small><strong id="depthValue">0 / 10</strong></div><div class="battle-status"><span><b data-t="combo">Combo</b><strong id="comboValue">0</strong></span><span><b data-t="time">Time</b><strong id="timeValue">0.0</strong></span><span><b data-t="shield">Shield</b><strong id="shieldValue">0</strong></span></div><button id="battleHelp" type="button" aria-label="How to play">?</button></header>
+        <p id="objective" class="objective-row" data-t="objective">Rotate the tower and reach the rescue gate.</p>
+        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="720" height="960" aria-label="Rotating crystal skyspire" data-t-aria="arenaLabel"></canvas><div class="control-cue" data-t="controlCue">Drag left or right to rotate</div><div id="powerBadge" class="power-badge"><span data-t="cometBreak">Comet Break</span><strong id="powerValue">0 / 3</strong></div></div>
+        <p id="feedback" class="feedback" aria-live="polite"></p>
+      </div>
+
+      <section id="helpModal" class="modal-layer" hidden><div class="dialog-card"><h2 data-t="helpTitle">Guide Fia through the opening</h2><ol><li data-t="help1">Drag horizontally to rotate the complete tower.</li><li data-t="help2">Turquoise is safe. Violet ends the run unless a shield or Comet Break is ready.</li><li data-t="help3">Three consecutive gaps charge one automatic Comet Break.</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">Continue</button></div></div></section>
+      <section id="leaveModal" class="modal-layer" hidden><div class="dialog-card"><h2 data-t="leaveTitle">Keep this descent?</h2><p data-t="leaveText">Continue returns to the exact bounce. Returning to the map ends this run.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">Continue</button><button id="leaveStage" type="button" data-t="returnMap">Return to Map</button></div></div></section>
+      <section id="resultModal" class="modal-layer" hidden><div class="result-card"><img src="../../assets/animal-skyspire-drop/fia-orb.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="resultTime">Time</b><strong id="resultTime"></strong></span><span><b data-t="bestCombo">Best Combo</b><strong id="resultCombo"></strong></span><span><b data-t="stars">Stars</b><strong id="resultStars"></strong></span></div><div class="modal-actions"><button id="retry" type="button" data-t="retry">Retry</button><button id="resultMap" type="button" data-t="returnMap">Tower Map</button><button id="next" class="primary" type="button" data-t="next">Next Tower</button></div></div></section>
+    </div>
+    <div class="ad-reserve" aria-hidden="true"></div>
+  </section>
+
+  <script src="../../src/site-config.js"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js"></script><script src="locales.js"></script><script src="game.js"></script><script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
+</body>
+</html>

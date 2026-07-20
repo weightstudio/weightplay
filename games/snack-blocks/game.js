@@ -1318,10 +1318,16 @@
     nodes.resultStars.textContent = cleared ? ratingStars() : "";
     renderSkillReport(progress, cleared);
     nodes.nextBtn.classList.toggle("hidden", !cleared || stage.id >= stages.length);
+    const primaryAction = cleared
+      ? (stage.id < stages.length ? nodes.nextBtn : nodes.menuBtn)
+      : nodes.againBtn;
+    [nodes.nextBtn, nodes.againBtn, nodes.menuBtn].forEach((action) => {
+      action.classList.toggle("primary-action", action === primaryAction);
+    });
     nodes.hud.classList.add("hidden");
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.remove("hidden");
-    requestAnimationFrame(() => (cleared && !nodes.nextBtn.classList.contains("hidden") ? nodes.nextBtn : nodes.againBtn).focus({ preventScroll: true }));
+    requestAnimationFrame(() => primaryAction.focus({ preventScroll: true }));
     window.WonderSound?.play(cleared ? "win" : "wrong");
     window.WonderAnalytics?.track("game_complete", {
       game_id: GAME_ID,
@@ -1426,6 +1432,9 @@
         bestBurst: state.bestBurst,
         goal: goalLabel(),
       };
+    },
+    finishStage(cleared) {
+      finishStage(Boolean(cleared));
     },
   };
 

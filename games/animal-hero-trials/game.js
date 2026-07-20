@@ -344,6 +344,32 @@
     window.WonderSound?.play?.(cue);
   }
 
+  const soundActionLabels = {
+    en: { mute: "Mute sound", unmute: "Turn sound on" },
+    "zh-Hant": { mute: "\u95dc\u9589\u97f3\u6548", unmute: "\u958b\u555f\u97f3\u6548" },
+    "zh-Hans": { mute: "\u5173\u95ed\u97f3\u6548", unmute: "\u5f00\u542f\u97f3\u6548" },
+    ja: { mute: "\u30b5\u30a6\u30f3\u30c9\u3092\u30df\u30e5\u30fc\u30c8", unmute: "\u30b5\u30a6\u30f3\u30c9\u3092\u30aa\u30f3" },
+    ko: { mute: "\uc18c\ub9ac \ub044\uae30", unmute: "\uc18c\ub9ac \ucf1c\uae30" },
+    es: { mute: "Silenciar sonido", unmute: "Activar sonido" },
+    "pt-BR": { mute: "Silenciar som", unmute: "Ativar som" },
+    fr: { mute: "Couper le son", unmute: "Activer le son" },
+    de: { mute: "Ton ausschalten", unmute: "Ton einschalten" },
+    it: { mute: "Disattiva audio", unmute: "Attiva audio" },
+    ru: { mute: "\u0412\u044b\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0437\u0432\u0443\u043a", unmute: "\u0412\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0437\u0432\u0443\u043a" },
+  };
+
+  function syncSoundToggle() {
+    const button = $("#soundToggle");
+    if (!button) return;
+    const muted = Boolean(window.WonderSound?.isMuted?.());
+    const labels = soundActionLabels[locale] || soundActionLabels.en;
+    const label = labels[muted ? "unmute" : "mute"];
+    button.setAttribute("aria-pressed", String(muted));
+    button.setAttribute("aria-label", label);
+    button.title = label;
+    button.textContent = muted ? "\ud83d\udd07" : "\ud83d\udd0a";
+  }
+
   function roomLabel(room, boss = false) {
     if (locale === "zh-Hant") return `\u623f\u9593 ${room}/3${boss ? " \u00b7 \u9996\u9818" : ""}`;
     return interpolate(boss ? "bossRoom" : "room", { room });
@@ -465,6 +491,7 @@
     $("#masteryCost").textContent = masterySummary;
     $("#masteryBtn").disabled = !masteryReady;
     $("#masteryBtn").setAttribute("aria-label", `${t("mastery")}, Lv.${mastery}. ${masterySummary}`);
+    syncSoundToggle();
     renderHeroPicker();
     renderStages();
   }
@@ -1073,6 +1100,17 @@
     writeStorage("weightPlayLocale", requested);
     localize();
   };
+  const soundToggle = $("#soundToggle");
+  if (soundToggle) {
+    soundToggle.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+    });
+    soundToggle.onclick = () => {
+      window.WonderSound?.unlock?.();
+      window.WonderSound?.setMuted?.(!window.WonderSound?.isMuted?.());
+      syncSoundToggle();
+    };
+  }
   $("#startBtn").addEventListener("keydown", (event) => { if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault(); });
   $("#stageRail").addEventListener("keydown", (event) => { if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest(".stage-card")) event.preventDefault(); });
   $("#startBtn").onclick = () => { playSound("click"); show("stage"); focusStage(); };
