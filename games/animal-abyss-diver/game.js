@@ -1,5 +1,6 @@
 (() => {
   const $ = (id) => document.getElementById(id);
+  const playSound = (name) => window.WonderSound?.play?.(name);
   const u = (text) => text.replace(/\\u([0-9a-f]{4})/gi, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
   const saveKey = "animal_abyss_diver_save";
   const en = { title:"Animal Abyss Diver",language:"Language",headline:"Choose how deep to risk the dive.",intro:"Recover relics, read hazards, and surface before oxygen runs out.",guideTitle:"How to dive",guideCopy:"Choose a route, swim through three zones, use sonar before a risky pocket, and surface with your salvage.",start:"Start Dive",stage:"Choose a dive route",stageHint:"Drag routes to compare depth and oxygen risk.",route:"Route {n}",relic:"Relic",oxygen:"Oxygen",zone:"Zone {n}/3",salvage:"Salvage {n}",left:"Swim left",right:"Swim right",sonar:"Sonar",surface:"Surface",beacon:"Beacon 3",beaconUsed:"Beacon used",beaconNeed:"Need 3 diamonds",beaconHelp:"One use per dive: restore oxygen to 30%.",collect:"Recovered a relic.",hazard:"Hazard hit: oxygen lost.",sonarSafe:"Sonar pulse reveals the safer lane.",chooseLane:"Choose a lane, then surface or continue.",sonarLane:"Sonar marks the safe lane.",clear:"Dive complete!",partial:"You surfaced safely with a partial recovery.",coins:"Salvage coins +{n}",rank:"Diver rank {n}",next:"Next route",menu:"Main menu",back:"Back",relicNames:["Compass","Moon Pearl","Rune Tablet"] };
@@ -564,7 +565,7 @@
       target?.focus({preventScroll:true});
     });
   }
-  function start(route){cancelDiveAsync();const config=routes[route-1];state={route,zone:1,oxygen:maxOxygen(),playerHp:maxHealth(),salvage:0,sonar:!!config.openingScan,battery:config.startBattery??4,shieldArmed:!!config.openingShield,beaconUsed:false,beaconPending:false,busy:false,fishActive:false,fishResolvedZones:[],safeStreak:0};show("battleShell");resetDiveField();$("fishEncounter").classList.add("hidden");$("fishEncounter").classList.remove("is-hit","is-countering","is-escaping");setUpgradeModal(false,false);renderBattle();setFeedback(`${icon(config.openingScan?"sonar":config.openingShield?"shield":"sonar")}<b>${config.openingScan||config.openingShield?"✓":"?"}</b>`,routeText(config,"rule"));setCoach(!save.tutorialDone);}
+  function start(route){cancelDiveAsync();const config=routes[route-1];state={route,zone:1,oxygen:maxOxygen(),playerHp:maxHealth(),salvage:0,sonar:!!config.openingScan,battery:config.startBattery??4,shieldArmed:!!config.openingShield,beaconUsed:false,beaconPending:false,busy:false,fishActive:false,fishResolvedZones:[],safeStreak:0};show("battleShell");resetDiveField();$("fishEncounter").classList.add("hidden");$("fishEncounter").classList.remove("is-hit","is-countering","is-escaping");setUpgradeModal(false,false);renderBattle();setFeedback(`${icon(config.openingScan?"sonar":config.openingShield?"shield":"sonar")}<b>${config.openingScan||config.openingShield?"✓":"?"}</b>`,routeText(config,"rule"));playSound("start");setCoach(!save.tutorialDone);}
   function finish(mode){
     cancelDiveAsync();
     const config=routeConfig(),clear=mode==="clear",finalClear=clear&&state.route>=routes.length;
@@ -572,7 +573,7 @@
     const unlockedBefore=save.unlocked;
     save.coins+=earned;
     if(clear){save.rank+=1;save.unlocked=Math.max(save.unlocked,Math.min(routes.length,state.route+1));}
-    persist();show("result");
+    persist();show("result");playSound(clear?"win":mode==="surface"?"success":"wrong");
     $("resultTitle").textContent=clear?t("clear"):mode==="combat"?t("combatDefeat"):mode==="fail"?t("oxygenLost"):mode==="miss"?t("missed"):t("partial");
     const copyKey=clear?"resultClear":mode==="combat"?"resultCombat":mode==="fail"?"resultFail":mode==="miss"?"resultMiss":"resultSurface";
     $("resultCopy").textContent=t(copyKey,{n:state.salvage,target:config.target,zones:config.zones});
@@ -596,6 +597,7 @@
     if(outcome===outcomes.relic)powerGain+=config.relicPower??0;
     if(outcome===outcomes.current)powerGain+=config.currentPower??0;
     state.battery=Math.min(4,state.battery+powerGain);
+    playSound(outcome.safe?(salvageDelta>0?"coin":"success"):"wrong");
     state.resolvingDirection=direction;
     setFeedback(`${salvageDelta?`${icon("salvage")}<b>${salvageDelta>0?"+":""}${salvageDelta}</b>`:""}${icon("oxygen")}<b>${oxygenDelta>0?"+":""}${oxygenDelta}</b>${powerGain?`${icon("power")}<b>+${powerGain}</b>`:""}${shielded?`${icon("shield")}<b>½</b>`:""}`,`${t(outcome.feedback)} ${routeText(config,"rule")}${shielded?` ${t("shieldBlock")}`:""}`);
     const impact=$("impactText");impact.textContent=`${salvageDelta?`${salvageDelta>0?"+":""}${salvageDelta} ${t("salvage",{n:""}).trim()}`:""}${salvageDelta&&oxygenDelta?" · ":""}${oxygenDelta>0?"+":""}${oxygenDelta} ${t("oxygenShort")}`;impact.classList.remove("hidden");

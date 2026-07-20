@@ -1291,7 +1291,7 @@
     state.readyTimer = state.orbCooldown;
     nodes.hintText.textContent = t("orbFlying");
     updateArenaControlLabel(true);
-    playSound("pop", 0.08);
+    playSound("shoot", 0.08);
     window.WonderAnalytics?.track("shot_fired", { game_id: GAME_ID, wave: state.wave, split: state.split });
     renderHud();
   }

@@ -45,7 +45,7 @@
     staticText.forEach((node)=>{node.textContent=t(node.dataset.t)});
     assistiveText.forEach((node)=>node.setAttribute("aria-label",t(node.dataset.ta)));
     document.title=`${t("title")} | WeightPlay Internal Trial`;
-    renderMain();renderStage();renderLab();if(run)updateHud(true);
+    renderMain();renderStage();renderLab();updateSoundToggle();if(run)updateHud(true);
     window.dispatchEvent(new CustomEvent("wonder:localechange",{detail:{locale}}));
   }
   function showScreen(name){
@@ -55,6 +55,7 @@
     if(name==="stage"){renderStage();requestAnimationFrame(()=>centerStage(Math.min(save.unlocked-1,29)))}
   }
   function renderMain(){$("mainProgress").textContent=`${Object.keys(save.stars).length} / 30`}
+  function updateSoundToggle(){const button=$("soundToggle"),muted=Boolean(window.WonderSound?.isMuted?.());if(!button)return;button.textContent=muted?"🔇":"🔊";button.title=t("sound");button.setAttribute("aria-label",t(muted?"enableSound":"disableSound"));button.classList.toggle("muted",muted)}
   function chapterName(stage){return t(chapters[stage.chapter])}
   function renderStage(){
     if(!$("stageRail"))return;
@@ -88,6 +89,8 @@
   document.querySelectorAll("[data-tab]").forEach((button)=>button.addEventListener("click",()=>{document.querySelectorAll("[data-tab]").forEach((item)=>{const active=item===button;item.classList.toggle("active",active);item.setAttribute("aria-selected",active?"true":"false")});$("missionsTab").hidden=button.dataset.tab!=="missions";$("labTab").hidden=button.dataset.tab!=="lab"}));
   $("start").addEventListener("click",()=>showScreen("stage"));$("stageBack").addEventListener("click",()=>showScreen("main"));
   $("locale").addEventListener("change",(event)=>{locale=canonicalLocale(event.target.value);storage.set("wonderLocale",locale);applyLocale()});
+  $("soundToggle").addEventListener("keydown",(event)=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
+  $("soundToggle").addEventListener("click",()=>{const sound=window.WonderSound;if(!sound)return;sound.unlock();sound.setMuted(!sound.isMuted());updateSoundToggle();if(!sound.isMuted())sound.play("click")});
 
   const canvas=$("arena"),ctx=canvas.getContext("2d"),images={};
   const imageSources={arena:"../../assets/animal-prism-battalion/arena.webp",spirits:"../../assets/animal-prism-battalion/spirit-atlas.webp",fox:"../../assets/weightplay-character-spark-paw-fox-cutout.webp",enemy:"../../assets/animal-crystal-survivor-shadow-fox-v2.webp",boss:"../../assets/animal-crystal-survivor-boss-eclipse-colossus.webp"};
@@ -186,7 +189,7 @@
   function finish(won){
     if(!run||run.finished)return;run.finished=true;run.paused=true;stopLoop();const remaining=Math.max(0,Math.ceil(run.time)),stars=won?1+(remaining>run.stage.time*.25?1:0)+(run.core===run.maxCore?1:0):0,earned=won?3+stars+run.stage.chapter:0;
     if(won){save.stars[run.stage.n]=Math.max(Number(save.stars[run.stage.n])||0,stars);save.unlocked=Math.max(save.unlocked,Math.min(30,run.stage.n+1));save.shards=Math.min(9999,save.shards+earned);persist()}
-    $("resultKicker").textContent=won?`${t("shardsEarned")} +${earned}`:t("missionFailed");$("resultTitle").textContent=t(won?"missionComplete":"missionFailed");$("resultText").textContent=t(won?"victoryText":"failureText");$("resultStats").innerHTML=`<span><b>${t("strength")}</b><strong>${run.peak}</strong></span><span><b>${t("coreHits")}</b><strong>${run.core}/${run.maxCore}</strong></span><span><b>${t("stars")}</b><strong>${"★".repeat(stars)}${"☆".repeat(3-stars)}</strong></span>`;$("nextMission").hidden=!won||run.stage.n>=30;$("result").hidden=false;$("battleLive").hidden=true;$("battleLive").inert=true;requestAnimationFrame(()=>(won&&!$("nextMission").hidden?$("nextMission"):$("retry")).focus());window.WonderSound?.play?.(won?"success":"fail")
+    $("resultKicker").textContent=won?`${t("shardsEarned")} +${earned}`:t("missionFailed");$("resultTitle").textContent=t(won?"missionComplete":"missionFailed");$("resultText").textContent=t(won?"victoryText":"failureText");$("resultStats").innerHTML=`<span><b>${t("strength")}</b><strong>${run.peak}</strong></span><span><b>${t("coreHits")}</b><strong>${run.core}/${run.maxCore}</strong></span><span><b>${t("stars")}</b><strong>${"★".repeat(stars)}${"☆".repeat(3-stars)}</strong></span>`;$("nextMission").hidden=!won||run.stage.n>=30;$("result").hidden=false;$("battleLive").hidden=true;$("battleLive").inert=true;requestAnimationFrame(()=>(won&&!$("nextMission").hidden?$("nextMission"):$("retry")).focus());window.WonderSound?.play?.(won?"win":"wrong")
   }
   $("battleBack").addEventListener("click",openLeave);$("battleHelp").addEventListener("click",openTutorial);$("continueBattle").addEventListener("click",()=>closeModal($("leave")));$("leaveStage").addEventListener("click",()=>{$("leave").hidden=true;$("battleLive").inert=false;run=null;showScreen("stage")});$("retry").addEventListener("click",()=>startBattle(run.stageIndex));$("resultStage").addEventListener("click",()=>{$("result").hidden=true;$("battleLive").inert=false;run=null;showScreen("stage")});$("nextMission").addEventListener("click",()=>startBattle(Math.min(29,run.stageIndex+1)));
   function loadImages(){return Promise.all(Object.entries(imageSources).map(([key,src])=>new Promise((resolve)=>{const image=new Image();images[key]=image;image.onload=image.onerror=resolve;image.src=src})))}

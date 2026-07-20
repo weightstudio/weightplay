@@ -308,7 +308,7 @@
 
   function validStart(node){const stage=currentStage();if(stage.forcedStart!==null&&node!==stage.forcedStart)return false;let cp=stage.checkpoints[0]===node?1:0;return Boolean(solveFrom(node,new Set(),cp,node===stage.keyNode));}
   function setFeedback(message,type=""){dom.feedback.textContent=message;dom.feedbackRow.classList.remove("error","success");if(type)dom.feedbackRow.classList.add(type);}
-  function reject(reason,vars={}){mistakes+=1;sound("error");setFeedback(t(reason,vars),"error");dom.scene.classList.remove("shake");void dom.scene.offsetWidth;dom.scene.classList.add("shake");updateAssist();}
+  function reject(reason,vars={}){mistakes+=1;sound("wrong");setFeedback(t(reason,vars),"error");dom.scene.classList.remove("shake");void dom.scene.offsetWidth;dom.scene.classList.add("shake");updateAssist();}
 
   function chooseNode(node){
     if(completing||!dom.result.hidden)return;

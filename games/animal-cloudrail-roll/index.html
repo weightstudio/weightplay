@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="weightplay-audience" content="general">
+  <title>Animal Cloudrail Roll | Internal WeightPlay Trial</title>
+  <meta name="description" content="Steer Rux's Gearglobe across thirty elevated cloudrail obstacle courses, control speed, recover at checkpoints, and relight every foundry beacon.">
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-screen="main" data-wp-game-id="animal-cloudrail-roll">
+  <div id="loading" class="loading-panel"><img src="../../assets/animal-cloudrail-roll/rux-gearglobe.webp" alt=""><strong data-t="loading">Warming the Gearglobe…</strong></div>
+
+  <div id="mainGroup" class="main-group">
+    <main id="mainScreen" class="main-screen">
+      <header class="main-header">
+        <a class="lobby-return" href="/" aria-label="Back to WeightPlay" data-t-aria="backWeightPlay"><span>←</span><img src="../../assets/weightplay-logo.png" alt="W"></a>
+        <strong data-t="title">Animal Cloudrail Roll</strong>
+        <label class="locale-control"><span class="sr-only" data-t="language">Language</span><select id="localeSelect"></select></label>
+      </header>
+      <section class="main-hero">
+        <img class="poster" src="../../assets/animal-cloudrail-roll/cover.webp" alt="Rux steering a Gearglobe along a floating cloudrail" data-t-alt="posterAlt">
+        <div class="main-copy">
+          <small data-t="eyebrow">Rolling obstacle-course arcade</small>
+          <h1 data-t="title">Animal Cloudrail Roll</h1>
+          <p data-t="pitch">Steer Rux left and right, control the Gearglobe's speed, and stay on the skyrail until the foundry beacon.</p>
+          <span id="mainProgress">0 / 30</span>
+          <button id="start" class="primary" type="button" data-t="start">Start Game</button>
+        </div>
+      </section>
+    </main>
+    <section class="public-guide" aria-label="Game guide" data-t-aria="guideLabel">
+      <small data-t="guideKicker">Original WeightPlay action arcade</small>
+      <h2 data-t="guideTitle">Steer the globe. Read the rail. Choose the speed.</h2>
+      <p data-t="guideIntro">Gear Horn Rux built a crystal Gearglobe to reconnect thirty floating foundry beacons. Every cloudrail demands active steering: accelerate through broad sections, brake before narrow turns, and recover from a fall at the latest checkpoint while a shield remains.</p>
+      <div class="guide-grid">
+        <article><h3 data-t="howTitle">How to play</h3><ol><li data-t="how1">Drag left or right across the course to steer.</li><li data-t="how2">Push upward to accelerate or pull downward to brake.</li><li data-t="how3">Avoid gates, bumpers, wind and broken plates; reach the beacon.</li></ol></article>
+        <article><h3 data-t="growthTitle">Thirty different courses</h3><p data-t="growthText">Six chapters add moving gates, boosts, fracture plates, jump gaps, crosswinds, magnetic rails, split routes, and Crownrail combinations.</p></article>
+        <article><h3 data-t="strategyTitle">Speed has a purpose</h3><p data-t="strategyText">Fast rolling builds Flow and improves the medal time. Braking gives more steering control. The safest line is not always the fastest line.</p></article>
+        <article><h3 data-t="saveTitle">Save and privacy</h3><p data-t="saveText">Medals, best times, Gear Sparks, and workshop upgrades stay in this browser. No login or personal information is required.</p></article>
+      </div>
+    </section>
+  </div>
+
+  <section id="stageScreen" class="active-screen" hidden>
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-cloudrail-roll/cover.webp" style="--wp-stage-art:url('../../assets/animal-cloudrail-roll/cover.webp')">
+      <header class="stage-header"><button id="stageBack" type="button" aria-label="Back" data-wp-return="stage">←</button><div><strong data-t="chooseStage">Choose a Cloudrail</strong><span id="stageSummary"></span></div><img src="../../assets/animal-cloudrail-roll/rux-gearglobe.webp" alt=""></header>
+      <nav class="stage-tabs"><button id="coursesTab" class="active" type="button" data-t="courses">Cloudrails</button><button id="workshopTab" type="button" data-t="workshop">Gear Workshop</button></nav>
+      <section id="coursePanel" class="tab-panel course-panel"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Cloudrail course selector" data-t-aria="stageRailLabel"></div><p id="stageHint" data-t="stageHint">Drag the rail and choose an unlocked course.</p></section>
+      <section id="workshopPanel" class="tab-panel workshop-panel" hidden>
+        <div class="workshop-intro"><img src="../../assets/animal-cloudrail-roll/rux-gearglobe.webp" alt=""><div><h2 data-t="workshopTitle">Gear Workshop</h2><p data-t="workshopIntro">Spend saved Gear Sparks on permanent handling and recovery upgrades.</p><strong id="sparkCount"></strong></div></div>
+        <div id="upgrades" class="upgrades"></div>
+        <div class="trail-card"><img src="../../assets/animal-cloudrail-roll/gear-spark.webp" alt=""><div><strong data-t="trailTitle">Aurora Gear Trail</strong><p data-t="trailText">A cyan-violet cosmetic trail. It never changes course physics.</p></div><button id="trailButton" type="button"></button></div>
+      </section>
+    </div>
+    <div class="ad-reserve" aria-hidden="true"></div>
+  </section>
+
+  <section id="battleScreen" class="active-screen" hidden>
+    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <div id="battleLive" class="battle-live">
+        <header class="battle-header"><button id="battleBack" type="button" aria-label="Back" data-wp-return="battle">←</button><div class="course-block"><small id="courseLabel"></small><strong id="distanceValue">0%</strong></div><div class="battle-status"><span><b data-t="speed">Speed</b><strong id="speedValue">0</strong></span><span><b data-t="flow">Flow</b><strong id="flowValue">0</strong></span><span><b data-t="shield">Shield</b><strong id="shieldValue">0</strong></span></div><button id="battleHelp" type="button" aria-label="How to play" data-t-aria="help">?</button></header>
+        <p id="objective" class="objective-row" data-t="objective">Steer Rux to the foundry beacon.</p>
+        <div id="arenaWrap" class="arena-wrap"><canvas id="courseCanvas" width="720" height="960" tabindex="0" aria-label="Rolling cloudrail course" data-t-aria="arenaLabel"></canvas><div class="control-cue" data-t="controlCue">Drag sideways to steer · up to accelerate · down to brake</div><div id="checkpointBadge" class="checkpoint-badge"><span data-t="checkpoint">Checkpoint</span><strong id="checkpointValue">Start</strong></div></div>
+        <p id="feedback" class="feedback" aria-live="polite"></p>
+      </div>
+
+      <section id="helpModal" class="modal-layer" hidden><div class="dialog-card"><h2 data-t="helpTitle">Control the Gearglobe</h2><ol><li data-t="help1">Drag sideways to steer continuously.</li><li data-t="help2">Push upward for speed; pull downward for stronger control.</li><li data-t="help3">A shield returns Rux to the latest checkpoint after one fall or heavy hit.</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">Continue</button></div></div></section>
+      <section id="leaveModal" class="modal-layer" hidden><div class="dialog-card"><h2 data-t="leaveTitle">Keep this run?</h2><p data-t="leaveText">Continue returns to the exact rail position. Returning to Courses ends this run.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">Continue</button><button id="leaveStage" type="button" data-t="returnCourses">Return to Courses</button></div></div></section>
+      <section id="resultModal" class="modal-layer" hidden><div class="result-card"><img src="../../assets/animal-cloudrail-roll/rux-gearglobe.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="resultTime">Time</b><strong id="resultTime"></strong></span><span><b data-t="bestFlow">Best Flow</b><strong id="resultFlow"></strong></span><span><b data-t="medal">Medal</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="retry" type="button" data-t="retry">Retry</button><button id="resultCourses" type="button" data-t="returnCourses">Courses</button><button id="next" class="primary" type="button" data-t="next">Next Course</button></div></div></section>
+    </div>
+    <div class="ad-reserve" aria-hidden="true"></div>
+  </section>
+
+  <script src="../../src/site-config.js"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js"></script><script src="locales.js"></script><script src="game.js"></script><script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
+</body>
+</html>

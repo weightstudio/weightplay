@@ -695,15 +695,16 @@
       && visualHeight > 0
       && Math.abs(visualWidth - window.innerWidth) <= 2
       && visualHeight <= window.innerHeight + 2;
-    const width = visualMatchesLayout ? visualWidth : window.innerWidth;
+    const safeWidth = visualMatchesLayout ? visualWidth : window.innerWidth;
     const height = visualMatchesLayout ? visualHeight : window.innerHeight;
     const mode = document.body.classList.contains("guard-yard-stage")
       ? "stage"
       : document.body.classList.contains("guard-yard-playing") ? "playing" : "main";
-    if (width === viewportWidth && height === viewportHeight && mode === viewportMode) return;
-    viewportWidth = width;
+    if (safeWidth === viewportWidth && height === viewportHeight && mode === viewportMode) return;
+    viewportWidth = safeWidth;
     viewportHeight = height;
     viewportMode = mode;
+    const width = Math.min(Math.max(1, safeWidth), 920);
     document.documentElement.style.setProperty("--guard-yard-vw", `${width}px`);
     document.documentElement.style.setProperty("--guard-yard-vh", `${height}px`);
     const isStage = mode === "stage";
@@ -718,7 +719,7 @@
       const logicalWidth = width / scale;
       const logicalHeight = height / scale;
       document.documentElement.style.setProperty("--guard-yard-frame-scale", String(scale));
-      document.documentElement.style.setProperty("--guard-yard-frame-left", "0px");
+      document.documentElement.style.setProperty("--guard-yard-frame-left", `${Math.max(0, (safeWidth - width) / 2)}px`);
       document.documentElement.style.setProperty("--guard-yard-frame-top", "0px");
       document.documentElement.style.setProperty("--guard-yard-logical-width", `${logicalWidth}px`);
       document.documentElement.style.setProperty("--guard-yard-logical-height", `${logicalHeight}px`);

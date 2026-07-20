@@ -476,7 +476,7 @@
     run.player.dx = 0;
     run.player.dy = 0;
     $("feedback").textContent = t("trailCut");
-    window.WonderSound?.play?.("fail");
+    window.WonderSound?.play?.("wrong");
     if (run.hearts <= 0) finish(false);
     return true;
   }
@@ -810,7 +810,7 @@
     $("battleLive").hidden = true;
     $("battleLive").inert = true;
     requestAnimationFrame(() => (won && !$("nextMission").hidden ? $("nextMission") : $("retry")).focus());
-    window.WonderSound?.play?.(won ? "success" : "fail");
+    window.WonderSound?.play?.(won ? "success" : "wrong");
   }
 
   $("battleBack").addEventListener("click", openLeave);
