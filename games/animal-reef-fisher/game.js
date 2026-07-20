@@ -589,6 +589,22 @@
     return value;
   }
 
+  const stageLocaleOverrides = {
+    it: {
+      ruleOpen: "Acque aperte · zona sicura stabile",
+      ruleDrift: "Deriva tra le alghe · la zona sicura si sposta dolcemente",
+      ruleSnag: "Ostacoli di corallo · la zona sicura si restringe e si allarga",
+      ruleTide: "Marea lunare · la zona sicura cambia lato",
+      ruleStorm: "Raffiche di tempesta · strattoni alla lenza ogni tre secondi",
+      ruleAbyss: "Prova abissale · deriva, pressione e raffiche",
+    },
+  };
+
+  function stageT(key) {
+    const activeLocale = activeI18nLocale() || document.documentElement.lang || locale;
+    return stageLocaleOverrides[activeLocale]?.[key] || t(key);
+  }
+
   function playSound(name) {
     window.WonderSound?.play(name);
   }
@@ -717,7 +733,7 @@
     nodes.zoneRow.innerHTML = zones.map((zone, index) => {
       const locked = index + 1 > save.unlockedZone;
       const missionLabel = t("mission", { stage:zone.stage });
-      const ruleLabel = t(`rule${zone.rule[0].toUpperCase()}${zone.rule.slice(1)}`);
+      const ruleLabel = stageT(`rule${zone.rule[0].toUpperCase()}${zone.rule.slice(1)}`);
       return `
         <button class="zone-card stage-card region-${zone.region} ${zone.checkpoint ? "is-checkpoint" : ""} ${zone.id === selectedZone ? "is-selected" : ""} ${locked ? "is-locked" : ""}" data-zone="${zone.id}" data-stage="${zone.stage}" type="button" aria-label="${missionLabel} · ${zone.name[locale]} · ${zone.checkpoint ? t("bossMission") : ruleLabel} · ${locked ? t("locked") : `${t("goal")} ${zone.goal}`}">
           <span class="zone-art"><img src="${zone.img}" alt="" /></span>

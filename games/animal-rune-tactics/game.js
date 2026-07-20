@@ -2392,11 +2392,16 @@
     nodes.resultNextText.textContent = `${missionDirection} ${upgradeDirection}`;
     nodes.skillReportText.textContent = t(win ? "reportWin" : "reportLose");
     const hasNextMission = win && state.mission < missionDefs.length;
+    const primaryResultAction = hasNextMission ? nodes.nextBtn : win ? nodes.menuBtn : nodes.retryBtn;
     nodes.nextBtn.disabled = !hasNextMission;
     nodes.nextBtn.classList.toggle("is-hidden", !hasNextMission);
+    [nodes.nextBtn, nodes.retryBtn, nodes.menuBtn].forEach((button) => {
+      button.classList.toggle("primary-btn", button === primaryResultAction);
+      button.classList.toggle("secondary-btn", button !== primaryResultAction);
+    });
     nodes.resultPanel.classList.remove("is-hidden");
     renderMenu();
-    requestAnimationFrame(() => (nodes.nextBtn.disabled ? nodes.retryBtn : nodes.nextBtn).focus({ preventScroll: true }));
+    requestAnimationFrame(() => primaryResultAction.focus({ preventScroll: true }));
   }
 
   function playCue(name) {

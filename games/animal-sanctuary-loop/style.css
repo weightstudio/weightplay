@@ -3,8 +3,8 @@
 @media(max-height:500px) and (min-aspect-ratio:3/2){.main-screen{min-height:720px}.stage-canvas{grid-template-rows:58px 40px minmax(0,1fr)}.missions-tab{grid-template-rows:minmax(0,1fr)}#stageHint{display:none}.stage-card{height:150px}.battle-live{grid-template-columns:minmax(0,1fr) 250px;grid-template-rows:58px 34px minmax(0,1fr) 24px}.battle-header{grid-column:1/-1}.objective-row{grid-column:1/-1}.arena-wrap{grid-column:1;grid-row:3/5}.feedback{grid-column:2;grid-row:4}.touch-pad{position:relative;right:auto;bottom:auto;width:100%;height:100%;grid-column:2;grid-row:3}.arena-wrap canvas{width:auto;height:100%}.result-card{width:min(760px,100%);display:grid;grid-template-columns:130px 1fr;gap:3px 12px;padding:9px}.result-card>img{grid-row:1/5;width:125px;height:125px}.result-card .modal-actions{grid-column:1/-1;margin-top:5px}.atelier-intro{grid-template-columns:70px 1fr}.atelier-intro img{width:64px;height:64px}.trail-styles{grid-template-columns:repeat(3,1fr)}.trail-style{min-height:100px}}
 
 /* The generated source art is tracked under the repository's case-sensitive Assets tree. */
-.main-group,.active-screen,.stage-canvas,.stage-card,.arena-wrap canvas{background-image:linear-gradient(#07152ac9,#07101ee8),url('../../Assets/animal-sanctuary-loop/arena.webp')}
-.arena-wrap{background:linear-gradient(#07152a8f,#07101ebd),url('../../Assets/animal-sanctuary-loop/arena.webp') center/cover}
+.main-group,.active-screen,.stage-canvas,.stage-card,.arena-wrap canvas{background-image:linear-gradient(#07152ac9,#07101ee8),url('../../assets/animal-sanctuary-loop/arena.webp')}
+.arena-wrap{background:linear-gradient(#07152a8f,#07101ebd),url('../../assets/animal-sanctuary-loop/arena.webp') center/cover}
 .stage-card{width:264px;height:190px;flex-basis:264px}
 .battle-header{grid-template-columns:52px minmax(0,1fr) minmax(138px,30%) 52px}
 .battle-header>.help-action{width:48px;height:48px}

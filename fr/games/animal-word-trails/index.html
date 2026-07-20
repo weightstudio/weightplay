@@ -19,8 +19,45 @@
   <meta name="weightplay-audience" content="kids">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="index,follow" />
-  <meta id="pageDescription" name="description" content="Connect animal and habitat words in a calm reading puzzle.">
+  <meta id="pageDescription" name="description" content="Animal Word Trails is a calm reading puzzle about following animal clues and connecting adjacent letters or characters into a complete word path.">
   <title>Sentiers de mots sur les animaux | WeightPlay</title>
+  <meta property="og:site_name" content="WeightPlay">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Sentiers de mots sur les animaux | WeightPlay" />
+  <meta property="og:description" content="Animal Word Trails est un puzzle de lecture calme en 30 étapes sur le suivi d&#39;indices d&#39;animaux et la connexion de lettres ou de caractères adjacents dans..." />
+  <meta property="og:url" content="https://weightplay.com/fr/games/animal-word-trails/" />
+  <meta property="og:image" content="https://weightplay.com/assets/animal-word-trails-cover.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sentiers de mots sur les animaux | WeightPlay" />
+  <meta name="twitter:description" content="Animal Word Trails est un puzzle de lecture calme en 30 étapes sur le suivi d&#39;indices d&#39;animaux et la connexion de lettres ou de caractères adjacents dans..." />
+  <meta name="twitter:image" content="https://weightplay.com/assets/animal-word-trails-cover.webp">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Sentiers de mots sur les animaux",
+  "description": "Animal Word Trails est un puzzle de lecture calme en 30 étapes sur le suivi d'indices d'animaux et la connexion de lettres ou de caractères adjacents dans...",
+  "url": "https://weightplay.com/fr/games/animal-word-trails/",
+  "image": "https://weightplay.com/assets/animal-word-trails-cover.webp",
+  "genre": [
+    "Mot",
+    "Casse-tête",
+    "Animal"
+  ],
+  "inLanguage": "fr",
+  "isAccessibleForFree": true,
+  "operatingSystem": "Any modern web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com/"
+  },
+  "audience": {
+    "@type": "PeopleAudience",
+    "suggestedMinAge": 9
+  }
+}
+    </script>
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/play-viewport.css">
@@ -28,11 +65,6 @@
   <script data-wp-stage-standard>/* Animal Word Trails owns its native Kids Stage rail. */</script>
   <script data-wp-battle-standard>/* Animal Word Trails owns its native Kids Battle Canvas. */</script>
   <meta name="description" content="Animal Word Trails est un puzzle de lecture calme en 30 étapes sur le suivi d&#39;indices d&#39;animaux et la connexion de lettres ou de caractères adjacents dans..." />
-    <meta property="og:title" content="Sentiers de mots sur les animaux | WeightPlay" />
-    <meta property="og:description" content="Animal Word Trails est un puzzle de lecture calme en 30 étapes sur le suivi d&#39;indices d&#39;animaux et la connexion de lettres ou de caractères adjacents dans..." />
-    <meta property="og:url" content="https://weightplay.com/fr/games/animal-word-trails/" />
-    <meta name="twitter:title" content="Sentiers de mots sur les animaux | WeightPlay" />
-    <meta name="twitter:description" content="Animal Word Trails est un puzzle de lecture calme en 30 étapes sur le suivi d&#39;indices d&#39;animaux et la connexion de lettres ou de caractères adjacents dans..." />
   </head>
 <body>
   <main class="word-trails" id="app">
@@ -43,7 +75,7 @@
       <h1 data-copy="title">Sentiers de mots sur les animaux</h1>
       <p data-copy="intro">Follow animal clues and connect a word path.</p>
       <button class="primary" id="start" data-copy="start">Start Game</button>
-      <section class="guide"><h2 data-copy="guideTitle">A calm reading puzzle</h2><p data-copy="guideBody">Find animal and habitat words. Your progress stays on this device.</p></section>
+      <section class="guide first-steps"><h2 data-copy="guideTitle">A calm reading puzzle</h2><p data-copy="guideBody">Find animal and habitat words. Your progress stays on this device.</p></section>
     </section>
 
     <section class="screen stage-screen wp-stage-art-shell hidden" data-screen="stage" data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/animal-word-trails-cover.webp" style="--wp-stage-art: url('../../assets/animal-word-trails-cover.webp')">

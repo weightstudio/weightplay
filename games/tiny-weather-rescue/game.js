@@ -886,8 +886,12 @@
       ? t("result", { score, best: records[stage.id] || stars })
       : t("resultFailed");
     renderSkillReport(stage);
-    nodes.nextStageBtn.classList.toggle("hidden", !cleared || stage.id >= stages.length);
-    (cleared && stage.id < stages.length ? nodes.nextStageBtn : nodes.retryBtn).focus({ preventScroll: true });
+    const isFinalClear = cleared && stage.id >= stages.length;
+    nodes.nextStageBtn.classList.toggle("hidden", !cleared || isFinalClear);
+    nodes.nextStageBtn.classList.toggle("result-primary", cleared && !isFinalClear);
+    nodes.retryBtn.classList.toggle("result-primary", !cleared);
+    nodes.resultStagesBtn.classList.toggle("result-primary", isFinalClear);
+    (isFinalClear ? nodes.resultStagesBtn : cleared ? nodes.nextStageBtn : nodes.retryBtn).focus({ preventScroll: true });
     renderStageGrid();
     playSound(cleared ? "success" : "wrong");
     track("game_complete", { stage: stage.id, score, stars, cleared, mistakes });

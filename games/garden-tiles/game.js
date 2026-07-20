@@ -848,7 +848,7 @@
     renderResult(starCount, previousBest);
     setBattleCovered(true);
     resultPanel.classList.remove("hidden");
-    requestAnimationFrame(() => (nextBtn.classList.contains("hidden") ? againBtn : nextBtn).focus({ preventScroll: true }));
+    requestAnimationFrame(() => (nextBtn.classList.contains("hidden") ? levelsBtn : nextBtn).focus({ preventScroll: true }));
     window.WonderAnalytics?.track?.("game_complete", { game_id: GAME_ID, level: levelNumber, moves, stars: starCount, cleared: true });
     window.WonderAnalytics?.track?.("level_clear", { game_id: GAME_ID, level: levelNumber, moves, stars: starCount });
   }
@@ -858,7 +858,10 @@
     stars.textContent = "\u2605".repeat(starCount) + "\u2606".repeat(3 - starCount);
     resultText.textContent = t("result", { moves, pairs: matchedPairs });
     renderSkillReport(starCount, previousBest);
-    nextBtn.classList.toggle("hidden", currentLevelIndex >= levels.length - 1);
+    const isFinalLevel = currentLevelIndex >= levels.length - 1;
+    nextBtn.classList.toggle("hidden", isFinalLevel);
+    nextBtn.classList.toggle("result-primary", !isFinalLevel);
+    levelsBtn.classList.toggle("result-primary", isFinalLevel);
   }
 
   function renderSkillReport(starCount, previousBest) {

@@ -792,6 +792,12 @@ body.helper-playing .play-panel.result-active .result-card {
   background: rgba(255, 255, 255, 0.94);
 }
 
+.result-card .result-primary {
+  background: #ffdf70;
+  box-shadow: 0 0 0 4px rgba(255, 243, 106, 0.82), 0 8px 20px rgba(23, 49, 79, 0.2);
+  font-weight: 900;
+}
+
 .loading-card div {
   height: 12px;
   overflow: hidden;

@@ -1271,18 +1271,25 @@
     nodes.starText.textContent = result.won ? starIcons(result.earned, 3) : t("failed");
     renderResultNextOrder(result);
     renderSkillReport(result.report);
-    nodes.nextStageBtn.classList.toggle("hidden", !result.won || currentStage >= stages.length - 1);
-    (result.won && currentStage < stages.length - 1 ? nodes.nextStageBtn : nodes.retryBtn).focus({ preventScroll: true });
+    const isFinalWin = result.won && currentStage >= stages.length - 1;
+    nodes.nextStageBtn.classList.toggle("hidden", !result.won || isFinalWin);
+    nodes.nextStageBtn.classList.toggle("result-primary", result.won && !isFinalWin);
+    nodes.retryBtn.classList.toggle("result-primary", !result.won);
+    nodes.resultStagesBtn.classList.toggle("result-primary", isFinalWin);
+    (isFinalWin ? nodes.resultStagesBtn : result.won ? nodes.nextStageBtn : nodes.retryBtn).focus({ preventScroll: true });
   }
 
   function renderResultNextOrder({ won, stageNo, earned, unlockedStageNo, stamp }) {
+    const isFinalWin = won && stageNo >= stages.length;
     const targetIndex = won ? recommendedStageIndex() : currentStage;
     const targetStage = stages[targetIndex] || stages[currentStage];
     const targetStageNo = targetIndex + 1;
     const orderIcons = stageOrderIds(targetStage).map((id) => `<img src="${colorData(id).asset}" alt="" />`).join("");
     const localizedStamp = stampProgress({ orders: stamp.orders });
-    const statusText = won
-      ? unlockedStageNo
+    const statusText = isFinalWin
+      ? t("resultAllClear")
+      : won
+        ? unlockedStageNo
         ? t("resultUnlocked", { stage: t("stage", { n: unlockedStageNo }) })
         : earned >= 3 && targetStageNo >= stages.length
           ? t("resultAllClear")
@@ -1290,7 +1297,7 @@
       : t("resultTryAgainGoal", { stage: t("stage", { n: stageNo }) });
 
     nodes.resultNextOrder.innerHTML = `
-      <strong>${t("resultNextTitle")}</strong>
+      <strong>${t(isFinalWin ? "allOrdersDone" : "resultNextTitle")}</strong>
       <span>${statusText}</span>
       <em>${t("resultNextCopy", { stage: t("stage", { n: targetStageNo }), theme: stageTitle(targetStage) })}</em>
       <small class="result-stamp">${won ? t("resultStampWin", { next: localizedStamp.nextText }) : t("resultStampLose")}</small>
@@ -1463,6 +1470,11 @@
   }, true);
   if (smokeMode) {
     window.__bubbleBakerySmoke = {
+      forceSuccess() {
+        if (nodes.playPanel.classList.contains("hidden") || !nodes.resultPanel.classList.contains("hidden")) return null;
+        finish(true);
+        return { resultVisible: !nodes.resultPanel.classList.contains("hidden"), stage: currentStage + 1 };
+      },
       forceFailure() {
         if (nodes.playPanel.classList.contains("hidden") || !nodes.resultPanel.classList.contains("hidden")) return null;
         moves = 0;

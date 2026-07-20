@@ -531,6 +531,12 @@ body.garden-stage .level-grid button.is-centered {
   gap: 10px;
 }
 
+.result-actions .result-primary {
+  background: #f2b84b;
+  color: #17371c;
+  font-weight: 800;
+}
+
 #resultPanel:not(.hidden) :is(button, a):focus {
   outline: 4px solid #fff3a7;
   outline-offset: 2px;

@@ -148,6 +148,12 @@ body.is-bakery-playing .play-panel {
   overflow: hidden;
 }
 
+.result-card .result-primary {
+  outline: 4px solid #fff1a3;
+  outline-offset: 2px;
+  background: linear-gradient(180deg, #ffe982, #ffad3d);
+}
+
 .home-link img {
   width: 28px;
   height: 28px;

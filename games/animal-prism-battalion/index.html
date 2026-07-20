@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="weightplay-audience" content="general">
+  <meta name="theme-color" content="#07152b">
+  <title>Animal Prism Battalion | WeightPlay Internal Trial</title>
+  <meta name="description" content="Aim a prism launcher through multiplier gates, grow an animal spirit battalion, and break thirty shadow fortresses.">
+  <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
+  <link rel="stylesheet" href="style.css?v=20260721-prism1">
+</head>
+<body data-screen="loading" data-game-id="animal-prism-battalion">
+  <section id="loading" class="loading-panel" aria-live="polite">
+    <div class="loading-card"><strong data-t="title">Animal Prism Battalion</strong><span data-t="loading">Charging the prism launcher…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
+  </section>
+
+  <div id="mainGroup" class="main-group" hidden>
+    <main class="main-screen">
+      <header class="main-header">
+        <a id="lobbyReturn" class="lobby-return" href="/en/" aria-label="Back to WeightPlay" data-wp-return="main" data-ta="backLobby"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
+        <strong data-t="title">Animal Prism Battalion</strong>
+        <label class="locale-control"><span class="sr-only" data-t="language">Language</span><select id="locale" aria-label="Language" data-ta="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option></select></label>
+      </header>
+      <section class="main-hero">
+        <img class="poster" src="../../assets/animal-prism-battalion/cover.webp" alt="Fox commander sends glowing animal spirits through crystal multiplier gates" data-ta="posterAlt">
+        <div class="main-copy"><small data-t="kicker">MULTIPLIER-GATE ARCADE STRATEGY</small><h1 data-t="title">Animal Prism Battalion</h1><p data-t="pitch">Slide the prism launcher, send spirit recruits through the best gate, and build enough force to shatter the shadow fortress.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">Start Game</button></div>
+      </section>
+    </main>
+    <section class="public-guide game-page-info" aria-label="Game guide" data-ta="guideLabel">
+      <small data-t="guideKicker">AN ORIGINAL WEIGHTPLAY ARCADE CAMPAIGN</small><h2 data-t="guideTitle">Aim the stream. Multiply the battalion.</h2><p data-t="guideIntro">Captain Fia powers a prism launcher at the edge of the Starlight Citadel. Every recruit that crosses a crystal gate changes the strength of the army, so the safest lane is not always the strongest lane.</p>
+      <div class="guide-grid"><article><h3 data-t="howTitle">How to play</h3><ol><li data-t="how1">Drag or use Left and Right to aim the launcher.</li><li data-t="how2">Route the spirit stream through helpful gates and away from drain gates.</li><li data-t="how3">Tap Overdrive when charged to break a dangerous formation.</li></ol></article><article><h3 data-t="campaignTitle">Thirty tactical assaults</h3><p data-t="campaignText">Six chapters add moving gates, shield lines, split routes, counter waves, champions, and fortress bosses.</p><h3 data-t="saveTitle">Local progress</h3><p data-t="saveText">Missions, stars, prism shards, and Lab upgrades remain in this browser. No account is required.</p></article></div>
+    </section>
+  </div>
+
+  <section id="stage" class="active-screen" hidden>
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-prism-battalion/arena.webp" style="--wp-stage-art:url('../../assets/animal-prism-battalion/arena.webp')">
+      <header class="stage-header"><button id="stageBack" type="button" aria-label="Back" data-wp-return="stage" data-ta="back">←</button><div><strong data-t="chooseMission">Choose an assault</strong><span id="stageProgress"></span></div><img src="../../assets/weightplay-character-spark-paw-fox-cutout.webp" alt=""></header>
+      <nav class="stage-tabs" aria-label="Battalion preparation" data-ta="stageTabs"><button class="active" data-tab="missions" data-t="missions">Missions</button><button data-tab="lab" data-t="lab">Prism Lab</button></nav>
+      <section id="missionsTab" class="tab-panel missions-tab"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Mission selector" data-ta="missionRail"></div><p id="stageHint" data-t="stageHint">Drag the rail and choose an unlocked assault.</p></section>
+      <section id="labTab" class="tab-panel lab-tab" hidden><div class="lab-intro"><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt=""><div><h2 data-t="labTitle">Prism Lab</h2><p data-t="labIntro">Spend earned shards on permanent launcher upgrades.</p><strong id="shardCount"></strong></div></div><div id="upgrades" class="upgrades"></div><p id="labFeedback" aria-live="polite"></p></section>
+    </div>
+  </section>
+
+  <section id="battle" class="active-screen" hidden>
+    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <div id="battleLive" class="battle-live">
+        <header class="battle-header"><button id="battleBack" type="button" aria-label="Back" data-wp-return="battle" data-ta="back">←</button><div class="mission-block"><small id="missionLabel"></small><strong id="fortressValue">100%</strong></div><div class="battle-status"><span><b data-t="core">Core</b><strong id="coreValue">♥♥♥</strong></span><span><b data-t="time">Time</b><strong id="timeValue">60</strong></span></div><button id="battleHelp" class="help-action" type="button" aria-label="How to play" data-ta="help">?</button></header>
+        <p id="objective" class="objective-row"></p>
+        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="960" height="640" aria-label="Prism battalion battlefield" data-ta="arenaLabel"></canvas><div class="aim-cue" aria-hidden="true">↔</div><button id="overdrive" type="button"><span data-t="overdrive">Overdrive</span><b id="overdriveValue">0%</b></button></div>
+        <p id="feedback" class="feedback" aria-live="polite"></p>
+      </div>
+      <section id="leave" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">Leave this assault?</h2><p data-t="leaveText">Continue preserves this exact battle. Return to Stage ends the attempt.</p><div class="modal-actions"><button id="continueBattle" class="primary" data-t="continue">Continue</button><button id="leaveStage" data-t="returnStage">Return to Stage</button></div></div></section>
+      <section id="tutorial" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card"><h2 id="tutorialTitle" data-t="tutorialTitle">Choose the stronger gate</h2><ol><li data-t="tutorial1">Move the launcher left or right to aim the stream.</li><li data-t="tutorial2">Green and gold gates grow the battalion; red gates drain it.</li><li data-t="tutorial3">Use Overdrive when the charge reaches 100%.</li></ol><div class="modal-actions"><button id="tutorialDone" class="primary" data-t="tutorialDone">Begin assault</button></div></div></section>
+      <section id="result" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-spark-paw-fox-cutout.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div id="resultStats" class="result-stats"></div><div class="modal-actions"><button id="retry" data-t="retry">Retry</button><button id="resultStage" data-t="returnStage">Return to Stage</button><button id="nextMission" class="primary" data-t="nextMission">Next Mission</button></div></div></section>
+    </div><div class="ad-reserve" aria-hidden="true"></div>
+  </section>
+
+  <script src="../../src/site-config.js"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="../../src/edge-guard.js"></script><script src="locales.js?v=20260721-prism1"></script><script src="game.js?v=20260721-prism1"></script><script src="../../src/stage-selector-standard.js?v=20260721-landscape-envelope-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260721-landscape-envelope-1" data-wp-battle-standard></script>
+</body>
+</html>
