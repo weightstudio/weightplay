@@ -2305,28 +2305,30 @@ body.relic-playing.relic-result .result-ad-reserve {
    portrait-sized children and rendering them at half-touch size. */
 @media (max-height: 560px) and (orientation: landscape) {
   body.relic-stage-select .stage-panel {
-    grid-template-columns: minmax(0, 1fr) 650px;
-    grid-template-rows: 116px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) 650px !important;
+    grid-template-rows: 116px minmax(0, 1fr) !important;
     gap: 14px;
     padding: 10px 12px;
   }
 
   body.relic-stage-select .stage-panel-head {
-    grid-column: 1 / -1;
-    grid-row: 1;
+    grid-column: 1 / -1 !important;
+    grid-row: 1 !important;
     grid-template-columns: 112px minmax(0, 1fr);
     gap: 20px;
   }
 
   body.relic-stage-select .stage-return {
-    width: 112px;
-    min-width: 112px;
-    max-width: 112px;
-    height: 112px;
-    min-height: 112px;
-    max-height: 112px;
+    width: 112px !important;
+    min-width: 112px !important;
+    max-width: 112px !important;
+    height: 112px !important;
+    min-height: 112px !important;
+    max-height: 112px !important;
     border-radius: 18px;
     font-size: 46px;
+    color: #142033;
+    background: #f8fafc;
   }
 
   body.relic-stage-select .stage-panel-head > div { gap: 6px; }
@@ -2334,25 +2336,25 @@ body.relic-playing.relic-result .result-ad-reserve {
   body.relic-stage-select .stage-panel-head span { font-size: 27px; line-height: 34px; }
 
   body.relic-stage-select .expedition-rail {
-    grid-column: 1;
-    grid-row: 2;
+    grid-column: 1 !important;
+    grid-row: 2 !important;
     align-self: center;
-    height: 486px;
-    min-height: 486px;
-    max-height: 486px;
+    height: 486px !important;
+    min-height: 486px !important;
+    max-height: 486px !important;
     gap: 24px;
     padding: 0 calc((100% - 680px) / 2);
   }
 
   body.relic-stage-select .expedition-card {
     grid-template-rows: 64px 190px 120px;
-    flex-basis: 680px;
-    width: 680px;
-    min-width: 680px;
-    max-width: 680px;
-    height: 486px;
-    min-height: 486px;
-    max-height: 486px;
+    flex-basis: 680px !important;
+    width: 680px !important;
+    min-width: 680px !important;
+    max-width: 680px !important;
+    height: 486px !important;
+    min-height: 486px !important;
+    max-height: 486px !important;
     padding: 34px;
     border-width: 5px;
     border-radius: 20px;
@@ -2362,9 +2364,9 @@ body.relic-playing.relic-result .result-ad-reserve {
   body.relic-stage-select .expedition-card :is(span, small) { font-size: 29px; line-height: 39px; }
 
   body.relic-stage-select .stage-config-mount {
-    grid-column: 2;
-    grid-row: 2;
-    grid-template-rows: minmax(0, 1fr) 112px;
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+    grid-template-rows: minmax(0, 1fr) 112px !important;
     gap: 14px;
   }
 
@@ -2373,10 +2375,10 @@ body.relic-playing.relic-result .result-ad-reserve {
   body.relic-stage-select .stage-config-mount :is(h2, h3) { font-size: 32px; line-height: 40px; }
   body.relic-stage-select .stage-config-mount :is(button, p, span, small, strong) { font-size: 27px; line-height: 34px; }
   body.relic-stage-select .stage-config-mount .start-btn {
-    width: 650px;
-    height: 112px;
-    min-height: 112px;
-    max-height: 112px;
+    width: 650px !important;
+    height: 112px !important;
+    min-height: 112px !important;
+    max-height: 112px !important;
     padding: 12px 20px;
     border-radius: 18px;
     font-size: 34px;
@@ -2412,7 +2414,7 @@ body.relic-playing.relic-result .result-ad-reserve {
   body.relic-playing .exp-meta { font-size: 30px; line-height: 38px; }
   body.relic-playing .bar-bg { height: 24px; border-radius: 12px; }
   body.relic-playing .hud-meta-row { grid-column: auto; grid-template-columns: 1fr; gap: 12px; }
-  body.relic-playing .meta-badge { min-height: 70px; padding: 10px 14px; font-size: 28px; line-height: 36px; }
+  body.relic-playing .meta-badge { min-height: 72px; padding: 10px 14px; font-size: 28px; line-height: 36px; }
   body.relic-playing .meta-badge .ui-icon { width: 38px; height: 38px; }
 
   body.wp-logical-battle-active.relic-playing #gamePanel[data-wp-logical-battle-canvas] .canvas-container {
@@ -2444,15 +2446,17 @@ body.relic-playing.relic-result .result-ad-reserve {
   body.relic-playing .stat-row { min-height: 42px; }
 
   body.relic-playing :is(.battle-return, .battle-pause) {
-    width: 112px;
-    min-width: 112px;
-    max-width: 112px;
-    height: 112px;
-    min-height: 112px;
-    max-height: 112px;
+    width: 112px !important;
+    min-width: 112px !important;
+    max-width: 112px !important;
+    height: 112px !important;
+    min-height: 112px !important;
+    max-height: 112px !important;
     border-radius: 18px;
     font-size: 46px;
   }
+
+  body.relic-playing .battle-return { color: #142033; background: #f8fafc; }
 
   body.relic-playing .pause-card {
     width: 760px;
@@ -2463,7 +2467,7 @@ body.relic-playing.relic-result .result-ad-reserve {
   }
 
   body.relic-playing .pause-card h2 { font-size: 50px; line-height: 60px; }
-  body.relic-playing .pause-card p { font-size: 30px; line-height: 40px; }
+  body.relic-playing .pause-card p { font-size: 40px; line-height: 56px; }
   body.relic-playing .pause-actions { gap: 18px; }
   body.relic-playing .pause-actions button { min-height: 112px; font-size: 30px; line-height: 38px; }
 

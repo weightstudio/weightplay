@@ -2,8 +2,31 @@
   const GAME_ID = "fruit-merge";
   const canonicalLocaleKey = "weightPlayLocale";
   const legacyLocaleKey = "weightplayLocale";
-  const canonicalSavedLocale = localStorage.getItem(canonicalLocaleKey);
-  const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
+  const storageFallback = new Map();
+
+  function storageRead(key) {
+    try {
+      const value = localStorage.getItem(key);
+      if (value !== null) storageFallback.set(key, value);
+      return value ?? storageFallback.get(key) ?? null;
+    } catch {
+      return storageFallback.get(key) ?? null;
+    }
+  }
+
+  function storageWrite(key, value) {
+    const normalized = String(value);
+    storageFallback.set(key, normalized);
+    try {
+      localStorage.setItem(key, normalized);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  const canonicalSavedLocale = storageRead(canonicalLocaleKey);
+  const legacySavedLocale = storageRead(legacyLocaleKey);
   if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) {
     window.WonderI18n?.setLocale?.(legacySavedLocale);
   }
@@ -474,7 +497,7 @@
   let comboCount = 0;
   let comboUntil = 0;
   let comboHudTimer = null;
-  let bestScore = Number(localStorage.getItem(BEST_KEY) || 0);
+  let bestScore = Number(storageRead(BEST_KEY) || 0);
   let running = false;
   let gameOver = false;
   let canDropAt = 0;
@@ -607,7 +630,7 @@
 
   function readChallengeProgress() {
     try {
-      const saved = JSON.parse(localStorage.getItem(CHALLENGE_KEY) || "{}");
+      const saved = JSON.parse(storageRead(CHALLENGE_KEY) || "{}");
       return {
         unlocked: clamp(Number(saved.unlocked) || 1, 1, challenges.length),
         selected: clamp(Number(saved.selected) || 1, 1, challenges.length),
@@ -621,7 +644,7 @@
 
   function saveChallengeProgress(progress) {
     try {
-      localStorage.setItem(CHALLENGE_KEY, JSON.stringify(progress));
+      storageWrite(CHALLENGE_KEY, JSON.stringify(progress));
     } catch {
       // Challenge progress remains optional when storage is unavailable.
     }
@@ -1218,7 +1241,7 @@
     const newBest = score > previousBest;
     if (newBest) {
       bestScore = score;
-      localStorage.setItem(BEST_KEY, String(bestScore));
+      storageWrite(BEST_KEY, String(bestScore));
       showToast(t("newBest"));
     }
     const progress = saveProgress(score, previousBest, bestScore);
@@ -1253,7 +1276,7 @@
 
   function readProgress() {
     try {
-      return JSON.parse(localStorage.getItem(PROGRESS_KEY) || "{}");
+      return JSON.parse(storageRead(PROGRESS_KEY) || "{}");
     } catch {
       return {};
     }
@@ -1273,7 +1296,7 @@
       skillScores: buildSkillScores(finalScore),
     };
     try {
-      localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
+      storageWrite(PROGRESS_KEY, JSON.stringify(progress));
     } catch {
       // Local progress is optional.
     }
@@ -1282,7 +1305,7 @@
 
   function readLeaderboard() {
     try {
-      const rows = JSON.parse(localStorage.getItem(LEADERBOARD_KEY) || "[]");
+      const rows = JSON.parse(storageRead(LEADERBOARD_KEY) || "[]");
       return Array.isArray(rows) ? rows : [];
     } catch {
       return [];
@@ -1300,7 +1323,7 @@
       .sort((a, b) => Number(b.score || 0) - Number(a.score || 0))
       .slice(0, 5);
     try {
-      localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(topRows));
+      storageWrite(LEADERBOARD_KEY, JSON.stringify(topRows));
     } catch {
       // Local leaderboard is optional.
     }
@@ -1816,6 +1839,13 @@
       challengeCatalog: () => challenges.map((challenge) => ({ ...challenge, rules: [...challenge.rules] })),
       challengeProgress: readChallengeProgress,
       startChallenge,
+      setOutcomeForTest(evidence = {}) {
+        score = Math.max(0, Number(evidence.score) || 0);
+        maxReachedLevel = clamp(Number(evidence.maxReachedLevel) || 0, 0, fruits.length - 1);
+        mergeCount = Math.max(0, Number(evidence.mergeCount) || 0);
+        bestCombo = Math.max(0, Number(evidence.bestCombo) || 0);
+        updateHud();
+      },
       completeChallengeForTest: () => endGame(true),
       getChallengeState: () => ({
         stage: activeChallenge()?.id || null,
