@@ -32,7 +32,8 @@
   const stages=Array.from({length:30},(_,index)=>{
     const n=index+1,chapter=Math.floor(index/5),step=index%5;
     const boss=n%5===0;
-    return{n,chapter,time:58-chapter*2-step,fortress:Math.round((165+index*42+chapter*chapter*360)*(boss?1.18:1)),enemyHp:10+chapter*14+step*4,waves:2+chapter+(step>=2?1:0),moving:chapter>=2,shields:chapter>=1,counter:chapter>=3,champion:chapter>=4,boss};
+    const layout={routes:n===1?2:(n%4===0||chapter>=4&&step%2===0?3:2),rows:2+(chapter>=2?1:0)+(chapter>=5&&step>=3?1:0),spread:.015+step*.006,rowGap:.155+(index%3)*.012,gateScale:.88+(index%5)*.07,phase:(index*1.73)%6.28};
+    return{n,chapter,time:58-chapter*2-step,fortress:Math.round((165+index*42+chapter*chapter*360)*(boss?1.18:1)),enemyHp:10+chapter*14+step*4,waves:2+chapter+(step>=2?1:0),moving:chapter>=2,shields:chapter>=1,counter:chapter>=3,champion:chapter>=4,boss,layout};
   });
   const staticText=[...document.querySelectorAll("[data-t]")];
   const assistiveText=[...document.querySelectorAll("[data-ta]")];
@@ -98,24 +99,23 @@
   function gateRows(stage){
     if(stage.n===1)return[[{x:.28,kind:"mul",value:2},{x:.72,kind:"sub",value:2}],[{x:.28,kind:"add",value:4},{x:.72,kind:"mul",value:2}]];
     const random=seeded(stage.n),rows=[];
-    const count=stage.chapter>=3?3:2;
-    for(let row=0;row<count;row+=1){
-      const strong=random()>.5?"left":"right",bonus=stage.chapter+2+Math.floor(random()*4);
-      const left=strong==="left"?{kind:random()>.45?"mul":"add",value:random()>.55?3:bonus}:{kind:random()>.35?"sub":"add",value:2+stage.chapter};
-      const right=strong==="right"?{kind:random()>.45?"mul":"add",value:random()>.55?3:bonus}:{kind:random()>.35?"sub":"add",value:2+stage.chapter};
-      rows.push([{x:.28,...left},{x:.72,...right}]);
+    const centers=stage.layout.routes===3?[.2,.5,.8]:[.27,.73];
+    for(let row=0;row<stage.layout.rows;row+=1){
+      const strong=Math.floor(random()*centers.length),bonus=stage.chapter+2+Math.floor(random()*4),gates=[];
+      for(let lane=0;lane<centers.length;lane+=1){const strongGate=lane===strong,kind=strongGate?(random()>.42?"mul":"add"):(random()>.38?"sub":"add"),value=kind==="mul"?(random()>.58?3:2):kind==="add"?bonus:2+stage.chapter,jitter=(random()-.5)*stage.layout.spread*2,dangerNarrow=strongGate?.82:1.06;gates.push({x:centers[lane]+jitter,kind,value,half:(stage.layout.routes===3?.105:.16)*stage.layout.gateScale*dangerNarrow,height:.055+(row%2)*.012+(stage.boss?.008:0),sway:.045+random()*.055,phase:random()*6.28})}
+      rows.push(gates);
     }
     return rows;
   }
-  function makeGates(stage){const rows=gateRows(stage);return rows.flatMap((row,rowIndex)=>row.map((gate,lane)=>({id:`${rowIndex}-${lane}`,row:rowIndex,lane,y:.7-rowIndex*.19,baseX:gate.x,x:gate.x,half:.18,...gate})))}
+  function makeGates(stage){const rows=gateRows(stage);return rows.flatMap((row,rowIndex)=>row.map((gate,lane)=>({id:`${rowIndex}-${lane}`,row:rowIndex,lane,y:.72-rowIndex*stage.layout.rowGap+Math.sin(stage.layout.phase+rowIndex)*.018,baseX:gate.x,x:gate.x,half:gate.half??.18,height:gate.height??.07,sway:gate.sway??.095,phase:gate.phase??0,...gate})))}
   function enemyWave(stage,wave=0){
     const count=2+Math.min(3,stage.chapter)+((wave+stage.n)%2),groups=[];
-    for(let i=0;i<count;i+=1){const x=(i+1)/(count+1);groups.push({x,y:.15+(i%2)*.06,hp:stage.enemyHp*(stage.champion&&i===Math.floor(count/2)?2.4:1),maxHp:stage.enemyHp*(stage.champion&&i===Math.floor(count/2)?2.4:1),shield:stage.shields&&i%2===0?stage.enemyHp*.55:0,speed:(stage.counter?.0075:.0035)+stage.chapter*.0006,champion:stage.champion&&i===Math.floor(count/2),phase:i*.7})}return groups;
+    for(let i=0;i<count;i+=1){const x=(i+1)/(count+1),speed=.018+stage.chapter*.002+(stage.counter?.0035:0)+(wave%2)*.0015;groups.push({x,y:.15+(i%2)*.06,hp:stage.enemyHp*(stage.champion&&i===Math.floor(count/2)?2.4:1),maxHp:stage.enemyHp*(stage.champion&&i===Math.floor(count/2)?2.4:1),shield:stage.shields&&i%2===0?stage.enemyHp*.55:0,speed,champion:stage.champion&&i===Math.floor(count/2),phase:i*.7})}return groups;
   }
   function startBattle(index){
     const stageIndex=Math.max(0,Math.min(29,Math.trunc(index))),stage=stages[stageIndex];
     lifecyclePaused=false;
-    run={stageIndex,stage,time:stage.time,core:3+save.upgrades.armor,maxCore:3+save.upgrades.armor,fortress:stage.fortress,maxFortress:stage.fortress,aimX:.28,units:[],enemies:enemyWave(stage),gates:makeGates(stage),particles:[],texts:[],fireClock:0,waveClock:0,wavesSpawned:1,charge:0,overdrive:0,peak:0,coreHits:0,paused:false,finished:false,lastGateMessage:""};
+    run={stageIndex,stage,time:stage.time,core:3+save.upgrades.armor,maxCore:3+save.upgrades.armor,fortress:stage.fortress,maxFortress:stage.fortress,aimX:.5,units:[],enemies:enemyWave(stage),gates:makeGates(stage),particles:[],texts:[],fireClock:0,waveClock:0,wavesSpawned:1,charge:0,overdrive:0,peak:0,coreHits:0,paused:false,finished:false,lastGateMessage:""};
     $("leave").hidden=true;$("tutorial").hidden=true;$("result").hidden=true;$("battleLive").hidden=false;$("battleLive").inert=false;showScreen("battle");updateHud(true);$("feedback").textContent="";lastTime=performance.now();stopLoop();raf=requestAnimationFrame(frame);window.WonderSound?.play?.("start");if(!save.tutorialSeen)requestAnimationFrame(()=>openTutorial())
   }
   function stopLoop(){if(raf)cancelAnimationFrame(raf);raf=0}
@@ -139,7 +139,7 @@
     run.time-=dt;run.fireClock+=dt;run.waveClock+=dt;if(run.overdrive>0)run.overdrive=Math.max(0,run.overdrive-dt);
     const interval=run.overdrive>0?.075:.31-save.upgrades.rate*.028;while(run.fireClock>=interval&&run.units.length<130)launch();
     if(run.wavesSpawned<run.stage.waves&&run.waveClock>=8.5){run.waveClock=0;run.enemies.push(...enemyWave(run.stage,run.wavesSpawned).map((enemy)=>({...enemy,y:run.stage.counter?.27:.15})));run.wavesSpawned+=1}
-    run.gates.forEach((gate)=>{if(run.stage.moving){const direction=gate.lane?1:-1;gate.x=Math.max(.18,Math.min(.82,gate.baseX+Math.sin((run.stage.time-run.time)*.85+gate.row)*.095*direction))}});
+    run.gates.forEach((gate)=>{if(run.stage.moving){const direction=gate.lane%2?1:-1;gate.x=Math.max(gate.half+.03,Math.min(1-gate.half-.03,gate.baseX+Math.sin((run.stage.time-run.time)*(.72+run.stage.chapter*.08)+gate.phase)*gate.sway*direction))}});
     for(const unit of run.units){
       const previousY=unit.y;unit.y+=unit.vy*dt;
       for(const gate of run.gates)if(previousY>gate.y&&unit.y<=gate.y&&Math.abs(unit.x-gate.x)<=gate.half)applyGate(unit,gate);
@@ -148,7 +148,7 @@
       if(hit){let damage=unit.count*unit.power*(run.overdrive>0?1.8:1);if(hit.shield>0){const absorbed=Math.min(hit.shield,damage);hit.shield-=absorbed;damage-=absorbed}hit.hp-=damage;addBurst(hit.x,hit.y,"#77ecff",Math.min(12,4+unit.count));unit.dead=true;if(hit.hp<=0){hit.dead=true;addBurst(hit.x,hit.y,"#ffe273",16)}}
       else if(unit.y<=.085){run.fortress-=unit.count*unit.power*(run.overdrive>0?1.8:1);addBurst(unit.x,.09,"#ffe273",Math.min(12,5+unit.count));unit.dead=true}
     }
-    for(const enemy of run.enemies){enemy.phase+=dt;enemy.x=Math.max(.08,Math.min(.92,enemy.x+Math.sin(enemy.phase*1.7)*dt*.012));enemy.y+=enemy.speed*dt;if(enemy.y>.87){run.core-=1;run.coreHits+=1;enemy.dead=true;addBurst(enemy.x,.88,"#ff627c",18)}}
+    for(const enemy of run.enemies){enemy.phase+=dt;enemy.x=Math.max(.08,Math.min(.92,enemy.x+Math.sin(enemy.phase*1.7)*dt*.012));enemy.y+=enemy.speed*dt;if(enemy.y>.87){run.core=Math.max(0,run.core-1);run.coreHits+=1;enemy.dead=true;addBurst(enemy.x,.88,"#ff627c",18)}}
     run.units=run.units.filter((unit)=>!unit.dead&&unit.y>0);run.enemies=run.enemies.filter((enemy)=>!enemy.dead);updatePeak();
     for(const particle of run.particles){particle.x+=particle.vx*dt;particle.y+=particle.vy*dt;particle.vy+=.025*dt;particle.life-=dt}run.particles=run.particles.filter((particle)=>particle.life>0);
     for(const text of run.texts){text.y-=.05*dt;text.life-=dt}run.texts=run.texts.filter((text)=>text.life>0);
@@ -161,7 +161,7 @@
   function draw(){
     if(!run)return;const w=canvas.width,h=canvas.height,d=Math.min(w,h),px=(x)=>x*w,py=(y)=>y*h;ctx.clearRect(0,0,w,h);drawCover(images.arena,0,0,w,h);ctx.fillStyle="#03152a45";ctx.fillRect(0,0,w,h);
     const fortressRatio=Math.max(0,run.fortress/run.maxFortress);rounded(w*.19,h*.025,w*.62,h*.038,12);ctx.fillStyle="#071326dd";ctx.fill();rounded(w*.195,h*.031,w*.61*fortressRatio,h*.026,10);ctx.fillStyle=fortressRatio>.35?"#64efd5":"#ff647e";ctx.fill();
-    for(const gate of run.gates){const x=px(gate.x-gate.half),y=py(gate.y-.035),gw=px(gate.half*2),gh=py(.07),positive=gate.kind!=="sub";ctx.save();ctx.shadowColor=positive?"#58f5df":"#ff5576";ctx.shadowBlur=d*.025;rounded(x,y,gw,gh,Math.min(18,gh*.24));ctx.fillStyle=positive?"#073f4dcc":"#4d1025d9";ctx.fill();ctx.lineWidth=Math.max(2,d*.004);ctx.strokeStyle=positive?"#8bffe8":"#ff8ba0";ctx.stroke();ctx.fillStyle="#fff";ctx.font=`900 ${Math.max(14,d*.035)}px sans-serif`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(gateLabel(gate),px(gate.x),py(gate.y));ctx.restore()}
+    for(const gate of run.gates){const gh=py(gate.height),x=px(gate.x-gate.half),y=py(gate.y)-gh/2,gw=px(gate.half*2),positive=gate.kind!=="sub";ctx.save();ctx.shadowColor=positive?"#58f5df":"#ff5576";ctx.shadowBlur=d*.025;rounded(x,y,gw,gh,Math.min(18,gh*.24));ctx.fillStyle=positive?"#073f4dcc":"#4d1025d9";ctx.fill();ctx.lineWidth=Math.max(2,d*.004);ctx.strokeStyle=positive?"#8bffe8":"#ff8ba0";ctx.stroke();ctx.fillStyle="#fff";ctx.font=`900 ${Math.max(12,d*(.027+gate.height*.1))}px sans-serif`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(gateLabel(gate),px(gate.x),py(gate.y));ctx.restore()}
     const spiritCells=[[1,0],[0,1],[1,1]];
     for(const unit of run.units){const x=px(unit.x),y=py(unit.y),size=Math.max(24,d*(.04+Math.min(10,unit.count)*.0018)),cell=spiritCells[unit.sprite%spiritCells.length],drawn=drawAtlasCell(images.spirits,cell[0],cell[1],x,y,size,unit.hue===48?"#ffe369":"#64ebff");if(!drawn){ctx.save();ctx.shadowColor="#64ebff";ctx.shadowBlur=size*.4;ctx.fillStyle="#baf8ff";ctx.beginPath();ctx.arc(x,y,size*.22,0,Math.PI*2);ctx.fill();ctx.restore()}if(unit.count>1){ctx.fillStyle="#fff";ctx.strokeStyle="#051225";ctx.lineWidth=Math.max(2,d*.004);ctx.font=`900 ${Math.max(11,d*.019)}px sans-serif`;ctx.textAlign="center";ctx.strokeText(String(Math.round(unit.count)),x,y-size*.42);ctx.fillText(String(Math.round(unit.count)),x,y-size*.42)}}
     for(const enemy of run.enemies){const x=px(enemy.x),y=py(enemy.y),size=(enemy.champion?.075:.055)*d;drawImageCentered(enemy.champion?images.boss:images.enemy,x,y,size,enemy.champion?"#ff4f83":"#a66cff");const ratio=Math.max(0,enemy.hp/enemy.maxHp);rounded(x-size*.48,y-size*.66,size*.96,Math.max(4,d*.009),5);ctx.fillStyle="#170d25dd";ctx.fill();rounded(x-size*.48,y-size*.66,size*.96*ratio,Math.max(4,d*.009),5);ctx.fillStyle="#ff6a85";ctx.fill();if(enemy.shield>0){ctx.strokeStyle="#67eaff";ctx.lineWidth=Math.max(2,d*.004);ctx.beginPath();ctx.arc(x,y,size*.55,0,Math.PI*2);ctx.stroke()}}

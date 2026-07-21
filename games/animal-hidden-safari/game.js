@@ -7,6 +7,9 @@
   const progressKey = "weightplay_progress_animal-hidden-safari";
   const supportedLocales = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru"];
   const storageFallback = new Map();
+  const safariFrame = document.querySelector(".safari-game");
+  safariFrame?.setAttribute("data-wp-stage-landscape-width", "760");
+  safariFrame?.setAttribute("data-wp-stage-landscape-height", "360");
 
   function storageRead(key) {
     try {
@@ -686,15 +689,15 @@
     const viewportHeight = viewport?.height || window.innerHeight;
     const viewportWidth = Math.min(Math.max(1, safeWidth), 920);
     const root = document.documentElement.style;
-    const isShortLandscape = !isStage && viewportHeight <= 430 && viewportWidth > viewportHeight;
-    const logicalWidth = isShortLandscape ? 780 : 390;
-    const logicalHeight = isStage ? 788 : isShortLandscape ? 390 : 390 * 16 / 9;
+    const isShortLandscape = viewportHeight <= 430 && viewportWidth > viewportHeight;
+    const logicalWidth = isStage && isShortLandscape ? 760 : isShortLandscape ? 780 : 390;
+    const logicalHeight = isStage ? (isShortLandscape ? 360 : 788) : isShortLandscape ? 390 : 390 * 16 / 9;
     const scale = Math.min(viewportWidth / logicalWidth, viewportHeight / logicalHeight);
     const envelopeWidth = viewportWidth / scale;
     const envelopeHeight = viewportHeight / scale;
     const frameWidth = envelopeWidth * scale;
     const frameHeight = envelopeHeight * scale;
-    const frame = document.querySelector(".safari-game");
+    const frame = safariFrame;
     root.setProperty("--safari-frame-left", `${Math.max(0, (safeWidth - viewportWidth) / 2)}px`);
     root.setProperty("--safari-frame-top", "0px");
     root.setProperty("--safari-logical-width", `${envelopeWidth}px`);

@@ -313,6 +313,35 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
     summary.textContent=t("campaignProgress",{cleared:progress.completedStages.length});
   }
   function localized(pair){const index=locale==="zh-Hant"?1:locale==="es"?2:0;return pair?.[index]||pair?.[0]||"";}
+  function setCenteredStageCard(card){
+    if(!card)return;
+    centeredStage=Math.max(0,Math.min(STAGE_COUNT-1,Number(card.dataset.stage)||0));
+    card.parentElement?.querySelectorAll(".region-card").forEach((node)=>{
+      const active=node===card;
+      node.classList.toggle("is-selected",active);
+      if(active)node.setAttribute("aria-current","true");
+      else node.removeAttribute("aria-current");
+    });
+  }
+  function settleStageRailSelection(){
+    if(document.body.dataset.screen!=="stage")return;
+    const rail=$("#regionRail"),center=rail.getBoundingClientRect().left+rail.clientWidth/2,cards=[...rail.querySelectorAll(".region-card")];
+    const nearest=cards.reduce((best,card)=>{
+      const rect=card.getBoundingClientRect(),distance=Math.abs(rect.left+rect.width/2-center);
+      return !best||distance<best.distance?{card,distance}:best;
+    },null)?.card;
+    if(!nearest)return;
+    setCenteredStageCard(nearest);
+    if(nearest.disabled)return;
+    selectedStage=centeredStage;progress.selectedStage=selectedStage;saveProgress();
+  }
+  function recenterStageSelection(){
+    if(document.body.dataset.screen!=="stage")return;
+    const card=$(`.region-card[data-stage="${centeredStage}"]`);
+    if(!card)return;
+    setCenteredStageCard(card);
+    card.scrollIntoView({behavior:"auto",inline:"center",block:"nearest"});
+  }
   function renderStage(){
     const unlocked=Math.max(1,Math.min(STAGE_COUNT,Number(progress.unlockedStage)||1));
     selectedStage=Math.max(0,Math.min(unlocked-1,selectedStage));
@@ -324,14 +353,14 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
       const region=regions[Math.floor(index/5)],available=index<unlocked,cleared=progress.completedStages.includes(index+1),checkpoint=(index+1)%5===0;
       const card=document.createElement("button");
       card.type="button";card.className=`region-card${index===centeredStage?" is-selected":""}${cleared?" is-cleared":""}${checkpoint?" is-checkpoint":""}`;
-      card.dataset.stage=String(index);if(index%5===0)card.dataset.region=String(Math.floor(index/5));else card.dataset.regionGroup=String(Math.floor(index/5));card.disabled=!available;card.toggleAttribute("data-wp-stage-unlocked",available);
+      card.dataset.stage=String(index);if(index===centeredStage)card.setAttribute("aria-current","true");if(index%5===0)card.dataset.region=String(Math.floor(index/5));else card.dataset.regionGroup=String(Math.floor(index/5));card.disabled=!available;card.toggleAttribute("data-wp-stage-unlocked",available);
       card.setAttribute("aria-label",available?`${t("stage")} ${index+1}: ${localized(definition.name)}. ${localized(definition.rule)}`:`${t("stage")} ${index+1}: ${t("locked")}`);
       card.innerHTML=`<img src="${region.background}" alt="${localized(region.name)}"><span class="stage-number">${t("stage")} ${index+1}/30</span><strong>${localized(definition.name)}</strong><span class="stage-rule"${index%5===0?' data-region-meta=""':''}>${available?`${index%5===0?`5 ${t("encounter")} · `:""}${localized(definition.rule)}`:t("locked")}</span><span class="stage-badges">${checkpoint?`<b>${t("checkpoint")} · ${localized(enemyCatalog[definition.enemies[4]].name)}</b>`:""}${cleared?`<em>${t("completed")}</em>`:""}</span>`;
-      card.addEventListener("focus",()=>{centeredStage=index;selectedStage=index;progress.selectedStage=index;card.parentElement?.querySelectorAll(".region-card").forEach((node)=>node.classList.toggle("is-selected",node===card));});
+      card.addEventListener("focus",()=>{centeredStage=index;selectedStage=index;progress.selectedStage=index;setCenteredStageCard(card);});
       card.addEventListener("click",()=>{if(!available)return;centeredStage=index;selectedStage=index;progress.selectedStage=index;saveProgress();newRun(index);});
       rail.append(card);
     });
-    requestAnimationFrame(()=>$(".region-card.is-selected")?.scrollIntoView({behavior:"auto",inline:"center",block:"nearest"}));
+    requestAnimationFrame(recenterStageSelection);
   }
 
   function enemyAt(room,stageIndex=selectedStage){const definition=stages[Math.max(0,Math.min(STAGE_COUNT-1,Number(stageIndex)||0))];const base=enemyCatalog[definition.enemies[Math.max(0,Math.min(ROOMS_PER_STAGE-1,Number(room)||0))]];const region=Math.floor(stageIndex/5),step=stageIndex%5;return {...base,id:definition.enemies[room],hp:base.hp+region*3+step*2,damage:base.damage+Math.floor(region/2)};}
@@ -481,7 +510,9 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
   $("#soundBtn").addEventListener("keydown",(event)=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});
   $("#soundBtn").addEventListener("click",()=>{window.WonderSound?.unlock?.();window.WonderSound?.setMuted?.(!window.WonderSound?.isMuted?.());syncSoundButton();});
   $("#localeSelect").addEventListener("change",(event)=>applyLocale(event.target.value));$("#startBtn").addEventListener("click",()=>showScreen("stage",true));$("#stageBackBtn").addEventListener("click",()=>showScreen("main",true));$("#battleBackBtn").addEventListener("click",()=>{if(resolving&&!combatPaused)return;if(combatPaused){resetCombatLifecycle();resolving=false;}saveRun();showScreen("stage",true)});$("#pauseBtn").addEventListener("keydown",(event)=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("#pauseBtn").addEventListener("click",()=>{if(!resolving){setFeedback(localized(stages[run?.stage??selectedStage].rule));return;}if(combatPaused)resumeCombat();else pauseCombat();});$("#rotateBtn").addEventListener("click",()=>{if(resolving||!selectedItem)return;rotated=!rotated;setItemFeedback(itemById(selectedItem));renderBattle();});$("#sellBtn").addEventListener("click",sellSelected);$("#fightBtn").addEventListener("click",fight);
-let railSettleTimer=0;$("#regionRail").addEventListener("scroll",()=>{clearTimeout(railSettleTimer);railSettleTimer=setTimeout(()=>{railSettleTimer=0;if(document.body.dataset.screen!=="stage")return;const rail=$("#regionRail"),center=rail.getBoundingClientRect().left+rail.clientWidth/2,cards=[...rail.querySelectorAll(".region-card")];const nearest=cards.sort((a,b)=>Math.abs((a.getBoundingClientRect().left+a.offsetWidth/2)-center)-Math.abs((b.getBoundingClientRect().left+b.offsetWidth/2)-center))[0];if(!nearest)return;centeredStage=Number(nearest.dataset.stage)||0;cards.forEach((card)=>card.classList.toggle("is-selected",card===nearest));if(nearest.disabled)return;selectedStage=centeredStage;progress.selectedStage=selectedStage;saveProgress();},100);},{passive:true});
+let railSettleTimer=0;$("#regionRail").addEventListener("scroll",()=>{clearTimeout(railSettleTimer);railSettleTimer=setTimeout(()=>{railSettleTimer=0;settleStageRailSelection();},100);},{passive:true});
+  $("#regionRail").addEventListener("wonder:stage-snap",settleStageRailSelection);
+  addEventListener("resize",()=>requestAnimationFrame(recenterStageSelection));
   if(new URLSearchParams(location.search).has("smoke"))window.__gearpackSmoke={stageCount:STAGE_COUNT,stages:stages.map((definition,index)=>({stage:index+1,region:Math.floor(index/5)+1,name:definition.name[0],rule:definition.rule[0],enemies:[...definition.enemies],checkpoint:(index+1)%5===0})),unlockAll(){progress.unlockedStage=STAGE_COUNT;progress.selectedStage=STAGE_COUNT-1;selectedStage=STAGE_COUNT-1;centeredStage=selectedStage;saveProgress();showScreen("stage");return progress;},openStageForTest(stage=1){progress.unlockedStage=Math.max(progress.unlockedStage,Math.min(STAGE_COUNT,stage));saveProgress();newRun(Math.max(0,Math.min(STAGE_COUNT-1,stage-1)));return {stage:run.stage+1,enemy:enemyAt(0,run.stage).id};},openEncounterForTest(stage=30,room=5){this.openStageForTest(stage);run.room=Math.max(0,Math.min(ROOMS_PER_STAGE-1,room-1));prepareEnemyState(enemyAt(run.room,run.stage));renderBattle();return {stage:run.stage+1,room:run.room+1,enemy:enemyAt(run.room,run.stage).id};},mechanicPreview(stage=30,room=5){const enemy=enemyAt(room-1,stage-1);return {id:enemy.id,shield:enemy.shield||0,openingHit:enemy.openingHit||0,isolation:enemy.isolation||0,corrosion:enemy.corrosion||0,rowHeat:enemy.rowHeat||0,overload:Boolean(enemy.overload),rotatingSeal:Boolean(enemy.rotatingSeal),phase:enemy.phase||null};},finishRegionForTest(){if(!run)newRun(0);run.room=4;showResult(true);},finishStageForTest(stage=1){if(!run||run.stage!==stage-1)newRun(stage-1);run.room=4;showResult(true);},failStageForTest(stage=1){if(!run||run.stage!==stage-1)newRun(stage-1);showResult(false);},openMerchantForTest(){if(!run)newRun(0);showMerchant();},openFullLootForTest(){if(!run)newRun(0);run.tray=Array.from({length:12},(_,index)=>items[index%6].id);run.placed=[];selectedItem=run.tray[0];selectedTrayIndex=0;showLoot(()=>{run.room=1;prepareEnemyState(enemyAt(run.room,run.stage));saveRun();setFeedback(t("repack"));renderBattle();});}};
   applyLocale(locale);showScreen("main");
 })();

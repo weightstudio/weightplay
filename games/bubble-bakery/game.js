@@ -385,6 +385,9 @@
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
   };
+  const gameRoot = document.querySelector(".bakery-game");
+  gameRoot?.setAttribute("data-wp-stage-landscape-width", "760");
+  gameRoot?.setAttribute("data-wp-stage-landscape-height", "360");
   const leavePanel = document.createElement("section");
   leavePanel.className = "bakery-leave-panel hidden";
   leavePanel.setAttribute("role", "dialog");
@@ -781,12 +784,16 @@
   }
 
   function updateBakeryFrame() {
-    if (!document.body.classList.contains("is-bakery-playing") && !document.body.classList.contains("is-bakery-stage-select")) return;
+    const isStage = document.body.classList.contains("is-bakery-stage-select");
+    if (!document.body.classList.contains("is-bakery-playing") && !isStage) return;
     const viewport = window.visualViewport;
     const safeWidth = viewport?.width || innerWidth;
     const viewportHeight = viewport?.height || innerHeight;
     const viewportWidth = Math.min(Math.max(1, safeWidth), 920);
-    const scale = Math.max(0.1, Math.min(viewportWidth / 390, viewportHeight / 788));
+    const shortStage = isStage && viewportHeight <= 430 && viewportWidth > viewportHeight;
+    const minimumWidth = shortStage ? 760 : 390;
+    const minimumHeight = shortStage ? 360 : 788;
+    const scale = Math.max(0.1, Math.min(viewportWidth / minimumWidth, viewportHeight / minimumHeight));
     const logicalWidth = viewportWidth / scale;
     const logicalHeight = viewportHeight / scale;
     const root = document.documentElement.style;

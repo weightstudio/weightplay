@@ -47,3 +47,26 @@ body[data-screen="stage"] :is(.wp-tutorial-button,.sound-toggle),body[data-scree
 .formation-row small{font-size:9px;color:#9fe8d0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media(max-width:640px){.hud{width:224px}.battle-header>div:nth-child(2){padding-right:228px}}
 @media(max-height:520px) and (min-aspect-ratio:3/2){.formation-row button{grid-template-rows:34px 18px 15px}.formation-row small{font-size:8px}.formation-row img{height:34px}}
+
+/* Strategic command layer: formation, operation, and route tactics remain separate decisions. */
+.decision-panel{grid-template-rows:minmax(0,1fr) 44px 26px;gap:6px 8px;padding:8px}
+.formation-row{grid-column:2;grid-row:1/3}
+.tactic-row{grid-column:1;grid-row:2;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+.tactic-row button{min-width:0;border:1px solid #46756c;border-radius:9px;background:#0b292c;color:#fff;padding:3px;overflow:hidden}
+.tactic-row button.selected{border-color:#ffe36c;box-shadow:inset 0 0 0 2px #60ebbd}
+.tactic-row :is(strong,small){display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tactic-row strong{font-size:10px}.tactic-row small{font-size:8px;color:#9fe8d0}
+.battle-actions{grid-column:3;grid-row:1/3;gap:6px}
+.territory.fortified:after{content:"◆";position:absolute;right:-4px;top:-6px;color:#7dffe0;text-shadow:0 0 8px #21d7ff;font-size:18px}
+@media(max-width:640px){
+  .battle-live{grid-template-rows:68px minmax(0,1fr) 286px}
+  .decision-panel{grid-template-columns:1fr;grid-template-rows:42px minmax(0,1fr) 40px 54px 20px}
+  .target-readout,.formation-row,.tactic-row,.battle-actions,.decision-panel>p{grid-column:1}
+  .target-readout{grid-row:1}.formation-row{grid-row:2}.tactic-row{grid-row:3}.battle-actions{grid-row:4;grid-template-columns:repeat(3,minmax(0,1fr))}.decision-panel>p{grid-row:5}
+  .formation-row img{height:58px}
+}
+@media(max-height:520px) and (min-aspect-ratio:3/2){
+  .decision-panel{grid-template-columns:1fr;grid-template-rows:42px 64px 38px 48px 18px}
+  .target-readout,.formation-row,.tactic-row,.battle-actions,.decision-panel>p{grid-column:1}
+  .target-readout{grid-row:1}.formation-row{grid-row:2}.tactic-row{grid-row:3}.battle-actions{grid-row:4;grid-template-columns:repeat(3,minmax(0,1fr))}.decision-panel>p{grid-row:5}
+}

@@ -257,6 +257,7 @@
   let rerollConfirmRemaining = 0;
   let pointer = null;
   let moveTarget = null;
+  let stageSelectionFrame = 0;
   let backgroundSuspended = false;
   let quitSuspended = false;
   const keys = {};
@@ -534,10 +535,12 @@
     for (let stage = 1; stage <= TRIAL_COUNT; stage += 1) {
       const definition=trialDefinition(stage);
       const region=regions[definition.region];
+      const locked=stage>unlocked;
       const button = document.createElement("button");
-      button.className = `stage-card${stage > unlocked ? " locked" : ""}${definition.checkpoint ? " checkpoint" : ""}`;
+      button.className = `stage-card${locked ? " locked" : ""}${definition.checkpoint ? " checkpoint" : ""}`;
       button.dataset.stage = String(stage);
-      const detail = stage > unlocked ? t("locked") : interpolate("roomsAndMarks",{marks:definition.reward});
+      if(locked)button.setAttribute("aria-disabled","true");
+      const detail = locked ? t("locked") : interpolate("roomsAndMarks",{marks:definition.reward});
       const title=locale==="zh-Hant"?definition.titleZh:locale==="es"?definition.titleEs:definition.titleEn;
       const rule=localizedPair(region.rule);
       const boss=definition.boss?` · ${localizedPair(definition.boss.name)}`:"";
@@ -545,6 +548,32 @@
       button.onclick = () => stage <= unlocked && startTrial(stage);
       rail.append(button);
     }
+    scheduleCenteredStageCard();
+  }
+
+  function updateCenteredStageCard() {
+    stageSelectionFrame=0;
+    const rail=$("#stageRail");
+    if(!rail||!rail.getClientRects().length)return;
+    const railRect=rail.getBoundingClientRect();
+    const center=railRect.left+railRect.width/2;
+    const cards=[...rail.querySelectorAll(".stage-card")];
+    const centered=cards.reduce((best,card)=>{
+      const rect=card.getBoundingClientRect();
+      const distance=Math.abs(rect.left+rect.width/2-center);
+      return !best||distance<best.distance?{card,distance}:best
+    },null)?.card||null;
+    cards.forEach((card)=>{
+      const active=card===centered;
+      card.classList.toggle("is-browsed",active);
+      if(active)card.setAttribute("aria-current","true");
+      else card.removeAttribute("aria-current");
+    });
+  }
+
+  function scheduleCenteredStageCard() {
+    cancelAnimationFrame(stageSelectionFrame);
+    stageSelectionFrame=requestAnimationFrame(updateCenteredStageCard);
   }
 
   function focusStage(stage = Math.min(TRIAL_COUNT, unlocked)) {
@@ -1171,6 +1200,9 @@
   const stagePreparation = $("#stageView");
   const progressCard = $(".progress-card");
   const stageRail = $("#stageRail");
+  stageRail?.addEventListener("scroll",scheduleCenteredStageCard,{passive:true});
+  stageRail?.addEventListener("wonder:stage-snap",scheduleCenteredStageCard);
+  addEventListener("resize",scheduleCenteredStageCard);
   if (stagePreparation && progressCard && stageRail && !stagePreparation.contains(progressCard)) {
     stagePreparation.insertBefore(progressCard, stageRail);
   }

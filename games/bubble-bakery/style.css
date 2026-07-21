@@ -1770,3 +1770,59 @@ body.is-bakery-playing .sound-toggle,
 body.is-bakery-playing .wp-tutorial-button {
   display: none !important;
 }
+
+@media (max-height: 430px) and (orientation: landscape) {
+  body[data-wp-game-id="bubble-bakery"].is-bakery-stage-select .stage-panel {
+    display: grid;
+    grid-template-rows: 44px 62px minmax(0, 1fr) !important;
+    gap: 6px !important;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body[data-wp-game-id="bubble-bakery"].is-bakery-stage-select .stage-panel-head {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  body[data-wp-game-id="bubble-bakery"].is-bakery-stage-select .stage-back {
+    width: 44px;
+    min-height: 44px;
+    padding: 0;
+  }
+
+  body[data-wp-game-id="bubble-bakery"].is-bakery-stage-select .recommend-card {
+    min-height: 62px;
+    padding: 6px 10px;
+  }
+
+  body[data-wp-game-id="bubble-bakery"].is-bakery-stage-select .recommend-card em,
+  body[data-wp-game-id="bubble-bakery"].is-bakery-stage-select .recommend-icons,
+  body[data-wp-game-id="bubble-bakery"].is-bakery-stage-select .bakery-progress {
+    display: none !important;
+  }
+
+  body[data-wp-game-id="bubble-bakery"].is-bakery-stage-select .stage-grid {
+    align-items: center;
+    height: 100%;
+    min-height: 0;
+    gap: 12px;
+    padding: 0 max(44px, calc((100% - 264px) / 2));
+    scroll-padding-inline: max(44px, calc((100% - 264px) / 2));
+  }
+
+  body[data-wp-game-id="bubble-bakery"].is-bakery-stage-select .stage-card {
+    flex: 0 0 264px;
+    width: 264px;
+    min-width: 264px;
+    min-height: 196px;
+    max-height: 210px;
+    padding: 14px;
+    align-content: center;
+    gap: 8px;
+  }
+
+  body[data-wp-game-id="bubble-bakery"].is-bakery-stage-select .stage-card b { font-size: 1.45rem; }
+  body[data-wp-game-id="bubble-bakery"].is-bakery-stage-select .stage-card small { min-height: 0; font-size: 0.72rem; }
+}
