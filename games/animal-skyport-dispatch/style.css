@@ -40,3 +40,10 @@
 /* Stage and Battle reserve ownership is external to each responsive Canvas. */
 .stage-screen{grid-template-rows:48px 44px auto minmax(0,1fr);background:linear-gradient(180deg,rgba(4,20,34,.82),rgba(4,20,34,.9)),url('../../assets/animal-skyport-dispatch-cover.webp') center 38%/cover no-repeat}
 @media(min-width:641px){.battle-canvas,.battle-shell>.ad-reserve{width:100%;max-width:none;justify-self:stretch}}
+
+/* The geometrically centered card stays visibly selected, even while locked. */
+.stage-card.centered{border-color:#ffd66a;box-shadow:0 0 22px #ffd66a66}
+
+/* Keep localized Battle actions readable inside the fixed logical footer. */
+.flight-row .secondary:not(.hidden){flex:0 0 min(42%,170px);min-width:0;padding:6px 8px;font-size:.72rem;line-height:1.15}
+#flightHint{min-width:0;overflow:hidden;font-size:.7rem;line-height:1.16;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3}

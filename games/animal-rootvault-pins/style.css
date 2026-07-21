@@ -1,0 +1,881 @@
+:root {
+  color-scheme: dark;
+  font-family: Inter, "Noto Sans TC", "Noto Sans JP", system-ui, sans-serif;
+  background: #031d1a;
+  color: #f5fff6;
+  --gold: #ffd45f;
+  --mint: #62efc2;
+  --ink: #061f1c;
+  --panel: #0b3831;
+  --line: #4ebc9b;
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: #031d1a;
+}
+body {
+  background: radial-gradient(
+    circle at 50% 0,
+    #17604e 0,
+    #031d1a 58%,
+    #021311 100%
+  );
+}
+button,
+select {
+  font: inherit;
+}
+button {
+  min-height: 44px;
+  border: 1px solid #6aa997;
+  border-radius: 12px;
+  background: #123f37;
+  color: #fff;
+  font-weight: 900;
+  cursor: pointer;
+}
+button:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 3px solid #fff2a0;
+  outline-offset: 2px;
+}
+.primary {
+  border-color: #ffe38d;
+  background: linear-gradient(#ffd66b, #eda81c);
+  color: #2d1b00;
+  box-shadow: 0 5px 0 #8f5a0a;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+[hidden] {
+  display: none !important;
+}
+.loading {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 14px;
+  background: #061f1c;
+}
+.loading img {
+  width: 110px;
+  height: 110px;
+  object-fit: contain;
+}
+.main-group {
+  width: min(100%, 920px);
+  margin: auto;
+}
+.main-screen {
+  min-height: min(844px, 100svh);
+  padding: 12px;
+  background:
+    linear-gradient(#061f1cdd, #082b25e8),
+    url("../../assets/animal-rootvault-pins/animal-rootvault-pins-vault-bg.webp")
+      center/cover;
+}
+.main-header {
+  height: 58px;
+  display: grid;
+  grid-template-columns: 82px minmax(0, 1fr) 116px;
+  align-items: center;
+  gap: 8px;
+}
+.main-header > strong {
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 18px;
+}
+.lobby-return {
+  width: 68px;
+  height: 48px;
+  border-radius: 12px;
+  background: #fff;
+  color: #1472a8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: 900;
+}
+.lobby-return img {
+  width: 27px;
+  height: 27px;
+  object-fit: contain;
+}
+.locale-control select {
+  width: 116px;
+  height: 44px;
+  border: 1px solid #83b5a7;
+  border-radius: 11px;
+  background: #0b302b;
+  color: #fff;
+  padding: 0 8px;
+  font-weight: 800;
+}
+.main-hero {
+  min-height: calc(min(844px, 100svh) - 82px);
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(270px, 0.85fr);
+  gap: 18px;
+  align-items: center;
+}
+.poster {
+  width: 100%;
+  max-height: 680px;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 22px;
+  border: 2px solid #8be2bf;
+  box-shadow: 0 16px 34px #0008;
+}
+.main-copy {
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+  align-content: center;
+}
+.main-copy h1 {
+  margin: 0;
+  font-size: clamp(30px, 5vw, 58px);
+  line-height: 1;
+}
+.main-copy p {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.45;
+}
+.main-copy span {
+  color: #9dffd8;
+  font-weight: 900;
+}
+.main-copy button {
+  width: 100%;
+  font-size: 20px;
+}
+.public-guide {
+  padding: 34px clamp(18px, 4vw, 46px) 72px;
+  background: #f2f6e9;
+  color: #17362d;
+}
+.public-guide > small {
+  color: #32705d;
+  font-weight: 900;
+}
+.public-guide h2 {
+  margin: 6px 0 10px;
+  font-size: 32px;
+}
+.public-guide > p {
+  max-width: 760px;
+  line-height: 1.65;
+}
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.guide-grid article {
+  padding: 18px;
+  border: 1px solid #bad3c9;
+  border-radius: 16px;
+  background: #fff;
+}
+.guide-grid h3 {
+  margin: 0 0 7px;
+}
+.guide-grid p {
+  margin: 0;
+  line-height: 1.55;
+}
+.active-screen {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+.stage-canvas,
+.battle-canvas {
+  width: 390px;
+  height: 788px;
+  overflow: hidden;
+  background: #072a25;
+  color: #fff;
+}
+.stage-canvas {
+  display: grid;
+  grid-template-rows: 72px 286px 50px minmax(0, 1fr);
+  gap: 0;
+  padding: 10px;
+  background:
+    linear-gradient(#062620d9, #072b25ed),
+    var(--wp-stage-art) center/cover;
+}
+.stage-header {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr) 56px;
+  gap: 10px;
+  align-items: center;
+  padding: 4px 0;
+}
+.stage-header > button,
+.battle-header > button:first-child {
+  width: 52px;
+  height: 52px;
+  background: #fff;
+  color: #1472a8;
+  font-size: 28px;
+}
+.stage-header > div {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+.stage-header strong {
+  font-size: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.stage-header span {
+  font-size: 13px;
+  color: #a7ead5;
+}
+.taro-chip {
+  width: 54px;
+  height: 54px;
+  background: url("../../assets/animal-rootvault-pins/animal-rootvault-pins-character-atlas.webp")
+    0 0/200% 200% no-repeat;
+}
+.stage-rail {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  padding: 10px calc(50% - 143px);
+  touch-action: pan-y;
+  scrollbar-width: none;
+}
+.stage-rail::-webkit-scrollbar {
+  display: none;
+}
+.stage-card {
+  position: relative;
+  flex: 0 0 286px;
+  height: 206px;
+  scroll-snap-align: center;
+  overflow: hidden;
+  border: 2px solid #6a998b;
+  border-radius: 20px;
+  padding: 18px;
+  text-align: left;
+  background:
+    linear-gradient(0deg, #061914ed 0 40%, #0c342655),
+    url("../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp")
+      center/cover;
+  color: #fff;
+  box-shadow: 0 10px 20px #0008;
+}
+.stage-card small,
+.stage-card span {
+  display: block;
+}
+.stage-card strong {
+  display: block;
+  margin: 40px 0 5px;
+  font-size: 25px;
+}
+.stage-card.locked {
+  filter: grayscale(0.9) brightness(0.5);
+}
+.stage-card.centered {
+  border-color: #fff07a;
+  box-shadow:
+    0 0 0 4px #67ffd1,
+    0 0 24px 8px #5bffd0aa;
+}
+.stage-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 3px 0;
+}
+.stage-tabs button {
+  min-height: 42px;
+}
+.stage-tabs button.active {
+  border-color: #ffe482;
+  background: #35644d;
+  color: #fff4a3;
+}
+.stage-panel {
+  min-height: 0;
+  overflow: auto;
+  padding: 10px 2px;
+}
+.selected-brief {
+  min-height: 148px;
+  padding: 12px;
+  border: 1px solid #477d6d;
+  border-radius: 15px;
+  background: #061c19e8;
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 9px;
+  align-items: start;
+}
+.selected-brief > span {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #ffcd50;
+  color: #271600;
+  font-size: 22px;
+  font-weight: 1000;
+}
+.selected-brief p {
+  margin: 5px 0 8px;
+  color: #b7dfd2;
+  line-height: 1.35;
+}
+.selected-brief button {
+  grid-column: 1/-1;
+}
+.stage-hint {
+  margin: 8px 4px;
+  text-align: center;
+  color: #c2eadd;
+  font-size: 13px;
+}
+.workshop-panel {
+  background: #061c19e8;
+  border: 1px solid #477d6d;
+  border-radius: 15px;
+}
+.workshop-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px;
+}
+.workshop-heading p {
+  margin: 3px 0;
+  color: #badacf;
+  font-size: 12px;
+}
+.workshop-heading b {
+  color: #ffdc69;
+  white-space: nowrap;
+}
+.upgrade-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+}
+.upgrade {
+  min-height: 126px;
+  padding: 8px;
+  display: grid;
+  align-content: start;
+  gap: 3px;
+  text-align: left;
+}
+.upgrade strong {
+  color: #fff2a3;
+}
+.upgrade small {
+  font-size: 10px;
+  line-height: 1.25;
+  color: #c1ded4;
+}
+.upgrade span {
+  margin-top: auto;
+  color: #61f2c4;
+  font-size: 11px;
+}
+.battle-canvas {
+  position: relative;
+  background: #061f1c;
+}
+.battle-live {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 70px 40px minmax(0, 1fr) 32px 70px;
+  overflow: hidden;
+}
+.battle-header {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr) 70px 44px;
+  gap: 7px;
+  align-items: center;
+  padding: 8px;
+  background: #071d1a;
+  border-bottom: 1px solid #326c5e;
+}
+.battle-header > div {
+  min-width: 0;
+  display: grid;
+}
+.battle-header > div small,
+.battle-header > span small {
+  font-size: 11px;
+  color: #9bdac7;
+}
+.battle-header > div strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.battle-header > span {
+  display: grid;
+  text-align: center;
+}
+.battle-header > button:last-child {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-size: 19px;
+}
+.objective-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 10px;
+  background: #0a3c34;
+  font-size: 12px;
+}
+.objective-row strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.objective-row span {
+  color: #ffdf6a;
+  white-space: nowrap;
+}
+.chamber-board {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    linear-gradient(#041c18bb, #041c18bb),
+    url("../../assets/animal-rootvault-pins/animal-rootvault-pins-vault-bg.webp")
+      center/cover;
+  border-block: 1px solid #397d6b;
+  touch-action: manipulation;
+}
+.room {
+  position: absolute;
+  width: 82px;
+  height: 78px;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  border: 2px solid #719c8e;
+  border-radius: 22px;
+  background: linear-gradient(#294b43ee, #0a2924ee);
+  box-shadow:
+    inset 0 0 16px #0008,
+    0 3px 8px #0007;
+  display: grid;
+  place-items: center;
+}
+.room.sanctuary {
+  border-color: #7fffe0;
+  box-shadow:
+    0 0 18px #42d9c0,
+    inset 0 0 15px #0df4c344;
+}
+.room.void {
+  border-color: #8f66b4;
+}
+.room-label {
+  position: absolute;
+  left: 5px;
+  top: 3px;
+  font-size: 9px;
+  color: #b9ded3;
+}
+.pieces {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  width: 70px;
+  height: 62px;
+  padding-top: 8px;
+}
+.piece {
+  width: 42px;
+  height: 42px;
+  margin: -5px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  filter: drop-shadow(0 2px 2px #0009);
+}
+.pieces .piece:nth-child(n + 2) {
+  width: 34px;
+  height: 34px;
+}
+.piece.taro {
+  background-image: url("../../assets/animal-rootvault-pins/animal-rootvault-pins-character-atlas.webp");
+  background-size: 200% 200%;
+  background-position: 0 0;
+}
+.piece.taro.armored {
+  background-position: 100% 0;
+}
+.piece.shadow {
+  background-image: url("../../assets/animal-rootvault-pins/animal-rootvault-pins-shadow-wisp.webp");
+}
+.piece.water,
+.piece.ember,
+.piece.core,
+.piece.ward,
+.piece.key,
+.piece.lock,
+.piece.sanctuary,
+.piece.void {
+  background-image: url("../../assets/animal-rootvault-pins/animal-rootvault-pins-object-atlas.webp");
+  background-size: 400% 200%;
+}
+.piece.water {
+  background-position: 0 0;
+}
+.piece.ember {
+  background-position: 33.333% 0;
+}
+.piece.core {
+  background-position: 66.667% 0;
+}
+.piece.ward {
+  background-position: 100% 0;
+}
+.piece.key {
+  background-position: 0 100%;
+}
+.piece.lock {
+  background-position: 33.333% 100%;
+}
+.piece.sanctuary {
+  background-position: 66.667% 100%;
+}
+.piece.void {
+  background-position: 100% 100%;
+}
+.channel {
+  position: absolute;
+  z-index: 0;
+  height: 5px;
+  transform-origin: 0 50%;
+  border-radius: 4px;
+  background: #204e43;
+  box-shadow: 0 0 0 1px #5f8b7d;
+}
+.pin {
+  position: absolute;
+  z-index: 3;
+  width: 88px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  border: 0;
+  background: transparent;
+  padding: 0;
+  overflow: visible;
+}
+.pin-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: url("../../assets/animal-rootvault-pins/animal-rootvault-pins-pin-fx-atlas.webp")
+    0 0/400% 200% no-repeat;
+  filter: drop-shadow(0 2px 3px #000);
+}
+.pin.locked .pin-art {
+  background-position: 33.333% 0;
+  filter: grayscale(0.25) drop-shadow(0 2px 3px #000);
+}
+.pin.selected .pin-art {
+  background-position: 66.667% 0;
+  filter: drop-shadow(0 0 6px #66fff3);
+}
+.pin[data-safe-hint="true"]:not(.selected) .pin-art {
+  filter: drop-shadow(0 0 7px #fff07a);
+}
+.pin.pulled {
+  pointer-events: none;
+  opacity: 0.28;
+}
+.pin.pulled .pin-art {
+  background-position: 100% 0;
+}
+.pin:disabled {
+  cursor: not-allowed;
+}
+.moving-piece {
+  position: absolute;
+  z-index: 9;
+  transition: transform 0.48s cubic-bezier(0.2, 0.75, 0.2, 1);
+  pointer-events: none;
+}
+.effect {
+  position: absolute;
+  z-index: 10;
+  width: 94px;
+  height: 94px;
+  transform: translate(-50%, -50%);
+  background: url("../../assets/animal-rootvault-pins/animal-rootvault-pins-pin-fx-atlas.webp")
+    0 100%/400% 200% no-repeat;
+  animation: effect-pop 0.62s ease-out forwards;
+}
+.effect.ward {
+  background-position: 33.333% 100%;
+}
+.effect.win {
+  background-position: 66.667% 100%;
+}
+.effect.fail {
+  background-position: 100% 100%;
+}
+@keyframes effect-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.55);
+  }
+  45% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.35);
+  }
+}
+.feedback {
+  margin: 0;
+  padding: 6px 10px;
+  text-align: center;
+  color: #c8f8e9;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: #061a17;
+}
+.battle-actions {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 10px;
+  padding: 8px 10px 12px;
+  background: #061a17;
+}
+.battle-actions button {
+  font-size: 17px;
+}
+.modal-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: #031310dc;
+}
+.dialog-card,
+.result-card {
+  width: min(100%, 520px);
+  max-height: 100%;
+  overflow: auto;
+  padding: 22px;
+  border: 2px solid #6ac6aa;
+  border-radius: 22px;
+  background: #092e28;
+  box-shadow: 0 20px 45px #000b;
+}
+.dialog-card h2,
+.result-card h2 {
+  margin: 4px 0 10px;
+}
+.dialog-card li {
+  margin: 10px 0;
+  line-height: 1.4;
+}
+.modal-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+.modal-actions.one {
+  grid-template-columns: 1fr;
+}
+.result-card {
+  text-align: center;
+}
+.result-art {
+  display: block;
+  width: 120px;
+  height: 120px;
+  margin: auto;
+  background: url("../../assets/animal-rootvault-pins/animal-rootvault-pins-character-atlas.webp")
+    0 100%/200% 200% no-repeat;
+}
+.result-card.fail .result-art {
+  background-image: url("../../assets/animal-rootvault-pins/animal-rootvault-pins-shadow-wisp.webp");
+  background-size: contain;
+  background-position: center;
+}
+.result-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  margin: 14px 0;
+}
+.result-stats span {
+  padding: 9px 4px;
+  border: 1px solid #3f7869;
+  border-radius: 11px;
+  display: grid;
+}
+.result-stats b {
+  font-size: 11px;
+  color: #a9d7c9;
+}
+.result-stats strong {
+  color: #ffe071;
+}
+.ad-reserve {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 56px;
+  background: #020f0d;
+  pointer-events: none;
+}
+@media (max-width: 680px) {
+  .main-screen {
+    min-height: 844px;
+  }
+  .main-hero {
+    display: flex;
+    min-height: 760px;
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+  .poster {
+    height: 460px;
+    max-height: none;
+  }
+  .main-copy {
+    padding: 4px 2px;
+  }
+  .main-copy h1 {
+    font-size: 30px;
+  }
+  .main-copy p {
+    font-size: 14px;
+  }
+  .guide-grid {
+    grid-template-columns: 1fr;
+  }
+  .public-guide h2 {
+    font-size: 27px;
+  }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .main-screen {
+    min-height: 620px;
+  }
+  .main-hero {
+    grid-template-columns: 46% 1fr;
+    min-height: 540px;
+  }
+  .poster {
+    height: 430px;
+  }
+  .stage-canvas {
+    position: relative;
+    grid-template-rows: 64px minmax(0, 1fr) 44px;
+  }
+  .stage-rail {
+    grid-row: 2;
+  }
+  .stage-tabs {
+    grid-row: 3;
+    z-index: 8;
+  }
+  #briefPanel {
+    display: none !important;
+  }
+  #workshopPanel:not([hidden]) {
+    position: absolute;
+    z-index: 7;
+    inset: 64px 10px 44px;
+    display: block;
+    overflow-y: auto;
+    padding: 10px;
+    border-radius: 16px;
+    background: #052019f2;
+  }
+  .battle-live {
+    position: relative;
+    grid-template-rows: 52px 28px minmax(0, 1fr) 52px;
+  }
+  .battle-header {
+    grid-row: 1;
+    padding-block: 4px;
+  }
+  .objective-row {
+    grid-row: 2;
+  }
+  .chamber-board {
+    grid-row: 3;
+  }
+  .feedback {
+    position: absolute;
+    z-index: 6;
+    right: 12px;
+    bottom: 57px;
+    left: 120px;
+    height: 24px;
+    padding: 4px 8px;
+    border-radius: 9px;
+    background: #061a17e8;
+  }
+  .battle-actions {
+    grid-row: 4;
+    padding: 4px 10px 6px;
+  }
+  .room {
+    width: 72px;
+    height: 66px;
+  }
+  .pieces {
+    transform: scale(0.86);
+  }
+}

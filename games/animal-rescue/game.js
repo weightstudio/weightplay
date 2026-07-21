@@ -960,6 +960,7 @@ function restoreRouteHint() {
 function finishLevel() {
   state.complete = true;
   const level = state.level;
+  const isFinalTrail = level.id >= levels.length;
   const stars = calculateStars();
   bestStars[level.id] = Math.max(bestStars[level.id] || 0, stars);
   unlocked = Math.max(unlocked, Math.min(levels.length, level.id + 1));
@@ -967,11 +968,16 @@ function finishLevel() {
   resultTitle.textContent = level.id === levels.length ? t("allClear") : t("trailClear");
   resultText.textContent = t("result", { animal: t(level.animal), fruit: state.collected, moves: state.moves });
   starLine.textContent = "\u2605".repeat(stars) + "\u2606".repeat(3 - stars);
-  nextBtn.classList.toggle("hidden", level.id >= levels.length);
+  nextBtn.classList.toggle("hidden", isFinalTrail);
+  const primaryAction = isFinalTrail ? trailsBtn : nextBtn;
+  [nextBtn, retryBtn, trailsBtn, lobbyLink].forEach((action) => {
+    action.classList.toggle("result-primary", action === primaryAction);
+    action.classList.toggle("result-secondary", action !== primaryAction);
+  });
   resultPanel.classList.remove("hidden");
   setResultOwnership(true);
   document.body.classList.add("rescue-result");
-  requestAnimationFrame(() => (nextBtn.classList.contains("hidden") ? retryBtn : nextBtn).focus({ preventScroll: true }));
+  requestAnimationFrame(() => primaryAction.focus({ preventScroll: true }));
   window.WonderSound?.play("win");
   window.WonderAnalytics?.track("game_complete", {
     game_id: GAME_ID,

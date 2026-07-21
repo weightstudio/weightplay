@@ -1464,6 +1464,7 @@
       const behavior = fishBehavior(run.hookFish);
       const pull = behavior.pull(run.reelElapsed * 1000, run.zone.speed) + (run.hookFish.rare ? 6 : 0);
       run.tension += (target - run.tension) * dt * (1.4 + gearControl) + pull * dt;
+      let warningPlayedThisStep = false;
       if (["storm", "abyss"].includes(run.zone.rule)) {
         const gustCycle = Math.floor(run.reelElapsed / 3);
         if (gustCycle > run.lastGustCycle) {
@@ -1471,11 +1472,12 @@
           run.tension += (gustCycle % 2 ? 1 : -1) * (run.zone.rule === "abyss" ? 18 : 13);
           run.hazardFlash = 1.1;
           playSound("wallHit");
+          warningPlayedThisStep = true;
         }
       }
       run.tension = Math.max(0, Math.min(100, run.tension));
       const { safe } = tensionRange();
-      if (!safe && run.tensionSafe) playSound("wallHit");
+      if (!safe && run.tensionSafe && !warningPlayedThisStep) playSound("wallHit");
       run.tensionSafe = safe;
       if (!safe) run.struggle += dt;
       else run.struggle = Math.max(0, run.struggle - dt * 1.8);

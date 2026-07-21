@@ -59,6 +59,9 @@
     openingStrike:"Ataque inicial",shielded:"Escudo",reflected:"Fragmento reflejado",regrowth:"El guardián se regeneró",seal:"Sellado",isolated:"objetos aislados",corrosion:"corrosión",heat:"calor en la fila superior",overload:"sobrecarga",bossPhase:"Fase del jefe",
   };
   Object.assign(copy.es,{leaveBattleTitle:"\u00bfSalir de esta expedici\u00f3n?",leaveBattleText:"Tu mochila y el encuentro actual se conservan mientras decides.",continueBattle:"Continuar expedici\u00f3n",confirmLeaveBattle:"Volver a niveles"});
+  Object.assign(copy.en,{campaignProgress:"{cleared} / 30 expeditions cleared"});
+  Object.assign(copy["zh-Hant"],{campaignProgress:"\u5df2\u5b8c\u6210 {cleared} / 30 \u95dc\u9060\u5f81"});
+  Object.assign(copy.es,{campaignProgress:"{cleared} / 30 expediciones completadas"});
   const PACK_COLS = 11;
   const PACK_ROWS = 7;
   const STAGE_COUNT = 30;
@@ -296,10 +299,19 @@
     effect.textContent=`${t("attack")} ${item.atk} · ${t("defense")} ${item.armor} · ${t("healing")} ${item.heal} · ${t("sameTagBonus")}`;
     row.replaceChildren(identity,effect);
   }
-function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){clearTimeout(railSettleTimer);railSettleTimer=0;}Object.entries(screens).forEach(([key,node])=>node.hidden=key!==name);document.body.dataset.screen=name;document.body.classList.toggle("is-game-playing",name==="battle");if(name==="stage")renderStage();if(name==="battle")renderBattle();if(focusTarget)requestAnimationFrame(()=>{const target=name==="main"?$("#startBtn"):name==="stage"?$(".region-card.is-selected:not(:disabled)"):$(".pack-cell[tabindex='0']");target?.focus({preventScroll:true});});}
+function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){clearTimeout(railSettleTimer);railSettleTimer=0;}Object.entries(screens).forEach(([key,node])=>node.hidden=key!==name);document.body.dataset.screen=name;document.body.classList.toggle("is-game-playing",name==="battle");if(name==="main")renderMain();if(name==="stage")renderStage();if(name==="battle")renderBattle();if(focusTarget)requestAnimationFrame(()=>{const target=name==="main"?$("#startBtn"):name==="stage"?$(".region-card.is-selected:not(:disabled)"):$(".pack-cell[tabindex='0']");target?.focus({preventScroll:true});});}
 
   function applyLocale(next){const current=window.WonderI18n?.actualLocale?.();const requested=next==="zh-Hant"&&current==="zh-Hans"?current:next||"en";if(current!==requested)window.WonderI18n?.setLocale?.(requested);locale=window.WonderI18n?.legacyLocale?.(requested)||requested;locale=copy[locale]?locale:"en";writeStorage("weightPlayLocale",requested);document.documentElement.lang=requested;document.title=`${t("title")} - WeightPlay`;$("#localeSelect").value=requested;document.querySelectorAll("[data-i18n]").forEach((node)=>{node.textContent=t(node.dataset.i18n)});const localizeAssistive=()=>{document.querySelectorAll("[data-ui-aria]").forEach((node)=>node.setAttribute("aria-label",t(node.dataset.uiAria)));document.querySelectorAll("[data-ui-alt]").forEach((node)=>node.setAttribute("alt",t(node.dataset.uiAlt)));const poster=$(".main-poster");if(poster)poster.alt=t("coverAlt");};localizeAssistive();setTimeout(localizeAssistive,0);requestAnimationFrame(()=>requestAnimationFrame(localizeAssistive));syncSoundButton();renderMain();if(!screens.stage.hidden)renderStage();if(!screens.battle.hidden)renderBattle();}
-  function renderMain(){$("#startBtn").textContent=t("start");$("#workshopSummary").textContent=`${t("workshop")} Lv.${1+Math.floor(progress.workshopXp/40)} · ${progress.workshopXp} XP`;$("#discoverySummary").textContent=`${t("discoveries")} ${progress.discoveries.length}/12`;}
+  function renderMain(){
+    $("#startBtn").textContent=t("start");
+    let summary=$("#campaignSummary");
+    if(!summary){
+      let strip=$(".main-copy .progress-strip");
+      if(!strip){strip=document.createElement("div");strip.className="progress-strip";$(".main-copy").insertBefore(strip,$("#startBtn"));}
+      summary=document.createElement("span");summary.id="campaignSummary";strip.replaceChildren(summary);
+    }
+    summary.textContent=t("campaignProgress",{cleared:progress.completedStages.length});
+  }
   function localized(pair){const index=locale==="zh-Hant"?1:locale==="es"?2:0;return pair?.[index]||pair?.[0]||"";}
   function renderStage(){
     const unlocked=Math.max(1,Math.min(STAGE_COUNT,Number(progress.unlockedStage)||1));

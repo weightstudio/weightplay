@@ -557,6 +557,18 @@ body.rescue-stage-select .stage-select {
   filter: brightness(1.05);
 }
 
+.result-card .result-primary {
+  border-color: #2f6425;
+  background: #ffd866;
+  box-shadow: 0 5px 0 #9a6f28, 0 0 0 4px rgba(255, 216, 102, 0.34), 0 0 22px rgba(255, 190, 65, 0.52);
+}
+
+.result-card .result-secondary {
+  border-color: #6f8d60;
+  background: #fffde8;
+  box-shadow: 0 4px 0 #a7b596;
+}
+
 .result-panel,
 .loading-panel {
   position: absolute;

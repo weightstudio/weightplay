@@ -14,3 +14,7 @@
 .main-screen .guide p {
   line-height: 1.45;
 }
+
+.skyport-protected-screen .game-page-info {
+  display: none !important;
+}

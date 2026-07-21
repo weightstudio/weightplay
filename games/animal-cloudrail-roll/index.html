@@ -9,7 +9,7 @@
   <meta name="description" content="Steer Rux's Gearglobe across thirty elevated cloudrail obstacle courses, control speed, recover at checkpoints, and relight every foundry beacon.">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20260721-feedback">
 </head>
 <body data-screen="main" data-wp-game-id="animal-cloudrail-roll">
   <div id="loading" class="loading-panel"><img src="../../assets/animal-cloudrail-roll/rux-gearglobe.webp" alt=""><strong data-t="loading">Warming the Gearglobe…</strong></div>
@@ -53,6 +53,7 @@
       <section id="workshopPanel" class="tab-panel workshop-panel" hidden>
         <div class="workshop-intro"><img src="../../assets/animal-cloudrail-roll/rux-gearglobe.webp" alt=""><div><h2 data-t="workshopTitle">Gear Workshop</h2><p data-t="workshopIntro">Spend saved Gear Sparks on permanent handling and recovery upgrades.</p><strong id="sparkCount"></strong></div></div>
         <div id="upgrades" class="upgrades"></div>
+        <p id="workshopFeedback" class="workshop-feedback" role="status" aria-live="polite"></p>
         <div class="trail-card"><img src="../../assets/animal-cloudrail-roll/gear-spark.webp" alt=""><div><strong data-t="trailTitle">Aurora Gear Trail</strong><p data-t="trailText">A cyan-violet cosmetic trail. It never changes course physics.</p></div><button id="trailButton" type="button"></button></div>
       </section>
     </div>
@@ -74,6 +75,6 @@
     <div class="ad-reserve" aria-hidden="true"></div>
   </section>
 
-  <script src="../../src/site-config.js"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js"></script><script src="locales.js"></script><script src="game.js"></script><script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
+  <script src="../../src/site-config.js"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js"></script><script src="locales.js"></script><script src="game.js?v=20260721-feedback"></script><script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
 </body>
 </html>

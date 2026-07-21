@@ -569,6 +569,11 @@
     logicStars: $("logicStars"),
     animalStars: $("animalStars"),
     closeReportBtn: $("closeReportBtn"),
+    parkLeavePanel: $("parkLeavePanel"),
+    parkLeaveTitle: $("parkLeaveTitle"),
+    parkLeaveText: $("parkLeaveText"),
+    keepParkOpenBtn: $("keepParkOpenBtn"),
+    leaveParkBtn: $("leaveParkBtn"),
     loadingPanel: $("loadingPanel"),
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
@@ -581,6 +586,27 @@
   let newlyRecruitedAnimalId = "";
   let facilityScrollLeft = 0;
   let careRouteChoiceOpen = false;
+  let parkLeaveOpen = false;
+
+  const parkLeaveCopy = {
+    en: ["Leave the park?", "Your park is saved. Continue playing, or return to the park menu.", "Continue playing", "Return to park menu"],
+    "zh-Hant": ["離開樂園嗎？", "樂園進度已儲存。繼續遊玩，或返回樂園選單。", "繼續遊玩", "返回樂園選單"],
+    "zh-Hans": ["离开乐园吗？", "乐园进度已保存。继续游玩，或返回乐园菜单。", "继续游玩", "返回乐园菜单"],
+    ja: ["パークを出ますか？", "パークの進行は保存されています。続けるか、パークメニューに戻れます。", "続けて遊ぶ", "パークメニューに戻る"],
+    ko: ["공원을 나갈까요?", "공원 진행 상황은 저장되었어요. 계속 플레이하거나 공원 메뉴로 돌아가세요.", "계속 플레이", "공원 메뉴로"],
+    es: ["¿Salir del parque?", "Tu parque está guardado. Sigue jugando o vuelve al menú del parque.", "Seguir jugando", "Volver al menú del parque"],
+    "pt-BR": ["Sair do parque?", "Seu parque está salvo. Continue jogando ou volte ao menu do parque.", "Continuar jogando", "Voltar ao menu do parque"],
+    fr: ["Quitter le parc ?", "Votre parc est enregistré. Continuez à jouer ou revenez au menu du parc.", "Continuer à jouer", "Retour au menu du parc"],
+    de: ["Den Park verlassen?", "Dein Park ist gespeichert. Spiele weiter oder kehre zum Parkmenü zurück.", "Weiterspielen", "Zurück zum Parkmenü"],
+    it: ["Uscire dal parco?", "Il parco è stato salvato. Continua a giocare o torna al menu del parco.", "Continua a giocare", "Torna al menu del parco"],
+    ru: ["Выйти из парка?", "Парк сохранён. Продолжайте играть или вернитесь в меню парка.", "Продолжить игру", "В меню парка"],
+  };
+
+  function syncParkLeaveCopy() {
+    const activeLocale = window.WonderI18n?.actualLocale?.() || locale || "en";
+    const copy = parkLeaveCopy[activeLocale] || parkLeaveCopy.en;
+    [nodes.parkLeaveTitle.textContent, nodes.parkLeaveText.textContent, nodes.keepParkOpenBtn.textContent, nodes.leaveParkBtn.textContent] = copy;
+  }
 
   function t(key, data = {}) {
     const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
@@ -977,6 +1003,7 @@
       node.setAttribute("aria-label", t(node.dataset.uiAriaLabel));
     });
     nodes.localeSelect.value = locale;
+    syncParkLeaveCopy();
     updatePageMetadata();
   }
 
@@ -1826,7 +1853,24 @@
     window.WonderSound?.play?.(name);
   }
 
+  function setParkLeaveOpen(open, restoreFocus = true) {
+    if (open && !nodes.resultPanel.classList.contains("hidden")) return;
+    parkLeaveOpen = Boolean(open);
+    nodes.parkLeavePanel.classList.toggle("hidden", !parkLeaveOpen);
+    nodes.habitatGrid.inert = parkLeaveOpen;
+    nodes.gamePanel.querySelector(".resource-row").inert = parkLeaveOpen;
+    if (parkLeaveOpen) {
+      cancelAnimalDrag();
+      saveGame();
+      syncParkLeaveCopy();
+      requestAnimationFrame(() => nodes.keepParkOpenBtn.focus({ preventScroll: true }));
+    } else if (restoreFocus && document.body.classList.contains("zoo-playing")) {
+      requestAnimationFrame(() => nodes.backToMenuBtn.focus({ preventScroll: true }));
+    }
+  }
+
   function startPark() {
+    setParkLeaveOpen(false, false);
     document.body.classList.remove("zoo-stage");
     document.body.classList.add("zoo-playing");
     document.querySelector(".zoo-app")?.classList.add("is-playing");
@@ -1855,6 +1899,7 @@
 
   function showMenu() {
     cancelAnimalDrag();
+    setParkLeaveOpen(false, false);
     document.body.classList.remove("zoo-playing");
     document.body.classList.remove("zoo-stage");
     document.querySelector(".zoo-app")?.classList.remove("is-playing");
@@ -1876,7 +1921,7 @@
   window.visualViewport?.addEventListener("scroll", updateZooViewportScales, { passive: true });
 
   function tickPark() {
-    if (nodes.gamePanel.classList.contains("hidden")) return;
+    if (nodes.gamePanel.classList.contains("hidden") || parkLeaveOpen) return;
     tickCount += 1;
     save.ticketBox += incomePerTick();
     save.happiness = clamp(save.happiness - Math.max(0.12, 0.28 - facilityLevel(facilities[2]) * 0.03), 18, 100);
@@ -1885,7 +1930,7 @@
   }
 
   function tickUi() {
-    if (!nodes.gamePanel.classList.contains("hidden")) render();
+    if (!nodes.gamePanel.classList.contains("hidden") && !parkLeaveOpen) render();
   }
 
   function loadAssets() {
@@ -1965,7 +2010,27 @@
     event.preventDefault();
     actions[nextIndex].focus({ preventScroll: true });
   }, true);
-  nodes.backToMenuBtn.addEventListener("click", showMenu);
+  nodes.backToMenuBtn.addEventListener("click", () => setParkLeaveOpen(true));
+  nodes.keepParkOpenBtn.addEventListener("click", () => setParkLeaveOpen(false));
+  nodes.leaveParkBtn.addEventListener("click", showMenu);
+  nodes.parkLeavePanel.addEventListener("keydown", (event) => {
+    if (!parkLeaveOpen) return;
+    if (event.repeat && ["Enter", " "].includes(event.key)) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return;
+    }
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setParkLeaveOpen(false);
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const actions = [nodes.keepParkOpenBtn, nodes.leaveParkBtn];
+    const index = actions.indexOf(document.activeElement);
+    event.preventDefault();
+    actions[(index + (event.shiftKey ? -1 : 1) + actions.length) % actions.length].focus({ preventScroll: true });
+  }, true);
   window.addEventListener("weightplay:tutorial-start", (event) => {
     if (event.detail?.gameId === GAME_ID) startGame();
   });

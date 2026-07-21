@@ -953,11 +953,18 @@ function renderLobby() {
 
   renderDailyReward();
 
-  const featured = lobby.games.find((game) => game.id === lobby.featuredGameId);
-  if (featured) {
-    featuredGame.href = featured.href;
-    featuredGame.querySelector("img").src = primaryArt(featured);
-    featuredGame.querySelector("strong").textContent = text(featured.title);
+  if (isKidsLobby) {
+    const featured = lobby.games.find((game) => game.id === lobby.featuredGameId);
+    if (featured) {
+      featuredGame.href = featured.href;
+      featuredGame.querySelector("img").src = primaryArt(featured);
+      featuredGame.querySelector("strong").textContent = text(featured.title);
+    }
+  } else {
+    featuredGame.href = "kids/";
+    featuredGame.querySelector("img").src = "assets/animal-zoo-idle-cover.webp";
+    featuredGame.querySelector("strong").textContent = i18n.t("kids.portal.title");
+    featuredGame.setAttribute("aria-label", i18n.t("kids.portal.action"));
   }
 
   renderContinuePlaying();
@@ -1561,7 +1568,7 @@ function applyStaticTranslations() {
     });
   }
   if (lobbyKicker) lobbyKicker.textContent = i18n.t(isKidsLobby ? "kids.site.kicker" : "general.site.kicker");
-  featuredLabel.textContent = i18n.t("site.featured");
+  featuredLabel.textContent = i18n.t(isKidsLobby ? "site.featured" : "kids.portal.kicker");
   languageLabel.textContent = i18n.t("language.label");
   heroRankLabel.textContent = i18n.t("section.hero_rank");
   heroGamesTitle.textContent = i18n.t("section.hero_games");

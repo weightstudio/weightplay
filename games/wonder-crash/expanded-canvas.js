@@ -5,6 +5,34 @@
   const BATTLE_LOGICAL_HEIGHT = 788;
   const DESKTOP_CANVAS_MAX_WIDTH = 920;
 
+  function syncCanonicalBrowserTitle() {
+    const activeLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || "en";
+    const runtimeTranslate = (value) => window.WeightPlayGameRuntimeLocalizer?.translate?.(value) || value;
+    const nativeTaglines = {
+      en: "Free Kids Game",
+      "zh-Hant": "免費兒童遊戲",
+      "zh-Hans": "免费儿童游戏",
+      es: "Juego gratuito para niños",
+    };
+    const visibleTitle = document.querySelector("#wonderMain [data-i18n='game_title']")?.textContent?.trim();
+    const gameTitle = visibleTitle || runtimeTranslate("Fantasy Lion Defense");
+    const tagline = nativeTaglines[activeLocale] || runtimeTranslate("Free Kids Game");
+    // The shared runtime localizer treats the ASCII "title - tagline" shape as
+    // a repeated-value template. An em dash keeps both localized fields intact.
+    const title = `${gameTitle} \u2014 ${tagline} | WeightPlay`;
+    document.title = title;
+    document.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]').forEach((meta) => meta.setAttribute("content", title));
+  }
+
+  function queueCanonicalBrowserTitle() {
+    setTimeout(syncCanonicalBrowserTitle, 0);
+    setTimeout(syncCanonicalBrowserTitle, 80);
+    setTimeout(syncCanonicalBrowserTitle, 250);
+    setTimeout(syncCanonicalBrowserTitle, 600);
+  }
+
+  window.addEventListener("wonder:locale-change", queueCanonicalBrowserTitle);
+  queueCanonicalBrowserTitle();
   const lockedStageText = () => ["zh-Hant", "zh-Hans"].includes(document.documentElement.lang)
     ? "\u95dc\u5361\u5c1a\u672a\u89e3\u9396\u3002"
     : "Stage locked.";
@@ -79,6 +107,7 @@
     updateViewport();
     requestAnimationFrame(() => requestAnimationFrame(() => {
       updateViewport();
+      syncCanonicalBrowserTitle();
       if (document.body.classList.contains("wonder-playing")
         && document.querySelector("#overlay")?.classList.contains("hidden")) {
         document.querySelector("#game")?.focus({ preventScroll: true });

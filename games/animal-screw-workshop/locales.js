@@ -15,5 +15,26 @@
   Object.assign(ko,{parentTitle:"가족 안내",parentText:"9세 이상에게 권장합니다. 시각적 계획과 유연한 문제 해결을 연습하는 퍼즐이며, 능력 평가가 아닙니다."});
   Object.assign(pt,{parentTitle:"Para famílias",parentText:"Recomendado para maiores de 9 anos. Os desafios praticam planejamento visual e solução flexível de problemas; não são um teste de capacidade."});
   Object.assign(de,{parentTitle:"Für Familien",parentText:"Empfohlen ab 9 Jahren. Die Rätsel fördern visuelle Planung und flexibles Problemlösen; sie sind kein Fähigkeitstest."});
-  window.AnimalScrewWorkshopLocales={en,"zh-Hant":zhHant,"zh-Hans":zhHans,es,ja,ko,"pt-BR":pt,de};
+  const fr={
+    progress:"{done}/30 restaurés · {stars} étoiles",summary:"{done}/30 · {stars} étoiles",chapter:"Chapitre {n}",stage:"Puzzle {n}",cleared:"Restauré",goal:"Libérez {n} plaques en bois",moveGoal:"Objectif : {n} mouvements",best:"Record : {n}",
+    selectScrew:"Choisissez d’abord une vis.",selectHole:"Choisissez maintenant un trou vide lumineux.",lockedScrew:"Cette vis se déverrouille après encore {n} plaque(s).",invalidHole:"Ce trou n’est pas libre.",plateDrop:"Une plaque en bois est libérée !",chainDrop:"{n} plaques libérées !",hintMove:"Essayez la vis et le trou lumineux.",noHint:"Aucun mouvement sûr n’est disponible.",
+    winTitle:"Atelier restauré !",winText:"Puzzle {n} terminé en {moves} mouvements.",newBest:"Nouveau meilleur parcours !",failTitle:"Limite de mouvements atteinte",failText:"Recommencez et libérez les plaques dans un ordre plus court.",remaining:"{n} plaques restantes",selected:"Vis sélectionnée",hole:"Trou vide",screw:"Vis",lockedScrewLabel:"Vis verrouillée",
+    chapters:["Premiers tours","Amis superposés","Fixations partagées","Établi verrouillé","Parcours serrés","Atelier de maître"],
+    rules:["Apprenez à déplacer une vis vers un trou libre.","Observez les plaques superposées avant de choisir une vis.","Une vis peut retenir plusieurs plaques.","Libérez les premières plaques pour déverrouiller les vis scellées.","Utilisez les nouveaux trous et évitez les mouvements inutiles.","Combinez toutes les règles sur les derniers panneaux d’animaux."]
+  };
+  const it={
+    progress:"{done}/30 restaurati · {stars} stelle",summary:"{done}/30 · {stars} stelle",chapter:"Capitolo {n}",stage:"Puzzle {n}",cleared:"Restaurato",goal:"Libera {n} piastre di legno",moveGoal:"Obiettivo: {n} mosse",best:"Record: {n}",
+    selectScrew:"Scegli prima una vite.",selectHole:"Ora scegli un foro vuoto luminoso.",lockedScrew:"Questa vite si sblocca dopo altre {n} piastra/e.",invalidHole:"Quel foro non è libero.",plateDrop:"Una piastra di legno è libera!",chainDrop:"{n} piastre liberate!",hintMove:"Prova la vite e il foro luminosi.",noHint:"Non è disponibile una mossa sicura.",
+    winTitle:"Officina restaurata!",winText:"Puzzle {n} completato in {moves} mosse.",newBest:"Nuovo percorso migliore!",failTitle:"Limite di mosse raggiunto",failText:"Ricomincia e libera le piastre con un ordine più breve.",remaining:"{n} piastre rimaste",selected:"Vite selezionata",hole:"Foro vuoto",screw:"Vite",lockedScrewLabel:"Vite bloccata",
+    chapters:["Primi giri","Amici sovrapposti","Fissaggi condivisi","Banco bloccato","Percorsi stretti","Officina maestra"],
+    rules:["Impara a spostare una vite in un foro libero.","Osserva le piastre sovrapposte prima di scegliere una vite.","Una vite può sostenere più piastre.","Libera le prime piastre per sbloccare le viti sigillate.","Usa i nuovi fori ed evita mosse sprecate.","Combina tutte le regole negli ultimi cartelli degli animali."]
+  };
+  const ru={
+    progress:"Восстановлено {done}/30 · звёзд: {stars}",summary:"{done}/30 · звёзд: {stars}",chapter:"Глава {n}",stage:"Головоломка {n}",cleared:"Восстановлено",goal:"Освободите деревянные пластины: {n}",moveGoal:"Цель: {n} ходов",best:"Лучший результат: {n}",
+    selectScrew:"Сначала выберите винт.",selectHole:"Теперь выберите светящееся пустое отверстие.",lockedScrew:"Этот винт откроется ещё через {n} пластин(ы).",invalidHole:"Это отверстие занято.",plateDrop:"Деревянная пластина свободна!",chainDrop:"Освобождено пластин: {n}!",hintMove:"Попробуйте светящиеся винт и отверстие.",noHint:"Безопасного хода сейчас нет.",
+    winTitle:"Мастерская восстановлена!",winText:"Головоломка {n} решена за {moves} ходов.",newBest:"Новый лучший маршрут!",failTitle:"Лимит ходов исчерпан",failText:"Начните заново и освободите пластины в более коротком порядке.",remaining:"Осталось пластин: {n}",selected:"Винт выбран",hole:"Пустое отверстие",screw:"Винт",lockedScrewLabel:"Заблокированный винт",
+    chapters:["Первые повороты","Слоёные друзья","Общие крепления","Закрытый верстак","Тесные маршруты","Мастерская мастера"],
+    rules:["Научитесь переставлять винт в свободное отверстие.","Изучите перекрывающиеся доски перед выбором винта.","Один винт может удерживать несколько пластин.","Освобождайте ранние пластины, чтобы открыть запечатанные винты.","Используйте новые отверстия и избегайте лишних ходов.","Объедините все правила на последних табличках с животными."]
+  };
+  window.AnimalScrewWorkshopLocales={en,"zh-Hant":zhHant,"zh-Hans":zhHans,es,ja,ko,"pt-BR":pt,fr,de,it,ru};
 })();

@@ -916,10 +916,17 @@
     renderSkillReport(previousBest);
     renderLeaderboard();
     nextRouteBtn.classList.toggle("hidden", !cleared || state.stage >= 30 || progress.unlocked < state.stage + 1);
+    const primaryAction = cleared
+      ? (state.stage >= 30 ? lobbyLink : nextRouteBtn)
+      : againBtn;
+    [nextRouteBtn, againBtn, lobbyLink].forEach((action) => {
+      action.classList.toggle("result-primary", action === primaryAction);
+      action.classList.toggle("result-secondary", action !== primaryAction);
+    });
     canvasWrap.inert = true;
     canvasWrap.setAttribute("aria-hidden", "true");
     resultPanel.classList.remove("hidden");
-    requestAnimationFrame(() => (nextRouteBtn.classList.contains("hidden") ? againBtn : nextRouteBtn).focus({ preventScroll: true }));
+    requestAnimationFrame(() => primaryAction.focus({ preventScroll: true }));
     window.WonderSound?.play("win");
     window.WonderAnalytics?.track("game_complete", {
       game_id: GAME_ID,

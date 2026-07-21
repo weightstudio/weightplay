@@ -30,6 +30,8 @@
     "animal-relic-hunters": ["#gamePanel", 382, 780],
     "animal-rescue": [".rescue-game", 382, 780],
     "animal-rope-rescue": ["#gamePanel", 382, 780],
+    "animal-rootvault-pins": [".battle-canvas", 390, 788, 760, 334],
+    "animal-sketchwheel-rally": [".battle-canvas", 390, 788, 760, 334],
     "animal-rune-tactics": [".rune-app", 382, 780],
     "animal-skyport-dispatch": [".battle-canvas", 390, 788],
     "animal-screw-workshop": [".battle-canvas", 390, 844],

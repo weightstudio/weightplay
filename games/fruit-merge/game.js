@@ -969,20 +969,34 @@
     let startScroll = 0;
     let moved = false;
     stageRail.addEventListener("pointerdown", (event) => {
+      if (stageRail.dataset.wpStageRail === "true") return;
+      const wrongMouseButton = event.pointerType === "mouse" && event.button !== 0;
+      if (pointerId !== null || event.isPrimary === false || wrongMouseButton) return;
       pointerId = event.pointerId;
       startX = event.clientX;
       startScroll = stageRail.scrollLeft;
       moved = false;
+      try { stageRail.setPointerCapture?.(event.pointerId); } catch { /* Synthetic or interrupted pointers may not be capturable. */ }
     });
     stageRail.addEventListener("pointermove", (event) => {
+      if (stageRail.dataset.wpStageRail === "true") return;
       if (event.pointerId !== pointerId) return;
       const delta = event.clientX - startX;
       if (Math.abs(delta) > 6) moved = true;
       if (moved) stageRail.scrollLeft = startScroll - delta;
     });
-    const finish = (event) => {
+    const finish = (event, cancelled = false) => {
+      if (stageRail.dataset.wpStageRail === "true") return;
       if (event.pointerId !== pointerId) return;
+      const ownedPointerId = pointerId;
       pointerId = null;
+      try { if (stageRail.hasPointerCapture?.(ownedPointerId)) stageRail.releasePointerCapture(ownedPointerId); } catch { /* Capture may already be released. */ }
+      if (cancelled) {
+        stageRail.scrollLeft = startScroll;
+        moved = false;
+        delete stageRail.dataset.dragged;
+        return;
+      }
       if (!moved) return;
       stageRail.dataset.dragged = "true";
       const center = stageRail.scrollLeft + stageRail.clientWidth / 2;
@@ -995,7 +1009,11 @@
       setTimeout(() => delete stageRail.dataset.dragged, 140);
     };
     stageRail.addEventListener("pointerup", finish);
-    stageRail.addEventListener("pointercancel", finish);
+    stageRail.addEventListener("pointercancel", (event) => finish(event, true));
+    stageRail.addEventListener("lostpointercapture", (event) => finish(event, true));
+    window.addEventListener("blur", () => { if (pointerId !== null) finish({ pointerId }, true); });
+    window.addEventListener("pagehide", () => { if (pointerId !== null) finish({ pointerId }, true); });
+    document.addEventListener("visibilitychange", () => { if (document.hidden && pointerId !== null) finish({ pointerId }, true); });
   }
 
   function updateAimAccessibility() {

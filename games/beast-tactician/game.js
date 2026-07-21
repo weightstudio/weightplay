@@ -1094,6 +1094,7 @@
   let reviveConfirmTimer = 0;
   let leaveBattleConfirmPending = false;
   let leaveBattleWasPaused = false;
+  let canvasPress = null;
   let toastTimer = 0;
   let battleFrame = 0;
 
@@ -1288,6 +1289,7 @@
   }
 
   function setScreen(screen) {
+    if (screen !== "game") cancelCanvasPress();
     if (screen !== "result") clearRewardRerollConfirmation();
     if (screen !== "result") clearReviveConfirmation();
     if (screen !== "tech") clearGoldenFrameConfirmation();
@@ -2289,6 +2291,7 @@
   }
 
   function pauseHiddenBattle() {
+    if (document.hidden) cancelCanvasPress();
     if (document.hidden && state.screen === "game" && !state.gameOver && !state.paused) {
       state.paused = true;
       track("game_speed_change", { stage: state.currentStage, speed: state.speed, paused: true, reason: "page_hidden" });
@@ -3396,9 +3399,8 @@
     return { x: (event.clientX - rect.left) * scaleX, y: (event.clientY - rect.top) * scaleY };
   }
 
-  function onCanvasClick(event) {
+  function applyCanvasPress(event) {
     if (state.screen !== "game" || state.gameOver) return;
-    if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
     state.keyboardMode = false;
     const p = canvasPointer(event);
     const tile = pointToTile(p.x, p.y);
@@ -3410,6 +3412,32 @@
       return;
     }
     buildUnit(tile);
+  }
+
+  function cancelCanvasPress(pointerId = null) {
+    if (!canvasPress || (pointerId !== null && canvasPress.pointerId !== pointerId)) return false;
+    const owner = canvasPress.pointerId;
+    canvasPress = null;
+    try {
+      if (nodes.canvas.hasPointerCapture?.(owner)) nodes.canvas.releasePointerCapture(owner);
+    } catch {}
+    return true;
+  }
+
+  function beginCanvasPress(event) {
+    if (canvasPress || state.screen !== "game" || state.gameOver || leaveBattleConfirmPending) return;
+    if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
+    canvasPress = { pointerId: event.pointerId };
+    try { nodes.canvas.setPointerCapture?.(event.pointerId); } catch {}
+  }
+
+  function finishCanvasPress(event) {
+    if (!canvasPress || canvasPress.pointerId !== event.pointerId) return;
+    canvasPress = null;
+    try {
+      if (nodes.canvas.hasPointerCapture?.(event.pointerId)) nodes.canvas.releasePointerCapture(event.pointerId);
+    } catch {}
+    applyCanvasPress(event);
   }
 
   function onCanvasPointerMove(event) {
@@ -3637,7 +3665,10 @@
     });
     nodes.speedBtn.addEventListener("click", cycleSpeedControl);
     document.addEventListener("visibilitychange", pauseHiddenBattle);
-    window.addEventListener("pagehide", stopBattleLoop);
+    window.addEventListener("pagehide", () => {
+      cancelCanvasPress();
+      stopBattleLoop();
+    });
     window.addEventListener("pageshow", syncBattleLoop);
     nodes.retryBtn.addEventListener("click", () => {
       track("game_restart", { stage: state.currentStage });
@@ -3660,7 +3691,10 @@
     });
     nodes.soundBtn?.addEventListener("click", () => setSoundEnabled(!state.soundEnabled, true));
     window.addEventListener("resize", updateBattleShell, { passive: true });
-    nodes.canvas.addEventListener("pointerdown", onCanvasClick);
+    nodes.canvas.addEventListener("pointerdown", beginCanvasPress);
+    nodes.canvas.addEventListener("pointerup", finishCanvasPress);
+    nodes.canvas.addEventListener("pointercancel", (event) => cancelCanvasPress(event.pointerId));
+    nodes.canvas.addEventListener("lostpointercapture", (event) => cancelCanvasPress(event.pointerId));
     nodes.canvas.addEventListener("pointermove", onCanvasPointerMove);
     nodes.canvas.addEventListener("pointerleave", () => {
       state.pointerTile = null;
@@ -3678,6 +3712,7 @@
       if (event.key === battleExitKeyboardKey) battleExitKeyboardKey = "";
     });
     window.addEventListener("blur", () => {
+      cancelCanvasPress();
       mainEntryKeyboardKey = "";
       battleExitKeyboardKey = "";
     });

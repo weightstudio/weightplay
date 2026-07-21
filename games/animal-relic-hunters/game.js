@@ -834,6 +834,7 @@
   let profile = createDefaultProfile();
   let selectedExpedition = 1;
   let resultNextExpedition = 0;
+  let resultMapIsPrimary = false;
   let eliteSpawnTimer = 0;
   let eliteSpawnDueAt = 0;
   let eliteSpawnCallback = null;
@@ -1280,7 +1281,7 @@
       if (active) layer.setAttribute("aria-hidden", "true");
       else layer.removeAttribute("aria-hidden");
     });
-    if (active) requestAnimationFrame(() => nodes.retryBtn.focus({ preventScroll: true }));
+    if (active) requestAnimationFrame(() => (resultMapIsPrimary ? nodes.resultMenuBtn : nodes.retryBtn).focus({ preventScroll: true }));
   }
 
   function setDraftModalActive(active, restoreBattleFocus = true) {
@@ -1344,6 +1345,10 @@
     const next = resultNextExpedition > 0 && document.body.classList.contains("relic-result");
     nodes.retryBtn.textContent = t(next ? "nextExpedition" : "tryAgain");
     nodes.retryBtn.setAttribute("aria-label", t(next ? "nextExpedition" : "tryAgain"));
+    nodes.retryBtn.classList.toggle("primary-btn", !resultMapIsPrimary);
+    nodes.retryBtn.classList.toggle("menu-btn", resultMapIsPrimary);
+    nodes.resultMenuBtn.classList.toggle("primary-btn", resultMapIsPrimary);
+    nodes.resultMenuBtn.classList.toggle("menu-btn", !resultMapIsPrimary);
   }
 
   function showMain() {
@@ -1356,6 +1361,7 @@
     document.body.classList.remove("relic-playing", "relic-stage-select");
     document.body.classList.remove("relic-result");
     resultNextExpedition = 0;
+    resultMapIsPrimary = false;
     setResultModalActive(false);
     setLootModalActive(false, false);
     nodes.gamePanel.classList.add("hidden");
@@ -1411,6 +1417,7 @@
     document.body.classList.remove("relic-result");
     document.body.classList.add("relic-stage-select");
     resultNextExpedition = 0;
+    resultMapIsPrimary = false;
     setResultModalActive(false);
     setLootModalActive(false, false);
     nodes.menuPanel.classList.add("hidden");
@@ -1828,6 +1835,7 @@
     document.body.classList.remove("relic-result");
     document.body.classList.add("relic-playing");
     resultNextExpedition = 0;
+    resultMapIsPrimary = false;
     setResultModalActive(false);
     setLootModalActive(false, false);
     focusGamePanel();
@@ -2443,6 +2451,7 @@
     resultNextExpedition = won && (state.expedition || 1) < EXPEDITION_COUNT && profile.unlockedExpedition >= (state.expedition || 1) + 1
       ? (state.expedition || 1) + 1
       : 0;
+    resultMapIsPrimary = won && (state.expedition || 1) === EXPEDITION_COUNT;
     renderResultSummary({ cleared, newlyUnlocked, won });
     updateResultPrimaryAction();
     setResultModalActive(true);

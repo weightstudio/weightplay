@@ -122,8 +122,10 @@
   };
   let saved;
   try { saved = JSON.parse(readStorage(saveKey) || '{}'); } catch { saved = {}; }
-  let locale = readStorage('weightPlayLocale') || 'en';
-  if (!strings[locale]) locale = 'en';
+  // Keep authored runtime text in the English source language. The shared
+  // runtime localizer translates that source into all 10 non-English locales
+  // and also observes Battle/Result text added after load.
+  let locale = 'en';
   let save = normalizeSave(saved);
   writeStorage(saveKey, JSON.stringify(save));
   let state = {contract:Boolean(save.insuranceReady)};
@@ -144,6 +146,7 @@
     $('battleLive').inert = resultOpen;
     $('battleLive').setAttribute('aria-hidden', resultOpen ? 'true' : 'false');
     $('mainHeader').classList.toggle('hidden', id !== 'mainScreen');
+    document.body.classList.toggle('skyport-protected-screen', id !== 'mainScreen');
     document.body.classList.toggle('skyport-playing', id === 'battleShell' || id === 'result');
     requestAnimationFrame(() => {
       if ($(id)?.classList.contains('hidden')) return;
@@ -158,10 +161,11 @@
     });
   };
   function localize() {
-    document.documentElement.lang = locale;
+    const activeLocale = window.WonderI18n?.actualLocale?.() || readStorage('weightPlayLocale') || 'en';
+    document.documentElement.lang = activeLocale;
     document.title = `${t('title')} - Internal Trial`;
     document.querySelectorAll('[data-i18n]').forEach((node) => { node.textContent = t(node.dataset.i18n); });
-    $('localeSelect').value = locale;
+    $('localeSelect').value = activeLocale;
     $('localeSelect').options[1].textContent = '\u7e41\u9ad4\u4e2d\u6587';
     document.querySelector('.home-link').setAttribute('aria-label', t('backToLobby'));
     document.querySelector('.cover').alt = t('coverAlt');
@@ -225,6 +229,19 @@
       $('stageRail').append(card);
     }
   }
+  function syncCenteredStageHighlight() {
+    const rail = $('stageRail');
+    const railRect = rail.getBoundingClientRect();
+    const center = railRect.left + railRect.width / 2;
+    const cards = [...rail.querySelectorAll('.stage-card')];
+    const nearest = cards.reduce((best, card) => {
+      const rect = card.getBoundingClientRect();
+      const distance = Math.abs(rect.left + rect.width / 2 - center);
+      return !best || distance < best.distance ? {card, distance} : best;
+    }, null)?.card;
+    cards.forEach((card) => card.classList.toggle('centered', card === nearest));
+  }
+  $('stageRail').addEventListener('wonder:stage-snap', syncCenteredStageHighlight);
   function renderHud() {
     $('shiftText').textContent = t('shift', {n:state.shift});
     $('scoreText').textContent = `${state.done}/${state.goal} \u00b7 ${t('errors', {done:state.errors})}`;
@@ -245,18 +262,21 @@
         }
       : {
           flights: flightLabels.en, docks: dockLabels.en,
-          repair:'use repair service first', conflict:'clear route conflict first', crew:'assign crew first', drag:'then drag to '
+          repair:'Repair service', conflict:'Clear conflict', crew:'Assign crew', drag:'Drag: '
         };
     const flightName = labels.flights[state.kind];
     const dockName = labels.docks[state.dock];
     const steps = [
-      { id: 'repair', text: labels.repair, complete: !state.storm || state.serviced },
       { id: 'conflict', text: labels.conflict, complete: !state.conflict },
       { id: 'crew', text: labels.crew, complete: !state.needsCrew || state.crewAssigned },
+      { id: 'repair', text: labels.repair, complete: !state.storm || state.serviced },
       { id: 'dock', text: labels.drag + dockName, complete: false }
     ].filter((step) => step.id === 'dock' || !((step.id === 'repair' && !state.storm) || (step.id === 'conflict' && !state.requiresConflict) || (step.id === 'crew' && !state.needsCrew)));
     const currentStepIndex = Math.max(0, steps.findIndex((step) => !step.complete));
     const currentStep = steps[currentStepIndex];
+    $('serviceBtn').classList.toggle('hidden', currentStep.id !== 'repair');
+    $('clearRouteBtn').classList.toggle('hidden', currentStep.id !== 'conflict');
+    $('assignCrewBtn').classList.toggle('hidden', currentStep.id !== 'crew');
     const stepLabel = locale === 'zh-Hant'
       ? `步驟 ${currentStepIndex + 1}/${steps.length}：${currentStep.text}`
       : `Step ${currentStepIndex + 1}/${steps.length}: ${currentStep.text}`;
@@ -268,13 +288,16 @@
     document.querySelector('.task-steps').textContent = stepLabel;
     const actionLabel = (id, text) => {
       const index = steps.findIndex((step) => step.id === id);
-      return `${locale === 'zh-Hant' ? '步驟' : 'Step'} ${index + 1}/${steps.length}: ${text}`;
+      return `${index + 1}/${steps.length} \u00b7 ${text}`;
     };
     if (state.storm) $('serviceBtn').textContent = actionLabel('repair', locale === 'zh-Hant' ? '維修服務' : 'Repair service');
     if (state.conflict) $('clearRouteBtn').textContent = actionLabel('conflict', locale === 'zh-Hant' ? '清除航線衝突' : 'Clear conflict');
     if (state.needsCrew) $('assignCrewBtn').textContent = actionLabel('crew', locale === 'zh-Hant' ? '指派組員' : 'Assign crew');
-    $('flight').setAttribute('aria-label', `${locale === 'zh-Hant' ? `${flightName}\uff0c\u76ee\u6a19 ${dockName}` : `${flightName}, target ${dockName}`}. ${t('keyboardFlight')}`);
-    $('flight').dataset.destination = locale === 'zh-Hant' ? `\u9001\u5f80 ${dockName}` : `TO ${dockName.toUpperCase()}`;
+    // The localized task strip and hint describe destination and controls.
+    // Keep the button name itself exact so runtime fragment translation cannot
+    // split keyboard words inside a composite accessibility sentence.
+    $('flight').setAttribute('aria-label', flightName);
+    $('flight').dataset.destination = `\u2192 ${dockName.at(-1)}`;
     document.querySelectorAll('.dock').forEach((dock) => {
       const label = labels.docks[dock.dataset.dock];
       const isTarget = dock.dataset.dock === state.dock;
@@ -581,9 +604,9 @@
   }
   function focusCurrentBattleAction() {
     const nextAction = [
-      state.storm && !state.serviced ? $('serviceBtn') : null,
       state.conflict ? $('clearRouteBtn') : null,
       state.needsCrew && !state.crewAssigned ? $('assignCrewBtn') : null,
+      state.storm && !state.serviced ? $('serviceBtn') : null,
       $('flight'),
     ].find((node) => node && !node.classList.contains('hidden') && !node.disabled);
     nextAction?.focus({preventScroll:true});
@@ -696,6 +719,32 @@
   });
   window.addEventListener('pagehide', suspendInsuranceConfirmation);
   window.addEventListener('pageshow', resumeInsuranceConfirmation);
-  $('localeSelect').onchange = (event) => { locale = event.target.value; writeStorage('weightPlayLocale', locale); localize(); };
+  const changeLocale = (event) => {
+    const nextLocale = event.target.value;
+    writeStorage('weightPlayLocale', nextLocale);
+    window.WonderI18n?.setLocale(nextLocale);
+    locale = 'en';
+    localize();
+  };
+  $('localeSelect').addEventListener('change', (event) => {
+    if (new URLSearchParams(location.search).get('trial') !== '1') return;
+    event.stopImmediatePropagation();
+    const stored = writeStorage('weightPlayLocale', event.target.value);
+    if (!stored) {
+      const routeConfig = window.WONDER_SITE?.localization;
+      const previousRouteSetting = routeConfig?.useLocaleRoutes;
+      if (routeConfig) routeConfig.useLocaleRoutes = false;
+      window.WonderI18n?.setLocale(event.target.value);
+      if (routeConfig) routeConfig.useLocaleRoutes = previousRouteSetting;
+      locale = strings[event.target.value] ? event.target.value : 'en';
+      localize();
+      return;
+    }
+    // The runtime locale catalog is selected while scripts load. Reload the
+    // protected trial in place so every locale receives the correct catalog
+    // without navigating to a public route or mixing two language states.
+    location.reload();
+  }, true);
+  $('localeSelect').onchange = changeLocale;
   localize();
 })();

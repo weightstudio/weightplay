@@ -7528,3 +7528,99 @@ select,
   -webkit-user-select: text;
   user-select: text;
 }
+
+/* General lobby hierarchy: one clear Kids gateway and separated update sections. */
+.general-lobby-page .lobby-kids-gateway {
+  grid-template-columns: 68px minmax(0, 1fr);
+  width: min(292px, 72%);
+  min-height: 70px;
+  gap: 11px;
+  padding: 7px 12px 7px 7px;
+  border-color: rgba(124, 237, 209, 0.88);
+  background: linear-gradient(135deg, rgba(7, 69, 74, 0.96), rgba(24, 46, 81, 0.96));
+  box-shadow: 0 0 0 1px rgba(123, 237, 210, 0.2), 0 10px 24px rgba(0, 0, 0, 0.34);
+}
+
+.general-lobby-page .lobby-kids-gateway img {
+  width: 68px;
+  height: 54px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.general-lobby-page .lobby-kids-gateway span {
+  color: #9ff2d4;
+}
+
+.general-lobby-page .lobby-kids-gateway strong {
+  color: #ffffff;
+  font-size: 17px;
+}
+
+.general-lobby-page #upcomingGamesSection {
+  padding: 18px;
+  border: 1px solid #3c4960;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #182131, #101824);
+}
+
+.general-lobby-page #upcomingGamesSection .section-heading,
+.general-lobby-page #freshUpdatesSection .section-heading {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.general-lobby-page #upcomingGamesSection .section-heading span {
+  width: fit-content;
+  padding: 4px 9px;
+  border: 1px solid rgba(255, 207, 101, 0.44);
+  border-radius: 999px;
+  background: #3b2f17;
+  color: #ffd774;
+  font-weight: 900;
+}
+
+.general-lobby-page #upcomingGamesSection .section-heading h2,
+.general-lobby-page #upcomingGamesSection .upcoming-game-copy strong {
+  color: #ffffff;
+}
+
+.general-lobby-page #upcomingGamesSection .upcoming-game-copy small {
+  color: #cbd5e4;
+}
+
+.general-lobby-page #upcomingGamesSection .upcoming-game-copy em {
+  color: #e4eaf3;
+}
+
+.general-lobby-page #freshUpdatesSection {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #354157;
+}
+
+@media (max-width: 720px) {
+  .general-lobby-page .lobby-kids-gateway {
+    right: 8px;
+    bottom: 8px;
+    grid-template-columns: 52px minmax(0, 1fr);
+    width: min(236px, 72%);
+    min-height: 60px;
+    gap: 9px;
+    padding: 6px 9px 6px 6px;
+  }
+
+  .general-lobby-page .lobby-kids-gateway img {
+    width: 52px;
+    height: 46px;
+  }
+
+  .general-lobby-page .lobby-kids-gateway strong {
+    font-size: 14px;
+  }
+
+  .general-lobby-page #upcomingGamesSection {
+    padding: 14px;
+  }
+}

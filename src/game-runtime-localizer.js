@@ -91,9 +91,14 @@
       if (!match) continue;
       let output = pattern.translated;
       pattern.names.forEach((name, index) => {
-        output = output.replaceAll(name, match[index + 1]);
+        // Replace one placeholder occurrence at a time. Templates may reuse a
+        // name (for example "{value} -> {value}") with different values.
+        output = output.replace(name, match[index + 1]);
       });
       outputValue = outputValue.replace(match[0], output);
+      // Patterns are ordered most-specific first. Reprocessing translated
+      // output as another source template corrupts words such as Enter/Assign.
+      break;
     }
     outputValue = replaceFragments(outputValue, fragmentIndex);
     outputValue = replaceFragments(outputValue, shortFragmentIndex);

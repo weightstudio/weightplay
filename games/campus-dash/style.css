@@ -418,6 +418,18 @@ canvas {
   filter: brightness(1.07);
 }
 
+#resultPanel .result-primary {
+  border-color: rgba(180, 83, 9, 0.82);
+  background: linear-gradient(135deg, #fde047, #fb923c);
+}
+
+#resultPanel .result-secondary {
+  border-color: rgba(146, 64, 14, 0.3);
+  background: rgba(255, 251, 235, 0.9);
+  color: #78350f;
+  box-shadow: 0 4px 0 rgba(120, 53, 15, 0.26);
+}
+
 .leaderboard {
   display: grid;
   gap: 5px;
