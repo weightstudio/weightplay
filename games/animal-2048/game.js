@@ -1,7 +1,14 @@
 (() => {
   "use strict";
   const $ = (selector) => document.querySelector(selector);
-  document.querySelector(".stage-canvas")?.setAttribute("data-wp-canvas-max-width", "920");
+  const stageCanvas=document.querySelector(".stage-canvas");
+  stageCanvas?.setAttribute("data-wp-canvas-max-width", "920");
+  stageCanvas?.setAttribute("data-wp-stage-landscape-width", "760");
+  stageCanvas?.setAttribute("data-wp-stage-landscape-height", "334");
+  const stageScreen=document.querySelector("#stageScreen");
+  if(stageScreen&&!stageScreen.querySelector(":scope > .stage-ad-reserve")){
+    const reserve=document.createElement("div");reserve.className="stage-ad-reserve wp-stage-physical-reserve";reserve.setAttribute("aria-hidden","true");stageScreen.append(reserve);
+  }
   document.querySelector(".battle-canvas")?.setAttribute("data-wp-canvas-max-width", "920");
   const SAVE_KEY = "weightplay_animal_2048_v1";
   const TUTORIAL_KEY = "weightplay_tutorial_seen_animal_2048_v1";
@@ -83,7 +90,7 @@
   function showMain(){setScreen("main");renderMainProgress();}
   function renderStages(){const entries=stageMode==="challenge"?[infiniteLevel]:levels;dom.stage.dataset.mode=stageMode;dom.rail.innerHTML=entries.map(level=>{const i=level.index,endless=i===INFINITE_INDEX,unlocked=endless||i<(save.unlocked||1),clear=!endless&&save.cleared?.[i],stars=endless?0:save.stars?.[i]||0,top=endless?`<span>${t("infiniteMode")}</span><span>∞</span>`:`<span>${t("mission")} ${i+1}</span><span>${"★".repeat(stars)}${"☆".repeat(Math.max(0,3-stars))}</span>`,goal=endless?t("endlessCardGoal"):goalText(level),status=endless?t("endlessCardBest",{score:Number(save.endlessBest||0)}):clear?t("cleared"):unlocked?t("ready"):t("locked");return`<button class="stage-card ${endless?"infinite-stage-card ":""}${unlocked?"unlocked":"locked"} ${i===stageIndex?"selected":""}" data-index="${i}" type="button" ${unlocked?"":"disabled"}><small>${top}</small><strong>${goal}</strong><span>${status}</span></button>`;}).join("");dom.campaignTab.setAttribute("aria-pressed",String(stageMode==="campaign"));dom.challengeTab.setAttribute("aria-pressed",String(stageMode==="challenge"));dom.stageSummary.textContent=stageMode==="challenge"?t("challengeSummary",{score:Number(save.endlessBest||0)}):t("stageProgress",{cleared:Object.keys(save.cleared||{}).length,stars:Object.values(save.stars||{}).reduce((a,b)=>a+Number(b||0),0)});updateChapter(stageIndex);}
   function updateChapter(index){stageIndex=index;if(index===INFINITE_INDEX){dom.chapterKicker.textContent="∞";dom.chapterTitle.textContent=t("infiniteMode");dom.chapterRule.textContent=t("endlessRule");}else{const ch=chapter(index);dom.chapterKicker.textContent=`${t("mission")} ${index+1} / 30`;dom.chapterTitle.textContent=t(`chapter${ch+1}`);dom.chapterRule.textContent=t(`rule${ch+1}`);}dom.rail.querySelectorAll(".stage-card").forEach(card=>{const selected=Number(card.dataset.index)===index;card.classList.toggle("selected",selected);if(selected)card.setAttribute("aria-current","true");else card.removeAttribute("aria-current");});}
-  function centerStageCard(){requestAnimationFrame(()=>requestAnimationFrame(()=>dom.rail.querySelector(`[data-index="${stageIndex}"]`)?.scrollIntoView({behavior:"auto",inline:"center",block:"nearest"})));}
+  function centerStageCard(){requestAnimationFrame(()=>requestAnimationFrame(()=>{const card=dom.rail.querySelector(`[data-index="${stageIndex}"]`);if(!card)return;dom.rail.scrollLeft=card.offsetLeft-(dom.rail.clientWidth-card.offsetWidth)/2;}));}
   function setStageMode(mode){stageMode=mode==="challenge"?"challenge":"campaign";stageIndex=stageMode==="challenge"?INFINITE_INDEX:Math.max(0,(save.unlocked||1)-1);renderStages();centerStageCard();}
   function showStage(focus=null){setScreen("stage");const latest=Math.max(0,(save.unlocked||1)-1);stageMode=focus===INFINITE_INDEX?"challenge":"campaign";stageIndex=stageMode==="challenge"?INFINITE_INDEX:Math.max(0,Math.min(focus===null?latest:focus,latest));renderStages();centerStageCard();}
   function boardCells(){if(dom.board.children.length!==16){const fragment=document.createDocumentFragment();for(let i=0;i<16;i++){const cell=document.createElement("div");cell.className="grid-cell";cell.dataset.index=String(i);fragment.append(cell);}dom.board.replaceChildren(fragment);}return[...dom.board.children];}

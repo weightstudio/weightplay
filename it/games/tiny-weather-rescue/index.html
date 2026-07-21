@@ -87,6 +87,14 @@
             <option value="en">English</option>
             <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
             <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+            <option value="ja">&#26085;&#26412;&#35486;</option>
+            <option value="ko">&#54620;&#44397;&#50612;</option>
+            <option value="es">Espa&ntilde;ol</option>
+            <option value="pt-BR">Portugu&ecirc;s</option>
+            <option value="fr">Fran&ccedil;ais</option>
+            <option value="de">Deutsch</option>
+            <option value="it">Italiano</option>
+            <option value="ru">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</option>
           </select>
         </label>
       </header>
@@ -97,12 +105,12 @@
           <strong data-ui="chooseStage">Choose Rescue</strong>
           <span data-ui="menuHint">Tap or drag the right tool to help the little animal.</span>
         </div>
-        <button id="startGameBtn" class="standard-main-start" data-wp-main-start type="button">Start Game</button>
+        <button id="startGameBtn" class="standard-main-start" data-wp-main-start data-ui="start" type="button">Start Game</button>
       </section>
 
       <section id="stagePanel" class="wp-standard-stage-panel hidden" data-wp-standard-stage-screen>
         <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><strong data-ui="chooseStage">Choose Rescue</strong></header>
-        <div id="stageGrid" class="stage-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Stage list"></div>
+        <div id="stageGrid" class="stage-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Help mission list"></div>
       </section>
 
       <section id="playPanel" class="play-panel hidden">
@@ -114,7 +122,7 @@
             <span id="starsText">Help 0</span>
           </div>
         </div>
-        <div id="board" class="board" aria-label="Animal helper board"></div>
+        <div id="board" class="board" aria-label="Animal care play area"></div>
         <div id="hintText" class="hint" aria-live="polite"></div>
         <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
           <div class="result-card">

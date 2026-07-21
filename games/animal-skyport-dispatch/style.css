@@ -11,9 +11,12 @@
 .objective #flightTask{grid-column:1/-1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#fff0ae;font-size:.74rem}
 .dock-label{position:absolute;left:50%;bottom:3px;transform:translateX(-50%);min-width:max-content;padding:2px 5px;border-radius:5px;background:#061521dd;color:#fff;font-size:.63rem;font-weight:800;pointer-events:none}
 .dock-target-badge{position:absolute;left:50%;top:-12px;transform:translateX(-50%);min-width:max-content;padding:3px 8px;border:2px solid #fff4b7;border-radius:999px;background:#f7d76b;color:#162335;font-size:.6rem;font-weight:1000;line-height:1;box-shadow:0 0 12px #f7d76bcc;pointer-events:none}
-.dock:not(.is-target) .dock-target-badge{display:none}
+.dock:not(.is-target):not(.is-alternate) .dock-target-badge{display:none}
 .dock.is-target{filter:drop-shadow(0 0 8px #f7d76b)}
 .dock.is-target .dock-label{background:#f7d76b;color:#162335}
+.dock.is-alternate{filter:drop-shadow(0 0 8px #72e9ff)}
+.dock.is-alternate .dock-target-badge{border-color:#bff8ff;background:#17647a;color:#fff;box-shadow:0 0 12px #72e9ff99}
+.dock.is-alternate .dock-label{background:#17647a;color:#fff}
 .flight:focus-visible,.dock:focus-visible{outline:4px solid #fff4b7;outline-offset:3px;border-radius:14px}.dock.is-keyboard-choice{filter:drop-shadow(0 0 10px #7af2e7)}
 .battle-canvas{grid-template-rows:52px 76px minmax(0,1fr) 58px}
 .objective #flightTask{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:16px 16px;gap:2px;min-width:0;white-space:normal;line-height:1.22}

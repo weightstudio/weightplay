@@ -35,6 +35,20 @@ for(const [code,p] of Object.entries(packs)){
   p.upgradeDescs=[p.forgeIntro,p.tutorial2,p.tutorial3];
   p.terrainTips={flat:`${p.circle} · ${p.terrainNames.flat}`,stairs:`${p.tall} · ${p.terrainNames.stairs}`,mud:`${p.spike} · ${p.terrainNames.mud}`,tunnel:`${p.wide} · ${p.terrainNames.tunnel}`,gap:`${p.wide} · ${p.terrainNames.gap}`,ice:`${p.circle} · ${p.terrainNames.ice}`,wind:`${p.tall} · ${p.terrainNames.wind}`};
 }
+const upgradeCopy={
+  en:{names:["Rune Compass","Steady Chalk","Quick Axle"],descs:["Warns about terrain sooner.","Adds tolerance to freehand profiles.","Raises cart speed after a successful match."]},
+  "zh-Hant":{names:["符文羅盤","穩定粉筆","迅捷輪軸"],descs:["更早提示前方地形。","提高自由繪圖的容錯。","成功配對後提升車速。"]},
+  "zh-Hans":{names:["符文罗盘","稳定粉笔","迅捷轮轴"],descs:["更早提示前方地形。","提高自由绘图的容错。","成功匹配后提升车速。"]},
+  ja:{names:["ルーンコンパス","安定チョーク","高速車軸"],descs:["次の地形をより早く知らせます。","フリーハンド形状の判定に余裕を加えます。","正しい輪型で通過した後の車速を上げます。"]},
+  ko:{names:["룬 나침반","안정 분필","고속 차축"],descs:["다가오는 지형을 더 일찍 알려 줍니다.","자유 그리기 프로필의 판정 허용 범위를 넓힙니다.","지형에 맞는 바퀴로 통과하면 수레 속도가 증가합니다."]},
+  es:{names:["Brújula rúnica","Tiza firme","Eje veloz"],descs:["Avisa antes del próximo terreno.","Añade tolerancia a los perfiles dibujados a mano.","Aumenta la velocidad del carro tras acertar el perfil."]},
+  "pt-BR":{names:["Bússola rúnica","Giz firme","Eixo veloz"],descs:["Avisa mais cedo sobre o próximo terreno.","Aumenta a tolerância dos perfis desenhados à mão.","Aumenta a velocidade da carroça após acertar o perfil."]},
+  fr:{names:["Boussole runique","Craie stable","Essieu rapide"],descs:["Avertit plus tôt du prochain terrain.","Ajoute de la tolérance aux profils dessinés à main levée.","Augmente la vitesse du chariot après un profil réussi."]},
+  de:{names:["Runenkompass","Stabile Kreide","Schnellachse"],descs:["Warnt früher vor dem nächsten Gelände.","Erhöht die Toleranz für freihändig gezeichnete Profile.","Erhöht das Wagentempo nach einem passenden Profil."]},
+  it:{names:["Bussola runica","Gesso stabile","Asse rapido"],descs:["Avvisa prima del prossimo terreno.","Aumenta la tolleranza dei profili disegnati a mano libera.","Aumenta la velocità del carro dopo un profilo corretto."]},
+  ru:{names:["Рунный компас","Устойчивый мел","Быстрая ось"],descs:["Раньше предупреждает о следующем участке.","Повышает допуск для профилей, нарисованных от руки.","Увеличивает скорость телеги после верного профиля."]}
+};
+for(const [code,copy] of Object.entries(upgradeCopy))Object.assign(packs[code],{upgradeNames:copy.names,upgradeDescs:copy.descs});
 const handsOnCopy={
   en:{lobbyReturn:"Return to WeightPlay",back:"Back",raceSelector:"Race selector",helpLabel:"How to play",raceCanvasLabel:"Live side-view rune cart race",wheelPadLabel:"Wheel drawing pad",blueprintLabel:"Wheel blueprints",drawFirst:"Draw or choose your first wheel to start both carts.",forgeReady:"Choose a forge tool. Costs and balances stay visible.",needBolts:"Need {cost} Forge Bolts. Current balance: {n}.",upgradeComplete:"{name} improved to level {level}/3.",needDiamondsDetail:"Need 15 Diamonds. Current balance: {n}.",lensComplete:"Prism Blueprint Lens unlocked."},
   "zh-Hant":{lobbyReturn:"返回 WeightPlay",back:"返回",raceSelector:"競速選擇列",helpLabel:"遊玩說明",raceCanvasLabel:"即時側視符文車競速",wheelPadLabel:"車輪繪圖板",blueprintLabel:"車輪藍圖",drawFirst:"先畫出或選擇第一個輪型，兩台車才會出發。",forgeReady:"選擇一項工坊工具；費用與餘額會持續顯示。",needBolts:"需要 {cost} 枚鍛造螺栓，目前有 {n} 枚。",upgradeComplete:"{name} 已強化至 {level}/3 級。",needDiamondsDetail:"需要 15 顆鑽石，目前有 {n} 顆。",lensComplete:"已解鎖稜鏡藍圖鏡。"},

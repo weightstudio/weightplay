@@ -5,6 +5,7 @@
   const unlockKey = "weightplay_hidden_safari_unlocked";
   const starKey = "weightplay_hidden_safari_stars";
   const progressKey = "weightplay_progress_animal-hidden-safari";
+  const supportedLocales = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru"];
   const storageFallback = new Map();
 
   function storageRead(key) {
@@ -222,6 +223,13 @@
     leaveHabitat: "Volver a los h\u00e1bitats",
   });
 
+  const localeOverrides = {
+    ko: {
+      locked: "잠긴 서식지",
+      resume: "계속 찾기",
+    },
+  };
+
   const targetAssets = {
     lion: "../../assets/weightplay-boom-mane-lion.png",
     elephant: "../../assets/animal-zoo-elephant.png",
@@ -375,6 +383,7 @@
   let pauseReturnFocus = null;
   let scenePointerOwner = null;
   let completedScenePointer = null;
+  let stageCenterFrame = 0;
 
   function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
@@ -442,8 +451,12 @@
   function t(key, data = {}) {
     const parts = key.split(".");
     const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
-    let value = text[sourceLocale] || text.en;
+    let value = localeOverrides[sourceLocale];
     for (const part of parts) value = value?.[part];
+    if (typeof value !== "string") {
+      value = text[sourceLocale] || text.en;
+      for (const part of parts) value = value?.[part];
+    }
     if (typeof value !== "string") value = key;
     const localized = Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
     return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(localized) || localized : localized;
@@ -473,7 +486,7 @@
   }
 
   function localizeStatic() {
-    document.documentElement.lang = ["zh-Hant", "zh-Hans", "es"].includes(locale) ? locale : "en";
+    document.documentElement.lang = supportedLocales.includes(locale) ? locale : "en";
     document.title = `${t("gameTitle")} - WeightPlay`;
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
@@ -515,16 +528,21 @@
     nodes.stageGrid.innerHTML = "";
     stages.forEach((stage, index) => {
       const stageNo = index + 1;
+      const isLocked = stageNo > unlocked;
       const button = document.createElement("button");
       button.className = "stage-card";
       button.type = "button";
       button.dataset.stageIndex = String(index);
-      if (stageNo > unlocked) button.classList.add("locked");
+      if (isLocked) {
+        button.classList.add("locked");
+        button.setAttribute("aria-disabled", "true");
+      }
       button.innerHTML = `
         <b>${animalImg(stage.targets[0][0], "stage-animal")}</b>
         <strong>${t("stage", { n: stageNo })} - ${t(`habitat.${stage.habitat}`)}</strong>
         <em>${stageRuleLabel(stage)}${stage.checkpoint ? ` · ${t("checkpoint")}` : ""}</em>
         <span>${starsFor(stageNo)}${bestLine(stageNo)}</span>
+        ${isLocked ? `<span class="stage-lock-label">${t("locked")}</span>` : ""}
       `;
       button.addEventListener("click", () => {
         if (nodes.stageGrid.dataset.draggingClick === "1") return;
@@ -537,6 +555,36 @@
       });
       nodes.stageGrid.appendChild(button);
     });
+    scheduleCenteredStageCard();
+  }
+
+  function updateCenteredStageCard() {
+    stageCenterFrame = 0;
+    if (!document.body.classList.contains("safari-stage")) return;
+    const railBox = nodes.stageGrid.getBoundingClientRect();
+    const railCenter = railBox.left + railBox.width / 2;
+    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
+    let centeredCard = null;
+    let closestDistance = Infinity;
+    cards.forEach((card) => {
+      const box = card.getBoundingClientRect();
+      const distance = Math.abs(box.left + box.width / 2 - railCenter);
+      if (distance < closestDistance) {
+        centeredCard = card;
+        closestDistance = distance;
+      }
+    });
+    cards.forEach((card) => {
+      const isCentered = card === centeredCard;
+      card.classList.toggle("is-centered", isCentered);
+      if (isCentered) card.setAttribute("aria-current", "true");
+      else card.removeAttribute("aria-current");
+    });
+  }
+
+  function scheduleCenteredStageCard() {
+    if (stageCenterFrame) return;
+    stageCenterFrame = requestAnimationFrame(updateCenteredStageCard);
   }
 
   function rejectRepeatedScreenActivation(event) {
@@ -551,6 +599,7 @@
       || nodes.stageGrid.querySelector(".stage-card:not(.locked)");
     card?.focus({ preventScroll: true });
     card?.scrollIntoView({ block: "nearest", inline: "center" });
+    scheduleCenteredStageCard();
   }
 
   function showMenu(focusIndex) {
@@ -618,14 +667,15 @@
     renderScene();
     renderTargetList();
     updateHud();
+    window.WeightPlayGame?.exitMobileGameMode?.();
+    document.body.classList.remove("wp-mobile-game-mode", "weightplay-active-viewport");
+    document.querySelector(".safari-game")?.classList.remove("weightplay-active-viewport");
     updateSafariFrame();
+    requestAnimationFrame(updateSafariFrame);
     startTimer();
     requestAnimationFrame(() => nodes.targetsLayer.querySelector(".target[data-index]:not(:disabled)")?.focus({ preventScroll: true }));
     track("game_start", { level: index + 1 });
     playSound("start");
-    window.WeightPlayGame?.exitMobileGameMode?.();
-    document.body.classList.remove("wp-mobile-game-mode", "weightplay-active-viewport");
-    document.querySelector(".safari-game")?.classList.remove("weightplay-active-viewport");
   }
 
   function updateSafariFrame() {
@@ -636,8 +686,9 @@
     const viewportHeight = viewport?.height || window.innerHeight;
     const viewportWidth = Math.min(Math.max(1, safeWidth), 920);
     const root = document.documentElement.style;
-    const logicalWidth = 390;
-    const logicalHeight = isStage ? 788 : logicalWidth * 16 / 9;
+    const isShortLandscape = !isStage && viewportHeight <= 430 && viewportWidth > viewportHeight;
+    const logicalWidth = isShortLandscape ? 780 : 390;
+    const logicalHeight = isStage ? 788 : isShortLandscape ? 390 : 390 * 16 / 9;
     const scale = Math.min(viewportWidth / logicalWidth, viewportHeight / logicalHeight);
     const envelopeWidth = viewportWidth / scale;
     const envelopeHeight = viewportHeight / scale;
@@ -656,6 +707,7 @@
       frame.dataset.logicalHeight = envelopeHeight.toFixed(4);
       frame.dataset.commonScale = scale.toFixed(6);
     }
+    scheduleCenteredStageCard();
   }
 
   window.addEventListener("resize", updateSafariFrame);
@@ -1085,6 +1137,7 @@
       }
     }, true);
     nodes.startGameBtn.addEventListener("click", () => showMenu());
+    nodes.stageGrid.addEventListener("scroll", scheduleCenteredStageCard, { passive: true });
     nodes.stageBackMainBtn.addEventListener("click", showMain);
     nodes.resultStagesBtn.addEventListener("click", () => showMenu(currentStage));
     nodes.retryBtn.addEventListener("click", () => startStage(currentStage));

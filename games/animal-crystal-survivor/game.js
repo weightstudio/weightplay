@@ -20,11 +20,11 @@
 
   const $ = (id) => document.getElementById(id);
   const canvas = $("gameCanvas");
-  const displayCtx = canvas.getContext("2d");
+  const displayCtx = canvas.getContext("2d", { alpha: false, desynchronized: true });
   const renderCanvas = document.createElement("canvas");
-  const ctx = renderCanvas.getContext("2d");
+  const ctx = renderCanvas.getContext("2d", { alpha: false });
   const arenaLayer = document.createElement("canvas");
-  const arenaCtx = arenaLayer.getContext("2d");
+  const arenaCtx = arenaLayer.getContext("2d", { alpha: false });
   const nodes = {
     localeSelect: $("localeSelect"),
     menuPanel: $("menuPanel"),

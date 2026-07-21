@@ -293,11 +293,12 @@
         };
     const flightName = labels.flights[state.kind];
     const dockName = labels.docks[state.dock];
+    const alternateName = labels.docks[state.altDock];
     const steps = [
       { id: 'conflict', text: labels.conflict, complete: !state.conflict },
       { id: 'crew', text: labels.crew, complete: !state.needsCrew || state.crewAssigned },
       { id: 'repair', text: labels.repair, complete: !state.storm || state.serviced },
-      { id: 'dock', text: labels.drag + dockName, complete: false }
+      { id: 'dock', text: `${labels.drag}${dockName} 1⛽ / ${alternateName} 2⛽`, complete: false }
     ].filter((step) => step.id === 'dock' || !((step.id === 'repair' && !state.storm) || (step.id === 'conflict' && !state.requiresConflict) || (step.id === 'crew' && !state.needsCrew)));
     const currentStepIndex = Math.max(0, steps.findIndex((step) => !step.complete));
     const currentStep = steps[currentStepIndex];
@@ -308,8 +309,8 @@
       ? `步驟 ${currentStepIndex + 1}/${steps.length}：${currentStep.text}`
       : `Step ${currentStepIndex + 1}/${steps.length}: ${currentStep.text}`;
     document.querySelector('.task-destination').textContent = locale === 'zh-Hant'
-      ? `本架：${flightName} → ${dockName}`
-      : `Current: ${flightName} -> ${dockName}`;
+      ? `本架：${flightName} → ${dockName} 1⛽ / ${alternateName} 2⛽`
+      : `Current: ${flightName} -> ${dockName} 1⛽ / ${alternateName} 2⛽`;
     // Keep the task strip focused on the action the player can take now. Showing
     // only the final drag step made late flights look like they had skipped rules.
     document.querySelector('.task-steps').textContent = stepLabel;
@@ -328,6 +329,7 @@
     document.querySelectorAll('.dock').forEach((dock) => {
       const label = labels.docks[dock.dataset.dock];
       const isTarget = dock.dataset.dock === state.dock;
+      const isAlternate = dock.dataset.dock === state.altDock;
       const blockingStep = state.storm && !state.serviced
         ? labels.repair
         : state.conflict
@@ -337,17 +339,20 @@
             : state.fuel <= 0
               ? (locale === 'zh-Hant' ? '\u5fc5\u9808\u5148\u88dc\u5145\u71c3\u6599' : 'Fuel must be restored first')
               : '';
-      const keyboardLabel = !isTarget
+      const keyboardLabel = !isTarget && !isAlternate
         ? t('keyboardDockWrong', {dock:label, flight:flightName, target:dockName})
+        : isAlternate
+          ? `${label}. 2 ⛽.`
         : blockingStep
           ? t('keyboardDockBlocked', {dock:label, flight:flightName, step:blockingStep})
           : t('keyboardDockCorrect', {dock:label, flight:flightName, fuel:state.fuel, remaining:Math.max(0, state.fuel - 1)});
       dock.querySelector('.dock-label').textContent = label;
       dock.setAttribute('aria-label', state.selected ? keyboardLabel : label);
       dock.classList.toggle('is-target', isTarget);
+      dock.classList.toggle('is-alternate', isAlternate);
       dock.querySelector('.dock-target-badge').textContent = isTarget
         ? (locale === 'zh-Hant' ? `前往 ${dockName.at(-1)}` : `GO: ${dockName.at(-1)}`)
-        : '';
+        : isAlternate ? `2⛽ ${alternateName.at(-1)}` : '';
     });
     requestAnimationFrame(renderGuidanceLine);
   }
@@ -399,6 +404,7 @@
     const [kind, dock] = flights[state.flightIndex++ % flights.length];
     state.kind = kind;
     state.dock = dock;
+    state.altDock = dock === 'repair' ? 'passenger' : 'repair';
     state.storm = state.stormEvery > 0 && state.flightIndex % state.stormEvery === 0;
     state.requiresConflict = state.shift >= 3 && state.flightIndex % 4 === 1;
     state.conflict = state.requiresConflict;
@@ -507,12 +513,16 @@
   function battleDecisionOpen() {
     return !$('leaveConfirm').classList.contains('hidden') || !$('result').classList.contains('hidden');
   }
-  function finish(ok) {
+  function finish(ok, chosenDock = ok ? state.dock : '') {
     if (battleDecisionOpen()) return;
-    if (ok && state.serviced && !state.conflict && state.crewAssigned && state.fuel > 0) {
+    const primary = chosenDock === state.dock;
+    const alternate = chosenDock === state.altDock;
+    const prepared = state.serviced && !state.conflict && state.crewAssigned;
+    const fuelCost = alternate ? 2 : 1;
+    if ((primary || alternate) && (alternate || prepared) && state.fuel >= fuelCost) {
       state.done += 1;
-      state.matched += 1;
-      state.fuel -= 1;
+      if (primary) state.matched += 1;
+      state.fuel -= fuelCost;
       if (state.needsCrew) state.crew = state.maxCrew;
       $('feedback').textContent = locale === 'zh-Hant' ? '\u78bc\u982d\u914d\u5c0d\u6210\u529f\u3002' : 'Dock matched.';
       if (state.done >= state.goal) {
@@ -535,7 +545,7 @@
     } else {
       playSound('wrong');
       state.errors += 1;
-      state.lastError = state.conflict ? (locale === 'zh-Hant' ? '先清除航線衝突，再拖曳飛船。' : 'Clear the route conflict before dragging.') : !state.crewAssigned ? (locale === 'zh-Hant' ? '這架需要組員：先按「指派組員」，再拖曳飛船。' : 'This flight needs crew: assign crew before dragging.') : state.storm && !state.serviced ? (locale === 'zh-Hant' ? '暴風航線需要先完成維修服務。' : 'Storm route: repair service is required first.') : state.fuel <= 0 ? (locale === 'zh-Hant' ? '燃料不足，無法派遣。' : 'Fuel depleted.') : (locale === 'zh-Hant' ? '碼頭不對：請依上方任務卡前往目標碼頭。' : 'Wrong dock: follow the task card target.');
+      state.lastError = state.conflict ? (locale === 'zh-Hant' ? '先清除航線衝突，再拖曳飛船。' : 'Clear the route conflict before dragging.') : !state.crewAssigned ? (locale === 'zh-Hant' ? '這架需要組員：先按「指派組員」，再拖曳飛船。' : 'This flight needs crew: assign crew before dragging.') : state.storm && !state.serviced ? (locale === 'zh-Hant' ? '暴風航線需要先完成維修服務。' : 'Storm route: repair service is required first.') : state.fuel < fuelCost ? (locale === 'zh-Hant' ? '燃料不足，無法派遣。' : 'Fuel depleted.') : (locale === 'zh-Hant' ? '碼頭不對：請依上方任務卡前往目標碼頭。' : 'Wrong dock: follow the task card target.');
       $('feedback').textContent = state.lastError;
       if (state.errors >= 3) { if (insuranceActive && state.contract) { save.coins = (save.coins || 0) + 20; persist(); } result(false); }
     }
@@ -598,7 +608,8 @@
     inputMode = '';
     routePointerId = null;
     suppressClick = length > 4;
-    finish(target?.dataset.dock === state.dock);
+    const chosenDock = target?.dataset.dock || '';
+    finish(chosenDock === state.dock || chosenDock === state.altDock, chosenDock);
   }
   function dockNodes() {
     return [...document.querySelectorAll('.dock')];
@@ -630,7 +641,7 @@
     if (battleDecisionOpen() || !state.selected) return;
     state.selected = false;
     setDockKeyboardMode(false);
-    finish(dock.dataset.dock === state.dock);
+    finish(dock.dataset.dock === state.dock || dock.dataset.dock === state.altDock, dock.dataset.dock);
     window.requestAnimationFrame(() => $('flight').focus({preventScroll:true}));
   }
   function focusCurrentBattleAction() {
@@ -723,7 +734,7 @@
     if (battleDecisionOpen() || !state.selected) return;
     state.selected = false;
     setDockKeyboardMode(false);
-    finish(dock.dataset.dock === state.dock);
+    finish(dock.dataset.dock === state.dock || dock.dataset.dock === state.altDock, dock.dataset.dock);
   }));
   document.querySelectorAll('.dock').forEach((dock) => dock.addEventListener('keydown', (event) => {
     if (battleDecisionOpen()) return;

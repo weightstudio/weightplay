@@ -788,7 +788,8 @@ body.helper-playing .play-panel.result-active .result-card {
 }
 
 .result-card button:nth-of-type(2),
-.result-card button:nth-of-type(3) {
+.result-card button:nth-of-type(3),
+.result-card a {
   background: rgba(255, 255, 255, 0.94);
 }
 

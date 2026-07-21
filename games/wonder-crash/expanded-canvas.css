@@ -8,6 +8,10 @@ body.wonder-playing {
   text-size-adjust: 100%;
 }
 
+body:is(.wonder-stage-select, .wonder-playing) .weightplay-version-badge {
+  display: none !important;
+}
+
 body:not(.wonder-playing) .game-shell {
   left: 50% !important;
   width: 390px !important;

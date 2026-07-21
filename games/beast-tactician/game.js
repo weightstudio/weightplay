@@ -1050,6 +1050,60 @@
     stage.bossNameEs = stage.boss ? copy.boss : "";
   });
 
+  // The Spanish source copy was historically saved through a Big5 code-page
+  // conversion. Repair the known reversible substitutions once at boot so the
+  // public Spanish journey stays readable without a second translation table.
+  function repairSpanishCopy(value) {
+    if (typeof value === "string") {
+      return value
+        .replaceAll("\u737a", "\u00e1")
+        .replaceAll("\u7c3d", "\u00f1")
+        .replaceAll("\u7e73", "\u00fa")
+        .replaceAll("\u7a69", "\u00ed")
+        .replaceAll("\u7c40", "\u00f3")
+        .replaceAll("\u77c7", "\u00e9")
+        .replaceAll("\u7652", "\u00a1")
+        .replaceAll("\u7e5a", "\u00b7")
+        .replaceAll("?rea", "\u00c1rea")
+        .replaceAll("?ltima", "\u00daltima");
+    }
+    if (Array.isArray(value)) return value.map(repairSpanishCopy);
+    if (value && typeof value === "object") {
+      Object.keys(value).forEach((key) => {
+        value[key] = repairSpanishCopy(value[key]);
+      });
+    }
+    return value;
+  }
+
+  function repairSpanishDocument() {
+    const walker = document.createTreeWalker(document.documentElement, NodeFilter.SHOW_TEXT);
+    let node = walker.nextNode();
+    while (node) {
+      if (!node.parentElement?.matches("script, style")) node.nodeValue = repairSpanishCopy(node.nodeValue);
+      node = walker.nextNode();
+    }
+    document.querySelectorAll("[content], [alt], [aria-label], [title]").forEach((element) => {
+      ["content", "alt", "aria-label", "title"].forEach((attribute) => {
+        if (element.hasAttribute(attribute)) {
+          element.setAttribute(attribute, repairSpanishCopy(element.getAttribute(attribute)));
+        }
+      });
+    });
+  }
+
+  repairSpanishCopy(text.es);
+  unitTypes.forEach((unit) => {
+    unit.name.es = repairSpanishCopy(unit.name.es);
+    unit.note.es = repairSpanishCopy(unit.note.es);
+  });
+  stages.forEach((stage) => {
+    stage.name.es = repairSpanishCopy(stage.name.es);
+    stage.intel.threat.es = repairSpanishCopy(stage.intel.threat.es);
+    stage.intel.plan.es = repairSpanishCopy(stage.intel.plan.es);
+    stage.bossNameEs = repairSpanishCopy(stage.bossNameEs);
+  });
+
   const state = {
     locale: "en",
     screen: "loading",
@@ -3601,6 +3655,7 @@
       let sharedLocaleUpdated = false;
       try { window.WonderI18n?.setLocale?.(requested); sharedLocaleUpdated = true; } catch {}
       state.locale = (sharedLocaleUpdated ? activeI18nLocale() : "") || requested;
+      if (state.locale === "es") repairSpanishDocument();
       writeStorage(localeKey, requested);
       updateLocale();
     });
@@ -5755,7 +5810,11 @@
     if (!text[state.locale]) state.locale = "en";
     const zhOption = nodes.localeSelect.querySelector('option[value="zh-Hant"]');
     if (zhOption) zhOption.textContent = text["zh-Hant"].localeName;
+    if (!nodes.localeSelect.querySelector('option[value="es"]')) {
+      nodes.localeSelect.add(new Option("Espa\u00f1ol", "es"));
+    }
     nodes.localeSelect.value = state.locale;
+    if (state.locale === "es") repairSpanishDocument();
     state.save = loadSave();
     state.soundEnabled = readStorage(soundKey) === "on";
     updateProfile();

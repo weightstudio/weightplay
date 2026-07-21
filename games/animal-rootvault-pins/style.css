@@ -832,22 +832,64 @@ a:focus-visible {
   }
   .stage-canvas {
     position: relative;
-    grid-template-rows: 64px minmax(0, 1fr) 44px;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    grid-template-rows: 58px minmax(0, 1fr) 44px;
+    padding: 8px;
+  }
+  .stage-header {
+    grid-column: 1 / -1;
+    grid-row: 1;
   }
   .stage-rail {
+    grid-column: 1;
     grid-row: 2;
   }
   .stage-tabs {
+    grid-column: 1;
     grid-row: 3;
     z-index: 8;
   }
-  #briefPanel {
-    display: none !important;
+  #briefPanel:not([hidden]) {
+    grid-column: 2;
+    grid-row: 2 / 4;
+    display: block;
+    overflow: hidden;
+    padding: 4px 0 0 8px;
+  }
+  #briefPanel .selected-brief {
+    min-height: 0;
+    height: 206px;
+    grid-template-columns: 42px minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) 44px;
+    gap: 6px;
+    padding: 8px;
+  }
+  #briefPanel .selected-brief > span {
+    width: 42px;
+    height: 42px;
+    font-size: 19px;
+  }
+  #briefPanel .selected-brief strong {
+    font-size: 14px;
+    line-height: 1.2;
+  }
+  #briefPanel .selected-brief p {
+    margin: 3px 0 0;
+    font-size: 12px;
+    line-height: 1.25;
+  }
+  #briefPanel .selected-brief button {
+    min-height: 44px;
+  }
+  #briefPanel .stage-hint {
+    margin: 5px 2px 0;
+    font-size: 11px;
+    line-height: 1.2;
   }
   #workshopPanel:not([hidden]) {
     position: absolute;
     z-index: 7;
-    inset: 64px 10px 44px;
+    inset: 58px 8px 44px;
     display: block;
     overflow-y: auto;
     padding: 10px;
@@ -882,6 +924,55 @@ a:focus-visible {
   .battle-actions {
     grid-row: 4;
     padding: 4px 10px 6px;
+  }
+  .result-layer {
+    padding: 10px;
+  }
+  .result-card {
+    width: min(100%, 760px);
+    max-height: 100%;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 104px minmax(0, 1fr);
+    grid-template-rows: 18px 34px minmax(0, auto) 54px 46px;
+    column-gap: 14px;
+    row-gap: 3px;
+    align-items: center;
+    padding: 10px 14px;
+  }
+  .result-card .result-art {
+    grid-column: 1;
+    grid-row: 1 / 5;
+    width: 92px;
+    height: 92px;
+  }
+  .result-card > small,
+  .result-card > h2,
+  .result-card > p,
+  .result-card > .result-stats {
+    grid-column: 2;
+  }
+  .result-card > small {
+    grid-row: 1;
+  }
+  .result-card > h2 {
+    grid-row: 2;
+    margin: 0;
+  }
+  .result-card > p {
+    grid-row: 3;
+    margin: 0;
+    line-height: 1.25;
+  }
+  .result-card > .result-stats {
+    grid-row: 4;
+    margin: 0;
+  }
+  .result-card > .modal-actions {
+    grid-column: 1 / -1;
+    grid-row: 5;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0;
   }
   .room {
     width: 72px;

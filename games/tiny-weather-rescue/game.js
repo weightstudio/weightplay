@@ -1,5 +1,19 @@
 (() => {
   const GAME_ID = "tiny-weather-rescue";
+  const supportedLocales = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru"];
+  const localeLabels = {
+    en: "English",
+    "zh-Hant": "繁體中文",
+    "zh-Hans": "简体中文",
+    ja: "日本語",
+    ko: "한국어",
+    es: "Español",
+    "pt-BR": "Português",
+    fr: "Français",
+    de: "Deutsch",
+    it: "Italiano",
+    ru: "Русский",
+  };
   document.querySelector(".weather-game")?.setAttribute("data-wp-canvas-max-width", "920");
   const localeKey = "weightplayLocale";
   const canonicalLocaleKey = "weightPlayLocale";
@@ -122,6 +136,8 @@
       boardAria: "Animal care play area",
       chooseStage: "Choose Help Mission",
       menuHint: "Help the little animal. Tap or drag the right care item to it.",
+      start: "Start Game",
+      homeAria: "Back to lobby",
       stages: "Stages",
       loading: "Loading",
       nextStage: "Next Stage",
@@ -197,6 +213,8 @@
       boardAria: "\u52d5\u7269\u7167\u9867\u904a\u6232\u5340",
       chooseStage: "\u9078\u64c7\u5e6b\u5fd9\u4efb\u52d9",
       menuHint: "\u5e6b\u5c0f\u52d5\u7269\uff0c\u9ede\u6216\u62d6\u66f3\u6b63\u78ba\u7167\u9867\u9053\u5177\u7d66\u5b83\u3002",
+      start: "\u958b\u59cb\u904a\u6232",
+      homeAria: "\u8fd4\u56de Kids \u5927\u5ef3",
       stages: "\u9078\u95dc",
       loading: "\u8f09\u5165\u4e2d",
       nextStage: "\u4e0b\u4e00\u95dc",
@@ -277,7 +295,7 @@
 
   Object.assign(text.en, { leaveTitle: "Leave this rescue?", leaveText: "Your care progress in this mission will reset.", keepHelping: "Keep helping", leaveMission: "Leave mission" });
   Object.assign(text["zh-Hant"], { leaveTitle: "\u8981\u96e2\u958b\u9019\u6b21\u6551\u63f4\u55ce\uff1f", leaveText: "\u9019\u4e00\u95dc\u7684\u7167\u8b77\u9032\u5ea6\u6703\u91cd\u8a2d\u3002", keepHelping: "\u7e7c\u7e8c\u5e6b\u5fd9", leaveMission: "\u96e2\u958b\u4efb\u52d9" });
-  Object.assign(text.es, { leaveTitle: "\u00bfSalir de este rescate?", leaveText: "Tu progreso de cuidado en esta misi\u00f3n se reiniciar\u00e1.", keepHelping: "Seguir ayudando", leaveMission: "Salir de la misi\u00f3n" });
+  Object.assign(text.es, { start: "Iniciar juego", homeAria: "Volver a la sala infantil", leaveTitle: "\u00bfSalir de este rescate?", leaveText: "Tu progreso de cuidado en esta misi\u00f3n se reiniciar\u00e1.", keepHelping: "Seguir ayudando", leaveMission: "Salir de la misi\u00f3n" });
 
   const $ = (id) => document.getElementById(id);
   const nodes = {
@@ -323,7 +341,7 @@
 
   const legacySavedLocale = storageRead(localeKey);
   const canonicalSavedLocale = storageRead(canonicalLocaleKey);
-  if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) {
+  if (!canonicalSavedLocale && supportedLocales.includes(legacySavedLocale)) {
     window.WonderI18n?.setLocale?.(legacySavedLocale);
   }
   let locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || canonicalSavedLocale || legacySavedLocale || "en";
@@ -410,7 +428,10 @@
     const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
     const table = text[sourceLocale] || text.en;
     const value = table[label] || text.en[label] || label;
-    const localized = Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
+    const immediate = ["en", "zh-Hant", "zh-Hans", "es"].includes(locale)
+      ? value
+      : window.WeightPlayGameRuntimeLocalizer?.translate(value) || value;
+    const localized = Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), immediate);
     return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(localized) || localized : localized;
   }
 
@@ -423,13 +444,14 @@
   }
 
   function localizeStatic() {
-    document.documentElement.lang = ["zh-Hant", "zh-Hans", "es"].includes(locale) ? locale : "en";
+    document.documentElement.lang = supportedLocales.includes(locale) ? locale : "en";
     document.title = t("seoTitle");
     setMeta('meta[name="description"]', "content", t("seoDescription"));
     setMeta('meta[property="og:title"]', "content", t("ogTitle"));
     setMeta('meta[property="og:description"]', "content", t("ogDescription"));
     nodes.localeSelect.value = locale;
     nodes.localeSelect.setAttribute("aria-label", t("languageAria"));
+    nodes.homeLink.setAttribute("aria-label", t("homeAria"));
     nodes.stageBackBtn.setAttribute("aria-label", t("back"));
     nodes.backToStagesBtn.setAttribute("aria-label", t("backToStages"));
     nodes.stageGrid.setAttribute("aria-label", t("stageListAria"));
@@ -446,6 +468,16 @@
   function setMeta(selector, attr, value) {
     const node = document.querySelector(selector);
     if (node) node.setAttribute(attr, value);
+  }
+
+  function ensureLocaleOptions() {
+    const current = new Map([...nodes.localeSelect.options].map((option) => [option.value, option]));
+    nodes.localeSelect.replaceChildren(...supportedLocales.map((code) => {
+      const option = current.get(code) || document.createElement("option");
+      option.value = code;
+      option.textContent = localeLabels[code];
+      return option;
+    }));
   }
 
   function renderStageGrid(focusIndex = null) {
@@ -1069,7 +1101,12 @@
     };
   }
 
-  localizeStatic();
-  renderStageGrid();
-  installLoading();
+  const boot = () => {
+    ensureLocaleOptions();
+    localizeStatic();
+    renderStageGrid();
+    installLoading();
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true });
+  else boot();
 })();
