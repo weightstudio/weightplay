@@ -833,6 +833,7 @@
 
   let profile = createDefaultProfile();
   let selectedExpedition = 1;
+  let browsedExpedition = 1;
   let resultNextExpedition = 0;
   let resultMapIsPrimary = false;
   let eliteSpawnTimer = 0;
@@ -1374,16 +1375,42 @@
     requestAnimationFrame(() => nodes.showStageBtn.focus({ preventScroll: true }));
   }
 
+  function syncCenteredExpedition() {
+    if (nodes.stagePanel.classList.contains("hidden")) return;
+    const cards = [...nodes.expeditionRail.querySelectorAll(".expedition-card")];
+    const railRect = nodes.expeditionRail.getBoundingClientRect();
+    if (!cards.length || railRect.width <= 0) return;
+    const railCenter = railRect.left + railRect.width / 2;
+    const centered = cards.reduce((best, card) => {
+      const cardRect = card.getBoundingClientRect();
+      const distance = Math.abs(cardRect.left + cardRect.width / 2 - railCenter);
+      return !best || distance < best.distance ? { card, distance } : best;
+    }, null)?.card;
+    if (!centered) return;
+    browsedExpedition = Number(centered.dataset.expedition) || selectedExpedition;
+    cards.forEach((card) => {
+      const isCentered = card === centered;
+      card.classList.toggle("is-centered", isCentered);
+      if (isCentered) card.setAttribute("aria-current", "true");
+      else card.removeAttribute("aria-current");
+    });
+    const expedition = expeditionDefs[browsedExpedition - 1];
+    nodes.stageSetupText.textContent = centered.disabled
+      ? t("expeditionLocked", { region: browsedExpedition - 1 })
+      : t("expeditionGoal", { level: expedition.level });
+  }
+
   function renderExpeditionStage(focusSelected = false) {
     const currentLocale = getLocale();
     selectedExpedition = Math.max(1, Math.min(profile.unlockedExpedition || 1, selectedExpedition));
+    browsedExpedition = selectedExpedition;
     nodes.expeditionRail.innerHTML = expeditionDefs.map((expedition) => {
       const locked = expedition.id > profile.unlockedExpedition;
       const name = currentLocale === "zh-Hant" ? expedition.zh : currentLocale === "es" ? expedition.es : expedition.en;
       const checkpoint = expedition.checkpoint
         ? (currentLocale === "zh-Hant" ? "\u5b88\u8b77\u8005" : currentLocale === "es" ? "Guardián" : "Guardian")
         : (currentLocale === "zh-Hant" ? `\u5340\u57df ${expedition.region}` : currentLocale === "es" ? `Región ${expedition.region}` : `Region ${expedition.region}`);
-      return `<button class="expedition-card stage-card ${expedition.id === selectedExpedition ? "is-selected" : ""} ${locked ? "is-locked" : ""} ${expedition.checkpoint ? "is-checkpoint" : ""}" data-expedition="${expedition.id}" type="button" ${locked ? "disabled" : ""}>
+      return `<button class="expedition-card stage-card ${expedition.id === selectedExpedition ? "is-selected is-centered" : ""} ${locked ? "is-locked" : ""} ${expedition.checkpoint ? "is-checkpoint" : ""}" data-expedition="${expedition.id}" data-stage-index="${expedition.id - 1}" type="button" ${expedition.id === selectedExpedition ? 'aria-current="true"' : ""} ${locked ? "disabled" : ""}>
         <span>${currentLocale === "zh-Hant" ? `\u9060\u5f81 ${expedition.id}` : currentLocale === "es" ? `Expedición ${expedition.id}` : `Expedition ${expedition.id}`} \u00b7 ${checkpoint}</span>
         <strong>${name}</strong>
         <small>${locked ? t("expeditionLocked", { region: expedition.id - 1 }) : t("expeditionGoal", { level: expedition.level })}</small>
@@ -1403,6 +1430,7 @@
         || nodes.expeditionRail.querySelector(".expedition-card:not(:disabled)");
       selected?.scrollIntoView({ inline: "center", block: "nearest" });
       if (focusSelected) selected?.focus({ preventScroll: true });
+      window.requestAnimationFrame(syncCenteredExpedition);
     });
   }
 
@@ -3278,6 +3306,8 @@
     nodes.expeditionRail.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest(".expedition-card")) event.preventDefault();
     });
+    nodes.expeditionRail.addEventListener("wonder:stage-snap", () => window.requestAnimationFrame(syncCenteredExpedition));
+    nodes.expeditionRail.addEventListener("scrollend", syncCenteredExpedition);
 
     nodes.stageBackBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");

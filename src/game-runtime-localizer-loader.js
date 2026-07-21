@@ -12,9 +12,11 @@
     de: "de",
     it: "it",
     ru: "ru",
+    hi: "hi",
+    ar: "ar",
   }[locale];
   if (!segment) return;
   const base = new URL(".", document.currentScript?.src || document.baseURI).href;
-  document.write(`<script src="${base}runtime-locales/${segment}.js?v=20260720-locale11-15"><\/script>`);
+  document.write(`<script src="${base}runtime-locales/${segment}.js?v=20260721-locale13-1"><\/script>`);
   document.write(`<script src="${base}game-runtime-localizer.js?v=20260721-pattern1"><\/script>`);
 })();

@@ -306,6 +306,7 @@
   let state = {},lastUpgrade=null,beaconConfirmTimer=0,beaconConfirmDueAt=0,beaconConfirmRemaining=0;
   let diveSession=0;
   let diveSuspended=false;
+  let windowFocused=document.hasFocus();
   const diveTimers=new Set();
   function clearBeaconConfirmation(){
     window.clearTimeout(beaconConfirmTimer);
@@ -337,7 +338,7 @@
     beaconConfirmDueAt=0;
   }
   function resumeBeaconConfirmation(){
-    if(!state?.beaconPending||beaconConfirmTimer||document.hidden)return;
+    if(!state?.beaconPending||beaconConfirmTimer||document.hidden||!windowFocused)return;
     armBeaconConfirmation(beaconConfirmRemaining);
   }
   function beaconRestoreTarget(){return Math.ceil(maxOxygen()*.3);}
@@ -376,7 +377,7 @@
     });
   }
   function resumeDiveAsync(){
-    if(document.hidden||$("battleShell").classList.contains("hidden")||!$("result").classList.contains("hidden")||!$("quitPanel").classList.contains("hidden")||!$("diveCoach").classList.contains("hidden"))return;
+    if(document.hidden||!windowFocused||$("battleShell").classList.contains("hidden")||!$("result").classList.contains("hidden")||!$("quitPanel").classList.contains("hidden")||!$("diveCoach").classList.contains("hidden"))return;
     resumeBeaconConfirmation();
     if(!diveSuspended)return;
     diveSuspended=false;
@@ -719,9 +720,11 @@
   $("quitKeep").onclick=()=>setQuit(false,{resume:true});
   $("quitLeave").onclick=leaveDive;
   $("menuBtn").onclick=leaveDive;
-  document.addEventListener("visibilitychange",()=>{if(document.hidden)suspendDiveAsync();else resumeDiveAsync();});
+  window.addEventListener("blur",()=>{windowFocused=false;suspendDiveAsync();});
+  window.addEventListener("focus",()=>{windowFocused=true;resumeDiveAsync();});
+  document.addEventListener("visibilitychange",()=>{if(document.hidden)suspendDiveAsync();else if(windowFocused)resumeDiveAsync();});
   window.addEventListener("pagehide",suspendDiveAsync);
-  window.addEventListener("pageshow",resumeDiveAsync);
+  window.addEventListener("pageshow",()=>{if(windowFocused)resumeDiveAsync();});
   $("upgradePanel").addEventListener("keydown",event=>{if($("upgradePanel").classList.contains("hidden"))return;if(event.key==="Enter"||event.key===" "){if(event.repeat){event.preventDefault();return;}screenDecisionKeyboardKeys.add(event.key);}if(event.key!=="Tab")return;const choices=[...$("upgradePanel").querySelectorAll("button:not(:disabled)")];if(!choices.length)return;const first=choices[0],last=choices.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
   $("fishEncounter").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});
   $("result").addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){if(event.repeat){event.preventDefault();return;}screenDecisionKeyboardKeys.add(event.key);}if(event.key!=="Tab"||$("result").classList.contains("hidden"))return;const actions=[$("nextBtn"),$("menuBtn")].filter(button=>!button.disabled&&!button.classList.contains("hidden"));if(!actions.length)return;event.preventDefault();const current=actions.indexOf(document.activeElement),index=event.shiftKey?(current<=0?actions.length-1:current-1):(current<0||current===actions.length-1?0:current+1);actions[index].focus({preventScroll:true});});

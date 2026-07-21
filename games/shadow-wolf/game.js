@@ -658,6 +658,7 @@
     particles: [],
   };
   let backgroundBattleSuspended = false;
+  let windowFocused = document.hasFocus();
   let battlePaused = false;
   let settlementPending = false;
   let settlementTimer = 0;
@@ -732,7 +733,7 @@
 
   function getLocale() {
     const requested = window.WonderI18n?.locale?.() || readStorage(localeKey) || "en";
-    return text[requested] ? requested : "en";
+    return text[requested] || window.WonderI18n?.supportedLocales?.includes(requested) ? requested : "en";
   }
 
   function t(key, params = {}) {
@@ -2108,7 +2109,7 @@
 
   function updateGameEngine(timestamp = performance.now()) {
     if (!state.gameActive) return;
-    if (document.hidden) {
+    if (document.hidden || !windowFocused) {
       suspendBackgroundBattle();
       return;
     }
@@ -2564,14 +2565,21 @@
       keysPressed[e.key.toLowerCase()] = false;
     });
     nodes.gameCanvas.addEventListener("blur", clearActiveInputs);
-    window.addEventListener("blur", clearActiveInputs);
+    window.addEventListener("blur", () => {
+      windowFocused = false;
+      suspendBackgroundBattle();
+    });
+    window.addEventListener("focus", () => {
+      windowFocused = true;
+      if (!document.hidden) resumeBackgroundBattle();
+    });
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) suspendBackgroundBattle();
-      else resumeBackgroundBattle();
+      else if (windowFocused) resumeBackgroundBattle();
     });
     window.addEventListener("pagehide", suspendBackgroundBattle);
     window.addEventListener("pageshow", () => {
-      if (!document.hidden) resumeBackgroundBattle();
+      if (!document.hidden && windowFocused) resumeBackgroundBattle();
     });
 
     // Pointer cancellation, focus loss, and screen changes must never leave movement latched.

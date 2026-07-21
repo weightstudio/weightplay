@@ -396,6 +396,7 @@
   let startTime = 0;
   let timerId = 0;
   let hiddenStartedAt = 0;
+  let windowFocused = document.hasFocus();
   let acceptingInput = false;
   let pauseOpen = false;
   let pauseReturnFocus = null;
@@ -902,6 +903,7 @@
 
   function resumeSearchTimer() {
     if (!hiddenStartedAt) return;
+    if (document.hidden || !windowFocused) return;
     if (acceptingInput && document.body.classList.contains("safari-playing") && !document.body.classList.contains("safari-result")) {
       startTime += Date.now() - hiddenStartedAt;
       hiddenStartedAt = 0;
@@ -1189,7 +1191,15 @@
     nodes.scene.addEventListener("pointerup", finishScenePointer, true);
     nodes.scene.addEventListener("pointercancel", finishScenePointer, true);
     nodes.scene.addEventListener("click", guardSceneClick, true);
-    window.addEventListener("blur", resetScenePointerOwnership);
+    window.addEventListener("blur", () => {
+      windowFocused = false;
+      pauseSearchTimer();
+      resetScenePointerOwnership();
+    });
+    window.addEventListener("focus", () => {
+      windowFocused = true;
+      resumeSearchTimer();
+    });
     window.addEventListener("pagehide", pauseSearchTimer);
     window.addEventListener("pagehide", resetScenePointerOwnership);
     window.addEventListener("pageshow", resumeSearchTimer);

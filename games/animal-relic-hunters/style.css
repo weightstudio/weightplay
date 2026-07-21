@@ -1984,12 +1984,19 @@ body.relic-stage-select .stage-return {
   text-overflow: ellipsis;
 }
 
-.expedition-card.is-selected {
-  border-color: #d4af37;
-  box-shadow: inset 0 0 0 3px rgb(212 175 55 / 24%);
+.expedition-card.is-centered {
+  border-color: #f5d261;
+  box-shadow:
+    inset 0 0 0 3px rgb(212 175 55 / 24%),
+    0 0 0 3px rgb(245 210 97 / 28%),
+    0 0 24px 6px rgb(86 231 196 / 62%);
 }
 
 .expedition-card.is-locked { opacity: .52; }
+
+.expedition-card.is-locked.is-centered { opacity: 1; }
+
+.expedition-card.is-locked.is-centered > * { opacity: .58; }
 
 body.relic-stage-select .stage-config-mount {
   display: grid;

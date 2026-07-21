@@ -1,9 +1,9 @@
 window.WONDER_SITE = {
-    version: "v0.18.18",
+    version: "v0.18.20",
   localization: {
     defaultLocale: "en",
     fallbackLocale: "en",
-    phaseOneLocales: ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru"],
+    phaseOneLocales: ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"],
     plannedLocales: [],
     useLocaleRoutes: true,
   },

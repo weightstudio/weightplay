@@ -32,6 +32,7 @@
   let backgroundSuspended = document.hidden || !document.hasFocus();
   const battleTransitions = new Set();
   let stageScrollTimer = 0;
+  let browsedMission = 0;
 
   function cancelStageSettlement() {
     if (!stageScrollTimer) return;
@@ -251,6 +252,7 @@
   }
 
   function selectStageTab(tabName) {
+    cancelStageSettlement();
     if (tabName !== "shop" && amuletConfirmPending) {
       clearAmuletConfirmation();
       updateDiamondShopUI();
@@ -263,6 +265,7 @@
     nodes.stagePanel.querySelectorAll("[data-stage-view]").forEach((view) => {
       view.classList.toggle("is-active", view.dataset.stageView === tabName);
     });
+    if (tabName === "missions") requestAnimationFrame(scrollStageToSelected);
   }
 
   function showStage() {
@@ -273,6 +276,7 @@
     document.body.classList.remove("beast-deck-playing");
     nodes.menuBtn.dataset.wpReturn = "battle";
     profile.selectedMission = profile.unlockedMission;
+    browsedMission = profile.selectedMission;
     saveLocalState();
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
@@ -1658,6 +1662,7 @@
 
   function renderProgressUI() {
     if (!nodes.stageGrid) return;
+    if (!Number.isInteger(browsedMission) || browsedMission < 1 || browsedMission > maxMission) browsedMission = profile.selectedMission;
     nodes.profileLevelText.textContent = String(profile.level);
     nodes.profileXpText.textContent = `${profile.xp}/${xpToNext(profile.level)}`;
     nodes.profileBestText.textContent = String(profile.bestMission);
@@ -1714,8 +1719,12 @@
     }
     nodes.stageGrid.querySelectorAll(".stage-card").forEach((card) => {
       const selected = Number(card.dataset.mission) === profile.selectedMission;
+      const centered = Number(card.dataset.mission) === browsedMission;
       card.classList.toggle("selected", selected);
+      card.classList.toggle("centered", centered);
       card.setAttribute("aria-pressed", selected ? "true" : "false");
+      if (centered) card.setAttribute("aria-current", "true");
+      else card.removeAttribute("aria-current");
       const action = card.querySelector("[data-stage-action]");
       if (action) action.textContent = selected ? t("missionSelectedCard") : t("startMissionCard");
     });
@@ -1723,7 +1732,7 @@
 
   function scrollStageToSelected() {
     if (!nodes.stageGrid) return;
-    const selected = nodes.stageGrid.querySelector(`.stage-card[data-mission="${profile.selectedMission}"]`);
+    const selected = nodes.stageGrid.querySelector(`.stage-card[data-mission="${browsedMission || profile.selectedMission}"]`);
     if (!selected) return;
     isAutoPositioningStage = true;
     requestAnimationFrame(() => {
@@ -1742,21 +1751,25 @@
     stageScrollTimer = 0;
     if (nodes.stagePanel?.classList.contains("hidden")) return;
     if (!nodes.stageGrid) return;
-    const unlockedCards = [...nodes.stageGrid.querySelectorAll(".stage-card:not([disabled])")];
-    if (!unlockedCards.length) return;
+    const missionView = nodes.stageGrid.closest('[data-stage-view="missions"]');
+    if (!missionView?.classList.contains("is-active") || nodes.stageGrid.clientWidth <= 0) return;
+    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
+    if (!cards.length) return;
     const gridBox = nodes.stageGrid.getBoundingClientRect();
     const center = gridBox.left + gridBox.width / 2;
-    const nearest = unlockedCards.reduce((best, card) => {
+    const nearest = cards.reduce((best, card) => {
       const box = card.getBoundingClientRect();
       const distance = Math.abs(box.left + box.width / 2 - center);
       return !best || distance < best.distance ? { card, distance } : best;
     }, null)?.card;
     const mission = Number(nearest?.dataset.mission);
-    if (!mission || mission === profile.selectedMission) return;
-    profile.selectedMission = clamp(mission, 1, profile.unlockedMission);
-    saveLocalState();
-    renderProgressUI();
-    scrollStageToSelected();
+    if (!mission || mission === browsedMission) return;
+    browsedMission = clamp(mission, 1, maxMission);
+    if (!nearest.disabled && mission !== profile.selectedMission) {
+      profile.selectedMission = clamp(mission, 1, profile.unlockedMission);
+      saveLocalState();
+    }
+    updateStageSelectionUI();
   }
   function addXp(amount) {
     const gained = Math.max(0, Math.round(amount));

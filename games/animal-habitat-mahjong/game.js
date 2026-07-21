@@ -96,7 +96,7 @@
     if (!source || copy[actualLocale()] || localizer?.locale !== actualLocale()) return source;
     return localizer.translate(source) || source;
   }
-  let locale = window.WonderI18n?.actualLocale?.() || readStorage(canonicalLocaleKey) || "en", save = loadSave(), stageIndex = 0, selected = null, state = null, leaveOpen = false, centeredStageFrame = 0;
+  let locale = window.WonderI18n?.actualLocale?.() || readStorage(canonicalLocaleKey) || "en", save = loadSave(), stageIndex = 0, selected = null, state = null, leaveOpen = false, centeredStageFrame = 0, windowFocused = document.hasFocus();
   const t = (key, values = {}) => {
     const authored = copy[actualLocale()];
     const source = authored?.[key] || copy.en[key] || key;
@@ -147,9 +147,9 @@
       return { id:id++, pairIndex, value, x, y, layer, sealed:usesSeal(habitat) && (habitat.sealedPairs || []).includes(pairIndex), rescue:usesRescue(habitat) && rescueValues.has(value), key:usesSeal(habitat) && pairIndex === 0, removed:false };
     }));
   }
-  function startStage(index = stageIndex) { stageIndex = index; const habitat = habitats[index], tiles = makeTiles(habitat, index); state = { tiles, totalPairs:tiles.length / 2, moves:0, removedPairs:0, history:[], hinted:[], selected:null, keyUnlocked:!usesSeal(habitat), rescuedPairs:0, rescueTotal:(habitat.rescuePairs || []).length, trailPhase:0, initialTrailPhase:0, startedAt:Date.now(), pausedAt:document.hidden ? Date.now() : null }; syncTrailPhase(); state.initialTrailPhase=state.trailPhase; save.playCount += 1; persist(); setScreen("battle"); const firstFree=state.tiles.find(isFree)?.id; renderBattle(availablePairs().length ? "" : t("noMoves"), firstFree); }
+  function startStage(index = stageIndex) { stageIndex = index; const habitat = habitats[index], tiles = makeTiles(habitat, index); state = { tiles, totalPairs:tiles.length / 2, moves:0, removedPairs:0, history:[], hinted:[], selected:null, keyUnlocked:!usesSeal(habitat), rescuedPairs:0, rescueTotal:(habitat.rescuePairs || []).length, trailPhase:0, initialTrailPhase:0, startedAt:Date.now(), pausedAt:document.hidden || !windowFocused ? Date.now() : null }; syncTrailPhase(); state.initialTrailPhase=state.trailPhase; save.playCount += 1; persist(); setScreen("battle"); const firstFree=state.tiles.find(isFree)?.id; renderBattle(availablePairs().length ? "" : t("noMoves"), firstFree); }
   function suspendBattleClock() { if (!state || nodes.battleScreen.classList.contains("hidden") || !nodes.resultScreen.classList.contains("hidden") || state.pausedAt !== null) return; state.pausedAt = Date.now(); }
-  function resumeBattleClock() { if (!state || state.pausedAt === null || leaveOpen) return; state.startedAt += Math.max(0, Date.now() - state.pausedAt); state.pausedAt = null; }
+  function resumeBattleClock() { if (!state || state.pausedAt === null || leaveOpen || document.hidden || !windowFocused) return; state.startedAt += Math.max(0, Date.now() - state.pausedAt); state.pausedAt = null; }
   function setBattleLiveCovered(covered) { nodes.battleLive.inert = covered; if (covered) nodes.battleLive.setAttribute("aria-hidden", "true"); else nodes.battleLive.removeAttribute("aria-hidden"); }
   function openLeaveDecision() {
     if (leaveOpen || !state || !nodes.resultScreen.classList.contains("hidden")) return;
@@ -305,6 +305,8 @@
   nodes.board.addEventListener("click", (event) => { const tile = event.target.closest(".tile"); if (tile) chooseTile(Number(tile.dataset.tile)); }); nodes.hintBtn.addEventListener("click", hint); nodes.undoBtn.addEventListener("keydown", (event) => { if (event.key !== "Enter" && event.key !== " ") return; event.preventDefault(); if (!undoKeyHeld) undo(); undoKeyHeld = true; }); nodes.undoBtn.addEventListener("keyup", (event) => { if (event.key === "Enter" || event.key === " ") undoKeyHeld = false; }); nodes.undoBtn.addEventListener("blur", () => { undoKeyHeld = false; }); nodes.undoBtn.addEventListener("click", undo); nodes.shuffleBtn.addEventListener("click", shuffle); nodes.continueBoardBtn.addEventListener("click", () => closeLeaveDecision(true)); nodes.leaveBoardBtn.addEventListener("click", leaveBoard); nodes.leavePanel.addEventListener("keydown", keepLeaveFocus, true); nodes.retryBtn.addEventListener("click", () => startStage(stageIndex)); nodes.nextBtn.addEventListener("click", () => startStage(Math.min(habitats.length - 1, stageIndex + 1))); nodes.stagesBtn.addEventListener("click", () => { stageIndex = Math.max(0, Math.min(habitats.length, save.unlocked) - 1); setScreen("stage"); renderStage(); focusCurrentStage(); });
   window.addEventListener("pagehide", suspendBattleClock);
   window.addEventListener("pageshow", resumeBattleClock);
+  window.addEventListener("blur", () => { windowFocused = false; suspendBattleClock(); });
+  window.addEventListener("focus", () => { windowFocused = true; resumeBattleClock(); });
   document.addEventListener("visibilitychange", () => { if (document.hidden) suspendBattleClock(); else resumeBattleClock(); });
   if (new URLSearchParams(location.search).has("smoke")) {
     window.__ANIMAL_HABITAT_MAHJONG_TEST__ = {

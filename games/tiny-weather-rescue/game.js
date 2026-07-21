@@ -296,6 +296,9 @@
   Object.assign(text.en, { leaveTitle: "Leave this rescue?", leaveText: "Your care progress in this mission will reset.", keepHelping: "Keep helping", leaveMission: "Leave mission" });
   Object.assign(text["zh-Hant"], { leaveTitle: "\u8981\u96e2\u958b\u9019\u6b21\u6551\u63f4\u55ce\uff1f", leaveText: "\u9019\u4e00\u95dc\u7684\u7167\u8b77\u9032\u5ea6\u6703\u91cd\u8a2d\u3002", keepHelping: "\u7e7c\u7e8c\u5e6b\u5fd9", leaveMission: "\u96e2\u958b\u4efb\u52d9" });
   Object.assign(text.es, { start: "Iniciar juego", homeAria: "Volver a la sala infantil", leaveTitle: "\u00bfSalir de este rescate?", leaveText: "Tu progreso de cuidado en esta misi\u00f3n se reiniciar\u00e1.", keepHelping: "Seguir ayudando", leaveMission: "Salir de la misi\u00f3n" });
+  const localeTextOverrides = {
+    ko: { locked: "\uc7a0\uae34 \uc2a4\ud14c\uc774\uc9c0" },
+  };
 
   const $ = (id) => document.getElementById(id);
   const nodes = {
@@ -427,8 +430,9 @@
   function t(label, data = {}) {
     const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
     const table = text[sourceLocale] || text.en;
-    const value = table[label] || text.en[label] || label;
-    const immediate = ["en", "zh-Hant", "zh-Hans", "es"].includes(locale)
+    const override = localeTextOverrides[locale]?.[label];
+    const value = override || table[label] || text.en[label] || label;
+    const immediate = override || ["en", "zh-Hant", "zh-Hans", "es"].includes(locale)
       ? value
       : window.WeightPlayGameRuntimeLocalizer?.translate(value) || value;
     const localized = Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), immediate);

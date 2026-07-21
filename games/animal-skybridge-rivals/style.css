@@ -88,6 +88,28 @@ button {
   height: 26px;
   object-fit: contain;
 }
+.main-utilities {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 6px;
+}
+.main-sound-toggle {
+  width: 42px;
+  min-height: 42px;
+  border: 1px solid #52adc4;
+  border-radius: 11px;
+  background: #0b3155;
+  color: #fff;
+  font-size: 21px;
+  line-height: 1;
+}
+.main-sound-toggle:hover,
+.main-sound-toggle:focus-visible {
+  border-color: #fff083;
+  box-shadow: 0 0 0 3px #fff08345;
+  outline: 0;
+}
 .locale-control select {
   width: 100%;
   min-height: 42px;
@@ -619,7 +641,7 @@ button {
     min-height: auto;
   }
   .main-header {
-    grid-template-columns: 60px minmax(0, 1fr) 116px;
+    grid-template-columns: 60px minmax(0, 1fr) 146px;
   }
   .main-hero {
     grid-template-columns: 1fr;

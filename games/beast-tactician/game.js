@@ -608,6 +608,23 @@
     },
   ];
 
+  const CAMPAIGN_NAME_TRANSLATIONS = {
+    ko: "숲의 관문|갈라진 뿌리|무너진 다리|이끼 정원|달빛 여울|수정 굽이|박쥐 교차로|기술자의 고개|메아리 숲|베히모스 관문|철갑나무 길|가시 방벽|멧돼지 골짜기|뿌리 대장간|거상 정원|안개물 길|치유의 샘|포자 원형진|드루이드 폐허|고대의 심장|폭풍의 전조|천둥 갈림길|질풍 방벽|번개 골짜기|폭풍의 왕관|일식의 관문|공허뿌리 미로|해질녘 다리|왕관 진입로|황제의 최후진".split("|"),
+    "pt-BR": "Portão da Floresta|Raízes Divididas|Ponte Quebrada|Pátio de Musgo|Vau ao Luar|Curva de Cristal|Travessia dos Morcegos|Passagem do Engenheiro|Bosque dos Ecos|Portão do Beemote|Trilha da Casca de Ferro|Barricada de Espinhos|Vale dos Javalis|Forja das Raízes|Pátio do Colosso|Caminho das Águas Nebulosas|Fonte Curativa|Círculo de Esporos|Ruínas Druídicas|Coração Ancestral|Aproximação da Tempestade|Bifurcação do Trovão|Muralha da Ventania|Vale dos Relâmpagos|Coroa da Tempestade|Portão do Eclipse|Labirinto das Raízes Vazias|Ponte do Anoitecer|Caminho da Coroa|Última Resistência do Imperador".split("|"),
+    fr: "Porte de la Forêt|Racines Séparées|Pont Brisé|Cour de Mousse|Gué au Clair de Lune|Virage de Cristal|Passage des Chauves-souris|Col de l’Ingénieur|Bosquet des Échos|Porte du Béhémoth|Sentier d’Écorce de Fer|Barricade d’Épines|Creux des Sangliers|Atelier des Racines|Cour du Colosse|Chemin des Eaux Brumeuses|Source Guérisseuse|Cercle de Spores|Ruines Druidiques|Cœur Ancestral|Approche de la Tempête|Fourche du Tonnerre|Rempart des Rafales|Creux de la Foudre|Couronne de la Tempête|Porte de l’Éclipse|Labyrinthe des Racines du Néant|Pont du Crépuscule|Approche de la Couronne|Dernier Rempart de l’Empereur".split("|"),
+    de: "Waldtor|Geteilte Wurzeln|Zerbrochene Brücke|Mooshof|Mondlichtfurt|Kristallbiegung|Fledermausquerung|Ingenieurspass|Echowald|Behemot-Tor|Eisenrindenpfad|Dornenbarrikade|Ebermulde|Wurzelschmiede|Koloss-Hof|Nebelwasserpfad|Heilquelle|Sporenkreis|Druidenruinen|Uraltes Herz|Sturmfront|Donnergabelung|Sturmwall|Blitzmulde|Sturmkrone|Finsternistor|Leerenwurzel-Labyrinth|Nachtfallbrücke|Kronenaufstieg|Letztes Bollwerk des Kaisers".split("|"),
+    it: "Porta della Foresta|Radici Divise|Ponte Spezzato|Cortile di Muschio|Guado al Chiaro di Luna|Curva di Cristallo|Passaggio dei Pipistrelli|Passo dell’Ingegnere|Selva dell’Eco|Porta del Behemoth|Sentiero della Corteccia Ferrea|Barricata di Spine|Valle dei Cinghiali|Forgia delle Radici|Cortile del Colosso|Sentiero delle Acque Nebbiose|Fonte Curativa|Cerchio delle Spore|Rovine Druidiche|Cuore Ancestrale|Arrivo della Tempesta|Bivio del Tuono|Baluardo del Vento|Valle dei Fulmini|Corona della Tempesta|Porta dell’Eclissi|Labirinto delle Radici del Vuoto|Ponte del Crepuscolo|Ascesa alla Corona|Ultimo Baluardo dell’Imperatore".split("|"),
+    ru: "Лесные врата|Разделённые корни|Разрушенный мост|Мшистый двор|Лунный брод|Хрустальный изгиб|Переправа летучих мышей|Перевал инженера|Роща эха|Врата бегемота|Тропа железной коры|Терновая баррикада|Кабанья лощина|Корневая кузница|Двор колосса|Туманный водный путь|Целебный источник|Круг спор|Руины друидов|Древнее сердце|Приближение бури|Громовая развилка|Ветряной бастион|Грозовая лощина|Корона бури|Врата затмения|Лабиринт пустых корней|Мост сумерек|Подступы к короне|Последний рубеж императора".split("|"),
+  };
+  const CAMPAIGN_BOSS_TRANSLATIONS = {
+    ko: "그림자 야수|숲의 베히모스|철갑나무 거상|녹음의 고대목|폭풍 약탈자|공허뿌리 황제".split("|"),
+    "pt-BR": "Bruto das Sombras|Beemote da Floresta|Colosso da Casca de Ferro|Ancião Verdejante|Devastador da Tempestade|Imperador das Raízes Vazias".split("|"),
+    fr: "Brute des Ombres|Béhémoth de la Forêt|Colosse d’Écorce de Fer|Ancien Verdoyant|Ravageur de la Tempête|Empereur des Racines du Néant".split("|"),
+    de: "Schattenbestie|Waldbehemot|Eisenrindenkoloss|Uralter Grüner|Sturmverwüster|Leerenwurzel-Kaiser".split("|"),
+    it: "Bruto dell’Ombra|Behemoth della Foresta|Colosso della Corteccia Ferrea|Antico Verdeggiante|Devastatore della Tempesta|Imperatore delle Radici del Vuoto".split("|"),
+    ru: "Теневой зверь|Лесной бегемот|Колосс железной коры|Древний хранитель зелени|Буревой разоритель|Император пустых корней".split("|"),
+  };
+
   const stages = CAMPAIGN_ARCS.flatMap((arc, arcIndex) => arc.names.en.map((name, stageIndex) => {
     const stage = arcIndex * 5 + stageIndex + 1;
     const boss = stageIndex === 4;
@@ -632,6 +649,7 @@
       bossName: boss ? arc.boss.en : "",
       bossNameJa: boss ? arc.boss.ja : "",
       bossNameZht: boss ? arc.boss["zh-Hant"] : "",
+      bossNames: boss ? { en: arc.boss.en, ja: arc.boss.ja, "zh-Hant": arc.boss["zh-Hant"] } : {},
       bossAbility: boss ? arc.boss.ability : "",
       bossHpScale: boss ? 5.6 + arcIndex * 0.9 : 0,
       bossDamage: boss ? 28 + arcIndex * 5 : 0,
@@ -639,6 +657,12 @@
       spawnCadence: Math.max(0.3, 0.88 - stage * 0.016),
     };
   }));
+  Object.entries(CAMPAIGN_NAME_TRANSLATIONS).forEach(([locale, names]) => {
+    stages.forEach((stage, index) => { stage.name[locale] = names[index]; });
+  });
+  Object.entries(CAMPAIGN_BOSS_TRANSLATIONS).forEach(([locale, names]) => {
+    stages.filter((stage) => stage.boss).forEach((stage, index) => { stage.bossNames[locale] = names[index]; });
+  });
   const STAGE_COUNT = stages.length;
 
   function applyCleanTraditionalChineseContent() {
@@ -1790,11 +1814,8 @@
 
   function localizedBossName(stage) {
     if (!stage?.boss) return "";
-    if (state.locale === "ja") return stage.bossNameJa || stage.bossName || t("boss");
-    if (state.locale === "zh-Hans") return stage.bossNameZht || stage.bossName || t("boss");
-    if (state.locale === "zh-Hant") return stage.bossNameZht || stage.bossName || t("boss");
     if (state.locale === "es") return stage.bossNameEs || stage.bossName || t("boss");
-    return stage.bossName || t("boss");
+    return localizedValue(stage.bossNames) || stage.bossName || t("boss");
   }
 
   function updateWaveIntel() {

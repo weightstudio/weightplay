@@ -969,7 +969,7 @@
   let trainingMessageTimer = 0;
   let battlePaused = false;
   let pauseFocusOwner = nodes.pauseBtn;
-  let lifecycleSuspended = document.hidden || !document.hasFocus();
+  let lifecycleSuspended = document.hidden;
   let renderedMovementMission = null;
   let movementAnimationActive = false;
   let movementAnimationTimer = 0;
@@ -1023,7 +1023,13 @@
       movementAnimationTimer = window.setTimeout(() => {
         movementAnimationTimer = 0;
         movementAnimationActive = false;
-        if (state && !nodes.gamePanel.classList.contains("is-hidden")) render();
+        if (state && !nodes.gamePanel.classList.contains("is-hidden")) {
+          render();
+          if (endTurnKeyboardFocusRequested && state.phase === "player") {
+            endTurnKeyboardFocusRequested = false;
+            requestAnimationFrame(() => nodes.endTurnBtn.focus({ preventScroll: true }));
+          }
+        }
       }, longest + 20);
     }
     return lastMovementEvidence.length;
@@ -2345,10 +2351,11 @@
     state.selected = livingHeroes()[0]?.id || null;
     render();
     const ended = checkEnd();
-    if (!ended && endTurnKeyboardFocusRequested && state?.phase === "player") {
+    if (!ended && endTurnKeyboardFocusRequested && state?.phase === "player" && !movementAnimationActive) {
+      endTurnKeyboardFocusRequested = false;
       requestAnimationFrame(() => nodes.endTurnBtn.focus({ preventScroll: true }));
     }
-    endTurnKeyboardFocusRequested = false;
+    if (ended) endTurnKeyboardFocusRequested = false;
   }
 
   function checkEnd() {

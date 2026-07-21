@@ -2,9 +2,9 @@
   const config = window.WONDER_SITE?.localization || {};
   const localeKey = "weightPlayLocale";
   const fallbackLocale = config.fallbackLocale || "en";
-  const supportedLocales = config.phaseOneLocales || ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru"];
-  const localeSegments = Object.freeze({ en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru" });
-  const localeLabels = Object.freeze({ en: "English", "zh-Hant": "繁體中文", "zh-Hans": "简体中文", ja: "日本語", ko: "한국어", es: "Español", "pt-BR": "Português", fr: "Français", de: "Deutsch", it: "Italiano", ru: "Русский" });
+  const supportedLocales = config.phaseOneLocales || ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const localeSegments = Object.freeze({ en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" });
+  const localeLabels = Object.freeze({ en: "English", "zh-Hant": "繁體中文", "zh-Hans": "简体中文", ja: "日本語", ko: "한국어", es: "Español", "pt-BR": "Português", fr: "Français", de: "Deutsch", it: "Italiano", ru: "Русский", hi: "हिन्दी", ar: "العربية" });
   const segmentLocales = Object.freeze(Object.fromEntries(Object.entries(localeSegments).map(([locale, segment]) => [segment, locale])));
 
   function localeFromPath(pathname = window.location?.pathname || "/") {
@@ -1785,6 +1785,7 @@
 
   function syncLocaleCompatibility() {
     if (document.documentElement.lang !== currentLocale) document.documentElement.lang = currentLocale;
+    document.documentElement.dir = currentLocale === "ar" ? "rtl" : "ltr";
     document.documentElement.dataset.weightPlayLocale = currentLocale;
     document.querySelectorAll("select").forEach((select) => {
       const isLanguageSelect = select.querySelector('option[value="en"]') &&
@@ -1816,7 +1817,7 @@
       try { url = new URL(raw, document.baseURI); } catch { return; }
       if (url.origin !== window.location.origin) return;
       const path = url.pathname;
-      const isLocalizedSurface = path === "/" || path === "/kids/" || /^\/(?:en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru)\/(?:kids\/)?$/i.test(path) || /^\/(?:en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru)\/games\/[a-z0-9-]+\/$/i.test(path) || /^\/games\/[a-z0-9-]+\/$/i.test(path);
+      const isLocalizedSurface = path === "/" || path === "/kids/" || /^\/(?:en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)\/(?:kids\/)?$/i.test(path) || /^\/(?:en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)\/games\/[a-z0-9-]+\/$/i.test(path) || /^\/games\/[a-z0-9-]+\/$/i.test(path);
       if (!isLocalizedSurface) return;
       anchor.href = new URL(localizedPath(currentLocale, `${path}${url.search}${url.hash}`), window.location.origin).href;
     });
@@ -1847,6 +1848,7 @@
   }
 
   document.documentElement.lang = currentLocale;
+  document.documentElement.dir = currentLocale === "ar" ? "rtl" : "ltr";
   document.documentElement.dataset.weightPlayLocale = currentLocale;
 
   window.WonderI18n = {

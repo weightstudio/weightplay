@@ -412,6 +412,16 @@
     activePointerId = null;
   }
 
+  function suspendLifecycle() {
+    lifecycleSuspended = true;
+    clearPointerInput();
+  }
+
+  function resumeLifecycle() {
+    lifecycleSuspended = document.hidden || !document.hasFocus();
+    if (!lifecycleSuspended && state.running) lastTime = performance.now();
+  }
+
   function setLeaveOpen(open, restoreFocus = true) {
     if (open === leaveOpen) return;
     leaveOpen = open;
@@ -1568,19 +1578,13 @@
   canvas.addEventListener("lostpointercapture", (event) => {
     if (event.pointerId === activePointerId) clearPointerInput();
   });
-  window.addEventListener("blur", clearPointerInput);
-  window.addEventListener("pagehide", () => {
-    lifecycleSuspended = true;
-    clearPointerInput();
-  });
-  window.addEventListener("pageshow", () => {
-    lifecycleSuspended = document.hidden;
-    if (!lifecycleSuspended && state.running) lastTime = performance.now();
-  });
+  window.addEventListener("blur", suspendLifecycle);
+  window.addEventListener("focus", resumeLifecycle);
+  window.addEventListener("pagehide", suspendLifecycle);
+  window.addEventListener("pageshow", resumeLifecycle);
   document.addEventListener("visibilitychange", () => {
-    lifecycleSuspended = document.hidden;
-    if (lifecycleSuspended) clearPointerInput();
-    else if (state.running) lastTime = performance.now();
+    if (document.hidden) suspendLifecycle();
+    else resumeLifecycle();
   });
 
   renderStaticText();

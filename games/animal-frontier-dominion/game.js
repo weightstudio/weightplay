@@ -24,7 +24,7 @@
   function storageRead(){try{return localStorage.getItem(SAVE_KEY)}catch{return sessionStore.get(SAVE_KEY)||null}}
   function storageWrite(value){sessionStore.set(SAVE_KEY,value);try{localStorage.setItem(SAVE_KEY,value)}catch{}}
   function readSave(){try{return normalizeSave(JSON.parse(storageRead()||'{}'))}catch{return normalizeSave(fallback)}}
-  let save=readSave(),stageIndex=Math.max(0,Math.min(29,save.unlocked-1)),run=null,selectedNode=-1,formation='',tactic='steady',inputLocked=false,lastFocus=null,marchTimer=0,pendingLeave=false;
+  let save=readSave(),stageIndex=Math.max(0,Math.min(29,save.unlocked-1)),run=null,selectedNode=-1,formation='',tactic='steady',inputLocked=false,lastFocus=null,marchTimer=0,marchDueAt=0,marchRemaining=0,marchOwner=null,pendingLeave=false,windowFocused=document.hasFocus();
   const positions=[[18,78],[20,49],[43,69],[43,30],[61,51],[78,72],[82,24]],links=[[0,1],[0,2],[1,3],[1,4],[2,4],[2,5],[3,6],[4,6],[5,6]];
   const defenderKeys=['raiders','wardens','scouts'],modifierKeys=['openGround','supplyCache','watchtower','storm'];
   function stageData(index){const chapter=Math.floor(index/5),power=2+Math.floor(index/3),turns=8+(index%3),required=4+(index>19?1:0);return{index,chapter,power,turns,required,rewardSupply:7+chapter*2,rewardCrystal:2+(index%3),chapterName:t(`chapter${chapter+1}`)}}
@@ -55,7 +55,11 @@
   function renderResearch(){const wallet=window.WeightPlayWallet?.read?.()||{diamonds:0};$('metaSupply').textContent=save.supply;$('metaCrystal').textContent=save.crystal;$('diamondBalance').textContent=wallet.diamonds;const commandCost=5+save.commandLevel*5,moraleCost=5+save.moraleLevel*5;$('commandCost').textContent=save.commandLevel>=3?t('maxed'):t('cost',{n:`${commandCost} ${t('supply')}`});$('moraleCost').textContent=save.moraleLevel>=3?t('maxed'):t('cost',{n:`${moraleCost} ${t('crystal')}`});$$('[data-upgrade]').forEach(button=>button.disabled=save[`${button.dataset.upgrade}Level`]>=3);$('lensUpgrade').disabled=save.lens;$('researchFeedback').textContent=save.lens?t('lensOwned'):''}
   function purchaseResourceUpgrade(type){const levelKey=`${type}Level`,resource=type==='command'?'supply':'crystal',nameKey=type==='command'?'commandTent':'moraleCamp',cost=5+save[levelKey]*5;if(save[levelKey]>=3)return;if(save[resource]<cost){$('researchFeedback').textContent=t('needResourceDetail',{cost,resource:t(resource),current:save[resource]});return}save[resource]-=cost;save[levelKey]++;persist();renderResearch();$('researchFeedback').textContent=t('purchasedDetail',{name:t(nameKey),level:save[levelKey]});window.WonderSound?.play?.('success')}
   function purchaseLens(){if(save.lens)return;const current=Number(window.WeightPlayWallet?.read?.().diamonds||0);if(!window.WeightPlayWallet?.spendDiamonds?.(25)){$('researchFeedback').textContent=t('needDiamondsDetail',{current});return}save.lens=true;persist();renderResearch();$('researchFeedback').textContent=t('lensPurchased');window.WonderSound?.play?.('success')}
-  function clearMarchTimer(){if(marchTimer){clearTimeout(marchTimer);marchTimer=0}}
+  function clearMarchTimer(){if(marchTimer){clearTimeout(marchTimer);marchTimer=0}marchDueAt=0;marchRemaining=0;marchOwner=null}
+  function completeMarchSettlement(activeRun){marchTimer=0;marchDueAt=0;marchRemaining=0;marchOwner=null;if(run!==activeRun||run.ended)return;inputLocked=false;if(run.owned.has(6)&&run.owned.size>=run.data.required){finish(true);return}if(run.morale<=0||run.turn>run.data.turns){finish(false);return}renderBattle();if(pendingLeave){pendingLeave=false;openLeave()}}
+  function armMarchSettlement(delay,activeRun=marchOwner){if(!activeRun||run!==activeRun||run.ended)return;marchOwner=activeRun;marchRemaining=Math.max(0,Number(delay)||0);marchDueAt=performance.now()+marchRemaining;marchTimer=setTimeout(()=>completeMarchSettlement(activeRun),marchRemaining)}
+  function suspendMarchSettlement(){if(!marchTimer)return;marchRemaining=Math.max(0,marchDueAt-performance.now());clearTimeout(marchTimer);marchTimer=0;marchDueAt=0}
+  function resumeMarchSettlement(){if(marchTimer||!marchOwner||document.hidden||!windowFocused)return;if(run!==marchOwner||run?.ended){clearMarchTimer();return}armMarchSettlement(marchRemaining,marchOwner)}
   function startBattle(index){clearMarchTimer();pendingLeave=false;inputLocked=false;stageIndex=Math.max(0,Math.min(29,boundedInteger(index,0,29)));const data=stageData(stageIndex);run={data,turn:1,morale:10+save.moraleLevel*2,supply:4,command:2+save.commandLevel,owned:new Set([0]),scouted:new Set(),failed:new Set(),fortified:new Set([0]),head:0,freeScout:save.lens,pressureLoss:0,tacticalHistory:[],ended:false};selectedNode=-1;formation='';tactic='steady';screen('battle');$('result').hidden=true;$('leave').hidden=true;$('battleLive').hidden=false;$('battleLive').inert=false;$('battleLive').setAttribute('aria-hidden','false');renderBattle();$('commandValue').textContent=run.command;$('scout').textContent=run.freeScout?t('freeScout'):t('scout');window.WonderSound?.play?.('start');track('game_start')}
   function neighbours(node){return links.filter(pair=>pair.includes(node)).map(pair=>pair[0]===node?pair[1]:pair[0])}
   function availableNodes(){const available=new Set;run.owned.forEach(node=>neighbours(node).forEach(next=>{if(!run.owned.has(next))available.add(next)}));return available}
@@ -74,6 +78,7 @@
   function fortify(){if(!run||run.ended||inputLocked)return;if(run.fortified.has(run.head))return;if(run.command<1||run.supply<1){$('feedback').textContent=t('fortifyNeed');return}run.command--;run.supply--;run.fortified.add(run.head);run.tacticalHistory.push({type:'fortify',node:run.head});$('feedback').textContent=t('fortifyDone');window.WonderSound?.play?.('success');renderBattle()}
   function resolveCounterattack(suppressed=false){if(suppressed)return'';const fronts=[...run.owned].filter(node=>node!==0).map(node=>({node,pressure:borderPressure(node)})).filter(item=>item.pressure>=2).sort((a,b)=>b.pressure-a.pressure);const target=fronts[0];if(!target)return'';if(run.fortified.has(target.node)){run.fortified.delete(target.node);return t('heldPressure')}const loss=Math.min(3,target.pressure-1+(run.data.chapter>=4?1:0));run.morale-=loss;run.pressureLoss+=loss;return t('counterattack',{loss})}
   function march(){
+    if(inputLocked)return
     if(selectedNode<0){$('feedback').textContent=t('selectTarget');return}
     if(!formation){$('feedback').textContent=t('selectFormation');return}
     const previewNode=nodeData(run.data,selectedNode);
@@ -108,15 +113,7 @@
     run.tacticalHistory.push({type:'march',target,formation,tactic,flank:preview.flank,support:preview.support,playerPower:preview.playerPower,enemyPower:preview.enemyPower});
     selectedNode=-1;formation='';
     const activeRun=run;
-    marchTimer=setTimeout(()=>{
-      marchTimer=0;
-      if(run!==activeRun||run.ended)return;
-      inputLocked=false;
-      if(run.owned.has(6)&&run.owned.size>=run.data.required){finish(true);return}
-      if(run.morale<=0||run.turn>run.data.turns){finish(false);return}
-      renderBattle();
-      if(pendingLeave){pendingLeave=false;openLeave()}
-    },650)
+    armMarchSettlement(650,activeRun)
   }
   function finish(won){clearMarchTimer();pendingLeave=false;inputLocked=false;run.ended=true;const data=run.data;$('battleLive').hidden=true;$('battleLive').inert=true;$('battleLive').setAttribute('aria-hidden','true');$('result').hidden=false;const stars=won?Math.max(1,3-run.failed.size):0;$('resultKicker').textContent=won?t('secured'):t('defeatKicker');$('resultTitle').textContent=won?t('victory'):t('defeat');$('resultText').textContent=won?t('victoryText'):t('defeatText');$('resultRewards').textContent=won?`★ ${stars} · +${data.rewardSupply} ${t('supply')} · +${data.rewardCrystal} ${t('crystal')}`:'';const canContinue=won&&stageIndex<29;$('nextRegion').hidden=!canContinue;const primary=canContinue?$('nextRegion'):won?$('resultMap'):$('retry');[$('retry'),$('resultMap'),$('nextRegion')].forEach(button=>button.classList.toggle('primary',button===primary));if(won){save.completed[stageIndex]=true;save.stars[stageIndex]=Math.max(save.stars[stageIndex]||0,stars);save.unlocked=Math.max(save.unlocked,Math.min(30,stageIndex+2));save.supply+=data.rewardSupply;save.crystal+=data.rewardCrystal;persist();track('game_complete',{stars})}else track('game_fail');requestAnimationFrame(()=>primary.focus({preventScroll:true}))}
   function openLeave(){if(!run||run.ended){returnToStage();return}if(inputLocked){pendingLeave=true;return}lastFocus=document.activeElement;$('leave').hidden=false;$('battleLive').inert=true;$('battleLive').setAttribute('aria-hidden','true');requestAnimationFrame(()=>$('continueBattle').focus({preventScroll:true}))}
@@ -140,6 +137,11 @@
     $('scout').onclick=scout;$('fortify').onclick=fortify;$('march').onclick=march;$('continueBattle').onclick=closeLeave;$('leaveMap').onclick=returnToStage;
     $('retry').onclick=()=>startBattle(stageIndex);$('resultMap').onclick=returnToStage;$('nextRegion').onclick=()=>startBattle(Math.min(29,stageIndex+1));
     document.addEventListener('keydown',event=>{trapModalFocus(event);if(event.key==='Escape'&&!$('leave').hidden){event.preventDefault();closeLeave()}});
+    window.addEventListener('blur',()=>{windowFocused=false;suspendMarchSettlement()});
+    window.addEventListener('focus',()=>{windowFocused=true;resumeMarchSettlement()});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden)suspendMarchSettlement();else if(windowFocused)resumeMarchSettlement()});
+    window.addEventListener('pagehide',suspendMarchSettlement);
+    window.addEventListener('pageshow',()=>{windowFocused=document.hasFocus();if(windowFocused)resumeMarchSettlement()});
   }
   bind();const assets=['../../assets/animal-frontier-dominion/cover.webp','../../assets/animal-frontier-dominion/frontier-map.webp','../../assets/weightplay-character-gear-horn-rhino-cutout.webp','../../assets/weightplay-character-moon-cap-owl-cutout.webp'];let loaded=0;Promise.allSettled(assets.map(src=>new Promise(resolve=>{const image=new Image,done=()=>{loaded++;$('loadingFill').style.width=`${loaded/assets.length*100}%`;resolve()};image.onload=done;image.onerror=done;image.src=src}))).then(()=>setTimeout(()=>{$('loading').hidden=true;screen('main');track('game_view')},160));
   window.__animalFrontierDominionTest={stageData,nodeData,startBattle,selectNode,scout,march,fortify,finish,availableNodes,combatPreview,setFormation:value=>{formation=value;renderBattle()},setTactic:value=>{tactic=value;renderBattle()},snapshot:()=>({save,stageIndex,formation,tactic,run:run?{...run,owned:[...run.owned],scouted:[...run.scouted],failed:[...run.failed],fortified:[...run.fortified]}:null})};

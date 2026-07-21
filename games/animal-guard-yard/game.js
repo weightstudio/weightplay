@@ -312,6 +312,12 @@
       stagePlan8: "最終 Boss，保留陽光補中路與防線。",
     },
   };
+  text.ko = Object.assign(Object.create(text.en), {
+    locked: "잠긴 스테이지",
+    resultWin: "스테이지 {n} 완료! 집 하트가 {hp}개 남았어요.",
+    stage: "스테이지 {n}",
+    wave: "스테이지 {n} · 남은 야수 {left}",
+  });
 
   text.es = {
     gameTitle: "Guardianes Animales del Jardín",
@@ -971,7 +977,7 @@
   }
 
   function localizeStatic() {
-    document.documentElement.lang = ["zh-Hant", "zh-Hans", "es"].includes(locale) ? locale : "en";
+    document.documentElement.lang = window.WonderI18n?.actualLocale?.() || locale;
     document.title = `${t("gameTitle")} - WeightPlay`;
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
