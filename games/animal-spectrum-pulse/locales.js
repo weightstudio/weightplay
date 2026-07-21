@@ -39,6 +39,20 @@ const studioFeedback={
   ru:{studioReady:"Выбери настройку. Стоимость и баланс останутся видимыми.",needNotes:"Нужно Звёздных нот: {cost}. Сейчас: {n}.",needDiamonds:"Нужно 10 Алмазов. Сейчас: {n}.",upgradeComplete:"{name}: настройка {level}/3.",trailComplete:"Звёздный след барабана открыт.",trainingSaved:"Учебный такт вернул стартовую точку. Следующая ошибка завершит попытку."},
 };
 for(const [code,copy] of Object.entries(studioFeedback))Object.assign(catalogs[code],copy);
+const practiceFeedback={
+  en:"Practice Beat returned you to the safe point. Watch the emblem and try again.",
+  "zh-Hant":"練習節拍已送你回安全點；看準相同紋章後再試一次。",
+  "zh-Hans":"练习节拍已送你回安全点；看准相同纹章后再试一次。",
+  ja:"練習ビートで安全地点に戻りました。同じ紋章を見て、もう一度試してください。",
+  ko:"연습 비트가 안전 지점으로 돌려보냈습니다. 같은 문양을 확인하고 다시 시도하세요.",
+  es:"El pulso de práctica te devolvió al punto seguro. Mira el emblema e inténtalo otra vez.",
+  "pt-BR":"O pulso de treino levou você ao ponto seguro. Observe o emblema e tente novamente.",
+  fr:"Le rythme d'entraînement vous ramène au point sûr. Observez l'emblème et réessayez.",
+  de:"Der Übungstakt bringt dich zum sicheren Punkt zurück. Beobachte das Emblem und versuche es erneut.",
+  it:"Il ritmo di prova ti riporta al punto sicuro. Osserva l'emblema e riprova.",
+  ru:"Учебный такт вернул вас в безопасную точку. Следите за символом и попробуйте снова.",
+};
+for(const [code,value] of Object.entries(practiceFeedback))catalogs[code].trainingSaved=value;
 const keys=Object.keys(en);for(const [code,copy] of Object.entries(catalogs)){const missing=keys.filter(key=>!(key in copy));if(missing.length)throw new Error(`Animal Spectrum Pulse locale ${code} missing: ${missing.join(", ")}`)}
 window.SPECTRUM_PULSE_LOCALES=catalogs;
 })();

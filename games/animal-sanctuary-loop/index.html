@@ -50,7 +50,7 @@
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
         <header class="battle-header"><button id="battleBack" type="button" aria-label="Back" data-wp-return="battle" data-ta="back">←</button><div class="progress-block"><small id="missionLabel"></small><strong id="progressValue">0%</strong></div><div class="battle-status"><span><b data-t="hearts">Hearts</b><strong id="heartsValue">3</strong></span><span><b data-t="time">Time</b><strong id="timeValue">90</strong></span></div><button id="battleHelp" class="help-action" type="button" aria-label="How to play" data-ta="help">?</button></header>
-        <p id="objective" class="objective-row"></p>
+        <div class="objective-row"><span id="objective"></span><small id="missionTwist"></small></div>
         <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="768" height="768" aria-label="Sanctuary territory arena" data-ta="arenaLabel"></canvas><div id="touchPad" class="touch-pad" aria-label="Direction controls" data-ta="directionControls"><button data-dir="up" aria-label="Up" data-ta="up">↑</button><button data-dir="left" aria-label="Left" data-ta="left">←</button><button data-dir="down" aria-label="Down" data-ta="down">↓</button><button data-dir="right" aria-label="Right" data-ta="right">→</button></div></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>
       </div>

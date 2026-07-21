@@ -2028,6 +2028,8 @@ body.reef-fisher-playing .tension-coach {
   color: #123d43;
   font-size: 11px;
   line-height: 16px;
+  white-space: normal;
+  text-overflow: clip;
 }
 
 body.reef-fisher-playing .hint {

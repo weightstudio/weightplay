@@ -52,6 +52,27 @@
     tutorial3:["A shadow touching your open trail costs one heart.","暗影碰到尚未閉合的光軌時會失去一顆心。","暗影碰到尚未闭合的光轨时会失去一颗心。","影が開いた軌跡に触れるとハートを1つ失います。","그림자가 열린 궤적에 닿으면 하트 하나를 잃습니다.","Si una sombra toca el rastro abierto, pierdes una vida.","Se uma sombra tocar a trilha aberta, você perde uma vida.","Une ombre qui touche la piste ouverte vous coûte une vie.","Berührt ein Schatten die offene Spur, verlierst du ein Herz.","Se un'ombra tocca la scia aperta, perdi una vita.","Если тень коснётся открытого следа, вы потеряете одно сердце."],
     tutorialDone:["Start restoring","開始修復","开始修复","修復を始める","복원 시작","Empezar a restaurar","Começar a restaurar","Commencer la restauration","Rettung beginnen","Inizia il ripristino","Начать восстановление"],
   };
+  Object.assign(rows, {
+    lockedBadge:["Locked","已鎖定","已锁定","ロック中","잠김","Bloqueada","Bloqueada","Verrouillée","Gesperrt","Bloccata","Заблокировано"],
+    styleAlreadySelected:["{style} is already equipped.","目前已裝備「{style}」。","当前已装备“{style}”。","「{style}」は装備中です。","{style}은(는) 이미 장착 중입니다.","{style} ya está equipado.","{style} já está equipado.","{style} est déjà équipé.","{style} ist bereits ausgerüstet.","{style} è già equipaggiato.","{style} уже используется."],
+    styleEquipped:["{style} equipped.","已裝備「{style}」。","已装备“{style}”。","「{style}」を装備しました。","{style}을(를) 장착했습니다.","{style} equipado.","{style} equipado.","{style} équipé.","{style} ausgerüstet.","{style} equipaggiato.","Стиль «{style}» выбран."],
+    noDiamondsDetail:["Need {cost} diamonds · balance {balance}.","需要 {cost} 顆鑽石，目前有 {balance} 顆。","需要 {cost} 颗钻石，当前有 {balance} 颗。","ダイヤが {cost} 個必要です（所持：{balance} 個）。","다이아몬드 {cost}개 필요 · 보유 {balance}개.","Necesitas {cost} diamantes · saldo: {balance}.","Precisa de {cost} diamantes · saldo: {balance}.","Il faut {cost} diamants · solde : {balance}.","Benötigt {cost} Diamanten · Bestand: {balance}.","Servono {cost} diamanti · saldo: {balance}.","Нужно алмазов: {cost} · в наличии: {balance}."],
+    styleBoughtDetail:["{style} unlocked and equipped.","已解鎖並裝備「{style}」。","已解锁并装备“{style}”。","「{style}」を解放して装備しました。","{style}을(를) 해금하고 장착했습니다.","{style} desbloqueado y equipado.","{style} desbloqueado e equipado.","{style} débloqué et équipé.","{style} freigeschaltet und ausgerüstet.","{style} sbloccato ed equipaggiato.","Стиль «{style}» открыт и выбран."],
+    missionFailedKicker:["Mission ended","任務結束","任务结束","任務終了","임무 종료","Misión terminada","Missão encerrada","Mission terminée","Mission beendet","Missione terminata","Миссия завершена"],
+    layoutHeart:["Heartland","核心聖域","核心圣域","中心聖域","중심 성역","Núcleo","Núcleo","Cœur du sanctuaire","Kernland","Cuore del santuario","Сердце святилища"],
+    layoutCross:["Crossroads","十字聖域","十字圣域","十字聖域","교차 성역","Cruce","Encruzilhada","Carrefour","Kreuzung","Crocevia","Перекрёсток"],
+    layoutTwin:["Twin Isles","雙島聖域","双岛圣域","双島聖域","쌍둥이 섬","Islas gemelas","Ilhas gêmeas","Îles jumelles","Zwillingsinseln","Isole gemelle","Парные острова"],
+    layoutEdge:["Border Haven","邊境聖域","边境圣域","辺境聖域","변경 성역","Refugio fronterizo","Refúgio da fronteira","Refuge frontalier","Grenzzuflucht","Rifugio di confine","Пограничный приют"],
+    layoutRing:["Moon Ring","月環聖域","月环圣域","月環聖域","달의 고리","Anillo lunar","Anel lunar","Anneau lunaire","Mondring","Anello lunare","Лунное кольцо"],
+    layoutIslands:["Sanctuary Isles","聖域群島","圣域群岛","聖域諸島","성역 군도","Islas santuario","Ilhas do santuário","Îles du sanctuaire","Zufluchtsinseln","Isole del santuario","Острова святилища"],
+    enemyProwler:["Shadow Stalker","暗影獵手","暗影猎手","影の追跡者","그림자 추적자","Acechador sombrío","Espreitador sombrio","Traqueur d’ombre","Schattenjäger","Predatore d’ombra","Теневой охотник"],
+    enemyRunner:["Crystal Runner","水晶疾獸","水晶疾兽","結晶ランナー","수정 질주자","Corredor de cristal","Corredor de cristal","Coureur de cristal","Kristallläufer","Corridore di cristallo","Кристальный бегун"],
+    enemyTank:["Stone Brute","巨石獸","巨石兽","岩の巨獣","바위 거수","Bestia pétrea","Fera de pedra","Brute de pierre","Steinkoloss","Bestia di pietra","Каменный громила"],
+    enemySentry:["Beacon Warden","信標守衛","信标守卫","ビーコンの番人","신호 수호자","Guardián de baliza","Guardião do sinal","Gardien de balise","Signalwächter","Guardiano del faro","Страж маяка"],
+    enemyGuardian:["Guardian","守護者","守护者","守護者","수호자","Guardián","Guardião","Gardien","Wächter","Guardiano","Страж"],
+    barrierHit:["Ancient ruins block this route.","古代遺跡擋住了這條路。","古代遗迹挡住了这条路。","古代遺跡が進路を塞いでいる。","고대 유적이 길을 막고 있습니다.","Las ruinas antiguas bloquean esta ruta.","Ruínas antigas bloqueiam esta rota.","Des ruines antiques bloquent ce passage.","Alte Ruinen blockieren diesen Weg.","Le rovine antiche bloccano il percorso.","Древние руины преграждают путь."],
+    borderShrunk:["The eclipse consumed the sanctuary edge!","月蝕吞噬了聖域外圍！","月蚀吞噬了圣域外围！","蝕が聖域の外縁を奪った！","월식이 성역 가장자리를 삼켰습니다!","¡El eclipse consumió el borde del santuario!","O eclipse consumiu a borda do santuário!","L’éclipse a dévoré la lisière du sanctuaire !","Die Finsternis hat den Rand verschlungen!","L’eclissi ha divorato il bordo del santuario!","Затмение поглотило край святилища!"],
+  });
   const dictionaries={};
   codes.forEach((code,index)=>{dictionaries[code]={};Object.entries(rows).forEach(([key,values])=>{dictionaries[code][key]=values[index]||values[0];});});
   window.AnimalSanctuaryLoopLocales={codes,dictionaries};

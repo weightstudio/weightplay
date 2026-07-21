@@ -348,6 +348,7 @@
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
   };
+  nodes.resultPanel?.querySelector("[data-ui='lobby']")?.remove();
   nodes.hintStatus.setAttribute("role", "status");
   nodes.hintStatus.setAttribute("aria-live", "polite");
   nodes.hintStatus.setAttribute("aria-atomic", "true");

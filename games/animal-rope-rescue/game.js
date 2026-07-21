@@ -357,6 +357,7 @@
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
   };
+  nodes.resultPanel?.querySelector("[data-ui='lobby']")?.remove();
 
   function setNodeText(node, value) {
     if (node && node.textContent !== value) node.textContent = value;
@@ -402,7 +403,7 @@
     attributeFilter: ["class", "aria-label"],
   });
 
-  // Keep canonical and localized shells on the Kids full-viewport Canvas contract.
+  // Keep canonical and localized shells on the Kids 920px-capped Canvas contract.
   nodes.stagePanel.dataset.wpCanvasMaxWidth = "920";
   nodes.gamePanel.dataset.wpCanvasMaxWidth = "920";
   window.dispatchEvent(new Event("resize"));

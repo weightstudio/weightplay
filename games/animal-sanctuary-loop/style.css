@@ -6,6 +6,11 @@
 .main-group,.active-screen,.stage-canvas,.stage-card,.arena-wrap canvas{background-image:linear-gradient(#07152ac9,#07101ee8),url('../../assets/animal-sanctuary-loop/arena.webp')}
 .arena-wrap{background:linear-gradient(#07152a8f,#07101ebd),url('../../assets/animal-sanctuary-loop/arena.webp') center/cover}
 .stage-card{width:264px;height:190px;flex-basis:264px}
+.stage-card.locked.centered{filter:saturate(.45) brightness(.72)}
+.stage-card.locked>small:first-child{color:#ffd862;text-transform:uppercase;letter-spacing:.08em}
+.stage-card .stage-twist{color:#ffd862;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.objective-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px}
+.objective-row small{max-width:46vw;color:#ffd862;overflow:hidden;text-overflow:ellipsis}
 .battle-header{grid-template-columns:52px minmax(0,1fr) minmax(138px,30%) 52px}
 .battle-header>.help-action{width:48px;height:48px}
 .modal-layer button:focus-visible,.stage-card:focus-visible,.trail-style:focus-visible{outline:4px solid #fff176;outline-offset:2px}
@@ -18,3 +23,12 @@
 /* The arena artwork belongs to the full play surface; the square simulation
    layer stays transparent so it never reads as a pasted-on second scene. */
 .arena-wrap canvas{background:transparent}
+
+/* Objective and authored encounter identity are separate rows so long locales
+   never collide while the player is steering. */
+.battle-live{grid-template-rows:70px 52px minmax(0,1fr) 28px}
+.objective-row{grid-template-columns:minmax(0,1fr);align-content:center;gap:1px;padding:4px 8px;line-height:1.15}
+.objective-row>span,.objective-row>small{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.objective-row>small{font-size:11px;color:#ffd862}
+@media(max-width:640px){.battle-live{grid-template-rows:66px 48px minmax(0,1fr) 25px}.objective-row{font-size:13px}.objective-row>small{font-size:10px}}
+@media(max-height:500px) and (min-aspect-ratio:3/2){.battle-live{grid-template-rows:58px 44px minmax(0,1fr) 24px}.objective-row{font-size:12px}}

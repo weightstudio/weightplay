@@ -52,7 +52,7 @@
     currentScreen=name;document.body.dataset.screen=name;
     $("mainGroup").hidden=name!=="main";$("stage").hidden=name!=="stage";$("battle").hidden=name!=="battle";
     if(name==="main"){$("start").focus();scrollTo(0,0)}
-    if(name==="stage"){renderStage();requestAnimationFrame(()=>centerStage(Math.min(save.unlocked-1,29)))}
+    if(name==="stage"){renderStage();renderLab();$("labFeedback").textContent="";requestAnimationFrame(()=>centerStage(Math.min(save.unlocked-1,29)))}
   }
   function renderMain(){$("mainProgress").textContent=`${Object.keys(save.stars).length} / 30`}
   function updateSoundToggle(){const button=$("soundToggle"),muted=Boolean(window.WonderSound?.isMuted?.());if(!button)return;button.textContent=muted?"🔇":"🔊";button.title=t("sound");button.setAttribute("aria-label",t(muted?"enableSound":"disableSound"));button.classList.toggle("muted",muted)}
@@ -63,7 +63,7 @@
     $("stageRail").replaceChildren(...stages.map((stage,index)=>{
       const locked=stage.n>save.unlocked,button=document.createElement("button");
       button.type="button";button.className=`stage-card${locked?" locked":""}`;button.dataset.stage=String(stage.n);button.dataset.index=String(index);button.setAttribute("aria-disabled",locked?"true":"false");
-      button.innerHTML=`<span>${chapterName(stage)}</span><strong>${stage.n}</strong><b>${stage.boss?"◆ ":""}${t("fortress")} ${stage.fortress}</b><small>${"★".repeat(save.stars[stage.n]||0)}${"☆".repeat(3-(save.stars[stage.n]||0))}</small>`;
+      button.innerHTML=`<span>${locked?t("lockedBadge"):chapterName(stage)}</span><strong>${stage.n}</strong><b>${stage.boss?"◆ ":""}${t("fortress")} ${stage.fortress}</b><small>${"★".repeat(save.stars[stage.n]||0)}${"☆".repeat(3-(save.stars[stage.n]||0))}</small>`;
       button.addEventListener("click",()=>{if(locked){$("stageHint").textContent=t("stageLocked");return}startBattle(index)});
       return button;
     }));
@@ -85,8 +85,8 @@
       button.addEventListener("click",()=>buyUpgrade(id));return button;
     }));
   }
-  function buyUpgrade(id){const level=save.upgrades[id];if(level>=5)return;const cost=upgradeCost(level);if(save.shards<cost){$("labFeedback").textContent=t("noShards");return}save.shards-=cost;save.upgrades[id]+=1;persist();renderLab();$("labFeedback").textContent=t("purchased");window.WonderSound?.play?.("success")}
-  document.querySelectorAll("[data-tab]").forEach((button)=>button.addEventListener("click",()=>{document.querySelectorAll("[data-tab]").forEach((item)=>{const active=item===button;item.classList.toggle("active",active);item.setAttribute("aria-selected",active?"true":"false")});$("missionsTab").hidden=button.dataset.tab!=="missions";$("labTab").hidden=button.dataset.tab!=="lab"}));
+  function buyUpgrade(id){const level=save.upgrades[id];if(level>=5)return;const cost=upgradeCost(level),name=t(upgradeData[id].name);if(save.shards<cost){$("labFeedback").textContent=t("needShardsDetail",{name,cost,balance:save.shards});return}save.shards-=cost;save.upgrades[id]+=1;persist();renderLab();$("labFeedback").textContent=t("upgradePurchasedDetail",{name,level:save.upgrades[id],balance:save.shards});window.WonderSound?.play?.("success")}
+  document.querySelectorAll("[data-tab]").forEach((button)=>button.addEventListener("click",()=>{document.querySelectorAll("[data-tab]").forEach((item)=>{const active=item===button;item.classList.toggle("active",active);item.setAttribute("aria-selected",active?"true":"false")});$("missionsTab").hidden=button.dataset.tab!=="missions";$("labTab").hidden=button.dataset.tab!=="lab";if(button.dataset.tab==="lab"){renderLab();$("labFeedback").textContent=""}}));
   $("start").addEventListener("click",()=>showScreen("stage"));$("stageBack").addEventListener("click",()=>showScreen("main"));
   $("locale").addEventListener("change",(event)=>{locale=canonicalLocale(event.target.value);storage.set("wonderLocale",locale);applyLocale()});
   $("soundToggle").addEventListener("keydown",(event)=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
@@ -114,13 +114,13 @@
   }
   function startBattle(index){
     const stageIndex=Math.max(0,Math.min(29,Math.trunc(index))),stage=stages[stageIndex];
-    run={stageIndex,stage,time:stage.time,core:3+Math.floor(save.upgrades.armor/2),maxCore:3+Math.floor(save.upgrades.armor/2),fortress:stage.fortress,maxFortress:stage.fortress,aimX:.28,units:[],enemies:enemyWave(stage),gates:makeGates(stage),particles:[],texts:[],fireClock:0,waveClock:0,wavesSpawned:1,charge:0,overdrive:0,peak:0,coreHits:0,paused:false,finished:false,lastGateMessage:""};
+    run={stageIndex,stage,time:stage.time,core:3+save.upgrades.armor,maxCore:3+save.upgrades.armor,fortress:stage.fortress,maxFortress:stage.fortress,aimX:.28,units:[],enemies:enemyWave(stage),gates:makeGates(stage),particles:[],texts:[],fireClock:0,waveClock:0,wavesSpawned:1,charge:0,overdrive:0,peak:0,coreHits:0,paused:false,finished:false,lastGateMessage:""};
     $("leave").hidden=true;$("tutorial").hidden=true;$("result").hidden=true;$("battleLive").hidden=false;$("battleLive").inert=false;showScreen("battle");updateHud(true);$("feedback").textContent="";lastTime=performance.now();stopLoop();raf=requestAnimationFrame(frame);window.WonderSound?.play?.("start");if(!save.tutorialSeen)requestAnimationFrame(()=>openTutorial())
   }
   function stopLoop(){if(raf)cancelAnimationFrame(raf);raf=0}
   function resumeLoop(){if(!run||run.finished||run.paused||raf)return;lastTime=performance.now();raf=requestAnimationFrame(frame)}
   function gateLabel(gate){return gate.kind==="mul"?`×${gate.value}`:gate.kind==="add"?`+${gate.value}`:`−${gate.value}`}
-  function updateHud(force=false){if(!run)return;const key=`${Math.ceil(run.time)}|${run.core}|${Math.ceil(run.fortress)}|${Math.floor(run.charge)}|${locale}`;if(!force&&key===lastHud)return;lastHud=key;$("missionLabel").textContent=`${chapterName(run.stage)} · ${run.stage.n}/30`;$("fortressValue").textContent=`${t("fortress")} ${Math.max(0,Math.ceil(run.fortress/run.maxFortress*100))}%`;$("coreValue").textContent="♥".repeat(run.core);$("timeValue").textContent=Math.max(0,Math.ceil(run.time));$("objective").textContent=t("objective");$("overdriveValue").textContent=`${Math.floor(run.charge)}%`;$("overdrive").classList.toggle("ready",run.charge>=100)}
+  function updateHud(force=false){if(!run)return;const key=`${Math.ceil(run.time)}|${run.core}|${Math.ceil(run.fortress)}|${Math.floor(run.charge)}|${Math.ceil(run.overdrive*10)}|${locale}`;if(!force&&key===lastHud)return;lastHud=key;$("missionLabel").textContent=`${chapterName(run.stage)} · ${run.stage.n}/30`;$("fortressValue").textContent=`${t("fortress")} ${Math.max(0,Math.ceil(run.fortress/run.maxFortress*100))}%`;$("coreValue").textContent=run.core<=4?"♥".repeat(run.core):`♥ ×${run.core}`;$("timeValue").textContent=Math.max(0,Math.ceil(run.time));$("objective").textContent=t("objective");$("overdrive").querySelector("span").textContent=t(run.overdrive>0?"overdriveActive":"overdrive");$("overdriveValue").textContent=run.overdrive>0?t("secondsShort",{seconds:run.overdrive.toFixed(1)}):`${Math.floor(run.charge)}%`;$("overdrive").classList.toggle("ready",run.charge>=100);$("overdrive").classList.toggle("active",run.overdrive>0)}
   function addText(x,y,text,color){run.texts.push({x,y,text,color,life:1})}
   function addBurst(x,y,color,count=8){for(let i=0;i<count;i+=1){const a=Math.PI*2*i/count+Math.random()*.3,s=.025+Math.random()*.045;run.particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,color,life:.65+Math.random()*.35})}}
   function updatePeak(){if(run)run.peak=Math.max(run.peak,Math.round(run.units.reduce((sum,unit)=>sum+unit.count,0)))}
@@ -130,7 +130,7 @@
     if(gate.kind==="mul")unit.count=Math.min(80,unit.count*gate.value);else if(gate.kind==="add")unit.count=Math.min(80,unit.count+gate.value);else unit.count=Math.max(1,unit.count-gate.value);
     const delta=unit.count-before,positive=delta>0;if(positive)run.charge=Math.min(100,run.charge+Math.min(16,4+delta));
     addText(gate.x,gate.y-.03,positive?`+${delta}`:`${delta}`,positive?"#72f4d8":"#ff6f85");addBurst(gate.x,gate.y,positive?"#5ff4db":"#ff5f7b",6);
-    const message=t(positive?"gateBoost":"gateDrain",{count:Math.abs(delta)});if(message!==run.lastGateMessage){run.lastGateMessage=message;$("feedback").textContent=message}
+    const message=t(positive?"gateBoost":"gateDrain",{count:Math.abs(delta)});if(message!==run.lastGateMessage){run.lastGateMessage=message;if(run.overdrive<=0)$("feedback").textContent=message}
     updatePeak();if(run.charge>=100)$("feedback").textContent=t("overdriveReady");
   }
   function update(dt){
@@ -175,7 +175,7 @@
   canvas.addEventListener("pointerdown",(event)=>{canvas.setPointerCapture?.(event.pointerId);aimFromEvent(event)});canvas.addEventListener("pointermove",(event)=>{if(event.buttons||event.pointerType==="touch")aimFromEvent(event)});
   const held=new Set();window.addEventListener("keydown",(event)=>{if(["ArrowLeft","ArrowRight","a","A","d","D"].includes(event.key)&&currentScreen==="battle"&&!activeModal()){event.preventDefault();held.add(event.key)}if(event.key===" "&&currentScreen==="battle"&&!activeModal()){event.preventDefault();activateOverdrive()}if(event.key==="Escape"&&!event.defaultPrevented&&currentScreen==="battle"&&!activeModal())openLeave()});window.addEventListener("keyup",(event)=>held.delete(event.key));window.addEventListener("blur",()=>held.clear());document.addEventListener("visibilitychange",()=>{if(document.hidden)held.clear()});
   setInterval(()=>{if(!run||run.paused||run.finished)return;const left=["ArrowLeft","a","A"].some((key)=>held.has(key)),right=["ArrowRight","d","D"].some((key)=>held.has(key));if(left!==right)run.aimX=Math.max(.08,Math.min(.92,run.aimX+(right?1:-1)*.028))},16);
-  function activateOverdrive(){if(!run||run.paused||run.finished||run.charge<100)return false;run.charge=0;run.overdrive=3.6;$("feedback").textContent=t("overdriveUsed");addBurst(run.aimX,.86,"#ffe273",24);window.WonderSound?.play?.("success");return true}
+  function activateOverdrive(){if(!run||run.paused||run.finished)return false;if(run.charge<100){$("feedback").textContent=t("overdriveNeed",{charge:Math.floor(run.charge)});return false}run.charge=0;run.overdrive=3.6;$("feedback").textContent=t("overdriveUsed");updateHud(true);addBurst(run.aimX,.86,"#ffe273",24);window.WonderSound?.play?.("success");return true}
   $("overdrive").addEventListener("click",activateOverdrive);
 
   function activeModal(){return[$("leave"),$("tutorial"),$("result")].find((modal)=>!modal.hidden)||null}
@@ -189,7 +189,7 @@
   function finish(won){
     if(!run||run.finished)return;run.finished=true;run.paused=true;stopLoop();const remaining=Math.max(0,Math.ceil(run.time)),stars=won?1+(remaining>run.stage.time*.25?1:0)+(run.core===run.maxCore?1:0):0,earned=won?3+stars+run.stage.chapter:0;
     if(won){save.stars[run.stage.n]=Math.max(Number(save.stars[run.stage.n])||0,stars);save.unlocked=Math.max(save.unlocked,Math.min(30,run.stage.n+1));save.shards=Math.min(9999,save.shards+earned);persist()}
-    $("resultKicker").textContent=won?`${t("shardsEarned")} +${earned}`:t("missionFailed");$("resultTitle").textContent=t(won?"missionComplete":"missionFailed");$("resultText").textContent=t(won?"victoryText":"failureText");$("resultStats").innerHTML=`<span><b>${t("strength")}</b><strong>${run.peak}</strong></span><span><b>${t("coreHits")}</b><strong>${run.core}/${run.maxCore}</strong></span><span><b>${t("stars")}</b><strong>${"★".repeat(stars)}${"☆".repeat(3-stars)}</strong></span>`;$("nextMission").hidden=!won||run.stage.n>=30;$("result").hidden=false;$("battleLive").hidden=true;$("battleLive").inert=true;requestAnimationFrame(()=>(won&&!$("nextMission").hidden?$("nextMission"):$("retry")).focus());window.WonderSound?.play?.(won?"win":"wrong")
+    $("resultKicker").textContent=won?`${t("shardsEarned")} +${earned}`:t("missionFailedKicker");$("resultTitle").textContent=t(won?"missionComplete":"missionFailed");$("resultText").textContent=t(won?"victoryText":"failureText");$("resultStats").innerHTML=`<span><b>${t("strength")}</b><strong>${run.peak}</strong></span><span><b>${t("coreHits")}</b><strong>${run.core}/${run.maxCore}</strong></span><span><b>${t("stars")}</b><strong>${"★".repeat(stars)}${"☆".repeat(3-stars)}</strong></span>`;$("nextMission").hidden=!won||run.stage.n>=30;$("result").hidden=false;$("battleLive").hidden=true;$("battleLive").inert=true;requestAnimationFrame(()=>(won&&!$("nextMission").hidden?$("nextMission"):$("retry")).focus());window.WonderSound?.play?.(won?"win":"wrong")
   }
   $("battleBack").addEventListener("click",openLeave);$("battleHelp").addEventListener("click",openTutorial);$("continueBattle").addEventListener("click",()=>closeModal($("leave")));$("leaveStage").addEventListener("click",()=>{$("leave").hidden=true;$("battleLive").inert=false;run=null;showScreen("stage")});$("retry").addEventListener("click",()=>startBattle(run.stageIndex));$("resultStage").addEventListener("click",()=>{$("result").hidden=true;$("battleLive").inert=false;run=null;showScreen("stage")});$("nextMission").addEventListener("click",()=>startBattle(Math.min(29,run.stageIndex+1)));
   function loadImages(){return Promise.all(Object.entries(imageSources).map(([key,src])=>new Promise((resolve)=>{const image=new Image();images[key]=image;image.onload=image.onerror=resolve;image.src=src})))}

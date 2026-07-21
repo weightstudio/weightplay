@@ -91,23 +91,46 @@
   const persist = () => storage.set(SAVE_KEY, JSON.stringify(save));
 
   const chapters = ["chapter1", "chapter2", "chapter3", "chapter4", "chapter5", "chapter6"];
-  const stages = Array.from({ length: 30 }, (_, index) => {
-    const number = index + 1;
-    const chapter = Math.floor(index / 5);
-    const step = index % 5;
-    return {
-      n: number,
-      chapter,
-      target: chapter === 0 ? 12 + step * 2 : 18 + chapter * 4 + step * 2,
-      time: 112 - chapter * 5 - step * 2,
-      hunters: 1 + Math.floor(index / 6),
-      rescue: chapter === 1 ? 1 + (step >= 2 ? 1 : 0) : chapter === 5 ? 1 : 0,
-      storm: chapter === 2 || chapter === 5,
-      rival: chapter === 3 || chapter === 5,
-      seals: chapter === 4 ? 2 + (step >= 2 ? 1 : 0) : chapter === 5 ? 3 : 0,
-      guardian: number % 5 === 0,
-    };
-  });
+  const stageBlueprints = [
+    { target: 12, time: 112, layout: "heart", field: "open", enemies: ["prowler"] },
+    { target: 14, time: 112, layout: "cross", field: "open", enemies: ["prowler", "prowler"] },
+    { target: 15, time: 110, layout: "twin", field: "pillars", enemies: ["runner"] },
+    { target: 17, time: 110, layout: "edge", field: "gates", enemies: ["prowler", "runner"] },
+    { target: 18, time: 112, layout: "ring", field: "channels", enemies: ["sentry"], guardianType: "root" },
+    { target: 18, time: 108, layout: "twin", field: "open", enemies: ["sentry"], rescue: 1 },
+    { target: 20, time: 108, layout: "edge", field: "pillars", enemies: ["prowler", "sentry"], rescue: 1 },
+    { target: 21, time: 106, layout: "cross", field: "gates", enemies: ["runner", "sentry"], rescue: 2 },
+    { target: 22, time: 106, layout: "islands", field: "channels", enemies: ["tank", "sentry"], rescue: 2 },
+    { target: 23, time: 108, layout: "ring", field: "ring", enemies: ["prowler"], rescue: 2, guardianType: "boar" },
+    { target: 21, time: 104, layout: "edge", field: "open", enemies: ["runner"], storm: true, stormEvery: 4.6 },
+    { target: 23, time: 104, layout: "twin", field: "channels", enemies: ["runner", "prowler"], storm: true, stormEvery: 4 },
+    { target: 24, time: 102, layout: "cross", field: "pillars", enemies: ["tank"], storm: true, stormEvery: 3.8 },
+    { target: 25, time: 102, layout: "islands", field: "gates", enemies: ["runner", "runner"], storm: true, stormEvery: 3.5 },
+    { target: 26, time: 104, layout: "ring", field: "ring", enemies: ["prowler"], storm: true, stormEvery: 3.2, guardianType: "roc" },
+    { target: 24, time: 102, layout: "heart", field: "open", enemies: ["prowler", "runner"], rival: true, rivalEvery: 7 },
+    { target: 25, time: 101, layout: "edge", field: "pillars", enemies: ["runner", "tank"], rival: true, rivalEvery: 6.6 },
+    { target: 26, time: 101, layout: "twin", field: "gates", enemies: ["sentry", "prowler"], shrink: true, shrinkEvery: 8 },
+    { target: 28, time: 100, layout: "islands", field: "channels", enemies: ["tank", "runner"], rival: true, shrink: true, rivalEvery: 6.4, shrinkEvery: 8 },
+    { target: 29, time: 102, layout: "ring", field: "ring", enemies: ["prowler"], rival: true, shrink: true, rivalEvery: 6, shrinkEvery: 7.5, guardianType: "cinder" },
+    { target: 25, time: 100, layout: "cross", field: "open", enemies: ["sentry"], seals: 2 },
+    { target: 27, time: 100, layout: "twin", field: "pillars", enemies: ["sentry", "runner"], seals: 2 },
+    { target: 28, time: 98, layout: "edge", field: "gates", enemies: ["tank", "sentry"], seals: 3 },
+    { target: 30, time: 98, layout: "islands", field: "channels", enemies: ["runner", "sentry", "prowler"], seals: 3 },
+    { target: 31, time: 100, layout: "ring", field: "ring", enemies: ["sentry"], seals: 4, guardianType: "moth" },
+    { target: 28, time: 98, layout: "twin", field: "gates", enemies: ["runner", "tank"], rescue: 1, storm: true, stormEvery: 3.8 },
+    { target: 30, time: 98, layout: "edge", field: "channels", enemies: ["sentry", "runner"], seals: 3, rival: true, rivalEvery: 6 },
+    { target: 31, time: 96, layout: "cross", field: "pillars", enemies: ["tank", "prowler"], rescue: 2, shrink: true, shrinkEvery: 7 },
+    { target: 33, time: 96, layout: "islands", field: "ring", enemies: ["runner", "sentry", "tank"], seals: 3, storm: true, rival: true, stormEvery: 3.4, rivalEvery: 5.8 },
+    { target: 35, time: 104, layout: "ring", field: "gates", enemies: ["prowler", "runner", "tank", "sentry"], rescue: 1, seals: 4, storm: true, rival: true, shrink: true, stormEvery: 3.2, rivalEvery: 5.6, shrinkEvery: 7, guardianType: "eclipse" },
+  ];
+  const stages = stageBlueprints.map((stage, index) => ({
+    rescue: 0, seals: 0, storm: false, rival: false, shrink: false,
+    n: index + 1,
+    chapter: Math.floor(index / 5),
+    ...stage,
+    hunters: stage.enemies.length,
+    guardian: Boolean(stage.guardianType),
+  }));
 
   const styleData = {
     starter: { name: "styleStarter", cost: 0, colors: ["#ffe36c", "#36d8ff"] },
@@ -124,6 +147,13 @@
     if (stage.seals) return t("objectiveSeals", { percent: stage.target, count: stage.seals });
     if (stage.rescue) return t("objectiveRescue", { percent: stage.target, count: stage.rescue });
     return t("objectiveRestore", { percent: stage.target });
+  }
+
+  function describeStage(stage) {
+    const counts = stage.enemies.reduce((result, type) => ({ ...result, [type]: (result[type] || 0) + 1 }), {});
+    const roster = Object.entries(counts).map(([type, count]) => `${t(`enemy${type[0].toUpperCase()}${type.slice(1)}`)}${count > 1 ? ` ×${count}` : ""}`);
+    if (stage.guardian) roster.push(t("enemyGuardian"));
+    return `${t(`layout${stage.layout[0].toUpperCase()}${stage.layout.slice(1)}`)} · ${roster.join(" + ")}`;
   }
 
   function applyLocale() {
@@ -190,8 +220,8 @@
       button.setAttribute("aria-disabled", locked ? "true" : "false");
       const rule = objectiveFor(stage);
       const earned = Number(save.stars[stage.n]) || 0;
-      button.setAttribute("aria-label", `${t(chapters[stage.chapter])}, ${stage.n}, ${rule}`);
-      button.innerHTML = `<small>${t(chapters[stage.chapter])}</small><strong>${stage.n}</strong><span>${rule}</span><small>${"★".repeat(earned)}${"☆".repeat(3 - earned)}</small>`;
+      button.setAttribute("aria-label", `${locked ? `${t("lockedBadge")}, ` : ""}${t(chapters[stage.chapter])}, ${stage.n}, ${rule}`);
+      button.innerHTML = `<small>${locked ? t("lockedBadge") : t(chapters[stage.chapter])}</small><strong>${stage.n}</strong><span>${rule}</span><small class="stage-twist">${describeStage(stage)}</small><small>${"★".repeat(earned)}${"☆".repeat(3 - earned)}</small>`;
       button.addEventListener("click", () => {
         if (stage.n > save.unlocked) {
           $("stageHint").textContent = t("stageLocked");
@@ -230,22 +260,33 @@
   }
 
   function chooseStyle(id) {
+    const styleName = t(styleData[id].name);
     if (save.ownedStyles.includes(id)) {
+      if (save.selectedStyle === id) {
+        $("atelierFeedback").textContent = t("styleAlreadySelected", { style: styleName });
+        return;
+      }
       save.selectedStyle = id;
       persist();
       renderAtelier();
+      $("atelierFeedback").textContent = t("styleEquipped", { style: styleName });
       return;
     }
     const cost = styleData[id].cost;
+    const balance = Math.max(0, Number(window.WeightPlayWallet?.read?.().diamonds) || 0);
+    if (balance < cost) {
+      $("atelierFeedback").textContent = t("noDiamondsDetail", { cost, balance });
+      return;
+    }
     if (!window.WeightPlayWallet?.spendDiamonds?.(cost)) {
-      $("atelierFeedback").textContent = t("noDiamonds");
+      $("atelierFeedback").textContent = t("noDiamondsDetail", { cost, balance });
       return;
     }
     save.ownedStyles.push(id);
     save.selectedStyle = id;
     persist();
     renderAtelier();
-    $("atelierFeedback").textContent = t("styleBought");
+    $("atelierFeedback").textContent = t("styleBoughtDetail", { style: styleName });
     window.WonderSound?.play?.("success");
   }
 
@@ -285,8 +326,16 @@
   const images = {};
   const imageSources = {
     player: "../../assets/weightplay-character-spark-paw-fox-cutout.webp",
-    hunter: "../../assets/animal-crystal-survivor-shadow-fox-v2.webp",
-    guardian: "../../assets/animal-crystal-survivor-boss-eclipse-colossus.webp",
+    prowler: "../../assets/animal-crystal-survivor-shadow-basic.webp",
+    runner: "../../assets/animal-crystal-survivor-shadow-runner.webp",
+    tank: "../../assets/animal-crystal-survivor-shadow-tank.webp",
+    sentry: "../../assets/animal-crystal-survivor-shadow-fox-v2.webp",
+    root: "../../assets/animal-crystal-survivor-boss-root-stalker.webp",
+    boar: "../../assets/animal-crystal-survivor-boss-briar-boar-king.webp",
+    roc: "../../assets/animal-crystal-survivor-boss-tempest-roc.webp",
+    cinder: "../../assets/animal-crystal-survivor-boss-cinder-panther.webp",
+    moth: "../../assets/animal-crystal-survivor-boss-prism-moth-queen.webp",
+    eclipse: "../../assets/animal-crystal-survivor-boss-eclipse-colossus.webp",
     beacon: "../../assets/animal-moonlight-heist-marker-objective.webp",
     seal: "../../assets/animal-crystal-survivor-xp-crystal.webp",
   };
@@ -300,51 +349,114 @@
   const territoryCount = () => run ? run.owned.reduce((sum, value) => sum + value, 0) : 0;
   const territoryPercent = () => territoryCount() / TOTAL * 100;
 
-  function makeOwned() {
+  const layoutSpawns = {
+    heart: { x: 29.1, y: 24 }, cross: { x: 30.1, y: 24 }, twin: { x: 20.1, y: 24 },
+    edge: { x: 7.1, y: 24 }, ring: { x: 33.1, y: 24 }, islands: { x: 24.1, y: 24 },
+  };
+
+  function makeBlocked(field) {
+    const blocked = new Uint8Array(TOTAL);
+    const addRect = (left, top, width, height) => {
+      for (let y = top; y < top + height; y += 1) for (let x = left; x < left + width; x += 1) blocked[y * GRID + x] = 1;
+    };
+    if (field === "pillars") [[12, 12], [33, 12], [12, 33], [33, 33]].forEach(([x, y]) => addRect(x, y, 3, 3));
+    if (field === "gates") {
+      addRect(16, 2, 2, 15); addRect(16, 30, 2, 16); addRect(31, 2, 2, 15); addRect(31, 30, 2, 16);
+    }
+    if (field === "channels") {
+      addRect(5, 15, 21, 2); addRect(31, 15, 12, 2); addRect(5, 31, 12, 2); addRect(22, 31, 21, 2);
+    }
+    if (field === "ring") [[23, 8], [34, 12], [38, 23], [34, 34], [23, 38], [12, 34], [8, 23], [12, 12]].forEach(([x, y]) => addRect(x, y, 3, 3));
+    return blocked;
+  }
+
+  function makeOwned(stage, blocked) {
     const owned = new Uint8Array(TOTAL);
     for (let y = 0; y < GRID; y += 1) {
       for (let x = 0; x < GRID; x += 1) {
-        if ((x - 24) ** 2 + (y - 24) ** 2 <= 28) owned[y * GRID + x] = 1;
+        const dx = x - 24;
+        const dy = y - 24;
+        const d2 = dx ** 2 + dy ** 2;
+        let inside = false;
+        if (stage.layout === "heart") inside = d2 <= 28;
+        if (stage.layout === "cross") inside = (Math.abs(dx) <= 2 && Math.abs(dy) <= 9) || (Math.abs(dy) <= 2 && Math.abs(dx) <= 9);
+        if (stage.layout === "twin") inside = (x - 17) ** 2 + dy ** 2 <= 19 || (x - 31) ** 2 + dy ** 2 <= 19 || (Math.abs(dy) <= 1 && x >= 17 && x <= 31);
+        if (stage.layout === "edge") inside = (x <= 6 && y >= 13 && y <= 35) || (x - 7) ** 2 + dy ** 2 <= 18;
+        if (stage.layout === "ring") inside = d2 >= 44 && d2 <= 96;
+        if (stage.layout === "islands") inside = d2 <= 13 || [[13, 13], [35, 13], [13, 35], [35, 35]].some(([cx, cy]) => (x - cx) ** 2 + (y - cy) ** 2 <= 8);
+        if (inside && !blocked[y * GRID + x]) owned[y * GRID + x] = 1;
       }
     }
     return owned;
   }
 
-  function createMarkers(count, type) {
-    return Array.from({ length: count }, (_, index) => ({
-      type,
-      x: 8 + ((index * 13 + (type === "seal" ? 11 : 7)) % 32),
-      y: 8 + ((index * 19 + (type === "seal" ? 5 : 11)) % 32),
-      done: false,
-    }));
+  function createMarkers(count, type, stage, blocked, owned) {
+    const markers = [];
+    for (let markerIndex = 0; markerIndex < count; markerIndex += 1) {
+      const seed = stage.n * 37 + markerIndex * 53 + (type === "seal" ? 19 : 7);
+      for (let attempt = 0; attempt < TOTAL; attempt += 1) {
+        const x = 4 + ((seed + attempt * 11) % 40);
+        const y = 4 + ((seed * 3 + attempt * 17) % 40);
+        const index = y * GRID + x;
+        if (!blocked[index] && !owned[index] && markers.every((marker) => Math.hypot(marker.x - x, marker.y - y) > 7)) {
+          markers.push({ type, x: x + 0.5, y: y + 0.5, done: false });
+          break;
+        }
+      }
+    }
+    return markers;
+  }
+
+  const enemyStats = {
+    prowler: { speed: 2.15, size: 4.2, cutRadius: 0.72 },
+    runner: { speed: 2.55, size: 3.8, cutRadius: 0.58 },
+    tank: { speed: 1.42, size: 5.4, cutRadius: 1.28 },
+    sentry: { speed: 1.9, size: 4.3, cutRadius: 0.82 },
+  };
+
+  function createEnemy(type, enemyIndex, stage, markers) {
+    const spawnPoints = [{ x: 6, y: 7 }, { x: 42, y: 8 }, { x: 41, y: 40 }, { x: 7, y: 41 }, { x: 24, y: 5 }, { x: 43, y: 24 }];
+    const stats = enemyStats[type];
+    const spawn = spawnPoints[(enemyIndex + stage.n) % spawnPoints.length];
+    return { ...spawn, type, imageKey: type, speed: stats.speed + stage.chapter * 0.06, size: stats.size, cutRadius: stats.cutRadius, patrolStep: enemyIndex % 4, abilityClock: enemyIndex * 0.7, burst: false, markerIndex: type === "sentry" && markers.length ? enemyIndex % markers.length : -1, angle: 0 };
   }
 
   function startBattle(index) {
     const stageIndex = Math.max(0, Math.min(29, Math.trunc(index)));
     const stage = stages[stageIndex];
+    const blocked = makeBlocked(stage.field);
+    const owned = makeOwned(stage, blocked);
+    const spawn = { ...layoutSpawns[stage.layout] };
+    if (!owned[indexFor(spawn.x, spawn.y)]) {
+      const nearest = owned.findIndex(Boolean);
+      Object.assign(spawn, { x: nearest % GRID + 0.5, y: Math.floor(nearest / GRID) + 0.5 });
+    }
+    const markers = [...createMarkers(stage.rescue, "beacon", stage, blocked, owned), ...createMarkers(stage.seals, "seal", stage, blocked, owned)];
+    const hunters = stage.enemies.map((type, enemyIndex) => createEnemy(type, enemyIndex, stage, markers));
+    if (stage.guardian) {
+      const guardianBase = { root: "prowler", boar: "tank", roc: "runner", cinder: "runner", moth: "sentry", eclipse: "tank" }[stage.guardianType];
+      hunters.push({ ...createEnemy(guardianBase, hunters.length, stage, markers), type: guardianBase, imageKey: stage.guardianType, guardian: true, size: 6.4, cutRadius: 1.1, speed: stage.guardianType === "roc" ? 2.65 : stage.guardianType === "cinder" ? 2.8 : 1.85 });
+    }
     run = {
       stageIndex,
       stage,
-      owned: makeOwned(),
+      owned,
+      blocked,
       trail: new Set(),
-      player: { x: 29.1, y: 24, dx: 0, dy: 0 },
-      anchor: { x: 29.1, y: 24 },
+      player: { ...spawn, dx: 0, dy: 0 },
+      anchor: { ...spawn },
       hearts: 3,
       time: stage.time,
-      hunters: Array.from({ length: stage.hunters + (stage.guardian ? 1 : 0) }, (_, hunterIndex) => ({
-        x: hunterIndex % 2 ? 7 : 41,
-        y: 8 + (hunterIndex * 11) % 32,
-        speed: stage.guardian && hunterIndex === stage.hunters ? 5 : 2.15 + stage.chapter * 0.17,
-        guardian: stage.guardian && hunterIndex === stage.hunters,
-        angle: 0,
-      })),
-      markers: [...createMarkers(stage.rescue, "beacon"), ...createMarkers(stage.seals, "seal")],
+      hunters,
+      markers,
       rescued: 0,
       seals: 0,
       paused: false,
       finished: false,
+      elapsed: 0,
       stormClock: 0,
       rivalClock: 0,
+      shrinkClock: 0,
       rivalMarks: [],
     };
     $("leave").hidden = true;
@@ -384,6 +496,7 @@
     $("heartsValue").textContent = "♥".repeat(run.hearts);
     $("timeValue").textContent = Math.max(0, Math.ceil(run.time));
     $("objective").textContent = objectiveFor(run.stage);
+    $("missionTwist").textContent = describeStage(run.stage);
   }
 
   function redrawLand() {
@@ -416,7 +529,7 @@
   function enclosedFill() {
     const blocked = new Uint8Array(TOTAL);
     for (let index = 0; index < TOTAL; index += 1) {
-      blocked[index] = run.owned[index] || run.trail.has(index) ? 1 : 0;
+      blocked[index] = run.blocked[index] || run.owned[index] || run.trail.has(index) ? 1 : 0;
     }
     const seen = new Uint8Array(TOTAL);
     const components = [];
@@ -446,14 +559,14 @@
     for (const component of components) {
       if (component.touchesEdge) continue;
       for (const index of component.items) {
-        if (!run.owned[index]) {
+        if (!run.owned[index] && !run.blocked[index]) {
           run.owned[index] = 1;
           filled += 1;
         }
       }
     }
     for (const index of run.trail) {
-      if (!run.owned[index]) {
+      if (!run.owned[index] && !run.blocked[index]) {
         run.owned[index] = 1;
         filled += 1;
       }
@@ -486,7 +599,7 @@
     for (let index = 0; index < TOTAL; index += 1) {
       if (!run.owned[index]) continue;
       const { x, y } = pointFor(index);
-      if ((x - 24) ** 2 + (y - 24) ** 2 > 18) candidates.push(index);
+      if ((x - 24) ** 2 + (y - 24) ** 2 > 18 && Math.hypot(x - run.player.x, y - run.player.y) > 3 && Math.hypot(x - run.anchor.x, y - run.anchor.y) > 2) candidates.push(index);
     }
     run.rivalMarks = [];
     for (let count = 0; count < Math.min(18, candidates.length); count += 1) {
@@ -498,11 +611,35 @@
     redrawLand();
   }
 
+  function shrinkSanctuary() {
+    const candidates = [];
+    for (let index = 0; index < TOTAL; index += 1) {
+      if (!run.owned[index]) continue;
+      const { x, y } = pointFor(index);
+      if (Math.hypot(x - run.player.x, y - run.player.y) < 3.2 || Math.hypot(x - run.anchor.x, y - run.anchor.y) < 2.2) continue;
+      const edge = [[x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]].some(([nx, ny]) => nx < 0 || ny < 0 || nx >= GRID || ny >= GRID || !run.owned[ny * GRID + nx]);
+      if (edge) candidates.push(index);
+    }
+    const amount = Math.min(10 + run.stage.chapter, candidates.length);
+    run.rivalMarks = [];
+    for (let count = 0; count < amount; count += 1) {
+      const slot = (Math.floor(run.elapsed * 13) + count * 17) % candidates.length;
+      const index = candidates.splice(slot, 1)[0];
+      if (index === undefined) break;
+      run.owned[index] = 0;
+      run.rivalMarks.push(index);
+    }
+    redrawLand();
+    $("feedback").textContent = t("borderShrunk");
+  }
+
   function update(dt) {
     if (!run || run.paused || run.finished) return;
     run.time -= dt;
+    run.elapsed += dt;
     run.stormClock += dt;
     run.rivalClock += dt;
+    run.shrinkClock += dt;
     if (run.time <= 0) {
       run.time = 0;
       finish(false);
@@ -511,17 +648,25 @@
     const player = run.player;
     const speed = 7.1 + run.stage.chapter * 0.12;
     if (player.dx || player.dy) {
-      player.x = Math.max(0.6, Math.min(GRID - 0.6, player.x + player.dx * speed * dt));
-      player.y = Math.max(0.6, Math.min(GRID - 0.6, player.y + player.dy * speed * dt));
+      const nextX = Math.max(0.6, Math.min(GRID - 0.6, player.x + player.dx * speed * dt));
+      const nextY = Math.max(0.6, Math.min(GRID - 0.6, player.y + player.dy * speed * dt));
+      if (run.blocked[indexFor(nextX, nextY)]) {
+        player.dx = 0;
+        player.dy = 0;
+        $("feedback").textContent = t("barrierHit");
+      } else {
+        player.x = nextX;
+        player.y = nextY;
+      }
       const index = indexFor(player.x, player.y);
       const inside = Boolean(run.owned[index]);
       if (!inside) run.trail.add(index);
       else if (run.trail.size > 1) enclosedFill();
     }
 
-    if (run.stage.storm && run.stormClock > 3.4) {
+    if (run.stage.storm && run.stormClock > (run.stage.stormEvery || 3.4)) {
       run.stormClock = 0;
-      const turn = Math.sin(performance.now() / 700) >= 0 ? 0.2 : -0.2;
+      const turn = Math.sin(run.elapsed * 1.7) >= 0 ? 0.22 : -0.22;
       const dx = player.dx + turn;
       const dy = player.dy - turn;
       const length = Math.hypot(dx, dy) || 1;
@@ -529,36 +674,60 @@
       player.dy = dy / length;
     }
 
+    const patrolPoints = [{ x: 5, y: 5 }, { x: 43, y: 5 }, { x: 43, y: 43 }, { x: 5, y: 43 }];
     for (const hunter of run.hunters) {
-      let target = player;
+      hunter.abilityClock += dt;
+      hunter.burst = hunter.type === "runner" && run.trail.size && hunter.abilityClock % 3.4 < 0.78;
+      let target = patrolPoints[hunter.patrolStep];
+      let targetingTrail = false;
+      if (hunter.type === "sentry" && hunter.markerIndex >= 0 && run.markers[hunter.markerIndex] && !run.markers[hunter.markerIndex].done) {
+        const marker = run.markers[hunter.markerIndex];
+        const orbit = run.elapsed * 0.72 + hunter.markerIndex * Math.PI;
+        target = { x: marker.x + Math.cos(orbit) * 5, y: marker.y + Math.sin(orbit) * 5 };
+      }
       if (run.trail.size) {
         let nearest = null;
         let best = Infinity;
         for (const index of run.trail) {
           const point = pointFor(index);
+          if (hunter.type === "sentry" && hunter.markerIndex >= 0) {
+            const marker = run.markers[hunter.markerIndex];
+            if (marker && Math.hypot(point.x - marker.x, point.y - marker.y) > 13) continue;
+          }
           const distance = (point.x - hunter.x) ** 2 + (point.y - hunter.y) ** 2;
           if (distance < best) {
             nearest = point;
             best = distance;
           }
         }
-        if (nearest) target = nearest;
+        if (nearest) {
+          target = nearest;
+          targetingTrail = true;
+        }
+      } else if (Math.hypot(hunter.x - target.x, hunter.y - target.y) < 1) {
+        hunter.patrolStep = (hunter.patrolStep + 1) % patrolPoints.length;
+        target = patrolPoints[hunter.patrolStep];
       }
       const dx = target.x - hunter.x;
       const dy = target.y - hunter.y;
       const length = Math.hypot(dx, dy) || 1;
-      hunter.x += dx / length * hunter.speed * dt;
-      hunter.y += dy / length * hunter.speed * dt;
+      const moveSpeed = hunter.speed * (hunter.burst ? 1.85 : 1);
+      hunter.x += dx / length * moveSpeed * dt;
+      hunter.y += dy / length * moveSpeed * dt;
       hunter.angle = Math.atan2(dy, dx);
-      if (run.trail.size && Math.hypot(hunter.x - target.x, hunter.y - target.y) < 0.7) {
+      if (targetingTrail && Math.hypot(hunter.x - target.x, hunter.y - target.y) < hunter.cutRadius) {
         cutTrail();
         break;
       }
     }
 
-    if (run.stage.rival && run.rivalClock > 6.2) {
+    if (run.stage.rival && run.rivalClock > (run.stage.rivalEvery || 6.2)) {
       run.rivalClock = 0;
       erodeRivalClaim();
+    }
+    if (run.stage.shrink && run.shrinkClock > (run.stage.shrinkEvery || 8)) {
+      run.shrinkClock = 0;
+      shrinkSanctuary();
     }
 
     if (
@@ -578,7 +747,10 @@
       ctx.shadowColor = glow;
       ctx.shadowBlur = Math.max(10, size * 0.42);
     }
-    ctx.drawImage(image, -size / 2, -size / 2, size, size);
+    const ratio = image.naturalWidth / image.naturalHeight || 1;
+    const drawWidth = ratio >= 1 ? size : size * ratio;
+    const drawHeight = ratio >= 1 ? size / ratio : size;
+    ctx.drawImage(image, -drawWidth / 2, -drawHeight / 2, drawWidth, drawHeight);
     ctx.restore();
   }
 
@@ -589,6 +761,18 @@
     const size = width / GRID;
     ctx.clearRect(0, 0, width, height);
     ctx.drawImage(landCanvas, 0, 0);
+
+    if (run.blocked.some(Boolean)) {
+      ctx.fillStyle = "rgba(18,12,38,.86)";
+      ctx.strokeStyle = "rgba(162,122,255,.72)";
+      ctx.lineWidth = Math.max(1, size * 0.14);
+      for (let index = 0; index < TOTAL; index += 1) {
+        if (!run.blocked[index]) continue;
+        const point = pointFor(index);
+        ctx.fillRect(point.x * size, point.y * size, size + 0.4, size + 0.4);
+        if ((point.x + point.y) % 2 === 0) ctx.strokeRect(point.x * size + size * 0.15, point.y * size + size * 0.15, size * 0.7, size * 0.7);
+      }
+    }
 
     if (run.stage.storm) {
       ctx.fillStyle = "rgba(67,205,255,.12)";
@@ -647,13 +831,20 @@
     }
 
     for (const hunter of run.hunters) {
+      if (hunter.burst) {
+        ctx.strokeStyle = "#76f6ff";
+        ctx.lineWidth = Math.max(2, size * 0.22);
+        ctx.beginPath();
+        ctx.arc(hunter.x * size, hunter.y * size, hunter.size * size * 0.62, 0, Math.PI * 2);
+        ctx.stroke();
+      }
       drawImageCentered(
-        hunter.guardian ? images.guardian : images.hunter,
+        images[hunter.imageKey],
         hunter.x * size,
         hunter.y * size,
-        (hunter.guardian ? 5.4 : 4.2) * size,
+        hunter.size * size,
         hunter.angle + Math.PI / 2,
-        hunter.guardian ? "#ff4b7d" : "#9d62ff",
+        hunter.guardian ? "#ff4b7d" : hunter.type === "runner" ? "#36d8ff" : hunter.type === "tank" ? "#ffb85c" : hunter.type === "sentry" ? "#ffe36c" : "#9d62ff",
       );
     }
     drawImageCentered(
@@ -801,7 +992,7 @@
       save.unlocked = Math.max(save.unlocked, Math.min(30, run.stage.n + 1));
       persist();
     }
-    $("resultKicker").textContent = won ? `${t("restored")} ${restored}%` : t("missionFailed");
+    $("resultKicker").textContent = won ? `${t("restored")} ${restored}%` : t("missionFailedKicker");
     $("resultTitle").textContent = t(won ? "missionComplete" : "missionFailed");
     $("resultText").textContent = objectiveFor(run.stage);
     $("resultStats").innerHTML = `<span><b>${t("restored")}</b><strong>${restored}%</strong></span><span><b>${t("rescued")}</b><strong>${run.rescued + run.seals}</strong></span><span><b>${t("stars")}</b><strong>${"★".repeat(stars)}${"☆".repeat(3 - stars)}</strong></span>`;
@@ -894,12 +1085,17 @@
         save: JSON.parse(JSON.stringify(save)),
         run: run && {
           stageIndex: run.stageIndex,
+          stage: { ...run.stage, enemies: [...run.stage.enemies] },
           hearts: run.hearts,
           time: run.time,
+          elapsed: run.elapsed,
           rescued: run.rescued,
           seals: run.seals,
           trail: [...run.trail],
           restored: territoryCount(),
+          blocked: Array.from(run.blocked).reduce((sum, value) => sum + value, 0),
+          playerOwned: Boolean(run.owned[indexFor(run.player.x, run.player.y)]),
+          markers: run.markers.map((marker) => ({ ...marker, blocked: Boolean(run.blocked[indexFor(marker.x, marker.y)]), owned: Boolean(run.owned[indexFor(marker.x, marker.y)]) })),
           player: { ...run.player },
           hunters: run.hunters.map((hunter) => ({ ...hunter })),
           paused: run.paused,

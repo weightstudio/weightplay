@@ -397,6 +397,7 @@
     loadingFill: $("loadingFill"),
     gameShell: document.querySelector(".zoo-game"),
   };
+  nodes.resultPanel?.querySelector("[data-ui='lobby']")?.remove();
   const leavePanel = document.createElement("section");
   leavePanel.className = "zoo-leave-panel hidden";
   leavePanel.setAttribute("role", "dialog");

@@ -4,11 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow">
+  <script data-wp-internal-trial-gate>if (/^https?:$/.test(location.protocol) && new URLSearchParams(location.search).get("trial") !== "1") location.replace("/");</script>
   <meta name="theme-color" content="#170d38">
   <meta name="weightplay-audience" content="general">
   <title>Animal Spectrum Pulse | Internal WeightPlay Trial</title>
   <link rel="icon" href="../../assets/weightplay-logo.png">
-  <link rel="stylesheet" href="style.css?v=20260721-studio-feedback1">
+  <link rel="stylesheet" href="style.css?v=20260721-safe-landing1">
 </head>
 <body data-screen="main">
   <div id="loading" class="loading"><img src="../../assets/animal-spectrum-pulse/spectrum-spirit.webp" alt=""><strong data-t="loading">Tuning the spectrum drum…</strong></div>
@@ -64,7 +65,7 @@
       <div id="battleLive" class="battle-live">
         <header class="battle-header"><button id="battleBack" type="button" aria-label="Back" data-t-aria="back" data-wp-return="battle">←</button><div class="tower-block"><small id="towerLabel"></small><strong id="timerValue">0:00</strong></div><div class="battle-status"><span><b data-t="gate">Gate</b><strong id="gateValue">0/0</strong></span><span><b data-t="resonance">Resonance</b><strong id="resonanceValue">×1</strong></span><span><b data-t="guard">Guard</b><strong id="guardValue">0</strong></span></div><button id="battleHelp" type="button" aria-label="How to play" data-t-aria="help">?</button></header>
         <div class="identity-row"><span data-t="currentIdentity">Current</span><img id="identityIcon" src="../../assets/animal-spectrum-pulse/node-cyan.webp" alt=""><strong id="identityName"></strong><span id="nextIdentity"></span></div>
-        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="720" height="1200" tabindex="0" aria-label="Spectrum pulse tower" data-t-aria="arenaLabel"></canvas><div class="scan-legend"><span data-t="scanMarker">SCAN</span><i></i></div><div class="control-cue" data-t="controlCue">Tap anywhere · Space / Enter / ↑</div></div>
+        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="720" height="1200" tabindex="0" aria-label="Spectrum pulse tower" data-t-aria="arenaLabel"></canvas><div class="scan-legend"><span data-t="scanMarker">SCAN</span><i></i></div><div id="timingCue" class="timing-cue" aria-hidden="true"></div><div class="control-cue" data-t="controlCue">Tap anywhere · Space / Enter / ↑</div></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>
         <button id="pulseButton" class="pulse-button" type="button" data-t="pulse">PULSE</button>
       </div>
@@ -76,9 +77,9 @@
     <div class="ad-reserve" aria-hidden="true"></div>
   </section>
 
-  <script src="locales.js?v=20260721-studio-feedback2"></script>
+  <script src="locales.js?v=20260721-safe-landing1"></script>
   <script src="../../src/wallet.js"></script>
-  <script src="game.js?v=20260721-studio-feedback2"></script>
+  <script src="game.js?v=20260721-safe-landing1"></script>
   <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
 </body>
