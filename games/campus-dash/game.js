@@ -249,10 +249,10 @@
       startTitle: "Elige un carril. Corre rápido.", startText: "Completa 30 rutas guardadas cuyas reglas, objetivos y patrones de guardianes cambian tu forma de correr.", controlTap: "Toca izquierda / derecha", controlSwipe: "Desliza entre carriles", controlKeyboard: "A/D o ←/→", start: "Empezar",
       chooseRoute: "Elegir una ruta de safari", stageProgress: "{unlocked} / 30 desbloqueadas", stageHint: "Desliza las tarjetas. Cada quinta ruta es una prueba de guardián.", stageSelection: "Rutas de safari", stageLocked: "Completa la ruta anterior", stageReady: "Lista", stageCleared: "Completada", guardianCheck: "Prueba de guardián", routeRules: "Reglas de la ruta",
       objectiveCoins: "Recoge {target} estrellas", objectiveCombo: "Alcanza un combo x{target}", objectiveClean: "Termina con un máximo de {target} choques", objectiveScore: "Consigue {target} puntos", objectiveFinish: "Llega a la meta",
-      routeClear: "¡Ruta {stage} completada!", routeFailed: "No se alcanzó el objetivo. Intenta la ruta otra vez.", nextRoute: "Siguiente ruta desbloqueada: {stage}", allRoutesClear: "¡Las 30 rutas están completadas!", routes: "Rutas",
+      routeClear: "¡Ruta {stage} completada!", routeFailed: "No se alcanzó el objetivo. Intenta la ruta otra vez.", nextRoute: "Siguiente ruta desbloqueada: {stage}", allRoutesClear: "¡Has completado las 30 rutas!", routes: "Rutas",
       ruleClassic: "Sendero abierto", ruleTrail: "Rastro de estrellas", ruleGate: "Puertas de dos carriles", ruleMud: "Barro pegajoso", rulePulse: "Patrón del guardián",
-      resultTitle: "¡Carrera completada!", resultText: "Puntuación {score}  Mejor {best}", skillReport: "Informe de habilidades", skillIntro: "Esta carrera practicó decisiones rápidas, atención constante y control de carriles.", reaction: "Reacción", reactionValue: "{count} cambios de carril", focus: "Concentración", focusValue: "{coins} recogidas · {bumps} choques", coordination: "Coordinación visual", coordinationValue: "Mejor combo x{combo}",
-      firstRun: "Puntuación de hoy: {score}", progress: "Puntuación de hoy: {score} · Mejor anterior: {previous}", newBest: "¡Nuevo récord: {score}! Mejor anterior: {previous}", again: "Correr de nuevo", lobby: "Sala de juegos", loading: "Cargando", leaderboard: "5 mejores locales", emptyRank: "Aún no hay carreras",
+      resultTitle: "¡Carrera completada!", resultText: "Puntuación: {score} · Récord: {best}", skillReport: "Informe de habilidades", skillIntro: "Esta carrera practicó decisiones rápidas, atención constante y control de carriles.", reaction: "Reacción", reactionValue: "{count} cambios de carril", focus: "Concentración", focusValue: "Estrellas: {coins} · Choques: {bumps}", coordination: "Coordinación ojo-mano", coordinationValue: "Mejor combo x{combo}",
+      firstRun: "Puntuación de esta carrera: {score}", progress: "Esta carrera: {score} · Récord anterior: {previous}", newBest: "¡Nuevo récord: {score}! Récord anterior: {previous}", again: "Correr de nuevo", lobby: "Sala de juegos", loading: "Cargando", leaderboard: "5 mejores locales", emptyRank: "Todavía no hay carreras guardadas",
       laneLeft: "carril izquierdo", laneCenter: "carril central", laneRight: "carril derecho", laneMoved: "Te moviste al {lane}",
     },
   };
@@ -354,7 +354,7 @@
     ["Pasos estelares del pantano", ""], ["Paciencia entre charcos", ""], ["Cruce del cocodrilo", ""], ["Cadena estelar de juncos", ""], ["Prueba de la charca del hipopótamo", "Hipopótamo guardián del agua"],
     ["Carrera de roca roja", ""], ["Rastro de estrellas con eco", ""], ["Puertas gemelas del cañón", ""], ["Combo junto al acantilado", ""], ["Prueba de la sombra del águila", "Águila guardiana del cielo"],
     ["Deriva de aguas lunares", ""], ["Cadena estelar de luciérnagas", ""], ["Ritmo de puertas nocturnas", ""], ["Relevo de la reserva", ""], ["Prueba de la manada de leones", "León guardián de la manada"],
-    ["Entrada de la puerta de la corona", ""], ["Laberinto de barro real", ""], ["Relevo estelar del guardián", ""], ["Desafío de todos los senderos", ""], ["Prueba de la corona del elefante", "Elefante guardián de la corona"],
+    ["Acceso a la puerta de la corona", ""], ["Laberinto de barro de la corona", ""], ["Relevo estelar del guardián", ""], ["Desafío de todos los senderos", ""], ["Prueba de la corona del elefante", "Elefante guardián de la corona"],
   ];
   if (spanishRouteCopy.length !== ROUTES.length) throw new Error("Spanish safari-route coverage must match all routes.");
   ROUTES.forEach((config, index) => {
@@ -563,7 +563,9 @@
     document.body.classList.remove("dash-expanded-canvas");
     const safeWidth = Math.min(Math.max(1, viewportWidth), 920);
     const frameLeft = (viewportWidth - safeWidth) / 2;
-    const scale = Math.min(safeWidth / 382, Math.max(1, viewportHeight) / 780);
+    const shortLandscape = viewportHeight <= 430 && viewportWidth > viewportHeight;
+    document.body.classList.toggle("dash-landscape-canvas", shortLandscape);
+    const scale = shortLandscape ? 1 : Math.min(safeWidth / 382, Math.max(1, viewportHeight) / 780);
     const logicalWidth = safeWidth / scale;
     const logicalHeight = viewportHeight / scale;
     const frame = document.querySelector(".dash-game");
@@ -589,7 +591,7 @@
     setLeaveOpen(false, false);
     clearPointerInput();
     state.running = false;
-    document.body.classList.remove("dash-playing", "dash-stage-select", "dash-expanded-canvas");
+    document.body.classList.remove("dash-playing", "dash-stage-select", "dash-expanded-canvas", "dash-landscape-canvas");
     document.querySelector(".dash-game")?.classList.remove("is-playing");
     document.querySelector(".dash-game")?.setAttribute("data-play-viewport", "");
     mainPanel.classList.remove("hidden");

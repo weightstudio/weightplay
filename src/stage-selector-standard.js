@@ -19,7 +19,7 @@
   let appliedStageHeight = 0;
   const savedStageStyles = new WeakMap();
   const savedReserveStyles = new WeakMap();
-  const nativeStageScalers = new Set(["wonder-crash", "animal-rope-rescue", "animal-coloring-studio", "animal-bubble-safari"]);
+  const nativeStageScalers = new Set(["wonder-crash", "animal-rope-rescue", "animal-coloring-studio", "animal-bubble-safari", "campus-dash"]);
   const stageRootByGame = {
     "animal-guard-yard": "#menuPanel",
     "animal-quiz": ".animal-game",

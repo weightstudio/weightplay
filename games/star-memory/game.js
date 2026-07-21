@@ -463,7 +463,8 @@
   };
   let leaveConfirmOpen = false;
   let roundGeneration = 0;
-  let roundLifecycleSuspended = document.hidden;
+  let windowFocused = document.hasFocus();
+  let roundLifecycleSuspended = document.hidden || !windowFocused;
   const roundTasks = new Set();
 
   function scheduleRoundTask(task, delay) {
@@ -501,7 +502,7 @@
   }
 
   function resumeRoundTasks() {
-    roundLifecycleSuspended = document.hidden;
+    roundLifecycleSuspended = document.hidden || !windowFocused;
     roundTasks.forEach((task) => { task.lastFrameAt = null; });
   }
 
@@ -519,6 +520,14 @@
     }
   }
 
+  window.addEventListener("blur", () => {
+    windowFocused = false;
+    suspendRoundTasks();
+  });
+  window.addEventListener("focus", () => {
+    windowFocused = true;
+    resumeRoundTasks();
+  });
   window.addEventListener("pagehide", suspendRoundTasks);
   window.addEventListener("pageshow", resumeRoundTasks);
   document.addEventListener("visibilitychange", () => {

@@ -824,6 +824,120 @@
     squadRule: "Regla del escuadrón",
   });
 
+  // Portuguese needs game-authored terminology here. The shared runtime
+  // catalog provides broad fallback coverage, but generic word replacement
+  // cannot distinguish a tactical Turn from the verb "turn", or Resume from
+  // a résumé. Keep the core Battle, Pause, and accessibility language local.
+  text["pt-BR"] = Object.assign({}, text.en, {
+    title: "Táticas de Runas Animais",
+    language: "Idioma",
+    backToLobby: "Voltar ao lobby",
+    backToMenu: "Voltar às missões",
+    backToMain: "Voltar ao menu principal",
+    startGame: "Iniciar jogo",
+    menuTitle: "Comande o Esquadrão Rúnico.",
+    menuHint: "Escolha uma missão, mova os heróis animais pelo tabuleiro rúnico e vença com bom posicionamento.",
+    missionSelect: "Escolher missão",
+    missionHint: "As missões desbloqueadas ficam salvas neste dispositivo.",
+    missionCard: "Missão {n}",
+    missionGoal: "Objetivo: derrotar {enemies}",
+    missionReward: "{xp} XP / {runes} Runas",
+    missionEnemyLine: "Inimigos: {enemies}",
+    locked: "Bloqueada",
+    startMission: "Iniciar missão",
+    mission: "Missão",
+    turn: "Turno",
+    enemiesLeft: "Inimigos",
+    attack: "Atacar",
+    guard: "Defender",
+    skill: "Habilidade",
+    endTurn: "Fim do turno",
+    chooseHero: "Escolha um herói. Mova uma vez e depois realize uma ação.",
+    chooseTarget: "{hero}: Vida {hp}/{maxHp}, Energia {energy}.",
+    ready: "Pronto",
+    positioned: "Posicionado",
+    acted: "Concluído",
+    fallen: "Caído",
+    turnRosterTitle: "Ações do esquadrão",
+    health: "Vida",
+    energy: "Energia",
+    skillInfo: "Habilidade: {skill} — {desc}",
+    skillInfoLabel: "Habilidade",
+    skillLion: "Salto do Leão",
+    skillLionDesc: "Causa muito dano ao alvo mais próximo.",
+    skillOwl: "Raio Rúnico",
+    skillOwlDesc: "Ataca de mais longe com magia rúnica.",
+    skillTurtle: "Proteção do Casco",
+    skillTurtleDesc: "Defende todo o esquadrão e recupera 1 ponto de Vida.",
+    attackValue: "Ataque {value}",
+    guardValue: "Defesa -1",
+    guardHelp: "Reduz em 1 o dano do próximo ataque inimigo.",
+    skillValue: "Habilidade {value}",
+    actionTarget: "{action}: causa {value} de dano a {target}.",
+    skillSquadResult: "{skill}: defende todos os heróis e recupera até 1 ponto de Vida de cada um.",
+    skillEnergyChange: "Custa 1 de Energia. Energia: {energy} → {remaining}.",
+    skillEnergyNeed: "Requer 1 de Energia; atual: {energy}.",
+    skillSilenced: "Indisponível enquanto estiver silenciado.",
+    heroTileLabel: "{hero}, Vida {hp}/{maxHp}, {status}, linha {row}, coluna {column}.",
+    enemyTileLabel: "{enemy}, Vida {hp}/{maxHp}, linha {row}, coluna {column}.",
+    moveTileLabel: "Mover para a linha {row}, coluna {column}.",
+    emptyTileLabel: "Linha {row}, coluna {column}.",
+    moved: "{hero} se moveu.",
+    attacked: "{hero} atacou {enemy}.",
+    guarded: "{hero} se defendeu.",
+    skillUsed: "{hero} usou uma habilidade rúnica.",
+    enemyTurn: "Os inimigos estão agindo.",
+    pause: "Pausar",
+    pauseTitle: "Batalha pausada",
+    pauseHint: "O turno inimigo e todas as ações pendentes ficam congelados até você continuar.",
+    resume: "Continuar",
+    pauseMenu: "Voltar às missões",
+    battleDetails: "Detalhes da batalha",
+    boardLabel: "Tabuleiro de táticas rúnicas",
+    endTurnDecision: "Encerrar o turno. {count} heróis ainda estão prontos: {heroes}. Os inimigos agirão em seguida.",
+    endTurnDecisionNone: "Encerrar o turno. Todos os heróis vivos já agiram. Os inimigos agirão em seguida.",
+    lion: "Leão Guardião",
+    owl: "Coruja Maga",
+    turtle: "Tartaruga Escudo",
+    wolf: "Lobo Sombrio",
+    raven: "Corvo de Cristal",
+    stag: "Cervo de Pedra",
+    boar: "Javali Espinhoso",
+    runeFox: "Raposa Rúnica",
+    tideTurtle: "Tartaruga da Maré",
+    heron: "Garça Relíquia",
+    salamander: "Salamandra de Brasa",
+    ram: "Carneiro de Cinzas",
+    moth: "Mariposa Lunar",
+    archiveOwl: "Coruja do Arquivo",
+    mirrorWolf: "Lobo Espelho",
+    sealRaven: "Corvo do Selo",
+    rhinoBoss: "Rinoceronte Raiz de Ferro",
+    serpentBoss: "Serpente Espiral do Pântano",
+    emberLionBoss: "Leão Juba de Brasa",
+    griffinBoss: "Grifo do Eclipse",
+    chimeraBoss: "Quimera da Coroa Rúnica",
+    traitRaven: "Visão da Fraqueza",
+    traitRavenShort: "Caçada",
+    traitRavenDesc: "Ataca o herói com a menor proporção de PV.",
+    traitStag: "Pele de Pedra",
+    traitStagShort: "Armadura",
+    traitStagDesc: "Reduz em 1 o primeiro dano de cada turno do jogador.",
+    missionPlan: "Plano: {plan}",
+    missionStatusCurrent: "Selecionada",
+    missionStatusUnlocked: "Toque para escolher",
+    missionRewardLabel: "Recompensa",
+    startSelectedMission: "Iniciar missão {n}",
+    enemyTraits: "Características: {traits}",
+    moveReady: "{hero} se moveu e ainda pode agir.",
+    moveThenActHint: "Mova uma vez e depois ataque, defenda ou use uma Habilidade.",
+    runeChain: "Corrente Rúnica x{count}: +{bonus} de dano!",
+    runeChainHint: "Concentre em {enemy}: o próximo golpe do esquadrão recebe +{bonus} de dano.",
+    runeChainReady: "Concentre ataques em um inimigo para iniciar uma Corrente Rúnica.",
+    battlePreview: "Resumo da missão",
+    squadRule: "Regra do esquadrão",
+  });
+
   const heroDefs = [
     { id: "lion", name: "lion", role: "lionRole", img: "weightplay-boom-mane-lion.png", hp: 7, atk: 3, skillName: "skillLion", skillDesc: "skillLionDesc", skill: "animal-rune-tactics-skill-lion-strike.webp" },
     { id: "owl", name: "owl", role: "owlRole", img: "animal-rune-tactics-hero-owl.png", hp: 5, atk: 2, range: 2, skillName: "skillOwl", skillDesc: "skillOwlDesc", skill: "animal-rune-tactics-skill-owl-rune-bolt.webp" },
@@ -931,6 +1045,41 @@
   missionDefs.forEach((definition, index) => {
     [definition.nameEs, definition.tacticEs] = missionCopyEs[index];
   });
+  const missionCopyPt = [
+    ["Primeiras Pegadas", "Separe os Lobos antes de concentrar os ataques em um alvo."],
+    ["Linha de Visão do Corvo", "Mantenha o herói mais vulnerável fora do alcance do Corvo."],
+    ["Ponte Rúnica Partida", "Escolha uma rota ao redor das casas bloqueadas da ponte."],
+    ["Encruzilhada da Alcateia", "Use a Tartaruga para segurar uma rota enquanto o Leão divide a alcateia."],
+    ["Prova do Chifre de Pedra", "Quebre a Pele de Pedra duas vezes e saia da rota de investida do chefe."],
+    ["Dentes de Espinho", "Use o alcance da Coruja para evitar o Contra-ataque Espinhoso."],
+    ["Portão da Raposa", "Proteja o herói mais vulnerável antes que a Raposa chegue à retaguarda."],
+    ["Armadilha de Raízes", "Atravesse o centro sem deixar o herói errado sobre uma armadilha."],
+    ["Pinça da Forja", "Elimine um flanco da Raposa antes de aproximar o Leão do Javali."],
+    ["Rinoceronte Raiz de Ferro", "Afaste a investida do centro antes que os escombros fechem o tabuleiro."],
+    ["Escrita Inundada", "Preveja o deslocamento das casas de Maré após o turno inimigo."],
+    ["Comboio do Casco", "Remova a defesa de um golpe antes de atacar o aliado protegido."],
+    ["Corrente da Garça", "Deixe casas livres para que a Garça não isole a Coruja."],
+    ["Formação Submersa", "Escolha entre quebrar a defesa e impedir o empurrão da Garça."],
+    ["Serpente Espiral do Pântano", "Acerte a Serpente com dois heróis no mesmo turno para impedir sua regeneração."],
+    ["Pegadas de Brasa", "Observe a casa anterior da Salamandra antes de avançar."],
+    ["Rota do Carneiro", "Saia da linha do Carneiro em vez de absorver toda a investida."],
+    ["Runas de Resfriamento", "Leve um herói com pouca Energia até uma Runa de Resfriamento."],
+    ["Divisão da Caldeira", "Mantenha uma saída livre enquanto as investidas separam o esquadrão."],
+    ["Leão Juba de Brasa", "Leia o ciclo de rugido, salto e ação extra quando o chefe estiver ferido."],
+    ["Poeira Lunar", "Use uma Habilidade antes que a Poeira Lunar silencie o herói."],
+    ["Poleiro do Vigia", "Mova o herói marcado antes do próximo ataque à distância."],
+    ["Runas Orbitais", "Preveja a rotação horária do anel externo no fim da rodada."],
+    ["Fogo Cruzado do Eclipse", "Ordene Habilidades, movimento e defesa antes que silêncio e marcas se combinem."],
+    ["Grifo do Eclipse", "Ataque corpo a corpo enquanto ele voa e separe o grupo antes da varredura no solo."],
+    ["Alcateia Espelho", "Reserve uma casa adjacente ou destrua imediatamente o clone de 1 PV."],
+    ["Corte das Penas Seladas", "Proteja a Energia enquanto controla a casa livre do clone."],
+    ["Trancas das Seis Runas", "Ocupe três casas de Selo conectadas para remover a proteção inimiga."],
+    ["Desafio da Coroa", "Responda a cinco mecânicas anteriores sem perder o controle da formação."],
+    ["Quimera da Coroa Rúnica", "Adapte-se sempre que uma fase visível do chefe mudar a regra do tabuleiro."],
+  ];
+  missionDefs.forEach((definition, index) => {
+    [definition.namePt, definition.tacticPt] = missionCopyPt[index];
+  });
 
   const routeLocale = ({
     en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", es: "es", ja: "ja", ko: "ko",
@@ -984,6 +1133,7 @@
     movementAnimationTimer = 0;
     movementAnimationActive = false;
     renderedMovementMission = null;
+    nodes.grid.removeAttribute("aria-busy");
     nodes.grid.querySelectorAll("[data-unit-key]").forEach((unit) => unit.getAnimations().forEach((animation) => animation.cancel()));
   }
 
@@ -997,6 +1147,7 @@
     lastMovementEvidence = [];
     if (!previousRects.size || matchMedia("(prefers-reduced-motion: reduce)").matches) {
       movementAnimationActive = false;
+      nodes.grid.removeAttribute("aria-busy");
       return 0;
     }
     nodes.grid.querySelectorAll("[data-unit-key]").forEach((unit) => {
@@ -1018,11 +1169,14 @@
       lastMovementEvidence.push({ key: unit.dataset.unitKey, dx, dy, duration });
     });
     movementAnimationActive = lastMovementEvidence.length > 0;
+    if (movementAnimationActive) nodes.grid.setAttribute("aria-busy", "true");
+    else nodes.grid.removeAttribute("aria-busy");
     if (movementAnimationActive) {
       const longest = Math.max(...lastMovementEvidence.map((item) => item.duration));
       movementAnimationTimer = window.setTimeout(() => {
         movementAnimationTimer = 0;
         movementAnimationActive = false;
+        nodes.grid.removeAttribute("aria-busy");
         if (state && !nodes.gamePanel.classList.contains("is-hidden")) {
           render();
           if (endTurnKeyboardFocusRequested && state.phase === "player") {
@@ -1230,7 +1384,9 @@
         ? chineseDescription
         : locale === "es"
           ? "Dirige a tres héroes animales en 30 misiones rúnicas con terreno, enemigos especiales, seis jefes por fases y mejoras permanentes."
-          : "Command three animal heroes through 30 authored rune-grid missions with terrain rules, special enemies, six phased Bosses, permanent upgrades, and local progress.";
+          : locale === "pt-BR"
+            ? "Comande três heróis animais em 30 missões rúnicas com terrenos, inimigos especiais, seis chefes em fases e melhorias permanentes."
+            : "Command three animal heroes through 30 authored rune-grid missions with terrain rules, special enemies, six phased Bosses, permanent upgrades, and local progress.";
     document.querySelector('meta[name="description"]')?.setAttribute("content", description);
     document.querySelector('meta[property="og:title"]')?.setAttribute("content", `${t("title")} - WeightPlay`);
     document.querySelector('meta[property="og:description"]')?.setAttribute("content", description);
@@ -1387,8 +1543,8 @@
       const traitNames = [...new Set(mission.enemies.map((id) => enemyDefs.find((enemy) => enemy.id === id)?.trait).filter(Boolean))]
         .map((key) => t(key))
         .join(" / ");
-      const missionNameSource = locale === "zh-Hant" || locale === "zh-Hans" ? mission.nameZht : locale === "es" ? mission.nameEs : mission.nameEn;
-      const missionTacticSource = locale === "zh-Hant" || locale === "zh-Hans" ? mission.tacticZht : locale === "es" ? mission.tacticEs : mission.tacticEn;
+      const missionNameSource = locale === "zh-Hant" || locale === "zh-Hans" ? mission.nameZht : locale === "es" ? mission.nameEs : locale === "pt-BR" ? mission.namePt : mission.nameEn;
+      const missionTacticSource = locale === "zh-Hant" || locale === "zh-Hans" ? mission.tacticZht : locale === "es" ? mission.tacticEs : locale === "pt-BR" ? mission.tacticPt : mission.tacticEn;
       const missionName = locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(missionNameSource) || missionNameSource : missionNameSource;
       const missionTactic = locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(missionTacticSource) || missionTacticSource : missionTacticSource;
       btn.innerHTML = `
@@ -1439,8 +1595,8 @@
   function renderMissionBriefing() {
     if (!nodes.missionBriefing) return;
     const mission = missionDefs.find((item) => item.id === centeredMission) || missionDefs[0];
-    const missionNameSource = locale === "zh-Hant" || locale === "zh-Hans" ? mission.nameZht : locale === "es" ? mission.nameEs : mission.nameEn;
-    const missionTacticSource = locale === "zh-Hant" || locale === "zh-Hans" ? mission.tacticZht : locale === "es" ? mission.tacticEs : mission.tacticEn;
+    const missionNameSource = locale === "zh-Hant" || locale === "zh-Hans" ? mission.nameZht : locale === "es" ? mission.nameEs : locale === "pt-BR" ? mission.namePt : mission.nameEn;
+    const missionTacticSource = locale === "zh-Hant" || locale === "zh-Hans" ? mission.tacticZht : locale === "es" ? mission.tacticEs : locale === "pt-BR" ? mission.tacticPt : mission.tacticEn;
     const missionName = locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(missionNameSource) || missionNameSource : missionNameSource;
     const missionTactic = locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(missionTacticSource) || missionTacticSource : missionTacticSource;
     const enemies = mission.enemies.map((id) => {
