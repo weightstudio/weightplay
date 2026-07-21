@@ -500,8 +500,9 @@
   function updateGardenFrame() {
     if (!document.body.classList.contains("garden-playing") && !document.body.classList.contains("garden-stage")) return;
     const viewport = window.visualViewport;
-    const viewportWidth = viewport?.width || innerWidth;
+    const safeWidth = viewport?.width || innerWidth;
     const viewportHeight = viewport?.height || innerHeight;
+    const viewportWidth = Math.min(Math.max(1, safeWidth), 920);
     const shell = document.querySelector(".garden-game");
     const publishRenderedMetrics = () => {
       if (!shell?.getClientRects().length) return;
@@ -530,7 +531,7 @@
     root.setProperty("--garden-frame-height", `${viewportHeight}px`);
     root.setProperty("--garden-logical-width", `${logicalWidth}px`);
     root.setProperty("--garden-logical-height", `${logicalHeight}px`);
-    root.setProperty("--garden-frame-left", `${viewport?.offsetLeft || 0}px`);
+    root.setProperty("--garden-frame-left", `${(viewport?.offsetLeft || 0) + Math.max(0, (safeWidth - viewportWidth) / 2)}px`);
     root.setProperty("--garden-frame-top", `${viewport?.offsetTop || 0}px`);
     shell?.style.setProperty("position", "fixed", "important");
     shell?.style.setProperty("inset", "auto", "important");

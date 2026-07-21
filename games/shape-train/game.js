@@ -622,14 +622,15 @@
   function updateStageFrame() {
     if (!document.body.classList.contains("wp-standard-stage-page")) return;
     const viewport = window.visualViewport;
-    const width = Math.round(viewport?.width || innerWidth);
+    const safeWidth = Math.round(viewport?.width || innerWidth);
+    const width = Math.min(Math.max(1, safeWidth), 920);
     const height = Math.round(viewport?.height || innerHeight);
     const scale = Math.min(width / 390, height / 844);
     const logicalWidth = width / scale;
     const logicalHeight = height / scale;
     const root = document.documentElement.style;
     root.setProperty("--shape-stage-scale", String(scale));
-    root.setProperty("--shape-stage-left", "0px");
+    root.setProperty("--shape-stage-left", `${(viewport?.offsetLeft || 0) + Math.max(0, (safeWidth - width) / 2)}px`);
     root.setProperty("--shape-stage-top", "0px");
     root.setProperty("--shape-stage-logical-width", `${logicalWidth}px`);
     root.setProperty("--shape-stage-logical-height", `${logicalHeight}px`);
@@ -647,9 +648,10 @@
       && visualHeight > 0
       && Math.abs(visualWidth - innerWidth) <= 2
       && visualHeight <= innerHeight + 2;
-    document.documentElement.style.setProperty("--shape-vw", `${useVisual ? visualWidth : innerWidth}px`);
+    const safeWidth = useVisual ? visualWidth : innerWidth;
+    const width = Math.min(Math.max(1, safeWidth), 920);
+    document.documentElement.style.setProperty("--shape-vw", `${width}px`);
     document.documentElement.style.setProperty("--shape-vh", `${useVisual ? visualHeight : innerHeight}px`);
-    const width = useVisual ? visualWidth : innerWidth;
     const height = useVisual ? visualHeight : innerHeight;
     const scale = Math.min(width / 362, height / 710);
     nodes.playPanel.dataset.wpCommonScale = String(scale);

@@ -1019,6 +1019,27 @@ body.shape-playing .passenger-area {
   body.shape-playing .passenger { width: min(112px, 70%); }
 }
 
+@media (min-width: 921px) and (min-height: 561px) {
+  body.shape-playing .play-panel {
+    grid-template-columns: minmax(0, 1fr) 240px;
+    grid-template-rows: 48px minmax(0, 1fr) 30px;
+    gap: 6px;
+  }
+
+  body.shape-playing .play-head { grid-column: 1 / -1; grid-row: 1; }
+  body.shape-playing .train-track {
+    grid-column: 1;
+    grid-row: 2;
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+    justify-self: center;
+  }
+  body.shape-playing .passenger-area { grid-column: 2; grid-row: 2; }
+  body.shape-playing .feedback { grid-column: 1 / -1; grid-row: 3; }
+  body.shape-playing .passenger { width: min(142px, 72%); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -418,7 +418,7 @@
   }
 
   function openQuitDecision() {
-    if (!run || document.body.dataset.gameView !== "battle" || !$("#choiceModal").classList.contains("hidden") || !$("#resultModal").classList.contains("hidden")) return;
+    if (!run || document.body.dataset.gameView !== "battle" || !$("#quitModal").classList.contains("hidden") || !$("#choiceModal").classList.contains("hidden") || !$("#resultModal").classList.contains("hidden")) return;
     clearMovementInput();
     quitSuspended = Boolean(run.active);
     run.active = false;

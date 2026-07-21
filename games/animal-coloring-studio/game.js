@@ -1,13 +1,14 @@
 (() => {
   const LOGICAL_W = 390, LOGICAL_H = 788, BOARD_W = 360, BOARD_H = 540;
   document.querySelectorAll('.logical-canvas').forEach(node=>node.setAttribute('data-wp-canvas-max-width','920'));
-  const supportedLocales=['en','zh-Hant','zh-Hans','es','ja','ko','pt-BR','de'];
+  const supportedLocales=['en','zh-Hant','zh-Hans','ja','ko','es','pt-BR','fr','de','it','ru'];
   const sessionStorageFallback=new Map();
   const storageGet=key=>{try{const value=localStorage.getItem(key);if(value!==null)sessionStorageFallback.set(key,value);return value??sessionStorageFallback.get(key)??null}catch{return sessionStorageFallback.get(key)??null}};
   const storageSet=(key,value)=>{const text=String(value);sessionStorageFallback.set(key,text);try{localStorage.setItem(key,text)}catch{}};
   const gameLocalePreference=storageGet('animalColoringStudioLocale');
   const platformLocale=storageGet('weightPlayLocale')||storageGet('weightplayLocale');
-  const routeLocale=window.WonderI18n?.actualLocale?.();
+  const localizedRoute=/^\/(?:en|zh-hant|zh-hans|ja|ko|es|pt-br|fr|de|it|ru)(?:\/|$)/i.test(location.pathname);
+  const routeLocale=localizedRoute?window.WonderI18n?.actualLocale?.():null;
   const pages = [
     ...['lion','elephant','giraffe','zebra','hippo','rhino'].map(id => ({ id, pack:'safari' })),
     ...['puppy','kitten','rabbit','hamster','bird','turtle'].map(id => ({ id, pack:'pet' }))
@@ -103,10 +104,10 @@
   $('battleBack').addEventListener('keydown',rejectRepeatedScreenActivation);
   $('locale').value=lang;$('locale').onchange=()=>{lang=$('locale').value;localStorage.setItem('animalColoringStudioLocale',lang);localStorage.setItem('weightPlayLocale',lang);translate();renderStages()};$('start').addEventListener('keydown',rejectRepeatedScreenActivation);$('pageRail').addEventListener('keydown',event=>{if(event.target.closest('.page-card'))rejectRepeatedScreenActivation(event)});$('resultPanel').addEventListener('keydown',event=>{rejectRepeatedScreenActivation(event);if(event.defaultPrevented||event.key!=='Tab'||$('resultPanel').classList.contains('hidden'))return;const actions=[...$('resultPanel').querySelectorAll('button:not(.hidden):not(:disabled)')].filter(action=>action.getClientRects().length);if(!actions.length)return;const first=actions[0],last=actions[actions.length-1];if((event.shiftKey&&document.activeElement===first)||(!event.shiftKey&&document.activeElement===last)){event.preventDefault();(event.shiftKey?last:first).focus({preventScroll:true})}},true);$('start').onclick=()=>{showStage(true);track('game_start')};$('stageBack').onclick=()=>showMain(true);$('battleBack').onclick=requestBattleReturn;$('keepColoring').onclick=()=>setLeaveConfirmOpen(false,true);$('leavePicture').onclick=leavePicture;$('undo').addEventListener('keydown',event=>{if(event.repeat&&(event.key==='Enter'||event.key===' '))event.preventDefault()});$('undo').onclick=undo;$('clear').addEventListener('keydown',rejectRepeatedScreenActivation);$('clear').onclick=clearPage;$('finish').onclick=complete;$('resultAlbum').onclick=()=>{setResultOpen(false);showStage(true)};$('nextPage').onclick=()=>{if(selectedPage>=pages.length-1){setResultOpen(false);showStage(true);return}selectedPage+=1;openPage(true)};
   translate();renderPalette();fitCanvases();setupCenteredPageCue();window.addEventListener('resize',()=>{fitCanvases();scheduleCenteredPageCard()},{passive:true});window.visualViewport?.addEventListener('resize',()=>{fitCanvases();scheduleCenteredPageCard()},{passive:true});track('game_view');
-  const resultColorUnit=()=>({en:'colors','zh-Hant':'種顏色','zh-Hans':'种颜色',es:'colores',ja:'色',ko:'가지 색','pt-BR':'cores',de:'Farben'}[lang]||'colors');
+  const resultColorUnit=()=>({en:'colors','zh-Hant':'種顏色','zh-Hans':'种颜色',ja:'色',ko:'가지 색',es:'colores','pt-BR':'cores',fr:'couleurs',de:'Farben',it:'colori',ru:'цветов'}[lang]||'colors');
   const completeLocalized=()=>{if(!fills.size&&!strokes.length){showFeedback(t('empty'));return}const save=readSave(),page=pages[selectedPage],colors=new Set([...fills.values(),...strokes.map(s=>s.color)]);save.completed[page.id]={colors:colors.size,regions:fills.size,strokes:strokes.length,completedAt:Date.now()};writeSave(save);$('resultPreview').src=canvas.toDataURL('image/png');$('resultPreview').alt=names[lang][page.id];$('resultSummary').textContent=`${names[lang][page.id]} · ${colors.size} ${resultColorUnit()} · ${t('saved')}`;setResultOpen(true);const primaryAction=configureResultActions();requestAnimationFrame(()=>primaryAction.focus({preventScroll:true}));track('page_completed',{colors_used:colors.size,filled_regions:fills.size,brush_strokes:strokes.length});window.WonderSound?.play('win')};
   $('finish').onclick=completeLocalized;
-  $('locale').onchange=()=>{const next=$('locale').value;if(window.WonderI18n?.setLocale){window.WonderI18n.setLocale(next);return}lang=next;storageSet('animalColoringStudioLocale',lang);storageSet('weightPlayLocale',lang);translate();renderStages()};
+  $('locale').onchange=()=>{const next=$('locale').value;storageSet('animalColoringStudioLocale',next);storageSet('weightPlayLocale',next);window.WonderI18n?.setLocale?.(next);lang=next;translate();renderStages()};
   window.__animalColoringStudioTest={
     pages,
     getState:()=>({screen:[...document.querySelectorAll('[data-screen]')].find(x=>!x.classList.contains('hidden'))?.dataset.screen,selectedPage,pageId:pages[selectedPage]?.id,mode,selectedColor,fills:fills.size,strokes:strokes.length,actions:actions.length,clearArmed,keyboardRegions:keyboardRegions.length,keyboardRegionIndex,activeCanvasPointerId,currentStrokePoints:currentStroke?.points.length||0}),

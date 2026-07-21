@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#170d38">
+  <meta name="weightplay-audience" content="general">
+  <title>Animal Spectrum Pulse | Internal WeightPlay Trial</title>
+  <link rel="icon" href="../../assets/weightplay-logo.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-screen="main">
+  <div id="loading" class="loading"><img src="../../assets/animal-spectrum-pulse/spectrum-spirit.webp" alt=""><strong data-t="loading">Tuning the spectrum drum…</strong></div>
+
+  <div id="mainGroup" class="main-group">
+    <main id="mainScreen" class="main-screen">
+      <header class="main-header">
+        <a class="lobby-return" href="/" aria-label="Return to WeightPlay"><span>←</span><img src="../../assets/weightplay-logo.png" alt="W"></a>
+        <strong data-t="titleShort">Spectrum Pulse</strong>
+        <label class="locale-control"><span class="sr-only" data-t="language">Language</span><select id="localeSelect" aria-label="Language"></select></label>
+      </header>
+      <section class="main-hero">
+        <img class="poster" src="../../assets/animal-spectrum-pulse/cover.webp" alt="Panko guiding a spectrum spirit through aurora gates" data-t-alt="posterAlt">
+        <div class="main-copy">
+          <small data-t="mainKicker">GENERAL · 13+ · INTERNAL TRIAL</small>
+          <h1 data-t="title">Animal Spectrum Pulse</h1>
+          <p data-t="mainSummary">Pulse Panko's spectrum spirit upward through rotating emblem gates.</p>
+          <p data-t="mainGoal">Match wave, sun, diamond, and paw at the scan point to restore all thirty towers.</p>
+          <span id="mainProgress"></span>
+          <button id="start" class="primary" type="button" data-t="startGame">Start Game</button>
+        </div>
+      </section>
+    </main>
+    <section class="public-guide" aria-labelledby="guideTitle">
+      <small data-t="guideKicker">INTERNAL GAME GUIDE</small>
+      <h2 id="guideTitle" data-t="guideTitle">Hear the pattern, read the gate</h2>
+      <p data-t="guideIntro">This private build explains the complete precision loop without making the game publicly indexable.</p>
+      <div class="guide-grid">
+        <article><h3 data-t="guideWorldTitle">The silent aurora towers</h3><p data-t="guideWorld">Panko's spectrum drums have gone quiet. Each rescued spirit restores one patterned tower and carries its pulse to the crown.</p></article>
+        <article><h3 data-t="guideLoopTitle">One press, one pulse</h3><p data-t="guideLoop">Tap, click, Space, Enter, or Arrow Up once for one identical lift. Release before pulsing again.</p></article>
+        <article><h3 data-t="guideReadTitle">Colour is never the only clue</h3><p data-t="guideRead">Cyan wave, gold sun, violet diamond, and coral paw always keep distinct emblems and textures.</p></article>
+        <article><h3 data-t="guideStrategyTitle">Wait on safe checkpoints</h3><p data-t="guideStrategy">A cleared gate becomes a safe resting beat. Watch the scan marker, then commit when your emblem arrives.</p></article>
+      </div>
+    </section>
+  </div>
+
+  <section id="stageScreen" class="active-screen" hidden>
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-spectrum-pulse/cover.webp" style="--wp-stage-art:url('../../assets/animal-spectrum-pulse/cover.webp')">
+      <header class="stage-header"><button id="stageBack" type="button" aria-label="Back" data-wp-return="stage">←</button><div><strong data-t="chooseTower">Choose a Pulse Tower</strong><span id="stageSummary"></span></div><img src="../../assets/animal-spectrum-pulse/panko.webp" alt=""></header>
+      <nav class="stage-tabs"><button id="towersTab" class="active" type="button" data-t="towers">Towers</button><button id="studioTab" type="button" data-t="studio">Resonance Studio</button></nav>
+      <section id="towerPanel" class="tab-panel tower-panel"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Pulse tower selector" data-t-aria="stageRailLabel"></div><p id="stageHint" data-t="stageHint">Drag the rail and choose an unlocked tower.</p></section>
+      <section id="studioPanel" class="tab-panel studio-panel" hidden>
+        <div class="studio-intro"><img src="../../assets/animal-spectrum-pulse/panko.webp" alt=""><div><h2 data-t="studioTitle">Resonance Studio</h2><p data-t="studioIntro">Spend Star Notes on permanent pulse tuning.</p><strong id="noteCount"></strong></div></div>
+        <div id="upgrades" class="upgrades"></div>
+        <div class="trail-card"><img src="../../assets/animal-spectrum-pulse/perfect-burst.webp" alt=""><div><strong data-t="trailTitle">Starlight Drum Trail</strong><p data-t="trailDesc">A cosmetic trail with no timing advantage.</p></div><button id="trailButton" type="button" data-t="trailBuy">Unlock · 10 ◆</button></div>
+      </section>
+    </div>
+  </section>
+
+  <section id="battleScreen" class="active-screen" hidden>
+    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <div id="battleLive" class="battle-live">
+        <header class="battle-header"><button id="battleBack" type="button" aria-label="Back" data-wp-return="battle">←</button><div class="tower-block"><small id="towerLabel"></small><strong id="timerValue">0:00</strong></div><div class="battle-status"><span><b data-t="gate">Gate</b><strong id="gateValue">0/0</strong></span><span><b data-t="resonance">Resonance</b><strong id="resonanceValue">×1</strong></span><span><b data-t="guard">Guard</b><strong id="guardValue">0</strong></span></div><button id="battleHelp" type="button" aria-label="How to play" data-t-aria="help">?</button></header>
+        <div class="identity-row"><span data-t="currentIdentity">Current</span><img id="identityIcon" src="../../assets/animal-spectrum-pulse/node-cyan.webp" alt=""><strong id="identityName"></strong><span id="nextIdentity"></span></div>
+        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="720" height="1200" tabindex="0" aria-label="Spectrum pulse tower" data-t-aria="arenaLabel"></canvas><div class="scan-legend"><span data-t="scanMarker">SCAN</span><i></i></div><div class="control-cue" data-t="controlCue">Tap anywhere · Space / Enter / ↑</div></div>
+        <p id="feedback" class="feedback" aria-live="polite"></p>
+        <button id="pulseButton" class="pulse-button" type="button" data-t="pulse">PULSE</button>
+      </div>
+
+      <section id="helpModal" class="modal-layer" hidden><div class="dialog-card"><h2 data-t="helpTitle">One press, one pulse</h2><ol><li data-t="help1">Pulse upward and release before pressing again.</li><li data-t="help2">Cross when the scan marker touches your colour and emblem.</li><li data-t="help3">A passed gate becomes a safe checkpoint. Reach the crown before time expires.</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">Continue</button></div></div></section>
+      <section id="leaveModal" class="modal-layer" hidden><div class="dialog-card"><h2 data-t="leaveTitle">Keep this pulse run?</h2><p data-t="leaveText">Continue resumes the exact spirit, gate angles, timer, and Resonance. Returning to Towers ends this run.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">Continue</button><button id="leaveStage" type="button" data-t="returnTowers">Return to Towers</button></div></div></section>
+      <section id="resultModal" class="modal-layer result-layer" hidden><div class="result-card"><img src="../../assets/animal-spectrum-pulse/panko.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">Time</b><strong id="resultTime"></strong></span><span><b data-t="bestResonance">Best Resonance</b><strong id="resultChain"></strong></span><span><b data-t="medal">Medal</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="retry" type="button" data-t="retry">Retry</button><button id="resultTowers" type="button" data-t="towers">Towers</button><button id="next" class="primary" type="button" data-t="nextTower">Next Tower</button></div></div></section>
+    </div>
+    <div class="ad-reserve" aria-hidden="true"></div>
+  </section>
+
+  <script src="locales.js"></script>
+  <script src="game.js"></script>
+  <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
+  <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
+</body>
+</html>

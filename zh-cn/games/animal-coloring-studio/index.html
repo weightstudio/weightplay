@@ -62,7 +62,7 @@
       <header class="main-topbar">
         <a class="home-link" href="../../kids/" data-wp-return="main" data-aria="backLobby" aria-label="Back to WeightPlay"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
         <h1 data-copy="title">动物塗色工作室</h1>
-        <select id="locale" data-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="pt-BR">Português (Brasil)</option><option value="de">Deutsch</option></select>
+        <select id="locale" data-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option></select>
       </header>
       <img class="cover" src="../../assets/animal-coloring-studio-cover.webp" alt="">
       <p class="intro" data-copy="intro">Choose an animal, pick colors, and make it yours.</p>
@@ -143,12 +143,12 @@
     </section>
   </main>
   <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite"><div class="loading-card"><strong id="loadingTitle">Loading studio</strong><span id="loadingText">0%</span><div><i id="loadingFill"></i></div></div></div>
-  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-15"></script>
+  <script src="../../src/site-config.js"></script><script>if(new URLSearchParams(location.search).get('trial')==='1')window.WONDER_SITE.localization.useLocaleRoutes=false;</script><script src="/src/i18n.js?v=20260718-locale-routes1"></script>
   <script src="../../src/analytics.js"></script>
 <script src="../../src/sound.js?v=20260720-locale11"></script>
 <script src="../../src/edge-guard.js?v=20260715-kids-fullscreen1"></script>
-<script src="locales.js?v=20260720-eight-locales1"></script>
-<script src="game.js?v=20260720-canvas-max920-1"></script>
+<script src="locales.js?v=20260721-eleven-locales1"></script>
+<script src="game.js?v=20260721-eleven-locales1"></script>
   <script data-wp-stage-standard data-wp-native-stage>/* This Kids game owns its native zero-reserve Stage rail. */</script>
   <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
 </body>
