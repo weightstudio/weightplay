@@ -434,6 +434,8 @@
     $("#pauseBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
     $("#pauseBtn").addEventListener("click",()=>setPaused(!paused));
     document.addEventListener("visibilitychange",()=>{if(document.hidden){suspendPendingEconomy();if(playing&&!paused)setPaused(true)}else resumePendingEconomy()});
+    window.addEventListener("blur",cancelRoutePreview);
+    window.addEventListener("pagehide",()=>{if(playing&&!paused)setPaused(true);else cancelRoutePreview()});
     nodes.field.addEventListener("pointerdown",e=>{if(!playing||paused||e.isPrimary===false||(e.button!==undefined&&e.button!==0)||(routePointerId!==null&&routePointerId!==e.pointerId))return;routePointerId=e.pointerId;nodes.field.setPointerCapture(e.pointerId);routeTo(e.clientX,e.clientY)});
     nodes.field.addEventListener("pointermove",e=>{if(!paused&&e.pointerId===routePointerId&&nodes.field.hasPointerCapture(e.pointerId))routeTo(e.clientX,e.clientY)});
     nodes.field.addEventListener("pointerup",e=>{if(e.pointerId!==routePointerId||(e.pointerType==="mouse"&&e.button!==0))return;if(!paused&&preview)routeTo(e.clientX,e.clientY,true);cancelRoutePreview()});

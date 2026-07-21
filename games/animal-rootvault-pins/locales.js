@@ -52,6 +52,19 @@ const workshopFeedback={
   it:{workshopReady:"Scegli un aiuto di pianificazione. Costo e saldo restano visibili.",needSeeds:"Servono {cost} Marchi Seme. Saldo attuale: {n}.",upgradeComplete:"{name} migliorato al livello {level}/3."},
   ru:{workshopReady:"Выбери подсказку. Стоимость и баланс останутся видимыми.",needSeeds:"Нужно Семенных знаков: {cost}. Сейчас: {n}.",upgradeComplete:"{name}: улучшение {level}/3."},
 };
-for(const code of Object.keys(packs))Object.assign(packs[code],navigation[code],workshopFeedback[code]);
+const publicGuide={
+  en:{guideKicker:"WEIGHTPLAY ORIGINAL GAME GUIDE",guideIntro:"Plan each pull, resolve material reactions, and guide Taro and the Star Core through 30 handcrafted Rootvault chambers."},
+  "zh-Hant":{guideKicker:"WEIGHTPLAY 原創遊戲指南",guideIntro:"規劃每次拉針、處理材質反應，帶領 Taro 與星核通過 30 個精心設計的根脈房間。"},
+  "zh-Hans":{guideKicker:"WEIGHTPLAY 原创游戏指南",guideIntro:"规划每次拉针、处理材质反应，带领 Taro 与星核通过 30 个精心设计的根脉房间。"},
+  ja:{guideKicker:"WEIGHTPLAY オリジナルゲームガイド",guideIntro:"ピンを抜く順番と素材反応を考え、タロとスターコアを30の手作りルートヴォルトへ導こう。"},
+  ko:{guideKicker:"WEIGHTPLAY 오리지널 게임 가이드",guideIntro:"핀을 뽑는 순서와 재료 반응을 계획해 타로와 별핵을 30개의 수제 뿌리 금고 방으로 안내하세요."},
+  es:{guideKicker:"GUÍA DEL JUEGO ORIGINAL DE WEIGHTPLAY",guideIntro:"Planifica cada clavija, resuelve las reacciones y guía a Taro y al Núcleo por 30 cámaras diseñadas a mano."},
+  "pt-BR":{guideKicker:"GUIA DO JOGO ORIGINAL WEIGHTPLAY",guideIntro:"Planeje cada pino, resolva as reações e guie Taro e o Núcleo por 30 câmaras criadas à mão."},
+  fr:{guideKicker:"GUIDE DU JEU ORIGINAL WEIGHTPLAY",guideIntro:"Planifiez chaque goupille, résolvez les réactions et guidez Taro et le Cœur à travers 30 salles conçues à la main."},
+  de:{guideKicker:"WEIGHTPLAY ORIGINAL-SPIELANLEITUNG",guideIntro:"Plane jeden Stift, löse Stoffreaktionen und führe Taro und den Sternenkern durch 30 handgefertigte Kammern."},
+  it:{guideKicker:"GUIDA AL GIOCO ORIGINALE WEIGHTPLAY",guideIntro:"Pianifica ogni perno, risolvi le reazioni e guida Taro e il Nucleo attraverso 30 camere create a mano."},
+  ru:{guideKicker:"РУКОВОДСТВО К ОРИГИНАЛЬНОЙ ИГРЕ WEIGHTPLAY",guideIntro:"Планируйте каждый штифт, учитывайте реакции и проведите Таро и Звёздное ядро через 30 созданных вручную камер."},
+};
+for(const code of Object.keys(packs))Object.assign(packs[code],publicGuide[code],navigation[code],workshopFeedback[code]);
 window.ROOTVAULT_PIN_LOCALES=packs;
 })();

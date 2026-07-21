@@ -1,6 +1,22 @@
+(() => {
+const boot = () => {
 const canonicalLocaleKey = "weightPlayLocale";
 const legacyLocaleKey = "weightplayLocale";
 const storageFallback = new Map();
+const supportedLocales = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru"];
+const localeLabels = {
+  en: "English",
+  "zh-Hant": "繁體中文",
+  "zh-Hans": "简体中文",
+  ja: "日本語",
+  ko: "한국어",
+  es: "Español",
+  "pt-BR": "Português",
+  fr: "Français",
+  de: "Deutsch",
+  it: "Italiano",
+  ru: "Русский",
+};
 
 function storageRead(key) {
   try {
@@ -25,7 +41,7 @@ function storageWrite(key, value) {
 
 const canonicalSavedLocale = storageRead(canonicalLocaleKey);
 const legacySavedLocale = storageRead(legacyLocaleKey);
-if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) {
+if (!canonicalSavedLocale && supportedLocales.includes(legacySavedLocale)) {
   storageWrite(canonicalLocaleKey, legacySavedLocale);
   window.WonderI18n?.setLocale?.(legacySavedLocale);
 }
@@ -101,6 +117,16 @@ const loadingPanel = document.querySelector("#loadingPanel");
 const loadingTitle = document.querySelector("#loadingTitle");
 const loadingText = document.querySelector("#loadingText");
 const loadingFill = document.querySelector("#loadingFill");
+
+function ensureLocaleOptions() {
+  const existing = new Map([...localeSelect.options].map((option) => [option.value, option]));
+  localeSelect.replaceChildren(...supportedLocales.map((code) => {
+    const option = existing.get(code) || document.createElement("option");
+    option.value = code;
+    option.textContent = localeLabels[code];
+    return option;
+  }));
+}
 
 const GAME_ID = "animal-rescue";
 const UNLOCK_KEY = "animalRescueUnlocked";
@@ -446,8 +472,15 @@ function locale() {
 }
 
 function t(key, params = {}) {
-  const table = dictionary[locale()] || dictionary.en;
-  return Object.entries(params).reduce((text, [name, value]) => text.replaceAll(`{${name}}`, String(value)), table[key] || dictionary.en[key] || key);
+  const currentLocale = locale();
+  const sourceLocale = currentLocale === "zh-Hans" ? "zh-Hant" : currentLocale;
+  const table = dictionary[sourceLocale] || dictionary.en;
+  const source = table[key] || dictionary.en[key] || key;
+  const immediate = ["en", "zh-Hant", "zh-Hans", "es"].includes(currentLocale)
+    ? source
+    : window.WeightPlayGameRuntimeLocalizer?.translate(source) || source;
+  const localized = Object.entries(params).reduce((text, [name, value]) => text.replaceAll(`{${name}}`, String(value)), immediate);
+  return currentLocale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(localized) || localized : localized;
 }
 
 function makeState(level) {
@@ -1205,6 +1238,7 @@ pageSupportObserver.observe(document.body, { childList:true, subtree:true });
 document.addEventListener("DOMContentLoaded", queueGamePageSupportSync, { once:true });
 window.addEventListener("load", queueGamePageSupportSync, { once:true });
 
+ensureLocaleOptions();
 renderStaticText();
 queueGamePageSupportSync();
 showMain();
@@ -1227,3 +1261,10 @@ if (new URLSearchParams(location.search).has("smoke")) {
     }),
   };
 }
+};
+
+const initialLocale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || "en";
+const needsRuntimeCatalog = !["en", "zh-Hant", "zh-Hans", "es"].includes(initialLocale);
+if (needsRuntimeCatalog && document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true });
+else boot();
+})();

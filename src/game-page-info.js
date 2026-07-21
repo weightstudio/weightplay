@@ -6830,6 +6830,7 @@
     const game = localizedGame(id);
     if (!game) return;
     syncLocalizedMetadata(game);
+    if (document.querySelector(".game-page-info[data-wp-preserve-static-guide]")) return;
     const gameSkills = game.skills || [];
     const showRecommendedAge = Boolean(baseGame.age) && !/^(12|13)\+$/.test(baseGame.age);
 
@@ -7113,6 +7114,48 @@
     progression: ["第 1–5 关教学相邻移动与不可重复；第 6–10 关练习转角规划；第 11–15 关加入石块切割棋盘。", "第 16–20 关延长路线；第 21–25 关增加容易误判的分岔；第 26–30 关综合大型棋盘、石块与窄出口。"],
     faq: [["可以重复走同一格吗？", "不行，重新进入已上色格会结束本次尝试。"], ["可以斜着走吗？", "不行，只能走到共享边线的上下左右相邻格。"], ["怎样才算过关？", "所有可走空格都必须被同一条路线填满。"], ["需要快速拖动吗？", "不需要，可以停在当前格子思考。"], ["进度会保存吗？", "会，数据只保存在当前浏览器。"], ["共有几关？", "共有 30 个原创格子棋盘。"]]
   });
+
+  Object.assign(games, { "animal-rootvault-pins": {
+    title: "Animal Rootvault Pins", difficulty: "Easy to Challenging", time: "2-6 minutes per chamber", gameplay: "Material-Reaction Pin Puzzle", genre: ["Puzzle", "Strategy", "Animal"], skills: ["Logic", "Planning", "Problem Solving"],
+    intro: "Animal Rootvault Pins is a 30-chamber pin puzzle starring Moss Shell Taro. Pull complete golden pins in a safe order, resolve visible material reactions, and bring Taro and the Star Core together at the sanctuary.",
+    story: ["Moonwater channels beneath Taro's living fortress shell have tangled with Emberlight, Shadow Wisps, wards, and ancient rune locks. Restoring all six chapters reopens the Rootvault."],
+    systems: ["A pull moves every item from its source room to its destination. Moonwater cools Emberlight into steam, a Shell Ward protects Taro once, and Rune Keys open matching marked pins.", "Restart restores the exact authored chamber. Clears, best pull counts, Seed Marks, and planning upgrades are stored locally in this browser."],
+    how: ["Choose an unlocked chamber from the horizontal Stage rail.", "Inspect every room, material, destination, and rune lock.", "Select one complete golden pin and pull it.", "Bring Taro and the Star Core safely to the sanctuary."],
+    strategyTips: ["Cool Emberlight before sending Taro through it.", "Collect a Shell Ward before exposing Taro to a Shadow Wisp.", "Deliver each Rune Key before relying on its marked pin.", "Plan where both Taro and the Star Core will finish, not only the next reaction."],
+    progression: ["Chambers 1-5 teach path order. Later chapters introduce steam reactions, wards and shadows, twin currents, rune locks, and combined mastery layouts through Chamber 30."],
+    designNote: "Every chamber is deterministic and readable before the first pull. Touch, mouse, and keyboard use the same one-action input, while responsive Stage, Battle, and Result screens keep the shared 920px maximum and separate 56px reserve.",
+    parent: "No account is required. Progress and workshop upgrades remain in this browser and may reset if site storage is cleared.",
+    faq: [["How many chambers are included?", "There are 30 authored chambers across six material-rule chapters."], ["Can a pin be partly pulled?", "No. Each action moves one complete golden pin."], ["What does Moonwater do?", "It cools Emberlight into harmless steam."], ["Does progress save?", "Yes, locally in this browser."]]
+  }});
+  gameplayProfiles["animal-rootvault-pins"] = { gameplay: "Material-Reaction Pin Puzzle", genre: ["Puzzle", "Strategy", "Animal"] };
+  localizedGames["zh-Hant"]["animal-rootvault-pins"] = {
+    ...games["animal-rootvault-pins"], title: "動物根脈機關", difficulty: "簡單至具挑戰性", time: "每個機關室約 2 至 6 分鐘", gameplay: "材質反應拉針益智", genre: ["益智", "策略", "動物"], skills: ["邏輯", "規劃", "問題解決"],
+    intro: "《動物根脈機關》是苔殼太郎主演的 30 關拉針益智遊戲。依安全順序拉出完整金針、處理可見材質反應，並讓太郎與星核一同抵達聖所。"
+  };
+  localizedGameplayProfiles["zh-Hant"]["animal-rootvault-pins"] = { gameplay: "材質反應拉針益智", genre: ["益智", "策略", "動物"] };
+  localizedGames["zh-Hans"]["animal-rootvault-pins"] = { ...localizedGames["zh-Hant"]["animal-rootvault-pins"], title: "动物根脉机关", gameplay: "材质反应拉针益智", intro: "《动物根脉机关》是苔壳太郎主演的 30 关拉针益智游戏。按安全顺序拉出完整金针、处理可见材质反应，并让太郎与星核一同抵达圣所。" };
+  localizedGameplayProfiles["zh-Hans"]["animal-rootvault-pins"] = { gameplay: "材质反应拉针益智", genre: ["益智", "策略", "动物"] };
+
+  Object.assign(games, { "animal-sanctuary-loop": {
+    title: "Animal Sanctuary Loop", difficulty: "Moderate to Challenging", time: "2-6 minutes per mission", gameplay: "Real-Time Territory Loop Arcade", genre: ["Arcade", "Strategy", "Animal"], skills: ["Planning", "Reaction", "Risk Management"],
+    intro: "Animal Sanctuary Loop is a 30-mission territory arcade game starring Spark Paw Fia. Leave restored land, draw a vulnerable lightning trail through corruption, and reconnect it before a hunter reaches the open line.",
+    story: ["Six sanctuary regions have been swallowed by corruption. Fia restores each habitat by enclosing territory, rescuing beacons, and surviving the changing rules of thirty authored missions."],
+    systems: ["Fia is safe on restored land. Outside it, her open trail can be cut by a hunter; reconnecting claims the enclosed region. Hearts, target area, mission modifiers, and enemy routes remain visible during Battle.", "Later chapters add rescue beacons, storm lanes, ordered seals, shrinking borders, rival claims, and Guardian hunts. Unlocks, stars, and chosen trail cosmetics are saved locally."],
+    how: ["Choose an unlocked mission from the horizontal Stage rail.", "Steer from restored land into corruption.", "Draw a useful loop while avoiding hunters.", "Reconnect to claim territory and complete the mission objective."],
+    strategyTips: ["Use short loops while learning a hunter's route.", "Start long loops only when nearby enemies are moving away.", "Leave a safe return corridor instead of tracing directly beside the open trail.", "Read the chapter modifier before deciding whether area, beacons, or seals come first."],
+    progression: ["Missions 1-5 teach territory loops. Chapters 2-6 add beacons, storm lanes, ordered seals, shrinking borders, rival territory, and Guardian combinations through Mission 30."],
+    designNote: "The game keeps movement responsive while making every risk visible. Touch, mouse, and keyboard share one movement model; Stage, Battle, and Result use the shared responsive 920px maximum with a separate 56px reserve.",
+    parent: "No account or personal information is required. Mission progress, stars, and trail styles stay in this browser.",
+    faq: [["How many missions are included?", "There are 30 authored missions across six rule chapters."], ["When is Fia safe?", "She is safe while touching restored territory."], ["What causes damage?", "A hunter touching Fia or her vulnerable open trail costs a heart."], ["Does progress save?", "Yes, locally in this browser."]]
+  }});
+  gameplayProfiles["animal-sanctuary-loop"] = { gameplay: "Real-Time Territory Loop Arcade", genre: ["Arcade", "Strategy", "Animal"] };
+  localizedGames["zh-Hant"]["animal-sanctuary-loop"] = {
+    ...games["animal-sanctuary-loop"], title: "動物聖域光環", difficulty: "中等至具挑戰性", time: "每個任務約 2 至 6 分鐘", gameplay: "即時領地光環遊戲", genre: ["動作", "策略", "動物"], skills: ["規劃", "反應", "風險管理"],
+    intro: "《動物聖域光環》是星爪菲亞主演的 30 關即時領地遊戲。離開已修復土地、在腐化區畫出脆弱光軌，並在獵影碰到開放路線前重新接回。"
+  };
+  localizedGameplayProfiles["zh-Hant"]["animal-sanctuary-loop"] = { gameplay: "即時領地光環遊戲", genre: ["動作", "策略", "動物"] };
+  localizedGames["zh-Hans"]["animal-sanctuary-loop"] = { ...localizedGames["zh-Hant"]["animal-sanctuary-loop"], title: "动物圣域光环", gameplay: "即时领地光环游戏", intro: "《动物圣域光环》是星爪菲亚主演的 30 关即时领地游戏。离开已修复土地、在腐化区画出脆弱光轨，并在猎影碰到开放路线前重新接回。" };
+  localizedGameplayProfiles["zh-Hans"]["animal-sanctuary-loop"] = { gameplay: "即时领地光环游戏", genre: ["动作", "策略", "动物"] };
 
   window.WeightPlayGameInfo = {
     get(gameId) {

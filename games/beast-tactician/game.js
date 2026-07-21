@@ -26,7 +26,7 @@
   }
   function activeI18nLocale() {
     try {
-      return window.WonderI18n?.locale?.() || "";
+      return window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || "";
     } catch {
       return "";
     }
@@ -508,6 +508,7 @@
       mechanic: "pathing",
       names: {
         en: ["Forest Gate", "Split Roots", "Broken Bridge", "Moss Yard", "Moonlit Ford"],
+        ja: ["森の門", "分かれ根", "壊れた橋", "苔むす中庭", "月明かりの浅瀬"],
         "zh-Hant": ["森林入口", "分岔樹根", "斷橋", "苔原庭院", "月光淺灘"],
       },
       threats: {
@@ -518,12 +519,13 @@
         en: ["Bend the route with Guards.", "Join both lanes before adding range.", "Open with Archer coverage.", "Upgrade one anchor and add healing.", "Use Taro to hold while Fia burns the Boss."],
         "zh-Hant": ["用守衛拉出轉彎路線。", "先讓雙線匯流，再補遠程。", "先用弓手覆蓋快速敵人。", "升級一名主坦並加入治療。", "太郎定線，菲亞集中攻擊 Boss。"],
       },
-      boss: { en: "Shadow Brute", "zh-Hant": "暗影巨漢", ability: "siege" },
+      boss: { en: "Shadow Brute", ja: "シャドウブルート", "zh-Hant": "暗影巨漢", ability: "siege" },
     },
     {
       mechanic: "flying",
       names: {
         en: ["Crystal Bend", "Bat Crossing", "Engineer's Pass", "Echo Grove", "Behemoth Gate"],
+        ja: ["水晶の曲がり道", "コウモリの渡り場", "技師の峠", "こだまの森", "巨獣の門"],
         "zh-Hant": ["水晶彎道", "影蝠渡口", "工程師通道", "回音林", "巨獸之門"],
       },
       threats: {
@@ -534,12 +536,13 @@
         en: ["Cover long angles with Archer and Orla.", "Keep ranged damage near the core.", "Slow boars before focusing bats.", "Split damage between route and sky.", "Clear escorts before committing Boss burst."],
         "zh-Hant": ["用弓手與歐拉覆蓋長距離。", "在核心附近保留遠程火力。", "先緩速野豬，再處理影蝠。", "把輸出分配給地面路線與空中。", "先清護衛，再集中爆發打 Boss。"],
       },
-      boss: { en: "Forest Behemoth", "zh-Hant": "森林巨獸", ability: "summon" },
+      boss: { en: "Forest Behemoth", ja: "森のベヒモス", "zh-Hant": "森林巨獸", ability: "summon" },
     },
     {
       mechanic: "armor",
       names: {
         en: ["Ironbark Trail", "Thorn Barricade", "Boar Hollow", "Root Forge", "Colossus Yard"],
+        ja: ["鉄皮の小道", "いばらの防壁", "イノシシ谷", "根の鍛冶場", "巨像の中庭"],
         "zh-Hant": ["鐵皮木徑", "荊棘路障", "野豬谷", "樹根鍛坊", "巨像庭院"],
       },
       threats: {
@@ -550,12 +553,13 @@
         en: ["Use sustained fire to break armor.", "Splash the shield line before runners pass.", "Create two blocker layers.", "Pair Sapper splash with ranged heroes.", "Break the guard before spending burst skills."],
         "zh-Hant": ["用持續火力擊破護甲。", "先用濺射削弱護甲線，避免快敵通過。", "建立兩層阻擋防線。", "用工兵濺射搭配遠程英雄。", "先破防護，再使用爆發技能。"],
       },
-      boss: { en: "Ironbark Colossus", "zh-Hant": "鐵皮巨像", ability: "armor" },
+      boss: { en: "Ironbark Colossus", ja: "鉄皮の巨像", "zh-Hant": "鐵皮巨像", ability: "armor" },
     },
     {
       mechanic: "regrowth",
       names: {
         en: ["Mistwater Path", "Healing Spring", "Spore Circle", "Druid Ruins", "Ancient Heart"],
+        ja: ["霧水の小道", "癒やしの泉", "胞子の環", "ドルイド遺跡", "古木の心"],
         "zh-Hant": ["霧水小徑", "療癒泉", "孢子環地", "德魯伊遺跡", "古木之心"],
       },
       threats: {
@@ -566,12 +570,13 @@
         en: ["Focus one target instead of spreading shots.", "Place burst damage before the final bend.", "Make lanes meet inside one kill zone.", "Break armor, then finish targets quickly.", "Save hero focus for each healing phase."],
         "zh-Hant": ["集中擊倒一個目標，不要分散攻擊。", "在最後轉角前配置爆發火力。", "讓分線敵人在同一火力區匯合。", "先破甲，再快速收掉目標。", "為每次治療階段保留英雄集火。"],
       },
-      boss: { en: "Verdant Ancient", "zh-Hant": "翠綠古木", ability: "regrowth" },
+      boss: { en: "Verdant Ancient", ja: "翠緑の古木", "zh-Hant": "翠綠古木", ability: "regrowth" },
     },
     {
       mechanic: "surge",
       names: {
         en: ["Storm Approach", "Thunder Fork", "Gale Rampart", "Lightning Hollow", "Tempest Crown"],
+        ja: ["嵐の前線", "雷鳴の分岐路", "強風の防壁", "稲妻谷", "暴風の王冠"],
         "zh-Hant": ["風暴前線", "雷鳴岔路", "強風壁壘", "閃電谷", "暴風王冠"],
       },
       threats: {
@@ -582,12 +587,13 @@
         en: ["Build finishing damage near the core.", "Keep Orla behind the last bend.", "Slow before breaking armor.", "Stagger damage zones instead of one cluster.", "Separate escorts from the Boss with slows."],
         "zh-Hant": ["在核心附近配置收尾火力。", "讓歐拉守住最後轉角。", "破甲前先施加緩速。", "分段配置火力區，不要只堆一處。", "用緩速把護衛與 Boss 分開。"],
       },
-      boss: { en: "Tempest Ravager", "zh-Hant": "暴風掠奪者", ability: "haste" },
+      boss: { en: "Tempest Ravager", ja: "暴風の略奪者", "zh-Hant": "暴風掠奪者", ability: "haste" },
     },
     {
       mechanic: "eclipse",
       names: {
         en: ["Eclipse Gate", "Voidroot Maze", "Nightfall Bridge", "Crown Approach", "Emperor's Stand"],
+        ja: ["月蝕の門", "虚根の迷宮", "夜幕の橋", "王冠への道", "皇帝の最終陣"],
         "zh-Hant": ["月蝕之門", "虛根迷宮", "夜幕斷橋", "王冠前線", "皇帝終戰"],
       },
       threats: {
@@ -598,7 +604,7 @@
         en: ["Use a complete ground-and-air formation.", "Focus regenerators after the armor line breaks.", "Keep a second damage zone near the core.", "Upgrade roles, not only one carry.", "Answer each phase: bats, armor, then the Emperor."],
         "zh-Hant": ["建立完整的地面與空中防線。", "破開護甲線後集中擊倒再生敵人。", "在核心附近保留第二火力區。", "平均升級角色功能，不只養一名主力。", "依序應對影蝠、護甲與皇帝三個階段。"],
       },
-      boss: { en: "Voidroot Emperor", "zh-Hant": "虛根皇帝", ability: "phase" },
+      boss: { en: "Voidroot Emperor", ja: "虚根の皇帝", "zh-Hant": "虛根皇帝", ability: "phase" },
     },
   ];
 
@@ -610,7 +616,7 @@
       arc: arcIndex + 1,
       mechanic: arc.mechanic,
       route: routeLayouts[stage - 1],
-      name: { en: name, "zh-Hant": arc.names["zh-Hant"][stageIndex] },
+      name: { en: name, ja: arc.names.ja[stageIndex], "zh-Hant": arc.names["zh-Hant"][stageIndex] },
       waves: boss ? 5 : stageIndex <= 1 ? 3 : 4,
       threat: stage,
       startCoins: 360 + stage * 42,
@@ -624,6 +630,7 @@
       },
       boss,
       bossName: boss ? arc.boss.en : "",
+      bossNameJa: boss ? arc.boss.ja : "",
       bossNameZht: boss ? arc.boss["zh-Hant"] : "",
       bossAbility: boss ? arc.boss.ability : "",
       bossHpScale: boss ? 5.6 + arcIndex * 0.9 : 0,
@@ -1172,6 +1179,14 @@
     return value;
   }
 
+  function localizedValue(values) {
+    if (!values) return "";
+    return values[state.locale]
+      || (state.locale === "zh-Hans" ? values["zh-Hant"] : "")
+      || values.en
+      || "";
+  }
+
   function track(event, payload = {}) {
     window.WonderAnalytics?.track?.(event, { game_id: GAME_ID, internal: !isPublicRelease, ...payload });
   }
@@ -1278,7 +1293,7 @@
   }
 
   function unitName(unit) {
-    return unit.name[state.locale] || unit.name.en;
+    return localizedValue(unit.name);
   }
 
   function unitKindLabel(unit) {
@@ -1443,7 +1458,7 @@
       button.type = "button";
       button.className = `build-card ${state.selectedBuild === unit.id ? "is-selected" : ""}`;
       button.dataset.id = unit.id;
-      button.innerHTML = `<img src="${assetSources[unit.img]}" alt="" /><div><strong>${unitName(unit)}</strong><span>${unitKindLabel(unit)} | ${t("cost")}: ${unit.cost}</span><span>${unit.note[state.locale] || unit.note.en}</span><span class="build-affordability"></span></div>`;
+      button.innerHTML = `<img src="${assetSources[unit.img]}" alt="" /><div><strong>${unitName(unit)}</strong><span>${unitKindLabel(unit)} | ${t("cost")}: ${unit.cost}</span><span>${localizedValue(unit.note)}</span><span class="build-affordability"></span></div>`;
       nodes.buildCards.appendChild(button);
     });
     updateBuildAffordability();
@@ -1479,7 +1494,7 @@
 
   function unitRoleText(unit) {
     if (!unit) return t("unitSupport");
-    return unit.note[state.locale] || unit.note.en || t("unitSupport");
+    return localizedValue(unit.note) || t("unitSupport");
   }
 
   function formatUnitTempo(unit) {
@@ -1528,7 +1543,7 @@
       const bestStars = Number(state.save.stars?.[stage.id] || 0);
       const status = !unlocked ? t("locked") : bestStars ? t("starRating", { stars: bestStars }) : state.save.clears[stage.id] ? t("cleared") : stage.boss ? t("bossStage") : t("stage");
       const rewardText = `+${stage.reward.points} ${t("upgradePoints")} / +${stage.reward.diamonds} ${t("diamonds")}`;
-      button.innerHTML = `<strong>${stage.id}. ${stage.name[state.locale]}</strong><span class="stage-status">${status}</span><span>${stage.waves} ${t("wave")} | ${stage.boss ? t("boss") : t("guardianRoute")}</span><span class="stage-intel"><b>${t("threatIntel")}:</b> ${stage.intel.threat[state.locale] || stage.intel.threat.en}</span><span class="stage-intel"><b>${t("recommendedPlan")}:</b> ${stage.intel.plan[state.locale] || stage.intel.plan.en}</span><span class="stage-reward"><b>${t("rewardIntel")}:</b> ${rewardText}</span>`;
+      button.innerHTML = `<strong>${stage.id}. ${localizedValue(stage.name)}</strong><span class="stage-status">${status}</span><span>${stage.waves} ${t("wave")} | ${stage.boss ? t("boss") : t("guardianRoute")}</span><span class="stage-intel"><b>${t("threatIntel")}:</b> ${localizedValue(stage.intel.threat)}</span><span class="stage-intel"><b>${t("recommendedPlan")}:</b> ${localizedValue(stage.intel.plan)}</span><span class="stage-reward"><b>${t("rewardIntel")}:</b> ${rewardText}</span>`;
       button.addEventListener("click", () => {
         if (!unlocked) return showToast(t("lockedStage"));
         startStage(stage.id);
@@ -1774,6 +1789,8 @@
 
   function localizedBossName(stage) {
     if (!stage?.boss) return "";
+    if (state.locale === "ja") return stage.bossNameJa || stage.bossName || t("boss");
+    if (state.locale === "zh-Hans") return stage.bossNameZht || stage.bossName || t("boss");
     if (state.locale === "zh-Hant") return stage.bossNameZht || stage.bossName || t("boss");
     if (state.locale === "es") return stage.bossNameEs || stage.bossName || t("boss");
     return stage.bossName || t("boss");
@@ -2805,7 +2822,7 @@
       const nextStage = stages[reward.stageId];
       nodes.resultUnlockText.textContent = t(reward.newlyUnlocked ? "newRouteUnlocked" : "nextRouteReady", {
         stage: nextStage.id,
-        name: nextStage.name[state.locale],
+        name: localizedValue(nextStage.name),
       });
     }
     nodes.rerollRewardBtn.classList.remove("is-hidden");
@@ -5807,6 +5824,8 @@
 
   async function init() {
     state.locale = activeI18nLocale() || readStorage(localeKey) || "en";
+    const runtimeLocalizer = window.WeightPlayGameRuntimeLocalizer;
+    if (!text[state.locale] && runtimeLocalizer?.locale === state.locale) text[state.locale] = text.en;
     if (!text[state.locale]) state.locale = "en";
     const zhOption = nodes.localeSelect.querySelector('option[value="zh-Hant"]');
     if (zhOption) zhOption.textContent = text["zh-Hant"].localeName;

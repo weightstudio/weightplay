@@ -33,6 +33,9 @@
   document.querySelectorAll(".fruit-game, .fixed-game-shell, #stagePanel, #resultPanel").forEach((element) => {
     element.setAttribute("data-wp-canvas-max-width", "920");
   });
+  const gameRoot = document.querySelector(".fruit-game");
+  gameRoot.dataset.wpStageLandscapeWidth = "760";
+  gameRoot.dataset.wpStageLandscapeHeight = "360";
 
   const BEST_KEY = "fruitMergeBestScore";
   const PROGRESS_KEY = "weightplay_fruit_merge_progress";
@@ -824,10 +827,11 @@
   function updateFruitBattleScale() {
     if (!document.body.classList.contains("fruit-playing") && !document.body.classList.contains("fruit-stage")) return;
     const isStage = document.body.classList.contains("fruit-stage");
-    const minimumLogicalWidth = isStage ? 390 : 382;
-    const minimumLogicalHeight = isStage ? 788 : 780;
     const safeWidth = visualViewport?.width || innerWidth;
     const viewportHeight = visualViewport?.height || innerHeight;
+    const shortLandscapeStage = isStage && viewportHeight <= 430 && safeWidth > viewportHeight;
+    const minimumLogicalWidth = shortLandscapeStage ? 760 : isStage ? 390 : 382;
+    const minimumLogicalHeight = shortLandscapeStage ? 360 : isStage ? 788 : 780;
     const viewportWidth = Math.min(Math.max(1, safeWidth), 920);
     const scale = Math.max(0.1, Math.min(viewportWidth / minimumLogicalWidth, viewportHeight / minimumLogicalHeight));
     const logicalWidth = viewportWidth / scale;
@@ -934,6 +938,7 @@
       card.type = "button";
       card.className = `merge-stage-card${challenge.checkpoint ? " is-checkpoint" : ""}${unlocked ? "" : " is-locked"}${challenge.id === selected ? " is-selected" : ""}`;
       card.dataset.stage = String(challenge.id);
+      card.dataset.index = String(challenge.id - 1);
       card.setAttribute("aria-disabled", String(!unlocked));
       card.innerHTML = `
         <b>${t("stageLabel", { stage: challenge.id })}</b>
@@ -959,7 +964,17 @@
     if (!card) return;
     const left = Math.max(0, Math.min(card.offsetLeft + card.offsetWidth / 2 - stageRail.clientWidth / 2, stageRail.scrollWidth - stageRail.clientWidth));
     stageRail.scrollTo({ left, behavior });
-    stageRail.querySelectorAll(".merge-stage-card").forEach((item) => item.classList.toggle("is-selected", item === card));
+    markCenteredChallengeCard(card);
+  }
+
+  function markCenteredChallengeCard(card) {
+    const id = Number(card?.dataset.stage || 0);
+    if (!id) return;
+    stageRail.querySelectorAll(".merge-stage-card").forEach((item) => {
+      const centered = item === card;
+      item.classList.toggle("is-selected", centered);
+      item.toggleAttribute("aria-current", centered);
+    });
     [...stageDots.children].forEach((dot, index) => dot.classList.toggle("active", index === id - 1));
   }
 
@@ -968,6 +983,19 @@
     let startX = 0;
     let startScroll = 0;
     let moved = false;
+    stageRail.addEventListener("wonder:stage-snap", (event) => {
+      const requestedIndex = Number(event.detail?.index);
+      const railCenter = stageRail.getBoundingClientRect().left + stageRail.getBoundingClientRect().width / 2;
+      const nearest = [...stageRail.children].reduce((best, card) => {
+        const rect = card.getBoundingClientRect();
+        const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
+        return !best || distance < best.distance ? { card, distance } : best;
+      }, null)?.card;
+      const card = Number.isInteger(requestedIndex) && requestedIndex >= 0
+        ? stageRail.children[requestedIndex]
+        : nearest;
+      markCenteredChallengeCard(card);
+    });
     stageRail.addEventListener("pointerdown", (event) => {
       if (stageRail.dataset.wpStageRail === "true") return;
       const wrongMouseButton = event.pointerType === "mouse" && event.button !== 0;

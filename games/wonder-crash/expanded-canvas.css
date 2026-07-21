@@ -149,6 +149,14 @@ body.wonder-playing .overlay.settlement-screen .menu-content {
   user-select: none;
 }
 
+/* Keep small Stage and navigation labels inside their own line boxes after the
+   complete logical Canvas is uniformly scaled for short landscape phones. */
+body.wonder-stage-select #levelGrid button > :is(span, small),
+body.wonder-stage-select .menu-tabs span {
+  line-height: 1.25;
+  padding-block: 1px;
+}
+
 .wonder-stage-status {
   position: absolute;
   width: 1px;

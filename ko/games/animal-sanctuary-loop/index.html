@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <base href="/games/animal-sanctuary-loop/" />
+    <link rel="canonical" href="https://weightplay.com/ko/games/animal-sanctuary-loop/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-sanctuary-loop/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-sanctuary-loop/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-sanctuary-loop/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-sanctuary-loop/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-sanctuary-loop/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-sanctuary-loop/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-sanctuary-loop/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-sanctuary-loop/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-sanctuary-loop/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-sanctuary-loop/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-sanctuary-loop/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-sanctuary-loop/" />
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="index,follow" />
+  <meta name="weightplay-audience" content="general">
+  <meta name="theme-color" content="#07152a">
+  <title>Animal Sanctuary Loop | WeightPlay</title>
+  <meta name="description" content="Animal Sanctuary Loop is a 30-mission territory arcade game starring Spark Paw Fia. Leave restored land, draw a vulnerable lightning trail through..." />
+  <meta property="og:site_name" content="WeightPlay">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Animal Sanctuary Loop | WeightPlay" />
+  <meta property="og:description" content="Animal Sanctuary Loop is a 30-mission territory arcade game starring Spark Paw Fia. Leave restored land, draw a vulnerable lightning trail through..." />
+  <meta property="og:url" content="https://weightplay.com/ko/games/animal-sanctuary-loop/" />
+  <meta property="og:image" content="https://weightplay.com/assets/animal-sanctuary-loop/cover.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Animal Sanctuary Loop | WeightPlay" />
+  <meta name="twitter:description" content="Animal Sanctuary Loop is a 30-mission territory arcade game starring Spark Paw Fia. Leave restored land, draw a vulnerable lightning trail through..." />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Animal Sanctuary Loop",
+  "url": "https://weightplay.com/ko/games/animal-sanctuary-loop/",
+  "image": "https://weightplay.com/assets/animal-sanctuary-loop/cover.webp",
+  "description": "Animal Sanctuary Loop is a 30-mission territory arcade game starring Spark Paw Fia. Leave restored land, draw a vulnerable lightning trail through...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "ko",
+  "isAccessibleForFree": true,
+  "genre": [
+    "아케이드",
+    "전략",
+    "동물"
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "General players"
+  }
+}
+    </script>
+  <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260720-locale11-2">
+  <link rel="stylesheet" href="style.css?v=20260721-loop1">
+</head>
+<body data-screen="loading" data-game-id="animal-sanctuary-loop" data-sound-toggle="off">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite">
+    <div class="loading-card"><strong data-t="title">동물 성역 루프</strong><span data-t="loading">성역을 깨우는 중…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
+  </section>
+
+  <div id="mainGroup" class="main-group" hidden>
+    <main class="main-screen">
+      <header class="main-header">
+        <a id="lobbyReturn" class="lobby-return" href="/en/" aria-label="Back to WeightPlay" data-wp-return="main" data-ta="backLobby"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
+        <strong data-t="title">동물 성역 루프</strong>
+        <label class="locale-control"><span class="sr-only" data-t="language">언어</span><select id="locale" aria-label="Language" data-ta="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option></select></label>
+      </header>
+      <section class="main-hero">
+        <img class="poster" src="../../assets/animal-sanctuary-loop/cover.webp" alt="Animal Sanctuary Loop 게임 이미지" data-ta="posterAlt">
+        <div class="main-copy"><small data-t="kicker">실시간 영역 점령 아케이드</small><h1 data-t="title">동물 성역 루프</h1><p data-t="pitch">안전지대를 벗어나 빛의 궤적을 그리고 그림자가 끊기 전에 다시 연결하세요. 서식지를 복원하면 임무 완료입니다.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">게임 시작</button></div>
+      </section>
+    </main>
+    <section class="public-guide game-page-info" aria-label="Game guide" data-ta="guideLabel" data-wp-preserve-static-guide>
+      <small data-t="guideKicker">WEIGHTPLAY 오리지널 아케이드 모험</small><h2 data-t="guideTitle">더 긴 궤적에 도전해 더 큰 성역을 복원하세요.</h2><p data-t="guideIntro">복원된 땅에서는 안전하지만 밖에서는 번개 궤적이 노출됩니다. 사냥꾼이 닿기 전에 연결하세요.</p>
+      <div class="guide-grid"><article><h3 data-t="howTitle">플레이 방법</h3><ol><li data-t="how1">스와이프, 드래그 또는 방향키로 피아를 조종하세요.</li><li data-t="how2">복원된 땅을 떠나 오염 지역에 고리를 만드세요.</li><li data-t="how3">사냥꾼이 열린 궤적에 닿기 전에 다시 연결하세요.</li></ol></article><article><h3 data-t="campaignTitle">30개 수제 임무</h3><p data-t="campaignText">6개 장에서 구조 신호, 폭풍 길, 순서 봉인, 축소 경계, 경쟁 점령, 수호자 추격이 추가됩니다.</p><h3 data-t="saveTitle">로컬 저장</h3><p data-t="saveText">해금 임무와 최고 별은 이 브라우저에 저장되며 계정이 필요 없습니다.</p></article></div>
+    <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>얼마나 많은 임무가 포함되어 있나요?</dt><dd>미션 5, 10, 15, 20, 25, 30에는 30개의 작성된 미션과 6개의 별도 Guardian 체크포인트가 있습니다.</dd></div><div><dt>진행 상황이 저장되나요?</dt><dd>예, 이 브라우저에서만 가능합니다.</dd></div></dl></div></section>
+  </div>
+
+  <section id="stage" class="active-screen" hidden>
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-sanctuary-loop/arena.webp" style="--wp-stage-art:url('../../assets/animal-sanctuary-loop/arena.webp')">
+      <header class="stage-header"><button id="stageBack" type="button" aria-label="Back" data-wp-return="stage" data-ta="back">←</button><div><strong data-t="chooseMission">성역 임무 선택</strong><span id="stageProgress"></span></div><img src="../../assets/weightplay-character-spark-paw-fox-cutout.webp" alt=""></header>
+      <nav class="stage-tabs" aria-label="Sanctuary preparation" data-ta="stageTabs"><button class="active" data-tab="missions" data-t="missions">임무</button><button data-tab="atelier" data-t="atelier">궤적 공방</button></nav>
+      <section id="missionsTab" class="tab-panel missions-tab"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Mission selector" data-ta="missionRail"></div><p id="stageHint" data-t="stageHint">레일을 드래그해 해금된 임무를 선택하세요.</p></section>
+      <section id="atelierTab" class="tab-panel atelier-tab" hidden><div class="atelier-intro"><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt=""><div><h2 data-t="atelierTitle">궤적 공방</h2><p data-t="atelierIntro">저장된 궤적 스타일을 선택하세요. 외형은 임무 균형에 영향을 주지 않습니다.</p></div></div><div id="trailStyles" class="trail-styles"></div><p id="atelierFeedback" aria-live="polite"></p></section>
+    </div>
+  </section>
+
+  <section id="battle" class="active-screen" hidden>
+    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <div id="battleLive" class="battle-live">
+        <header class="battle-header"><button id="battleBack" type="button" aria-label="Back" data-wp-return="battle" data-ta="back">←</button><div class="progress-block"><small id="missionLabel"></small><strong id="progressValue">0%</strong></div><div class="battle-status"><span><b data-t="hearts">생명</b><strong id="heartsValue">3</strong></span><span><b data-t="time">시간</b><strong id="timeValue">90</strong></span></div><button id="battleHelp" class="help-action" type="button" aria-label="How to play" data-ta="help">?</button></header>
+        <div class="objective-row"><span id="objective"></span><small id="missionTwist"></small></div>
+        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="768" height="768" aria-label="Sanctuary territory arena" data-ta="arenaLabel"></canvas><div id="touchPad" class="touch-pad" aria-label="Direction controls" data-ta="directionControls"><button data-dir="up" aria-label="Up" data-ta="up">↑</button><button data-dir="left" aria-label="Left" data-ta="left">←</button><button data-dir="down" aria-label="Down" data-ta="down">↓</button><button data-dir="right" aria-label="Right" data-ta="right">→</button></div></div>
+        <p id="feedback" class="feedback" aria-live="polite"></p>
+      </div>
+      <section id="leave" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">임무를 나갈까요?</h2><p data-t="leaveText">계속하면 현재 상태를 유지하고 Stage로 돌아가면 도전이 끝납니다.</p><div class="modal-actions"><button id="continueBattle" class="primary" data-t="continue">계속</button><button id="leaveStage" data-t="returnStage">Stage로 돌아가기</button></div></div></section>
+      <section id="tutorial" class="modal-layer tutorial-panel" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card tutorial-card"><h2 id="tutorialTitle" data-t="tutorialTitle">고리를 닫으세요</h2><ol><li data-t="tutorial1">복원된 땅에서 오염 지역으로 이동하세요.</li><li data-t="tutorial2">자신의 땅으로 다시 연결해 둘러싼 지역을 되찾으세요.</li><li data-t="tutorial3">그림자가 열린 궤적에 닿으면 하트 하나를 잃습니다.</li></ol><div class="modal-actions"><button id="tutorialDone" class="primary" data-t="tutorialDone">복원 시작</button></div></div></section>
+      <section id="result" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-spark-paw-fox-cutout.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div id="resultStats" class="result-stats"></div><div class="modal-actions"><button id="retry" data-t="retry">다시 도전</button><button id="resultStage" data-t="returnStage">Stage로 돌아가기</button><button id="nextMission" class="primary" data-t="nextMission">다음 임무</button></div></div></section>
+    </div><div class="ad-reserve" aria-hidden="true"></div>
+  </section>
+
+  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260718-locale-routes1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260720-locale11-15"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="../../src/edge-guard.js"></script><script src="locales.js?v=20260721-loop1"></script><script src="game.js?v=20260721-loop3"></script><script src="../../src/stage-selector-standard.js?v=20260721-landscape-envelope-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260721-landscape-envelope-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+</body>
+</html>

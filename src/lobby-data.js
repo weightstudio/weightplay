@@ -639,10 +639,10 @@ window.WONDER_LOBBY = {
         "pt-BR": "Pinos do Cofre Animal", fr: "Goupilles du Caveau Animal",
         de: "Tierische Wurzelgewölbe-Stifte", it: "Perni della Cripta Animale", ru: "Звери: Штифты корневого хранилища",
       },
-      status: "planned",
+      status: "playable",
       statusText: {
-        en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정",
-        es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро",
+        en: "Play Now", "zh-Hant": "立即遊玩", "zh-Hans": "立即游玩", ja: "今すぐプレイ", ko: "지금 플레이",
+        es: "Jugar ahora", "pt-BR": "Jogar agora", fr: "Jouer maintenant", de: "Jetzt spielen", it: "Gioca ora", ru: "Играть",
       },
       type: {
         en: "Order-Based Chamber Puzzle", "zh-Hant": "順序式房間機關", "zh-Hans": "顺序式房间机关",
@@ -654,7 +654,6 @@ window.WONDER_LOBBY = {
       skills: ["Logic", "Planning", "Problem Solving"],
       ages: ["13"],
       href: "games/animal-rootvault-pins/",
-      internalTrial: "index.html?trial=1",
       description: {
         en: "Pull complete golden pins to route Taro, Moonwater, Emberlight, wards, keys, shadows, and a Star Core through 30 authored Rootvault chambers.",
         "zh-Hant": "拉出完整金色機關針，引導 Taro、月水、燼光、護盾、鑰匙、暗影與星核通過 30 個根脈房間。",
@@ -762,10 +761,10 @@ window.WONDER_LOBBY = {
         "pt-BR": "Laço do Santuário Animal", fr: "Boucle du Sanctuaire Animal",
         de: "Tierische Zufluchtsschleife", it: "Anello del Santuario Animale", ru: "Кольцо звериного святилища",
       },
-      status: "planned",
+      status: "playable",
       statusText: {
-        en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정",
-        es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро",
+        en: "Play Now", "zh-Hant": "立即遊玩", "zh-Hans": "立即游玩", ja: "今すぐプレイ", ko: "지금 플레이",
+        es: "Jugar ahora", "pt-BR": "Jogar agora", fr: "Jouer maintenant", de: "Jetzt spielen", it: "Gioca ora", ru: "Играть",
       },
       type: {
         en: "Territory Capture Arcade", "zh-Hant": "即時圈地冒險", "zh-Hans": "即时圈地冒险", ja: "リアルタイム陣取りアーケード",
@@ -777,7 +776,6 @@ window.WONDER_LOBBY = {
       ages: ["13"],
       ageLabel: { en: "13+", "zh-Hant": "13+" },
       href: "games/animal-sanctuary-loop/",
-      internalTrial: "index.html?trial=1",
       description: {
         en: "Guide Fia beyond safe land, close glowing loops before shadows cut the trail, and restore 30 rule-changing sanctuary missions.",
         "zh-Hant": "引導星爪狐離開安全領地，在暗影切斷光軌前完成封環，修復 30 個規則持續變化的聖域任務。",

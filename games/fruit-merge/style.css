@@ -1783,6 +1783,22 @@ body.fruit-stage .sound-toggle {
 }
 
 @media (max-height: 430px) {
+  body.fruit-stage .merge-stage-panel {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 76px 188px 10px minmax(0, 1fr);
+    gap: 4px;
+    padding: 4px;
+  }
+
+  body.fruit-stage .merge-stage-rail {
+    padding-block: 0;
+  }
+
+  body.fruit-stage .merge-stage-tools {
+    grid-template-columns: 1fr;
+    padding: 6px;
+  }
+
   body.fruit-playing {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;

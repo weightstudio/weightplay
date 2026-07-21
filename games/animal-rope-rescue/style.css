@@ -964,6 +964,7 @@ body.is-vine-playing .wp-tutorial-button {
     flex-basis: 320px;
     min-height: 180px;
     padding: 18px;
+    gap: 1px;
   }
 
   body.is-vine-stage-select .stage-card > strong { font-size: 1.15rem; }

@@ -850,6 +850,7 @@ a:focus-visible {
     z-index: 8;
   }
   #briefPanel:not([hidden]) {
+    position: relative;
     grid-column: 2;
     grid-row: 2 / 4;
     display: block;
@@ -880,9 +881,17 @@ a:focus-visible {
   }
   #briefPanel .selected-brief button {
     min-height: 44px;
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    width: 140px;
   }
   #briefPanel .stage-hint {
-    margin: 5px 2px 0;
+    position: absolute;
+    left: 8px;
+    bottom: 8px;
+    width: 132px;
+    margin: 0;
     font-size: 11px;
     line-height: 1.2;
   }

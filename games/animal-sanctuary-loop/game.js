@@ -1035,7 +1035,7 @@
   Promise.all([loadImages(), new Promise((resolve) => setTimeout(resolve, 350))]).then(() => {
     $("loadingFill").style.width = "100%";
     setTimeout(() => {
-      $("loading").hidden = true;
+      $("loadingPanel").hidden = true;
       showScreen("main");
     }, 160);
   });
