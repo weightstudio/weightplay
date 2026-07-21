@@ -280,6 +280,31 @@
   Object.assign(text.en, { leaveTitle:"Leave this shift?", leaveText:"Your care progress in this shift will reset.", keepHelping:"Keep helping", leaveShift:"Leave shift" });
   Object.assign(text["zh-Hant"], { leaveTitle:"\u8981\u96e2\u958b\u9019\u6b21\u73ed\u6b21\u55ce\uff1f", leaveText:"\u9019\u6b21\u73ed\u6b21\u7684\u7167\u8b77\u9032\u5ea6\u6703\u91cd\u65b0\u958b\u59cb\u3002", keepHelping:"\u7e7c\u7e8c\u5e6b\u5fd9", leaveShift:"\u96e2\u958b\u73ed\u6b21" });
   Object.assign(text.es, { leaveTitle:"¿Salir de este turno?", leaveText:"Se reiniciará el progreso de cuidado de este turno.", keepHelping:"Seguir ayudando", leaveShift:"Salir del turno" });
+  text.ko = Object.assign(Object.create(text.en), {
+    chooseStage: "스테이지 선택",
+    locked: "잠긴 스테이지",
+    stage: "스테이지 {n}",
+    stageGoal: "{station} 근무 · 티켓 {tickets}장",
+    checkpoint: "사육사 점검",
+    stageBackAria: "뒤로",
+    stageListAria: "스테이지 목록",
+    rules: {
+      exact: "돌봄 짝 맞추기",
+      picture: "그림 도구",
+      category: "돌봄 분류",
+      memory: "기억하고 돕기",
+      routine: "두 단계 돌봄",
+      expert: "사육사 종합 도전",
+    },
+    stations: {
+      savanna: "사바나 먹이주기",
+      bamboo: "대나무 숲",
+      bath: "코끼리 목욕장",
+      ice: "펭귄 풀",
+      lookout: "기린 전망대",
+      nursery: "코알라 돌봄방",
+    },
+  });
 
   const itemIcons = {
     fruit: "../../assets/zoo-helper-day-fruit-apple.svg",

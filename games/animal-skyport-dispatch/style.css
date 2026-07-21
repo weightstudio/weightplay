@@ -49,6 +49,18 @@
 /* The geometrically centered card stays visibly selected, even while locked. */
 .stage-card.centered{border-color:#ffd66a;box-shadow:0 0 22px #ffd66a66}
 
+/* Short landscape uses a native landscape envelope so Stage controls remain
+   readable while the Canvas still owns the complete 334px safe height. */
+@media(max-height:500px) and (min-aspect-ratio:3/2){
+  .stage-screen{grid-template-rows:40px 30px 50px minmax(0,1fr);gap:6px;padding:8px 0}
+  .stage-screen>.return{width:44px;height:40px}
+  .stage-copy{font-size:.86rem}
+  .contract-row{height:50px;min-height:50px}
+  .contract-choice{padding:5px 9px;font-size:.7rem}
+  .insurance-btn{font-size:.7rem}
+  .stage-rail>.stage-card{height:122px!important;min-height:122px!important;max-height:122px!important;padding:10px;font-size:.78rem}
+}
+
 /* Keep localized Battle actions readable inside the fixed logical footer. */
 .flight-row .secondary:not(.hidden){flex:0 0 min(42%,170px);min-width:0;padding:6px 8px;font-size:.72rem;line-height:1.15}
 #flightHint{min-width:0;overflow:hidden;font-size:.7rem;line-height:1.16;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3}

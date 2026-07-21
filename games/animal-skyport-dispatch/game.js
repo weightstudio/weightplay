@@ -3,7 +3,10 @@
   // General Stage and Battle own the complete safe physical width. These
   // declarations run before the shared controllers load, so their responsive
   // envelopes supersede the historical numeric desktop maximum.
-  $('stageScreen')?.setAttribute('data-wp-canvas-max-width', '920');
+  const stageScreen = $('stageScreen');
+  stageScreen?.setAttribute('data-wp-canvas-max-width', '920');
+  stageScreen?.setAttribute('data-wp-stage-landscape-width', '760');
+  stageScreen?.setAttribute('data-wp-stage-landscape-height', '334');
   document.querySelector('.battle-canvas')?.setAttribute('data-wp-canvas-max-width', '920');
   const saveKey = 'animal_skyport_dispatch_save';
   const readStorage = (key) => { try { return localStorage.getItem(key); } catch { return null; } };

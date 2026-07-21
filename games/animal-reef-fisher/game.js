@@ -1,5 +1,8 @@
 ﻿(() => {
-  document.getElementById("stagePanel")?.setAttribute("data-wp-canvas-max-width", "920");
+  const stagePanel = document.getElementById("stagePanel");
+  stagePanel?.setAttribute("data-wp-canvas-max-width", "920");
+  stagePanel?.setAttribute("data-wp-stage-landscape-width", "760");
+  stagePanel?.setAttribute("data-wp-stage-landscape-height", "334");
   document.querySelector(".battle-shell")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-reef-fisher";

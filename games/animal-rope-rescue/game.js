@@ -171,6 +171,12 @@
       koala: "Koala",
     },
   };
+  text.ko = Object.assign(Object.create(text.en), {
+    stage: "스테이지",
+    stages: "스테이지",
+    stageLabel: "스테이지 {n}",
+    locked: "잠긴 스테이지",
+  });
   const assets = {
     cover: "../../assets/animal-vine-rescue-cover.png",
     background: "../../assets/animal-vine-rescue-game-bg.webp",
@@ -562,7 +568,7 @@
     const requested = next === "zh-Hant" && current === "zh-Hans" ? current : next || "en";
     locale = window.WonderI18n?.legacyLocale?.(requested) || requested;
     storageWrite(localeKey, requested);
-    document.documentElement.lang = requested;
+    document.documentElement.lang = window.WonderI18n?.actualLocale?.() || requested;
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });

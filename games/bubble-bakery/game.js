@@ -251,6 +251,19 @@
   Object.assign(text.en, { leaveTitle:"Leave this order?", leaveText:"Your tray, moves, and order progress will reset.", keepBaking:"Keep baking", leaveOrder:"Leave order" });
   Object.assign(text["zh-Hant"], { leaveTitle:"\u8981\u96e2\u958b\u9019\u5f35\u8a02\u55ae\u55ce\uff1f", leaveText:"\u9019\u76e4\u6ce1\u6ce1\u3001\u6b65\u6578\u8207\u8a02\u55ae\u9032\u5ea6\u6703\u91cd\u65b0\u958b\u59cb\u3002", keepBaking:"\u7e7c\u7e8c\u70d8\u7119", leaveOrder:"\u96e2\u958b\u8a02\u55ae" });
   Object.assign(text.es, { leaveTitle:"¿Salir de este pedido?", leaveText:"Se reiniciarán la bandeja, los movimientos y el progreso del pedido.", keepBaking:"Seguir horneando", leaveOrder:"Salir del pedido" });
+  text.ko = Object.assign(Object.create(text.en), {
+    chooseStage: "스테이지 선택",
+    back: "뒤로",
+    stageList: "스테이지 목록",
+    locked: "잠긴 스테이지",
+    unlockRequirement: "{stage} 완료 후 이 베이커리 트레이가 열려요.",
+    stage: "스테이지 {n}",
+    movesCount: "{n}번 이동",
+    stageNew: "새 주문",
+    stageImprove: "별 더 모으기",
+    stageMastered: "완벽 달성",
+    pankoCheck: "판코 점검",
+  });
 
   const colors = [
     { id: "berry", labelKey: "bunny", asset: "../../assets/bubble-bakery-bunny.png" },
@@ -578,7 +591,7 @@
   }
 
   function localizeStatic() {
-    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : locale === "es" ? "es" : "en";
+    document.documentElement.lang = window.WonderI18n?.actualLocale?.() || locale;
     document.title = t("pageTitle");
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);

@@ -970,6 +970,64 @@
   let battlePaused = false;
   let pauseFocusOwner = nodes.pauseBtn;
   let lifecycleSuspended = document.hidden || !document.hasFocus();
+  let renderedMovementMission = null;
+  let movementAnimationActive = false;
+  let movementAnimationTimer = 0;
+  let lastMovementEvidence = [];
+
+  function unitRenderKey(unit) {
+    return `${unit.team}:${unit.uid || unit.id}`;
+  }
+
+  function resetMovementAnimationTracking() {
+    clearTimeout(movementAnimationTimer);
+    movementAnimationTimer = 0;
+    movementAnimationActive = false;
+    renderedMovementMission = null;
+    nodes.grid.querySelectorAll("[data-unit-key]").forEach((unit) => unit.getAnimations().forEach((animation) => animation.cancel()));
+  }
+
+  function captureUnitRects() {
+    return new Map([...nodes.grid.querySelectorAll("[data-unit-key]")].map((unit) => [unit.dataset.unitKey, unit.getBoundingClientRect()]));
+  }
+
+  function animateMovedUnits(previousRects) {
+    clearTimeout(movementAnimationTimer);
+    movementAnimationTimer = 0;
+    lastMovementEvidence = [];
+    if (!previousRects.size || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      movementAnimationActive = false;
+      return 0;
+    }
+    nodes.grid.querySelectorAll("[data-unit-key]").forEach((unit) => {
+      const previous = previousRects.get(unit.dataset.unitKey);
+      if (!previous) return;
+      const next = unit.getBoundingClientRect();
+      const dx = previous.left - next.left;
+      const dy = previous.top - next.top;
+      if (Math.hypot(dx, dy) < 2) return;
+      const distanceCells = Math.max(1, Math.round(Math.hypot(dx / Math.max(1, next.width), dy / Math.max(1, next.height))));
+      const duration = Math.min(520, 260 + distanceCells * 70);
+      unit.classList.add("is-moving");
+      const animation = unit.animate([
+        { transform: `translate(${dx}px, ${dy}px) scale(.94)`, offset: 0 },
+        { transform: `translate(${dx * .38}px, ${dy * .38}px) scale(1.04)`, offset: .68 },
+        { transform: "translate(0, 0) scale(1)", offset: 1 },
+      ], { duration, easing: "cubic-bezier(.22,.78,.22,1)", fill: "both" });
+      animation.finished.catch(() => {}).finally(() => unit.classList.remove("is-moving"));
+      lastMovementEvidence.push({ key: unit.dataset.unitKey, dx, dy, duration });
+    });
+    movementAnimationActive = lastMovementEvidence.length > 0;
+    if (movementAnimationActive) {
+      const longest = Math.max(...lastMovementEvidence.map((item) => item.duration));
+      movementAnimationTimer = window.setTimeout(() => {
+        movementAnimationTimer = 0;
+        movementAnimationActive = false;
+        if (state && !nodes.gamePanel.classList.contains("is-hidden")) render();
+      }, longest + 20);
+    }
+    return lastMovementEvidence.length;
+  }
 
   function clearTurnTransition() {
     clearTimeout(turnTransitionTimer);
@@ -1539,6 +1597,7 @@
     const extraEnergy = (profile.training ? 1 : 0) + (profile.bonusEnergy || 0);
     const hpBonus = profile.bonusHp || 0;
     const missionDef = missionDefs.find((item) => item.id === mission) || missionDefs[0];
+    resetMovementAnimationTracking();
     state = {
       mission,
       missionDef,
@@ -1669,6 +1728,7 @@
   }
 
   function render() {
+    const previousRects = renderedMovementMission === state?.mission ? captureUnitRects() : new Map();
     const focusedTile = document.activeElement?.closest?.("#grid .tile");
     const restoreGridFocus = Boolean(focusedTile);
     if (focusedTile) gridCursor = { x: Number(focusedTile.dataset.x), y: Number(focusedTile.dataset.y) };
@@ -1731,6 +1791,8 @@
         nodes.grid.appendChild(tile);
       }
     }
+    renderedMovementMission = state?.mission ?? null;
+    animateMovedUnits(previousRects);
     renderSelected();
     renderTurnRoster();
     updateActionButtons();
@@ -1760,6 +1822,7 @@
   function renderUnit(unit) {
     const wrap = document.createElement("div");
     wrap.className = unit.team === "enemy" ? "enemy" : `hero ${state?.acted?.has(unit.id) ? "has-acted" : state?.moved?.has(unit.id) ? "is-positioned" : "is-ready"}`;
+    wrap.dataset.unitKey = unitRenderKey(unit);
     if (unit.bossKit) wrap.classList.add("is-boss");
     const img = document.createElement("img");
     img.className = "unit";
@@ -1838,7 +1901,7 @@
 
   function updateActionButtons() {
     const hero = selectedHero();
-    const canAct = hero && !state.acted.has(hero.id) && state.phase === "player";
+    const canAct = hero && !state.acted.has(hero.id) && state.phase === "player" && !movementAnimationActive;
     const targets = hero ? validTargets() : [];
     const attackTarget = targets[0];
     const skillTarget = hero && hero.id !== "turtle" ? attackTarget || livingEnemies().sort((a, b) => distance(hero, a) - distance(hero, b))[0] : null;
@@ -1865,7 +1928,7 @@
     nodes.attackBtn.disabled = !canAct || !targets.length;
     nodes.guardBtn.disabled = !canAct;
     nodes.skillBtn.disabled = !canAct || hero.energy <= 0 || hero.silenced;
-    nodes.endTurnBtn.disabled = state.phase !== "player";
+    nodes.endTurnBtn.disabled = state.phase !== "player" || movementAnimationActive;
     const readyHeroNames = state.heroes
       .filter((candidate) => candidate.hp > 0 && !state.acted.has(candidate.id))
       .map((candidate) => t(candidate.name));
@@ -1920,6 +1983,7 @@
   }
 
   function onTile(x, y) {
+    if (!state || state.phase !== "player" || movementAnimationActive) return;
     const unit = unitAt(x, y);
     if (unit?.team === "hero" && state.phase === "player") {
       state.selected = unit.id;
@@ -2544,6 +2608,13 @@
           phaseEvents: state.phaseEvents.map((item) => ({ ...item })),
         };
       },
+      movementEvidence() {
+        return {
+          active: movementAnimationActive,
+          movements: lastMovementEvidence.map((item) => ({ ...item })),
+          animations: [...nodes.grid.querySelectorAll("[data-unit-key]")].reduce((total, unit) => total + unit.getAnimations().length, 0),
+        };
+      },
       startMission(mission) {
         startMission(Math.max(1, Math.min(MISSION_COUNT, Number(mission) || 1)));
         return this.readBattleState();
@@ -2552,6 +2623,7 @@
         const unit = state?.[team]?.[index];
         if (!unit || !patch || typeof patch !== "object") return false;
         Object.assign(unit, patch);
+        resetMovementAnimationTracking();
         render();
         return true;
       },
@@ -2576,6 +2648,7 @@
         state.chainTarget = null;
         state.chainCount = 0;
         state.selected = selected || null;
+        resetMovementAnimationTracking();
         render();
         return true;
       },

@@ -592,6 +592,21 @@ body.is-rune-playing .pause-toggle {
   z-index: 2;
 }
 
+.hero,
+.enemy {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  transform-origin: center;
+}
+
+.hero.is-moving,
+.enemy.is-moving {
+  z-index: 8;
+  will-change: transform;
+}
+
 .enemy.is-boss .unit { width: min(98%, 86px); }
 .enemy.is-boss .hpbar { left: 4%; right: 4%; height: 9px; }
 
@@ -760,6 +775,8 @@ body.is-rune-playing .pause-toggle {
 @media (prefers-reduced-motion: reduce) {
   .fx,
   .fx-value { animation-duration: 1ms !important; animation-iteration-count: 1 !important; }
+  .hero,
+  .enemy { transition: none !important; }
 }
 
 .battle-info {

@@ -214,6 +214,10 @@
       },
     },
   };
+  text.ko = Object.assign(Object.create(text.en), {
+    stage: "스테이지 {n}",
+    locked: "잠긴 스테이지",
+  });
 
   const trainCarAsset = "../../assets/shape-train-car.svg";
   const shapes = {
@@ -493,7 +497,7 @@
   }
 
   function localizeStatic() {
-    document.documentElement.lang = locale;
+    document.documentElement.lang = window.WonderI18n?.actualLocale?.() || locale;
     updatePageMeta();
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);

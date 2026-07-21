@@ -342,6 +342,7 @@
   let raf = 0;
   let lastTime = 0;
   let lastHud = "";
+  let lifecycleSuspended = false;
 
   const indexFor = (x, y) => Math.max(0, Math.min(GRID - 1, Math.floor(y))) * GRID
     + Math.max(0, Math.min(GRID - 1, Math.floor(x)));
@@ -422,6 +423,7 @@
   }
 
   function startBattle(index) {
+    lifecycleSuspended = false;
     const stageIndex = Math.max(0, Math.min(29, Math.trunc(index)));
     const stage = stages[stageIndex];
     const blocked = makeBlocked(stage.field);
@@ -484,6 +486,32 @@
     lastTime = performance.now();
     raf = requestAnimationFrame(frame);
   }
+
+  function suspendForLifecycle() {
+    if (currentScreen !== "battle" || !run || run.finished) return;
+    lifecycleSuspended = true;
+    run.paused = true;
+    run.player.dx = 0;
+    run.player.dy = 0;
+    stopLoop();
+  }
+
+  function resumeFromLifecycle() {
+    if (!lifecycleSuspended) return;
+    lifecycleSuspended = false;
+    if (currentScreen !== "battle" || !run || run.finished || activeModal()) return;
+    run.paused = false;
+    resumeLoop();
+  }
+
+  window.addEventListener("blur", suspendForLifecycle);
+  window.addEventListener("focus", resumeFromLifecycle);
+  window.addEventListener("pagehide", suspendForLifecycle);
+  window.addEventListener("pageshow", resumeFromLifecycle);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) suspendForLifecycle();
+    else resumeFromLifecycle();
+  });
 
   function updateBattleHud(force = false) {
     if (!run) return;
@@ -932,7 +960,7 @@
   function closeModal(modal, restoreFocus = true) {
     modal.hidden = true;
     $("battleLive").inert = false;
-    if (run && !run.finished) {
+    if (run && !run.finished && !lifecycleSuspended) {
       run.paused = false;
       resumeLoop();
     }
