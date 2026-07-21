@@ -1503,7 +1503,13 @@
   foodCard.addEventListener("lostpointercapture", (event) => {
     if (event.pointerId === state.activePointerId) clearFoodDrag();
   });
-  window.addEventListener("blur", clearFoodDrag);
+  window.addEventListener("blur", () => {
+    roundLifecycleSuspended = true;
+    clearFoodDrag();
+  });
+  window.addEventListener("focus", () => {
+    roundLifecycleSuspended = document.hidden;
+  });
   window.addEventListener("pagehide", () => {
     roundLifecycleSuspended = true;
     clearFoodDrag();

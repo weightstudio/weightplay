@@ -541,6 +541,12 @@ html[lang="de"] body.guardian-stage .stage-card .stage-reward {
   line-height: 1.15;
 }
 
+html[lang="it"] body.guardian-stage .stage-card .stage-intel,
+html[lang="it"] body.guardian-stage .stage-card .stage-reward {
+  margin-top: 1px;
+  line-height: 1.15;
+}
+
 .stage-card .stage-intel b,
 .stage-card .stage-reward b {
   color: #dff6df;

@@ -403,7 +403,7 @@
   }
 
   function resumeRoundTasks() {
-    roundLifecycleSuspended = document.hidden;
+    roundLifecycleSuspended = document.hidden || leaveConfirmOpen;
     for (const task of roundTasks) task.lastFrameAt = null;
   }
 
@@ -1022,6 +1022,8 @@
   });
   window.addEventListener("pagehide", suspendRoundTasks);
   window.addEventListener("pageshow", resumeRoundTasks);
+  window.addEventListener("blur", suspendRoundTasks);
+  window.addEventListener("focus", resumeRoundTasks);
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) suspendRoundTasks();
     else resumeRoundTasks();

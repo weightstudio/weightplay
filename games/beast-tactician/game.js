@@ -674,6 +674,22 @@
     21: "Halte Orla an der letzten Kurve.",
     29: "Flug, Rüstung, Kaiser.",
   });
+  CAMPAIGN_INTEL_TRANSLATIONS.it = {
+    threats: "I lupi base mettono alla prova la prima curva.|Due sentieri di radici dividono il branco.|Gli esploratori veloci puniscono le difese tardive.|I cinghiali premono su un solo difensore.|Il Bruto dell’Ombra spezza le linee deboli.|I pipistrelli volanti ignorano il labirinto a terra.|Due ondate di pipistrelli attraversano il centro.|Gruppi veloci e pesanti si alternano.|Ondate aeree e terrestri arrivano insieme.|Il Behemoth della Foresta chiama le scorte.|Le guardie di corteccia ferrea arrivano con armatura fragile.|I gruppi protetti coprono gli inseguitori veloci.|Colonne di cinghiali premono su una corsia.|Armatura e pipistrelli richiedono danni misti.|Il Colosso della Corteccia Ferrea ripristina la protezione.|Le creature della nebbia si curano in movimento.|I bersagli non finiti continuano a rigenerarsi.|I gruppi divisi si curano su corsie separate.|I rigeneratori corazzati allungano ogni scontro.|L’Antico Verdeggiante recupera vita a fasi.|I nemici feriti accelerano.|I pipistrelli accelerati puniscono la corsia centrale vuota.|I cinghiali accelerano dopo aver perso l’armatura.|Accelerazioni miste arrivano a ogni ondata.|Il Devastatore della Tempesta accelera le scorte vicine.|I gruppi dell’eclissi uniscono volo e armatura.|La rigenerazione ritorna dietro la linea corazzata.|Pipistrelli veloci coprono le colonne pesanti.|Tutte le minacce precedenti arrivano in sequenza.|L’Imperatore delle Radici del Vuoto cambia fase due volte.".split("|"),
+    plans: "Piega il percorso con le Guardie.|Unisci le corsie prima di aggiungere gittata.|Inizia con la copertura degli Arcieri.|Potenzia un difensore e aggiungi cure.|Taro resiste; Fia colpisce il Boss.|Copri gli angoli lunghi con Arcieri e Orla.|Tieni i danni a distanza vicino al nucleo.|Rallenta i cinghiali, poi mira ai pipistrelli.|Dividi i danni tra percorso e cielo.|Elimina le scorte prima di attaccare il Boss.|Rompi l’armatura con fuoco continuo.|Colpisci gli scudi prima che passino i veloci.|Crea due strati di difensori.|Abbina danni ad area ed eroi a distanza.|Rompi la protezione prima delle abilità forti.|Concentra il fuoco su un bersaglio.|Metti danni esplosivi prima dell’ultima curva.|Unisci le corsie in una zona di eliminazione.|Rompi l’armatura e finisci presto i bersagli.|Conserva il focus degli eroi per ogni fase di cura.|Metti danni finali vicino al nucleo.|Tieni Orla dietro l’ultima curva.|Rallenta prima di rompere l’armatura.|Distribuisci le zone di danno invece di ammucchiarle.|Separa le scorte dal Boss con rallentamenti.|Crea una difesa completa a terra e in aria.|Mira ai rigeneratori dopo aver rotto l’armatura.|Tieni una seconda zona di danno vicino al nucleo.|Potenzia ogni ruolo, non un solo eroe.|Rispondi in ordine: pipistrelli, armatura, Imperatore.".split("|"),
+  };
+  Object.assign(CAMPAIGN_INTEL_TRANSLATIONS.it.threats, {
+    10: "Guardie: armatura fragile.",
+    15: "La nebbia si cura in movimento.",
+    26: "Rigenerazione dietro l’armatura.",
+    29: "Imperatore: due cambi.",
+  });
+  Object.assign(CAMPAIGN_INTEL_TRANSLATIONS.it.plans, {
+    10: "Usa fuoco continuo.",
+    15: "Concentra un bersaglio.",
+    26: "Mira ai rigeneratori.",
+    29: "Volo, armatura, Imperatore.",
+  });
 
   const stages = CAMPAIGN_ARCS.flatMap((arc, arcIndex) => arc.names.en.map((name, stageIndex) => {
     const stage = arcIndex * 5 + stageIndex + 1;

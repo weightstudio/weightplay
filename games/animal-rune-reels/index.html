@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#080d28">
+  <title>Animal Rune Reels — Internal Trial</title>
+  <link rel="stylesheet" href="style.css">
+  <style>[hidden]{display:none!important}</style>
+</head>
+<body>
+  <div id="loading" class="loading"><div class="loader-orb"></div><strong data-i18n="loading">Awakening the rune reels…</strong><div class="load-track"><i id="loadFill"></i></div></div>
+  <main id="app" hidden>
+    <section id="mainPage" class="page main-page">
+      <div class="canvas main-canvas">
+        <header class="topbar">
+          <a class="back-logo" href="/" aria-label="WeightPlay lobby"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
+          <h1 data-i18n="title">Animal Rune Reels</h1>
+          <select id="localeSelect" aria-label="Language"></select>
+        </header>
+        <div class="poster"><img src="../../assets/animal-rune-reels/cover.webp" alt=""><div class="poster-shade"><span data-i18n="badge">TACTICAL REEL COMBAT</span></div></div>
+        <p class="lead" data-i18n="lead">Spin animal runes to command attacks. Read the monster's intent, hold one reel, and let Mimi's rabbit rune restore your health.</p>
+        <button id="startBtn" class="primary" data-i18n="start">Start Game</button>
+      </div>
+      <article class="guide">
+        <h2 data-i18n="guideTitle">How to play</h2>
+        <p data-i18n="guideBody">Three center runes resolve from left to right. Fia strikes, Leo guards, Orla weakens the enemy, Mimi heals, crystals charge Focus, and claws empower the monster. Hold one reel for the next spin, but every turn ends with the shown enemy intent.</p>
+        <div class="guide-grid"><div><b data-i18n="gameplayLabel">Gameplay</b><span data-i18n="gameplay">Tactical slot combat</span></div><div><b data-i18n="difficultyLabel">Difficulty</b><span data-i18n="difficulty">Adaptive</span></div><div><b data-i18n="timeLabel">Play time</b><span data-i18n="time">3–6 minutes</span></div><div><b data-i18n="ageLabel">Age</b><span>13+</span></div></div>
+      </article>
+    </section>
+
+    <section id="stagePage" class="page play-page" hidden>
+      <div class="canvas stage-canvas">
+        <header class="screen-head"><button class="icon-btn" id="stageBack" aria-label="Back">←</button><h2 data-i18n="chooseStage">Choose a Rift</h2><button class="icon-btn" id="helpBtn" aria-label="Help">?</button></header>
+        <div class="progress-card"><span data-i18n="campaign">Campaign</span><strong id="campaignProgress">1 / 30</strong></div>
+        <div id="stageRail" class="stage-rail" tabindex="0" aria-label="Stage selection"></div>
+        <div class="forge">
+          <div><small data-i18n="runesFound">Rune Sparks</small><strong id="sparkCount">0</strong></div>
+          <button class="upgrade" data-upgrade="attack"><img style="grid-row:1/3;width:38px;height:38px;object-fit:contain;margin-right:6px" src="../../assets/weightplay-character-spark-paw-fox-cutout.webp" alt=""><b data-i18n="power">Power</b><small id="attackLevel">Lv. 1</small></button>
+          <button class="upgrade" data-upgrade="heal"><img style="grid-row:1/3;width:38px;height:38px;object-fit:contain;margin-right:6px" src="../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt=""><b data-i18n="healing">Healing</b><small id="healLevel">Lv. 1</small></button>
+          <button class="upgrade" data-upgrade="guard"><img style="grid-row:1/3;width:38px;height:38px;object-fit:contain;margin-right:6px" src="../../assets/weightplay-character-boom-mane-lion-cutout.webp" alt=""><b data-i18n="guard">Guard</b><small id="guardLevel">Lv. 1</small></button>
+        </div>
+        <button id="enterBattle" class="primary" data-i18n="enter">Enter Battle</button>
+      </div><div class="ad-reserve" aria-hidden="true"></div>
+    </section>
+
+    <section id="battlePage" class="page play-page" hidden>
+      <div class="canvas battle-canvas">
+        <header class="battle-head"><button class="icon-btn" id="battleBack" aria-label="Back">←</button><div class="stage-name"><small id="chapterName"></small><strong id="battleStage"></strong></div><button class="icon-btn" id="pauseBtn" aria-label="Pause">Ⅱ</button></header>
+        <div class="arena" id="arena">
+          <div class="intent" id="intent"><small data-i18n="nextIntent">NEXT INTENT</small><strong id="intentText"></strong></div>
+          <div class="enemy-wrap" id="enemyWrap"><img id="enemyImg" src="../../assets/animal-gearpack-expedition-enemy-root-guardian.webp" alt=""><div class="enemy-name" id="enemyName"></div><div class="hpbar enemy-hp"><i id="enemyHpFill"></i><span id="enemyHpText"></span></div></div>
+          <div id="fxLayer" class="fx-layer" aria-hidden="true"></div>
+          <div class="player-hud"><img src="../../assets/weightplay-character-spark-paw-fox-cutout.webp" alt=""><div><div class="hpbar"><i id="playerHpFill"></i><span id="playerHpText"></span></div><div class="shield-line"><span>◆</span><b id="shieldText">0</b><span>Focus</span><b id="focusText">1</b></div></div></div>
+        </div>
+        <div class="reel-console">
+          <div id="comboBanner" class="combo" aria-live="polite"></div>
+          <div id="reels" class="reels"></div>
+          <div class="battle-actions"><button id="spinBtn" class="spin"><span data-i18n="spin">SPIN</span><small id="spinCost" data-i18n="resolve">Resolve 3 runes</small></button><button id="burstBtn" class="burst" disabled><span data-i18n="burst">RESONANCE</span><small>3 Focus</small></button></div>
+        </div>
+        <div id="result" class="modal" hidden><div class="modal-card"><span id="resultKicker"></span><h2 id="resultTitle"></h2><p id="resultBody"></p><div class="reward"><span data-i18n="reward">Rune Sparks</span><strong id="rewardValue">+0</strong></div><button id="nextBtn" class="primary" data-i18n="next">Next Rift</button><button id="retryBtn" class="secondary" data-i18n="retry">Try Again</button><button id="resultStages" class="text-btn" data-i18n="stages">Rift Map</button></div></div>
+        <div id="pauseModal" class="modal" hidden><div class="modal-card"><h2 data-i18n="paused">Paused</h2><p data-i18n="pauseBody">The rune flow is frozen.</p><button id="resumeBtn" class="primary" data-i18n="resume">Resume</button><button id="leaveBtn" class="secondary" data-i18n="leave">Leave Battle</button></div></div>
+        <div id="tutorial" class="modal" hidden><div class="modal-card tutorial-card"><h2 data-i18n="tutorialTitle">Command the reels</h2><ol><li data-i18n="tip1">Spin: the three center runes act from left to right.</li><li data-i18n="tip2">Tap one reel after it stops to hold it. Holding costs 1 Focus on the next Spin.</li><li data-i18n="tip3">Watch NEXT INTENT. Rabbit heals; claw empowers the enemy.</li></ol><button id="tutorialClose" class="primary" data-i18n="ready">Ready</button></div></div>
+      </div><div class="ad-reserve" aria-hidden="true"></div>
+    </section>
+  </main>
+  <script src="../../src/site-config.js"></script><script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script><script src="../../src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script><script src="locales.js"></script><script src="game.js"></script>
+</body>
+</html>

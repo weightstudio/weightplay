@@ -8,6 +8,26 @@
 .battle-leave-overlay{position:absolute;inset:0;z-index:20;display:grid;place-items:center;padding:18px;background:rgba(0,20,24,.82)}.battle-leave-card{width:min(480px,100%);display:grid;gap:16px;padding:22px;border:2px solid #6ff4d9;border-radius:24px;background:linear-gradient(145deg,#0b5552,#052e36);box-shadow:0 20px 60px #001a1acc}.battle-leave-card h2,.battle-leave-card p{margin:0;text-align:center}.battle-leave-card>div{display:grid;grid-template-columns:1fr 1fr;gap:10px}.battle-leave-card button{min-height:52px;border:1px solid #6bf3da;border-radius:14px;background:#0f5153;color:#fff;font-weight:900}.battle-leave-card button:first-child{color:#2d2500;background:linear-gradient(#ffe888,#ffc638);border-color:#ffe169}.battle-leave-card button:focus-visible{outline:3px solid #fff;outline-offset:3px}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 
+/* Essential recovery and progression actions retain a 44px rendered target. */
+.result-actions button{min-height:44px}
+@media(max-height:480px) and (orientation:landscape){
+  .main-screen{height:100svh;min-height:0;padding:8px;grid-template-rows:64px minmax(0,1fr);gap:8px}
+  .main-header{grid-template-columns:58px minmax(0,1fr) 160px;padding:4px 8px;gap:8px;border-radius:16px}
+  .main-header>strong{font-size:22px}
+  .main-return{width:48px;height:48px;border-radius:12px;font-size:24px}
+  .main-hero{height:auto;min-height:0;grid-template-columns:minmax(210px,270px) minmax(0,1fr);padding:10px;gap:16px}
+  .main-poster{width:min(270px,calc(100svh - 112px));height:auto;aspect-ratio:1;margin:auto}
+  .main-copy{min-height:0;gap:5px}
+  .main-copy h1{font-size:30px;line-height:1}
+  .main-copy p{font-size:14px;line-height:1.3}
+  .main-progress{padding:7px;font-size:13px;line-height:1.2}
+  .main-copy .primary-action{min-height:44px;font-size:16px;box-shadow:0 4px 0 #b77d00}
+  .battle-canvas{grid-template-rows:116px 42px minmax(0,1fr) 80px}
+  .battle-header{grid-template-columns:108px minmax(0,1fr) 92px 92px}
+  .battle-header>button{width:104px;height:104px}
+  .battle-actions button,.result-actions button{min-height:104px}
+}
+
 /* Grid-fill gameplay replaces the retired freehand corridor tracer. */
 .trace-board{display:grid;place-items:center;padding:clamp(8px,1.8vmin,18px);background:linear-gradient(145deg,rgba(237,238,204,.98),rgba(203,224,185,.98));container-type:size}
 .trace-board::before{opacity:.08}

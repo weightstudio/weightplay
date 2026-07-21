@@ -439,7 +439,7 @@
   }
 
   function resumeBoardTasks() {
-    boardLifecycleSuspended = document.hidden;
+    boardLifecycleSuspended = document.hidden || state.leaveConfirmOpen;
   }
 
   function setBattleCovered(covered) {
@@ -1486,6 +1486,8 @@
   }, { once: true });
   window.addEventListener("pagehide", suspendBoardTasks);
   window.addEventListener("pageshow", resumeBoardTasks);
+  window.addEventListener("blur", suspendBoardTasks);
+  window.addEventListener("focus", resumeBoardTasks);
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) suspendBoardTasks();
     else resumeBoardTasks();
