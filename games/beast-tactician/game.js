@@ -624,6 +624,56 @@
     it: "Bruto dell’Ombra|Behemoth della Foresta|Colosso della Corteccia Ferrea|Antico Verdeggiante|Devastatore della Tempesta|Imperatore delle Radici del Vuoto".split("|"),
     ru: "Теневой зверь|Лесной бегемот|Колосс железной коры|Древний хранитель зелени|Буревой разоритель|Император пустых корней".split("|"),
   };
+  const CAMPAIGN_INTEL_TRANSLATIONS = {
+    ko: {
+      threats: "기본 늑대 무리가 첫 굽이를 시험합니다.|두 갈래 뿌리 길이 무리를 나눕니다.|빠른 정찰대는 늦은 배치를 파고듭니다.|멧돼지 무리가 한 명의 방어자를 압박합니다.|그림자 야수는 약한 전선을 돌파합니다.|비행 박쥐는 지상 미로를 무시합니다.|두 무리의 박쥐가 중앙을 가로지릅니다.|빠른 무리와 중장갑 무리가 번갈아 옵니다.|공중과 지상 공격이 동시에 시작됩니다.|숲의 베히모스가 호위 병력을 부릅니다.|철갑나무 경비병이 파괴 가능한 갑옷을 두르고 옵니다.|방패 무리가 빠른 추격대를 보호합니다.|멧돼지 종대가 한 경로를 집중 압박합니다.|갑옷과 박쥐를 상대하려면 혼합 화력이 필요합니다.|철갑나무 거상이 방어막을 재생합니다.|안개 생물은 이동하면서 체력을 회복합니다.|끝내지 못한 적은 계속 재생합니다.|갈라진 적 무리가 각 경로에서 회복합니다.|갑옷을 두른 재생 적이 전투를 길게 끕니다.|녹음의 고대목은 단계마다 체력을 회복합니다.|부상당한 적이 가속 상태에 들어갑니다.|가속 박쥐가 비어 있는 핵심 경로를 노립니다.|멧돼지는 갑옷을 잃은 뒤 가속합니다.|각 웨이브에서 서로 다른 적이 가속합니다.|폭풍 약탈자가 주변 호위병을 가속합니다.|일식 무리는 비행과 갑옷을 함께 사용합니다.|재생 적이 중장갑 전선 뒤에서 돌아옵니다.|가속 박쥐가 중장갑 종대를 엄호합니다.|앞서 등장한 모든 위협이 차례로 나타납니다.|공허뿌리 황제는 두 번 형태를 바꿉니다.".split("|"),
+      plans: "경비병으로 경로에 굽이를 만드세요.|원거리 유닛을 추가하기 전에 두 경로를 합치세요.|궁수의 사거리로 빠른 적부터 막으세요.|핵심 방어자 한 명을 강화하고 치유를 더하세요.|타로가 버티는 동안 피아가 보스를 집중 공격하게 하세요.|궁수와 올라로 긴 사선을 덮으세요.|원거리 화력을 핵심부 가까이에 남겨 두세요.|멧돼지를 느리게 만든 뒤 박쥐를 집중 공격하세요.|지상 경로와 공중에 화력을 나누세요.|보스에게 화력을 집중하기 전에 호위병부터 정리하세요.|지속 화력으로 갑옷을 부수세요.|빠른 적이 지나가기 전에 방패 전열을 광역 공격하세요.|방어선을 두 겹으로 만드세요.|공병의 광역 공격과 원거리 영웅을 조합하세요.|폭발 기술을 쓰기 전에 방어막부터 부수세요.|공격을 분산하지 말고 한 목표에 집중하세요.|마지막 굽이 앞에 폭발 화력을 배치하세요.|두 경로가 하나의 처치 구역에서 만나게 하세요.|갑옷을 부순 뒤 적을 빠르게 마무리하세요.|각 회복 단계에 맞춰 영웅 집중 공격을 아껴 두세요.|핵심부 가까이에 마무리 화력을 배치하세요.|올라를 마지막 굽이 뒤에 두세요.|갑옷을 부수기 전에 먼저 둔화하세요.|화력 구역을 한곳에 몰지 말고 여러 구간에 나누세요.|둔화로 호위병과 보스를 떼어 놓으세요.|지상과 공중을 모두 막는 완전한 진형을 만드세요.|갑옷 전열이 무너지면 재생 적을 집중 공격하세요.|핵심부 가까이에 두 번째 화력 구역을 남겨 두세요.|한 명의 주력만 키우지 말고 역할별로 강화하세요.|박쥐, 갑옷, 황제 순서로 각 단계에 대응하세요.".split("|"),
+    },
+    "pt-BR": {
+      threats: "Lobos básicos testam a primeira curva.|Duas trilhas de raízes dividem a alcateia.|Batedores velozes punem construções tardias.|Javalis pressionam um único bloqueador.|O Bruto das Sombras rompe linhas fracas.|Morcegos voadores ignoram o labirinto no chão.|Duas ondas de morcegos cruzam o centro.|Grupos rápidos e pesados se alternam.|Ondas aéreas e terrestres chegam juntas.|O Beemote da Floresta chama escoltas.|Guardas de casca de ferro chegam com armadura quebrável.|Grupos com escudo protegem perseguidores velozes.|Colunas de javalis pressionam uma rota.|Armadura e morcegos exigem dano misto.|O Colosso da Casca de Ferro refaz sua proteção.|Criaturas da névoa se curam em movimento.|Alvos não finalizados continuam se curando.|Grupos divididos se curam em rotas separadas.|Regeneradores blindados prolongam cada luta.|O Ancião Verdejante recupera vida por fases.|Inimigos feridos entram em aceleração.|Morcegos acelerados punem a rota central vazia.|Javalis aceleram após perder a armadura.|Acelerações mistas chegam em cada onda.|O Devastador da Tempestade acelera escoltas próximas.|Grupos do eclipse combinam voo e armadura.|Regeneradores retornam atrás da linha blindada.|Morcegos acelerados cobrem colunas pesadas.|Todas as ameaças anteriores chegam em sequência.|O Imperador das Raízes Vazias muda de fase duas vezes.".split("|"),
+      plans: "Use Guardas para criar curvas na rota.|Una as duas rotas antes de adicionar alcance.|Comece com cobertura de Arqueiros.|Fortaleça um bloqueador e adicione cura.|Use Taro para segurar e Fia para atacar o Chefe.|Cubra ângulos longos com Arqueiros e Orla.|Mantenha dano à distância perto do núcleo.|Desacelere javalis antes de focar nos morcegos.|Divida o dano entre a rota e o céu.|Elimine escoltas antes de atacar o Chefe.|Use fogo contínuo para quebrar a armadura.|Ataque a linha de escudos antes que os rápidos passem.|Crie duas camadas de bloqueadores.|Combine o dano em área do Sapador com heróis de alcance.|Quebre a proteção antes de usar habilidades fortes.|Concentre fogo em um alvo por vez.|Coloque dano explosivo antes da última curva.|Faça as rotas se unirem em uma zona de abate.|Quebre a armadura e finalize os alvos rápido.|Guarde o foco dos heróis para cada fase de cura.|Coloque dano de finalização perto do núcleo.|Mantenha Orla atrás da última curva.|Desacelere antes de quebrar a armadura.|Separe as zonas de dano em vez de agrupar tudo.|Use lentidão para separar escoltas do Chefe.|Monte uma formação completa contra chão e ar.|Foque os regeneradores após romper a linha blindada.|Mantenha uma segunda zona de dano perto do núcleo.|Melhore cada função, não apenas um carregador.|Responda a cada fase: morcegos, armadura e Imperador.".split("|"),
+    },
+  };
+  Object.assign(CAMPAIGN_INTEL_TRANSLATIONS["pt-BR"].threats, {
+    15: "A névoa se cura em movimento.",
+    20: "Feridos entram em aceleração.",
+    29: "O Imperador muda duas vezes.",
+  });
+  Object.assign(CAMPAIGN_INTEL_TRANSLATIONS["pt-BR"].plans, {
+    15: "Foque um alvo por vez.",
+    20: "Finalize perto do núcleo.",
+    29: "Morcegos, armadura, Chefe.",
+  });
+  CAMPAIGN_INTEL_TRANSLATIONS.fr = {
+    threats: "Des loups ordinaires testent le premier virage.|Deux voies de racines divisent la meute.|Les éclaireurs rapides punissent les défenses tardives.|Les sangliers pressent un seul bloqueur.|La Brute des Ombres brise les lignes faibles.|Les chauves-souris ignorent le labyrinthe au sol.|Deux vagues de chauves-souris traversent le centre.|Les groupes rapides et lourds alternent.|Les vagues aériennes et terrestres arrivent ensemble.|Le Béhémoth de la Forêt appelle des escortes.|Les gardes d’écorce de fer arrivent avec une armure brisable.|Les groupes protégés couvrent les poursuivants rapides.|Les colonnes de sangliers pressent une voie.|Armure et chauves-souris exigent des dégâts mixtes.|Le Colosse d’Écorce de Fer renouvelle sa garde.|Les créatures de brume récupèrent en avançant.|Les cibles inachevées continuent de guérir.|Les groupes séparés guérissent sur chaque voie.|Les régénérateurs blindés prolongent chaque combat.|L’Ancien Verdoyant récupère sa vie par phases.|Les ennemis blessés accélèrent.|Les chauves-souris rapides punissent la voie centrale vide.|Les sangliers accélèrent après avoir perdu leur armure.|Des accélérations mixtes arrivent à chaque vague.|Le Ravageur de la Tempête accélère ses escortes.|Les groupes de l’éclipse mêlent vol et armure.|La régénération revient derrière la ligne blindée.|Les chauves-souris rapides couvrent les colonnes lourdes.|Toutes les menaces précédentes arrivent en séquence.|L’Empereur des Racines du Néant change deux fois de phase.".split("|"),
+    plans: "Courbez la route avec des Gardes.|Réunissez les deux voies avant d’ajouter la portée.|Ouvrez avec la couverture des Archers.|Renforcez un bloqueur et ajoutez des soins.|Taro retient ; Fia frappe le Boss.|Couvrez les longs angles avec les Archers et Orla.|Gardez les dégâts à distance près du noyau.|Ralentissez les sangliers, puis visez les chauves-souris.|Répartissez les dégâts entre la route et le ciel.|Éliminez les escortes avant de frapper le Boss.|Brisez l’armure avec un feu soutenu.|Frappez la ligne de boucliers avant le passage des rapides.|Créez deux couches de bloqueurs.|Associez le Sapeur et les héros à distance.|Brisez la garde avant les compétences puissantes.|Concentrez le feu sur une cible.|Placez les dégâts explosifs avant le dernier virage.|Réunissez les voies dans une zone d’élimination.|Brisez l’armure, puis finissez vite les cibles.|Gardez le focus des héros pour chaque phase de soin.|Placez les dégâts finaux près du noyau.|Gardez Orla derrière le dernier virage.|Ralentissez avant de briser l’armure.|Étalez les zones de dégâts au lieu de tout grouper.|Séparez les escortes du Boss avec des ralentissements.|Formez une défense complète au sol et dans les airs.|Visez les régénérateurs après la rupture de l’armure.|Gardez une seconde zone de dégâts près du noyau.|Améliorez chaque rôle, pas un seul héros.|Répondez par ordre : chauves-souris, armure, Empereur.".split("|"),
+  };
+  Object.assign(CAMPAIGN_INTEL_TRANSLATIONS.fr.threats, {
+    15: "La brume récupère en avançant.",
+    26: "La régénération suit l’armure.",
+    29: "L’Empereur change deux fois.",
+  });
+  Object.assign(CAMPAIGN_INTEL_TRANSLATIONS.fr.plans, {
+    15: "Focalisez une cible.",
+    26: "Visez les soins après l’armure.",
+    29: "Ordre : vol, armure, Empereur.",
+  });
+  CAMPAIGN_INTEL_TRANSLATIONS.de = {
+    threats: "Einfache Wölfe prüfen die erste Kurve.|Zwei Wurzelwege teilen das Rudel.|Schnelle Späher bestrafen späten Aufbau.|Eber bedrängen einen einzelnen Blocker.|Die Schattenbestie bricht schwache Fronten.|Fliegende Fledermäuse umgehen das Bodenlabyrinth.|Zwei Fledermauswellen kreuzen die Mitte.|Schnelle und schwere Gruppen wechseln sich ab.|Luft- und Bodenwellen treffen gemeinsam ein.|Der Waldbehemot ruft Begleiter.|Eisenrindenwachen kommen mit brechbarer Rüstung.|Geschützte Gruppen decken schnelle Verfolger.|Eberkolonnen bedrängen einen Weg.|Rüstung und Fledermäuse verlangen gemischten Schaden.|Der Eisenrindenkoloss erneuert seinen Schutz.|Nebelwesen heilen sich beim Bewegen.|Unbesiegte Ziele regenerieren weiter.|Geteilte Gruppen heilen auf getrennten Wegen.|Gepanzerte Regeneratoren verlängern jeden Kampf.|Der Uralte Grüne heilt sich phasenweise.|Verwundete Gegner beschleunigen.|Beschleunigte Fledermäuse bestrafen den leeren Kernweg.|Eber beschleunigen nach Rüstungsverlust.|Gemischte Schübe kommen in jeder Welle.|Der Sturmverwüster beschleunigt nahe Begleiter.|Finsternisgruppen verbinden Flug und Rüstung.|Regeneration kehrt hinter der Panzerfront zurück.|Schnelle Fledermäuse decken schwere Kolonnen.|Alle bisherigen Gefahren folgen nacheinander.|Der Leerenwurzel-Kaiser wechselt zweimal die Phase.".split("|"),
+    plans: "Biege den Weg mit Wachen.|Führe beide Wege zusammen, dann ergänze Reichweite.|Beginne mit Bogenschützen-Abdeckung.|Verstärke einen Blocker und füge Heilung hinzu.|Taro hält; Fia greift den Boss an.|Decke lange Winkel mit Bogenschützen und Orla.|Halte Fernschaden nahe am Kern.|Verlangsame Eber, dann fokussiere Fledermäuse.|Teile Schaden zwischen Weg und Luft.|Besiege Begleiter vor dem Boss-Angriff.|Brich Rüstung mit Dauerfeuer.|Triff die Schildlinie, bevor Schnelle passieren.|Baue zwei Blockerschichten.|Kombiniere Flächenschaden und Fernhelden.|Brich den Schutz vor starken Fähigkeiten.|Konzentriere das Feuer auf ein Ziel.|Platziere Explosivschaden vor der letzten Kurve.|Führe Wege in einer Kampfzone zusammen.|Brich Rüstung und erledige Ziele schnell.|Spare Heldenfokus für jede Heilphase.|Platziere Endschaden nahe am Kern.|Halte Orla hinter der letzten Kurve.|Verlangsame vor dem Rüstungsbruch.|Verteile Schadenszonen statt alles zu bündeln.|Trenne Begleiter mit Verlangsamung vom Boss.|Baue eine vollständige Boden- und Luftabwehr.|Fokussiere Regeneratoren nach dem Rüstungsbruch.|Halte eine zweite Schadenszone nahe am Kern.|Verbessere jede Rolle, nicht nur einen Träger.|Reagiere der Reihe nach: Fledermäuse, Rüstung, Kaiser.".split("|"),
+  };
+  Object.assign(CAMPAIGN_INTEL_TRANSLATIONS.de.threats, {
+    13: "Rüstung und Fledermäuse brauchen Mischschaden.",
+    18: "Gepanzerte Regeneration verlängert Kämpfe.",
+    21: "Schnelle Fledermäuse treffen den leeren Kern.",
+    29: "Kaiser wechselt zweimal.",
+  });
+  Object.assign(CAMPAIGN_INTEL_TRANSLATIONS.de.plans, {
+    13: "Kombiniere Fläche und Fernkampf.",
+    18: "Brich Rüstung, erledige Ziele schnell.",
+    21: "Halte Orla an der letzten Kurve.",
+    29: "Flug, Rüstung, Kaiser.",
+  });
 
   const stages = CAMPAIGN_ARCS.flatMap((arc, arcIndex) => arc.names.en.map((name, stageIndex) => {
     const stage = arcIndex * 5 + stageIndex + 1;
@@ -662,6 +712,12 @@
   });
   Object.entries(CAMPAIGN_BOSS_TRANSLATIONS).forEach(([locale, names]) => {
     stages.filter((stage) => stage.boss).forEach((stage, index) => { stage.bossNames[locale] = names[index]; });
+  });
+  Object.entries(CAMPAIGN_INTEL_TRANSLATIONS).forEach(([locale, intel]) => {
+    stages.forEach((stage, index) => {
+      stage.intel.threat[locale] = intel.threats[index];
+      stage.intel.plan[locale] = intel.plans[index];
+    });
   });
   const STAGE_COUNT = stages.length;
 

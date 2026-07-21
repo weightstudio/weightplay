@@ -362,6 +362,7 @@
   let dragState = null;
   let careTransitionToken = 0;
   let careLifecycleSuspended = document.hidden;
+  let careWindowBlurred = false;
   let leaveOpen = false;
 
   function invalidateCareTransition() {
@@ -393,7 +394,7 @@
   }
 
   function resumeCareTransitions() {
-    careLifecycleSuspended = document.hidden;
+    careLifecycleSuspended = document.hidden || careWindowBlurred || leaveOpen;
   }
 
   function clamp(value, min, max) {
@@ -971,7 +972,15 @@
     window.setTimeout(() => toast.remove(), 1300);
   }
 
-  window.addEventListener("blur", cleanupDrag);
+  window.addEventListener("blur", () => {
+    careWindowBlurred = true;
+    cleanupDrag();
+    suspendCareTransitions();
+  });
+  window.addEventListener("focus", () => {
+    careWindowBlurred = false;
+    resumeCareTransitions();
+  });
   window.addEventListener("pagehide", () => {
     cleanupDrag();
     suspendCareTransitions();

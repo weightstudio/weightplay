@@ -517,6 +517,30 @@ body.guardian-playing .command-row button {
   font-size: 0.82rem;
 }
 
+html[lang="ko"] body.guardian-stage .stage-card .stage-intel,
+html[lang="ko"] body.guardian-stage .stage-card .stage-reward {
+  margin-top: 2px;
+  line-height: 1.2;
+}
+
+html[lang="pt-BR"] body.guardian-stage .stage-card .stage-intel,
+html[lang="pt-BR"] body.guardian-stage .stage-card .stage-reward {
+  margin-top: 1px;
+  line-height: 1.15;
+}
+
+html[lang="fr"] body.guardian-stage .stage-card .stage-intel,
+html[lang="fr"] body.guardian-stage .stage-card .stage-reward {
+  margin-top: 1px;
+  line-height: 1.15;
+}
+
+html[lang="de"] body.guardian-stage .stage-card .stage-intel,
+html[lang="de"] body.guardian-stage .stage-card .stage-reward {
+  margin-top: 1px;
+  line-height: 1.15;
+}
+
 .stage-card .stage-intel b,
 .stage-card .stage-reward b {
   color: #dff6df;
