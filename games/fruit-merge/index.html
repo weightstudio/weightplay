@@ -147,10 +147,6 @@
           <h2 id="menuTitle">Merge to the Lion King</h2>
           <p id="menuDesc">Drop animal balls carefully. Matching animals merge into the next bigger animal.</p>
           <button id="startBtn" type="button">Start Game</button>
-          <button id="freePlayBtn" class="secondary-action" type="button">Free Play</button>
-          <div id="chainPreview" class="chain-preview" aria-live="polite"></div>
-          <div id="menuMilestone" class="milestone-panel" aria-live="polite"></div>
-          <div id="menuLeaderboard" class="leaderboard-panel" aria-live="polite"></div>
         </div>
       </section>
 
@@ -164,7 +160,16 @@
         </div>
         <div id="stageRail" class="merge-stage-rail stage-rail" data-wp-stage-rail></div>
         <div id="stageDots" class="merge-stage-dots" aria-hidden="true"></div>
-        <div class="merge-stage-art" aria-hidden="true"></div>
+        <div id="stageTools" class="merge-stage-tools">
+          <div class="merge-stage-mode-column">
+            <button id="freePlayBtn" class="secondary-action" type="button">Free Play</button>
+            <div id="chainPreview" class="chain-preview" aria-live="polite"></div>
+          </div>
+          <div class="merge-stage-progress-column">
+            <div id="menuMilestone" class="milestone-panel" aria-live="polite"></div>
+            <div id="menuLeaderboard" class="leaderboard-panel" aria-live="polite"></div>
+          </div>
+        </div>
       </section>
 
       <section id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">

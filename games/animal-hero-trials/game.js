@@ -70,7 +70,7 @@
     bossObjectiveNamed: "Defeat {boss}",
     recommended: "Recommended: {hero}",
     roomsAndMarks: "3 rooms · +{marks} marks",
-    masteryReady: "Heart Mastery is ready on Main.",
+    masteryReady: "Ready to upgrade",
     masteryNeed: "Heart Mastery needs {remaining} more Trial Marks.",
     masteryUpgradeReady: "All heroes Max HP +{current} → +{next} · Spend {cost} / Have {marks} marks",
     masteryUpgradeNeed: "All heroes Max HP +{current} → +{next} · Need {cost} / Have {marks} marks",
@@ -89,7 +89,7 @@
     bossObjectiveNamed: "擊敗{boss}",
     recommended: "建議英雄：{hero}",
     roomsAndMarks: "3 個房間 · +{marks} 印記",
-    masteryReady: "\u53ef\u56de\u4e3b\u756b\u9762\u5347\u7d1a\u52c7\u6c23\u7cbe\u901a\u3002",
+    masteryReady: "\u53ef\u4ee5\u5347\u7d1a\u751f\u547d\u7cbe\u901a\u3002",
     masteryNeed: "\u52c7\u6c23\u7cbe\u901a\u9084\u9700\u8981 {remaining} \u679a\u8a66\u7149\u5370\u8a18\u3002",
     masteryUpgradeReady: "\u5168\u82f1\u96c4\u6700\u5927\u751f\u547d +{current} \u2192 +{next} \u00b7 \u6d88\u8017 {cost} / \u6301\u6709 {marks} \u679a",
     masteryUpgradeNeed: "\u5168\u82f1\u96c4\u6700\u5927\u751f\u547d +{current} \u2192 +{next} \u00b7 \u9700\u8981 {cost} / \u6301\u6709 {marks} \u679a",
@@ -156,7 +156,7 @@
     bossObjectiveNamed: "Derrota a {boss}",
     recommended: "Recomendado: {hero}",
     roomsAndMarks: "3 salas · +{marks} marcas",
-    masteryReady: "La Maestría de vida está lista en la pantalla principal.",
+    masteryReady: "La Maestría de vida está lista para mejorar.",
     masteryNeed: "Faltan {remaining} marcas de prueba para mejorar la Maestría de vida.",
     masteryUpgradeReady: "PV máximos de todos los héroes +{current} → +{next} · Gasta {cost} / Tienes {marks} marcas",
     masteryUpgradeNeed: "PV máximos de todos los héroes +{current} → +{next} · Necesitas {cost} / Tienes {marks} marcas",
@@ -232,7 +232,8 @@
 
   function readStorage(key) { try { return localStorage.getItem(key); } catch { return null; } }
   function writeStorage(key, value) { try { localStorage.setItem(key, value); return true; } catch { return false; } }
-  let locale = window.WonderI18n?.locale?.() || readStorage("weightPlayLocale") || "en";
+  const routeLocale = document.documentElement.lang;
+  let locale = routeLocale || readStorage("weightPlayLocale") || window.WonderI18n?.locale?.() || "en";
   const savedHero = readStorage("aht-selected-hero");
   let selectedHero = ["leo", "fia", "orla", "taro"].includes(savedHero) ? savedHero : "leo";
   if (savedHero && savedHero !== selectedHero) writeStorage("aht-selected-hero", selectedHero);
@@ -1096,7 +1097,7 @@
   localeSelect.onchange = (event) => {
     const requested = event.target.value;
     window.WonderI18n?.setLocale?.(requested);
-    locale = window.WonderI18n?.locale?.() || requested;
+    locale = requested;
     writeStorage("weightPlayLocale", requested);
     localize();
   };
@@ -1167,6 +1168,12 @@
     if (event.shiftKey && document.activeElement === actions[0]) { event.preventDefault(); actions.at(-1).focus(); }
     else if (!event.shiftKey && document.activeElement === actions.at(-1)) { event.preventDefault(); actions[0].focus(); }
   });
+  const stagePreparation = $("#stageView");
+  const progressCard = $(".progress-card");
+  const stageRail = $("#stageRail");
+  if (stagePreparation && progressCard && stageRail && !stagePreparation.contains(progressCard)) {
+    stagePreparation.insertBefore(progressCard, stageRail);
+  }
   $("#masteryBtn").addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });

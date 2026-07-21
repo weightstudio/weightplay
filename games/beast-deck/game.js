@@ -209,6 +209,9 @@
     const stageSelect = nodes.stageGrid.closest(".stage-select");
     const collectionPanel = $("collectionPanel");
     const diamondShop = $("diamondShop");
+    const progressPanel = menuCopy.querySelector(".prototype-goals");
+    const profilePanel = $("profilePanel");
+    const controlChips = menuCopy.querySelector(".control-chips");
     const mainStart = document.createElement("button");
     mainStart.id = "mainStartBtn";
     mainStart.type = "button";
@@ -241,7 +244,7 @@
     const shopView = stagePanel.querySelector('[data-stage-view="shop"]');
     missionView.append(stageSelect);
     nodes.startBtn.remove();
-    deckView.append(collectionPanel);
+    deckView.append(progressPanel, profilePanel, controlChips, collectionPanel);
     shopView.append(diamondShop);
     nodes.menuPanel.after(stagePanel);
     Object.assign(nodes, { stagePanel, mainStartBtn: mainStart, stageBackBtn: stagePanel.querySelector("#stageBackBtn") });
@@ -311,7 +314,7 @@
       title: "Beast Deck: The Mist Forest",
       language: "Language",
       menuTitle: "Enter the Mist Forest.",
-      menuHint: "Build an animal power deck, read enemy intent, and clear forest missions. Your level, coins, cards, equipment, and unlocked missions are saved on this device.",
+      menuHint: "Build animal-power decks across 30 missions, counter ten regional mechanics, and defeat six phase-changing forest Bosses.",
       startGame: "Start Game",
       progressTitle: "Local Progress",
       missionSelection: "Mission selection",
@@ -523,7 +526,7 @@
       title: "獸王牌組：迷霧森林",
       language: "語言",
       menuTitle: "進入迷霧森林。",
-      menuHint: "建立動物能力牌組、判斷敵人意圖並通關森林任務。等級、金幣、卡牌、裝備與任務進度都會保存在本機。",
+      menuHint: "建立動物能力牌組、判斷敵人意圖，並完成全部 30 個森林任務。",
       startGame: "開始遊戲",
       progressTitle: "本地進度",
       missionSelection: "任務選擇",
@@ -748,7 +751,7 @@
     title: "Beast Deck: El Bosque de Niebla",
     language: "Idioma",
     menuTitle: "Entra en el Bosque de Niebla.",
-    menuHint: "Crea un mazo de poderes animales, interpreta la intención enemiga y completa misiones. Tu nivel, monedas, cartas, equipo y misiones se guardan en este dispositivo.",
+    menuHint: "Crea un mazo de poderes animales, interpreta la intención enemiga y completa las 30 misiones del bosque.",
     startGame: "Iniciar juego",
     progressTitle: "Progreso local",
     missionSelection: "Selección de misiones",

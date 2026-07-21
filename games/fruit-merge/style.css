@@ -86,7 +86,8 @@ body.fruit-playing #menuPanel {
 .controls button,
 .result-actions a,
 .result-actions button,
-#startBtn {
+#startBtn,
+#freePlayBtn {
   min-height: 44px;
   border: 0;
   border-radius: 8px;
@@ -1740,13 +1741,45 @@ body.fruit-stage .sound-toggle {
   background: #72ffd0;
 }
 
-.merge-stage-art {
+.merge-stage-tools {
   min-height: 0;
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 12px;
   border-radius: 16px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  scrollbar-width: thin;
   background:
-    linear-gradient(180deg, rgba(13, 36, 31, 0.02), rgba(13, 36, 31, 0.72)),
+    linear-gradient(180deg, rgba(255, 253, 241, 0.96), rgba(240, 255, 247, 0.96)),
     url("../../assets/fruit-merge-cover.webp") center 28% / cover no-repeat;
   box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.18);
+}
+
+.merge-stage-tools #freePlayBtn {
+  align-self: start;
+  width: 100%;
+  height: 48px;
+  min-height: 48px;
+  background: #72ffd0;
+  box-shadow: 0 6px 18px rgba(13, 36, 31, 0.24);
+}
+
+.merge-stage-mode-column,
+.merge-stage-progress-column {
+  min-width: 0;
+  display: grid;
+  align-content: start;
+  gap: 10px;
+}
+
+@media (min-width: 700px) {
+  .merge-stage-tools {
+    grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+  }
 }
 
 @media (max-height: 430px) {

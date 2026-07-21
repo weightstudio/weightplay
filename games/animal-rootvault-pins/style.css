@@ -388,6 +388,18 @@ a:focus-visible {
   color: #ffdc69;
   white-space: nowrap;
 }
+.workshop-hint {
+  min-height: 34px;
+  margin: 0 8px 7px;
+  padding: 7px 9px;
+  border: 1px solid #72d7bb;
+  border-radius: 10px;
+  background: #0b3029;
+  color: #caffed;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.25;
+}
 .upgrade-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

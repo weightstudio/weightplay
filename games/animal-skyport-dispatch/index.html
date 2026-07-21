@@ -27,12 +27,13 @@
     <link rel="stylesheet" href="style.css?v=20260721-battle-footer1" />
     <link rel="stylesheet" href="main-flow.css" />
   </head>
-  <body data-no-mobile-immersive="true">
+  <body data-no-mobile-immersive="true" data-sound-toggle="off">
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Animal Skyport Dispatch</strong><span>Loading</span><div class="loading-track"><i></i></div></div></section>
     <main class="app">
       <header id="mainHeader" class="topbar">
         <a class="home-link icon-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <h1 data-i18n="title">Animal Skyport Dispatch</h1>
+        <button id="soundToggle" class="main-sound-toggle" type="button" data-sound-toggle aria-pressed="false" aria-label="Mute sound" title="Mute sound">🔊</button>
         <label class="locale"><span data-i18n="language">Language</span><select id="localeSelect"><option value="en">English</option><option value="zh-Hant">繁體中文</option></select></label>
       </header>
       <section id="mainScreen" class="main-screen">
@@ -73,7 +74,8 @@
     </main>
     <script src="../../src/site-config.js"></script><script src="../../src/i18n.js?v=20260720-locale11-4"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-pattern1"></script><script src="../../src/edge-guard.js"></script>
     <script src="../../src/wallet.js"></script>
-    <script src="game.js?v=20260721-locale-runtime3"></script>
+    <script src="../../src/sound.js?v=20260720-locale11"></script>
+    <script src="game.js?v=20260721-sound1"></script>
     <script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script>
     <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
     <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>

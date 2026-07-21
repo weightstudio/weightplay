@@ -58,6 +58,17 @@ const mainPanel = document.querySelector("#mainPanel");
 const mainTitle = document.querySelector("#mainTitle");
 const mainIntro = document.querySelector("#mainIntro");
 const showStageBtn = document.querySelector("#showStageBtn");
+const mainPreview = document.createElement("div");
+mainPreview.className = "rescue-main-preview";
+mainPreview.setAttribute("aria-hidden", "true");
+mainPreview.innerHTML = `
+  <img src="../../assets/weightplay-character-boom-mane-lion-cutout.webp" alt="" draggable="false" />
+  <span>→</span>
+  <img src="../../assets/animal-vine-fruit-apple.png" alt="" draggable="false" />
+  <span>→</span>
+  <img src="../../assets/tiny-weather-tool-house.svg" alt="" draggable="false" />
+`;
+mainPanel.insertBefore(mainPreview, showStageBtn);
 const stageBackBtn = document.querySelector("#stageBackBtn");
 const battleBackBtn = document.querySelector("#battleBackBtn");
 const stageSelectTitle = document.querySelector("#stageSelectTitle");

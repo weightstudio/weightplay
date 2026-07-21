@@ -8,6 +8,32 @@
   const saveKey = 'animal_skyport_dispatch_save';
   const readStorage = (key) => { try { return localStorage.getItem(key); } catch { return null; } };
   const writeStorage = (key, value) => { try { localStorage.setItem(key, value); return true; } catch { return false; } };
+  const soundActionLabels = {
+    en: ['Mute sound', 'Turn sound on'],
+    'zh-Hant': ['關閉音效', '開啟音效'],
+    'zh-Hans': ['关闭音效', '开启音效'],
+    ja: ['サウンドをミュート', 'サウンドをオン'],
+    ko: ['소리 끄기', '소리 켜기'],
+    es: ['Silenciar sonido', 'Activar sonido'],
+    'pt-BR': ['Silenciar som', 'Ativar som'],
+    fr: ['Couper le son', 'Activer le son'],
+    de: ['Ton ausschalten', 'Ton einschalten'],
+    it: ['Disattiva audio', 'Attiva audio'],
+    ru: ['Выключить звук', 'Включить звук'],
+  };
+  const playSound = (cue) => window.WonderSound?.play?.(cue);
+  function syncSoundToggle() {
+    const toggle = $('soundToggle');
+    if (!toggle) return;
+    const activeLocale = window.WonderI18n?.actualLocale?.() || readStorage('weightPlayLocale') || document.documentElement.lang || 'en';
+    const muted = Boolean(window.WonderSound?.isMuted?.());
+    const actions = soundActionLabels[activeLocale] || soundActionLabels.en;
+    const action = actions[muted ? 1 : 0];
+    toggle.textContent = muted ? '🔇' : '🔊';
+    toggle.title = action;
+    toggle.setAttribute('aria-label', action);
+    toggle.setAttribute('aria-pressed', String(muted));
+  }
   const strings = {
     en: { title:'Animal Skyport Dispatch', language:'Language', headline:'Keep Cloudline Skyport moving.', intro:'Draw safe routes, match airships to docks, and protect the shift from congestion.', start:'Start Game', chooseShift:'Choose a shift', best:'Best shift: {n}', shift:'Shift {n}/5', objective:'Serve {done}/{goal} flights', errors:'Errors {done}/3', stageReady:'Ready', stageLocked:'Locked', stageReplay:'Replay', service:'Use repair service', dragHint:'Drag the airship, or press Enter and use arrow keys, to choose its dock.', menu:'Main Menu', next:'Next Shift', retry:'Retry Shift', win:'Shift complete!', lose:'Skyport congested!', winCopy:'Clear routing earns a new skyport record.', loseCopy:'Three unsafe arrivals closed the shift. Retry is free.', repair:'Repair parts {n}' },
     'zh-Hant': { title:'\u52d5\u7269\u5929\u7a7a\u6e2f\u8abf\u5ea6\u968a', language:'\u8a9e\u8a00', headline:'\u8b93\u96f2\u7dda\u5929\u7a7a\u6e2f\u6301\u7e8c\u904b\u4f5c\u3002', intro:'\u7e6a\u51fa\u5b89\u5168\u822a\u7dda\uff0c\u914d\u5c0d\u98db\u8239\u8207\u78bc\u982d\uff0c\u4fdd\u8b77\u73ed\u6b21\u4e0d\u88ab\u58c5\u585e\u3002', start:'\u958b\u59cb\u904a\u6232', chooseShift:'\u9078\u64c7\u73ed\u6b21', best:'\u6700\u4f73\u73ed\u6b21\uff1a{n}', shift:'\u73ed\u6b21 {n}/5', objective:'\u5b8c\u6210 {done}/{goal} \u67b6\u98db\u8239', errors:'\u5931\u8aa4 {done}/3', stageReady:'\u53ef\u958b\u59cb', stageLocked:'\u672a\u89e3\u9396', stageReplay:'\u53ef\u91cd\u73a9', service:'\u4f7f\u7528\u7dad\u4fee\u670d\u52d9', dragHint:'\u62d6\u66f3\u98db\u8239，\u6216\u6309 Enter \u5f8c\u7528\u65b9\u5411\u9375\u9078\u64c7\u78bc\u982d\u3002', menu:'\u56de\u4e3b\u9078\u55ae', next:'\u4e0b\u4e00\u73ed', retry:'\u91cd\u8a66\u73ed\u6b21', win:'\u73ed\u6b21\u5b8c\u6210\uff01', lose:'\u5929\u7a7a\u6e2f\u58c5\u585e\uff01', winCopy:'\u6e05\u6670\u8abf\u5ea6\u70ba\u5929\u7a7a\u6e2f\u5beb\u4e0b\u65b0\u7d00\u9304\u3002', loseCopy:'\u4e09\u6b21\u4e0d\u5b89\u5168\u9032\u5834\u95dc\u9589\u4e86\u73ed\u6b21\uff0c\u91cd\u8a66\u514d\u8cbb\u3002', repair:'\u7dad\u4fee\u96f6\u4ef6 {n}' }
@@ -172,6 +198,7 @@
     $('stageBack').setAttribute('aria-label', t('back'));
     $('battleBack').setAttribute('aria-label', t('back'));
     $('stageRail').setAttribute('aria-label', t('shiftSelection'));
+    syncSoundToggle();
     renderContractControls();
     renderStages();
   }
@@ -364,6 +391,7 @@
     const config = shiftConfig[shift];
     state = {shift, done:0, errors:0, parts:config.parts, crew:2, maxCrew:2, fuel:config.goal+4, goal:config.goal, stormEvery:config.stormEvery, flightIndex:0, matched:0, selected:false, contract:Boolean(state.contract)};
     show('battleShell');
+    playSound('click');
     nextFlight();
     renderHud();
   }
@@ -397,6 +425,7 @@
     cancelRouteGesture({restoreGuidance:false});
     const insuredRun = insuranceActive;
     show('result');
+    if (win) playSound('win');
     $('resultTitle').textContent = win ? t('win') : t('lose');
     $('resultCopy').textContent = win ? t('winCopy') : (state.lastError || t('loseCopy'));
     const resultLabels = locale === 'zh-Hant'
@@ -501,8 +530,10 @@
         result(true);
         return;
       }
+      playSound('success');
       nextFlight();
     } else {
+      playSound('wrong');
       state.errors += 1;
       state.lastError = state.conflict ? (locale === 'zh-Hant' ? '先清除航線衝突，再拖曳飛船。' : 'Clear the route conflict before dragging.') : !state.crewAssigned ? (locale === 'zh-Hant' ? '這架需要組員：先按「指派組員」，再拖曳飛船。' : 'This flight needs crew: assign crew before dragging.') : state.storm && !state.serviced ? (locale === 'zh-Hant' ? '暴風航線需要先完成維修服務。' : 'Storm route: repair service is required first.') : state.fuel <= 0 ? (locale === 'zh-Hant' ? '燃料不足，無法派遣。' : 'Fuel depleted.') : (locale === 'zh-Hant' ? '碼頭不對：請依上方任務卡前往目標碼頭。' : 'Wrong dock: follow the task card target.');
       $('feedback').textContent = state.lastError;
@@ -612,6 +643,16 @@
     nextAction?.focus({preventScroll:true});
   }
   $('startBtn').onclick = () => { state.shift = save.unlocked; show('stageScreen'); renderStages(); };
+  $('soundToggle').onclick = () => {
+    window.WonderSound?.unlock?.();
+    const nextMuted = !Boolean(window.WonderSound?.isMuted?.());
+    window.WonderSound?.setMuted?.(nextMuted);
+    syncSoundToggle();
+    if (!nextMuted) playSound('click');
+  };
+  $('soundToggle').addEventListener('keydown', (event) => {
+    if (event.repeat && (event.key === 'Enter' || event.key === ' ')) event.preventDefault();
+  });
   $('startBtn').addEventListener('keydown', (event) => {
     if (event.repeat && (event.key === 'Enter' || event.key === ' ')) event.preventDefault();
   });

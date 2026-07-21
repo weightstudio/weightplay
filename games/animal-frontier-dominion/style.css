@@ -42,3 +42,8 @@ body[data-screen="stage"] :is(.wp-tutorial-button,.sound-toggle),body[data-scree
   .formation-row span{font-size:11px}
   .decision-panel>p{font-size:11px}
 }
+.hud{grid-template-columns:repeat(4,1fr);gap:4px}
+.formation-row button{grid-template-rows:1fr 20px 18px}
+.formation-row small{font-size:9px;color:#9fe8d0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:640px){.hud{width:224px}.battle-header>div:nth-child(2){padding-right:228px}}
+@media(max-height:520px) and (min-aspect-ratio:3/2){.formation-row button{grid-template-rows:34px 18px 15px}.formation-row small{font-size:8px}.formation-row img{height:34px}}

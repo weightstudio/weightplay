@@ -875,5 +875,33 @@
     "chapter6": "Кристальный Доминион"
   }
 };
+Object.assign(window.ANIMAL_FRONTIER_DOMINION_LOCALES["zh-Hans"],{backLobby:"返回 WeightPlay"});
+Object.assign(window.ANIMAL_FRONTIER_DOMINION_LOCALES.es,{backLobby:"Volver a WeightPlay"});
+Object.assign(window.ANIMAL_FRONTIER_DOMINION_LOCALES["pt-BR"],{backLobby:"Voltar ao WeightPlay"});
+Object.assign(window.ANIMAL_FRONTIER_DOMINION_LOCALES.it,{backLobby:"Torna a WeightPlay"});
+const handsOnCopy={
+  "zh-Hans":{command:"指挥",vanguardCounter:"克制游骑队",rangerCounter:"克制守卫队",guardCounter:"克制突击队",needResourceDetail:"需要 {cost} {resource}，目前有 {current}。",purchasedDetail:"{name} 已升级至 {level}/3 级。",needDiamondsDetail:"需要 25 颗钻石，目前有 {current} 颗。",repelledCounter:"阵型不利；对付{defender}请使用{formation}。士气 -{loss}。"},
+  ja:{command:"指揮",vanguardCounter:"偵察隊に強い",rangerCounter:"守備隊に強い",guardCounter:"襲撃隊に強い",needResourceDetail:"{resource}が {cost} 必要です。現在は {current} です。",purchasedDetail:"{name}をレベル {level}/3 に強化しました。",needDiamondsDetail:"ダイヤが25個必要です。現在は {current} 個です。",repelledCounter:"陣形が不利です。{defender}には{formation}を使いましょう。士気 -{loss}。"},
+  ko:{command:"지휘",vanguardCounter:"정찰대에 강함",rangerCounter:"수비대에 강함",guardCounter:"습격대에 강함",needResourceDetail:"{resource} {cost}개가 필요합니다. 현재 {current}개입니다.",purchasedDetail:"{name}을(를) {level}/3레벨로 강화했습니다.",needDiamondsDetail:"다이아몬드 25개가 필요합니다. 현재 {current}개입니다.",repelledCounter:"진형이 불리합니다. {defender}에게는 {formation}을 사용하세요. 사기 -{loss}."},
+  es:{command:"Mando",vanguardCounter:"Vence a exploradores",rangerCounter:"Vence a guardianes",guardCounter:"Vence a saqueadores",needResourceDetail:"Necesitas {cost} de {resource}. Tienes {current}.",purchasedDetail:"{name} mejorado al nivel {level}/3.",needDiamondsDetail:"Necesitas 25 diamantes. Tienes {current}.",repelledCounter:"Formación desfavorable. Usa {formation} contra {defender}. Moral -{loss}."},
+  "pt-BR":{command:"Comando",vanguardCounter:"Vence batedores",rangerCounter:"Vence guardiões",guardCounter:"Vence invasores",needResourceDetail:"Você precisa de {cost} de {resource}. Tem {current}.",purchasedDetail:"{name} melhorado para o nível {level}/3.",needDiamondsDetail:"Você precisa de 25 diamantes. Tem {current}.",repelledCounter:"Formação desfavorável. Use {formation} contra {defender}. Moral -{loss}."},
+  fr:{command:"Commandement",vanguardCounter:"Fort contre éclaireurs",rangerCounter:"Fort contre gardiens",guardCounter:"Fort contre pillards",needResourceDetail:"Il faut {cost} de {resource}. Vous en avez {current}.",purchasedDetail:"{name} amélioré au niveau {level}/3.",needDiamondsDetail:"Il faut 25 diamants. Vous en avez {current}.",repelledCounter:"Formation défavorable. Utilisez {formation} contre {defender}. Moral -{loss}."},
+  de:{command:"Befehl",vanguardCounter:"Stark gegen Späher",rangerCounter:"Stark gegen Wächter",guardCounter:"Stark gegen Plünderer",needResourceDetail:"Du brauchst {cost} {resource}. Aktuell: {current}.",purchasedDetail:"{name} auf Stufe {level}/3 verbessert.",needDiamondsDetail:"Du brauchst 25 Diamanten. Aktuell: {current}.",repelledCounter:"Ungünstige Formation. Nutze {formation} gegen {defender}. Moral -{loss}."},
+  it:{command:"Comando",vanguardCounter:"Forte contro esploratori",rangerCounter:"Forte contro guardiani",guardCounter:"Forte contro razziatori",needResourceDetail:"Servono {cost} di {resource}. Ne hai {current}.",purchasedDetail:"{name} migliorato al livello {level}/3.",needDiamondsDetail:"Servono 25 diamanti. Ne hai {current}.",repelledCounter:"Formazione sfavorevole. Usa {formation} contro {defender}. Morale -{loss}."},
+  ru:{command:"Команды",vanguardCounter:"Силен против разведчиков",rangerCounter:"Силен против стражей",guardCounter:"Силен против налётчиков",needResourceDetail:"Нужно {cost} ед. ресурса «{resource}». Сейчас: {current}.",purchasedDetail:"{name}: улучшено до уровня {level}/3.",needDiamondsDetail:"Нужно 25 алмазов. Сейчас: {current}.",repelledCounter:"Неудачный строй. Против {defender} используйте {formation}. Боевой дух -{loss}."}
+};
+const defeatKickerCopy={"zh-Hans":"远征受挫",ja:"遠征失敗",ko:"원정 실패",es:"EXPEDICIÓN FALLIDA","pt-BR":"EXPEDIÇÃO FRACASSADA",fr:"EXPÉDITION ÉCHOUÉE",de:"EXPEDITION GESCHEITERT",it:"SPEDIZIONE FALLITA",ru:"ЭКСПЕДИЦИЯ ПРОВАЛЕНА"};
+for(const [code,copy] of Object.entries(handsOnCopy))Object.assign(window.ANIMAL_FRONTIER_DOMINION_LOCALES[code],copy,{defeatKicker:defeatKickerCopy[code]});
+const coreTermsCopy={
+  "zh-Hans":{turn:"回合",supply:"补给",scout:"侦察 · 1 指挥",freeScout:"侦察 · 免费"},
+  ja:{turn:"ターン",supply:"補給",ranger:"遊撃隊",guard:"守備隊",scout:"偵察 · 指揮1",freeScout:"偵察 · 無料"},
+  ko:{turn:"턴",supply:"보급",ranger:"유격대",guard:"수비대",scout:"정찰 · 지휘 1",freeScout:"정찰 · 무료"},
+  es:{turn:"Turno",supply:"Suministros",ranger:"Exploradores",scout:"Explorar · 1 mando",freeScout:"Explorar · gratis",march:"Avanzar"},
+  "pt-BR":{turn:"Turno",supply:"Suprimentos",ranger:"Batedores",scout:"Explorar · 1 comando",freeScout:"Explorar · grátis",march:"Avançar"},
+  fr:{turn:"Tour",supply:"Ravitail.",command:"Ordres",ranger:"Éclaireurs",scout:"Éclairer · 1 ordre",freeScout:"Éclairer · gratuit"},
+  de:{turn:"Runde",supply:"Vorrat",ranger:"Späher",scout:"Aufklären · 1 Befehl",freeScout:"Aufklären · gratis",march:"Vorrücken"},
+  it:{turn:"Turno",supply:"Scorte",ranger:"Esploratori",scout:"Esplora · 1 comando",freeScout:"Esplora · gratis"},
+  ru:{turn:"Ход",supply:"Снабжение",command:"Приказы",ranger:"Разведчики",scout:"Разведать · 1 приказ",freeScout:"Разведать · бесплатно",march:"Наступать"}
+};
+for(const [code,copy] of Object.entries(coreTermsCopy))Object.assign(window.ANIMAL_FRONTIER_DOMINION_LOCALES[code],copy);
 })();
-

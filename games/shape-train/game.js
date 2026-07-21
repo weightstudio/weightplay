@@ -217,20 +217,20 @@
 
   const trainCarAsset = "../../assets/shape-train-car.svg";
   const shapes = {
-    circle: { token: "../../assets/shape-token-circle.svg" },
-    square: { token: "../../assets/shape-token-square.svg" },
-    triangle: { token: "../../assets/shape-token-triangle.svg" },
-    star: { token: "../../assets/shape-token-star.svg" },
-    diamond: { token: "../../assets/shape-token-diamond.svg" },
-    heart: { token: "../../assets/shape-token-heart.svg" },
+    circle: { token: "../../assets/shape-train-badge-circle.svg" },
+    square: { token: "../../assets/shape-train-badge-square.svg" },
+    triangle: { token: "../../assets/shape-train-badge-triangle.svg" },
+    star: { token: "../../assets/shape-train-badge-star.svg" },
+    diamond: { token: "../../assets/shape-train-badge-diamond.svg" },
+    heart: { token: "../../assets/shape-train-badge-heart.svg" },
   };
   const passengerAnimals = {
-    circle: "../../assets/tiny-weather-animal-rabbit.png",
-    square: "../../assets/tiny-weather-animal-panda.png",
-    triangle: "../../assets/tiny-weather-animal-fox.png",
-    star: "../../assets/weightplay-boom-mane-lion.png",
-    diamond: "../../assets/tiny-weather-animal-penguin.png",
-    heart: "../../assets/tiny-weather-animal-koala.png",
+    circle: "../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp",
+    square: "../../assets/weightplay-character-drum-belly-panda-clean-cutout.webp",
+    triangle: "../../assets/weightplay-character-spark-paw-captain-cutout.webp",
+    star: "../../assets/weightplay-character-boom-mane-lion-cutout.webp",
+    diamond: "../../assets/weightplay-character-bubble-fin-otter-cutout.webp",
+    heart: "../../assets/weightplay-character-moon-cap-owl-cutout.webp",
   };
 
   const makeStage = (cars, tasks, options = {}) => ({ cars, tasks, rule: "direct", ...options });
