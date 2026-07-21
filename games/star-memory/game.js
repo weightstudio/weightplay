@@ -674,12 +674,12 @@
     const viewport = window.visualViewport;
     const viewportWidth = viewport?.width || window.innerWidth;
     const viewportHeight = viewport?.height || window.innerHeight;
-    const availableWidth = Math.max(1, viewportWidth);
+    const availableWidth = Math.max(1, Math.min(viewportWidth, 920));
     const availableHeight = Math.max(1, viewportHeight);
     const scale = Math.min(availableWidth / 390, availableHeight / 788);
     const logicalWidth = availableWidth / scale;
     const logicalHeight = availableHeight / scale;
-    const frameLeft = viewport?.offsetLeft || 0;
+    const frameLeft = (viewport?.offsetLeft || 0) + Math.max(0, (viewportWidth - availableWidth) / 2);
     const frameTop = viewport?.offsetTop || 0;
     document.documentElement.style.setProperty("--memory-frame-scale", String(scale));
     document.documentElement.style.setProperty("--memory-frame-left", `${frameLeft}px`);
@@ -1108,6 +1108,7 @@
   function finishGame() {
     cancelRoundTasks();
     const stage = stages[state.stageIndex];
+    const isFinalStage = stage.id === stages.length;
     const previousBest = getLevelHighScore(stage.id);
     
     // Save progress to unlock next level
@@ -1130,8 +1131,8 @@
     saveLevelStars(stage.id, starsEarned);
     
     // Victory UI
-    resultTitle.textContent = stage.id === stages.length ? t("allClear") : t("victory");
-    resultText.textContent = stage.id === stages.length ? t("allClearDesc", { count: stages.length }) : t("victoryDesc", { moves: state.moves });
+    resultTitle.textContent = isFinalStage ? t("allClear") : t("victory");
+    resultText.textContent = isFinalStage ? t("allClearDesc", { count: stages.length }) : t("victoryDesc", { moves: state.moves });
     renderSkillReport(stage, true, previousBest);
     memoryReport.classList.remove("hidden");
     
@@ -1142,10 +1143,15 @@
     });
     
     // Toggle next level button
-    nextLevelBtn.classList.toggle("hidden", stage.id === stages.length);
+    nextLevelBtn.classList.toggle("hidden", isFinalStage);
+    const primaryAction = isFinalStage ? stageSelectBtn : nextLevelBtn;
+    [nextLevelBtn, againBtn, stageSelectBtn, lobbyLink].forEach((action) => {
+      action.classList.toggle("result-primary", action === primaryAction);
+      action.classList.toggle("result-secondary", action !== primaryAction);
+    });
     document.body.classList.add("memory-result");
     resultPanel.classList.remove("hidden");
-    (stage.id === stages.length ? againBtn : nextLevelBtn).focus({ preventScroll: true });
+    primaryAction.focus({ preventScroll: true });
     
     window.WonderSound?.play("win");
     
@@ -1175,6 +1181,10 @@
     });
     
     nextLevelBtn.classList.add("hidden");
+    [nextLevelBtn, againBtn, stageSelectBtn, lobbyLink].forEach((action) => {
+      action.classList.toggle("result-primary", action === againBtn);
+      action.classList.toggle("result-secondary", action !== againBtn);
+    });
     document.body.classList.add("memory-result");
     resultPanel.classList.remove("hidden");
     againBtn.focus({ preventScroll: true });

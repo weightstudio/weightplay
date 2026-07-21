@@ -870,6 +870,24 @@ body.memory-result .result-panel {
   background: rgba(255, 255, 255, 0.12);
 }
 
+.result-actions #nextLevelBtn.result-primary,
+.result-actions #againBtn.result-primary,
+.result-actions #stageSelectBtn.result-primary {
+  border: 2px solid #a7f3d0;
+  background: var(--success);
+  color: #fff;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2), 0 0 22px var(--success-glow);
+}
+
+.result-actions #nextLevelBtn.result-secondary,
+.result-actions #againBtn.result-secondary,
+.result-actions #stageSelectBtn.result-secondary {
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-light);
+  box-shadow: none;
+}
+
 .lobby-btn {
   background: transparent;
   color: var(--text-muted);
