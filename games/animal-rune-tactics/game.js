@@ -969,6 +969,7 @@
   let trainingMessageTimer = 0;
   let battlePaused = false;
   let pauseFocusOwner = nodes.pauseBtn;
+  let lifecycleSuspended = document.hidden || !document.hasFocus();
 
   function clearTurnTransition() {
     clearTimeout(turnTransitionTimer);
@@ -978,7 +979,7 @@
   }
 
   function armTurnTransition() {
-    if (!turnTransitionTask || turnTransitionTimer || document.hidden) return;
+    if (!turnTransitionTask || turnTransitionTimer || lifecycleSuspended || document.hidden) return;
     const task = turnTransitionTask;
     turnTransitionDueAt = performance.now() + task.delay;
     turnTransitionTimer = window.setTimeout(() => {
@@ -1008,7 +1009,7 @@
   }
 
   function resumeTurnTransition() {
-    if (battlePaused) return;
+    if (battlePaused || lifecycleSuspended) return;
     armTurnTransition();
   }
 
@@ -1210,7 +1211,7 @@
   }
 
   function armTrainingIntent(delay = trainingIntentRemaining) {
-    if (!trainingIntentPending || trainingIntentTimer || document.hidden) return;
+    if (!trainingIntentPending || trainingIntentTimer || lifecycleSuspended || document.hidden) return;
     trainingIntentRemaining = Math.max(0, Number(delay) || 0);
     trainingIntentDueAt = performance.now() + trainingIntentRemaining;
     trainingIntentTimer = window.setTimeout(() => {
@@ -1230,8 +1231,21 @@
   }
 
   function resumeTrainingIntent() {
-    if (!trainingIntentPending || trainingIntentTimer || document.hidden) return;
+    if (!trainingIntentPending || trainingIntentTimer || lifecycleSuspended || document.hidden) return;
     armTrainingIntent();
+  }
+
+  function suspendAppLifecycle() {
+    lifecycleSuspended = true;
+    suspendTurnTransition();
+    suspendTrainingIntent();
+  }
+
+  function resumeAppLifecycle() {
+    if (document.hidden || !document.hasFocus()) return;
+    lifecycleSuspended = false;
+    resumeTurnTransition();
+    resumeTrainingIntent();
   }
 
   function renderTrainingChoice() {
@@ -2599,22 +2613,13 @@
 
   function bind() {
     document.addEventListener("visibilitychange", () => {
-      if (document.hidden) {
-        suspendTurnTransition();
-        suspendTrainingIntent();
-      } else {
-        resumeTurnTransition();
-        resumeTrainingIntent();
-      }
+      if (document.hidden) suspendAppLifecycle();
+      else resumeAppLifecycle();
     });
-    window.addEventListener("pagehide", () => {
-      suspendTurnTransition();
-      suspendTrainingIntent();
-    });
-    window.addEventListener("pageshow", () => {
-      resumeTurnTransition();
-      resumeTrainingIntent();
-    });
+    window.addEventListener("blur", suspendAppLifecycle);
+    window.addEventListener("focus", resumeAppLifecycle);
+    window.addEventListener("pagehide", suspendAppLifecycle);
+    window.addEventListener("pageshow", resumeAppLifecycle);
     const syncRuntimeLocale = () => {
       const requested = document.documentElement.lang;
       if (text[requested] && requested !== locale) {

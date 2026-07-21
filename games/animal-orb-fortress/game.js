@@ -2105,6 +2105,24 @@
   nodes.roomGrid.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });
+  nodes.upgradePanel.addEventListener("keydown", (event) => {
+    if (event.key !== "Tab") return;
+    const actions = Array.from(nodes.upgradePanel.querySelectorAll("button"))
+      .filter((button) => !button.disabled && button.getClientRects().length);
+    if (!actions.length) return;
+    const first = actions[0];
+    const last = actions.at(-1);
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus({ preventScroll: true });
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus({ preventScroll: true });
+    } else if (!actions.includes(document.activeElement)) {
+      event.preventDefault();
+      first.focus({ preventScroll: true });
+    }
+  });
   nodes.upgradeCards.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });

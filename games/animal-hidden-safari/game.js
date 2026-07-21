@@ -230,6 +230,21 @@
     ko: {
       locked: "잠긴 서식지",
       resume: "계속 찾기",
+      great: "잘 찾았어요!",
+      perfect: "정말 잘 찾았어요!",
+      good: "멋진 탐색이에요!",
+      result: "{time} 동안 동물 {found}/{total}마리를 찾았어요.",
+      skillReport: "놀이 기록",
+      focus: "집중해서 찾기",
+      focusValue: "동물 {found}마리 · 빈 곳 {mistakes}번",
+      animalKnowledge: "동물 알아보기",
+      animalValue: "{count}마리 알아봤어요",
+      problemSolving: "스스로 해결하기",
+      solveValue: "힌트 없이 {unaided}마리 · 힌트 {hints}개",
+      firstFinish: "처음 완료 · {time}",
+      newBest: "새 최고 기록 {time} · 이전 기록 {previous}",
+      progress: "이번 기록 {time} · 최고 기록 {best}",
+      best: "최고 기록 {time}",
     },
   };
 

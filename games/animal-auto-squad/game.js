@@ -1924,6 +1924,9 @@
     save = loadSave();
     setStageTab("stages");
     renderStageSelector();
+    requestAnimationFrame(() => {
+      nodes.stageRail.querySelector(".stage-card.is-selected:not([aria-disabled='true'])")?.focus({ preventScroll: true });
+    });
   }
 
   const TRAINING_STAGE_STYLE_PROPERTIES = [
@@ -4597,10 +4600,16 @@
   // Event Listeners Registration
   function setupEvents() {
     nodes.showStageBtn.addEventListener("click", showStageSelection);
+    nodes.showStageBtn.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
+    });
     nodes.stageBackBtn.addEventListener("click", renderMenu);
     nodes.stageTabBtn?.addEventListener("click", () => setStageTab("stages"));
     nodes.trainingTabBtn?.addEventListener("click", () => setStageTab("training"));
     nodes.stageRail.addEventListener("scroll", scheduleStageBrowseUpdate, { passive: true });
+    nodes.stageRail.addEventListener("keydown", (event) => {
+      if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest(".stage-card")) event.preventDefault();
+    });
     nodes.rerollShopBtn.addEventListener("click", rerollShop);
     nodes.rerollRelicsBtn.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) {

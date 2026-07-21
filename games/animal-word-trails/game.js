@@ -35,6 +35,7 @@
   copy.en.start = 'Start Game';
   copy['zh-Hant'].start = '\u958b\u59cb\u904a\u6232';
   const app = document.getElementById('app'), locale = document.getElementById('locale');
+  const stageCanvas=document.querySelector('.stage-screen');stageCanvas?.setAttribute('data-wp-stage-landscape-width','760');stageCanvas?.setAttribute('data-wp-stage-landscape-height','360');
   const supportedLocales=['en','zh-Hant','zh-Hans','ja','ko','es','pt-BR','fr','de','it','ru'];
   const runtimeTranslate=value=>window.WeightPlayGameRuntimeLocalizer?.translate?.(String(value))||String(value);
   const cleanWord=value=>Array.from(String(value).normalize('NFC').toLocaleUpperCase()).filter(char=>/[\p{Letter}\p{Mark}]/u.test(char)).join('');

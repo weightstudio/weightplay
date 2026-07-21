@@ -1158,6 +1158,7 @@
   let canvasPress = null;
   let toastTimer = 0;
   let battleFrame = 0;
+  let battleWindowFocused = document.hasFocus();
 
   function currentStartTile() {
     return state.stage?.route?.start || startTile;
@@ -2361,14 +2362,19 @@
     updateHud();
   }
 
-  function pauseHiddenBattle() {
-    if (document.hidden) cancelCanvasPress();
-    if (document.hidden && state.screen === "game" && !state.gameOver && !state.paused) {
+  function suspendUnattendedBattle(reason) {
+    cancelCanvasPress();
+    if (state.screen === "game" && !state.gameOver && !state.paused) {
       state.paused = true;
-      track("game_speed_change", { stage: state.currentStage, speed: state.speed, paused: true, reason: "page_hidden" });
+      track("game_speed_change", { stage: state.currentStage, speed: state.speed, paused: true, reason });
       updateHud();
     }
     syncBattleLoop();
+  }
+
+  function handleBattleVisibilityChange() {
+    if (document.hidden) suspendUnattendedBattle("page_hidden");
+    else syncBattleLoop();
   }
 
   function setBattleDecisionCoverage(covered) {
@@ -3589,7 +3595,7 @@
   }
 
   function shouldRunBattleLoop() {
-    return state.screen === "game" && !state.gameOver && !leaveBattleConfirmPending && !document.hidden;
+    return state.screen === "game" && !state.gameOver && !leaveBattleConfirmPending && !document.hidden && battleWindowFocused;
   }
 
   function stopBattleLoop() {
@@ -3736,12 +3742,24 @@
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
     });
     nodes.speedBtn.addEventListener("click", cycleSpeedControl);
-    document.addEventListener("visibilitychange", pauseHiddenBattle);
+    document.addEventListener("visibilitychange", handleBattleVisibilityChange);
+    window.addEventListener("blur", () => {
+      battleWindowFocused = false;
+      suspendUnattendedBattle("window_blur");
+    });
+    window.addEventListener("focus", () => {
+      battleWindowFocused = true;
+      syncBattleLoop();
+    });
     window.addEventListener("pagehide", () => {
+      battleWindowFocused = false;
       cancelCanvasPress();
       stopBattleLoop();
     });
-    window.addEventListener("pageshow", syncBattleLoop);
+    window.addEventListener("pageshow", () => {
+      battleWindowFocused = true;
+      syncBattleLoop();
+    });
     nodes.retryBtn.addEventListener("click", () => {
       track("game_restart", { stage: state.currentStage });
       startStage(state.currentStage);

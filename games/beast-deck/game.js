@@ -29,7 +29,7 @@
   let amuletConfirmRemaining = 0;
   let amuletConfirmDueAt = 0;
   let battleTransitionEpoch = 0;
-  let backgroundSuspended = document.hidden;
+  let backgroundSuspended = document.hidden || !document.hasFocus();
   const battleTransitions = new Set();
   let stageScrollTimer = 0;
 
@@ -98,7 +98,7 @@
   }
 
   function resumeBackgroundBattle() {
-    if (!backgroundSuspended || document.hidden || leaveDecisionOpen) return;
+    if (!backgroundSuspended || document.hidden || !document.hasFocus() || leaveDecisionOpen) return;
     backgroundSuspended = false;
     armAmuletConfirmation();
     battleTransitions.forEach(armBattleTransition);
@@ -3201,6 +3201,8 @@
       if (document.hidden) suspendBackgroundBattle();
       else resumeBackgroundBattle();
     });
+    window.addEventListener("blur", suspendBackgroundBattle);
+    window.addEventListener("focus", resumeBackgroundBattle);
     window.addEventListener("pagehide", suspendBackgroundBattle);
     window.addEventListener("pageshow", resumeBackgroundBattle);
 

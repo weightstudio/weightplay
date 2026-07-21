@@ -74,3 +74,4 @@ body.word-playing .icon { width:24px; height:24px; }
 body.word-playing .compact { min-height:48px; padding:0 22px; font-size:inherit; }
 @media (max-height:760px){body.word-playing .board{width:min(100%,390px)}}
 @media (max-height:560px) and (orientation:landscape){body.word-playing .target-row{min-height:34px}.clue-reveal{inset:4px;gap:3px}.clue-reveal i{width:54px;height:54px}.feedback{min-height:24px;font-size:12px!important;line-height:1.15}body.word-playing .board{width:min(100%,243px)}}
+@media (max-height:430px) and (orientation:landscape){body.word-stage .stage-screen{grid-template-rows:52px minmax(0,1fr) 52px;gap:6px;padding:8px}body.word-stage .stage-screen .back{top:8px;left:8px}body.word-stage .stage-rail{padding:3px calc(50% - 132px)}}

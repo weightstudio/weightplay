@@ -1,6 +1,7 @@
 (function(){
   'use strict';
   const $=id=>document.getElementById(id),LOCALES=window.AnimalScrewWorkshopLocales||{},SUPPORTED=['en','zh-Hant','zh-Hans','es','ja','ko','pt-BR','fr','de','it','ru'],CATALOG_BACKED=['fr','it','ru'],SAVE_KEY='animalScrewWorkshopSaveV1',LOCALE_KEY='animalScrewWorkshopLocale';
+  const stageCanvas=document.querySelector('.stage-canvas');stageCanvas?.setAttribute('data-wp-stage-landscape-width','760');stageCanvas?.setAttribute('data-wp-stage-landscape-height','360');
   const safeStorage={get(key){try{return localStorage.getItem(key)}catch{return null}},set(key,value){try{localStorage.setItem(key,value);return true}catch{return false}}};
   const normalizeLocale=value=>{const raw=String(value||'').replace('_','-'),lower=raw.toLowerCase();if(SUPPORTED.includes(raw))return raw;if(lower.startsWith('zh-tw')||lower.startsWith('zh-hk')||lower.includes('hant'))return'zh-Hant';if(lower.startsWith('zh'))return'zh-Hans';if(lower.startsWith('pt'))return'pt-BR';return SUPPORTED.find(item=>item.toLowerCase()===lower)||'en'};
   const routedLocale=window.WonderI18n?.actualLocale?.(),platformLocale=safeStorage.get('weightPlayLocale')||safeStorage.get('weightplayLocale')||navigator.language||'en',gameLocale=safeStorage.get(LOCALE_KEY);
