@@ -51,9 +51,12 @@ function projection(worldY,w,h){const z=worldY-run.progress,look=46,p=Math.max(0
 function trackZoneAt(y){if(y>run.course.length-4)return'finish';const o=run.course.objects.find(x=>Math.abs(x.y-y)<2.6);if(!o)return'safe';if(o.type==='boost'||o.type==='fracture'||o.type==='split'||o.type==='magnet'||o.type==='checkpoint')return o.type==='split'?'fracture':o.type;return'safe'}
 function trackColors(type,y){const pulse=.5+.5*Math.sin(y*.28);if(type==='boost')return[`hsl(${42+pulse*7} 88% 62%)`,`hsl(30 76% 32%)`];if(type==='fracture')return[`hsl(${270+pulse*12} 72% 65%)`,`hsl(255 55% 28%)`];if(type==='magnet')return[`hsl(${181+pulse*9} 82% 60%)`,`hsl(198 67% 27%)`];if(type==='checkpoint')return[`hsl(153 78% 62%)`,`hsl(177 69% 25%)`];if(type==='finish')return[`hsl(48 96% 70%)`,`hsl(31 76% 34%)`];return[`hsl(${187+pulse*8} 73% 50%)`,`hsl(204 70% 20%)`]}
 function drawTrack(w,h){
-  const look=46,step=.9,leftRail=[],rightRail=[],centerRail=[];
-  for(let z=look;z>0;z-=step){
-    const y1=run.progress+z,y0=Math.max(run.progress,y1-step),a=projection(y1,w,h),b=projection(y0,w,h),wa=widthAt(y1)*w*.073*a.scale,wb=widthAt(y0)*w*.073*b.scale,type=trackZoneAt((y0+y1)/2),colors=trackColors(type,(y0+y1)/2);
+  const look=46,step=.42,leftRail=[],rightRail=[],centerRail=[];
+  // Anchor tessellation in world space. Camera-relative strips stay fixed on
+  // screen and look like exchanged tiles; world-aligned samples actually
+  // travel toward the player every frame and keep the runway continuous.
+  for(let y1=Math.ceil((run.progress+look)/step)*step;y1>run.progress;y1-=step){
+    const y0=Math.max(run.progress,y1-step),a=projection(y1,w,h),b=projection(y0,w,h),wa=widthAt(y1)*w*.073*a.scale,wb=widthAt(y0)*w*.073*b.scale,type=trackZoneAt((y0+y1)/2),colors=trackColors(type,(y0+y1)/2);
     ctx.beginPath();ctx.moveTo(a.sx-wa-1,a.sy-1);ctx.lineTo(a.sx+wa+1,a.sy-1);ctx.lineTo(b.sx+wb+1,b.sy+1);ctx.lineTo(b.sx-wb-1,b.sy+1);ctx.closePath();ctx.fillStyle=colors[0];ctx.fill();
     ctx.save();ctx.clip();const lateral=ctx.createLinearGradient(Math.min(a.sx-wa,b.sx-wb),0,Math.max(a.sx+wa,b.sx+wb),0);lateral.addColorStop(0,'rgba(0,20,55,.55)');lateral.addColorStop(.22,'rgba(48,225,238,.10)');lateral.addColorStop(.5,'rgba(216,255,255,.30)');lateral.addColorStop(.78,'rgba(48,225,238,.10)');lateral.addColorStop(1,'rgba(0,20,55,.55)');ctx.fillStyle=lateral;ctx.fillRect(Math.min(a.sx-wa,b.sx-wb)-2,a.sy-2,Math.max(4,Math.max(a.sx+wa,b.sx+wb)-Math.min(a.sx-wa,b.sx-wb)+4),Math.max(4,b.sy-a.sy+4));ctx.restore();
     leftRail.push([b.sx-wb,b.sy,b.scale]);rightRail.push([b.sx+wb,b.sy,b.scale]);centerRail.push([b.sx,b.sy,b.scale,type]);

@@ -1,3 +1,4 @@
+(()=>{const script=document.createElement("script");script.src="./locale-ownership.js?v=20260722-fr1";document.head.append(script)})();
 (()=>{
   "use strict";
 

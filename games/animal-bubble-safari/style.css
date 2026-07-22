@@ -210,6 +210,8 @@ body:not(.safari-main) .screen.is-active.weightplay-active-viewport {
 .reward-row b { margin-right: 8px; }
 .skill-report { border-radius: 8px; background: rgba(126,224,200,.14); display: grid; place-items: center; padding: 8px; }
 .skill-report span { color: #8ee2d2; font-size: 11px; }
+.result-progress { margin: 0; color: #fff3a8; font-size: 11px; font-weight: 800; line-height: 1.15; }
+.result-progress[hidden] { display: none; }
 .result-actions { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 52px 48px; gap: 10px; align-self: end; }
 .result-actions button { border-radius: 8px; background: #fff; color: #173047; font-weight: 900; }
 .result-actions button:focus { outline: 4px solid #ffe676; outline-offset: 3px; box-shadow: 0 0 0 3px #173047; }

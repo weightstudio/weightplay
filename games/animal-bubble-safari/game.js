@@ -15,7 +15,7 @@
       startGame: "開始遊戲", guide: "玩法", chooseStage: "選擇關卡", album: "救援圖鑑", bestStars: "最佳星星",
       startLevel: "開始關卡", level: "關卡", shots: "剩餘", rescued: "目標", score: "分數",
       currentBubble: "目前", nextBubble: "下一顆", shotsLeft: "剩餘泡泡", rescuedAnimals: "救出動物",
-      skillReport: "能力報告", retry: "再試一次", nextLevel: "下一關", backToMap: "返回關卡",
+      skillReport: "能力報告", retry: "再試一次", nextLevel: "下一關", backToMap: "返回關卡", bestScoreValue: "最佳分數：{score}", improvedBest: "進步很多！你刷新了自己的最佳分數。",
       howToPlay: "怎麼玩", guideAim: "拖曳瞄準同色泡泡，放開即可發射。", guideBank: "利用牆面反彈，繞過擋路的岩石。",
       guideRescue: "三顆以上相連會消除；在泡泡用完前救出目標。", gotIt: "知道了",
       aim: "拖曳瞄準，放開發射", directGoal: "配對 1 組同色泡泡", bankGoal: "用反彈射擊配對 1 組", rescueGoal: "救出泡泡裡的小斑馬",
@@ -35,7 +35,7 @@
       startGame: "Start Game", guide: "Guide", chooseStage: "Choose Stage", album: "Rescue Album", bestStars: "Best Stars",
       startLevel: "Start Level", level: "Level", shots: "Shots", rescued: "Goal", score: "Score",
       currentBubble: "Current", nextBubble: "Next", shotsLeft: "Shots Left", rescuedAnimals: "Animals Rescued",
-      skillReport: "Skill Report", retry: "Retry", nextLevel: "Next Level", backToMap: "Back to Map",
+      skillReport: "Skill Report", retry: "Retry", nextLevel: "Next Level", backToMap: "Back to Map", bestScoreValue: "Best score: {score}", improvedBest: "Great progress! You improved your best score.",
       howToPlay: "How to Play", guideAim: "Drag to aim at matching bubbles, then release to shoot.", guideBank: "Bounce shots off a wall to get around rocks.",
       guideRescue: "Connect three or more. Rescue the target before shots run out.", gotIt: "Got It",
       aim: "Drag to aim, release to shoot", directGoal: "Make 1 matching group", bankGoal: "Make 1 group with a bank shot", rescueGoal: "Rescue an animal bubble",
@@ -54,7 +54,7 @@
       startGame: "Empezar", guide: "Guía", chooseStage: "Elegir nivel", album: "Álbum de rescate", bestStars: "Mejores estrellas",
       startLevel: "Empezar nivel", level: "Nivel", shots: "Tiros", rescued: "Objetivo", score: "Puntuación",
       currentBubble: "Actual", nextBubble: "Siguiente", shotsLeft: "Tiros restantes", rescuedAnimals: "Animales rescatados",
-      skillReport: "Informe de habilidades", retry: "Reintentar", nextLevel: "Siguiente nivel", backToMap: "Volver al mapa",
+      skillReport: "Informe de habilidades", retry: "Reintentar", nextLevel: "Siguiente nivel", backToMap: "Volver al mapa", bestScoreValue: "Mejor puntuación: {score}", improvedBest: "¡Gran progreso! Mejoraste tu mejor puntuación.",
       howToPlay: "Cómo jugar", guideAim: "Arrastra para apuntar a burbujas iguales y suelta para disparar.", guideBank: "Haz rebotar el tiro en una pared para rodear las rocas.",
       guideRescue: "Une tres o más. Rescata el objetivo antes de quedarte sin tiros.", gotIt: "Entendido",
       aim: "Arrastra para apuntar y suelta para disparar", directGoal: "Forma 1 grupo del mismo color", bankGoal: "Forma 1 grupo con un rebote en la pared", rescueGoal: "Rescata una burbuja animal",
@@ -121,11 +121,15 @@
   if (battleScreen && resultScreen && !document.getElementById("pauseOverlay")) {
     resultScreen.insertAdjacentHTML("beforebegin", '<section id="pauseOverlay" class="pause-overlay" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden><div class="pause-panel"><span class="pause-symbol" aria-hidden="true">Ⅱ</span><h2 id="pauseTitle" data-i18n="paused">Paused</h2><p data-i18n="pauseMessage">Take a breath. Your safari is waiting.</p><div class="pause-actions"><button id="pauseResume" class="primary-button" type="button" data-i18n="resume">Resume</button><button id="pauseBack" type="button" data-i18n="backToMap">Back to Map</button></div></div></section>');
   }
+  const skillReport = resultScreen?.querySelector(".skill-report");
+  if (skillReport && !document.getElementById("resultProgress")) {
+    skillReport.insertAdjacentHTML("beforeend", '<p id="resultProgress" class="result-progress" aria-live="polite" hidden></p>');
+  }
 
   const dom = Object.fromEntries([
     "viewport","gameCanvas","loadingScreen","loadingCover","loadingPanel","loadingFill","loadingProgress","mainScreen","stageScreen","battleLive","pauseButton","pauseOverlay","pauseResume","resultScreen","guideModal","stageRail","stageStatus","playCanvas","localeSelect",
     "mainProgress","albumCount","starCount","stageSkill","stageGoal","battleStageName","shotsLeft","rescueProgress","scoreValue","battleMessage","battleGoal",
-    "currentPreview","nextPreview","resultTitle","resultStars","resultScore","resultShots","resultRescued","rewardStars","rewardCoins","rewardAlbum","skillText","nextStage"
+    "currentPreview","nextPreview","resultTitle","resultStars","resultScore","resultShots","resultRescued","rewardStars","rewardCoins","rewardAlbum","skillText","resultProgress","nextStage"
   ].map(id => [id, document.getElementById(id)]));
   dom.battleScreen = battleScreen;
 
@@ -196,6 +200,10 @@
     const authored = copy[locale];
     const source = authored?.[key] || copy.en[key] || key;
     return authored?.[key] ? source : translateRuntime(source);
+  }
+
+  function formatText(template, values) {
+    return String(template).replace(/\{(\w+)\}/g, (_, key) => values[key] ?? `{${key}}`);
   }
 
   function stageTitle(stage) {
@@ -786,6 +794,9 @@
   function showResult(won) {
     const starLimits = game.def.stars;
     const stars = won ? (game.shots >= starLimits[0] ? 3 : game.shots >= starLimits[1] ? 2 : 1) : 0;
+    const previousBest = Number(save.bestScore[game.def.id]) || 0;
+    const bestScore = won ? Math.max(previousBest, game.score) : previousBest;
+    const improvedBest = won && previousBest > 0 && game.score > previousBest;
     dom.resultTitle.textContent = won ? t("success") : t("failed");
     dom.resultStars.textContent = "★".repeat(stars) + "☆".repeat(3-stars);
     dom.resultScore.textContent = game.score;
@@ -795,6 +806,10 @@
     dom.rewardCoins.textContent = `+${won ? 20 + game.score/60|0 : 0}`;
     dom.rewardAlbum.textContent = `+${game.rescued}`;
     dom.skillText.textContent = t(game.def.report);
+    dom.resultProgress.hidden = bestScore <= 0;
+    dom.resultProgress.textContent = bestScore > 0
+      ? `${improvedBest ? `${t("improvedBest")} ` : ""}${formatText(t("bestScoreValue"), { score: bestScore })}`
+      : "";
     dom.nextStage.hidden = !won || game.def.id >= stageDefs.length;
     document.querySelector(".result-actions").classList.toggle("single-primary", dom.nextStage.hidden);
     if (won) {
