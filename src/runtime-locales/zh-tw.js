@@ -231,6 +231,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "{value} - Internal Trial": "{value} - 內部試驗",
   "{value} - WeightPlay": "{value} - WeightPlay",
   "{value} · 3 Diamonds · {value}": "{value} · 3 顆鑽石 · {value}",
+  "{value} · CD:0": "{value}·CD:0",
   "{value} {value}/12 · {value} Lv.{value}": "{value} {value}/12 · {value} Lv.{value}",
   "{value} | Internal WeightPlay Trial": "{value} |內部WeightPlay試用",
   "{value} | WeightPlay": "{value} | WeightPlay",

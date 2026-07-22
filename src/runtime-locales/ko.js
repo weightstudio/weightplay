@@ -231,6 +231,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "{value} - Internal Trial": "{value} - 내부 재판",
   "{value} - WeightPlay": "{value} - WeightPlay",
   "{value} · 3 Diamonds · {value}": "{value} · 다이아몬드 3개 · {value}",
+  "{value} · CD:0": "{value} · CD:0",
   "{value} {value}/12 · {value} Lv.{value}": "{value} {value}/12 · {value} 레벨{value}",
   "{value} | Internal WeightPlay Trial": "{value} | 내부 WeightPlay 평가판",
   "{value} | WeightPlay": "{value} | WeightPlay",

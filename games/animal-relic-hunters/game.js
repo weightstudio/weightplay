@@ -844,6 +844,7 @@
   let backgroundBattleSuspended = false;
   let manualPauseActive = false;
   let pauseDialogMode = "pause";
+  let windowFocused = document.hasFocus();
 
   function clearEliteSpawnTimer() {
     window.clearTimeout(eliteSpawnTimer);
@@ -886,7 +887,7 @@
   function resumeBackgroundBattle() {
     resumeAmuletConfirmation();
     resumeDraftRerollConfirmation();
-    if (!backgroundSuspendedAt || document.hidden) return;
+    if (!backgroundSuspendedAt || document.hidden || !windowFocused) return;
     const elapsed = Math.max(0, performance.now() - backgroundSuspendedAt);
     backgroundSuspendedAt = 0;
     ["roomGraceUntil", "slowUntil", "silencedUntil", "bossWarningUntil", "lastHitSoundAt"].forEach((key) => {
@@ -1523,7 +1524,7 @@
   }
 
   function armAmuletConfirmation(delay = amuletConfirmRemaining) {
-    if (!amuletPurchasePending || document.hidden) return;
+    if (!amuletPurchasePending || document.hidden || !windowFocused) return;
     clearTimeout(amuletConfirmTimer);
     amuletConfirmRemaining = Math.max(0, Number(delay) || 0);
     amuletConfirmDueAt = performance.now() + amuletConfirmRemaining;
@@ -1531,7 +1532,7 @@
       amuletConfirmTimer = 0;
       amuletConfirmRemaining = 0;
       amuletConfirmDueAt = 0;
-      if (!amuletPurchasePending || document.hidden) return;
+      if (!amuletPurchasePending || document.hidden || !windowFocused) return;
       amuletPurchasePending = false;
       updateDiamondShopUI();
     }, amuletConfirmRemaining);
@@ -1546,7 +1547,7 @@
   }
 
   function resumeAmuletConfirmation() {
-    if (!amuletPurchasePending || amuletConfirmTimer || document.hidden) return;
+    if (!amuletPurchasePending || amuletConfirmTimer || document.hidden || !windowFocused) return;
     armAmuletConfirmation();
   }
 
@@ -2269,6 +2270,7 @@
   }
 
   function armDraftRerollConfirmation(delay = draftRerollConfirmRemaining) {
+    if (!draftRerollPending || document.hidden || !windowFocused) return;
     window.clearTimeout(draftRerollConfirmTimer);
     draftRerollConfirmRemaining = Math.max(0, Number(delay) || 0);
     draftRerollConfirmDueAt = performance.now() + draftRerollConfirmRemaining;
@@ -2276,6 +2278,7 @@
       draftRerollConfirmTimer = 0;
       draftRerollConfirmRemaining = 0;
       draftRerollConfirmDueAt = 0;
+      if (!windowFocused || document.hidden) return;
       draftRerollPending = false;
       updateDraftRerollUI();
     }, draftRerollConfirmRemaining);
@@ -2290,7 +2293,7 @@
   }
 
   function resumeDraftRerollConfirmation() {
-    if (!draftRerollPending || draftRerollConfirmTimer || document.hidden) return;
+    if (!draftRerollPending || draftRerollConfirmTimer || document.hidden || !windowFocused) return;
     armDraftRerollConfirmation();
   }
 
@@ -3233,8 +3236,14 @@
       keysPressed[e.key] = false;
     });
     window.addEventListener("blur", () => {
+      windowFocused = false;
       clearMovementInput();
+      suspendBackgroundBattle();
       if (state.gameActive && !manualPauseActive) setPauseModalActive(true);
+    });
+    window.addEventListener("focus", () => {
+      windowFocused = true;
+      if (!manualPauseActive) resumeBackgroundBattle();
     });
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) suspendBackgroundBattle();

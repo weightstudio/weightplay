@@ -231,6 +231,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "{value} - Internal Trial": "{value} - 社内トライアル",
   "{value} - WeightPlay": "{value} - WeightPlay",
   "{value} · 3 Diamonds · {value}": "{value} · 3 ダイヤモンド · {value}",
+  "{value} · CD:0": "{value} · CD:0",
   "{value} {value}/12 · {value} Lv.{value}": "{value} {value}/12 · {value} Lv.{value}",
   "{value} | Internal WeightPlay Trial": "{value} |社内WeightPlay トライアル",
   "{value} | WeightPlay": "{value} | WPブランドトークン",

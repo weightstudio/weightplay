@@ -129,7 +129,7 @@
   const dom = Object.fromEntries([
     "viewport","gameCanvas","loadingScreen","loadingCover","loadingPanel","loadingFill","loadingProgress","mainScreen","stageScreen","battleLive","pauseButton","pauseOverlay","pauseResume","resultScreen","guideModal","stageRail","stageStatus","playCanvas","localeSelect",
     "mainProgress","albumCount","starCount","stageSkill","stageGoal","battleStageName","shotsLeft","rescueProgress","scoreValue","battleMessage","battleGoal",
-    "currentPreview","nextPreview","resultTitle","resultStars","resultScore","resultShots","resultRescued","rewardStars","rewardCoins","rewardAlbum","skillText","resultProgress","nextStage"
+    "currentPreview","nextPreview","resultTitle","resultStars","resultScore","resultShots","resultRescued","rewardStars","rewardCoins","rewardAlbum","skillText","resultProgress","retryStage","nextStage","backToMap"
   ].map(id => [id, document.getElementById(id)]));
   dom.battleScreen = battleScreen;
 
@@ -810,7 +810,12 @@
     dom.resultProgress.textContent = bestScore > 0
       ? `${improvedBest ? `${t("improvedBest")} ` : ""}${formatText(t("bestScoreValue"), { score: bestScore })}`
       : "";
-    dom.nextStage.hidden = !won || game.def.id >= stageDefs.length;
+    const hasNextStage = won && game.def.id < stageDefs.length;
+    const primaryAction = hasNextStage ? dom.nextStage : won ? dom.backToMap : dom.retryStage;
+    dom.nextStage.hidden = !hasNextStage;
+    [dom.retryStage, dom.nextStage, dom.backToMap].forEach((action) => {
+      action.classList.toggle("primary-button", action === primaryAction);
+    });
     document.querySelector(".result-actions").classList.toggle("single-primary", dom.nextStage.hidden);
     if (won) {
       save.bestStars[game.def.id] = Math.max(save.bestStars[game.def.id] || 0, stars);
@@ -820,7 +825,7 @@
       persist();
     }
     showScreen("result");
-    requestAnimationFrame(() => (dom.nextStage.hidden ? document.getElementById("retryStage") : dom.nextStage).focus({ preventScroll:true }));
+    requestAnimationFrame(() => primaryAction.focus({ preventScroll:true }));
     track("level_complete", { level: game.def.id, won, score: game.score, stars });
   }
 

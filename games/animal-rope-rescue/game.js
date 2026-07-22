@@ -969,9 +969,15 @@
     nodes.resultText.textContent = success && currentStage === stages.length ? t("completeText") : success ? t("successText") : t("failText");
     const starCount = success ? save.stars[currentStage] || 2 : 0;
     nodes.starText.textContent = `${"★".repeat(starCount)}${"☆".repeat(3 - starCount)}`;
-    nodes.nextStageBtn.classList.toggle("hidden", !success || currentStage >= stages.length);
+    const hasNextStage = success && currentStage < stages.length;
+    const primaryAction = hasNextStage ? nodes.nextStageBtn : success ? nodes.resultStagesBtn : nodes.retryBtn;
+    nodes.nextStageBtn.classList.toggle("hidden", !hasNextStage);
+    [nodes.nextStageBtn, nodes.retryBtn, nodes.resultStagesBtn].forEach((action) => {
+      action.classList.toggle("result-primary", action === primaryAction);
+      action.classList.toggle("result-secondary", action !== primaryAction);
+    });
     nodes.resultPanel.classList.remove("hidden");
-    (success && currentStage < stages.length ? nodes.nextStageBtn : nodes.retryBtn).focus();
+    primaryAction.focus({ preventScroll: true });
     window.WonderSound?.play?.(success ? "success" : "error");
   }
 

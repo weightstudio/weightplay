@@ -287,6 +287,8 @@
     de: { nextRouteAction: "N\u00e4chste Route" },
     it: { nextRouteAction: "Percorso successivo" },
     ru: { nextRouteAction: "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u043c\u0430\u0440\u0448\u0440\u0443\u0442" },
+    hi: { nextRouteAction: "\u0905\u0917\u0932\u093e \u092e\u093e\u0930\u094d\u0917" },
+    ar: { nextRouteAction: "\u0627\u0644\u0645\u0633\u0627\u0631 \u0627\u0644\u062a\u0627\u0644\u064a" },
   });
 
   const regionNames = [
@@ -997,7 +999,7 @@
         duration: config.duration,
         bossEn: config.bossEn,
       })),
-      nextRouteLabels: () => Object.fromEntries(["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru"]
+      nextRouteLabels: () => Object.fromEntries(["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"]
         .map((code) => [code, dictionary[code]?.nextRouteAction || ""])),
       restoreProgress: (snapshot = {}) => {
         progress = {

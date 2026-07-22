@@ -17,8 +17,9 @@
     ar:['الصحة','رونة الضربة القاضية للفريق','تستبدل الهجمات العادية؛ يستخدم كل بطل ضربته القاضية بالترتيب.','تصاعد المعركة','يضرب الجميع بقوة 1.2× ATK ويكسب +0.25× ATK لكل موجة تم بلوغها.']
   };
   const weekly={en:'Every week','zh-Hant':'每週','zh-Hans':'每周',ja:'毎週',ko:'매주',es:'Cada semana','pt-BR':'Toda semana',fr:'Chaque semaine',de:'Jede Woche',it:'Ogni settimana',ru:'Каждую неделю',hi:'हर सप्ताह',ar:'كل أسبوع'};
+  const cooldown={en:'Cooldown','zh-Hant':'冷卻','zh-Hans':'冷却',ja:'クールダウン',ko:'재사용 대기',es:'Recarga','pt-BR':'Recarga',fr:'Recharge',de:'Abklingzeit',it:'Ricarica',ru:'Перезарядка',hi:'कूलडाउन',ar:'وقت الانتظار'};
   const keys=['hp','runeSpecial','runeSpecialDesc','specialPanda','specialPandaDesc'];
-  Object.keys(L).forEach(code=>{const values=copy[code]||copy.en,patch={weekly:weekly[code]||weekly.en};keys.forEach((key,index)=>patch[key]=values[index]);Object.assign(L[code],patch)});
+  Object.keys(L).forEach(code=>{const values=copy[code]||copy.en,patch={weekly:weekly[code]||weekly.en,cooldown:cooldown[code]||cooldown.en};keys.forEach((key,index)=>patch[key]=values[index]);Object.assign(L[code],patch)});
   L['zh-Hant'].leaderNyraDesc='必殺符石威力 +20%。';
   L['zh-Hans'].leaderNyraDesc='必杀符石威力 +20%。';
 })();

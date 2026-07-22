@@ -231,6 +231,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "{value} - Internal Trial": "{value} - आंतरिक परीक्षण",
   "{value} - WeightPlay": "{value} - WeightPlay",
   "{value} · 3 Diamonds · {value}": "{value} · 3 हीरे · {value}",
+  "{value} · CD:0": "{value} · सीडी:0",
   "{value} {value}/12 · {value} Lv.{value}": "{value} {value}/12 · {value} लव.{value}",
   "{value} | Internal WeightPlay Trial": "{value} | आंतरिक WeightPlay परीक्षण",
   "{value} | WeightPlay": "{value} | WeightPlay",

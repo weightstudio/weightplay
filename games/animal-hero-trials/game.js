@@ -259,6 +259,7 @@
   let moveTarget = null;
   let stageSelectionFrame = 0;
   let backgroundSuspended = false;
+  let windowHasFocus = document.hasFocus();
   let quitSuspended = false;
   const keys = {};
   const battleControlCodes = new Set(["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "KeyA", "KeyD", "KeyW", "KeyS", "Space"]);
@@ -304,7 +305,7 @@
   }
 
   function resumeBackgroundBattle() {
-    if (!backgroundSuspended || !run || document.hidden || document.body.dataset.gameView !== "battle") return;
+    if (!backgroundSuspended || !run || document.hidden || !windowHasFocus || document.body.dataset.gameView !== "battle") return;
     if (!$("#choiceModal").classList.contains("hidden") || !$("#quitModal").classList.contains("hidden") || !$("#resultModal").classList.contains("hidden")) return;
     backgroundSuspended = false;
     run.active = true;
@@ -891,7 +892,7 @@
   }
 
   function resumeRerollConfirmation() {
-    if (!run?.rerollPending || rerollConfirmTimer || document.hidden) return;
+    if (!run?.rerollPending || rerollConfirmTimer || document.hidden || !windowHasFocus) return;
     armRerollConfirmation(rerollConfirmRemaining);
   }
 
@@ -1235,11 +1236,13 @@
   });
   addEventListener("keyup", (event) => { keys[event.code] = false; });
   addEventListener("blur", () => {
+    windowHasFocus = false;
     clearMovementInput();
     suspendRerollConfirmation();
     suspendBackgroundBattle();
   });
   addEventListener("focus", () => {
+    windowHasFocus = true;
     resumeRerollConfirmation();
     resumeBackgroundBattle();
   });

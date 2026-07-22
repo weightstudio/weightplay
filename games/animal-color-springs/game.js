@@ -18,10 +18,11 @@
     ["hue-rotate(265deg) saturate(3.8) brightness(1.05)","#ef72ff"]
   ];
   const REQUIRED_LOCALES=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
-  let locale=normalizeLocale(readStorage("weightPlayLocale")||document.documentElement.lang||"zh-Hant");
+  let locale=initialLocale();
   let save=loadSave(),levels=[],stageIndex=0,state=[],capacities=[],moves=0,selected=-1,history=[],planned=[],sealedIndex=-1,unlockAfter=0,resultState=false,toastTimer=0,lastFocus=null,interactionLocked=false,transferToken=0;
 
   function normalizeLocale(v){if(v==="zh-TW")return"zh-Hant";if(v==="zh-CN")return"zh-Hans";if(v?.startsWith("pt"))return"pt-BR";const short=v?.split("-")[0];return REQUIRED_LOCALES.includes(v)?v:REQUIRED_LOCALES.includes(short)?short:"en";}
+  function initialLocale(){const routed=window.WonderI18n?.localeFromPath?.();return normalizeLocale(routed||window.WonderI18n?.actualLocale?.()||document.documentElement.lang||readStorage("weightPlayLocale")||"zh-Hant");}
   function tr(key,vars={}){let value=(LOCALES[locale]||LOCALES.en)[key]??LOCALES.en[key]??key;const translate=window.WeightPlayGameRuntimeLocalizer?.translate;if(locale!=="en"&&!LOCALES[locale]&&translate)value=Array.isArray(value)?value.map(translate):translate(String(value));if(Array.isArray(value))return value;return String(value).replace(/\{(\w+)\}/g,(_,k)=>vars[k]??"");}
   function loadSave(){try{return Object.assign({unlocked:1,cleared:{},stars:{},best:{},tutorial:false},JSON.parse(readStorage(SAVE_KEY)||"{}"));}catch{return{unlocked:1,cleared:{},stars:{},best:{},tutorial:false};}}
   function persist(){writeStorage(SAVE_KEY,JSON.stringify(save));}
@@ -70,6 +71,7 @@
   function showResultStage(){dom.result.hidden=true;stageIndex=latestUnlockedStage();setScreen("stage");renderStage();requestAnimationFrame(()=>requestAnimationFrame(()=>focusStageCard(stageIndex)));setTimeout(()=>focusStageCard(stageIndex),380);}
 
   dom.locale.addEventListener("change",()=>{const next=normalizeLocale(dom.locale.value);if(window.WonderI18n?.setLocale){window.WonderI18n.setLocale(next);return;}locale=next;writeStorage("weightPlayLocale",locale);applyLocale();});
+  window.addEventListener?.("wonder:locale-change",event=>{locale=normalizeLocale(event.detail?.locale||window.WonderI18n?.actualLocale?.()||document.documentElement.lang);writeStorage("weightPlayLocale",locale);applyLocale();});
   dom.start.addEventListener("click",()=>{stageIndex=Math.max(0,Math.min(29,Number(save.unlocked||1)-1));setScreen("stage");renderStage();if(!save.tutorial)focusModal(dom.tutorial,dom.tutorialStart);});
   dom.stageBack.addEventListener("click",()=>{setScreen("main");renderMain();});
   dom.rail.addEventListener("wonder:stage-snap",e=>{const i=Number(e.detail?.index);if(!Number.isInteger(i))return;stageIndex=i;$$('.stage-card').forEach(c=>c.classList.toggle("selected",Number(c.dataset.index)===i));const chapter=chapterFor(i);dom.chapterKicker.textContent=tr("chapter",{n:chapter+1});dom.chapterTitle.textContent=tr("chapters")[chapter];dom.chapterRule.textContent=tr("rules")[chapter];});

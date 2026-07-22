@@ -231,6 +231,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "{value} - Internal Trial": "{value} - محاكمة داخلية",
   "{value} - WeightPlay": "{value} - WeightPlay",
   "{value} · 3 Diamonds · {value}": "{value} · 3 ماسات · {value}",
+  "{value} · CD:0": "{value} · القرص المضغوط:0",
   "{value} {value}/12 · {value} Lv.{value}": "{value} {value}/12 · {value} المستوى{value}",
   "{value} | Internal WeightPlay Trial": "{value} | تجربة WeightPlay الداخلية",
   "{value} | WeightPlay": "{value} | WeightPlay",

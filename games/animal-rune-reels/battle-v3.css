@@ -149,7 +149,11 @@ img{-webkit-user-drag:none}
 .v3-battle .stage-name strong{max-width:100%}
 .v3-battle .stage-name em{margin-top:2px}
 .enemy-squad{width:min(calc(var(--enemy-count,3)*180px),82%,650px);grid-template-columns:repeat(var(--enemy-count,3),minmax(0,1fr))}
-.enemy-unit.defeated{display:none}
+.enemy-unit.defeated{display:block;visibility:hidden;pointer-events:none}
+.enemy-cd{position:absolute;z-index:5;left:3px;bottom:17px;min-width:42px;padding:3px 7px;border:1px solid #79e7ff;border-radius:999px;background:#07122bea;color:#bff8ff;font-size:.68rem;font-weight:1000;line-height:1;letter-spacing:.03em;box-shadow:0 0 12px #36dff477;text-shadow:0 1px 3px #000}
+.enemy-unit.enemy-ready .enemy-cd,.enemy-unit.enemy-attacking .enemy-cd{border-color:#ffdf69;background:#4a1b16ee;color:#fff3a8;box-shadow:0 0 16px #ff7a3d}
+.enemy-unit.enemy-attacking{animation:enemyAttackStep .92s cubic-bezier(.2,.7,.25,1)}
+@keyframes enemyAttackStep{0%,100%{transform:none}34%{transform:translateY(18px) scale(1.08);filter:brightness(1.35) drop-shadow(0 0 14px #ff724d)}62%{transform:translateY(12px) scale(1.04)}}
 .party-hero.active{transform:none;filter:drop-shadow(0 0 14px #ffe36a)}
 .party-hero.attack-launch{animation:heroLaunchV7 1.04s both}
 .party-hero.attack-launch.ultimate-cast{animation-duration:1.32s}
@@ -162,4 +166,4 @@ img{-webkit-user-drag:none}
 @media(max-width:560px){.roster-grid{grid-auto-rows:178px}.enemy-squad{width:min(calc(var(--enemy-count,3)*150px),94%)}}
 @media(min-width:561px){.roster-grid{grid-auto-rows:154px}.roster-card{height:154px;grid-template-rows:50px 15px 18px 16px 28px}.roster-card img{width:50px;height:50px}}
 @media(max-height:520px) and (orientation:landscape){.roster-grid{grid-auto-rows:166px}.roster-card{height:166px;grid-template-rows:54px 16px 18px 17px 28px}.roster-card img{width:54px;height:54px}}
-@media(prefers-reduced-motion:reduce){.party-hero.attack-launch,.summoner-hp.player-hit{animation-duration:.01ms!important}}
+@media(prefers-reduced-motion:reduce){.party-hero.attack-launch,.enemy-unit.enemy-attacking,.summoner-hp.player-hit{animation-duration:.01ms!important}}

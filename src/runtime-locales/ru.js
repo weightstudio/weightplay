@@ -231,6 +231,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "{value} - Internal Trial": "{value} — Внутреннее испытание",
   "{value} - WeightPlay": "{value} - WeightPlay",
   "{value} · 3 Diamonds · {value}": "{value} · 3 бриллианта · {value}",
+  "{value} · CD:0": "{value} · КД:0",
   "{value} {value}/12 · {value} Lv.{value}": "{value} {value}/12 · {value} Ур.{value}",
   "{value} | Internal WeightPlay Trial": "{value} | Внутренняя пробная версия WeightPlay",
   "{value} | WeightPlay": "{value} | WeightPlay",

@@ -218,7 +218,7 @@ body:not(.safari-main) .screen.is-active.weightplay-active-viewport {
 body:not(.safari-main) .wp-tutorial-button { display: none !important; }
 .result-actions .primary-button { background: linear-gradient(#ffe676,#ffc63b); }
 #backToMap { grid-column: 1 / -1; }
-.result-actions.single-primary #retryStage { grid-column: 1 / -1; }
+.result-actions.single-primary .primary-button { grid-column: 1 / -1; }
 
 .modal { position: absolute; inset: 0; z-index: 10; background: rgba(10,28,38,.78); padding: 54px 24px; }
 .modal[hidden] { display: none; }
@@ -360,7 +360,7 @@ body:not(.safari-main) .wp-tutorial-button { display: none !important; }
   .skill-report { grid-column: 3; grid-row: 4; height: 100%; }
   .result-actions { grid-column: 2 / 4; grid-row: 5; width: 100%; }
   .result-actions { grid-template-columns: repeat(3, 1fr); grid-template-rows: 54px; gap: 8px; }
-  #backToMap { grid-column: auto; }
+  .result-actions:not(.single-primary) #backToMap { grid-column: auto; }
 }
 
 @media (orientation: landscape) and (max-height: 460px) {

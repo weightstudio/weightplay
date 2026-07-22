@@ -214,7 +214,7 @@
   function syncSoundToggle(){const button=$("#soundToggle");if(!button)return;const muted=Boolean(window.WonderSound?.isMuted?.());button.setAttribute("aria-pressed",String(muted));window.dispatchEvent(new Event("wonder:locale-change"))}
   function createOffers(){return Object.keys(gadgets).map(id=>({id,level:1+Math.floor(Math.random()*3)}))}
   function selectedOffer(){return gadgetOffers.find(offer=>offer.id===gadget)||gadgetOffers[0]}
-  let economyFeedbackTimer=0,pendingEconomy="",pendingEconomyTimer=0,pendingEconomyDeadline=0,pendingEconomyRemaining=0;
+  let economyFeedbackTimer=0,pendingEconomy="",pendingEconomyTimer=0,pendingEconomyDeadline=0,pendingEconomyRemaining=0,windowFocused=document.hasFocus();
   function gadgetEffect(id,level){
     if(id==="dash")return t("dashEffect",{ms:Math.max(180,320-level*45)});
     if(id==="decoy")return t("decoyEffect",{seconds:(2.5+level*.65).toFixed(2).replace(/0$/,"")});
@@ -227,7 +227,7 @@
     pendingEconomyTimer=setTimeout(()=>{pendingEconomyTimer=0;pendingEconomyDeadline=0;pendingEconomyRemaining=0;pendingEconomy="";renderEconomy();renderGadgetSummary()},pendingEconomyRemaining);
   }
   function suspendPendingEconomy(){if(!pendingEconomy||!pendingEconomyTimer)return;pendingEconomyRemaining=Math.max(0,pendingEconomyDeadline-performance.now());clearTimeout(pendingEconomyTimer);pendingEconomyTimer=0;pendingEconomyDeadline=0}
-  function resumePendingEconomy(){if(pendingEconomy&&!pendingEconomyTimer)schedulePendingEconomyExpiry(pendingEconomyRemaining)}
+  function resumePendingEconomy(){if(!document.hidden&&windowFocused&&pendingEconomy&&!pendingEconomyTimer)schedulePendingEconomyExpiry(pendingEconomyRemaining)}
   function renderGadgetSummary(){clearTimeout(economyFeedbackTimer);$("#economyFeedback").textContent=gadgetSummary()}
   function economyMessage(message=""){clearTimeout(economyFeedbackTimer);$("#economyFeedback").textContent=message||gadgetSummary();if(message)economyFeedbackTimer=setTimeout(renderGadgetSummary,1600)}
   function renderEconomy(){
@@ -434,8 +434,10 @@
     $("#pauseBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
     $("#pauseBtn").addEventListener("click",()=>setPaused(!paused));
     document.addEventListener("visibilitychange",()=>{if(document.hidden){suspendPendingEconomy();if(playing&&!paused)setPaused(true)}else resumePendingEconomy()});
-    window.addEventListener("blur",()=>{if(playing&&!paused)setPaused(true);else cancelRoutePreview()});
-    window.addEventListener("pagehide",()=>{if(playing&&!paused)setPaused(true);else cancelRoutePreview()});
+    window.addEventListener("blur",()=>{windowFocused=false;suspendPendingEconomy();if(playing&&!paused)setPaused(true);else cancelRoutePreview()});
+    window.addEventListener("focus",()=>{windowFocused=true;resumePendingEconomy()});
+    window.addEventListener("pagehide",()=>{suspendPendingEconomy();if(playing&&!paused)setPaused(true);else cancelRoutePreview()});
+    window.addEventListener("pageshow",resumePendingEconomy);
     nodes.field.addEventListener("pointerdown",e=>{if(!playing||paused||e.isPrimary===false||(e.button!==undefined&&e.button!==0)||(routePointerId!==null&&routePointerId!==e.pointerId))return;routePointerId=e.pointerId;nodes.field.setPointerCapture(e.pointerId);routeTo(e.clientX,e.clientY)});
     nodes.field.addEventListener("pointermove",e=>{if(!paused&&e.pointerId===routePointerId&&nodes.field.hasPointerCapture(e.pointerId))routeTo(e.clientX,e.clientY)});
     nodes.field.addEventListener("pointerup",e=>{if(e.pointerId!==routePointerId||(e.pointerType==="mouse"&&e.button!==0))return;if(!paused&&preview)routeTo(e.clientX,e.clientY,true);cancelRoutePreview()});

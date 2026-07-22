@@ -1249,10 +1249,16 @@
     impactFlash: { life: 0, max: 0, color: "255, 209, 102" },
   };
   let rewardRerollConfirmTimer = 0;
+  let rewardRerollConfirmDueAt = 0;
+  let rewardRerollConfirmRemaining = 0;
   let goldenFrameConfirmPending = false;
   let goldenFrameConfirmTimer = 0;
+  let goldenFrameConfirmDueAt = 0;
+  let goldenFrameConfirmRemaining = 0;
   let reviveConfirmPending = false;
   let reviveConfirmTimer = 0;
+  let reviveConfirmDueAt = 0;
+  let reviveConfirmRemaining = 0;
   let leaveBattleConfirmPending = false;
   let leaveBattleWasPaused = false;
   let canvasPress = null;
@@ -1762,7 +1768,20 @@
   function clearGoldenFrameConfirmation() {
     clearTimeout(goldenFrameConfirmTimer);
     goldenFrameConfirmTimer = 0;
+    goldenFrameConfirmDueAt = 0;
+    goldenFrameConfirmRemaining = 0;
     goldenFrameConfirmPending = false;
+  }
+
+  function armGoldenFrameConfirmation(delay = 5000) {
+    clearTimeout(goldenFrameConfirmTimer);
+    goldenFrameConfirmRemaining = Math.max(1, delay);
+    goldenFrameConfirmDueAt = performance.now() + goldenFrameConfirmRemaining;
+    goldenFrameConfirmTimer = setTimeout(() => {
+      if (!goldenFrameConfirmPending) return;
+      clearGoldenFrameConfirmation();
+      renderTech();
+    }, goldenFrameConfirmRemaining);
   }
 
   function buyGoldenFrame() {
@@ -1771,12 +1790,7 @@
     if (state.save.diamonds < 15) return showToast(t("noDiamonds"));
     if (!goldenFrameConfirmPending) {
       goldenFrameConfirmPending = true;
-      clearTimeout(goldenFrameConfirmTimer);
-      goldenFrameConfirmTimer = setTimeout(() => {
-        if (!goldenFrameConfirmPending) return;
-        clearGoldenFrameConfirmation();
-        renderTech();
-      }, 5000);
+      armGoldenFrameConfirmation();
       renderTech();
       window.requestAnimationFrame(() => nodes.techGrid.querySelector('[data-cosmetic-id="goldenFrame"]')?.focus({ preventScroll: true }));
       return;
@@ -2469,9 +2483,43 @@
     syncBattleLoop();
   }
 
+  function suspendTransactionConfirmations() {
+    const now = performance.now();
+    if (goldenFrameConfirmPending && goldenFrameConfirmTimer) {
+      goldenFrameConfirmRemaining = Math.max(1, goldenFrameConfirmDueAt - now);
+      clearTimeout(goldenFrameConfirmTimer);
+      goldenFrameConfirmTimer = 0;
+      goldenFrameConfirmDueAt = 0;
+    }
+    if (reviveConfirmPending && reviveConfirmTimer) {
+      reviveConfirmRemaining = Math.max(1, reviveConfirmDueAt - now);
+      clearTimeout(reviveConfirmTimer);
+      reviveConfirmTimer = 0;
+      reviveConfirmDueAt = 0;
+    }
+    if (state.resultReward?.rerollPending && rewardRerollConfirmTimer) {
+      rewardRerollConfirmRemaining = Math.max(1, rewardRerollConfirmDueAt - now);
+      clearTimeout(rewardRerollConfirmTimer);
+      rewardRerollConfirmTimer = 0;
+      rewardRerollConfirmDueAt = 0;
+    }
+  }
+
+  function resumeTransactionConfirmations() {
+    if (document.hidden || !battleWindowFocused) return;
+    if (goldenFrameConfirmPending && !goldenFrameConfirmTimer) armGoldenFrameConfirmation(goldenFrameConfirmRemaining || 5000);
+    if (reviveConfirmPending && !reviveConfirmTimer) armReviveConfirmation(reviveConfirmRemaining || 5000);
+    if (state.resultReward?.rerollPending && !rewardRerollConfirmTimer) armRewardRerollConfirmation(rewardRerollConfirmRemaining || 5000);
+  }
+
   function handleBattleVisibilityChange() {
-    if (document.hidden) suspendUnattendedBattle("page_hidden");
-    else syncBattleLoop();
+    if (document.hidden) {
+      suspendTransactionConfirmations();
+      suspendUnattendedBattle("page_hidden");
+    } else {
+      resumeTransactionConfirmations();
+      syncBattleLoop();
+    }
   }
 
   function setBattleDecisionCoverage(covered) {
@@ -2853,11 +2901,7 @@
     }
     if (!reviveConfirmPending) {
       reviveConfirmPending = true;
-      clearTimeout(reviveConfirmTimer);
-      reviveConfirmTimer = setTimeout(() => {
-        if (!reviveConfirmPending) return;
-        clearReviveConfirmation();
-      }, 5000);
+      armReviveConfirmation();
       renderReviveAction();
       window.requestAnimationFrame(() => nodes.reviveBtn.focus({ preventScroll: true }));
       return;
@@ -2890,8 +2934,20 @@
   function clearReviveConfirmation() {
     clearTimeout(reviveConfirmTimer);
     reviveConfirmTimer = 0;
+    reviveConfirmDueAt = 0;
+    reviveConfirmRemaining = 0;
     reviveConfirmPending = false;
     renderReviveAction();
+  }
+
+  function armReviveConfirmation(delay = 5000) {
+    clearTimeout(reviveConfirmTimer);
+    reviveConfirmRemaining = Math.max(1, delay);
+    reviveConfirmDueAt = performance.now() + reviveConfirmRemaining;
+    reviveConfirmTimer = setTimeout(() => {
+      if (!reviveConfirmPending) return;
+      clearReviveConfirmation();
+    }, reviveConfirmRemaining);
   }
 
   function rerollRewardPoints(stageId, currentPoints) {
@@ -2944,7 +3000,20 @@
   function clearRewardRerollConfirmation() {
     clearTimeout(rewardRerollConfirmTimer);
     rewardRerollConfirmTimer = 0;
+    rewardRerollConfirmDueAt = 0;
+    rewardRerollConfirmRemaining = 0;
     if (state.resultReward) state.resultReward.rerollPending = false;
+  }
+
+  function armRewardRerollConfirmation(delay = 5000) {
+    clearTimeout(rewardRerollConfirmTimer);
+    rewardRerollConfirmRemaining = Math.max(1, delay);
+    rewardRerollConfirmDueAt = performance.now() + rewardRerollConfirmRemaining;
+    rewardRerollConfirmTimer = setTimeout(() => {
+      if (!state.resultReward?.rerollPending) return;
+      clearRewardRerollConfirmation();
+      renderResultReward();
+    }, rewardRerollConfirmRemaining);
   }
 
   function rerollReward() {
@@ -2958,12 +3027,7 @@
     const deltaPoints = Math.max(0, newPoints - reward.points);
     if (!reward.rerollPending) {
       reward.rerollPending = true;
-      clearTimeout(rewardRerollConfirmTimer);
-      rewardRerollConfirmTimer = setTimeout(() => {
-        if (!state.resultReward?.rerollPending) return;
-        state.resultReward.rerollPending = false;
-        renderResultReward();
-      }, 5000);
+      armRewardRerollConfirmation();
       renderResultReward();
       return;
     }
@@ -3842,19 +3906,23 @@
     document.addEventListener("visibilitychange", handleBattleVisibilityChange);
     window.addEventListener("blur", () => {
       battleWindowFocused = false;
+      suspendTransactionConfirmations();
       suspendUnattendedBattle("window_blur");
     });
     window.addEventListener("focus", () => {
       battleWindowFocused = true;
+      resumeTransactionConfirmations();
       syncBattleLoop();
     });
     window.addEventListener("pagehide", () => {
       battleWindowFocused = false;
+      suspendTransactionConfirmations();
       cancelCanvasPress();
       stopBattleLoop();
     });
     window.addEventListener("pageshow", () => {
       battleWindowFocused = true;
+      resumeTransactionConfirmations();
       syncBattleLoop();
     });
     nodes.retryBtn.addEventListener("click", () => {
@@ -4924,6 +4992,35 @@
     };
   }
 
+  function beginTransactionConfirmationScenario(kind) {
+    clearGoldenFrameConfirmation();
+    clearReviveConfirmation();
+    clearRewardRerollConfirmation();
+    if (kind === "goldenFrame") {
+      showTechScreenScenario();
+      buyGoldenFrame();
+    } else if (kind === "revive") {
+      showResultScreenScenario(1, false, 20);
+      reviveCore();
+    } else if (kind === "rewardReroll") {
+      showResultScreenScenario(1, true, 20);
+      rerollReward();
+    }
+    return transactionConfirmationScenarioState(kind);
+  }
+
+  function transactionConfirmationScenarioState(kind) {
+    return {
+      pending: kind === "goldenFrame"
+        ? goldenFrameConfirmPending
+        : kind === "revive"
+          ? reviveConfirmPending
+          : Boolean(state.resultReward?.rerollPending),
+      diamonds: state.save.diamonds,
+      screen: state.screen,
+    };
+  }
+
   function runResultSkillReportScenario() {
     state.manualSimulation = true;
     const previousLocale = state.locale;
@@ -5977,6 +6074,8 @@
       showStageScreenScenario,
       showTechScreenScenario,
       showResultScreenScenario,
+      beginTransactionConfirmationScenario,
+      transactionConfirmationScenarioState,
       runResultSkillReportScenario,
       runNextStageResultScenario,
       runWaveIntelScenario,

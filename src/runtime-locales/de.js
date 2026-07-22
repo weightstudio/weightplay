@@ -231,6 +231,7 @@ window.WeightPlayGameRuntimeLocales["de"] = {
   "{value} - Internal Trial": "{value} – Interner Test",
   "{value} - WeightPlay": "{value} - WeightPlay",
   "{value} · 3 Diamonds · {value}": "{value} · 3 Diamanten · {value}",
+  "{value} · CD:0": "{value} · CD:0",
   "{value} {value}/12 · {value} Lv.{value}": "{value} {value}/12 · {value} Lv.{value}",
   "{value} | Internal WeightPlay Trial": "{value} | Interne WeightPlay-Testversion",
   "{value} | WeightPlay": "{value} | WeightPlay",
