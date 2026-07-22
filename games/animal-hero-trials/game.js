@@ -347,6 +347,8 @@
   }
 
   const soundActionLabels = {
+    hi: { mute: "ध्वनि म्यूट करें", unmute: "ध्वनि चालू करें" },
+    ar: { mute: "كتم الصوت", unmute: "تشغيل الصوت" },
     en: { mute: "Mute sound", unmute: "Turn sound on" },
     "zh-Hant": { mute: "\u95dc\u9589\u97f3\u6548", unmute: "\u958b\u555f\u97f3\u6548" },
     "zh-Hans": { mute: "\u5173\u95ed\u97f3\u6548", unmute: "\u5f00\u542f\u97f3\u6548" },
@@ -365,7 +367,8 @@
     if (!button) return;
     const muted = Boolean(window.WonderSound?.isMuted?.());
     const labels = soundActionLabels[locale] || soundActionLabels.en;
-    const label = labels[muted ? "unmute" : "mute"];
+    const sourceLabel = muted ? "Turn sound on" : "Mute sound";
+    const label = window.WeightPlayGameRuntimeLocalizer ? sourceLabel : labels[muted ? "unmute" : "mute"];
     button.setAttribute("aria-pressed", String(muted));
     button.setAttribute("aria-label", label);
     button.title = label;

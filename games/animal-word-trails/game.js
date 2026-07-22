@@ -310,7 +310,7 @@
   $('loadingText').textContent='72%';
   if(document.readyState==='complete') finishLoading(); else window.addEventListener('load',finishLoading,{once:true});
   setTimeout(finishLoading,1800);
-  addEventListener('blur',()=>cancelBoardPointer());addEventListener('pagehide',()=>{cancelBoardPointer();pauseBattleTasks()});addEventListener('pageshow',resumeBattleTasks);document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelBoardPointer();pauseBattleTasks()}else resumeBattleTasks();});
+  addEventListener('blur',()=>{cancelBoardPointer();pauseBattleTasks()});addEventListener('focus',resumeBattleTasks);addEventListener('pagehide',()=>{cancelBoardPointer();pauseBattleTasks()});addEventListener('pageshow',resumeBattleTasks);document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelBoardPointer();pauseBattleTasks()}else resumeBattleTasks();});
   track('game_view');
   locale.onchange=()=>{const next=locale.value;writeStorage('wordTrailsLocale',next);writeStorage('weightPlayLocale',next);if(window.WonderI18n?.setLocale){window.WonderI18n.setLocale(next);return;}lang=next;if(!packs[lang])packs[lang]=packs.en.map(buildLocalizedStage);stage=0;save();translate();};
   $('start').onclick=()=>{track('game_start');renderStages();screen('stage');focusSelectedStage();};

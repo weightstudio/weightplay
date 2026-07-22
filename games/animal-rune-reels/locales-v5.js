@@ -69,8 +69,14 @@
     en:['Rune Current','All rune effects are increased by 10%.','Tidal Resonance'],'zh-Hant':['符文洋流','所有符石效果 +10%。','潮汐共鳴'],'zh-Hans':['符文洋流','所有符石效果 +10%。','潮汐共鸣'],ja:['ルーン潮流','全ルーン効果が10%上昇。','潮流共鳴'],ko:['룬의 물결','모든 룬 효과가 10% 증가합니다.','해류 공명'],es:['Corriente rúnica','Todos los efectos de runa aumentan un 10%.','Resonancia de marea'],'pt-BR':['Corrente rúnica','Todos os efeitos de runa aumentam em 10%.','Ressonância da maré'],fr:['Courant runique','Tous les effets de rune augmentent de 10 %.','Résonance des marées'],de:['Runenstrom','Alle Runeneffekte steigen um 10 %.','Gezeitenresonanz'],it:['Corrente runica','Tutti gli effetti runa aumentano del 10%.','Risonanza di marea'],ru:['Рунный поток','Все эффекты рун усилены на 10%.','Резонанс прилива'],hi:['रून धारा','सभी रून प्रभाव 10% बढ़ते हैं।','ज्वार अनुनाद'],ar:['تيار الرون','تزداد كل تأثيرات الرون 10%.','رنين المد']
   };
   const allRunesBoosted={en:'All runes','zh-Hant':'所有符石','zh-Hans':'所有符石',ja:'全ルーン',ko:'모든 룬',es:'Todas las runas','pt-BR':'Todas as runas',fr:'Toutes les runes',de:'Alle Runen',it:'Tutte le rune',ru:'Все руны',hi:'सभी रून',ar:'كل الرونات'};
+  const dailyCoinBonus={
+    en:'Coin rune rewards ×3','zh-Hant':'金幣符文收益 ×3','zh-Hans':'金币符文收益 ×3',ja:'コインルーン報酬 ×3',ko:'코인 룬 보상 ×3',es:'Recompensas de runa moneda ×3','pt-BR':'Recompensas da runa de moeda ×3',fr:'Gains des runes de pièces ×3',de:'Münzrunen-Erträge ×3',it:'Ricompense runa moneta ×3',ru:'Доход от рун монет ×3',hi:'सिक्का रूण पुरस्कार ×3',ar:'مكافآت رونة العملات ×3'
+  };
+  const stageSelection={
+    en:'Rift selection','zh-Hant':'裂隙選擇','zh-Hans':'裂隙选择',ja:'裂け目選択',ko:'균열 선택',es:'Selección de grieta','pt-BR':'Seleção de fenda',fr:'Sélection de faille',de:'Spaltauswahl',it:'Selezione frattura',ru:'Выбор разлома',hi:'दरार चयन',ar:'اختيار الصدع'
+  };
   Object.keys(L).forEach(code=>{
     const map={};uiKeys.forEach((key,i)=>map[key]=(ui[code]||ui.en)[i]);leaderKeys.forEach((key,i)=>map[key]=(leaders[code]||leaders.en)[i]);
-    const translated=specials[code]||specials.en;specialKeys.forEach((key,i)=>map[key]=translated[i]);const richer=varied[code]||varied.en;variedKeys.forEach((key,i)=>map[key]=richer[i]);const otter=otterUpdates[code]||otterUpdates.en;Object.assign(map,{leaderOtter:otter[0],leaderOtterDesc:otter[1],specialOtter:otter[2],allRunesBoosted:allRunesBoosted[code]||allRunesBoosted.en});Object.assign(L[code],map);
+    const translated=specials[code]||specials.en;specialKeys.forEach((key,i)=>map[key]=translated[i]);const richer=varied[code]||varied.en;variedKeys.forEach((key,i)=>map[key]=richer[i]);const otter=otterUpdates[code]||otterUpdates.en;Object.assign(map,{leaderOtter:otter[0],leaderOtterDesc:otter[1],specialOtter:otter[2],allRunesBoosted:allRunesBoosted[code]||allRunesBoosted.en,dailyCoinBonus:dailyCoinBonus[code]||dailyCoinBonus.en,stageSelection:stageSelection[code]||stageSelection.en});Object.assign(L[code],map);
   });
 })();

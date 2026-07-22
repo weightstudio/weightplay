@@ -12,5 +12,6 @@
 .orb.flying-orb{position:fixed!important;z-index:80!important;display:block!important;margin:0!important;pointer-events:none!important;animation:none!important;will-change:transform;transform-origin:center}
 .stage-canvas,.battle-canvas{max-width:920px!important}
 .stage-rail{padding-left:calc(50% - 132px)!important;padding-right:calc(50% - 132px)!important}
-.vessel.transfer-target{filter:drop-shadow(0 0 12px #ffd260) drop-shadow(0 9px 5px rgba(0,0,0,.55))}
+.vessel.valid-target{filter:drop-shadow(0 0 9px #ffd260) drop-shadow(0 7px 5px rgba(0,0,0,.5));box-shadow:inset 0 0 0 3px rgba(255,226,112,.86),0 0 0 2px rgba(3,27,26,.75);animation:validTargetPulse 1.15s ease-in-out infinite}.vessel.selected{animation:none}@keyframes validTargetPulse{50%{box-shadow:inset 0 0 0 3px #ffe270,0 0 15px rgba(255,226,112,.82)}}
+.vessel.transfer-target{filter:drop-shadow(0 0 12px #ffd260) drop-shadow(0 9px 5px rgba(0,0,0,.55));animation:none}
 .battle-screen[data-transferring="true"] .vessel-board,.battle-screen[data-transferring="true"] .battle-actions,.battle-screen[data-transferring="true"] .battle-header{pointer-events:none}
