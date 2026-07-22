@@ -717,6 +717,12 @@ a {
   text-decoration: none;
 }
 
+.result-card .result-primary {
+  border-color: #174f2c;
+  background: #71d88b;
+  box-shadow: 0 0 0 4px #fff2a8, 0 7px 0 #2f7f45;
+}
+
 .result-card button.hidden {
   display: none !important;
 }
@@ -779,6 +785,10 @@ a {
   color: #233516;
   font-size: 22px;
   box-shadow: 0 5px 0 #6aa45c;
+}
+
+body.quiz-playing:has(#resultPanel:not(.hidden), #leavePanel:not(.hidden)) .sound-toggle {
+  display: none !important;
 }
 
 .hidden {

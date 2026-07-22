@@ -75,5 +75,34 @@
   });
   const dictionaries={};
   codes.forEach((code,index)=>{dictionaries[code]={};Object.entries(rows).forEach(([key,values])=>{dictionaries[code][key]=values[index]||values[0];});});
+  const supplemental={
+    hi:{
+      guideIntro:"फिया पुनर्स्थापित भूमि पर सुरक्षित है। बाहर उसकी बिजली की रेखा असुरक्षित रहती है। शिकारी के खुली रेखा तक पहुँचने से पहले दोबारा जुड़ें।",
+      saveText:"अनलॉक किए गए मिशन और सर्वश्रेष्ठ सितारे इसी ब्राउज़र में रहते हैं। किसी खाते की आवश्यकता नहीं है।",
+      rescued:"बचाए गए",missionComplete:"अभयारण्य पुनर्स्थापित!",missionFailed:"मार्ग खो गया",stageLocked:"पहले पिछला मिशन पूरा करें।",
+      loopClosed:"चक्र पूरा — अभयारण्य विस्तृत हुआ!",trailCut:"छाया ने खुला मार्ग काट दिया!",
+      chapter1:"मैदानी चक्र",chapter2:"प्रकाश-स्तंभ बचाव",chapter3:"तूफ़ानी गलियाँ",chapter4:"छाया का पीछा",chapter5:"क्रिस्टल क्रम",chapter6:"रक्षक ग्रहण",
+      objectiveRestore:"अभयारण्य का {percent}% पुनर्स्थापित करें।",objectiveRescue:"{percent}% पुनर्स्थापित करें और {count} प्रकाश-स्तंभों को घेरें।",objectiveSeals:"{percent}% पुनर्स्थापित करें और क्रम से {count} मुहरें जगाएँ।",
+      styleStarter:"सूर्य चिंगारी",stylePrism:"प्रिज़्म धारा",styleMoon:"चंद्र फीता",styleCost:"{cost} हीरे",styleBought:"मार्ग शैली अनलॉक हुई।",
+      styleAlreadySelected:"{style} पहले से सुसज्जित है।",styleEquipped:"{style} सुसज्जित।",noDiamondsDetail:"{cost} हीरे चाहिए · शेष {balance}।",styleBoughtDetail:"{style} अनलॉक और सुसज्जित हुआ।",
+      missionFailedKicker:"मिशन समाप्त",layoutHeart:"हृदयभूमि",layoutCross:"चौराहा",layoutTwin:"जुड़वाँ द्वीप",layoutEdge:"सीमांत आश्रय",layoutRing:"चंद्र वलय",layoutIslands:"अभयारण्य द्वीप",
+      enemyProwler:"छाया शिकारी",enemyTank:"पत्थर दैत्य",enemySentry:"प्रकाश-स्तंभ प्रहरी",barrierHit:"प्राचीन खंडहर इस मार्ग को रोकते हैं।",borderShrunk:"ग्रहण ने अभयारण्य की सीमा निगल ली!"
+    },
+    ar:{
+      guideIntro:"تكون فيا آمنة على الأرض المستعادة. خارجها يصبح مسار البرق مكشوفًا. أعد الاتصال قبل أن يصل صياد إلى الخط المفتوح.",
+      saveText:"تبقى المهام المفتوحة وأفضل النجوم في هذا المتصفح. لا يلزم حساب.",
+      rescued:"تم إنقاذها",missionComplete:"تمت استعادة المحمية!",missionFailed:"فُقد المسار",stageLocked:"أكمل المهمة السابقة أولًا.",
+      loopClosed:"اكتملت الحلقة — اتسعت المحمية!",trailCut:"قطع ظل المسار المفتوح!",
+      chapter1:"حلقات المرج",chapter2:"إنقاذ المنارات",chapter3:"ممرات العاصفة",chapter4:"مطاردة الظلال",chapter5:"تسلسل البلورات",chapter6:"كسوف الحارس",
+      objectiveRestore:"استعد {percent}% من المحمية.",objectiveRescue:"استعد {percent}% وطوّق {count} منارات.",objectiveSeals:"استعد {percent}% وأيقظ {count} أختام بالترتيب.",
+      styleStarter:"شرارة الشمس",stylePrism:"تيار المنشور",styleMoon:"شريط القمر",styleCost:"{cost} ألماسات",styleBought:"تم فتح نمط المسار.",
+      styleAlreadySelected:"{style} مجهز بالفعل.",styleEquipped:"تم تجهيز {style}.",noDiamondsDetail:"تحتاج إلى {cost} ألماسات · الرصيد {balance}.",styleBoughtDetail:"تم فتح {style} وتجهيزه.",
+      missionFailedKicker:"انتهت المهمة",layoutHeart:"قلب المحمية",layoutCross:"ملتقى الطرق",layoutTwin:"الجزيرتان",layoutEdge:"ملاذ الحدود",layoutRing:"حلقة القمر",layoutIslands:"جزر المحمية",
+      enemyProwler:"متسلل الظلال",enemyTank:"وحش الحجر",enemySentry:"حارس المنارة",barrierHit:"تسد الأطلال القديمة هذا الطريق.",borderShrunk:"ابتلع الكسوف حافة المحمية!"
+    }
+  };
+  codes.push("hi","ar");
+  dictionaries.hi={...dictionaries.en,...supplemental.hi};
+  dictionaries.ar={...dictionaries.en,...supplemental.ar};
   window.AnimalSanctuaryLoopLocales={codes,dictionaries};
 })();

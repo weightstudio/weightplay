@@ -753,6 +753,8 @@
   }
 
   function refreshOrbBattleLayout() {
+    const nextOrientation = innerWidth > innerHeight ? "landscape" : "portrait";
+    if (canvas.dataset.orientation !== nextOrientation) configureArena();
     updateOrbBattleScale();
     window.dispatchEvent(new Event("weightplay:battle-open"));
     queueOrbArenaFit();

@@ -124,6 +124,13 @@
   const resultMilestone = document.querySelector("#resultMilestone");
   const menuLeaderboard = document.querySelector("#menuLeaderboard");
   const resultLeaderboard = document.querySelector("#resultLeaderboard");
+  let resultScroll = resultText.closest(".result-scroll");
+  if (!resultScroll) {
+    resultScroll = document.createElement("div");
+    resultScroll.className = "result-scroll";
+    resultText.before(resultScroll);
+    resultScroll.append(resultText, resultMilestone, resultLeaderboard);
+  }
   const playAgainBtn = document.querySelector("#playAgainBtn");
   const menuBtn = document.querySelector("#menuBtn");
   const loadingPanel = document.querySelector("#loadingPanel");
@@ -956,7 +963,10 @@
       dot.className = challenge.id === selected ? "active" : "";
       stageDots.append(dot);
     });
-    if (centerLatest) requestAnimationFrame(() => centerChallengeCard(selected, "auto"));
+    if (centerLatest) requestAnimationFrame(() => {
+      centerChallengeCard(selected, "auto");
+      stageRail.querySelector(`[data-stage="${selected}"]`)?.focus({ preventScroll: true });
+    });
   }
 
   function centerChallengeCard(id, behavior = "smooth") {
@@ -1311,11 +1321,18 @@
     renderResultReport(progress, newBest);
     renderMilestone(resultMilestone, progress, true);
     renderLeaderboard(resultLeaderboard, leaderboard);
+    const hasNextChallenge = Boolean(challenge && cleared && challenge.id < challenges.length);
+    const terminalChallengeClear = Boolean(challenge && cleared && challenge.id >= challenges.length);
+    playAgainBtn.textContent = challenge ? t(hasNextChallenge ? "nextChallenge" : "retryChallenge") : t("playAgain");
+    menuBtn.textContent = challenge ? t("challengeMenu") : t("menu");
+    const primaryResultAction = terminalChallengeClear ? menuBtn : playAgainBtn;
+    [playAgainBtn, menuBtn].forEach((action) => {
+      action.classList.toggle("result-primary", action === primaryResultAction);
+      action.classList.toggle("result-secondary", action !== primaryResultAction);
+    });
     resultPanel.classList.remove("hidden");
     setBattleContentInert(true);
-    requestAnimationFrame(() => playAgainBtn.focus({ preventScroll: true }));
-    playAgainBtn.textContent = challenge ? t(cleared && challenge.id < challenges.length ? "nextChallenge" : "retryChallenge") : t("playAgain");
-    menuBtn.textContent = challenge ? t("challengeMenu") : t("menu");
+    requestAnimationFrame(() => primaryResultAction.focus({ preventScroll: true }));
     window.WonderAnalytics?.track?.("game_complete", { game_id: GAME_ID, score, best_score: bestScore, new_best: newBest, challenge: challenge?.id || null, cleared: challenge ? cleared : false });
     window.WonderAnalytics?.track?.("score_game_over", { game_id: GAME_ID, score, best_score: bestScore });
     updateHud();

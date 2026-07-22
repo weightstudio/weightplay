@@ -1902,6 +1902,12 @@ body.guard-yard-stage .stage-grid { padding-inline: calc((100% - 264px) / 2); to
   font-size: 1.65rem;
 }
 
+.result-card .result-primary {
+  background: linear-gradient(180deg, #f3ffac, #8bd34e);
+  color: #173d20;
+  box-shadow: 0 0 0 4px rgba(255, 241, 118, 0.92), 0 8px 0 #3f7f2f, 0 12px 22px rgba(38, 91, 48, 0.34);
+}
+
 .pause-card strong {
   font-size: 1.45rem;
 }

@@ -6,7 +6,7 @@
   const localeCodes = localePack.codes;
   const routeSegments = {
     en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko",
-    es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru",
+    es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar",
   };
   const routeLocales = Object.fromEntries(
     Object.entries(routeSegments).map(([key, value]) => [value, key]),
@@ -41,9 +41,17 @@
 
   const routeLocale = routeLocales[location.pathname.split("/").filter(Boolean)[0]];
   let locale = canonicalLocale(routeLocale || storage.get("wonderLocale") || navigator.language);
-  const t = (key, vars = {}) => String(
-    localePack.dictionaries[locale]?.[key] || localePack.dictionaries.en[key] || key,
-  ).replace(/\{(\w+)\}/g, (_, name) => vars[name] ?? `{${name}}`);
+  const runtimeLocales = new Set(["hi", "ar"]);
+  function t(key, vars = {}) {
+    const source = String(localePack.dictionaries[locale]?.[key] || localePack.dictionaries.en[key] || key)
+      .replace(/\{(\w+)\}/g, (_, name) => vars[name] ?? `{${name}}`);
+    return runtimeLocales.has(locale) ? window.WeightPlayGameRuntimeLocalizer?.translate?.(source) || source : source;
+  }
+
+  for (const [value, label] of [["hi", "हिन्दी"], ["ar", "العربية"]]) {
+    if ($("locale").querySelector(`option[value="${value}"]`)) continue;
+    $("locale").append(new Option(label, value));
+  }
 
   const SAVE_KEY = "animalSanctuaryLoopSaveV1";
   const STYLE_IDS = ["starter", "prism", "moon"];
@@ -158,11 +166,12 @@
 
   function applyLocale() {
     document.documentElement.lang = locale;
+    document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     $("locale").value = locale;
     $("lobbyReturn").href = `/${routeSegments[locale]}/`;
     staticText.forEach((element) => { element.textContent = t(element.dataset.t); });
     assistiveText.forEach((element) => element.setAttribute("aria-label", t(element.dataset.ta)));
-    document.title = `${t("title")} | WeightPlay Internal Trial`;
+    document.title = `${t("title")} | WeightPlay`;
     renderMainProgress();
     renderStage();
     renderAtelier();
@@ -325,7 +334,12 @@
   });
   $("stageBack").addEventListener("click", () => showScreen("main"));
   $("locale").addEventListener("change", (event) => {
-    locale = canonicalLocale(event.target.value);
+    const next = canonicalLocale(event.target.value);
+    if (runtimeLocales.has(next) && window.WeightPlayGameRuntimeLocalizer?.locale !== next) {
+      location.href = `/${routeSegments[next]}/games/animal-sanctuary-loop/`;
+      return;
+    }
+    locale = next;
     storage.set("wonderLocale", locale);
     applyLocale();
   });
@@ -1047,10 +1061,12 @@
     $("resultText").textContent = objectiveFor(run.stage);
     $("resultStats").innerHTML = `<span><b>${t("restored")}</b><strong>${restored}%</strong></span><span><b>${t("rescued")}</b><strong>${run.rescued + run.seals}</strong></span><span><b>${t("stars")}</b><strong>${"★".repeat(stars)}${"☆".repeat(3 - stars)}</strong></span>`;
     $("nextMission").hidden = !won || run.stage.n >= 30;
+    const primaryAction = won ? (run.stage.n < 30 ? $("nextMission") : $("resultStage")) : $("retry");
+    for (const action of [$("retry"), $("resultStage"), $("nextMission")]) action.classList.toggle("primary", action === primaryAction);
     $("result").hidden = false;
     $("battleLive").hidden = true;
     $("battleLive").inert = true;
-    requestAnimationFrame(() => (won && !$("nextMission").hidden ? $("nextMission") : $("retry")).focus());
+    requestAnimationFrame(() => primaryAction.focus());
     window.WonderSound?.play?.(won ? "success" : "wrong");
   }
 

@@ -2209,14 +2209,23 @@
       profile.coins += coinsEarned;
       saveProfile();
     }
-    nodes.nextStageBtn.classList.toggle("hidden", !won || currentStage >= stages.length - 1);
+    const canContinue = won && currentStage < stages.length - 1;
+    const primaryResultAction = canContinue
+      ? nodes.nextStageBtn
+      : won
+        ? nodes.resultStagesBtn
+        : nodes.retryBtn;
+    nodes.nextStageBtn.classList.toggle("hidden", !canContinue);
+    [nodes.nextStageBtn, nodes.retryBtn, nodes.resultStagesBtn].forEach((action) => {
+      action.classList.toggle("result-primary", action === primaryResultAction);
+    });
     document.documentElement.classList.add("guard-yard-playing");
     document.body.classList.add("guard-yard-playing");
     nodes.playPanel.classList.remove("hidden");
     nodes.gameShell.classList.add("hidden");
     nodes.gameShell.inert = true;
     nodes.resultPanel.classList.remove("hidden");
-    (won && currentStage < stages.length - 1 ? nodes.nextStageBtn : nodes.retryBtn).focus({ preventScroll: true });
+    primaryResultAction.focus({ preventScroll: true });
     renderWallet();
     renderKennel();
   }
@@ -2356,6 +2365,7 @@
   if (new URLSearchParams(location.search).has("test")) {
     window.__AnimalGuardYardTest = {
       finish,
+      startStage,
       storageSnapshot: () => ({
         unlocked: Number(readStorage(unlockKey)) || 1,
         progress: JSON.parse(readStorage(progressKey) || "{}"),

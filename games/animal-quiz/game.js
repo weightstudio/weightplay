@@ -1217,9 +1217,13 @@ function finishStage() {
   updateProgress();
   renderResultText();
   nextStageBtn.classList.toggle("hidden", isFinalStage);
+  const primaryAction = isFinalStage ? stageSelectBtn : nextStageBtn;
+  [againBtn, nextStageBtn, stageSelectBtn, homeText].forEach((action) => {
+    action.classList.toggle("result-primary", action === primaryAction);
+  });
   resultPanel.classList.remove("hidden");
   setBattleCovered(true);
-  requestAnimationFrame(() => (isFinalStage ? againBtn : nextStageBtn).focus({ preventScroll: true }));
+  requestAnimationFrame(() => primaryAction.focus({ preventScroll: true }));
   window.WonderSound?.play("win");
   window.WonderAnalytics?.track("game_complete", {
     game_id: GAME_ID,

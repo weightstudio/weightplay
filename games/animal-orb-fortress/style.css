@@ -944,7 +944,7 @@ body.orb-fortress-playing #gamePanel:not(.is-hidden) ~ #battleAdReserve {
 /* Final Expanded Canvas override. */
 html:has(body.orb-fortress-playing), body.orb-fortress-playing { width:100%; height:var(--orb-vh,100dvh); -webkit-text-size-adjust:100%; text-size-adjust:100%; }
 body.orb-fortress-playing .orb-app { width:var(--orb-vw,100vw); height:var(--orb-vh,100dvh); min-height:0; padding:0; overflow:hidden; }
-body.orb-fortress-playing .topbar, body.orb-fortress-playing .game-page-info, body.orb-fortress-playing .tutorial-button, body.orb-fortress-playing .wp-tutorial-button, body.orb-fortress-playing .wp-tutorial-backdrop { display:none !important; }
+body.orb-fortress-playing .topbar, body.orb-fortress-playing .game-page-info, body.orb-fortress-playing .tutorial-button, body.orb-fortress-playing .wp-tutorial-button, body.orb-fortress-playing .wp-tutorial-backdrop, body.orb-fortress-playing .weightplay-version-badge { display:none !important; }
 body.orb-fortress-playing #gamePanel.game-panel, body.orb-fortress-playing #stagePanel.stage-panel, body.orb-fortress-playing #upgradePanel.modal-panel, body.orb-fortress-playing #resultPanel.result-panel { position:fixed; z-index:50; left:50%; top:4px; width:min(calc(var(--orb-vw,100vw) - 8px),612px) !important; max-width:none !important; height:min(calc(var(--orb-vh,100dvh) - 64px),788px) !important; min-height:0; max-height:none !important; margin:0 !important; transform:translateX(-50%); overflow:hidden; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
 body.orb-fortress-playing #gamePanel.game-panel { display:grid; grid-template-rows:54px minmax(0,1fr) 38px; gap:6px; border:0; padding:8px; background:radial-gradient(circle at center,rgba(38,104,88,.72),rgba(3,22,18,.96)); }
 body.orb-fortress-playing #stagePanel.stage-panel { display:grid; }
@@ -1201,4 +1201,56 @@ body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel .hud-ro
   body.orb-fortress-playing #resultPanel h2 { font-size: 2rem; }
   body.orb-fortress-playing #resultPanel p { font-size: 1.15rem; }
   body.orb-fortress-playing #resultPanel .result-actions button { min-height: 88px; font-size: 1.2rem; }
+
+  body.orb-fortress-playing #upgradePanel.modal-panel {
+    grid-template-rows: 56px 64px minmax(0, 1fr) 104px;
+    gap: 12px;
+    padding: 14px;
+    background: radial-gradient(circle at top, rgba(17, 67, 57, 0.99), rgba(3, 22, 18, 0.995));
+  }
+
+  body.orb-fortress-playing #upgradePanel h2 {
+    font-size: 40px;
+    line-height: 1.2;
+  }
+
+  body.orb-fortress-playing #upgradeStatus {
+    width: min(100%, 1200px);
+    min-height: 64px;
+    font-size: 34px;
+    line-height: 1.2;
+  }
+
+  body.orb-fortress-playing #upgradePanel .upgrade-cards {
+    gap: 24px;
+  }
+
+  body.orb-fortress-playing #upgradePanel .upgrade-card {
+    grid-template-rows: 132px auto minmax(0, 1fr);
+    gap: 16px;
+    padding: 20px;
+  }
+
+  body.orb-fortress-playing #upgradePanel .upgrade-icon {
+    width: 132px;
+    height: 132px;
+    padding: 20px;
+  }
+
+  body.orb-fortress-playing #upgradePanel .upgrade-card strong {
+    font-size: 34px;
+    line-height: 1.2;
+  }
+
+  body.orb-fortress-playing #upgradePanel .upgrade-card span {
+    font-size: 30px;
+    line-height: 1.3;
+  }
+
+  body.orb-fortress-playing #upgradePanel #rerollBtn {
+    width: min(100%, 520px);
+    min-height: 104px;
+    height: 104px;
+    font-size: 32px;
+  }
 }
