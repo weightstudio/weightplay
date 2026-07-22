@@ -53,6 +53,7 @@
     faq: [["無料で遊べますか？", "はい。ブラウザで基本プレイを始められ、ログインは必要ありません。"], ["進行は保存されますか？", "対応する進行はこのブラウザにローカル保存されます。ブラウザのデータを消すと失われる場合があります。"], ["スマートフォンでも遊べますか？", "はい。タップとドラッグを使える画面に対応しています。"], ["うまく進めない時は？", "目標とヒントを確認し、位置、順番、またはタイミングを変えて再挑戦してください。"], ["ゲームの記録は正式な能力テストですか？", "いいえ。楽しむためのゲーム内記録であり、正式な評価ではありません。"], ["アカウントは必要ですか？", "いいえ。通常のプレイにアカウントは必要ありません。"]],
   });
   const games = Object.fromEntries(Object.entries(specs).map(([id, spec]) => [id, guide(spec)]));
+  games["shadow-wolf"].guideKicker = "WeightPlay オリジナルゲームガイド";
   games["animal-one-line"] = {
     ...games["animal-one-line"], guideKicker: "WeightPlay オリジナルゲームガイド", guideTitleSuffix: "ゲームガイド", noteTitle: "プレイヤーと保存情報", difficulty: "やさしい〜難しい", time: "1ステージ約1〜4分", gameplay: "一筆グリッド塗り", genre: ["論理", "ルート計画", "パズル", "動物"], skills: ["Spatial Reasoning", "Planning", "Sequencing"],
     intro: "One Lineは、ミミと挑む30ステージのグリッドパズルです。光る足あとから始め、上下左右に隣接する空きマスを進み、同じマスを二度通らずに盤面全体を一筆で塗ります。",

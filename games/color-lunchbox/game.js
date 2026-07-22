@@ -1448,12 +1448,17 @@
       : t(isPerfect ? "perfectDesc" : "winDesc", { score: state.score });
     renderResultReport(message, progress);
     nextStageBtn.classList.toggle("hidden", isFinalStage);
+    const primaryAction = isFinalStage ? stageSelectBtn : nextStageBtn;
+    [nextStageBtn, againBtn, stageSelectBtn, lobbyLink].forEach((action) => {
+      action.classList.toggle("result-primary", action === primaryAction);
+      action.classList.toggle("result-secondary", action !== primaryAction);
+    });
     foodCard.style.pointerEvents = "none";
     gameHud.classList.add("hidden");
     gamePlayContent.classList.add("hidden");
     resultPanel.classList.remove("hidden");
     setBattleCovered(true);
-    (isFinalStage ? againBtn : nextStageBtn).focus({ preventScroll: true });
+    primaryAction.focus({ preventScroll: true });
     window.WonderSound?.play("win");
     window.WonderAnalytics?.track("game_complete", {
       game_id: GAME_ID,

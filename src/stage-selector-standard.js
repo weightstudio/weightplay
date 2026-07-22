@@ -412,6 +412,7 @@
     let pointerId = null;
     let startX = 0;
     let startScroll = 0;
+    let dragMultiplier = 1;
     let moved = false;
     let suppressNextClick = false;
     let suppressClickTimer = 0;
@@ -426,6 +427,10 @@
       rail.dataset.wpDragDown = "1";
       startX = event.clientX;
       startScroll = rail.scrollLeft;
+      const configuredDragMultiplier = Number(rail.dataset.wpStageDragMultiplier);
+      dragMultiplier = Number.isFinite(configuredDragMultiplier)
+        ? Math.min(3, Math.max(1, configuredDragMultiplier))
+        : 1;
       rail.dataset.wpDragStartScroll = String(startScroll);
       rail.dataset.wpDragApplied = "0";
       moved = false;
@@ -457,7 +462,7 @@
       }
       if (!moved) return;
       if (event.cancelable) event.preventDefault();
-      rail.scrollLeft = startScroll - delta * coordinateScale;
+      rail.scrollLeft = startScroll - delta * coordinateScale * dragMultiplier;
       rail.dataset.wpDragScroll = String(rail.scrollLeft);
       rail.dataset.wpDragApplied = String(rail.scrollLeft - startScroll);
       if (isKidsAudience()) event.stopPropagation();

@@ -6614,8 +6614,9 @@
 
   function shortDescription(game) {
     const sentenceSplit = new RegExp("(?<=[.!?\\u3002\\uff01\\uff1f])\\s*", "u");
-    const source = String(game.intro || "").split(sentenceSplit)[0] || game.gameplay || game.title;
-    return window.WeightPlayGameRuntimeLocalizer?.translate?.(source) || source;
+    const source = String(game.intro || "");
+    const localized = window.WeightPlayGameRuntimeLocalizer?.translate?.(source) || source;
+    return localized.split(sentenceSplit)[0] || game.gameplay || game.title;
   }
 
   function relatedCard(gameId) {

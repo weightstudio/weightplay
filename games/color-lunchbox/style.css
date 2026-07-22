@@ -144,10 +144,16 @@ a {
   min-height: 50px;
   border: 3px solid #7f5a23;
   border-radius: 8px;
-  background: #ffcf63;
+  background: #fff7dd;
   color: #2d2513;
   font-weight: 1000;
-  box-shadow: 0 4px 0 #c99b44;
+  box-shadow: 0 4px 0 #d5c28f;
+}
+
+.result-actions .result-primary {
+  border-color: #6c4712;
+  background: #ffcf63;
+  box-shadow: 0 4px 0 #c99b44, 0 0 0 3px rgba(255, 239, 158, 0.72);
 }
 
 .home-link:active {

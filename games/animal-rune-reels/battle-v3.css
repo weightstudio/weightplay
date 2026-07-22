@@ -114,8 +114,8 @@ img{-webkit-user-drag:none}
 .material-card{display:grid;grid-template-columns:78px minmax(0,1fr) auto;align-items:center;gap:10px;padding:10px;border:1px solid #53619b;border-radius:14px;background:#10183f}
 .material-card img{width:74px;height:74px;object-fit:contain}.material-card div{min-width:0}.material-card b,.material-card small{display:block}.material-card small{margin-top:5px;color:#bdc8ef;font-size:.7rem;line-height:1.35}.material-card strong{color:#ffe06b;font-size:1.1rem}
 .hero-stars,.character-stars{color:#ffe06b;letter-spacing:.08em;text-shadow:0 0 9px #ffb52f}.roster-card .hero-stars{font-size:.68rem;line-height:18px}.character-stars{font-size:1.2rem}
-.summon-panel{padding:4px 8px}.summon-pools{height:calc(100% - 54px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.summon-pools article{display:grid;grid-template-rows:100px auto auto 56px;align-content:center;justify-items:center;padding:12px;border:2px solid #53619b;border-radius:18px;background:linear-gradient(160deg,#222d6c,#10163d)}
+.summon-panel{padding:4px 8px}.summon-pools{height:calc(100% - 54px);display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:12px;overflow:auto;padding:6px}
+.summon-pools article{box-sizing:border-box;flex:0 0 248px;width:248px;height:252px;display:grid;grid-template-rows:100px auto auto 56px;align-content:center;justify-items:center;padding:12px;border:2px solid #53619b;border-radius:18px;background:linear-gradient(160deg,#222d6c,#10163d)}
 .summon-pools article:last-child{border-color:#b978ff;box-shadow:inset 0 0 30px #8e51ff33}.summon-pools img{width:96px;height:96px;object-fit:contain}.summon-pools h3{margin:2px}.summon-pools p{margin:4px 0 9px;color:#ffe08a}.summon-pools .primary{min-width:0;width:100%;min-height:52px}.summon-pools .primary small{display:block;color:#fff4a8}
 .rune-guide-card{flex-basis:154px;height:154px;grid-template-columns:86px minmax(0,1fr);grid-template-rows:25px 22px minmax(0,1fr) 34px}
 .rune-guide-card img{grid-row:1/5}.rune-guide-card b{grid-row:1}.rune-guide-card>span{grid-column:2;grid-row:2;color:#ffe06b;font-size:.72rem;font-weight:900}.rune-guide-card small{grid-row:3;overflow:hidden}.rune-guide-card button{grid-column:2;grid-row:4;border:1px solid #8170dc;border-radius:9px;background:#33256c;color:#fff;font-size:.68rem;font-weight:900}.rune-guide-card button:disabled{opacity:.55}
@@ -137,3 +137,29 @@ img{-webkit-user-drag:none}
 @media(max-height:520px) and (orientation:landscape){.team-formation{height:76px;grid-template-rows:58px 15px}.team-slot img{height:46px}.team-summary{height:36px}.roster-grid{height:calc(100% - 118px);grid-auto-rows:126px}.roster-card{height:126px;grid-template-rows:58px 16px 18px 16px}.roster-card img{width:58px;height:58px}.rune-guide-card{height:176px;flex-basis:176px}.enemy-unit img{height:20vh}.party-hero img{height:50px}}
 @media(max-height:430px) and (orientation:landscape){#characterModal .character-card{grid-template-columns:160px minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto auto auto;align-content:start}#characterModal #characterArt{grid-column:1;grid-row:1}#characterModal #characterStars{grid-column:1;grid-row:2}#characterModal #characterName{grid-column:1;grid-row:3}#characterModal #characterStats{grid-column:1;grid-row:4}#characterModal .ultimate-detail{grid-column:2;grid-row:1;margin:0}#characterModal .leader-detail{grid-column:3;grid-row:1;margin:0;padding-inline-end:42px}#characterModal #duplicateProgress{grid-column:2 / 4;grid-row:2}#characterModal #equipBtn{grid-column:2;grid-row:3}#characterModal #upgradeBtn{grid-column:3;grid-row:3}}
 @media(prefers-reduced-motion:reduce){.rune-flight,.metric-impact,.wave-transition span,.arena.wave-out .enemy-squad,.arena.wave-out .summoner-field,.arena.wave-in .enemy-squad,.arena.wave-in .summoner-field{animation-duration:.01ms!important;animation-delay:0ms!important}}
+
+/* V6: smoother combat timing, centered live squads and clearer team information. */
+.roster-grid{grid-auto-rows:178px}
+.roster-card{height:178px;grid-template-rows:62px 17px 20px 18px 32px}
+.roster-card img{width:62px;height:62px}
+.roster-copy-progress{position:relative;box-sizing:border-box;width:124px;height:24px;align-self:center;overflow:hidden;border:1px solid #6f7fb8;border-radius:7px;background:#070d28;color:#fff;font-size:.66rem;font-weight:900;line-height:22px}
+.roster-copy-progress i{position:absolute;inset:0 auto 0 0;width:var(--copy-progress);background:linear-gradient(90deg,#7455e9,#39d7b1);opacity:.75}
+.roster-copy-progress em{position:relative;font-style:normal;text-shadow:0 1px 3px #000}
+.v3-battle .stage-name{flex-direction:column;gap:0;padding-bottom:4px;line-height:1.05}
+.v3-battle .stage-name strong{max-width:100%}
+.v3-battle .stage-name em{margin-top:2px}
+.enemy-squad{width:min(calc(var(--enemy-count,3)*180px),82%,650px);grid-template-columns:repeat(var(--enemy-count,3),minmax(0,1fr))}
+.enemy-unit.defeated{display:none}
+.party-hero.active{transform:none;filter:drop-shadow(0 0 14px #ffe36a)}
+.party-hero.attack-launch{animation:heroLaunchV6 1.04s cubic-bezier(.22,.65,.25,1) both}
+.party-hero.attack-launch.ultimate-cast{animation-duration:1.32s}
+@keyframes heroLaunchV6{0%{transform:none}18%{transform:translateY(-4px) scale(1.03)}52%{transform:translateY(-26px) scale(1.12)}78%{transform:translateY(-8px) scale(1.04)}100%{transform:none}}
+.summoner-hp.player-hit{animation:playerHpHit .65s ease-out}
+@keyframes playerHpHit{0%,100%{border-color:#dce5ff;box-shadow:none}20%,65%{border-color:#ff315d;box-shadow:0 0 0 3px #ff315d,0 0 24px #ff214fcc}42%{border-color:#fff;box-shadow:0 0 0 2px #fff,0 0 30px #ff315d}}
+.summoner-hud.player-hit{animation:none}
+.summon-bank img,.resource-bank img{width:27px;height:27px;object-fit:contain;filter:drop-shadow(0 0 7px #ffe36b)}
+.summon-bank i{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@media(max-width:560px){.roster-grid{grid-auto-rows:178px}.enemy-squad{width:min(calc(var(--enemy-count,3)*150px),94%)}}
+@media(min-width:561px){.roster-grid{grid-auto-rows:154px}.roster-card{height:154px;grid-template-rows:50px 15px 18px 16px 28px}.roster-card img{width:50px;height:50px}}
+@media(max-height:520px) and (orientation:landscape){.roster-grid{grid-auto-rows:166px}.roster-card{height:166px;grid-template-rows:54px 16px 18px 17px 28px}.roster-card img{width:54px;height:54px}}
+@media(prefers-reduced-motion:reduce){.party-hero.attack-launch,.summoner-hp.player-hit{animation-duration:.01ms!important}}

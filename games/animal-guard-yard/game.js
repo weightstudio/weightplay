@@ -674,6 +674,9 @@
   let activeMenuTab = "stages";
   let running = false;
   let paused = false;
+  let lifecycleSuspended = false;
+  let windowFocused = document.hasFocus();
+  let pageActive = true;
   let energy = 0;
   let baseHp = 3;
   let spawned = 0;
@@ -1329,6 +1332,7 @@
 
   function showMenu() {
     clearFloatingText();
+    lifecycleSuspended = false;
     running = false;
     paused = false;
     cancelAnimationFrame(raf);
@@ -1365,6 +1369,7 @@
 
   function showMain() {
     clearFloatingText();
+    lifecycleSuspended = false;
     running = false;
     paused = false;
     cancelAnimationFrame(raf);
@@ -1384,6 +1389,7 @@
 
   function startStage(index) {
     clearFloatingText();
+    lifecycleSuspended = false;
     updateGuardYardViewport();
     currentStage = index;
     const stage = stages[currentStage];
@@ -1422,6 +1428,22 @@
     track("game_start", { level: index + 1 });
     playSound("start");
     window.WeightPlayGame?.exitMobileGameMode?.();
+    raf = requestAnimationFrame(tick);
+  }
+
+  function suspendBattleLifecycle() {
+    if (lifecycleSuspended || !running || paused) return;
+    lifecycleSuspended = true;
+    running = false;
+    cancelAnimationFrame(raf);
+  }
+
+  function resumeBattleLifecycle() {
+    if (!lifecycleSuspended || !windowFocused || !pageActive || document.hidden) return;
+    lifecycleSuspended = false;
+    if (paused || nodes.playPanel.classList.contains("hidden") || !nodes.resultPanel.classList.contains("hidden")) return;
+    running = true;
+    lastTick = performance.now();
     raf = requestAnimationFrame(tick);
   }
 
@@ -2144,6 +2166,7 @@
   }
 
   function finish(won) {
+    lifecycleSuspended = false;
     running = false;
     cancelAnimationFrame(raf);
     let resultMessage = "";
@@ -2349,6 +2372,26 @@
   window.addEventListener("resize", () => {
     boardRect = { width: nodes.yardBoard.clientWidth, height: nodes.yardBoard.clientHeight };
     entities.forEach(updateEntityElement);
+  });
+  window.addEventListener("blur", () => {
+    windowFocused = false;
+    suspendBattleLifecycle();
+  });
+  window.addEventListener("focus", () => {
+    windowFocused = true;
+    resumeBattleLifecycle();
+  });
+  window.addEventListener("pagehide", () => {
+    pageActive = false;
+    suspendBattleLifecycle();
+  });
+  window.addEventListener("pageshow", () => {
+    pageActive = true;
+    resumeBattleLifecycle();
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) suspendBattleLifecycle();
+    else resumeBattleLifecycle();
   });
 
   localizeStatic();
