@@ -8661,6 +8661,8 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Pulsos prisma obligan a dar giros amplios por la arena.": "تلزم النبضات المنشورة بالمزيد من الجيران على الساحة.",
   "Punish an armored boar after its charge": "معاقبة الخنزير المدرع بعد هجومه",
   "Punkte": "بونتي",
+  "Puntaggio": "بونتاجيو",
+  "Punte": "بونتي",
   "Punteggio": "بونتيجيو",
   "Punteggio di oggi": "قوة كل يوم",
   "Punto de control": "نقطة التحكم",

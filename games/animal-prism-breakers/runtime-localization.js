@@ -51,8 +51,19 @@
   const genericKeys=["title","posterAlt","pitch","guideTitle","guideIntro","growth","objective","help","win"],originals={};
   if(C){genericKeys.forEach(key=>{originals[key]=C[key];C[key]=translate(C[key])});originals.how=[...C.how];C.how=C.how.map(translate);C.fail=copy.fail;C.chapters=[...copy.chapters]}
   const translateTree=root=>{if(!root)return;const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);do{const node=walker.currentNode;if(node.nodeType===Node.TEXT_NODE&&node.parentElement&&!['SCRIPT','STYLE','NOSCRIPT'].includes(node.parentElement.tagName)){const source=node.data.trim(),next=translate(source);if(next!==source)node.data=node.data.replace(source,next)}}while(walker.nextNode())};
-  translateTree(document.documentElement);
-  document.addEventListener("DOMContentLoaded",()=>setTimeout(()=>{translateTree(document.documentElement);if(C){genericKeys.forEach(key=>{C[key]=originals[key]});C.how=[...originals.how]}},0),{once:true});
-  new MutationObserver(records=>records.forEach(record=>record.type==="characterData"?translateTree(record.target.parentElement):record.addedNodes.forEach(translateTree))).observe(document.documentElement,{childList:true,characterData:true,subtree:true});
+  const stabilizeItalianScoreLabels=()=>{
+    if(locale!=="it")return;
+    document.querySelectorAll(".battle-stats span:first-child b,.result-stats span:first-child b").forEach(label=>{
+      if(label.dataset.prismScoreTerm==="true")return;
+      if(!["Score","Punteggio","Puntaggio"].includes(label.textContent.trim()))return;
+      const first=document.createElement("span"),second=document.createElement("span");
+      first.textContent="Punte";second.textContent="ggio";
+      label.replaceChildren(first,second);
+      label.dataset.prismScoreTerm="true";
+    });
+  };
+  translateTree(document.documentElement);stabilizeItalianScoreLabels();
+  document.addEventListener("DOMContentLoaded",()=>setTimeout(()=>{translateTree(document.documentElement);stabilizeItalianScoreLabels();if(C){genericKeys.forEach(key=>{C[key]=originals[key]});C.how=[...originals.how]}},0),{once:true});
+  new MutationObserver(records=>{records.forEach(record=>record.type==="characterData"?translateTree(record.target.parentElement):record.addedNodes.forEach(translateTree));stabilizeItalianScoreLabels()}).observe(document.documentElement,{childList:true,characterData:true,subtree:true});
   window.PrismBreakersLocale=Object.freeze({locale,translate,copy});
 })();

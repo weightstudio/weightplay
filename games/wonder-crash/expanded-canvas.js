@@ -121,6 +121,7 @@
   window.visualViewport?.addEventListener("resize", updateViewport, { passive: true });
   window.visualViewport?.addEventListener("scroll", updateViewport, { passive: true });
   window.addEventListener("wonder:locale-change", syncLocalizedAccessibility);
+  document.querySelector("#wonderMainLocaleSelect")?.addEventListener("change", queueCanonicalBrowserTitle);
   new MutationObserver(settleViewportAfterSceneChange).observe(document.body, { attributes: true, attributeFilter: ["class"] });
 
   const stageRail = document.querySelector("#levelGrid");
@@ -253,6 +254,7 @@
         || settingsButton.disabled) return;
       settingsButton.click();
     };
+    window.addEventListener("blur", pauseHiddenBattle);
     window.addEventListener("pagehide", pauseHiddenBattle);
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) pauseHiddenBattle();

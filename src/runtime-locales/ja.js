@@ -8661,6 +8661,8 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Pulsos prisma obligan a dar giros amplios por la arena.": "アリーナでの無限の広がり。",
   "Punish an armored boar after its charge": "突撃後に鎧を着たイノシシを罰する",
   "Punkte": "プンテ",
+  "Puntaggio": "プンタッジョ",
+  "Punte": "プンテ",
   "Punteggio": "プンテッジョ",
   "Punteggio di oggi": "プンテッジョ ディ オッジ",
   "Punto de control": "プント・デ・コントロール",

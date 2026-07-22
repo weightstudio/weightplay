@@ -730,7 +730,6 @@ canvas {
   display: block;
   width: 100%;
   height: 100%;
-  contain: size;
   touch-action: none;
 }
 
@@ -1259,7 +1258,6 @@ body.crystal-playing #gamePanel.game-panel { display: grid; grid-template-rows: 
 body.crystal-playing .canvas-wrap { width: min(100%, 366px); max-width: 100%; height: auto; max-height: 100%; justify-self: center; align-self: center; aspect-ratio: 32 / 55; }
 body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .canvas-wrap {
   width: min(100%, 366px) !important;
-  min-width: 0 !important;
   max-width: 100% !important;
   height: auto !important;
   max-height: 100% !important;
@@ -1315,8 +1313,8 @@ body.crystal-playing .upgrade-card-wrap { max-height: 100%; overflow-y: auto; }
 
 @media (orientation: landscape) {
   body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .canvas-wrap {
-    width: auto !important;
-    height: 100% !important;
+    width: min(100%, 366px, calc((var(--crystal-vh, 100dvh) - 68px) * 32 / 55)) !important;
+    height: auto !important;
   }
 }
 
@@ -1412,7 +1410,7 @@ body.crystal-playing #gamePanel .hud-row {
     grid-template-rows: repeat(6, minmax(0, 1fr)) !important;
   }
 
-  html body.wp-logical-battle-active.crystal-playing #gamePanel .canvas-wrap {
+  html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .canvas-wrap {
     grid-column: 2 !important;
     grid-row: 1 / -1 !important;
     width: auto !important;
