@@ -489,6 +489,7 @@
   let lastFrame = 0;
   let raf = 0;
   let backgroundSuspended = false;
+  let windowFocused = document.hasFocus();
   let pointer = { active: false, id: null, x: 0, y: 0 };
   let keyboardAimDeg = -90;
   let arenaControlSignature = "";
@@ -1642,7 +1643,7 @@
   }
 
   function armRerollConfirmation(delay = rerollConfirmRemaining) {
-    if (!state.rerollPending || document.hidden) return;
+    if (!state.rerollPending || document.hidden || !windowFocused) return;
     clearTimeout(rerollConfirmTimer);
     rerollConfirmRemaining = Math.max(0, Number(delay) || 0);
     rerollConfirmDueAt = performance.now() + rerollConfirmRemaining;
@@ -1665,7 +1666,7 @@
   }
 
   function resumeRerollConfirmation() {
-    if (!state.rerollPending || rerollConfirmTimer || document.hidden) return;
+    if (!state.rerollPending || rerollConfirmTimer || document.hidden || !windowFocused) return;
     armRerollConfirmation();
   }
 
@@ -2141,7 +2142,10 @@
   canvas.addEventListener("pointercancel", cancelPointerAim);
   canvas.addEventListener("lostpointercapture", cancelPointerAim);
   canvas.addEventListener("keydown", onCanvasKeydown);
-  window.addEventListener("blur", suspendBackgroundRaid);
+  window.addEventListener("blur", () => {
+    windowFocused = false;
+    suspendBackgroundRaid();
+  });
   function suspendBackgroundRaid() {
     cancelPointerAim();
     suspendRerollConfirmation();
@@ -2150,6 +2154,7 @@
     cancelAnimationFrame(raf);
   }
   function resumeBackgroundRaid() {
+    if (document.hidden || !windowFocused) return;
     resumeRerollConfirmation();
     if (!backgroundSuspended) return;
     backgroundSuspended = false;
@@ -2160,7 +2165,8 @@
   window.addEventListener("pagehide", suspendBackgroundRaid);
   window.addEventListener("pageshow", resumeBackgroundRaid);
   window.addEventListener("focus", () => {
-    if (!document.hidden) resumeBackgroundRaid();
+    windowFocused = true;
+    resumeBackgroundRaid();
   });
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) suspendBackgroundRaid();
