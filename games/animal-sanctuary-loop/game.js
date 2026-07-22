@@ -173,7 +173,7 @@
     $("mainProgress").textContent = `${Object.keys(save.stars).length} / 30`;
   }
 
-  function showScreen(name) {
+  function showScreen(name, restoreFocus = true) {
     currentScreen = name;
     document.body.dataset.screen = name;
     $("mainGroup").hidden = name !== "main";
@@ -182,7 +182,9 @@
     if (name !== "battle") stopLoop();
     if (name === "stage") {
       renderStage();
-      requestAnimationFrame(centerCurrentStage);
+      requestAnimationFrame(() => centerCurrentStage(restoreFocus));
+    } else if (name === "main" && restoreFocus) {
+      requestAnimationFrame(() => $("start").focus({ preventScroll: true }));
     }
   }
 
@@ -223,6 +225,7 @@
       button.setAttribute("aria-label", `${locked ? `${t("lockedBadge")}, ` : ""}${t(chapters[stage.chapter])}, ${stage.n}, ${rule}`);
       button.innerHTML = `<small>${locked ? t("lockedBadge") : t(chapters[stage.chapter])}</small><strong>${stage.n}</strong><span>${rule}</span><small class="stage-twist">${describeStage(stage)}</small><small>${"★".repeat(earned)}${"☆".repeat(3 - earned)}</small>`;
       button.addEventListener("click", () => {
+        if (heldScreenTransition === "main") return;
         if (stage.n > save.unlocked) {
           $("stageHint").textContent = t("stageLocked");
           return;
@@ -236,11 +239,14 @@
     requestAnimationFrame(() => markCentered(null));
   }
 
-  function centerCurrentStage() {
+  function centerCurrentStage(restoreFocus = true) {
     const index = Math.min(save.unlocked, 30) - 1;
     const card = $("stageRail").querySelector(`[data-index="${index}"]`);
     card?.scrollIntoView({ behavior: "auto", inline: "center", block: "nearest" });
-    requestAnimationFrame(() => markCentered(index));
+    requestAnimationFrame(() => {
+      markCentered(index);
+      if (restoreFocus) card?.focus({ preventScroll: true });
+    });
   }
 
   $("stageRail").addEventListener("wonder:stage-snap", (event) => markCentered(event.detail?.index));
@@ -300,7 +306,23 @@
     $("atelierTab").hidden = button.dataset.tab !== "atelier";
   }));
 
-  $("start").addEventListener("click", () => showScreen("stage"));
+  let heldScreenTransition = "";
+  const activationKey = (event) => event.key === "Enter" || event.key === " " || event.key === "Spacebar";
+  const ownScreenTransition = (source) => (event) => {
+    if (activationKey(event) && !event.repeat) heldScreenTransition = source;
+  };
+  const releaseScreenTransition = (event) => {
+    if (activationKey(event)) heldScreenTransition = "";
+  };
+
+  $("start").addEventListener("keydown", ownScreenTransition("main"));
+  $("stageBack").addEventListener("keydown", ownScreenTransition("stage"));
+  document.addEventListener("keyup", releaseScreenTransition);
+  window.addEventListener("blur", () => { heldScreenTransition = ""; });
+  $("start").addEventListener("click", () => {
+    if (heldScreenTransition === "stage") return;
+    showScreen("stage");
+  });
   $("stageBack").addEventListener("click", () => showScreen("main"));
   $("locale").addEventListener("change", (event) => {
     locale = canonicalLocale(event.target.value);
@@ -1064,7 +1086,7 @@
     $("loadingFill").style.width = "100%";
     setTimeout(() => {
       $("loadingPanel").hidden = true;
-      showScreen("main");
+      showScreen("main", false);
     }, 160);
   });
 

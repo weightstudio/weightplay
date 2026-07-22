@@ -1,0 +1,45 @@
+@media (max-height:500px) and (min-aspect-ratio:3/2) {
+  .stage-canvas {
+    grid-template-columns:370px minmax(0,1fr);
+    grid-template-rows:68px minmax(0,1fr) 44px;
+    gap:7px;
+    padding:8px;
+  }
+
+  .stage-header {
+    grid-column:1;
+    grid-row:1;
+  }
+
+  .stage-header strong {
+    font-size:18px;
+    white-space:nowrap;
+    line-height:1.1;
+  }
+
+  .stage-rail {
+    grid-column:2;
+    grid-row:1 / 4;
+    min-width:0;
+  }
+
+  .stage-card {
+    height:196px;
+  }
+
+  .stage-hint {
+    grid-column:1;
+    grid-row:2 / 4;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    align-self:stretch;
+    margin:0;
+    padding:14px 18px;
+    border:1px solid var(--line);
+    border-radius:15px;
+    background:#07172ded;
+    font-size:16px;
+    line-height:1.45;
+  }
+}

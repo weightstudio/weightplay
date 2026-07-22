@@ -2,7 +2,7 @@
 * { box-sizing: border-box; }
 body { margin: 0; min-height: 100svh; background: radial-gradient(circle at top, #2d746e, #102d2b 68%); }
 button, select { font: inherit; }
-.cafe-app { width: min(100%, 820px); min-height: 100svh; margin: auto; padding: max(12px, env(safe-area-inset-top)) 14px calc(18px + env(safe-area-inset-bottom)); }
+.cafe-app { width: min(100%, 920px); min-height: 100svh; margin: auto; padding: max(12px, env(safe-area-inset-top)) 14px calc(18px + env(safe-area-inset-bottom)); }
 .topbar { display: grid; grid-template-columns: 58px minmax(0, 1fr) minmax(116px, 170px); gap: 10px; align-items: center; margin-bottom: 12px; }
 .home-link { width: 58px; min-height: 44px; display: grid; grid-template-columns: 16px 28px; place-content: center; gap: 4px; overflow: hidden; border-radius: 12px; background: #fff9e9; color: #235a55; text-decoration: none; font-size: 1.35rem; font-weight: 900; }
 .home-link img { width: 28px; height: 28px; object-fit: contain; }.brand span,.locale span,.profile-grid span,.play-hud span { display:block; color:#a8e4d7; font-size:12px; font-weight:800; }.brand h1 { margin:2px 0 0; font-size:clamp(20px,5vw,32px); line-height:1.05; }.locale { display:grid; gap:4px; }.locale select { min-height:38px; border:1px solid #69b5aa; border-radius:10px; color:#fff; background:#123b39; padding:0 8px; }
@@ -14,7 +14,56 @@ button, select { font: inherit; }
 .result-panel { position:fixed; z-index:90; inset:0; display:grid; place-items:center; padding:16px; background:#061815e8; }.result-card { width:min(100%,420px); display:grid; gap:11px; padding:18px; border:2px solid #8ad7c7; border-radius:18px; background:#174943; text-align:center; }.result-card img { width:110px; height:110px; object-fit:contain; margin:auto; }.result-card h2,.result-card p { margin:0; }.result-card p { color:#d1eee7; }.result-card>div { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:8px; }
 .cafe-leave-card > div { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 body.is-cafe-playing { overflow:hidden; } body.is-cafe-playing .cafe-app { position:fixed; top:0; bottom:0; left:50%; width:min(100vw,820px); height:var(--wp-mobile-vh,100svh); min-height:var(--wp-mobile-vh,100svh); max-height:var(--wp-mobile-vh,100svh); padding:8px; overflow:hidden; transform:translateX(-50%); } body.is-cafe-playing .topbar,body.is-cafe-playing .menu-panel,body.is-cafe-playing .game-page-info { display:none !important; }
-@media (max-width:620px) { .menu-panel { grid-template-columns:1fr; }.cover { max-height:220px; object-position:center 30%; }.play-panel { grid-template-rows:42px 42px minmax(0,1fr) 124px 28px; }.station img { height:66px; }.prep-row { grid-template-columns:1fr 104px; } }
+@media (max-width:620px) { .menu-panel { grid-template-columns:1fr; grid-template-rows:auto auto; align-content:start; }.cover { max-height:220px; object-position:center 30%; }.play-panel { grid-template-rows:42px 42px minmax(0,1fr) 124px 28px; }.station img { height:66px; }.prep-row { grid-template-columns:1fr 104px; } }
+
+/* Main owns one complete live-viewport Canvas; its guide follows in document flow. */
+body:not(.is-cafe-stage):not(.is-cafe-playing) .cafe-app {
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 920px);
+  height: 100dvh;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+body:not(.is-cafe-stage):not(.is-cafe-playing) .topbar {
+  flex: 0 0 auto;
+}
+
+body:not(.is-cafe-stage):not(.is-cafe-playing) .menu-panel {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (min-width: 621px) and (max-height: 560px) {
+  body:not(.is-cafe-stage):not(.is-cafe-playing) .cafe-app {
+    padding: max(8px, env(safe-area-inset-top)) 10px max(8px, env(safe-area-inset-bottom));
+  }
+
+  body:not(.is-cafe-stage):not(.is-cafe-playing) .topbar {
+    margin-bottom: 8px;
+  }
+
+  body:not(.is-cafe-stage):not(.is-cafe-playing) .menu-panel {
+    align-items: stretch;
+    gap: 12px;
+    padding: 10px;
+  }
+
+  body:not(.is-cafe-stage):not(.is-cafe-playing) .cover {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+
+  body:not(.is-cafe-stage):not(.is-cafe-playing) .menu-copy {
+    min-height: 0;
+    gap: 9px;
+    overflow: hidden;
+  }
+}
 
 /* First-day guidance uses the same visual language as the playable controls. */
 .step-number { display:grid; place-items:center; flex:0 0 24px; width:24px; height:24px; border-radius:50%; background:#f4b845; color:#244640; }

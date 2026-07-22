@@ -76,9 +76,11 @@
     keyboardDockWrong: '{dock}. Wrong target for {flight}; the correct target is {target}. Pressing Enter now adds 1 Error.',
     keyboardDockBlocked: '{dock}. Correct target for {flight}, but {step}. Pressing Enter now adds 1 Error.',
     routeCancelled: 'Route cancelled. No error added.',
-    routeStorm: 'Route crossed a red storm cell.',
-    routeBeacon: 'Pass every cyan beacon in number order.',
-    routeRule: 'Curve around red storms · pass cyan beacons in order',
+    routeStorm: 'The route touched a red blocked airway.',
+    routeSelf: 'The route crossed its own line.',
+    routeBeacon: 'Connect every numbered node in order.',
+    routeRule: 'Connect (1)(2)(3)... in order · avoid every red line',
+    nodeProgress: 'Nodes {done}/{goal}',
   });
   Object.assign(strings['zh-Hant'], {
     leaveTitle: '\u96e2\u958b\u9019\u500b\u73ed\u6b21？',
@@ -112,9 +114,11 @@
     keyboardDockWrong: '{dock}\u3002\u9019\u4e0d\u662f{flight}\u7684\u6b63\u78ba\u76ee\u6a19\uff1b\u6b63\u78ba\u76ee\u6a19\u662f{target}\u3002\u73fe\u5728\u6309 Enter \u6703\u589e\u52a0 1 \u6b21\u5931\u8aa4\u3002',
     keyboardDockBlocked: '{dock}\u3002\u9019\u662f{flight}\u7684\u6b63\u78ba\u76ee\u6a19\uff0c\u4f46{step}\u3002\u73fe\u5728\u6309 Enter \u6703\u589e\u52a0 1 \u6b21\u5931\u8aa4\u3002',
     routeCancelled: '\u822a\u7dda\u5df2\u53d6\u6d88\uff0c\u4e0d\u8a08\u5165\u932f\u8aa4\u3002',
-    routeStorm: '\u822a\u7dda\u7a7f\u904e\u4e86\u7d05\u8272\u98a8\u66b4\u5340\u3002',
-    routeBeacon: '\u5fc5\u9808\u6309\u7de8\u865f\u9806\u5e8f\u901a\u904e\u6240\u6709\u9752\u8272\u4fe1\u6a19\u3002',
-    routeRule: '\u7e5e\u904e\u7d05\u8272\u98a8\u66b4\u5340 \u00b7 \u4f9d\u5e8f\u901a\u904e\u9752\u8272\u4fe1\u6a19',
+    routeStorm: '\u822a\u7dda\u78b0\u5230\u7d05\u8272\u7981\u884c\u822a\u7dda\u3002',
+    routeSelf: '\u822a\u7dda\u4e0d\u80fd\u8207\u81ea\u5df1\u7684\u7dda\u4ea4\u53c9\u3002',
+    routeBeacon: '\u5fc5\u9808\u6309\u9806\u5e8f\u9023\u63a5\u6240\u6709\u7de8\u865f\u7bc0\u9ede\u3002',
+    routeRule: '\u4f9d\u5e8f\u9023\u63a5 (1)(2)(3)\u2026 \u00b7 \u907f\u958b\u6240\u6709\u7d05\u7dda',
+    nodeProgress: '\u7bc0\u9ede {done}/{goal}',
   });
   const flights = [['cargo','cargo'], ['passenger','passenger'], ['repair','repair'], ['festival','passenger'], ['heavy','cargo']];
   const flightLabels = {
@@ -138,8 +142,7 @@
     repair: '\u7dad\u4fee\u78bc\u982d C'
   });
   const TOTAL_SHIFTS = 30;
-  const legacyShifts=[null,{goal:4,parts:2,stormEvery:0,coin:24,stamps:1},{goal:6,parts:2,stormEvery:0,coin:36,stamps:1},{goal:7,parts:2,stormEvery:3,coin:48,stamps:2},{goal:8,parts:4,stormEvery:2,coin:62,stamps:2},{goal:10,parts:5,stormEvery:2,coin:80,stamps:3}];
-  const shiftConfig = [null,...Array.from({length:TOTAL_SHIFTS},(_,index)=>{const shift=index+1,chapter=Math.floor(index/5),within=index%5;if(shift<=5)return{...legacyShifts[shift],chapter,layout:within,hazards:0,beacons:0};return{goal:5+chapter+(within%3),parts:2+Math.floor(chapter/2),stormEvery:Math.max(2,5-chapter),coin:30+index*6,stamps:1+Math.floor(chapter/2),chapter,layout:within,hazards:chapter<2?0:1+Math.floor((chapter+within)/3),beacons:chapter<3?1:Math.min(2,1+within%2)}})];
+  const shiftConfig = [null,...Array.from({length:TOTAL_SHIFTS},(_,index)=>{const shift=index+1,chapter=Math.floor(index/5),within=index%5;return{goal:4+chapter+(within%3),coin:24+index*6,stamps:1+Math.floor(chapter/2),chapter,layout:within,barriers:shift<=2?0:Math.min(3,1+Math.floor((shift-3)/10)),beacons:Math.min(4,1+Math.floor(index/8))}})];
   const boundedInteger = (value, fallback, minimum, maximum = Number.MAX_SAFE_INTEGER) => {
     const number = Number(value);
     return Number.isFinite(number) ? Math.max(minimum, Math.min(maximum, Math.floor(number))) : fallback;
@@ -288,86 +291,36 @@
     $('shiftText').textContent = t('shift', {n:state.shift});
     $('scoreText').textContent = `${state.done}/${state.goal} \u00b7 ${t('errors', {done:state.errors})}`;
     $('objectiveText').textContent = t('objective', {done:state.done, goal:state.goal});
-    const crewLabel = locale === 'zh-Hant' ? '\u7d44\u54e1' : 'Crew';
-    const fuelLabel = locale === 'zh-Hant' ? '\u71c3\u6599' : 'Fuel';
-    $('resourceText').textContent = `${crewLabel} ${state.crew}/${state.maxCrew} · ${fuelLabel} ${state.fuel} · ${t('repair', {n:state.parts})}`;
+    $('resourceText').textContent = t('nodeProgress', {done:state.routePassed || 0, goal:state.beacons?.length || 0});
     renderFlightTask();
   }
 
   function renderFlightTask() {
     if (!state.kind) return;
     const labels = locale === 'zh-Hant'
-      ? {
-          flights: {cargo:'\u8ca8\u904b\u98db\u8239', passenger:'\u65c5\u5ba2\u98db\u8239', repair:'\u7dad\u4fee\u98db\u8239', festival:'\u7bc0\u6176\u98db\u8239', heavy:'\u91cd\u578b\u8ca8\u904b\u98db\u8239'},
-          docks: {cargo:'\u8ca8\u904b\u78bc\u982d A', passenger:'\u65c5\u5ba2\u78bc\u982d B', repair:'\u7dad\u4fee\u78bc\u982d C'},
-          repair:'\u5148\u6309\u7dad\u4fee\u670d\u52d9', conflict:'\u5148\u6e05\u9664\u822a\u7dda\u885d\u7a81', crew:'\u5148\u6307\u6d3e\u7d44\u54e1', drag:'\u518d\u62d6\u5230 '
-        }
-      : {
-          flights: flightLabels.en, docks: dockLabels.en,
-          repair:'Repair service', conflict:'Clear conflict', crew:'Assign crew', drag:'Drag: '
-        };
+      ? {flights:flightLabels['zh-Hant'],docks:dockLabels['zh-Hant']}
+      : {flights:flightLabels.en,docks:dockLabels.en};
     const flightName = labels.flights[state.kind];
     const dockName = labels.docks[state.dock];
-    const alternateName = labels.docks[state.altDock];
-    const steps = [
-      { id: 'conflict', text: labels.conflict, complete: !state.conflict },
-      { id: 'crew', text: labels.crew, complete: !state.needsCrew || state.crewAssigned },
-      { id: 'repair', text: labels.repair, complete: !state.storm || state.serviced },
-      { id: 'dock', text: `${labels.drag}${dockName} 1⛽ / ${alternateName} 2⛽`, complete: false }
-    ].filter((step) => step.id === 'dock' || !((step.id === 'repair' && !state.storm) || (step.id === 'conflict' && !state.requiresConflict) || (step.id === 'crew' && !state.needsCrew)));
-    const currentStepIndex = Math.max(0, steps.findIndex((step) => !step.complete));
-    const currentStep = steps[currentStepIndex];
-    $('serviceBtn').classList.toggle('hidden', currentStep.id !== 'repair');
-    $('clearRouteBtn').classList.toggle('hidden', currentStep.id !== 'conflict');
-    $('assignCrewBtn').classList.toggle('hidden', currentStep.id !== 'crew');
-    const stepLabel = locale === 'zh-Hant'
-      ? `步驟 ${currentStepIndex + 1}/${steps.length}：${currentStep.text}`
-      : `Step ${currentStepIndex + 1}/${steps.length}: ${currentStep.text}`;
     document.querySelector('.task-destination').textContent = locale === 'zh-Hant'
-      ? `本架：${flightName} → ${dockName} 1⛽ / ${alternateName} 2⛽`
-      : `Current: ${flightName} -> ${dockName} 1⛽ / ${alternateName} 2⛽`;
-    // Keep the task strip focused on the action the player can take now. Showing
-    // only the final drag step made late flights look like they had skipped rules.
-    document.querySelector('.task-steps').textContent = stepLabel;
-    const actionLabel = (id, text) => {
-      const index = steps.findIndex((step) => step.id === id);
-      return `${index + 1}/${steps.length} \u00b7 ${text}`;
-    };
-    if (state.storm) $('serviceBtn').textContent = actionLabel('repair', locale === 'zh-Hant' ? '維修服務' : 'Repair service');
-    if (state.conflict) $('clearRouteBtn').textContent = actionLabel('conflict', locale === 'zh-Hant' ? '清除航線衝突' : 'Clear conflict');
-    if (state.needsCrew) $('assignCrewBtn').textContent = actionLabel('crew', locale === 'zh-Hant' ? '指派組員' : 'Assign crew');
-    // The localized task strip and hint describe destination and controls.
-    // Keep the button name itself exact so runtime fragment translation cannot
-    // split keyboard words inside a composite accessibility sentence.
+      ? `目標：${flightName} → ${dockName}`
+      : `Target: ${flightName} -> ${dockName}`;
+    document.querySelector('.task-steps').textContent = t('routeRule');
     $('flight').setAttribute('aria-label', flightName);
     $('flight').dataset.destination = `\u2192 ${dockName.at(-1)}`;
     document.querySelectorAll('.dock').forEach((dock) => {
       const label = labels.docks[dock.dataset.dock];
       const isTarget = dock.dataset.dock === state.dock;
-      const isAlternate = dock.dataset.dock === state.altDock;
-      const blockingStep = state.storm && !state.serviced
-        ? labels.repair
-        : state.conflict
-          ? labels.conflict
-          : !state.crewAssigned
-            ? labels.crew
-            : state.fuel <= 0
-              ? (locale === 'zh-Hant' ? '\u5fc5\u9808\u5148\u88dc\u5145\u71c3\u6599' : 'Fuel must be restored first')
-              : '';
-      const keyboardLabel = !isTarget && !isAlternate
+      const keyboardLabel = !isTarget
         ? t('keyboardDockWrong', {dock:label, flight:flightName, target:dockName})
-        : isAlternate
-          ? `${label}. 2 ⛽.`
-        : blockingStep
-          ? t('keyboardDockBlocked', {dock:label, flight:flightName, step:blockingStep})
-          : t('keyboardDockCorrect', {dock:label, flight:flightName, fuel:state.fuel, remaining:Math.max(0, state.fuel - 1)});
+        : `${label}. ${t('routeRule')}`;
       dock.querySelector('.dock-label').textContent = label;
       dock.setAttribute('aria-label', state.selected ? keyboardLabel : label);
       dock.classList.toggle('is-target', isTarget);
-      dock.classList.toggle('is-alternate', isAlternate);
+      dock.classList.remove('is-alternate');
       dock.querySelector('.dock-target-badge').textContent = isTarget
         ? (locale === 'zh-Hant' ? `前往 ${dockName.at(-1)}` : `GO: ${dockName.at(-1)}`)
-        : isAlternate ? `2⛽ ${alternateName.at(-1)}` : '';
+        : '';
     });
     requestAnimationFrame(renderGuidanceLine);
   }
@@ -389,13 +342,16 @@
       y: (rect.top + rect.height / 2 - space.rect.top) / space.scaleY,
     };
   }
-  const hazardLayouts=[[[.34,.34],[.67,.61]],[[.52,.26],[.29,.66],[.73,.48]],[[.28,.48],[.58,.63],[.72,.28]],[[.42,.30],[.65,.46],[.36,.70]],[[.25,.30],[.52,.54],[.76,.70]]];
-  const beaconLayouts=[[[.50,.30],[.37,.64]],[[.34,.52],[.66,.43]],[[.58,.30],[.42,.68]],[[.30,.36],[.68,.62]],[[.50,.66],[.50,.31]]];
-  function challengePoints(config){const offset=(state.flightIndex%3-1)*.025,hazards=hazardLayouts[config.layout].slice(0,config.hazards).map(([x,y])=>({x:Math.max(.16,Math.min(.84,x+offset)),y})),beacons=beaconLayouts[(config.layout+state.flightIndex)%beaconLayouts.length].slice(0,config.beacons).map(([x,y],index)=>({x,y,order:index+1}));return{hazards,beacons}}
-  function renderRouteChallenges(){const container=$('routeChallenges');container.innerHTML='';for(const hazard of state.hazards||[]){const node=document.createElement('span');node.className='route-hazard';node.style.left=`${hazard.x*100}%`;node.style.top=`${hazard.y*100}%`;container.append(node)}for(const beacon of state.beacons||[]){const node=document.createElement('span');node.className='route-beacon';node.dataset.order=String(beacon.order);node.style.left=`${beacon.x*100}%`;node.style.top=`${beacon.y*100}%`;container.append(node)}}
-  function renderRouteTrace(){const svg=$('routeTrace'),field=$('routeField');svg.setAttribute('viewBox',`0 0 ${field.clientWidth} ${field.clientHeight}`);$('routeTracePath').setAttribute('points',routePoints.map(point=>`${point.x},${point.y}`).join(' '));const passed=routeProgress(routePoints).beacons;document.querySelectorAll('.route-beacon').forEach((node,index)=>node.classList.toggle('passed',index<passed))}
+  const beaconLayouts=[[[.38,.61],[.27,.44],[.42,.27],[.66,.36]],[[.63,.62],[.75,.49],[.64,.29],[.37,.28]],[[.32,.52],[.40,.72],[.69,.64],[.72,.36]],[[.68,.48],[.58,.25],[.30,.32],[.28,.63]],[[.48,.69],[.74,.62],[.70,.30],[.36,.24]]];
+  const barrierCandidates=[[[.14,.31],[.32,.31]],[[.68,.21],[.86,.21]],[[.14,.74],[.35,.74]],[[.65,.77],[.86,.77]],[[.20,.44],[.20,.64]],[[.80,.41],[.80,.63]],[[.42,.13],[.60,.13]],[[.42,.86],[.60,.86]],[[.48,.38],[.63,.38]],[[.34,.58],[.48,.58]],[[.27,.20],[.27,.34]],[[.73,.66],[.73,.82]]];
+  function routeTargetPoint(){return state.dock==='cargo'?{x:.14,y:.21}:state.dock==='passenger'?{x:.86,y:.21}:{x:.50,y:.84}}
+  function segmentGap(a,b,c,d){if(segmentsIntersect(a,b,c,d))return 0;return Math.min(segmentDistance(a,c,d),segmentDistance(b,c,d),segmentDistance(c,a,b),segmentDistance(d,a,b))}
+  function challengePoints(config){const offset=(state.flightIndex%3-1)*.018,beacons=beaconLayouts[(config.layout+state.flightIndex)%beaconLayouts.length].slice(0,config.beacons).map(([x,y],index)=>({x:Math.max(.16,Math.min(.84,x+offset)),y,order:index+1})),solution=[{x:.5,y:.5},...beacons,routeTargetPoint()],occupied=[...beacons,{x:.5,y:.5},routeTargetPoint()],rotated=[...barrierCandidates.slice((config.layout+state.flightIndex)%barrierCandidates.length),...barrierCandidates.slice(0,(config.layout+state.flightIndex)%barrierCandidates.length)].map(([a,b])=>({a:{x:a[0],y:a[1]},b:{x:b[0],y:b[1]}})),barriers=rotated.filter(({a,b})=>occupied.every(point=>segmentDistance(point,a,b)>.09)&&solution.slice(1).every((point,index)=>segmentGap(solution[index],point,a,b)>.065)).slice(0,config.barriers).map((barrier,index)=>({...barrier,order:index+1}));return{barriers,beacons}}
+  function renderRouteChallenges(){const container=$('routeChallenges');container.innerHTML='';for(const barrier of state.barriers||[]){const node=document.createElement('span'),dx=barrier.b.x-barrier.a.x,dy=barrier.b.y-barrier.a.y;node.className='route-barrier';node.style.left=`${barrier.a.x*100}%`;node.style.top=`${barrier.a.y*100}%`;node.style.width=`${Math.hypot(dx,dy)*100}%`;node.style.transform=`rotate(${Math.atan2(dy,dx)}rad)`;container.append(node)}for(const beacon of state.beacons||[]){const node=document.createElement('span');node.className='route-beacon';node.dataset.order=`(${beacon.order})`;node.style.left=`${beacon.x*100}%`;node.style.top=`${beacon.y*100}%`;container.append(node)}}
+  function renderRouteTrace(){const svg=$('routeTrace'),field=$('routeField'),progress=routeProgress(routePoints);svg.setAttribute('viewBox',`0 0 ${field.clientWidth} ${field.clientHeight}`);$('routeTracePath').setAttribute('points',routePoints.map(point=>`${point.x},${point.y}`).join(' '));svg.classList.toggle('invalid',progress.barrier||progress.selfCross);state.routePassed=progress.beacons;$('resourceText').textContent=t('nodeProgress',{done:progress.beacons,goal:state.beacons?.length||0});document.querySelectorAll('.route-beacon').forEach((node,index)=>node.classList.toggle('passed',index<progress.beacons))}
   function segmentDistance(point,a,b){const dx=b.x-a.x,dy=b.y-a.y,length=dx*dx+dy*dy;if(!length)return Math.hypot(point.x-a.x,point.y-a.y);const t=Math.max(0,Math.min(1,((point.x-a.x)*dx+(point.y-a.y)*dy)/length)),x=a.x+t*dx,y=a.y+t*dy;return Math.hypot(point.x-x,point.y-y)}
-  function routeProgress(points){const field=$('routeField'),width=field.clientWidth,height=field.clientHeight;let beaconIndex=0,hazard=false;for(let index=1;index<points.length;index++){const a=points[index-1],b=points[index];for(const cell of state.hazards||[])if(segmentDistance({x:cell.x*width,y:cell.y*height},a,b)<Math.min(width,height)*.082)hazard=true;const beacon=state.beacons?.[beaconIndex];if(beacon&&segmentDistance({x:beacon.x*width,y:beacon.y*height},a,b)<Math.min(width,height)*.075)beaconIndex++}return{hazard,beacons:beaconIndex,valid:!hazard&&beaconIndex===(state.beacons?.length||0)}}
+  function segmentsIntersect(a,b,c,d){const cross=(p,q,r)=>(q.x-p.x)*(r.y-p.y)-(q.y-p.y)*(r.x-p.x),abC=cross(a,b,c),abD=cross(a,b,d),cdA=cross(c,d,a),cdB=cross(c,d,b),epsilon=.00001;return Math.abs(abC)<epsilon&&segmentDistance(c,a,b)<epsilon||Math.abs(abD)<epsilon&&segmentDistance(d,a,b)<epsilon||Math.abs(cdA)<epsilon&&segmentDistance(a,c,d)<epsilon||Math.abs(cdB)<epsilon&&segmentDistance(b,c,d)<epsilon||(abC>0)!==(abD>0)&&(cdA>0)!==(cdB>0)}
+  function routeProgress(points){const field=$('routeField'),width=field.clientWidth,height=field.clientHeight,scale=Math.min(width,height);let beaconIndex=0,barrier=false,selfCross=false;for(let index=1;index<points.length;index++){const a=points[index-1],b=points[index];for(const blocked of state.barriers||[]){const c={x:blocked.a.x*width,y:blocked.a.y*height},d={x:blocked.b.x*width,y:blocked.b.y*height};if(segmentGap(a,b,c,d)<Math.max(7,scale*.018))barrier=true}while(state.beacons?.[beaconIndex]){const beacon=state.beacons[beaconIndex],point={x:beacon.x*width,y:beacon.y*height};if(segmentDistance(point,a,b)<Math.min(width,height)*.07)beaconIndex++;else break}for(let prior=1;prior<index-2;prior++)if(segmentsIntersect(points[prior-1],points[prior],a,b)){selfCross=true;break}}return{barrier,selfCross,beacons:beaconIndex,valid:!barrier&&!selfCross&&beaconIndex===(state.beacons?.length||0)}}
   function renderGuidanceLine() {
     const space = routeFieldSpace();
     const flight = routeFieldCenter($('flight'), space);
@@ -416,7 +372,7 @@
     clearInsuranceConfirmation();
     const shift = state.shift || 1;
     const config = shiftConfig[shift];
-    state = {shift, config, done:0, errors:0, parts:config.parts, crew:2, maxCrew:2, fuel:config.goal+4, goal:config.goal, stormEvery:config.stormEvery, flightIndex:0, matched:0, selected:false, contract:Boolean(state.contract)};
+    state = {shift, config, done:0, errors:0, goal:config.goal, flightIndex:0, matched:0, selected:false, routePassed:0, contract:Boolean(state.contract)};
     show('battleShell');
     playSound('click');
     nextFlight();
@@ -426,28 +382,16 @@
     const [kind, dock] = flights[state.flightIndex++ % flights.length];
     state.kind = kind;
     state.dock = dock;
-    state.altDock = dock === 'repair' ? 'passenger' : 'repair';
-    state.storm = state.stormEvery > 0 && state.flightIndex % state.stormEvery === 0;
-    state.requiresConflict = state.shift >= 3 && state.flightIndex % 4 === 1;
-    state.conflict = state.requiresConflict;
-    // Shift 1 teaches only matching and routing; crew arrives after the player
-    // has a stable mental model of docks.
-    state.needsCrew = state.shift >= 2 && ['cargo','repair','festival','heavy'].includes(kind);
-    state.crewAssigned = !state.needsCrew;
-    state.serviced = !state.storm;
     Object.assign(state,challengePoints(state.config));
     state.routeViolation='';
+    state.routePassed=0;
     routePoints=[];
     $('routeTracePath').setAttribute('points','');
     renderRouteChallenges();
     state.selected = false;
     setDockKeyboardMode(false);
     $('flight').style.backgroundImage = `url('../../assets/animal-skyport-dispatch-airship-${kind}.webp')`;
-    $('weatherZone').classList.toggle('hidden', !state.storm);
-    $('weatherZone').src = '../../assets/animal-skyport-dispatch-weather-storm.webp';
-    $('serviceBtn').classList.toggle('hidden', !state.storm);
-    $('clearRouteBtn').classList.toggle('hidden', !state.conflict);
-    $('assignCrewBtn').classList.toggle('hidden', !state.needsCrew);
+    $('weatherZone').classList.add('hidden');
     // The task card is the durable instruction. Keep the floating layer empty
     // until an actual success or error needs immediate feedback.
     $('feedback').textContent = '';
@@ -455,7 +399,7 @@
     $('routeLine').classList.remove('is-guidance');
     routePoints=[];
     $('routeTracePath').setAttribute('points','');
-    $('flightHint').textContent=(state.hazards.length||state.beacons.length)?t('routeRule'):t('dragHint');
+    $('flightHint').textContent=t('routeRule');
   }
   function result(win) {
     cancelRouteGesture({restoreGuidance:false});
@@ -546,14 +490,9 @@
   function finish(ok, chosenDock = ok ? state.dock : '') {
     if (battleDecisionOpen()) return;
     const primary = chosenDock === state.dock;
-    const alternate = chosenDock === state.altDock;
-    const prepared = state.serviced && !state.conflict && state.crewAssigned;
-    const fuelCost = alternate ? 2 : 1;
-    if ((primary || alternate) && !state.routeViolation && (alternate || prepared) && state.fuel >= fuelCost) {
+    if (primary && !state.routeViolation) {
       state.done += 1;
-      if (primary) state.matched += 1;
-      state.fuel -= fuelCost;
-      if (state.needsCrew) state.crew = state.maxCrew;
+      state.matched += 1;
       $('feedback').textContent = locale === 'zh-Hant' ? '\u78bc\u982d\u914d\u5c0d\u6210\u529f\u3002' : 'Dock matched.';
       if (state.done >= state.goal) {
         renderHud();
@@ -575,7 +514,7 @@
     } else {
       playSound('wrong');
       state.errors += 1;
-      state.lastError = state.routeViolation==='storm'?t('routeStorm'):state.routeViolation==='beacon'?t('routeBeacon'):state.conflict ? (locale === 'zh-Hant' ? '先清除航線衝突，再拖曳飛船。' : 'Clear the route conflict before dragging.') : !state.crewAssigned ? (locale === 'zh-Hant' ? '這架需要組員：先按「指派組員」，再拖曳飛船。' : 'This flight needs crew: assign crew before dragging.') : state.storm && !state.serviced ? (locale === 'zh-Hant' ? '暴風航線需要先完成維修服務。' : 'Storm route: repair service is required first.') : state.fuel < fuelCost ? (locale === 'zh-Hant' ? '燃料不足，無法派遣。' : 'Fuel depleted.') : (locale === 'zh-Hant' ? '碼頭不對：請依上方任務卡前往目標碼頭。' : 'Wrong dock: follow the task card target.');
+      state.lastError = state.routeViolation==='barrier'?t('routeStorm'):state.routeViolation==='self'?t('routeSelf'):state.routeViolation==='beacon'?t('routeBeacon'):(locale === 'zh-Hant' ? '碼頭不對：請前往上方指定的碼頭。' : 'Wrong dock: follow the target shown above.');
       state.routeViolation='';
       $('feedback').textContent = state.lastError;
       if (state.errors >= 3) { if (insuranceActive && state.contract) { save.coins = (save.coins || 0) + 20; persist(); } result(false); }
@@ -614,6 +553,8 @@
       dragging = true;
       const start=routeFieldCenter(flight,field);
       routePoints=start?[start]:[];
+      $('routeLine').style.opacity='0';
+      $('routeLine').classList.remove('is-guidance');
       renderRouteTrace();
       flight.setPointerCapture?.(event.pointerId);
     }
@@ -627,8 +568,7 @@
     const length = Math.hypot(dx, dy);
     const routePoint={x:(event.clientX-field.rect.left)/field.scaleX,y:(event.clientY-field.rect.top)/field.scaleY};
     if(!routePoints.length||Math.hypot(routePoint.x-routePoints.at(-1).x,routePoint.y-routePoints.at(-1).y)>3){routePoints.push(routePoint);renderRouteTrace()}
-    $('routeLine').classList.remove('is-guidance');
-    Object.assign($('routeLine').style, {left:`${fromX}px`, top:`${fromY}px`, width:`${length}px`, transform:`rotate(${Math.atan2(dy, dx)}rad)`, opacity:'1'});
+    $('routeLine').style.opacity='0';
     if (!isEnd) return;
     let target = null;
     let nearest = Infinity;
@@ -648,8 +588,8 @@
     suppressClick = length > 4;
     const chosenDock = target?.dataset.dock || '';
     const routeCheck=routeProgress(routePoints);
-    state.routeViolation=routeCheck.hazard?'storm':routeCheck.beacons<(state.beacons?.length||0)?'beacon':'';
-    finish(chosenDock === state.dock || chosenDock === state.altDock, chosenDock);
+    state.routeViolation=routeCheck.barrier?'barrier':routeCheck.selfCross?'self':routeCheck.beacons<(state.beacons?.length||0)?'beacon':'';
+    finish(chosenDock === state.dock, chosenDock);
   }
   function dockNodes() {
     return [...document.querySelectorAll('.dock')];
@@ -680,19 +620,17 @@
   function finishKeyboardDock(dock) {
     if (battleDecisionOpen() || !state.selected) return;
     state.selected = false;
-    state.routeViolation = '';
     setDockKeyboardMode(false);
-    finish(dock.dataset.dock === state.dock || dock.dataset.dock === state.altDock, dock.dataset.dock);
+    const field=$('routeField'),space=routeFieldSpace(),start=routeFieldCenter($('flight'),space),target=routeFieldCenter(dock,space);
+    routePoints=[start,...(state.beacons||[]).map(beacon=>({x:beacon.x*field.clientWidth,y:beacon.y*field.clientHeight})),target].filter(Boolean);
+    const routeCheck=routeProgress(routePoints);
+    state.routeViolation=routeCheck.barrier?'barrier':routeCheck.selfCross?'self':routeCheck.beacons<(state.beacons?.length||0)?'beacon':'';
+    renderRouteTrace();
+    finish(dock.dataset.dock === state.dock, dock.dataset.dock);
     window.requestAnimationFrame(() => $('flight').focus({preventScroll:true}));
   }
   function focusCurrentBattleAction() {
-    const nextAction = [
-      state.conflict ? $('clearRouteBtn') : null,
-      state.needsCrew && !state.crewAssigned ? $('assignCrewBtn') : null,
-      state.storm && !state.serviced ? $('serviceBtn') : null,
-      $('flight'),
-    ].find((node) => node && !node.classList.contains('hidden') && !node.disabled);
-    nextAction?.focus({preventScroll:true});
+    $('flight').focus({preventScroll:true});
   }
   $('startBtn').onclick = () => { state.shift = save.unlocked; show('stageScreen'); renderStages(); };
   $('soundToggle').onclick = () => {
@@ -743,19 +681,6 @@
   $('leaveConfirm').addEventListener('keydown', trapLeaveFocus);
   $('menuBtn').onclick = () => show('mainScreen');
   $('result').addEventListener('keydown', trapResultFocus);
-  $('serviceBtn').onclick = () => {
-    if (battleDecisionOpen()) return;
-    if (state.storm && !state.serviced && state.parts) {
-      state.parts -= 1;
-      state.serviced = true;
-      $('serviceBtn').classList.add('hidden');
-      $('feedback').textContent = locale === 'zh-Hant' ? '\u98db\u8239\u5df2\u53ef\u5b89\u5168\u9032\u5834\u3002' : 'Flight cleared for safe approach.';
-      renderHud();
-      focusCurrentBattleAction();
-    }
-  };
-  $('clearRouteBtn').onclick = () => { if (!battleDecisionOpen() && state.conflict && state.fuel > 0) { state.fuel -= 1; state.conflict = false; $('clearRouteBtn').classList.add('hidden'); $('feedback').textContent = locale === 'zh-Hant' ? '\u822a\u7dda\u5df2\u6e05\u7406\u3002' : 'Route cleared.'; renderHud(); focusCurrentBattleAction(); } };
-  $('assignCrewBtn').onclick = () => { if (!battleDecisionOpen() && state.needsCrew && !state.crewAssigned && state.crew > 0) { state.crew -= 1; state.crewAssigned = true; $('assignCrewBtn').classList.add('hidden'); $('feedback').textContent = locale === 'zh-Hant' ? '\u7d44\u54e1\u5df2\u6307\u6d3e\u3002' : 'Crew assigned.'; renderHud(); focusCurrentBattleAction(); } };
   $('flight').addEventListener('pointerdown', routePointer);
   $('flight').addEventListener('mousedown', routePointer);
   $('flight').addEventListener('click', (event) => {
@@ -773,9 +698,7 @@
   });
   document.querySelectorAll('.dock').forEach((dock) => dock.addEventListener('click', () => {
     if (battleDecisionOpen() || !state.selected) return;
-    state.selected = false;
-    setDockKeyboardMode(false);
-    finish(dock.dataset.dock === state.dock || dock.dataset.dock === state.altDock, dock.dataset.dock);
+    finishKeyboardDock(dock);
   }));
   document.querySelectorAll('.dock').forEach((dock) => dock.addEventListener('keydown', (event) => {
     if (battleDecisionOpen()) return;
@@ -842,17 +765,13 @@
   if (new URLSearchParams(location.search).get('trial') === '1') {
     window.__animalSkyportDispatchSmoke = {
       totalShifts: TOTAL_SHIFTS,
-      configs: shiftConfig.slice(1).map(({goal, parts, stormEvery, stamps, chapter, layout, hazards, beacons}) => ({goal, parts, stormEvery, stamps, chapter, layout, hazards, beacons})),
+      configs: shiftConfig.slice(1).map(({goal, stamps, chapter, layout, barriers, beacons}) => ({goal, stamps, chapter, layout, barriers, beacons})),
       startShift(shift) {
         state.shift = Math.max(1, Math.min(TOTAL_SHIFTS, Number(shift) || 1));
         startBattle();
       },
       prepareAndDispatch() {
-        state.conflict = false;
-        state.crewAssigned = true;
-        state.serviced = true;
         state.routeViolation = '';
-        state.fuel = Math.max(state.fuel, state.goal + 4);
         finish(true, state.dock);
       },
       snapshot() {
@@ -861,6 +780,9 @@
           done: state.done,
           goal: state.goal,
           errors: state.errors,
+          beacons: state.beacons?.length || 0,
+          barriers: state.barriers?.length || 0,
+          routePassed: state.routePassed || 0,
           resultOpen: !$('result').classList.contains('hidden'),
           unlocked: save.unlocked,
           medals: save.medals?.[state.shift] || 0,
