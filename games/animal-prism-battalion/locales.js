@@ -46,21 +46,21 @@
     overdriveNeed:["Overdrive needs 100% · current {charge}%.","超載需要 100% 充能，目前為 {charge}%。","超载需要 100% 充能，当前为 {charge}%。","100%で発動できます（現在 {charge}%）。","100%에서 사용 가능 · 현재 {charge}%.","La Sobrecarga requiere 100 % · actual: {charge}%.","A Sobrecarga requer 100% · atual: {charge}%.","La Surcharge exige 100 % · actuel : {charge}%.","Überladung benötigt 100 % · aktuell {charge}%.","Il Sovraccarico richiede il 100% · attuale: {charge}%.","Для Перегрузки нужно 100% · сейчас {charge}%."],
     secondsShort:["{seconds}s","{seconds} 秒","{seconds} 秒","{seconds}秒","{seconds}초","{seconds} s","{seconds} s","{seconds} s","{seconds} s","{seconds} s","{seconds} с"],
   });
-  const runtimeFallbackKeys=["laneKicker","lanePosterAlt","laneObjective","laneGuideTitle","laneGuideIntro","laneHow1","laneHow2","laneHow3","laneCampaign","laneTutorialTitle","laneTutorial1","laneTutorial2","laneTutorial3","attackPower","powerStored","shieldReward","bombThreat","pickupPower","shieldBroken","bombDefused","bombDamage","enemyCollision","enemyLeak","laneReady"];
+  const runtimeFallbackKeys=["laneKicker","lanePosterAlt","laneObjective","laneGuideTitle","laneGuideIntro","laneHow1","laneHow2","laneHow3","laneCampaign","laneTutorialTitle","laneTutorial1","laneTutorial2","laneTutorial3","attackPower","powerStored","shieldReward","bombThreat","pickupPower","shieldBroken","bombDefused","bombDamage","enemyCollision","enemyLeak","laneReady","waveLabel","bossWave"];
   Object.assign(rows,{
-    laneKicker:["THREE-LANE BATTALION STRATEGY"],lanePosterAlt:["Fox commander leads a three-lane prism battalion assault"],laneObjective:["Switch lanes · build attack · survive."],
-    laneGuideTitle:["Choose a lane. Build power. Survive the breach."],
-    laneGuideIntro:["Captain Fia switches between three crystal roads while the battalion fires automatically. Read what is coming, weaken the dangerous target, then choose whether to collect its power or avoid it."],
-    laneHow1:["Tap a lane or use Left and Right to switch instantly."],
-    laneHow2:["Shoot power cores and shield carriers, then collide with them to collect their attack value."],
-    laneHow3:["Reduce bombs before they cross the line; monsters deal their remaining health on contact, or one breach damage when avoided."],
-    laneCampaign:["Six chapters combine power cores, shield rewards, bombs, monsters, faster formations, champions, and fortress assaults across 30 authored routes."],
-    laneTutorialTitle:["Command three crystal lanes"],
-    laneTutorial1:["Tap a lane or press Left and Right to switch. Your battalion fires automatically."],
-    laneTutorial2:["Power cores store every hit. Break blue shields before collecting their attack reward."],
-    laneTutorial3:["Bombs always deal their remaining value. A monster in your lane deals its remaining health; an avoided monster still deals 1."],
+    laneKicker:["THREE-LANE CORE DEFENSE"],lanePosterAlt:["Prism spirits defend three crystal lanes from shadow waves"],laneObjective:["Switch lanes, destroy every wave, protect the core."],
+    laneGuideTitle:["Read the wave. Focus fire. Hold the core.","讀懂波次，集中火力，守住核心。","读懂波次，集中火力，守住核心。","ウェーブを読み、集中攻撃でコアを守れ。","웨이브를 읽고 화력을 집중해 코어를 지키세요.","Lee la oleada. Concentra el fuego. Protege el núcleo.","Leia a onda. Concentre o fogo. Proteja o núcleo.","Lisez la vague. Concentrez le feu. Protégez le noyau.","Lies die Welle. Bündele das Feuer. Halte den Kern.","Leggi l'ondata. Concentra il fuoco. Difendi il nucleo.","Читайте волну. Сосредоточьте огонь. Защитите ядро."],
+    laneGuideIntro:["Command three automatic prism batteries against dense shadow formations. Switch lanes to stop the closest threat and collect the rare power core before the stronger wave behind it arrives."],
+    laneHow1:["Tap a lane or use Left and Right to focus the automatic battery."],
+    laneHow2:["Most formations are monsters. A rare glowing core upgrades attack, and every later formation is balanced around that upgrade."],
+    laneHow3:["Do not let enemies reach the core. Survive every wave; the final wave of each chapter is a Boss."],
+    laneCampaign:["Thirty authored defenses escalate from split monster packs to shields, bombs, champions, converging waves, and six final Bosses."],
+    laneTutorialTitle:["Defend three crystal lanes"],
+    laneTutorial1:["Tap a lane or press Left and Right to focus fire. Your prism battery shoots automatically."],
+    laneTutorial2:["Power cores are rare. Break and collect one, because the following monsters become much stronger."],
+    laneTutorial3:["Any surviving monster damages the core. Clear every wave and defeat the Boss to win."],
     attackPower:["Attack"],powerStored:["Stored +{count}"],shieldReward:["Shield {shield} · +{reward}"],bombThreat:["Bomb {count}"],
-    pickupPower:["Attack power +{count}"],shieldBroken:["Shield broken · collect +{count}"],bombDefused:["Bomb defused!"],bombDamage:["Bomb blast -{count}"],enemyCollision:["Monster collision -{count}"],enemyLeak:["Monster escaped -1"],laneReady:["Lane {lane} selected"],
+    pickupPower:["Attack power +{count}"],shieldBroken:["Shield broken · collect +{count}"],bombDefused:["Bomb defused!"],bombDamage:["Bomb blast -{count}"],enemyCollision:["Core hit -{count}"],enemyLeak:["Monster breached -{count}"],laneReady:["Lane {lane} selected"],waveLabel:["Wave {wave}/{total}"],bossWave:["BOSS WAVE"],
   });
   const dictionaries={};
   codes.forEach((code,index)=>{dictionaries[code]={};Object.entries(rows).forEach(([key,values])=>{dictionaries[code][key]=values[index]||values[0];});});

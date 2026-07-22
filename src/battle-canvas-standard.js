@@ -8,7 +8,6 @@
     "animal-auto-squad": ["#gamePanel", 382, 780],
     "animal-bubble-safari": ["#battleScreen", 390, 788],
     "animal-2048": [".battle-canvas", 390, 788, 760, 334],
-    "animal-frontier-dominion": [".battle-canvas", 390, 788, 760, 334],
     "animal-sanctuary-loop": [".battle-canvas", 390, 788, 760, 334],
     "animal-prism-battalion": [".battle-canvas", 390, 788, 760, 334],
     "animal-skybridge-rivals": [".battle-canvas", 390, 788, 760, 334],

@@ -23,7 +23,6 @@ window.WONDER_LOBBY = {
       "animal-starlight-trails",
       "animal-one-line",
       "animal-2048",
-      "animal-frontier-dominion",
       "animal-sanctuary-loop",
       "animal-prism-battalion",
       "animal-skybridge-rivals",
@@ -778,37 +777,6 @@ window.WONDER_LOBBY = {
         ru: ["30 гонок", "Свободный рисунок", "Смена на ходу"],
       },
       art: { kind: "image", background: "assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp", hideHero: true },
-    },
-    {
-      id: "animal-frontier-dominion",
-      title: {
-        en: "Animal Frontier Dominion",
-        "zh-Hant": "\u52d5\u7269\u908a\u5883\u9818\u4e3b",
-      },
-      status: "planned",
-      statusText: {
-        en: "Coming Soon",
-        "zh-Hant": "\u656c\u8acb\u671f\u5f85",
-      },
-      type: {
-        en: "4X-Lite Territory Strategy",
-        "zh-Hant": "4X-Lite \u9818\u5730\u7b56\u7565",
-      },
-      categories: ["Animal Games", "Strategy", "Featured"],
-      skills: ["Strategic Planning", "Problem Solving", "Focus"],
-      ages: ["13"],
-      ageLabel: { en: "13+", "zh-Hant": "13+" },
-      href: "games/animal-frontier-dominion/",
-      internalTrial: "index.html?trial=1",
-      description: {
-        en: "Scout hidden frontier rules, counter rival formations, and connect captured territories to the Crystal Citadel across 30 handcrafted regions.",
-        "zh-Hant": "\u5075\u5bdf\u908a\u5883\u7684\u96b1\u85cf\u898f\u5247\uff0c\u7528\u9663\u578b\u524b\u5236\u5c0d\u624b\uff0c\u5728 30 \u500b\u624b\u5de5\u5340\u57df\u4e2d\u5efa\u7acb\u901a\u5f80\u6c34\u6676\u8981\u585e\u7684\u9818\u5730\u93c8\u3002",
-      },
-      meta: {
-        en: ["30 Regions", "Scout & Expand", "Formation Counters"],
-        "zh-Hant": ["30 \u500b\u5340\u57df", "\u5075\u5bdf\u8207\u64f4\u5f35", "\u9663\u578b\u524b\u5236"],
-      },
-      art: { kind: "image", background: "assets/animal-frontier-dominion/cover.webp", hideHero: true },
     },
     {
       id: "animal-sanctuary-loop",
@@ -1696,35 +1664,6 @@ for (const game of window.WONDER_LOBBY.games) {
   game.type["zh-Hans"] = type;
   game.description["zh-Hans"] = description;
   game.meta["zh-Hans"] = meta;
-}
-
-const animalFrontierDominion = window.WONDER_LOBBY.games.find((game) => game.id === "animal-frontier-dominion");
-if (animalFrontierDominion) {
-  Object.assign(animalFrontierDominion.title, {
-    "zh-Hans": "\u52a8\u7269\u8fb9\u5883\u9886\u4e3b", ja: "\u30a2\u30cb\u30de\u30eb\u30fb\u30d5\u30ed\u30f3\u30c6\u30a3\u30a2\u30fb\u30c9\u30df\u30cb\u30aa\u30f3", ko: "\ub3d9\ubb3c \ud504\ub860\ud2f0\uc5b4 \ub3c4\ubbf8\ub2c8\uc5b8",
-    es: "Dominio de la Frontera Animal", "pt-BR": "Dom\u00ednio da Fronteira Animal", fr: "Dominion de la Fronti\u00e8re Animale", de: "Tierisches Grenzland", it: "Dominio della Frontiera Animale", ru: "\u0417\u0432\u0435\u0440\u0438\u043d\u044b\u0435 \u0432\u043b\u0430\u0434\u0435\u043d\u0438\u044f",
-  });
-  Object.assign(animalFrontierDominion.statusText, {
-    "zh-Hans": "\u656c\u8bf7\u671f\u5f85", ja: "\u8fd1\u65e5\u516c\u958b", ko: "\uacf5\uac1c \uc608\uc815", es: "Pr\u00f3ximamente", "pt-BR": "Em breve", fr: "Bient\u00f4t disponible", de: "Demn\u00e4chst", it: "Prossimamente", ru: "\u0421\u043a\u043e\u0440\u043e",
-  });
-  Object.assign(animalFrontierDominion.type, {
-    "zh-Hans": "4X-Lite \u9886\u5730\u7b56\u7565", ja: "4X\u30e9\u30a4\u30c8\u9818\u5730\u6226\u7565", ko: "4X \ub77c\uc774\ud2b8 \uc601\ud1a0 \uc804\ub7b5", es: "Estrategia territorial 4X ligera", "pt-BR": "Estrat\u00e9gia territorial 4X leve", fr: "Strat\u00e9gie territoriale 4X l\u00e9g\u00e8re", de: "Leichte 4X-Gebietsstrategie", it: "Strategia territoriale 4X leggera", ru: "\u041e\u0431\u043b\u0435\u0433\u0447\u0451\u043d\u043d\u0430\u044f 4X-\u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f",
-  });
-  Object.assign(animalFrontierDominion.description, {
-    "zh-Hans": "\u4fa6\u5bdf\u8fb9\u5883\u7684\u9690\u85cf\u89c4\u5219\uff0c\u7528\u9635\u578b\u514b\u5236\u5bf9\u624b\uff0c\u5728 30 \u4e2a\u624b\u5de5\u533a\u57df\u4e2d\u5efa\u7acb\u901a\u5f80\u6c34\u6676\u8981\u585e\u7684\u9886\u5730\u94fe\u3002",
-    ja: "\u8fba\u5883\u306e\u96a0\u3055\u308c\u305f\u30eb\u30fc\u30eb\u3092\u5075\u5bdf\u3057\u3001\u9663\u5f62\u3067\u5b88\u5099\u968a\u3092\u514b\u5236\u3057\u300130\u306e\u624b\u4f5c\u308a\u5730\u57df\u3067\u30af\u30ea\u30b9\u30bf\u30eb\u8981\u585e\u3078\u306e\u9818\u5730\u7dda\u3092\u7bc9\u304d\u307e\u3059\u3002",
-    ko: "\uc228\uaca8\uc9c4 \ubcc0\uacbd \uaddc\uce59\uc744 \uc815\ucc30\ud558\uace0 \uc9c4\ud615\uc73c\ub85c \uc218\ube44\ub300\ub97c \uc0c1\ub300\ud558\uba70, 30\uac1c \uc218\uc81c \uc9c0\uc5ed\uc5d0\uc11c \uc218\uc815 \uc694\uc0c8\uae4c\uc9c0 \uc601\ud1a0\ub97c \uc5f0\uacb0\ud558\uc138\uc694.",
-    es: "Explora reglas ocultas, contrarresta formaciones rivales y conecta territorios con la Ciudadela de Cristal en 30 regiones dise\u00f1adas a mano.",
-    "pt-BR": "Revele regras ocultas, neutralize forma\u00e7\u00f5es rivais e conecte territ\u00f3rios \u00e0 Cidadela de Cristal em 30 regi\u00f5es criadas \u00e0 m\u00e3o.",
-    fr: "Rep\u00e9rez les r\u00e8gles cach\u00e9es, contrecarrez les formations adverses et reliez vos territoires \u00e0 la Citadelle de cristal dans 30 r\u00e9gions con\u00e7ues \u00e0 la main.",
-    de: "Erkunde verborgene Grenzregeln, kontere gegnerische Formationen und verbinde in 30 handgefertigten Regionen deine Gebiete mit der Kristallzitadelle.",
-    it: "Scopri le regole nascoste, contrasta le formazioni rivali e collega i territori alla Cittadella di Cristallo in 30 regioni create a mano.",
-    ru: "\u0420\u0430\u0437\u0432\u0435\u0434\u044b\u0432\u0430\u0439\u0442\u0435 \u0441\u043a\u0440\u044b\u0442\u044b\u0435 \u0443\u0441\u043b\u043e\u0432\u0438\u044f, \u043f\u043e\u0434\u0431\u0438\u0440\u0430\u0439\u0442\u0435 \u0441\u0442\u0440\u043e\u0439 \u043f\u0440\u043e\u0442\u0438\u0432 \u0432\u0440\u0430\u0433\u0430 \u0438 \u0441\u043e\u0435\u0434\u0438\u043d\u0438\u0442\u0435 \u0437\u0435\u043c\u043b\u0438 \u0441 \u041a\u0440\u0438\u0441\u0442\u0430\u043b\u044c\u043d\u043e\u0439 \u0446\u0438\u0442\u0430\u0434\u0435\u043b\u044c\u044e \u0432 30 \u0440\u0435\u0433\u0438\u043e\u043d\u0430\u0445.",
-  });
-  Object.assign(animalFrontierDominion.meta, {
-    "zh-Hans": ["30 \u4e2a\u533a\u57df", "\u4fa6\u5bdf\u4e0e\u6269\u5f20", "\u9635\u578b\u514b\u5236"], ja: ["30\u5730\u57df", "\u5075\u5bdf\u3068\u62e1\u5f35", "\u9663\u5f62\u30ab\u30a6\u30f3\u30bf\u30fc"], ko: ["30\uac1c \uc9c0\uc5ed", "\uc815\ucc30\uacfc \ud655\uc7a5", "\uc9c4\ud615 \uc0c1\uc131"],
-    es: ["30 regiones", "Explorar y expandir", "Contraformaciones"], "pt-BR": ["30 regi\u00f5es", "Explorar e expandir", "Contraform\u00e7\u00f5es"], fr: ["30 r\u00e9gions", "Explorer et s'\u00e9tendre", "Contre-formations"], de: ["30 Regionen", "Erkunden und erweitern", "Formationen kontern"], it: ["30 regioni", "Esplora ed espandi", "Contro-formazioni"], ru: ["30 \u0440\u0435\u0433\u0438\u043e\u043d\u043e\u0432", "\u0420\u0430\u0437\u0432\u0435\u0434\u043a\u0430 \u0438 \u0440\u0430\u0441\u0448\u0438\u0440\u0435\u043d\u0438\u0435", "\u041a\u043e\u043d\u0442\u0440\u0444\u043e\u0440\u043c\u0430\u0446\u0438\u0438"],
-  });
 }
 
 const animalHeroTrialsPublicCopy = window.WONDER_LOBBY.games.find((game) => game.id === "animal-hero-trials");

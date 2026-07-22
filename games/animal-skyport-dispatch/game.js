@@ -142,7 +142,7 @@
     repair: '\u7dad\u4fee\u78bc\u982d C'
   });
   const TOTAL_SHIFTS = 30;
-  const shiftConfig = [null,...Array.from({length:TOTAL_SHIFTS},(_,index)=>{const shift=index+1,chapter=Math.floor(index/5),within=index%5;return{goal:4+chapter+(within%3),coin:24+index*6,stamps:1+Math.floor(chapter/2),chapter,layout:within,barriers:shift<=2?0:Math.min(3,1+Math.floor((shift-3)/10)),beacons:Math.min(4,1+Math.floor(index/8))}})];
+  const shiftConfig = [null,...Array.from({length:TOTAL_SHIFTS},(_,index)=>{const shift=index+1,chapter=Math.floor(index/5),within=index%5;return{goal:4+chapter+(within%3),coin:24+index*6,stamps:1+Math.floor(chapter/2),chapter,layout:within,barriers:shift<=2?0:Math.min(7,1+Math.floor((shift-3)/4)),beacons:Math.min(10,1+Math.floor(index/3))}})];
   const boundedInteger = (value, fallback, minimum, maximum = Number.MAX_SAFE_INTEGER) => {
     const number = Number(value);
     return Number.isFinite(number) ? Math.max(minimum, Math.min(maximum, Math.floor(number))) : fallback;
@@ -342,11 +342,17 @@
       y: (rect.top + rect.height / 2 - space.rect.top) / space.scaleY,
     };
   }
-  const beaconLayouts=[[[.38,.61],[.27,.44],[.42,.27],[.66,.36]],[[.63,.62],[.75,.49],[.64,.29],[.37,.28]],[[.32,.52],[.40,.72],[.69,.64],[.72,.36]],[[.68,.48],[.58,.25],[.30,.32],[.28,.63]],[[.48,.69],[.74,.62],[.70,.30],[.36,.24]]];
-  const barrierCandidates=[[[.14,.31],[.32,.31]],[[.68,.21],[.86,.21]],[[.14,.74],[.35,.74]],[[.65,.77],[.86,.77]],[[.20,.44],[.20,.64]],[[.80,.41],[.80,.63]],[[.42,.13],[.60,.13]],[[.42,.86],[.60,.86]],[[.48,.38],[.63,.38]],[[.34,.58],[.48,.58]],[[.27,.20],[.27,.34]],[[.73,.66],[.73,.82]]];
+  const beaconLayouts=[
+    [[.36,.61],[.20,.73],[.17,.49],[.29,.31],[.49,.22],[.70,.31],[.83,.49],[.80,.71],[.63,.80],[.47,.67]],
+    [[.64,.62],[.80,.73],[.83,.48],[.70,.29],[.50,.21],[.30,.29],[.17,.48],[.20,.70],[.37,.80],[.53,.66]],
+    [[.31,.55],[.22,.34],[.43,.25],[.67,.27],[.79,.45],[.70,.66],[.48,.75],[.25,.70],[.18,.51],[.46,.45]],
+    [[.69,.55],[.78,.34],[.57,.25],[.33,.27],[.21,.45],[.30,.66],[.52,.75],[.75,.70],[.82,.51],[.54,.45]],
+    [[.48,.68],[.28,.77],[.18,.58],[.25,.37],[.45,.25],[.67,.30],[.81,.49],[.72,.70],[.54,.79],[.38,.55]],
+  ];
+  const borderBarriers=[[[.08,.11],[.23,.11]],[[.30,.11],[.45,.11]],[[.55,.11],[.70,.11]],[[.77,.11],[.92,.11]],[[.08,.90],[.23,.90]],[[.31,.90],[.46,.90]],[[.56,.90],[.71,.90]],[[.77,.90],[.92,.90]]];
   function routeTargetPoint(){return state.dock==='cargo'?{x:.14,y:.21}:state.dock==='passenger'?{x:.86,y:.21}:{x:.50,y:.84}}
   function segmentGap(a,b,c,d){if(segmentsIntersect(a,b,c,d))return 0;return Math.min(segmentDistance(a,c,d),segmentDistance(b,c,d),segmentDistance(c,a,b),segmentDistance(d,a,b))}
-  function challengePoints(config){const offset=(state.flightIndex%3-1)*.018,beacons=beaconLayouts[(config.layout+state.flightIndex)%beaconLayouts.length].slice(0,config.beacons).map(([x,y],index)=>({x:Math.max(.16,Math.min(.84,x+offset)),y,order:index+1})),solution=[{x:.5,y:.5},...beacons,routeTargetPoint()],occupied=[...beacons,{x:.5,y:.5},routeTargetPoint()],rotated=[...barrierCandidates.slice((config.layout+state.flightIndex)%barrierCandidates.length),...barrierCandidates.slice(0,(config.layout+state.flightIndex)%barrierCandidates.length)].map(([a,b])=>({a:{x:a[0],y:a[1]},b:{x:b[0],y:b[1]}})),barriers=rotated.filter(({a,b})=>occupied.every(point=>segmentDistance(point,a,b)>.09)&&solution.slice(1).every((point,index)=>segmentGap(solution[index],point,a,b)>.065)).slice(0,config.barriers).map((barrier,index)=>({...barrier,order:index+1}));return{barriers,beacons}}
+  function challengePoints(config){const offset=(state.flightIndex%3-1)*.012,beacons=beaconLayouts[(config.layout+state.flightIndex)%beaconLayouts.length].slice(0,config.beacons).map(([x,y],index)=>({x:Math.max(.15,Math.min(.85,x+offset)),y,order:index+1})),nodes=[{x:.5,y:.5},...beacons,routeTargetPoint()],barriers=[],safeRoute=[nodes[0]],blockedLeg=config.barriers?nodes.length-2:-1;for(let leg=0;leg<nodes.length-1;leg++){if(leg===blockedLeg){const a=nodes[leg],b=nodes[leg+1],dx=b.x-a.x,dy=b.y-a.y,length=Math.max(.001,Math.hypot(dx,dy)),nx=-dy/length,ny=dx/length,mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2},half=Math.min(.052,Math.max(.028,length*.16)),side=(config.layout+state.flightIndex)%2?1:-1,detour={x:Math.max(.07,Math.min(.93,mid.x+nx*side*(half+.12))),y:Math.max(.08,Math.min(.92,mid.y+ny*side*(half+.12)))};barriers.push({a:{x:mid.x-nx*half,y:mid.y-ny*half},b:{x:mid.x+nx*half,y:mid.y+ny*half},detour,leg,order:1});safeRoute.push(detour)}safeRoute.push(nodes[leg+1])}for(const [a,b] of borderBarriers.slice((config.layout+state.flightIndex)%borderBarriers.length).concat(borderBarriers).slice(0,Math.max(0,config.barriers-1))){barriers.push({a:{x:a[0],y:a[1]},b:{x:b[0],y:b[1]},order:barriers.length+1})}return{barriers,beacons,safeRoute}}
   function renderRouteChallenges(){const container=$('routeChallenges');container.innerHTML='';for(const barrier of state.barriers||[]){const node=document.createElement('span'),dx=barrier.b.x-barrier.a.x,dy=barrier.b.y-barrier.a.y;node.className='route-barrier';node.style.left=`${barrier.a.x*100}%`;node.style.top=`${barrier.a.y*100}%`;node.style.width=`${Math.hypot(dx,dy)*100}%`;node.style.transform=`rotate(${Math.atan2(dy,dx)}rad)`;container.append(node)}for(const beacon of state.beacons||[]){const node=document.createElement('span');node.className='route-beacon';node.dataset.order=`(${beacon.order})`;node.style.left=`${beacon.x*100}%`;node.style.top=`${beacon.y*100}%`;container.append(node)}}
   function renderRouteTrace(){const svg=$('routeTrace'),field=$('routeField'),progress=routeProgress(routePoints);svg.setAttribute('viewBox',`0 0 ${field.clientWidth} ${field.clientHeight}`);$('routeTracePath').setAttribute('points',routePoints.map(point=>`${point.x},${point.y}`).join(' '));svg.classList.toggle('invalid',progress.barrier||progress.selfCross);state.routePassed=progress.beacons;$('resourceText').textContent=t('nodeProgress',{done:progress.beacons,goal:state.beacons?.length||0});document.querySelectorAll('.route-beacon').forEach((node,index)=>node.classList.toggle('passed',index<progress.beacons))}
   function segmentDistance(point,a,b){const dx=b.x-a.x,dy=b.y-a.y,length=dx*dx+dy*dy;if(!length)return Math.hypot(point.x-a.x,point.y-a.y);const t=Math.max(0,Math.min(1,((point.x-a.x)*dx+(point.y-a.y)*dy)/length)),x=a.x+t*dx,y=a.y+t*dy;return Math.hypot(point.x-x,point.y-y)}
@@ -622,7 +628,7 @@
     state.selected = false;
     setDockKeyboardMode(false);
     const field=$('routeField'),space=routeFieldSpace(),start=routeFieldCenter($('flight'),space),target=routeFieldCenter(dock,space);
-    routePoints=[start,...(state.beacons||[]).map(beacon=>({x:beacon.x*field.clientWidth,y:beacon.y*field.clientHeight})),target].filter(Boolean);
+    routePoints=[start,...(state.safeRoute||[]).slice(1,-1).map(point=>({x:point.x*field.clientWidth,y:point.y*field.clientHeight})),target].filter(Boolean);
     const routeCheck=routeProgress(routePoints);
     state.routeViolation=routeCheck.barrier?'barrier':routeCheck.selfCross?'self':routeCheck.beacons<(state.beacons?.length||0)?'beacon':'';
     renderRouteTrace();
@@ -780,6 +786,7 @@
           done: state.done,
           goal: state.goal,
           errors: state.errors,
+          dock: state.dock,
           beacons: state.beacons?.length || 0,
           barriers: state.barriers?.length || 0,
           routePassed: state.routePassed || 0,
@@ -788,6 +795,9 @@
           medals: save.medals?.[state.shift] || 0,
         };
       },
+      safeRoute(){return(state.safeRoute||[]).map(point=>({...point}))},
+      challenges(){return{barriers:(state.barriers||[]).map(item=>JSON.parse(JSON.stringify(item))),beacons:(state.beacons||[]).map(item=>({...item})),target:routeTargetPoint()}},
+      auditSafeRoute(){const field=$("routeField"),points=(state.safeRoute||[]).map(point=>({x:point.x*field.clientWidth,y:point.y*field.clientHeight}));return routeProgress(points)},
     };
   }
   localize();

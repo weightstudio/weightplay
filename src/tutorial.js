@@ -23,14 +23,6 @@
   };
 
   const tutorials = {
-    "animal-frontier-dominion": {
-      title: { en: "Secure the crystal frontier.", "zh-Hant": "\u5b88\u4f4f\u6c34\u6676\u908a\u5883\u3002" },
-      steps: [
-        { icon: "1", en: ["Choose a Territory", "Select a glowing territory connected to land you already control."], "zh-Hant": ["\u9078\u64c7\u9818\u5730", "\u9ede\u9078\u8207\u5df2\u65b9\u9818\u5730\u76f8\u9023\u7684\u767c\u5149\u5340\u57df\u3002"] },
-        { icon: "2", en: ["Scout the Defender", "Spend command to reveal the hidden terrain rule and defender role."], "zh-Hant": ["\u5075\u5bdf\u5b88\u8ecd", "\u82b1\u8cbb\u6307\u63ee\u9ede\uff0c\u63ed\u9732\u96b1\u85cf\u7684\u5730\u5f62\u898f\u5247\u8207\u5b88\u8ecd\u985e\u578b\u3002"] },
-        { icon: "3", en: ["Counter and March", "Choose the formation that counters the defender, then capture a route to the citadel."], "zh-Hant": ["\u514b\u5236\u4e26\u9032\u8ecd", "\u9078\u64c7\u514b\u5236\u5b88\u8ecd\u7684\u9663\u578b\uff0c\u518d\u958b\u95e2\u901a\u5f80\u8981\u585e\u7684\u8def\u7dda\u3002"] },
-      ],
-    },
     "animal-starlight-trails": {
       title: { en: "Restore every starlight trail.", "zh-Hant": "修復每一條動物星路。" },
       steps: [
