@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "tiny-weather-rescue";
-  const supportedLocales = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru"];
+  const supportedLocales = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const localeLabels = {
     en: "English",
     "zh-Hant": "繁體中文",
@@ -13,6 +13,8 @@
     de: "Deutsch",
     it: "Italiano",
     ru: "Русский",
+    hi: "हिन्दी",
+    ar: "العربية",
   };
   document.querySelector(".weather-game")?.setAttribute("data-wp-canvas-max-width", "920");
   const localeKey = "weightplayLocale";
@@ -309,7 +311,7 @@
       back: "Indietro",
       backToStages: "Torna alle missioni",
       stageListAria: "Elenco delle missioni di aiuto",
-      boardAria: "Spazio interattivo per la cura animale",
+      boardAria: "Area giochi per la cura degli animali",
       chooseStage: "Scegli una missione di aiuto",
       menuHint: "Aiuta il piccolo animale: tocca l'oggetto giusto oppure trascinalo sull'animale.",
       start: "Inizia il gioco",
@@ -537,6 +539,7 @@
 
   function localizeStatic() {
     document.documentElement.lang = supportedLocales.includes(locale) ? locale : "en";
+    document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     document.title = t("seoTitle");
     setMeta('meta[name="description"]', "content", t("seoDescription"));
     setMeta('meta[property="og:title"]', "content", t("ogTitle"));

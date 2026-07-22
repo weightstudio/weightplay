@@ -107,7 +107,7 @@
   function encounterRows(stage){
     const random=seeded(stage.n*17+stage.layout.pattern),rows=[];
     for(let row=0;row<stage.layout.rows;row+=1){
-      const rewardInterval=stage.chapter<2?5:6,rewardWave=row===2||row%rewardInterval===rewardInterval-1,rewardLane=(row+stage.layout.pattern)%3,powerTier=Math.max(0,Math.floor((row+1)/rewardInterval)),entries=[];
+      const rewardInterval=7+Math.min(2,stage.chapter),rewardWave=row===3||(row>3&&(row+1)%rewardInterval===0),rewardLane=(row+stage.layout.pattern)%3,powerTier=Math.max(0,Math.floor((row+1)/rewardInterval)),entries=[];
       for(let lane=0;lane<3;lane+=1){
         let kind=rewardWave&&lane===rewardLane?(stage.shields&&powerTier%2===0?"shield":"power"):(stage.counter&&random()<.14?"bomb":"enemy");
         const finalBoss=stage.boss&&row===stage.layout.rows-1&&lane===1;if(stage.boss&&row===stage.layout.rows-1)kind="enemy";
@@ -210,7 +210,7 @@
   Promise.all([loadImages(),new Promise((resolve)=>setTimeout(resolve,350))]).then(()=>{$("loadingFill").style.width="100%";setTimeout(()=>{$("loading").hidden=true;showScreen("main")},160)});
   applyLocale();
   window.__animalPrismBattalionTest={
-    stages,startBattle,setLane,setAim(value){if(run){const x=Math.max(0,Math.min(1,Number(value))),lane=laneCenters.reduce((best,center,index)=>Math.abs(center-x)<Math.abs(laneCenters[best]-x)?index:best,0);setLane(lane)}},activateOverdrive,
+    stages,startBattle,setLane,showMain(){run=null;showScreen("main")},setAim(value){if(run){const x=Math.max(0,Math.min(1,Number(value))),lane=laneCenters.reduce((best,center,index)=>Math.abs(center-x)<Math.abs(laneCenters[best]-x)?index:best,0);setLane(lane)}},activateOverdrive,
     advance(seconds,step=1/60){const iterations=Math.ceil(seconds/step);for(let i=0;i<iterations&&run&&!run.finished;i+=1)update(step);draw()},
     configureEncounter(id,patch){if(!run)return null;const entry=run.encounters.find(item=>item.id===id)||run.encounters[Math.max(0,Math.trunc(Number(id))||0)];if(entry)Object.assign(entry,patch);return entry?{...entry}:null},setTime(seconds){if(run)run.time=Number(seconds)},clearEnemies(){if(run)for(const entry of run.encounters)if(entry.kind==="enemy")entry.resolved=true},finish,
     grantProgress(unlocked=3,shards=30){save.unlocked=Math.max(1,Math.min(30,unlocked));save.shards=Math.max(save.shards,shards);persist();renderStage();renderLab()},setUpgrades(rate=0,power=0,armor=0){save.upgrades=normalizeSave({upgrades:{rate,power,armor}}).upgrades;persist();renderLab()},resetSave(){save=defaultSave();persist();applyLocale()},

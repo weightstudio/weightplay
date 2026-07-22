@@ -730,6 +730,7 @@ canvas {
   display: block;
   width: 100%;
   height: 100%;
+  contain: size;
   touch-action: none;
 }
 
@@ -1258,6 +1259,7 @@ body.crystal-playing #gamePanel.game-panel { display: grid; grid-template-rows: 
 body.crystal-playing .canvas-wrap { width: min(100%, 366px); max-width: 100%; height: auto; max-height: 100%; justify-self: center; align-self: center; aspect-ratio: 32 / 55; }
 body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .canvas-wrap {
   width: min(100%, 366px) !important;
+  min-width: 0 !important;
   max-width: 100% !important;
   height: auto !important;
   max-height: 100% !important;

@@ -785,6 +785,12 @@
       && renderCanvas.height === height) return false;
     renderCanvas.width = width;
     renderCanvas.height = height;
+    // Keep the visible output surface on the same physical-pixel budget as
+    // the render layer. CSS preserves the logical playfield geometry and
+    // pointer mapping, so a larger fixed backing store only adds a second
+    // full-frame upscale/composite on every animation frame.
+    canvas.width = width;
+    canvas.height = height;
     backingScale = Math.min(width / W, height / H);
     ctx.setTransform(backingScale, 0, 0, backingScale, 0, 0);
     ctx.imageSmoothingEnabled = true;
@@ -1799,7 +1805,7 @@
       ctx.restore();
     });
     state.floaters.forEach(drawFloater);
-    displayCtx.drawImage(renderCanvas, 0, 0, renderCanvas.width, renderCanvas.height, 0, 0, canvas.width, canvas.height);
+    displayCtx.drawImage(renderCanvas, 0, 0);
   }
 
   function drawStageHazards(frameNow) {

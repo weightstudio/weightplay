@@ -343,21 +343,34 @@
     };
   }
   const beaconLayouts=[
-    [[.36,.61],[.20,.73],[.17,.49],[.29,.31],[.49,.22],[.70,.31],[.83,.49],[.80,.71],[.63,.80],[.47,.67]],
-    [[.64,.62],[.80,.73],[.83,.48],[.70,.29],[.50,.21],[.30,.29],[.17,.48],[.20,.70],[.37,.80],[.53,.66]],
-    [[.31,.55],[.22,.34],[.43,.25],[.67,.27],[.79,.45],[.70,.66],[.48,.75],[.25,.70],[.18,.51],[.46,.45]],
-    [[.69,.55],[.78,.34],[.57,.25],[.33,.27],[.21,.45],[.30,.66],[.52,.75],[.75,.70],[.82,.51],[.54,.45]],
-    [[.48,.68],[.28,.77],[.18,.58],[.25,.37],[.45,.25],[.67,.30],[.81,.49],[.72,.70],[.54,.79],[.38,.55]],
+    [[.38,.54],[.24,.575],[.43,.61],[.68,.645],[.80,.68],[.62,.715],[.36,.75],[.20,.785],[.42,.82],[.66,.855]],
+    [[.64,.46],[.80,.425],[.61,.39],[.36,.355],[.20,.32],[.38,.285],[.64,.25],[.81,.215],[.58,.18],[.34,.145]],
+    [[.54,.36],[.575,.22],[.61,.42],[.645,.68],[.68,.79],[.715,.61],[.75,.34],[.785,.19],[.82,.43],[.855,.66]],
+    [[.46,.64],[.425,.79],[.39,.60],[.355,.34],[.32,.20],[.285,.39],[.25,.66],[.215,.81],[.18,.58],[.145,.35]],
+    [[.34,.54],[.52,.575],[.76,.61],[.64,.645],[.38,.68],[.20,.715],[.44,.75],[.70,.785],[.82,.82],[.58,.855]],
   ];
-  const borderBarriers=[[[.08,.11],[.23,.11]],[[.30,.11],[.45,.11]],[[.55,.11],[.70,.11]],[[.77,.11],[.92,.11]],[[.08,.90],[.23,.90]],[[.31,.90],[.46,.90]],[[.56,.90],[.71,.90]],[[.77,.90],[.92,.90]]];
+  const borderBarriers=[[[.08,.04],[.23,.04]],[[.30,.04],[.45,.04]],[[.55,.04],[.70,.04]],[[.77,.04],[.92,.04]],[[.08,.96],[.23,.96]],[[.31,.96],[.46,.96]],[[.56,.96],[.71,.96]],[[.77,.96],[.92,.96]]];
   function routeTargetPoint(){return state.dock==='cargo'?{x:.14,y:.21}:state.dock==='passenger'?{x:.86,y:.21}:{x:.50,y:.84}}
   function segmentGap(a,b,c,d){if(segmentsIntersect(a,b,c,d))return 0;return Math.min(segmentDistance(a,c,d),segmentDistance(b,c,d),segmentDistance(c,a,b),segmentDistance(d,a,b))}
-  function challengePoints(config){const offset=(state.flightIndex%3-1)*.012,beacons=beaconLayouts[(config.layout+state.flightIndex)%beaconLayouts.length].slice(0,config.beacons).map(([x,y],index)=>({x:Math.max(.15,Math.min(.85,x+offset)),y,order:index+1})),nodes=[{x:.5,y:.5},...beacons,routeTargetPoint()],barriers=[],safeRoute=[nodes[0]],blockedLeg=config.barriers?nodes.length-2:-1;for(let leg=0;leg<nodes.length-1;leg++){if(leg===blockedLeg){const a=nodes[leg],b=nodes[leg+1],dx=b.x-a.x,dy=b.y-a.y,length=Math.max(.001,Math.hypot(dx,dy)),nx=-dy/length,ny=dx/length,mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2},half=Math.min(.052,Math.max(.028,length*.16)),side=(config.layout+state.flightIndex)%2?1:-1,detour={x:Math.max(.07,Math.min(.93,mid.x+nx*side*(half+.12))),y:Math.max(.08,Math.min(.92,mid.y+ny*side*(half+.12)))};barriers.push({a:{x:mid.x-nx*half,y:mid.y-ny*half},b:{x:mid.x+nx*half,y:mid.y+ny*half},detour,leg,order:1});safeRoute.push(detour)}safeRoute.push(nodes[leg+1])}for(const [a,b] of borderBarriers.slice((config.layout+state.flightIndex)%borderBarriers.length).concat(borderBarriers).slice(0,Math.max(0,config.barriers-1))){barriers.push({a:{x:a[0],y:a[1]},b:{x:b[0],y:b[1]},order:barriers.length+1})}return{barriers,beacons,safeRoute}}
+  function challengePoints(config){
+    const offset=(state.flightIndex%3-1)*.012,beacons=beaconLayouts[(config.layout+state.flightIndex)%beaconLayouts.length].slice(0,config.beacons).map(([x,y],index)=>({x:Math.max(.15,Math.min(.85,x+offset)),y,order:index+1})),nodes=[{x:.5,y:.5},...beacons,routeTargetPoint()],barriers=[],safeRoute=[nodes[0]],blockedLeg=config.barriers?nodes.length-2:-1,metric=point=>({x:point.x*.63,y:point.y});
+    for(let leg=0;leg<nodes.length-1;leg++){
+      if(leg===blockedLeg){
+        const a=nodes[leg],b=nodes[leg+1],dx=b.x-a.x,dy=b.y-a.y,length=Math.max(.001,Math.hypot(dx,dy)),nx=-dy/length,ny=dx/length,mid={x:a.x+dx*.78,y:a.y+dy*.78},half=Math.min(.038,Math.max(.024,length*.11)),barrier={a:{x:mid.x-nx*half,y:mid.y-ny*half},b:{x:mid.x+nx*half,y:mid.y+ny*half},leg,order:1};
+        const blockedA=metric(barrier.a),blockedB=metric(barrier.b),clearOfEarlier=safeRoute.slice(1).every((point,index)=>segmentGap(metric(safeRoute[index]),metric(point),blockedA,blockedB)>.035),candidates=[];for(const distance of [half+.12,half+.19,half+.26])for(const side of [1,-1])candidates.push({x:Math.max(.06,Math.min(.94,mid.x+nx*side*distance)),y:Math.max(.07,Math.min(.93,mid.y+ny*side*distance))});
+        const clear=detour=>{const trial=[...safeRoute,detour,b].map(metric);for(let index=1;index<trial.length;index++)if(segmentGap(trial[index-1],trial[index],blockedA,blockedB)<.025)return false;for(let index=1;index<trial.length;index++)for(let prior=1;prior<index-2;prior++)if(segmentsIntersect(trial[prior-1],trial[prior],trial[index-1],trial[index]))return false;return true},detour=candidates.find(clear);if(clearOfEarlier&&detour){barrier.detour=detour;barriers.push(barrier);safeRoute.push(detour)}
+      }
+      safeRoute.push(nodes[leg+1])
+    }
+    for(const [a,b] of borderBarriers.slice((config.layout+state.flightIndex)%borderBarriers.length).concat(borderBarriers).slice(0,Math.max(0,config.barriers-barriers.length)))barriers.push({a:{x:a[0],y:a[1]},b:{x:b[0],y:b[1]},order:barriers.length+1});
+    return{barriers,beacons,safeRoute}
+  }
   function renderRouteChallenges(){const container=$('routeChallenges');container.innerHTML='';for(const barrier of state.barriers||[]){const node=document.createElement('span'),dx=barrier.b.x-barrier.a.x,dy=barrier.b.y-barrier.a.y;node.className='route-barrier';node.style.left=`${barrier.a.x*100}%`;node.style.top=`${barrier.a.y*100}%`;node.style.width=`${Math.hypot(dx,dy)*100}%`;node.style.transform=`rotate(${Math.atan2(dy,dx)}rad)`;container.append(node)}for(const beacon of state.beacons||[]){const node=document.createElement('span');node.className='route-beacon';node.dataset.order=`(${beacon.order})`;node.style.left=`${beacon.x*100}%`;node.style.top=`${beacon.y*100}%`;container.append(node)}}
   function renderRouteTrace(){const svg=$('routeTrace'),field=$('routeField'),progress=routeProgress(routePoints);svg.setAttribute('viewBox',`0 0 ${field.clientWidth} ${field.clientHeight}`);$('routeTracePath').setAttribute('points',routePoints.map(point=>`${point.x},${point.y}`).join(' '));svg.classList.toggle('invalid',progress.barrier||progress.selfCross);state.routePassed=progress.beacons;$('resourceText').textContent=t('nodeProgress',{done:progress.beacons,goal:state.beacons?.length||0});document.querySelectorAll('.route-beacon').forEach((node,index)=>node.classList.toggle('passed',index<progress.beacons))}
   function segmentDistance(point,a,b){const dx=b.x-a.x,dy=b.y-a.y,length=dx*dx+dy*dy;if(!length)return Math.hypot(point.x-a.x,point.y-a.y);const t=Math.max(0,Math.min(1,((point.x-a.x)*dx+(point.y-a.y)*dy)/length)),x=a.x+t*dx,y=a.y+t*dy;return Math.hypot(point.x-x,point.y-y)}
   function segmentsIntersect(a,b,c,d){const cross=(p,q,r)=>(q.x-p.x)*(r.y-p.y)-(q.y-p.y)*(r.x-p.x),abC=cross(a,b,c),abD=cross(a,b,d),cdA=cross(c,d,a),cdB=cross(c,d,b),epsilon=.00001;return Math.abs(abC)<epsilon&&segmentDistance(c,a,b)<epsilon||Math.abs(abD)<epsilon&&segmentDistance(d,a,b)<epsilon||Math.abs(cdA)<epsilon&&segmentDistance(a,c,d)<epsilon||Math.abs(cdB)<epsilon&&segmentDistance(b,c,d)<epsilon||(abC>0)!==(abD>0)&&(cdA>0)!==(cdB>0)}
   function routeProgress(points){const field=$('routeField'),width=field.clientWidth,height=field.clientHeight,scale=Math.min(width,height);let beaconIndex=0,barrier=false,selfCross=false;for(let index=1;index<points.length;index++){const a=points[index-1],b=points[index];for(const blocked of state.barriers||[]){const c={x:blocked.a.x*width,y:blocked.a.y*height},d={x:blocked.b.x*width,y:blocked.b.y*height};if(segmentGap(a,b,c,d)<Math.max(7,scale*.018))barrier=true}while(state.beacons?.[beaconIndex]){const beacon=state.beacons[beaconIndex],point={x:beacon.x*width,y:beacon.y*height};if(segmentDistance(point,a,b)<Math.min(width,height)*.07)beaconIndex++;else break}for(let prior=1;prior<index-2;prior++)if(segmentsIntersect(points[prior-1],points[prior],a,b)){selfCross=true;break}}return{barrier,selfCross,beacons:beaconIndex,valid:!barrier&&!selfCross&&beaconIndex===(state.beacons?.length||0)}}
+  function repairSafeRoute(){const field=$('routeField'),space=routeFieldSpace(),flight=routeFieldCenter($('flight'),space),start=flight?{x:flight.x/field.clientWidth,y:flight.y/field.clientHeight}:{x:.5,y:.5},target=routeTargetPoint(),base=[start,...(state.beacons||[]).map(point=>({x:point.x,y:point.y}))],toPixels=route=>route.map(point=>({x:point.x*field.clientWidth,y:point.y*field.clientHeight})),valid=route=>routeProgress(toPixels(route)).valid,preferred=state.barriers?.[0]?.detour?[state.barriers[0].detour]:[],direct=[...base,...preferred,target];if(valid(direct)){state.safeRoute=direct;return true}const edge=[];for(const value of [.10,.20,.30,.40,.50,.60,.70,.80,.90])edge.push({x:.055,y:value},{x:.945,y:value},{x:value,y:.065},{x:value,y:.935});for(const point of edge){const route=[...base,point,target];if(valid(route)){state.safeRoute=route;return true}}for(const first of edge)for(const second of edge){const route=[...base,first,second,target];if(valid(route)){state.safeRoute=route;return true}}const grid=[];for(const x of [.08,.22,.36,.50,.64,.78,.92])for(const y of [.08,.22,.36,.50,.64,.78,.92])grid.push({x,y});for(const first of grid)for(const second of grid){const route=[...base,first,second,target];if(valid(route)){state.safeRoute=route;return true}}state.safeRoute=[...base,target];return false}
   function renderGuidanceLine() {
     const space = routeFieldSpace();
     const flight = routeFieldCenter($('flight'), space);
@@ -394,6 +407,7 @@
     routePoints=[];
     $('routeTracePath').setAttribute('points','');
     renderRouteChallenges();
+    repairSafeRoute();
     state.selected = false;
     setDockKeyboardMode(false);
     $('flight').style.backgroundImage = `url('../../assets/animal-skyport-dispatch-airship-${kind}.webp')`;
