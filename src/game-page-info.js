@@ -7566,4 +7566,18 @@
   localizedGameplayProfiles["zh-Hant"]["animal-word-trails"] = { gameplay: "閱讀文字路徑益智", genre: ["文字", "益智", "動物"] };
   localizedGames["zh-Hans"]["animal-word-trails"] = { ...localizedGames["zh-Hant"]["animal-word-trails"], title: "动物文字小径", gameplay: "阅读文字路径益智" };
   localizedGameplayProfiles["zh-Hans"]["animal-word-trails"] = { gameplay: "阅读文字路径益智", genre: ["文字", "益智", "动物"] };
+  games["animal-mosaic-clues"] = {
+    title: "Animal Mosaic Clues", difficulty: "Easy to Challenging", time: "2-10 minutes per mosaic", gameplay: "Nonogram Mosaic Logic", genre: ["Puzzle", "Strategy", "Animal"], skills: ["Logic", "Focus", "Deduction"],
+    guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", hideScoreBands: true,
+    intro: "Read every row and column clue to uncover a hidden animal portrait.",
+    story: ["Every number describes a continuous run. Complete the intersecting clues to restore each hidden animal mosaic."],
+    systems: ["Paint cells that must be filled, cross cells that must stay empty, and use intersecting clues to solve each mosaic without guessing.", "Undo restores the previous mark, Restart restores the authored puzzle, and Hint explains a forced deduction without changing the board."],
+    how: ["Read each row and column run from the outer edge inward.", "Use Paint for confirmed cells and Mark for confirmed empty cells.", "Complete every run to reveal the hidden animal."],
+    strategyTips: ["Start with rows or columns whose runs nearly fill the available space.", "Use completed runs to mark the remaining cells in that line as empty.", "Compare crossing clues before committing a cell."],
+    progression: ["Six chapters grow from guided 5×5 signs to deduction-rich 12×12 portraits across 30 uniquely solvable mosaics."],
+    designNote: "Every board has exactly one solution and is designed to be completed through deduction rather than guessing.",
+    parent: "No account is required. Progress stays in this browser and may reset if site storage is cleared.",
+    faq: [["How many mosaics are included?", "There are 30 authored mosaics."], ["Do I need to guess?", "No. Every mosaic has exactly one solution."], ["Does progress save?", "Yes. Clears and unlocks are stored locally in this browser."]]
+  };
+  gameplayProfiles["animal-mosaic-clues"] = { gameplay: "Nonogram Mosaic Logic", genre: ["Puzzle", "Strategy", "Animal"] };
 })();

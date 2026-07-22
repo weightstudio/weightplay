@@ -264,9 +264,13 @@
     nodes.resultBest.textContent = t(improved ? "newBest" : "personalBest", { score:record.score, moves:record.moves, time:formatTime(record.seconds) });
     nodes.resultBest.classList.toggle("new-best", improved);
     nodes.resultReport.textContent = t("result", { pairs:state.removedPairs, moves:state.moves });
-    nodes.nextBtn.classList.toggle("hidden", stageIndex >= habitats.length - 1);
+    const terminal = stageIndex >= habitats.length - 1;
+    nodes.nextBtn.classList.toggle("hidden", terminal);
+    nodes.nextBtn.classList.toggle("primary", !terminal);
+    nodes.stagesBtn.classList.toggle("primary", terminal);
+    nodes.retryBtn.classList.remove("primary");
     setScreen("result");
-    requestAnimationFrame(() => (nodes.nextBtn.classList.contains("hidden") ? nodes.retryBtn : nodes.nextBtn).focus({ preventScroll:true }));
+    requestAnimationFrame(() => (terminal ? nodes.stagesBtn : nodes.nextBtn).focus({ preventScroll:true }));
   }
   function openStageFromMain() {
     nodes.loadingScreen.classList.remove("hidden");

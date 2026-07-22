@@ -342,18 +342,11 @@
       y: (rect.top + rect.height / 2 - space.rect.top) / space.scaleY,
     };
   }
-  const beaconLayouts=[
-    [[.38,.54],[.24,.575],[.43,.61],[.68,.645],[.80,.68],[.62,.715],[.36,.75],[.20,.785],[.42,.82],[.66,.855]],
-    [[.64,.46],[.80,.425],[.61,.39],[.36,.355],[.20,.32],[.38,.285],[.64,.25],[.81,.215],[.58,.18],[.34,.145]],
-    [[.54,.36],[.575,.22],[.61,.42],[.645,.68],[.68,.79],[.715,.61],[.75,.34],[.785,.19],[.82,.43],[.855,.66]],
-    [[.46,.64],[.425,.79],[.39,.60],[.355,.34],[.32,.20],[.285,.39],[.25,.66],[.215,.81],[.18,.58],[.145,.35]],
-    [[.34,.54],[.52,.575],[.76,.61],[.64,.645],[.38,.68],[.20,.715],[.44,.75],[.70,.785],[.82,.82],[.58,.855]],
-  ];
   const borderBarriers=[[[.08,.04],[.23,.04]],[[.30,.04],[.45,.04]],[[.55,.04],[.70,.04]],[[.77,.04],[.92,.04]],[[.08,.96],[.23,.96]],[[.31,.96],[.46,.96]],[[.56,.96],[.71,.96]],[[.77,.96],[.92,.96]]];
   const interiorBarriers=[[[.08,.30],[.31,.30]],[[.67,.34],[.92,.34]],[[.10,.70],[.34,.70]],[[.64,.76],[.90,.76]],[[.24,.12],[.24,.36]],[[.76,.53],[.76,.78]],[[.34,.43],[.52,.28]],[[.49,.72],[.68,.57]],[[.15,.48],[.34,.60]],[[.66,.44],[.86,.56]]];
   function routeTargetPoint(){return state.dock==='cargo'?{x:.14,y:.21}:state.dock==='passenger'?{x:.86,y:.21}:{x:.50,y:.84}}
   function segmentGap(a,b,c,d){if(segmentsIntersect(a,b,c,d))return 0;return Math.min(segmentDistance(a,c,d),segmentDistance(b,c,d),segmentDistance(c,a,b),segmentDistance(d,a,b))}
-  function distributedBeacons(config){const start={x:.5,y:.5},target=routeTargetPoint(),count=config.beacons,dx=target.x-start.x,dy=target.y-start.y,length=Math.max(.001,Math.hypot(dx,dy)),nx=-dy/length,ny=dx/length,phase=(config.layout+state.flightIndex)%5*.47,amplitude=.20+Math.min(.08,count*.008);return Array.from({length:count},(_,index)=>{const progress=(index+1)/(count+1),wave=Math.sin(progress*Math.PI*(1.7+(config.layout%3)*.24)+phase)*amplitude*(.7+Math.sin(progress*Math.PI)*.3);return{x:Math.max(.12,Math.min(.88,start.x+dx*progress+nx*wave)),y:Math.max(.12,Math.min(.88,start.y+dy*progress+ny*wave)),order:index+1}})}
+  function distributedBeacons(config){const start={x:.5,y:.5},target=routeTargetPoint(),count=config.beacons,dx=target.x-start.x,dy=target.y-start.y,length=Math.max(.001,Math.hypot(dx,dy)),nx=-dy/length,ny=dx/length,variant=(config.layout+state.flightIndex)%2,baseAmplitude=.28+Math.min(.08,count*.008);return Array.from({length:count},(_,index)=>{const progress=(index+1)/(count+1),side=(index+variant)%2?-1:1,amplitude=baseAmplitude*(.8+Math.sin(progress*Math.PI)*.2);return{x:Math.max(.1,Math.min(.9,start.x+dx*progress+nx*side*amplitude)),y:Math.max(.1,Math.min(.9,start.y+dy*progress+ny*side*amplitude)),order:index+1}})}
   function challengePoints(config){
     const beacons=distributedBeacons(config),nodes=[{x:.5,y:.5},...beacons,routeTargetPoint()],barriers=[],safeRoute=[nodes[0]],blockedLeg=config.barriers?nodes.length-2:-1,metric=point=>({x:point.x*.63,y:point.y});
     for(let leg=0;leg<nodes.length-1;leg++){
