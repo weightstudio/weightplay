@@ -527,6 +527,25 @@
     const actualLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale;
     const guide = document.querySelector(".game-page-info");
     if (!guide) return;
+    if (actualLocale === "es") {
+      guide.setAttribute("aria-label", "Información del juego Fortaleza de Orbes Animal");
+      guide.innerHTML = `
+        <div class="game-info-hero">
+          <div class="game-info-title"><span class="game-info-kicker">Guía original de WeightPlay</span><h2>Fortaleza de Orbes Animal</h2><p>Fortaleza de Orbes Animal es una campaña de defensa con 30 rutas. Apunta un orbe espiritual, anticipa sus rebotes y protege el núcleo de cristal durante tres oleadas continuas. Cada región añade enemigos, obstáculos y jefes con reglas propias; entre oleadas eliges una bendición y entre rutas mejoras las salas de la fortaleza con Piedras Estelares.</p></div>
+          <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Defensa de rebotes roguelite</strong></div><div class="game-info-fact"><span>Género</span><strong>Rebotes · Acción estratégica · Animales</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Difícil</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>5-8 minutos por ruta</strong></div><div class="game-info-fact"><span>Habilidades practicadas</span><strong>Lógica · Resolución de problemas · Concentración</strong></div></div>
+        </div>
+        <div class="game-info-sections">
+          <div class="game-info-section"><h3>Mundo y misión</h3><p>La Fortaleza de Cristal se alza donde confluyen seis caminos guardianes: Bosque de Cristal, Forja de Espinas, Ruinas Lunares, Bóveda de Espejos, Bastión de Tormenta y Corazón del Eclipse. Un pulso inestable del núcleo atrajo a las bestias sombrías. Leo, el guardián de los orbes, debe defender cada camino desde la cámara del lanzador.</p><p>Superar una ruta permite que los equipos de reparación vuelvan a abrirla. Cada quinta ruta culmina contra un jefe regional distinto. Completar la ruta 30 reconecta los seis caminos y detiene el pulso corrupto.</p></div>
+          <div class="game-info-section"><h3>Cómo funcionan los sistemas</h3><p><strong>Apuntar y rebotar:</strong> arrastra desde el lanzador para ver la trayectoria inicial y suelta para disparar. Los rebotes contra muros y pilares pueden alcanzar enemigos ocultos detrás de otras formaciones.</p><p><strong>Tres oleadas:</strong> las dos primeras presentan la regla de la ruta. La tercera usa una formación de élite o uno de los seis jefes regionales. Tras las oleadas 1 y 2, el combate se detiene hasta que eliges una bendición; después continúa con los puntos de vida del núcleo y las mejoras actuales.</p><p><strong>Enemigos especiales:</strong> la armadura exige varios impactos; las anclas protegen a aliados cercanos; los espectros lunares alternan entre estados sólidos e intangibles; los divisores crean fragmentos; y los cargadores anuncian su carril antes de atacar.</p><p><strong>Pilares espejo:</strong> las rutas avanzadas añaden superficies de rebote dentro de la arena. Algunos pilares se mueven, por lo que una trayectoria útil puede cambiar durante la misma oleada.</p><p><strong>Crecimiento:</strong> las bendiciones modifican la incursión actual. Las Piedras Estelares mejoran de forma permanente la Forja de Orbes, el Escudo del Núcleo, la Guarida de Compañeros y la Torre de Exploración. Repetir las tres bendiciones cuesta tres Diamantes, requiere confirmación y nunca es obligatorio.</p></div>
+          <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Elige una ruta desbloqueada y lee su nombre, regla y advertencia.</li><li>Arrastra desde Leo hacia el ángulo deseado y revisa la trayectoria prevista.</li><li>Suelta para disparar. Observa armaduras, fases, cargas, anclas y señales de jefe antes del siguiente tiro.</li><li>Después de las oleadas 1 y 2, elige una bendición para continuar.</li><li>Mantén los puntos de vida del núcleo por encima de cero hasta superar la tercera oleada.</li><li>Vuelve al mapa para gastar Piedras Estelares, repetir rutas o avanzar a la siguiente.</li></ol></div>
+          <div class="game-info-section game-info-strategy"><h3>Consejos de estrategia</h3><ul><li>No apuntes siempre al enemigo más cercano: anclas, divisores y espectros del fondo pueden ser objetivos prioritarios.</li><li>Un contorno discontinuo indica que el enemigo es intangible. Prepara el ángulo y dispara cuando vuelva a ser sólido.</li><li>Los pilares móviles son superficies útiles. Apunta hacia el lugar donde estarán cuando llegue el orbe.</li><li>Contra cargadores y el Guardián Cuerno de Tempestad, espera la recuperación posterior a la carga.</li><li>Escudo del Núcleo y Recarga Rápida aportan estabilidad; Orbe Gigante y Luz Penetrante acortan las fases peligrosas.</li><li>Reserva la repetición opcional para una selección que no ayude contra la regla actual. Toda la campaña se puede completar sin Diamantes.</li></ul></div>
+          <div class="game-info-section"><h3>Campaña y dificultad</h3><p>Las rutas 1-5 enseñan disparos directos, rebotes contra una pared y prioridad de objetivos. Las rutas 6-10 añaden armadura y anclas. Las rutas 11-15 introducen fases y puertas móviles. Las rutas 16-20 incorporan pilares y divisores. Las rutas 21-25 exigen leer cargas y pulsos de tormenta. Las rutas 26-30 combinan todas las reglas y culminan contra el Emperador del Núcleo Vacío.</p></div>
+          <div class="game-info-section"><h3>Nota de diseño</h3><p>Cada ruta usa tres oleadas cortas para concentrar la partida en un problema de puntería. Las señales visuales muestran armadura, protección, fase y carga sin exigir un panel de reglas durante el combate. En teléfono se apunta arrastrando; con teclado, las flechas ajustan el ángulo y Espacio o Enter disparan. La trayectoria del tiro es el recurso estratégico principal.</p></div>
+          <div class="game-info-section game-info-parent"><h3>Información del jugador y guardado</h3><p>El navegador guarda localmente la mejor ruta desbloqueada, las Piedras Estelares, el número de partidas y los niveles de las cuatro salas. No se necesita una cuenta. Borrar los datos del sitio puede eliminar el progreso. Las repeticiones con Diamantes son opcionales y muestran el saldo antes y después. El Informe de habilidades describe únicamente la partida; no es una medición formal.</p></div>
+          <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cuál es el objetivo de una ruta?</dt><dd>Protege el núcleo durante tres oleadas. Superar la tercera guarda la ruta, entrega Piedras Estelares y desbloquea la siguiente.</dd></div><div><dt>¿Todas las rutas usan el mismo jefe?</dt><dd>No. Cada quinta ruta tiene un jefe regional distinto; las demás terminan con formaciones de élite diseñadas para esa ruta.</dd></div><div><dt>¿Por qué mi orbe atravesó a un enemigo lunar?</dt><dd>El contorno discontinuo indica una fase intangible. Espera a que el enemigo vuelva a ser sólido.</dd></div><div><dt>¿Qué hacen los pilares espejo?</dt><dd>Son superficies de rebote dentro de la arena. Los pilares avanzados se mueven y cambian las trayectorias disponibles.</dd></div><div><dt>¿Necesito Diamantes para terminar?</dt><dd>No. Solo sirven para repetir una vez las tres bendiciones de una oleada tras una confirmación.</dd></div><div><dt>¿Qué ocurre tras fallar?</dt><dd>La incursión termina, pero conservas las Piedras Estelares obtenidas y la mejor ruta desbloqueada.</dd></div></dl></div>
+        </div>`;
+      return;
+    }
     const replacements = actualLocale === "ja"
       ? [
           ["WEIGHTPLAY ORIGINAL GAME GUIDE", "WEIGHTPLAY オリジナルゲームガイド"],
@@ -545,23 +564,7 @@
         ]
       : actualLocale === "zh-Hans"
       ? [["牠", "它"], ["舊", "旧"]]
-      : actualLocale === "es"
-        ? [
-            ["Animal Orb Fortress", "Fortaleza de Orbes Animal"],
-            ["Clearing Wave 3", "Superar la tercera oleada"],
-            ["Star Stones", "Piedras Estelares"],
-            ["Bigger Orb", "Orbe gigante"],
-            ["Split Orb", "Orbe dividido"],
-            ["Piercing Shine", "Luz penetrante"],
-            ["Faster Recharge", "Carga rápida"],
-            ["Core Shield", "Escudo del núcleo"],
-            ["Scout Magnet", "Imán explorador"],
-            ["Orb Forge", "Forja de orbes"],
-            ["Companion Den", "Guarida de compañeros"],
-            ["Scout Tower", "Torre de exploración"],
-            ["Result", "Resultado"],
-          ]
-        : [];
+      : [];
     if (!replacements.length) return;
     const walker = document.createTreeWalker(guide, NodeFilter.SHOW_TEXT);
     let node = walker.nextNode();
@@ -1714,6 +1717,7 @@
     state.rerolled = false;
     spawnWave();
     state.mode = "running";
+    nodes.hintText.textContent = activeEncounterCue() || t("aimHint");
     backgroundSuspended = false;
     show(nodes.gamePanel);
     window.requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
