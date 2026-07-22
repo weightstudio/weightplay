@@ -34,6 +34,9 @@ window.WONDER_LOBBY = {
       "animal-rootvault-pins",
       "animal-sketchwheel-rally",
       "animal-rune-reels",
+      "animal-cratebound",
+      "animal-mosaic-clues",
+      "animal-prism-breakers",
     ],
   },
   games: [
@@ -1345,8 +1348,8 @@ window.WONDER_LOBBY = {
       ages: ["13"],
       href: "games/animal-cratebound/",
       internalTrial: "index.html?trial=1",
-      description: { en: "Walk, push, pull and route rune cargo through 30 authored sky-ark warehouses with ice rails, signals, magnets and linked crates.", "zh-Hant": "在 30 座手工設計的天空方舟倉庫中行走、推拉並運送符文貨箱，破解冰軌、號誌、磁力與連動貨箱。", "zh-Hans": "在 30 座手工设计的天空方舟仓库中行走、推拉并运送符文货箱，破解冰轨、信号、磁力与联动货箱。", hi: "30 हस्तनिर्मित आकाश-गोदामों में चलें, संदूक धकेलें और खींचें, तथा बर्फीली पटरियों, संकेतों और चुंबकों को सुलझाएँ।", ar: "تحرّك وادفع واسحب صناديق الرون عبر 30 مستودعًا سماويًا مصممًا يدويًا مع سكك جليدية وإشارات ومغناطيسات." },
-      meta: { en: ["30 Warehouses", "Push and Pull", "Six Rule Chapters"], "zh-Hant": ["30 座倉庫", "推拉規劃", "六章機關"], "zh-Hans": ["30 座仓库", "推拉规划", "六章机关"], hi: ["30 गोदाम", "धकेलें और खींचें", "छह नियम अध्याय"], ar: ["30 مستودعًا", "دفع وسحب", "ستة فصول قواعد"] },
+      description: { en: "Walk, push, pull and route rune cargo through 30 authored sky-ark warehouses with ice rails, signals, magnets and linked crates.", "zh-Hant": "在 30 座手工設計的天空方舟倉庫中行走、推拉並運送符文貨箱，破解冰軌、號誌、磁力與連動貨箱。", "zh-Hans": "在 30 座手工设计的天空方舟仓库中行走、推拉并运送符文货箱，破解冰轨、信号、磁力与联动货箱。", ja: "30の手作り天空倉庫でルーン貨物を押し引きし、氷のレール、信号、磁石、連結箱を攻略します。", ko: "30개의 수제 하늘 창고에서 룬 화물을 밀고 당기며 얼음 레일, 신호, 자석, 연결 상자를 해결하세요.", es: "Empuja, atrae y guía cargamentos rúnicos por 30 almacenes celestes con hielo, señales, imanes y cajas enlazadas.", "pt-BR": "Empurre, puxe e conduza cargas rúnicas por 30 armazéns celestes com gelo, sinais, ímãs e caixas ligadas.", fr: "Poussez, tirez et acheminez des cargaisons runiques dans 30 entrepôts célestes avec glace, signaux, aimants et caisses liées.", de: "Schiebe, ziehe und leite Runenfracht durch 30 handgebaute Himmelslager mit Eisbahnen, Signalen, Magneten und Koppelkisten.", it: "Spingi, attira e instrada carichi runici in 30 magazzini celesti con ghiaccio, segnali, magneti e casse collegate.", ru: "Толкайте, тяните и направляйте рунические грузы через 30 небесных складов с ледяными рельсами, сигналами, магнитами и связанными ящиками.", hi: "30 हस्तनिर्मित आकाश-गोदामों में चलें, संदूक धकेलें और खींचें, तथा बर्फीली पटरियों, संकेतों और चुंबकों को सुलझाएँ।", ar: "تحرّك وادفع واسحب صناديق الرون عبر 30 مستودعًا سماويًا مصممًا يدويًا مع سكك جليدية وإشارات ومغناطيسات." },
+      meta: { en: ["30 Warehouses", "Push and Pull", "Six Rule Chapters"], "zh-Hant": ["30 座倉庫", "推拉規劃", "六章機關"], "zh-Hans": ["30 座仓库", "推拉规划", "六章机关"], ja: ["30の倉庫", "押す・引く", "6章の仕掛け"], ko: ["30개 창고", "밀기와 당기기", "6개 규칙 장"], es: ["30 almacenes", "Empujar y atraer", "Seis capítulos"], "pt-BR": ["30 armazéns", "Empurrar e puxar", "Seis capítulos"], fr: ["30 entrepôts", "Pousser et tirer", "Six chapitres"], de: ["30 Lager", "Schieben und Ziehen", "Sechs Regelkapitel"], it: ["30 magazzini", "Spingi e attira", "Sei capitoli"], ru: ["30 складов", "Толкать и тянуть", "Шесть глав"], hi: ["30 गोदाम", "धकेलें और खींचें", "छह नियम अध्याय"], ar: ["30 مستودعًا", "دفع وسحب", "ستة فصول قواعد"] },
       art: { kind: "image", background: "assets/animal-cratebound/cover.webp", hideHero: true },
     },
     {
@@ -1360,8 +1363,8 @@ window.WONDER_LOBBY = {
       ages: ["13"],
       href: "games/animal-mosaic-clues/",
       internalTrial: "index.html?trial=1",
-      description: { en: "Read row and column runs to reveal 30 unique animal mosaics, from guided 5×5 signs to deduction-rich 12×12 portraits.", "zh-Hant": "解讀橫列與直行數字，在 30 幅唯一解謎圖中，從 5×5 引導圖案進階到 12×12 動物肖像。", "zh-Hans": "解读横列与直行数字，在 30 幅唯一解谜图中，从 5×5 引导图案进阶到 12×12 动物肖像。", hi: "पंक्ति और स्तंभ संकेत पढ़कर 30 अनोखे पशु मोज़ेक खोलें—5×5 अभ्यास से 12×12 चित्रों तक।", ar: "اقرأ إشارات الصفوف والأعمدة لكشف 30 فسيفساء حيوانية فريدة، من شبكات 5×5 إلى صور 12×12." },
-      meta: { en: ["30 Unique Puzzles", "No Guessing", "5×5 to 12×12"], "zh-Hant": ["30 幅唯一解", "無需猜測", "5×5 至 12×12"], "zh-Hans": ["30 幅唯一解", "无需猜测", "5×5 至 12×12"], hi: ["30 अनोखी पहेलियाँ", "बिना अनुमान", "5×5 से 12×12"], ar: ["30 لغزًا فريدًا", "من دون تخمين", "من 5×5 إلى 12×12"] },
+      description: { en: "Read row and column runs to reveal 30 unique animal mosaics, from guided 5×5 signs to deduction-rich 12×12 portraits.", "zh-Hant": "解讀橫列與直行數字，在 30 幅唯一解謎圖中，從 5×5 引導圖案進階到 12×12 動物肖像。", "zh-Hans": "解读横列与直行数字，在 30 幅唯一解谜图中，从 5×5 引导图案进阶到 12×12 动物肖像。", ja: "行と列の数字を読み、5×5の入門図から12×12の動物肖像まで、唯一解の30枚を完成させます。", ko: "행과 열 단서를 읽고 5×5 안내 퍼즐부터 12×12 동물 초상까지 유일해 30개를 완성하세요.", es: "Lee las pistas de filas y columnas y revela 30 mosaicos únicos, desde cuadrículas 5×5 hasta retratos 12×12.", "pt-BR": "Leia as pistas de linhas e colunas e revele 30 mosaicos únicos, de grades 5×5 a retratos 12×12.", fr: "Lisez les indices des lignes et colonnes pour révéler 30 mosaïques uniques, des grilles 5×5 aux portraits 12×12.", de: "Lies Zeilen- und Spaltenhinweise und enthülle 30 eindeutig lösbare Tiermosaike von 5×5 bis 12×12.", it: "Leggi gli indizi di righe e colonne e svela 30 mosaici unici, dalle griglie 5×5 ai ritratti 12×12.", ru: "Читайте подсказки строк и столбцов и открывайте 30 мозаик с единственным решением — от 5×5 до 12×12.", hi: "पंक्ति और स्तंभ संकेत पढ़कर 30 अनोखे पशु मोज़ेक खोलें—5×5 अभ्यास से 12×12 चित्रों तक।", ar: "اقرأ إشارات الصفوف والأعمدة لكشف 30 فسيفساء حيوانية فريدة، من شبكات 5×5 إلى صور 12×12." },
+      meta: { en: ["30 Unique Puzzles", "No Guessing", "5×5 to 12×12"], "zh-Hant": ["30 幅唯一解", "無需猜測", "5×5 至 12×12"], "zh-Hans": ["30 幅唯一解", "无需猜测", "5×5 至 12×12"], ja: ["唯一解30問", "推測不要", "5×5から12×12"], ko: ["유일해 30개", "추측 불필요", "5×5에서 12×12"], es: ["30 puzles únicos", "Sin adivinar", "De 5×5 a 12×12"], "pt-BR": ["30 puzzles únicos", "Sem adivinhação", "De 5×5 a 12×12"], fr: ["30 grilles uniques", "Sans deviner", "De 5×5 à 12×12"], de: ["30 eindeutige Rätsel", "Ohne Raten", "5×5 bis 12×12"], it: ["30 puzzle unici", "Senza tentativi", "Da 5×5 a 12×12"], ru: ["30 уникальных задач", "Без угадывания", "От 5×5 до 12×12"], hi: ["30 अनोखी पहेलियाँ", "बिना अनुमान", "5×5 से 12×12"], ar: ["30 لغزًا فريدًا", "من دون تخمين", "من 5×5 إلى 12×12"] },
       art: { kind: "image", background: "assets/animal-mosaic-clues/cover.webp", hideHero: true },
     },
     {
@@ -1375,8 +1378,8 @@ window.WONDER_LOBBY = {
       ages: ["13"],
       href: "games/animal-prism-breakers/",
       internalTrial: "index.html?trial=1",
-      description: { en: "Control the return angle, catch prism powers and shatter 30 authored crystal formations with moving bands, mirrors and gravity wells.", "zh-Hant": "掌握反彈角度、接住稜光能力，擊破 30 組手工設計的水晶陣形，挑戰移動磚帶、反射鏡與重力井。", "zh-Hans": "掌握反弹角度、接住棱光能力，击破 30 组手工设计的水晶阵形，挑战移动砖带、反射镜与重力井。", hi: "वापसी कोण नियंत्रित करें, प्रिज़्म शक्तियाँ पकड़ें और गतिशील पट्टियों, दर्पणों व गुरुत्व कुओं वाली 30 संरचनाएँ तोड़ें।", ar: "تحكم بزاوية الارتداد والتقط قوى الموشور وحطم 30 تشكيلًا بلوريًا مع صفوف متحركة ومرايا وآبار جاذبية." },
-      meta: { en: ["30 Formations", "Angle Control", "Six Arcade Chapters"], "zh-Hant": ["30 組陣形", "角度操控", "六章街機變化"], "zh-Hans": ["30 组阵形", "角度操控", "六章街机变化"], hi: ["30 संरचनाएँ", "कोण नियंत्रण", "छह आर्केड अध्याय"], ar: ["30 تشكيلًا", "تحكم بالزاوية", "ستة فصول آركيد"] },
+      description: { en: "Control the return angle, catch prism powers and shatter 30 authored crystal formations with moving bands, mirrors and gravity wells.", "zh-Hant": "掌握反彈角度、接住稜光能力，擊破 30 組手工設計的水晶陣形，挑戰移動磚帶、反射鏡與重力井。", "zh-Hans": "掌握反弹角度、接住棱光能力，击破 30 组手工设计的水晶阵形，挑战移动砖带、反射镜与重力井。", ja: "反射角を操り、プリズム能力を拾い、移動列、鏡、重力井を備えた30の水晶陣形を砕きます。", ko: "반사 각도를 조절하고 프리즘 능력을 받아 이동 띠, 거울, 중력 우물이 있는 30개 수정 진형을 깨뜨리세요.", es: "Controla el ángulo, recoge poderes prismáticos y rompe 30 formaciones con bandas móviles, espejos y pozos gravitatorios.", "pt-BR": "Controle o ângulo, pegue poderes prismáticos e quebre 30 formações com faixas móveis, espelhos e poços gravitacionais.", fr: "Maîtrisez l'angle, récupérez les pouvoirs prismatiques et brisez 30 formations avec rangées mobiles, miroirs et puits gravitationnels.", de: "Steuere den Rückprallwinkel, fange Prismakräfte und zerbrich 30 Formationen mit beweglichen Reihen, Spiegeln und Gravitationsfeldern.", it: "Controlla l'angolo, raccogli i poteri prismatici e infrangi 30 formazioni con file mobili, specchi e pozzi gravitazionali.", ru: "Управляйте углом отскока, ловите силы призм и разбивайте 30 построений с движущимися рядами, зеркалами и гравитационными колодцами.", hi: "वापसी कोण नियंत्रित करें, प्रिज़्म शक्तियाँ पकड़ें और गतिशील पट्टियों, दर्पणों व गुरुत्व कुओं वाली 30 संरचनाएँ तोड़ें।", ar: "تحكم بزاوية الارتداد والتقط قوى الموشور وحطم 30 تشكيلًا بلوريًا مع صفوف متحركة ومرايا وآبار جاذبية." },
+      meta: { en: ["30 Formations", "Angle Control", "Six Arcade Chapters"], "zh-Hant": ["30 組陣形", "角度操控", "六章街機變化"], "zh-Hans": ["30 组阵形", "角度操控", "六章街机变化"], ja: ["30の陣形", "角度操作", "6章のアーケード"], ko: ["30개 진형", "각도 조절", "6개 아케이드 장"], es: ["30 formaciones", "Control de ángulo", "Seis capítulos"], "pt-BR": ["30 formações", "Controle de ângulo", "Seis capítulos"], fr: ["30 formations", "Contrôle de l'angle", "Six chapitres"], de: ["30 Formationen", "Winkelkontrolle", "Sechs Arcade-Kapitel"], it: ["30 formazioni", "Controllo dell'angolo", "Sei capitoli"], ru: ["30 построений", "Контроль угла", "Шесть глав"], hi: ["30 संरचनाएँ", "कोण नियंत्रण", "छह आर्केड अध्याय"], ar: ["30 تشكيلًا", "تحكم بالزاوية", "ستة فصول آركيد"] },
       art: { kind: "image", background: "assets/animal-prism-breakers/cover.webp", hideHero: true },
     },
   ],
@@ -1560,6 +1563,32 @@ for (const game of window.WONDER_LOBBY.games) {
   game.type["zh-Hant"] = clean.type;
   game.description["zh-Hant"] = clean.description;
   game.meta["zh-Hant"] = clean.meta;
+}
+
+// Animal Rune Reels V3 internal-trial copy. The card remains planned.
+const animalRuneReelsV3 = window.WONDER_LOBBY.games.find((game) => game.id === "animal-rune-reels");
+if (animalRuneReelsV3) {
+  animalRuneReelsV3.description = {
+    en: "Build a summoned animal team, spin ten kinds of downward-moving runes, complete doubled lines, and unleash separate pet attacks while shared defense and healing protect the summoner.",
+    "zh-Hant": "組成召喚動物隊伍，轉動十種向下滾動的符石；完成連線讓效果加倍，寵物各自攻擊，全隊防禦與治療共同保護召喚師。",
+    "zh-Hans": "组成召唤动物队伍，转动十种向下滚动的符石；完成连线让效果加倍，宠物各自攻击，全队防御与治疗共同保护召唤师。",
+    ja: "召喚した動物チームを編成し、下へ回る10種類のルーンでラインを完成。各ペットが個別に攻撃し、合計防御と回復で召喚師を守ります。",
+    ko: "소환 동물 팀을 꾸리고 아래로 도는 10종 룬의 라인을 완성하세요. 각 펫은 따로 공격하고, 팀 방어와 치유 합계가 소환사를 지킵니다.",
+    es: "Forma un equipo animal invocado, gira diez runas hacia abajo, duplica líneas y lanza ataques separados mientras la defensa y curación totales protegen al invocador.",
+    "pt-BR": "Monte uma equipe animal invocada, gire dez runas para baixo, dobre linhas e ataque com cada mascote enquanto defesa e cura totais protegem o invocador.",
+    fr: "Formez une équipe animale invoquée, faites défiler dix runes vers le bas, doublez les lignes et attaquez avec chaque familier tandis que défense et soin protègent l'invocateur.",
+    de: "Stelle ein beschworenes Tierteam zusammen, drehe zehn Runen nach unten, verdopple Linien und greife mit jedem Begleiter an, während Gesamtverteidigung und Heilung den Beschwörer schützen.",
+    it: "Crea una squadra animale evocata, gira dieci rune verso il basso, raddoppia le linee e attacca con ogni compagno mentre difesa e cura totali proteggono l'evocatore.",
+    ru: "Соберите отряд призванных зверей, вращайте вниз десять видов рун, удваивайте линии и атакуйте каждым питомцем, пока общая защита и лечение берегут призывателя.",
+    hi: "बुलाए गए पशु दल को बनाएँ, नीचे घूमने वाले दस रून मिलाएँ और लाइन का प्रभाव दुगुना करें। हर साथी अलग वार करता है, जबकि कुल रक्षा और उपचार आह्वानकर्ता को बचाते हैं।",
+    ar: "كوّن فريق حيوانات مستدعى وأدر عشرة أنواع من الرون إلى الأسفل. تضاعف الخطوط المكتملة التأثير، ويهاجم كل رفيق منفردًا بينما تحمي الدفاعات والشفاء المجمعة المستدعي.",
+  };
+  animalRuneReelsV3.meta = {
+    en: ["10 Rune Types", "Collectible Team", "Downward Auto Reels"], "zh-Hant": ["10 種符石", "角色召喚隊伍", "向下自動轉輪"], "zh-Hans": ["10 种符石", "角色召唤队伍", "向下自动转轮"],
+    ja: ["10種類のルーン", "収集チーム", "下向きオートリール"], ko: ["룬 10종", "수집형 팀", "하향 자동 릴"], es: ["10 tipos de runa", "Equipo coleccionable", "Rodillos automáticos"],
+    "pt-BR": ["10 tipos de runa", "Equipe colecionável", "Carretéis automáticos"], fr: ["10 types de rune", "Équipe à collectionner", "Rouleaux automatiques"], de: ["10 Runenarten", "Sammelteam", "Automatische Walzen"],
+    it: ["10 tipi di runa", "Squadra collezionabile", "Rulli automatici"], ru: ["10 видов рун", "Коллекционный отряд", "Автовращение вниз"], hi: ["10 रून प्रकार", "संग्रह योग्य दल", "नीचे ऑटो रील"], ar: ["10 أنواع رون", "فريق قابل للجمع", "بكرات تلقائية للأسفل"],
+  };
 }
 
 const beastGuardianPublicCopy = {

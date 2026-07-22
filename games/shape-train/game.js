@@ -528,6 +528,22 @@
     queueMicrotask(localizeStatic);
     setTimeout(localizeStatic, 0);
     setTimeout(localizeStatic, 260);
+    requestAnimationFrame(positionMainSoundToggle);
+    setTimeout(positionMainSoundToggle, 300);
+  }
+
+  function positionMainSoundToggle() {
+    if (document.body.classList.contains("shape-playing") || document.body.classList.contains("wp-standard-stage-page")) return;
+    const toggle = document.querySelector(".sound-toggle");
+    const title = document.querySelector(".title-block")?.getBoundingClientRect();
+    const topbar = document.querySelector(".topbar")?.getBoundingClientRect();
+    if (!toggle || !title || !topbar) return;
+    const rtl = document.documentElement.dir === "rtl";
+    const x = rtl ? title.left + 6 : title.right - 48;
+    toggle.style.setProperty("left", `${Math.round(x)}px`, "important");
+    toggle.style.setProperty("top", `${Math.round(topbar.top + 3)}px`, "important");
+    toggle.style.setProperty("right", "auto", "important");
+    toggle.style.setProperty("bottom", "auto", "important");
   }
 
   function updateMetaContent(selector, value) {
@@ -742,6 +758,7 @@
     nodes.stagePanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("wp-standard-stage-page");
+    requestAnimationFrame(positionMainSoundToggle);
     if (focusStart) nodes.startGameBtn.focus({ preventScroll: true });
   }
 
@@ -1145,6 +1162,7 @@
 
   localizeStatic();
   window.addEventListener("load", preserveGameLocaleAfterSharedGuide, { once: true });
+  window.addEventListener("resize", () => requestAnimationFrame(positionMainSoundToggle));
   window.addEventListener("pagehide", suspendTaskTransitions);
   window.addEventListener("pageshow", resumeTaskTransitions);
   document.addEventListener("visibilitychange", () => {

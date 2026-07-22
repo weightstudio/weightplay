@@ -1,832 +1,130 @@
 (() => {
   "use strict";
-
-  const $ = (selector) => document.querySelector(selector);
-  const $$ = (selector) => [...document.querySelectorAll(selector)];
-  const LOCALES = window.RUNE_REELS_LOCALES;
-  const localeKeys = Object.keys(LOCALES);
-  const storageKey = "weightplay.animalRuneReels.v2";
-  const legacyStorageKey = "weightplay.animalRuneReels.v1";
-  const trialMode = new URLSearchParams(location.search).get("trial") === "1";
-  const ASSET_ROOT = "../../assets/";
-  const memoryStorage = new Map();
-
-  const symbols = {
-    lion: {
-      key: "lionSymbol",
-      img: "weightplay-character-boom-mane-lion-cutout.webp",
-      color: "#ffd15a",
-    },
-    turtle: {
-      key: "turtleSymbol",
-      img: "weightplay-character-moss-shell-turtle-cutout.webp",
-      color: "#61e2c4",
-    },
-    rabbit: {
-      key: "rabbitSymbol",
-      img: "weightplay-character-rainbow-hop-mimi-clean-cutout.webp",
-      color: "#65ef9d",
-    },
-    stone: {
-      key: "stoneSymbol",
-      img: "animal-rune-reels/dormant-rune-stone.webp",
-      color: "#9aa4bf",
-    },
+  const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
+  const ASSET = "../../assets/", trial = new URLSearchParams(location.search).get("trial") === "1";
+  const storageKey = "weightplay.animalRuneReels.v3", memory = new Map();
+  const LOCALES = window.RUNE_REELS_LOCALES, localeKeys = Object.keys(LOCALES);
+  const HEROES = {
+    lion:{name:"heroLion",img:"weightplay-character-boom-mane-lion-cutout.webp",atk:15,def:4,heal:2,special:"specialLion",mode:"damage",power:2.2},
+    turtle:{name:"heroTurtle",img:"weightplay-character-moss-shell-turtle-cutout.webp",atk:8,def:14,heal:3,special:"specialTurtle",mode:"shield",power:3},
+    rabbit:{name:"heroRabbit",img:"weightplay-character-rainbow-hop-mimi-clean-cutout.webp",atk:5,def:5,heal:10,special:"specialRabbit",mode:"heal",power:4},
+    panda:{name:"heroPanda",img:"weightplay-character-drum-belly-panda-clean-cutout.webp",atk:10,def:10,heal:6,special:"specialPanda",mode:"all",power:1.7},
+    fox:{name:"heroFox",img:"weightplay-character-spark-paw-fox-cutout.webp",atk:14,def:6,heal:4,special:"specialFox",mode:"damage",power:2.5},
+    owl:{name:"heroOwl",img:"weightplay-character-moon-cap-owl-cutout.webp",atk:9,def:7,heal:8,special:"specialOwl",mode:"drain",power:1.6},
+    otter:{name:"heroOtter",img:"weightplay-character-bubble-fin-otter-cutout.webp",atk:11,def:8,heal:7,special:"specialOtter",mode:"tide",power:1.5},
+    rhino:{name:"heroRhino",img:"weightplay-character-gear-horn-rhino-cutout.webp",atk:13,def:12,heal:3,special:"specialRhino",mode:"damage",power:2.3}
   };
-  const symbolIds = Object.keys(symbols);
-  const enemyAssets = [
-    "animal-gearpack-expedition-enemy-root-guardian.webp",
-    "animal-gearpack-expedition-enemy-armored-boar.webp",
-    "animal-gearpack-expedition-enemy-crystal-crow.webp",
-    "animal-rune-tactics-enemy-wolf.webp",
-    "animal-rune-tactics-enemy-raven.webp",
-  ];
-  const attackMultipliers = [0, 1.2, 1.4, 2];
-  const defenseMultipliers = [0, 1.2, 1.4, 2];
-  const healingPercents = [0, 2, 4, 10];
-  const chapterNames = {
-    en: ["Whispering Gate", "Moonforge Steps", "Thornveil Court", "Stormglass Ring", "Voidpaw Spire", "Astral Crown"],
-    "zh-Hant": ["低語之門", "月爐階梯", "棘幕王庭", "風暴晶環", "虛爪高塔", "星界王冠"],
-    "zh-Hans": ["低语之门", "月炉阶梯", "棘幕王庭", "风暴晶环", "虚爪高塔", "星界王冠"],
-    ja: ["囁きの門", "月炉の階段", "茨幕の宮廷", "嵐晶の環", "虚爪の塔", "星界の冠"],
-    ko: ["속삭임의 문", "달빛 대장간", "가시 장막 궁정", "폭풍 수정 고리", "공허발톱 첨탑", "별의 왕관"],
-    es: ["Puerta Susurrante", "Peldaños Lunares", "Corte del Velo", "Anillo de Tormenta", "Aguja del Vacío", "Corona Astral"],
-    "pt-BR": ["Portão Sussurrante", "Degraus da Lua", "Corte do Véu", "Anel da Tempestade", "Torre do Vazio", "Coroa Astral"],
-    fr: ["Porte Murmurante", "Marches Lunaires", "Cour du Voile", "Anneau de Tempête", "Flèche du Vide", "Couronne Astrale"],
-    de: ["Flüstertor", "Mondschmiede", "Dornenhof", "Sturmglasring", "Leerenpfotenturm", "Astralkrone"],
-    it: ["Porta Sussurrante", "Gradini Lunari", "Corte del Velo", "Anello della Tempesta", "Guglia del Vuoto", "Corona Astrale"],
-    ru: ["Шепчущие врата", "Лунная кузня", "Двор шипов", "Кольцо бури", "Башня пустоты", "Астральная корона"],
-    hi: ["फुसफुसाता द्वार", "चंद्र भट्ठी", "काँटों का दरबार", "तूफानी वलय", "शून्य पंजा मीनार", "तारकीय मुकुट"],
-    ar: ["بوابة الهمس", "درجات القمر", "بلاط الشوك", "حلقة العاصفة", "برج الفراغ", "التاج النجمي"],
+  const RUNES = {
+    attack:{name:"runeAttack",desc:"runeAttackDesc",img:"animal-rune-reels/rune-attack.webp",color:"#ff9b42"},
+    defense:{name:"runeDefense",desc:"runeDefenseDesc",img:"animal-rune-reels/rune-defense.webp",color:"#68dfff"},
+    heal:{name:"runeHeal",desc:"runeHealDesc",img:"animal-rune-reels/rune-heal.webp",color:"#ff6f9e"},
+    wild:{name:"runeWild",desc:"runeWildDesc",img:"animal-rune-reels/rune-wild.webp",color:"#fff28a"},
+    coin:{name:"runeCoin",desc:"runeCoinDesc",img:"animal-rune-reels/rune-coin.webp",color:"#ffd45b"},
+    special:{name:"runeSpecial",desc:"runeSpecialDesc",img:"animal-rune-reels/rune-special.webp",color:"#c77bff"},
+    focus:{name:"runeFocus",desc:"runeFocusDesc",img:"animal-rune-reels/rune-focus.webp",color:"#62eaff"},
+    echo:{name:"runeEcho",desc:"runeEchoDesc",img:"animal-rune-reels/rune-echo.webp",color:"#ffbd59"},
+    luck:{name:"runeLuck",desc:"runeLuckDesc",img:"animal-rune-reels/rune-luck.webp",color:"#71ef8c"},
+    blank:{name:"runeBlank",desc:"runeBlankDesc",img:"animal-rune-reels/dormant-rune-stone.webp",color:"#9ba4bb"}
   };
+  const runeIds = Object.keys(RUNES), heroIds = Object.keys(HEROES);
+  const enemies=["animal-gearpack-expedition-enemy-root-guardian.webp","animal-gearpack-expedition-enemy-armored-boar.webp","animal-gearpack-expedition-enemy-crystal-crow.webp","animal-rune-tactics-enemy-wolf.webp","animal-rune-tactics-enemy-raven.webp"];
+  const chapterKeys=["chapter1","chapter2","chapter3","chapter4","chapter5","chapter6"];
+  let locale, profile=load(), selectedStage=1, battle=null, railTimer=0, dragged=false, currentHero="lion";
 
-  let profile = loadProfile();
-  let locale = pickLocale();
-  let selectedStage = Math.min(profile.unlocked, 30);
-  let battle = null;
-  let centerTimer = 0;
-
-  function readStorage(key) {
-    try { return localStorage.getItem(key); }
-    catch { return memoryStorage.get(key) ?? null; }
+  function read(k){try{return localStorage.getItem(k)}catch{return memory.get(k)||null}}
+  function write(k,v){memory.set(k,v);try{localStorage.setItem(k,v)}catch{}}
+  function saneInt(v,min,max,f){v=Number(v);return Number.isInteger(v)&&v>=min&&v<=max?v:f}
+  function load(){
+    try{
+      const d=JSON.parse(read(storageKey)||"{}"); const cards={}; heroIds.forEach(id=>cards[id]={unlocked:id==="lion"||!!d.cards?.[id]?.unlocked,level:saneInt(d.cards?.[id]?.level,1,20,1),copies:saneInt(d.cards?.[id]?.copies,0,999,0)});
+      const team=Array.isArray(d.team)?d.team.filter(id=>cards[id]?.unlocked).slice(0,3):["lion"];
+      return {unlocked:saneInt(d.unlocked,1,30,1),coins:saneInt(d.coins,0,999999,300),cards,team:team.length?team:["lion"],best:Array.isArray(d.best)?d.best.slice(0,30):Array(30).fill(0),tutorial:!!d.tutorial};
+    }catch{return loadDefault()}
   }
+  function loadDefault(){const cards={};heroIds.forEach(id=>cards[id]={unlocked:id==="lion",level:1,copies:0});return{unlocked:1,coins:300,cards,team:["lion"],best:Array(30).fill(0),tutorial:false}}
+  function save(){write(storageKey,JSON.stringify(profile))}
+  function t(k){return LOCALES[locale]?.[k]??LOCALES.en?.[k]??k}
+  function pickLocale(){const q=new URLSearchParams(location.search).get("lang"), shared=window.WonderI18n?.actualLocale?.(), saved=read(`${storageKey}.locale`);return localeKeys.includes(q)?q:localeKeys.includes(shared)?shared:localeKeys.includes(saved)?saved:"en"}
+  function show(id){if(locale){document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr"}["mainPage","stagePage","battlePage"].forEach(x=>$("#"+x).hidden=x!==id)}
+  function setBattleInert(value){['.battle-head','#arena','.reel-console'].forEach(s=>{const n=$(s);if(n)n.inert=value})}
+  function openBattleModal(id){if(battle){battle.auto=false;renderBattle(false)}setBattleInert(true);const modal=$(id);modal.hidden=false;setTimeout(()=>modal.querySelector('button:not([disabled])')?.focus(),0)}
+  function closeBattleModal(id){$(id).hidden=true;setBattleInert(false);$("#battleBack")?.focus()}
+  function applyLocale(){document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";document.title=`${t("title")} — ${t("internalTrial")}`;$$('[data-i18n]').forEach(n=>n.textContent=t(n.dataset.i18n));$$('[data-i18n-aria]').forEach(n=>n.setAttribute("aria-label",t(n.dataset.i18nAria)));renderStage();if(battle)renderBattle()}
+  function populateLocales(){const s=$("#localeSelect");s.innerHTML="";localeKeys.forEach(k=>{const o=document.createElement("option");o.value=k;o.textContent=LOCALES[k].name;o.selected=k===locale;s.append(o)})}
+  function stats(id){const h=HEROES[id],lv=profile.cards[id].level,m=1+(lv-1)*.18;return{atk:Math.round(h.atk*m),def:Math.round(h.def*m),heal:Math.round(h.heal*m)}}
+  function totals(){return profile.team.reduce((a,id)=>{const s=stats(id);a.def+=s.def;a.heal+=s.heal;return a},{def:0,heal:0})}
+  function requiredCopies(level){return level}
 
-  function writeStorage(key, value) {
-    memoryStorage.set(key, value);
-    try { localStorage.setItem(key, value); }
-    catch { /* Memory fallback keeps this session playable. */ }
+  function stageEnemyCount(n){return n%5===0?3:n%5>=3?2:1}
+  function stageEnemies(n){return Array.from({length:stageEnemyCount(n)},(_,i)=>enemies[(n+i)%enemies.length])}
+  function renderStages(){
+    const rail=$("#stageRail");rail.innerHTML="";for(let n=1;n<=30;n++){
+      const locked=n>profile.unlocked, count=stageEnemyCount(n), card=document.createElement("button");card.className=`stage-card${locked?" locked":""}`;card.dataset.stage=n;
+      card.innerHTML=`<small>${t(n%5===0?"guardian":"stage")} ${n}</small><h3>${t(chapterKeys[Math.floor((n-1)/5)])}</h3><div class="stage-enemy-preview" data-count="${count}">${stageEnemies(n).map(src=>`<img src="${ASSET}${src}" alt="">`).join("")}</div><p>${t("hp")} ${55+n*11} · ${t("attackShort")} ${8+Math.ceil(n*.9)}</p><span class="monster-chip">${locked?t("locked"):profile.best[n-1]?"★".repeat(profile.best[n-1]):t("readyStage")}<b class="monster-count">×${count}</b></span>`;
+      card.onclick=()=>{if(dragged)return;selectedStage=n;centerStage(n);if(!locked)updateEnter()};rail.append(card)
+    }centerStage(selectedStage,false)
   }
-
-  function clampInt(value, min, max, fallback) {
-    const number = Number(value);
-    return Number.isInteger(number) && number >= min && number <= max ? number : fallback;
+  function centerStage(n,smooth=true){const card=$(`.stage-card[data-stage="${n}"]`),rail=$("#stageRail");if(!card)return;selectedStage=n;$$('.stage-card').forEach(c=>c.classList.toggle('centered',c===card));rail.scrollTo({left:card.offsetLeft-(rail.clientWidth-card.offsetWidth)/2,behavior:smooth?'smooth':'auto'});updateEnter()}
+  function settleRail(){clearTimeout(railTimer);railTimer=setTimeout(()=>{const rail=$("#stageRail"),cx=rail.getBoundingClientRect().left+rail.clientWidth/2,card=$$('.stage-card').reduce((a,c)=>Math.abs(c.getBoundingClientRect().left+c.offsetWidth/2-cx)<Math.abs(a.getBoundingClientRect().left+a.offsetWidth/2-cx)?c:a);centerStage(+card.dataset.stage)},100)}
+  function updateEnter(){const locked=selectedStage>profile.unlocked;$("#enterBattle").disabled=locked;$("#enterBattle").textContent=locked?t("locked"):t("enter")}
+  function renderRoster(){
+    const grid=$("#rosterGrid");grid.innerHTML="";heroIds.forEach(id=>{const c=profile.cards[id],s=stats(id),b=document.createElement('button');b.className=`roster-card${c.unlocked?'':' locked'}${profile.team.includes(id)?' active':''}`;b.dataset.hero=id;b.innerHTML=`${profile.team.includes(id)?'<span class="active-dot">✓</span>':''}<img src="${ASSET}${HEROES[id].img}" alt=""><b>${c.unlocked?t(HEROES[id].name):t('unknownHero')}</b><small>${c.unlocked?`${t('level')} ${c.level} · ${t('attackShort')} ${s.atk}`:t('locked')}</small>`;b.onclick=()=>openHero(id);grid.append(b)});
+    const x=totals();$("#teamCount").textContent=`${profile.team.length} / 3`;$("#teamTotals").textContent=`${t('teamDefense')} ${x.def} · ${t('teamHealing')} ${x.heal}`
   }
+  function renderRunes(){const g=$("#runeGuide");g.innerHTML=runeIds.map(id=>`<article class="rune-guide-card"><img src="${ASSET}${RUNES[id].img}" alt=""><b>${t(RUNES[id].name)}</b><small>${t(RUNES[id].desc)}</small></article>`).join("")}
+  function renderStage(){if(!$("#stageRail"))return;$("#campaignProgress").textContent=`${profile.unlocked} / 30`;$("#coinCount").textContent=profile.coins;renderStages();renderRoster();renderRunes();updateEnter()}
+  function setTab(name){$$('.stage-tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));['stages','pack','summon','runes'].forEach(x=>$("#"+x+"Panel").hidden=x!==name);$("#enterBattle").hidden=name!=="stages";if(name==='stages')setTimeout(()=>centerStage(selectedStage,false),0)}
+  function openHero(id){currentHero=id;const h=HEROES[id],c=profile.cards[id],s=stats(id);$("#characterArt").src=ASSET+h.img;$("#characterName").textContent=c.unlocked?t(h.name):t('unknownHero');$("#characterStats").textContent=c.unlocked?`${t('attackShort')} ${s.atk} · ${t('defenseShort')} ${s.def} · ${t('healingShort')} ${s.heal}`:t('summonToUnlock');$("#characterSpecial").textContent=c.unlocked?`${t('specialSkill')}: ${t(h.special)}`:"";$("#duplicateProgress").textContent=c.unlocked?`${t('duplicateCards')} ${c.copies} / ${requiredCopies(c.level)}`:"";$("#equipBtn").hidden=!c.unlocked;$("#equipBtn").textContent=profile.team.includes(id)?t('removeTeam'):t('addTeam');$("#upgradeBtn").hidden=!c.unlocked;$("#upgradeBtn").disabled=c.copies<requiredCopies(c.level);$("#upgradeBtn").textContent=`${t('upgrade')} ${c.copies} / ${requiredCopies(c.level)}`;$("#characterModal").hidden=false}
+  function summon(forced){if(profile.coins<100)return toast(t('needCoins'));profile.coins-=100;const id=forced||heroIds[Math.floor(Math.random()*heroIds.length)],c=profile.cards[id],fresh=!c.unlocked;c.unlocked=true;if(!fresh)c.copies++;save();renderStage();$("#summonArt").src=ASSET+HEROES[id].img;$("#summonName").textContent=t(HEROES[id].name);$("#summonCopy").textContent=fresh?t('newHero'):`${t('duplicateCards')} ${c.copies} / ${requiredCopies(c.level)}`;$("#summonResult").hidden=false}
 
-  function loadProfile() {
-    try {
-      const raw = readStorage(storageKey) || readStorage(legacyStorageKey) || "{}";
-      const data = JSON.parse(raw);
-      return {
-        unlocked: clampInt(data.unlocked, 1, 30, 1),
-        sparks: clampInt(data.sparks, 0, 99999, 0),
-        upgrades: {
-          attack: clampInt(data.upgrades?.attack, 1, 8, 1),
-          guard: clampInt(data.upgrades?.guard, 1, 8, 1),
-          heal: clampInt(data.upgrades?.heal, 1, 8, 1),
-        },
-        best: Array.isArray(data.best)
-          ? data.best.slice(0, 30).map((value) => clampInt(value, 0, 3, 0))
-          : Array(30).fill(0),
-        tutorial: Boolean(data.tutorial),
-      };
-    } catch {
-      return {
-        unlocked: 1,
-        sparks: 0,
-        upgrades: { attack: 1, guard: 1, heal: 1 },
-        best: Array(30).fill(0),
-        tutorial: false,
-      };
-    }
+  function buildEnemies(){return stageEnemies(selectedStage).map((img,i)=>({img,hp:55+selectedStage*11+i*7,maxHp:55+selectedStage*11+i*7,name:`${t('guardian')} ${i+1}`}))}
+  function startBattle(){if(selectedStage>profile.unlocked||!profile.team.length)return;battle={hp:180,maxHp:180,shield:0,coins:0,turn:0,busy:false,ended:false,auto:false,reels:['blank','blank','blank'],enemies:buildEnemies(),intentDamage:10+Math.ceil(selectedStage*1.2),forced:null,currentPhase:null,phaseLog:[],stopLog:[],lastResolution:null};show('battlePage');setBattleInert(false);renderBattle();if(!profile.tutorial)openBattleModal('#tutorial')}
+  function living(){return battle.enemies.filter(e=>e.hp>0)}
+  function renderEnemies(){const box=$("#enemySquad");box.innerHTML="";battle.enemies.forEach((e,i)=>{const d=document.createElement('div');d.className=`enemy-unit${e.hp<=0?' defeated':''}`;d.dataset.enemy=i;d.innerHTML=`<img src="${ASSET}${e.img}" alt=""><div class="enemy-name">${e.name}</div><div class="hpbar"><i style="width:${Math.max(0,e.hp/e.maxHp*100)}%"></i><span>${Math.max(0,e.hp)} / ${e.maxHp}</span></div>`;box.append(d)})}
+  function renderParty(){const box=$("#partyHeroes");box.innerHTML=profile.team.map(id=>{const s=stats(id);return`<div class="party-hero" data-hero="${id}"><img src="${ASSET}${HEROES[id].img}" alt=""><small>${t('attackShort')} ${s.atk}</small></div>`}).join('')}
+  function renderBattle(reels=true){if(!battle)return;renderEnemies();renderParty();const sum=totals();$("#battleStage").textContent=`${t('stage')} ${selectedStage}`;$("#chapterName").textContent=t(chapterKeys[Math.floor((selectedStage-1)/5)]);$("#playerHpFill").style.width=`${Math.max(0,battle.hp/battle.maxHp*100)}%`;$("#playerHpText").textContent=`${battle.hp} / ${battle.maxHp}`;$("#shieldText").textContent=battle.shield;$("#defenseTotal").textContent=sum.def;$("#healTotal").textContent=sum.heal;$("#battleCoins").textContent=battle.coins;$("#intentText").textContent=`${t('enemyStrike')} · ${battle.intentDamage}`;$("#spinBtn").disabled=battle.busy||battle.ended;$("#autoBtn").classList.toggle('on',battle.auto);$("#autoBtn small").textContent=t(battle.auto?'autoOn':'autoOff');if(reels)renderReels()}
+  function cell(id){return`<div class="reel-cell" data-symbol="${id}"><img src="${ASSET}${RUNES[id].img}" alt="${t(RUNES[id].name)}"></div>`}
+  function renderReels(){const box=$("#reels");box.innerHTML=battle.reels.map((id,i)=>`<div class="reel" data-reel="${i}" aria-label="${t(RUNES[id].name)}"><div class="reel-strip">${cell(id)}</div></div>`).join('')}
+  function targets(){if(trial&&battle.forced)return battle.forced.slice();return [0,1,2].map(()=>runeIds[Math.floor(Math.random()*runeIds.length)])}
+  function seededSeq(target,index){const n=12+index*3,arr=[target];for(let i=1;i<n;i++)arr.push(runeIds[(battle.turn*7+i*3+index*5)%runeIds.length]);return arr}
+  async function animateReel(index,target){const reel=$(`.reel[data-reel="${index}"]`),strip=reel.querySelector('.reel-strip'),seq=seededSeq(target,index);strip.innerHTML=seq.map(cell).join('');reel.classList.add('spinning');const h=reel.clientHeight,start=-(seq.length-1)*h,dur=(matchMedia('(prefers-reduced-motion: reduce)').matches?260:920)+index*260;battle.spinFrames[index]=seq.length;const a=strip.animate([{transform:`translateY(${start}px)`},{transform:'translateY(6px)',offset:.94},{transform:'translateY(0)'}],{duration:dur,easing:'cubic-bezier(.12,.72,.16,1)',fill:'forwards'});await a.finished;reel.classList.remove('spinning');battle.reels[index]=target;battle.stopLog.push({index,at:performance.now()})}
+  function lineInfo(){const non=battle.reels.filter(x=>x!=='wild'),types=[...new Set(non)],line=types.length===1&&non.length>0&&types[0]!=="blank";return{line,type:line?types[0]:null,count:line?3:0,factor:line?6:0}}
+  function counts(){const c=Object.fromEntries(runeIds.map(x=>[x,0]));battle.reels.forEach(x=>c[x]++);const l=lineInfo();if(l.line)c[l.type]=3;return{c,line:l}}
+  async function spin(){if(!battle||battle.busy||battle.ended)return;battle.busy=true;battle.turn++;battle.currentPhase='spinning';battle.phaseLog=[];battle.stopLog=[];battle.spinFrames=[];$("#spinBtn").disabled=true;$("#comboBanner").textContent=t('spinningDown');const ts=targets();battle.forced=null;await Promise.all(ts.map((x,i)=>animateReel(i,x)));battle.reels=ts;renderReels();await resolve();if(living().length&&battle.hp>0)await enemyTurn();finishTurn()}
+  async function showLine(line){if(!line.line)return;$$('.reel').forEach(r=>r.classList.add('line-win'));$("#comboBanner").textContent=t('lineComplete');await wait(1000);$$('.reel').forEach(r=>r.classList.remove('line-win'))}
+  async function showMultiplier(count,line,color){const f=count*(line?2:1),chip=$("#multiplierChip");chip.hidden=false;chip.classList.remove('fly');chip.style.borderColor=color;chip.textContent=line?`×${count} ×2 = ×${f}`:`×${count}`;void chip.offsetWidth;await wait(650);chip.classList.add('fly');await wait(760);chip.hidden=true;chip.classList.remove('fly');return f}
+  function showPhase(label,math,color){const b=$("#phaseBanner");b.hidden=false;b.style.setProperty('--phase-color',color);$("#phaseLabel").textContent=label;$("#phaseMath").textContent=math}
+  function hidePhase(){$("#phaseBanner").hidden=true;$$('.party-hero').forEach(x=>x.classList.remove('active'))}
+  function deal(amount){let rest=amount;for(const e of battle.enemies){if(e.hp<=0)continue;const d=Math.min(rest,e.hp);e.hp-=d;rest-=d;if(!rest)break}renderEnemies()}
+  async function petAttack(id,amount,label){const hero=$(`.party-hero[data-hero="${id}"]`),enemy=$('.enemy-unit:not(.defeated)')||$('.enemy-unit'),arena=$("#arena").getBoundingClientRect(),heroBox=hero.getBoundingClientRect(),enemyBox=enemy?.getBoundingClientRect(),targetX=enemyBox?(enemyBox.left+enemyBox.width/2-arena.left)/arena.width*100:50,targetY=enemyBox?(enemyBox.top+enemyBox.height*.45-arena.top)/arena.height*100:20;$$('.party-hero').forEach(x=>x.classList.toggle('active',x===hero));hero.classList.add('attack-launch');const shot=document.createElement('i');shot.className='magic-projectile';shot.style.setProperty('--shot-x',`${(heroBox.left+heroBox.width/2-arena.left)/arena.width*100}%`);shot.style.setProperty('--target-x',`${targetX}%`);shot.style.setProperty('--target-y',`${targetY}%`);$("#fxLayer").append(shot);await wait(420);deal(amount);enemy?.classList.add('enemy-hit');const num=document.createElement('b');num.className='damage-number';num.style.setProperty('--damage-x',`${targetX}%`);num.style.setProperty('--damage-y',`${Math.max(8,targetY-5)}%`);num.textContent=`-${amount}`;$("#fxLayer").append(num);showPhase(label,`-${amount}`,RUNES.attack.color);await wait(420);hero.classList.remove('attack-launch');shot.remove();num.remove();enemy?.classList.remove('enemy-hit')}
+  async function normalAttacks(mult,luck){let total=0;for(const id of profile.team){const s=stats(id),dmg=Math.round(s.atk*mult*(1+luck*.1));battle.phaseLog.push({phase:'attack',hero:id,base:s.atk,mult,amount:dmg});showPhase(`${t(HEROES[id].name)} · ${t('attackPhase')}`,`${s.atk} × ${mult}${luck?` × ${1+luck*.1}`:''} = ${dmg}`,RUNES.attack.color);await wait(480);await petAttack(id,dmg,t(HEROES[id].name));total+=dmg;if(!living().length)break}return total}
+  async function specials(mult){let total=0;for(const id of profile.team){const h=HEROES[id],s=stats(id),value=Math.round((h.mode==='shield'?s.def:h.mode==='heal'?s.heal:s.atk)*h.power*mult);battle.phaseLog.push({phase:'special',hero:id,mode:h.mode,amount:value});showPhase(`${t(HEROES[id].name)} · ${t(h.special)}`,`${h.power} × ${mult} = ${value}`,RUNES.special.color);await wait(420);if(['damage','all'].includes(h.mode)){await petAttack(id,value,t(h.special));total+=value}else if(h.mode==='shield'){battle.shield+=value;await wait(650)}else if(h.mode==='heal'){battle.hp=Math.min(battle.maxHp,battle.hp+value);await wait(650)}else if(h.mode==='drain'){await petAttack(id,value,t(h.special));battle.hp=Math.min(battle.maxHp,battle.hp+Math.round(value/2));total+=value}else if(h.mode==='tide'){await petAttack(id,value,t(h.special));battle.shield+=Math.round(value/2);total+=value}renderBattle(false);if(!living().length)break}return total}
+  async function resolve(){const {c,line}=counts(),storedLuck=battle.luckCharge||0;battle.lastResolution={counts:c,line,attacks:[],defense:0,healing:0,special:false};await showLine(line);let attackTotal=0;
+    if(c.special){battle.currentPhase='special';const mult=await showMultiplier(c.special,line.line&&line.type==='special',RUNES.special.color);battle.lastResolution.special=true;attackTotal=await specials(mult)}
+    else if(c.attack){battle.currentPhase='attack';const mult=await showMultiplier(c.attack,line.line&&line.type==='attack',RUNES.attack.color);attackTotal=await normalAttacks(mult,c.luck+storedLuck)}
+    if(c.echo&&(attackTotal||battle.lastDamage)&&living().length){const base=attackTotal||battle.lastDamage,echoMult=c.echo*(line.line&&line.type==='echo'?2:1),echo=Math.round(base*.5*echoMult);showPhase(t('runeEcho'),`${base} × 0.5 × ${echoMult} = ${echo}`,RUNES.echo.color);deal(echo);battle.phaseLog.push({phase:'echo',base,mult:echoMult,amount:echo});await wait(650)}
+    if(c.defense){battle.currentPhase='defense';const sum=totals().def,mult=await showMultiplier(c.defense,line.line&&line.type==='defense',RUNES.defense.color),value=sum*mult;battle.shield+=value;battle.lastResolution.defense=value;battle.phaseLog.push({phase:'defense',base:sum,mult,amount:value});showPhase(t('defensePhase'),`${sum} × ${mult} = +${value}`,RUNES.defense.color);renderBattle(false);await wait(800)}
+    if(c.heal){battle.currentPhase='healing';const sum=totals().heal,mult=await showMultiplier(c.heal,line.line&&line.type==='heal',RUNES.heal.color),value=sum*mult,actual=Math.min(value,battle.maxHp-battle.hp);battle.hp+=actual;battle.lastResolution.healing=value;battle.phaseLog.push({phase:'healing',base:sum,mult,amount:value,actual});showPhase(t('healingPhase'),`${sum} × ${mult} = +${value}`,RUNES.heal.color);renderBattle(false);await wait(800)}
+    if(c.coin){const mult=c.coin*(line.line&&line.type==='coin'?2:1),value=8*mult;battle.coins+=value;showPhase(t('runeCoin'),`8 × ${mult} = +${value}`,RUNES.coin.color);battle.phaseLog.push({phase:'coin',amount:value});renderBattle(false);await wait(600)}
+    if(c.focus){battle.focus=c.focus*(line.line&&line.type==='focus'?2:1);showPhase(t('runeFocus'),`${battle.focus} × 15%`,RUNES.focus.color);await wait(500)}else battle.focus=0;
+    if(attackTotal)battle.lastDamage=attackTotal;battle.luckCharge=line.line&&line.type==='luck'?c.luck*2:0;
+    hidePhase();battle.currentPhase=null;renderBattle(false)
   }
-
-  function save() {
-    writeStorage(storageKey, JSON.stringify(profile));
+  async function enemyTurn(){battle.currentPhase='enemy';const reduction=Math.min(.9,(battle.focus||0)*.15);let dmg=Math.round(battle.intentDamage*(1-reduction));showPhase(t('enemyPhase'),`${battle.intentDamage}${battle.focus?` − ${Math.round(reduction*100)}%`:''} = ${dmg}`,"#ff6481");await wait(350);const blocked=Math.min(battle.shield,dmg);battle.shield-=blocked;dmg-=blocked;battle.hp=Math.max(0,battle.hp-dmg);$("#summonerField").classList.add('summoner-hit');const v=document.createElement('i');v.className='damage-vignette';$("#arena").append(v);renderBattle(false);await wait(450);$("#summonerField").classList.remove('summoner-hit');v.remove();hidePhase();battle.phaseLog.push({phase:'enemy',damage:dmg,blocked});battle.currentPhase=null}
+  function finishTurn(){battle.busy=false;if(!living().length)return endBattle(true);if(battle.hp<=0)return endBattle(false);battle.intentDamage=10+Math.ceil(selectedStage*1.2)+Math.floor(battle.turn/3);renderBattle(false);if(battle.auto)setTimeout(()=>spin(),500)}
+  function endBattle(win){battle.ended=true;battle.auto=false;profile.coins+=battle.coins+(win?40+selectedStage*4:Math.floor(battle.coins/2));if(win){profile.best[selectedStage-1]=Math.max(profile.best[selectedStage-1]||0,battle.hp/battle.maxHp>.7?3:battle.hp/battle.maxHp>.35?2:1);profile.unlocked=Math.max(profile.unlocked,Math.min(30,selectedStage+1))}save();$("#resultTitle").textContent=t(win?'win':'lose');$("#resultBody").textContent=t(win?'winBodyV3':'loseBodyV3');$("#rewardValue").textContent=`+${battle.coins+(win?40+selectedStage*4:Math.floor(battle.coins/2))}`;$("#nextBtn").hidden=!win||selectedStage>=30;renderBattle(false);openBattleModal('#result')}
+  function leaveBattle(){battle=null;$("#pauseModal").hidden=true;$("#result").hidden=true;setBattleInert(false);show('stagePage');renderStage();setTab('stages')}
+  function toast(text){const n=document.createElement('div');n.className='toast';n.textContent=text;document.body.append(n);setTimeout(()=>n.remove(),1600)}
+  const wait=(ms)=>new Promise(r=>setTimeout(r,ms));
+  function bind(){
+    $("#runeStartBtn").onclick=()=>{show('stagePage');renderStage();setTab('stages')};$("#stageBack").onclick=()=>show('mainPage');$("#enterBattle").onclick=startBattle;$("#spinBtn").onclick=spin;$("#autoBtn").onclick=()=>{if(!battle||battle.ended)return;battle.auto=!battle.auto;renderBattle(false);if(battle.auto&&!battle.busy)spin()};$("#pauseBtn").onclick=$("#battleBack").onclick=()=>{if(battle&&!battle.busy)openBattleModal('#pauseModal')};$("#resumeBtn").onclick=()=>closeBattleModal('#pauseModal');$("#leaveBtn").onclick=leaveBattle;$("#resultStages").onclick=leaveBattle;$("#retryBtn").onclick=()=>{ $("#result").hidden=true;startBattle()};$("#nextBtn").onclick=()=>{selectedStage++;$("#result").hidden=true;startBattle()};$("#tutorialClose").onclick=()=>{profile.tutorial=true;save();closeBattleModal('#tutorial')};$("#helpBtn").onclick=()=>setTab('runes');
+    $$('.stage-tabs button').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));$("#summonBtn").onclick=()=>summon();$("#summonClose").onclick=()=>$("#summonResult").hidden=true;$("#characterClose").onclick=()=>$("#characterModal").hidden=true;$("#equipBtn").onclick=()=>{const i=profile.team.indexOf(currentHero);if(i>=0){if(profile.team.length===1)return toast(t('needOneHero'));profile.team.splice(i,1)}else{if(profile.team.length>=3)return toast(t('teamFull'));profile.team.push(currentHero)}save();openHero(currentHero);renderRoster()};$("#upgradeBtn").onclick=()=>{const c=profile.cards[currentHero],need=requiredCopies(c.level);if(c.copies<need)return;c.copies-=need;c.level++;save();openHero(currentHero);renderRoster()};
+    $("#localeSelect").onchange=e=>{locale=e.target.value;write(`${storageKey}.locale`,locale);applyLocale()};
+    const rail=$("#stageRail");let startX=0,startScroll=0;rail.addEventListener('pointerdown',e=>{startX=e.clientX;startScroll=rail.scrollLeft;dragged=false;rail.classList.add('dragging');rail.setPointerCapture(e.pointerId)});rail.addEventListener('pointermove',e=>{if(!rail.hasPointerCapture(e.pointerId))return;const dx=e.clientX-startX;if(Math.abs(dx)>5)dragged=true;rail.scrollLeft=startScroll-dx});rail.addEventListener('pointerup',e=>{rail.releasePointerCapture(e.pointerId);rail.classList.remove('dragging');settleRail();setTimeout(()=>dragged=false,180)});rail.addEventListener('scroll',settleRail,{passive:true});
+    document.addEventListener('keydown',e=>{const modal=$('.v3-battle .modal:not([hidden])');if(!modal)return;if(e.key==='Escape'&&modal.id==='pauseModal'){e.preventDefault();closeBattleModal('#pauseModal');return}if(e.key==='Tab'){const buttons=[...modal.querySelectorAll('button:not([disabled]):not([hidden])')];if(!buttons.length)return;const first=buttons[0],last=buttons.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});
   }
-
-  function pickLocale() {
-    const queryLocale = new URLSearchParams(location.search).get("lang");
-    const sharedLocale = window.WonderI18n?.actualLocale?.();
-    const savedLocale = readStorage(`${storageKey}.locale`);
-    const browserLocale = navigator.language;
-    return localeKeys.includes(queryLocale) ? queryLocale
-      : localeKeys.includes(sharedLocale) ? sharedLocale
-      : localeKeys.includes(savedLocale) ? savedLocale
-      : localeKeys.find((key) => browserLocale.toLowerCase().startsWith(key.toLowerCase().split("-")[0])) || "en";
-  }
-
-  function t(key) {
-    return LOCALES[locale]?.[key] || LOCALES.en[key] || key;
-  }
-
-  function applyLocale() {
-    document.documentElement.lang = locale;
-    document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
-    document.title = `${t("title")} — ${t("internalTrial")}`;
-    $$('[data-i18n]').forEach((element) => { element.textContent = t(element.dataset.i18n); });
-    $$('[data-i18n-aria]').forEach((element) => element.setAttribute("aria-label", t(element.dataset.i18nAria)));
-    $("#localeSelect").value = locale;
-    if (battle) renderBattle();
-  }
-
-  function initLocales() {
-    for (const key of localeKeys) {
-      const option = document.createElement("option");
-      option.value = key;
-      option.textContent = LOCALES[key].name;
-      $("#localeSelect").append(option);
-    }
-    $("#localeSelect").addEventListener("change", (event) => {
-      locale = event.target.value;
-      writeStorage(`${storageKey}.locale`, locale);
-      window.WonderI18n?.setLocale?.(locale);
-      applyLocale();
-      renderStages();
-    });
-    window.addEventListener("wonder:locale-change", (event) => {
-      const next = event.detail?.locale;
-      if (!localeKeys.includes(next)) return;
-      locale = next;
-      setTimeout(() => { applyLocale(); renderStages(); }, 0);
-    });
-  }
-
-  function syncLiveViewport() {
-    const viewport = window.visualViewport;
-    const width = viewport?.width || innerWidth;
-    const height = viewport?.height || innerHeight;
-    document.documentElement.style.setProperty("--live-width", `${Math.round(width * 100) / 100}px`);
-    document.documentElement.style.setProperty("--live-height", `${Math.round(height * 100) / 100}px`);
-    if (!$("#stagePage")?.hidden) requestAnimationFrame(() => centerStage(selectedStage, false));
-  }
-
-  function show(id) {
-    $$(".page").forEach((page) => { page.hidden = page.id !== id; });
-    scrollTo(0, 0);
-  }
-
-  function heroStats() {
-    return {
-      attack: 20 + profile.upgrades.attack * 4,
-      defense: 12 + profile.upgrades.guard * 3,
-      maxHp: 110 + profile.upgrades.heal * 10,
-    };
-  }
-
-  function stageData(stage) {
-    const boss = stage % 5 === 0;
-    const chapter = Math.ceil(stage / 5);
-    const position = (stage - 1) % 5;
-    const enemyCount = boss ? 3 : Math.min(3, 1 + Math.floor(position / 2));
-    const totalHp = (boss ? 130 + chapter * 34 : 62 + stage * 9) + (enemyCount - 1) * 16;
-    const stats = heroStats();
-    return {
-      n: stage,
-      boss,
-      chapter,
-      enemyCount,
-      totalHp,
-      playerHp: stats.maxHp,
-      enemyPower: 6 + Math.floor(stage * 1.15) + (boss ? 5 : 0),
-      reward: 8 + stage + (boss ? 12 : 0),
-    };
-  }
-
-  function chapterName(stage) {
-    const names = chapterNames[locale] || chapterNames.en;
-    return names[Math.floor((stage - 1) / 5)];
-  }
-
-  function enemyAssetFor(stage, index) {
-    return enemyAssets[(Math.floor((stage - 1) / 5) + index) % enemyAssets.length];
-  }
-
-  function renderStages() {
-    const rail = $("#stageRail");
-    rail.innerHTML = "";
-    for (let stage = 1; stage <= 30; stage += 1) {
-      const data = stageData(stage);
-      const locked = stage > profile.unlocked;
-      const stars = profile.best[stage - 1] ? ` · ${"★".repeat(profile.best[stage - 1])}` : "";
-      const card = document.createElement("button");
-      card.className = `stage-card${locked ? " locked" : ""}`;
-      card.dataset.stage = String(stage);
-      card.setAttribute("aria-disabled", String(locked));
-      const portraits = Array.from({ length: data.enemyCount }, (_, index) => (
-        `<img src="${ASSET_ROOT}${enemyAssetFor(stage, index)}" alt="">`
-      )).join("");
-      card.innerHTML = `
-        <small>${chapterName(stage)}${locked ? ` · ${t("locked")}` : stars}</small>
-        <h3>${data.boss ? t("boss") : t("stage")} ${stage}</h3>
-        <div class="stage-enemy-preview" data-count="${data.enemyCount}">${portraits}</div>
-        <p>${t("hp")} ${data.totalHp} · ${t("attackShort")} ${data.enemyPower}</p>
-        <div class="monster-chip"><span>${data.boss ? t("guardianSquad") : t("enemySquadLabel")}</span><span class="monster-count">×${data.enemyCount}</span></div>`;
-      card.addEventListener("click", () => {
-        if (!locked) centerStage(stage, true);
-      });
-      rail.append(card);
-    }
-    updateStageUi();
-    requestAnimationFrame(() => centerStage(selectedStage, false));
-  }
-
-  function centerStage(stage, smooth) {
-    const card = $(`.stage-card[data-stage="${stage}"]`);
-    if (!card) return;
-    card.scrollIntoView({ behavior: smooth ? "smooth" : "auto", inline: "center", block: "nearest" });
-    selectedStage = stage;
-    updateStageUi();
-  }
-
-  function updateStageUi() {
-    $$(".stage-card").forEach((card) => card.classList.toggle("centered", Number(card.dataset.stage) === selectedStage));
-    $("#campaignProgress").textContent = `${profile.unlocked} / 30`;
-    $("#sparkCount").textContent = String(profile.sparks);
-    for (const kind of ["attack", "guard", "heal"]) {
-      $(`#${kind}Level`).textContent = `${t("level")} ${profile.upgrades[kind]}`;
-    }
-  }
-
-  function settleRail() {
-    clearTimeout(centerTimer);
-    centerTimer = setTimeout(() => {
-      const rail = $("#stageRail");
-      const midpoint = rail.getBoundingClientRect().left + rail.clientWidth / 2;
-      let closest = null;
-      let distance = Infinity;
-      $$(".stage-card").forEach((card) => {
-        const rect = card.getBoundingClientRect();
-        const current = Math.abs(rect.left + rect.width / 2 - midpoint);
-        if (current < distance) { closest = card; distance = current; }
-      });
-      if (closest) centerStage(Number(closest.dataset.stage), true);
-    }, 100);
-  }
-
-  function upgrade(kind) {
-    const level = profile.upgrades[kind];
-    const cost = level * 18;
-    if (level >= 8) return toast(t("max"));
-    if (profile.sparks < cost) return toast(t("needSparks"));
-    profile.sparks -= cost;
-    profile.upgrades[kind] += 1;
-    save();
-    updateStageUi();
-    toast(t("upgradeOk"));
-  }
-
-  function seedRand(seed) {
-    let value = seed >>> 0;
-    return () => {
-      value = (value * 1664525 + 1013904223) >>> 0;
-      return value / 4294967296;
-    };
-  }
-
-  function buildEnemies(data) {
-    let remaining = data.totalHp;
-    return Array.from({ length: data.enemyCount }, (_, index) => {
-      const enemiesLeft = data.enemyCount - index;
-      const maxHp = index === data.enemyCount - 1 ? remaining : Math.round(remaining / enemiesLeft);
-      remaining -= maxHp;
-      return {
-        id: index,
-        name: `${data.boss ? t("guardian") : t("enemy")} ${index + 1}`,
-        asset: enemyAssetFor(data.n, index),
-        hp: maxHp,
-        maxHp,
-      };
-    });
-  }
-
-  function startBattle() {
-    const data = stageData(selectedStage);
-    const enemies = buildEnemies(data);
-    battle = {
-      ...data,
-      hp: data.playerHp,
-      maxPlayerHp: data.playerHp,
-      enemies,
-      enemyHp: data.totalHp,
-      maxHp: data.totalHp,
-      shield: 0,
-      focus: 1,
-      turn: 0,
-      held: null,
-      reels: ["stone", "rabbit", "lion"],
-      busy: false,
-      ended: false,
-      intent: "strike",
-      rage: 0,
-      currentPhase: null,
-      phaseLog: [],
-      spinFrames: [0, 0, 0],
-      reelStopLog: [],
-      forcedReels: null,
-    };
-    show("battlePage");
-    resetResolutionSteps();
-    rollIntent();
-    renderBattle();
-    if (!profile.tutorial) $("#tutorial").hidden = false;
-  }
-
-  function aliveEnemies() {
-    return battle?.enemies.filter((enemy) => enemy.hp > 0) || [];
-  }
-
-  function syncEnemyTotals() {
-    battle.enemyHp = battle.enemies.reduce((sum, enemy) => sum + Math.max(0, enemy.hp), 0);
-    battle.maxHp = battle.enemies.reduce((sum, enemy) => sum + enemy.maxHp, 0);
-  }
-
-  function rollIntent() {
-    const random = seedRand(selectedStage * 7919 + (battle.turn + 1) * 104729)();
-    battle.intent = random < 0.38 ? "strike" : random < 0.66 ? "heavy" : random < 0.84 ? "drain" : "rage";
-  }
-
-  function intentDamage() {
-    const living = Math.max(1, aliveEnemies().length);
-    const base = battle.enemyPower + battle.rage + (living - 1) * 3;
-    return battle.intent === "heavy" ? Math.round(base * 1.55)
-      : battle.intent === "drain" ? Math.round(base * 0.78)
-      : battle.intent === "rage" ? Math.round(base * 1.25)
-      : base;
-  }
-
-  function renderBattle({ reels = true } = {}) {
-    if (!battle) return;
-    const stats = heroStats();
-    $("#chapterName").textContent = chapterName(selectedStage);
-    $("#battleStage").textContent = `${t("stage")} ${selectedStage}`;
-    renderEnemySquad();
-    $("#playerHpFill").style.width = `${Math.max(0, battle.hp / battle.maxPlayerHp * 100)}%`;
-    $("#playerHpText").textContent = `${Math.max(0, battle.hp)} / ${battle.maxPlayerHp}`;
-    $("#shieldText").textContent = String(battle.shield);
-    $("#focusText").textContent = String(battle.focus);
-    $("#lionStat").textContent = `${t("attackShort")} ${stats.attack}`;
-    $("#turtleStat").textContent = `${t("defenseShort")} ${stats.defense}`;
-    $("#rabbitStat").textContent = `2 / 4 / 10%`;
-    $("#intentText").textContent = `${t(`intent${battle.intent[0].toUpperCase()}${battle.intent.slice(1)}`)} · ${intentDamage()}`;
-    $("#spinBtn").disabled = battle.busy || battle.ended;
-    if (reels) renderReels();
-  }
-
-  function renderEnemySquad() {
-    const squad = $("#enemySquad");
-    squad.innerHTML = "";
-    battle.enemies.forEach((enemy, index) => {
-      const unit = document.createElement("div");
-      unit.className = `enemy-unit${enemy.hp <= 0 ? " defeated" : ""}`;
-      unit.dataset.enemy = String(index);
-      unit.innerHTML = `
-        <img src="${ASSET_ROOT}${enemy.asset}" alt="">
-        <div class="enemy-name">${enemy.name}</div>
-        <div class="hpbar"><i style="width:${Math.max(0, enemy.hp / enemy.maxHp * 100)}%"></i><span>${Math.max(0, enemy.hp)} / ${enemy.maxHp}</span></div>`;
-      squad.append(unit);
-    });
-  }
-
-  function reelCell(symbolId) {
-    const symbol = symbols[symbolId];
-    return `<span class="reel-cell" data-symbol="${symbolId}"><img src="${ASSET_ROOT}${symbol.img}" alt=""><b>${t(symbol.key)}</b></span>`;
-  }
-
-  function renderReels() {
-    const reels = $("#reels");
-    reels.innerHTML = "";
-    battle.reels.forEach((symbolId, index) => {
-      const reel = document.createElement("button");
-      reel.className = `reel${battle.held === index ? " held" : ""}`;
-      reel.dataset.index = String(index);
-      reel.innerHTML = `<span class="reel-strip">${reelCell(symbolId)}</span>`;
-      reel.setAttribute("aria-label", `${t(symbols[symbolId].key)}${battle.held === index ? `, ${t("hold")}` : ""}`);
-      reel.addEventListener("click", () => toggleHold(index));
-      reels.append(reel);
-    });
-  }
-
-  function renderSingleReel(index) {
-    const reel = $(`.reel[data-index="${index}"]`);
-    if (!reel) return;
-    const symbolId = battle.reels[index];
-    reel.className = `reel${battle.held === index ? " held" : ""}`;
-    reel.innerHTML = `<span class="reel-strip">${reelCell(symbolId)}</span>`;
-    reel.setAttribute("aria-label", `${t(symbols[symbolId].key)}${battle.held === index ? `, ${t("hold")}` : ""}`);
-  }
-
-  function toggleHold(index) {
-    if (!battle || battle.busy || battle.ended) return;
-    battle.held = battle.held === index ? null : index;
-    renderReels();
-  }
-
-  function stagePool() {
-    const pool = ["lion", "turtle", "rabbit", "stone", "stone"];
-    if (selectedStage > 10) pool.push("stone");
-    if (selectedStage > 20) pool.push("lion", "turtle", "rabbit", "stone");
-    return pool;
-  }
-
-  function chooseSpinTargets() {
-    const forced = trialMode && Array.isArray(battle.forcedReels) ? battle.forcedReels : null;
-    const random = seedRand(selectedStage * 1000003 + battle.turn * 9176 + profile.upgrades.attack * 17);
-    const pool = stagePool();
-    return battle.reels.map((current, index) => {
-      if (battle.held === index) return current;
-      return forced?.[index] && symbols[forced[index]] ? forced[index] : pool[Math.floor(random() * pool.length)];
-    });
-  }
-
-  async function animateReel(index, target, random) {
-    if (battle.held === index) return;
-    const reel = $(`.reel[data-index="${index}"]`);
-    const strip = reel.querySelector(".reel-strip");
-    const cellHeight = reel.clientHeight;
-    const length = 11 + index * 3;
-    const sequence = Array.from({ length: length - 1 }, () => symbolIds[Math.floor(random() * symbolIds.length)]);
-    sequence.push(target);
-    strip.innerHTML = sequence.map(reelCell).join("");
-    strip.querySelectorAll(".reel-cell").forEach((cell) => { cell.style.height = `${cellHeight}px`; });
-    reel.classList.add("spinning");
-    battle.spinFrames[index] = sequence.length;
-    const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const duration = reduceMotion ? 180 + index * 70 : 1050 + index * 310;
-    const animation = strip.animate(
-      [{ transform: "translateY(0)" }, { transform: `translateY(-${(sequence.length - 1) * cellHeight}px)` }],
-      { duration, easing: "cubic-bezier(.12,.68,.16,1)", fill: "forwards" },
-    );
-    await animation.finished.catch(() => {});
-    battle.reelStopLog.push({ index, at: performance.now() });
-    battle.reels[index] = target;
-    renderSingleReel(index);
-  }
-
-  async function spin() {
-    if (!battle || battle.busy || battle.ended) return;
-    if (battle.held !== null && battle.focus < 1) {
-      toast(t("needFocus"));
-      battle.held = null;
-      renderReels();
-    }
-    battle.busy = true;
-    battle.currentPhase = "spinning";
-    battle.phaseLog = [];
-    battle.reelStopLog = [];
-    resetResolutionSteps();
-    hidePhaseBanner();
-    if (battle.held !== null) battle.focus -= 1;
-    battle.turn += 1;
-    $("#spinBtn").disabled = true;
-    $("#comboBanner").textContent = t("reelsSpinning");
-    const targets = chooseSpinTargets();
-    battle.forcedReels = null;
-    const random = seedRand(selectedStage * 55001 + battle.turn * 31337);
-    await Promise.all(targets.map((target, index) => animateReel(index, target, random)));
-    battle.reels = targets;
-    battle.held = null;
-    renderReels();
-    await resolveSpin();
-    if (battle.enemyHp > 0 && battle.hp > 0) await enemyTurn();
-    finishTurn();
-  }
-
-  function resetResolutionSteps() {
-    $$("#resolutionSteps span").forEach((step) => step.classList.remove("active", "done"));
-  }
-
-  function activateStep(phase) {
-    const order = ["attack", "defense", "healing"];
-    order.forEach((name) => {
-      const step = $(`#resolutionSteps [data-phase="${name}"]`);
-      step.classList.toggle("active", name === phase);
-      step.classList.toggle("done", order.indexOf(name) < order.indexOf(phase));
-    });
-  }
-
-  function setActiveHero(hero) {
-    $$(".party-hero").forEach((element) => element.classList.toggle("active", element.dataset.hero === hero));
-  }
-
-  function showPhaseBanner(label, math, color) {
-    const banner = $("#phaseBanner");
-    banner.hidden = false;
-    banner.style.setProperty("--phase-color", color);
-    $("#phaseLabel").textContent = label;
-    $("#phaseMath").textContent = math;
-  }
-
-  function hidePhaseBanner() {
-    $("#phaseBanner").hidden = true;
-    setActiveHero(null);
-  }
-
-  function phaseEffect(phase) {
-    const effect = document.createElement("span");
-    effect.className = `combat-phase-fx ${phase}-phase-fx`;
-    $("#fxLayer").append(effect);
-    setTimeout(() => effect.remove(), 900);
-  }
-
-  async function resolveSpin() {
-    const counts = { lion: 0, turtle: 0, rabbit: 0, stone: 0 };
-    battle.reels.forEach((symbol) => { counts[symbol] += 1; });
-    const stats = heroStats();
-    const attackMultiplier = attackMultipliers[counts.lion];
-    const attack = Math.round(stats.attack * attackMultiplier);
-    const defenseMultiplier = defenseMultipliers[counts.turtle];
-    const defense = Math.round(stats.defense * defenseMultiplier);
-    const healingPercent = healingPercents[counts.rabbit];
-    const healing = Math.round(battle.maxPlayerHp * healingPercent / 100);
-    battle.lastResolution = { counts, attackMultiplier, attack, defenseMultiplier, defense, healingPercent, healing };
-
-    await presentAttack(counts.lion, stats.attack, attackMultiplier, attack);
-    await presentDefense(counts.turtle, stats.defense, defenseMultiplier, defense);
-    await presentHealing(counts.rabbit, healingPercent, healing);
-
-    if (counts.stone > 0) {
-      $("#comboBanner").textContent = `${t("stoneSymbol")} ×${counts.stone} · ${t("noEffect")}`;
-    } else {
-      $("#comboBanner").textContent = "";
-    }
-    if ((counts.lion === 3 || counts.turtle === 3 || counts.rabbit === 3) && battle.focus < 5) {
-      battle.focus += 1;
-      floatFx(`${t("focus")} +1`, 50, 68, "#ffe26a");
-    }
-    $$("#resolutionSteps span").forEach((step) => { step.classList.remove("active"); step.classList.add("done"); });
-    hidePhaseBanner();
-    battle.currentPhase = null;
-    renderBattle({ reels: false });
-  }
-
-  async function presentAttack(count, base, multiplier, amount) {
-    battle.currentPhase = "attack";
-    $("#comboBanner").textContent = t("attackPhase");
-    battle.phaseLog.push({ phase: "attack", count, base, multiplier, amount });
-    activateStep("attack");
-    setActiveHero("lion");
-    const math = count ? `${base} × ${formatMultiplier(multiplier)} = ${amount}` : `${t("noLion")} · 0`;
-    showPhaseBanner(`${t("attackPhase")} · ${t("lionSymbol")} ×${count}`, math, "#ffd15a");
-    if (amount > 0) {
-      phaseEffect("attack");
-      await wait(280);
-      damageEnemies(amount);
-    }
-    await wait(count ? 680 : 420);
-  }
-
-  async function presentDefense(count, base, multiplier, amount) {
-    battle.currentPhase = "defense";
-    $("#comboBanner").textContent = t("defensePhase");
-    battle.phaseLog.push({ phase: "defense", count, base, multiplier, amount });
-    activateStep("defense");
-    setActiveHero("turtle");
-    const math = count ? `${base} × ${formatMultiplier(multiplier)} = +${amount}` : `${t("noTurtle")} · +0`;
-    showPhaseBanner(`${t("defensePhase")} · ${t("turtleSymbol")} ×${count}`, math, "#61e2c4");
-    if (amount > 0) {
-      battle.shield += amount;
-      phaseEffect("defense");
-      floatFx(`+${amount} ${t("shield")}`, 26, 70, "#6fe9dd");
-      renderBattle({ reels: false });
-    }
-    await wait(count ? 680 : 420);
-  }
-
-  async function presentHealing(count, percent, amount) {
-    battle.currentPhase = "healing";
-    $("#comboBanner").textContent = t("healingPhase");
-    const actual = Math.min(amount, battle.maxPlayerHp - battle.hp);
-    battle.phaseLog.push({ phase: "healing", count, percent, amount, actual });
-    activateStep("healing");
-    setActiveHero("rabbit");
-    const math = count ? `${percent}% × ${battle.maxPlayerHp} = +${actual}` : `${t("noRabbit")} · +0`;
-    showPhaseBanner(`${t("healingPhase")} · ${t("rabbitSymbol")} ×${count}`, math, "#65ef9d");
-    if (amount > 0) {
-      battle.hp += actual;
-      phaseEffect("healing");
-      floatFx(`+${actual} HP`, 26, 68, "#65ef9d");
-      renderBattle({ reels: false });
-    }
-    await wait(count ? 720 : 420);
-  }
-
-  function formatMultiplier(value) {
-    return value.toFixed(1);
-  }
-
-  function damageEnemies(totalDamage) {
-    let remaining = totalDamage;
-    const hitIndexes = [];
-    for (let index = 0; index < battle.enemies.length && remaining > 0; index += 1) {
-      const enemy = battle.enemies[index];
-      if (enemy.hp <= 0) continue;
-      const damage = Math.min(enemy.hp, remaining);
-      enemy.hp -= damage;
-      remaining -= damage;
-      hitIndexes.push({ index, damage });
-    }
-    syncEnemyTotals();
-    renderBattle({ reels: false });
-    hitIndexes.forEach(({ index, damage }, order) => {
-      setTimeout(() => {
-        const unit = $(`.enemy-unit[data-enemy="${index}"]`);
-        unit?.classList.add("enemy-hit");
-        setTimeout(() => unit?.classList.remove("enemy-hit"), 350);
-        floatFx(`-${damage}`, 43 + index * 10, 28, "#ffd15a");
-      }, order * 100);
-    });
-  }
-
-  async function enemyTurn() {
-    await wait(300);
-    battle.currentPhase = "enemy";
-    let damage = intentDamage();
-    showPhaseBanner(t("enemyPhase"), `${t(`intent${battle.intent[0].toUpperCase()}${battle.intent.slice(1)}`)} · ${damage}`, "#ff6787");
-    if (battle.intent === "drain") {
-      const healing = Math.round(damage * 0.65);
-      const target = aliveEnemies()[0];
-      if (target) target.hp = Math.min(target.maxHp, target.hp + healing);
-      syncEnemyTotals();
-    }
-    await wait(360);
-    const blocked = Math.min(battle.shield, damage);
-    battle.shield -= blocked;
-    damage -= blocked;
-    battle.hp = Math.max(0, battle.hp - damage);
-    stablePlayerHit(damage, blocked);
-    renderBattle({ reels: false });
-    await wait(620);
-    hidePhaseBanner();
-    battle.currentPhase = null;
-  }
-
-  function stablePlayerHit(damage, blocked) {
-    const party = $("#playerParty");
-    party.classList.add("party-hit");
-    setTimeout(() => party.classList.remove("party-hit"), 320);
-    const vignette = document.createElement("span");
-    vignette.className = "damage-vignette";
-    $("#fxLayer").append(vignette);
-    setTimeout(() => vignette.remove(), 450);
-    floatFx(damage ? `-${damage}` : t("block"), 23, 67, damage ? "#ff668a" : "#7fe9ff");
-    if (blocked > 0) floatFx(`${t("shield")} -${blocked}`, 33, 72, "#6fe9dd");
-  }
-
-  function finishTurn() {
-    battle.busy = false;
-    if (battle.enemyHp <= 0) return endBattle(true);
-    if (battle.hp <= 0) return endBattle(false);
-    rollIntent();
-    renderBattle();
-  }
-
-  function endBattle(win) {
-    battle.ended = true;
-    battle.currentPhase = "result";
-    $("#result").hidden = false;
-    $("#resultKicker").textContent = win ? "★★★" : "◇";
-    $("#resultTitle").textContent = t(win ? "win" : "lose");
-    $("#resultBody").textContent = t(win ? "winBody" : "loseBody");
-    const reward = win ? battle.reward : Math.max(2, Math.floor(battle.reward * 0.25));
-    $("#rewardValue").textContent = `+${reward}`;
-    profile.sparks += reward;
-    if (win) {
-      const stars = battle.hp / battle.maxPlayerHp > 0.7 ? 3 : battle.hp / battle.maxPlayerHp > 0.35 ? 2 : 1;
-      profile.best[selectedStage - 1] = Math.max(profile.best[selectedStage - 1] || 0, stars);
-      if (selectedStage === profile.unlocked && profile.unlocked < 30) profile.unlocked += 1;
-    }
-    save();
-    $("#nextBtn").hidden = !win || selectedStage >= 30;
-    $("#retryBtn").hidden = win;
-    renderBattle({ reels: false });
-  }
-
-  function floatFx(text, x, y, color) {
-    const element = document.createElement("span");
-    element.className = "float-fx";
-    element.textContent = text;
-    element.style.left = `${x}%`;
-    element.style.top = `${y}%`;
-    element.style.color = color;
-    $("#fxLayer").append(element);
-    setTimeout(() => element.remove(), 950);
-  }
-
-  function toast(text) {
-    $("#comboBanner").textContent = text;
-    setTimeout(() => {
-      if ($("#comboBanner").textContent === text) $("#comboBanner").textContent = "";
-    }, 1400);
-  }
-
-  function wait(milliseconds) {
-    return new Promise((resolve) => setTimeout(resolve, milliseconds));
-  }
-
-  function leaveToStages() {
-    $("#pauseModal").hidden = true;
-    $("#result").hidden = true;
-    battle = null;
-    show("stagePage");
-    renderStages();
-  }
-
-  function bind() {
-    initLocales();
-    syncLiveViewport();
-    addEventListener("resize", syncLiveViewport, { passive: true });
-    window.visualViewport?.addEventListener("resize", syncLiveViewport, { passive: true });
-    $("#runeStartBtn").onclick = () => { show("stagePage"); renderStages(); };
-    $("#stageBack").onclick = () => show("mainPage");
-    $("#helpBtn").onclick = () => { $("#tutorial").hidden = false; };
-    $("#stageRail").addEventListener("scroll", settleRail, { passive: true });
-    $("#enterBattle").onclick = startBattle;
-    $$(".upgrade").forEach((button) => { button.onclick = () => upgrade(button.dataset.upgrade); });
-    $("#battleBack").onclick = () => { if (!battle?.busy) $("#pauseModal").hidden = false; };
-    $("#pauseBtn").onclick = () => { if (!battle?.busy) $("#pauseModal").hidden = false; };
-    $("#resumeBtn").onclick = () => { $("#pauseModal").hidden = true; };
-    $("#leaveBtn").onclick = leaveToStages;
-    $("#spinBtn").onclick = spin;
-    $("#tutorialClose").onclick = () => { profile.tutorial = true; save(); $("#tutorial").hidden = true; };
-    $("#resultStages").onclick = leaveToStages;
-    $("#retryBtn").onclick = startBattle;
-    $("#nextBtn").onclick = () => {
-      selectedStage = Math.min(30, selectedStage + 1);
-      $("#result").hidden = true;
-      startBattle();
-    };
-    document.addEventListener("keydown", (event) => {
-      if ($("#battlePage").hidden || battle?.busy) return;
-      if (event.code === "Space") { event.preventDefault(); spin(); }
-      if (["Digit1", "Digit2", "Digit3"].includes(event.code)) toggleHold(Number(event.code.slice(-1)) - 1);
-    });
-  }
-
-  async function preload() {
-    const urls = [
-      "../../assets/animal-rune-reels/cover.webp",
-      "../../assets/animal-rune-reels/arena.webp",
-      "../../assets/weightplay-logo.png",
-      ...Object.values(symbols).map((symbol) => ASSET_ROOT + symbol.img),
-      ...enemyAssets.map((asset) => ASSET_ROOT + asset),
-    ];
-    let completed = 0;
-    await Promise.all(urls.map((src) => new Promise((resolve) => {
-      const image = new Image();
-      let settled = false;
-      const finish = () => {
-        if (settled) return;
-        settled = true;
-        $("#loadFill").style.width = `${++completed / urls.length * 100}%`;
-        resolve();
-      };
-      image.onload = finish;
-      image.onerror = finish;
-      image.src = src;
-      setTimeout(finish, 5000);
-    })));
-    await wait(180);
-  }
-
-  if (trialMode) {
-    window.__RUNE_REELS_TEST__ = {
-      state: () => battle ? JSON.parse(JSON.stringify(battle)) : null,
-      forceReels: (reels) => { if (battle) battle.forcedReels = reels; },
-      setHealth: (hp) => {
-        if (!battle) return;
-        battle.hp = Math.max(1, Math.min(battle.maxPlayerHp, hp));
-        renderBattle({ reels: false });
-      },
-      setEnemyHealth: (hp) => {
-        if (!battle) return;
-        battle.enemies.forEach((enemy, index) => { enemy.hp = index === 0 ? Math.max(1, Math.min(enemy.maxHp, hp)) : 0; });
-        syncEnemyTotals();
-        renderBattle({ reels: false });
-      },
-      setStage: (stage) => {
-        selectedStage = clampInt(stage, 1, 30, 1);
-        clearTimeout(centerTimer);
-        if (!$("#stagePage").hidden) centerStage(selectedStage, false);
-      },
-      unlockAll: () => { profile.unlocked = 30; save(); renderStages(); },
-    };
-  }
-
-  bind();
-  applyLocale();
-  preload().then(() => {
-    $("#loading").remove();
-    $("#app").hidden = false;
-    show("mainPage");
-  });
+  async function preload(){const urls=["animal-rune-reels/cover.webp","animal-rune-reels/arena.webp","animal-rune-reels/summoner-keeper.webp",...Object.values(RUNES).map(x=>x.img),...Object.values(HEROES).map(x=>x.img),...enemies];let done=0;await Promise.all(urls.map(src=>new Promise(r=>{const im=new Image();let settled=false;const finish=()=>{if(settled)return;settled=true;$("#loadFill").style.width=`${++done/urls.length*100}%`;r()};im.onload=finish;im.onerror=finish;im.src=ASSET+src;setTimeout(finish,4000)})));$("#loading").hidden=true;$("#app").hidden=false}
+  async function init(){locale=pickLocale();selectedStage=Math.min(profile.unlocked,30);populateLocales();bind();applyLocale();await preload();show('mainPage')}
+  if(trial)window.__RUNE_REELS_TEST__={state:()=>battle?JSON.parse(JSON.stringify(battle)):null,profile:()=>JSON.parse(JSON.stringify(profile)),forceReels:x=>{if(battle)battle.forced=x},forceSummon:id=>summon(id),unlockAll:()=>{profile.unlocked=30;save();renderStage()},unlockRoster:()=>{heroIds.forEach(id=>profile.cards[id].unlocked=true);profile.team=['lion','turtle','rabbit'];save();renderStage()},resetTeamLevels:()=>{profile.team.forEach(id=>{profile.cards[id].level=1;profile.cards[id].copies=0});save();renderStage()},setHealth:n=>{if(battle){battle.hp=Math.max(1,Math.min(battle.maxHp,n));renderBattle(false)}},setEnemyHealth:n=>{if(battle){battle.enemies.forEach((e,i)=>e.hp=i?0:Math.max(1,Math.min(e.maxHp,n)));renderBattle(false)}},setEnemyPool:n=>{if(battle){battle.enemies.forEach(e=>{e.maxHp=n;e.hp=n});renderBattle(false)}}};
+  init();
 })();

@@ -2141,7 +2141,7 @@
   canvas.addEventListener("pointercancel", cancelPointerAim);
   canvas.addEventListener("lostpointercapture", cancelPointerAim);
   canvas.addEventListener("keydown", onCanvasKeydown);
-  window.addEventListener("blur", cancelPointerAim);
+  window.addEventListener("blur", suspendBackgroundRaid);
   function suspendBackgroundRaid() {
     cancelPointerAim();
     suspendRerollConfirmation();
@@ -2159,6 +2159,9 @@
   }
   window.addEventListener("pagehide", suspendBackgroundRaid);
   window.addEventListener("pageshow", resumeBackgroundRaid);
+  window.addEventListener("focus", () => {
+    if (!document.hidden) resumeBackgroundRaid();
+  });
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) suspendBackgroundRaid();
     else resumeBackgroundRaid();

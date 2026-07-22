@@ -79,6 +79,49 @@ select {
   margin-inline: auto;
 }
 
+body:not(.zoo-helper-playing):not(.wp-standard-stage-page) .zoo-game {
+  width: min(100%, 920px);
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin-inline: auto;
+  overflow: hidden;
+}
+
+body:not(.zoo-helper-playing):not(.wp-standard-stage-page) .zoo-game > .topbar,
+body:not(.zoo-helper-playing):not(.wp-standard-stage-page) .zoo-game > .menu-panel {
+  width: 100%;
+}
+
+body:not(.zoo-helper-playing):not(.wp-standard-stage-page) .menu-panel {
+  min-height: 0;
+  grid-template-rows: minmax(0, 1fr) auto auto;
+  align-content: stretch;
+}
+
+body:not(.zoo-helper-playing):not(.wp-standard-stage-page) .cover {
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: auto;
+}
+
+@media (min-width: 700px) {
+  body:not(.zoo-helper-playing):not(.wp-standard-stage-page) .menu-panel {
+    grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.8fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    column-gap: 18px;
+  }
+
+  body:not(.zoo-helper-playing):not(.wp-standard-stage-page) .cover {
+    grid-row: 1 / 3;
+  }
+
+  body:not(.zoo-helper-playing):not(.wp-standard-stage-page) .menu-copy {
+    align-self: end;
+  }
+}
+
 .topbar {
   display: grid;
   grid-template-columns: 48px 1fr auto;

@@ -73,8 +73,10 @@ select {
 }
 
 .shape-game {
-  width: min(100%, 760px);
-  min-height: 100vh;
+  width: min(100%, 920px);
+  height: 100vh;
+  height: 100svh;
+  min-height: 0;
   margin: 0 auto;
   padding: calc(14px + env(safe-area-inset-top)) 14px calc(24px + env(safe-area-inset-bottom));
   display: flex;
@@ -84,9 +86,19 @@ select {
 
 .topbar {
   display: grid;
-  grid-template-columns: 48px 1fr auto;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
   gap: 10px;
   align-items: center;
+}
+
+.title-block {
+  min-width: 0;
+  padding-right: 54px;
+}
+
+html[dir="rtl"] .title-block {
+  padding-right: 0;
+  padding-left: 54px;
 }
 
 .home-link,
@@ -131,6 +143,7 @@ select {
 .title-block h1 {
   font-size: clamp(1.25rem, 5vw, 2.2rem);
   line-height: 1.02;
+  overflow-wrap: anywhere;
 }
 
 .language-picker {
@@ -160,10 +173,16 @@ select {
   gap: 14px;
 }
 
+.menu-panel {
+  min-height: 0;
+  grid-template-rows: minmax(0, 1fr) auto auto auto;
+}
+
 .cover-poster {
   position: relative;
   width: 100%;
-  aspect-ratio: 1.18 / 1;
+  height: 100%;
+  min-height: 0;
   border-radius: 22px;
   overflow: hidden;
   box-shadow: 0 18px 38px rgba(38, 79, 113, 0.22);
@@ -913,10 +932,6 @@ body.shape-playing .weightplay-version-badge {
     grid-template-columns: 44px 1fr 104px;
   }
 
-  .cover-poster {
-    aspect-ratio: 1.04 / 1;
-  }
-
   .menu-preview {
     grid-template-columns: 48px 1fr 34px 62px;
     min-height: 66px;
@@ -944,6 +959,37 @@ body.shape-playing .weightplay-version-badge {
   .car-shape {
     width: 46px;
     height: 46px;
+  }
+}
+
+@media (min-width: 700px) {
+  .menu-panel {
+    grid-template-columns: minmax(0, 1.55fr) minmax(240px, 0.9fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+
+  .menu-panel .cover-poster {
+    grid-column: 1;
+    grid-row: 1 / -1;
+  }
+
+  .menu-copy,
+  .menu-preview,
+  .menu-panel .standard-main-start {
+    grid-column: 2;
+  }
+
+  .menu-copy {
+    grid-row: 1;
+  }
+
+  .menu-preview {
+    grid-row: 2;
+    align-self: center;
+  }
+
+  .menu-panel .standard-main-start {
+    grid-row: 3;
   }
 }
 

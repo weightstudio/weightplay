@@ -1,6 +1,6 @@
 (function(){
   "use strict";
-  const codes=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru"];
+  const codes=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
   const rows={
     title:["Animal Prism Battalion","動物稜光軍團","动物棱光军团","アニマル・プリズム大隊","동물 프리즘 대대","Batallón Prisma Animal","Batalhão Prisma Animal","Bataillon Prisme Animal","Tierisches Prismenbataillon","Battaglione Prisma Animale","Звериный призменный батальон"],
     loading:["Charging the prism launcher…","稜光發射器充能中……","棱光发射器充能中……","プリズムランチャーを充填中…","프리즘 발사기 충전 중…","Cargando el lanzador prisma…","Carregando o lançador prisma…","Chargement du lanceur prismatique…","Prismenwerfer wird geladen…","Caricamento del lanciatore prisma…","Заряжаем призменную установку…"],
@@ -45,6 +45,22 @@
     overdriveActive:["Overdrive active","超載啟動中","超载启动中","オーバードライブ中","오버드라이브 가동 중","Sobrecarga activa","Sobrecarga ativa","Surcharge active","Überladung aktiv","Sovraccarico attivo","Перегрузка активна"],
     overdriveNeed:["Overdrive needs 100% · current {charge}%.","超載需要 100% 充能，目前為 {charge}%。","超载需要 100% 充能，当前为 {charge}%。","100%で発動できます（現在 {charge}%）。","100%에서 사용 가능 · 현재 {charge}%.","La Sobrecarga requiere 100 % · actual: {charge}%.","A Sobrecarga requer 100% · atual: {charge}%.","La Surcharge exige 100 % · actuel : {charge}%.","Überladung benötigt 100 % · aktuell {charge}%.","Il Sovraccarico richiede il 100% · attuale: {charge}%.","Для Перегрузки нужно 100% · сейчас {charge}%."],
     secondsShort:["{seconds}s","{seconds} 秒","{seconds} 秒","{seconds}秒","{seconds}초","{seconds} s","{seconds} s","{seconds} s","{seconds} s","{seconds} s","{seconds} с"],
+  });
+  const runtimeFallbackKeys=["laneKicker","lanePosterAlt","laneObjective","laneGuideTitle","laneGuideIntro","laneHow1","laneHow2","laneHow3","laneCampaign","laneTutorialTitle","laneTutorial1","laneTutorial2","laneTutorial3","attackPower","powerStored","shieldReward","bombThreat","pickupPower","shieldBroken","bombDefused","bombDamage","enemyCollision","enemyLeak","laneReady"];
+  Object.assign(rows,{
+    laneKicker:["THREE-LANE BATTALION STRATEGY"],lanePosterAlt:["Fox commander leads a three-lane prism battalion assault"],laneObjective:["Switch lanes · build attack · survive."],
+    laneGuideTitle:["Choose a lane. Build power. Survive the breach."],
+    laneGuideIntro:["Captain Fia switches between three crystal roads while the battalion fires automatically. Read what is coming, weaken the dangerous target, then choose whether to collect its power or avoid it."],
+    laneHow1:["Tap a lane or use Left and Right to switch instantly."],
+    laneHow2:["Shoot power cores and shield carriers, then collide with them to collect their attack value."],
+    laneHow3:["Reduce bombs before they cross the line; monsters deal their remaining health on contact, or one breach damage when avoided."],
+    laneCampaign:["Six chapters combine power cores, shield rewards, bombs, monsters, faster formations, champions, and fortress assaults across 30 authored routes."],
+    laneTutorialTitle:["Command three crystal lanes"],
+    laneTutorial1:["Tap a lane or press Left and Right to switch. Your battalion fires automatically."],
+    laneTutorial2:["Power cores store every hit. Break blue shields before collecting their attack reward."],
+    laneTutorial3:["Bombs always deal their remaining value. A monster in your lane deals its remaining health; an avoided monster still deals 1."],
+    attackPower:["Attack"],powerStored:["Stored +{count}"],shieldReward:["Shield {shield} · +{reward}"],bombThreat:["Bomb {count}"],
+    pickupPower:["Attack power +{count}"],shieldBroken:["Shield broken · collect +{count}"],bombDefused:["Bomb defused!"],bombDamage:["Bomb blast -{count}"],enemyCollision:["Monster collision -{count}"],enemyLeak:["Monster escaped -1"],laneReady:["Lane {lane} selected"],
   });
   const dictionaries={};
   codes.forEach((code,index)=>{dictionaries[code]={};Object.entries(rows).forEach(([key,values])=>{dictionaries[code][key]=values[index]||values[0];});});

@@ -1,6 +1,11 @@
 ﻿(() => {
   document.querySelector(".beast-deck-app")?.setAttribute("data-wp-canvas-max-width", "920");
   document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "920");
+  const resultDialog = document.getElementById("resultPanel");
+  resultDialog?.setAttribute("role", "dialog");
+  resultDialog?.setAttribute("aria-modal", "true");
+  resultDialog?.setAttribute("aria-labelledby", "resultTitle");
+  resultDialog?.setAttribute("aria-describedby", "resultText resultRewards resultUnlock");
 
   const GAME_ID = "beast-deck";
   const saveKey = "weightplay_beast_deck_v1";
@@ -1797,7 +1802,13 @@
       // The native scroll event can arrive after the next animation frame. Keep
       // it marked as programmatic long enough that it cannot overwrite the
       // saved selection with a neighboring card.
-      window.setTimeout(() => { isAutoPositioningStage = false; }, 220);
+      window.setTimeout(() => {
+        isAutoPositioningStage = false;
+        // A player can begin swiping before the initial programmatic settle
+        // finishes. Scroll events during that guard are intentionally ignored,
+        // so reconcile the card that is actually centered once the guard lifts.
+        selectNearestVisibleStage();
+      }, 220);
     });
   }
 
@@ -2768,6 +2779,13 @@
         playerShield: state.playerShield || 0,
         highlightDraftCard: state.highlightDraftCard || null,
       }),
+      getStageSettlementState: () => ({
+        browsedMission,
+        selectedMission: profile.selectedMission,
+        isAutoPositioningStage,
+        hasPendingSettle: Boolean(stageScrollTimer),
+        centeredMission: Number(nodes.stageGrid?.querySelector(".stage-card.centered")?.dataset.mission || 0),
+      }),
       campaignDepth: () => ({
         missionCount: missionTemplates.length,
         arcs: [...new Set(missionTemplates.map((mission) => mission.arc))],
@@ -3211,6 +3229,11 @@
       if (isAutoPositioningStage) return;
       window.clearTimeout(stageScrollTimer);
       stageScrollTimer = window.setTimeout(selectNearestVisibleStage, 120);
+    }, { passive: true });
+    nodes.stageGrid?.addEventListener("scrollend", () => {
+      if (isAutoPositioningStage) return;
+      cancelStageSettlement();
+      selectNearestVisibleStage();
     }, { passive: true });
     nodes.stageGrid?.addEventListener("wheel", (event) => {
       if (event.ctrlKey || event.shiftKey) return;

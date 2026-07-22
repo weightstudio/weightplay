@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#080d28">
   <title>Animal Rune Reels — Internal Trial</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="battle-v2.css">
+  <link rel="stylesheet" href="battle-v3.css">
   <style>[hidden]{display:none!important}</style>
 </head>
 <body>
@@ -15,66 +15,51 @@
   <main id="app" hidden>
     <section id="mainPage" class="page main-page">
       <div class="canvas main-canvas">
-        <header class="topbar">
-          <a class="back-logo" href="/" aria-label="WeightPlay lobby" data-i18n-aria="lobby"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
-          <h1 data-i18n="title">Animal Rune Reels</h1>
-          <select id="localeSelect" aria-label="Language" data-i18n-aria="language"></select>
-        </header>
-        <div class="poster"><img src="../../assets/animal-rune-reels/cover.webp" alt=""><div class="poster-shade"><span data-i18n="badge">TACTICAL REEL COMBAT</span></div></div>
-        <p class="lead" data-i18n="lead">Spin animal runes to command attacks. Read the monster's intent, hold one reel, and let Mimi's rabbit rune restore your health.</p>
+        <header class="topbar"><a class="back-logo" href="/" data-i18n-aria="lobby"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a><h1 data-i18n="title">Animal Rune Reels</h1><select id="localeSelect" data-i18n-aria="language"></select></header>
+        <div class="poster"><img src="../../assets/animal-rune-reels/cover.webp" alt=""><div class="poster-shade"><span data-i18n="badge">SUMMONER REEL BATTLE</span></div></div>
+        <p class="lead" data-i18n="leadV3">Build a team of summoned animal heroes, align runes, and defeat every guardian.</p>
         <button id="runeStartBtn" class="primary" data-i18n="start">Start Game</button>
       </div>
-      <article class="guide">
-        <h2 data-i18n="guideTitle">How to play</h2>
-        <p data-i18n="guideBody">The reels visibly spin and stop one by one. Lion symbols multiply attack, turtle symbols multiply defense, rabbit gems heal, and dormant stones have no effect. Results play as attack, defense, healing, then the enemy squad strikes.</p>
-        <div class="guide-grid"><div><b data-i18n="gameplayLabel">Gameplay</b><span data-i18n="gameplay">Tactical slot combat</span></div><div><b data-i18n="difficultyLabel">Difficulty</b><span data-i18n="difficulty">Adaptive</span></div><div><b data-i18n="timeLabel">Play time</b><span data-i18n="time">3–6 minutes</span></div><div><b data-i18n="ageLabel">Age</b><span>13+</span></div></div>
-      </article>
+      <article class="guide"><h2 data-i18n="guideTitle">How to play</h2><p data-i18n="guideV3">Spin downward reels. Matching lines double their effect; pets attack separately while defense and healing combine for the summoner.</p><div class="guide-grid"><div><b data-i18n="gameplayLabel">Gameplay</b><span data-i18n="gameplayV3">Team reel RPG</span></div><div><b data-i18n="difficultyLabel">Difficulty</b><span data-i18n="difficulty">Adaptive</span></div><div><b data-i18n="timeLabel">Play time</b><span data-i18n="time">3–6 minutes</span></div><div><b data-i18n="ageLabel">Age</b><span>13+</span></div></div></article>
     </section>
 
     <section id="stagePage" class="page play-page" hidden>
-      <div class="canvas stage-canvas">
-        <header class="screen-head"><button class="icon-btn" id="stageBack" aria-label="Back" data-i18n-aria="back">←</button><h2 data-i18n="chooseStage">Choose a Rift</h2><button class="icon-btn" id="helpBtn" aria-label="Help" data-i18n-aria="help">?</button></header>
-        <div class="progress-card"><span data-i18n="campaign">Campaign</span><strong id="campaignProgress">1 / 30</strong></div>
-        <div id="stageRail" class="stage-rail" tabindex="0" aria-label="Stage selection" data-i18n-aria="stageSelection"></div>
-        <div class="forge">
-          <div><small data-i18n="runesFound">Rune Sparks</small><strong id="sparkCount">0</strong></div>
-          <button class="upgrade" data-upgrade="attack"><img src="../../assets/weightplay-character-boom-mane-lion-cutout.webp" alt=""><b data-i18n="lionPower">Lion ATK</b><small id="attackLevel">Lv. 1</small></button>
-          <button class="upgrade" data-upgrade="guard"><img src="../../assets/weightplay-character-moss-shell-turtle-cutout.webp" alt=""><b data-i18n="turtleGuard">Turtle DEF</b><small id="guardLevel">Lv. 1</small></button>
-          <button class="upgrade" data-upgrade="heal"><img src="../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt=""><b data-i18n="rabbitVitality">Rabbit HP</b><small id="healLevel">Lv. 1</small></button>
-        </div>
+      <div class="canvas stage-canvas v3-stage">
+        <header class="screen-head"><button class="icon-btn" id="stageBack" data-i18n-aria="back">←</button><h2 data-i18n="chooseStage">Choose a Rift</h2><button class="icon-btn" id="helpBtn" data-i18n-aria="help">?</button></header>
+        <nav class="stage-tabs" aria-label="Management"><button data-tab="stages" class="active" data-i18n="tabStages">Stages</button><button data-tab="pack" data-i18n="tabPack">Backpack</button><button data-tab="summon" data-i18n="tabSummon">Summon</button><button data-tab="runes" data-i18n="tabRunes">Runes</button></nav>
+        <div class="stage-panel" id="stagesPanel"><div class="progress-card"><span data-i18n="campaign">Campaign</span><strong id="campaignProgress">1 / 30</strong></div><div id="stageRail" class="stage-rail" tabindex="0" data-i18n-aria="stageSelection"></div></div>
+        <div class="stage-panel" id="packPanel" hidden><div class="team-summary"><span data-i18n="activeTeam">Active team</span><b id="teamCount">1 / 3</b><span id="teamTotals"></span></div><div id="rosterGrid" class="roster-grid"></div></div>
+        <div class="stage-panel summon-panel" id="summonPanel" hidden><div class="summon-orb"><img src="../../assets/animal-rune-reels/rune-special.webp" alt=""></div><h3 data-i18n="summonTitle">Call an animal hero</h3><p data-i18n="summonBody">New cards unlock heroes. Duplicate cards are used for level upgrades.</p><div class="coin-bank"><span data-i18n="coins">Coins</span><b id="coinCount">0</b></div><button id="summonBtn" class="primary"><span data-i18n="summonOne">Summon ×1</span><small>100</small></button></div>
+        <div class="stage-panel" id="runesPanel" hidden><div id="runeGuide" class="rune-guide"></div></div>
         <button id="enterBattle" class="primary" data-i18n="enter">Enter Battle</button>
       </div><div class="ad-reserve" aria-hidden="true"></div>
     </section>
 
     <section id="battlePage" class="page play-page" hidden>
-      <div class="canvas battle-canvas">
-        <header class="battle-head"><button class="icon-btn" id="battleBack" aria-label="Back" data-i18n-aria="back">←</button><div class="stage-name"><small id="chapterName"></small><strong id="battleStage"></strong></div><button class="icon-btn" id="pauseBtn" aria-label="Pause" data-i18n-aria="pauseLabel">Ⅱ</button></header>
+      <div class="canvas battle-canvas v3-battle">
+        <header class="battle-head"><button class="icon-btn" id="battleBack" data-i18n-aria="back">←</button><div class="stage-name"><small id="chapterName"></small><strong id="battleStage"></strong></div><button class="icon-btn" id="pauseBtn" data-i18n-aria="pauseLabel">Ⅱ</button></header>
         <div class="arena" id="arena">
           <div class="intent" id="intent"><small data-i18n="nextIntent">NEXT INTENT</small><strong id="intentText"></strong></div>
-          <div class="enemy-squad" id="enemySquad" aria-live="polite"></div>
-          <div class="phase-banner" id="phaseBanner" hidden><small id="phaseLabel"></small><strong id="phaseMath"></strong></div>
+          <div id="enemySquad" class="enemy-squad"></div>
+          <div id="phaseBanner" class="phase-banner" hidden><small id="phaseLabel"></small><strong id="phaseMath"></strong></div>
+          <div id="multiplierChip" class="multiplier-chip" hidden></div>
           <div id="fxLayer" class="fx-layer" aria-hidden="true"></div>
-          <div class="player-party" id="playerParty">
-            <div class="party-heroes" aria-label="Active team">
-              <div class="party-hero" data-hero="lion"><img src="../../assets/weightplay-character-boom-mane-lion-cutout.webp" alt=""><small id="lionStat">ATK 24</small></div>
-              <div class="party-hero" data-hero="turtle"><img src="../../assets/weightplay-character-moss-shell-turtle-cutout.webp" alt=""><small id="turtleStat">DEF 15</small></div>
-              <div class="party-hero" data-hero="rabbit"><img src="../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt=""><small id="rabbitStat">HEAL %</small></div>
-            </div>
-            <div class="team-status"><div class="hpbar"><i id="playerHpFill"></i><span id="playerHpText"></span></div><div class="shield-line"><span data-i18n="shield">Shield</span><b id="shieldText">0</b><span data-i18n="focus">Focus</span><b id="focusText">1</b></div></div>
+          <div id="summonerField" class="summoner-field">
+            <img class="summoner" src="../../assets/animal-rune-reels/summoner-keeper.webp" alt="">
+            <div id="partyHeroes" class="party-heroes"></div>
+            <div class="summoner-hud"><div class="hpbar summoner-hp"><i id="playerHpFill"></i><span id="playerHpText"></span></div><div class="team-metrics"><span><i data-i18n="shield">Shield</i><b id="shieldText">0</b></span><span><i data-i18n="teamDefense">Team DEF</i><b id="defenseTotal">0</b></span><span><i data-i18n="teamHealing">Team HEAL</i><b id="healTotal">0</b></span><span><i data-i18n="coins">Coins</i><b id="battleCoins">0</b></span></div></div>
           </div>
         </div>
-        <div class="reel-console">
-          <div id="comboBanner" class="combo" aria-live="polite"></div>
-          <div id="reels" class="reels"></div>
-          <div id="resolutionSteps" class="resolution-steps" aria-live="polite"><span data-phase="attack" data-i18n="attackPhase">Attack</span><span data-phase="defense" data-i18n="defensePhase">Defense</span><span data-phase="healing" data-i18n="healingPhase">Healing</span></div>
-          <div class="battle-actions"><button id="spinBtn" class="spin"><span data-i18n="spin">SPIN</span><small id="spinCost" data-i18n="resolve">Spin 3 reels</small></button></div>
-        </div>
-        <div id="result" class="modal" hidden><div class="modal-card"><span id="resultKicker"></span><h2 id="resultTitle"></h2><p id="resultBody"></p><div class="reward"><span data-i18n="reward">Rune Sparks</span><strong id="rewardValue">+0</strong></div><button id="nextBtn" class="primary" data-i18n="next">Next Rift</button><button id="retryBtn" class="secondary" data-i18n="retry">Try Again</button><button id="resultStages" class="text-btn" data-i18n="stages">Rift Map</button></div></div>
-        <div id="pauseModal" class="modal" hidden><div class="modal-card"><h2 data-i18n="paused">Paused</h2><p data-i18n="pauseBody">The rune flow is frozen.</p><button id="resumeBtn" class="primary" data-i18n="resume">Resume</button><button id="leaveBtn" class="secondary" data-i18n="leave">Leave Battle</button></div></div>
-        <div id="tutorial" class="modal" hidden><div class="modal-card tutorial-card"><h2 data-i18n="tutorialTitle">Command the reels</h2><ol><li data-i18n="tip1">Watch all three reel strips slow down and stop.</li><li data-i18n="tip2">Results resolve as Attack → Defense → Healing with visible numbers.</li><li data-i18n="tip3">One to three monsters attack after healing. Hold one reel for 1 Focus.</li></ol><button id="tutorialClose" class="primary" data-i18n="ready">Ready</button></div></div>
+        <div class="reel-console"><div id="comboBanner" class="combo" aria-live="polite"></div><div id="reels" class="reels"></div><div class="battle-actions"><button id="spinBtn" class="spin"><span data-i18n="spin">SPIN</span><small data-i18n="spinHint">Spin downward</small></button><button id="autoBtn" class="auto-btn"><span data-i18n="auto">AUTO</span><small data-i18n="autoOff">OFF</small></button></div></div>
+        <div id="result" class="modal" hidden><div class="modal-card"><span id="resultKicker"></span><h2 id="resultTitle"></h2><p id="resultBody"></p><div class="reward"><span data-i18n="coins">Coins</span><strong id="rewardValue">+0</strong></div><button id="nextBtn" class="primary" data-i18n="next">Next Rift</button><button id="retryBtn" class="secondary" data-i18n="retry">Try Again</button><button id="resultStages" class="text-btn" data-i18n="stages">Rift Map</button></div></div>
+        <div id="pauseModal" class="modal" hidden><div class="modal-card"><h2 data-i18n="paused">Paused</h2><p data-i18n="pauseBodyV3">This battle is frozen. Permanent cards and coins are safe; current battle progress will be lost if you leave.</p><button id="resumeBtn" class="primary" data-i18n="resume">Continue playing</button><button id="leaveBtn" class="secondary" data-i18n="leave">Return to Stages</button></div></div>
+        <div id="tutorial" class="modal" hidden><div class="modal-card tutorial-card"><h2 data-i18n="tutorialTitle">Command the runes</h2><ol><li data-i18n="tipV31">Reels move downward and stop one by one.</li><li data-i18n="tipV32">A completed line glows, then doubles its ability.</li><li data-i18n="tipV33">Pets attack separately; team defense and healing protect the summoner.</li></ol><button id="tutorialClose" class="primary" data-i18n="ready">Ready</button></div></div>
       </div><div class="ad-reserve" aria-hidden="true"></div>
     </section>
+
+    <div id="characterModal" class="global-modal" hidden><div class="character-card"><button id="characterClose" class="modal-close">×</button><img id="characterArt" alt=""><h2 id="characterName"></h2><p id="characterStats"></p><p id="characterSpecial"></p><div id="duplicateProgress" class="duplicate-progress"></div><button id="equipBtn" class="primary"></button><button id="upgradeBtn" class="secondary"></button></div></div>
+    <div id="summonResult" class="global-modal" hidden><div class="character-card"><span data-i18n="summonResult">Summon result</span><img id="summonArt" alt=""><h2 id="summonName"></h2><p id="summonCopy"></p><button id="summonClose" class="primary" data-i18n="continue">Continue</button></div></div>
   </main>
-  <script src="../../src/site-config.js"></script><script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script><script src="../../src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script><script src="locales.js"></script><script src="game.js"></script>
+  <script src="../../src/site-config.js"></script><script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script><script src="../../src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script><script src="locales.js"></script><script src="locales-v3.js"></script><script src="game.js"></script>
 </body>
 </html>
