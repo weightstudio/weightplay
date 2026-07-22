@@ -444,6 +444,10 @@
   let leaveOpenedAt = 0;
   let physicsFrame = 0;
   let lastFrame = 0;
+  let lifecycleSuspended = document.hidden;
+  let lifecyclePausedAt = 0;
+  let lifecycleWasRunning = false;
+  let lifecycleDeliveryRemaining = 0;
   let paddleX = 50;
   let playPointerId = null;
   let fruit = { x: 50, y: 20, vx: 0, vy: 0, rot: 0, cut: false };
@@ -453,6 +457,43 @@
       try { nodes.playfield.releasePointerCapture(playPointerId); } catch {}
     }
     playPointerId = null;
+  }
+
+  function suspendRescueLifecycle() {
+    resetPlayPointer();
+    if (lifecycleSuspended) return;
+    lifecycleSuspended = true;
+    lifecyclePausedAt = performance.now();
+    if (leaveOpen) return;
+    lifecycleWasRunning = running;
+    running = false;
+    cancelAnimationFrame(physicsFrame);
+    physicsFrame = 0;
+    lifecycleDeliveryRemaining = deliveryTimer ? Math.max(0, deliveryDueAt - lifecyclePausedAt) : 0;
+    if (deliveryTimer) clearDeliverySchedule();
+  }
+
+  function resumeRescueLifecycle() {
+    if (document.hidden || !lifecycleSuspended) return;
+    lifecycleSuspended = false;
+    if (leaveOpen) {
+      lifecyclePausedAt = 0;
+      lifecycleWasRunning = false;
+      lifecycleDeliveryRemaining = 0;
+      return;
+    }
+    const pausedFor = lifecyclePausedAt ? Math.max(0, performance.now() - lifecyclePausedAt) : 0;
+    if (lifecycleWasRunning && !settled) {
+      stageStartedAt += pausedFor;
+      running = true;
+      lastFrame = performance.now();
+      physicsFrame = requestAnimationFrame(tick);
+    } else if (lifecycleDeliveryRemaining > 0 && !settled) {
+      scheduleDelivery(stages[currentStage - 1], lifecycleDeliveryRemaining);
+    }
+    lifecyclePausedAt = 0;
+    lifecycleWasRunning = false;
+    lifecycleDeliveryRemaining = 0;
   }
 
   function claimPlayPointer(event) {
@@ -1081,9 +1122,14 @@
     showStages(save.unlocked);
   });
   window.addEventListener("resize", positionElements);
-  window.addEventListener("blur", resetPlayPointer);
-  window.addEventListener("pagehide", resetPlayPointer);
-  document.addEventListener("visibilitychange", () => { if (document.hidden) resetPlayPointer(); });
+  window.addEventListener("blur", suspendRescueLifecycle);
+  window.addEventListener("focus", resumeRescueLifecycle);
+  window.addEventListener("pagehide", suspendRescueLifecycle);
+  window.addEventListener("pageshow", resumeRescueLifecycle);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) suspendRescueLifecycle();
+    else resumeRescueLifecycle();
+  });
 
   nodes.localeSelect.value = window.WonderI18n?.actualLocale?.() || locale;
   setLocale(locale);

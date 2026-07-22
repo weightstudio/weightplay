@@ -949,6 +949,7 @@
   let combatEndRemaining = 0;
   const combatStepTimers = new Set();
   let combatSuspendedForBackground = false;
+  let windowFocused = true;
   let quitDecisionOpen = false;
   let skinPurchasePending = false;
   let skinPurchaseTimer = 0;
@@ -2164,6 +2165,7 @@
     clearTimeout(skinPurchaseTimer);
     skinPurchaseRemaining = Math.max(0, delay);
     skinPurchaseDueAt = Date.now() + skinPurchaseRemaining;
+    if (document.hidden || !windowFocused) return;
     skinPurchaseTimer = window.setTimeout(expireSkinPurchaseDecision, skinPurchaseRemaining);
   }
 
@@ -2176,7 +2178,7 @@
   }
 
   function resumeSkinPurchaseDecision() {
-    if (!skinPurchasePending || skinPurchaseTimer || document.hidden) return;
+    if (!skinPurchasePending || skinPurchaseTimer || document.hidden || !windowFocused) return;
     if (skinPurchaseRemaining <= 0) {
       expireSkinPurchaseDecision();
       return;
@@ -3637,7 +3639,7 @@
     const timerId = setTimeout(() => {
       combatStepTimers.delete(timerId);
       if (runId !== state.combat.runId || state.combat.resolved) return;
-      if (document.hidden || quitDecisionOpen) {
+      if (document.hidden || !windowFocused || quitDecisionOpen) {
         scheduleCombatStepCleanup(callback, 80);
         return;
       }
@@ -3647,7 +3649,7 @@
   }
 
   function armCombatEndTimer() {
-    if (!combatEndPending || combatEndTimer !== null || document.hidden || quitDecisionOpen) return;
+    if (!combatEndPending || combatEndTimer !== null || document.hidden || !windowFocused || quitDecisionOpen) return;
     const delay = Math.max(0, combatEndRemaining);
     combatEndDueAt = performance.now() + delay;
     combatEndTimer = setTimeout(() => {
@@ -3670,7 +3672,7 @@
   }
 
   function resumeCombatEndTimer() {
-    if (!combatEndPending || document.hidden || quitDecisionOpen) return;
+    if (!combatEndPending || document.hidden || !windowFocused || quitDecisionOpen) return;
     armCombatEndTimer();
   }
 
@@ -3686,7 +3688,7 @@
   function runCombatAnimation() {
     if (!state.combat.animating) return;
     if (quitDecisionOpen) return;
-    if (document.hidden) {
+    if (document.hidden || !windowFocused) {
       combatSuspendedForBackground = true;
       return;
     }
@@ -4582,7 +4584,7 @@
     setBattleDecisionOwnership(nodes.quitRunPanel, false);
     nodes.quitRunPanel.classList.add("is-hidden");
     if (resume) resumeCombatEndTimer();
-    if (resume && state.combat.animating && !document.hidden) {
+    if (resume && state.combat.animating && !document.hidden && windowFocused) {
       cancelAnimationFrame(animationId);
       animationId = requestAnimationFrame(runCombatAnimation);
     }
@@ -4688,12 +4690,21 @@
       cancelAnimationFrame(animationId);
     };
     const resumeBackgroundCombat = () => {
+      if (document.hidden || !windowFocused) return;
       resumeSkinPurchaseDecision();
       resumeCombatEndTimer();
-      if (!combatSuspendedForBackground || !state.combat.animating || document.hidden || quitDecisionOpen) return;
+      if (!combatSuspendedForBackground || !state.combat.animating || quitDecisionOpen) return;
       combatSuspendedForBackground = false;
       animationId = requestAnimationFrame(runCombatAnimation);
     };
+    window.addEventListener("blur", () => {
+      windowFocused = false;
+      suspendBackgroundCombat();
+    });
+    window.addEventListener("focus", () => {
+      windowFocused = true;
+      resumeBackgroundCombat();
+    });
     window.addEventListener("pagehide", suspendBackgroundCombat);
     window.addEventListener("pageshow", resumeBackgroundCombat);
     document.addEventListener("visibilitychange", () => {

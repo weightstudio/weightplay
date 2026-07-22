@@ -1219,6 +1219,60 @@
       keep: "Seguir jugando",
       leave: "Salir de la misión",
     },
+    ja: {
+      title: "このミッションを離れますか？",
+      message: ({ mission, battle, hp, maxHp, hand }) => `ミッション ${mission}、バトル ${battle}/3：HP ${hp}/${maxHp}、手札 ${hand} 枚。離れるとこのミッションは終了し、現在のバトル進行とミッション限定のドラフトカードは失われます。保存済みのレベル、XP、ビーストコイン、コレクション、装備、解放済みミッションは保持されます。`,
+      keep: "プレイを続ける",
+      leave: "ミッションを離れる",
+    },
+    ko: {
+      title: "이 미션에서 나가시겠어요?",
+      message: ({ mission, battle, hp, maxHp, hand }) => `미션 ${mission}, 전투 ${battle}/3: HP ${hp}/${maxHp}, 손에 든 카드 ${hand}장. 나가면 이 미션이 종료되고 현재 전투 진행도와 미션 전용 드래프트 카드를 잃습니다. 저장된 레벨, XP, 야수 코인, 컬렉션, 장비, 해제한 미션은 유지됩니다.`,
+      keep: "계속 플레이",
+      leave: "미션 나가기",
+    },
+    "pt-BR": {
+      title: "Sair desta missão?",
+      message: ({ mission, battle, hp, maxHp, hand }) => `Missão ${mission}, batalha ${battle}/3: ${hp}/${maxHp} PV e ${hand} cartas na mão. Sair encerra esta missão e descarta o progresso da batalha atual e as cartas de Draft exclusivas desta missão. Seu nível, XP, Moedas de Fera, coleção, equipamento e missões desbloqueadas salvos permanecem seguros.`,
+      keep: "Continuar jogando",
+      leave: "Sair da missão",
+    },
+    fr: {
+      title: "Quitter cette mission ?",
+      message: ({ mission, battle, hp, maxHp, hand }) => `Mission ${mission}, combat ${battle}/3 : ${hp}/${maxHp} PV et ${hand} cartes en main. Quitter met fin à cette mission et efface la progression du combat actuel ainsi que les cartes de Draft propres à cette mission. Le niveau, l’XP, les Pièces de Bête, la collection, l’équipement et les missions débloquées enregistrés restent intacts.`,
+      keep: "Continuer à jouer",
+      leave: "Quitter la mission",
+    },
+    de: {
+      title: "Diese Mission verlassen?",
+      message: ({ mission, battle, hp, maxHp, hand }) => `Mission ${mission}, Kampf ${battle}/3: ${hp}/${maxHp} LP und ${hand} Karten auf der Hand. Beim Verlassen endet diese Mission; der aktuelle Kampffortschritt und missionsgebundene Draft-Karten gehen verloren. Gespeicherte Stufe, EP, Bestienmünzen, Sammlung, Ausrüstung und freigeschaltete Missionen bleiben erhalten.`,
+      keep: "Weiterspielen",
+      leave: "Mission verlassen",
+    },
+    it: {
+      title: "Abbandonare questa missione?",
+      message: ({ mission, battle, hp, maxHp, hand }) => `Missione ${mission}, battaglia ${battle}/3: ${hp}/${maxHp} PS e ${hand} carte in mano. Uscire termina questa missione e annulla i progressi della battaglia attuale e le carte Draft valide solo per questa missione. Livello, XP, Monete Bestia, collezione, equipaggiamento e missioni sbloccate salvati restano al sicuro.`,
+      keep: "Continua a giocare",
+      leave: "Abbandona missione",
+    },
+    ru: {
+      title: "Покинуть эту миссию?",
+      message: ({ mission, battle, hp, maxHp, hand }) => `Миссия ${mission}, бой ${battle}/3: ${hp}/${maxHp} ОЗ и ${hand} карт в руке. Выход завершит миссию и сбросит прогресс текущего боя и выбранные только для этой миссии карты. Сохранённые уровень, опыт, монеты зверей, коллекция, снаряжение и открытые миссии останутся в безопасности.`,
+      keep: "Продолжить игру",
+      leave: "Покинуть миссию",
+    },
+    hi: {
+      title: "यह मिशन छोड़ें?",
+      message: ({ mission, battle, hp, maxHp, hand }) => `मिशन ${mission}, युद्ध ${battle}/3: ${hp}/${maxHp} HP और हाथ में ${hand} कार्ड। छोड़ने पर यह मिशन समाप्त हो जाएगा तथा मौजूदा युद्ध की प्रगति और केवल इस मिशन के ड्राफ़्ट कार्ड मिट जाएँगे। सहेजा गया स्तर, XP, बीस्ट कॉइन, संग्रह, उपकरण और अनलॉक किए गए मिशन सुरक्षित रहेंगे।`,
+      keep: "खेलना जारी रखें",
+      leave: "मिशन छोड़ें",
+    },
+    ar: {
+      title: "هل تريد مغادرة هذه المهمة؟",
+      message: ({ mission, battle, hp, maxHp, hand }) => `المهمة ${mission}، المعركة ${battle}/3: نقاط الصحة ${hp}/${maxHp} و${hand} بطاقات في يدك. تؤدي المغادرة إلى إنهاء هذه المهمة وحذف تقدم المعركة الحالية وبطاقات الاختيار الخاصة بهذه المهمة. سيبقى المستوى ونقاط الخبرة وعملات الوحوش والمجموعة والمعدات والمهام المفتوحة المحفوظة بأمان.`,
+      keep: "متابعة اللعب",
+      leave: "مغادرة المهمة",
+    },
   };
 
   function leaveCoveredLayers() {

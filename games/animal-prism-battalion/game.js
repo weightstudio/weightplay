@@ -78,20 +78,25 @@
 
   const upgradeData={rate:{icon:"⚡",name:"upgradeRate",desc:"upgradeRateDesc"},power:{icon:"✦",name:"upgradePower",desc:"upgradePowerDesc"},armor:{icon:"◆",name:"upgradeArmor",desc:"upgradeArmorDesc"}};
   const upgradeCost=(level)=>6+level*6;
-  function renderLab(){
+  let labPurchaseKeyboardKey=null;
+  function renderLab(focusUpgrade=""){
     $("shardCount").textContent=t("shards",{count:save.shards});
     $("upgrades").replaceChildren(...Object.entries(upgradeData).map(([id,data])=>{
       const level=save.upgrades[id],button=document.createElement("button");button.type="button";button.className=`upgrade${level>=5?" maxed":""}`;button.dataset.upgrade=id;button.disabled=level>=5;
       button.innerHTML=`<span class="upgrade-icon">${data.icon}</span><strong>${t(data.name)}</strong><small>${t(data.desc)}</small><b>${t("level",{level})}</b><em>${level>=5?t("maxed"):t("upgradeCost",{cost:upgradeCost(level)})}</em>`;
+      button.addEventListener("keydown",(event)=>{if(event.key!=="Enter"&&event.key!==" ")return;if(event.repeat||labPurchaseKeyboardKey===event.key){event.preventDefault();return}labPurchaseKeyboardKey=event.key});
       button.addEventListener("click",()=>buyUpgrade(id));return button;
     }));
+    if(focusUpgrade)requestAnimationFrame(()=>$("upgrades").querySelector(`[data-upgrade="${focusUpgrade}"]`)?.focus());
   }
-  function buyUpgrade(id){const level=save.upgrades[id];if(level>=5)return;const cost=upgradeCost(level),name=t(upgradeData[id].name);if(save.shards<cost){$("labFeedback").textContent=t("needShardsDetail",{name,cost,balance:save.shards});return}save.shards-=cost;save.upgrades[id]+=1;persist();renderLab();$("labFeedback").textContent=t("upgradePurchasedDetail",{name,level:save.upgrades[id],balance:save.shards});window.WonderSound?.play?.("success")}
+  function buyUpgrade(id){const level=save.upgrades[id];if(level>=5)return;const cost=upgradeCost(level),name=t(upgradeData[id].name);if(save.shards<cost){$("labFeedback").textContent=t("needShardsDetail",{name,cost,balance:save.shards});return}save.shards-=cost;save.upgrades[id]+=1;persist();renderLab(id);$("labFeedback").textContent=t("upgradePurchasedDetail",{name,level:save.upgrades[id],balance:save.shards});window.WonderSound?.play?.("success")}
   document.querySelectorAll("[data-tab]").forEach((button)=>button.addEventListener("click",()=>{document.querySelectorAll("[data-tab]").forEach((item)=>{const active=item===button;item.classList.toggle("active",active);item.setAttribute("aria-selected",active?"true":"false")});$("missionsTab").hidden=button.dataset.tab!=="missions";$("labTab").hidden=button.dataset.tab!=="lab";if(button.dataset.tab==="lab"){renderLab();$("labFeedback").textContent=""}}));
   $("start").addEventListener("click",()=>showScreen("stage"));$("stageBack").addEventListener("click",()=>showScreen("main"));
   $("locale").addEventListener("change",(event)=>{locale=canonicalLocale(event.target.value);storage.set("wonderLocale",locale);applyLocale()});
   $("soundToggle").addEventListener("keydown",(event)=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
   $("soundToggle").addEventListener("click",()=>{const sound=window.WonderSound;if(!sound)return;sound.unlock();sound.setMuted(!sound.isMuted());updateSoundToggle();if(!sound.isMuted())sound.play("click")});
+  window.addEventListener("keyup",(event)=>{if(event.key===labPurchaseKeyboardKey)labPurchaseKeyboardKey=null});
+  window.addEventListener("blur",()=>{labPurchaseKeyboardKey=null});
 
   const canvas=$("arena"),ctx=canvas.getContext("2d"),images={};
   const imageSources={arena:"../../assets/animal-prism-battalion/arena.webp",spirits:"../../assets/animal-prism-battalion/spirit-atlas.webp",fox:"../../assets/weightplay-character-spark-paw-fox-cutout.webp",enemy:"../../assets/animal-crystal-survivor-shadow-fox-v2.webp",boss:"../../assets/animal-crystal-survivor-boss-eclipse-colossus.webp"};

@@ -298,6 +298,87 @@
   Object.assign(text.es, { start: "Iniciar juego", homeAria: "Volver a la sala infantil", leaveTitle: "\u00bfSalir de este rescate?", leaveText: "Tu progreso de cuidado en esta misi\u00f3n se reiniciar\u00e1.", keepHelping: "Seguir ayudando", leaveMission: "Salir de la misi\u00f3n" });
   const localeTextOverrides = {
     ko: { locked: "\uc7a0\uae34 \uc2a4\ud14c\uc774\uc9c0" },
+    it: {
+      gameTitle: "Missione Aiuta-Animali",
+      seoTitle: "Missione Aiuta-Animali - WeightPlay",
+      seoDescription: "Aiuta simpatici animali con pioggia, fame, fango, buio e altre tranquille missioni di cura.",
+      ogTitle: "Missione Aiuta-Animali - Gioco di cura degli animali",
+      ogDescription: "Tocca l'oggetto di cura giusto oppure trascinalo sull'animale per aiutarlo.",
+      language: "Lingua",
+      languageAria: "Lingua",
+      back: "Indietro",
+      backToStages: "Torna alle missioni",
+      stageListAria: "Elenco delle missioni di aiuto",
+      boardAria: "Spazio interattivo per la cura animale",
+      chooseStage: "Scegli una missione di aiuto",
+      menuHint: "Aiuta il piccolo animale: tocca l'oggetto giusto oppure trascinalo sull'animale.",
+      start: "Inizia il gioco",
+      homeAria: "Ritorna alla raccolta dei giochi",
+      stages: "Missioni",
+      loading: "Caricamento",
+      nextStage: "Missione successiva",
+      retry: "Riprova",
+      lobby: "Raccolta giochi",
+      locked: "Missione bloccata",
+      stage: "Missione {n}",
+      progress: "{done}/{total}",
+      calm: "Aiuti {score}",
+      clear: "Missione completata!",
+      failed: "Serve ancora un po' di aiuto!",
+      result: "Situazioni risolte: {score}. Record: {best} stelle.",
+      resultFailed: "Riprova e aiuta altri animali.",
+      reportTitle: "Rapporto sulle abilit\u00e0",
+      previousBest: "Record precedente",
+      todayScore: "Punteggio di oggi",
+      improvement: "Miglioramento",
+      problemSolving: "Risoluzione dei problemi",
+      focus: "Attenzione",
+      animalCare: "Cura degli animali",
+      reportGreat: "Ottimo lavoro! Hai osservato con attenzione e scelto gli oggetti di cura adatti.",
+      reportGood: "Bel tentativo! Riprova per osservare meglio e scegliere l'oggetto pi\u00f9 adatto.",
+      reportTry: "Buon allenamento! Guarda di cosa ha bisogno l'animale, poi prova un oggetto utile.",
+      hint: "Tocca un oggetto di cura oppure trascinalo sull'animale.",
+      whatHelps: "Cosa pu\u00f2 aiutare?",
+      correct: "Animale aiutato!",
+      wrong: "Prova un altro oggetto di cura.",
+      moveOn: "Aiutiamo il prossimo animale.",
+      goal: "Obiettivo {target}",
+      checkpoint: "Prova dell'aiutante",
+      ruleDirect: "Un bisogno chiaro",
+      rulePicture: "Strumenti illustrati",
+      ruleCombined: "Due indizi, una priorit\u00e0",
+      ruleMemory: "Ricorda la necessit\u00e0",
+      ruleChanging: "Gli strumenti cambiano posto",
+      ruleExpert: "Sfida completa dell'aiutante",
+      rememberNeed: "Di cosa aveva bisogno l'animale? Toccalo per guardare di nuovo.",
+      rain: "Sta piovendo.",
+      puddle: "L'animale \u00e8 bagnato.",
+      heat: "Fa troppo caldo.",
+      dark: "\u00c8 troppo buio.",
+      thunder: "Il temporale \u00e8 vicino.",
+      hungry: "L'animale ha fame.",
+      muddy: "Il sentiero \u00e8 fangoso.",
+      cold: "Fa troppo freddo.",
+      windy: "Il vento \u00e8 troppo forte.",
+      rabbit: "Coniglio",
+      fox: "Volpe",
+      panda: "Panda",
+      penguin: "Pinguino",
+      lion: "Leone",
+      koala: "Koala",
+      umbrella: "Ombrello",
+      towel: "Asciugamano",
+      fan: "Ventaglio",
+      lantern: "Lampada",
+      house: "Rifugio",
+      apple: "Mela",
+      boots: "Stivali",
+      blanket: "Coperta",
+      leaveTitle: "Vuoi lasciare questa missione?",
+      leaveText: "I progressi di cura di questa missione verranno azzerati.",
+      keepHelping: "Continua ad aiutare",
+      leaveMission: "Lascia la missione",
+    },
   };
 
   const $ = (id) => document.getElementById(id);
@@ -397,6 +478,12 @@
     careLifecycleSuspended = document.hidden || careWindowBlurred || leaveOpen;
   }
 
+  function reclaimCareForeground(event) {
+    if (!event.isTrusted || document.hidden || leaveOpen) return;
+    careWindowBlurred = false;
+    resumeCareTransitions();
+  }
+
   function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
   }
@@ -485,6 +572,34 @@
     }));
   }
 
+  let centeredStageFrame = 0;
+
+  function updateCenteredStageCard() {
+    const railRect = nodes.stageGrid.getBoundingClientRect();
+    const railCenter = railRect.left + railRect.width / 2;
+    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")]
+      .filter((card) => card.getClientRects().length);
+    const centered = cards.reduce((nearest, card) => {
+      const rect = card.getBoundingClientRect();
+      const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
+      return !nearest || distance < nearest.distance ? { card, distance } : nearest;
+    }, null)?.card;
+    cards.forEach((card) => {
+      const active = card === centered;
+      card.classList.toggle("is-centered", active);
+      if (active) card.setAttribute("aria-current", "true");
+      else card.removeAttribute("aria-current");
+    });
+  }
+
+  function requestCenteredStageUpdate() {
+    if (centeredStageFrame) return;
+    centeredStageFrame = requestAnimationFrame(() => {
+      centeredStageFrame = 0;
+      updateCenteredStageCard();
+    });
+  }
+
   function renderStageGrid(focusIndex = null) {
     nodes.stageGrid.innerHTML = "";
     stages.forEach((stage, index) => {
@@ -526,6 +641,7 @@
       const target = focusCard || unlockedCard;
       target?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
       focusCard?.focus({ preventScroll: true });
+      requestCenteredStageUpdate();
     });
   }
 
@@ -563,6 +679,11 @@
   window.addEventListener("resize", updateWeatherFrame);
   window.addEventListener("orientationchange", updateWeatherFrame);
   window.visualViewport?.addEventListener("resize", updateWeatherFrame, { passive: true });
+  window.addEventListener("resize", requestCenteredStageUpdate, { passive: true });
+  window.addEventListener("orientationchange", requestCenteredStageUpdate, { passive: true });
+  window.visualViewport?.addEventListener("resize", requestCenteredStageUpdate, { passive: true });
+  nodes.stageGrid.addEventListener("scroll", requestCenteredStageUpdate, { passive: true });
+  nodes.stageGrid.addEventListener("wonder:stage-snap", requestCenteredStageUpdate);
 
   function startStage(index) {
     invalidateCareTransition();
@@ -706,11 +827,13 @@
         event.preventDefault();
       }
     });
-    button.addEventListener("click", () => {
+    button.addEventListener("click", (event) => {
+      reclaimCareForeground(event);
       if (button.dataset.skipClick === "1") return;
       chooseTool(button.dataset.tool, button);
     });
     button.addEventListener("pointerdown", (event) => {
+      reclaimCareForeground(event);
       if (!running || busy) return;
       dragState = {
         tool: button.dataset.tool,

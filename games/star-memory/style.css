@@ -39,13 +39,14 @@ body.memory-main {
   overflow-y: auto;
 }
 
-body.memory-main .memory-game {
-  height: auto;
+body.memory-main .star-memory-game {
+  height: 100svh;
   min-height: 100svh;
+  max-width: 920px;
 }
 
 /* App Layout Shell */
-.memory-game {
+.star-memory-game {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -80,8 +81,8 @@ body.memory-playing .game-page-info {
   display: none !important;
 }
 
-body.memory-stage .memory-game,
-body.memory-playing .memory-game {
+body.memory-stage .star-memory-game,
+body.memory-playing .star-memory-game {
   position: fixed;
   inset: 0;
   width: 100vw;
@@ -170,6 +171,12 @@ body.memory-playing .topbar {
   padding: 16px;
 }
 
+body.memory-main .main-panel {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
 .main-poster {
   width: 100%;
   aspect-ratio: 1;
@@ -199,6 +206,29 @@ body.memory-playing .topbar {
   background: var(--primary);
   color: #fff;
   font-weight: 800;
+}
+
+@media (min-width: 560px) {
+  body.memory-main .main-panel {
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.9fr);
+    grid-template-rows: minmax(0, 1fr);
+    align-items: center;
+  }
+
+  body.memory-main .main-poster {
+    align-self: center;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    max-height: 100%;
+    object-position: center;
+  }
+
+  body.memory-main .main-copy {
+    align-self: center;
+    width: 100%;
+    max-width: 420px;
+  }
 }
 
 .home-link:active {
@@ -981,7 +1011,7 @@ body.memory-result .result-panel {
   display: none !important;
 }
 
-/* Fixed-ratio Kids Stage/Battle shell using the complete live viewport. */
+/* Responsive Kids Stage/Battle Canvas using the complete live viewport. */
 body.memory-stage,
 body.memory-playing,
 body.has-game-page-info.memory-stage,
@@ -996,10 +1026,10 @@ body.has-game-page-info.memory-playing {
   touch-action: none;
 }
 
-body.memory-stage .memory-game,
-body.memory-playing .memory-game,
-body.memory-stage.weightplay-active-viewport .memory-game,
-body.memory-playing.weightplay-active-viewport .memory-game {
+body.memory-stage .star-memory-game,
+body.memory-playing .star-memory-game,
+body.memory-stage.weightplay-active-viewport .star-memory-game,
+body.memory-playing.weightplay-active-viewport .star-memory-game {
   position: fixed !important;
   inset: auto !important;
   left: var(--memory-frame-left, 4px) !important;
@@ -1098,10 +1128,10 @@ body.memory-playing .feedback {
 }
 
 /* Phone Stage and Battle share the Expanded Canvas contract. */
-body.memory-stage.memory-expanded-canvas .memory-game,
-body.memory-stage.memory-expanded-canvas.weightplay-active-viewport .memory-game,
-body.memory-playing.memory-expanded-canvas .memory-game,
-body.memory-playing.memory-expanded-canvas.weightplay-active-viewport .memory-game {
+body.memory-stage.memory-expanded-canvas .star-memory-game,
+body.memory-stage.memory-expanded-canvas.weightplay-active-viewport .star-memory-game,
+body.memory-playing.memory-expanded-canvas .star-memory-game,
+body.memory-playing.memory-expanded-canvas.weightplay-active-viewport .star-memory-game {
   left: var(--memory-frame-left, 4px) !important;
   top: var(--memory-frame-top, 4px) !important;
   width: var(--memory-frame-width, calc(100vw - 8px)) !important;
@@ -1209,42 +1239,157 @@ body.memory-playing.memory-expanded-canvas .wp-tutorial-button {
 }
 
 @media (max-height: 430px) {
-  body.memory-playing.memory-expanded-canvas .topbar {
-    flex-basis: 40px;
-    min-height: 40px;
+  body.memory-stage .stage-select {
+    justify-content: center;
+    padding: 12px 20px;
   }
 
-  body.memory-playing.memory-expanded-canvas .home-link {
-    top: 3px;
-    width: 34px;
-    height: 34px;
-    min-width: 34px;
-    min-height: 34px;
-    font-size: 20px;
-    line-height: 34px;
+  body.memory-stage .stage-select h2 {
+    margin-bottom: 10px;
   }
 
+  body.memory-stage .stage-grid {
+    flex-basis: 190px;
+    padding-inline: max(47px, calc((100% - 264px) / 2));
+  }
+
+  body.memory-result .result-panel {
+    justify-content: center;
+    padding: 14px 20px;
+    overflow: hidden;
+  }
+
+  body.memory-result .result-panel::before,
+  body.memory-result .result-panel::after {
+    display: none;
+  }
+
+  body.memory-result .result-card {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.9fr) minmax(300px, 1.1fr);
+    grid-template-areas:
+      "title report-title"
+      "stars report-intro"
+      "result report"
+      "actions comparison";
+    align-items: center;
+    column-gap: 22px;
+    row-gap: 6px;
+    width: min(100%, 720px);
+    max-width: 720px;
+    padding: 16px 20px;
+  }
+
+  body.memory-result .result-card h2 {
+    grid-area: title;
+    margin: 0;
+  }
+
+  body.memory-result .star-rating {
+    grid-area: stars;
+    margin: 2px 0;
+  }
+
+  body.memory-result #resultText {
+    grid-area: result;
+    margin: 0;
+  }
+
+  body.memory-result .skill-report-title {
+    grid-area: report-title;
+    margin: 0;
+  }
+
+  body.memory-result .skill-report-intro {
+    grid-area: report-intro;
+    margin: 0;
+  }
+
+  body.memory-result .memory-report {
+    grid-area: report;
+    margin: 0;
+  }
+
+  body.memory-result .progress-comparison {
+    grid-area: comparison;
+    margin: 0;
+  }
+
+  body.memory-result .result-actions {
+    grid-area: actions;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  body.memory-result .result-actions button,
+  body.memory-result .result-actions a {
+    min-height: 44px;
+    padding: 10px 8px;
+  }
+
+  body.memory-playing .star-memory-game,
+  body.memory-playing.memory-expanded-canvas .star-memory-game {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 230px;
+    grid-template-rows: minmax(0, 1fr) 44px;
+  }
+
+  body.memory-playing .game-hud,
   body.memory-playing.memory-expanded-canvas .game-hud {
-    flex-basis: 54px;
-    min-height: 54px;
-    grid-template-columns: minmax(150px, 1fr) 90px 130px;
-    padding: 5px 10px;
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+    min-height: 0;
+    grid-template-columns: 44px minmax(0, 1fr);
+    grid-template-rows: minmax(54px, auto) minmax(0, 1fr);
+    padding: 10px 12px;
+    gap: 8px;
+    border-bottom: 0;
+    border-left: 1px solid var(--glass-border);
   }
 
+  body.memory-playing .game-hud .hud-item,
+  body.memory-playing.memory-expanded-canvas .game-hud .hud-item {
+    min-width: 0;
+  }
+
+  body.memory-playing .hud-item-score,
+  body.memory-playing .hud-item-moves,
+  body.memory-playing.memory-expanded-canvas .hud-item-score,
+  body.memory-playing.memory-expanded-canvas .hud-item-moves {
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  body.memory-playing .game-board-panel,
   body.memory-playing.memory-expanded-canvas .game-board-panel {
+    grid-column: 1;
+    grid-row: 1 / -1;
+    width: auto;
+    height: auto;
     padding: 5px 10px;
   }
 
+  body.memory-playing .card-grid,
   body.memory-playing.memory-expanded-canvas .card-grid {
     width: var(--memory-board-width, 232px);
     height: var(--memory-board-height, 232px);
     gap: 6px;
   }
 
+  body.memory-playing .feedback,
   body.memory-playing.memory-expanded-canvas .feedback {
-    flex-basis: 38px;
-    min-height: 38px;
+    grid-column: 2;
+    grid-row: 2;
+    min-width: 0;
+    min-height: 44px;
     padding: 3px 10px;
+    border-top: 1px solid var(--glass-border);
+    border-left: 1px solid var(--glass-border);
   }
 }
 

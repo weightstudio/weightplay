@@ -837,6 +837,13 @@
     if (!document.body.classList.contains("lunch-stage") && !document.body.classList.contains("lunch-playing")) return;
     const viewportWidth = visualViewport?.width || innerWidth;
     const viewportHeight = visualViewport?.height || innerHeight;
+    const shortLandscape = viewportWidth > viewportHeight && viewportHeight <= 500;
+    const battleTargetSize = shortLandscape ? "88px" : "48px";
+    [battleBackBtn, battleHelpBtn].forEach((button) => {
+      ["width", "min-width", "max-width", "height", "min-height", "max-height"].forEach((property) => {
+        button.style.setProperty(property, battleTargetSize, "important");
+      });
+    });
     const scale = Math.min(Math.max(1, viewportWidth) / 390, Math.max(1, viewportHeight) / 788);
     const logicalWidth = viewportWidth / scale;
     const logicalHeight = viewportHeight / scale;
@@ -1292,6 +1299,11 @@
         return element;
       }),
     );
+    const shortLandscape = (visualViewport?.width || innerWidth) > (visualViewport?.height || innerHeight)
+      && (visualViewport?.height || innerHeight) <= 500;
+    if (shortLandscape) {
+      dropZone.querySelectorAll(".lunchbox").forEach((box) => box.style.setProperty("min-height", "88px", "important"));
+    }
   }
 
   function startStage(stageIndex, focusChoice = false) {

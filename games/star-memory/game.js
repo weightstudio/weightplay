@@ -40,7 +40,7 @@
   const stageBackBtn = document.querySelector("#stageBackBtn");
   const battleBackBtn = document.querySelector("#battleBackBtn");
   const stageGrid = document.querySelector("#stageGrid");
-  const memoryGame = document.querySelector(".memory-game");
+  const memoryGame = document.querySelector(".star-memory-game");
   
   const gameHud = document.querySelector("#gameHud");
   const levelIndicator = document.querySelector("#levelIndicator");
@@ -351,6 +351,30 @@
       todayScore: "Puntuación de hoy: {score}",
       scoreProgress: "Puntuación de hoy: {score} · Mejor anterior: {previous}",
       newBest: "¡Nuevo récord: {score}! Mejor anterior: {previous}"
+    },
+    de: {
+      title: "Tierisches Sternen-Memo", seoTitle: "Tierisches Sternen-Memo - WeightPlay",
+      seoDescription: "Spiele 30 Tier-Memo-Level mit Vorschauen, Mondmischen, Reihenfolgen, drehenden Sternbildern und sechs freundlichen Sternwächter-Prüfungen.",
+      ogTitle: "Tierisches Sternen-Memo - Kartenpaare finden", ogDescription: "Finde Tierpaare in 30 Memo-Leveln mit Vorschau-, Misch-, Reihenfolge- und Drehregeln.",
+      language: "Sprache", languageAria: "Sprache auswählen", stageBackAria: "Zurück zur Startseite", battleBackAria: "Zurück zur Rundenauswahl",
+      leaveTitle: "Diese Runde verlassen?", leaveText: "Gefundene Paare, Züge, Punkte und deine Serie gehen verloren.", keepPlaying: "Weiterspielen", leaveLevel: "Runde verlassen",
+      gameStatsAria: "Spielstand", mainIntro: "Folge 30 Sternenlichtpfaden. Vorschauen, Mischen, Reihenfolgen und drehende Sternbilder verändern jedes Memo-Feld.",
+      start: "Spiel starten", chooseLevel: "Spielrunde auswählen", level: "Runde {current} / {total}", score: "Punkte", moves: "Züge",
+      movesLimit: "{current} / {limit}", movesInfinite: "{current} / Ohne Limit", locked: "Gesperrt", play: "Spielen",
+      victory: "Runde geschafft!", defeat: "Keine Züge mehr!", allClear: "Alle Spielrunden geschafft!",
+      victoryDesc: "Du hast die Runde mit {moves} Zügen geschafft!", defeatDesc: "Versuche es noch einmal und merke dir die Karten neu.", allClearDesc: "Großartig! Du hast alle {count} Spielrunden geschafft!",
+      nextLevel: "Nächste Runde", again: "Noch einmal", levels: "Rundenauswahl", lobby: "Spieleauswahl",
+      tipTap: "Decke Karten auf und finde gleiche Tierpaare!", tipMatch: "Paar gefunden!", tipMismatch: "Noch kein Paar. Merke dir die beiden Plätze!", tipCombo: "Serie x{count}!",
+      hiddenCard: "Verdeckte Karte, Reihe {row}, Spalte {column}", revealedCard: "{animal} aufgedeckt, Reihe {row}, Spalte {column}", matchedCard: "{animal} gefunden, Reihe {row}, Spalte {column}",
+      animalPanda: "Panda", animalBear: "Bär", animalLion: "Löwe", animalCat: "Katze", animalRabbit: "Kaninchen", animalFox: "Fuchs",
+      animalOwl: "Eule", animalFrog: "Frosch", animalWhale: "Wal", animalChick: "Küken", animalPenguin: "Pinguin", animalKoala: "Koala",
+      loading: "Laden", parkCheck: "Sternwächter-Prüfung", ruleNormal: "Klassische Paare", rulePreview: "Vorschau am Anfang",
+      ruleShuffle: "Nach einem Fehlversuch mischt der Mond", ruleOrder: "Finde als Nächstes das gezeigte Tier", ruleRotate: "Nach einem Paar dreht sich das Sternbild", ruleFinal: "Gemischte Sternenregeln",
+      previewing: "Schau genau hin. Gleich werden die Karten verdeckt!", orderTarget: "Finde als Nächstes das {animal}-Paar.", wrongOrder: "Dieses Paar stimmt, aber ein anderes Tier ist zuerst dran.",
+      highScore: "Bestwert: {score}", skillReport: "Spielbericht",
+      reportIntroWin: "Diese Runde übte das Merken von Plätzen, aufmerksames Suchen und die Wahl des nächsten Paars.", reportIntroTry: "Guter Versuch! Jedes gefundene Paar trainierte Gedächtnis und Aufmerksamkeit.",
+      reportPairs: "Gedächtnis", reportMoves: "Aufmerksamkeit", reportStreak: "Lösungswege", reportPairsValue: "{current} / {total} Paare", reportMovesValue: "{moves} Züge",
+      reportStreakValue: "Beste Serie x{streak}", todayScore: "Heutige Punkte: {score}", scoreProgress: "Heutige Punkte: {score} · Bisheriger Bestwert: {previous}", newBest: "Neuer Bestwert: {score}! Vorher: {previous}"
     }
   };
 
@@ -447,6 +471,43 @@
     [stage.title.es, stage.description.es] = spanishStageCopy[index];
   });
 
+  const germanStageCopy = [
+    ["Erste Pfotenspuren", "Lerne zwei ruhige Paare ganz ohne Zuglimit kennen."],
+    ["Drei Freunde", "Merke dir drei Paare auf einem breiten Anfängerfeld."],
+    ["Vier am Fluss", "Vier Paare üben das längere Suchen von links nach rechts."],
+    ["Waldpfad", "Sechs Paare füllen das erste höhere Memo-Feld."],
+    ["Katzen-Sternwächter-Prüfung", "Eine kurze Vorschau bereitet die erste Prüfung mit sechs Paaren vor."],
+    ["Vorschau im Morgengrauen", "Sieh dir vier Paare an, bevor alle Karten verdeckt werden."],
+    ["Kurzes Sternenlicht", "Fünf Paare sind nur für einen kurzen Augenblick sichtbar."],
+    ["Wolkenfenster", "Sechs sichtbare Paare prüfen deinen ersten Gesamteindruck."],
+    ["Verblassende Wiese", "Acht Paare erscheinen kurz, bevor die Wiese dunkel wird."],
+    ["Bären-Sternwächter-Prüfung", "Merke dir acht Paare; danach mischt der Mond sie einmal."],
+    ["Mischen im Mondlicht", "Nach einem Fehlversuch werden die übrigen verdeckten Tiere gemischt."],
+    ["Wandernde Baue", "Acht Paare wechseln nach jedem Fehlversuch ihre Plätze."],
+    ["Glühwürmchen-Wirrwarr", "Zehn verdeckte Paare machen jedes Mondmischen wichtig."],
+    ["Erst merken, dann bewegen", "Nach der Vorschau mischen Fehlversuche die Karten neu."],
+    ["Eulen-Sternwächter-Prüfung", "Zehn vorher sichtbare Paare treffen auf das Mondmischen der Eule."],
+    ["Panda zuerst", "Finde sechs Tierpaare in der angezeigten Reihenfolge."],
+    ["Tierliste im Wald", "Acht Paare folgen der Tierliste des Sternwächters."],
+    ["Parade der zehn Sterne", "Zehn Tiere belohnen sorgfältiges Merken in Reihenfolge."],
+    ["Parade mit Vorschau", "Sieh acht Paare an und folge danach der geforderten Reihenfolge."],
+    ["Löwen-Sternwächter-Prüfung", "Reihenfolge und Mondmischen treffen in einer Prüfung zusammen."],
+    ["Drehender Himmel", "Nach jedem Paar rückt das übrige Sternbild um einen Platz weiter."],
+    ["Zehner-Umlaufbahn", "Zehn Paare drehen sich nach jedem Treffer weiter."],
+    ["Weites Sternbild", "Der Himmel mit zwölf Paaren bewegt sich, während er leerer wird."],
+    ["In Bewegung gesehen", "Sieh zehn Paare an, bevor das Sternbild sich zu drehen beginnt."],
+    ["Pinguin-Sternwächter-Prüfung", "Zwölf Paare drehen sich nach Treffern und mischen sich nach Fehlern."],
+    ["Geordneter Morgen", "Sieh acht Paare an und finde die genannten Tiere der Reihe nach."],
+    ["Wechselnde Umlaufbahn", "Zehn Paare drehen sich bei Treffern und mischen sich bei Fehlern."],
+    ["Verschwindende Sternkarte", "Sieh alle zwölf Paare an, bevor das Mondmischen beginnt."],
+    ["Umlaufbahn der Wächter", "Zwölf Paare bleiben in Reihenfolge, während der Himmel sich dreht."],
+    ["Koalas große Sternenprüfung", "Vorschau, Reihenfolge, Mondmischen und Sternbild-Drehung treffen im Finale zusammen."],
+  ];
+  if (germanStageCopy.length !== stages.length) throw new Error("German memory-stage coverage must match all stages.");
+  stages.forEach((stage, index) => {
+    [stage.title.de, stage.description.de] = germanStageCopy[index];
+  });
+
   // Game State
   const state = {
     stageIndex: 0,
@@ -494,6 +555,31 @@
       }
     };
     return requestAnimationFrame(tick);
+  }
+
+  function scheduleCommittedResult(delay) {
+    const generation = roundGeneration;
+    let remaining = delay;
+    let lastStartedAt = document.hidden ? null : performance.now();
+    const settle = () => {
+      if (generation !== roundGeneration || !document.body.classList.contains("memory-playing")) return;
+      const stage = stages[state.stageIndex];
+      if (state.matchedPairsCount !== stage.symbols.length) return;
+      if (document.hidden) {
+        lastStartedAt = null;
+        document.addEventListener("visibilitychange", settle, { once: true });
+        return;
+      }
+      const now = performance.now();
+      if (lastStartedAt !== null) remaining -= Math.max(0, now - lastStartedAt);
+      if (remaining <= 0) {
+        finishGame();
+        return;
+      }
+      lastStartedAt = now;
+      setTimeout(settle, remaining);
+    };
+    return setTimeout(settle, remaining);
   }
 
   function suspendRoundTasks() {
@@ -685,7 +771,10 @@
     const viewportHeight = viewport?.height || window.innerHeight;
     const availableWidth = Math.max(1, Math.min(viewportWidth, 920));
     const availableHeight = Math.max(1, viewportHeight);
-    const scale = Math.min(availableWidth / 390, availableHeight / 788);
+    const shortLandscape = availableWidth / availableHeight >= 1.5 && availableHeight <= 430;
+    const minimumLogicalWidth = shortLandscape ? 760 : 390;
+    const minimumLogicalHeight = shortLandscape ? 360 : 788;
+    const scale = Math.min(availableWidth / minimumLogicalWidth, availableHeight / minimumLogicalHeight);
     const logicalWidth = availableWidth / scale;
     const logicalHeight = availableHeight / scale;
     const frameLeft = (viewport?.offsetLeft || 0) + Math.max(0, (viewportWidth - availableWidth) / 2);
@@ -705,7 +794,7 @@
   }
 
   const MEMORY_CARD_LOGICAL_SIZE = 112;
-  const MEMORY_BOARD_MAX_SCALE = 1.35;
+  const MEMORY_BOARD_MAX_SCALE = 2.25;
 
   function fitMemoryBoard(stage = stages[state.stageIndex]) {
     if (!stage || !document.body.classList.contains("memory-playing") || document.body.classList.contains("memory-result")) return;
@@ -1082,7 +1171,7 @@
       
       // Check for win
       if (state.matchedPairsCount === stage.symbols.length) {
-        scheduleRoundTask(finishGame, 600);
+        scheduleCommittedResult(600);
       }
     } else {
       // Mismatch

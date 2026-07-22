@@ -3232,7 +3232,10 @@
     window.addEventListener("keyup", (e) => {
       keysPressed[e.key] = false;
     });
-    window.addEventListener("blur", clearMovementInput);
+    window.addEventListener("blur", () => {
+      clearMovementInput();
+      if (state.gameActive && !manualPauseActive) setPauseModalActive(true);
+    });
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) suspendBackgroundBattle();
       else if (!manualPauseActive) resumeBackgroundBattle();

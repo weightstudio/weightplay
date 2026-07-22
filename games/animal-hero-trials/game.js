@@ -1231,7 +1231,15 @@
     if (event.code === "Space") skill();
   });
   addEventListener("keyup", (event) => { keys[event.code] = false; });
-  addEventListener("blur", clearMovementInput);
+  addEventListener("blur", () => {
+    clearMovementInput();
+    suspendRerollConfirmation();
+    suspendBackgroundBattle();
+  });
+  addEventListener("focus", () => {
+    resumeRerollConfirmation();
+    resumeBackgroundBattle();
+  });
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
       suspendRerollConfirmation();

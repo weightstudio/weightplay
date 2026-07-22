@@ -1215,13 +1215,16 @@
     state.spawnTimer = Math.max(0.72, 1.9 - elapsed * 0.0035 - config.region * 0.06);
   }
 
+  const chargingEnemyModifiers = new Set(["charge", "chargeRoots", "briar", "convergence"]);
+
   function updateEnemies(dt) {
     const p = state.player;
+    const chargingEnemies = chargingEnemyModifiers.has(state.stageConfig?.modifier);
     state.enemies.forEach((enemy) => {
       const dx = p.x - enemy.x;
       const dy = p.y - enemy.y;
       const dist = Math.hypot(dx, dy) || 1;
-      if (!enemy.isBoss && ["charge", "chargeRoots", "briar", "convergence"].includes(state.stageConfig?.modifier)) {
+      if (!enemy.isBoss && chargingEnemies) {
         enemy.chargeTimer -= dt;
         enemy.speed = enemy.chargeTimer <= 0 ? (enemy.baseSpeed || enemy.speed) * 2.8 : (enemy.baseSpeed || enemy.speed);
         if (enemy.chargeTimer <= -0.55) enemy.chargeTimer = 3.1 + Math.random() * 1.6;
@@ -1767,6 +1770,7 @@
   }
 
   function draw() {
+    const frameNow = performance.now();
     ensureArenaLayer();
     if (arenaLayer.width && arenaLayer.height) {
       ctx.drawImage(arenaLayer, 0, 0, arenaLayer.width, arenaLayer.height, 0, 0, W, H);
@@ -1774,10 +1778,10 @@
       ctx.clearRect(0, 0, W, H);
       renderMetrics.fallbackFrameClears += 1;
     }
-    drawStageHazards();
-    drawKey();
+    drawStageHazards(frameNow);
+    drawKey(frameNow);
     state.xpDrops.forEach((drop) => drawImageCentered(images.xp, drop.x, drop.y, 34));
-    state.enemies.forEach(drawEnemy);
+    state.enemies.forEach((enemy) => drawEnemy(enemy, frameNow));
     state.shots.forEach((shot) => {
       const angle = Math.atan2(shot.target.y - shot.y, shot.target.x - shot.x);
       drawShotTrail(shot);
@@ -1798,7 +1802,7 @@
     displayCtx.drawImage(renderCanvas, 0, 0, renderCanvas.width, renderCanvas.height, 0, 0, canvas.width, canvas.height);
   }
 
-  function drawStageHazards() {
+  function drawStageHazards(frameNow) {
     if (state.safeZone) {
       ctx.save();
       ctx.fillStyle = "rgba(24,8,38,.28)";
@@ -1817,7 +1821,7 @@
     }
     state.hazards.forEach((hazard) => {
       const active = hazard.warn <= 0;
-      const pulse = 0.58 + Math.sin(performance.now() / 100) * 0.18;
+      const pulse = 0.58 + Math.sin(frameNow / 100) * 0.18;
       ctx.save();
       ctx.globalAlpha = active ? 0.34 : pulse;
       ctx.fillStyle = hazard.color;
@@ -1896,21 +1900,21 @@
     ctx.restore();
   }
 
-  function drawKey() {
+  function drawKey(frameNow) {
     ctx.save();
     ctx.globalAlpha = 0.32;
     ctx.fillStyle = "#fff7ad";
     ctx.beginPath();
-    ctx.arc(state.key.x, state.key.y, 44 + Math.sin(performance.now() / 180) * 4, 0, Math.PI * 2);
+    ctx.arc(state.key.x, state.key.y, 44 + Math.sin(frameNow / 180) * 4, 0, Math.PI * 2);
     ctx.fill();
     ctx.restore();
     drawImageCentered(images.key, state.key.x, state.key.y, 54);
   }
 
-  function drawEnemy(enemy) {
+  function drawEnemy(enemy, frameNow) {
     const hpPct = Math.max(0, enemy.hp / enemy.maxHp);
     const visualSize = enemy.isBoss ? enemy.size * 2.25 : enemy.image === "tank" ? enemy.size * 1.9 : enemy.image === "runner" ? enemy.size * 1.65 : enemy.size * 1.55;
-    drawEnemyDanger(enemy);
+    drawEnemyDanger(enemy, frameNow);
     if (enemy.shielded) {
       ctx.save();
       ctx.strokeStyle = "rgba(196,181,253,.9)";
@@ -1931,11 +1935,11 @@
     ctx.restore();
   }
 
-  function drawEnemyDanger(enemy) {
+  function drawEnemyDanger(enemy, frameNow) {
     const dist = Math.hypot(enemy.x - state.player.x, enemy.y - state.player.y);
     if (dist > 170) return;
     const danger = Math.max(0, 1 - dist / 170);
-    const pulse = (Math.sin(performance.now() / 110) + 1) * 0.5;
+    const pulse = (Math.sin(frameNow / 110) + 1) * 0.5;
     const radius = enemy.size * (0.58 + danger * 0.28 + pulse * 0.06);
     ctx.save();
     ctx.globalAlpha = 0.18 + danger * 0.32;

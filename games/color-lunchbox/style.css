@@ -725,10 +725,10 @@ body.lunch-stage .stage-card.locked.is-centered {
 .in-game-help {
   display: grid;
   place-items: center;
-  width: 44px;
-  min-width: 44px;
-  height: 44px;
-  min-height: 44px;
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  min-height: 48px;
   padding: 0;
   border: 3px solid #7f5a23;
   border-radius: 999px;
@@ -1306,19 +1306,83 @@ body.lunch-playing .battle-return {
   z-index: 40;
   top: 8px;
   left: 10px;
-  width: 38px;
-  min-width: 38px;
-  max-width: 38px;
-  height: 38px;
-  min-height: 38px;
-  max-height: 38px;
+  width: 44px;
+  min-width: 44px;
+  max-width: 44px;
+  height: 44px;
+  min-height: 44px;
+  max-height: 44px;
   padding: 0;
-  font-size: 22px;
+  font-size: 24px;
   line-height: 1;
 }
 
 body.lunch-playing .game-hud {
-  margin-left: 46px;
+  margin-left: 52px;
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  body.lunch-playing .game-hud {
+    flex-basis: 112px;
+    min-height: 112px;
+  }
+
+  html body.wp-logical-battle-active.lunch-playing #gameHud {
+    grid-template-columns: 96px minmax(0, 1.2fr) minmax(96px, 0.9fr) minmax(96px, 0.9fr) 88px !important;
+  }
+
+  body.lunch-playing .battle-return,
+  body.lunch-playing #battleHelpBtn {
+    width: 88px !important;
+    min-width: 88px !important;
+    max-width: 88px !important;
+    height: 88px !important;
+    min-height: 88px !important;
+    max-height: 88px !important;
+  }
+
+  body.lunch-playing .game-play-content {
+    grid-template-columns: minmax(360px, 1.2fr) minmax(260px, 0.8fr);
+    grid-template-rows: minmax(0, 1fr) 48px;
+    gap: 8px 12px;
+  }
+
+  body.lunch-playing .lunchboxes {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    align-content: center;
+  }
+
+  body.lunch-playing .lunchbox {
+    min-height: 88px !important;
+  }
+
+  body.lunch-playing .food-stage {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  body.lunch-playing .feedback {
+    grid-column: 2;
+    grid-row: 2;
+    min-height: 48px;
+  }
+
+  body.lunch-playing .feedback strong {
+    padding: 6px 12px;
+    font-size: 16px;
+  }
+
+  body.lunch-playing .food-card {
+    width: 150px;
+    height: 150px;
+    min-width: 150px;
+    min-height: 150px;
+  }
+
+  body.lunch-playing .game-hud {
+    margin-left: 104px;
+  }
 }
 
 body.lunch-playing .weightplay-version-badge,

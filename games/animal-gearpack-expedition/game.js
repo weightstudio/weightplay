@@ -259,6 +259,7 @@
   let combatFxRemaining = 0;
   let combatFxDueAt = 0;
   let combatFxPending = false;
+  let windowFocused = true;
   let modalReturnFocus = null;
   let modalEscapeHandler = null;
   let selectedStage = progress.selectedStage;
@@ -387,8 +388,8 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
   function animateAttack(){const rux=$("#ruxActor"),enemy=$("#enemyActor");rux.classList.remove("is-attacking");enemy.classList.remove("is-hit");void rux.offsetWidth;rux.classList.add("is-attacking");enemy.classList.add("is-hit");}
   function animateCounterattack(){const rux=$("#ruxActor"),enemy=$("#enemyActor");enemy.classList.remove("is-attacking");rux.classList.remove("is-hit");void enemy.offsetWidth;enemy.classList.add("is-attacking");rux.classList.add("is-hit");}
   function clearCombatFx(){clearTimeout(combatFxTimer);combatFxTimer=0;combatFxRemaining=0;combatFxDueAt=0;combatFxPending=false;const fx=$("#combatFx");if(fx)fx.textContent="";}
-  function armCombatFx(delay=combatFxRemaining){clearTimeout(combatFxTimer);combatFxTimer=0;if(!combatFxPending||document.hidden)return;combatFxRemaining=Math.max(0,delay);combatFxDueAt=performance.now()+combatFxRemaining;combatFxTimer=setTimeout(()=>clearCombatFx(),combatFxRemaining);}
-  function showCombatFx(text,delay=420){clearCombatFx();$("#combatFx").textContent=text;combatFxPending=true;combatFxRemaining=delay;if(!document.hidden)armCombatFx(delay);}
+  function armCombatFx(delay=combatFxRemaining){clearTimeout(combatFxTimer);combatFxTimer=0;if(!combatFxPending||document.hidden||!windowFocused)return;combatFxRemaining=Math.max(0,delay);combatFxDueAt=performance.now()+combatFxRemaining;combatFxTimer=setTimeout(()=>clearCombatFx(),combatFxRemaining);}
+  function showCombatFx(text,delay=420){clearCombatFx();$("#combatFx").textContent=text;combatFxPending=true;combatFxRemaining=delay;if(!document.hidden&&windowFocused)armCombatFx(delay);}
   function suspendCombatFx(){if(!combatFxPending)return;if(combatFxTimer){combatFxRemaining=Math.max(0,combatFxDueAt-performance.now());clearTimeout(combatFxTimer);combatFxTimer=0;}}
   function resumeCombatFx(){if(combatFxPending&&!combatFxTimer)armCombatFx(combatFxRemaining);}
   function resetCombatLifecycle(){clearTimeout(combatTimer);combatTimer=0;combatPendingCallback=null;combatRemaining=0;combatDueAt=0;combatPaused=false;clearCombatFx();}
@@ -410,17 +411,20 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
   function showLoot(done){const hasRoom=run.tray.length+run.placed.length<12,reward=`${t("reward")}: +${4+run.room*2} ${t("gold")}`;const choices=showModal(t("chooseLoot"),hasRoom?reward:`${reward} · ${t("fullLoot")}`);randomItems(3).forEach((item)=>{const choice=choiceButton(itemName(item),()=>{if(!addToTray(item))return;closeModal();done();},item);choice.disabled=!hasRoom;choices.append(choice);});choices.append(choiceButton(t("leaveLoot"),()=>{closeModal();done();}));focusModalChoice(null,true);}
   function showMerchant(){
     let stock=randomItems(3),refreshPending=false,refreshUsed=false,confirmTimer=0,confirmDueAt=0,confirmRemaining=0,confirmationListening=false;
-    let onConfirmationVisibility;
+    let onConfirmationVisibility,onConfirmationBlur,onConfirmationFocus;
     const detachConfirmationLifecycle=()=>{
       if(!confirmationListening)return;
       document.removeEventListener("visibilitychange",onConfirmationVisibility);
       window.removeEventListener("pagehide",suspendConfirmation);
       window.removeEventListener("pageshow",resumeConfirmation);
+      window.removeEventListener("blur",onConfirmationBlur);
+      window.removeEventListener("focus",onConfirmationFocus);
       confirmationListening=false;
     };
     const armConfirmation=(delay)=>{
       clearTimeout(confirmTimer);
       confirmRemaining=Math.max(0,Number(delay)||0);
+      if(document.hidden||!windowFocused)return;
       confirmDueAt=performance.now()+confirmRemaining;
       confirmTimer=setTimeout(()=>{
         confirmTimer=0;confirmDueAt=0;confirmRemaining=0;refreshPending=false;
@@ -433,13 +437,17 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
       confirmRemaining=Math.max(0,confirmDueAt-performance.now());
       clearTimeout(confirmTimer);confirmTimer=0;confirmDueAt=0;
     }
-    function resumeConfirmation(){if(!refreshPending||confirmTimer||document.hidden)return;armConfirmation(confirmRemaining);}
+    function resumeConfirmation(){if(!refreshPending||confirmTimer||document.hidden||!windowFocused)return;armConfirmation(confirmRemaining);}
     onConfirmationVisibility=()=>{if(document.hidden)suspendConfirmation();else resumeConfirmation();};
+    onConfirmationBlur=()=>suspendConfirmation();
+    onConfirmationFocus=()=>resumeConfirmation();
     const beginConfirmation=()=>{
       if(!confirmationListening){
         document.addEventListener("visibilitychange",onConfirmationVisibility);
         window.addEventListener("pagehide",suspendConfirmation);
         window.addEventListener("pageshow",resumeConfirmation);
+        window.addEventListener("blur",onConfirmationBlur);
+        window.addEventListener("focus",onConfirmationFocus);
         confirmationListening=true;
       }
       armConfirmation(5000);
@@ -499,11 +507,14 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
   $("#regionRail").addEventListener("keydown",(event)=>{if(!event.repeat&&(event.key==="Enter"||event.key===" ")&&event.target.closest(".region-card:not(:disabled)"))stageEntryKeyboardKey=event.key;});
   ["rotateBtn","sellBtn"].forEach((id)=>$("#"+id).addEventListener("keydown",(event)=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();}));
   document.addEventListener("keyup",(event)=>{if(event.key===stageEntryKeyboardKey)stageEntryKeyboardKey="";});
-  window.addEventListener("blur",()=>{stageEntryKeyboardKey="";});
+  const suspendWindowOwnedCombat=()=>{suspendCombatFx();pauseCombat();};
+  const restoreWindowOwnedCombat=()=>{if(document.hidden||!windowFocused)return;resumeCombatFx();if(combatPaused)requestAnimationFrame(()=>$("#fightBtn")?.focus({preventScroll:true}));};
+  window.addEventListener("blur",()=>{windowFocused=false;stageEntryKeyboardKey="";suspendWindowOwnedCombat();});
+  window.addEventListener("focus",()=>{windowFocused=true;restoreWindowOwnedCombat();});
   $("#modal").addEventListener("keydown",trapModalFocus);
-  document.addEventListener("visibilitychange",()=>{if(document.hidden){suspendCombatFx();pauseCombat();}else{resumeCombatFx();if(combatPaused)requestAnimationFrame(()=>$("#fightBtn")?.focus({preventScroll:true}));}});
-  window.addEventListener("pagehide",()=>{suspendCombatFx();pauseCombat();});
-  window.addEventListener("pageshow",resumeCombatFx);
+  document.addEventListener("visibilitychange",()=>{if(document.hidden)suspendWindowOwnedCombat();else restoreWindowOwnedCombat();});
+  window.addEventListener("pagehide",suspendWindowOwnedCombat);
+  window.addEventListener("pageshow",restoreWindowOwnedCombat);
 
   $(".home-link").setAttribute("data-wp-return","main");$("#stageBackBtn").setAttribute("data-wp-return","stage");$("#battleBackBtn").setAttribute("data-wp-return","battle");
   $("#battleBackBtn").addEventListener("click",(event)=>{event.stopImmediatePropagation();openBattleReturn();},{capture:true});

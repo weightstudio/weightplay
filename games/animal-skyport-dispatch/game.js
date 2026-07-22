@@ -12,6 +12,8 @@
   const readStorage = (key) => { try { return localStorage.getItem(key); } catch { return null; } };
   const writeStorage = (key, value) => { try { localStorage.setItem(key, value); return true; } catch { return false; } };
   const soundActionLabels = {
+    hi: ['ध्वनि म्यूट करें', 'ध्वनि चालू करें'],
+    ar: ['كتم الصوت', 'تشغيل الصوت'],
     en: ['Mute sound', 'Turn sound on'],
     'zh-Hant': ['關閉音效', '開啟音效'],
     'zh-Hans': ['关闭音效', '开启音效'],
@@ -31,7 +33,8 @@
     const activeLocale = window.WonderI18n?.actualLocale?.() || readStorage('weightPlayLocale') || document.documentElement.lang || 'en';
     const muted = Boolean(window.WonderSound?.isMuted?.());
     const actions = soundActionLabels[activeLocale] || soundActionLabels.en;
-    const action = actions[muted ? 1 : 0];
+    const sourceAction = muted ? 'Turn sound on' : 'Mute sound';
+    const action = window.WeightPlayGameRuntimeLocalizer ? sourceAction : actions[muted ? 1 : 0];
     toggle.textContent = muted ? '🔇' : '🔊';
     toggle.title = action;
     toggle.setAttribute('aria-label', action);

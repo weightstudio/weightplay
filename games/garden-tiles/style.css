@@ -47,9 +47,11 @@ body.garden-main {
 }
 
 body.garden-main .garden-game {
-  height: auto;
+  width: min(100%, 920px);
+  height: 100svh;
   min-height: 100svh;
-  grid-template-rows: auto auto;
+  grid-template-rows: auto minmax(0, 1fr);
+  overflow: hidden;
 }
 
 button,
@@ -103,16 +105,61 @@ body.garden-stage .home-link { grid-template-columns: 1fr; }
 
 .main-panel {
   display: grid;
+  min-height: 0;
   gap: 12px;
   padding: 16px;
   border-radius: 8px;
   background: rgba(255, 253, 241, .92);
 }
 
-.main-poster { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; }
+.main-poster { width: 100%; min-height: 0; aspect-ratio: 1; object-fit: cover; border-radius: 8px; }
 .main-panel h2 { font-size: clamp(24px, 6vw, 34px); }
 .main-panel p { color: rgba(36, 53, 40, .76); line-height: 1.5; }
 .main-panel button { min-height: 48px; border: 0; border-radius: 8px; background: #315b35; color: #fff; font-weight: 900; }
+
+body.garden-main .main-panel {
+  grid-template-rows: minmax(0, 1fr) auto auto auto;
+}
+
+body.garden-main .main-poster {
+  height: 100%;
+  aspect-ratio: auto;
+}
+
+body.garden-main .main-panel :is(h2, p) {
+  margin: 0;
+}
+
+@media (min-width: 600px) {
+  body.garden-main .main-panel {
+    grid-template-columns: minmax(0, 1.12fr) minmax(260px, .88fr);
+    grid-template-rows: auto auto minmax(0, 1fr);
+    align-items: start;
+  }
+
+  body.garden-main .main-poster {
+    grid-column: 1;
+    grid-row: 1 / 4;
+  }
+
+  body.garden-main .main-panel h2 {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: end;
+  }
+
+  body.garden-main .main-panel p {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  body.garden-main .main-panel button {
+    grid-column: 2;
+    grid-row: 3;
+    align-self: start;
+    width: 100%;
+  }
+}
 
 .title-block {
   min-width: 0;

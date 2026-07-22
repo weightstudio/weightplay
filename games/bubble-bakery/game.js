@@ -246,6 +246,112 @@
       resultStampWin: "Sello +1 · {next}", resultStampLose: "Completa el pedido para ganar un sello.", groupTooSmall: "Esta bandeja necesita un grupo conectado de {count}.", sequenceNext: "Siguiente pedido: {animal}.",
       recipeNext: "¡La bandeja {current}/{total} está lista!", recipeProgress: "Bandeja {current}/{total}", groupGoal: "Grupo mayor {done}/{need}", pankoCheck: "Prueba de Panko",
     },
+    fr: {
+      gameTitle: "La Pâtisserie des Bulles Animales",
+      pageTitle: "La Pâtisserie des Bulles Animales - WeightPlay",
+      language: "Langue",
+      localeSelect: "Choix de la langue",
+      coachCard: "Conseils de Panko",
+      stageList: "Liste des commandes",
+      orderList: "Objectifs de la commande",
+      bubbleBoard: "Plateau de bulles",
+      bubbleSingle: "{animal}, ligne {row}, colonne {column} ; groupe relié de 1 ; il en faut {minimum} pour l’effacer",
+      bubbleOrderSingle: "Cible de la commande : {animal}, ligne {row}, colonne {column} ; groupe relié de 1 ; il en faut {minimum} pour l’effacer",
+      bubbleGroup: "{animal}, ligne {row}, colonne {column} ; groupe relié de {count} ; deux bulles ou plus peuvent être effacées ; minimum de la commande : {minimum}",
+      bubbleOrderGroup: "Cible de la commande : {animal}, ligne {row}, colonne {column} ; groupe relié de {count} ; deux bulles ou plus peuvent être effacées ; minimum de la commande : {minimum}",
+      bunny: "Lapin",
+      whale: "Baleine",
+      chick: "Poussin",
+      frog: "Grenouille",
+      fox: "Renard",
+      chooseStage: "Choisis une commande",
+      menuHint: "Touche au moins 2 bulles animales identiques et reliées pour préparer les commandes.",
+      startGame: "Commencer le jeu",
+      back: "Retour",
+      stages: "Commandes",
+      loading: "Chargement",
+      nextStage: "Commande suivante",
+      retry: "Réessayer",
+      lobby: "Jeux Kids",
+      locked: "Commande verrouillée",
+      unlockRequirement: "Termine {stage} pour ouvrir ce plateau.",
+      moves: "Coups",
+      score: "Score",
+      stage: "Commande {n}",
+      theme: "Commande : {theme}",
+      movesCount: "{n} coups",
+      orderDone: "Commande terminée !",
+      failed: "Réessaie cette commande.",
+      resultWin: "Toutes les commandes sont prêtes, avec encore {moves} coups.",
+      resultLose: "Ramasse les bulles demandées avant de manquer de coups.",
+      smallGroup: "Touche au moins 2 bulles identiques et reliées.",
+      notOrderTarget: "Beau groupe ! La commande demande les bulles animales lumineuses.",
+      orderStreak: "Série de commandes x{streak} ! +{bonus}",
+      collect: "Ramasse {n}",
+      skillReport: "Bilan des compétences",
+      previousBest: "Meilleur score précédent",
+      todayScore: "Score du jour",
+      improvement: "Progression",
+      logic: "Logique",
+      focus: "Attention",
+      problemSolving: "Résolution de problèmes",
+      targetHitEvidence: "Bulles utiles {hits}/{moves}",
+      largestGroupEvidence: "Plus grand groupe : {count}",
+      bestStreakEvidence: "Meilleure série x{count}",
+      reportGreat: "Bravo ! Les groupes ont été bien préparés et l’attention est restée solide.",
+      reportGood: "Bel effort ! Réessaie pour préparer encore plus de commandes.",
+      reportNewBest: "Super progrès ! C’est un nouveau meilleur score pour cette commande.",
+      themeCozyStart: "Boîte douillette du lapin",
+      themeOceanCupcakes: "Cupcakes de l’océan",
+      themeSunnyChickTray: "Plateau ensoleillé du poussin",
+      themeGardenMix: "Mélange du jardin",
+      themeFoxBerryCake: "Gâteau aux baies du renard",
+      themeWhaleMintRolls: "Roulés menthe-baleine",
+      themeRainbowCookies: "Biscuits arc-en-ciel",
+      themeForestPicnic: "Pique-nique en forêt",
+      themePartyTray: "Plateau de fête",
+      themeMasterBakery: "Grande pâtisserie",
+      bakeryProgress: "Progression de la pâtisserie",
+      clearedStages: "Commandes terminées {done}/{total}",
+      totalStars: "Étoiles {stars}/{total}",
+      nextGoal: "À suivre : termine {stage}",
+      perfectOrders: "Maîtrisées {done}/{total}",
+      nextPerfectGoal: "À rejouer : maîtrise {stage}",
+      allOrdersDone: "Toutes les commandes sont terminées !",
+      stageNew: "Nouvelle",
+      stageImprove: "À améliorer",
+      stageMastered: "Maîtrisée",
+      coachName: "Panko, coach pâtissier",
+      coachTip: "Repère d’abord le plus grand groupe identique, puis garde des coups pour les bulles lumineuses de la commande.",
+      recommendedTitle: "Le choix de Panko",
+      recommendedCopy: "{stage} · {theme}",
+      recommendedNew: "Termine cette commande pour ouvrir le plateau suivant.",
+      recommendedImprove: "Rejoue cette commande pour gagner plus d’étoiles.",
+      recommendedMastered: "Tout est maîtrisé ! Rejoue ta commande préférée.",
+      resultNextTitle: "Prochaine commande",
+      resultUnlocked: "Nouveau plateau ouvert : {stage}",
+      resultReplay: "Objectif : gagne plus d’étoiles dans {stage}",
+      resultNextCopy: "{stage} · {theme}",
+      resultAllClear: "Tous les plateaux sont ouverts. Rejoue une commande pour compléter ses étoiles.",
+      resultTryAgainGoal: "Réessaie : il reste des bulles à ramasser dans {stage}.",
+      customerStamps: "Tampons des clients",
+      stampOrders: "Commandes {orders}",
+      stampStickers: "Autocollants {stickers}",
+      nextSticker: "Encore {n} pour le prochain autocollant",
+      stickerReady: "Autocollant prêt !",
+      resultStampWin: "Tampon +1 · {next}",
+      resultStampLose: "Termine la commande pour gagner un tampon.",
+      groupTooSmall: "Ce plateau demande un groupe relié de {count} bulles.",
+      sequenceNext: "Prochaine cible : {animal}.",
+      recipeNext: "Le plateau {current}/{total} est prêt !",
+      recipeProgress: "Plateau {current}/{total}",
+      groupGoal: "Plus grand groupe {done}/{need}",
+      pankoCheck: "Défi de Panko",
+      leaveTitle: "Quitter cette commande ?",
+      leaveText: "Le plateau, les coups et la progression de cette commande recommenceront.",
+      keepBaking: "Continuer à jouer",
+      leaveOrder: "Quitter la commande",
+    },
   };
 
   Object.assign(text.en, { leaveTitle:"Leave this order?", leaveText:"Your tray, moves, and order progress will reset.", keepBaking:"Keep baking", leaveOrder:"Leave order" });
@@ -345,6 +451,43 @@
   if (spanishStageCopy.length !== stages.length) throw new Error("Spanish bakery-stage coverage must match all stages.");
   stages.forEach((stage, index) => {
     [stage.titleEs, stage.ruleEs] = spanishStageCopy[index];
+  });
+
+  const frenchStageCopy = [
+    ["Boîte douillette du lapin", "Efface des groupes reliés d’au moins deux bulles."],
+    ["Cupcakes de l’océan", "Choisis entre les deux animaux demandés."],
+    ["Plateau ensoleillé", "Termine la commande et forme un groupe de trois."],
+    ["Double fournée du jardin", "Les groupes de quatre ajoutent deux bulles bonus."],
+    ["Premier défi de Panko", "Seuls les groupes d’au moins trois remplissent la commande."],
+    ["Roulés baleine-menthe", "Forme un groupe de quatre tout en remplissant trois objectifs."],
+    ["Gâteau aux baies", "Les groupes utiles doivent compter au moins trois bulles."],
+    ["Biscuits bonus du renard", "Les grands groupes de renards et de lapins avancent plus vite."],
+    ["Grandes fournées arc-en-ciel", "Utilise des groupes de trois ; ceux de cinq donnent un bonus."],
+    ["Défi grandes fournées de Panko", "Remplis chaque commande avec des groupes d’au moins quatre."],
+    ["File du lapin d’abord", "Remplis les commandes dans l’ordre affiché."],
+    ["File des animaux de l’océan", "Baleine, grenouille puis renard passent chacun leur tour."],
+    ["File du jardin", "Suis la file et forme un groupe de quatre."],
+    ["File bonus du renard", "Suis la file ; les groupes de quatre donnent deux bulles bonus."],
+    ["Défi des files de Panko", "Prépare deux plateaux dans l’ordre sans réinitialiser le jeu."],
+    ["Brunch à deux plateaux", "Une deuxième recette apparaît après le premier plateau."],
+    ["Menu du jardin en deux services", "Prépare deux recettes différentes sur le même plateau."],
+    ["Duo de recettes aux baies", "Les deux recettes demandent aussi un groupe de quatre."],
+    ["Duo arc-en-ciel", "Les grandes fournées aident à terminer les deux recettes."],
+    ["Défi trois services de Panko", "Sers trois petites recettes sur un plateau qui continue."],
+    ["Grande file", "Suis l’ordre avec des groupes d’au moins trois."],
+    ["Bonus en deux services", "Les grands groupes donnent des bonus dans les deux recettes."],
+    ["Arc-en-ciel précis", "Les groupes doivent compter trois bulles ; l’un d’eux doit en atteindre cinq."],
+    ["Plateaux alternés", "Chaque recette possède sa propre file ordonnée."],
+    ["Défi du festival de Panko", "Deux plateaux en file combinent groupes de trois et bonus."],
+    ["Groupes de maître", "Les groupes utiles doivent compter quatre bulles et l’un doit en atteindre six."],
+    ["File de maître", "Les groupes en file doivent en compter trois ; ceux de cinq donnent un bonus."],
+    ["Triple service", "Trois recettes partagent un objectif de groupe de cinq."],
+    ["Grande répétition", "Deux recettes en file combinent minimums et bonus."],
+    ["Grande pâtisserie de Panko", "Sers trois plateaux en file avec des groupes de quatre et un groupe de six."],
+  ];
+  if (frenchStageCopy.length !== stages.length) throw new Error("French bakery-stage coverage must match all stages.");
+  stages.forEach((stage, index) => {
+    [stage.titleFr, stage.ruleFr] = frenchStageCopy[index];
   });
 
   function validateStages() {
@@ -458,6 +601,7 @@
   let bestOrderStreak = 0;
   let busy = false;
   let leaveConfirmOpen = false;
+  let roundLifecycleSuspended = document.hidden;
   let lastResult = null;
   let centeredStageFrame = 0;
   const popMs = 620;
@@ -468,7 +612,7 @@
       let elapsed = 0;
       let previous = performance.now();
       const tick = (now) => {
-        if (!leaveConfirmOpen) elapsed += now - previous;
+        if (!leaveConfirmOpen && !roundLifecycleSuspended && !document.hidden) elapsed += now - previous;
         previous = now;
         if (elapsed >= ms) resolve();
         else requestAnimationFrame(tick);
@@ -482,6 +626,17 @@
     node.animate(keyframes, options);
     return wait((options.duration || 0) + 90);
   }
+
+  function syncRoundLifecycle() {
+    roundLifecycleSuspended = document.hidden || !document.hasFocus();
+    return roundLifecycleSuspended;
+  }
+
+  window.addEventListener("pagehide", () => { roundLifecycleSuspended = true; });
+  window.addEventListener("pageshow", syncRoundLifecycle);
+  window.addEventListener("blur", () => { roundLifecycleSuspended = true; });
+  window.addEventListener("focus", syncRoundLifecycle);
+  document.addEventListener("visibilitychange", syncRoundLifecycle);
 
   function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
@@ -552,12 +707,14 @@
   function stageTitle(stage) {
     if (locale === "zh-Hant") return stage.titleZh;
     if (locale === "es") return stage.titleEs;
+    if (locale === "fr") return stage.titleFr;
     return stage.titleEn;
   }
 
   function stageRule(stage) {
     if (locale === "zh-Hant") return stage.ruleZh;
     if (locale === "es") return stage.ruleEs;
+    if (locale === "fr") return stage.ruleFr;
     return stage.ruleEn;
   }
 
@@ -639,7 +796,9 @@
         ${stage.checkpoint ? `<em class="panko-check"><img src="../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp" alt="" />${t("pankoCheck")}</em>` : ""}
       `;
       if (isLocked) {
-        button.setAttribute("aria-label", `${t("stage", { n: stageNo })}，${stageTitle(stage)}。${t("locked")}。${unlockRequirement}`);
+        const comma = locale === "zh-Hant" ? "，" : ", ";
+        const period = locale === "zh-Hant" ? "。" : ". ";
+        button.setAttribute("aria-label", `${t("stage", { n: stageNo })}${comma}${stageTitle(stage)}${period}${t("locked")}${period}${unlockRequirement}`);
       }
       button.dataset.unlockAfter = String(stageNo - 1);
       button.addEventListener("click", () => {
@@ -1074,7 +1233,7 @@
   }
 
   async function popGroup(r, c) {
-    if (busy || moves <= 0) return;
+    if (syncRoundLifecycle() || busy || moves <= 0) return;
     const { id, group } = groupFrom(r, c);
     const stage = stages[currentStage];
     if (group.length < 2) {
