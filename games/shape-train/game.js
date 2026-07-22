@@ -939,7 +939,7 @@
     requestAnimationFrame(() => {
       nodes.playPanel.scrollTop = 0;
       nodes.playPanel.scrollLeft = 0;
-      (currentStage < stages.length - 1 ? nodes.nextStageBtn : nodes.retryBtn).focus({ preventScroll: true });
+      (nodes.resultPanel.querySelector(".primary-action") || nodes.retryBtn).focus({ preventScroll: true });
     });
     playSound("win");
     track("game_complete", { level: stageNo, stars: earned, mistakes });
@@ -950,7 +950,11 @@
     nodes.starText.textContent = "★".repeat(result.earned) + "☆".repeat(3 - result.earned);
     nodes.resultText.textContent = t("result", { count: result.count });
     renderSkillReport(result.earned, result.previousBest);
-    nodes.nextStageBtn.classList.toggle("hidden", currentStage >= stages.length - 1);
+    const hasNextStage = currentStage < stages.length - 1;
+    nodes.nextStageBtn.classList.toggle("hidden", !hasNextStage);
+    nodes.nextStageBtn.classList.toggle("primary-action", hasNextStage);
+    nodes.resultStagesBtn.classList.toggle("primary-action", !hasNextStage);
+    nodes.retryBtn.classList.remove("primary-action");
   }
 
   function setResultOwnership(active) {

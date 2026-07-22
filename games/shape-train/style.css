@@ -898,6 +898,11 @@ body.shape-playing .weightplay-version-badge {
   background: rgba(255, 255, 255, 0.94);
 }
 
+.result-card button.primary-action {
+  background: #ffdf70;
+  box-shadow: 0 0 0 3px rgba(255, 223, 112, 0.44), 0 8px 18px rgba(49, 77, 92, 0.24);
+}
+
 @keyframes cardIn {
   from { transform: translateY(16px) scale(0.96); opacity: 0; }
   to { transform: translateY(0) scale(1); opacity: 1; }

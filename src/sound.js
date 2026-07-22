@@ -31,6 +31,8 @@
     de: { sound: "Ton", enable: "Ton einschalten", disable: "Ton ausschalten" },
     it: { sound: "Audio", enable: "Attiva audio", disable: "Disattiva audio" },
     ru: { sound: "Звук", enable: "Включить звук", disable: "Выключить звук" },
+    hi: { sound: "ध्वनि", enable: "ध्वनि चालू करें", disable: "ध्वनि बंद करें" },
+    ar: { sound: "الصوت", enable: "تشغيل الصوت", disable: "إيقاف الصوت" },
   };
 
   try {

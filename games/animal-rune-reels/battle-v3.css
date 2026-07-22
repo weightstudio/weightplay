@@ -107,7 +107,7 @@ img{-webkit-user-drag:none}
 .mission-tabs button{border:1px solid #4f5d97;border-radius:9px;background:#0c1439;color:#bac5ef;font-size:.72rem;font-weight:900}
 .mission-tabs button.active{border-color:#ffe06b;color:#fff;background:#403072;box-shadow:0 0 12px #b16dff66}
 .v3-stage .stage-card{height:210px;grid-template-rows:18px 27px 70px 38px 18px 30px!important}
-.stage-card time{font-size:.58rem;color:#ffe08a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mission-schedule{font-size:.58rem;line-height:18px;color:#ffe08a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .resource-bank,.summon-bank{height:46px;display:flex;justify-content:center;gap:28px;align-items:center;margin-bottom:8px;border-radius:12px;background:#111943dd}
 .resource-bank span,.summon-bank span{display:flex;gap:8px;align-items:center}.resource-bank i,.summon-bank i{font-style:normal;color:#afbbe8}.resource-bank b,.summon-bank b{color:#ffe06b;font-size:1.15rem}
 .material-grid{height:calc(100% - 54px);overflow:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:112px;gap:10px;padding:4px}
@@ -151,9 +151,9 @@ img{-webkit-user-drag:none}
 .enemy-squad{width:min(calc(var(--enemy-count,3)*180px),82%,650px);grid-template-columns:repeat(var(--enemy-count,3),minmax(0,1fr))}
 .enemy-unit.defeated{display:none}
 .party-hero.active{transform:none;filter:drop-shadow(0 0 14px #ffe36a)}
-.party-hero.attack-launch{animation:heroLaunchV6 1.04s cubic-bezier(.22,.65,.25,1) both}
+.party-hero.attack-launch{animation:heroLaunchV7 1.04s both}
 .party-hero.attack-launch.ultimate-cast{animation-duration:1.32s}
-@keyframes heroLaunchV6{0%{transform:none}18%{transform:translateY(-4px) scale(1.03)}52%{transform:translateY(-26px) scale(1.12)}78%{transform:translateY(-8px) scale(1.04)}100%{transform:none}}
+@keyframes heroLaunchV7{0%{transform:none;animation-timing-function:cubic-bezier(.22,.65,.25,1)}42%{transform:translateY(-26px) scale(1.12);animation-timing-function:cubic-bezier(.2,0,.25,1)}100%{transform:none}}
 .summoner-hp.player-hit{animation:playerHpHit .65s ease-out}
 @keyframes playerHpHit{0%,100%{border-color:#dce5ff;box-shadow:none}20%,65%{border-color:#ff315d;box-shadow:0 0 0 3px #ff315d,0 0 24px #ff214fcc}42%{border-color:#fff;box-shadow:0 0 0 2px #fff,0 0 30px #ff315d}}
 .summoner-hud.player-hit{animation:none}

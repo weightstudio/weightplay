@@ -899,6 +899,11 @@ body.zoo-helper-playing .feedback {
   background: rgba(255, 255, 255, 0.92);
 }
 
+.result-card button.primary-action {
+  background: #f8dc76;
+  box-shadow: 0 0 0 3px rgba(248, 220, 118, 0.42), 0 8px 18px rgba(76, 83, 37, 0.22);
+}
+
 @keyframes cardIn {
   from { transform: translateY(16px) scale(0.96); opacity: 0; }
   to { transform: translateY(0) scale(1); opacity: 1; }

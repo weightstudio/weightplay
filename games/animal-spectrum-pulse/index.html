@@ -34,10 +34,12 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-spectrum-pulse/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-spectrum-pulse/" />
     <link rel="icon" href="../../assets/weightplay-logo.png">
+  <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260720-locale11-2">
   <link rel="stylesheet" href="style.css?v=20260721-safe-landing1">
 </head>
 <body data-screen="main">
-  <div id="loading" class="loading"><img src="../../assets/animal-spectrum-pulse/spectrum-spirit.webp" alt=""><strong data-t="loading">Tuning the spectrum drum…</strong></div>
+  <div id="loadingPanel" class="loading" role="status"><img src="../../assets/animal-spectrum-pulse/spectrum-spirit.webp" alt=""><strong data-t="loading">Tuning the spectrum drum…</strong></div>
 
   <div id="mainGroup" class="main-group">
     <main id="mainScreen" class="main-screen">
@@ -58,7 +60,7 @@
         </div>
       </section>
     </main>
-    <section class="public-guide game-page-info" aria-labelledby="guideTitle">
+    <section class="public-guide game-page-info" aria-labelledby="guideTitle" data-wp-preserve-static-guide>
       <small data-t="guideKicker">GAME GUIDE</small>
       <h2 id="guideTitle" data-t="guideTitle">Hear the pattern, read the gate</h2>
       <p data-t="guideIntro">Learn the complete read-and-pulse loop, then restore all thirty handcrafted aurora towers.</p>
@@ -95,7 +97,7 @@
         <button id="pulseButton" class="pulse-button" type="button" data-t="pulse">PULSE</button>
       </div>
 
-      <section id="helpModal" class="modal-layer" hidden><div class="dialog-card"><h2 data-t="helpTitle">One press, one pulse</h2><ol><li data-t="help1">Pulse upward and release before pressing again.</li><li data-t="help2">Cross when the scan marker touches your colour and emblem.</li><li data-t="help3">A passed gate becomes a safe checkpoint. Reach the crown before time expires.</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">Continue</button></div></div></section>
+      <section id="helpModal" class="modal-layer tutorial-panel" hidden><div class="dialog-card"><h2 data-t="helpTitle">One press, one pulse</h2><ol><li data-t="help1">Pulse upward and release before pressing again.</li><li data-t="help2">Cross when the scan marker touches your colour and emblem.</li><li data-t="help3">A passed gate becomes a safe checkpoint. Reach the crown before time expires.</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">Continue</button></div></div></section>
       <section id="leaveModal" class="modal-layer" hidden><div class="dialog-card"><h2 data-t="leaveTitle">Keep this pulse run?</h2><p data-t="leaveText">Continue resumes the exact spirit, gate angles, timer, and Resonance. Returning to Towers ends this run.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">Continue</button><button id="leaveStage" type="button" data-t="returnTowers">Return to Towers</button></div></div></section>
       <section id="resultModal" class="modal-layer result-layer" hidden><div class="result-card"><img src="../../assets/animal-spectrum-pulse/panko.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">Time</b><strong id="resultTime"></strong></span><span><b data-t="bestResonance">Best Resonance</b><strong id="resultChain"></strong></span><span><b data-t="medal">Medal</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="retry" type="button" data-t="retry">Retry</button><button id="resultTowers" type="button" data-t="towers">Towers</button><button id="next" class="primary" type="button" data-t="nextTower">Next Tower</button></div></div></section>
     </div>
@@ -125,6 +127,8 @@
   <script src="locales.js?v=20260721-safe-landing1"></script>
   <script src="../../src/wallet.js"></script>
   <script src="game.js?v=20260721-safe-landing1"></script>
+  <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+  <script src="../../src/edge-guard.js"></script>
   <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
 </body>

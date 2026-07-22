@@ -11,6 +11,7 @@
   let active=null;
   let returnFocus=null;
   let pendingOpener=null;
+  const heldDecisionKeys=new Set();
 
   const visible=spec=>spec.node&&!spec.node.hidden;
   const actions=modal=>[...modal.querySelectorAll('button:not(:disabled),a[href],select:not(:disabled),[tabindex]:not([tabindex="-1"])')]
@@ -65,6 +66,29 @@
     const opener=event.target.closest?.("#battleHelp,#battleBack,#breakerPause");
     if(opener)pendingOpener=opener;
   },true);
+
+  const decisionKey=event=>event.key==="Enter"||event.key===" "?event.key:"";
+  const decisionTarget=target=>target instanceof Element&&Boolean(target.closest("#battleHelp,#battleBack,#breakerPause,#helpModal button,#leaveModal button,#pauseModal button,#resultModal button"));
+
+  document.addEventListener("keydown",event=>{
+    const key=decisionKey(event);
+    if(!key)return;
+    const owned=Boolean(active)||decisionTarget(event.target);
+    if(!owned)return;
+    if(heldDecisionKeys.has(key)){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return;
+    }
+    heldDecisionKeys.add(key);
+  },true);
+
+  document.addEventListener("keyup",event=>{
+    const key=decisionKey(event);
+    if(key)heldDecisionKeys.delete(key);
+  },true);
+  window.addEventListener("blur",()=>heldDecisionKeys.clear());
+  document.addEventListener("visibilitychange",()=>{if(document.hidden)heldDecisionKeys.clear();});
 
   document.addEventListener("keydown",event=>{
     if(!active)return;

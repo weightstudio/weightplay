@@ -34,10 +34,12 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-spectrum-pulse/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-spectrum-pulse/" />
     <link rel="icon" href="../../assets/weightplay-logo.png">
+  <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260720-locale11-2">
   <link rel="stylesheet" href="style.css?v=20260721-safe-landing1">
 </head>
 <body data-screen="main">
-  <div id="loading" class="loading"><img src="../../assets/animal-spectrum-pulse/spectrum-spirit.webp" alt=""><strong data-t="loading">ضبط طبل الطيف…</strong></div>
+  <div id="loadingPanel" class="loading" role="status"><img src="../../assets/animal-spectrum-pulse/spectrum-spirit.webp" alt=""><strong data-t="loading">ضبط طبل الطيف…</strong></div>
 
   <div id="mainGroup" class="main-group">
     <main id="mainScreen" class="main-screen">
@@ -58,7 +60,7 @@
         </div>
       </section>
     </main>
-    <section class="public-guide game-page-info" aria-labelledby="guideTitle">
+    <section class="public-guide game-page-info" aria-labelledby="guideTitle" data-wp-preserve-static-guide>
       <small data-t="guideKicker">دليل اللعبة</small>
       <h2 id="guideTitle" data-t="guideTitle">سماع النمط، وقراءة البوابة</h2>
       <p data-t="guideIntro">تعلّم دورة القراءة والنبض كاملة، ثم أعد ترميم أبراج الشفق الثلاثين المصممة يدوياً.</p>
@@ -95,7 +97,7 @@
         <button id="pulseButton" class="pulse-button" type="button" data-t="pulse">نبض</button>
       </div>
 
-      <section id="helpModal" class="modal-layer" hidden><div class="dialog-card"><h2 data-t="helpTitle">ضغطة واحدة، نبضة واحدة</h2><ol><li data-t="help1">نبض لأعلى ثم حرر قبل الضغط مرة أخرى.</li><li data-t="help2">علامة عبور عندما تلمس علامة المسح اللون والشعار الخاص بك.</li><li data-t="help3">تصبح البوابة التي تم تجاوزها نقطة تفتيش آمنة. الوصول إلى التاج قبل انتهاء الوقت.</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">متابعة</button></div></div></section>
+      <section id="helpModal" class="modal-layer tutorial-panel" hidden><div class="dialog-card"><h2 data-t="helpTitle">ضغطة واحدة، نبضة واحدة</h2><ol><li data-t="help1">نبض لأعلى ثم حرر قبل الضغط مرة أخرى.</li><li data-t="help2">علامة عبور عندما تلمس علامة المسح اللون والشعار الخاص بك.</li><li data-t="help3">تصبح البوابة التي تم تجاوزها نقطة تفتيش آمنة. الوصول إلى التاج قبل انتهاء الوقت.</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">متابعة</button></div></div></section>
       <section id="leaveModal" class="modal-layer" hidden><div class="dialog-card"><h2 data-t="leaveTitle">هل يستمر هذا النبض؟</h2><p data-t="leaveText">استمر في استئناف الروح الدقيقة وزوايا البوابة والمؤقت والرنين. العودة إلى الأبراج تنهي هذا السباق.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">متابعة</button><button id="leaveStage" type="button" data-t="returnTowers">العودة إلى الأبراج</button></div></div></section>
       <section id="resultModal" class="modal-layer result-layer" hidden><div class="result-card"><img src="../../assets/animal-spectrum-pulse/panko.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">الوقت</b><strong id="resultTime"></strong></span><span><b data-t="bestResonance">أفضل الرنين</b><strong id="resultChain"></strong></span><span><b data-t="medal">ميدالية</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="retry" type="button" data-t="retry">أعد المحاولة</button><button id="resultTowers" type="button" data-t="towers">أبراج</button><button id="next" class="primary" type="button" data-t="nextTower">البرج التالي</button></div></div></section>
     </div>
@@ -121,9 +123,10 @@
   "operatingSystem": "Any modern web browser",
   "applicationCategory": "Game",
   "genre": [
-    "العاب الحيوانات",
     "أركيد",
-    "مميز"
+    "التوقيت",
+    "التعرف على الأنماط",
+    "حيوان"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -136,6 +139,8 @@
   <script src="locales.js?v=20260721-safe-landing1"></script>
   <script src="../../src/wallet.js"></script>
   <script src="game.js?v=20260721-safe-landing1"></script>
+  <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+  <script src="../../src/edge-guard.js"></script>
   <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
 </body>

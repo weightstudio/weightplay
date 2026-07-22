@@ -1,4 +1,6 @@
 (function () {
+  if (window.__weightPlayEdgeGuardInstalled) return;
+  window.__weightPlayEdgeGuardInstalled = true;
   const audience = document.querySelector('meta[name="weightplay-audience"]')?.content === "kids" ? "kids" : "general";
   const isKidsAudience = audience === "kids";
   window.WeightPlayAudience = Object.freeze({
@@ -200,6 +202,11 @@
     return findPlayableFrame();
   }
 
+  function blockDoubleActivationZoom(event) {
+    if (isEditable(event.target) || event.target?.closest?.("[data-allow-double-tap='true']")) return;
+    event.preventDefault();
+  }
+
   function markImmersiveFrame(frame) {
     if (!frame || !isMobileGameViewport()) return;
     if (immersiveFrame && immersiveFrame !== frame) immersiveFrame.classList.remove("weightplay-active-viewport");
@@ -330,6 +337,7 @@
   document.documentElement.style.webkitTapHighlightColor = "transparent";
   document.documentElement.style.webkitUserSelect = "none";
   document.documentElement.style.userSelect = "none";
+  document.documentElement.style.touchAction = "manipulation";
   document.body?.style.setProperty("-webkit-user-select", "none");
   document.body?.style.setProperty("user-select", "none");
   window.WeightPlayGame = {
@@ -362,4 +370,5 @@
   window.addEventListener("wheel", preserveGuideWheelScroll, { passive: true, capture: true });
   window.addEventListener("selectstart", blockSelection, { capture: true });
   window.addEventListener("dragstart", blockNativeDrag, { capture: true });
+  window.addEventListener("dblclick", blockDoubleActivationZoom, { passive: false, capture: true });
 })();

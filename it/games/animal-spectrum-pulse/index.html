@@ -7,17 +7,17 @@
   <meta name="robots" content="index,follow" />
   <meta name="theme-color" content="#170d38">
   <meta name="weightplay-audience" content="general">
-  <title>Impulso Spettarale Animale | WeightPlay</title>
-  <meta name="description" content="Spingi lo spirito spettrale di Panko tra portali rotanti con emblemi e ripristina 30 torri dell&#39;aurora progettata." />
+  <title>Impulso Spettrale Animale | WeightPlay</title>
+  <meta name="description" content="Spingi lo spirito spettrale di Panko tra portali rotanti con emblemi e ripristina 30 torri dell&#39;aurora progettate." />
   <meta property="og:site_name" content="WeightPlay">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Impulso Spettarale Animale | WeightPlay" />
-  <meta property="og:description" content="Spingi lo spirito spettrale di Panko tra portali rotanti con emblemi e ripristina 30 torri dell&#39;aurora progettata." />
+  <meta property="og:title" content="Impulso Spettrale Animale | WeightPlay" />
+  <meta property="og:description" content="Spingi lo spirito spettrale di Panko tra portali rotanti con emblemi e ripristina 30 torri dell&#39;aurora progettate." />
   <meta property="og:url" content="https://weightplay.com/it/games/animal-spectrum-pulse/" />
   <meta property="og:image" content="https://weightplay.com/assets/animal-spectrum-pulse/cover.webp">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Impulso Spettarale Animale | WeightPlay" />
-  <meta name="twitter:description" content="Spingi lo spirito spettrale di Panko tra portali rotanti con emblemi e ripristina 30 torri dell&#39;aurora progettata." />
+  <meta name="twitter:title" content="Impulso Spettrale Animale | WeightPlay" />
+  <meta name="twitter:description" content="Spingi lo spirito spettrale di Panko tra portali rotanti con emblemi e ripristina 30 torri dell&#39;aurora progettate." />
   <link rel="canonical" href="https://weightplay.com/it/games/animal-spectrum-pulse/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-spectrum-pulse/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-spectrum-pulse/" />
@@ -34,15 +34,17 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-spectrum-pulse/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-spectrum-pulse/" />
     <link rel="icon" href="../../assets/weightplay-logo.png">
+  <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260720-locale11-2">
   <link rel="stylesheet" href="style.css?v=20260721-safe-landing1">
 </head>
 <body data-screen="main">
-  <div id="loading" class="loading"><img src="../../assets/animal-spectrum-pulse/spectrum-spirit.webp" alt=""><strong data-t="loading">Accordatura del tamburo spettrale…</strong></div>
+  <div id="loadingPanel" class="loading" role="status"><img src="../../assets/animal-spectrum-pulse/spectrum-spirit.webp" alt=""><strong data-t="loading">Accordatura del tamburo spettrale…</strong></div>
 
   <div id="mainGroup" class="main-group">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
-        <a class="lobby-return" href="/" aria-label="Return to WeightPlay" data-t-aria="lobbyReturn"><span>←</span><img src="../../assets/weightplay-logo.png" alt="Immagine del gioco Impulso Spettarale Animale"></a>
+        <a class="lobby-return" href="/" aria-label="Return to WeightPlay" data-t-aria="lobbyReturn"><span>←</span><img src="../../assets/weightplay-logo.png" alt="Immagine del gioco Impulso Spettrale Animale"></a>
         <strong data-t="titleShort">Impulso Spettrale</strong>
         <label class="locale-control"><span class="sr-only" data-t="language">Lingua</span><select id="localeSelect" aria-label="Language" data-t-aria="language"></select></label>
       </header>
@@ -58,7 +60,7 @@
         </div>
       </section>
     </main>
-    <section class="public-guide game-page-info" aria-labelledby="guideTitle">
+    <section class="public-guide game-page-info" aria-labelledby="guideTitle" data-wp-preserve-static-guide>
       <small data-t="guideKicker">GUIDA AL GIOCO</small>
       <h2 id="guideTitle" data-t="guideTitle">Senti il ritmo e leggi il portale</h2>
       <p data-t="guideIntro">Impara il ciclo completo di lettura e impulso e ripristina tutte le trenta torri dell&#39;aurora create a mano.</p>
@@ -95,7 +97,7 @@
         <button id="pulseButton" class="pulse-button" type="button" data-t="pulse">IMPULSO</button>
       </div>
 
-      <section id="helpModal" class="modal-layer" hidden><div class="dialog-card"><h2 data-t="helpTitle">Una pressione, un impulso</h2><ol><li data-t="help1">Sali e rilascia prima di premere di nuovo.</li><li data-t="help2">Passa quando lo scanner tocca colore ed emblema corretti.</li><li data-t="help3">Un portale superato è un punto sicuro. Raggiungi la corona in tempo.</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">Continua</button></div></div></section>
+      <section id="helpModal" class="modal-layer tutorial-panel" hidden><div class="dialog-card"><h2 data-t="helpTitle">Una pressione, un impulso</h2><ol><li data-t="help1">Sali e rilascia prima di premere di nuovo.</li><li data-t="help2">Passa quando lo scanner tocca colore ed emblema corretti.</li><li data-t="help3">Un portale superato è un punto sicuro. Raggiungi la corona in tempo.</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">Continua</button></div></div></section>
       <section id="leaveModal" class="modal-layer" hidden><div class="dialog-card"><h2 data-t="leaveTitle">Mantenere questo tentativo?</h2><p data-t="leaveText">Continua riprende spirito, angoli, tempo e Risonanza. Tornare alle Torri termina la partita.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">Continua</button><button id="leaveStage" type="button" data-t="returnTowers">Torna alle Torri</button></div></div></section>
       <section id="resultModal" class="modal-layer result-layer" hidden><div class="result-card"><img src="../../assets/animal-spectrum-pulse/panko.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">Tempo</b><strong id="resultTime"></strong></span><span><b data-t="bestResonance">Migliore risonanza</b><strong id="resultChain"></strong></span><span><b data-t="medal">Medaglia</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="retry" type="button" data-t="retry">Riprova</button><button id="resultTowers" type="button" data-t="towers">Torri</button><button id="next" class="primary" type="button" data-t="nextTower">Torre successiva</button></div></div></section>
     </div>
@@ -106,11 +108,11 @@
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "Impulso Spettarale Animale",
+  "name": "Impulso Spettrale Animale",
   "alternateName": "動物光譜脈衝",
   "url": "https://weightplay.com/it/games/animal-spectrum-pulse/",
   "image": "https://weightplay.com/assets/animal-spectrum-pulse/cover.webp",
-  "description": "Spingi lo spirito spettrale di Panko tra portali rotanti con emblemi e ripristina 30 torri dell'aurora progettata.",
+  "description": "Spingi lo spirito spettrale di Panko tra portali rotanti con emblemi e ripristina 30 torri dell'aurora progettate.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightPlay",
@@ -121,9 +123,10 @@
   "operatingSystem": "Any modern web browser",
   "applicationCategory": "Game",
   "genre": [
-    "Giochi di animali",
     "Arcade",
-    "In primo piano"
+    "Tempistica",
+    "Riconoscimento di modelli",
+    "Animale"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -136,6 +139,8 @@
   <script src="locales.js?v=20260721-safe-landing1"></script>
   <script src="../../src/wallet.js"></script>
   <script src="game.js?v=20260721-safe-landing1"></script>
+  <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+  <script src="../../src/edge-guard.js"></script>
   <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
 </body>

@@ -795,7 +795,7 @@
   }
 
   function focusResultAction() {
-    const preferred = !nodes.nextStageBtn.classList.contains("hidden") ? nodes.nextStageBtn : nodes.retryBtn;
+    const preferred = nodes.resultPanel.querySelector(".primary-action") || nodes.retryBtn;
     preferred.focus();
   }
 
@@ -1128,7 +1128,11 @@
     nodes.progressComparison.textContent = previousBest === 0
       ? t("firstFinish", { stars: earned })
       : t(earned > previousBest ? "newBest" : "progress", { stars: earned, previous: previousBest });
-    nodes.nextStageBtn.classList.toggle("hidden", currentStage >= stages.length - 1);
+    const hasNextStage = currentStage < stages.length - 1;
+    nodes.nextStageBtn.classList.toggle("hidden", !hasNextStage);
+    nodes.nextStageBtn.classList.toggle("primary-action", hasNextStage);
+    nodes.resultStagesBtn.classList.toggle("primary-action", !hasNextStage);
+    nodes.retryBtn.classList.remove("primary-action");
   }
 
   function bindEvents() {

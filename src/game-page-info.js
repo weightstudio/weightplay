@@ -7338,6 +7338,30 @@
   localizedGameplayProfiles["zh-Hant"]["animal-abyss-diver"] = { gameplay: "深海路線風險冒險", genre: ["策略", "冒險", "風險管理", "動物"] };
   localizedGames["zh-Hans"]["animal-abyss-diver"] = { ...localizedGames["zh-Hant"]["animal-abyss-diver"], title: "动物深渊潜航员", gameplay: "深海路线风险冒险" };
   localizedGameplayProfiles["zh-Hans"]["animal-abyss-diver"] = { gameplay: "深海路线风险冒险", genre: ["策略", "冒险", "风险管理", "动物"] };
+
+  Object.assign(games, { "animal-spectrum-pulse": {
+    title: "Animal Spectrum Pulse",
+    difficulty: "Medium to Challenging",
+    time: "2-7 minutes per tower",
+    gameplay: "One-Touch Precision Arcade",
+    genre: ["Arcade", "Timing", "Pattern Recognition", "Animal"],
+    skills: ["Timing", "Pattern Recognition", "Focus"],
+    intro: "Animal Spectrum Pulse is a 30-tower one-touch precision arcade adventure. Guide Panko's spectrum spirit upward, read the emblem segment nearest the spirit at the bottom scan marker, and pulse only when the current wave, sun, diamond, or paw identity is aligned.",
+    story: ["Panko's spectrum drums have fallen silent across six aurora regions. Every rescued spirit restores one patterned tower and carries its pulse toward the final Aurora Crown.", "The campaign is handcrafted rather than endless. Towers introduce counter-rotating pairs, oscillating bars, petal spirals, tempo fields, split arcs, and crown combinations in six distinct chapters."],
+    systems: ["Touch or click the arena, press the Pulse button, Space, Enter, or Arrow Up once for one identical vertical impulse. Holding never repeats the action; release before the next pulse.", "Each gate combines colour with a distinct emblem and texture, so success never depends on colour alone. A cleared gate becomes a safe landing point where the player can read the next pattern.", "Correct centre passages build Resonance. Echo Guard can recover one mistake at the last checkpoint, while Pulse Control and Foresight provide permanent tuning without changing the authored gate solutions.", "The Resonance Studio spends earned Star Notes on three upgrades. The optional Starlight Drum Trail is cosmetic and gives no timing or collision advantage."],
+    progression: ["Thirty deterministic towers are divided into First Beat, Twin Echo, Prism Bars, Petal Spiral, Tempo Shift, and Aurora Crown. Later towers add visible rules and combinations instead of only increasing speed.", "Clearing a tower unlocks the next one and records medals, best time, Star Notes, upgrades, and the optional trail in the current browser. Tower 30 remains replayable after completion."],
+    design: ["The game uses one simulation for touch, mouse, and keyboard. Gate angles, gravity, collision, timer, rewards, and difficulty do not change with screen size.", "Stage, Battle, and Result fill the available safe area up to the shared 920px desktop maximum, with one separate 56px reserve below General gameplay."],
+    faq: [["How many towers are included?", "There are 30 handcrafted towers across six mechanical chapters."], ["Where should I read the gate?", "Read the segment at the bottom marker nearest the spirit, then pulse when its colour and emblem match the current identity."], ["Can I hold the button to keep moving?", "No. Every physical press produces one pulse and must be released before another."], ["Does colour alone decide a match?", "No. Wave, sun, diamond, and paw use both colour and distinct emblems or textures."], ["What does Resonance do?", "Correct passages build the run's Resonance and reward more precise play."], ["Are upgrades required?", "No. They make correction, foresight, or recovery more forgiving without replacing gate reading."], ["Where is progress saved?", "Tower unlocks, medals, times, notes, upgrades, and the cosmetic trail are stored only in the current browser."], ["What happens after Tower 30?", "Tower 30 remains replayable and Result returns to Towers without offering a nonexistent Tower 31."]]
+  } });
+  gameplayProfiles["animal-spectrum-pulse"] = { gameplay: "One-Touch Precision Arcade", genre: ["Arcade", "Timing", "Pattern Recognition", "Animal"] };
+  localizedGames["zh-Hant"]["animal-spectrum-pulse"] = {
+    ...games["animal-spectrum-pulse"], title: "動物光譜脈衝", difficulty: "中等至具挑戰性", time: "每座塔約 2 至 7 分鐘", gameplay: "單鍵精準動作遊戲", genre: ["動作", "時機", "圖樣辨識", "動物"], skills: ["時機", "圖樣辨識", "專注"],
+    intro: "《動物光譜脈衝》是一款 30 塔的單鍵精準動作冒險。引導 Panko 的光譜精靈向上移動，閱讀最靠近精靈的底部掃描標記，只有在目前的波浪、太陽、菱形或腳印紋章對準時才發動脈衝。"
+  };
+  localizedGameplayProfiles["zh-Hant"]["animal-spectrum-pulse"] = { gameplay: "單鍵精準動作遊戲", genre: ["動作", "時機", "圖樣辨識", "動物"] };
+  localizedGames["zh-Hans"]["animal-spectrum-pulse"] = { ...localizedGames["zh-Hant"]["animal-spectrum-pulse"], title: "动物光谱脉冲", difficulty: "中等至具挑战性", time: "每座塔约 2 至 7 分钟", gameplay: "单键精准动作游戏", intro: "《动物光谱脉冲》是一款 30 塔的单键精准动作冒险。引导 Panko 的光谱精灵向上移动，阅读最靠近精灵的底部扫描标记，只有在当前的波浪、太阳、菱形或脚印纹章对准时才发动脉冲。" };
+  localizedGameplayProfiles["zh-Hans"]["animal-spectrum-pulse"] = { gameplay: "单键精准动作游戏", genre: ["动作", "时机", "图样识别", "动物"] };
+
   const publicKidsBatch = {
     "animal-block-grove": {
       title: "Animal Block Grove", difficulty: "Easy to Challenging", time: "2-6 minutes per mission", gameplay: "8×8 Block Placement Puzzle", genre: ["Puzzle", "Logic", "Animal"], skills: ["Logic", "Spatial Reasoning", "Sequencing"],

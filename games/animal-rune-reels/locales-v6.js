@@ -16,8 +16,9 @@
     hi:['जीवन','टीम अल्टिमेट रून','सामान्य हमलों की जगह हर हीरो क्रम से अपना अल्टिमेट चलाता है।','युद्ध आरोह','सभी को 1.2× ATK; हर पहुँची वेव पर +0.25× ATK।'],
     ar:['الصحة','رونة الضربة القاضية للفريق','تستبدل الهجمات العادية؛ يستخدم كل بطل ضربته القاضية بالترتيب.','تصاعد المعركة','يضرب الجميع بقوة 1.2× ATK ويكسب +0.25× ATK لكل موجة تم بلوغها.']
   };
+  const weekly={en:'Every week','zh-Hant':'每週','zh-Hans':'每周',ja:'毎週',ko:'매주',es:'Cada semana','pt-BR':'Toda semana',fr:'Chaque semaine',de:'Jede Woche',it:'Ogni settimana',ru:'Каждую неделю',hi:'हर सप्ताह',ar:'كل أسبوع'};
   const keys=['hp','runeSpecial','runeSpecialDesc','specialPanda','specialPandaDesc'];
-  Object.keys(L).forEach(code=>{const values=copy[code]||copy.en,patch={};keys.forEach((key,index)=>patch[key]=values[index]);Object.assign(L[code],patch)});
+  Object.keys(L).forEach(code=>{const values=copy[code]||copy.en,patch={weekly:weekly[code]||weekly.en};keys.forEach((key,index)=>patch[key]=values[index]);Object.assign(L[code],patch)});
   L['zh-Hant'].leaderNyraDesc='必殺符石威力 +20%。';
   L['zh-Hans'].leaderNyraDesc='必杀符石威力 +20%。';
 })();

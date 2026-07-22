@@ -156,6 +156,12 @@ a {
   box-shadow: 0 4px 0 #c99b44, 0 0 0 3px rgba(255, 239, 158, 0.72);
 }
 
+.result-actions .result-secondary {
+  border-color: #9b7740;
+  background: #fffdf7;
+  box-shadow: 0 4px 0 #d5c28f;
+}
+
 .home-link:active {
   transform: translateY(3px);
   box-shadow: 0 2px 0 #c99b44;
