@@ -1,5 +1,6 @@
 (() => {
   "use strict";
+  document.body.dataset.runtimeLocalize="off";
   const LOCALES=window.SKYDROP_LOCALES;
   const localeOrder=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
   const localeLabels={en:"English","zh-Hant":"繁體中文","zh-Hans":"简体中文",ja:"日本語",ko:"한국어",es:"Español","pt-BR":"Português",fr:"Français",de:"Deutsch",it:"Italiano",ru:"Русский",hi:"हिन्दी",ar:"العربية"};

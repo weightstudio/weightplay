@@ -5375,6 +5375,68 @@
       ]
     ]
   };
+  localizedGames.it = localizedGames.it || {};
+  localizedGames.it["animal-orb-fortress"] = {
+    title: "Fortezza delle Sfere Animali",
+    difficulty: "Difficile",
+    time: "5-8 minuti per percorso",
+    gameplay: "Roguelite di difesa a rimbalzi",
+    genre: ["Rimbalzi", "Strategia d'azione", "Roguelite", "Animali"],
+    skills: ["Logica", "Risoluzione dei problemi", "Concentrazione"],
+    guideKicker: "Guida originale WeightPlay",
+    guideTitleSuffix: "Guida al gioco",
+    noteTitle: "Informazioni sul giocatore e sui salvataggi",
+    hideScoreBands: true,
+    intro:
+      "Fortezza delle Sfere Animali è una campagna di difesa a rimbalzi con 30 percorsi, in cui bisogna analizzare l'arena prima di lanciare una sfera spirituale. Ogni percorso ha tre ondate continue. Il giocatore trascina dal custode leone per visualizzare una traiettoria con rimbalzo sulle pareti, rilascia una raffica e protegge il nucleo di cristallo mentre le bestie d'ombra avanzano. Sei regioni da cinque percorsi introducono armature, ancore protettive, nemici in fase, scissori, piloni a specchio mobili, assalitori con attacchi segnalati e sei boss regionali con meccaniche diverse. Tra un'ondata e l'altra, una benedizione della fortezza modifica l'incursione in corso; tra i percorsi, le Pietre Stellari migliorano quattro stanze permanenti della fortezza.",
+    story: [
+      "La Fortezza di Cristallo è stata costruita nel punto in cui si incontrano sei strade dei guardiani: il Bosco di Cristallo, le Officine Spinose, le Rovine Lunari, la Volta degli Specchi, il Bastione della Tempesta e il Cuore dell'Eclissi. Quando il nucleo della fortezza ha iniziato a trasmettere un impulso instabile, gli animali d'ombra hanno seguito quelle strade verso l'interno. Il custode leone non può lasciare il nucleo incustodito, quindi ogni difesa parte dalla camera di lancio e devia le sfere spirituali sulle pareti e sugli specchi circostanti.",
+      "Liberare un percorso significa rendere la sua strada abbastanza stabile da consentire alle squadre di riparazione di riaprirla. Il Golem delle Radici sorveglia il cancello del bosco, il Colosso dei Rovi occupa la forgia spinosa, la Matriarca dei Fuochi Fatui Lunari attraversa la strada lunare, il Reggente del Guscio Prismatico controlla la Volta degli Specchi, il Guardiano Corno di Tempesta segna le corsie della tempesta e l'Imperatore del Nucleo Vuoto sigilla la camera finale con tre fasi. Completare il percorso 30 ricollega tutte e sei le strade e impedisce all'impulso corrotto di attirare altri nemici verso la fortezza."
+    ],
+    systems: [
+      "Mira e rimbalza: trascina dal lanciatore per vedere la traiettoria iniziale, quindi rilascia. La sfera principale e una sfera dell'eco più debole viaggiano ad angoli correlati. I rimbalzi sulle pareti possono attraversare più corsie o raggiungere un bersaglio nascosto dietro un'altra formazione. Sfera Divisa può aggiungere un terzo proiettile, mentre Luce Perforante riduce il ritardo prima che una sfera possa colpire di nuovo lo stesso bersaglio.",
+      "Percorso a tre ondate: le ondate 1 e 2 presentano la regola nemica del percorso. L'ondata 3 usa una formazione d'élite progettata, tranne nei percorsi 5, 10, 15, 20, 25 e 30, che terminano con un boss regionale. Dopo aver eliminato un'ondata, la battaglia si ferma per la scelta di una benedizione; poi lo stesso percorso riprende con i PV del nucleo rimasti e i potenziamenti attuali.",
+      "Nemici speciali: le bestie corazzate assorbono un numero fisso di colpi prima di perdere PV. Le ancore spinose immobili applicano periodicamente uno scudo agli alleati vicini. I fuochi fatui lunari diventano visibilmente intangibili e non possono subire danni finché non ritornano solidi. Gli scissori di cristallo generano due frammenti più veloci quando vengono sconfitti. Gli assalitori segnano una corsia, scattano in avanti e poi lasciano una finestra di recupero.",
+      "Piloni a specchio: nei percorsi avanzati compaiono uno o due piloni esagonali solidi nell'arena. Le sfere rimbalzano davvero su di essi, creando traiettorie impossibili nelle prime regioni. Alcuni piloni si muovono in orizzontale, quindi un angolo prima sicuro può smettere di funzionare durante la stessa ondata.",
+      "Regole dei boss: il Golem delle Radici ricostruisce una guardia spezzabile; il Colosso dei Rovi evoca ancore e rinforzi corazzati a determinate soglie di salute; la Matriarca dei Fuochi Fatui Lunari alterna periodi visibili e intangibili; il Reggente del Guscio Prismatico subisce danni solo quando il segmento dorato dello scudo è aperto; il Guardiano Corno di Tempesta è vulnerabile dopo una carica segnalata; l'Imperatore del Nucleo Vuoto cambia fase due volte, aggiunge scorte, ricostruisce la protezione e attiva due piloni a specchio.",
+      "Corsa e crescita permanente: ogni ondata offre Sfera Maggiore, Sfera Divisa, Luce Perforante, Ricarica Rapida, Scudo del Nucleo o Magnete Esploratore in base al ciclo di scelta attuale. Le Pietre Stellari guadagnate al risultato migliorano i danni della Forgia delle Sfere, i PV iniziali dello Scudo del Nucleo, gli attacchi di supporto del Rifugio dei Compagni e le ricompense della Torre degli Esploratori. Un rilancio della benedizione al costo di tre Diamanti è facoltativo, viene confermato in due passaggi e non è mai necessario per sbloccare i percorsi."
+    ],
+    how: [
+      "Scegli un percorso sbloccato dalla mappa orizzontale della fortezza. Leggi il nome, l'etichetta della regola e l'avviso specifico prima di entrare.",
+      "Trascina dal custode leone verso l'angolo desiderato. Usa l'anteprima per capire se un tiro diretto, un rimbalzo su una parete, un rimbalzo attraverso l'arena o una riflessione su un pilone raggiunge il bersaglio prioritario.",
+      "Rilascia per lanciare la raffica di sfere spirituali. Osserva gli anelli dell'armatura, i contorni di fase, i segni di carica, la protezione delle ancore e i segnali dei boss prima del tiro successivo.",
+      "Dopo le ondate 1 e 2, scegli una benedizione. Un rilancio costa tre Diamanti e richiede una seconda conferma; scegliere una benedizione avvia subito l'ondata successiva.",
+      "Mantieni i PV del nucleo sopra lo zero fino alla fine dell'ondata 3. La vittoria salva il percorso successivo e le Pietre Stellari; la sconfitta conserva comunque le Pietre Stellari guadagnate e il miglior percorso sbloccato.",
+      "Torna alla mappa per spendere le Pietre Stellari nelle stanze della fortezza, rigiocare i percorsi completati o continuare con il percorso successivo dal risultato."
+    ],
+    strategyTips: [
+      "Non mirare sempre al nemico più vicino. Ancore, scissori e fuochi fatui nelle retrovie possono creare più pressione di un bersaglio frontale lento, quindi usa una traiettoria di rimbalzo per raggiungere la priorità corretta.",
+      "Un contorno di fase indica che il danno è bloccato. Prepara l'angolo successivo e rilascia quando il nemico torna solido, invece di sprecare la raffica mentre è intangibile.",
+      "I piloni mobili sono superfici utili, non solo ostacoli. Mira leggermente più avanti lungo il loro movimento, così la sfera incontra il pilone dove sarà e attraversa una corsia irraggiungibile con i soli rimbalzi sulle pareti.",
+      "Contro gli assalitori e il Guardiano Corno di Tempesta, osserva la corsia segnalata e attendi l'apertura dopo la carica. Ricarica Rapida è utile solo se tiri durante quella finestra.",
+      "Scudo del Nucleo e Ricarica Rapida stabilizzano un percorso sotto pressione; Sfera Maggiore e Luce Perforante accorciano le fasi pericolose dei boss. Magnete Esploratore aiuta la crescita a lungo termine, ma non ferma una violazione immediata.",
+      "Conserva il rilancio opzionale con Diamanti per una serie di benedizioni che non risponde davvero alla regola del percorso. La progressione normale e tutti e sei i boss restano accessibili senza spendere Diamanti."
+    ],
+    progression: [
+      "I percorsi 1-5 insegnano il tiro diretto, i rimbalzi su una parete, le corsie separate e l'ordine dei bersagli. Corona delle Radici è il primo punto di controllo: il Golem delle Radici ricostruisce la guardia dopo un intervallo vulnerabile, quindi bisogna spezzare la protezione e sfruttare l'apertura invece di sparare senza tempismo.",
+      "I percorsi 6-10 introducono armature che richiedono più colpi e ancore spinose immobili. I percorsi 11-15 sostituiscono il tiro continuo con il tempismo delle fasi e aggiungono il primo varco riflettente mobile. Il Colosso dei Rovi evoca protezioni durante lo scontro, mentre la Matriarca dei Fuochi Fatui Lunari alterna invulnerabilità e finestre di recupero.",
+      "I percorsi 16-20 aggiungono piloni a specchio fisici e scissori che, una volta sconfitti, generano frammenti più veloci. I percorsi 21-25 segnalano le corsie di carica e aggiungono il tempismo della tempesta. Il Reggente del Guscio Prismatico ruota una finestra vulnerabile; il Guardiano Corno di Tempesta deve completare la sua carica prima di poter essere colpito.",
+      "I percorsi 26-30 combinano armature, ancore, tempismo delle fasi, scissori, assalitori e piloni mobili in formazioni progettate. Il percorso 29 usa l'intero repertorio dei nemici comuni. Il percorso 30 aggiunge due cambi di fase dell'Imperatore del Nucleo Vuoto, quattro evocazioni di supporto, scudi ricostruiti e due piloni attivi, mettendo alla prova pianificazione del tiro, priorità dei bersagli, tempismo, potenziamenti e crescita permanente della fortezza."
+    ],
+    designNote:
+      "Il gioco usa tre ondate brevi perché ogni percorso deve sembrare un problema di mira ben definito, non una lunga prova di resistenza. Le pause tra le ondate conservano i danni al nucleo e la configurazione attuale, ma offrono una scelta di benedizione compatta prima della formazione successiva. Le prime regioni si affidano alle pareti per insegnare una geometria prevedibile; in seguito i piloni a specchio creano nuove superfici e invalidano gli angoli memorizzati. I nemici speciali comunicano la propria contromossa con anelli, segni di scudo, linee di corsia o illustrazioni distinte dei boss, senza richiedere un lungo pannello di regole durante la battaglia. Il trascinamento è il controllo principale su telefono; su tastiera, Sinistra e Destra regolano la stessa mira, mentre Spazio o Invio sparano. A differenza del posizionamento dei difensori in Guardiano delle Bestie o della pianificazione delle formazioni in Squadra Animale Automatica, Fortezza delle Sfere Animali rende la traiettoria del tiro la risorsa strategica principale.",
+    parent:
+      "Il browser salva su questo dispositivo il miglior percorso sbloccato, le Pietre Stellari, il numero di partite e i livelli delle quattro stanze della fortezza. Il gioco di base non richiede un account. La cancellazione dei dati del sito dal browser può rimuovere questi progressi. I rilanci delle benedizioni con Diamanti sono facoltativi, mostrano il saldo attuale e quello successivo e non sono necessari per completare i 30 percorsi. Punteggi e rapporti sulle abilità descrivono soltanto il gioco e non sono valutazioni formali delle capacità.",
+    faq: [
+      ["Qual è l'obiettivo di un percorso?", "Proteggere il nucleo di cristallo per tre ondate. Completare l'ondata 3 salva il percorso, assegna Pietre Stellari e sblocca il percorso successivo."],
+      ["Ogni percorso usa lo stesso boss?", "No. Solo ogni quinto percorso è un punto di controllo con un boss regionale. Gli altri terminano con formazioni d'élite progettate, e tutti e sei i boss hanno illustrazioni, segnali e contromosse diverse."],
+      ["Perché la mia sfera ha attraversato un nemico lunare?", "Un contorno di fase tratteggiato indica che il nemico è temporaneamente intangibile. Attendi che torni solido, quindi rilascia il tiro preparato."],
+      ["A cosa servono i piloni a specchio?", "Sono vere superfici riflettenti nell'arena. Nei percorsi avanzati si muovono, modificando la traiettoria di rimbalzo disponibile durante un'ondata."],
+      ["Servono Diamanti per completare la campagna?", "No. Dopo una conferma in due passaggi, i Diamanti permettono soltanto di rilanciare una volta le tre benedizioni proposte durante un'ondata."],
+      ["Cosa succede dopo un percorso fallito?", "La corsa termina, ma le Pietre Stellari guadagnate vengono salvate e il miglior percorso sbloccato viene conservato. Migliora una stanza, cambia il piano di tiro o riprova."],
+      ["Quali progressi vengono salvati?", "Il miglior percorso sbloccato, le Pietre Stellari, il numero di partite e i livelli di Forgia delle Sfere, Scudo del Nucleo, Rifugio dei Compagni e Torre degli Esploratori vengono salvati localmente in questo browser."]
+    ]
+  };
   localizedGames["zh-Hans"]["animal-orb-fortress"] = {
     "title": "动物星珠要塞",
     "difficulty": "困难",

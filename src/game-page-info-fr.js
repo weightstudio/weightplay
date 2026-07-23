@@ -108,12 +108,74 @@
         },
       ],
     },
+    "animal-orb-fortress": {
+      title: "Forteresse des Orbes Animales",
+      difficulty: "Difficile",
+      time: "5 à 8 minutes par parcours",
+      gameplay: "Roguelite de défense par ricochets",
+      genre: ["Ricochets", "Stratégie d'action", "Roguelite", "Animaux"],
+      skills: ["Logic", "Problem Solving", "Focus"],
+      guideKicker: "Guide de jeu original WeightPlay",
+      guideTitleSuffix: "Guide de jeu",
+      noteTitle: "Informations sur le joueur et la sauvegarde",
+      hideScoreBands: true,
+      intro: "Forteresse des Orbes Animales est une campagne de défense par ricochets composée de 30 parcours. Il faut lire l'arène avant de lancer un orbe spirituel. Chaque parcours comporte trois vagues continues. Le joueur fait glisser depuis le gardien lion pour prévisualiser une trajectoire sur les murs, libère une salve et protège le noyau de cristal pendant que les bêtes d'ombre avancent. Six régions de cinq parcours ajoutent armures, ancres protectrices, ennemis en phase, scindaires, pylônes miroirs mobiles, assaillants signalés et six boss régionaux aux mécaniques différentes. Entre les vagues, une bénédiction modifie l'assaut en cours ; entre les parcours, les Pierres Stellaires améliorent quatre salles permanentes.",
+      story: [
+        "La Forteresse de Cristal fut construite au croisement de six routes gardiennes : la Forêt de Cristal, les Ateliers d'Épines, les Ruines Lunaires, la Volte aux Miroirs, le Bastion de la Tempête et le Cœur de l'Éclipse. Quand le noyau a commencé à émettre une impulsion instable, les animaux d'ombre ont suivi ces routes vers l'intérieur. Le gardien lion ne peut laisser le noyau sans défense ; chaque combat part donc de la chambre de lancement et redirige les orbes spirituels sur les murs et les miroirs.",
+        "Libérer un parcours stabilise sa route pour les équipes de réparation. Le Golem des Racines garde la porte de la forêt, le Colosse des Ronces occupe la forge épineuse, la Matriarche des Feux Follets Lunaires traverse la route lunaire, le Régent de la Carapace Prismatique contrôle la Volte aux Miroirs, le Gardien Corne de Tempête marque les couloirs de l'orage et l'Empereur du Noyau du Vide scelle la chambre finale en trois phases. Terminer le parcours 30 reconnecte les six routes et empêche l'impulsion corrompue d'attirer de nouveaux ennemis."
+      ],
+      systems: [
+        "Visée et ricochets : faites glisser depuis le lanceur pour voir la trajectoire initiale, puis relâchez. L'orbe principal et un orbe écho plus faible voyagent selon des angles liés. Les rebonds peuvent traverser plusieurs couloirs ou atteindre une cible cachée. Orbe Scindé ajoute un troisième projectile ; Éclat Perforant réduit le délai avant qu'un orbe puisse toucher de nouveau la même cible.",
+        "Parcours en trois vagues : les vagues 1 et 2 présentent la règle ennemie du parcours. La vague 3 utilise une formation d'élite conçue, sauf aux parcours 5, 10, 15, 20, 25 et 30, qui se terminent par un boss régional. Après une vague, le combat s'arrête pour choisir une bénédiction, puis reprend avec les PV restants du noyau et les améliorations actuelles.",
+        "Ennemis spéciaux : les bêtes blindées absorbent un nombre fixe de coups avant de perdre des PV. Les ancres épineuses immobiles protègent périodiquement les alliés proches. Les feux follets lunaires deviennent intangibles jusqu'à leur retour. Les scindaires de cristal créent deux fragments plus rapides à leur défaite. Les assaillants marquent un couloir, chargent, puis laissent une fenêtre de récupération.",
+        "Pylônes miroirs : les parcours avancés placent un ou deux pylônes hexagonaux solides dans l'arène. Les orbes y ricochent réellement, créant des trajectoires absentes des premières régions. Certains pylônes se déplacent horizontalement ; un angle auparavant sûr peut donc cesser de fonctionner pendant la même vague.",
+        "Règles des boss : le Golem des Racines reconstruit une garde brisable ; le Colosse des Ronces invoque ancres et renforts blindés ; la Matriarche alterne périodes visibles et intangibles ; le Régent de la Carapace Prismatique ne subit des dégâts que lorsque le segment doré est ouvert ; le Gardien Corne de Tempête devient vulnérable après sa charge ; l'Empereur du Noyau du Vide change deux fois de phase, invoque une escorte, reconstruit sa protection et active deux pylônes.",
+        "Croissance de l'assaut et croissance permanente : chaque vague propose Orbe Majeur, Orbe Scindé, Éclat Perforant, Recharge Rapide, Bouclier du Noyau ou Aimant Éclaireur. Les Pierres Stellaires obtenues améliorent les dégâts de la Forge des Orbes, les PV initiaux du Bouclier du Noyau, les frappes du Refuge des Compagnons et les récompenses de la Tour des Éclaireurs. Renouveler les bénédictions pour trois Diamants est facultatif, demande deux confirmations et n'est jamais nécessaire pour débloquer les parcours."
+      ],
+      how: [
+        "Choisissez un parcours débloqué sur la carte horizontale. Lisez son nom, sa règle et son avertissement avant d'entrer.",
+        "Faites glisser depuis le gardien lion vers l'angle souhaité. Utilisez l'aperçu pour choisir un tir direct, un ricochet mural, une traversée de l'arène ou une réflexion sur un pylône.",
+        "Relâchez pour lancer la salve. Observez les anneaux d'armure, contours de phase, marques de charge, protections des ancres et signaux des boss.",
+        "Après les vagues 1 et 2, choisissez une bénédiction. Un renouvellement coûte trois Diamants et exige une seconde confirmation.",
+        "Gardez les PV du noyau au-dessus de zéro jusqu'à la fin de la vague 3. La victoire enregistre le parcours suivant et les Pierres Stellaires ; l'échec conserve les Pierres gagnées et le meilleur parcours débloqué.",
+        "Revenez à la carte pour améliorer les salles, rejouer un parcours terminé ou continuer vers le parcours suivant depuis le résultat."
+      ],
+      strategyTips: [
+        "Ne visez pas toujours l'ennemi le plus proche. Ancres, scindaires et feux follets en retrait peuvent créer davantage de pression ; utilisez un ricochet pour atteindre la bonne priorité.",
+        "Un contour de phase indique que les dégâts sont bloqués. Préparez l'angle suivant et tirez quand l'ennemi redevient solide.",
+        "Les pylônes mobiles sont des surfaces utiles. Visez légèrement devant leur déplacement pour atteindre un couloir inaccessible avec les seuls murs.",
+        "Contre les assaillants et le Gardien Corne de Tempête, lisez le couloir marqué et attendez la récupération après la charge.",
+        "Bouclier du Noyau et Recharge Rapide stabilisent un parcours sous pression ; Orbe Majeur et Éclat Perforant raccourcissent les phases dangereuses. Aimant Éclaireur aide la progression à long terme, mais n'arrête pas une brèche immédiate.",
+        "Conservez le renouvellement facultatif pour une série de bénédictions vraiment inadaptée à la règle du parcours. Tous les parcours et les six boss restent accessibles sans dépenser de Diamants."
+      ],
+      progression: [
+        "Les parcours 1 à 5 enseignent le tir direct, les ricochets sur un mur, les couloirs séparés et l'ordre des cibles. Couronne des Racines est le premier contrôle : le Golem reconstruit sa garde après une fenêtre vulnérable, il faut donc briser la protection puis profiter de l'ouverture.",
+        "Les parcours 6 à 10 introduisent l'armure à plusieurs coups et les ancres immobiles. Les parcours 11 à 15 ajoutent le rythme des phases puis la première porte réfléchissante mobile. Le Colosse des Ronces invoque des protections, tandis que la Matriarche alterne invulnérabilité et récupération.",
+        "Les parcours 16 à 20 ajoutent des pylônes physiques et des scindaires qui créent des fragments plus rapides. Les parcours 21 à 25 signalent les charges et ajoutent le rythme de la tempête. Le Régent fait tourner sa fenêtre vulnérable ; le Gardien Corne de Tempête doit terminer sa ruée avant de pouvoir être blessé.",
+        "Les parcours 26 à 30 combinent armures, ancres, phases, scindaires, assaillants et pylônes mobiles. Le parcours 29 emploie tout le répertoire des ennemis ordinaires. Le parcours 30 ajoute deux changements de phase de l'Empereur, quatre invocations de soutien, des boucliers reconstruits et deux pylônes actifs."
+      ],
+      designNote: "Trois vagues courtes font de chaque parcours un problème de visée précis plutôt qu'une longue épreuve d'endurance. Les pauses conservent les dégâts du noyau et la configuration actuelle, tout en offrant une décision compacte. Les premières régions enseignent une géométrie prévisible avec les murs ; les pylônes suivants créent de nouvelles surfaces. Anneaux, boucliers, lignes de couloir et illustrations distinctes communiquent les contremesures. Le glissement est le contrôle principal sur téléphone ; au clavier, Gauche et Droite règlent la visée, tandis qu'Espace ou Entrée tire.",
+      parent: "Le navigateur enregistre sur cet appareil le meilleur parcours débloqué, les Pierres Stellaires, le nombre de parties et les niveaux des quatre salles. Aucun compte n'est requis. Effacer les données du site peut supprimer cette progression. Les renouvellements avec Diamants sont facultatifs et ne sont pas nécessaires pour les 30 parcours. Les scores et bilans décrivent uniquement la partie et ne constituent pas une évaluation formelle.",
+      faq: [
+        ["Quel est l'objectif d'un parcours ?", "Protéger le noyau pendant trois vagues. Terminer la vague 3 enregistre le parcours, accorde des Pierres Stellaires et débloque le suivant."],
+        ["Chaque parcours utilise-t-il le même boss ?", "Non. Chaque cinquième parcours est un contrôle avec un boss régional différent. Les autres se terminent par des formations d'élite conçues."],
+        ["Pourquoi mon orbe a-t-il traversé un ennemi lunaire ?", "Un contour en pointillés indique une phase temporairement intangible. Attendez son retour à l'état solide."],
+        ["À quoi servent les pylônes miroirs ?", "Ce sont de véritables surfaces réfléchissantes dans l'arène. Les pylônes avancés se déplacent et modifient les trajectoires disponibles."],
+        ["Faut-il des Diamants pour terminer la campagne ?", "Non. Ils servent uniquement à renouveler une fois les trois bénédictions d'une vague après confirmation."],
+        ["Que se passe-t-il après un échec ?", "L'assaut se termine, mais les Pierres Stellaires gagnées et le meilleur parcours débloqué sont conservés."],
+        ["Quelle progression est enregistrée ?", "Le meilleur parcours, les Pierres Stellaires, le nombre de parties et les niveaux de la Forge des Orbes, du Bouclier du Noyau, du Refuge des Compagnons et de la Tour des Éclaireurs sont enregistrés dans ce navigateur."]
+      ],
+    },
   };
 
   const gameplayProfiles = {
     "bubble-bakery": {
       gameplay: "Puzzle de groupes de bulles",
       genre: ["Puzzle", "Logique", "Animaux"],
+    },
+    "animal-orb-fortress": {
+      gameplay: "Roguelite de défense par ricochets",
+      genre: ["Ricochets", "Stratégie d'action", "Roguelite", "Animaux"],
     },
   };
 

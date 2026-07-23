@@ -1590,6 +1590,13 @@
     resumeTrainingIntent();
   }
 
+  function resumeAppLifecycleFromTrustedInput(event) {
+    if (!event.isTrusted || document.hidden || !lifecycleSuspended) return;
+    lifecycleSuspended = false;
+    resumeTurnTransition();
+    resumeTrainingIntent();
+  }
+
   function renderTrainingChoice() {
     const balance = Number(wallet().diamonds) || 0;
     nodes.trainingBtn.disabled = profile.training || balance < trainingCost;
@@ -2970,6 +2977,8 @@
   }
 
   function bind() {
+    document.addEventListener("pointerdown", resumeAppLifecycleFromTrustedInput, true);
+    document.addEventListener("keydown", resumeAppLifecycleFromTrustedInput, true);
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) suspendAppLifecycle();
       else resumeAppLifecycle();
