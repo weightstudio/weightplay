@@ -1,7 +1,8 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && new URLSearchParams(location.search).get("trial") !== "1") location.replace("/en/games/animal-skyport-dispatch/" + location.search + location.hash);</script>
+    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol)) location.replace("/en/games/animal-skyport-dispatch/" + location.search + location.hash);</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Animal Skyport Dispatch","url":"https://weightplay.com/en/games/animal-skyport-dispatch/","image":"https://weightplay.com/assets/animal-skyport-dispatch-cover.webp","genre":["Puzzle","Strategy","Animal"],"playMode":"SinglePlayer","applicationCategory":"Game","operatingSystem":"Any","inLanguage":"en","isAccessibleForFree":true}</script>
     <link rel="canonical" href="https://weightplay.com/en/games/animal-skyport-dispatch/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-skyport-dispatch/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-skyport-dispatch/" />
@@ -14,11 +15,14 @@
     <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-skyport-dispatch/" />
     <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-skyport-dispatch/" />
     <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-skyport-dispatch/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-skyport-dispatch/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-skyport-dispatch/" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="robots" content="noindex,nofollow" />
-    <title>Animal Skyport Dispatch - Internal Trial</title>
+    <meta name="robots" content="index,follow" />
+    <meta name="weightplay-audience" content="general" />
+    <title>Animal Skyport Dispatch | WeightPlay</title>
     <link rel="stylesheet" href="../../src/game-page-info.css" />
     <link rel="stylesheet" href="../../src/loading-screen.css" />
     <link rel="stylesheet" href="../../src/play-viewport.css" />
@@ -34,14 +38,14 @@
         <a class="home-link icon-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <h1 data-i18n="title">Animal Skyport Dispatch</h1>
         <button id="soundToggle" class="main-sound-toggle" type="button" data-sound-toggle aria-pressed="false" aria-label="Mute sound" title="Mute sound">🔊</button>
-        <label class="locale"><span data-i18n="language">Language</span><select id="localeSelect"><option value="en">English</option><option value="zh-Hant">繁體中文</option></select></label>
+        <label class="locale"><span data-i18n="language">Language</span><select id="localeSelect"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
       </header>
       <section id="mainScreen" class="main-screen">
         <img class="cover" src="../../assets/animal-skyport-dispatch-cover.webp" alt="Skyport dispatch animals" />
         <h2 data-i18n="headline">Keep Cloudline Skyport moving.</h2>
         <p data-i18n="intro">Draw safe routes, match airships to docks, and protect the shift from congestion.</p>
         <button id="startBtn" class="primary" data-i18n="start">Start Game</button>
-        <section class="guide"><h2 data-i18n="guideTitle">How to dispatch</h2><p data-i18n="guideBody">Choose a shift, read each flight request, then guide the airship to the highlighted matching dock before congestion builds.</p></section>
+        <section class="guide game-page-info"><h2 data-i18n="guideTitle">How to dispatch</h2><p data-i18n="guideBody">Choose a shift, read each flight request, then guide the airship to the highlighted matching dock before congestion builds.</p></section>
       </section>
       <section id="stageScreen" class="stage-screen hidden">
         <button id="stageBack" class="return" data-wp-return="stage" aria-label="Back">&larr;</button>

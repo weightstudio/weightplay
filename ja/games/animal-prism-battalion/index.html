@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <base href="/games/animal-prism-battalion/" />
+  <link rel="canonical" href="https://weightplay.com/ja/games/animal-prism-battalion/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-prism-battalion/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-prism-battalion/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-prism-battalion/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-prism-battalion/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-prism-battalion/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-prism-battalion/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-prism-battalion/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-prism-battalion/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-prism-battalion/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-prism-battalion/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-prism-battalion/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-prism-battalion/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-prism-battalion/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-prism-battalion/" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "アニマル・プリズム大隊",
+  "url": "https://weightplay.com/ja/games/animal-prism-battalion/",
+  "image": "https://weightplay.com/assets/animal-prism-battalion/cover.webp",
+  "genre": [
+    "動物ゲーム",
+    "アーケード",
+    "戦略",
+    "注目の"
+  ],
+  "playMode": "SinglePlayer",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "inLanguage": "ja",
+  "isAccessibleForFree": true,
+  "description": "フィアの精霊流を倍率ゲートへ導き、大隊を増やして進化する30の影要塞を破壊しよう。"
+}
+    </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="index,follow" />
+  <meta name="weightplay-audience" content="general">
+  <meta name="theme-color" content="#07152b">
+  <title>アニマル・プリズム大隊 | WeightPlay</title>
+  <meta name="description" content="フィアの精霊流を倍率ゲートへ導き、大隊を増やして進化する30の影要塞を破壊しよう。" />
+  <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
+  <link rel="stylesheet" href="style.css?v=20260721-prism1">
+  <meta property="og:title" content="アニマル・プリズム大隊 | WeightPlay" />
+    <meta property="og:description" content="フィアの精霊流を倍率ゲートへ導き、大隊を増やして進化する30の影要塞を破壊しよう。" />
+    <meta property="og:url" content="https://weightplay.com/ja/games/animal-prism-battalion/" />
+    <meta name="twitter:title" content="アニマル・プリズム大隊 | WeightPlay" />
+    <meta name="twitter:description" content="フィアの精霊流を倍率ゲートへ導き、大隊を増やして進化する30の影要塞を破壊しよう。" />
+  </head>
+<body data-screen="loading" data-game-id="animal-prism-battalion" data-sound-toggle="off">
+  <section id="loading" class="loading-panel" aria-live="polite">
+    <div class="loading-card"><strong data-t="title">Animal Prism Battalion</strong><span data-t="loading">Charging the prism launcher…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
+  </section>
+
+  <div id="mainGroup" class="main-group" hidden>
+    <main class="main-screen">
+      <header class="main-header">
+        <a id="lobbyReturn" class="lobby-return" href="/en/" aria-label="Back to WeightPlay" data-wp-return="main" data-ta="backLobby"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
+        <strong data-t="title">Animal Prism Battalion</strong>
+        <label class="locale-control"><span class="sr-only" data-t="language">Language</span><select id="locale" aria-label="Language" data-ta="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
+        <button id="soundToggle" class="main-sound" type="button" aria-label="Disable sound" title="Sound">🔊</button>
+      </header>
+      <section class="main-hero">
+        <img class="poster" src="../../assets/animal-prism-battalion/cover.webp" alt="アニマル・プリズム大隊のゲーム画像" data-ta="lanePosterAlt">
+        <div class="main-copy"><small data-t="laneKicker">THREE-LANE BATTALION STRATEGY</small><h1 data-t="title">アニマル・プリズム大隊</h1><p data-t="laneGuideIntro">Captain Fia switches between three crystal roads while the battalion fires automatically. Read what is coming, weaken the dangerous target, then choose whether to collect its power or avoid it.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">Start Game</button></div>
+      </section>
+    </main>
+    <section class="game-page-info game-page-info-static" aria-label="アニマル・プリズム大隊 のゲーム情報">
+    
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>アニマル・プリズム大隊</h2><p>フィアの精霊流を倍率ゲートへ導き、大隊を増やして進化する30の影要塞を破壊しよう。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>倍率ゲート・アーケード戦略</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>動物ゲーム · アーケード · 戦略 · 注目の</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      
+      
+      
+      
+      
+      
+      
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>進行状況は保存されますか?</dt><dd>はい、このブラウザでのみ可能です。</dd></div></dl></div>
+      
+    </div>
+  </section>
+  </div>
+
+  <section id="stage" class="active-screen" hidden>
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-prism-battalion/arena.webp" style="--wp-stage-art:url('../../assets/animal-prism-battalion/arena.webp')">
+      <header class="stage-header"><button id="stageBack" type="button" aria-label="Back" data-wp-return="stage" data-ta="back">←</button><div><strong data-t="chooseMission">Choose an assault</strong><span id="stageProgress"></span></div><img src="../../assets/weightplay-character-spark-paw-fox-cutout.webp" alt=""></header>
+      <nav class="stage-tabs" aria-label="Battalion preparation" data-ta="stageTabs"><button class="active" data-tab="missions" data-t="missions">Missions</button><button data-tab="lab" data-t="lab">Prism Lab</button></nav>
+      <section id="missionsTab" class="tab-panel missions-tab"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Mission selector" data-ta="missionRail"></div><p id="stageHint" data-t="stageHint">Drag the rail and choose an unlocked assault.</p></section>
+      <section id="labTab" class="tab-panel lab-tab" hidden><div class="lab-intro"><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt=""><div><h2 data-t="labTitle">Prism Lab</h2><p data-t="labIntro">Spend earned shards on permanent launcher upgrades.</p><strong id="shardCount"></strong></div></div><div id="upgrades" class="upgrades"></div><p id="labFeedback" aria-live="polite"></p></section>
+    </div>
+  </section>
+
+  <section id="battle" class="active-screen" hidden>
+    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <div id="battleLive" class="battle-live">
+        <header class="battle-header"><button id="battleBack" type="button" aria-label="Back" data-wp-return="battle" data-ta="back">←</button><div class="mission-block"><small id="missionLabel"></small><strong id="fortressValue">100%</strong></div><div class="battle-status"><span><b data-t="core">Core</b><strong id="coreValue">♥♥♥</strong></span><span><b data-t="time">Time</b><strong id="timeValue">60</strong></span></div><button id="battleHelp" class="help-action" type="button" aria-label="How to play" data-ta="help">?</button></header>
+        <p id="objective" class="objective-row"></p>
+        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="960" height="640" aria-label="Prism battalion battlefield" data-ta="arenaLabel"></canvas><div class="aim-cue" aria-hidden="true">↔</div><button id="overdrive" type="button"><span data-t="overdrive">Overdrive</span><b id="overdriveValue">0%</b></button></div>
+        <p id="feedback" class="feedback" aria-live="polite"></p>
+      </div>
+      <section id="leave" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">Leave this assault?</h2><p data-t="leaveText">Continue preserves this exact battle. Return to Stage ends the attempt.</p><div class="modal-actions"><button id="continueBattle" class="primary" data-t="continue">Continue</button><button id="leaveStage" data-t="returnStage">Return to Stage</button></div></div></section>
+      <section id="tutorial" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card"><h2 id="tutorialTitle" data-t="laneTutorialTitle">Command three crystal lanes</h2><ol><li data-t="laneTutorial1">Tap a lane or press Left and Right to switch. Your battalion fires automatically.</li><li data-t="laneTutorial2">Power cores store every hit. Break blue shields before collecting their attack reward.</li><li data-t="laneTutorial3">Bombs always deal their remaining value. A monster in your lane deals its remaining health; an avoided monster still deals 1.</li></ol><div class="modal-actions"><button id="tutorialDone" class="primary" data-t="tutorialDone">Begin assault</button></div></div></section>
+      <section id="result" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-spark-paw-fox-cutout.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div id="resultStats" class="result-stats"></div><div class="modal-actions"><button id="retry" data-t="retry">Retry</button><button id="resultStage" data-t="returnStage">Return to Stage</button><button id="nextMission" class="primary" data-t="nextMission">Next Mission</button></div></div></section>
+    </div><div class="ad-reserve" aria-hidden="true"></div>
+  </section>
+
+  <script src="../../src/site-config.js"></script><script src="/src/i18n-ja.js?v=20260719-ja1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js"></script><script src="../../src/edge-guard.js"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="locales.js?v=20260721-prism2"></script><script src="game.js?v=20260721-prism2"></script><script src="../../src/stage-selector-standard.js?v=20260721-landscape-envelope-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260721-landscape-envelope-1" data-wp-battle-standard></script>
+  <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="アニマル・プリズム大隊";document.title="アニマル・プリズム大隊 | WeightPlay";},{once:true});</script>
+</body>
+</html>

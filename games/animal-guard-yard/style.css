@@ -2311,7 +2311,7 @@ body.guard-yard-stage .stage-grid { padding-inline: calc((100% - 264px) / 2); to
   }
 
   .topbar {
-    grid-template-columns: 42px 1fr;
+    grid-template-columns: 58px minmax(0, 1fr);
   }
 
   .language-picker {

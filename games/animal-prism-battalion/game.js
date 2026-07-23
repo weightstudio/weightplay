@@ -47,7 +47,7 @@
     $("lobbyReturn").href=`/${routeSegments[locale]}/`;
     staticText.forEach((node)=>{node.textContent=t(node.dataset.t)});
     assistiveText.forEach((node)=>node.setAttribute("aria-label",t(node.dataset.ta)));
-    document.title=`${t("title")} | WeightPlay Internal Trial`;
+    document.title=`${t("title")} | WeightPlay`;
     renderMain();renderStage();renderLab();updateSoundToggle();if(run)updateHud(true);
     window.dispatchEvent(new CustomEvent("wonder:localechange",{detail:{locale}}));
   }
@@ -94,7 +94,7 @@
   function buyUpgrade(id){const level=save.upgrades[id];if(level>=5)return;const cost=upgradeCost(level),name=t(upgradeData[id].name);if(save.shards<cost){$("labFeedback").textContent=t("needShardsDetail",{name,cost,balance:save.shards});return}save.shards-=cost;save.upgrades[id]+=1;persist();renderLab(id);$("labFeedback").textContent=t("upgradePurchasedDetail",{name,level:save.upgrades[id],balance:save.shards});window.WonderSound?.play?.("success")}
   document.querySelectorAll("[data-tab]").forEach((button)=>button.addEventListener("click",()=>{document.querySelectorAll("[data-tab]").forEach((item)=>{const active=item===button;item.classList.toggle("active",active);item.setAttribute("aria-selected",active?"true":"false")});$("missionsTab").hidden=button.dataset.tab!=="missions";$("labTab").hidden=button.dataset.tab!=="lab";if(button.dataset.tab==="lab"){renderLab();$("labFeedback").textContent=""}}));
   $("start").addEventListener("click",()=>showScreen("stage"));$("stageBack").addEventListener("click",()=>showScreen("main"));
-  $("locale").addEventListener("change",(event)=>{locale=canonicalLocale(event.target.value);storage.set("wonderLocale",locale);window.WonderI18n?.setLocale?.(locale);if(locale!=="en"&&window.WeightPlayGameRuntimeLocalizer?.locale!==locale){location.reload();return}applyLocale()});
+  $("locale").addEventListener("change",(event)=>{locale=canonicalLocale(event.target.value);storage.set("wonderLocale",locale);if(window.WonderI18n?.setLocale){window.WonderI18n.setLocale(locale);return}applyLocale()});
   $("soundToggle").addEventListener("keydown",(event)=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
   $("soundToggle").addEventListener("click",()=>{const sound=window.WonderSound;if(!sound)return;sound.unlock();sound.setMuted(!sound.isMuted());updateSoundToggle();if(!sound.isMuted())sound.play("click")});
   window.addEventListener("keyup",(event)=>{if(event.key===labPurchaseKeyboardKey)labPurchaseKeyboardKey=null});
@@ -111,9 +111,11 @@
       for(let lane=0;lane<3;lane+=1){
         let kind=rewardWave&&lane===rewardLane?(stage.shields&&powerTier%2===0?"shield":"power"):(stage.counter&&random()<.14?"bomb":"enemy");
         const finalBoss=stage.boss&&row===stage.layout.rows-1&&lane===1;if(stage.boss&&row===stage.layout.rows-1)kind="enemy";
-        const escalation=1+powerTier*.52+stage.chapter*.34+row*.018,value=Math.round((kind==="power"||kind==="shield"?8+powerTier*5+stage.chapter*3:(8+random()*7)*escalation)*(finalBoss?4.8:1));
+        const escalation=1+powerTier*.52+stage.chapter*.34+row*.018,value=Math.round((kind==="power"||kind==="shield"?8+powerTier*5+stage.chapter*3:(8+random()*7)*escalation)*(finalBoss?10:1));
         entries.push({id:`${row}-${lane}`,row,lane,x:laneCenters[lane],y:-.08-row*(.12+(stage.n%3)*.004),kind,value,hp:value,maxHp:value,stored:0,reward:Math.max(4,Math.round((6+powerTier*5+stage.chapter*2)*(kind==="shield"?1.15:1))),shield:kind==="shield"?value:0,maxShield:kind==="shield"?value:0,powerTier,champion:kind==="enemy"&&(finalBoss||(stage.champion&&row%6===5&&lane===(row+1)%3)),boss:finalBoss,resolved:false});
       }
+      const boss=entries.find((entry)=>entry.boss);
+      if(boss){const strongestEscort=Math.max(...entries.filter((entry)=>!entry.boss).map((entry)=>entry.maxHp));boss.value=Math.max(boss.value,strongestEscort*10);boss.hp=boss.maxHp=boss.value}
       rows.push(entries);
     }
     return rows;
@@ -133,11 +135,11 @@
   function addBurst(x,y,color,count=8){for(let i=0;i<count;i+=1){const a=Math.PI*2*i/count+Math.random()*.3,s=.025+Math.random()*.045;run.particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,color,life:.65+Math.random()*.35})}}
   function updatePeak(){if(run)run.peak=Math.max(run.peak,Math.round(run.attack))}
   function fireInterval(){if(run.overdrive>0)return.075;if(run.weapon==="rapid")return Math.max(.095,.155-save.upgrades.rate*.01);return Math.max(.16,.27-save.upgrades.rate*.022)}
-  function launch(){const interval=fireInterval(),shots=run.weapon==="double"?2:1,damageFactor=shots===2?.62:run.weapon==="rapid"?.72:1;for(let shot=0;shot<shots;shot+=1)run.units.push({x:laneCenters[run.lane]+(shots===2?(shot?1:-1)*.018:0),lane:run.lane,y:.83,damage:run.attack*damageFactor*(run.overdrive>0?1.75:1),vy:run.weapon==="rapid"?-.84:-.72,hue:run.overdrive>0?48:188,sprite:(run.units.length+run.resolved+shot)%3});run.fireClock-=interval}
+  function launch(){const interval=fireInterval(),shots=run.weapon==="double"?2:1,damageFactor=shots===2?.62:run.weapon==="rapid"?.72:1;for(let shot=0;shot<shots;shot+=1)run.units.push({x:laneCenters[run.lane]+(shots===2?(shot?1:-1)*.018:0),lane:run.lane,y:.83,damage:run.attack*damageFactor*(run.overdrive>0?1.75:1),vy:run.weapon==="rapid"?-.84:-.72,hue:run.overdrive>0?48:188,sprite:(run.units.length+run.resolved+shot)%3,passed:[]});run.fireClock-=interval}
   function hitEncounter(unit,entry){
-    const damage=Math.max(1,unit.damage);unit.dead=true;
+    const damage=Math.max(1,unit.damage),nonBlocking=entry.kind==="power"||(entry.kind==="shield"&&entry.collecting);if(nonBlocking){unit.passed??=[];unit.passed.push(entry.id)}else unit.dead=true;
     if(entry.kind==="power"){const gained=Math.min(entry.value-entry.stored,Math.max(1,Math.round(damage*.45)));entry.stored+=gained;run.charge=Math.min(100,run.charge+Math.max(1,gained*.7));addText(entry.x,entry.y-.035,`+${entry.stored}`,"#72f4d8");addBurst(entry.x,entry.y,"#5ff4db",7)}
-    else if(entry.kind==="shield"){entry.shield=Math.max(0,entry.shield-damage);if(entry.shield===0&&!entry.broken){entry.broken=true;entry.collecting=true;run.charge=Math.min(100,run.charge+18);$("feedback").textContent=t("shieldBroken",{count:entry.reward});addBurst(entry.x,entry.y,"#70eaff",16)}}
+    else if(entry.kind==="shield"&&!entry.collecting){entry.shield=Math.max(0,entry.shield-damage);if(entry.shield===0&&!entry.broken){entry.broken=true;entry.collecting=true;run.charge=Math.min(100,run.charge+18);$("feedback").textContent=t("shieldBroken",{count:entry.reward});addBurst(entry.x,entry.y,"#70eaff",16)}}
     else{entry.hp=Math.max(0,entry.hp-damage);addBurst(entry.x,entry.y,entry.kind==="bomb"?"#ffb04d":"#ff6a85",entry.boss?24:8);if(entry.hp===0){entry.resolved=true;run.resolved+=1;if(entry.boss){run.bossDefeated=true;$("feedback").textContent=t("bossWave")}run.charge=Math.min(100,run.charge+(entry.kind==="bomb"?20:12));if(!entry.boss)$("feedback").textContent=t(entry.kind==="bomb"?"bombDefused":"gateBoost",{count:Math.round(entry.maxHp)});addBurst(entry.x,entry.y,"#ffe273",entry.boss?42:18)}}
     if(run.charge>=100)$("feedback").textContent=t("overdriveReady")
   }
@@ -156,7 +158,7 @@
     for(const entry of run.encounters)if(!entry.resolved){if(entry.collecting){entry.y+=(1.15+(.84-entry.y)*1.8)*dt;entry.x+=(run.aimX-entry.x)*Math.min(1,dt*8)}else{const advanceFactor=entry.boss&&entry.y>=.1?.18:1;entry.y+=run.stage.layout.speed*dt*advanceFactor;entry.x=laneCenters[entry.lane]}}
     for(const unit of run.units){
       unit.y+=unit.vy*dt;let hit=null,best=.055;
-      for(const entry of run.encounters)if(!entry.resolved&&entry.lane===unit.lane&&entry.y<unit.y&&entry.y>.04&&unit.y-entry.y<best){best=unit.y-entry.y;hit=entry}
+      for(const entry of run.encounters)if(!entry.resolved&&entry.lane===unit.lane&&!unit.passed?.includes(entry.id)&&entry.y<unit.y&&entry.y>.04&&unit.y-entry.y<best){best=unit.y-entry.y;hit=entry}
       if(hit)hitEncounter(unit,hit);else if(unit.y<=.035)unit.dead=true
     }
     for(const entry of run.encounters)if(!entry.resolved&&entry.y>=.835)resolveEncounter(entry);
@@ -215,7 +217,7 @@
   window.__animalPrismBattalionTest={
     stages,startBattle,setLane,showMain(){run=null;showScreen("main")},setAim(value){if(run){const x=Math.max(0,Math.min(1,Number(value))),lane=laneCenters.reduce((best,center,index)=>Math.abs(center-x)<Math.abs(laneCenters[best]-x)?index:best,0);setLane(lane)}},activateOverdrive,
     advance(seconds,step=1/60){const iterations=Math.ceil(seconds/step);for(let i=0;i<iterations&&run&&!run.finished;i+=1)update(step);draw()},
-    configureEncounter(id,patch){if(!run)return null;const entry=run.encounters.find(item=>item.id===id)||run.encounters[Math.max(0,Math.trunc(Number(id))||0)];if(entry)Object.assign(entry,patch);return entry?{...entry}:null},setTime(seconds){if(run)run.time=Number(seconds)},clearEnemies(){if(run)for(const entry of run.encounters)if(entry.kind==="enemy")entry.resolved=true},finish,
+    configureEncounter(id,patch){if(!run)return null;const entry=run.encounters.find(item=>item.id===id)||run.encounters[Math.max(0,Math.trunc(Number(id))||0)];if(entry)Object.assign(entry,patch);return entry?{...entry}:null},injectUnits(units){if(run)run.units=units.map((unit,index)=>({x:laneCenters[unit.lane??run.lane],lane:unit.lane??run.lane,y:.83,damage:run.attack,vy:-.72,hue:188,sprite:index%3,passed:[],...unit}))},setTime(seconds){if(run)run.time=Number(seconds)},clearEnemies(){if(run)for(const entry of run.encounters)if(entry.kind==="enemy")entry.resolved=true},finish,
     grantProgress(unlocked=3,shards=30){save.unlocked=Math.max(1,Math.min(30,unlocked));save.shards=Math.max(save.shards,shards);persist();renderStage();renderLab()},setUpgrades(rate=0,power=0,armor=0){save.upgrades=normalizeSave({upgrades:{rate,power,armor}}).upgrades;persist();renderLab()},resetSave(){save=defaultSave();persist();applyLocale()},
     snapshot(){return{locale,screen:currentScreen,save:JSON.parse(JSON.stringify(save)),run:run&&{stageIndex:run.stageIndex,time:run.time,core:run.core,maxCore:run.maxCore,wave:run.wave,totalWaves:run.totalWaves,bossDefeated:run.bossDefeated,lane:run.lane,aimX:run.aimX,attack:run.attack,weapon:run.weapon,charge:run.charge,overdrive:run.overdrive,peak:run.peak,resolved:run.resolved,units:run.units.map((unit)=>({...unit})),enemies:run.enemies.map((enemy)=>({...enemy})),encounters:run.encounters.map((entry)=>({...entry})),gates:run.gates.map((entry)=>({...entry})),paused:run.paused,finished:run.finished,won:run.won}}}
   };

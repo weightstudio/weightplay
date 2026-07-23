@@ -2167,13 +2167,14 @@
       window.WonderSound?.play("click");
     }
 
+    const playerDefeated = state.playerHp <= 0;
+    const enemyDefeated = state.enemyHp <= 0;
+    if (playerDefeated || enemyDefeated) state.isPlayerTurn = false;
     renderStats();
     renderHand();
-    if (state.playerHp <= 0) {
-      state.isPlayerTurn = false;
+    if (playerDefeated) {
       scheduleBattleTransition(() => endGame(false), 500);
-    } else if (state.enemyHp <= 0) {
-      state.isPlayerTurn = false;
+    } else if (enemyDefeated) {
       window.WonderSound?.play("enemyDown");
       scheduleBattleTransition(handleBattleWin, 500);
     } else {
@@ -2960,6 +2961,18 @@
       setHandAccessibilityState: ({ energy = state.energy, isPlayerTurn = state.isPlayerTurn, hand = state.hand } = {}) => {
         state.energy = Math.max(0, Number(energy) || 0);
         state.isPlayerTurn = Boolean(isPlayerTurn);
+        state.hand = Array.isArray(hand) ? hand.filter((cardId) => cardDb[cardId]) : state.hand;
+        renderStats();
+        renderHand();
+        return window.__beastDeckSmoke.getState();
+      },
+      setCardSequenceState: ({ energy = state.energy, enemyHp = state.enemyHp, hand = state.hand } = {}) => {
+        cancelBattleTransitions();
+        state.energy = Math.max(0, Number(energy) || 0);
+        state.enemyHp = Math.max(1, Number(enemyHp) || 1);
+        state.isPlayerTurn = true;
+        state.enemySeal = null;
+        state.enemyRiposte = 0;
         state.hand = Array.isArray(hand) ? hand.filter((cardId) => cardDb[cardId]) : state.hand;
         renderStats();
         renderHand();

@@ -1,6 +1,8 @@
 (() => {
   const MENU_LOGICAL_WIDTH = 390;
   const MENU_LOGICAL_HEIGHT = MENU_LOGICAL_WIDTH * 16 / 9;
+  const STAGE_LANDSCAPE_WIDTH = 760;
+  const STAGE_LANDSCAPE_HEIGHT = 360;
   const BATTLE_LOGICAL_WIDTH = 390;
   const BATTLE_LOGICAL_HEIGHT = 788;
   const DESKTOP_CANVAS_MAX_WIDTH = 920;
@@ -69,9 +71,12 @@
     document.documentElement.style.setProperty("--wonder-vh", `${height}px`);
     const playing = document.body.classList.contains("wonder-playing");
     const menuScale = Math.min(width / MENU_LOGICAL_WIDTH, height / MENU_LOGICAL_HEIGHT);
+    const useStageLandscape = availableWidth / height >= 1.5;
+    const stageMinimumWidth = useStageLandscape ? STAGE_LANDSCAPE_WIDTH : MENU_LOGICAL_WIDTH;
+    const stageMinimumHeight = useStageLandscape ? STAGE_LANDSCAPE_HEIGHT : MENU_LOGICAL_HEIGHT;
     const stageScale = Math.min(
-      availableWidth / MENU_LOGICAL_WIDTH,
-      height / MENU_LOGICAL_HEIGHT
+      availableWidth / stageMinimumWidth,
+      height / stageMinimumHeight
     );
     const battleScale = Math.min(
       availableWidth / BATTLE_LOGICAL_WIDTH,

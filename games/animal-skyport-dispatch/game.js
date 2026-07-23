@@ -207,7 +207,7 @@
   function localize() {
     const activeLocale = window.WonderI18n?.actualLocale?.() || readStorage('weightPlayLocale') || 'en';
     document.documentElement.lang = activeLocale;
-    document.title = `${t('title')} - Internal Trial`;
+    document.title = `${t('title')} | WeightPlay`;
     document.querySelectorAll('[data-i18n]').forEach((node) => { node.textContent = t(node.dataset.i18n); });
     $('localeSelect').value = activeLocale;
     $('localeSelect').options[1].textContent = '\u7e41\u9ad4\u4e2d\u6587';
@@ -757,25 +757,6 @@
     locale = 'en';
     localize();
   };
-  $('localeSelect').addEventListener('change', (event) => {
-    if (new URLSearchParams(location.search).get('trial') !== '1') return;
-    event.stopImmediatePropagation();
-    const stored = writeStorage('weightPlayLocale', event.target.value);
-    if (!stored) {
-      const routeConfig = window.WONDER_SITE?.localization;
-      const previousRouteSetting = routeConfig?.useLocaleRoutes;
-      if (routeConfig) routeConfig.useLocaleRoutes = false;
-      window.WonderI18n?.setLocale(event.target.value);
-      if (routeConfig) routeConfig.useLocaleRoutes = previousRouteSetting;
-      locale = strings[event.target.value] ? event.target.value : 'en';
-      localize();
-      return;
-    }
-    // The runtime locale catalog is selected while scripts load. Reload the
-    // protected trial in place so every locale receives the correct catalog
-    // without navigating to a public route or mixing two language states.
-    location.reload();
-  }, true);
   $('localeSelect').onchange = changeLocale;
   if (new URLSearchParams(location.search).get('trial') === '1') {
     window.__animalSkyportDispatchSmoke = {

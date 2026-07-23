@@ -1561,6 +1561,56 @@ for (const game of window.WONDER_LOBBY.games) {
   delete game.internalTrial;
 }
 
+// Owner-approved General releases. Keep this as the single release-state
+// override so later catalogue edits cannot silently restore the private gate.
+const approvedGeneralReleases = {
+  "animal-sketchwheel-rally": {
+    hi: ["पशु स्केचव्हील रैली", "ड्रॉ-टू-ड्राइव रैली", "हर भूभाग के लिए सही पहिया बनाएं और 30 जीवंत रेस में प्रतिद्वंद्वी से पहले फिनिश तक पहुंचें।", ["30 रेस", "पहिया बनाएं", "छह भूभाग अध्याय"]],
+    ar: ["رالي عجلات الحيوانات", "سباق الرسم والقيادة", "ارسم العجلة المناسبة لكل تضاريس وتسابق عبر 30 جولة حية للوصول قبل منافسك.", ["30 سباقًا", "ارسم العجلة", "ستة فصول للتضاريس"]],
+  },
+  "animal-prism-battalion": {
+    hi: ["पशु प्रिज़्म बटालियन", "तीन-लेन रक्षा आर्केड", "तीन क्रिस्टल लेन के बीच निशाना बदलें, शक्ति कोर जुटाएं और 30 रक्षा अभियानों में छह बॉस हराएं।", ["30 रक्षा मिशन", "तीन लेन", "छह बॉस"]],
+    ar: ["كتيبة منشور الحيوانات", "دفاع آركيد بثلاثة مسارات", "بدّل التصويب بين ثلاثة مسارات بلورية واجمع نوى القوة واهزم ستة زعماء عبر 30 مهمة دفاع.", ["30 مهمة دفاع", "ثلاثة مسارات", "ستة زعماء"]],
+  },
+  "animal-skybridge-rivals": {
+    hi: ["पशु आकाशपुल प्रतिद्वंद्वी", "ढेर बनाकर पुल की रेस", "ऑरोरा टाइलें इकट्ठी करें, उन्हें पुल पर लगाएं और 30 आकाश रेस में प्रतिद्वंद्वियों से पहले फिनिश करें।", ["30 आकाश रेस", "इकट्ठा और निर्माण", "छह रेस अध्याय"]],
+    ar: ["منافسو جسر السماء", "سباق جمع وبناء الجسور", "اجمع بلاطات الشفق وأنفقها على الجسر وأنهِ 30 سباقًا سماويًا قبل المنافسين.", ["30 سباقًا سماويًا", "اجمع وابنِ", "ستة فصول سباق"]],
+  },
+  "animal-rift-salvage": {
+    hi: ["पशु रिफ्ट बचाव दल", "आकाशीय संग्रह आर्केड", "चंद्र वलय को चलाएं, छोटे मलबे से आकार बढ़ाएं और 30 क्षेत्रों में बचाव कोर तथा मुकुट मलबा वापस लाएं।", ["30 बचाव क्षेत्र", "बढ़ें और संग्रह करें", "छह रिफ्ट अध्याय"]],
+    ar: ["فريق إنقاذ الصدع", "آركيد جمع سماوي", "قد حلقة القمر وكبّرها بجمع الحطام الصغير ثم استعد نوى الإنقاذ والحطام الملكي عبر 30 منطقة.", ["30 منطقة إنقاذ", "انمُ واجمع", "ستة فصول للصدع"]],
+  },
+  "animal-skyport-dispatch": {
+    en: ["Animal Skyport Dispatch", "Air-route Drawing Puzzle", "Connect numbered waypoints in order, avoid blocked routes, and dispatch every airship across 30 skyport shifts.", ["30 Shifts", "Draw Safe Routes", "Six Dispatch Chapters"]],
+    "zh-Hant": ["動物天空港調度隊", "航線繪製益智", "依序連接分散的編號節點、避開封鎖航線，完成 30 個天空港班次的調度。", ["30 個班次", "繪製安全航線", "六個調度章節"]],
+    "zh-Hans": ["动物天空港调度队", "航线绘制益智", "依序连接分散的编号节点、避开封锁航线，完成 30 个天空港班次的调度。", ["30 个班次", "绘制安全航线", "六个调度章节"]],
+    ja: ["アニマル・スカイポート管制隊", "航路ドロー・パズル", "離れた番号ノードを順番につなぎ、封鎖航路を避けて30の空港シフトを完了しよう。", ["30シフト", "安全な航路を描く", "6つの管制チャプター"]],
+    ko: ["동물 하늘항구 관제대", "항로 그리기 퍼즐", "흩어진 번호 지점을 순서대로 잇고 막힌 항로를 피해 30개 하늘항구 근무를 완료하세요.", ["30개 근무", "안전 항로 그리기", "6개 관제 챕터"]],
+    es: ["Despacho del Aeropuerto Animal", "Puzle de rutas aéreas", "Conecta los puntos numerados en orden, evita rutas bloqueadas y completa 30 turnos del aeropuerto celeste.", ["30 turnos", "Dibuja rutas seguras", "Seis capítulos"]],
+    "pt-BR": ["Controle do Aeroporto Animal", "Puzzle de rotas aéreas", "Conecte os pontos numerados em ordem, evite rotas bloqueadas e conclua 30 turnos no aeroporto celeste.", ["30 turnos", "Trace rotas seguras", "Seis capítulos"]],
+    fr: ["Régulation de l’Aéroport Animal", "Puzzle de routes aériennes", "Reliez les points numérotés dans l’ordre, évitez les voies bloquées et terminez 30 services aériens.", ["30 services", "Tracez des routes sûres", "Six chapitres"]],
+    de: ["Tierische Himmelhafen-Leitstelle", "Flugrouten-Zeichenpuzzle", "Verbinde verstreute Nummernpunkte der Reihe nach, meide Sperrstrecken und meistere 30 Himmelhafen-Schichten.", ["30 Schichten", "Sichere Routen zeichnen", "Sechs Kapitel"]],
+    it: ["Controllo dell’Aeroporto Animale", "Puzzle di rotte aeree", "Collega in ordine i punti numerati, evita le rotte bloccate e completa 30 turni nell’aeroporto celeste.", ["30 turni", "Traccia rotte sicure", "Sei capitoli"]],
+    ru: ["Диспетчеры Звериного Аэропорта", "Головоломка с авиамаршрутами", "Соединяйте разбросанные точки по порядку, обходите закрытые пути и завершите 30 смен небесного порта.", ["30 смен", "Безопасные маршруты", "Шесть глав"]],
+    hi: ["पशु आकाशबंदरगाह प्रेषण", "हवाई मार्ग रेखांकन पहेली", "बिखरे क्रमांकित बिंदुओं को क्रम से जोड़ें, बंद मार्गों से बचें और 30 आकाशबंदरगाह पालियां पूरी करें।", ["30 पालियां", "सुरक्षित मार्ग बनाएं", "छह प्रेषण अध्याय"]],
+    ar: ["فريق تنظيم الميناء الجوي", "لغز رسم المسارات الجوية", "صل النقاط المرقمة المتباعدة بالترتيب وتجنب الطرق المغلقة وأكمل 30 وردية في الميناء الجوي.", ["30 وردية", "ارسم مسارات آمنة", "ستة فصول تنظيم"]],
+  },
+};
+
+for (const game of window.WONDER_LOBBY.games) {
+  const release = approvedGeneralReleases[game.id];
+  if (!release) continue;
+  game.status = "playable";
+  delete game.internalTrial;
+  for (const [locale, [title, type, description, meta]] of Object.entries(release)) {
+    game.title[locale] = title;
+    game.statusText[locale] = locale === "zh-Hant" ? "可遊玩" : locale === "zh-Hans" ? "可游玩" : locale === "ja" ? "プレイ可能" : locale === "ko" ? "플레이 가능" : locale === "es" ? "Disponible" : locale === "pt-BR" ? "Disponível" : locale === "fr" ? "Disponible" : locale === "de" ? "Spielbar" : locale === "it" ? "Disponibile" : locale === "ru" ? "Доступно" : locale === "hi" ? "खेलने योग्य" : locale === "ar" ? "متاحة للعب" : "Playable";
+    game.type[locale] = type;
+    game.description[locale] = description;
+    game.meta[locale] = meta;
+  }
+}
+
 for (const id of ["animal-color-springs", "animal-word-trails"]) {
   const game = window.WONDER_LOBBY.games.find((entry) => entry.id === id);
   if (!game) continue;

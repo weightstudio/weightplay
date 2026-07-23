@@ -1,6 +1,22 @@
 (function(){
 "use strict";
 const $=id=>document.getElementById(id),LOCALES=window.RIFT_SALVAGE_LOCALES||{},CODES=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"],LABELS={en:"English","zh-Hant":"繁體中文","zh-Hans":"简体中文",ja:"日本語",ko:"한국어",es:"Español","pt-BR":"Português",fr:"Français",de:"Deutsch",it:"Italiano",ru:"Русский",hi:"हिन्दी",ar:"العربية"},STORE="weightplay:animal-rift-salvage:v1",WORLD=1000,TAU=Math.PI*2;
+const PUBLIC_INFO={
+en:["GENERAL · 30-ZONE CAMPAIGN","PUBLIC GAME GUIDE","Learn the complete salvage loop, from safe size routes to rescue cores, rivals, and the closing storm."],
+"zh-Hant":["一般 · 30 區域戰役","公開遊戲指南","了解完整回收流程，從安全尺寸路線到救援核心、競爭裂隙與收縮風暴。"],
+"zh-Hans":["一般 · 30 区域战役","公开游戏指南","了解完整回收流程，从安全尺寸路线到救援核心、竞争裂隙与收缩风暴。"],
+ja:["一般 · 30区域キャンペーン","公開ゲームガイド","安全なサイズ経路から救助コア、ライバル、迫る嵐まで、回収の流れを学びましょう。"],
+ko:["일반 · 30구역 캠페인","공개 게임 안내","안전한 크기 경로부터 구조 코어, 경쟁 균열, 다가오는 폭풍까지 전체 회수 과정을 알아보세요."],
+es:["GENERAL · CAMPAÑA DE 30 ZONAS","GUÍA PÚBLICA","Aprende el ciclo de rescate completo: rutas por tamaño, núcleos, rivales y la tormenta que se cierra."],
+"pt-BR":["GERAL · CAMPANHA DE 30 ZONAS","GUIA PÚBLICO","Aprenda todo o ciclo de resgate: rotas por tamanho, núcleos, rivais e a tempestade que se fecha."],
+fr:["GÉNÉRAL · CAMPAGNE DE 30 ZONES","GUIDE PUBLIC","Découvrez toute la récupération : tailles sûres, noyaux, rivaux et tempête qui se referme."],
+de:["ALLGEMEIN · KAMPAGNE MIT 30 ZONEN","ÖFFENTLICHER SPIELFÜHRER","Lerne den gesamten Bergungsablauf mit Größenrouten, Rettungskernen, Rivalen und Sturm."],
+it:["GENERALE · CAMPAGNA DI 30 ZONE","GUIDA PUBBLICA","Impara l’intero ciclo di recupero: percorsi sicuri, nuclei, rivali e tempesta in chiusura."],
+ru:["ОБЩАЯ · КАМПАНИЯ ИЗ 30 ЗОН","ПУБЛИЧНОЕ РУКОВОДСТВО","Изучите весь цикл сбора: безопасные размеры, спасательные ядра, соперники и надвигающаяся буря."],
+hi:["सामान्य · 30-क्षेत्र अभियान","सार्वजनिक खेल मार्गदर्शिका","सुरक्षित आकार मार्गों से लेकर बचाव कोर, प्रतिद्वंद्वियों और सिकुड़ते तूफान तक पूरा संग्रह चक्र सीखें।"],
+ar:["عام · حملة من 30 منطقة","دليل اللعب العام","تعلّم دورة الإنقاذ كاملة، من مسارات الحجم الآمنة إلى نوى الإنقاذ والمنافسين والعاصفة المتقلصة."],
+};
+for(const [code,[mainKicker,guideKicker,guideIntro]] of Object.entries(PUBLIC_INFO))Object.assign(LOCALES[code]||={}, {mainKicker,guideKicker,guideIntro});
 const els={loading:$("loading"),mainGroup:$("mainGroup"),stageScreen:$("stageScreen"),battleScreen:$("battleScreen"),battleLive:$("battleLive"),localeSelect:$("localeSelect"),mainProgress:$("mainProgress"),start:$("start"),stageBack:$("stageBack"),stageRail:$("stageRail"),stageSummary:$("stageSummary"),zonesTab:$("zonesTab"),observatoryTab:$("observatoryTab"),zonePanel:$("zonePanel"),observatoryPanel:$("observatoryPanel"),stageHint:$("stageHint"),gearCount:$("gearCount"),upgrades:$("upgrades"),observatoryFeedback:$("observatoryFeedback"),wakeButton:$("wakeButton"),battleBack:$("battleBack"),battleHelp:$("battleHelp"),zoneLabel:$("zoneLabel"),timerValue:$("timerValue"),scoreValue:$("scoreValue"),sizeValue:$("sizeValue"),stabilityValue:$("stabilityValue"),objective:$("objective"),arenaWrap:$("arenaWrap"),canvas:$("arena"),salvageProgress:$("salvageProgress"),salvageProgressValue:$("salvageProgressValue"),salvageProgressFill:$("salvageProgressFill"),chainValue:$("chainValue"),feedback:$("feedback"),helpModal:$("helpModal"),helpClose:$("helpClose"),leaveModal:$("leaveModal"),leaveContinue:$("leaveContinue"),leaveStage:$("leaveStage"),resultModal:$("resultModal"),resultKicker:$("resultKicker"),resultTitle:$("resultTitle"),resultText:$("resultText"),resultTime:$("resultTime"),resultChain:$("resultChain"),resultMedal:$("resultMedal"),retry:$("retry"),resultZones:$("resultZones"),next:$("next")};
 const ctx=els.canvas.getContext("2d",{alpha:false}),memory=new Map();let locale="en",screen="main",stageIndex=0,run=null,raf=0,lastFrame=performance.now(),stageScrollTimer=0,lifecyclePaused=false,windowFocused=true,view={scale:1,cx:0,cy:0};
 const storage={get(k){try{return localStorage.getItem(k)}catch{return memory.get(k)||null}},set(k,v){try{localStorage.setItem(k,v)}catch{memory.set(k,v)}}};
@@ -18,9 +34,9 @@ const TYPE={shard:{r:13,mass:4,value:5,img:"shard"},crate:{r:21,mass:8,value:9,i
 function buildZone(index){const chapter=Math.floor(index/5),formation=zoneFormations[index%zoneFormations.length],rng=seeded(4889+index*197),quota=150+index*6+chapter*10,timer=72+chapter*3,rescueNeed=index>=4?(chapter>=5?2:1):0,rivals=chapter>=4?(index>=27?2:1):0,objects=[];let id=0;const add=(type,count,extra={})=>{for(let i=0;i<count;i++){const ordinal=id,p=formationPoint(rng,formation,ordinal,70,chapter>=5?390:410),d=TYPE[type],angle=Math.atan2(p.y-500,p.x-500),orbitRadius=Math.hypot(p.x-500,p.y-500);objects.push({id:id++,type,x:p.x,y:p.y,vx:chapter===1||formation==="corridor"?(rng()-.5)*34:0,vy:chapter===1||formation==="corridor"?(rng()-.5)*34:0,r:d.r,mass:d.mass,value:d.value,img:d.img,active:true,shielded:Boolean(extra.shielded&&i%2===0),phase:rng()*TAU,angle,orbitRadius,gear:rng()<.11})}};add("shard",18+chapter*2);add("crate",12+chapter);add("prism",8+Math.floor(chapter/2));add("tower",5+Math.floor(chapter/2),{shielded:chapter>=3});add("crown",1+Math.floor(chapter/3),{shielded:chapter>=3});if(chapter>=2)add("anchor",2+Math.floor((index%5)/2));add("core",rescueNeed);objects.sort((a,b)=>a.r-b.r||a.id-b.id);const rivalList=Array.from({length:rivals},(_,i)=>{const a=(i?Math.PI:.15)+rng()*.2;return{id:i,x:500+Math.cos(a)*330,y:500+Math.sin(a)*330,vx:0,vy:0,mass:0,threshold:17,score:0,target:null,phase:rng()*TAU}}),turretCount=chapter>=1?1+Math.floor(chapter/2)+(index%5===4?1:0):0,turretPattern=index%3===0?"aimed":index%3===1?"crossfire":"burst",turrets=Array.from({length:turretCount},(_,i)=>{const angle=i/turretCount*TAU+index*.47,radius=350-(i%2)*42;return{x:500+Math.cos(angle)*radius,y:500+Math.sin(angle)*radius,angle:angle+Math.PI,cooldown:.8+i*.42,interval:Math.max(.95,2.25-chapter*.16),pattern:turretPattern,burst:0}});return{index,chapter,formation,name:t("chapters")[chapter],rule:t("rules")[chapter],quota,timer,rescueNeed,rivals:rivalList,objects,turrets,turretPattern,currentPower:chapter>=2?42+chapter*8:0,storm:chapter>=5,goldTime:Math.max(24,timer*.55),silverTime:Math.max(32,timer*.76)}}
 const zones=Array.from({length:30},(_,i)=>buildZone(i));
 function refreshZoneLocale(){zones.forEach(z=>{z.name=t("chapters")[z.chapter];z.rule=t("rules")[z.chapter]})}
-function initLocale(){const saved=storage.get("weightplay:animal-rift-salvage:locale")||storage.get("weightplay:locale");locale=CODES.includes(saved)?saved:"en";els.localeSelect.innerHTML=CODES.map(code=>`<option value="${code}">${LABELS[code]}</option>`).join("");els.localeSelect.value=locale}
-function applyLocale(){document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";document.title=`${t("title")} | Internal WeightPlay Trial`;document.querySelectorAll("[data-t]").forEach(n=>n.textContent=t(n.dataset.t));document.querySelectorAll("[data-t-aria]").forEach(n=>n.setAttribute("aria-label",t(n.dataset.tAria)));document.querySelectorAll("[data-t-alt]").forEach(n=>n.setAttribute("alt",t(n.dataset.tAlt)));renderMainProgress();renderStages();renderObservatory();if(run)renderHud()}
-els.localeSelect.addEventListener("change",()=>{locale=CODES.includes(els.localeSelect.value)?els.localeSelect.value:"en";storage.set("weightplay:animal-rift-salvage:locale",locale);storage.set("weightplay:locale",locale);window.WonderI18n?.setLocale?.(locale);if(!LOCALES[locale]&&window.WeightPlayGameRuntimeLocalizer?.locale!==locale){window.location.reload();return}applyLocale()});
+function initLocale(){const route=window.WonderI18n?.actualLocale?.(),saved=storage.get("weightplay:animal-rift-salvage:locale")||storage.get("weightplay:locale");locale=CODES.includes(route)?route:CODES.includes(saved)?saved:"en";els.localeSelect.innerHTML=CODES.map(code=>`<option value="${code}">${LABELS[code]}</option>`).join("");els.localeSelect.value=locale}
+function applyLocale(){document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";document.title=`${t("title")} | WeightPlay`;document.querySelectorAll("[data-t]").forEach(n=>n.textContent=t(n.dataset.t));document.querySelectorAll("[data-t-aria]").forEach(n=>n.setAttribute("aria-label",t(n.dataset.tAria)));document.querySelectorAll("[data-t-alt]").forEach(n=>n.setAttribute("alt",t(n.dataset.tAlt)));renderMainProgress();renderStages();renderObservatory();if(run)renderHud()}
+els.localeSelect.addEventListener("change",()=>{locale=CODES.includes(els.localeSelect.value)?els.localeSelect.value:"en";storage.set("weightplay:animal-rift-salvage:locale",locale);storage.set("weightplay:locale",locale);const legacyTrial=new URLSearchParams(location.search).get("trial")==="1";if(!legacyTrial&&window.WonderI18n?.setLocale){window.WonderI18n.setLocale(locale);return}applyLocale()});
 function renderMainProgress(){const done=Object.values(save.medals).filter(n=>Number(n)>0).length;els.mainProgress.textContent=t("progress",{done})}
 function setScreen(next){screen=next;document.body.dataset.screen=next;els.mainGroup.hidden=next!=="main";els.stageScreen.hidden=next!=="stage";els.battleScreen.hidden=next!=="battle";if(next!=="battle")cancelAnimationFrame(raf);if(next==="stage"){renderStages();renderObservatory();requestAnimationFrame(centerCurrentStage)}if(next==="battle")startLoop()}
 function renderStages(){refreshZoneLocale();els.stageRail.innerHTML="";for(const z of zones){const locked=z.index+1>save.unlocked,medal=Number(save.medals[z.index]||0),best=Number(save.best[z.index]||0),card=document.createElement("button");card.type="button";card.className=`stage-card${locked?" locked":""}`;card.disabled=locked;card.dataset.stage=String(z.index);card.innerHTML=`<small>${t("chapter",{n:z.chapter+1})} · ${z.name}</small><strong>${t("zone",{n:z.index+1})}</strong><span>${medal?"★".repeat(medal):locked?t("locked"):t("target",{n:z.quota})}</span><small>${best?t("best",{n:best.toFixed(1)}):z.rule}</small>`;card.addEventListener("click",()=>{if(!locked)startBattle(z.index)});els.stageRail.append(card)}const medals=Object.values(save.medals).reduce((a,n)=>a+Number(n||0),0);els.stageSummary.textContent=`${Math.min(save.unlocked,30)} / 30 · ★ ${medals}`;markCentered()}
@@ -29,7 +45,40 @@ function markCentered(){const cards=[...els.stageRail.querySelectorAll(".stage-c
 els.stageRail.addEventListener("scroll",()=>{clearTimeout(stageScrollTimer);stageScrollTimer=setTimeout(markCentered,90)},{passive:true});
 const upgradeData=[["drive","upgradeDrive","upgradeDriveDesc"],["compression","upgradeCompression","upgradeCompressionDesc"],["stability","upgradeStability","upgradeStabilityDesc"]];
 function upgradeCost(level){return 9+level*9}
-function renderObservatory(){els.gearCount.textContent=t("gears",{n:save.gears});els.upgrades.innerHTML="";for(const [id,name,desc] of upgradeData){const level=save.upgrades[id],cost=upgradeCost(level),button=document.createElement("button");button.type="button";button.className=`upgrade${level>=3?" maxed":""}`;button.dataset.upgrade=id;button.innerHTML=`<strong>${t(name)}</strong><small>${t(desc)}</small><b>${"◆".repeat(level)}${"◇".repeat(3-level)}</b><span>${level>=3?t("upgradeMax"):t("upgradeBuy",{n:cost})}</span>`;button.disabled=level>=3;button.addEventListener("click",()=>{if(level>=3)return;if(save.gears<cost){els.observatoryFeedback.textContent=`${t("gears",{n:save.gears})} · ${t("upgradeBuy",{n:cost})}`;return}save.gears-=cost;save.upgrades[id]++;persist();renderObservatory()});els.upgrades.append(button)}els.wakeButton.textContent=save.wake?t("wakeOwned"):t("wakeBuy");els.wakeButton.disabled=save.wake}
+function renderObservatory(focusUpgradeId=null){
+  els.gearCount.textContent=t("gears",{n:save.gears});
+  els.upgrades.innerHTML="";
+  for(const [id,name,desc] of upgradeData){
+    const level=save.upgrades[id],cost=upgradeCost(level),button=document.createElement("button");
+    button.type="button";
+    button.className=`upgrade${level>=3?" maxed":""}`;
+    button.dataset.upgrade=id;
+    button.innerHTML=`<strong>${t(name)}</strong><small>${t(desc)}</small><b>${"◆".repeat(level)}${"◇".repeat(3-level)}</b><span>${level>=3?t("upgradeMax"):t("upgradeBuy",{n:cost})}</span>`;
+    button.disabled=level>=3;
+    button.addEventListener("keydown",event=>{
+      if((event.key==="Enter"||event.key===" ")&&event.repeat)event.preventDefault();
+    });
+    button.addEventListener("click",()=>{
+      if(level>=3)return;
+      if(save.gears<cost){
+        els.observatoryFeedback.textContent=`${t("gears",{n:save.gears})} · ${t("upgradeBuy",{n:cost})}`;
+        return;
+      }
+      save.gears-=cost;
+      save.upgrades[id]++;
+      persist();
+      renderObservatory(id);
+    });
+    els.upgrades.append(button);
+  }
+  els.wakeButton.textContent=save.wake?t("wakeOwned"):t("wakeBuy");
+  els.wakeButton.disabled=save.wake;
+  if(focusUpgradeId){
+    const upgraded=els.upgrades.querySelector(`[data-upgrade="${focusUpgradeId}"]:not(:disabled)`);
+    const nextAction=upgraded||els.upgrades.querySelector("button:not(:disabled)")||(!els.wakeButton.disabled&&els.wakeButton);
+    nextAction?.focus({preventScroll:true});
+  }
+}
 function setTab(tab){const zonesOn=tab==="zones";els.zonePanel.hidden=!zonesOn;els.observatoryPanel.hidden=zonesOn;els.zonesTab.classList.toggle("active",zonesOn);els.observatoryTab.classList.toggle("active",!zonesOn);if(zonesOn)requestAnimationFrame(centerCurrentStage)}
 function threshold(){return 17+save.upgrades.compression*1.8+Math.sqrt(Math.max(0,run?.mass||0))*2.28}
 function ringRadius(){return 25+threshold()*.52}

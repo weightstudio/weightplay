@@ -177,3 +177,19 @@ body.wonder-stage-select .menu-tabs span {
   white-space: nowrap;
   border: 0;
 }
+
+@media (min-aspect-ratio: 3 / 2) and (max-height: 500px) {
+  body.wonder-stage-select #overlay {
+    gap: 6px;
+    padding: 8px 24px 96px;
+  }
+
+  body.wonder-stage-select #menuContent {
+    width: calc(100% - 48px);
+    max-height: 248px;
+  }
+
+  body.wonder-stage-select #levelGrid {
+    width: 100%;
+  }
+}
