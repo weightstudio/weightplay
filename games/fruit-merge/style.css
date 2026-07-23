@@ -1991,6 +1991,72 @@ body.fruit-playing #gameCanvas {
   border-width: 3px;
 }
 
+/* Keep live aiming feedback in its own stable row instead of covering the board. */
+body.wp-logical-battle-active.fruit-playing .fixed-game-shell.fixed-game-shell[data-wp-logical-battle-canvas],
+body.wp-logical-battle-active.fruit-playing.fruit-expanded-canvas .fixed-game-shell.fixed-game-shell[data-wp-logical-battle-canvas] {
+  grid-template-rows: 42px 58px 40px minmax(0, 1fr) 36px !important;
+  grid-template-areas:
+    "score"
+    "goal"
+    "coach"
+    "board"
+    "controls" !important;
+}
+
+body.fruit-playing .aim-coach,
+body.fruit-playing.fruit-expanded-canvas .aim-coach {
+  position: static;
+  inset: auto;
+  z-index: auto;
+  grid-area: coach;
+  display: grid !important;
+  width: 100%;
+  min-width: 0;
+  height: 40px;
+  min-height: 40px;
+  max-height: 40px;
+  padding: 4px 10px;
+  place-items: center;
+  align-self: stretch;
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+}
+
+body.wp-logical-battle-active.fruit-playing .fixed-game-shell[data-wp-logical-battle-canvas] > .aim-coach {
+  grid-column: 1 !important;
+  grid-row: 3 !important;
+}
+
+body.wp-logical-battle-active.fruit-playing .fixed-game-shell[data-wp-logical-battle-canvas] > .board-shell {
+  grid-column: 1 !important;
+  grid-row: 4 !important;
+}
+
+body.wp-logical-battle-active.fruit-playing .fixed-game-shell[data-wp-logical-battle-canvas] > .controls {
+  grid-column: 1 !important;
+  grid-row: 5 !important;
+}
+
+@media (max-height: 430px) {
+  body.wp-logical-battle-active.fruit-playing .fixed-game-shell.fixed-game-shell[data-wp-logical-battle-canvas],
+  body.wp-logical-battle-active.fruit-playing.fruit-expanded-canvas .fixed-game-shell.fixed-game-shell[data-wp-logical-battle-canvas] {
+    grid-template-rows: 38px 54px 34px minmax(0, 1fr) 30px !important;
+  }
+
+  body.fruit-playing .aim-coach,
+  body.fruit-playing.fruit-expanded-canvas .aim-coach {
+    height: 34px;
+    min-height: 34px;
+    max-height: 34px;
+    padding-block: 2px;
+    font-size: 11px;
+    line-height: 12px;
+  }
+}
+
 html,
 body,
 button,

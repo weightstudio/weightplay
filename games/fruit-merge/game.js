@@ -138,6 +138,10 @@
   const loadingFill = document.querySelector("#loadingFill");
   const toast = document.querySelector("#toast");
   const aimCoach = document.querySelector("#aimCoach");
+  const boardShell = document.querySelector(".board-shell");
+  if (aimCoach && boardShell?.contains(aimCoach)) {
+    boardShell.before(aimCoach);
+  }
 
   const W = canvas.width;
   const H = canvas.height;

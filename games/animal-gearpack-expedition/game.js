@@ -206,6 +206,98 @@
     eclipseHoardmaster:"Maestro del Tesoro del Eclipse"
   };
   Object.entries(enemyCatalog).forEach(([id,enemy])=>{enemy.name.push(spanishEnemyNames[id]);});
+
+  copy.ar = {
+    title:"حملة حقيبة العتاد الحيوانية",internal:"تجربة داخلية",pitch:"رتّب العتاد، وابنِ روابط متجاورة، وقُد روكس عبر مسارات غابة التروس.",start:"ابدأ اللعب",
+    chooseRegion:"اختر المنطقة",packmaster:"روكس خبير الحقيبة",region1:"درب غابة التروس",region1Meta:"5 مواجهات · حارس الجذور",region2:"مقلع ضوء القمر",region2Meta:"5 مواجهات · حارس البلور",region3:"جوف الساعة",region3Meta:"5 مواجهات · عملاق الجوف",
+    locked:"مغلق",backpack:"حقيبة العتاد 11 × 7",rotate:"تدوير",sell:"بيع",fight:"ابدأ المواجهة",strike:"احسم الاشتباك",room:"المواجهة",armor:"الدرع",
+    objective:"رتّب العتاد ثم اهزم حارس المسار.",workshop:"الورشة",discoveries:"المكتشفات",gold:"ذهب",diamonds:"ألماس",items:"قطع",
+    selected:"محدد",placed:"تم الوضع",blocked:"هذا الشكل لا يناسب المكان.",rotated:"تم تدوير القطعة.",needGear:"ضع قطعة عتاد واحدة على الأقل قبل القتال.",
+    victory:"اكتمل المسار",defeat:"انهارت القافلة",continue:"متابعة",retry:"إعادة المسار",regions:"العودة إلى المناطق",chooseLoot:"اختر قطعة عتاد",
+    merchant:"متجر قافلة أورلا",buy:"شراء",leave:"مغادرة المتجر",refresh:"تجديد مقابل 3 ألماسات",confirmRefresh:"هل تنفق 3 ألماسات لتجديد بضاعة أورلا؟",
+    notEnough:"العملة غير كافية.",boss:"حارس الجذور",scout:"كشاف ثعلب الظل",boar:"خنزير بري مدرع",crow:"غراب بلوري",reward:"المكافأة",
+    saved:"تم حفظ تقدم الورشة.",full:"لا توجد مساحة في الحقيبة.",pickedUp:"أعيد إلى صينية العتاد",sold:"تم البيع",adventure:"مغامرة غابة التروس",
+    refreshConfirm:"تأكيد 3 · {before} ← {after}",refreshDecision:"استبدل القطع الثلاث مرة واحدة. اضغط مجددًا للتأكيد: {before} ← {after} ألماسة.",
+    refreshLabel:"استبدل القطع الثلاث. التكلفة 3 ألماسات. الرصيد الحالي {balance}.",refreshConfirmLabel:"أكد تجديد المتجر مرة واحدة. أنفق 3 ألماسات. يتغير الرصيد من {before} إلى {after}.",
+    refreshNeed:"تحتاج إلى 3 ألماسات. الرصيد الحالي {balance}/3.",refreshUsed:"استُخدم التجديد في هذه المحطة.",leaveLoot:"المتابعة دون غنيمة",
+    fullLoot:"الحقيبة ممتلئة. تابع من دون أخذ قطعة.",battleSteps:"١ اختر العتاد  ٢ اضغط خلية خضراء  ٣ ابدأ المواجهة",
+    attack:"الهجوم",defense:"الدفاع",healing:"العلاج",links:"الروابط",attackHint:"اضغط الهجوم لحسم الاشتباك.",health:"الصحة",
+    tagForge:"حدادة",tagNature:"طبيعة",tagCrystal:"بلور",tagMoon:"قمر",sameTagBonus:"الوسم نفسه +2 هجوم / +1 دفاع",sellValue:"سعر البيع",
+    autoFighting:"قتال تلقائي…",combatPaused:"توقفت المواجهة مؤقتًا. استأنف عندما تكون مستعدًا.",resumeCombat:"استئناف المواجهة",
+    repack:"هُزم العدو. أعد ترتيب العتاد للمواجهة التالية.",newRegionUnlocked:"فُتحت منطقة جديدة",
+    packGridLabel:"شبكة الحقيبة، 7 صفوف في 11 عمودًا",cellLabel:"الصف {row}، العمود {column}. {action}",placeItem:"ضع {item} هنا.",
+    pickUpItem:"التقط {item}.",cannotPlace:"لا تناسب {item} هذا المكان.",emptyCell:"خلية فارغة. اختر عتادًا من الصينية.",
+    selectItem:"اختر {item}.",selectedItem:"تم اختيار {item}.",backToLobby:"العودة إلى WeightPlay",language:"اللغة",
+    coverAlt:"ملصق حملة حقيبة العتاد الحيوانية",backToMain:"العودة إلى الرئيسية",ruxAlt:"روكس ذو قرن الترس",regionRail:"مراحل الحملة",
+    gearwoodTrailAlt:"درب غابة التروس",backToRegions:"العودة إلى المراحل",objectiveHelp:"إظهار الهدف",itemTrayLabel:"العتاد المتاح",
+    pauseCombatAction:"إيقاف المواجهة مؤقتًا",rotateItemLabel:"دوّر {item} إلى {width} × {height}",sellItemLabel:"بِع {item} مقابل {value} ذهب",
+    fightBlockedLabel:"بدء المواجهة غير متاح. ضع قطعة عتاد واحدة على الأقل.",fightReadyLabel:"ابدأ مواجهة تلقائية ضد {enemy}، صحة العدو {hp}. هجومك {attack} ودفاعك {defense}. {mechanic}. يستمر القتال تلقائيًا حتى هزيمة أحد الطرفين.",
+    leaveBattleTitle:"مغادرة هذه الحملة؟",leaveBattleText:"تبقى حقيبتك والمواجهة الحالية محفوظتين أثناء اتخاذ القرار.",
+    continueBattle:"متابعة الحملة",confirmLeaveBattle:"العودة إلى المراحل",chooseExpedition:"اختر الحملة",stage:"المرحلة",encounter:"المواجهة",
+    checkpoint:"الحارس",completed:"مكتملة",unlocked:"مفتوحة",stageRule:"قاعدة المسار",nextExpedition:"الحملة التالية",
+    allStagesCleared:"اكتملت الحملات الثلاثون",stageCleared:"اكتملت الحملة",retryStage:"إعادة الحملة",backToStages:"العودة إلى المراحل",
+    openingStrike:"ضربة افتتاحية",shielded:"درع",reflected:"شظية مرتدة",regrowth:"استعاد الحارس قوته",seal:"الختم",isolated:"قطع معزولة",
+    corrosion:"التآكل",heat:"حرارة الصف العلوي",overload:"الحمل الزائد",bossPhase:"طور الزعيم",
+    campaignProgress:"اكتملت {cleared} / 30 حملة",
+  };
+
+  const arabicItemNames = [
+    "مطرقة الحدادة","ترس الأوراق","عدسة بلورية","جرعة التوت","حذاء التروس","تميمة القمر",
+    "سوط الأشواك","درع الطحلب","ملف الشرر","عدة إصلاح","فانوس الكشاف","شارة القافلة",
+  ];
+  items.forEach((item,index)=>{item.name.ar=arabicItemNames[index];});
+
+  const arabicRegions = [
+    "درب غابة التروس","مقلع ضوء القمر","جوف الساعة","مسبك الجمر","مرصد العاصفة","خزنة الكسوف",
+  ];
+  regions.forEach((region,index)=>{region.name.ar=arabicRegions[index];});
+
+  const arabicStages = [
+    ["بوابة الورشة","تعلّم إيقاع المواجهات الخمس وأنشئ رابطًا واحدًا بين المواد."],
+    ["مفترق الكشافة","تهاجم ثعالب الكشافة الحقائب غير المستعدة أولًا."],
+    ["معبر الجذر الحديدي","تمتص الخنازير المصفحة الضربة الأولى بدرعها."],
+    ["مظلة البلور","تعاقب الغربان البلورية كل قطعة معزولة."],
+    ["حارس الجذور","تمنع روابط الطبيعة الحارس من استعادة درعه."],
+    ["الهبوط الفضي","تعطّل عثات القمر روابط القمر أثناء المواجهة."],
+    ["عرق الصدى","تعاقب غربان المنشور العتاد المعزول؛ اجعل الحقيبة متراصة."],
+    ["مصعد المنشور","تكافئ الحواجز ضربة افتتاحية قوية."],
+    ["الرواق المحطم","يتطلب التعطيل والحواجز خطة مواد متنوعة."],
+    ["حارس البلور","اكسر درع المنشور ثم اصمد أمام شظيته المرتدة."],
+    ["الممر المتعرج","تزداد قوة بنات آوى الآلية مع كل هجوم مضاد."],
+    ["قاعة المغناطيس","تعاقب خنافس المغناطيس كل قطعة بلا رابط."],
+    ["أعمال البندول","يفضّل الغضب السريع وضغط العزل هجومًا متراصًا."],
+    ["المرحّل الصدئ","يقلل التآكل الدفاع بعد كل دور للعدو."],
+    ["عملاق الجوف","يتناوب العملاق بين طوري التحصن والغضب."],
+    ["ناقل الرماد","يجعل تآكل ضفادع البخار المعارك الطويلة خطرة."],
+    ["ممر الغلاية","تحوّل حرارة الصف العلوي الخلايا المشغولة إلى ضرر وارد."],
+    ["منعطف المصهر","اترك مساحة تهوية في الأعلى مع الحفاظ على الروابط المفيدة."],
+    ["خزنة قفل البخار","تتطلب الحرارة والتآكل والدروع علاجًا وضررًا اندفاعيًا."],
+    ["تنين الفرن","أبقِ الصف العلوي فارغًا لتنفيس نبضة الفرن."],
+    ["جسر الرياح","ينفذ كشافة الرياح ضربة افتتاحية سريعة قبل العلاج."],
+    ["حجرة الملفات","تحمّل وشوق الملفات أكبر رابط مواد فوق طاقته."],
+    ["عدسة الرعد","وزّع الروابط على مادتين لمقاومة الحمل الزائد."],
+    ["مصفوفة السكة السماوية","تختبر الضربات الافتتاحية والحمل الزائد دفاعًا متوازنًا."],
+    ["سيد العاصفة","يزداد البرق المتسلسل قوة مع العتاد المعزول."],
+    ["سجل الظلال","تنسخ مقلدات الكسوف القيمة الأعلى بين الهجوم والدفاع."],
+    ["الكوكبة المكسورة","تدور الأختام بين الحدادة والطبيعة والبلور والقمر."],
+    ["ختم التاج","يعيد الختم الدوار وحرارة الصف العلوي تشكيل الترتيب الآمن."],
+    ["قاعة كاسر الحقائب","تظهر كل الضغوط المعروفة قبل الخزنة الأخيرة."],
+    ["سيد كنوز الكسوف","يدوّر سيد الكنوز الأختام ويقفل الروابط ويعاقب العزل."],
+  ];
+  stages.forEach((definition,index)=>{
+    definition.name.ar=arabicStages[index][0];
+    definition.rule.ar=arabicStages[index][1];
+  });
+
+  const arabicEnemyNames = {
+    scout:"كشاف ثعلب الظل",ambusher:"ثعلب الأشواك الكامن",boar:"خنزير بري مدرع",platedBoar:"خنزير الصفيحة الحديدية",
+    crow:"غراب بلوري",linkCrow:"غراب ضريبة المنشور",moonMoth:"عثة حجاب القمر",prismRam:"كبش المنشور",
+    gearJackal:"ابن آوى التروس",magnetBeetle:"خنفساء المغناطيس",rustCrow:"غراب الجناح الصدئ",steamToad:"ضفدع البخار",
+    furnaceBoar:"خنزير الفرن",galeScout:"كشاف الرياح",coilLynx:"وشق الملفات",eclipseMimic:"مقلد الكسوف",
+    tagSealer:"خاتم مواد الخزنة",rootGuardian:"حارس الجذور",crystalWarden:"حارس البلور",hollowColossus:"عملاق الجوف",
+    furnaceLeviathan:"تنين الفرن",tempestArchon:"سيد العاصفة",eclipseHoardmaster:"سيد كنوز الكسوف",
+  };
+  Object.entries(enemyCatalog).forEach(([id,enemy])=>{enemy.name.ar=arabicEnemyNames[id];});
   const $ = (selector) => document.querySelector(selector);
   function ensureSoundButton(){
     let button=$("#soundBtn");
@@ -224,9 +316,10 @@
     return button;
   }
   ensureSoundButton();
+  document.querySelector("#startBtn")?.setAttribute("data-runtime-localize","off");
   const screens = {main:$("#mainScreen"),stage:$("#stageScreen"),battle:$("#battleScreen")};
   const storedLocale = readStorage("weightPlayLocale");
-  let locale = window.WonderI18n?.locale?.() || (["zh-Hant","es"].includes(storedLocale) ? storedLocale : "en");
+  let locale = window.WonderI18n?.locale?.() || (copy[storedLocale] ? storedLocale : "en");
   function normalizeProgress(source){
     const data=source&&typeof source==="object"?source:{};
     const whole=(value,fallback=0,max=Number.MAX_SAFE_INTEGER)=>{const numeric=Number(value);return Number.isFinite(numeric)?Math.max(0,Math.min(max,Math.floor(numeric))):fallback;};
@@ -302,7 +395,7 @@
   }
 function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){clearTimeout(railSettleTimer);railSettleTimer=0;}Object.entries(screens).forEach(([key,node])=>node.hidden=key!==name);document.body.dataset.screen=name;document.body.classList.toggle("is-game-playing",name==="battle");if(name==="main")renderMain();if(name==="stage")renderStage();if(name==="battle")renderBattle();if(focusTarget)requestAnimationFrame(()=>{const target=name==="main"?$("#startBtn"):name==="stage"?$(".region-card.is-selected:not(:disabled)"):$(".pack-cell[tabindex='0']");target?.focus({preventScroll:true});});}
 
-  function applyLocale(next){const current=window.WonderI18n?.actualLocale?.();const requested=next==="zh-Hant"&&current==="zh-Hans"?current:next||"en";if(current!==requested)window.WonderI18n?.setLocale?.(requested);locale=window.WonderI18n?.legacyLocale?.(requested)||requested;locale=copy[locale]?locale:"en";writeStorage("weightPlayLocale",requested);document.documentElement.lang=requested;document.title=`${t("title")} - WeightPlay`;$("#localeSelect").value=requested;document.querySelectorAll("[data-i18n]").forEach((node)=>{node.textContent=t(node.dataset.i18n)});const localizeAssistive=()=>{document.querySelectorAll("[data-ui-aria]").forEach((node)=>node.setAttribute("aria-label",t(node.dataset.uiAria)));document.querySelectorAll("[data-ui-alt]").forEach((node)=>node.setAttribute("alt",t(node.dataset.uiAlt)));const poster=$(".main-poster");if(poster)poster.alt=t("coverAlt");};localizeAssistive();setTimeout(localizeAssistive,0);requestAnimationFrame(()=>requestAnimationFrame(localizeAssistive));syncSoundButton();renderMain();if(!screens.stage.hidden)renderStage();if(!screens.battle.hidden)renderBattle();}
+  function applyLocale(next){const current=window.WonderI18n?.actualLocale?.();const requested=next==="zh-Hant"&&current==="zh-Hans"?current:next||"en";if(current!==requested)window.WonderI18n?.setLocale?.(requested);locale=window.WonderI18n?.legacyLocale?.(requested)||requested;locale=copy[locale]?locale:"en";writeStorage("weightPlayLocale",requested);document.documentElement.lang=requested;document.documentElement.dir=requested==="ar"?"rtl":"ltr";document.title=`${t("title")} - WeightPlay`;$("#localeSelect").value=requested;const localizeOwned=()=>{document.querySelectorAll("[data-i18n]").forEach((node)=>{node.textContent=t(node.dataset.i18n)});document.querySelectorAll("[data-ui-aria]").forEach((node)=>node.setAttribute("aria-label",t(node.dataset.uiAria)));document.querySelectorAll("[data-ui-alt]").forEach((node)=>node.setAttribute("alt",t(node.dataset.uiAlt)));const poster=$(".main-poster");if(poster)poster.alt=t("coverAlt");renderMain();if(!screens.stage.hidden)renderStage();if(!screens.battle.hidden)renderBattle();};localizeOwned();setTimeout(localizeOwned,0);requestAnimationFrame(()=>requestAnimationFrame(localizeOwned));syncSoundButton();}
   function renderMain(){
     $("#startBtn").textContent=t("start");
     let summary=$("#campaignSummary");
@@ -313,7 +406,7 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
     }
     summary.textContent=t("campaignProgress",{cleared:progress.completedStages.length});
   }
-  function localized(pair){const index=locale==="zh-Hant"?1:locale==="es"?2:0;return pair?.[index]||pair?.[0]||"";}
+  function localized(pair){const index=locale==="zh-Hant"?1:locale==="es"?2:0;return pair?.[locale]||pair?.[index]||pair?.[0]||"";}
   function setCenteredStageCard(card){
     if(!card)return;
     centeredStage=Math.max(0,Math.min(STAGE_COUNT-1,Number(card.dataset.stage)||0));
@@ -524,6 +617,6 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
 let railSettleTimer=0;$("#regionRail").addEventListener("scroll",()=>{clearTimeout(railSettleTimer);railSettleTimer=setTimeout(()=>{railSettleTimer=0;settleStageRailSelection();},100);},{passive:true});
   $("#regionRail").addEventListener("wonder:stage-snap",settleStageRailSelection);
   addEventListener("resize",()=>requestAnimationFrame(recenterStageSelection));
-  if(new URLSearchParams(location.search).has("smoke"))window.__gearpackSmoke={stageCount:STAGE_COUNT,stages:stages.map((definition,index)=>({stage:index+1,region:Math.floor(index/5)+1,name:definition.name[0],rule:definition.rule[0],enemies:[...definition.enemies],checkpoint:(index+1)%5===0})),unlockAll(){progress.unlockedStage=STAGE_COUNT;progress.selectedStage=STAGE_COUNT-1;selectedStage=STAGE_COUNT-1;centeredStage=selectedStage;saveProgress();showScreen("stage");return progress;},openStageForTest(stage=1){progress.unlockedStage=Math.max(progress.unlockedStage,Math.min(STAGE_COUNT,stage));saveProgress();newRun(Math.max(0,Math.min(STAGE_COUNT-1,stage-1)));return {stage:run.stage+1,enemy:enemyAt(0,run.stage).id};},openEncounterForTest(stage=30,room=5){this.openStageForTest(stage);run.room=Math.max(0,Math.min(ROOMS_PER_STAGE-1,room-1));prepareEnemyState(enemyAt(run.room,run.stage));renderBattle();return {stage:run.stage+1,room:run.room+1,enemy:enemyAt(run.room,run.stage).id};},mechanicPreview(stage=30,room=5){const enemy=enemyAt(room-1,stage-1);return {id:enemy.id,shield:enemy.shield||0,openingHit:enemy.openingHit||0,isolation:enemy.isolation||0,corrosion:enemy.corrosion||0,rowHeat:enemy.rowHeat||0,overload:Boolean(enemy.overload),rotatingSeal:Boolean(enemy.rotatingSeal),phase:enemy.phase||null};},finishRegionForTest(){if(!run)newRun(0);run.room=4;showResult(true);},finishStageForTest(stage=1){if(!run||run.stage!==stage-1)newRun(stage-1);run.room=4;showResult(true);},failStageForTest(stage=1){if(!run||run.stage!==stage-1)newRun(stage-1);showResult(false);},openMerchantForTest(){if(!run)newRun(0);showMerchant();},openFullLootForTest(){if(!run)newRun(0);run.tray=Array.from({length:12},(_,index)=>items[index%6].id);run.placed=[];selectedItem=run.tray[0];selectedTrayIndex=0;showLoot(()=>{run.room=1;prepareEnemyState(enemyAt(run.room,run.stage));saveRun();setFeedback(t("repack"));renderBattle();});}};
+  if(new URLSearchParams(location.search).has("smoke"))window.__gearpackSmoke={stageCount:STAGE_COUNT,stages:stages.map((definition,index)=>({stage:index+1,region:Math.floor(index/5)+1,name:definition.name[0],rule:definition.rule[0],enemies:[...definition.enemies],checkpoint:(index+1)%5===0})),localeAudit(localeCode){const dictionary=copy[localeCode]||{};return {copyMissing:Object.keys(copy.en).filter((key)=>!Object.prototype.hasOwnProperty.call(dictionary,key)),copyEqualEnglish:Object.keys(copy.en).filter((key)=>dictionary[key]===copy.en[key]),itemsMissing:items.filter((item)=>!item.name[localeCode]||item.name[localeCode]===item.name.en).map((item)=>item.id),regionsMissing:regions.filter((region)=>!region.name[localeCode]||region.name[localeCode]===region.name[0]).map((_,index)=>index+1),stagesMissing:stages.filter((definition)=>!definition.name[localeCode]||definition.name[localeCode]===definition.name[0]||!definition.rule[localeCode]||definition.rule[localeCode]===definition.rule[0]).map((_,index)=>index+1),enemiesMissing:Object.entries(enemyCatalog).filter(([,enemy])=>!enemy.name[localeCode]||enemy.name[localeCode]===enemy.name[0]).map(([id])=>id)};},unlockAll(){progress.unlockedStage=STAGE_COUNT;progress.selectedStage=STAGE_COUNT-1;selectedStage=STAGE_COUNT-1;centeredStage=selectedStage;saveProgress();showScreen("stage");return progress;},openStageForTest(stage=1){progress.unlockedStage=Math.max(progress.unlockedStage,Math.min(STAGE_COUNT,stage));saveProgress();newRun(Math.max(0,Math.min(STAGE_COUNT-1,stage-1)));return {stage:run.stage+1,enemy:enemyAt(0,run.stage).id};},openEncounterForTest(stage=30,room=5){this.openStageForTest(stage);run.room=Math.max(0,Math.min(ROOMS_PER_STAGE-1,room-1));prepareEnemyState(enemyAt(run.room,run.stage));renderBattle();return {stage:run.stage+1,room:run.room+1,enemy:enemyAt(run.room,run.stage).id};},mechanicPreview(stage=30,room=5){const enemy=enemyAt(room-1,stage-1);return {id:enemy.id,shield:enemy.shield||0,openingHit:enemy.openingHit||0,isolation:enemy.isolation||0,corrosion:enemy.corrosion||0,rowHeat:enemy.rowHeat||0,overload:Boolean(enemy.overload),rotatingSeal:Boolean(enemy.rotatingSeal),phase:enemy.phase||null};},finishRegionForTest(){if(!run)newRun(0);run.room=4;showResult(true);},finishStageForTest(stage=1){if(!run||run.stage!==stage-1)newRun(stage-1);run.room=4;showResult(true);},failStageForTest(stage=1){if(!run||run.stage!==stage-1)newRun(stage-1);showResult(false);},openMerchantForTest(){if(!run)newRun(0);showMerchant();},openFullLootForTest(){if(!run)newRun(0);run.tray=Array.from({length:12},(_,index)=>items[index%6].id);run.placed=[];selectedItem=run.tray[0];selectedTrayIndex=0;showLoot(()=>{run.room=1;prepareEnemyState(enemyAt(run.room,run.stage));saveRun();setFeedback(t("repack"));renderBattle();});}};
   applyLocale(locale);showScreen("main");
 })();

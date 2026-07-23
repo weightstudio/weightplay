@@ -1856,6 +1856,31 @@ body.is-bakery-playing .hint-text {
   text-overflow: clip;
 }
 
+@media (max-height: 430px) and (min-aspect-ratio: 1 / 1) {
+  body.is-bakery-playing #playPanel.play-panel {
+    grid-template-columns: minmax(230px, 0.75fr) minmax(340px, 1.25fr);
+    grid-template-rows: 44px 56px minmax(0, 1fr);
+    grid-template-areas:
+      "head head"
+      "board orders"
+      "board hint";
+    gap: 6px 10px;
+  }
+
+  body.is-bakery-playing #playPanel.play-panel #board.bubble-board {
+    width: auto !important;
+    height: 100% !important;
+    align-self: center !important;
+  }
+
+  body.is-bakery-playing .hint-text {
+    width: 100%;
+    max-height: none;
+    align-self: start;
+    font-size: 0.75rem;
+  }
+}
+
 /* Shared Battle scaling owns #playPanel; keep its desktop wrapper from scaling it a second time. */
 body.wp-logical-battle-active.is-bakery-playing .bakery-game {
   left: calc(50% - var(--wp-battle-canvas-rendered-width, 390px) / 2);

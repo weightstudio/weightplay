@@ -17,6 +17,7 @@
     ar:['الصحة','رونة الضربة القاضية للفريق','تستبدل الهجمات العادية؛ يستخدم كل بطل ضربته القاضية بالترتيب.','تصاعد المعركة','يضرب الجميع بقوة 1.2× ATK ويكسب +0.25× ATK لكل موجة تم بلوغها.']
   };
   const weekly={en:'Every week','zh-Hant':'每週','zh-Hans':'每周',ja:'毎週',ko:'매주',es:'Cada semana','pt-BR':'Toda semana',fr:'Chaque semaine',de:'Jede Woche',it:'Ogni settimana',ru:'Каждую неделю',hi:'हर सप्ताह',ar:'كل أسبوع'};
+  const rewardClaimed={en:'Reward claimed','zh-Hant':'獎勵已領取','zh-Hans':'奖励已领取',ja:'報酬受取済み',ko:'보상 수령 완료',es:'Recompensa recibida','pt-BR':'Recompensa recebida',fr:'Récompense récupérée',de:'Belohnung abgeholt',it:'Ricompensa riscattata',ru:'Награда получена',hi:'पुरस्कार मिल चुका है',ar:'تم استلام المكافأة'};
   const cooldown={en:'Cooldown','zh-Hant':'冷卻','zh-Hans':'冷却',ja:'クールダウン',ko:'재사용 대기',es:'Recarga','pt-BR':'Recarga',fr:'Recharge',de:'Abklingzeit',it:'Ricarica',ru:'Перезарядка',hi:'कूलडाउन',ar:'وقت الانتظار'};
   const battleSpeed={en:'Battle speed','zh-Hant':'戰鬥速度','zh-Hans':'战斗速度',ja:'バトル速度',ko:'전투 속도',es:'Velocidad de combate','pt-BR':'Velocidade de batalha',fr:'Vitesse de combat',de:'Kampfgeschwindigkeit',it:'Velocità di battaglia',ru:'Скорость боя',hi:'युद्ध की गति',ar:'سرعة المعركة'};
   const sound={
@@ -35,7 +36,7 @@
     ar:['الصوت','تشغيل الصوت','إيقاف الصوت']
   };
   const keys=['hp','runeSpecial','runeSpecialDesc','specialPanda','specialPandaDesc'];
-  Object.keys(L).forEach(code=>{const values=copy[code]||copy.en,soundValues=sound[code]||sound.en,patch={weekly:weekly[code]||weekly.en,cooldown:cooldown[code]||cooldown.en,battleSpeed:battleSpeed[code]||battleSpeed.en,sound:soundValues[0],enableSound:soundValues[1],disableSound:soundValues[2]};keys.forEach((key,index)=>patch[key]=values[index]);Object.assign(L[code],patch)});
+  Object.keys(L).forEach(code=>{const values=copy[code]||copy.en,soundValues=sound[code]||sound.en,patch={weekly:weekly[code]||weekly.en,rewardClaimed:rewardClaimed[code]||rewardClaimed.en,cooldown:cooldown[code]||cooldown.en,battleSpeed:battleSpeed[code]||battleSpeed.en,sound:soundValues[0],enableSound:soundValues[1],disableSound:soundValues[2]};keys.forEach((key,index)=>patch[key]=values[index]);Object.assign(L[code],patch)});
   L['zh-Hant'].leaderNyraDesc='必殺符石威力 +20%。';
   L['zh-Hans'].leaderNyraDesc='必杀符石威力 +20%。';
 })();
