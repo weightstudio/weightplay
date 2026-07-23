@@ -1828,6 +1828,14 @@
     }
   });
 
+  const suppressRepeatedButtonActivation = (event) => {
+    if (!event.repeat || (event.key !== "Enter" && event.key !== " ") || !event.target.closest("button")) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  };
+  startBtn.addEventListener("keydown", suppressRepeatedButtonActivation, true);
+  stageRail.addEventListener("keydown", suppressRepeatedButtonActivation, true);
+
   restartBtn.addEventListener("click", () => {
     window.WonderAnalytics?.track?.("game_restart", { game_id: GAME_ID, score, source: "button" });
     resetGame(false, "restart");

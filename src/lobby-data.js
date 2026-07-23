@@ -54,6 +54,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "移動爆鬃獅雷歐，挑戰 30 個具名守城關卡、四種編隊、八種野獸角色與六種王攻擊。",
       },
       meta: { en: ["Four Formations", "Six Bosses", "30 Stages"], "zh-Hant": ["四種編隊", "六位王", "30 關"] },
+      previewVideo: "assets/previews/wonder-crash-battle.webm",
       art: { kind: "image", background: "assets/wonder-crash-cover.webp", hero: "assets/weightplay-character-boom-mane-lion-cutout.webp" },
     },
     {
@@ -72,6 +73,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "在 30 個圖片便當盒關卡分類食物，並完成六位友善守護員的顏色檢查。",
       },
       meta: { en: ["Picture Match", "30 Levels", "Six Guardians"], "zh-Hant": ["圖片配對", "30 關", "六位守護員"] },
+      previewVideo: "assets/previews/color-lunchbox-battle.webm",
       art: { kind: "image", background: "assets/lunchbox-cover.webp", hero: "assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" },
     },
     {
@@ -90,6 +92,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "規劃相連動物泡泡的消除順序，完成 30 關食譜、多托盤訂單與友善的 Panko 檢核關。",
       },
       meta: { en: ["30 Stages", "Recipe Rules", "Panko Checks"], "zh-Hant": ["30 關", "食譜規則", "Panko 檢核"] },
+      previewVideo: "assets/previews/bubble-bakery-battle.webm",
       art: { kind: "image", background: "assets/bubble-bakery-cover.webp", hero: "assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp" },
     },
     {
@@ -108,6 +111,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "引導水果通過 30 關物理救援，挑戰移動籃、分層風、雙重彈跳與 Panko 檢核。",
       },
       meta: { en: ["30 Stages", "Physics Routes", "Panko Checks"], "zh-Hant": ["30 關", "物理路線", "Panko 檢核"] },
+      previewVideo: "assets/previews/animal-rope-rescue-battle.webm",
       art: { kind: "image", background: "assets/animal-vine-rescue-cover.webp", hero: "assets/weightplay-character-spark-paw-fox-cutout.webp" },
     },
     {
@@ -126,6 +130,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "完成 30 個有存檔的樂園挑戰，選擇照顧方式、安排棲地、升級設施，並通過六次友善審查。",
       },
       meta: { en: ["30 Challenges", "Park Care", "Six Reviews"], "zh-Hant": ["30 個挑戰", "樂園照顧", "六次審查"] },
+      previewVideo: "assets/previews/animal-zoo-idle-battle.webm",
       art: { kind: "image", background: "assets/animal-zoo-idle-cover.webp", hero: "assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" },
     },
     {
@@ -144,6 +149,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "完成 30 個有存檔的動物星圖關卡，面對預覽、月光洗牌、順序配對與星座移位。",
       },
       meta: { en: ["30 Stages", "Memory Rules", "Six Keeper Checks"], "zh-Hant": ["30 關", "記憶規則", "六次守護者檢查"] },
+      previewVideo: "assets/previews/star-memory-battle.webm",
       art: { kind: "image", background: "assets/memory-cover.webp", hero: "assets/weightplay-character-moon-cap-owl-cutout.webp" },
     },
     {
@@ -162,6 +168,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "左右切換跑道，閃避草原障礙並挑戰高分。",
       },
       meta: { en: ["Safari", "Score Attack", "60 Sec"], "zh-Hant": ["草原跑酷", "分數挑戰", "60 秒"] },
+      previewVideo: "assets/previews/campus-dash-battle.webm",
       art: { kind: "image", background: "assets/campus-dash-cover.webp", hero: "assets/weightplay-character-spark-paw-fox-cutout.webp" },
     },
     {
@@ -180,6 +187,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "消除動物零食方塊，用有限步數完成收集目標並挑戰最佳分數。",
       },
       meta: { en: ["30 Stages", "Six Goal Families", "Six Checkpoints"], "zh-Hant": ["30 關", "六種目標", "六個檢查關"] },
+      previewVideo: "assets/previews/snack-blocks-battle.webm",
       art: { kind: "image", background: "assets/snack-blocks-cover.webp", hero: "assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp" },
     },
     {
@@ -198,6 +206,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "落下動物球並合成相同動物，一路挑戰到獅王球與最佳分數。",
       },
       meta: { en: ["30 Challenges", "Five Physics Rules", "Six Checkpoints"], "zh-Hant": ["30 個挑戰", "五種物理規則", "六個檢查關"] },
+      previewVideo: "assets/previews/fruit-merge-battle.webm",
       art: { kind: "image", background: "assets/fruit-merge-cover.webp", hero: "assets/weightplay-character-moss-shell-turtle-cutout.webp" },
     },
     {
@@ -233,6 +242,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "完成 30 個無倒數的記憶挑戰，應對預覽、薄霧、移動卡牌與 6 個花園檢查點。",
       },
       meta: { en: ["30 Challenges", "Four Memory Rules", "No Timer"], "zh-Hant": ["30 個挑戰", "4 種記憶規則", "無倒數"] },
+      previewVideo: "assets/previews/garden-tiles-battle.webm",
       art: { kind: "image", background: "assets/garden-tiles-cover.webp", hero: "assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" },
     },
     {
@@ -251,6 +261,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "引導動物完成 30 條路線，應對水果、黏泥、鑰匙門、脆弱小路與 6 個救援檢查點。",
       },
       meta: { en: ["30 Trails", "Four Route Rules", "No Timer"], "zh-Hant": ["30 條路線", "4 種路線規則", "無倒數"] },
+      previewVideo: "assets/previews/animal-rescue-battle.webm",
       art: { kind: "image", background: "assets/animal-rescue-cover.webp", hero: "assets/weightplay-character-boom-mane-lion-cutout.webp" },
     },
     {
@@ -269,6 +280,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "搜尋 30 個棲地，應對指定順序、動物雙雙、偽裝、訪客、移動巡遊與六個檢查點。",
       },
       meta: { en: ["30 Habitats", "Six Search Rules", "No Timer Failure"], "zh-Hant": ["30 個棲地", "6 種搜尋規則", "無倒數失敗"] },
+      previewVideo: "assets/previews/animal-hidden-safari-battle.webm",
       art: { kind: "image", background: "assets/animal-hidden-safari-cover.webp", hero: "assets/weightplay-character-moon-cap-owl-cutout.webp" },
     },
     {
@@ -287,6 +299,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "配置動物守衛，挑戰 30 個花園關卡、可判斷的特殊野獸與六場獨立首領戰。",
       },
       meta: { en: ["Hero Defense", "Animal Upgrades", "Boss Battles"], "zh-Hant": ["英雄防守", "動物升級", "Boss 戰"] },
+      previewVideo: "assets/previews/animal-guard-yard-battle.webm",
       art: { kind: "image", background: "assets/animal-guard-yard-poster.webp", hero: "assets/weightplay-character-moss-shell-turtle-cutout.webp" },
     },
     {
@@ -329,6 +342,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "完成 30 個動物觀察任務，從圖片、棲地、外觀、行為、食物、神祕圖片與剪影線索找出答案。",
       },
       meta: { en: ["30 Stages", "6 Chapters", "Animal Facts"], "zh-Hant": ["30 關", "6 章節", "動物知識"] },
+      previewVideo: "assets/previews/animal-quiz-battle.webm",
       art: { kind: "image", background: "assets/quiz-cover.webp", hero: "assets/weightplay-character-moon-cap-owl-cutout.webp" },
     },
     {
@@ -347,6 +361,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "完成 30 個溫和動物園班次，練習圖片道具、照顧分類、記住需求與順序照顧。",
       },
       meta: { en: ["30 Shifts", "6 Keeper Checks", "Picture Care"], "zh-Hant": ["30 關", "6 次檢核", "圖片照顧"] },
+      previewVideo: "assets/previews/zoo-helper-day-battle.webm",
       art: { kind: "image", background: "assets/zoo-helper-day-cover.webp", hero: "assets/weightplay-character-gear-horn-rhino-cutout.webp" },
     },
     {
@@ -365,6 +380,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "讓六種形狀朋友完成 30 條路線，挑戰輪廓、移動、記憶與驗票規則。",
       },
       meta: { en: ["30 Routes", "6 Checks", "Shape Memory"], "zh-Hant": ["30 路線", "6 次檢查", "形狀記憶"] },
+      previewVideo: "assets/previews/shape-train-battle.webm",
       art: { kind: "image", background: "assets/shape-train-cover.webp", hero: "assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" },
     },
     {
@@ -383,6 +399,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "完成 30 個動物幫忙任務，挑戰圖片道具、雙線索、記憶需求與換位工具。",
       },
       meta: { en: ["30 Missions", "6 Helper Checks", "Scene Clues"], "zh-Hant": ["30 任務", "6 次幫手檢查", "情境線索"] },
+      previewVideo: "assets/previews/tiny-weather-rescue-battle.webm",
       art: { kind: "image", background: "assets/tiny-weather-rescue-cover.webp", hero: "assets/weightplay-character-gear-horn-rhino-cutout.webp" },
     },
     {
@@ -544,6 +561,7 @@ window.WONDER_LOBBY = {
         ja: ["30ミッション", "8×8ボード", "無限の森"], ko: ["30개 임무", "8×8 보드", "무한 숲"],
         "pt-BR": ["30 missões", "Tabuleiro 8×8", "Bosque infinito"], de: ["30 Missionen", "8×8-Brett", "Endloswald"],
       },
+      previewVideo: "assets/previews/animal-block-grove-battle.webm",
       art: { kind: "image", background: "assets/animal-block-grove-cover.webp", hideHero: true },
     },
     {
@@ -584,6 +602,7 @@ window.WONDER_LOBBY = {
         ja: ["30ステージ", "封印された器", "容量変化"], ko: ["30개 스테이지", "봉인된 용기", "용량 변화"],
         "pt-BR": ["30 fases", "Recipientes selados", "Capacidade variável"], de: ["30 Stufen", "Versiegelte Gefäße", "Variable Kapazität"],
       },
+      previewVideo: "assets/previews/animal-color-springs-battle.webm",
       art: { kind: "image", background: "games/animal-color-springs/assets/animal-color-springs-cover.webp", hideHero: true },
     },
     {
@@ -636,6 +655,7 @@ window.WONDER_LOBBY = {
         ru: ["30 боёв", "Остановка по очереди", "1–3 монстра"], hi: ["30 युद्ध", "क्रमिक रुकना", "1–3 राक्षस"],
         ar: ["30 معركة", "توقف متتابع", "1–3 وحوش"],
       },
+      previewVideo: "assets/previews/animal-rune-reels-battle.webm",
       art: { kind: "image", background: "assets/animal-rune-reels/cover.webp", hideHero: true },
     },
     {
@@ -689,6 +709,7 @@ window.WONDER_LOBBY = {
         hi: ["30 मीनारें", "चार प्रतीक", "एक-स्पर्श पल्स"],
         ar: ["30 برجاً", "أربعة رموز", "نبضة بلمسة واحدة"],
       },
+      previewVideo: "assets/previews/animal-spectrum-pulse-battle.webm",
       art: { kind: "image", background: "assets/animal-spectrum-pulse/cover.webp", hideHero: true },
     },
     {
@@ -735,6 +756,7 @@ window.WONDER_LOBBY = {
         de: ["30 Kammern", "Stoffreaktionen", "Runenschlösser"], it: ["30 camere", "Reazioni", "Serrature runiche"],
         ru: ["30 камер", "Реакции веществ", "Рунные замки"],
       },
+      previewVideo: "assets/previews/animal-rootvault-pins-battle.webm",
       art: { kind: "image", background: "assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp", hideHero: true },
     },
     {
@@ -780,6 +802,7 @@ window.WONDER_LOBBY = {
         de: ["30 Rennen", "Freihandräder", "Live neu zeichnen"], it: ["30 rally", "Ruote libere", "Ridisegno dal vivo"],
         ru: ["30 гонок", "Свободный рисунок", "Смена на ходу"],
       },
+      previewVideo: "assets/previews/animal-sketchwheel-rally-battle.webm",
       art: { kind: "image", background: "assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp", hideHero: true },
     },
     {
@@ -826,6 +849,7 @@ window.WONDER_LOBBY = {
         de: ["30 Missionen", "Schließe die Schleife", "Schattenjäger"], it: ["30 missioni", "Chiudi l'anello", "Cacciatori d'ombra"],
         ru: ["30 миссий", "Замкните петлю", "Теневые охотники"],
       },
+      previewVideo: "assets/previews/animal-sanctuary-loop-battle.webm",
       art: { kind: "image", background: "assets/animal-sanctuary-loop/cover.webp", hideHero: true },
     },
     {
@@ -874,6 +898,7 @@ window.WONDER_LOBBY = {
         de: ["30 Angriffe", "Multiplikatortore", "Prismen-Übertrieb"], it: ["30 assalti", "Porte moltiplicatrici", "Sovraccarico prisma"],
         ru: ["30 штурмов", "Ворота-множители", "Призменная перегрузка"],
       },
+      previewVideo: "assets/previews/animal-prism-battalion-battle.webm",
       art: { kind: "image", background: "assets/animal-prism-battalion/cover.webp", hideHero: true },
     },
     {
@@ -922,6 +947,7 @@ window.WONDER_LOBBY = {
         de: ["30 Rennen", "Sammeln und stapeln", "Freie Spurwahl"], it: ["30 gare", "Raccogli e impila", "Scegli la corsia"],
         ru: ["30 гонок", "Собирай и складывай", "Выбирай любой путь"],
       },
+      previewVideo: "assets/previews/animal-skybridge-rivals-battle.webm",
       art: { kind: "image", background: "assets/animal-skybridge-rivals/cover.webp", hideHero: true },
     },
     {
@@ -1018,6 +1044,7 @@ window.WONDER_LOBBY = {
         de: ["30 Zonen", "Wachsen durch Bergen", "Rivalen und Rettungen"], it: ["30 zone", "Cresci recuperando", "Rivali e salvataggi"],
         ru: ["30 зон", "Рост через сбор", "Соперники и спасение"],
       },
+      previewVideo: "assets/previews/animal-rift-salvage-battle.webm",
       art: { kind: "image", background: "assets/animal-rift-salvage/cover.webp", hideHero: true },
     },
     {
@@ -1035,6 +1062,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "\u8abf\u5ea6\u52d5\u7269\u98db\u8239\u9032\u5165\u6b63\u78ba\u78bc\u982d\uff0c\u8655\u7406\u66b4\u98a8\u3001\u7d44\u54e1\u8207\u58c5\u585e\u3002"
       },
       meta: { en: ["Route Planning", "Five Shifts", "Skyport Growth"], "zh-Hant": ["\u822a\u7dda\u898f\u5283", "\u4e94\u500b\u73ed\u6b21", "\u5929\u7a7a\u6e2f\u6210\u9577"] },
+      previewVideo: "assets/previews/animal-skyport-dispatch-battle.webm",
       art: { kind: "image", background: "assets/animal-skyport-dispatch-cover.webp", hero: "assets/animal-skyport-dispatch-orla.webp" },
     },
     {
@@ -1109,6 +1137,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "挑戰 30 個救援關卡，運用反應式障礙、風、移動列與四種力量泡泡。",
       },
       meta: { en: ["30 Levels", "6 Safari Checks", "Bank & Power Shots"], "zh-Hant": ["30 關", "6 次草原檢查", "反彈與力量泡泡"] },
+      previewVideo: "assets/previews/animal-bubble-safari-battle.webm",
       art: { kind: "image", background: "assets/animal-bubble-safari-cover.webp", hideHero: true },
     },
     {
@@ -1146,6 +1175,7 @@ window.WONDER_LOBBY = {
         ja: ["12 枚のどうぶつ", "塗りつぶしとブラシ", "端末内ギャラリー"], ko: ["동물 그림 12장", "채우기와 브러시", "기기 갤러리"],
         "pt-BR": ["12 desenhos", "Preencher e pincel", "Galeria local"], de: ["12 Tierbilder", "Füller und Pinsel", "Lokale Galerie"],
       },
+      previewVideo: "assets/previews/animal-coloring-studio-battle.webm",
       art: { kind: "image", background: "assets/animal-coloring-studio-cover.webp", hideHero: true },
     },
     {
@@ -1186,6 +1216,7 @@ window.WONDER_LOBBY = {
         ja: ["30 パズル", "重なる木板", "ロックネジ"], ko: ["퍼즐 30개", "겹친 나무판", "잠긴 나사"],
         "pt-BR": ["30 fases", "Placas sobrepostas", "Parafusos travados"], de: ["30 Rätsel", "Überlappende Platten", "Gesperrte Schrauben"],
       },
+      previewVideo: "assets/previews/animal-screw-workshop-battle.webm",
       art: { kind: "image", background: "assets/animal-screw-workshop-cover.webp", hideHero: true },
     },
     {
@@ -1223,6 +1254,7 @@ window.WONDER_LOBBY = {
         ja: ["30ルート", "四方向の交通", "信号と車列"], ko: ["30개 경로", "사방 교통", "신호와 대열"],
         "pt-BR": ["30 rotas", "Trânsito em 4 vias", "Sinais e comboios"], de: ["30 Routen", "Vier-Wege-Verkehr", "Signale und Konvois"],
       },
+      previewVideo: "assets/previews/animal-parking-patrol-battle.webm",
       art: { kind: "image", background: "assets/animal-parking-patrol-cover.webp", hideHero: true },
     },
     {
@@ -1241,6 +1273,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "挑戰 30 個立體動物牌局，解開路徑封印、救援家族、跟隨交替巡守路徑並完成六個棲地終局。",
       },
       meta: { en: ["30 Boards", "Trail Seals", "Family Rescue"], "zh-Hant": ["30 關", "路徑封印", "家族救援"] },
+      previewVideo: "assets/previews/animal-habitat-mahjong-battle.webm",
       art: { kind: "image", background: "assets/animal-habitat-mahjong-cover.webp", hideHero: true },
     },
     {
@@ -1259,6 +1292,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "跟著動物線索連接相鄰字母或文字，完成英語與繁體中文的字詞小徑。",
       },
       meta: { en: ["Bilingual Words", "Path Logic", "Animal Clues"], "zh-Hant": ["雙語字詞", "路徑邏輯", "動物線索"] },
+      previewVideo: "assets/previews/animal-word-trails-battle.webm",
       art: { kind: "image", background: "assets/animal-word-trails-cover.webp", hideHero: true },
     },
     {
@@ -1288,6 +1322,7 @@ window.WONDER_LOBBY = {
       href: "games/animal-mosaic-clues/",
       description: { en: "Read row and column runs to reveal 30 unique animal mosaics, from guided 5×5 signs to deduction-rich 12×12 portraits.", "zh-Hant": "解讀橫列與直行數字，在 30 幅唯一解謎圖中，從 5×5 引導圖案進階到 12×12 動物肖像。", "zh-Hans": "解读横列与直行数字，在 30 幅唯一解谜图中，从 5×5 引导图案进阶到 12×12 动物肖像。", ja: "行と列の数字を読み、5×5の入門図から12×12の動物肖像まで、唯一解の30枚を完成させます。", ko: "행과 열 단서를 읽고 5×5 안내 퍼즐부터 12×12 동물 초상까지 유일해 30개를 완성하세요.", es: "Lee las pistas de filas y columnas y revela 30 mosaicos únicos, desde cuadrículas 5×5 hasta retratos 12×12.", "pt-BR": "Leia as pistas de linhas e colunas e revele 30 mosaicos únicos, de grades 5×5 a retratos 12×12.", fr: "Lisez les indices des lignes et colonnes pour révéler 30 mosaïques uniques, des grilles 5×5 aux portraits 12×12.", de: "Lies Zeilen- und Spaltenhinweise und enthülle 30 eindeutig lösbare Tiermosaike von 5×5 bis 12×12.", it: "Leggi gli indizi di righe e colonne e svela 30 mosaici unici, dalle griglie 5×5 ai ritratti 12×12.", ru: "Читайте подсказки строк и столбцов и открывайте 30 мозаик с единственным решением — от 5×5 до 12×12.", hi: "पंक्ति और स्तंभ संकेत पढ़कर 30 अनोखे पशु मोज़ेक खोलें—5×5 अभ्यास से 12×12 चित्रों तक।", ar: "اقرأ إشارات الصفوف والأعمدة لكشف 30 فسيفساء حيوانية فريدة، من شبكات 5×5 إلى صور 12×12." },
       meta: { en: ["30 Unique Puzzles", "No Guessing", "5×5 to 12×12"], "zh-Hant": ["30 幅唯一解", "無需猜測", "5×5 至 12×12"], "zh-Hans": ["30 幅唯一解", "无需猜测", "5×5 至 12×12"], ja: ["唯一解30問", "推測不要", "5×5から12×12"], ko: ["유일해 30개", "추측 불필요", "5×5에서 12×12"], es: ["30 puzles únicos", "Sin adivinar", "De 5×5 a 12×12"], "pt-BR": ["30 puzzles únicos", "Sem adivinhação", "De 5×5 a 12×12"], fr: ["30 grilles uniques", "Sans deviner", "De 5×5 à 12×12"], de: ["30 eindeutige Rätsel", "Ohne Raten", "5×5 bis 12×12"], it: ["30 puzzle unici", "Senza tentativi", "Da 5×5 a 12×12"], ru: ["30 уникальных задач", "Без угадывания", "От 5×5 до 12×12"], hi: ["30 अनोखी पहेलियाँ", "बिना अनुमान", "5×5 से 12×12"], ar: ["30 لغزًا فريدًا", "من دون تخمين", "من 5×5 إلى 12×12"] },
+      previewVideo: "assets/previews/animal-mosaic-clues-battle.webm",
       art: { kind: "image", background: "assets/animal-mosaic-clues/cover.webp", hideHero: true },
     },
     {
@@ -1371,7 +1406,8 @@ window.WONDER_LOBBY.games.push({
     en: ["30 Cafe Days", "Six Rule Chapters", "Saved Upgrades"],
     "zh-Hant": ["30 \u500b\u71df\u696d\u65e5", "\u516d\u7ae0\u898f\u5247", "\u5b58\u6a94\u5347\u7d1a"],
   },
-  art: { kind: "image", background: "assets/animal-cafe-rush-cover.webp", hideHero: true },
+      previewVideo: "assets/previews/animal-cafe-rush-battle.webm",
+      art: { kind: "image", background: "assets/animal-cafe-rush-cover.webp", hideHero: true },
 });
 
 window.WONDER_LOBBY.games.push({

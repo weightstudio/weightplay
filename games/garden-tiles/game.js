@@ -732,6 +732,8 @@
 
   function renderBoard(focusIndex = null) {
     board.innerHTML = "";
+    const inputLocked = busy || previewing;
+    board.setAttribute("aria-busy", String(inputLocked));
     for (const tile of tiles) {
       const button = document.createElement("button");
       button.type = "button";
@@ -742,6 +744,7 @@
       const selected = selectedTile?.index === tile.index;
       button.setAttribute("aria-label", selected || previewing ? tileName(tile.art) : t("hiddenTile"));
       button.setAttribute("aria-pressed", String(selected));
+      button.disabled = inputLocked;
       if (tile.matched) {
         button.classList.add("matched");
         button.disabled = true;
