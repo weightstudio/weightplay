@@ -1289,6 +1289,27 @@
     return value;
   }
 
+  const battleLevelTerms = {
+    en: "Level",
+    "zh-Hant": "等級",
+    "zh-Hans": "等级",
+    ja: "レベル",
+    ko: "레벨",
+    es: "Nivel",
+    "pt-BR": "Nível",
+    fr: "Niveau",
+    de: "Stufe",
+    it: "Livello",
+    ru: "Уровень",
+    hi: "स्तर",
+    ar: "المستوى",
+  };
+
+  function battleLevelText(level) {
+    const term = battleLevelTerms[state.locale] || battleLevelTerms.en;
+    return `${term} ${Math.max(1, Math.floor(Number(level) || 1))}`;
+  }
+
   function localizedValue(values) {
     if (!values) return "";
     return values[state.locale]
@@ -1628,7 +1649,7 @@
       const d = state.selectedDefender;
       const unit = unitTypes.find((item) => item.id === d.type);
       const traits = unitTraitText(unit);
-      nodes.selectedInfo.innerHTML = `<strong>${d.name}</strong><span>${t("roleLabel")}: ${unitRoleText(unit)}</span>${traits ? `<span>${t("traitLabel")}: ${traits}</span>` : ""}<span>${t("level")} ${d.level} | ${t("hp")}: ${Math.ceil(d.hp)}/${d.maxHp}</span><span>${t("damage")}: ${Math.ceil(d.damage)} | ${t("range")}: ${d.range} | ${t("attackSpeed")}: ${formatUnitTempo(unit || d)}</span><span>${t("selectedActionInfo", { upgrade: upgradeCost(d), sell: sellRefund(d) })}</span>`;
+      nodes.selectedInfo.innerHTML = `<strong>${d.name}</strong><span>${t("roleLabel")}: ${unitRoleText(unit)}</span>${traits ? `<span>${t("traitLabel")}: ${traits}</span>` : ""}<span>${battleLevelText(d.level)} | ${t("hp")}: ${Math.ceil(d.hp)}/${d.maxHp}</span><span>${t("damage")}: ${Math.ceil(d.damage)} | ${t("range")}: ${d.range} | ${t("attackSpeed")}: ${formatUnitTempo(unit || d)}</span><span>${t("selectedActionInfo", { upgrade: upgradeCost(d), sell: sellRefund(d) })}</span>`;
       updateCommandButtons();
       return;
     }
@@ -2121,8 +2142,8 @@
     d.damage *= 1.28;
     d.range += d.level % 2 === 0 ? 0.18 : 0;
     addSkillEffect(tileToPoint(d.tile), skillFxFrames.gear, 1.05, 0.5);
-    addFloatingText(tileToPoint(d.tile), t("upgradeFeedback", { level: d.level }), "#fef08a");
-    showToast(t("upgraded", { name: d.name, level: d.level }));
+    addFloatingText(tileToPoint(d.tile), `↑ ${battleLevelText(d.level)}`, "#fef08a");
+    showToast(`${d.name} ↑ ${battleLevelText(d.level)}`);
     playSfx("upgrade");
     track("game_upgrade_unit", { stage: state.currentStage, unit: d.type, level: d.level, cost });
     updateHud();
@@ -3470,7 +3491,7 @@
     ctx.fillStyle = d.kind === "hero" ? "#ffd166" : "#e9f7ff";
     ctx.font = `${Math.max(11, board.cell * 0.18)}px system-ui`;
     ctx.textAlign = "center";
-    ctx.fillText(`Lv.${d.level}`, p.x, p.y + size * 0.48);
+    ctx.fillText(battleLevelText(d.level), p.x, p.y + size * 0.48);
     ctx.restore();
   }
 
@@ -5448,6 +5469,42 @@
     return result;
   }
 
+  function runBattleLevelLocalizationScenario() {
+    state.manualSimulation = true;
+    state.save = {
+      bestStage: 1,
+      diamonds: 12,
+      upgradePoints: 0,
+      tech: { power: 0, bulwark: 0, economy: 0 },
+      cosmetics: { goldenFrame: false },
+      clears: {},
+      stars: {},
+    };
+    startStage(1);
+    state.coins = 999;
+    state.selectedBuild = "guard";
+    buildUnit({ x: 2, y: 2 });
+    state.selectedDefender = state.defenders[0];
+    updateHud();
+    const before = nodes.selectedInfo.textContent;
+    state.effects = [];
+    upgradeSelected();
+    const feedback = state.effects
+      .filter((effect) => effect.type === "floatingText")
+      .map((effect) => effect.text);
+    const result = {
+      locale: state.locale,
+      level: state.selectedDefender.level,
+      expected: battleLevelText(state.selectedDefender.level),
+      before,
+      selectedInfo: nodes.selectedInfo.textContent,
+      toast: nodes.toast.textContent,
+      feedback,
+    };
+    state.manualSimulation = false;
+    return result;
+  }
+
   function runHitResponseScenario() {
     state.manualSimulation = true;
     state.save = {
@@ -6162,6 +6219,7 @@
       runBuildAffordabilityScenario,
       runSelectedActionStateScenario,
       runActionFeedbackScenario,
+      runBattleLevelLocalizationScenario,
       runHitResponseScenario,
       runWaveClearFeedbackScenario,
       runSelectedBuildInfoScenario,

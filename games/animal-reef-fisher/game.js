@@ -609,6 +609,27 @@
     return stageLocaleOverrides[activeLocale]?.[key] || t(key);
   }
 
+  const levelTerms = {
+    en: "Level",
+    "zh-Hant": "等級",
+    "zh-Hans": "等级",
+    ja: "レベル",
+    ko: "레벨",
+    es: "Nivel",
+    "pt-BR": "Nível",
+    fr: "Niveau",
+    de: "Stufe",
+    it: "Livello",
+    ru: "Уровень",
+    hi: "स्तर",
+    ar: "المستوى",
+  };
+
+  function formatLevel(level) {
+    const activeLocale = activeI18nLocale() || document.documentElement.lang || locale;
+    return `${levelTerms[activeLocale] || levelTerms.en} ${level}`;
+  }
+
   function playSound(name) {
     window.WonderSound?.play(name);
   }
@@ -753,7 +774,7 @@
       return `
         <div class="gear-card">
           <img src="${item.img}" alt="" />
-          <div><strong>${item.name[locale]}</strong><span>Lv.${level}</span></div>
+          <div><strong>${item.name[locale]}</strong><span>${formatLevel(level)}</span></div>
           <button class="secondary-btn" data-gear="${item.id}" type="button">${maxed ? t("max") : `${t("upgrade")} ${cost}`}</button>
         </div>
       `;

@@ -1199,6 +1199,27 @@
     return localizeChinese(interpolated, locale);
   }
 
+  const resultSavedText = {
+    en: "Saved: Level {level} · {xp}/{nextXp} XP · {coins} Beast Coins",
+    "zh-Hant": "已儲存：等級 {level} · {xp}/{nextXp} 經驗值 · {coins} 野獸幣",
+    "zh-Hans": "已保存：等级 {level} · {xp}/{nextXp} 经验值 · {coins} 野兽币",
+    ja: "保存済み：レベル {level} · {xp}/{nextXp} XP · {coins} ビーストコイン",
+    ko: "저장됨: 레벨 {level} · {xp}/{nextXp} XP · {coins} 비스트 코인",
+    es: "Guardado: Nivel {level} · {xp}/{nextXp} XP · {coins} Monedas Bestia",
+    "pt-BR": "Salvo: Nível {level} · {xp}/{nextXp} XP · {coins} Moedas da Besta",
+    fr: "Enregistré : niveau {level} · {xp}/{nextXp} XP · {coins} Pièces de bête",
+    de: "Gespeichert: Stufe {level} · {xp}/{nextXp} XP · {coins} Bestienmünzen",
+    it: "Salvato: livello {level} · {xp}/{nextXp} XP · {coins} Monete Bestia",
+    ru: "Сохранено: уровень {level} · {xp}/{nextXp} опыта · {coins} монет зверей",
+    hi: "सहेजा गया: स्तर {level} · {xp}/{nextXp} XP · {coins} बीस्ट सिक्के",
+    ar: "تم الحفظ: المستوى {level} · {xp}/{nextXp} XP · {coins} من عملات الوحوش",
+  };
+
+  function formatResultSaved(params) {
+    const template = resultSavedText[getLocale()] || resultSavedText.en;
+    return Object.entries(params).reduce((value, [key, replacement]) => value.replaceAll(`{${key}}`, String(replacement)), template);
+  }
+
   const leaveText = {
     en: {
       title: "Leave this mission?",
@@ -2622,7 +2643,7 @@
       window.WonderSound?.play("wrong");
     }
     nodes.resultRewards.textContent = t("resultRewards", { xp: state.xpEarned, coins: state.coinsEarned });
-    nodes.resultSaved.textContent = t("resultSaved", { level: profile.level, xp: profile.xp, nextXp: xpToNext(profile.level), coins: profile.coins });
+    nodes.resultSaved.textContent = formatResultSaved({ level: profile.level, xp: profile.xp, nextXp: xpToNext(profile.level), coins: profile.coins });
     if (won && state.mission >= maxMission) {
       nodes.resultUnlock.textContent = t("resultComplete", { count: maxMission });
     } else if (won) {

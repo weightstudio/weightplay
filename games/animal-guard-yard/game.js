@@ -687,6 +687,7 @@
   let projectiles = [];
   let cells = [];
   let raf = 0;
+  let resultActionClaimed = false;
   let boardRect = { width: 1, height: 1 };
   let coinsEarned = 0;
   let lastDangerAt = 0;
@@ -2219,6 +2220,7 @@
     [nodes.nextStageBtn, nodes.retryBtn, nodes.resultStagesBtn].forEach((action) => {
       action.classList.toggle("result-primary", action === primaryResultAction);
     });
+    resultActionClaimed = false;
     document.documentElement.classList.add("guard-yard-playing");
     document.body.classList.add("guard-yard-playing");
     nodes.playPanel.classList.remove("hidden");
@@ -2228,6 +2230,12 @@
     primaryResultAction.focus({ preventScroll: true });
     renderWallet();
     renderKennel();
+  }
+
+  function claimResultAction() {
+    if (nodes.resultPanel.classList.contains("hidden") || resultActionClaimed) return false;
+    resultActionClaimed = true;
+    return true;
   }
 
   function handleKennelAction(unitId) {
@@ -2359,9 +2367,18 @@
       event.preventDefault();
     }
   });
-  nodes.resultStagesBtn.addEventListener("click", showMenu);
-  nodes.retryBtn.addEventListener("click", () => startStage(currentStage));
-  nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
+  nodes.resultStagesBtn.addEventListener("click", () => {
+    if (!claimResultAction()) return;
+    showMenu();
+  });
+  nodes.retryBtn.addEventListener("click", () => {
+    if (!claimResultAction()) return;
+    startStage(currentStage);
+  });
+  nodes.nextStageBtn.addEventListener("click", () => {
+    if (!claimResultAction()) return;
+    startStage(Math.min(currentStage + 1, stages.length - 1));
+  });
   if (new URLSearchParams(location.search).has("test")) {
     window.__AnimalGuardYardTest = {
       finish,

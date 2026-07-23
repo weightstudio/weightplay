@@ -274,6 +274,7 @@
   let backgroundSuspended = false;
   let windowHasFocus = document.hasFocus();
   let quitSuspended = false;
+  let quitOpener = null;
   const keys = {};
   const battleControlCodes = new Set(["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "KeyA", "KeyD", "KeyW", "KeyS", "Space"]);
   let stick = { x: 0, y: 0 };
@@ -475,6 +476,7 @@
 
   function openQuitDecision() {
     if (!run || document.body.dataset.gameView !== "battle" || !$("#quitModal").classList.contains("hidden") || !$("#choiceModal").classList.contains("hidden") || !$("#resultModal").classList.contains("hidden")) return;
+    quitOpener = document.activeElement === $("#battleBack") ? document.activeElement : $("#battleBack");
     clearMovementInput();
     quitSuspended = Boolean(run.active);
     run.active = false;
@@ -487,8 +489,10 @@
     requestAnimationFrame(() => $("#quitKeep").focus({ preventScroll: true }));
   }
 
-  function closeQuitDecision(resume = false, focusArena = true) {
+  function closeQuitDecision(resume = false, restoreFocus = true) {
     const wasOpen = !$("#quitModal").classList.contains("hidden");
+    const opener = quitOpener;
+    quitOpener = null;
     $("#quitModal").classList.add("hidden");
     quitCoveredLayers().forEach((layer) => {
       layer.inert = false;
@@ -500,7 +504,7 @@
     run.active = true;
     run.last = performance.now();
     loop(run.last);
-    if (focusArena) requestAnimationFrame(() => $("#game").focus({ preventScroll: true }));
+    if (restoreFocus) requestAnimationFrame(() => (opener?.isConnected ? opener : $("#battleBack")).focus({ preventScroll: true }));
   }
 
   function setChoiceModal(open, focusPrimary = true) {

@@ -174,6 +174,7 @@
   let game = null;
   let animationFrame = 0;
   let resultTimer = 0;
+  let resultActionClaimed = false;
   let stageStatusTimer = 0;
   let isPaused = false;
 
@@ -828,9 +829,16 @@
       save.unlocked = Math.max(save.unlocked, Math.min(stageDefs.length, game.def.id + 1));
       persist();
     }
+    resultActionClaimed = false;
     showScreen("result");
     requestAnimationFrame(() => primaryAction.focus({ preventScroll:true }));
     track("level_complete", { level: game.def.id, won, score: game.score, stars });
+  }
+
+  function claimResultAction() {
+    if (currentScreen !== "result" || resultActionClaimed) return false;
+    resultActionClaimed = true;
+    return true;
   }
 
   function updateHud() {
@@ -1098,9 +1106,20 @@
     if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
     else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
   }, true);
-  document.getElementById("retryStage").addEventListener("click", () => startStage(game.def.id));
-  document.getElementById("nextStage").addEventListener("click", () => startStage(Math.min(stageDefs.length,game.def.id+1)));
-  document.getElementById("backToMap").addEventListener("click", () => { renderStageRail(); showScreen("stage"); focusSelectedStage(); });
+  document.getElementById("retryStage").addEventListener("click", () => {
+    if (!claimResultAction()) return;
+    startStage(game.def.id);
+  });
+  document.getElementById("nextStage").addEventListener("click", () => {
+    if (!claimResultAction()) return;
+    startStage(Math.min(stageDefs.length,game.def.id+1));
+  });
+  document.getElementById("backToMap").addEventListener("click", () => {
+    if (!claimResultAction()) return;
+    renderStageRail();
+    showScreen("stage");
+    focusSelectedStage();
+  });
   document.getElementById("openGuide").addEventListener("click", openGuide);
   document.getElementById("closeGuide").addEventListener("click", closeGuide);
   document.getElementById("guideDone").addEventListener("click", closeGuide);
