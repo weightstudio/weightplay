@@ -1796,7 +1796,12 @@ body.is-bakery-stage-select .stage-panel {
 
 body.is-bakery-playing #playPanel.play-panel {
   display: grid;
-  grid-template-rows: 44px 78px minmax(0, 1fr);
+  grid-template-rows: 44px 56px 34px minmax(0, 1fr);
+  grid-template-areas:
+    "head"
+    "orders"
+    "hint"
+    "board";
   width: 100% !important;
   max-width: none !important;
   height: 100% !important;
@@ -1838,7 +1843,17 @@ body.is-bakery-playing #playPanel.play-panel #board.bubble-board {
 }
 
 body.is-bakery-playing .hint-text {
-  display: none;
+  display: grid;
+  min-height: 34px;
+  max-height: 34px;
+  padding: 3px 8px;
+  overflow: hidden;
+  place-items: center;
+  color: #68402a;
+  font-size: clamp(0.62rem, 2.8vw, 0.75rem);
+  line-height: 1.15;
+  text-align: center;
+  text-overflow: clip;
 }
 
 /* Shared Battle scaling owns #playPanel; keep its desktop wrapper from scaling it a second time. */

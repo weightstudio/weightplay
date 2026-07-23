@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script>
+    if (/^https?:$/.test(location.protocol) && new URLSearchParams(location.search).get("trial") !== "1") {
+      location.replace("/");
+    }
+  </script>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="weightplay-audience" content="general">
+  <title>Triple Match | WeightPlay</title>
+  <meta name="description" content="Find uncovered treasures, collect three of a kind, and keep Mimi's seven-slot tray from filling across 30 crafted stages.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-screen="main" data-wp-game-id="animal-triple-match">
+  <div id="loading" class="loading"><div class="loading-gem"></div><strong data-t="loading">Opening the treasure greenhouse…</strong></div>
+
+  <div id="mainGroup" class="main-group">
+    <main id="mainScreen" class="main-screen">
+      <header class="main-header">
+        <a class="lobby-return" href="/" aria-label="Back to WeightPlay"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="W"></a>
+        <strong data-t="title">Triple Match</strong>
+        <label class="locale-control"><span class="sr-only" data-t="language">Language</span><select id="localeSelect"></select></label>
+      </header>
+      <section class="main-hero">
+        <img class="poster" src="../../Assets/animal-triple-match/cover.png" alt="Mimi sorting magical treasures into groups of three" data-t-alt="posterAlt">
+        <div class="main-copy">
+          <small data-t="eyebrow">Treasure sorting puzzle</small>
+          <h1 data-t="title">Triple Match</h1>
+          <p data-t="pitch">Tap uncovered treasures and collect three of a kind before the seven-slot tray fills.</p>
+          <span id="mainProgress">0 / 30</span>
+          <button id="startBtn" class="primary" type="button" data-t="start">Start Game</button>
+        </div>
+      </section>
+    </main>
+    <section class="public-guide" aria-label="Game guide" data-t-aria="guideLabel">
+      <small data-t="guideKicker">Original WeightPlay collection puzzle</small>
+      <h2 data-t="guideTitle">Read the pile. Protect the tray. Complete every trio.</h2>
+      <p data-t="guideIntro">Mimi's greenhouse shelves are overflowing with enchanted keepsakes. Only uncovered objects can move into the tray. Three matching objects vanish, but seven unmatched objects end the attempt.</p>
+      <div class="guide-grid">
+        <article><h3 data-t="howTitle">How to play</h3><ol><li data-t="how1">Tap an uncovered object to move it into the tray.</li><li data-t="how2">Collect three matching objects to clear them automatically.</li><li data-t="how3">Clear the complete pile before all seven tray slots are occupied.</li></ol></article>
+        <article><h3 data-t="chaptersTitle">Six rule chapters</h3><p data-t="chaptersText">Thirty stages introduce tangled vines, crystal shells, mystery wrapping, shifting shelves, tight trays, and finale piles that combine the rules.</p></article>
+        <article><h3 data-t="strategyTitle">Plan before tapping</h3><p data-t="strategyText">A tempting object can uncover a useful match—or bury the tray in singletons. Look for pairs, track the top layers, and keep one emergency slot open.</p></article>
+        <article><h3 data-t="trustTitle">Progress and privacy</h3><p data-t="trustText">Cleared stages, stars, and best tray space stay in this browser. No login or personal information is needed.</p></article>
+      </div>
+    </section>
+  </div>
+
+  <section id="stageScreen" class="active-screen" hidden>
+    <div class="physical-canvas"><div class="logical-canvas stage-canvas">
+      <header class="stage-header">
+        <button id="stageBack" class="back-btn" type="button" aria-label="Back" data-t-aria="back">&larr;</button>
+        <div><strong data-t="chooseStage">Choose a greenhouse shelf</strong><span id="stageSummary"></span></div>
+        <img src="../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt="">
+      </header>
+      <div class="chapter-strip"><span data-t="chapter">Chapter</span><strong id="chapterName"></strong></div>
+      <div id="stageRail" class="stage-rail" aria-label="Stage selector" data-t-aria="stageRailLabel"></div>
+      <p class="rail-hint" data-t="stageHint">Drag the shelf and choose an unlocked stage.</p>
+    </div></div>
+    <div class="ad-reserve" aria-hidden="true"></div>
+  </section>
+
+  <section id="battleScreen" class="active-screen" hidden>
+    <div class="physical-canvas"><div class="logical-canvas battle-canvas">
+      <div id="battleLive" class="battle-live">
+        <header class="battle-header">
+          <button id="battleBack" class="back-btn" type="button" aria-label="Back" data-t-aria="back">&larr;</button>
+          <div class="battle-title"><small id="stageLabel"></small><strong id="stageName"></strong></div>
+          <div class="hud"><span><b data-t="left">Left</b><strong id="leftValue">0</strong></span><span><b data-t="stars">Stars</b><strong id="starValue">★★★</strong></span></div>
+          <button id="soundBtn" class="icon-btn" type="button" aria-label="Sound" data-t-aria="sound">♪</button>
+          <button id="helpBtn" class="icon-btn" type="button" aria-label="How to play" data-t-aria="help">?</button>
+        </header>
+        <p id="objective" class="objective" data-t="objective">Match every treasure without filling the tray.</p>
+        <div id="board" class="board" aria-label="Treasure pile" data-t-aria="boardLabel"></div>
+        <p id="feedback" class="feedback" aria-live="polite"></p>
+        <div class="tray-wrap"><span data-t="tray">Tray</span><div id="tray" class="tray" aria-label="Seven-slot tray" data-t-aria="trayLabel"></div></div>
+        <nav class="tools">
+          <button id="undoBtn" type="button"><span class="tool-icon">↶</span><span data-t="undo">Undo</span><b id="undoCount">2</b></button>
+          <button id="magnetBtn" type="button"><span class="tool-icon">⌁</span><span data-t="magnet">Pair Finder</span><b id="magnetCount">2</b></button>
+          <button id="shuffleBtn" type="button"><span class="tool-icon">⤨</span><span data-t="shuffle">Shuffle</span><b id="shuffleCount">2</b></button>
+        </nav>
+      </div>
+
+      <section id="tutorialModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card">
+        <h2 id="tutorialTitle" data-t="tutorialTitle">Make room with trios</h2>
+        <ol><li data-t="tutorial1">Bright treasures are uncovered and ready to tap.</li><li data-t="tutorial2">Three matching treasures disappear from the seven-slot tray.</li><li data-t="tutorial3">Vines and crystal shells need one tap before the treasure can move.</li></ol>
+        <button id="tutorialClose" class="primary" type="button" data-t="continue">Continue</button>
+      </div></section>
+
+      <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
+        <h2 id="leaveTitle" data-t="leaveTitle">Leave this shelf?</h2>
+        <p data-t="leaveText">Continue keeps the exact pile. Returning to stages ends only this attempt.</p>
+        <div class="dialog-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">Continue</button><button id="leaveStage" type="button" data-t="returnStages">Return to stages</button></div>
+      </div></section>
+
+      <section id="resultModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="dialog-card result-card">
+        <small id="resultKicker"></small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p>
+        <div class="skill-report"><b data-t="skillReport">Skill Report</b><span id="skillText"></span></div>
+        <div class="dialog-actions"><button id="retryBtn" type="button" data-t="retry">Retry</button><button id="nextBtn" class="primary" type="button" data-t="next">Next Stage</button><button id="resultStages" type="button" data-t="stages">Stages</button></div>
+      </div></section>
+    </div></div>
+    <div class="ad-reserve" aria-hidden="true"></div>
+  </section>
+
+  <script src="../../src/site-config.js"></script>
+  <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
+  <script src="../../src/i18n.js?v=20260721-locale13-1"></script>
+  <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
+  <script src="../../src/analytics.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

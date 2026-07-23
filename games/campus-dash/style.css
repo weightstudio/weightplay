@@ -141,6 +141,18 @@ a {
   }
 
   body:not(.dash-playing) #controlChips {
+    display: flex;
+    width: 100%;
+    gap: 5px;
+  }
+
+  body:not(.dash-playing) #controlChips span {
+    min-height: 24px;
+    padding: 5px 9px;
+    font-size: 11px;
+  }
+
+  body:not(.dash-playing) #controlChips span:last-child {
     display: none;
   }
 
@@ -907,7 +919,7 @@ select,
   user-select: text;
 }
 
-/* Final phone Main layout: Start remains visible in the first visual viewport. */
+/* Final phone Main layout: Start and core touch cues remain visible in the first visual viewport. */
 @media (max-width: 700px), (max-height: 560px) {
   body:not(.dash-playing) .dash-game {
     width: 100vw;
@@ -951,6 +963,18 @@ select,
   }
 
   body:not(.dash-playing) #controlChips {
+    display: flex;
+    width: 100%;
+    gap: 5px;
+  }
+
+  body:not(.dash-playing) #controlChips span {
+    min-height: 24px;
+    padding: 5px 9px;
+    font-size: 11px;
+  }
+
+  body:not(.dash-playing) #controlChips span:last-child {
     display: none;
   }
 

@@ -833,11 +833,13 @@
     button.addEventListener("click", (event) => {
       reclaimCareForeground(event);
       if (button.dataset.skipClick === "1") return;
+      if (dragState) return;
       chooseTool(button.dataset.tool, button);
     });
     button.addEventListener("pointerdown", (event) => {
       reclaimCareForeground(event);
-      if (!running || busy) return;
+      if (!running || busy || dragState) return;
+      if (event.pointerType === "mouse" && event.button !== 0) return;
       dragState = {
         tool: button.dataset.tool,
         pointerId: event.pointerId,
@@ -852,7 +854,7 @@
       button.setPointerCapture?.(event.pointerId);
     });
     button.addEventListener("pointermove", (event) => {
-      if (!dragState || dragState.tool !== button.dataset.tool) return;
+      if (!dragState || dragState.pointerId !== event.pointerId || dragState.button !== button) return;
       const dx = event.clientX - dragState.startX;
       const dy = event.clientY - dragState.startY;
       dragState.lastX = event.clientX;
@@ -863,10 +865,12 @@
       nodes.board.querySelector(".animal-zone")?.classList.toggle("drag-over", isOverAnimal(event.clientX, event.clientY));
     });
     button.addEventListener("pointerup", finishToolDrag);
-    button.addEventListener("pointercancel", cleanupDrag);
-    button.addEventListener("lostpointercapture", () => {
+    button.addEventListener("pointercancel", (event) => {
+      if (dragState?.pointerId === event.pointerId) cleanupDrag();
+    });
+    button.addEventListener("lostpointercapture", (event) => {
       requestAnimationFrame(() => {
-        if (dragState?.button === button) cleanupDrag();
+        if (dragState?.button === button && dragState.pointerId === event.pointerId) cleanupDrag();
       });
     });
   }

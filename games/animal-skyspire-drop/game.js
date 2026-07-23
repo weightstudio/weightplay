@@ -5,9 +5,17 @@
   const localeLabels={en:"English","zh-Hant":"繁體中文","zh-Hans":"简体中文",ja:"日本語",ko:"한국어",es:"Español","pt-BR":"Português",fr:"Français",de:"Deutsch",it:"Italiano",ru:"Русский",hi:"हिन्दी",ar:"العربية"};
   const routeLocales={en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const localeRoutes=Object.fromEntries(Object.entries(routeLocales).map(([route,locale])=>[locale,route]));
+  const localeOverrides={ar:{title:"هبوط الحيوانات من البرج السماوي",cometBreak:"ضربة المذنب",help2:"الفيروزي آمن؛ أما البنفسجي فينهي المحاولة ما لم يتوفر درع أو تكن ضربة المذنب جاهزة.",help3:"ثلاث فتحات متتالية تشحن ضربة مذنب تلقائية واحدة.",cometSmash:"حطمت ضربة المذنب منطقة الخطر!",winTitle:"تم اجتياز البرج السماوي!"}};
   const storageKey="weightplay:animal-skyspire-drop:v1",sessionStore=new Map();
   const $=id=>document.getElementById(id);
   const els={loading:$("loading"),mainGroup:$("mainGroup"),stageScreen:$("stageScreen"),battleScreen:$("battleScreen"),battleLive:$("battleLive"),localeSelect:$("localeSelect"),mainProgress:$("mainProgress"),start:$("start"),stageBack:$("stageBack"),stageRail:$("stageRail"),stageSummary:$("stageSummary"),racesTab:$("racesTab"),forgeTab:$("forgeTab"),towerPanel:$("towerPanel"),forgePanel:$("forgePanel"),stageHint:$("stageHint"),shardCount:$("shardCount"),upgrades:$("upgrades"),auraButton:$("auraButton"),forgeFeedback:$("forgeFeedback"),battleBack:$("battleBack"),battleHelp:$("battleHelp"),towerLabel:$("towerLabel"),depthValue:$("depthValue"),comboValue:$("comboValue"),timeValue:$("timeValue"),shieldValue:$("shieldValue"),objective:$("objective"),arenaWrap:$("arenaWrap"),arena:$("arena"),powerBadge:$("powerBadge"),powerValue:$("powerValue"),feedback:$("feedback"),helpModal:$("helpModal"),helpClose:$("helpClose"),leaveModal:$("leaveModal"),leaveContinue:$("leaveContinue"),leaveStage:$("leaveStage"),resultModal:$("resultModal"),resultKicker:$("resultKicker"),resultTitle:$("resultTitle"),resultText:$("resultText"),resultTime:$("resultTime"),resultCombo:$("resultCombo"),resultStars:$("resultStars"),retry:$("retry"),resultMap:$("resultMap"),next:$("next")};
+  let stageReserve=els.stageScreen.querySelector(":scope > .wp-stage-physical-reserve");
+  if(!stageReserve){
+    stageReserve=document.createElement("div");
+    stageReserve.className="ad-reserve wp-stage-physical-reserve";
+    stageReserve.setAttribute("aria-hidden","true");
+    els.stageScreen.append(stageReserve);
+  }
   const defaultSave={unlocked:1,stars:{},best:{},shards:0,upgrades:{grip:0,aegis:0,spark:0},tutorial:false,aura:false};
   let lang=detectLocale(),save=loadSave(),stageIndex=Math.max(0,Math.min(29,save.unlocked-1)),run=null,raf=0,lastFrame=0,screen="main",activeTab="towers",resizeObserver=null,lifecycleSuspended=document.hidden,modalOpener=null;
   const images={};
@@ -22,9 +30,47 @@
   function loadSave(){try{return normalizeSave(JSON.parse(storageRead(storageKey)||"{}"))}catch{return normalizeSave()}}
   function persist(){storageWrite(storageKey,JSON.stringify(save))}
   function boundInt(value,min,max,fallback){const n=Number(value);return Number.isFinite(n)?Math.max(min,Math.min(max,Math.trunc(n))):fallback}
-  function t(key,vars={}){let value=LOCALES[lang]?.[key]??LOCALES.en[key]??key;const translate=window.WeightPlayGameRuntimeLocalizer?.translate;if(lang!=="en"&&!LOCALES[lang]&&translate)value=Array.isArray(value)?value.map(item=>translate(String(item))):translate(String(value));if(Array.isArray(value))return value;return String(value).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??`{${name}}`)}
-  function applyLocale(){document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";document.title=`${t("title")} | WeightPlay`;document.querySelectorAll("[data-t]").forEach(node=>{node.textContent=t(node.dataset.t)});document.querySelectorAll("[data-t-aria]").forEach(node=>node.setAttribute("aria-label",t(node.dataset.tAria)));document.querySelectorAll("[data-t-alt]").forEach(node=>node.setAttribute("alt",t(node.dataset.tAlt)));renderMainProgress();renderStages();renderForge();if(run)renderHud()}
-  function initLocale(){els.localeSelect.innerHTML=localeOrder.map(code=>`<option value="${code}">${localeLabels[code]}</option>`).join("");els.localeSelect.value=lang;els.localeSelect.addEventListener("change",()=>{lang=els.localeSelect.value;try{localStorage.setItem("weightplayLocale",lang)}catch{}window.WonderI18n?.setLocale?.(lang);if(!LOCALES[lang]&&window.WeightPlayGameRuntimeLocalizer?.locale!==lang){if(/^https?:$/.test(location.protocol)){location.assign(`/${localeRoutes[lang]}/games/animal-skyspire-drop/${location.search}${location.hash}`)}else window.location.reload();return}applyLocale()})}
+  function t(key,vars={}){let value=localeOverrides[lang]?.[key]??LOCALES[lang]?.[key]??LOCALES.en[key]??key;const translate=window.WeightPlayGameRuntimeLocalizer?.translate;if(!localeOverrides[lang]?.[key]&&lang!=="en"&&!LOCALES[lang]&&translate)value=Array.isArray(value)?value.map(item=>translate(String(item))):translate(String(value));if(Array.isArray(value))return value;return String(value).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??`{${name}}`)}
+  function commonText(source){const translate=window.WeightPlayGameRuntimeLocalizer?.translate;return lang==="en"||!translate?source:translate(source)}
+  function ensureCompletePublicGuide(){
+    const guide=document.querySelector(".game-page-info");
+    if(!guide)return;
+    guide.classList.add("public-guide");
+    guide.dataset.wpGuideComplete="true";
+    guide.innerHTML=`
+      <small data-t="guideKicker"></small>
+      <h2 data-t="guideTitle"></h2>
+      <p data-t="guideIntro"></p>
+      <div class="game-info-sections">
+        <article class="game-info-section"><h3 data-t="howTitle"></h3><ol><li data-t="how1"></li><li data-t="how2"></li><li data-t="how3"></li></ol></article>
+        <article class="game-info-section"><h3 data-t="growthTitle"></h3><p data-t="growthText"></p><ul data-wp-guide-rules></ul></article>
+        <article class="game-info-section"><h3 data-t="cometBreak"></h3><p data-t="help3"></p><p data-t="cometSmash"></p></article>
+        <article class="game-info-section"><h3 data-t="shield"></h3><p data-t="help2"></p><p data-t="shieldSave"></p><p data-t="failText"></p></article>
+        <article class="game-info-section"><h3 data-t="strategyTitle"></h3><p data-t="strategyText"></p></article>
+        <article class="game-info-section"><h3 data-t="forgeTitle"></h3><p data-t="forgeIntro"></p><ul><li><strong data-t="upgradeGrip"></strong> — <span data-t="upgradeGripDesc"></span></li><li><strong data-t="upgradeAegis"></strong> — <span data-t="upgradeAegisDesc"></span></li><li><strong data-t="upgradeSpark"></strong> — <span data-t="upgradeSparkDesc"></span></li></ul></article>
+        <article class="game-info-section"><h3 data-t="saveTitle"></h3><p data-t="saveText"></p></article>
+        <article class="game-info-section"><h3 data-wp-guide-faq-title></h3><dl><div><dt data-t="helpTitle"></dt><dd data-t="help1"></dd></div><div><dt data-t="leaveTitle"></dt><dd data-t="leaveText"></dd></div></dl></article>
+        <article class="game-info-section"><h3 data-wp-guide-related-title></h3><nav class="guide-related-links" aria-label="Related WeightPlay content"><a data-wp-guide-all-games></a><a data-wp-guide-related-game></a></nav></article>
+      </div>`;
+  }
+  function refreshPublicGuide(){
+    const guide=document.querySelector("[data-wp-guide-complete]");
+    if(!guide)return;
+    const rules=t("rules");
+    guide.querySelector("[data-wp-guide-rules]").innerHTML=rules.slice(1,5).map(rule=>`<li>${rule}</li>`).join("");
+    const route=localeRoutes[lang]||"en";
+    const allGames=guide.querySelector("[data-wp-guide-all-games]");
+    const relatedGame=guide.querySelector("[data-wp-guide-related-game]");
+    guide.querySelector("[data-wp-guide-faq-title]").textContent=commonText("Frequently Asked Questions");
+    guide.querySelector("[data-wp-guide-related-title]").textContent=commonText("Related Games");
+    allGames.href=`/${route}/`;
+    allGames.textContent=commonText("All Games");
+    relatedGame.href=`/${route}/games/animal-block-grove/`;
+    relatedGame.textContent=commonText("Animal Block Grove");
+    guide.querySelector(".guide-related-links").setAttribute("aria-label",commonText("Related Games"));
+  }
+  function applyLocale(){document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";document.title=`${t("title")} | WeightPlay`;document.querySelectorAll("[data-t]").forEach(node=>{node.textContent=t(node.dataset.t)});document.querySelectorAll("[data-t-aria]").forEach(node=>node.setAttribute("aria-label",t(node.dataset.tAria)));document.querySelectorAll("[data-t-alt]").forEach(node=>node.setAttribute("alt",t(node.dataset.tAlt)));refreshPublicGuide();renderMainProgress();renderStages();renderForge();if(run)renderHud()}
+  function initLocale(){els.localeSelect.innerHTML=localeOrder.map(code=>`<option value="${code}">${localeLabels[code]}</option>`).join("");els.localeSelect.value=lang;els.localeSelect.addEventListener("change",()=>{const next=els.localeSelect.value;try{localStorage.setItem("weightplayLocale",next)}catch{}if(/^https?:$/.test(location.protocol)){location.assign(`/${localeRoutes[next]}/games/animal-skyspire-drop/${location.search}${location.hash}`);return}lang=next;window.WonderI18n?.setLocale?.(lang);applyLocale()})}
   function track(event,details={}){window.WonderAnalytics?.track?.(event,{game_id:"animal-skyspire-drop",stage:stageIndex+1,locale:lang,...details})}
 
   function seeded(seed){let x=(seed|0)||1;return()=>{x=(x*1664525+1013904223)|0;return((x>>>0)/4294967296)}}
@@ -110,5 +156,5 @@
 
   function preload(){return Promise.all(Object.entries(imagePaths).map(([key,src])=>new Promise(resolve=>{const image=new Image;image.onload=()=>{images[key]=image;resolve()};image.onerror=()=>{images[key]=image;resolve()};image.src=src})))}
   window.__animalSkyspireDropSmoke={stages,startBattle:(index=0)=>startBattle(index,{skipTutorial:true}),snapshot:()=>run?{stage:run.stage.index,current:run.current,rotation:run.rotation,rotationTarget:run.rotationTarget,bounce:run.bounce,transition:run.transition,departing:run.departing?{...run.departing}:null,combo:run.combo,bestCombo:run.bestCombo,power:run.power,shield:run.shield,elapsed:run.elapsed,paused:run.paused,ended:run.ended,result:run.result,screen}:null,rotateToGap:()=>{const ring=currentRing();if(!ring)return false;run.rotation=run.rotationTarget=normAngle(PLAYER_ANGLE-ringAngle(ring)-ring.gap);return true},forceLanding:()=>{if(!run||run.ended)return false;run.bounce=1;land();return true},forceWin:()=>{if(!run)return;run.current=run.stage.ringCount;finish(true)},forceFail:()=>{if(!run)return;finish(false)},step:(seconds=.1)=>{for(let left=seconds;left>0&&!run.ended;left-=.016)update(Math.min(.016,left));draw()},save:()=>JSON.parse(JSON.stringify(save)),setSave:value=>{save=normalizeSave(value);persist();renderMainProgress();renderStages();renderForge()}};
-  initLocale();applyLocale();preload().then(()=>{els.loading.hidden=true;syncArenaSize();renderMainProgress();renderStages();renderForge()});
+  ensureCompletePublicGuide();initLocale();applyLocale();preload().then(()=>{els.loading.hidden=true;syncArenaSize();renderMainProgress();renderStages();renderForge()});
 })();
