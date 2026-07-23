@@ -1039,6 +1039,7 @@
   nodes.stagePanel.addEventListener("keydown", (event) => {
     if (event.target.closest("[data-stage]")) rejectRepeatedActivation(event);
   });
+  nodes.resultPanel.addEventListener("keydown", rejectRepeatedActivation, true);
   nodes.startBtn.addEventListener("click", () => {
     showStages(save.unlocked);
   });

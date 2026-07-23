@@ -1577,6 +1577,7 @@
       gameHelpCloseBtn.focus({ preventScroll: true });
     }
   });
+  resultPanel.addEventListener("keydown", rejectRepeatedActivation, true);
 
   againBtn.addEventListener("click", () => {
     window.WonderAnalytics?.track("game_restart", {
