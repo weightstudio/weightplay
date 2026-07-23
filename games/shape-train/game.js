@@ -371,6 +371,7 @@
   let resultSettled = false;
   let stageEntryToken = 0;
   let taskTransitionToken = 0;
+  let taskWindowFocused = true;
   let taskLifecycleSuspended = document.hidden;
   let floatingToast = null;
   let floatingToastTimer = 0;
@@ -443,7 +444,7 @@
   }
 
   function resumeTaskTransitions() {
-    taskLifecycleSuspended = document.hidden || leaveConfirmOpen;
+    taskLifecycleSuspended = document.hidden || !taskWindowFocused || leaveConfirmOpen;
   }
 
   function clamp(value, min, max) {
@@ -1177,8 +1178,14 @@
   localizeStatic();
   window.addEventListener("load", preserveGameLocaleAfterSharedGuide, { once: true });
   window.addEventListener("resize", () => requestAnimationFrame(positionMainSoundToggle));
-  window.addEventListener("blur", suspendTaskTransitions);
-  window.addEventListener("focus", resumeTaskTransitions);
+  window.addEventListener("blur", () => {
+    taskWindowFocused = false;
+    suspendTaskTransitions();
+  });
+  window.addEventListener("focus", () => {
+    taskWindowFocused = true;
+    resumeTaskTransitions();
+  });
   window.addEventListener("pagehide", suspendTaskTransitions);
   window.addEventListener("pageshow", resumeTaskTransitions);
   document.addEventListener("visibilitychange", () => {

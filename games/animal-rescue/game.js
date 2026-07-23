@@ -468,6 +468,7 @@ let hintResetTimer = 0;
 let hintResetRemaining = 0;
 let hintResetStartedAt = 0;
 let hintLifecycleSuspended = document.hidden;
+let hintWindowFocused = true;
 let centeredTrailFrame = 0;
 
 function locale() {
@@ -1014,7 +1015,7 @@ function suspendRouteHintReset() {
 }
 
 function resumeRouteHintReset() {
-  hintLifecycleSuspended = document.hidden;
+  hintLifecycleSuspended = document.hidden || !hintWindowFocused;
   if (hintLifecycleSuspended || hintResetTimer || hintResetRemaining <= 0) return;
   hintResetStartedAt = performance.now();
   hintResetTimer = window.setTimeout(restoreRouteHint, hintResetRemaining);
@@ -1264,8 +1265,14 @@ const pageSupportObserver = new MutationObserver((records) => {
 pageSupportObserver.observe(document.body, { childList:true, subtree:true });
 document.addEventListener("DOMContentLoaded", queueGamePageSupportSync, { once:true });
 window.addEventListener("load", queueGamePageSupportSync, { once:true });
-window.addEventListener("blur", suspendRouteHintReset);
-window.addEventListener("focus", resumeRouteHintReset);
+window.addEventListener("blur", () => {
+  hintWindowFocused = false;
+  suspendRouteHintReset();
+});
+window.addEventListener("focus", () => {
+  hintWindowFocused = true;
+  resumeRouteHintReset();
+});
 window.addEventListener("pagehide", suspendRouteHintReset);
 window.addEventListener("pageshow", resumeRouteHintReset);
 document.addEventListener("visibilitychange", () => {

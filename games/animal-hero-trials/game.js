@@ -364,6 +364,27 @@
     return owned || runtimeTranslate(copy.en[key] || key);
   }
 
+  const masteryLevelLabels = {
+    en: "Level",
+    "zh-Hant": "等級",
+    "zh-Hans": "等级",
+    ja: "レベル",
+    ko: "레벨",
+    es: "Nivel",
+    "pt-BR": "Nível",
+    fr: "Niveau",
+    de: "Stufe",
+    it: "Livello",
+    ru: "Уровень",
+    hi: "स्तर",
+    ar: "المستوى",
+  };
+
+  function formatMasteryLevel(value) {
+    const label = masteryLevelLabels[locale] || masteryLevelLabels.en;
+    return `${label} ${Math.max(0, Math.floor(Number(value) || 0))}`;
+  }
+
   function playSound(cue) {
     window.WonderSound?.play?.(cue);
   }
@@ -513,7 +534,8 @@
       node.textContent = t(node.dataset.t);
     });
     $("#markCount").textContent = marks;
-    $("#masteryLevel").textContent = `Lv.${mastery}`;
+    const masteryLevel = formatMasteryLevel(mastery);
+    $("#masteryLevel").textContent = masteryLevel;
     const masteryCost = 5 + mastery * 4;
     const masteryCurrent = mastery * 12;
     const masteryNext = (mastery + 1) * 12;
@@ -526,7 +548,7 @@
     });
     $("#masteryCost").textContent = masterySummary;
     $("#masteryBtn").disabled = !masteryReady;
-    $("#masteryBtn").setAttribute("aria-label", `${t("mastery")}, Lv.${mastery}. ${masterySummary}`);
+    $("#masteryBtn").setAttribute("aria-label", `${t("mastery")}, ${masteryLevel}. ${masterySummary}`);
     syncSoundToggle();
     renderHeroPicker();
     renderStages();

@@ -633,6 +633,7 @@ let leaveOpen = false;
 let centeredStageFrame = 0;
 let quizGeneration = 0;
 let quizLifecycleSuspended = document.hidden;
+let quizWindowFocused = true;
 const quizTasks = new Set();
 
 function invalidateQuizSession() {
@@ -675,7 +676,7 @@ function suspendQuizTasks() {
 }
 
 function resumeQuizTasks() {
-  quizLifecycleSuspended = document.hidden;
+  quizLifecycleSuspended = document.hidden || !quizWindowFocused;
   quizTasks.forEach((task) => { task.lastFrameAt = null; });
 }
 
@@ -1312,8 +1313,14 @@ localeSelect.addEventListener("change", applyLocaleChange);
 localeSelect.addEventListener("input", applyLocaleChange);
 window.addEventListener("pagehide", suspendQuizTasks);
 window.addEventListener("pageshow", resumeQuizTasks);
-window.addEventListener("blur", suspendQuizTasks);
-window.addEventListener("focus", resumeQuizTasks);
+window.addEventListener("blur", () => {
+  quizWindowFocused = false;
+  suspendQuizTasks();
+});
+window.addEventListener("focus", () => {
+  quizWindowFocused = true;
+  resumeQuizTasks();
+});
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) suspendQuizTasks();
   else resumeQuizTasks();

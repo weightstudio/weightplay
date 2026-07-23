@@ -273,6 +273,7 @@
       card.onclick = () => { state.shift = shift; startBattle(); };
       $('stageRail').append(card);
     }
+    requestAnimationFrame(syncCenteredStageHighlight);
   }
   function syncCenteredStageHighlight() {
     const rail = $('stageRail');
@@ -284,7 +285,12 @@
       const distance = Math.abs(rect.left + rect.width / 2 - center);
       return !best || distance < best.distance ? {card, distance} : best;
     }, null)?.card;
-    cards.forEach((card) => card.classList.toggle('centered', card === nearest));
+    cards.forEach((card) => {
+      const centered = card === nearest;
+      card.classList.toggle('centered', centered);
+      if (centered) card.setAttribute('aria-current', 'true');
+      else card.removeAttribute('aria-current');
+    });
   }
   $('stageRail').addEventListener('wonder:stage-snap', syncCenteredStageHighlight);
   function renderHud() {

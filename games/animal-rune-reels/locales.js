@@ -36,3 +36,19 @@ ar:{lionPower:'هجوم الأسد',turtleGuard:'دفاع السلحفاة',rabb
 };
 for(const [code,strings] of Object.entries(combatV2))Object.assign(window.RUNE_REELS_LOCALES[code],strings);
 for(const dict of Object.values(window.RUNE_REELS_LOCALES))for(const [k,v] of Object.entries(base))if(dict[k]===undefined)dict[k]=v;
+const runeReelsProgressTerms={
+  en:{level:"Level",upgradeAction:"Upgrade"},
+  "zh-Hant":{level:"等級",upgradeAction:"升級"},
+  "zh-Hans":{level:"等级",upgradeAction:"升级"},
+  ja:{level:"レベル",upgradeAction:"アップグレード"},
+  ko:{level:"레벨",upgradeAction:"업그레이드"},
+  es:{level:"Nivel",upgradeAction:"Mejorar"},
+  "pt-BR":{level:"Nível",upgradeAction:"Melhorar"},
+  fr:{level:"Niveau",upgradeAction:"Améliorer"},
+  de:{level:"Stufe",upgradeAction:"Verbessern"},
+  it:{level:"Livello",upgradeAction:"Migliora"},
+  ru:{level:"Уровень",upgradeAction:"Улучшить"},
+  hi:{level:"स्तर",upgradeAction:"उन्नत करें"},
+  ar:{level:"المستوى",upgradeAction:"ترقية"}
+};
+for(const [code,terms] of Object.entries(runeReelsProgressTerms))Object.assign(window.RUNE_REELS_LOCALES[code],terms);
