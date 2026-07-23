@@ -53,6 +53,7 @@
   nodes.stagePanel.dataset.wpCanvasMaxWidth = "920";
   nodes.gamePanel.dataset.wpCanvasMaxWidth = "920";
   const canvas = $("gameCanvas");
+  canvas.dataset.runtimeLocalize = "off";
   const ctx = canvas.getContext("2d");
 
   const text = {
@@ -115,6 +116,7 @@
       ruleGuardian: "Elite guard",
       tierShort: "R{tier}",
       wave: "Wave",
+      waves: "waves",
       core: "Core",
       shots: "Shots",
       aimHint: "Drag from the launcher, preview the bounce path, then release.",
@@ -329,11 +331,21 @@
   text.es = {
     title:"Fortaleza de Orbes Animal",language:"Idioma",backToLobby:"Volver al vestíbulo",fortressRooms:"Salas de la fortaleza",arenaLabel:"Arena de Fortaleza de Orbes Animal",soundTitle:"Sonido",enableSound:"Activar sonido",disableSound:"Desactivar sonido",menuTitle:"Apunta el orbe espiritual por la fortaleza de cristal.",menuHint:"Planifica rebotes, protege el núcleo y mejora cuatro salas con Piedras Estelares.",bestRaid:"Mejor ruta",starStones:"Piedras Estelares",diamonds:"Diamantes",openRaidMap:"Abrir mapa",raidMap:"Mapa de rutas",battleReturnDecision:"Pausar la incursión y revisar las opciones de salida",pause:"Pausar",pausedTitle:"Incursión en pausa",pausedText:"La fortaleza está detenida. Continúa para conservar esta incursión o elige Mapa de rutas para abandonar la oleada y las bendiciones temporales.",resume:"Continuar",raidTiers:"Rutas de incursión",returnMain:"Volver al inicio",fortressWorkshop:"Taller de la fortaleza",stageProgress:"{unlocked}/30 rutas desbloqueadas · 3 oleadas cada una",tierLocked:"Bloqueado",enterRaid:"Entrar",nextStage:"Siguiente nivel",
     tier1Name:"Puerta de Cristal",tier1Desc:"Aprende los rebotes contra exploradores lentos.",tier2Name:"Galería de Musgo",tier2Desc:"Más enemigos, armadura y presión.",tier3Name:"Patio del Eco",tier3Desc:"Supera el ataque más fuerte y derrota al gólem.",tier4Name:"Corona del Bosque",tier5Name:"Puente de Espinas",tier6Name:"Jardín Venenoso",tier7Name:"Laberinto de Raíces",tier8Name:"Guardián del Pantano",tier9Name:"Escalera Lunar",tier10Name:"Galería de Luces",tier11Name:"Ruinas de Espejos",tier12Name:"Guardián Lunar",tier13Name:"Puerta del Eclipse",tier14Name:"Salón de Cristal Negro",tier15Name:"Fundición de Sombras",tier16Name:"Trono del Eclipse",tier17Name:"Frente del Gólem",tier18Name:"Fundición del Núcleo",tier19Name:"Último Bastión",tier20Name:"Corazón de la Fortaleza",
-    zone1Desc:"Patrullas del bosque de cristal que prueban rebotes estables.",zone2Desc:"Bestias de espinas con armadura y ataques densos.",zone3Desc:"Espíritus lunares atraviesan rápido las ruinas.",zone4Desc:"Fuerzas del eclipse atacan con escudos de cristal.",zone5Desc:"La guardia del gólem combina todas las amenazas.",ruleFormation:"Formación",ruleSwarm:"Enjambre",ruleArmored:"Armadura",ruleGuardian:"Guardián",tierShort:"Ruta {tier}",wave:"Oleada",core:"Núcleo",shots:"Disparos",
+    zone1Desc:"Patrullas del bosque de cristal que prueban rebotes estables.",zone2Desc:"Bestias de espinas con armadura y ataques densos.",zone3Desc:"Espíritus lunares atraviesan rápido las ruinas.",zone4Desc:"Fuerzas del eclipse atacan con escudos de cristal.",zone5Desc:"La guardia del gólem combina todas las amenazas.",ruleFormation:"Formación",ruleSwarm:"Enjambre",ruleArmored:"Armadura",ruleGuardian:"Guardián",tierShort:"Ruta {tier}",wave:"Oleada",waves:"oleadas",core:"Núcleo",shots:"Disparos",
     aimHint:"Arrastra desde el lanzador, revisa la ruta de rebote y suelta.",keyboardAim:"Ángulo {angle}°. Ajusta con flechas y dispara con Espacio o Enter.",arenaControlLabel:"Arena de Fortaleza de Orbes Animal. Ángulo {angle} grados. Ajusta con flechas y dispara con Espacio o Enter.",arenaControlReadyLabel:"Arena de Fortaleza de Orbes Animal. Ángulo {angle} grados. El orbe está listo; Espacio o Enter dispara.",arenaControlCooldownLabel:"Arena de Fortaleza de Orbes Animal. Ángulo {angle} grados. Recarga aproximada {seconds} s; aún no puedes disparar.",arenaControlLimitLabel:"Arena de Fortaleza de Orbes Animal. Ángulo {angle} grados. Hay {active}/{limit} orbes volando, el límite activo; aún no puedes disparar.",orbReady:"Orbe listo. Rebota contra los muros antes de que las bestias alcancen el núcleo.",orbFlying:"El orbe está volando. Observa la ruta y prepara el siguiente ángulo.",fortressHit:"Una bestia golpeó el núcleo. Apunta antes o usa un rebote más amplio.",waveClear:"Oleada completada. Elige una bendición para continuar.",chooseUpgrade:"Elige una bendición",reroll:"Repetir por 3 diamantes",rerolled:"Opciones renovadas.",rerollNeed:"Necesitas 3 diamantes. Saldo {balance}/3.",rerollConfirm:"Confirmar 3 · {before}→{after}",rerollDecision:"Renueva las tres bendiciones una vez. Toca otra vez: {before} → {after} diamantes.",rerollLabel:"Renueva las tres bendiciones una vez. Cuesta 3 diamantes. Saldo {balance}.",rerollConfirmLabel:"Confirma una renovación. Gasta 3 diamantes. Saldo de {before} a {after}.",retry:"Reintentar",
     raidClear:"Incursión completada",raidFailed:"Incursión fallida",resultWin:"Completaste la ruta {tier}, oleada {wave}/3, ganaste {stones} piedras y conservaste {core} de núcleo.",resultLose:"Llegaste a la ruta {tier}, oleada {wave}/3 y ganaste {stones} piedras. Mejora salas e intenta un rebote más seguro.",progressUnlocked:"Progreso guardado: {total} piedras; ruta {best} desbloqueada.",progressComplete:"Progreso guardado: {total} piedras; las 30 rutas están completas.",ruleBank:"Ruta de rebote",rulePriority:"Prioridad de objetivos",ruleAnchor:"Ancla de espinas",ruleArmor:"Romper armadura",rulePhase:"Momento de fase",rulePylon:"Pilar espejo",ruleSplitter:"División de cristal",ruleCharge:"Carril de carga",ruleMastery:"Dominio combinado",ruleBoss:"Contraataque de jefe",
     bossCueRootbound:"Defensa de raíces elevada: rómpela y golpea el cristal del pecho.",bossCueBramble:"Placas de zarzas y anclas protegen al Coloso.",bossCueLunar:"La Matriarca cambia de fase: espera a que se abran los anillos lunares.",bossCuePrism:"Escudo prisma girando: ataca cuando el segmento dorado mire al frente.",bossCueTempest:"Carril de carga marcado: el Guardián queda expuesto tras correr.",bossCueVoid:"Cambió la fase del núcleo vacío: elimina la escolta y sigue el núcleo iluminado.",progressSaved:"Progreso guardado: {total} piedras; mejor ruta desbloqueada {best}.",reportWin:"Informe: lógica y reacción sólidas. Protegiste la fortaleza con rebotes y mejoras.",reportLose:"Informe: buena práctica. Apunta antes y usa el muro para golpear varias bestias.",
     upgradeDamage:"Orbe gigante",upgradeDamageDesc:"+1 de daño de orbe.",upgradeSplit:"Orbe dividido",upgradeSplitDesc:"Añade un tercer orbe eco a cada disparo.",upgradePierce:"Luz penetrante",upgradePierceDesc:"El orbe puede volver a golpear antes a la misma bestia.",upgradeRecharge:"Carga rápida",upgradeRechargeDesc:"Prepara antes el siguiente disparo.",upgradeShield:"Escudo del núcleo",upgradeShieldDesc:"Restaura 4 de vida del núcleo.",upgradeMagnet:"Imán explorador",upgradeMagnetDesc:"+2 Piedras Estelares al terminar.",roomForge:"Forja de orbes",roomForgeDesc:"+1 de daño base por nivel.",roomShield:"Sala del escudo",roomShieldDesc:"+4 de vida inicial del núcleo por nivel.",roomDen:"Guarida de compañeros",roomDenDesc:"Daño de apoyo desde nivel 2.",companionLocked:"Alcanza Nv.2 para desbloquear ataques de apoyo.",companionCurrent:"Apoyo: {damage} de daño cada 4 segundos.",companionNext:"Siguiente nivel: {damage} de daño.",roomTower:"Torre de exploración",roomTowerDesc:"+1 Piedra Estelar por ruta y nivel.",level:"Nv.{n}",upgradeRoom:"Mejorar {cost}",upgradeRoomLabel:"{name}: subir a Nv.{level} por {cost} piedras. Después: {effect}",maxRoomLabel:"{name}: nivel máximo {level}. {effect}",maxed:"Máximo"
+  };
+
+  text.it = {
+    title:"Fortezza delle Sfere Animali",language:"Lingua",backToLobby:"Torna alla lobby",fortressRooms:"Sale della fortezza",arenaLabel:"Arena della Fortezza delle Sfere Animali",soundTitle:"Audio",enableSound:"Attiva audio",disableSound:"Disattiva audio",menuTitle:"Dirigi la sfera spirituale nella fortezza di cristallo.",menuHint:"Scegli un percorso, pianifica i rimbalzi e proteggi il nucleo della fortezza.",bestRaid:"Percorso migliore",starStones:"Pietre Stellari",diamonds:"Diamanti",openRaidMap:"Scegli percorso",raidMap:"Mappa dei percorsi",battleReturnDecision:"Metti in pausa e controlla le opzioni di uscita",pause:"Pausa",pausedTitle:"Incursione in pausa",pausedText:"La fortezza è ferma. Riprendi per continuare questa incursione oppure torna alla Mappa dei percorsi per abbandonare l'ondata e le benedizioni temporanee.",resume:"Riprendi",raidTiers:"Percorsi d'incursione",returnMain:"Torna alla schermata principale",fortressWorkshop:"Officina della fortezza",stageProgress:"{unlocked}/30 percorsi sbloccati · 3 ondate ciascuno",tierLocked:"Bloccato",enterRaid:"Entra",nextStage:"Percorso successivo",
+    tier1Name:"Porta di Cristallo",tier1Desc:"Impara i rimbalzi contro le bestie esploratrici.",tier2Name:"Galleria del Muschio",tier2Desc:"Arrivano più nemici con armature più resistenti.",tier3Name:"Cortile dell'Eco",tier3Desc:"Resisti all'assalto più intenso e al golem finale.",tier4Name:"Corona della Foresta",tier5Name:"Ponte di Spine",tier6Name:"Giardino Velenoso",tier7Name:"Labirinto di Radici",tier8Name:"Guardiano della Palude",tier9Name:"Scalinata Lunare",tier10Name:"Galleria dei Fuochi Fatui",tier11Name:"Rovine degli Specchi",tier12Name:"Sentinella Lunare",tier13Name:"Porta dell'Eclissi",tier14Name:"Sala del Cristallo Nero",tier15Name:"Fornace delle Ombre",tier16Name:"Reggente dell'Eclissi",tier17Name:"Accesso del Golem",tier18Name:"Fonderia del Nucleo",tier19Name:"Ultimo Bastione",tier20Name:"Cuore della Fortezza",
+    zone1Desc:"Le pattuglie del bosco di cristallo mettono alla prova i rimbalzi precisi.",zone2Desc:"Le bestie spinose usano armature e corsie affollate.",zone3Desc:"I fuochi fatui lunari attraversano rapidamente le sale in rovina.",zone4Desc:"Le truppe dell'eclissi avanzano dietro scudi di cristallo.",zone5Desc:"Le guardie del golem combinano tutte le minacce precedenti.",ruleFormation:"Formazione",ruleSwarm:"Sciame",ruleArmored:"Corazzati",ruleGuardian:"Guardia d'élite",tierShort:"P{tier}",wave:"Ondata",waves:"ondate",core:"Nucleo",shots:"Tiri",
+    aimHint:"Trascina dal lanciatore, controlla la traiettoria di rimbalzo e rilascia.",keyboardAim:"Angolo {angle}° dal centro. Regola con Sinistra/Destra; premi Spazio o Invio per tirare.",arenaControlLabel:"Arena della Fortezza delle Sfere Animali. Angolo di {angle} gradi dal centro. Usa le frecce Sinistra e Destra per regolare; premi Spazio o Invio per tirare.",arenaControlReadyLabel:"Arena della Fortezza delle Sfere Animali. Angolo di {angle} gradi dal centro. Usa le frecce Sinistra e Destra per regolare. Sfera pronta; premi Spazio o Invio per tirare.",arenaControlCooldownLabel:"Arena della Fortezza delle Sfere Animali. Angolo di {angle} gradi dal centro. La sfera si ricarica per circa {seconds} secondi; non puoi ancora tirare.",arenaControlLimitLabel:"Arena della Fortezza delle Sfere Animali. Angolo di {angle} gradi dal centro. Sono in volo {active}/{limit} sfere spirituali, il limite massimo; non puoi ancora tirare.",orbReady:"Sfera pronta. Fai rimbalzare i tiri sulle bestie d'ombra prima che raggiungano il nucleo.",orbFlying:"La sfera spirituale è in volo. Osserva i rimbalzi e prepara il prossimo angolo.",fortressHit:"Una bestia d'ombra ha colpito il nucleo. Mira prima o usa angoli più ampi.",waveClear:"Ondata completata. Scegli una benedizione prima della prossima ondata.",chooseUpgrade:"Scegli una benedizione della fortezza",reroll:"Rinnova per 3 Diamanti",rerolled:"Scelte delle reliquie rinnovate.",rerollNeed:"Servono 3 Diamanti. Saldo attuale {balance}/3.",rerollConfirm:"Conferma 3 · {before}→{after}",rerollDecision:"Rinnova tutte e tre le benedizioni una volta in questa ondata. Tocca di nuovo per confermare: {before} → {after} Diamanti.",rerollLabel:"Rinnova tutte e tre le benedizioni una volta in questa ondata. Costa 3 Diamanti. Saldo attuale {balance}.",rerollConfirmLabel:"Conferma un rinnovo delle benedizioni. Spendi 3 Diamanti. Saldo da {before} a {after}.",retry:"Riprova",
+    raidClear:"Incursione completata",raidFailed:"Incursione fallita",resultWin:"Hai completato il percorso {tier}, ondata {wave}/3, ottenuto {stones} Pietre Stellari e protetto {core} PV del nucleo.",resultLose:"Hai raggiunto il percorso {tier}, ondata {wave}/3, e ottenuto {stones} Pietre Stellari. Migliora le sale e prova una traiettoria più sicura.",progressUnlocked:"Progresso salvato: {total} Pietre Stellari totali; il percorso {best} è ora sbloccato.",progressComplete:"Progresso salvato: {total} Pietre Stellari totali; tutti i 30 percorsi sono completati.",ruleBank:"Traiettoria di rimbalzo",rulePriority:"Ordine dei bersagli",ruleAnchor:"Ancora spinosa",ruleArmor:"Rompi armatura",rulePhase:"Tempi di fase",rulePylon:"Piloni a specchio",ruleSplitter:"Divisori di cristallo",ruleCharge:"Corsie di carica",ruleMastery:"Padronanza combinata",ruleBoss:"Contromossa del boss",
+    bossCueRootbound:"La guardia di radici è attiva: spezzala, poi colpisci il cristallo esposto sul petto.",bossCueBramble:"Placche di rovi e ancore spinose proteggono il Colosso.",bossCueLunar:"La Matriarca sta cambiando fase: attendi che gli anelli lunari si aprano.",bossCuePrism:"Lo scudo prismatico ruota: attacca quando il segmento dorato è rivolto in avanti.",bossCueTempest:"Corsia di carica segnalata: il Guardiano è vulnerabile dopo lo scatto.",bossCueVoid:"La fase del Nucleo Vuoto è cambiata: elimina la scorta e segui il nucleo illuminato.",progressSaved:"Progresso salvato: {total} Pietre Stellari totali; il miglior percorso sbloccato resta {best}.",reportWin:"Rapporto abilità: logica e reazione solide. Hai protetto la fortezza pianificando rimbalzi e potenziamenti.",reportLose:"Rapporto abilità: buon allenamento. La prossima volta mira prima e usa le pareti per colpire più bestie.",
+    upgradeDamage:"Sfera Maggiore",upgradeDamageDesc:"+1 danno della sfera.",upgradeSplit:"Sfera Divisa",upgradeSplitDesc:"Aggiunge una terza sfera eco a ogni tiro.",upgradePierce:"Luce Perforante",upgradePierceDesc:"La sfera può colpire di nuovo la stessa bestia più rapidamente.",upgradeRecharge:"Ricarica Rapida",upgradeRechargeDesc:"Prepara prima il tiro successivo.",upgradeShield:"Scudo del Nucleo",upgradeShieldDesc:"Ripristina 4 PV del nucleo.",upgradeMagnet:"Magnete Esploratore",upgradeMagnetDesc:"+2 Pietre Stellari dopo l'incursione.",roomForge:"Forgia delle Sfere",roomForgeDesc:"+1 danno base della sfera per livello.",roomShield:"Scudo del Nucleo",roomShieldDesc:"+4 PV iniziali del nucleo per livello.",roomDen:"Rifugio dei Compagni",roomDenDesc:"Aggiunge attacchi di supporto dal livello 2.",companionLocked:"Sblocca gli attacchi di supporto al Liv. 2.",companionCurrent:"Attacco di supporto: {damage} danni ogni 4 s.",companionNext:"Livello successivo: {damage} danni.",roomTower:"Torre degli Esploratori",roomTowerDesc:"+1 Pietra Stellare bonus per livello del percorso.",level:"Liv.{n}",upgradeRoom:"Migliora {cost}",upgradeRoomLabel:"{name}: migliora al Liv.{level} per {cost} Pietre Stellari. Risultato: {effect}",maxRoomLabel:"{name}: livello massimo Liv.{level}. {effect}",maxed:"Massimo"
   };
 
   text.ja = {
@@ -392,6 +404,13 @@
     },
   };
 
+  pageMeta.it = {
+    title: "Fortezza delle Sfere Animali - Gioco di rimbalzi",
+    description: "Mira le sfere spirituali lungo 30 percorsi difensivi con nemici speciali, piloni a specchio mobili, sei boss unici e potenziamenti della fortezza.",
+    ogDescription: "Pianifica rimbalzi su pareti e piloni in 30 percorsi, contrasta armature, fasi, divisori e assalitori, poi sconfiggi sei boss.",
+    twitterDescription: "Proteggi il nucleo di cristallo in 30 percorsi a rimbalzo, sei regioni, nemici speciali e sei battaglie contro boss distinti.",
+  };
+
   const roomDefs = [
     { id: "forge", iconSrc: "../../assets/animal-orb-fortress-room-icon-1.webp", name: "roomForge", desc: "roomForgeDesc" },
     { id: "shield", iconSrc: "../../assets/animal-orb-fortress-room-icon-3.webp", name: "roomShield", desc: "roomShieldDesc" },
@@ -446,6 +465,15 @@
     ["Acceso del Gólem","Prioriza enemigos acorazados y en fase en una formación."],["Fundición del Núcleo","Alcanza divisores ocultos tras anclas de espinas."],["Galería del Vacío","Apunta por pilares móviles mientras se marcan carriles."],["Corazón del Eclipse","Supera tres formaciones usando todas las reglas aprendidas."],["Corazón de la Fortaleza","Rompe tres fases finales, escoltas y pilares cambiantes."]
   ];
   raidDefs.forEach((raid,index)=>{raid.name.es=spanishRaidDefs[index][0];raid.desc.es=spanishRaidDefs[index][1];});
+  const italianRaidDefs = [
+    ["Porta di Cristallo","Calcola i tiri diretti contro una corsia lenta."],["Galleria del Muschio","Usa il primo rimbalzo sulla parete per aggirare il centro bloccato."],["Cortile dell'Eco","Scegli il rimbalzo a sinistra o a destra per corsie separate."],["Passaggio Diviso","Distruggi il blocco spinoso prima che passino i nemici mobili."],["Corona delle Radici","Spezza la guardia del primo boss e rimbalza verso il suo punto debole."],
+    ["Ponte di Spine","Rimuovi l'armatura prima che il fuoco fatuo nelle retrovie fugga."],["Giardino Velenoso","Distruggi un'ancora spinosa che protegge le bestie vicine."],["Labirinto di Radici","Scegli una corsia di rimbalzo tra due colonne corazzate."],["Muro di Rovi","Affronta insieme un'ancora e un assalitore corazzato."],["Trono delle Spine","Spezza due placche del boss mentre elimini le ancore."],
+    ["Scalinata Lunare","Interpreta il primo segnale di fase e ricomparsa."],["Galleria dei Fuochi Fatui","Segui due fuochi fatui che alternano le loro fasi."],["Rovine degli Specchi","Mira attraverso una porta lunare mobile che cambia il corridoio di rimbalzo."],["Crocevia Lunare","Combina i tempi di fase con una porta riflettente mobile."],["Sentinella del Pozzo Lunare","Colpisci durante il recupero della Matriarca dopo lo scatto lunare."],
+    ["Porta dell'Eclissi","Usa il primo pilone fisso come nuova superficie di rimbalzo."],["Sala del Cristallo Nero","Sconfiggi il divisore prima che diffonda i suoi due frammenti."],["Fonderia Prismatica","Scegli tra due corridoi di piloni e una scorta corazzata."],["Circuito dei Frammenti","Cambia tiro quando i piloni mobili rendono inutile il vecchio angolo."],["Reggente della Cripta degli Specchi","Rimbalza verso il segmento illuminato dello scudo rotante."],
+    ["Passaggio della Tempesta","Leggi la prima corsia segnalata prima della carica."],["Galleria del Tuono","Segui due assalitori che alternano le corsie segnalate."],["Fonderia della Burrasca","Adattati quando gli impulsi della tempesta cambiano la velocità della sfera."],["Ultimo Bastione","Combina cambi di corsia, cariche e tempi della tempesta."],["Corona della Tempesta","Attacca dopo la carica segnalata del boss cornuto."],
+    ["Accesso del Golem","Dai priorità ai nemici corazzati e in fase nella stessa formazione."],["Fonderia del Nucleo","Raggiungi i divisori nascosti dietro le ancore spinose."],["Galleria del Vuoto","Mira tra i piloni mobili mentre gli assalitori segnalano le corsie."],["Cuore dell'Eclissi","Supera tre formazioni usando tutte le regole dei nemici."],["Cuore della Fortezza","Spezza le tre fasi finali del boss, le scorte e i piloni mobili."]
+  ];
+  raidDefs.forEach((raid,index)=>{raid.name.it=italianRaidDefs[index][0];raid.desc.it=italianRaidDefs[index][1];});
   const japaneseRaidDefs = [
     ["クリスタルゲート","遅い偵察獣のレーンへ直接射撃するタイミングを学びます。"],["苔の回廊","中央の障害を最初の壁反射で回り込みます。"],["こだまの中庭","離れた敵レーンへ左右どちらの反射を使うか選びます。"],["分岐通路","移動する敵が通る前にいばらの障害を壊します。"],["根縛りの王冠","最初のボス防壁を破り、弱点へ反射させます。"],
     ["いばら橋","後衛のウィスプが逃げる前に一撃装甲を外します。"],["毒花園","隣接する獣を守るいばらアンカーを壊します。"],["根の迷宮","2本の装甲レーンの間から反射コースを選びます。"],["茨の壁","アンカーと装甲突進獣を同時に攻略します。"],["いばら工房の王座","アンカーを処理しながらボスの装甲板を2枚壊します。"],
@@ -464,6 +492,7 @@
     { tier: 30, id: "voidcore", imageKey: "bossVoidcore", name: { en: "Voidcore Emperor", "zh-Hant": "虛空核心皇" }, cue: "bossCueVoid" },
   ];
   ["Gólem Enraizado","Coloso Lomo de Zarzas","Matriarca Espíritu Lunar","Regente de Caparazón Prisma","Guardián Cuerno de Tempestad","Emperador del Núcleo Vacío"].forEach((name,index)=>{bossDefs[index].name.es=name;});
+  ["Golem delle Radici","Colosso dei Rovi","Matriarca dei Fuochi Fatui Lunari","Reggente del Guscio Prismatico","Guardiano Corno di Tempesta","Imperatore del Nucleo Vuoto"].forEach((name,index)=>{bossDefs[index].name.it=name;});
   ["根縛りのゴーレム","ブランブルバック巨像","月光ウィスプ女王","プリズムシェル王","テンペストホーン守護者","ヴォイドコア皇帝"].forEach((name,index)=>{bossDefs[index].name.ja=name;});
   const upgradeDefs = [
     { id: "damage", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-1.webp", name: "upgradeDamage", desc: "upgradeDamageDesc" },
@@ -512,9 +541,9 @@
     document.querySelector(selector)?.setAttribute("content", value);
   }
 
-  function localizeSpanishSoundToggle() {
+  function localizeGameSoundToggle() {
     const actualLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale;
-    if (actualLocale !== "es" && actualLocale !== "ja") return;
+    if (!["es", "it", "ja"].includes(actualLocale)) return;
     const toggle = document.querySelector("button[data-sound-toggle]");
     if (!toggle) return;
     const muted = Boolean(window.WonderSound?.isMuted?.());
@@ -585,7 +614,8 @@
 
   function scheduleGameLocalLocalization() {
     [0, 80, 320, 1400, 2200].forEach((delay) => window.setTimeout(() => {
-      localizeSpanishSoundToggle();
+      nodes.startBtn.textContent = t("openRaidMap");
+      localizeGameSoundToggle();
       normalizeGameLocalGuideCopy();
       updatePageMeta();
     }, delay));
@@ -780,6 +810,17 @@
     const requested = next === "zh-Hant" && current === "zh-Hans" ? current : next || "en";
     if (current !== requested) window.WonderI18n?.setLocale?.(requested);
     locale = window.WonderI18n?.legacyLocale?.(requested) || requested;
+    const gameOwnedLocalizationRoots = [
+      document.querySelector(".brand"),
+      document.querySelector(".menu-copy > strong"),
+      document.querySelector(".menu-copy > span"),
+      nodes.stagePanel,
+      nodes.gamePanel,
+    ];
+    gameOwnedLocalizationRoots.forEach((node) => {
+      if (["es", "it", "ja"].includes(requested)) node?.setAttribute("data-runtime-localize", "off");
+      else node?.removeAttribute("data-runtime-localize");
+    });
     writeStorage(localeKey, requested);
     document.documentElement.lang = requested;
     document.querySelectorAll("[data-ui]").forEach((node) => {
@@ -875,7 +916,9 @@
             <span class="raid-number">${raid.tier}</span>
             <strong>${localized(raid.name)}</strong>
             <span>${localized(raid.desc)}</span>
-            <em>${t(raid.rule)} · ${locked ? t("tierLocked") : `${t("enterRaid")} · ${WAVES_PER_RAID} ${t("wave")}`}</em>
+            <em><span>${t(raid.rule)}</span><span aria-hidden="true"> · </span>${locked
+              ? `<span>${t("tierLocked")}</span>`
+              : `<span>${t("enterRaid")}</span><span aria-hidden="true"> · </span><span>${WAVES_PER_RAID}</span> <span>${t("waves")}</span>`}</em>
           </button>`;
       })
       .join("");
@@ -1524,6 +1567,8 @@
   function activeEncounterCue() {
     const boss = state.enemies.find((enemy) => enemy.kind === "boss" && enemy.hp > 0);
     if (boss?.cue) return `${localized(boss.name)} — ${t(boss.cue)}`;
+    if (locale === "it" && state.enemies.some((enemy) => enemy.phased)) return "Fase chiusa: attendi che il nemico ricompaia.";
+    if (locale === "it" && state.enemies.some((enemy) => enemy.chargeState === "marked")) return "Corsia di carica segnalata: prepara un altro angolo.";
     if (state.enemies.some((enemy) => enemy.phased)) return locale === "zh-Hant" ? "相位關閉：等待敵人重新顯形。" : locale === "es" ? "Fase cerrada: espera a que reaparezca." : locale === "ja" ? "位相が閉じています。敵が再出現するまで待ちましょう。" : "Phase closed — wait for the enemy to reappear.";
     if (state.enemies.some((enemy) => enemy.chargeState === "marked")) return locale === "zh-Hant" ? "衝鋒路線已標記：準備改變角度。" : locale === "es" ? "Carril de carga marcado: prepara otro ángulo." : locale === "ja" ? "突進レーンが表示されました。別の角度を準備しましょう。" : "Charge lane marked — prepare a different angle.";
     return "";
@@ -2141,7 +2186,7 @@
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });
   nodes.rerollBtn.addEventListener("click", rerollChoices);
-  document.querySelector("button[data-sound-toggle]")?.addEventListener("click", localizeSpanishSoundToggle);
+  document.querySelector("button[data-sound-toggle]")?.addEventListener("click", localizeGameSoundToggle);
   canvas.addEventListener("pointerdown", onPointerStart);
   canvas.addEventListener("pointermove", onPointerMove);
   canvas.addEventListener("pointerup", onPointerEnd);

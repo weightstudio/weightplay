@@ -1838,6 +1838,7 @@
 
   function syncStandardMainStartLabels() {
     document.querySelectorAll("[data-wp-main-start], #mainStartBtn, #startBtn, #startGameBtn, #showStageBtn, #wonderMainStart").forEach((node) => {
+      if (node.closest?.('[data-runtime-localize="off"]')) return;
       const rect = node.getBoundingClientRect();
       const style = window.getComputedStyle(node);
       const active = style.display !== "none" && style.visibility !== "hidden" && rect.width > 0 && rect.height > 0;

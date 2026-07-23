@@ -316,7 +316,7 @@ window.WeightPlayGameInfoLocales.es = {
         ],
         [
           "¿Qué pasa cuando falta una fruta?",
-          "Un resultado de apoyo ofrece Intentar de nuevo, Etapas o Lobby sin eliminar el progreso desbloqueado."
+          "Un resultado de apoyo ofrece Volver a intentarlo o Etapas sin eliminar el progreso desbloqueado."
         ],
         [
           "¿El juego requiere iniciar sesión o mostrar anuncios?",

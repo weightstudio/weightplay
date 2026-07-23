@@ -232,8 +232,21 @@
 
   function readStorage(key) { try { return localStorage.getItem(key); } catch { return null; } }
   function writeStorage(key, value) { try { localStorage.setItem(key, value); return true; } catch { return false; } }
+  const localeCodes = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const ownedLocales = new Set(["en", "zh-Hant", "es"]);
+  const runtimeSupplemental = {
+    hi: { Trial: "परीक्षण" },
+    ar: { Trial: "التجربة" },
+  };
+  function canonicalLocale(value) {
+    const raw = String(value || "").toLowerCase();
+    if (raw.startsWith("zh-tw") || raw.includes("hant")) return "zh-Hant";
+    if (raw.startsWith("zh-cn") || raw.includes("hans")) return "zh-Hans";
+    if (raw.startsWith("pt")) return "pt-BR";
+    return localeCodes.find((code) => code.toLowerCase() === raw) || "en";
+  }
   const routeLocale = document.documentElement.lang;
-  let locale = routeLocale || readStorage("weightPlayLocale") || window.WonderI18n?.locale?.() || "en";
+  let locale = canonicalLocale(routeLocale || readStorage("weightPlayLocale") || window.WonderI18n?.locale?.() || "en");
   const savedHero = readStorage("aht-selected-hero");
   let selectedHero = ["leo", "fia", "orla", "taro"].includes(savedHero) ? savedHero : "leo";
   if (savedHero && savedHero !== selectedHero) writeStorage("aht-selected-hero", selectedHero);
@@ -339,8 +352,16 @@
     return image;
   }
 
+  function runtimeTranslate(source) {
+    if (ownedLocales.has(locale)) return source;
+    const supplemental = runtimeSupplemental[locale]?.[source];
+    if (supplemental) return supplemental;
+    return window.WeightPlayGameRuntimeLocalizer?.translate?.(String(source)) || source;
+  }
+
   function t(key) {
-    return copy[locale]?.[key] || copy.en[key] || key;
+    const owned = copy[locale]?.[key];
+    return owned || runtimeTranslate(copy.en[key] || key);
   }
 
   function playSound(cue) {
@@ -390,8 +411,16 @@
     return key && heroNames[key] ? localizedPair(heroNames[key]) : heroId.charAt(0).toUpperCase() + heroId.slice(1);
   }
 
-  function localizedPair(pair) { return pair[locale === "zh-Hant" ? 1 : locale === "es" ? 2 : 0] || pair[0]; }
-  function localizedValue(en, zh, es) { return locale === "zh-Hant" ? zh : locale === "es" ? es : en; }
+  function localizedPair(pair) {
+    if (locale === "zh-Hant") return pair[1] || pair[0];
+    if (locale === "es") return pair[2] || pair[0];
+    return runtimeTranslate(pair[0]);
+  }
+  function localizedValue(en, zh, es) {
+    if (locale === "zh-Hant") return zh;
+    if (locale === "es") return es;
+    return runtimeTranslate(en);
+  }
   function trialDefinition(stage) { return trials[Math.max(0,Math.min(TRIAL_COUNT-1,Number(stage)-1))] || trials[0]; }
 
   function show(name) {
@@ -477,6 +506,7 @@
 
   function localize() {
     document.documentElement.lang = locale;
+    document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     document.title = localizedValue("Animal Hero Trials - WeightPlay", "動物英雄試煉 - WeightPlay", "Pruebas de Héroes Animales - WeightPlay");
     $("#game").setAttribute("aria-label", t("arenaLabel"));
     $$('[data-t]').forEach((node) => {
@@ -545,7 +575,7 @@
       button.dataset.stage = String(stage);
       if(locked)button.setAttribute("aria-disabled","true");
       const detail = locked ? t("locked") : interpolate("roomsAndMarks",{marks:definition.reward});
-      const title=locale==="zh-Hant"?definition.titleZh:locale==="es"?definition.titleEs:definition.titleEn;
+      const title=localizedValue(definition.titleEn,definition.titleZh,definition.titleEs);
       const rule=localizedPair(region.rule);
       const boss=definition.boss?` · ${localizedPair(definition.boss.name)}`:"";
       button.innerHTML = `<img src="${ASSET_ROOT}${definition.boss?.asset || "animal-hero-trials-arena.png"}" alt=""><strong>${localizedValue("Trial", "試煉", "Prueba")} ${stage} · ${title}</strong><span>${detail}<br>${rule}${boss}<br>${interpolate("recommended",{hero:localizedPair(heroNames[definition.recommended])})}</span>`;
@@ -662,7 +692,11 @@
 
   function updateHud() {
     $("#hpFill").style.width = `${Math.max(0, (run.hp / run.maxHp) * 100)}%`;
-    const skillName = heroes[run.heroId].skill[locale === "zh-Hant" ? "zh" : locale] || heroes[run.heroId].skill.en;
+    const skillName = locale === "zh-Hant"
+      ? heroes[run.heroId].skill.zh
+      : locale === "es"
+        ? heroes[run.heroId].skill.es
+        : runtimeTranslate(heroes[run.heroId].skill.en);
     $("#cooldownText").textContent = run.cool > 0 ? run.cool.toFixed(1) : skillName;
     $("#skillBtn").setAttribute("aria-label", interpolate(run.cool > 0 ? "skillCooldownLabel" : "skillReadyLabel", {
       skill: skillName,
@@ -1128,10 +1162,14 @@
   const localeSelect = $("#locale") || $("#localeSelect");
   localeSelect.value = locale;
   localeSelect.onchange = (event) => {
-    const requested = event.target.value;
+    const requested = canonicalLocale(event.target.value);
     window.WonderI18n?.setLocale?.(requested);
     locale = requested;
     writeStorage("weightPlayLocale", requested);
+    if (!ownedLocales.has(requested) && window.WeightPlayGameRuntimeLocalizer?.locale !== requested) {
+      window.location.reload();
+      return;
+    }
     localize();
   };
   const soundToggle = $("#soundToggle");

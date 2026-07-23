@@ -13,7 +13,7 @@
   const SAVE_KEY = "weightplay_animal_2048_v1";
   const TUTORIAL_KEY = "weightplay_tutorial_seen_animal_2048_v1";
   const LOCALE_SEGMENTS = {en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",es:"es",ja:"ja",ko:"ko","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru"};
-  const SEGMENTS = {en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",es:"es",ja:"ja",ko:"ko","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru"};
+  const SEGMENTS = {en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",es:"es",ja:"ja",ko:"ko","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const firstSegment = location.pathname.split("/").filter(Boolean)[0] || "en";
   const readStorage=(key)=>{try{return localStorage.getItem(key);}catch{return null;}};
   const writeStorage=(key,value)=>{try{localStorage.setItem(key,value);return true;}catch{return false;}};
@@ -117,7 +117,8 @@
   function closeTutorial(){writeStorage(TUTORIAL_KEY,"1");dom.tutorial.hidden=true;focusSelectedStageCard();}
 
   dom.start.addEventListener("click",()=>{showStage();if(!readStorage(TUTORIAL_KEY))dom.tutorial.hidden=false;});dom.stageBack.addEventListener("click",showMain);dom.campaignTab.addEventListener("click",()=>setStageMode("campaign"));dom.challengeTab.addEventListener("click",()=>setStageMode("challenge"));dom.rail.addEventListener("click",event=>{const card=event.target.closest(".stage-card.unlocked");if(card)startStage(Number(card.dataset.index));});dom.rail.addEventListener("wonder:stage-snap",event=>{let card=event.detail?.card,index=Number(card?.dataset?.index);if(!Number.isInteger(index)){const position=Number(event.detail?.index);card=dom.rail.children[position];index=Number(card?.dataset.index);}if(Number.isInteger(index)&&index>=0){updateChapter(index);setStageCardCenter(card||dom.rail.querySelector(`[data-index="${index}"]`));}});
-  dom.start.addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});
+  const preventRepeatedActivation=event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();};
+  [dom.start,dom.stageBack,dom.battleBack,dom.leaveContinue,dom.leaveStages,dom.retry,dom.resultStages,dom.next,dom.tutorialClose,dom.tutorialStart].forEach(button=>button.addEventListener("keydown",preventRepeatedActivation));
   dom.rail.addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" ")&&event.target.closest(".stage-card"))event.preventDefault();});
   const resultStageTarget=()=>resultState==="win"&&stageIndex<29?stageIndex+1:stageIndex;
   dom.battleBack.addEventListener("click",()=>{if(motionLock)settleMotion();if(resultState){showStage(resultStageTarget());return;}setBattleCovered(true);dom.leave.hidden=false;dom.leaveContinue.focus({preventScroll:true});});dom.leaveContinue.addEventListener("click",()=>{dom.leave.hidden=true;setBattleCovered(false);dom.battleBack.focus({preventScroll:true});});dom.leaveStages.addEventListener("click",()=>{dom.leave.hidden=true;setBattleCovered(false);showStage(stageIndex);});

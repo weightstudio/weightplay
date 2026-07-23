@@ -221,7 +221,7 @@
         ["Why did the fruit pass the basket?", "Every delivery requires at least one leaf bounce, and marked routes may require two bounces or use a narrower opening."],
         ["How do moving baskets and wind layers work?", "Moving baskets change horizontal position after Cut. Wind-layer routes apply different force in the upper and lower parts of the clearing."],
         ["What happens in a picnic delivery?", "Two or three fruit routes continue inside the same Battle. Result waits until every delivery is complete."],
-        ["What happens when a fruit misses?", "A supportive Result offers Try Again, Stages, or Lobby without deleting unlocked progress."],
+        ["What happens when a fruit misses?", "A supportive Result offers Try Again or Stages without deleting unlocked progress."],
         ["Does the game require login or show ads?", "No. This Kids game is ad-free and stores basic progress locally without requiring an account."],
         ["Are stars a formal ability score?", "No. Stars are only game progress feedback and are not a diagnosis or assessment."],
       ],
@@ -2759,7 +2759,7 @@
       ["為什麼水果穿過籃子？", "每份配送至少需要一次葉子彈跳；標記關卡可能要求兩次彈跳或使用較窄入口。"],
       ["移動籃與分層風怎麼運作？", "移動籃會在切斷後改變水平位置；分層風會在空地上半部與下半部施加不同推力。"],
       ["野餐配送會發生什麼？", "兩顆或三顆水果會留在同一個遊玩畫面連續配送，全部完成後才顯示結算。"],
-      ["水果沒接到會怎樣？", "友善結算會提供再玩一次、選關或大廳，不會刪除已解鎖進度。"],
+      ["水果沒接到會怎樣？", "友善結算會提供再玩一次或選關，不會刪除已解鎖進度。"],
       ["需要登入或會顯示廣告嗎？", "不需要登入；這款 Kids 遊戲沒有廣告，基本進度只存在目前瀏覽器。"],
       ["星等是正式能力分數嗎？", "不是。星等只是遊戲進度回饋，不是診斷或評量。"]
     ]
@@ -4059,7 +4059,7 @@
       ],
       [
         "水果没接到会怎样？",
-        "友善结算会提供再玩一次、选关或大厅，不会删除已解锁进度。"
+        "友善结算会提供再玩一次或选关，不会删除已解锁进度。"
       ],
       [
         "需要登入或会显示广告吗？",
@@ -7580,4 +7580,19 @@
     faq: [["How many mosaics are included?", "There are 30 authored mosaics."], ["Do I need to guess?", "No. Every mosaic has exactly one solution."], ["Does progress save?", "Yes. Clears and unlocks are stored locally in this browser."]]
   };
   gameplayProfiles["animal-mosaic-clues"] = { gameplay: "Nonogram Mosaic Logic", genre: ["Puzzle", "Strategy", "Animal"] };
+  localizedGames["zh-Hant"]["animal-mosaic-clues"] = {
+    ...games["animal-mosaic-clues"],
+    title: "動物馬賽克線索", difficulty: "簡單到具挑戰性", time: "每幅馬賽克 2–10 分鐘", gameplay: "數織馬賽克推理", genre: ["益智", "策略", "動物"], skills: ["邏輯", "專注", "推理"],
+    guideKicker: "WeightPlay 原創遊戲指南", guideTitleSuffix: "遊戲指南",
+    intro: "閱讀每一列與每一行的線索，找出藏在格子裡的動物圖像。",
+    story: ["每個數字都代表一段連續的填滿格。結合交叉線索，還原每幅隱藏的動物馬賽克。"],
+    systems: ["填上確定要著色的格子、標記確定要留白的格子，並用交叉線索逐步解開馬賽克，不必猜測。", "復原會撤銷上一個標記，重新開始會還原原始題目，提示會說明必然的推理步驟而不改變棋盤。"],
+    how: ["從外側閱讀每一列與每一行的連續數字。", "對確定的格子使用填色，對確定空白的格子使用標記。", "完成所有連續段，揭開隱藏的動物。"],
+    strategyTips: ["先從連續段幾乎填滿整列或整行的線索開始。", "完成一個連續段後，把該線上其餘格子標記為空白。", "在決定一格前，先比較與它交叉的線索。"],
+    progression: ["六個章節共有 30 幅唯一可解的馬賽克，從引導式 5×5 圖案逐步發展到需要更多推理的 12×12 動物肖像。"],
+    designNote: "每個棋盤都只有一個解答，設計重點是推理而不是試誤猜測。",
+    parent: "不需要帳號。進度儲存在此瀏覽器；清除網站資料後可能會重設。",
+    faq: [["有多少幅馬賽克？", "共有 30 幅手工設計的馬賽克。"], ["需要靠猜測嗎？", "不需要。每幅馬賽克都只有一個正確解答。"], ["進度會儲存嗎？", "會。完成紀錄與解鎖進度會儲存在此瀏覽器。"]]
+  };
+  localizedGameplayProfiles["zh-Hant"]["animal-mosaic-clues"] = { gameplay: "數織馬賽克推理", genre: ["益智", "策略", "動物"] };
 })();
