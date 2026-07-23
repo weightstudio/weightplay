@@ -1670,6 +1670,25 @@
   function centerStageCard(stageId) {
     const card = nodes.stageRail.querySelector(`[data-stage-id="${stageId}"]`);
     card?.scrollIntoView?.({ behavior: "auto", inline: "center", block: "nearest" });
+    window.requestAnimationFrame(syncCenteredStageCard);
+  }
+
+  function syncCenteredStageCard() {
+    const cards = Array.from(nodes.stageRail.querySelectorAll(".stage-card"));
+    if (!cards.length || !nodes.stageRail.getClientRects().length) return null;
+    const railBox = nodes.stageRail.getBoundingClientRect();
+    const railCenter = railBox.left + railBox.width / 2;
+    const nearest = cards
+      .map((card) => {
+        const box = card.getBoundingClientRect();
+        return { card, distance: Math.abs(box.left + box.width / 2 - railCenter) };
+      })
+      .sort((a, b) => a.distance - b.distance)[0]?.card || null;
+    cards.forEach((card) => {
+      if (card === nearest) card.setAttribute("aria-current", "true");
+      else card.removeAttribute("aria-current");
+    });
+    return nearest;
   }
 
   function snapStageRailToNearest(behavior = "smooth") {
@@ -1684,6 +1703,7 @@
       })
       .sort((a, b) => a.distance - b.distance)[0]?.card;
     nearest?.scrollIntoView?.({ behavior, inline: "center", block: "nearest" });
+    if (behavior === "auto") window.requestAnimationFrame(syncCenteredStageCard);
   }
 
   function techEffectPreview(tech, level) {
@@ -4010,6 +4030,12 @@
     // The shared Stage controller owns pointer tracking, click suppression,
     // and nearest-card settling. A second scroll timer or mouse drag handler
     // here makes touch compatibility events fight that controller mid-gesture.
+    let stageCenteredTimer = 0;
+    nodes.stageRail.addEventListener("scroll", () => {
+      window.clearTimeout(stageCenteredTimer);
+      stageCenteredTimer = window.setTimeout(syncCenteredStageCard, 120);
+    }, { passive: true });
+    nodes.stageRail.addEventListener("wonder:stage-snap", syncCenteredStageCard);
     nodes.stageRail.addEventListener("wheel", (event) => {
       if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
       event.preventDefault();

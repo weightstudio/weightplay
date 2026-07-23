@@ -2,6 +2,8 @@
   const GAME_ID = "garden-tiles";
   const UNLOCK_KEY = "gardenTilesUnlocked";
   const STARS_KEY = "gardenTilesStars";
+  const CARD_ATLAS = "../../assets/garden-tiles-card-faces.webp?v=20260723-art1";
+  const CARD_BACK = "../../assets/garden-tiles-card-back.webp?v=20260723-art1";
   document.querySelector(".garden-game")?.setAttribute("data-wp-canvas-max-width", "920");
   if (!document.querySelector("#leaveConfirmPanel")) {
     const panel = document.createElement("section");
@@ -246,31 +248,17 @@
     },
   };
   const tileArt = [
-    { id: "cat", label: "Cat", asset: "../../assets/animal-guard-cat.png" },
-    { id: "dog", label: "Dog", asset: "../../assets/animal-guard-dog.png" },
-    { id: "fox", label: "Fox", asset: "../../assets/animal-guard-fox.png" },
-    { id: "owl", label: "Owl", asset: "../../assets/animal-guard-owl.png" },
-    { id: "rabbit", label: "Rabbit", asset: "../../assets/tiny-weather-animal-rabbit.png" },
-    { id: "panda", label: "Panda", asset: "../../assets/tiny-weather-animal-panda.png" },
-    { id: "penguin", label: "Penguin", asset: "../../assets/tiny-weather-animal-penguin.png" },
-    { id: "koala", label: "Koala", asset: "../../assets/tiny-weather-animal-koala.png" },
-    { id: "lion", label: "Lion", asset: "../../assets/weightplay-boom-mane-lion.png" },
-    { id: "elephant", label: "Elephant", asset: "../../assets/animal-zoo-elephant.png" },
-    { id: "giraffe", label: "Giraffe", asset: "../../assets/animal-zoo-idle-giraffe.png" },
-    { id: "whale", label: "Whale", asset: "../../assets/bubble-bakery-whale.png" },
-    { id: "chick", label: "Chick", asset: "../../assets/bubble-bakery-chick.png" },
-    { id: "frog", label: "Frog", asset: "../../assets/bubble-bakery-frog.png" },
-    { id: "apple", label: "Apple", asset: "../../assets/animal-vine-fruit-apple.png" },
-    { id: "banana", label: "Banana", asset: "../../assets/animal-vine-fruit-banana.png" },
-    { id: "berry", label: "Berry", asset: "../../assets/animal-vine-fruit-berry.png" },
-    { id: "leaf", label: "Leaf", asset: "../../assets/animal-guard-projectile-leaf.svg" },
-    { id: "seed", label: "Seed", asset: "../../assets/animal-guard-projectile-seed.svg" },
-    { id: "feather", label: "Feather", asset: "../../assets/animal-guard-projectile-feather.svg" },
-    { id: "keeper", label: "Keeper", asset: "../../assets/animal-zoo-keeper.png" },
-    { id: "visitor", label: "Visitor", asset: "../../assets/animal-zoo-visitor-child.png" },
-    { id: "ticket", label: "Ticket Booth", asset: "../../assets/animal-zoo-idle-ticket-booth.png" },
-    { id: "basket", label: "Basket", asset: "../../assets/animal-vine-basket.png" },
-  ];
+    "cat", "dog", "fox", "owl",
+    "rabbit", "panda", "penguin", "koala",
+    "lion", "elephant", "giraffe", "whale",
+    "chick", "frog", "apple", "banana",
+    "berry", "leaf", "seed", "feather",
+    "keeper", "visitor", "ticket", "basket",
+  ].map((id, atlasIndex) => ({
+    id,
+    label: id === "ticket" ? "Ticket Booth" : id[0].toUpperCase() + id.slice(1),
+    atlasIndex,
+  }));
   const chapterNames = {
     en: ["Seedling Walk", "Morning Greenhouse", "Misty Pond", "Breezy Orchard", "Animal Parade", "Moonlit Conservatory"],
     "zh-Hant": ["\u5ae9\u82bd\u5c0f\u5f91", "\u6668\u5149\u6eab\u5ba4", "\u8584\u9727\u6c60\u5858", "\u5fae\u98a8\u679c\u5712", "\u52d5\u7269\u904a\u884c", "\u6708\u5149\u82b1\u623f"],
@@ -712,10 +700,13 @@
   }
 
   function makeTiles(pairCount, levelIndex) {
-    const levelIcons = tileArt.slice(0, Math.min(tileArt.length, pairCount + 3));
+    const chapterIndex = Math.floor(levelIndex / 5);
+    const availableCount = Math.min(tileArt.length, pairCount + 3 + chapterIndex * 2);
+    const levelIcons = tileArt.slice(0, availableCount);
+    const chapterStart = chapterIndex * 4;
     const picks = [];
     for (let i = 0; i < pairCount; i += 1) {
-      const art = levelIcons[(i + levelIndex) % levelIcons.length];
+      const art = levelIcons[(i + chapterStart) % levelIcons.length];
       picks.push({ art, matched: false, id: `${i}a` }, { art, matched: false, id: `${i}b` });
     }
     return shuffle(picks).map((tile, index) => ({ ...tile, index }));
@@ -740,7 +731,13 @@
       button.className = "tile";
       button.dataset.index = String(tile.index);
       button.dataset.tileId = tile.art.id;
-      button.innerHTML = `<img class="tile-image" src="${tile.art.asset}" alt="" draggable="false" />`;
+      button.dataset.atlasIndex = String(tile.art.atlasIndex);
+      const face = document.createElement("span");
+      face.className = "tile-image";
+      face.setAttribute("aria-hidden", "true");
+      face.style.backgroundImage = `url("${CARD_ATLAS}")`;
+      face.style.backgroundPosition = `${(tile.art.atlasIndex % 4) * 100 / 3}% ${Math.floor(tile.art.atlasIndex / 4) * 20}%`;
+      button.append(face);
       const selected = selectedTile?.index === tile.index;
       const revealed = selected || previewing || tile.revealed;
       button.setAttribute("aria-label", revealed ? tileName(tile.art) : t("hiddenTile"));
@@ -1057,9 +1054,15 @@
   localeSelect.value = locale();
   applyText();
   showMain();
-  loadingPanel.classList.add("hidden");
-  window.WonderAnalytics?.track?.("game_ready", { game_id: GAME_ID });
-  window.WeightPlayGameReady = true;
+  Promise.all([CARD_ATLAS, CARD_BACK].map((source) => new Promise((resolve) => {
+    const image = new Image();
+    image.onload = image.onerror = resolve;
+    image.src = source;
+  }))).finally(() => {
+    loadingPanel.classList.add("hidden");
+    window.WonderAnalytics?.track?.("game_ready", { game_id: GAME_ID });
+    window.WeightPlayGameReady = true;
+  });
 })();
 
 window.setTimeout(() => {

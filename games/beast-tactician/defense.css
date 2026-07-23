@@ -498,7 +498,9 @@ body.guardian-playing .command-row button {
 
 .stage-card[aria-current="true"] {
   outline: 2px solid var(--gold);
-  box-shadow: 0 0 0 4px rgba(255, 209, 102, 0.12);
+  box-shadow:
+    0 0 0 4px rgba(255, 209, 102, 0.2),
+    0 0 20px rgba(255, 209, 102, 0.48);
 }
 
 .stage-card[aria-disabled="true"] {

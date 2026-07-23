@@ -799,7 +799,19 @@
     preferred.focus();
   }
 
-  function showMenu() {
+  function focusStageSelection(preferCurrent = false) {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const unlockedCards = [...nodes.stageGrid.querySelectorAll(".stage-card:not(.locked)")];
+        const currentCard = preferCurrent
+          ? nodes.stageGrid.querySelector(`.stage-card[data-stage-index="${currentStage}"]:not(.locked)`)
+          : null;
+        (currentCard || unlockedCards.at(-1))?.focus({ preventScroll:true });
+      });
+    });
+  }
+
+  function showMenu({ focusStage = false, preferCurrent = false } = {}) {
     setLeaveConfirmOpen(false, false);
     cancelCareTransition();
     acceptingInput = false;
@@ -817,10 +829,11 @@
       restoreStageShell();
       updateStageViewport();
     });
+    if (focusStage) focusStageSelection(preferCurrent);
     setTimeout(restoreStageShell, 180);
   }
 
-  function showMain() {
+  function showMain({ focusStart = false } = {}) {
     setLeaveConfirmOpen(false, false);
     cancelCareTransition();
     acceptingInput = false;
@@ -829,6 +842,7 @@
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("wp-standard-stage-page");
     clearBattleShellStyles();
+    if (focusStart) requestAnimationFrame(() => nodes.startGameBtn.focus({ preventScroll:true }));
   }
 
   function startStage(index) {
@@ -1138,8 +1152,8 @@
   }
 
   function bindEvents() {
-    nodes.startGameBtn.addEventListener("click", showMenu);
-    nodes.stageBackBtn.addEventListener("click", showMain);
+    nodes.startGameBtn.addEventListener("click", () => showMenu({ focusStage:true }));
+    nodes.stageBackBtn.addEventListener("click", () => showMain({ focusStart:true }));
     nodes.localeSelect.addEventListener("change", () => {
       const requested = nodes.localeSelect.value;
       window.WonderI18n?.setLocale?.(requested);
@@ -1164,7 +1178,7 @@
     });
     nodes.backToStagesBtn.addEventListener("click", () => setLeaveConfirmOpen(true));
     nodes.keepHelpingBtn.addEventListener("click", () => setLeaveConfirmOpen(false));
-    nodes.leaveShiftBtn.addEventListener("click", showMenu);
+    nodes.leaveShiftBtn.addEventListener("click", () => showMenu({ focusStage:true, preferCurrent:true }));
     leavePanel.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) { event.preventDefault(); event.stopImmediatePropagation(); return; }
       if (event.key === "Escape") { event.preventDefault(); setLeaveConfirmOpen(false); return; }
@@ -1172,7 +1186,7 @@
       if (event.shiftKey && document.activeElement === nodes.keepHelpingBtn) { event.preventDefault(); nodes.leaveShiftBtn.focus({ preventScroll:true }); }
       else if (!event.shiftKey && document.activeElement === nodes.leaveShiftBtn) { event.preventDefault(); nodes.keepHelpingBtn.focus({ preventScroll:true }); }
     }, true);
-    nodes.resultStagesBtn.addEventListener("click", showMenu);
+    nodes.resultStagesBtn.addEventListener("click", () => showMenu({ focusStage:true }));
     nodes.retryBtn.addEventListener("click", () => {
       track("game_restart", { level: currentStage + 1, mistakes });
       startStage(currentStage);

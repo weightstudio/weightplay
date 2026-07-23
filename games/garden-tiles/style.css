@@ -374,7 +374,7 @@ body.garden-stage .level-grid button.is-centered {
   place-items: center;
   background:
     linear-gradient(rgba(255, 253, 241, .42), rgba(49, 91, 53, .2)),
-    url("../../assets/garden-tiles-cover.webp") center / cover no-repeat;
+    url("../../assets/garden-tiles-card-back.webp?v=20260723-art1") center / cover no-repeat;
   color: #243528;
   padding: clamp(5px, 1.4vw, 10px);
   overflow: hidden;
@@ -385,10 +385,13 @@ body.garden-stage .level-grid button.is-centered {
 }
 
 .tile-image {
-  width: min(82%, 92px);
-  height: min(82%, 92px);
+  display: block;
+  width: min(94%, 108px);
+  height: min(94%, 108px);
   min-height: 0;
-  object-fit: contain;
+  border-radius: 6px;
+  background-repeat: no-repeat;
+  background-size: 400% 600%;
   filter: drop-shadow(0 5px 4px rgba(49, 91, 53, 0.2));
   pointer-events: none;
   opacity: 0;

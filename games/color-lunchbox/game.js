@@ -953,7 +953,7 @@
   visualViewport?.addEventListener("resize", updateLunchFrame, { passive: true });
   visualViewport?.addEventListener("scroll", updateLunchFrame, { passive: true });
 
-  function showMain() {
+  function showMain(restoreStartFocus = false) {
     setHelpOpen(false, null, false);
     setLeaveConfirmOpen(false, false);
     invalidateRoundTransition();
@@ -966,6 +966,7 @@
     gamePlayContent.classList.add("hidden");
     setBattleCovered(false);
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    if (restoreStartFocus) requestAnimationFrame(() => startBtn.focus({ preventScroll: true }));
   }
 
   function showStageSelect(focusCurrent = false) {
@@ -1563,7 +1564,7 @@
     window.WonderSound?.play("click");
     showStageSelect(true);
   });
-  stageBackBtn.addEventListener("click", showMain);
+  stageBackBtn.addEventListener("click", () => showMain(true));
   stageHelpBtn.addEventListener("click", () => setHelpOpen(true, stageHelpBtn));
   battleHelpBtn.addEventListener("click", () => setHelpOpen(true, battleHelpBtn));
   gameHelpCloseBtn.addEventListener("click", () => setHelpOpen(false));
@@ -1619,7 +1620,7 @@
     if (document.body.classList.contains("lunch-main")) return;
     event.preventDefault();
     window.WonderSound?.play("click");
-    showMain();
+    showMain(true);
   });
 
   translateStaticUI();
