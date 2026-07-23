@@ -652,6 +652,54 @@
     return t(`animal${symbol[0].toUpperCase()}${symbol.slice(1)}`);
   }
 
+  const germanTutorial = {
+    title: "Finde die passenden Tierkarten.",
+    close: "Spiel starten",
+    closeAria: "Anleitung schließen",
+    helpAria: "Spielanleitung",
+    steps: [
+      ["Karte aufdecken", "Tippe auf eine Karte, um das Tier zu sehen."],
+      ["Paar finden", "Merke dir die Plätze und decke zwei gleiche Tiere auf."],
+      ["Besondere Runden", "Achte später auf Vorschauen, Mischen und die vorgegebene Reihenfolge."],
+    ],
+  };
+
+  function localizeOwnedTutorial() {
+    if (locale() !== "de") return;
+    const setText = (node, value) => {
+      if (node && node.textContent !== value) node.textContent = value;
+    };
+    document.querySelector(".wp-tutorial-button")?.setAttribute("aria-label", germanTutorial.helpAria);
+    const backdrop = document.querySelector('.wp-tutorial-backdrop[data-game-id="star-memory"]');
+    if (!backdrop) return;
+    backdrop.setAttribute("data-runtime-localize", "off");
+    const title = backdrop.querySelector(".wp-tutorial-head strong");
+    const close = backdrop.querySelector(".wp-tutorial-close");
+    const action = backdrop.querySelector(".wp-tutorial-action");
+    setText(title, germanTutorial.title);
+    close?.setAttribute("aria-label", germanTutorial.closeAria);
+    setText(action, germanTutorial.close);
+    backdrop.querySelectorAll(".wp-tutorial-step").forEach((step, index) => {
+      const copy = germanTutorial.steps[index];
+      if (!copy) return;
+      const heading = step.querySelector("b");
+      const body = step.querySelector("span");
+      setText(heading, copy[0]);
+      setText(body, copy[1]);
+    });
+  }
+
+  const tutorialObserver = new MutationObserver((records) => {
+    const tutorialChanged = records.some((record) => {
+      if (record.target instanceof Element && record.target.matches('.wp-tutorial-backdrop[data-game-id="star-memory"]')) return true;
+      return [...record.addedNodes].some((node) => node instanceof Element
+        && (node.matches('.wp-tutorial-backdrop[data-game-id="star-memory"]')
+          || node.querySelector('.wp-tutorial-backdrop[data-game-id="star-memory"]')));
+    });
+    if (tutorialChanged) localizeOwnedTutorial();
+  });
+  tutorialObserver.observe(document.body, { childList: true, subtree: true });
+
   function shuffle(arr) {
     return [...arr].sort(() => Math.random() - 0.5);
   }
@@ -691,6 +739,9 @@
 
   // UI Translating
   function translateStaticUI() {
+    const gameRoot = document.querySelector(".star-memory-game");
+    if (locale() === "de") gameRoot?.setAttribute("data-runtime-localize", "off");
+    else gameRoot?.removeAttribute("data-runtime-localize");
     document.documentElement.lang = locale();
     localeSelect.value = locale();
     updateSeoText();
@@ -1365,7 +1416,10 @@
     window.WonderI18n?.setLocale(localeSelect.value);
   });
 
-  window.addEventListener("wonder:locale-change", translateStaticUI);
+  window.addEventListener("wonder:locale-change", () => {
+    translateStaticUI();
+    localizeOwnedTutorial();
+  });
 
   window.addEventListener("weightplay:tutorial-start", (event) => {
     if (event.detail?.gameId !== GAME_ID || !document.body.classList.contains("memory-main")) return;
@@ -1402,6 +1456,7 @@
 
   // Initialization
   translateStaticUI();
+  localizeOwnedTutorial();
   simulateLoading();
 
 })();

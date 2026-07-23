@@ -268,13 +268,17 @@
       && !resultOverlay.classList.contains("hidden");
     let resultOwned = false;
     const syncResultOwnership = () => {
+      const actions = resultActions();
+      actions.forEach((action) => action.classList.remove("wonder-terminal-primary"));
+      if (resultVisible() && actions.length === 1 && actions[0].dataset.settlementAction === "home") {
+        actions[0].classList.add("wonder-terminal-primary");
+      }
       if (resultVisible()) {
         resultOwned = true;
         resultOverlay.setAttribute("role", "dialog");
         resultOverlay.setAttribute("aria-modal", "true");
         resultOverlay.setAttribute("aria-labelledby", overlayTitle.id);
         setPausedBattleCovered(true);
-        const actions = resultActions();
         if (actions.length && !actions.includes(document.activeElement)) {
           requestAnimationFrame(() => actions[0]?.focus({ preventScroll: true }));
         }

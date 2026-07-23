@@ -595,11 +595,11 @@ window.WONDER_LOBBY = {
         de: "Tierische Runenwalzen", it: "Rulli Runici Animali", ru: "Звериные рунические барабаны",
         hi: "एनिमल रून रील्स", ar: "بكرات الرون الحيوانية",
       },
-      status: "planned",
+      status: "playable",
       statusText: {
-        en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정",
-        es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst",
-        it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا",
+        en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능",
+        es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar",
+        it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
       },
       type: {
         en: "Tactical Reel Combat", "zh-Hant": "戰術轉輪戰鬥", "zh-Hans": "战术转轮战斗", ja: "戦術リールバトル",
@@ -612,7 +612,6 @@ window.WONDER_LOBBY = {
       ages: ["13"],
       ageLabel: "13+",
       href: "games/animal-rune-reels/",
-      internalTrial: "index.html?trial=1",
       description: {
         en: "Watch three reel strips stop in sequence: lions multiply attack, turtles multiply defense, rabbit gems heal, and dormant stones are blank while one to three monsters fight back across 30 battles.",
         "zh-Hant": "觀看三條轉輪依序停下：獅子提升攻擊、烏龜提升防禦、兔子寶石補血、沉睡符文石空轉，並在 30 場戰鬥中迎戰一至三隻怪物。",
@@ -1489,7 +1488,7 @@ for (const game of window.WONDER_LOBBY.games) {
   game.meta["zh-Hant"] = clean.meta;
 }
 
-// Animal Rune Reels V3 internal-trial copy. The card remains planned.
+// Animal Rune Reels public 13-locale General lobby copy.
 const animalRuneReelsV3 = window.WONDER_LOBBY.games.find((game) => game.id === "animal-rune-reels");
 if (animalRuneReelsV3) {
   animalRuneReelsV3.description = {

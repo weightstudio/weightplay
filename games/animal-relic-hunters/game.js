@@ -51,6 +51,7 @@
     lootPanel: $("lootPanel"),
     resultPanel: $("resultPanel"),
     menuCover: $("menuCover"),
+    campaignProgress: $("campaignProgress"),
     menuBtn: $("menuBtn"),
     retryBtn: $("retryBtn"),
     resultMenuBtn: $("resultMenuBtn"),
@@ -114,7 +115,7 @@
     en: {
       title: "Animal Relic Hunters",
       menuTitle: "Explore the Ancient Ruins.",
-      menuHint: "Tap anywhere in the arena to move there, or keep dragging to guide the explorer continuously. WASD and arrow keys also work. Defeat shadow beasts, collect Relic Orbs to level up, and find keys to unlock chests for Weapons, Armor, and Boots.",
+      menuHint: "Tap or drag in the arena to guide the explorer while relic weapons fire automatically. Defeat shadow beasts, collect Relic Orbs, and recover keys from each room.",
       prototypeGoalsTitle: "Expedition Goal",
       prototypeGoalsText: "Clear three rooms in each of 30 expeditions, learn each ruin's hazard, and defeat six regional Guardians while growing through permanent training and gear.",
       diamondShopTitle: "Permanent Upgrade",
@@ -234,7 +235,7 @@
     "zh-Hant": {
       title: "動物遺跡獵人",
       menuTitle: "探索古代遺跡。",
-      menuHint: "點擊戰鬥場景即可移動到該處，按住拖曳則會持續跟隨指向；也可使用 WASD 或方向鍵。擊敗怪物、收集能量球升級，並取得鑰匙開啟裝備寶箱。",
+      menuHint: "點擊或拖曳戰鬥場景來引導探險者，遺跡武器會自動攻擊。擊敗影獸、收集遺跡能量球，並找回每個房間的金鑰。",
       prototypeGoalsTitle: "遠征目標",
       prototypeGoalsText: "完成 30 個遠征的三房戰鬥，辨識不同遺跡威脅，並擊敗六位區域守護者；永久訓練與裝備會陪你繼續前進。",
       diamondShopTitle: "永久升級",
@@ -341,7 +342,7 @@
   Object.assign(text["zh-Hant"], {
     title: "動物遺跡獵人",
     menuTitle: "探索古代動物遺跡",
-    menuHint: "點擊戰鬥場景即可移動到該處，按住拖曳則會持續跟隨指向；也可使用 WASD 或方向鍵。擊敗影獸、收集遺跡能量球升級，並找到金鑰開啟裝備寶箱。",
+    menuHint: "點擊或拖曳戰鬥場景來引導探險者，遺跡武器會自動攻擊。擊敗影獸、收集遺跡能量球，並找回每個房間的金鑰。",
     prototypeGoalsTitle: "遠征目標",
     prototypeGoalsText: "完成 30 個遠征的三房戰鬥，辨識不同遺跡威脅，並擊敗六位區域守護者；永久訓練與裝備會陪你繼續前進。",
     diamondShopTitle: "永久升級",
@@ -448,7 +449,7 @@
   text.es = {
     title: "Cazadores Animales de Reliquias",
     menuTitle: "Explora las Ruinas Antiguas.",
-    menuHint: "Toca cualquier punto de la arena para moverte allí o mantén y arrastra para guiar al explorador. También puedes usar WASD o las flechas. Derrota bestias sombrías, recoge Orbes Reliquia y encuentra llaves para abrir cofres de equipo.",
+    menuHint: "Toca o arrastra en la arena para guiar al explorador mientras las armas reliquia disparan solas. Derrota bestias sombrías, recoge Orbes Reliquia y recupera las llaves de cada sala.",
     prototypeGoalsTitle: "Objetivo de la expedición",
     prototypeGoalsText: "Supera tres salas en cada una de las 30 expediciones, aprende los peligros de cada ruina y derrota a seis Guardianes regionales mientras mejoras entrenamiento y equipo permanentes.",
     diamondShopTitle: "Mejora permanente",
@@ -557,6 +558,7 @@
     report_no_wins: "¡Sigue explorando! Concéntrate en recoger llaves y conservar la salud.",
     bossWarning: "¡Se acerca el Guardián de las Ruinas!",
     startGame: "Empezar",
+    campaignProgress: "Expediciones completadas: {count} / 30",
     chooseExpedition: "Elegir expedición",
     expeditionGoal: "3 salas · Nivel recomendado {level}",
     expeditionLocked: "Completa primero la expedición {region}",
@@ -588,6 +590,7 @@
 
   Object.assign(text.en, {
     startGame: "Start Game",
+    campaignProgress: "Expeditions cleared: {count} / 30",
     chooseExpedition: "Choose Expedition",
     expeditionGoal: "3 rooms · Recommended Lv.{level}",
     expeditionLocked: "Complete Expedition {region} first",
@@ -619,6 +622,7 @@
 
   Object.assign(text["zh-Hant"], {
     startGame: "\u958b\u59cb\u904a\u6232",
+    campaignProgress: "\u5df2\u5b8c\u6210\u9060\u5f81\uff1a{count} / 30",
     chooseExpedition: "\u9078\u64c7\u9060\u5f81",
     expeditionGoal: "3 \u500b\u623f\u9593\u00b7\u5efa\u8b70 Lv.{level}",
     expeditionLocked: "\u5148\u5b8c\u6210\u9060\u5f81 {region}",
@@ -1255,6 +1259,12 @@
     `;
   }
 
+  function renderCampaignProgress() {
+    if (!nodes.campaignProgress) return;
+    const count = Math.max(0, Math.min(30, Math.floor(Number(profile.bestExpedition) || 0)));
+    nodes.campaignProgress.textContent = t("campaignProgress", { count });
+  }
+
   const metaText = {
     en: {
       description: "Clear 30 three-room animal relic expeditions, master ten special enemy behaviors, collect gear, and defeat six phase-changing ruin Guardians.",
@@ -1373,6 +1383,7 @@
     updateDiamondShopUI();
     renderTrainingPanel();
     renderEquippedGear();
+    renderCampaignProgress();
     requestAnimationFrame(() => nodes.showStageBtn.focus({ preventScroll: true }));
   }
 
@@ -1480,6 +1491,7 @@
     renderTrainingPanel();
     renderEquippedGear();
     renderGrowthPrompt();
+    renderCampaignProgress();
     if (!nodes.stagePanel.classList.contains("hidden")) renderExpeditionStage();
   }
 

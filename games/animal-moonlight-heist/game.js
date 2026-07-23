@@ -76,6 +76,7 @@
   Object.assign(copy.es, {
     notCleared:"Sin completar", bestMedals:"Mejor: {medals}/3 medallas", perfectMedals:"Mejor: 3/3 medallas · Completada", bonusMedal:"El tesoro adicional concede la última medalla.", medalCount:"{medals} de 3 medallas obtenidas", resultMedals:"{medals}/3 medallas", pauseAction:"Pausar misión", resumeAction:"Continuar misión", playFieldLabel:"Ruta de sigilo. Usa WASD o las flechas para moverte y Espacio para usar el dispositivo.", playFieldPassiveLabel:"Ruta de sigilo. Usa WASD o las flechas para moverte. {name} es pasivo: {effect}.", playFieldActiveLabel:"Ruta de sigilo. Usa WASD o las flechas para moverte y Espacio para usar {name}: {effect}.", passiveGadgetLabel:"{name} es pasivo: {effect}.", activeGadgetLabel:"Usa {name}: {effect}.", passive:"Pasivo", languageLabel:"Idioma", posterAlt:"Cartel de Golpe Animal a la Luz de la Luna", orlaAlt:"Orla Sombrero Lunar", missionRailLabel:"Misiones", fiaAlt:"Fia Garra Chispeante", stageBackLabel:"Volver al menú principal", battleBackLabel:"Volver a las misiones", checkpoint:"Puesto del guardián", firstSeal:"Recupera primero el sello del tesoro.", mirrorWarning:"¡Se acerca un cambio de espejos!", bellWarning:"¡Se acerca el pulso de la campana! ¡Busca una sombra!", clockSlow:"Fase azul: las patrullas van despacio.", clockSurge:"¡Fase ámbar: las patrullas aceleran!", guardianCleared:"Ruta del guardián completada"
   });
+  copy.ru={title:"Звери: тайна Лунного архива",internal:"Задания Лунного архива",pitch:"Следите за патрулями, возвращайте реликвии и выбирайте момент для эвакуации.",start:"Начать игру",missions:"Лунный архив",chooseGadget:"Выберите устройство",alert:"Тревога",holdRoute:"Удерживайте, чтобы наметить маршрут.",objective:"Верните предмет задания",locked:"Сначала завершите предыдущее задание",retry:"Повторить",next:"Следующее задание",victory:"Задание выполнено",captured:"Обнаружены",capturedText:"Патруль поднял тревогу. Повторная попытка бесплатна.",treasure:"Дополнительное сокровище найдено",extraction:"Доберитесь до точки эвакуации",dash:"Молниеносный рывок",decoy:"Звёздная приманка",smoke:"Дымчатый лист",dashEffect:"Быстрый маршрут: перемещение за {ms} мс",decoyEffect:"Патрули остановлены на {seconds} с",smokeEffect:"Тревога сброшена, укрытие на {seconds} с",coins:"Лунные монеты",safehouse:"Убежище, ур. {n}",mission:"Задание {n}",move:"Отпустите, чтобы переместиться",found:"Предмет получен!",exitReady:"Эвакуация доступна",treasureFound:"Сокровище получено",paused:"Пауза",diamonds:"Алмазы",reroll:"Смена · 3",insure:"Защита · 5",insured:"Застраховано",alreadyInsured:"Страховка эвакуации уже действует.",notEnough:"Недостаточно алмазов.",rerolled:"Сила трёх устройств обновлена.",insuranceReady:"Страховка эвакуации действует в следующем задании.",confirmSpend:"Подтвердить за {cost} · {before}→{after}",rerollDecision:"Обновить силу всех трёх устройств. Нажмите ещё раз для подтверждения: {before} → {after} алмазов.",insuranceDecision:"Сохранить дополнительное сокровище после одного обнаружения в следующем задании. Нажмите ещё раз для подтверждения: {before} → {after} алмазов.",rerollLabel:"Обновить силу всех трёх устройств. Цена: 3 алмаза. Текущий баланс: {balance}.",insuranceLabel:"Застраховать дополнительное сокровище от одного обнаружения в следующем задании. Цена: 5 алмазов. Текущий баланс: {balance}.",confirmLabel:"Подтвердите действие «{action}». Потратить {cost} алмазов. Баланс: {before} → {after}.",rerollAction:"обновление силы устройств",insuranceAction:"страховка сокровища",insuredLabel:"Сокровище застраховано от одного обнаружения в следующем задании.",notCleared:"Не завершено",bestMedals:"Лучший результат: {medals}/3 медалей",perfectMedals:"Лучший результат: 3/3 медалей · Завершено",bonusMedal:"Дополнительное сокровище приносит третью медаль.",medalCount:"Получено медалей: {medals}/3",resultMedals:"Медали: {medals}/3",pauseAction:"Приостановить задание",resumeAction:"Продолжить задание",playFieldLabel:"Поле скрытного маршрута. Двигайтесь клавишами WASD или стрелками, устройство используется пробелом.",playFieldPassiveLabel:"Поле скрытного маршрута. Двигайтесь клавишами WASD или стрелками. {name} действует постоянно: {effect}.",playFieldActiveLabel:"Поле скрытного маршрута. Двигайтесь клавишами WASD или стрелками, используйте {name} пробелом: {effect}.",passiveGadgetLabel:"{name} действует постоянно: {effect}.",activeGadgetLabel:"Использовать {name}: {effect}.",passive:"Постоянный эффект",languageLabel:"Язык",posterAlt:"Постер игры «Звери: тайна Лунного архива»",orlaAlt:"Орла в лунной шляпе",missionRailLabel:"Выбор задания",fiaAlt:"Искролапка Фиа",stageBackLabel:"Вернуться в главное меню",battleBackLabel:"Вернуться к заданиям",checkpoint:"Испытание хранителя",firstSeal:"Сначала верните печать сокровища.",mirrorWarning:"Скоро метки поменяются местами!",bellWarning:"Скоро удар колокола — укройтесь в тени!",clockSlow:"Синяя фаза: патрули замедлены.",clockSurge:"Янтарная фаза: патрули ускорились!",guardianCleared:"Маршрут хранителя пройден"};
   const missionObjects=["moon-seal","courier-token","star-map","clockwork-lens","district-relic"];
   const patrolArt=["wolf","rabbit","badger"];
   const missions=[
@@ -160,15 +161,49 @@
     ["Conservador del eclipse","Domina sellos, sombras, cambios de marcador, pulsos y una salida móvil."]
   ];
   campaign.forEach((mission, index) => { mission.name[2] = campaignEs[index][0]; mission.rule[2] = campaignEs[index][1]; });
+  const campaignRu=[
+    ["Тихий порог","Проследите за одним патрулём, верните печать и эвакуируйтесь."],
+    ["Зал фонарей","Проберитесь позади двух линий патруля."],
+    ["Разделённая галерея","Выберите спокойную сторону до пересечения маршрутов."],
+    ["Лестницы курьера","Дополнительное сокровище лежит в стороне от прямого пути к выходу."],
+    ["Фонарный ревизор","Прожектор ревизора расширяется; двигайтесь, когда сияние сужается."],
+    ["Бархатная ниша","Теневые круги скрывают Фиа от патрулей."],
+    ["Парные полки","Переходите от одного теневого круга к другому."],
+    ["Разбитый фонарь","Узкая полоса тени разделяет пересекающиеся патрули."],
+    ["Шепчущий флигель","Заберите необязательное сокровище до выхода из последней тени."],
+    ["Колокольный страж","Удар колокола повышает тревогу за пределами теневых кругов."],
+    ["Серебряная развилка","После предупредительной вспышки реликвия и сокровище меняются местами."],
+    ["Зеркальный реестр","Дождитесь смены меток или выберите более длинный маршрут."],
+    ["Ложный север","Сначала верните сокровище, чтобы зеркальная реликвия стала настоящей."],
+    ["Призматический зал","Укройтесь в тени, пока две метки готовятся поменяться местами."],
+    ["Хранитель зеркал","Хранитель быстро меняет обе метки; следите за вспышкой."],
+    ["Медленный механизм","Патрули чередуют медленное наблюдение и быстрое прочёсывание."],
+    ["Быстрый маятник","Переходите в медленную синюю фазу, а не во время янтарного рывка."],
+    ["Разделённая минута","Сочетайте теневое укрытие с ритмом механизма."],
+    ["Хранилище секундной стрелки","Сначала заберите сокровище, пока скорость патрулей меняется."],
+    ["Часовой маршал","Маршал заранее показывает каждое ускоренное преследование."],
+    ["Первая печать","Сокровище — первая печать; реликвия открывается второй."],
+    ["Скрещённые ключи","Откройте две печати среди трёх пересекающихся маршрутов."],
+    ["Запечатанный лунный колодец","Пронесите первую печать через два теневых укрытия."],
+    ["Двойной оберег","Порядок печатей сочетается с ускорениями механизма."],
+    ["Хранитель печатей","Сломайте обе печати по порядку, пока хранитель защищает центр."],
+    ["Тёмный меридиан","Расширяющийся прожектор проходит над цепочкой теневых укрытий."],
+    ["Тихие перезвоны","Сочетайте удары колокола, укрытие в тени и рискованный путь к сокровищу."],
+    ["Подвижный планетарий","Метки меняются местами внутри переменного часового ритма."],
+    ["Тройная печать","Сначала сокровище, затем реликвия; после находки выход перемещается."],
+    ["Хранитель затмения","Примените всё: печати, тени, смену меток, импульсы и подвижный выход."]
+  ];
+  campaign.forEach((mission,index)=>{mission.name[3]=campaignRu[index][0];mission.rule[3]=campaignRu[index][1]});
   [
     [guardianCatalog.spotlight,"Auditor de faroles"], [guardianCatalog.bell,"Guardián de la campana"],
     [guardianCatalog.mirror,"Guardián del espejo"], [guardianCatalog.clock,"Mariscal mecánico"],
     [guardianCatalog.seals,"Guardasellos de la cámara"], [guardianCatalog.eclipse,"Conservador del eclipse"]
   ].forEach(([guardian, name]) => { guardian.name[2] = name; });
+  [[guardianCatalog.spotlight,"Фонарный ревизор"],[guardianCatalog.bell,"Колокольный страж"],[guardianCatalog.mirror,"Хранитель зеркал"],[guardianCatalog.clock,"Часовой маршал"],[guardianCatalog.seals,"Хранитель печатей"],[guardianCatalog.eclipse,"Хранитель затмения"]].forEach(([guardian,name])=>{guardian.name[3]=name});
   function normalizeLocale(value){if(value==="zh-TW")return"zh-Hant";if(value==="zh-CN")return"zh-Hans";if(value?.startsWith("pt"))return"pt-BR";return value||"en"}
   let state=load(),locale=normalizeLocale(window.WonderI18n?.locale?.()||readOptionalStorage(localeKey)||readOptionalStorage(legacyLocaleKey)||"en"),selectedMission=0,gadget="dash",gadgetOffers=createOffers(),insuranceActive=state.insuranceReady===true,preservedTreasure=false,playing=false,paused=false,alert=0,objectFound=false,treasureFound=false,caught=false,patrols=[],lastTime=0,missionStartedAt=0,freezeUntil=0,smokeUntil=0,preview=null,arrivalTimer=0,animationFrame=0,routePointerId=null,lastPulseCycle=-1,lastMirrorCycle=-1,guardianPhase=1;
-  const gameLocales=new Set(["en","zh-Hant","es"]);
-  const localeArrayIndex = () => locale === "zh-Hant" ? 1 : locale === "es" ? 2 : 0;
+  const gameLocales=new Set(["en","zh-Hant","es","ru"]);
+  const localeArrayIndex=()=>locale==="zh-Hant"?1:locale==="es"?2:locale==="ru"?3:0;
   function sharedText(value){const text=String(value??"");return window.WeightPlayGameRuntimeLocalizer?.translate?.(text)||text}
   function runtimeText(value){
     const text=String(value??"");
@@ -177,6 +212,7 @@
   function campaignText(values){return runtimeText(values[localeArrayIndex()])}
   const nodes={main:$("#mainScreen"),stage:$("#stageScreen"),battle:$("#battleScreen"),rail:$("#missionRail"),field:$("#playField"),fia:$("#fiaActor"),objective:$("#objectiveActor"),treasure:$("#treasureActor"),exit:$("#exitActor"),patrolLayer:$("#patrolLayer"),route:$("#routeLine"),feedback:$("#feedbackText"),fx:$("#feedbackFx"),alert:$("#alertFill"),modal:$("#resultModal")};
   const leaveCopy={en:{title:"Leave this mission?",text:"Your current route is paused. Continue to keep playing, or return to Missions and leave this run.",continue:"Continue mission",leave:"Return to Missions"},"zh-Hant":{title:"離開這個任務？",text:"目前路線已暫停。繼續任務可保留本局，返回任務列表才會離開。",continue:"繼續任務",leave:"返回任務列表"},es:{title:"¿Salir de esta misión?",text:"La ruta actual está en pausa. Continúa para conservar la partida o vuelve a Misiones para salir.",continue:"Continuar misión",leave:"Volver a Misiones"}};
+  leaveCopy.ru={title:"Покинуть задание?",text:"Текущий маршрут приостановлен. Продолжите игру или вернитесь к заданиям и завершите эту попытку.",continue:"Продолжить задание",leave:"Вернуться к заданиям"};
   let leaveWasPaused=false;
   function createLeaveModal(){const modal=document.createElement("div");modal.id="battleLeaveModal";modal.className="modal";modal.hidden=true;modal.setAttribute("role","dialog");modal.setAttribute("aria-modal","true");modal.setAttribute("aria-labelledby","battleLeaveTitle");modal.setAttribute("aria-describedby","battleLeaveText");modal.innerHTML='<section class="modal-card"><h2 id="battleLeaveTitle"></h2><p id="battleLeaveText"></p><div class="modal-actions leave-actions"><button id="battleContinueBtn" class="primary" type="button"></button><button id="battleLeaveBtn" type="button"></button></div></section>';nodes.modal.after(modal);nodes.leaveModal=modal}
   createLeaveModal();

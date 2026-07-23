@@ -154,6 +154,14 @@ body > .battle-ad-reserve { display: none; height: 56px; min-height: 56px; borde
   line-height: 1.4;
 }
 
+.campaign-progress {
+  margin: -8px 0 12px;
+  color: #f6d77a;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
 .primary-btn {
   background: linear-gradient(135deg, #d4af37 0%, #aa841c 100%);
   color: #0c0e17;
@@ -1548,8 +1556,8 @@ body > .battle-ad-reserve { display: none; height: 56px; min-height: 56px; borde
 
 @media (max-width: 720px) {
   #menuPanel .menu-cover-box { margin-bottom: 10px; }
-  #menuPanel .menu-hint,
   #menuPanel .goals-card { display: none; }
+  #menuPanel .menu-hint { margin-bottom: 12px; }
   #menuPanel .menu-title { margin-bottom: 12px; }
 }
 

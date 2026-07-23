@@ -246,6 +246,18 @@ body.zoo-playing .game-page-info {
   font-size: 1.35rem;
 }
 
+.menu-progress {
+  justify-self: start;
+  padding: 5px 10px;
+  border: 2px solid rgba(87, 139, 65, .34);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .72);
+  color: #365d2d;
+  font-size: .84rem;
+  font-weight: 950;
+  line-height: 1.2;
+}
+
 .game-panel {
   display: grid;
   gap: 12px;
@@ -1306,7 +1318,7 @@ body.zoo-playing .game-page-info {
 
 @media (max-width: 720px) {
   .topbar {
-    grid-template-columns: 42px 1fr;
+    grid-template-columns: 58px minmax(0, 1fr);
   }
 
   .language-picker {

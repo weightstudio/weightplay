@@ -552,6 +552,7 @@
     localeSelect: $("localeSelect"),
     menuPanel: $("menuPanel"),
     gamePanel: $("gamePanel"),
+    menuProgress: $("menuProgress"),
     startBtn: $("startBtn"),
     backToMenuBtn: $("backToMenuBtn"),
     coinText: $("coinText"),
@@ -757,6 +758,11 @@
 
   function completedTours() {
     return Object.values(save.challengeCleared || {}).filter(Boolean).length;
+  }
+
+  function renderMenuProgress() {
+    if (!nodes.menuProgress) return;
+    nodes.menuProgress.textContent = `${formatNumber(completedTours())} / ${formatNumber(zooChallenges.length)} ${t("milestones")}`;
   }
 
   function tourReputationRate() {
@@ -1003,6 +1009,7 @@
       node.setAttribute("aria-label", t(node.dataset.uiAriaLabel));
     });
     nodes.localeSelect.value = locale;
+    renderMenuProgress();
     syncParkLeaveCopy();
     updatePageMetadata();
   }
@@ -1906,6 +1913,7 @@
     nodes.localeSelect.closest(".language-picker")?.removeAttribute("aria-hidden");
     nodes.gamePanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
+    renderMenuProgress();
     closeReport(false);
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     requestAnimationFrame(() => nodes.startBtn.focus({ preventScroll: true }));

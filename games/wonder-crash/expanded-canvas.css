@@ -121,6 +121,7 @@ body.wonder-playing .battle-hud {
 body.wonder-playing .overlay.settlement-screen {
   gap: 10px;
   padding: 18px 16px;
+  background: rgb(5, 16, 24);
 }
 
 body.wonder-playing .overlay.settlement-screen #overlayText,
@@ -130,6 +131,14 @@ body.wonder-playing .overlay.settlement-screen .menu-content {
 
 body.wonder-playing .overlay.settlement-screen .menu-content {
   max-height: 692px;
+}
+
+body.wonder-playing .overlay.settlement-screen .profile-panel {
+  background: rgb(12, 29, 34);
+}
+
+body.wonder-playing .settlement-actions button[data-settlement-action="home"].wonder-terminal-primary {
+  background: #ffcb3f;
 }
 
 #levelGrid {
