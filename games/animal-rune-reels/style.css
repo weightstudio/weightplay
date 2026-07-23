@@ -30,6 +30,7 @@
 .main-sound-toggle{width:44px;height:44px;display:grid;place-items:center;padding:0;border:1px solid #7180bf;border-radius:12px;background:#111943;color:#fff;font-size:1.15rem;cursor:pointer}
 .main-sound-toggle:focus-visible{outline:3px solid #ffe083;outline-offset:2px}
 .main-sound-toggle[aria-pressed="true"]{opacity:.72}
+.stage-toast{position:absolute;z-index:30;left:50%;bottom:68px;transform:translateX(-50%);width:max-content;max-width:calc(100% - 32px);padding:10px 16px;border:1px solid #ffe083;border-radius:14px;background:#111943f2;color:#fff;font-weight:900;text-align:center;box-shadow:0 10px 28px #000a;pointer-events:none}
 .main-canvas .poster{width:min(100%,760px);min-height:0;justify-self:center}
 .main-canvas .lead{padding:0 8px}
 .main-canvas #runeStartBtn{width:min(100%,480px);justify-self:center}

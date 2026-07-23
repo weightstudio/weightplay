@@ -283,6 +283,11 @@
   const ROUTE_COUNT=30;
   const supportedLocales=new Set(["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"]);
   const gameOwnedLocales=new Set(["en","zh-Hant","zh-Hans"]);
+  const levelLabels={
+    en:"Level","zh-Hant":"等級","zh-Hans":"等级",ja:"レベル",ko:"레벨",
+    es:"Nivel","pt-BR":"Nível",fr:"Niveau",de:"Stufe",it:"Livello",
+    ru:"Уровень",hi:"लेवल",ar:"المستوى"
+  };
   const routeSegment=location.pathname.split("/").filter(Boolean)[0];
   const routeLocale=({en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"})[routeSegment];
   const readStorage=(key)=>{try{return localStorage.getItem(key);}catch{return null;}};
@@ -441,6 +446,7 @@
     return simplify(runtimeTranslate(template));
   };
   const t=(key,values={})=>simplify(format(runtimeTranslate((isChinese()?zh:en)[key]??key),values));
+  const levelText=(value)=>`${levelLabels[locale]||levelLabels.en} ${value}`;
   const icon = name => `<i class="ui-icon icon-${name}" aria-hidden="true"></i>`;
   const maxHealth = () => 30 + save.stats.hp * 8;
   const diverAttack = () => 6 + save.stats.attack * 2;
@@ -642,7 +648,7 @@
     const fish=fishProfile(),blocked=!!state.fishBusy;
     $("fishEncounter").dataset.enemy=fish.name;
     $("fishTitle").innerHTML=`${icon("danger")}<span>${t("fishBattle")}</span>`;$("fishTitle").setAttribute("aria-label",`${t("fishBattle")}: ${fish.name}`);
-    $("fishTell").innerHTML=`<strong>${fish.name}</strong><small>Lv.${state.route+state.zone}</small>`;
+    $("fishTell").innerHTML=`<strong>${fish.name}</strong><small>${levelText(state.route+state.zone)}</small>`;
     $("fishGuardText").innerHTML=`<span>${t("fishHp")}</span><b>${Math.max(0,state.fishHp)}/${state.fishMaxHp}</b>`;
     $("fishGuardBar").style.width=`${Math.max(0,state.fishHp/state.fishMaxHp*100)}%`;
     $("fishTimerText").innerHTML=`<span>${t("diverHp")}</span><b>${Math.max(0,state.playerHp)}/${maxHealth()}</b>`;
@@ -661,7 +667,7 @@
   function statStep(stat){return stat==="hp"?8:stat==="attack"?2:10;}
   function renderUpgrade(){
     $("upgradeTitle").textContent=t("upgradeTitle");
-    $("upgradePoints").textContent=`Lv.${save.level} · ${t("statPoints",{n:save.statPoints})}`;
+    $("upgradePoints").textContent=`${levelText(save.level)} · ${t("statPoints",{n:save.statPoints})}`;
     for(const [stat,id,key] of [["hp","upgradeHp","hpStat"],["attack","upgradeAttack","attackStat"],["oxygen","upgradeOxygen","oxygenStat"]]){
       const current=statValue(stat);
       $(id).textContent=t("statPreview",{name:t(key),current,next:current+statStep(stat)});
@@ -712,7 +718,7 @@
     renderBattle();
     focusCurrentDiveDecision();
   }
-  function renderMainProgress(){$("progress").textContent=`Lv.${save.level} · ${t("rank",{n:save.rank})} - ${t("coins",{n:save.coins})}`;}
+  function renderMainProgress(){$("progress").textContent=`${levelText(save.level)} · ${t("rank",{n:save.rank})} - ${t("coins",{n:save.coins})}`;}
   function localize(){document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";document.title=`${t("title")} - WeightPlay`;$("title").textContent=t("title");$("languageLabel").textContent=t("language");$("localeSelect").value=locale;$("headline").textContent=t("headline");$("intro").textContent=t("intro");$("guideTitle").textContent=t("guideTitle");$("guideCopy").textContent=t("guideCopy");$("startBtn").textContent=t("start");$("stageTitle").textContent=t("stage");$("stageHint").textContent=t("stageHint");$("leftBtn").textContent=t("left");$("rightBtn").textContent=t("right");$("sonarBtn").textContent=t("sonarPowered");$("shieldBtn").textContent=t("shield");$("surfaceBtn").textContent=t("surface");$("coachTitle").textContent=t("coachTitle");$("coachStart").textContent=t("coachStart");renderCoach();$("helpBtn").ariaLabel=t("help");$("stageBack").ariaLabel=t("back");$("battleBack").ariaLabel=t("back");renderMainProgress();renderRoutes();if(state.route){renderBattle();if(state.fishActive)renderFish();if(!$("upgradePanel").classList.contains("hidden"))renderUpgrade();}}
   $("startBtn").onclick=()=>{show("stageScreen");renderRoutes();};$("stageBack").onclick=()=>show("mainScreen");$("battleBack").onclick=()=>{cancelDiveAsync();show("stageScreen");renderRoutes();};$("menuBtn").onclick=leaveDive;$("leftBtn").onclick=()=>move("left");$("rightBtn").onclick=()=>move("right");$("dodgeLeftBtn").onclick=attackFish;$("pulseBtn").onclick=escapeFish;$("helpBtn").onclick=()=>setCoach(true);$("coachStart").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("coachStart").onclick=()=>{save.tutorialDone=true;persist();setCoach(false);setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));};$("sonarBtn").onclick=()=>{if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<2){setFeedback(`${icon("power")}<b>0</b>`,t("sonarNeed"));return;}state.battery-=2;state.sonar=true;setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};$("shieldBtn").onclick=()=>{if(state.shieldArmed)return;if(state.battery<1){setFeedback(`${icon("power")}<b>0</b>`,t("shieldNeed"));return;}state.battery-=1;state.shieldArmed=true;setFeedback(`${icon("shield")}<b>✓</b>`,t("shieldArmed"));renderBattle();focusCurrentDiveDecision();};$("surfaceBtn").onclick=()=>finish("surface");$("beaconBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("beaconBtn").onclick=useBeacon;["upgradeHp","upgradeAttack","upgradeOxygen"].forEach(id=>$(id).addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();}));$("upgradeHp").onclick=()=>allocateStat("hp");$("upgradeAttack").onclick=()=>allocateStat("attack");$("upgradeOxygen").onclick=()=>allocateStat("oxygen");$("upgradeDone").onclick=()=>{setUpgradeModal(false);renderBattle();};$("localeSelect").onchange=(event)=>{locale=event.target.value;writeStorage("weightPlayLocale",locale);localize();};
   $("sonarBtn").onclick=()=>{const config=routeConfig(),cost=config.sonarCost??2;if(config.jammedZones?.includes(state.zone)){setFeedback(`${icon("sonar")}<b>×</b>`,routeText(config,"rule"));return;}if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<cost){setFeedback(`${icon("power")}<b>${state.battery}</b>`,t("sonarNeed").replace("2",String(cost)));return;}state.battery-=cost;state.sonar=true;setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};

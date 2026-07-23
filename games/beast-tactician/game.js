@@ -1262,7 +1262,10 @@
   let leaveBattleConfirmPending = false;
   let leaveBattleWasPaused = false;
   let canvasPress = null;
+  let toastPending = false;
   let toastTimer = 0;
+  let toastDueAt = 0;
+  let toastRemaining = 0;
   let battleFrame = 0;
   let battleWindowFocused = document.hasFocus();
 
@@ -1952,16 +1955,43 @@
 
   function hideToast() {
     clearTimeout(toastTimer);
+    toastPending = false;
     toastTimer = 0;
+    toastDueAt = 0;
+    toastRemaining = 0;
     nodes.toast.classList.add("is-hidden");
     nodes.toast.textContent = "";
   }
 
+  function armToastTimer(duration) {
+    toastRemaining = Math.max(1, duration);
+    if (document.hidden || !battleWindowFocused) return;
+    toastDueAt = performance.now() + toastRemaining;
+    toastTimer = setTimeout(hideToast, toastRemaining);
+  }
+
   function showToast(message, duration = 1600) {
     clearTimeout(toastTimer);
+    toastPending = true;
+    toastTimer = 0;
+    toastDueAt = 0;
+    toastRemaining = 0;
     nodes.toast.textContent = message;
     nodes.toast.classList.remove("is-hidden");
-    toastTimer = setTimeout(hideToast, duration);
+    armToastTimer(duration);
+  }
+
+  function suspendToastFeedback() {
+    if (!toastPending || !toastTimer) return;
+    toastRemaining = Math.max(1, toastDueAt - performance.now());
+    clearTimeout(toastTimer);
+    toastTimer = 0;
+    toastDueAt = 0;
+  }
+
+  function resumeToastFeedback() {
+    if (!toastPending || toastTimer || document.hidden || !battleWindowFocused) return;
+    armToastTimer(toastRemaining || 1600);
   }
 
   function tileToPoint(tile) {
@@ -2515,9 +2545,11 @@
   function handleBattleVisibilityChange() {
     if (document.hidden) {
       suspendTransactionConfirmations();
+      suspendToastFeedback();
       suspendUnattendedBattle("page_hidden");
     } else {
       resumeTransactionConfirmations();
+      resumeToastFeedback();
       syncBattleLoop();
     }
   }
@@ -3907,22 +3939,26 @@
     window.addEventListener("blur", () => {
       battleWindowFocused = false;
       suspendTransactionConfirmations();
+      suspendToastFeedback();
       suspendUnattendedBattle("window_blur");
     });
     window.addEventListener("focus", () => {
       battleWindowFocused = true;
       resumeTransactionConfirmations();
+      resumeToastFeedback();
       syncBattleLoop();
     });
     window.addEventListener("pagehide", () => {
       battleWindowFocused = false;
       suspendTransactionConfirmations();
+      suspendToastFeedback();
       cancelCanvasPress();
       stopBattleLoop();
     });
     window.addEventListener("pageshow", () => {
       battleWindowFocused = true;
       resumeTransactionConfirmations();
+      resumeToastFeedback();
       syncBattleLoop();
     });
     nodes.retryBtn.addEventListener("click", () => {
@@ -5021,6 +5057,22 @@
     };
   }
 
+  function beginInsufficientFundsToastScenario() {
+    showTechScreenScenario();
+    state.save.diamonds = 0;
+    buyGoldenFrame();
+    return toastScenarioState();
+  }
+
+  function toastScenarioState() {
+    return {
+      visible: !nodes.toast.classList.contains("is-hidden"),
+      text: nodes.toast.textContent,
+      screen: state.screen,
+      diamonds: state.save.diamonds,
+    };
+  }
+
   function runResultSkillReportScenario() {
     state.manualSimulation = true;
     const previousLocale = state.locale;
@@ -6076,6 +6128,8 @@
       showResultScreenScenario,
       beginTransactionConfirmationScenario,
       transactionConfirmationScenarioState,
+      beginInsufficientFundsToastScenario,
+      toastScenarioState,
       runResultSkillReportScenario,
       runNextStageResultScenario,
       runWaveIntelScenario,

@@ -952,6 +952,7 @@
   let windowFocused = true;
   let quitDecisionOpen = false;
   let skinPurchasePending = false;
+  let skinPurchaseNoticePending = false;
   let skinPurchaseTimer = 0;
   let skinPurchaseDueAt = 0;
   let skinPurchaseRemaining = 0;
@@ -2140,6 +2141,10 @@
         const decision = t("skinPurchaseDecision", { before: balance, after: Math.max(0, balance - 15) });
         nodes.buySkinBtn.textContent = decision;
         nodes.buySkinBtn.setAttribute("aria-label", decision);
+      } else if (skinPurchaseNoticePending) {
+        const message = t("skinPurchaseNeed", { balance });
+        nodes.buySkinBtn.textContent = message;
+        nodes.buySkinBtn.setAttribute("aria-label", message);
       } else {
         nodes.buySkinBtn.innerHTML = currencyMarkup("diamond", 15, t("currencyUnlock"));
         nodes.buySkinBtn.setAttribute("aria-label", t("buySkin"));
@@ -2150,6 +2155,7 @@
 
   function clearSkinPurchaseDecision() {
     skinPurchasePending = false;
+    skinPurchaseNoticePending = false;
     clearTimeout(skinPurchaseTimer);
     skinPurchaseTimer = 0;
     skinPurchaseDueAt = 0;
@@ -2170,7 +2176,7 @@
   }
 
   function suspendSkinPurchaseDecision() {
-    if (!skinPurchasePending || !skinPurchaseTimer) return;
+    if ((!skinPurchasePending && !skinPurchaseNoticePending) || !skinPurchaseTimer) return;
     skinPurchaseRemaining = Math.max(0, skinPurchaseDueAt - Date.now());
     clearTimeout(skinPurchaseTimer);
     skinPurchaseTimer = 0;
@@ -2178,7 +2184,7 @@
   }
 
   function resumeSkinPurchaseDecision() {
-    if (!skinPurchasePending || skinPurchaseTimer || document.hidden || !windowFocused) return;
+    if ((!skinPurchasePending && !skinPurchaseNoticePending) || skinPurchaseTimer || document.hidden || !windowFocused) return;
     if (skinPurchaseRemaining <= 0) {
       expireSkinPurchaseDecision();
       return;
@@ -2191,19 +2197,14 @@
     const balance = getWalletDiamonds();
     if (!skinPurchasePending) {
       if (balance < 15) {
-        const message = t("skinPurchaseNeed", { balance });
-        nodes.buySkinBtn.textContent = message;
-        nodes.buySkinBtn.setAttribute("aria-label", message);
-        clearTimeout(skinPurchaseTimer);
-        skinPurchaseDueAt = 0;
-        skinPurchaseRemaining = 0;
-        skinPurchaseTimer = window.setTimeout(() => {
-          skinPurchaseTimer = 0;
-          renderCosmeticSection();
-        }, 5000);
+        clearSkinPurchaseDecision();
+        skinPurchaseNoticePending = true;
+        armSkinPurchaseDecision();
+        renderCosmeticSection();
         playSynth("click");
         return;
       }
+      clearSkinPurchaseDecision();
       skinPurchasePending = true;
       armSkinPurchaseDecision();
       renderCosmeticSection();
