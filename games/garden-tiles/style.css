@@ -1020,6 +1020,14 @@ body.garden-playing .wp-tutorial-button {
     padding-block: 10px;
   }
 
+  body.garden-playing .tile-board {
+    width: auto !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100%;
+    aspect-ratio: var(--board-aspect, 1);
+  }
+
   body.garden-playing.wp-logical-battle-active #resultPanel .result-card {
     width: min(calc(100% - 28px), 720px) !important;
     max-width: 720px !important;

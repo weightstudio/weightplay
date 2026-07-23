@@ -367,6 +367,66 @@
       berry: "बेर", leaf: "पत्ता", seed: "बीज", feather: "पंख", keeper: "माली", visitor: "आगंतुक", ticket: "टिकट घर", basket: "टोकरी",
     },
   };
+  dictionary.ar = {
+    title: "بطاقات ذاكرة حديقة الحيوانات",
+    pageTitle: "بطاقات ذاكرة حديقة الحيوانات - WeightPlay",
+    pageDescription: "ابحث عن أزواج صور الحيوانات والحديقة في 30 تحديًا هادئًا للذاكرة، مع نظرة صباحية وضباب ونسمات وموكب بطاقات وست محطات محفوظة.",
+    language: "اللغة",
+    mainIntro: "تذكّر أماكن صور الحديقة وأكمل 30 تحديًا هادئًا في ستة فصول.",
+    start: "اختر المستوى",
+    level: "المستوى",
+    moves: "المحاولات",
+    pairs: "الأزواج",
+    pairCount: "{count} أزواج",
+    starGoal: "3 نجوم: خلال {moves} محاولة",
+    chapter: "الفصل {chapter}: {name}",
+    checkpoint: "محطة الذاكرة",
+    rules: {
+      classic: "لعبة الذاكرة الكلاسيكية",
+      preview: "نظرة الصباح",
+      mist: "ضباب الحديقة",
+      gust: "نسمة مرحة",
+      parade: "موكب البطاقات",
+    },
+    chooseLevel: "اختر المستوى",
+    locked: "المستوى مقفل",
+    selectFirst: "اقلب بطاقة، ثم ابحث عن البطاقة المطابقة لها.",
+    matched: "وجدت الزوج!",
+    miss: "جرّب زوجًا آخر.",
+    clear: "اكتمل المستوى",
+    result: "وجدت {pairs} أزواج في {moves} محاولات.",
+    skillReport: "تقرير المهارات",
+    memory: "الذاكرة",
+    memoryValue: "وجدت {pairs} أزواج",
+    focus: "التركيز",
+    focusValue: "{moves} محاولات · مرات الإعادة: {retries}",
+    problem: "حل المشكلات",
+    problemValue: "حصلت على {stars} نجوم",
+    firstFinish: "الإكمال الأول: {stars} نجوم",
+    progress: "اليوم: {stars} نجوم · أفضل نتيجة سابقة: {previous}",
+    newBest: "أفضل نتيجة جديدة: {stars} نجوم · النتيجة السابقة: {previous}",
+    next: "المستوى التالي",
+    again: "العب مرة أخرى",
+    levels: "المستويات",
+    lobby: "ألعاب الأطفال",
+    allClear: "أكملت جميع المستويات.",
+    homeAria: "العودة إلى ألعاب الأطفال",
+    languageAria: "اختيار اللغة",
+    statusAria: "حالة اللعبة",
+    stageBackAria: "رجوع",
+    battleBackAria: "العودة إلى المستويات",
+    leaveTitle: "هل تريد مغادرة هذا المستوى؟",
+    leaveText: "ستفقد الأزواج التي وجدتها ومحاولاتك في هذا المستوى.",
+    keepPlaying: "متابعة اللعب",
+    leaveLevel: "مغادرة المستوى",
+    boardAria: "لوحة بطاقات ذاكرة الحديقة",
+    hiddenTile: "بطاقة ذاكرة مقلوبة",
+    tileNames: {
+      cat: "قطة", dog: "كلب", fox: "ثعلب", owl: "بومة", rabbit: "أرنب", panda: "باندا", penguin: "بطريق", koala: "كوالا",
+      lion: "أسد", elephant: "فيل", giraffe: "زرافة", whale: "حوت", chick: "كتكوت", frog: "ضفدع", apple: "تفاحة", banana: "موزة",
+      berry: "توت", leaf: "ورقة", seed: "بذرة", feather: "ريشة", keeper: "حارس الحديقة", visitor: "زائر", ticket: "شباك التذاكر", basket: "سلة",
+    },
+  };
   const tileArt = [
     "cat", "dog", "fox", "owl",
     "rabbit", "panda", "penguin", "koala",
@@ -386,6 +446,7 @@
     ru: ["Тропа ростков", "Утренняя оранжерея", "Пруд в дымке", "Фруктовый сад на ветру", "Парад животных", "Лунная оранжерея"],
   };
   chapterNames.hi = ["अंकुरों की पगडंडी", "सुबह का पौधघर", "धुंध वाला तालाब", "हवादार बाग", "जानवरों की परेड", "चाँदनी वाला पौधघर"];
+  chapterNames.ar = ["درب البراعم", "البيت الزجاجي الصباحي", "البركة الضبابية", "البستان العليل", "موكب الحيوانات", "البيت الزجاجي تحت ضوء القمر"];
   const levelBlueprints = [
     [4, ["classic"]], [5, ["classic"]], [6, ["classic"]], [7, ["classic"]], [8, ["classic", "preview"]],
     [6, ["preview"]], [7, ["preview"]], [8, ["preview"]], [9, ["preview"]], [10, ["preview", "classic"]],
@@ -557,6 +618,7 @@
 
   function applyText() {
     document.documentElement.lang = locale();
+    document.documentElement.dir = locale() === "ar" ? "rtl" : "ltr";
     document.title = t("pageTitle");
     document.querySelector('meta[name="description"]')?.setAttribute("content", t("pageDescription"));
     document.querySelector('meta[property="og:title"]')?.setAttribute("content", t("pageTitle"));
@@ -721,7 +783,8 @@
       if (stars > 0) button.classList.add("completed");
       if (index + 1 === unlocked) button.classList.add("challenge");
       button.setAttribute("aria-disabled", String(isLocked));
-      button.setAttribute("aria-label", `${t("level")} ${index + 1}${isLocked ? `, ${t("locked")}` : ""}`);
+      const ariaSeparator = locale() === "ar" ? "، " : ", ";
+      button.setAttribute("aria-label", `${t("level")} ${index + 1}${isLocked ? `${ariaSeparator}${t("locked")}` : ""}`);
       levelGrid.append(button);
     });
     scheduleCenteredLevelCard();
@@ -812,11 +875,13 @@
   }
 
   function chooseBattleColumns(totalCards) {
-    const availableWidth = 366;
-    const availableHeight = 650;
+    const shortLandscape = matchMedia("(orientation: landscape) and (max-height: 560px)").matches;
+    const availableWidth = shortLandscape ? 678 : 366;
+    const availableHeight = shortLandscape ? 230 : 650;
+    const maximumColumns = shortLandscape ? Math.min(8, totalCards) : 6;
     let bestColumns = 3;
     let bestTileSize = 0;
-    for (let columns = 3; columns <= 6; columns += 1) {
+    for (let columns = 3; columns <= maximumColumns; columns += 1) {
       const rows = Math.ceil(totalCards / columns);
       const tileSize = Math.min(availableWidth / columns, availableHeight / rows);
       if (tileSize > bestTileSize) {
@@ -1179,7 +1244,7 @@
     else resumeRoundTasks();
   });
 
-  if (["ru", "hi"].includes(locale())) {
+  if (["ru", "hi", "ar"].includes(locale())) {
     document.querySelector(".garden-game")?.setAttribute("data-runtime-localize", "off");
     homeLink?.setAttribute("data-runtime-localize", "off");
     document.addEventListener("DOMContentLoaded", applyText, { once: true });
