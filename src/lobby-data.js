@@ -85,7 +85,7 @@ window.WONDER_LOBBY = {
         de: ["30 Stufen", "Sieben Plätze", "Sechs Kapitel"], it: ["30 livelli", "Sette spazi", "Sei capitoli"], ru: ["30 уровней", "Семь ячеек", "Шесть глав"],
         hi: ["30 चरण", "सात खाने", "छह अध्याय"], ar: ["30 مرحلة", "سبع خانات", "ستة فصول"],
       },
-      art: { kind: "image", background: "Assets/animal-triple-match/cover.png", hideHero: true },
+      art: { kind: "image", background: "assets/animal-triple-match-cover.png", hideHero: true },
     },
     {
       id: "wonder-crash",

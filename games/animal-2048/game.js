@@ -69,7 +69,7 @@
     };
   }
   let save;try{save=normalizeSave(JSON.parse(readStorage(SAVE_KEY)||"{}"));}catch{save=normalizeSave(null);}writeStorage(SAVE_KEY,JSON.stringify(save));
-  let stageIndex=0,stageMode="campaign",board=Array(16).fill(0),score=0,moves=0,merges=0,rngState=1,undoState=null,resultState="",startTime=0,hintUsed=false,restarts=0,swipeStart=null,resultTimer=0,motionTimer=0,motionLock=false,pendingMerged=[];
+  let stageIndex=0,stageMode="campaign",board=Array(16).fill(0),score=0,moves=0,merges=0,rngState=1,undoState=null,resultState="",startTime=0,hintUsed=false,restarts=0,swipeStart=null,resultTimer=0,resultRevealSuspended=false,motionTimer=0,motionLock=false,pendingMerged=[];
   const dom={loading:$("#loadingPanel"),loadingFill:$("#loadingFill"),mainGroup:$("#mainGroup"),main:$("#mainScreen"),guide:$(".game-page-info"),stage:$("#stageScreen"),battle:$("#battleScreen"),locale:$("#localeSelect"),mainProgress:$("#mainProgress"),start:$("#startBtn"),stageBack:$("#stageBackBtn"),campaignTab:$("#campaignTab"),challengeTab:$("#challengeTab"),rail:$("#stageRail"),stageSummary:$("#stageSummary"),chapterKicker:$("#chapterKicker"),chapterTitle:$("#chapterTitle"),chapterRule:$("#chapterRule"),battleBack:$("#battleBackBtn"),stageLabel:$("#stageLabel"),goalValue:$("#goalValue"),movesValue:$("#movesValue"),scoreValue:$("#scoreValue"),objective:$("#objectiveRow"),board:$("#gameBoard"),feedback:$("#moveFeedback"),undo:$("#undoBtn"),restart:$("#restartBtn"),hint:$("#hintBtn"),result:$("#resultPanel"),resultTitle:$("#resultTitle"),resultStars:$("#resultStars"),resultText:$("#resultText"),skillGrid:$("#skillGrid"),bestText:$("#bestText"),retry:$("#retryBtn"),resultStages:$("#resultStagesBtn"),next:$("#nextBtn"),leave:$("#leavePanel"),leaveText:$("#leaveText"),leaveContinue:$("#leaveContinueBtn"),leaveStages:$("#leaveStagesBtn"),tutorial:$("#tutorialPanel"),tutorialClose:$("#tutorialCloseBtn"),tutorialStart:$("#tutorialStartBtn")};
   function persist(){save=normalizeSave(save);writeStorage(SAVE_KEY,JSON.stringify(save));}
   function cloneState(){return{board:[...board],score,moves,merges,rngState};}
@@ -78,7 +78,9 @@
   const battleRegions=()=>[...dom.result.parentElement.children].filter(node=>node!==dom.result&&node!==dom.leave);
   function setBattleCovered(covered){battleRegions().forEach(node=>{node.inert=covered;if(covered)node.setAttribute("aria-hidden","true");else node.removeAttribute("aria-hidden");});}
   function battleDecisionBlocked(){return Boolean(resultState||!dom.leave.hidden||!dom.result.hidden);}
-  function cancelResultReveal(){clearTimeout(resultTimer);resultTimer=0;dom.result.hidden=true;if(dom.leave.hidden)setBattleCovered(false);}
+  function cancelResultReveal(){clearTimeout(resultTimer);resultTimer=0;resultRevealSuspended=false;dom.result.hidden=true;if(dom.leave.hidden)setBattleCovered(false);}
+  function suspendResultReveal(){if(!resultTimer)return;clearTimeout(resultTimer);resultTimer=0;resultRevealSuspended=true;}
+  function resumeResultReveal(){if(!resultRevealSuspended||!resultState||document.body.dataset.screen!=="battle"||!dom.result.hidden)return;resultRevealSuspended=false;const primary=dom.result.querySelector(".primary-action:not([hidden])");resultTimer=setTimeout(()=>{resultTimer=0;if(document.body.dataset.screen!=="battle"||!resultState)return;setBattleCovered(true);dom.result.hidden=false;primary?.focus({preventScroll:true});},260);}
   function setScreen(name){if(name!=="battle")cancelResultReveal();document.body.dataset.screen=name;dom.mainGroup.hidden=name!=="main";dom.stage.hidden=name!=="stage";dom.battle.hidden=name!=="battle";}
   function chapter(index){return Math.min(5,Math.floor(index/5));}
   function activeLevel(){return stageIndex===INFINITE_INDEX?infiniteLevel:levels[stageIndex];}
@@ -130,6 +132,13 @@
   document.addEventListener("keydown",event=>{if(!dom.leave.hidden){if(event.key==="Escape"){event.preventDefault();dom.leaveContinue.click();}return;}if(document.body.dataset.screen!=="battle"||!dom.result.hidden)return;const map={ArrowUp:"up",w:"up",W:"up",ArrowDown:"down",s:"down",S:"down",ArrowLeft:"left",a:"left",A:"left",ArrowRight:"right",d:"right",D:"right"};if(map[event.key]){event.preventDefault();performMove(map[event.key]);}else if(event.key==="u"||event.key==="U"){event.preventDefault();undo();}else if(event.key==="r"||event.key==="R"){event.preventDefault();restart();}else if(event.key==="h"||event.key==="H"){event.preventDefault();showHint();}});
   dom.start.addEventListener("click",()=>{if(!dom.tutorial.hidden)requestAnimationFrame(()=>dom.tutorialStart.focus({preventScroll:true}));});
   document.addEventListener("keydown",event=>{const panel=!dom.tutorial.hidden?dom.tutorial:!dom.leave.hidden?dom.leave:!dom.result.hidden?dom.result:null;if(!panel)return;if(event.key==="Escape"){event.preventDefault();event.stopImmediatePropagation();if(panel===dom.tutorial)closeTutorial();else if(panel===dom.leave)dom.leaveContinue.click();else dom.resultStages.click();return;}if(event.key!=="Tab")return;const controls=[...panel.querySelectorAll("button:not([disabled]),a[href],select,[tabindex]:not([tabindex='-1'])")].filter(node=>node.getClientRects().length);if(!controls.length)return;const first=controls[0],last=controls.at(-1);if(!panel.contains(document.activeElement)){event.preventDefault();first.focus();}else if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}event.stopImmediatePropagation();},true);
+  let resultWindowFocused=true;
+  window.addEventListener("blur",()=>{resultWindowFocused=false;suspendResultReveal();});
+  window.addEventListener("focus",()=>{resultWindowFocused=true;if(!document.hidden)resumeResultReveal();});
+  window.addEventListener("pagehide",()=>{resultWindowFocused=false;suspendResultReveal();});
+  window.addEventListener("pageshow",()=>{resultWindowFocused=true;if(!document.hidden)resumeResultReveal();});
+  document.addEventListener("visibilitychange",()=>{if(document.hidden)suspendResultReveal();else if(resultWindowFocused)resumeResultReveal();});
+
   window.__animal2048Smoke={
     levels:levels.map(level=>({index:level.index,type:level.type,target:level.target,limit:level.limit,blocked:[...level.blocked],start:[...level.start],seed:level.seed>>>0})),
     infiniteIndex:INFINITE_INDEX,

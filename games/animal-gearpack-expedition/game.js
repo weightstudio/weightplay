@@ -320,6 +320,7 @@
   const screens = {main:$("#mainScreen"),stage:$("#stageScreen"),battle:$("#battleScreen")};
   const storedLocale = readStorage("weightPlayLocale");
   let locale = window.WonderI18n?.locale?.() || (copy[storedLocale] ? storedLocale : "en");
+  document.addEventListener("DOMContentLoaded",()=>setTimeout(()=>{$("#startBtn").textContent=t("start");},0),{once:true});
   function normalizeProgress(source){
     const data=source&&typeof source==="object"?source:{};
     const whole=(value,fallback=0,max=Number.MAX_SAFE_INTEGER)=>{const numeric=Number(value);return Number.isFinite(numeric)?Math.max(0,Math.min(max,Math.floor(numeric))):fallback;};
