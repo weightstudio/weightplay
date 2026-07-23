@@ -1558,6 +1558,8 @@
     moveLane(key === "arrowleft" || key === "a" ? -1 : 1);
   });
   canvas.addEventListener("pointerdown", (event) => {
+    if (!state.running || lifecycleSuspended || leaveOpen || activePointerId !== null
+      || event.isPrimary === false || (event.pointerType === "mouse" && event.button !== 0)) return;
     event.preventDefault();
     canvas.focus({ preventScroll: true });
     pointerStartX = event.clientX;

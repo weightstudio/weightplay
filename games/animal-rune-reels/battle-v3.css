@@ -167,4 +167,5 @@ img{-webkit-user-drag:none}
 @media(max-width:560px){.roster-grid{grid-auto-rows:178px}.enemy-squad{width:min(calc(var(--enemy-count,3)*150px),94%)}}
 @media(min-width:561px){.roster-grid{grid-auto-rows:154px}.roster-card{height:154px;grid-template-rows:50px 15px 18px 16px 28px}.roster-card img{width:50px;height:50px}}
 @media(max-height:520px) and (orientation:landscape){.roster-grid{grid-auto-rows:166px}.roster-card{height:166px;grid-template-rows:54px 16px 18px 17px 28px}.roster-card img{width:54px;height:54px}}
+@media(max-height:520px) and (orientation:landscape){.v3-stage #stagesPanel{grid-template-columns:132px minmax(0,1fr);grid-template-rows:minmax(0,1fr);gap:8px}.v3-stage #stagesPanel .mission-tabs{grid-column:1;grid-row:1;grid-template-columns:1fr;grid-template-rows:repeat(3,minmax(44px,1fr));gap:6px}.v3-stage #stagesPanel .stage-rail{grid-column:2;grid-row:1;padding-inline:calc(50% - 132px)}.v3-stage #stagesPanel .stage-card{height:190px}}
 @media(prefers-reduced-motion:reduce){.party-hero.attack-launch,.enemy-unit.enemy-attacking,.summoner-hp.player-hit{animation-duration:.01ms!important}}

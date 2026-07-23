@@ -716,6 +716,8 @@
   let battlePaused = false;
   let settlementPending = false;
   let settlementTimer = 0;
+  let settlementDeadline = 0;
+  let settlementRemaining = 0;
   const SIMULATION_STEP_MS = 1000 / 60;
   const MAX_SIMULATION_STEPS = 6;
   let simulationAccumulator = 0;
@@ -1655,14 +1657,41 @@
   function cancelPendingSettlement() {
     clearTimeout(settlementTimer);
     settlementTimer = 0;
+    settlementDeadline = 0;
+    settlementRemaining = 0;
     settlementPending = false;
+  }
+
+  function suspendPendingSettlement() {
+    if (!settlementPending || !settlementTimer) return;
+    settlementRemaining = Math.max(0, settlementDeadline - performance.now());
+    clearTimeout(settlementTimer);
+    settlementTimer = 0;
+    settlementDeadline = 0;
+  }
+
+  function resumePendingSettlement() {
+    if (!settlementPending || settlementTimer || !state.gameActive || document.hidden || !windowFocused) return;
+    const delay = Math.max(0, settlementRemaining);
+    settlementDeadline = performance.now() + delay;
+    settlementTimer = window.setTimeout(() => {
+      settlementTimer = 0;
+      settlementDeadline = 0;
+      settlementRemaining = 0;
+      if (document.hidden || !windowFocused) {
+        suspendPendingSettlement();
+        return;
+      }
+      endGame(true);
+    }, delay);
   }
 
   function scheduleWinSettlement() {
     if (settlementPending || !state.gameActive) return;
     settlementPending = true;
+    settlementRemaining = 260;
     clearActiveInputs();
-    settlementTimer = window.setTimeout(() => endGame(true), 260);
+    resumePendingSettlement();
   }
 
   function openPause() {
@@ -2231,6 +2260,7 @@
   function suspendBackgroundBattle() {
     clearActiveInputs();
     suspendAmuletConfirmation();
+    suspendPendingSettlement();
     if (!state.gameActive) return;
     backgroundBattleSuspended = true;
     cancelAnimationFrame(state.gameLoopId);
@@ -2239,6 +2269,7 @@
 
   function resumeBackgroundBattle() {
     resumeAmuletConfirmation();
+    resumePendingSettlement();
     if (!backgroundBattleSuspended) return;
     backgroundBattleSuspended = false;
     if (!state.gameActive || battlePaused) return;
@@ -3194,6 +3225,10 @@
       },
       forceWin() {
         endGame(true);
+        return this.readState();
+      },
+      scheduleWin() {
+        scheduleWinSettlement();
         return this.readState();
       },
       forceFail() {

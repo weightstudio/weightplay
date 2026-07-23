@@ -1071,9 +1071,16 @@
     event.stopPropagation();
     cutVine();
   });
+  nodes.cutNowBtn.addEventListener("pointerdown", (event) => {
+    if (!claimPlayPointer(event)) return;
+    event.preventDefault();
+    event.stopPropagation();
+    cutVine();
+    resetPlayPointer();
+  });
   nodes.cutNowBtn.addEventListener("click", (event) => {
     event.preventDefault();
-    cutVine();
+    if (event.detail === 0) cutVine();
   });
   nodes.playfield.addEventListener("pointerdown", (event) => {
     if (!claimPlayPointer(event)) return;

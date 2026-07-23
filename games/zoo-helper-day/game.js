@@ -946,7 +946,7 @@
         chooseItem(meta.id, button);
       });
       button.addEventListener("pointerdown", (event) => {
-        if (!acceptingInput || event.isPrimary === false || event.button !== 0) return;
+        if (itemPointerDrag || !acceptingInput || event.isPrimary === false || event.button !== 0) return;
         itemPointerDrag = { id: event.pointerId, button, item: meta.id, x: event.clientX, y: event.clientY, moved: false };
       });
       button.addEventListener("pointermove", (event) => {
