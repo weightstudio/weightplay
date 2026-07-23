@@ -958,11 +958,7 @@ window.WONDER_LOBBY = {
         "pt-BR": "Queda na Torre Animal", fr: "Chute de la Tour Animale", de: "Tierischer Himmelsturm-Sturz",
         it: "Caduta dalla Torre Animale", ru: "Звери: Падение с небесной башни",
       },
-      status: "planned",
-      statusText: {
-        en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정",
-        es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt", de: "Demnächst", it: "Prossimamente", ru: "Скоро",
-      },
+      status: "playable",
       type: {
         en: "Rotating Tower Drop Arcade", "zh-Hant": "旋轉尖塔墜落街機", "zh-Hans": "旋转尖塔坠落街机",
         ja: "回転タワー落下アーケード", ko: "회전 탑 낙하 아케이드", es: "Arcade de caída y torre giratoria",
@@ -974,7 +970,6 @@ window.WONDER_LOBBY = {
       ages: ["13"],
       ageLabel: { en: "13+", "zh-Hant": "13+" },
       href: "games/animal-skyspire-drop/",
-      internalTrial: "index.html?trial=1",
       description: {
         en: "Rotate thirty crystal skyspires, guide Fia through shifting gaps, and charge Comet Break before cursed rings end the descent.",
         "zh-Hant": "旋轉 30 座水晶天空尖塔，引導菲亞穿越移動缺口，蓄滿彗星破擊並避開詛咒塔環。",
@@ -996,6 +991,7 @@ window.WONDER_LOBBY = {
         de: ["30 Türme", "Drehen und fallen", "Kometenbruch"], it: ["30 torri", "Ruota e cadi", "Spacca Cometa"],
         ru: ["30 башен", "Вращение и падение", "Кометный пробой"],
       },
+      previewVideo: "assets/previews/animal-skyspire-drop-battle.webm",
       art: { kind: "image", background: "assets/animal-skyspire-drop/cover.webp", hideHero: true },
     },
     {

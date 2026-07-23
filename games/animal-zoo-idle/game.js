@@ -2,8 +2,27 @@
   const GAME_ID = "animal-zoo-idle";
   const localeKey = "weightPlayLocale";
   const legacyLocaleKey = "weightplayLocale";
-  const canonicalSavedLocale = localStorage.getItem(localeKey);
-  const legacySavedLocale = localStorage.getItem(legacyLocaleKey);
+  const storageFallback = new Map();
+  const readStorage = (key) => {
+    try {
+      const value = localStorage.getItem(key);
+      if (value !== null) storageFallback.set(key, value);
+      return value ?? storageFallback.get(key) ?? null;
+    } catch {
+      return storageFallback.get(key) ?? null;
+    }
+  };
+  const writeStorage = (key, value) => {
+    const serialized = String(value);
+    storageFallback.set(key, serialized);
+    try {
+      localStorage.setItem(key, serialized);
+    } catch {
+      // Current-session park progress remains available through storageFallback.
+    }
+  };
+  const canonicalSavedLocale = readStorage(localeKey);
+  const legacySavedLocale = readStorage(legacyLocaleKey);
   if (!canonicalSavedLocale && ["en", "zh-Hant", "zh-Hans", "es"].includes(legacySavedLocale)) window.WonderI18n?.setLocale?.(legacySavedLocale);
   const saveKey = "weightplay_animal_zoo_idle_save_v3";
   const oldSaveKeys = ["weightplay_animal_zoo_idle_save_v2", "weightplay_animal_zoo_idle_save_v1"];
@@ -580,7 +599,7 @@
     loadingFill: $("loadingFill"),
   };
 
-  let locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
+  let locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || readStorage(localeKey) || "en";
   if (!text[locale] && locale !== "zh-Hans") locale = "en";
   let save = loadSave();
   let tickCount = 0;
@@ -641,10 +660,10 @@
       facilities: {},
     };
     try {
-      const current = JSON.parse(localStorage.getItem(saveKey) || "null");
+      const current = JSON.parse(readStorage(saveKey) || "null");
       if (current) return normalizeSave({ ...fallback, ...current });
       for (const key of oldSaveKeys) {
-        const old = JSON.parse(localStorage.getItem(key) || "null");
+        const old = JSON.parse(readStorage(key) || "null");
         if (old) {
           return normalizeSave({
             ...fallback,
@@ -713,7 +732,7 @@
 
   function saveGame() {
     save.lastPlayedAt = Date.now();
-    localStorage.setItem(saveKey, JSON.stringify(save));
+    writeStorage(saveKey, JSON.stringify(save));
   }
 
   function clamp(value, min, max) {
@@ -1981,7 +2000,7 @@
     const requested = nodes.localeSelect.value;
     window.WonderI18n?.setLocale?.(requested);
     locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || requested;
-    localStorage.setItem(localeKey, requested);
+    writeStorage(localeKey, requested);
     localizeStatic();
     render();
   });
@@ -1989,7 +2008,7 @@
     if (event.detail?.locale && event.detail.locale !== locale) {
       locale = event.detail.locale;
       nodes.localeSelect.value = event.detail.locale;
-      localStorage.setItem(localeKey, event.detail.locale);
+      writeStorage(localeKey, event.detail.locale);
       localizeStatic();
       render();
     }

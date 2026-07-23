@@ -69,11 +69,19 @@
     node:"별 {number}",startNode:"시작 별 {number}",keyNode:"열쇠 별 {number}",checkpointNode:"번호 {order} 별",edgeLabel:"별 {from}에서 별 {to}로 가는 길",backToMain:"메인으로 돌아가기",backToStage:"스테이지로 돌아가기",stageRailLabel:"별자리",puzzleLabel:"별자리 퍼즐",graphLabel:"한붓그리기 별자리",leaveTitle:"이 별자리를 일시정지할까요?",leaveText:"현재 경로를 계속하거나 스테이지로 돌아가 이번 시도를 포기합니다. 저장된 잠금 해제와 최고 기록은 유지됩니다.",continueBattle:"경로 계속하기",returnStages:"스테이지로 돌아가기"
   });
 
-  const routeLocale = ({en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru"})[location.pathname.split("/").filter(Boolean)[0]];
+  const supportedLocales = new Set(["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"]);
+  const gameOwnedLocales = new Set(Object.keys(STRINGS));
+  const routeLocale = ({en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"})[location.pathname.split("/").filter(Boolean)[0]];
   let locale = routeLocale || readStorage(LOCALE_KEY) || "en";
-  if (!STRINGS[locale]) locale = "en";
+  if (!supportedLocales.has(locale)) locale = "en";
   const format = (text, vars={}) => String(text).replace(/\{(\w+)\}/g, (_, key) => vars[key] ?? "");
-  const t = (key, vars) => format(STRINGS[locale]?.[key] ?? EN[key] ?? key, vars);
+  const t = (key, vars) => {
+    const template = STRINGS[locale]?.[key] ?? EN[key] ?? key;
+    const localizedTemplate = gameOwnedLocales.has(locale)
+      ? template
+      : window.WeightPlayGameRuntimeLocalizer?.translate?.(template) || template;
+    return format(localizedTemplate, vars);
+  };
 
   const TEMPLATES = [
     {p:[[14,58],[38,30],[63,58],[86,27]],r:[0,1,2,3]},
@@ -186,6 +194,7 @@
 
   function applyLocale() {
     document.documentElement.lang = locale;
+    document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     dom.locale.value = locale;
     writeStorage(LOCALE_KEY,locale);
     $$('[data-i18n]').forEach(node => {node.textContent=t(node.dataset.i18n);});

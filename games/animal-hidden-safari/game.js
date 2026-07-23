@@ -403,9 +403,58 @@
   let scenePointerOwner = null;
   let completedScenePointer = null;
   let stageCenterFrame = 0;
+  const transientFeedbackTasks = new Map();
+  let transientFeedbackSuspended = false;
 
   function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
+  }
+
+  function armTransientFeedbackTask(task) {
+    task.startedAt = performance.now();
+    task.timerId = window.setTimeout(() => {
+      transientFeedbackTasks.delete(task.owner);
+      task.cleanup();
+    }, task.remaining);
+  }
+
+  function scheduleTransientFeedback(owner, cleanup, duration) {
+    const previous = transientFeedbackTasks.get(owner);
+    if (previous?.timerId) window.clearTimeout(previous.timerId);
+    const task = { owner, cleanup, remaining: duration, startedAt: 0, timerId: 0 };
+    transientFeedbackTasks.set(owner, task);
+    if (document.hidden || !windowFocused || pauseOpen || transientFeedbackSuspended) {
+      transientFeedbackSuspended = true;
+    } else {
+      armTransientFeedbackTask(task);
+    }
+  }
+
+  function pauseTransientFeedback() {
+    if (transientFeedbackSuspended) return;
+    transientFeedbackSuspended = true;
+    const now = performance.now();
+    transientFeedbackTasks.forEach((task) => {
+      if (!task.timerId) return;
+      window.clearTimeout(task.timerId);
+      task.timerId = 0;
+      task.remaining = Math.max(0, task.remaining - (now - task.startedAt));
+    });
+  }
+
+  function resumeTransientFeedback() {
+    if (!transientFeedbackSuspended || document.hidden || !windowFocused || pauseOpen) return;
+    transientFeedbackSuspended = false;
+    transientFeedbackTasks.forEach((task) => armTransientFeedbackTask(task));
+  }
+
+  function clearTransientFeedback() {
+    transientFeedbackTasks.forEach((task) => {
+      if (task.timerId) window.clearTimeout(task.timerId);
+      task.cleanup();
+    });
+    transientFeedbackTasks.clear();
+    transientFeedbackSuspended = false;
   }
 
   function readJson(key, fallback) {
@@ -624,6 +673,7 @@
   function showMenu(focusIndex) {
     resetScenePointerOwnership();
     closePause(false);
+    clearTransientFeedback();
     stopTimer();
     hiddenStartedAt = 0;
     acceptingInput = false;
@@ -644,6 +694,7 @@
   function showMain() {
     resetScenePointerOwnership();
     closePause(false);
+    clearTransientFeedback();
     stopTimer();
     hiddenStartedAt = 0;
     acceptingInput = false;
@@ -659,6 +710,7 @@
   function startStage(index) {
     resetScenePointerOwnership();
     closePause(false);
+    clearTransientFeedback();
     currentStage = index;
     found = new Set();
     hintsLeft = 2;
@@ -827,7 +879,7 @@
       showFloatingText(message, Number.parseFloat(button.style.left), Number.parseFloat(button.style.top));
       announceStatus(message);
       button.classList.add("wrong-order");
-      window.setTimeout(() => button.classList.remove("wrong-order"), 360);
+      scheduleTransientFeedback(button, () => button.classList.remove("wrong-order"), 360);
       playSound("error");
       return;
     }
@@ -918,6 +970,7 @@
     pauseOpen = true;
     pauseReturnFocus = returnFocus;
     pauseSearchTimer();
+    pauseTransientFeedback();
     nodes.playPanel.inert = true;
     nodes.playPanel.setAttribute("aria-hidden", "true");
     nodes.pausePanel.classList.remove("hidden");
@@ -933,6 +986,7 @@
     nodes.playPanel.inert = false;
     nodes.playPanel.removeAttribute("aria-hidden");
     resumeSearchTimer();
+    resumeTransientFeedback();
     if (restoreFocus) requestAnimationFrame(() => returnFocus?.focus({ preventScroll: true }));
   }
 
@@ -952,6 +1006,7 @@
 
   function finishStage() {
     closePause(false);
+    clearTransientFeedback();
     acceptingInput = false;
     stopTimer();
     hiddenStartedAt = 0;
@@ -1046,7 +1101,7 @@
     node.style.left = `${x}%`;
     node.style.top = `${y}%`;
     nodes.floatLayer.appendChild(node);
-    window.setTimeout(() => node.remove(), 950);
+    scheduleTransientFeedback(node, () => node.remove(), 950);
   }
 
   function showImageEffect(type, x, y, targetSize = 56) {
@@ -1059,7 +1114,7 @@
     node.style.top = `${y}%`;
     node.style.setProperty("--feedback-size", `${Math.max(92, targetSize * 2.1)}px`);
     nodes.floatLayer.appendChild(node);
-    window.setTimeout(() => node.remove(), 760);
+    scheduleTransientFeedback(node, () => node.remove(), 760);
   }
 
   function preloadGameAssets() {
@@ -1194,18 +1249,31 @@
     window.addEventListener("blur", () => {
       windowFocused = false;
       pauseSearchTimer();
+      pauseTransientFeedback();
       resetScenePointerOwnership();
     });
     window.addEventListener("focus", () => {
       windowFocused = true;
       resumeSearchTimer();
+      resumeTransientFeedback();
     });
-    window.addEventListener("pagehide", pauseSearchTimer);
+    window.addEventListener("pagehide", () => {
+      pauseSearchTimer();
+      pauseTransientFeedback();
+    });
     window.addEventListener("pagehide", resetScenePointerOwnership);
-    window.addEventListener("pageshow", resumeSearchTimer);
+    window.addEventListener("pageshow", () => {
+      resumeSearchTimer();
+      resumeTransientFeedback();
+    });
     document.addEventListener("visibilitychange", () => {
-      if (document.hidden) pauseSearchTimer();
-      else resumeSearchTimer();
+      if (document.hidden) {
+        pauseSearchTimer();
+        pauseTransientFeedback();
+      } else {
+        resumeSearchTimer();
+        resumeTransientFeedback();
+      }
     });
   }
 
@@ -1244,6 +1312,8 @@
         unlocked,
         scenePointerOwner,
         completedScenePointer,
+        transientFeedbackSuspended,
+        transientFeedbackCount: transientFeedbackTasks.size,
       }),
     };
   }

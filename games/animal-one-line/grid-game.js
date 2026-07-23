@@ -7,7 +7,7 @@
   function writeStorage(key,value){try{localStorage.setItem(key,value);return true;}catch{return false;}}
   const $ = (selector) => document.querySelector(selector);
   const localeSegment = location.pathname.split("/").filter(Boolean)[0] || "en";
-  const routeLocale = ({ en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", es: "es", ja: "ja", ru: "ru" })[localeSegment] || "en";
+  const routeLocale = ({ en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" })[localeSegment] || "en";
 
   const EN = {
     title: "One Line", language: "Language", languageLabel: "Language", mainReturn: "Back to WeightPlay", back: "Back", stageRail: "Stages", boardLabel: "One-line grid board", startCell: "Glowing paw start", close: "Close", eyebrow: "Mimi's color-grid workshop",
@@ -22,7 +22,7 @@
     incomplete: "Some cells are still empty. Keep planning your route.", revisit: "That cell is already in the route.",
     deadEnd: "No route remains, but cells are still empty.", complete: "Every cell filled!",
     hintText: "The next cell in one possible route is glowing.", summary: "{cleared} cleared · {stars} stars",
-    locked: "Locked", available: "Ready", cleared: "Cleared", resultTitle: "Puzzle Complete",
+    locked: "Locked", available: "Ready", cleared: "Cleared", resultTitle: "Puzzle Complete", durationSeconds: "{seconds}s",
     resultText: "You filled all {cells} cells in {time} with {attempts} attempt(s).", newBest: "New best time!", best: "Best time: {time}",
     route: "Route", planning: "Planning", control: "Control", routeValue: "{cells} cells", planningValue: "{attempts} attempt(s)", controlValue: "No repeats",
     chapter1: "First Steps", chapter2: "Corner Planning", chapter3: "Stone Blocks", chapter4: "Long Routes", chapter5: "Tight Choices", chapter6: "Master Grids",
@@ -44,7 +44,7 @@
     restart: "Начать заново", hint: "Показать подсказку", retry: "Ещё раз", stages: "К этапам", next: "Следующий этап", skillReport: "Отчёт о головоломке",
     tutorialTitle: "Заполните все клетки одной линией.", tutorial1: "Начните со светящейся лапки, затем нажимайте или ведите по соседним клеткам.", tutorial2: "Палец можно отпустить в любой момент — маршрут останется на поле.", tutorial3: "Вернитесь на предыдущую клетку, чтобы отменить ход. Заполните все свободные клетки, не пересекая маршрут.", tutorialStart: "Начать",
     progress: "{cleared} / 30 головоломок решено", bestStars: "Собрано звёзд: {stars}", stage: "Этап", ready: "Начните со светящейся лапки и заполните все свободные клетки.", drawing: "Продолжайте: каждую клетку можно использовать только один раз.", incomplete: "Некоторые клетки ещё пусты. Продолжайте планировать маршрут.", revisit: "Эта клетка уже входит в маршрут.", deadEnd: "Маршрут закончился, но некоторые клетки ещё пусты.", complete: "Все клетки заполнены!", hintText: "Светится следующая клетка одного из возможных решений.", summary: "Решено: {cleared} · Звёзд: {stars}",
-    locked: "Заблокировано", available: "Готово", cleared: "Решено", resultTitle: "Головоломка решена", resultText: "Заполнено клеток: {cells}. Время: {time}. Попыток: {attempts}.", newBest: "Новое лучшее время!", best: "Лучшее время: {time}",
+    locked: "Заблокировано", available: "Готово", cleared: "Решено", resultTitle: "Головоломка решена", durationSeconds: "{seconds} с", resultText: "Заполнено клеток: {cells}. Время: {time}. Попыток: {attempts}.", newBest: "Новое лучшее время!", best: "Лучшее время: {time}",
     route: "Маршрут", planning: "Планирование", control: "Контроль", routeValue: "Клеток: {cells}", planningValue: "Попыток: {attempts}", controlValue: "Без повторов",
     chapter1: "Первые шаги", chapter2: "Планирование углов", chapter3: "Каменные блоки", chapter4: "Длинные маршруты", chapter5: "Сложный выбор", chapter6: "Мастерские сетки",
     rule1: "Освойте движение вверх, вниз, влево и вправо и заполните все свободные клетки.", rule2: "Планируйте повороты заранее, чтобы не перекрыть маршрут слишком рано.", rule3: "Каменные клетки разделяют поле и усложняют выбор направления.", rule4: "На длинном поле ранняя ошибка влияет на последние клетки.", rule5: "Несколько направлений кажутся верными, но победу даёт только полностью заполненное поле.", rule6: "Сочетайте каменные блоки, узкие выходы и длинные непрерывные маршруты.",
@@ -84,8 +84,15 @@
   Object.assign(STRINGS.es, { leaveTitle:"¿Salir de este rompecabezas?", leaveText:"La ruta actual y los intentos se conservan mientras decides.", continuePuzzle:"Continuar rompecabezas", returnStages:"Volver a niveles" });
   Object.assign(STRINGS.ja, { leaveTitle:"このパズルを離れますか？", leaveText:"選択中は現在のルートと試行回数が保持されます。", continuePuzzle:"パズルを続ける", returnStages:"ステージへ戻る" });
   const S = STRINGS[routeLocale] || EN;
-  const text = (key, vars = {}) => String(S[key] ?? EN[key] ?? key).replace(/\{(\w+)\}/g, (_, name) => vars[name] ?? "");
-  const formatDuration = (seconds) => `${seconds.toFixed(1)}${routeLocale === "ru" ? " с" : "s"}`;
+  const gameOwnedLocales = new Set(Object.keys(STRINGS));
+  const translateTemplate = (value) => {
+    const template = String(value ?? "");
+    return gameOwnedLocales.has(routeLocale)
+      ? template
+      : window.WeightPlayGameRuntimeLocalizer?.translate?.(template) || template;
+  };
+  const text = (key, vars = {}) => translateTemplate(S[key] ?? EN[key] ?? key).replace(/\{(\w+)\}/g, (_, name) => vars[name] ?? "");
+  const formatDuration = (seconds) => text("durationSeconds", { seconds: seconds.toFixed(1) });
 
   function rowSnake(rows, cols) { const p=[]; for(let r=0;r<rows;r++){ const cs=[...Array(cols).keys()]; if(r%2) cs.reverse(); cs.forEach(c=>p.push([r,c])); } return p; }
   function colSnake(rows, cols) { const p=[]; for(let c=0;c<cols;c++){ const rs=[...Array(rows).keys()]; if(c%2) rs.reverse(); rs.forEach(r=>p.push([r,c])); } return p; }
@@ -124,7 +131,7 @@
   function chapter(i){return Math.min(5,Math.floor(i/5));}
   function pauseRunClock(){if(startTime&&document.body.dataset.screen==="battle"&&runClockPausedAt===0)runClockPausedAt=performance.now();}
   function resumeRunClock(){if(!runClockPausedAt||lifecycleSuspended||!dom.leave.hidden)return;if(startTime)startTime+=Math.max(0,performance.now()-runClockPausedAt);runClockPausedAt=0;}
-  function applyLocale(){ document.documentElement.lang=routeLocale; document.querySelectorAll("[data-one-line-i18n]").forEach(el=>el.textContent=text(el.dataset.oneLineI18n)); if(dom.locale){dom.locale.value=routeLocale;dom.locale.setAttribute("aria-label",text("languageLabel"));}document.querySelector(".main-return")?.setAttribute("aria-label",text("mainReturn"));dom.stageBack.setAttribute("aria-label",text("back"));dom.rail.setAttribute("aria-label",text("stageRail"));dom.battleBack.setAttribute("aria-label",text("back"));dom.tutorialClose.setAttribute("aria-label",text("close")); }
+  function applyLocale(){ document.documentElement.lang=routeLocale;document.documentElement.dir=routeLocale==="ar"?"rtl":"ltr"; document.querySelectorAll("[data-one-line-i18n]").forEach(el=>el.textContent=text(el.dataset.oneLineI18n)); if(dom.locale){dom.locale.value=routeLocale;dom.locale.setAttribute("aria-label",text("languageLabel"));}document.querySelector(".main-return")?.setAttribute("aria-label",text("mainReturn"));dom.stageBack.setAttribute("aria-label",text("back"));dom.rail.setAttribute("aria-label",text("stageRail"));dom.battleBack.setAttribute("aria-label",text("back"));dom.tutorialClose.setAttribute("aria-label",text("close")); }
   function cancelPendingResult(){if(resultRevealTimer!==null){clearTimeout(resultRevealTimer);resultRevealTimer=null;}resultSettlementPending=false;}
   function setScreen(name){if(name!=="battle"){cancelPendingResult();closeResultOwnership();runClockPausedAt=0;}document.body.dataset.screen=name;dom.main.hidden=name!=="main";dom.guide.hidden=name!=="main";dom.stage.hidden=name!=="stage";dom.battle.hidden=name!=="battle";}
   function showMain(){setScreen("main");const cleared=Object.keys(save.cleared||{}).length,stars=Object.values(save.stars||{}).reduce((a,b)=>a+Number(b||0),0);dom.mainProgress.textContent=`${text("progress",{cleared})} · ${text("bestStars",{stars})}`;}
@@ -170,7 +177,7 @@
   dom.restart.addEventListener("click",()=>resetAttempt(true));
   dom.hint.addEventListener("click",()=>{hintUsed=true;const next=levels[stageIndex].solution.find(([r,c])=>!visitedSet.has(`${r},${c}`));if(next){const cell=dom.board.querySelector(`[data-row="${next[0]}"][data-col="${next[1]}"]`);cell?.classList.add("is-hint");setTimeout(()=>cell?.classList.remove("is-hint"),1300);}dom.feedback.textContent=text("hintText");});
   dom.result.addEventListener("keydown",trapResult);dom.retry.addEventListener("click",()=>startStage(stageIndex));dom.resultStages.addEventListener("click",()=>showStage(stageIndex));dom.next.addEventListener("click",()=>startStage(Math.min(29,stageIndex+1)));
-  dom.locale?.addEventListener("change",()=>{const segment=({en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",es:"es",ja:"ja",ru:"ru"})[dom.locale.value];if(segment&&segment!==localeSegment)location.href=`/${segment}/games/animal-one-line/${location.search}${location.hash}`;});
+  dom.locale?.addEventListener("change",()=>{const segment=({en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"})[dom.locale.value];if(segment&&segment!==localeSegment)location.href=`/${segment}/games/animal-one-line/${location.search}${location.hash}`;});
   function closeTutorial(){writeStorage(TUTORIAL_KEY,"1");dom.tutorial.hidden=true;}dom.tutorialClose.addEventListener("click",closeTutorial);dom.tutorialStart.addEventListener("click",()=>{closeTutorial();startStage(0);});
   window.__animalOneLineSmoke={levels:levels.map(l=>({rows:l.rows,cols:l.cols,solution:l.solution})),startStage,snapshot:()=>({stage:stageIndex+1,visited:visited.length,total:levels[stageIndex].solution.length,screen:document.body.dataset.screen,result:!dom.result.hidden,resultSettlementPending,feedback:dom.feedback.textContent,drawing,activePointer,lifecycleSuspended,windowFocused,runClockPaused:runClockPausedAt>0,save:JSON.parse(JSON.stringify(save))})};
   applyLocale();setTimeout(()=>{dom.loading.hidden=true;showMain();},180);

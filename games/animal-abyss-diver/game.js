@@ -281,11 +281,14 @@
     quitLeave:u("\u96e2\u958b\u672c\u8f2a")
   });
   const ROUTE_COUNT=30;
+  const supportedLocales=new Set(["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"]);
+  const gameOwnedLocales=new Set(["en","zh-Hant","zh-Hans"]);
   const routeSegment=location.pathname.split("/").filter(Boolean)[0];
-  const routeLocale=({en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans"})[routeSegment];
+  const routeLocale=({en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"})[routeSegment];
   const readStorage=(key)=>{try{return localStorage.getItem(key);}catch{return null;}};
   const writeStorage=(key,value)=>{try{localStorage.setItem(key,value);return true;}catch{return false;}};
   let locale = routeLocale || readStorage("weightPlayLocale") || "en";
+  if(!supportedLocales.has(locale))locale="en";
   const defaultSave=()=>({rank:1,coins:0,unlocked:1,level:1,xp:0,statPoints:0,stats:{hp:0,attack:0,oxygen:0},tutorialDone:false});
   const whole=(value,fallback,min=0,max=Number.MAX_SAFE_INTEGER)=>Number.isFinite(value)?Math.max(min,Math.min(max,Math.trunc(value))):fallback;
   function normalizeSave(raw){
@@ -431,8 +434,13 @@
   if(routes.length!==ROUTE_COUNT||routes.some(route=>route.encounters.length!==route.zones))throw new Error("Animal Abyss Diver authored route data is incomplete.");
   const isChinese=()=>locale==="zh-Hant"||locale==="zh-Hans";
   const simplify=(value)=>locale==="zh-Hans"&&window.WeightPlayI18n?.simplifyChineseText?window.WeightPlayI18n.simplifyChineseText(value):value;
-  const routeText=(route,key)=>simplify(isChinese()?route[`zh${key[0].toUpperCase()}${key.slice(1)}`]:route[key]);
-  const t = (key, values={}) => simplify(Object.entries(values).reduce((value,[name,replacement]) => value.replace(`{${name}}`,replacement),(isChinese() ? zh : en)[key]));
+  const runtimeTranslate=(template)=>gameOwnedLocales.has(locale)?template:window.WeightPlayGameRuntimeLocalizer?.translate?.(template)||template;
+  const format=(template,values={})=>Object.entries(values).reduce((value,[name,replacement])=>value.replaceAll(`{${name}}`,String(replacement)),String(template));
+  const routeText=(route,key)=>{
+    const template=isChinese()?route[`zh${key[0].toUpperCase()}${key.slice(1)}`]:route[key];
+    return simplify(runtimeTranslate(template));
+  };
+  const t=(key,values={})=>simplify(format(runtimeTranslate((isChinese()?zh:en)[key]??key),values));
   const icon = name => `<i class="ui-icon icon-${name}" aria-hidden="true"></i>`;
   const maxHealth = () => 30 + save.stats.hp * 8;
   const diverAttack = () => 6 + save.stats.attack * 2;
@@ -705,7 +713,7 @@
     focusCurrentDiveDecision();
   }
   function renderMainProgress(){$("progress").textContent=`Lv.${save.level} · ${t("rank",{n:save.rank})} - ${t("coins",{n:save.coins})}`;}
-  function localize(){document.documentElement.lang=locale;document.title=`${t("title")} - WeightPlay`;$("title").textContent=t("title");$("languageLabel").textContent=t("language");$("localeSelect").value=locale;$("headline").textContent=t("headline");$("intro").textContent=t("intro");$("guideTitle").textContent=t("guideTitle");$("guideCopy").textContent=t("guideCopy");$("startBtn").textContent=t("start");$("stageTitle").textContent=t("stage");$("stageHint").textContent=t("stageHint");$("leftBtn").textContent=t("left");$("rightBtn").textContent=t("right");$("sonarBtn").textContent=t("sonarPowered");$("shieldBtn").textContent=t("shield");$("surfaceBtn").textContent=t("surface");$("coachTitle").textContent=t("coachTitle");$("coachStart").textContent=t("coachStart");renderCoach();$("helpBtn").ariaLabel=t("help");$("stageBack").ariaLabel=t("back");$("battleBack").ariaLabel=t("back");renderMainProgress();renderRoutes();if(state.route){renderBattle();if(state.fishActive)renderFish();if(!$("upgradePanel").classList.contains("hidden"))renderUpgrade();}}
+  function localize(){document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";document.title=`${t("title")} - WeightPlay`;$("title").textContent=t("title");$("languageLabel").textContent=t("language");$("localeSelect").value=locale;$("headline").textContent=t("headline");$("intro").textContent=t("intro");$("guideTitle").textContent=t("guideTitle");$("guideCopy").textContent=t("guideCopy");$("startBtn").textContent=t("start");$("stageTitle").textContent=t("stage");$("stageHint").textContent=t("stageHint");$("leftBtn").textContent=t("left");$("rightBtn").textContent=t("right");$("sonarBtn").textContent=t("sonarPowered");$("shieldBtn").textContent=t("shield");$("surfaceBtn").textContent=t("surface");$("coachTitle").textContent=t("coachTitle");$("coachStart").textContent=t("coachStart");renderCoach();$("helpBtn").ariaLabel=t("help");$("stageBack").ariaLabel=t("back");$("battleBack").ariaLabel=t("back");renderMainProgress();renderRoutes();if(state.route){renderBattle();if(state.fishActive)renderFish();if(!$("upgradePanel").classList.contains("hidden"))renderUpgrade();}}
   $("startBtn").onclick=()=>{show("stageScreen");renderRoutes();};$("stageBack").onclick=()=>show("mainScreen");$("battleBack").onclick=()=>{cancelDiveAsync();show("stageScreen");renderRoutes();};$("menuBtn").onclick=leaveDive;$("leftBtn").onclick=()=>move("left");$("rightBtn").onclick=()=>move("right");$("dodgeLeftBtn").onclick=attackFish;$("pulseBtn").onclick=escapeFish;$("helpBtn").onclick=()=>setCoach(true);$("coachStart").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("coachStart").onclick=()=>{save.tutorialDone=true;persist();setCoach(false);setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));};$("sonarBtn").onclick=()=>{if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<2){setFeedback(`${icon("power")}<b>0</b>`,t("sonarNeed"));return;}state.battery-=2;state.sonar=true;setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};$("shieldBtn").onclick=()=>{if(state.shieldArmed)return;if(state.battery<1){setFeedback(`${icon("power")}<b>0</b>`,t("shieldNeed"));return;}state.battery-=1;state.shieldArmed=true;setFeedback(`${icon("shield")}<b>✓</b>`,t("shieldArmed"));renderBattle();focusCurrentDiveDecision();};$("surfaceBtn").onclick=()=>finish("surface");$("beaconBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("beaconBtn").onclick=useBeacon;["upgradeHp","upgradeAttack","upgradeOxygen"].forEach(id=>$(id).addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();}));$("upgradeHp").onclick=()=>allocateStat("hp");$("upgradeAttack").onclick=()=>allocateStat("attack");$("upgradeOxygen").onclick=()=>allocateStat("oxygen");$("upgradeDone").onclick=()=>{setUpgradeModal(false);renderBattle();};$("localeSelect").onchange=(event)=>{locale=event.target.value;writeStorage("weightPlayLocale",locale);localize();};
   $("sonarBtn").onclick=()=>{const config=routeConfig(),cost=config.sonarCost??2;if(config.jammedZones?.includes(state.zone)){setFeedback(`${icon("sonar")}<b>×</b>`,routeText(config,"rule"));return;}if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<cost){setFeedback(`${icon("power")}<b>${state.battery}</b>`,t("sonarNeed").replace("2",String(cost)));return;}state.battery-=cost;state.sonar=true;setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};
   $("shieldBtn").onclick=()=>{const config=routeConfig(),cost=config.shieldCost??1;if(state.shieldArmed)return;if(state.battery<cost){setFeedback(`${icon("power")}<b>${state.battery}</b>`,t("shieldNeed").replace("1",String(cost)));return;}state.battery-=cost;state.shieldArmed=true;setFeedback(`${icon("shield")}<b>✓</b>`,t("shieldArmed"));renderBattle();focusCurrentDiveDecision();};
@@ -785,7 +793,7 @@
   const lobbyLabels = { en: "Back to lobby", "zh-Hant": u("\\u8fd4\\u56de\\u5927\\u5ef3"), "zh-Hans": u("\\u8fd4\\u56de\\u5927\\u5385") };
   function syncMetadata() {
     document.title = `${t("title")} - WeightPlay`;
-    $("homeLink").ariaLabel = lobbyLabels[locale] || lobbyLabels.en;
+    $("homeLink").ariaLabel = lobbyLabels[locale] || runtimeTranslate(lobbyLabels.en);
     document.querySelector("#pageDescription").content = t("intro");
   }
   syncMetadata();

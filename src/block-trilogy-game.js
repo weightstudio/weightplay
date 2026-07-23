@@ -28,6 +28,7 @@ function crateAssignmentDistance(boxes,goals){return Math.min(...cratePermutatio
 function cratePlan(stage){
 if(stage===1)return{chapter:0,size:7,walls:[],ice:[],belts:[],switches:[],gate:null,goals:[{x:5,y:2}],boxes:[{x:2,y:2,linked:false}],player:{x:1,y:1},pulls:0,distance:3,variant:0};
 if(stage===6)return{chapter:1,featureTier:1,size:7,walls:[{x:3,y:1},{x:4,y:1},{x:4,y:4}],ice:[{x:3,y:3},{x:4,y:3}],belts:[],switches:[],gate:null,goals:[{x:5,y:3}],boxes:[{x:2,y:3,linked:false}],player:{x:1,y:1},pulls:0,distance:3,variant:0};
+if(stage===21)return{chapter:4,featureTier:4,size:9,walls:[{x:2,y:5},{x:6,y:5}],ice:[],belts:[],switches:[],gate:null,goals:[{x:3,y:5},{x:4,y:5},{x:5,y:6}],boxes:[{x:3,y:3,linked:true},{x:4,y:3,linked:true},{x:5,y:4,linked:false}],player:{x:3,y:2},pulls:0,distance:6,variant:-1};
 const chapter=chapterFor(stage),featureTier=chapter,size=stage<=10?7:stage<=20?8:9,boxCount=stage<=10?1:stage<=20?2:3,variant=crateVariants[stage-1],random=(()=>{let value=stage*7919+variant*104729+17;return()=>((value=value*48271%2147483647)/2147483647)})(),cells=[];
 for(let y=1;y<size-1;y++)for(let x=1;x<size-1;x++)cells.push({x,y});for(let i=cells.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[cells[i],cells[j]]=[cells[j],cells[i]]}
 const wallCount=Math.min(8,2+chapter+Math.floor(stage/12)),walls=cells.slice(0,wallCount),wallKeys=new Set(walls.map(point=>`${point.x},${point.y}`)),open=cells.filter(point=>!wallKeys.has(`${point.x},${point.y}`)&&point.x>1&&point.y>1&&point.x<size-2&&point.y<size-2),goals=open.slice(0,boxCount).map(point=>({...point})),boxes=goals.map(point=>({...point,linked:false}));if(chapter===4&&boxes.length>=2){boxes[0].linked=true;boxes[1].linked=true}let player={...(open[boxCount]||{x:1,y:1})};
@@ -69,9 +70,10 @@ function drawMosaic(){const {s,rowClues,columnClues,cell,ox,oy,clueStep}=mosaicG
 function breakerStageRules(stage){
   const chapter=chapterFor(stage),variant=(stage-1)%5,pressure=chapter===4||stage>=29;
   const hazardCount=chapter===5?(stage>=30?3:stage>=28?2:1):0;
+  const opening=chapter===0?[{},{twinStart:true},{moving:true},{chain:true},{speedSurge:true}][variant]:{};
   return{
-    chapter,variant,split:chapter===1,moving:chapter===2||chapter>=4&&variant%2===0,gravity:chapter===4||stage===30,
-    wind:chapter>=1?[0,-.038,.038,-.062,.062][variant]:0,twinStart:chapter>=1&&variant===1,chain:chapter>=2&&variant===3,speedSurge:chapter>=3&&variant===4,
+    chapter,variant,split:chapter===1,moving:Boolean(opening.moving)||chapter===2||chapter>=4&&variant%2===0,gravity:chapter===4||stage===30,
+    wind:chapter>=1?[0,-.038,.038,-.062,.062][variant]:0,twinStart:Boolean(opening.twinStart)||(chapter===1&&variant<=1)||(chapter===2||chapter===3)&&variant===1,chain:Boolean(opening.chain)||chapter>=2&&variant===3,speedSurge:Boolean(opening.speedSurge)||chapter>=3&&variant===4,
     descent:pressure?{interval:chapter===4?9-variant*.5:stage===29?7.5:6.8,max:5,elapsed:0,count:0,dangerY:.76}:null,
     hazards:Array.from({length:hazardCount},(_,index)=>({index,r:stage>=30?.037:.034,orbit:stage===26?0:.105+(index%2)*.035,phase:(Math.PI*2*index)/Math.max(1,hazardCount),speed:(index%2?-1:1)*(.42+stage*.012)})),
     objective:C.ruleObjectives?.[chapter]||C.objective
