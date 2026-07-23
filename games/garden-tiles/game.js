@@ -307,6 +307,66 @@
       },
     },
   };
+  dictionary.hi = {
+    title: "पालतू बगीचे के मेमोरी कार्ड",
+    pageTitle: "पालतू बगीचे के मेमोरी कार्ड - WeightPlay",
+    pageDescription: "जानवरों और बगीचे के चित्रों की जोड़ियाँ 30 शांत याददाश्त चुनौतियों में खोजें। सुबह की झलक, धुंध, हवा और कार्ड परेड के नियमों के साथ छह पड़ाव पूरे करें।",
+    language: "भाषा",
+    mainIntro: "बगीचे के चित्रों की जगह याद रखें और छह अध्यायों की 30 शांत चुनौतियाँ पूरी करें।",
+    start: "स्तर चुनें",
+    level: "स्तर",
+    moves: "चालें",
+    pairs: "जोड़ियाँ",
+    pairCount: "{count} जोड़ियाँ",
+    starGoal: "3 सितारे: {moves} चालों के भीतर",
+    chapter: "अध्याय {chapter}: {name}",
+    checkpoint: "याददाश्त जाँच",
+    rules: {
+      classic: "साधारण जोड़ियाँ",
+      preview: "सुबह की झलक",
+      mist: "बगीचे की धुंध",
+      gust: "शरारती हवा",
+      parade: "कार्ड परेड",
+    },
+    chooseLevel: "स्तर चुनें",
+    locked: "स्तर अभी बंद है",
+    selectFirst: "एक कार्ड खोलें, फिर उसकी जोड़ी खोजें।",
+    matched: "जोड़ी मिल गई!",
+    miss: "दूसरी जोड़ी आज़माएँ।",
+    clear: "स्तर पूरा",
+    result: "{moves} चालों में {pairs} जोड़ियाँ मिलीं।",
+    skillReport: "खेल रिपोर्ट",
+    memory: "याददाश्त",
+    memoryValue: "{pairs} जोड़ियाँ मिलीं",
+    focus: "ध्यान",
+    focusValue: "{moves} चालें · दोबारा कोशिशें: {retries}",
+    problem: "समस्या सुलझाना",
+    problemValue: "{stars} सितारे मिले",
+    firstFinish: "पहली बार पूरा: {stars} सितारे",
+    progress: "आज: {stars} सितारे · पिछला सर्वश्रेष्ठ: {previous}",
+    newBest: "नया सर्वश्रेष्ठ: {stars} सितारे · पिछला सर्वश्रेष्ठ: {previous}",
+    next: "अगला स्तर",
+    again: "फिर खेलें",
+    levels: "स्तर",
+    lobby: "बच्चों के खेल",
+    allClear: "सभी स्तर पूरे हुए।",
+    homeAria: "बच्चों के खेलों पर वापस जाएँ",
+    languageAria: "भाषा चुनें",
+    statusAria: "खेल की स्थिति",
+    stageBackAria: "वापस",
+    battleBackAria: "स्तरों पर वापस जाएँ",
+    leaveTitle: "यह स्तर छोड़ें?",
+    leaveText: "इस स्तर की मिली जोड़ियाँ और चालें मिट जाएँगी।",
+    keepPlaying: "खेलते रहें",
+    leaveLevel: "स्तर छोड़ें",
+    boardAria: "बगीचे के मेमोरी कार्डों का बोर्ड",
+    hiddenTile: "ढका हुआ मेमोरी कार्ड",
+    tileNames: {
+      cat: "बिल्ली", dog: "कुत्ता", fox: "लोमड़ी", owl: "उल्लू", rabbit: "खरगोश", panda: "पांडा", penguin: "पेंगुइन", koala: "कोआला",
+      lion: "शेर", elephant: "हाथी", giraffe: "जिराफ़", whale: "व्हेल", chick: "चूजा", frog: "मेंढक", apple: "सेब", banana: "केला",
+      berry: "बेर", leaf: "पत्ता", seed: "बीज", feather: "पंख", keeper: "माली", visitor: "आगंतुक", ticket: "टिकट घर", basket: "टोकरी",
+    },
+  };
   const tileArt = [
     "cat", "dog", "fox", "owl",
     "rabbit", "panda", "penguin", "koala",
@@ -325,6 +385,7 @@
     es: ["Paseo de los brotes", "Invernadero matinal", "Estanque brumoso", "Huerto con brisa", "Desfile de animales", "Invernadero a la luz de la luna"],
     ru: ["Тропа ростков", "Утренняя оранжерея", "Пруд в дымке", "Фруктовый сад на ветру", "Парад животных", "Лунная оранжерея"],
   };
+  chapterNames.hi = ["अंकुरों की पगडंडी", "सुबह का पौधघर", "धुंध वाला तालाब", "हवादार बाग", "जानवरों की परेड", "चाँदनी वाला पौधघर"];
   const levelBlueprints = [
     [4, ["classic"]], [5, ["classic"]], [6, ["classic"]], [7, ["classic"]], [8, ["classic", "preview"]],
     [6, ["preview"]], [7, ["preview"]], [8, ["preview"]], [9, ["preview"]], [10, ["preview", "classic"]],
@@ -571,7 +632,13 @@
       return;
     }
     shell?.classList.remove("weightplay-active-viewport");
-    const scale = Math.max(0.1, Math.min(viewportWidth / 390, viewportHeight / 788));
+    const useLandscapeEnvelope = viewportWidth / viewportHeight >= 1.5;
+    const minimumLogicalWidth = useLandscapeEnvelope ? 760 : 390;
+    const minimumLogicalHeight = useLandscapeEnvelope ? 350 : 788;
+    const scale = Math.max(0.1, Math.min(
+      viewportWidth / minimumLogicalWidth,
+      viewportHeight / minimumLogicalHeight
+    ));
     const logicalWidth = viewportWidth / scale;
     const logicalHeight = viewportHeight / scale;
     const root = document.documentElement.style;
@@ -1112,7 +1179,7 @@
     else resumeRoundTasks();
   });
 
-  if (locale() === "ru") {
+  if (["ru", "hi"].includes(locale())) {
     document.querySelector(".garden-game")?.setAttribute("data-runtime-localize", "off");
     homeLink?.setAttribute("data-runtime-localize", "off");
     document.addEventListener("DOMContentLoaded", applyText, { once: true });

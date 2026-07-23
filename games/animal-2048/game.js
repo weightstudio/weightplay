@@ -135,8 +135,8 @@
   let resultWindowFocused=true;
   window.addEventListener("blur",()=>{resultWindowFocused=false;suspendResultReveal();});
   window.addEventListener("focus",()=>{resultWindowFocused=true;if(!document.hidden)resumeResultReveal();});
-  window.addEventListener("pagehide",()=>{resultWindowFocused=false;suspendResultReveal();});
-  window.addEventListener("pageshow",()=>{resultWindowFocused=true;if(!document.hidden)resumeResultReveal();});
+  window.addEventListener("pagehide",suspendResultReveal);
+  window.addEventListener("pageshow",()=>{if(resultWindowFocused&&!document.hidden)resumeResultReveal();});
   document.addEventListener("visibilitychange",()=>{if(document.hidden)suspendResultReveal();else if(resultWindowFocused)resumeResultReveal();});
 
   window.__animal2048Smoke={

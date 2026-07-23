@@ -575,7 +575,8 @@
   let pointer = { down: false, id: null, x: 0, y: 0, tensionPct: 50, source: "canvas", keyboardHeld: false };
   let lastTime = performance.now();
   let raf = 0;
-  let backgroundSuspended = false;
+  let windowFocused = document.hasFocus();
+  let backgroundSuspended = document.hidden || !windowFocused;
   let leaveDecisionOpen = false;
   const images = {};
   const fishThumbCache = {};
@@ -830,7 +831,7 @@
   }
 
   function restartFishingLoop() {
-    if (backgroundSuspended || leaveDecisionOpen || state !== "game" || !run || run.finished) return;
+    if (backgroundSuspended || document.hidden || !windowFocused || leaveDecisionOpen || state !== "game" || !run || run.finished) return;
     cancelAnimationFrame(raf);
     lastTime = performance.now();
     raf = requestAnimationFrame(tick);
@@ -1670,7 +1671,7 @@
 
   function tick(now) {
     raf = 0;
-    if (backgroundSuspended || leaveDecisionOpen || state !== "game" || !run || run.finished) return;
+    if (backgroundSuspended || document.hidden || !windowFocused || leaveDecisionOpen || state !== "game" || !run || run.finished) return;
     const dt = Math.min(0.05, (now - lastTime) / 1000);
     lastTime = now;
     update(dt);
@@ -1846,7 +1847,7 @@
   }
 
   function resumeDiamondPurchaseConfirmation() {
-    if (!diamondPurchasePending || diamondConfirmTimer || document.hidden) return;
+    if (!diamondPurchasePending || diamondConfirmTimer || document.hidden || !windowFocused) return;
     armDiamondPurchaseConfirmation(diamondConfirmRemaining);
   }
 
@@ -2068,7 +2069,6 @@
   });
   window.addEventListener("pointerup", releaseCast);
   window.addEventListener("pointercancel", cancelFishingInput);
-  window.addEventListener("blur", cancelFishingInput);
   function suspendBackgroundFishing() {
     cancelFishingInput();
     suspendDiamondPurchaseConfirmation();
@@ -2078,11 +2078,20 @@
     raf = 0;
   }
   function resumeBackgroundFishing() {
+    if (document.hidden || !windowFocused) return;
     resumeDiamondPurchaseConfirmation();
     if (!backgroundSuspended) return;
     backgroundSuspended = false;
     restartFishingLoop();
   }
+  window.addEventListener("blur", () => {
+    windowFocused = false;
+    suspendBackgroundFishing();
+  });
+  window.addEventListener("focus", () => {
+    windowFocused = true;
+    resumeBackgroundFishing();
+  });
   window.addEventListener("pagehide", suspendBackgroundFishing);
   window.addEventListener("pageshow", resumeBackgroundFishing);
   document.addEventListener("visibilitychange", () => {

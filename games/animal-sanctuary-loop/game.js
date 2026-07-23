@@ -379,6 +379,7 @@
   let lastTime = 0;
   let lastHud = "";
   let lifecycleSuspended = false;
+  let windowFocused = document.hasFocus();
 
   const indexFor = (x, y) => Math.max(0, Math.min(GRID - 1, Math.floor(y))) * GRID
     + Math.max(0, Math.min(GRID - 1, Math.floor(x)));
@@ -518,7 +519,7 @@
   }
 
   function resumeLoop() {
-    if (!run || run.finished || run.paused || raf) return;
+    if (!run || run.finished || run.paused || raf || document.hidden || !windowFocused) return;
     lastTime = performance.now();
     raf = requestAnimationFrame(frame);
   }
@@ -533,15 +534,21 @@
   }
 
   function resumeFromLifecycle() {
-    if (!lifecycleSuspended) return;
+    if (!lifecycleSuspended || document.hidden || !windowFocused) return;
     lifecycleSuspended = false;
     if (currentScreen !== "battle" || !run || run.finished || activeModal()) return;
     run.paused = false;
     resumeLoop();
   }
 
-  window.addEventListener("blur", suspendForLifecycle);
-  window.addEventListener("focus", resumeFromLifecycle);
+  window.addEventListener("blur", () => {
+    windowFocused = false;
+    suspendForLifecycle();
+  });
+  window.addEventListener("focus", () => {
+    windowFocused = true;
+    resumeFromLifecycle();
+  });
   window.addEventListener("pagehide", suspendForLifecycle);
   window.addEventListener("pageshow", resumeFromLifecycle);
   document.addEventListener("visibilitychange", () => {
@@ -923,7 +930,7 @@
 
   function frame(now) {
     raf = 0;
-    if (!run || run.finished || run.paused) return;
+    if (!run || run.finished || run.paused || document.hidden || !windowFocused) return;
     const dt = Math.min(0.04, (now - lastTime) / 1000 || 0);
     lastTime = now;
     update(dt);

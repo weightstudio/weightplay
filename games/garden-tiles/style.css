@@ -1001,6 +1001,91 @@ body.garden-playing .wp-tutorial-button {
   display: none !important;
 }
 
+@media (orientation: landscape) and (max-height: 560px) {
+  body.garden-stage .level-select {
+    padding-top: 6px;
+  }
+
+  body.garden-stage .wp-standard-stage-heading {
+    min-height: 52px;
+  }
+
+  body.garden-stage .wp-standard-stage-heading h2 {
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  body.garden-stage .level-grid button {
+    gap: 5px;
+    padding-block: 10px;
+  }
+
+  body.garden-playing.wp-logical-battle-active #resultPanel .result-card {
+    width: min(calc(100% - 28px), 720px) !important;
+    max-width: 720px !important;
+    min-height: 280px;
+    max-height: calc(100% - 24px);
+    grid-template-columns: 250px minmax(0, 1fr);
+    grid-template-areas:
+      "title report"
+      "stars report"
+      "summary report"
+      "actions actions";
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    column-gap: 18px;
+    row-gap: 6px;
+    padding: 14px 18px;
+  }
+
+  body.garden-playing .result-card h2 {
+    grid-area: title;
+    align-self: end;
+    font-size: 34px;
+  }
+
+  body.garden-playing .result-card > .stars {
+    grid-area: stars;
+    font-size: 46px;
+    line-height: 48px;
+  }
+
+  body.garden-playing .result-card > p {
+    grid-area: summary;
+    align-self: start;
+    font-size: 16px;
+    line-height: 1.3;
+  }
+
+  body.garden-playing .garden-skill-report {
+    grid-area: report;
+    align-self: center;
+  }
+
+  body.garden-playing.wp-logical-battle-active #resultPanel .result-actions {
+    grid-area: actions;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 8px;
+  }
+
+  body.garden-playing .result-actions :is(button, a) {
+    min-height: 48px;
+  }
+
+  body.garden-playing .leave-confirm-card {
+    width: min(calc(100% - 40px), 600px);
+    gap: 12px;
+    padding: 18px 22px;
+  }
+
+  body.garden-playing .leave-confirm-card h2 {
+    font-size: 32px;
+  }
+
+  body.garden-playing .leave-confirm-actions button {
+    min-height: 48px;
+  }
+}
+
 html,
 body,
 button,
