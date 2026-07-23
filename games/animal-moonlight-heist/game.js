@@ -210,6 +210,22 @@
     return gameLocales.has(locale)?text:sharedText(text);
   }
   function campaignText(values){return runtimeText(values[localeArrayIndex()])}
+  const levelTemplates={
+    en:"Level {n}",
+    "zh-Hant":"\u7b49\u7d1a {n}",
+    "zh-Hans":"\u7b49\u7ea7 {n}",
+    ja:"\u30ec\u30d9\u30eb {n}",
+    ko:"\ub808\ubca8 {n}",
+    es:"Nivel {n}",
+    "pt-BR":"N\u00edvel {n}",
+    fr:"Niveau {n}",
+    de:"Stufe {n}",
+    it:"Livello {n}",
+    ru:"\u0423\u0440\u043e\u0432\u0435\u043d\u044c {n}",
+    hi:"\u0938\u094d\u0924\u0930 {n}",
+    ar:"\u0627\u0644\u0645\u0633\u062a\u0648\u0649 {n}",
+  };
+  function levelText(level){return(levelTemplates[locale]||levelTemplates.en).replace("{n}",level)}
   const nodes={main:$("#mainScreen"),stage:$("#stageScreen"),battle:$("#battleScreen"),rail:$("#missionRail"),field:$("#playField"),fia:$("#fiaActor"),objective:$("#objectiveActor"),treasure:$("#treasureActor"),exit:$("#exitActor"),patrolLayer:$("#patrolLayer"),route:$("#routeLine"),feedback:$("#feedbackText"),fx:$("#feedbackFx"),alert:$("#alertFill"),modal:$("#resultModal")};
   const leaveCopy={en:{title:"Leave this mission?",text:"Your current route is paused. Continue to keep playing, or return to Missions and leave this run.",continue:"Continue mission",leave:"Return to Missions"},"zh-Hant":{title:"離開這個任務？",text:"目前路線已暫停。繼續任務可保留本局，返回任務列表才會離開。",continue:"繼續任務",leave:"返回任務列表"},es:{title:"¿Salir de esta misión?",text:"La ruta actual está en pausa. Continúa para conservar la partida o vuelve a Misiones para salir.",continue:"Continuar misión",leave:"Volver a Misiones"}};
   leaveCopy.ru={title:"Покинуть задание?",text:"Текущий маршрут приостановлен. Продолжите игру или вернитесь к заданиям и завершите эту попытку.",continue:"Продолжить задание",leave:"Вернуться к заданиям"};
@@ -264,7 +280,7 @@
     if(id==="decoy")return t("decoyEffect",{seconds:(2.5+level*.65).toFixed(2).replace(/0$/,"")});
     return t("smokeEffect",{seconds:(.8+level*.5).toFixed(1)});
   }
-  function gadgetSummary(id=gadget,level=selectedOffer().level){return `${t(id)} Lv.${level} · ${gadgetEffect(id,level)}`}
+  function gadgetSummary(id=gadget,level=selectedOffer().level){return `${t(id)} · ${levelText(level)} · ${gadgetEffect(id,level)}`}
   function clearPendingEconomy({render=true}={}){clearTimeout(pendingEconomyTimer);pendingEconomyTimer=0;pendingEconomyDeadline=0;pendingEconomyRemaining=0;pendingEconomy="";if(render)renderEconomy()}
   function schedulePendingEconomyExpiry(delay){
     clearTimeout(pendingEconomyTimer);pendingEconomyRemaining=Math.max(0,delay);pendingEconomyDeadline=performance.now()+pendingEconomyRemaining;
@@ -374,7 +390,7 @@
     });
   }
   function focusMain(){requestAnimationFrame(()=>$("#startBtn")?.focus({preventScroll:true}))}
-  function renderGadgets(focusId=null){const wrap=$("#gadgetChoices");wrap.innerHTML="";gadgetOffers.forEach(({id,level})=>{const g=gadgets[id],b=document.createElement("button");b.className=`gadget-choice${id===gadget?" selected":""}`;b.dataset.gadgetId=id;b.innerHTML=`<img src="../../assets/animal-moonlight-heist-gadget-${g.art}.webp" alt=""><span class="gadget-level">Lv.${level}</span>`;b.type="button";b.title=`${t(id)} Lv.${level}`;b.setAttribute("aria-label",gadgetSummary(id,level));b.setAttribute("aria-pressed",id===gadget?"true":"false");b.addEventListener("click",()=>{gadget=id;renderGadgets(id);updateGadget();renderGadgetSummary()});wrap.append(b)});if(focusId)wrap.querySelector(`[data-gadget-id="${focusId}"]`)?.focus({preventScroll:true})}
+  function renderGadgets(focusId=null){const wrap=$("#gadgetChoices");wrap.innerHTML="";gadgetOffers.forEach(({id,level})=>{const g=gadgets[id],b=document.createElement("button"),levelLabel=levelText(level);b.className=`gadget-choice${id===gadget?" selected":""}`;b.dataset.gadgetId=id;b.innerHTML=`<img src="../../assets/animal-moonlight-heist-gadget-${g.art}.webp" alt=""><span class="gadget-level">${levelLabel}</span>`;b.type="button";b.title=`${t(id)} · ${levelLabel}`;b.setAttribute("aria-label",gadgetSummary(id,level));b.setAttribute("aria-pressed",id===gadget?"true":"false");b.addEventListener("click",()=>{gadget=id;renderGadgets(id);updateGadget();renderGadgetSummary()});wrap.append(b)});if(focusId)wrap.querySelector(`[data-gadget-id="${focusId}"]`)?.focus({preventScroll:true})}
   function updateGadget(){if(!$("#gadgetIcon"))return;const passive=gadget==="dash",name=t(gadget),effect=gadgetEffect(gadget,selectedOffer().level),button=$("#gadgetBtn");$("#gadgetIcon").src=`../../assets/animal-moonlight-heist-gadget-${gadgets[gadget].art}.webp`;$("#gadgetLabel").textContent=passive?`${name} · ${t("passive")}`:name;button.disabled=passive;button.setAttribute("aria-label",t(passive?"passiveGadgetLabel":"activeGadgetLabel",{name,effect}));button.title=button.getAttribute("aria-label");nodes.field.setAttribute("aria-label",t(passive?"playFieldPassiveLabel":"playFieldActiveLabel",{name,effect}))}
   function startMission(index){
     stopBattleLoop();

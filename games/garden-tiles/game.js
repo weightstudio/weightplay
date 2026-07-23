@@ -524,6 +524,7 @@
   let resultPreviousBest = 0;
   let roundGeneration = 0;
   let roundLifecycleSuspended = document.hidden;
+  let roundWindowFocused = true;
   let previewing = false;
   let firstPickTaskToken = 0;
   let leaveConfirmOpen = false;
@@ -574,7 +575,7 @@
   }
 
   function resumeRoundTasks() {
-    roundLifecycleSuspended = document.hidden || leaveConfirmOpen;
+    roundLifecycleSuspended = document.hidden || !roundWindowFocused || leaveConfirmOpen;
     for (const task of roundTasks) task.lastFrameAt = null;
   }
 
@@ -1237,8 +1238,14 @@
   });
   window.addEventListener("pagehide", suspendRoundTasks);
   window.addEventListener("pageshow", resumeRoundTasks);
-  window.addEventListener("blur", suspendRoundTasks);
-  window.addEventListener("focus", resumeRoundTasks);
+  window.addEventListener("blur", () => {
+    roundWindowFocused = false;
+    suspendRoundTasks();
+  });
+  window.addEventListener("focus", () => {
+    roundWindowFocused = true;
+    resumeRoundTasks();
+  });
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) suspendRoundTasks();
     else resumeRoundTasks();

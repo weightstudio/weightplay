@@ -38,7 +38,7 @@
   });
   const staticText=[...document.querySelectorAll("[data-t]")];
   const assistiveText=[...document.querySelectorAll("[data-ta]")];
-  let currentScreen="loading",run=null,raf=0,lastTime=0,lastHud="",modalReturnFocus=null,lifecyclePaused=false;
+  let currentScreen="loading",run=null,raf=0,lastTime=0,lastHud="",modalReturnFocus=null,lifecyclePaused=false,windowFocused=true;
 
   function applyLocale(){
     document.documentElement.lang=locale;
@@ -126,7 +126,7 @@
     lifecyclePaused=false;
     const maxCore=100+save.upgrades.armor*20,encounters=makeEncounters(stage);
     run={stageIndex,stage,time:stage.time,core:maxCore,maxCore,wave:1,totalWaves:stage.waves,bossDefeated:false,lane:1,aimX:laneCenters[1],attack:6+save.upgrades.power*2,weapon:"single",units:[],encounters,gates:encounters,enemies:encounters.filter(entry=>entry.kind==="enemy"),particles:[],texts:[],fireClock:0,charge:0,overdrive:0,feedbackLock:0,peak:6+save.upgrades.power*2,coreHits:0,resolved:0,paused:false,finished:false,lastGateMessage:""};
-    $("leave").hidden=true;$("tutorial").hidden=true;$("result").hidden=true;$("battleLive").hidden=false;$("battleLive").inert=false;showScreen("battle");updateHud(true);$("feedback").textContent="";lastTime=performance.now();stopLoop();raf=requestAnimationFrame(frame);window.WonderSound?.play?.("start");if(!save.tutorialSeen)requestAnimationFrame(()=>openTutorial())
+    $("leave").hidden=true;$("tutorial").hidden=true;$("result").hidden=true;$("battleLive").hidden=false;$("battleLive").inert=false;showScreen("battle");updateHud(true);$("feedback").textContent="";lastTime=performance.now();stopLoop();lifecyclePaused=!windowFocused||document.hidden;run.paused=lifecyclePaused;if(!lifecyclePaused)raf=requestAnimationFrame(frame);window.WonderSound?.play?.("start");if(!save.tutorialSeen)requestAnimationFrame(()=>openTutorial())
   }
   function stopLoop(){if(raf)cancelAnimationFrame(raf);raf=0}
   function resumeLoop(){if(!run||run.finished||run.paused||raf)return;lastTime=performance.now();raf=requestAnimationFrame(frame)}
@@ -184,7 +184,7 @@
     for(const text of run.texts){ctx.globalAlpha=Math.max(0,text.life);ctx.fillStyle=text.color;ctx.font=`900 ${Math.max(13,d*.026)}px sans-serif`;ctx.textAlign="center";ctx.fillText(text.text,px(text.x),py(text.y))}ctx.globalAlpha=1;
     const lx=px(run.aimX),ly=py(.91);drawAtlasCell(images.spirits,0,0,lx,ly,Math.max(60,d*.17),run.overdrive>0?"#ffe273":"#58e8ff");drawImageCentered(images.fox,lx-Math.max(34,d*.09),ly+d*.012,Math.max(34,d*.085),"#ffd66b");ctx.fillStyle="#fff";ctx.strokeStyle="#061225";ctx.lineWidth=Math.max(3,d*.006);ctx.font=`900 ${Math.max(15,d*.026)}px sans-serif`;ctx.textAlign="center";ctx.strokeText(`${t("attackPower")} ${Math.round(run.attack)}`,lx,ly-d*.12);ctx.fillText(`${t("attackPower")} ${Math.round(run.attack)}`,lx,ly-d*.12);
   }
-  function frame(now){raf=0;if(!run||run.finished||run.paused)return;const dt=Math.min(.04,(now-lastTime)/1000||0);lastTime=now;update(dt);draw();if(!run.finished&&!run.paused)raf=requestAnimationFrame(frame)}
+  function frame(now){raf=0;if(!run||run.finished||run.paused)return;if(!windowFocused||document.hidden){suspendForLifecycle();return}const dt=Math.min(.04,(now-lastTime)/1000||0);lastTime=now;update(dt);draw();if(!run.finished&&!run.paused)raf=requestAnimationFrame(frame)}
   function resizeCanvas(){const rect=canvas.getBoundingClientRect(),dpr=Math.min(2,devicePixelRatio||1),width=Math.max(1,Math.round(rect.width*dpr)),height=Math.max(1,Math.round(rect.height*dpr));if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height;draw()}}
   new ResizeObserver(resizeCanvas).observe(canvas);
   function setLane(value,announce=false){if(!run||run.paused||run.finished)return false;const lane=Math.max(0,Math.min(2,Math.round(Number(value))));if(lane===run.lane)return true;run.lane=lane;run.aimX=laneCenters[lane];addBurst(run.aimX,.86,"#72f4d8",10);if(announce)$("feedback").textContent=t("laneReady",{lane:lane+1});updateHud(true);draw();return true}
@@ -192,15 +192,15 @@
   canvas.addEventListener("pointerdown",(event)=>{canvas.setPointerCapture?.(event.pointerId);aimFromEvent(event)});canvas.addEventListener("pointermove",(event)=>{if(event.buttons||event.pointerType==="touch")aimFromEvent(event)});
   const held=new Set();window.addEventListener("keydown",(event)=>{if(["ArrowLeft","ArrowRight","a","A","d","D"].includes(event.key)&&currentScreen==="battle"&&!activeModal()){event.preventDefault();if(!event.repeat){const right=["ArrowRight","d","D"].includes(event.key);setLane(run.lane+(right?1:-1),true)}held.add(event.key)}if(event.key===" "&&currentScreen==="battle"&&!activeModal()){event.preventDefault();activateOverdrive()}if(event.key==="Escape"&&!event.defaultPrevented&&currentScreen==="battle"&&!activeModal())openLeave()});window.addEventListener("keyup",(event)=>held.delete(event.key));
   function suspendForLifecycle(){held.clear();if(!run||run.finished||run.paused||currentScreen!=="battle")return;lifecyclePaused=true;run.paused=true;stopLoop()}
-  function resumeFromLifecycle(){held.clear();if(!lifecyclePaused||document.hidden)return;lifecyclePaused=false;if(!run||run.finished||currentScreen!=="battle"||activeModal())return;run.paused=false;resumeLoop()}
-  window.addEventListener("blur",suspendForLifecycle);window.addEventListener("focus",resumeFromLifecycle);window.addEventListener("pagehide",suspendForLifecycle);window.addEventListener("pageshow",resumeFromLifecycle);document.addEventListener("visibilitychange",()=>document.hidden?suspendForLifecycle():resumeFromLifecycle());
+  function resumeFromLifecycle(){held.clear();if(!lifecyclePaused||document.hidden||!windowFocused)return;lifecyclePaused=false;if(!run||run.finished||currentScreen!=="battle"||activeModal())return;run.paused=false;resumeLoop()}
+  window.addEventListener("blur",()=>{windowFocused=false;suspendForLifecycle()});window.addEventListener("focus",()=>{windowFocused=true;resumeFromLifecycle()});window.addEventListener("pagehide",suspendForLifecycle);window.addEventListener("pageshow",resumeFromLifecycle);document.addEventListener("visibilitychange",()=>document.hidden?suspendForLifecycle():resumeFromLifecycle());
   function activateOverdrive(){if(!run||run.paused||run.finished)return false;if(run.charge<100){$("feedback").textContent=t("overdriveNeed",{charge:Math.floor(run.charge)});return false}run.charge=0;run.overdrive=3.6;run.feedbackLock=.7;$("feedback").textContent=t("overdriveUsed");updateHud(true);addBurst(run.aimX,.86,"#ffe273",24);window.WonderSound?.play?.("success");return true}
   $("overdrive").addEventListener("click",activateOverdrive);
 
   function activeModal(){return[$("leave"),$("tutorial"),$("result")].find((modal)=>!modal.hidden)||null}
   function modalButtons(modal){return[...modal.querySelectorAll("button:not([hidden]):not(:disabled)")]}
   function openModal(modal,focusTarget){modalReturnFocus=document.activeElement;if(run)run.paused=true;stopLoop();modal.hidden=false;$("battleLive").inert=true;requestAnimationFrame(()=>(focusTarget||modalButtons(modal)[0])?.focus())}
-  function closeModal(modal,restore=true){modal.hidden=true;$("battleLive").inert=false;if(run&&!run.finished&&!lifecyclePaused&&!document.hidden){run.paused=false;resumeLoop()}if(restore)(modalReturnFocus?.isConnected?modalReturnFocus:$("battleBack"))?.focus();modalReturnFocus=null}
+  function closeModal(modal,restore=true){modal.hidden=true;$("battleLive").inert=false;if(run&&!run.finished&&!lifecyclePaused&&!document.hidden&&windowFocused){run.paused=false;resumeLoop()}if(restore)(modalReturnFocus?.isConnected?modalReturnFocus:$("battleBack"))?.focus();modalReturnFocus=null}
   document.addEventListener("keydown",(event)=>{const modal=activeModal();if(!modal)return;if(event.key==="Tab"){const buttons=modalButtons(modal),first=buttons[0],last=buttons.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus()}}if(event.key==="Escape"&&modal===$("leave")){event.preventDefault();closeModal(modal)}});
   function openTutorial(){if(!run||run.finished)return;openModal($("tutorial"),$("tutorialDone"))}
   $("tutorialDone").addEventListener("click",()=>{save.tutorialSeen=true;persist();closeModal($("tutorial"))});

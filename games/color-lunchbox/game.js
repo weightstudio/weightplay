@@ -911,6 +911,7 @@
 
   let roundTransitionToken = 0;
   let roundLifecycleSuspended = document.hidden;
+  let roundWindowFocused = true;
 
   function clearFoodDrag() {
     const pointerId = state.activePointerId;
@@ -1522,10 +1523,12 @@
     if (event.pointerId === state.activePointerId) clearFoodDrag();
   });
   window.addEventListener("blur", () => {
+    roundWindowFocused = false;
     roundLifecycleSuspended = true;
     clearFoodDrag();
   });
   window.addEventListener("focus", () => {
+    roundWindowFocused = true;
     roundLifecycleSuspended = document.hidden;
   });
   window.addEventListener("pagehide", () => {
@@ -1533,10 +1536,10 @@
     clearFoodDrag();
   });
   window.addEventListener("pageshow", () => {
-    roundLifecycleSuspended = document.hidden;
+    roundLifecycleSuspended = document.hidden || !roundWindowFocused;
   });
   document.addEventListener("visibilitychange", () => {
-    roundLifecycleSuspended = document.hidden;
+    roundLifecycleSuspended = document.hidden || !roundWindowFocused;
     if (document.hidden) clearFoodDrag();
   });
 
