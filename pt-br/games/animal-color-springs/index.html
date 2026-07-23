@@ -75,7 +75,7 @@
   <div id="mainGroup" class="main-group" hidden>
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
-        <a class="home-link" href="/kids/" aria-label="回到 WeightPlay" data-i18n-aria="backWeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+        <a class="home-link" data-wp-return="main" href="/kids/" aria-label="回到 WeightPlay" data-i18n-aria="backWeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
         <strong data-i18n="title">動物彩泉分類</strong>
         <label class="locale-control"><span class="sr-only" data-i18n="language">語言</span><select id="localeSelect" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
       </header>
@@ -92,7 +92,7 @@
 
   <section id="stageScreen" class="stage-screen" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" style="--wp-stage-art:url('assets/animal-color-springs-cover.webp')">
-      <header class="stage-header"><button id="stageBackBtn" type="button" data-i18n-aria="back">←</button><div><strong data-i18n="chooseStage">選擇彩泉</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /></header>
+      <header class="stage-header"><button id="stageBackBtn" data-wp-return="stage" type="button" data-i18n-aria="back">←</button><div><strong data-i18n="chooseStage">選擇彩泉</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /></header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel"></div>
     </div>
@@ -100,7 +100,7 @@
 
   <section id="battleScreen" class="battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
-      <header class="battle-header"><button id="battleBackBtn" type="button" data-i18n-aria="back">←</button><div class="battle-title"><small id="stageLabel"></small><strong id="stageGoal"></strong></div><div class="battle-stat"><small data-i18n="moves">步數</small><strong id="movesValue">0</strong></div><button id="helpBtn" class="help-btn" type="button" data-i18n-aria="help">?</button></header>
+      <header class="battle-header"><button id="battleBackBtn" data-wp-return="battle" type="button" data-i18n-aria="back">←</button><div class="battle-title"><small id="stageLabel"></small><strong id="stageGoal"></strong></div><div class="battle-stat"><small data-i18n="moves">步數</small><strong id="movesValue">0</strong></div><button id="helpBtn" class="help-btn" type="button" data-i18n-aria="help">?</button></header>
       <section id="lockNotice" class="lock-notice" aria-live="polite" hidden></section>
       <section id="vesselBoard" class="vessel-board" aria-label="彩泉分類盤" data-i18n-aria="boardLabel"></section>
       <div class="battle-actions"><button id="undoBtn" type="button"><span aria-hidden="true">↶</span><b data-i18n="undo">復原</b></button><button id="restartBtn" type="button"><span aria-hidden="true">↻</span><b data-i18n="restart">重來</b></button><button id="hintBtn" type="button"><span aria-hidden="true">✦</span><b data-i18n="hint">提示</b></button></div>

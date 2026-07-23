@@ -642,6 +642,60 @@
     "toast.coming_soon": "{title} \u656c\u8acb\u671f\u5f85\uff0c\u76ee\u524d\u9084\u6c92\u6709\u958b\u653e\u516c\u958b\u904a\u73a9\u3002",
   });
 
+  const lifetimeStatsCopy = {
+    en: {
+      "stats.plays_total": "{count} total plays",
+      "stats.lobby_visits_total_short": "Lobby Visits",
+    },
+    "zh-Hant": {
+      "stats.plays_total": "\u7d2f\u8a08\u904a\u73a9 {count} \u6b21",
+      "stats.lobby_visits_total_short": "\u7d2f\u8a08\u9032\u5165\u5927\u5ef3",
+    },
+    "zh-Hans": {
+      "stats.plays_total": "\u7d2f\u8ba1\u6e38\u73a9 {count} \u6b21",
+      "stats.lobby_visits_total_short": "\u7d2f\u8ba1\u8fdb\u5165\u5927\u5385",
+    },
+    ja: {
+      "stats.plays_total": "\u7d2f\u8a08 {count} \u56de\u30d7\u30ec\u30a4",
+      "stats.lobby_visits_total_short": "\u30ed\u30d3\u30fc\u8a2a\u554f\u6570",
+    },
+    ko: {
+      "stats.plays_total": "\ub204\uc801 \ud50c\ub808\uc774 {count}\ud68c",
+      "stats.lobby_visits_total_short": "\ub204\uc801 \ub85c\ube44 \ubc29\ubb38",
+    },
+    es: {
+      "stats.plays_total": "{count} partidas totales",
+      "stats.lobby_visits_total_short": "Visitas al lobby",
+    },
+    "pt-BR": {
+      "stats.plays_total": "{count} partidas no total",
+      "stats.lobby_visits_total_short": "Visitas ao lobby",
+    },
+    fr: {
+      "stats.plays_total": "{count} parties au total",
+      "stats.lobby_visits_total_short": "Visites du lobby",
+    },
+    de: {
+      "stats.plays_total": "{count} Spiele insgesamt",
+      "stats.lobby_visits_total_short": "Lobby-Besuche",
+    },
+    it: {
+      "stats.plays_total": "{count} partite totali",
+      "stats.lobby_visits_total_short": "Visite alla lobby",
+    },
+    ru: {
+      "stats.plays_total": "\u0412\u0441\u0435\u0433\u043e \u0437\u0430\u043f\u0443\u0441\u043a\u043e\u0432: {count}",
+      "stats.lobby_visits_total_short": "\u041f\u043e\u0441\u0435\u0449\u0435\u043d\u0438\u044f \u043b\u043e\u0431\u0431\u0438",
+    },
+    hi: {
+      "stats.plays_total": "\u0915\u0941\u0932 {count} \u092c\u093e\u0930 \u0916\u0947\u0932\u093e",
+      "stats.lobby_visits_total_short": "\u0915\u0941\u0932 \u0932\u0949\u092c\u0940 \u0935\u093f\u091c\u093c\u093f\u091f",
+    },
+    ar: {
+      "stats.plays_total": "\u0625\u062c\u0645\u0627\u0644\u064a \u0645\u0631\u0627\u062a \u0627\u0644\u0644\u0639\u0628: {count}",
+      "stats.lobby_visits_total_short": "\u0625\u062c\u0645\u0627\u0644\u064a \u0632\u064a\u0627\u0631\u0627\u062a \u0627\u0644\u0631\u062f\u0647\u0629",
+    },
+  };
   function getSavedLocale() {
     const routedLocale = localeFromPath();
     if (routedLocale && supportedLocales.includes(routedLocale)) return routedLocale;
@@ -1652,6 +1706,10 @@
   "龍": "龙",
   "龜": "龟"
 });
+
+  Object.entries(lifetimeStatsCopy).forEach(([locale, copy]) => {
+    dictionaries[locale] = { ...(dictionaries[locale] || {}), ...copy };
+  });
 
   function simplifyChineseText(value) {
     if (typeof value !== "string" || !value) return value;

@@ -513,6 +513,7 @@
   let canDropAt = 0;
   let lastTime = performance.now();
   let toastTimer = null;
+  let toastUntil = 0;
   let engine = null;
   let world = null;
   let animationFrameId = null;
@@ -541,6 +542,22 @@
     }
   }
 
+  function scheduleToastExpiry() {
+    window.clearTimeout(toastTimer);
+    toastTimer = null;
+    const remaining = toastUntil - activeNow();
+    if (remaining <= 0) {
+      toast.classList.add("hidden");
+      return;
+    }
+    if (!lifecycleSuspended) {
+      toastTimer = window.setTimeout(() => {
+        toastTimer = null;
+        if (toastUntil <= activeNow()) toast.classList.add("hidden");
+      }, remaining + 20);
+    }
+  }
+
   function clearAimPointer(pointerId = null) {
     if (aimPointerId === null || (pointerId !== null && pointerId !== aimPointerId)) return false;
     const ownedPointerId = aimPointerId;
@@ -560,6 +577,8 @@
     lifecycleSuspendedAt = performance.now();
     window.clearTimeout(comboHudTimer);
     comboHudTimer = null;
+    window.clearTimeout(toastTimer);
+    toastTimer = null;
     stopAnimationLoop();
   }
 
@@ -569,11 +588,13 @@
     const pausedFor = Math.max(0, now - lifecycleSuspendedAt);
     canDropAt += pausedFor;
     if (comboUntil > 0) comboUntil += pausedFor;
+    if (toastUntil > 0) toastUntil += pausedFor;
     for (const fruit of fruitsOnBoard) fruit.bornAt += pausedFor;
     lifecycleSuspended = false;
     lifecycleSuspendedAt = 0;
     lastTime = now;
     scheduleComboHudExpiry();
+    scheduleToastExpiry();
     updateHud();
     updateAimCoach();
     draw();
@@ -1704,8 +1725,8 @@
   function showToast(text) {
     toast.textContent = text;
     toast.classList.remove("hidden");
-    if (toastTimer) clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.add("hidden"), 900);
+    toastUntil = activeNow() + 900;
+    scheduleToastExpiry();
   }
 
   function clamp(value, min, max) {
@@ -1938,6 +1959,8 @@
           suspended: lifecycleSuspended,
           canDropRemaining: Math.max(0, canDropAt - now),
           comboRemaining: Math.max(0, comboUntil - now),
+          toastRemaining: Math.max(0, toastUntil - now),
+          toastVisible: !toast.classList.contains("hidden"),
           fruits: fruitsOnBoard.map((fruit) => ({
             age: Math.max(0, now - fruit.bornAt),
             x: fruit.x,

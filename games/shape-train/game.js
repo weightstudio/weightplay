@@ -1167,6 +1167,8 @@
   localizeStatic();
   window.addEventListener("load", preserveGameLocaleAfterSharedGuide, { once: true });
   window.addEventListener("resize", () => requestAnimationFrame(positionMainSoundToggle));
+  window.addEventListener("blur", suspendTaskTransitions);
+  window.addEventListener("focus", resumeTaskTransitions);
   window.addEventListener("pagehide", suspendTaskTransitions);
   window.addEventListener("pageshow", resumeTaskTransitions);
   document.addEventListener("visibilitychange", () => {

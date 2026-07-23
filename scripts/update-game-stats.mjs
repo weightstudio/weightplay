@@ -64,7 +64,31 @@ async function createAccessToken() {
   return data.access_token;
 }
 
-async function runReport(accessToken, startDate) {
+async function runReport(accessToken, startDate, { eventName = "page_view", gamePagesOnly = true } = {}) {
+  const filters = [
+    {
+      filter: {
+        fieldName: "eventName",
+        stringFilter: {
+          matchType: "EXACT",
+          value: eventName,
+          caseSensitive: true,
+        },
+      },
+    },
+  ];
+  if (gamePagesOnly) {
+    filters.push({
+      filter: {
+        fieldName: "pagePath",
+        stringFilter: {
+          matchType: "CONTAINS",
+          value: `${sitePathPrefix}/games/`,
+          caseSensitive: false,
+        },
+      },
+    });
+  }
   const response = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`, {
     method: "POST",
     headers: {
@@ -73,17 +97,10 @@ async function runReport(accessToken, startDate) {
     },
     body: JSON.stringify({
       dateRanges: [{ startDate, endDate: "today" }],
-      dimensions: [{ name: "pagePath" }],
-      metrics: [{ name: "screenPageViews" }, { name: "activeUsers" }],
+      ...(gamePagesOnly ? { dimensions: [{ name: "pagePath" }] } : {}),
+      metrics: [{ name: "eventCount" }, { name: "activeUsers" }],
       dimensionFilter: {
-        filter: {
-          fieldName: "pagePath",
-          stringFilter: {
-            matchType: "CONTAINS",
-            value: `${sitePathPrefix}/games/`,
-            caseSensitive: false,
-          },
-        },
+        andGroup: { expressions: filters },
       },
       limit: 250,
     }),
@@ -96,8 +113,16 @@ function emptyStats(games, source = "pending") {
   return {
     updatedAt: new Date().toISOString(),
     source,
+    metric: "game_page_view",
     windowDays: lookbackDays,
-    totals: { plays7d: 0, playsTotal: 0, users7d: 0 },
+    totals: {
+      plays7d: 0,
+      playsTotal: 0,
+      users7d: 0,
+      lobbyVisits7d: 0,
+      lobbyVisitsTotal: 0,
+      lobbyUsers7d: 0,
+    },
     games: Object.fromEntries(
       games.map((game) => [
         game.id,
@@ -136,6 +161,14 @@ function rankStats(stats) {
   stats.totals.users7d = ranked.reduce((sum, [, value]) => sum + value.users7d, 0);
 }
 
+function aggregateMetrics(report = {}) {
+  const row = report.rows?.[0];
+  return {
+    count: Number(row?.metricValues?.[0]?.value || 0),
+    users: Number(row?.metricValues?.[1]?.value || 0),
+  };
+}
+
 async function writeReport(stats, games, note = "") {
   try {
     await fs.access(path.dirname(reportPath));
@@ -147,7 +180,9 @@ async function writeReport(stats, games, note = "") {
     "",
     `Updated: ${stats.updatedAt}`,
     `Source: ${stats.source}`,
+    `Metric: ${stats.metric || "game_page_view"}`,
     `Window: Last ${stats.windowDays} days`,
+    `Lobby visits: ${stats.totals?.lobbyVisits7d || 0} in 7d, ${stats.totals?.lobbyVisitsTotal || 0} total`,
     "",
     "## Top Games",
     "",
@@ -159,7 +194,7 @@ async function writeReport(stats, games, note = "") {
   });
   for (const game of ranked.slice(0, 10)) {
     const gameStats = stats.games[game.id] || {};
-    lines.push(`- ${game.id}: ${gameStats.plays7d || 0} plays in 7d, ${gameStats.playsTotal || 0} total page plays`);
+    lines.push(`- ${game.id}: ${gameStats.plays7d || 0} game entries in 7d, ${gameStats.playsTotal || 0} total game entries`);
   }
   if (note) {
     lines.push("", "## Note", "", note);
@@ -192,10 +227,17 @@ async function main() {
     const accessToken = await createAccessToken();
     const recent = await runReport(accessToken, `${lookbackDays}daysAgo`);
     const total = await runReport(accessToken, "2020-01-01");
+    const recentLobby = await runReport(accessToken, `${lookbackDays}daysAgo`, { eventName: "lobby_ready", gamePagesOnly: false });
+    const totalLobby = await runReport(accessToken, "2020-01-01", { eventName: "lobby_ready", gamePagesOnly: false });
     const stats = emptyStats(games, "ga4");
     addRows(stats, games, recent.rows, "plays7d", "users7d");
     addRows(stats, games, total.rows, "playsTotal");
     rankStats(stats);
+    const lobby7d = aggregateMetrics(recentLobby);
+    const lobbyTotal = aggregateMetrics(totalLobby);
+    stats.totals.lobbyVisits7d = lobby7d.count;
+    stats.totals.lobbyVisitsTotal = lobbyTotal.count;
+    stats.totals.lobbyUsers7d = lobby7d.users;
     await fs.writeFile(statsPath, `${JSON.stringify(stats, null, 2)}\n`, "utf8");
     await writeReport(stats, games);
   } catch (error) {

@@ -64,7 +64,7 @@
   <div id="mainGroup" class="main-group" hidden>
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
-        <a class="home-link" href="/kids/" data-i18n-aria="backWeightPlay" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+        <a class="home-link" data-wp-return="main" href="/kids/" data-i18n-aria="backWeightPlay" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
         <strong data-i18n="title">Animal Parking Patrol</strong>
         <label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
       </header>
@@ -96,7 +96,7 @@
 
   <section id="stageScreen" class="stage-screen" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/animal-parking-patrol-cover.webp" style="--wp-stage-art:url('../../assets/animal-parking-patrol-cover.webp')">
-      <header class="stage-header"><button id="stageBackBtn" type="button" data-i18n-aria="backMain">←</button><div><strong data-i18n="chooseStage">Choose a patrol route</strong><span id="stageSummary"></span></div><button id="stageHelpBtn" class="utility-button" type="button" data-i18n-aria="tutorialHelp" aria-label="How to play">?</button></header>
+      <header class="stage-header"><button id="stageBackBtn" data-wp-return="stage" type="button" data-i18n-aria="backMain">←</button><div><strong data-i18n="chooseStage">Choose a patrol route</strong><span id="stageSummary"></span></div><button id="stageHelpBtn" class="utility-button" type="button" data-i18n-aria="tutorialHelp" aria-label="How to play">?</button></header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Patrol route selection"></div>
     </div>
@@ -104,7 +104,7 @@
 
   <section id="battleScreen" class="battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
-      <header class="battle-header"><button id="battleBackBtn" type="button" data-i18n-aria="backStage">←</button><div class="battle-title"><small id="stageLabel"></small><strong id="stageGoal"></strong></div><div class="battle-stat"><small data-i18n="left">Left</small><strong id="leftValue">0</strong></div><div class="battle-stat"><small data-i18n="safety">Safety</small><strong id="safetyValue">3</strong></div><button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="settings" aria-label="Pause and settings">⚙</button></header>
+      <header class="battle-header"><button id="battleBackBtn" data-wp-return="battle" type="button" data-i18n-aria="backStage">←</button><div class="battle-title"><small id="stageLabel"></small><strong id="stageGoal"></strong></div><div class="battle-stat"><small data-i18n="left">Left</small><strong id="leftValue">0</strong></div><div class="battle-stat"><small data-i18n="safety">Safety</small><strong id="safetyValue">3</strong></div><button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="settings" aria-label="Pause and settings">⚙</button></header>
       <section id="objectiveBar" class="objective-bar" aria-live="polite"></section>
       <section id="trafficBoard" class="traffic-board" data-i18n-aria="boardLabel" aria-label="Forest traffic puzzle board"></section>
       <div class="battle-actions"><button id="undoBtn" type="button"><span aria-hidden="true">↶</span><b data-i18n="undo">Undo</b></button><button id="restartBtn" type="button"><span aria-hidden="true">↻</span><b data-i18n="restart">Restart</b></button><button id="hintBtn" type="button"><span aria-hidden="true">✦</span><b data-i18n="hint">Hint</b></button></div>

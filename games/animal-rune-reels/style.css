@@ -16,7 +16,7 @@
 .main-canvas .poster,
 .main-canvas .lead,
 .main-canvas #runeStartBtn{grid-column:1;grid-row:auto}
-.main-canvas .topbar{grid-template-columns:68px minmax(0,1fr) 112px}
+.main-canvas .topbar{grid-template-columns:68px minmax(0,1fr) 162px}
 .main-canvas .back-logo{
   width:64px;
   min-width:64px;
@@ -25,6 +25,11 @@
   border-radius:12px;
   background:#111943;
 }
+.main-utilities{display:grid;grid-template-columns:44px minmax(0,1fr);gap:6px;align-items:center;min-width:0}
+.main-utilities select{width:100%}
+.main-sound-toggle{width:44px;height:44px;display:grid;place-items:center;padding:0;border:1px solid #7180bf;border-radius:12px;background:#111943;color:#fff;font-size:1.15rem;cursor:pointer}
+.main-sound-toggle:focus-visible{outline:3px solid #ffe083;outline-offset:2px}
+.main-sound-toggle[aria-pressed="true"]{opacity:.72}
 .main-canvas .poster{width:min(100%,760px);min-height:0;justify-self:center}
 .main-canvas .lead{padding:0 8px}
 .main-canvas #runeStartBtn{width:min(100%,480px);justify-self:center}
@@ -32,7 +37,7 @@
 
 @media(max-width:560px){
   .main-canvas{padding:8px 10px 14px;grid-template-rows:48px minmax(230px,1fr) auto 52px;gap:8px}
-  .main-canvas .topbar{grid-template-columns:60px minmax(0,1fr) 92px}
+  .main-canvas .topbar{grid-template-columns:60px minmax(0,1fr) 142px}
   .main-canvas .back-logo{width:56px;min-width:56px}
   .guide-grid{grid-template-columns:1fr}
 }

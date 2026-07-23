@@ -264,6 +264,7 @@ body:not(.safari-main) .wp-tutorial-button { display: none !important; }
   .stage-summary {
     grid-column: 1;
     grid-row: 2 / 4;
+    z-index: 3;
     height: auto;
     margin: 6px 8px 10px;
     grid-template-columns: 1fr 1fr;
@@ -271,8 +272,9 @@ body:not(.safari-main) .wp-tutorial-button { display: none !important; }
   }
   .stage-summary img { grid-column: 1 / -1; width: 140px; height: 150px; justify-self: center; }
   .safari-stage-rail {
-    grid-column: 2;
+    grid-column: 1 / -1;
     grid-row: 2;
+    z-index: 1;
     height: auto;
     align-items: center;
     padding-top: 12px;

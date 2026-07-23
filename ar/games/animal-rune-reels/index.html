@@ -66,15 +66,15 @@
   <link rel="stylesheet" href="battle-v3.css">
   <style>[hidden]{display:none!important}</style>
 </head>
-<body>
+<body data-sound-toggle="off">
   <div id="loading" class="loading"><div class="loader-orb"></div><strong data-i18n="loading">Awakening the rune reels…</strong><div class="load-track"><i id="loadFill"></i></div></div>
   <main id="app" hidden>
     <section id="mainPage" class="page main-page">
       <div class="canvas main-canvas">
-        <header class="topbar"><a class="back-logo" href="/" data-i18n-aria="lobby"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a><h1 data-i18n="title">بكرات الرون الحيوانية</h1><select id="localeSelect" data-i18n-aria="language"></select></header>
+        <header class="topbar"><a class="back-logo" href="/" data-i18n-aria="lobby" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a><h1 data-i18n="title">بكرات الرون الحيوانية</h1><div class="main-utilities"><button id="soundToggle" class="main-sound-toggle" type="button" data-sound-toggle="true" aria-label="Disable sound" aria-pressed="false">🔊</button><select id="localeSelect" data-i18n-aria="language"></select></div></header>
         <div class="poster"><img src="../../assets/animal-rune-reels/cover.webp" alt=""><div class="poster-shade"><span data-i18n="badge">SUMMONER REEL BATTLE</span></div></div>
         <p class="lead" data-i18n="leadV3">Build a team of summoned animal heroes, align runes, and defeat every guardian.</p>
-        <button id="runeStartBtn" class="primary" data-i18n="start">Start Game</button>
+        <button id="runeStartBtn" class="primary" data-i18n="start" data-wp-main-start>Start Game</button>
       </div>
       <section class="game-page-info game-page-info-static" aria-label="بكرات الرون الحيوانية معلومات اللعبة">
     
@@ -98,7 +98,7 @@
 
     <section id="stagePage" class="page play-page" hidden>
       <div class="canvas stage-canvas v3-stage wp-stage-art-shell" data-screen="stage" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-rune-reels/arena.webp">
-        <header class="screen-head"><button class="icon-btn" id="stageBack" data-i18n-aria="back">←</button><h2 data-i18n="chooseStage">Choose a Rift</h2><button class="icon-btn" id="helpBtn" data-i18n-aria="help">?</button></header>
+        <header class="screen-head"><button class="icon-btn" id="stageBack" data-i18n-aria="back" data-wp-return="stage">←</button><h2 data-i18n="chooseStage">Choose a Rift</h2><button class="icon-btn" id="helpBtn" data-i18n-aria="help">?</button></header>
         <nav class="stage-tabs" aria-label="Management"><button data-tab="stages" class="active" data-i18n="tabStages">Stages</button><button data-tab="pack" data-i18n="tabPack">Backpack</button><button data-tab="team" data-i18n="tabTeam">Team</button><button data-tab="summon" data-i18n="tabSummon">Summon</button><button data-tab="runes" data-i18n="tabRunes">Runes</button></nav>
         <div class="management-panel" id="stagesPanel"><div class="mission-tabs"><button data-mission-type="main" class="active" data-i18n="mainMissions">Main</button><button data-mission-type="daily" data-i18n="dailyMissions">Daily</button><button data-mission-type="event" data-i18n="eventMissions">Events</button></div><div class="progress-card"><span id="missionHeading" data-i18n="campaign">Campaign</span><strong id="campaignProgress">1 / 30</strong></div><div id="stageRail" class="stage-rail" tabindex="0" data-wp-stage-rail data-wp-stage-drag-multiplier="2" data-i18n-aria="stageSelection"></div></div>
         <div class="management-panel" id="packPanel" hidden><div class="resource-bank"><span><i data-i18n="coins">Coins</i><b id="packCoins">0</b></span><span><i data-i18n="diamonds">Diamonds</i><b id="packDiamonds">0</b></span></div><div id="materialGrid" class="material-grid"></div></div>
@@ -111,7 +111,7 @@
 
     <section id="battlePage" class="page play-page" hidden>
       <div class="canvas battle-canvas v3-battle">
-        <header class="battle-head"><button class="icon-btn" id="battleBack" data-i18n-aria="back">←</button><div class="stage-name"><strong id="battleStage"></strong><em id="waveText"></em></div><button class="speed-btn" id="speedBtn" type="button">x1</button></header>
+        <header class="battle-head"><button class="icon-btn" id="battleBack" data-i18n-aria="back" data-wp-return="battle">←</button><div class="stage-name"><strong id="battleStage"></strong><em id="waveText"></em></div><button class="speed-btn" id="speedBtn" type="button">x1</button></header>
         <div class="arena" id="arena">
           <div id="enemySquad" class="enemy-squad"></div>
           <div id="fxLayer" class="fx-layer" aria-hidden="true"></div>

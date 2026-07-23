@@ -19,8 +19,23 @@
   const weekly={en:'Every week','zh-Hant':'每週','zh-Hans':'每周',ja:'毎週',ko:'매주',es:'Cada semana','pt-BR':'Toda semana',fr:'Chaque semaine',de:'Jede Woche',it:'Ogni settimana',ru:'Каждую неделю',hi:'हर सप्ताह',ar:'كل أسبوع'};
   const cooldown={en:'Cooldown','zh-Hant':'冷卻','zh-Hans':'冷却',ja:'クールダウン',ko:'재사용 대기',es:'Recarga','pt-BR':'Recarga',fr:'Recharge',de:'Abklingzeit',it:'Ricarica',ru:'Перезарядка',hi:'कूलडाउन',ar:'وقت الانتظار'};
   const battleSpeed={en:'Battle speed','zh-Hant':'戰鬥速度','zh-Hans':'战斗速度',ja:'バトル速度',ko:'전투 속도',es:'Velocidad de combate','pt-BR':'Velocidade de batalha',fr:'Vitesse de combat',de:'Kampfgeschwindigkeit',it:'Velocità di battaglia',ru:'Скорость боя',hi:'युद्ध की गति',ar:'سرعة المعركة'};
+  const sound={
+    en:['Sound','Enable sound','Disable sound'],
+    'zh-Hant':['音效','開啟音效','關閉音效'],
+    'zh-Hans':['音效','开启音效','关闭音效'],
+    ja:['サウンド','サウンドをオン','サウンドをオフ'],
+    ko:['소리','소리 켜기','소리 끄기'],
+    es:['Sonido','Activar sonido','Desactivar sonido'],
+    'pt-BR':['Som','Ativar som','Desativar som'],
+    fr:['Son','Activer le son','Désactiver le son'],
+    de:['Ton','Ton einschalten','Ton ausschalten'],
+    it:['Audio','Attiva audio','Disattiva audio'],
+    ru:['Звук','Включить звук','Выключить звук'],
+    hi:['ध्वनि','ध्वनि चालू करें','ध्वनि बंद करें'],
+    ar:['الصوت','تشغيل الصوت','إيقاف الصوت']
+  };
   const keys=['hp','runeSpecial','runeSpecialDesc','specialPanda','specialPandaDesc'];
-  Object.keys(L).forEach(code=>{const values=copy[code]||copy.en,patch={weekly:weekly[code]||weekly.en,cooldown:cooldown[code]||cooldown.en,battleSpeed:battleSpeed[code]||battleSpeed.en};keys.forEach((key,index)=>patch[key]=values[index]);Object.assign(L[code],patch)});
+  Object.keys(L).forEach(code=>{const values=copy[code]||copy.en,soundValues=sound[code]||sound.en,patch={weekly:weekly[code]||weekly.en,cooldown:cooldown[code]||cooldown.en,battleSpeed:battleSpeed[code]||battleSpeed.en,sound:soundValues[0],enableSound:soundValues[1],disableSound:soundValues[2]};keys.forEach((key,index)=>patch[key]=values[index]);Object.assign(L[code],patch)});
   L['zh-Hant'].leaderNyraDesc='必殺符石威力 +20%。';
   L['zh-Hans'].leaderNyraDesc='必杀符石威力 +20%。';
 })();

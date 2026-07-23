@@ -397,12 +397,14 @@ body.garden-stage .level-grid button.is-centered {
 }
 
 .tile.selected .tile-image,
+.tile.revealed .tile-image,
 .tile.preview .tile-image,
 .tile.wrong .tile-image {
   opacity: 1;
   transform: scale(1) rotate(0);
 }
 
+.tile.revealed,
 .tile.preview,
 .tile.wrong { background: #fff0b8; }
 
@@ -422,6 +424,13 @@ body.garden-stage .level-grid button.is-centered {
   pointer-events: none;
   opacity: 0;
   transform: scale(0.86);
+}
+
+.tile.match-fading {
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.86);
+  transition: opacity .55s ease, transform .55s ease;
 }
 
 .tile.wrong {

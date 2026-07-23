@@ -325,9 +325,13 @@
       dom.stageRail.appendChild(card);
     });
     updateStageSummary();
-    requestAnimationFrame(() => {
+    requestAnimationFrame(() => requestAnimationFrame(() => {
       centerSelectedStage("auto");
-    });
+      requestAnimationFrame(() => centerSelectedStage("auto"));
+    }));
+    setTimeout(() => {
+      if (dom.stageScreen.classList.contains("is-active")) centerSelectedStage("auto");
+    }, 80);
   }
 
   function updateCenteredStageCard() {

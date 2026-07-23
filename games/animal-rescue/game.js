@@ -465,6 +465,9 @@ let bestStars = loadBestStars();
 let activeIndex = 0;
 let state = makeState(levels[0]);
 let hintResetTimer = 0;
+let hintResetRemaining = 0;
+let hintResetStartedAt = 0;
+let hintLifecycleSuspended = document.hidden;
 let centeredTrailFrame = 0;
 
 function locale() {
@@ -988,16 +991,40 @@ function resetLevel() {
 
 function rejectMove(messageKey = "wrongTile") {
   window.WonderSound?.play("wrong");
-  window.clearTimeout(hintResetTimer);
   hintText.textContent = t(messageKey);
-  hintResetTimer = window.setTimeout(() => {
-    restoreRouteHint();
-  }, 900);
+  scheduleRouteHintReset(900);
+}
+
+function scheduleRouteHintReset(delay) {
+  window.clearTimeout(hintResetTimer);
+  hintResetTimer = 0;
+  hintResetRemaining = Math.max(0, delay);
+  if (hintLifecycleSuspended || document.hidden || hintResetRemaining === 0) return;
+  hintResetStartedAt = performance.now();
+  hintResetTimer = window.setTimeout(restoreRouteHint, hintResetRemaining);
+}
+
+function suspendRouteHintReset() {
+  if (hintLifecycleSuspended) return;
+  hintLifecycleSuspended = true;
+  if (!hintResetTimer) return;
+  window.clearTimeout(hintResetTimer);
+  hintResetTimer = 0;
+  hintResetRemaining = Math.max(0, hintResetRemaining - (performance.now() - hintResetStartedAt));
+}
+
+function resumeRouteHintReset() {
+  hintLifecycleSuspended = document.hidden;
+  if (hintLifecycleSuspended || hintResetTimer || hintResetRemaining <= 0) return;
+  hintResetStartedAt = performance.now();
+  hintResetTimer = window.setTimeout(restoreRouteHint, hintResetRemaining);
 }
 
 function restoreRouteHint() {
   window.clearTimeout(hintResetTimer);
   hintResetTimer = 0;
+  hintResetRemaining = 0;
+  hintResetStartedAt = 0;
   hintText.textContent = t("hint");
 }
 
@@ -1237,6 +1264,14 @@ const pageSupportObserver = new MutationObserver((records) => {
 pageSupportObserver.observe(document.body, { childList:true, subtree:true });
 document.addEventListener("DOMContentLoaded", queueGamePageSupportSync, { once:true });
 window.addEventListener("load", queueGamePageSupportSync, { once:true });
+window.addEventListener("blur", suspendRouteHintReset);
+window.addEventListener("focus", resumeRouteHintReset);
+window.addEventListener("pagehide", suspendRouteHintReset);
+window.addEventListener("pageshow", resumeRouteHintReset);
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) suspendRouteHintReset();
+  else resumeRouteHintReset();
+});
 
 ensureLocaleOptions();
 renderStaticText();

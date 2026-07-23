@@ -742,7 +742,8 @@
       button.dataset.tileId = tile.art.id;
       button.innerHTML = `<img class="tile-image" src="${tile.art.asset}" alt="" draggable="false" />`;
       const selected = selectedTile?.index === tile.index;
-      button.setAttribute("aria-label", selected || previewing ? tileName(tile.art) : t("hiddenTile"));
+      const revealed = selected || previewing || tile.revealed;
+      button.setAttribute("aria-label", revealed ? tileName(tile.art) : t("hiddenTile"));
       button.setAttribute("aria-pressed", String(selected));
       button.disabled = inputLocked;
       if (tile.matched) {
@@ -752,6 +753,8 @@
         button.setAttribute("aria-hidden", "true");
       }
       if (selected) button.classList.add("selected");
+      if (tile.revealed) button.classList.add("revealed");
+      if (tile.matchFading) button.classList.add("match-fading");
       if (previewing) button.classList.add("preview");
       board.append(button);
     }
@@ -785,18 +788,37 @@
     moves += 1;
     firstPickTaskToken += 1;
     if (selectedTile.art.id === tile.art.id) {
-      selectedTile.matched = true;
-      tile.matched = true;
+      const firstMatch = selectedTile;
+      firstMatch.revealed = true;
+      tile.revealed = true;
       matchedPairs += 1;
       selectedTile = null;
+      busy = true;
       showMessage(t("matched"));
       window.WonderSound?.play?.("success");
-      renderBoard(tiles.find((item) => !item.matched)?.index ?? null);
-      if (levels[currentLevelIndex].rules.includes("parade") && matchedPairs < levels[currentLevelIndex].pairs) {
-        rotateUnmatchedTiles();
-        renderBoard(tiles.find((item) => !item.matched)?.index ?? null);
-      }
-      if (matchedPairs === levels[currentLevelIndex].pairs) finishLevel();
+      renderBoard();
+      scheduleRoundTask(() => {
+        firstMatch.matchFading = true;
+        tile.matchFading = true;
+        renderBoard();
+        scheduleRoundTask(() => {
+          firstMatch.matched = true;
+          tile.matched = true;
+          firstMatch.revealed = false;
+          tile.revealed = false;
+          firstMatch.matchFading = false;
+          tile.matchFading = false;
+          busy = false;
+          if (levels[currentLevelIndex].rules.includes("parade") && matchedPairs < levels[currentLevelIndex].pairs) {
+            rotateUnmatchedTiles();
+          }
+          if (matchedPairs === levels[currentLevelIndex].pairs) {
+            finishLevel();
+            return;
+          }
+          renderBoard(tiles.find((item) => !item.matched)?.index ?? null);
+        }, 550);
+      }, 1000);
     } else {
       const first = selectedTile.index;
       const second = tile.index;

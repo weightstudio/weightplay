@@ -19,7 +19,7 @@
   ];
   const REQUIRED_LOCALES=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
   let locale=initialLocale();
-  let save=loadSave(),levels=[],stageIndex=0,state=[],capacities=[],moves=0,selected=-1,history=[],planned=[],sealedIndex=-1,unlockAfter=0,resultState=false,toastTimer=0,lastFocus=null,interactionLocked=false,transferToken=0;
+  let save=loadSave(),levels=[],stageIndex=0,state=[],capacities=[],moves=0,selected=-1,history=[],planned=[],sealedIndex=-1,unlockAfter=0,resultState=false,toastTimer=0,lastFocus=null,interactionLocked=false,transferToken=0,transferAnimations=[],transferLifecycleSuspended=document.hidden;
 
   function normalizeLocale(v){if(v==="zh-TW")return"zh-Hant";if(v==="zh-CN")return"zh-Hans";if(v?.startsWith("pt"))return"pt-BR";const short=v?.split("-")[0];return REQUIRED_LOCALES.includes(v)?v:REQUIRED_LOCALES.includes(short)?short:"en";}
   function initialLocale(){const routed=window.WonderI18n?.localeFromPath?.();return normalizeLocale(routed||window.WonderI18n?.actualLocale?.()||document.documentElement.lang||readStorage("weightPlayLocale")||"zh-Hant");}
@@ -82,12 +82,48 @@
   dom.tutorialClose.addEventListener("click",()=>{save.tutorial=true;persist();closeModal(dom.tutorial);});dom.tutorialStart.addEventListener("click",()=>{save.tutorial=true;persist();dom.tutorial.hidden=true;startStage(0);});
   document.addEventListener("keydown",e=>{const panel=!dom.leave.hidden?dom.leave:!dom.tutorial.hidden?dom.tutorial:!dom.result.hidden?dom.result:null;if(panel){if(e.key==="Escape"){e.preventDefault();if(panel===dom.leave)dom.leaveContinue.click();else if(panel===dom.tutorial)dom.tutorialClose.click();else dom.resultStages.click();return;}if(e.key==="Tab"){const b=modalButtons(panel),first=b[0],last=b.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}return;}if(document.body.dataset.screen!=="battle")return;if(e.key==="Escape")dom.battleBack.click();if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="z"){e.preventDefault();undo();}});
   document.addEventListener("click",e=>{if(e.target.closest?.(".sound-toggle"))setTimeout(positionSound,0);});
+  function suspendTransferAnimations(){transferLifecycleSuspended=true;transferAnimations.forEach(animation=>{if(animation.playState==="running"||animation.playState==="pending")animation.pause();});}
+  function resumeTransferAnimations(){transferLifecycleSuspended=document.hidden;if(transferLifecycleSuspended)return;transferAnimations.forEach(animation=>{if(animation.playState==="paused")animation.play();});}
+  window.addEventListener?.("blur",suspendTransferAnimations);
+  window.addEventListener?.("focus",resumeTransferAnimations);
+  window.addEventListener?.("pagehide",suspendTransferAnimations);
+  window.addEventListener?.("pageshow",resumeTransferAnimations);
+  document.addEventListener("visibilitychange",()=>{if(document.hidden)suspendTransferAnimations();else resumeTransferAnimations();});
 
   window.__COLOR_SPRINGS_TEST__={levels,isSolved,moveInfo,legalMoves,applyMove,solve,startStage,nextHintMove,snapshot,finish,resetSave:()=>removeStorage(SAVE_KEY)};
   applyLocale();const assets=["assets/animal-color-springs-cover.webp","assets/animal-color-springs-background.webp","assets/spring-vessel.webp","assets/spring-orb.webp","../../assets/weightplay-character-moon-cap-owl-cutout.webp","../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp","../../assets/weightplay-logo.png"];let loaded=0;Promise.allSettled(assets.map(src=>new Promise(resolve=>{const img=new Image(),done=()=>{loaded++;dom.fill.style.width=`${loaded/assets.length*100}%`;resolve();};img.onload=done;img.onerror=done;img.src=src;}))).then(()=>setTimeout(()=>{dom.loading.hidden=true;setScreen("main");renderMain();window.WonderAnalytics?.track?.("game_view",{gameId:GAME_ID,release:"public"});},180));
   function setTransferControlsDisabled(disabled){$$('.vessel,.battle-actions button,.battle-header button').forEach(button=>button.disabled=disabled);}
   function commitAnimatedMove(move,beforeLocked){state=applyMove(state,move);moves++;if(planned&&planned[0]&&planned[0].from===move.from&&planned[0].to===move.to)planned.shift();else planned=null;selected=-1;interactionLocked=false;dom.battle.dataset.transferring="false";setTransferControlsDisabled(false);renderBattle();window.WonderSound?.play?.("click");if(beforeLocked&&moves>=unlockAfter&&sealedIndex>=0)showToast(tr("unsealed"));if(isSolved())finish();}
-function animateTransfer(move,beforeLocked){const vessels=$$(".vessel"),source=vessels[move.from],target=vessels[move.to],sourceOrbs=source?$$(`.vessel[data-index="${move.from}"] .orb`).slice(-move.count).reverse():[],targetStack=target?.querySelector(".orb-stack"),reducedMotion=matchMedia("(prefers-reduced-motion: reduce)").matches;if(!sourceOrbs.length||!targetStack){commitAnimatedMove(move,beforeLocked);return;}interactionLocked=true;const token=++transferToken;dom.battle.dataset.transferring="true";target.classList.add("transfer-target");setTransferControlsDisabled(true);const targetRect=targetStack.getBoundingClientRect(),existing=state[move.to].length,animations=sourceOrbs.map((orb,i)=>{const rect=orb.getBoundingClientRect(),clone=orb.cloneNode(true),endX=targetRect.left+(targetRect.width-rect.width)/2,endY=targetRect.bottom-rect.height*(existing+i+1),dx=endX-rect.left,dy=endY-rect.top,lift=Math.max(48,Math.min(124,Math.abs(dx)*.3+42));clone.classList.add("flying-orb");clone.style.left=`${rect.left}px`;clone.style.top=`${rect.top}px`;clone.style.width=`${rect.width}px`;clone.style.height=`${rect.height}px`;document.body.append(clone);orb.classList.add("transfer-source");const animation=clone.animate([{transform:"translate3d(0,0,0) scale(1)"},{transform:`translate3d(0,${-lift}px,0) scale(1.08)`,offset:.28},{transform:`translate3d(${dx}px,${dy-lift}px,0) scale(1.08)`,offset:.72},{transform:`translate3d(${dx}px,${dy}px,0) scale(1)`}],{duration:reducedMotion?520:760,delay:i*(reducedMotion?70:120),easing:"cubic-bezier(.22,.72,.2,1)",fill:"forwards"});return animation.finished.catch(()=>{}).then(()=>clone.remove());});Promise.all(animations).then(()=>{if(token!==transferToken)return;commitAnimatedMove(move,beforeLocked);});}
+  function animateTransfer(move,beforeLocked){
+    const vessels=$$(".vessel"),source=vessels[move.from],target=vessels[move.to],sourceOrbs=source?$$(`.vessel[data-index="${move.from}"] .orb`).slice(-move.count).reverse():[],targetStack=target?.querySelector(".orb-stack"),reducedMotion=matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(!sourceOrbs.length||!targetStack){commitAnimatedMove(move,beforeLocked);return;}
+    interactionLocked=true;
+    const token=++transferToken;
+    dom.battle.dataset.transferring="true";
+    target.classList.add("transfer-target");
+    setTransferControlsDisabled(true);
+    const targetRect=targetStack.getBoundingClientRect(),existing=state[move.to].length;
+    const animations=sourceOrbs.map((orb,i)=>{
+      const rect=orb.getBoundingClientRect(),clone=orb.cloneNode(true),endX=targetRect.left+(targetRect.width-rect.width)/2,endY=targetRect.bottom-rect.height*(existing+i+1),dx=endX-rect.left,dy=endY-rect.top,lift=Math.max(48,Math.min(124,Math.abs(dx)*.3+42));
+      clone.classList.add("flying-orb");
+      clone.style.left=`${rect.left}px`;
+      clone.style.top=`${rect.top}px`;
+      clone.style.width=`${rect.width}px`;
+      clone.style.height=`${rect.height}px`;
+      document.body.append(clone);
+      orb.classList.add("transfer-source");
+      const animation=clone.animate([{transform:"translate3d(0,0,0) scale(1)"},{transform:`translate3d(0,${-lift}px,0) scale(1.08)`,offset:.28},{transform:`translate3d(${dx}px,${dy-lift}px,0) scale(1.08)`,offset:.72},{transform:`translate3d(${dx}px,${dy}px,0) scale(1)`}],{duration:reducedMotion?520:760,delay:i*(reducedMotion?70:120),easing:"cubic-bezier(.22,.72,.2,1)",fill:"forwards"});
+      if(transferLifecycleSuspended)animation.pause();
+      transferAnimations.push(animation);
+      return animation.finished.catch(()=>{}).then(()=>clone.remove());
+    });
+    Promise.all(animations).then(()=>{
+      transferAnimations=transferAnimations.filter(animation=>animation.playState!=="finished"&&animation.playState!=="idle");
+      if(token!==transferToken)return;
+      transferAnimations=[];
+      commitAnimatedMove(move,beforeLocked);
+    });
+  }
   function updateVesselSelection(){$$('.vessel').forEach(button=>{const index=Number(button.dataset.index),isSelected=index===selected,validTarget=selected>=0&&Boolean(moveInfo(state,selected,index));button.classList.toggle('selected',isSelected);button.classList.toggle('valid-target',validTarget);button.setAttribute('aria-pressed',String(isSelected));});}
   function selectVessel(index){if(resultState||interactionLocked)return;if(sealedIndex===index&&moves<unlockAfter){showToast(tr("lockedVessel",{n:unlockAfter-moves}));return;}if(selected<0){if(!state[index].length)return;selected=index;updateVesselSelection();return;}if(selected===index){selected=-1;updateVesselSelection();return;}const info=moveInfo(state,selected,index);if(!info){showToast(tr("invalid"));selected=state[index].length?index:-1;updateVesselSelection();window.WonderSound?.play?.("wrong");return;}const beforeLocked=moves<unlockAfter;history.push(snapshot());animateTransfer({from:selected,to:index,count:info.count},beforeLocked);}
 })();

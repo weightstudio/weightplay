@@ -176,7 +176,20 @@ let activeSearch = "";
 let toastTimer = null;
 let favoriteGameIds = readFavorites();
 let recentGameIds = readRecentGames();
-let gameStats = { source: "pending", windowDays: 7, totals: { plays7d: 0, playsTotal: 0, users7d: 0 }, games: {} };
+let gameStats = {
+  source: "pending",
+  metric: "game_page_view",
+  windowDays: 7,
+  totals: {
+    plays7d: 0,
+    playsTotal: 0,
+    users7d: 0,
+    lobbyVisits7d: 0,
+    lobbyVisitsTotal: 0,
+    lobbyUsers7d: 0,
+  },
+  games: {},
+};
 
 function text(value) {
   return i18n.getLocalized(value);
@@ -579,7 +592,7 @@ function formatCount(value) {
 function playCountText(game) {
   const stats = statFor(game);
   if (!hasStatsFeed()) return i18n.t("stats.collecting");
-  return i18n.t("stats.plays_7d", { count: formatCount(stats.plays7d || 0), days: gameStats.windowDays || 7 });
+  return i18n.t("stats.plays_total", { count: formatCount(stats.playsTotal || 0) });
 }
 
 function rankLabel(game, fallbackRank) {
@@ -701,8 +714,17 @@ async function loadGameStats() {
     if (!stats || typeof stats !== "object") return;
     gameStats = {
       source: stats.source || "pending",
+      metric: stats.metric || "legacy-page-view",
       windowDays: Number(stats.windowDays) || 7,
-      totals: stats.totals || { plays7d: 0, playsTotal: 0, users7d: 0 },
+      totals: {
+        plays7d: 0,
+        playsTotal: 0,
+        users7d: 0,
+        lobbyVisits7d: 0,
+        lobbyVisitsTotal: null,
+        lobbyUsers7d: 0,
+        ...(stats.totals || {}),
+      },
       games: stats.games || {},
     };
     renderLobby();
@@ -945,10 +967,11 @@ function renderLobby() {
   renderWallet();
 
   const totalGameCount = lobby.games.length;
-  const topPlayCount = Number(gameStats.totals?.plays7d || 0);
+  const lobbyVisitsTotal = Number(gameStats.totals?.lobbyVisitsTotal);
+  const hasLobbyVisitTotal = hasStatsFeed() && gameStats.totals?.lobbyVisitsTotal !== null && Number.isFinite(lobbyVisitsTotal) && lobbyVisitsTotal >= 0;
   lobbyStats.innerHTML = `
     <div><strong>${totalGameCount}</strong><span>${i18n.t("stats.total_games")}</span></div>
-    <div><strong>${hasStatsFeed() ? formatCount(topPlayCount) : "..."}</strong><span>${i18n.t("stats.plays_7d_short")}</span></div>
+    <div><strong>${hasLobbyVisitTotal ? formatCount(lobbyVisitsTotal) : "..."}</strong><span>${i18n.t("stats.lobby_visits_total_short")}</span></div>
   `;
 
   renderDailyReward();

@@ -68,7 +68,7 @@
   <div id="mainGroup" class="main-group">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
-        <a class="main-return" href="/kids/" aria-label="返回 WeightPlay" data-i18n-aria="backWeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+        <a class="main-return" data-wp-return="main" href="/kids/" aria-label="返回 WeightPlay" data-i18n-aria="backWeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
         <strong data-i18n="title">動物方塊森林</strong>
         <label class="locale-control"><span class="sr-only" data-i18n="language">語言</span><select id="localeSelect" aria-label="語言" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="pt-BR">Português</option><option value="de">Deutsch</option></select></label>
       </header>
@@ -100,7 +100,7 @@
 
   <section id="stageScreen" class="stage-screen" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" style="--wp-stage-art:url('../../assets/animal-block-grove-cover.webp')">
-      <header class="stage-header"><button id="stageBackBtn" type="button" aria-label="返回" data-i18n-aria="back">←</button><div><strong data-i18n="chooseStage">選擇任務</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moss-shell-turtle-cutout.webp" alt="" /></header>
+      <header class="stage-header"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="返回" data-i18n-aria="back">←</button><div><strong data-i18n="chooseStage">選擇任務</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moss-shell-turtle-cutout.webp" alt="" /></header>
       <nav class="stage-mode-tabs" aria-label="遊戲模式" data-i18n-aria="stageModeLabel"><button id="campaignTab" type="button" data-stage-mode="campaign" data-i18n="campaignMode">棲地任務</button><button id="challengeTab" type="button" data-stage-mode="challenge" data-i18n="challengeMode">無限森林</button></nav>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="任務選擇" data-i18n-aria="stageRailLabel"></div>
@@ -109,7 +109,7 @@
 
   <section id="battleScreen" class="battle-screen" hidden>
     <div class="block-grove-battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
-      <header class="battle-header"><button id="battleBackBtn" type="button" aria-label="返回" data-i18n-aria="back">←</button><div class="battle-progress"><span id="stageLabel"></span><strong id="goalValue"></strong></div><div class="battle-stat"><small data-i18n="moves">步數</small><strong id="movesValue">0</strong></div><div class="battle-stat"><small data-i18n="score">分數</small><strong id="scoreValue">0</strong></div></header>
+      <header class="battle-header"><button id="battleBackBtn" data-wp-return="battle" type="button" aria-label="返回" data-i18n-aria="back">←</button><div class="battle-progress"><span id="stageLabel"></span><strong id="goalValue"></strong></div><div class="battle-stat"><small data-i18n="moves">步數</small><strong id="movesValue">0</strong></div><div class="battle-stat"><small data-i18n="score">分數</small><strong id="scoreValue">0</strong></div></header>
       <section id="objectiveRow" class="objective-row" aria-live="polite"></section>
       <section class="board-zone"><div id="gameBoard" class="game-board" role="application" tabindex="0" aria-label="8 乘 8 動物方塊棋盤" data-i18n-aria="boardLabel"></div><div id="comboToast" class="combo-toast" aria-live="polite"></div></section>
       <section id="pieceTray" class="piece-tray" aria-label="可放置方塊" data-i18n-aria="trayLabel"></section>
