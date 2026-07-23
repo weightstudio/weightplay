@@ -2428,6 +2428,28 @@
     return getLocale() === "zh-Hant" ? expedition.zh : getLocale() === "es" ? expedition.es : expedition.en;
   }
 
+  const levelValueLabels = {
+    en: "Level",
+    "zh-Hant": "等級",
+    "zh-Hans": "等级",
+    ja: "レベル",
+    ko: "레벨",
+    es: "Nivel",
+    "pt-BR": "Nível",
+    fr: "Niveau",
+    de: "Stufe",
+    it: "Livello",
+    ru: "Уровень",
+    hi: "स्तर",
+    ar: "المستوى",
+  };
+
+  function formatLevelValue(level) {
+    const locale = getLocale();
+    const label = levelValueLabels[locale] || levelValueLabels.en;
+    return `${label} ${Math.max(1, Math.floor(Number(level) || 1))}`;
+  }
+
   function renderResultSummary({ cleared, newlyUnlocked = 0, won = false }) {
     if (!nodes.resultSummary) return;
     const highestUnlocked = Math.max(1, Math.min(EXPEDITION_COUNT, Number(profile.unlockedExpedition) || 1));
@@ -2437,7 +2459,7 @@
         ? t("resultAllCleared")
         : t("resultReady", { region: expeditionName(highestUnlocked) });
     const rows = [
-      [t("resultSummaryLevel"), `Lv.${profile.level}`],
+      [t("resultSummaryLevel"), formatLevelValue(profile.level)],
       [t("resultSummaryRooms"), `${cleared}/${ROOMS_PER_EXPEDITION}`],
       [t("resultSummaryKeys"), String(state.runKeys)],
       [t("resultSummaryGold"), String(state.runGold)],

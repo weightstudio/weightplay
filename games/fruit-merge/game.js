@@ -521,7 +521,8 @@
   let engine = null;
   let world = null;
   let animationFrameId = null;
-  let lifecycleSuspended = document.hidden;
+  let runWindowFocused = document.hasFocus();
+  let lifecycleSuspended = document.hidden || !runWindowFocused;
   let lifecycleSuspendedAt = lifecycleSuspended ? performance.now() : 0;
   let activeChallengeIndex = null;
   let bestCombo = 0;
@@ -587,7 +588,7 @@
   }
 
   function resumeRunLifecycle() {
-    if (!lifecycleSuspended || document.hidden) return;
+    if (!lifecycleSuspended || document.hidden || !runWindowFocused) return;
     const now = performance.now();
     const pausedFor = Math.max(0, now - lifecycleSuspendedAt);
     canDropAt += pausedFor;
@@ -1835,7 +1836,14 @@
 
   canvas.addEventListener("pointercancel", (event) => clearAimPointer(event.pointerId));
   canvas.addEventListener("lostpointercapture", (event) => clearAimPointer(event.pointerId));
-  window.addEventListener("blur", () => clearAimPointer());
+  window.addEventListener("blur", () => {
+    runWindowFocused = false;
+    suspendRunLifecycle();
+  });
+  window.addEventListener("focus", () => {
+    runWindowFocused = true;
+    resumeRunLifecycle();
+  });
 
   canvas.addEventListener("keydown", (event) => {
     if (!running || gameOver) return;

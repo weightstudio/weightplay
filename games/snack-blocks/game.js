@@ -406,6 +406,7 @@
     decisionMode: null,
   };
   let boardGeneration = 0;
+  let boardWindowFocused = document.hasFocus();
   let boardLifecycleSuspended = document.hidden;
 
   function invalidateBoardSession() {
@@ -440,7 +441,17 @@
   }
 
   function resumeBoardTasks() {
-    boardLifecycleSuspended = document.hidden || state.leaveConfirmOpen;
+    boardLifecycleSuspended = document.hidden || !boardWindowFocused || state.leaveConfirmOpen;
+  }
+
+  function handleBoardWindowBlur() {
+    boardWindowFocused = false;
+    suspendBoardTasks();
+  }
+
+  function handleBoardWindowFocus() {
+    boardWindowFocused = true;
+    resumeBoardTasks();
   }
 
   function setBattleCovered(covered) {
@@ -1514,8 +1525,8 @@
   }, { once: true });
   window.addEventListener("pagehide", suspendBoardTasks);
   window.addEventListener("pageshow", resumeBoardTasks);
-  window.addEventListener("blur", suspendBoardTasks);
-  window.addEventListener("focus", resumeBoardTasks);
+  window.addEventListener("blur", handleBoardWindowBlur);
+  window.addEventListener("focus", handleBoardWindowFocus);
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) suspendBoardTasks();
     else resumeBoardTasks();

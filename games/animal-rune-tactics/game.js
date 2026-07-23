@@ -2979,6 +2979,7 @@
   function bind() {
     document.addEventListener("pointerdown", resumeAppLifecycleFromTrustedInput, true);
     document.addEventListener("keydown", resumeAppLifecycleFromTrustedInput, true);
+    document.addEventListener("click", resumeAppLifecycleFromTrustedInput, true);
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) suspendAppLifecycle();
       else resumeAppLifecycle();

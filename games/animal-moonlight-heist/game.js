@@ -201,7 +201,7 @@
   ].forEach(([guardian, name]) => { guardian.name[2] = name; });
   [[guardianCatalog.spotlight,"Фонарный ревизор"],[guardianCatalog.bell,"Колокольный страж"],[guardianCatalog.mirror,"Хранитель зеркал"],[guardianCatalog.clock,"Часовой маршал"],[guardianCatalog.seals,"Хранитель печатей"],[guardianCatalog.eclipse,"Хранитель затмения"]].forEach(([guardian,name])=>{guardian.name[3]=name});
   function normalizeLocale(value){if(value==="zh-TW")return"zh-Hant";if(value==="zh-CN")return"zh-Hans";if(value?.startsWith("pt"))return"pt-BR";return value||"en"}
-  let state=load(),locale=normalizeLocale(window.WonderI18n?.locale?.()||readOptionalStorage(localeKey)||readOptionalStorage(legacyLocaleKey)||"en"),selectedMission=0,gadget="dash",gadgetOffers=createOffers(),insuranceActive=state.insuranceReady===true,preservedTreasure=false,playing=false,paused=false,alert=0,objectFound=false,treasureFound=false,caught=false,patrols=[],lastTime=0,missionStartedAt=0,freezeUntil=0,smokeUntil=0,preview=null,arrivalTimer=0,animationFrame=0,routePointerId=null,lastPulseCycle=-1,lastMirrorCycle=-1,guardianPhase=1;
+  let state=load(),locale=normalizeLocale(window.WonderI18n?.locale?.()||readOptionalStorage(localeKey)||readOptionalStorage(legacyLocaleKey)||"en"),selectedMission=0,centeredMission=Math.max(0,Math.min(campaign.length-1,(state.unlocked||1)-1)),gadget="dash",gadgetOffers=createOffers(),insuranceActive=state.insuranceReady===true,preservedTreasure=false,playing=false,paused=false,alert=0,objectFound=false,treasureFound=false,caught=false,patrols=[],lastTime=0,missionStartedAt=0,freezeUntil=0,smokeUntil=0,preview=null,arrivalTimer=0,animationFrame=0,routePointerId=null,lastPulseCycle=-1,lastMirrorCycle=-1,guardianPhase=1;
   const gameLocales=new Set(["en","zh-Hant","es","ru"]);
   const localeArrayIndex=()=>locale==="zh-Hant"?1:locale==="es"?2:locale==="ru"?3:0;
   function sharedText(value){const text=String(value??"");return window.WeightPlayGameRuntimeLocalizer?.translate?.(text)||text}
@@ -310,7 +310,7 @@
   function localize(){if(window.WonderI18n?.locale?.()!==locale)window.WonderI18n?.setLocale?.(locale);document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";const internal=document.querySelector('meta[name="robots"]')?.content.includes("noindex");document.title=`${t("title")} - ${internal?"Internal Trial":"WeightPlay"}`;document.querySelectorAll("[data-i18n]").forEach(n=>n.textContent=t(n.dataset.i18n));$("#localeSelect").setAttribute("aria-label",t("languageLabel"));$(".main-poster").alt=t("posterAlt");$(".planner > img").alt=t("orlaAlt");nodes.rail.setAttribute("aria-label",t("missionRailLabel"));nodes.fia.alt=t("fiaAlt");$("#stageBackBtn").setAttribute("aria-label",t("stageBackLabel"));$("#battleBackBtn").setAttribute("aria-label",t("battleBackLabel"));renderSummary();renderStage();renderGadgets();renderEconomy();updateGadget();renderGadgetSummary();updatePauseControl();syncSoundToggle()}
   function stopBattleLoop(){if(animationFrame){cancelAnimationFrame(animationFrame);animationFrame=0}}
   function startBattleLoop(){if(!playing||paused||animationFrame)return;lastTime=performance.now();animationFrame=requestAnimationFrame(loop)}
-  function show(name){document.body.dataset.screen=name;nodes.main.hidden=name!=="main";nodes.stage.hidden=name!=="stage";nodes.battle.hidden=name!=="battle";if(name!=="battle"){playing=false;paused=false;stopBattleLoop();cancelPendingMovement();updatePauseControl()}}
+  function show(name){document.body.dataset.screen=name;document.body.classList.toggle("wp-stage-select-active",name==="stage");document.documentElement.classList.toggle("wp-stage-select-active",name==="stage");nodes.main.hidden=name!=="main";nodes.stage.hidden=name!=="stage";nodes.battle.hidden=name!=="battle";if(name!=="battle"){playing=false;paused=false;stopBattleLoop();cancelPendingMovement();updatePauseControl()}}
   function renderSummary(){$("#safehouseSummary").textContent=`${Object.keys(state.cleared).length}/${campaign.length}`}
   function medalProgress(index){
     const medals=Math.max(0,Math.min(3,Number(state.cleared[index])||0));
@@ -329,19 +329,49 @@
       const locked=i+1>state.unlocked;
       const progress=medalProgress(i);
       b.type="button";
-      b.className=`mission-card${locked?" locked":""}`;
+      b.className=`mission-card${locked?" locked":""}${i===centeredMission?" centered":""}`;
+      b.dataset.index=String(i);
+      if(i===centeredMission&&!locked)b.dataset.wpStageRecommended="true";
       const guardian=m.guardian;
       const art=guardian?`../../assets/animal-moonlight-heist-guardian-${guardian.id}.webp`:"../../assets/animal-moonlight-heist-archive-background.png";
       const checkpoint=guardian?`<span class="checkpoint-tag">${t("checkpoint")} · ${campaignText(guardian.name)}</span>`:"";
       b.classList.toggle("checkpoint",Boolean(guardian));
       b.innerHTML=`<img src="${art}" alt=""><div><strong>${missionName}</strong>${checkpoint}<span class="mission-rule">${campaignText(m.rule)}</span><span>${locked?t("locked"):progress.visible}</span></div>`;
       b.setAttribute("aria-label",`${missionName}. ${campaignText(m.rule)}. ${locked?t("locked"):progress.accessible}`);
+      b.setAttribute("aria-current",i===centeredMission?"true":"false");
       b.addEventListener("click",()=>{if(!locked)startMission(i)});
       nodes.rail.append(b);
     });
   }
+  function markCenteredMission(index=centeredMission){
+    centeredMission=Math.max(0,Math.min(campaign.length-1,Number(index)||0));
+    nodes.rail.querySelectorAll(".mission-card").forEach((card,i)=>{
+      const centered=i===centeredMission;
+      card.classList.toggle("centered",centered);
+      card.setAttribute("aria-current",centered?"true":"false");
+      if(centered&&!card.classList.contains("locked"))card.dataset.wpStageRecommended="true";
+      else delete card.dataset.wpStageRecommended;
+    });
+  }
+  function markGeometricMission(){
+    const railBox=nodes.rail.getBoundingClientRect();
+    if(!railBox.width)return;
+    const midpoint=railBox.left+railBox.width/2;
+    const nearest=[...nodes.rail.querySelectorAll(".mission-card")].reduce((best,card)=>{
+      const box=card.getBoundingClientRect(),distance=Math.abs(box.left+box.width/2-midpoint);
+      return!best||distance<best.distance?{card,distance}:best;
+    },null)?.card;
+    if(nearest)markCenteredMission(nearest.dataset.index);
+  }
   function focusMission(index=Math.max(0,Math.min(campaign.length-1,state.unlocked-1))){
-    requestAnimationFrame(()=>nodes.rail.querySelectorAll(".mission-card")[index]?.focus({preventScroll:true}));
+    centeredMission=Math.max(0,Math.min(campaign.length-1,index));
+    requestAnimationFrame(()=>{
+      const card=nodes.rail.querySelectorAll(".mission-card")[centeredMission];
+      card?.scrollIntoView({behavior:"auto",inline:"center",block:"nearest"});
+      markCenteredMission();
+      card?.focus({preventScroll:true});
+      requestAnimationFrame(markGeometricMission);
+    });
   }
   function focusMain(){requestAnimationFrame(()=>$("#startBtn")?.focus({preventScroll:true}))}
   function renderGadgets(focusId=null){const wrap=$("#gadgetChoices");wrap.innerHTML="";gadgetOffers.forEach(({id,level})=>{const g=gadgets[id],b=document.createElement("button");b.className=`gadget-choice${id===gadget?" selected":""}`;b.dataset.gadgetId=id;b.innerHTML=`<img src="../../assets/animal-moonlight-heist-gadget-${g.art}.webp" alt=""><span class="gadget-level">Lv.${level}</span>`;b.type="button";b.title=`${t(id)} Lv.${level}`;b.setAttribute("aria-label",gadgetSummary(id,level));b.setAttribute("aria-pressed",id===gadget?"true":"false");b.addEventListener("click",()=>{gadget=id;renderGadgets(id);updateGadget();renderGadgetSummary()});wrap.append(b)});if(focusId)wrap.querySelector(`[data-gadget-id="${focusId}"]`)?.focus({preventScroll:true})}
@@ -500,6 +530,11 @@
   function bindMissionRailDrag(){
     const rail=nodes.rail;
     rail.addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
+    rail.addEventListener("wonder:stage-snap",event=>{
+      const index=Number(event.detail?.index);
+      if(Number.isInteger(index)&&index>=0)markCenteredMission(index);
+      else markGeometricMission();
+    });
   }
   window.addEventListener("keydown",event=>{
     if(!playing||paused||event.target.matches("button,select,input,textarea"))return;

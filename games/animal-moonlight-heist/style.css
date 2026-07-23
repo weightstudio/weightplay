@@ -46,6 +46,7 @@ html body[data-wp-game-id="animal-moonlight-heist"] > .wp-stage-physical-reserve
 }
 
 .mission-card .mission-rule{font-size:12px;line-height:1.28;color:#d7e6f4}
+.mission-card.centered{border-color:#ffe08a!important;box-shadow:0 0 0 3px #f3a82c,0 0 30px #ffd765cc!important}
 .mission-card .checkpoint-tag{width:auto;max-width:100%;min-width:0;padding:3px 7px;border-radius:999px;background:#6c4e15;color:#ffe79a;font-size:11px;font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .mission-card.checkpoint{position:relative;display:block;border-color:#ffd765;box-shadow:0 0 0 2px #ffd76533 inset;background:radial-gradient(circle at 72% 42%,#284f72,#0c1d31 72%)}
 .mission-card.checkpoint img{position:absolute;top:3%;right:-2%;width:61%;height:94%;object-fit:contain;object-position:right center;padding:2px;background:radial-gradient(circle at 68% 42%,#6b92bd55,transparent 58%);opacity:1;filter:drop-shadow(0 5px 8px #000d) drop-shadow(0 0 7px #9fcfff55)}

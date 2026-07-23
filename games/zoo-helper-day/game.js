@@ -453,6 +453,8 @@
   let acceptingInput = false;
   let careTransitionFrame = 0;
   let careTransitionToken = 0;
+  let careWindowFocused = document.hasFocus();
+  let careLifecycleSuspended = document.hidden || !careWindowFocused;
   let wrongFeedbackTimer = 0;
   let itemPointerDrag = null;
   let suppressItemClick = null;
@@ -516,7 +518,12 @@
     let previous = null;
     const advance = (now) => {
       if (token !== careTransitionToken) return;
-      if (previous !== null && !document.hidden && !leaveConfirmOpen) elapsed += Math.min(48, now - previous);
+      if (careLifecycleSuspended || document.hidden || leaveConfirmOpen) {
+        previous = null;
+        careTransitionFrame = requestAnimationFrame(advance);
+        return;
+      }
+      if (previous !== null) elapsed += Math.min(48, now - previous);
       previous = now;
       if (elapsed < 520) {
         careTransitionFrame = requestAnimationFrame(advance);
@@ -526,6 +533,19 @@
       callback();
     };
     careTransitionFrame = requestAnimationFrame(advance);
+  }
+
+  function cancelItemPointerDrag() {
+    const drag = itemPointerDrag;
+    itemPointerDrag = null;
+    suppressItemClick = null;
+    if (!drag) return;
+    drag.button.classList.remove("dragging");
+    try {
+      if (drag.button.hasPointerCapture?.(drag.id)) drag.button.releasePointerCapture?.(drag.id);
+    } catch {
+      // The browser may already have released capture during lifecycle exit.
+    }
   }
 
   function updateBattleViewport() {
@@ -1220,11 +1240,26 @@
       }
     }, true);
 
-    const interruptCareTransition = () => cancelCareTransition(true);
-    window.addEventListener("blur", interruptCareTransition);
-    window.addEventListener("pagehide", interruptCareTransition);
+    const suspendCareTransition = () => {
+      cancelItemPointerDrag();
+      careLifecycleSuspended = true;
+    };
+    const resumeCareTransition = () => {
+      careLifecycleSuspended = document.hidden || !careWindowFocused || leaveConfirmOpen;
+    };
+    window.addEventListener("blur", () => {
+      careWindowFocused = false;
+      suspendCareTransition();
+    });
+    window.addEventListener("focus", () => {
+      careWindowFocused = true;
+      resumeCareTransition();
+    });
+    window.addEventListener("pagehide", suspendCareTransition);
+    window.addEventListener("pageshow", resumeCareTransition);
     document.addEventListener("visibilitychange", () => {
-      if (document.hidden) interruptCareTransition();
+      if (document.hidden) suspendCareTransition();
+      else resumeCareTransition();
     });
 
   }
