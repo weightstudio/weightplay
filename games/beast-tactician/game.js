@@ -3969,14 +3969,12 @@
       syncBattleLoop();
     });
     window.addEventListener("pagehide", () => {
-      battleWindowFocused = false;
       suspendTransactionConfirmations();
       suspendToastFeedback();
       cancelCanvasPress();
       stopBattleLoop();
     });
     window.addEventListener("pageshow", () => {
-      battleWindowFocused = true;
       resumeTransactionConfirmations();
       resumeToastFeedback();
       syncBattleLoop();

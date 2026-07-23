@@ -298,6 +298,99 @@
     furnaceLeviathan:"تنين الفرن",tempestArchon:"سيد العاصفة",eclipseHoardmaster:"سيد كنوز الكسوف",
   };
   Object.entries(enemyCatalog).forEach(([id,enemy])=>{enemy.name.ar=arabicEnemyNames[id];});
+
+  copy["zh-Hans"] = {
+    ...copy["zh-Hant"],
+    title:"动物装备行囊远征",internal:"内部试玩",pitch:"配置装备、建立相邻连接，带领鲁克斯穿越齿轮森林路线。",start:"开始游戏",
+    chooseRegion:"选择区域",packmaster:"行囊大师鲁克斯",region1:"齿轮森林小径",region1Meta:"5 个房间 · 树根守卫",region2:"月光矿场",region3:"发条树洞",
+    locked:"尚未解锁",backpack:"装备行囊 11 x 7",rotate:"旋转",sell:"出售",fight:"开始遭遇",strike:"进行交锋",room:"房间",armor:"护甲",
+    objective:"配置装备，击败路线守卫。",workshop:"工坊",discoveries:"图鉴",gold:"金币",diamonds:"钻石",items:"件",
+    selected:"已选择",placed:"已放置",blocked:"这个形状无法放在这里。",rotated:"装备已旋转。",needGear:"至少放入一件装备才能战斗。",
+    victory:"路线完成",defeat:"行囊队伍败退",continue:"继续",retry:"重试路线",regions:"返回区域",chooseLoot:"选择一件装备",
+    merchant:"奥菈的商队商店",buy:"购买",leave:"离开商店",refresh:"花费 3 钻石刷新",confirmRefresh:"确定花费 3 钻石刷新奥菈的商品吗？",
+    notEnough:"货币不足。",boss:"树根守卫",scout:"暗影狐斥候",boar:"重甲野猪",crow:"水晶乌鸦",reward:"奖励",
+    saved:"工坊进度已保存。",full:"行囊没有足够空间。",pickedUp:"已取回待放区",sold:"已出售",adventure:"齿轮森林冒险",
+    refreshConfirm:"确认 3 · {before}→{after}",refreshDecision:"一次更换全部三件商品。再点一次确认：{before} → {after} 颗钻石。",
+    refreshLabel:"一次更换全部三件商品。花费 3 颗钻石。目前余额 {balance}。",refreshConfirmLabel:"确认刷新一次商店。花费 3 颗钻石。余额 {before} 变为 {after}。",
+    refreshNeed:"需要 3 颗钻石。目前余额 {balance}/3。",refreshUsed:"本次商店停靠已使用刷新。",leaveLoot:"不拿装备并继续",
+    fullLoot:"行囊已满。请选择不拿装备并继续。",battleSteps:"① 选下方装备　② 点绿色格子放入　③ 开始遭遇",
+    attack:"攻击",defense:"防御",healing:"恢复",links:"连接",attackHint:"按“攻击”进行这一回合。",health:"生命",
+    region2Meta:"5 个房间 · 水晶守卫",region3Meta:"5 个房间 · 树洞巨像",tagForge:"锻造",tagNature:"自然",tagCrystal:"水晶",tagMoon:"月光",
+    sameTagBonus:"同标签 +2 攻击 / +1 防御",sellValue:"售价",autoFighting:"自动战斗中…",combatPaused:"战斗已暂停。准备好后继续。",
+    resumeCombat:"继续战斗",repack:"敌人已击败，重新搭配装备迎战下一只。",newRegionUnlocked:"新区域已解锁",
+    packGridLabel:"背包格，7 排、11 栏",cellLabel:"第 {row} 排、第 {column} 栏。{action}",placeItem:"在这里放置{item}。",
+    pickUpItem:"拿起{item}。",cannotPlace:"{item}无法放在这里。",emptyCell:"空格。请先从物品列选择装备。",
+    selectItem:"选择{item}。",selectedItem:"已选择{item}。",backToLobby:"返回 WeightPlay",language:"语言",
+    coverAlt:"动物装备行囊远征封面",backToMain:"返回主界面",ruxAlt:"齿轮角鲁克斯",regionRail:"区域滑轨",
+    gearwoodTrailAlt:"齿轮森林小径",backToRegions:"返回区域选择",objectiveHelp:"显示目标",itemTrayLabel:"待放装备",pauseCombatAction:"暂停战斗",
+    rotateItemLabel:"将{item}旋转为 {width} × {height}",sellItemLabel:"出售{item}，获得 {value} 金币",
+    fightBlockedLabel:"目前无法开始遭遇战。请先放置至少一件装备。",
+    fightReadyLabel:"开始与{enemy}的自动遭遇战，敌方生命 {hp}。你的攻击 {attack}、防御 {defense}。{mechanic}。战斗会自动持续到其中一方倒下。",
+    leaveBattleTitle:"离开这次远征？",leaveBattleText:"决定期间会保留目前行囊与战斗状态。",continueBattle:"继续远征",confirmLeaveBattle:"返回关卡",
+    chooseExpedition:"选择远征",stage:"关卡",encounter:"遭遇",checkpoint:"守关首领",completed:"已通关",unlocked:"已解锁",
+    stageRule:"路线规则",nextExpedition:"下一关",allStagesCleared:"30 关远征全部完成",stageCleared:"远征完成",retryStage:"重试本关",backToStages:"返回关卡",
+    openingStrike:"开场突袭",shielded:"护盾",reflected:"反射碎片",regrowth:"守卫再生",seal:"封印",isolated:"件孤立装备",
+    corrosion:"腐蚀",heat:"顶排热浪",overload:"过载",bossPhase:"首领阶段",campaignProgress:"已完成 {cleared} / 30 关远征",
+  };
+
+  const simplifiedChineseItemNames = [
+    "锻造锤","叶纹圆盾","水晶鉴定镜","莓果药水","齿轮战靴","月牙护符",
+    "荆棘长鞭","苔甲","火花线圈","野外修理包","斥候提灯","商队徽章",
+  ];
+  items.forEach((item,index)=>{item.name["zh-Hans"]=simplifiedChineseItemNames[index];});
+
+  const simplifiedChineseRegions = [
+    "齿轮森林小径","月光矿场","发条树洞","余烬铸造厂","风暴观测台","日蚀宝库",
+  ];
+  regions.forEach((region,index)=>{region.name["zh-Hans"]=simplifiedChineseRegions[index];});
+
+  const simplifiedChineseStages = [
+    ["工坊入口","熟悉五场遭遇，先建立一组材质连接。"],
+    ["斥候岔路","狐狸斥候会抢先攻击未准备的行囊。"],
+    ["铁根交叉口","装甲野猪会用护板吸收第一次攻击。"],
+    ["水晶树冠","水晶乌鸦会惩罚没有相邻连接的装备。"],
+    ["树根守卫","自然材质连接可阻止守卫重新长出护甲。"],
+    ["银月下坡","月蛾在场时会压制月光材质连接。"],
+    ["回音矿脉","棱镜乌鸦会针对孤立装备，请压紧配置。"],
+    ["棱镜升降台","棱镜屏障考验高伤害的第一击。"],
+    ["碎晶长廊","材质压制与屏障同时出现，需要混合配置。"],
+    ["水晶守卫","先打破棱镜盾，再承受反射晶片。"],
+    ["上链小径","发条胡狼每次反击都会加强。"],
+    ["磁力大厅","磁力甲虫会针对每件没有连接的装备。"],
+    ["钟摆工坊","快速狂怒与孤立压力要求紧凑的攻击配置。"],
+    ["锈蚀继电站","锈蚀会在每次敌方回合后降低防御。"],
+    ["发条巨像","巨像会在防守姿态与狂怒姿态间切换。"],
+    ["余烬输送带","蒸汽蟾蜍的锈蚀让持久战变得危险。"],
+    ["锅炉通道","顶排热浪会把已占用格转成额外伤害。"],
+    ["熔炉弯道","保留顶排散热空间，同时维持有效连接。"],
+    ["蒸汽锁库","热浪、锈蚀与护甲同时考验治疗与爆发。"],
+    ["熔炉巨兽","保持顶排空间，才能降低熔炉脉冲伤害。"],
+    ["疾风桥","疾风斥候会在治疗前先发动快速攻击。"],
+    ["线圈室","线圈山猫会使最大的材质连接过载。"],
+    ["雷霆透镜","把连接分散到两种材质以抵抗过载。"],
+    ["天轨阵列","先制攻击与过载共同考验均衡防守。"],
+    ["风暴统领","连锁闪电会依孤立装备数量增强。"],
+    ["暗影账册","日蚀拟态兽会复制攻击或防御中较高的一项。"],
+    ["破碎星图","材质封印会在锻造、自然、水晶与月光间轮替。"],
+    ["王冠封印","轮替封印与顶排热浪会改变安全配置。"],
+    ["破囊者大厅","最终宝库前会重新组合所有已知压力。"],
+    ["日蚀藏主","藏主会轮替封印、锁住连接并惩罚孤立装备。"],
+  ];
+  stages.forEach((definition,index)=>{
+    definition.name["zh-Hans"]=simplifiedChineseStages[index][0];
+    definition.rule["zh-Hans"]=simplifiedChineseStages[index][1];
+  });
+
+  const simplifiedChineseEnemyNames = {
+    scout:"暗影狐斥候",ambusher:"荆棘狐伏击手",boar:"重甲野猪",platedBoar:"铁板野猪",
+    crow:"水晶乌鸦",linkCrow:"棱镜税羽鸦",moonMoth:"月幕蛾",prismRam:"棱镜山羊",
+    gearJackal:"发条胡狼",magnetBeetle:"磁力甲虫",rustCrow:"锈翼乌鸦",steamToad:"蒸汽蟾蜍",
+    furnaceBoar:"熔炉野猪",galeScout:"疾风狐斥候",coilLynx:"线圈山猫",eclipseMimic:"日蚀拟态兽",
+    tagSealer:"宝库材质封印兽",rootGuardian:"树根守卫",crystalWarden:"水晶守卫",hollowColossus:"发条巨像",
+    furnaceLeviathan:"熔炉巨兽",tempestArchon:"风暴统领",eclipseHoardmaster:"日蚀藏主",
+  };
+  Object.entries(enemyCatalog).forEach(([id,enemy])=>{enemy.name["zh-Hans"]=simplifiedChineseEnemyNames[id];});
+
   const $ = (selector) => document.querySelector(selector);
   function ensureSoundButton(){
     let button=$("#soundBtn");

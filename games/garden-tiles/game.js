@@ -246,6 +246,66 @@
         berry: "Baya", leaf: "Hoja", seed: "Semilla", feather: "Pluma", keeper: "Cuidador", visitor: "Visitante", ticket: "Taquilla", basket: "Cesta",
       },
     },
+    ru: {
+      title: "Садовые карточки питомцев",
+      pageTitle: "Садовые карточки питомцев — WeightPlay",
+      pageDescription: "Находите пары животных и садовых предметов в 30 спокойных заданиях на память с подсказками, дымкой, ветерком, парадом карточек и шестью контрольными уровнями.",
+      language: "Язык",
+      mainIntro: "Запоминайте садовые картинки и проходите 30 спокойных заданий в шести главах.",
+      start: "Выбрать уровень",
+      level: "Уровень",
+      moves: "Ходы",
+      pairs: "Пары",
+      pairCount: "Пар на поле: {count}",
+      starGoal: "3 звезды: не больше {moves} ходов",
+      chapter: "Глава {chapter}: {name}",
+      checkpoint: "Проверка памяти",
+      rules: {
+        classic: "Классические пары",
+        preview: "Утренний просмотр",
+        mist: "Садовая дымка",
+        gust: "Игривый ветерок",
+        parade: "Парад карточек",
+      },
+      chooseLevel: "Выбрать уровень",
+      locked: "Уровень пока закрыт",
+      selectFirst: "Откройте карточку, затем найдите её пару.",
+      matched: "Пара найдена!",
+      miss: "Попробуйте другую пару.",
+      clear: "Уровень пройден",
+      result: "Ходов: {moves} · Найдено пар: {pairs}",
+      skillReport: "Итоги игры",
+      memory: "Память",
+      memoryValue: "Найдено пар: {pairs}",
+      focus: "Внимание",
+      focusValue: "Ходов: {moves} · Повторных попыток: {retries}",
+      problem: "Решение задач",
+      problemValue: "Получено звёзд: {stars}",
+      firstFinish: "Первое прохождение · Звёзд: {stars}",
+      progress: "Сейчас: {stars} · Лучший результат: {previous}",
+      newBest: "Новый лучший результат: {stars} · Раньше: {previous}",
+      next: "Следующий уровень",
+      again: "Играть ещё раз",
+      levels: "Уровни",
+      lobby: "Детские игры",
+      allClear: "Все уровни пройдены.",
+      homeAria: "Вернуться в детские игры",
+      languageAria: "Выбор языка",
+      statusAria: "Состояние игры",
+      stageBackAria: "Назад",
+      battleBackAria: "Вернуться к уровням",
+      leaveTitle: "Выйти с уровня?",
+      leaveText: "Найденные пары и ходы этого уровня будут сброшены.",
+      keepPlaying: "Продолжить игру",
+      leaveLevel: "Выйти к уровням",
+      boardAria: "Поле с садовыми карточками",
+      hiddenTile: "Закрытая садовая карточка",
+      tileNames: {
+        cat: "Кошка", dog: "Собака", fox: "Лиса", owl: "Сова", rabbit: "Кролик", panda: "Панда", penguin: "Пингвин", koala: "Коала",
+        lion: "Лев", elephant: "Слон", giraffe: "Жираф", whale: "Кит", chick: "Цыплёнок", frog: "Лягушка", apple: "Яблоко", banana: "Банан",
+        berry: "Ягода", leaf: "Лист", seed: "Семечко", feather: "Перо", keeper: "Смотритель", visitor: "Посетитель", ticket: "Билетная касса", basket: "Корзина",
+      },
+    },
   };
   const tileArt = [
     "cat", "dog", "fox", "owl",
@@ -263,6 +323,7 @@
     en: ["Seedling Walk", "Morning Greenhouse", "Misty Pond", "Breezy Orchard", "Animal Parade", "Moonlit Conservatory"],
     "zh-Hant": ["\u5ae9\u82bd\u5c0f\u5f91", "\u6668\u5149\u6eab\u5ba4", "\u8584\u9727\u6c60\u5858", "\u5fae\u98a8\u679c\u5712", "\u52d5\u7269\u904a\u884c", "\u6708\u5149\u82b1\u623f"],
     es: ["Paseo de los brotes", "Invernadero matinal", "Estanque brumoso", "Huerto con brisa", "Desfile de animales", "Invernadero a la luz de la luna"],
+    ru: ["Тропа ростков", "Утренняя оранжерея", "Пруд в дымке", "Фруктовый сад на ветру", "Парад животных", "Лунная оранжерея"],
   };
   const levelBlueprints = [
     [4, ["classic"]], [5, ["classic"]], [6, ["classic"]], [7, ["classic"]], [8, ["classic", "preview"]],
@@ -1051,6 +1112,11 @@
     else resumeRoundTasks();
   });
 
+  if (locale() === "ru") {
+    document.querySelector(".garden-game")?.setAttribute("data-runtime-localize", "off");
+    homeLink?.setAttribute("data-runtime-localize", "off");
+    document.addEventListener("DOMContentLoaded", applyText, { once: true });
+  }
   localeSelect.value = locale();
   applyText();
   showMain();

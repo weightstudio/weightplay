@@ -85,7 +85,45 @@
   const CHAPTERS = ["openShelf","vineGallery","crystalRoom","mysteryLoft","shiftingHall","grandFinale"];
   const ITEM_NAMES = ["Acorn Lantern","Moon Cup","Shell Compass","Berry Brooch","Cloud Jar","Prism Flower","Star Telescope","Leaf Locket","Coral Music Box","Bee Bell","Mushroom Lamp","Crystal Feather"];
   let locale = "en", screen = "main", stageIndex = 0, run = null, audio = null, centeredTimer = 0;
+  let pendingMatch = null;
   let save = loadSave();
+
+  function isForeground() { return document.visibilityState === "visible" && document.hasFocus(); }
+  function hasOpenBattleModal() { return [els.tutorialModal, els.leaveModal, els.resultModal].some(modal => !modal.hidden); }
+  function cancelPendingMatch() {
+    if (!pendingMatch) return;
+    clearTimeout(pendingMatch.timer);
+    pendingMatch = null;
+  }
+  function suspendPendingMatch() {
+    if (!pendingMatch?.timer) return;
+    clearTimeout(pendingMatch.timer);
+    pendingMatch.remaining = Math.max(0, pendingMatch.dueAt - performance.now());
+    pendingMatch.timer = 0;
+  }
+  function settlePendingMatch() {
+    const pending = pendingMatch;
+    if (!pending || run !== pending.runRef) { cancelPendingMatch(); return; }
+    pendingMatch = null;
+    const matchedIds = new Set(pending.pieceIds);
+    pending.runRef.pieces.filter(piece => matchedIds.has(piece.id)).forEach(piece => { piece.active = false; piece.tray = false; });
+    pending.runRef.tray = pending.runRef.tray.filter(piece => !matchedIds.has(piece.id));
+    pending.runRef.matches++;
+    pending.runRef.paused = false;
+    els.feedback.textContent = t("matched"); sound("match");
+    if (pending.runRef.config.shiftEvery && pending.runRef.moves % pending.runRef.config.shiftEvery === 0) shiftRemaining();
+    checkEnd(); renderRun();
+  }
+  function armPendingMatch() {
+    if (!pendingMatch || pendingMatch.timer || !isForeground() || hasOpenBattleModal()) return;
+    pendingMatch.dueAt = performance.now() + pendingMatch.remaining;
+    pendingMatch.timer = setTimeout(settlePendingMatch, pendingMatch.remaining);
+  }
+  function schedulePendingMatch(pieceIds) {
+    cancelPendingMatch();
+    pendingMatch = { runRef: run, pieceIds, remaining: 380, dueAt: 0, timer: 0 };
+    armPendingMatch();
+  }
 
   function loadSave() {
     try {
@@ -258,6 +296,7 @@
     });
   }
   function startBattle(index, skipTutorial = false) {
+    cancelPendingMatch();
     stageIndex = Math.max(0, Math.min(29, index));
     const config = stageConfig(stageIndex);
     run = { config, pieces: buildPieces(stageIndex), tray: [], history: [], matches: 0, moves: 0, tools: { undo: 2, magnet: 2, shuffle: 2 }, ended: false, paused: false };
@@ -336,13 +375,7 @@
       renderRun();
       same.slice(0, 3).forEach(p => els.tray.querySelector(`[data-tray="${p.id}"]`)?.classList.add("matching"));
       run.paused = true;
-      setTimeout(() => {
-        same.slice(0, 3).forEach(p => { p.active = false; p.tray = false; });
-        run.tray = run.tray.filter(p => !same.slice(0, 3).includes(p)); run.matches++; run.paused = false;
-        els.feedback.textContent = t("matched"); sound("match");
-        if (run.config.shiftEvery && run.moves % run.config.shiftEvery === 0) shiftRemaining();
-        checkEnd(); renderRun();
-      }, 380);
+      schedulePendingMatch(same.slice(0, 3).map(piece => piece.id));
       return;
     }
     if (run.tray.length >= run.config.trayCap) { finish(false); return; }
@@ -357,6 +390,7 @@
   function checkEnd() { if (!run.pieces.some(p => p.active && !p.tray) && run.tray.length === 0) finish(true); }
   function finish(win) {
     if (run.ended) return;
+    cancelPendingMatch();
     run.ended = true; run.paused = true;
     const free = run.config.trayCap - run.tray.length, stars = win ? (free >= 5 ? 3 : free >= 3 ? 2 : 1) : 0;
     if (win) {
@@ -398,8 +432,14 @@
   }
 
   function isolateBattle(value) { els.battleLive.inert = value; value ? els.battleLive.setAttribute("aria-hidden", "true") : els.battleLive.removeAttribute("aria-hidden"); }
-  function openModal(modal, focus) { modal.hidden = false; isolateBattle(true); requestAnimationFrame(() => focus?.focus()); }
-  function closeModal(modal, focus) { modal.hidden = true; isolateBattle(false); run.paused = false; requestAnimationFrame(() => focus?.focus()); }
+  function openModal(modal, focus) { modal.hidden = false; suspendPendingMatch(); isolateBattle(true); requestAnimationFrame(() => focus?.focus()); }
+  function closeModal(modal, focus) {
+    modal.hidden = true;
+    isolateBattle(false);
+    run.paused = pendingMatch?.runRef === run;
+    armPendingMatch();
+    requestAnimationFrame(() => focus?.focus());
+  }
   function trap(event, onEscape) {
     if (event.key === "Escape") { event.preventDefault(); onEscape?.(); return; }
     if (event.key !== "Tab") return;
@@ -425,18 +465,23 @@
   els.stageBack.addEventListener("click", () => setScreen("main"));
   els.battleBack.addEventListener("click", () => { if (!run || run.ended) return setScreen("stage"); run.paused = true; openModal(els.leaveModal, els.leaveContinue); });
   els.leaveContinue.addEventListener("click", () => closeModal(els.leaveModal, els.battleBack));
-  els.leaveStage.addEventListener("click", () => { els.leaveModal.hidden = true; isolateBattle(false); run = null; setScreen("stage"); });
+  els.leaveStage.addEventListener("click", () => { cancelPendingMatch(); els.leaveModal.hidden = true; isolateBattle(false); run = null; setScreen("stage"); });
   els.helpBtn.addEventListener("click", () => { if (!run) return; run.paused = true; openModal(els.tutorialModal, els.tutorialClose); });
   els.tutorialClose.addEventListener("click", () => { save.tutorial = true; persist(); closeModal(els.tutorialModal, els.helpBtn); });
   els.undoBtn.addEventListener("click", undo); els.magnetBtn.addEventListener("click", magnet); els.shuffleBtn.addEventListener("click", shuffleTool);
   els.retryBtn.addEventListener("click", () => startBattle(stageIndex, true));
   els.nextBtn.addEventListener("click", () => startBattle(Math.min(29, stageIndex + 1), true));
-  els.resultStages.addEventListener("click", () => { els.resultModal.hidden = true; isolateBattle(false); run = null; setScreen("stage"); });
+  els.resultStages.addEventListener("click", () => { cancelPendingMatch(); els.resultModal.hidden = true; isolateBattle(false); run = null; setScreen("stage"); });
   els.soundBtn.addEventListener("click", () => { save.sound = !save.sound; persist(); renderRun(); if (save.sound) sound("pick"); });
   els.tutorialModal.addEventListener("keydown", e => trap(e, () => closeModal(els.tutorialModal, els.helpBtn)));
   els.leaveModal.addEventListener("keydown", e => trap(e, () => closeModal(els.leaveModal, els.battleBack)));
   els.resultModal.addEventListener("keydown", e => trap(e));
   window.addEventListener("resize", fitCanvas, { passive: true });
+  window.addEventListener("blur", suspendPendingMatch);
+  window.addEventListener("focus", armPendingMatch);
+  window.addEventListener("pagehide", suspendPendingMatch);
+  window.addEventListener("pageshow", armPendingMatch);
+  document.addEventListener("visibilitychange", () => document.visibilityState === "visible" ? armPendingMatch() : suspendPendingMatch());
 
   window.__animalTripleMatchSmoke = {
     stages: Array.from({ length: 30 }, (_, i) => stageConfig(i)),

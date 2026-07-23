@@ -368,6 +368,7 @@
   let acceptingInput = false;
   let feedbackKey = "";
   let lastResult = null;
+  let resultSettled = false;
   let stageEntryToken = 0;
   let taskTransitionToken = 0;
   let taskLifecycleSuspended = document.hidden;
@@ -930,6 +931,7 @@
     }
     nodes.progressFill.style.width = "100%";
     lastResult = { earned, previousBest, count: stages[currentStage].tasks.length };
+    resultSettled = false;
     renderResult(lastResult);
     nodes.playPanel.classList.add("is-result");
     nodes.resultPanel.classList.remove("hidden");
@@ -969,6 +971,12 @@
 
   function visibleResultActions() {
     return [...nodes.resultPanel.querySelectorAll("button, a")].filter((node) => !node.classList.contains("hidden") && !node.disabled && node.getClientRects().length > 0);
+  }
+
+  function settleResult(action) {
+    if (resultSettled || nodes.resultPanel.classList.contains("hidden")) return;
+    resultSettled = true;
+    action();
   }
 
   function refreshActiveTaskLocale() {
@@ -1136,12 +1144,14 @@
       event.preventDefault();
       actions[nextIndex].focus({ preventScroll: true });
     }, true);
-    nodes.resultStagesBtn.addEventListener("click", () => showMenu(true));
+    nodes.resultStagesBtn.addEventListener("click", () => settleResult(() => showMenu(true)));
     nodes.retryBtn.addEventListener("click", () => {
-      track("game_restart", { level: currentStage + 1, mistakes });
-      startStage(currentStage);
+      settleResult(() => {
+        track("game_restart", { level: currentStage + 1, mistakes });
+        startStage(currentStage);
+      });
     });
-    nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
+    nodes.nextStageBtn.addEventListener("click", () => settleResult(() => startStage(Math.min(currentStage + 1, stages.length - 1))));
     nodes.resultPanel.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) {
         event.preventDefault();
