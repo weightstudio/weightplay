@@ -358,6 +358,30 @@ body:not(.squad-stage-select):not(.squad-active) .sound-toggle {
   .profile-grid strong { font-size:.78rem; }
 }
 
+@media (orientation: landscape) and (max-height: 480px) {
+  body:not(.squad-stage-select):not(.squad-active) .menu-panel {
+    grid-template-columns: minmax(260px, 1fr) minmax(300px, 1fr);
+    gap: 12px;
+    padding: 10px;
+  }
+  body:not(.squad-stage-select):not(.squad-active) .cover {
+    height: 280px;
+    aspect-ratio: auto;
+    object-position: center 38%;
+  }
+  body:not(.squad-stage-select):not(.squad-active) .menu-copy { gap: 7px; }
+  body:not(.squad-stage-select):not(.squad-active) .menu-copy > strong {
+    font-size: 1.25rem;
+    line-height: 1.05;
+  }
+  body:not(.squad-stage-select):not(.squad-active) .menu-copy > span {
+    font-size: .76rem;
+    line-height: 1.25;
+  }
+  body:not(.squad-stage-select):not(.squad-active) .profile-grid > div { padding: 6px; }
+  body:not(.squad-stage-select):not(.squad-active) #showStageBtn { min-height: 44px; }
+}
+
 @media (max-height: 470px) and (orientation: landscape) {
   #gamePanel:has(#combatArea:not(.is-hidden)):not(.is-result) {
     grid-template-columns: 480px minmax(0,1fr);

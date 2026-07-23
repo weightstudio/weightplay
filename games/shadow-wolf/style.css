@@ -145,7 +145,7 @@ body {
 
 .menu-layout {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 2rem;
 }
 
@@ -196,6 +196,14 @@ body {
   line-height: 1.6;
   margin-bottom: 1.5rem;
 }
+
+.campaign-summary {
+  margin: 0 0 1rem;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.campaign-summary strong { color: var(--accent-cyan); }
 
 .stage-select {
   margin: 0 0 1rem;
@@ -317,6 +325,8 @@ body {
   color: var(--primary);
 }
 
+.shop-badge .ui-icon { width: 28px; height: 28px; flex: 0 0 28px; object-fit: contain; }
+
 .shop-item-btn {
   display: flex;
   justify-content: space-between;
@@ -369,6 +379,8 @@ body {
   align-items: center;
   gap: 0.25rem;
 }
+
+.shop-cost-tag .ui-icon { width: 16px; height: 16px; flex: 0 0 16px; object-fit: contain; }
 
 .shop-status-text {
   font-size: 0.8rem;
@@ -722,6 +734,19 @@ body[data-shadow-wolf-screen="battle"] .relic-app {
 .stage-header > div { min-width: 0; }
 .stage-header span { color: #67e8f9; font-size: .72rem; font-weight: 800; letter-spacing: .08em; }
 .stage-header h2 { margin: 2px 0 0; color: #f8fafc; font-size: clamp(1.05rem, 3vw, 1.45rem); }
+.stage-workshop-btn {
+  min-height: 44px;
+  margin-left: auto;
+  padding: 8px 12px;
+  border: 1px solid rgba(103,232,249,.58);
+  border-radius: 8px;
+  background: rgba(7,24,43,.92);
+  color: #e0f2fe;
+  font: 800 .78rem/1.2 var(--font-main);
+  cursor: pointer;
+}
+.stage-workshop-btn:focus-visible,
+.stage-workshop-btn:hover { border-color: #fde68a; outline: 3px solid rgba(253,230,138,.22); }
 .stage-subtitle { position: absolute; top: 72px; left: 72px; right: 12px; z-index: 1; color: #cbd5e1; font-size: .82rem; }
 .world-map-grid.stage-rail {
   position: relative;
@@ -759,6 +784,37 @@ body[data-shadow-wolf-screen="battle"] .relic-app {
 .world-map-grid.stage-rail .stage-card small { font-size: .84rem; color: #cbd5e1; }
 .world-map-grid.stage-rail .stage-card.is-cleared { border-color:#6ee7b7; box-shadow:inset 0 0 0 1px rgba(110,231,183,.3); }
 .world-map-grid.stage-rail .stage-card:disabled { opacity:.48; cursor:not-allowed; filter:saturate(.45); }
+.stage-management-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  overflow: auto;
+  background: rgba(3,10,20,.94);
+  backdrop-filter: blur(5px);
+}
+.stage-management-panel.hidden { display: none; }
+.stage-management-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+  gap: 12px;
+  width: min(720px, 100%);
+  max-height: 100%;
+  padding: 60px 14px 14px;
+  overflow: auto;
+  border: 1px solid rgba(103,232,249,.48);
+  border-radius: 12px;
+  background: #0b1c2d;
+  box-shadow: 0 18px 50px rgba(0,0,0,.42);
+}
+.stage-management-close { position: absolute; top: 8px; left: 8px; }
+.stage-management-card .goals-card,
+.stage-management-card .menu-shop { margin: 0; box-shadow: none; }
+.stage-management-card .goals-card h2 { margin: 0 0 8px; color: var(--accent-cyan); font-size: 1rem; }
+.stage-management-card .menu-shop { padding: 1rem; }
 .stage-ad-reserve,
 .battle-ad-reserve { height: 56px; min-height: 56px; pointer-events: none; background: #081320; }
 
@@ -916,7 +972,36 @@ body[data-shadow-wolf-screen="battle"].wp-logical-battle-active #resultPanel.bat
   .desktop-only-notice { display: none !important; }
 }
 @media (max-height: 470px) {
+  body[data-shadow-wolf-screen="main"] .top-nav { padding: 6px 12px; }
+  body[data-shadow-wolf-screen="main"] .relic-app { margin: 8px auto; padding: 0 8px; min-height: 0; }
+  body[data-shadow-wolf-screen="main"] .menu-main {
+    display: grid;
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    grid-template-rows: auto auto auto auto auto;
+    column-gap: 14px;
+    row-gap: 6px;
+    min-height: 300px;
+    padding: 12px;
+    text-align: left;
+  }
+  body[data-shadow-wolf-screen="main"] .menu-cover-box {
+    grid-column: 1;
+    grid-row: 1 / 6;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+  }
+  body[data-shadow-wolf-screen="main"] .menu-title { grid-column: 2; margin: 0; font-size: 1.2rem; }
+  body[data-shadow-wolf-screen="main"] .menu-hint { grid-column: 2; margin: 0; font-size: .75rem; line-height: 1.35; }
+  body[data-shadow-wolf-screen="main"] .campaign-summary { grid-column: 2; margin: 0; font-size: .8rem; }
+  body[data-shadow-wolf-screen="main"] .start-btn { grid-column: 2; min-height: 44px; padding: 9px 12px; }
+  body[data-shadow-wolf-screen="main"] .desktop-controls { grid-column: 2; margin: 0; padding: 6px; font-size: .64rem; }
   .world-map-grid.stage-rail .stage-card { height: 176px; min-height: 176px; }
+  .stage-management-card { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); padding-top: 50px; }
+  .stage-management-card .goals-card,
+  .stage-management-card .menu-shop { padding: 10px; }
+  .stage-management-card .shop-badge { margin-bottom: 8px; padding: 7px 10px; }
+  .stage-management-card .shop-item-btn { padding: 8px; }
   .arena-viewport { padding-top: 52px; }
   .play-return { width: 38px; height: 38px; font-size: 1.2rem; }
   .hud-meta-row { display: none; }
@@ -937,6 +1022,10 @@ body[data-shadow-wolf-screen="battle"].wp-logical-battle-active #resultPanel.bat
     width: auto;
     margin: 0;
   }
+}
+
+@media (max-width: 560px) and (min-height: 471px) {
+  .stage-management-card { grid-template-columns: 1fr; }
 }
 
 @media (min-aspect-ratio: 5 / 4) {

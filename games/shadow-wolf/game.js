@@ -150,6 +150,60 @@
     attributeButtons: Array.from(document.querySelectorAll("[data-attribute]")),
   };
 
+  function ensureMainInformationScope() {
+    let campaignSummary = $("campaignSummary");
+    if (!campaignSummary) {
+      const summary = document.createElement("p");
+      summary.className = "campaign-summary";
+      summary.innerHTML = '<span data-ui="regionsCleared">Stage progress</span>: <strong id="campaignSummary">0 / 30</strong>';
+      nodes.startBtn?.before(summary);
+      campaignSummary = $("campaignSummary");
+    }
+
+    let workshopButton = $("stageWorkshopBtn");
+    if (!workshopButton) {
+      workshopButton = document.createElement("button");
+      workshopButton.id = "stageWorkshopBtn";
+      workshopButton.className = "stage-workshop-btn";
+      workshopButton.type = "button";
+      workshopButton.setAttribute("aria-controls", "stageManagementPanel");
+      workshopButton.setAttribute("aria-expanded", "false");
+      workshopButton.dataset.ui = "diamondShopTitle";
+      workshopButton.textContent = "Permanent Upgrade";
+      nodes.mapPanel?.querySelector(".stage-header")?.append(workshopButton);
+    }
+
+    let managementPanel = $("stageManagementPanel");
+    if (!managementPanel) {
+      managementPanel = document.createElement("section");
+      managementPanel.id = "stageManagementPanel";
+      managementPanel.className = "stage-management-panel hidden";
+      managementPanel.setAttribute("role", "dialog");
+      managementPanel.setAttribute("aria-modal", "true");
+      managementPanel.setAttribute("aria-labelledby", "stageManagementTitle");
+      managementPanel.innerHTML = '<div class="stage-management-card"><button id="stageManagementCloseBtn" class="play-return stage-management-close" type="button" aria-label="Back to stages" data-ui-aria="backToStages">&larr;</button></div>';
+      nodes.mapPanel?.querySelector(".stage-ad-reserve")?.before(managementPanel);
+    }
+
+    const managementCard = managementPanel.querySelector(".stage-management-card");
+    const record = document.querySelector(".goals-card");
+    const shop = document.querySelector(".menu-shop");
+    if (record) {
+      const title = record.querySelector("h2, h3");
+      if (title) {
+        title.id = "stageManagementTitle";
+        title.dataset.ui = "adventureRecordTitle";
+      }
+      managementCard?.append(record);
+    }
+    if (shop) managementCard?.append(shop);
+
+    nodes.campaignSummary = campaignSummary;
+    nodes.stageWorkshopBtn = workshopButton;
+    nodes.stageManagementPanel = managementPanel;
+    nodes.stageManagementCloseBtn = $("stageManagementCloseBtn");
+  }
+
   const amuletCost = 15;
   let amuletConfirmPending = false;
   let amuletConfirmTimer = 0;
@@ -747,8 +801,8 @@
   }
 
   function renderAdventureRecord() {
-    if (!nodes.adventureRecordText) return;
-    nodes.adventureRecordText.textContent = t("adventureRecordText", { runs: state.runs, best: state.bestRoom, wins: state.wins, unlocked: state.unlockedStage });
+    if (nodes.campaignSummary) nodes.campaignSummary.textContent = `${state.completedStages.length} / ${STAGE_COUNT}`;
+    if (nodes.adventureRecordText) nodes.adventureRecordText.textContent = t("adventureRecordText", { runs: state.runs, best: state.bestRoom, wins: state.wins, unlocked: state.unlockedStage });
   }
 
   function translateUI() {
@@ -847,8 +901,60 @@
     document.documentElement.dataset.shadowWolfScreen = screen;
   }
 
+  function stageManagementCoveredRegions() {
+    return Array.from(nodes.stageManagementPanel?.parentElement?.children || [])
+      .filter((node) => node !== nodes.stageManagementPanel && !node.classList.contains("stage-ad-reserve"));
+  }
+
+  function closeStageManagement(restoreFocus = true) {
+    if (!nodes.stageManagementPanel || nodes.stageManagementPanel.classList.contains("hidden")) return;
+    nodes.stageManagementPanel.classList.add("hidden");
+    nodes.stageWorkshopBtn?.setAttribute("aria-expanded", "false");
+    stageManagementCoveredRegions().forEach((region) => {
+      region.inert = false;
+      region.removeAttribute("aria-hidden");
+    });
+    if (restoreFocus && document.body.dataset.shadowWolfScreen === "stage") nodes.stageWorkshopBtn?.focus({ preventScroll: true });
+  }
+
+  function openStageManagement() {
+    if (document.body.dataset.shadowWolfScreen !== "stage" || !nodes.stageManagementPanel?.classList.contains("hidden")) return;
+    clearAmuletConfirmation();
+    renderAdventureRecord();
+    updateDiamondShopUI();
+    nodes.stageManagementPanel.classList.remove("hidden");
+    nodes.stageWorkshopBtn?.setAttribute("aria-expanded", "true");
+    stageManagementCoveredRegions().forEach((region) => {
+      region.inert = true;
+      region.setAttribute("aria-hidden", "true");
+    });
+    nodes.stageManagementCloseBtn?.focus({ preventScroll: true });
+  }
+
+  function trapStageManagementFocus(event) {
+    if (nodes.stageManagementPanel?.classList.contains("hidden")) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeStageManagement(true);
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const focusable = [nodes.stageManagementCloseBtn, nodes.amuletBtn].filter((node) => node && !node.disabled);
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus({ preventScroll: true });
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus({ preventScroll: true });
+    }
+  }
+
   function showStage() {
     cancelPendingSettlement();
+    closeStageManagement(false);
     closePause(false);
     clearAmuletConfirmation();
     clearActiveInputs();
@@ -865,6 +971,7 @@
 
   function showMain() {
     cancelPendingSettlement();
+    closeStageManagement(false);
     closePause(false);
     clearAmuletConfirmation();
     clearActiveInputs();
@@ -2716,6 +2823,7 @@
   }
 
   function init() {
+    ensureMainInformationScope();
     installResponsiveBattleOwner();
     document.querySelector("#gamePanel .shadow-game-layout")?.append(nodes.resultPanel);
     loadLocalState();
@@ -2741,6 +2849,9 @@
     nodes.mapBackBtn.addEventListener("click", () => {
       showMain();
     });
+    nodes.stageWorkshopBtn?.addEventListener("click", openStageManagement);
+    nodes.stageManagementCloseBtn?.addEventListener("click", () => closeStageManagement(true));
+    nodes.stageManagementPanel?.addEventListener("keydown", trapStageManagementFocus);
     nodes.attributeButtons.forEach((button) => button.addEventListener("click", () => spendAttribute(button.dataset.attribute)));
     nodes.draftCards.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();

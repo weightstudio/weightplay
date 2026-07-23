@@ -436,6 +436,7 @@
 
   function suspendBoardTasks() {
     boardLifecycleSuspended = true;
+    clearBoardPointer();
   }
 
   function resumeBoardTasks() {
@@ -955,6 +956,8 @@
       if (state.selected === index) button.classList.add("selected");
       button.addEventListener("pointerdown", onPointerDown);
       button.addEventListener("pointerup", onPointerUp);
+      button.addEventListener("pointercancel", clearBoardPointer);
+      button.addEventListener("lostpointercapture", clearBoardPointer);
       button.addEventListener("click", onTileClick);
       nodes.board.append(button);
     });
@@ -1163,17 +1166,42 @@
   }
 
   function onPointerDown(event) {
+    if (!state.running || state.busy || state.dragStart || event.isPrimary === false
+      || (event.pointerType === "mouse" && event.button !== 0)) return;
     const index = Number(event.currentTarget.dataset.index);
-    state.dragStart = { index, x: event.clientX, y: event.clientY };
+    state.dragStart = {
+      index,
+      x: event.clientX,
+      y: event.clientY,
+      pointerId: event.pointerId,
+      owner: event.currentTarget,
+    };
+    try {
+      event.currentTarget.setPointerCapture?.(event.pointerId);
+    } catch {
+      // Synthetic or interrupted pointers may not be capturable.
+    }
+  }
+
+  function clearBoardPointer(event = null) {
+    if (!state.dragStart || (event?.pointerId !== undefined && event.pointerId !== state.dragStart.pointerId)) return false;
+    const { owner, pointerId } = state.dragStart;
+    state.dragStart = null;
+    try {
+      if (owner?.hasPointerCapture?.(pointerId)) owner.releasePointerCapture(pointerId);
+    } catch {
+      // The browser may already have released an interrupted pointer.
+    }
+    return true;
   }
 
   function onPointerUp(event) {
-    if (!state.dragStart) return;
+    if (!state.dragStart || event.pointerId !== state.dragStart.pointerId) return;
     const dx = event.clientX - state.dragStart.x;
     const dy = event.clientY - state.dragStart.y;
     const distance = Math.hypot(dx, dy);
     const start = state.dragStart.index;
-    state.dragStart = null;
+    clearBoardPointer(event);
     if (distance < 20) return;
 
     let target = start;

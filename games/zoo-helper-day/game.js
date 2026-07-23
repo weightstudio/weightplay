@@ -951,10 +951,11 @@
         itemPointerDrag = null;
         button.classList.remove("dragging");
         if (button.hasPointerCapture?.(event.pointerId)) button.releasePointerCapture?.(event.pointerId);
-        if (!moved || event.type === "pointercancel") return;
+        if (!moved) return;
         event.preventDefault();
         suppressItemClick = button;
         setTimeout(() => { if (suppressItemClick === button) suppressItemClick = null; }, 0);
+        if (event.type === "pointercancel" || event.type === "lostpointercapture") return;
         const target = nodes.animalCard.getBoundingClientRect();
         if (event.clientX >= target.left && event.clientX <= target.right && event.clientY >= target.top && event.clientY <= target.bottom) {
           chooseItem(meta.id, button);
@@ -962,6 +963,7 @@
       };
       button.addEventListener("pointerup", finishPointerDrag);
       button.addEventListener("pointercancel", finishPointerDrag);
+      button.addEventListener("lostpointercapture", finishPointerDrag);
       nodes.itemGrid.appendChild(button);
     });
     requestAnimationFrame(syncItemCards);

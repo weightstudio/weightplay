@@ -47,7 +47,7 @@
   let save=loadSave();
   function persist(){safeStore.set(STORAGE,JSON.stringify(save))}
   persist();
-  function t(key,vars={}){const source=L.dictionaries.en[key]??key,owned=L.dictionaries[locale]?.[key],translate=window.WeightPlayGameRuntimeLocalizer?.translate;let s=owned??source;if(locale!=="en"&&translate&&((locale==="hi"||locale==="ar")||s===source))s=translate(source);for(const [k,v] of Object.entries(vars))s=String(s).replaceAll(`{${k}}`,String(v));return String(s)}
+  function t(key,vars={}){const source=L.dictionaries.en[key]??key,owned=L.dictionaries[locale]?.[key],translate=window.WeightPlayGameRuntimeLocalizer?.translate;let s=owned??source;if(locale!=="en"&&translate&&s===source)s=translate(source);for(const [k,v] of Object.entries(vars))s=String(s).replaceAll(`{${k}}`,String(v));return String(s)}
   const cueTimes=new Map();
   function playCue(name,minGap=0){const now=performance.now(),last=cueTimes.get(name)||-Infinity;if(now-last<minGap)return;cueTimes.set(name,now);window.WonderSound?.play?.(name)}
   function updateSoundToggle(){const muted=window.WonderSound?.isMuted?.()===true;els.soundToggle.dataset.soundToggle="true";els.soundToggle.textContent=muted?"🔇":"🔊";els.soundToggle.title=t("sound");els.soundToggle.setAttribute("aria-label",t(muted?"soundEnable":"soundDisable"));els.soundToggle.classList.toggle("muted",muted)}

@@ -1312,6 +1312,8 @@ localeSelect.addEventListener("change", applyLocaleChange);
 localeSelect.addEventListener("input", applyLocaleChange);
 window.addEventListener("pagehide", suspendQuizTasks);
 window.addEventListener("pageshow", resumeQuizTasks);
+window.addEventListener("blur", suspendQuizTasks);
+window.addEventListener("focus", resumeQuizTasks);
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) suspendQuizTasks();
   else resumeQuizTasks();
