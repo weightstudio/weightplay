@@ -168,18 +168,21 @@
     document.title = `${text("title")} | WeightPlay`;
     document.querySelectorAll("[data-bamboo-t]").forEach(node => { node.textContent = text(node.dataset.bambooT); });
     document.querySelector(".locale").firstChild.textContent = `${text("language")} `;
-    document.querySelector(".return").setAttribute("aria-label", text("returnLobby"));
-    document.querySelector(".return").href = `/${LOCALE_ROUTES[locale] || "en"}/`;
+    const mainReturn = document.querySelector(".return");
+    if (mainReturn) {
+      mainReturn.setAttribute("aria-label", text("returnLobby"));
+      mainReturn.href = `/${LOCALE_ROUTES[locale] || "en"}/`;
+    }
     document.querySelectorAll("[data-back]").forEach(node => node.setAttribute("aria-label", text("back")));
     $("rail").setAttribute("aria-label", text("stageSelector"));
     $("board").setAttribute("aria-label", text("boardLabel"));
-    document.querySelector(".hero img").setAttribute("alt", text("coverAlt"));
-    $("publicGuide").setAttribute("aria-label", text("guideTitle"));
+    document.querySelector(".hero img")?.setAttribute("alt", text("coverAlt"));
+    $("publicGuide")?.setAttribute("aria-label", text("guideTitle"));
     updateMainProgress();
-    renderStages();
-    if (!$("result").hidden && run) {
+    if (run) {
       $("resultText").textContent = text("resultText", { moves: run.moves, n: selected + 1 });
     }
+    renderStages();
   }
   CODES.forEach(code => { const option = document.createElement("option"); option.value = code; option.textContent = window.BAMBOO_LOCALES[code].label; $("locale").append(option); });
   $("locale").value = locale;
@@ -192,6 +195,16 @@
     window.WonderI18n?.setLocale?.(locale);
     applyLocale();
   };
+  window.addEventListener("wonder:locale-change", event => {
+    const nextLocale = event.detail?.locale;
+    if (!CODES.includes(nextLocale)) return;
+    locale = nextLocale;
+    $("locale").value = locale;
+    applyLocale();
+    setTimeout(() => {
+      if (locale === nextLocale) applyLocale();
+    }, 0);
+  });
   $("start").onclick = () => { show("stage"); renderStages(); };
   document.querySelectorAll("[data-back]").forEach(button => { button.onclick = () => show($("battle").hidden ? "main" : "stage"); });
   $("undo").onclick = () => { const prior = run?.history.pop(); if (prior) { run.tiles.forEach((tile, i) => { tile.rot = prior[i]; }); run.moves--; renderBoard(); } };

@@ -41,6 +41,7 @@
   const BATTLE_SELECTORS = [
     "[data-wp-logical-battle-canvas]", "#battle", "#battleScreen", "#battleView",
     "#battleShell", "#battlePage", "#gamePanel", "#playPanel", "#mainPanel",
+    ".quiz-playing .animal-game",
     "[data-screen='battle']", ".battle-screen", ".battle-shell", ".battle-page",
   ];
   const HEADER_SELECTORS = [
@@ -567,6 +568,14 @@
     if (type === "battle") {
       currentHeader?.classList.remove("wp-shell-header", "wp-main-shell-header", "wp-stage-shell-header");
       currentHeader = header;
+      if (header.classList.contains("wp-generated-battle-header") && !first(RETURN_SELECTORS, header)) {
+        const externalBattleReturn = first(['[data-wp-return="battle"]'], document);
+        if (externalBattleReturn && !header.contains(externalBattleReturn)) {
+          externalBattleReturn.hidden = false;
+          externalBattleReturn.classList.remove("is-hidden", "hidden", "wp-shell-legacy-control");
+          header.prepend(externalBattleReturn);
+        }
+      }
       normalizeReturn(header);
       const battleReturn = first(RETURN_SELECTORS, header);
       if (battleReturn) battleReturn.dataset.wpReturn = "battle";

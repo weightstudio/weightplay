@@ -53,6 +53,16 @@
   overflow: hidden !important;
 }
 
+body.wp-stage-select-active [data-wp-logical-stage-canvas] :is(button, a)[data-wp-return="stage"] {
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  padding: 0 !important;
+}
+
 :is(a, button)[data-wp-return].hidden,
 :is(a, button)[data-wp-return][hidden] {
   display: none !important;
@@ -107,6 +117,43 @@
   scroll-snap-align: center !important;
   scroll-snap-stop: normal !important;
   overflow: hidden;
+}
+
+/* Game styles historically used enlarged or shortened landscape cards. Stage
+   now owns one normalized card geometry inside the uniformly scaled Canvas. */
+body.wp-stage-select-active [data-wp-logical-stage-canvas] :is(
+  #stageGrid,
+  #stageRail,
+  #levelGrid,
+  #missionGrid,
+  #missionRail,
+  #routeRail,
+  #regionRail,
+  #dayRail,
+  #zoneRow,
+  #expeditionRail
+) > :is(
+  .stage-card,
+  .mission-card,
+  .region-card,
+  .route-card,
+  .day-card,
+  .zone-card,
+  .expedition-card,
+  .raid-card,
+  .merge-stage-card,
+  .zone-node,
+  button
+) {
+  box-sizing: border-box !important;
+  flex: 0 0 264px !important;
+  width: 264px !important;
+  min-width: 264px !important;
+  max-width: 264px !important;
+  height: 190px !important;
+  min-height: 190px !important;
+  max-height: 190px !important;
+  transform: none !important;
 }
 
 /* Locked native buttons must not swallow a swipe before it reaches the rail. */
@@ -316,6 +363,13 @@ body[data-wp-game-id="animal-hero-trials"] .wp-stage-art-shell .stage-card span 
 
 body.wp-standard-stage-page,
 body.wp-stage-select-active {
+  overflow: hidden !important;
+}
+
+html:has(body.wp-stage-select-active) {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
   overflow: hidden !important;
 }
 

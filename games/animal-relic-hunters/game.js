@@ -2,6 +2,8 @@
   ["stagePanel", "gamePanel"].forEach((id) => {
     document.getElementById(id)?.setAttribute("data-wp-canvas-max-width", "920");
   });
+  document.getElementById("stagePanel")?.setAttribute("data-wp-stage-landscape-width", "760");
+  document.getElementById("stagePanel")?.setAttribute("data-wp-stage-landscape-height", "334");
 
   const ARENA_WIDTH = 800;
   const ARENA_HEIGHT = 1000;

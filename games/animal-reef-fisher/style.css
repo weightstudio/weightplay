@@ -2123,6 +2123,28 @@ body.reef-fisher-playing .hint {
   }
 }
 
+@media (max-height: 560px) and (min-aspect-ratio: 3 / 2) {
+  body.wp-stage-select-active #stagePanel .stage-workspace {
+    grid-template-columns: minmax(0, 1fr) 280px !important;
+    grid-template-rows: 54px 190px !important;
+    gap: 8px !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+  body.wp-stage-select-active #stagePanel .zone-row {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    clip-path: inset(0);
+  }
+  body.wp-stage-select-active #stagePanel .stage-upgrades {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+}
+
 body.reef-fisher-result {
   height: var(--reef-vh, 100dvh);
   min-height: 0;

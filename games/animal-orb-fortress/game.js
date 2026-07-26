@@ -51,6 +51,8 @@
   // responsive Canvas controllers keep one uniform scale while widening the
   // logical envelope; this opt-in removes the superseded 920px desktop cap.
   nodes.stagePanel.dataset.wpCanvasMaxWidth = "920";
+  nodes.stagePanel.dataset.wpStageLandscapeWidth = "760";
+  nodes.stagePanel.dataset.wpStageLandscapeHeight = "334";
   nodes.gamePanel.dataset.wpCanvasMaxWidth = "920";
   const canvas = $("gameCanvas");
   canvas.dataset.runtimeLocalize = "off";

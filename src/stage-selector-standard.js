@@ -21,9 +21,11 @@
   const savedReserveStyles = new WeakMap();
   const nativeStageScalers = new Set(["wonder-crash", "animal-rope-rescue", "animal-coloring-studio", "animal-bubble-safari", "animal-rune-reels", "animal-triple-match"]);
   const stageRootByGame = {
+    "animal-color-link": "#stage",
     "animal-guard-yard": "#menuPanel",
     "animal-quiz": ".animal-game",
     "animal-rune-tactics": "#menuPanel",
+    "animal-tangram": "#stage",
     "beast-deck": ".beast-deck-app",
     "star-memory": ".memory-game",
   };
@@ -421,6 +423,7 @@
       const visible = Boolean(rail.getClientRects().length && getComputedStyle(rail).visibility !== "hidden");
       const wasVisible = railVisibility.get(rail) || false;
       railVisibility.set(rail, visible);
+      if (rail.classList.contains("wp-stage-dragging") || rail.dataset.wpDragDown === "1") return;
       if (!visible || (!force && wasVisible)) return;
       const recommended = recommendedCard(rail);
       stageCards(rail).forEach((card) => {
@@ -600,6 +603,7 @@
         const hasCards = stageCards(rail).length > 0;
         const gainedInitialCards = hasCards && !railHadCards.get(rail);
         railHadCards.set(rail, hasCards);
+        if (rail.classList.contains("wp-stage-dragging") || rail.dataset.wpDragDown === "1") return;
         scheduleRecommendedCenter(rail, gainedInitialCards || observerRails.has(rail));
       });
       observerNeedsState = false;

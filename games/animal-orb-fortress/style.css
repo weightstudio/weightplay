@@ -1254,3 +1254,68 @@ body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel .hud-ro
     font-size: 32px;
   }
 }
+
+@media (max-height: 560px) and (orientation: landscape) {
+  body.wp-stage-select-active #stagePanel.stage-panel {
+    grid-template-rows: 48px minmax(0, 1fr) !important;
+    gap: 6px !important;
+    padding: 6px 8px !important;
+  }
+  body.wp-stage-select-active #stagePanel .stage-content {
+    grid-template-columns: minmax(0, 1fr) 260px !important;
+    grid-template-rows: 48px minmax(0, 1fr) !important;
+    gap: 6px 8px !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+  body.wp-stage-select-active #stagePanel .profile-grid {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    min-width: 0 !important;
+  }
+  body.wp-stage-select-active #stagePanel .stage-rail {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    padding: 4px max(12px, calc(50% - 132px)) !important;
+    gap: 12px !important;
+    clip-path: inset(0);
+  }
+  body.wp-stage-select-active #stagePanel .workshop-title {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    align-self: center !important;
+    font-size: 16px !important;
+  }
+  body.wp-stage-select-active #stagePanel .room-grid {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+  body.wp-stage-select-active #stagePanel .room-card {
+    grid-template-columns: 36px minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, 1fr) 38px !important;
+    padding: 5px !important;
+    min-width: 0 !important;
+  }
+  body.wp-stage-select-active #stagePanel .room-card img {
+    width: 34px !important;
+    height: 34px !important;
+  }
+  body.wp-stage-select-active #stagePanel .room-card span {
+    font-size: 9px !important;
+    line-height: 11px !important;
+  }
+  body.wp-stage-select-active #stagePanel .room-card button {
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    min-height: 36px !important;
+    font-size: 10px !important;
+  }
+}
