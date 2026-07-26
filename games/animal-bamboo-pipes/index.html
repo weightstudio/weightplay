@@ -8,19 +8,20 @@
   <link rel="stylesheet" href="style.css"><style>
     .screen[hidden]{display:none!important}
     @media (max-height:500px) and (orientation:landscape){
-      .battle{height:100vh;min-height:0;grid-template-rows:52px 1fr;overflow:hidden;padding:6px 10px}
-      .battle header{height:52px}
-      .battle-panel{grid-template-columns:274px;grid-template-rows:274px 44px;gap:4px;align-content:start}
-      .battle .board{width:274px;height:274px}
-      .battle .tools{height:44px;align-items:center}
-      .battle .tools button{min-height:40px;padding:.4rem .8rem}
+      .battle{height:calc(100svh - 56px);min-height:0;grid-template-rows:46px minmax(0,1fr);overflow:hidden;padding:4px 10px;gap:4px}
+      .battle header{height:46px}
+      .battle-panel{grid-template-columns:220px;grid-template-rows:220px 38px;gap:4px;align-content:start}
+      .battle .board{width:220px;height:220px}
+      .battle .tools{height:38px;align-items:center}
+      .battle .tools button{min-height:36px;padding:.3rem .7rem}
     }
   </style>
 </head>
 <body data-screen="main">
   <main id="main" class="screen main"><header class="main-header"><a class="return" href="/" aria-label="Return to WeightPlay">←</a><strong data-t="title">Panko's Bamboo Waterway</strong><label class="locale">Language <select id="locale"></select></label></header><section class="hero"><img src="../../assets/animal-bamboo-pipes-cover.webp" alt="Panko beside a bamboo waterway"><div><p class="eyebrow" data-t="kicker">PANKO'S PUZZLE GARDEN</p><h1 data-t="title">Panko's Bamboo Waterway</h1><p data-t="summary">Turn the bamboo. Let every drop reach the flowering grove.</p><button id="start" class="primary" data-t="start">Start game</button><details><summary data-t="guideTitle">How to play</summary><p data-t="cue">Tap bamboo to turn it clockwise. Light every pipe.</p></details></div></section></main>
-  <main id="stage" class="screen" hidden><header><button class="back" data-back>←</button><div><small data-t="choose">CHOOSE A WATERWAY</small><h2 data-t="title">Panko's Bamboo Waterway</h2></div></header><div id="rail" class="rail" aria-label="Stage selector"></div><button id="enter" class="primary" data-t="enter">Open waterway</button></main>
+  <main id="stage" class="screen stage" hidden><header><button class="back" data-back>←</button><div><small data-t="choose">CHOOSE A WATERWAY</small><h2 data-t="title">Panko's Bamboo Waterway</h2></div></header><div id="rail" class="rail" aria-label="Stage selector"></div><button id="enter" class="primary" data-t="enter">Open waterway</button></main>
   <main id="battle" class="screen battle" hidden><header><button class="back" data-back>←</button><div><small id="chapter"></small><h2 id="stageName"></h2></div><span id="moves" aria-live="polite"></span></header><section class="battle-panel"><div class="guide"><img src="../../assets/animal-bamboo-pipes-panko-guide.webp" alt="Panko"><p id="cue"></p></div><div id="board" class="board" role="grid" aria-label="Bamboo pipe puzzle"></div><div class="tools"><button id="undo" data-t="undo">Undo</button><button id="hint" data-t="hint">Hint</button><button id="restart" data-t="restart">Restart</button></div></section></main>
+  <div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
   <dialog id="result"><img src="../../assets/animal-bamboo-pipes-panko-guide.webp" alt=""><p class="eyebrow" data-t="clear">WATERWAY RESTORED</p><h2 data-t="clearTitle">The grove is blooming!</h2><p id="resultText"></p><div><button id="retry" data-t="retry">Try again</button><button id="next" class="primary" data-t="next">Next waterway</button></div></dialog>
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>

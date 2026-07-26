@@ -269,6 +269,13 @@
     if (restore) pending.restore();
   }
 
+  function boundScrollLeft(rail, value) {
+    const maximum = Math.max(0, rail.scrollWidth - rail.clientWidth);
+    return getComputedStyle(rail).direction === "rtl"
+      ? Math.max(-maximum, Math.min(0, value))
+      : Math.max(0, Math.min(maximum, value));
+  }
+
   function centerNearest(rail, restore) {
     const allCards = stageCards(rail);
     // Locking controls entry, not whether future stages may be browsed.
@@ -292,7 +299,7 @@
     }
     const cardRect = nearest.getBoundingClientRect();
     const target = rail.scrollLeft + ((cardRect.left + cardRect.width / 2) - (railRect.left + railRect.width / 2)) * coordinateScale;
-    const boundedTarget = Math.max(0, Math.min(target, rail.scrollWidth - rail.clientWidth));
+    const boundedTarget = boundScrollLeft(rail, target);
     rail.dataset.wpSnapTarget = String(boundedTarget);
     if (Math.abs(boundedTarget - rail.scrollLeft) < 1) {
       rail.scrollLeft = boundedTarget;
@@ -366,7 +373,7 @@
     const coordinateScale = railRect.width > 0 ? rail.clientWidth / railRect.width : 1;
     const target = rail.scrollLeft
       + ((cardRect.left + cardRect.width / 2) - (railRect.left + railRect.width / 2)) * coordinateScale;
-    const boundedTarget = Math.max(0, Math.min(target, rail.scrollWidth - rail.clientWidth));
+    const boundedTarget = boundScrollLeft(rail, target);
     if (behavior === "auto") {
       const previousBehavior = rail.style.getPropertyValue("scroll-behavior");
       const previousPriority = rail.style.getPropertyPriority("scroll-behavior");
@@ -569,7 +576,7 @@
         const hasCards = stageCards(rail).length > 0;
         const gainedInitialCards = hasCards && !railHadCards.get(rail);
         railHadCards.set(rail, hasCards);
-        scheduleRecommendedCenter(rail, gainedInitialCards);
+        scheduleRecommendedCenter(rail, gainedInitialCards || observerRails.has(rail));
       });
       observerNeedsState = false;
       observerNeedsLocale = false;

@@ -7628,6 +7628,33 @@
   localizedGameplayProfiles["zh-Hant"]["animal-word-trails"] = { gameplay: "閱讀文字路徑益智", genre: ["文字", "益智", "動物"] };
   localizedGames["zh-Hans"]["animal-word-trails"] = { ...localizedGames["zh-Hant"]["animal-word-trails"], title: "动物文字小径", gameplay: "阅读文字路径益智" };
   localizedGameplayProfiles["zh-Hans"]["animal-word-trails"] = { gameplay: "阅读文字路径益智", genre: ["文字", "益智", "动物"] };
+  games["animal-cratebound"] = {
+    title: "Animal Cratebound", difficulty: "Easy to Challenging", time: "2–8 minutes per warehouse", gameplay: "Push-Pull Logistics Puzzle", genre: ["Puzzle", "Strategy", "Animal"], skills: ["Logic", "Planning", "Problem Solving"],
+    guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", hideScoreBands: true,
+    intro: "Walk, push, and pull rune cargo through thirty authored sky-ark warehouses.",
+    story: ["Rux is restoring a cargo ark one warehouse at a time. Every rune crate must reach a glowing dock before the route can reopen."],
+    systems: ["Move one square at a time and push crates only when the cell beyond is open. Magnetic Pull moves Rux backward while drawing an adjacent crate into the space Rux left.", "Later chapters add sliding ice rails, signal gates, linked cargo, and one-way storm belts. Each device follows a fixed, readable rule."],
+    how: ["Choose an unlocked warehouse from the stage rail.", "Read the whole route before the first push and keep enough room to get behind each crate.", "Match every rune crate with a glowing dock to clear the warehouse."],
+    strategyTips: ["Work backward from the docks and identify the final push direction.", "Avoid pushing cargo against an outer wall unless its dock lies on that wall.", "Save magnetic pulls for positions that cannot be recovered by ordinary walking and pushing."],
+    progression: ["Thirty warehouses span six chapters: First Freight, Polar Rails, Signal Deck, Magnet Bay, Twin Cargo, and Storm Ark."],
+    designNote: "Every warehouse is authored and solvable. Undo and Restart let players test a route without losing cleared-stage progress.",
+    faq: [["How many warehouses are included?", "There are 30 authored warehouses across six rule chapters."], ["Can every stage be solved?", "Yes. Every warehouse has a verified solution."], ["What does Pull do?", "Pull spends one magnetic charge, moves Rux backward, and draws the adjacent crate into Rux's previous cell."], ["Does progress save?", "Yes. Clears, unlocks, and best results are stored locally in this browser."]]
+  };
+  gameplayProfiles["animal-cratebound"] = { gameplay: "Push-Pull Logistics Puzzle", genre: ["Puzzle", "Strategy", "Animal"] };
+  localizedGames["zh-Hant"]["animal-cratebound"] = {
+    ...games["animal-cratebound"],
+    title: "動物方舟搬運隊", difficulty: "簡單到具挑戰性", time: "每座倉庫 2–8 分鐘", gameplay: "推拉貨運解謎", genre: ["益智", "策略", "動物"], skills: ["邏輯", "規劃", "問題解決"],
+    guideKicker: "WeightPlay 原創遊戲指南", guideTitleSuffix: "遊戲指南",
+    intro: "在 30 座手工設計的天空方舟倉庫中行走、推動與拉回符文貨箱。",
+    story: ["魯克斯正逐座修復貨運方舟。必須把每個符文貨箱送到發光碼頭，貨運路線才能重新開放。"],
+    systems: ["每次移動一格；只有貨箱後方是空格時才能推動。磁力拉取會讓魯克斯後退，並把相鄰貨箱拉進魯克斯原本的位置。", "後續章節會加入滑動冰軌、訊號門、連結貨箱與單向風暴輸送帶。每種裝置都有固定且可讀懂的規則。"],
+    how: ["從關卡列選擇已解鎖的方舟倉庫。", "第一次推箱前先讀完整條路線，並保留繞到貨箱後方的空間。", "讓每個符文貨箱抵達發光碼頭即可完成倉庫。"],
+    strategyTips: ["從碼頭反推最後一次推動的方向。", "除非碼頭就在牆邊，否則不要把貨箱推到外牆上。", "把磁力拉取留給無法靠一般行走與推動救回的位置。"],
+    progression: ["30 座倉庫分為六章：初次貨運、極地冰軌、訊號甲板、磁力港灣、連結貨箱與風暴方舟。"],
+    designNote: "每座倉庫都經過手工設計並確認可解。復原與重新開始可讓玩家測試路線，不會失去已完成關卡的進度。",
+    faq: [["共有多少座倉庫？", "六個機關章節共有 30 座手工設計的倉庫。"], ["每一關都能解開嗎？", "可以。每座倉庫都有經過驗證的解法。"], ["拉取有什麼作用？", "拉取會消耗一次磁力次數，讓魯克斯後退，並把相鄰貨箱拉進原本的位置。"], ["進度會儲存嗎？", "會。完成紀錄、解鎖進度與最佳結果會儲存在此瀏覽器。"]]
+  };
+  localizedGameplayProfiles["zh-Hant"]["animal-cratebound"] = { gameplay: "推拉貨運解謎", genre: ["益智", "策略", "動物"] };
   games["animal-mosaic-clues"] = {
     title: "Animal Mosaic Clues", difficulty: "Easy to Challenging", time: "2-10 minutes per mosaic", gameplay: "Nonogram Mosaic Logic", genre: ["Puzzle", "Strategy", "Animal"], skills: ["Logic", "Focus", "Deduction"],
     guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", hideScoreBands: true,

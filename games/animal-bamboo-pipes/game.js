@@ -12,14 +12,41 @@
   const screens = { main: $("main"), stage: $("stage"), battle: $("battle") };
   const DIRS = [[-1, 0, 0, 2], [0, 1, 1, 3], [1, 0, 2, 0], [0, -1, 3, 1]];
   function localRead(key) { try { return localStorage.getItem(key); } catch { return null; } }
-  function show(name) { document.body.dataset.screen = name; Object.entries(screens).forEach(([key, node]) => { node.hidden = key !== name; }); }
+  function show(name) { document.body.dataset.screen = name; Object.entries(screens).forEach(([key, node]) => { node.hidden = key !== name; }); $("generalReserve").hidden = name === "main"; }
   function persist() { try { localStorage.setItem("wp:bamboo", JSON.stringify(save)); } catch {} }
   function stageData(index) {
     return LEVELS[index].tiles.map((tile, i) => ({ ...tile, rot: tile.shape === "x" ? 0 : (tile.solved + 1 + ((index * 7 + i * 3) % 3)) % 4 }));
   }
   function ports(tile) {
-    const raw = tile.shape === "x" ? [0,1,2,3] : tile.shape === "s" ? [0,2] : tile.shape === "e" ? [0,1] : tile.shape === "t" ? [0,1,3] : tile.shape === "source" ? [0] : [2];
+    const raw = tile.shape === "x" ? [0,1,2,3] : tile.shape === "s" ? [0,2] : tile.shape === "e" ? [0,1] : tile.shape === "t" ? [0,1,3] : tile.shape === "source" ? [2] : [0];
     return raw.map(port => (port + tile.rot) % 4);
+  }
+  function basePorts(tile) {
+    return tile.shape === "x" ? [0,1,2,3] : tile.shape === "s" ? [0,2] : tile.shape === "e" ? [0,1] : tile.shape === "t" ? [0,1,3] : tile.shape === "source" ? [2] : [0];
+  }
+  function flowSvg(tile, index, wet) {
+    if (!wet) return null;
+    const paths = basePorts(tile).map(port => {
+      const end = [[50,0],[100,50],[50,100],[0,50]][port];
+      return `<path d="M50 50 L${end[0]} ${end[1]}" pathLength="1"/>`;
+    }).join("");
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.classList.add("flow"); svg.setAttribute("viewBox", "0 0 100 100"); svg.setAttribute("aria-hidden", "true");
+    svg.innerHTML = paths;
+    if (tile.shape === "source") svg.classList.add("flow-source");
+    if (tile.shape === "goal") svg.classList.add("flow-goal");
+    return svg;
+  }
+  function junctionSvg(tile) {
+    if (tile.shape !== "t") return null;
+    const paths = basePorts(tile).map(port => {
+      const end = [[50,0],[100,50],[50,100],[0,50]][port];
+      return `<path d="M50 50 L${end[0]} ${end[1]}"/>`;
+    }).join("");
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.classList.add("pipe-art"); svg.setAttribute("viewBox", "0 0 100 100"); svg.setAttribute("aria-hidden", "true");
+    svg.innerHTML = `<g class="pipe-art-outline">${paths}</g><g class="pipe-art-body">${paths}</g>`;
+    return svg;
   }
   function water() {
     const source = run.tiles.findIndex(tile => tile.shape === "source");
@@ -56,7 +83,12 @@
       pipe.className = `pipe${wet.has(index) ? " wet" : ""}`;
       pipe.dataset.shape = tile.shape;
       pipe.style.transform = `rotate(${tile.rot * 90}deg)`;
+      pipe.dataset.rotation = String(tile.rot);
       pipe.setAttribute("aria-label", text("pipeLabel", { n: index + 1 }));
+      const art = junctionSvg(tile);
+      if (art) pipe.append(art);
+      const flow = flowSvg(tile, index, wet.has(index));
+      if (flow) pipe.append(flow);
       pipe.onclick = () => { run.history.push(run.tiles.map(item => item.rot)); tile.rot = (tile.rot + 1) % 4; run.moves++; renderBoard(); if (winReady()) complete(); };
       board.append(pipe);
     });

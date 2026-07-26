@@ -2,7 +2,10 @@
   "use strict";
   const size=5;
   const directions=[[-1,0,0],[0,1,1],[1,0,2],[0,-1,3]];
-  const raw={source:[0],goal:[2],s:[0,2],e:[0,1],t:[0,1,3],x:[0,1,2,3]};
+  // Atlas orientation: the source pours downward; the flowering basin receives
+  // from above. Keeping these bases aligned with the artwork is essential for
+  // both the solved layout and every rotated scramble.
+  const raw={source:[2],goal:[0],s:[0,2],e:[0,1],t:[0,1,3],x:[0,1,2,3]};
   const mod=value=>(value+4)%4;
   function routeConnections(route){
     const links=Array.from({length:25},()=>new Set());

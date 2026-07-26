@@ -867,12 +867,17 @@ function createGameCard(game) {
   const skillBadges = isPlayable ? (game.skills || []).slice(0, 3).map((item) => `<span>${skillText(item)}</span>`).join("") : "";
   const skillReason = isPlayable ? skillReasonText(game) : "";
   const quickFacts = isPlayable ? [gameInfoText(game.id, "difficulty"), gameInfoText(game.id, "time")].filter(Boolean).join("") : "";
-  const showHero = game.art.hero && !game.art.hideHero && !game.art.hero.includes("width='1'");
+  const cardArt = game.art || {
+    kind: "image",
+    background: game.cover || "assets/hero.png",
+    hideHero: true,
+  };
+  const showHero = cardArt.hero && !cardArt.hideHero && !cardArt.hero.includes("width='1'");
   const comingSoonBadge = isPlayable ? "" : `<span class="coming-soon-art-badge">${i18n.t("action.coming_soon")}</span>`;
   const art =
-    game.art.kind === "image"
-      ? `<div class="game-card-art image-art"><img class="game-card-bg-blur" src="${game.art.background}" alt="" /><img class="game-card-fg" src="${game.art.background}" alt="" />${showHero ? `<img class="game-card-hero" src="${game.art.hero}" alt="" />` : ""}${isPlayable && game.previewVideo ? `<video class="game-card-preview" data-preview-src="${game.previewVideo}" muted loop playsinline preload="none" aria-hidden="true"></video>` : ""}${comingSoonBadge}</div>`
-      : `<div class="game-card-art ${game.art.className}">${showAgeLabels ? `<span>${ageLabel}</span>` : ""}${comingSoonBadge}</div>`;
+    cardArt.kind === "image"
+      ? `<div class="game-card-art image-art"><img class="game-card-bg-blur" src="${cardArt.background}" alt="" /><img class="game-card-fg" src="${cardArt.background}" alt="" />${showHero ? `<img class="game-card-hero" src="${cardArt.hero}" alt="" />` : ""}${isPlayable && game.previewVideo ? `<video class="game-card-preview" data-preview-src="${game.previewVideo}" muted loop playsinline preload="none" aria-hidden="true"></video>` : ""}${comingSoonBadge}</div>`
+      : `<div class="game-card-art ${cardArt.className || ""}">${showAgeLabels ? `<span>${ageLabel}</span>` : ""}${comingSoonBadge}</div>`;
   const favoriteAction = i18n.t(favorite ? "action.remove_favorite" : "action.add_favorite");
   const favoriteLabel = i18n.t(favorite ? "action.remove_favorite_title" : "action.add_favorite_title", { title });
   const primaryAction = isPlayable ? i18n.t(recent ? "action.continue" : "action.play") : i18n.t("action.coming_soon");

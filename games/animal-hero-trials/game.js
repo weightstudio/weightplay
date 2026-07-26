@@ -207,6 +207,46 @@
     Taro: ["Moss Shell Taro", "苔甲塔羅"],
     "Any hero": ["Any hero", "任一英雄"],
   };
+  const trialRosters = [
+    ["scout"], ["scout"], ["scout", "raven"], ["scout", "hunter"], ["scout", "raven"],
+    ["raven", "scout"], ["raven", "hunter"], ["armored", "raven"], ["raven", "armored", "scout"], ["armored", "raven"],
+    ["boar", "scout"], ["boar", "armored"], ["boar", "raven"], ["boar", "scout", "armored"], ["boar", "armored"],
+    ["hunter", "scout"], ["hunter", "raven"], ["hunter", "scout", "raven"], ["hunter", "raven", "armored"], ["hunter", "raven"],
+    ["armored", "scout"], ["armored", "boar"], ["armored", "hunter"], ["armored", "boar", "hunter"], ["armored", "hunter"],
+    ["scout", "raven", "boar"], ["hunter", "armored", "raven"], ["armored", "hunter", "boar"], ["scout", "raven", "boar", "hunter"], ["scout", "raven", "boar", "hunter", "armored"],
+  ];
+  const formationOrder = ["line", "pincer", "arc", "corners", "column", "stagger"];
+  const formationPoints = {
+    line: [[55, 105], [125, 105], [195, 105], [265, 105], [335, 105]],
+    pincer: [[65, 105], [325, 105], [85, 225], [305, 225], [195, 145]],
+    arc: [[55, 165], [115, 100], [195, 78], [275, 100], [335, 165]],
+    corners: [[62, 88], [328, 88], [72, 250], [318, 250], [195, 155]],
+    column: [[195, 72], [195, 140], [195, 208], [105, 130], [285, 130]],
+    stagger: [[78, 82], [286, 112], [125, 198], [320, 242], [210, 132]],
+  };
+
+  function buildEncounterPlans(stage, roster, checkpoint) {
+    const region = Math.floor((stage - 1) / 5);
+    const slot = (stage - 1) % 5;
+    return [1, 2, 3].map((room) => {
+      if (room === 3 && checkpoint) return { boss: true, formation: "column", count: 1, types: ["boss"], elite: true, hpScale: 1 };
+      const count = room === 1
+        ? 2 + ((stage + region) % 2)
+        : room === 2
+          ? 3 + ((stage + slot) % 2)
+          : 1 + ((stage + region) % 2);
+      const formation = formationOrder[(stage * 2 + room + region) % formationOrder.length];
+      const types = Array.from({ length: count }, (_, index) => roster[(index + stage + room + slot) % roster.length]);
+      return {
+        boss: false,
+        formation,
+        count,
+        types,
+        elite: room === 3,
+        hpScale: 1 + slot * 0.03,
+      };
+    });
+  }
   const trialTitlesEs = [
     "Primeras Huellas", "Círculo de Exploradores", "Persecución entre Zarzas", "Emboscada de Raíces", "Puerta del Acechador",
     "Alas Prismáticas", "Viento Cruzado del Cuervo", "Guardia de Cristal", "Manada de Refracción", "Espejo del Basilisco",
@@ -228,7 +268,25 @@
   Object.values(enemyProfiles).forEach((profile, index) => profile.name[2] = enemyNamesEs[index]);
   const heroNamesEs = ["Leo Melena Explosiva", "Fia Pata Chispeante", "Orla Sombrero Lunar", "Taro Caparazón Musgoso", "Cualquier héroe"];
   Object.values(heroNames).forEach((name, index) => name[2] = heroNamesEs[index]);
-  const trials = Array.from({length:TRIAL_COUNT},(_,index)=>{ const stage=index+1; const region=Math.floor(index/5); return { stage, region, titleEn:trialTitles[index][0], titleZh:trialTitles[index][1], titleEs:trialTitles[index][2], checkpoint:stage%5===0, enemies:[...regions[region].enemies], recommended:regions[region].hero, reward:Math.min(9,3+stage), boss:stage%5===0?bosses[region]:null }; });
+  const trials = Array.from({length:TRIAL_COUNT},(_,index)=>{
+    const stage=index+1;
+    const region=Math.floor(index/5);
+    const checkpoint=stage%5===0;
+    const enemies=[...trialRosters[index]];
+    return {
+      stage,
+      region,
+      titleEn:trialTitles[index][0],
+      titleZh:trialTitles[index][1],
+      titleEs:trialTitles[index][2],
+      checkpoint,
+      enemies,
+      encounters:buildEncounterPlans(stage,enemies,checkpoint),
+      recommended:regions[region].hero,
+      reward:Math.min(9,3+stage),
+      boss:checkpoint?bosses[region]:null
+    };
+  });
 
   function readStorage(key) { try { return localStorage.getItem(key); } catch { return null; } }
   function writeStorage(key, value) { try { localStorage.setItem(key, value); return true; } catch { return false; } }
@@ -684,6 +742,7 @@
 
   function spawn() {
     const definition=run.definition;
+    const encounter=definition.encounters[run.room-1];
     if (run.room === 3 && definition.checkpoint) {
       const boss=definition.boss;
       const hp = 190 + definition.region * 44;
@@ -694,17 +753,22 @@
       playSound("boss");
       return;
     }
-    const elite=run.room===3;
-    const count=elite?1:2+run.room;
+    const elite=encounter.elite;
+    const count=encounter.count;
+    const points=formationPoints[encounter.formation];
     run.enemies = Array.from({ length:count }, (_, index) => {
-      const type=definition.enemies[(run.room+index-1)%definition.enemies.length];
+      const type=encounter.types[index];
       const profile=enemyProfiles[type];
-      const hp=(elite?92:30)+definition.region*9+run.room*6;
-      return { x:elite?195:70+index*(250/Math.max(1,count-1)), y:elite?125:105+(index%2)*90, hp, max:hp, cd:0, type, elite, special:1.6+index*.3, warning:0, guard:(profile.guard||0)+(elite?1:0), phase:0 };
+      const point=points[index%points.length];
+      const baseHp=(elite?84:28)+definition.region*9+run.room*6+definition.stage*.45;
+      const hp=Math.round(baseHp*encounter.hpScale*(elite&&count>1?.7:1));
+      return { x:point[0], y:point[1], hp, max:hp, cd:0, type, elite, special:1.6+index*.3, warning:0, guard:(profile.guard||0)+(elite?1:0), phase:0 };
     });
     $("#roomText").textContent = roomLabel(run.room,elite);
-    const firstProfile=enemyProfiles[run.enemies[0].type];
-    $("#objective").textContent = elite?interpolate("eliteObjective",{enemy:localizedPair(firstProfile.name)}):interpolate("enemyObjective",{count:run.enemies.length,enemy:localizedPair(firstProfile.name)});
+    const enemyNames=[...new Set(run.enemies.map((enemy)=>localizedPair(enemyProfiles[enemy.type].name)))].join(" + ");
+    $("#objective").textContent = elite&&count===1
+      ? interpolate("eliteObjective",{enemy:enemyNames})
+      : interpolate("enemyObjective",{count:run.enemies.length,enemy:enemyNames});
     updateHud();
     if(elite) playSound("boss");
   }
@@ -1336,7 +1400,7 @@
   });
   bindTapMove();
   if (new URLSearchParams(location.search).has("smoke")) window.__heroTrialSmoke = {
-    definitions:()=>trials.map((trial)=>({stage:trial.stage,region:trial.region,titleEn:trial.titleEn,titleZh:trial.titleZh,checkpoint:trial.checkpoint,enemies:[...trial.enemies],recommended:trial.recommended,reward:trial.reward,boss:trial.boss?{id:trial.boss.id,nameEn:trial.boss.name[0],nameZh:trial.boss.name[1],asset:trial.boss.asset,rule:trial.boss.rule}:null})),
+    definitions:()=>trials.map((trial)=>({stage:trial.stage,region:trial.region,titleEn:trial.titleEn,titleZh:trial.titleZh,checkpoint:trial.checkpoint,enemies:[...trial.enemies],encounters:trial.encounters.map((encounter)=>({...encounter,types:[...encounter.types]})),recommended:trial.recommended,reward:trial.reward,boss:trial.boss?{id:trial.boss.id,nameEn:trial.boss.name[0],nameZh:trial.boss.name[1],asset:trial.boss.asset,rule:trial.boss.rule}:null})),
     prepare:(stage,room=1)=>{ unlocked=TRIAL_COUNT; startTrial(stage); run.room=Math.max(1,Math.min(3,room)); spawn(); return window.__heroTrialSmoke.snapshot(); },
     damageFirst:(amount=20,source="auto")=>{ const enemy=run?.enemies[0]; return enemy?{applied:damageEnemy(enemy,amount,source),enemy:{...enemy}}:null; },
     forceRoomClear:()=>{ if(!run) return null; run.enemies=[]; if(run.room>=3) finish(true); else chooseBlessing(); return window.__heroTrialSmoke.snapshot(); },
