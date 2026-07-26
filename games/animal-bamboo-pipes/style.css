@@ -58,14 +58,13 @@
 .public-guide h2{font-size:clamp(1.45rem,4vw,2rem)}
 
 .stage,.battle{box-sizing:border-box;height:calc(100svh - 56px);min-height:0!important;max-width:920px;padding:12px;align-content:stretch;overflow:hidden}
-.stage{grid-template-rows:64px minmax(198px,1fr) 52px;gap:10px}
+.stage{grid-template-rows:64px minmax(198px,1fr);gap:10px}
 .stage header,.battle header{min-width:0}
 .stage header>div,.battle header>div{min-width:0}
 .stage header h2,.battle header h2{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .stage .rail{width:100%;height:100%;padding-block:4px!important}
 .stage-card{padding:18px;border:3px solid transparent}
 .stage-card.selected,.stage-card[aria-current="true"]{border-color:#f9c44d!important;box-shadow:0 0 0 4px #f9c44d55,0 0 26px #f9c44daa!important}
-.stage-enter{justify-self:center;width:264px;min-height:52px}
 .ad-reserve{width:100%;max-width:none;height:56px;margin:0;background:#052e2d;pointer-events:none}
 
 .battle{grid-template-rows:68px minmax(0,1fr);gap:8px}
@@ -96,7 +95,7 @@
   .hero p:not(.eyebrow){margin:6px 0;font-size:.96rem;line-height:1.35}
   .main-progress{margin:8px auto}
   .stage,.battle{padding:8px}
-  .stage{grid-template-rows:58px minmax(198px,1fr) 52px}
+  .stage{grid-template-rows:58px minmax(198px,1fr)}
   .battle{grid-template-rows:60px minmax(0,1fr)}
   .battle-panel{grid-template-rows:38px minmax(0,1fr) 48px;gap:6px}
   .battle-objective{height:38px;padding:8px 10px;font-size:.84rem}

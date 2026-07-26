@@ -1,1 +1,86 @@
-(()=>{const en={label:"English",title:"Hexa Sort",shortTitle:"HEXA SORT",language:"Language",returnLobby:"Return to WeightPlay",back:"Back",kicker:"PANKO'S COLOR STACKS",summary:"Move hex tiles between stacks until every color forms a calm tower.",start:"Start game",guideTitle:"How to play",guideBody:"Tap a stack to lift its top hex. Tap an empty stack or a stack with the same color to place it. Three matching hexes clear a tower.",choose:"CHOOSE A GROVE",stageList:"Stage list",open:"Open grove",grove:"Grove {n}",progress:"{done}/30 cleared",locked:"Clear the previous grove first.",chapter:"CHAPTER {n}",remaining:"{n} hexes left",hint:"Hint",restart:"Restart",undo:"Undo",status:"Choose a stack to lift a hex.",complete:"GROVE CLEARED",resultTitle:"Every color is sorted!",resultBody:"Grove {n} cleared in {moves} moves.",retry:"Play again",next:"Next grove",colors:["coral","sky","sun","mint"]};const labels={en:"English","zh-Hant":"繁體中文","zh-Hans":"简体中文",ja:"日本語",ko:"한국어",es:"Español","pt-BR":"Português",fr:"Français",de:"Deutsch",it:"Italiano",ru:"Русский",hi:"हिन्दी",ar:"العربية"};window.HEXA_SORT_LOCALES=Object.fromEntries(Object.entries(labels).map(([k,label])=>[k,{...en,label}]));})()
+(()=>{
+  const en={
+    label:"English",
+    title:"Hexa Sort",
+    shortTitle:"HEXA SORT",
+    language:"Language",
+    returnLobby:"Return to WeightPlay",
+    back:"Back",
+    kicker:"PANKO'S COLOR STACKS",
+    summary:"Move hex tiles between stacks until every color forms a calm tower.",
+    start:"Start game",
+    guideTitle:"How to play",
+    guideBody:"Tap a stack to lift its top hex. Tap an empty stack or a stack with the same color to place it. Three matching hexes clear a tower.",
+    choose:"CHOOSE A GROVE",
+    stageList:"Stage list",
+    open:"Open grove",
+    grove:"Grove {n}",
+    progress:"{done}/30 cleared",
+    locked:"Clear the previous grove first.",
+    chapter:"CHAPTER {n}",
+    remaining:"{n} hexes left",
+    hint:"Hint",
+    restart:"Restart",
+    undo:"Undo",
+    status:"Choose a stack to lift a hex.",
+    complete:"GROVE CLEARED",
+    resultTitle:"Every color is sorted!",
+    resultBody:"Grove {n} cleared in {moves} moves.",
+    retry:"Play again",
+    next:"Next grove",
+    colors:["coral hex tile","sky blue hex tile","sun yellow hex tile","mint green hex tile"]
+  };
+  const zhHant={
+    ...en,
+    label:"繁體中文",
+    title:"六角堆疊",
+    shortTitle:"六角堆疊",
+    language:"語言",
+    returnLobby:"返回 WeightPlay",
+    back:"返回",
+    kicker:"胖達的繽紛堆塔",
+    summary:"在堆塔之間移動六角拼塊，讓每種顏色各自疊成整齊高塔。",
+    start:"開始遊戲",
+    guideTitle:"玩法說明",
+    guideBody:"點選堆塔拿起最上方的六角拼塊，再放到空堆塔或頂端顏色相同的堆塔。三個同色拼塊疊在一起即可消除。",
+    choose:"選擇花園",
+    stageList:"花園關卡列表",
+    open:"開啟花園",
+    grove:"花園 {n}",
+    progress:"已完成 {done}/30",
+    locked:"請先完成上一座花園。",
+    chapter:"第 {n} 章",
+    remaining:"剩餘 {n} 個六角拼塊",
+    hint:"提示",
+    restart:"重新開始",
+    undo:"復原",
+    status:"選擇一座堆塔，拿起最上方的六角拼塊。",
+    complete:"花園完成",
+    resultTitle:"所有顏色都整理好了！",
+    resultBody:"花園 {n} 已完成，共移動 {moves} 次。",
+    retry:"再玩一次",
+    next:"下一座花園",
+    colors:["珊瑚紅六角拼塊","天空藍六角拼塊","陽光黃六角拼塊","薄荷綠六角拼塊"]
+  };
+  const labels={
+    en:"English",
+    "zh-Hant":"繁體中文",
+    "zh-Hans":"简体中文",
+    ja:"日本語",
+    ko:"한국어",
+    es:"Español",
+    "pt-BR":"Português",
+    fr:"Français",
+    de:"Deutsch",
+    it:"Italiano",
+    ru:"Русский",
+    hi:"हिन्दी",
+    ar:"العربية"
+  };
+  window.HEXA_SORT_LOCALES=Object.fromEntries(
+    Object.entries(labels).map(([code,label])=>[
+      code,
+      code==="zh-Hant"?zhHant:{...en,label}
+    ])
+  );
+})();

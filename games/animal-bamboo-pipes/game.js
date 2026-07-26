@@ -85,19 +85,13 @@
     const rail = $("rail"); rail.innerHTML = "";
     for (let index = 0; index < 30; index++) {
       const locked = index >= save.unlocked, card = document.createElement("button");
-      card.className = `stage-card${index === selected ? " selected" : ""}${locked ? " locked" : ""}`;
-      card.disabled = locked;
+      card.className = `stage-card${index === selected ? " selected centered" : ""}${locked ? " locked" : ""}`;
       card.dataset.index = String(index);
       card.dataset.stageIndex = String(index);
       card.setAttribute("aria-current", index === selected ? "true" : "false");
+      card.setAttribute("aria-disabled", locked ? "true" : "false");
       card.innerHTML = `<small>${text("chapter", { n: Math.floor(index / 5) + 1 })}</small><h3>${text("waterway", { n: index + 1 })}</h3><p>${locked ? text("locked") : save.done[index] ? text("restored") : text("objective")}</p>`;
-      card.onclick = () => {
-        if (index !== selected) {
-          selectStage(index, true);
-          return;
-        }
-        if (!locked) startStage();
-      };
+      card.onclick = () => { selectStage(index, true); if (!locked) startStage(); };
       rail.append(card);
     }
     selectStage(selected, false);
@@ -111,9 +105,9 @@
     [...$("rail").children].forEach((card, cardIndex) => {
       const active = cardIndex === selected;
       card.classList.toggle("selected", active);
+      card.classList.toggle("centered", active);
       card.setAttribute("aria-current", active ? "true" : "false");
     });
-    $("enter").disabled = selected >= save.unlocked;
     if (center) centerStage(selected);
   }
   function renderBoard() {
@@ -192,7 +186,6 @@
     applyLocale();
   };
   $("start").onclick = () => { show("stage"); renderStages(); };
-  $("enter").onclick = startStage;
   document.querySelectorAll("[data-back]").forEach(button => { button.onclick = () => show($("battle").hidden ? "main" : "stage"); });
   $("undo").onclick = () => { const prior = run?.history.pop(); if (prior) { run.tiles.forEach((tile, i) => { tile.rot = prior[i]; }); run.moves--; renderBoard(); } };
   $("restart").onclick = startStage;

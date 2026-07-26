@@ -62,6 +62,7 @@
     mainBack: document.querySelector(".guardian-topbar .back-btn"),
     audioMenuBtn: $("audioMenuBtn"),
     audioPopover: $("audioPopover"),
+    settingsTitle: $("settingsTitle"),
     soundSettingLabel: $("soundSettingLabel"),
     soundStateText: $("soundStateText"),
     localeSelect: $("localeSelect"),
@@ -153,7 +154,7 @@
     en: {
       title: "Beast Guardian",
       language: "Language",
-      audioSettings: "Audio settings",
+      audioSettings: "Settings",
       soundEffects: "Sound Effects",
       backToLobby: "Back to WeightPlay General games",
       languageControl: "Language",
@@ -756,7 +757,7 @@
     Object.assign(text["zh-Hant"], {
       title: "獸王守衛",
       language: "語言",
-      audioSettings: "音訊設定",
+      audioSettings: "設定",
       soundEffects: "音效",
       backToLobby: "返回 WeightPlay 一般遊戲大廳",
       languageControl: "語言",
@@ -951,7 +952,7 @@
   text.es = {
     title: "Guardián de Bestias",
     language: "Idioma",
-    audioSettings: "Ajustes de audio",
+    audioSettings: "Configuración",
     soundEffects: "Efectos de sonido",
     backToLobby: "Volver a los juegos generales de WeightPlay",
     languageControl: "Idioma",
@@ -1389,7 +1390,6 @@
     if (nodes.soundStateText) nodes.soundStateText.textContent = t(state.soundEnabled ? "soundOn" : "soundOff");
     nodes.soundBtn.setAttribute("aria-pressed", String(state.soundEnabled));
     nodes.soundBtn.setAttribute("aria-label", `${t("soundEffects")}: ${t(state.soundEnabled ? "soundOn" : "soundOff")}`);
-    nodes.audioMenuBtn?.classList.toggle("is-muted", !state.soundEnabled);
   }
 
   function setAudioPopover(open, restoreFocus = false) {
@@ -1632,6 +1632,7 @@
     nodes.localeSelect.setAttribute("aria-label", t("languageControl"));
     nodes.audioMenuBtn?.setAttribute("aria-label", t("audioSettings"));
     nodes.audioPopover?.setAttribute("aria-label", t("audioSettings"));
+    if (nodes.settingsTitle) nodes.settingsTitle.textContent = t("audioSettings");
     nodes.stageBackBtn.setAttribute("aria-label", t("backToMain"));
     nodes.stageRail.setAttribute("aria-label", t("stageSelector"));
     nodes.stageTabs?.setAttribute("aria-label", t("stagePages"));

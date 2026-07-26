@@ -8,16 +8,24 @@
   function read(key){try{return localStorage.getItem(key)}catch{return null}}
   function write(key,value){try{localStorage.setItem(key,value)}catch{}}
   function t(key,vars={}){const value=window.NUMBER_MATCH_LOCALES[locale]?.[key]??window.NUMBER_MATCH_LOCALES.en[key]??key;return String(value).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??"")}
-  function show(id){screens.forEach(screen=>screen.hidden=screen.id!==id);document.body.dataset.screen=id;if(id==="stage")renderStages()}
+  function show(id){screens.forEach(screen=>screen.hidden=screen.id!==id);$("#generalReserve").hidden=id!=="battle";document.body.dataset.screen=id;window.scrollTo(0,0);if(id==="stage")renderStages()}
+  function selectStage(index,center=false){
+    selected=Math.max(0,Math.min(29,index));
+    document.querySelectorAll("#stageGrid .stage-card").forEach((card,cardIndex)=>{
+      const active=cardIndex===selected;
+      card.classList.toggle("selected",active);card.classList.toggle("centered",active);card.setAttribute("aria-current",active?"true":"false");
+    });
+    if(center)document.querySelector(`#stageGrid [data-index="${selected}"]`)?.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});
+  }
   function renderStages(){
     $("#progress").textContent=t("progress",{done:Math.min(unlocked-1,30)});$("#stageGrid").innerHTML="";
     levels.forEach((item,index)=>{
       const button=document.createElement("button"),locked=index+1>unlocked;
-      button.className=`stage-card${index===selected?" selected":""}`;button.disabled=locked;
+      button.className=`stage-card${index===selected?" selected centered":""}${locked?" locked":""}`;button.dataset.index=index;button.dataset.stageIndex=index;button.setAttribute("aria-current",index===selected?"true":"false");button.setAttribute("aria-disabled",locked?"true":"false");
       button.innerHTML=`<strong>${t("grove",{n:index+1})}</strong><span>${item.rows} × ${item.cols}${locked?" · "+t("locked"):""}</span>`;
-      button.onclick=()=>{selected=index;renderStages()};$("#stageGrid").append(button);
+      button.onclick=()=>{selectStage(index,true);if(!locked)startLevel(index)};$("#stageGrid").append(button);
     });
-    requestAnimationFrame(()=>$("#stageGrid .selected")?.scrollIntoView({block:"nearest"}));
+    selectStage(selected);
   }
   function startLevel(index){
     selected=index;level=levels[index];values=level.cells.slice();picked=null;history=[];moves=0;
@@ -81,7 +89,7 @@
   }
   codes.forEach(code=>{const option=document.createElement("option");option.value=code;option.textContent=window.NUMBER_MATCH_LOCALES[code].label;$("#locale").append(option)});
   document.addEventListener("change",event=>{if(event.target.id!=="locale")return;locale=event.target.value;write("wp-locale",locale);try{window.WonderI18n?.setLocale?.(locale)}catch{}applyLocale()});
-  $("#start").onclick=()=>show("stage");$("#enter").onclick=()=>startLevel(selected);document.querySelectorAll("[data-back]").forEach(button=>button.onclick=()=>show(button.closest("#battle")?"stage":"main"));
+  $("#start").onclick=()=>show("stage");$("#stageGrid").addEventListener("wonder:stage-snap",event=>{const index=Number(event.detail?.index);if(Number.isInteger(index)&&index>=0)selectStage(index)});document.querySelectorAll("[data-back]").forEach(button=>button.onclick=()=>show(button.closest("#battle")?"stage":"main"));
   $("#undo").onclick=()=>{const last=history.pop();if(!last)return;values[last.a]=last.va;values[last.b]=last.vb;picked=null;moves=Math.max(0,moves-1);$("#status").textContent=t("undone");renderBoard()};
   $("#hint").onclick=hint;$("#shuffle").onclick=reorder;$("#restart").onclick=()=>startLevel(selected);
   $("#retry").onclick=()=>{$("#result").close();startLevel(selected)};$("#next").onclick=()=>{$("#result").close();selected===29?show("stage"):startLevel(selected+1)};
