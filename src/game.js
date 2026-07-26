@@ -550,10 +550,10 @@ dictionary.es = {
   upgrade_damage_name:"Goma afilada",upgrade_damage_desc:"Daño de arma +1",upgrade_cooldown_name:"Manos rápidas",upgrade_cooldown_desc:"Recarga de arma -15%",upgrade_double_name:"Lanzamiento doble",upgrade_double_desc:"Lanza 1 arma adicional",upgrade_sideShot_name:"Disparo lateral",upgrade_sideShot_desc:"Lanza 2 armas adicionales en diagonal",upgrade_burst_name:"Ráfaga de lanzamientos",upgrade_burst_desc:"Cada lanzamiento dispara una oleada adicional",upgrade_size_name:"Material gigante",upgrade_size_desc:"Tamaño de arma +20%",upgrade_wallHp_name:"Reparar muro",upgrade_wallHp_desc:"Restaura 12 de vida del muro",upgrade_coinMultiplier_name:"Bono de paga",upgrade_coinMultiplier_desc:"Monedas ganadas +35%",upgrade_pierce_name:"Lanzamiento penetrante",upgrade_pierce_desc:"Las armas atraviesan 1 enemigo más",upgrade_explode_name:"Material explosivo",upgrade_explode_desc:"Los golpes dañan a enemigos cercanos",upgrade_lifeSteal_name:"Espíritu guardián",upgrade_lifeSteal_desc:"Las derrotas restauran 3 de vida del muro",upgrade_slow_name:"Rugido de león",upgrade_slow_desc:"Los golpes pueden ralentizar brevemente",roar_label:"¡RUGIDO!",crit_label:"CRÍTICO"
 };
 
-const W = canvas.width;
-const H = canvas.height;
-const wallY = 1200;
-const heroY = 1432;
+let W = canvas.width;
+let H = canvas.height;
+let wallY = H * (1200 / 1688);
+let heroY = H * (1432 / 1688);
 const DATA = window.WONDER_DATA;
 const enemyFiles = DATA.assets.enemies;
 const imageSources = DATA.assets.images;
@@ -729,19 +729,54 @@ function restart() {
   startLevel(state.levelIndex);
 }
 
-const BATTLE_LOGICAL_WIDTH = 390;
-const BATTLE_LOGICAL_HEIGHT = 788;
+const BATTLE_PORTRAIT_WIDTH = 390;
+const BATTLE_PORTRAIT_HEIGHT = 788;
+const BATTLE_LANDSCAPE_WIDTH = 760;
+const BATTLE_LANDSCAPE_HEIGHT = 360;
+
+function useShortLandscapeBattle(width, height) {
+  return width / height >= 1.5 && height <= 500;
+}
+
+function syncBattleCanvasOrientation(shortLandscape) {
+  const nextWidth = shortLandscape ? 1520 : 950;
+  const nextHeight = shortLandscape ? 700 : 1688;
+  if (canvas.width === nextWidth && canvas.height === nextHeight) return;
+  const oldWidth = W;
+  const oldHeight = H;
+  const scalePoint = (point) => {
+    if (!point) return;
+    if (Number.isFinite(point.x)) point.x = point.x / oldWidth * nextWidth;
+    if (Number.isFinite(point.y)) point.y = point.y / oldHeight * nextHeight;
+  };
+  scalePoint(state?.hero);
+  for (const key of ["enemies", "projectiles", "bossProjectiles", "hits", "damageTexts"]) {
+    state?.[key]?.forEach(scalePoint);
+  }
+  canvas.width = nextWidth;
+  canvas.height = nextHeight;
+  W = nextWidth;
+  H = nextHeight;
+  wallY = H * (1200 / 1688);
+  heroY = H * (1432 / 1688);
+  if (state?.hero) state.hero.y = heroY;
+  canvas.dataset.orientation = shortLandscape ? "landscape" : "portrait";
+}
 
 function updateBattleShell() {
   if (!document.body.classList.contains("wonder-playing")) return;
   const width = Math.max(1, window.innerWidth);
   const height = Math.max(1, window.innerHeight);
+  const shortLandscape = useShortLandscapeBattle(width, height);
+  syncBattleCanvasOrientation(shortLandscape);
+  const logicalWidth = shortLandscape ? BATTLE_LANDSCAPE_WIDTH : BATTLE_PORTRAIT_WIDTH;
+  const logicalHeight = shortLandscape ? BATTLE_LANDSCAPE_HEIGHT : BATTLE_PORTRAIT_HEIGHT;
   const scale = Math.min(
-    Math.max(1, width) / BATTLE_LOGICAL_WIDTH,
-    Math.max(1, height) / BATTLE_LOGICAL_HEIGHT
+    Math.max(1, Math.min(width, 920)) / logicalWidth,
+    Math.max(1, height) / logicalHeight
   );
   document.documentElement.style.setProperty("--wonder-battle-scale", String(scale));
-  document.documentElement.style.setProperty("--wonder-battle-logical-width", `${width / scale}px`);
+  document.documentElement.style.setProperty("--wonder-battle-logical-width", `${Math.min(width, 920) / scale}px`);
   document.documentElement.style.setProperty("--wonder-battle-logical-height", `${height / scale}px`);
 }
 

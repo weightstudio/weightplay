@@ -1028,6 +1028,138 @@ body.snack-playing .wp-tutorial-button {
   }
 }
 
+@media (min-aspect-ratio: 3 / 2) and (max-height: 430px) {
+  body.snack-playing .snack-game {
+    display: grid !important;
+    grid-template-columns: 120px minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    gap: 8px;
+    padding: 6px 8px;
+  }
+
+  body.snack-playing .hud {
+    width: 120px;
+    height: 100%;
+    max-height: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    align-self: stretch;
+    gap: 6px;
+  }
+
+  body.snack-playing .hud > :is(button, div) {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    height: auto;
+  }
+
+  body.snack-playing .hud strong {
+    font-size: 1rem;
+  }
+
+  body.snack-playing .play-panel {
+    display: grid;
+    grid-template-columns: 504px minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, 1fr) auto !important;
+    align-content: center;
+    align-items: center;
+    justify-items: stretch;
+    gap: 8px;
+  }
+
+  body.snack-playing .board {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    width: 504px !important;
+    height: 340px !important;
+    max-width: 504px !important;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    grid-template-rows: repeat(7, minmax(0, 1fr));
+    gap: 5px;
+    padding: 10px;
+    place-self: center;
+  }
+
+  body.snack-playing .score-line {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: end;
+    min-height: 72px;
+    padding-inline: 5px;
+  }
+
+  body.snack-playing .hint {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: start;
+    min-height: 44px;
+    display: grid;
+    place-items: center;
+    padding: 6px;
+    font-size: 0.68rem;
+  }
+
+  body.snack-playing .result-card {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: auto;
+    align-content: center;
+    gap: 5px 8px;
+    padding: 8px;
+    overflow: hidden;
+  }
+
+  body.snack-playing .result-card > :is(strong, span, .result-stars, .skill-report) {
+    grid-column: 1 / -1;
+  }
+
+  body.snack-playing .result-card > strong {
+    font-size: 1.2rem;
+  }
+
+  body.snack-playing .result-card > span {
+    font-size: 0.78rem;
+    line-height: 1.2;
+  }
+
+  body.snack-playing .result-stars {
+    min-height: 26px;
+    font-size: 1.45rem;
+    line-height: 1;
+  }
+
+  body.snack-playing .skill-report {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 3px 8px;
+    padding: 6px 8px;
+  }
+
+  body.snack-playing .skill-report > strong,
+  body.snack-playing .skill-report > :is(.progress-message, .progress-note) {
+    grid-column: 1 / -1;
+  }
+
+  body.snack-playing .skill-report > :is(.skill-line, .progress-line) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 4px;
+    font-size: 0.72rem;
+  }
+
+  body.snack-playing .skill-report > :is(.progress-message, .progress-note) {
+    margin: 0;
+    font-size: 0.68rem;
+    line-height: 1.15;
+  }
+
+  body.snack-playing .result-card > :is(button, a) {
+    min-height: 44px;
+    padding: 5px;
+    font-size: 0.76rem;
+  }
+}
+
 @media (max-width: 390px) {
   .board {
     gap: 4px;

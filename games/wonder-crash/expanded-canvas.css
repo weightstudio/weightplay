@@ -179,6 +179,18 @@ body.wonder-stage-select .menu-tabs span {
 }
 
 @media (min-aspect-ratio: 3 / 2) and (max-height: 500px) {
+  body.wonder-playing #game {
+    bottom: 0;
+    width: 760px;
+    height: 350px;
+    aspect-ratio: 76 / 35;
+  }
+
+  body.wonder-playing #settingsBtn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
   body.wonder-stage-select #overlay {
     gap: 6px;
     padding: 8px 24px 96px;

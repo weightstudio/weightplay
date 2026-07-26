@@ -5,6 +5,8 @@
   const STAGE_LANDSCAPE_HEIGHT = 360;
   const BATTLE_LOGICAL_WIDTH = 390;
   const BATTLE_LOGICAL_HEIGHT = 788;
+  const BATTLE_LANDSCAPE_WIDTH = 760;
+  const BATTLE_LANDSCAPE_HEIGHT = 360;
   const DESKTOP_CANVAS_MAX_WIDTH = 920;
 
   function syncCanonicalBrowserTitle() {
@@ -78,9 +80,12 @@
       availableWidth / stageMinimumWidth,
       height / stageMinimumHeight
     );
+    const useBattleLandscape = availableWidth / height >= 1.5 && height <= 500;
+    const battleMinimumWidth = useBattleLandscape ? BATTLE_LANDSCAPE_WIDTH : BATTLE_LOGICAL_WIDTH;
+    const battleMinimumHeight = useBattleLandscape ? BATTLE_LANDSCAPE_HEIGHT : BATTLE_LOGICAL_HEIGHT;
     const battleScale = Math.min(
-      availableWidth / BATTLE_LOGICAL_WIDTH,
-      height / BATTLE_LOGICAL_HEIGHT
+      availableWidth / battleMinimumWidth,
+      height / battleMinimumHeight
     );
     const stageLogicalWidth = availableWidth / stageScale;
     const stageLogicalHeight = height / stageScale;

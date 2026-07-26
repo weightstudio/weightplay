@@ -1,0 +1,19 @@
+@media (max-width: 680px) {
+  .scene-header {
+    grid-template-columns: 54px minmax(0, 1fr) max-content;
+    gap: 6px;
+  }
+
+  .scene-header h2 {
+    overflow: visible;
+    font-size: 1rem;
+    line-height: 1.08;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
+  .scene-header > span {
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+}

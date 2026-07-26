@@ -1,7 +1,7 @@
 (function () {
   const GAME_ID = "snack-blocks";
-  const columns = 7;
-  const rows = 10;
+  let columns = 7;
+  let rows = 10;
   const matchClearDuration = 360;
   const dropSettleDuration = 360;
   const snacks = ["ST", "CK", "JM", "GR", "CH", "PR"];
@@ -1236,7 +1236,17 @@
     const frameLeft = Math.max(0, (layoutWidth - viewportWidth) / 2);
     const shell = document.querySelector(".snack-game");
     shell?.classList.remove("weightplay-active-viewport");
-    const scale = Math.min(Math.max(1, viewportWidth) / 390, Math.max(1, viewportHeight) / 788);
+    const shortLandscape = viewportWidth / viewportHeight >= 1.5 && viewportHeight <= 430;
+    const nextColumns = shortLandscape ? 10 : 7;
+    const nextRows = shortLandscape ? 7 : 10;
+    const boardOrientationChanged = columns !== nextColumns || rows !== nextRows;
+    columns = nextColumns;
+    rows = nextRows;
+    nodes.board.dataset.columns = String(columns);
+    nodes.board.dataset.rows = String(rows);
+    const baseWidth = shortLandscape ? 760 : 390;
+    const baseHeight = shortLandscape ? 350 : 788;
+    const scale = Math.min(Math.max(1, viewportWidth) / baseWidth, Math.max(1, viewportHeight) / baseHeight);
     const logicalWidth = viewportWidth / scale;
     const logicalHeight = viewportHeight / scale;
     document.documentElement.style.setProperty("--snack-frame-scale", String(scale));
@@ -1262,6 +1272,10 @@
       shell.dataset.logicalWidth = logicalWidth.toFixed(4);
       shell.dataset.logicalHeight = logicalHeight.toFixed(4);
       shell.dataset.commonScale = scale.toFixed(6);
+    }
+    if (boardOrientationChanged && state.running && !state.busy && state.board.length === columns * rows) {
+      clearBoardPointer();
+      renderBoard();
     }
   }
 
@@ -1400,7 +1414,8 @@
     showStage(state.currentStageIndex);
     const shell = document.querySelector(".snack-game");
     shell?.setAttribute("data-play-viewport", "");
-    for (const property of ["position", "inset", "left", "top", "width", "height", "min-height", "transform", "transform-origin"]) shell?.style.removeProperty(property);
+    updateSnackFrame();
+    requestAnimationFrame(updateSnackFrame);
     window.WonderAnalytics?.track("game_menu", { game_id: GAME_ID });
   }
 

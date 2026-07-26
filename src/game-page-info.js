@@ -572,7 +572,7 @@
       ],
       strategyTips: ["Scan previews by corners or rows.", "Treat a mismatch as useful location information on classic boards.", "After Gust or Parade movement, rebuild a small mental map instead of trusting every old position.", "Replay finished challenges for stars without risking saved unlocks."],
       designNote:
-        "The game grows through changing memory demands rather than a stressful countdown. A fixed 390 by 788 canvas keeps the board stable across devices, native buttons support touch and keyboard play, mismatches remain visible long enough to learn from, and hidden-page time pauses feedback. Preview, Mist, Gust, and Parade each ask for a different kind of recall while preserving calm Kids play.",
+        "The game grows through changing memory demands rather than a stressful countdown. Stage and Battle fill the safe viewport with one uniformly scaled responsive Canvas, switching to a compatible short-landscape envelope when needed. Native buttons support touch and keyboard play, mismatches remain visible long enough to learn from, and hidden-page time pauses feedback. Preview, Mist, Gust, and Parade each ask for a different kind of recall while preserving calm Kids play.",
       parent:
         "Pet Garden Tiles is intended for ages 6+ and family play. Stars and the Skill Report summarize only the current local run; they are not an intelligence test, diagnosis, developmental assessment, or comparison with other children. The Kids build has no ads, login, chat, or purchase request.",
       faq: [
@@ -1628,7 +1628,7 @@
         systems: ["步數與星星：步數計算完整的兩張牌嘗試。較少嘗試可取得更多星星，但任何完成的牌面都能前進，也不會降低舊有最佳成績。", "晨光預覽：開始時短暫顯示全部圖片，適合練習依照角落或列數掃描。", "花園薄霧：若沒有選第二張牌，第一張會在溫和的時間窗後蓋回；整關仍然沒有倒數。", "調皮微風：失誤的可見提示結束後，只會洗動尚未完成的牌。", "花園遊行：成功配對後，其餘牌會沿空位輪轉，需要跟著移動更新記憶位置。"],
         progression: ["1-5 嫩芽小徑：四至八組配對教真正的蓋牌記憶，最後以預覽檢查點收尾。", "6-10 晨光溫室：開場預覽搭配較大牌面，鼓勵規律掃描。", "11-15 薄霧池塘：第一張牌只短暫保持翻開，練習保存最新圖像。", "16-20 微風果園：失誤會移動未配對牌，舊位置不能一直沿用。", "21-25 動物遊行：成功後牌面輪轉，需要追蹤移動。", "26-30 月光花房：多種規則組合，最後是 14 組配對、四規則同時出現的檢查點。"],
         strategyTips: ["預覽時依角落或橫列分組記憶。", "經典關卡的失誤仍是有用的位置資訊。", "微風或遊行移動後，先重建一小區記憶地圖。", "重玩舊關可改善星星，不會失去已解鎖進度。"],
-        designNote: "本作用不同記憶要求增加難度，而不是加入緊張倒數。固定 390×788 畫布讓手機與電腦的牌面位置穩定；原生按鈕支援觸控和鍵盤，失誤圖案保留足夠時間，切到背景時也會暫停提示時間。預覽、薄霧、微風與遊行分別練習不同的觀察方式，同時維持 Kids 遊戲的平靜節奏。",
+        designNote: "本作用不同記憶要求增加難度，而不是加入緊張倒數。關卡與遊戲畫面使用單一等比例縮放的響應式畫布填滿安全視窗，短橫向螢幕會切換到相容的橫向邏輯範圍。原生按鈕支援觸控和鍵盤，失誤圖案保留足夠時間，切到背景時也會暫停提示時間。預覽、薄霧、微風與遊行分別練習不同的觀察方式，同時維持 Kids 遊戲的平靜節奏。",
         parent: "本作適合 6+ 與親子遊玩。星星與技能報告只整理本次本機遊戲的配對、步數、重試和星星，不是智力測驗、診斷、發展評估，也不會和其他孩子比較。Kids 版本沒有廣告、登入、聊天或購買要求。",
         faq: [["共有多少挑戰？", "共有六篇 30 關，檢查點位於第 5、10、15、20、25、30 關。"], ["遊戲有倒數嗎？", "沒有。花園薄霧只會讓單次第一張牌在短暫時間後蓋回。"], ["為什麼後期卡牌會移動？", "調皮微風會在失誤後移動未完成牌；花園遊行則在成功後輪轉。"], ["星星怎麼計算？", "依完整兩張牌嘗試次數計算；只要清完牌面就能繼續。"], ["進度會保存嗎？", "已解鎖關卡與最佳星星會保存在目前瀏覽器。"], ["手機和鍵盤都能玩嗎？", "可以，牌卡使用支援觸控、滑鼠與鍵盤的原生按鈕。"], ["需要付費或會顯示廣告嗎？", "不需要帳號或購買；Kids 版本也不會發出廣告請求。"], ["技能報告是正式測驗嗎？", "不是，只是本次完成關卡的遊戲摘要。"]],
       },
@@ -4460,7 +4460,7 @@
       "微风或游行移动后，先重建一小区记忆地图。",
       "重玩旧关可改善星星，不会失去已解锁进度。"
     ],
-    "designNote": "本作用不同记忆要求增加难度，而不是加入紧张倒数。固定 390×788 画布让手机与电脑的牌面位置稳定；原生按钮支援触控和键盘，失误图案保留足够时间，切到背景时也会暂停提示时间。预览、薄雾、微风与游行分别练习不同的观察方式，同时维持 Kids 游戏的平静节奏。",
+    "designNote": "本作用不同记忆要求增加难度，而不是加入紧张倒数。关卡与游戏画面使用单一等比例缩放的响应式画布填满安全视窗，短横向屏幕会切换到兼容的横向逻辑范围。原生按钮支持触控和键盘，失误图案保留足够时间，切到背景时也会暂停提示时间。预览、薄雾、微风与游行分别练习不同的观察方式，同时维持 Kids 游戏的平静节奏。",
     "parent": "本作适合 6+ 与亲子游玩。星星与技能报告只整理本次本机游戏的配对、步数、重试和星星，不是智力测验、诊断、发展评估，也不会和其他孩子比较。Kids 版本没有广告、登入、聊天或购买要求。",
     "faq": [
       [
@@ -7657,4 +7657,33 @@
     faq: [["有多少幅馬賽克？", "共有 30 幅手工設計的馬賽克。"], ["需要靠猜測嗎？", "不需要。每幅馬賽克都只有一個正確解答。"], ["進度會儲存嗎？", "會。完成紀錄與解鎖進度會儲存在此瀏覽器。"]]
   };
   localizedGameplayProfiles["zh-Hant"]["animal-mosaic-clues"] = { gameplay: "數織馬賽克推理", genre: ["益智", "策略", "動物"] };
+  games["animal-skyspire-drop"] = {
+    title: "Animal Skyspire Drop", difficulty: "Moderate", time: "2-6 minutes per descent", gameplay: "Rotating Tower Arcade", genre: ["Arcade", "Action", "Animal"], skills: ["Reaction", "Focus", "Hand-Eye Coordination"],
+    guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", hideScoreBands: true,
+    intro: "Rotate crystal rings to guide Fia through thirty skyspires, line up safe openings, and build a Comet Break before cursed sectors end the descent.",
+    story: ["Fia travels inside a comet sphere through a chain of unstable skyspires. Each cleared tower restores one section of the high-altitude route and brings the rescue gate closer."],
+    systems: ["Drag across the tower or use Left and Right to rotate every ring together. A turquoise platform is safe; a violet cursed sector ends the run unless a shield or charged Comet Break protects Fia.", "Consecutive gap descents charge Comet Break. Sky shards and stars from cleared towers save locally and can improve control, shields, and other optional Comet Forge upgrades."],
+    how: ["Choose an unlocked skyspire from the horizontal tower rail.", "Rotate the ring so an opening or safe turquoise platform reaches Fia before the next landing.", "Keep a chain of clean descents to charge Comet Break, then continue to the rescue gate."],
+    strategyTips: ["Use a short safe bounce when you need time to read the next ring instead of forcing every fall.", "A long gap chain builds power quickly, but the next landing arrives faster; plan the following opening before committing.", "Save a shield or charged Comet Break for a crowded cursed segment rather than using it on a simple ring."],
+    progression: ["Thirty authored skyspires span six chapters. Later towers add fragile glass, drifting rings, reversed controls, charge crystals, shield gates, and Crownfall layouts that combine earlier rules."],
+    designNote: "Every tower keeps the same direct rotation control while changing ring timing and hazards, so challenge comes from reading the next landing rather than learning a new input scheme.",
+    parent: "No account is required. Stars, best times, sky shards, and upgrades are stored locally in this browser. Clearing site storage or switching browsers may create a separate save.",
+    faq: [["How many skyspires are there?", "There are 30 authored skyspires across six chapters."], ["What charges Comet Break?", "Passing through consecutive openings builds the charge. A full charge can break through one danger."], ["Does progress save?", "Yes. Cleared towers, stars, best times, sky shards, and Comet Forge upgrades save locally."]]
+  };
+  gameplayProfiles["animal-skyspire-drop"] = { gameplay: "Rotating Tower Arcade", genre: ["Arcade", "Action", "Animal"] };
+  localizedGames["zh-Hant"]["animal-skyspire-drop"] = {
+    ...games["animal-skyspire-drop"],
+    title: "動物天塔墜擊", difficulty: "中等", time: "每次墜降 2–6 分鐘", gameplay: "旋轉高塔街機挑戰", genre: ["街機", "動作", "動物"], skills: ["反應", "專注", "手眼協調"],
+    guideKicker: "WeightPlay 原創遊戲指南", guideTitleSuffix: "遊戲指南",
+    intro: "旋轉水晶環塔，引導 Fia 穿越 30 座天塔，對準安全缺口，並在詛咒區域終止墜降前累積彗星破擊。",
+    story: ["Fia 乘著彗星護罩穿越一連串不穩定的天塔。每通過一座塔，就會修復高空路線的一段，離救援之門更近一步。"],
+    systems: ["在高塔上拖曳，或使用左右方向鍵，同時旋轉所有環塔。青綠色平台安全；紫色詛咒區域會結束本次挑戰，除非護盾或已充能的彗星破擊保護 Fia。", "連續穿過缺口會為彗星破擊充能。完成高塔可獲得的天空碎片與星星會儲存在本機，並可用於提升操控、護盾和其他彗星工坊升級。"],
+    how: ["從水平天塔軌道選擇已解鎖的關卡。", "旋轉環塔，讓缺口或安全的青綠色平台在下一次落地前移到 Fia 下方。", "維持連續安全墜降來充能彗星破擊，並前往救援之門。"],
+    strategyTips: ["需要時間判讀下一環時，先落在短距離安全平台，不必勉強每次都穿越缺口。", "長距離連續墜降充能較快，但下一次落地也更快；在行動前先規劃下一個缺口。", "把護盾或已充能的彗星破擊留給擁擠的詛咒區段，而不是簡單的環塔。"],
+    progression: ["30 座手工設計的天塔分為六個章節。後期會加入易碎玻璃、漂移環塔、反向控制、充能水晶、護盾閘門，以及結合所有規則的王冠墜落塔。"],
+    designNote: "每座塔都維持直接的旋轉操作，再透過環塔時機與危險配置改變挑戰；難度來自判讀下一次落地，而非學習新的控制方式。",
+    parent: "不需要帳號。星星、最佳時間、天空碎片與升級都儲存在此瀏覽器；清除網站資料或使用其他瀏覽器可能會建立新的進度。",
+    faq: [["共有多少座天塔？", "六個章節共有 30 座手工設計的天塔。"], ["如何為彗星破擊充能？", "連續穿過缺口即可累積充能；充滿後可突破一次危險。"], ["進度會儲存嗎？", "會。完成的天塔、星星、最佳時間、天空碎片與彗星工坊升級都會儲存在本機。"]]
+  };
+  localizedGameplayProfiles["zh-Hant"]["animal-skyspire-drop"] = { gameplay: "旋轉高塔街機挑戰", genre: ["街機", "動作", "動物"] };
 })();

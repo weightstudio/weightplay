@@ -13,7 +13,7 @@
     "animal-skybridge-rivals": [".battle-canvas", 390, 788, 760, 334],
     "animal-skyspire-drop": [".battle-canvas", 390, 788, 760, 334],
     "animal-rift-salvage": [".battle-canvas", 390, 788, 760, 334],
-    "animal-cafe-rush": ["#playPanel", 382, 780],
+    "animal-cafe-rush": ["#playPanel", 382, 780, 760, 360],
     "animal-crystal-survivor": ["#gamePanel", 382, 780],
     "animal-gearpack-expedition": [".battle-canvas", 390, 788],
     "animal-guard-yard": ["#playPanel", 390, 450],
@@ -46,10 +46,10 @@
     "garden-tiles": [".garden-game", 382, 780, 760, 350],
     "shadow-wolf": [".game-layout", 390, 788],
     "shape-train": ["#playPanel", 362, 710],
-    "snack-blocks": [".snack-game", 382, 780],
+    "snack-blocks": [".snack-game", 382, 780, 760, 350],
     "star-memory": [".memory-game", 382, 780],
     "tiny-weather-rescue": [".weather-game", 366, 764],
-    "wonder-crash": [".game-shell", 390, 788],
+    "wonder-crash": [".game-shell", 390, 788, 760, 360],
     "zoo-helper-day": [".zoo-game", 374, 776],
   };
   const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1] || "";
