@@ -745,6 +745,7 @@
       guideTitleSuffix: "30-Stage Campaign Guide",
       noteTitle: "Player and Save Information",
       hideScoreBands: true,
+      showSkills: false,
       intro:
         "Animal Crystal Survivor is a 30-stage real-time patrol campaign built around movement, automatic attacks, temporary upgrades, readable hazards, and six original animal Bosses. Every route lasts up to three minutes and has a named rule, key target, and saved unlock.",
       story: [

@@ -154,6 +154,10 @@
       else node.removeAttribute("aria-hidden");
     });
     result.hidden = !open;
+    if (open) {
+      battle.scrollTop = 0;
+      result.scrollTop = 0;
+    }
   }
   function updateMainProgress() {
     $("mainProgress").textContent = `${text("waterway", { n: Math.min(save.unlocked, 30) })} / 30`;
@@ -173,6 +177,9 @@
     $("publicGuide").setAttribute("aria-label", text("guideTitle"));
     updateMainProgress();
     renderStages();
+    if (!$("result").hidden && run) {
+      $("resultText").textContent = text("resultText", { moves: run.moves, n: selected + 1 });
+    }
   }
   CODES.forEach(code => { const option = document.createElement("option"); option.value = code; option.textContent = window.BAMBOO_LOCALES[code].label; $("locale").append(option); });
   $("locale").value = locale;

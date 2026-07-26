@@ -79,6 +79,7 @@
 #result[hidden]{display:none!important;pointer-events:none!important}
 #result:not([hidden]){display:grid;top:0!important;right:0!important;bottom:auto!important;left:0!important;transform:none!important}
 #result img{height:110px}
+#result .eyebrow{color:#245f4b}
 #result>div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:min(100%,560px);margin:12px auto 0}
 #result button{min-height:48px;min-width:0}
 
@@ -106,7 +107,7 @@
 
 @media(max-height:500px) and (orientation:landscape){
   .battle-objective{height:24px;padding:3px 8px;font-size:.7rem}
-  #result:not([hidden]){top:10px!important}
+  #result:not([hidden]){top:0!important}
   #result{place-content:start center;padding:10px}
   #result img{height:70px}
   #result>div{grid-template-columns:repeat(3,minmax(0,1fr));position:sticky;bottom:0}

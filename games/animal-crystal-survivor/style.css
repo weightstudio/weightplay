@@ -1320,6 +1320,11 @@ body.crystal-playing .upgrade-card-wrap { max-height: 100%; overflow-y: auto; }
   text-align: center;
 }
 
+.brand-title p,
+.weightplay-version-badge {
+  display: none !important;
+}
+
 .settings-control {
   position: relative;
   z-index: 80;
@@ -1505,6 +1510,145 @@ body.crystal-playing .settings-control {
   }
 }
 
+/* Canonical Main: one 920px ownership boundary, square poster, concise copy. */
+html:has(body:not(.crystal-playing):not(.crystal-stage-select)),
+body:not(.crystal-playing):not(.crystal-stage-select) {
+  height: auto;
+  min-height: 100%;
+  overflow-y: auto;
+  overscroll-behavior-y: auto;
+}
+
+body:not(.crystal-playing):not(.crystal-stage-select) .crystal-app {
+  grid-template-rows: auto auto;
+  width: min(100%, 920px);
+  max-width: 920px;
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+}
+
+body:not(.crystal-playing):not(.crystal-stage-select) .menu-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+  grid-template-rows: auto;
+  align-items: stretch;
+  gap: 16px;
+  overflow: visible;
+}
+
+body:not(.crystal-playing):not(.crystal-stage-select) .cover {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+body:not(.crystal-playing):not(.crystal-stage-select) .menu-copy {
+  align-content: center;
+  gap: 16px;
+  min-height: 0;
+  padding: 24px;
+  overflow: visible;
+}
+
+.main-progress {
+  display: grid;
+  place-items: center;
+  min-height: 44px;
+  border: 1px solid rgba(183, 244, 215, 0.34);
+  border-radius: 10px;
+  color: #fff9c4;
+  background: rgba(4, 24, 22, 0.56);
+  font-size: 14px;
+  font-weight: 1000;
+}
+
+#startBtn {
+  min-height: 52px;
+}
+
+.game-page-info {
+  width: min(calc(100% - 24px), 920px) !important;
+  max-width: 920px !important;
+  margin-inline: auto !important;
+}
+
+/* Stage owns campaign records and equipment; Main never exposes run internals. */
+.stage-panel {
+  grid-template-rows: 56px minmax(0, 1fr) 56px;
+}
+
+.stage-workspace,
+.stage-page {
+  min-width: 0;
+  min-height: 0;
+}
+
+.stage-page {
+  display: grid;
+  grid-template-rows: 62px minmax(0, 1fr) 38px;
+  gap: 8px;
+  height: 100%;
+}
+
+.equipment-page {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  height: 100%;
+  min-height: 0;
+  padding: 8px;
+  overflow-y: auto;
+}
+
+.equipment-page > * {
+  width: min(100%, 640px);
+  margin-inline: auto;
+}
+
+.stage-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  min-height: 56px;
+}
+
+.stage-tab {
+  min-width: 0;
+  min-height: 52px;
+  color: #d9f8e7;
+  border: 1px solid rgba(183, 244, 215, 0.28);
+  background: rgba(4, 22, 20, 0.92);
+}
+
+.stage-tab.is-active {
+  color: #183a2c;
+  border-color: #67e8a5;
+  background: linear-gradient(180deg, #a7f3d0, #67e8a5);
+  box-shadow: 0 0 0 2px rgba(103, 232, 165, 0.2);
+}
+
+body.crystal-stage-select #stagePanel {
+  width: min(100%, 920px);
+}
+
+@media (max-width: 699px) {
+  body:not(.crystal-playing):not(.crystal-stage-select) .menu-panel {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  body:not(.crystal-playing):not(.crystal-stage-select) .menu-copy {
+    gap: 10px;
+    padding: 14px;
+  }
+
+  body:not(.crystal-playing):not(.crystal-stage-select) .menu-copy strong {
+    font-size: 22px;
+  }
+}
+
 @media (orientation: landscape) {
   body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .canvas-wrap {
     width: min(100%, 366px, calc((var(--crystal-vh, 100dvh) - 68px) * 32 / 55)) !important;
@@ -1515,11 +1659,6 @@ body.crystal-playing .settings-control {
 /* Result belongs to the active Battle canvas and replaces its live controls in-place. */
 body.crystal-playing .weightplay-version-badge {
   display: none !important;
-}
-
-/* Keep the Main version visible without pinning it over the long public guide. */
-html body:not(.crystal-playing) .weightplay-version-badge {
-  position: absolute !important;
 }
 
 body.crystal-playing #gamePanel.game-panel > .battle-live {

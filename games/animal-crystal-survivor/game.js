@@ -34,7 +34,12 @@
     settingsPopover: $("settingsPopover"),
     soundStateText: $("soundStateText"),
     menuPanel: $("menuPanel"),
+    mainProgress: $("mainProgress"),
     stagePanel: $("stagePanel"),
+    stagePage: $("stagePage"),
+    equipmentPage: $("equipmentPage"),
+    stageTabBtn: $("stageTabBtn"),
+    equipmentTabBtn: $("equipmentTabBtn"),
     gamePanel: $("gamePanel"),
     upgradePanel: $("upgradePanel"),
     resultPanel: $("resultPanel"),
@@ -90,6 +95,9 @@
       soundOff: "Sound off",
       menuTitle: "Survive the Crystal Grove.",
       menuHint: "Goal: collect golden keys before 3:00. Crystals give XP, and upgrades help the ranger survive longer.",
+      mainProgress: "Stages cleared {cleared} / 30",
+      stageTab: "Stages",
+      equipmentTab: "Equipment",
       expeditionRecordTitle: "Expedition Record",
       expeditionRecordText: "Best {keys} keys · Highest level {level} · {runs} runs",
       patrolRankTitle: "Patrol Rank: {rank}",
@@ -198,6 +206,9 @@
       soundOff: "\u97f3\u6548\u95dc\u9589",
       menuTitle: "\u5728\u7d50\u6676\u68ee\u6797\u4e2d\u751f\u5b58\u4e0b\u53bb\u3002",
       menuHint: "\u76ee\u6a19\uff1a\u5728 3:00 \u4e4b\u524d\u6536\u96c6\u91d1\u9470\u3002\u6c34\u6676\u6703\u589e\u52a0\u7d93\u9a57\uff0c\u5347\u7d1a\u53ef\u4ee5\u8b93\u5de1\u5b88\u54e1\u6490\u5f97\u66f4\u4e45\u3002",
+      mainProgress: "\u5df2\u901a\u95dc {cleared} / 30",
+      stageTab: "\u95dc\u5361",
+      equipmentTab: "\u88dd\u5099",
       expeditionRecordTitle: "\u63a2\u96aa\u7d00\u9304",
       expeditionRecordText: "\u6700\u4f73 {keys} \u628a\u91d1\u9470 \u00b7 \u6700\u9ad8 {level} \u7d1a \u00b7 \u5df2\u5b8c\u6210 {runs} \u6b21\u9060\u5f81",
       patrolRankTitle: "\u5de1\u5b88\u968e\u7d1a\uff1a{rank}",
@@ -308,6 +319,24 @@
   text.en.mainStart = "Start Game";
   text["zh-Hant"].mainStart = "\u958b\u59cb\u904a\u6232";
   text.es.mainStart = "Comenzar juego";
+  Object.entries({
+    en: ["Stages cleared {cleared} / 30", "Stages", "Equipment"],
+    "zh-Hant": ["\u5df2\u901a\u95dc {cleared} / 30", "\u95dc\u5361", "\u88dd\u5099"],
+    "zh-Hans": ["\u5df2\u901a\u5173 {cleared} / 30", "\u5173\u5361", "\u88c5\u5907"],
+    ja: ["\u30af\u30ea\u30a2 {cleared} / 30", "\u30b9\u30c6\u30fc\u30b8", "\u88c5\u5099"],
+    ko: ["\uc644\ub8cc\ud55c \uc2a4\ud14c\uc774\uc9c0 {cleared} / 30", "\uc2a4\ud14c\uc774\uc9c0", "\uc7a5\ube44"],
+    es: ["Niveles superados {cleared} / 30", "Niveles", "Equipo"],
+    pt: ["Fases conclu\u00eddas {cleared} / 30", "Fases", "Equipamento"],
+    fr: ["Niveaux termin\u00e9s {cleared} / 30", "Niveaux", "\u00c9quipement"],
+    de: ["Abgeschlossene Stufen {cleared} / 30", "Stufen", "Ausr\u00fcstung"],
+    it: ["Livelli completati {cleared} / 30", "Livelli", "Equipaggiamento"],
+    ru: ["\u041f\u0440\u043e\u0439\u0434\u0435\u043d\u043e {cleared} / 30", "\u042d\u0442\u0430\u043f\u044b", "\u0421\u043d\u0430\u0440\u044f\u0436\u0435\u043d\u0438\u0435"],
+    hi: ["\u092a\u0942\u0930\u0947 \u0939\u0941\u090f \u0938\u094d\u091f\u0947\u091c {cleared} / 30", "\u0938\u094d\u091f\u0947\u091c", "\u0909\u092a\u0915\u0930\u0923"],
+    ar: ["\u0627\u0644\u0645\u0631\u0627\u062d\u0644 \u0627\u0644\u0645\u0643\u062a\u0645\u0644\u0629 {cleared} / 30", "\u0627\u0644\u0645\u0631\u0627\u062d\u0644", "\u0627\u0644\u0645\u0639\u062f\u0627\u062a"],
+  }).forEach(([code, labels]) => {
+    text[code] ||= {};
+    [text[code].mainProgress, text[code].stageTab, text[code].equipmentTab] = labels;
+  });
 
   const assetPaths = {
     arena: "../../assets/animal-crystal-survivor-forest-arena.webp",
@@ -515,6 +544,28 @@
     renderPatrolRank();
   }
 
+  function renderMainProgress() {
+    if (!nodes.mainProgress) return;
+    nodes.mainProgress.textContent = t("mainProgress", { cleared: save.completedStages.length });
+  }
+
+  function setStagePage(page = "stages") {
+    const equipmentOpen = page === "equipment";
+    nodes.stagePage?.classList.toggle("hidden", equipmentOpen);
+    nodes.equipmentPage?.classList.toggle("hidden", !equipmentOpen);
+    nodes.stageTabBtn?.classList.toggle("is-active", !equipmentOpen);
+    nodes.equipmentTabBtn?.classList.toggle("is-active", equipmentOpen);
+    nodes.stageTabBtn?.setAttribute("aria-pressed", String(!equipmentOpen));
+    nodes.equipmentTabBtn?.setAttribute("aria-pressed", String(equipmentOpen));
+    if (equipmentOpen) {
+      nodes.stageSelectTitle.textContent = t("equipmentTab");
+      renderExpeditionRecord();
+      updateDiamondShop();
+    } else {
+      renderStageSelector(false);
+    }
+  }
+
   function patrolRankFor(totalKeys = 0) {
     const total = Math.max(0, Number(totalKeys) || 0);
     let index = 0;
@@ -659,6 +710,7 @@
     nodes.settingsPopover?.setAttribute("aria-label", t("audioSettings"));
     updatePageMeta();
     nodes.localeSelect.value = requested;
+    renderMainProgress();
     renderExpeditionRecord();
     renderHud(true);
     updateDiamondShop();
@@ -874,6 +926,7 @@
     setUpgradeModalOpen(false, false);
     state.mode = "stage";
     show(nodes.stagePanel);
+    setStagePage("stages");
     renderStageSelector(shouldScroll);
     requestAnimationFrame(() => nodes.stageRail.querySelector(".stage-card.is-selected")?.focus({ preventScroll: true }));
   }
@@ -958,6 +1011,7 @@
     prepareSmokeCombatDemo();
     save.playCount += 1;
     persist();
+    renderMainProgress();
     renderExpeditionRecord();
     show(nodes.gamePanel);
     window.WeightPlayGame?.exitMobileGameMode?.();
@@ -2063,8 +2117,11 @@
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });
   nodes.startBtn.addEventListener("click", () => showStageSelection(true));
+  nodes.stageTabBtn?.addEventListener("click", () => setStagePage("stages"));
+  nodes.equipmentTabBtn?.addEventListener("click", () => setStagePage("equipment"));
   nodes.stageBackBtn.addEventListener("click", () => {
     state.mode = "menu";
+    renderMainProgress();
     show(nodes.menuPanel);
     nodes.startBtn.focus({ preventScroll: true });
   });

@@ -40,7 +40,6 @@ window.WONDER_LOBBY = {
       "animal-number-match",
       "animal-sunbeam-garden",
       "animal-bus-jam",
-      "animal-block-grove",
       "animal-unblock",
       "animal-hexa-sort",
     ],
@@ -51,7 +50,8 @@ window.WONDER_LOBBY = {
       title: { en: "Unblock Trail", "zh-Hant": "解鎖滑塊", "zh-Hans": "解锁滑块", ja: "アンブロック・トレイル", ko: "언블록 트레일", es: "Ruta de Desbloqueo", "pt-BR": "Trilha Desbloqueio", fr: "Piste Unblock", de: "Unblock-Pfad", it: "Sentiero Unblock", ru: "Тропа Unblock", hi: "अनब्लॉक ट्रेल", ar: "مسار فك الحجب" },
       status: "planned", statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "곧 출시", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
       type: { en: "Sliding Block Puzzle", "zh-Hant": "滑塊益智", "zh-Hans": "滑块益智", ja: "スライドパズル", ko: "슬라이딩 퍼즐", es: "Puzle de bloques", "pt-BR": "Puzzle de blocos", fr: "Puzzle de blocs", de: "Schiebepuzzle", it: "Puzzle a scorrimento", ru: "Пятнашки", hi: "स्लाइडिंग पहेली", ar: "لغز الكتل المنزلقة" },
-      categories: ["Animal Games", "Puzzle", "Strategy"], skills: ["Planning", "Spatial Reasoning"], ages: ["9", "family"], href: "games/animal-unblock/index.html?trial=1", internalTrial: "index.html?trial=1", cover: "assets/animal-unblock-cover.svg",
+      categories: ["Animal Games", "Puzzle", "Strategy"], skills: ["Planning", "Spatial Reasoning"], ages: ["9", "family"], href: "games/animal-unblock/", internalTrial: "index.html?trial=1",
+      art: { kind: "image", background: "assets/animal-unblock-cover-general-v3.webp", hideHero: true },
       description: { en: "Slide the blocks and guide Panko out through the gate across 30 trails, with thousands of deterministic layouts.", "zh-Hant": "滑動木塊讓 Panko 從出口離開，挑戰 30 個關卡與數千種布局。", "zh-Hans": "滑动木块让 Panko 从出口离开，挑战 30 个关卡与数千种布局。", ja: "ブロックを動かしてPankoを出口へ。30ステージと数千の配置。", ko: "블록을 움직여 Panko를 출구로 보내세요. 30개 스테이지와 수천 가지 배치.", es: "Mueve los bloques y guía a Panko a la salida en 30 rutas.", "pt-BR": "Mova os blocos e leve Panko à saída em 30 trilhas.", fr: "Faites glisser les blocs et guidez Panko vers la sortie.", de: "Schiebe Blöcke und führe Panko zum Ausgang.", it: "Sposta i blocchi e guida Panko all'uscita.", ru: "Двигай блоки и выведи Панко к выходу.", hi: "ब्लॉक खिसकाकर पांको को निकास तक पहुंचाएं।", ar: "حرّك الكتل وأوصل بانكو إلى المخرج." },
       meta: { en: "30 trails · 6×6 board · thousands of layouts", "zh-Hant": "30 關 · 6×6 棋盤 · 數千布局", "zh-Hans": "30 关 · 6×6 棋盘 · 数千布局", ja: "30ステージ · 6×6 · 数千配置", ko: "30 스테이지 · 6×6 · 수천 배치", es: "30 rutas · tablero 6×6 · miles de diseños", "pt-BR": "30 trilhas · tabuleiro 6×6 · milhares de layouts", fr: "30 pistes · plateau 6×6 · milliers de layouts", de: "30 Pfade · 6×6-Brett · tausende Layouts", it: "30 percorsi · tavola 6×6 · migliaia di layout", ru: "30 трасс · поле 6×6 · тысячи раскладок", hi: "30 ट्रेल · 6×6 बोर्ड · हजारों लेआउट", ar: "30 مسارًا · لوحة 6×6 · آلاف التخطيطات" }
     },
@@ -60,7 +60,8 @@ window.WONDER_LOBBY = {
       title: { en: "Hexa Sort", "zh-Hant": "六角分類", "zh-Hans": "六角分类", ja: "ヘキサソート", ko: "헥사 정렬", es: "Hexa Sort", "pt-BR": "Hexa Sort", fr: "Hexa Sort", de: "Hexa Sort", it: "Hexa Sort", ru: "Hexa Sort", hi: "हेक्सा सॉर्ट", ar: "فرز سداسي" },
       status: "planned", statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "곧 출시", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
       type: { en: "Hex Color Sorting", "zh-Hant": "六角顏色分類", "zh-Hans": "六角颜色分类", ja: "六角カラーソート", ko: "육각 색상 정렬", es: "Clasificación hexagonal", "pt-BR": "Classificação hexagonal", fr: "Tri hexagonal", de: "Hex-Farbsortierung", it: "Ordine esagonale", ru: "Сортировка hex", hi: "हेक्सा रंग छंटाई", ar: "فرز ألوان سداسي" },
-      categories: ["Animal Games", "Puzzle", "Relaxing"], skills: ["Planning", "Sorting"], ages: ["9", "family"], href: "games/animal-hexa-sort/index.html?trial=1", internalTrial: "index.html?trial=1", cover: "assets/animal-hexa-sort-cover.svg",
+      categories: ["Animal Games", "Puzzle", "Relaxing"], skills: ["Planning", "Sorting"], ages: ["9", "family"], href: "games/animal-hexa-sort/", internalTrial: "index.html?trial=1",
+      art: { kind: "image", background: "assets/animal-hexa-sort-cover-general-v3.webp", hideHero: true },
       description: { en: "Sort soothing colored hex tiles into matching towers across 30 calm groves.", "zh-Hant": "將舒服的彩色六角形分類成同色高塔，完成 30 個庭園。", "zh-Hans": "将舒服的彩色六角形分类成同色高塔，完成 30 个庭园。", ja: "色付き六角タイルを同色の塔へ。30の庭園を攻略。", ko: "색 육각 타일을 같은 색 탑으로 정렬하세요.", es: "Ordena hexágonos de colores en torres iguales.", "pt-BR": "Separe hexágonos coloridos em torres iguais.", fr: "Triez les hexagones colorés en tours assorties.", de: "Sortiere farbige Hex-Fliesen in passende Türme.", it: "Ordina gli esagoni colorati in torri abbinate.", ru: "Сортируй цветные hex-плитки по башням.", hi: "रंगीन हेक्सा टाइलों को मिलती टावरों में लगाएं।", ar: "رتب البلاطات السداسية الملونة في أبراج متطابقة." },
       meta: { en: "30 groves · 3–4 colors · no timer", "zh-Hant": "30 庭園 · 3–4 色 · 無計時", "zh-Hans": "30 庭园 · 3–4 色 · 无计时", ja: "30庭園 · 3–4色 · タイマーなし", ko: "30 정원 · 3–4색 · 타이머 없음", es: "30 jardines · 3–4 colores · sin tiempo", "pt-BR": "30 jardins · 3–4 cores · sem cronômetro", fr: "30 jardins · 3–4 couleurs · sans chrono", de: "30 Haine · 3–4 Farben · ohne Timer", it: "30 giardini · 3–4 colori · senza timer", ru: "30 садов · 3–4 цвета · без таймера", hi: "30 गार्डन · 3–4 रंग · बिना टाइमर", ar: "30 حديقة · 3–4 ألوان · بلا مؤقت" }
     },
@@ -68,10 +69,11 @@ window.WONDER_LOBBY = {
       id: "animal-bus-jam",
       title: { en: "Panko's Bus Jam", "zh-Hant": "Panko 公車大塞車", "zh-Hans": "Panko 公交大塞车", ja: "Pankoのバスジャム", ko: "Panko 버스 잼", es: "Atasco de buses de Panko", "pt-BR": "Engarrafamento de ônibus do Panko", fr: "Bus Jam de Panko", de: "Pankos Bus-Chaos", it: "Bus Jam di Panko", ru: "Автобусная пробка Панко", hi: "पांको बस जाम", ar: "ازدحام حافلات بانكو" },
       status: "planned",
-      statusText: { en: "Coming Soon", "zh-Hant": "即將推出", "zh-Hans": "即将推出", ja: "近日公開", ko: "곧 출시", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
+      statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "곧 출시", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
       type: { en: "Queue Strategy", "zh-Hant": "排隊策略", "zh-Hans": "排队策略", ja: "行列ストラテジー", ko: "대기열 전략", es: "Estrategia de colas", "pt-BR": "Estratégia de filas", fr: "Stratégie de files", de: "Warteschlangen-Strategie", it: "Strategia delle file", ru: "Стратегия очередей", hi: "कतार रणनीति", ar: "استراتيجية الطوابير" },
       categories: ["Animal Games", "Puzzle", "Strategy"], skills: ["Planning", "Logic"], ages: ["9", "family"],
-      href: "games/animal-bus-jam/index.html?trial=1", internalTrial: "index.html?trial=1", cover: "assets/animal-bus-jam-cover.svg",
+      href: "games/animal-bus-jam/", internalTrial: "index.html?trial=1",
+      art: { kind: "image", background: "assets/animal-bus-jam-cover-general-v3.webp", hideHero: true },
       description: { en: "Board every passenger onto the matching bus across 30 stops.", "zh-Hant": "將乘客送上對應顏色的公車，完成 30 個站點。", "zh-Hans": "将乘客送上对应颜色的公交车，完成 30 个站点。", ja: "乗客を同じ色のバスへ送り、30の停留所を攻略。", ko: "승객을 같은 색 버스에 태우며 30개 정류장을 공략하세요.", es: "Sube a cada pasajero al bus correcto en 30 paradas.", "pt-BR": "Leve cada passageiro ao ônibus certo em 30 pontos.", fr: "Faites monter chaque passager dans le bon bus sur 30 arrêts.", de: "Bringe Fahrgäste an 30 Haltestellen in den richtigen Bus.", it: "Porta ogni passeggero sul bus giusto in 30 fermate.", ru: "Посади пассажиров в нужные автобусы на 30 остановках.", hi: "30 स्टॉप पर हर यात्री को सही बस में बैठाएं।", ar: "أوصل كل راكب إلى الحافلة المطابقة عبر 30 محطة." },
       meta: { en: "30 stops · 3 colors · plan the queue", "zh-Hant": "30 個站點 · 3 種顏色 · 規劃隊列", "zh-Hans": "30 个站点 · 3 种颜色 · 规划队列", ja: "30ステージ · 3色 · 行列計画", ko: "30 스테이지 · 3색 · 대기열 계획", es: "30 paradas · 3 colores · planifica la fila", "pt-BR": "30 pontos · 3 cores · planeje a fila", fr: "30 arrêts · 3 couleurs · planifiez la file", de: "30 Haltestellen · 3 Farben · plane die Schlange", it: "30 fermate · 3 colori · pianifica la fila", ru: "30 остановок · 3 цвета · планируй очередь", hi: "30 स्टॉप · 3 रंग · कतार की योजना", ar: "30 محطة · 3 ألوان · خطط للطابور" }
     },
@@ -95,7 +97,7 @@ window.WONDER_LOBBY = {
         ru: "Головоломка с солнечными зеркалами", hi: "सूर्य दर्पण पहेली", ar: "لغز مرايا ضوء الشمس",
       },
       categories: ["Animal Games", "Puzzle", "Strategy"], skills: ["Logic", "Planning"], ages: ["9", "family"],
-      href: "games/animal-sunbeam-garden/index.html?trial=1", internalTrial: "index.html?trial=1",
+      href: "games/animal-sunbeam-garden/", internalTrial: "index.html?trial=1",
       description: {
         en: "Rotate mirrors, trace a real sunbeam cell by cell, and wake each plant across 30 gardens.",
         "zh-Hant": "旋轉鏡子，逐格追蹤真正的陽光，在 30 座花園喚醒植物。",
@@ -120,7 +122,7 @@ window.WONDER_LOBBY = {
         ru: ["30 садов", "Настоящий луч", "Поворот зеркал"], hi: ["30 बगीचे", "असली किरण", "दर्पण घुमाएँ"],
         ar: ["30 حديقة", "شعاع حقيقي", "تدوير المرايا"],
       },
-      art: { kind: "image", background: "assets/animal-sunbeam-garden-cover.svg", hideHero: true },
+      art: { kind: "image", background: "assets/animal-sunbeam-garden-cover-general-v2.webp", hideHero: true },
     },
     {
       id: "animal-number-match",
@@ -143,7 +145,7 @@ window.WONDER_LOBBY = {
         ru: "Головоломка с парами чисел", hi: "नंबर मिलान पहेली", ar: "لغز مطابقة الأرقام",
       },
       categories: ["Animal Games", "Puzzle", "Strategy"], skills: ["Logic", "Planning"], ages: ["9", "family"],
-      href: "games/animal-number-match/index.html?trial=1", internalTrial: "index.html?trial=1",
+      href: "games/animal-number-match/", internalTrial: "index.html?trial=1",
       description: {
         en: "Clear equal numbers or pairs that add to ten, opening sight lines across 30 calm groves.",
         "zh-Hant": "消除相同或相加等於 10 的數字，在 30 座悠閒花園中打開配對視線。",
@@ -168,7 +170,7 @@ window.WONDER_LOBBY = {
         ru: ["30 рощ", "Равны или сумма 10", "Без таймера"], hi: ["30 उपवन", "समान या जोड़ 10", "बिना समय सीमा"],
         ar: ["30 بستانًا", "متساويان أو المجموع 10", "دون مؤقت"],
       },
-      art: { kind: "image", background: "assets/animal-number-match-cover.svg", hideHero: true },
+      art: { kind: "image", background: "assets/animal-number-match-cover-general-v2.webp", hideHero: true },
     },
     {
       id: "animal-tangram",
@@ -186,7 +188,9 @@ window.WONDER_LOBBY = {
         ko: "탱그램 퍼즐", es: "Puzle de tangram", "pt-BR": "Quebra-cabeça tangram", fr: "Puzzle tangram",
         de: "Tangram-Rätsel", it: "Puzzle tangram", ru: "Головоломка танграм", hi: "टैंग्राम पहेली", ar: "لغز تانغرام",
       },
-      categories: ["Animal Games", "Puzzle"], skills: ["Spatial Reasoning", "Planning"], ages: ["9", "family"], href: "games/animal-tangram/index.html?trial=1", internalTrial: "index.html?trial=1",
+      categories: ["Animal Games", "Puzzle"], skills: ["Spatial Reasoning", "Planning"], ages: ["9", "family"],
+      ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", ja: "9+", ko: "9+", es: "9+", "pt-BR": "9+", fr: "9+", de: "9+", it: "9+", ru: "9+", hi: "9+", ar: "9+" },
+      href: "games/animal-tangram/", internalTrial: "index.html?trial=1",
       description: {
         en: "Move and rotate seven bright pieces to rebuild animal silhouettes across 30 shapes.",
         "zh-Hant": "移動並旋轉七片明亮形狀，在 30 個拼圖中重組動物輪廓。",
@@ -205,7 +209,7 @@ window.WONDER_LOBBY = {
         ru: ["Семь деталей", "Двигайте и вращайте", "Силуэты животных"], hi: ["सात टुकड़े", "खींचें और घुमाएँ", "जानवरों की आकृतियाँ"],
         ar: ["سبع قطع", "سحب وتدوير", "هيئات حيوانات"],
       },
-      art: { kind: "image", background: "assets/animal-tangram-cover.svg", hideHero: true },
+      art: { kind: "image", background: "assets/animal-tangram-cover-kids-v2.webp", hideHero: true },
     },
     {
       id: "animal-color-link",
@@ -228,7 +232,8 @@ window.WONDER_LOBBY = {
         it: "Puzzle collega colori", ru: "Головоломка с цветными линиями", hi: "रंग जोड़ने की पहेली", ar: "لغز وصل الألوان",
       },
       categories: ["Animal Games", "Puzzle"], skills: ["Logic", "Spatial Reasoning"], ages: ["9", "family"],
-      href: "games/animal-color-link/index.html?trial=1", internalTrial: "index.html?trial=1",
+      ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", ja: "9+", ko: "9+", es: "9+", "pt-BR": "9+", fr: "9+", de: "9+", it: "9+", ru: "9+", hi: "9+", ar: "9+" },
+      href: "games/animal-color-link/", internalTrial: "index.html?trial=1",
       description: {
         en: "Connect matching garden seeds without crossing paths, then fill every tile.",
         "zh-Hant": "連接相同顏色的花種，路線不能交叉，並填滿每一格。",
@@ -253,7 +258,7 @@ window.WONDER_LOBBY = {
         ru: ["Цветные линии", "Без пересечений", "Полное поле"], hi: ["रंगीन रास्ते", "कोई कटाव नहीं", "पूरा बोर्ड"],
         ar: ["مسارات ملونة", "دون تقاطع", "لوحة كاملة"],
       },
-      art: { kind: "image", background: "assets/animal-color-link-cover.svg", hideHero: true },
+      art: { kind: "image", background: "assets/animal-color-link-cover-kids-v2.webp", hideHero: true },
     },
     {
       id: "animal-bamboo-pipes",
@@ -279,7 +284,7 @@ window.WONDER_LOBBY = {
       skills: ["Logic", "Planning", "Spatial Reasoning"],
       ages: ["9", "family"],
       ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", ja: "9+", ko: "9+", es: "9+", "pt-BR": "9+", fr: "9+", de: "9+", it: "9+", ru: "9+", hi: "9+", ar: "9+" },
-      href: "games/animal-bamboo-pipes/index.html?trial=1",
+      href: "games/animal-bamboo-pipes/",
       internalTrial: "index.html?trial=1",
       description: {
         en: "Turn Panko's bamboo pipes, carry water through every segment, and bring the flowering grove back to life.",
@@ -305,7 +310,7 @@ window.WONDER_LOBBY = {
         ru: ["30 каналов", "Поворот труб", "Без таймера"], hi: ["30 नहरें", "पाइप घुमाएँ", "समय सीमा नहीं"],
         ar: ["30 مجرى", "تدوير الأنابيب", "دون مؤقت"],
       },
-      art: { kind: "image", background: "assets/animal-bamboo-pipes-cover.webp", hideHero: true },
+      art: { kind: "image", background: "assets/animal-bamboo-pipes-cover-general-v2.webp", hideHero: true },
     },
     {
       id: "animal-triple-match",
@@ -353,7 +358,7 @@ window.WONDER_LOBBY = {
         de: ["30 Stufen", "Sieben Plätze", "Sechs Kapitel"], it: ["30 livelli", "Sette spazi", "Sei capitoli"], ru: ["30 уровней", "Семь ячеек", "Шесть глав"],
         hi: ["30 चरण", "सात खाने", "छह अध्याय"], ar: ["30 مرحلة", "سبع خانات", "ستة فصول"],
       },
-      art: { kind: "image", background: "assets/animal-triple-match-cover.png", hideHero: true },
+      art: { kind: "image", background: "assets/animal-triple-match-cover-general-v2.webp", hideHero: true },
     },
     {
       id: "wonder-crash",
@@ -532,7 +537,7 @@ window.WONDER_LOBBY = {
       title: { en: "Animal 2048: Forest Evolution", "zh-Hant": "動物 2048：森林進化" },
       status: "playable",
       statusText: { en: "Playable", "zh-Hant": "立即遊玩" },
-      href: "games/animal-2048/index.html?trial=1",
+      href: "games/animal-2048/",
       type: { en: "Grid Merge Strategy", "zh-Hant": "格子合併策略" },
       categories: ["Animal Games", "Puzzle", "Strategy"],
       skills: ["Logic", "Problem Solving", "Focus"],
@@ -850,7 +855,7 @@ window.WONDER_LOBBY = {
         "pt-BR": "Bosque de Blocos Animais",
         de: "Tierischer Blöcke-Wald",
       },
-      status: "planned",
+      status: "playable",
       statusText: { en: "Playable", "zh-Hant": "立即遊玩", "zh-Hans": "立即游玩", es: "Jugar", ja: "今すぐ遊ぶ", ko: "지금 플레이", "pt-BR": "Jogar", de: "Jetzt spielen" },
       type: {
         en: "Block Placement Puzzle", "zh-Hant": "方塊配置益智", "zh-Hans": "方块放置益智",
@@ -861,7 +866,7 @@ window.WONDER_LOBBY = {
       skills: ["Logic", "Problem Solving", "Focus"],
       ages: ["9", "family"],
       ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", es: "9+", ja: "9+", ko: "9+", "pt-BR": "9+", de: "9+" },
-      href: "games/animal-block-grove/index.html?trial=1",
+      href: "games/animal-block-grove/",
       description: {
         en: "Place three animal block groups, clear complete rows and columns, and restore 30 forest habitats or continue in Infinite Grove.",
         "zh-Hant": "配置三組動物方塊、消除完整橫列與直行，修復 30 座森林棲地，或挑戰無限森林。",
