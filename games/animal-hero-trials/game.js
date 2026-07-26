@@ -718,6 +718,13 @@
 
   function updateHud() {
     $("#hpFill").style.width = `${Math.max(0, (run.hp / run.maxHp) * 100)}%`;
+    const healthBar = $(".health");
+    const healthLabel = localizedValue("Health", "生命", "Salud");
+    healthBar.setAttribute("role", "progressbar");
+    healthBar.setAttribute("aria-valuemin", "0");
+    healthBar.setAttribute("aria-valuemax", String(run.maxHp));
+    healthBar.setAttribute("aria-valuenow", String(run.hp));
+    healthBar.setAttribute("aria-label", `${healthLabel}: ${run.hp} / ${run.maxHp}`);
     const skillName = locale === "zh-Hant"
       ? heroes[run.heroId].skill.zh
       : locale === "es"
