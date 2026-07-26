@@ -1341,6 +1341,7 @@
     damageFirst:(amount=20,source="auto")=>{ const enemy=run?.enemies[0]; return enemy?{applied:damageEnemy(enemy,amount,source),enemy:{...enemy}}:null; },
     forceRoomClear:()=>{ if(!run) return null; run.enemies=[]; if(run.room>=3) finish(true); else chooseBlessing(); return window.__heroTrialSmoke.snapshot(); },
     setCooldown:(value=0)=>{ if(!run) return null; run.cool=Math.max(0,Number(value)||0); updateHud(); return window.__heroTrialSmoke.snapshot(); },
+    setHealth:(value)=>{ if(!run) return null; run.hp=Math.max(0,Math.min(run.maxHp,Number(value)||0)); updateHud(); return window.__heroTrialSmoke.snapshot(); },
     snapshot: () => ({ pointer, moveTarget: moveTarget ? { ...moveTarget } : null, stick: { ...stick }, active: Boolean(run?.active), hp: run?.hp ?? null, cooldown: run?.cool ?? null, player: run ? { ...run.leo } : null, run:run?{stage:run.stage,room:run.room,checkpoint:run.definition.checkpoint,boss:run.definition.boss?.id||null}:null, unlocked,marks, enemies: run?.enemies.map((enemy) => ({ x: enemy.x, y: enemy.y, hp: enemy.hp,max:enemy.max,type:enemy.type,bossId:enemy.bossId||null,bossRule:enemy.bossRule||null,guard:enemy.guard||0,warning:enemy.warning||0,phase:enemy.phase||0 })) || [] })
   };
   localize();

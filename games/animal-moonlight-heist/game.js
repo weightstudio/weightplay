@@ -226,7 +226,17 @@
     ar:"\u0627\u0644\u0645\u0633\u062a\u0648\u0649 {n}",
   };
   function levelText(level){return(levelTemplates[locale]||levelTemplates.en).replace("{n}",level)}
-  const nodes={main:$("#mainScreen"),stage:$("#stageScreen"),battle:$("#battleScreen"),rail:$("#missionRail"),field:$("#playField"),fia:$("#fiaActor"),objective:$("#objectiveActor"),treasure:$("#treasureActor"),exit:$("#exitActor"),patrolLayer:$("#patrolLayer"),route:$("#routeLine"),feedback:$("#feedbackText"),fx:$("#feedbackFx"),alert:$("#alertFill"),modal:$("#resultModal")};
+  const nodes={main:$("#mainScreen"),stage:$("#stageScreen"),battle:$("#battleScreen"),rail:$("#missionRail"),field:$("#playField"),fia:$("#fiaActor"),objective:$("#objectiveActor"),treasure:$("#treasureActor"),exit:$("#exitActor"),patrolLayer:$("#patrolLayer"),route:$("#routeLine"),feedback:$("#feedbackText"),fx:$("#feedbackFx"),alertTrack:$(".alert-track"),alert:$("#alertFill"),modal:$("#resultModal")};
+  function updateAlertMeter(){
+    const value=Math.round(Math.max(0,Math.min(100,alert)));
+    nodes.alertTrack.setAttribute("role","progressbar");
+    nodes.alertTrack.setAttribute("aria-valuemin","0");
+    nodes.alertTrack.setAttribute("aria-valuemax","100");
+    nodes.alertTrack.setAttribute("aria-valuenow",String(value));
+    nodes.alertTrack.setAttribute("aria-label",t("alert"));
+    nodes.alertTrack.removeAttribute("aria-hidden");
+    nodes.alert.style.width=`${alert}%`;
+  }
   const leaveCopy={en:{title:"Leave this mission?",text:"Your current route is paused. Continue to keep playing, or return to Missions and leave this run.",continue:"Continue mission",leave:"Return to Missions"},"zh-Hant":{title:"離開這個任務？",text:"目前路線已暫停。繼續任務可保留本局，返回任務列表才會離開。",continue:"繼續任務",leave:"返回任務列表"},es:{title:"¿Salir de esta misión?",text:"La ruta actual está en pausa. Continúa para conservar la partida o vuelve a Misiones para salir.",continue:"Continuar misión",leave:"Volver a Misiones"}};
   leaveCopy.ru={title:"Покинуть задание?",text:"Текущий маршрут приостановлен. Продолжите игру или вернитесь к заданиям и завершите эту попытку.",continue:"Продолжить задание",leave:"Вернуться к заданиям"};
   let leaveWasPaused=false;
@@ -323,7 +333,7 @@
     insuranceActive=true;state.insuranceReady=true;save();economyMessage(t("insuranceReady"));renderEconomy();playSound("upgrade");
   }
   function t(key,vars={}){const owned=copy[locale]?.[key];let value=owned||copy.en[key]||key;value=owned?runtimeText(value):sharedText(value);Object.entries(vars).forEach(([k,v])=>value=value.replace(`{${k}}`,v));return value}
-  function localize(){if(window.WonderI18n?.locale?.()!==locale)window.WonderI18n?.setLocale?.(locale);document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";const internal=document.querySelector('meta[name="robots"]')?.content.includes("noindex");document.title=`${t("title")} - ${internal?"Internal Trial":"WeightPlay"}`;document.querySelectorAll("[data-i18n]").forEach(n=>n.textContent=t(n.dataset.i18n));$("#localeSelect").setAttribute("aria-label",t("languageLabel"));$(".main-poster").alt=t("posterAlt");$(".planner > img").alt=t("orlaAlt");nodes.rail.setAttribute("aria-label",t("missionRailLabel"));nodes.fia.alt=t("fiaAlt");$("#stageBackBtn").setAttribute("aria-label",t("stageBackLabel"));$("#battleBackBtn").setAttribute("aria-label",t("battleBackLabel"));renderSummary();renderStage();renderGadgets();renderEconomy();updateGadget();renderGadgetSummary();updatePauseControl();syncSoundToggle()}
+  function localize(){if(window.WonderI18n?.locale?.()!==locale)window.WonderI18n?.setLocale?.(locale);document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";const internal=document.querySelector('meta[name="robots"]')?.content.includes("noindex");document.title=`${t("title")} - ${internal?"Internal Trial":"WeightPlay"}`;document.querySelectorAll("[data-i18n]").forEach(n=>n.textContent=t(n.dataset.i18n));$("#localeSelect").setAttribute("aria-label",t("languageLabel"));$(".main-poster").alt=t("posterAlt");$(".planner > img").alt=t("orlaAlt");nodes.rail.setAttribute("aria-label",t("missionRailLabel"));nodes.fia.alt=t("fiaAlt");$("#stageBackBtn").setAttribute("aria-label",t("stageBackLabel"));$("#battleBackBtn").setAttribute("aria-label",t("battleBackLabel"));renderSummary();renderStage();renderGadgets();renderEconomy();updateGadget();renderGadgetSummary();updatePauseControl();updateAlertMeter();syncSoundToggle()}
   function stopBattleLoop(){if(animationFrame){cancelAnimationFrame(animationFrame);animationFrame=0}}
   function startBattleLoop(){if(!playing||paused||animationFrame)return;lastTime=performance.now();animationFrame=requestAnimationFrame(loop)}
   function show(name){document.body.dataset.screen=name;document.body.classList.toggle("wp-stage-select-active",name==="stage");document.documentElement.classList.toggle("wp-stage-select-active",name==="stage");nodes.main.hidden=name!=="main";nodes.stage.hidden=name!=="stage";nodes.battle.hidden=name!=="battle";if(name!=="battle"){playing=false;paused=false;stopBattleLoop();cancelPendingMovement();updatePauseControl()}}
@@ -405,7 +415,7 @@
     (m.safeZones||[]).forEach(([x,y,size])=>{const zone=document.createElement("span");zone.className="safe-zone";zone.style.left=`${x}%`;zone.style.top=`${y}%`;zone.style.setProperty("--zone-size",`${size*2}%`);zone.setAttribute("aria-hidden","true");nodes.patrolLayer.append(zone)});
     patrols=m.patrols.map((path,i)=>createPatrol(path,`../../assets/animal-moonlight-heist-patrol-${patrolArt[i%3]}.webp`,i*.23));
     if(m.guardian){const guardian=createPatrol(m.guardian.path,`../../assets/animal-moonlight-heist-guardian-${m.guardian.id}.webp`,.12,m.guardian);guardian.img.alt=campaignText(m.guardian.name);patrols.push(guardian)}
-    nodes.feedback.textContent=t("holdRoute");nodes.alert.style.width="0";$("#coinBattle").textContent=`${t("coins")}: ${state.coins}`;show("battle");playing=true;missionStartedAt=performance.now();playSound("start");startBattleLoop();
+    nodes.feedback.textContent=t("holdRoute");updateAlertMeter();$("#coinBattle").textContent=`${t("coins")}: ${state.coins}`;show("battle");playing=true;missionStartedAt=performance.now();playSound("start");startBattleLoop();
     requestAnimationFrame(()=>nodes.field.focus({preventScroll:true}));
   }
   function createPatrol(path,src,progress=0,guardian=null){
@@ -441,7 +451,7 @@
     else nodes.field.classList.remove("clock-surge");
     if(m.mirrorInterval){const cycle=Math.floor(elapsed/m.mirrorInterval),phase=elapsed%m.mirrorInterval;warning=warning||phase>=m.mirrorInterval-1;if(cycle>0&&cycle!==lastMirrorCycle){lastMirrorCycle=cycle;swapMissionMarkers()}if(phase>=m.mirrorInterval-1&&!preview)nodes.feedback.textContent=t("mirrorWarning")}
     const bellInterval=m.bellPulse||(m.guardian?.behavior==="bell"||m.guardian?.behavior==="eclipse"?5:0);
-    if(bellInterval){const cycle=Math.floor(elapsed/bellInterval),phase=elapsed%bellInterval;warning=warning||phase>=bellInterval-1;if(cycle>0&&cycle!==lastPulseCycle){lastPulseCycle=cycle;if(!inSafeZone()){alert=Math.min(100,alert+20);showFx("warning")}}if(phase>=bellInterval-1&&!preview)nodes.feedback.textContent=t("bellWarning")}
+    if(bellInterval){const cycle=Math.floor(elapsed/bellInterval),phase=elapsed%bellInterval;warning=warning||phase>=bellInterval-1;if(cycle>0&&cycle!==lastPulseCycle){lastPulseCycle=cycle;if(!inSafeZone()){alert=Math.min(100,alert+20);updateAlertMeter();showFx("warning")}}if(phase>=bellInterval-1&&!preview)nodes.feedback.textContent=t("bellWarning")}
     setGuardianWarning(warning);return speedFactor;
   }
   function patrolSightRadius(p,now){
@@ -457,7 +467,7 @@
       const m=activeMission(),speedFactor=updateMissionRules(now);
       patrols.forEach(p=>{p.progress+=dt*(.115+(m.speed||1)*.028)*speedFactor;if(p.progress>=1){p.progress=0;p.direction*=-1}updatePatrol(p);const radius=patrolSightRadius(p,now);p.sight.style.setProperty("--sight-size",`${radius*2}%`)});
       const seen=!inSafeZone()&&patrols.some(p=>distance(point(nodes.fia),point(p.img))<patrolSightRadius(p,now));
-      alert=Math.max(0,Math.min(100,alert+(seen?48:-(m.alertDecay||34))*dt));nodes.alert.style.width=`${alert}%`;if(alert>=100)fail();
+      alert=Math.max(0,Math.min(100,alert+(seen?48:-(m.alertDecay||34))*dt));updateAlertMeter();if(alert>=100)fail();
     }
     if(playing&&!paused)animationFrame=requestAnimationFrame(loop);
   }
@@ -468,13 +478,13 @@
     if(!objectFound&&distance(p,point(nodes.objective))<12){
       if(m.order==="treasure-first"&&!treasureFound){nodes.feedback.textContent=t("firstSeal");showFx("warning");return}
       objectFound=true;nodes.objective.hidden=true;nodes.exit.style.opacity=1;if(m.phaseExit)place(nodes.exit,m.phaseExit);
-      if(m.guardian?.behavior==="eclipse"){guardianPhase=2;patrols.forEach(p=>p.direction*=-1);alert=Math.max(alert,28)}
+      if(m.guardian?.behavior==="eclipse"){guardianPhase=2;patrols.forEach(p=>p.direction*=-1);alert=Math.max(alert,28);updateAlertMeter()}
       $("#objectiveLabel").textContent=t("extraction");showFx("pickup");nodes.feedback.textContent=t("found");playSound("success");
     }
     if(objectFound&&distance(p,point(nodes.exit))<13)win();
   }
   function showFx(type){nodes.fx.src=`../../assets/animal-moonlight-heist-fx-${type}.webp`;place(nodes.fx,point(nodes.fia));nodes.fx.hidden=false;nodes.fx.classList.remove("fx-show");void nodes.fx.offsetWidth;nodes.fx.classList.add("fx-show");setTimeout(()=>nodes.fx.hidden=true,650)}
-  function useGadget(){if(!playing||paused||gadget==="dash")return;const level=selectedOffer().level;if(gadget==="decoy"){freezeUntil=performance.now()+(2500+level*650);showFx("pickup")}else{alert=0;smokeUntil=performance.now()+(800+level*500);showFx("shadow")}playSound("shoot")}
+  function useGadget(){if(!playing||paused||gadget==="dash")return;const level=selectedOffer().level;if(gadget==="decoy"){freezeUntil=performance.now()+(2500+level*650);showFx("pickup")}else{alert=0;updateAlertMeter();smokeUntil=performance.now()+(800+level*500);showFx("shadow")}playSound("shoot")}
   function fail(){if(caught||performance.now()<smokeUntil)return;caught=true;playing=false;stopBattleLoop();if(insuranceActive&&treasureFound)preservedTreasure=true;insuranceActive=false;state.insuranceReady=false;save();showFx("warning");nodes.fia.classList.add("caught");playSound("wrong");openResult(false)}
   function win(){playing=false;stopBattleLoop();insuranceActive=false;state.insuranceReady=false;const m=activeMission(),medals=1+(!caught?1:0)+(treasureFound?1:0);const reward=20+selectedMission*4+(treasureFound?12:0)+(m.guardian?30:0);state.coins+=reward;state.cleared[selectedMission]=Math.max(state.cleared[selectedMission]||0,medals);state.unlocked=Math.max(state.unlocked,Math.min(campaign.length,selectedMission+2));state.safehouse=1+Math.floor(Object.keys(state.cleared).length/5);save();playSound("win");openResult(true,medals,reward)}
   function openResult(ok,medals=0,reward=0){
