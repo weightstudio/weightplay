@@ -1085,7 +1085,7 @@
     techBuy: "Mejorar",
     techBuyLabel: "Mejora {name} del Nv.{current} al Nv.{next}. {effect}. Cuesta {cost} punto de mejora. Saldo de {balance} a {result}.",
     techNeedLabel: "{name} del Nv.{current} al Nv.{next}. {effect}. Necesitas {cost} punto de mejora; saldo {balance}.",
-    techMaxLabel: "{name} está en el nivel máximo {max}. {effect}.",
+    techMaxLabel: "{name} está al máximo: {max}. {effect}.",
     techPowerEffect: "Bonificación de daño de héroes de {current}% a {next}%",
     techBulwarkEffect: "Bonificación de PV de defensores de {current} a {next}",
     techEconomyEffect: "Bonificación de monedas iniciales de {current} a {next}",
@@ -1305,9 +1305,31 @@
     ar: "المستوى",
   };
 
-  function battleLevelText(level) {
+  function localizedLevelText(level, minimum = 0) {
     const term = battleLevelTerms[state.locale] || battleLevelTerms.en;
-    return `${term} ${Math.max(1, Math.floor(Number(level) || 1))}`;
+    return `${term} ${Math.max(minimum, Math.floor(Number(level) || 0))}`;
+  }
+
+  function battleLevelText(level) {
+    return localizedLevelText(level, 1);
+  }
+
+  function techLevelText(level) {
+    return localizedLevelText(level);
+  }
+
+  function techLevelLabel(key, values) {
+    const markers = {
+      current: "__CURRENT_LEVEL__",
+      next: "__NEXT_LEVEL__",
+      max: "__MAX_LEVEL__",
+    };
+    let label = t(key, { ...values, ...markers });
+    label = label.replace(/(?:Lv|Nv|Niv)\.\s*__(CURRENT|NEXT|MAX)_LEVEL__/giu, "__$1_LEVEL__");
+    return label
+      .replaceAll(markers.current, techLevelText(values.current))
+      .replaceAll(markers.next, techLevelText(values.next))
+      .replaceAll(markers.max, techLevelText(values.max));
   }
 
   function localizedValue(values) {
@@ -1741,7 +1763,7 @@
       const card = document.createElement("div");
       card.className = "tech-card";
       const canBuy = level < tech.max && state.save.upgradePoints >= tech.cost;
-      card.innerHTML = `<strong>${t(tech.label)} ${level}/${tech.max}</strong><span>${t(tech.desc)}</span>`;
+      card.innerHTML = `<strong>${t(tech.label)} — ${techLevelText(level)} / ${tech.max}</strong><span>${t(tech.desc)}</span>`;
       const button = document.createElement("button");
       button.type = "button";
       button.className = canBuy ? "primary-btn" : "secondary-btn";
@@ -1759,10 +1781,10 @@
         result: Math.max(0, state.save.upgradePoints - tech.cost),
       };
       button.setAttribute("aria-label", level >= tech.max
-        ? t("techMaxLabel", labelData)
+        ? techLevelLabel("techMaxLabel", labelData)
         : canBuy
-          ? t("techBuyLabel", labelData)
-          : t("techNeedLabel", labelData));
+          ? techLevelLabel("techBuyLabel", labelData)
+          : techLevelLabel("techNeedLabel", labelData));
       button.addEventListener("keydown", (event) => {
         if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
       });
@@ -5505,6 +5527,43 @@
     return result;
   }
 
+  function runTechLevelLocalizationScenario() {
+    state.manualSimulation = true;
+    state.save = {
+      bestStage: 10,
+      diamonds: 20,
+      upgradePoints: 2,
+      tech: { power: 0, bulwark: 0, economy: 5 },
+      cosmetics: { goldenFrame: false },
+      clears: {},
+      stars: {},
+    };
+    updateProfile();
+    renderTech();
+    setScreen("tech");
+    const readCards = () => [...nodes.techGrid.querySelectorAll(".tech-card")]
+      .slice(0, techs.length)
+      .map((card) => ({
+        title: card.querySelector("strong")?.textContent || "",
+        label: card.querySelector("button")?.getAttribute("aria-label") || "",
+        disabled: Boolean(card.querySelector("button")?.disabled),
+      }));
+    const before = readCards();
+    nodes.techGrid.querySelector('[data-tech-id="power"]')?.click();
+    const result = {
+      locale: state.locale,
+      expectedZero: techLevelText(0),
+      expectedOne: techLevelText(1),
+      expectedFive: techLevelText(5),
+      before,
+      after: readCards(),
+      balance: state.save.upgradePoints,
+      power: state.save.tech.power,
+    };
+    state.manualSimulation = false;
+    return result;
+  }
+
   function runHitResponseScenario() {
     state.manualSimulation = true;
     state.save = {
@@ -6220,6 +6279,7 @@
       runSelectedActionStateScenario,
       runActionFeedbackScenario,
       runBattleLevelLocalizationScenario,
+      runTechLevelLocalizationScenario,
       runHitResponseScenario,
       runWaveClearFeedbackScenario,
       runSelectedBuildInfoScenario,

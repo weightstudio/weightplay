@@ -1,5 +1,9 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ko"] = {
+  "__$1_LEVEL__": "__$1_LEVEL__",
+  "__CURRENT_LEVEL__": "__현재_레벨__",
+  "__MAX_LEVEL__": "__MAX_LEVEL__",
+  "__NEXT_LEVEL__": "__다음_레벨__",
   "-{value} · ARM {value}": "-{value} · ARM {value}",
   "-{value}% DMG / {value} · {value}": "-{value}% 데미지 / {value} · {value}",
   "-12 SOL": "-12 솔",
@@ -756,6 +760,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "A successful route saves its clear and unlocks the next route; Run Again retries the current route.": "성공적인 경로는 클리어를 저장하고 다음 경로의 잠금을 해제합니다. Run Again은 현재 경로를 다시 시도합니다.",
   "A supportive Result offers Try Again or Stages without deleting unlocked progress.": "지원 결과는 잠금 해제된 진행 상황을 삭제하지 않고 다시 시도 또는 단계를 제공합니다.",
   "A tempting object can uncover a useful match—or bury the tray in singletons. Look for pairs, track the top layers, and keep one emergency slot open.": "유혹적인 물체는 유용한 성냥을 발견하거나 트레이를 싱글톤에 묻을 수 있습니다. 쌍을 찾고, 상위 레이어를 추적하고, 하나의 비상 슬롯을 열어 두십시오.",
+  "A tempting object can uncover a useful match. Keep one emergency slot open.": "유혹적인 물건은 유용한 짝을 찾아낼 수 있습니다. 하나의 비상 슬롯을 열어 두십시오.",
   "A ten-animal parade rewards careful ordered recall.": "10마리의 동물 퍼레이드는 신중하게 정렬된 회상을 보상합니다.",
   "A tile is free when nothing covers it and at least one side is open. Match two identical free tiles to clear the board.": "타일을 덮는 것이 없고 적어도 한 면이 열려 있으면 타일은 무료입니다. 두 개의 동일한 무료 타일을 일치시켜 보드를 클리어하세요.",
   "A tile needs no cover above and an open left or right side.": "타일에는 위에 덮개가 필요하지 않으며 왼쪽 또는 오른쪽이 열려 있어야 합니다.",
@@ -8118,6 +8123,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Opening the mosaic archive…": "모자이크 아카이브를 열다…",
   "Opening the Rootvault…": "루트볼트를 여는 중…",
   "Opening the skyspire…": "천공의 문을 열다…",
+  "Opening the treasure greenhouse": "보물온실 개장",
   "Opening the treasure greenhouse…": "보물온실 개장…",
   "Opens fast with simple touch controls.": "간단한 터치 컨트롤로 빠르게 열립니다.",
   "Opens now": "지금 열림",

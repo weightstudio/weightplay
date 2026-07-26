@@ -1,5 +1,9 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["hi"] = {
+  "__$1_LEVEL__": "__$1_स्तर__",
+  "__CURRENT_LEVEL__": "__वर्तमान_स्तर__",
+  "__MAX_LEVEL__": "__MAX_स्तर__",
+  "__NEXT_LEVEL__": "__अगला_स्तर__",
   "-{value} · ARM {value}": "-{value} · एआरएम {value}",
   "-{value}% DMG / {value} · {value}": "-{value}% डीएमजी / {value} · {value}",
   "-12 SOL": "-12 एसओएल",
@@ -756,6 +760,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "A successful route saves its clear and unlocks the next route; Run Again retries the current route.": "एक सफल मार्ग अपने स्पष्ट को बचाता है और अगले मार्ग को अनलॉक करता है; रन अगेन वर्तमान मार्ग को पुनः प्रयास करता है।",
   "A supportive Result offers Try Again or Stages without deleting unlocked progress.": "एक सहायक परिणाम अनलॉक की गई प्रगति को हटाए बिना पुनः प्रयास या चरण प्रदान करता है।",
   "A tempting object can uncover a useful match—or bury the tray in singletons. Look for pairs, track the top layers, and keep one emergency slot open.": "एक आकर्षक वस्तु एक उपयोगी मेल को उजागर कर सकती है - या ट्रे को सिंगलटन में दफन कर सकती है। जोड़ियों की तलाश करें, ऊपरी परतों पर नज़र रखें और एक आपातकालीन स्लॉट खुला रखें।",
+  "A tempting object can uncover a useful match. Keep one emergency slot open.": "एक आकर्षक वस्तु एक उपयोगी मेल को उजागर कर सकती है। एक आपातकालीन स्लॉट खुला रखें।",
   "A ten-animal parade rewards careful ordered recall.": "दस जानवरों की परेड सावधानीपूर्वक आदेशित याद दिलाने का पुरस्कार देती है।",
   "A tile is free when nothing covers it and at least one side is open. Match two identical free tiles to clear the board.": "एक टाइल तब स्वतंत्र होती है जब उसे कुछ भी नहीं ढकता है और कम से कम एक तरफ खुला होता है। बोर्ड को साफ़ करने के लिए दो समान निःशुल्क टाइलों का मिलान करें।",
   "A tile needs no cover above and an open left or right side.": "एक टाइल को ऊपर किसी आवरण की आवश्यकता नहीं होती है और बाएँ या दाएँ खुले होने की आवश्यकता नहीं होती है।",
@@ -8118,6 +8123,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Opening the mosaic archive…": "मोज़ेक संग्रह खोला जा रहा है...",
   "Opening the Rootvault…": "रूटवॉल्ट खुल रहा है...",
   "Opening the skyspire…": "गगनचुंबी इमारत खुल रही है...",
+  "Opening the treasure greenhouse": "खजाना ग्रीनहाउस खोलना",
   "Opening the treasure greenhouse…": "खज़ाना ग्रीनहाउस खोलना...",
   "Opens fast with simple touch controls.": "सरल स्पर्श नियंत्रण के साथ तेजी से खुलता है।",
   "Opens now": "अभी खुलता है",

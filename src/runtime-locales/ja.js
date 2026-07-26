@@ -1,5 +1,9 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ja"] = {
+  "__$1_LEVEL__": "__$1_レベル__",
+  "__CURRENT_LEVEL__": "__CURRENT_LEVEL__",
+  "__MAX_LEVEL__": "__MAX_LEVEL__",
+  "__NEXT_LEVEL__": "__NEXT_LEVEL__",
   "-{value} · ARM {value}": "-{value} · アーム {value}",
   "-{value}% DMG / {value} · {value}": "-{value}% ダメージ / {value} · {value}",
   "-12 SOL": "-12ソル",
@@ -756,6 +760,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "A successful route saves its clear and unlocks the next route; Run Again retries the current route.": "ルートが成功するとクリアが保存され、次のルートのロックが解除されます。 「再実行」は、現在のルートを再試行します。",
   "A supportive Result offers Try Again or Stages without deleting unlocked progress.": "サポート的な結果は、ロック解除された進行状況を削除せずに、再試行またはステージを提供します。",
   "A tempting object can uncover a useful match—or bury the tray in singletons. Look for pairs, track the top layers, and keep one emergency slot open.": "魅力的なオブジェクトは、有用な一致を発見することも、シングルトンでトレイを埋めることもできます。ペアを探し、最上位レイヤーを追跡し、緊急スロットを 1 つ開いておきます。",
+  "A tempting object can uncover a useful match. Keep one emergency slot open.": "魅力的なオブジェクトは、有用な一致を発見する可能性があります。緊急スロットを 1 つ開いておきます。",
   "A ten-animal parade rewards careful ordered recall.": "10 頭の動物のパレードは、注意深く順序立てて思い出させることに報います。",
   "A tile is free when nothing covers it and at least one side is open. Match two identical free tiles to clear the board.": "何も覆われておらず、少なくとも片面が開いている場合、タイルはフリーです。 2 つの同じフリー タイルをマッチさせてボードをクリアします。",
   "A tile needs no cover above and an open left or right side.": "タイルには上部をカバーする必要がなく、左側または右側が開いている必要はありません。",
@@ -8118,6 +8123,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Opening the mosaic archive…": "モザイク アーカイブを開くと…",
   "Opening the Rootvault…": "ルートボルトを開くと…",
   "Opening the skyspire…": "天空の尖塔を開くと…",
+  "Opening the treasure greenhouse": "宝物温室の開放",
   "Opening the treasure greenhouse…": "宝物温室を開けると…",
   "Opens fast with simple touch controls.": "シンプルなタッチ操作で素早く開きます。",
   "Opens now": "ただいまオープン中",

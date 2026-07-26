@@ -1,5 +1,9 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["es"] = {
+  "__$1_LEVEL__": "__$1_LEVEL__",
+  "__CURRENT_LEVEL__": "__CURRENT_LEVEL__",
+  "__MAX_LEVEL__": "__MAX_LEVEL__",
+  "__NEXT_LEVEL__": "__NEXT_LEVEL__",
   "-{value} · ARM {value}": "-{value} · BRAZO {value}",
   "-{value}% DMG / {value} · {value}": "-{value}% DAÑO / {value} · {value}",
   "-12 SOL": "-12 SOLES",
@@ -756,6 +760,7 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "A successful route saves its clear and unlocks the next route; Run Again retries the current route.": "Una ruta exitosa guarda su despeje y desbloquea la siguiente ruta; Ejecutar de nuevo reintenta la ruta actual.",
   "A supportive Result offers Try Again or Stages without deleting unlocked progress.": "Un resultado de apoyo ofrece intentarlo de nuevo o etapas sin eliminar el progreso desbloqueado.",
   "A tempting object can uncover a useful match—or bury the tray in singletons. Look for pairs, track the top layers, and keep one emergency slot open.": "Un objeto tentador puede descubrir una coincidencia útil o enterrar la bandeja en singletons. Busque pares, rastree las capas superiores y mantenga abierta una ranura de emergencia.",
+  "A tempting object can uncover a useful match. Keep one emergency slot open.": "Un objeto tentador puede descubrir una coincidencia útil. Mantenga abierta una ranura de emergencia.",
   "A ten-animal parade rewards careful ordered recall.": "Un desfile de diez animales recompensa el recuerdo ordenado y cuidadoso.",
   "A tile is free when nothing covers it and at least one side is open. Match two identical free tiles to clear the board.": "Una loseta está libre cuando nada la cubre y al menos un lado está abierto. Combina dos fichas libres idénticas para despejar el tablero.",
   "A tile needs no cover above and an open left or right side.": "Una losa no necesita cubierta superior y un lado izquierdo o derecho abierto.",
@@ -8118,6 +8123,7 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Opening the mosaic archive…": "Abriendo el archivo de mosaicos…",
   "Opening the Rootvault…": "Abriendo la Bóveda de Raíces...",
   "Opening the skyspire…": "Abriendo la torre del cielo...",
+  "Opening the treasure greenhouse": "Abriendo el invernadero del tesoro",
   "Opening the treasure greenhouse…": "Abriendo el invernadero del tesoro...",
   "Opens fast with simple touch controls.": "Se abre rápidamente con controles táctiles simples.",
   "Opens now": "Abre ahora",

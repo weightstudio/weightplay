@@ -1,5 +1,9 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
+  "__$1_LEVEL__": "__$1_LEVEL__",
+  "__CURRENT_LEVEL__": "__當前_等級__",
+  "__MAX_LEVEL__": "__最大_級__",
+  "__NEXT_LEVEL__": "__下一個等級__",
   "-{value} · ARM {value}": "-{value}·手臂{value}",
   "-{value}% DMG / {value} · {value}": "-{value}% DMG / {value}·{value}",
   "-12 SOL": "-12 索爾",
@@ -756,6 +760,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "A successful route saves its clear and unlocks the next route; Run Again retries the current route.": "成功的路線保存其清除並解鎖下一條路線； Run Again 重試當前路線。",
   "A supportive Result offers Try Again or Stages without deleting unlocked progress.": "支持性結果提供重試或階段，而不刪除解鎖的進度。",
   "A tempting object can uncover a useful match—or bury the tray in singletons. Look for pairs, track the top layers, and keep one emergency slot open.": "一個誘人的物體可以發現有用的火柴，或將托盤埋在單身人士中。尋找成對的物品，追蹤頂層，並保留一個緊急槽位。",
+  "A tempting object can uncover a useful match. Keep one emergency slot open.": "一個誘人的物體可以發現一個有用的匹配。保持 1 個應急槽開放。",
   "A ten-animal parade rewards careful ordered recall.": "十隻動物的遊行獎勵仔細有序的回憶。",
   "A tile is free when nothing covers it and at least one side is open. Match two identical free tiles to clear the board.": "當一塊瓷磚沒有任何東西覆蓋並且至少一側是開放的時，它就是自由的。搭配兩個相同的免費瓷磚以清除棋盤。",
   "A tile needs no cover above and an open left or right side.": "磁磚上方不需要遮蓋，且左側或右側開口。",
@@ -8118,6 +8123,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "Opening the mosaic archive…": "開放馬賽克檔案...",
   "Opening the Rootvault…": "開啟根保管庫...",
   "Opening the skyspire…": "打開天空塔…",
+  "Opening the treasure greenhouse": "開啟寶藏溫室",
   "Opening the treasure greenhouse…": "打開寶藏溫室…",
   "Opens fast with simple touch controls.": "透過簡單的觸控控制即可快速開啟。",
   "Opens now": "現已開放",

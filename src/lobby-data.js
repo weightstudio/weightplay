@@ -46,7 +46,7 @@ window.WONDER_LOBBY = {
         es: "Triple Match", "pt-BR": "Triple Match", fr: "Triple Match", de: "Triple Match", it: "Triple Match",
         ru: "Тройное совпадение", hi: "ट्रिपल मैच", ar: "مطابقة ثلاثية",
       },
-      status: "planned",
+      status: "playable",
       statusText: {
         en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정",
         es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt", de: "Demnächst", it: "Prossimamente",
@@ -62,7 +62,6 @@ window.WONDER_LOBBY = {
       ages: ["13", "family"],
       ageLabel: { en: "13+", "zh-Hant": "13+", "zh-Hans": "13+", ja: "13+", ko: "13+", es: "13+", "pt-BR": "13+", fr: "13+", de: "13+", it: "13+", ru: "13+", hi: "13+", ar: "13+" },
       href: "games/animal-triple-match/",
-      internalTrial: "index.html?trial=1",
       description: {
         en: "Read layered treasure piles, build safe pairs, and complete every trio before Mimi's seven-slot tray fills across 30 crafted stages.",
         "zh-Hant": "觀察分層寶物堆、建立安全配對，在咪咪的七格托盤塞滿前完成 30 關的所有三連。",

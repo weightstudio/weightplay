@@ -1,5 +1,9 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["de"] = {
+  "__$1_LEVEL__": "__$1_LEVEL__",
+  "__CURRENT_LEVEL__": "__CURRENT_LEVEL__",
+  "__MAX_LEVEL__": "__MAX_LEVEL__",
+  "__NEXT_LEVEL__": "__NEXT_LEVEL__",
   "-{value} · ARM {value}": "-{value} · ARM {value}",
   "-{value}% DMG / {value} · {value}": "-{value}% DMG / {value} · {value}",
   "-12 SOL": "-12 SOL",
@@ -756,6 +760,7 @@ window.WeightPlayGameRuntimeLocales["de"] = {
   "A successful route saves its clear and unlocks the next route; Run Again retries the current route.": "Eine erfolgreiche Route speichert ihre Freigabe und gibt die nächste Route frei; „Erneut ausführen“ wiederholt die aktuelle Route.",
   "A supportive Result offers Try Again or Stages without deleting unlocked progress.": "Ein unterstützendes Ergebnis bietet „Erneut versuchen“ oder „Stufen“, ohne den freigeschalteten Fortschritt zu löschen.",
   "A tempting object can uncover a useful match—or bury the tray in singletons. Look for pairs, track the top layers, and keep one emergency slot open.": "Ein verlockender Gegenstand kann eine nützliche Übereinstimmung aufdecken – oder das Tablett unter Singletons begraben. Suchen Sie nach Paaren, verfolgen Sie die obersten Schichten und halten Sie einen Notschlitz offen.",
+  "A tempting object can uncover a useful match. Keep one emergency slot open.": "Ein verlockender Gegenstand kann eine nützliche Übereinstimmung aufdecken. Halten Sie einen Notschlitz offen.",
   "A ten-animal parade rewards careful ordered recall.": "Eine Parade mit zehn Tieren belohnt den sorgfältigen, geordneten Rückruf.",
   "A tile is free when nothing covers it and at least one side is open. Match two identical free tiles to clear the board.": "Ein Plättchen ist frei, wenn es nichts bedeckt und mindestens eine Seite offen ist. Kombiniere zwei identische freie Spielsteine, um das Spielfeld freizuräumen.",
   "A tile needs no cover above and an open left or right side.": "Eine Fliese benötigt keine Abdeckung oben und eine offene linke oder rechte Seite.",
@@ -8118,6 +8123,7 @@ window.WeightPlayGameRuntimeLocales["de"] = {
   "Opening the mosaic archive…": "Eröffnung des Mosaikarchivs…",
   "Opening the Rootvault…": "Den Rootvault öffnen…",
   "Opening the skyspire…": "Eröffnung des Skyspire…",
+  "Opening the treasure greenhouse": "Eröffnung des Schatzgewächshauses",
   "Opening the treasure greenhouse…": "Eröffnung des Schatzgewächshauses…",
   "Opens fast with simple touch controls.": "Lässt sich schnell mit einfachen Touch-Bedienelementen öffnen.",
   "Opens now": "Öffnet jetzt",

@@ -1,5 +1,9 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["fr"] = {
+  "__$1_LEVEL__": "__$1_LEVEL__",
+  "__CURRENT_LEVEL__": "__CURRENT_LEVEL__",
+  "__MAX_LEVEL__": "__MAX_LEVEL__",
+  "__NEXT_LEVEL__": "__NEXT_LEVEL__",
   "-{value} · ARM {value}": "-{value} · BRAS {value}",
   "-{value}% DMG / {value} · {value}": "-{value}% DÉG / {value} · {value}",
   "-12 SOL": "-12 SOL",
@@ -756,6 +760,7 @@ window.WeightPlayGameRuntimeLocales["fr"] = {
   "A successful route saves its clear and unlocks the next route; Run Again retries the current route.": "Un itinéraire réussi enregistre son effacement et débloque l'itinéraire suivant ; Run Again réessaye l'itinéraire actuel.",
   "A supportive Result offers Try Again or Stages without deleting unlocked progress.": "Un résultat de soutien propose de réessayer ou d'étapes sans supprimer la progression déverrouillée.",
   "A tempting object can uncover a useful match—or bury the tray in singletons. Look for pairs, track the top layers, and keep one emergency slot open.": "Un objet tentant peut découvrir une allumette utile ou enterrer le plateau dans des singletons. Recherchez des paires, suivez les couches supérieures et gardez un emplacement d'urgence ouvert.",
+  "A tempting object can uncover a useful match. Keep one emergency slot open.": "Un objet tentant peut révéler une correspondance utile. Gardez un emplacement d’urgence ouvert.",
   "A ten-animal parade rewards careful ordered recall.": "Un défilé de dix animaux récompense un rappel soigneusement ordonné.",
   "A tile is free when nothing covers it and at least one side is open. Match two identical free tiles to clear the board.": "Une tuile est libre lorsque rien ne la recouvre et qu'au moins un côté est ouvert. Associez deux tuiles libres identiques pour vider le plateau.",
   "A tile needs no cover above and an open left or right side.": "Une tuile n'a pas besoin de couvercle au-dessus et d'un côté gauche ou droit ouvert.",
@@ -8118,6 +8123,7 @@ window.WeightPlayGameRuntimeLocales["fr"] = {
   "Opening the mosaic archive…": "Ouverture des archives mosaïques…",
   "Opening the Rootvault…": "Ouverture du Rootvault…",
   "Opening the skyspire…": "Ouverture de la flèche du ciel…",
+  "Opening the treasure greenhouse": "Ouverture de la serre au trésor",
   "Opening the treasure greenhouse…": "Ouverture de la serre au trésor…",
   "Opens fast with simple touch controls.": "S'ouvre rapidement avec des commandes tactiles simples.",
   "Opens now": "Ouvre maintenant",

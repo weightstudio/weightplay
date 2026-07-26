@@ -1,5 +1,9 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ar"] = {
+  "__$1_LEVEL__": "__$1_LEVEL__",
+  "__CURRENT_LEVEL__": "__المستوى_الحالي__",
+  "__MAX_LEVEL__": "__MAX_LEVEL__",
+  "__NEXT_LEVEL__": "__المستوى_التالي__",
   "-{value} · ARM {value}": "-{value} · أرإم {value}",
   "-{value}% DMG / {value} · {value}": "-{value}% ضرر / {value} · {value}",
   "-12 SOL": "-12 سول",
@@ -756,6 +760,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "A successful route saves its clear and unlocks the next route; Run Again retries the current route.": "يحفظ المسار الناجح مكانه ويفتح المسار التالي؛ \"تشغيل مرة أخرى\" يعيد محاولة المسار الحالي.",
   "A supportive Result offers Try Again or Stages without deleting unlocked progress.": "تقدم النتيجة الداعمة \"المحاولة مرة أخرى\" أو \"المراحل\" دون حذف التقدم الذي تم إلغاء قفله.",
   "A tempting object can uncover a useful match—or bury the tray in singletons. Look for pairs, track the top layers, and keep one emergency slot open.": "يمكن لجسم مغري أن يكشف عن تطابق مفيد، أو يدفن الدرج في قطع مفردة. ابحث عن الأزواج، وتتبع الطبقات العليا، واحتفظ بفتحة طوارئ واحدة مفتوحة.",
+  "A tempting object can uncover a useful match. Keep one emergency slot open.": "يمكن لجسم مغري أن يكشف عن تطابق مفيد. احتفظ بفتحة طوارئ واحدة مفتوحة.",
   "A ten-animal parade rewards careful ordered recall.": "موكب من عشرة حيوانات يكافئ الاستدعاء الدقيق والمرتب.",
   "A tile is free when nothing covers it and at least one side is open. Match two identical free tiles to clear the board.": "يكون البلاط حرًا عندما لا يغطيه شيء ويكون جانب واحد على الأقل مفتوحًا. قم بمطابقة قطعتين حرتين متطابقتين لمسح اللوحة.",
   "A tile needs no cover above and an open left or right side.": "لا يحتاج البلاط إلى غطاء أعلاه وجانب مفتوح أيسر أو يمين.",
@@ -8118,6 +8123,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Opening the mosaic archive…": "فتح أرشيف الفسيفساء...",
   "Opening the Rootvault…": "فتح الروتفولت...",
   "Opening the skyspire…": "فتح البرج…",
+  "Opening the treasure greenhouse": "فتح دفيئة الكنز",
   "Opening the treasure greenhouse…": "فتح دفيئة الكنز ...",
   "Opens fast with simple touch controls.": "يفتح بسرعة باستخدام أدوات تحكم بسيطة تعمل باللمس.",
   "Opens now": "يفتح الآن",

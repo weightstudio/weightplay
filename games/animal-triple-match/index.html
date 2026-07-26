@@ -2,11 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <script>
-    if (/^https?:$/.test(location.protocol) && new URLSearchParams(location.search).get("trial") !== "1") {
-      location.replace("/");
-    }
-  </script>
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
   <meta name="robots" content="noindex,nofollow">
   <meta name="weightplay-audience" content="general">
@@ -14,8 +9,8 @@
   <meta name="description" content="Find uncovered treasures, collect three of a kind, and keep Mimi's seven-slot tray from filling across 30 crafted stages.">
   <link rel="stylesheet" href="style.css">
 </head>
-<body data-screen="main" data-wp-game-id="animal-triple-match">
-  <div id="loading" class="loading"><div class="loading-gem"></div><strong data-t="loading">Opening the treasure greenhouse…</strong></div>
+  <body data-screen="main" data-wp-game-id="animal-triple-match">
+  <div id="loading" class="loading"><div class="loading-gem"></div><strong data-t="loading">Opening the treasure greenhouse</strong></div>
 
   <div id="mainGroup" class="main-group">
     <main id="mainScreen" class="main-screen">
@@ -42,7 +37,7 @@
       <div class="guide-grid">
         <article><h3 data-t="howTitle">How to play</h3><ol><li data-t="how1">Tap an uncovered object to move it into the tray.</li><li data-t="how2">Collect three matching objects to clear them automatically.</li><li data-t="how3">Clear the complete pile before all seven tray slots are occupied.</li></ol></article>
         <article><h3 data-t="chaptersTitle">Six rule chapters</h3><p data-t="chaptersText">Thirty stages introduce tangled vines, crystal shells, mystery wrapping, shifting shelves, tight trays, and finale piles that combine the rules.</p></article>
-        <article><h3 data-t="strategyTitle">Plan before tapping</h3><p data-t="strategyText">A tempting object can uncover a useful match—or bury the tray in singletons. Look for pairs, track the top layers, and keep one emergency slot open.</p></article>
+        <article><h3 data-t="strategyTitle">Plan before tapping</h3><p data-t="strategyText">A tempting object can uncover a useful match. Keep one emergency slot open.</p></article>
         <article><h3 data-t="trustTitle">Progress and privacy</h3><p data-t="trustText">Cleared stages, stars, and best tray space stay in this browser. No login or personal information is needed.</p></article>
       </div>
     </section>
@@ -68,8 +63,8 @@
         <header class="battle-header">
           <button id="battleBack" class="back-btn" type="button" aria-label="Back" data-t-aria="back">&larr;</button>
           <div class="battle-title"><small id="stageLabel"></small><strong id="stageName"></strong></div>
-          <div class="hud"><span><b data-t="left">Left</b><strong id="leftValue">0</strong></span><span><b data-t="stars">Stars</b><strong id="starValue">★★★</strong></span></div>
-          <button id="soundBtn" class="icon-btn" type="button" aria-label="Sound" data-t-aria="sound">♪</button>
+          <div class="hud"><span><b data-t="left">Left</b><strong id="leftValue">0</strong></span><span><b data-t="stars">Stars</b><strong id="starValue">0</strong></span></div>
+          <button id="soundBtn" class="icon-btn" type="button" aria-label="Sound" data-t-aria="sound">&#x1F50A;</button>
           <button id="helpBtn" class="icon-btn" type="button" aria-label="How to play" data-t-aria="help">?</button>
         </header>
         <p id="objective" class="objective" data-t="objective">Match every treasure without filling the tray.</p>
@@ -77,9 +72,9 @@
         <p id="feedback" class="feedback" aria-live="polite"></p>
         <div class="tray-wrap"><span data-t="tray">Tray</span><div id="tray" class="tray" aria-label="Seven-slot tray" data-t-aria="trayLabel"></div></div>
         <nav class="tools">
-          <button id="undoBtn" type="button"><span class="tool-icon">↶</span><span data-t="undo">Undo</span><b id="undoCount">2</b></button>
-          <button id="magnetBtn" type="button"><span class="tool-icon">⌁</span><span data-t="magnet">Pair Finder</span><b id="magnetCount">2</b></button>
-          <button id="shuffleBtn" type="button"><span class="tool-icon">⤨</span><span data-t="shuffle">Shuffle</span><b id="shuffleCount">2</b></button>
+          <button id="undoBtn" type="button"><span class="tool-icon">&#x21B6;</span><span data-t="undo">Undo</span><b id="undoCount">2</b></button>
+          <button id="magnetBtn" type="button"><span class="tool-icon">&#x1F9F2;</span><span data-t="magnet">Pair Finder</span><b id="magnetCount">2</b></button>
+          <button id="shuffleBtn" type="button"><span class="tool-icon">&#x1F500;</span><span data-t="shuffle">Shuffle</span><b id="shuffleCount">2</b></button>
         </nav>
       </div>
 
@@ -112,3 +107,5 @@
   <script src="game.js"></script>
 </body>
 </html>
+
+

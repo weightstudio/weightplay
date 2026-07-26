@@ -1,5 +1,9 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["it"] = {
+  "__$1_LEVEL__": "__$1_LIVELLO__",
+  "__CURRENT_LEVEL__": "__CURRENT_LEVEL__",
+  "__MAX_LEVEL__": "__MAX_LIVELLO__",
+  "__NEXT_LEVEL__": "__SUCCESSIVO_LIVELLO__",
   "-{value} · ARM {value}": "-{value} · BRACCIO {value}",
   "-{value}% DMG / {value} · {value}": "-{value}% DAN / {value} · {value}",
   "-12 SOL": "-12 SOL",
@@ -756,6 +760,7 @@ window.WeightPlayGameRuntimeLocales["it"] = {
   "A successful route saves its clear and unlocks the next route; Run Again retries the current route.": "Un percorso riuscito salva la sua destinazione e sblocca il percorso successivo; Run Again riprova il percorso corrente.",
   "A supportive Result offers Try Again or Stages without deleting unlocked progress.": "Un risultato di supporto offre Riprova o Fasi senza eliminare i progressi sbloccati.",
   "A tempting object can uncover a useful match—or bury the tray in singletons. Look for pairs, track the top layers, and keep one emergency slot open.": "Un oggetto allettante può scoprire un abbinamento utile o seppellire il vassoio tra i single. Cerca le coppie, monitora gli strati superiori e mantieni aperto uno slot di emergenza.",
+  "A tempting object can uncover a useful match. Keep one emergency slot open.": "Un oggetto allettante può scoprire un abbinamento utile. Tieni aperto uno slot di emergenza.",
   "A ten-animal parade rewards careful ordered recall.": "Una parata di dieci animali premia un attento richiamo ordinato.",
   "A tile is free when nothing covers it and at least one side is open. Match two identical free tiles to clear the board.": "Una tessera è libera quando nulla la copre e almeno un lato è aperto. Abbina due tessere libere identiche per svuotare il tabellone.",
   "A tile needs no cover above and an open left or right side.": "Una tessera non ha bisogno di copertura sopra e di un lato sinistro o destro aperto.",
@@ -8118,6 +8123,7 @@ window.WeightPlayGameRuntimeLocales["it"] = {
   "Opening the mosaic archive…": "Apertura dell’archivio del mosaico…",
   "Opening the Rootvault…": "Apertura del Rootvault...",
   "Opening the skyspire…": "Aprendo la guglia celeste...",
+  "Opening the treasure greenhouse": "Apertura della serra del tesoro",
   "Opening the treasure greenhouse…": "Aprendo la serra del tesoro...",
   "Opens fast with simple touch controls.": "Si apre velocemente con semplici controlli touch.",
   "Opens now": "Apre ora",

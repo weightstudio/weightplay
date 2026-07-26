@@ -234,9 +234,10 @@
     els.chapterName.textContent = t(CHAPTERS[chapter]);
   }
   els.stageRail.addEventListener("scroll", () => { clearTimeout(centeredTimer); centeredTimer = setTimeout(syncCentered, 80); }, { passive: true });
-  let railDrag = null, railSuppressUntil = 0;
+  let railDrag = null, railSuppressUntil = 0, pendingStageCard = null;
   els.stageRail.addEventListener("pointerdown", event => {
     if (event.button !== 0 && event.pointerType === "mouse") return;
+    pendingStageCard = event.target.closest?.(".stage-card") || null;
     railDrag = { id: event.pointerId, startX: event.clientX, lastX: event.clientX, startScroll: els.stageRail.scrollLeft, moved: false };
     els.stageRail.setPointerCapture(event.pointerId);
     els.stageRail.style.scrollSnapType = "none";
@@ -272,7 +273,8 @@
   els.stageRail.addEventListener("pointercancel", finishRailDrag);
   els.stageRail.addEventListener("click", event => {
     if (performance.now() < railSuppressUntil) { event.preventDefault(); event.stopPropagation(); return; }
-    const card = event.target.closest(".stage-card");
+    const card = pendingStageCard || event.target.closest?.(".stage-card");
+    pendingStageCard = null;
     if (!card || card.getAttribute("aria-disabled") === "true") return;
     startBattle(+card.dataset.stage);
   }, true);

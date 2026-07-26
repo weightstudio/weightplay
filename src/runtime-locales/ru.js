@@ -1,5 +1,9 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ru"] = {
+  "__$1_LEVEL__": "__$1_LEVEL__",
+  "__CURRENT_LEVEL__": "__CURRENT_LEVEL__",
+  "__MAX_LEVEL__": "__MAX_LEVEL__",
+  "__NEXT_LEVEL__": "__NEXT_LEVEL__",
   "-{value} · ARM {value}": "-{value} · РУКА {value}",
   "-{value}% DMG / {value} · {value}": "-{value}% урона / {value} · {value}",
   "-12 SOL": "-12 СОЛ",
@@ -756,6 +760,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "A successful route saves its clear and unlocks the next route; Run Again retries the current route.": "Успешный маршрут сохраняется и открывается следующий маршрут; Run Again повторяет текущий маршрут.",
   "A supportive Result offers Try Again or Stages without deleting unlocked progress.": "Вспомогательный результат предлагает «Попробовать еще раз» или «Этапы» без удаления разблокированного прогресса.",
   "A tempting object can uncover a useful match—or bury the tray in singletons. Look for pairs, track the top layers, and keep one emergency slot open.": "Соблазнительный объект может обнаружить полезную спичку или закопать поднос в одиночные предметы. Ищите пары, отслеживайте верхние слои и оставляйте открытым один запасной слот.",
+  "A tempting object can uncover a useful match. Keep one emergency slot open.": "Соблазнительный объект может обнаружить полезную пару. Оставьте один аварийный слот открытым.",
   "A ten-animal parade rewards careful ordered recall.": "Парад десяти животных вознаграждает за тщательный упорядоченный отзыв.",
   "A tile is free when nothing covers it and at least one side is open. Match two identical free tiles to clear the board.": "Плитка свободна, если ее ничто не закрывает и хотя бы одна сторона открыта. Соедините две одинаковые бесплатные плитки, чтобы очистить игровое поле.",
   "A tile needs no cover above and an open left or right side.": "Плитке не нужна крышка сверху и открытая левая или правая сторона.",
@@ -8118,6 +8123,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "Opening the mosaic archive…": "Открываем архив мозаики…",
   "Opening the Rootvault…": "Открытие корневого хранилища…",
   "Opening the skyspire…": "Открывая небоскреб…",
+  "Opening the treasure greenhouse": "Открытие оранжереи сокровищ",
   "Opening the treasure greenhouse…": "Открываем оранжерею сокровищ…",
   "Opens fast with simple touch controls.": "Быстро открывается с помощью простого сенсорного управления.",
   "Opens now": "Откроется сейчас",
