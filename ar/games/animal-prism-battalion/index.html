@@ -21,21 +21,21 @@
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "كتيبة منشور الحيوانات",
+  "name": "كتيبة بريزم الحيوان",
   "url": "https://weightplay.com/ar/games/animal-prism-battalion/",
   "image": "https://weightplay.com/assets/animal-prism-battalion/cover.webp",
   "genre": [
-    "العاب الحيوانات",
     "أركيد",
     "الإستراتيجية",
-    "مميز"
+    "الدفاع",
+    "حيوان"
   ],
   "playMode": "SinglePlayer",
   "applicationCategory": "Game",
   "operatingSystem": "Any",
   "inLanguage": "ar",
   "isAccessibleForFree": true,
-  "description": "بدّل التصويب بين ثلاثة مسارات بلورية واجمع نوى القوة واهزم ستة زعماء عبر 30 مهمة دفاع."
+  "description": "قم بتبديل بطارية منشورية أوتوماتيكية واحدة بين ثلاثة ممرات، ودمر كل تشكيل وارد، واجمع نوى الهجوم النادرة، وأبق كل وحش على قيد الحياة بعيدًا عن النواة..."
 }
     </script>
   <meta charset="utf-8">
@@ -43,18 +43,18 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#07152b">
-  <title>كتيبة منشور الحيوانات | WeightPlay</title>
-  <meta name="description" content="بدّل التصويب بين ثلاثة مسارات بلورية واجمع نوى القوة واهزم ستة زعماء عبر 30 مهمة دفاع." />
+  <title>كتيبة بريزم الحيوان | WeightPlay</title>
+  <meta name="description" content="قم بتبديل بطارية منشورية أوتوماتيكية واحدة بين ثلاثة ممرات، ودمر كل تشكيل وارد، واجمع نوى الهجوم النادرة، وأبق كل وحش على قيد الحياة بعيدًا عن النواة..." />
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="style.css?v=20260723-prism2">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
-  <meta property="og:title" content="كتيبة منشور الحيوانات | WeightPlay" />
-    <meta property="og:description" content="بدّل التصويب بين ثلاثة مسارات بلورية واجمع نوى القوة واهزم ستة زعماء عبر 30 مهمة دفاع." />
+  <meta property="og:title" content="كتيبة بريزم الحيوان | WeightPlay" />
+    <meta property="og:description" content="قم بتبديل بطارية منشورية أوتوماتيكية واحدة بين ثلاثة ممرات، ودمر كل تشكيل وارد، واجمع نوى الهجوم النادرة، وأبق كل وحش على قيد الحياة بعيدًا عن النواة..." />
     <meta property="og:url" content="https://weightplay.com/ar/games/animal-prism-battalion/" />
-    <meta name="twitter:title" content="كتيبة منشور الحيوانات | WeightPlay" />
-    <meta name="twitter:description" content="بدّل التصويب بين ثلاثة مسارات بلورية واجمع نوى القوة واهزم ستة زعماء عبر 30 مهمة دفاع." />
+    <meta name="twitter:title" content="كتيبة بريزم الحيوان | WeightPlay" />
+    <meta name="twitter:description" content="قم بتبديل بطارية منشورية أوتوماتيكية واحدة بين ثلاثة ممرات، ودمر كل تشكيل وارد، واجمع نوى الهجوم النادرة، وأبق كل وحش على قيد الحياة بعيدًا عن النواة..." />
   </head>
 <body data-screen="loading" data-game-id="animal-prism-battalion" data-sound-toggle="off">
   <section id="loading" class="loading-panel" aria-live="polite">
@@ -70,25 +70,30 @@
         <button id="soundToggle" class="main-sound" type="button" aria-label="Disable sound" title="Sound">🔊</button>
       </header>
       <section class="main-hero">
-        <img class="poster" src="../../assets/animal-prism-battalion/cover.webp" alt="كتيبة منشور الحيوانات game artwork" data-ta="lanePosterAlt">
-        <div class="main-copy"><small data-t="laneKicker">THREE-LANE BATTALION STRATEGY</small><h1 data-t="title">كتيبة منشور الحيوانات</h1><p data-t="laneGuideIntro">Switch Captain Fia between three lanes while the battalion fires automatically. Break threats, collect power cores, and protect the crystal.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">Start Game</button></div>
+        <img class="poster" src="../../assets/animal-prism-battalion/cover.webp" alt="كتيبة بريزم الحيوان game artwork" data-ta="lanePosterAlt">
+        <div class="main-copy"><small data-t="laneKicker">THREE-LANE BATTALION STRATEGY</small><h1 data-t="title">كتيبة بريزم الحيوان</h1><p data-t="laneGuideIntro">Switch Captain Fia between three lanes while the battalion fires automatically. Break threats, collect power cores, and protect the crystal.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">Start Game</button></div>
       </section>
     </main>
-    <section class="game-page-info game-page-info-static" aria-label="كتيبة منشور الحيوانات معلومات اللعبة">
+    <section class="game-page-info game-page-info-static" aria-label="كتيبة بريزم الحيوان معلومات اللعبة">
     
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>كتيبة منشور الحيوانات</h2><p>بدّل التصويب بين ثلاثة مسارات بلورية واجمع نوى القوة واهزم ستة زعماء عبر 30 مهمة دفاع.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>دفاع آركيد بثلاثة مسارات</strong></div><div class="game-info-fact"><span>النوع</span><strong>العاب الحيوانات · أركيد · الإستراتيجية · مميز</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay دليل اللعبة الأصلي</span><h2>كتيبة بريزم الحيوان</h2><p>قم بتبديل بطارية منشورية أوتوماتيكية واحدة بين ثلاثة ممرات، ودمر كل تشكيل وارد، واجمع نوى الهجوم النادرة، وأبق كل وحش على قيد الحياة بعيدًا عن النواة البلورية.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>الدفاع الأساسي التلقائي بثلاثة حارات</strong></div><div class="game-info-fact"><span>النوع</span><strong>أركيد · الإستراتيجية · الدفاع · حيوان</strong></div><div class="game-info-fact"><span>صعوبة</span><strong>من السهل التحدي</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>2-8 دقائق لكل مرحلة</strong></div><div class="game-info-fact"><span>المهارات المدربة</span><strong>تحديد الأولويات · رد فعل · التخطيط</strong></div></div>
     </div>
     <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل يتم حفظ التقدم؟</dt><dd>نعم، فقط في هذا المتصفح.</dd></div></dl></div>
+      <div class="game-info-section"><h3>العالم والرسالة</h3><p>ثلاثون دفاعًا تحمي قلعة منشورية يتم مهاجمة مقارباتها الثلاثة في وقت واحد. تعمل البطاريات تلقائيًا، لكن المسار المحدد فقط هو الذي يتلقى نيرانًا مركزة، لذلك يقرر القائد التهديد الذي يجب أن يختفي أولاً.</p>
+<p>كل دفاع خامس ينتهي بفصل من الزعيم. تقوم الموجات السابقة بتعليم قاعدة الفصل قبل أن يقوم الزعيم بدمجها مع التكوينات الأكثر كثافة.</p></div>
+      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>اضغط على حارة، اضغط على اليسار أو اليمين، أو استخدم A وD لتحريك البطارية المحددة. يتوهج المسار المختار ويستقبل قيمة الهجوم الحالية تلقائيًا.</p>
+<p>معظم الأهداف هي أعداء، لكن نواة الطاقة المتوهجة النادرة تثير الهجوم بشكل دائم لبقية تلك الجولة. تفترض صحة العدو لاحقًا أن النواة قد تم جمعها، لذا فإن تجاهلها يخلق تكلفة استراتيجية حقيقية.</p>
+<p>يجب أن تفقد التشكيلات المحمية درعها قبل أن تتعرض لأضرار عادية. يجب إبطال مفعول القنابل قبل انتهاء العد التنازلي، ويحتاج الأبطال إلى تركيز مستمر، وأي وحش ناجٍ يتجاوز النتيجة النهائية يلحق الضرر بالقلب البلوري.</p>
+<p>تعمل الشظايا المكتسبة من الدفاعات المكتملة على تحسين معدل إطلاق النار أو قوة الهجوم أو الدروع الأساسية في المختبر. تدعم هذه الترقيات اللعب ولكنها لا تحل محل قرارات المسار.</p></div>
+      <div class="game-info-section"><h3>كيفية اللعب</h3><ol><li>اختر دفاعًا مفتوحًا من حاجز المرحلة.</li><li>اقرأ الممرات الثلاثة واختر التشكيل النشط الأقرب أو الأكثر خطورة.</li><li>قم بالتبديل لفترة وجيزة إلى مركز الطاقة أو القنبلة عندما يكون توقيتها أكثر إلحاحًا من الضرر العادي.</li><li>امسح كل موجة واهزم زعيم الفصل قبل أن يصل النواة البلورية إلى الصفر.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>نصائح الاستراتيجية</h3><ul><li>إعطاء الأولوية للمسافة والسلوك الخاص، وليس فقط الصحة المتبقية.</li><li>قم بإنهاء التشكيل المهزوم تقريبًا قبل التبديل ما لم تكن هناك قنبلة أو اختراق وشيك.</li><li>قم بتجميع نواة الطاقة بمجرد أن يصبح الممر آمنًا بدرجة كافية لأن الموجات اللاحقة تكون متوازنة حول زيادة هجومها.</li><li>استخدم ترقيات الدروع للحصول على التسامح، ولكن استخدم ترقيات المعدل والقوة عندما ينجو التشكيل بشكل متكرر بهامش صغير.</li></ul></div>
+      <div class="game-info-section"><h3>الحملة وصعوبة النمو</h3><p>تتضمن ستة فصول من خمسة فصول دفاعية حزمًا مقسمة وحاملات درع وقنابل موقوتة وأبطالًا وضغطًا متقاربًا وستة نهائيات مميزة للزعيم.</p>
+<p>تغير تخطيطات الموجة المؤلفة توقيت المسار والأولوية بدلاً من مجرد مضاعفة صحة العدو.</p></div>
+      <div class="game-info-section"><h3>مذكرة تصميم المطور</h3><p>The selected lane, incoming distance, special target state, core health, and attack value remain visible together. Switching never moves the pointer target or changes the meaning of the three lanes at another screen size. The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.</p></div>
+      <div class="game-info-section game-info-parent"><h3>ملاحظة الوالدين</h3><p>No account, purchase, or public leaderboard is required. Unlocks, stars, shards, and laboratory upgrades are saved locally in this browser. You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.</p></div>
+      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل تشتعل البطارية من تلقاء نفسها؟</dt><dd>نعم. اخترت المسار. تهاجم البطارية المحددة تلقائيًا.</dd></div><div><dt>لماذا يجب علي جمع نواة الطاقة؟</dt><dd>فهو يرفع الهجوم للدفاع الحالي، والتشكيلات اللاحقة تتوازن حول تلك الزيادة.</dd></div><div><dt>ما الذي يدمر جوهر الكريستال؟</dt><dd>وحش يصل إلى القاع أو هجوم خاص لم يتم حله.</dd></div><div><dt>كم عدد الدفاعات المضمنة؟</dt><dd>هناك 30 دفاعًا مؤلفًا مع رئيس في نهاية كل فصل من خمس مراحل.</dd></div><div><dt>ما هي عناصر التحكم وأحجام الشاشة المدعومة؟</dt><dd>تدعم نفس القواعد اللمس والماوس ولوحة المفاتيح حيث تستخدم اللعبة تلك المدخلات. يتم تحجيم الواجهة كتخطيط منطقي واحد عبر إطارات العرض المطلوبة للهاتف والمناظر الطبيعية وسطح المكتب.</dd></div><div><dt>هل يمكن أن ينتقل التقدم تلقائيًا إلى جهاز آخر؟</dt><dd>لا. يتم حفظ هذه اللعبة حاليًا في مساحة تخزين المتصفح المحلي فقط، لذلك يبدأ ملف تعريف متصفح آخر أو جهاز آخر بالتقدم المحلي المنفصل الخاص به ما لم تتم إضافة نظام حساب مستقبلي.</dd></div></dl></div>
       
     </div>
   </section>

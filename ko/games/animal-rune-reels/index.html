@@ -6,14 +6,14 @@
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "애니멀 룬 릴",
-  "description": "소환 동물 팀을 꾸리고 아래로 도는 10종 룬의 라인을 완성하세요. 각 펫은 따로 공격하고, 팀 방어와 치유 합계가 소환사를 지킵니다.",
+  "name": "동물 룬 릴",
+  "description": "최대 5명의 소환된 동물 영웅으로 팀을 구성하고, 3개의 하향 룬 릴을 돌리고, 정지된 기호를 결합하고, 30개의 가디언 미션의 모든 웨이브에서 살아남으세요.",
   "url": "https://weightplay.com/ko/games/animal-rune-reels/",
   "image": "https://weightplay.com/assets/animal-rune-reels/cover.webp",
   "genre": [
-    "동물 게임",
     "전략",
-    "아케이드"
+    "롤플레잉",
+    "동물"
   ],
   "playMode": "SinglePlayer",
   "applicationCategory": "Game",
@@ -51,17 +51,17 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#080d28">
-  <title>애니멀 룬 릴 | WeightPlay</title>
-  <meta name="description" content="소환 동물 팀을 꾸리고 아래로 도는 10종 룬의 라인을 완성하세요. 각 펫은 따로 공격하고, 팀 방어와 치유 합계가 소환사를 지킵니다." />
+  <title>동물 룬 릴 | WeightPlay</title>
+  <meta name="description" content="최대 5명의 소환된 동물 영웅으로 팀을 구성하고, 3개의 하향 룬 릴을 돌리고, 정지된 기호를 결합하고, 30개의 가디언 미션의 모든 웨이브에서 살아남으세요." />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="애니멀 룬 릴 | WeightPlay" />
-  <meta property="og:description" content="소환 동물 팀을 꾸리고 아래로 도는 10종 룬의 라인을 완성하세요. 각 펫은 따로 공격하고, 팀 방어와 치유 합계가 소환사를 지킵니다." />
+  <meta property="og:title" content="동물 룬 릴 | WeightPlay" />
+  <meta property="og:description" content="최대 5명의 소환된 동물 영웅으로 팀을 구성하고, 3개의 하향 룬 릴을 돌리고, 정지된 기호를 결합하고, 30개의 가디언 미션의 모든 웨이브에서 살아남으세요." />
   <meta property="og:url" content="https://weightplay.com/ko/games/animal-rune-reels/" />
   <meta property="og:image" content="https://weightplay.com/assets/animal-rune-reels/cover.webp" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="애니멀 룬 릴 | WeightPlay" />
-  <meta name="twitter:description" content="소환 동물 팀을 꾸리고 아래로 도는 10종 룬의 라인을 완성하세요. 각 펫은 따로 공격하고, 팀 방어와 치유 합계가 소환사를 지킵니다." />
+  <meta name="twitter:title" content="동물 룬 릴 | WeightPlay" />
+  <meta name="twitter:description" content="최대 5명의 소환된 동물 영웅으로 팀을 구성하고, 3개의 하향 룬 릴을 돌리고, 정지된 기호를 결합하고, 30개의 가디언 미션의 모든 웨이브에서 살아남으세요." />
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="battle-v3.css">
   <style>[hidden]{display:none!important}</style>
@@ -72,7 +72,7 @@
   <main id="app" hidden>
     <section id="mainPage" class="page main-page">
       <div class="canvas main-canvas">
-        <header class="topbar"><a class="back-logo" href="/" data-i18n-aria="lobby" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a><h1 data-i18n="title">애니멀 룬 릴</h1><div class="main-utilities"><button id="soundToggle" class="main-sound-toggle" type="button" data-sound-toggle="true" aria-label="Disable sound" aria-pressed="false">🔊</button><select id="localeSelect" data-i18n-aria="language"></select></div></header>
+        <header class="topbar"><a class="back-logo" href="/" data-i18n-aria="lobby" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a><h1 data-i18n="title">동물 룬 릴</h1><div class="main-utilities"><button id="soundToggle" class="main-sound-toggle" type="button" data-sound-toggle="true" aria-label="Disable sound" aria-pressed="false">🔊</button><select id="localeSelect" data-i18n-aria="language"></select></div></header>
         <div class="poster"><img src="../../assets/animal-rune-reels/cover.webp" alt=""><div class="poster-shade"><span data-i18n="badge">SUMMONER REEL BATTLE</span></div></div>
         <div class="main-copy">
           <p class="lead" data-i18n="leadV3">Build a team of summoned animal heroes, align runes, and defeat every guardian.</p>
@@ -80,21 +80,26 @@
           <button id="runeStartBtn" class="primary" data-i18n="start" data-wp-main-start>Start Game</button>
         </div>
       </div>
-      <section class="game-page-info game-page-info-static" aria-label="애니멀 룬 릴 게임 정보">
+      <section class="game-page-info game-page-info-static" aria-label="동물 룬 릴 게임 정보">
     
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>애니멀 룬 릴</h2><p>소환 동물 팀을 꾸리고 아래로 도는 10종 룬의 라인을 완성하세요. 각 펫은 따로 공격하고, 팀 방어와 치유 합계가 소환사를 지킵니다.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>전술 릴 전투</strong></div><div class="game-info-fact"><span>장르</span><strong>동물 게임 · 전략 · 아케이드</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>동물 룬 릴</h2><p>최대 5명의 소환된 동물 영웅으로 팀을 구성하고, 3개의 하향 룬 릴을 돌리고, 정지된 기호를 결합하고, 30개의 가디언 미션의 모든 웨이브에서 살아남으세요.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>팀 릴 롤플레잉 배틀</strong></div><div class="game-info-fact"><span>장르</span><strong>전략 · 롤플레잉 · 동물</strong></div><div class="game-info-fact"><span>난이도</span><strong>도전하기 쉬움</strong></div><div class="game-info-fact"><span>예상 플레이 시간</span><strong>스테이지당 2~8분</strong></div><div class="game-info-fact"><span>훈련된 기술</span><strong>팀 빌딩 · 확률관리 · 기획</strong></div></div>
     </div>
     <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>진행 상황이 저장되나요?</dt><dd>예, 이 브라우저에서만 가능합니다.</dd></div></dl></div>
+      <div class="game-info-section"><h3>세계와 사명</h3><p>소환사는 점점 늘어나는 동물 명단을 가지고 6개의 균열 지역을 횡단합니다. 각 영웅에는 공격, 방어, 치유 및 고유한 궁극기가 있으므로 팀 구성은 동일한 릴 결과가 해결되는 방식을 변경합니다.</p>
+<p>메인 캠페인에는 30개의 멀티 웨이브 미션이 포함되어 있습니다. 별도의 일일 및 예정된 이벤트 미션은 캠페인 진행 상황을 대체하지 않고 선택 재료를 제공합니다.</p></div>
+      <div class="game-info-section"><h3>시스템 작동 방식</h3><p>스핀을 눌러 3개의 하향 릴을 하나씩 중지합니다. 눈에 보이는 모든 룬은 그 효과에 기여하며, 일치하는 룬 라인이 완성되면 해당 능력이 두 배로 늘어납니다.</p>
+<p>발톱 룬은 활성화된 각 영웅을 공격합니다. 방패와 심장 룬은 소환사를 위한 팀의 전체 방어 또는 치유를 결합합니다. Wild는 다른 라인을 완성하지만 단독으로는 효과가 없습니다. 코인, 얼티밋, 포커스, 에코, 행운, 휴면 룬에는 명시된 특수 효과가 있습니다.</p>
+<p>적들은 룬 결과가 해결된 후에 행동합니다. 소환사의 체력, 보호막, 전체 방어력, 전체 치유량, 파도 수, 적의 의도는 전투 내내 계속 표시됩니다.</p>
+<p>소환하면 영웅이 잠금 해제됩니다. 중복 카드는 레벨 업그레이드를 지원합니다. 룬 가루, 태양 조각, 달 수정, 수호 코어는 룬 레벨을 향상시킵니다. 영구 카드, 재료, 코인, 다이아몬드는 전투가 중단되어도 안전하게 유지되지만 현재 웨이브는 재설정됩니다.</p></div>
+      <div class="game-info-section"><h3>플레이 방법</h3><ol><li>스테이지를 열고 메인, 일일, 이벤트를 선택하고 이용 가능한 미션을 선택하세요.</li><li>팀을 사용하여 최소 1명에서 최대 5명의 소유 영웅을 활성 포메이션에 배치하세요.</li><li>업그레이드가 필요한 경우 배낭, 소환, 룬을 검토한 후 전투에 참여하세요.</li><li>회전하고, 완성된 줄을 읽고, 모든 웨이브와 가디언이 패배할 때까지 계속하세요.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>다음에 눈에 띄는 적의 의도에서 살아남을 수 있도록 충분한 결합된 방어 또는 치유로 피해의 균형을 맞추세요.</li><li>야생 룬은 유용한 라인을 완성할 때만 가치가 있습니다. 독립형 효과로 간주하지 마십시오.</li><li>단순히 최고 레벨의 팀이 아닌 현재의 웨이브를 해결하는 특수 효과를 지닌 영웅과 함께 궁극의 룬을 사용하세요.</li><li>자동 모드는 유효한 회전을 반복하지만 더 나은 팀이나 룬 업그레이드를 선택하지 않습니다.</li></ul></div>
+      <div class="game-info-section"><h3>캠페인 및 난이도 성장</h3><p>6개의 5단계 캠페인 챕터는 웨이브 길이와 가디언 조합을 증가시킵니다. 일일 임무는 동전이나 재료에 중점을 두는 반면, 이벤트는 표시된 일정에 따라 순환됩니다.</p>
+<p>명단과 룬 성장은 읽기 가능한 3릴 해결 순서를 변경하지 않고도 전략적 옵션을 확장합니다.</p></div>
+      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>Reels stop in a fixed visual order, completed lines glow before resolving, and hero actions remain separate from the combined summoner defense and healing totals. The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.</p></div>
+      <div class="game-info-section game-info-parent"><h3>학부모 메모</h3><p>No account is required. Roster, campaign progress, currencies, materials, rune levels, and reward claims are stored locally in this browser. You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>일치하는 선은 무엇을 합니까?</dt><dd>세 릴이 모두 멈춘 후에는 해당 룬 능력이 두 배로 늘어납니다.</dd></div><div><dt>영웅은 하나의 공격을 공유합니까?</dt><dd>아니요. 영웅은 별도로 공격합니다. 소환사를 위해 팀 방어와 치유가 결합됩니다.</dd></div><div><dt>Battle에서 나가면 어떻게 되나요?</dt><dd>영구 인벤토리는 유지되지만 현재 전투 시도는 손실됩니다.</dd></div><div><dt>이벤트 보상은 항상 제공되나요?</dt><dd>아니요. 이벤트 미션은 스테이지에 표시된 일정을 따릅니다.</dd></div><div><dt>어떤 컨트롤과 화면 크기가 지원되나요?</dt><dd>동일한 규칙은 게임에서 해당 입력을 사용하는 터치, 마우스 및 키보드를 지원합니다. 인터페이스는 필요한 휴대폰, 가로 및 데스크톱 뷰포트에 걸쳐 하나의 논리적 레이아웃으로 확장됩니다.</dd></div><div><dt>진행 상황이 자동으로 다른 장치로 이동할 수 있나요?</dt><dd>아니요. 이 게임은 현재 로컬 브라우저 저장소에만 저장되므로 향후 계정 시스템이 추가되지 않는 한 다른 브라우저 프로필이나 장치는 별도의 로컬 진행 상황으로 시작됩니다.</dd></div></dl></div>
       
     </div>
   </section>

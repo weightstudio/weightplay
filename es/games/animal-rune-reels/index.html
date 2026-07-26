@@ -6,14 +6,14 @@
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "Rodillos Rúnicos Animales",
-  "description": "Forma un equipo animal invocado, gira diez runas hacia abajo, duplica líneas y lanza ataques separados mientras la defensa y curación totales protegen al...",
+  "name": "Carretes de runas animales",
+  "description": "Forma un equipo de hasta cinco héroes animales convocados, gira tres carretes de runas hacia abajo, combina los símbolos detenidos y sobrevive a cada...",
   "url": "https://weightplay.com/es/games/animal-rune-reels/",
   "image": "https://weightplay.com/assets/animal-rune-reels/cover.webp",
   "genre": [
-    "Juegos de animales",
     "Estrategia",
-    "Arcada"
+    "Juego de roles",
+    "animales"
   ],
   "playMode": "SinglePlayer",
   "applicationCategory": "Game",
@@ -51,17 +51,17 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#080d28">
-  <title>Rodillos Rúnicos Animales | WeightPlay</title>
-  <meta name="description" content="Forma un equipo animal invocado, gira diez runas hacia abajo, duplica líneas y lanza ataques separados mientras la defensa y curación totales protegen al..." />
+  <title>Carretes de runas animales | WeightPlay</title>
+  <meta name="description" content="Forma un equipo de hasta cinco héroes animales convocados, gira tres carretes de runas hacia abajo, combina los símbolos detenidos y sobrevive a cada..." />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Rodillos Rúnicos Animales | WeightPlay" />
-  <meta property="og:description" content="Forma un equipo animal invocado, gira diez runas hacia abajo, duplica líneas y lanza ataques separados mientras la defensa y curación totales protegen al..." />
+  <meta property="og:title" content="Carretes de runas animales | WeightPlay" />
+  <meta property="og:description" content="Forma un equipo de hasta cinco héroes animales convocados, gira tres carretes de runas hacia abajo, combina los símbolos detenidos y sobrevive a cada..." />
   <meta property="og:url" content="https://weightplay.com/es/games/animal-rune-reels/" />
   <meta property="og:image" content="https://weightplay.com/assets/animal-rune-reels/cover.webp" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Rodillos Rúnicos Animales | WeightPlay" />
-  <meta name="twitter:description" content="Forma un equipo animal invocado, gira diez runas hacia abajo, duplica líneas y lanza ataques separados mientras la defensa y curación totales protegen al..." />
+  <meta name="twitter:title" content="Carretes de runas animales | WeightPlay" />
+  <meta name="twitter:description" content="Forma un equipo de hasta cinco héroes animales convocados, gira tres carretes de runas hacia abajo, combina los símbolos detenidos y sobrevive a cada..." />
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="battle-v3.css">
   <style>[hidden]{display:none!important}</style>
@@ -72,7 +72,7 @@
   <main id="app" hidden>
     <section id="mainPage" class="page main-page">
       <div class="canvas main-canvas">
-        <header class="topbar"><a class="back-logo" href="/" data-i18n-aria="lobby" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a><h1 data-i18n="title">Rodillos Rúnicos Animales</h1><div class="main-utilities"><button id="soundToggle" class="main-sound-toggle" type="button" data-sound-toggle="true" aria-label="Disable sound" aria-pressed="false">🔊</button><select id="localeSelect" data-i18n-aria="language"></select></div></header>
+        <header class="topbar"><a class="back-logo" href="/" data-i18n-aria="lobby" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a><h1 data-i18n="title">Carretes de runas animales</h1><div class="main-utilities"><button id="soundToggle" class="main-sound-toggle" type="button" data-sound-toggle="true" aria-label="Disable sound" aria-pressed="false">🔊</button><select id="localeSelect" data-i18n-aria="language"></select></div></header>
         <div class="poster"><img src="../../assets/animal-rune-reels/cover.webp" alt=""><div class="poster-shade"><span data-i18n="badge">SUMMONER REEL BATTLE</span></div></div>
         <div class="main-copy">
           <p class="lead" data-i18n="leadV3">Build a team of summoned animal heroes, align runes, and defeat every guardian.</p>
@@ -80,21 +80,26 @@
           <button id="runeStartBtn" class="primary" data-i18n="start" data-wp-main-start>Start Game</button>
         </div>
       </div>
-      <section class="game-page-info game-page-info-static" aria-label="Guía de Rodillos Rúnicos Animales">
+      <section class="game-page-info game-page-info-static" aria-label="Guía de Carretes de runas animales">
     
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2>Rodillos Rúnicos Animales</h2><p>Forma un equipo animal invocado, gira diez runas hacia abajo, duplica líneas y lanza ataques separados mientras la defensa y curación totales protegen al invocador.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Cómo se juega</span><strong>Combate táctico de rodillos</strong></div><div class="game-info-fact"><span>Género</span><strong>Juegos de animales · Estrategia · Arcada</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Guía del juego original</span><h2>Carretes de runas animales</h2><p>Forma un equipo de hasta cinco héroes animales convocados, gira tres carretes de runas hacia abajo, combina los símbolos detenidos y sobrevive a cada oleada de treinta misiones de guardianes.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Cómo se juega</span><strong>Batalla de rol en carretes en equipo</strong></div><div class="game-info-fact"><span>Género</span><strong>Estrategia · Juego de roles · animales</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Fácil de desafiar</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>2-8 minutos por etapa</strong></div><div class="game-info-fact"><span>Habilidades</span><strong>Trabajo en equipo · Gestión de probabilidad · Planificación</strong></div></div>
     </div>
     <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Se guarda el progreso?</dt><dd>Sí, sólo en este navegador.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Historia y misión</h3><p>Un invocador cruza seis regiones de grieta con una lista de animales en expansión. Cada héroe tiene ataque, defensa, curación y una habilidad definitiva distinta, por lo que la composición del equipo cambia la forma en que se resuelve el mismo resultado del carrete.</p>
+<p>La campaña principal contiene treinta misiones de múltiples oleadas. Las misiones de eventos diarias y programadas separadas proporcionan materiales opcionales sin reemplazar el progreso de la campaña.</p></div>
+      <div class="game-info-section"><h3>Reglas del juego</h3><p>Pulsa Girar para detener tres carretes hacia abajo uno por uno. Cada runa visible contribuye con su efecto, y una línea completa de runas iguales duplica esa habilidad.</p>
+<p>Las runas de garra hacen que cada héroe activo ataque. Las runas Escudo y Corazón combinan la defensa total del equipo o la curación para el invocador. Wild completa otra línea pero no tiene ningún efecto por sí solo; Las runas Coin, Ultimate, Focus, Echo, Luck y Dormant tienen sus efectos especializados declarados.</p>
+<p>Los enemigos actúan después de que se resuelve el resultado de la runa. La salud, el escudo, la defensa total, la curación total, el recuento de oleadas y la intención del enemigo del invocador permanecen visibles durante la batalla.</p>
+<p>La invocación desbloquea héroes; Las tarjetas duplicadas admiten actualizaciones de nivel. Rune Dust, Sun Shards, Moon Crystals y Guardian Cores mejoran los niveles de runas. Las tarjetas, materiales, monedas y diamantes permanentes permanecen seguros si se abandona una batalla, pero la ola actual se reinicia.</p></div>
+      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Abra el escenario, elija Principal, Diario o Evento y seleccione una misión disponible.</li><li>Usa Equipo para colocar al menos uno y hasta cinco héroes propios en la formación activa.</li><li>Revisa la mochila, la invocación y las runas cuando sea necesaria una mejora y luego ingresa a la batalla.</li><li>Gira, lee las líneas completas y continúa hasta que cada ola y guardián sean derrotados.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consejos</h3><ul><li>Equilibre el daño con suficiente defensa o curación combinadas para sobrevivir al siguiente intento enemigo visible.</li><li>Una runa salvaje es valiosa sólo cuando completa una línea útil; no lo cuente como un efecto independiente.</li><li>Usa runas definitivas con héroes cuyos efectos especiales resuelvan la ola actual, no solo con el equipo con el nivel más alto.</li><li>El modo automático repite giros válidos pero no elige un mejor equipo o mejora de runa para ti.</li></ul></div>
+      <div class="game-info-section"><h3>Progresión y dificultad</h3><p>Los seis capítulos de campaña de cinco etapas aumentan la longitud de onda y las combinaciones de guardianes. Las misiones diarias enfatizan monedas o materiales, mientras que los eventos rotan según el cronograma mostrado.</p>
+<p>El crecimiento de la lista y las runas amplía las opciones estratégicas sin cambiar el orden de resolución legible de los tres carretes.</p></div>
+      <div class="game-info-section"><h3>Nota de diseño</h3><p>Reels stop in a fixed visual order, completed lines glow before resolving, and hero actions remain separate from the combined summoner defense and healing totals. The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota para familias</h3><p>No account is required. Roster, campaign progress, currencies, materials, rune levels, and reward claims are stored locally in this browser. You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.</p></div>
+      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Qué hace una línea coincidente?</dt><dd>Duplica esa habilidad de runa después de que los tres carretes se detengan.</dd></div><div><dt>¿Los héroes comparten un ataque?</dt><dd>No. Los héroes atacan por separado; La defensa y la curación del equipo se combinan para el invocador.</dd></div><div><dt>¿Qué pasa si dejo Battle?</dt><dd>El inventario permanente permanece, pero el intento de batalla actual se pierde.</dd></div><div><dt>¿Las recompensas del evento están siempre disponibles?</dt><dd>No. Las misiones de eventos siguen el cronograma que se muestra en el escenario.</dd></div><div><dt>¿Qué controles y tamaños de pantalla son compatibles?</dt><dd>Las mismas reglas admiten el tacto, el mouse y el teclado cuando el juego usa esas entradas. La interfaz se escala como un diseño lógico en las ventanas gráficas requeridas de teléfono, paisaje y escritorio.</dd></div><div><dt>¿Puede el progreso pasar automáticamente a otro dispositivo?</dt><dd>No. Actualmente, este juego solo se guarda en el almacenamiento del navegador local, por lo que otro perfil de navegador o dispositivo comienza con su propio progreso local separado a menos que se agregue un sistema de cuenta futuro.</dd></div></dl></div>
       
     </div>
   </section>

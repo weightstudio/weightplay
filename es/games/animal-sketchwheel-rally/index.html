@@ -21,21 +21,21 @@
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "Rally Animal de Ruedas Dibujadas",
+  "name": "Rally de rueda de dibujo de animales",
   "url": "https://weightplay.com/es/games/animal-sketchwheel-rally/",
   "image": "https://weightplay.com/assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp",
   "genre": [
-    "Juegos de animales",
-    "carreras",
     "Arcada",
-    "Estrategia"
+    "Dibujo",
+    "Estrategia",
+    "animales"
   ],
   "playMode": "SinglePlayer",
   "applicationCategory": "Game",
   "operatingSystem": "Any",
   "inLanguage": "es",
   "isAccessibleForFree": true,
-  "description": "Dibuja ruedas para el carro rúnico de Rux y adáptalas a escalones, barro, túneles, brechas, hielo y viento en 30 rallies."
+  "description": "Dibuja un perfil de rueda antes de cada sección del terreno, observa cómo se comporta su forma medida y adapta la siguiente rueda para que el corredor de..."
 }
     </script>
   <meta charset="utf-8">
@@ -44,27 +44,27 @@
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#082a25">
   <link rel="icon" href="../../assets/weightplay-logo.png">
-  <title>Rally Animal de Ruedas Dibujadas | WeightPlay</title>
+  <title>Rally de rueda de dibujo de animales | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css">
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css">
   <link rel="stylesheet" href="style.css?v=20260721-hands-on1">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
-  <meta name="description" content="Dibuja ruedas para el carro rúnico de Rux y adáptalas a escalones, barro, túneles, brechas, hielo y viento en 30 rallies." />
-    <meta property="og:title" content="Rally Animal de Ruedas Dibujadas | WeightPlay" />
-    <meta property="og:description" content="Dibuja ruedas para el carro rúnico de Rux y adáptalas a escalones, barro, túneles, brechas, hielo y viento en 30 rallies." />
+  <meta name="description" content="Dibuja un perfil de rueda antes de cada sección del terreno, observa cómo se comporta su forma medida y adapta la siguiente rueda para que el corredor de..." />
+    <meta property="og:title" content="Rally de rueda de dibujo de animales | WeightPlay" />
+    <meta property="og:description" content="Dibuja un perfil de rueda antes de cada sección del terreno, observa cómo se comporta su forma medida y adapta la siguiente rueda para que el corredor de..." />
     <meta property="og:url" content="https://weightplay.com/es/games/animal-sketchwheel-rally/" />
-    <meta name="twitter:title" content="Rally Animal de Ruedas Dibujadas | WeightPlay" />
-    <meta name="twitter:description" content="Dibuja ruedas para el carro rúnico de Rux y adáptalas a escalones, barro, túneles, brechas, hielo y viento en 30 rallies." />
+    <meta name="twitter:title" content="Rally de rueda de dibujo de animales | WeightPlay" />
+    <meta name="twitter:description" content="Dibuja un perfil de rueda antes de cada sección del terreno, observa cómo se comporta su forma medida y adapta la siguiente rueda para que el corredor de..." />
   </head>
 <body data-screen="loading">
   <section id="loading" class="loading" aria-live="polite"><img src="../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp" alt=""><strong>WeightPlay</strong><div><i id="loadingFill"></i></div></section>
 
   <div id="mainGroup" class="main-group" hidden>
     <main class="main-screen">
-      <header class="main-header"><a class="lobby-return" href="/" aria-label="Return to WeightPlay" data-t-aria="lobbyReturn" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt="Imagen del juego Rally Animal de Ruedas Dibujadas"></a><strong data-t="title">Animal Sketchwheel Rally</strong><label><span data-t="language">Language</span><select id="localeSelect" aria-label="Language" data-t-aria="language"></select></label></header>
+      <header class="main-header"><a class="lobby-return" href="/" aria-label="Return to WeightPlay" data-t-aria="lobbyReturn" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt="Imagen del juego Rally de rueda de dibujo de animales"></a><strong data-t="title">Animal Sketchwheel Rally</strong><label><span data-t="language">Language</span><select id="localeSelect" aria-label="Language" data-t-aria="language"></select></label></header>
       <section class="main-hero">
         <img class="poster" src="../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp" data-t-alt="posterAlt" alt="Gear Horn Rux sketches rune wheels for a forest race cart">
-        <div class="main-copy"><small data-t="kicker">DRAW-TO-DRIVE RALLY</small><h1 data-t="title">Rally Animal de Ruedas Dibujadas</h1><p data-t="pitch">Draw Rux a wheel that matches the next terrain. Redraw during the live race before Fia reaches the finish.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">Start Game</button></div>
+        <div class="main-copy"><small data-t="kicker">DRAW-TO-DRIVE RALLY</small><h1 data-t="title">Rally de rueda de dibujo de animales</h1><p data-t="pitch">Draw Rux a wheel that matches the next terrain. Redraw during the live race before Fia reaches the finish.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">Start Game</button></div>
       </section>
     </main>
     <article class="public-guide game-page-info">
@@ -110,21 +110,26 @@
   <script src="locales.js?v=20260721-hands-on1"></script>
   <script src="game.js?v=20260721-hands-on1"></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
-<section class="game-page-info game-page-info-static" aria-label="Guía de Rally Animal de Ruedas Dibujadas">
+<section class="game-page-info game-page-info-static" aria-label="Guía de Rally de rueda de dibujo de animales">
     
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2>Rally Animal de Ruedas Dibujadas</h2><p>Dibuja ruedas para el carro rúnico de Rux y adáptalas a escalones, barro, túneles, brechas, hielo y viento en 30 rallies.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Cómo se juega</span><strong>Rally de dibujo</strong></div><div class="game-info-fact"><span>Género</span><strong>Juegos de animales · carreras · Arcada · Estrategia</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Guía del juego original</span><h2>Rally de rueda de dibujo de animales</h2><p>Dibuja un perfil de rueda antes de cada sección del terreno, observa cómo se comporta su forma medida y adapta la siguiente rueda para que el corredor de animales llegue a la meta antes que el rival.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Cómo se juega</span><strong>Carreras de ruedas de sorteo y prueba</strong></div><div class="game-info-fact"><span>Género</span><strong>Arcada · Dibujo · Estrategia · animales</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Fácil de desafiar</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>2-8 minutos por etapa</strong></div><div class="game-info-fact"><span>Habilidades</span><strong>Diseño de formas · Adaptación · Observación</strong></div></div>
     </div>
     <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Se guarda el progreso?</dt><dd>Sí, sólo en este navegador.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Historia y misión</h3><p>Treinta recorridos de rally atraviesan carreteras llanas, escaleras, barro, túneles, brechas, hielo y viento. El vehículo se mueve continuamente, pero su avance depende de si la rueda actual se adapta al terreno próximo.</p>
+<p>Cada recorrido utiliza una secuencia de terreno y una posición de obstáculos creadas por un autor. El objetivo no es dibujar un círculo bonito cada vez; diferentes secciones recompensan diferentes proporciones.</p></div>
+      <div class="game-info-section"><h3>Reglas del juego</h3><p>Dibuja la rueda en el panel visible con un puntero o un dedo. El juego mide la redondez, la altura, el ancho, el agarre y la velocidad de esa forma y luego la monta en el vehículo en movimiento.</p>
+<p>La carretera plana recompensa una rueda redonda y equilibrada. Las escaleras favorecen la altura, el barro y el hielo necesitan agarre, los túneles requieren un perfil bajo y ancho, los huecos necesitan anchura y velocidad, y el viento recompensa una forma estrecha y estable.</p>
+<p>Un perfil que se adapta al terreno actual mantiene el impulso. Un mal partido frena, resbala, choca o falla el obstáculo mientras el rival continúa.</p>
+<p>Las actualizaciones del taller brindan velocidad, tolerancia o soporte de control modestos. No convierten una rueda universal en la respuesta correcta para cada terreno.</p></div>
+      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Elige un rally desbloqueado y lee la secuencia del terreno.</li><li>Dibuja una forma de rueda cerrada para la primera sección.</li><li>Observe cómo gira la rueda y compare la respuesta del vehículo con la señal del terreno.</li><li>Vuelve a dibujar para secciones posteriores cuando cambie el perfil requerido y llega a la meta antes que el rival.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consejos</h3><ul><li>Utilice una silueta deliberada simple porque pequeñas protuberancias decorativas reducen el perfil medido.</li><li>Para escaleras, enfatice la altura vertical; para un túnel, baje la parte superior manteniendo suficiente ancho.</li><li>Una rueda con un espacio amplio puede ser deficiente con el viento, así que vuelva a dibujarla en lugar de forzar que un diseño pase por ambas.</li><li>Observe qué rasgo medido falló y ajuste solo ese rasgo en el siguiente intento.</li></ul></div>
+      <div class="game-info-section"><h3>Progresión y dificultad</h3><p>Las primeras hileras aíslan el camino llano y las escaleras. Los capítulos posteriores añaden barro, hielo, viento, túneles, brechas y recorridos mixtos que requieren varios rediseños.</p>
+<p>Treinta secuencias creadas por el autor cambian el orden del terreno, el espacio entre los obstáculos, la forma del recorrido y el ritmo del rival.</p></div>
+      <div class="game-info-section"><h3>Nota de diseño</h3><p>The wheel is visibly attached to the vehicle, rotates with travel, meets the ground line, and faces the direction of motion. Draw coordinates and rendered shape share one scale on phone and desktop. The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota para familias</h3><p>No account, purchase, or public leaderboard is required. Clears, bolts, upgrades, lens state, and local best times stay in this browser. You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.</p></div>
+      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cada rueda debería ser un círculo?</dt><dd>No. Cada terreno premia un perfil medido diferente.</dd></div><div><dt>¿Puedo volver a dibujar durante un rally?</dt><dd>Sí, la jugada prevista es adaptarse antes de tramos de terreno posteriores.</dd></div><div><dt>¿Por qué el vehículo frenó en las escaleras?</dt><dd>Es probable que la rueda actual careciera de suficiente altura o agarre.</dd></div><div><dt>¿El rival usa mi volante?</dt><dd>No. El rival proporciona presión en la carrera, mientras que tu rendimiento proviene de la forma dibujada.</dd></div><div><dt>¿Qué controles y tamaños de pantalla son compatibles?</dt><dd>Las mismas reglas admiten el tacto, el mouse y el teclado cuando el juego usa esas entradas. La interfaz se escala como un diseño lógico en las ventanas gráficas requeridas de teléfono, paisaje y escritorio.</dd></div><div><dt>¿Puede el progreso pasar automáticamente a otro dispositivo?</dt><dd>No. Actualmente, este juego solo se guarda en el almacenamiento del navegador local, por lo que otro perfil de navegador o dispositivo comienza con su propio progreso local separado a menos que se agregue un sistema de cuenta futuro.</dd></div></dl></div>
       
     </div>
   </section>

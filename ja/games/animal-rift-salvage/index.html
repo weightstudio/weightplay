@@ -21,21 +21,21 @@
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "アニマル・リフトサルベージ",
+  "name": "アニマルリフトサルベージ",
   "url": "https://weightplay.com/ja/games/animal-rift-salvage/",
   "image": "https://weightplay.com/assets/animal-rift-salvage/cover.webp",
   "genre": [
-    "動物ゲーム",
     "アーケード",
     "アクション",
-    "注目の"
+    "戦略",
+    "動物"
   ],
   "playMode": "SinglePlayer",
   "applicationCategory": "Game",
   "operatingSystem": "Any",
   "inLanguage": "ja",
   "isAccessibleForFree": true,
-  "description": "オーラの月輪を導き、30の星界区域で小さな残骸から成長し、救助コアを回収してライバルを追い越そう。"
+  "description": "円形の裂け目を通して小さな月のコレクターを操縦し、現在のサイズ以下のサルベージを吸収し、スコアチェーンを構築し、時間切れになる前に回収ノルマと救助目標の両方を完了します。"
 }
     </script>
   <meta charset="utf-8">
@@ -43,16 +43,16 @@
   <meta name="robots" content="index,follow" />
   <meta name="theme-color" content="#07152d">
   <meta name="weightplay-audience" content="general">
-  <title>アニマル・リフトサルベージ | WeightPlay</title>
+  <title>アニマルリフトサルベージ | WeightPlay</title>
   <link rel="icon" href="../../assets/weightplay-logo.png">
   <link rel="stylesheet" href="style.css?v=20260721-feedback-timer">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
-  <meta name="description" content="オーラの月輪を導き、30の星界区域で小さな残骸から成長し、救助コアを回収してライバルを追い越そう。" />
-    <meta property="og:title" content="アニマル・リフトサルベージ | WeightPlay" />
-    <meta property="og:description" content="オーラの月輪を導き、30の星界区域で小さな残骸から成長し、救助コアを回収してライバルを追い越そう。" />
+  <meta name="description" content="円形の裂け目を通して小さな月のコレクターを操縦し、現在のサイズ以下のサルベージを吸収し、スコアチェーンを構築し、時間切れになる前に回収ノルマと救助目標の両方を完了します。" />
+    <meta property="og:title" content="アニマルリフトサルベージ | WeightPlay" />
+    <meta property="og:description" content="円形の裂け目を通して小さな月のコレクターを操縦し、現在のサイズ以下のサルベージを吸収し、スコアチェーンを構築し、時間切れになる前に回収ノルマと救助目標の両方を完了します。" />
     <meta property="og:url" content="https://weightplay.com/ja/games/animal-rift-salvage/" />
-    <meta name="twitter:title" content="アニマル・リフトサルベージ | WeightPlay" />
-    <meta name="twitter:description" content="オーラの月輪を導き、30の星界区域で小さな残骸から成長し、救助コアを回収してライバルを追い越そう。" />
+    <meta name="twitter:title" content="アニマルリフトサルベージ | WeightPlay" />
+    <meta name="twitter:description" content="円形の裂け目を通して小さな月のコレクターを操縦し、現在のサイズ以下のサルベージを吸収し、スコアチェーンを構築し、時間切れになる前に回収ノルマと救助目標の両方を完了します。" />
   </head>
 <body data-screen="main">
   <div id="loading" class="loading-panel"><img src="../../assets/animal-rift-salvage/orla-ring.webp" alt=""><strong data-t="loading">Calibrating the lunar ring…</strong></div>
@@ -60,7 +60,7 @@
   <div id="mainGroup" class="main-group">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
-        <a class="lobby-return" href="/" aria-label="Return to WeightPlay" data-t-aria="backLobby" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt="アニマル・リフトサルベージのゲーム画像"></a>
+        <a class="lobby-return" href="/" aria-label="Return to WeightPlay" data-t-aria="backLobby" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt="アニマルリフトサルベージのゲーム画像"></a>
         <strong data-t="titleShort">Rift Salvage</strong>
         <label class="locale-control"><span class="sr-only" data-t="language">Language</span><select id="localeSelect" aria-label="Language" data-t-aria="language"></select></label>
       </header>
@@ -68,7 +68,7 @@
         <img class="poster" src="../../assets/animal-rift-salvage/cover.webp" alt="Moon Cap Orla guiding a lunar recovery ring" data-t-alt="posterAlt">
         <div class="main-copy">
           <small data-t="mainKicker">GENERAL · 30-ZONE CAMPAIGN</small>
-          <h1 data-t="title">アニマル・リフトサルベージ</h1>
+          <h1 data-t="title">アニマルリフトサルベージ</h1>
           <p data-t="mainSummary">Guide Orla's lunar ring across the astral foundry. Recover small debris first, grow, then reclaim the crown wreckage.</p>
           <p data-t="mainGoal">Clear each salvage quota, rescue the cores, and reach the beacon before the rift closes.</p>
           <span id="mainProgress"></span>
@@ -76,21 +76,26 @@
         </div>
       </section>
     </main>
-    <section class="game-page-info game-page-info-static" aria-label="アニマル・リフトサルベージ のゲーム情報">
+    <section class="game-page-info game-page-info-static" aria-label="アニマルリフトサルベージ のゲーム情報">
     
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>アニマル・リフトサルベージ</h2><p>オーラの月輪を導き、30の星界区域で小さな残骸から成長し、救助コアを回収してライバルを追い越そう。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>成長型サルベージアリーナ</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>動物ゲーム · アーケード · アクション · 注目の</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>アニマルリフトサルベージ</h2><p>円形の裂け目を通して小さな月のコレクターを操縦し、現在のサイズ以下のサルベージを吸収し、スコアチェーンを構築し、時間切れになる前に回収ノルマと救助目標の両方を完了します。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>モメンタム サルベージ アリーナ</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>アーケード · アクション · 戦略 · 動物</strong></div><div class="game-info-fact"><span>難易度</span><strong>挑戦しやすい</strong></div><div class="game-info-fact"><span>目安時間</span><strong>1ステージあたり2～8分</strong></div><div class="game-info-fact"><span>育てる力</span><strong>ナビゲーション · リスク管理 · 企画</strong></div></div>
     </div>
     <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>進行状況は保存されますか?</dt><dd>はい、このブラウザでのみ可能です。</dd></div></dl></div>
+      <div class="game-info-section"><h3>世界とミッション</h3><p>30 のリフト ゾーンには、散在する破片、箱、プリズム、タワー、クラウン、閉じ込められたコア、敵対的な機械が含まれています。コレクターは小さいものから始まり、安全な物質を吸収した後にのみ、より重い物体を回収できるようになります。</p>
+<p>すべてのゾーンでは、作成されたフォーメーション、目標、砲塔パターン、およびライバルの配置が使用されます。完全な回復バーだけで必ずしもミッション全体が完了するとは限りません。</p></div>
+      <div class="game-info-section"><h3>ゲームのしくみ</h3><p>押し続けるか、ポイントに向かってドラッグするか、方向キーを使用するか、WASD を使用して操縦します。入力が変化した後も勢いは続くため、大きな危険の近くでは幅広のターンがより安全です。</p>
+<p>電流コレクタに十分小さいオブジェクトは、有効なサルベージとして光ります。それらを吸収すると質量とスコアが増加します。まだ大きすぎるオブジェクトに触れると、安定性が損なわれ、チェーンが切れてしまいます。</p>
+<p>迅速な回復によりチェーンマルチプライヤーが延長されます。プリズムキーはシールドされたサルベージを開くことができ、アンカーは後の目標に影響を与え、閉じ込められたコアはクォータの横に表示される個別のレスキュー合計にカウントされます。</p>
+<p>後のゾーンでは、照準を合わせたタレット、クロスファイア、現在のフィールド、シールドされたオブジェクト、ライバルコレクター、ストーム、および複数のレスキューコアが追加されます。結果は、表示されたすべての目標が完了した後にのみ表示されます。</p></div>
+      <div class="game-info-section"><h3>遊び方</h3><ol><li>ロックされていないゾーンを選択し、その割り当て、救助数、時間、および章のルールを読みます。</li><li>安全に質量を増やすために、最初に到達可能な最小の残存物を収集します。</li><li>ルートに障害がないときはチェーンを維持しますが、砲塔の砲撃や大きな衝突の前に離脱してください。</li><li>回復クォータに達し、タイマーまたは安定性がゼロになる前にすべての救助要件を完了してください。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>1 つの遠くの目標に向かって加速するのではなく、いくつかの小さな部分を通過するループを計画します。</li><li>十分なプリズムキーと質量が収集されるまで、シールドされた大型サルベージを保管してください。</li><li>レスキュー目標が 0/1 または 0/2 と表示されたら、最後の割り当てポイントを埋める前にコアを見つけます。</li><li>ライバルのルートは、使用するつもりだった簡単なオブジェクトを削除する可能性があるため、後の章で注意してください。</li></ul></div>
+      <div class="game-info-section"><h3>進行と難易度</h3><p>6 つの 5 つのゾーンの章で、漂流フォーメーション、砲塔、海流とアンカー、シールドされたサルベージ、ライバル、嵐の組み合わせが紹介されています。</p>
+<p>難易度は、数値的なノルマを上げるだけでなく、ナビゲーションと目標の構造を変更します。</p></div>
+      <div class="game-info-section"><h3>デザインノート</h3><p>The collector size, legal salvage glow, objective counters, stability, and arena geometry remain synchronized at every supported viewport. The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.</p></div>
+      <div class="game-info-section game-info-parent"><h3>保護者の方へ</h3><p>No account, purchase, or public leaderboard is required. Unlocks, medals, gears, upgrades, and best results are stored locally in this browser. You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.</p></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>なぜゾーンが 230/230 で終了しなかったのですか?</dt><dd>表示された救助またはその他の二次目標がまだ完了していませんでした。</dd></div><div><dt>何を吸収できるでしょうか？</dt><dd>コレクターの現在のサイズしきい値以下のオブジェクト。</dd></div><div><dt>何が鎖を断ち切るのか？</dt><dd>待機時間が長すぎるか、大きすぎるオブジェクトと衝突します。</dd></div><div><dt>ライバルがゾーンを不可能にするのか？</dt><dd>いいえ。作成された各ゾーンには、有効なルートと十分な回収可能なマテリアルが残されています。</dd></div><div><dt>どのコントロールと画面サイズがサポートされていますか?</dt><dd>ゲームでこれらの入力が使用されるタッチ、マウス、キーボードも同じルールでサポートされます。このインターフェイスは、必要な電話、ランドスケープ、デスクトップのビューポート全体にわたって 1 つの論理レイアウトとして拡張されます。</dd></div><div><dt>進行状況を別のデバイスに自動的に移動できますか?</dt><dd>いいえ。現在、このゲームはローカル ブラウザ ストレージにのみ保存されるため、将来のアカウント システムが追加されない限り、別のブラウザ プロファイルまたはデバイスは独自のローカルの進行状況で開始されます。</dd></div></dl></div>
       
     </div>
   </section>
@@ -133,6 +138,6 @@
   <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
-  <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="アニマル・リフトサルベージ";document.title="アニマル・リフトサルベージ | WeightPlay";},{once:true});</script>
+  <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="アニマルリフトサルベージ";document.title="アニマルリフトサルベージ | WeightPlay";},{once:true});</script>
 </body>
 </html>

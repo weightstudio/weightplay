@@ -92,6 +92,20 @@
       document.body.append(script);
     }
   }
+
+  function ensureGameInfoRuntime() {
+    if (!document.querySelector('link[href*="game-page-info.css"]')) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = new URL("game-page-info.css", sharedAssetBase).href;
+      document.head.append(link);
+    }
+    if (!document.querySelector('script[src*="game-page-info.js"]')) {
+      const script = document.createElement("script");
+      script.src = new URL("game-page-info.js", sharedAssetBase).href;
+      document.body.append(script);
+    }
+  }
   const PROGRESS_LABEL = {
     en: "Stage", "zh-Hant": "關卡", "zh-Hans": "关卡", ja: "ステージ",
     ko: "스테이지", es: "Nivel", "pt-BR": "Fase", fr: "Niveau",
@@ -322,6 +336,7 @@
     start = firstVisible(MAIN_START_SELECTORS, screen);
     poster = firstVisible(MAIN_POSTER_SELECTORS, screen);
     if (!start || !poster) return;
+    (screen.closest("main") || screen).classList.add("wp-standard-main-flow-owner");
 
     const guide = firstVisible([".public-guide", ".game-page-info", ".guide"], screen);
     let summary = firstVisible(MAIN_SUMMARY_SELECTORS, screen);
@@ -374,8 +389,15 @@
         branch.classList.add("wp-main-legacy-layout");
       }
     });
-    [...screen.children].forEach((child) => {
-      if (/^H[1-3]$/.test(child.tagName) && child !== header && !composition.contains(child)) {
+    const layoutRoot = composition.parentElement || screen;
+    [...layoutRoot.children].forEach((child) => {
+      if (
+        child !== header
+        && child !== composition
+        && child !== guide
+        && !child.contains(composition)
+        && !["SCRIPT", "STYLE", "TEMPLATE"].includes(child.tagName)
+      ) {
         child.classList.add("wp-main-legacy-layout");
       }
     });
@@ -411,16 +433,26 @@
     adoptControls();
     normalizeBattleReturns();
     const { type, screen } = activeScreen();
+    document.querySelectorAll(".wp-standard-main-flow-owner").forEach((owner) => {
+      if (type !== "main" || (!owner.contains(screen) && !screen?.contains(owner))) {
+        owner.classList.remove("wp-standard-main-flow-owner");
+      }
+    });
     if (type === "main") normalizeMainLayout(screen);
-    let header = firstVisible(HEADER_SELECTORS, screen) || firstVisible(HEADER_SELECTORS, document);
-    if (!header && type === "main") {
+    let header = firstVisible(HEADER_SELECTORS, screen);
+    if (!header) {
       header = document.createElement("header");
-      header.className = "wp-generated-main-header";
+      header.className = type === "stage" ? "wp-generated-stage-header" : "wp-generated-main-header";
       screen.prepend(header);
     }
     if (!header) return;
-    const externalReturn = firstVisible(RETURN_SELECTORS, screen);
+    const externalReturn = firstVisible(RETURN_SELECTORS, screen)
+      || (header.classList.contains("wp-generated-main-header") ? firstVisible(RETURN_SELECTORS, document) : null);
+    const legacyHeader = externalReturn?.closest("header");
     if (externalReturn && !header.contains(externalReturn)) header.prepend(externalReturn);
+    if (legacyHeader && legacyHeader !== header && header.classList.contains("wp-generated-main-header")) {
+      legacyHeader.classList.add("wp-shell-legacy-control");
+    }
     if (!header.classList.contains("wp-generated-main-header")) {
       screen.querySelectorAll(".wp-generated-main-header").forEach((generatedHeader) => {
         if (generatedHeader !== header) generatedHeader.remove();
@@ -467,6 +499,7 @@
   function init() {
     window.__weightPlayShellControlsPhase = "init";
     ensureStageSelectorRuntime();
+    ensureGameInfoRuntime();
     build();
     place();
     const observer = new MutationObserver(() => requestAnimationFrame(place));

@@ -21,22 +21,21 @@
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "アニマル・スカイブリッジ",
+  "name": "アニマルスカイブリッジのライバル",
   "url": "https://weightplay.com/ja/games/animal-skybridge-rivals/",
   "image": "https://weightplay.com/assets/animal-skybridge-rivals/cover.webp",
   "genre": [
-    "動物ゲーム",
-    "レーシング",
     "アーケード",
+    "レーシング",
     "戦略",
-    "注目の"
+    "動物"
   ],
   "playMode": "SinglePlayer",
   "applicationCategory": "Game",
   "operatingSystem": "Any",
   "inLanguage": "ja",
   "isAccessibleForFree": true,
-  "description": "フィアを導き、30の雲上レースでシアンのタイルを集め、3人のライバルより先に橋を完成させよう。"
+  "description": "自分の色のオーロラ タイルを集め、3 つの橋ドックのいずれかに運び、近くにあるときに自動的にスタックを提出し、ライバルの乗組員よりも先に必要な橋の距離を完了します。"
 }
     </script>
   <meta charset="utf-8">
@@ -44,18 +43,18 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#082c50">
-  <title>アニマル・スカイブリッジ | WeightPlay</title>
-  <meta name="description" content="フィアを導き、30の雲上レースでシアンのタイルを集め、3人のライバルより先に橋を完成させよう。" />
+  <title>アニマルスカイブリッジのライバル | WeightPlay</title>
+  <meta name="description" content="自分の色のオーロラ タイルを集め、3 つの橋ドックのいずれかに運び、近くにあるときに自動的にスタックを提出し、ライバルの乗組員よりも先に必要な橋の距離を完了します。" />
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="style.css?v=20260721-skybridge1">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
-  <meta property="og:title" content="アニマル・スカイブリッジ | WeightPlay" />
-    <meta property="og:description" content="フィアを導き、30の雲上レースでシアンのタイルを集め、3人のライバルより先に橋を完成させよう。" />
+  <meta property="og:title" content="アニマルスカイブリッジのライバル | WeightPlay" />
+    <meta property="og:description" content="自分の色のオーロラ タイルを集め、3 つの橋ドックのいずれかに運び、近くにあるときに自動的にスタックを提出し、ライバルの乗組員よりも先に必要な橋の距離を完了します。" />
     <meta property="og:url" content="https://weightplay.com/ja/games/animal-skybridge-rivals/" />
-    <meta name="twitter:title" content="アニマル・スカイブリッジ | WeightPlay" />
-    <meta name="twitter:description" content="フィアを導き、30の雲上レースでシアンのタイルを集め、3人のライバルより先に橋を完成させよう。" />
+    <meta name="twitter:title" content="アニマルスカイブリッジのライバル | WeightPlay" />
+    <meta name="twitter:description" content="自分の色のオーロラ タイルを集め、3 つの橋ドックのいずれかに運び、近くにあるときに自動的にスタックを提出し、ライバルの乗組員よりも先に必要な橋の距離を完了します。" />
   </head>
 <body data-screen="loading" data-game-id="animal-skybridge-rivals" data-sound-toggle="off">
   <section id="loading" class="loading-panel" aria-live="polite">
@@ -70,25 +69,30 @@
         <div class="main-utilities"><button id="soundToggle" class="main-sound-toggle" type="button" aria-label="Disable sound">🔊</button><label class="locale-control"><span class="sr-only" data-t="language">Language</span><select id="locale" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div>
       </header>
       <section class="main-hero">
-        <img class="poster" src="../../assets/animal-skybridge-rivals/cover.webp" alt="アニマル・スカイブリッジのゲーム画像" data-ta="posterAlt">
-        <div class="main-copy"><small data-t="kicker">REAL-TIME STACK-AND-BUILD RACING</small><h1 data-t="title">アニマル・スカイブリッジ</h1><p data-t="pitch">Guide Fia across the cloud arena, collect cyan aurora tiles, and spend the stack to finish a bridge before three rivals.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">Start Game</button></div>
+        <img class="poster" src="../../assets/animal-skybridge-rivals/cover.webp" alt="アニマルスカイブリッジのライバルのゲーム画像" data-ta="posterAlt">
+        <div class="main-copy"><small data-t="kicker">REAL-TIME STACK-AND-BUILD RACING</small><h1 data-t="title">アニマルスカイブリッジのライバル</h1><p data-t="pitch">Guide Fia across the cloud arena, collect cyan aurora tiles, and spend the stack to finish a bridge before three rivals.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">Start Game</button></div>
       </section>
     </main>
-    <section class="game-page-info game-page-info-static" aria-label="アニマル・スカイブリッジ のゲーム情報">
+    <section class="game-page-info game-page-info-static" aria-label="アニマルスカイブリッジのライバル のゲーム情報">
     
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>アニマル・スカイブリッジ</h2><p>フィアを導き、30の雲上レースでシアンのタイルを集め、3人のライバルより先に橋を完成させよう。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>リアルタイム収集・建設レース</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>動物ゲーム · レーシング · アーケード · 戦略 · 注目の</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>アニマルスカイブリッジのライバル</h2><p>自分の色のオーロラ タイルを集め、3 つの橋ドックのいずれかに運び、近くにあるときに自動的にスタックを提出し、ライバルの乗組員よりも先に必要な橋の距離を完了します。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>集めて建てる橋レース</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>アーケード · レーシング · 戦略 · 動物</strong></div><div class="game-info-fact"><span>難易度</span><strong>挑戦しやすい</strong></div><div class="game-info-fact"><span>目安時間</span><strong>1ステージあたり2～8分</strong></div><div class="game-info-fact"><span>育てる力</span><strong>ルート計画 · リスク管理 · 反応</strong></div></div>
     </div>
     <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>進行状況は保存されますか?</dt><dd>はい、このブラウザでのみ可能です。</dd></div></dl></div>
+      <div class="game-info-section"><h3>世界とミッション</h3><p>30 のスカイブリッジ レースで、動物ビルダーが水上アリーナを渡ります。すべてのレーサーは色付きのタイルを集めてドックに戻り、運ばれたスタックを橋の進行状況に変えます。</p>
+<p>コースプランは、より多くの人数で1つのアリーナを繰り返すのではなく、ピックアップルート、ドックへのアクセス、危険、風、増援、移動ブースト、チャンピオンの行動を変更します。</p></div>
+      <div class="game-info-section"><h3>ゲームのしくみ</h3><p>ポインタ、タッチターゲット、方向キー、または WASD を使用して移動します。あなたの動物は、選択したターゲットに向かって進みます。</p>
+<p>一致するオーロラ タイルをタッチすると、そのタイルが現在の容量までキャリー スタックに追加されます。橋ドックの周囲のマークされたエリアに入ると、1 つ以上の運ばれたタイルが自動的に送信されます。正確なピクセルの位置合わせや追加の強度条件は必要ありません。</p>
+<p>ステージのブリッジゴールに最初に到達したレーサーが勝利します。爆弾、モンスター、風、ライバルとの接触、強化された橋のセクションは、表示されているチャプタールールに応じて進行を遅らせたり、進行を妨げたりする可能性があります。</p>
+<p>ダッシュ エネルギーは一時的なスピード バーストを引き起こします。シールド、マグネット、ダッシュ ピックアップは短期間の戦術効果を提供しますが、ワークショップの能力、スピード、グリップのアップグレードは永続的なローカル サポートを提供します。</p></div>
+      <div class="game-info-section"><h3>遊び方</h3><ol><li>ロックが解除されているレースを選択し、そのブリッジ ゴール、タイマー、ルート、および危険ルールを読みます。</li><li>安全な帰還距離を超えないように、自分の色のタイルをいくつか集めます。</li><li>番号が付けられた橋のドックに近づいてください。表示領域内にいる間、提出は自動的に開始されます。</li><li>ライバルより先に橋がゴールに到着するまで、収集と入金のループを繰り返します。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>危険によって長いルートが妨げられている場合は、全容量の負荷を失うのではなく、小さなスタックをデポジットします。</li><li>最も近い安全なドックを選択してください。ドック番号は、非表示の提出命令を課すものではありません。</li><li>密集したピックアップフィールドで磁石を使用し、帰路または最終レースに備えてダッシュを保存します。</li><li>グリップは風によるドリフトを軽減しますが、容量は中断されずに戻ることができる場合にのみ役立ちます。</li></ul></div>
+      <div class="game-info-section"><h3>進行と難易度</h3><p>6 つの 5 レースの章には、ルート分割、ウィンドレーン、強化セクション、移動ブースト リング、襲撃レイアウト、チャンピオン ライバルが追加されます。</p>
+<p>ゴール、アリーナのレイアウト、ピックアップ、ハザード、ライバルの行動は、作成された 30 のレース全体で一緒に変化します。</p></div>
+      <div class="game-info-section"><h3>デザインノート</h3><p>Dock range, carried stack, bridge progress, rival progress, and submission feedback remain visible. A valid nearby deposit never depends on an invisible angle or upgrade check. The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.</p></div>
+      <div class="game-info-section game-info-parent"><h3>保護者の方へ</h3><p>No account or purchase is required. Unlocks, stars, shards, workshop upgrades, and local best results remain in this browser. You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.</p></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>タイルを送信するには何が必要ですか?</dt><dd>少なくとも 1 つの一致するタイルを持ち、ドックの目に見える提出エリアに入ります。</dd></div><div><dt>ドックは番号順に使用する必要がありますか?</dt><dd>いいえ。到達可能なドックを選択してください。</dd></div><div><dt>タイルがスタックに入らなかったのはなぜですか?</dt><dd>色が合わなかったか、現在の容量がいっぱいでした。</dd></div><div><dt>どうすれば勝てますか？</dt><dd>ライバルクルーよりも先に、表示されたブリッジゴールに到達します。</dd></div><div><dt>どのコントロールと画面サイズがサポートされていますか?</dt><dd>ゲームでこれらの入力が使用されるタッチ、マウス、キーボードも同じルールでサポートされます。このインターフェイスは、必要な電話、ランドスケープ、デスクトップのビューポート全体にわたって 1 つの論理レイアウトとして拡張されます。</dd></div><div><dt>進行状況を別のデバイスに自動的に移動できますか?</dt><dd>いいえ。現在、このゲームはローカル ブラウザ ストレージにのみ保存されるため、将来のアカウント システムが追加されない限り、別のブラウザ プロファイルまたはデバイスは独自のローカルの進行状況で開始されます。</dd></div></dl></div>
       
     </div>
   </section>
@@ -120,6 +124,6 @@
   <script src="../../src/site-config.js"></script><script src="/src/i18n-ja.js?v=20260719-ja1"></script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js"></script><script src="../../src/edge-guard.js"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="locales.js?v=20260721-skybridge1"></script><script src="game.js?v=20260721-skybridge1"></script><script src="../../src/stage-selector-standard.js?v=20260721-landscape-envelope-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260721-landscape-envelope-1" data-wp-battle-standard></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
-  <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="アニマル・スカイブリッジ";document.title="アニマル・スカイブリッジ | WeightPlay";},{once:true});</script>
+  <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="アニマルスカイブリッジのライバル";document.title="アニマルスカイブリッジのライバル | WeightPlay";},{once:true});</script>
 </body>
 </html>

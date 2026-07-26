@@ -190,6 +190,14 @@
   overflow: visible !important;
 }
 
+.wp-standard-main-flow-owner {
+  box-sizing: border-box !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
 .wp-standard-main-composition {
   box-sizing: border-box;
   flex: 0 0 100% !important;

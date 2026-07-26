@@ -6,14 +6,14 @@
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "بكرات الرون الحيوانية",
-  "description": "كوّن فريق حيوانات مستدعى وأدر عشرة أنواع من الرون إلى الأسفل. تضاعف الخطوط المكتملة التأثير، ويهاجم كل رفيق منفردًا بينما تحمي الدفاعات والشفاء المجمعة...",
+  "name": "بكرات رون الحيوان",
+  "description": "قم ببناء فريق يصل إلى خمسة من أبطال الحيوانات المستدعين، وقم بتدوير ثلاث بكرات رونية للأسفل، واجمع بين الرموز المتوقفة، ونجو من كل موجة مكونة من ثلاثين...",
   "url": "https://weightplay.com/ar/games/animal-rune-reels/",
   "image": "https://weightplay.com/assets/animal-rune-reels/cover.webp",
   "genre": [
-    "العاب الحيوانات",
     "الإستراتيجية",
-    "أركيد"
+    "لعب الأدوار",
+    "حيوان"
   ],
   "playMode": "SinglePlayer",
   "applicationCategory": "Game",
@@ -51,17 +51,17 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#080d28">
-  <title>بكرات الرون الحيوانية | WeightPlay</title>
-  <meta name="description" content="كوّن فريق حيوانات مستدعى وأدر عشرة أنواع من الرون إلى الأسفل. تضاعف الخطوط المكتملة التأثير، ويهاجم كل رفيق منفردًا بينما تحمي الدفاعات والشفاء المجمعة..." />
+  <title>بكرات رون الحيوان | WeightPlay</title>
+  <meta name="description" content="قم ببناء فريق يصل إلى خمسة من أبطال الحيوانات المستدعين، وقم بتدوير ثلاث بكرات رونية للأسفل، واجمع بين الرموز المتوقفة، ونجو من كل موجة مكونة من ثلاثين..." />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="بكرات الرون الحيوانية | WeightPlay" />
-  <meta property="og:description" content="كوّن فريق حيوانات مستدعى وأدر عشرة أنواع من الرون إلى الأسفل. تضاعف الخطوط المكتملة التأثير، ويهاجم كل رفيق منفردًا بينما تحمي الدفاعات والشفاء المجمعة..." />
+  <meta property="og:title" content="بكرات رون الحيوان | WeightPlay" />
+  <meta property="og:description" content="قم ببناء فريق يصل إلى خمسة من أبطال الحيوانات المستدعين، وقم بتدوير ثلاث بكرات رونية للأسفل، واجمع بين الرموز المتوقفة، ونجو من كل موجة مكونة من ثلاثين..." />
   <meta property="og:url" content="https://weightplay.com/ar/games/animal-rune-reels/" />
   <meta property="og:image" content="https://weightplay.com/assets/animal-rune-reels/cover.webp" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="بكرات الرون الحيوانية | WeightPlay" />
-  <meta name="twitter:description" content="كوّن فريق حيوانات مستدعى وأدر عشرة أنواع من الرون إلى الأسفل. تضاعف الخطوط المكتملة التأثير، ويهاجم كل رفيق منفردًا بينما تحمي الدفاعات والشفاء المجمعة..." />
+  <meta name="twitter:title" content="بكرات رون الحيوان | WeightPlay" />
+  <meta name="twitter:description" content="قم ببناء فريق يصل إلى خمسة من أبطال الحيوانات المستدعين، وقم بتدوير ثلاث بكرات رونية للأسفل، واجمع بين الرموز المتوقفة، ونجو من كل موجة مكونة من ثلاثين..." />
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="battle-v3.css">
   <style>[hidden]{display:none!important}</style>
@@ -72,7 +72,7 @@
   <main id="app" hidden>
     <section id="mainPage" class="page main-page">
       <div class="canvas main-canvas">
-        <header class="topbar"><a class="back-logo" href="/" data-i18n-aria="lobby" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a><h1 data-i18n="title">بكرات الرون الحيوانية</h1><div class="main-utilities"><button id="soundToggle" class="main-sound-toggle" type="button" data-sound-toggle="true" aria-label="Disable sound" aria-pressed="false">🔊</button><select id="localeSelect" data-i18n-aria="language"></select></div></header>
+        <header class="topbar"><a class="back-logo" href="/" data-i18n-aria="lobby" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a><h1 data-i18n="title">بكرات رون الحيوان</h1><div class="main-utilities"><button id="soundToggle" class="main-sound-toggle" type="button" data-sound-toggle="true" aria-label="Disable sound" aria-pressed="false">🔊</button><select id="localeSelect" data-i18n-aria="language"></select></div></header>
         <div class="poster"><img src="../../assets/animal-rune-reels/cover.webp" alt=""><div class="poster-shade"><span data-i18n="badge">SUMMONER REEL BATTLE</span></div></div>
         <div class="main-copy">
           <p class="lead" data-i18n="leadV3">Build a team of summoned animal heroes, align runes, and defeat every guardian.</p>
@@ -80,21 +80,26 @@
           <button id="runeStartBtn" class="primary" data-i18n="start" data-wp-main-start>Start Game</button>
         </div>
       </div>
-      <section class="game-page-info game-page-info-static" aria-label="بكرات الرون الحيوانية معلومات اللعبة">
+      <section class="game-page-info game-page-info-static" aria-label="بكرات رون الحيوان معلومات اللعبة">
     
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>بكرات الرون الحيوانية</h2><p>كوّن فريق حيوانات مستدعى وأدر عشرة أنواع من الرون إلى الأسفل. تضاعف الخطوط المكتملة التأثير، ويهاجم كل رفيق منفردًا بينما تحمي الدفاعات والشفاء المجمعة المستدعي.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>قتال بكرات تكتيكي</strong></div><div class="game-info-fact"><span>النوع</span><strong>العاب الحيوانات · الإستراتيجية · أركيد</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay دليل اللعبة الأصلي</span><h2>بكرات رون الحيوان</h2><p>قم ببناء فريق يصل إلى خمسة من أبطال الحيوانات المستدعين، وقم بتدوير ثلاث بكرات رونية للأسفل، واجمع بين الرموز المتوقفة، ونجو من كل موجة مكونة من ثلاثين مهمة حراسة.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>معركة لعب الأدوار Team Reel</strong></div><div class="game-info-fact"><span>النوع</span><strong>الإستراتيجية · لعب الأدوار · حيوان</strong></div><div class="game-info-fact"><span>صعوبة</span><strong>من السهل التحدي</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>2-8 دقائق لكل مرحلة</strong></div><div class="game-info-fact"><span>المهارات المدربة</span><strong>بناء الفريق · إدارة الاحتمالية · التخطيط</strong></div></div>
     </div>
     <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل يتم حفظ التقدم؟</dt><dd>نعم، فقط في هذا المتصفح.</dd></div></dl></div>
+      <div class="game-info-section"><h3>العالم والرسالة</h3><p>يعبر المستدعي ست مناطق صدع مع قائمة حيوانات متوسعة. يتمتع كل بطل بالهجوم والدفاع والشفاء ونهاية مميزة، لذلك يغير تكوين الفريق كيفية حل نفس نتيجة البكرة.</p>
+<p>تحتوي الحملة الرئيسية على ثلاثين مهمة متعددة الموجات. توفر مهمات الأحداث اليومية والمجدولة المنفصلة مواد اختيارية دون استبدال تقدم الحملة.</p></div>
+      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>اضغط على Spin لإيقاف ثلاث بكرات متجهة نحو الأسفل واحدة تلو الأخرى. كل رونية مرئية تساهم في تأثيرها، والخط الكامل من الأحرف الرونية المطابقة يضاعف هذه القدرة.</p>
+<p>الرونية المخلبية تجعل كل بطل نشط يهاجم. تجمع رونية الدرع والقلب بين الدفاع الكامل للفريق أو الشفاء للمستدعي. يكمل Wild سطرًا آخر ولكن ليس له تأثير وحده؛ الأحرف الرونية Coin وUltimate وFocus وEcho وLuck وDormant لها تأثيراتها المتخصصة المعلنة.</p>
+<p>يتصرف الأعداء بعد حل نتيجة الرون. تظل صحة المستدعي ودرعه ودفاعه الكامل وشفاءه الكامل وعدد الموجات ونوايا العدو مرئية طوال المعركة.</p>
+<p>الاستدعاء يفتح الأبطال؛ تدعم البطاقات المكررة ترقيات المستوى. يعمل Rune Dust وSun Shards وMoon Crystals وGuardian Cores على تحسين مستويات الأحرف الرونية. تظل البطاقات والمواد والعملات المعدنية والماس الدائمة آمنة إذا تم التخلي عن المعركة، ولكن تتم إعادة ضبط الموجة الحالية.</p></div>
+      <div class="game-info-section"><h3>كيفية اللعب</h3><ol><li>افتح المرحلة، واختر رئيسي، أو يومي، أو حدث، وحدد مهمة متاحة.</li><li>استخدم الفريق لوضع ما لا يقل عن واحد وما يصل إلى خمسة أبطال مملوكين في التشكيل النشط.</li><li>قم بمراجعة حقيبة الظهر، والاستدعاء، والطلاسم عند الحاجة إلى الترقية، ثم أدخل المعركة.</li><li>قم بالدوران، واقرأ السطور المكتملة، واستمر حتى يتم هزيمة كل موجة ووصي.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>نصائح الاستراتيجية</h3><ul><li>قم بموازنة الضرر مع ما يكفي من الدفاع أو الشفاء المشترك للنجاة من نية العدو المرئية التالية.</li><li>تعتبر الرونية البرية ذات قيمة فقط عندما تكمل سطرًا مفيدًا؛ لا تعتبره تأثيرًا مستقلاً.</li><li>استخدم الأحرف الرونية النهائية مع الأبطال الذين تحل مؤثراتهم الخاصة الموجة الحالية، وليس فقط الفريق ذو المستوى الأعلى.</li><li>يكرر الوضع التلقائي الدورات الصالحة ولكنه لا يختار فريقًا أفضل أو ترقية رونية لك.</li></ul></div>
+      <div class="game-info-section"><h3>الحملة وصعوبة النمو</h3><p>تزيد فصول الحملة الستة المكونة من خمس مراحل من طول الموجة ومجموعات الوصي. تركز المهام اليومية على العملات المعدنية أو المواد، بينما تدور الأحداث وفقًا لجدولها الزمني المحدد.</p>
+<p>يعمل نمو القائمة والرون على توسيع الخيارات الإستراتيجية دون تغيير ترتيب الدقة ثلاثي البكرات القابل للقراءة.</p></div>
+      <div class="game-info-section"><h3>مذكرة تصميم المطور</h3><p>Reels stop in a fixed visual order, completed lines glow before resolving, and hero actions remain separate from the combined summoner defense and healing totals. The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.</p></div>
+      <div class="game-info-section game-info-parent"><h3>ملاحظة الوالدين</h3><p>No account is required. Roster, campaign progress, currencies, materials, rune levels, and reward claims are stored locally in this browser. You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.</p></div>
+      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>ماذا يفعل خط المطابقة؟</dt><dd>إنها تضاعف قدرة الرون هذه بعد توقف البكرات الثلاثة.</dd></div><div><dt>هل يتشارك الأبطال في هجوم واحد؟</dt><dd>لا، الأبطال يهاجمون بشكل منفصل؛ يتم الجمع بين دفاع الفريق والشفاء للمستدعي.</dd></div><div><dt>ماذا يحدث إذا تركت باتل؟</dt><dd>يبقى المخزون الدائم، لكن محاولة المعركة الحالية مفقودة.</dd></div><div><dt>هل مكافآت الأحداث متاحة دائمًا؟</dt><dd>لا. تتبع مهمات الحدث الجدول الزمني المعروض في المرحلة.</dd></div><div><dt>ما هي عناصر التحكم وأحجام الشاشة المدعومة؟</dt><dd>تدعم نفس القواعد اللمس والماوس ولوحة المفاتيح حيث تستخدم اللعبة تلك المدخلات. يتم تحجيم الواجهة كتخطيط منطقي واحد عبر إطارات العرض المطلوبة للهاتف والمناظر الطبيعية وسطح المكتب.</dd></div><div><dt>هل يمكن أن ينتقل التقدم تلقائيًا إلى جهاز آخر؟</dt><dd>لا. يتم حفظ هذه اللعبة حاليًا في مساحة تخزين المتصفح المحلي فقط، لذلك يبدأ ملف تعريف متصفح آخر أو جهاز آخر بالتقدم المحلي المنفصل الخاص به ما لم تتم إضافة نظام حساب مستقبلي.</dd></div></dl></div>
       
     </div>
   </section>

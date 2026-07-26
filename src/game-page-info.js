@@ -6895,12 +6895,12 @@
     const game = localizedGame(id);
     if (!game) return;
     syncLocalizedMetadata(game);
-    if (document.querySelector(".game-page-info[data-wp-preserve-static-guide]")) return;
     const gameSkills = game.skills || [];
     const showRecommendedAge = Boolean(baseGame.age) && !/^(12|13)\+$/.test(baseGame.age);
 
-    document.querySelector(".game-page-info")?.remove();
-    if (id === "animal-color-springs") document.querySelector(".game-guide")?.remove();
+    document
+      .querySelectorAll(".game-page-info, .public-guide, .game-guide")
+      .forEach((node) => node.remove());
     document.querySelectorAll("script[data-game-page-info-jsonld]").forEach((node) => node.remove());
 
     document.documentElement.classList.add("has-game-page-info");
@@ -7223,6 +7223,7 @@
   localizedGameplayProfiles["zh-Hans"]["animal-sanctuary-loop"] = { gameplay: "即时领地光环游戏", genre: ["动作", "策略", "动物"] };
 
   window.WeightPlayGameInfo = {
+    render,
     get(gameId) {
       const game = games[gameId];
       if (!game) return null;
@@ -7715,5 +7716,259 @@
     faq: [["共有多少座天塔？", "六個章節共有 30 座手工設計的天塔。"], ["如何為彗星破擊充能？", "連續穿過缺口即可累積充能；充滿後可突破一次危險。"], ["進度會儲存嗎？", "會。完成的天塔、星星、最佳時間、天空碎片與彗星工坊升級都會儲存在本機。"]]
   };
   localizedGameplayProfiles["zh-Hant"]["animal-skyspire-drop"] = { gameplay: "旋轉高塔街機挑戰", genre: ["街機", "動作", "動物"] };
+
+  function registerExpandedGuide(id, data, zhHantTitle, zhHansTitle) {
+    games[id] = {
+      difficulty: "Easy to Challenging",
+      time: "2-8 minutes per stage",
+      genre: ["Puzzle", "Strategy", "Animal"],
+      skills: ["Logic", "Planning", "Problem Solving"],
+      guideKicker: "WeightPlay Original Game Guide",
+      guideTitleSuffix: "Game Guide",
+      hideScoreBands: true,
+      ...data,
+    };
+    gameplayProfiles[id] = { gameplay: games[id].gameplay, genre: games[id].genre };
+    localizedGames["zh-Hant"][id] = { ...games[id], title: zhHantTitle };
+    localizedGames["zh-Hans"][id] = { ...games[id], title: zhHansTitle };
+  }
+
+  registerExpandedGuide("animal-bamboo-pipes", {
+    title: "Panko's Bamboo Waterway", gameplay: "Rotating Pipe Network Puzzle",
+    intro: "Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers.",
+    story: ["Panko is restoring thirty garden waterways whose bamboo joints were twisted by a storm. Every board is a closed engineering problem: the spring, basin, pipe shapes, and correct route are authored before play begins.", "The visible water is more than decoration. It follows the currently connected network from the source, making wrong turns, dead ends, and disconnected sections readable before the player commits more rotations."],
+    systems: ["Tap a tile to rotate it clockwise. Straight pipes, elbows, junctions, the spring, and the destination all use the same centered connection points.", "A pipe counts as connected only when both neighboring openings face each other. Touching artwork or a nearby edge is not enough.", "The source begins flowing immediately through every valid branch. A stage clears when the route reaches the destination under the stage rule; the destination itself does not need to rotate.", "Undo restores one rotation, Restart restores the authored board, and Hint identifies a useful next correction without silently solving the network."],
+    how: ["Choose an unlocked waterway from the horizontal Stage rail.", "Trace backward from the destination and forward from the spring before rotating crowded junctions.", "Rotate each required piece until every used opening meets the center of its neighbor.", "Confirm that the water reaches the clearly marked flowering destination, then continue from Result to the next waterway."],
+    strategyTips: ["Fix edge pieces first because their impossible outward openings remove choices.", "Use straight runs to establish a stable spine before deciding junction branches.", "When water stops, inspect the first dry joint rather than rotating pieces far downstream.", "Keep unused branches facing inward only when the stage requires the whole network to carry water."],
+    progression: ["Six five-stage chapters move from short straight routes to elbows, junctions, loops, misleading branches, and dense mixed networks.", "Later waterways increase structural ambiguity instead of merely hiding the pipes or demanding faster input."],
+    designNote: "Every tile fills its grid cell and every connection shares one mathematical centerline, so the visual art, hit area, water path, and solved-state test describe the same geometry on phone and desktop.",
+    parent: "No account, timer, purchase, or public score is required. Unlocks and best rotation counts remain in this browser and may reset if site storage is cleared.",
+    faq: [["Why is there still a gap?", "The two openings must meet at the exact shared center of their tile edges."], ["Does the destination rotate?", "No. Reaching its inlet is enough."], ["Can a decorative branch be ignored?", "Only when the current stage does not require every pipe to carry water."], ["Does progress save?", "Yes, cleared waterways and local best results stay in this browser."]]
+  }, "胖達竹水道", "胖达竹水道");
+
+  registerExpandedGuide("animal-bus-jam", {
+    title: "Panko's Bus Jam", gameplay: "Queue and Capacity Ordering Puzzle",
+    intro: "Board the front passenger from each queue onto the matching colored bus, choosing an order that clears every line without filling a bus at the wrong moment.",
+    story: ["Panko coordinates thirty crowded animal stops. Passengers keep their place in line, buses accept only their own color, and the visible capacity belongs to the current puzzle rather than a random traffic simulation.", "Each stop is authored so the important information is visible: queue fronts, the colors hidden behind them, and the remaining seats on every bus."],
+    systems: ["Only the first passenger in a queue can board. Removing that passenger reveals the next decision in the same line.", "A passenger boards only the bus with the matching color. A full bus rejects further passengers and leaves the puzzle state unchanged.", "The move counter records accepted boardings. Undo restores the exact queues, bus counts, and move count.", "Hint points to a legal front passenger, while Restart restores the original stop layout."],
+    how: ["Select an unlocked stop.", "Compare all queue fronts with the remaining capacity of the three buses.", "Tap one front passenger, then re-read every newly revealed color.", "Board all passengers to finish the stop and unlock the next card."],
+    strategyTips: ["Look one or two passengers deep in each queue before using the last seat of a color.", "Prefer a move that reveals a needed color without blocking another nearly full bus.", "When two fronts share a color, inspect what each one uncovers before choosing.", "Use Undo immediately after a capacity mistake instead of rebuilding the whole stop."],
+    progression: ["The first chapter teaches direct color boarding. Later chapters use longer queues, tighter capacities, repeated colors, and interlocked reveal orders.", "Difficulty grows through ordering consequences, not faster animation or hidden rules."],
+    designNote: "Every stop is deterministic and readable. Color is reinforced by labels and bus structure so the puzzle does not rely on color alone.",
+    parent: "The game has no countdown, account, purchase, or public leaderboard. Completed stops and local results remain only in this browser.",
+    faq: [["Can I board from the middle of a queue?", "No, only the visible front passenger can move."], ["Why was a passenger rejected?", "Its matching bus had no remaining seat."], ["What does Undo restore?", "It restores queues, capacities, and the move counter."], ["Are all stops solvable?", "Yes, every authored stop has a valid boarding order."]]
+  }, "潘可的巴士疏運", "胖达巴士疏导");
+
+  registerExpandedGuide("animal-hexa-sort", {
+    title: "Animal Hexa Sort", gameplay: "Color Stack Sorting Puzzle",
+    intro: "Move the top hex between short stacks, combine three matching colors, and clear every piece without trapping useful tiles beneath incompatible towers.",
+    story: ["Panko is sorting rune-colored hexes across thirty quiet groves. Each grove begins with an authored stack arrangement and enough open capacity to solve it through deliberate transfers.", "The challenge comes from access: only a top hex can move, so every placement changes which colors become available next."],
+    systems: ["Tap a nonempty stack to lift its top hex, then tap the same stack to cancel or another valid stack to place it.", "A hex can enter an empty stack or a stack whose top color matches. Each stack holds at most three pieces.", "Three matching hexes in one stack clear automatically and free the stack for later moves.", "Undo restores the previous stack arrangement and move count; Hint selects a movable source without inventing a new rule."],
+    how: ["Choose an unlocked grove.", "Identify colors that already have two accessible pieces.", "Lift one top hex and place it on an empty or matching stack.", "Continue until all stacks are empty, then advance from Result."],
+    strategyTips: ["Keep at least one empty stack available as a temporary buffer.", "Complete a triple when it frees a buried color you need next.", "Avoid building three different single-color stack tops with no matching destination.", "Read the second piece in each stack before moving its top."],
+    progression: ["Early groves teach empty-stack transfers and immediate triples. Later layouts add more colors, taller dependency chains, fewer spare spaces, and mixed near-complete towers.", "All thirty stages preserve the same move rules while changing the order-planning problem."],
+    designNote: "Large top pieces, stable stack positions, and a single selected highlight keep every move legible on touch screens and desktop pointers.",
+    parent: "There is no timer, account, purchase, or public ranking. Clears and best move counts are stored locally in this browser.",
+    faq: [["Can I place on a different color?", "No. The destination must be empty or have the same top color."], ["When does a stack clear?", "Three matching hexes clear immediately."], ["Can I cancel a lift?", "Yes, tap the selected source stack again."], ["Does Undo restore a cleared triple?", "Yes, it restores the complete previous state."]]
+  }, "動物六角堆疊", "动物六角堆叠");
+
+  registerExpandedGuide("animal-number-match", {
+    title: "Panko's Number Grove", gameplay: "Visible-Line Number Pair Puzzle",
+    intro: "Remove equal numbers or pairs that total ten when they touch or can see each other through cleared spaces, opening new sight lines across the board.",
+    story: ["Thirty number groves have become crowded with paired rune tiles. Panko clears them by matching values under one consistent visibility rule.", "The board never asks the player to guess a hidden value. Every number and every empty space needed for the next deduction remains visible."],
+    systems: ["A legal pair contains equal values or two values whose sum is ten.", "The two tiles must be adjacent in the same row or column, or share a straight line containing only cleared cells.", "Removing a pair creates new empty cells and may expose a longer match that was blocked before.", "Undo restores one pair. Reorder rearranges only remaining values when available, while Restart restores the authored board."],
+    how: ["Choose an unlocked grove.", "Tap one number and then a legal partner.", "Use the new empty cells to find longer horizontal or vertical sight lines.", "Clear every pair to complete the grove."],
+    strategyTips: ["Prefer matches that open the center or connect two separated empty regions.", "Check equal values before spending a flexible pair that totals ten.", "Scan rows and columns again after every removal because visibility changes immediately.", "Use Hint to learn the current legality rule, not as a substitute for reading the board."],
+    progression: ["Six chapters expand board size and introduce denser blockers, longer sight lines, competing pair choices, and layouts that require careful opening order.", "Difficulty comes from spatial consequences while the arithmetic remains limited to equality and sums of ten."],
+    designNote: "Numbers remain visible as text and the selection state uses more than color, supporting keyboard, touch, and mouse play.",
+    parent: "No account, countdown, purchase, or public score is required. Local clears and best move counts remain in this browser.",
+    faq: [["Why can two matching values not clear?", "A number still blocks their shared row or column."], ["Do diagonal pairs count?", "No, pairs use adjacency or a straight horizontal or vertical sight line."], ["What does Reorder do?", "It rearranges the remaining values without changing the pairing rule."], ["Are stages timed?", "No, you can inspect the board at your own pace."]]
+  }, "潘可的數字花園", "胖达数字花园");
+
+  registerExpandedGuide("animal-sunbeam-garden", {
+    title: "Animal Sunbeam Garden", gameplay: "Mirror Route Logic Puzzle",
+    intro: "Rotate mirrors on a six-by-six garden board until the visible sunbeam follows a valid path from its source to the sleeping plant.",
+    story: ["Panko is reopening thirty shaded gardens. Each plant has one authored mirror arrangement that brings real light to its cell.", "The animated beam always follows the current board, so it shows exactly where a route turns, loops, leaves the garden, or reaches its goal."],
+    systems: ["Tap a mirror to rotate it between its two diagonal reflection states.", "The beam advances one cell at a time, reflects only from a mirror it actually reaches, and stops at an edge or repeated loop.", "A stage clears only when the traced beam enters the plant cell; a nearby line or decorative glow does not count.", "Hint corrects one mirror that differs from the solution. Reset restores every authored starting rotation."],
+    how: ["Choose an unlocked garden.", "Trace backward from the plant and forward from the source.", "Rotate one mirror, then read the complete updated beam.", "Connect the final reflected segment to the plant and continue from Result."],
+    strategyTips: ["Begin with mirrors already touched by the beam.", "Use edge exits to eliminate impossible reflection choices.", "When a loop appears, change the first mirror that sends light back into an earlier cell.", "Do not rotate untouched mirrors until the route is close enough to use them."],
+    progression: ["Early gardens use a few mirrors and one clear bend. Later chapters add longer routes, decoy mirrors, crossing possibilities, edge escapes, and loops.", "All thirty stages keep the same two-state mirror rule while requiring more complete route planning."],
+    designNote: "The beam, mirror center, grid cell, and solved-state trace share one coordinate system, so the visual route and the rule cannot drift apart at different screen sizes.",
+    parent: "There is no timer, account, purchase, or public ranking. Cleared gardens and local move records stay in this browser.",
+    faq: [["Why did the plant not wake?", "The traced beam did not enter its exact cell."], ["Can light pass through a mirror?", "No, a reached mirror always reflects according to its current state."], ["Can the beam loop?", "Yes; rotate the first mirror that repeats the route."], ["Does Hint finish the board?", "No, it corrects one useful mirror."]]
+  }, "動物陽光花園", "动物阳光花园");
+
+  registerExpandedGuide("animal-triple-match", {
+    title: "Animal Triple Match", gameplay: "Layered Object Triple Puzzle",
+    intro: "Move uncovered objects from a layered pile into a seven-slot tray and collect three identical objects before unmatched singles fill every slot.",
+    story: ["Thirty forest piles hide animal supplies beneath overlapping layers. A visible object can move only when no active object covers its selection point.", "The tray is both workspace and danger meter: every choice reveals more of the pile but may consume space needed for a later triple."],
+    systems: ["Tap an uncovered object to place it in the next tray slot.", "Three identical objects clear automatically, close the tray gap, and expose the remaining capacity.", "Covered objects remain visible but cannot be selected until their blockers move.", "Later chapters add vines, crystal shells, mystery wrapping, shifting shelves, tighter trays, and combined finale piles."],
+    how: ["Choose an unlocked stage.", "Inspect the top layer and identify an accessible pair or triple.", "Move objects into the tray while preserving at least one recovery slot.", "Clear the full pile before all tray slots hold unmatched objects."],
+    strategyTips: ["Prefer an object that reveals several covered items.", "Track pairs already in the tray before adding a new singleton type.", "Delay mystery objects when a known triple is available.", "Use Hint to identify legal access, then decide whether the tray can support that move."],
+    progression: ["Six five-stage chapters introduce one rule family at a time before the final chapter combines them.", "Difficulty grows through layer dependencies and tray pressure, not a hidden timer."],
+    designNote: "Large objects, stable overlap shadows, visible tray order, and automatic triple motion make each consequence readable without flashing the whole board.",
+    parent: "No account, purchase, countdown, or public leaderboard is required. Clears, stars, and local best tray space stay in this browser.",
+    faq: [["Why can I not select an object?", "Another active object still covers it."], ["When does a triple clear?", "Immediately after the third identical object enters the tray."], ["Do tray gaps remain?", "No, remaining objects close together."], ["Are stages random?", "No, each pile and rule set is authored."]]
+  }, "動物三消收納", "动物三消收纳");
+
+  registerExpandedGuide("animal-unblock", {
+    title: "Animal Unblock Trail", gameplay: "Sliding Block Exit Puzzle",
+    intro: "Slide horizontal and vertical blocks along their own axes until the red explorer gains a clear route through the exit.",
+    story: ["Panko maps thirty crowded forest gates. Every block begins on a fixed grid and every puzzle has a verified sequence that releases the marked explorer.", "Blocks never rotate, jump, or leave the board. The challenge is deciding which temporary moves create room for the decisive final slide."],
+    systems: ["Horizontal blocks move only left and right; vertical blocks move only up and down.", "A move stops before the board edge or another block. Occupied cells cannot overlap.", "The red explorer clears the stage when its path reaches the marked exit lane.", "Undo restores one slide, Hint identifies a useful block, and Restart restores the exact opening layout."],
+    how: ["Choose an unlocked trail.", "Identify every block crossing the explorer's exit row.", "Move those blockers only after creating space along their legal axis.", "Slide the explorer through the exit and continue to the next trail."],
+    strategyTips: ["Work backward from the exit lane.", "Move a blocker farther than seems necessary when it must make room for another block.", "Avoid filling the only open column with a block needed later.", "Use Undo for a recent positioning error and Restart when the whole order is wrong."],
+    progression: ["Early trails teach axis limits and single blockers. Later chapters use longer pieces, narrow buffers, nested dependencies, multiple crossings, and dense finale boards.", "Every stage changes the spatial sequence without adding arbitrary movement rules."],
+    designNote: "The drag direction, grid snapping, collision test, and block artwork use the same cell geometry on touch, mouse, and keyboard input.",
+    parent: "There is no timer, account, purchase, or public score. Unlocks and local best move counts stay in this browser.",
+    faq: [["Can blocks rotate?", "No, each block keeps its original orientation."], ["Why did a drag stop?", "The next cell was occupied or outside the board."], ["Which block must exit?", "The clearly marked red explorer."], ["Are all thirty trails solvable?", "Yes, each authored layout has a verified solution."]]
+  }, "動物暢通小徑", "动物畅通小径");
+
+  registerExpandedGuide("animal-spectrum-pulse", {
+    title: "Animal Spectrum Pulse", gameplay: "One-Touch Timing Arcade",
+    intro: "Guide Panko's spectrum spirit upward by pulsing only when the nearest scan marker matches the required color and emblem.",
+    story: ["Thirty signal towers have lost synchronization. Every gate broadcasts a visible combination, and Panko restores the tower one accurately timed pulse at a time.", "The spirit's standing point, next marker, and success window remain visible so a failed attempt can be understood rather than guessed."],
+    systems: ["Press, tap, or use Space for one pulse, then release fully before the next input.", "The relevant marker is the nearest upcoming scan point, not a distant decoration higher on the tower.", "A pulse succeeds only when both the color and emblem align inside the visible timing window.", "Pulse Control, Foresight, and Echo Guard improve recovery or preview clarity but never remove the matching rule."],
+    how: ["Choose an unlocked tower.", "Read the current required color and emblem.", "Watch the nearest scan marker approach the spirit's action line.", "Pulse once during the matching window, release, and prepare for the next gate."],
+    strategyTips: ["Use short deliberate presses instead of holding.", "Read the emblem first when several markers share a similar color.", "After a miss, wait for the state to settle before pulsing again.", "Use Foresight to plan the next pair, not to ignore the current marker."],
+    progression: ["Early towers isolate color and emblem timing. Later chapters shorten spacing, alternate patterns, introduce recovery pressure, and combine previously taught sequences.", "Difficulty grows through readable pattern density rather than invisible physics changes."],
+    designNote: "Character position, marker line, success test, and feedback animation share one logical coordinate system so a visible success cannot still fall through the platform.",
+    parent: "No account or purchase is required. Tower clears, upgrades, and local best results remain in this browser.",
+    faq: [["Why did a jump fail?", "The nearest marker did not match both required properties inside the window."], ["Can I hold the button?", "No, release between pulses for reliable input."], ["Do upgrades change the rule?", "No, they only improve preview or recovery."], ["Is every tower beatable without upgrades?", "Yes, upgrades are optional support."]]
+  }, "動物光譜脈衝", "动物光谱脉冲");
+
+  registerExpandedGuide("animal-prism-battalion", {
+    title: "Animal Prism Battalion", gameplay: "Three-Lane Automatic Core Defense",
+    genre: ["Arcade", "Strategy", "Defense", "Animal"],
+    skills: ["Prioritization", "Reaction", "Planning"],
+    intro: "Switch one automatic prism battery between three lanes, destroy each incoming formation, collect rare attack cores, and keep every surviving monster away from the crystal core.",
+    story: ["Thirty defenses protect a prism citadel whose three approaches are attacked at once. The batteries fire automatically, but only the selected lane receives focused fire, so the commander decides which threat must disappear first.", "Every fifth defense ends with a chapter Boss. Earlier waves teach the chapter rule before that Boss combines it with denser formations."],
+    systems: ["Tap a lane, press Left or Right, or use A and D to move the selected battery. The chosen lane glows and receives the current attack value automatically.", "Most targets are enemies, but a rare glowing power core permanently raises attack for the rest of that run. Later enemy health assumes that core was collected, so ignoring it creates a real strategic cost.", "Shielded formations must lose their shield before taking normal damage. Bombs must be defused before their countdown finishes, champions require sustained focus, and any surviving monster that crosses the bottom line damages the crystal core.", "Shards earned from completed defenses improve firing rate, attack power, or core armor in the laboratory. These upgrades support play but do not replace lane decisions."],
+    how: ["Choose an unlocked defense from the Stage rail.", "Read the three lanes and select the closest or most dangerous active formation.", "Switch briefly to a power core or bomb when its timing is more urgent than ordinary damage.", "Clear every wave and defeat the chapter Boss before the crystal core reaches zero."],
+    strategyTips: ["Prioritize distance and special behavior, not only remaining health.", "Finish a nearly defeated formation before switching unless a bomb or breach is imminent.", "Collect a power core as soon as the lane is safe enough because later waves are balanced around its attack increase.", "Use armor upgrades for forgiveness, but use rate and power upgrades when a formation repeatedly survives by a small margin."],
+    progression: ["Six five-defense chapters add split packs, shield carriers, timed bombs, champions, converging pressure, and six distinct Boss finales.", "The authored wave layouts change lane timing and priority instead of merely multiplying enemy health."],
+    designNote: "The selected lane, incoming distance, special target state, core health, and attack value remain visible together. Switching never moves the pointer target or changes the meaning of the three lanes at another screen size.",
+    parent: "No account, purchase, or public leaderboard is required. Unlocks, stars, shards, and laboratory upgrades are saved locally in this browser.",
+    faq: [["Does the battery fire by itself?", "Yes. You choose the lane; the selected battery attacks automatically."], ["Why should I collect a power core?", "It raises attack for the current defense, and later formations are balanced around that increase."], ["What damages the crystal core?", "A monster that reaches the bottom or an unresolved special attack."], ["How many defenses are included?", "There are 30 authored defenses with a Boss at the end of each five-stage chapter."]]
+  }, "動物稜光軍團", "动物棱光军团");
+
+  registerExpandedGuide("animal-prism-breakers", {
+    title: "Animal Prism Breakers", gameplay: "Paddle-Angle Crystal Breaker",
+    genre: ["Arcade", "Action", "Animal"],
+    skills: ["Timing", "Prediction", "Hand-Eye Coordination"],
+    intro: "Move the paddle beneath each returning light orb, control the rebound with the contact point, and shatter every breakable crystal before all three orbs are lost.",
+    story: ["A fox keeper restores thirty prism formations across six arenas. Each formation is authored around a visible rebound lesson rather than an endless random brick field.", "The chapter names preview the changing rule: Sunlit Quarry, Split Spectrum, Moving Gallery, Mirror Vault, Gravity Forge, and Eclipse Prism."],
+    systems: ["Drag anywhere across the arena to align the paddle with a finger or pointer, or use Left and Right or A and D. The paddle remains horizontally constrained.", "A hit near the paddle center produces a controlled return. Contact nearer an edge produces a sharper angle that can enter protected side lanes.", "The stage clears after every breakable crystal is gone. Missing an orb spends one of three available orbs; losing all three ends the attempt.", "Later chapters split orbs through combos, move crystal bands, add permanent mirrors, advance crystal walls, alter the return with gravity, and place fatal void mines. Permanent mirrors are routing tools, not targets."],
+    how: ["Choose an unlocked formation.", "Launch the first light orb and move early toward its predicted return point.", "Use the paddle center for recovery or an edge when a narrow angle is required.", "Track every active orb after a split and clear all breakable crystals before the final orb falls."],
+    strategyTips: ["Watch the downward path rather than chasing the orb after it has already reached the paddle.", "Use a safe center return after a difficult recovery, then create a sharp angle on the following hit.", "In moving formations, aim for the opening the band will reach, not its current position.", "In the final chapter, treat void mines as absolute hazards even when a nearby crystal looks easy."],
+    progression: ["Stages 1–5 teach rebound control. The next chapters add split orbs, sweeping bands, indestructible mirrors, advancing walls and gravity, then dangerous mines.", "The thirty formations change geometry and timing while preserving the same paddle input."],
+    designNote: "The visible paddle, collision point, orb trajectory, and logical arena use one scaled coordinate system, so touch and mouse contacts create the same return angle.",
+    parent: "No account or purchase is required. Cleared formations, stars, and local best results remain in this browser.",
+    faq: [["What controls the return angle?", "The point where the orb touches the paddle."], ["Do mirrors need to be broken?", "No. Permanent mirrors redirect the orb toward protected crystals."], ["Why did the stage fail with an orb still visible?", "A chapter hazard such as a void mine or advancing danger line can also end the attempt."], ["How many orbs do I have?", "Each attempt begins with three, and split effects may create additional active orbs."]]
+  }, "動物稜光破陣", "动物棱光破阵");
+
+  registerExpandedGuide("animal-rift-salvage", {
+    title: "Animal Rift Salvage", gameplay: "Momentum Salvage Arena",
+    genre: ["Arcade", "Action", "Strategy", "Animal"],
+    skills: ["Navigation", "Risk Management", "Planning"],
+    intro: "Steer a small lunar collector through a circular rift, absorb salvage below its current size, build a scoring chain, and complete both the recovery quota and any rescue objective before time expires.",
+    story: ["Thirty rift zones contain scattered shards, crates, prisms, towers, crowns, trapped cores, and hostile machinery. The collector begins small and becomes capable of recovering heavier objects only after absorbing safe material.", "Every zone uses an authored formation, objective, turret pattern, and rival arrangement. A full recovery bar alone is not always the entire mission."],
+    systems: ["Hold or drag toward a point, use the direction keys, or use WASD to steer. Momentum continues after input changes, so wide turns are safer near large hazards.", "Objects small enough for the current collector glow as valid salvage. Absorbing them raises mass and score; touching an object that is still too large costs stability and breaks the chain.", "Rapid recoveries extend the chain multiplier. Prism keys can open shielded salvage, anchors affect later objectives, and trapped cores count toward the separate rescue total shown beside the quota.", "Later zones add aimed turrets, crossfire, current fields, shielded objects, rival collectors, storms, and multiple rescue cores. The Result appears only after every displayed objective is complete."],
+    how: ["Choose an unlocked zone and read its quota, rescue count, time, and chapter rule.", "Collect the smallest reachable salvage first to increase mass safely.", "Maintain a chain when the route is clear, but break away before a turret shot or oversized collision.", "Reach the recovery quota and finish every rescue requirement before the timer or stability reaches zero."],
+    strategyTips: ["Plan a loop through several small pieces instead of accelerating toward one distant target.", "Save shielded large salvage until enough prism keys and mass have been collected.", "When a rescue objective reads 0/1 or 0/2, locate the core before filling the last quota points.", "Watch rival routes in later chapters because they can remove the easy objects you intended to use."],
+    progression: ["Six five-zone chapters introduce drifting formations, turrets, currents and anchors, shielded salvage, rivals, and storm combinations.", "Difficulty changes navigation and objective structure rather than only raising the numerical quota."],
+    designNote: "The collector size, legal salvage glow, objective counters, stability, and arena geometry remain synchronized at every supported viewport.",
+    parent: "No account, purchase, or public leaderboard is required. Unlocks, medals, gears, upgrades, and best results are stored locally in this browser.",
+    faq: [["Why did the zone not end at 230/230?", "A displayed rescue or other secondary objective was still incomplete."], ["What can I absorb?", "Objects at or below the collector's current size threshold."], ["What breaks a chain?", "Waiting too long or colliding with an object that is too large."], ["Do rivals make a zone impossible?", "No. Each authored zone leaves a valid route and enough recoverable material."]]
+  }, "動物裂隙回收隊", "动物裂隙回收队");
+
+  registerExpandedGuide("animal-rune-reels", {
+    title: "Animal Rune Reels", gameplay: "Team Reel Role-Playing Battle",
+    genre: ["Strategy", "Role-Playing", "Animal"],
+    skills: ["Team Building", "Probability Management", "Planning"],
+    intro: "Build a team of up to five summoned animal heroes, spin three downward rune reels, combine the stopped symbols, and survive every wave of thirty guardian missions.",
+    story: ["A summoner crosses six rift regions with an expanding animal roster. Each hero has attack, defense, healing, and a distinct ultimate, so team composition changes how the same reel result resolves.", "The main campaign contains thirty multi-wave missions. Separate daily and scheduled event missions provide optional materials without replacing campaign progress."],
+    systems: ["Press Spin to stop three downward reels one by one. Every visible rune contributes its effect, and a completed line of matching runes doubles that ability.", "Claw runes make each active hero attack. Shield and Heart runes combine the team's total defense or healing for the summoner. Wild completes another line but has no effect alone; Coin, Ultimate, Focus, Echo, Luck, and Dormant runes have their stated specialized effects.", "Enemies act after the rune result resolves. The summoner's health, shield, total defense, total healing, wave count, and enemy intent remain visible throughout Battle.", "Summoning unlocks heroes; duplicate cards support level upgrades. Rune Dust, Sun Shards, Moon Crystals, and Guardian Cores improve rune levels. Permanent cards, materials, coins, and diamonds remain safe if a battle is abandoned, but the current wave resets."],
+    how: ["Open Stage, choose Main, Daily, or Event, and select an available mission.", "Use Team to place at least one and up to five owned heroes in the active formation.", "Review Backpack, Summon, and Runes when an upgrade is needed, then enter Battle.", "Spin, read the completed lines, and continue until every wave and guardian is defeated."],
+    strategyTips: ["Balance damage with enough combined defense or healing to survive the next visible enemy intent.", "A Wild rune is valuable only when it completes a useful line; do not count it as a standalone effect.", "Use Ultimate runes with heroes whose special effects solve the current wave, not merely the team with the highest level.", "Auto mode repeats valid spins but does not choose a better team or rune upgrade for you."],
+    progression: ["The six five-stage campaign chapters increase wave length and guardian combinations. Daily missions emphasize coins or materials, while events rotate on their shown schedule.", "Roster and rune growth expand strategic options without changing the readable three-reel resolution order."],
+    designNote: "Reels stop in a fixed visual order, completed lines glow before resolving, and hero actions remain separate from the combined summoner defense and healing totals.",
+    parent: "No account is required. Roster, campaign progress, currencies, materials, rune levels, and reward claims are stored locally in this browser.",
+    faq: [["What does a matching line do?", "It doubles that rune ability after all three reels stop."], ["Do heroes share one attack?", "No. Heroes attack separately; team defense and healing are combined for the summoner."], ["What happens if I leave Battle?", "Permanent inventory remains, but the current battle attempt is lost."], ["Are event rewards always available?", "No. Event missions follow the schedule displayed in Stage."]]
+  }, "動物符文轉輪", "动物符文转轮");
+
+  registerExpandedGuide("animal-sketchwheel-rally", {
+    title: "Animal Sketchwheel Rally", gameplay: "Draw-and-Test Wheel Racing",
+    genre: ["Arcade", "Drawing", "Strategy", "Animal"],
+    skills: ["Shape Design", "Adaptation", "Observation"],
+    intro: "Draw a wheel profile before each terrain section, watch how its measured shape performs, and adapt the next wheel so the animal racer reaches the finish before the rival.",
+    story: ["Thirty rally courses cross flat road, stairs, mud, tunnels, gaps, ice, and wind. The vehicle moves continuously, but its progress depends on whether the current drawn wheel suits the upcoming terrain.", "Each course uses an authored terrain sequence and obstacle position. The objective is not to draw a pretty circle every time; different sections reward different proportions."],
+    systems: ["Draw the wheel in the visible pad with a pointer or finger. The game measures roundness, height, width, grip, and speed from that shape, then mounts it on the moving vehicle.", "Flat road rewards a round balanced wheel. Stairs favor height, mud and ice need grip, tunnels require a low wide profile, gaps need width and speed, and wind rewards a narrow stable shape.", "A profile that suits the current terrain keeps momentum. A poor match slows, slips, collides, or fails the obstacle while the rival continues.", "Workshop upgrades provide modest speed, tolerance, or control support. They do not turn one universal wheel into the correct answer for every terrain."],
+    how: ["Choose an unlocked rally and read the terrain sequence.", "Draw a closed wheel shape for the first section.", "Watch the wheel rotate and compare the vehicle's response with the terrain cue.", "Redraw for later sections when the required profile changes, and reach the finish before the rival."],
+    strategyTips: ["Use a simple deliberate silhouette because tiny decorative bumps reduce the measured profile.", "For stairs, emphasize vertical height; for a tunnel, lower the top while keeping enough width.", "A wide gap wheel can be poor in wind, so redraw instead of forcing one design through both.", "Observe which measured trait failed and adjust only that trait on the next attempt."],
+    progression: ["The first courses isolate flat road and stairs. Later chapters add mud, ice, wind, tunnels, gaps, and mixed courses that require several redraws.", "Thirty authored sequences change terrain order, obstacle spacing, course shape, and rival pace."],
+    designNote: "The wheel is visibly attached to the vehicle, rotates with travel, meets the ground line, and faces the direction of motion. Draw coordinates and rendered shape share one scale on phone and desktop.",
+    parent: "No account, purchase, or public leaderboard is required. Clears, bolts, upgrades, lens state, and local best times stay in this browser.",
+    faq: [["Should every wheel be a circle?", "No. Each terrain rewards a different measured profile."], ["Can I redraw during a rally?", "Yes, the intended play is to adapt before later terrain sections."], ["Why did the vehicle slow on stairs?", "The current wheel likely lacked enough height or grip."], ["Does the rival use my wheel?", "No. The rival provides race pressure while your performance comes from the drawn shape."]]
+  }, "動物繪輪競速", "动物绘轮竞速");
+
+  registerExpandedGuide("animal-skybridge-rivals", {
+    title: "Animal Skybridge Rivals", gameplay: "Collect-and-Build Bridge Race",
+    genre: ["Arcade", "Racing", "Strategy", "Animal"],
+    skills: ["Route Planning", "Risk Management", "Reaction"],
+    intro: "Collect Aurora tiles in your color, carry them to one of three bridge docks, automatically submit the stack while nearby, and finish the required bridge distance before the rival crews.",
+    story: ["Thirty skybridge races send animal builders across floating arenas. Every racer gathers colored tiles, returns to a dock, and turns the carried stack into bridge progress.", "Course plans change pickup routes, dock access, hazards, wind, reinforcement, moving boosts, and champion behavior instead of repeating one arena with larger numbers."],
+    systems: ["Move with a pointer, touch target, direction keys, or WASD. Your animal faces and travels toward the chosen target.", "Touching a matching Aurora tile adds it to the carried stack up to the current capacity. Entering the marked area around any bridge dock automatically submits one or more carried tiles; no exact pixel alignment or extra strength condition is required.", "The first racer to reach the stage's bridge goal wins. Bombs, monsters, wind, rival contact, and reinforced bridge sections can slow or remove progress depending on the displayed chapter rule.", "Dash energy powers a temporary speed burst. Shield, magnet, and dash pickups provide short tactical effects, while workshop capacity, speed, and grip upgrades offer permanent local support."],
+    how: ["Choose an unlocked race and read its bridge goal, timer, route, and hazard rule.", "Collect several tiles of your color without exceeding a safe return distance.", "Approach any numbered bridge dock; submission starts automatically while you remain inside its visible area.", "Repeat the collection and deposit loop until your bridge reaches the goal before the rivals."],
+    strategyTips: ["Deposit a small stack when a hazard blocks the long route instead of losing a full capacity load.", "Choose the nearest safe dock; dock number does not impose a hidden submission order.", "Use a magnet on a dense pickup field and save dash for a return trip or final race.", "Grip reduces wind drift, while capacity helps only if you can return without being interrupted."],
+    progression: ["Six five-race chapters add route splits, wind lanes, reinforced sections, moving boost rings, assault layouts, and champion rivals.", "Goals, arena layouts, pickups, hazards, and rival behavior change together across the thirty authored races."],
+    designNote: "Dock range, carried stack, bridge progress, rival progress, and submission feedback remain visible. A valid nearby deposit never depends on an invisible angle or upgrade check.",
+    parent: "No account or purchase is required. Unlocks, stars, shards, workshop upgrades, and local best results remain in this browser.",
+    faq: [["What is required to submit tiles?", "Carry at least one matching tile and enter a dock's visible submission area."], ["Must I use docks in number order?", "No. Choose any reachable dock."], ["Why did a tile not enter my stack?", "It did not match your color or your current capacity was full."], ["How do I win?", "Reach the displayed bridge goal before the rival crews."]]
+  }, "動物天橋爭霸", "动物天桥争霸");
+
+  const completeGuideStandard = (id) => {
+    const game = games[id];
+    if (!game) return;
+    const responsiveNote = "The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.";
+    const saveNote = "You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.";
+    const sharedFaq = [
+      ["Which controls and screen sizes are supported?", "The same rules support touch, mouse, and keyboard where the game uses those inputs. The interface scales as one logical layout across the required phone, landscape, and desktop viewports."],
+      ["Can progress move automatically to another device?", "No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added."]
+    ];
+    game.designNote = `${game.designNote || ""} ${responsiveNote}`.trim();
+    game.parent = `${game.parent || ""} ${saveNote}`.trim();
+    game.faq = [...(game.faq || []), ...sharedFaq];
+    for (const code of ["zh-Hant", "zh-Hans"]) {
+      if (!localizedGames[code]?.[id]) continue;
+      localizedGames[code][id] = {
+        ...localizedGames[code][id],
+        designNote: game.designNote,
+        parent: game.parent,
+        faq: game.faq,
+      };
+    }
+  };
+  [
+    "animal-bamboo-pipes",
+    "animal-bus-jam",
+    "animal-cratebound",
+    "animal-hexa-sort",
+    "animal-mosaic-clues",
+    "animal-number-match",
+    "animal-prism-battalion",
+    "animal-prism-breakers",
+    "animal-rift-salvage",
+    "animal-rootvault-pins",
+    "animal-rune-reels",
+    "animal-sanctuary-loop",
+    "animal-sketchwheel-rally",
+    "animal-skybridge-rivals",
+    "animal-skyspire-drop",
+    "animal-spectrum-pulse",
+    "animal-sunbeam-garden",
+    "animal-triple-match",
+    "animal-unblock",
+  ].forEach(completeGuideStandard);
   render();
 })();

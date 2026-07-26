@@ -21,21 +21,21 @@
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "동물 균열 회수대",
+  "name": "동물의 균열 회수",
   "url": "https://weightplay.com/ko/games/animal-rift-salvage/",
   "image": "https://weightplay.com/assets/animal-rift-salvage/cover.webp",
   "genre": [
-    "동물 게임",
     "아케이드",
     "액션",
-    "추천"
+    "전략",
+    "동물"
   ],
   "playMode": "SinglePlayer",
   "applicationCategory": "Game",
   "operatingSystem": "Any",
   "inLanguage": "ko",
   "isAccessibleForFree": true,
-  "description": "오를라의 달 회수 고리를 이끌어 30개 성계 구역에서 작은 잔해부터 흡수하고 구조 코어를 구해 경쟁자를 앞지르세요."
+  "description": "원형 균열을 통해 작은 달 수집기를 조종하고, 현재 크기보다 작은 잔해를 흡수하고, 점수 체인을 구축하고, 시간이 만료되기 전에 복구 할당량과 구조 목표를 모두 완료하세요."
 }
     </script>
   <meta charset="utf-8">
@@ -43,16 +43,16 @@
   <meta name="robots" content="index,follow" />
   <meta name="theme-color" content="#07152d">
   <meta name="weightplay-audience" content="general">
-  <title>동물 균열 회수대 | WeightPlay</title>
+  <title>동물의 균열 회수 | WeightPlay</title>
   <link rel="icon" href="../../assets/weightplay-logo.png">
   <link rel="stylesheet" href="style.css?v=20260721-feedback-timer">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
-  <meta name="description" content="오를라의 달 회수 고리를 이끌어 30개 성계 구역에서 작은 잔해부터 흡수하고 구조 코어를 구해 경쟁자를 앞지르세요." />
-    <meta property="og:title" content="동물 균열 회수대 | WeightPlay" />
-    <meta property="og:description" content="오를라의 달 회수 고리를 이끌어 30개 성계 구역에서 작은 잔해부터 흡수하고 구조 코어를 구해 경쟁자를 앞지르세요." />
+  <meta name="description" content="원형 균열을 통해 작은 달 수집기를 조종하고, 현재 크기보다 작은 잔해를 흡수하고, 점수 체인을 구축하고, 시간이 만료되기 전에 복구 할당량과 구조 목표를 모두 완료하세요." />
+    <meta property="og:title" content="동물의 균열 회수 | WeightPlay" />
+    <meta property="og:description" content="원형 균열을 통해 작은 달 수집기를 조종하고, 현재 크기보다 작은 잔해를 흡수하고, 점수 체인을 구축하고, 시간이 만료되기 전에 복구 할당량과 구조 목표를 모두 완료하세요." />
     <meta property="og:url" content="https://weightplay.com/ko/games/animal-rift-salvage/" />
-    <meta name="twitter:title" content="동물 균열 회수대 | WeightPlay" />
-    <meta name="twitter:description" content="오를라의 달 회수 고리를 이끌어 30개 성계 구역에서 작은 잔해부터 흡수하고 구조 코어를 구해 경쟁자를 앞지르세요." />
+    <meta name="twitter:title" content="동물의 균열 회수 | WeightPlay" />
+    <meta name="twitter:description" content="원형 균열을 통해 작은 달 수집기를 조종하고, 현재 크기보다 작은 잔해를 흡수하고, 점수 체인을 구축하고, 시간이 만료되기 전에 복구 할당량과 구조 목표를 모두 완료하세요." />
   </head>
 <body data-screen="main">
   <div id="loading" class="loading-panel"><img src="../../assets/animal-rift-salvage/orla-ring.webp" alt=""><strong data-t="loading">Calibrating the lunar ring…</strong></div>
@@ -60,7 +60,7 @@
   <div id="mainGroup" class="main-group">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
-        <a class="lobby-return" href="/" aria-label="Return to WeightPlay" data-t-aria="backLobby" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt="동물 균열 회수대 게임 이미지"></a>
+        <a class="lobby-return" href="/" aria-label="Return to WeightPlay" data-t-aria="backLobby" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt="동물의 균열 회수 게임 이미지"></a>
         <strong data-t="titleShort">Rift Salvage</strong>
         <label class="locale-control"><span class="sr-only" data-t="language">Language</span><select id="localeSelect" aria-label="Language" data-t-aria="language"></select></label>
       </header>
@@ -68,7 +68,7 @@
         <img class="poster" src="../../assets/animal-rift-salvage/cover.webp" alt="Moon Cap Orla guiding a lunar recovery ring" data-t-alt="posterAlt">
         <div class="main-copy">
           <small data-t="mainKicker">GENERAL · 30-ZONE CAMPAIGN</small>
-          <h1 data-t="title">동물 균열 회수대</h1>
+          <h1 data-t="title">동물의 균열 회수</h1>
           <p data-t="mainSummary">Guide Orla's lunar ring across the astral foundry. Recover small debris first, grow, then reclaim the crown wreckage.</p>
           <p data-t="mainGoal">Clear each salvage quota, rescue the cores, and reach the beacon before the rift closes.</p>
           <span id="mainProgress"></span>
@@ -76,21 +76,26 @@
         </div>
       </section>
     </main>
-    <section class="game-page-info game-page-info-static" aria-label="동물 균열 회수대 게임 정보">
+    <section class="game-page-info game-page-info-static" aria-label="동물의 균열 회수 게임 정보">
     
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>동물 균열 회수대</h2><p>오를라의 달 회수 고리를 이끌어 30개 성계 구역에서 작은 잔해부터 흡수하고 구조 코어를 구해 경쟁자를 앞지르세요.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>성장형 회수 아레나</strong></div><div class="game-info-fact"><span>장르</span><strong>동물 게임 · 아케이드 · 액션 · 추천</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>동물의 균열 회수</h2><p>원형 균열을 통해 작은 달 수집기를 조종하고, 현재 크기보다 작은 잔해를 흡수하고, 점수 체인을 구축하고, 시간이 만료되기 전에 복구 할당량과 구조 목표를 모두 완료하세요.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>모멘텀 샐비지 아레나</strong></div><div class="game-info-fact"><span>장르</span><strong>아케이드 · 액션 · 전략 · 동물</strong></div><div class="game-info-fact"><span>난이도</span><strong>도전하기 쉬움</strong></div><div class="game-info-fact"><span>예상 플레이 시간</span><strong>스테이지당 2~8분</strong></div><div class="game-info-fact"><span>훈련된 기술</span><strong>항해 · 위험 관리 · 기획</strong></div></div>
     </div>
     <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>진행 상황이 저장되나요?</dt><dd>예, 이 브라우저에서만 가능합니다.</dd></div></dl></div>
+      <div class="game-info-section"><h3>세계와 사명</h3><p>30개의 균열 구역에는 흩어져 있는 파편, 상자, 프리즘, 탑, 크라운, 갇힌 코어 및 적대적인 기계가 있습니다. 수집기는 작게 시작하여 안전한 물질을 흡수한 후에만 더 무거운 물체를 회수할 수 있게 됩니다.</p>
+<p>모든 구역은 작성된 대형, 목표, 포탑 패턴 및 라이벌 배치를 사용합니다. 전체 회복 막대만으로는 항상 전체 임무가 아닙니다.</p></div>
+      <div class="game-info-section"><h3>시스템 작동 방식</h3><p>지점을 향해 길게 누르거나 끌거나, 방향 키를 사용하거나, WASD를 사용하여 조종하세요. 입력 변경 후에도 추진력이 계속되므로 큰 위험 근처에서는 넓은 회전이 더 안전합니다.</p>
+<p>집전체가 빛을 발할 만큼 작은 물체는 유효한 회수품으로 간주됩니다. 그것들을 흡수하면 질량과 점수가 올라갑니다. 여전히 너무 큰 물체를 만지면 안정성이 떨어지고 체인이 끊어집니다.</p>
+<p>신속한 복구로 체인 승수가 확장됩니다. 프리즘 키는 보호된 회수를 열 수 있고, 앵커는 이후 목표에 영향을 미치며, 갇힌 코어는 할당량 옆에 표시된 별도의 구조 합계에 포함됩니다.</p>
+<p>이후 구역에는 조준 포탑, 교차 공격, 현재 필드, 보호된 개체, 라이벌 수집가, 폭풍 및 여러 구조 코어가 추가됩니다. 결과는 표시된 모든 목표가 완료된 후에만 나타납니다.</p></div>
+      <div class="game-info-section"><h3>플레이 방법</h3><ol><li>잠금 해제된 영역을 선택하고 할당량, 구조 횟수, 시간 및 챕터 규칙을 읽어보세요.</li><li>안전하게 질량을 늘리려면 도달 가능한 가장 작은 잔해를 먼저 수집하세요.</li><li>경로가 깨끗할 때 체인을 유지하되 포탑 공격이나 대형 충돌이 발생하기 전에 이탈하십시오.</li><li>타이머나 안정성이 0이 되기 전에 복구 할당량에 도달하고 모든 구조 요구 사항을 완료하세요.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>하나의 멀리 있는 목표를 향해 가속하는 대신 여러 개의 작은 조각을 통해 루프를 계획하십시오.</li><li>충분한 프리즘 키와 질량이 수집될 때까지 차폐된 대형 회수품을 보관하십시오.</li><li>구조 목표가 0/1 또는 0/2로 표시되면 마지막 할당량 포인트를 채우기 전에 코어를 찾으세요.</li><li>사용하려는 쉬운 개체를 제거할 수 있으므로 이후 장에서 경쟁 경로를 시청하세요.</li></ul></div>
+      <div class="game-info-section"><h3>캠페인 및 난이도 성장</h3><p>6개의 5개 구역으로 구성된 챕터에서는 표류 대형, 포탑, 해류 및 닻, 보호된 구조, 라이벌 및 폭풍 조합을 소개합니다.</p>
+<p>난이도는 숫자 할당량만 늘리는 것이 아니라 탐색 및 목표 구조를 변경합니다.</p></div>
+      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>The collector size, legal salvage glow, objective counters, stability, and arena geometry remain synchronized at every supported viewport. The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.</p></div>
+      <div class="game-info-section game-info-parent"><h3>학부모 메모</h3><p>No account, purchase, or public leaderboard is required. Unlocks, medals, gears, upgrades, and best results are stored locally in this browser. You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>영역이 230/230에서 끝나지 않은 이유는 무엇입니까?</dt><dd>표시된 구조 또는 기타 보조 목표가 아직 완료되지 않았습니다.</dd></div><div><dt>나는 무엇을 흡수할 수 있는가?</dt><dd>수집기의 현재 크기 임계값 이하의 개체입니다.</dd></div><div><dt>사슬을 끊는 것은 무엇입니까?</dt><dd>너무 오래 기다리거나 너무 큰 물체와 충돌합니다.</dd></div><div><dt>라이벌이 영역을 불가능하게 만드는가?</dt><dd>아니요. 각 작성된 영역에는 유효한 경로와 충분한 복구 가능한 자료가 남아 있습니다.</dd></div><div><dt>어떤 컨트롤과 화면 크기가 지원되나요?</dt><dd>동일한 규칙은 게임에서 해당 입력을 사용하는 터치, 마우스 및 키보드를 지원합니다. 인터페이스는 필요한 휴대폰, 가로 및 데스크톱 뷰포트에 걸쳐 하나의 논리적 레이아웃으로 확장됩니다.</dd></div><div><dt>진행 상황이 자동으로 다른 장치로 이동할 수 있나요?</dt><dd>아니요. 이 게임은 현재 로컬 브라우저 저장소에만 저장되므로 향후 계정 시스템이 추가되지 않는 한 다른 브라우저 프로필이나 장치는 별도의 로컬 진행 상황으로 시작됩니다.</dd></div></dl></div>
       
     </div>
   </section>

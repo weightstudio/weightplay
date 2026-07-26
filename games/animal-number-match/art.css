@@ -1,0 +1,16 @@
+.result-character {
+  display: block;
+  width: 112px;
+  height: 112px;
+  margin: 0 auto 8px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 12px #173f3838);
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .result-character {
+    width: 58px;
+    height: 58px;
+    margin-bottom: 2px;
+  }
+}
