@@ -1168,7 +1168,6 @@
     }
     window.setTimeout(() => {
       showScreen("main");
-      if (!readStorage(FIRST_PLAY_KEY)) openGuide();
     }, hasError ? 700 : 120);
   });
 })();

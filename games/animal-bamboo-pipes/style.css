@@ -48,7 +48,7 @@
 .main-group[hidden],.public-guide[hidden]{display:none!important}
 .main{min-height:100svh;padding:clamp(12px,3vw,32px);gap:12px}
 .main-header{grid-template-columns:72px minmax(0,1fr) minmax(104px,132px)}
-.main .return{width:58px!important;height:51px!important;grid-template-columns:16px 28px!important;gap:4px!important;padding:4px!important}
+.main .return{width:58px!important;height:48px!important;min-height:48px!important;max-height:48px!important;grid-template-columns:16px 28px!important;gap:4px!important;padding:4px!important}
 .main .return img{width:28px;height:28px;object-fit:contain}
 .hero{min-height:0;gap:clamp(14px,4vw,42px)}
 .hero-copy{min-width:0}

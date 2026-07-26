@@ -2037,7 +2037,7 @@
     event.preventDefault();
     actions[nextIndex].focus({ preventScroll: true });
   }, true);
-  nodes.backToMenuBtn.addEventListener("click", () => setParkLeaveOpen(true));
+  nodes.backToMenuBtn.addEventListener("click", showMenu);
   nodes.keepParkOpenBtn.addEventListener("click", () => setParkLeaveOpen(false));
   nodes.leaveParkBtn.addEventListener("click", showMenu);
   nodes.parkLeavePanel.addEventListener("keydown", (event) => {

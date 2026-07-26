@@ -1,15 +1,25 @@
 (function () {
   "use strict";
 
-  if (window.__weightPlayShellControlsInstalled) return;
+  if (document.querySelector("[data-wp-locale-route]")) return;
+  const ownedSettingsButton = document.querySelector("#audioMenuBtn[aria-controls='audioPopover']");
+  const ownedSettingsGroup = ownedSettingsButton?.closest(".settings-control");
+  if (ownedSettingsButton && ownedSettingsGroup?.querySelector("#audioPopover #localeSelect")) {
+    ownedSettingsButton.dataset.wpSettings = "true";
+    ownedSettingsGroup.dataset.wpSettingsControl = "true";
+    return;
+  }
+  if (document.documentElement.dataset.wpShellControlsInstalled === "true") return;
+  document.documentElement.dataset.wpShellControlsInstalled = "true";
   window.__weightPlayShellControlsInstalled = true;
+  window.__weightPlayShellControlsOrigin = document.querySelector("base")?.getAttribute("href") || "no-base";
 
   const COPY = {
-    en: ["Settings", "Language", "Sound"],
+    en: ["Settings", "Language", "Sound Effects"],
     "zh-Hant": ["設定", "語言", "音效"],
     "zh-Hans": ["设置", "语言", "音效"],
-    ja: ["設定", "言語", "サウンド"],
-    ko: ["설정", "언어", "사운드"],
+    ja: ["設定", "言語", "効果音"],
+    ko: ["설정", "언어", "효과음"],
     es: ["Configuración", "Idioma", "Sonido"],
     "pt-BR": ["Configurações", "Idioma", "Som"],
     fr: ["Paramètres", "Langue", "Son"],
@@ -26,14 +36,34 @@
   ];
   const STAGE_SELECTORS = [
     "#stage", "#stageScreen", "[data-screen='stage']", ".stage-screen",
-    "[data-wp-standard-stage-screen]",
+    ".stage-panel", "[data-wp-standard-stage-screen]",
   ];
   const HEADER_SELECTORS = [
-    ".main-header", ".topbar", ".stage-header", ".stage-panel-head",
+    ".main-header", ".topbar", ".stage-header", ".stage-panel-head", ".stage-shell-head",
     "header",
   ];
   const RETURN_SELECTORS = [
     "[data-wp-return]", ".lobby-return", ".return", ".back", "[data-back]",
+    "a[href='/']", "a[href='/kids/']",
+  ];
+  const MAIN_START_SELECTORS = [
+    "[data-wp-main-start]", ".standard-main-start", "#startGameBtn", "#startGame",
+    "#startBtn", "#start", "#playBtn", "#beginBtn", "#showStageBtn",
+    "button[data-start-game]",
+  ];
+  const MAIN_POSTER_SELECTORS = [
+    ".wonder-main-cover", "img.cover", "img.main-cover", "img.main-poster",
+    "img.menu-poster", ".main-cover img", ".hero img", ".menu-hero img",
+    ".poster-wrap > img", "picture img",
+  ];
+  const MAIN_SUMMARY_SELECTORS = [
+    ".main-summary", ".main-description", ".summary", ".tagline",
+    "[data-ui='menuHint']", "#menuHint", ".menu-copy p", ".hero-copy p",
+    ".poster-copy p", ".poster-copy strong", ".main-copy p", "#intro",
+  ];
+  const MAIN_PROGRESS_SELECTORS = [
+    ".main-progress", "#mainProgress", ".campaign-progress", ".stage-progress",
+    "#progress", "[data-wp-main-progress]",
   ];
 
   let host;
@@ -45,6 +75,7 @@
   let localeOwner;
   let soundToggle;
   let currentHeader;
+  let generatedTitle;
 
   function visible(element) {
     if (!element || element.hidden) return false;
@@ -56,6 +87,14 @@
   function first(selectors, root = document) {
     for (const selector of selectors) {
       const match = root.querySelector(selector);
+      if (match) return match;
+    }
+    return null;
+  }
+
+  function firstVisible(selectors, root = document) {
+    for (const selector of selectors) {
+      const match = [...root.querySelectorAll(selector)].find(visible);
       if (match) return match;
     }
     return null;
@@ -82,6 +121,7 @@
   }
 
   function build() {
+    window.__weightPlayShellControlsPhase = "build";
     host = document.createElement("div");
     host.className = "wp-shell-settings";
     host.dataset.wpSettings = "true";
@@ -131,10 +171,10 @@
 
   function findLocaleOwner() {
     const select = document.querySelector(
-      "#locale,#localeSelect,#languageSelect,#langSelect,select[data-locale],select[data-language]"
+      "#locale,#localeSelect,#languageSelect,#langSelect,select[id*='locale' i],select[id*='language' i],select[data-locale],select[data-language]"
     );
     if (!select) return null;
-    return select.closest("label,.language-picker,.locale-control,.locale,.lang-switch") || select;
+    return select.closest("label,.language-picker,.locale-picker,.locale-control,.locale,.lang-switch") || select;
   }
 
   function adoptControls() {
@@ -167,6 +207,11 @@
     if (!control.dataset.wpReturn) {
       control.dataset.wpReturn = header.classList.contains("wp-stage-shell-header") ? "stage" : "main";
     }
+    [...control.childNodes].forEach((node) => {
+      if (node.nodeType === Node.TEXT_NODE && /^[\s←‹⟵]+$/.test(node.textContent || "")) {
+        node.remove();
+      }
+    });
     let arrow = control.querySelector(".wp-shell-return-arrow");
     if (!arrow) {
       const existing = [...control.querySelectorAll("span")].find((node) => /[←‹⟵]/.test(node.textContent || ""));
@@ -190,12 +235,125 @@
     }
   }
 
+  function conciseCopy(text) {
+    const normalized = (text || "").replace(/\s+/g, " ").trim();
+    if (!normalized) return "";
+    const cjk = (normalized.match(/[\u3040-\u30ff\u3400-\u9fff\uac00-\ud7af]/g) || []).length;
+    if (cjk) return normalized.length <= 48 ? normalized : `${normalized.slice(0, 47).trim()}…`;
+    const words = normalized.split(/\s+/);
+    return words.length <= 24 ? normalized : `${words.slice(0, 24).join(" ").replace(/[,:;.!?]+$/, "")}…`;
+  }
+
+  function directBranch(root, node) {
+    let branch = node;
+    while (branch?.parentElement && branch.parentElement !== root) branch = branch.parentElement;
+    return branch?.parentElement === root ? branch : null;
+  }
+
+  function normalizeMainLayout(screen) {
+    if (!screen) return;
+    let start = firstVisible(MAIN_START_SELECTORS, screen);
+    let poster = firstVisible(MAIN_POSTER_SELECTORS, screen);
+    if ((screen === document.body || screen === document.documentElement) && start && poster) {
+      const ancestors = new Set();
+      for (let node = poster.parentElement; node && node !== document.body; node = node.parentElement) ancestors.add(node);
+      for (let node = start.parentElement; node && node !== document.body; node = node.parentElement) {
+        if (ancestors.has(node)) {
+          screen = node;
+          break;
+        }
+      }
+    }
+    if (screen.classList.contains("wp-standard-main-screen")) return;
+    start = firstVisible(MAIN_START_SELECTORS, screen);
+    poster = firstVisible(MAIN_POSTER_SELECTORS, screen);
+    if (!start || !poster) return;
+
+    const guide = firstVisible([".public-guide", ".game-page-info", ".guide"], screen);
+    let summary = firstVisible(MAIN_SUMMARY_SELECTORS, screen);
+    const progress = firstVisible(MAIN_PROGRESS_SELECTORS, screen);
+    const originalBranches = new Set([
+      directBranch(screen, poster),
+      directBranch(screen, start),
+      summary ? directBranch(screen, summary) : null,
+      progress ? directBranch(screen, progress) : null,
+    ].filter(Boolean));
+
+    const composition = document.createElement("section");
+    composition.className = "wp-standard-main-composition";
+    const posterPane = document.createElement("div");
+    posterPane.className = "wp-standard-main-poster";
+    const copyPane = document.createElement("div");
+    copyPane.className = "wp-standard-main-copy";
+
+    const posterNode = poster.closest("picture") || poster;
+    posterNode.classList.add("wp-standard-main-poster-media");
+    posterPane.append(posterNode);
+
+    if (!summary || guide?.contains(summary)) {
+      const guideCopy = firstVisible([".game-page-info p", ".public-guide p", ".guide p"], document);
+      summary = document.createElement("p");
+      summary.textContent = conciseCopy(guideCopy?.textContent || poster.getAttribute("alt") || document.title);
+    }
+    summary.classList.add("wp-standard-main-summary");
+    summary.textContent = conciseCopy(summary.textContent);
+    copyPane.append(summary);
+    if (progress && !guide?.contains(progress)) {
+      progress.classList.add("wp-standard-main-progress");
+      copyPane.append(progress);
+    }
+    start.classList.add("wp-standard-main-start");
+    copyPane.append(start);
+    composition.append(posterPane, copyPane);
+
+    const header = firstVisible(HEADER_SELECTORS, screen);
+    if (header?.nextSibling) header.after(composition);
+    else screen.prepend(composition);
+
+    originalBranches.forEach((branch) => {
+      const movedDirectly = branch === posterNode || branch === start || branch === summary || branch === progress;
+      if (!movedDirectly && branch !== header && branch !== guide && branch !== composition && !branch.contains(composition)) {
+        branch.classList.add("wp-main-legacy-layout");
+      }
+    });
+    [...screen.children].forEach((child) => {
+      if (/^H[1-3]$/.test(child.tagName) && child !== header && !composition.contains(child)) {
+        child.classList.add("wp-main-legacy-layout");
+      }
+    });
+    screen.classList.add("wp-standard-main-screen");
+  }
+
   function place() {
     adoptControls();
     const { type, screen } = activeScreen();
-    const header = first(HEADER_SELECTORS, screen);
+    if (type === "main") normalizeMainLayout(screen);
+    let header = firstVisible(HEADER_SELECTORS, screen) || firstVisible(HEADER_SELECTORS, document);
+    if (!header && type === "main") {
+      header = document.createElement("header");
+      header.className = "wp-generated-main-header";
+      screen.prepend(header);
+    }
     if (!header) return;
-    if (header !== currentHeader) {
+    const externalReturn = firstVisible(RETURN_SELECTORS, screen);
+    if (externalReturn && !header.contains(externalReturn)) header.prepend(externalReturn);
+    if (!header.classList.contains("wp-generated-main-header")) {
+      screen.querySelectorAll(".wp-generated-main-header").forEach((generatedHeader) => {
+        if (generatedHeader !== header) generatedHeader.remove();
+      });
+      if (generatedTitle && !generatedTitle.isConnected) generatedTitle = null;
+    }
+    if (header.classList.contains("wp-generated-main-header")) {
+      const sourceTitle = [...screen.querySelectorAll("h1")].find(visible);
+      if (!generatedTitle) {
+        generatedTitle = document.createElement("strong");
+        generatedTitle.className = "wp-generated-main-title";
+      }
+      generatedTitle.textContent = sourceTitle?.textContent?.trim() || document.title.split(/[|\-]/)[0].trim();
+      generatedTitle.setAttribute("aria-label", generatedTitle.textContent);
+      if (generatedTitle.parentElement !== header) header.append(generatedTitle);
+    }
+    if (header !== currentHeader || host.parentElement !== header) {
       currentHeader?.classList.remove("wp-shell-header", "wp-main-shell-header", "wp-stage-shell-header");
       currentHeader = header;
       header.classList.add("wp-shell-header", type === "stage" ? "wp-stage-shell-header" : "wp-main-shell-header");
@@ -208,24 +366,48 @@
   }
 
   function init() {
+    window.__weightPlayShellControlsPhase = "init";
     build();
     place();
     const observer = new MutationObserver(() => requestAnimationFrame(place));
-    observer.observe(document.body, {
+    observer.observe(document, {
       subtree: true,
       childList: true,
       attributes: true,
       attributeFilter: ["hidden", "class", "data-screen", "style"],
     });
     window.addEventListener("resize", place);
+    window.addEventListener("load", place, { once: true });
     setTimeout(place, 0);
     setTimeout(place, 300);
     setTimeout(place, 1000);
+    setTimeout(place, 1800);
+    setTimeout(place, 3200);
+    setTimeout(place, 4800);
+    let recoveryAttempts = 0;
+    const recoveryTimer = setInterval(() => {
+      place();
+      recoveryAttempts += 1;
+      if (recoveryAttempts >= 20) clearInterval(recoveryTimer);
+    }, 250);
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init, { once: true });
-  } else {
+  let initialized = false;
+  let beginAttempts = 0;
+  function begin() {
+    window.__weightPlayShellControlsPhase = "begin";
+    if (initialized) return;
+    if (!document.body) {
+      beginAttempts += 1;
+      if (beginAttempts < 100) setTimeout(begin, 50);
+      return;
+    }
+    initialized = true;
     init();
   }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", begin, { once: true });
+  }
+  setTimeout(begin, 0);
+  if (document.readyState !== "loading") begin();
 })();

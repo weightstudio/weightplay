@@ -1313,7 +1313,15 @@ body.crystal-playing .upgrade-card-wrap { max-height: 100%; overflow-y: auto; }
 
 /* Shared Main/Stage utility: one stable Settings control opposite Return. */
 .topbar {
-  grid-template-columns: 58px minmax(0, 1fr) 48px;
+  grid-template-columns: 58px minmax(0, 1fr) 58px;
+}
+
+.topbar .home-link {
+  box-sizing: border-box;
+  width: 58px;
+  height: 48px;
+  min-height: 48px;
+  max-height: 48px;
 }
 
 .brand-title {
@@ -1480,7 +1488,7 @@ body.crystal-playing .settings-control {
 
 @media (max-width: 520px) {
   .topbar {
-    grid-template-columns: 58px minmax(0, 1fr) 48px;
+    grid-template-columns: 58px minmax(0, 1fr) 58px;
     grid-template-rows: 48px 32px;
     gap: 6px;
   }
@@ -1565,6 +1573,7 @@ body:not(.crystal-playing):not(.crystal-stage-select) .menu-copy {
 }
 
 #startBtn {
+  height: 52px;
   min-height: 52px;
 }
 

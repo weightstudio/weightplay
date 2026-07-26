@@ -25,11 +25,9 @@
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
 </head>
   <body data-wp-game-id="animal-unblock">
-    <main id="main" class="screen main">
+    <main id="main" class="screen main main-screen" data-screen="main">
       <header>
-        <a href="/" data-t-aria="returnLobby" aria-label="Return to WeightPlay"
-          >←</a
-        >
+        <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
         <strong data-t="shortTitle">UNBLOCK</strong>
         <select id="locale"></select>
       </header>
@@ -45,13 +43,8 @@
           <p data-t="summary"></p>
           <button id="start" data-wp-main-start data-t="start">
             Start game
-          </button>
-          <details>
-            <summary data-t="guideTitle"></summary>
-            <p data-t="guideBody"></p>
-          </details>
-        </div>
-      </section>
+          </button></div>
+      </section><section class="public-guide guide" aria-label="Game guide"><h2 data-t="guideTitle"></h2><p data-t="guideBody"></p></section>
     </main>
     <main
       id="stage"

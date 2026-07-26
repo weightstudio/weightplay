@@ -50,6 +50,58 @@
   .main-canvas #runeStartBtn{min-height:46px}
 }
 
+/* Canonical Main entrance geometry. */
+.main-canvas {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 420px minmax(0, 1fr);
+  grid-template-rows: auto auto auto 52px;
+  align-items: center;
+}
+.main-canvas > .topbar {
+  grid-column: 1 / -1;
+}
+.main-canvas > .poster {
+  grid-column: 1;
+  grid-row: 2 / 5;
+  width: 420px;
+  height: 420px;
+  min-height: 0;
+  aspect-ratio: 1;
+}
+.main-canvas > .main-copy {
+  grid-column: 2;
+  width: 100%;
+  max-width: none;
+}
+.main-canvas > .main-copy {
+  display: grid;
+  gap: 12px;
+  align-content: center;
+}
+.main-canvas > .main-copy #runeStartBtn {
+  width: 100%;
+  height: 52px;
+  min-height: 52px;
+}
+@media (max-width: 699px) {
+  .main-canvas {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto 52px;
+  }
+  .main-canvas > .topbar,
+  .main-canvas > .poster,
+  .main-canvas > .main-copy {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .main-canvas > .poster {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+  }
+}
+
 /* The live viewport variables are refreshed by game.js so an in-progress
    Stage/Battle cannot retain portrait geometry after rotation. */
 .canvas,.ad-reserve{width:min(var(--live-width,100vw),920px)}

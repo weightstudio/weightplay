@@ -20,6 +20,10 @@
   min-width: 0;
 }
 
+.wp-main-shell-header > :is(.top-nav-left, .top-nav-right) {
+  display: contents !important;
+}
+
 .wp-main-shell-header > strong,
 .wp-main-shell-header > h1,
 .wp-main-shell-header > h2,
@@ -28,6 +32,7 @@
 }
 
 .wp-shell-return {
+  box-sizing: border-box !important;
   grid-column: 1;
   justify-self: start;
   display: inline-flex !important;
@@ -37,6 +42,8 @@
   width: 58px !important;
   min-width: 58px !important;
   height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
   padding: 0 !important;
   border-radius: 12px !important;
 }
@@ -60,12 +67,15 @@
 }
 
 .wp-shell-settings-button {
+  box-sizing: border-box;
   display: grid;
   place-items: center;
-  width: 48px;
-  min-width: 48px;
-  height: 48px;
-  padding: 0;
+  width: 48px !important;
+  min-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  padding: 0 !important;
   border: 1px solid color-mix(in srgb, currentColor 34%, transparent);
   border-radius: 12px;
   background: color-mix(in srgb, #071426 88%, transparent);
@@ -129,6 +139,7 @@
   padding: 0 10px !important;
 }
 
+.wp-shell-sound-row > button,
 .wp-shell-settings-row .sound-toggle {
   position: static !important;
   inset: auto !important;
@@ -136,6 +147,7 @@
   width: 100% !important;
   height: 44px !important;
   min-height: 44px !important;
+  max-height: 44px !important;
   border-radius: 10px !important;
   cursor: pointer !important;
   touch-action: manipulation !important;
@@ -143,6 +155,110 @@
 
 .wp-shell-legacy-control {
   display: none !important;
+}
+
+.wp-standard-main-screen {
+  box-sizing: border-box !important;
+  width: min(100%, 920px) !important;
+  max-width: 920px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin-inline: auto !important;
+}
+
+.wp-standard-main-composition {
+  box-sizing: border-box;
+  width: 100%;
+  display: grid !important;
+  grid-template-columns: 420px minmax(0, 1fr) !important;
+  align-items: center;
+  gap: clamp(16px, 3vw, 28px);
+  margin: 0 !important;
+  padding: clamp(12px, 2.5vw, 22px) !important;
+}
+
+.wp-standard-main-poster {
+  width: 420px;
+  height: 420px;
+  overflow: hidden;
+  border-radius: 22px;
+}
+
+.wp-standard-main-poster-media,
+.wp-standard-main-poster-media > img,
+.wp-standard-main-poster > img {
+  box-sizing: border-box !important;
+  display: block !important;
+  width: 420px !important;
+  min-width: 420px !important;
+  max-width: 420px !important;
+  height: 420px !important;
+  min-height: 420px !important;
+  max-height: 420px !important;
+  aspect-ratio: 1 !important;
+  margin: 0 !important;
+  object-fit: cover !important;
+  border-radius: inherit;
+}
+
+.wp-standard-main-copy {
+  min-width: 0;
+  height: 420px;
+  display: grid !important;
+  align-content: center;
+  gap: 14px;
+}
+
+.wp-standard-main-summary {
+  display: block !important;
+  margin: 0 !important;
+  font-size: clamp(15px, 2vw, 18px);
+  line-height: 1.55;
+}
+
+.wp-standard-main-progress {
+  display: block;
+  width: 100%;
+  margin: 0 !important;
+}
+
+.wp-standard-main-start {
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  margin: 0 !important;
+}
+
+.wp-main-legacy-layout {
+  display: none !important;
+}
+
+.public-guide.guide {
+  width: 100%;
+  margin-top: 16px;
+  padding: clamp(18px, 4vw, 32px);
+  border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+  border-radius: 22px;
+  background: color-mix(in srgb, #071426 88%, transparent);
+  color: #f8fafc;
+  text-align: start;
+}
+
+.public-guide.guide h2 {
+  margin: 0 0 10px;
+  font-size: clamp(22px, 4vw, 30px);
+}
+
+.public-guide.guide p {
+  margin: 0;
+  line-height: 1.65;
 }
 
 .wp-stage-shell-header > .wp-shell-settings {
@@ -155,7 +271,7 @@
   display: none;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 699px) {
   .wp-main-shell-header {
     grid-template-columns: 58px minmax(0, 1fr) 58px !important;
     gap: 4px !important;
@@ -170,5 +286,33 @@
   .wp-shell-settings-button {
     width: 48px;
     min-width: 48px;
+  }
+
+  .wp-standard-main-composition {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 12px;
+    padding: 10px !important;
+  }
+
+  .wp-standard-main-poster {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  .wp-standard-main-copy {
+    height: auto;
+  }
+
+  .wp-standard-main-poster-media,
+  .wp-standard-main-poster-media > img,
+  .wp-standard-main-poster > img {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: 1 !important;
   }
 }

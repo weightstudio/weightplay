@@ -62,6 +62,7 @@
     attackPower:["Attack"],powerStored:["Stored +{count}"],shieldReward:["Shield {shield} · +{reward}"],bombThreat:["Bomb {count}"],
     pickupPower:["Attack power +{count}"],shieldBroken:["Shield broken · collect +{count}"],bombDefused:["Bomb defused!"],bombDamage:["Bomb blast -{count}"],enemyCollision:["Core hit -{count}"],enemyLeak:["Monster breached -{count}"],laneReady:["Lane {lane} selected"],waveLabel:["Wave {wave}/{total}"],bossWave:["BOSS WAVE"],
   });
+  rows.laneGuideIntro[0]="Switch Captain Fia between three lanes while the battalion fires automatically. Break threats, collect power cores, and protect the crystal.";
   const requiredLocaleCatalogs={
     "hi": {
       "title": "पशु प्रिज्म बटालियन",
