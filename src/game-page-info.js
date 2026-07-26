@@ -1282,6 +1282,7 @@
       gameplay: "Hero Tower Defense",
       genre: ["Tower Defense", "Strategy", "Animal"],
       skills: ["Logic", "Problem Solving", "Focus"],
+      showSkills: false,
       guideKicker: "WeightPlay Original Game Guide",
       guideTitleSuffix: "Game Guide",
       noteTitle: "Player and Save Information",
@@ -6921,7 +6922,7 @@
           ${showRecommendedAge ? `<div class="game-info-fact"><span>${escapeHtml(uiLabel("recommendedAge"))}</span><strong>${escapeHtml(localizeAge(game.age))}</strong></div>` : ""}
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("difficulty"))}</span><strong>${escapeHtml(localizeDifficulty(game.difficulty))}</strong></div>
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("estimatedTime"))}</span><strong>${escapeHtml(localizePlayTime(game.time))}</strong></div>
-          <div class="game-info-fact"><span>${escapeHtml(uiLabel("skills"))}</span><div class="game-info-skills">${gameSkills.map((skill) => `<span>${escapeHtml(localizeSkill(skill))}</span>`).join("")}</div></div>
+          ${game.showSkills === false ? "" : `<div class="game-info-fact"><span>${escapeHtml(uiLabel("skills"))}</span><div class="game-info-skills">${gameSkills.map((skill) => `<span>${escapeHtml(localizeSkill(skill))}</span>`).join("")}</div></div>`}
         </div>
       </div>
       <div class="game-info-sections">

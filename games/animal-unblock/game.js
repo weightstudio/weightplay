@@ -31,6 +31,7 @@
 
   const saveKey = "unblockProgress";
   const progress = JSON.parse(localStorage.getItem(saveKey) || "[]");
+  while (selected < 29 && progress[selected]) selected += 1;
   const t = (key, values = {}) =>
     String((dict[locale] || dict.en)[key] ?? dict.en[key] ?? key).replace(
       /\{(\w+)\}/g,
@@ -100,9 +101,30 @@
     ["main", "stage", "battle"].forEach((id) => {
       $(id).hidden = id !== nextScreen;
     });
-    $("generalReserve").hidden = nextScreen === "main";
+    $("generalReserve").hidden = nextScreen !== "battle";
     screen = nextScreen;
     window.scrollTo(0, 0);
+  }
+
+  function selectStage(levelIndex, center = false) {
+    selected = Math.max(0, Math.min(29, levelIndex));
+    document
+      .querySelectorAll("#stageGrid .stage-card")
+      .forEach((card, cardIndex) => {
+        const active = cardIndex === selected;
+        card.classList.toggle("selected", active);
+        card.classList.toggle("centered", active);
+        card.setAttribute("aria-current", active ? "true" : "false");
+      });
+    if (center) {
+      document
+        .querySelector(`#stageGrid [data-index="${selected}"]`)
+        ?.scrollIntoView({
+          behavior: "smooth",
+          inline: "center",
+          block: "nearest",
+        });
+    }
   }
 
   function renderStage() {
@@ -113,22 +135,33 @@
     $("stageGrid").innerHTML = levels
       .map(
         (_, levelIndex) =>
-          `<button class="stage-card ${levelIndex === selected ? "selected" : ""}" data-i="${levelIndex}" ${
-            levelIndex && !progress[levelIndex - 1] ? "disabled" : ""
-          }><b>${t("trail", { n: levelIndex + 1 })}</b><small>${
+          `<button class="stage-card ${
+            levelIndex === selected ? "selected centered" : ""
+          }${
+            levelIndex && !progress[levelIndex - 1] ? " locked" : ""
+          }" data-index="${levelIndex}" data-stage-index="${levelIndex}" aria-current="${
+            levelIndex === selected
+          }" aria-disabled="${
+            Boolean(levelIndex && !progress[levelIndex - 1])
+          }"><b>${t("trail", { n: levelIndex + 1 })}</b><small>${
             progress[levelIndex]
               ? `✓ ${t("complete")}`
               : t("chapter", { n: Math.floor(levelIndex / 10) + 1 })
           }</small></button>`,
       )
       .join("");
-    document.querySelectorAll("[data-i]").forEach((button) => {
+    document
+      .querySelectorAll("#stageGrid .stage-card")
+      .forEach((button) => {
       button.onclick = () => {
-        selected = Number(button.dataset.i);
-        start(selected);
+        const levelIndex = Number(button.dataset.index);
+        selectStage(levelIndex, true);
+        if (button.getAttribute("aria-disabled") !== "true") {
+          start(levelIndex);
+        }
       };
     });
-    $("enter").disabled = selected > 0 && !progress[selected - 1];
+    selectStage(selected);
   }
 
   function start(levelIndex) {
@@ -287,7 +320,12 @@
   document.querySelectorAll("[data-back]").forEach((button) => {
     button.onclick = () => show(screen === "battle" ? "stage" : "main");
   });
-  $("enter").onclick = () => start(selected);
+  $("stageGrid").addEventListener("wonder:stage-snap", (event) => {
+    const levelIndex = Number(event.detail?.index);
+    if (Number.isInteger(levelIndex) && levelIndex >= 0) {
+      selectStage(levelIndex);
+    }
+  });
   $("undo").onclick = undo;
   $("hint").onclick = hint;
   $("restart").onclick = () => start(index);
@@ -297,7 +335,7 @@
   };
   $("next").onclick = () => {
     $("result").close();
-    selected = index + 1;
+    selected = Math.min(29, index + 1);
     show("stage");
     renderStage();
   };

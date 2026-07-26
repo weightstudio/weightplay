@@ -15,9 +15,14 @@
     />
     <meta name="robots" content="noindex,nofollow" />
     <title>Unblock Trail | WeightPlay</title>
+    <link
+      rel="stylesheet"
+      href="../../src/stage-selector-standard.css"
+      data-wp-stage-standard
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
+  <body data-wp-game-id="animal-unblock">
     <main id="main" class="screen main">
       <header>
         <a href="/" data-t-aria="returnLobby" aria-label="Return to WeightPlay"
@@ -36,7 +41,9 @@
           <p data-t="kicker">PANKO'S SLIDE PUZZLE</p>
           <h1 data-t="title">Unblock Trail</h1>
           <p data-t="summary"></p>
-          <button id="start" data-t="start">Start game</button>
+          <button id="start" data-wp-main-start data-t="start">
+            Start game
+          </button>
           <details>
             <summary data-t="guideTitle"></summary>
             <p data-t="guideBody"></p>
@@ -44,7 +51,17 @@
         </div>
       </section>
     </main>
-    <main id="stage" class="screen canvas" hidden>
+    <main
+      id="stage"
+      class="screen canvas stage-canvas"
+      data-wp-standard-stage-screen
+      data-wp-logical-stage-canvas
+      data-wp-canvas-max-width="920"
+      data-wp-stage-landscape-width="760"
+      data-wp-stage-landscape-height="334"
+      style="--wp-stage-art: url('../../assets/animal-unblock-cover-v2.webp')"
+      hidden
+    >
       <header>
         <button data-back data-t-aria="back" aria-label="Back">←</button>
         <h2 data-t="choose"></h2>
@@ -52,10 +69,12 @@
       </header>
       <section
         id="stageGrid"
+        class="stage-rail"
+        data-wp-stage-rail
+        data-wp-stage-recommendation="last"
         data-t-aria="stageList"
         aria-label="Trail list"
       ></section>
-      <button id="enter" data-t="open"></button>
     </main>
     <main id="battle" class="screen canvas" hidden>
       <header>
@@ -101,5 +120,9 @@
     <script src="levels.js"></script>
     <script src="locales.js?v=20260726-zh-hant3"></script>
     <script src="game.js"></script>
+    <script
+      src="../../src/stage-selector-standard.js"
+      data-wp-stage-standard
+    ></script>
   </body>
 </html>

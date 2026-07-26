@@ -60,6 +60,10 @@
   }
   const nodes = {
     mainBack: document.querySelector(".guardian-topbar .back-btn"),
+    audioMenuBtn: $("audioMenuBtn"),
+    audioPopover: $("audioPopover"),
+    soundSettingLabel: $("soundSettingLabel"),
+    soundStateText: $("soundStateText"),
     localeSelect: $("localeSelect"),
     loadingPanel: $("loadingPanel"),
     loadingFill: $("loadingFill"),
@@ -86,16 +90,18 @@
     upgradePointLabel: $("upgradePointLabel"),
     diamondLabel: $("diamondLabel"),
     bestStageText: $("bestStageText"),
+    mainProgress: $("mainProgress"),
     upgradePointText: $("upgradePointText"),
     diamondText: $("diamondText"),
     startBtn: $("startBtn"),
-    techBtn: $("techBtn"),
-    techBackBtn: $("techBackBtn"),
     techTitle: $("techTitle"),
     techHint: $("techHint"),
     techGrid: $("techGrid"),
-    stageTitle: $("stageTitle"),
     stageBackBtn: $("stageBackBtn"),
+    stagePage: $("stagePage"),
+    stageTabs: $("stageTabs"),
+    stageTabBtn: $("stageTabBtn"),
+    equipmentTabBtn: $("equipmentTabBtn"),
     stageRail: $("stageRail"),
     menuBtn: $("menuBtn"),
     buildTitle: $("buildTitle"),
@@ -147,10 +153,15 @@
     en: {
       title: "Beast Guardian",
       language: "Language",
+      audioSettings: "Audio settings",
+      soundEffects: "Sound Effects",
       backToLobby: "Back to WeightPlay General games",
       languageControl: "Language",
       backToMain: "Back to main",
       stageSelector: "Stage selector",
+      stagePages: "Stage pages",
+      stagesTab: "Stages",
+      equipmentTab: "Equipment",
       backToStages: "Back to stages",
       pauseDecisionTitle: "Pause Stage {stage}?",
       pauseDecisionText: "Continue this exact Stage {stage} battle, or return to Stages and lose the current wave, defenders, coins, and core health.",
@@ -745,10 +756,15 @@
     Object.assign(text["zh-Hant"], {
       title: "獸王守衛",
       language: "語言",
+      audioSettings: "音訊設定",
+      soundEffects: "音效",
       backToLobby: "返回 WeightPlay 一般遊戲大廳",
       languageControl: "語言",
       backToMain: "返回主頁",
       stageSelector: "關卡選擇列",
+      stagePages: "關卡分頁",
+      stagesTab: "關卡",
+      equipmentTab: "裝備",
       backToStages: "返回關卡選擇",
       localeName: "繁體中文",
       releaseBadge: "內部 Release 候選版",
@@ -935,10 +951,15 @@
   text.es = {
     title: "Guardián de Bestias",
     language: "Idioma",
+    audioSettings: "Ajustes de audio",
+    soundEffects: "Efectos de sonido",
     backToLobby: "Volver a los juegos generales de WeightPlay",
     languageControl: "Idioma",
     backToMain: "Volver al inicio",
     stageSelector: "Selector de niveles",
+    stagePages: "Páginas de nivel",
+    stagesTab: "Niveles",
+    equipmentTab: "Equipo",
     backToStages: "Volver a niveles",
     pauseDecisionTitle: "\u00bfPausar el nivel {stage}?",
     pauseDecisionText: "Contin\u00faa esta batalla exacta del nivel {stage} o vuelve a los niveles y pierde la oleada, los defensores, las monedas y la vida del n\u00facleo actuales.",
@@ -1364,8 +1385,38 @@
 
   function updateSoundButton() {
     if (!nodes.soundBtn) return;
-    nodes.soundBtn.textContent = t(state.soundEnabled ? "soundOn" : "soundOff");
+    if (nodes.soundSettingLabel) nodes.soundSettingLabel.textContent = t("soundEffects");
+    if (nodes.soundStateText) nodes.soundStateText.textContent = t(state.soundEnabled ? "soundOn" : "soundOff");
     nodes.soundBtn.setAttribute("aria-pressed", String(state.soundEnabled));
+    nodes.soundBtn.setAttribute("aria-label", `${t("soundEffects")}: ${t(state.soundEnabled ? "soundOn" : "soundOff")}`);
+    nodes.audioMenuBtn?.classList.toggle("is-muted", !state.soundEnabled);
+  }
+
+  function setAudioPopover(open, restoreFocus = false) {
+    const nextOpen = Boolean(open);
+    nodes.audioPopover?.classList.toggle("is-hidden", !nextOpen);
+    nodes.audioMenuBtn?.setAttribute("aria-expanded", String(nextOpen));
+    if (restoreFocus && !nextOpen) nodes.audioMenuBtn?.focus({ preventScroll: true });
+  }
+
+  function setStagePage(page, focusPanel = false) {
+    const equipment = page === "equipment";
+    nodes.stagePage?.classList.toggle("is-hidden", equipment);
+    nodes.techPanel?.classList.toggle("is-hidden", !equipment);
+    nodes.stageTabBtn?.classList.toggle("is-active", !equipment);
+    nodes.equipmentTabBtn?.classList.toggle("is-active", equipment);
+    nodes.stageTabBtn?.setAttribute("aria-selected", String(!equipment));
+    nodes.equipmentTabBtn?.setAttribute("aria-selected", String(equipment));
+    if (equipment) renderTech();
+    else renderStages();
+    if (focusPanel) {
+      window.requestAnimationFrame(() => {
+        const target = equipment
+          ? nodes.techGrid?.querySelector("button:not(:disabled)") || nodes.equipmentTabBtn
+          : nodes.stageRail?.querySelector('[aria-current="true"]') || nodes.stageTabBtn;
+        target?.focus({ preventScroll: true });
+      });
+    }
   }
 
   function setSoundEnabled(enabled, announce = false) {
@@ -1540,10 +1591,17 @@
     document.body.classList.toggle("guardian-result", resultActive);
     document.body.classList.toggle("guardian-stage", stageActive);
     setBattleDecisionCoverage(resultActive);
-    [nodes.menuPanel, nodes.stagePanel, nodes.techPanel, nodes.gamePanel, nodes.resultPanel, nodes.pauseDecisionPanel].forEach((panel) => panel?.classList.add("is-hidden"));
+    setAudioPopover(false);
+    nodes.mainBack?.classList.toggle("is-hidden", stageActive);
+    nodes.stageBackBtn?.classList.toggle("is-hidden", !stageActive);
+    nodes.mainBack?.toggleAttribute("hidden", stageActive);
+    nodes.stageBackBtn?.toggleAttribute("hidden", !stageActive);
+    [nodes.menuPanel, nodes.stagePanel, nodes.gamePanel, nodes.resultPanel, nodes.pauseDecisionPanel].forEach((panel) => panel?.classList.add("is-hidden"));
     if (screen === "menu") nodes.menuPanel.classList.remove("is-hidden");
-    if (screen === "stages") nodes.stagePanel.classList.remove("is-hidden");
-    if (screen === "tech") nodes.techPanel.classList.remove("is-hidden");
+    if (stageActive) {
+      nodes.stagePanel.classList.remove("is-hidden");
+      setStagePage(screen === "tech" ? "equipment" : "stages");
+    }
     if (screen === "game") nodes.gamePanel.classList.remove("is-hidden");
     if (resultActive) {
       nodes.gamePanel.classList.remove("is-hidden");
@@ -1572,8 +1630,11 @@
     document.documentElement.lang = state.locale;
     nodes.mainBack?.setAttribute("aria-label", t("backToLobby"));
     nodes.localeSelect.setAttribute("aria-label", t("languageControl"));
+    nodes.audioMenuBtn?.setAttribute("aria-label", t("audioSettings"));
+    nodes.audioPopover?.setAttribute("aria-label", t("audioSettings"));
     nodes.stageBackBtn.setAttribute("aria-label", t("backToMain"));
     nodes.stageRail.setAttribute("aria-label", t("stageSelector"));
+    nodes.stageTabs?.setAttribute("aria-label", t("stagePages"));
     nodes.menuBtn.setAttribute("aria-label", t("backToStages"));
     renderPauseDecision();
     nodes.gameTitle.textContent = t("title");
@@ -1586,9 +1647,8 @@
     nodes.upgradePointLabel.textContent = t("upgradePoints");
     nodes.diamondLabel.textContent = t("diamonds");
     nodes.startBtn.textContent = t("start");
-    nodes.techBtn.textContent = t("tech");
-    nodes.techBackBtn.textContent = t("back");
-    nodes.stageTitle.textContent = t("chooseStage");
+    nodes.stageTabBtn.textContent = t("stagesTab");
+    nodes.equipmentTabBtn.textContent = t("equipmentTab");
     nodes.stageBackBtn.textContent = "\u2190";
     nodes.menuBtn.textContent = "\u2190";
     nodes.buildTitle.textContent = t("build");
@@ -1612,11 +1672,14 @@
     renderBuildCards();
     renderStages();
     renderTech();
+    updateProfile();
     updateHud();
   }
 
   function updateProfile() {
-    nodes.bestStageText.textContent = state.save.bestStage;
+    const progress = `${state.save.bestStage} / ${STAGE_COUNT}`;
+    nodes.bestStageText.textContent = progress;
+    if (nodes.mainProgress) nodes.mainProgress.textContent = `${t("bestStage")} ${progress}`;
     nodes.upgradePointText.textContent = state.save.upgradePoints;
     nodes.diamondText.textContent = state.save.diamonds;
   }
@@ -1714,7 +1777,7 @@
       const bestStars = Number(state.save.stars?.[stage.id] || 0);
       const status = !unlocked ? t("locked") : bestStars ? t("starRating", { stars: bestStars }) : state.save.clears[stage.id] ? t("cleared") : stage.boss ? t("bossStage") : t("stage");
       const rewardText = `+${stage.reward.points} ${t("upgradePoints")} / +${stage.reward.diamonds} ${t("diamonds")}`;
-      button.innerHTML = `<strong>${stage.id}. ${localizedValue(stage.name)}</strong><span class="stage-status">${status}</span><span>${stage.waves} ${t("wave")} | ${stage.boss ? t("boss") : t("guardianRoute")}</span><span class="stage-intel"><b>${t("threatIntel")}:</b> ${localizedValue(stage.intel.threat)}</span><span class="stage-intel"><b>${t("recommendedPlan")}:</b> ${localizedValue(stage.intel.plan)}</span><span class="stage-reward"><b>${t("rewardIntel")}:</b> ${rewardText}</span>`;
+      button.innerHTML = `<strong>${stage.id}. ${localizedValue(stage.name)}</strong><span class="stage-status">${status}</span><span class="stage-intel"><b>${t("threatIntel")}:</b> ${localizedValue(stage.intel.threat)}</span><span class="stage-meta">${stage.waves} ${t("wave")} · ${stage.boss ? t("boss") : t("guardianRoute")}</span><span class="stage-reward"><b>${t("rewardIntel")}:</b> ${rewardText}</span>`;
       button.addEventListener("click", () => {
         if (!unlocked) return showToast(t("lockedStage"));
         startStage(stage.id);
@@ -3964,14 +4027,13 @@
       renderStages();
       focusCurrentStage();
     });
-    nodes.techBtn.addEventListener("click", () => {
-      renderTech();
-      setScreen("tech");
+    nodes.stageTabBtn?.addEventListener("click", () => {
+      state.screen = "stages";
+      setStagePage("stages", true);
     });
-    nodes.techBackBtn.addEventListener("click", () => {
-      setScreen("stages");
-      renderStages();
-      focusCurrentStage();
+    nodes.equipmentTabBtn?.addEventListener("click", () => {
+      state.screen = "tech";
+      setStagePage("equipment", true);
     });
     nodes.stageBackBtn.addEventListener("click", () => {
       setScreen("menu");
@@ -4060,6 +4122,22 @@
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
     });
     nodes.soundBtn?.addEventListener("click", () => setSoundEnabled(!state.soundEnabled, true));
+    nodes.audioMenuBtn?.addEventListener("click", () => {
+      const open = nodes.audioMenuBtn.getAttribute("aria-expanded") !== "true";
+      setAudioPopover(open);
+      if (open) window.requestAnimationFrame(() => nodes.soundBtn?.focus({ preventScroll: true }));
+    });
+    document.addEventListener("pointerdown", (event) => {
+      if (nodes.audioPopover?.classList.contains("is-hidden")) return;
+      if (event.target.closest(".audio-control")) return;
+      setAudioPopover(false);
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !nodes.audioPopover?.classList.contains("is-hidden")) {
+        event.preventDefault();
+        setAudioPopover(false, true);
+      }
+    });
     window.addEventListener("resize", updateBattleShell, { passive: true });
     nodes.canvas.addEventListener("pointerdown", beginCanvasPress);
     nodes.canvas.addEventListener("pointerup", finishCanvasPress);

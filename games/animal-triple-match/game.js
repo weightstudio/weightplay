@@ -253,50 +253,11 @@
     els.chapterName.textContent = t(CHAPTERS[chapter]);
   }
   els.stageRail.addEventListener("scroll", () => { clearTimeout(centeredTimer); centeredTimer = setTimeout(syncCentered, 80); }, { passive: true });
-  let railDrag = null, railSuppressUntil = 0, pendingStageCard = null;
-  els.stageRail.addEventListener("pointerdown", event => {
-    if (event.button !== 0 && event.pointerType === "mouse") return;
-    pendingStageCard = event.target.closest?.(".stage-card") || null;
-    railDrag = { id: event.pointerId, startX: event.clientX, lastX: event.clientX, startScroll: els.stageRail.scrollLeft, moved: false };
-    els.stageRail.setPointerCapture(event.pointerId);
-    els.stageRail.style.scrollSnapType = "none";
-  });
-  els.stageRail.addEventListener("pointermove", event => {
-    if (!railDrag || railDrag.id !== event.pointerId) return;
-    const delta = event.clientX - railDrag.startX;
-    if (Math.abs(delta) > 4) railDrag.moved = true;
-    if (!railDrag.moved) return;
-    els.stageRail.scrollLeft = railDrag.startScroll - delta;
-    railDrag.lastX = event.clientX;
-    event.preventDefault();
-  });
-  function finishRailDrag(event) {
-    if (!railDrag || railDrag.id !== event.pointerId) return;
-    const moved = railDrag.moved;
-    if (moved) {
-      railSuppressUntil = performance.now() + 120;
-      setTimeout(() => { railSuppressUntil = 0; }, 140);
-    }
-    railDrag = null;
-    els.stageRail.releasePointerCapture?.(event.pointerId);
-    const center = els.stageRail.getBoundingClientRect().left + els.stageRail.clientWidth / 2;
-    let target = null, distance = Infinity;
-    els.stageRail.querySelectorAll(".stage-card").forEach(card => {
-      const rect = card.getBoundingClientRect(), next = Math.abs(rect.left + rect.width / 2 - center);
-      if (next < distance) { distance = next; target = card; }
-    });
-    target?.scrollIntoView({ behavior: moved ? "smooth" : "auto", inline: "center", block: "nearest" });
-    setTimeout(() => { els.stageRail.style.scrollSnapType = "x mandatory"; syncCentered(); }, moved ? 340 : 0);
-  }
-  els.stageRail.addEventListener("pointerup", finishRailDrag);
-  els.stageRail.addEventListener("pointercancel", finishRailDrag);
   els.stageRail.addEventListener("click", event => {
-    if (performance.now() < railSuppressUntil) { event.preventDefault(); event.stopPropagation(); return; }
-    const card = pendingStageCard || event.target.closest?.(".stage-card");
-    pendingStageCard = null;
+    const card = event.target.closest?.(".stage-card");
     if (!card || card.getAttribute("aria-disabled") === "true") return;
     startBattle(+card.dataset.stage);
-  }, true);
+  });
 
   function rng(seed) { let value = seed >>> 0; return () => ((value = Math.imul(value ^ value >>> 15, 1 | value), value ^= value + Math.imul(value ^ value >>> 7, 61 | value), ((value ^ value >>> 14) >>> 0) / 4294967296)); }
   function shuffle(list, random) { for (let i = list.length - 1; i > 0; i--) { const j = Math.floor(random() * (i + 1)); [list[i], list[j]] = [list[j], list[i]]; } return list; }

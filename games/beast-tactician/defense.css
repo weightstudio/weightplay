@@ -1595,61 +1595,739 @@ body.guardian-playing .build-card.is-selected {
   }
 }
 
-body.guardian-stage .stage-panel {
-  grid-template-rows: 56px 64px minmax(0, 1fr);
+/* 2026-07-26 canonical Main / Stage component kit. */
+:root {
+  --wp-ui-shell: #17243a;
+  --wp-ui-surface: rgba(15, 29, 49, 0.92);
+  --wp-ui-control: #f8fafc;
+  --wp-ui-control-text: #176a9d;
+  --wp-ui-text: #f8fafc;
+  --wp-ui-muted: #cbd5e1;
+  --wp-ui-primary: #f5c84c;
+  --wp-ui-primary-text: #1f2937;
+  --wp-ui-border: rgba(255, 255, 255, 0.16);
+  --wp-ui-accent: #ffd166;
 }
 
-body.guardian-stage .stage-header {
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+body:not(.guardian-playing) .guardian-app {
+  width: min(100%, 920px);
+  max-width: 920px;
+  margin-inline: auto;
+}
+
+body:not(.guardian-playing) .guardian-topbar {
+  position: relative;
+  z-index: 70;
+  width: 100%;
+  height: 64px;
+  min-height: 64px;
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) auto;
   grid-template-rows: 48px;
-  height: 56px;
-  gap: 0;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 0;
+  border-bottom: 1px solid var(--wp-ui-border);
+  background: var(--wp-ui-surface);
 }
 
-body.guardian-stage #techPanel.modal-panel {
+body:not(.guardian-playing) .back-btn,
+body:not(.guardian-playing) .stage-return {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 14px;
+  color: var(--wp-ui-control-text);
+  background: var(--wp-ui-control);
+}
+
+body:not(.guardian-playing) .stage-return {
+  width: 48px;
+  height: 48px;
+  min-height: 48px;
+  padding: 0;
+  font-size: 24px;
+}
+
+body:not(.guardian-playing) .brand-lockup {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  text-align: center;
+}
+
+body:not(.guardian-playing) .brand-lockup h1 {
+  margin: 0;
+  overflow: hidden;
+  color: var(--wp-ui-text);
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.header-utilities {
+  grid-column: 3;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 8px;
+  min-width: 0;
+}
+
+.audio-control {
+  position: relative;
+}
+
+.header-icon-btn {
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 14px;
+  color: var(--wp-ui-control-text);
+  background: var(--wp-ui-control);
+  cursor: pointer;
+}
+
+.header-icon-btn svg,
+.locale-box svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}
+
+.header-icon-btn.is-muted svg {
+  opacity: .48;
+}
+
+.audio-popover {
+  position: absolute;
+  z-index: 90;
+  top: 52px;
+  right: 0;
+  width: 220px;
+  padding: 8px;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 14px;
+  background: var(--wp-ui-surface);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, .42);
+}
+
+.audio-setting-row {
+  width: 100%;
+  height: 44px;
+  min-height: 44px;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) 38px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 12px;
+  color: var(--wp-ui-text);
+  background: rgba(255, 255, 255, .08);
+  text-align: left;
+  cursor: pointer;
+}
+
+.audio-row-icon {
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.audio-switch {
+  position: relative;
+  width: 36px;
+  height: 22px;
+  border-radius: 999px;
+  background: #64748b;
+}
+
+.audio-switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform .16s ease;
+}
+
+.audio-setting-row[aria-pressed="true"] .audio-switch {
+  background: #2fbf8f;
+}
+
+.audio-setting-row[aria-pressed="true"] .audio-switch::after {
+  transform: translateX(14px);
+}
+
+body:not(.guardian-playing) .locale-box {
+  width: 96px;
+  height: 44px;
+  display: grid !important;
+  grid-template-columns: 18px minmax(0, 1fr);
+  align-items: center;
+  gap: 4px;
+  padding: 0 6px;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 14px;
+  color: var(--wp-ui-control-text);
+  background: var(--wp-ui-control);
+}
+
+body:not(.guardian-playing) .locale-box svg {
+  width: 18px;
+  height: 18px;
+}
+
+body:not(.guardian-playing) .locale-box select,
+body:not(.guardian-playing) .guardian-app:not(.is-playing) .locale-box select {
+  display: block !important;
+  visibility: visible !important;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  height: 42px;
+  padding: 0;
+  overflow: hidden;
+  color: #1f2937;
+  border: 0;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+}
+
+body.guardian-stage .guardian-app:not(.is-playing) .locale-box {
+  display: none !important;
+}
+
+body.guardian-stage .guardian-topbar {
+  height: 64px;
+  min-height: 64px;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+  grid-template-rows: 48px;
+  padding: 8px 12px;
+}
+
+body.guardian-stage .brand-lockup {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+body.guardian-stage .header-utilities {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+body:not(.guardian-playing) .primary-btn {
+  border-radius: 14px;
+  color: var(--wp-ui-primary-text);
+  background: var(--wp-ui-primary);
+}
+
+body:not(.guardian-playing) button:active,
+body:not(.guardian-playing) .back-btn:active {
+  transform: translateY(2px);
+  filter: brightness(.92);
+}
+
+body:not(.guardian-playing) button:focus-visible,
+body:not(.guardian-playing) a:focus-visible,
+body:not(.guardian-playing) select:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* Main: one responsive poster/copy composition above the complete guide. */
+body:not(.guardian-playing):not(.guardian-stage) .menu-panel {
+  width: calc(100% - 32px);
+  max-width: 888px;
+  min-height: 0;
+  grid-template-columns: 420px minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+  margin: 16px auto;
+  padding: 0;
+  border-radius: 18px;
+  background: var(--wp-ui-surface);
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .poster-frame {
+  width: 420px;
+  height: 420px;
+  max-width: none;
+  aspect-ratio: 1;
+  border-radius: 18px 0 0 18px;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .menu-copy {
+  align-self: stretch;
+  align-content: center;
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  padding: 20px;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .release-badge,
+body:not(.guardian-playing):not(.guardian-stage) #menuTitle,
+body:not(.guardian-playing):not(.guardian-stage) #holdNotice {
+  display: none;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) #menuHint {
+  display: block;
+  margin: 0;
+  overflow: visible;
+  color: var(--wp-ui-text);
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.main-progress {
+  width: fit-content;
+  max-width: 100%;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0 14px;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 999px;
+  color: var(--wp-ui-muted);
+  background: rgba(255, 255, 255, .08);
+  font-weight: 800;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .menu-actions {
+  display: block;
+  margin: 0;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) #startBtn {
+  width: 100%;
+  height: 52px;
+  min-height: 52px;
+  padding: 0 16px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .game-page-info {
+  width: calc(100% - 32px);
+  max-width: 888px;
+  margin: 16px auto 32px;
+  padding: 24px;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .game-page-info p,
+body:not(.guardian-playing):not(.guardian-stage) .game-page-info li,
+body:not(.guardian-playing):not(.guardian-stage) .game-page-info dd {
+  max-width: 72ch;
+}
+
+/* Stage: shared header, bounded workspace, fixed [empty][Stages][Equipment]. */
+body.guardian-stage .guardian-topbar {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: 70;
+  width: min(100%, 920px);
+  transform: translateX(-50%);
+}
+
+body.guardian-stage .guardian-app {
+  width: 100%;
+  max-width: none;
+  min-height: calc(100dvh - 56px);
+}
+
+body.guardian-stage .stage-panel {
+  position: fixed;
   inset: 0 0 56px;
   width: min(100%, 920px);
+  max-width: 920px;
   height: auto;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) 56px;
+  gap: 8px;
   margin: 0 auto;
-  padding: 14px;
+  padding: 76px 16px 0;
+  overflow: hidden;
+  border: 0;
   border-radius: 0;
+  background:
+    linear-gradient(rgba(9, 20, 35, .76), rgba(9, 20, 35, .88)),
+    url("../../assets/beast-tactician-cover.webp") center / cover no-repeat,
+    var(--wp-ui-shell);
 }
 
-body.guardian-stage #techPanel .modal-card {
-  max-height: 100%;
+.stage-workspace {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.stage-page {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+#stagePage {
+  display: grid;
+  grid-template-rows: 44px minmax(0, 1fr);
+  gap: 8px;
+}
+
+body.guardian-stage .stage-progress {
+  width: min(100%, 360px);
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  justify-self: center;
+  padding: 0 14px;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 14px;
+  color: var(--wp-ui-text);
+  background: var(--wp-ui-surface);
+}
+
+body.guardian-stage .stage-progress span {
+  color: var(--wp-ui-muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+body.guardian-stage .stage-progress strong {
+  color: var(--wp-ui-text);
+  font-size: 15px;
+}
+
+body.guardian-stage .stage-rail {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 264px;
+  align-content: center;
+  gap: 14px;
+  padding: 12px max(14px, calc((100% - 264px) / 2));
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+}
+
+body.guardian-stage .stage-card {
+  width: 264px;
+  min-width: 264px;
+  max-width: 264px;
+  height: 190px;
+  min-height: 190px;
+  max-height: 190px;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+  align-content: start;
+  gap: 4px;
+  padding: 14px;
+  overflow: hidden;
+  border-radius: 14px;
+  background: rgba(15, 29, 49, .94);
+}
+
+body.guardian-stage .stage-card .stage-intel {
+  display: -webkit-box;
+  margin: 2px 0 0;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 1.3;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+body.guardian-stage .stage-card .stage-meta,
+body.guardian-stage .stage-card .stage-reward {
+  margin: 0;
+  overflow: hidden;
+  font-size: 11px;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stage-tabs {
+  width: 100%;
+  height: 56px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  padding: 6px;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 14px 14px 0 0;
+  background: var(--wp-ui-surface);
+}
+
+.stage-tab-empty {
+  grid-column: 1;
+}
+
+.stage-tab {
+  height: 44px;
+  min-height: 44px;
+  min-width: 0;
+  padding: 0 8px;
+  overflow: hidden;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 12px;
+  color: var(--wp-ui-text);
+  background: rgba(255, 255, 255, .08);
+  font-size: 14px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#stageTabBtn {
+  grid-column: 2;
+}
+
+#equipmentTabBtn {
+  grid-column: 3;
+}
+
+.stage-tab.is-active {
+  color: var(--wp-ui-primary-text);
+  border-color: var(--wp-ui-accent);
+  background: var(--wp-ui-primary);
+  box-shadow: 0 0 0 2px rgba(255, 209, 102, .22), 0 0 18px rgba(255, 209, 102, .38);
+}
+
+.equipment-page {
+  display: grid;
+  grid-template-rows: 44px auto minmax(0, 1fr);
+  gap: 8px;
+  overflow: hidden;
+}
+
+.equipment-summary {
+  width: min(100%, 420px);
+  height: 44px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  justify-self: center;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 14px;
+  background: var(--wp-ui-surface);
+}
+
+.equipment-summary > div {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 8px;
+}
+
+.equipment-summary > div + div {
+  border-left: 1px solid var(--wp-ui-border);
+}
+
+.equipment-summary span {
+  overflow: hidden;
+  color: var(--wp-ui-muted);
+  font-size: 11px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.equipment-summary strong {
+  color: var(--wp-ui-text);
+}
+
+.equipment-intro {
+  padding: 10px 14px;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 14px;
+  background: var(--wp-ui-surface);
+}
+
+.equipment-intro h2,
+.equipment-intro p {
+  margin: 0;
+}
+
+.equipment-intro h2 {
+  font-size: 18px;
+}
+
+.equipment-intro p {
+  margin-top: 4px;
+  color: var(--wp-ui-muted);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+body.guardian-stage .tech-grid {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: 8px;
+  overflow: auto;
+  padding: 2px;
+}
+
+body.guardian-stage .tech-card {
+  min-width: 0;
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--wp-ui-surface);
 }
 
 body.guardian-stage .battle-ad-reserve {
-  position: fixed;
-  z-index: 49;
-  left: 50%;
-  bottom: 0;
-  display: block;
-  width: min(100%, 920px);
-  height: 56px;
-  transform: translateX(-50%);
-  pointer-events: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(4, 10, 16, 0.92);
+  left: 0;
+  width: 100%;
+  transform: none;
 }
 
-@media (max-width: 560px) {
+@media (max-width: 699px) and (min-height: 501px) {
+  body:not(.guardian-playing) .guardian-topbar {
+    height: 96px;
+    grid-template-columns: 58px minmax(0, 1fr);
+    grid-template-rows: 48px 32px;
+    padding: 8px 12px;
+  }
+
+  body:not(.guardian-playing) .brand-lockup {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  body:not(.guardian-playing) .brand-lockup h1 {
+    font-size: 20px;
+  }
+
+  .header-utilities {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  body:not(.guardian-playing):not(.guardian-stage) .menu-panel {
+    width: min(calc(100% - 24px), 420px);
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    margin: 12px auto;
+  }
+
+  body:not(.guardian-playing):not(.guardian-stage) .poster-frame {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 18px 18px 0 0;
+  }
+
+  body:not(.guardian-playing):not(.guardian-stage) .menu-copy {
+    padding: 12px;
+  }
+
+  body:not(.guardian-playing):not(.guardian-stage) #menuHint {
+    font-size: 15px;
+    line-height: 1.35;
+  }
+
+  body:not(.guardian-playing):not(.guardian-stage) .game-page-info {
+    width: calc(100% - 24px);
+    margin-top: 16px;
+    padding: 16px;
+  }
+
   body.guardian-stage .stage-panel {
-    grid-template-rows: 52px 62px minmax(0, 1fr);
+    padding: 68px 12px 0;
   }
 
-  body.guardian-stage .stage-header {
-    height: 52px;
-    grid-template-rows: 44px;
+  body.guardian-stage .tech-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  body:not(.guardian-playing) .guardian-topbar {
+    height: 64px;
   }
 
-  body.guardian-stage .stage-progress {
-    height: 62px;
-    grid-template-columns: minmax(0, 1fr) 92px;
+  body:not(.guardian-playing):not(.guardian-stage) .menu-panel {
+    grid-template-columns: 360px minmax(0, 1fr);
   }
 
-  body.guardian-stage .stage-progress #techBtn {
-    width: 92px;
-    min-width: 92px;
-    min-height: 62px;
+  body:not(.guardian-playing):not(.guardian-stage) .poster-frame {
+    width: 360px;
+    height: 360px;
+  }
+
+  body.guardian-stage .stage-panel {
+    padding-top: 68px;
+  }
+
+  .equipment-intro {
+    display: none;
+  }
+
+  .equipment-page {
+    grid-template-rows: 44px minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 699px) and (min-height: 501px) {
+  body.guardian-stage .guardian-topbar {
+    height: 64px;
+    min-height: 64px;
+    grid-template-columns: 48px minmax(0, 1fr) auto;
+    grid-template-rows: 48px;
+    padding: 8px 12px;
+  }
+
+  body.guardian-stage .brand-lockup {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  body.guardian-stage .header-utilities {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  body.guardian-stage .stage-panel {
+    padding-top: 68px;
   }
 }
