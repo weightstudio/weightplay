@@ -325,7 +325,13 @@
       arrow.textContent = "←";
       control.prepend(arrow);
     }
-    if (!control.querySelector("img")) {
+    const ownsLobbyLogo =
+      control.dataset.wpReturn === "main" &&
+      !header.classList.contains("wp-stage-shell-header") &&
+      !header.classList.contains("wp-battle-shell-header");
+    if (!ownsLobbyLogo) {
+      control.querySelectorAll(":scope > img").forEach((image) => image.remove());
+    } else if (!control.querySelector(":scope > img")) {
       const logo = document.createElement("img");
       logo.src = "../../assets/weightplay-logo.png";
       logo.alt = "";

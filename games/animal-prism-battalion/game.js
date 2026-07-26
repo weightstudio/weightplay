@@ -39,7 +39,7 @@
   });
   const staticText=[...document.querySelectorAll("[data-t]")];
   const assistiveText=[...document.querySelectorAll("[data-ta]")];
-  let currentScreen="loading",run=null,raf=0,lastTime=0,lastHud="",modalReturnFocus=null,lifecyclePaused=false,windowFocused=true;
+  let currentScreen="loading",run=null,raf=0,lastTime=0,lastHud="",modalReturnFocus=null,lifecyclePaused=false,windowFocused=document.hasFocus(),resultDecisionCommitted=false;
 
   function applyLocale(){
     document.documentElement.lang=locale;
@@ -207,11 +207,12 @@
   $("tutorialDone").addEventListener("click",()=>{save.tutorialSeen=true;persist();closeModal($("tutorial"))});
   function openLeave(){if(!run||run.finished||activeModal())return;openModal($("leave"),$("continueBattle"))}
   function finish(won){
-    if(!run||run.finished)return;run.finished=true;run.won=Boolean(won);run.paused=true;stopLoop();const remaining=Math.max(0,Math.ceil(run.time)),stars=won?1+(remaining>run.stage.time*.25?1:0)+(run.core===run.maxCore?1:0):0,earned=won?3+stars+run.stage.chapter:0;
+    if(!run||run.finished)return;run.finished=true;run.won=Boolean(won);run.paused=true;resultDecisionCommitted=false;stopLoop();const remaining=Math.max(0,Math.ceil(run.time)),stars=won?1+(remaining>run.stage.time*.25?1:0)+(run.core===run.maxCore?1:0):0,earned=won?3+stars+run.stage.chapter:0;
     if(won){save.stars[run.stage.n]=Math.max(Number(save.stars[run.stage.n])||0,stars);save.unlocked=Math.max(save.unlocked,Math.min(30,run.stage.n+1));save.shards=Math.min(9999,save.shards+earned);persist()}
     $("resultKicker").textContent=won?`${t("shardsEarned")} +${earned}`:t("missionFailedKicker");$("resultTitle").textContent=t(won?"missionComplete":"missionFailed");$("resultText").textContent=t(won?"victoryText":"failureText");$("resultStats").innerHTML=`<span><b>${t("strength")}</b><strong>${run.peak}</strong></span><span><b>${t("coreHits")}</b><strong>${Math.max(0,Math.ceil(run.core))}/${run.maxCore}</strong></span><span><b>${t("stars")}</b><strong>${"★".repeat(stars)}${"☆".repeat(3-stars)}</strong></span>`;$("nextMission").hidden=!won||run.stage.n>=30;const primary=won?$("nextMission").hidden?$("resultStage"):$("nextMission"):$("retry");[$("retry"),$("resultStage"),$("nextMission")].forEach((button)=>button.classList.remove("primary"));primary.classList.add("primary");$("result").hidden=false;$("battleLive").hidden=true;$("battleLive").inert=true;requestAnimationFrame(()=>primary.focus());window.WonderSound?.play?.(won?"win":"wrong")
   }
-  $("battleBack").addEventListener("click",openLeave);$("battleHelp").addEventListener("click",openTutorial);$("continueBattle").addEventListener("click",()=>closeModal($("leave")));$("leaveStage").addEventListener("click",()=>{$("leave").hidden=true;$("battleLive").inert=false;run=null;showScreen("stage")});$("retry").addEventListener("click",()=>startBattle(run.stageIndex));$("resultStage").addEventListener("click",()=>{$("result").hidden=true;$("battleLive").inert=false;run=null;showScreen("stage")});$("nextMission").addEventListener("click",()=>startBattle(Math.min(29,run.stageIndex+1)));
+  function commitResultDecision(action){if(resultDecisionCommitted||$("result").hidden)return false;resultDecisionCommitted=true;action();return true}
+  $("battleBack").addEventListener("click",openLeave);$("battleHelp").addEventListener("click",openTutorial);$("continueBattle").addEventListener("click",()=>closeModal($("leave")));$("leaveStage").addEventListener("click",()=>{$("leave").hidden=true;$("battleLive").inert=false;run=null;showScreen("stage")});$("retry").addEventListener("click",()=>commitResultDecision(()=>startBattle(run.stageIndex)));$("resultStage").addEventListener("click",()=>commitResultDecision(()=>{$("result").hidden=true;$("battleLive").inert=false;run=null;showScreen("stage")}));$("nextMission").addEventListener("click",()=>commitResultDecision(()=>startBattle(Math.min(29,run.stageIndex+1))));
   function loadImages(){return Promise.all(Object.entries(imageSources).map(([key,src])=>new Promise((resolve)=>{const image=new Image();images[key]=image;image.onload=image.onerror=resolve;image.src=src})))}
   Promise.all([loadImages(),new Promise((resolve)=>setTimeout(resolve,350))]).then(()=>{$("loadingFill").style.width="100%";setTimeout(()=>{$("loading").hidden=true;showScreen("main")},160)});
   applyLocale();

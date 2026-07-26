@@ -8,7 +8,7 @@ const memory={};
 function load(){try{return JSON.parse(localStorage.getItem(STORE)||"null")||defaults()}catch(_){return memory.save||defaults()}}
 function persist(){try{localStorage.setItem(STORE,JSON.stringify(save))}catch(_){memory.save=JSON.parse(JSON.stringify(save))}}
 function defaults(){return{locale:"en",unlocked:1,cleared:[],bolts:0,upgrades:[0,0,0],lens:false,tutorial:false,best:{}}}
-let save=load(), locale=CODES.includes(window.WonderI18n?.actualLocale?.())?window.WonderI18n.actualLocale():(CODES.includes(save.locale)?save.locale:"en"), t=catalogFor(locale), selected=0, centered=0, run=null, raf=0, last=0, paused=false, drawing=false, drawPointerId=null, drawPoints=[], forgeFeedbackTimer=0, lifecyclePaused=false, windowFocused=true;
+let save=load(), locale=CODES.includes(window.WonderI18n?.actualLocale?.())?window.WonderI18n.actualLocale():(CODES.includes(save.locale)?save.locale:"en"), t=catalogFor(locale), selected=0, centered=0, run=null, raf=0, last=0, paused=false, drawing=false, drawPointerId=null, drawPoints=[], forgeFeedbackTimer=0, lifecyclePaused=false, windowFocused=document.hasFocus();
 const clamp=(n,a=0,b=1)=>Math.max(a,Math.min(b,n)), fmt=(s,v={})=>String(s).replace(/\{(\w+)\}/g,(_,k)=>v[k]??"");
 function translateValue(value){const translate=window.WeightPlayGameRuntimeLocalizer?.translate;if(!translate)return value;if(typeof value==="string")return translate(value);if(Array.isArray(value))return value.map(translateValue);if(value&&typeof value==="object")return Object.fromEntries(Object.entries(value).map(([key,entry])=>[key,translateValue(entry)]));return value}
 function catalogFor(code){return locales[code]||((code==="hi"||code==="ar")?translateValue(locales.en||{}):locales.en||{})}

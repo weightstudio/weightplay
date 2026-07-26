@@ -938,6 +938,7 @@
   let locale = window.WonderI18n?.locale?.() || readStorage(localeKey) || "en";
   let save = loadSave();
   let state = makeState();
+  let resultDecisionCommitted = false;
   let selectedSlot = null; // for tap-to-select mobile fallback
   let imageCache = {};
   let canvasCtx = null;
@@ -4532,7 +4533,15 @@
       .filter((button) => !button.classList.contains("is-hidden"));
   }
 
+  function commitResultDecision(action) {
+    if (resultDecisionCommitted || nodes.resultPanel.classList.contains("is-hidden")) return false;
+    resultDecisionCommitted = true;
+    action();
+    return true;
+  }
+
   function openResultScreen(isWin) {
+    resultDecisionCommitted = false;
     const isFinalVictory = isWin && state.stage >= STAGE_COUNT;
     nodes.gamePanel.classList.remove("is-hidden");
     nodes.gamePanel.classList.add("is-result");
@@ -4648,21 +4657,21 @@
     nodes.reviveBtn.addEventListener("click", handleRevive);
     nodes.giveUpBtn.addEventListener("click", handleGiveUp);
     
-    nodes.retryBtn.addEventListener("click", () => {
+    nodes.retryBtn.addEventListener("click", () => commitResultDecision(() => {
       nodes.resultPanel.classList.add("is-hidden");
       save = normalizeSave(save);
       save.selectedStage = state.stage;
       saveSave();
       startExpedition();
-    });
-    nodes.nextStageBtn.addEventListener("click", () => {
+    }));
+    nodes.nextStageBtn.addEventListener("click", () => commitResultDecision(() => {
       save = normalizeSave(save);
       save.selectedStage = Math.min(save.unlockedStage, state.stage + 1);
       saveSave();
       nodes.resultPanel.classList.add("is-hidden");
       startExpedition();
-    });
-    nodes.resultMenuBtn.addEventListener("click", showStageSelection);
+    }));
+    nodes.resultMenuBtn.addEventListener("click", () => commitResultDecision(showStageSelection));
     nodes.resultPanel.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) {
         event.preventDefault();

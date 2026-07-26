@@ -425,13 +425,20 @@
       railVisibility.set(rail, visible);
       if (rail.classList.contains("wp-stage-dragging") || rail.dataset.wpDragDown === "1") return;
       if (!visible || (!force && wasVisible)) return;
-      const recommended = recommendedCard(rail);
+      const explicitCurrent = wasVisible && rail.dataset.wpStageInitialCentered === "true"
+        ? stageCards(rail).find((card) =>
+          card.getAttribute("aria-current") === "true"
+          || card.classList.contains("is-centered")
+          || card.classList.contains("centered"))
+        : null;
+      const recommended = explicitCurrent || recommendedCard(rail);
       stageCards(rail).forEach((card) => {
         if (card === recommended) card.dataset.wpStageRecommended = "true";
         else delete card.dataset.wpStageRecommended;
       });
       centerCard(rail, recommended, "auto");
       requestAnimationFrame(() => centerCard(rail, recommended, "auto"));
+      rail.dataset.wpStageInitialCentered = "true";
     });
   }
 

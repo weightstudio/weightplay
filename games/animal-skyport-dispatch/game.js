@@ -182,6 +182,7 @@
   let insuranceConfirmTimer = 0;
   let insuranceConfirmDueAt = 0;
   let insuranceConfirmRemaining = 0;
+  let windowFocused = document.hasFocus();
   const t = (key, values = {}) => Object.entries(values).reduce((value, [name, replacement]) => value.replace(`{${name}}`, replacement), strings[locale][key]);
   const persist = () => writeStorage(saveKey, JSON.stringify(save));
   const show = (id) => {
@@ -246,7 +247,7 @@
     insuranceConfirmDueAt = 0;
   }
   function resumeInsuranceConfirmation() {
-    if (!insurancePending || insuranceConfirmTimer || document.hidden) return;
+    if (!insurancePending || insuranceConfirmTimer || document.hidden || !windowFocused) return;
     armInsuranceConfirmation(insuranceConfirmRemaining);
   }
   function renderContractControls(message = '') {
@@ -747,7 +748,15 @@
   window.addEventListener('mousemove', routePointer);
   window.addEventListener('mouseup', routePointer);
   $('flight').addEventListener('lostpointercapture', (event) => { if (dragging && event.pointerId === routePointerId) cancelRouteGesture({announce:true}); });
-  window.addEventListener('blur', () => { if (dragging) cancelRouteGesture({announce:true}); });
+  window.addEventListener('blur', () => {
+    windowFocused = false;
+    if (dragging) cancelRouteGesture({announce:true});
+    suspendInsuranceConfirmation();
+  });
+  window.addEventListener('focus', () => {
+    windowFocused = true;
+    resumeInsuranceConfirmation();
+  });
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
       if (dragging) cancelRouteGesture({announce:true});

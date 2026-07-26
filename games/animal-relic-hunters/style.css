@@ -10,6 +10,126 @@
   --color-boots: #10b981;
 }
 
+@media (max-height: 560px) and (orientation: landscape) {
+  body.wp-stage-select-active.relic-stage-select .stage-panel[data-wp-logical-stage-canvas] {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 280px !important;
+    grid-template-rows: 48px minmax(0, 1fr) !important;
+    gap: 6px 8px !important;
+    padding: 6px 8px !important;
+  }
+  body.wp-stage-select-active.relic-stage-select .stage-panel-head {
+    position: absolute !important;
+    inset: auto 8px auto 8px !important;
+    top: 6px !important;
+    width: auto !important;
+    height: 48px !important;
+    grid-template-columns: 48px minmax(0, 1fr) !important;
+    gap: 8px !important;
+  }
+  body.wp-stage-select-active.relic-stage-select .stage-return {
+    width: 48px !important;
+    min-width: 48px !important;
+    max-width: 48px !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    max-height: 48px !important;
+    border-radius: 8px !important;
+    font-size: 24px !important;
+  }
+  body.wp-stage-select-active.relic-stage-select .stage-panel-head > div {
+    display: grid !important;
+    grid-template-rows: 22px !important;
+    align-content: center !important;
+    gap: 2px !important;
+    min-width: 0 !important;
+    text-align: center !important;
+  }
+  body.wp-stage-select-active.relic-stage-select .stage-panel-head strong {
+    font-size: 18px !important;
+    line-height: 22px !important;
+  }
+  body.wp-stage-select-active.relic-stage-select .stage-panel-head #stageSetupText {
+    display: none !important;
+  }
+  html body.wp-stage-select-active.relic-stage-select .expedition-rail {
+    position: absolute !important;
+    inset: auto 296px auto 8px !important;
+    top: 62px !important;
+    align-self: center !important;
+    justify-self: stretch !important;
+    box-sizing: border-box !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 198px !important;
+    min-height: 198px !important;
+    max-height: 198px !important;
+    gap: 12px !important;
+    padding: 4px max(12px, calc(50% - 132px)) !important;
+    clip-path: inset(0);
+    touch-action: none !important;
+  }
+  body.wp-stage-select-active.relic-stage-select .expedition-card {
+    grid-template-rows: 22px 72px 42px !important;
+    flex-basis: 264px !important;
+    width: 264px !important;
+    min-width: 264px !important;
+    max-width: 264px !important;
+    height: 190px !important;
+    min-height: 190px !important;
+    max-height: 190px !important;
+    padding: 16px !important;
+    border-width: 2px !important;
+    border-radius: 8px !important;
+  }
+  body.wp-stage-select-active.relic-stage-select .expedition-card strong {
+    font-size: 24px !important;
+    line-height: 34px !important;
+  }
+  body.wp-stage-select-active.relic-stage-select .expedition-card :is(span, small) {
+    font-size: 13px !important;
+    line-height: 18px !important;
+  }
+  html body.wp-stage-select-active.relic-stage-select .stage-config-mount {
+    position: absolute !important;
+    inset: 62px 8px 6px auto !important;
+    width: 280px !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    grid-template-rows: minmax(0, 1fr) 48px !important;
+    gap: 6px !important;
+    overflow: hidden !important;
+  }
+  body.wp-stage-select-active.relic-stage-select .stage-config-mount .menu-shop {
+    min-height: 0 !important;
+    padding: 8px !important;
+    overflow-y: auto !important;
+  }
+  body.wp-stage-select-active.relic-stage-select .stage-config-mount :is(h2, h3) {
+    font-size: 15px !important;
+    line-height: 19px !important;
+  }
+  body.wp-stage-select-active.relic-stage-select .stage-config-mount :is(button, p, span, small, strong) {
+    font-size: 11px !important;
+    line-height: 14px !important;
+  }
+  body.wp-stage-select-active.relic-stage-select .stage-config-mount .start-btn {
+    width: 100% !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    max-height: 48px !important;
+    padding: 6px 10px !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+  }
+  html[dir="rtl"] body.wp-stage-select-active.relic-stage-select :is(.stage-panel-head, .stage-config-mount, .expedition-card) {
+    direction: rtl;
+  }
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
