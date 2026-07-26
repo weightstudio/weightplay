@@ -1281,8 +1281,26 @@
     return unitTypes.filter((unit) => unit.available !== false);
   }
 
+  const healthTerms = {
+    en: "Health",
+    "zh-Hant": "生命",
+    "zh-Hans": "生命值",
+    ja: "体力",
+    ko: "체력",
+    es: "Salud",
+    "pt-BR": "Vida",
+    fr: "Santé",
+    de: "Gesundheit",
+    it: "Salute",
+    ru: "Здоровье",
+    hi: "स्वास्थ्य",
+    ar: "الصحة",
+  };
+
   function t(key, values = {}) {
-    let value = text[state.locale]?.[key] || text.en[key] || key;
+    let value = key === "hp"
+      ? (healthTerms[state.locale] || healthTerms.en)
+      : (text[state.locale]?.[key] || text.en[key] || key);
     Object.entries(values).forEach(([name, replacement]) => {
       value = value.replaceAll(`{${name}}`, replacement);
     });

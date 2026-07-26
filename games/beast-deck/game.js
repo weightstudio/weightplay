@@ -1190,11 +1190,29 @@
     return window.WonderI18n?.simplifyChineseText?.(value) || value;
   }
 
+  const hudHealthText = {
+    en: "Player Health",
+    "zh-Hant": "生命",
+    "zh-Hans": "生命值",
+    ja: "プレイヤーの体力",
+    ko: "플레이어 체력",
+    es: "Salud del jugador",
+    "pt-BR": "Vida do jogador",
+    fr: "Santé du joueur",
+    de: "Spielergesundheit",
+    it: "Salute giocatore",
+    ru: "Здоровье игрока",
+    hi: "खिलाड़ी का स्वास्थ्य",
+    ar: "صحة اللاعب",
+  };
+
   function t(key, params = {}) {
     const locale = getLocale();
     const zhRuntimeFallback = {};
     const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
-    const raw = (sourceLocale === "zh-Hant" ? zhRuntimeFallback[key] : "") || text[sourceLocale]?.[key] || text.en[key] || key;
+    const raw = key === "hudHp"
+      ? (hudHealthText[locale] || hudHealthText.en)
+      : ((sourceLocale === "zh-Hant" ? zhRuntimeFallback[key] : "") || text[sourceLocale]?.[key] || text.en[key] || key);
     const interpolated = Object.entries(params).reduce((str, [k, v]) => str.replaceAll(`{${k}}`, String(v)), raw);
     return localizeChinese(interpolated, locale);
   }
@@ -1223,7 +1241,7 @@
   const leaveText = {
     en: {
       title: "Leave this mission?",
-      message: ({ mission, battle, hp, maxHp, hand }) => `Mission ${mission}, Battle ${battle}/3: ${hp}/${maxHp} HP and ${hand} cards in hand. Leaving ends this mission and discards its current Battle progress and mission-only Draft cards. Saved level, XP, Beast Coins, collection, equipment, and unlocked missions stay safe.`,
+      message: ({ mission, battle, hp, maxHp, hand }) => `Mission ${mission}, Battle ${battle}/3: ${hp}/${maxHp} Health and ${hand} cards in hand. Leaving ends this mission and discards its current Battle progress and mission-only Draft cards. Saved level, XP, Beast Coins, collection, equipment, and unlocked missions stay safe.`,
       keep: "Keep Playing",
       leave: "Leave Mission",
     },
@@ -1235,61 +1253,61 @@
     },
     "zh-Hans": {
       title: "要离开这次任务吗？",
-      message: ({ mission, battle, hp, maxHp, hand }) => `任务 ${mission}、战斗 ${battle}/3：生命 ${hp}/${maxHp}，手牌 ${hand} 张。离开会结束本次任务，并失去当前战斗进度与本次任务的选牌卡；已保存的等级、XP、野兽金币、卡册、装备与已解锁任务都会保留。`,
+      message: ({ mission, battle, hp, maxHp, hand }) => `任务 ${mission}、战斗 ${battle}/3：生命值 ${hp}/${maxHp}，手牌 ${hand} 张。离开会结束本次任务，并失去当前战斗进度与本次任务的选牌卡；已保存的等级、XP、野兽金币、卡册、装备与已解锁任务都会保留。`,
       keep: "继续战斗",
       leave: "离开任务",
     },
     es: {
       title: "¿Salir de esta misión?",
-      message: ({ mission, battle, hp, maxHp, hand }) => `Misión ${mission}, batalla ${battle}/3: ${hp}/${maxHp} PV y ${hand} cartas en la mano. Salir termina esta misión y descarta el progreso de la batalla y las cartas elegidas solo para esta misión. El nivel, XP, Monedas Bestia, colección, equipo y misiones desbloqueadas permanecen.`,
+      message: ({ mission, battle, hp, maxHp, hand }) => `Misión ${mission}, batalla ${battle}/3: ${hp}/${maxHp} de salud y ${hand} cartas en la mano. Salir termina esta misión y descarta el progreso de la batalla y las cartas elegidas solo para esta misión. El nivel, XP, Monedas Bestia, colección, equipo y misiones desbloqueadas permanecen.`,
       keep: "Seguir jugando",
       leave: "Salir de la misión",
     },
     ja: {
       title: "このミッションを離れますか？",
-      message: ({ mission, battle, hp, maxHp, hand }) => `ミッション ${mission}、バトル ${battle}/3：HP ${hp}/${maxHp}、手札 ${hand} 枚。離れるとこのミッションは終了し、現在のバトル進行とミッション限定のドラフトカードは失われます。保存済みのレベル、XP、ビーストコイン、コレクション、装備、解放済みミッションは保持されます。`,
+      message: ({ mission, battle, hp, maxHp, hand }) => `ミッション ${mission}、バトル ${battle}/3：体力 ${hp}/${maxHp}、手札 ${hand} 枚。離れるとこのミッションは終了し、現在のバトル進行とミッション限定のドラフトカードは失われます。保存済みのレベル、XP、ビーストコイン、コレクション、装備、解放済みミッションは保持されます。`,
       keep: "プレイを続ける",
       leave: "ミッションを離れる",
     },
     ko: {
       title: "이 미션에서 나가시겠어요?",
-      message: ({ mission, battle, hp, maxHp, hand }) => `미션 ${mission}, 전투 ${battle}/3: HP ${hp}/${maxHp}, 손에 든 카드 ${hand}장. 나가면 이 미션이 종료되고 현재 전투 진행도와 미션 전용 드래프트 카드를 잃습니다. 저장된 레벨, XP, 야수 코인, 컬렉션, 장비, 해제한 미션은 유지됩니다.`,
+      message: ({ mission, battle, hp, maxHp, hand }) => `미션 ${mission}, 전투 ${battle}/3: 체력 ${hp}/${maxHp}, 손에 든 카드 ${hand}장. 나가면 이 미션이 종료되고 현재 전투 진행도와 미션 전용 드래프트 카드를 잃습니다. 저장된 레벨, XP, 야수 코인, 컬렉션, 장비, 해제한 미션은 유지됩니다.`,
       keep: "계속 플레이",
       leave: "미션 나가기",
     },
     "pt-BR": {
       title: "Sair desta missão?",
-      message: ({ mission, battle, hp, maxHp, hand }) => `Missão ${mission}, batalha ${battle}/3: ${hp}/${maxHp} PV e ${hand} cartas na mão. Sair encerra esta missão e descarta o progresso da batalha atual e as cartas de Draft exclusivas desta missão. Seu nível, XP, Moedas de Fera, coleção, equipamento e missões desbloqueadas salvos permanecem seguros.`,
+      message: ({ mission, battle, hp, maxHp, hand }) => `Missão ${mission}, batalha ${battle}/3: ${hp}/${maxHp} de vida e ${hand} cartas na mão. Sair encerra esta missão e descarta o progresso da batalha atual e as cartas de Draft exclusivas desta missão. Seu nível, XP, Moedas de Fera, coleção, equipamento e missões desbloqueadas salvos permanecem seguros.`,
       keep: "Continuar jogando",
       leave: "Sair da missão",
     },
     fr: {
       title: "Quitter cette mission ?",
-      message: ({ mission, battle, hp, maxHp, hand }) => `Mission ${mission}, combat ${battle}/3 : ${hp}/${maxHp} PV et ${hand} cartes en main. Quitter met fin à cette mission et efface la progression du combat actuel ainsi que les cartes de Draft propres à cette mission. Le niveau, l’XP, les Pièces de Bête, la collection, l’équipement et les missions débloquées enregistrés restent intacts.`,
+      message: ({ mission, battle, hp, maxHp, hand }) => `Mission ${mission}, combat ${battle}/3 : ${hp}/${maxHp} de santé et ${hand} cartes en main. Quitter met fin à cette mission et efface la progression du combat actuel ainsi que les cartes de Draft propres à cette mission. Le niveau, l’XP, les Pièces de Bête, la collection, l’équipement et les missions débloquées enregistrés restent intacts.`,
       keep: "Continuer à jouer",
       leave: "Quitter la mission",
     },
     de: {
       title: "Diese Mission verlassen?",
-      message: ({ mission, battle, hp, maxHp, hand }) => `Mission ${mission}, Kampf ${battle}/3: ${hp}/${maxHp} LP und ${hand} Karten auf der Hand. Beim Verlassen endet diese Mission; der aktuelle Kampffortschritt und missionsgebundene Draft-Karten gehen verloren. Gespeicherte Stufe, EP, Bestienmünzen, Sammlung, Ausrüstung und freigeschaltete Missionen bleiben erhalten.`,
+      message: ({ mission, battle, hp, maxHp, hand }) => `Mission ${mission}, Kampf ${battle}/3: ${hp}/${maxHp} Gesundheit und ${hand} Karten auf der Hand. Beim Verlassen endet diese Mission; der aktuelle Kampffortschritt und missionsgebundene Draft-Karten gehen verloren. Gespeicherte Stufe, EP, Bestienmünzen, Sammlung, Ausrüstung und freigeschaltete Missionen bleiben erhalten.`,
       keep: "Weiterspielen",
       leave: "Mission verlassen",
     },
     it: {
       title: "Abbandonare questa missione?",
-      message: ({ mission, battle, hp, maxHp, hand }) => `Missione ${mission}, battaglia ${battle}/3: ${hp}/${maxHp} PS e ${hand} carte in mano. Uscire termina questa missione e annulla i progressi della battaglia attuale e le carte Draft valide solo per questa missione. Livello, XP, Monete Bestia, collezione, equipaggiamento e missioni sbloccate salvati restano al sicuro.`,
+      message: ({ mission, battle, hp, maxHp, hand }) => `Missione ${mission}, battaglia ${battle}/3: ${hp}/${maxHp} di salute e ${hand} carte in mano. Uscire termina questa missione e annulla i progressi della battaglia attuale e le carte Draft valide solo per questa missione. Livello, XP, Monete Bestia, collezione, equipaggiamento e missioni sbloccate salvati restano al sicuro.`,
       keep: "Continua a giocare",
       leave: "Abbandona missione",
     },
     ru: {
       title: "Покинуть эту миссию?",
-      message: ({ mission, battle, hp, maxHp, hand }) => `Миссия ${mission}, бой ${battle}/3: ${hp}/${maxHp} ОЗ и ${hand} карт в руке. Выход завершит миссию и сбросит прогресс текущего боя и выбранные только для этой миссии карты. Сохранённые уровень, опыт, монеты зверей, коллекция, снаряжение и открытые миссии останутся в безопасности.`,
+      message: ({ mission, battle, hp, maxHp, hand }) => `Миссия ${mission}, бой ${battle}/3: ${hp}/${maxHp} здоровья и ${hand} карт в руке. Выход завершит миссию и сбросит прогресс текущего боя и выбранные только для этой миссии карты. Сохранённые уровень, опыт, монеты зверей, коллекция, снаряжение и открытые миссии останутся в безопасности.`,
       keep: "Продолжить игру",
       leave: "Покинуть миссию",
     },
     hi: {
       title: "यह मिशन छोड़ें?",
-      message: ({ mission, battle, hp, maxHp, hand }) => `मिशन ${mission}, युद्ध ${battle}/3: ${hp}/${maxHp} HP और हाथ में ${hand} कार्ड। छोड़ने पर यह मिशन समाप्त हो जाएगा तथा मौजूदा युद्ध की प्रगति और केवल इस मिशन के ड्राफ़्ट कार्ड मिट जाएँगे। सहेजा गया स्तर, XP, बीस्ट कॉइन, संग्रह, उपकरण और अनलॉक किए गए मिशन सुरक्षित रहेंगे।`,
+      message: ({ mission, battle, hp, maxHp, hand }) => `मिशन ${mission}, युद्ध ${battle}/3: ${hp}/${maxHp} स्वास्थ्य और हाथ में ${hand} कार्ड। छोड़ने पर यह मिशन समाप्त हो जाएगा तथा मौजूदा युद्ध की प्रगति और केवल इस मिशन के ड्राफ़्ट कार्ड मिट जाएँगे। सहेजा गया स्तर, XP, बीस्ट कॉइन, संग्रह, उपकरण और अनलॉक किए गए मिशन सुरक्षित रहेंगे।`,
       keep: "खेलना जारी रखें",
       leave: "मिशन छोड़ें",
     },
