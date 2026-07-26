@@ -72,7 +72,8 @@
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
-    <meta name="twitter:title" content="フルーツ合体どうぶつ園 | WeightPlay" />
+    <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
+  <meta name="twitter:title" content="フルーツ合体どうぶつ園 | WeightPlay" />
     <meta name="twitter:description" content="フルーツ合体どうぶつ園は、落とす位置を選び、同じ果物を合体させて大きな収穫を目指す物理ゲームを楽しめるWeightPlayオリジナル作品です。画面に出る手がかりを読み、自分で次の一手を決めながら進めます。" />
   </head>
   <body>
@@ -252,6 +253,7 @@
         else window.addEventListener("load", schedule, { once: true });
       })();
     </script>
-    <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="フルーツ合体どうぶつ園";document.title="フルーツ合体どうぶつ園 | WeightPlay";},{once:true});</script>
+    <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
+  <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="フルーツ合体どうぶつ園";document.title="フルーツ合体どうぶつ園 | WeightPlay";},{once:true});</script>
 </body>
 </html>

@@ -9,9 +9,10 @@
   <meta name="theme-color" content="#123e39">
   <title>Color Link Garden | WeightPlay</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
 </head>
 <body data-screen="main" data-audience="kids">
-  <main id="main" class="screen main">
+  <main id="main" class="screen main main-screen" data-screen="main">
     <header class="main-header">
       <a class="return" href="/" data-t-aria="returnLobby" aria-label="Return to WeightPlay">←</a>
       <strong data-t="shortTitle">COLOR LINK</strong>
@@ -23,12 +24,13 @@
         <p class="eyebrow" data-t="kicker">PANKO'S PUZZLE GARDEN</p>
         <h1 data-t="title">Color Link Garden</h1>
         <p data-t="summary">Connect every matching seed without crossing paths. Fill the whole garden to bloom.</p>
-        <button id="start" class="primary" data-t="start">Start game</button>
-        <details>
-          <summary data-t="guideTitle">How to play</summary>
-          <p data-t="guideBody">Drag from one colored seed to its match. Paths cannot share a tile, and every tile must be filled.</p>
-        </details>
+        <button id="start" class="primary" data-t="start">Start Game</button>
       </div>
+    </section>
+    <section class="guide public-guide" aria-label="Game guide">
+      <p class="eyebrow" data-t="kicker">PANKO'S PUZZLE GARDEN</p>
+      <h2 data-t="guideTitle">How to play</h2>
+      <p data-t="guideBody">Drag from one colored seed to its match. Paths cannot share a tile, and every tile must be filled.</p>
     </section>
   </main>
 
@@ -81,5 +83,6 @@
   <script src="levels.js"></script>
   <script src="locales.js"></script>
   <script src="game.js"></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
 </body>
 </html>

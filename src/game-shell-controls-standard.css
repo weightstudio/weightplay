@@ -1,0 +1,174 @@
+/*
+ * Canonical Main / Stage utility controls.
+ * The game owns its artwork and data; this file owns only Return, Settings,
+ * language/audio placement, and their stable header geometry.
+ */
+.wp-shell-header {
+  position: relative;
+  isolation: isolate;
+}
+
+.wp-main-shell-header {
+  display: grid !important;
+  grid-template-columns: 58px minmax(0, 1fr) 58px !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-height: 56px;
+}
+
+.wp-main-shell-header > :not(.wp-shell-return):not(.wp-shell-settings):not(.wp-shell-legacy-control) {
+  min-width: 0;
+}
+
+.wp-main-shell-header > strong,
+.wp-main-shell-header > h1,
+.wp-main-shell-header > h2,
+.wp-main-shell-header > div:not(.wp-shell-settings) {
+  text-align: center;
+}
+
+.wp-shell-return {
+  grid-column: 1;
+  justify-self: start;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 58px !important;
+  min-width: 58px !important;
+  height: 48px !important;
+  padding: 0 !important;
+  border-radius: 12px !important;
+}
+
+.wp-shell-return > img {
+  display: block;
+  width: 23px !important;
+  height: 23px !important;
+  object-fit: contain;
+}
+
+.wp-shell-return-arrow {
+  font: 900 22px/1 system-ui, sans-serif;
+}
+
+.wp-shell-settings {
+  grid-column: 3;
+  justify-self: end;
+  position: relative;
+  z-index: 40;
+}
+
+.wp-shell-settings-button {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, currentColor 34%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, #071426 88%, transparent);
+  color: #fff;
+  box-shadow: 0 8px 22px #0005;
+  cursor: pointer;
+}
+
+.wp-shell-settings-button svg {
+  width: 25px;
+  height: 25px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.wp-shell-settings-button:focus-visible,
+.wp-shell-settings-popover :is(button, select):focus-visible {
+  outline: 3px solid #66e6bd;
+  outline-offset: 2px;
+}
+
+.wp-shell-settings-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: min(280px, calc(100vw - 24px));
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid #ffffff42;
+  border-radius: 16px;
+  background: #071426f5;
+  color: #fff;
+  box-shadow: 0 18px 45px #0009;
+  text-align: start;
+}
+
+.wp-shell-settings-popover[hidden] {
+  display: none !important;
+}
+
+.wp-shell-settings-title {
+  font: 900 16px/1.2 system-ui, sans-serif;
+}
+
+.wp-shell-settings-row {
+  display: grid;
+  gap: 6px;
+  font: 800 13px/1.25 system-ui, sans-serif;
+}
+
+.wp-shell-settings-row select {
+  width: 100% !important;
+  min-height: 44px !important;
+  margin: 0 !important;
+  border: 1px solid #ffffff42 !important;
+  border-radius: 10px !important;
+  background: #10233c !important;
+  color: #fff !important;
+  padding: 0 10px !important;
+}
+
+.wp-shell-settings-row .sound-toggle {
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+  width: 100% !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  border-radius: 10px !important;
+  cursor: pointer !important;
+  touch-action: manipulation !important;
+}
+
+.wp-shell-legacy-control {
+  display: none !important;
+}
+
+.wp-stage-shell-header > .wp-shell-settings {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+}
+
+.wp-stage-shell-header > .wp-shell-settings .wp-shell-language-row {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .wp-main-shell-header {
+    grid-template-columns: 58px minmax(0, 1fr) 58px !important;
+    gap: 4px !important;
+  }
+
+  .wp-shell-return {
+    width: 58px !important;
+    min-width: 58px !important;
+    height: 48px !important;
+  }
+
+  .wp-shell-settings-button {
+    width: 48px;
+    min-width: 48px;
+  }
+}

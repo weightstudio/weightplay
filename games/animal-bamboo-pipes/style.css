@@ -112,3 +112,13 @@
   #result img{height:70px}
   #result>div{grid-template-columns:repeat(3,minmax(0,1fr));position:sticky;bottom:0}
 }
+
+@media (min-width:700px) {
+  .main .hero{grid-template-columns:420px minmax(0,1fr)}
+  .main .hero>img{width:420px;height:420px;aspect-ratio:1;object-fit:cover;object-position:center}
+}
+@media (max-width:699px) {
+  .main{grid-template-rows:58px auto;align-content:start}
+  .main .hero{align-content:start}
+  .main .hero>img{width:min(100%,342px);max-width:none;height:auto;aspect-ratio:1;object-fit:cover;object-position:center}
+}

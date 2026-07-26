@@ -71,7 +71,8 @@
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <script data-wp-stage-standard>/* Animal Quiz owns its native Kids Stage rail. */</script>
-    <meta name="twitter:title" content="どうぶつクイズ | WeightPlay" />
+    <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
+  <meta name="twitter:title" content="どうぶつクイズ | WeightPlay" />
     <meta name="twitter:description" content="どうぶつクイズは、写真とヒントを比べ、動物に関する答えを選ぶクイズを楽しめるWeightPlayオリジナル作品です。画面に出る手がかりを読み、自分で次の一手を決めながら進めます。" />
   </head>
   <body data-tutorial-auto-show="false">
@@ -210,6 +211,7 @@
         else window.addEventListener("load", schedule, { once: true });
       })();
     </script>
-    <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="どうぶつクイズ";document.title="どうぶつクイズ | WeightPlay";},{once:true});</script>
+    <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
+  <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="どうぶつクイズ";document.title="どうぶつクイズ | WeightPlay";},{once:true});</script>
 </body>
 </html>
