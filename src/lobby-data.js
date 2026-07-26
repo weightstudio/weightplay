@@ -43,19 +43,9 @@ window.WONDER_LOBBY = {
       "animal-block-grove",
       "animal-unblock",
       "animal-hexa-sort",
-      "animal-sliding-merge",
     ],
   },
   games: [
-    {
-      id: "animal-sliding-merge",
-      title: { en: "Sliding Merge", "zh-Hant": "滑動合成", "zh-Hans": "滑动合成", ja: "スライディングマージ", ko: "슬라이딩 머지", es: "Sliding Merge", "pt-BR": "Sliding Merge", fr: "Sliding Merge", de: "Sliding Merge", it: "Sliding Merge", ru: "Sliding Merge", hi: "स्लाइडिंग मर्ज", ar: "الدمج المنزلق" },
-      status: "planned", statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "곧 출시", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
-      type: { en: "Sliding Merge Puzzle", "zh-Hant": "滑動合成益智", "zh-Hans": "滑动合成益智", ja: "スライド合成パズル", ko: "슬라이드 합성 퍼즐", es: "Puzle de deslizamiento", "pt-BR": "Puzzle de fusão deslizante", fr: "Puzzle de fusion glissante", de: "Schiebe-Merge-Puzzle", it: "Puzzle di fusione scorrevole", ru: "Скользящее слияние", hi: "स्लाइडिंग मर्ज पहेली", ar: "لغز الدمج المنزلق" },
-      categories: ["Animal Games", "Puzzle", "Strategy"], skills: ["Planning", "Logic"], ages: ["9", "family"], href: "games/animal-2048/index.html?trial=1", internalTrial: "index.html?trial=1", cover: "assets/animal-2048-cover.webp",
-      description: { en: "Slide the whole board, merge matching animals, and keep growing beyond 2048 with block-placement choices.", "zh-Hant": "滑動整個棋盤，合成相同動物，持續超越 2048。", "zh-Hans": "滑动整个棋盘，合成相同动物，持续超越 2048。", ja: "盤面を滑らせ、同じ動物を合成して2048の先へ。", ko: "보드를 밀어 같은 동물을 합치고 2048 너머로 성장하세요.", es: "Desliza, fusiona animales iguales y supera 2048.", "pt-BR": "Deslize, una animais iguais e supere 2048.", fr: "Faites glisser, fusionnez les animaux et dépassez 2048.", de: "Schiebe, verschmelze gleiche Tiere und wachse über 2048 hinaus.", it: "Scorri, unisci animali uguali e supera 2048.", ru: "Скользи, объединяй одинаковых животных и расти выше 2048.", hi: "बोर्ड स्लाइड कर समान जानवर मिलाएं और 2048 पार करें।", ar: "حرّك اللوحة وادمج الحيوانات المتطابقة وتجاوز 2048." },
-      meta: { en: "30 missions · full-board sliding · endless growth", "zh-Hant": "30 任務 · 全盤滑動 · 無限成長", "zh-Hans": "30 任务 · 全盘滑动 · 无限成长", ja: "30ミッション · 全体スライド · エンドレス", ko: "30 미션 · 전체 슬라이드 · 무한 성장", es: "30 misiones · deslizamiento total · crecimiento infinito", "pt-BR": "30 missões · deslize total · crescimento infinito", fr: "30 missions · glissement total · croissance infinie", de: "30 Missionen · Vollbrett-Schieben · endloses Wachstum", it: "30 missioni · scorrimento completo · crescita infinita", ru: "30 миссий · скольжение поля · бесконечный рост", hi: "30 मिशन · पूरा बोर्ड स्लाइड · अनंत वृद्धि", ar: "30 مهمة · تحريك كامل · نمو لا نهائي" }
-    },
     {
       id: "animal-unblock",
       title: { en: "Unblock Trail", "zh-Hant": "解鎖滑塊", "zh-Hans": "解锁滑块", ja: "アンブロック・トレイル", ko: "언블록 트레일", es: "Ruta de Desbloqueo", "pt-BR": "Trilha Desbloqueio", fr: "Piste Unblock", de: "Unblock-Pfad", it: "Sentiero Unblock", ru: "Тропа Unblock", hi: "अनब्लॉक ट्रेल", ar: "مسار فك الحجب" },

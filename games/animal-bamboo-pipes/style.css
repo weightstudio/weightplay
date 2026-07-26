@@ -17,16 +17,28 @@
   .hero img{max-width:330px}
 }
 
-/* Flow readability: the atlas has no T-junction tile, so draw that junction
-   explicitly and animate water along every connected port. */
-.pipe[data-shape="t"]{background-color:#466f32;background-image:linear-gradient(90deg,transparent 0 32%,#a8d36b 32% 68%,transparent 68%),linear-gradient(180deg,#a8d36b 0 50%,transparent 50%),repeating-linear-gradient(90deg,transparent 0 42%,#638f3e 42% 48%,transparent 48% 100%);background-size:100% 34%,34% 100%,100% 100%;background-position:center;background-repeat:no-repeat;box-shadow:inset 0 0 0 1px #c5e88c,inset 0 0 0 5px #365c29}
-.pipe .pipe-art{position:absolute;z-index:1;inset:8%;width:84%;height:84%;overflow:visible;pointer-events:none}
-.pipe-art path{fill:none;stroke-linecap:round;stroke-linejoin:round}
-.pipe-art-outline path{stroke:#355a29;stroke-width:34}
-.pipe-art-body path{stroke:#9bc75c;stroke-width:24;filter:drop-shadow(0 2px 1px #355a29)}
-.pipe .flow{position:absolute;z-index:2;inset:10%;width:80%;height:80%;overflow:visible;pointer-events:none}
-.pipe .flow path{fill:none;stroke:#6df7f0;stroke-width:9;stroke-linecap:round;stroke-dasharray:.16 .18;stroke-dashoffset:1;filter:drop-shadow(0 0 3px #18d9d6);animation:waterTravel 1.15s linear infinite}
-.pipe .flow-source path{stroke:#b5fff4;stroke-width:10}
-.pipe .flow-goal path{stroke:#ffe47d;animation-duration:.72s}
-.pipe.wet::after{content:"";position:absolute;inset:18%;border-radius:50%;background:radial-gradient(circle,#b2fff688 0 13%,transparent 48%);opacity:.9;z-index:3;animation:pulse 1s infinite}
+/* Keep the production atlas visible. Water is a narrow current inside the
+   illustrated bamboo, never a second pipe or a laser laid over the tile. */
+.pipe .flow{position:absolute;z-index:2;inset:0;width:100%;height:100%;overflow:hidden;pointer-events:none}
+.pipe .flow path{fill:none;stroke-linecap:round}
+.pipe .flow-channel path{stroke:#38d6cf;stroke-width:5;opacity:.42;filter:drop-shadow(0 0 1.5px #0a8d8b)}
+.pipe .flow-current path{stroke:#c7fffa;stroke-width:2.4;stroke-dasharray:.08 .22;stroke-dashoffset:1;filter:drop-shadow(0 0 1px #35ded8);animation:waterTravel 1.15s linear infinite}
+.pipe .flow-source .flow-current path{stroke:#efffff}
+.pipe .flow-goal .flow-current path{stroke:#fff1a8;animation-duration:.72s}
+.pipe.wet::after{content:"";position:absolute;inset:34%;border-radius:50%;background:radial-gradient(circle,#b2fff677 0 18%,transparent 68%);opacity:.55;z-index:3;animation:pulse 1s infinite;pointer-events:none}
 @keyframes waterTravel{to{stroke-dashoffset:0}}
+
+/* Each source atlas cell contains presentation padding. Zoom every crop around
+   its exact cell centre so pipe mouths reach neighbouring tile boundaries
+   without moving the shared 50% junction point. */
+.pipe{--atlas-x:50%;--atlas-y:50%;border:0;border-radius:0;background:#2f7c61;overflow:hidden;isolation:isolate}
+.pipe::before{content:"";position:absolute;z-index:0;inset:-2px;background:url('../../assets/animal-bamboo-pipes-atlas.webp') var(--atlas-x) var(--atlas-y)/700% 350% no-repeat;transform:rotate(var(--pipe-rotation));transition:transform .16s ease;pointer-events:none}
+.pipe .flow{transform:rotate(var(--pipe-rotation));transform-origin:center}
+.pipe[data-shape="s"]{--atlas-x:8.07%;--atlas-y:15%}
+.pipe[data-shape="e"]{--atlas-x:32.29%;--atlas-y:16.4%}
+.pipe[data-shape="t"]{--atlas-x:63.67%;--atlas-y:16.9%}
+.pipe[data-shape="x"]{--atlas-x:92.55%;--atlas-y:17%}
+.pipe[data-shape="source"]{--atlas-x:7.8%;--atlas-y:85%}
+.pipe[data-shape="goal"]{--atlas-x:35.42%;--atlas-y:85%}
+.pipe.target{cursor:default}
+.pipe.target::before{inset:-1px;background:url('../../assets/animal-bamboo-pipes-goal-v2.png') center/cover no-repeat;transform:none}

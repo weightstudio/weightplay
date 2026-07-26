@@ -15,37 +15,44 @@
   function show(name) { document.body.dataset.screen = name; Object.entries(screens).forEach(([key, node]) => { node.hidden = key !== name; }); $("generalReserve").hidden = name === "main"; }
   function persist() { try { localStorage.setItem("wp:bamboo", JSON.stringify(save)); } catch {} }
   function stageData(index) {
-    return LEVELS[index].tiles.map((tile, i) => ({ ...tile, rot: tile.shape === "x" ? 0 : (tile.solved + 1 + ((index * 7 + i * 3) % 3)) % 4 }));
+    const level = LEVELS[index], target = targetIndex(level);
+    return level.tiles.map((tile, i) => ({ ...tile, target: i === target, rot: tile.shape === "x" ? 0 : (tile.solved + 1 + ((index * 7 + i * 3) % 3)) % 4 }));
   }
   function ports(tile) {
-    const raw = tile.shape === "x" ? [0,1,2,3] : tile.shape === "s" ? [0,2] : tile.shape === "e" ? [0,1] : tile.shape === "t" ? [0,1,3] : tile.shape === "source" ? [2] : [0];
+    const raw = tile.shape === "x" || tile.target ? [0,1,2,3] : tile.shape === "s" ? [0,2] : tile.shape === "e" ? [0,1] : tile.shape === "t" ? [0,1,3] : tile.shape === "source" ? [2] : [0];
     return raw.map(port => (port + tile.rot) % 4);
+  }
+  function targetIndex(level) {
+    const solved = level.tiles.map(tile => ({ ...tile, target: false, rot: tile.solved }));
+    const distance = Array(25).fill(-1), queue = [level.source];
+    distance[level.source] = 0;
+    while (queue.length) {
+      const index = queue.shift(), row = Math.floor(index / 5), col = index % 5;
+      DIRS.forEach(([dr, dc, direction, reverse]) => {
+        const nr = row + dr, nc = col + dc, next = nr * 5 + nc;
+        if (nr < 0 || nr > 4 || nc < 0 || nc > 4 || distance[next] >= 0) return;
+        if (ports(solved[index]).includes(direction) && ports(solved[next]).includes(reverse)) {
+          distance[next] = distance[index] + 1;
+          queue.push(next);
+        }
+      });
+    }
+    return solved.reduce((best, tile, index) => tile.shape === "goal" && distance[index] > distance[best] ? index : best, solved.findIndex(tile => tile.shape === "goal"));
   }
   function basePorts(tile) {
     return tile.shape === "x" ? [0,1,2,3] : tile.shape === "s" ? [0,2] : tile.shape === "e" ? [0,1] : tile.shape === "t" ? [0,1,3] : tile.shape === "source" ? [2] : [0];
   }
   function flowSvg(tile, index, wet) {
-    if (!wet) return null;
+    if (!wet || tile.target) return null;
     const paths = basePorts(tile).map(port => {
       const end = [[50,0],[100,50],[50,100],[0,50]][port];
       return `<path d="M50 50 L${end[0]} ${end[1]}" pathLength="1"/>`;
     }).join("");
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.classList.add("flow"); svg.setAttribute("viewBox", "0 0 100 100"); svg.setAttribute("aria-hidden", "true");
-    svg.innerHTML = paths;
+    svg.innerHTML = `<g class="flow-channel">${paths}</g><g class="flow-current">${paths}</g>`;
     if (tile.shape === "source") svg.classList.add("flow-source");
     if (tile.shape === "goal") svg.classList.add("flow-goal");
-    return svg;
-  }
-  function junctionSvg(tile) {
-    if (tile.shape !== "t") return null;
-    const paths = basePorts(tile).map(port => {
-      const end = [[50,0],[100,50],[50,100],[0,50]][port];
-      return `<path d="M50 50 L${end[0]} ${end[1]}"/>`;
-    }).join("");
-    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.classList.add("pipe-art"); svg.setAttribute("viewBox", "0 0 100 100"); svg.setAttribute("aria-hidden", "true");
-    svg.innerHTML = `<g class="pipe-art-outline">${paths}</g><g class="pipe-art-body">${paths}</g>`;
     return svg;
   }
   function water() {
@@ -63,7 +70,8 @@
     return wet;
   }
   function winReady() {
-    return water().size === 25;
+    const goal = run.tiles.findIndex(tile => tile.target);
+    return water().has(goal);
   }
   function renderStages() {
     const rail = $("rail"); rail.innerHTML = "";
@@ -81,15 +89,15 @@
     run.tiles.forEach((tile, index) => {
       const pipe = document.createElement("button");
       pipe.className = `pipe${wet.has(index) ? " wet" : ""}`;
+      if (tile.target) pipe.classList.add("target");
       pipe.dataset.shape = tile.shape;
-      pipe.style.transform = `rotate(${tile.rot * 90}deg)`;
+      pipe.style.setProperty("--pipe-rotation", `${tile.rot * 90}deg`);
       pipe.dataset.rotation = String(tile.rot);
       pipe.setAttribute("aria-label", text("pipeLabel", { n: index + 1 }));
-      const art = junctionSvg(tile);
-      if (art) pipe.append(art);
+      pipe.disabled = tile.target;
       const flow = flowSvg(tile, index, wet.has(index));
       if (flow) pipe.append(flow);
-      pipe.onclick = () => { run.history.push(run.tiles.map(item => item.rot)); tile.rot = (tile.rot + 1) % 4; run.moves++; renderBoard(); if (winReady()) complete(); };
+      if (!tile.target) pipe.onclick = () => { run.history.push(run.tiles.map(item => item.rot)); tile.rot = (tile.rot + 1) % 4; run.moves++; renderBoard(); if (winReady()) complete(); };
       board.append(pipe);
     });
     $("moves").textContent = text("moves", { n: run.moves });
