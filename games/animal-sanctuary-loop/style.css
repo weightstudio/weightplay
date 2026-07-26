@@ -42,4 +42,42 @@
 .objective-row>span,.objective-row>small{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .objective-row>small{font-size:11px;color:#ffd862}
 @media(max-width:640px){.battle-live{grid-template-rows:66px 48px minmax(0,1fr) 25px}.objective-row{font-size:13px}.objective-row>small{font-size:10px}}
-@media(max-height:500px) and (min-aspect-ratio:3/2){.battle-live{grid-template-rows:58px 44px minmax(0,1fr) 24px}.objective-row{font-size:12px}}
+@media(max-height:500px) and (min-aspect-ratio:3/2){
+  .battle-live{
+    grid-template-columns:minmax(0,1fr);
+    grid-template-rows:58px 44px minmax(0,1fr) 24px;
+  }
+  .battle-header,.objective-row,.arena-wrap,.feedback{
+    grid-column:1;
+  }
+  .battle-header{grid-row:1}
+  .objective-row{grid-row:2;font-size:12px}
+  .arena-wrap{
+    grid-row:3;
+    grid-template-columns:minmax(0,1fr) 220px;
+    grid-template-rows:minmax(0,1fr);
+    place-items:stretch;
+    gap:8px;
+    padding:6px;
+  }
+  .arena-wrap canvas{
+    grid-column:1;
+    grid-row:1;
+    min-height:0;
+    width:auto;
+    height:100%;
+    max-width:100%;
+    justify-self:center;
+  }
+  .touch-pad{
+    position:relative;
+    grid-column:2;
+    grid-row:1;
+    right:auto;
+    bottom:auto;
+    width:100%;
+    height:min(100%,132px);
+    align-self:center;
+  }
+  .feedback{grid-row:4}
+}

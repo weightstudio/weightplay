@@ -1993,6 +1993,13 @@ body.guardian-stage .stage-panel {
     var(--wp-ui-shell);
 }
 
+body.guardian-stage #stagePanel:has(> .wp-generated-stage-header) {
+  display: grid !important;
+  grid-template-rows: 64px minmax(0, 1fr) 56px !important;
+  gap: 8px !important;
+  padding: 0 12px !important;
+}
+
 .stage-workspace {
   min-width: 0;
   min-height: 0;

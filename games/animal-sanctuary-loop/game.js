@@ -42,6 +42,13 @@
   const routeLocale = routeLocales[location.pathname.split("/").filter(Boolean)[0]];
   let locale = canonicalLocale(routeLocale || storage.get("wonderLocale") || navigator.language);
   const runtimeLocales = new Set(["hi", "ar"]);
+  function navigateToLocale(next) {
+    const segment = routeSegments[next];
+    const currentSegment = location.pathname.split("/").filter(Boolean)[0];
+    if (!segment || currentSegment === segment) return false;
+    location.href = `/${segment}/games/animal-sanctuary-loop/${location.search}${location.hash}`;
+    return true;
+  }
   function t(key, vars = {}) {
     const source = String(localePack.dictionaries[locale]?.[key] || localePack.dictionaries.en[key] || key)
       .replace(/\{(\w+)\}/g, (_, name) => vars[name] ?? `{${name}}`);
@@ -335,17 +342,16 @@
   $("stageBack").addEventListener("click", () => showScreen("main"));
   $("locale").addEventListener("change", (event) => {
     const next = canonicalLocale(event.target.value);
-    if (runtimeLocales.has(next) && window.WeightPlayGameRuntimeLocalizer?.locale !== next) {
-      location.href = `/${routeSegments[next]}/games/animal-sanctuary-loop/`;
-      return;
-    }
+    storage.set("wonderLocale", next);
+    if (navigateToLocale(next)) return;
     locale = next;
-    storage.set("wonderLocale", locale);
     applyLocale();
   });
   window.addEventListener("wonder:locale-change", (event) => {
     const next = canonicalLocale(event.detail?.locale || event.detail?.actualLocale);
     if (next !== locale) {
+      storage.set("wonderLocale", next);
+      if (navigateToLocale(next)) return;
       locale = next;
       applyLocale();
     }

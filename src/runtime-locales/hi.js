@@ -303,7 +303,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "/{value}/games/animal-block-grove/": "/{value}/गेम्स/एनिमल-ब्लॉक-ग्रोव/",
   "/{value}/games/animal-one-line/{value}{value}": "/{value}/गेम्स/एनिमल-वन-लाइन/{value}{value}",
   "/{value}/games/animal-rune-reels/": "/{value}/गेम्स/एनिमल-रूण-रील्स/",
-  "/{value}/games/animal-sanctuary-loop/": "/{value}/खेल/पशु-अभयारण्य-लूप/",
+  "/{value}/games/animal-sanctuary-loop/{value}{value}": "/{value}/खेल/पशु-अभयारण्य-लूप/{value}{value}",
   "/{value}/games/animal-skyspire-drop/{value}{value}": "/{value}/गेम्स/एनिमल-स्काईस्पायर-ड्रॉप/{value}{value}",
   "/{value}/games/animal-spectrum-pulse/{value}{value}": "/{value}/गेम्स/एनिमल-स्पेक्ट्रम-पल्स/{value}{value}",
   "/games/": "/खेल/",

@@ -303,7 +303,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "/{value}/games/animal-block-grove/": "/{value}/遊戲/動物塊樹林/",
   "/{value}/games/animal-one-line/{value}{value}": "/{value}/遊戲/動物一行/{value}{value}",
   "/{value}/games/animal-rune-reels/": "/{value}/遊戲/動物符文捲軸/",
-  "/{value}/games/animal-sanctuary-loop/": "/{value}/遊戲/動物保護區循環/",
+  "/{value}/games/animal-sanctuary-loop/{value}{value}": "/{value}/遊戲/動物保護區循環/{value}{value}",
   "/{value}/games/animal-skyspire-drop/{value}{value}": "/{value}/遊戲/animal-skyspire-drop/{value}{value}",
   "/{value}/games/animal-spectrum-pulse/{value}{value}": "/{value}/遊戲/動物頻譜脈衝/{value}{value}",
   "/games/": "/遊戲/",

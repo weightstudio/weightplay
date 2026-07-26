@@ -303,7 +303,7 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "/{value}/games/animal-block-grove/": "/{value}/juegos/animal-block-grove/",
   "/{value}/games/animal-one-line/{value}{value}": "/{value}/juegos/animal-una-linea/{value}{value}",
   "/{value}/games/animal-rune-reels/": "/{value}/juegos/animal-rune-reels/",
-  "/{value}/games/animal-sanctuary-loop/": "/{value}/juegos/animal-sanctuary-loop/",
+  "/{value}/games/animal-sanctuary-loop/{value}{value}": "/{value}/juegos/animal-sanctuary-loop/{value}{value}",
   "/{value}/games/animal-skyspire-drop/{value}{value}": "/{value}/juegos/animal-skyspire-drop/{value}{value}",
   "/{value}/games/animal-spectrum-pulse/{value}{value}": "/{value}/juegos/pulso-de-espectro-animal/{value}{value}",
   "/games/": "/juegos/",

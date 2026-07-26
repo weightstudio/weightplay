@@ -267,6 +267,7 @@
           break;
         }
       }
+      inferredMain = inferredMain?.closest(".wp-standard-main-screen") || inferredMain;
     }
     let main = mains.find(visible) || inferredMain;
     if (!main && document.body.matches(".wp-shell-stage-active,.wp-shell-battle-active")) {
@@ -531,10 +532,27 @@
         });
       }
     });
-    if (type === "main") normalizeMainLayout(screen);
+    if (type === "main") {
+      screen?.querySelectorAll(".wp-standard-main-composition .wp-generated-main-header").forEach((nestedHeader) => {
+        nestedHeader.remove();
+      });
+      [...(screen?.children || [])].forEach((child) => {
+        if (!child.classList?.contains("wp-generated-main-header")) return;
+        child.hidden = false;
+        child.classList.remove("wp-shell-legacy-control");
+      });
+      normalizeMainLayout(screen);
+    }
     let header = firstVisible(HEADER_SELECTORS, screen);
     if (!header && type === "stage") {
       header = firstVisible(['[data-wp-return="stage"]'], document)?.closest("header") || null;
+    }
+    if (type === "stage" && header?.classList.contains("wp-generated-stage-header")) {
+      const ownedStageHeader = firstVisible(['[data-wp-return="stage"]'], document)?.closest("header");
+      if (ownedStageHeader && ownedStageHeader !== header) {
+        header.remove();
+        header = ownedStageHeader;
+      }
     }
     if (!header) {
       header = document.createElement("header");
@@ -556,9 +574,16 @@
       return;
     }
     const externalReturn = firstVisible(RETURN_SELECTORS, screen)
+      || (type === "stage" && header.classList.contains("wp-generated-stage-header")
+        ? first(['[data-wp-return="stage"]'], document)
+        : null)
       || (type === "main" && header.classList.contains("wp-generated-main-header") ? firstVisible(RETURN_SELECTORS, document) : null);
     const legacyHeader = externalReturn?.closest("header");
-    if (externalReturn && !header.contains(externalReturn)) header.prepend(externalReturn);
+    if (externalReturn && !header.contains(externalReturn)) {
+      externalReturn.hidden = false;
+      externalReturn.classList.remove("is-hidden", "hidden");
+      header.prepend(externalReturn);
+    }
     if (legacyHeader && legacyHeader !== header && header.classList.contains("wp-generated-main-header")) {
       legacyHeader.classList.add("wp-shell-legacy-control");
     }
@@ -601,6 +626,18 @@
       header.append(host);
       setOpen(false);
     }
+    if (type === "stage") {
+      const helpAction = screen.querySelector("#helpBtn");
+      if (helpAction && !popover.contains(helpAction)) {
+        helpAction.classList.add("wp-shell-settings-extra");
+        popover.append(helpAction);
+      }
+      const albumAction = screen.querySelector("#album");
+      if (albumAction && albumAction.parentElement !== screen) {
+        albumAction.classList.add("wp-stage-bottom-extra");
+        screen.append(albumAction);
+      }
+    }
     host.dataset.screenOwner = type;
     host.hidden = type === "stage" && !soundToggle;
   }
@@ -623,6 +660,7 @@
     setTimeout(place, 0);
     setTimeout(place, 300);
     setTimeout(place, 1000);
+    setTimeout(place, 1300);
     setTimeout(place, 1800);
     setTimeout(place, 3200);
     setTimeout(place, 4800);

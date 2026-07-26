@@ -353,21 +353,7 @@ body.wp-stage-select-active [data-wp-logical-stage-canvas] :is(
   display: none !important;
 }
 
-body[data-wp-game-id="animal-rune-reels"].wp-stage-select-active [data-wp-logical-stage-canvas] #helpBtn {
-  position: absolute !important;
-  z-index: 55 !important;
-  top: 112px !important;
-  right: 8px !important;
-  left: auto !important;
-  width: 44px !important;
-  min-width: 44px !important;
-  max-width: 44px !important;
-  height: 44px !important;
-  min-height: 44px !important;
-  max-height: 44px !important;
-}
-
-body[data-wp-game-id="animal-word-trails"].wp-stage-select-active [data-wp-logical-stage-canvas] #album {
+body.wp-stage-select-active [data-wp-logical-stage-canvas] #album.wp-stage-bottom-extra {
   position: absolute !important;
   z-index: 55 !important;
   top: auto !important;

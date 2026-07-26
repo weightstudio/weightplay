@@ -1,8 +1,8 @@
 (() => {
   const MENU_LOGICAL_WIDTH = 390;
   const MENU_LOGICAL_HEIGHT = MENU_LOGICAL_WIDTH * 16 / 9;
-  const STAGE_LANDSCAPE_WIDTH = 760;
-  const STAGE_LANDSCAPE_HEIGHT = 360;
+  const STAGE_LANDSCAPE_WIDTH = 920;
+  const STAGE_LANDSCAPE_HEIGHT = 460;
   const BATTLE_LOGICAL_WIDTH = 390;
   const BATTLE_LOGICAL_HEIGHT = 788;
   const BATTLE_LANDSCAPE_WIDTH = 760;
@@ -221,14 +221,6 @@
     pausePanel.setAttribute("role", "dialog");
     pausePanel.setAttribute("aria-modal", "true");
     pausePanel.setAttribute("aria-labelledby", overlayTitle.id);
-
-    battleBackButton?.addEventListener("click", (event) => {
-      if (!document.body.classList.contains("wonder-playing") || battleBackButton.classList.contains("hidden")) return;
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      settingsButton.click();
-      overlayTitle.textContent = leaveButton.textContent;
-    }, true);
 
     settingsButton.addEventListener("click", () => {
       if (pausePanel.classList.contains("hidden")) return;

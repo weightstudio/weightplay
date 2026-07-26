@@ -95,6 +95,42 @@ body.wonder-stage-select:not(.wonder-playing) .game-shell {
   background: #111a2d url("../../assets/wonder-crash-cover.webp") center / cover no-repeat;
 }
 
+body.wonder-stage-select #overlay {
+  align-content: start;
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+  gap: 8px;
+  padding: 68px 18px 96px;
+}
+
+body.wonder-stage-select #overlay > .wp-generated-stage-header {
+  position: absolute !important;
+  z-index: 20;
+  top: 6px;
+  right: 8px;
+  left: 8px;
+  width: auto !important;
+  height: 56px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  background: rgba(8, 18, 31, 0.88);
+  backdrop-filter: blur(8px);
+}
+
+body.wonder-stage-select #menuContent {
+  align-self: stretch;
+  width: 100%;
+  max-height: none;
+  min-height: 0;
+  overflow: hidden;
+}
+
+body.wonder-stage-select #levelGrid {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  margin-top: 0;
+}
+
 body.wonder-playing .game-shell[data-battle-shell] {
   position: fixed !important;
   top: 0 !important;
@@ -217,7 +253,35 @@ body.wonder-stage-select .menu-tabs span {
 
   body.wonder-stage-select #overlay {
     gap: 6px;
-    padding: 8px 24px 96px;
+    padding: 124px 24px 8px;
+  }
+
+  body.wonder-stage-select :is(#menuCoinLine, #overlayText) {
+    display: none !important;
+  }
+
+  body.wonder-stage-select #menuTabs {
+    top: 64px;
+    right: 24px;
+    bottom: auto;
+    left: 24px;
+    width: auto;
+    height: 54px;
+    padding: 4px;
+    transform: none;
+  }
+
+  body.wonder-stage-select #menuTabs button {
+    grid-template-columns: 30px minmax(0, 1fr);
+    height: 44px;
+    min-height: 44px;
+    max-height: 44px;
+    padding: 2px 6px;
+  }
+
+  body.wonder-stage-select #menuTabs img {
+    width: 28px;
+    height: 28px;
   }
 
   body.wonder-stage-select #menuContent {

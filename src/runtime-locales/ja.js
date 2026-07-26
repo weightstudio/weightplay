@@ -303,7 +303,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "/{value}/games/animal-block-grove/": "/{value}/ゲーム/アニマルブロックグローブ/",
   "/{value}/games/animal-one-line/{value}{value}": "/{value}/ゲーム/動物一行/{value}{value}",
   "/{value}/games/animal-rune-reels/": "/{value}/ゲーム/動物ルーンリール/",
-  "/{value}/games/animal-sanctuary-loop/": "/{value}/ゲーム/動物保護区ループ/",
+  "/{value}/games/animal-sanctuary-loop/{value}{value}": "/{value}/ゲーム/動物保護区ループ/{value}{value}",
   "/{value}/games/animal-skyspire-drop/{value}{value}": "/{value}/ゲーム/animal-skyspire-drop/{value}{value}",
   "/{value}/games/animal-spectrum-pulse/{value}{value}": "/{value}/ゲーム/アニマルスペクトラムパルス/{value}{value}",
   "/games/": "/ゲーム/",
