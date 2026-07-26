@@ -25,7 +25,7 @@
     "zh-Hant": [
       "正在開啟寶物溫室…","三重配對","語言","咪咪把魔法寶物整理成三個一組","寶物整理益智","點擊未被遮住的寶物，湊齊三個同款；別讓七格托盤塞滿。","開始遊戲","遊戲指南","WeightPlay 原創收藏益智","讀懂堆疊、守住托盤、完成每一組三連。","咪咪的溫室堆滿了魔法收藏。只有沒有被遮住的物件能放入托盤；三個同款會消失，但七個未配對物件會讓挑戰結束。",
       "玩法","點擊未被遮住的物件，將它放入托盤。","收集三個相同物件就會自動消除。","在七個托盤格全部占滿前清空整堆物件。","六個規則章節","30 關會依序加入藤蔓、晶殼、神秘包裝、移動層架、緊縮托盤，以及混合規則的終章。","點擊前先規劃","誘人的物件可能打開好配對，也可能讓托盤堆滿單張。先找成對機會、觀察上層，並保留一格緊急空間。","進度與隱私","過關、星星與最佳剩餘格數只保存在本瀏覽器，不需登入或個人資料。",
-      "返回","選擇溫室層架","章節","關卡選擇","拖曳層架並選擇已解鎖關卡。","剩餘","星星","音效","玩法","清除所有寶物，別讓托盤塞滿。","寶物堆","托盤","七格托盤","上一步","找一對","洗牌","用三連騰出空間","發亮的寶物沒有被遮住，可以點擊。","托盤內三個同款會一起消失。","藤蔓與晶殼要先點一次解除，下一次才能收取。","繼續","離開這個層架？","繼續會保留目前堆疊；返回關卡只會結束這次挑戰。","返回關卡","技巧報告","重試","下一關","關卡","第 {n} 關","尚未解鎖","已完成","最佳剩餘格：{n}","{n} 個寶物","開放層架","藤蔓藝廊","水晶室","神秘閣樓","移動長廊","盛大終章","藤蔓已解開，再點一次即可收取。","晶殼裂開了，再點一次。","神秘寶物現身了。","三個配對成功！","托盤只剩一格。","目前無法復原。","現在沒有安全的一對露出。","剩餘物件已重新排列。","層架清空","所有三連都找到了！","第 {n} 關完成，獲得 {stars} 顆星。","托盤已滿","收藏需要新的規劃。","換個順序再試一次。","你保留了 {n} 格空間，前瞻規劃很出色。","你完成了 {n} 組三連；下次可以更早建立成對物件。","全部完成","音效開啟","音效關閉"
+      "返回","選擇溫室層架","章節","關卡選擇","拖曳層架並選擇已解鎖關卡。","剩餘","星星","音效","玩法","清除所有寶物，別讓托盤塞滿。","寶物堆","托盤","七格托盤","復原","配對提示","重新排列","用三連騰出空間","發亮的寶物沒有被遮住，可以點擊。","托盤內三個同款會一起消失。","藤蔓與晶殼要先點一次解除，下一次才能收取。","繼續","離開這個層架？","繼續會保留目前堆疊；返回關卡只會結束這次挑戰。","返回關卡","技巧報告","重試","下一關","關卡","第 {n} 關","尚未解鎖","已完成","最佳剩餘格：{n}","{n} 個寶物","開放層架","藤蔓藝廊","水晶室","神秘閣樓","移動長廊","盛大終章","藤蔓已解開，再點一次即可收取。","晶殼裂開了，再點一次。","神秘寶物現身了。","三個同款已消除！","托盤只剩一格。","目前無法復原。","現在沒有安全的配對露出。","剩餘物件已重新排列。","層架清空","所有三連都找到了！","第 {n} 關完成，獲得 {stars} 顆星。","托盤已滿","收藏需要新的規劃。","換個順序再試一次。","你保留了 {n} 格空間，前瞻規劃很出色。","你完成了 {n} 組三連；下次可以更早建立成對物件。","全部完成","音效開啟","音效關閉"
     ],
     "zh-Hans": [
       "正在开启宝物温室…","三重配对","语言","咪咪把魔法宝物整理成三个一组","宝物整理益智","点击未被遮住的宝物，凑齐三个同款；别让七格托盘塞满。","开始游戏","游戏指南","WeightPlay 原创收藏益智","看懂堆叠，守住托盘，完成每组三连。","咪咪的温室堆满了魔法收藏。只有没有被遮住的物件能放入托盘；三个同款会消失，但七个未配对物件会让挑战结束。",
@@ -84,6 +84,7 @@
   const SAVE_KEY = "weightplay_animal_triple_match_v1";
   const CHAPTERS = ["openShelf","vineGallery","crystalRoom","mysteryLoft","shiftingHall","grandFinale"];
   const ITEM_NAMES = ["Acorn Lantern","Moon Cup","Shell Compass","Berry Brooch","Cloud Jar","Prism Flower","Star Telescope","Leaf Locket","Coral Music Box","Bee Bell","Mushroom Lamp","Crystal Feather"];
+  const ITEM_NAMES_ZH_HANT = ["橡果提燈","月光杯","貝殼羅盤","莓果胸針","雲朵罐","稜鏡花","星光望遠鏡","葉片墜飾","珊瑚音樂盒","蜜蜂鈴","蘑菇燈","水晶羽毛"];
   let locale = "en", screen = "main", stageIndex = 0, run = null, audio = null, centeredTimer = 0;
   let pendingMatch = null;
   let save = loadSave();
@@ -140,7 +141,14 @@
   function initialLocale() {
     const segment = location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
     const routed = ROUTE_LOCALE[segment] || LOCALES.find(([code]) => code.toLowerCase() === segment)?.[0];
-    let stored = ""; try { stored = sessionStorage.getItem("weightplay-locale") || localStorage.getItem("weightplay-locale") || ""; } catch {}
+    let stored = "";
+    try {
+      stored = sessionStorage.getItem("weightPlayLocale")
+        || localStorage.getItem("weightPlayLocale")
+        || sessionStorage.getItem("weightplay-locale")
+        || localStorage.getItem("weightplay-locale")
+        || "";
+    } catch {}
     return LOCALES.some(([code]) => code === routed) ? routed : LOCALES.some(([code]) => code === stored) ? stored : "en";
   }
   function applyLocale() {
@@ -154,14 +162,22 @@
   }
   function setLocale(value) {
     locale = LOCALES.some(([code]) => code === value) ? value : "en";
-    try { sessionStorage.setItem("weightplay-locale", locale); localStorage.setItem("weightplay-locale", locale); } catch {}
+    try {
+      sessionStorage.setItem("weightPlayLocale", locale);
+      localStorage.setItem("weightPlayLocale", locale);
+      sessionStorage.setItem("weightplay-locale", locale);
+      localStorage.setItem("weightplay-locale", locale);
+      window.WonderI18n?.setLocale?.(locale);
+    } catch {}
     applyLocale();
   }
   function initLocale() {
     locale = initialLocale();
     els.localeSelect.innerHTML = LOCALES.map(([code, label]) => `<option value="${code}">${label}</option>`).join("");
     els.localeSelect.value = locale;
-    els.localeSelect.addEventListener("change", e => setLocale(e.target.value));
+    document.addEventListener("change", event => {
+      if (event.target.id === "localeSelect") setLocale(event.target.value);
+    });
   }
 
   function fitCanvas() {
@@ -311,6 +327,12 @@
     const x = type % 4, y = Math.floor(type / 4);
     return `background-position:${x * 100 / 3}% ${y * 50}%;`;
   }
+  function itemName(type) {
+    return locale === "zh-Hant" ? ITEM_NAMES_ZH_HANT[type] : ITEM_NAMES[type];
+  }
+  function mysteryItemName() {
+    return locale === "zh-Hant" ? "神秘寶物" : "Mystery treasure";
+  }
   function isBlocked(piece) {
     if (!piece.active || piece.tray) return true;
     return run.pieces.some(other => other.active && !other.tray && other.layer > piece.layer && Math.abs(other.x - piece.x) < .15 && Math.abs(other.y - piece.y) < .115);
@@ -338,7 +360,7 @@
     els.soundBtn.setAttribute("aria-label", t(save.sound ? "soundOn" : "soundOff"));
     els.board.innerHTML = remaining.map(piece => {
       const blocked = isBlocked(piece), state = piece.vine ? " vine" : piece.crystal ? " crystal" : piece.mystery ? " mystery" : "";
-      return `<button type="button" class="piece ${blocked ? "blocked" : "free"}${state}" data-piece="${piece.id}" aria-label="${piece.mystery ? "Mystery treasure" : ITEM_NAMES[piece.type]}" style="${spriteStyle(piece.type)}"></button>`;
+      return `<button type="button" class="piece ${blocked ? "blocked" : "free"}${state}" data-piece="${piece.id}" aria-label="${piece.mystery ? mysteryItemName() : itemName(piece.type)}" style="${spriteStyle(piece.type)}"></button>`;
     }).join("");
     els.board.querySelectorAll(".piece.free").forEach(btn => btn.addEventListener("click", () => choosePiece(+btn.dataset.piece)));
     renderTray(); layoutPieces(); renderTools();
@@ -348,7 +370,7 @@
     const slots = Array.from({ length: 7 }, (_, i) => {
       if (i >= cap) return `<div class="tray-slot" aria-hidden="true" style="background:#341929;border-color:#a54867">×</div>`;
       const piece = run.tray[i];
-      return piece ? `<div class="tray-piece" data-tray="${piece.id}" style="${spriteStyle(piece.type)}" aria-label="${ITEM_NAMES[piece.type]}"></div>` : `<div class="tray-slot"></div>`;
+      return piece ? `<div class="tray-piece" data-tray="${piece.id}" style="${spriteStyle(piece.type)}" aria-label="${itemName(piece.type)}"></div>` : `<div class="tray-slot"></div>`;
     });
     els.tray.innerHTML = slots.join("");
   }

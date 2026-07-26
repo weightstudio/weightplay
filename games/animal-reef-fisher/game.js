@@ -96,6 +96,7 @@
     timeText: $("timeText"),
     goalText: $("goalText"),
     hintText: $("hintText"),
+    castMeter: document.querySelector(".cast-meter"),
     castFill: $("castFill"),
     tensionLane: $("tensionLane"),
     safeBand: $("safeBand"),
@@ -1427,7 +1428,21 @@
     });
   }
 
+  function updateCastMeter() {
+    const power = Math.round(run?.phase === "charging" ? run.castPower : 0);
+    nodes.castFill.style.width = `${power}%`;
+    nodes.castMeter.id = "castMeter";
+    nodes.castMeter.removeAttribute("aria-hidden");
+    nodes.castMeter.setAttribute("role", "progressbar");
+    nodes.castMeter.setAttribute("aria-label", t("castHint"));
+    nodes.castMeter.setAttribute("aria-valuemin", "0");
+    nodes.castMeter.setAttribute("aria-valuemax", "100");
+    nodes.castMeter.setAttribute("aria-valuenow", String(power));
+    nodes.castMeter.setAttribute("aria-valuetext", `${power}% · ${run?.phase === "charging" ? t("charging") : t("castHint")}`);
+  }
+
   function updateTensionGuide() {
+    updateCastMeter();
     const range = tensionRange();
     nodes.safeBand.style.left = `${range.safeMin}%`;
     nodes.safeBand.style.width = `${range.safeMax - range.safeMin}%`;
@@ -1522,7 +1537,6 @@
     run.catchToastTimer = Math.max(0, run.catchToastTimer - dt);
     run.hazardFlash = Math.max(0, run.hazardFlash - dt);
     if (run.catchToastTimer <= 0) nodes.catchToast.classList.add("is-hidden");
-    nodes.castFill.style.width = `${run.phase === "charging" ? run.castPower : 0}%`;
     nodes.tensionMarker.style.left = `${run.tension}%`;
     updateTensionGuide();
   }

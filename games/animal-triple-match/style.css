@@ -15,4 +15,5 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:4px solid #fff
 html[dir="rtl"] .guide-grid ol,html[dir="rtl"] .dialog-card ol{padding-left:0;padding-right:22px}
 @media(min-width:700px){.main-hero{grid-template-columns:minmax(0,1.5fr) minmax(300px,.75fr);grid-template-rows:minmax(0,1fr)}.main-copy{align-content:end}.guide-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:430px){.main-screen{padding:8px}.main-header{grid-template-columns:60px minmax(0,1fr) 108px}.locale-control select{width:108px}.main-copy{padding:12px 14px}.main-copy h1{font-size:24px}.public-guide{margin:12px 8px 24px}.guide-grid{grid-template-columns:1fr}}
+@media(orientation:landscape) and (max-height:500px){.main-screen{height:100vh;height:100dvh;min-height:0;padding:8px 12px;gap:6px}.main-header{height:46px}.main-hero{grid-template-columns:minmax(0,1.45fr) minmax(300px,.82fr);grid-template-rows:minmax(0,1fr);border-radius:18px}.main-copy{align-content:center;gap:5px;padding:10px 16px 12px}.main-copy h1{font-size:22px;line-height:1.1}.main-copy p{font-size:14px;line-height:1.25}.main-copy button{height:44px}}
 

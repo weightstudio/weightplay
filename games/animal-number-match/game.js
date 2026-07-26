@@ -3,7 +3,7 @@
   const codes=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
   const $=selector=>document.querySelector(selector),screens=[...document.querySelectorAll(".screen")],levels=window.NUMBER_MATCH_LEVELS.levels;
   const storageKey="wp-animal-number-match-v1";
-  let locale=read("wp-locale")||"en";if(!codes.includes(locale))locale="en";
+  let locale=read("weightPlayLocale")||read("wp-locale")||window.WonderI18n?.locale?.()||"en";if(!codes.includes(locale))locale="en";
   let unlocked=Number(read(storageKey))||1,selected=Math.min(unlocked,30)-1,level=null,values=[],picked=null,history=[],moves=0;
   function read(key){try{return localStorage.getItem(key)}catch{return null}}
   function write(key,value){try{localStorage.setItem(key,value)}catch{}}
@@ -80,7 +80,7 @@
     $("#locale").value=locale;if(!$("#stage").hidden)renderStages();if(!$("#battle").hidden){$("#chapter").textContent=t("chapter",{n:Math.floor(selected/5)+1});$("#stageName").textContent=t("grove",{n:selected+1});$("#status").textContent=t("selectFirst");renderBoard()}
   }
   codes.forEach(code=>{const option=document.createElement("option");option.value=code;option.textContent=window.NUMBER_MATCH_LOCALES[code].label;$("#locale").append(option)});
-  $("#locale").onchange=event=>{locale=event.target.value;write("wp-locale",locale);applyLocale()};
+  document.addEventListener("change",event=>{if(event.target.id!=="locale")return;locale=event.target.value;write("wp-locale",locale);try{window.WonderI18n?.setLocale?.(locale)}catch{}applyLocale()});
   $("#start").onclick=()=>show("stage");$("#enter").onclick=()=>startLevel(selected);document.querySelectorAll("[data-back]").forEach(button=>button.onclick=()=>show(button.closest("#battle")?"stage":"main"));
   $("#undo").onclick=()=>{const last=history.pop();if(!last)return;values[last.a]=last.va;values[last.b]=last.vb;picked=null;moves=Math.max(0,moves-1);$("#status").textContent=t("undone");renderBoard()};
   $("#hint").onclick=hint;$("#shuffle").onclick=reorder;$("#restart").onclick=()=>startLevel(selected);

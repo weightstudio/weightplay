@@ -134,7 +134,7 @@
         <div class="play-frame">
           <canvas id="gameCanvas" width="960" height="540" tabindex="0" aria-label="Animal Reef Fisher play area. Hold Space to charge and release to cast; use Left and Right arrows to control tension."></canvas>
           <div id="catchToast" class="catch-toast is-hidden" aria-live="polite"></div>
-          <div class="cast-meter" aria-hidden="true"><div id="castFill" class="cast-fill"></div></div>
+          <div id="castMeter" class="cast-meter" role="progressbar" aria-label="Cast power" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="0%"><div id="castFill" class="cast-fill"></div></div>
         </div>
         <div class="catch-hud" aria-live="polite">
           <div>
