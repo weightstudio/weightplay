@@ -1311,6 +1311,200 @@ body.crystal-playing .upgrade-card-wrap { max-height: 100%; overflow-y: auto; }
   body.crystal-playing .upgrade-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
+/* Shared Main/Stage utility: one stable Settings control opposite Return. */
+.topbar {
+  grid-template-columns: 58px minmax(0, 1fr) 48px;
+}
+
+.brand-title {
+  text-align: center;
+}
+
+.settings-control {
+  position: relative;
+  z-index: 80;
+  width: 48px;
+  min-width: 48px;
+}
+
+.settings-btn {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 11px;
+  border: 1px solid rgba(255, 249, 196, 0.42);
+  border-radius: 14px;
+  background: rgba(17, 42, 39, 0.92);
+  color: #fff8c7;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+}
+
+.settings-btn svg,
+.audio-setting-row svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.settings-btn:focus-visible,
+.audio-setting-row:focus-visible,
+.settings-popover .language-picker select:focus-visible {
+  outline: 2px solid #63e6be;
+  outline-offset: 2px;
+}
+
+.settings-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 100;
+  display: grid;
+  width: min(280px, calc(100vw - 24px));
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid rgba(255, 249, 196, 0.42);
+  border-radius: 14px;
+  background: rgba(8, 29, 28, 0.98);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.42);
+}
+
+.settings-popover.hidden {
+  display: none !important;
+}
+
+.settings-popover > strong {
+  color: #fffce9;
+  font-size: 16px;
+}
+
+.audio-setting-row {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 10px;
+  border: 1px solid rgba(183, 244, 215, 0.34);
+  border-radius: 12px;
+  background: rgba(17, 42, 39, 0.88);
+  color: #fffce9;
+  text-align: left;
+  cursor: pointer;
+}
+
+.audio-setting-row svg {
+  width: 24px;
+  height: 24px;
+}
+
+.audio-switch {
+  position: relative;
+  display: block;
+  width: 44px;
+  height: 24px;
+  border-radius: 999px;
+  background: #53656a;
+  transition: background 160ms ease;
+}
+
+.audio-switch::after {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  content: "";
+  transition: transform 160ms ease;
+}
+
+.audio-setting-row[aria-pressed="true"] .audio-switch {
+  background: #38c98c;
+}
+
+.audio-setting-row[aria-pressed="true"] .audio-switch::after {
+  transform: translateX(20px);
+}
+
+.settings-popover .language-picker {
+  display: grid !important;
+  min-height: 44px;
+  padding: 7px 9px;
+  visibility: visible !important;
+}
+
+.settings-popover .language-picker select {
+  display: block !important;
+  min-width: 0;
+  visibility: visible !important;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.stage-panel-head {
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+}
+
+.stage-panel-head > .settings-control {
+  display: block;
+  min-width: 48px;
+  gap: 0;
+}
+
+.crystal-stage-select .settings-popover .language-picker {
+  display: none !important;
+}
+
+body.crystal-playing .settings-control {
+  display: none !important;
+}
+
+@media (max-width: 520px) {
+  .topbar {
+    grid-template-columns: 58px minmax(0, 1fr) 48px;
+    grid-template-rows: 48px 32px;
+    gap: 6px;
+  }
+
+  .topbar .home-link {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .topbar > .settings-control {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .topbar .brand-title {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    align-self: center;
+  }
+
+  .topbar .brand-title p {
+    display: none;
+  }
+
+  .topbar .brand-title h1 {
+    margin: 0;
+  }
+}
+
 @media (orientation: landscape) {
   body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .canvas-wrap {
     width: min(100%, 366px, calc((var(--crystal-vh, 100dvh) - 68px) * 32 / 55)) !important;

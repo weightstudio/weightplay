@@ -27,6 +27,12 @@
   const arenaCtx = arenaLayer.getContext("2d", { alpha: false });
   const nodes = {
     localeSelect: $("localeSelect"),
+    topbar: document.querySelector(".topbar"),
+    stagePanelHead: document.querySelector(".stage-panel-head"),
+    settingsControl: $("settingsControl"),
+    settingsBtn: $("settingsBtn"),
+    settingsPopover: $("settingsPopover"),
+    soundStateText: $("soundStateText"),
     menuPanel: $("menuPanel"),
     stagePanel: $("stagePanel"),
     gamePanel: $("gamePanel"),
@@ -78,6 +84,10 @@
       pageDescription: "Animal Crystal Survivor is a 30-stage Crystal Grove campaign with key objectives, six upgrades, changing hazards, and six original animal Bosses.",
       ogDescription: "A 30-stage action-survival campaign with six regions, readable hazards, auto-attacks, build choices, and six distinct animal Bosses.",
       language: "Language",
+      audioSettings: "Settings",
+      soundEffects: "Sound Effects",
+      soundOn: "Sound on",
+      soundOff: "Sound off",
       menuTitle: "Survive the Crystal Grove.",
       menuHint: "Goal: collect golden keys before 3:00. Crystals give XP, and upgrades help the ranger survive longer.",
       expeditionRecordTitle: "Expedition Record",
@@ -182,6 +192,10 @@
       pageDescription: "\u300a\u52d5\u7269\u6c34\u6676\u751f\u5b58\u6230\u300b\u662f 30 \u95dc\u6c34\u6676\u6797\u5730\u6230\u5f79\uff0c\u5305\u542b\u91d1\u9470\u76ee\u6a19\u3001\u516d\u7a2e\u5347\u7d1a\u3001\u8b8a\u5316\u5371\u96aa\u8207\u516d\u96bb\u539f\u5275\u52d5\u7269\u9996\u9818\u3002",
       ogDescription: "30 \u95dc\u52d5\u4f5c\u751f\u5b58\u6230\u5f79\uff0c\u5305\u542b\u516d\u500b\u5340\u57df\u3001\u53ef\u8b80\u5371\u96aa\u3001\u81ea\u52d5\u653b\u64ca\u3001\u5efa\u69cb\u9078\u64c7\u8207\u516d\u96bb\u7368\u7279\u9996\u9818\u3002",
       language: "\u8a9e\u8a00",
+      audioSettings: "\u8a2d\u5b9a",
+      soundEffects: "\u97f3\u6548",
+      soundOn: "\u97f3\u6548\u958b\u555f",
+      soundOff: "\u97f3\u6548\u95dc\u9589",
       menuTitle: "\u5728\u7d50\u6676\u68ee\u6797\u4e2d\u751f\u5b58\u4e0b\u53bb\u3002",
       menuHint: "\u76ee\u6a19\uff1a\u5728 3:00 \u4e4b\u524d\u6536\u96c6\u91d1\u9470\u3002\u6c34\u6676\u6703\u589e\u52a0\u7d93\u9a57\uff0c\u5347\u7d1a\u53ef\u4ee5\u8b93\u5de1\u5b88\u54e1\u6490\u5f97\u66f4\u4e45\u3002",
       expeditionRecordTitle: "\u63a2\u96aa\u7d00\u9304",
@@ -283,7 +297,7 @@
     },
   };
   text.es = {
-    title:"Superviviente de Cristal Animal",pageDescription:"Campaña de 30 niveles en la Arboleda de Cristal con objetivos de llaves, seis mejoras, peligros cambiantes y seis jefes animales originales.",ogDescription:"Campaña de supervivencia de 30 niveles con seis regiones, peligros legibles, ataque automático, elecciones de mejora y seis jefes distintos.",language:"Idioma",
+    title:"Superviviente de Cristal Animal",pageDescription:"Campaña de 30 niveles en la Arboleda de Cristal con objetivos de llaves, seis mejoras, peligros cambiantes y seis jefes animales originales.",ogDescription:"Campaña de supervivencia de 30 niveles con seis regiones, peligros legibles, ataque automático, elecciones de mejora y seis jefes distintos.",language:"Idioma",audioSettings:"Configuración",soundEffects:"Efectos de sonido",soundOn:"Sonido activado",soundOff:"Sonido desactivado",
     menuTitle:"Sobrevive en la Arboleda de Cristal.",menuHint:"Objetivo: recoge llaves doradas antes de 3:00. Los cristales dan XP y las mejoras ayudan al guardabosques.",expeditionRecordTitle:"Registro de expedición",expeditionRecordText:"Mejor: {keys} llaves · Nivel máximo {level} · {runs} partidas",patrolRankTitle:"Rango de patrulla: {rank}",patrolRankProgress:"{current} / {target} llaves acumuladas",patrolRankComplete:"Rango máximo · {current} llaves acumuladas",patrolRankUp:"¡Subes de rango! Ahora eres {rank}.",patrolRankNext:"Progreso: {current} / {target} llaves para {rank}.",rankScout:"Explorador de cristal",rankKeeper:"Cuidador de la arboleda",rankRanger:"Guardabosques de cristal",rankGuardian:"Guardián de la arboleda",rankWarden:"Custodio de cristal",
     controlMove:"Toca o arrastra para moverte",controlKeys:"WASD / Flechas",controlAttack:"Ataque automático",chooseStage:"Elegir nivel",stage:"Nivel",stageProgress:"{unlocked} / 30 desbloqueados",stageSetup:"Desliza por seis regiones. Cada quinto nivel es un jefe con una regla de supervivencia distinta.",stageSwipe:"↔ Desliza",stageDeploy:"Toca un nivel desbloqueado para patrullar",stageLocked:"Bloqueado",stageReady:"Listo",stageCleared:"Completado",bossCheckpoint:"Punto de jefe",objective:"Recoge {keys} llaves · sobrevive 3:00{boss}",bossObjective:" · derrota al jefe",nextStage:"Siguiente nivel",
     diamondShopTitle:"Mejora de partida",charmName:"Amuleto de cristal",charmEffect:"Inicio permanente: Vida máx. 7 → 8 · radio de recogida 54 → 68.",charmOwned:"En propiedad y guardado: Vida máx. 8 · radio 68 en cada partida.",charmBuy:"Desbloquear por {cost}",charmNeed:"Necesitas {cost} diamantes · saldo {balance}.",charmBought:"Desbloqueado y guardado · quedan {balance} diamantes.",charmConfirm:"Confirma la mejora permanente · Diamantes {before} → {after}. Toca otra vez.",charmConfirmLabel:"Confirma el Amuleto de cristal. Gasta 12 diamantes. Saldo de {before} a {after}.",enableSound:"Activar sonido",disableSound:"Desactivar sonido",startRun:"Empezar partida",menu:"Menú",backToLobby:"Volver al vestíbulo",
@@ -641,6 +655,8 @@
     playfieldLabelSignature = "";
     nodes.menuBtn.setAttribute("aria-label", t("menu"));
     nodes.resultMenuBtn.setAttribute("aria-label", t("backToStages"));
+    nodes.settingsBtn?.setAttribute("aria-label", t("audioSettings"));
+    nodes.settingsPopover?.setAttribute("aria-label", t("audioSettings"));
     updatePageMeta();
     nodes.localeSelect.value = requested;
     renderExpeditionRecord();
@@ -661,9 +677,16 @@
   function updateMenuSound() {
     if (!nodes.menuSoundBtn) return;
     const muted = Boolean(window.WonderSound?.isMuted?.());
-    nodes.menuSoundBtn.textContent = muted ? "🔇" : "🔊";
-    nodes.menuSoundBtn.setAttribute("aria-label", t(muted ? "enableSound" : "disableSound"));
     nodes.menuSoundBtn.setAttribute("aria-pressed", String(!muted));
+    nodes.menuSoundBtn.setAttribute("aria-label", `${t("soundEffects")}: ${t(muted ? "soundOff" : "soundOn")}`);
+    if (nodes.soundStateText) nodes.soundStateText.textContent = t(muted ? "soundOff" : "soundOn");
+  }
+
+  function setSettingsOpen(open, restoreFocus = false) {
+    const nextOpen = Boolean(open);
+    nodes.settingsPopover?.classList.toggle("hidden", !nextOpen);
+    nodes.settingsBtn?.setAttribute("aria-expanded", String(nextOpen));
+    if (!nextOpen && restoreFocus) nodes.settingsBtn?.focus({ preventScroll: true });
   }
 
   function updateDiamondShop(message = "") {
@@ -736,6 +759,9 @@
     if (resultOpen) battleLive.setAttribute("aria-hidden", "true");
     else battleLive.removeAttribute("aria-hidden");
     const stageOpen = panel === nodes.stagePanel;
+    setSettingsOpen(false);
+    if (stageOpen) nodes.stagePanelHead?.append(nodes.settingsControl);
+    else nodes.topbar?.append(nodes.settingsControl);
     document.body?.classList.toggle("crystal-stage-select", stageOpen);
     document.body?.classList.toggle("crystal-playing", panel !== nodes.menuPanel && !stageOpen);
     updateCrystalBattleViewport();
@@ -2018,6 +2044,21 @@
   });
 
   nodes.localeSelect.addEventListener("change", (event) => setLocale(event.target.value));
+  nodes.settingsBtn?.addEventListener("click", () => {
+    const open = nodes.settingsBtn.getAttribute("aria-expanded") !== "true";
+    setSettingsOpen(open);
+    if (open) window.requestAnimationFrame(() => nodes.menuSoundBtn?.focus({ preventScroll: true }));
+  });
+  document.addEventListener("pointerdown", (event) => {
+    if (nodes.settingsPopover?.classList.contains("hidden")) return;
+    if (event.target.closest(".settings-control")) return;
+    setSettingsOpen(false);
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || nodes.settingsPopover?.classList.contains("hidden")) return;
+    event.preventDefault();
+    setSettingsOpen(false, true);
+  });
   nodes.startBtn.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });
