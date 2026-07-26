@@ -19,7 +19,7 @@
   let appliedStageHeight = 0;
   const savedStageStyles = new WeakMap();
   const savedReserveStyles = new WeakMap();
-  const nativeStageScalers = new Set(["wonder-crash", "animal-rope-rescue", "animal-coloring-studio", "animal-bubble-safari", "animal-rune-reels", "animal-triple-match", "campus-dash"]);
+  const nativeStageScalers = new Set(["wonder-crash", "animal-rope-rescue", "animal-coloring-studio", "animal-bubble-safari", "animal-rune-reels", "animal-triple-match"]);
   const stageRootByGame = {
     "animal-guard-yard": "#menuPanel",
     "animal-quiz": ".animal-game",
@@ -100,6 +100,29 @@
       if (style.transform !== "none" || style.perspective !== "none" || style.filter !== "none") root = ancestor;
     }
     return root;
+  }
+
+  function ensureStageArtwork(rail) {
+    const root = stageRootFor(rail);
+    if (!root) return;
+    let art = getComputedStyle(root).getPropertyValue("--wp-stage-art").trim();
+    let sourceUrl = art.match(/url\((['"]?)(.*?)\1\)/i)?.[2] || "";
+    if (!art || art === "none") {
+      const poster = document.querySelector(
+        ".wp-standard-main-poster-media,img.main-poster,img.main-cover,img.cover,img.poster,.hero img,.main-cover img",
+      );
+      const source = poster?.currentSrc || poster?.src || document.querySelector('meta[property="og:image"]')?.content || "";
+      if (source) {
+        const url = new URL(source, location.href).href.replaceAll('"', '\\"');
+        root.style.setProperty("--wp-stage-art", `url("${url}")`);
+        art = `url("${url}")`;
+        sourceUrl = url;
+      }
+    }
+    if (art && art !== "none") {
+      root.classList.add("wp-stage-art-shell");
+      if (sourceUrl) root.dataset.wpStageArt = new URL(sourceUrl, location.href).href;
+    }
   }
 
   function rememberStageStyles(root) {
@@ -412,6 +435,7 @@
   function install(rail) {
     if (installed.has(rail)) return;
     installed.add(rail);
+    ensureStageArtwork(rail);
     rail.dataset.wpStageRail = "true";
     rail.dataset.wpStageInitiallyHidden = rail.getClientRects().length ? "false" : "true";
     railVisibility.set(rail, Boolean(rail.getClientRects().length));

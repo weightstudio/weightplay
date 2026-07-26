@@ -249,8 +249,8 @@
     const layoutWidth = responsiveCanvas
       ? Math.max(1, scrollportWidth, window.innerWidth || 0, window.visualViewport?.width || 0)
       : Math.max(1, scrollportWidth);
-    const width = responsiveCanvas ? Math.min(layoutWidth, 920) : layoutWidth;
-    const frameLeft = responsiveCanvas ? Math.max(0, (layoutWidth - width) / 2) : 0;
+    const width = responsiveCanvas || mainCanvas ? Math.min(layoutWidth, 920) : layoutWidth;
+    const frameLeft = responsiveCanvas || mainCanvas ? Math.max(0, (layoutWidth - width) / 2) : 0;
     const height = responsiveCanvas || mainCanvas
       ? Math.max(1, document.documentElement.clientHeight || 0, window.innerHeight || 0, window.visualViewport?.height || 0)
       : Math.max(1, window.innerHeight || document.documentElement.clientHeight);
@@ -259,9 +259,9 @@
     const minimumWidth = landscape ? 844 : widePortrait ? 520 : LOGICAL_WIDTH;
     const minimumHeight = landscape ? 390 : widePortrait ? 720 : LOGICAL_HEIGHT;
     const referenceScale = Math.min(width / minimumWidth, height / minimumHeight);
-    const scale = referenceScale;
-    const logicalWidth = responsiveCanvas || mainCanvas ? width / scale : LOGICAL_WIDTH;
-    const logicalHeight = responsiveCanvas || mainCanvas ? height / scale : LOGICAL_HEIGHT;
+    const scale = mainCanvas ? 1 : referenceScale;
+    const logicalWidth = mainCanvas ? width : responsiveCanvas ? width / scale : LOGICAL_WIDTH;
+    const logicalHeight = mainCanvas ? height : responsiveCanvas ? height / scale : LOGICAL_HEIGHT;
     dom.gameCanvas.style.setProperty("--scale", String(scale));
     dom.gameCanvas.style.width = `${logicalWidth}px`;
     dom.gameCanvas.style.height = `${logicalHeight}px`;

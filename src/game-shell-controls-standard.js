@@ -1,13 +1,13 @@
 (function () {
   "use strict";
 
-  if (document.querySelector("[data-wp-locale-route]")) return;
+  const sharedAssetBase = new URL(".", document.currentScript?.src || location.href);
   const ownedSettingsButton = document.querySelector("#audioMenuBtn[aria-controls='audioPopover']");
   const ownedSettingsGroup = ownedSettingsButton?.closest(".settings-control");
   if (ownedSettingsButton && ownedSettingsGroup?.querySelector("#audioPopover #localeSelect")) {
     ownedSettingsButton.dataset.wpSettings = "true";
     ownedSettingsGroup.dataset.wpSettingsControl = "true";
-    return;
+    ownedSettingsGroup.classList.add("wp-shell-legacy-control");
   }
   if (document.documentElement.dataset.wpShellControlsInstalled === "true") return;
   document.documentElement.dataset.wpShellControlsInstalled = "true";
@@ -53,11 +53,11 @@
   ];
   const MAIN_POSTER_SELECTORS = [
     ".wonder-main-cover", "img.cover", "img.main-cover", "img.main-poster",
-    "img.menu-poster", ".main-cover img", ".hero img", ".menu-hero img",
+    "img.menu-poster", "img.poster", ".poster img", ".main-cover img", ".hero img", ".menu-hero img",
     ".poster-wrap > img", "picture img",
   ];
   const MAIN_SUMMARY_SELECTORS = [
-    ".main-summary", ".main-description", ".summary", ".tagline",
+    ".wp-standard-main-summary", ".main-summary", ".main-description", ".summary", ".tagline",
     "[data-ui='menuHint']", "#menuHint", ".menu-copy p", ".hero-copy p",
     ".poster-copy p", ".poster-copy strong", ".main-copy p", "#intro",
   ];
@@ -65,6 +65,38 @@
     ".main-progress", "#mainProgress", ".campaign-progress", ".stage-progress",
     "#progress", "[data-wp-main-progress]",
   ];
+  const STAGE_CARD_SELECTORS = [
+    ".stage-card", ".mission-card", ".route-card", ".region-card", ".day-card",
+    ".raid-card", ".zone-card", ".expedition-card", ".merge-stage-card",
+    ".page-card", ".challenge", ".zone-node",
+  ];
+  const STAGE_RAIL_SELECTORS = [
+    "[data-wp-stage-rail]", "#stageRail", "#levelGrid", "#missionGrid", "#routeRail",
+    "#regionRail", "#dayRail", "#stageGrid", "#zoneRow", "#expeditionRail",
+    ".stage-rail", ".world-map-grid",
+  ];
+
+  function ensureStageSelectorRuntime() {
+    if (!STAGE_RAIL_SELECTORS.some((selector) => document.querySelector(selector))) return;
+    if (!document.querySelector('link[href*="stage-selector-standard.css"]')) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = new URL("stage-selector-standard.css", sharedAssetBase).href;
+      link.dataset.wpStageStandard = "true";
+      document.head.append(link);
+    }
+    if (!document.querySelector('script[src*="stage-selector-standard.js"]')) {
+      const script = document.createElement("script");
+      script.src = new URL("stage-selector-standard.js", sharedAssetBase).href;
+      script.dataset.wpStageStandard = "true";
+      document.body.append(script);
+    }
+  }
+  const PROGRESS_LABEL = {
+    en: "Stage", "zh-Hant": "關卡", "zh-Hans": "关卡", ja: "ステージ",
+    ko: "스테이지", es: "Nivel", "pt-BR": "Fase", fr: "Niveau",
+    de: "Level", it: "Livello", ru: "Уровень", hi: "स्तर", ar: "المرحلة",
+  };
 
   let host;
   let button;
@@ -235,13 +267,28 @@
     }
   }
 
+  function normalizeBattleReturns() {
+    document.querySelectorAll(
+      "#battle,#battleScreen,#battleView,[data-screen='battle'],.battle-screen",
+    ).forEach((screen) => {
+      const header = first(HEADER_SELECTORS, screen);
+      if (!header) return;
+      normalizeReturn(header);
+      const control = first(RETURN_SELECTORS, header);
+      if (control) control.dataset.wpReturn = "battle";
+    });
+  }
+
   function conciseCopy(text) {
     const normalized = (text || "").replace(/\s+/g, " ").trim();
     if (!normalized) return "";
     const cjk = (normalized.match(/[\u3040-\u30ff\u3400-\u9fff\uac00-\ud7af]/g) || []).length;
     if (cjk) return normalized.length <= 48 ? normalized : `${normalized.slice(0, 47).trim()}…`;
     const words = normalized.split(/\s+/);
-    return words.length <= 24 ? normalized : `${words.slice(0, 24).join(" ").replace(/[,:;.!?]+$/, "")}…`;
+    const wordLimited = words.length <= 24 ? normalized : `${words.slice(0, 24).join(" ").replace(/[,:;.!?]+$/, "")}…`;
+    if (wordLimited.length <= 150) return wordLimited;
+    const clipped = wordLimited.slice(0, 149).replace(/\s+\S*$/, "").replace(/[,:;.!?]+$/, "");
+    return `${clipped}…`;
   }
 
   function directBranch(root, node) {
@@ -254,6 +301,13 @@
     if (!screen) return;
     let start = firstVisible(MAIN_START_SELECTORS, screen);
     let poster = firstVisible(MAIN_POSTER_SELECTORS, screen);
+    const existingStandardScreen = start?.closest(".wp-standard-main-screen");
+    if (existingStandardScreen?.contains(poster)) {
+      const existingSummary = first(MAIN_SUMMARY_SELECTORS, existingStandardScreen);
+      if (existingSummary) existingSummary.textContent = conciseCopy(existingSummary.textContent);
+      ensureMainProgress(existingStandardScreen);
+      return;
+    }
     if ((screen === document.body || screen === document.documentElement) && start && poster) {
       const ancestors = new Set();
       for (let node = poster.parentElement; node && node !== document.body; node = node.parentElement) ancestors.add(node);
@@ -303,6 +357,10 @@
       copyPane.append(progress);
     }
     start.classList.add("wp-standard-main-start");
+    start.style.setProperty("width", "100%", "important");
+    start.style.setProperty("height", "52px", "important");
+    start.style.setProperty("min-height", "52px", "important");
+    start.style.setProperty("max-height", "52px", "important");
     copyPane.append(start);
     composition.append(posterPane, copyPane);
 
@@ -322,10 +380,36 @@
       }
     });
     screen.classList.add("wp-standard-main-screen");
+    ensureMainProgress(screen);
+  }
+
+  function ensureMainProgress(screen) {
+    const copy = screen?.querySelector(".wp-standard-main-copy");
+    const start = copy && first(MAIN_START_SELECTORS, copy);
+    if (!copy || !start) return;
+    const existingProgress = first(MAIN_PROGRESS_SELECTORS, copy);
+    if (existingProgress && existingProgress.dataset.wpMainProgress !== "generated") return;
+    const cards = STAGE_CARD_SELECTORS.flatMap((selector) => [...document.querySelectorAll(selector)])
+      .filter((card, index, all) => all.indexOf(card) === index);
+    const ownsStage = STAGE_RAIL_SELECTORS.some((selector) => document.querySelector(selector));
+    if (cards.length < 2 && !ownsStage) return;
+    const total = cards.length >= 2 ? cards.length : 30;
+    const unlocked = cards.filter((card) => (
+      !card.disabled
+      && card.getAttribute("aria-disabled") !== "true"
+      && !card.classList.contains("locked")
+      && !card.classList.contains("is-locked")
+    )).length;
+    const progress = existingProgress || document.createElement("div");
+    progress.classList.add("wp-standard-main-progress");
+    progress.dataset.wpMainProgress = "generated";
+    progress.textContent = `${PROGRESS_LABEL[localeCode()] || PROGRESS_LABEL.en} ${Math.max(1, unlocked)} / ${total}`;
+    if (!existingProgress) copy.insertBefore(progress, start);
   }
 
   function place() {
     adoptControls();
+    normalizeBattleReturns();
     const { type, screen } = activeScreen();
     if (type === "main") normalizeMainLayout(screen);
     let header = firstVisible(HEADER_SELECTORS, screen) || firstVisible(HEADER_SELECTORS, document);
@@ -353,6 +437,21 @@
       generatedTitle.setAttribute("aria-label", generatedTitle.textContent);
       if (generatedTitle.parentElement !== header) header.append(generatedTitle);
     }
+    if (!firstVisible(["h1", "h2", "strong"], header)) {
+      const sourceTitle = [...screen.querySelectorAll("h1,h2")].find((node) => visible(node) && !header.contains(node));
+      if (!generatedTitle) {
+        generatedTitle = document.createElement("strong");
+        generatedTitle.className = "wp-generated-main-title";
+      }
+      generatedTitle.textContent = sourceTitle?.textContent?.trim() || document.title.split(/[|\-]/)[0].trim();
+      generatedTitle.setAttribute("aria-label", generatedTitle.textContent);
+      header.append(generatedTitle);
+    }
+    const canonicalTitle = firstVisible([".wp-generated-main-title", "h1", "h2", "strong"], header);
+    if (canonicalTitle && !canonicalTitle.closest(".wp-shell-settings,.wp-shell-return")) {
+      canonicalTitle.classList.add("wp-shell-main-title");
+      if (canonicalTitle.parentElement !== header) header.append(canonicalTitle);
+    }
     if (header !== currentHeader || host.parentElement !== header) {
       currentHeader?.classList.remove("wp-shell-header", "wp-main-shell-header", "wp-stage-shell-header");
       currentHeader = header;
@@ -367,6 +466,7 @@
 
   function init() {
     window.__weightPlayShellControlsPhase = "init";
+    ensureStageSelectorRuntime();
     build();
     place();
     const observer = new MutationObserver(() => requestAnimationFrame(place));

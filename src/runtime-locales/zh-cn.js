@@ -4208,6 +4208,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
   "Drag the rail and choose an unlocked zone.": "拖动导轨并选择一个解锁区域。",
   "Drag the rail. A glowing frame marks the centered chamber.": "拖动导轨。一个发光的框架标志着中心室。",
   "Drag the rail. Choose any unlocked mission.": "拖动导轨。选择任何解锁的任务。",
+  "Drag the rail. Tap an unlocked glowing card to enter its race.": "拖动导轨。点击一张解锁的发光卡即可参加比赛。",
   "Drag the rail. The centred glowing card is selected.": "拖动导轨。选择居中的发光卡。",
   "Drag the rail. The glowing card is the selected race.": "拖动导轨。发光的卡片是所选的种族。",
   "Drag the red knob, slide across the sea, or use Left and Right to follow the moving green band.": "拖动红色旋钮，滑过大海，或使用向左和向右跟随移动的绿色带。",

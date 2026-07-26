@@ -13,6 +13,7 @@ body { background: #0e1b2c; color: var(--ink); touch-action: none; }
 body.safari-main { height: auto; min-height: 100%; overflow-y: auto; touch-action: pan-y; }
 body.safari-main .viewport { position: relative; height: 100vh; min-height: 568px; }
 body:not(.safari-main) > .game-page-info { display: none; }
+body:not(.safari-main) #mainScreen.wp-standard-main-screen { display: none !important; }
 button, a { font: inherit; -webkit-tap-highlight-color: transparent; }
 button { border: 0; cursor: pointer; color: inherit; }
 

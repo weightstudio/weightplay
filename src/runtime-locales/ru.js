@@ -4208,6 +4208,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "Drag the rail and choose an unlocked zone.": "Перетащите рельс и выберите разблокированную зону.",
   "Drag the rail. A glowing frame marks the centered chamber.": "Перетащите рельс. Светящаяся рамка отмечает центральную камеру.",
   "Drag the rail. Choose any unlocked mission.": "Перетащите рельс. Выберите любую разблокированную миссию.",
+  "Drag the rail. Tap an unlocked glowing card to enter its race.": "Перетащите рельс. Коснитесь разблокированной светящейся карты, чтобы принять участие в гонке.",
   "Drag the rail. The centred glowing card is selected.": "Перетащите рельс. Выбрана центрированная светящаяся карта.",
   "Drag the rail. The glowing card is the selected race.": "Перетащите рельс. Светящаяся карта — выбранная раса.",
   "Drag the red knob, slide across the sea, or use Left and Right to follow the moving green band.": "Перетащите красную ручку, скользите по морю или используйте Влево и Вправо, чтобы следовать за движущейся зеленой полосой.",

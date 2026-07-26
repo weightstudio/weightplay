@@ -4208,6 +4208,7 @@ window.WeightPlayGameRuntimeLocales["pt-BR"] = {
   "Drag the rail and choose an unlocked zone.": "Arraste o trilho e escolha uma zona desbloqueada.",
   "Drag the rail. A glowing frame marks the centered chamber.": "Arraste o trilho. Uma moldura brilhante marca a câmara centralizada.",
   "Drag the rail. Choose any unlocked mission.": "Arraste o trilho. Escolha qualquer missão desbloqueada.",
+  "Drag the rail. Tap an unlocked glowing card to enter its race.": "Arraste o trilho. Toque em uma carta brilhante desbloqueada para entrar na corrida.",
   "Drag the rail. The centred glowing card is selected.": "Arraste o trilho. O cartão brilhante centralizado é selecionado.",
   "Drag the rail. The glowing card is the selected race.": "Arraste o trilho. A carta brilhante é a raça selecionada.",
   "Drag the red knob, slide across the sea, or use Left and Right to follow the moving green band.": "Arraste o botão vermelho, deslize pelo mar ou use Esquerda e Direita para seguir a faixa verde em movimento.",

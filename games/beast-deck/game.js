@@ -3278,11 +3278,13 @@
       window.WonderI18n?.setLocale?.(event.target.value);
     });
     nodes.stageGrid?.addEventListener("scroll", () => {
+      if (nodes.stageGrid.dataset.wpStageRail === "true") return;
       if (isAutoPositioningStage) return;
       window.clearTimeout(stageScrollTimer);
       stageScrollTimer = window.setTimeout(selectNearestVisibleStage, 120);
     }, { passive: true });
     nodes.stageGrid?.addEventListener("scrollend", () => {
+      if (nodes.stageGrid.dataset.wpStageRail === "true") return;
       if (isAutoPositioningStage) return;
       cancelStageSettlement();
       selectNearestVisibleStage();

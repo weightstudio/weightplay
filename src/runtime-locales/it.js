@@ -4208,6 +4208,7 @@ window.WeightPlayGameRuntimeLocales["it"] = {
   "Drag the rail and choose an unlocked zone.": "Trascina il binario e scegli una zona sbloccata.",
   "Drag the rail. A glowing frame marks the centered chamber.": "Trascina il binario. Una cornice luminosa segna la camera centrata.",
   "Drag the rail. Choose any unlocked mission.": "Trascina il binario. Scegli qualsiasi missione sbloccata.",
+  "Drag the rail. Tap an unlocked glowing card to enter its race.": "Trascina il binario. Tocca una carta luminosa sbloccata per partecipare alla sua corsa.",
   "Drag the rail. The centred glowing card is selected.": "Trascina il binario. La carta luminosa centrata è selezionata.",
   "Drag the rail. The glowing card is the selected race.": "Trascina il binario. La carta luminosa è la razza selezionata.",
   "Drag the red knob, slide across the sea, or use Left and Right to follow the moving green band.": "Trascina la manopola rossa, scivola sul mare o usa Sinistra e Destra per seguire la fascia verde in movimento.",

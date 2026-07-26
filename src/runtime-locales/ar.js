@@ -4208,6 +4208,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Drag the rail and choose an unlocked zone.": "اسحب السكة واختر منطقة غير مقفلة.",
   "Drag the rail. A glowing frame marks the centered chamber.": "اسحب السكة. إطار متوهج يمثل الغرفة المركزية.",
   "Drag the rail. Choose any unlocked mission.": "اسحب السكة. اختر أي مهمة غير مقفلة.",
+  "Drag the rail. Tap an unlocked glowing card to enter its race.": "اسحب السكة. اضغط على بطاقة متوهجة غير مقفلة للدخول في سباقها.",
   "Drag the rail. The centred glowing card is selected.": "اسحب السكة. تم تحديد البطاقة المتوهجة المركزية.",
   "Drag the rail. The glowing card is the selected race.": "اسحب السكة. البطاقة المتوهجة هي السباق المختار.",
   "Drag the red knob, slide across the sea, or use Left and Right to follow the moving green band.": "اسحب المقبض الأحمر، أو مرر عبر البحر، أو استخدم اليسار واليمين لمتابعة الشريط الأخضر المتحرك.",

@@ -53,6 +53,26 @@ body:not(.wonder-playing):not(.wonder-stage-select) .wonder-main-cover {
   object-position: center top;
 }
 
+/* Main is normal document flow; only Stage and Battle own a scaled Canvas. */
+body:not(.wonder-playing):not(.wonder-stage-select) .wonder-main-flow-slot {
+  width: min(100%, 920px) !important;
+  height: auto !important;
+}
+
+body:not(.wonder-playing):not(.wonder-stage-select) .game-shell {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  width: min(100%, 920px) !important;
+  min-width: 0 !important;
+  max-width: 920px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin-inline: auto !important;
+  transform: none !important;
+}
+
 body.wonder-stage-select:not(.wonder-playing) .game-shell {
   position: fixed !important;
   top: 0 !important;

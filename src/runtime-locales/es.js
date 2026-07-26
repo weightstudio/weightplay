@@ -4208,6 +4208,7 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Drag the rail and choose an unlocked zone.": "Arrastra el riel y elige una zona desbloqueada.",
   "Drag the rail. A glowing frame marks the centered chamber.": "Arrastra el riel. Un marco brillante marca la cámara centrada.",
   "Drag the rail. Choose any unlocked mission.": "Arrastra el riel. Elige cualquier misión desbloqueada.",
+  "Drag the rail. Tap an unlocked glowing card to enter its race.": "Arrastra el riel. Toca una tarjeta brillante desbloqueada para participar en su carrera.",
   "Drag the rail. The centred glowing card is selected.": "Arrastra el riel. Se selecciona la tarjeta brillante centrada.",
   "Drag the rail. The glowing card is the selected race.": "Arrastra el riel. La carta luminosa es la carrera seleccionada.",
   "Drag the red knob, slide across the sea, or use Left and Right to follow the moving green band.": "Arrastra la perilla roja, deslízate por el mar o usa Izquierda y Derecha para seguir la banda verde en movimiento.",

@@ -9,14 +9,21 @@
 }
 
 .wp-main-shell-header {
+  box-sizing: border-box !important;
   display: grid !important;
   grid-template-columns: 58px minmax(0, 1fr) 58px !important;
   align-items: center !important;
   gap: 8px !important;
   min-height: 56px;
+  width: min(100%, 920px) !important;
+  max-width: 920px !important;
+  margin-inline: auto !important;
+  padding: 4px 6px !important;
 }
 
 .wp-main-shell-header > :not(.wp-shell-return):not(.wp-shell-settings):not(.wp-shell-legacy-control) {
+  grid-column: 2;
+  grid-row: 1;
   min-width: 0;
 }
 
@@ -29,6 +36,19 @@
 .wp-main-shell-header > h2,
 .wp-main-shell-header > div:not(.wp-shell-settings) {
   text-align: center;
+}
+
+.wp-main-shell-header > :is(.wp-generated-main-title, .wp-shell-main-title, h1, h2, strong) {
+  position: absolute !important;
+  grid-column: 1 / -1 !important;
+  grid-row: 1 !important;
+  inset-inline: 70px !important;
+  left: 70px !important;
+  width: auto !important;
+  max-width: none !important;
+  transform: none !important;
+  text-align: center !important;
+  margin: 0 !important;
 }
 
 .wp-shell-return {
@@ -159,15 +179,21 @@
 
 .wp-standard-main-screen {
   box-sizing: border-box !important;
+  display: block;
+  grid-template: none !important;
   width: min(100%, 920px) !important;
   max-width: 920px !important;
   height: auto !important;
   min-height: 0 !important;
   margin-inline: auto !important;
+  padding: 0 !important;
+  overflow: visible !important;
 }
 
 .wp-standard-main-composition {
   box-sizing: border-box;
+  flex: 0 0 100% !important;
+  grid-column: 1 / -1;
   width: 100%;
   display: grid !important;
   grid-template-columns: 420px minmax(0, 1fr) !important;
@@ -205,8 +231,13 @@
   min-width: 0;
   height: 420px;
   display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
   align-content: center;
   gap: 14px;
+}
+
+.wp-standard-main-copy > * {
+  grid-column: 1 !important;
 }
 
 .wp-standard-main-summary {
@@ -217,12 +248,20 @@
 }
 
 .wp-standard-main-progress {
-  display: block;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center;
   width: 100%;
+  height: 44px !important;
+  min-height: 0 !important;
+  max-height: 44px !important;
+  padding-block: 0 !important;
+  overflow: hidden;
   margin: 0 !important;
 }
 
-.wp-standard-main-start {
+.wp-standard-main-start,
+.wp-standard-main-copy > [data-wp-main-start] {
   box-sizing: border-box !important;
   display: flex !important;
   align-items: center;
@@ -310,7 +349,7 @@
     width: 100% !important;
     min-width: 0 !important;
     max-width: none !important;
-    height: auto !important;
+    height: 100% !important;
     min-height: 0 !important;
     max-height: none !important;
     aspect-ratio: 1 !important;

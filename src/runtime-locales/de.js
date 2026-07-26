@@ -4208,6 +4208,7 @@ window.WeightPlayGameRuntimeLocales["de"] = {
   "Drag the rail and choose an unlocked zone.": "Ziehen Sie die Schiene und wählen Sie eine entsperrte Zone aus.",
   "Drag the rail. A glowing frame marks the centered chamber.": "Ziehen Sie die Schiene. Ein leuchtender Rahmen markiert die zentrale Kammer.",
   "Drag the rail. Choose any unlocked mission.": "Ziehen Sie die Schiene. Wählen Sie eine beliebige freigeschaltete Mission.",
+  "Drag the rail. Tap an unlocked glowing card to enter its race.": "Ziehen Sie die Schiene. Tippen Sie auf eine freigeschaltete leuchtende Karte, um am Rennen teilzunehmen.",
   "Drag the rail. The centred glowing card is selected.": "Ziehen Sie die Schiene. Die zentrierte leuchtende Karte ist ausgewählt.",
   "Drag the rail. The glowing card is the selected race.": "Ziehen Sie die Schiene. Die leuchtende Karte ist das ausgewählte Rennen.",
   "Drag the red knob, slide across the sea, or use Left and Right to follow the moving green band.": "Ziehen Sie den roten Knopf, gleiten Sie über das Meer oder folgen Sie mit Links und Rechts dem sich bewegenden grünen Band.",

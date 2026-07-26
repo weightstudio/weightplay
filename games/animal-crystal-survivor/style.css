@@ -1399,6 +1399,7 @@ body.crystal-playing .upgrade-card-wrap { max-height: 100%; overflow-y: auto; }
   gap: 10px;
   width: 100%;
   min-height: 44px;
+  max-height: 44px;
   padding: 8px 10px;
   border: 1px solid rgba(183, 244, 215, 0.34);
   border-radius: 12px;
@@ -1406,6 +1407,22 @@ body.crystal-playing .upgrade-card-wrap { max-height: 100%; overflow-y: auto; }
   color: #fffce9;
   text-align: left;
   cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.audio-setting-row > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html[dir="rtl"] .topbar {
+  direction: ltr;
+}
+
+html[dir="rtl"] .settings-popover {
+  direction: rtl;
 }
 
 .audio-setting-row svg {
