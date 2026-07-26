@@ -38,9 +38,14 @@
     "#stage", "#stageScreen", "[data-screen='stage']", ".stage-screen",
     ".stage-panel", "[data-wp-standard-stage-screen]",
   ];
+  const BATTLE_SELECTORS = [
+    "[data-wp-logical-battle-canvas]", "#battle", "#battleScreen", "#battleView",
+    "#battleShell", "#battlePage", "#gamePanel", "#playPanel", "#mainPanel",
+    "[data-screen='battle']", ".battle-screen", ".battle-shell", ".battle-page",
+  ];
   const HEADER_SELECTORS = [
     ".main-header", ".topbar", ".stage-header", ".stage-panel-head", ".stage-shell-head",
-    "header",
+    ".stage-screen-head", ".guardian-topbar", "header",
   ];
   const RETURN_SELECTORS = [
     "[data-wp-return]", ".lobby-return", ".return", ".back", "[data-back]",
@@ -240,10 +245,55 @@
 
   function activeScreen() {
     const stages = STAGE_SELECTORS.map((selector) => document.querySelector(selector)).filter(Boolean);
-    const stage = stages.find(visible);
+    const activeRail = STAGE_RAIL_SELECTORS
+      .map((selector) => document.querySelector(selector))
+      .find(visible);
+    const inferredStage = activeRail?.closest(
+      "[data-wp-logical-stage-canvas],[data-wp-standard-stage-screen],.stage-screen,.stage-panel",
+    ) || activeRail?.parentElement;
+    const stage = stages.find(visible)
+      || (document.body.matches(".wp-stage-select-active,.wp-standard-stage-page") && inferredStage);
     if (stage) return { type: "stage", screen: stage };
     const mains = MAIN_SELECTORS.map((selector) => document.querySelector(selector)).filter(Boolean);
-    return { type: "main", screen: mains.find(visible) || mains[0] || document.body };
+    const visibleStart = firstVisible(MAIN_START_SELECTORS, document);
+    const visiblePoster = firstVisible(MAIN_POSTER_SELECTORS, document);
+    let inferredMain = null;
+    if (visibleStart && visiblePoster) {
+      const ancestors = new Set();
+      for (let node = visiblePoster; node; node = node.parentElement) ancestors.add(node);
+      for (let node = visibleStart; node; node = node.parentElement) {
+        if (ancestors.has(node)) {
+          inferredMain = node;
+          break;
+        }
+      }
+    }
+    let main = mains.find(visible) || inferredMain;
+    if (!main && document.body.matches(".wp-shell-stage-active,.wp-shell-battle-active")) {
+      const standardScreen = document.querySelector(".wp-standard-main-screen");
+      const composition = standardScreen?.querySelector(".wp-standard-main-composition");
+      let nativelyAvailable = Boolean(standardScreen && composition);
+      for (
+        let node = standardScreen;
+        nativelyAvailable && node && node !== document.body;
+        node = node.parentElement
+      ) {
+        const style = getComputedStyle(node);
+        if (node.hidden || style.visibility === "hidden" || style.display === "none") {
+          nativelyAvailable = false;
+        }
+      }
+      if (nativelyAvailable) main = standardScreen;
+    }
+    const battles = BATTLE_SELECTORS.map((selector) => document.querySelector(selector)).filter(Boolean);
+    const battle = battles.find(visible);
+    const battleStateHint = document.body.matches(
+      ".playing,.is-playing,.is-game-playing,.game-playing,[class*='-playing']",
+    );
+    if (battle && (!main || battleStateHint)) return { type: "battle", screen: battle };
+    if (main) return { type: "main", screen: main };
+    if (battle) return { type: "battle", screen: battle };
+    return { type: "main", screen: mains[0] || document.body };
   }
 
   function normalizeReturn(header) {
@@ -311,6 +361,28 @@
     return branch?.parentElement === root ? branch : null;
   }
 
+  const mainFlowObservers = new WeakMap();
+
+  function syncMainFlowHeight(owner, composition) {
+    if (!owner || !composition) return;
+    const update = () => {
+      if (!owner.isConnected || !composition.isConnected) return;
+      const ownerRect = owner.getBoundingClientRect();
+      const compositionRect = composition.getBoundingClientRect();
+      const requiredHeight = Math.max(
+        0,
+        Math.ceil(compositionRect.bottom - ownerRect.top + 8),
+      );
+      owner.style.setProperty("--wp-main-flow-min-height", `${requiredHeight}px`);
+    };
+    update();
+    requestAnimationFrame(update);
+    if (mainFlowObservers.has(owner) || typeof ResizeObserver !== "function") return;
+    const observer = new ResizeObserver(update);
+    observer.observe(composition);
+    mainFlowObservers.set(owner, observer);
+  }
+
   function normalizeMainLayout(screen) {
     if (!screen) return;
     let start = firstVisible(MAIN_START_SELECTORS, screen);
@@ -320,6 +392,9 @@
       const existingSummary = first(MAIN_SUMMARY_SELECTORS, existingStandardScreen);
       if (existingSummary) existingSummary.textContent = conciseCopy(existingSummary.textContent);
       ensureMainProgress(existingStandardScreen);
+      const existingComposition = existingStandardScreen.querySelector(".wp-standard-main-composition");
+      const existingOwner = existingStandardScreen.closest(".wp-standard-main-flow-owner");
+      syncMainFlowHeight(existingOwner, existingComposition);
       return;
     }
     if ((screen === document.body || screen === document.documentElement) && start && poster) {
@@ -336,7 +411,8 @@
     start = firstVisible(MAIN_START_SELECTORS, screen);
     poster = firstVisible(MAIN_POSTER_SELECTORS, screen);
     if (!start || !poster) return;
-    (screen.closest("main") || screen).classList.add("wp-standard-main-flow-owner");
+    const flowOwner = screen.closest("main") || screen;
+    flowOwner.classList.add("wp-standard-main-flow-owner");
 
     const guide = firstVisible([".public-guide", ".game-page-info", ".guide"], screen);
     let summary = firstVisible(MAIN_SUMMARY_SELECTORS, screen);
@@ -382,6 +458,13 @@
     const header = firstVisible(HEADER_SELECTORS, screen);
     if (header?.nextSibling) header.after(composition);
     else screen.prepend(composition);
+    for (
+      let node = composition.parentElement;
+      node && node !== flowOwner;
+      node = node.parentElement
+    ) {
+      node.classList.add("wp-standard-main-flow-node");
+    }
 
     originalBranches.forEach((branch) => {
       const movedDirectly = branch === posterNode || branch === start || branch === summary || branch === progress;
@@ -403,6 +486,7 @@
     });
     screen.classList.add("wp-standard-main-screen");
     ensureMainProgress(screen);
+    syncMainFlowHeight(flowOwner, composition);
   }
 
   function ensureMainProgress(screen) {
@@ -433,21 +517,46 @@
     adoptControls();
     normalizeBattleReturns();
     const { type, screen } = activeScreen();
+    document.body.classList.toggle("wp-shell-main-active", type === "main");
+    document.body.classList.toggle("wp-shell-stage-active", type === "stage");
+    document.body.classList.toggle("wp-shell-battle-active", type === "battle");
     document.querySelectorAll(".wp-standard-main-flow-owner").forEach((owner) => {
       if (type !== "main" || (!owner.contains(screen) && !screen?.contains(owner))) {
         owner.classList.remove("wp-standard-main-flow-owner");
+        owner.style.removeProperty("--wp-main-flow-min-height");
+        mainFlowObservers.get(owner)?.disconnect();
+        mainFlowObservers.delete(owner);
+        owner.querySelectorAll(".wp-standard-main-flow-node").forEach((node) => {
+          node.classList.remove("wp-standard-main-flow-node");
+        });
       }
     });
     if (type === "main") normalizeMainLayout(screen);
     let header = firstVisible(HEADER_SELECTORS, screen);
+    if (!header && type === "stage") {
+      header = firstVisible(['[data-wp-return="stage"]'], document)?.closest("header") || null;
+    }
     if (!header) {
       header = document.createElement("header");
-      header.className = type === "stage" ? "wp-generated-stage-header" : "wp-generated-main-header";
+      header.className = type === "stage"
+        ? "wp-generated-stage-header"
+        : type === "battle"
+          ? "wp-generated-battle-header"
+          : "wp-generated-main-header";
       screen.prepend(header);
     }
     if (!header) return;
+    if (type === "battle") {
+      currentHeader?.classList.remove("wp-shell-header", "wp-main-shell-header", "wp-stage-shell-header");
+      currentHeader = header;
+      normalizeReturn(header);
+      const battleReturn = first(RETURN_SELECTORS, header);
+      if (battleReturn) battleReturn.dataset.wpReturn = "battle";
+      host.hidden = true;
+      return;
+    }
     const externalReturn = firstVisible(RETURN_SELECTORS, screen)
-      || (header.classList.contains("wp-generated-main-header") ? firstVisible(RETURN_SELECTORS, document) : null);
+      || (type === "main" && header.classList.contains("wp-generated-main-header") ? firstVisible(RETURN_SELECTORS, document) : null);
     const legacyHeader = externalReturn?.closest("header");
     if (externalReturn && !header.contains(externalReturn)) header.prepend(externalReturn);
     if (legacyHeader && legacyHeader !== header && header.classList.contains("wp-generated-main-header")) {

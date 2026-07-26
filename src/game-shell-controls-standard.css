@@ -180,6 +180,9 @@
 .wp-standard-main-screen {
   box-sizing: border-box !important;
   display: block;
+  position: relative !important;
+  inset: auto !important;
+  transform: none !important;
   grid-template: none !important;
   width: min(100%, 920px) !important;
   max-width: 920px !important;
@@ -192,9 +195,33 @@
 
 .wp-standard-main-flow-owner {
   box-sizing: border-box !important;
+  display: block !important;
+  position: relative !important;
+  inset: auto !important;
+  transform: none !important;
+  height: auto !important;
+  min-height: var(--wp-main-flow-min-height, 0px) !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.wp-standard-main-flow-owner .wp-standard-main-flow-node {
+  box-sizing: border-box !important;
+  display: block !important;
+  position: relative !important;
+  inset: auto !important;
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  transform-origin: center !important;
+  width: 100% !important;
+  max-width: 920px !important;
   height: auto !important;
   min-height: 0 !important;
   max-height: none !important;
+  margin-inline: auto !important;
   overflow: visible !important;
 }
 
@@ -284,6 +311,10 @@
 }
 
 .wp-main-legacy-layout {
+  display: none !important;
+}
+
+body:is(.wp-shell-stage-active, .wp-shell-battle-active) .wp-standard-main-composition {
   display: none !important;
 }
 

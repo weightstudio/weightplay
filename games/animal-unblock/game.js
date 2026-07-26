@@ -199,7 +199,16 @@
     $("board").innerHTML = cells;
     blocks.forEach((block, blockIndex) => {
       const element = document.createElement("button");
-      element.className = `block ${block.hero ? "hero" : ""} ${block.dir ? "v" : "h"}`;
+      const artClass = block.hero
+        ? "art-hero"
+        : block.dir
+          ? blockIndex % 2
+            ? "art-amber"
+            : "art-jade"
+          : blockIndex % 2
+            ? "art-moss"
+            : "art-sky";
+      element.className = `block ${block.hero ? "hero" : ""} ${block.dir ? "v" : "h"} ${artClass}`;
       element.textContent = block.hero ? "P" : "";
       element.style.gridColumn = `${block.x + 1}/span ${block.w}`;
       element.style.gridRow = `${block.y + 1}/span ${block.h}`;

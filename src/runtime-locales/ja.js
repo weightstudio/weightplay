@@ -4045,7 +4045,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Development and Design Notes": "開発および設計ノート",
   "Development Note": "開発ノート",
   "Devuelto a la bandeja": "デブエルト・ア・ラ・バンデハ",
-  "Di cosa aveva bisogno l'animale? Toccalo per guardare di nuovo.": "ディ・コサ・アヴェヴァ・ビソーニョ・アニメーレ?トッカロ ペル グアルダーレ ディ ヌオーヴォ。",
+  "Di cosa aveva bisogno l'animale? Toccalo per guardare di nuovo.": "ディ・コサ・アヴェヴァ・ビソーニョ・アニメーレ？トッカロ ペル グアルダーレ ディ ヌオーヴォ。",
   "Diamanten": "ディアマンテン",
   "Diamantes": "ディアマンテス",
   "Diamanti": "ディアマンティ",

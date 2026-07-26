@@ -59,6 +59,10 @@ body:not(.wonder-playing):not(.wonder-stage-select) .wonder-main-flow-slot {
   height: auto !important;
 }
 
+body:not(.wonder-playing) #game {
+  display: none !important;
+}
+
 body:not(.wonder-playing):not(.wonder-stage-select) .game-shell {
   position: relative !important;
   top: auto !important;

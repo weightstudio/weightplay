@@ -1,8 +1,8 @@
 ﻿(function () {
   const LOCALES = [
     ["en", "English"],
-    ["zh-Hant", "�c��"],
-    ["zh-Hans", "?��"],
+    ["zh-Hant", "繁體中文"],
+    ["zh-Hans", "简体中文"],
   ];
 
   function $(id) { return document.getElementById(id); }
@@ -297,7 +297,7 @@
     renderHud() {
       if (!this.run) return;
       if (!this.els.hudTop) return;
-      this.els.hudTop.textContent = `${t(this.locale, this.config.copy, 'moves')} ${this.run.moves || 0}${this.run.movesLimit ? ` / ${this.run.movesLimit}` : ''} �P ${t(this.locale, this.config.copy, 'score')} ${this.run.score || 0}`;
+      this.els.hudTop.textContent = `${t(this.locale, this.config.copy, 'moves')} ${this.run.moves || 0}${this.run.movesLimit ? ` / ${this.run.movesLimit}` : ''} · ${t(this.locale, this.config.copy, 'score')} ${this.run.score || 0}`;
     }
 
     renderBoard() {

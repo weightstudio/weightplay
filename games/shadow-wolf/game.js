@@ -169,7 +169,7 @@
       workshopButton.setAttribute("aria-controls", "stageManagementPanel");
       workshopButton.setAttribute("aria-expanded", "false");
       workshopButton.dataset.ui = "diamondShopTitle";
-      workshopButton.textContent = "Permanent Upgrade";
+      workshopButton.textContent = t("diamondShopTitle");
       nodes.mapPanel?.querySelector(".stage-header")?.append(workshopButton);
     }
 
