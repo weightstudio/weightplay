@@ -1017,8 +1017,29 @@ body.orb-fortress-playing .sound-toggle{display:none!important}
    responsive Canvas may widen the middle tracks, but no control may wrap into
    the arena track at any viewport. */
 body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel .hud-row {
-  grid-template-columns: 48px repeat(3, minmax(0, 1fr)) 48px !important;
+  width: calc(100% - 53px);
+  margin-left: 53px;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) 48px !important;
   grid-template-rows: 54px !important;
+}
+
+body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel > .wp-generated-battle-header {
+  position: absolute !important;
+  z-index: 4;
+  top: 8px !important;
+  left: 8px !important;
+  display: grid;
+  place-items: start;
+  width: 48px;
+  height: 54px;
+  margin: 0 !important;
+}
+
+body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel > .wp-generated-battle-header #battleBackBtn.wp-shell-return {
+  width: 48px !important;
+  min-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
 }
 
 body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel .hud-row .pause-btn {
@@ -1120,13 +1141,13 @@ body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel .hud-ro
 
   body.orb-fortress-playing #gamePanel.game-panel {
     grid-template-columns: minmax(0, 1fr) !important;
-    grid-template-rows: 96px minmax(0, 1fr) 72px !important;
+    grid-template-rows: 96px minmax(0, 1fr) 44px !important;
     gap: 10px !important;
     padding: 14px !important;
   }
 
   html body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel {
-    grid-template-rows: 96px minmax(0, 1fr) 72px !important;
+    grid-template-rows: 96px minmax(0, 1fr) 44px !important;
     gap: 10px !important;
     padding: 14px !important;
   }
@@ -1134,13 +1155,17 @@ body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel .hud-ro
   body.orb-fortress-playing #gamePanel.game-panel #battleLive .hud-row {
     grid-column: 1;
     grid-row: 1;
-    grid-template-columns: 96px repeat(3, minmax(0, 1fr)) 96px !important;
+    width: calc(100% - 106px);
+    margin-left: 106px;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) 96px !important;
     grid-template-rows: 96px !important;
     gap: 10px;
   }
 
   html body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battleLive .hud-row {
-    grid-template-columns: 96px repeat(3, minmax(0, 1fr)) 96px !important;
+    width: calc(100% - 106px);
+    margin-left: 106px;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) 96px !important;
     grid-template-rows: 96px !important;
     gap: 10px !important;
   }
@@ -1162,6 +1187,21 @@ body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel .hud-ro
     font-size: 2rem;
   }
 
+  body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel > .wp-generated-battle-header {
+    top: 14px !important;
+    left: 14px !important;
+    width: 96px;
+    height: 96px;
+  }
+
+  body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel > .wp-generated-battle-header #battleBackBtn.wp-shell-return {
+    width: 96px !important;
+    min-width: 96px !important;
+    height: 96px !important;
+    min-height: 96px !important;
+    font-size: 2rem;
+  }
+
   body.orb-fortress-playing #gamePanel.game-panel #battleLive #gameCanvas {
     grid-column: 1;
     grid-row: 2;
@@ -1175,8 +1215,8 @@ body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel .hud-ro
     grid-column: 1;
     grid-row: 3;
     align-self: stretch;
-    min-height: 72px;
-    padding: 12px 20px;
+    min-height: 44px;
+    padding: 6px 20px;
     font-size: 1.7rem;
     line-height: 1.35;
     white-space: nowrap;
@@ -1184,8 +1224,8 @@ body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel .hud-ro
 
   html body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battleLive .hint {
     grid-row: 3 !important;
-    height: 72px !important;
-    min-height: 72px !important;
+    height: 44px !important;
+    min-height: 44px !important;
   }
 
   body.orb-fortress-playing #pausePanel .pause-card {

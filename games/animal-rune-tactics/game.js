@@ -1227,6 +1227,7 @@
   let profile = loadProfile();
   let state = null;
   let claimedRewardId = null;
+  let resultDecisionCommitted = false;
   let gridCursor = { x: 0, y: 0 };
   let turnTransitionTimer = 0;
   let turnTransitionTask = null;
@@ -2714,7 +2715,15 @@
     return true;
   }
 
+  function commitResultDecision(action) {
+    if (resultDecisionCommitted || nodes.resultPanel.classList.contains("is-hidden")) return false;
+    resultDecisionCommitted = true;
+    action();
+    return true;
+  }
+
   function showResult(win) {
+    resultDecisionCommitted = false;
     clearTurnTransition();
     nodes.rewardPanel.classList.add("is-hidden");
     nodes.gamePanel.classList.add("is-hidden");
@@ -3071,12 +3080,12 @@
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
       keepDialogFocus(nodes.resultPanel, event);
     });
-    nodes.nextBtn.addEventListener("click", () => {
+    nodes.nextBtn.addEventListener("click", () => commitResultDecision(() => {
       selectedMission = Math.min(missionDefs.length, state.mission + 1);
       startMission(selectedMission);
-    });
-    nodes.retryBtn.addEventListener("click", () => startMission(state?.mission || selectedMission));
-    nodes.menuBtn.addEventListener("click", showMenu);
+    }));
+    nodes.retryBtn.addEventListener("click", () => commitResultDecision(() => startMission(state?.mission || selectedMission)));
+    nodes.menuBtn.addEventListener("click", () => commitResultDecision(showMenu));
   }
 
   function boot() {

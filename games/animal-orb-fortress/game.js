@@ -567,6 +567,7 @@
   let soundAt = {};
   let preloadFinished = false;
   let pauseFocusOwner = null;
+  let resultDecisionCommitted = false;
 
   function t(key, data = {}) {
     const actualLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale;
@@ -1845,6 +1846,7 @@
   function finishRaid(win) {
     if (state.mode === "result") return;
     state.mode = "result";
+    resultDecisionCommitted = false;
     backgroundSuspended = false;
     cancelAnimationFrame(raf);
     const stones = Math.max(1, state.stonesEarned + state.bonusStones + (win ? 5 : 1));
@@ -1877,6 +1879,12 @@
     renderMenu();
     playSound(win ? "success" : "wrong", 0.2);
     window.WonderAnalytics?.track("raid_result", { game_id: GAME_ID, win, wave: Math.min(3, state.wave), stones });
+  }
+
+  function commitResultDecision(action) {
+    if (resultDecisionCommitted || state.mode !== "result" || nodes.resultPanel.classList.contains("is-hidden")) return;
+    resultDecisionCommitted = true;
+    action();
   }
 
   function drawAtlas(img, index, count, x, y, size) {
@@ -2127,9 +2135,11 @@
     const tier = Number(event.target?.closest?.("[data-tier]")?.dataset?.tier);
     if (tier && tier <= Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1))) startRaid(tier);
   });
-  nodes.retryBtn.addEventListener("click", () => startRaid(state.raidTier));
+  nodes.retryBtn.addEventListener("click", () => commitResultDecision(() => startRaid(state.raidTier)));
   nodes.nextStageBtn.addEventListener("click", () => {
-    if (!nodes.nextStageBtn.disabled && state.raidTier < MAX_RAID_TIER) startRaid(state.raidTier + 1);
+    if (!nodes.nextStageBtn.disabled && state.raidTier < MAX_RAID_TIER) {
+      commitResultDecision(() => startRaid(state.raidTier + 1));
+    }
   });
   nodes.mapBtn.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
@@ -2167,8 +2177,11 @@
     }
   });
   nodes.resultMenuBtn.addEventListener("click", () => {
-    show(nodes.stagePanel);
-    renderMenu();
+    commitResultDecision(() => {
+      state.mode = "stage";
+      show(nodes.stagePanel);
+      renderMenu();
+    });
   });
   nodes.resultPanel.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) {

@@ -608,6 +608,8 @@
     const current = window.WonderI18n?.actualLocale?.();
     const requested = next === "zh-Hant" && current === "zh-Hans" ? current : next || "en";
     locale = window.WonderI18n?.legacyLocale?.(requested) || requested;
+    if (requested === "es") document.body.dataset.runtimeLocalize = "off";
+    else delete document.body.dataset.runtimeLocalize;
     storageWrite(localeKey, requested);
     document.documentElement.lang = window.WonderI18n?.actualLocale?.() || requested;
     document.querySelectorAll("[data-ui]").forEach((node) => {

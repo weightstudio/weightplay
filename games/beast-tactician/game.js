@@ -1290,6 +1290,7 @@
   let toastRemaining = 0;
   let battleFrame = 0;
   let battleWindowFocused = document.hasFocus();
+  let resultDecisionCommitted = false;
 
   function currentStartTile() {
     return state.stage?.route?.start || startTile;
@@ -3011,6 +3012,13 @@
     return primaryAction;
   }
 
+  function commitResultDecision(action) {
+    if (resultDecisionCommitted || state.screen !== "result" || nodes.resultPanel.classList.contains("is-hidden")) return false;
+    resultDecisionCommitted = true;
+    action();
+    return true;
+  }
+
   function tileDistance(a, b) {
     return Math.hypot(a.x - b.x, a.y - b.y);
   }
@@ -3044,6 +3052,7 @@
     nodes.nextStageBtn.classList.toggle("is-hidden", stage.id >= STAGE_COUNT);
     nodes.reviveBtn.classList.add("is-hidden");
     renderResultReward();
+    resultDecisionCommitted = false;
     setScreen("result");
     playSfx("victory");
     track("game_complete", { stage: stage.id, core_hp: Math.max(0, Math.ceil(state.coreHp)), waves: stage.waves, stars });
@@ -3065,6 +3074,7 @@
     nodes.reviveBtn.disabled = state.revived || state.save.diamonds < 5;
     nodes.skillReportText.textContent = resultSkillReport(false);
     nodes.nextStageBtn.classList.add("is-hidden");
+    resultDecisionCommitted = false;
     setScreen("result");
     playSfx("defeat");
     track("game_fail", { stage: state.currentStage, wave: state.wave, core_hp: Math.max(0, Math.ceil(state.coreHp)) });
@@ -4104,20 +4114,26 @@
       syncBattleLoop();
     });
     nodes.retryBtn.addEventListener("click", () => {
-      track("game_restart", { stage: state.currentStage });
-      startStage(state.currentStage);
+      commitResultDecision(() => {
+        track("game_restart", { stage: state.currentStage });
+        startStage(state.currentStage);
+      });
     });
     nodes.resultMenuBtn.addEventListener("click", () => {
-      track("game_result_menu", { stage: state.currentStage, won: state.won });
-      setScreen("stages");
-      renderStages();
-      focusCurrentStage();
+      commitResultDecision(() => {
+        track("game_result_menu", { stage: state.currentStage, won: state.won });
+        setScreen("stages");
+        renderStages();
+        focusCurrentStage();
+      });
     });
     nodes.rerollRewardBtn.addEventListener("click", rerollReward);
     nodes.nextStageBtn.addEventListener("click", () => {
-      const nextStage = Math.min(STAGE_COUNT, state.currentStage + 1);
-      track("game_next_stage", { stage: state.currentStage, next_stage: nextStage });
-      startStage(nextStage);
+      commitResultDecision(() => {
+        const nextStage = Math.min(STAGE_COUNT, state.currentStage + 1);
+        track("game_next_stage", { stage: state.currentStage, next_stage: nextStage });
+        startStage(nextStage);
+      });
     });
     nodes.soundBtn?.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();

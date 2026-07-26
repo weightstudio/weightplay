@@ -322,6 +322,7 @@
   let marks = readStoredInteger("aht-marks", 0, 0, Number.MAX_SAFE_INTEGER - 9);
   let mastery = readStoredInteger("aht-mastery", 0, 0, Math.floor((Number.MAX_SAFE_INTEGER - 9) / 4));
   let run = null;
+  let resultDecisionCommitted = false;
   let frame = 0;
   let rerollConfirmTimer = 0;
   let rerollConfirmDueAt = 0;
@@ -585,6 +586,14 @@
       else layer.removeAttribute("aria-hidden");
     });
     if (open && focusPrimary) requestAnimationFrame(() => $("#resultNext").focus({ preventScroll: true }));
+  }
+
+  function commitResultDecision(action) {
+    if (resultDecisionCommitted || $("#resultModal").classList.contains("hidden")) return false;
+    resultDecisionCommitted = true;
+    [$("#resultNext"), $("#resultHome")].forEach((button) => { button.disabled = true; });
+    action();
+    return true;
   }
 
   function localize() {
@@ -1059,6 +1068,8 @@
     cancelAnimationFrame(frame);
     const terminalVictory = won && run.stage >= TRIAL_COUNT;
     $("#resultHome").hidden = terminalVictory;
+    resultDecisionCommitted = false;
+    [$("#resultNext"), $("#resultHome")].forEach((button) => { button.disabled = false; });
     if (won) {
       const gain = run.definition.reward;
       const previousUnlocked = unlocked;
@@ -1077,8 +1088,10 @@
       $("#resultCopy").textContent = `${interpolate("earnedMarks", { gain, total: marks })} ${unlockCopy} ${masteryCopy}`;
       $("#resultNext").textContent = run.stage < TRIAL_COUNT ? t("next") : t("menu");
       $("#resultNext").onclick = () => {
-        if (run.stage < TRIAL_COUNT) startTrial(run.stage + 1);
-        else { show("main"); localize(); focusMain(); }
+        commitResultDecision(() => {
+          if (run.stage < TRIAL_COUNT) startTrial(run.stage + 1);
+          else { show("main"); localize(); focusMain(); }
+        });
       };
     } else {
       $("#resultTitle").textContent = t("fail");
@@ -1086,7 +1099,7 @@
         ? `${heroName(run.heroId)}\u9700\u8981\u518d\u8a66\u4e00\u6b21\u3002`
         : interpolate("failCopy", { hero: heroName(run.heroId) });
       $("#resultNext").textContent = t("retry");
-      $("#resultNext").onclick = () => startTrial(run.stage);
+      $("#resultNext").onclick = () => commitResultDecision(() => startTrial(run.stage));
     }
     setResultModal(true);
     playSound(won ? "win" : "wrong");
@@ -1291,7 +1304,7 @@
   });
   $("#rerollBtn").addEventListener("keydown",(event)=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
   $("#rerollBtn").onclick = rerollBlessings;
-  $("#resultHome").onclick = () => { playSound("click"); show("main"); localize(); focusMain(); };
+  $("#resultHome").onclick = () => commitResultDecision(() => { playSound("click"); show("main"); localize(); focusMain(); });
   $("#quitKeep").onclick = () => closeQuitDecision(true);
   $("#quitLeave").onclick = () => {
     const stage = run?.stage || Math.min(TRIAL_COUNT, unlocked);

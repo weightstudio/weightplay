@@ -85,7 +85,7 @@
   const CHAPTERS = ["openShelf","vineGallery","crystalRoom","mysteryLoft","shiftingHall","grandFinale"];
   const ITEM_NAMES = ["Acorn Lantern","Moon Cup","Shell Compass","Berry Brooch","Cloud Jar","Prism Flower","Star Telescope","Leaf Locket","Coral Music Box","Bee Bell","Mushroom Lamp","Crystal Feather"];
   const ITEM_NAMES_ZH_HANT = ["橡果提燈","月光杯","貝殼羅盤","莓果胸針","雲朵罐","稜鏡花","星光望遠鏡","葉片墜飾","珊瑚音樂盒","蜜蜂鈴","蘑菇燈","水晶羽毛"];
-  let locale = "en", screen = "main", stageIndex = 0, run = null, audio = null, centeredTimer = 0;
+  let locale = "en", screen = "main", stageIndex = 0, run = null, audio = null, centeredTimer = 0, resultDecisionCommitted = false;
   let pendingMatch = null;
   let save = loadSave();
 
@@ -406,6 +406,13 @@
     els.feedback.textContent = t("shuffled"); sound("shuffle");
   }
   function checkEnd() { if (!run.pieces.some(p => p.active && !p.tray) && run.tray.length === 0) finish(true); }
+  function commitResultDecision(action) {
+    if (resultDecisionCommitted || els.resultModal.hidden) return false;
+    resultDecisionCommitted = true;
+    [els.retryBtn, els.nextBtn, els.resultStages].forEach(button => { button.disabled = true; });
+    action();
+    return true;
+  }
   function finish(win) {
     if (run.ended) return;
     cancelPendingMatch();
@@ -422,6 +429,8 @@
     els.resultText.textContent = win ? t("winText", { n: stageIndex + 1, stars }) : t("failText");
     els.skillText.textContent = win ? t(free >= 4 ? "skillGreat" : "skillSteady", { n: free || run.matches }) : t("skillSteady", { n: run.matches });
     els.nextBtn.hidden = !win || stageIndex >= 29;
+    resultDecisionCommitted = false;
+    [els.retryBtn, els.nextBtn, els.resultStages].forEach(button => { button.disabled = false; });
     openModal(els.resultModal, win && stageIndex < 29 ? els.nextBtn : els.retryBtn);
     sound(win ? "win" : "fail"); track(win ? "game_complete" : "game_fail", { stage: stageIndex + 1, stars });
   }
@@ -499,9 +508,9 @@
   els.helpBtn.addEventListener("click", () => { if (!run) return; run.paused = true; openModal(els.tutorialModal, els.tutorialClose); });
   els.tutorialClose.addEventListener("click", () => { save.tutorial = true; persist(); closeModal(els.tutorialModal, els.helpBtn); });
   els.undoBtn.addEventListener("click", undo); els.magnetBtn.addEventListener("click", magnet); els.shuffleBtn.addEventListener("click", shuffleTool);
-  els.retryBtn.addEventListener("click", () => startBattle(stageIndex, true));
-  els.nextBtn.addEventListener("click", () => startBattle(Math.min(29, stageIndex + 1), true));
-  els.resultStages.addEventListener("click", () => { cancelPendingMatch(); els.resultModal.hidden = true; isolateBattle(false); run = null; setScreen("stage"); });
+  els.retryBtn.addEventListener("click", () => commitResultDecision(() => startBattle(stageIndex, true)));
+  els.nextBtn.addEventListener("click", () => commitResultDecision(() => startBattle(Math.min(29, stageIndex + 1), true)));
+  els.resultStages.addEventListener("click", () => commitResultDecision(() => { cancelPendingMatch(); els.resultModal.hidden = true; isolateBattle(false); run = null; setScreen("stage"); }));
   els.soundBtn.addEventListener("click", () => { save.sound = !save.sound; persist(); renderRun(); if (save.sound) sound("pick"); });
   els.tutorialModal.addEventListener("keydown", e => trap(e, () => closeModal(els.tutorialModal, els.helpBtn)));
   els.leaveModal.addEventListener("keydown", e => trap(e, () => closeModal(els.leaveModal, els.battleBack)));
