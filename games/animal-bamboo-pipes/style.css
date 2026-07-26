@@ -42,3 +42,73 @@
 .pipe[data-shape="goal"]{--atlas-x:35.42%;--atlas-y:85%}
 .pipe.target{cursor:default}
 .pipe.target::before{inset:-1px;background:url('../../assets/animal-bamboo-pipes-goal-v2.png') center/cover no-repeat;transform:none}
+
+/* Canonical Main → Stage → Battle ownership. */
+.main-group{max-width:920px;margin:0 auto}
+.main-group[hidden],.public-guide[hidden]{display:none!important}
+.main{min-height:100svh;padding:clamp(12px,3vw,32px);gap:12px}
+.main-header{grid-template-columns:72px minmax(0,1fr) minmax(104px,132px)}
+.main .return{width:58px!important;height:51px!important;grid-template-columns:16px 28px!important;gap:4px!important;padding:4px!important}
+.main .return img{width:28px;height:28px;object-fit:contain}
+.hero{min-height:0;gap:clamp(14px,4vw,42px)}
+.hero-copy{min-width:0}
+.main-progress{display:block;width:max-content;max-width:100%;min-height:38px;margin:10px 0;padding:8px 12px;border-radius:999px;background:#063831d9;color:#d9f4cf;white-space:nowrap}
+.main #start{display:block;width:100%;min-height:52px}
+.public-guide{margin:0 12px 36px;padding:clamp(18px,4vw,34px);border:1px solid #75bd9c;border-radius:24px;background:#063831e8;line-height:1.6}
+.public-guide h2{font-size:clamp(1.45rem,4vw,2rem)}
+
+.stage,.battle{box-sizing:border-box;height:calc(100svh - 56px);min-height:0!important;max-width:920px;padding:12px;align-content:stretch;overflow:hidden}
+.stage{grid-template-rows:64px minmax(198px,1fr) 52px;gap:10px}
+.stage header,.battle header{min-width:0}
+.stage header>div,.battle header>div{min-width:0}
+.stage header h2,.battle header h2{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stage .rail{width:100%;height:100%;padding-block:4px!important}
+.stage-card{padding:18px;border:3px solid transparent}
+.stage-card.selected,.stage-card[aria-current="true"]{border-color:#f9c44d!important;box-shadow:0 0 0 4px #f9c44d55,0 0 26px #f9c44daa!important}
+.stage-enter{justify-self:center;width:264px;min-height:52px}
+.ad-reserve{width:100%;max-width:none;height:56px;margin:0;background:#052e2d;pointer-events:none}
+
+.battle{grid-template-rows:68px minmax(0,1fr);gap:8px}
+.battle-panel{min-height:0;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:42px minmax(0,1fr) 52px;gap:8px;justify-items:center;align-items:center}
+.battle-objective{width:min(100%,620px);height:42px;margin:0;padding:10px 14px;overflow:hidden;border:1px solid #75bd9c;border-radius:12px;background:#063831e8;text-align:center;white-space:nowrap;text-overflow:ellipsis}
+.battle .board{grid-column:1;grid-row:2;width:min(100%,520px);height:auto;max-height:100%;align-self:center}
+.battle .tools{grid-column:1;grid-row:3;width:min(100%,520px);height:52px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.battle .tools button{min-width:0;height:48px;padding:8px}
+
+.battle.result-open>header,.battle.result-open>.battle-panel{visibility:hidden;pointer-events:none}
+#result{position:absolute;inset:0;box-sizing:border-box;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:clamp(16px,4vw,34px);border:0;border-radius:0;background:linear-gradient(#edfae7f7,#d7f4d8f7);overflow:auto;place-content:center;text-align:center;color:#073c38;z-index:20}
+#result[hidden]{display:none!important;pointer-events:none!important}
+#result:not([hidden]){display:grid;top:0!important;right:0!important;bottom:auto!important;left:0!important;transform:none!important}
+#result img{height:110px}
+#result>div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:min(100%,560px);margin:12px auto 0}
+#result button{min-height:48px;min-width:0}
+
+@media(max-width:620px){
+  .main{padding:10px 12px}
+  .main-header{grid-template-columns:62px minmax(0,1fr) 100px}
+  .main-header>strong{font-size:.86rem}
+  .main .locale{font-size:0}
+  .main .locale select{width:96px;margin:0;font-size:.72rem}
+  .hero{grid-template-columns:1fr;gap:10px;text-align:center}
+  .hero img{width:min(100%,190px);max-width:190px;border-radius:20px}
+  .hero .eyebrow{margin:0}
+  .hero h1{font-size:1.72rem;margin:.12em 0}
+  .hero p:not(.eyebrow){margin:6px 0;font-size:.96rem;line-height:1.35}
+  .main-progress{margin:8px auto}
+  .stage,.battle{padding:8px}
+  .stage{grid-template-rows:58px minmax(198px,1fr) 52px}
+  .battle{grid-template-rows:60px minmax(0,1fr)}
+  .battle-panel{grid-template-rows:38px minmax(0,1fr) 48px;gap:6px}
+  .battle-objective{height:38px;padding:8px 10px;font-size:.84rem}
+  .battle .tools{height:48px;gap:6px}
+  .battle .tools button{height:44px}
+  #result>div{grid-template-columns:1fr;gap:8px}
+}
+
+@media(max-height:500px) and (orientation:landscape){
+  .battle-objective{height:24px;padding:3px 8px;font-size:.7rem}
+  #result:not([hidden]){top:10px!important}
+  #result{place-content:start center;padding:10px}
+  #result img{height:70px}
+  #result>div{grid-template-columns:repeat(3,minmax(0,1fr));position:sticky;bottom:0}
+}

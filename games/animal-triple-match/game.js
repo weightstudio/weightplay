@@ -106,10 +106,11 @@
     const pending = pendingMatch;
     if (!pending || run !== pending.runRef) { cancelPendingMatch(); return; }
     pendingMatch = null;
-    const matchedIds = new Set(pending.pieceIds);
+    const groups = pending.groups || [pending.pieceIds];
+    const matchedIds = new Set(groups.flat());
     pending.runRef.pieces.filter(piece => matchedIds.has(piece.id)).forEach(piece => { piece.active = false; piece.tray = false; });
     pending.runRef.tray = pending.runRef.tray.filter(piece => !matchedIds.has(piece.id));
-    pending.runRef.matches++;
+    pending.runRef.matches += groups.length;
     pending.runRef.paused = false;
     els.feedback.textContent = t("matched"); sound("match");
     if (pending.runRef.config.shiftEvery && pending.runRef.moves % pending.runRef.config.shiftEvery === 0) shiftRemaining();
@@ -121,8 +122,10 @@
     pendingMatch.timer = setTimeout(settlePendingMatch, pendingMatch.remaining);
   }
   function schedulePendingMatch(pieceIds) {
-    cancelPendingMatch();
-    pendingMatch = { runRef: run, pieceIds, remaining: 380, dueAt: 0, timer: 0 };
+    if (pendingMatch?.runRef !== run) cancelPendingMatch();
+    if (!pendingMatch) pendingMatch = { runRef: run, groups: [], remaining: 260, dueAt: 0, timer: 0 };
+    pendingMatch.groups.push(pieceIds);
+    pendingMatch.remaining = Math.min(pendingMatch.remaining || 260, 260);
     armPendingMatch();
   }
 
@@ -317,7 +320,7 @@
     cancelPendingMatch();
     stageIndex = Math.max(0, Math.min(29, index));
     const config = stageConfig(stageIndex);
-    run = { config, pieces: buildPieces(stageIndex), tray: [], history: [], matches: 0, moves: 0, tools: { undo: 2, magnet: 2, shuffle: 2 }, ended: false, paused: false };
+    run = { config, pieces: buildPieces(stageIndex), tray: [], history: [], matches: 0, moves: 0, lastTrayId: null, tools: { undo: 2, magnet: 2, shuffle: 2 }, ended: false, paused: false };
     [els.tutorialModal, els.leaveModal, els.resultModal].forEach(modal => modal.hidden = true);
     isolateBattle(false); setScreen("battle"); renderRun(); sound("start");
     if (!save.tutorial && !skipTutorial) { run.paused = true; openModal(els.tutorialModal, els.tutorialClose); }
@@ -333,9 +336,24 @@
   function mysteryItemName() {
     return locale === "zh-Hant" ? "神秘寶物" : "Mystery treasure";
   }
+  function pendingPieceIds() {
+    return pendingMatch?.runRef === run ? new Set((pendingMatch.groups || []).flat()) : new Set();
+  }
+  function pieceBounds(piece) {
+    const w = els.board.clientWidth || 390, h = els.board.clientHeight || 788, size = 78;
+    const trackX = Math.max(0, w - size - 24), trackY = Math.max(0, h - size - 24);
+    const left = 12 + piece.x * trackX, top = 12 + piece.y * trackY;
+    return { left, top, right: left + size, bottom: top + size };
+  }
   function isBlocked(piece) {
     if (!piece.active || piece.tray) return true;
-    return run.pieces.some(other => other.active && !other.tray && other.layer > piece.layer && Math.abs(other.x - piece.x) < .15 && Math.abs(other.y - piece.y) < .115);
+    const bounds = pieceBounds(piece);
+    return run.pieces.some(other => {
+      if (!other.active || other.tray || other.layer <= piece.layer) return false;
+      const otherBounds = pieceBounds(other);
+      return otherBounds.left < bounds.right && otherBounds.right > bounds.left
+        && otherBounds.top < bounds.bottom && otherBounds.bottom > bounds.top;
+    });
   }
   function layoutPieces() {
     if (!run) return;
@@ -358,26 +376,41 @@
     els.starValue.textContent = "★".repeat(riskStars);
     els.soundBtn.textContent = save.sound ? "♪" : "×";
     els.soundBtn.setAttribute("aria-label", t(save.sound ? "soundOn" : "soundOff"));
-    els.board.innerHTML = remaining.map(piece => {
+    const remainingIds = new Set(remaining.map(piece => String(piece.id)));
+    els.board.querySelectorAll(".piece").forEach(node => {
+      if (!remainingIds.has(node.dataset.piece)) node.remove();
+    });
+    remaining.forEach(piece => {
+      let node = els.board.querySelector(`[data-piece="${piece.id}"]`);
+      if (!node) {
+        node = document.createElement("button");
+        node.type = "button";
+        node.dataset.piece = String(piece.id);
+        node.style.cssText = spriteStyle(piece.type);
+        els.board.append(node);
+      }
       const blocked = isBlocked(piece), state = piece.vine ? " vine" : piece.crystal ? " crystal" : piece.mystery ? " mystery" : "";
-      return `<button type="button" class="piece ${blocked ? "blocked" : "free"}${state}" data-piece="${piece.id}" aria-label="${piece.mystery ? mysteryItemName() : itemName(piece.type)}" style="${spriteStyle(piece.type)}"></button>`;
-    }).join("");
-    els.board.querySelectorAll(".piece.free").forEach(btn => btn.addEventListener("click", () => choosePiece(+btn.dataset.piece)));
+      node.className = `piece ${blocked ? "blocked" : "free"}${state}`;
+      node.setAttribute("aria-label", piece.mystery ? mysteryItemName() : itemName(piece.type));
+    });
     renderTray(); layoutPieces(); renderTools();
   }
   function renderTray() {
     const cap = run.config.trayCap;
+    const pendingIds = pendingPieceIds();
     const slots = Array.from({ length: 7 }, (_, i) => {
       if (i >= cap) return `<div class="tray-slot" aria-hidden="true" style="background:#341929;border-color:#a54867">×</div>`;
       const piece = run.tray[i];
-      return piece ? `<div class="tray-piece" data-tray="${piece.id}" style="${spriteStyle(piece.type)}" aria-label="${itemName(piece.type)}"></div>` : `<div class="tray-slot"></div>`;
+      return piece ? `<div class="tray-piece${pendingIds.has(piece.id) ? " matching" : ""}${run.lastTrayId === piece.id ? " tray-new" : ""}" data-tray="${piece.id}" style="${spriteStyle(piece.type)}" aria-label="${itemName(piece.type)}"></div>` : `<div class="tray-slot"></div>`;
     });
     els.tray.innerHTML = slots.join("");
+    run.lastTrayId = null;
   }
   function renderTools() {
+    const settling = pendingMatch?.runRef === run;
     for (const name of ["undo","magnet","shuffle"]) {
       els[`${name}Count`].textContent = run.tools[name];
-      els[`${name}Btn`].disabled = run.ended || run.tools[name] <= 0;
+      els[`${name}Btn`].disabled = run.ended || settling || run.tools[name] <= 0;
     }
   }
   function snapshot() { return JSON.stringify({ pieces: run.pieces, tray: run.tray, matches: run.matches, moves: run.moves }); }
@@ -390,19 +423,19 @@
     if (piece.crystal) { piece.crystal = false; els.feedback.textContent = t("cracked"); sound("crack"); renderRun(); return; }
     if (piece.mystery) { piece.mystery = false; els.feedback.textContent = t("revealed"); sound("reveal"); renderRun(); return; }
     run.history.push(snapshot()); if (run.history.length > 12) run.history.shift();
-    piece.tray = true; run.tray.push(piece); run.moves++;
+    piece.tray = true; run.tray.push(piece); run.lastTrayId = piece.id; run.moves++;
     sound("pick"); resolveMatch(piece.type);
   }
   function resolveMatch(type) {
-    const same = run.tray.filter(p => p.type === type);
+    const pendingIds = pendingPieceIds();
+    const same = run.tray.filter(p => p.type === type && !pendingIds.has(p.id));
     if (same.length >= 3) {
-      renderRun();
-      same.slice(0, 3).forEach(p => els.tray.querySelector(`[data-tray="${p.id}"]`)?.classList.add("matching"));
-      run.paused = true;
       schedulePendingMatch(same.slice(0, 3).map(piece => piece.id));
+      run.paused = false;
+      renderRun();
       return;
     }
-    if (run.tray.length >= run.config.trayCap) { finish(false); return; }
+    if (run.tray.length - pendingIds.size >= run.config.trayCap) { finish(false); return; }
     els.feedback.textContent = run.tray.length === run.config.trayCap - 1 ? t("trayDanger") : "";
     renderRun();
   }
@@ -460,7 +493,7 @@
   function closeModal(modal, focus) {
     modal.hidden = true;
     isolateBattle(false);
-    run.paused = pendingMatch?.runRef === run;
+    run.paused = false;
     armPendingMatch();
     requestAnimationFrame(() => focus?.focus());
   }
@@ -485,6 +518,18 @@
   }
   function track(name, data = {}) { try { window.WeightPlayAnalytics?.track?.(name, { game_id: "animal-triple-match", ...data }); } catch {} }
 
+  els.board.addEventListener("pointerdown", event => {
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    const piece = event.target.closest?.(".piece.free");
+    if (!piece) return;
+    event.preventDefault();
+    choosePiece(+piece.dataset.piece);
+  });
+  els.board.addEventListener("click", event => {
+    if (event.detail !== 0) return;
+    const piece = event.target.closest?.(".piece.free");
+    if (piece) choosePiece(+piece.dataset.piece);
+  });
   els.startBtn.addEventListener("click", () => setScreen("stage"));
   els.stageBack.addEventListener("click", () => setScreen("main"));
   els.battleBack.addEventListener("click", () => { if (!run || run.ended) return setScreen("stage"); run.paused = true; openModal(els.leaveModal, els.leaveContinue); });

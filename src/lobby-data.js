@@ -329,7 +329,7 @@ window.WONDER_LOBBY = {
       skills: ["Planning", "Visual Scanning", "Problem Solving"],
       ages: ["13", "family"],
       ageLabel: { en: "13+", "zh-Hant": "13+", "zh-Hans": "13+", ja: "13+", ko: "13+", es: "13+", "pt-BR": "13+", fr: "13+", de: "13+", it: "13+", ru: "13+", hi: "13+", ar: "13+" },
-      href: "games/animal-triple-match/index.html?trial=1",
+      href: "games/animal-triple-match/",
       internalTrial: "index.html?trial=1",
       description: {
         en: "Read layered treasure piles, build safe pairs, and complete every trio before Mimi's seven-slot tray fills across 30 crafted stages.",
