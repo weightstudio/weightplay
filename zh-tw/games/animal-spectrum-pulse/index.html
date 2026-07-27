@@ -39,7 +39,7 @@
   <link rel="stylesheet" href="style.css?v=20260721-safe-landing1">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
 </head>
-<body data-screen="main">
+<body data-screen="main" data-wp-combined-sound="true">
   <div id="loadingPanel" class="loading" role="status"><img src="../../assets/animal-spectrum-pulse/spectrum-spirit.webp" alt=""><strong data-t="loading">正在調整光譜鼓…</strong></div>
 
   <div id="mainGroup" class="main-group">
@@ -110,7 +110,7 @@
 
       <section id="helpModal" class="modal-layer tutorial-panel" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle" data-t="helpTitle">按一下，一次脈衝</h2><ol><li data-t="help1">向上脈衝，放開後再按下一次。</li><li data-t="help2">當掃描標記碰到相同顏色與紋章時穿越。</li><li data-t="help3">通過的星門會成為安全檢查點；時間結束前抵達王冠。</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">繼續</button></div></div></section>
       <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">保留這次脈衝進度？</h2><p data-t="leaveText">繼續會恢復完全相同的精靈、星門角度、時間與共鳴；返回塔樓會結束本局。</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">繼續</button><button id="leaveStage" type="button" data-t="returnTowers">返回塔樓</button></div></div></section>
-      <section id="resultModal" class="modal-layer result-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/animal-spectrum-pulse/panko.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">時間</b><strong id="resultTime"></strong></span><span><b data-t="bestResonance">最高共鳴</b><strong id="resultChain"></strong></span><span><b data-t="medal">獎牌</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="retry" type="button" data-t="retry">再試一次</button><button id="resultTowers" type="button" data-t="towers">塔樓</button><button id="next" class="primary" type="button" data-t="nextTower">下一座塔</button></div></div></section>
+      <section id="resultModal" class="modal-layer result-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/animal-spectrum-pulse/panko.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">時間</b><strong id="resultTime"></strong></span><span><b data-t="bestResonance">最高共鳴</b><strong id="resultChain"></strong></span><span><b data-t="medal">獎牌</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="resultTowers" type="button" data-t="towers">塔樓</button><button id="next" class="primary" type="button" data-t="nextTower">下一座塔</button><button id="retry" type="button" data-t="retry">再試一次</button></div></div></section>
     </div>
     <div class="ad-reserve" aria-hidden="true"></div>
   </section>

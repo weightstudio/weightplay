@@ -207,7 +207,7 @@
       if (design) design.textContent = "Objetos grandes, sombras de sobreposição estáveis, ordem visível na bandeja e animação automática dos trios tornam cada consequência fácil de entender sem piscar o tabuleiro inteiro. A interface usa um único layout lógico centralizado, com largura máxima de 920 pixels. Celular, paisagem e desktop dimensionam juntos controles, áreas de toque, arte e coordenadas. Toque, mouse e teclado atuam sobre o mesmo estado válido. O pôster e o botão Começar ficam separados da gestão de fases; seleção, Batalha, diálogos e Resultado mantêm seus próprios limites e caminhos de retorno.";
       if (parent) parent.textContent = "Não é preciso criar conta, comprar itens, enfrentar contagem regressiva ou participar de ranking público. Fases concluídas, estrelas e o melhor espaço livre na bandeja ficam neste navegador. O progresso usa o armazenamento local do perfil atual; limpar os dados, usar navegação privada, trocar de navegador ou dispositivo pode criar outro progresso ou apagar o atual. Idioma, som e preferência de movimento reduzido seguem os controles do WeightPlay quando o navegador permite. O guia e o Relatório de habilidade não são avaliações médicas, escolares ou profissionais.";
       strategy?.querySelectorAll("li").forEach((item) => {
-        item.textContent = item.textContent.replace("Use o Hint", "Use Encontrar par").replace("um novo tipo de singleton", "um novo tipo isolado");
+        item.textContent = item.textContent.replace("Use o Hint", "Use a dica").replace("um novo tipo de singleton", "um novo tipo isolado");
       });
       const relatedIntro = related?.querySelector(":scope > p");
       if (relatedIntro) relatedIntro.textContent = "Como este jogo pratica lógica, experimente também:";
@@ -741,10 +741,14 @@
     els.resultStars.textContent = win ? "★".repeat(stars) : "◇◇◇";
     els.resultText.textContent = win ? t("winText", { n: stageIndex + 1, stars }) : t("failText");
     els.skillText.textContent = win ? t(free >= 4 ? "skillGreat" : "skillSteady", { n: free || run.matches }) : t("skillSteady", { n: run.matches });
-    els.nextBtn.hidden = !win || stageIndex >= 29;
+    const canAdvance = win && stageIndex < 29;
+    els.nextBtn.hidden = false;
     resultDecisionCommitted = false;
     [els.retryBtn, els.nextBtn, els.resultStages].forEach(button => { button.disabled = false; });
-    openModal(els.resultModal, win && stageIndex < 29 ? els.nextBtn : els.retryBtn);
+    els.nextBtn.disabled = !canAdvance;
+    els.nextBtn.classList.toggle("primary", canAdvance);
+    els.resultStages.classList.toggle("primary", !canAdvance);
+    openModal(els.resultModal, canAdvance ? els.nextBtn : els.resultStages);
     sound(win ? "win" : "fail"); track(win ? "game_complete" : "game_fail", { stage: stageIndex + 1, stars });
   }
   function undo() {

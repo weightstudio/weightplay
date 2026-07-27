@@ -39,7 +39,7 @@
   <link rel="stylesheet" href="style.css?v=20260721-safe-landing1">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
 </head>
-<body data-screen="main">
+<body data-screen="main" data-wp-combined-sound="true">
   <div id="loadingPanel" class="loading" role="status"><img src="../../assets/animal-spectrum-pulse/spectrum-spirit.webp" alt=""><strong data-t="loading">Tuning the spectrum drum…</strong></div>
 
   <div id="mainGroup" class="main-group">
@@ -110,7 +110,7 @@
 
       <section id="helpModal" class="modal-layer tutorial-panel" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle" data-t="helpTitle">One press, one pulse</h2><ol><li data-t="help1">Pulse upward and release before pressing again.</li><li data-t="help2">Cross when the scan marker touches your colour and emblem.</li><li data-t="help3">A passed gate becomes a safe checkpoint. Reach the crown before time expires.</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">Continue</button></div></div></section>
       <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">Keep this pulse run?</h2><p data-t="leaveText">Continue resumes the exact spirit, gate angles, timer, and Resonance. Returning to Towers ends this run.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">Continue</button><button id="leaveStage" type="button" data-t="returnTowers">Return to Towers</button></div></div></section>
-      <section id="resultModal" class="modal-layer result-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/animal-spectrum-pulse/panko.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">Time</b><strong id="resultTime"></strong></span><span><b data-t="bestResonance">Best Resonance</b><strong id="resultChain"></strong></span><span><b data-t="medal">Medal</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="retry" type="button" data-t="retry">Retry</button><button id="resultTowers" type="button" data-t="towers">Towers</button><button id="next" class="primary" type="button" data-t="nextTower">Next Tower</button></div></div></section>
+      <section id="resultModal" class="modal-layer result-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/animal-spectrum-pulse/panko.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">Time</b><strong id="resultTime"></strong></span><span><b data-t="bestResonance">Best Resonance</b><strong id="resultChain"></strong></span><span><b data-t="medal">Medal</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="resultTowers" type="button" data-t="towers">Towers</button><button id="next" class="primary" type="button" data-t="nextTower">Next Tower</button><button id="retry" type="button" data-t="retry">Retry</button></div></div></section>
     </div>
     <div class="ad-reserve" aria-hidden="true"></div>
   </section>

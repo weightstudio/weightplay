@@ -43,3 +43,11 @@
     line-height:1.45;
   }
 }
+#resultModal .modal-actions {
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+#resultModal .modal-actions button {
+  min-width: 0;
+}
