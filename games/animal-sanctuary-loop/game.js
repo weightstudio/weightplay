@@ -190,14 +190,28 @@
     $("mainProgress").textContent = `${Object.keys(save.stars).length} / 30`;
   }
 
+  let mainFocusSettlementToken = 0;
   function restoreMainStartFocus() {
+    const token = ++mainFocusSettlementToken;
+    let observer = null;
+    let stopTimer = 0;
     const focusStart = () => {
-      if (currentScreen !== "main" || $("mainGroup").hidden) return;
+      if (token !== mainFocusSettlementToken || currentScreen !== "main" || $("mainGroup").hidden) {
+        observer?.disconnect();
+        window.clearTimeout(stopTimer);
+        return;
+      }
+      const active = document.activeElement;
+      const visibleOwner = active && active !== document.body && active.getClientRects().length > 0;
+      if (visibleOwner && active !== $("start")) return;
       $("start").focus({ preventScroll: true });
     };
     focusStart();
     requestAnimationFrame(focusStart);
-    window.setTimeout(focusStart, 80);
+    observer = new MutationObserver(focusStart);
+    observer.observe(document.body, { attributes: true, childList: true, subtree: true });
+    for (const delay of [80, 400, 1000]) window.setTimeout(focusStart, delay);
+    stopTimer = window.setTimeout(() => observer.disconnect(), 1600);
   }
 
   function showScreen(name, restoreFocus = true) {

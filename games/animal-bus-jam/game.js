@@ -286,6 +286,7 @@
     progress[levelIndex] = true;
     save();
     $("resultBody").textContent = t("resultBody", { n: levelIndex + 1, moves });
+    $("next").disabled = levelIndex >= levels.length - 1;
     $("result").showModal();
   }
 
@@ -327,11 +328,16 @@
   $("hint").onclick = hint;
   $("restart").onclick = () => startLevel(levelIndex);
   $("retry").onclick = () => startLevel(levelIndex);
-  $("next").onclick = () => {
+  $("menu").onclick = () => {
     $("result").close();
     selected = Math.min(29, levelIndex + 1);
-    show("stage");
-    renderStage();
+    show("main");
+  };
+  $("next").onclick = () => {
+    if (levelIndex >= levels.length - 1) return;
+    $("result").close();
+    selected = Math.min(29, levelIndex + 1);
+    startLevel(selected);
   };
   $("deadlockUndo").onclick = () => { $("deadlock").close(); undo(); };
   $("deadlockRetry").onclick = () => startLevel(levelIndex);

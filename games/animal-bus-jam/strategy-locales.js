@@ -167,4 +167,22 @@
   Object.entries(copy).forEach(([code, values]) => {
     if (window.BUS_JAM_LOCALES[code]) Object.assign(window.BUS_JAM_LOCALES[code], values);
   });
+  const resultActions = {
+    en: { menu: "Menu", next: "Next stage", retry: "Play again" },
+    "zh-Hant": { menu: "選單", next: "下一關", retry: "再玩一次" },
+    "zh-Hans": { menu: "菜单", next: "下一关", retry: "再玩一次" },
+    ja: { menu: "メニュー", next: "次のステージ", retry: "もう一度" },
+    ko: { menu: "메뉴", next: "다음 스테이지", retry: "다시 플레이" },
+    es: { menu: "Menú", next: "Siguiente nivel", retry: "Jugar de nuevo" },
+    "pt-BR": { menu: "Menu", next: "Próxima fase", retry: "Jogar novamente" },
+    fr: { menu: "Menu", next: "Niveau suivant", retry: "Rejouer" },
+    de: { menu: "Menü", next: "Nächste Stufe", retry: "Noch einmal" },
+    it: { menu: "Menu", next: "Livello successivo", retry: "Gioca ancora" },
+    ru: { menu: "Меню", next: "Следующий уровень", retry: "Играть снова" },
+    hi: { menu: "मेन्यू", next: "अगला स्तर", retry: "फिर से खेलें" },
+    ar: { menu: "القائمة", next: "المرحلة التالية", retry: "العب مجددًا" },
+  };
+  Object.entries(resultActions).forEach(([code, values]) => {
+    if (window.BUS_JAM_LOCALES[code]) Object.assign(window.BUS_JAM_LOCALES[code], values);
+  });
 })();

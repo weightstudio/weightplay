@@ -13,6 +13,16 @@
 @media(min-width:701px) and (min-height:481px){.battle-canvas{grid-template-columns:minmax(0,1fr) auto;grid-template-rows:82px 48px minmax(0,1fr) 74px;grid-template-areas:"head head" "objective objective" "board board" "actions directions"}.battle-header{grid-area:head}.objective-row{grid-area:objective}.board-zone{grid-area:board}.battle-actions{grid-area:actions}.direction-pad{grid-area:directions;align-self:stretch;align-items:center}}
 body[data-screen="stage"] .sound-toggle,body[data-screen="battle"] .sound-toggle{display:none!important}
 
+/* The shared Stage shell adds Settings to this native absolute header.
+   Keep the header inside its left/right anchors and reserve the center track
+   for one clean title; the decorative owl must not compete for that track. */
+.stage-header.wp-stage-shell-header{width:auto!important}
+.stage-header.wp-stage-shell-header>img{display:none!important}
+.stage-header.wp-stage-shell-header>div:not(.wp-shell-settings){display:none!important}
+.stage-header.wp-stage-shell-header>.wp-shell-settings{top:50%;right:4px;transform:translateY(-50%)}
+.wp-stage-art-shell .stage-header :is(strong,span){text-shadow:none!important}
+.wp-stage-art-shell .stage-header .wp-shell-return-arrow{color:#117baa!important}
+
 /* Dim locked content without filtering the centered card's border and glow. */
 .stage-card.locked{filter:none;background:linear-gradient(rgba(3,33,34,.82),rgba(2,24,28,.98)),url('../../assets/animal-2048-cover.webp') center/cover;color:#b8ccc6;cursor:not-allowed}
 .stage-card.locked>*{opacity:.66}
@@ -64,4 +74,76 @@ body.wp-logical-battle-active .battle-ad-reserve[data-wp-battle-physical-reserve
   .result-actions{grid-area:actions;min-height:44px;height:44px}
   .result-actions button{min-width:0;min-height:44px}
   .battle-actions button,.direction-pad button{min-width:44px;min-height:44px}
+}
+
+/* 2048 Main / Stage calibration against the shared shell geometry. */
+.main-header.wp-main-shell-header>.wp-shell-main-title{
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  display:grid;
+  place-items:center;
+  font-size:22px!important;
+  font-weight:800;
+  line-height:1.2!important;
+  text-shadow:none!important;
+}
+.main-copy>#startBtn{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  height:52px!important;
+  min-height:52px!important;
+  max-height:52px!important;
+  padding:0 16px!important;
+  font-size:16px!important;
+  font-weight:800!important;
+  line-height:1.2!important;
+  white-space:nowrap;
+  text-align:center;
+}
+.stage-header.wp-stage-shell-header{
+  height:64px!important;
+  min-height:64px!important;
+}
+.stage-header.wp-stage-shell-header>.wp-shell-main-title,
+.stage-header.wp-stage-shell-header>strong{
+  align-self:center;
+  font-size:22px!important;
+  font-weight:800;
+  line-height:1.2!important;
+}
+.stage-mode-tabs{
+  top:90px;
+  height:56px;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  padding:6px;
+}
+.chapter-panel{top:154px}
+.stage-mode-tabs button{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:44px;
+  padding:0 10px;
+  font-size:14px;
+  font-weight:700;
+  line-height:1.2;
+  white-space:nowrap;
+  text-align:center;
+}
+.stage-mode-tabs button:first-child{grid-column:2}
+.stage-mode-tabs button:last-child{grid-column:3}
+
+@media(max-width:700px){
+  .main-header.wp-main-shell-header>.wp-shell-main-title{font-size:20px!important}
+  .stage-header.wp-stage-shell-header>strong{font-size:20px!important}
+  .stage-mode-tabs{top:80px;height:56px;padding:6px}
+  .chapter-panel{top:144px}
+}
+
+@media(max-height:480px) and (orientation:landscape){
+  .stage-header.wp-stage-shell-header{height:58px!important;min-height:58px!important}
+  .stage-mode-tabs{height:56px;padding:6px}
+  .chapter-panel{top:126px}
 }

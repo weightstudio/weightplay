@@ -427,6 +427,15 @@ dialog::backdrop { background: #02070dcc; backdrop-filter: blur(5px); }
 dialog h2 { margin: .2rem 0; }
 dialog > p:not(.eyebrow) { color: #b6c5ce; line-height: 1.45; }
 dialog > div:last-child { display: flex; justify-content: center; gap: 9px; margin-top: 18px; }
+dialog > div.result-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+dialog .result-actions button {
+  min-width: 0;
+  padding-inline: 8px;
+}
+dialog button:disabled { opacity: .42; cursor: not-allowed; }
 
 @media (max-width: 680px) {
   .main-header { grid-template-columns: 70px minmax(0, 1fr) 100px; }

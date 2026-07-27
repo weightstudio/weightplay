@@ -127,7 +127,7 @@
   function renderStages(){
     const rail=$("#stageRail");rail.innerHTML="";missions().forEach((m,index)=>{const card=document.createElement("button"),rewards=m.rewardClaimed?"":rewardText(m.rewards),rule=m.rewardClaimed?t("rewardClaimed"):m.rule?t(m.rule):"",summary=rule||`${t("waves")} ${m.waves}${rewards?` · ${rewards}`:""}`;card.className=`stage-card${m.locked?" locked":""}`;card.dataset.mission=m.id;card.dataset.stage=m.stage;card.dataset.stageIndex=index;card.dataset.waves=m.waves;card.setAttribute("aria-label",[m.label,m.name,`${t("waves")} ${m.waves}`,rewards,rule,m.schedule,m.locked?t("locked"):""].filter(Boolean).join(". "));
       card.innerHTML=`<small>${m.label}</small><h3>${m.name}</h3><div class="stage-rift-mark"><img src="${ASSET}${RUNES.wild.img}" alt=""></div><p>${summary}</p>${m.schedule?`<span class="mission-schedule">${m.schedule}</span>`:""}<span class="monster-chip">${m.locked?t("locked"):m.type==='main'&&profile.best[m.stage-1]?"★".repeat(profile.best[m.stage-1]):t("readyStage")}<b>${t('waves')} ${m.waves}</b></span>`;
-      card.onclick=()=>{selectedMissionId=m.id;selectedStage=m.stage;centerMission(m.id);if(!m.locked)startBattle()};rail.append(card)
+      card.onclick=()=>centerMission(m.id);rail.append(card)
     });centerMission(selectedMissionId,false)
   }
   function markCenteredMission(card){$$('.stage-card').forEach(c=>{const current=c===card;c.classList.toggle('centered',current);if(current)c.setAttribute('aria-current','true');else c.removeAttribute('aria-current')})}
