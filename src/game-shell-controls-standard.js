@@ -42,6 +42,7 @@
     "[data-wp-logical-battle-canvas]", "#battle", "#battleScreen", "#battleView",
     "#battleShell", "#battlePage", "#gamePanel", "#playPanel", "#mainPanel",
     ".quiz-playing .animal-game",
+    ".dash-playing .dash-game",
     "[data-screen='battle']", ".battle-screen", ".battle-shell", ".battle-page",
   ];
   const HEADER_SELECTORS = [
@@ -663,25 +664,54 @@
     ensureGameInfoRuntime();
     build();
     place();
-    const observer = new MutationObserver(() => requestAnimationFrame(place));
-    observer.observe(document, {
+    const placementWatchSelector = [
+      ...MAIN_SELECTORS,
+      ...STAGE_SELECTORS,
+      ...BATTLE_SELECTORS,
+      ...HEADER_SELECTORS,
+      ...RETURN_SELECTORS,
+      ...MAIN_START_SELECTORS,
+      ...MAIN_POSTER_SELECTORS,
+      ".wp-shell-settings",
+    ].join(",");
+    const mutationAffectsPlacement = (record) => {
+      if (record.target === document.body || record.target === document.documentElement) return true;
+      if (record.type === "attributes") return record.target?.matches?.(placementWatchSelector) || false;
+      return [...record.addedNodes, ...record.removedNodes].some((node) => node.nodeType === Node.ELEMENT_NODE
+        && (node.matches?.(placementWatchSelector) || node.querySelector?.(placementWatchSelector)));
+    };
+    let placementFrame = 0;
+    const observePlacement = () => observer.observe(document, {
       subtree: true,
       childList: true,
       attributes: true,
-      attributeFilter: ["hidden", "class", "data-screen", "style"],
+      attributeFilter: ["hidden", "class", "data-screen"],
     });
-    window.addEventListener("resize", place);
-    window.addEventListener("load", place, { once: true });
-    setTimeout(place, 0);
-    setTimeout(place, 300);
-    setTimeout(place, 1000);
-    setTimeout(place, 1300);
-    setTimeout(place, 1800);
-    setTimeout(place, 3200);
-    setTimeout(place, 4800);
+    const schedulePlace = () => {
+      if (placementFrame) return;
+      placementFrame = requestAnimationFrame(() => {
+        placementFrame = 0;
+        observer.disconnect();
+        place();
+        observePlacement();
+      });
+    };
+    const observer = new MutationObserver((records) => {
+      if (records.some(mutationAffectsPlacement)) schedulePlace();
+    });
+    observePlacement();
+    window.addEventListener("resize", schedulePlace);
+    window.addEventListener("load", schedulePlace, { once: true });
+    setTimeout(schedulePlace, 0);
+    setTimeout(schedulePlace, 300);
+    setTimeout(schedulePlace, 1000);
+    setTimeout(schedulePlace, 1300);
+    setTimeout(schedulePlace, 1800);
+    setTimeout(schedulePlace, 3200);
+    setTimeout(schedulePlace, 4800);
     let recoveryAttempts = 0;
     const recoveryTimer = setInterval(() => {
-      place();
+      schedulePlace();
       recoveryAttempts += 1;
       if (recoveryAttempts >= 20) clearInterval(recoveryTimer);
     }, 250);

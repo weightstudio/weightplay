@@ -199,6 +199,40 @@
   padding: 4px !important;
 }
 
+/* Battle screens without a recognized native header receive this overlay.
+   It must never participate in the Battle grid, or the adopted return action
+   can become a final row underneath the play controls. */
+body.wp-shell-battle-active .wp-generated-battle-header {
+  box-sizing: border-box !important;
+  position: absolute !important;
+  z-index: 90 !important;
+  inset: 8px auto auto 8px !important;
+  display: block !important;
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  pointer-events: none;
+}
+
+body.wp-shell-battle-active .wp-generated-battle-header > [data-wp-return="battle"] {
+  position: static !important;
+  inset: auto !important;
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  margin: 0 !important;
+  transform: none !important;
+  pointer-events: auto;
+}
+
 .wp-stage-shell-header > :not(.wp-shell-return):not(.wp-shell-settings):not(.wp-shell-legacy-control) {
   grid-column: 2;
   grid-row: 1;

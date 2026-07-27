@@ -15,3 +15,9 @@ body.playing .first-steps li+li::before{content:none!important}
 .leave-confirm-canvas{grid-area:1/1;position:relative;z-index:4;width:100%;height:100%;display:grid;place-items:center;padding:20px;background:#173d34a8;backdrop-filter:blur(7px)}.leave-confirm-card{width:min(100%,350px);display:grid;gap:16px;padding:24px;border-radius:20px;background:#fff9e8;color:#29483f;text-align:center;box-shadow:0 20px 50px #102b}.leave-confirm-card h2,.leave-confirm-card p{margin:0}.leave-confirm-card h2{font-size:27px}.leave-confirm-card p{font-size:16px;line-height:1.45;font-weight:700}.leave-confirm-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.leave-confirm-actions button{width:100%;min-width:0;padding-inline:10px}.leave-confirm-actions button:focus{outline:4px solid #245f56;outline-offset:3px;box-shadow:0 0 0 3px #fff}
 @media(max-height:500px){.logical-canvas{box-shadow:0 0 24px #0008}}@media(min-width:700px){.main-canvas{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);grid-template-rows:52px minmax(0,1fr) 74px 48px;column-gap:12px;padding:10px}.main-topbar{grid-column:1/-1}.main-canvas>.cover{grid-column:1;grid-row:2/5;width:100%;max-width:none;height:100%;aspect-ratio:auto}.main-canvas>.intro{grid-column:2;grid-row:2;align-self:center}.main-canvas>.first-steps{grid-column:2;grid-row:3;width:100%;max-width:360px}.main-canvas>#start{grid-column:2;grid-row:4;width:100%;max-width:340px}}@media(min-width:760px){.studio-app{box-shadow:0 0 40px #0007}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* Battle header owns the logical canvas top edge; do not vertically center the
+   complete play stack and push the return action into a second visual row. */
+body.playing .battle-live {
+  align-content: start;
+}
