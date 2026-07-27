@@ -1,35 +1,289 @@
-(()=>{
-"use strict";
-const codes=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
-const root=document, levels=window.BUS_JAM_LEVELS.levels, dict=window.BUS_JAM_LOCALES;
-const read=key=>{try{return localStorage.getItem(key)}catch{return null}};
-const write=(key,value)=>{try{localStorage.setItem(key,value)}catch{}};
-let locale=read("weightPlayLocale")||read("wp-locale")||window.WonderI18n?.actualLocale?.()||"en", screen="main", selected=0, levelIndex=0, queues=[], busCounts=[], history=[], moves=0;
-if(!codes.includes(locale))locale="en";
-const $=id=>root.getElementById(id), key="animalBusJamProgress";
-let progress=JSON.parse(localStorage.getItem(key)||"[]");while(selected<29&&progress[selected])selected++;
-const t=(k,vars={})=>{const d=dict[locale]||dict.en;let v=d[k]??dict.en[k]??k;if(Array.isArray(v))return v;return String(v).replace(/\{(\w+)\}/g,(_,n)=>vars[n]??"");};
-function save(){localStorage.setItem(key,JSON.stringify(progress))}
-function applyLocale(){document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";root.querySelectorAll("[data-t]").forEach(e=>e.textContent=t(e.dataset.t));root.querySelectorAll("[data-t-aria]").forEach(e=>e.setAttribute("aria-label",t(e.dataset.tAria)));root.querySelectorAll("[data-t-alt]").forEach(e=>e.alt=t(e.dataset.tAlt));$("locale").value=locale;renderStage();if(screen==="battle"){render();if($("result").open)$("resultBody").textContent=t("resultBody",{n:levelIndex+1,moves})}}
-function show(name){["main","stage","battle"].forEach(id=>$(id).hidden=id!==name);$("generalReserve").hidden=name!=="battle";screen=name;window.scrollTo(0,0)}
-function selectStage(i,center=false){selected=Math.max(0,Math.min(29,i));root.querySelectorAll("#stageGrid .stage-card").forEach((card,cardIndex)=>{const active=cardIndex===selected;card.classList.toggle("selected",active);card.classList.toggle("centered",active);card.setAttribute("aria-current",active?"true":"false")});if(center)root.querySelector(`#stageGrid [data-index="${selected}"]`)?.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"})}
-function renderStage(){if(screen!=="stage")return;$("progress").textContent=t("progress",{done:progress.filter(Boolean).length});$("stageGrid").innerHTML=levels.map((l,i)=>{const locked=i>0&&!progress[i-1];return `<button class="stage-card ${i===selected?"selected centered":""}${locked?" locked":""}" data-index="${i}" data-stage-index="${i}" aria-current="${i===selected}" aria-disabled="${locked}"><strong>${t("stop",{n:i+1})}</strong><span>${locked?"🔒 "+t("locked"):progress[i]?"✓ "+t("complete"):t("chapter",{n:Math.floor(i/10)+1})}</span></button>`}).join("");root.querySelectorAll("#stageGrid .stage-card").forEach(b=>b.onclick=()=>{const i=Number(b.dataset.index);selectStage(i,true);if(b.getAttribute("aria-disabled")!=="true")startLevel(i)});selectStage(selected)}
-function render(){
-  const l=levels[levelIndex];
-  const colorNames=["coral","sky","sun"];
-  const colorValues=["#ef7770","#5b9fe3","#efb83f"];
-  $("chapter").textContent=t("chapter",{n:Math.floor(levelIndex/10)+1});
-  $("stageName").textContent=t("stop",{n:levelIndex+1});
-  $("remaining").textContent=t("remaining",{n:queues.flat().length});
-  $("buses").innerHTML=Array.from({length:3},(_,c)=>`<div class="bus" style="--bus:${colorValues[c]}"><strong>${t("colors")[c]}</strong><img class="bus-art" src="../../assets/animal-bus-jam-bus-${colorNames[c]}.webp" alt="" aria-hidden="true" draggable="false"><div class="seats">${Array.from({length:l.capacity},(_,i)=>`<i class="${i<busCounts[c]?"filled":""}"></i>`).join("")}</div><small>${t("busLabel",{color:t("colors")[c],filled:busCounts[c],capacity:l.capacity})}</small></div>`).join("");
-    $("queues").innerHTML=queues.map((q,i)=>{const queueColor=q[0]??i;return`<div class="queue" style="--person:${colorValues[queueColor]}">${q.length?q.map((c,j)=>`<button class="${j===0?"front":""}" data-queue="${i}" style="--person:${colorValues[c]}" aria-label="${t("personLabel",{color:t("colors")[c]})}"><img class="passenger-art" src="../../assets/animal-bus-jam-passenger-${colorNames[c]}.webp" alt="" aria-hidden="true" draggable="false"><span>${t("colors")[c]}</span></button>`).join(""):"<small>—</small>"}</div>`}).join("");
-  root.querySelectorAll("[data-queue]").forEach(b=>b.onclick=()=>board(+b.dataset.queue));
-  $("status").textContent=t("status");
-  $("undo").disabled=!history.length
-}
-function startLevel(i){levelIndex=i;const l=levels[i];queues=l.queues.map(q=>q.slice());busCounts=[0,0,0];history=[];moves=0;show("battle");render()}
-function board(i){if(!queues[i].length)return;const c=queues[i][0],l=levels[levelIndex];if(busCounts[c]>=l.capacity){$("status").textContent=t("full");return}history.push({queues:queues.map(q=>q.slice()),busCounts:busCounts.slice(),moves});queues[i].shift();busCounts[c]++;moves++;render();$("status").textContent=t("boarded");if(!queues.flat().length){progress[levelIndex]=true;save();$("resultBody").textContent=t("resultBody",{n:levelIndex+1,moves});$("result").showModal()}}
-function undo(){const s=history.pop();if(!s)return;queues=s.queues;busCounts=s.busCounts;moves=s.moves;render()}
-function hint(){const i=queues.findIndex(q=>q.length&&busCounts[q[0]]<levels[levelIndex].capacity);if(i>=0){const b=root.querySelector(`[data-queue="${i}"]`);b?.focus();b?.classList.add("hint");setTimeout(()=>b?.classList.remove("hint"),700)}}
-$("start").onclick=()=>{show("stage");renderStage()};root.querySelectorAll("[data-back]").forEach(b=>b.onclick=()=>show(screen==="battle"?"stage":"main"));$("stageGrid").addEventListener("wonder:stage-snap",event=>{const i=Number(event.detail?.index);if(Number.isInteger(i)&&i>=0)selectStage(i)});$("undo").onclick=undo;$("hint").onclick=hint;$("restart").onclick=()=>startLevel(levelIndex);$("retry").onclick=()=>{$("result").close();startLevel(levelIndex)};$("next").onclick=()=>{$("result").close();if(levelIndex<levels.length-1){selected=Math.min(29,levelIndex+1);show("stage");renderStage()}else show("stage")};$("locale").innerHTML=codes.map(c=>`<option value="${c}">${dict[c]?.label||c}</option>`).join("");root.addEventListener("change",e=>{if(e.target.id!=="locale")return;locale=e.target.value;write("weightPlayLocale",locale);write("wp-locale",locale);try{window.WonderI18n?.setLocale?.(locale)}catch{}applyLocale()});window.addEventListener("wonder:locale-change",event=>{const next=event.detail?.actualLocale||event.detail?.locale;if(!codes.includes(next))return;locale=next;write("weightPlayLocale",locale);write("wp-locale",locale);applyLocale();window.setTimeout(()=>{if(locale===next)applyLocale()},0)});applyLocale();show("main");
+(() => {
+  "use strict";
+
+  const codes = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const palette = ["#ef6b62", "#4da8e8", "#f0bb4d", "#9a7ae9"];
+  const routeCodes = ["A", "B", "C", "D"];
+  const root = document;
+  const engine = window.BUS_JAM_LEVELS;
+  const levels = engine.levels;
+  const dict = window.BUS_JAM_LOCALES;
+  const $ = (id) => root.getElementById(id);
+  const read = (key) => {
+    try { return localStorage.getItem(key); } catch { return null; }
+  };
+  const write = (key, value) => {
+    try { localStorage.setItem(key, value); } catch {}
+  };
+
+  let locale = read("weightPlayLocale") || read("wp-locale") || window.WonderI18n?.actualLocale?.() || "en";
+  let screen = "main";
+  let selected = 0;
+  let levelIndex = 0;
+  let state = null;
+  let history = [];
+  let moves = 0;
+  const progressKey = "animalBusJamProgress";
+  let progress;
+  try { progress = JSON.parse(read(progressKey) || "[]"); } catch { progress = []; }
+  if (!Array.isArray(progress)) progress = [];
+  if (!codes.includes(locale)) locale = "en";
+  while (selected < 29 && progress[selected]) selected += 1;
+
+  function t(key, vars = {}) {
+    const active = dict[locale] || dict.en;
+    let value = active[key] ?? dict.en[key] ?? key;
+    if (Array.isArray(value)) return value;
+    return String(value).replace(/\{(\w+)\}/g, (_, name) => vars[name] ?? "");
+  }
+
+  function save() {
+    write(progressKey, JSON.stringify(progress));
+  }
+
+  function snapshot() {
+    return {
+      queues: state.queues.map((queue) => queue.slice()),
+      waiting: state.waiting.slice(),
+      busIndex: state.busIndex,
+      busFilled: state.busFilled,
+      moves,
+    };
+  }
+
+  function restore(saved) {
+    state = {
+      queues: saved.queues.map((queue) => queue.slice()),
+      waiting: saved.waiting.slice(),
+      busIndex: saved.busIndex,
+      busFilled: saved.busFilled,
+    };
+    moves = saved.moves;
+  }
+
+  function applyLocale() {
+    document.documentElement.lang = locale;
+    document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+    root.querySelectorAll("[data-t]").forEach((element) => {
+      element.textContent = t(element.dataset.t);
+    });
+    root.querySelectorAll("[data-t-aria]").forEach((element) => {
+      element.setAttribute("aria-label", t(element.dataset.tAria));
+    });
+    root.querySelectorAll("[data-t-alt]").forEach((element) => {
+      element.alt = t(element.dataset.tAlt);
+    });
+    $("locale").value = locale;
+    renderStage();
+    if (screen === "battle" && state) render();
+    if ($("result").open) $("resultBody").textContent = t("resultBody", { n: levelIndex + 1, moves });
+  }
+
+  function show(name) {
+    ["main", "stage", "battle"].forEach((id) => { $(id).hidden = id !== name; });
+    $("generalReserve").hidden = name !== "battle";
+    document.body.dataset.screen = name;
+    screen = name;
+    window.scrollTo(0, 0);
+  }
+
+  function selectStage(index, center = false) {
+    selected = Math.max(0, Math.min(29, index));
+    root.querySelectorAll("#stageGrid .stage-card").forEach((card, cardIndex) => {
+      const active = cardIndex === selected;
+      card.classList.toggle("selected", active);
+      card.classList.toggle("centered", active);
+      card.setAttribute("aria-current", active ? "true" : "false");
+    });
+    if (center) {
+      root.querySelector(`#stageGrid [data-index="${selected}"]`)?.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      });
+    }
+  }
+
+  function renderStage() {
+    if (screen !== "stage") return;
+    $("progress").textContent = t("progress", { done: progress.filter(Boolean).length });
+    $("stageGrid").innerHTML = levels.map((level, index) => {
+      const locked = index > 0 && !progress[index - 1];
+      const stateLabel = locked ? `🔒 ${t("locked")}` : progress[index] ? `✓ ${t("complete")}` : t("stageMeta", {
+        buses: level.buses.length,
+        bay: level.baySize,
+      });
+      return `<button class="stage-card ${index === selected ? "selected centered" : ""}${locked ? " locked" : ""}" data-index="${index}" data-stage-index="${index}" aria-current="${index === selected}" aria-disabled="${locked}">
+        <strong>${t("stop", { n: index + 1 })}</strong>
+        <span>${t("chapter", { n: level.chapter + 1 })}</span>
+        <span>${stateLabel}</span>
+      </button>`;
+    }).join("");
+    root.querySelectorAll("#stageGrid .stage-card").forEach((button) => {
+      button.onclick = () => {
+        const index = Number(button.dataset.index);
+        selectStage(index, true);
+        if (button.getAttribute("aria-disabled") !== "true") startLevel(index);
+      };
+    });
+    selectStage(selected);
+  }
+
+  function busCard(bus, index) {
+    const active = index === state.busIndex;
+    const departed = index < state.busIndex;
+    const filled = departed ? bus.seats : active ? state.busFilled : 0;
+    return `<div class="bus ${active ? "active" : ""}${departed ? " departed" : ""}" style="--bus:${palette[bus.color]}">
+      <div class="bus-head"><strong>${t("colors")[bus.color]}</strong><span class="bus-route">${active ? t("activeBus") : `R-${index + 1}`}</span></div>
+      <div class="bus-shape" aria-hidden="true"></div>
+      <div class="seats" aria-label="${t("busLabel", { color: t("colors")[bus.color], filled, capacity: bus.seats })}">${Array.from({ length: bus.seats }, (_, seat) => `<i class="${seat < filled ? "filled" : ""}"></i>`).join("")}</div>
+    </div>`;
+  }
+
+  function passenger(color, queueIndex, itemIndex) {
+    const front = itemIndex === 0;
+    return `<button class="passenger ${front ? "front" : ""}" data-queue="${queueIndex}" style="--person:${palette[color]}" ${front ? "" : "tabindex=\"-1\" aria-hidden=\"true\""}>
+      <span class="passenger-token">${routeCodes[color]}</span>
+      <span>${t("colors")[color]}</span>
+    </button>`;
+  }
+
+  function render() {
+    const level = levels[levelIndex];
+    engine.settle(level, state);
+    const remaining = state.queues.reduce((sum, queue) => sum + queue.length, 0) + state.waiting.length;
+    $("chapter").textContent = t("chapter", { n: level.chapter + 1 });
+    $("stageName").textContent = t("stop", { n: levelIndex + 1 });
+    $("remaining").textContent = t("remaining", { n: remaining });
+    $("buses").innerHTML = level.buses.map(busCard).join("");
+    $("holdingCount").textContent = `${state.waiting.length}/${level.baySize}`;
+    $("holding").innerHTML = Array.from({ length: level.baySize }, (_, index) => {
+      const color = state.waiting[index];
+      return color === undefined
+        ? `<span class="holding-slot">${index + 1}</span>`
+        : `<span class="holding-slot occupied" style="--person:${palette[color]}"><b>${routeCodes[color]}</b></span>`;
+    }).join("");
+    $("queues").innerHTML = state.queues.map((queue, queueIndex) => `
+      <div class="queue" role="listitem">
+        <span class="queue-label">${t("queueNumber", { n: queueIndex + 1 })}</span>
+        ${queue.length ? queue.map((color, itemIndex) => passenger(color, queueIndex, itemIndex)).join("") : `<span class="queue-empty">—</span>`}
+      </div>
+    `).join("");
+    root.querySelectorAll(".passenger.front").forEach((button) => {
+      button.onclick = () => dispatch(Number(button.dataset.queue));
+    });
+    $("undo").disabled = history.length === 0;
+  }
+
+  function startLevel(index) {
+    levelIndex = index;
+    const level = levels[index];
+    state = {
+      queues: level.queues.map((queue) => queue.slice()),
+      waiting: [],
+      busIndex: 0,
+      busFilled: 0,
+    };
+    history = [];
+    moves = 0;
+    $("result").close();
+    $("deadlock").close();
+    show("battle");
+    render();
+    $("status").textContent = t("status");
+  }
+
+  function dispatch(queueIndex) {
+    const level = levels[levelIndex];
+    const color = state.queues[queueIndex]?.[0];
+    const activeColor = level.buses[state.busIndex]?.color;
+    if (color === undefined || activeColor === undefined) return;
+    if (color !== activeColor && state.waiting.length >= level.baySize) {
+      $("status").textContent = t("holdingFull");
+      root.querySelector(".holding-panel")?.classList.remove("jam");
+      requestAnimationFrame(() => root.querySelector(".holding-panel")?.classList.add("jam"));
+      return;
+    }
+    history.push(snapshot());
+    const nextState = engine.step(level, state, queueIndex);
+    if (!nextState) return;
+    state = nextState;
+    moves += 1;
+    render();
+    $("status").textContent = color === activeColor ? t("boarded") : t("held");
+
+    if (engine.isComplete(level, state)) {
+      progress[levelIndex] = true;
+      save();
+      $("resultBody").textContent = t("resultBody", { n: levelIndex + 1, moves });
+      $("result").showModal();
+      return;
+    }
+    if (engine.isDeadlocked(level, state)) $("deadlock").showModal();
+  }
+
+  function undo() {
+    const saved = history.pop();
+    if (!saved) return;
+    restore(saved);
+    render();
+    $("status").textContent = t("undone");
+  }
+
+  function hint() {
+    const level = levels[levelIndex];
+    const activeColor = level.buses[state.busIndex]?.color;
+    let queueIndex = state.queues.findIndex((queue) => queue[0] === activeColor);
+    if (queueIndex < 0 && state.waiting.length < level.baySize) {
+      const nextColor = level.buses[state.busIndex + 1]?.color;
+      queueIndex = state.queues.findIndex((queue) => queue.length && queue[0] === nextColor);
+    }
+    if (queueIndex < 0) queueIndex = state.queues.findIndex((queue) => queue.length);
+    const button = root.querySelector(`.passenger.front[data-queue="${queueIndex}"]`);
+    button?.focus();
+    button?.classList.add("hint");
+    window.setTimeout(() => button?.classList.remove("hint"), 700);
+  }
+
+  $("start").onclick = () => { show("stage"); renderStage(); };
+  root.querySelectorAll("[data-back]").forEach((button) => {
+    button.onclick = () => show(screen === "battle" ? "stage" : "main");
+  });
+  $("stageGrid").addEventListener("wonder:stage-snap", (event) => {
+    const index = Number(event.detail?.index);
+    if (Number.isInteger(index) && index >= 0) selectStage(index);
+  });
+  $("undo").onclick = undo;
+  $("hint").onclick = hint;
+  $("restart").onclick = () => startLevel(levelIndex);
+  $("retry").onclick = () => startLevel(levelIndex);
+  $("next").onclick = () => {
+    $("result").close();
+    selected = Math.min(29, levelIndex + 1);
+    show("stage");
+    renderStage();
+  };
+  $("deadlockUndo").onclick = () => { $("deadlock").close(); undo(); };
+  $("deadlockRetry").onclick = () => startLevel(levelIndex);
+  $("locale").innerHTML = codes.map((code) => `<option value="${code}">${dict[code]?.label || code}</option>`).join("");
+  root.addEventListener("change", (event) => {
+    if (event.target.id !== "locale") return;
+    locale = event.target.value;
+    write("weightPlayLocale", locale);
+    write("wp-locale", locale);
+    try { window.WonderI18n?.setLocale?.(locale); } catch {}
+    applyLocale();
+  });
+  window.addEventListener("wonder:locale-change", (event) => {
+    const next = event.detail?.actualLocale || event.detail?.locale;
+    if (!codes.includes(next)) return;
+    locale = next;
+    write("weightPlayLocale", locale);
+    write("wp-locale", locale);
+    applyLocale();
+    window.setTimeout(() => { if (locale === next) applyLocale(); }, 0);
+  });
+
+  applyLocale();
+  show("main");
 })();

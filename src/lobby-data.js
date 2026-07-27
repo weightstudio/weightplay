@@ -41,7 +41,6 @@ window.WONDER_LOBBY = {
       "animal-sunbeam-garden",
       "animal-bus-jam",
       "animal-unblock",
-      "animal-hexa-sort",
     ],
   },
   games: [
@@ -56,16 +55,6 @@ window.WONDER_LOBBY = {
       meta: { en: "30 trails · 6×6 board · thousands of layouts", "zh-Hant": "30 關 · 6×6 棋盤 · 數千布局", "zh-Hans": "30 关 · 6×6 棋盘 · 数千布局", ja: "30ステージ · 6×6 · 数千配置", ko: "30 스테이지 · 6×6 · 수천 배치", es: "30 rutas · tablero 6×6 · miles de diseños", "pt-BR": "30 trilhas · tabuleiro 6×6 · milhares de layouts", fr: "30 pistes · plateau 6×6 · milliers de layouts", de: "30 Pfade · 6×6-Brett · tausende Layouts", it: "30 percorsi · tavola 6×6 · migliaia di layout", ru: "30 трасс · поле 6×6 · тысячи раскладок", hi: "30 ट्रेल · 6×6 बोर्ड · हजारों लेआउट", ar: "30 مسارًا · لوحة 6×6 · آلاف التخطيطات" }
     },
     {
-      id: "animal-hexa-sort",
-      title: { en: "Hexa Sort", "zh-Hant": "六角分類", "zh-Hans": "六角分类", ja: "ヘキサソート", ko: "헥사 정렬", es: "Hexa Sort", "pt-BR": "Hexa Sort", fr: "Hexa Sort", de: "Hexa Sort", it: "Hexa Sort", ru: "Hexa Sort", hi: "हेक्सा सॉर्ट", ar: "فرز سداسي" },
-      status: "planned", statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "곧 출시", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
-      type: { en: "Hex Color Sorting", "zh-Hant": "六角顏色分類", "zh-Hans": "六角颜色分类", ja: "六角カラーソート", ko: "육각 색상 정렬", es: "Clasificación hexagonal", "pt-BR": "Classificação hexagonal", fr: "Tri hexagonal", de: "Hex-Farbsortierung", it: "Ordine esagonale", ru: "Сортировка hex", hi: "हेक्सा रंग छंटाई", ar: "فرز ألوان سداسي" },
-      categories: ["Animal Games", "Puzzle", "Relaxing"], skills: ["Planning", "Sorting"], ages: ["9", "family"], href: "games/animal-hexa-sort/", internalTrial: "index.html?trial=1",
-      art: { kind: "image", background: "assets/animal-hexa-sort-cover-general-v3.webp", hideHero: true },
-      description: { en: "Sort soothing colored hex tiles into matching towers across 30 calm groves.", "zh-Hant": "將舒服的彩色六角形分類成同色高塔，完成 30 個庭園。", "zh-Hans": "将舒服的彩色六角形分类成同色高塔，完成 30 个庭园。", ja: "色付き六角タイルを同色の塔へ。30の庭園を攻略。", ko: "색 육각 타일을 같은 색 탑으로 정렬하세요.", es: "Ordena hexágonos de colores en torres iguales.", "pt-BR": "Separe hexágonos coloridos em torres iguais.", fr: "Triez les hexagones colorés en tours assorties.", de: "Sortiere farbige Hex-Fliesen in passende Türme.", it: "Ordina gli esagoni colorati in torri abbinate.", ru: "Сортируй цветные hex-плитки по башням.", hi: "रंगीन हेक्सा टाइलों को मिलती टावरों में लगाएं।", ar: "رتب البلاطات السداسية الملونة في أبراج متطابقة." },
-      meta: { en: "30 groves · 3–4 colors · no timer", "zh-Hant": "30 庭園 · 3–4 色 · 無計時", "zh-Hans": "30 庭园 · 3–4 色 · 无计时", ja: "30庭園 · 3–4色 · タイマーなし", ko: "30 정원 · 3–4색 · 타이머 없음", es: "30 jardines · 3–4 colores · sin tiempo", "pt-BR": "30 jardins · 3–4 cores · sem cronômetro", fr: "30 jardins · 3–4 couleurs · sans chrono", de: "30 Haine · 3–4 Farben · ohne Timer", it: "30 giardini · 3–4 colori · senza timer", ru: "30 садов · 3–4 цвета · без таймера", hi: "30 गार्डन · 3–4 रंग · बिना टाइमर", ar: "30 حديقة · 3–4 ألوان · بلا مؤقت" }
-    },
-    {
       id: "animal-bus-jam",
       title: { en: "Panko's Bus Jam", "zh-Hant": "Panko 公車大塞車", "zh-Hans": "Panko 公交大塞车", ja: "Pankoのバスジャム", ko: "Panko 버스 잼", es: "Atasco de buses de Panko", "pt-BR": "Engarrafamento de ônibus do Panko", fr: "Bus Jam de Panko", de: "Pankos Bus-Chaos", it: "Bus Jam di Panko", ru: "Автобусная пробка Панко", hi: "पांको बस जाम", ar: "ازدحام حافلات بانكو" },
       status: "planned",
@@ -73,9 +62,9 @@ window.WONDER_LOBBY = {
       type: { en: "Queue Strategy", "zh-Hant": "排隊策略", "zh-Hans": "排队策略", ja: "行列ストラテジー", ko: "대기열 전략", es: "Estrategia de colas", "pt-BR": "Estratégia de filas", fr: "Stratégie de files", de: "Warteschlangen-Strategie", it: "Strategia delle file", ru: "Стратегия очередей", hi: "कतार रणनीति", ar: "استراتيجية الطوابير" },
       categories: ["Animal Games", "Puzzle", "Strategy"], skills: ["Planning", "Logic"], ages: ["9", "family"],
       href: "games/animal-bus-jam/", internalTrial: "index.html?trial=1",
-      art: { kind: "image", background: "assets/animal-bus-jam-cover-general-v3.webp", hideHero: true },
-      description: { en: "Board every passenger onto the matching bus across 30 stops.", "zh-Hant": "將乘客送上對應顏色的公車，完成 30 個站點。", "zh-Hans": "将乘客送上对应颜色的公交车，完成 30 个站点。", ja: "乗客を同じ色のバスへ送り、30の停留所を攻略。", ko: "승객을 같은 색 버스에 태우며 30개 정류장을 공략하세요.", es: "Sube a cada pasajero al bus correcto en 30 paradas.", "pt-BR": "Leve cada passageiro ao ônibus certo em 30 pontos.", fr: "Faites monter chaque passager dans le bon bus sur 30 arrêts.", de: "Bringe Fahrgäste an 30 Haltestellen in den richtigen Bus.", it: "Porta ogni passeggero sul bus giusto in 30 fermate.", ru: "Посади пассажиров в нужные автобусы на 30 остановках.", hi: "30 स्टॉप पर हर यात्री को सही बस में बैठाएं।", ar: "أوصل كل راكب إلى الحافلة المطابقة عبر 30 محطة." },
-      meta: { en: "30 stops · 3 colors · plan the queue", "zh-Hant": "30 個站點 · 3 種顏色 · 規劃隊列", "zh-Hans": "30 个站点 · 3 种颜色 · 规划队列", ja: "30ステージ · 3色 · 行列計画", ko: "30 스테이지 · 3색 · 대기열 계획", es: "30 paradas · 3 colores · planifica la fila", "pt-BR": "30 pontos · 3 cores · planeje a fila", fr: "30 arrêts · 3 couleurs · planifiez la file", de: "30 Haltestellen · 3 Farben · plane die Schlange", it: "30 fermate · 3 colori · pianifica la fila", ru: "30 остановок · 3 цвета · планируй очередь", hi: "30 स्टॉप · 3 रंग · कतार की योजना", ar: "30 محطة · 3 ألوان · خطط للطابور" }
+      art: { kind: "image", background: "assets/animal-bus-jam-cover-general-v5.png", hideHero: true },
+      description: { en: "Read the convoy order and route exposed passengers without locking the limited holding lane across 30 terminals.", "zh-Hant": "判讀車隊順序，在有限候車通道堵死前安排露出的乘客，挑戰 30 座轉運站。", "zh-Hans": "判断车队顺序，在有限候车通道堵死前安排露出的乘客，挑战 30 座换乘站。", ja: "車列の順番を読み、限られた待機レーンを詰まらせず30ターミナルを攻略。", ko: "차량 순서를 읽고 제한된 대기 통로가 막히지 않게 30개 터미널을 운영하세요.", es: "Lee el orden del convoy y evita bloquear la zona de espera en 30 terminales.", "pt-BR": "Leia a ordem do comboio e evite travar a faixa de espera em 30 terminais.", fr: "Lisez l’ordre du convoi sans bloquer la voie d’attente dans 30 terminaux.", de: "Lies die Abfahrtsfolge und halte in 30 Terminals die Wartezone frei.", it: "Leggi l’ordine del convoglio senza bloccare la corsia d’attesa in 30 terminal.", ru: "Следите за очередью автобусов и не блокируйте зону ожидания в 30 терминалах.", hi: "बस क्रम पढ़ें और 30 टर्मिनल में सीमित प्रतीक्षा लेन को जाम होने से बचाएँ।", ar: "اقرأ ترتيب الحافلات وتجنب انسداد مسار الانتظار عبر 30 محطة." },
+      meta: { en: "30 terminals · 4 routes · deadlock strategy", "zh-Hant": "30 座轉運站 · 4 條路線 · 防堵策略", "zh-Hans": "30 座换乘站 · 4 条线路 · 防堵策略", ja: "30ターミナル · 4路線 · 詰まり対策", ko: "30개 터미널 · 4개 노선 · 교착 전략", es: "30 terminales · 4 rutas · estrategia de bloqueo", "pt-BR": "30 terminais · 4 rotas · estratégia contra bloqueios", fr: "30 terminaux · 4 lignes · stratégie de blocage", de: "30 Terminals · 4 Routen · Blockade-Strategie", it: "30 terminal · 4 linee · strategia anti-blocco", ru: "30 терминалов · 4 маршрута · стратегия блокировок", hi: "30 टर्मिनल · 4 मार्ग · जाम रणनीति", ar: "30 محطة · 4 مسارات · استراتيجية منع الانسداد" }
     },
     {
       id: "animal-sunbeam-garden",

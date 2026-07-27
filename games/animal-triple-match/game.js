@@ -306,7 +306,6 @@
       setText(related, ":scope > p", "Wenn du weiter Logik und Vorausplanung üben möchtest, probiere als Nächstes:");
       const relatedCopy = [
         ["animal-cratebound", "Animal Cratebound", "Bewege, schiebe und ziehe Runenfracht durch dreißig handgebaute Lagerhäuser der Himmelsarche."],
-        ["animal-hexa-sort", "Animal Hexa Sort", "Verschiebe den obersten Sechseckstein zwischen kleinen Stapeln, bilde passende Farbgruppen und räume alle Steine ab, ohne nützliche Teile einzuschließen."],
         ["animal-rootvault-pins", "Animal Rootvault Pins", "Löse dreißig Stiftkammern mit Taro Moospanzer und öffne jeden Mechanismus in einer sicheren Reihenfolge."],
       ];
       relatedCopy.forEach(([slug, title, copy]) => {
@@ -408,7 +407,6 @@
       setText(related, ":scope > p", "Pour continuer à exercer votre logique et votre anticipation, essayez ensuite :");
       const relatedCopy = [
         ["animal-cratebound", "Animal Cratebound", "Déplacez, poussez et tirez des cargaisons runiques dans trente entrepôts de l'Arche céleste conçus à la main."],
-        ["animal-hexa-sort", "Animal Hexa Sort", "Déplacez l'hexagone supérieur entre de petites piles, formez des groupes de couleurs identiques et retirez toutes les pièces sans bloquer les éléments utiles."],
         ["animal-rootvault-pins", "Animal Rootvault Pins", "Résolvez trente chambres à goupilles avec Taro Coque-de-Mousse et ouvrez chaque mécanisme dans un ordre sûr."],
       ];
       relatedCopy.forEach(([slug, title, copy]) => {

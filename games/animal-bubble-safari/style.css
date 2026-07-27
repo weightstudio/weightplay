@@ -310,6 +310,10 @@ body:not(.safari-main) .wp-tutorial-button { display: none !important; }
   }
   .battle-header .back-button,
   .battle-header .battle-utility-button { justify-self: center; }
+  .battle-header .back-button {
+    align-self: start;
+    justify-self: start;
+  }
   .battle-message { grid-column: 2 / 4; grid-row: 1; height: 30px; border-radius: 8px; }
   .play-frame {
     grid-column: 2;

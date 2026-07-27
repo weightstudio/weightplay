@@ -1,1 +1,0 @@
-(()=>{function build(index){const colors=3+Math.floor(index/10)%2,stacks=[];for(let i=0;i<colors;i++)stacks.push(Array.from({length:3},(_,j)=>(i+j+index)%colors));stacks.push([]);return{index,colors,capacity:3,stacks}}window.HEXA_SORT_LEVELS={levels:Array.from({length:30},(_,i)=>build(i)),build};if(typeof module!=="undefined")module.exports=window.HEXA_SORT_LEVELS})()

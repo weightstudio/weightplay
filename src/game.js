@@ -626,6 +626,7 @@ const drag = {
 let state = makeState(0);
 let lastTime = performance.now();
 let loaded = false;
+let hudElapsed = 0;
 
 setLoadingProgress(0);
 
@@ -814,6 +815,7 @@ function startLevel(levelIndex) {
   menuTabs.classList.add("hidden");
   overlay.classList.remove("settlement-screen", "equipment-screen");
   overlay.classList.add("hidden");
+  hudElapsed = 0;
   updateHud();
   requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
   window.WonderSound?.play("start");
@@ -1002,7 +1004,11 @@ function update(dt) {
 
   if (state.wallHp <= 0) loseLevel();
 
-  updateHud();
+  hudElapsed += dt;
+  if (hudElapsed >= 0.1) {
+    hudElapsed = 0;
+    updateHud();
+  }
 }
 
 function buildInitialWeaponTimers() {
@@ -2002,11 +2008,15 @@ function drawImageContain(image, x, y, width, height) {
 }
 
 function updateHud() {
-  coinText.textContent = state.coins;
-  menuCoinText.textContent = profile.coins;
-  if (menuDiamondText) menuDiamondText.textContent = readWallet().diamonds;
-  levelText.textContent = state.level.id;
-  waveText.textContent = `${Math.min(state.waveIndex + 1, state.level.waves.length)}/${state.level.waves.length}`;
+  const setText = (node, value) => {
+    const next = String(value);
+    if (node && node.textContent !== next) node.textContent = next;
+  };
+  setText(coinText, state.coins);
+  setText(menuCoinText, profile.coins);
+  setText(menuDiamondText, readWallet().diamonds);
+  setText(levelText, state.level.id);
+  setText(waveText, `${Math.min(state.waveIndex + 1, state.level.waves.length)}/${state.level.waves.length}`);
 }
 
 function showMainMenu(tab = activeMenuTab) {

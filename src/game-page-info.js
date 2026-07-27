@@ -7759,19 +7759,6 @@
     faq: [["Can I board from the middle of a queue?", "No, only the visible front passenger can move."], ["Why was a passenger rejected?", "Its matching bus had no remaining seat."], ["What does Undo restore?", "It restores queues, capacities, and the move counter."], ["Are all stops solvable?", "Yes, every authored stop has a valid boarding order."]]
   }, "潘可的巴士疏運", "胖达巴士疏导");
 
-  registerExpandedGuide("animal-hexa-sort", {
-    title: "Animal Hexa Sort", gameplay: "Color Stack Sorting Puzzle",
-    intro: "Move the top hex between short stacks, combine three matching colors, and clear every piece without trapping useful tiles beneath incompatible towers.",
-    story: ["Panko is sorting rune-colored hexes across thirty quiet groves. Each grove begins with an authored stack arrangement and enough open capacity to solve it through deliberate transfers.", "The challenge comes from access: only a top hex can move, so every placement changes which colors become available next."],
-    systems: ["Tap a nonempty stack to lift its top hex, then tap the same stack to cancel or another valid stack to place it.", "A hex can enter an empty stack or a stack whose top color matches. Each stack holds at most three pieces.", "Three matching hexes in one stack clear automatically and free the stack for later moves.", "Undo restores the previous stack arrangement and move count; Hint selects a movable source without inventing a new rule."],
-    how: ["Choose an unlocked grove.", "Identify colors that already have two accessible pieces.", "Lift one top hex and place it on an empty or matching stack.", "Continue until all stacks are empty, then advance from Result."],
-    strategyTips: ["Keep at least one empty stack available as a temporary buffer.", "Complete a triple when it frees a buried color you need next.", "Avoid building three different single-color stack tops with no matching destination.", "Read the second piece in each stack before moving its top."],
-    progression: ["Early groves teach empty-stack transfers and immediate triples. Later layouts add more colors, taller dependency chains, fewer spare spaces, and mixed near-complete towers.", "All thirty stages preserve the same move rules while changing the order-planning problem."],
-    designNote: "Large top pieces, stable stack positions, and a single selected highlight keep every move legible on touch screens and desktop pointers.",
-    parent: "There is no timer, account, purchase, or public ranking. Clears and best move counts are stored locally in this browser.",
-    faq: [["Can I place on a different color?", "No. The destination must be empty or have the same top color."], ["When does a stack clear?", "Three matching hexes clear immediately."], ["Can I cancel a lift?", "Yes, tap the selected source stack again."], ["Does Undo restore a cleared triple?", "Yes, it restores the complete previous state."]]
-  }, "動物六角堆疊", "动物六角堆叠");
-
   registerExpandedGuide("animal-number-match", {
     title: "Panko's Number Grove", gameplay: "Visible-Line Number Pair Puzzle",
     intro: "Remove equal numbers or pairs that total ten when they touch or can see each other through cleared spaces, opening new sight lines across the board.",
@@ -7953,7 +7940,6 @@
     "animal-bamboo-pipes",
     "animal-bus-jam",
     "animal-cratebound",
-    "animal-hexa-sort",
     "animal-mosaic-clues",
     "animal-number-match",
     "animal-prism-battalion",
