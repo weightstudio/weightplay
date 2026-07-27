@@ -26,7 +26,7 @@ h1{margin:0;font-size:clamp(2.7rem,7vw,5.4rem);line-height:.92;letter-spacing:-.
 .public-guide{margin-top:18px;padding:20px;border:1px solid #a9cdb8;border-radius:22px;background:#f7fff6e8;text-align:left}
 .public-guide h2{margin:.2rem 0 .5rem}
 .public-guide p{margin:.35rem 0;line-height:1.55}
-.canvas{height:100svh;min-height:430px;background:linear-gradient(155deg,#f6fff3,#cce9d4);overflow:hidden}
+.canvas{height:100svh;min-height:430px;background:linear-gradient(155deg,#f6fff3e8,#cce9d4e8),url("../../assets/animal-color-link-cover-kids-v2.webp") center/cover;overflow:hidden}
 .scene-header{height:76px;padding:max(10px,env(safe-area-inset-top)) 16px 8px;background:#164e46;color:#fff}
 .scene-header .icon-button{background:#e8f8df}
 .scene-header small{display:block;font-size:.67rem;letter-spacing:.14em;opacity:.78}
@@ -45,7 +45,7 @@ h1{margin:0;font-size:clamp(2.7rem,7vw,5.4rem);line-height:.92;letter-spacing:-.
 .battle{display:grid;grid-template-rows:76px 1fr}
 .battle-content{min-height:0;padding:10px 16px 12px;display:grid;grid-template-rows:34px minmax(0,1fr) 52px 30px;gap:8px;place-items:center}
 .hud{width:min(86vw,570px);display:flex;justify-content:space-between;font-weight:900;font-size:.82rem}
-.grid{--size:5;--cell:calc((100% - (var(--size) - 1)*5px)/var(--size));width:min(86vw,calc(100svh - 280px),570px);aspect-ratio:1;display:grid;grid-template-columns:repeat(var(--size),1fr);gap:5px;padding:7px;border-radius:24px;background:#b6d4c1;box-shadow:0 14px 34px #174f4027;touch-action:none;outline:none}
+.grid{--size:5;--cell:calc((100% - (var(--size) - 1)*5px)/var(--size));width:min(86vw,calc(100svh - 280px),570px);aspect-ratio:1;display:grid;grid-template-columns:repeat(var(--size),1fr);gap:5px;padding:7px;border-radius:24px;background:linear-gradient(#b6d4c1dc,#b6d4c1dc),url("../../assets/animal-color-link-cover-kids-v2.webp") center/cover;box-shadow:0 14px 34px #174f4027;touch-action:none;outline:none}
 .grid:focus-visible{box-shadow:0 0 0 4px #f0b943,0 14px 34px #174f4027}
 .cell{position:relative;min-width:0;border:0;border-radius:clamp(6px,1.6vw,13px);background:#edf7ed;padding:0;overflow:hidden;box-shadow:inset 0 -2px 0 #9ebfac55}
 .cell.path{background:color-mix(in srgb,var(--color) 35%,#f7fff5)}
@@ -59,7 +59,7 @@ h1{margin:0;font-size:clamp(2.7rem,7vw,5.4rem);line-height:.92;letter-spacing:-.
 .status{margin:0;text-align:center;font-weight:800;font-size:.82rem;min-height:1.2em}
 dialog{width:min(440px,calc(100% - 28px));border:0;border-radius:26px;padding:28px;text-align:center;color:var(--ink);background:#f8fff3;box-shadow:0 30px 90px #0b332e70}
 dialog::backdrop{background:#0a2926aa;backdrop-filter:blur(4px)}
-.result-mark{width:70px;height:70px;margin:0 auto 15px;border-radius:50%;display:grid;place-items:center;background:#56b873;color:#fff;font-size:2.6rem;font-weight:900}
+.result-mark{width:138px;height:96px;margin:0 auto 15px;border-radius:22px;background:url("../../assets/animal-color-link-cover-kids-v2.webp") 45% 22%/cover no-repeat;box-shadow:0 10px 24px #153e3838}
 dialog h2{margin:.2rem 0;font-size:1.8rem}
 .result-actions{display:flex;justify-content:center;gap:10px;margin-top:20px}
 .result-actions .primary{background:#176b5e;color:#fff}

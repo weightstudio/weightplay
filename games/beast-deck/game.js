@@ -2608,6 +2608,7 @@
 
   function renderHand() {
     nodes.handRow.innerHTML = "";
+    nodes.handRow.scrollLeft = 0;
     state.hand.forEach((cardId, index) => {
       const card = cardDb[cardId];
       const cardEl = document.createElement("button");
@@ -2636,6 +2637,7 @@
       cardEl.addEventListener("click", () => playCard(index));
       nodes.handRow.appendChild(cardEl);
     });
+    nodes.handRow.scrollLeft = 0;
     updateEndTurnDecisionLabel();
   }
 

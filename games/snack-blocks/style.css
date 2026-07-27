@@ -1058,6 +1058,18 @@ body.snack-playing .wp-tutorial-button {
     font-size: 1rem;
   }
 
+  /* Stage 1 renders "0 / 650"; keep the complete goal readable in the
+     narrow two-column landscape HUD. */
+  body.snack-playing #targetText {
+    max-width: 100%;
+    font-size: 0.78rem;
+    letter-spacing: -0.02em;
+  }
+
+  body.snack-playing .hud div {
+    padding-inline: 3px;
+  }
+
   body.snack-playing .play-panel {
     display: grid;
     grid-template-columns: 504px minmax(0, 1fr) !important;

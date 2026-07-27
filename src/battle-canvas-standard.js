@@ -191,7 +191,7 @@
     if (reserve) {
       reserve.setAttribute("data-wp-battle-physical-reserve", "");
       const reserveTop = availableHeight;
-      const reserveFollowsCanvas = gameId === "animal-2048";
+      const reserveFollowsCanvas = gameId === "animal-2048" || gameId === "animal-relic-hunters";
       const reserveLeft = reserveFollowsCanvas ? left : 0;
       const reserveWidth = reserveFollowsCanvas ? renderedWidth : width;
       rememberAndSet(reserve, {

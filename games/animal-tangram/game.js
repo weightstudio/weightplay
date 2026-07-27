@@ -2,11 +2,26 @@
   "use strict";
   const codes=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"],levels=window.TANGRAM_LEVELS.levels,parts=window.TANGRAM_LEVELS.pieces;
   const $=s=>document.querySelector(s),screens=[...document.querySelectorAll(".screen")],key="wp-animal-tangram-v1";
+  document.body.setAttribute("data-runtime-localize","off");
+  const artStyle=document.createElement("style");
+  artStyle.textContent=`
+    .canvas{background:linear-gradient(155deg,#fbfff4e8,#d5ecd8e8),url("../../assets/animal-tangram-cover-kids-v2.webp") center/cover}
+    .board{background:linear-gradient(#d5ecdae8,#d5ecdae8),url("../../assets/animal-tangram-cover-kids-v2.webp") center/cover}
+    .result-mark{width:132px;height:96px;border-radius:22px;margin:0 auto 12px;background:url("../../assets/animal-tangram-cover-kids-v2.webp") 50% 24%/cover no-repeat;color:transparent;box-shadow:0 10px 24px #173f3838}
+  `;
+  document.head.append(artStyle);
+  const animalNames={
+    en:["Turtle","Cat","Bird","Fox","Fish","Rabbit"],"zh-Hant":["海龜","小貓","小鳥","狐狸","小魚","兔子"],"zh-Hans":["海龟","小猫","小鸟","狐狸","小鱼","兔子"],
+    ja:["カメ","ネコ","トリ","キツネ","サカナ","ウサギ"],ko:["거북이","고양이","새","여우","물고기","토끼"],es:["Tortuga","Gato","Ave","Zorro","Pez","Conejo"],
+    "pt-BR":["Tartaruga","Gato","Ave","Raposa","Peixe","Coelho"],fr:["Tortue","Chat","Oiseau","Renard","Poisson","Lapin"],de:["Schildkröte","Katze","Vogel","Fuchs","Fisch","Hase"],
+    it:["Tartaruga","Gatto","Uccello","Volpe","Pesce","Coniglio"],ru:["Черепаха","Кошка","Птица","Лиса","Рыба","Кролик"],hi:["कछुआ","बिल्ली","पक्षी","लोमड़ी","मछली","खरगोश"],ar:["سلحفاة","قطة","طائر","ثعلب","سمكة","أرنب"]
+  };
   let locale=read("wp-locale")||"en";if(!codes.includes(locale))locale="en";let unlocked=Number(read(key))||1,selected=Math.min(unlocked,30)-1,level=null,states=[],moves=0,drag=null;
   function read(k){try{return localStorage.getItem(k)}catch{return null}}function write(k,v){try{localStorage.setItem(k,v)}catch{}}
   function t(k,v={}){const value=window.TANGRAM_LOCALES[locale]?.[k]??window.TANGRAM_LOCALES.en[k]??k;return String(value).replace(/\{(\w+)\}/g,(_,n)=>v[n]??"")}
   function show(id){screens.forEach(screen=>screen.hidden=screen.id!==id);document.body.dataset.screen=id;if(id==="stage")renderStages()}
-  function renderStages(){$("#progress").textContent=t("progress",{done:Math.min(unlocked-1,30)});$("#stageGrid").innerHTML="";levels.forEach((item,index)=>{const b=document.createElement("button"),locked=index+1>unlocked;b.className="stage-card"+(index===selected?" selected":"");b.disabled=locked;b.innerHTML="<strong>"+t("shape",{n:index+1})+"</strong><span>"+item.names[0]+(locked?" · "+t("locked"):"")+"</span>";b.onclick=()=>startLevel(index);$("#stageGrid").append(b)});requestAnimationFrame(()=>$("#stageGrid .selected")?.scrollIntoView({block:"nearest"}))}
+  function animalName(index){return (animalNames[locale]||animalNames.en)[index%6]}
+  function renderStages(){$("#progress").textContent=t("progress",{done:Math.min(unlocked-1,30)});$("#stageGrid").innerHTML="";levels.forEach((item,index)=>{const b=document.createElement("button"),locked=index+1>unlocked;b.className="stage-card"+(index===selected?" selected":"");b.disabled=locked;b.innerHTML="<strong>"+t("shape",{n:index+1})+"</strong><span>"+animalName(index)+(locked?" · "+t("locked"):"")+"</span>";b.onclick=()=>startLevel(index);$("#stageGrid").append(b)});requestAnimationFrame(()=>$("#stageGrid .selected")?.scrollIntoView({block:"nearest"}))}
   function pos(el,x,y,r){el.style.left=(x-.085)*100+"%";el.style.top=(y-.085)*100+"%";el.style.transform="rotate("+r+"deg)"}
   function startLevel(index){selected=index;level=levels[index];states=parts.map(()=>({x:.18,y:.86,r:0,placed:false}));states.forEach((s,i)=>{s.x=.18+(i%4)*.22;s.y=.86+Math.floor(i/4)*.1});moves=0;$("#chapter").textContent=t("chapter",{n:Math.floor(index/5)+1});$("#stageName").textContent=t("shape",{n:index+1});$("#status").textContent=t("status");show("battle");renderBoard()}
   function renderBoard(){const targets=$("#targets"),piecesLayer=$("#pieces");targets.innerHTML="";piecesLayer.innerHTML="";level.targets.forEach((target,index)=>{const ghost=document.createElement("div");ghost.className="target-piece "+parts[index];ghost.dataset.shape=parts[index];pos(ghost,target.x,target.y,target.r);targets.append(ghost)});states.forEach((state,index)=>{const piece=document.createElement("button");piece.className="piece "+parts[index]+(state.placed?" placed":"");piece.dataset.shape=parts[index];piece.dataset.index=index;piece.setAttribute("aria-label",t("pieceLabel",{n:index+1}));pos(piece,state.x,state.y,state.r);piece.onpointerdown=event=>begin(index,event);piece.onpointermove=event=>move(event);piece.onpointerup=finish;piece.onpointercancel=finish;piecesLayer.append(piece)});$("#placedCount").textContent=t("placed",{done:states.filter(state=>state.placed).length})}

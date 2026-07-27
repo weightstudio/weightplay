@@ -5,6 +5,7 @@
   const storeKey="wp-animal-color-link-v1";
   const $=selector=>document.querySelector(selector);
   const screens=[...document.querySelectorAll(".screen")];
+  document.body.setAttribute("data-runtime-localize","off");
   let locale=readStore("wp-locale")||"en";
   if(!localeOrder.includes(locale))locale="en";
   let unlocked=Number(readStore(storeKey))||1;

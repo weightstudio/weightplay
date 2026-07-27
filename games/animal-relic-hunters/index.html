@@ -159,10 +159,21 @@
       <section id="stagePanel" class="panel stage-panel hidden" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" aria-labelledby="stageTitle">
         <div class="stage-panel-head">
           <button id="stageBackBtn" class="play-return stage-return" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
-          <div><strong id="stageTitle">Prepare Expedition</strong><span id="stageSetupText">Review permanent gear and training before entering Room 1.</span></div>
+          <strong id="stageTitle">Animal Relic Hunters</strong>
         </div>
-        <div id="expeditionRail" class="expedition-rail stage-rail" aria-label="Ruin regions"></div>
-        <div id="stageConfigMount" class="stage-config-mount"></div>
+        <div id="stageWorkspace" class="stage-workspace">
+          <section class="stage-view is-active" data-stage-view="stages" aria-labelledby="stageTabStages">
+            <div id="expeditionRail" class="expedition-rail stage-rail" aria-label="Ruin regions"></div>
+            <p id="stageSetupText" class="stage-setup-text">Review permanent gear and training before entering Room 1.</p>
+          </section>
+          <section class="stage-view" data-stage-view="team" aria-labelledby="stageTabTeam"></section>
+          <section id="stageConfigMount" class="stage-view stage-config-mount" data-stage-view="equipment" aria-labelledby="stageTabEquipment"></section>
+        </div>
+        <nav class="stage-bottom-tabs" aria-label="Expedition preparation">
+          <button id="stageTabTeam" type="button" data-stage-tab="team" aria-pressed="false">Team</button>
+          <button id="stageTabStages" class="is-active" type="button" data-stage-tab="stages" aria-pressed="true">Stages</button>
+          <button id="stageTabEquipment" type="button" data-stage-tab="equipment" aria-pressed="false">Equipment</button>
+        </nav>
       </section>
 
       <!-- Active Game / Canvas Viewport -->
@@ -308,8 +319,9 @@
         </div>
         <div class="result-action-shell">
           <div class="result-btn-row">
-            <button id="retryBtn" class="primary-btn retry-btn" type="button" data-ui="tryAgain">Try Again</button>
-            <button id="resultMenuBtn" class="menu-btn" type="button" data-ui="backToStage">Back to Missions</button>
+            <button id="resultMenuBtn" class="menu-btn" type="button">Stages</button>
+            <button id="resultNextBtn" class="primary-btn" type="button">Next Stage</button>
+            <button id="retryBtn" class="menu-btn retry-btn" type="button">Replay</button>
           </div>
           <small class="disclaimer" data-ui="resultDisclaimer">For fun and local progress tracking only.</small>
         </div>

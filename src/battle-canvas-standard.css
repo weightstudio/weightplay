@@ -303,12 +303,37 @@ body.wp-logical-battle-active.beast-deck-playing #gamePanel.game-panel {
   gap: 6px !important;
   padding: 8px !important;
 }
-body.wp-logical-battle-active.beast-deck-playing .hud-row { grid-column: 1 !important; grid-row: 1 !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; grid-template-rows: auto !important; gap: 6px !important; padding: 8px !important; }
+body.wp-logical-battle-active.beast-deck-playing .hud-row { grid-column: 1 !important; grid-row: 1 !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; grid-template-rows: auto !important; gap: 6px !important; padding: 8px 8px 8px 64px !important; }
 body.wp-logical-battle-active.beast-deck-playing .hud-row .soft-btn { grid-column: 1 / -1 !important; width: 48px !important; min-width: 48px !important; height: 34px !important; min-height: 34px !important; }
-body.wp-logical-battle-active.beast-deck-playing .battlefield { grid-column: 1 !important; grid-row: 2 !important; padding: 10px !important; gap: 8px !important; min-height: 0 !important; }
+body.wp-logical-battle-active.beast-deck-playing .battlefield { grid-column: 1 !important; grid-row: 2 !important; grid-template-columns: minmax(0, 1fr) !important; grid-template-rows: minmax(0, 1fr) 58px auto !important; justify-content: stretch !important; padding: 10px !important; gap: 6px !important; min-height: 0 !important; }
 body.wp-logical-battle-active.beast-deck-playing .action-area { grid-column: 1 !important; grid-row: 3 !important; width: 100% !important; min-width: 100% !important; height: 238px !important; min-height: 238px !important; grid-template-rows: 184px 48px !important; gap: 6px !important; }
 body.wp-logical-battle-active.beast-deck-playing .hand-row { width: 100% !important; min-width: 100% !important; height: 184px !important; min-height: 184px !important; max-height: 184px !important; }
 body.wp-logical-battle-active.beast-deck-playing .combat-feedback.damage { top: 22% !important; }
+
+@media (min-width: 561px) and (min-height: 561px) {
+  body.wp-logical-battle-active.beast-deck-playing #gamePanel.game-panel {
+    grid-template-rows: 86px minmax(0, 1fr) 280px !important;
+  }
+
+  body.wp-logical-battle-active.beast-deck-playing .hud-row {
+    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+    grid-template-rows: 1fr !important;
+    padding-left: 64px !important;
+  }
+
+  body.wp-logical-battle-active.beast-deck-playing .action-area {
+    height: 280px !important;
+    min-height: 280px !important;
+    grid-template-rows: 224px 48px !important;
+    gap: 8px !important;
+  }
+
+  body.wp-logical-battle-active.beast-deck-playing .hand-row {
+    height: 224px !important;
+    min-height: 224px !important;
+    max-height: 224px !important;
+  }
+}
 
 @media (orientation: landscape) and (max-height: 560px) {
   body.wp-logical-battle-active.beast-deck-playing #gamePanel.game-panel {

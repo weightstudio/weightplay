@@ -1913,6 +1913,7 @@ body {
 /* Battle shell: one centered layout path for every viewport. */
 body.beast-deck-playing { position:fixed; inset:0; width:100vw; height:100dvh; overflow:hidden; overscroll-behavior:none; }
 body.beast-deck-playing .game-container { position:fixed; inset:0; width:100vw; height:100dvh; overflow:hidden; }
+body.beast-deck-playing .beast-deck-app { width:100vw; max-width:none; min-height:100dvh; margin:0; border:0; box-shadow:none; }
 body.beast-deck-playing .topbar,
 body.beast-deck-playing .game-page-info,
 body.beast-deck-playing .wp-tutorial-button,
@@ -1924,17 +1925,19 @@ body.beast-deck-playing .topbar, body.beast-deck-playing .game-page-info, body.b
 body.beast-deck-playing button[data-sound-toggle] { display:none !important; }
 body.beast-deck-playing #gamePanel.game-panel { position:fixed; inset:0 auto auto 0; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:86px minmax(0,1fr) 238px; justify-content:stretch; justify-items:stretch; gap:6px; width:var(--beast-vw,100vw); max-width:none; height:calc(var(--beast-vh,100dvh) - 56px); min-height:0; margin:0; padding:8px; overflow:hidden; transform:none !important; }
 body.beast-deck-playing .hud-row, body.beast-deck-playing .battlefield, body.beast-deck-playing .action-area { min-width:0; min-height:0; margin:0; overflow:hidden; }
-body.beast-deck-playing .battlefield { padding:10px; gap:6px; }
+body.beast-deck-playing .hud-row { position:relative; padding-left:64px; }
+body.beast-deck-playing .battlefield { display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr) 58px auto; justify-content:stretch; padding:10px; gap:6px; }
 body.beast-deck-playing .enemy-container { flex:0 0 auto; gap:3px; }
 body.beast-deck-playing .enemy-intent { margin:0; }
 body.beast-deck-playing .beast-avatar { width:72px; height:72px; }
 body.beast-deck-playing .beast-avatar.is-boss { width:122px; height:122px; }
-body.beast-deck-playing .battle-log { flex:1 1 48px; min-height:48px; max-height:58px; }
+body.beast-deck-playing .battle-log { width:100%; height:58px; min-height:58px; max-height:58px; }
 body.beast-deck-playing .player-container { flex:0 0 auto; gap:3px; }
 body.beast-deck-playing .hand-row { min-height:176px; max-height:184px; overflow-x:auto; overflow-y:hidden; }
 body.beast-deck-playing .action-area { width:100%; min-width:100%; max-width:100%; height:238px; min-height:238px; grid-template-rows:184px 48px; justify-self:stretch; align-self:stretch; }
 body.beast-deck-playing .hand-row { width:100%; min-width:100%; max-width:100%; height:184px; min-height:184px; max-height:184px; flex:0 0 184px; align-self:stretch; }
 body.beast-deck-playing .battle-log { max-height:58px; overflow-y:auto; }
+body.beast-deck-playing .hand-row .card:hover { transform:none; }
 body.beast-deck-playing .battle-ad-reserve { position:fixed; inset:auto 0 0 0; display:block; width:var(--beast-vw,100vw); height:56px; min-height:56px; transform:none !important; }
 body.beast-deck-playing .draft-panel { position:absolute; z-index:80; inset:0; }
 body.beast-deck-playing #gamePanel.result-open { isolation:isolate; }
@@ -2205,6 +2208,32 @@ body.beast-deck-playing button[data-sound-toggle] {
   top: 16px !important;
   right: max(16px, calc((100vw - 612px) / 2 + 12px)) !important;
   bottom: auto !important;
+}
+
+@media (min-width: 561px) and (min-height: 561px) {
+  body.beast-deck-playing #gamePanel.game-panel {
+    grid-template-rows: 86px minmax(0, 1fr) 280px;
+  }
+
+  body.beast-deck-playing .hud-row {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-rows: 1fr;
+    padding-left: 64px;
+  }
+
+  body.beast-deck-playing .action-area {
+    height: 280px;
+    min-height: 280px;
+    grid-template-rows: 224px 48px;
+    gap: 8px;
+  }
+
+  body.beast-deck-playing .hand-row {
+    height: 224px;
+    min-height: 224px;
+    max-height: 224px;
+    flex-basis: 224px;
+  }
 }
 
 @media (orientation: landscape) and (max-height: 560px) {

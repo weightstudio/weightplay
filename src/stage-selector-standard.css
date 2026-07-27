@@ -554,20 +554,30 @@ body[data-wp-game-id="animal-gearpack-expedition"] [data-wp-logical-stage-canvas
 
 body[data-wp-game-id="animal-relic-hunters"] [data-wp-logical-stage-canvas] {
   grid-template-columns: none !important;
-  grid-template-rows: 54px 198px minmax(0, 1fr) !important;
+  grid-template-rows: 64px minmax(0, 1fr) 56px !important;
   gap: 8px !important;
 }
 
-body[data-wp-game-id="animal-relic-hunters"] [data-wp-logical-stage-canvas] :is(.stage-panel-head, .expedition-rail, .stage-config-mount) {
-  grid-column: auto !important;
-  grid-row: auto !important;
+body[data-wp-game-id="animal-relic-hunters"] [data-wp-logical-stage-canvas] .stage-panel-head {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+}
+
+body[data-wp-game-id="animal-relic-hunters"] [data-wp-logical-stage-canvas] .stage-workspace {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+}
+
+body[data-wp-game-id="animal-relic-hunters"] [data-wp-logical-stage-canvas] .stage-bottom-tabs {
+  grid-column: 1 !important;
+  grid-row: 3 !important;
 }
 
 body[data-wp-game-id="animal-relic-hunters"] [data-wp-logical-stage-canvas] .expedition-rail {
   width: 100% !important;
-  height: 198px !important;
-  min-height: 198px !important;
-  max-height: 198px !important;
+  height: 190px !important;
+  min-height: 190px !important;
+  max-height: 190px !important;
 }
 
 body[data-wp-game-id="animal-rune-tactics"] [data-wp-logical-stage-canvas] .mission-list {

@@ -37,6 +37,7 @@
     stagePanel: $("stagePanel"),
     expeditionRail: $("expeditionRail"),
     stageConfigMount: $("stageConfigMount"),
+    stageWorkspace: $("stageWorkspace"),
     showStageBtn: $("showStageBtn"),
     stageBackBtn: $("stageBackBtn"),
     stageTitle: $("stageTitle"),
@@ -56,6 +57,7 @@
     campaignProgress: $("campaignProgress"),
     menuBtn: $("menuBtn"),
     retryBtn: $("retryBtn"),
+    resultNextBtn: $("resultNextBtn"),
     resultMenuBtn: $("resultMenuBtn"),
     hpText: $("hpText"),
     hpFill: $("hpFill"),
@@ -1298,7 +1300,7 @@
       if (active) layer.setAttribute("aria-hidden", "true");
       else layer.removeAttribute("aria-hidden");
     });
-    if (active) requestAnimationFrame(() => (resultMapIsPrimary ? nodes.resultMenuBtn : nodes.retryBtn).focus({ preventScroll: true }));
+    if (active) requestAnimationFrame(() => (nodes.resultNextBtn.disabled ? nodes.resultMenuBtn : nodes.resultNextBtn).focus({ preventScroll: true }));
   }
 
   function setDraftModalActive(active, restoreBattleFocus = true) {
@@ -1359,13 +1361,79 @@
   }
 
   function updateResultPrimaryAction() {
-    const next = resultNextExpedition > 0 && document.body.classList.contains("relic-result");
-    nodes.retryBtn.textContent = t(next ? "nextExpedition" : "tryAgain");
-    nodes.retryBtn.setAttribute("aria-label", t(next ? "nextExpedition" : "tryAgain"));
-    nodes.retryBtn.classList.toggle("primary-btn", !resultMapIsPrimary);
-    nodes.retryBtn.classList.toggle("menu-btn", resultMapIsPrimary);
-    nodes.resultMenuBtn.classList.toggle("primary-btn", resultMapIsPrimary);
-    nodes.resultMenuBtn.classList.toggle("menu-btn", !resultMapIsPrimary);
+    const copy = resultActionText[getLocale()] || resultActionText.en;
+    const hasNext = resultNextExpedition > 0 && document.body.classList.contains("relic-result");
+    nodes.resultMenuBtn.textContent = copy.stages;
+    nodes.resultNextBtn.textContent = copy.next;
+    nodes.retryBtn.textContent = copy.replay;
+    nodes.resultMenuBtn.setAttribute("aria-label", copy.stages);
+    nodes.resultNextBtn.setAttribute("aria-label", copy.next);
+    nodes.retryBtn.setAttribute("aria-label", copy.replay);
+    nodes.resultNextBtn.disabled = !hasNext;
+    nodes.resultNextBtn.setAttribute("aria-disabled", String(!hasNext));
+    nodes.resultNextBtn.classList.toggle("primary-btn", hasNext);
+    nodes.resultNextBtn.classList.toggle("menu-btn", !hasNext);
+    nodes.resultMenuBtn.className = "menu-btn";
+    nodes.retryBtn.className = "menu-btn retry-btn";
+  }
+
+  const stageTabText = {
+    en: { team: "Team", stages: "Stages", equipment: "Equipment", nav: "Expedition preparation" },
+    "zh-Hant": { team: "\u968a\u4f0d", stages: "\u95dc\u5361", equipment: "\u88dd\u5099", nav: "\u9060\u5f81\u6e96\u5099" },
+    "zh-Hans": { team: "\u961f\u4f0d", stages: "\u5173\u5361", equipment: "\u88c5\u5907", nav: "\u8fdc\u5f81\u51c6\u5907" },
+    ja: { team: "\u30c1\u30fc\u30e0", stages: "\u30b9\u30c6\u30fc\u30b8", equipment: "\u88c5\u5099", nav: "\u63a2\u691c\u6e96\u5099" },
+    ko: { team: "\ud300", stages: "\uc2a4\ud14c\uc774\uc9c0", equipment: "\uc7a5\ube44", nav: "\ud0d0\ud5d8 \uc900\ube44" },
+    es: { team: "Equipo", stages: "Misiones", equipment: "Equipamiento", nav: "Preparaci\u00f3n" },
+    "pt-BR": { team: "Equipe", stages: "Fases", equipment: "Equipamento", nav: "Prepara\u00e7\u00e3o" },
+    fr: { team: "\u00c9quipe", stages: "Niveaux", equipment: "\u00c9quipement", nav: "Pr\u00e9paration" },
+    de: { team: "Team", stages: "Stufen", equipment: "Ausr\u00fcstung", nav: "Vorbereitung" },
+    it: { team: "Squadra", stages: "Livelli", equipment: "Equipaggiamento", nav: "Preparazione" },
+    ru: { team: "\u041a\u043e\u043c\u0430\u043d\u0434\u0430", stages: "\u042d\u0442\u0430\u043f\u044b", equipment: "\u0421\u043d\u0430\u0440\u044f\u0436\u0435\u043d\u0438\u0435", nav: "\u041f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u043a\u0430" },
+    hi: { team: "\u091f\u0940\u092e", stages: "\u091a\u0930\u0923", equipment: "\u0909\u092a\u0915\u0930\u0923", nav: "\u0905\u092d\u093f\u092f\u093e\u0928 \u0924\u0948\u092f\u093e\u0930\u0940" },
+    ar: { team: "\u0627\u0644\u0641\u0631\u064a\u0642", stages: "\u0627\u0644\u0645\u0631\u0627\u062d\u0644", equipment: "\u0627\u0644\u0645\u0639\u062f\u0627\u062a", nav: "\u062a\u062d\u0636\u064a\u0631 \u0627\u0644\u0628\u0639\u062b\u0629" },
+  };
+
+  const resultActionText = {
+    en: { stages: "Stages", next: "Next Stage", replay: "Replay" },
+    "zh-Hant": { stages: "\u95dc\u5361", next: "\u4e0b\u4e00\u95dc", replay: "\u91cd\u73a9" },
+    "zh-Hans": { stages: "\u5173\u5361", next: "\u4e0b\u4e00\u5173", replay: "\u91cd\u73a9" },
+    ja: { stages: "\u30b9\u30c6\u30fc\u30b8", next: "\u6b21\u306e\u30b9\u30c6\u30fc\u30b8", replay: "\u30ea\u30d7\u30ec\u30a4" },
+    ko: { stages: "\uc2a4\ud14c\uc774\uc9c0", next: "\ub2e4\uc74c \uc2a4\ud14c\uc774\uc9c0", replay: "\ub2e4\uc2dc \ud50c\ub808\uc774" },
+    es: { stages: "Misiones", next: "Siguiente", replay: "Repetir" },
+    "pt-BR": { stages: "Fases", next: "Pr\u00f3xima", replay: "Repetir" },
+    fr: { stages: "Niveaux", next: "Suivant", replay: "Rejouer" },
+    de: { stages: "Stufen", next: "Weiter", replay: "Wiederholen" },
+    it: { stages: "Livelli", next: "Avanti", replay: "Rigioca" },
+    ru: { stages: "\u042d\u0442\u0430\u043f\u044b", next: "\u0414\u0430\u043b\u0435\u0435", replay: "\u041f\u043e\u0432\u0442\u043e\u0440\u0438\u0442\u044c" },
+    hi: { stages: "\u091a\u0930\u0923", next: "\u0905\u0917\u0932\u093e", replay: "\u092b\u093f\u0930 \u0916\u0947\u0932\u0947\u0902" },
+    ar: { stages: "\u0627\u0644\u0645\u0631\u0627\u062d\u0644", next: "\u0627\u0644\u062a\u0627\u0644\u064a", replay: "\u0625\u0639\u0627\u062f\u0629 \u0627\u0644\u0644\u0639\u0628" },
+  };
+
+  function updateStageTabsCopy() {
+    const copy = stageTabText[getLocale()] || stageTabText.en;
+    const nav = nodes.stagePanel.querySelector(".stage-bottom-tabs");
+    nav.setAttribute("aria-label", copy.nav);
+    nav.querySelector('[data-stage-tab="team"]').textContent = copy.team;
+    nav.querySelector('[data-stage-tab="stages"]').textContent = copy.stages;
+    nav.querySelector('[data-stage-tab="equipment"]').textContent = copy.equipment;
+  }
+
+  function selectStageTab(tabName, { focus = false } = {}) {
+    nodes.stagePanel.querySelectorAll("[data-stage-tab]").forEach((button) => {
+      const active = button.dataset.stageTab === tabName;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", String(active));
+      if (active && focus) button.focus({ preventScroll: true });
+    });
+    nodes.stagePanel.querySelectorAll("[data-stage-view]").forEach((view) => {
+      view.classList.toggle("is-active", view.dataset.stageView === tabName);
+    });
+    if (tabName === "stages") {
+      requestAnimationFrame(() => {
+        renderExpeditionStage(false);
+        window.dispatchEvent(new Event("resize"));
+      });
+    }
   }
 
   let mainFocusSettlementToken = 0;
@@ -1465,7 +1533,7 @@
         startRun();
       });
     });
-    nodes.stageTitle.textContent = t("chooseExpedition");
+    nodes.stageTitle.textContent = t("title");
     nodes.stageSetupText.textContent = t("expeditionGoal", { level: expeditionDefs[selectedExpedition - 1].level });
     window.requestAnimationFrame(() => {
       const selected = nodes.expeditionRail.querySelector(".is-selected:not(:disabled)")
@@ -1494,6 +1562,7 @@
     nodes.resultPanel.classList.add("hidden");
     nodes.gamePanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
+    selectStageTab("stages");
     updateDiamondShopUI();
     renderTrainingPanel();
     renderEquippedGear();
@@ -1522,6 +1591,8 @@
     renderEquippedGear();
     renderGrowthPrompt();
     renderCampaignProgress();
+    updateStageTabsCopy();
+    updateResultPrimaryAction();
     if (!nodes.stagePanel.classList.contains("hidden")) renderExpeditionStage();
   }
 
@@ -3366,7 +3437,10 @@
   // Init handler
   function init() {
     loadLocalState();
-    nodes.stageConfigMount.append(document.querySelector(".menu-shop"));
+    const menuShop = document.querySelector(".menu-shop");
+    const trainingPanel = menuShop.querySelector(".training-panel");
+    nodes.stagePanel.querySelector('[data-stage-view="team"]').append(trainingPanel);
+    nodes.stageConfigMount.append(menuShop);
     updateDiamondShopUI();
     translateUI();
     setupInputs();
@@ -3390,9 +3464,22 @@
       showMain();
     });
 
+    nodes.stagePanel.querySelectorAll("[data-stage-tab]").forEach((button) => {
+      button.addEventListener("click", () => {
+        window.WonderSound?.play("click");
+        selectStageTab(button.dataset.stageTab);
+      });
+    });
+
     nodes.retryBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
-      if (resultNextExpedition) selectedExpedition = resultNextExpedition;
+      startRun();
+    });
+
+    nodes.resultNextBtn.addEventListener("click", () => {
+      if (!resultNextExpedition) return;
+      window.WonderSound?.play("click");
+      selectedExpedition = resultNextExpedition;
       startRun();
     });
 
@@ -3451,7 +3538,7 @@
         return;
       }
       if (event.key !== "Tab" || nodes.resultPanel.classList.contains("hidden")) return;
-      const actions = [nodes.retryBtn, nodes.resultMenuBtn].filter((button) => !button.disabled);
+      const actions = [nodes.resultMenuBtn, nodes.resultNextBtn, nodes.retryBtn].filter((button) => !button.disabled);
       if (!actions.length) return;
       const first = actions[0];
       const last = actions[actions.length - 1];

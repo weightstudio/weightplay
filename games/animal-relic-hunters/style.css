@@ -9,7 +9,236 @@
   --color-armor: #06b6d4;
   --color-boots: #10b981;
 }
+/* Interface v4 foundation: one Stage workspace, fixed three-track bottom
+   navigation, and three stable Result actions. */
+body.relic-stage-select .stage-panel {
+  inset: 0;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 64px minmax(0, 1fr) 56px;
+  gap: 8px;
+  padding: 8px;
+}
 
+body.relic-stage-select .stage-panel-head {
+  position: relative !important;
+  inset: auto !important;
+  z-index: 20;
+  grid-column: 1;
+  grid-row: 1;
+  width: 100%;
+  height: 64px;
+  min-height: 64px;
+  overflow: visible;
+  border: 1px solid rgb(255 255 255 / 16%);
+  border-radius: 14px;
+  background: rgb(15 29 49 / 94%);
+}
+
+body.relic-stage-select .stage-workspace {
+  position: relative;
+  grid-column: 1;
+  grid-row: 2;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+body.relic-stage-select .stage-view {
+  display: none;
+  position: absolute;
+  inset: 0;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+body.relic-stage-select .stage-view.is-active {
+  display: block;
+}
+
+body.relic-stage-select .stage-view[data-stage-view="stages"] {
+  overflow: hidden;
+}
+
+body.relic-stage-select .stage-view[data-stage-view="stages"] .expedition-rail {
+  position: absolute !important;
+  top: clamp(8px, calc(38% - 95px), calc(100% - 198px)) !important;
+  right: 0 !important;
+  bottom: auto !important;
+  left: 0 !important;
+  width: 100% !important;
+}
+
+body.relic-stage-select .stage-setup-text {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  left: 8px;
+  min-height: 36px;
+  margin: 0;
+  padding: 8px 12px;
+  overflow: hidden;
+  border-radius: 12px;
+  color: #cbd5e1;
+  background: rgb(15 29 49 / 92%);
+  font-size: 13px;
+  line-height: 20px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body.relic-stage-select .stage-view[data-stage-view="team"],
+body.relic-stage-select .stage-view[data-stage-view="equipment"] {
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 8px;
+  border-radius: 14px;
+  background: rgb(9 17 29 / 92%);
+}
+
+body.relic-stage-select .stage-view[data-stage-view="team"] .training-panel {
+  width: min(100%, 720px);
+  margin: 0 auto;
+}
+
+body.relic-stage-select .stage-config-mount .menu-shop {
+  width: min(100%, 720px);
+  min-height: 100%;
+  margin: 0 auto;
+  padding: 10px;
+  overflow: visible;
+}
+
+body.relic-stage-select .stage-bottom-tabs {
+  z-index: 10;
+  display: grid;
+  grid-column: 1;
+  grid-row: 3;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  gap: 8px;
+  height: 56px;
+  min-height: 56px;
+  padding: 6px;
+  border: 1px solid rgb(255 255 255 / 16%);
+  border-radius: 14px;
+  background: rgb(15 29 49 / 96%);
+}
+
+body.relic-stage-select .stage-bottom-tabs button {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 44px;
+  min-height: 44px;
+  padding: 0 10px;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 14px;
+  color: #f8fafc;
+  background: #263650;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+body.relic-stage-select .stage-bottom-tabs button.is-active {
+  border-color: #63e6be;
+  background: #087f63;
+  box-shadow: 0 0 0 2px rgb(99 230 190 / 24%), 0 0 18px rgb(99 230 190 / 34%);
+}
+
+body.relic-stage-select .stage-bottom-tabs button:focus-visible {
+  outline: 2px solid #f5c84c;
+  outline-offset: 2px;
+}
+
+body.relic-playing.relic-result .result-action-shell .result-btn-row {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+body.relic-playing.relic-result .result-action-shell .result-btn-row button {
+  min-width: 0;
+  white-space: nowrap;
+}
+
+body.relic-playing.relic-result .result-action-shell .result-btn-row button:disabled {
+  cursor: not-allowed;
+  opacity: .48;
+}
+
+@media (max-height: 560px) and (orientation: landscape) {
+  body.relic-stage-select .stage-panel {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: 112px minmax(0, 1fr) 112px !important;
+    gap: 14px;
+    padding: 10px 12px;
+  }
+
+  body.relic-stage-select .stage-panel-head {
+    position: relative !important;
+    inset: auto !important;
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
+    height: 112px;
+    min-height: 112px !important;
+    grid-template-columns: 112px minmax(0, 1fr) 112px !important;
+  }
+
+  body.relic-stage-select .stage-workspace {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  body.relic-stage-select .stage-view[data-stage-view="stages"] .expedition-rail {
+    top: clamp(8px, calc(38% - 243px), calc(100% - 494px)) !important;
+    right: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: none !important;
+    height: 486px !important;
+    min-height: 486px !important;
+    max-height: 486px !important;
+  }
+
+  body.relic-stage-select .stage-setup-text {
+    min-height: 72px;
+    padding: 14px 20px;
+    border-radius: 18px;
+    font-size: 27px;
+    line-height: 34px;
+  }
+
+  body.relic-stage-select .stage-view[data-stage-view="team"],
+  body.relic-stage-select .stage-view[data-stage-view="equipment"] {
+    padding: 16px;
+    border-radius: 20px;
+  }
+
+  body.relic-stage-select .stage-bottom-tabs {
+    grid-column: 1;
+    grid-row: 3;
+    height: 112px;
+    min-height: 112px;
+    padding: 8px;
+    border-radius: 20px;
+  }
+
+  body.relic-stage-select .stage-bottom-tabs button {
+    height: 96px;
+    min-height: 96px;
+    padding: 0 18px;
+    border-radius: 18px;
+    font-size: 30px;
+  }
+}
 @media (max-height: 560px) and (orientation: landscape) {
   body.wp-stage-select-active.relic-stage-select .stage-panel[data-wp-logical-stage-canvas] {
     display: grid !important;
@@ -2672,5 +2901,136 @@ body.relic-playing.relic-result .result-ad-reserve {
   body.relic-playing.relic-result .result-action-shell { padding: 10px 18px; }
   body.relic-playing.relic-result .result-action-shell .result-btn-row { gap: 18px; }
   body.relic-playing.relic-result .result-action-shell .result-btn-row button { height: 112px; min-height: 112px; font-size: 30px; line-height: 38px; }
-  body.relic-playing.relic-result .result-action-shell .disclaimer { display: none; }
+body.relic-playing.relic-result .result-action-shell .disclaimer { display: none; }
+}
+
+/* Interface v4 cascade guard. Historical viewport-specific rules above remain
+   useful for Battle, but may not restore the superseded split Stage layout. */
+body.relic-stage-select .stage-panel {
+  inset: 0 !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: 64px minmax(0, 1fr) 56px !important;
+  gap: 8px !important;
+  padding: 8px !important;
+}
+
+body.relic-stage-select .stage-panel-head {
+  position: relative !important;
+  inset: auto !important;
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  width: 100% !important;
+  height: 64px !important;
+  min-height: 64px !important;
+  grid-template-columns: 48px minmax(0, 1fr) 48px !important;
+}
+
+body.relic-stage-select .stage-workspace {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+}
+
+body.relic-stage-select .stage-workspace > .stage-view {
+  display: none !important;
+}
+
+body.relic-stage-select .stage-workspace > .stage-view.is-active {
+  display: block !important;
+}
+
+body.relic-stage-select .stage-view[data-stage-view="stages"] .expedition-rail {
+  top: clamp(8px, calc(38% - 95px), calc(100% - 198px)) !important;
+  right: 0 !important;
+  bottom: auto !important;
+  left: 0 !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: none !important;
+  height: 190px !important;
+  min-height: 190px !important;
+  max-height: 190px !important;
+}
+
+body.relic-stage-select .stage-view[data-stage-view="stages"] .expedition-card {
+  flex-basis: 264px !important;
+  width: 264px !important;
+  min-width: 264px !important;
+  max-width: 264px !important;
+  height: 190px !important;
+  min-height: 190px !important;
+  max-height: 190px !important;
+}
+
+body.relic-stage-select .stage-config-mount {
+  position: absolute !important;
+  inset: 0 !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+body.relic-stage-select .stage-bottom-tabs {
+  grid-column: 1 !important;
+  grid-row: 3 !important;
+}
+
+body.relic-playing.relic-result .result-action-shell .result-btn-row {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  justify-content: stretch;
+  width: 100%;
+}
+
+body.relic-playing.relic-result .result-action-shell .result-btn-row button {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+}
+
+@media (max-height: 560px) and (orientation: landscape) {
+  body.relic-stage-select .stage-panel {
+    grid-template-rows: 64px minmax(0, 1fr) 56px !important;
+    gap: 4px !important;
+    padding: 4px 8px !important;
+  }
+
+  body.relic-stage-select .stage-panel-head {
+    height: 64px !important;
+    min-height: 64px !important;
+    grid-template-columns: 48px minmax(0, 1fr) 48px !important;
+  }
+
+  body.relic-stage-select .stage-view[data-stage-view="stages"] .expedition-rail {
+    top: 12px !important;
+    height: 190px !important;
+    min-height: 190px !important;
+    max-height: 190px !important;
+  }
+
+  body.relic-stage-select .stage-view[data-stage-view="stages"] .expedition-card {
+    flex-basis: 264px !important;
+    width: 264px !important;
+    min-width: 264px !important;
+    max-width: 264px !important;
+    height: 190px !important;
+    min-height: 190px !important;
+    max-height: 190px !important;
+  }
+
+  body.relic-stage-select .stage-setup-text {
+    display: none;
+  }
+
+  body.relic-stage-select .stage-bottom-tabs {
+    height: 56px;
+    min-height: 56px;
+    padding: 6px;
+    border-radius: 14px;
+  }
+
+  body.relic-stage-select .stage-bottom-tabs button {
+    height: 44px;
+    min-height: 44px;
+    padding: 0 10px;
+    border-radius: 14px;
+    font-size: 14px;
+  }
 }

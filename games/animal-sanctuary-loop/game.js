@@ -4,6 +4,10 @@
   const $ = (id) => document.getElementById(id);
   const localePack = window.AnimalSanctuaryLoopLocales;
   const localeCodes = localePack.codes;
+  // The reviewed French action is already localized. Do not let the generic
+  // bridge reinterpret "Commencer" as its unrelated "Beginner" source entry.
+  // Other game copy still uses the bridge for legacy dictionary completion.
+  $("start")?.setAttribute("data-runtime-localize", "off");
   const routeSegments = {
     en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko",
     es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar",
