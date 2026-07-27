@@ -1602,6 +1602,7 @@ window.WeightPlayGameRuntimeLocales["pt-BR"] = {
   "ArrowDown": "Seta para baixo",
   "ArrowLeft": "Seta para a esquerda",
   "ArrowLeft ArrowRight A D": "SetaSeta EsquerdaDireita A D",
+  "ArrowLeft ArrowRight ArrowUp ArrowDown w a s d": "ArrowLeft ArrowRight ArrowUp ArrowDown w a s d",
   "ArrowRight": "Seta Direita",
   "ArrowUp": "Seta para cima",
   "ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space 1 2 3 4 5 6 7 8 9 Q E W U S Escape": "ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space 1 2 3 4 5 6 7 8 9 Q E W U S Escape",

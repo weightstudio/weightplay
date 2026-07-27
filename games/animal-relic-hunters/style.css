@@ -2617,6 +2617,24 @@ body.relic-playing.relic-result .result-ad-reserve {
     font-size: 46px;
   }
 
+  /* The shared return-control stylesheet is injected after this game's CSS.
+     Keep this game-local control at the same logical size as Pause so both
+     remain at least 44 physical pixels after the uniform Battle scale. */
+  body.wp-logical-battle-active.relic-playing
+    #gamePanel[data-wp-logical-battle-canvas]
+    #backToStageBtn.battle-return[data-wp-return="battle"] {
+    width: 112px !important;
+    min-width: 112px !important;
+    max-width: 112px !important;
+    height: 112px !important;
+    min-height: 112px !important;
+    max-height: 112px !important;
+    border-radius: 18px !important;
+    color: #142033 !important;
+    font-size: 46px !important;
+    line-height: 1 !important;
+  }
+
   body.relic-playing .battle-return { color: #142033; background: #f8fafc; }
 
   body.relic-playing .pause-card {

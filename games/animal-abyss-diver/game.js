@@ -515,6 +515,15 @@
   function encounter(direction){const pair=routeConfig().encounters[state.zone-1];return outcomes[pair[direction==="left"?0:1]];}
   function sonarMessage(){return t("sonarRead",{left:t(encounter("left").label),right:t(encounter("right").label)});}
   const artFor = outcome => outcome.safe ? "../../assets/animal-abyss-diver-relics.png" : "../../assets/animal-abyss-diver-hazards.png";
+  function syncProgressbar(id,label,current,maximum){
+    const meter=$(id),now=Math.max(0,Math.min(maximum,Math.ceil(current)));
+    meter.setAttribute("role","progressbar");
+    meter.setAttribute("aria-label",label);
+    meter.setAttribute("aria-valuemin","0");
+    meter.setAttribute("aria-valuemax",String(maximum));
+    meter.setAttribute("aria-valuenow",String(now));
+    meter.setAttribute("aria-valuetext",`${label} ${now}/${maximum}`);
+  }
   function renderBattle(){
     const config=routeConfig();
     const sonarCost=config.sonarCost??2,shieldCost=config.shieldCost??1,sonarJammed=config.jammedZones?.includes(state.zone),surfaceReady=!config.surfaceZones||config.surfaceZones.includes(state.zone);
@@ -524,6 +533,7 @@
     $("oxygenText").textContent=`${t("oxygenShort")} ${state.oxygen}/${maxOxygen()}`;
     $("oxygenBar").style.width=`${state.oxygen/maxOxygen()*100}%`;
     $("oxygenBar").classList.toggle("is-low",state.oxygen<=maxOxygen()*.3);
+    syncProgressbar("oxygenText",t("oxygenShort"),state.oxygen,maxOxygen());
     $("diveField").classList.toggle("is-fish-combat",!!state.fishActive);
     const objectiveLabel=state.fishActive?t("fishObjective"):state.oxygen<=30?t("objectiveLow"):state.sonar?t("objectiveChoose"):state.zone===1?t("objectiveScan"):t("objectiveContinue");
     $("objectiveText").innerHTML=state.fishActive?`${icon("danger")}<strong>${t("shortReadAttack")}</strong>`:state.oxygen<=30?`${icon("oxygen")}<strong>${t("shortLow")}</strong>`:state.sonar?`${icon("sonar")}<strong>${t("shortConfirmed")}</strong>`:`<strong>${t("shortChoose")}</strong>`;$("objectiveText").setAttribute("aria-label",`${routeText(config,"rule")} ${objectiveLabel}`);
@@ -653,6 +663,8 @@
     $("fishGuardBar").style.width=`${Math.max(0,state.fishHp/state.fishMaxHp*100)}%`;
     $("fishTimerText").innerHTML=`<span>${t("diverHp")}</span><b>${Math.max(0,state.playerHp)}/${maxHealth()}</b>`;
     $("fishTimerBar").style.animation="none";$("fishTimerBar").style.width=`${Math.max(0,state.playerHp/maxHealth()*100)}%`;
+    syncProgressbar("fishGuardText",t("fishHp"),state.fishHp,state.fishMaxHp);
+    syncProgressbar("fishTimerText",t("diverHp"),state.playerHp,maxHealth());
     $("dodgeLeftBtn").innerHTML=`${icon("danger")}<span>${t("attackAction")}</span><b>${diverAttack()}</b>`;$("dodgeLeftBtn").ariaLabel=`${t("attackAction")} ${diverAttack()}`;
     $("pulseBtn").innerHTML=`${icon("surface")}<span>${t("escapeAction")}</span>`;$("pulseBtn").ariaLabel=t("escapeAction");
     $("dodgeRightBtn").classList.add("hidden");$("dodgeLeftBtn").disabled=blocked;$("pulseBtn").disabled=blocked;

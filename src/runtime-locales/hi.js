@@ -1602,6 +1602,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "ArrowDown": "तीर नीचे",
   "ArrowLeft": "एरोलेफ्ट",
   "ArrowLeft ArrowRight A D": "तीर बायां तीर दायां ए डी",
+  "ArrowLeft ArrowRight ArrowUp ArrowDown w a s d": "एरोलेफ्ट एरोराइट एरोअप एरोडाउन डब्ल्यू ए एस डी",
   "ArrowRight": "तीरदाएँ",
   "ArrowUp": "तीर ऊपर",
   "ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space 1 2 3 4 5 6 7 8 9 Q E W U S Escape": "तीर ऊपर तीर नीचे तीर बायां तीर दायां अंतरिक्ष में प्रवेश करें 1 2 3 4 5 6 7 8 9 क्यू ई डब्ल्यू यू एस एस्केप",

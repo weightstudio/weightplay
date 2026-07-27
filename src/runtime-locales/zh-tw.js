@@ -1602,6 +1602,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "ArrowDown": "向下箭頭",
   "ArrowLeft": "向左箭頭",
   "ArrowLeft ArrowRight A D": "箭頭左箭頭右 A D",
+  "ArrowLeft ArrowRight ArrowUp ArrowDown w a s d": "箭頭向左箭頭向右箭頭向上箭頭向下 w a s d",
   "ArrowRight": "右箭頭",
   "ArrowUp": "向上箭頭",
   "ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space 1 2 3 4 5 6 7 8 9 Q E W U S Escape": "箭頭向上箭頭向下箭頭向左箭頭向右輸入空格 1 2 3 4 5 6 7 8 9 Q E W U S Escape",

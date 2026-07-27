@@ -1602,6 +1602,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "ArrowDown": "Стрелка вниз",
   "ArrowLeft": "Стрелка Влево",
   "ArrowLeft ArrowRight A D": "СтрелкаСтрелка влевоВправо A D",
+  "ArrowLeft ArrowRight ArrowUp ArrowDown w a s d": "Стрелка Стрелка влево Стрелка вправо Стрелка вверх Стрелка вниз w a s d",
   "ArrowRight": "СтрелкаВправо",
   "ArrowUp": "СтрелкаВверх",
   "ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space 1 2 3 4 5 6 7 8 9 Q E W U S Escape": "СтрелкаСтрелка вверх Стрелка вниз Стрелка влево Стрелка вправо Ввод пробела 1 2 3 4 5 6 7 8 9 Q E W U S Escape",

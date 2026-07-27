@@ -1153,6 +1153,7 @@
     nodes.expeditionRail.setAttribute("aria-label", labels.regions);
     nodes.backToStageBtn.setAttribute("aria-label", labels.battleBack);
     nodes.gameCanvas.setAttribute("aria-label", labels.arena);
+    nodes.gameCanvas.setAttribute("aria-keyshortcuts", "w a s d ArrowUp ArrowDown ArrowLeft ArrowRight");
   }
 
   const trainingDefs = [

@@ -184,7 +184,7 @@
 
   function passenger(color, queueIndex, itemIndex) {
     const front = itemIndex === 0;
-    return `<button class="passenger ${front ? "front" : ""}" data-queue="${queueIndex}" style="--person:${palette[color]}" ${front ? "" : "tabindex=\"-1\" aria-hidden=\"true\""}>
+    return `<button class="passenger ${front ? "front" : ""}" data-queue="${queueIndex}" style="--person:${palette[color]}" aria-label="${t("personLabel", { color: t("colors")[color] })}" ${front ? "" : "tabindex=\"-1\" aria-hidden=\"true\""}>
       <span class="passenger-token">${routeCodes[color]}</span>
       <span>${t("colors")[color]}</span>
     </button>`;

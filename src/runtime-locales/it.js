@@ -1602,6 +1602,7 @@ window.WeightPlayGameRuntimeLocales["it"] = {
   "ArrowDown": "Freccia giù",
   "ArrowLeft": "Freccia sinistra",
   "ArrowLeft ArrowRight A D": "Freccia sinistra Freccia destra A D",
+  "ArrowLeft ArrowRight ArrowUp ArrowDown w a s d": "Freccia sinistra Freccia destra Freccia su Freccia giù w a s d",
   "ArrowRight": "Freccia a destra",
   "ArrowUp": "Freccia su",
   "ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space 1 2 3 4 5 6 7 8 9 Q E W U S Escape": "Freccia su Freccia giù Freccia sinistra Freccia destra Inserisci spazio 1 2 3 4 5 6 7 8 9 Q E W U S Fuga",

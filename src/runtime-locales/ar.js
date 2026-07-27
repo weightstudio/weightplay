@@ -1602,6 +1602,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "ArrowDown": "سهم للأسفل",
   "ArrowLeft": "سهم لليسار",
   "ArrowLeft ArrowRight A D": "سهم لليسار، سهم لليمين، أ د",
+  "ArrowLeft ArrowRight ArrowUp ArrowDown w a s d": "ArrowLeft ArrowRight ArrowUp ArrowDown w a s d",
   "ArrowRight": "سهم لليمين",
   "ArrowUp": "سهم لأعلى",
   "ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space 1 2 3 4 5 6 7 8 9 Q E W U S Escape": "سهم لأعلى، سهم لأسفل، سهم لليسار، سهم لليمين، أدخل مسافة 1 2 3 4 5 6 7 8 9 Q E W U S Escape",
