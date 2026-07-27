@@ -498,15 +498,17 @@
     $("#medalRow").setAttribute("aria-label",ok?t("medalCount",{medals}):"");
     const retryBtn=$("#retryBtn"),stagesBtn=$("#stagesBtn"),nextBtn=$("#nextBtn");
     resultActionClaimed=false;
-    [retryBtn,stagesBtn,nextBtn].forEach(button=>button.disabled=false);
-    nextBtn.hidden=!ok||selectedMission>=campaign.length-1;
-    const terminalVictory=ok&&nextBtn.hidden;
-    retryBtn.classList.toggle("primary",!ok);
-    stagesBtn.classList.toggle("primary",terminalVictory);
-    nextBtn.classList.toggle("primary",ok&&!nextBtn.hidden);
+    const canContinue=ok&&selectedMission<campaign.length-1;
+    retryBtn.disabled=false;
+    stagesBtn.disabled=false;
+    nextBtn.hidden=false;
+    nextBtn.disabled=!canContinue;
+    retryBtn.classList.remove("primary");
+    stagesBtn.classList.toggle("primary",!canContinue);
+    nextBtn.classList.toggle("primary",canContinue);
     [...nodes.modal.parentElement.children].filter(node=>node!==nodes.modal).forEach(node=>{node.inert=true;node.setAttribute("aria-hidden","true")});
     nodes.modal.hidden=false;
-    (terminalVictory?stagesBtn:ok?nextBtn:retryBtn).focus({preventScroll:true});
+    (canContinue?nextBtn:stagesBtn).focus({preventScroll:true});
   }
   function claimResultAction(){
     if(nodes.modal.hidden||resultActionClaimed)return false;

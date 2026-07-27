@@ -5,13 +5,16 @@
   const LOCALE_ROUTES = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const BASE = window.BAMBOO_LOCALES.en;
   const LEVELS = window.BAMBOO_LEVELS.levels;
-  let locale = localRead("weightPlayLocale") || localRead("wp-locale") || "en", selected = 0, run = null, resultActionClaimed = false;
+  let locale = localRead("weightPlayLocale") || localRead("wp-locale") || "en", selected = 0, run = null, resultActionClaimed = false, leaveOpen = false;
   if (!CODES.includes(locale)) locale = "en";
   let save = { unlocked: 1, done: {} };
   try { save = { ...save, ...JSON.parse(localStorage.getItem("wp:bamboo") || "{}") }; } catch {}
   selected = Math.max(0, Math.min(29, Number(save.unlocked || 1) - 1));
   const text = (key, data = {}) => String((window.BAMBOO_LOCALES[locale] || BASE)[key] || BASE[key] || key).replace(/\{(\w+)\}/g, (_, name) => data[name] ?? "");
   const screens = { main: $("main"), stage: $("stage"), battle: $("battle") };
+  $("battle").append($("leaveDialogTemplate").content.cloneNode(true));
+  const battleBack = () => [...$("battle").querySelectorAll('[data-wp-return="battle"]')]
+    .find(node => !node.closest("[inert]") && node.getClientRects().length);
   const DIRS = [[-1, 0, 0, 2], [0, 1, 1, 3], [1, 0, 2, 0], [0, -1, 3, 1]];
   function localRead(key) { try { return localStorage.getItem(key); } catch { return null; } }
   function show(name) {
@@ -19,7 +22,10 @@
     $("mainGroup").hidden = name !== "main";
     Object.entries(screens).forEach(([key, node]) => { node.hidden = key !== name; });
     $("generalReserve").hidden = name !== "battle";
-    if (name !== "battle") setResultOpen(false);
+    if (name !== "battle") {
+      setResultOpen(false);
+      setLeaveOpen(false, false);
+    }
   }
   function persist() { try { localStorage.setItem("wp:bamboo", JSON.stringify(save)); } catch {} }
   function stageData(index) {
@@ -144,16 +150,20 @@
     $("retry").disabled = false;
     $("resultStages").disabled = false;
     $("next").disabled = selected >= 29;
+    [$("resultStages"), $("next"), $("retry")].forEach(button => button.classList.remove("primary"));
+    const primaryAction = $("next").disabled ? $("resultStages") : $("next");
+    primaryAction.classList.add("primary");
     setResultOpen(true);
+    primaryAction.focus();
   }
   function claimResultAction() {
     if ($("result").hidden || resultActionClaimed) return false;
     resultActionClaimed = true;
-    [$("retry"), $("resultStages"), $("next")].forEach(button => { button.disabled = true; });
+    [$("resultStages"), $("next"), $("retry")].forEach(button => { button.disabled = true; });
     return true;
   }
   function setResultOpen(open) {
-    const result = $("result"), battle = $("battle"), owned = [battle.querySelector("header"), battle.querySelector(".battle-panel")];
+    const result = $("result"), battle = $("battle"), owned = [...battle.querySelectorAll(":scope > header"), battle.querySelector(".battle-panel")];
     battle.classList.toggle("result-open", open);
     owned.forEach(node => {
       if (!node) return;
@@ -166,6 +176,26 @@
       resultActionClaimed = false;
       battle.scrollTop = 0;
       result.scrollTop = 0;
+    }
+  }
+  function setLeaveOpen(open, restoreFocus = true) {
+    if (!$("result").hidden && open) return;
+    const battle = $("battle"), dialog = $("leaveDialog");
+    const owned = [...battle.querySelectorAll(":scope > header"), battle.querySelector(".battle-panel")];
+    leaveOpen = open;
+    battle.classList.toggle("leave-open", open);
+    owned.forEach(node => {
+      if (!node) return;
+      node.inert = open;
+      if (open) node.setAttribute("aria-hidden", "true");
+      else if ($("result").hidden) node.removeAttribute("aria-hidden");
+    });
+    if (open) {
+      dialog.hidden = false;
+      $("continueBattle").focus();
+    } else {
+      if (restoreFocus && !battle.hidden) battleBack()?.focus();
+      dialog.hidden = true;
     }
   }
   function updateMainProgress() {
@@ -215,7 +245,38 @@
     }, 0);
   });
   $("start").onclick = () => { show("stage"); renderStages(); };
-  document.querySelectorAll("[data-back]").forEach(button => { button.onclick = () => show($("battle").hidden ? "main" : "stage"); });
+  document.querySelector("#stage [data-back]").onclick = () => show("main");
+  document.addEventListener("click", event => {
+    const control = event.target.closest?.('#battle [data-wp-return="battle"]');
+    if (!control || $("battle").hidden || !$("result").hidden) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    setLeaveOpen(true);
+  }, true);
+  $("continueBattle").onclick = () => setLeaveOpen(false);
+  $("leaveBattle").onclick = () => {
+    setLeaveOpen(false, false);
+    show("stage");
+    renderStages();
+  };
+  document.addEventListener("keydown", event => {
+    if (!leaveOpen) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setLeaveOpen(false);
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const actions = [$("continueBattle"), $("leaveBattle")];
+    const index = actions.indexOf(document.activeElement);
+    if (event.shiftKey && index <= 0) {
+      event.preventDefault();
+      actions[actions.length - 1].focus();
+    } else if (!event.shiftKey && index === actions.length - 1) {
+      event.preventDefault();
+      actions[0].focus();
+    }
+  });
   $("undo").onclick = () => { const prior = run?.history.pop(); if (prior) { run.tiles.forEach((tile, i) => { tile.rot = prior[i]; }); run.moves--; renderBoard(); } };
   $("restart").onclick = startStage;
   $("hint").onclick = () => { const tile = run.tiles.find(item => ports(item).slice().sort().join(",") !== ports({ ...item, rot: item.solved }).slice().sort().join(",")); if (tile) { run.history.push(run.tiles.map(item => item.rot)); tile.rot = tile.solved; run.moves++; renderBoard(); if (winReady()) complete(); } };
