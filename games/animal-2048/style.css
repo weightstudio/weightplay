@@ -82,6 +82,9 @@ body.wp-logical-battle-active .battle-ad-reserve[data-wp-battle-physical-reserve
   min-height:64px!important;
   max-height:64px!important;
 }
+.main-header.wp-main-shell-header>.wp-shell-return{
+  box-shadow:inset 0 -3px 0 #9d5626!important;
+}
 .main-header.wp-main-shell-header>.wp-shell-main-title{
   top:calc(50% - 2px)!important;
   transform:translateY(-50%)!important;

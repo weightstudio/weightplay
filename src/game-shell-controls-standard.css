@@ -245,6 +245,12 @@
   display: none !important;
 }
 
+/* sound.js injects its rule after the static styles; keep the retired floating
+   control hidden once Settings owns the combined sound switch. */
+.sound-toggle.wp-shell-legacy-control {
+  display: none !important;
+}
+
 .wp-shell-settings-extra {
   box-sizing: border-box !important;
   width: 100% !important;

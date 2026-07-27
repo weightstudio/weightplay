@@ -328,7 +328,12 @@
 
     const candidate = document.querySelector("button[data-sound-toggle]");
     if (candidate && candidate !== soundToggle) soundToggle = candidate;
-    if (soundToggle) soundToggle.classList.add("wp-shell-legacy-control");
+    if (soundToggle) {
+      soundToggle.classList.add("wp-shell-legacy-control");
+      soundToggle.hidden = true;
+      soundToggle.setAttribute("aria-hidden", "true");
+      soundToggle.tabIndex = -1;
+    }
 
     const readStored = (key, fallback) => {
       try {

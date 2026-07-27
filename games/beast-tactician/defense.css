@@ -118,10 +118,10 @@ body.guardian-playing #menuBtn {
 body.guardian-playing #gamePanel > .wp-generated-battle-header {
   position: absolute !important;
   z-index: 90;
-  top: 6px;
+  top: 3px;
   left: 6px;
   width: 48px;
-  height: 42px;
+  height: 48px;
   margin: 0;
   padding: 0;
   pointer-events: none;
@@ -129,8 +129,8 @@ body.guardian-playing #gamePanel > .wp-generated-battle-header {
 
 body.guardian-playing #gamePanel > .wp-generated-battle-header #menuBtn {
   width: 48px !important;
-  height: 42px !important;
-  min-height: 42px !important;
+  height: 48px !important;
+  min-height: 48px !important;
   pointer-events: auto;
 }
 

@@ -148,6 +148,13 @@
   // Result and Pause inherit Battle because they remain its modal substates.
   nodes.stagePanel.dataset.wpCanvasMaxWidth = "920";
   nodes.gamePanel.dataset.wpCanvasMaxWidth = "920";
+  // Runtime owns the Battle keyboard contract so older generated locale
+  // shells receive the same shortcut metadata before their next regeneration.
+  nodes.canvas.tabIndex = 0;
+  nodes.canvas.setAttribute(
+    "aria-keyshortcuts",
+    "ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space 1 2 3 4 5 6 7 8 9 Q E W U S Escape",
+  );
   const ctx = nodes.canvas.getContext("2d");
 
   const text = {
