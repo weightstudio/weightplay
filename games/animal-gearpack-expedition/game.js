@@ -409,6 +409,10 @@
     return button;
   }
   ensureSoundButton();
+  const feedbackStatus=$("#feedbackRow");
+  feedbackStatus?.setAttribute("role","status");
+  feedbackStatus?.setAttribute("aria-live","polite");
+  feedbackStatus?.setAttribute("aria-atomic","true");
   document.querySelector("#startBtn")?.setAttribute("data-runtime-localize","off");
   const screens = {main:$("#mainScreen"),stage:$("#stageScreen"),battle:$("#battleScreen")};
   const storedLocale = readStorage("weightPlayLocale");

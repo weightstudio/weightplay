@@ -19,6 +19,16 @@
   const crystalCharmCost = 12;
 
   const $ = (id) => document.getElementById(id);
+  const resultCard = document.querySelector("#resultPanel .result-card");
+  if (resultCard && !resultCard.querySelector(".result-ranger-art")) {
+    const resultRangerArt = document.createElement("img");
+    resultRangerArt.className = "result-ranger-art";
+    resultRangerArt.src = "/assets/animal-crystal-survivor-ranger.webp";
+    resultRangerArt.alt = "";
+    resultRangerArt.setAttribute("aria-hidden", "true");
+    resultRangerArt.decoding = "async";
+    resultCard.prepend(resultRangerArt);
+  }
   const canvas = $("gameCanvas");
   const displayCtx = canvas.getContext("2d", { alpha: false, desynchronized: true });
   const renderCanvas = document.createElement("canvas");

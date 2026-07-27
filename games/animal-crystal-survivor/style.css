@@ -845,7 +845,29 @@ canvas {
 }
 
 .result-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   text-align: center;
+}
+
+.result-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.result-card .result-ranger-art {
+  position: absolute;
+  z-index: 0;
+  top: -8px;
+  right: -10px;
+  width: clamp(82px, 18vw, 126px);
+  height: clamp(110px, 25vw, 168px);
+  object-fit: contain;
+  object-position: top right;
+  opacity: 0.72;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.36));
+  pointer-events: none;
 }
 
 .result-score {

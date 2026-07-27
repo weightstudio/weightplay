@@ -15,6 +15,26 @@
   const $ = (id) => document.getElementById(id);
   document.querySelector(".rune-app")?.setAttribute("data-wp-canvas-max-width", "920");
   const asset = (name) => `../../assets/${name}`;
+  const resultCard = document.querySelector("#resultPanel .overlay-card");
+  if (resultCard && !resultCard.querySelector(".result-squad-art")) {
+    const resultSquadArt = document.createElement("div");
+    resultSquadArt.className = "result-squad-art";
+    resultSquadArt.setAttribute("aria-hidden", "true");
+    [
+      ["result-clear-fx", "animal-rune-tactics-fx-mission-clear.webp"],
+      ["result-hero result-hero-lion", "animal-rune-tactics-hero-lion.webp"],
+      ["result-hero result-hero-owl", "animal-rune-tactics-hero-owl.webp"],
+      ["result-hero result-hero-turtle", "animal-rune-tactics-hero-turtle.webp"],
+    ].forEach(([className, source]) => {
+      const image = document.createElement("img");
+      image.className = className;
+      image.src = asset(source);
+      image.alt = "";
+      image.decoding = "async";
+      resultSquadArt.append(image);
+    });
+    resultCard.prepend(resultSquadArt);
+  }
   const nodes = {
     localeSelect: $("localeSelect"),
     loadingPanel: $("loadingPanel"),
