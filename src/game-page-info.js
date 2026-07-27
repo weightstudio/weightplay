@@ -6672,8 +6672,8 @@
       return value;
     };
     const translated = translateValue(merged);
-    if (translated.designNoteParts?.length) translated.designNote = translated.designNoteParts.join(" ");
-    if (translated.parentParts?.length) translated.parent = translated.parentParts.join(" ");
+    if (translated.designNoteParts?.length && !override.designNote) translated.designNote = translated.designNoteParts.join(" ");
+    if (translated.parentParts?.length && !override.parent) translated.parent = translated.parentParts.join(" ");
     return translated;
   }
 
@@ -7012,6 +7012,7 @@
         <div class="game-info-section">
           <h3>${escapeHtml(uiLabel("howToPlay"))}</h3>
           <ol>${game.how.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}</ol>
+          ${game.guideAccess ? `<p data-t="guideAccess">${escapeHtml(game.guideAccess)}</p>` : ""}
         </div>
         ${
           game.strategyTips?.length
@@ -7260,7 +7261,20 @@
     intro: "《動物根脈機關》是苔殼太郎主演的 30 關拉針益智遊戲。依安全順序拉出完整金針、處理可見材質反應，並讓太郎與星核一同抵達聖所。"
   };
   localizedGameplayProfiles["zh-Hant"]["animal-rootvault-pins"] = { gameplay: "材質反應拉針益智", genre: ["益智", "策略", "動物"] };
-  localizedGames["zh-Hans"]["animal-rootvault-pins"] = { ...localizedGames["zh-Hant"]["animal-rootvault-pins"], title: "动物根脉机关", gameplay: "材质反应拉针益智", intro: "《动物根脉机关》是苔壳太郎主演的 30 关拉针益智游戏。按安全顺序拉出完整金针、处理可见材质反应，并让太郎与星核一同抵达圣所。" };
+  localizedGames["zh-Hans"]["animal-rootvault-pins"] = {
+    ...localizedGames["zh-Hant"]["animal-rootvault-pins"],
+    title: "动物根脉机关", difficulty: "简单至具挑战性", time: "每个房间约 2 至 6 分钟", gameplay: "材质反应拉针益智", genre: ["益智", "策略", "动物"], skills: ["逻辑", "规划", "问题解决"],
+    intro: "《动物根脉机关》是苔甲龟 Taro 主演的 30 关拉针益智游戏。按安全顺序拉出完整金针、处理可见材质反应，并让 Taro 与星核一同抵达圣泉。",
+    story: ["月水通道在 Taro 的生命堡垒甲壳下，与烬光、暗影、甲壳护盾和古代符文锁纠缠。修复六个章节，才能重新开启整座根脉宝库。"],
+    systems: ["每次拉针都会把来源房间内的所有物件移到目标房间。月水会把烬光冷却成蒸汽，甲壳护盾能保护 Taro 一次，符文钥匙会开启带有相同标记的机关针。", "重新开始会还原当前房间的完整初始状态。通关记录、最佳拉针次数、种子印记与工坊强化只保存在当前浏览器。"],
+    how: ["从横向房间栏选择已解锁的房间。", "先观察每个房间、物质、目标位置与符文锁。", "点选一根完整金针后按“拉出机关针”，也能聚焦机关针后按回车键或空格键；长按不会重复触发。", "安全地让 Taro 与星核一起抵达圣泉。"],
+    guideAccess: "点选机关针后按拉针，也能聚焦后按回车键或空格键；长按不会重复触发。",
+    strategyTips: ["先用月水冷却烬光，再让 Taro 通过。", "让 Taro 遇到暗影前先取得甲壳护盾。", "依赖带标记的机关针前，先把对应符文钥匙送到锁处。", "规划 Taro 与星核最终停留的位置，不要只看下一次反应。"],
+    progression: ["第 1–5 关教学路线顺序；之后依次加入蒸汽反应、护盾与暗影、双流路线、符文锁，直到第 30 关综合运用全部规则。"],
+    designNote: "每个房间都有确定解法，第一次拉针前就能读懂所有必要信息。触控、鼠标与键盘共用一次一动作的输入规则；主画面、房间选择、游戏、对话框与结果各自拥有清楚边界，并在手机、短横向与桌面视窗中使用同一套最大 920 像素布局。游戏画面下方另保留独立的 56 像素区域，不会覆盖操作。",
+    parent: "无需注册账号。进度与工坊强化只保存在当前浏览器；清除网站数据、使用隐私浏览、换浏览器或换设备，都可能产生独立存档或移除现有进度。指南内容不构成医疗、学校或专业评估。",
+    faq: [["共有多少个房间？", "共有 30 个原创房间，分为六个材质规则章节。"], ["机关针可以只拉一半吗？", "不可以。每次动作都会完整拉出一根金色机关针。"], ["月水有什么作用？", "月水会把烬光冷却成安全蒸汽。"], ["支持哪些操作与屏幕尺寸？", "触控、鼠标与键盘都遵循相同规则，界面会在手机、短横向与桌面视窗中统一缩放。"], ["进度会保存吗？", "会，但只保存在当前浏览器，无法自动同步到其他设备。"]]
+  };
   localizedGameplayProfiles["zh-Hans"]["animal-rootvault-pins"] = { gameplay: "材质反应拉针益智", genre: ["益智", "策略", "动物"] };
 
   Object.assign(games, { "animal-sanctuary-loop": {
@@ -7995,11 +8009,12 @@
     game.faq = [...(game.faq || []), ...sharedFaq];
     for (const code of ["zh-Hant", "zh-Hans"]) {
       if (!localizedGames[code]?.[id]) continue;
+      const current = localizedGames[code][id];
       localizedGames[code][id] = {
         ...localizedGames[code][id],
-        designNote: game.designNote,
-        parent: game.parent,
-        faq: game.faq,
+        designNote: current.designNote || game.designNote,
+        parent: current.parent || game.parent,
+        faq: current.faq?.length ? current.faq : game.faq,
       };
     }
   };

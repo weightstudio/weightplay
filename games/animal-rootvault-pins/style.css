@@ -747,6 +747,9 @@ a:focus-visible {
 .result-card {
   text-align: center;
 }
+.result-card > .modal-actions {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
 .result-art {
   display: block;
   width: 120px;

@@ -980,26 +980,85 @@ body.guardian-result .game-panel > .command-row {
 
 .result-card .result-actions {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows: repeat(2, 44px);
+  grid-template-columns: minmax(0, 1fr);
   gap: 10px;
+}
+
+.result-reward-actions,
+.result-nav-actions {
+  display: grid;
+  gap: 10px;
+}
+
+.result-reward-actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.result-nav-actions {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .result-card .result-actions button {
   width: 100%;
-  min-height: 44px;
+  min-height: 52px;
 }
 
-#nextStageBtn { grid-column: 1; grid-row: 1; }
-#rerollRewardBtn { grid-column: 2; grid-row: 1; }
+.result-card .result-actions button:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+
 #rerollRewardBtn.is-confirming,
 #reviveBtn.is-confirming {
   border-color: var(--gold);
   background: rgba(255, 209, 102, 0.18);
   box-shadow: 0 0 0 2px rgba(255, 209, 102, 0.16);
 }
-#retryBtn { grid-column: 1; grid-row: 2; }
-#resultMenuBtn { grid-column: 2; grid-row: 2; }
+
+.result-stars:empty,
+.result-reward:empty,
+.result-progress:empty,
+.result-unlock:empty {
+  display: none;
+}
+
+@media (max-height: 480px) and (orientation: landscape) {
+  body.guardian-playing #resultPanel .result-card {
+    width: min(1760px, 96%);
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 28px;
+    padding: 28px 36px;
+    overflow: hidden;
+    text-align: left;
+  }
+
+  body.guardian-playing #resultPanel .result-card > img {
+    width: 220px;
+    height: 220px;
+  }
+
+  body.guardian-playing #resultPanel .result-card > div {
+    min-width: 0;
+    display: grid;
+    gap: 10px;
+  }
+
+  body.guardian-playing #resultPanel .result-card h2 {
+    font-size: 42px;
+    line-height: 1.1;
+  }
+
+  body.guardian-playing #resultPanel .result-card p {
+    font-size: 28px;
+    line-height: 1.22;
+  }
+
+  body.guardian-playing #resultPanel .result-actions button {
+    min-height: 104px;
+    font-size: 30px;
+    line-height: 1.1;
+  }
+}
 
 @media (max-width: 780px) {
   .guardian-topbar {

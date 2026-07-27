@@ -1673,7 +1673,7 @@
     nodes.sellBtn.textContent = t("sell");
     renderReviveAction();
     nodes.retryBtn.textContent = t("retry");
-    nodes.resultMenuBtn.textContent = t("menu");
+    nodes.resultMenuBtn.textContent = t("stagesTab");
     nodes.nextStageBtn.textContent = t("nextStage");
     nodes.rerollRewardBtn.textContent = t("rerollReward");
     updateSoundButton();
@@ -3005,21 +3005,39 @@
     return t(key, { stars, core: corePercent });
   }
 
+  function ensureResultActionStructure() {
+    const actions = nodes.nextStageBtn.closest(".result-actions");
+    if (!actions) return;
+    let rewardActions = actions.querySelector(".result-reward-actions");
+    let navActions = actions.querySelector(".result-nav-actions");
+    if (!rewardActions) {
+      rewardActions = document.createElement("div");
+      rewardActions.className = "result-reward-actions";
+      actions.append(rewardActions);
+    }
+    if (!navActions) {
+      navActions = document.createElement("div");
+      navActions.className = "result-nav-actions";
+      actions.append(navActions);
+    }
+    rewardActions.append(nodes.rerollRewardBtn, nodes.reviveBtn);
+    navActions.append(nodes.resultMenuBtn, nodes.nextStageBtn, nodes.retryBtn);
+  }
+
   function syncResultActionHierarchy() {
-    const nextAvailable = !nodes.nextStageBtn.classList.contains("is-hidden") && !nodes.nextStageBtn.disabled;
-    const reviveAvailable = !nodes.reviveBtn.classList.contains("is-hidden") && !nodes.reviveBtn.disabled;
-    const terminalVictory = state.won && state.stage?.id >= STAGE_COUNT;
+    ensureResultActionStructure();
+    const nextAvailable = !nodes.nextStageBtn.disabled;
     const primaryAction = nextAvailable
       ? nodes.nextStageBtn
-      : reviveAvailable
-        ? nodes.reviveBtn
-        : terminalVictory
-          ? nodes.resultMenuBtn
-          : nodes.retryBtn;
-    [nodes.nextStageBtn, nodes.reviveBtn, nodes.retryBtn, nodes.resultMenuBtn].forEach((button) => {
+      : nodes.resultMenuBtn;
+    [nodes.nextStageBtn, nodes.retryBtn, nodes.resultMenuBtn].forEach((button) => {
       const isPrimary = button === primaryAction;
       button.classList.toggle("primary-btn", isPrimary);
       button.classList.toggle("secondary-btn", !isPrimary);
+    });
+    [nodes.rerollRewardBtn, nodes.reviveBtn].forEach((button) => {
+      button.classList.remove("primary-btn");
+      button.classList.add("secondary-btn");
     });
     return primaryAction;
   }
@@ -3061,7 +3079,8 @@
     nodes.resultText.textContent = t("victoryText", { stage: stage.id });
     nodes.resultStars.textContent = t("starRating", { stars });
     nodes.skillReportText.textContent = resultSkillReport(true, stars, state.coreHp, stage);
-    nodes.nextStageBtn.classList.toggle("is-hidden", stage.id >= STAGE_COUNT);
+    nodes.nextStageBtn.classList.remove("is-hidden");
+    nodes.nextStageBtn.disabled = stage.id >= STAGE_COUNT;
     nodes.reviveBtn.classList.add("is-hidden");
     renderResultReward();
     resultDecisionCommitted = false;
@@ -3085,7 +3104,8 @@
     nodes.reviveBtn.classList.toggle("is-hidden", state.revived);
     nodes.reviveBtn.disabled = state.revived || state.save.diamonds < 5;
     nodes.skillReportText.textContent = resultSkillReport(false);
-    nodes.nextStageBtn.classList.add("is-hidden");
+    nodes.nextStageBtn.classList.remove("is-hidden");
+    nodes.nextStageBtn.disabled = true;
     resultDecisionCommitted = false;
     setScreen("result");
     playSfx("defeat");

@@ -848,7 +848,15 @@
   window.addEventListener?.("orientationchange", refreshOrbBattleLayout, { passive: true });
   window.visualViewport?.addEventListener("resize", refreshOrbBattleLayout, { passive: true });
 
+  function ensureResultActionStructure() {
+    const actions = nodes.resultPanel?.querySelector(".result-actions");
+    if (!actions) return;
+    nodes.resultMenuBtn.dataset.ui = "raidMap";
+    [nodes.resultMenuBtn, nodes.nextStageBtn, nodes.retryBtn].forEach((button) => actions.append(button));
+  }
+
   function setLocale(next) {
+    ensureResultActionStructure();
     const current = window.WonderI18n?.actualLocale?.();
     const requested = next === "zh-Hant" && current === "zh-Hans" ? current : next || "en";
     if (current !== requested) window.WonderI18n?.setLocale?.(requested);
@@ -1877,15 +1885,16 @@
     })}`;
     nodes.skillReportText.textContent = t(win ? "reportWin" : "reportLose");
     const hasNextStage = win && state.raidTier < MAX_RAID_TIER;
-    const isFinalVictory = win && state.raidTier >= MAX_RAID_TIER;
     nodes.nextStageBtn.classList.toggle("is-unavailable", !hasNextStage);
     nodes.nextStageBtn.disabled = !hasNextStage;
-    nodes.retryBtn.classList.toggle("primary-btn", !isFinalVictory);
-    nodes.retryBtn.classList.toggle("secondary-btn", isFinalVictory);
-    nodes.resultMenuBtn.classList.toggle("primary-btn", isFinalVictory);
-    nodes.resultMenuBtn.classList.toggle("secondary-btn", !isFinalVictory);
+    nodes.nextStageBtn.classList.toggle("primary-btn", hasNextStage);
+    nodes.nextStageBtn.classList.toggle("secondary-btn", !hasNextStage);
+    nodes.resultMenuBtn.classList.toggle("primary-btn", !hasNextStage);
+    nodes.resultMenuBtn.classList.toggle("secondary-btn", hasNextStage);
+    nodes.retryBtn.classList.remove("primary-btn");
+    nodes.retryBtn.classList.add("secondary-btn");
     show(nodes.resultPanel);
-    (hasNextStage ? nodes.nextStageBtn : isFinalVictory ? nodes.resultMenuBtn : nodes.retryBtn).focus({ preventScroll: true });
+    (hasNextStage ? nodes.nextStageBtn : nodes.resultMenuBtn).focus({ preventScroll: true });
     renderMenu();
     playSound(win ? "success" : "wrong", 0.2);
     window.WonderAnalytics?.track("raid_result", { game_id: GAME_ID, win, wave: Math.min(3, state.wave), stones });
