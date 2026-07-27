@@ -107,6 +107,7 @@ body.wp-logical-battle-active .battle-ad-reserve[data-wp-battle-physical-reserve
   text-align:center;
 }
 .stage-header.wp-stage-shell-header{
+  z-index:20!important;
   height:64px!important;
   min-height:64px!important;
 }

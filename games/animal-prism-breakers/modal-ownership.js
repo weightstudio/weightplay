@@ -134,3 +134,31 @@
 
   sync();
 })();
+
+(()=>{
+  const $=selector=>document.querySelector(selector);
+  let settlementToken=0;
+  function settleNavigationFocus(screen,targetSelector,recoverableSelector=targetSelector){
+    const token=++settlementToken;
+    let observer=null,stopTimer=0;
+    const settle=()=>{
+      if(token!==settlementToken||document.body.dataset.screen!==screen){
+        observer?.disconnect();clearTimeout(stopTimer);return;
+      }
+      const target=$(targetSelector);
+      if(!target)return;
+      const active=document.activeElement;
+      const visibleOwner=active&&active!==document.body&&active.getClientRects().length>0;
+      if(visibleOwner&&active!==target&&!active.matches(recoverableSelector))return;
+      target.focus({preventScroll:true});
+    };
+    settle();requestAnimationFrame(settle);
+    observer=new MutationObserver(settle);
+    observer.observe(document.body,{attributes:true,childList:true,subtree:true});
+    [80,400,1000].forEach(delay=>setTimeout(settle,delay));
+    stopTimer=setTimeout(()=>observer.disconnect(),1600);
+  }
+  $("#start")?.addEventListener("click",()=>settleNavigationFocus("stage",'.stage-card.centered[aria-current="true"]',".stage-card"));
+  $("#stageBack")?.addEventListener("click",()=>settleNavigationFocus("main","#start"));
+  ["#leaveStage","#resultStage"].forEach(selector=>$(selector)?.addEventListener("click",()=>settleNavigationFocus("stage",'.stage-card.centered[aria-current="true"]',".stage-card")));
+})();
