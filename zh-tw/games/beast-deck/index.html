@@ -76,7 +76,7 @@
   <meta name="twitter:title" content="獸王牌組：迷霧森林 | WeightPlay" />
     <meta name="twitter:description" content="《獸王牌組：迷霧森林》是一套以判讀敵人意圖、安排出牌順序為核心的 30 任務回合制牌組戰役。每個任務有三場連續戰鬥；通過前兩場後各選一張本次任務限定卡並恢復部分生命，擊敗第三場才會保存經驗、獸王金幣與下一個任務。六個五關區域依序加入護甲、反擊、疲勞、標記、再生、淨化、虛弱、牌型封印、詛咒與三相結界。第..." />
   </head>
-  <body data-tutorial-auto-show="false">
+  <body data-tutorial-auto-show="false" data-wp-combined-sound="true">
     <main class="beast-deck-app" data-no-mobile-immersive="true" data-wp-canvas-max-width="920">
       <header class="topbar">
         <a class="icon-btn" data-wp-return="main" href="/" data-aria="backToLobby" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
@@ -257,15 +257,15 @@
             </div>
 
             <div class="skill-lines">
-              <span><span data-ui="skillLogic">Logic</span> <b id="logicStars">-----</b></span>
-              <span><span data-ui="skillFocus">Focus</span> <b id="focusStars">-----</b></span>
-              <span><span data-ui="skillProblem">Problem Solving</span> <b id="problemStars">-----</b></span>
+              <span><span data-ui="skillLogic">Strategy</span> <b id="logicStars">-----</b></span>
+              <span><span data-ui="skillFocus">Card Control</span> <b id="focusStars">-----</b></span>
+              <span><span data-ui="skillProblem">Defense</span> <b id="problemStars">-----</b></span>
             </div>
 
-            <div class="skill-report">
-              <strong data-ui="skillReportTitle">Skill Report</strong>
+            <div class="skill-report" hidden aria-hidden="true">
+              <strong data-ui="skillReportTitle">Battle Summary</strong>
               <p id="skillReportText"></p>
-              <small data-ui="resultDisclaimer">For fun and local progress tracking only.</small>
+              <small data-ui="resultDisclaimer">Saved in this local mission record.</small>
             </div>
 
             <div class="result-actions">

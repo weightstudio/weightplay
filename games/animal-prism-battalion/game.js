@@ -1,5 +1,6 @@
 (function(){
   "use strict";
+  document.body.setAttribute("data-runtime-localize","off");
   const $=(id)=>document.getElementById(id);
   const pack=window.AnimalPrismBattalionLocales;
   const localeCodes=pack.codes;
@@ -56,7 +57,6 @@
     $("retry").textContent=resultReplayLabels[locale]||resultReplayLabels.en;
     document.title=`${t("title")} | WeightPlay`;
     renderMain();renderStage();renderLab();updateSoundToggle();if(run)updateHud(true);
-    window.dispatchEvent(new CustomEvent("wonder:localechange",{detail:{locale}}));
   }
   function showScreen(name){
     currentScreen=name;document.body.dataset.screen=name;
@@ -101,7 +101,7 @@
   function buyUpgrade(id){const level=save.upgrades[id];if(level>=5)return;const cost=upgradeCost(level),name=t(upgradeData[id].name);if(save.shards<cost){$("labFeedback").textContent=t("needShardsDetail",{name,cost,balance:save.shards});return}save.shards-=cost;save.upgrades[id]+=1;persist();renderLab(id);$("labFeedback").textContent=t("upgradePurchasedDetail",{name,level:save.upgrades[id],balance:save.shards});window.WonderSound?.play?.("success")}
   document.querySelectorAll("[data-tab]").forEach((button)=>button.addEventListener("click",()=>{document.querySelectorAll("[data-tab]").forEach((item)=>{const active=item===button;item.classList.toggle("active",active);item.setAttribute("aria-selected",active?"true":"false")});$("missionsTab").hidden=button.dataset.tab!=="missions";$("labTab").hidden=button.dataset.tab!=="lab";if(button.dataset.tab==="lab"){renderLab();$("labFeedback").textContent=""}}));
   $("start").addEventListener("click",()=>showScreen("stage"));$("stageBack").addEventListener("click",()=>showScreen("main"));
-  $("locale").addEventListener("change",(event)=>{locale=canonicalLocale(event.target.value);storage.set("wonderLocale",locale);if(window.WonderI18n?.setLocale){window.WonderI18n.setLocale(locale);return}applyLocale()});
+  $("locale").addEventListener("change",(event)=>{locale=canonicalLocale(event.target.value);storage.set("wonderLocale",locale);window.WonderI18n?.setLocale?.(locale);applyLocale()});
   $("soundToggle").addEventListener("keydown",(event)=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
   $("soundToggle").addEventListener("click",()=>{const sound=window.WonderSound;if(!sound)return;sound.unlock();sound.setMuted(!sound.isMuted());updateSoundToggle();if(!sound.isMuted())sound.play("click")});
   window.addEventListener("keyup",(event)=>{if(event.key===labPurchaseKeyboardKey)labPurchaseKeyboardKey=null});

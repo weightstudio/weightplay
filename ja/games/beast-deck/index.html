@@ -76,7 +76,7 @@
   <meta name="twitter:title" content="ビーストデッキ | WeightPlay" />
     <meta name="twitter:description" content="ビーストデッキは、カードの効果と報酬を組み合わせ、部屋ごとの戦いを乗り越えるデッキ戦略を楽しめるWeightPlayオリジナル作品です。画面に出る手がかりを読み、自分で次の一手を決めながら進めます。" />
   </head>
-  <body data-tutorial-auto-show="false">
+  <body data-tutorial-auto-show="false" data-wp-combined-sound="true">
     <main class="beast-deck-app" data-no-mobile-immersive="true" data-wp-canvas-max-width="920">
       <header class="topbar">
         <a class="icon-btn" data-wp-return="main" href="/" data-aria="backToLobby" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
@@ -257,15 +257,15 @@
             </div>
 
             <div class="skill-lines">
-              <span><span data-ui="skillLogic">Logic</span> <b id="logicStars">-----</b></span>
-              <span><span data-ui="skillFocus">Focus</span> <b id="focusStars">-----</b></span>
-              <span><span data-ui="skillProblem">Problem Solving</span> <b id="problemStars">-----</b></span>
+              <span><span data-ui="skillLogic">Strategy</span> <b id="logicStars">-----</b></span>
+              <span><span data-ui="skillFocus">Card Control</span> <b id="focusStars">-----</b></span>
+              <span><span data-ui="skillProblem">Defense</span> <b id="problemStars">-----</b></span>
             </div>
 
-            <div class="skill-report">
-              <strong data-ui="skillReportTitle">Skill Report</strong>
+            <div class="skill-report" hidden aria-hidden="true">
+              <strong data-ui="skillReportTitle">Battle Summary</strong>
               <p id="skillReportText"></p>
-              <small data-ui="resultDisclaimer">For fun and local progress tracking only.</small>
+              <small data-ui="resultDisclaimer">Saved in this local mission record.</small>
             </div>
 
             <div class="result-actions">

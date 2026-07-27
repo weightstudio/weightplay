@@ -989,7 +989,7 @@ body {
 }
 
 .intent-icon {
-  font-size: 14px;
+  display: none;
 }
 
 /* Status Effects Row */
@@ -2205,4 +2205,108 @@ body.beast-deck-playing button[data-sound-toggle] {
   top: 16px !important;
   right: max(16px, calc((100vw - 612px) / 2 + 12px)) !important;
   bottom: auto !important;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  body.beast-deck-playing #gamePanel.game-panel {
+    grid-template-rows: 100px minmax(0, 1fr) 318px;
+    gap: 6px;
+    padding: 8px;
+  }
+
+  body.beast-deck-playing .hud-row {
+    grid-template-columns: auto repeat(6, minmax(0, 1fr)) !important;
+    padding: 10px 14px;
+    font-size: 22px;
+  }
+
+  body.beast-deck-playing .hud-row span {
+    font-size: 20px;
+  }
+
+  body.beast-deck-playing .hud-row b {
+    font-size: 28px;
+  }
+
+  body.beast-deck-playing .soft-btn {
+    min-width: 82px;
+    min-height: 72px;
+    font-size: 30px;
+  }
+
+  body.beast-deck-playing .battlefield {
+    padding: 10px 14px;
+    gap: 6px;
+  }
+
+  body.beast-deck-playing .enemy-container {
+    gap: 2px;
+  }
+
+  body.beast-deck-playing .beast-avatar {
+    width: 118px;
+    height: 118px;
+  }
+
+  body.beast-deck-playing .beast-avatar.is-boss {
+    width: 156px;
+    height: 156px;
+  }
+
+  body.beast-deck-playing #enemyName {
+    font-size: 27px;
+  }
+
+  body.beast-deck-playing .enemy-intent,
+  body.beast-deck-playing .status-badge,
+  body.beast-deck-playing .battle-log {
+    font-size: 20px;
+  }
+
+  body.beast-deck-playing .battle-log {
+    flex-basis: 58px;
+    min-height: 58px;
+    max-height: 66px;
+  }
+
+  body.beast-deck-playing .action-area {
+    height: 318px;
+    min-height: 318px;
+    grid-template-rows: 262px 48px;
+    gap: 8px;
+  }
+
+  body.beast-deck-playing .hand-row {
+    height: 262px;
+    min-height: 262px;
+    max-height: 262px;
+    flex-basis: 262px;
+    gap: 14px;
+  }
+
+  body.beast-deck-playing .card {
+    width: 220px;
+    height: 252px;
+    padding: 12px;
+    gap: 7px;
+  }
+
+  body.beast-deck-playing .card-icon {
+    flex-basis: 108px;
+    height: 108px;
+  }
+
+  body.beast-deck-playing .card-name {
+    font-size: 22px;
+  }
+
+  body.beast-deck-playing .card-desc {
+    font-size: 17px;
+    line-height: 1.3;
+  }
+
+  body.beast-deck-playing .action-btn {
+    min-height: 48px;
+    font-size: 24px;
+  }
 }

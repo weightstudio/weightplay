@@ -410,21 +410,24 @@
       combatBlock: "Block",
       combatGainBlock: "Block +{amount}",
       combatApplyPoison: "Poison +{amount}",
+      combatArmorReduction: "Armor {amount}",
+      combatRiposte: "Riposte -{amount}",
+      combatPhase: "Phase {phase}",
       shieldLabel: "Block",
       chooseCard: "Draft a Card",
       chooseCardDesc: "Choose one animal power for this mission deck. The chosen card is guaranteed in the next opening hand.",
       draftPermanentHint: "Mission draft cards last for this mission only. Permanent cards come from Gold Beast Packs on the menu.",
       tryAgain: "Try Again",
       backToMenu: "Back to Menu",
-      skillLogic: "Logic",
-      skillFocus: "Focus",
-      skillProblem: "Problem Solving",
+      skillLogic: "Strategy",
+      skillFocus: "Card Control",
+      skillProblem: "Defense",
       endTurn: "End Turn",
       runComplete: "Mission Complete!",
       runFailed: "Mission Failed",
       resultScoreLabel: "Mission Progress",
-      resultDisclaimer: "For fun and local progress tracking only.",
-      skillReportTitle: "Skill Report",
+      resultDisclaimer: "Saved in this local mission record.",
+      skillReportTitle: "Battle Summary",
       loading: "Loading",
       card_wolf_pack: "Wolf Pack",
       card_wolf_pack_desc: "Deal 6 damage. If another attack was played this turn, deal 12 instead.",
@@ -483,15 +486,15 @@
       log_player_block: "You gained {amount} Block. It will absorb enemy attack damage this turn.",
       log_enemy_block_fade: "{enemy}'s remaining Block faded.",
       log_draft_added: "{card} joined this mission deck and is guaranteed in this opening hand.",
-      enemyBlockStatus: "DEF {amount} absorbs your next damage.",
-      enemyArmorStatus: "ARM {amount} reduces every direct hit.",
-      enemyRiposteStatus: "RIP {amount} counters the next Attack card.",
-      enemyWardStatus: "WARD: play {amount} more card type(s).",
-      enemyRegenStatus: "REG {amount} heals after enemy actions.",
-      playerWeakStatus: "WEAK {amount} reduces your next Attack.",
-      playerExhaustStatus: "EXH raises {card}'s cost by 1.",
-      playerMarkStatus: "MARK: play {card} or take {amount} damage.",
-      playerSealStatus: "SEALED: {type}",
+      enemyBlockStatus: "Block {amount} absorbs your next damage.",
+      enemyArmorStatus: "Armor {amount} reduces every direct hit.",
+      enemyRiposteStatus: "Riposte {amount} counters the next Attack card.",
+      enemyWardStatus: "Triad Ward: play {amount} more card type(s).",
+      enemyRegenStatus: "Regeneration {amount} heals after enemy actions.",
+      playerWeakStatus: "Weak {amount} reduces your next Attack.",
+      playerExhaustStatus: "Exhaust raises {card}'s cost by 1.",
+      playerMarkStatus: "Mark: play {card} or take {amount} damage.",
+      playerSealStatus: "Sealed: {type}",
       log_armor_absorb: "{enemy}'s armor reduces the hit by {blocked}.",
       log_riposte: "{enemy} ripostes for {damage} damage.",
       log_exhaust: "{card} is Exhausted and costs 1 more Energy this turn.",
@@ -622,21 +625,24 @@
       combatBlock: "格擋",
       combatGainBlock: "格擋 +{amount}",
       combatApplyPoison: "中毒 +{amount}",
+      combatArmorReduction: "護甲削減 {amount}",
+      combatRiposte: "反擊 -{amount}",
+      combatPhase: "第 {phase} 階段",
       shieldLabel: "格擋",
       chooseCard: "選擇卡牌",
       chooseCardDesc: "選一張動物能力加入本次任務牌組，選到的卡會保證出現在下一場開手牌。",
       draftPermanentHint: "戰鬥中選到的卡只存在本次任務；永久卡冊要用選單的金幣卡包取得。",
       tryAgain: "再試一次",
       backToMenu: "回到選單",
-      skillLogic: "邏輯",
-      skillFocus: "專注",
-      skillProblem: "問題解決",
+      skillLogic: "策略",
+      skillFocus: "牌序掌控",
+      skillProblem: "防守",
       endTurn: "結束回合",
       runComplete: "任務完成！",
       runFailed: "任務失敗",
       resultScoreLabel: "任務進度",
-      resultDisclaimer: "僅供遊玩與本地進度追蹤。",
-      skillReportTitle: "能力報告",
+      resultDisclaimer: "已記錄於本機任務進度。",
+      skillReportTitle: "戰鬥摘要",
       loading: "載入中",
       card_wolf_pack: "狼群突襲",
       card_wolf_pack_desc: "造成 6 點傷害。本回合若已打出攻擊卡，改為造成 12 點。",
@@ -695,14 +701,14 @@
       log_player_block: "你獲得 {amount} 點格擋，可吸收本回合敵方攻擊。",
       log_enemy_block_fade: "{enemy} 剩餘的格擋消退了。",
       log_draft_added: "{card} 已加入本次任務牌組，並保證出現在這場開手牌。",
-      enemyBlockStatus: "DEF {amount} 會吸收你的下一次傷害。",
-      enemyArmorStatus: "ARM {amount} 會削減每次直接傷害。",
-      enemyRiposteStatus: "RIP {amount} 會反擊下一張攻擊牌。",
-      enemyWardStatus: "WARD：還需使用 {amount} 種卡牌類型。",
-      enemyRegenStatus: "REG {amount} 會在敵方行動後治療。",
-      playerWeakStatus: "WEAK {amount} 會降低下一次攻擊。",
-      playerExhaustStatus: "EXH：{card} 消耗增加 1。",
-      playerMarkStatus: "MARK：打出 {card}，否則受到 {amount} 點傷害。",
+      enemyBlockStatus: "格擋 {amount}：吸收你的下一次傷害。",
+      enemyArmorStatus: "護甲 {amount}：削減每次直接傷害。",
+      enemyRiposteStatus: "反擊 {amount}：反擊下一張攻擊牌。",
+      enemyWardStatus: "三相結界：還需使用 {amount} 種卡牌類型。",
+      enemyRegenStatus: "再生 {amount}：在敵方行動後治療。",
+      playerWeakStatus: "虛弱 {amount}：降低下一次攻擊。",
+      playerExhaustStatus: "疲勞：{card} 消耗增加 1。",
+      playerMarkStatus: "標記：打出 {card}，否則受到 {amount} 點傷害。",
       playerSealStatus: "封印：{type}",
       log_armor_absorb: "{enemy} 的護甲削減了 {blocked} 點傷害。",
       log_riposte: "{enemy} 反擊並造成 {damage} 點傷害。",
@@ -732,8 +738,8 @@
       log_loss: "你被 {enemy} 擊敗了。",
       log_reshuffle: "抽牌堆已空，棄牌堆重新洗入牌庫。",
       shieldAbsorbed: "格擋吸收所有傷害，剩餘 {shield} 點格擋。",
-      playerDamage: "玩家受到 {damage} 點傷害，剩餘 {hp} HP。",
-      playerPoison: "玩家受到 {damage} 點中毒傷害，剩餘 {hp} HP。",
+      playerDamage: "玩家受到 {damage} 點傷害，剩餘 {hp} 點生命。",
+      playerPoison: "玩家受到 {damage} 點中毒傷害，剩餘 {hp} 點生命。",
       levelUp: "升級！達到等級 {level}。",
       report_win: "任務 {mission} 通關，獲得 {xp} 經驗並推進森林進度。",
       report_partial: "任務 {mission} 已通過 {count} 場戰鬥，獲得 {xp} 經驗。調整牌組再挑戰一次。",
@@ -847,21 +853,24 @@
     combatBlock: "Bloqueo",
     combatGainBlock: "Bloqueo +{amount}",
     combatApplyPoison: "Veneno +{amount}",
+    combatArmorReduction: "Armadura {amount}",
+    combatRiposte: "Contraataque -{amount}",
+    combatPhase: "Fase {phase}",
     shieldLabel: "Bloqueo",
     chooseCard: "Elige una carta",
     chooseCardDesc: "Elige un poder animal para el mazo de esta misión. La carta elegida aparecerá en la próxima mano inicial.",
     draftPermanentHint: "Las cartas elegidas duran solo esta misión. Las permanentes salen en Sobres Bestia de Oro del menú.",
     tryAgain: "Intentar de nuevo",
     backToMenu: "Volver al menú",
-    skillLogic: "Lógica",
-    skillFocus: "Concentración",
-    skillProblem: "Resolución de problemas",
+    skillLogic: "Estrategia",
+    skillFocus: "Control de cartas",
+    skillProblem: "Defensa",
     endTurn: "Terminar turno",
     runComplete: "¡Misión completada!",
     runFailed: "Misión fallida",
     resultScoreLabel: "Progreso de misión",
-    resultDisclaimer: "Solo para divertirse y registrar el progreso local.",
-    skillReportTitle: "Informe de habilidades",
+    resultDisclaimer: "Guardado en el registro local de la misión.",
+    skillReportTitle: "Resumen de batalla",
     loading: "Cargando",
     card_wolf_pack: "Manada de Lobos",
     card_wolf_pack_desc: "Inflige 6 de daño. Si jugaste otro ataque este turno, inflige 12.",
@@ -920,11 +929,11 @@
     log_player_block: "Obtuviste {amount} de bloqueo. Absorberá daño enemigo este turno.",
     log_enemy_block_fade: "El bloqueo restante de {enemy} desapareció.",
     log_draft_added: "{card} se unió al mazo de esta misión y aparecerá en la mano inicial.",
-    enemyBlockStatus: "DEF {amount} absorbe tu próximo daño.",
-    enemyArmorStatus: "ARM {amount} reduce cada golpe directo.",
+    enemyBlockStatus: "Bloqueo {amount} absorbe tu próximo daño.",
+    enemyArmorStatus: "Armadura {amount} reduce cada golpe directo.",
     enemyRiposteStatus: "CON {amount} responde a la próxima carta de ataque.",
-    enemyWardStatus: "BARRERA: juega {amount} tipo(s) de carta más.",
-    enemyRegenStatus: "REG {amount} cura tras las acciones enemigas.",
+    enemyWardStatus: "Barrera tríadica: juega {amount} tipo(s) de carta más.",
+    enemyRegenStatus: "Regeneración {amount} cura tras las acciones enemigas.",
     playerWeakStatus: "DÉBIL {amount} reduce tu próximo ataque.",
     playerExhaustStatus: "AGOT aumenta en 1 el coste de {card}.",
     playerMarkStatus: "MARCA: juega {card} o recibe {amount} de daño.",
@@ -2032,7 +2041,7 @@
     if (remaining === 0) {
       state.enemyWard = 0;
       log(t("log_ward_break"), "player-synergy");
-      showCombatFeedback("WARD BREAK", "block");
+      showCombatFeedback(t("log_ward_break"), "block");
     } else {
       state.enemyWard = remaining;
       log(t("log_ward_progress", { type: cardTypeLabel(type), remaining }), "system");
@@ -2058,7 +2067,7 @@
         state.enemyWard = 3;
       }
       log(t("log_boss_phase", { enemy: enemyName(state.enemy), phase, effect: t(`phase_${mechanic}`) }), "enemy");
-      showCombatFeedback(`PHASE ${phase}`, "poison");
+      showCombatFeedback(t("combatPhase", { phase }), "poison");
     }
   }
 
@@ -2078,7 +2087,7 @@
   function applyEnemyDamage(amount) {
     let damage = Math.max(0, Math.round(amount));
     if (state.enemyWard > 0) {
-      showCombatFeedback(`WARD ${state.enemyWard}`, "block");
+      showCombatFeedback(t("enemyWardStatus", { amount: state.enemyWard }), "block");
       return 0;
     }
     const armorBlocked = Math.min(state.enemyArmor, damage);
@@ -2105,7 +2114,8 @@
       const impact = damage > 0 ? `-${damage} · ${t("combatBlock")} ${blocked}` : `${t("combatBlock")} ${blocked}`;
       showCombatFeedback(impact, damage > 0 ? "damage" : "block");
     } else if (armorBlocked > 0) {
-      const impact = damage > 0 ? `-${damage} · ARM ${armorBlocked}` : `ARM ${armorBlocked}`;
+      const armorText = t("combatArmorReduction", { amount: armorBlocked });
+      const impact = damage > 0 ? `-${damage} · ${armorText}` : armorText;
       showCombatFeedback(impact, damage > 0 ? "damage" : "block");
     } else if (damage > 0) {
       showCombatFeedback(`-${damage}`, "damage");
@@ -2156,7 +2166,7 @@
       state.enemyRiposte = 0;
       const result = applyPlayerDamage(riposte);
       log(t("log_riposte", { enemy: enemyName(state.enemy), damage: result.damage }), "enemy");
-      showCombatFeedback(`RIP -${result.damage}`, "poison");
+      showCombatFeedback(t("combatRiposte", { amount: result.damage }), "poison");
     }
   }
 

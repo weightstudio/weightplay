@@ -310,6 +310,45 @@ body.wp-logical-battle-active.beast-deck-playing .action-area { grid-column: 1 !
 body.wp-logical-battle-active.beast-deck-playing .hand-row { width: 100% !important; min-width: 100% !important; height: 184px !important; min-height: 184px !important; max-height: 184px !important; }
 body.wp-logical-battle-active.beast-deck-playing .combat-feedback.damage { top: 22% !important; }
 
+@media (orientation: landscape) and (max-height: 560px) {
+  body.wp-logical-battle-active.beast-deck-playing #gamePanel.game-panel {
+    grid-template-rows: 100px minmax(0, 1fr) 318px !important;
+  }
+
+  body.wp-logical-battle-active.beast-deck-playing .hud-row {
+    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+    grid-template-rows: 100px !important;
+    gap: 10px !important;
+    padding: 10px 14px 10px 110px !important;
+  }
+
+  body.wp-logical-battle-active.beast-deck-playing .hud-row .soft-btn {
+    grid-column: auto !important;
+    width: 82px !important;
+    min-width: 82px !important;
+    height: 72px !important;
+    min-height: 72px !important;
+  }
+
+  body.wp-logical-battle-active.beast-deck-playing .battlefield {
+    padding: 10px 14px !important;
+    gap: 6px !important;
+  }
+
+  body.wp-logical-battle-active.beast-deck-playing .action-area {
+    height: 318px !important;
+    min-height: 318px !important;
+    grid-template-rows: 262px 48px !important;
+    gap: 8px !important;
+  }
+
+  body.wp-logical-battle-active.beast-deck-playing .hand-row {
+    height: 262px !important;
+    min-height: 262px !important;
+    max-height: 262px !important;
+  }
+}
+
 /* Beast Tactician keeps the HUD, arena/build stack and commands in fixed tracks. */
 body.wp-logical-battle-active.guardian-playing #gamePanel.game-panel {
   grid-template-columns: minmax(0, 1fr) !important;

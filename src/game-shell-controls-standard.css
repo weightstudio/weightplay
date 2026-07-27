@@ -157,6 +157,10 @@
   font: 800 13px/1.25 system-ui, sans-serif;
 }
 
+.wp-shell-settings-row[hidden] {
+  display: none !important;
+}
+
 .wp-shell-settings-row > span:first-child {
   grid-column: 1;
   grid-row: 1;
