@@ -23,7 +23,7 @@
   let state = null;
   let history = [];
   let moves = 0;
-  let departingBusIndex = -1;
+  let departingBusIndexes = [];
   let departureTimer = 0;
   const progressKey = "animalBusJamProgress";
   let progress;
@@ -85,7 +85,8 @@
     if (name !== "battle") {
       window.clearTimeout(departureTimer);
       departureTimer = 0;
-      departingBusIndex = -1;
+      departingBusIndexes = [];
+      $("buses").replaceChildren();
     }
     ["main", "stage", "battle"].forEach((id) => { $(id).hidden = id !== name; });
     $("generalReserve").hidden = name !== "battle";
@@ -136,15 +137,49 @@
     selectStage(selected);
   }
 
-  function busCard(bus, index) {
+  function updateBusCard(element, bus, index) {
     const active = index === state.busIndex;
-    const departing = index === departingBusIndex;
+    const departureOrder = departingBusIndexes.indexOf(index);
+    const departing = departureOrder >= 0;
     const filled = departing ? bus.seats : active ? state.busFilled : 0;
-    return `<div class="bus ${active ? "active" : ""}${departing ? " departing" : ""}" style="--bus:${palette[bus.color]}"${departing ? ' aria-hidden="true"' : ""}>
+    element.className = `bus${active ? " active" : ""}${departing ? " departing" : ""}`;
+    element.dataset.busIndex = String(index);
+    element.dataset.departureOrder = departing ? String(departureOrder) : "";
+    element.style.setProperty("--bus", palette[bus.color]);
+    element.style.setProperty("--departure-order", departureOrder);
+    if (departing) element.setAttribute("aria-hidden", "true");
+    else element.removeAttribute("aria-hidden");
+    element.innerHTML = `
       <div class="bus-head"><strong>${t("colors")[bus.color]}</strong><span class="bus-route">${active ? t("activeBus") : `R-${index + 1}`}</span></div>
       <div class="bus-shape" aria-hidden="true"></div>
       <div class="seats" aria-label="${t("busLabel", { color: t("colors")[bus.color], filled, capacity: bus.seats })}">${Array.from({ length: bus.seats }, (_, seat) => `<i class="${seat < filled ? "filled" : ""}"></i>`).join("")}</div>
-    </div>`;
+    `;
+  }
+
+  function renderBuses(level) {
+    const container = $("buses");
+    const visibleIndexes = level.buses
+      .map((_, index) => index)
+      .filter((index) => index >= state.busIndex || departingBusIndexes.includes(index));
+    const visibleSet = new Set(visibleIndexes.map(String));
+    const elements = new Map(
+      [...container.children].map((element) => [element.dataset.busIndex, element]),
+    );
+
+    [...container.children].forEach((element) => {
+      if (!visibleSet.has(element.dataset.busIndex)) element.remove();
+    });
+    visibleIndexes.forEach((index, position) => {
+      let element = elements.get(String(index));
+      if (!element?.isConnected) {
+        element = document.createElement("div");
+        element.className = "bus";
+      }
+      updateBusCard(element, level.buses[index], index);
+      if (container.children[position] !== element) {
+        container.insertBefore(element, container.children[position] || null);
+      }
+    });
   }
 
   function passenger(color, queueIndex, itemIndex) {
@@ -162,11 +197,7 @@
     $("chapter").textContent = t("chapter", { n: level.chapter + 1 });
     $("stageName").textContent = t("stop", { n: levelIndex + 1 });
     $("remaining").textContent = t("remaining", { n: remaining });
-    $("buses").innerHTML = level.buses
-      .map((bus, index) => ({ bus, index }))
-      .filter(({ index }) => index >= state.busIndex || index === departingBusIndex)
-      .map(({ bus, index }) => busCard(bus, index))
-      .join("");
+    renderBuses(level);
     $("holdingCount").textContent = `${state.waiting.length}/${level.baySize}`;
     $("holding").innerHTML = Array.from({ length: level.baySize }, (_, index) => {
       const color = state.waiting[index];
@@ -189,7 +220,8 @@
   function startLevel(index) {
     window.clearTimeout(departureTimer);
     departureTimer = 0;
-    departingBusIndex = -1;
+    departingBusIndexes = [];
+    $("buses").replaceChildren();
     levelIndex = index;
     const level = levels[index];
     state = {
@@ -225,11 +257,15 @@
     state = nextState;
     moves += 1;
     if (state.busIndex > previousBusIndex) {
-      departingBusIndex = previousBusIndex;
+      departingBusIndexes = Array.from(
+        { length: state.busIndex - previousBusIndex },
+        (_, offset) => previousBusIndex + offset,
+      );
       window.clearTimeout(departureTimer);
-      const departureDuration = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ? 80 : 560;
+      const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+      const departureDuration = reducedMotion ? 80 : 560 + (departingBusIndexes.length - 1) * 90;
       departureTimer = window.setTimeout(() => {
-        departingBusIndex = -1;
+        departingBusIndexes = [];
         departureTimer = 0;
         render();
         if (engine.isComplete(level, state)) finishLevel();
@@ -239,7 +275,7 @@
     $("status").textContent = color === activeColor ? t("boarded") : t("held");
 
     if (engine.isComplete(level, state)) {
-      if (departingBusIndex < 0) finishLevel();
+      if (departingBusIndexes.length === 0) finishLevel();
       return;
     }
     if (engine.isDeadlocked(level, state)) $("deadlock").showModal();
@@ -258,7 +294,7 @@
     if (!saved) return;
     window.clearTimeout(departureTimer);
     departureTimer = 0;
-    departingBusIndex = -1;
+    departingBusIndexes = [];
     restore(saved);
     render();
     $("status").textContent = t("undone");

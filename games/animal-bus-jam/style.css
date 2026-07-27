@@ -239,7 +239,12 @@ body:not([data-screen="main"]) > .game-page-info { display: none !important; }
   color: #fff;
   opacity: .48;
   transform: scale(.92);
-  transition: .25s ease;
+  transition:
+    flex-basis 560ms cubic-bezier(.3, .72, .18, 1),
+    opacity 220ms ease,
+    transform 560ms cubic-bezier(.3, .72, .18, 1),
+    box-shadow 220ms ease;
+  will-change: flex-basis, transform, opacity;
   overflow: hidden;
 }
 .bus.active {
@@ -255,6 +260,7 @@ body:not([data-screen="main"]) > .game-page-info { display: none !important; }
   transform: none;
   pointer-events: none;
   animation: busDepartLeft 560ms cubic-bezier(.3, .72, .18, 1) forwards;
+  animation-delay: calc(var(--departure-order, 0) * 90ms);
 }
 .bus-head { display: flex; align-items: center; justify-content: space-between; gap: 5px; }
 .bus strong { font-size: .76rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -379,10 +385,10 @@ body:not([data-screen="main"]) > .game-page-info { display: none !important; }
     opacity: 1;
     transform: translateX(0);
   }
-  68% {
-    flex-basis: calc(var(--departing-bus-width) * .42);
-    opacity: .18;
-    transform: translateX(-145%) rotate(-1deg);
+  55% {
+    flex-basis: calc(var(--departing-bus-width) * .58);
+    opacity: .58;
+    transform: translateX(-92%) rotate(-1deg);
   }
   100% {
     flex-basis: 0;
@@ -496,5 +502,5 @@ dialog > div:last-child { display: flex; justify-content: center; gap: 9px; marg
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bus.departing { animation-duration: 80ms; }
+  .bus.departing { animation-duration: 80ms; animation-delay: 0ms; }
 }

@@ -569,6 +569,7 @@
   if (!zones.some((zone) => zone.id === selectedZone)) selectedZone = "mission-1";
   let state = "loading";
   let run = null;
+  let resultDecisionCommitted = false;
   let diamondPurchasePending = "";
   let diamondConfirmTimer = 0;
   let diamondConfirmDueAt = 0;
@@ -987,6 +988,13 @@
     return primary;
   }
 
+  function commitResultDecision(action) {
+    if (resultDecisionCommitted || state !== "result" || nodes.resultPanel.classList.contains("is-hidden")) return;
+    resultDecisionCommitted = true;
+    for (const button of [nodes.nextZoneBtn, nodes.retryBtn, nodes.resultMenuBtn]) button.disabled = true;
+    return action();
+  }
+
   function finishRun(won) {
     if (!run || run.finished) return;
     cancelFishingInput();
@@ -1004,6 +1012,8 @@
     nodes.resultText.textContent = t("result", { catches: run.catches, newFish: run.newFish, notes: run.notes });
     renderResultSummary();
     nodes.skillReportText.textContent = won ? t("reportWin") : t("reportFail");
+    resultDecisionCommitted = false;
+    for (const button of [nodes.nextZoneBtn, nodes.retryBtn, nodes.resultMenuBtn]) button.disabled = false;
     const primaryResultAction = syncResultActions(won);
     showPanel("result");
     focusPanel(nodes.resultPanel);
@@ -2011,10 +2021,10 @@
       first.focus();
     }
   });
-  nodes.retryBtn.addEventListener("click", async () => {
+  nodes.retryBtn.addEventListener("click", () => commitResultDecision(async () => {
     await startRun();
-  });
-  nodes.nextZoneBtn.addEventListener("click", async () => {
+  }));
+  nodes.nextZoneBtn.addEventListener("click", () => commitResultDecision(async () => {
     const zoneIndex = run ? zones.indexOf(run.zone) : -1;
     const nextZone = zones[zoneIndex + 1];
     if (!nextZone || nextZone.stage > save.unlockedZone) return;
@@ -2023,15 +2033,15 @@
     saveProgress();
     renderMenu();
     await startRun();
-  });
-  nodes.resultMenuBtn.addEventListener("click", () => {
+  }));
+  nodes.resultMenuBtn.addEventListener("click", () => commitResultDecision(() => {
     playSound("click");
     state = "stage";
     showPanel("stage");
     renderMenu();
     focusPanel(nodes.stagePanel);
     window.requestAnimationFrame(() => nodes.stagePanel.querySelector(".zone-card.is-selected:not(:disabled)")?.focus({ preventScroll: true }));
-  });
+  }));
   nodes.resultPanel.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) {
       event.preventDefault();

@@ -157,6 +157,7 @@
   const assistiveText = [...document.querySelectorAll("[data-ta]")];
   let run = null;
   let currentScreen = "loading";
+  let resultDecisionCommitted = false;
 
   function objectiveFor(stage) {
     if (stage.seals) return t("objectiveSeals", { percent: stage.target, count: stage.seals });
@@ -189,6 +190,16 @@
     $("mainProgress").textContent = `${Object.keys(save.stars).length} / 30`;
   }
 
+  function restoreMainStartFocus() {
+    const focusStart = () => {
+      if (currentScreen !== "main" || $("mainGroup").hidden) return;
+      $("start").focus({ preventScroll: true });
+    };
+    focusStart();
+    requestAnimationFrame(focusStart);
+    window.setTimeout(focusStart, 80);
+  }
+
   function showScreen(name, restoreFocus = true) {
     currentScreen = name;
     document.body.dataset.screen = name;
@@ -200,7 +211,7 @@
       renderStage();
       requestAnimationFrame(() => centerCurrentStage(restoreFocus));
     } else if (name === "main" && restoreFocus) {
-      requestAnimationFrame(() => $("start").focus({ preventScroll: true }));
+      restoreMainStartFocus();
     }
   }
 
@@ -1060,6 +1071,8 @@
     if (!run || run.finished) return;
     run.finished = true;
     run.paused = true;
+    resultDecisionCommitted = false;
+    for (const action of [$("retry"), $("resultStage"), $("nextMission")]) action.disabled = false;
     stopLoop();
     const restored = Math.round(territoryPercent());
     const remaining = Math.max(0, Math.ceil(run.time));
@@ -1083,6 +1096,14 @@
     window.WonderSound?.play?.(won ? "success" : "wrong");
   }
 
+  function commitResultDecision(action) {
+    if (resultDecisionCommitted || $("result").hidden) return false;
+    resultDecisionCommitted = true;
+    for (const button of [$("retry"), $("resultStage"), $("nextMission")]) button.disabled = true;
+    action();
+    return true;
+  }
+
   $("battleBack").addEventListener("click", openLeave);
   $("battleHelp").addEventListener("click", () => openTutorial(true));
   $("tutorialDone").addEventListener("click", closeTutorial);
@@ -1093,14 +1114,14 @@
     run = null;
     showScreen("stage");
   });
-  $("retry").addEventListener("click", () => startBattle(run.stageIndex));
-  $("resultStage").addEventListener("click", () => {
+  $("retry").addEventListener("click", () => commitResultDecision(() => startBattle(run.stageIndex)));
+  $("resultStage").addEventListener("click", () => commitResultDecision(() => {
     $("result").hidden = true;
     $("battleLive").inert = false;
     run = null;
     showScreen("stage");
-  });
-  $("nextMission").addEventListener("click", () => startBattle(Math.min(29, run.stageIndex + 1)));
+  }));
+  $("nextMission").addEventListener("click", () => commitResultDecision(() => startBattle(Math.min(29, run.stageIndex + 1))));
 
   function loadImages() {
     return Promise.all(Object.entries(imageSources).map(([key, src]) => new Promise((resolve) => {

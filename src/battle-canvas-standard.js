@@ -191,13 +191,16 @@
     if (reserve) {
       reserve.setAttribute("data-wp-battle-physical-reserve", "");
       const reserveTop = availableHeight;
+      const reserveFollowsCanvas = gameId === "animal-2048";
+      const reserveLeft = reserveFollowsCanvas ? left : 0;
+      const reserveWidth = reserveFollowsCanvas ? renderedWidth : width;
       rememberAndSet(reserve, {
         position: "fixed",
-        inset: `${reserveTop}px auto auto 0px`,
+        inset: `${reserveTop}px auto auto ${reserveLeft}px`,
         display: "block",
-        width: `${width}px`,
+        width: `${reserveWidth}px`,
         "min-width": "0",
-        "max-width": "none",
+        "max-width": reserveFollowsCanvas ? `${DESKTOP_CANVAS_MAX_WIDTH}px` : "none",
         height: "56px",
         "min-height": "56px",
         "max-height": "56px",

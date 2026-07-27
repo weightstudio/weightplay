@@ -10,6 +10,36 @@
     { colors: 4, queues: 5, bay: 3, buses: 6, seats: 2 },
     { colors: 4, queues: 5, bay: 2, buses: 6, seats: 3 },
   ];
+  // Hand-picked bus orders and queue layouts introduce required wrong-color
+  // holds instead of merely increasing the number of passengers.
+  const layoutSalts = [
+    0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0,
+    2, 7, 19, 5, 6,
+    71, 137, 24, 181, 192,
+  ];
+  const strategyLayouts = {
+    10: { queues: [[3, 0], [1, 0], [3, 2], [1, 2]], solution: [0, 0, 1, 1, 2, 3, 2, 3] },
+    11: { queues: [[2, 0], [3, 1], [0, 3], [1, 2]], solution: [3, 1, 1, 0, 3, 2, 2, 0] },
+    12: { queues: [[1, 0], [2, 3], [1, 3], [2, 0]], solution: [0, 0, 3, 3, 2, 2, 1, 1] },
+    13: { queues: [[2, 1], [2, 1], [3, 0], [3, 0]], solution: [0, 0, 1, 1, 2, 2, 3, 3] },
+    14: { queues: [[3, 2], [2, 1], [0, 3], [0, 1]], solution: [1, 0, 0, 1, 3, 3, 2, 2] },
+    15: { queues: [[2, 2, 1], [1, 3], [0, 3, 0], [0, 0]], solution: [2, 2, 1, 1, 2, 0, 0, 0, 3, 3] },
+    16: { queues: [[2, 2], [3, 0, 2], [3, 1], [2, 0, 1]], solution: [3, 3, 1, 1, 0, 3, 2, 2, 0, 1] },
+    17: { queues: [[0, 0, 2], [0, 3], [0, 1, 3], [2, 1]], solution: [3, 3, 2, 2, 0, 0, 0, 2, 1, 1] },
+    18: { queues: [[1, 2, 1], [0, 2], [2, 3, 0], [2, 3]], solution: [2, 2, 3, 3, 1, 2, 0, 0, 0, 1] },
+    19: { queues: [[1, 0], [0, 1, 1], [3, 1, 2], [2, 3]], solution: [1, 3, 0, 0, 1, 1, 2, 3, 2, 2] },
+    20: { queues: [[0, 1], [3, 2], [3, 3], [0, 3, 2], [0, 0, 1]], solution: [1, 1, 3, 3, 3, 2, 0, 0, 4, 4, 4, 2] },
+    21: { queues: [[2, 1], [2, 1, 1], [2, 3], [1, 0, 0], [2, 3]], solution: [2, 2, 4, 4, 3, 1, 1, 3, 3, 1, 0, 0] },
+    22: { queues: [[3, 3], [2, 0, 2], [2, 0, 1], [0, 1], [0, 2]], solution: [2, 2, 2, 3, 3, 1, 0, 0, 1, 1, 4, 4] },
+    23: { queues: [[1, 0], [1, 1, 0], [2, 3], [2, 3], [1, 3, 3]], solution: [0, 0, 1, 1, 1, 4, 4, 4, 2, 3, 2, 3] },
+    24: { queues: [[3, 1, 3], [2, 3], [3, 2, 0], [1, 2], [2, 0]], solution: [2, 2, 2, 4, 4, 0, 0, 3, 0, 1, 1, 3] },
+    25: { queues: [[0, 3, 2], [0, 2, 1], [2, 3, 1, 3], [2, 3, 1], [3, 0, 3]], solution: [0, 1, 4, 4, 0, 2, 2, 3, 2, 3, 3, 1, 1, 2, 4, 0] },
+    26: { queues: [[0, 2, 0], [2, 0, 3], [2, 2, 3, 2], [3, 1, 3], [1, 2, 1]], solution: [0, 0, 0, 1, 1, 2, 1, 3, 3, 4, 4, 4, 2, 2, 2, 3] },
+    27: { queues: [[2, 1, 2], [3, 3, 0], [1, 2, 1, 2], [0, 3, 2], [3, 0, 2]], solution: [2, 0, 0, 2, 2, 0, 1, 1, 1, 3, 4, 4, 2, 4, 3, 3] },
+    28: { queues: [[0, 1, 0], [0, 2, 2, 3], [3, 1, 0], [0, 2, 0], [1, 2, 3]], solution: [4, 2, 2, 0, 0, 0, 1, 2, 1, 1, 1, 4, 4, 3, 3, 3] },
+    29: { queues: [[3, 3, 1, 3], [1, 1, 0], [2, 0, 2], [3, 0, 0], [3, 3, 2]], solution: [1, 1, 0, 0, 0, 4, 1, 2, 2, 2, 4, 4, 0, 3, 3, 3] },
+  };
 
   function rng(seed) {
     let value = seed >>> 0;
@@ -42,7 +72,11 @@
   function build(index) {
     const chapter = Math.floor(index / 5);
     const config = chapterConfig[chapter];
-    const roll = rng(0x71a5e31 ^ Math.imul(index + 1, 2654435761));
+    const roll = rng(
+      0x71a5e31
+      ^ Math.imul(index + 1, 2654435761)
+      ^ Math.imul(layoutSalts[index] || 0, 2246822519),
+    );
     const buses = makeBuses(index, config, roll);
     const dispatchOrder = buses.flatMap((bus) => Array(bus.seats).fill(bus.color));
     const queues = Array.from({ length: config.queues }, () => []);
@@ -72,14 +106,15 @@
       if (solutionStep >= 0) solution[solutionStep] = queueIndex;
     });
 
+    const strategy = strategyLayouts[index];
     return {
       index,
       chapter,
       colors: config.colors,
       baySize: config.bay,
       buses,
-      queues,
-      solution,
+      queues: strategy ? strategy.queues.map((queue) => queue.slice()) : queues,
+      solution: strategy ? strategy.solution.slice() : solution,
       par: dispatchOrder.length,
     };
   }
