@@ -130,6 +130,8 @@
   let musicOutput;
   let soundRange;
   let soundOutput;
+  let combinedSoundRow;
+  let combinedSoundToggle;
   let localeOwner;
   let soundToggle;
   let currentHeader;
@@ -179,6 +181,8 @@
     soundRow.querySelector("span").textContent = copy[3];
     musicRange.setAttribute("aria-label", copy[2]);
     soundRange.setAttribute("aria-label", copy[3]);
+    if (combinedSoundRow) combinedSoundRow.querySelector("span").textContent = copy[3];
+    if (combinedSoundToggle) combinedSoundToggle.setAttribute("aria-label", copy[3]);
   }
 
   function build() {
@@ -218,7 +222,21 @@
     soundRange = soundRow.querySelector("input");
     soundOutput = soundRow.querySelector("output");
 
+    if (document.body.dataset.wpCombinedSound === "true" || document.body.dataset.gameId === "animal-2048") {
+      combinedSoundRow = document.createElement("div");
+      combinedSoundRow.className = "wp-shell-settings-row wp-shell-combined-sound-row";
+      combinedSoundRow.innerHTML = "<span></span>";
+      combinedSoundToggle = document.createElement("button");
+      combinedSoundToggle.type = "button";
+      combinedSoundToggle.className = "wp-shell-combined-sound-toggle";
+      combinedSoundToggle.setAttribute("role", "switch");
+      combinedSoundRow.append(combinedSoundToggle);
+      musicRow.hidden = true;
+      soundRow.hidden = true;
+    }
+
     popover.append(title, languageRow, musicRow, soundRow);
+    if (combinedSoundRow) popover.append(combinedSoundRow);
     host.append(button, popover);
 
     const setOutput = (range, output) => {
@@ -257,6 +275,16 @@
         persistVolume("weightPlayEffectsVolume", "effects", soundRange.value);
       }
     });
+    const syncCombinedSound = () => {
+      if (!combinedSoundToggle) return;
+      const enabled = !Boolean(window.WonderSound?.isMuted?.());
+      combinedSoundToggle.setAttribute("aria-checked", String(enabled));
+      combinedSoundToggle.dataset.state = enabled ? "on" : "off";
+    };
+    combinedSoundToggle?.addEventListener("click", () => {
+      window.WonderSound?.setMuted?.(!window.WonderSound.isMuted());
+      syncCombinedSound();
+    });
     window.addEventListener("wonder:audio-volume-change", (event) => {
       const detail = event.detail || {};
       if (Number.isFinite(detail.musicVolume)) musicRange.value = String(detail.musicVolume);
@@ -274,6 +302,7 @@
     });
     window.addEventListener("wonder:locale-change", updateCopy);
     updateCopy();
+    syncCombinedSound();
   }
 
   function setOpen(open, restoreFocus) {

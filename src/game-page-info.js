@@ -7015,7 +7015,7 @@
         </div>
         <div class="game-info-section">
           <h3>${escapeHtml(uiLabel("relatedGames"))}</h3>
-          <p>${escapeHtml(uiLabel("relatedIntro", { skill: localizeSkill(gameSkills[0] || "Focus") }))}</p>
+          ${game.showRelatedSkill === false ? "" : `<p>${escapeHtml(uiLabel("relatedIntro", { skill: localizeSkill(gameSkills[0] || "Focus") }))}</p>`}
           <div class="game-info-related">${related.map(relatedCard).join("")}</div>
         </div>
       </div>
@@ -7268,6 +7268,9 @@
     skills: ["Logic", "Spatial Reasoning", "Sequencing"],
     guideKicker: "WeightPlay Original Game Guide",
     guideTitleSuffix: "Game Guide",
+    noteTitle: "Player and Save Information",
+    showSkills: false,
+    showRelatedSkill: false,
     hideScoreBands: true,
     intro: "Animal 2048 is a turn-based forest strategy puzzle hosted by Moon Cap Orla. Every direction moves the complete 4 by 4 board, so a single swipe can open space, build several evolution chains, or trap the animals needed for the mission goal.",
     story: [
@@ -7299,7 +7302,7 @@
       "Missions 16-20 focus on score efficiency, Missions 21-25 begin from denser rare-animal nests, and Missions 26-30 combine stones, tight move limits, scoring, and high tiers up to 2048. Infinite Forest removes the move budget and turns the same rules into a personal endurance challenge."
     ],
     designNote: "The game uses short deterministic missions so a failed attempt can become a specific planning lesson instead of a different random puzzle. Whole-grid swipes were chosen because each input has broad consequences while remaining comfortable on phones. Mouse, touch, direction buttons, arrows, and WASD all operate the same state. Stable tile elements slide between cells and only real merges receive a pop effect, keeping motion readable without flashing the board. Progress and Infinite Forest records are stored only in this browser; no account is required.",
-    parent: "No account is required. Campaign unlocks, stars, best scores, and Infinite Forest records are stored only in this browser. Clearing site data or changing browsers may start a separate save. The planning report summarizes the current puzzle result for entertainment and is not a formal ability, medical, or school assessment.",
+    parent: "No account is required. Campaign unlocks, stars, best scores, and Infinite Forest records are stored only in this browser. Clearing site data or changing browsers may start a separate save.",
     faq: [
       ["Does every swipe create a new animal?", "No. Only a swipe that changes the board spends a move and adds one low-tier animal."],
       ["Can a newly merged tile merge again immediately?", "No. Each resulting tile can merge only once during a single move."],
@@ -7312,7 +7315,7 @@
   gameplayProfiles["animal-2048"] = { gameplay: "Whole-Grid Merge Strategy", genre: ["Puzzle", "Strategy", "Logic", "Animal"] };
 
   localizedGames["zh-Hant"]["animal-2048"] = {
-    ...games["animal-2048"], title: "動物 2048：森林進化", difficulty: "簡單至具挑戰性", time: "每關約 2 至 6 分鐘", gameplay: "全盤滑動合成策略", genre: ["益智", "策略", "邏輯", "動物"], skills: ["邏輯", "空間推理", "順序規劃"],
+    ...games["animal-2048"], title: "動物 2048：森林進化", noteTitle: "玩家與存檔資訊", difficulty: "簡單至具挑戰性", time: "每關約 2 至 6 分鐘", gameplay: "全盤滑動合成策略", genre: ["益智", "策略", "邏輯", "動物"], skills: ["邏輯", "空間推理", "順序規劃"],
     intro: "《動物 2048：森林進化》是由月帽貓頭鷹 Orla 引導的回合制森林策略遊戲。每個方向都會推動完整的 4×4 棋盤，因此一次滑動可能打開空間、串起多段進化，也可能封住任務需要的動物。",
     story: ["Orla 維護著月光森林裡的動物靈光保護區，相同動物相遇後會進化成更高階形態。三十個闖關任務要求玩家在步數用完前，合出指定動物、完成合成次數或取得目標分數。", "中期開始出現不會移動的苔石，將橫列與直行切成不同區段。第 30 關要合出數值 2048 的獅王守護者，完成最終進化；無限森林則是獨立挑戰，不是隱藏的第 31 關。"],
     systems: ["有效滑動會把所有可移動方塊推到最遠。兩隻相同動物相遇後進化一階，但新合成的方塊不能在同一步再次合成。沒有改變棋盤的方向不會扣步數，也不會生成新動物。", "每次有效移動後，空格會出現一隻低階動物，所以空間就是最重要的資源。把高階動物留在穩定角落很有用，但也要保留通往角落的路線。每個圖案都保留數值，玩家不必只靠圖片辨認階級。", "闖關目標分為指定方塊、合成次數與分數。每關擁有固定開局、苔石配置、步數限制與可重現的生成順序；復原會還原棋盤、分數、步數及生成狀態。", "無限森林由兩個隨機低階動物開始，沒有步數上限，直到棋盤完全無法滑動或合成才結束。2048 之後仍能繼續進化，最佳分數與最高方塊也和闖關進度分開保存。"],
@@ -7320,7 +7323,7 @@
     strategyTips: ["把最大的動物留在角落，但不要讓旁邊兩條邊都塞滿無法配對的低階動物。", "滑動前先看完整橫列或直行，因為方向會影響所有方塊，而不只是眼前的一對。", "苔石附近要分別規劃被切開的區段，並預留新動物可能出現的位置。", "分數與合成任務不一定要急著追最高階，穩定的小型連鎖通常更安全。", "若一步封死重要路線，立即使用復原最有效；生成位置也會一起精確還原。"],
     progression: ["第 1 至 5 關教全盤滑動與單次合成，第 6 至 10 關加入連鎖規劃，第 11 至 15 關用苔石切開移動路線。", "第 16 至 20 關重視分數效率，第 21 至 25 關從較密集的稀有動物巢開始，第 26 至 30 關綜合苔石、有限步數、分數與最高 2048 的進化目標。無限森林則移除步數限制，考驗長期空間管理。"],
     designNote: "遊戲採用短而固定的任務，讓失敗能指向明確的路線判斷，而不是每次重試都變成另一盤隨機題目。全盤滑動讓每個輸入都有廣泛後果，同時適合手機操作；觸控、滑鼠、方向按鈕、方向鍵與 WASD 共用同一套狀態。方塊會平順移動，只有真正合成時才播放特效，避免整盤閃爍。闖關與無限模式紀錄只保存在目前瀏覽器，不需要登入。",
-    parent: "不需要帳號。闖關解鎖、星等、最佳分數與無限森林紀錄只保存在目前瀏覽器；清除網站資料或更換瀏覽器可能建立另一份存檔。規劃報告只整理本次解謎結果並供遊戲娛樂使用，不是正式能力、醫療或學校評量。",
+    parent: "不需要帳號。闖關解鎖、星等、最佳分數與無限森林紀錄只保存在目前瀏覽器；清除網站資料或更換瀏覽器可能建立另一份存檔。",
     faq: [["每次滑動都會出現新動物嗎？", "不會，只有真正改變棋盤的方向才會扣一步並產生低階動物。"], ["新合成的方塊可以立刻再合成嗎？", "不行，同一個結果方塊每一步只能合成一次。"], ["苔石有什麼作用？", "苔石固定不動，會把一列或一行切成彼此獨立的移動區段。"], ["復原會還原哪些內容？", "會還原棋盤、分數、步數、任務進度及固定生成狀態。"], ["無限森林算在三十關裡嗎？", "不算，它是獨立的無限挑戰，不會改變闖關星數或解鎖。"], ["遊戲會保存進度嗎？", "會，闖關與無限森林紀錄只保存在目前瀏覽器。"]]
   };
   localizedGameplayProfiles["zh-Hant"]["animal-2048"] = { gameplay: "全盤滑動合成策略", genre: ["益智", "策略", "邏輯", "動物"] };

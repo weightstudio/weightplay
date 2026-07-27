@@ -183,6 +183,64 @@
   font-variant-numeric: tabular-nums;
 }
 
+.wp-shell-combined-sound-row {
+  grid-template-columns: minmax(0, 1fr) 52px;
+  align-items: center;
+  gap: 12px;
+}
+
+.wp-shell-combined-sound-toggle {
+  position: relative;
+  width: 52px;
+  min-width: 52px;
+  height: 30px;
+  min-height: 30px;
+  padding: 0;
+  border: 1px solid #ffffff52;
+  border-radius: 999px;
+  background: #34445a;
+  cursor: pointer;
+}
+
+.wp-shell-combined-sound-toggle::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 7px #0007;
+  transition: transform 160ms ease;
+}
+
+.wp-shell-combined-sound-toggle[aria-checked="true"] {
+  border-color: #66e6bd;
+  background: #1f9b79;
+}
+
+.wp-shell-combined-sound-toggle[aria-checked="true"]::after {
+  transform: translateX(22px);
+}
+
+/* Stage themes must not resize controls nested inside the Settings popover. */
+.wp-stage-shell-header .wp-shell-settings-popover .wp-shell-settings-title {
+  font: 900 16px/1.2 system-ui, sans-serif !important;
+}
+
+.wp-stage-shell-header .wp-shell-settings-popover .wp-shell-combined-sound-toggle {
+  width: 52px !important;
+  min-width: 52px !important;
+  max-width: 52px !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  max-height: 30px !important;
+  padding: 0 !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+}
+
 .wp-shell-legacy-control {
   display: none !important;
 }
