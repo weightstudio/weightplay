@@ -1289,6 +1289,7 @@
   let toastDueAt = 0;
   let toastRemaining = 0;
   let battleFrame = 0;
+  let battleHudElapsed = 0;
   let battleWindowFocused = document.hasFocus();
   let resultDecisionCommitted = false;
 
@@ -2631,7 +2632,11 @@
     updateShots(step);
     updateEffects(step);
     updateImpactFeedback(step);
-    updateHud();
+    battleHudElapsed += dt;
+    if (battleHudElapsed >= 0.1) {
+      battleHudElapsed = 0;
+      updateHud();
+    }
   }
 
   function cycleSpeedControl() {

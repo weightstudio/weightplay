@@ -112,12 +112,38 @@ body.guardian-playing #menuBtn {
   font-size: 24px;
 }
 
+/* The shared shell adopts the Battle return into a generated header. Keep that
+   header inside the logical canvas at the HUD's top-left instead of allowing it
+   to become an extra grid row below the command bar. */
+body.guardian-playing #gamePanel > .wp-generated-battle-header {
+  position: absolute !important;
+  z-index: 90;
+  top: 6px;
+  left: 6px;
+  width: 48px;
+  height: 42px;
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+}
+
+body.guardian-playing #gamePanel > .wp-generated-battle-header #menuBtn {
+  width: 48px !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  pointer-events: auto;
+}
+
 body.guardian-playing .hud-row {
   display: grid;
   grid-template-columns: 48px repeat(4, minmax(42px, 1fr)) 44px;
   grid-template-rows: 42px 38px;
   gap: 4px;
   padding: 6px;
+}
+
+body.guardian-playing .hud-row > div:first-of-type {
+  grid-column: 2;
 }
 
 body.guardian-playing .hud-row > div {

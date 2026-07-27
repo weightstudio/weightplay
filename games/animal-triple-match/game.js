@@ -90,10 +90,10 @@
   const SHARED_SRC_BASE = new URL("../../src/", document.currentScript?.src || location.href);
   const runtimeCatalogLoads = new Map();
   let locale = "en", screen = "main", stageIndex = 0, run = null, audio = null, centeredTimer = 0, resultDecisionCommitted = false;
-  let pendingMatch = null;
+  let pendingMatch = null, windowFocused = document.hasFocus();
   let save = loadSave();
 
-  function isForeground() { return document.visibilityState === "visible" && document.hasFocus(); }
+  function isForeground() { return document.visibilityState === "visible" && windowFocused; }
   function hasOpenBattleModal() { return [els.tutorialModal, els.leaveModal, els.resultModal].some(modal => !modal.hidden); }
   function cancelPendingMatch() {
     if (!pendingMatch) return;
@@ -124,6 +124,12 @@
     if (!pendingMatch || pendingMatch.timer || !isForeground() || hasOpenBattleModal()) return;
     pendingMatch.dueAt = performance.now() + pendingMatch.remaining;
     pendingMatch.timer = setTimeout(settlePendingMatch, pendingMatch.remaining);
+  }
+  function ownForegroundInteraction() {
+    if (document.visibilityState !== "visible") return false;
+    windowFocused = true;
+    armPendingMatch();
+    return true;
   }
   function schedulePendingMatch(pieceIds) {
     if (pendingMatch?.runRef !== run) cancelPendingMatch();
@@ -207,6 +213,210 @@
       if (relatedIntro) relatedIntro.textContent = "Como este jogo pratica lógica, experimente também:";
       const rootvault = related?.querySelector('a[href*="animal-rootvault-pins"] .game-info-related-copy > span');
       if (rootvault) rootvault.textContent = "Resolva trinta câmaras de pinos com Taro Casco de Musgo, liberando cada mecanismo na ordem segura.";
+    }
+    if (code === "de") {
+      const sections = [...guide.querySelectorAll(".game-info-section")];
+      const setText = (root, selector, value) => {
+        const node = root?.querySelector(selector);
+        if (node) node.textContent = value;
+      };
+      const setItems = (root, selector, values) => {
+        const nodes = root?.querySelectorAll(selector) || [];
+        values.forEach((value, index) => { if (nodes[index]) nodes[index].textContent = value; });
+      };
+      const hero = guide.querySelector(".game-info-hero");
+      setText(hero, ".game-info-kicker", "Originale WeightPlay-Spielanleitung");
+      setText(hero, "h2", "Tierisches Triple-Match – Spielanleitung");
+      setText(hero, "h2 + p", "Verschiebe freiliegende Schätze aus einem geschichteten Stapel in die sieben Plätze der Ablage. Bilde Dreiergruppen, bevor sieben einzelne, nicht passende Schätze die Ablage füllen.");
+      setItems(hero, ".game-info-facts span, .game-info-facts strong", [
+        "Spielprinzip", "Geschichtetes Dreiergruppen-Puzzle", "Genre", "Rätsel",
+        "Thema", "Tiere", "Schwierigkeit", "Leicht bis anspruchsvoll",
+        "Geschätzte Spielzeit", "2–8 Minuten pro Stufe", "Trainierte Fähigkeiten",
+        "Logik", "Planung", "Problemlösung",
+      ]);
+
+      const story = guide.querySelector(".game-info-story");
+      setText(story, "h3", "Welt und Aufgabe");
+      setItems(story, "p", [
+        "In dreißig handgebauten Gewächshausstufen liegen verzauberte Schätze in überlappenden Schichten. Ein Schatz kann nur bewegt werden, wenn kein aktives Objekt seine Auswahlfläche verdeckt.",
+        "Die Ablage ist Arbeitsfläche und Gefahrenanzeige zugleich: Jeder Zug legt mehr vom Stapel frei, kann aber auch den Platz verbrauchen, den du für eine spätere Dreiergruppe brauchst.",
+      ]);
+
+      const systems = guide.querySelector(".game-info-systems");
+      setText(systems, "h3", "So funktionieren die Systeme");
+      setItems(systems, "li", [
+        "Tippe einen freiliegenden Schatz an, um ihn auf den nächsten freien Platz der Ablage zu legen.",
+        "Drei gleiche Schätze verschwinden automatisch; die übrigen Stücke rücken zusammen und geben wieder Platz frei.",
+        "Verdeckte Schätze bleiben sichtbar, können aber erst ausgewählt werden, nachdem die darüberliegenden Objekte entfernt wurden.",
+        "Spätere Kapitel ergänzen Ranken, Kristallhüllen, geheimnisvolle Verpackungen, verschiebbare Regale, kleinere Ablagen und abschließende Kombinationsstapel.",
+      ]);
+
+      const how = sections[2];
+      setText(how, "h3", "Spielablauf");
+      setItems(how, "li", [
+        "Wähle eine freigeschaltete Stufe.",
+        "Untersuche die oberste Schicht und suche nach einem erreichbaren Paar oder einer erreichbaren Dreiergruppe.",
+        "Lege Schätze in die Ablage und halte nach Möglichkeit mindestens einen Notfallplatz frei.",
+        "Räume den gesamten Stapel ab, bevor alle verfügbaren Plätze mit nicht passenden Schätzen belegt sind.",
+      ]);
+
+      const strategy = guide.querySelector(".game-info-strategy");
+      setText(strategy, "h3", "Strategietipps");
+      setItems(strategy, "li", [
+        "Bevorzuge einen Schatz, dessen Entfernung mehrere verdeckte Objekte freilegt.",
+        "Behalte vorhandene Paare in der Ablage im Blick, bevor du eine neue einzelne Schatzart aufnimmst.",
+        "Verschiebe geheimnisvolle Schätze, wenn bereits eine sichere Dreiergruppe erreichbar ist.",
+        "Nutze „Paar finden“, um einen erlaubten Zug zu erkennen, und prüfe anschließend, ob die Ablage genug Platz dafür bietet.",
+      ]);
+
+      const campaign = guide.querySelector(".game-info-campaign");
+      setText(campaign, "h3", "Kampagne und Schwierigkeitsanstieg");
+      setItems(campaign, "p", [
+        "Sechs Kapitel mit jeweils fünf Stufen führen nacheinander neue Regelfamilien ein; das Schlusskapitel verbindet sie miteinander.",
+        "Die Schwierigkeit steigt durch Abhängigkeiten zwischen den Schichten und den knapper werdenden Platz in der Ablage – nicht durch einen versteckten Zeitdruck.",
+      ]);
+
+      const design = guide.querySelector(".game-info-design");
+      setText(design, "h3", "Hinweis des Entwicklungsteams");
+      setText(design, "p", "Große Objekte, beständige Überlappungsschatten, eine klar erkennbare Reihenfolge in der Ablage und das automatische Entfernen von Dreiergruppen machen jede Folge eines Zuges lesbar, ohne das ganze Brett aufblinken zu lassen. Die vollständige Oberfläche verwendet ein einziges zentriertes Layout mit höchstens 920 Pixeln Breite. Auf Telefonen, im Querformat und auf Desktop-Bildschirmen werden Bedienelemente, Trefferflächen, Grafik und Spielkoordinaten gemeinsam skaliert. Berührung, Maus und Tastatur greifen dadurch auf denselben gültigen Spielzustand zu. Poster und „Spiel starten“ gehören zum Hauptbildschirm; Stufenauswahl, Spielbrett, Dialoge und Ergebnis besitzen jeweils klar begrenzte Inhalte und eindeutige Rückwege.");
+
+      const parent = guide.querySelector(".game-info-parent");
+      setText(parent, "h3", "Hinweis für Eltern");
+      setText(parent, "p", "Zum Spielen sind weder Konto noch Kauf, Countdown oder öffentliche Rangliste nötig. Abgeschlossene Stufen, Sterne und der beste freie Ablageplatz bleiben im aktuellen Browserprofil gespeichert. Das Löschen von Websitedaten, privates Surfen, ein anderer Browser oder ein Gerätewechsel kann einen neuen Spielstand anlegen oder den vorhandenen entfernen. Sprache, Ton und die Einstellung für reduzierte Bewegung folgen den gemeinsamen WeightPlay-Einstellungen, sofern der Browser die Speicherung erlaubt. Die Spielanleitung und der Fähigkeitsbericht sind keine medizinische, schulische oder berufliche Bewertung.");
+
+      const faq = sections[7];
+      setText(faq, "h3", "Häufige Fragen");
+      setItems(faq, "dt, dd", [
+        "Warum kann ich einen Schatz nicht auswählen?",
+        "Ein anderes aktives Objekt verdeckt noch seine Auswahlfläche.",
+        "Wann verschwindet eine Dreiergruppe?",
+        "Sofort nachdem der dritte gleiche Schatz in die Ablage gelegt wurde.",
+        "Bleiben nach einer Dreiergruppe Lücken in der Ablage?",
+        "Nein. Die übrigen Schätze rücken automatisch zusammen.",
+        "Sind die Stufen zufällig?",
+        "Nein. Jeder Stapel und jede Regelkombination ist handgebaut.",
+        "Welche Eingaben und Bildschirmgrößen werden unterstützt?",
+        "Berührung, Maus und Tastatur folgen denselben Regeln. Die Oberfläche skaliert als ein gemeinsames Layout für die vorgesehenen Telefon-, Querformat- und Desktopgrößen.",
+        "Wird mein Fortschritt automatisch auf ein anderes Gerät übertragen?",
+        "Nein. Der Spielstand liegt nur im lokalen Browserspeicher. Ein anderes Browserprofil oder Gerät beginnt daher mit einem eigenen Spielstand.",
+      ]);
+
+      const related = sections[8];
+      setText(related, "h3", "Ähnliche Spiele");
+      setText(related, ":scope > p", "Wenn du weiter Logik und Vorausplanung üben möchtest, probiere als Nächstes:");
+      const relatedCopy = [
+        ["animal-cratebound", "Animal Cratebound", "Bewege, schiebe und ziehe Runenfracht durch dreißig handgebaute Lagerhäuser der Himmelsarche."],
+        ["animal-hexa-sort", "Animal Hexa Sort", "Verschiebe den obersten Sechseckstein zwischen kleinen Stapeln, bilde passende Farbgruppen und räume alle Steine ab, ohne nützliche Teile einzuschließen."],
+        ["animal-rootvault-pins", "Animal Rootvault Pins", "Löse dreißig Stiftkammern mit Taro Moospanzer und öffne jeden Mechanismus in einer sicheren Reihenfolge."],
+      ];
+      relatedCopy.forEach(([slug, title, copy]) => {
+        const card = related?.querySelector(`a[href*="${slug}"]`);
+        setText(card, "strong", title);
+        setText(card, ".game-info-related-copy > span", copy);
+      });
+      guide.setAttribute("aria-label", "Tierisches Triple-Match — Spielanleitung");
+    }
+    if (code === "fr") {
+      const sections = [...guide.querySelectorAll(".game-info-section")];
+      const setText = (root, selector, value) => {
+        const node = root?.querySelector(selector);
+        if (node) node.textContent = value;
+      };
+      const setItems = (root, selector, values) => {
+        const nodes = root?.querySelectorAll(selector) || [];
+        values.forEach((value, index) => { if (nodes[index]) nodes[index].textContent = value; });
+      };
+      const hero = guide.querySelector(".game-info-hero");
+      setText(hero, ".game-info-kicker", "Guide de jeu original WeightPlay");
+      setText(hero, "h2", "Triple Match animal – Guide de jeu");
+      setText(hero, "h2 + p", "Déplacez les trésors dégagés d'une pile superposée vers les sept cases du plateau. Formez des trios avant que sept trésors isolés et différents n'occupent toutes les cases.");
+      setItems(hero, ".game-info-facts span, .game-info-facts strong", [
+        "Principe de jeu", "Puzzle de trios en couches", "Genre", "Puzzle",
+        "Thème", "Animaux", "Difficulté", "Facile à exigeant",
+        "Durée estimée", "2 à 8 minutes par niveau", "Compétences exercées",
+        "Logique", "Planification", "Résolution de problèmes",
+      ]);
+
+      const story = guide.querySelector(".game-info-story");
+      setText(story, "h3", "Univers et mission");
+      setItems(story, "p", [
+        "Trente niveaux conçus à la main empilent des trésors enchantés dans la serre. Un trésor ne peut être déplacé que si aucun objet actif ne recouvre sa zone de sélection.",
+        "Le plateau sert à la fois d'espace de travail et d'indicateur de danger : chaque choix dévoile une partie de la pile, mais peut aussi utiliser la place nécessaire à un prochain trio.",
+      ]);
+
+      const systems = guide.querySelector(".game-info-systems");
+      setText(systems, "h3", "Fonctionnement des systèmes");
+      setItems(systems, "li", [
+        "Touchez un trésor dégagé pour le placer dans la prochaine case libre du plateau.",
+        "Trois trésors identiques disparaissent automatiquement ; les autres se rapprochent et libèrent de la place.",
+        "Les trésors recouverts restent visibles, mais ne peuvent être sélectionnés qu'après le retrait des objets placés au-dessus.",
+        "Les chapitres suivants ajoutent des lianes, des coques de cristal, des emballages mystérieux, des étagères mobiles, des plateaux plus petits et des piles finales qui combinent ces règles.",
+      ]);
+
+      const how = sections[2];
+      setText(how, "h3", "Déroulement d'une partie");
+      setItems(how, "li", [
+        "Choisissez un niveau déverrouillé.",
+        "Examinez la couche supérieure et cherchez une paire ou un trio accessible.",
+        "Placez les trésors sur le plateau en conservant si possible au moins une case de secours.",
+        "Videz entièrement la pile avant que toutes les cases disponibles ne soient occupées par des trésors différents.",
+      ]);
+
+      const strategy = guide.querySelector(".game-info-strategy");
+      setText(strategy, "h3", "Conseils stratégiques");
+      setItems(strategy, "li", [
+        "Préférez un trésor dont le retrait libère plusieurs objets recouverts.",
+        "Surveillez les paires déjà présentes sur le plateau avant d'ajouter un nouveau trésor isolé.",
+        "Retardez les trésors mystérieux lorsqu'un trio sûr est déjà accessible.",
+        "Utilisez « Trouver une paire » pour repérer un coup autorisé, puis vérifiez que le plateau dispose d'assez de place.",
+      ]);
+
+      const campaign = guide.querySelector(".game-info-campaign");
+      setText(campaign, "h3", "Campagne et progression de la difficulté");
+      setItems(campaign, "p", [
+        "Six chapitres de cinq niveaux introduisent chacun une famille de règles ; le dernier chapitre les réunit.",
+        "La difficulté augmente avec les dépendances entre les couches et le manque de place sur le plateau, jamais à cause d'un chronomètre caché.",
+      ]);
+
+      const design = guide.querySelector(".game-info-design");
+      setText(design, "h3", "Note de l'équipe de développement");
+      setText(design, "p", "De grands objets, des ombres de superposition stables, un ordre clairement visible sur le plateau et la disparition automatique des trios rendent chaque conséquence lisible sans faire clignoter tout le plateau. L'interface complète utilise une seule disposition logique centrée, limitée à 920 pixels de largeur. Sur téléphone, en paysage et sur ordinateur, les commandes, zones tactiles, illustrations et coordonnées de jeu sont mises à l'échelle ensemble. Le toucher, la souris et le clavier agissent donc sur le même état de jeu valide. L'affiche et « Commencer » appartiennent à l'écran principal ; la sélection des niveaux, la partie, les dialogues et le résultat possèdent chacun un contenu délimité et un chemin de retour clair.");
+
+      const parent = guide.querySelector(".game-info-parent");
+      setText(parent, "h3", "Note aux parents");
+      setText(parent, "p", "Aucun compte, achat, compte à rebours ni classement public n'est nécessaire. Les niveaux terminés, les étoiles et le meilleur nombre de cases libres restent enregistrés dans le profil actuel du navigateur. Effacer les données du site, utiliser la navigation privée, changer de navigateur ou changer d'appareil peut créer une nouvelle sauvegarde ou supprimer l'ancienne. La langue, le son et la réduction des animations suivent les réglages communs de WeightPlay lorsque le navigateur autorise leur stockage. Le guide et le rapport de compétence ne constituent pas une évaluation médicale, scolaire ou professionnelle.");
+
+      const faq = sections[7];
+      setText(faq, "h3", "Questions fréquentes");
+      setItems(faq, "dt, dd", [
+        "Pourquoi ne puis-je pas sélectionner un trésor ?",
+        "Un autre objet actif recouvre encore sa zone de sélection.",
+        "Quand un trio disparaît-il ?",
+        "Dès que le troisième trésor identique rejoint le plateau.",
+        "Les espaces vides restent-ils après un trio ?",
+        "Non. Les trésors restants se rapprochent automatiquement.",
+        "Les niveaux sont-ils aléatoires ?",
+        "Non. Chaque pile et chaque combinaison de règles sont conçues à la main.",
+        "Quelles commandes et tailles d'écran sont prises en charge ?",
+        "Le toucher, la souris et le clavier suivent les mêmes règles. L'interface forme une seule disposition mise à l'échelle pour les tailles prévues sur téléphone, en paysage et sur ordinateur.",
+        "Ma progression est-elle transférée automatiquement vers un autre appareil ?",
+        "Non. La sauvegarde reste dans le stockage local du navigateur. Un autre profil ou appareil commence donc avec sa propre progression.",
+      ]);
+
+      const related = sections[8];
+      setText(related, "h3", "Jeux similaires");
+      setText(related, ":scope > p", "Pour continuer à exercer votre logique et votre anticipation, essayez ensuite :");
+      const relatedCopy = [
+        ["animal-cratebound", "Animal Cratebound", "Déplacez, poussez et tirez des cargaisons runiques dans trente entrepôts de l'Arche céleste conçus à la main."],
+        ["animal-hexa-sort", "Animal Hexa Sort", "Déplacez l'hexagone supérieur entre de petites piles, formez des groupes de couleurs identiques et retirez toutes les pièces sans bloquer les éléments utiles."],
+        ["animal-rootvault-pins", "Animal Rootvault Pins", "Résolvez trente chambres à goupilles avec Taro Coque-de-Mousse et ouvrez chaque mécanisme dans un ordre sûr."],
+      ];
+      relatedCopy.forEach(([slug, title, copy]) => {
+        const card = related?.querySelector(`a[href*="${slug}"]`);
+        setText(card, "strong", title);
+        setText(card, ".game-info-related-copy > span", copy);
+      });
+      guide.setAttribute("aria-label", "Triple Match animal — Guide du jeu");
     }
     guide.dataset.runtimeLocalize = "off";
   }
@@ -598,12 +808,13 @@
     const piece = event.target.closest?.(".piece.free");
     if (!piece) return;
     event.preventDefault();
+    if (!ownForegroundInteraction()) return;
     choosePiece(+piece.dataset.piece);
   });
   els.board.addEventListener("click", event => {
     if (event.detail !== 0) return;
     const piece = event.target.closest?.(".piece.free");
-    if (piece) choosePiece(+piece.dataset.piece);
+    if (piece && ownForegroundInteraction()) choosePiece(+piece.dataset.piece);
   });
   els.startBtn.addEventListener("click", () => setScreen("stage"));
   els.stageBack.addEventListener("click", () => setScreen("main"));
@@ -621,11 +832,18 @@
   els.leaveModal.addEventListener("keydown", e => trap(e, () => closeModal(els.leaveModal, els.battleBack)));
   els.resultModal.addEventListener("keydown", e => trap(e));
   window.addEventListener("resize", fitCanvas, { passive: true });
-  window.addEventListener("blur", suspendPendingMatch);
-  window.addEventListener("focus", armPendingMatch);
-  window.addEventListener("pagehide", suspendPendingMatch);
-  window.addEventListener("pageshow", armPendingMatch);
-  document.addEventListener("visibilitychange", () => document.visibilityState === "visible" ? armPendingMatch() : suspendPendingMatch());
+  window.addEventListener("blur", () => { windowFocused = false; suspendPendingMatch(); });
+  window.addEventListener("focus", () => { windowFocused = true; armPendingMatch(); });
+  window.addEventListener("pagehide", () => { windowFocused = false; suspendPendingMatch(); });
+  window.addEventListener("pageshow", () => {
+    windowFocused = document.hasFocus();
+    if (windowFocused) armPendingMatch();
+  });
+  document.addEventListener("visibilitychange", () => {
+    windowFocused = document.visibilityState === "visible" && document.hasFocus();
+    if (windowFocused) armPendingMatch();
+    else suspendPendingMatch();
+  });
 
   window.__animalTripleMatchSmoke = {
     stages: Array.from({ length: 30 }, (_, i) => stageConfig(i)),

@@ -1506,7 +1506,7 @@ body.crystal-playing .settings-control {
 @media (max-width: 520px) {
   .topbar {
     grid-template-columns: 58px minmax(0, 1fr) 58px;
-    grid-template-rows: 48px 32px;
+    grid-template-rows: 48px;
     gap: 6px;
   }
 
@@ -1521,9 +1521,10 @@ body.crystal-playing .settings-control {
   }
 
   .topbar .brand-title {
-    grid-column: 1 / -1;
-    grid-row: 2;
+    grid-column: 2;
+    grid-row: 1;
     align-self: center;
+    min-width: 0;
   }
 
   .topbar .brand-title p {
@@ -1532,6 +1533,9 @@ body.crystal-playing .settings-control {
 
   .topbar .brand-title h1 {
     margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 
