@@ -29,7 +29,8 @@
     hint: "Hint",
     restart: "Restart",
     undo: "Undo",
-    status: "Drag a block along its track.",
+    status:
+      "Clear the right lane, then drag the red block into the glowing exit.",
     complete: "TRAIL CLEARED",
     resultTitle: "Panko escaped!",
     resultBody: "Trail {n} cleared in {moves} moves.",
@@ -65,7 +66,7 @@
     hint: "提示",
     restart: "重新開始",
     undo: "復原",
-    status: "沿著方塊的軌道拖曳。",
+    status: "清出右側路線，再把紅色方塊拖進發光出口。",
     complete: "小徑已通關",
     resultTitle: "紅色探險家成功脫困！",
     resultBody: "小徑 {n} 以 {moves} 步通關。",

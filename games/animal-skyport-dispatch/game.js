@@ -172,6 +172,7 @@
   let save = normalizeSave(saved);
   writeStorage(saveKey, JSON.stringify(save));
   let state = {contract:Boolean(save.insuranceReady)};
+  let resultActionClaimed = false;
   let dragging = false;
   let inputMode = '';
   let routePointerId = null;
@@ -439,8 +440,11 @@
       ? `<span>${resultLabels.reputation} +${state.done * 5} \u00b7 ${t('total', {n:save.reputation})}</span><span>${resultLabels.coins} +${coinReward} \u00b7 ${t('total', {n:save.coins})}</span><span>${t('blueprintStamps')} +${shiftConfig[state.shift].stamps} \u00b7 ${t('total', {n:save.stamps})}</span><span>${resultLabels.medals} ${save.medals[state.shift] || 1}/3</span><span>${unlockEvidence}</span>`
       : `<span>${resultLabels.safe} ${state.done}/${state.goal}</span><span>${resultLabels.errors} ${state.errors}/3</span><span>${insuredRun ? `${resultLabels.protected} +20 · ${t('total', {n:save.coins})}` : resultLabels.retry}</span>`;
     const terminalWin = win && state.shift >= TOTAL_SHIFTS;
+    resultActionClaimed = false;
+    [$('nextBtn'), $('menuBtn')].forEach((button) => { button.disabled = false; });
     $('nextBtn').textContent = terminalWin ? t('shifts') : win ? t('next') : t('retry');
     $('nextBtn').onclick = () => {
+      if (!claimResultAction()) return;
       if (terminalWin) { show('stageScreen'); renderStages(); return; }
       state.shift = win ? state.shift + 1 : state.shift;
       startBattle();
@@ -448,6 +452,12 @@
     $('nextBtn').focus({ preventScroll: true });
     insuranceActive = false;
     if (save.insuranceReady) { delete save.insuranceReady; persist(); }
+  }
+  function claimResultAction() {
+    if ($('result').classList.contains('hidden') || resultActionClaimed) return false;
+    resultActionClaimed = true;
+    [$('nextBtn'), $('menuBtn')].forEach((button) => { button.disabled = true; });
+    return true;
   }
   function trapResultFocus(event) {
     if (event.repeat && (event.key === 'Enter' || event.key === ' ')) {
@@ -701,7 +711,7 @@
   $('leaveCancel').onclick = () => closeLeaveConfirm();
   $('leaveConfirmBtn').onclick = () => { closeLeaveConfirm({restoreFocus:false}); show('stageScreen'); renderStages(); };
   $('leaveConfirm').addEventListener('keydown', trapLeaveFocus);
-  $('menuBtn').onclick = () => show('mainScreen');
+  $('menuBtn').onclick = () => { if (claimResultAction()) show('mainScreen'); };
   $('result').addEventListener('keydown', trapResultFocus);
   $('flight').addEventListener('pointerdown', routePointer);
   $('flight').addEventListener('mousedown', routePointer);

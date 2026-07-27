@@ -228,6 +228,7 @@ body:not([data-screen="main"]) > .game-page-info { display: none !important; }
   overflow: hidden;
 }
 .bus {
+  --departing-bus-width: 156px;
   flex: 0 0 112px;
   height: 84px;
   position: relative;
@@ -239,6 +240,7 @@ body:not([data-screen="main"]) > .game-page-info { display: none !important; }
   opacity: .48;
   transform: scale(.92);
   transition: .25s ease;
+  overflow: hidden;
 }
 .bus.active {
   flex-basis: 156px;
@@ -246,7 +248,14 @@ body:not([data-screen="main"]) > .game-page-info { display: none !important; }
   transform: none;
   box-shadow: 0 0 0 2px var(--bus), 0 0 24px color-mix(in srgb, var(--bus) 45%, transparent);
 }
-.bus.departed { opacity: .18; filter: grayscale(1); }
+.bus.departing {
+  flex-basis: var(--departing-bus-width);
+  min-width: 0;
+  opacity: 1;
+  transform: none;
+  pointer-events: none;
+  animation: busDepartLeft 560ms cubic-bezier(.3, .72, .18, 1) forwards;
+}
 .bus-head { display: flex; align-items: center; justify-content: space-between; gap: 5px; }
 .bus strong { font-size: .76rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .bus-route { color: var(--bus); font-size: .6rem; font-weight: 950; }
@@ -364,6 +373,26 @@ body:not([data-screen="main"]) > .game-page-info { display: none !important; }
 .jam { animation: jamShake .35s ease; }
 @keyframes hintPulse { 50% { filter: brightness(1.8); transform: translateY(-4px); } }
 @keyframes jamShake { 25%, 75% { transform: translateX(6px); } 50% { transform: translateX(-6px); } }
+@keyframes busDepartLeft {
+  0% {
+    flex-basis: var(--departing-bus-width);
+    opacity: 1;
+    transform: translateX(0);
+  }
+  68% {
+    flex-basis: calc(var(--departing-bus-width) * .42);
+    opacity: .18;
+    transform: translateX(-145%) rotate(-1deg);
+  }
+  100% {
+    flex-basis: 0;
+    margin-right: -8px;
+    padding-inline: 0;
+    border-width: 0;
+    opacity: 0;
+    transform: translateX(-185%) rotate(-1deg);
+  }
+}
 
 dialog {
   width: min(430px, calc(100% - 28px));
@@ -407,6 +436,7 @@ dialog > div:last-child { display: flex; justify-content: center; gap: 9px; marg
   .battle-content { grid-template-rows: 142px minmax(0, 1fr) 44px 42px; }
   .bus { flex-basis: 92px; }
   .bus.active { flex-basis: 132px; }
+  .bus.departing { --departing-bus-width: 132px; }
   .queues { gap: 5px; }
   .queue { padding: 5px; }
   .passenger { grid-template-columns: 20px minmax(0, 1fr); padding: 2px 4px; }
@@ -445,6 +475,7 @@ dialog > div:last-child { display: flex; justify-content: center; gap: 9px; marg
   .buses { height: 57px; }
   .bus { height: 50px; flex-basis: 92px; padding: 3px 6px; }
   .bus.active { flex-basis: 118px; }
+  .bus.departing { --departing-bus-width: 118px; }
   .bus-shape { height: 16px; margin: 3px 0; }
   .bus strong { font-size: .6rem; }
   .dispatch-floor { grid-template-columns: 116px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); gap: 5px; }
@@ -462,4 +493,8 @@ dialog > div:last-child { display: flex; justify-content: center; gap: 9px; marg
   .result-mark { width: 42px; height: 42px; font-size: 1.2rem; }
   dialog h2 { font-size: 1.15rem; }
   dialog > div:last-child { margin-top: 8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bus.departing { animation-duration: 80ms; }
 }

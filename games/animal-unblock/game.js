@@ -193,10 +193,14 @@
     let cells = "";
     for (let y = 0; y < 6; y += 1) {
       for (let x = 0; x < 6; x += 1) {
-        cells += `<div class="cell ${x === 5 && y === 2 ? "exit" : ""}" data-cell="${x},${y}"></div>`;
+        cells += `<div class="cell ${x === 5 && y === 2 ? "exit" : ""}" data-cell="${x},${y}" style="grid-column:${x + 1};grid-row:${y + 1}"></div>`;
       }
     }
     $("board").innerHTML = cells;
+    $("board").classList.toggle("goal-coach", index === 0 && moves === 0);
+    $("board")
+      .querySelector(".exit")
+      ?.setAttribute("aria-label", t("exit"));
     blocks.forEach((block, blockIndex) => {
       const element = document.createElement("button");
       const artClass = block.hero
@@ -220,6 +224,23 @@
     });
     $("status").textContent = t("status");
     $("undo").disabled = !history.length;
+  }
+
+  function commitMove(block, nextX, nextY) {
+    history.push(blocks.map((entry) => ({ ...entry })));
+    block.x = nextX;
+    block.y = nextY;
+    moves += 1;
+    if (block.hero && block.x >= 4) {
+      progress[index] = true;
+      localStorage.setItem(saveKey, JSON.stringify(progress));
+      $("resultBody").textContent = t("resultBody", {
+        n: index + 1,
+        moves,
+      });
+      $("result").showModal();
+    }
+    render();
   }
 
   function clearDrag() {
@@ -280,20 +301,7 @@
       nextY + block.h <= 6 &&
       !occupied(block, nextX, nextY, block.w, block.h)
     ) {
-      history.push(blocks.map((entry) => ({ ...entry })));
-      block.x = nextX;
-      block.y = nextY;
-      moves += 1;
-      if (block.hero && block.x >= 4) {
-        progress[index] = true;
-        localStorage.setItem(saveKey, JSON.stringify(progress));
-        $("resultBody").textContent = t("resultBody", {
-          n: index + 1,
-          moves,
-        });
-        $("result").showModal();
-      }
-      render();
+      commitMove(block, nextX, nextY);
     }
   }
 
@@ -315,9 +323,35 @@
           block.y + block.h > hero.y &&
           block.x > hero.x,
       );
-      if (blocker) {
-        blocker.y = blocker.dir ? Math.max(0, blocker.y - 1) : blocker.y;
-        render();
+      if (blocker?.dir) {
+        const targetY = Array.from(
+          { length: 7 - blocker.h },
+          (_, candidateY) => candidateY,
+        )
+          .filter(
+            (candidateY) =>
+              (hero.y < candidateY ||
+                hero.y >= candidateY + blocker.h) &&
+              !occupied(
+                blocker,
+                blocker.x,
+                candidateY,
+                blocker.w,
+                blocker.h,
+              ),
+          )
+          .sort(
+            (left, right) =>
+              Math.abs(left - blocker.y) - Math.abs(right - blocker.y),
+          )[0];
+        if (Number.isInteger(targetY)) {
+          commitMove(blocker, blocker.x, targetY);
+        }
+      } else if (
+        hero.x + hero.w < 6 &&
+        !occupied(hero, hero.x + 1, hero.y, hero.w, hero.h)
+      ) {
+        commitMove(hero, hero.x + 1, hero.y);
       }
     }
   }

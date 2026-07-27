@@ -23,6 +23,8 @@
   let state = null;
   let history = [];
   let moves = 0;
+  let departingBusIndex = -1;
+  let departureTimer = 0;
   const progressKey = "animalBusJamProgress";
   let progress;
   try { progress = JSON.parse(read(progressKey) || "[]"); } catch { progress = []; }
@@ -80,6 +82,11 @@
   }
 
   function show(name) {
+    if (name !== "battle") {
+      window.clearTimeout(departureTimer);
+      departureTimer = 0;
+      departingBusIndex = -1;
+    }
     ["main", "stage", "battle"].forEach((id) => { $(id).hidden = id !== name; });
     $("generalReserve").hidden = name !== "battle";
     document.body.dataset.screen = name;
@@ -131,9 +138,9 @@
 
   function busCard(bus, index) {
     const active = index === state.busIndex;
-    const departed = index < state.busIndex;
-    const filled = departed ? bus.seats : active ? state.busFilled : 0;
-    return `<div class="bus ${active ? "active" : ""}${departed ? " departed" : ""}" style="--bus:${palette[bus.color]}">
+    const departing = index === departingBusIndex;
+    const filled = departing ? bus.seats : active ? state.busFilled : 0;
+    return `<div class="bus ${active ? "active" : ""}${departing ? " departing" : ""}" style="--bus:${palette[bus.color]}"${departing ? ' aria-hidden="true"' : ""}>
       <div class="bus-head"><strong>${t("colors")[bus.color]}</strong><span class="bus-route">${active ? t("activeBus") : `R-${index + 1}`}</span></div>
       <div class="bus-shape" aria-hidden="true"></div>
       <div class="seats" aria-label="${t("busLabel", { color: t("colors")[bus.color], filled, capacity: bus.seats })}">${Array.from({ length: bus.seats }, (_, seat) => `<i class="${seat < filled ? "filled" : ""}"></i>`).join("")}</div>
@@ -155,7 +162,11 @@
     $("chapter").textContent = t("chapter", { n: level.chapter + 1 });
     $("stageName").textContent = t("stop", { n: levelIndex + 1 });
     $("remaining").textContent = t("remaining", { n: remaining });
-    $("buses").innerHTML = level.buses.map(busCard).join("");
+    $("buses").innerHTML = level.buses
+      .map((bus, index) => ({ bus, index }))
+      .filter(({ index }) => index >= state.busIndex || index === departingBusIndex)
+      .map(({ bus, index }) => busCard(bus, index))
+      .join("");
     $("holdingCount").textContent = `${state.waiting.length}/${level.baySize}`;
     $("holding").innerHTML = Array.from({ length: level.baySize }, (_, index) => {
       const color = state.waiting[index];
@@ -176,6 +187,9 @@
   }
 
   function startLevel(index) {
+    window.clearTimeout(departureTimer);
+    departureTimer = 0;
+    departingBusIndex = -1;
     levelIndex = index;
     const level = levels[index];
     state = {
@@ -205,26 +219,46 @@
       return;
     }
     history.push(snapshot());
+    const previousBusIndex = state.busIndex;
     const nextState = engine.step(level, state, queueIndex);
     if (!nextState) return;
     state = nextState;
     moves += 1;
+    if (state.busIndex > previousBusIndex) {
+      departingBusIndex = previousBusIndex;
+      window.clearTimeout(departureTimer);
+      const departureDuration = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ? 80 : 560;
+      departureTimer = window.setTimeout(() => {
+        departingBusIndex = -1;
+        departureTimer = 0;
+        render();
+        if (engine.isComplete(level, state)) finishLevel();
+      }, departureDuration);
+    }
     render();
     $("status").textContent = color === activeColor ? t("boarded") : t("held");
 
     if (engine.isComplete(level, state)) {
-      progress[levelIndex] = true;
-      save();
-      $("resultBody").textContent = t("resultBody", { n: levelIndex + 1, moves });
-      $("result").showModal();
+      if (departingBusIndex < 0) finishLevel();
       return;
     }
     if (engine.isDeadlocked(level, state)) $("deadlock").showModal();
   }
 
+  function finishLevel() {
+    if (!state || !engine.isComplete(levels[levelIndex], state) || $("result").open) return;
+    progress[levelIndex] = true;
+    save();
+    $("resultBody").textContent = t("resultBody", { n: levelIndex + 1, moves });
+    $("result").showModal();
+  }
+
   function undo() {
     const saved = history.pop();
     if (!saved) return;
+    window.clearTimeout(departureTimer);
+    departureTimer = 0;
+    departingBusIndex = -1;
     restore(saved);
     render();
     $("status").textContent = t("undone");

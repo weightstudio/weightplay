@@ -203,7 +203,7 @@
   ].forEach(([guardian, name]) => { guardian.name[2] = name; });
   [[guardianCatalog.spotlight,"Фонарный ревизор"],[guardianCatalog.bell,"Колокольный страж"],[guardianCatalog.mirror,"Хранитель зеркал"],[guardianCatalog.clock,"Часовой маршал"],[guardianCatalog.seals,"Хранитель печатей"],[guardianCatalog.eclipse,"Хранитель затмения"]].forEach(([guardian,name])=>{guardian.name[3]=name});
   function normalizeLocale(value){if(value==="zh-TW")return"zh-Hant";if(value==="zh-CN")return"zh-Hans";if(value?.startsWith("pt"))return"pt-BR";return value||"en"}
-  let state=load(),locale=normalizeLocale(window.WonderI18n?.locale?.()||readOptionalStorage(localeKey)||readOptionalStorage(legacyLocaleKey)||"en"),selectedMission=0,centeredMission=Math.max(0,Math.min(campaign.length-1,(state.unlocked||1)-1)),gadget="dash",gadgetOffers=createOffers(),insuranceActive=state.insuranceReady===true,preservedTreasure=false,playing=false,paused=false,alert=0,objectFound=false,treasureFound=false,caught=false,patrols=[],lastTime=0,missionStartedAt=0,freezeUntil=0,smokeUntil=0,preview=null,arrivalTimer=0,animationFrame=0,routePointerId=null,lastPulseCycle=-1,lastMirrorCycle=-1,guardianPhase=1;
+  let state=load(),locale=normalizeLocale(window.WonderI18n?.locale?.()||readOptionalStorage(localeKey)||readOptionalStorage(legacyLocaleKey)||"en"),selectedMission=0,centeredMission=Math.max(0,Math.min(campaign.length-1,(state.unlocked||1)-1)),gadget="dash",gadgetOffers=createOffers(),insuranceActive=state.insuranceReady===true,preservedTreasure=false,playing=false,paused=false,alert=0,objectFound=false,treasureFound=false,caught=false,patrols=[],lastTime=0,missionStartedAt=0,freezeUntil=0,smokeUntil=0,preview=null,arrivalTimer=0,animationFrame=0,routePointerId=null,lastPulseCycle=-1,lastMirrorCycle=-1,guardianPhase=1,resultActionClaimed=false;
   const gameLocales=new Set(["en","zh-Hant","es","ru"]);
   const localeArrayIndex=()=>locale==="zh-Hant"?1:locale==="es"?2:locale==="ru"?3:0;
   function sharedText(value){const text=String(value??"");return window.WeightPlayGameRuntimeLocalizer?.translate?.(text)||text}
@@ -497,6 +497,8 @@
     $("#medalRow").textContent=ok?"★".repeat(medals)+"☆".repeat(3-medals):"";
     $("#medalRow").setAttribute("aria-label",ok?t("medalCount",{medals}):"");
     const retryBtn=$("#retryBtn"),stagesBtn=$("#stagesBtn"),nextBtn=$("#nextBtn");
+    resultActionClaimed=false;
+    [retryBtn,stagesBtn,nextBtn].forEach(button=>button.disabled=false);
     nextBtn.hidden=!ok||selectedMission>=campaign.length-1;
     const terminalVictory=ok&&nextBtn.hidden;
     retryBtn.classList.toggle("primary",!ok);
@@ -505,6 +507,12 @@
     [...nodes.modal.parentElement.children].filter(node=>node!==nodes.modal).forEach(node=>{node.inert=true;node.setAttribute("aria-hidden","true")});
     nodes.modal.hidden=false;
     (terminalVictory?stagesBtn:ok?nextBtn:retryBtn).focus({preventScroll:true});
+  }
+  function claimResultAction(){
+    if(nodes.modal.hidden||resultActionClaimed)return false;
+    resultActionClaimed=true;
+    [$("#retryBtn"),$("#stagesBtn"),$("#nextBtn")].forEach(button=>button.disabled=true);
+    return true;
   }
   function closeResult(){nodes.modal.hidden=true;[...nodes.modal.parentElement.children].filter(node=>node!==nodes.modal).forEach(node=>{node.inert=false;node.removeAttribute("aria-hidden")});nodes.fia.classList.remove("caught")}
   function trapResultFocus(event){
@@ -551,9 +559,9 @@
     nodes.modal.addEventListener("keydown",trapResultFocus);nodes.leaveModal.addEventListener("keydown",trapBattleLeaveFocus);$("#gadgetBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});$("#gadgetBtn").addEventListener("click",useGadget);
     $("#battleContinueBtn").addEventListener("click",()=>closeBattleLeave());
     $("#battleLeaveBtn").addEventListener("click",()=>{closeBattleLeave(false);show("stage");renderStage();focusMission(selectedMission)});
-    $("#retryBtn").addEventListener("click",()=>{closeResult();startMission(selectedMission)});
-    $("#stagesBtn").addEventListener("click",()=>{closeResult();show("stage");renderStage();focusMission(selectedMission)});
-    $("#nextBtn").addEventListener("click",()=>{closeResult();startMission(Math.min(campaign.length-1,selectedMission+1))});
+    $("#retryBtn").addEventListener("click",()=>{if(!claimResultAction())return;closeResult();startMission(selectedMission)});
+    $("#stagesBtn").addEventListener("click",()=>{if(!claimResultAction())return;closeResult();show("stage");renderStage();focusMission(selectedMission)});
+    $("#nextBtn").addEventListener("click",()=>{if(!claimResultAction())return;const nextMission=Math.min(campaign.length-1,selectedMission+1);closeResult();startMission(nextMission)});
   }
   function bindMissionRailDrag(){
     const rail=nodes.rail;
