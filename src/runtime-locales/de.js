@@ -1610,6 +1610,7 @@ window.WeightPlayGameRuntimeLocales["de"] = {
   "ArrowDown": "Pfeil nach unten",
   "ArrowLeft": "Pfeil nach links",
   "ArrowLeft ArrowRight A D": "Pfeil nach links Pfeil nach rechts A D",
+  "ArrowLeft ArrowRight ArrowUp ArrowDown": "Pfeil nach links, Pfeil nach rechts, Pfeil nach oben, Pfeil nach unten",
   "ArrowLeft ArrowRight ArrowUp ArrowDown w a s d": "Pfeil nach links, Pfeil nach rechts, Pfeil nach oben, Pfeil nach unten, w a s d",
   "ArrowRight": "PfeilRechts",
   "ArrowUp": "Pfeil nach oben",

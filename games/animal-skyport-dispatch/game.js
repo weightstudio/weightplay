@@ -185,6 +185,30 @@
   let insuranceConfirmRemaining = 0;
   let windowFocused = document.hasFocus();
   const t = (key, values = {}) => Object.entries(values).reduce((value, [name, replacement]) => value.replace(`{${name}}`, replacement), strings[locale][key]);
+  function normalizeResultActions() {
+    const panel = $('result');
+    if (!panel) return;
+    let actions = panel.querySelector('.result-actions');
+    if (!actions) {
+      actions = document.createElement('div');
+      actions.className = 'result-actions';
+      panel.append(actions);
+    }
+    let retry = $('retryBtn');
+    if (!retry) {
+      retry = document.createElement('button');
+      retry.id = 'retryBtn';
+      retry.type = 'button';
+      retry.className = 'secondary';
+    }
+    [$('menuBtn'), $('nextBtn'), retry].forEach((button) => {
+      button.type = 'button';
+      button.classList.remove('primary');
+      button.classList.add('secondary');
+      actions.append(button);
+    });
+  }
+  normalizeResultActions();
   const persist = () => writeStorage(saveKey, JSON.stringify(save));
   const show = (id) => {
     ['mainScreen','stageScreen','battleShell','result'].forEach((screen) => $(screen).classList.toggle('hidden', screen !== id && !(id === 'result' && screen === 'battleShell')));
@@ -441,22 +465,28 @@
       : `<span>${resultLabels.safe} ${state.done}/${state.goal}</span><span>${resultLabels.errors} ${state.errors}/3</span><span>${insuredRun ? `${resultLabels.protected} +20 · ${t('total', {n:save.coins})}` : resultLabels.retry}</span>`;
     const terminalWin = win && state.shift >= TOTAL_SHIFTS;
     resultActionClaimed = false;
-    [$('nextBtn'), $('menuBtn')].forEach((button) => { button.disabled = false; });
-    $('nextBtn').textContent = terminalWin ? t('shifts') : win ? t('next') : t('retry');
+    const nextAvailable = win && !terminalWin;
+    $('menuBtn').textContent = t('shifts');
+    $('nextBtn').textContent = t('next');
+    $('retryBtn').textContent = t('retry');
+    $('nextBtn').disabled = !nextAvailable;
+    [$('menuBtn'), $('retryBtn')].forEach((button) => { button.disabled = false; });
+    [$('menuBtn'), $('nextBtn'), $('retryBtn')].forEach((button) => button.classList.remove('primary'));
+    const primary = nextAvailable ? $('nextBtn') : terminalWin ? $('menuBtn') : $('retryBtn');
+    primary.classList.add('primary');
     $('nextBtn').onclick = () => {
       if (!claimResultAction()) return;
-      if (terminalWin) { show('stageScreen'); renderStages(); return; }
-      state.shift = win ? state.shift + 1 : state.shift;
+      state.shift += 1;
       startBattle();
     };
-    $('nextBtn').focus({ preventScroll: true });
+    primary.focus({ preventScroll: true });
     insuranceActive = false;
     if (save.insuranceReady) { delete save.insuranceReady; persist(); }
   }
   function claimResultAction() {
     if ($('result').classList.contains('hidden') || resultActionClaimed) return false;
     resultActionClaimed = true;
-    [$('nextBtn'), $('menuBtn')].forEach((button) => { button.disabled = true; });
+    [$('menuBtn'), $('nextBtn'), $('retryBtn')].forEach((button) => { button.disabled = true; });
     return true;
   }
   function trapResultFocus(event) {
@@ -465,8 +495,9 @@
       return;
     }
     if (event.key !== 'Tab' || $('result').classList.contains('hidden')) return;
-    const first = $('nextBtn');
-    const last = $('menuBtn');
+    const enabled = [$('menuBtn'), $('nextBtn'), $('retryBtn')].filter((button) => !button.disabled);
+    const first = enabled[0];
+    const last = enabled[enabled.length - 1];
     if (event.shiftKey && document.activeElement === first) {
       event.preventDefault();
       last.focus();
@@ -711,7 +742,15 @@
   $('leaveCancel').onclick = () => closeLeaveConfirm();
   $('leaveConfirmBtn').onclick = () => { closeLeaveConfirm({restoreFocus:false}); show('stageScreen'); renderStages(); };
   $('leaveConfirm').addEventListener('keydown', trapLeaveFocus);
-  $('menuBtn').onclick = () => { if (claimResultAction()) show('mainScreen'); };
+  $('menuBtn').onclick = () => {
+    if (!claimResultAction()) return;
+    show('stageScreen');
+    renderStages();
+  };
+  $('retryBtn').onclick = () => {
+    if (!claimResultAction()) return;
+    startBattle();
+  };
   $('result').addEventListener('keydown', trapResultFocus);
   $('flight').addEventListener('pointerdown', routePointer);
   $('flight').addEventListener('mousedown', routePointer);

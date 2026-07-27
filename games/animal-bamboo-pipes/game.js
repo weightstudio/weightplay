@@ -5,7 +5,7 @@
   const LOCALE_ROUTES = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const BASE = window.BAMBOO_LOCALES.en;
   const LEVELS = window.BAMBOO_LEVELS.levels;
-  let locale = localRead("weightPlayLocale") || localRead("wp-locale") || "en", selected = 0, run = null;
+  let locale = localRead("weightPlayLocale") || localRead("wp-locale") || "en", selected = 0, run = null, resultActionClaimed = false;
   if (!CODES.includes(locale)) locale = "en";
   let save = { unlocked: 1, done: {} };
   try { save = { ...save, ...JSON.parse(localStorage.getItem("wp:bamboo") || "{}") }; } catch {}
@@ -141,8 +141,16 @@
     save.unlocked = Math.max(save.unlocked, Math.min(30, selected + 2)); persist();
     updateMainProgress();
     $("resultText").textContent = text("resultText", { moves: run.moves, n: selected + 1 });
+    $("retry").disabled = false;
+    $("resultStages").disabled = false;
     $("next").disabled = selected >= 29;
     setResultOpen(true);
+  }
+  function claimResultAction() {
+    if ($("result").hidden || resultActionClaimed) return false;
+    resultActionClaimed = true;
+    [$("retry"), $("resultStages"), $("next")].forEach(button => { button.disabled = true; });
+    return true;
   }
   function setResultOpen(open) {
     const result = $("result"), battle = $("battle"), owned = [battle.querySelector("header"), battle.querySelector(".battle-panel")];
@@ -155,6 +163,7 @@
     });
     result.hidden = !open;
     if (open) {
+      resultActionClaimed = false;
       battle.scrollTop = 0;
       result.scrollTop = 0;
     }
@@ -214,8 +223,8 @@
     const index = Number(event.detail?.index);
     if (Number.isInteger(index) && index >= 0) selectStage(index, false);
   });
-  $("retry").onclick = () => { setResultOpen(false); startStage(); };
-  $("next").onclick = () => { if (selected >= 29) return; setResultOpen(false); selected += 1; startStage(); };
-  $("resultStages").onclick = () => { setResultOpen(false); show("stage"); renderStages(); };
+  $("retry").onclick = () => { if (!claimResultAction()) return; setResultOpen(false); startStage(); };
+  $("next").onclick = () => { if (selected >= 29 || !claimResultAction()) return; setResultOpen(false); selected += 1; startStage(); };
+  $("resultStages").onclick = () => { if (!claimResultAction()) return; setResultOpen(false); show("stage"); renderStages(); };
   applyLocale();
 })();
