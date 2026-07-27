@@ -162,3 +162,121 @@ body.wp-logical-battle-active .battle-ad-reserve[data-wp-battle-physical-reserve
   .stage-mode-tabs{height:56px;padding:6px}
   .chapter-panel{top:126px}
 }
+
+/* Interface standard v4: Stage owns a fixed bottom tab bar and an
+   upper-middle selected mission; Result owns three stable decisions. */
+.stage-mode-tabs{
+  left:18px;
+  right:18px;
+  top:auto;
+  bottom:0;
+  width:auto;
+  height:56px;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  padding:6px;
+  transform:none;
+}
+.stage-mode-tabs button:first-child{grid-column:2}
+.stage-mode-tabs button:last-child{grid-column:3}
+.chapter-panel{
+  left:24px;
+  right:24px;
+  top:90px;
+  bottom:auto;
+  width:auto;
+  transform:none;
+}
+.stage-rail{
+  left:18px;
+  right:18px;
+  top:210px;
+  bottom:56px;
+  width:auto;
+  height:auto;
+  padding:8px calc(50% - 132px);
+  transform:none;
+}
+.stage-card{
+  position:relative;
+  top:-12%;
+}
+.result-card{
+  grid-template-columns:1fr;
+  grid-template-areas:none;
+}
+.result-card>img,
+.result-card h2,
+.result-stars,
+.result-card>p,
+.best-text,
+.result-actions{grid-area:auto}
+.result-actions{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+}
+.result-actions .primary-action{grid-column:auto}
+.result-actions button:disabled{
+  opacity:.46;
+  cursor:not-allowed;
+  filter:saturate(.45);
+}
+
+@media(max-width:700px){
+  .chapter-panel{top:78px}
+  .stage-rail{top:198px}
+  .result-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
+@media(max-height:480px) and (orientation:landscape){
+  .stage-mode-tabs{
+    left:18px;
+    right:18px;
+    top:auto;
+    bottom:0;
+    width:auto;
+    height:56px;
+    transform:none;
+  }
+  .chapter-panel{
+    left:18px;
+    right:auto;
+    top:82px;
+    bottom:56px;
+    width:250px;
+    min-height:0;
+    align-content:center;
+    transform:none;
+  }
+  .stage-rail{
+    left:18px;
+    right:18px;
+    top:82px;
+    bottom:56px;
+    width:auto;
+    height:auto;
+    padding:8px calc(50% - 132px);
+    transform:none;
+  }
+  .stage-card{
+    top:0;
+    padding:12px;
+  }
+  .stage-card strong{font-size:24px}
+  .result-card{
+    width:min(760px,96%);
+    grid-template-columns:110px minmax(0,1fr);
+    grid-template-areas:
+      "img title"
+      "img stars"
+      "text best"
+      "actions actions";
+    gap:6px;
+    padding:10px;
+  }
+  .result-card>img{grid-area:img}
+  .result-card h2{grid-area:title}
+  .result-stars{grid-area:stars}
+  .result-card>p:not(.best-text){grid-area:text}
+  .best-text{grid-area:best}
+  .result-actions{grid-area:actions}
+}

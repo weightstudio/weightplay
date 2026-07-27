@@ -39,6 +39,7 @@
   });
   const staticText=[...document.querySelectorAll("[data-t]")];
   const assistiveText=[...document.querySelectorAll("[data-ta]")];
+  const resultReplayLabels={en:"Replay","zh-Hant":"重玩","zh-Hans":"重玩",ja:"リプレイ",ko:"다시 플레이",es:"Repetir","pt-BR":"Jogar novamente",fr:"Rejouer",de:"Erneut spielen",it:"Rigioca",ru:"Играть снова",hi:"फिर खेलें",ar:"إعادة اللعب"};
   let currentScreen="loading",run=null,raf=0,lastTime=0,lastHud="",modalReturnFocus=null,lifecyclePaused=false,windowFocused=document.hasFocus(),resultDecisionCommitted=false;
 
   function applyLocale(){
@@ -48,6 +49,11 @@
     $("lobbyReturn").href=`/${routeSegments[locale]}/`;
     staticText.forEach((node)=>{node.textContent=t(node.dataset.t)});
     assistiveText.forEach((node)=>node.setAttribute("aria-label",t(node.dataset.ta)));
+    const resultActions=$("resultStage").parentElement;
+    resultActions.append($("resultStage"),$("nextMission"),$("retry"));
+    $("resultStage").textContent=t("missions");
+    $("nextMission").textContent=t("nextMission");
+    $("retry").textContent=resultReplayLabels[locale]||resultReplayLabels.en;
     document.title=`${t("title")} | WeightPlay`;
     renderMain();renderStage();renderLab();updateSoundToggle();if(run)updateHud(true);
     window.dispatchEvent(new CustomEvent("wonder:localechange",{detail:{locale}}));
@@ -209,9 +215,9 @@
   function finish(won){
     if(!run||run.finished)return;run.finished=true;run.won=Boolean(won);run.paused=true;resultDecisionCommitted=false;stopLoop();const remaining=Math.max(0,Math.ceil(run.time)),stars=won?1+(remaining>run.stage.time*.25?1:0)+(run.core===run.maxCore?1:0):0,earned=won?3+stars+run.stage.chapter:0;
     if(won){save.stars[run.stage.n]=Math.max(Number(save.stars[run.stage.n])||0,stars);save.unlocked=Math.max(save.unlocked,Math.min(30,run.stage.n+1));save.shards=Math.min(9999,save.shards+earned);persist()}
-    $("resultKicker").textContent=won?`${t("shardsEarned")} +${earned}`:t("missionFailedKicker");$("resultTitle").textContent=t(won?"missionComplete":"missionFailed");$("resultText").textContent=t(won?"victoryText":"failureText");$("resultStats").innerHTML=`<span><b>${t("strength")}</b><strong>${run.peak}</strong></span><span><b>${t("coreHits")}</b><strong>${Math.max(0,Math.ceil(run.core))}/${run.maxCore}</strong></span><span><b>${t("stars")}</b><strong>${"★".repeat(stars)}${"☆".repeat(3-stars)}</strong></span>`;$("nextMission").hidden=!won||run.stage.n>=30;const primary=won?$("nextMission").hidden?$("resultStage"):$("nextMission"):$("retry");[$("retry"),$("resultStage"),$("nextMission")].forEach((button)=>button.classList.remove("primary"));primary.classList.add("primary");$("result").hidden=false;$("battleLive").hidden=true;$("battleLive").inert=true;requestAnimationFrame(()=>primary.focus());window.WonderSound?.play?.(won?"win":"wrong")
+    $("resultKicker").textContent=won?`${t("shardsEarned")} +${earned}`:t("missionFailedKicker");$("resultTitle").textContent=t(won?"missionComplete":"missionFailed");$("resultText").textContent=t(won?"victoryText":"failureText");$("resultStats").innerHTML=`<span><b>${t("strength")}</b><strong>${run.peak}</strong></span><span><b>${t("coreHits")}</b><strong>${Math.max(0,Math.ceil(run.core))}/${run.maxCore}</strong></span><span><b>${t("stars")}</b><strong>${"★".repeat(stars)}${"☆".repeat(3-stars)}</strong></span>`;[$("retry"),$("resultStage"),$("nextMission")].forEach((button)=>{button.disabled=false;button.classList.remove("primary")});$("nextMission").hidden=false;$("nextMission").disabled=!won||run.stage.n>=30;const primary=$("nextMission").disabled?$("resultStage"):$("nextMission");primary.classList.add("primary");$("result").hidden=false;$("battleLive").hidden=true;$("battleLive").inert=true;requestAnimationFrame(()=>primary.focus());window.WonderSound?.play?.(won?"win":"wrong")
   }
-  function commitResultDecision(action){if(resultDecisionCommitted||$("result").hidden)return false;resultDecisionCommitted=true;action();return true}
+  function commitResultDecision(action){if(resultDecisionCommitted||$("result").hidden)return false;resultDecisionCommitted=true;[$("retry"),$("resultStage"),$("nextMission")].forEach((button)=>{button.disabled=true});action();return true}
   $("battleBack").addEventListener("click",openLeave);$("battleHelp").addEventListener("click",openTutorial);$("continueBattle").addEventListener("click",()=>closeModal($("leave")));$("leaveStage").addEventListener("click",()=>{$("leave").hidden=true;$("battleLive").inert=false;run=null;showScreen("stage")});$("retry").addEventListener("click",()=>commitResultDecision(()=>startBattle(run.stageIndex)));$("resultStage").addEventListener("click",()=>commitResultDecision(()=>{$("result").hidden=true;$("battleLive").inert=false;run=null;showScreen("stage")}));$("nextMission").addEventListener("click",()=>commitResultDecision(()=>startBattle(Math.min(29,run.stageIndex+1))));
   function loadImages(){return Promise.all(Object.entries(imageSources).map(([key,src])=>new Promise((resolve)=>{const image=new Image();images[key]=image;image.onload=image.onerror=resolve;image.src=src})))}
   Promise.all([loadImages(),new Promise((resolve)=>setTimeout(resolve,350))]).then(()=>{$("loadingFill").style.width="100%";setTimeout(()=>{$("loading").hidden=true;showScreen("main")},160)});

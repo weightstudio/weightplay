@@ -1562,42 +1562,67 @@ body {
   text-align: center;
 }
 
-.result-card button {
+.result-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
   margin-top: 4px;
 }
 
+#nextMissionBtn,
 #retryBtn,
 #resultMenuBtn {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  min-height: 44px;
+  margin: 0;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border-color);
   color: #fff;
   border-radius: 12px;
-  padding: 12px 24px;
+  padding: 10px 8px;
   font-size: 14px;
+  line-height: 1.2;
+  white-space: nowrap;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
 }
 
-#nextMissionBtn {
-  width: 100%;
-  max-width: none;
-}
-
+#nextMissionBtn:hover:not(:disabled),
 #retryBtn:hover,
 #resultMenuBtn:hover {
   background: rgba(255, 255, 255, 0.1);
   transform: translateY(-1px);
 }
 
+#nextMissionBtn.result-primary-action,
 #resultMenuBtn.result-primary-action,
 #retryBtn.result-primary-action {
-  width: 100%;
-  max-width: none;
   background: linear-gradient(135deg, var(--primary-color) 0%, #059669 100%);
   border-color: transparent;
   color: #fff;
   box-shadow: 0 0 20px rgba(16, 185, 129, 0.24);
+}
+
+#nextMissionBtn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+@media (orientation: landscape) and (max-height: 800px) {
+  .result-card {
+    max-width: 800px;
+  }
+
+  #nextMissionBtn,
+  #retryBtn,
+  #resultMenuBtn {
+    min-height: 124px;
+    padding: 18px 12px;
+    font-size: 32px;
+  }
 }
 
 /* Loading Panel */

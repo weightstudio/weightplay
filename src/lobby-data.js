@@ -57,12 +57,12 @@ window.WONDER_LOBBY = {
     {
       id: "animal-bus-jam",
       title: { en: "Panko's Bus Jam", "zh-Hant": "Panko 公車大塞車", "zh-Hans": "Panko 公交大塞车", ja: "Pankoのバスジャム", ko: "Panko 버스 잼", es: "Atasco de buses de Panko", "pt-BR": "Engarrafamento de ônibus do Panko", fr: "Bus Jam de Panko", de: "Pankos Bus-Chaos", it: "Bus Jam di Panko", ru: "Автобусная пробка Панко", hi: "पांको बस जाम", ar: "ازدحام حافلات بانكو" },
-      status: "planned",
-      statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "곧 출시", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
+      status: "playable",
       type: { en: "Queue Strategy", "zh-Hant": "排隊策略", "zh-Hans": "排队策略", ja: "行列ストラテジー", ko: "대기열 전략", es: "Estrategia de colas", "pt-BR": "Estratégia de filas", fr: "Stratégie de files", de: "Warteschlangen-Strategie", it: "Strategia delle file", ru: "Стратегия очередей", hi: "कतार रणनीति", ar: "استراتيجية الطوابير" },
       categories: ["Animal Games", "Puzzle", "Strategy"], skills: ["Planning", "Logic"], ages: ["9", "family"],
-      href: "games/animal-bus-jam/", internalTrial: "index.html?trial=1",
+      href: "games/animal-bus-jam/",
       art: { kind: "image", background: "assets/animal-bus-jam-cover-general-v4.webp", hideHero: true },
+      previewVideo: "assets/previews/animal-bus-jam-battle.webm",
       description: { en: "Read the convoy order and route exposed passengers without locking the limited holding lane across 30 terminals.", "zh-Hant": "判讀車隊順序，在有限候車通道堵死前安排露出的乘客，挑戰 30 座轉運站。", "zh-Hans": "判断车队顺序，在有限候车通道堵死前安排露出的乘客，挑战 30 座换乘站。", ja: "車列の順番を読み、限られた待機レーンを詰まらせず30ターミナルを攻略。", ko: "차량 순서를 읽고 제한된 대기 통로가 막히지 않게 30개 터미널을 운영하세요.", es: "Lee el orden del convoy y evita bloquear la zona de espera en 30 terminales.", "pt-BR": "Leia a ordem do comboio e evite travar a faixa de espera em 30 terminais.", fr: "Lisez l’ordre du convoi sans bloquer la voie d’attente dans 30 terminaux.", de: "Lies die Abfahrtsfolge und halte in 30 Terminals die Wartezone frei.", it: "Leggi l’ordine del convoglio senza bloccare la corsia d’attesa in 30 terminal.", ru: "Следите за очередью автобусов и не блокируйте зону ожидания в 30 терминалах.", hi: "बस क्रम पढ़ें और 30 टर्मिनल में सीमित प्रतीक्षा लेन को जाम होने से बचाएँ।", ar: "اقرأ ترتيب الحافلات وتجنب انسداد مسار الانتظار عبر 30 محطة." },
       meta: { en: "30 terminals · 4 routes · deadlock strategy", "zh-Hant": "30 座轉運站 · 4 條路線 · 防堵策略", "zh-Hans": "30 座换乘站 · 4 条线路 · 防堵策略", ja: "30ターミナル · 4路線 · 詰まり対策", ko: "30개 터미널 · 4개 노선 · 교착 전략", es: "30 terminales · 4 rutas · estrategia de bloqueo", "pt-BR": "30 terminais · 4 rotas · estratégia contra bloqueios", fr: "30 terminaux · 4 lignes · stratégie de blocage", de: "30 Terminals · 4 Routen · Blockade-Strategie", it: "30 terminal · 4 linee · strategia anti-blocco", ru: "30 терминалов · 4 маршрута · стратегия блокировок", hi: "30 टर्मिनल · 4 मार्ग · जाम रणनीति", ar: "30 محطة · 4 مسارات · استراتيجية منع الانسداد" }
     },

@@ -6671,7 +6671,10 @@
       }
       return value;
     };
-    return translateValue(merged);
+    const translated = translateValue(merged);
+    if (translated.designNoteParts?.length) translated.designNote = translated.designNoteParts.join(" ");
+    if (translated.parentParts?.length) translated.parent = translated.parentParts.join(" ");
+    return translated;
   }
 
   function relatedGames(activeId, activeBaseGame) {
@@ -6953,6 +6956,8 @@
     if (!game) return;
     syncLocalizedMetadata(game);
     const gameSkills = game.skills || [];
+    const audience = document.querySelector('meta[name="weightplay-audience"]')?.content?.trim().toLowerCase() || "general";
+    const showSkills = audience === "kids" && game.showSkills !== false;
     const showRecommendedAge = Boolean(baseGame.age) && !/^(12|13)\+$/.test(baseGame.age);
 
     document
@@ -6980,7 +6985,7 @@
           ${showRecommendedAge ? `<div class="game-info-fact"><span>${escapeHtml(uiLabel("recommendedAge"))}</span><strong>${escapeHtml(localizeAge(game.age))}</strong></div>` : ""}
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("difficulty"))}</span><strong>${escapeHtml(localizeDifficulty(game.difficulty))}</strong></div>
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("estimatedTime"))}</span><strong>${escapeHtml(localizePlayTime(game.time))}</strong></div>
-          ${game.showSkills === false ? "" : `<div class="game-info-fact"><span>${escapeHtml(uiLabel("skills"))}</span><div class="game-info-skills">${gameSkills.map((skill) => `<span>${escapeHtml(localizeSkill(skill))}</span>`).join("")}</div></div>`}
+          ${showSkills ? `<div class="game-info-fact"><span>${escapeHtml(uiLabel("skills"))}</span><div class="game-info-skills">${gameSkills.map((skill) => `<span>${escapeHtml(localizeSkill(skill))}</span>`).join("")}</div></div>` : ""}
         </div>
       </div>
       <div class="game-info-sections">
@@ -7815,7 +7820,7 @@
     strategyTips: ["Treat each holding space as a scarce resource, not free storage.", "Before sending a future color, check whether it will become the front blocker.", "Expose the active color first whenever the holding lane is nearly full.", "Use Undo as soon as a dispatch changes the holding order you planned."],
     progression: ["Terminal 1 teaches the flow. From Terminal 2 onward, wrong routes can create a real deadlock.", "Later chapters add a fourth route, longer convoys, more queues, repeated bus colors, and a two-space holding lane instead of repeating the same three-bus layout."],
     designNote: "The four routes use both color and letter codes. The fixed convoy, FIFO holding lane, deterministic queues, and verified solution path define one readable strategy puzzle on phone and desktop.",
-    parent: "The game is a General-audience untimed strategy puzzle. It has no account, purchase, public leaderboard, or Kids ability report. Local clears remain in this browser.",
+    parent: "The game is a General-audience untimed strategy puzzle. It has no account, purchase, or public leaderboard. Local clears remain in this browser.",
     faq: [["Can I dispatch from the middle of a queue?", "No. Only each exposed front passenger can move."], ["Why did a passenger enter the holding lane?", "Only the active bus boards; every future route waits in dispatch order."], ["Why did the terminal deadlock?", "The holding order blocked the active route and no exposed passenger could clear it."], ["Are all terminals solvable?", "Yes. All thirty recorded solution paths are checked automatically."]]
   }, "潘可的巴士疏運", "胖达巴士疏导");
 
@@ -7983,8 +7988,10 @@
       ["Which controls and screen sizes are supported?", "The same rules support touch, mouse, and keyboard where the game uses those inputs. The interface scales as one logical layout across the required phone, landscape, and desktop viewports."],
       ["Can progress move automatically to another device?", "No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added."]
     ];
-    game.designNote = `${game.designNote || ""} ${responsiveNote}`.trim();
-    game.parent = `${game.parent || ""} ${saveNote}`.trim();
+    game.designNoteParts = [game.designNote || "", responsiveNote].filter(Boolean);
+    game.parentParts = [game.parent || "", saveNote].filter(Boolean);
+    game.designNote = game.designNoteParts.join(" ");
+    game.parent = game.parentParts.join(" ");
     game.faq = [...(game.faq || []), ...sharedFaq];
     for (const code of ["zh-Hant", "zh-Hans"]) {
       if (!localizedGames[code]?.[id]) continue;

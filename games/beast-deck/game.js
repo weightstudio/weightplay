@@ -38,6 +38,8 @@
   const battleTransitions = new Set();
   let stageScrollTimer = 0;
   let browsedMission = 0;
+  let settledMission = 0;
+  let resultTransactionLocked = false;
 
   function cancelStageSettlement() {
     if (!stageScrollTimer) return;
@@ -1317,6 +1319,22 @@
       keep: "متابعة اللعب",
       leave: "مغادرة المهمة",
     },
+  };
+
+  const resultActionText = {
+    en: { stages: "Stages", next: "Next Stage", replay: "Replay" },
+    "zh-Hant": { stages: "關卡", next: "下一關", replay: "重玩" },
+    "zh-Hans": { stages: "关卡", next: "下一关", replay: "重玩" },
+    es: { stages: "Misiones", next: "Siguiente", replay: "Repetir" },
+    ja: { stages: "ステージ", next: "次へ", replay: "リプレイ" },
+    ko: { stages: "스테이지", next: "다음", replay: "다시 하기" },
+    "pt-BR": { stages: "Fases", next: "Próxima", replay: "Repetir" },
+    fr: { stages: "Niveaux", next: "Suivant", replay: "Rejouer" },
+    de: { stages: "Stufen", next: "Weiter", replay: "Wiederholen" },
+    it: { stages: "Livelli", next: "Avanti", replay: "Rigioca" },
+    ru: { stages: "Этапы", next: "Далее", replay: "Повторить" },
+    hi: { stages: "चरण", next: "अगला", replay: "फिर खेलें" },
+    ar: { stages: "المراحل", next: "التالي", replay: "إعادة اللعب" },
   };
 
   function leaveCoveredLayers() {
@@ -2619,12 +2637,7 @@
   }
 
   function syncResultPrimaryAction(won, canContinue) {
-    const terminalVictory = won && state.mission >= maxMission;
-    const primaryAction = canContinue
-      ? nodes.nextMissionBtn
-      : terminalVictory
-        ? nodes.resultMenuBtn
-        : nodes.retryBtn;
+    const primaryAction = canContinue ? nodes.nextMissionBtn : nodes.resultMenuBtn;
     [nodes.nextMissionBtn, nodes.retryBtn, nodes.resultMenuBtn].forEach((button) => {
       button?.classList.toggle("result-primary-action", button === primaryAction);
     });
@@ -2632,6 +2645,8 @@
   }
 
   function endGame(won) {
+    settledMission = state.mission;
+    resultTransactionLocked = false;
     clearCombatFeedback();
     nodes.gamePanel.classList.add("result-open");
     nodes.resultPanel.classList.remove("hidden");
@@ -2673,9 +2688,13 @@
     }
     const canContinue = won && state.mission < maxMission && profile.selectedMission > state.mission;
     if (nodes.nextMissionBtn) {
-      nodes.nextMissionBtn.classList.toggle("hidden", !canContinue);
-      if (canContinue) nodes.nextMissionBtn.textContent = nextMissionLabel(profile.selectedMission);
+      nodes.nextMissionBtn.classList.remove("hidden");
+      nodes.nextMissionBtn.disabled = !canContinue;
     }
+    const actionCopy = resultActionText[getLocale()] || resultActionText.en;
+    nodes.resultMenuBtn.textContent = actionCopy.stages;
+    nodes.nextMissionBtn.textContent = actionCopy.next;
+    nodes.retryBtn.textContent = actionCopy.replay;
     renderProgressUI();
     updateDiamondShopUI();
     syncResultPrimaryAction(won, canContinue)?.focus({ preventScroll: true });
@@ -3140,7 +3159,18 @@
           savedText: nodes.resultSaved?.textContent || "",
           unlockText: nodes.resultUnlock?.textContent || "",
           nextMissionVisible: !nodes.nextMissionBtn?.classList.contains("hidden"),
+          nextMissionDisabled: Boolean(nodes.nextMissionBtn?.disabled),
           nextMissionText: nodes.nextMissionBtn?.textContent || "",
+        };
+      },
+      forceLoseMission: () => {
+        endGame(false);
+        return {
+          ...window.__beastDeckSmoke.getState(),
+          selectedMission: profile.selectedMission,
+          unlockedMission: profile.unlockedMission,
+          nextMissionVisible: !nodes.nextMissionBtn?.classList.contains("hidden"),
+          nextMissionDisabled: Boolean(nodes.nextMissionBtn?.disabled),
         };
       },
     };
@@ -3224,43 +3254,48 @@
         actions[0].focus();
       }
     });
-    nodes.retryBtn.addEventListener("click", () => {
+    const commitResultAction = (action) => {
+      if (resultTransactionLocked || nodes.resultPanel.classList.contains("hidden")) return;
+      if (action === "next" && nodes.nextMissionBtn.disabled) return;
+      resultTransactionLocked = true;
       window.WonderSound?.play("click");
+      if (action === "stages") {
+        profile.selectedMission = profile.unlockedMission;
+        saveLocalState();
+        document.body.classList.remove("beast-deck-playing");
+        nodes.resultPanel.classList.add("hidden");
+        nodes.gamePanel.classList.add("hidden");
+        nodes.gamePanel.classList.remove("result-open");
+        showStage();
+        renderProgressUI();
+        updateDiamondShopUI();
+        renderCollectionUI();
+        return;
+      }
+      profile.selectedMission = action === "next"
+        ? Math.min(profile.unlockedMission, settledMission + 1)
+        : settledMission;
+      saveLocalState();
       startRun();
-    });
-    nodes.nextMissionBtn?.addEventListener("click", () => {
-      window.WonderSound?.play("click");
-      startRun();
-    });
-    nodes.resultMenuBtn.addEventListener("click", () => {
-      document.body.classList.remove("beast-deck-playing");
-      window.WonderSound?.play("click");
-      nodes.resultPanel.classList.add("hidden");
-      nodes.gamePanel.classList.add("hidden");
-      nodes.gamePanel.classList.remove("result-open");
-      showStage();
-      renderProgressUI();
-      updateDiamondShopUI();
-      renderCollectionUI();
-    });
+    };
+    nodes.retryBtn.addEventListener("click", () => commitResultAction("replay"));
+    nodes.nextMissionBtn?.addEventListener("click", () => commitResultAction("next"));
+    nodes.resultMenuBtn.addEventListener("click", () => commitResultAction("stages"));
     nodes.resultPanel.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) {
         event.preventDefault();
         return;
       }
       if (event.key !== "Tab" || nodes.resultPanel.classList.contains("hidden")) return;
-      const actions = [...nodes.resultPanel.querySelectorAll("button:not(:disabled)")]
-        .filter((button) => !button.classList.contains("hidden") && button.getClientRects().length);
+      const actions = [nodes.resultMenuBtn, nodes.nextMissionBtn, nodes.retryBtn]
+        .filter((button) => button && !button.disabled && !button.classList.contains("hidden") && button.getClientRects().length);
       if (!actions.length) return;
-      const first = actions[0];
-      const last = actions.at(-1);
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
+      const currentIndex = Math.max(0, actions.indexOf(document.activeElement));
+      const nextIndex = event.shiftKey
+        ? (currentIndex - 1 + actions.length) % actions.length
+        : (currentIndex + 1) % actions.length;
+      event.preventDefault();
+      actions[nextIndex].focus({ preventScroll: true });
     });
     nodes.mainStartBtn.addEventListener("click", showStage);
     nodes.mainStartBtn.addEventListener("keydown", (event) => {
@@ -3278,13 +3313,11 @@
       window.WonderI18n?.setLocale?.(event.target.value);
     });
     nodes.stageGrid?.addEventListener("scroll", () => {
-      if (nodes.stageGrid.dataset.wpStageRail === "true") return;
       if (isAutoPositioningStage) return;
       window.clearTimeout(stageScrollTimer);
       stageScrollTimer = window.setTimeout(selectNearestVisibleStage, 120);
     }, { passive: true });
     nodes.stageGrid?.addEventListener("scrollend", () => {
-      if (nodes.stageGrid.dataset.wpStageRail === "true") return;
       if (isAutoPositioningStage) return;
       cancelStageSettlement();
       selectNearestVisibleStage();

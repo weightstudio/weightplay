@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+    <base href="/games/animal-bus-jam/" />
+    <link rel="canonical" href="https://weightplay.com/zh-tw/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-bus-jam/" />
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="index,follow" />
+  <meta name="weightplay-audience" content="general">
+  <meta name="theme-color" content="#081622">
+  <title>潘可的巴士疏運 | WeightPlay</title>
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260727-shell2">
+  <meta name="description" content="Read the fixed departure order, expose the right passengers, and keep a limited first-in-first-out holding lane from locking the terminal." />
+    <meta property="og:title" content="潘可的巴士疏運 | WeightPlay" />
+    <meta property="og:description" content="Read the fixed departure order, expose the right passengers, and keep a limited first-in-first-out holding lane from locking the terminal." />
+    <meta property="og:url" content="https://weightplay.com/zh-tw/games/animal-bus-jam/" />
+    <meta name="twitter:title" content="潘可的巴士疏運 | WeightPlay" />
+    <meta name="twitter:description" content="Read the fixed departure order, expose the right passengers, and keep a limited first-in-first-out holding lane from locking the terminal." />
+  </head>
+<body data-screen="main" data-audience="general" data-wp-game-id="animal-bus-jam" data-wp-combined-sound="true">
+  <main id="main" class="screen main main-screen" data-screen="main">
+    <header class="main-header">
+      <a class="return" href="/" data-t-aria="returnLobby" aria-label="Return to WeightPlay">←</a>
+      <strong data-t="shortTitle">BUS JAM</strong>
+      <label class="locale"><span data-t="language">Language</span><select id="locale"></select></label>
+    </header>
+    <section class="hero">
+      <img src="../../assets/animal-bus-jam-cover-general-v4.webp" data-t-alt="coverAlt" alt="《潘可的巴士疏運》遊戲圖片">
+      <div>
+        <p class="eyebrow" data-t="kicker">NIGHT TERMINAL CONTROL</p>
+        <h1 data-t="title">潘可的巴士疏運</h1>
+        <p class="main-summary" data-t="summary">Read the convoy order, route each queue, and keep the holding lane from locking up.</p>
+        <button id="start" class="primary" data-t="start">Start game</button>
+      </div>
+    </section>
+    <section class="public-guide guide" aria-label="Game guide">
+      <h2 data-t="guideTitle">How to play</h2>
+      <p data-t="guideBody">Only the first bus accepts passengers. A wrong color waits in the holding lane, in order. If that lane blocks before the active bus is filled, the terminal deadlocks.</p>
+      <ol>
+        <li data-t="guideRule1">Check the active bus and its remaining seats.</li>
+        <li data-t="guideRule2">Dispatch only the front passenger of a queue.</li>
+        <li data-t="guideRule3">Use Undo before the holding lane becomes blocked.</li>
+      </ol>
+    </section>
+  </main>
+
+  <main id="stage" class="screen canvas stage stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-bus-jam-cover-general-v4.webp')" hidden>
+    <header class="scene-header">
+      <button data-back data-t-aria="back" aria-label="Back">←</button>
+      <h2 data-t="shortTitle">BUS JAM</h2>
+    </header>
+    <span id="progress" class="stage-progress"></span>
+    <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="Stage list"></section>
+    <nav class="stage-tabs" data-t-aria="stageTabs" aria-label="Stage navigation">
+      <span aria-hidden="true"></span>
+      <button type="button" class="stage-tab active" aria-current="page" data-t="stages">Stages</button>
+      <span aria-hidden="true"></span>
+    </nav>
+  </main>
+
+  <main id="battle" class="screen canvas battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
+    <header class="scene-header">
+      <button data-back data-t-aria="back" aria-label="Back">←</button>
+      <div><small id="chapter"></small><h2 id="stageName"></h2></div>
+      <span id="remaining"></span>
+    </header>
+    <section class="battle-content">
+      <div class="convoy-panel">
+        <div class="panel-label" data-t="convoy">DEPARTURE ORDER</div>
+        <div id="buses" class="buses"></div>
+      </div>
+      <div class="dispatch-floor">
+        <div class="holding-panel">
+          <div class="panel-label"><span data-t="holding">HOLDING LANE</span><span id="holdingCount"></span></div>
+          <div id="holding" class="holding"></div>
+        </div>
+        <div id="queues" class="queues" role="list" data-t-aria="queueLabel" aria-label="Passenger queues"></div>
+      </div>
+      <div class="tools">
+        <button id="undo" data-t="undo">Undo</button>
+        <button id="hint" data-t="hint">Hint</button>
+        <button id="restart" data-t="restart">Restart</button>
+      </div>
+      <p id="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
+  <dialog id="result">
+    <div class="result-mark">✓</div>
+    <p class="eyebrow" data-t="complete">TERMINAL CLEARED</p>
+    <h2 data-t="resultTitle">Every convoy departed!</h2>
+    <p id="resultBody"></p>
+    <div class="result-actions">
+      <button id="resultStages" data-t="stages">Stages</button>
+      <button id="next" class="primary" data-t="next">Next terminal</button>
+      <button id="retry" data-t="retry">Play again</button>
+    </div>
+  </dialog>
+  <dialog id="deadlock">
+    <div class="result-mark fail-mark">!</div>
+    <p class="eyebrow" data-t="deadlockKicker">ROUTE LOCKED</p>
+    <h2 data-t="deadlockTitle">The holding lane is blocked</h2>
+    <p data-t="deadlockBody">The active bus cannot be filled from the exposed passengers. Undo the last dispatch or restart.</p>
+    <div><button id="deadlockUndo" data-t="undo">Undo</button><button id="deadlockRetry" class="primary" data-t="restart">Restart</button></div>
+  </dialog>
+  <dialog id="leaveBattle" aria-labelledby="leaveBattleTitle">
+    <p class="eyebrow" data-t="leaveKicker">LEAVE TERMINAL?</p>
+    <h2 id="leaveBattleTitle" data-t="leaveTitle">Return to terminal selection?</h2>
+    <p id="leaveBattleBody"></p>
+    <div class="leave-actions">
+      <button id="continueBattle" class="primary" data-t="continueBattle">Continue playing</button>
+      <button id="returnToStage" data-t="returnStages">Return to stages</button>
+    </div>
+  </dialog>
+
+  <script src="../../src/site-config.js"></script>
+  <script>window.WONDER_SITE.localization.useLocaleRoutes = false;</script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
+  <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
+  <script src="levels.js"></script>
+  <script src="locales.js"></script>
+  <script src="strategy-locales.js"></script>
+  <script src="game.js"></script>
+  <script src="../../src/sound.js?v=20260720-locale11"></script>
+  <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260727-shell2"></script>
+<section class="game-page-info game-page-info-static" aria-label="潘可的巴士疏運 遊戲資訊">
+    
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>潘可的巴士疏運</h2><p>Read the fixed departure order, expose the right passengers, and keep a limited first-in-first-out holding lane from locking the terminal.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>Convoy and Holding-Lane Strategy</strong></div><div class="game-info-fact"><span>類型</span><strong>Puzzle · Strategy · Animal</strong></div><div class="game-info-fact"><span>難度</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>2-8 minutes per stage</strong></div><div class="game-info-fact"><span>練習能力</span><strong>邏輯 · 規劃 · 問題解決</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界與任務</h3><p>Thirty night terminals are operating at capacity. Only the active bus can board passengers, while every other color must wait in the holding lane in the exact order dispatched.</p>
+<p>Every decision is visible: the complete convoy, each queue, the active bus seats, and every occupied holding space. Failure comes from a route choice, not hidden traffic or a timer.</p></div>
+      <div class="game-info-section"><h3>遊戲系統</h3><p>Only the front passenger of a queue can move. A matching passenger boards the active bus immediately.</p>
+<p>A nonmatching passenger enters the holding lane. Its first passenger must be cleared before anyone behind it can board.</p>
+<p>When the active bus fills, it departs and the next bus becomes active. Matching passengers at the front of the holding lane board automatically.</p>
+<p>If the holding lane is full and no exposed passenger can complete the active route, the terminal deadlocks. Undo restores the exact prior state; Restart restores the authored terminal.</p></div>
+      <div class="game-info-section"><h3>玩法說明</h3><ol><li>Select an unlocked terminal.</li><li>Read the active bus, its remaining seats, and the next buses in the convoy.</li><li>Compare every queue front before sending a future color into the holding lane.</li><li>Fill every bus without deadlocking the holding lane to unlock the next terminal.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>Treat each holding space as a scarce resource, not free storage.</li><li>Before sending a future color, check whether it will become the front blocker.</li><li>Expose the active color first whenever the holding lane is nearly full.</li><li>Use Undo as soon as a dispatch changes the holding order you planned.</li></ul></div>
+      <div class="game-info-section"><h3>關卡與難度成長</h3><p>Terminal 1 teaches the flow. From Terminal 2 onward, wrong routes can create a real deadlock.</p>
+<p>Later chapters add a fourth route, longer convoys, more queues, repeated bus colors, and a two-space holding lane instead of repeating the same three-bus layout.</p></div>
+      <div class="game-info-section"><h3>開發設計理念</h3><p>這四條路線同時使用顏色和字母代碼。固定車隊、先進先出保存通道、確定性隊列和經過驗證的解決方案路徑定義了一種在手機和桌面上可讀的策略難題。 完整的介面使用居中的邏輯佈局，最大像素為 920。手機、風景和桌面視圖將相同的控制、點擊區域、藝術作品和遊戲座標一起縮放，而不是拉伸各個部分。因此，觸控、滑鼠和鍵盤作用於相同的合法狀態。主海報和開始遊戲操作與舞台管理保持分離，而舞台選擇、戰鬥、對話和結果保留自己的有限內容和返迴路徑。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>該遊戲是一款針對一般玩家的不定時策略益智遊戲。它沒有帳戶、購買或公共排行榜。本地清除保留在此瀏覽器中。 您無需建立帳戶即可玩。進度保存在目前瀏覽器設定檔的本機瀏覽器儲存中，而不是線上帳戶或跨裝置資料庫中。清除網站資料、使用隱私瀏覽、變更瀏覽器或移動到另一台裝置可以建立單獨的儲存或刪除現有的儲存。當瀏覽器允許儲存時，語言、聲音和簡化動作首選項遵循共享的 WeightPlay 控制。沒有任何指導結果是醫學、學校或專業評估。</p></div>
+      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>Can I dispatch from the middle of a queue?</dt><dd>No. Only each exposed front passenger can move.</dd></div><div><dt>Why did a passenger enter the holding lane?</dt><dd>Only the active bus boards; every future route waits in dispatch order.</dd></div><div><dt>Why did the terminal deadlock?</dt><dd>The holding order blocked the active route and no exposed passenger could clear it.</dd></div><div><dt>Are all terminals solvable?</dt><dd>Yes. All thirty recorded solution paths are checked automatically.</dd></div><div><dt>Which controls and screen sizes are supported?</dt><dd>The same rules support touch, mouse, and keyboard where the game uses those inputs. The interface scales as one logical layout across the required phone, landscape, and desktop viewports.</dd></div><div><dt>Can progress move automatically to another device?</dt><dd>No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.</dd></div></dl></div>
+      
+    </div>
+  </section>
+</body>
+</html>

@@ -14,6 +14,10 @@
 }
 .stage-card.locked.centered{filter:saturate(.45) brightness(.72)}
 .stage-card.locked>span:first-child{color:#ffd862;text-transform:uppercase;letter-spacing:.08em}
+
+/* Interface v4 keeps Result decisions in fixed equal tracks at every size. */
+.result-card .modal-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
+.modal-actions button:disabled{cursor:not-allowed;opacity:.5}
 @media(max-width:640px){#fortressValue{font-size:15px;white-space:nowrap}.objective-row{font-size:13px}}
 .arena-wrap>#overdrive.active{border-color:#fff4a8;background:#81500ee8;box-shadow:0 0 32px #ffe176}
 .arena-wrap>#overdrive.active b{color:#fff4a8}

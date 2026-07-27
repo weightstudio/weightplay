@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <base href="/games/animal-bus-jam/" />
+    <link rel="canonical" href="https://weightplay.com/es/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-bus-jam/" />
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="index,follow" />
+  <meta name="weightplay-audience" content="general">
+  <meta name="theme-color" content="#081622">
+  <title>Atasco de autobús de Panko | WeightPlay</title>
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260727-shell2">
+  <meta name="description" content="Lea el orden de salida fijo, exponga a los pasajeros correctos y evite que un carril de espera limitado de primero en entrar, primero en salir bloquee la..." />
+    <meta property="og:title" content="Atasco de autobús de Panko | WeightPlay" />
+    <meta property="og:description" content="Lea el orden de salida fijo, exponga a los pasajeros correctos y evite que un carril de espera limitado de primero en entrar, primero en salir bloquee la..." />
+    <meta property="og:url" content="https://weightplay.com/es/games/animal-bus-jam/" />
+    <meta name="twitter:title" content="Atasco de autobús de Panko | WeightPlay" />
+    <meta name="twitter:description" content="Lea el orden de salida fijo, exponga a los pasajeros correctos y evite que un carril de espera limitado de primero en entrar, primero en salir bloquee la..." />
+  </head>
+<body data-screen="main" data-audience="general" data-wp-game-id="animal-bus-jam" data-wp-combined-sound="true">
+  <main id="main" class="screen main main-screen" data-screen="main">
+    <header class="main-header">
+      <a class="return" href="/" data-t-aria="returnLobby" aria-label="Return to WeightPlay">←</a>
+      <strong data-t="shortTitle">BUS JAM</strong>
+      <label class="locale"><span data-t="language">Language</span><select id="locale"></select></label>
+    </header>
+    <section class="hero">
+      <img src="../../assets/animal-bus-jam-cover-general-v4.webp" data-t-alt="coverAlt" alt="Imagen del juego Atasco de autobús de Panko">
+      <div>
+        <p class="eyebrow" data-t="kicker">NIGHT TERMINAL CONTROL</p>
+        <h1 data-t="title">Atasco de autobús de Panko</h1>
+        <p class="main-summary" data-t="summary">Read the convoy order, route each queue, and keep the holding lane from locking up.</p>
+        <button id="start" class="primary" data-t="start">Start game</button>
+      </div>
+    </section>
+    <section class="public-guide guide" aria-label="Game guide">
+      <h2 data-t="guideTitle">How to play</h2>
+      <p data-t="guideBody">Only the first bus accepts passengers. A wrong color waits in the holding lane, in order. If that lane blocks before the active bus is filled, the terminal deadlocks.</p>
+      <ol>
+        <li data-t="guideRule1">Check the active bus and its remaining seats.</li>
+        <li data-t="guideRule2">Dispatch only the front passenger of a queue.</li>
+        <li data-t="guideRule3">Use Undo before the holding lane becomes blocked.</li>
+      </ol>
+    </section>
+  </main>
+
+  <main id="stage" class="screen canvas stage stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-bus-jam-cover-general-v4.webp')" hidden>
+    <header class="scene-header">
+      <button data-back data-t-aria="back" aria-label="Back">←</button>
+      <h2 data-t="shortTitle">BUS JAM</h2>
+    </header>
+    <span id="progress" class="stage-progress"></span>
+    <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="Stage list"></section>
+    <nav class="stage-tabs" data-t-aria="stageTabs" aria-label="Stage navigation">
+      <span aria-hidden="true"></span>
+      <button type="button" class="stage-tab active" aria-current="page" data-t="stages">Stages</button>
+      <span aria-hidden="true"></span>
+    </nav>
+  </main>
+
+  <main id="battle" class="screen canvas battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
+    <header class="scene-header">
+      <button data-back data-t-aria="back" aria-label="Back">←</button>
+      <div><small id="chapter"></small><h2 id="stageName"></h2></div>
+      <span id="remaining"></span>
+    </header>
+    <section class="battle-content">
+      <div class="convoy-panel">
+        <div class="panel-label" data-t="convoy">DEPARTURE ORDER</div>
+        <div id="buses" class="buses"></div>
+      </div>
+      <div class="dispatch-floor">
+        <div class="holding-panel">
+          <div class="panel-label"><span data-t="holding">HOLDING LANE</span><span id="holdingCount"></span></div>
+          <div id="holding" class="holding"></div>
+        </div>
+        <div id="queues" class="queues" role="list" data-t-aria="queueLabel" aria-label="Passenger queues"></div>
+      </div>
+      <div class="tools">
+        <button id="undo" data-t="undo">Undo</button>
+        <button id="hint" data-t="hint">Hint</button>
+        <button id="restart" data-t="restart">Restart</button>
+      </div>
+      <p id="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
+  <dialog id="result">
+    <div class="result-mark">✓</div>
+    <p class="eyebrow" data-t="complete">TERMINAL CLEARED</p>
+    <h2 data-t="resultTitle">Every convoy departed!</h2>
+    <p id="resultBody"></p>
+    <div class="result-actions">
+      <button id="resultStages" data-t="stages">Stages</button>
+      <button id="next" class="primary" data-t="next">Next terminal</button>
+      <button id="retry" data-t="retry">Play again</button>
+    </div>
+  </dialog>
+  <dialog id="deadlock">
+    <div class="result-mark fail-mark">!</div>
+    <p class="eyebrow" data-t="deadlockKicker">ROUTE LOCKED</p>
+    <h2 data-t="deadlockTitle">The holding lane is blocked</h2>
+    <p data-t="deadlockBody">The active bus cannot be filled from the exposed passengers. Undo the last dispatch or restart.</p>
+    <div><button id="deadlockUndo" data-t="undo">Undo</button><button id="deadlockRetry" class="primary" data-t="restart">Restart</button></div>
+  </dialog>
+  <dialog id="leaveBattle" aria-labelledby="leaveBattleTitle">
+    <p class="eyebrow" data-t="leaveKicker">LEAVE TERMINAL?</p>
+    <h2 id="leaveBattleTitle" data-t="leaveTitle">Return to terminal selection?</h2>
+    <p id="leaveBattleBody"></p>
+    <div class="leave-actions">
+      <button id="continueBattle" class="primary" data-t="continueBattle">Continue playing</button>
+      <button id="returnToStage" data-t="returnStages">Return to stages</button>
+    </div>
+  </dialog>
+
+  <script src="../../src/site-config.js"></script>
+  <script>window.WONDER_SITE.localization.useLocaleRoutes = false;</script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
+  <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
+  <script src="levels.js"></script>
+  <script src="locales.js"></script>
+  <script src="strategy-locales.js"></script>
+  <script src="game.js"></script>
+  <script src="../../src/sound.js?v=20260720-locale11"></script>
+  <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260727-shell2"></script>
+<section class="game-page-info game-page-info-static" aria-label="Guía de Atasco de autobús de Panko">
+    
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Guía del juego original</span><h2>Atasco de autobús de Panko</h2><p>Lea el orden de salida fijo, exponga a los pasajeros correctos y evite que un carril de espera limitado de primero en entrar, primero en salir bloquee la terminal.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Cómo se juega</span><strong>Estrategia de convoyes y carriles de espera</strong></div><div class="game-info-fact"><span>Género</span><strong>rompecabezas · Estrategia · animales</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Fácil de desafiar</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>2-8 minutos por etapa</strong></div><div class="game-info-fact"><span>Habilidades</span><strong>Lógica · Planificación · Resolución de problemas</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Historia y misión</h3><p>Treinta terminales nocturnas están funcionando al máximo de su capacidad. Solo el autobús activo puede abordar pasajeros, mientras que los demás colores deben esperar en el carril de espera en el orden exacto en que fueron despachados.</p>
+<p>Cada decisión es visible: el convoy completo, cada cola, los asientos de autobús activos y cada espacio de espera ocupado. El fracaso proviene de la elección de una ruta, no de tráfico oculto o de un cronómetro.</p></div>
+      <div class="game-info-section"><h3>Reglas del juego</h3><p>Sólo el pasajero delantero de una cola puede moverse. Un pasajero coincidente sube inmediatamente al autobús activo.</p>
+<p>Un pasajero que no coincide ingresa al carril de espera. Su primer pasajero debe ser autorizado antes de que cualquiera que esté detrás pueda abordar.</p>
+<p>Cuando el autobús activo se llena, sale y el siguiente autobús se activa. Hacer coincidir automáticamente a los pasajeros en la parte delantera del tablero del carril de espera.</p>
+<p>Si el carril de espera está lleno y ningún pasajero expuesto puede completar la ruta activa, la terminal se bloquea. Deshacer restaura el estado anterior exacto; Reiniciar restaura el terminal creado.</p></div>
+      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Selecciona un terminal desbloqueado.</li><li>Lea el autobús activo, los asientos restantes y los siguientes autobuses del convoy.</li><li>Compare cada frente de cola antes de enviar un color futuro al carril de espera.</li><li>Llene todos los autobuses sin bloquear el carril de espera para desbloquear la siguiente terminal.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consejos</h3><ul><li>Trate cada espacio de almacenamiento como un recurso escaso, no como almacenamiento gratuito.</li><li>Antes de enviar un color futuro, verifique si se convertirá en el bloqueador frontal.</li><li>Exponga primero el color activo siempre que el carril de espera esté casi lleno.</li><li>Utilice Deshacer tan pronto como un envío cambie el orden de espera que planeó.</li></ul></div>
+      <div class="game-info-section"><h3>Progresión y dificultad</h3><p>La terminal 1 enseña el flujo. A partir de la Terminal 2, rutas equivocadas pueden crear un verdadero punto muerto.</p>
+<p>Los capítulos posteriores añaden una cuarta ruta, convoyes más largos, más colas, colores repetidos de autobuses y un carril de espera de dos espacios en lugar de repetir el mismo diseño de tres autobuses.</p></div>
+      <div class="game-info-section"><h3>Nota de diseño</h3><p>Las cuatro rutas utilizan códigos de colores y letras. El convoy fijo, el carril de espera FIFO, las colas deterministas y la ruta de solución verificada definen un rompecabezas de estrategia legible en el teléfono y el escritorio. La interfaz completa utiliza un diseño lógico centrado con un máximo de 920 píxeles. Las vistas de teléfono, paisaje y escritorio escalan los mismos controles, áreas de impacto, ilustraciones y coordenadas del juego juntas en lugar de estirar piezas individuales. Por tanto, el tacto, el ratón y el teclado actúan bajo el mismo estado jurídico. El cartel principal y la acción Iniciar juego permanecen separados de la gestión del escenario, mientras que la selección del escenario, la batalla, los diálogos y el resultado mantienen su propio contenido delimitado y ruta de regreso.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota para familias</h3><p>El juego es un rompecabezas de estrategia sin tiempo para público general. No tiene cuenta, compra ni tabla de clasificación pública. Los borrados locales permanecen en este navegador. Puedes jugar sin crear una cuenta. El progreso se guarda en el almacenamiento del navegador local en el perfil del navegador actual, no en una cuenta en línea ni en una base de datos entre dispositivos. Borrar los datos del sitio, usar la navegación privada, cambiar de navegador o pasar a otro dispositivo puede crear un guardado por separado o eliminar el existente. Las preferencias de idioma, sonido y movimiento reducido siguen los controles compartidos WeightPlay cuando el navegador permite el almacenamiento. Ningún resultado guía es una evaluación médica, escolar o profesional.</p></div>
+      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Puedo despachar desde el medio de una cola?</dt><dd>No. Sólo cada pasajero delantero expuesto puede moverse.</dd></div><div><dt>¿Por qué un pasajero entró en el carril de espera?</dt><dd>Sólo los autobuses activos abordan; cada ruta futura espera en orden de despacho.</dd></div><div><dt>¿Por qué se bloqueó la terminal?</dt><dd>La orden de espera bloqueó la ruta activa y ningún pasajero expuesto pudo despejarla.</dd></div><div><dt>¿Todos los terminales tienen solución?</dt><dd>Sí. Las treinta rutas de solución registradas se verifican automáticamente.</dd></div><div><dt>¿Qué controles y tamaños de pantalla son compatibles?</dt><dd>Las mismas reglas admiten el tacto, el mouse y el teclado cuando el juego usa esas entradas. La interfaz se escala como un diseño lógico en las ventanas gráficas requeridas de teléfono, paisaje y escritorio.</dd></div><div><dt>¿Puede el progreso pasar automáticamente a otro dispositivo?</dt><dd>No. Actualmente, este juego solo se guarda en el almacenamiento del navegador local, por lo que otro perfil de navegador o dispositivo comienza con su propio progreso local separado a menos que se agregue un sistema de cuenta futuro.</dd></div></dl></div>
+      
+    </div>
+  </section>
+</body>
+</html>

@@ -155,6 +155,12 @@
 
   const staticText = [...document.querySelectorAll("[data-t]")];
   const assistiveText = [...document.querySelectorAll("[data-ta]")];
+  const resultReplayLabels = {
+    en: "Replay", "zh-Hant": "重玩", "zh-Hans": "重玩", ja: "リプレイ",
+    ko: "다시 플레이", es: "Repetir", "pt-BR": "Jogar novamente",
+    fr: "Rejouer", de: "Erneut spielen", it: "Rigioca",
+    ru: "Играть снова", hi: "फिर खेलें", ar: "إعادة اللعب",
+  };
   let run = null;
   let currentScreen = "loading";
   let resultDecisionCommitted = false;
@@ -179,6 +185,11 @@
     $("lobbyReturn").href = `/${routeSegments[locale]}/`;
     staticText.forEach((element) => { element.textContent = t(element.dataset.t); });
     assistiveText.forEach((element) => element.setAttribute("aria-label", t(element.dataset.ta)));
+    const resultActions = $("resultStage").parentElement;
+    resultActions.append($("resultStage"), $("nextMission"), $("retry"));
+    $("resultStage").textContent = t("missions");
+    $("nextMission").textContent = t("nextMission");
+    $("retry").textContent = resultReplayLabels[locale] || resultReplayLabels.en;
     document.title = `${t("title")} | WeightPlay`;
     renderMainProgress();
     renderStage();
@@ -1100,8 +1111,9 @@
     $("resultTitle").textContent = t(won ? "missionComplete" : "missionFailed");
     $("resultText").textContent = objectiveFor(run.stage);
     $("resultStats").innerHTML = `<span><b>${t("restored")}</b><strong>${restored}%</strong></span><span><b>${t("rescued")}</b><strong>${run.rescued + run.seals}</strong></span><span><b>${t("stars")}</b><strong>${"★".repeat(stars)}${"☆".repeat(3 - stars)}</strong></span>`;
-    $("nextMission").hidden = !won || run.stage.n >= 30;
-    const primaryAction = won ? (run.stage.n < 30 ? $("nextMission") : $("resultStage")) : $("retry");
+    $("nextMission").hidden = false;
+    $("nextMission").disabled = !won || run.stage.n >= 30;
+    const primaryAction = $("nextMission").disabled ? $("resultStage") : $("nextMission");
     for (const action of [$("retry"), $("resultStage"), $("nextMission")]) action.classList.toggle("primary", action === primaryAction);
     $("result").hidden = false;
     $("battleLive").hidden = true;

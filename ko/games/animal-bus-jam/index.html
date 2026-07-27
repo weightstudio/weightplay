@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <base href="/games/animal-bus-jam/" />
+    <link rel="canonical" href="https://weightplay.com/ko/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-bus-jam/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-bus-jam/" />
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="index,follow" />
+  <meta name="weightplay-audience" content="general">
+  <meta name="theme-color" content="#081622">
+  <title>판코의 버스잼 | WeightPlay</title>
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260727-shell2">
+  <meta name="description" content="고정된 출발 순서를 읽고, 올바른 승객을 노출시키고, 제한된 선입선출 대기 차선으로 인해 터미널이 잠기지 않도록 하십시오." />
+    <meta property="og:title" content="판코의 버스잼 | WeightPlay" />
+    <meta property="og:description" content="고정된 출발 순서를 읽고, 올바른 승객을 노출시키고, 제한된 선입선출 대기 차선으로 인해 터미널이 잠기지 않도록 하십시오." />
+    <meta property="og:url" content="https://weightplay.com/ko/games/animal-bus-jam/" />
+    <meta name="twitter:title" content="판코의 버스잼 | WeightPlay" />
+    <meta name="twitter:description" content="고정된 출발 순서를 읽고, 올바른 승객을 노출시키고, 제한된 선입선출 대기 차선으로 인해 터미널이 잠기지 않도록 하십시오." />
+  </head>
+<body data-screen="main" data-audience="general" data-wp-game-id="animal-bus-jam" data-wp-combined-sound="true">
+  <main id="main" class="screen main main-screen" data-screen="main">
+    <header class="main-header">
+      <a class="return" href="/" data-t-aria="returnLobby" aria-label="Return to WeightPlay">←</a>
+      <strong data-t="shortTitle">BUS JAM</strong>
+      <label class="locale"><span data-t="language">Language</span><select id="locale"></select></label>
+    </header>
+    <section class="hero">
+      <img src="../../assets/animal-bus-jam-cover-general-v4.webp" data-t-alt="coverAlt" alt="판코의 버스잼 게임 이미지">
+      <div>
+        <p class="eyebrow" data-t="kicker">NIGHT TERMINAL CONTROL</p>
+        <h1 data-t="title">판코의 버스잼</h1>
+        <p class="main-summary" data-t="summary">Read the convoy order, route each queue, and keep the holding lane from locking up.</p>
+        <button id="start" class="primary" data-t="start">Start game</button>
+      </div>
+    </section>
+    <section class="public-guide guide" aria-label="Game guide">
+      <h2 data-t="guideTitle">How to play</h2>
+      <p data-t="guideBody">Only the first bus accepts passengers. A wrong color waits in the holding lane, in order. If that lane blocks before the active bus is filled, the terminal deadlocks.</p>
+      <ol>
+        <li data-t="guideRule1">Check the active bus and its remaining seats.</li>
+        <li data-t="guideRule2">Dispatch only the front passenger of a queue.</li>
+        <li data-t="guideRule3">Use Undo before the holding lane becomes blocked.</li>
+      </ol>
+    </section>
+  </main>
+
+  <main id="stage" class="screen canvas stage stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-bus-jam-cover-general-v4.webp')" hidden>
+    <header class="scene-header">
+      <button data-back data-t-aria="back" aria-label="Back">←</button>
+      <h2 data-t="shortTitle">BUS JAM</h2>
+    </header>
+    <span id="progress" class="stage-progress"></span>
+    <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="Stage list"></section>
+    <nav class="stage-tabs" data-t-aria="stageTabs" aria-label="Stage navigation">
+      <span aria-hidden="true"></span>
+      <button type="button" class="stage-tab active" aria-current="page" data-t="stages">Stages</button>
+      <span aria-hidden="true"></span>
+    </nav>
+  </main>
+
+  <main id="battle" class="screen canvas battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
+    <header class="scene-header">
+      <button data-back data-t-aria="back" aria-label="Back">←</button>
+      <div><small id="chapter"></small><h2 id="stageName"></h2></div>
+      <span id="remaining"></span>
+    </header>
+    <section class="battle-content">
+      <div class="convoy-panel">
+        <div class="panel-label" data-t="convoy">DEPARTURE ORDER</div>
+        <div id="buses" class="buses"></div>
+      </div>
+      <div class="dispatch-floor">
+        <div class="holding-panel">
+          <div class="panel-label"><span data-t="holding">HOLDING LANE</span><span id="holdingCount"></span></div>
+          <div id="holding" class="holding"></div>
+        </div>
+        <div id="queues" class="queues" role="list" data-t-aria="queueLabel" aria-label="Passenger queues"></div>
+      </div>
+      <div class="tools">
+        <button id="undo" data-t="undo">Undo</button>
+        <button id="hint" data-t="hint">Hint</button>
+        <button id="restart" data-t="restart">Restart</button>
+      </div>
+      <p id="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
+  <dialog id="result">
+    <div class="result-mark">✓</div>
+    <p class="eyebrow" data-t="complete">TERMINAL CLEARED</p>
+    <h2 data-t="resultTitle">Every convoy departed!</h2>
+    <p id="resultBody"></p>
+    <div class="result-actions">
+      <button id="resultStages" data-t="stages">Stages</button>
+      <button id="next" class="primary" data-t="next">Next terminal</button>
+      <button id="retry" data-t="retry">Play again</button>
+    </div>
+  </dialog>
+  <dialog id="deadlock">
+    <div class="result-mark fail-mark">!</div>
+    <p class="eyebrow" data-t="deadlockKicker">ROUTE LOCKED</p>
+    <h2 data-t="deadlockTitle">The holding lane is blocked</h2>
+    <p data-t="deadlockBody">The active bus cannot be filled from the exposed passengers. Undo the last dispatch or restart.</p>
+    <div><button id="deadlockUndo" data-t="undo">Undo</button><button id="deadlockRetry" class="primary" data-t="restart">Restart</button></div>
+  </dialog>
+  <dialog id="leaveBattle" aria-labelledby="leaveBattleTitle">
+    <p class="eyebrow" data-t="leaveKicker">LEAVE TERMINAL?</p>
+    <h2 id="leaveBattleTitle" data-t="leaveTitle">Return to terminal selection?</h2>
+    <p id="leaveBattleBody"></p>
+    <div class="leave-actions">
+      <button id="continueBattle" class="primary" data-t="continueBattle">Continue playing</button>
+      <button id="returnToStage" data-t="returnStages">Return to stages</button>
+    </div>
+  </dialog>
+
+  <script src="../../src/site-config.js"></script>
+  <script>window.WONDER_SITE.localization.useLocaleRoutes = false;</script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
+  <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
+  <script src="levels.js"></script>
+  <script src="locales.js"></script>
+  <script src="strategy-locales.js"></script>
+  <script src="game.js"></script>
+  <script src="../../src/sound.js?v=20260720-locale11"></script>
+  <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260727-shell2"></script>
+<section class="game-page-info game-page-info-static" aria-label="판코의 버스잼 게임 정보">
+    
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>판코의 버스잼</h2><p>고정된 출발 순서를 읽고, 올바른 승객을 노출시키고, 제한된 선입선출 대기 차선으로 인해 터미널이 잠기지 않도록 하십시오.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>호송 및 대기 차선 전략</strong></div><div class="game-info-fact"><span>장르</span><strong>퍼즐 · 전략 · 동물</strong></div><div class="game-info-fact"><span>난이도</span><strong>도전하기 쉬움</strong></div><div class="game-info-fact"><span>예상 플레이 시간</span><strong>스테이지당 2~8분</strong></div><div class="game-info-fact"><span>훈련된 기술</span><strong>논리 · 기획 · 문제 해결</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>세계와 사명</h3><p>서티나잇 터미널은 정원이 꽉 차서 운영되고 있습니다. 활성 버스만 승객을 태울 수 있으며, 다른 모든 버스는 배차된 순서대로 대기 차선에서 대기해야 합니다.</p>
+<p>전체 호송대, 각 대기열, 활성 버스 좌석 및 모든 점유 공간 등 모든 결정이 표시됩니다. 실패는 숨겨진 트래픽이나 타이머가 아닌 경로 선택에서 발생합니다.</p></div>
+      <div class="game-info-section"><h3>시스템 작동 방식</h3><p>대기열의 맨 앞 승객만 이동할 수 있습니다. 일치하는 승객은 즉시 활성 버스에 탑승합니다.</p>
+<p>일치하지 않는 승객이 대기 차선으로 진입합니다. 첫 번째 승객은 뒤에 있는 사람이 탑승하기 전에 허가를 받아야 합니다.</p>
+<p>활성 버스가 가득 차면 출발하고 다음 버스가 활성화됩니다. 대기줄 보드 앞의 승객을 자동으로 매칭합니다.</p>
+<p>대기 차선이 가득 차고 노출된 승객이 활성 경로를 완료할 수 없는 경우 터미널이 교착 상태에 빠집니다. 실행 취소는 정확한 이전 상태를 복원합니다. 다시 시작하면 작성된 터미널이 복원됩니다.</p></div>
+      <div class="game-info-section"><h3>플레이 방법</h3><ol><li>잠금 해제된 단말기를 선택하세요.</li><li>활성 버스, 남은 좌석 및 호송의 다음 버스를 읽습니다.</li><li>미래의 색상을 대기 레인으로 보내기 전에 모든 대기열 앞부분을 비교하십시오.</li><li>다음 터미널의 잠금을 해제하려면 대기 차선을 막지 않고 모든 버스를 채우세요.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>각 보관 공간을 무료 저장 공간이 아닌 부족한 자원으로 취급하세요.</li><li>향후 색상을 보내기 전에 해당 색상이 전면 차단 장치가 되는지 확인하세요.</li><li>대기 레인이 거의 가득 찰 때마다 먼저 활성 색상을 노출합니다.</li><li>파견으로 인해 계획한 보류 순서가 변경되는 즉시 실행 취소를 사용하십시오.</li></ul></div>
+      <div class="game-info-section"><h3>캠페인 및 난이도 성장</h3><p>터미널 1에서는 흐름을 가르칩니다. 제2터미널부터는 잘못된 경로로 인해 실제 교착 상태가 발생할 수 있습니다.</p>
+<p>이후 장에서는 동일한 3개 버스 레이아웃을 반복하는 대신 네 번째 경로, 더 긴 호송대, 더 많은 대기열, 반복되는 버스 색상 및 2칸 대기 차선을 추가합니다.</p></div>
+      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>4개 경로는 색상과 문자 코드를 모두 사용합니다. 고정 호송대, FIFO 대기 차선, 결정적 대기열, 검증된 솔루션 경로는 휴대폰과 데스크톱에서 읽을 수 있는 하나의 전략 퍼즐을 정의합니다. 전체 인터페이스는 최대 920픽셀의 중앙 집중식 논리적 레이아웃을 사용합니다. 휴대폰, 가로 및 데스크탑 보기는 개별 부분을 늘리는 대신 동일한 컨트롤, 히트 영역, 아트워크 및 게임 좌표를 함께 확장합니다. 따라서 터치, 마우스 및 키보드는 동일한 법적 상태에서 작동합니다. 메인 포스터와 게임 시작 작업은 스테이지 관리와 별도로 유지되는 반면, 스테이지 선택, 전투, 대화 및 결과는 자체적으로 제한된 콘텐츠와 반환 경로를 유지합니다.</p></div>
+      <div class="game-info-section game-info-parent"><h3>학부모 메모</h3><p>이 게임은 일반 청중을 위한 시간 제한이 없는 전략 퍼즐입니다. 계정, 구매 또는 공개 리더보드가 없습니다. 로컬 지우기는 이 브라우저에 남아 있습니다. 계정을 만들지 않고도 플레이할 수 있습니다. 진행 상황은 온라인 계정이나 교차 장치 데이터베이스가 아닌 현재 브라우저 프로필의 로컬 브라우저 저장소에 저장됩니다. 사이트 데이터 삭제, 시크릿 브라우징 사용, 브라우저 변경, 다른 기기로 이동 시 별도의 저장을 생성하거나 기존 저장을 제거할 수 있습니다. 브라우저가 저장을 허용하는 경우 언어, 소리 및 모션 감소 기본 설정은 공유된 WeightPlay 컨트롤을 따릅니다. 가이드 결과는 의학적, 학교 또는 전문적 평가가 아닙니다.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>대기열 중간에서 파견할 수 있나요?</dt><dd>아니요. 노출된 앞좌석 승객만 움직일 수 있습니다.</dd></div><div><dt>승객이 대기차선으로 진입한 이유는 무엇입니까?</dt><dd>활성 버스 보드만; 모든 향후 경로는 발송 순서대로 대기합니다.</dd></div><div><dt>터미널 교착상태가 발생한 이유는 무엇입니까?</dt><dd>보류 명령으로 인해 활성 경로가 차단되었으며 노출된 승객은 경로를 지울 수 없습니다.</dd></div><div><dt>모든 터미널을 해결할 수 있습니까?</dt><dd>예. 기록된 30개의 솔루션 경로가 모두 자동으로 확인됩니다.</dd></div><div><dt>어떤 컨트롤과 화면 크기가 지원되나요?</dt><dd>동일한 규칙은 게임에서 해당 입력을 사용하는 터치, 마우스 및 키보드를 지원합니다. 인터페이스는 필요한 휴대폰, 가로 및 데스크톱 뷰포트에 걸쳐 하나의 논리적 레이아웃으로 확장됩니다.</dd></div><div><dt>진행 상황이 자동으로 다른 장치로 이동할 수 있나요?</dt><dd>아니요. 이 게임은 현재 로컬 브라우저 저장소에만 저장되므로 향후 계정 시스템이 추가되지 않는 한 다른 브라우저 프로필이나 장치는 별도의 로컬 진행 상황으로 시작됩니다.</dd></div></dl></div>
+      
+    </div>
+  </section>
+</body>
+</html>

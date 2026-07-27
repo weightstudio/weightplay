@@ -345,10 +345,11 @@
   $("hint").onclick = hint;
   $("restart").onclick = () => startLevel(levelIndex);
   $("retry").onclick = () => startLevel(levelIndex);
-  $("menu").onclick = () => {
+  $("resultStages").onclick = () => {
     $("result").close();
     selected = Math.min(29, levelIndex + 1);
-    show("main");
+    show("stage");
+    renderStage();
   };
   $("next").onclick = () => {
     if (levelIndex >= levels.length - 1) return;
