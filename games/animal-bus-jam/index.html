@@ -12,9 +12,9 @@
   <title>Panko's Bus Jam | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
+  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260727-shell2">
 </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="animal-bus-jam">
+<body data-screen="main" data-audience="general" data-wp-game-id="animal-bus-jam" data-wp-combined-sound="true">
   <main id="main" class="screen main main-screen" data-screen="main">
     <header class="main-header">
       <a class="return" href="/" data-t-aria="returnLobby" aria-label="Return to WeightPlay">←</a>
@@ -26,7 +26,7 @@
       <div>
         <p class="eyebrow" data-t="kicker">NIGHT TERMINAL CONTROL</p>
         <h1 data-t="title">Panko's Bus Jam</h1>
-        <p data-t="summary">Read the convoy order, route each queue, and keep the holding lane from locking up.</p>
+        <p class="main-summary" data-t="summary">Read the convoy order, route each queue, and keep the holding lane from locking up.</p>
         <button id="start" class="primary" data-t="start">Start game</button>
       </div>
     </section>
@@ -105,7 +105,8 @@
   <script src="locales.js"></script>
   <script src="strategy-locales.js"></script>
   <script src="game.js"></script>
+  <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260727-shell2"></script>
 </body>
 </html>

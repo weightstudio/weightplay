@@ -192,7 +192,10 @@ img{-webkit-user-drag:none}
     clip-path:inset(0);
   }
 }
-@media(prefers-reduced-motion:reduce){.party-hero.attack-launch,.enemy-unit.enemy-attacking,.summoner-hp.player-hit{animation-duration:.01ms!important}}
+@media(prefers-reduced-motion:reduce){
+  .party-hero.attack-launch,.enemy-unit.enemy-attacking,.summoner-hp.player-hit{animation-duration:.01ms!important}
+  .loader-orb,.enemy-unit.targeted .target-marker,.reel.effect-active,.reel.effect-active .reel-cell img{animation:none!important}
+}
 
 /* V7.1: short landscape keeps the explicit Stage-to-Battle decision visible. */
 @media(max-height:520px) and (orientation:landscape){

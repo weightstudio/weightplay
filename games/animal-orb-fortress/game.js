@@ -1222,7 +1222,17 @@
 
   function renderHud() {
     nodes.waveText.textContent = `${t("tierShort", { tier: state.raidTier })} · ${Math.min(state.wave, 3)}/3`;
-    nodes.coreText.textContent = `${Math.max(0, Math.ceil(state.core))}/${state.maxCore}`;
+    const currentCore = Math.max(0, Math.ceil(state.core));
+    nodes.coreText.textContent = `${currentCore}/${state.maxCore}`;
+    const coreMeter = nodes.coreText.parentElement;
+    if (coreMeter) {
+      coreMeter.setAttribute("role", "progressbar");
+      coreMeter.setAttribute("aria-label", t("core"));
+      coreMeter.setAttribute("aria-valuemin", "0");
+      coreMeter.setAttribute("aria-valuemax", String(state.maxCore));
+      coreMeter.setAttribute("aria-valuenow", String(currentCore));
+      coreMeter.setAttribute("aria-valuetext", `${t("core")} ${currentCore}/${state.maxCore}`);
+    }
     nodes.shotText.textContent = String(state.shotCount);
   }
 

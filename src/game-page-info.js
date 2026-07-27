@@ -2608,9 +2608,11 @@
   }
 
   function uiLabel(key, params = {}) {
-    const table = labels[locale()] || labels.en;
+    const activeLocale = locale();
+    const table = labels[activeLocale] || labels.en;
     const raw = table[key] || labels.en[key] || key;
-    return Object.entries(params).reduce((text, [name, value]) => text.replaceAll(`{${name}}`, String(value)), raw);
+    const localized = window.WeightPlayGameRuntimeLocales?.[activeLocale]?.[raw] || raw;
+    return Object.entries(params).reduce((text, [name, value]) => text.replaceAll(`{${name}}`, String(value)), localized);
   }
 
   function localizeSkill(skill) {
@@ -6550,6 +6552,44 @@
   let spanishResourceFailed = false;
   let japaneseResourcePromise = null;
   let japaneseResourceFailed = false;
+  const runtimeGuideResourcePromises = new Map();
+  const runtimeGuideResourceFailures = new Set();
+  const runtimeGuideSegments = {
+    "zh-Hant": "zh-tw",
+    "zh-Hans": "zh-cn",
+    ja: "ja",
+    ko: "ko",
+    es: "es",
+    "pt-BR": "pt-br",
+    fr: "fr",
+    de: "de",
+    it: "it",
+    ru: "ru",
+    hi: "hi",
+    ar: "ar",
+  };
+
+  function ensureRuntimeGuideResource(activeLocale) {
+    if (activeLocale === "en" || window.WeightPlayGameRuntimeLocales?.[activeLocale] || runtimeGuideResourceFailures.has(activeLocale)) {
+      return Promise.resolve();
+    }
+    if (runtimeGuideResourcePromises.has(activeLocale)) return runtimeGuideResourcePromises.get(activeLocale);
+    const segment = runtimeGuideSegments[activeLocale];
+    if (!segment) return Promise.resolve();
+    const promise = new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = new URL(`runtime-locales/${segment}.js?v=20260726-block-trilogy-copy1`, sharedAssetBase).href;
+      script.dataset.wpGamePageInfoRuntimeLocale = activeLocale;
+      script.onload = resolve;
+      script.onerror = () => {
+        runtimeGuideResourceFailures.add(activeLocale);
+        resolve();
+      };
+      document.head.appendChild(script);
+    });
+    runtimeGuideResourcePromises.set(activeLocale, promise);
+    return promise;
+  }
 
   function installSpanishResource() {
     const resource = window.WeightPlayGameInfoLocales?.es;
@@ -6608,11 +6648,12 @@
   function localizedGame(id) {
     const base = games[id];
     if (!base) return null;
-    const override = localizedGames[locale()]?.[id] || {};
+    const activeLocale = locale();
+    const override = localizedGames[activeLocale]?.[id] || {};
     const profile = gameplayProfiles[id] || {};
-    const localizedProfile = localizedGameplayProfiles[locale()]?.[id] || {};
+    const localizedProfile = localizedGameplayProfiles[activeLocale]?.[id] || {};
     const skills = override.skills || localizedProfile.skills || profile.skills || base.skills || [];
-    return {
+    const merged = {
       ...base,
       ...profile,
       ...localizedProfile,
@@ -6620,6 +6661,17 @@
       skills,
       genre: override.genre || localizedProfile.genre || profile.genre || [],
     };
+    const catalog = window.WeightPlayGameRuntimeLocales?.[activeLocale];
+    if (!catalog || activeLocale === "en") return merged;
+    const translateValue = (value) => {
+      if (typeof value === "string") return catalog[value] || value;
+      if (Array.isArray(value)) return value.map(translateValue);
+      if (value && typeof value === "object") {
+        return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, translateValue(item)]));
+      }
+      return value;
+    };
+    return translateValue(merged);
   }
 
   function relatedGames(activeId, activeBaseGame) {
@@ -6880,6 +6932,11 @@
   }
 
   function render() {
+    const activeLocale = locale();
+    if (activeLocale !== "en" && !window.WeightPlayGameRuntimeLocales?.[activeLocale] && !runtimeGuideResourceFailures.has(activeLocale)) {
+      ensureRuntimeGuideResource(activeLocale).then(render);
+      return;
+    }
     if (locale() === "es" && !installSpanishResource() && !spanishResourceFailed) {
       ensureSpanishResource().then(render);
       return;
