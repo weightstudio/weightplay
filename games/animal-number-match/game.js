@@ -4,7 +4,7 @@
   const $=selector=>document.querySelector(selector),screens=[...document.querySelectorAll(".screen")],levels=window.NUMBER_MATCH_LEVELS.levels;
   const storageKey="wp-animal-number-match-v1";
   let locale=read("weightPlayLocale")||read("wp-locale")||window.WonderI18n?.locale?.()||"en";if(!codes.includes(locale))locale="en";
-  let unlocked=Number(read(storageKey))||1,selected=Math.min(unlocked,30)-1,level=null,values=[],picked=null,history=[],moves=0;
+  let unlocked=Number(read(storageKey))||1,selected=Math.min(unlocked,30)-1,level=null,values=[],picked=null,history=[],moves=0,resultActionClaimed=false;
   function read(key){try{return localStorage.getItem(key)}catch{return null}}
   function write(key,value){try{localStorage.setItem(key,value)}catch{}}
   function t(key,vars={}){const value=window.NUMBER_MATCH_LOCALES[locale]?.[key]??window.NUMBER_MATCH_LOCALES.en[key]??key;return String(value).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??"")}
@@ -80,7 +80,12 @@
   }
   function complete(){
     if(selected+2>unlocked){unlocked=Math.min(31,selected+2);write(storageKey,String(unlocked))}
+    resultActionClaimed=false;$("#retry").disabled=false;$("#next").disabled=false;
     $("#resultBody").textContent=t("resultBody",{n:selected+1,moves});$("#next").textContent=selected===29?t("allDone"):t("next");setTimeout(()=>$("#result").showModal(),180);
+  }
+  function claimResultAction(action){
+    if(resultActionClaimed)return;
+    resultActionClaimed=true;$("#retry").disabled=true;$("#next").disabled=true;$("#result").close();action();
   }
   function applyLocale(){
     document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";document.title=`${t("title")} | WeightPlay`;
@@ -98,6 +103,6 @@
   $("#start").onclick=()=>show("stage");$("#stageGrid").addEventListener("wonder:stage-snap",event=>{const index=Number(event.detail?.index);if(Number.isInteger(index)&&index>=0)selectStage(index)});document.querySelectorAll("[data-back]").forEach(button=>button.onclick=()=>show(button.closest("#battle")?"stage":"main"));
   $("#undo").onclick=()=>{const last=history.pop();if(!last)return;values[last.a]=last.va;values[last.b]=last.vb;picked=null;moves=Math.max(0,moves-1);$("#status").textContent=t("undone");renderBoard()};
   $("#hint").onclick=hint;$("#shuffle").onclick=reorder;$("#restart").onclick=()=>startLevel(selected);
-  $("#retry").onclick=()=>{$("#result").close();startLevel(selected)};$("#next").onclick=()=>{$("#result").close();selected===29?show("stage"):startLevel(selected+1)};
+  $("#retry").onclick=()=>claimResultAction(()=>startLevel(selected));$("#next").onclick=()=>claimResultAction(()=>selected===29?show("stage"):startLevel(selected+1));
   applyLocale();show("main");window.__NUMBER_MATCH_TEST__={matches,visiblePair,availablePair};
 })();

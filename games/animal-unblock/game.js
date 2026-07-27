@@ -28,6 +28,7 @@
   let history = [];
   let moves = 0;
   let drag = null;
+  let resultActionClaimed = false;
 
   const saveKey = "unblockProgress";
   const progress = JSON.parse(localStorage.getItem(saveKey) || "[]");
@@ -238,9 +239,27 @@
         n: index + 1,
         moves,
       });
+      resultActionClaimed = false;
+      $("resultStages").disabled = false;
+      $("retry").disabled = false;
+      $("next").disabled = index >= levels.length - 1;
       $("result").showModal();
+      requestAnimationFrame(() =>
+        $(index >= levels.length - 1 ? "resultStages" : "next").focus({
+          preventScroll: true,
+        }),
+      );
     }
     render();
+  }
+
+  function claimResultAction(action) {
+    if (!$("result").open || resultActionClaimed) return;
+    resultActionClaimed = true;
+    ["resultStages", "next", "retry"].forEach((id) => {
+      $(id).disabled = true;
+    });
+    action();
   }
 
   function clearDrag() {
@@ -372,16 +391,22 @@
   $("undo").onclick = undo;
   $("hint").onclick = hint;
   $("restart").onclick = () => start(index);
-  $("retry").onclick = () => {
-    $("result").close();
-    start(index);
-  };
-  $("next").onclick = () => {
+  $("resultStages").onclick = () => claimResultAction(() => {
     $("result").close();
     selected = Math.min(29, index + 1);
     show("stage");
     renderStage();
-  };
+  });
+  $("next").onclick = () => claimResultAction(() => {
+    if (index >= levels.length - 1) return;
+    $("result").close();
+    selected = index + 1;
+    start(selected);
+  });
+  $("retry").onclick = () => claimResultAction(() => {
+    $("result").close();
+    start(index);
+  });
   $("locale").innerHTML = codes
     .map((code) => `<option value="${code}">${dict[code].label}</option>`)
     .join("");

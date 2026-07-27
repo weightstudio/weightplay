@@ -25,6 +25,7 @@
   let moves = 0;
   let departingBusIndexes = [];
   let departureTimer = 0;
+  let resultActionClaimed = false;
   const progressKey = "animalBusJamProgress";
   let progress;
   try { progress = JSON.parse(read(progressKey) || "[]"); } catch { progress = []; }
@@ -288,8 +289,18 @@
     progress[levelIndex] = true;
     save();
     $("resultBody").textContent = t("resultBody", { n: levelIndex + 1, moves });
+    resultActionClaimed = false;
+    $("resultStages").disabled = false;
+    $("retry").disabled = false;
     $("next").disabled = levelIndex >= levels.length - 1;
     $("result").showModal();
+  }
+
+  function claimResultAction(action) {
+    if (!$("result").open || resultActionClaimed) return;
+    resultActionClaimed = true;
+    ["resultStages", "next", "retry"].forEach((id) => { $(id).disabled = true; });
+    action();
   }
 
   function undo() {
@@ -344,19 +355,19 @@
   $("undo").onclick = undo;
   $("hint").onclick = hint;
   $("restart").onclick = () => startLevel(levelIndex);
-  $("retry").onclick = () => startLevel(levelIndex);
-  $("resultStages").onclick = () => {
+  $("retry").onclick = () => claimResultAction(() => startLevel(levelIndex));
+  $("resultStages").onclick = () => claimResultAction(() => {
     $("result").close();
     selected = Math.min(29, levelIndex + 1);
     show("stage");
     renderStage();
-  };
-  $("next").onclick = () => {
+  });
+  $("next").onclick = () => claimResultAction(() => {
     if (levelIndex >= levels.length - 1) return;
     $("result").close();
     selected = Math.min(29, levelIndex + 1);
     startLevel(selected);
-  };
+  });
   $("deadlockUndo").onclick = () => { $("deadlock").close(); undo(); };
   $("deadlockRetry").onclick = () => startLevel(levelIndex);
   $("locale").innerHTML = codes.map((code) => `<option value="${code}">${dict[code]?.label || code}</option>`).join("");
