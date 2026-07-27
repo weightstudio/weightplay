@@ -448,6 +448,8 @@
     bossWarning: "遺跡守護者即將出現！"
   });
 
+  text["zh-Hant"].gearLevelLabel = "\u7b49\u7d1a {level}";
+
   text.es = {
     title: "Cazadores Animales de Reliquias",
     menuTitle: "Explora las Ruinas Antiguas.",
@@ -1366,6 +1368,31 @@
     nodes.resultMenuBtn.classList.toggle("menu-btn", !resultMapIsPrimary);
   }
 
+  let mainFocusSettlementToken = 0;
+
+  function restoreMainStartFocus() {
+    const token = ++mainFocusSettlementToken;
+    let observer = null;
+    let stopTimer = 0;
+    const settle = () => {
+      if (token !== mainFocusSettlementToken || nodes.menuPanel.classList.contains("hidden")) {
+        observer?.disconnect();
+        clearTimeout(stopTimer);
+        return;
+      }
+      const active = document.activeElement;
+      const visibleOwner = active && active !== document.body && active.getClientRects().length > 0;
+      if (visibleOwner && active !== nodes.showStageBtn) return;
+      nodes.showStageBtn.focus({ preventScroll: true });
+    };
+    settle();
+    requestAnimationFrame(settle);
+    observer = new MutationObserver(settle);
+    observer.observe(document.body, { attributes: true, childList: true, subtree: true });
+    [80, 400, 1000].forEach((delay) => setTimeout(settle, delay));
+    stopTimer = setTimeout(() => observer.disconnect(), 1600);
+  }
+
   function showMain() {
     clearEliteSpawnTimer();
     clearAmuletConfirmation();
@@ -1387,7 +1414,7 @@
     renderTrainingPanel();
     renderEquippedGear();
     renderCampaignProgress();
-    requestAnimationFrame(() => nodes.showStageBtn.focus({ preventScroll: true }));
+    restoreMainStartFocus();
   }
 
   function syncCenteredExpedition() {
@@ -2462,7 +2489,7 @@
         ? t("resultAllCleared")
         : t("resultReady", { region: expeditionName(highestUnlocked) });
     const rows = [
-      [t("resultSummaryLevel"), formatLevelValue(profile.level)],
+      [t("resultSummaryLevel"), String(Math.max(1, Math.floor(Number(profile.level) || 1)))],
       [t("resultSummaryRooms"), `${cleared}/${ROOMS_PER_EXPEDITION}`],
       [t("resultSummaryKeys"), String(state.runKeys)],
       [t("resultSummaryGold"), String(state.runGold)],

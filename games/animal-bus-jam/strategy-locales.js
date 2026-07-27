@@ -185,4 +185,22 @@
   Object.entries(resultActions).forEach(([code, values]) => {
     if (window.BUS_JAM_LOCALES[code]) Object.assign(window.BUS_JAM_LOCALES[code], values);
   });
+  const interfaceActions = {
+    en: { stages: "Stages", stageTabs: "Stage navigation", leaveKicker: "LEAVE TERMINAL?", leaveTitle: "Return to terminal selection?", leaveBody: "Progress in Terminal {n} will be discarded. Completed terminals stay saved.", continueBattle: "Continue playing", returnStages: "Return to stages" },
+    "zh-Hant": { stages: "關卡", stageTabs: "關卡導覽", leaveKicker: "離開站點？", leaveTitle: "要返回關卡選擇嗎？", leaveBody: "第 {n} 站目前的進度將會放棄，已完成的站點仍會保留。", continueBattle: "繼續遊玩", returnStages: "返回關卡" },
+    "zh-Hans": { stages: "关卡", stageTabs: "关卡导航", leaveKicker: "离开站点？", leaveTitle: "要返回关卡选择吗？", leaveBody: "第 {n} 站当前的进度将会放弃，已完成的站点仍会保留。", continueBattle: "继续游玩", returnStages: "返回关卡" },
+    ja: { stages: "ステージ", stageTabs: "ステージナビゲーション", leaveKicker: "ターミナルを離れますか？", leaveTitle: "ステージ選択に戻りますか？", leaveBody: "ターミナル {n} の現在の進行は失われます。クリア済みの記録は残ります。", continueBattle: "プレイを続ける", returnStages: "ステージへ戻る" },
+    ko: { stages: "스테이지", stageTabs: "스테이지 탐색", leaveKicker: "터미널을 나갈까요?", leaveTitle: "스테이지 선택으로 돌아갈까요?", leaveBody: "터미널 {n}의 현재 진행은 사라집니다. 완료 기록은 유지됩니다.", continueBattle: "계속 플레이", returnStages: "스테이지로 돌아가기" },
+    es: { stages: "Niveles", stageTabs: "Navegación de niveles", leaveKicker: "¿SALIR DE LA TERMINAL?", leaveTitle: "¿Volver a la selección de niveles?", leaveBody: "Se perderá el progreso actual de la terminal {n}. Las terminales completadas seguirán guardadas.", continueBattle: "Seguir jugando", returnStages: "Volver a niveles" },
+    "pt-BR": { stages: "Fases", stageTabs: "Navegação de fases", leaveKicker: "SAIR DO TERMINAL?", leaveTitle: "Voltar à seleção de fases?", leaveBody: "O progresso atual do terminal {n} será perdido. Terminais concluídos continuam salvos.", continueBattle: "Continuar jogando", returnStages: "Voltar às fases" },
+    fr: { stages: "Niveaux", stageTabs: "Navigation des niveaux", leaveKicker: "QUITTER LE TERMINAL ?", leaveTitle: "Revenir au choix des niveaux ?", leaveBody: "La progression actuelle du terminal {n} sera perdue. Les terminaux terminés restent enregistrés.", continueBattle: "Continuer à jouer", returnStages: "Retour aux niveaux" },
+    de: { stages: "Stufen", stageTabs: "Stufennavigation", leaveKicker: "TERMINAL VERLASSEN?", leaveTitle: "Zur Stufenauswahl zurückkehren?", leaveBody: "Der aktuelle Fortschritt in Terminal {n} geht verloren. Abgeschlossene Terminals bleiben gespeichert.", continueBattle: "Weiterspielen", returnStages: "Zurück zu den Stufen" },
+    it: { stages: "Livelli", stageTabs: "Navigazione livelli", leaveKicker: "USCIRE DAL TERMINAL?", leaveTitle: "Tornare alla selezione dei livelli?", leaveBody: "I progressi attuali del terminal {n} andranno persi. I terminal completati restano salvati.", continueBattle: "Continua a giocare", returnStages: "Torna ai livelli" },
+    ru: { stages: "Уровни", stageTabs: "Навигация по уровням", leaveKicker: "ПОКИНУТЬ ТЕРМИНАЛ?", leaveTitle: "Вернуться к выбору уровней?", leaveBody: "Текущий прогресс терминала {n} будет потерян. Пройденные терминалы останутся сохранены.", continueBattle: "Продолжить игру", returnStages: "Вернуться к уровням" },
+    hi: { stages: "स्तर", stageTabs: "स्तर नेविगेशन", leaveKicker: "टर्मिनल छोड़ें?", leaveTitle: "स्तर चयन पर लौटें?", leaveBody: "टर्मिनल {n} की मौजूदा प्रगति मिट जाएगी। पूरे किए गए टर्मिनल सुरक्षित रहेंगे।", continueBattle: "खेल जारी रखें", returnStages: "स्तरों पर लौटें" },
+    ar: { stages: "المراحل", stageTabs: "التنقل بين المراحل", leaveKicker: "مغادرة المحطة؟", leaveTitle: "العودة إلى اختيار المراحل؟", leaveBody: "سيتم فقدان التقدم الحالي في المحطة {n}. ستبقى المحطات المكتملة محفوظة.", continueBattle: "متابعة اللعب", returnStages: "العودة إلى المراحل" },
+  };
+  Object.entries(interfaceActions).forEach(([code, values]) => {
+    if (window.BUS_JAM_LOCALES[code]) Object.assign(window.BUS_JAM_LOCALES[code], values);
+  });
 })();

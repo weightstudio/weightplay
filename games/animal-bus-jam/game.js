@@ -79,6 +79,7 @@
     renderStage();
     if (screen === "battle" && state) render();
     if ($("result").open) $("resultBody").textContent = t("resultBody", { n: levelIndex + 1, moves });
+    if ($("leaveBattle").open) $("leaveBattleBody").textContent = t("leaveBody", { n: levelIndex + 1 });
   }
 
   function show(name) {
@@ -234,6 +235,7 @@
     moves = 0;
     $("result").close();
     $("deadlock").close();
+    $("leaveBattle").close();
     show("battle");
     render();
     $("status").textContent = t("status");
@@ -317,8 +319,23 @@
   }
 
   $("start").onclick = () => { show("stage"); renderStage(); };
-  root.querySelectorAll("[data-back]").forEach((button) => {
-    button.onclick = () => show(screen === "battle" ? "stage" : "main");
+  const stageBack = $("stage").querySelector("[data-back]");
+  const battleBack = $("battle").querySelector("[data-back]");
+  stageBack.onclick = () => show("main");
+  battleBack.onclick = () => {
+    if (departureTimer || $("result").open || $("deadlock").open) return;
+    $("leaveBattleBody").textContent = t("leaveBody", { n: levelIndex + 1 });
+    $("leaveBattle").showModal();
+  };
+  $("continueBattle").onclick = () => $("leaveBattle").close();
+  $("returnToStage").onclick = () => {
+    $("leaveBattle").close();
+    selected = levelIndex;
+    show("stage");
+    renderStage();
+  };
+  $("leaveBattle").addEventListener("close", () => {
+    if (screen === "battle") battleBack.focus();
   });
   $("stageGrid").addEventListener("wonder:stage-snap", (event) => {
     const index = Number(event.detail?.index);

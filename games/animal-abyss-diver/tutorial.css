@@ -55,7 +55,7 @@
 }
 
 .oxygen-meter span {
-  font-size: 0.68rem;
+  font-size: 0.82rem;
 }
 
 .oxygen-meter i {
@@ -333,7 +333,7 @@
   max-width: none;
   height: 100%;
   min-height: 0;
-  font-size: 0.75rem;
+  font-size: 0.82rem;
   font-weight: 900;
 }
 
@@ -346,8 +346,8 @@
 }
 
 .utility-controls button .ui-icon { width: 24px; height: 24px; }
-.utility-controls button span { font-size: 0.58rem; }
-.utility-controls button b { font-size: 0.7rem; }
+.utility-controls button span { font-size: 0.68rem; }
+.utility-controls button b { font-size: 0.76rem; }
 
 .lane-controls button {
   display: grid;

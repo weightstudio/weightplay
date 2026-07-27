@@ -48,6 +48,11 @@
       <span id="progress"></span>
     </header>
     <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="Stage list"></section>
+    <nav class="stage-tabs" data-t-aria="stageTabs" aria-label="Stage navigation">
+      <span aria-hidden="true"></span>
+      <button type="button" class="stage-tab active" aria-current="page" data-t="stages">Stages</button>
+      <span aria-hidden="true"></span>
+    </nav>
   </main>
 
   <main id="battle" class="screen canvas battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
@@ -95,6 +100,15 @@
     <h2 data-t="deadlockTitle">The holding lane is blocked</h2>
     <p data-t="deadlockBody">The active bus cannot be filled from the exposed passengers. Undo the last dispatch or restart.</p>
     <div><button id="deadlockUndo" data-t="undo">Undo</button><button id="deadlockRetry" class="primary" data-t="restart">Restart</button></div>
+  </dialog>
+  <dialog id="leaveBattle" aria-labelledby="leaveBattleTitle">
+    <p class="eyebrow" data-t="leaveKicker">LEAVE TERMINAL?</p>
+    <h2 id="leaveBattleTitle" data-t="leaveTitle">Return to terminal selection?</h2>
+    <p id="leaveBattleBody"></p>
+    <div class="leave-actions">
+      <button id="continueBattle" class="primary" data-t="continueBattle">Continue playing</button>
+      <button id="returnToStage" data-t="returnStages">Return to stages</button>
+    </div>
   </dialog>
 
   <script src="../../src/site-config.js"></script>
