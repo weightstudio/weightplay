@@ -5,6 +5,7 @@
  */
 .wp-shell-header {
   position: relative;
+  z-index: 100;
   isolation: isolate;
 }
 
@@ -49,6 +50,11 @@
   transform: none !important;
   text-align: center !important;
   margin: 0 !important;
+}
+
+.wp-main-shell-header > .wp-shell-main-title {
+  font: 800 22px/1.2 system-ui, sans-serif !important;
+  letter-spacing: 0 !important;
 }
 
 .wp-shell-return {
@@ -128,7 +134,7 @@
   padding: 14px;
   border: 1px solid #ffffff42;
   border-radius: 16px;
-  background: #071426f5;
+  background: #071426;
   color: #fff;
   box-shadow: 0 18px 45px #0009;
   text-align: start;
@@ -144,12 +150,33 @@
 
 .wp-shell-settings-row {
   display: grid;
-  gap: 6px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
   font: 800 13px/1.25 system-ui, sans-serif;
 }
 
+.wp-shell-settings-row > span:first-child {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.wp-shell-language-row > :not(span:first-child) {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  width: 144px !important;
+  max-width: 144px !important;
+}
+
+.wp-shell-language-row > :not(span:first-child) > span {
+  display: none !important;
+}
+
 .wp-shell-settings-row select {
-  width: 100% !important;
+  width: 144px !important;
+  max-width: 144px !important;
   min-height: 44px !important;
   margin: 0 !important;
   border: 1px solid #ffffff42 !important;
@@ -316,6 +343,11 @@ body.wp-shell-battle-active .wp-generated-battle-header > [data-wp-return="battl
   text-align: center !important;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.wp-stage-shell-header > :is(h1, h2, strong) {
+  font: 800 22px/1.2 system-ui, sans-serif !important;
+  letter-spacing: 0 !important;
 }
 
 .wp-standard-main-screen {
@@ -486,9 +518,12 @@ body:is(.wp-shell-stage-active, .wp-shell-battle-active)
 }
 
 .wp-stage-shell-header > .wp-shell-settings {
-  position: absolute;
-  top: 4px;
-  right: 4px;
+  position: relative;
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+  top: auto;
+  right: auto;
 }
 
 .wp-stage-shell-header > .wp-shell-settings .wp-shell-language-row {
@@ -496,6 +531,11 @@ body:is(.wp-shell-stage-active, .wp-shell-battle-active)
 }
 
 @media (max-width: 699px) {
+  .wp-main-shell-header > .wp-shell-main-title,
+  .wp-stage-shell-header > :is(h1, h2, strong) {
+    font-size: 20px !important;
+  }
+
   .wp-main-shell-header {
     grid-template-columns: 58px minmax(0, 1fr) 58px !important;
     gap: 4px !important;

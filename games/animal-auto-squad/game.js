@@ -4485,13 +4485,29 @@
       .filter((button) => !button.classList.contains("is-hidden"));
   }
 
+  let battleDecisionObserver = null;
+
+  function setCoveredBattleChild(child, panel, active) {
+    if (!(child instanceof HTMLElement) || child === panel) return;
+    child.inert = active;
+    if (active) child.setAttribute("aria-hidden", "true");
+    else child.removeAttribute("aria-hidden");
+  }
+
   function setBattleDecisionOwnership(panel, active) {
+    battleDecisionObserver?.disconnect();
+    battleDecisionObserver = null;
     [...nodes.gamePanel.children].forEach((child) => {
-      if (child === panel) return;
-      child.inert = active;
-      if (active) child.setAttribute("aria-hidden", "true");
-      else child.removeAttribute("aria-hidden");
+      setCoveredBattleChild(child, panel, active);
     });
+    if (!active) return;
+
+    battleDecisionObserver = new MutationObserver((records) => {
+      records.forEach((record) => {
+        record.addedNodes.forEach((child) => setCoveredBattleChild(child, panel, true));
+      });
+    });
+    battleDecisionObserver.observe(nodes.gamePanel, { childList: true });
   }
 
   function trapBattleDecisionFocus(panel, event) {
@@ -4519,13 +4535,25 @@
     owner?.focus({ preventScroll: true });
   }
 
+  let resultOwnershipObserver = null;
+
   function setResultOwnership(active) {
+    resultOwnershipObserver?.disconnect();
+    resultOwnershipObserver = null;
     [...nodes.gamePanel.children].forEach((child) => {
       if (child === nodes.resultPanel) return;
       child.inert = active;
       if (active) child.setAttribute("aria-hidden", "true");
       else child.removeAttribute("aria-hidden");
     });
+    if (!active) return;
+
+    resultOwnershipObserver = new MutationObserver((records) => {
+      records.forEach((record) => {
+        record.addedNodes.forEach((child) => setCoveredBattleChild(child, nodes.resultPanel, true));
+      });
+    });
+    resultOwnershipObserver.observe(nodes.gamePanel, { childList: true });
   }
 
   function visibleResultActions() {

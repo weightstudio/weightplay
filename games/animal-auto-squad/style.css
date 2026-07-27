@@ -369,7 +369,10 @@ body:not(.squad-stage-select):not(.squad-active) .sound-toggle {
     aspect-ratio: auto;
     object-position: center 38%;
   }
-  body:not(.squad-stage-select):not(.squad-active) .menu-copy { gap: 7px; }
+  body:not(.squad-stage-select):not(.squad-active) .menu-copy,
+  body:not(.squad-stage-select):not(.squad-active) #menuPanel .wp-standard-main-copy {
+    gap: 4px !important;
+  }
   body:not(.squad-stage-select):not(.squad-active) .menu-copy > strong {
     font-size: 1.25rem;
     line-height: 1.05;
@@ -379,7 +382,6 @@ body:not(.squad-stage-select):not(.squad-active) .sound-toggle {
     line-height: 1.25;
   }
   body:not(.squad-stage-select):not(.squad-active) .profile-grid > div { padding: 6px; }
-  body:not(.squad-stage-select):not(.squad-active) #showStageBtn { min-height: 44px; }
 }
 
 @media (max-height: 470px) and (orientation: landscape) {
