@@ -11,6 +11,8 @@
   let active=null;
   let returnFocus=null;
   let pendingOpener=null;
+  let resultDecisionCommitted=false;
+  let resultWasOpen=false;
   const heldDecisionKeys=new Set();
 
   const visible=spec=>spec.node&&!spec.node.hidden;
@@ -25,6 +27,9 @@
   }
 
   function sync(){
+    const resultOpen=visible(specs[3]);
+    if(resultOpen&&!resultWasOpen)resultDecisionCommitted=false;
+    resultWasOpen=resultOpen;
     const next=specs.find(visible)||null;
     if(next===active)return;
     const previous=active;
@@ -65,6 +70,14 @@
   document.addEventListener("click",event=>{
     const opener=event.target.closest?.("#battleHelp,#battleBack,#breakerPause");
     if(opener)pendingOpener=opener;
+    const resultAction=event.target.closest?.("#resultModal button");
+    if(!resultAction)return;
+    if(resultDecisionCommitted||specs[3].node?.hidden){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return;
+    }
+    resultDecisionCommitted=true;
   },true);
 
   const decisionKey=event=>event.key==="Enter"||event.key===" "?event.key:"";

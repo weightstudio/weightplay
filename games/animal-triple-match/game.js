@@ -789,16 +789,23 @@
     if ((event.shiftKey && document.activeElement === first) || (!event.shiftKey && document.activeElement === last)) { event.preventDefault(); (event.shiftKey ? last : first).focus(); }
   }
   function sound(kind) {
-    if (!save.sound) return;
+    const volume = Math.max(0, Math.min(100, Number(localStorage.getItem("weightPlayEffectsVolume") ?? 80))) / 100;
+    if (!save.sound || volume <= 0) return;
     try {
       audio ||= new (window.AudioContext || window.webkitAudioContext)();
       const tones = { start:[392,.08],pick:[520,.05],match:[784,.18],crack:[220,.08],reveal:[660,.1],shuffle:[330,.12],undo:[280,.08],hint:[880,.1],win:[988,.35],fail:[170,.28] };
       const [frequency, duration] = tones[kind] || [440,.06], osc = audio.createOscillator(), gain = audio.createGain();
       osc.type = kind === "fail" ? "sawtooth" : "sine"; osc.frequency.value = frequency; gain.gain.setValueAtTime(.0001, audio.currentTime);
-      gain.gain.exponentialRampToValueAtTime(.12, audio.currentTime + .01); gain.gain.exponentialRampToValueAtTime(.0001, audio.currentTime + duration);
+      gain.gain.exponentialRampToValueAtTime(Math.max(.0001, .12 * volume), audio.currentTime + .01); gain.gain.exponentialRampToValueAtTime(.0001, audio.currentTime + duration);
       osc.connect(gain).connect(audio.destination); osc.start(); osc.stop(audio.currentTime + duration + .03);
     } catch {}
   }
+  window.addEventListener("wonder:audio-volume-change", event => {
+    if (event.detail?.channel !== "effects") return;
+    save.sound = Number(event.detail.value) > 0;
+    persist();
+    renderRun();
+  });
   function track(name, data = {}) { try { window.WeightPlayAnalytics?.track?.(name, { game_id: "animal-triple-match", ...data }); } catch {} }
 
   els.board.addEventListener("pointerdown", event => {

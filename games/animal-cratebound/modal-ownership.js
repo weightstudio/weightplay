@@ -9,6 +9,8 @@
   ];
   let active=null;
   let returnFocus=null;
+  let resultDecisionCommitted=false;
+  let resultWasOpen=false;
   const heldDecisionKeys=new Set();
 
   const visible=spec=>spec.node&&!spec.node.hidden;
@@ -23,6 +25,9 @@
   }
 
   function sync(){
+    const resultOpen=visible(specs[2]);
+    if(resultOpen&&!resultWasOpen)resultDecisionCommitted=false;
+    resultWasOpen=resultOpen;
     const next=specs.find(visible)||null;
     if(next===active)return;
     const previous=active;
@@ -78,6 +83,17 @@
   },true);
   window.addEventListener("blur",()=>heldDecisionKeys.clear());
   document.addEventListener("visibilitychange",()=>{if(document.hidden)heldDecisionKeys.clear();});
+
+  document.addEventListener("click",event=>{
+    const resultAction=event.target.closest?.("#resultModal button");
+    if(!resultAction)return;
+    if(resultDecisionCommitted||specs[2].node?.hidden){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return;
+    }
+    resultDecisionCommitted=true;
+  },true);
 
   document.addEventListener("keydown",event=>{
     if(!active)return;

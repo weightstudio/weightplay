@@ -113,7 +113,7 @@
 }
 
 .wp-shell-settings-button:focus-visible,
-.wp-shell-settings-popover :is(button, select):focus-visible {
+.wp-shell-settings-popover :is(button, select, input):focus-visible {
   outline: 3px solid #66e6bd;
   outline-offset: 2px;
 }
@@ -159,18 +159,28 @@
   padding: 0 10px !important;
 }
 
-.wp-shell-sound-row > button,
-.wp-shell-settings-row .sound-toggle {
-  position: static !important;
-  inset: auto !important;
-  transform: none !important;
-  width: 100% !important;
-  height: 44px !important;
-  min-height: 44px !important;
-  max-height: 44px !important;
-  border-radius: 10px !important;
-  cursor: pointer !important;
-  touch-action: manipulation !important;
+.wp-shell-volume-control {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 42px;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+}
+
+.wp-shell-volume-control input[type="range"] {
+  width: 100%;
+  min-width: 0;
+  height: 28px;
+  margin: 0;
+  accent-color: #66e6bd;
+  cursor: pointer;
+}
+
+.wp-shell-volume-control output {
+  color: #dffdf4;
+  font: 800 12px/1 system-ui, sans-serif;
+  text-align: end;
+  font-variant-numeric: tabular-nums;
 }
 
 .wp-shell-legacy-control {
@@ -382,6 +392,11 @@ body.wp-shell-battle-active .wp-generated-battle-header > [data-wp-return="battl
 }
 
 body:is(.wp-shell-stage-active, .wp-shell-battle-active) .wp-standard-main-composition {
+  display: none !important;
+}
+
+body:is(.wp-shell-stage-active, .wp-shell-battle-active)
+  :is(.game-page-info, .public-guide, .game-guide, .guide) {
   display: none !important;
 }
 

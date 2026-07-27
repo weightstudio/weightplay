@@ -1,10 +1,15 @@
 (function () {
   const muteKey = "wonderSoundMuted";
+  const effectsVolumeKey = "weightPlayEffectsVolume";
+  const musicVolumeKey = "weightPlayMusicVolume";
   const positionKey = "wonderSoundTogglePosition";
   const localeKey = "weightPlayLocale";
   let audioContext = null;
   let unlocked = false;
   let muted = false;
+  let effectsVolume = 80;
+  let musicVolume = 60;
+  let lastAudibleEffectsVolume = 80;
   let dragState = null;
 
   const labels = {
@@ -37,6 +42,20 @@
 
   try {
     muted = localStorage.getItem(muteKey) === "1";
+    const storedEffectsVolume = localStorage.getItem(effectsVolumeKey);
+    const storedMusicVolume = localStorage.getItem(musicVolumeKey);
+    const savedEffectsVolume = Number(storedEffectsVolume);
+    const savedMusicVolume = Number(storedMusicVolume);
+    if (storedEffectsVolume != null && Number.isFinite(savedEffectsVolume) && savedEffectsVolume >= 0 && savedEffectsVolume <= 100) {
+      effectsVolume = savedEffectsVolume;
+    } else if (muted) {
+      effectsVolume = 0;
+    }
+    if (storedMusicVolume != null && Number.isFinite(savedMusicVolume) && savedMusicVolume >= 0 && savedMusicVolume <= 100) {
+      musicVolume = savedMusicVolume;
+    }
+    muted = effectsVolume === 0;
+    if (effectsVolume > 0) lastAudibleEffectsVolume = effectsVolume;
   } catch {
     muted = false;
   }
@@ -121,7 +140,7 @@
   }
 
   function play(name) {
-    if (muted) return;
+    if (muted || effectsVolume <= 0) return;
     const context = ensureContext();
     const notes = sounds[name];
     if (!context || !notes) return;
@@ -138,7 +157,10 @@
       oscillator.type = "sine";
       oscillator.frequency.value = frequency;
       gain.gain.setValueAtTime(0.0001, start + offset);
-      gain.gain.exponentialRampToValueAtTime(gainValue, start + offset + 0.01);
+      gain.gain.exponentialRampToValueAtTime(
+        Math.max(0.0001, gainValue * effectsVolume / 100),
+        start + offset + 0.01,
+      );
       gain.gain.exponentialRampToValueAtTime(0.0001, start + offset + 0.16);
 
       oscillator.connect(gain);
@@ -148,14 +170,60 @@
     });
   }
 
-  function setMuted(value) {
-    muted = value;
+  function clampVolume(value) {
+    const numeric = Number(value);
+    if (!Number.isFinite(numeric)) return 0;
+    return Math.max(0, Math.min(100, Math.round(numeric)));
+  }
+
+  function applyMediaVolumes() {
+    document.querySelectorAll("audio").forEach((audio) => {
+      const isMusic = audio.matches("[data-wp-music],[data-music],audio[loop]");
+      const volume = isMusic ? musicVolume : effectsVolume;
+      try {
+        audio.volume = volume / 100;
+      } catch {
+        // Some browser-owned media elements do not expose mutable volume.
+      }
+    });
+  }
+
+  function announceVolumeChange(channel, value) {
+    window.dispatchEvent(new CustomEvent("wonder:audio-volume-change", {
+      detail: { channel, value, effectsVolume, musicVolume },
+    }));
+  }
+
+  function setEffectsVolume(value, { track = true } = {}) {
+    effectsVolume = clampVolume(value);
+    muted = effectsVolume === 0;
+    if (effectsVolume > 0) lastAudibleEffectsVolume = effectsVolume;
     try {
+      localStorage.setItem(effectsVolumeKey, String(effectsVolume));
       localStorage.setItem(muteKey, muted ? "1" : "0");
     } catch {
       // Sound preferences are optional.
     }
+    applyMediaVolumes();
     updateToggle();
+    announceVolumeChange("effects", effectsVolume);
+    if (track) window.WonderAnalytics?.track("sound_volume", { volume: effectsVolume });
+  }
+
+  function setMusicVolume(value, { track = true } = {}) {
+    musicVolume = clampVolume(value);
+    try {
+      localStorage.setItem(musicVolumeKey, String(musicVolume));
+    } catch {
+      // Sound preferences are optional.
+    }
+    applyMediaVolumes();
+    announceVolumeChange("music", musicVolume);
+    if (track) window.WonderAnalytics?.track("music_volume", { volume: musicVolume });
+  }
+
+  function setMuted(value) {
+    setEffectsVolume(value ? 0 : lastAudibleEffectsVolume || 80);
     window.WonderAnalytics?.track("sound_toggle", { muted });
   }
 
@@ -420,7 +488,19 @@
     unlock,
     isMuted: () => muted,
     setMuted,
+    getEffectsVolume: () => effectsVolume,
+    setEffectsVolume,
+    getMusicVolume: () => musicVolume,
+    setMusicVolume,
   };
+
+  applyMediaVolumes();
+  new MutationObserver((records) => {
+    if (records.some((record) => [...record.addedNodes].some((node) => (
+      node.nodeType === Node.ELEMENT_NODE
+      && (node.matches?.("audio") || node.querySelector?.("audio"))
+    )))) applyMediaVolumes();
+  }).observe(document.body, { childList: true, subtree: true });
 
   if (document.body.dataset.soundToggle !== "off") {
     installToggle();

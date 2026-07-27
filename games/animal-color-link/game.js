@@ -116,7 +116,9 @@
     setTimeout(()=>$("#result").showModal(),220);
   }
   function playTone(frequency,duration){
-    try{const audio=new(window.AudioContext||window.webkitAudioContext)(),osc=audio.createOscillator(),gain=audio.createGain();osc.frequency.value=frequency;gain.gain.setValueAtTime(.045,audio.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);osc.connect(gain).connect(audio.destination);osc.start();osc.stop(audio.currentTime+duration)}catch{}
+    const volume=Math.max(0,Math.min(100,Number(localStorage.getItem("weightPlayEffectsVolume")??80)))/100;
+    if(volume<=0)return;
+    try{const audio=new(window.AudioContext||window.webkitAudioContext)(),osc=audio.createOscillator(),gain=audio.createGain();osc.frequency.value=frequency;gain.gain.setValueAtTime(.045*volume,audio.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);osc.connect(gain).connect(audio.destination);osc.start();osc.stop(audio.currentTime+duration)}catch{}
   }
   function hint(){
     const unresolved=Object.keys(level.solution).map(Number).find(color=>!paths[color]);

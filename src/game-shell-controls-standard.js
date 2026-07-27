@@ -15,19 +15,19 @@
   window.__weightPlayShellControlsOrigin = document.querySelector("base")?.getAttribute("href") || "no-base";
 
   const COPY = {
-    en: ["Settings", "Language", "Sound Effects"],
-    "zh-Hant": ["設定", "語言", "音效"],
-    "zh-Hans": ["设置", "语言", "音效"],
-    ja: ["設定", "言語", "効果音"],
-    ko: ["설정", "언어", "효과음"],
-    es: ["Configuración", "Idioma", "Sonido"],
-    "pt-BR": ["Configurações", "Idioma", "Som"],
-    fr: ["Paramètres", "Langue", "Son"],
-    de: ["Einstellungen", "Sprache", "Ton"],
-    it: ["Impostazioni", "Lingua", "Audio"],
-    ru: ["Настройки", "Язык", "Звук"],
-    hi: ["सेटिंग्स", "भाषा", "ध्वनि"],
-    ar: ["الإعدادات", "اللغة", "الصوت"],
+    en: ["Settings", "Language", "Music", "Sound Effects"],
+    "zh-Hant": ["設定", "語言", "音樂", "音效"],
+    "zh-Hans": ["设置", "语言", "音乐", "音效"],
+    ja: ["設定", "言語", "音楽", "効果音"],
+    ko: ["설정", "언어", "음악", "효과음"],
+    es: ["Configuración", "Idioma", "Música", "Efectos de sonido"],
+    "pt-BR": ["Configurações", "Idioma", "Música", "Efeitos sonoros"],
+    fr: ["Paramètres", "Langue", "Musique", "Effets sonores"],
+    de: ["Einstellungen", "Sprache", "Musik", "Soundeffekte"],
+    it: ["Impostazioni", "Lingua", "Musica", "Effetti sonori"],
+    ru: ["Настройки", "Язык", "Музыка", "Звуковые эффекты"],
+    hi: ["सेटिंग्स", "भाषा", "संगीत", "ध्वनि प्रभाव"],
+    ar: ["الإعدادات", "اللغة", "الموسيقى", "المؤثرات الصوتية"],
   };
 
   const MAIN_SELECTORS = [
@@ -124,7 +124,12 @@
   let popover;
   let title;
   let languageRow;
+  let musicRow;
   let soundRow;
+  let musicRange;
+  let musicOutput;
+  let soundRange;
+  let soundOutput;
   let localeOwner;
   let soundToggle;
   let currentHeader;
@@ -170,7 +175,10 @@
     button.setAttribute("aria-label", copy[0]);
     popover.setAttribute("aria-label", copy[0]);
     languageRow.querySelector("span").textContent = copy[1];
-    soundRow.querySelector("span").textContent = copy[2];
+    musicRow.querySelector("span").textContent = copy[2];
+    soundRow.querySelector("span").textContent = copy[3];
+    musicRange.setAttribute("aria-label", copy[2]);
+    soundRange.setAttribute("aria-label", copy[3]);
   }
 
   function build() {
@@ -198,12 +206,64 @@
     languageRow.className = "wp-shell-settings-row wp-shell-language-row";
     languageRow.innerHTML = "<span></span>";
 
-    soundRow = document.createElement("div");
-    soundRow.className = "wp-shell-settings-row wp-shell-sound-row";
-    soundRow.innerHTML = "<span></span>";
+    musicRow = document.createElement("label");
+    musicRow.className = "wp-shell-settings-row wp-shell-music-row";
+    musicRow.innerHTML = '<span></span><div class="wp-shell-volume-control"><input type="range" min="0" max="100" step="1" data-wp-music-volume><output></output></div>';
+    musicRange = musicRow.querySelector("input");
+    musicOutput = musicRow.querySelector("output");
 
-    popover.append(title, languageRow, soundRow);
+    soundRow = document.createElement("label");
+    soundRow.className = "wp-shell-settings-row wp-shell-sound-row";
+    soundRow.innerHTML = '<span></span><div class="wp-shell-volume-control"><input type="range" min="0" max="100" step="1" data-wp-effects-volume><output></output></div>';
+    soundRange = soundRow.querySelector("input");
+    soundOutput = soundRow.querySelector("output");
+
+    popover.append(title, languageRow, musicRow, soundRow);
     host.append(button, popover);
+
+    const setOutput = (range, output) => {
+      output.value = `${range.value}%`;
+      output.textContent = `${range.value}%`;
+      range.style.setProperty("--wp-volume", `${range.value}%`);
+    };
+    const persistVolume = (key, channel, value) => {
+      try {
+        localStorage.setItem(key, String(value));
+      } catch {
+        // Audio preferences are optional when storage is unavailable.
+      }
+      window.dispatchEvent(new CustomEvent("wonder:audio-volume-change", {
+        detail: {
+          channel,
+          value: Number(value),
+          musicVolume: Number(musicRange.value),
+          effectsVolume: Number(soundRange.value),
+        },
+      }));
+    };
+    musicRange.addEventListener("input", () => {
+      setOutput(musicRange, musicOutput);
+      if (window.WonderSound?.setMusicVolume) {
+        window.WonderSound.setMusicVolume(musicRange.value);
+      } else {
+        persistVolume("weightPlayMusicVolume", "music", musicRange.value);
+      }
+    });
+    soundRange.addEventListener("input", () => {
+      setOutput(soundRange, soundOutput);
+      if (window.WonderSound?.setEffectsVolume) {
+        window.WonderSound.setEffectsVolume(soundRange.value);
+      } else {
+        persistVolume("weightPlayEffectsVolume", "effects", soundRange.value);
+      }
+    });
+    window.addEventListener("wonder:audio-volume-change", (event) => {
+      const detail = event.detail || {};
+      if (Number.isFinite(detail.musicVolume)) musicRange.value = String(detail.musicVolume);
+      if (Number.isFinite(detail.effectsVolume)) soundRange.value = String(detail.effectsVolume);
+      setOutput(musicRange, musicOutput);
+      setOutput(soundRange, soundOutput);
+    });
 
     button.addEventListener("click", () => setOpen(popover.hidden));
     document.addEventListener("pointerdown", (event) => {
@@ -239,10 +299,32 @@
 
     const candidate = document.querySelector("button[data-sound-toggle]");
     if (candidate && candidate !== soundToggle) soundToggle = candidate;
-    if (soundToggle && !soundRow.contains(soundToggle)) soundRow.append(soundToggle);
+    if (soundToggle) soundToggle.classList.add("wp-shell-legacy-control");
+
+    const readStored = (key, fallback) => {
+      try {
+        const stored = localStorage.getItem(key);
+        if (stored == null || stored === "") return fallback;
+        const value = Number(stored);
+        return Number.isFinite(value) && value >= 0 && value <= 100 ? value : fallback;
+      } catch {
+        return fallback;
+      }
+    };
+    const musicValue = window.WonderSound?.getMusicVolume?.()
+      ?? readStored("weightPlayMusicVolume", 60);
+    const soundValue = window.WonderSound?.getEffectsVolume?.()
+      ?? readStored("weightPlayEffectsVolume", window.WonderSound?.isMuted?.() ? 0 : 80);
+    musicRange.value = String(musicValue);
+    soundRange.value = String(soundValue);
+    musicOutput.value = `${musicValue}%`;
+    musicOutput.textContent = `${musicValue}%`;
+    soundOutput.value = `${soundValue}%`;
+    soundOutput.textContent = `${soundValue}%`;
+    musicRange.style.setProperty("--wp-volume", `${musicValue}%`);
+    soundRange.style.setProperty("--wp-volume", `${soundValue}%`);
 
     languageRow.hidden = !localeOwner;
-    soundRow.hidden = !soundToggle;
   }
 
   function activeScreen() {
@@ -655,7 +737,7 @@
       }
     }
     host.dataset.screenOwner = type;
-    host.hidden = type === "stage" && !soundToggle;
+    host.hidden = false;
   }
 
   function init() {

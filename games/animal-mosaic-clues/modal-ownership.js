@@ -9,6 +9,8 @@
   ];
   let activeSpec=null;
   let returnFocus=null;
+  let resultDecisionCommitted=false;
+  let resultWasOpen=false;
   const heldDecisionKeys=new Set();
 
   const visible=spec=>spec.node&&!spec.node.hidden;
@@ -28,6 +30,9 @@
   }
 
   function syncOwnership(){
+    const resultOpen=visible(modalSpecs[2]);
+    if(resultOpen&&!resultWasOpen)resultDecisionCommitted=false;
+    resultWasOpen=resultOpen;
     const next=modalSpecs.find(visible)||null;
     if(next===activeSpec)return;
     const previous=activeSpec;
@@ -84,6 +89,17 @@
   },true);
   window.addEventListener("blur",()=>heldDecisionKeys.clear());
   document.addEventListener("visibilitychange",()=>{if(document.hidden)heldDecisionKeys.clear();});
+
+  document.addEventListener("click",event=>{
+    const action=event.target.closest?.("#resultModal button");
+    if(!action)return;
+    if(resultDecisionCommitted||modalSpecs[2].node?.hidden){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return;
+    }
+    resultDecisionCommitted=true;
+  },true);
 
   document.addEventListener("keydown",event=>{
     const spec=activeSpec;

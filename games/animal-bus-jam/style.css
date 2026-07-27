@@ -193,7 +193,7 @@ body:not([data-screen="main"]) > .game-page-info { display: none !important; }
   grid-template-rows: 76px minmax(0, 1fr);
   background:
     linear-gradient(#050b12ad, #050b12d4),
-    url("../../assets/animal-bus-jam-terminal-general-v2.png") center / cover;
+    url("../../assets/animal-bus-jam-terminal-general-v2.webp") center / cover;
 }
 .battle-content {
   min-height: 0;
@@ -404,37 +404,60 @@ dialog > div:last-child { display: flex; justify-content: center; gap: 9px; marg
   .scene-header h2 { margin: 0; font-size: 1rem; }
   .scene-header > span { font-size: .66rem; }
   .battle-content { padding-inline: 8px; }
+  .battle-content { grid-template-rows: 142px minmax(0, 1fr) 44px 42px; }
   .bus { flex-basis: 92px; }
   .bus.active { flex-basis: 132px; }
   .queues { gap: 5px; }
   .queue { padding: 5px; }
   .passenger { grid-template-columns: 20px minmax(0, 1fr); padding: 2px 4px; }
   .passenger-token { width: 19px; height: 19px; font-size: .53rem; }
+  .status { align-self: center; font-size: .7rem; line-height: 1.25; }
 }
 
 @media (orientation: landscape) and (max-height: 500px) {
+  .wp-standard-main-composition {
+    grid-template-columns: 300px minmax(0, 1fr) !important;
+    gap: 16px !important;
+    padding: 4px 14px !important;
+  }
+  .wp-standard-main-poster {
+    width: 300px !important;
+    height: 300px !important;
+  }
+  .wp-standard-main-poster-media,
+  .wp-standard-main-poster-media > img,
+  .wp-standard-main-poster > img {
+    width: 300px !important;
+    min-width: 300px !important;
+    max-width: 300px !important;
+    height: 300px !important;
+    min-height: 300px !important;
+    max-height: 300px !important;
+  }
+  .wp-standard-main-copy { height: 300px !important; gap: 8px !important; }
   .canvas { min-height: 0; }
   .scene-header { height: 60px; padding: 6px 12px; }
   .stage { grid-template-rows: 60px minmax(0, 1fr); }
   .battle { grid-template-rows: 60px minmax(0, 1fr); }
-  .battle-content { grid-template-rows: 84px minmax(0, 1fr) 38px 20px; gap: 4px; padding: 5px 10px; }
+  .battle-content { position: relative; grid-template-rows: 76px minmax(0, 1fr) 34px 18px; gap: 3px; padding: 4px 10px 22px; }
   .convoy-panel { padding: 4px 8px; }
   .panel-label { min-height: 14px; font-size: .52rem; }
-  .buses { height: 62px; }
-  .bus { height: 54px; flex-basis: 92px; padding: 4px 6px; }
+  .buses { height: 57px; }
+  .bus { height: 50px; flex-basis: 92px; padding: 3px 6px; }
   .bus.active { flex-basis: 118px; }
   .bus-shape { height: 16px; margin: 3px 0; }
   .bus strong { font-size: .6rem; }
-  .dispatch-floor { grid-template-rows: 42px minmax(0, 1fr); gap: 4px; }
-  .holding-panel { padding: 3px 7px; }
-  .holding { min-height: 20px; gap: 4px; }
-  .holding-slot { height: 20px; }
+  .dispatch-floor { grid-template-columns: 116px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); gap: 5px; }
+  .holding-panel { width: auto; height: 100%; padding: 4px 6px; }
+  .holding-panel .panel-label { display: grid; text-align: center; }
+  .holding { min-height: 0; height: calc(100% - 24px); flex-direction: column; gap: 4px; }
+  .holding-slot { width: 100%; height: auto; min-height: 20px; }
   .queue { padding: 3px; gap: 2px; }
   .queue-label { font-size: .48rem; }
   .passenger { min-height: 23px; grid-template-columns: 16px minmax(0, 1fr); font-size: .55rem; padding: 1px 3px; }
   .passenger-token { width: 15px; height: 15px; font-size: .43rem; border-width: 1px; }
-  .tools button { min-height: 34px; padding: 4px 12px; }
-  .status { font-size: .63rem; }
+  .tools button { min-height: 32px; padding: 3px 12px; }
+  .status { position: absolute; left: 10px; right: 10px; bottom: 5px; font-size: .56rem; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   dialog[open] { top: calc((100svh - 56px) / 2); bottom: auto; margin: 0 auto; transform: translateY(-50%); max-height: calc(100svh - 72px); padding: 12px 20px; overflow: auto; }
   .result-mark { width: 42px; height: 42px; font-size: 1.2rem; }
   dialog h2 { font-size: 1.15rem; }
