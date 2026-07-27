@@ -37,7 +37,7 @@
     ja:["宝物温室を開いています…","トリプルマッチ","言語","ミミが魔法の宝物を3個ずつ整理している","宝物整理パズル","覆われていない宝物を選び、トレイが埋まる前に同じ物を3個集めよう。","ゲーム開始","ゲームガイド","WeightPlayオリジナル収集パズル","山を読み、トレイを守り、すべての3個組を完成させよう。","温室には魔法の宝物が山積みです。上に物がない宝物だけを選べます。同じ物3個は消えますが、未一致の物7個で失敗です。"],
     ko:["보물 온실을 여는 중…","트리플 매치","언어","미미가 마법 보물을 세 개씩 정리하는 모습","보물 정리 퍼즐","가려지지 않은 보물을 눌러 트레이가 차기 전에 같은 보물 세 개를 모으세요.","게임 시작","게임 안내","WeightPlay 오리지널 수집 퍼즐","더미를 읽고 트레이를 지키며 모든 세트를 완성하세요.","온실에는 마법 수집품이 쌓여 있습니다. 위가 열린 물건만 옮길 수 있고 같은 세 개는 사라지지만, 일곱 칸이 차면 도전이 끝납니다."],
     es:["Abriendo el invernadero…","Triple Match","Idioma","Mimi ordena tesoros mágicos en grupos de tres","Puzle de tesoros","Toca tesoros libres y reúne tres iguales antes de llenar las siete casillas.","Empezar","Guía del juego","Puzle de colección original de WeightPlay","Lee la pila, protege la bandeja y completa cada trío.","El invernadero de Mimi está lleno de recuerdos encantados. Solo se mueven los objetos descubiertos. Tres iguales desaparecen; siete distintos terminan el intento."],
-    "pt-BR":["Abrindo a estufa de tesouros…","Triple Match","Idioma","Mimi organiza tesouros mágicos em trios","Quebra-cabeça de tesouros","Toque tesouros livres e junte três iguais antes de lotar as sete vagas.","Começar","Guia do jogo","Puzzle de coleção original WeightPlay","Leia a pilha, proteja a bandeja e complete cada trio.","A estufa de Mimi está cheia de lembranças encantadas. Só objetos descobertos podem ir à bandeja. Três iguais somem; sete diferentes encerram a tentativa."],
+    "pt-BR":["Abrindo a estufa de tesouros…","Partida Tripla","Idioma","Mimi organiza tesouros mágicos em trios","Quebra-cabeça de tesouros","Toque tesouros livres e junte três iguais antes de lotar as sete vagas.","Começar","Guia do jogo","Puzzle de coleção original WeightPlay","Leia a pilha, proteja a bandeja e complete cada trio.","A estufa de Mimi está cheia de lembranças encantadas. Só objetos descobertos podem ir à bandeja. Três iguais somem; sete diferentes encerram a tentativa."],
     fr:["Ouverture de la serre aux trésors…","Triple Match","Langue","Mimi range les trésors magiques par trois","Puzzle de trésors","Touchez les trésors libres et réunissez trois identiques avant de remplir les sept cases.","Commencer","Guide du jeu","Puzzle de collection original WeightPlay","Lisez la pile, protégez le plateau et complétez chaque trio.","La serre de Mimi déborde de souvenirs enchantés. Seuls les objets découverts rejoignent le plateau. Trois identiques disparaissent ; sept objets sans trio arrêtent l'essai."],
     de:["Die Schatzhalle wird geöffnet…","Triple Match","Sprache","Mimi sortiert magische Schätze in Dreiergruppen","Schatz-Sortierpuzzle","Tippe freie Schätze an und sammle drei gleiche, bevor alle sieben Plätze voll sind.","Spiel starten","Spielanleitung","Originales WeightPlay-Sammelpuzzle","Lies den Stapel, schütze die Ablage und bilde jedes Trio.","Mimis Gewächshaus ist voller verzauberter Andenken. Nur freie Objekte dürfen in die Ablage. Drei gleiche verschwinden, sieben einzelne beenden den Versuch."],
     it:["Apertura della serra dei tesori…","Triple Match","Lingua","Mimi ordina tesori magici a gruppi di tre","Puzzle di tesori","Tocca i tesori liberi e raccogline tre uguali prima di riempire i sette spazi.","Inizia","Guida di gioco","Puzzle da collezione originale WeightPlay","Leggi la pila, proteggi il vassoio e completa ogni trio.","La serra di Mimi trabocca di ricordi incantati. Solo gli oggetti scoperti possono muoversi. Tre uguali spariscono; sette oggetti spaiati chiudono il tentativo."],
@@ -85,6 +85,10 @@
   const CHAPTERS = ["openShelf","vineGallery","crystalRoom","mysteryLoft","shiftingHall","grandFinale"];
   const ITEM_NAMES = ["Acorn Lantern","Moon Cup","Shell Compass","Berry Brooch","Cloud Jar","Prism Flower","Star Telescope","Leaf Locket","Coral Music Box","Bee Bell","Mushroom Lamp","Crystal Feather"];
   const ITEM_NAMES_ZH_HANT = ["橡果提燈","月光杯","貝殼羅盤","莓果胸針","雲朵罐","稜鏡花","星光望遠鏡","葉片墜飾","珊瑚音樂盒","蜜蜂鈴","蘑菇燈","水晶羽毛"];
+  const ITEM_NAMES_PT_BR = ["Lanterna de bolota","Taça da Lua","Bússola de concha","Broche de frutas vermelhas","Pote de nuvem","Flor prismática","Telescópio estelar","Medalhão de folha","Caixa de música de coral","Sino de abelha","Luminária de cogumelo","Pena de cristal"];
+  const RUNTIME_LOCALE_SEGMENTS = { "zh-Hant":"zh-tw", "zh-Hans":"zh-cn", ja:"ja", ko:"ko", es:"es", "pt-BR":"pt-br", fr:"fr", de:"de", it:"it", ru:"ru", hi:"hi", ar:"ar" };
+  const SHARED_SRC_BASE = new URL("../../src/", document.currentScript?.src || location.href);
+  const runtimeCatalogLoads = new Map();
   let locale = "en", screen = "main", stageIndex = 0, run = null, audio = null, centeredTimer = 0, resultDecisionCommitted = false;
   let pendingMatch = null;
   let save = loadSave();
@@ -141,6 +145,103 @@
     let text = index >= 0 ? table[index] : key;
     return String(text).replace(/\{(\w+)\}/g, (_, name) => Object.prototype.hasOwnProperty.call(vars, name) ? vars[name] : "");
   }
+  function runtimeCatalog(code = locale) {
+    return window.WeightPlayGameRuntimeLocales?.[code] || null;
+  }
+  function ensureRuntimeCatalog(code) {
+    if (code === "en" || runtimeCatalog(code)) return Promise.resolve(runtimeCatalog(code));
+    if (runtimeCatalogLoads.has(code)) return runtimeCatalogLoads.get(code);
+    const segment = RUNTIME_LOCALE_SEGMENTS[code];
+    if (!segment) return Promise.resolve(null);
+    const pending = new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = new URL(`runtime-locales/${segment}.js?v=20260726-block-trilogy-copy1`, SHARED_SRC_BASE).href;
+      script.dataset.animalTripleMatchRuntimeLocale = code;
+      script.addEventListener("load", () => resolve(runtimeCatalog(code)), { once: true });
+      script.addEventListener("error", () => resolve(null), { once: true });
+      document.head.append(script);
+    });
+    runtimeCatalogLoads.set(code, pending);
+    return pending;
+  }
+  function translateGeneratedGuide(code) {
+    const guide = document.querySelector(".game-page-info");
+    const catalog = runtimeCatalog(code);
+    if (!guide || !catalog) return;
+    const fragments = ["Animal Triple Match", "Game Guide"];
+    const translate = (value) => {
+      const source = String(value || "");
+      const leading = source.match(/^\s*/u)?.[0] || "";
+      const trailing = source.match(/\s*$/u)?.[0] || "";
+      const core = source.slice(leading.length, source.length - trailing.length || undefined);
+      let translated = catalog[core] || core;
+      if (translated === core) fragments.forEach((fragment) => {
+        if (translated.includes(fragment) && catalog[fragment]) translated = translated.replaceAll(fragment, catalog[fragment]);
+      });
+      return `${leading}${translated}${trailing}`;
+    };
+    const walker = document.createTreeWalker(guide, NodeFilter.SHOW_TEXT);
+    while (walker.nextNode()) {
+      const next = translate(walker.currentNode.data);
+      if (next !== walker.currentNode.data) walker.currentNode.data = next;
+    }
+    ["aria-label", "title", "alt"].forEach((name) => {
+      guide.querySelectorAll(`[${name}]`).forEach((node) => {
+        const next = translate(node.getAttribute(name));
+        if (next !== node.getAttribute(name)) node.setAttribute(name, next);
+      });
+    });
+    const guideLabel = `${catalog["Animal Triple Match"] || t("title")} — ${t("guideLabel")}`;
+    if (guide.getAttribute("aria-label") !== guideLabel) guide.setAttribute("aria-label", guideLabel);
+    if (code === "pt-BR") {
+      const design = guide.querySelector(".game-info-design p");
+      const parent = guide.querySelector(".game-info-parent p");
+      const strategy = guide.querySelector(".game-info-strategy");
+      const related = [...guide.querySelectorAll(".game-info-section")].find((section) => section.querySelector(".game-info-related"));
+      if (design) design.textContent = "Objetos grandes, sombras de sobreposição estáveis, ordem visível na bandeja e animação automática dos trios tornam cada consequência fácil de entender sem piscar o tabuleiro inteiro. A interface usa um único layout lógico centralizado, com largura máxima de 920 pixels. Celular, paisagem e desktop dimensionam juntos controles, áreas de toque, arte e coordenadas. Toque, mouse e teclado atuam sobre o mesmo estado válido. O pôster e o botão Começar ficam separados da gestão de fases; seleção, Batalha, diálogos e Resultado mantêm seus próprios limites e caminhos de retorno.";
+      if (parent) parent.textContent = "Não é preciso criar conta, comprar itens, enfrentar contagem regressiva ou participar de ranking público. Fases concluídas, estrelas e o melhor espaço livre na bandeja ficam neste navegador. O progresso usa o armazenamento local do perfil atual; limpar os dados, usar navegação privada, trocar de navegador ou dispositivo pode criar outro progresso ou apagar o atual. Idioma, som e preferência de movimento reduzido seguem os controles do WeightPlay quando o navegador permite. O guia e o Relatório de habilidade não são avaliações médicas, escolares ou profissionais.";
+      strategy?.querySelectorAll("li").forEach((item) => {
+        item.textContent = item.textContent.replace("Use o Hint", "Use Encontrar par").replace("um novo tipo de singleton", "um novo tipo isolado");
+      });
+      const relatedIntro = related?.querySelector(":scope > p");
+      if (relatedIntro) relatedIntro.textContent = "Como este jogo pratica lógica, experimente também:";
+      const rootvault = related?.querySelector('a[href*="animal-rootvault-pins"] .game-info-related-copy > span');
+      if (rootvault) rootvault.textContent = "Resolva trinta câmaras de pinos com Taro Casco de Musgo, liberando cada mecanismo na ordem segura.";
+    }
+    guide.dataset.runtimeLocalize = "off";
+  }
+  function syncGameOwnedMainOwners() {
+    if (els.startBtn.textContent !== t("start")) els.startBtn.textContent = t("start");
+    document.querySelectorAll(".wp-generated-main-title").forEach((node) => {
+      if (node.textContent !== t("title")) node.textContent = t("title");
+      if (node.getAttribute("aria-label") !== t("title")) node.setAttribute("aria-label", t("title"));
+    });
+  }
+  function installLocaleOwnerObservers() {
+    const startObserver = new MutationObserver(() => {
+      if (els.startBtn.textContent !== t("start")) queueMicrotask(syncGameOwnedMainOwners);
+    });
+    startObserver.observe(els.startBtn, { childList: true, characterData: true, subtree: true });
+    const guideObserver = new MutationObserver(() => {
+      if (locale === "en" || !runtimeCatalog(locale)) return;
+      queueMicrotask(() => translateGeneratedGuide(locale));
+    });
+    guideObserver.observe(els.mainGroup, { childList: true });
+  }
+  function settleLocaleTransaction(code) {
+    ensureRuntimeCatalog(code).then(() => {
+      if (locale !== code) return;
+      window.WeightPlayGameInfo?.render?.();
+      const reconcile = () => {
+        if (locale !== code) return;
+        applyLocale();
+        syncGameOwnedMainOwners();
+        if (code !== "en") translateGeneratedGuide(code);
+      };
+      requestAnimationFrame(reconcile);
+      [50, 200, 450].forEach((delay) => setTimeout(reconcile, delay));
+    });
+  }
   function initialLocale() {
     const segment = location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
     const routed = ROUTE_LOCALE[segment] || LOCALES.find(([code]) => code.toLowerCase() === segment)?.[0];
@@ -162,6 +263,7 @@
     document.querySelectorAll("[data-t-alt]").forEach(el => el.alt = t(el.dataset.tAlt));
     document.title = `${t("title")} | WeightPlay`;
     renderMainProgress(); renderStages(); if (run) renderRun();
+    syncGameOwnedMainOwners();
   }
   function setLocale(value) {
     locale = LOCALES.some(([code]) => code === value) ? value : "en";
@@ -173,6 +275,7 @@
       window.WonderI18n?.setLocale?.(locale);
     } catch {}
     applyLocale();
+    settleLocaleTransaction(locale);
   }
   function initLocale() {
     locale = initialLocale();
@@ -292,7 +395,9 @@
     return `background-position:${x * 100 / 3}% ${y * 50}%;`;
   }
   function itemName(type) {
-    return locale === "zh-Hant" ? ITEM_NAMES_ZH_HANT[type] : ITEM_NAMES[type];
+    if (locale === "zh-Hant") return ITEM_NAMES_ZH_HANT[type];
+    if (locale === "pt-BR") return ITEM_NAMES_PT_BR[type];
+    return runtimeCatalog(locale)?.[ITEM_NAMES[type]] || ITEM_NAMES[type];
   }
   function mysteryItemName() {
     return locale === "zh-Hant" ? "神秘寶物" : "Mystery treasure";
@@ -531,6 +636,6 @@
     setSave: value => { save = { ...save, ...value }; persist(); renderMainProgress(); renderStages(); },
   };
 
-  initLocale(); applyLocale(); renderMainProgress(); renderStages();
+  initLocale(); installLocaleOwnerObservers(); applyLocale(); renderMainProgress(); renderStages();
   Promise.all([...document.images].map(img => img.complete ? Promise.resolve() : new Promise(resolve => { img.addEventListener("load", resolve, { once: true }); img.addEventListener("error", resolve, { once: true }); }))).then(() => { els.loading.hidden = true; });
 })();
