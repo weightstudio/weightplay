@@ -8,13 +8,14 @@
   <meta name="weightplay-audience" content="kids">
   <meta name="theme-color" content="#123e39">
   <title>Color Link Garden | WeightPlay</title>
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
 </head>
-<body data-screen="main" data-audience="kids">
+<body data-screen="main" data-audience="kids" data-wp-game-id="animal-color-link" data-wp-combined-sound="true" data-runtime-localize="off">
   <main id="main" class="screen main main-screen" data-screen="main">
     <header class="main-header">
-      <a class="return" href="/" data-t-aria="returnLobby" aria-label="Return to WeightPlay">←</a>
+      <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Return to WeightPlay">←</a>
       <strong data-t="shortTitle">COLOR LINK</strong>
       <label class="locale"><span data-t="language">Language</span><select id="locale"></select></label>
     </header>
@@ -34,18 +35,23 @@
     </section>
   </main>
 
-  <main id="stage" class="screen canvas stage" hidden>
-    <header class="scene-header">
-      <button class="icon-button" data-back data-t-aria="back" aria-label="Back">←</button>
+  <main id="stage" class="screen canvas stage stage-canvas" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-color-link-cover-kids-v2.webp')" hidden>
+    <header class="scene-header stage-header">
+      <button class="icon-button" data-back data-wp-return="stage" data-t-aria="back" aria-label="Back">←</button>
       <div><small data-t="choose">CHOOSE A GARDEN</small><h2 data-t="title">Color Link Garden</h2></div>
       <span id="progressBadge" class="badge"></span>
     </header>
-    <section id="stageGrid" class="stage-grid" data-t-aria="stageList" aria-label="Stage list"></section>
+    <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="Stage list"></section>
+    <nav class="stage-tabs" data-t-aria="stageList" aria-label="Stage list">
+      <button id="previousGroup" type="button" aria-label="Previous gardens">←</button>
+      <button id="stageTab" type="button" class="stage-tab active" aria-current="page">Stages</button>
+      <button id="nextGroup" type="button" aria-label="Next gardens">→</button>
+    </nav>
   </main>
 
-  <main id="battle" class="screen canvas battle" hidden>
+  <main id="battle" class="screen canvas battle" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
     <header class="scene-header battle-header">
-      <button class="icon-button" data-back data-t-aria="back" aria-label="Back">←</button>
+      <button class="icon-button" data-back data-wp-return="battle" data-t-aria="back" aria-label="Back">←</button>
       <div><small id="chapter"></small><h2 id="stageName"></h2></div>
       <span id="moves"></span>
     </header>
@@ -62,18 +68,30 @@
       </div>
       <p id="status" class="status" aria-live="polite"></p>
     </section>
+    <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveText" hidden>
+      <div class="modal-card">
+        <h2 id="leaveTitle">Pause this garden?</h2>
+        <p id="leaveText">Continue keeps every path exactly in place. Returning to Stages ends this attempt.</p>
+        <div class="modal-actions">
+          <button id="leaveContinue" class="primary" type="button">Continue</button>
+          <button id="leaveStages" type="button">Return to Stages</button>
+        </div>
+      </div>
+    </section>
+    <section id="result" class="modal-layer" data-wp-result-audit role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
+      <div class="modal-card result-card">
+        <div class="result-mark" aria-hidden="true"></div>
+        <p class="eyebrow" data-t="complete">GARDEN COMPLETE</p>
+        <h2 id="resultTitle" data-t="resultTitle">Every path is blooming!</h2>
+        <p id="resultBody"></p>
+        <div class="result-actions">
+          <button id="resultStages" type="button">Stages</button>
+          <button id="next" class="primary" type="button" data-t="next">Next garden</button>
+          <button id="retry" type="button" data-t="retry">Play again</button>
+        </div>
+      </div>
+    </section>
   </main>
-
-  <dialog id="result">
-    <div class="result-mark" aria-hidden="true"></div>
-    <p class="eyebrow" data-t="complete">GARDEN COMPLETE</p>
-    <h2 data-t="resultTitle">Every path is blooming!</h2>
-    <p id="resultBody"></p>
-    <div class="result-actions">
-      <button id="retry" data-t="retry">Play again</button>
-      <button id="next" class="primary" data-t="next">Next garden</button>
-    </div>
-  </dialog>
 
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
@@ -82,6 +100,8 @@
   <script src="levels.js"></script>
   <script src="locales.js"></script>
   <script src="game.js"></script>
+  <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
+  <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
 </body>
 </html>

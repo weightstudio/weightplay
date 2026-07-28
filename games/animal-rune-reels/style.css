@@ -143,7 +143,7 @@
   .battle-canvas .symbol img{width:58px;height:58px}
   .battle-canvas .symbol b{display:none}
   .battle-canvas .battle-actions{grid-template-columns:2fr 1fr;gap:5px;width:100%;margin:0}
-  .battle-canvas .spin,.battle-canvas .burst{min-height:52px}
+  .battle-canvas #spinBtn,.battle-canvas #autoBtn{height:48px;min-height:48px;align-self:center}
   .battle-canvas .enemy-wrap>img{height:min(34vh,112px)}
   .battle-canvas .player-hud{width:48%}
   .battle-canvas .modal{padding:8px}
