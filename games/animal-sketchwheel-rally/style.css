@@ -9,6 +9,9 @@
 @media(max-width:650px){.forge-panel{inset:84px 10px 200px}}
 @media(max-height:500px) and (orientation:landscape){.forge-panel{inset:62px 10px 53px}}
 
+.modal-actions button,.dialog-card>.primary{min-height:48px}
+.modal-actions button:disabled{cursor:not-allowed;opacity:.48}
+
 /* Canonical Main entrance geometry. */
 .main-screen{min-height:0;height:auto}
 .main-hero{grid-template-columns:420px minmax(0,1fr);min-height:0;align-items:stretch}

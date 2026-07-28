@@ -55,7 +55,6 @@
   const nextBtn = document.querySelector("#nextBtn");
   const againBtn = document.querySelector("#againBtn");
   const levelsBtn = document.querySelector("#levelsBtn");
-  const lobbyLink = document.querySelector("#lobbyLink");
   const loadingPanel = document.querySelector("#loadingPanel");
   const leaveConfirmPanel = document.querySelector("#leaveConfirmPanel");
   const leaveConfirmTitle = document.querySelector("#leaveConfirmTitle");
@@ -522,6 +521,7 @@
   let busy = false;
   let resultStarCount = 0;
   let resultPreviousBest = 0;
+  let resultActionCommitted = false;
   let roundGeneration = 0;
   let roundLifecycleSuspended = document.hidden;
   let roundWindowFocused = true;
@@ -636,7 +636,6 @@
     nextBtn.textContent = t("next");
     againBtn.textContent = t("again");
     levelsBtn.textContent = t("levels");
-    lobbyLink.textContent = t("lobby");
     homeLink.setAttribute("aria-label", t("homeAria"));
     localeSelect.setAttribute("aria-label", t("languageAria"));
     statusbar.setAttribute("aria-label", t("statusAria"));
@@ -1062,10 +1061,11 @@
     saveProgress();
     resultStarCount = starCount;
     resultPreviousBest = previousBest;
+    resultActionCommitted = false;
     renderResult(starCount, previousBest);
     setBattleCovered(true);
     resultPanel.classList.remove("hidden");
-    requestAnimationFrame(() => (nextBtn.classList.contains("hidden") ? levelsBtn : nextBtn).focus({ preventScroll: true }));
+    requestAnimationFrame(() => (nextBtn.disabled ? levelsBtn : nextBtn).focus({ preventScroll: true }));
     window.WonderAnalytics?.track?.("game_complete", { game_id: GAME_ID, level: levelNumber, moves, stars: starCount, cleared: true });
     window.WonderAnalytics?.track?.("level_clear", { game_id: GAME_ID, level: levelNumber, moves, stars: starCount });
   }
@@ -1076,9 +1076,12 @@
     resultText.textContent = t("result", { moves, pairs: matchedPairs });
     renderSkillReport(starCount, previousBest);
     const isFinalLevel = currentLevelIndex >= levels.length - 1;
-    nextBtn.classList.toggle("hidden", isFinalLevel);
+    nextBtn.classList.remove("hidden");
+    nextBtn.disabled = isFinalLevel;
+    nextBtn.setAttribute("aria-disabled", String(isFinalLevel));
     nextBtn.classList.toggle("result-primary", !isFinalLevel);
     levelsBtn.classList.toggle("result-primary", isFinalLevel);
+    againBtn.classList.remove("result-primary");
   }
 
   function renderSkillReport(starCount, previousBest) {
@@ -1187,12 +1190,23 @@
     startLevel(Number(button.dataset.level));
   });
 
-  nextBtn.addEventListener("click", () => startLevel(Math.min(currentLevelIndex + 1, levels.length - 1)));
-  againBtn.addEventListener("click", () => {
-    window.WonderAnalytics?.track?.("game_restart", { game_id: GAME_ID, level: currentLevelIndex + 1 });
-    startLevel(currentLevelIndex);
+  function commitResultAction(action) {
+    if (resultActionCommitted) return;
+    resultActionCommitted = true;
+    action();
+  }
+
+  nextBtn.addEventListener("click", () => {
+    if (nextBtn.disabled) return;
+    commitResultAction(() => startLevel(Math.min(currentLevelIndex + 1, levels.length - 1)));
   });
-  levelsBtn.addEventListener("click", showLevelSelect);
+  againBtn.addEventListener("click", () => {
+    commitResultAction(() => {
+      window.WonderAnalytics?.track?.("game_restart", { game_id: GAME_ID, level: currentLevelIndex + 1 });
+      startLevel(currentLevelIndex);
+    });
+  });
+  levelsBtn.addEventListener("click", () => commitResultAction(showLevelSelect));
   startBtn.addEventListener("click", showLevelSelect);
   levelBackBtn.addEventListener("click", showMain);
   battleBackBtn.addEventListener("click", openLeaveConfirm);

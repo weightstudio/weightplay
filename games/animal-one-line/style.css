@@ -56,6 +56,7 @@
 .trace-board{display:grid;place-items:center;padding:clamp(8px,1.8vmin,18px);background:linear-gradient(145deg,rgba(237,238,204,.98),rgba(203,224,185,.98));container-type:size}
 .trace-board::before{opacity:.08}
 .line-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));grid-template-rows:repeat(var(--rows),minmax(0,1fr));gap:clamp(5px,1.2vmin,12px);width:min(100cqw,calc(100cqh * var(--cols) / var(--rows)));height:min(100cqh,calc(100cqw * var(--rows) / var(--cols)));max-width:680px;max-height:680px;aspect-ratio:var(--cols)/var(--rows);touch-action:none}
+.line-grid:focus-visible{outline:4px solid #fff8b0;outline-offset:4px}
 .line-cell{position:relative;min-width:0;min-height:0;border-radius:clamp(10px,2vmin,20px);display:grid;place-items:center;font-size:clamp(18px,4vmin,34px);transition:background .12s,transform .12s,box-shadow .12s}
 .line-cell.is-open{background:#f7f1d6;border:2px solid #c8c5a9;box-shadow:inset 0 -5px 0 rgba(87,92,68,.16),0 5px 12px rgba(30,55,42,.18)}
 .line-cell.is-blocked{background:linear-gradient(135deg,#6f8791 0 50%,#566c79 50%);border:2px solid #81949c;box-shadow:inset 0 -6px 0 rgba(23,38,47,.28)}

@@ -53,6 +53,12 @@
   const loadingFill = document.querySelector("#loadingFill");
   const lunchGame = document.querySelector(".lunch-game");
   lunchGame?.setAttribute("data-wp-canvas-max-width", "920");
+  if ((window.WonderI18n?.actualLocale?.() || document.documentElement.lang) === "pt-BR") {
+    // This game owns its Portuguese Battle and Stage copy. Keep the shared
+    // runtime catalog from reinterpreting already-localized color vocabulary
+    // as unrelated "core" terminology used by other games.
+    lunchGame?.setAttribute("data-runtime-localize", "off");
+  }
   const leaveConfirmPanel = document.createElement("section");
   leaveConfirmPanel.className = "leave-confirm-panel hidden";
   leaveConfirmPanel.setAttribute("role", "dialog");
@@ -1562,6 +1568,7 @@
     rejectRepeatedActivation(event);
     if (event.key === "Escape") {
       event.preventDefault();
+      event.stopPropagation();
       setHelpOpen(false);
     } else if (event.key === "Tab") {
       event.preventDefault();

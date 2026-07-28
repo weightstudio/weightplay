@@ -750,6 +750,9 @@ a:focus-visible {
 .result-card > .modal-actions {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
+.result-card > .modal-actions button {
+  min-height: 48px;
+}
 .result-art {
   display: block;
   width: 120px;
@@ -962,7 +965,7 @@ a:focus-visible {
     overflow: hidden;
     display: grid;
     grid-template-columns: 104px minmax(0, 1fr);
-    grid-template-rows: 18px 34px minmax(0, auto) 54px 46px;
+    grid-template-rows: 18px 34px minmax(0, auto) 54px 48px;
     column-gap: 14px;
     row-gap: 3px;
     align-items: center;

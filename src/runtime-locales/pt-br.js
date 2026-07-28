@@ -10129,7 +10129,7 @@ window.WeightPlayGameRuntimeLocales["pt-BR"] = {
   "Recompensa cambiada.": "Recompensa cambiada.",
   "Recompensa salva: {reward} — {effect}": "Recompensa salva: {reward} — {effect}",
   "Recompensa: +{points} puntos de mejora, +{diamonds} diamantes": "Recompensa: +{points} pontos de melhor, +{diamonds} diamantes",
-  "Reconhecimento de cores": "Reconhecimento de núcleos",
+  "Reconhecimento de cores": "Reconhecimento de cores",
   "Reconnect before a hunter touches the open trail.": "Reconecte-se antes que um caçador toque a trilha aberta.",
   "Reconnect to claim territory and complete the mission objective.": "Reconecte-se para reivindicar território e completar o objetivo da missão.",
   "Reconnect to your land to claim the enclosed area.": "Reconecte-se à sua terra para reivindicar a área fechada.",

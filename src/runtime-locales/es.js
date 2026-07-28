@@ -7492,7 +7492,7 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Melhoria permanente opcional": "Melhoria permanente opcional",
   "Melon": "melón",
   "Melon: Gives Melon Shield": "Melón: Da escudo de melón",
-  "Memoria": "memoria",
+  "Memoria": "Memoria",
   "Memoria Estelar Animal": "Memoria Estelar Animal",
   "Memoria Estelar Animal - WeightPlay": "Memoria Estelar Animal - WeightPlay",
   "Memory": "Memoria",

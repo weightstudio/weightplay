@@ -523,6 +523,7 @@
     ready: false
   };
   let leaveConfirmOpen = false;
+  let resultActionCommitted = false;
   let roundGeneration = 0;
   let windowFocused = document.hasFocus();
   let roundLifecycleSuspended = document.hidden || !windowFocused;
@@ -740,8 +741,13 @@
   // UI Translating
   function translateStaticUI() {
     const gameRoot = document.querySelector(".star-memory-game");
-    if (locale() === "de") gameRoot?.setAttribute("data-runtime-localize", "off");
-    else gameRoot?.removeAttribute("data-runtime-localize");
+    if (locale() === "de") {
+      gameRoot?.setAttribute("data-runtime-localize", "off");
+      document.body.setAttribute("data-runtime-localize", "off");
+    } else {
+      gameRoot?.removeAttribute("data-runtime-localize");
+      document.body.removeAttribute("data-runtime-localize");
+    }
     document.documentElement.lang = locale();
     localeSelect.value = locale();
     updateSeoText();
@@ -761,7 +767,6 @@
     nextLevelBtn.textContent = t("nextLevel");
     againBtn.textContent = t("again");
     stageSelectBtn.textContent = t("levels");
-    document.querySelector("#lobbyLink").textContent = t("lobby");
     document.querySelector("#homeLink").setAttribute("aria-label", t("lobby"));
     stageBackBtn.setAttribute("aria-label", t("stageBackAria"));
     battleBackBtn.setAttribute("aria-label", t("battleBackAria"));
@@ -889,8 +894,11 @@
     gameHud.classList.add("hidden");
     gameBoardPanel.classList.add("hidden");
     gameFeedback.classList.add("hidden");
+    exitSharedPlayViewport();
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    requestAnimationFrame(() => startBtn.focus({ preventScroll: true }));
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => startBtn.focus({ preventScroll: true }));
+    });
   }
 
   // Stage Selection Screen
@@ -1291,14 +1299,17 @@
       star.classList.toggle("active", idx <= starsEarned);
     });
     
-    // Toggle next level button
-    nextLevelBtn.classList.toggle("hidden", isFinalStage);
+    // Keep the canonical three-action Result geometry stable. The next-stage
+    // action remains visible but unavailable after the final stage.
+    nextLevelBtn.disabled = isFinalStage;
+    nextLevelBtn.setAttribute("aria-disabled", String(isFinalStage));
     const primaryAction = isFinalStage ? stageSelectBtn : nextLevelBtn;
-    [nextLevelBtn, againBtn, stageSelectBtn, lobbyLink].forEach((action) => {
+    [stageSelectBtn, nextLevelBtn, againBtn].forEach((action) => {
       action.classList.toggle("result-primary", action === primaryAction);
       action.classList.toggle("result-secondary", action !== primaryAction);
     });
     document.body.classList.add("memory-result");
+    resultActionCommitted = false;
     resultPanel.classList.remove("hidden");
     primaryAction.focus({ preventScroll: true });
     
@@ -1329,12 +1340,14 @@
       star.classList.remove("active");
     });
     
-    nextLevelBtn.classList.add("hidden");
-    [nextLevelBtn, againBtn, stageSelectBtn, lobbyLink].forEach((action) => {
+    nextLevelBtn.disabled = true;
+    nextLevelBtn.setAttribute("aria-disabled", "true");
+    [stageSelectBtn, nextLevelBtn, againBtn].forEach((action) => {
       action.classList.toggle("result-primary", action === againBtn);
       action.classList.toggle("result-secondary", action !== againBtn);
     });
     document.body.classList.add("memory-result");
+    resultActionCommitted = false;
     resultPanel.classList.remove("hidden");
     againBtn.focus({ preventScroll: true });
     
@@ -1426,7 +1439,13 @@
     showStageSelect();
   });
 
-  againBtn.addEventListener("click", () => {
+  function commitResultAction(action) {
+    if (resultActionCommitted || resultPanel.classList.contains("hidden")) return;
+    resultActionCommitted = true;
+    action();
+  }
+
+  againBtn.addEventListener("click", () => commitResultAction(() => {
     window.WonderSound?.play("click");
     window.WonderAnalytics?.track("game_restart", {
       game_id: GAME_ID,
@@ -1434,17 +1453,20 @@
       locale: locale()
     });
     startStage(state.stageIndex);
-  });
+  }));
 
   nextLevelBtn.addEventListener("click", () => {
-    window.WonderSound?.play("click");
-    startStage(Math.min(state.stageIndex + 1, stages.length - 1));
+    if (nextLevelBtn.disabled) return;
+    commitResultAction(() => {
+      window.WonderSound?.play("click");
+      startStage(Math.min(state.stageIndex + 1, stages.length - 1));
+    });
   });
 
-  stageSelectBtn.addEventListener("click", () => {
+  stageSelectBtn.addEventListener("click", () => commitResultAction(() => {
     window.WonderSound?.play("click");
     showStageSelect();
-  });
+  }));
 
   document.querySelector("#homeLink").addEventListener("click", (event) => {
     if (document.body.classList.contains("memory-main")) return;

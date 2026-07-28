@@ -855,8 +855,9 @@ body.memory-result .result-panel {
   gap: 10px;
 }
 
-.result-actions button, .result-actions a {
+.result-actions button {
   width: 100%;
+  min-height: 52px;
   padding: 12px;
   border-radius: 12px;
   font-size: 14px;
@@ -867,6 +868,11 @@ body.memory-result .result-panel {
   text-align: center;
   text-decoration: none;
   display: block;
+}
+
+.result-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.56;
 }
 
 #nextLevelBtn {
@@ -916,15 +922,6 @@ body.memory-result .result-panel {
   background: rgba(255, 255, 255, 0.08);
   color: var(--text-light);
   box-shadow: none;
-}
-
-.lobby-btn {
-  background: transparent;
-  color: var(--text-muted);
-}
-
-.lobby-btn:active {
-  color: var(--text-light);
 }
 
 /* Loading Panel */
@@ -1318,14 +1315,14 @@ body.memory-playing.memory-expanded-canvas .wp-tutorial-button {
   body.memory-result .result-actions {
     grid-area: actions;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
   }
 
-  body.memory-result .result-actions button,
-  body.memory-result .result-actions a {
-    min-height: 44px;
-    padding: 10px 8px;
+  body.memory-result .result-actions button {
+    min-height: 48px;
+    padding: 8px 6px;
+    font-size: 12px;
   }
 
   body.memory-playing .star-memory-game,
