@@ -530,6 +530,12 @@
     if (!stagePanel.classList.contains("hidden")) renderStageSelector(false);
   }
 
+  function attachMainControlCues() {
+    const copy = document.querySelector(".wp-standard-main-copy");
+    const start = copy?.querySelector("#startBtn");
+    if (copy && start && controlChips.parentElement !== copy) copy.insertBefore(controlChips, start);
+  }
+
   function preloadGame() {
     let percent = 0;
     let completed = false;
@@ -572,6 +578,7 @@
     const logicalHeight = viewportHeight / scale;
     const frame = document.querySelector(".dash-game");
     document.documentElement.style.setProperty("--dash-frame-scale", String(scale));
+    document.documentElement.style.setProperty("--wp-stage-canvas-inverse-scale", String(1 / scale));
     document.documentElement.style.setProperty("--dash-logical-width", `${logicalWidth}px`);
     document.documentElement.style.setProperty("--dash-logical-height", `${logicalHeight}px`);
     document.documentElement.style.setProperty("--dash-frame-left", `${frameLeft}px`);
@@ -580,6 +587,7 @@
       frame.dataset.logicalHeight = logicalHeight.toFixed(4);
       frame.dataset.commonScale = scale.toFixed(6);
     }
+    stagePanel.dataset.wpLogicalStageCanvas = `${logicalWidth.toFixed(3)}x${logicalHeight.toFixed(3)}`;
   }
 
   function exitSharedPlayViewport() {
@@ -1597,4 +1605,5 @@
   updateHud();
   exposeSmokeHooks();
   preloadGame();
+  window.addEventListener("load", () => requestAnimationFrame(attachMainControlCues), { once: true });
 })();

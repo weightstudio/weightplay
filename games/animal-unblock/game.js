@@ -229,8 +229,19 @@
       element.style.gridColumn = `${block.x + 1}/span ${block.w}`;
       element.style.gridRow = `${block.y + 1}/span ${block.h}`;
       element.dataset.block = blockIndex;
+      element.setAttribute(
+        "aria-label",
+        `${block.hero ? "Panko" : blockIndex + 1} ${block.dir ? "↕" : "↔"}`,
+      );
+      element.setAttribute(
+        "aria-keyshortcuts",
+        block.dir ? "ArrowUp ArrowDown" : "ArrowLeft ArrowRight",
+      );
       element.addEventListener("pointerdown", (event) =>
         dragStart(event, blockIndex),
+      );
+      element.addEventListener("keydown", (event) =>
+        keyboardMove(event, blockIndex),
       );
       $("board").append(element);
     });
@@ -238,7 +249,7 @@
     $("undo").disabled = !history.length;
   }
 
-  function commitMove(block, nextX, nextY) {
+  function commitMove(block, nextX, nextY, restoreFocusIndex = null) {
     history.push(blocks.map((entry) => ({ ...entry })));
     block.x = nextX;
     block.y = nextY;
@@ -262,6 +273,13 @@
       );
     }
     render();
+    if (restoreFocusIndex != null && !$("result").open) {
+      requestAnimationFrame(() =>
+        $("board")
+          .querySelector(`[data-block="${restoreFocusIndex}"]`)
+          ?.focus({ preventScroll: true }),
+      );
+    }
   }
 
   function claimResultAction(action) {
@@ -380,6 +398,44 @@
       nextX + block.w <= 6 &&
       nextY + block.h <= 6 &&
       !occupied(block, nextX, nextY, block.w, block.h)
+    );
+  }
+
+  function keyboardMove(event, blockIndex) {
+    const block = blocks[blockIndex];
+    const step = block?.dir
+      ? event.key === "ArrowUp"
+        ? -1
+        : event.key === "ArrowDown"
+          ? 1
+          : 0
+      : event.key === "ArrowLeft"
+        ? -1
+        : event.key === "ArrowRight"
+          ? 1
+          : 0;
+    if (!step) return;
+    event.preventDefault();
+    if (event.repeat || moveLocked || drag || !legalStep(block, step)) return;
+
+    const cells = $("board").querySelectorAll(".cell");
+    const first = cells[0]?.getBoundingClientRect();
+    const adjacent = cells[block.dir ? 6 : 1]?.getBoundingClientRect();
+    const unit =
+      first && adjacent
+        ? block.dir
+          ? adjacent.top - first.top
+          : adjacent.left - first.left
+        : 0;
+    const element = event.currentTarget;
+    const nextX = block.x + (block.dir ? 0 : step);
+    const nextY = block.y + (block.dir ? step : 0);
+    if (!unit) {
+      commitMove(block, nextX, nextY, blockIndex);
+      return;
+    }
+    settleElement(element, block, 0, step * unit, () =>
+      commitMove(block, nextX, nextY, blockIndex),
     );
   }
 

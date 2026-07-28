@@ -573,6 +573,11 @@
     adoptControls();
     normalizeBattleReturns();
     const { type, screen } = activeScreen();
+    if (type !== "battle") {
+      document.querySelectorAll(".wp-generated-battle-header").forEach((battleHeader) => {
+        battleHeader.hidden = true;
+      });
+    }
     document.body.classList.toggle("wp-shell-main-active", type === "main");
     document.body.classList.toggle("wp-shell-stage-active", type === "stage");
     document.body.classList.toggle("wp-shell-battle-active", type === "battle");
@@ -599,6 +604,10 @@
       normalizeMainLayout(screen);
     }
     let header = firstVisible(HEADER_SELECTORS, screen);
+    if (!header && type === "battle") {
+      header = [...screen.querySelectorAll(".wp-generated-battle-header")]
+        .find((candidate) => candidate.parentElement === screen) || null;
+    }
     if (!header && type === "stage") {
       header = firstVisible(['[data-wp-return="stage"]'], document)?.closest("header") || null;
     }
@@ -632,6 +641,7 @@
     }
     if (!header) return;
     if (type === "battle") {
+      header.hidden = false;
       currentHeader?.classList.remove("wp-shell-header", "wp-main-shell-header", "wp-stage-shell-header");
       currentHeader = header;
       if (header.classList.contains("wp-generated-battle-header") && !first(RETURN_SELECTORS, header)) {

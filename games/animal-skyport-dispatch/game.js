@@ -660,9 +660,9 @@
   function dockNodes() {
     return [...document.querySelectorAll('.dock')];
   }
-  function setDockKeyboardMode(active) {
+  function setDockKeyboardMode() {
     dockNodes().forEach((dock) => {
-      dock.tabIndex = active ? 0 : -1;
+      dock.tabIndex = -1;
       dock.classList.remove('is-keyboard-choice');
     });
   }
@@ -673,6 +673,7 @@
     renderFlightTask();
     $('feedback').textContent = t('keyboardChooseDock');
     const firstDock = dockNodes()[0];
+    if (firstDock) firstDock.tabIndex = 0;
     firstDock?.classList.add('is-keyboard-choice');
     firstDock?.focus({preventScroll:true});
   }
@@ -680,7 +681,11 @@
     const docks = dockNodes();
     const index = docks.indexOf(current);
     const next = docks[(index + direction + docks.length) % docks.length];
-    docks.forEach((dock) => dock.classList.toggle('is-keyboard-choice', dock === next));
+    docks.forEach((dock) => {
+      const active = dock === next;
+      dock.tabIndex = active ? 0 : -1;
+      dock.classList.toggle('is-keyboard-choice', active);
+    });
     next?.focus({preventScroll:true});
   }
   function finishKeyboardDock(dock) {

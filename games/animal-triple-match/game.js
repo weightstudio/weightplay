@@ -793,7 +793,10 @@
     if ((event.shiftKey && document.activeElement === first) || (!event.shiftKey && document.activeElement === last)) { event.preventDefault(); (event.shiftKey ? last : first).focus(); }
   }
   function sound(kind) {
-    const volume = Math.max(0, Math.min(100, Number(localStorage.getItem("weightPlayEffectsVolume") ?? 80))) / 100;
+    let volume = 0.8;
+    try {
+      volume = Math.max(0, Math.min(100, Number(localStorage.getItem("weightPlayEffectsVolume") ?? 80))) / 100;
+    } catch {}
     if (!save.sound || volume <= 0) return;
     try {
       audio ||= new (window.AudioContext || window.webkitAudioContext)();

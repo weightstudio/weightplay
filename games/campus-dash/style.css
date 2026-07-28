@@ -417,7 +417,7 @@ canvas {
   line-height: 1.35;
 }
 
-.control-chips {
+.main-control-cues {
   display: flex;
   flex-wrap: wrap;
   gap: 7px;
@@ -425,7 +425,7 @@ canvas {
   width: min(100%, 285px);
 }
 
-.control-chips span {
+.main-control-cues span {
   min-height: 30px;
   padding: 7px 10px;
   border: 1px solid rgba(166, 98, 22, 0.24);
@@ -1000,6 +1000,26 @@ select,
 }
 
 @media (max-height: 560px) {
+  body:not(.dash-playing) .wp-standard-main-composition {
+    height: calc(100dvh - 64px) !important;
+    padding-block: 4px !important;
+  }
+
+  body:not(.dash-playing) .wp-standard-main-copy {
+    height: 100% !important;
+    gap: 6px;
+  }
+
+  body:not(.dash-playing) .wp-standard-main-summary {
+    font-size: 14px;
+    line-height: 1.35;
+  }
+
+  body:not(.dash-playing) .wp-standard-main-progress {
+    height: 36px !important;
+    max-height: 36px !important;
+  }
+
   body:not(.dash-playing) .main-panel {
     grid-template-columns: minmax(0, 1fr) minmax(250px, 320px);
     grid-template-rows: minmax(0, 1fr);
@@ -1057,7 +1077,7 @@ body.dash-stage-select.weightplay-active-viewport .dash-game {
   overflow: hidden !important;
   transform: scale(var(--dash-frame-scale, 1)) !important;
   transform-origin: top left !important;
-  border: 2px solid rgba(150, 255, 214, 0.42);
+  border: 0;
   border-radius: 18px;
   background:
     linear-gradient(rgba(4, 30, 23, 0.74), rgba(4, 25, 20, 0.94)),
@@ -1101,6 +1121,10 @@ body.wp-stage-select-active.dash-stage-select #stagePanel.stage-panel[data-wp-lo
   background: rgba(4, 31, 25, 0.9);
 }
 
+body.dash-stage-select .stage-header.wp-stage-shell-header {
+  width: calc(100% - 24px) !important;
+}
+
 .stage-header button {
   width: 48px;
   height: 48px;
@@ -1112,9 +1136,9 @@ body.wp-stage-select-active.dash-stage-select #stagePanel.stage-panel[data-wp-lo
   font-weight: 1000;
 }
 
-.stage-header div { min-width: 0; display: grid; gap: 3px; }
-.stage-header strong { overflow: hidden; font-size: 19px; line-height: 1.1; text-overflow: ellipsis; white-space: nowrap; }
-.stage-header span { color: #8bf1c8; font-size: 12px; font-weight: 900; }
+.stage-header > div:not(.wp-shell-settings) { min-width: 0; display: grid; gap: 3px; }
+.stage-header > div:not(.wp-shell-settings) > strong { overflow: hidden; font-size: 19px; line-height: 1.1; text-overflow: ellipsis; white-space: nowrap; }
+.stage-header > div:not(.wp-shell-settings) > span { color: #8bf1c8; font-size: 12px; font-weight: 900; }
 
 .stage-hint {
   margin: 0 14px;
@@ -1213,6 +1237,7 @@ body.dash-landscape-canvas.dash-stage-select .stage-panel {
 }
 
 body.dash-landscape-canvas.dash-stage-select .stage-header {
+  width: calc(100% - 16px) !important;
   margin: 0 8px;
   padding: 4px;
 }
