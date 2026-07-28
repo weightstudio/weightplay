@@ -69,7 +69,49 @@
     const tiles=links.map((set,i)=>matchShape([...set],i===source));
     return{index,size,source,tiles};
   }
-  const api={levels:Array.from({length:30},(_,index)=>build(index)),build,raw};
+  function structureScore(level){
+    return level.tiles.reduce((score,tile)=>score+(tile.shape==="t"?1:tile.shape==="x"?2:0),0);
+  }
+  const authored=Array.from({length:30},(_,index)=>build(index));
+  const levels=[
+    ...authored.slice(0,3),
+    ...authored.slice(3).sort((a,b)=>structureScore(a)-structureScore(b)||a.index-b.index)
+  ].map((level,index)=>({...level,index,difficulty:{
+    turns:index+2,
+    pieces:Math.min(level.tiles.filter(tile=>tile.shape!=="x").length-1,2+Math.floor(index/2)),
+    structure:structureScore(level)
+  }}));
+  function createStageTiles(level,index,target){
+    const tiles=level.tiles.map((tile,tileIndex)=>({...tile,target:tileIndex===target,rot:tile.solved}));
+    const candidates=tiles
+      .map((tile,tileIndex)=>({tile,tileIndex,rank:((tileIndex+1)*1103515245+(index+1)*12345)>>>0}))
+      .filter(({tile})=>tile.shape!=="x"&&!tile.target)
+      .sort((a,b)=>{
+        const aCap=a.tile.shape==="s"?1:3,bCap=b.tile.shape==="s"?1:3;
+        return bCap-aCap||a.rank-b.rank||a.tileIndex-b.tileIndex;
+      })
+      .slice(0,level.difficulty.pieces);
+    const required=new Map(candidates.map(({tileIndex})=>[tileIndex,1]));
+    let remaining=level.difficulty.turns-candidates.length;
+    while(remaining>0){
+      let advanced=false;
+      for(const {tile,tileIndex} of candidates){
+        const cap=tile.shape==="s"?1:3,current=required.get(tileIndex);
+        if(current>=cap)continue;
+        required.set(tileIndex,current+1);
+        remaining--;
+        advanced=true;
+        if(!remaining)break;
+      }
+      if(!advanced)throw new Error(`Waterway ${index+1} cannot satisfy its difficulty budget`);
+    }
+    required.forEach((turns,tileIndex)=>{
+      const period=tiles[tileIndex].shape==="s"?2:4;
+      tiles[tileIndex].rot=mod(tiles[tileIndex].solved+period-(turns%period));
+    });
+    return tiles;
+  }
+  const api={levels,build,raw,createStageTiles,structureScore};
   root.BAMBOO_LEVELS=api;
   if(typeof module!=="undefined")module.exports=api;
 })(typeof window!=="undefined"?window:globalThis);

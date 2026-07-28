@@ -2743,6 +2743,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Choose a Mosaic": "اختر فسيفساء",
   "Choose a nearby tile.": "اختر بلاطًا قريبًا.",
   "Choose a number, then find its partner.": "اختر رقمًا، ثم ابحث عن شريكه.",
+  "Choose a number, then find the number that completes 10.": "اختر رقمًا، ثم ابحث عن الرقم الذي يكمل 10.",
   "Choose a page": "اختر صفحة",
   "Choose a patrol route": "اختر طريق الدورية",
   "Choose a piece and drag it onto empty cells.": "اختر قطعة واسحبها إلى الخلايا الفارغة.",
@@ -2917,6 +2918,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Choose Trial": "اختر المحاكمة",
   "Choose two equal numbers, or two numbers whose sum is 10. They must touch or see each other across cleared spaces.": "اختر رقمين متساويين، أو رقمين مجموعهما 10. يجب أن يتلامسا أو يرون بعضهما البعض عبر المساحات الخالية.",
   "Choose two matching free tiles.": "اختر اثنين من البلاط المجاني المتطابق.",
+  "Choose two numbers whose sum is exactly 10. They must touch or see each other across cleared spaces.": "اختر رقمين مجموعهما 10 بالضبط. يجب أن يتلامسا أو يرون بعضهما البعض عبر المساحات الخالية.",
   "Choose whether the optional treasure is worth the detour. It awards the third medal and extra Moon Coins, but ordinary mission progress never requires it unless the current rule explicitly turns it into a seal.": "اختر ما إذا كان الكنز الاختياري يستحق الانعطاف أم لا. إنها تمنح الميدالية الثالثة وعملات القمر الإضافية، لكن تقدم المهمة العادية لا يتطلب ذلك أبدًا ما لم تحولها القاعدة الحالية صراحةً إلى ختم.",
   "Choose whether to equip {gear} or keep the current loadout.": "اختر ما إذا كنت تريد تجهيز {gear} أو الاحتفاظ بالعتاد الحالي.",
   "Choose your age": "اختر عمرك",
@@ -3012,6 +3014,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Clear matching bubbles around the animal": "قم بمسح الفقاعات المطابقة حول الحيوان",
   "Clear missions to earn XP and Beast Coins. Spend coins on packs, equip cards and gear, then push deeper into the forest.": "قم بإنهاء المهام لتربح عملات XP وBeast. أنفق العملات المعدنية على الحزم، وجهز البطاقات والعتاد، ثم انطلق إلى عمق الغابة.",
   "Clear missions to earn XP, level up, and unlock deeper forest routes. Progress is saved on this device.": "قم بإنهاء المهام لكسب نقاط XP والارتقاء بالمستوى وفتح مسارات أعمق للغابات. يتم حفظ التقدم على هذا الجهاز.",
+  "Clear number pairs that add up to ten. Open sight lines and keep the grove tidy.": "مسح أزواج الأعداد التي يصل مجموعها إلى عشرة. افتح خطوط الرؤية وحافظ على نظافة البستان.",
   "Clear obstacles and make the match": "إزالة العقبات وإجراء المباراة",
   "Clear pairs that match or add up to ten. Open sight lines and keep the grove tidy.": "قم بمسح الأزواج التي تتطابق أو تضيف ما يصل إلى عشرة. افتح خطوط الرؤية وحافظ على نظافة البستان.",
   "Clear pockets with only one entrance at the correct moment instead of sealing their entrance too early.": "قم بإخلاء الجيوب بمدخل واحد فقط في الوقت المناسب بدلاً من إغلاق مدخلها مبكرًا.",
@@ -12906,6 +12909,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "There is no timer, life limit, or losing screen. A wrong choice gives supportive feedback and another try.": "لا يوجد مؤقت أو حد للحياة أو فقدان الشاشة. الاختيار الخاطئ يعطي ردود فعل داعمة ومحاولة أخرى.",
   "Thermal Crown": "التاج الحراري",
   "These are simplified play situations, not professional wildlife-care instructions. Paired clues introduce an immediate priority: rain plus strong wind calls for shelter, while an animal already wet after rain needs the towel. Mission 30 closes the final mixed Helper Check.": "هذه مواقف لعب مبسطة، وليست تعليمات احترافية لرعاية الحياة البرية. تقدم القرائن المزدوجة أولوية فورية: المطر بالإضافة إلى الرياح القوية يستدعيان المأوى، بينما يحتاج الحيوان المبتل بالفعل بعد المطر إلى المنشفة. تغلق المهمة 30 فحص المساعد المختلط النهائي.",
+  "These numbers do not add up to 10.": "هذه الأرقام لا تضيف ما يصل إلى 10.",
   "They are real reflection surfaces inside the arena. Later pylons move, changing the available ricochet path during a wave.": "إنها أسطح انعكاس حقيقية داخل الساحة. تتحرك الأبراج اللاحقة، مما يؤدي إلى تغيير مسار الارتداد المتاح أثناء الموجة.",
   "They are shadow shelters. Fia is hidden from patrol sight and protected from bell pulses while inside one.": "هم ملاجئ الظل. يتم إخفاء Fia عن أنظار الدوريات ومحمي من نبضات الجرس أثناء وجودها بداخلها.",
   "They can confirm the permanent Mist Amulet or reroll one relic draft for three Diamonds. They do not unlock missions, gear or Guardians.": "يمكنهم تأكيد تميمة الضباب الدائمة أو إعادة مسودة بقايا واحدة لثلاثة ماسات. إنهم لا يفتحون المهام أو العتاد أو الأوصياء.",
@@ -14011,6 +14015,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Watermelon": "البطيخ",
   "Waterway {n}": "الممر المائي {n}",
   "Waterway {n} restored in {moves} turns.": "تم ترميم الممر المائي {n} بعد {moves} منعطفات.",
+  "Waterway {value} cannot satisfy its difficulty budget": "الممر المائي {value} لا يمكنه تلبية ميزانيته الصعبة",
   "WATERWAY RESTORED": "تمت استعادة الممر المائي",
   "Waterway selector": "محدد الممر المائي",
   "Waterways": "الممرات المائية",
@@ -14602,3 +14607,10 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Zur Lobby": "زور لوبي",
   "Zwei Hinweise": "زوي هينويز"
 };
+Object.assign(window.WeightPlayGameRuntimeLocales.ar, {
+  "Choose a number, then find the number that completes 10.":"اختر رقمًا ثم ابحث عن الرقم الذي يكمل 10.",
+  "Choose two numbers whose sum is exactly 10. They must touch or see each other across cleared spaces.":"اختر رقمين مجموعهما 10 بالضبط. يجب أن يتلامسا أو يرى أحدهما الآخر عبر خانات فارغة.",
+  "Clear number pairs that add up to ten. Open sight lines and keep the grove tidy.":"أزل أزواج الأرقام التي مجموعها عشرة ونظّف البستان.",
+  "These numbers do not add up to 10.":"مجموع هذين الرقمين لا يساوي 10.",
+  "Waterway {value} cannot satisfy its difficulty budget":"لا يمكن للممر المائي {value} تلبية ميزانية الصعوبة الخاصة به"
+});

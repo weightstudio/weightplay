@@ -250,7 +250,7 @@
     Object.entries(declarations).forEach(([property, value]) => root.style.setProperty(property, value, "important"));
     if (reserve) {
       rememberReserveStyles(reserve);
-      const reserveFollowsCanvas = gameId() === "animal-relic-hunters";
+      const reserveFollowsCanvas = ["animal-relic-hunters","animal-number-match"].includes(gameId());
       const reserveDeclarations = {
         position: "fixed", inset: "auto", top: `${availableHeight}px`, right: "auto", bottom: "auto", left: `${reserveFollowsCanvas ? left : 0}px`,
         width: `${reserveFollowsCanvas ? renderedWidth : width}px`, "min-width": "0", "max-width": reserveFollowsCanvas ? `${DESKTOP_CANVAS_MAX_WIDTH}px` : "none", height: `${reserveHeight}px`, "min-height": `${reserveHeight}px`, transform: "none",

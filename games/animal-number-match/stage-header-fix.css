@@ -12,8 +12,34 @@
     white-space: normal;
   }
 
+  body[data-wp-game-id="animal-number-match"] #stage .scene-header h2 {
+    width: calc(100% - 70px) !important;
+    margin-inline: 0 !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: normal !important;
+  }
+
   .scene-header > span {
     font-size: 0.72rem;
     white-space: nowrap;
   }
+}
+
+@media (max-width: 420px) {
+  body[data-wp-game-id="animal-number-match"] #stage .scene-header h2 {
+    font-size: 0.95rem !important;
+  }
+}
+
+body[data-wp-game-id="animal-number-match"] #stage .scene-header h2 {
+  width: calc(100% - 80px) !important;
+  margin-inline: 0 !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: normal !important;
+}
+
+body[data-wp-game-id="animal-number-match"] #stage .scene-header small {
+  display: none !important;
 }

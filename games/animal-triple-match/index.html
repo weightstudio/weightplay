@@ -1,14 +1,30 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol)) location.replace("/en/games/animal-triple-match/" + location.search + location.hash);</script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-  <script data-wp-internal-trial-gate>if(/^https?:$/.test(location.protocol)&&new URLSearchParams(location.search).get("trial")!=="1")location.replace("/");</script>
-  <meta name="robots" content="noindex,nofollow">
+  <link rel="canonical" href="https://weightplay.com/en/games/animal-triple-match/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-triple-match/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-triple-match/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-triple-match/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-triple-match/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-triple-match/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-triple-match/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-triple-match/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-triple-match/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-triple-match/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-triple-match/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-triple-match/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-triple-match/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-triple-match/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-triple-match/" />
+    <meta name="robots" content="index,follow">
   <meta name="weightplay-audience" content="general">
   <title>Triple Match | WeightPlay</title>
   <meta name="description" content="Find uncovered treasures, collect three of a kind, and keep Mimi's seven-slot tray from filling across 30 crafted stages.">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
+  <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
 </head>
@@ -53,11 +69,15 @@
       <header class="stage-header">
         <button id="stageBack" class="back-btn" type="button" aria-label="Back" data-t-aria="back" data-wp-return="stage">&larr;</button>
         <div><strong data-t="chooseStage">Choose a greenhouse shelf</strong><span id="stageSummary"></span></div>
-        <img src="../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt="">
       </header>
       <div class="chapter-strip"><span data-t="chapter">Chapter</span><strong id="chapterName"></strong></div>
       <div id="stageRail" class="stage-rail" aria-label="Stage selector" data-t-aria="stageRailLabel" data-wp-stage-rail></div>
       <p class="rail-hint" data-t="stageHint">Drag the shelf and choose an unlocked stage.</p>
+      <nav class="stage-tabs" aria-label="Stages" data-t-aria="stages">
+        <span aria-hidden="true"></span>
+        <button class="stage-tab" type="button" aria-current="page" data-t="stages">Stages</button>
+        <span aria-hidden="true"></span>
+      </nav>
     </div></div>
     <div class="ad-reserve" aria-hidden="true"></div>
   </section>

@@ -14602,3 +14602,10 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Zur Lobby": "ज़ूर लॉबी",
   "Zwei Hinweise": "ज़ेवेई हिंवेइज़"
 };
+Object.assign(window.WeightPlayGameRuntimeLocales.hi, {
+  "Choose a number, then find the number that completes 10.":"एक नंबर चुनें और 10 पूरा करने वाला नंबर खोजें।",
+  "Choose two numbers whose sum is exactly 10. They must touch or see each other across cleared spaces.":"दो नंबर चुनें जिनका जोड़ ठीक 10 हो। वे पास हों या खाली खानों के पार एक-दूसरे को देख सकें।",
+  "Clear number pairs that add up to ten. Open sight lines and keep the grove tidy.":"दस का जोड़ बनाने वाले नंबरों के जोड़े हटाएँ और उपवन साफ करें।",
+  "These numbers do not add up to 10.":"इन दोनों नंबरों का जोड़ 10 नहीं है।",
+  "Waterway {value} cannot satisfy its difficulty budget":"जलमार्ग {value} अपने कठिनाई बजट को पूरा नहीं कर सकता"
+});

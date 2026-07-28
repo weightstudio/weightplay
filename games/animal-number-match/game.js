@@ -4,7 +4,7 @@
   const $=selector=>document.querySelector(selector),screens=[...document.querySelectorAll(".screen")],levels=window.NUMBER_MATCH_LEVELS.levels;
   const storageKey="wp-animal-number-match-v1";
   let locale=read("weightPlayLocale")||read("wp-locale")||window.WonderI18n?.locale?.()||"en";if(!codes.includes(locale))locale="en";
-  let unlocked=Number(read(storageKey))||1,selected=Math.min(unlocked,30)-1,level=null,values=[],picked=null,history=[],moves=0,resultActionClaimed=false;
+  let unlocked=Number(read(storageKey))||1,selected=Math.min(unlocked,30)-1,level=null,values=[],picked=null,history=[],moves=0,resultActionClaimed=false,inputLocked=false;
   function read(key){try{return localStorage.getItem(key)}catch{return null}}
   function write(key,value){try{localStorage.setItem(key,value)}catch{}}
   function t(key,vars={}){const value=window.NUMBER_MATCH_LOCALES[locale]?.[key]??window.NUMBER_MATCH_LOCALES.en[key]??key;return String(value).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??"")}
@@ -22,16 +22,16 @@
     levels.forEach((item,index)=>{
       const button=document.createElement("button"),locked=index+1>unlocked;
       button.className=`stage-card${index===selected?" selected centered":""}${locked?" locked":""}`;button.dataset.index=index;button.dataset.stageIndex=index;button.setAttribute("aria-current",index===selected?"true":"false");button.setAttribute("aria-disabled",locked?"true":"false");
-      button.innerHTML=`<strong>${t("grove",{n:index+1})}</strong><span>${item.rows} × ${item.cols}${locked?" · "+t("locked"):""}</span>`;
+      button.innerHTML=`<strong>${t("grove",{n:index+1})}</strong><span>${item.rows} × ${item.cols}${locked?" · "+t("locked"):""}</span><span class="difficulty-pips" data-tier="${item.tier}" aria-hidden="true"></span>`;
       button.onclick=()=>{selectStage(index,true);if(!locked)startLevel(index)};$("#stageGrid").append(button);
     });
     selectStage(selected);
   }
   function startLevel(index){
-    selected=index;level=levels[index];values=level.cells.slice();picked=null;history=[];moves=0;
+    selected=index;level=levels[index];values=level.cells.slice();picked=null;history=[];moves=0;inputLocked=false;
     $("#board").style.setProperty("--cols",level.cols);$("#chapter").textContent=t("chapter",{n:Math.floor(index/5)+1});$("#stageName").textContent=t("grove",{n:index+1});$("#status").textContent=t("selectFirst");show("battle");renderBoard();
   }
-  const matches=(a,b)=>a===b||a+b===10;
+  const matches=(a,b)=>Number.isFinite(a)&&Number.isFinite(b)&&a+b===10;
   function visiblePair(a,b){
     if(a===b)return false;
     const ar=Math.floor(a/level.cols),ac=a%level.cols,br=Math.floor(b/level.cols),bc=b%level.cols;
@@ -44,7 +44,7 @@
     return null;
   }
   function choose(index){
-    if(values[index]===null)return;
+    if(inputLocked||values[index]===null)return;
     if(picked===null){picked=index;$("#status").textContent=t("selectFirst");renderBoard();return}
     if(index===picked){picked=null;renderBoard();return}
     if(!matches(values[picked],values[index])){
@@ -53,8 +53,9 @@
     if(!visiblePair(picked,index)){
       $("#status").textContent=t("blocked");picked=index;renderBoard();flash(index,"bad");return;
     }
-    const a=picked,b=index;history.push({a,b,va:values[a],vb:values[b]});values[a]=null;values[b]=null;picked=null;moves++;
-    $("#status").textContent=t("match");renderBoard();if(values.every(value=>value===null))complete();
+    const a=picked,b=index,matched=[{index:a,value:values[a]},{index:b,value:values[b]}];
+    history.push({a,b,va:values[a],vb:values[b]});values[a]=null;values[b]=null;picked=null;moves++;
+    $("#status").textContent=t("match");renderBoard();showMatchEffect(matched);if(values.every(value=>value===null))complete();
   }
   function renderBoard(){
     const board=$("#board");board.innerHTML="";
@@ -66,6 +67,16 @@
     $("#pairsLeft").textContent=t("pairsLeft",{n:values.filter(value=>value!==null).length/2});$("#undo").disabled=!history.length;
   }
   function flash(index,className){requestAnimationFrame(()=>document.querySelector(`[data-index="${index}"]`)?.classList.add(className))}
+  function showMatchEffect(matched){
+    const board=$("#board");
+    matched.forEach(({index,value})=>{
+      const socket=board.querySelector(`[data-index="${index}"]`);if(!socket)return;
+      const echo=document.createElement("span");
+      echo.className="match-echo";echo.textContent=value;echo.setAttribute("aria-hidden","true");
+      echo.style.cssText=`left:${socket.offsetLeft}px;top:${socket.offsetTop}px;width:${socket.offsetWidth}px;height:${socket.offsetHeight}px`;
+      board.append(echo);echo.addEventListener("animationend",()=>echo.remove(),{once:true});
+    });
+  }
   function hint(){const pair=availablePair();if(!pair){reorder();return}pair.forEach(index=>flash(index,"hint"));$("#status").textContent=t("selectFirst")}
   function pairValues(list,memo=new Map()){
     if(!list.length)return[];const key=list.slice().sort((a,b)=>a-b).join(",");if(memo.has(key))return null;memo.set(key,true);
@@ -80,12 +91,12 @@
   }
   function complete(){
     if(selected+2>unlocked){unlocked=Math.min(31,selected+2);write(storageKey,String(unlocked))}
-    resultActionClaimed=false;$("#retry").disabled=false;$("#next").disabled=false;
-    $("#resultBody").textContent=t("resultBody",{n:selected+1,moves});$("#next").textContent=selected===29?t("allDone"):t("next");setTimeout(()=>$("#result").showModal(),180);
+    resultActionClaimed=false;["#resultStages","#retry","#next"].forEach(selector=>$(selector).disabled=false);$("#next").disabled=selected===29;
+    $("#resultBody").textContent=t("resultBody",{n:selected+1,moves});$("#next").textContent=t("next");setTimeout(()=>$("#result").showModal(),180);
   }
   function claimResultAction(action){
     if(resultActionClaimed)return;
-    resultActionClaimed=true;$("#retry").disabled=true;$("#next").disabled=true;$("#result").close();action();
+    resultActionClaimed=true;["#resultStages","#retry","#next"].forEach(selector=>$(selector).disabled=true);$("#result").close();action();
   }
   function applyLocale(){
     document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";document.title=`${t("title")} | WeightPlay`;
@@ -103,6 +114,6 @@
   $("#start").onclick=()=>show("stage");$("#stageGrid").addEventListener("wonder:stage-snap",event=>{const index=Number(event.detail?.index);if(Number.isInteger(index)&&index>=0)selectStage(index)});document.querySelectorAll("[data-back]").forEach(button=>button.onclick=()=>show(button.closest("#battle")?"stage":"main"));
   $("#undo").onclick=()=>{const last=history.pop();if(!last)return;values[last.a]=last.va;values[last.b]=last.vb;picked=null;moves=Math.max(0,moves-1);$("#status").textContent=t("undone");renderBoard()};
   $("#hint").onclick=hint;$("#shuffle").onclick=reorder;$("#restart").onclick=()=>startLevel(selected);
-  $("#retry").onclick=()=>claimResultAction(()=>startLevel(selected));$("#next").onclick=()=>claimResultAction(()=>selected===29?show("stage"):startLevel(selected+1));
-  applyLocale();show("main");window.__NUMBER_MATCH_TEST__={matches,visiblePair,availablePair};
+  $("#resultStages").onclick=()=>claimResultAction(()=>{selected=Math.min(29,unlocked-1);show("stage")});$("#next").onclick=()=>claimResultAction(()=>startLevel(selected+1));$("#retry").onclick=()=>claimResultAction(()=>startLevel(selected));
+  applyLocale();show("main");window.__NUMBER_MATCH_TEST__={matches,visiblePair,availablePair,currentSolution:()=>level?.solution?.map(pair=>pair.slice())||[]};
 })();

@@ -309,11 +309,11 @@ window.WONDER_LOBBY = {
         es: "Triple Match", "pt-BR": "Triple Match", fr: "Triple Match", de: "Triple Match", it: "Triple Match",
         ru: "Тройное совпадение", hi: "ट्रिपल मैच", ar: "مطابقة ثلاثية",
       },
-      status: "planned",
+      status: "playable",
       statusText: {
-        en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정",
-        es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt", de: "Demnächst", it: "Prossimamente",
-        ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريباً",
+        en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능",
+        es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile",
+        ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
       },
       type: {
         en: "Layered Triple-Match Puzzle", "zh-Hant": "堆疊三件配對益智", "zh-Hans": "堆叠三件配对益智", ja: "積層トリプルパズル", ko: "레이어 트리플 퍼즐",
@@ -325,7 +325,7 @@ window.WONDER_LOBBY = {
       ages: ["13", "family"],
       ageLabel: { en: "13+", "zh-Hant": "13+", "zh-Hans": "13+", ja: "13+", ko: "13+", es: "13+", "pt-BR": "13+", fr: "13+", de: "13+", it: "13+", ru: "13+", hi: "13+", ar: "13+" },
       href: "games/animal-triple-match/",
-      internalTrial: "index.html?trial=1",
+      previewVideo: "assets/previews/animal-triple-match-battle.webm",
       description: {
         en: "Read layered treasure piles, build safe pairs, and complete every trio before Mimi's seven-slot tray fills across 30 crafted stages.",
         "zh-Hant": "觀察分層寶物堆、建立安全配對，在咪咪的七格托盤塞滿前完成 30 關的所有三連。",

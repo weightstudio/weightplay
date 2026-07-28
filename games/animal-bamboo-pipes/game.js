@@ -5,7 +5,7 @@
   const LOCALE_ROUTES = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const BASE = window.BAMBOO_LOCALES.en;
   const LEVELS = window.BAMBOO_LEVELS.levels;
-  let locale = localRead("weightPlayLocale") || localRead("wp-locale") || "en", selected = 0, run = null, resultActionClaimed = false, leaveOpen = false;
+  let locale = localRead("weightPlayLocale") || localRead("wp-locale") || "en", selected = 0, run = null, resultActionClaimed = false, leaveOpen = false, completionTimer = 0;
   if (!CODES.includes(locale)) locale = "en";
   let save = { unlocked: 1, done: {} };
   try { save = { ...save, ...JSON.parse(localStorage.getItem("wp:bamboo") || "{}") }; } catch {}
@@ -18,6 +18,7 @@
   const DIRS = [[-1, 0, 0, 2], [0, 1, 1, 3], [1, 0, 2, 0], [0, -1, 3, 1]];
   function localRead(key) { try { return localStorage.getItem(key); } catch { return null; } }
   function show(name) {
+    if (name !== "battle") cancelCompletionReveal();
     document.body.dataset.screen = name;
     $("mainGroup").hidden = name !== "main";
     Object.entries(screens).forEach(([key, node]) => { node.hidden = key !== name; });
@@ -30,7 +31,7 @@
   function persist() { try { localStorage.setItem("wp:bamboo", JSON.stringify(save)); } catch {} }
   function stageData(index) {
     const level = LEVELS[index], target = targetIndex(level);
-    return level.tiles.map((tile, i) => ({ ...tile, target: i === target, rot: tile.shape === "x" ? 0 : (tile.solved + 1 + ((index * 7 + i * 3) % 3)) % 4 }));
+    return window.BAMBOO_LEVELS.createStageTiles(level, index, target);
   }
   function ports(tile) {
     const raw = tile.shape === "x" || tile.target ? [0,1,2,3] : tile.shape === "s" ? [0,2] : tile.shape === "e" ? [0,1] : tile.shape === "t" ? [0,1,3] : tile.shape === "source" ? [2] : [0];
@@ -84,8 +85,7 @@
     return wet;
   }
   function winReady() {
-    const goal = run.tiles.findIndex(tile => tile.target);
-    return water().has(goal);
+    return water().size === run.tiles.length;
   }
   function renderStages() {
     const rail = $("rail"); rail.innerHTML = "";
@@ -126,23 +126,26 @@
       pipe.style.setProperty("--pipe-rotation", `${tile.rot * 90}deg`);
       pipe.dataset.rotation = String(tile.rot);
       pipe.setAttribute("aria-label", text("pipeLabel", { n: index + 1 }));
-      pipe.disabled = tile.target;
+      pipe.disabled = tile.target || run.completed;
       const flow = flowSvg(tile, index, wet.has(index));
       if (flow) pipe.append(flow);
-      if (!tile.target) pipe.onclick = () => { run.history.push(run.tiles.map(item => item.rot)); tile.rot = (tile.rot + 1) % 4; run.moves++; renderBoard(); if (winReady()) complete(); };
+      if (!tile.target) pipe.onclick = () => { if(run.completed)return;run.history.push(run.tiles.map(item => item.rot)); tile.rot = (tile.rot + 1) % 4; run.moves++; renderBoard(); if (winReady()) complete(); };
       board.append(pipe);
     });
     $("moves").textContent = text("moves", { n: run.moves });
     $("cue").textContent = text("cue");
   }
   function startStage() {
+    cancelCompletionReveal();
     setResultOpen(false);
-    run = { tiles: stageData(selected), history: [], moves: 0 };
+    run = { tiles: stageData(selected), history: [], moves: 0, completed: false };
     $("chapter").textContent = text("chapter", { n: Math.floor(selected / 5) + 1 });
     $("stageName").textContent = text("waterway", { n: selected + 1 });
     show("battle"); renderBoard();
   }
   function complete() {
+    if(run.completed)return;
+    run.completed = true;
     save.done[selected] = true;
     save.unlocked = Math.max(save.unlocked, Math.min(30, selected + 2)); persist();
     updateMainProgress();
@@ -153,8 +156,24 @@
     [$("resultStages"), $("next"), $("retry")].forEach(button => button.classList.remove("primary"));
     const primaryAction = $("next").disabled ? $("resultStages") : $("next");
     primaryAction.classList.add("primary");
-    setResultOpen(true);
-    primaryAction.focus();
+    $("board").classList.add("celebrating");
+    $("battle").classList.add("celebrating");
+    scheduleCompletionReveal(primaryAction,900);
+  }
+  function cancelCompletionReveal() {
+    clearTimeout(completionTimer);
+    completionTimer=0;
+    $("board")?.classList.remove("celebrating");
+    $("battle")?.classList.remove("celebrating");
+  }
+  function scheduleCompletionReveal(primaryAction,delay=150) {
+    clearTimeout(completionTimer);
+    completionTimer=setTimeout(()=>{
+      completionTimer=0;
+      if(!run?.completed||document.body.dataset.screen!=="battle"||leaveOpen)return;
+      setResultOpen(true);
+      primaryAction.focus();
+    },delay);
   }
   function claimResultAction() {
     if ($("result").hidden || resultActionClaimed) return false;
@@ -196,6 +215,7 @@
     } else {
       if (restoreFocus && !battle.hidden) battleBack()?.focus();
       dialog.hidden = true;
+      if (run?.completed && $("result").hidden) scheduleCompletionReveal($("next").disabled ? $("resultStages") : $("next"));
     }
   }
   function updateMainProgress() {
@@ -277,9 +297,9 @@
       actions[0].focus();
     }
   });
-  $("undo").onclick = () => { const prior = run?.history.pop(); if (prior) { run.tiles.forEach((tile, i) => { tile.rot = prior[i]; }); run.moves--; renderBoard(); } };
+  $("undo").onclick = () => { if(run?.completed)return;const prior = run?.history.pop(); if (prior) { run.tiles.forEach((tile, i) => { tile.rot = prior[i]; }); run.moves--; renderBoard(); } };
   $("restart").onclick = startStage;
-  $("hint").onclick = () => { const tile = run.tiles.find(item => ports(item).slice().sort().join(",") !== ports({ ...item, rot: item.solved }).slice().sort().join(",")); if (tile) { run.history.push(run.tiles.map(item => item.rot)); tile.rot = tile.solved; run.moves++; renderBoard(); if (winReady()) complete(); } };
+  $("hint").onclick = () => { if(run?.completed)return;const tile = run.tiles.find(item => ports(item).slice().sort().join(",") !== ports({ ...item, rot: item.solved }).slice().sort().join(",")); if (tile) { run.history.push(run.tiles.map(item => item.rot)); tile.rot = tile.solved; run.moves++; renderBoard(); if (winReady()) complete(); } };
   $("rail").addEventListener("wonder:stage-snap", event => {
     const index = Number(event.detail?.index);
     if (Number.isInteger(index) && index >= 0) selectStage(index, false);

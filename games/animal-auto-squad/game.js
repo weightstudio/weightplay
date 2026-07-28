@@ -1,4 +1,5 @@
 (function () {
+  document.body.dataset.wpCombinedSound = "true";
   ["stagePanel", "gamePanel"].forEach((id) => {
     document.getElementById(id)?.setAttribute("data-wp-canvas-max-width", "920");
   });
@@ -4561,6 +4562,12 @@
       .filter((button) => !button.classList.contains("is-hidden"));
   }
 
+  function ensureResultActions() {
+    const wrapper = nodes.resultPanel.querySelector(".result-actions");
+    if (!wrapper) return;
+    [nodes.resultMenuBtn, nodes.nextStageBtn, nodes.retryBtn].forEach((button) => wrapper.append(button));
+  }
+
   function commitResultDecision(action) {
     if (resultDecisionCommitted || nodes.resultPanel.classList.contains("is-hidden")) return false;
     resultDecisionCommitted = true;
@@ -4571,6 +4578,9 @@
   function openResultScreen(isWin) {
     resultDecisionCommitted = false;
     const isFinalVictory = isWin && state.stage >= STAGE_COUNT;
+    const canAdvance = isWin && state.stage < STAGE_COUNT;
+    const primaryAction = canAdvance ? nodes.nextStageBtn : isFinalVictory ? nodes.resultMenuBtn : nodes.retryBtn;
+    ensureResultActions();
     nodes.gamePanel.classList.remove("is-hidden");
     nodes.gamePanel.classList.add("is-result");
     nodes.resultPanel.classList.remove("is-hidden");
@@ -4589,17 +4599,18 @@
     nodes.resultGoldText.textContent = t("resultGoldEarned", { earned: state.earnedTrainingCoins || 0, total: save.coins });
     nodes.resultStageText.textContent = t("resultStageSaved", { unlocked: save.unlockedStage, total: STAGE_COUNT });
     nodes.resultGrowthText.textContent = t("resultGrowthNext", { atk: bonus.atk, hp: bonus.hp, remaining });
-    nodes.nextStageBtn.classList.toggle("is-hidden", !isWin || state.stage >= STAGE_COUNT);
-    nodes.retryBtn.classList.toggle("primary-btn", !isFinalVictory);
-    nodes.retryBtn.classList.toggle("secondary-btn", isFinalVictory);
-    nodes.resultMenuBtn.classList.toggle("primary-btn", isFinalVictory);
-    nodes.resultMenuBtn.classList.toggle("secondary-btn", !isFinalVictory);
+    [nodes.resultMenuBtn, nodes.nextStageBtn, nodes.retryBtn].forEach((button) => {
+      button.classList.remove("is-hidden");
+      button.disabled = button === nodes.nextStageBtn && !canAdvance;
+      button.classList.toggle("primary-btn", button === primaryAction);
+      button.classList.toggle("secondary-btn", button !== primaryAction);
+    });
     nodes.skillReportText.innerHTML = `<strong>${t("skillReport")}</strong><br/>${t("skillsLearned")}`;
     nodes.resultPanel.scrollTop = 0;
     const resultCopy = nodes.resultPanel.querySelector(".result-copy");
     if (resultCopy) resultCopy.scrollTop = 0;
     setResultOwnership(true);
-    requestAnimationFrame(() => (isWin && state.stage < STAGE_COUNT ? nodes.nextStageBtn : isFinalVictory ? nodes.resultMenuBtn : nodes.retryBtn).focus({ preventScroll: true }));
+    requestAnimationFrame(() => primaryAction.focus({ preventScroll: true }));
     
     playSynth(isWin ? "win" : "fail");
     window.WonderAnalytics?.track("expedition_end", { game_id: GAME_ID, stage: state.stage, wave: state.round, cleared: isWin });

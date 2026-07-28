@@ -2743,6 +2743,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Choose a Mosaic": "모자이크를 선택하세요",
   "Choose a nearby tile.": "가까운 타일을 선택하세요.",
   "Choose a number, then find its partner.": "번호를 선택한 다음 해당 파트너를 찾으세요.",
+  "Choose a number, then find the number that completes 10.": "숫자를 선택한 다음 10을 완성하는 숫자를 찾으세요.",
   "Choose a page": "페이지를 선택하세요",
   "Choose a patrol route": "순찰 경로를 선택하세요",
   "Choose a piece and drag it onto empty cells.": "조각을 선택하고 빈 셀로 드래그합니다.",
@@ -2917,6 +2918,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Choose Trial": "평가판을 선택하세요",
   "Choose two equal numbers, or two numbers whose sum is 10. They must touch or see each other across cleared spaces.": "두 개의 동일한 숫자 또는 합이 10인 두 개의 숫자를 선택하십시오. 두 숫자는 비어 있는 공간에서 서로 접촉하거나 볼 수 있어야 합니다.",
   "Choose two matching free tiles.": "일치하는 무료 타일 2개를 선택하세요.",
+  "Choose two numbers whose sum is exactly 10. They must touch or see each other across cleared spaces.": "합이 정확히 10인 숫자 두 개를 선택하세요. 이 숫자들은 비어 있는 공간에서 서로 닿거나 보여야 합니다.",
   "Choose whether the optional treasure is worth the detour. It awards the third medal and extra Moon Coins, but ordinary mission progress never requires it unless the current rule explicitly turns it into a seal.": "선택적인 보물이 우회할 가치가 있는지 선택하세요. 세 번째 메달과 추가 달 코인을 수여하지만, 현재 규칙에서 명시적으로 인장으로 바꾸지 않는 한 일반적인 임무 진행에는 절대로 필요하지 않습니다.",
   "Choose whether to equip {gear} or keep the current loadout.": "{gear}를 장착할지 아니면 현재 로드아웃을 유지할지 선택하세요.",
   "Choose your age": "나이를 선택하세요",
@@ -3012,6 +3014,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Clear matching bubbles around the animal": "동물 주변의 일치하는 거품을 제거하세요.",
   "Clear missions to earn XP and Beast Coins. Spend coins on packs, equip cards and gear, then push deeper into the forest.": "미션을 클리어하여 XP와 비스트 코인을 획득하세요. 팩에 코인을 쓰고, 카드와 장비를 장착한 다음 숲 속으로 더 깊이 들어가 보세요.",
   "Clear missions to earn XP, level up, and unlock deeper forest routes. Progress is saved on this device.": "미션을 클리어하여 XP를 획득하고, 레벨을 올리고, 더 깊은 숲길을 잠금 해제하세요. 진행 상황은 이 장치에 저장됩니다.",
+  "Clear number pairs that add up to ten. Open sight lines and keep the grove tidy.": "최대 10까지의 숫자 쌍을 지웁니다. 시야를 확보하고 숲을 깔끔하게 유지하세요.",
   "Clear obstacles and make the match": "장애물을 제거하고 매치를 만드세요",
   "Clear pairs that match or add up to ten. Open sight lines and keep the grove tidy.": "일치하거나 최대 10까지 더해지는 쌍을 지웁니다. 시야를 확보하고 숲을 깔끔하게 유지하세요.",
   "Clear pockets with only one entrance at the correct moment instead of sealing their entrance too early.": "입구를 너무 일찍 봉쇄하는 대신 적절한 순간에 입구가 하나만 있는 포켓을 정리하세요.",
@@ -12906,6 +12909,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "There is no timer, life limit, or losing screen. A wrong choice gives supportive feedback and another try.": "타이머, 수명 제한, 패배 화면이 없습니다. 잘못된 선택은 지지적인 피드백과 또 다른 시도를 제공합니다.",
   "Thermal Crown": "열 크라운",
   "These are simplified play situations, not professional wildlife-care instructions. Paired clues introduce an immediate priority: rain plus strong wind calls for shelter, while an animal already wet after rain needs the towel. Mission 30 closes the final mixed Helper Check.": "이는 전문적인 야생 동물 관리 지침이 아닌 단순화된 놀이 상황입니다. 짝을 이룬 단서는 즉각적인 우선순위를 제시합니다. 비와 강풍이 피난처를 요구하는 반면, 비 후에 이미 젖어 있는 동물에게는 수건이 필요합니다. 미션 30은 최종 혼합 도우미 확인을 종료합니다.",
+  "These numbers do not add up to 10.": "이 숫자의 합은 10이 되지 않습니다.",
   "They are real reflection surfaces inside the arena. Later pylons move, changing the available ricochet path during a wave.": "이는 경기장 내부의 실제 반사 표면입니다. 나중에 파일론이 이동하여 파도 중에 사용 가능한 도탄 경로가 변경됩니다.",
   "They are shadow shelters. Fia is hidden from patrol sight and protected from bell pulses while inside one.": "그들은 그림자 대피소입니다. Fia는 순찰 시야에서 숨겨져 있으며 내부에 있는 동안 벨 펄스로부터 보호됩니다.",
   "They can confirm the permanent Mist Amulet or reroll one relic draft for three Diamonds. They do not unlock missions, gear or Guardians.": "영구 안개 부적을 확인하거나 다이아몬드 3개로 유물 초안 1개를 다시 굴릴 수 있습니다. 미션, 장비, 수호자는 잠금 해제되지 않습니다.",
@@ -14011,6 +14015,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Watermelon": "수박",
   "Waterway {n}": "수로 {n}",
   "Waterway {n} restored in {moves} turns.": "{moves}턴 만에 수로 {n}가 복원되었습니다.",
+  "Waterway {value} cannot satisfy its difficulty budget": "Waterway {value}는 난이도 예산을 충족할 수 없습니다.",
   "WATERWAY RESTORED": "복원된 수로",
   "Waterway selector": "수로 선택기",
   "Waterways": "수로",
@@ -14602,3 +14607,10 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Zur Lobby": "주르 로비",
   "Zwei Hinweise": "츠바이 힌바이제"
 };
+Object.assign(window.WeightPlayGameRuntimeLocales.ko, {
+  "Choose a number, then find the number that completes 10.":"숫자를 고르고 합이 10이 되는 짝을 찾으세요.",
+  "Choose two numbers whose sum is exactly 10. They must touch or see each other across cleared spaces.":"합이 정확히 10인 숫자 두 개를 고르세요. 서로 붙어 있거나 빈칸을 통해 보여야 합니다.",
+  "Clear number pairs that add up to ten. Open sight lines and keep the grove tidy.":"합이 10인 숫자 짝을 지워 숲을 정리하세요.",
+  "These numbers do not add up to 10.":"두 숫자의 합이 10이 아닙니다.",
+  "Waterway {value} cannot satisfy its difficulty budget":"수로 {value}이(가) 난이도 예산을 충족할 수 없습니다"
+});

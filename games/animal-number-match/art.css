@@ -5,6 +5,14 @@
   margin: 0 auto 8px;
   object-fit: contain;
   filter: drop-shadow(0 10px 12px #173f3838);
+  animation: result-character-celebrate 1.15s ease-in-out infinite alternate;
+}
+
+@keyframes result-character-celebrate {
+  to {
+    transform: translateY(-5px) rotate(2deg);
+    filter: drop-shadow(0 14px 14px #edb63f66);
+  }
 }
 
 @media (max-height: 500px) and (orientation: landscape) {
@@ -12,5 +20,11 @@
     width: 58px;
     height: 58px;
     margin-bottom: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .result-character {
+    animation: none;
   }
 }

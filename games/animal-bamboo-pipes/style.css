@@ -42,6 +42,17 @@
 .pipe[data-shape="goal"]{--atlas-x:35.42%;--atlas-y:85%}
 .pipe.target{cursor:default}
 .pipe.target::before{inset:-1px;background:url('../../assets/animal-bamboo-pipes-goal-v2.png') center/cover no-repeat;transform:none}
+.battle.celebrating .pipe{pointer-events:none}
+.board.celebrating{animation:restoredBoardGlow .9s ease-out}
+.board.celebrating .pipe.wet::after{opacity:1;animation:celebrationCurrent .46s ease-in-out infinite alternate}
+.board.celebrating .pipe.target{z-index:4;overflow:visible}
+.board.celebrating .pipe.target::before{animation:lotusBloom .9s cubic-bezier(.2,.8,.2,1) both;filter:drop-shadow(0 0 12px #fff5a8) drop-shadow(0 0 22px #73ffd0)}
+.board.celebrating .pipe.target::after{inset:-18%;background:radial-gradient(circle,#fffbd6dd 0 14%,#ffe56f88 28%,#62f5ca44 48%,transparent 70%);opacity:1;animation:lotusHalo .9s ease-out both}
+@keyframes restoredBoardGlow{45%{box-shadow:0 0 18px #8affd2,0 0 42px #fff0a866}100%{box-shadow:0 8px 25px #001b19}}
+@keyframes celebrationCurrent{to{filter:brightness(1.8);transform:scale(1.24)}}
+@keyframes lotusBloom{0%{transform:scale(.88);filter:brightness(1)}45%{transform:scale(1.15);filter:brightness(1.75) drop-shadow(0 0 16px #fff5a8) drop-shadow(0 0 28px #73ffd0)}100%{transform:scale(1);filter:brightness(1.25) drop-shadow(0 0 10px #fff5a8)}}
+@keyframes lotusHalo{0%{opacity:0;transform:scale(.55)}45%{opacity:1;transform:scale(1.2)}100%{opacity:0;transform:scale(1.65)}}
+@media(prefers-reduced-motion:reduce){.board.celebrating,.board.celebrating .pipe.wet::after,.board.celebrating .pipe.target::before,.board.celebrating .pipe.target::after{animation:none}.board.celebrating .pipe.target::before{filter:brightness(1.5) drop-shadow(0 0 16px #fff5a8) drop-shadow(0 0 24px #73ffd0)}}
 
 /* Canonical Main → Stage → Battle ownership. */
 .main-group{max-width:920px;margin:0 auto}

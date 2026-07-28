@@ -2743,6 +2743,7 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Choose a Mosaic": "Elige un mosaico",
   "Choose a nearby tile.": "Elija un mosaico cercano.",
   "Choose a number, then find its partner.": "Elija un número y luego busque su compañero.",
+  "Choose a number, then find the number that completes 10.": "Elige un número y luego encuentra el número que completa 10.",
   "Choose a page": "Elige una página",
   "Choose a patrol route": "Elige una ruta de patrulla",
   "Choose a piece and drag it onto empty cells.": "Elige una pieza y arrástrala a celdas vacías.",
@@ -2917,6 +2918,7 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Choose Trial": "Elija prueba",
   "Choose two equal numbers, or two numbers whose sum is 10. They must touch or see each other across cleared spaces.": "Elige dos números iguales, o dos números cuya suma sea 10. Deben tocarse o verse a través de espacios despejados.",
   "Choose two matching free tiles.": "Elige dos fichas libres iguales.",
+  "Choose two numbers whose sum is exactly 10. They must touch or see each other across cleared spaces.": "Elige dos números cuya suma sea exactamente 10. Deben tocarse o verse a través de espacios despejados.",
   "Choose whether the optional treasure is worth the detour. It awards the third medal and extra Moon Coins, but ordinary mission progress never requires it unless the current rule explicitly turns it into a seal.": "Elija si vale la pena desviarse por el tesoro opcional. Otorga la tercera medalla y Monedas Lunares adicionales, pero el progreso de la misión ordinaria nunca lo requiere a menos que la regla actual lo convierta explícitamente en un sello.",
   "Choose whether to equip {gear} or keep the current loadout.": "Elige si deseas equipar {gear} o mantener el equipamiento actual.",
   "Choose your age": "Elige tu edad",
@@ -3012,6 +3014,7 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Clear matching bubbles around the animal": "Elimina burbujas iguales alrededor del animal.",
   "Clear missions to earn XP and Beast Coins. Spend coins on packs, equip cards and gear, then push deeper into the forest.": "Completa misiones para ganar XP y Beast Coins. Gasta monedas en paquetes, equipa cartas y equipo, luego adéntrate en el bosque.",
   "Clear missions to earn XP, level up, and unlock deeper forest routes. Progress is saved on this device.": "Completa misiones para ganar XP, subir de nivel y desbloquear rutas forestales más profundas. El progreso se guarda en este dispositivo.",
+  "Clear number pairs that add up to ten. Open sight lines and keep the grove tidy.": "Borra pares de números que suman diez. Abra las líneas de visión y mantenga la arboleda ordenada.",
   "Clear obstacles and make the match": "Elimina obstáculos y haz el partido.",
   "Clear pairs that match or add up to ten. Open sight lines and keep the grove tidy.": "Borra pares que coincidan o sumen diez. Abra las líneas de visión y mantenga la arboleda ordenada.",
   "Clear pockets with only one entrance at the correct moment instead of sealing their entrance too early.": "Limpie los bolsillos con una sola entrada en el momento correcto en lugar de sellar su entrada demasiado pronto.",
@@ -12906,6 +12909,7 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "There is no timer, life limit, or losing screen. A wrong choice gives supportive feedback and another try.": "No hay cronómetro, límite de vida ni pantalla perdida. Una elección equivocada genera retroalimentación de apoyo y otro intento.",
   "Thermal Crown": "Corona Térmica",
   "These are simplified play situations, not professional wildlife-care instructions. Paired clues introduce an immediate priority: rain plus strong wind calls for shelter, while an animal already wet after rain needs the towel. Mission 30 closes the final mixed Helper Check.": "Estas son situaciones de juego simplificadas, no instrucciones profesionales sobre el cuidado de la vida silvestre. Las pistas emparejadas introducen una prioridad inmediata: la lluvia y el fuerte viento exigen refugio, mientras que un animal que ya está mojado después de la lluvia necesita la toalla. La misión 30 cierra el último cheque de ayuda mixto.",
+  "These numbers do not add up to 10.": "Estos números no suman 10.",
   "They are real reflection surfaces inside the arena. Later pylons move, changing the available ricochet path during a wave.": "Son verdaderas superficies de reflexión dentro de la arena. Posteriormente, los pilones se mueven, cambiando la ruta de rebote disponible durante una ola.",
   "They are shadow shelters. Fia is hidden from patrol sight and protected from bell pulses while inside one.": "Son refugios de sombra. Fia está oculta a la vista de las patrullas y protegida de los pulsos de campana mientras está dentro de una.",
   "They can confirm the permanent Mist Amulet or reroll one relic draft for three Diamonds. They do not unlock missions, gear or Guardians.": "Pueden confirmar el Amuleto de la Niebla permanente o volver a tirar un borrador de reliquia por tres Diamantes. No desbloquean misiones, equipo ni Guardianes.",
@@ -14011,6 +14015,7 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Watermelon": "Sandía",
   "Waterway {n}": "Vía navegable {n}",
   "Waterway {n} restored in {moves} turns.": "Vía fluvial {n} restaurada en {moves} vueltas.",
+  "Waterway {value} cannot satisfy its difficulty budget": "La vía navegable {value} no puede satisfacer su presupuesto de dificultad",
   "WATERWAY RESTORED": "VÍA AGUA RESTAURADA",
   "Waterway selector": "Selector de vías navegables",
   "Waterways": "Vías navegables",
@@ -14602,3 +14607,10 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Zur Lobby": "Vestíbulo Zur",
   "Zwei Hinweise": "Zwei Hinweise"
 };
+Object.assign(window.WeightPlayGameRuntimeLocales.es, {
+  "Choose a number, then find the number that completes 10.":"Elige un número y busca el que complete 10.",
+  "Choose two numbers whose sum is exactly 10. They must touch or see each other across cleared spaces.":"Elige dos números cuya suma sea exactamente 10. Deben tocarse o verse a través de casillas vacías.",
+  "Clear number pairs that add up to ten. Open sight lines and keep the grove tidy.":"Elimina parejas de números que sumen diez y despeja el bosque.",
+  "These numbers do not add up to 10.":"Estos números no suman 10.",
+  "Waterway {value} cannot satisfy its difficulty budget":"La vía acuática {value} no puede cumplir su presupuesto de dificultad"
+});

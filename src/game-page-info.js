@@ -6952,6 +6952,7 @@
     const baseGame = games[id];
     const main = document.querySelector("main");
     if (!baseGame || !main) return;
+    if (id === "animal-number-match" && document.querySelector("script[data-wp-internal-trial-gate]")) return;
     const game = localizedGame(id);
     if (!game) return;
     syncLocalizedMetadata(game);
