@@ -168,6 +168,10 @@
     taroSkillEffect: "Protege durante 3,5 segundos, recupera hasta {heal} PV e inflige {damage} de daño en un área amplia.",
   };
 
+  Object.assign(copy.en, { stages: "Stages", replay: "Replay" });
+  Object.assign(copy["zh-Hant"], { stages: "\u8a66\u7149", replay: "\u91cd\u65b0\u6311\u6230" });
+  Object.assign(copy.es, { stages: "Pruebas", replay: "Repetir" });
+
   const TRIAL_COUNT = 30;
   const trialTitles = [
     ["First Footprints","初始足跡"],["Scout Ring","斥候包圍"],["Bramble Pursuit","荊棘追逐"],["Root Ambush","樹根伏擊"],["Prowler Gate","潛影者之門"],
@@ -323,6 +327,7 @@
   let mastery = readStoredInteger("aht-mastery", 0, 0, Math.floor((Number.MAX_SAFE_INTEGER - 9) / 4));
   let run = null;
   let resultDecisionCommitted = false;
+  let blessingDecisionCommitted = false;
   let frame = 0;
   let rerollConfirmTimer = 0;
   let rerollConfirmDueAt = 0;
@@ -366,6 +371,13 @@
     stage: $("#stageView"),
     battle: $("#battleView"),
   };
+  const resultActions = document.createElement("div");
+  resultActions.className = "result-actions";
+  const resultReplay = document.createElement("button");
+  resultReplay.id = "resultReplay";
+  resultReplay.type = "button";
+  resultActions.append($("#resultHome"), $("#resultNext"), resultReplay);
+  $("#resultModal > section").append(resultActions);
   const canvas = $("#game");
   const ctx = canvas.getContext("2d");
 
@@ -585,13 +597,13 @@
       if (open) layer.setAttribute("aria-hidden", "true");
       else layer.removeAttribute("aria-hidden");
     });
-    if (open && focusPrimary) requestAnimationFrame(() => $("#resultNext").focus({ preventScroll: true }));
+    if (open && focusPrimary) requestAnimationFrame(() => $("#resultHome").focus({ preventScroll: true }));
   }
 
   function commitResultDecision(action) {
     if (resultDecisionCommitted || $("#resultModal").classList.contains("hidden")) return false;
     resultDecisionCommitted = true;
-    [$("#resultNext"), $("#resultHome")].forEach((button) => { button.disabled = true; });
+    [$("#resultHome"), $("#resultNext"), resultReplay].forEach((button) => { button.disabled = true; });
     action();
     return true;
   }
@@ -954,6 +966,7 @@
   }
 
   function renderBlessings(rerolled) {
+    blessingDecisionCommitted = false;
     const options = blessingPool(rerolled);
     const box = $("#choices");
     box.innerHTML = "";
@@ -963,6 +976,8 @@
       button.dataset.nativeLocalized = "true";
       button.innerHTML = `<img src="${ASSET_ROOT + option.img}" alt=""><span><b>${option.name}</b><br><small>${option.copy}</small></span>`;
       button.onclick = () => {
+        if (blessingDecisionCommitted || $("#choiceModal").classList.contains("hidden")) return;
+        blessingDecisionCommitted = true;
         clearRerollConfirmation();
         playSound("upgrade");
         run.bless[option.id] += option.amount;
@@ -1066,10 +1081,22 @@
     backgroundSuspended = false;
     run.active = false;
     cancelAnimationFrame(frame);
-    const terminalVictory = won && run.stage >= TRIAL_COUNT;
-    $("#resultHome").hidden = terminalVictory;
     resultDecisionCommitted = false;
-    [$("#resultNext"), $("#resultHome")].forEach((button) => { button.disabled = false; });
+    $("#resultHome").hidden = false;
+    $("#resultHome").disabled = false;
+    $("#resultNext").hidden = false;
+    $("#resultNext").disabled = !won || run.stage >= TRIAL_COUNT;
+    resultReplay.hidden = false;
+    resultReplay.disabled = false;
+    $("#resultHome").textContent = t("stages");
+    $("#resultNext").textContent = t("next");
+    resultReplay.textContent = t("replay");
+    $("#resultHome").onclick = () => commitResultDecision(() => {
+      playSound("click");
+      show("stage");
+      focusStage(Math.min(TRIAL_COUNT, unlocked));
+    });
+    resultReplay.onclick = () => commitResultDecision(() => startTrial(run.stage));
     if (won) {
       const gain = run.definition.reward;
       const previousUnlocked = unlocked;
@@ -1086,20 +1113,15 @@
         : interpolate("masteryNeed", { remaining });
       $("#resultTitle").textContent = t("win");
       $("#resultCopy").textContent = `${interpolate("earnedMarks", { gain, total: marks })} ${unlockCopy} ${masteryCopy}`;
-      $("#resultNext").textContent = run.stage < TRIAL_COUNT ? t("next") : t("menu");
       $("#resultNext").onclick = () => {
-        commitResultDecision(() => {
-          if (run.stage < TRIAL_COUNT) startTrial(run.stage + 1);
-          else { show("main"); localize(); focusMain(); }
-        });
+        if (run.stage < TRIAL_COUNT) commitResultDecision(() => startTrial(run.stage + 1));
       };
     } else {
       $("#resultTitle").textContent = t("fail");
       $("#resultCopy").textContent = locale === "zh-Hant"
         ? `${heroName(run.heroId)}\u9700\u8981\u518d\u8a66\u4e00\u6b21\u3002`
         : interpolate("failCopy", { hero: heroName(run.heroId) });
-      $("#resultNext").textContent = t("retry");
-      $("#resultNext").onclick = () => commitResultDecision(() => startTrial(run.stage));
+      $("#resultNext").onclick = null;
     }
     setResultModal(true);
     playSound(won ? "win" : "wrong");
@@ -1304,7 +1326,6 @@
   });
   $("#rerollBtn").addEventListener("keydown",(event)=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
   $("#rerollBtn").onclick = rerollBlessings;
-  $("#resultHome").onclick = () => commitResultDecision(() => { playSound("click"); show("main"); localize(); focusMain(); });
   $("#quitKeep").onclick = () => closeQuitDecision(true);
   $("#quitLeave").onclick = () => {
     const stage = run?.stage || Math.min(TRIAL_COUNT, unlocked);
@@ -1334,7 +1355,7 @@
       return;
     }
     if (event.key !== "Tab" || $("#resultModal").classList.contains("hidden")) return;
-    const actions = [$("#resultNext"), $("#resultHome")].filter((button) => !button.disabled && !button.hidden);
+    const actions = [$("#resultHome"), $("#resultNext"), resultReplay].filter((button) => !button.disabled && !button.hidden);
     if (event.shiftKey && document.activeElement === actions[0]) { event.preventDefault(); actions.at(-1).focus(); }
     else if (!event.shiftKey && document.activeElement === actions.at(-1)) { event.preventDefault(); actions[0].focus(); }
   });

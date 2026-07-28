@@ -22,3 +22,19 @@ body[data-screen="stage"] .sound-toggle,body[data-screen="battle"] .sound-toggle
 @media(max-height:520px) and (orientation:landscape){.block-grove-battle-canvas{grid-template-columns:minmax(0,1fr) 235px;grid-template-rows:58px 72px minmax(0,1fr);grid-template-areas:"head head" "objective side" "board side";gap:4px;padding:4px}.block-grove-battle-canvas .objective-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:4px;padding:4px}.block-grove-battle-canvas .objective-chip{min-width:0;justify-content:center;font-size:12px;padding:2px 5px}.block-grove-battle-canvas .objective-chip img{width:20px;height:20px}}
 .stage-rail{touch-action:pan-y}
 @media(max-height:520px) and (orientation:landscape){.block-grove-battle-canvas .battle-header{grid-area:head}.block-grove-battle-canvas .objective-row{grid-area:objective}.block-grove-battle-canvas .board-zone{grid-area:board}.block-grove-battle-canvas .piece-tray{grid-area:side;align-self:start;height:250px}.block-grove-battle-canvas .battle-actions{grid-area:side;align-self:end;height:96px}.block-grove-battle-canvas .leave-card button,.block-grove-battle-canvas .result-card button{min-height:96px}}
+
+/* Interface V4 keeps Stage Settings physically inside narrow viewports and
+   preserves one stable three-action Result track across every outcome. */
+.result-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
+.result-stars{min-height:46px}
+.result-actions button{min-width:0}
+.result-actions button:disabled{opacity:.48;box-shadow:none;cursor:not-allowed}
+@media(max-width:700px){
+  .wp-stage-shell-header>.wp-shell-settings{right:4px!important}
+  .result-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .result-actions .primary-action{grid-column:auto}
+}
+@media(max-height:520px) and (orientation:landscape){
+  .block-grove-battle-canvas .leave-card button,
+  .block-grove-battle-canvas .result-card button{min-height:96px}
+}

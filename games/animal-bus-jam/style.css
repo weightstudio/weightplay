@@ -479,6 +479,56 @@ dialog::backdrop { background: #02070dcc; backdrop-filter: blur(5px); }
   font-size: 1.7rem;
   font-weight: 950;
 }
+.result-art {
+  position: relative;
+  width: min(100%, 330px);
+  height: 122px;
+  margin: 0 auto 10px;
+  overflow: hidden;
+  border: 1px solid #b48a43;
+  border-radius: 16px;
+  background: #132231;
+  box-shadow: inset 0 0 24px #0008, 0 9px 24px #0007;
+}
+.result-art::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(90deg, transparent 44%, #07121a1a 70%, #07121a99);
+  pointer-events: none;
+}
+.result-art > img {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+.result-terminal {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.result-bus {
+  z-index: 1;
+  width: 42%;
+  filter: drop-shadow(0 5px 5px #000a);
+}
+.result-bus-sky {
+  right: 1%;
+  bottom: -17%;
+}
+.result-bus-coral {
+  right: 25%;
+  bottom: -23%;
+}
+.result-panko {
+  z-index: 2;
+  left: -5%;
+  bottom: -35%;
+  height: 145%;
+  filter: drop-shadow(0 5px 5px #000b);
+}
 .fail-mark { background: #b74f49; }
 dialog h2 { margin: .2rem 0; }
 dialog > p:not(.eyebrow) { color: #b6c5ce; line-height: 1.45; }
@@ -572,6 +622,8 @@ dialog button:disabled { opacity: .42; cursor: not-allowed; }
   .status { position: absolute; left: 10px; right: 10px; bottom: 5px; font-size: .56rem; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   dialog[open] { top: calc((100svh - 56px) / 2); bottom: auto; margin: 0 auto; transform: translateY(-50%); max-height: calc(100svh - 72px); padding: 12px 20px; overflow: auto; }
   .result-mark { width: 42px; height: 42px; font-size: 1.2rem; }
+  .result-art { height: 76px; margin-bottom: 5px; border-radius: 12px; }
+  .result-panko { bottom: -42%; height: 154%; }
   dialog h2 { font-size: 1.15rem; }
   dialog > div:last-child { margin-top: 8px; }
 }

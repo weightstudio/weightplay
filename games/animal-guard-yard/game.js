@@ -1385,7 +1385,10 @@
     nodes.gameShell.removeAttribute("aria-hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.pausePanel.classList.add("hidden");
-    nodes.startGameBtn?.focus({ preventScroll: true });
+    window.requestAnimationFrame(() => {
+      nodes.startGameBtn?.focus({ preventScroll: true });
+      window.setTimeout(() => nodes.startGameBtn?.focus({ preventScroll: true }), 120);
+    });
   }
 
   function startStage(index) {
@@ -2216,7 +2219,9 @@
       : won
         ? nodes.resultStagesBtn
         : nodes.retryBtn;
-    nodes.nextStageBtn.classList.toggle("hidden", !canContinue);
+    nodes.nextStageBtn.classList.remove("hidden");
+    nodes.nextStageBtn.disabled = !canContinue;
+    nodes.nextStageBtn.setAttribute("aria-disabled", String(!canContinue));
     [nodes.nextStageBtn, nodes.retryBtn, nodes.resultStagesBtn].forEach((action) => {
       action.classList.toggle("result-primary", action === primaryResultAction);
     });

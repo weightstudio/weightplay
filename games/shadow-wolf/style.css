@@ -903,6 +903,8 @@ body[data-shadow-wolf-screen="battle"] .relic-app {
   border: 0;
   border-radius: 0;
   background: rgba(5, 15, 28, .96);
+  animation: none;
+  opacity: 1;
 }
 .battle-result.hidden { display: none; }
 .battle-result h2,
@@ -913,7 +915,7 @@ body[data-shadow-wolf-screen="battle"] .relic-app {
 .battle-result .report-grid strong { color:#fde68a; letter-spacing:.08em; }
 .battle-result .result-actions {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
   width: 100%;
   margin-top: 2px;
@@ -926,6 +928,10 @@ body[data-shadow-wolf-screen="battle"] .relic-app {
   font: inherit;
   font-weight: 800;
   cursor: pointer;
+}
+.battle-result .result-actions button:disabled {
+  cursor: not-allowed;
+  opacity: .48;
 }
 .battle-result .result-actions button:focus-visible {
   outline: 4px solid #fde68a;
@@ -944,6 +950,11 @@ body[data-shadow-wolf-screen="battle"] .relic-app {
 body[data-shadow-wolf-screen="battle"].wp-logical-battle-active #resultPanel.battle-result:not(.hidden) {
   height: 100% !important;
   max-height: 100% !important;
+}
+body:has(#resultPanel.battle-result:not(.hidden)) .battle-return,
+body:has(#resultPanel.battle-result:not(.hidden)) .arena-hud,
+body:has(#resultPanel.battle-result:not(.hidden)) .mobile-controls-row {
+  visibility: hidden;
 }
 .battle-return { position: absolute; top: 8px; left: 8px; z-index: 4; }
 .arena-hud { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }

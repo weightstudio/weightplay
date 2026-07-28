@@ -89,6 +89,7 @@
     startBtn: $("startBtn"),
     menuBtn: document.querySelector("#gamePanel #menuBtn, #battleMenuBtn"),
     retryBtn: $("retryBtn"),
+    nextStageBtn: $("nextStageBtn"),
     resultMenuBtn: $("resultMenuBtn"),
     hpText: $("hpText"),
     hpFill: $("hpFill"),
@@ -271,6 +272,8 @@
       lootFound: "Relic Chest Unlocked!",
       equipLoot: "Equip Gear",
       tryAgain: "Try Again",
+      nextStage: "Next Stage",
+      replayStage: "Replay Stage",
       backToMenu: "Back to Stages",
       sidebarInventory: "Equipped Gear",
       sidebarStats: "Character Stats",
@@ -436,6 +439,8 @@
     menuHint: "\u4f7f\u7528 A/D \u79fb\u52d5\u3001W \u6216\u7a7a\u767d\u9375\u4e8c\u6bb5\u8df3\u3001J \u653b\u64ca\u3001K \u885d\u523a\u3002\u901a\u904e 30 \u500b\u5b58\u6a94\u95dc\u5361\uff0c\u5b78\u6703\u5730\u5f62\u8207\u6575\u4eba\u53cd\u5236\uff0c\u64ca\u6557\u516d\u96bb\u5340\u57df\u9996\u9818\u3002",
     stageHint: "\u5de6\u53f3\u62d6\u66f3\u9078\u64c7\u5df2\u89e3\u9396\u95dc\u5361\u3002\u9996\u9818\u95dc\u70ba 5\u300110\u300115\u300120\u300125\u300130\u3002",
     backToMenu: "\u8fd4\u56de\u95dc\u5361",
+    nextStage: "\u4e0b\u4e00\u95dc",
+    replayStage: "\u91cd\u73a9\u672c\u95dc",
     report_win: "\u7b2c {stage} \u95dc\u5df2\u901a\u904e\u3002\u4e0b\u4e00\u689d\u8def\u7dda\u5df2\u89e3\u9396\uff0c\u672c\u95dc\u4ecd\u53ef\u91cd\u65b0\u6311\u6230\u3002",
     report_partial: "\u7b2c {stage} \u95dc\u5c1a\u672a\u901a\u904e\u3002\u89c0\u5bdf\u5730\u5f62\u8b66\u793a\u3001\u8abf\u6574\u5c6c\u6027\u5f8c\u518d\u8a66\u4e00\u6b21\u3002",
     report_skill_win: "\u4f60\u8b80\u61c2\u95dc\u5361\u898f\u5247\u3001\u63a7\u5236\u79fb\u52d5\u8def\u7dda\uff0c\u4e26\u5b8c\u6210\u6574\u5834\u5c0d\u6230\u3002",
@@ -503,6 +508,8 @@
     lootFound: "¡Cofre de reliquia desbloqueado!",
     equipLoot: "Equipar objeto",
     tryAgain: "Intentar de nuevo",
+    nextStage: "Siguiente nivel",
+    replayStage: "Repetir nivel",
     backToMenu: "Volver a niveles",
     sidebarInventory: "Equipo equipado",
     sidebarStats: "Atributos del personaje",
@@ -1753,11 +1760,17 @@
     if (open && focusPrimary) (nodes.resultPanel.querySelector(".result-actions .primary-btn") || nodes.retryBtn).focus({ preventScroll: true });
   }
 
-  function syncResultActionHierarchy(terminalVictory) {
-    nodes.retryBtn.classList.toggle("primary-btn", !terminalVictory);
-    nodes.retryBtn.classList.toggle("secondary-btn", terminalVictory);
-    nodes.resultMenuBtn.classList.toggle("primary-btn", terminalVictory);
-    nodes.resultMenuBtn.classList.toggle("secondary-btn", !terminalVictory);
+  function syncResultActionHierarchy(nextAvailable) {
+    nodes.nextStageBtn.disabled = !nextAvailable;
+    [nodes.resultMenuBtn, nodes.nextStageBtn, nodes.retryBtn].forEach((button) => {
+      button.classList.remove("primary-btn");
+      button.classList.add("secondary-btn");
+    });
+    const primary = nextAvailable
+      ? nodes.nextStageBtn
+      : state.stageCleared ? nodes.resultMenuBtn : nodes.retryBtn;
+    primary.classList.remove("secondary-btn");
+    primary.classList.add("primary-btn");
   }
 
   function trapResultFocus(event) {
@@ -1766,12 +1779,15 @@
       return;
     }
     if (event.key !== "Tab" || nodes.resultPanel.classList.contains("hidden")) return;
-    if (event.shiftKey && document.activeElement === nodes.retryBtn) {
+    const focusable = [nodes.resultMenuBtn, nodes.nextStageBtn, nodes.retryBtn].filter((button) => !button.disabled);
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
       event.preventDefault();
-      nodes.resultMenuBtn.focus({ preventScroll: true });
-    } else if (!event.shiftKey && document.activeElement === nodes.resultMenuBtn) {
+      last.focus({ preventScroll: true });
+    } else if (!event.shiftKey && document.activeElement === last) {
       event.preventDefault();
-      nodes.retryBtn.focus({ preventScroll: true });
+      first.focus({ preventScroll: true });
     }
   }
 
@@ -1821,6 +1837,7 @@
     clearActiveInputs();
     cancelAnimationFrame(state.gameLoopId);
     const clearedStage = state.room;
+    nodes.resultPanel.dataset.settledStage = String(clearedStage);
     state.stageCleared = Boolean(won);
     nodes.resultTitle.textContent = won ? t("runComplete") : t("runFailed");
     nodes.resultScore.textContent = `${clearedStage}/${STAGE_COUNT}`;
@@ -1836,17 +1853,10 @@
         ? "All 30 stages and six region bosses cleared! Replay any stage to refine your squad."
         : t("report_win", { stage: clearedStage });
       nodes.skillReportText.textContent = t("report_skill_win", { stage: clearedStage });
-      const locale = getLocale();
-      nodes.retryBtn.textContent = clearedStage < STAGE_COUNT
-        ? locale === "zh-Hant" ? "\u4e0b\u4e00\u95dc" : locale === "es" ? "Siguiente nivel" : "Next Stage"
-        : locale === "zh-Hant" ? "\u518d\u73a9\u4e00\u6b21" : locale === "es" ? "Repetir nivel" : "Replay Stage";
-      nodes.retryBtn.dataset.resultAction = clearedStage < STAGE_COUNT ? "next" : "retry";
       window.WonderSound?.play("win");
     } else {
       nodes.resultText.textContent = t("report_partial", { stage: clearedStage });
       nodes.skillReportText.textContent = t("report_skill_partial", { stage: clearedStage });
-      nodes.retryBtn.textContent = t("tryAgain");
-      nodes.retryBtn.dataset.resultAction = "retry";
       window.WonderSound?.play("wrong");
     }
 
@@ -1856,7 +1866,7 @@
     state.selectedStage = won && clearedStage < STAGE_COUNT ? clearedStage + 1 : clearedStage;
     saveLocalState();
     renderAdventureRecord();
-    syncResultActionHierarchy(won && clearedStage === STAGE_COUNT);
+    syncResultActionHierarchy(won && clearedStage < STAGE_COUNT);
     setResultModalOpen(true);
   }
 
@@ -2904,7 +2914,14 @@
 
     nodes.retryBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
-      startRun();
+      startRun(Number(nodes.resultPanel.dataset.settledStage) || state.selectedStage);
+    });
+
+    nodes.nextStageBtn.addEventListener("click", () => {
+      if (nodes.nextStageBtn.disabled) return;
+      window.WonderSound?.play("click");
+      const settledStage = Number(nodes.resultPanel.dataset.settledStage) || state.selectedStage;
+      startRun(Math.min(STAGE_COUNT, settledStage + 1));
     });
 
     nodes.menuBtn.addEventListener("click", () => {

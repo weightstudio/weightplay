@@ -51,8 +51,8 @@ select {
 
 body:not(.guard-yard-stage):not(.guard-yard-playing) .yard-game {
   width: min(100%, 920px);
-  height: 100dvh;
-  min-height: 100dvh;
+  height: var(--guard-yard-vh, 100dvh) !important;
+  min-height: var(--guard-yard-vh, 100dvh) !important;
   padding-bottom: calc(16px + env(safe-area-inset-bottom));
   overflow: hidden;
 }
@@ -92,6 +92,19 @@ body:not(.guard-yard-stage):not(.guard-yard-playing) .yard-game {
   width: 28px;
   height: 28px;
   object-fit: contain;
+}
+
+.wp-main-shell-header .wp-shell-main-title {
+  color: #fff8d8 !important;
+  text-shadow: 0 2px 2px rgba(10, 28, 44, 0.9);
+}
+
+body:not(.guard-yard-stage):not(.guard-yard-playing) :is(
+  .wp-standard-main-summary,
+  .wp-standard-main-progress
+) {
+  color: #fff8d8 !important;
+  text-shadow: 0 2px 2px rgba(10, 28, 44, 0.9);
 }
 
 .title-block p,
@@ -160,7 +173,7 @@ body:not(.guard-yard-stage):not(.guard-yard-playing) .yard-game {
 @media (max-width: 560px) {
   .main-cover { aspect-ratio: 1 / 1; }
 }
-.main-entry-copy { display: grid; gap: 4px; text-align: center; color: #fff7d1; }
+.main-entry-copy { display: grid !important; gap: 4px; text-align: center; color: #fff7d1; }
 .main-entry-copy strong { font-size: 1.45rem; }
 .main-start-btn, .stage-screen-head button { min-height: 44px; border: 0; border-radius: 12px; padding: 10px 18px; background: linear-gradient(180deg, #fff8d8, #f7c95d); color: #3b2a17; font-weight: 900; }
 
@@ -203,6 +216,37 @@ body:not(.guard-yard-stage):not(.guard-yard-playing) .yard-game {
   .main-entry-copy { padding: 10px; }
   .main-entry-copy strong { font-size: 1.05rem; }
   .main-entry-copy span { font-size: .82rem; line-height: 1.3; }
+
+  body:not(.guard-yard-stage):not(.guard-yard-playing) .wp-standard-main-composition {
+    height: calc(var(--guard-yard-vh, 100dvh) - 72px);
+    min-height: 0;
+    grid-template-columns: 300px minmax(0, 1fr) !important;
+    gap: 18px;
+    padding: 8px 20px !important;
+  }
+
+  body:not(.guard-yard-stage):not(.guard-yard-playing) .wp-standard-main-poster {
+    width: 300px;
+    height: 300px;
+  }
+
+  body:not(.guard-yard-stage):not(.guard-yard-playing) .wp-standard-main-copy {
+    width: 100%;
+    height: 300px;
+  }
+
+  body:not(.guard-yard-stage):not(.guard-yard-playing) :is(
+    .wp-standard-main-poster-media,
+    .wp-standard-main-poster-media > img,
+    .wp-standard-main-poster > img
+  ) {
+    width: 300px !important;
+    min-width: 300px !important;
+    max-width: 300px !important;
+    height: 300px !important;
+    min-height: 300px !important;
+    max-height: 300px !important;
+  }
 }
 .stage-screen-head { min-height: 46px; display: grid; grid-template-columns: 46px minmax(0, 1fr); align-items: center; gap: 10px; }
 .stage-screen-head button { width: 44px; padding: 0; font-size: 1.45rem; }
@@ -2663,6 +2707,10 @@ body.guard-yard-playing .result-panel {
   background: rgba(22, 51, 31, 0.76);
 }
 
+body.guard-yard-playing:has(#resultPanel:not(.hidden)) [data-wp-return="battle"] {
+  display: none !important;
+}
+
 body.guard-yard-playing .pause-panel {
   position: absolute;
   inset: 0;
@@ -2687,8 +2735,8 @@ body.guard-yard-playing .result-panel .result-card {
   max-height: 450px;
   padding: 12px;
   gap: 7px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows: auto minmax(0, 1fr) 40px 40px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: auto minmax(0, 1fr) 44px;
   overflow: hidden;
 }
 
@@ -2699,13 +2747,58 @@ body.guard-yard-playing .result-panel .result-report {
 
 body.guard-yard-playing .result-panel .result-report {
   min-height: 0;
-  overflow: auto;
+  gap: 6px;
+  overflow: hidden;
+}
+
+body.guard-yard-playing .result-panel .result-summary,
+body.guard-yard-playing .result-panel .progress-message {
+  font-size: 0.82rem;
+  line-height: 1.2;
+}
+
+body.guard-yard-playing .result-panel .result-stats {
+  gap: 6px;
+}
+
+body.guard-yard-playing .result-panel .result-stats span {
+  min-height: 42px;
+  padding: 4px;
+  font-size: 0.76rem;
+}
+
+body.guard-yard-playing .result-panel .mastery-result {
+  gap: 2px 6px;
+  padding: 6px 9px;
+}
+
+body.guard-yard-playing .result-panel .skill-report {
+  gap: 4px;
+  padding: 8px 10px;
+}
+
+body.guard-yard-playing .result-panel .skill-row {
+  font-size: 0.78rem;
+}
+
+body.guard-yard-playing .result-panel .result-report small {
+  font-size: 0.64rem;
+  line-height: 1.15;
 }
 
 body.guard-yard-playing .result-panel .result-card > button,
 body.guard-yard-playing .result-panel .result-card > a {
-  min-height: 40px;
+  min-width: 0;
+  min-height: 44px;
   padding: 5px 8px;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+body.guard-yard-playing .result-panel .result-card > button:disabled {
+  opacity: 0.48;
+  box-shadow: none;
+  cursor: not-allowed;
 }
 
 /* Guard Yard Stage keeps navigation and resources stable while only tab content scrolls. */

@@ -817,11 +817,12 @@
       : "";
     const hasNextStage = won && game.def.id < stageDefs.length;
     const primaryAction = hasNextStage ? dom.nextStage : won ? dom.backToMap : dom.retryStage;
-    dom.nextStage.hidden = !hasNextStage;
+    dom.nextStage.hidden = false;
+    dom.nextStage.disabled = !hasNextStage;
+    dom.nextStage.setAttribute("aria-disabled", String(!hasNextStage));
     [dom.retryStage, dom.nextStage, dom.backToMap].forEach((action) => {
       action.classList.toggle("primary-button", action === primaryAction);
     });
-    document.querySelector(".result-actions").classList.toggle("single-primary", dom.nextStage.hidden);
     if (won) {
       save.bestStars[game.def.id] = Math.max(save.bestStars[game.def.id] || 0, stars);
       save.bestScore[game.def.id] = Math.max(save.bestScore[game.def.id] || 0, game.score);
