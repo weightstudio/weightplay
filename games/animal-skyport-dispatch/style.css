@@ -71,3 +71,7 @@
 .topbar h1{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .main-sound-toggle{width:44px;height:44px;margin:0;border:1px solid #6ca8b6;border-radius:12px;background:#17465b;color:#fff;font:800 1.1rem/1 system-ui;cursor:pointer}
 .main-sound-toggle:focus-visible{outline:3px solid #fff4b7;outline-offset:2px}
+
+/* Keep the shared Settings panel inside the viewport when RTL mirrors the
+   header utility slot to the physical left edge. */
+[dir="rtl"] .wp-shell-settings-popover{right:auto;left:0}

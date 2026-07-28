@@ -1,5 +1,6 @@
 (() => {
   const $ = (id) => document.getElementById(id);
+  document.body.dataset.wpCombinedSound = 'true';
   // General Stage and Battle own the complete safe physical width. These
   // declarations run before the shared controllers load, so their responsive
   // envelopes supersede the historical numeric desktop maximum.
@@ -219,15 +220,17 @@
     document.body.classList.toggle('skyport-protected-screen', id !== 'mainScreen');
     document.body.classList.toggle('skyport-playing', id === 'battleShell' || id === 'result');
     requestAnimationFrame(() => {
-      if ($(id)?.classList.contains('hidden')) return;
-      const target = id === 'mainScreen'
-        ? $('startBtn')
-        : id === 'stageScreen'
-          ? document.querySelector('.stage-card.selected:not(:disabled)') || document.querySelector('.stage-card:not(:disabled)')
-          : id === 'result'
-            ? $('nextBtn')
-            : $('flight');
-      target?.focus({preventScroll:true});
+      requestAnimationFrame(() => {
+        if ($(id)?.classList.contains('hidden')) return;
+        const target = id === 'mainScreen'
+          ? $('startBtn')
+          : id === 'stageScreen'
+            ? document.querySelector('.stage-card.selected:not(:disabled)') || document.querySelector('.stage-card:not(:disabled)')
+            : id === 'result'
+              ? $('nextBtn')
+              : $('flight');
+        target?.focus({preventScroll:true});
+      });
     });
   };
   function localize() {
