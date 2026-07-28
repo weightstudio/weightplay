@@ -956,6 +956,9 @@
     runeChainReady: "Concentre ataques em um inimigo para iniciar uma Corrente Rúnica.",
     battlePreview: "Resumo da missão",
     squadRule: "Regra do esquadrão",
+    strategyTips: text.en.strategyTips.map(
+      (tip) => window.WeightPlayGameRuntimeLocales?.["pt-BR"]?.[tip] || tip,
+    ),
   });
 
   const heroDefs = [

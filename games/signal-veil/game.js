@@ -9,6 +9,36 @@
   const PATH_LOCALES = Object.fromEntries(Object.entries(LOCALE_PATHS).map(([key,value]) => [value,key]));
   const WORLD = {width:3072,height:1024};
   const BASE_VIEW = {width:960,height:540};
+  const PLAYER_RADIUS = 24;
+  const TERRAIN_COLLIDERS = [
+    // Signal Town buildings and solid plaza fixtures.
+    {kind:"rect",x:350,y:28,w:620,h:154},
+    {kind:"rect",x:150,y:150,w:275,h:142},
+    {kind:"rect",x:610,y:165,w:215,h:132},
+    {kind:"rect",x:145,y:325,w:270,h:142},
+    {kind:"rect",x:625,y:330,w:250,h:145},
+    {kind:"rect",x:135,y:610,w:310,h:175},
+    {kind:"rect",x:620,y:605,w:275,h:145},
+    {kind:"rect",x:135,y:775,w:325,h:170},
+    {kind:"rect",x:620,y:765,w:300,h:175},
+    {kind:"circle",x:520,y:245,r:52},
+    {kind:"circle",x:525,y:515,r:48},
+    {kind:"circle",x:505,y:720,r:48},
+    // Forest water, monoliths, and dense rock clusters beside the paths.
+    {kind:"circle",x:1190,y:150,r:112},
+    {kind:"circle",x:1050,y:855,r:88},
+    {kind:"circle",x:1985,y:115,r:102},
+    {kind:"rect",x:1015,y:720,w:105,h:165},
+    {kind:"rect",x:1960,y:170,w:88,h:205},
+    // Laboratory walls and machinery. Corridors and enemy rooms remain open.
+    {kind:"rect",x:2210,y:35,w:280,h:150},
+    {kind:"rect",x:2590,y:35,w:375,h:160},
+    {kind:"rect",x:2190,y:205,w:180,h:150},
+    {kind:"rect",x:2840,y:205,w:150,h:180},
+    {kind:"rect",x:2180,y:760,w:170,h:185},
+    {kind:"rect",x:2830,y:750,w:180,h:190},
+    {kind:"circle",x:2520,y:525,r:62},
+  ];
   const atlas = {sprites:new Image(),items:new Image(),npcs:new Image(),world:new Image()};
   atlas.sprites.src = "/assets/signal-veil-sprites.webp";
   atlas.items.src = "/assets/signal-veil-items.webp";
@@ -158,6 +188,7 @@
     nodes.zone.textContent=t(zoneKey());
     canvas.dataset.playerX=String(Math.round(state.x));
     canvas.dataset.playerY=String(Math.round(state.y));
+    canvas.dataset.facing=state.facing;
     canvas.dataset.enemiesDefeated=String(state.defeated.size);
     canvas.dataset.witnesses=String(state.talked.size);
     canvas.dataset.totalEnemies=String(enemySeeds.length);
@@ -233,6 +264,17 @@
     const col=index%columns,row=Math.floor(index/columns);
     ctx.save();ctx.globalAlpha=alpha;ctx.drawImage(image,col*cellW,row*cellH,cellW,cellH,x-w/2,y-h/2,w,h);ctx.restore();
   }
+  function drawAtlasRotated(image,index,columns,rows,x,y,w,h,rotation,alpha=1) {
+    if(!image.complete||!image.naturalWidth)return;
+    const cellW=image.naturalWidth/columns,cellH=image.naturalHeight/rows;
+    const col=index%columns,row=Math.floor(index/columns);
+    ctx.save();
+    ctx.globalAlpha=alpha;
+    ctx.translate(x,y);
+    ctx.rotate(rotation);
+    ctx.drawImage(image,col*cellW,row*cellH,cellW,cellH,-w/2,-h/2,w,h);
+    ctx.restore();
+  }
   function drawWorld(cam) {
     if(atlas.world.complete&&atlas.world.naturalWidth) ctx.drawImage(atlas.world,0,0,atlas.world.naturalWidth,atlas.world.naturalHeight,-cam.x,-cam.y,WORLD.width,WORLD.height);
     else {ctx.fillStyle="#08222b";ctx.fillRect(0,0,BASE_VIEW.width,BASE_VIEW.height)}
@@ -262,7 +304,12 @@
       if(!state.talked.has(index)){ctx.fillStyle="#ffc550";ctx.font="900 23px sans-serif";ctx.textAlign="center";ctx.fillText("!",npc.x-cam.x,npc.y-cam.y-47)}
     });
     enemies.forEach(enemy=>{
-      if(enemy.dead||(enemy.hidden&&!trueVision))return;
+      if(enemy.dead)return;
+      if(enemy.hidden&&!trueVision){
+        const pulse=22+Math.sin(performance.now()/180)*5;
+        ctx.strokeStyle="#49f5ff99";ctx.lineWidth=3;ctx.beginPath();ctx.arc(enemy.x-cam.x,enemy.y-cam.y,pulse,0,Math.PI*2);ctx.stroke();
+        return;
+      }
       drawAtlas(atlas.sprites,enemy.sprite,4,4,enemy.x-cam.x,enemy.y-cam.y,78,78);
       drawEntityBars(enemy,cam,54);
     });
@@ -276,8 +323,11 @@
     const facingIndex={down:0,left:1,right:2,up:3}[state.facing]||0;
     drawAtlas(atlas.sprites,facingIndex,4,4,state.x-cam.x,state.y-cam.y,78,78,invulnerability>0&&Math.floor(invulnerability*12)%2?0.35:1);
     if(swingTimer>0) {
-      const vector=facingVector();drawAtlas(atlas.items,8,4,4,state.x-cam.x+vector.x*48,state.y-cam.y+vector.y*48,76,76);
+      const vector=facingVector();
+      const rotation={right:0,down:Math.PI/2,left:Math.PI,up:-Math.PI/2}[state.facing];
+      drawAtlasRotated(atlas.items,8,4,4,state.x-cam.x+vector.x*48,state.y-cam.y+vector.y*48,76,76,rotation);
     }
+    drawEnemyGuide(cam);
     const target=nearestInteractable();
     if(target&&!paused){
       ctx.fillStyle="#05141be8";ctx.strokeStyle="#4ff4f4";ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(BASE_VIEW.width/2-90,BASE_VIEW.height-52,180,34,12);ctx.fill();ctx.stroke();
@@ -289,6 +339,53 @@
   }
 
   function facingVector(){return {up:{x:0,y:-1},down:{x:0,y:1},left:{x:-1,y:0},right:{x:1,y:0}}[state.facing]}
+  function collidesTerrain(x,y,radius=PLAYER_RADIUS) {
+    return TERRAIN_COLLIDERS.some(shape=>{
+      if(shape.kind==="circle")return Math.hypot(x-shape.x,y-shape.y)<radius+shape.r;
+      const nearestX=clamp(x,shape.x,shape.x+shape.w),nearestY=clamp(y,shape.y,shape.y+shape.h);
+      return Math.hypot(x-nearestX,y-nearestY)<radius;
+    });
+  }
+  function collidesSolidActor(x,y,radius=PLAYER_RADIUS) {
+    const overlaps=(entity,entityRadius)=>Math.hypot(x-entity.x,y-entity.y)<radius+entityRadius;
+    if(npcs.some(npc=>overlaps(npc,22)))return true;
+    if(chests.some(chest=>!state.chests.has(chest.id)&&overlaps(chest,25)))return true;
+    if(enemies.some(enemy=>!enemy.dead&&(!enemy.hidden||trueVision)&&overlaps(enemy,25)))return true;
+    return !boss.dead&&state.defeated.size>=15&&overlaps(boss,48);
+  }
+  function moveEntityWithTerrain(entity,dx,dy,radius=PLAYER_RADIUS,avoidActors=false) {
+    const blocked=(x,y)=>collidesTerrain(x,y,radius)||(avoidActors&&collidesSolidActor(x,y,radius));
+    const wasBlocked=blocked(entity.x,entity.y);
+    const nextX=clamp(entity.x+dx,radius,WORLD.width-radius);
+    if(!blocked(nextX,entity.y)||wasBlocked)entity.x=nextX;
+    const nextY=clamp(entity.y+dy,radius,WORLD.height-radius);
+    if(!blocked(entity.x,nextY)||wasBlocked)entity.y=nextY;
+  }
+  function drawEnemyGuide(cam) {
+    if(state.talked.size<10||state.defeated.size>=enemySeeds.length)return;
+    const living=enemies.filter(enemy=>!enemy.dead);
+    if(!living.length)return;
+    const target=living.sort((a,b)=>distance(state,a)-distance(state,b))[0];
+    const screen={x:target.x-cam.x,y:target.y-cam.y};
+    const margin=42,top=82,bottom=BASE_VIEW.height-42;
+    const marker={x:clamp(screen.x,margin,BASE_VIEW.width-margin),y:clamp(screen.y,top,bottom)};
+    const offscreen=screen.x<margin||screen.x>BASE_VIEW.width-margin||screen.y<top||screen.y>bottom;
+    const color=target.hidden&&!trueVision?"#54f4ef":"#ffc550";
+    ctx.save();
+    ctx.translate(marker.x,marker.y);
+    if(offscreen){
+      const angle=Math.atan2(screen.y-marker.y,screen.x-marker.x);
+      ctx.rotate(angle);ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(18,0);ctx.lineTo(-10,-11);ctx.lineTo(-10,11);ctx.closePath();ctx.fill();
+    }else{
+      ctx.strokeStyle=color;ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,30+Math.sin(performance.now()/170)*4,0,Math.PI*2);ctx.stroke();
+    }
+    if(target.hidden&&!trueVision){
+      ctx.rotate(offscreen?-Math.atan2(screen.y-marker.y,screen.x-marker.x):0);
+      ctx.fillStyle="#06151ddd";ctx.beginPath();ctx.arc(0,0,12,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle=color;ctx.font="900 15px sans-serif";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("V",0,1);
+    }
+    ctx.restore();
+  }
   function movementVector() {
     let x=touchMove.x+(keys.has("arrowright")||keys.has("d")?1:0)-(keys.has("arrowleft")||keys.has("a")?1:0);
     let y=touchMove.y+(keys.has("arrowdown")||keys.has("s")?1:0)-(keys.has("arrowup")||keys.has("w")?1:0);
@@ -304,7 +401,7 @@
     let nx=clamp(state.x+move.x*speed*dt,55,WORLD.width-55),ny=clamp(state.y+move.y*speed*dt,75,WORLD.height-55);
     if(nx>995&&state.x<=1020&&state.talked.size<10){nx=995;showToast(t("lockedForest"))}
     if(nx>2040&&state.x<=2070&&!trueVision){nx=2040;showToast(t("lockedLab"))}
-    state.x=nx;state.y=ny;
+    moveEntityWithTerrain(state,nx-state.x,ny-state.y,PLAYER_RADIUS,true);
     if(state.x>1060&&state.checkpoint.x<1000)state.checkpoint={x:1080,y:520};
     if(state.x>2100&&state.checkpoint.x<2000)state.checkpoint={x:2110,y:520};
   }
@@ -325,6 +422,7 @@
   function attack() {
     if(paused||attackCooldown>0)return;
     canvas.dataset.lastAction="attack";
+    canvas.dataset.slashDirection=state.facing;
     attackCooldown=.32;swingTimer=.18;playTone(150,.07);const v=facingVector(),point={x:state.x+v.x*62,y:state.y+v.y*62};
     enemies.forEach(enemy=>{if(!enemy.dead&&(!enemy.hidden||trueVision)&&distance(point,enemy)<78)damageEnemy(enemy,effectiveAttack())});
     if(!boss.dead&&state.defeated.size>=15&&distance(point,boss)<105)damageBoss(effectiveAttack());
@@ -371,11 +469,11 @@
       enemy.attackTimer-=dt;const dist=distance(state,enemy);
       if(dist<310){
         const dx=(state.x-enemy.x)/(dist||1),dy=(state.y-enemy.y)/(dist||1);
-        if(dist>55){enemy.x+=dx*enemy.speed*dt;enemy.y+=dy*enemy.speed*dt}
+        if(dist>55)moveEntityWithTerrain(enemy,dx*enemy.speed*dt,dy*enemy.speed*dt,22);
         else if(enemy.attackTimer<=0){hurt(enemy.id>7?10:7);enemy.attackTimer=1.05+(enemy.id%3)*.2}
       } else {
         enemy.phase+=dt*.7;const tx=enemy.homeX+Math.cos(enemy.phase)*55,ty=enemy.homeY+Math.sin(enemy.phase*.8)*40;
-        enemy.x+=(tx-enemy.x)*dt*.7;enemy.y+=(ty-enemy.y)*dt*.7;
+        moveEntityWithTerrain(enemy,(tx-enemy.x)*dt*.7,(ty-enemy.y)*dt*.7,22);
       }
     });
   }
@@ -386,7 +484,7 @@
     if(dist>600)return;
     boss.attackTimer-=dt;boss.stun=Math.max(0,boss.stun-dt);
     if(boss.charge>0){
-      boss.charge-=dt;const dx=(state.x-boss.x)/(dist||1),dy=(state.y-boss.y)/(dist||1);boss.x+=dx*250*dt;boss.y+=dy*250*dt;
+      boss.charge-=dt;const dx=(state.x-boss.x)/(dist||1),dy=(state.y-boss.y)/(dist||1);moveEntityWithTerrain(boss,dx*250*dt,dy*250*dt,48);
       if(dist<75)hurt(17);return;
     }
     if(boss.attackTimer<=0){
@@ -401,7 +499,7 @@
     }
   }
   function updateProjectiles(dt) {
-    projectiles.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt});
+    projectiles.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;if(collidesTerrain(p.x,p.y,9))p.life=0});
     enemyProjectiles.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;if(distance(state,p)<35){hurt(p.damage);p.life=0}});
     for(let i=projectiles.length-1;i>=0;i--){
       const p=projectiles[i];let hit=false;
@@ -451,7 +549,7 @@
     if(event.repeat)return;
     if(!paused&&["arrowup","arrowdown","arrowleft","arrowright","w","a","s","d"].includes(key)){
       const nudge={arrowup:[0,-10],w:[0,-10],arrowdown:[0,10],s:[0,10],arrowleft:[-10,0],a:[-10,0],arrowright:[10,0],d:[10,0]}[key];
-      state.x=clamp(state.x+nudge[0],55,WORLD.width-55);state.y=clamp(state.y+nudge[1],75,WORLD.height-55);
+      moveEntityWithTerrain(state,nudge[0],nudge[1],PLAYER_RADIUS,true);
       if(state.x>995&&state.talked.size<10)state.x=995;
       if(state.x>2040&&!trueVision)state.x=2040;
       setFacing({x:nudge[0],y:nudge[1]});updateHud();
@@ -502,5 +600,12 @@
   Promise.all(Object.values(atlas).map(image=>image.decode?.().catch(()=>{})||Promise.resolve())).finally(()=>{
     setTimeout(()=>{nodes.loading.hidden=true},350);
   });
+  if(new URLSearchParams(location.search).get("trial")==="1"){
+    window.__SIGNAL_VEIL_TEST__={
+      collidesTerrain,
+      enemySeeds:enemySeeds.map(([x,y])=>({x,y})),
+      terrainCount:TERRAIN_COLLIDERS.length,
+    };
+  }
   applyLocale();updateMainProgress();renderInventory();requestAnimationFrame(frame);
 })();

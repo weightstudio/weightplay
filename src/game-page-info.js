@@ -5825,6 +5825,75 @@
       ]
     ]
   };
+  localizedGames["pt-BR"] = {
+    ...(localizedGames["pt-BR"] || {}),
+    "animal-rune-tactics": {
+      title: "Táticas de Runas Animais",
+      difficulty: "Difícil",
+      time: "8–15 minutos por missão",
+      gameplay: "Tática de esquadrão por turnos",
+      genre: ["Estratégia", "Tática", "Aventura e ação animal"],
+      skills: ["Lógica", "Resolução de problemas", "Concentração", "Planejamento tático"],
+      guideKicker: "Guia original do WeightPlay",
+      guideTitleSuffix: "Guia do jogo",
+      noteTitle: "Informações do jogador e do salvamento",
+      hideScoreBands: true,
+      intro:
+        "Táticas de Runas Animais é uma campanha de 30 missões por turnos em um tabuleiro rúnico de três por quatro. Leão Guardião, Coruja Maga e Tartaruga Escudo realizam uma ação antes do turno inimigo: mover, atacar, defender ou gastar Energia em uma Habilidade própria. Seis capítulos apresentam caminhos bloqueados, armadilhas, correntes, fogo, runas giratórias e selos, além de inimigos que contra-atacam, empurram, silenciam, marcam, drenam Energia ou criam clones. As missões 5, 10, 15, 20, 25 e 30 terminam com seis Chefes diferentes, cada um com fases próprias. Missões desbloqueadas, treinamento dos heróis e Recompensas Rúnicas ficam salvos neste navegador.",
+      story: [
+        "As Estradas Rúnicas ligam seis territórios animais ao Arquivo da Coroa. Caminhos da floresta contêm raízes vivas, marcas da forja prendem o ferro-raiz, glifos da maré regulam câmaras inundadas, círculos de brasa liberam calor, runas lunares preservam memórias e os Selos da Coroa mantêm os cinco sistemas em sincronia. Quando a coroa central se partiu, pontes viraram escombros, raízes cercaram viajantes e os selos passaram a proteger as criaturas que haviam danificado o arquivo.",
+        "O jogador comanda três guardiões enviados para restaurar as estradas. Leão Guardião luta de perto, Coruja Maga ataca a duas casas de distância e Tartaruga Escudo protege e cura o grupo. Cervo de Pedra, Rinoceronte Raiz de Ferro, Serpente Espiral do Pântano, Leão Juba de Brasa e Grifo do Eclipse controlam os capítulos danificados. Na missão 30, derrotar a Quimera da Coroa Rúnica reconecta o arquivo sem inventar uma missão 31."
+      ],
+      systems: [
+        "Fluxo do turno: selecione um herói vivo e escolha uma ação. Mover usa uma casa adjacente válida; Atacar respeita o alcance; Defender reduz em um o próximo dano; e uma Habilidade gasta uma Energia. Depois que todos os heróis agem, ou quando Fim do turno é acionado, os inimigos executam seus comportamentos e cada herói recupera uma Energia, até o máximo de três.",
+        "As regras inimigas dependem da posição. Lobos recebem Presa da Alcateia quando estão lado a lado. Corvos perseguem o herói com menor proporção de Vida. Cervo de Pedra restaura a armadura do primeiro golpe. Javali Espinhoso contra-ataca golpes corpo a corpo, Raposa Rúnica se teletransporta, Tartaruga da Maré protege um aliado, Garça Relíquia empurra e Carneiro de Cinzas avança em linha reta.",
+        "Inimigos posteriores alteram o planejamento. Salamandra de Brasa deixa uma casa em chamas. Mariposa Lunar silencia uma Habilidade por um turno sem impedir Mover, Atacar ou Defender. Coruja do Arquivo marca um herói, Lobo Espelho cria um clone de uma Vida e Corvo do Selo drena uma Energia sem deixá-la abaixo de zero.",
+        "O terreno faz parte de cada missão. Escombros bloqueiam casas, Armadilha de Raiz impede o próximo movimento, Maré desloca uma unidade após o turno inimigo, Queimadura causa dano, Runa de Resfriamento recupera Energia e Runas de Órbita giram unidades no anel externo. Nos Seis Selos Rúnicos, três heróis precisam ocupar selos ligados para remover a proteção inimiga.",
+        "As fases dos Chefes são ativadas cumulativamente com 70% e 35% de Vida. Cervo de Pedra restaura armadura e avança; Rinoceronte Raiz de Ferro cria escombros; Serpente Espiral do Pântano puxa heróis e se regenera se não receber golpes de dois heróis; Leão Juba de Brasa espalha fogo; Grifo do Eclipse alterna voo e varredura; Quimera da Coroa Rúnica combina todos esses sistemas.",
+        "O crescimento permanente tem três camadas. Vitórias concedem XP e Runas; XP aumenta o Nível do Esquadrão e Runas treinam Leão, Coruja ou Tartaruga até o nível 6. A Recompensa Rúnica salva Ataque, Vida máxima, XP, Energia inicial ou um Símbolo de Reviver. Rolar novamente por três Diamantes e liberar o Espaço de Treinamento por 18 Diamantes são opções confirmadas, nunca requisitos para missões ou Chefes."
+      ],
+      how: [
+        "Deslize o trilho de 30 cartas e selecione uma missão desbloqueada; cada quinta carta é um Chefe.",
+        "Leia o nome, os inimigos, as características, o terreno e o plano tático antes de entrar na Batalha.",
+        "Selecione Leão, Coruja ou Tartaruga no tabuleiro ou na lista Ações do Esquadrão.",
+        "Escolha uma casa destacada para mover, um inimigo para atacar, Defender ou Habilidade.",
+        "Observe os marcadores Concluído e use Fim do turno antecipadamente apenas quando preservar a posição for mais seguro.",
+        "Derrote todos os inimigos, escolha uma Recompensa Rúnica permanente e confira XP, Runas, melhor missão e próxima melhoria.",
+        "Use Próxima missão, Tentar novamente ou Voltar às missões conforme o estado do Resultado."
+      ],
+      strategyTips: [
+        "Separe Lobos adjacentes antes de trocar golpes; uma mudança de posição pode retirar Presa da Alcateia de dois ataques.",
+        "Ataque Javali Espinhoso com a Coruja a duas casas para evitar o contra-ataque corpo a corpo.",
+        "Um herói silenciado ainda pode mover, atacar ou defender; use o turno para sair de uma linha de carga.",
+        "Acerte Serpente Espiral do Pântano com dois heróis diferentes no mesmo turno para impedir a regeneração.",
+        "Use Leão enquanto Grifo do Eclipse voa e espalhe o grupo antes da varredura no chão.",
+        "Elimine rapidamente o clone de uma Vida do Lobo Espelho antes que ele bloqueie uma rota necessária.",
+        "Trate Resfriamento, Selos e Órbita como recursos; atributos permanentes não substituem o posicionamento."
+      ],
+      progression: [
+        "Missões 1–5 ensinam movimento, foco de ataque, Lobos adjacentes, perseguição do Corvo e pontes bloqueadas; Prova do Chifre de Pedra fecha o capítulo.",
+        "Missões 6–10 acrescentam contra-ataques, teleporte, Armadilha de Raiz e formações em pinça; Rinoceronte Raiz de Ferro transforma casas seguras em escombros.",
+        "Missões 11–15 usam Maré e empurrões; Serpente Espiral do Pântano exige dois atacantes no mesmo turno.",
+        "Missões 16–20 combinam fogo, cargas em linha reta e Runas de Resfriamento; Leão Juba de Brasa ganha pressão extra quando ferido.",
+        "Missões 21–25 restringem Habilidades com silêncio e marcas, depois giram o anel externo; Grifo do Eclipse muda quem pode causar dano.",
+        "Missões 26–30 acrescentam clones, drenagem de Energia e selos ligados antes de a Quimera da Coroa Rúnica combinar as regras anteriores."
+      ],
+      designNote:
+        "O tabuleiro permanece com três colunas e quatro linhas para manter cada decisão visível no telefone sem deslocamento. A profundidade vem de turnos com uma ação: mover para evitar um perigo significa abrir mão do ataque daquele herói, enquanto Defender pode ser melhor do que perseguir dano. Os seis capítulos apresentam o vocabulário aos poucos e os Chefes recombinam as regras. Toque, ponteiro e teclado usam as mesmas casas lógicas. Diferente do preparo automático de Animal Auto Squad ou do movimento em tempo real de Animal Relic Hunters, Táticas de Runas Animais pausa após cada decisão para transformar o próprio estado do tabuleiro no quebra-cabeça.",
+      parent:
+        "Nível do Esquadrão, XP, Runas, melhor missão, missões desbloqueadas, níveis dos heróis, Espaço de Treinamento, bônus permanentes e Símbolos de Reviver ficam salvos somente neste navegador. Não é necessário entrar em uma conta. Limpar os dados do site ou trocar de navegador pode iniciar outro perfil. Diamantes são opcionais e servem apenas para rolar novamente uma recompensa ou confirmar o Espaço de Treinamento; as 30 missões, os terrenos, inimigos especiais e seis Chefes continuam disponíveis sem eles.",
+      faq: [
+        ["Táticas de Runas Animais é gratuito?", "Sim. As 30 missões, terrenos, inimigos especiais, crescimento com Runas e seis Chefes podem ser jogados no navegador sem pagamento."],
+        ["Quantas missões e Chefes existem?", "São 30 missões. As missões 5, 10, 15, 20, 25 e 30 usam seis Chefes com arte, comportamento e duas fases de Vida próprios."],
+        ["É preciso reagir rapidamente?", "Não. O jogo é por turnos e nada se move enquanto você escolhe herói, casa ou ação."],
+        ["Por que não posso usar uma Habilidade?", "O herói pode estar sem Energia, já ter concluído sua ação ou estar silenciado pela Mariposa Lunar."],
+        ["O que reinicia após uma missão?", "O tabuleiro reinicia; missões, Nível do Esquadrão, XP, Runas, treino e recompensas permanentes continuam salvos."],
+        ["Qual é a função dos Diamantes?", "Três Diamantes rolam novamente as recompensas e 18 confirmam o Espaço de Treinamento. Eles não desbloqueiam campanha, heróis ou Chefes."],
+        ["Posso repetir missões anteriores?", "Sim. Toda missão desbloqueada continua selecionável, inclusive após a vitória final."],
+        ["A progressão exige uma conta?", "Não. O progresso fica somente neste navegador; apagar os dados do site ou trocar de dispositivo pode iniciar outro perfil local."]
+      ]
+    }
+  };
   localizedGames["zh-Hans"]["animal-rune-tactics"] = {
     "title": "动物符文战棋",
     "difficulty": "困难",
@@ -6700,7 +6769,14 @@
       genre: override.genre || localizedProfile.genre || profile.genre || [],
     };
     const catalog = window.WeightPlayGameRuntimeLocales?.[activeLocale];
-    if (!catalog || activeLocale === "en") return merged;
+    // Spanish guide records are fully authored in game-page-info-es.js. Feeding
+    // those finished sentences back through the runtime catalog can match
+    // Spanish text as if it were an English source fragment and corrupt titles
+    // or grammar. Other locales still use the runtime catalog to complete any
+    // fields not owned by a dedicated guide resource.
+    if (!catalog || activeLocale === "en" || activeLocale === "es"
+      || (activeLocale === "pt-BR" && id === "animal-rune-tactics")
+      || (activeLocale === "ru" && id === "animal-one-line")) return merged;
     const translateValue = (value) => {
       if (typeof value === "string") return catalog[value] || value;
       if (Array.isArray(value)) return value.map(translateValue);
@@ -6941,14 +7017,20 @@
 
   function syncLocalizedMetadata(game, identity) {
     const activeLocale = locale();
-    const title = `${game.title} - ${identity.suffix} | WeightPlay`;
+    const localizedTitle = activeLocale === "es"
+      ? String(game.title).replace("Escuadrón animales Automático", "Escuadrón Animal Automático")
+      : game.title;
+    const title = `${localizedTitle} - ${identity.suffix} | WeightPlay`;
     const description = compactMetaDescription(game.intro);
     document.documentElement.lang = activeLocale;
+    if (activeLocale !== "en") document.querySelector("title")?.setAttribute("data-runtime-localize", "off");
     document.title = title;
     document.querySelectorAll('meta[name="description"], meta[property="og:description"], meta[name="twitter:description"]').forEach((meta) => {
+      if (activeLocale !== "en") meta.setAttribute("data-runtime-localize", "off");
       meta.setAttribute("content", description);
     });
     document.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]').forEach((meta) => {
+      if (activeLocale !== "en") meta.setAttribute("data-runtime-localize", "off");
       meta.setAttribute("content", title);
     });
     document.querySelectorAll('script[type="application/ld+json"]:not([data-game-page-info-jsonld])').forEach((script) => {
@@ -6959,7 +7041,7 @@
         entries.forEach((entry) => {
           const types = Array.isArray(entry?.["@type"]) ? entry["@type"] : [entry?.["@type"]];
           if (!types.some((type) => ["VideoGame", "Game", "SoftwareApplication"].includes(type))) return;
-          entry.name = game.title;
+          entry.name = localizedTitle;
           entry.description = description;
           entry.inLanguage = activeLocale;
           if (game.genre?.length) entry.genre = game.genre;
@@ -7017,6 +7099,7 @@
     const scoreBands = scoreBandsFor(baseGame);
     const section = document.createElement("section");
     section.className = "game-page-info";
+    if (activeLocale !== "en") section.dataset.runtimeLocalize = "off";
     section.setAttribute("aria-label", uiLabel("guideLabel", { title: game.title }));
     section.innerHTML = `
       <div class="game-info-hero">
@@ -7159,6 +7242,13 @@
       script.textContent = JSON.stringify(jsonLd);
       document.head.appendChild(script);
     });
+    // Locale and game scripts can finish their own startup metadata write in
+    // the same task that requested the guide. Reassert the authored guide
+    // identity after that startup stack settles so metadata and the rendered
+    // localized heading cannot diverge.
+    const settledMetadataGame = { ...game, title: String(game.title), intro: String(game.intro) };
+    const settledMetadataIdentity = { ...identity };
+    window.setTimeout(() => syncLocalizedMetadata(settledMetadataGame, settledMetadataIdentity), 0);
   }
 
   games["animal-starlight-trails"] = {
@@ -7288,6 +7378,74 @@
     progression: ["第 1–5 关教学相邻移动与不可重复；第 6–10 关练习转角规划；第 11–15 关加入石块切割棋盘。", "第 16–20 关延长路线；第 21–25 关增加容易误判的分岔；第 26–30 关综合大型棋盘、石块与窄出口。"],
     faq: [["可以重复走同一格吗？", "不行，重新进入已上色格会结束本次尝试。"], ["可以斜着走吗？", "不行，只能走到共享边线的上下左右相邻格。"], ["怎样才算过关？", "所有可走空格都必须被同一条路线填满。"], ["需要快速拖动吗？", "不需要，可以停在当前格子思考。"], ["进度会保存吗？", "会，数据只保存在当前浏览器。"], ["共有几关？", "共有 30 个原创格子棋盘。"]]
   });
+  localizedGames.ru = {
+    ...(localizedGames.ru || {}),
+    "animal-one-line": {
+      title: "Одна линия",
+      difficulty: "От простого к сложному",
+      time: "1–4 минуты на этап",
+      gameplay: "Заполнение сетки одной линией",
+      genre: ["Логика", "Планирование маршрута", "Головоломка", "Животные"],
+      skills: ["Пространственное мышление", "Планирование", "Последовательность"],
+      guideKicker: "Оригинальное руководство WeightPlay",
+      guideTitleSuffix: "руководство по игре",
+      noteTitle: "Сведения об игроке и сохранении",
+      hideScoreBands: true,
+      intro:
+        "«Одна линия» — оригинальная кампания из 30 головоломок с Радужной Мими. Начните со светящейся лапки, переходите только в соседние по стороне свободные клетки и заполните всё поле одним непрерывным маршрутом, не посещая ни одну клетку дважды.",
+      story: [
+        "Мими возвращает цвет погасшим игровым полям в мастерской волшебного леса. Каменные клетки разделяют поле, поэтому маршрут должен пройти через каждую свободную клетку ровно один раз.",
+        "Последние пять мастерских полей объединяют длинные маршруты, узкие выходы и обманчивые первые ходы. Этап 30 завершает кампанию и остаётся доступным для повторного прохождения."
+      ],
+      systems: [
+        "Правильная попытка начинается на светящейся лапке. Каждый ход ведёт в свободную клетку сверху, снизу, слева или справа; диагональные переходы и повторное посещение клетки запрещены.",
+        "Головоломка решена только тогда, когда закрашены все свободные клетки. Если маршрут пришёл в тупик, можно вернуться на предыдущую клетку или начать попытку заново без траты игровой валюты.",
+        "Кнопка «Показать подсказку» выделяет следующую клетку одного из возможных решений, а «Начать заново» очищает текущий маршрут. Подсказка не расходует валюту, но ограничивает результат попытки двумя звёздами.",
+        "Пройденные этапы, открытые головоломки, лучшие оценки и лучшее время сохраняются только в этом браузере. Любой завершённый этап можно снова выбрать на горизонтальной ленте."
+      ],
+      how: [
+        "Выберите открытую головоломку на горизонтальной ленте этапов.",
+        "Нажмите светящуюся лапку, чтобы начать маршрут.",
+        "Переходите в свободные клетки, которые имеют общую сторону с текущей клеткой.",
+        "Не заходите в уже закрашенные клетки.",
+        "Заполните все свободные клетки одной линией, чтобы завершить этап."
+      ],
+      strategyTips: [
+        "До начала осмотрите углы и узкие выходы: неверное направление может изолировать последнюю клетку.",
+        "Область с единственным входом нужно заполнить в подходящий момент, не перекрывая вход слишком рано.",
+        "Если вы застряли, используйте «Показать подсказку», чтобы увидеть следующий шаг одного из полных решений.",
+        "Скорость не требуется: остановитесь на текущей клетке и спланируйте оставшуюся часть маршрута."
+      ],
+      progression: [
+        "Этапы 1–5 обучают движению по сторонам клеток и запрету повторов; этапы 6–10 требуют заранее планировать повороты; этапы 11–15 разделяют поле каменными блоками.",
+        "Этапы 16–20 удлиняют маршруты, этапы 21–25 добавляют трудные развилки, а этапы 26–30 объединяют большие поля, камни и узкие выходы."
+      ],
+      designNote:
+        "«Одна линия» проверяет планирование маршрута, а не точность рисования от руки. Крупные клетки и обработка промежуточных точек указателя сохраняют одинаковые правила для мыши и пальца. Запрет повторов и требование заполнить всё поле удерживают внимание на логике. Адаптивная игровая область заполняет безопасное пространство выбора этапа и головоломки, сохраняя единый масштаб, устойчивые опорные точки и отдельный резерв высотой 56 пикселей.",
+      parent:
+        "Игра рекомендуется пользователям от 9 лет и семьям. Учётная запись не нужна: прогресс хранится только в текущем браузере. Звёзды и итоговый отчёт о навыках служат игровым поощрением, а не медицинской, школьной или официальной оценкой способностей.",
+      faq: [
+        ["Можно ли посетить клетку дважды?", "Нет. Повторный вход в закрашенную клетку недопустим."],
+        ["Можно ли двигаться по диагонали?", "Нет. Переходить можно только в свободную клетку с общей стороной."],
+        ["Нужно ли двигаться быстро?", "Нет. Можно остановиться на текущей клетке и спокойно спланировать продолжение."],
+        ["Что делает кнопка «Показать подсказку»?", "Она выделяет следующую клетку одного из возможных полных маршрутов."],
+        ["Сохраняется ли прогресс?", "Да. Открытые этапы, звёзды, завершения и лучшее время хранятся только в текущем браузере."],
+        ["Сколько этапов в игре?", "Кампания содержит 30 оригинальных головоломок в шести главах по пять этапов."]
+      ]
+    },
+    "animal-2048": {
+      title: "Животные 2048: эволюция леса",
+      intro: "«Животные 2048» — пошаговая лесная головоломка с Лунной Совой. Соединяйте одинаковых животных, планируйте свободные клетки и развивайте лесную цепочку."
+    },
+    "animal-zoo-idle": {
+      title: "Зоопарк животных",
+      intro: "«Зоопарк животных» — спокойная игра об управлении парком с 30 сохраняемыми заданиями."
+    },
+    "animal-skyport-dispatch": {
+      title: "Диспетчер небесного порта",
+      intro: "«Диспетчер небесного порта» — стратегическая игра о прокладке маршрутов в порту Небесной Линии. Направляйте прибывающие дирижабли к подходящим причалам и не допускайте заторов."
+    }
+  };
 
   Object.assign(games, { "animal-rootvault-pins": {
     title: "Animal Rootvault Pins", difficulty: "Easy to Challenging", time: "2-6 minutes per chamber", gameplay: "Material-Reaction Pin Puzzle", genre: ["Puzzle", "Strategy", "Animal"], skills: ["Logic", "Planning", "Problem Solving"],

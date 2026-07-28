@@ -3170,6 +3170,43 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
     if (titles[id]) game.title = titles[id];
     if (difficulties[game.difficulty]) game.difficulty = difficulties[game.difficulty];
   });
+  const repairAutoSquadSpanish = (value) => {
+    if (typeof value === "string") {
+      return value
+        .replace(/\bLas niveles\b/g, "Los niveles")
+        .replace(/\blas niveles\b/g, "los niveles")
+        .replace(/\bLa Nivel\b/g, "El nivel")
+        .replace(/\bLa nivel\b/g, "El nivel")
+        .replace(/\bla Nivel\b/g, "el nivel")
+        .replace(/\bla nivel\b/g, "el nivel")
+        .replace(/\bCada quinta nivel\b/g, "Cada quinto nivel")
+        .replace(/\bcada quinta nivel\b/g, "cada quinto nivel")
+        .replace(/\bniveles desbloqueadas y completadas\b/g, "niveles desbloqueados y completados")
+        .replace(/\bTeam XP\b/g, "XP de equipo")
+        .replace(/\bTraining Gold\b/g, "oro de entrenamiento")
+        .replace(/\bpanel Resultados\b/g, "panel de resultados")
+        .replace(/\bHearts\b/g, "Corazones")
+        .replace(/\bun animal con tu propiedad\b/g, "uno de tus animales")
+        .replace(/\bnivel de jefe\b/g, "nivel con jefe")
+        .replace(/\bcada quinto nivel está marcada\b/g, "cada quinto nivel está marcado")
+        .replace(/\bLa ola final de el nivel 30\b/g, "La oleada final del nivel 30")
+        .replace(/\bprogresión normal de el nivel\b/g, "progresión normal del nivel")
+        .replace(/\blas niveles completadas\b/g, "los niveles completados")
+        .replace(/\blos niveles completadas\b/g, "los niveles completados")
+        .replace(/\bSuministros Temporales\b/g, "Suministros temporales")
+        .replace(/\bescudos, amortiguadores de equipo y efectos débiles\b/g, "protectores, potenciadores de equipo y efectos debilitadores")
+        .replace(/\bhabilidades débiles\b/g, "habilidades debilitadoras")
+        .replace(/\bmientras que oro de entrenamiento\b/g, "mientras que el oro de entrenamiento")
+        .replace(/\benseñan cómo apuntar en cabeza\b/g, "enseñan a seleccionar el objetivo principal")
+        .replace(/\bLimpiar los seis significa\b/g, "Superar las seis regiones significa");
+    }
+    if (Array.isArray(value)) return value.map(repairAutoSquadSpanish);
+    if (value && typeof value === "object") {
+      return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, repairAutoSquadSpanish(item)]));
+    }
+    return value;
+  };
+  resource.games["animal-auto-squad"] = repairAutoSquadSpanish(resource.games["animal-auto-squad"]);
   const repairShadowWolfSpanish = (value) => {
     if (typeof value === "string") {
       return value
@@ -3194,8 +3231,8 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
 })(window.WeightPlayGameInfoLocales.es);
 
 window.WeightPlayGameInfoLocales.es.games["animal-2048"] = {
-  title: "Animal 2048: Evolución del bosque", noteTitle: "Información del jugador y la partida", difficulty: "Fácil a desafiante", time: "2-6 minutos por misión", gameplay: "Estrategia de fusión de tablero completo", genre: ["Puzle", "Estrategia", "Lógica", "Animales"], skills: ["Logic", "Spatial Reasoning", "Sequencing"],
-  intro: "Animal 2048 es un puzle estratégico por turnos guiado por la lechuza Orla. Cada dirección desplaza todo el tablero de 4 por 4, de modo que un movimiento puede abrir espacio, preparar varias evoluciones o bloquear el animal que exige la misión.",
+  title: "Animales 2048: Evolución del bosque", noteTitle: "Información del jugador y la partida", difficulty: "Fácil a desafiante", time: "2-6 minutos por misión", gameplay: "Estrategia de fusión de tablero completo", genre: ["Puzle", "Estrategia", "Lógica", "Animales"], skills: ["Logic", "Spatial Reasoning", "Sequencing"],
+  intro: "Animales 2048 es un puzle estratégico por turnos guiado por la lechuza Orla. Cada dirección desplaza todo el tablero de 4 por 4, de modo que un movimiento puede abrir espacio, preparar varias evoluciones o bloquear el animal que exige la misión.",
   story: ["En el santuario del bosque lunar, dos espíritus animales iguales evolucionan a una forma superior. Las treinta misiones piden crear un animal concreto, completar fusiones o alcanzar una puntuación antes de agotar los movimientos.", "Las piedras de musgo son obstáculos fijos que separan filas y columnas. La misión 30 culmina con el Guardián León de valor 2048. El Bosque infinito es un desafío separado, no una misión 31."],
   systems: ["Un movimiento válido empuja todas las fichas hasta el límite. Dos animales iguales se fusionan una vez; la ficha recién creada no puede volver a fusionarse en el mismo turno. Un gesto que no cambia el tablero no consume movimiento ni crea una ficha.", "Cada movimiento válido añade un animal de nivel bajo, por lo que el espacio libre es el recurso principal. Las misiones tienen tablero inicial, piedras, límite y secuencia de aparición definidos. Deshacer recupera exactamente el tablero, la puntuación, los movimientos y la aparición anterior.", "El Bosque infinito comienza con dos fichas aleatorias, no tiene límite de movimientos y termina solo cuando no queda ninguna jugada legal. Sus récords se guardan aparte de las estrellas y desbloqueos de campaña."],
   how: ["Elige Campaña o Bosque infinito.", "Desliza, toca una dirección o usa flechas y WASD.", "Fusiona animales iguales sin cerrar los espacios libres.", "Usa Deshacer, Reiniciar o Pista cuando lo necesites.", "Cumple el objetivo antes del límite o continúa hasta bloquear el tablero en modo infinito."],
