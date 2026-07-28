@@ -9603,8 +9603,6 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Pulsos prisma obligan a dar giros amplios por la arena.": "Pulsos prisma obligan a dar giros amplios por la arena.",
   "Punish an armored boar after its charge": "Castigar a un jabalí acorazado tras su carga.",
   "Punkte": "punte",
-  "Puntaggio": "Puntagio",
-  "Punte": "Punta",
   "Punteggio": "punteggio",
   "Punteggio di oggi": "Punteggio di oggi",
   "Punto de control": "punto de control",

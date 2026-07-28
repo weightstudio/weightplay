@@ -9603,8 +9603,6 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "Pulsos prisma obligan a dar giros amplios por la arena.": "Pulsos prisma обязательна к активным действиям на арене.",
   "Punish an armored boar after its charge": "Наказать бронированного кабана после его нападения",
   "Punkte": "Пункте",
-  "Puntaggio": "Пунтаджио",
-  "Punte": "Пунте",
   "Punteggio": "Пунтеджио",
   "Punteggio di oggi": "Пунтеджио-ди-Оджи",
   "Punto de control": "Пунто де контроль",

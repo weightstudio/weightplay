@@ -9603,8 +9603,6 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Pulsos prisma obligan a dar giros amplios por la arena.": "Pulsos prisma는 dar giros amplios por la arena를 지원합니다.",
   "Punish an armored boar after its charge": "돌진 후 장갑 멧돼지를 처벌하세요.",
   "Punkte": "펑크테",
-  "Puntaggio": "푼타지오",
-  "Punte": "푼테",
   "Punteggio": "푼테지오",
   "Punteggio di oggi": "푼테지오 디 오기",
   "Punto de control": "통제력 향상",

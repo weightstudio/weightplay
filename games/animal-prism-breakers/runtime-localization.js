@@ -1,5 +1,6 @@
 (()=>{
   "use strict";
+  ["objective","feedback","resultText"].forEach(id=>document.getElementById(id)?.setAttribute("data-runtime-localize","off"));
   const copies={
     en:{loading:"Charging the prism arena…",stage:"Stage {n}",chapters:["Sunlit Quarry","Split Spectrum","Moving Gallery","Mirror Vault","Gravity Forge","Eclipse Prism"],launch:"Launch",lost:"Orb lost. Launch the next light orb.",split:"Split Spectrum created another light orb!",fail:"All three light orbs fell. Read the return angle and try again."},
     "zh-Hant":{loading:"稜光競技場充能中…",stage:"第 {n} 關",chapters:["日照採石場","分光光譜","移動畫廊","鏡面寶庫","重力熔爐","蝕光稜鏡"],launch:"發射",lost:"光球落下了。請發射下一顆光球。",split:"分光光譜產生了另一顆光球！",fail:"三顆光球都落下了。重新判讀回彈角度再試一次。"},
@@ -56,8 +57,8 @@
     ar:{Score:"النقاط",Blocks:"البلورات",Orbs:"كرات الضوء",Combo:"سلسلة","Stage Map":"خريطة المراحل"}
   }[locale];
   if(contextual)Object.entries(contextual).forEach(([source,translated])=>exact.set(source,translated));
-  const ownedRules=ruleCopies[locale];
-  if(ownedRules)[...ownedRules.objectives,ownedRules.advance,ownedRules.pressureFail,ownedRules.hazardFail].forEach(value=>exact.set(value,value));
+  if(locale==="de")exact.set(ruleCopies.de.hazardFail,ruleCopies.de.hazardFail);
+  if(locale==="it")exact.set("Punteggio","Punteggio");
   copies.en.chapters.forEach((chapter,index)=>{
     const translated=copy.chapters[index];
     exact.set(chapter,translated);
@@ -72,16 +73,14 @@
   const stabilizeItalianScoreLabels=()=>{
     if(locale!=="it")return;
     document.querySelectorAll(".battle-stats span:first-child b,.result-stats span:first-child b").forEach(label=>{
-      if(label.dataset.prismScoreTerm==="true")return;
-      if(!["Score","Punteggio","Puntaggio"].includes(label.textContent.trim()))return;
-      const first=document.createElement("span"),second=document.createElement("span");
-      first.textContent="Punte";second.textContent="ggio";
-      label.replaceChildren(first,second);
+      if(label.dataset.prismScoreTerm==="true"&&label.textContent==="Punteggio"&&label.getAttribute("data-runtime-localize")==="off")return;
+      label.setAttribute("data-runtime-localize","off");
+      if(label.textContent!=="Punteggio")label.textContent="Punteggio";
       label.dataset.prismScoreTerm="true";
     });
   };
   translateTree(document.documentElement);stabilizeItalianScoreLabels();
   document.addEventListener("DOMContentLoaded",()=>setTimeout(()=>{translateTree(document.documentElement);stabilizeItalianScoreLabels();if(C){genericKeys.forEach(key=>{C[key]=originals[key]});C.how=[...originals.how]}},0),{once:true});
-  new MutationObserver(records=>{records.forEach(record=>record.type==="characterData"?translateTree(record.target.parentElement):record.addedNodes.forEach(translateTree));stabilizeItalianScoreLabels()}).observe(document.documentElement,{childList:true,characterData:true,subtree:true});
+  new MutationObserver(records=>{records.forEach(record=>{if(record.type==="characterData"){if(locale!=="it")translateTree(record.target.parentElement)}else record.addedNodes.forEach(translateTree)});stabilizeItalianScoreLabels()}).observe(document.documentElement,{childList:true,characterData:locale!=="it",subtree:true});
   window.PrismBreakersLocale=Object.freeze({locale,translate,copy,rules:ruleCopies[locale]||null});
 })();

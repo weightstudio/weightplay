@@ -9603,8 +9603,6 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "Pulsos prisma obligan a dar giros amplios por la arena.": "Pulsos prisma obligan 和 dar giros amplios por la 競技場。",
   "Punish an armored boar after its charge": "衝鋒後懲罰裝甲野豬",
   "Punkte": "龐克特",
-  "Puntaggio": "蓬塔焦",
-  "Punte": "彭特",
   "Punteggio": "蓬特吉奧",
   "Punteggio di oggi": "奧吉角",
   "Punto de control": "控制點",

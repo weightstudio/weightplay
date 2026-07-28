@@ -9603,8 +9603,6 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Pulsos prisma obligan a dar giros amplios por la arena.": "पल्सोस प्रिज्मा ओब्लिगन ए डार गिरोस एम्प्लिओस पोर ला एरिना।",
   "Punish an armored boar after its charge": "एक बख्तरबंद सूअर को उसके आरोप के बाद दंडित करें",
   "Punkte": "पंकटे",
-  "Puntaggio": "पुंटागियो",
-  "Punte": "पुंटे",
   "Punteggio": "पुंटेगियो",
   "Punteggio di oggi": "ओग्गी का पुंटेगियो",
   "Punto de control": "पंटो डे कंट्रोल",
