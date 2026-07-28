@@ -75,10 +75,11 @@
   function applyLocale(){
     document.documentElement.lang=lang;
     document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+    if(lang!=="en")document.querySelector("title")?.setAttribute("data-runtime-localize","off");
     document.title=`${t("title")} | WeightPlay`;
     for(const selector of ['meta[property="og:title"]','meta[name="twitter:title"]']){
       const meta=document.querySelector(selector);
-      if(meta)meta.content=document.title;
+      if(meta){if(lang!=="en")meta.setAttribute("data-runtime-localize","off");meta.content=document.title}
     }
     const guide=document.querySelector(".game-page-info");
     if(guide)guide.setAttribute("aria-label",lang==="ar"?`دليل لعبة ${t("title")}`:t("guideLabel"));

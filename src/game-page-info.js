@@ -7055,6 +7055,7 @@
   }
 
   function render() {
+    if (document.body?.hasAttribute("data-wp-game-owned-guide")) return;
     const activeLocale = locale();
     if (activeLocale !== "en" && !window.WeightPlayGameRuntimeLocales?.[activeLocale] && !runtimeGuideResourceFailures.has(activeLocale)) {
       ensureRuntimeGuideResource(activeLocale).then(render);

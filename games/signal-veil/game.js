@@ -10,40 +10,62 @@
   const WORLD = {width:3072,height:1024};
   const BASE_VIEW = {width:960,height:540};
   const PLAYER_RADIUS = 24;
-  const TERRAIN_COLLIDERS = [
-    // Signal Town buildings and solid plaza fixtures.
-    {kind:"rect",x:350,y:28,w:620,h:154},
-    {kind:"rect",x:150,y:150,w:275,h:142},
-    {kind:"rect",x:610,y:165,w:215,h:132},
-    {kind:"rect",x:145,y:325,w:270,h:142},
-    {kind:"rect",x:625,y:330,w:250,h:145},
-    {kind:"rect",x:135,y:610,w:310,h:175},
-    {kind:"rect",x:620,y:605,w:275,h:145},
-    {kind:"rect",x:135,y:775,w:325,h:170},
-    {kind:"rect",x:620,y:765,w:300,h:175},
-    {kind:"circle",x:520,y:245,r:52},
-    {kind:"circle",x:525,y:515,r:48},
-    {kind:"circle",x:505,y:720,r:48},
-    // Forest water, monoliths, and dense rock clusters beside the paths.
-    {kind:"circle",x:1190,y:150,r:112},
-    {kind:"circle",x:1050,y:855,r:88},
-    {kind:"circle",x:1985,y:115,r:102},
-    {kind:"rect",x:1015,y:720,w:105,h:165},
-    {kind:"rect",x:1960,y:170,w:88,h:205},
-    // Laboratory walls and machinery. Corridors and enemy rooms remain open.
-    {kind:"rect",x:2210,y:35,w:280,h:150},
-    {kind:"rect",x:2590,y:35,w:375,h:160},
-    {kind:"rect",x:2190,y:205,w:180,h:150},
-    {kind:"rect",x:2840,y:205,w:150,h:180},
-    {kind:"rect",x:2180,y:760,w:170,h:185},
-    {kind:"rect",x:2830,y:750,w:180,h:190},
-    {kind:"circle",x:2520,y:525,r:62},
+  const MAP_SIGNAL_TOWN = "signalTown";
+  const MAP_MOONFALL = "moonfallRelay";
+  const WORLD_OBJECTS = [
+    // Every visible object owns its own matching collision footprint.
+    {sprite:3,x:520,y:150,w:430,h:286,collision:{kind:"rect",w:360,h:200,oy:18}},
+    {sprite:0,x:190,y:300,w:250,h:210,collision:{kind:"rect",w:190,h:160,oy:14}},
+    {sprite:1,x:820,y:300,w:250,h:210,collision:{kind:"rect",w:190,h:160,oy:14}},
+    {sprite:2,x:190,y:750,w:250,h:210,collision:{kind:"rect",w:190,h:160,oy:14}},
+    {sprite:0,x:820,y:750,w:250,h:210,collision:{kind:"rect",w:190,h:160,oy:14}},
+    {sprite:4,x:520,y:430,w:200,h:200,collision:{kind:"circle",r:60}},
+    {sprite:5,x:1140,y:155,w:230,h:200,collision:{kind:"circle",r:66}},
+    {sprite:5,x:1510,y:150,w:230,h:200,collision:{kind:"circle",r:66}},
+    {sprite:5,x:1900,y:155,w:230,h:200,collision:{kind:"circle",r:66}},
+    {sprite:5,x:1110,y:895,w:230,h:200,collision:{kind:"circle",r:66}},
+    {sprite:5,x:1920,y:895,w:230,h:200,collision:{kind:"circle",r:66}},
+    {sprite:6,x:1350,y:835,w:145,h:125,collision:{kind:"circle",r:46}},
+    {sprite:6,x:1770,y:835,w:145,h:125,collision:{kind:"circle",r:46}},
+    {sprite:7,x:1550,y:905,w:230,h:150,collision:{kind:"circle",r:72}},
+    {sprite:8,x:2220,y:150,w:230,h:155,collision:{kind:"rect",w:185,h:110}},
+    {sprite:10,x:2580,y:125,w:270,h:170,collision:{kind:"rect",w:225,h:120}},
+    {sprite:9,x:2910,y:175,w:160,h:195,collision:{kind:"circle",r:52}},
+    {sprite:9,x:2470,y:600,w:150,h:185,collision:{kind:"circle",r:50}},
+    {sprite:11,x:2200,y:880,w:180,h:145,collision:{kind:"rect",w:150,h:100}},
+    {sprite:10,x:2580,y:900,w:260,h:160,collision:{kind:"rect",w:215,h:112}},
+    {sprite:8,x:2910,y:860,w:220,h:150,collision:{kind:"rect",w:180,h:105}},
+  ];
+  const MOONFALL_OBJECTS = WORLD_OBJECTS.map((object,index)=>({
+    ...object,
+    x:WORLD.width-object.x,
+    y:index%2===0?WORLD.height-object.y:object.y,
+    sprite:(object.sprite+(index%3))%12,
+    collision:{...object.collision,ox:-(object.collision.ox||0)}
+  }));
+  const MAP_OBJECTS = {[MAP_SIGNAL_TOWN]:WORLD_OBJECTS,[MAP_MOONFALL]:MOONFALL_OBJECTS};
+  const MAP_PORTALS = {
+    [MAP_SIGNAL_TOWN]:{x:2700,y:520,to:MAP_MOONFALL,spawnX:430,spawnY:520,label:"portalToMoonfall"},
+    [MAP_MOONFALL]:{x:390,y:520,to:MAP_SIGNAL_TOWN,spawnX:2630,spawnY:520,label:"portalToTown"},
+  };
+  const RELAY_NODES = [
+    {id:"origin",x:720,y:260,index:5,name:"relayOrigin"},
+    {id:"memory",x:1540,y:760,index:13,name:"relayMemory"},
+    {id:"warning",x:2450,y:360,index:5,name:"relayWarning"},
+  ];
+  const SPRITE_FRAMES = [
+    [55,45,230,220],[365,42,225,220],[642,42,228,220],[990,42,190,230],
+    [75,345,150,190],[360,298,225,245],[680,350,180,180],[985,310,210,240],
+    [20,590,230,230],[305,580,275,245],[625,548,270,275],[895,565,345,275],
+    [20,860,260,340],[285,875,305,310],[620,860,330,340],[910,860,310,335],
   ];
   const atlas = {sprites:new Image(),items:new Image(),npcs:new Image(),world:new Image()};
   atlas.sprites.src = "/assets/signal-veil-sprites.webp";
   atlas.items.src = "/assets/signal-veil-items.webp";
   atlas.npcs.src = "/assets/signal-veil-npcs.webp";
-  atlas.world.src = "/assets/signal-veil-world.webp";
+  atlas.world.src = "/assets/signal-veil-ground-v2.webp";
+  atlas.objects = new Image();
+  atlas.objects.src = "/assets/signal-veil-world-objects-v2.webp";
 
   function readSave() {
     try { return JSON.parse(localStorage.getItem(SAVE_KEY) || "null"); } catch { return null; }
@@ -80,17 +102,21 @@
   const fresh = {
     x:420,y:545,facing:"right",level:1,xp:0,hp:40,maxHp:40,attack:8,defense:2,
     visionUnlocked:false,trueVision:false,talked:[],defeated:[],chests:[],bossDefeated:false,
-    equipment:{weapon:false,armor:false,accessory:false},signalAnchor:false,checkpoint:{x:420,y:545}
+    equipment:{weapon:false,armor:false,accessory:false},signalAnchor:false,
+    mapId:MAP_SIGNAL_TOWN,chapter2Started:false,relays:[],storyComplete:false,
+    checkpoint:{x:420,y:545,mapId:MAP_SIGNAL_TOWN}
   };
   let state = Object.assign({}, fresh, readSave() || {});
   state.talked = new Set(state.talked || []);
   state.defeated = new Set(state.defeated || []);
   state.chests = new Set(state.chests || []);
+  state.relays = new Set(state.relays || []);
   state.equipment = Object.assign({}, fresh.equipment, state.equipment || {});
   state.checkpoint = Object.assign({}, fresh.checkpoint, state.checkpoint || {});
+  if(!MAP_OBJECTS[state.mapId])state.mapId=MAP_SIGNAL_TOWN;
   let playing = false, paused = false, trueVision = Boolean(state.trueVision), currentDialogue = null;
   let attackCooldown = 0, skillCooldown = 0, invulnerability = 0, swingTimer = 0, lastTime = 0, toastTimer = 0;
-  let bossIntroduced = false, resultClaimed = false;
+  let bossIntroduced = false, resultClaimed = false, playerMoving = false, walkCycle = 0;
   const keys = new Set();
   const projectiles = [];
   const enemyProjectiles = [];
@@ -98,19 +124,30 @@
   const touchMove = {x:0,y:0};
 
   const npcs = [
-    {x:470,y:520,index:0,reveal:false},{x:310,y:310,index:1,reveal:true},{x:720,y:300,index:2,reveal:true},
-    {x:810,y:560,index:3,reveal:true},{x:635,y:720,index:4,reveal:false},{x:260,y:690,index:5,reveal:false},
-    {x:470,y:805,index:6,reveal:false},{x:855,y:805,index:7,reveal:false},{x:875,y:420,index:8,reveal:false},
-    {x:370,y:450,index:9,reveal:false}
+    {x:430,y:490,index:0,reveal:false},{x:345,y:300,index:1,reveal:true},{x:680,y:300,index:2,reveal:true},
+    {x:840,y:520,index:3,reveal:true},{x:650,y:650,index:4,reveal:false},{x:340,y:650,index:5,reveal:false},
+    {x:470,y:820,index:6,reveal:false},{x:610,y:820,index:7,reveal:false},{x:880,y:470,index:8,reveal:false},
+    {x:500,y:650,index:9,reveal:false}
   ];
   const enemySeeds = [
     [1100,340,4],[1230,650,5],[1360,450,4],[1490,760,6],[1620,300,5],[1730,600,7],[1860,430,4],[1930,760,7],
     [2160,310,8],[2260,670,9],[2380,430,10],[2470,790,8],[2580,300,11],[2680,620,10],[2760,790,9]
   ];
-  let enemies = enemySeeds.map(([x,y,sprite],id) => ({
-    id,x,y,homeX:x,homeY:y,sprite,hp:26 + (id > 7 ? 15 : 0),maxHp:26 + (id > 7 ? 15 : 0),
-    speed:50 + (id % 3) * 10,attackTimer:0,phase:id*.73,hidden:sprite===7,dead:state.defeated.has(id)
-  }));
+  const moonfallEnemySeeds = [
+    [510,410,9],[890,690,10],[1190,330,11],[1430,520,8],
+    [1760,260,10],[2050,680,11],[2380,610,9],[2720,430,8],
+  ];
+  const makeEnemies = () => [
+    ...enemySeeds.map(([x,y,sprite],id) => ({
+      id,x,y,homeX:x,homeY:y,mapId:MAP_SIGNAL_TOWN,sprite,hp:26 + (id > 7 ? 15 : 0),maxHp:26 + (id > 7 ? 15 : 0),
+      speed:50 + (id % 3) * 10,attackTimer:0,phase:id*.73,hidden:sprite===7,dead:state.defeated.has(id)
+    })),
+    ...moonfallEnemySeeds.map(([x,y,sprite],offset) => {
+      const id=enemySeeds.length+offset;
+      return {id,x,y,homeX:x,homeY:y,mapId:MAP_MOONFALL,sprite,hp:52,maxHp:52,speed:62+(offset%3)*8,attackTimer:0,phase:id*.73,hidden:offset===3||offset===7,dead:state.defeated.has(id)};
+    }),
+  ];
+  let enemies = makeEnemies();
   let boss = {x:2890,y:520,hp:260,maxHp:260,attackTimer:1.2,pattern:0,dead:state.bossDefeated,sprite:12,stun:0,charge:0};
   const chests = [
     {id:"weapon",x:1430,y:270,item:"weapon",hidden:true},{id:"accessory",x:1840,y:810,item:"accessory",hidden:true},
@@ -118,7 +155,7 @@
   ];
 
   function serializedState() {
-    return {...state,trueVision,talked:[...state.talked],defeated:[...state.defeated],chests:[...state.chests]};
+    return {...state,trueVision,talked:[...state.talked],defeated:[...state.defeated],chests:[...state.chests],relays:[...state.relays]};
   }
   function saveGame(showNotice=false) {
     try { localStorage.setItem(SAVE_KEY, JSON.stringify(serializedState())); } catch {}
@@ -136,6 +173,7 @@
     document.title = `${t("title")} | WeightPlay`;
     document.querySelectorAll("[data-t]").forEach(node => node.textContent = t(node.dataset.t));
     document.querySelectorAll("[data-t-alt]").forEach(node => node.setAttribute("alt", t(node.dataset.tAlt)));
+    document.querySelectorAll("[data-t-aria]").forEach(node => node.setAttribute("aria-label", t(node.dataset.tAria)));
     nodes.locale.value = locale;
     updateHud();
     updateObjective();
@@ -156,21 +194,32 @@
   });
 
   function updateMainProgress() {
-    const milestones = Number(state.talked.size >= 10) + Number(state.defeated.size >= 15) + Number(state.bossDefeated);
-    nodes.progress.textContent = `${milestones} / 3`;
+    const milestones = Number(state.talked.size >= 10) + Number(firstMapDefeated() >= 15) + Number(state.bossDefeated)
+      + Number(state.chapter2Started) + Number(moonfallDefeated() >= moonfallEnemySeeds.length&&state.relays.size>=3) + Number(state.storyComplete);
+    nodes.progress.textContent = `${milestones} / 6`;
   }
   function zoneKey() {
+    if(state.mapId===MAP_MOONFALL)return "zoneMoonfall";
     if (state.x < 1024) return "zoneTown";
     if (state.x < 2048) return "zoneForest";
     return "zoneLab";
   }
+  function firstMapDefeated(){return [...state.defeated].filter(id=>id<enemySeeds.length).length}
+  function moonfallDefeated(){return [...state.defeated].filter(id=>id>=enemySeeds.length).length}
   function updateObjective() {
     let text;
-    if (state.bossDefeated) text=t("objectiveComplete");
+    if(state.storyComplete)text=t("objectiveStoryComplete");
+    else if(state.mapId===MAP_MOONFALL&&moonfallDefeated()<moonfallEnemySeeds.length)text=t("objectiveMoonfallEnemies",{n:moonfallDefeated()});
+    else if(state.mapId===MAP_MOONFALL&&state.relays.size<RELAY_NODES.length)text=t("objectiveRelays",{n:state.relays.size});
+    else if(state.mapId===MAP_MOONFALL)text=t("objectiveFinalReturn");
+    else if(state.bossDefeated&&!state.chapter2Started)text=t("objectiveReturnOrla");
+    else if(state.chapter2Started&&moonfallDefeated()<moonfallEnemySeeds.length)text=t("objectiveEnterMoonfall");
+    else if(state.chapter2Started&&state.relays.size<RELAY_NODES.length)text=t("objectiveReturnMoonfall");
+    else if(state.chapter2Started)text=t("objectiveFinalReturn");
     else if (!state.visionUnlocked) text=t("objectiveTalk");
     else if (state.talked.size < 10) text=t("objectiveWitnesses",{n:state.talked.size});
-    else if (state.defeated.size < 8) text=t("objectiveForest",{n:state.defeated.size});
-    else if (state.defeated.size < 15) text=t("objectiveLab",{n:state.defeated.size});
+    else if (firstMapDefeated() < 8) text=t("objectiveForest",{n:firstMapDefeated()});
+    else if (firstMapDefeated() < 15) text=t("objectiveLab",{n:firstMapDefeated()});
     else text=t("objectiveBoss");
     nodes.objective.textContent=text;
   }
@@ -189,12 +238,19 @@
     canvas.dataset.playerX=String(Math.round(state.x));
     canvas.dataset.playerY=String(Math.round(state.y));
     canvas.dataset.facing=state.facing;
-    canvas.dataset.enemiesDefeated=String(state.defeated.size);
+    canvas.dataset.enemiesDefeated=String(firstMapDefeated());
+    canvas.dataset.moonfallEnemiesDefeated=String(moonfallDefeated());
     canvas.dataset.witnesses=String(state.talked.size);
     canvas.dataset.totalEnemies=String(enemySeeds.length);
+    canvas.dataset.totalMoonfallEnemies=String(moonfallEnemySeeds.length);
     canvas.dataset.totalNpcs=String(npcs.length);
     canvas.dataset.bossHp=String(Math.max(0,Math.ceil(boss?.hp ?? 0)));
     canvas.dataset.vision=trueVision?"true":"normal";
+    canvas.dataset.mapId=state.mapId;
+    canvas.dataset.relays=String(state.relays.size);
+    canvas.dataset.storyComplete=state.storyComplete?"true":"false";
+    canvas.dataset.walking=playerMoving?"true":"false";
+    canvas.dataset.walkCycle=walkCycle.toFixed(2);
   }
   function renderInventory() {
     nodes.weaponName.textContent=state.equipment.weapon?t("weaponName"):t("none");
@@ -230,6 +286,20 @@
     else canvas.focus({preventScroll:true});
   }
   function showDialogue(index) {
+    if(index===0&&state.bossDefeated){
+      let lineKey="chapter2After";
+      if(!state.chapter2Started){
+        state.chapter2Started=true;lineKey="chapter2Briefing";showToast(t("moonfallUnlocked"),2600);
+      }else if(moonfallDefeated()>=moonfallEnemySeeds.length&&state.relays.size>=RELAY_NODES.length&&!state.storyComplete){
+        state.storyComplete=true;lineKey="chapter2Debrief";playTone(820,.3);
+      }
+      currentDialogue=`story-${lineKey}`;paused=true;
+      nodes.speaker.textContent=(copy.npcNames||en.npcNames)[0] || en.npcNames[0];
+      nodes.dialogueText.textContent=t(lineKey);
+      nodes.dialogue.hidden=false;nodes.dialogueNext.focus();
+      saveGame();updateObjective();updateHud();
+      return;
+    }
     const wasNew=!state.talked.has(index);
     if (wasNew) state.talked.add(index);
     if (index===0 && !state.visionUnlocked) {
@@ -275,13 +345,62 @@
     ctx.drawImage(image,col*cellW,row*cellH,cellW,cellH,-w/2,-h/2,w,h);
     ctx.restore();
   }
+  function drawSprite(index,x,y,maxWidth,maxHeight,alpha=1) {
+    if(!atlas.sprites.complete||!atlas.sprites.naturalWidth)return;
+    const [sourceX,sourceY,sourceWidth,sourceHeight]=SPRITE_FRAMES[index];
+    const scale=Math.min(maxWidth/sourceWidth,maxHeight/sourceHeight);
+    const width=sourceWidth*scale,height=sourceHeight*scale;
+    ctx.save();
+    ctx.globalAlpha=alpha;
+    ctx.drawImage(atlas.sprites,sourceX,sourceY,sourceWidth,sourceHeight,x-width/2,y-height/2,width,height);
+    ctx.restore();
+  }
   function drawWorld(cam) {
-    if(atlas.world.complete&&atlas.world.naturalWidth) ctx.drawImage(atlas.world,0,0,atlas.world.naturalWidth,atlas.world.naturalHeight,-cam.x,-cam.y,WORLD.width,WORLD.height);
+    if(atlas.world.complete&&atlas.world.naturalWidth){
+      if(state.mapId===MAP_SIGNAL_TOWN)ctx.drawImage(atlas.world,0,0,atlas.world.naturalWidth,atlas.world.naturalHeight,-cam.x,-cam.y,WORLD.width,WORLD.height);
+      else{
+        ctx.save();ctx.translate(WORLD.width-cam.x,-cam.y);ctx.scale(-1,1);
+        ctx.drawImage(atlas.world,0,0,atlas.world.naturalWidth,atlas.world.naturalHeight,0,0,WORLD.width,WORLD.height);ctx.restore();
+      }
+    }
     else {ctx.fillStyle="#08222b";ctx.fillRect(0,0,BASE_VIEW.width,BASE_VIEW.height)}
-    if(trueVision){
+    MAP_OBJECTS[state.mapId].forEach(object=>drawAtlas(atlas.objects,object.sprite,4,3,object.x-cam.x,object.y-cam.y,object.w,object.h));
+    if(state.mapId===MAP_MOONFALL){
+      const glow=ctx.createLinearGradient(0,0,BASE_VIEW.width,BASE_VIEW.height);
+      glow.addColorStop(0,"#38145b42");glow.addColorStop(.5,"#071b4250");glow.addColorStop(1,"#3a0a4d4f");
+      ctx.fillStyle=glow;ctx.fillRect(0,0,BASE_VIEW.width,BASE_VIEW.height);
+      ctx.strokeStyle=trueVision?"#65fff04d":"#b66cff2c";ctx.lineWidth=2;ctx.setLineDash([6,22]);
+      for(let y=90;y<BASE_VIEW.height;y+=72){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(BASE_VIEW.width,y-28);ctx.stroke()}
+      ctx.setLineDash([]);
+    }
+    if(trueVision&&state.mapId===MAP_SIGNAL_TOWN){
       ctx.save();ctx.globalCompositeOperation="screen";ctx.strokeStyle="#45ffff99";ctx.lineWidth=8;ctx.setLineDash([10,14]);
       ctx.beginPath();ctx.moveTo(930-cam.x,520-cam.y);ctx.bezierCurveTo(1400-cam.x,260-cam.y,1750-cam.x,780-cam.y,2070-cam.x,520-cam.y);ctx.stroke();ctx.restore();
     }
+  }
+  function drawMapFeatures(cam) {
+    const portal=MAP_PORTALS[state.mapId];
+    const portalVisible=state.mapId===MAP_MOONFALL||state.chapter2Started;
+    if(portalVisible){
+      const pulse=96+Math.sin(performance.now()/180)*8;
+      ctx.save();ctx.globalAlpha=.34;ctx.fillStyle="#62f7ff";ctx.beginPath();ctx.arc(portal.x-cam.x,portal.y-cam.y,pulse*.46,0,Math.PI*2);ctx.fill();ctx.restore();
+      drawAtlas(atlas.items,15,4,4,portal.x-cam.x,portal.y-cam.y,pulse,pulse);
+    }
+    if(state.mapId===MAP_MOONFALL)RELAY_NODES.forEach(relay=>{
+      const active=state.relays.has(relay.id);
+      drawAtlas(atlas.items,active?13:relay.index,4,4,relay.x-cam.x,relay.y-cam.y,active?88:78,active?88:78,active?1:.9);
+      ctx.strokeStyle=active?"#70ffe4":"#c681ff";ctx.lineWidth=3;ctx.beginPath();
+      ctx.arc(relay.x-cam.x,relay.y-cam.y,42+Math.sin(performance.now()/220+relay.x)*4,0,Math.PI*2);ctx.stroke();
+    });
+  }
+  function drawPlayer(cam) {
+    const x=state.x-cam.x,y=state.y-cam.y;
+    const stride=playerMoving?Math.sin(walkCycle):0;
+    const bob=playerMoving?Math.abs(Math.sin(walkCycle))*4:Math.sin(performance.now()/520)*.45;
+    ctx.save();ctx.fillStyle="#02080c70";ctx.beginPath();ctx.ellipse(x,y+31,playerMoving?25:22,8,0,0,Math.PI*2);ctx.fill();ctx.restore();
+    const facingIndex={down:0,left:1,right:2,up:3}[state.facing]||0;
+    ctx.save();ctx.translate(x,y-bob);ctx.rotate(stride*.035);ctx.scale(1-stride*.018,1+Math.abs(stride)*.025);
+    drawSprite(facingIndex,0,0,78,78,invulnerability>0&&Math.floor(invulnerability*12)%2?0.35:1);ctx.restore();
   }
   function drawEntityBars(entity,cam,width=62) {
     const ratio=clamp(entity.hp/entity.maxHp,0,1),x=entity.x-cam.x-width/2,y=entity.y-cam.y-50;
@@ -293,38 +412,38 @@
     ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,canvas.width,canvas.height);
     ctx.save();ctx.translate(tr.ox,tr.oy);ctx.scale(tr.scale,tr.scale);ctx.beginPath();ctx.rect(0,0,BASE_VIEW.width,BASE_VIEW.height);ctx.clip();
     drawWorld(cam);
-    chests.forEach(chest=>{
+    drawMapFeatures(cam);
+    if(state.mapId===MAP_SIGNAL_TOWN)chests.forEach(chest=>{
       if(state.chests.has(chest.id)||(chest.hidden&&!trueVision))return;
       drawAtlas(atlas.items,6,4,4,chest.x-cam.x,chest.y-cam.y,70,70);
       if(trueVision){ctx.strokeStyle="#4ff4f4";ctx.lineWidth=3;ctx.strokeRect(chest.x-cam.x-36,chest.y-cam.y-36,72,72)}
     });
-    npcs.forEach((npc,index)=>{
-      if(trueVision&&npc.reveal) drawAtlas(atlas.sprites,8+(index%4),4,4,npc.x-cam.x,npc.y-cam.y,80,80);
+    if(state.mapId===MAP_SIGNAL_TOWN)npcs.forEach((npc,index)=>{
+      if(trueVision&&npc.reveal) drawSprite(8+(index%4),npc.x-cam.x,npc.y-cam.y,80,80);
       else drawAtlas(atlas.npcs,index,5,2,npc.x-cam.x,npc.y-cam.y,76,82);
       if(!state.talked.has(index)){ctx.fillStyle="#ffc550";ctx.font="900 23px sans-serif";ctx.textAlign="center";ctx.fillText("!",npc.x-cam.x,npc.y-cam.y-47)}
     });
     enemies.forEach(enemy=>{
-      if(enemy.dead)return;
+      if(enemy.dead||enemy.mapId!==state.mapId)return;
       if(enemy.hidden&&!trueVision){
         const pulse=22+Math.sin(performance.now()/180)*5;
         ctx.strokeStyle="#49f5ff99";ctx.lineWidth=3;ctx.beginPath();ctx.arc(enemy.x-cam.x,enemy.y-cam.y,pulse,0,Math.PI*2);ctx.stroke();
         return;
       }
-      drawAtlas(atlas.sprites,enemy.sprite,4,4,enemy.x-cam.x,enemy.y-cam.y,78,78);
+      drawSprite(enemy.sprite,enemy.x-cam.x,enemy.y-cam.y,78,78);
       drawEntityBars(enemy,cam,54);
     });
-    if(!boss.dead&&state.defeated.size>=15){
-      drawAtlas(atlas.sprites,boss.sprite,4,4,boss.x-cam.x,boss.y-cam.y,132,132);
+    if(state.mapId===MAP_SIGNAL_TOWN&&!boss.dead&&firstMapDefeated()>=15){
+      drawSprite(boss.sprite,boss.x-cam.x,boss.y-cam.y,132,132);
       drawEntityBars(boss,cam,118);
     }
     projectiles.forEach(p=>drawAtlas(atlas.items,9,4,4,p.x-cam.x,p.y-cam.y,44,44));
     enemyProjectiles.forEach(p=>drawAtlas(atlas.items,10,4,4,p.x-cam.x,p.y-cam.y,38,38));
     effects.forEach(f=>drawAtlas(atlas.items,f.index,4,4,f.x-cam.x,f.y-cam.y,f.size,f.size,f.life/.35));
-    const facingIndex={down:0,left:1,right:2,up:3}[state.facing]||0;
-    drawAtlas(atlas.sprites,facingIndex,4,4,state.x-cam.x,state.y-cam.y,78,78,invulnerability>0&&Math.floor(invulnerability*12)%2?0.35:1);
+    drawPlayer(cam);
     if(swingTimer>0) {
       const vector=facingVector();
-      const rotation={right:0,down:Math.PI/2,left:Math.PI,up:-Math.PI/2}[state.facing];
+      const rotation={left:0,up:Math.PI/2,right:Math.PI,down:-Math.PI/2}[state.facing];
       drawAtlasRotated(atlas.items,8,4,4,state.x-cam.x+vector.x*48,state.y-cam.y+vector.y*48,76,76,rotation);
     }
     drawEnemyGuide(cam);
@@ -333,25 +452,27 @@
       ctx.fillStyle="#05141be8";ctx.strokeStyle="#4ff4f4";ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(BASE_VIEW.width/2-90,BASE_VIEW.height-52,180,34,12);ctx.fill();ctx.stroke();
       ctx.fillStyle="#fff";ctx.font="800 14px sans-serif";ctx.textAlign="center";ctx.fillText(t("interact"),BASE_VIEW.width/2,BASE_VIEW.height-30);
     }
-    if(state.x<1000&&state.talked.size<10){ctx.fillStyle="#ffb13b";ctx.fillRect(996-cam.x,350-cam.y,8,340)}
-    if(state.x<2050&&!trueVision){ctx.fillStyle="#43eef255";ctx.fillRect(2038-cam.x,280-cam.y,14,480)}
+    if(state.mapId===MAP_SIGNAL_TOWN&&state.x<1000&&state.talked.size<10){ctx.fillStyle="#ffb13b";ctx.fillRect(996-cam.x,350-cam.y,8,340)}
+    if(state.mapId===MAP_SIGNAL_TOWN&&state.x<2050&&!trueVision){ctx.fillStyle="#43eef255";ctx.fillRect(2038-cam.x,280-cam.y,14,480)}
     ctx.restore();
   }
 
   function facingVector(){return {up:{x:0,y:-1},down:{x:0,y:1},left:{x:-1,y:0},right:{x:1,y:0}}[state.facing]}
   function collidesTerrain(x,y,radius=PLAYER_RADIUS) {
-    return TERRAIN_COLLIDERS.some(shape=>{
-      if(shape.kind==="circle")return Math.hypot(x-shape.x,y-shape.y)<radius+shape.r;
-      const nearestX=clamp(x,shape.x,shape.x+shape.w),nearestY=clamp(y,shape.y,shape.y+shape.h);
+    return MAP_OBJECTS[state.mapId].some(object=>{
+      const shape=object.collision,shapeX=object.x+(shape.ox||0),shapeY=object.y+(shape.oy||0);
+      if(shape.kind==="circle")return Math.hypot(x-shapeX,y-shapeY)<radius+shape.r;
+      const left=shapeX-shape.w/2,top=shapeY-shape.h/2;
+      const nearestX=clamp(x,left,left+shape.w),nearestY=clamp(y,top,top+shape.h);
       return Math.hypot(x-nearestX,y-nearestY)<radius;
     });
   }
   function collidesSolidActor(x,y,radius=PLAYER_RADIUS) {
     const overlaps=(entity,entityRadius)=>Math.hypot(x-entity.x,y-entity.y)<radius+entityRadius;
-    if(npcs.some(npc=>overlaps(npc,22)))return true;
-    if(chests.some(chest=>!state.chests.has(chest.id)&&overlaps(chest,25)))return true;
-    if(enemies.some(enemy=>!enemy.dead&&(!enemy.hidden||trueVision)&&overlaps(enemy,25)))return true;
-    return !boss.dead&&state.defeated.size>=15&&overlaps(boss,48);
+    if(state.mapId===MAP_SIGNAL_TOWN&&npcs.some(npc=>overlaps(npc,22)))return true;
+    if(state.mapId===MAP_SIGNAL_TOWN&&chests.some(chest=>!state.chests.has(chest.id)&&overlaps(chest,25)))return true;
+    if(enemies.some(enemy=>enemy.mapId===state.mapId&&!enemy.dead&&(!enemy.hidden||trueVision)&&overlaps(enemy,25)))return true;
+    return state.mapId===MAP_SIGNAL_TOWN&&!boss.dead&&firstMapDefeated()>=15&&overlaps(boss,48);
   }
   function moveEntityWithTerrain(entity,dx,dy,radius=PLAYER_RADIUS,avoidActors=false) {
     const blocked=(x,y)=>collidesTerrain(x,y,radius)||(avoidActors&&collidesSolidActor(x,y,radius));
@@ -362,8 +483,8 @@
     if(!blocked(entity.x,nextY)||wasBlocked)entity.y=nextY;
   }
   function drawEnemyGuide(cam) {
-    if(state.talked.size<10||state.defeated.size>=enemySeeds.length)return;
-    const living=enemies.filter(enemy=>!enemy.dead);
+    if(state.mapId===MAP_SIGNAL_TOWN&&state.talked.size<10)return;
+    const living=enemies.filter(enemy=>enemy.mapId===state.mapId&&!enemy.dead);
     if(!living.length)return;
     const target=living.sort((a,b)=>distance(state,a)-distance(state,b))[0];
     const screen={x:target.x-cam.x,y:target.y-cam.y};
@@ -382,7 +503,7 @@
     if(target.hidden&&!trueVision){
       ctx.rotate(offscreen?-Math.atan2(screen.y-marker.y,screen.x-marker.x):0);
       ctx.fillStyle="#06151ddd";ctx.beginPath();ctx.arc(0,0,12,0,Math.PI*2);ctx.fill();
-      ctx.fillStyle=color;ctx.font="900 15px sans-serif";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("V",0,1);
+      ctx.fillStyle=color;ctx.font="900 15px sans-serif";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("◉",0,1);
     }
     ctx.restore();
   }
@@ -396,23 +517,55 @@
     else if(Math.abs(move.y)>.05)state.facing=move.y>0?"down":"up";
   }
   function movePlayer(dt) {
-    const move=movementVector();if(Math.abs(move.x)+Math.abs(move.y)<.05)return;
+    const move=movementVector();
+    if(Math.abs(move.x)+Math.abs(move.y)<.05){playerMoving=false;return}
     setFacing(move);const speed=185;
+    const beforeX=state.x,beforeY=state.y;
     let nx=clamp(state.x+move.x*speed*dt,55,WORLD.width-55),ny=clamp(state.y+move.y*speed*dt,75,WORLD.height-55);
-    if(nx>995&&state.x<=1020&&state.talked.size<10){nx=995;showToast(t("lockedForest"))}
-    if(nx>2040&&state.x<=2070&&!trueVision){nx=2040;showToast(t("lockedLab"))}
+    if(state.mapId===MAP_SIGNAL_TOWN&&nx>995&&state.x<=1020&&state.talked.size<10){nx=995;showToast(t("lockedForest"))}
+    if(state.mapId===MAP_SIGNAL_TOWN&&nx>2040&&state.x<=2070&&!trueVision){nx=2040;showToast(t("lockedLab"))}
     moveEntityWithTerrain(state,nx-state.x,ny-state.y,PLAYER_RADIUS,true);
-    if(state.x>1060&&state.checkpoint.x<1000)state.checkpoint={x:1080,y:520};
-    if(state.x>2100&&state.checkpoint.x<2000)state.checkpoint={x:2110,y:520};
+    playerMoving=Math.hypot(state.x-beforeX,state.y-beforeY)>.1;
+    if(playerMoving)walkCycle+=dt*10.5;
+    if(state.mapId===MAP_SIGNAL_TOWN&&state.x>1060&&state.checkpoint.mapId===MAP_SIGNAL_TOWN&&state.checkpoint.x<1000)state.checkpoint={x:1080,y:520,mapId:MAP_SIGNAL_TOWN};
+    if(state.mapId===MAP_SIGNAL_TOWN&&state.x>2100&&state.checkpoint.mapId===MAP_SIGNAL_TOWN&&state.checkpoint.x<2000)state.checkpoint={x:2110,y:520,mapId:MAP_SIGNAL_TOWN};
   }
   function nearestInteractable() {
-    const npc=npcs.map((value,index)=>({...value,kind:"npc",index})).filter(value=>distance(state,value)<82).sort((a,b)=>distance(state,a)-distance(state,b))[0];
-    if(npc)return npc;
-    return chests.filter(chest=>!state.chests.has(chest.id)&&(!chest.hidden||trueVision)&&distance(state,chest)<85).map(chest=>({...chest,kind:"chest"}))[0]||null;
+    const candidates=[];
+    if(state.mapId===MAP_SIGNAL_TOWN){
+      const npc=npcs.map((value,index)=>({...value,kind:"npc",index})).filter(value=>distance(state,value)<82);
+      candidates.push(...npc);
+      candidates.push(...chests.filter(chest=>!state.chests.has(chest.id)&&(!chest.hidden||trueVision)&&distance(state,chest)<85).map(chest=>({...chest,kind:"chest"})));
+    }else{
+      candidates.push(...RELAY_NODES.map((relay,relayIndex)=>({...relay,relayIndex})).filter(relay=>!state.relays.has(relay.id)&&distance(state,relay)<92).map(relay=>({...relay,kind:"relay"})));
+    }
+    const portal=MAP_PORTALS[state.mapId];
+    if((state.mapId===MAP_MOONFALL||state.chapter2Started)&&distance(state,portal)<105)candidates.push({...portal,kind:"portal"});
+    return candidates.sort((a,b)=>distance(state,a)-distance(state,b))[0]||null;
   }
   function interact() {
     if(paused)return;const target=nearestInteractable();if(!target)return;
-    if(target.kind==="npc")showDialogue(target.index);else openChest(target);
+    if(target.kind==="npc")showDialogue(target.index);
+    else if(target.kind==="chest")openChest(target);
+    else if(target.kind==="relay")activateRelay(target);
+    else if(target.kind==="portal")switchMap(target);
+  }
+  function switchMap(portal) {
+    state.mapId=portal.to;state.x=portal.spawnX;state.y=portal.spawnY;
+    state.checkpoint={x:portal.spawnX,y:portal.spawnY,mapId:portal.to};
+    projectiles.length=0;enemyProjectiles.length=0;effects.length=0;
+    showToast(t(state.mapId===MAP_MOONFALL?"moonfallArrival":"townReturn"),2400);
+    saveGame();updateObjective();updateHud();
+  }
+  function activateRelay(relay) {
+    if(moonfallDefeated()<moonfallEnemySeeds.length){showToast(t("relayLocked"),2200);return}
+    state.relays.add(relay.id);gainXp(24);playTone(660,.2);
+    showToast(t("relayActivated",{n:state.relays.size}),2200);
+    currentDialogue=`relay-${relay.id}`;paused=true;
+    nodes.speaker.textContent=t(relay.name);
+    nodes.dialogueText.textContent=t(`relayMessage${relay.relayIndex+1}`);
+    nodes.dialogue.hidden=false;nodes.dialogueNext.focus();
+    saveGame();updateObjective();updateHud();
   }
   function openChest(chest) {
     state.chests.add(chest.id);state.equipment[chest.item]=true;
@@ -424,8 +577,8 @@
     canvas.dataset.lastAction="attack";
     canvas.dataset.slashDirection=state.facing;
     attackCooldown=.32;swingTimer=.18;playTone(150,.07);const v=facingVector(),point={x:state.x+v.x*62,y:state.y+v.y*62};
-    enemies.forEach(enemy=>{if(!enemy.dead&&(!enemy.hidden||trueVision)&&distance(point,enemy)<78)damageEnemy(enemy,effectiveAttack())});
-    if(!boss.dead&&state.defeated.size>=15&&distance(point,boss)<105)damageBoss(effectiveAttack());
+    enemies.forEach(enemy=>{if(enemy.mapId===state.mapId&&!enemy.dead&&(!enemy.hidden||trueVision)&&distance(point,enemy)<78)damageEnemy(enemy,effectiveAttack())});
+    if(state.mapId===MAP_SIGNAL_TOWN&&!boss.dead&&firstMapDefeated()>=15&&distance(point,boss)<105)damageBoss(effectiveAttack());
   }
   function useSkill() {
     if(paused||skillCooldown>0)return;
@@ -458,14 +611,14 @@
     if(invulnerability>0||paused)return;
     state.hp-=Math.max(1,amount-effectiveDefense());invulnerability=.75;playTone(90,.12);
     if(state.hp<=0){
-      state.hp=state.maxHp;state.x=state.checkpoint.x;state.y=state.checkpoint.y;
+      state.hp=state.maxHp;state.mapId=state.checkpoint.mapId||MAP_SIGNAL_TOWN;state.x=state.checkpoint.x;state.y=state.checkpoint.y;
       enemyProjectiles.length=0;showToast(t("defeated"),2500);saveGame();
     }
     updateHud();
   }
   function updateEnemies(dt) {
     enemies.forEach(enemy=>{
-      if(enemy.dead||(enemy.hidden&&!trueVision))return;
+      if(enemy.dead||enemy.mapId!==state.mapId||(enemy.hidden&&!trueVision))return;
       enemy.attackTimer-=dt;const dist=distance(state,enemy);
       if(dist<310){
         const dx=(state.x-enemy.x)/(dist||1),dy=(state.y-enemy.y)/(dist||1);
@@ -478,7 +631,7 @@
     });
   }
   function updateBoss(dt) {
-    if(boss.dead||state.defeated.size<15)return;
+    if(state.mapId!==MAP_SIGNAL_TOWN||boss.dead||firstMapDefeated()<15)return;
     const dist=distance(state,boss);
     if(dist<500&&!bossIntroduced){bossIntroduced=true;showToast(t("bossAppears"),3000)}
     if(dist>600)return;
@@ -503,8 +656,8 @@
     enemyProjectiles.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;if(distance(state,p)<35){hurt(p.damage);p.life=0}});
     for(let i=projectiles.length-1;i>=0;i--){
       const p=projectiles[i];let hit=false;
-      enemies.forEach(enemy=>{if(!hit&&!enemy.dead&&(!enemy.hidden||trueVision)&&distance(p,enemy)<45){damageEnemy(enemy,p.damage);hit=true}});
-      if(!hit&&!boss.dead&&state.defeated.size>=15&&distance(p,boss)<70){damageBoss(p.damage);hit=true}
+      enemies.forEach(enemy=>{if(!hit&&enemy.mapId===state.mapId&&!enemy.dead&&(!enemy.hidden||trueVision)&&distance(p,enemy)<45){damageEnemy(enemy,p.damage);hit=true}});
+      if(!hit&&state.mapId===MAP_SIGNAL_TOWN&&!boss.dead&&firstMapDefeated()>=15&&distance(p,boss)<70){damageBoss(p.damage);hit=true}
       if(hit||p.life<=0||p.x<0||p.x>WORLD.width||p.y<0||p.y>WORLD.height)projectiles.splice(i,1);
     }
     for(let i=enemyProjectiles.length-1;i>=0;i--)if(enemyProjectiles[i].life<=0)enemyProjectiles.splice(i,1);
@@ -517,7 +670,7 @@
   }
 
   function update(dt) {
-    if(!playing||paused)return;
+    if(!playing||paused){playerMoving=false;return}
     attackCooldown=Math.max(0,attackCooldown-dt);skillCooldown=Math.max(0,skillCooldown-dt);invulnerability=Math.max(0,invulnerability-dt);swingTimer=Math.max(0,swingTimer-dt);
     movePlayer(dt);updateEnemies(dt);updateBoss(dt);updateProjectiles(dt);updateHud();
   }
@@ -536,8 +689,8 @@
   }
   function restartGame() {
     const keepAnchor=Boolean(state.signalAnchor);clearSave();
-    state={...fresh,maxHp:fresh.maxHp+(keepAnchor?12:0),hp:fresh.hp+(keepAnchor?12:0),signalAnchor:keepAnchor,talked:new Set(),defeated:new Set(),chests:new Set(),equipment:{...fresh.equipment},checkpoint:{...fresh.checkpoint}};
-    trueVision=false;enemies=enemySeeds.map(([x,y,sprite],id)=>({id,x,y,homeX:x,homeY:y,sprite,hp:26+(id>7?15:0),maxHp:26+(id>7?15:0),speed:50+(id%3)*10,attackTimer:0,phase:id*.73,hidden:sprite===7,dead:false}));
+    state={...fresh,maxHp:fresh.maxHp+(keepAnchor?12:0),hp:fresh.hp+(keepAnchor?12:0),signalAnchor:keepAnchor,talked:new Set(),defeated:new Set(),chests:new Set(),relays:new Set(),equipment:{...fresh.equipment},checkpoint:{...fresh.checkpoint}};
+    trueVision=false;enemies=makeEnemies();
     boss={x:2890,y:520,hp:260,maxHp:260,attackTimer:1.2,pattern:0,dead:false,sprite:12,stun:0,charge:0};bossIntroduced=false;
     projectiles.length=0;enemyProjectiles.length=0;setPanel(null);showBattle();saveGame();
   }
@@ -549,9 +702,6 @@
     if(event.repeat)return;
     if(!paused&&["arrowup","arrowdown","arrowleft","arrowright","w","a","s","d"].includes(key)){
       const nudge={arrowup:[0,-10],w:[0,-10],arrowdown:[0,10],s:[0,10],arrowleft:[-10,0],a:[-10,0],arrowright:[10,0],d:[10,0]}[key];
-      moveEntityWithTerrain(state,nudge[0],nudge[1],PLAYER_RADIUS,true);
-      if(state.x>995&&state.talked.size<10)state.x=995;
-      if(state.x>2040&&!trueVision)state.x=2040;
       setFacing({x:nudge[0],y:nudge[1]});updateHud();
     }
     if(key===" "||key==="j")attack();
@@ -565,7 +715,7 @@
     }
   });
   addEventListener("keyup",event=>keys.delete(event.key.toLowerCase()));
-  addEventListener("blur",()=>{keys.clear();if(playing&&!paused)setPanel(nodes.pause)});
+  addEventListener("blur",()=>{keys.clear();playerMoving=false;if(playing&&!paused)setPanel(nodes.pause)});
   document.addEventListener("visibilitychange",()=>{if(document.hidden&&playing&&!paused)setPanel(nodes.pause)});
   $("#startGame").addEventListener("click",showBattle);
   $("#menuButton").addEventListener("click",()=>setPanel(nodes.pause));
@@ -604,7 +754,16 @@
     window.__SIGNAL_VEIL_TEST__={
       collidesTerrain,
       enemySeeds:enemySeeds.map(([x,y])=>({x,y})),
-      terrainCount:TERRAIN_COLLIDERS.length,
+      npcPositions:npcs.map(({x,y})=>({x,y})),
+      chestPositions:chests.map(({x,y})=>({x,y})),
+      terrainCount:WORLD_OBJECTS.length,
+      moonfallEnemySeeds:moonfallEnemySeeds.map(([x,y])=>({x,y})),
+      relayPositions:RELAY_NODES.map(({x,y})=>({x,y})),
+      portalPositions:Object.fromEntries(Object.entries(MAP_PORTALS).map(([mapId,{x,y}])=>[mapId,{x,y}])),
+      setPlayer(x,y,mapId=state.mapId){state.mapId=mapId;state.x=x;state.y=y;updateHud();},
+      unlockMoonfall(){state.bossDefeated=true;boss.dead=true;state.chapter2Started=true;saveGame();updateObjective();updateHud()},
+      switchMap(mapId){const portal=Object.values(MAP_PORTALS).find(candidate=>candidate.to===mapId);if(portal)switchMap(portal)},
+      completeMoonfallCombat(){moonfallEnemySeeds.forEach((_,offset)=>{const id=enemySeeds.length+offset;state.defeated.add(id);const enemy=enemies.find(candidate=>candidate.id===id);if(enemy)enemy.dead=true});saveGame();updateObjective();updateHud()},
     };
   }
   applyLocale();updateMainProgress();renderInventory();requestAnimationFrame(frame);

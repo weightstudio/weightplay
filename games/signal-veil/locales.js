@@ -103,8 +103,222 @@
   for(const [code,data] of Object.entries(economyCopy)){
     Object.assign({en,"zh-Hant":zhHant,"zh-Hans":zhHans,ja,ko,es,"pt-BR":pt,fr,de,it,ru,hi,ar}[code],data);
   }
-
-  window.SIGNAL_VEIL_LOCALES={
-    en,"zh-Hant":zhHant,"zh-Hans":zhHans,ja,ko,es,"pt-BR":pt,fr,de,it,ru,hi,ar
+  const visionSkillCopy={
+    en:"Vision","zh-Hant":"真視","zh-Hans":"真视",ja:"真視",ko:"진실 시야",
+    es:"Visión","pt-BR":"Visão",fr:"Vision",de:"Sicht",it:"Visione",
+    ru:"Зрение",hi:"दृष्टि",ar:"الرؤية",
   };
+  const localeRegistry={en,"zh-Hant":zhHant,"zh-Hans":zhHans,ja,ko,es,"pt-BR":pt,fr,de,it,ru,hi,ar};
+  for(const [code,value] of Object.entries(visionSkillCopy)){
+    localeRegistry[code].visionSkill=value;
+  }
+  const chapterTwoKeys=[
+    "zoneMoonfall","objectiveReturnOrla","objectiveEnterMoonfall","objectiveMoonfallEnemies",
+    "objectiveRelays","objectiveReturnMoonfall","objectiveFinalReturn","objectiveStoryComplete",
+    "chapter2Briefing","chapter2Debrief","chapter2After","moonfallUnlocked","moonfallArrival","townReturn",
+    "relayLocked","relayActivated","relayOrigin","relayMemory","relayWarning",
+    "relayMessage1","relayMessage2","relayMessage3","guideChapterTwoTitle","guideChapterTwo"
+  ];
+  const chapterTwoCopy={
+    en:[
+      "Moonfall Relay","Return to Orla with the Commander's device.","Use the laboratory gate to enter Moonfall Relay.",
+      "Clear the signal-corrupted sentries ({n}/8).","Activate the three memory relays ({n}/3).","Return through the gate and bring the records to Orla.",
+      "Return to Orla in Signal Town.","The records are safe. Travel freely between both maps.",
+      "The device is answering a relay outside our mapped world. I opened the laboratory gate. Go to Moonfall, clear the corrupted sentries, and recover all three records.",
+      "Now we know the truth. The Lizards sent an evacuation warning, not an invasion signal. Helix Directorate stole it and used Neural Vision to hide its experiments. We will expose them together.",
+      "Moonfall is stable now. Both gates remain open whenever you need to investigate either side.",
+      "Moonfall Relay route unlocked.","Moonfall Relay: the same signal, reflected through a broken network.","Returned to Signal Town.",
+      "Signal interference is too strong. Clear all eight sentries first.","Memory relay activated ({n}/3).",
+      "Origin Record","Memory Record","Warning Record",
+      "Record one: the Lizard fleet fled a dying moon and requested sanctuary.",
+      "Record two: Helix Directorate intercepted the plea and built disguises from its neural pattern.",
+      "Record three: the Commander guarded the evidence so Helix could not erase it.",
+      "Two-map investigation","After defeating the Commander, report to Orla to unlock Moonfall Relay. Clear eight corrupted sentries, activate three records, then return to Orla. The laboratory gate and Moonfall return gate remain open, so quests and exploration can continue across both maps."
+    ],
+    "zh-Hant":[
+      "月落中繼站","帶著指揮官的裝置回去找奧拉。","從實驗室閘門前往月落中繼站。",
+      "清除受到訊號侵蝕的哨兵（{n}/8）。","啟動三座記憶節點（{n}/3）。","穿過閘門，把紀錄帶回給奧拉。",
+      "返回訊號鎮找奧拉。","紀錄已安全回收，可以自由往返兩張地圖。",
+      "裝置正在回應一個不存在於地圖上的中繼站。我已開啟實驗室閘門。前往月落，清除被侵蝕的哨兵，帶回三份完整紀錄。",
+      "真相終於完整了。蜥蜴族送來的是撤離警告，不是入侵訊號。赫利克斯局攔截訊息，還利用神經視覺掩蓋人體實驗。我們會一起公開證據。",
+      "月落中繼站已穩定。兩邊閘門會保持開啟，隨時都能繼續調查。",
+      "已解鎖月落中繼站路線。","月落中繼站：同一道訊號，在破碎網路中的倒影。","已返回訊號鎮。",
+      "訊號干擾太強，先清除八名哨兵。","記憶節點已啟動（{n}/3）。",
+      "起源紀錄","記憶紀錄","警告紀錄",
+      "紀錄一：蜥蜴艦隊逃離一顆垂死的月球，向地球請求庇護。",
+      "紀錄二：赫利克斯局攔截求救訊息，並用其中的神經模式製造偽裝。",
+      "紀錄三：指揮官守護證據，是為了阻止赫利克斯將真相抹除。",
+      "雙地圖調查","擊敗指揮官後回報奧拉，即可解鎖月落中繼站。清除八名受侵蝕的哨兵、啟動三份紀錄，再回到訊號鎮交付證據。實驗室與月落的閘門會持續開放，可以在兩張地圖間往返解任務。"
+    ],
+    "zh-Hans":[
+      "月落中继站","带着指挥官的装置回去找奥拉。","从实验室闸门前往月落中继站。",
+      "清除受到信号侵蚀的哨兵（{n}/8）。","启动三座记忆节点（{n}/3）。","穿过闸门，把记录带回给奥拉。",
+      "返回信号镇找奥拉。","记录已安全回收，可以自由往返两张地图。",
+      "装置正在回应一个不存在于地图上的中继站。我已开启实验室闸门。前往月落，清除被侵蚀的哨兵，带回三份完整记录。",
+      "真相终于完整了。蜥蜴族送来的是撤离警告，不是入侵信号。赫利克斯局拦截信息，还利用神经视觉掩盖人体实验。我们会一起公开证据。",
+      "月落中继站已稳定。两边闸门会保持开启，随时都能继续调查。",
+      "已解锁月落中继站路线。","月落中继站：同一道信号，在破碎网络中的倒影。","已返回信号镇。",
+      "信号干扰太强，先清除八名哨兵。","记忆节点已启动（{n}/3）。",
+      "起源记录","记忆记录","警告记录",
+      "记录一：蜥蜴舰队逃离一颗垂死的月球，向地球请求庇护。",
+      "记录二：赫利克斯局拦截求救信息，并用其中的神经模式制造伪装。",
+      "记录三：指挥官守护证据，是为了阻止赫利克斯将真相抹除。",
+      "双地图调查","击败指挥官后向奥拉报告，即可解锁月落中继站。清除八名哨兵、启动三份记录，再回到信号镇交付证据。两边闸门会持续开放，可以往返完成任务。"
+    ],
+    ja:[
+      "ムーンフォール中継局","司令官の装置をオルラに届ける。","研究所のゲートからムーンフォールへ向かう。",
+      "信号に侵された番兵を倒す（{n}/8）。","3基の記憶リレーを起動する（{n}/3）。","ゲートを戻り、記録をオルラに届ける。",
+      "シグナルタウンのオルラに戻る。","記録を回収した。2つのマップを自由に移動できる。",
+      "装置が地図にない中継局へ応答している。研究所のゲートを開いた。ムーンフォールで番兵を排除し、3つの記録を回収して。",
+      "真相が分かった。トカゲ族の信号は侵略ではなく避難警告だった。ヘリックス局が傍受し、神経パターンを人体実験の隠蔽に使った。証拠を公開しよう。",
+      "ムーンフォールは安定した。両方のゲートは開いたままだ。",
+      "ムーンフォールへの経路を解除。","ムーンフォール中継局。同じ信号が壊れた網に反射している。","シグナルタウンへ帰還。",
+      "干渉が強すぎる。先に8体の番兵を倒そう。","記憶リレー起動（{n}/3）。",
+      "起源記録","記憶記録","警告記録",
+      "記録1：トカゲ艦隊は死にゆく月から逃れ、保護を求めていた。",
+      "記録2：ヘリックス局は救難信号を奪い、神経パターンで偽装を作った。",
+      "記録3：司令官は証拠を消されないよう守っていた。",
+      "2マップ調査","司令官を倒したらオルラへ報告し、ムーンフォールを解放する。8体の番兵を倒し、3つの記録を起動して戻ろう。2つのゲートは開いたままなので、両マップを往復できる。"
+    ],
+    ko:[
+      "문폴 중계소","사령관의 장치를 오를라에게 가져가세요.","연구소 관문으로 문폴 중계소에 들어가세요.",
+      "신호에 오염된 보초를 처치하세요 ({n}/8).","기억 중계기 세 개를 작동하세요 ({n}/3).","관문을 돌아가 기록을 오를라에게 전하세요.",
+      "시그널 타운의 오를라에게 돌아가세요.","기록을 확보했습니다. 두 지도를 자유롭게 오갈 수 있습니다.",
+      "장치가 지도에 없는 중계소에 응답해. 연구소 관문을 열었어. 문폴의 오염된 보초를 없애고 세 기록을 회수해 줘.",
+      "진실이 드러났어. 도마뱀 종족의 신호는 침공이 아니라 대피 경고였어. 헬릭스 국이 이를 가로채 신경 패턴으로 실험을 숨겼지. 함께 증거를 공개하자.",
+      "문폴이 안정됐어. 두 관문은 계속 열려 있을 거야.",
+      "문폴 중계소 경로가 열렸습니다.","문폴 중계소: 부서진 망에 비친 같은 신호.","시그널 타운으로 돌아왔습니다.",
+      "간섭이 너무 강합니다. 먼저 보초 여덟을 처치하세요.","기억 중계기 작동 ({n}/3).",
+      "기원 기록","기억 기록","경고 기록",
+      "기록 1: 도마뱀 함대는 죽어 가는 달에서 탈출해 피난처를 요청했다.",
+      "기록 2: 헬릭스 국은 구조 신호를 가로채 신경 패턴으로 위장을 만들었다.",
+      "기록 3: 사령관은 헬릭스가 증거를 지우지 못하도록 지키고 있었다.",
+      "두 지도 조사","사령관을 쓰러뜨린 뒤 오를라에게 보고해 문폴을 여세요. 보초 여덟을 처치하고 기록 세 개를 작동한 뒤 돌아오세요. 두 관문은 계속 열려 있어 양쪽 지도의 임무를 이어갈 수 있습니다."
+    ],
+    es:[
+      "Repetidor Moonfall","Lleva el dispositivo del comandante a Orla.","Usa el portal del laboratorio para entrar en Moonfall.",
+      "Elimina a los centinelas corruptos ({n}/8).","Activa los tres repetidores de memoria ({n}/3).","Vuelve por el portal y entrega los registros a Orla.",
+      "Regresa con Orla en Pueblo Señal.","Los registros están a salvo. Puedes viajar entre ambos mapas.",
+      "El dispositivo responde a un repetidor fuera del mapa. Abrí el portal del laboratorio. Ve a Moonfall, elimina a los centinelas y recupera los tres registros.",
+      "Ya conocemos la verdad. Los Lagartos enviaron una alerta de evacuación, no una invasión. La Dirección Helix la robó y usó el patrón neural para ocultar sus experimentos. Publicaremos las pruebas.",
+      "Moonfall está estable. Ambos portales seguirán abiertos.",
+      "Ruta a Moonfall desbloqueada.","Moonfall: la misma señal reflejada en una red rota.","Has vuelto a Pueblo Señal.",
+      "La interferencia es muy fuerte. Elimina primero a los ocho centinelas.","Repetidor de memoria activado ({n}/3).",
+      "Registro de origen","Registro de memoria","Registro de alerta",
+      "Registro uno: la flota Lagarto huyó de una luna moribunda y pidió refugio.",
+      "Registro dos: Helix interceptó la petición y creó disfraces con su patrón neural.",
+      "Registro tres: el comandante protegía las pruebas para impedir que Helix las borrara.",
+      "Investigación en dos mapas","Tras vencer al comandante, informa a Orla para abrir Moonfall. Elimina ocho centinelas, activa tres registros y regresa. Los dos portales permanecen abiertos para completar misiones en ambos mapas."
+    ],
+    "pt-BR":[
+      "Retransmissor Moonfall","Leve o dispositivo do comandante até Orla.","Use o portal do laboratório para entrar em Moonfall.",
+      "Elimine as sentinelas corrompidas ({n}/8).","Ative os três retransmissores de memória ({n}/3).","Volte pelo portal e entregue os registros a Orla.",
+      "Retorne a Orla na Cidade Sinal.","Os registros estão seguros. Viaje livremente entre os dois mapas.",
+      "O dispositivo responde a um retransmissor fora do mapa. Abri o portal do laboratório. Vá a Moonfall, elimine as sentinelas e recupere os três registros.",
+      "Agora sabemos a verdade. Os Lagartos enviaram um alerta de evacuação, não de invasão. A Diretoria Helix o roubou e usou o padrão neural para esconder seus experimentos. Vamos revelar as provas.",
+      "Moonfall está estável. Os dois portais continuarão abertos.",
+      "Rota para Moonfall desbloqueada.","Moonfall: o mesmo sinal refletido por uma rede quebrada.","Você voltou à Cidade Sinal.",
+      "A interferência está forte demais. Elimine primeiro as oito sentinelas.","Retransmissor de memória ativado ({n}/3).",
+      "Registro de origem","Registro de memória","Registro de alerta",
+      "Registro um: a frota Lagarto fugiu de uma lua moribunda e pediu abrigo.",
+      "Registro dois: a Diretoria Helix interceptou o pedido e criou disfarces com o padrão neural.",
+      "Registro três: o comandante protegia as provas para impedir que Helix as apagasse.",
+      "Investigação em dois mapas","Após derrotar o comandante, fale com Orla para abrir Moonfall. Elimine oito sentinelas, ative três registros e retorne. Os portais permanecem abertos para missões nos dois mapas."
+    ],
+    fr:[
+      "Relais Moonfall","Rapportez l'appareil du commandant à Orla.","Empruntez le portail du laboratoire vers Moonfall.",
+      "Éliminez les sentinelles corrompues ({n}/8).","Activez les trois relais de mémoire ({n}/3).","Revenez par le portail et remettez les archives à Orla.",
+      "Retournez voir Orla à Signalville.","Les archives sont sûres. Voyagez librement entre les deux cartes.",
+      "L'appareil répond à un relais absent de nos cartes. J'ai ouvert le portail du laboratoire. Va à Moonfall, élimine les sentinelles et récupère les trois archives.",
+      "Nous connaissons la vérité. Les Lézards ont envoyé une alerte d'évacuation, pas un signal d'invasion. La Direction Helix l'a volée pour cacher ses expériences. Nous révélerons les preuves.",
+      "Moonfall est stable. Les deux portails resteront ouverts.",
+      "Route de Moonfall déverrouillée.","Moonfall : le même signal reflété par un réseau brisé.","Retour à Signalville.",
+      "L'interférence est trop forte. Éliminez d'abord les huit sentinelles.","Relais de mémoire activé ({n}/3).",
+      "Archive d'origine","Archive de mémoire","Archive d'alerte",
+      "Archive un : la flotte Lézard fuyait une lune mourante et demandait refuge.",
+      "Archive deux : Helix a intercepté l'appel et créé des déguisements avec son motif neural.",
+      "Archive trois : le commandant protégeait les preuves pour empêcher Helix de les effacer.",
+      "Enquête sur deux cartes","Après le commandant, parlez à Orla pour ouvrir Moonfall. Éliminez huit sentinelles, activez trois archives puis revenez. Les portails restent ouverts pour poursuivre les missions sur les deux cartes."
+    ],
+    de:[
+      "Moonfall-Relais","Bringe Orla das Gerät des Kommandanten.","Nutze das Labortor zum Moonfall-Relais.",
+      "Besiege die signalverseuchten Wächter ({n}/8).","Aktiviere die drei Erinnerungsrelais ({n}/3).","Kehre durchs Tor zurück und bringe Orla die Aufzeichnungen.",
+      "Kehre zu Orla in Signalstadt zurück.","Die Aufzeichnungen sind sicher. Reise frei zwischen beiden Karten.",
+      "Das Gerät antwortet einem Relais außerhalb unserer Karten. Ich habe das Labortor geöffnet. Geh nach Moonfall, besiege die Wächter und sichere alle drei Aufzeichnungen.",
+      "Jetzt kennen wir die Wahrheit. Die Echsen sendeten eine Evakuierungswarnung, kein Invasionssignal. Die Helix-Direktion stahl sie und verbarg damit ihre Experimente. Wir veröffentlichen die Beweise.",
+      "Moonfall ist stabil. Beide Tore bleiben geöffnet.",
+      "Route nach Moonfall freigeschaltet.","Moonfall: dasselbe Signal, gespiegelt in einem zerbrochenen Netz.","Zurück in Signalstadt.",
+      "Die Störung ist zu stark. Besiege zuerst alle acht Wächter.","Erinnerungsrelais aktiviert ({n}/3).",
+      "Ursprungsakte","Erinnerungsakte","Warnakte",
+      "Akte eins: Die Echsenflotte floh von einem sterbenden Mond und bat um Schutz.",
+      "Akte zwei: Helix fing den Hilferuf ab und baute Tarnungen aus seinem Neuralmuster.",
+      "Akte drei: Der Kommandant schützte die Beweise vor Helix.",
+      "Ermittlung auf zwei Karten","Melde dich nach dem Kommandanten bei Orla und öffne Moonfall. Besiege acht Wächter, aktiviere drei Akten und kehre zurück. Beide Tore bleiben für Aufgaben auf beiden Karten offen."
+    ],
+    it:[
+      "Ripetitore Moonfall","Porta a Orla il dispositivo del comandante.","Usa il portale del laboratorio per entrare a Moonfall.",
+      "Elimina le sentinelle corrotte ({n}/8).","Attiva i tre ripetitori di memoria ({n}/3).","Torna dal portale e consegna i registri a Orla.",
+      "Torna da Orla a Città Segnale.","I registri sono al sicuro. Viaggia liberamente fra le due mappe.",
+      "Il dispositivo risponde a un ripetitore fuori dalle mappe. Ho aperto il portale del laboratorio. Vai a Moonfall, elimina le sentinelle e recupera i tre registri.",
+      "Ora sappiamo la verità. I Rettili inviarono un allarme di evacuazione, non d'invasione. La Direzione Helix lo rubò e usò il modello neurale per nascondere gli esperimenti. Riveleremo le prove.",
+      "Moonfall è stabile. Entrambi i portali resteranno aperti.",
+      "Percorso per Moonfall sbloccato.","Moonfall: lo stesso segnale riflesso in una rete spezzata.","Ritorno a Città Segnale.",
+      "L'interferenza è troppo forte. Elimina prima le otto sentinelle.","Ripetitore di memoria attivato ({n}/3).",
+      "Registro d'origine","Registro di memoria","Registro d'allarme",
+      "Registro uno: la flotta Rettiliana fuggì da una luna morente e chiese rifugio.",
+      "Registro due: Helix intercettò la richiesta e creò camuffamenti dal modello neurale.",
+      "Registro tre: il comandante proteggeva le prove perché Helix non le cancellasse.",
+      "Indagine su due mappe","Dopo il comandante, parla con Orla per aprire Moonfall. Elimina otto sentinelle, attiva tre registri e torna. I portali restano aperti per le missioni su entrambe le mappe."
+    ],
+    ru:[
+      "Ретранслятор Мунфолл","Отнесите устройство командира Орле.","Войдите в Мунфолл через врата лаборатории.",
+      "Уничтожьте заражённых сигналом стражей ({n}/8).","Активируйте три ретранслятора памяти ({n}/3).","Вернитесь через врата и отдайте записи Орле.",
+      "Вернитесь к Орле в Сигнал-Сити.","Записи спасены. Между двумя картами можно путешествовать свободно.",
+      "Устройство отвечает ретранслятору вне наших карт. Я открыла врата лаборатории. Иди в Мунфолл, уничтожь стражей и забери три записи.",
+      "Теперь правда ясна. Ящеры отправили предупреждение об эвакуации, а не сигнал вторжения. Дирекция «Геликс» перехватила его и скрыла свои опыты. Мы обнародуем доказательства.",
+      "Мунфолл стабилен. Оба портала останутся открыты.",
+      "Маршрут в Мунфолл открыт.","Мунфолл: тот же сигнал в отражении сломанной сети.","Возвращение в Сигнал-Сити.",
+      "Помехи слишком сильны. Сначала уничтожьте восемь стражей.","Ретранслятор памяти активирован ({n}/3).",
+      "Запись истока","Запись памяти","Запись предупреждения",
+      "Запись первая: флот Ящеров покинул умирающую луну и попросил убежища.",
+      "Запись вторая: «Геликс» перехватил просьбу и создал маскировку из нейронного узора.",
+      "Запись третья: командир охранял доказательства от уничтожения.",
+      "Расследование на двух картах","После победы над командиром доложите Орле и откройте Мунфолл. Уничтожьте восемь стражей, включите три записи и вернитесь. Оба портала остаются открыты для заданий на двух картах."
+    ],
+    hi:[
+      "मूनफॉल रिले","कमांडर का उपकरण ऑर्ला को दें।","प्रयोगशाला द्वार से मूनफॉल रिले जाएँ।",
+      "सिग्नल से दूषित प्रहरी हटाएँ ({n}/8)।","तीन स्मृति रिले चालू करें ({n}/3)।","द्वार से लौटकर अभिलेख ऑर्ला को दें।",
+      "सिग्नल टाउन में ऑर्ला के पास लौटें।","अभिलेख सुरक्षित हैं। दोनों नक्शों के बीच स्वतंत्र यात्रा करें।",
+      "उपकरण हमारे नक्शे से बाहर एक रिले को उत्तर दे रहा है। मैंने प्रयोगशाला द्वार खोल दिया है। मूनफॉल जाओ, दूषित प्रहरियों को हटाओ और तीनों अभिलेख लाओ।",
+      "अब सच साफ है। छिपकली जाति ने आक्रमण नहीं, निकासी चेतावनी भेजी थी। हेलिक्स निदेशालय ने उसे चुराकर अपने प्रयोग छिपाए। हम प्रमाण सामने लाएँगे।",
+      "मूनफॉल स्थिर है। दोनों द्वार खुले रहेंगे।",
+      "मूनफॉल मार्ग खुल गया।","मूनफॉल: टूटी हुई जाल में उसी सिग्नल का प्रतिबिंब।","सिग्नल टाउन लौट आए।",
+      "हस्तक्षेप बहुत तेज है। पहले आठों प्रहरी हटाएँ।","स्मृति रिले सक्रिय ({n}/3)।",
+      "उद्गम अभिलेख","स्मृति अभिलेख","चेतावनी अभिलेख",
+      "अभिलेख एक: छिपकली बेड़ा मरते चंद्रमा से भागकर शरण माँग रहा था।",
+      "अभिलेख दो: हेलिक्स ने पुकार रोककर उसके तंत्रिका पैटर्न से छद्मावरण बनाया।",
+      "अभिलेख तीन: कमांडर प्रमाण को हेलिक्स से बचा रहा था।",
+      "दो नक्शों की जाँच","कमांडर को हराकर ऑर्ला को सूचना दें और मूनफॉल खोलें। आठ प्रहरी हटाएँ, तीन अभिलेख सक्रिय करें और लौटें। दोनों द्वार खुले रहते हैं, इसलिए दोनों नक्शों में मिशन पूरे किए जा सकते हैं।"
+    ],
+    ar:[
+      "مرحل مونفول","أعد جهاز القائد إلى أورلا.","استخدم بوابة المختبر لدخول مونفول.",
+      "اقضِ على الحراس الملوثين بالإشارة ({n}/8).","فعّل مرحلات الذاكرة الثلاثة ({n}/3).","عد عبر البوابة وسلم السجلات إلى أورلا.",
+      "عد إلى أورلا في بلدة الإشارة.","السجلات آمنة. يمكنك التنقل بحرية بين الخريطتين.",
+      "الجهاز يجيب مرحلاً خارج خرائطنا. فتحت بوابة المختبر. اذهب إلى مونفول، أزل الحراس الملوثين واستعد السجلات الثلاثة.",
+      "عرفنا الحقيقة. أرسل السحالي تحذير إخلاء لا إشارة غزو. سرقت مديرية هيليكس الرسالة واستخدمت نمطها العصبي لإخفاء تجاربها. سنكشف الأدلة.",
+      "استقر مونفول. ستظل البوابتان مفتوحتين.",
+      "فُتح طريق مونفول.","مونفول: الإشارة نفسها منعكسة في شبكة محطمة.","عدت إلى بلدة الإشارة.",
+      "التشويش شديد. اقضِ أولاً على الحراس الثمانية.","تم تفعيل مرحل الذاكرة ({n}/3).",
+      "سجل الأصل","سجل الذاكرة","سجل التحذير",
+      "السجل الأول: هرب أسطول السحالي من قمر يحتضر وطلب الملجأ.",
+      "السجل الثاني: اعترضت هيليكس النداء وصنعت تمويهاً من نمطه العصبي.",
+      "السجل الثالث: كان القائد يحمي الأدلة كي لا تمحوها هيليكس.",
+      "تحقيق بخريطتين","بعد هزيمة القائد، أبلغ أورلا لفتح مونفول. اقضِ على ثمانية حراس وفعّل ثلاثة سجلات ثم عد. تبقى البوابتان مفتوحتين لمهام الخريطتين."
+    ]
+  };
+  for(const [code,values] of Object.entries(chapterTwoCopy)){
+    Object.assign(localeRegistry[code],Object.fromEntries(chapterTwoKeys.map((key,index)=>[key,values[index]])));
+  }
+
+  window.SIGNAL_VEIL_LOCALES=localeRegistry;
 })();
