@@ -43,3 +43,24 @@
     line-height:1.45;
   }
 }
+
+#resultModal .modal-actions {
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+#resultModal .modal-actions button {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: 52px;
+  min-height: 52px;
+  max-height: 52px;
+  padding-inline: 8px;
+  white-space: nowrap;
+}
+
+#resultModal .modal-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}

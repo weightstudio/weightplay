@@ -3,3 +3,51 @@ body #stage{grid-template-rows:76px minmax(0,1fr);background:linear-gradient(#24
 .board{background-color:#244f3b;background-image:url("../../assets/animal-sunbeam-garden-board-v1.webp");background-position:center;background-repeat:no-repeat;background-size:100% 100%}.cell{background:transparent;box-shadow:none}.cell.source{background:transparent url("../../assets/animal-sunbeam-garden-sun-v1.webp") center/contain no-repeat}.cell.goal{background:transparent url("../../assets/animal-sunbeam-garden-flower-v1.webp") center/contain no-repeat}.cell.goal.hit{background-image:url("../../assets/animal-sunbeam-garden-flower-hit-v1.webp")}.cell.mirror{background:transparent}.cell.mirror::after{inset:2%;background:url("../../assets/animal-sunbeam-garden-mirror-v1.webp") center/contain no-repeat;filter:drop-shadow(0 3px 2px #25463444)}.cell.mirror[data-rot="1"]::after{transform:rotate(90deg)}
 .board{background-image:none}.cell,.cell.mirror{background-color:transparent;background-image:url("../../assets/animal-sunbeam-garden-cell-v1.webp");background-position:center;background-repeat:no-repeat;background-size:100% 100%}
 @media(max-height:500px) and (orientation:landscape){body #battle .board{width:min(264px,calc(100svh - 126px))}}
+
+/* Interface v4: one shared shell, centered stage tabs, and a readable garden board. */
+body #stage{grid-template-rows:76px minmax(0,1fr) 62px}
+.stage-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:center;padding:7px 12px;background:#173f31e8;border-top:1px solid #8ec59c66;backdrop-filter:blur(10px)}
+.stage-tab{grid-column:2;min-height:46px;border:1px solid #f8dc72;border-radius:13px;background:linear-gradient(180deg,#f9dc72,#e7ad36);color:#23422f;font-weight:950;box-shadow:0 5px 14px #102b2166}
+
+#battle{position:relative;background:#143d31}
+#battle .scene-header{position:relative;z-index:4;background:linear-gradient(90deg,#173e31f2,#356d4ff2);border-bottom:1px solid #e8d47888}
+.battle-content{position:relative;isolation:isolate;display:grid;place-items:center;padding:12px 16px;overflow:hidden}
+.battle-content::before{content:"";position:absolute;z-index:-2;inset:0;background:linear-gradient(#12392caf,#12392caf),url("../../assets/animal-sunbeam-garden-cover-general-v3.webp") center 42%/cover no-repeat;filter:saturate(.82)}
+.battle-content::after{content:"";position:absolute;z-index:-1;inset:0;background:radial-gradient(circle at 50% 38%,#f9ed9270,transparent 36%),linear-gradient(180deg,transparent 60%,#08261ee0)}
+.garden-panel{width:min(100%,680px);display:grid;grid-template-rows:minmax(0,1fr) auto auto;justify-items:center;gap:9px;padding:14px;border:1px solid #f5df85aa;border-radius:28px;background:linear-gradient(155deg,#faffefed,#d8e9bde8);box-shadow:0 18px 50px #071b16aa,inset 0 1px #fff}
+.board{position:relative;width:min(calc(100vw - 62px),calc(100svh - 320px),570px);min-width:250px;isolation:isolate;overflow:hidden;border:6px solid #5b843f;border-radius:24px;background:#244f3b;box-shadow:0 10px 28px #173a2d66,inset 0 0 0 2px #d4dc82}
+.cell{z-index:1;border-radius:4px}
+.cell.beam{box-shadow:inset 0 0 0 2px #fff4a933;filter:brightness(1.05)}
+.cell.source,.cell.goal,.cell.mirror{z-index:4}
+.cell.mirror::after{transition:transform .3s cubic-bezier(.2,.85,.25,1.25),filter .3s ease;transform-origin:center}
+.cell.mirror[data-rot="1"]::after{transform:rotate(90deg)}
+.cell.mirror.turning[data-rot="0"]::after{transform:rotate(90deg) scale(1.08);filter:drop-shadow(0 0 7px #fff7b8)}
+.cell.mirror.turning[data-rot="1"]::after{transform:rotate(180deg) scale(1.08);filter:drop-shadow(0 0 7px #fff7b8)}
+.board.is-turning .beam-layer{opacity:.48;filter:saturate(.5)}
+.beam-layer{position:absolute;z-index:3;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;transition:opacity .2s ease}
+.beam-layer polyline{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.beam-glow{stroke:#ffd83d;stroke-width:16;opacity:.55;filter:drop-shadow(0 0 7px #fff199)}
+.beam-core{stroke:#fff8b8;stroke-width:5;filter:drop-shadow(0 0 3px #fff)}
+.board.solved .beam-core{stroke:#fffef0;animation:beamPulse .75s ease-in-out infinite alternate}
+.garden-panel #status{min-height:22px;margin:0;color:#234b3d;font-size:.86rem;font-weight:900}
+.tools{width:min(100%,420px);display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.tools button{min-height:46px;border:1px solid #789e64;border-radius:13px;background:#fffef0;color:#284d3a;font-weight:900;box-shadow:0 4px 10px #31523a22}
+.tools button:active{transform:translateY(1px)}
+dialog>div:last-child{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+dialog>div:last-child button{min-width:0;padding-inline:8px}
+dialog button:disabled{opacity:.45;cursor:not-allowed}
+@keyframes beamPulse{to{stroke-width:7;filter:drop-shadow(0 0 7px #fff)}}
+
+@media(max-width:680px){
+  .garden-panel{padding:10px;border-radius:22px}
+  .board{width:min(calc(100vw - 44px),calc(100svh - 270px),570px)}
+}
+@media(max-height:500px) and (orientation:landscape){
+  body #stage{grid-template-rows:58px minmax(0,1fr) 54px}
+  .stage-tabs{padding:4px 10px}.stage-tab{min-height:42px}
+  .battle-content{padding:6px 10px}
+  .garden-panel{width:min(720px,100%);grid-template-columns:minmax(220px,1fr) 190px;grid-template-rows:1fr auto;gap:8px 14px;padding:8px 12px}
+  body #battle .board{grid-column:1;grid-row:1/3;width:min(252px,calc(100svh - 82px));min-width:0}
+  .garden-panel #status{grid-column:2;grid-row:1;align-self:end}
+  .tools{grid-column:2;grid-row:2;width:100%}
+}

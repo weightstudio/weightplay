@@ -333,46 +333,9 @@
   }
 
   function hint() {
-    const hero = blocks[0];
-    if (hero.x < 4) {
-      const blocker = blocks.find(
-        (block) =>
-          block !== hero &&
-          block.y <= hero.y &&
-          block.y + block.h > hero.y &&
-          block.x > hero.x,
-      );
-      if (blocker?.dir) {
-        const targetY = Array.from(
-          { length: 7 - blocker.h },
-          (_, candidateY) => candidateY,
-        )
-          .filter(
-            (candidateY) =>
-              (hero.y < candidateY ||
-                hero.y >= candidateY + blocker.h) &&
-              !occupied(
-                blocker,
-                blocker.x,
-                candidateY,
-                blocker.w,
-                blocker.h,
-              ),
-          )
-          .sort(
-            (left, right) =>
-              Math.abs(left - blocker.y) - Math.abs(right - blocker.y),
-          )[0];
-        if (Number.isInteger(targetY)) {
-          commitMove(blocker, blocker.x, targetY);
-        }
-      } else if (
-        hero.x + hero.w < 6 &&
-        !occupied(hero, hero.x + 1, hero.y, hero.w, hero.h)
-      ) {
-        commitMove(hero, hero.x + 1, hero.y);
-      }
-    }
+    const move = UNBLOCK_LEVELS.nextMove(blocks);
+    if (!move) return;
+    commitMove(blocks[move.pieceIndex], move.x, move.y);
   }
 
   $("start").onclick = () => {
