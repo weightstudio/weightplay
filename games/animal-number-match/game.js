@@ -8,7 +8,7 @@
   function read(key){try{return localStorage.getItem(key)}catch{return null}}
   function write(key,value){try{localStorage.setItem(key,value)}catch{}}
   function t(key,vars={}){const value=window.NUMBER_MATCH_LOCALES[locale]?.[key]??window.NUMBER_MATCH_LOCALES.en[key]??key;return String(value).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??"")}
-  function show(id){screens.forEach(screen=>screen.hidden=screen.id!==id);$("#generalReserve").hidden=id!=="battle";document.body.dataset.screen=id;window.scrollTo(0,0);if(id==="stage")renderStages()}
+  function show(id){if(id!=="battle"&&$("#leaveDialog").open)$("#leaveDialog").close();screens.forEach(screen=>screen.hidden=screen.id!==id);$("#generalReserve").hidden=id!=="battle";document.body.dataset.screen=id;window.scrollTo(0,0);if(id==="stage")renderStages()}
   function selectStage(index,center=false){
     selected=Math.max(0,Math.min(29,index));
     document.querySelectorAll("#stageGrid .stage-card").forEach((card,cardIndex)=>{
@@ -111,7 +111,15 @@
     locale=next;write("weightPlayLocale",locale);write("wp-locale",locale);applyLocale();
     window.setTimeout(()=>{if(locale===next)applyLocale()},0);
   });
-  $("#start").onclick=()=>show("stage");$("#stageGrid").addEventListener("wonder:stage-snap",event=>{const index=Number(event.detail?.index);if(Number.isInteger(index)&&index>=0)selectStage(index)});document.querySelectorAll("[data-back]").forEach(button=>button.onclick=()=>show(button.closest("#battle")?"stage":"main"));
+  $("#start").onclick=()=>show("stage");$("#stageGrid").addEventListener("wonder:stage-snap",event=>{const index=Number(event.detail?.index);if(Number.isInteger(index)&&index>=0)selectStage(index)});$("#stage [data-back]").onclick=()=>show("main");
+  $("#battle [data-back]").onclick=()=>{
+    if(picked===null&&!history.length&&!moves){show("stage");return}
+    inputLocked=true;$("#leaveDialog").showModal();$("#continueBattle").focus();
+  };
+  const continueBattle=()=>{inputLocked=false;$("#leaveDialog").close();$("#battle [data-back]").focus()};
+  $("#continueBattle").onclick=continueBattle;
+  $("#leaveBattle").onclick=()=>{inputLocked=false;picked=null;show("stage")};
+  $("#leaveDialog").addEventListener("cancel",event=>{event.preventDefault();continueBattle()});
   $("#undo").onclick=()=>{const last=history.pop();if(!last)return;values[last.a]=last.va;values[last.b]=last.vb;picked=null;moves=Math.max(0,moves-1);$("#status").textContent=t("undone");renderBoard()};
   $("#hint").onclick=hint;$("#shuffle").onclick=reorder;$("#restart").onclick=()=>startLevel(selected);
   $("#resultStages").onclick=()=>claimResultAction(()=>{selected=Math.min(29,unlocked-1);show("stage")});$("#next").onclick=()=>claimResultAction(()=>startLevel(selected+1));$("#retry").onclick=()=>claimResultAction(()=>startLevel(selected));

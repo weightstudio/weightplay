@@ -22,6 +22,10 @@
     <section class="battle-content"><img class="battle-coach" src="../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp" alt="" aria-hidden="true"><div id="board" class="board" role="grid" data-t-aria="boardLabel" aria-label="Number Match board"></div><div class="tools"><button id="undo" data-t="undo">Undo</button><button id="hint" data-t="hint">Hint</button><button id="shuffle" data-t="shuffle">Reorder</button><button id="restart" data-t="restart">Restart</button></div><p id="status" aria-live="polite"></p></section>
   </main>
   <div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
+  <dialog id="leaveDialog" class="leave-dialog" aria-labelledby="leaveTitle">
+    <h2 id="leaveTitle" data-t="leaveTitle">Leave this run?</h2>
+    <div><button id="continueBattle" class="primary" data-t="continuePlaying">Continue playing</button><button id="leaveBattle" data-t="returnStages">Return to stages</button></div>
+  </dialog>
   <dialog id="result"><img class="result-character" src="../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp" alt="" aria-hidden="true"><p class="eyebrow" data-t="complete">GROVE CLEARED</p><h2 data-t="resultTitle">Every number found a partner!</h2><p id="resultBody"></p><div><button id="resultStages" data-t="stageList">Stages</button><button id="next" class="primary" data-t="next">Next grove</button><button id="retry" data-t="retry">Replay</button></div></dialog>
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>

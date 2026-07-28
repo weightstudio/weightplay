@@ -2743,6 +2743,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Choose a Mosaic": "एक मोज़ेक चुनें",
   "Choose a nearby tile.": "पास की टाइल चुनें.",
   "Choose a number, then find its partner.": "एक नंबर चुनें, फिर उसका साथी ढूंढें।",
+  "Choose a number, then find the number that completes 10.": "एक नंबर चुनें और 10 पूरा करने वाला नंबर खोजें।",
   "Choose a page": "एक पेज चुनें",
   "Choose a patrol route": "गश्ती मार्ग चुनें",
   "Choose a piece and drag it onto empty cells.": "एक टुकड़ा चुनें और उसे खाली कोशिकाओं पर खींचें।",
@@ -2917,6 +2918,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Choose Trial": "परीक्षण चुनें",
   "Choose two equal numbers, or two numbers whose sum is 10. They must touch or see each other across cleared spaces.": "दो समान संख्याएँ, या दो संख्याएँ चुनें जिनका योग 10 है। उन्हें खाली स्थानों पर एक दूसरे को छूना या देखना होगा।",
   "Choose two matching free tiles.": "दो मेल खाने वाली निःशुल्क टाइलें चुनें।",
+  "Choose two numbers whose sum is exactly 10. They must touch or see each other across cleared spaces.": "दो नंबर चुनें जिनका जोड़ ठीक 10 हो। वे पास हों या खाली खानों के पार एक-दूसरे को देख सकें।",
   "Choose whether the optional treasure is worth the detour. It awards the third medal and extra Moon Coins, but ordinary mission progress never requires it unless the current rule explicitly turns it into a seal.": "चुनें कि क्या वैकल्पिक खजाना चक्कर लगाने लायक है। यह तीसरा पदक और अतिरिक्त मून सिक्के प्रदान करता है, लेकिन सामान्य मिशन प्रगति के लिए इसकी आवश्यकता कभी नहीं होती जब तक कि वर्तमान नियम स्पष्ट रूप से इसे मुहर में नहीं बदल देता।",
   "Choose whether to equip {gear} or keep the current loadout.": "चुनें कि {gear} को लैस करना है या वर्तमान लोडआउट रखना है।",
   "Choose your age": "अपनी उम्र चुनें",
@@ -3012,6 +3014,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Clear matching bubbles around the animal": "जानवर के चारों ओर मिलते-जुलते बुलबुले साफ़ करें",
   "Clear missions to earn XP and Beast Coins. Spend coins on packs, equip cards and gear, then push deeper into the forest.": "XP और बीस्ट सिक्के अर्जित करने के लिए स्पष्ट मिशन। पैक्स पर सिक्के खर्च करें, कार्ड और गियर सुसज्जित करें, फिर जंगल में गहराई तक धकेलें।",
   "Clear missions to earn XP, level up, and unlock deeper forest routes. Progress is saved on this device.": "XP अर्जित करने, स्तर बढ़ाने और गहरे वन मार्गों को अनलॉक करने के लिए स्पष्ट मिशन। प्रगति इस डिवाइस पर सहेजी गई है.",
+  "Clear number pairs that add up to ten. Open sight lines and keep the grove tidy.": "दस का जोड़ बनाने वाले नंबरों के जोड़े हटाएँ और उपवन साफ करें।",
   "Clear obstacles and make the match": "बाधाओं को दूर करें और मैच बनाएं",
   "Clear pairs that match or add up to ten. Open sight lines and keep the grove tidy.": "ऐसे जोड़े साफ़ करें जो मेल खाते हों या दस तक जोड़ते हों। दृष्टि रेखाएं खोलें और उपवन को साफ-सुथरा रखें।",
   "Clear pockets with only one entrance at the correct moment instead of sealing their entrance too early.": "अपने प्रवेश द्वार को बहुत पहले सील करने के बजाय सही समय पर केवल एक प्रवेश द्वार से जेब साफ़ करें।",
@@ -12139,6 +12142,9 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Sunbeam Garden": "सनबीम गार्डन",
   "Sunbeam Garden | WeightPlay": "सनबीम गार्डन | WeightPlay",
   "Sunbeam mirror board": "सनबीम मिरर बोर्ड",
+  "Sunbeam route crosses itself": "सनबीम मार्ग स्वयं को पार करता है",
+  "Sunbeam routes disagree at a mirror": "सनबीम मार्ग एक दर्पण पर असहमत हैं",
+  "Sunbeam routes need one shared goal": "सनबीम मार्गों को एक साझा लक्ष्य की आवश्यकता है",
   "Sunbeam Shelf": "सनबीम शेल्फ",
   "Sunclaw Ridge": "सनक्लाव रिज",
   "Sunken Crown": "धँसा हुआ मुकुट",
@@ -12906,6 +12912,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "There is no timer, life limit, or losing screen. A wrong choice gives supportive feedback and another try.": "कोई टाइमर, जीवन सीमा या स्क्रीन खोने की कोई समस्या नहीं है। एक गलत विकल्प सहायक प्रतिक्रिया देता है और दूसरा प्रयास।",
   "Thermal Crown": "थर्मल क्राउन",
   "These are simplified play situations, not professional wildlife-care instructions. Paired clues introduce an immediate priority: rain plus strong wind calls for shelter, while an animal already wet after rain needs the towel. Mission 30 closes the final mixed Helper Check.": "ये सरलीकृत खेल स्थितियाँ हैं, पेशेवर वन्यजीव-देखभाल निर्देश नहीं। युग्मित सुराग तत्काल प्राथमिकता का परिचय देते हैं: बारिश और तेज़ हवा के लिए आश्रय की आवश्यकता होती है, जबकि बारिश के बाद पहले से ही भीगे हुए जानवर को तौलिये की आवश्यकता होती है। मिशन 30 अंतिम मिश्रित हेल्पर चेक को बंद कर देता है।",
+  "These numbers do not add up to 10.": "इन दोनों नंबरों का जोड़ 10 नहीं है।",
   "They are real reflection surfaces inside the arena. Later pylons move, changing the available ricochet path during a wave.": "वे अखाड़े के अंदर वास्तविक प्रतिबिंब सतहें हैं। बाद में तोरण चलते हैं, एक लहर के दौरान उपलब्ध रिकोषेट पथ को बदलते हैं।",
   "They are shadow shelters. Fia is hidden from patrol sight and protected from bell pulses while inside one.": "वे छाया आश्रय हैं. फिया गश्ती की दृष्टि से छिपा हुआ है और एक के अंदर रहते हुए बेल पल्स से सुरक्षित है।",
   "They can confirm the permanent Mist Amulet or reroll one relic draft for three Diamonds. They do not unlock missions, gear or Guardians.": "वे स्थायी धुंध ताबीज की पुष्टि कर सकते हैं या तीन हीरों के लिए एक अवशेष ड्राफ्ट को फिर से रोल कर सकते हैं। वे मिशन, गियर या गार्जियंस को अनलॉक नहीं करते हैं।",
@@ -14011,6 +14018,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Watermelon": "तरबूज",
   "Waterway {n}": "जलमार्ग {n}",
   "Waterway {n} restored in {moves} turns.": "जलमार्ग {n} को {moves} मोड़ में बहाल किया गया।",
+  "Waterway {value} cannot satisfy its difficulty budget": "जलमार्ग {value} अपने कठिनाई बजट को पूरा नहीं कर सकता",
   "WATERWAY RESTORED": "जलमार्ग बहाल",
   "Waterway selector": "जलमार्ग चयनकर्ता",
   "Waterways": "जलमार्ग",
@@ -14602,10 +14610,3 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Zur Lobby": "ज़ूर लॉबी",
   "Zwei Hinweise": "ज़ेवेई हिंवेइज़"
 };
-Object.assign(window.WeightPlayGameRuntimeLocales.hi, {
-  "Choose a number, then find the number that completes 10.":"एक नंबर चुनें और 10 पूरा करने वाला नंबर खोजें।",
-  "Choose two numbers whose sum is exactly 10. They must touch or see each other across cleared spaces.":"दो नंबर चुनें जिनका जोड़ ठीक 10 हो। वे पास हों या खाली खानों के पार एक-दूसरे को देख सकें।",
-  "Clear number pairs that add up to ten. Open sight lines and keep the grove tidy.":"दस का जोड़ बनाने वाले नंबरों के जोड़े हटाएँ और उपवन साफ करें।",
-  "These numbers do not add up to 10.":"इन दोनों नंबरों का जोड़ 10 नहीं है।",
-  "Waterway {value} cannot satisfy its difficulty budget":"जलमार्ग {value} अपने कठिनाई बजट को पूरा नहीं कर सकता"
-});

@@ -697,10 +697,12 @@ function recommendedGames(limit = 3) {
 
 function recommendationNote(game, seeds) {
   if (seeds.length) {
-    const sharedSkill = (game.skills || []).find((skill) => seeds.some((seed) => (seed.skills || []).includes(skill)));
-    if (sharedSkill) return i18n.t("recommend.shared_skill", { skill: skillText(sharedSkill) });
-    const sharedAge = (game.ages || []).find((age) => seeds.some((seed) => (seed.ages || []).includes(age)));
-    if (sharedAge) return i18n.t("recommend.shared_age", { age: sharedAge === "family" ? i18n.t("filter.family") : `${sharedAge}+` });
+    if (isKidsLobby) {
+      const sharedSkill = (game.skills || []).find((skill) => seeds.some((seed) => (seed.skills || []).includes(skill)));
+      if (sharedSkill) return i18n.t("recommend.shared_skill", { skill: skillText(sharedSkill) });
+      const sharedAge = (game.ages || []).find((age) => seeds.some((seed) => (seed.ages || []).includes(age)));
+      if (sharedAge) return i18n.t("recommend.shared_age", { age: sharedAge === "family" ? i18n.t("filter.family") : `${sharedAge}+` });
+    }
     return i18n.t("recommend.based_on_activity");
   }
   return hasStatsFeed() ? i18n.t("recommend.popular_reason") : i18n.t("recommend.start_here");
@@ -864,8 +866,8 @@ function createGameCard(game) {
 
   const meta = isPlayable ? text(game.meta).map((item) => `<span>${item}</span>`).join("") : "";
   const categoryBadges = (game.categories || []).map((item) => `<span>${categoryText(item)}</span>`).join("");
-  const skillBadges = isPlayable ? (game.skills || []).slice(0, 3).map((item) => `<span>${skillText(item)}</span>`).join("") : "";
-  const skillReason = isPlayable ? skillReasonText(game) : "";
+  const skillBadges = isKidsLobby && isPlayable ? (game.skills || []).slice(0, 3).map((item) => `<span>${skillText(item)}</span>`).join("") : "";
+  const skillReason = isKidsLobby && isPlayable ? skillReasonText(game) : "";
   const quickFacts = isPlayable ? [gameInfoText(game.id, "difficulty"), gameInfoText(game.id, "time")].filter(Boolean).join("") : "";
   const cardArt = game.art || {
     kind: "image",
@@ -1193,7 +1195,7 @@ function renderMobilePicks() {
     const title = text(game.title);
     const type = text(game.type);
     const ageLabel = text(game.ageLabel);
-    const skillBadges = (game.skills || []).slice(0, 2).map((skill) => `<span>${skillText(skill)}</span>`).join("");
+    const skillBadges = isKidsLobby ? (game.skills || []).slice(0, 2).map((skill) => `<span>${skillText(skill)}</span>`).join("") : "";
     const card = document.createElement("a");
     card.className = "mobile-pick-card";
     card.href = game.href;
@@ -1262,6 +1264,11 @@ function renderUpcomingGames() {
 
 function renderCharacterShowcase() {
   if (!characterShowcase || !characterShowcaseSection) return;
+  if (!isKidsLobby) {
+    characterShowcaseSection.classList.add("hidden");
+    characterShowcase.replaceChildren();
+    return;
+  }
   const cards = weightPlayCharacters.map((character) => {
     const name = i18n.t(character.nameKey);
     const skill = skillText(character.skill);
@@ -1295,7 +1302,7 @@ function renderRecommendations() {
     const type = text(game.type);
     const ageLabel = text(game.ageLabel);
     const note = recommendationNote(game, seeds);
-    const skillBadges = (game.skills || []).slice(0, 2).map((skill) => `<span>${skillText(skill)}</span>`).join("");
+    const skillBadges = isKidsLobby ? (game.skills || []).slice(0, 2).map((skill) => `<span>${skillText(skill)}</span>`).join("") : "";
     const updatedBadge = recentlyUpdatedGameIds.has(game.id) ? `<span class="recommendation-update">${i18n.t("badge.updated")}</span>` : "";
     const card = document.createElement("a");
     card.className = "recommendation-card";
@@ -1333,7 +1340,7 @@ function renderFreshUpdates() {
     const type = text(game.type);
     const ageLabel = text(game.ageLabel);
     const description = text(game.description);
-    const skillBadges = (game.skills || []).slice(0, 2).map((skill) => `<span>${skillText(skill)}</span>`).join("");
+    const skillBadges = isKidsLobby ? (game.skills || []).slice(0, 2).map((skill) => `<span>${skillText(skill)}</span>`).join("") : "";
     const card = document.createElement("a");
     card.className = "fresh-update-card";
     card.dataset.gameId = game.id;
@@ -1373,7 +1380,7 @@ function renderChallengeSpotlight() {
     const title = text(game.title);
     const type = text(game.type);
     const description = text(game.description);
-    const skillBadges = (game.skills || []).slice(0, 3).map((skill) => `<span>${skillText(skill)}</span>`).join("");
+    const skillBadges = isKidsLobby ? (game.skills || []).slice(0, 3).map((skill) => `<span>${skillText(skill)}</span>`).join("") : "";
     const card = document.createElement("a");
     card.className = "challenge-spotlight-card";
     card.href = game.href;
@@ -1420,6 +1427,11 @@ function gamesForSkillPath(skill, limit = 2) {
 
 function renderSkillPaths() {
   if (!skillPaths || !skillPathsSection) return;
+  if (!isKidsLobby) {
+    skillPathsSection.classList.add("hidden");
+    skillPaths.replaceChildren();
+    return;
+  }
   const cards = featuredSkillPaths
     .map((skill) => {
       const games = gamesForSkillPath(skill);

@@ -29,3 +29,19 @@ Object.entries({
   hi:{summary:"दस का जोड़ बनाने वाले नंबरों के जोड़े हटाएँ और उपवन साफ करें।",guideBody:"दो नंबर चुनें जिनका जोड़ ठीक 10 हो। वे पास हों या खाली खानों के पार एक-दूसरे को देख सकें।",selectFirst:"एक नंबर चुनें और 10 पूरा करने वाला नंबर खोजें।",invalid:"इन दोनों नंबरों का जोड़ 10 नहीं है।",retry:"फिर खेलें"},
   ar:{summary:"أزل أزواج الأرقام التي مجموعها عشرة ونظّف البستان.",guideBody:"اختر رقمين مجموعهما 10 بالضبط. يجب أن يتلامسا أو يرى أحدهما الآخر عبر خانات فارغة.",selectFirst:"اختر رقمًا ثم ابحث عن الرقم الذي يكمل 10.",invalid:"مجموع هذين الرقمين لا يساوي 10.",retry:"إعادة اللعب"}
 }).forEach(([code,copy])=>Object.assign(window.NUMBER_MATCH_LOCALES[code],copy));
+
+Object.entries({
+  en:{leaveTitle:"Leave this run?",continuePlaying:"Continue playing",returnStages:"Return to stages"},
+  "zh-Hant":{leaveTitle:"要離開這一局嗎？",continuePlaying:"繼續遊戲",returnStages:"返回關卡"},
+  "zh-Hans":{leaveTitle:"要离开这一局吗？",continuePlaying:"继续游戏",returnStages:"返回关卡"},
+  ja:{leaveTitle:"このプレイを終了しますか？",continuePlaying:"ゲームを続ける",returnStages:"ステージへ戻る"},
+  ko:{leaveTitle:"이번 게임을 나갈까요?",continuePlaying:"계속 플레이",returnStages:"스테이지로 돌아가기"},
+  es:{leaveTitle:"¿Salir de esta partida?",continuePlaying:"Seguir jugando",returnStages:"Volver a las etapas"},
+  "pt-BR":{leaveTitle:"Sair desta partida?",continuePlaying:"Continuar jogando",returnStages:"Voltar às fases"},
+  fr:{leaveTitle:"Quitter cette partie ?",continuePlaying:"Continuer à jouer",returnStages:"Retourner aux niveaux"},
+  de:{leaveTitle:"Diesen Durchgang verlassen?",continuePlaying:"Weiterspielen",returnStages:"Zurück zu den Stufen"},
+  it:{leaveTitle:"Uscire da questa partita?",continuePlaying:"Continua a giocare",returnStages:"Torna ai livelli"},
+  ru:{leaveTitle:"Выйти из этой игры?",continuePlaying:"Продолжить игру",returnStages:"Вернуться к уровням"},
+  hi:{leaveTitle:"यह खेल छोड़ें?",continuePlaying:"खेल जारी रखें",returnStages:"चरणों पर लौटें"},
+  ar:{leaveTitle:"هل تريد مغادرة هذه الجولة؟",continuePlaying:"متابعة اللعب",returnStages:"العودة إلى المراحل"}
+}).forEach(([code,copy])=>Object.assign(window.NUMBER_MATCH_LOCALES[code],copy));

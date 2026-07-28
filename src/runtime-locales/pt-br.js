@@ -2743,7 +2743,7 @@ window.WeightPlayGameRuntimeLocales["pt-BR"] = {
   "Choose a Mosaic": "Escolha um mosaico",
   "Choose a nearby tile.": "Escolha um bloco próximo.",
   "Choose a number, then find its partner.": "Escolha um número e encontre seu parceiro.",
-  "Choose a number, then find the number that completes 10.": "Escolha um número e encontre o número que completa 10.",
+  "Choose a number, then find the number that completes 10.": "Escolha um número e encontre o que completa 10.",
   "Choose a page": "Escolha uma página",
   "Choose a patrol route": "Escolha uma rota de patrulha",
   "Choose a piece and drag it onto empty cells.": "Escolha uma peça e arraste-a para as células vazias.",
@@ -2918,7 +2918,7 @@ window.WeightPlayGameRuntimeLocales["pt-BR"] = {
   "Choose Trial": "Escolha o teste",
   "Choose two equal numbers, or two numbers whose sum is 10. They must touch or see each other across cleared spaces.": "Escolha dois números iguais ou dois números cuja soma seja 10. Eles devem se tocar ou se ver nos espaços vazios.",
   "Choose two matching free tiles.": "Escolha duas peças livres correspondentes.",
-  "Choose two numbers whose sum is exactly 10. They must touch or see each other across cleared spaces.": "Escolha dois números cuja soma seja exatamente 10. Eles devem se tocar ou se ver nos espaços vazios.",
+  "Choose two numbers whose sum is exactly 10. They must touch or see each other across cleared spaces.": "Escolha dois números cuja soma seja exatamente 10. Eles devem se tocar ou se ver por casas vazias.",
   "Choose whether the optional treasure is worth the detour. It awards the third medal and extra Moon Coins, but ordinary mission progress never requires it unless the current rule explicitly turns it into a seal.": "Escolha se vale a pena desviar do tesouro opcional. Ele concede a terceira medalha e Moedas Lunares extras, mas o progresso normal da missão nunca exige isso, a menos que a regra atual o transforme explicitamente em um selo.",
   "Choose whether to equip {gear} or keep the current loadout.": "Escolha se deseja equipar {gear} ou manter o equipamento atual.",
   "Choose your age": "Escolha sua idade",
@@ -3014,7 +3014,7 @@ window.WeightPlayGameRuntimeLocales["pt-BR"] = {
   "Clear matching bubbles around the animal": "Limpar bolhas correspondentes ao redor do animal",
   "Clear missions to earn XP and Beast Coins. Spend coins on packs, equip cards and gear, then push deeper into the forest.": "Complete missões para ganhar XP e Beast Coins. Gaste moedas em pacotes, equipe cartas e equipamentos e depois avance mais fundo na floresta.",
   "Clear missions to earn XP, level up, and unlock deeper forest routes. Progress is saved on this device.": "Conclua missões para ganhar XP, subir de nível e desbloquear rotas florestais mais profundas. O progresso é salvo neste dispositivo.",
-  "Clear number pairs that add up to ten. Open sight lines and keep the grove tidy.": "Pares de números claros que somam dez. Abra as linhas de visão e mantenha o bosque arrumado.",
+  "Clear number pairs that add up to ten. Open sight lines and keep the grove tidy.": "Elimine pares de números que somem dez e organize o bosque.",
   "Clear obstacles and make the match": "Elimine obstáculos e faça a partida",
   "Clear pairs that match or add up to ten. Open sight lines and keep the grove tidy.": "Limpe os pares que correspondem ou somam dez. Abra as linhas de visão e mantenha o bosque arrumado.",
   "Clear pockets with only one entrance at the correct moment instead of sealing their entrance too early.": "Limpe os bolsos com apenas uma entrada no momento correto, em vez de selar a entrada muito cedo.",
@@ -12142,6 +12142,9 @@ window.WeightPlayGameRuntimeLocales["pt-BR"] = {
   "Sunbeam Garden": "Jardim Raio de Sol",
   "Sunbeam Garden | WeightPlay": "Jardim Raio de Sol | WeightPlay",
   "Sunbeam mirror board": "Placa de espelho Sunbeam",
+  "Sunbeam route crosses itself": "A rota do raio de sol se cruza",
+  "Sunbeam routes disagree at a mirror": "As rotas do raio de sol discordam em um espelho",
+  "Sunbeam routes need one shared goal": "As rotas Sunbeam precisam de um objetivo compartilhado",
   "Sunbeam Shelf": "Prateleira Raio de Sol",
   "Sunclaw Ridge": "Cume da Garra Solar",
   "Sunken Crown": "Coroa Afundada",
@@ -14015,7 +14018,7 @@ window.WeightPlayGameRuntimeLocales["pt-BR"] = {
   "Watermelon": "Melancia",
   "Waterway {n}": "Hidrovia {n}",
   "Waterway {n} restored in {moves} turns.": "Hidrovia {n} restaurada em {moves} turnos.",
-  "Waterway {value} cannot satisfy its difficulty budget": "A hidrovia {value} não consegue satisfazer seu orçamento de dificuldade",
+  "Waterway {value} cannot satisfy its difficulty budget": "A hidrovia {value} não pode atender ao orçamento de dificuldade",
   "WATERWAY RESTORED": "HIDROVIÁRIO RESTAURADO",
   "Waterway selector": "Seletor de hidrovia",
   "Waterways": "Hidrovias",
@@ -14607,10 +14610,3 @@ window.WeightPlayGameRuntimeLocales["pt-BR"] = {
   "Zur Lobby": "Lobby do Zur",
   "Zwei Hinweise": "Zwei Hinweise"
 };
-Object.assign(window.WeightPlayGameRuntimeLocales["pt-BR"], {
-  "Choose a number, then find the number that completes 10.":"Escolha um número e encontre o que completa 10.",
-  "Choose two numbers whose sum is exactly 10. They must touch or see each other across cleared spaces.":"Escolha dois números cuja soma seja exatamente 10. Eles devem se tocar ou se ver por casas vazias.",
-  "Clear number pairs that add up to ten. Open sight lines and keep the grove tidy.":"Elimine pares de números que somem dez e organize o bosque.",
-  "These numbers do not add up to 10.":"Esses números não somam 10.",
-  "Waterway {value} cannot satisfy its difficulty budget":"A hidrovia {value} não pode atender ao orçamento de dificuldade"
-});

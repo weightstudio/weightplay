@@ -78,7 +78,6 @@
 
   function chooseLocale(nextLocale, synchronize = true) {
     locale = codes.includes(nextLocale) ? nextLocale : "en";
-    const reloadForSharedCatalog = synchronize && locale !== "zh-Hant";
     document.body.toggleAttribute(
       "data-runtime-localize",
       locale === "zh-Hant",
@@ -97,7 +96,6 @@
       }
     }
     apply();
-    if (reloadForSharedCatalog) window.location.reload();
   }
 
   function show(nextScreen) {
@@ -219,13 +217,13 @@
       const element = document.createElement("button");
       const artClass = block.hero
         ? "art-hero"
-        : block.dir
-          ? blockIndex % 2
-            ? "art-amber"
-            : "art-jade"
-          : blockIndex % 2
-            ? "art-moss"
-            : "art-sky";
+        : block.w === 3
+          ? "art-h3"
+          : block.h === 3
+            ? "art-v3"
+            : block.dir
+              ? "art-v2"
+              : "art-h2";
       element.className = `block ${block.hero ? "hero" : ""} ${block.dir ? "v" : "h"} ${artClass}`;
       element.textContent = block.hero ? "P" : "";
       element.style.gridColumn = `${block.x + 1}/span ${block.w}`;
