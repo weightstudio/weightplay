@@ -734,7 +734,8 @@ body.helper-playing .play-panel.result-active .result-card {
   animation: cardIn 0.28s ease both;
 }
 
-.result-card strong {
+.result-card h2 {
+  margin: 0;
   font-size: 1.65rem;
 }
 
@@ -743,12 +744,26 @@ body.helper-playing .play-panel.result-active .result-card {
   font-size: 2.1rem;
 }
 
-.result-card button,
-.result-card a {
+.result-card > p {
+  margin: 0;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.result-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.result-actions button {
   display: grid;
   place-items: center;
-  padding: 10px 14px;
-  background: #ffdf70;
+  min-width: 0;
+  min-height: 48px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.94);
+  line-height: 1.15;
 }
 
 .skill-report {
@@ -799,16 +814,16 @@ body.helper-playing .play-panel.result-active .result-card {
   font-size: 0.95rem;
 }
 
-.result-card button:nth-of-type(2),
-.result-card button:nth-of-type(3),
-.result-card a {
-  background: rgba(255, 255, 255, 0.94);
-}
-
-.result-card .result-primary {
+.result-actions .result-primary {
   background: #ffdf70;
   box-shadow: 0 0 0 4px rgba(255, 243, 106, 0.82), 0 8px 20px rgba(23, 49, 79, 0.2);
   font-weight: 900;
+}
+
+.result-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 .loading-card div {
@@ -1338,4 +1353,62 @@ body.helper-playing .rescue-scene {
 body.wp-standard-stage-page .weightplay-version-badge,
 body.helper-playing .weightplay-version-badge {
   display: none !important;
+}
+
+/* Interface V4 Result: keep the three canonical actions physically readable
+   while the complete Battle Canvas continues to use one uniform scale. */
+@media (max-height: 560px) and (orientation: landscape) {
+  body.helper-playing .result-card,
+  body.helper-playing .play-panel.result-active .result-card {
+    width: min(760px, calc(100% - 32px)) !important;
+    padding: 14px 20px;
+    gap: 8px;
+  }
+
+  body.helper-playing .result-card h2 {
+    font-size: 2rem;
+  }
+
+  body.helper-playing .result-card > p {
+    font-size: 1.3rem;
+  }
+
+  body.helper-playing .result-card > .stars {
+    font-size: 2.4rem;
+  }
+
+  body.helper-playing .result-card .skill-report {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr);
+    gap: 5px 14px;
+    padding: 10px 14px;
+  }
+
+  body.helper-playing .result-card .skill-report h2,
+  body.helper-playing .result-card .skill-report p {
+    grid-column: 1;
+  }
+
+  body.helper-playing .result-card .skill-report h2 {
+    font-size: 1.4rem;
+  }
+
+  body.helper-playing .result-card .skill-report p,
+  body.helper-playing .result-card .skill-report dl {
+    font-size: 1.25rem;
+  }
+
+  body.helper-playing .result-card .skill-report .stars {
+    font-size: 1.2rem;
+  }
+
+  body.helper-playing .result-card .skill-report dl {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+  }
+
+  body.helper-playing .result-card .result-actions button {
+    min-height: 88px;
+    font-size: 1.35rem;
+  }
 }

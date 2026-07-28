@@ -35,5 +35,17 @@
     {id:"q31_memory_record",chapter:2,type:"relay",target:"memory",name:"relayMemory"},
     {id:"q32_warning_record",chapter:2,type:"relay",target:"warning",name:"relayWarning"},
     {id:"q33_proof_for_world",chapter:2,type:"storyComplete"},
+    {id:"q34_ashfall_briefing",chapter:3,type:"chapter3Started"},
+    {id:"q35_enter_ashfall",chapter:3,type:"visit",target:"ashfall"},
+    {id:"q36_find_aster",chapter:3,type:"ashfallFinding",target:"survivor",name:"ashfallSurvivorName"},
+    {id:"q37_break_cordon",chapter:3,type:"defeatAshfall",target:2,place:"zoneAshfall"},
+    {id:"q38_read_manifest",chapter:3,type:"ashfallFinding",target:"manifest",name:"ashfallManifestName"},
+    {id:"q39_cross_array",chapter:3,type:"defeatAshfall",target:4,place:"zoneAshfall"},
+    {id:"q40_disable_jammer",chapter:3,type:"ashfallFinding",target:"jammer",name:"ashfallJammerName"},
+    {id:"q41_last_helix_guard",chapter:3,type:"defeatAshfall",target:6,place:"zoneAshfall"},
+    {id:"q42_open_blackbox",chapter:3,type:"ashfallFinding",target:"core",name:"ashfallCoreName"},
+    {id:"q43_choose_the_signal",chapter:3,type:"ashfallChoice"},
+    {id:"q44_bring_aster_home",chapter:3,type:"ashfallReturned"},
+    {id:"q45_the_world_hears",chapter:3,type:"chapter3Complete"},
   ]);
 })();

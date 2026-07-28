@@ -3,8 +3,10 @@ const boot = () => {
 const canonicalLocaleKey = "weightPlayLocale";
 const legacyLocaleKey = "weightplayLocale";
 const storageFallback = new Map();
-const supportedLocales = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru"];
+const supportedLocales = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
 const localeLabels = {
+  hi: "हिन्दी",
+  ar: "العربية",
   en: "English",
   "zh-Hant": "繁體中文",
   "zh-Hans": "简体中文",
@@ -73,6 +75,7 @@ const stageSelect = document.querySelector("#stageSelect");
 const mainPanel = document.querySelector("#mainPanel");
 const mainTitle = document.querySelector("#mainTitle");
 const mainIntro = document.querySelector("#mainIntro");
+const mainProgress = document.querySelector("#mainProgress");
 const showStageBtn = document.querySelector("#showStageBtn");
 const mainPreview = document.createElement("div");
 mainPreview.className = "rescue-main-preview";
@@ -84,7 +87,7 @@ mainPreview.innerHTML = `
   <span>→</span>
   <img src="../../assets/tiny-weather-tool-house.svg" alt="" draggable="false" />
 `;
-mainPanel.insertBefore(mainPreview, showStageBtn);
+mainPanel.insertBefore(mainPreview, showStageBtn.parentElement === mainPanel ? showStageBtn : null);
 const stageBackBtn = document.querySelector("#stageBackBtn");
 const battleBackBtn = document.querySelector("#battleBackBtn");
 const stageSelectTitle = document.querySelector("#stageSelectTitle");
@@ -112,7 +115,6 @@ const starLine = document.querySelector("#starLine");
 const nextBtn = document.querySelector("#nextBtn");
 const retryBtn = document.querySelector("#retryBtn");
 const trailsBtn = document.querySelector("#trailsBtn");
-const lobbyLink = document.querySelector("#lobbyLink");
 const loadingPanel = document.querySelector("#loadingPanel");
 const loadingTitle = document.querySelector("#loadingTitle");
 const loadingText = document.querySelector("#loadingText");
@@ -286,7 +288,7 @@ const dictionary = {
     stage: "Ruta",
     moves: "Movimientos",
     fruit: "Fruta",
-    chooseTrail: "Elegir ruta",
+    chooseTrail: "Seleccionar ruta",
     start: "Empezar",
     locked: "Bloqueada",
     complete: "Completada",
@@ -356,6 +358,17 @@ const dictionary = {
 };
 
 const localizedPageSupport = {
+  "zh-Hant": { guideReplacements: { "6+ / Family": "6+ / 家庭" } },
+  "zh-Hans": { guideReplacements: { "6+ / Family": "6岁以上 / 家庭" } },
+  ja: { guideReplacements: { "6+ / Family": "6歳以上 / ファミリー" } },
+  ko: { guideReplacements: { "6+ / Family": "6세 이상 / 가족" } },
+  "pt-BR": { guideReplacements: { "6+ / Family": "6+ / Família" } },
+  fr: { guideReplacements: { "6+ / Family": "6+ / Famille" } },
+  de: { guideReplacements: { "6+ / Family": "6+ / Familie" } },
+  it: { guideReplacements: { "6+ / Family": "6+ / Famiglia" } },
+  ru: { guideReplacements: { "6+ / Family": "6+ / Для всей семьи" } },
+  hi: { guideReplacements: { "6+ / Family": "6+ / परिवार" } },
+  ar: { guideReplacements: { "6+ / Family": "6+ / العائلة" } },
   es: {
     sound: "Sonido",
     enableSound: "Activar sonido",
@@ -378,6 +391,10 @@ const localizedPageSupport = {
       "Animal Auto Squad es": "Es",
       "Animal Relic Hunters": "Cazadores de Reliquias Animales",
       "Animal Auto Squad": "Escuadrón Animal Automático",
+      "Animal Cratebound": "Carga Animal",
+      "Animal Rootvault Pins": "Clavijas de la Cámara Animal",
+      "Animal Spectrum Pulse": "Pulso Espectral Animal",
+      "Conocimiento animal": "Conocimiento de los animales",
       "6+ / Family": "6+ / Familia",
     },
   },
@@ -562,6 +579,7 @@ function renderStaticText() {
   titleText.textContent = t("title");
   mainTitle.textContent = t("title");
   mainIntro.textContent = t("hint");
+  mainProgress.textContent = `${t("stage")} ${unlocked} / ${levels.length}`;
   showStageBtn.textContent = t("chooseTrail");
   stageLabel.textContent = t("stage");
   moveLabel.textContent = t("moves");
@@ -577,7 +595,6 @@ function renderStaticText() {
   nextBtn.textContent = t("next");
   retryBtn.textContent = t("retry");
   trailsBtn.textContent = t("trails");
-  lobbyLink.textContent = t("lobby");
   loadingTitle.textContent = t("loading");
   renderStageSelect();
   renderBoard(restoreBoardFocus);
@@ -589,17 +606,17 @@ function localizeGamePageSupport() {
   if (!support) return;
   homeLink.setAttribute("aria-label", t("backToLobby"));
   const soundToggle = document.querySelector("button[data-sound-toggle]");
-  if (soundToggle) {
+  if (soundToggle && support.sound) {
     soundToggle.title = support.sound;
     soundToggle.setAttribute("aria-label", soundToggle.classList.contains("muted") ? support.enableSound : support.disableSound);
   }
-  document.querySelector(".wp-tutorial-button")?.setAttribute("aria-label", support.tutorial);
+  if (support.tutorial) document.querySelector(".wp-tutorial-button")?.setAttribute("aria-label", support.tutorial);
   const guide = document.querySelector(".game-page-info");
   if (!guide) return;
   const walker = document.createTreeWalker(guide, NodeFilter.SHOW_TEXT);
   while (walker.nextNode()) {
     let value = walker.currentNode.nodeValue || "";
-    for (const [source, replacement] of Object.entries(support.guideReplacements)) value = value.replaceAll(source, replacement);
+    for (const [source, replacement] of Object.entries(support.guideReplacements || {})) value = value.replaceAll(source, replacement);
     walker.currentNode.nodeValue = value;
   }
 }
@@ -789,7 +806,9 @@ function showMain({ focusStart = false } = {}) {
   document.body.classList.remove("rescue-playing", "rescue-stage-select", "rescue-result");
   resetRescueFrame();
   renderStaticText();
-  if (focusStart) requestAnimationFrame(() => showStageBtn.focus({ preventScroll: true }));
+  if (focusStart) requestAnimationFrame(() => {
+    requestAnimationFrame(() => showStageBtn.focus({ preventScroll: true }));
+  });
 }
 
 function showLocked() {
@@ -1040,9 +1059,10 @@ function finishLevel() {
   resultTitle.textContent = level.id === levels.length ? t("allClear") : t("trailClear");
   resultText.textContent = t("result", { animal: t(level.animal), fruit: state.collected, moves: state.moves });
   starLine.textContent = "\u2605".repeat(stars) + "\u2606".repeat(3 - stars);
-  nextBtn.classList.toggle("hidden", isFinalTrail);
+  nextBtn.disabled = isFinalTrail;
+  nextBtn.setAttribute("aria-disabled", String(isFinalTrail));
   const primaryAction = isFinalTrail ? trailsBtn : nextBtn;
-  [nextBtn, retryBtn, trailsBtn, lobbyLink].forEach((action) => {
+  [trailsBtn, nextBtn, retryBtn].forEach((action) => {
     action.classList.toggle("result-primary", action === primaryAction);
     action.classList.toggle("result-secondary", action !== primaryAction);
   });
@@ -1152,14 +1172,15 @@ function updateBattleScale() {
   const viewportHeight = visualViewportIsCurrent ? visualHeight : innerHeight;
   if (!document.body.classList.contains("rescue-playing") && !document.body.classList.contains("rescue-stage-select")) return;
   document.body.classList.add("rescue-expanded-canvas");
-  const scale = Math.max(0.1, Math.min(viewportWidth / 390, viewportHeight / 788));
-  const width = viewportWidth / scale;
+  const canvasWidth = Math.min(viewportWidth, 920);
+  const scale = Math.max(0.1, Math.min(canvasWidth / 390, viewportHeight / 788));
+  const width = canvasWidth / scale;
   const contentHeight = viewportHeight / scale;
   document.documentElement.style.setProperty("--rescue-battle-scale", String(scale));
   document.documentElement.style.setProperty("--rescue-battle-width", `${width}px`);
   document.documentElement.style.setProperty("--rescue-battle-height", `${contentHeight}px`);
   document.documentElement.style.setProperty("--rescue-battle-content-height", `${contentHeight}px`);
-  document.documentElement.style.setProperty("--rescue-battle-left", "0px");
+  document.documentElement.style.setProperty("--rescue-battle-left", `${Math.max(0, (viewportWidth - canvasWidth) / 2)}px`);
   document.documentElement.style.setProperty("--rescue-battle-top", "0px");
 }
 
@@ -1244,7 +1265,7 @@ resultPanel.addEventListener("keydown", (event) => {
     return;
   }
   if (event.key !== "Tab" || resultPanel.classList.contains("hidden")) return;
-  const actions = [nextBtn, retryBtn, trailsBtn, lobbyLink].filter((action) => !action.classList.contains("hidden") && !action.disabled);
+  const actions = [trailsBtn, nextBtn, retryBtn].filter((action) => !action.classList.contains("hidden") && !action.disabled);
   if (!actions.length) return;
   const currentIndex = actions.indexOf(document.activeElement);
   const nextIndex = event.shiftKey

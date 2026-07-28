@@ -13,6 +13,7 @@
     state.defeated=new Set(saved.defeated||[]);
     state.chests=new Set(saved.chests||[]);
     state.relays=new Set(saved.relays||[]);
+    state.ashfallFindings=new Set(saved.ashfallFindings||[]);
     state.equipment=Object.assign({},fresh.equipment,saved.equipment||{});
     state.equipped=Object.assign({},fresh.equipped,saved.equipped||saved.equipment||{});
     state.enemyHp=Object.assign({},saved.enemyHp||{});
@@ -31,6 +32,7 @@
       defeated:[...state.defeated],
       chests:[...state.chests],
       relays:[...state.relays],
+      ashfallFindings:[...state.ashfallFindings],
     };
   }
 

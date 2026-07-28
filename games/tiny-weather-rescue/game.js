@@ -1053,9 +1053,11 @@
     nodes.resultText.textContent = cleared
       ? t("result", { score, best: records[stage.id] || stars })
       : t("resultFailed");
+    nodes.starText.setAttribute("aria-label", nodes.resultText.textContent);
     renderSkillReport(stage);
     const isFinalClear = cleared && stage.id >= stages.length;
-    nodes.nextStageBtn.classList.toggle("hidden", !cleared || isFinalClear);
+    nodes.nextStageBtn.disabled = !cleared || isFinalClear;
+    nodes.nextStageBtn.setAttribute("aria-disabled", String(nodes.nextStageBtn.disabled));
     nodes.nextStageBtn.classList.toggle("result-primary", cleared && !isFinalClear);
     nodes.retryBtn.classList.toggle("result-primary", !cleared);
     nodes.resultStagesBtn.classList.toggle("result-primary", isFinalClear);

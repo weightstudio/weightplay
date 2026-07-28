@@ -34,7 +34,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-rescue/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-rescue/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rescue/" />
-    <link rel="stylesheet" href="style.css?v=20260722-main-viewport" data-wp-stage-standard data-wp-battle-standard />
+    <link rel="stylesheet" href="style.css?v=20260729-interface4-1" data-wp-stage-standard data-wp-battle-standard />
     <script data-wp-stage-standard>/* Shared Kids Stage selector owns pointer drag and settle; Animal Rescue owns stage activation. */</script>
     <script data-wp-battle-standard>/* Animal Rescue owns its native Kids Battle Canvas. */</script>
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
@@ -76,8 +76,8 @@
   <meta name="twitter:title" content="동물 구조 트레일 | WeightPlay" />
     <meta name="twitter:description" content="타이머가 없는 30개의 저장된 경로 퍼즐을 통해 12명의 동물 친구들을 안내하세요. 6개 지역에는 필수 과일, 무거운 진흙, 트레일 키, 잠긴 문, 깨지기 쉬운 일회용 경로 및 구조 검문소가 추가됩니다." />
   </head>
-  <body data-tutorial-auto-show="false">
-    <main class="rescue-game" data-play-viewport data-no-mobile-immersive="true" data-wp-canvas-max-width="920">
+  <body data-tutorial-auto-show="false" data-wp-combined-sound="true">
+    <main class="rescue-game" data-play-viewport data-no-mobile-immersive="true" data-wp-canvas-max-width="920" data-runtime-localize="off">
       <header class="topbar">
         <a id="homeLink" class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div>
@@ -98,19 +98,22 @@
             <option value="de">Deutsch</option>
             <option value="it">Italiano</option>
             <option value="ru">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</option>
+            <option value="hi">&#2361;&#2367;&#2344;&#2381;&#2342;&#2368;</option>
+            <option value="ar">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</option>
           </select>
         </label>
       </header>
 
-      <section id="hud" class="hud hidden">
+      <header id="hud" class="hud hidden">
+        <button id="battleBackBtn" class="battle-return" data-wp-return="battle" type="button" aria-label="Back to trails">&larr;</button>
         <div><span id="stageLabel">Stage</span><strong id="stageText">1 / 30</strong></div>
         <div><span id="moveLabel">Moves</span><strong id="moveText">0</strong></div>
         <div><span id="fruitLabel">Fruit</span><strong id="fruitText">0 / 2</strong></div>
-      </section>
+      </header>
 
       <section id="mainPanel" class="main-panel">
         <img class="main-cover" src="../../assets/animal-rescue-cover.webp" alt="" />
-        <div class="main-copy"><strong id="mainTitle">Animal Rescue Trail</strong><span id="mainIntro">Guide animal friends safely home across each trail.</span></div>
+        <div class="main-copy"><strong id="mainTitle">Animal Rescue Trail</strong><span id="mainIntro">Guide animal friends safely home across each trail.</span><span id="mainProgress" class="main-progress" data-wp-main-progress>Stage 1 / 30</span></div>
         <button id="showStageBtn" class="main-start" type="button">Choose Trail</button>
       </section>
 
@@ -120,7 +123,6 @@
         <div id="stageGrid" class="stage-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep"></div>
       </section>
       <section id="playArea" class="play-area hidden">
-        <button id="battleBackBtn" class="battle-return" data-wp-return="battle" type="button" aria-label="Back to trails">&larr;</button>
         <div class="animal-panel">
           <div id="animalAvatar" class="animal-avatar"></div>
           <div>
@@ -143,13 +145,14 @@
         </section>
         <section id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText">
           <div class="result-card">
-            <strong id="resultTitle">Trail Clear!</strong>
-            <span id="resultText"></span>
-            <div id="starLine" class="star-line"></div>
-            <button id="nextBtn" type="button">Next Trail</button>
-            <button id="retryBtn" type="button">Play Again</button>
-            <button id="trailsBtn" type="button">Trails</button>
-            <a id="lobbyLink" href="/kids/">Lobby</a>
+            <h2 id="resultTitle" data-result-title>Trail Clear!</h2>
+            <div id="starLine" class="star-line" data-result-stat></div>
+            <p id="resultText" data-result-description></p>
+            <div class="result-actions">
+              <button id="trailsBtn" type="button" data-ui="stages">Trails</button>
+              <button id="nextBtn" type="button" data-ui="nextStage">Next Trail</button>
+              <button id="retryBtn" type="button" data-ui="retry">Play Again</button>
+            </div>
           </div>
         </section>
       </section>
@@ -203,8 +206,7 @@
     <script src="/src/i18n.js?v=20260721-locale13-1"></script>
     <script>
       (() => {
-        const supportedLocales = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru"];
-        const nativeLocales = ["en", "zh-Hant", "zh-Hans", "es"];
+        const supportedLocales = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
         try {
           const canonicalLocale = localStorage.getItem("weightPlayLocale");
           const legacyLocale = localStorage.getItem("weightplayLocale");
@@ -216,14 +218,11 @@
             window.WonderI18n?.setLocale?.(savedLocale);
           }
         } catch {}
-        const activeLocale = window.WonderI18n?.actualLocale?.() || "en";
-        if (!nativeLocales.includes(activeLocale)) {
-          document.write('<script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"><\/script>');
-        }
+        document.write('<script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"><\/script>');
       })();
     </script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
-    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script src="game.js?v=20260729-interface4-1"></script>
     <script>
       (() => {
         const loadGameInfo = () => {

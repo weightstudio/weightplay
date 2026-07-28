@@ -640,16 +640,39 @@ body.rescue-stage-select .stage-select {
 }
 
 .result-card strong,
+.result-card h2,
 .loading-card strong {
+  margin: 0;
   font-size: clamp(30px, 9vw, 44px);
   line-height: 1;
 }
 
-.result-card span {
+.result-card span,
+.result-card > p {
+  margin: 0;
   color: #5b7448;
   font-size: 16px;
   font-weight: 900;
   line-height: 1.3;
+}
+
+.result-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  width: 100%;
+}
+
+.result-actions button {
+  min-width: 0;
+  padding: 8px 10px;
+  line-height: 1.15;
+}
+
+.result-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 #leaveTrailBtn {
@@ -1188,7 +1211,8 @@ body.rescue-playing.rescue-expanded-canvas .action-row button {
 
 body.rescue-playing .weightplay-version-badge,
 body.rescue-playing .sound-toggle,
-body.rescue-playing .wp-tutorial-button {
+body.rescue-playing .wp-tutorial-button,
+body.rescue-playing .wp-shell-settings {
   display: none !important;
 }
 
@@ -1269,6 +1293,29 @@ body.rescue-playing .wp-tutorial-button {
     height: 36px;
     min-height: 36px;
     font-size: 13px;
+  }
+
+  body.rescue-playing.rescue-expanded-canvas #resultPanel .result-card {
+    width: min(1500px, calc(100% - 48px));
+    padding: 18px 24px;
+    gap: 10px;
+  }
+
+  body.rescue-playing.rescue-expanded-canvas #resultPanel .result-card h2 {
+    font-size: 42px;
+  }
+
+  body.rescue-playing.rescue-expanded-canvas #resultPanel .result-card > p {
+    font-size: 26px;
+  }
+
+  body.rescue-playing.rescue-expanded-canvas #resultPanel .star-line {
+    font-size: 48px;
+  }
+
+  body.rescue-playing.rescue-expanded-canvas #resultPanel .result-actions button {
+    min-height: 88px;
+    font-size: 26px;
   }
 }
 html,

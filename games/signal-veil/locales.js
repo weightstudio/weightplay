@@ -477,5 +477,210 @@
     Object.assign(localeRegistry[code],Object.fromEntries(chapterTwoKeys.map((key,index)=>[key,values[index]])));
   }
 
+  const chapterThreeKeys=[
+    "zoneAshfall","ashfallUnlocked","ashfallArrival","ashfallReturn","chapter3Briefing","chapter3Reminder",
+    "chapter3DebriefBroadcast","chapter3DebriefProtect","chapter3After",
+    "ashfallSurvivorName","ashfallSurvivorMessage","ashfallManifestName","ashfallManifestMessage",
+    "ashfallJammerName","ashfallJammerMessage","ashfallCoreName","ashfallCoreMessage",
+    "ashfallBroadcast","ashfallProtect","ashfallBroadcastChosen","ashfallProtectChosen",
+    "objectiveAshfallBriefing","questAshfallEvidenceObjective","objectiveAshfallChoice","objectiveAshfallReturn","objectiveAshfallFinal"
+  ];
+  const chapterThreeCopy={
+    en:[
+      "Ashfall Observatory","Ashfall Observatory route unlocked.","Ashfall Observatory: Helix burned the sky to bury a witness.","Returned from Ashfall.",
+      "The Warning Record names Ashfall Observatory. Helix marked one technician alive, then ordered the site erased. Moonfall's eastern gate can still reach it. Find the survivor before Helix finishes the purge.",
+      "Use Moonfall's eastern gate. A living witness is waiting at Ashfall.",
+      "The evidence is already across the open network. Helix cannot call this a fake anymore—but they now know exactly where we are.",
+      "Aster is safe and the black box is intact. We will release the proof through trusted stations, slowly enough to keep Helix from tracing her.",
+      "Ashfall changed the investigation. The world knows Helix exists, and Aster chose to stay with us.",
+      "Aster Vale","I maintained Helix's disguise array. When I learned it was rewriting human witnesses, I copied the launch manifest. They burned the observatory to erase me.",
+      "Evacuation Manifest","The manifest lists civilian Lizard ships as refugees. Helix relabeled every passenger vessel as an invasion carrier.",
+      "Perception Jammer","The jammer did not hide Lizard bodies. It edited human memory after every sighting—and the test population was Signal Town.",
+      "Ashfall Black Box","The black box holds enough proof to expose Helix, but one live transmission will reveal Aster's location. Broadcast now, or protect the witness and carry the archive home.",
+      "Broadcast the evidence","Protect Aster","The truth is live. Attack increased by 2.","Aster is protected. Maximum health +8 and defense +2.",
+      "Return to Orla; the Warning Record contains a new location.","Investigate {evidence} at Ashfall Observatory.","Choose whether to broadcast now or protect Aster.","Bring Aster and the black box back through Moonfall.","Return to Orla and decide how the world will hear the truth."
+    ],
+    "zh-Hant":[
+      "灰燼天文台","已解鎖灰燼天文台路線。","灰燼天文台：Helix 燒毀天空，只為埋葬一名證人。","已從灰燼天文台返回。",
+      "警告紀錄提到灰燼天文台。Helix 標記了一名仍然生還的技術員，隨後下令抹除整座設施。月落中繼站的東側門仍能抵達那裡。在清除行動完成前找到生還者。",
+      "使用月落中繼站的東側門。一名活著的證人正在灰燼天文台等待。",
+      "證據已經傳遍公開網路。Helix 再也不能說它是偽造影片——但他們也知道我們的位置了。",
+      "Aster 已安全，黑盒也完整保存。我們會透過可信任的站點逐步公開證據，讓 Helix 無法追蹤她。",
+      "灰燼天文台改變了整起調查。世界已知道 Helix 的存在，而 Aster 選擇留下與我們並肩。",
+      "Aster Vale","我負責維護 Helix 的偽裝陣列。發現它會重寫人類目擊者的記憶後，我複製了發射清單。他們燒掉天文台，就是為了抹除我。",
+      "撤離船隊清單","清單證明蜥蜴人的民用船隊是難民。Helix 把每一艘載客船都重新標記成入侵艦。",
+      "感知干擾器","干擾器不是隱藏蜥蜴人的身體，而是在每次目擊後改寫人類記憶；實驗人口正是訊號鎮。",
+      "灰燼黑盒","黑盒足以揭露 Helix，但即時傳送會暴露 Aster 的位置。現在公開，或保護證人並把資料帶回去。",
+      "立即公開證據","保護 Aster","真相已公開，攻擊力提升 2。","Aster 已受保護，最大生命提升 8、防禦提升 2。",
+      "回去找 Orla；警告紀錄包含一個新地點。","在灰燼天文台調查「{evidence}」。","決定立即公開，或優先保護 Aster。","帶著 Aster 與黑盒穿過月落中繼站。","回去找 Orla，決定世界將如何聽見真相。"
+    ],
+    "zh-Hans":[
+      "灰烬天文台","已解锁灰烬天文台路线。","灰烬天文台：Helix 焚烧天空，只为埋葬一名证人。","已从灰烬天文台返回。",
+      "警告记录提到灰烬天文台。Helix 标记了一名幸存技术员，随后下令抹除设施。月落中继站的东门仍能抵达那里。请在清除行动完成前找到幸存者。",
+      "使用月落中继站的东门。一名活着的证人正在灰烬天文台等待。",
+      "证据已传遍公开网络。Helix 再也不能说它是伪造影片——但他们也知道我们的位置了。",
+      "Aster 已安全，黑匣子也完整保存。我们会通过可信站点逐步公开证据，让 Helix 无法追踪她。",
+      "灰烬天文台改变了调查。世界已知道 Helix 的存在，Aster 也选择与我们并肩。",
+      "Aster Vale","我维护 Helix 的伪装阵列。发现它会改写目击者记忆后，我复制了发射清单。他们烧掉天文台，就是为了抹除我。",
+      "撤离船队清单","清单证明蜥蜴人的民用船队是难民。Helix 把每艘客船都重新标记成入侵舰。",
+      "感知干扰器","干扰器不是隐藏身体，而是在每次目击后改写人类记忆；实验人口正是信号镇。",
+      "灰烬黑匣子","黑匣子足以揭露 Helix，但直播会暴露 Aster 的位置。现在公开，或保护证人并带走档案。",
+      "立即公开证据","保护 Aster","真相已公开，攻击力提升 2。","Aster 已受保护，最大生命提升 8、防御提升 2。",
+      "返回 Orla；警告记录包含一个新地点。","在灰烬天文台调查“{evidence}”。","决定立即公开，或优先保护 Aster。","带着 Aster 和黑匣子穿过月落中继站。","返回 Orla，决定世界将如何听见真相。"
+    ],
+    ja:[
+      "アッシュフォール天文台","アッシュフォール天文台への経路を解放。","アッシュフォール天文台：Helixは証人を消すため空を焼いた。","アッシュフォールから帰還した。",
+      "警告記録はアッシュフォール天文台を示している。Helixは生存中の技術者を一人確認し、施設抹消を命じた。ムーンフォール東門から向かい、粛清前に救出しよう。",
+      "ムーンフォール東門を使おう。生きた証人が待っている。",
+      "証拠は公開網へ流れた。Helixは偽物と言えないが、こちらの位置も知られた。",
+      "アスターとブラックボックスは無事だ。追跡されないよう、信頼できる局から段階的に公開する。",
+      "世界はHelixの存在を知った。アスターは私たちと共に残る。",
+      "アスター・ヴェイル","私はHelixの偽装装置を保守していた。人間の記憶を書き換えると知り、発進記録を複製した。彼らは私を消すため天文台を焼いた。",
+      "避難船団名簿","民間船は難民船だった。Helixは全てを侵略船に書き換えた。",
+      "知覚ジャマー","身体を隠す装置ではない。目撃後の人間の記憶を編集し、実験対象はシグナルタウンだった。",
+      "アッシュフォール・ブラックボックス","Helixを暴けるが、生中継はアスターの位置を明かす。今放送するか、証人を守り持ち帰ろう。",
+      "証拠を放送","アスターを守る","真実を放送した。攻撃力+2。","アスターを保護した。最大体力+8、防御+2。",
+      "オーラへ戻ろう。警告記録に新たな場所がある。","アッシュフォールで「{evidence}」を調べる。","今放送するかアスターを守るか選ぶ。","アスターとブラックボックスをムーンフォール経由で運ぶ。","オーラへ戻り、真実の伝え方を決める。"
+    ],
+    ko:[
+      "애시폴 천문대","애시폴 천문대 경로가 열렸습니다.","애시폴 천문대: Helix는 증인을 묻으려 하늘을 불태웠습니다.","애시폴에서 돌아왔습니다.",
+      "경고 기록은 애시폴 천문대를 가리킵니다. Helix는 생존 기술자 한 명을 확인한 뒤 시설 삭제를 명령했습니다. 문폴 동쪽 문으로 가서 숙청 전에 구조하세요.",
+      "문폴 동쪽 문을 사용하세요. 살아 있는 증인이 기다립니다.",
+      "증거가 공개망에 퍼졌습니다. Helix는 더는 가짜라 할 수 없지만 우리 위치도 알게 됐습니다.",
+      "아스터와 블랙박스는 안전합니다. 추적을 막기 위해 신뢰할 수 있는 방송국에서 단계적으로 공개하겠습니다.",
+      "세상은 Helix의 존재를 압니다. 아스터는 우리와 함께 남았습니다.",
+      "아스터 베일","저는 Helix 위장 배열을 관리했습니다. 목격자의 기억을 다시 쓴다는 걸 알고 발사 명단을 복사했죠. 그들은 저를 지우려고 천문대를 불태웠습니다.",
+      "대피 함대 명단","민간 함선은 난민선이었습니다. Helix는 모두 침공선으로 바꿔 적었습니다.",
+      "지각 방해기","몸을 숨긴 게 아니라 목격 뒤 인간의 기억을 편집했습니다. 시험 대상은 시그널 타운이었습니다.",
+      "애시폴 블랙박스","Helix를 폭로할 증거지만 생방송은 아스터의 위치를 드러냅니다. 지금 방송하거나 증인을 보호하세요.",
+      "증거 방송","아스터 보호","진실을 방송했습니다. 공격력 +2.","아스터를 보호했습니다. 최대 체력 +8, 방어 +2.",
+      "오를라에게 돌아가세요. 경고 기록에 새 장소가 있습니다.","애시폴에서 {evidence} 조사.","지금 방송할지 아스터를 보호할지 선택하세요.","아스터와 블랙박스를 문폴을 통해 데려오세요.","오를라에게 돌아가 진실을 알릴 방법을 정하세요."
+    ],
+    es:[
+      "Observatorio Ashfall","Ruta al Observatorio Ashfall desbloqueada.","Observatorio Ashfall: Helix quemó el cielo para enterrar a una testigo.","Regreso desde Ashfall.",
+      "El Registro de Advertencia nombra Ashfall. Helix marcó viva a una técnica y ordenó borrar el lugar. La puerta este de Moonfall aún llega allí. Encuéntrala antes de la purga.",
+      "Usa la puerta este de Moonfall. Una testigo viva espera en Ashfall.",
+      "La prueba ya está en la red abierta. Helix no puede llamarla falsa, pero ahora sabe dónde estamos.",
+      "Aster y la caja negra están a salvo. Publicaremos la prueba por estaciones fiables sin revelar su ubicación.",
+      "El mundo conoce a Helix y Aster ha decidido quedarse con nosotros.",
+      "Aster Vale","Mantenía la red de disfraces de Helix. Al descubrir que reescribía recuerdos, copié el manifiesto. Quemaron el observatorio para borrarme.",
+      "Manifiesto de evacuación","Las naves civiles eran refugiados. Helix las etiquetó como transportes de invasión.",
+      "Inhibidor perceptivo","No ocultaba cuerpos: editaba la memoria tras cada avistamiento. La población de prueba era Pueblo Señal.",
+      "Caja negra de Ashfall","Puede exponer a Helix, pero una transmisión revelará la ubicación de Aster. Emite ahora o protege a la testigo.",
+      "Emitir la prueba","Proteger a Aster","La verdad está en directo. Ataque +2.","Aster está protegida. Salud máxima +8 y defensa +2.",
+      "Vuelve con Orla; el registro contiene una ubicación nueva.","Investiga {evidence} en Ashfall.","Elige emitir ahora o proteger a Aster.","Lleva a Aster y la caja negra por Moonfall.","Vuelve con Orla y decide cómo oirá el mundo la verdad."
+    ],
+    "pt-BR":[
+      "Observatório Ashfall","Rota para o Observatório Ashfall liberada.","Observatório Ashfall: a Helix queimou o céu para enterrar uma testemunha.","Retorno de Ashfall.",
+      "O Registro de Alerta cita Ashfall. A Helix marcou uma técnica viva e ordenou apagar o local. O portão leste de Moonfall ainda chega lá. Encontre-a antes da limpeza.",
+      "Use o portão leste de Moonfall. Uma testemunha viva espera em Ashfall.",
+      "A prova está na rede aberta. A Helix não pode chamá-la de falsa, mas agora sabe onde estamos.",
+      "Aster e a caixa-preta estão seguras. Vamos divulgar por estações confiáveis sem revelar sua localização.",
+      "O mundo conhece a Helix, e Aster decidiu ficar conosco.",
+      "Aster Vale","Eu mantinha a rede de disfarce da Helix. Ao descobrir que reescrevia memórias, copiei o manifesto. Queimaram o observatório para me apagar.",
+      "Manifesto de evacuação","As naves civis eram de refugiados. A Helix marcou todas como transportes de invasão.",
+      "Bloqueador perceptivo","Não escondia corpos; editava memórias após cada avistamento. A população de teste era Signal Town.",
+      "Caixa-preta de Ashfall","Ela pode expor a Helix, mas uma transmissão revela Aster. Transmita agora ou proteja a testemunha.",
+      "Transmitir a prova","Proteger Aster","A verdade está no ar. Ataque +2.","Aster está protegida. Vida máxima +8 e defesa +2.",
+      "Volte a Orla; o registro contém um novo local.","Investigue {evidence} em Ashfall.","Escolha transmitir agora ou proteger Aster.","Leve Aster e a caixa-preta por Moonfall.","Volte a Orla e decida como o mundo ouvirá a verdade."
+    ],
+    fr:[
+      "Observatoire Ashfall","Route vers l'observatoire Ashfall déverrouillée.","Observatoire Ashfall : Helix a brûlé le ciel pour ensevelir un témoin.","Retour d'Ashfall.",
+      "Le Registre d'alerte nomme Ashfall. Helix a signalé une technicienne vivante puis ordonné l'effacement du site. La porte est de Moonfall y mène encore. Trouvez-la avant la purge.",
+      "Utilisez la porte est de Moonfall. Un témoin vivant attend à Ashfall.",
+      "La preuve circule sur le réseau public. Helix ne peut plus parler de faux, mais connaît notre position.",
+      "Aster et la boîte noire sont en sécurité. Nous publierons par des stations fiables sans révéler sa position.",
+      "Le monde connaît Helix et Aster a choisi de rester avec nous.",
+      "Aster Vale","J'entretenais le réseau de camouflage d'Helix. Quand j'ai découvert qu'il réécrivait les souvenirs, j'ai copié le manifeste. Ils ont brûlé l'observatoire pour m'effacer.",
+      "Manifeste d'évacuation","Les vaisseaux civils transportaient des réfugiés. Helix les a tous classés comme envahisseurs.",
+      "Brouilleur perceptif","Il ne cachait pas les corps : il modifiait la mémoire après chaque observation. Signal Town servait de test.",
+      "Boîte noire d'Ashfall","Elle peut exposer Helix, mais une diffusion révélera Aster. Diffusez maintenant ou protégez le témoin.",
+      "Diffuser la preuve","Protéger Aster","La vérité est diffusée. Attaque +2.","Aster est protégée. Santé max +8 et défense +2.",
+      "Retournez voir Orla ; le registre contient un nouveau lieu.","Enquêtez sur {evidence} à Ashfall.","Choisissez de diffuser ou de protéger Aster.","Ramenez Aster et la boîte noire via Moonfall.","Retournez voir Orla et décidez comment révéler la vérité."
+    ],
+    de:[
+      "Ashfall-Observatorium","Route zum Ashfall-Observatorium freigeschaltet.","Ashfall-Observatorium: Helix verbrannte den Himmel, um eine Zeugin zu begraben.","Aus Ashfall zurückgekehrt.",
+      "Der Warnbericht nennt Ashfall. Helix meldete eine lebende Technikerin und befahl die Tilgung des Standorts. Das Osttor von Moonfall führt dorthin. Finde sie vor der Säuberung.",
+      "Nutze Moonfalls Osttor. Eine lebende Zeugin wartet in Ashfall.",
+      "Die Beweise sind im offenen Netz. Helix kann sie nicht mehr fälschen nennen, kennt nun aber unseren Standort.",
+      "Aster und die Blackbox sind sicher. Wir veröffentlichen über vertrauenswürdige Sender, ohne ihren Ort zu verraten.",
+      "Die Welt kennt Helix, und Aster bleibt bei uns.",
+      "Aster Vale","Ich wartete Helix' Tarnsystem. Als ich erfuhr, dass es Erinnerungen umschreibt, kopierte ich das Manifest. Sie verbrannten das Observatorium, um mich zu löschen.",
+      "Evakuierungsmanifest","Die zivilen Schiffe waren Flüchtlinge. Helix erklärte jedes Passagierschiff zum Invasionstransporter.",
+      "Wahrnehmungsstörer","Er verbarg keine Körper, sondern änderte Erinnerungen nach jeder Sichtung. Signal Town war das Testgebiet.",
+      "Ashfall-Blackbox","Sie kann Helix entlarven, doch eine Live-Sendung verrät Aster. Jetzt senden oder die Zeugin schützen.",
+      "Beweise senden","Aster schützen","Die Wahrheit ist live. Angriff +2.","Aster ist geschützt. Max. Gesundheit +8, Verteidigung +2.",
+      "Kehre zu Orla zurück; der Bericht enthält einen neuen Ort.","Untersuche {evidence} in Ashfall.","Entscheide: senden oder Aster schützen.","Bringe Aster und die Blackbox durch Moonfall zurück.","Kehre zu Orla zurück und entscheide, wie die Welt die Wahrheit erfährt."
+    ],
+    it:[
+      "Osservatorio Ashfall","Percorso per l'Osservatorio Ashfall sbloccato.","Osservatorio Ashfall: Helix ha bruciato il cielo per seppellire una testimone.","Ritorno da Ashfall.",
+      "Il Registro d'allarme nomina Ashfall. Helix ha segnato viva una tecnica e ordinato di cancellare il sito. Il portale est di Moonfall conduce ancora lì. Trovala prima dell'epurazione.",
+      "Usa il portale est di Moonfall. Una testimone viva attende ad Ashfall.",
+      "Le prove sono sulla rete pubblica. Helix non può più definirle false, ma ora sa dove siamo.",
+      "Aster e la scatola nera sono al sicuro. Pubblicheremo tramite stazioni fidate senza rivelarla.",
+      "Il mondo conosce Helix e Aster ha scelto di restare con noi.",
+      "Aster Vale","Mantenevo la rete di travestimento Helix. Scoperto che riscriveva i ricordi, ho copiato il manifesto. Hanno bruciato l'osservatorio per cancellarmi.",
+      "Manifesto di evacuazione","Le navi civili portavano rifugiati. Helix le ha classificate come mezzi d'invasione.",
+      "Disturbatore percettivo","Non nascondeva corpi: modificava i ricordi dopo ogni avvistamento. Signal Town era il test.",
+      "Scatola nera di Ashfall","Può smascherare Helix, ma una diretta rivela Aster. Trasmetti ora o proteggi la testimone.",
+      "Trasmetti le prove","Proteggi Aster","La verità è in diretta. Attacco +2.","Aster è protetta. Salute max +8 e difesa +2.",
+      "Torna da Orla: il registro contiene un nuovo luogo.","Indaga su {evidence} ad Ashfall.","Scegli se trasmettere o proteggere Aster.","Riporta Aster e la scatola nera via Moonfall.","Torna da Orla e decidi come rivelare la verità."
+    ],
+    ru:[
+      "Обсерватория Эшфолл","Маршрут к обсерватории Эшфолл открыт.","Обсерватория Эшфолл: Helix сжёг небо, чтобы похоронить свидетеля.","Возвращение из Эшфолла.",
+      "В записи указана обсерватория Эшфолл. Helix отметил выжившую техницу и приказал стереть объект. Восточные врата Мунфолла ещё ведут туда. Найдите её до зачистки.",
+      "Используйте восточные врата Мунфолла. В Эшфолле ждёт живой свидетель.",
+      "Доказательства уже в открытой сети. Helix не сможет назвать их подделкой, но теперь знает, где мы.",
+      "Астер и чёрный ящик в безопасности. Мы опубликуем данные через надёжные станции, не выдавая её.",
+      "Мир узнал о Helix, а Астер решила остаться с нами.",
+      "Астер Вейл","Я обслуживала маскировочную сеть Helix. Узнав, что она переписывает память, я скопировала манифест. Они сожгли обсерваторию, чтобы стереть меня.",
+      "Манифест эвакуации","Гражданские корабли везли беженцев. Helix объявил каждый из них кораблём вторжения.",
+      "Глушитель восприятия","Он не скрывал тела, а менял память после наблюдений. Испытательной зоной был Сигнал-Сити.",
+      "Чёрный ящик Эшфолла","Он разоблачит Helix, но прямая передача выдаст Астер. Передать сейчас или защитить свидетеля.",
+      "Передать доказательства","Защитить Астер","Правда вышла в эфир. Атака +2.","Астер защищена. Макс. здоровье +8, защита +2.",
+      "Вернитесь к Орле: в записи есть новое место.","Исследуйте {evidence} в Эшфолле.","Выберите: передать данные или защитить Астер.","Проведите Астер и чёрный ящик через Мунфолл.","Вернитесь к Орле и решите, как открыть миру правду."
+    ],
+    hi:[
+      "ऐशफॉल वेधशाला","ऐशफॉल वेधशाला का मार्ग खुला।","ऐशफॉल वेधशाला: Helix ने एक गवाह को मिटाने के लिए आकाश जला दिया।","ऐशफॉल से वापसी।",
+      "चेतावनी रिकॉर्ड ऐशफॉल वेधशाला बताता है। Helix ने एक जीवित तकनीशियन को चिह्नित कर जगह मिटाने का आदेश दिया। मूनफॉल का पूर्वी द्वार अब भी वहाँ जाता है। सफ़ाए से पहले उसे खोजें।",
+      "मूनफॉल का पूर्वी द्वार उपयोग करें। ऐशफॉल में एक जीवित गवाह प्रतीक्षा कर रही है।",
+      "सबूत खुले नेटवर्क पर है। Helix इसे नकली नहीं कह सकता, पर अब हमारी जगह जानता है।",
+      "ऐस्टर और ब्लैक बॉक्स सुरक्षित हैं। हम भरोसेमंद स्टेशनों से धीरे-धीरे प्रमाण जारी करेंगे।",
+      "दुनिया Helix को जानती है और ऐस्टर हमारे साथ रहेगी।",
+      "ऐस्टर वेल","मैं Helix की छद्म प्रणाली संभालती थी। पता चला कि वह यादें बदलती है, तो मैंने प्रस्थान सूची कॉपी की। मुझे मिटाने के लिए उन्होंने वेधशाला जला दी।",
+      "निकासी सूची","नागरिक जहाज़ शरणार्थियों के थे। Helix ने हर यात्री जहाज़ को आक्रमण वाहक लिखा।",
+      "अनुभूति जैमर","यह शरीर नहीं छिपाता था; हर दृश्य के बाद मानव स्मृति बदलता था। परीक्षण क्षेत्र सिग्नल टाउन था।",
+      "ऐशफॉल ब्लैक बॉक्स","यह Helix को उजागर करेगा, पर सीधा प्रसारण ऐस्टर का स्थान बताएगा। अभी प्रसारित करें या गवाह बचाएँ।",
+      "सबूत प्रसारित करें","ऐस्टर की रक्षा करें","सच प्रसारित हुआ। हमला +2।","ऐस्टर सुरक्षित है। अधिकतम स्वास्थ्य +8, रक्षा +2।",
+      "ऑर्ला के पास लौटें; रिकॉर्ड में नया स्थान है।","ऐशफॉल में {evidence} की जाँच करें।","अभी प्रसारित करने या ऐस्टर को बचाने का चुनाव करें।","ऐस्टर और ब्लैक बॉक्स को मूनफॉल से वापस लाएँ।","ऑर्ला के पास लौटकर तय करें कि दुनिया सच कैसे सुनेगी।"
+    ],
+    ar:[
+      "مرصد آشْفول","فُتح الطريق إلى مرصد آشْفول.","مرصد آشْفول: أحرقت Helix السماء لدفن شاهدة.","العودة من آشْفول.",
+      "يسمّي سجل التحذير مرصد آشْفول. رصدت Helix تقنية ناجية ثم أمرت بمحو الموقع. ما زالت بوابة مونفول الشرقية تصل إليه. اعثر عليها قبل التطهير.",
+      "استخدم بوابة مونفول الشرقية. شاهدة حية تنتظر في آشْفول.",
+      "انتشر الدليل في الشبكة المفتوحة. لم تعد Helix قادرة على وصفه بالمزيف، لكنها تعرف موقعنا الآن.",
+      "آستر والصندوق الأسود بأمان. سننشر الدليل عبر محطات موثوقة من دون كشف موقعها.",
+      "يعرف العالم الآن بوجود Helix، واختارت آستر البقاء معنا.",
+      "آستر ڤيل","كنت أصون شبكة تمويه Helix. حين عرفت أنها تعيد كتابة الذكريات نسخت قائمة الإطلاق. أحرقوا المرصد لمحي أثري.",
+      "قائمة الإخلاء","كانت السفن المدنية تحمل لاجئين. أعادت Helix تصنيف كل سفينة ركاب كناقلة غزو.",
+      "مشوش الإدراك","لم يخفِ الأجساد، بل عدّل ذاكرة البشر بعد كل مشاهدة. كانت بلدة الإشارة منطقة الاختبار.",
+      "صندوق آشْفول الأسود","يكفي لفضح Helix، لكن البث المباشر سيكشف موقع آستر. ابث الآن أو احمِ الشاهدة.",
+      "بث الدليل","حماية آستر","بُثت الحقيقة. الهجوم +2.","آستر محمية. الصحة القصوى +8 والدفاع +2.",
+      "عد إلى أورلا؛ يحتوي السجل على موقع جديد.","حقق في {evidence} داخل آشْفول.","اختر البث الآن أو حماية آستر.","أعد آستر والصندوق الأسود عبر مونفول.","عد إلى أورلا وقرر كيف سيسمع العالم الحقيقة."
+    ]
+  };
+  for(const [code,values] of Object.entries(chapterThreeCopy)){
+    Object.assign(localeRegistry[code],Object.fromEntries(chapterThreeKeys.map((key,index)=>[key,values[index]])));
+    localeRegistry[code].guideChapterThreeTitle=localeRegistry[code].zoneAshfall;
+    localeRegistry[code].guideChapterThree=`${localeRegistry[code].chapter3Briefing} ${localeRegistry[code].ashfallCoreMessage}`;
+  }
+
+  const interactAction={
+    en:"Interact","zh-Hant":"互動","zh-Hans":"互动",ja:"調べる",ko:"상호작용",
+    es:"Interactuar","pt-BR":"Interagir",fr:"Interagir",de:"Interagieren",
+    it:"Interagisci",ru:"Взаимодействовать",hi:"इंटरैक्ट करें",ar:"تفاعل"
+  };
+  for(const [code,value] of Object.entries(interactAction))localeRegistry[code].interactAction=value;
+
   window.SIGNAL_VEIL_LOCALES=localeRegistry;
 })();

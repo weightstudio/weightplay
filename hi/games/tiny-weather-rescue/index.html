@@ -34,7 +34,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/tiny-weather-rescue/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/tiny-weather-rescue/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/tiny-weather-rescue/" />
-    <link rel="stylesheet" data-wp-stage-standard data-wp-battle-standard href="style.css?v=20260719-helper-cues1" />
+    <link rel="stylesheet" data-wp-stage-standard data-wp-battle-standard href="style.css?v=20260729-interface4-1" />
     <script data-wp-stage-standard>/* Animal Helper Quest owns its native Stage rail. */</script>
     <script data-wp-battle-standard>/* Animal Helper Quest owns its native Battle Canvas. */</script>
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
@@ -76,7 +76,7 @@
   <meta name="twitter:title" content="पशु सहायक क्वेस्ट | WeightPlay" />
     <meta name="twitter:description" content="एनिमल हेल्पर क्वेस्ट एक निःशुल्क द्विभाषी बच्चों की चित्र पहेली है जिसमें 30 सहेजे गए मिशन और छह हेल्पर चेक हैं। एक खरगोश, लोमड़ी, पांडा, पेंगुइन, शेर, या..." />
   </head>
-  <body data-tutorial-auto-show="false">
+  <body data-tutorial-auto-show="false" data-wp-combined-sound="true">
     <main class="weather-game" data-play-viewport data-no-mobile-immersive="true" data-wp-logical-battle-canvas="390x788">
       <header class="topbar">
         <a class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
@@ -98,6 +98,8 @@
             <option value="de">Deutsch</option>
             <option value="it">Italiano</option>
             <option value="ru">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</option>
+            <option value="hi">&#2361;&#2367;&#2344;&#2381;&#2342;&#2368;</option>
+            <option value="ar">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</option>
           </select>
         </label>
       </header>
@@ -127,16 +129,17 @@
         </div>
         <div id="board" class="board" aria-label="Animal care play area"></div>
         <div id="hintText" class="hint" aria-live="polite"></div>
-        <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+        <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText">
           <div class="result-card">
-            <strong id="resultTitle">Rescue Complete!</strong>
-            <div id="starText" class="stars">&#9734;&#9734;&#9734;</div>
-            <span id="resultText"></span>
+            <h2 id="resultTitle" data-result-title>Rescue Complete!</h2>
+            <div id="starText" class="stars" data-result-stat>&#9734;&#9734;&#9734;</div>
+            <p id="resultText" data-result-description></p>
             <div id="skillReport" class="skill-report" aria-live="polite"></div>
-            <button id="nextStageBtn" type="button" data-ui="nextStage">Next Stage</button>
-            <button id="retryBtn" type="button" data-ui="retry">Try Again</button>
-            <button id="resultStagesBtn" type="button" data-ui="stages">Stages</button>
-            <a href="/kids/" data-ui="lobby">Lobby</a>
+            <div class="result-actions">
+              <button id="resultStagesBtn" type="button" data-ui="stages">Stages</button>
+              <button id="nextStageBtn" type="button" data-ui="nextStage">Next Stage</button>
+              <button id="retryBtn" type="button" data-ui="retry">Try Again</button>
+            </div>
           </div>
         </div>
       </section>
@@ -190,7 +193,7 @@
     <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
     <script src="../../src/tutorial.js?v=20260704-helper-tutorial-locale1"></script>
-    <script src="game.js?v=20260723-pointer-owner1"></script>
+    <script src="game.js?v=20260729-interface4-1"></script>
     <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
     <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
 </body>
