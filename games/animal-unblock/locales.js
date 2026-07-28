@@ -41,8 +41,8 @@
 
   const zhHant = {
     label: "繁體中文",
-    title: "暢通小徑",
-    shortTitle: "解鎖",
+    title: "解鎖滑塊",
+    shortTitle: "解鎖滑塊",
     language: "語言",
     returnLobby: "返回 WeightPlay",
     back: "返回",

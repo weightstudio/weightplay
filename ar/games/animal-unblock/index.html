@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <base href="/games/animal-unblock/" />
+    <link rel="canonical" href="https://weightplay.com/ar/games/animal-unblock/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-unblock/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-unblock/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-unblock/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-unblock/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-unblock/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-unblock/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-unblock/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-unblock/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-unblock/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-unblock/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-unblock/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-unblock/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-unblock/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-unblock/" />
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="robots" content="index,follow" />
+    <meta name="weightplay-audience" content="general" />
+    <title>فتح درب | WeightPlay</title>
+    <link
+      rel="stylesheet"
+      href="../../src/stage-selector-standard.css"
+      data-wp-stage-standard
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="result-v4.css" />
+    <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
+  <meta name="description" content="قم بتحريك الكتل الأفقية والرأسية على طول محاورها الخاصة حتى يكتسب المستكشف الأحمر طريقًا واضحًا عبر المخرج." />
+    <meta property="og:title" content="فتح درب | WeightPlay" />
+    <meta property="og:description" content="قم بتحريك الكتل الأفقية والرأسية على طول محاورها الخاصة حتى يكتسب المستكشف الأحمر طريقًا واضحًا عبر المخرج." />
+    <meta property="og:url" content="https://weightplay.com/ar/games/animal-unblock/" />
+    <meta name="twitter:title" content="فتح درب | WeightPlay" />
+    <meta name="twitter:description" content="قم بتحريك الكتل الأفقية والرأسية على طول محاورها الخاصة حتى يكتسب المستكشف الأحمر طريقًا واضحًا عبر المخرج." />
+  </head>
+  <body data-wp-game-id="animal-unblock" data-wp-combined-sound="true">
+    <main id="main" class="screen main main-screen" data-screen="main">
+      <header>
+        <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
+        <strong data-t="shortTitle">UNBLOCK</strong>
+        <select id="locale"></select>
+      </header>
+      <section class="hero">
+        <img
+          src="../../assets/animal-unblock-cover-v2.webp"
+          data-t-alt="coverAlt"
+          alt="شعار WeightPlay"
+        />
+        <div>
+          <p data-t="kicker">PANKO'S SLIDE PUZZLE</p>
+          <h1 data-t="title">فتح درب</h1>
+          <p data-t="summary"></p>
+          <button id="start" data-wp-main-start data-t="start">
+            Start game
+          </button></div>
+      </section><section class="public-guide guide" aria-label="Game guide"><h2 data-t="guideTitle"></h2><p data-t="guideBody"></p></section>
+    </main>
+    <main
+      id="stage"
+      class="screen canvas stage-canvas"
+      data-wp-standard-stage-screen
+      data-wp-logical-stage-canvas
+      data-wp-canvas-max-width="920"
+      data-wp-stage-landscape-width="760"
+      data-wp-stage-landscape-height="334"
+      style="--wp-stage-art: url('../../assets/animal-unblock-cover-v2.webp')"
+      hidden
+    >
+      <header>
+        <button data-back data-t-aria="back" aria-label="Back">←</button>
+        <h2 data-t="choose"></h2>
+        <span id="progress"></span>
+      </header>
+      <section
+        id="stageGrid"
+        class="stage-rail"
+        data-wp-stage-rail
+        data-wp-stage-recommendation="last"
+        data-t-aria="stageList"
+        aria-label="Trail list"
+      ></section>
+    </main>
+    <main id="battle" class="screen canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
+      <header>
+        <button data-back data-t-aria="back" aria-label="Back">←</button>
+        <div>
+          <small id="chapter"></small>
+          <h2 id="trailName"></h2>
+        </div>
+        <span id="moveCount"></span>
+      </header>
+      <section class="battle">
+        <div
+          id="board"
+          data-t-aria="boardLabel"
+          aria-label="Unblock Trail game board"
+        ></div>
+        <div class="tools">
+          <button id="undo" data-t="undo"></button>
+          <button id="hint" data-t="hint"></button>
+          <button id="restart" data-t="restart"></button>
+        </div>
+        <p id="status"></p>
+      </section>
+    </main>
+    <aside id="generalReserve" class="ad-reserve" hidden aria-hidden="true"></aside>
+    <dialog id="result">
+      <img
+        class="result-character"
+        src="../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp"
+        alt=""
+      />
+      <h2 data-t="resultTitle"></h2>
+      <p id="resultBody"></p>
+      <div class="result-actions">
+        <button id="resultStages" data-t="stageList"></button>
+        <button id="next" data-t="next"></button>
+        <button id="retry" data-t="retry"></button>
+      </div>
+    </dialog>
+    <script src="../../src/site-config.js"></script>
+    <script>
+      window.WONDER_SITE.localization.useLocaleRoutes = false;
+    </script>
+    <script src="/src/i18n.js?v=20260721-locale13-1"></script>
+    <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
+    <script src="levels.js"></script>
+    <script src="locales.js?v=20260726-zh-hant3"></script>
+    <script src="game.js"></script>
+    <script
+      src="../../src/stage-selector-standard.js"
+      data-wp-stage-standard
+    ></script>
+    <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
+<section class="game-page-info game-page-info-static" aria-label="فتح درب معلومات اللعبة">
+    
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay دليل اللعبة الأصلي</span><h2>فتح درب</h2><p>قم بتحريك الكتل الأفقية والرأسية على طول محاورها الخاصة حتى يكتسب المستكشف الأحمر طريقًا واضحًا عبر المخرج.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>انزلاق كتلة الخروج اللغز</strong></div><div class="game-info-fact"><span>النوع</span><strong>لغز · الإستراتيجية · حيوان</strong></div><div class="game-info-fact"><span>صعوبة</span><strong>من السهل التحدي</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>2-8 دقائق لكل مرحلة</strong></div><div class="game-info-fact"><span>المهارات المدربة</span><strong>المنطق · التخطيط · حل المشكلات</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>العالم والرسالة</h3><p>يرسم بانكو ثلاثين بوابة غابة مزدحمة. تبدأ كل كتلة على شبكة ثابتة ولكل لغز تسلسل تم التحقق منه يطلق المستكشف المميز.</p>
+<p>لا تدور الكتل أبدًا أو تقفز أو تترك اللوحة. ويكمن التحدي في تحديد التحركات المؤقتة التي ستتيح المجال للشريحة النهائية الحاسمة.</p></div>
+      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>تتحرك الكتل الأفقية فقط إلى اليسار واليمين؛ الكتل العمودية تتحرك فقط لأعلى ولأسفل.</p>
+<p>تتوقف الحركة قبل حافة اللوحة أو كتلة أخرى. لا يمكن أن تتداخل الخلايا المحتلة.</p>
+<p>يقوم المستكشف الأحمر بإخلاء المسرح عندما يصل طريقه إلى ممر الخروج المحدد.</p>
+<p>يؤدي التراجع إلى استعادة شريحة واحدة، ويحدد التلميح كتلة مفيدة، بينما تستعيد عملية إعادة التشغيل التخطيط الافتتاحي الدقيق.</p></div>
+      <div class="game-info-section"><h3>كيفية اللعب</h3><ol><li>اختر دربًا غير مقفل.</li><li>حدد كل كتلة تعبر صف خروج المستكشف.</li><li>لا تحرك تلك الحواجز إلا بعد خلق مساحة على طول محورها القانوني.</li><li>مرر المستكشف عبر المخرج واستمر إلى المسار التالي.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>نصائح الاستراتيجية</h3><ul><li>اعمل للخلف من ممر الخروج.</li><li>حرك مانعًا أبعد مما يبدو ضروريًا عندما يتعين عليه إفساح المجال لكتلة أخرى.</li><li>تجنب ملء العمود المفتوح الوحيد بالكتلة المطلوبة لاحقًا.</li><li>استخدم التراجع عن خطأ تحديد الموقع الأخير وإعادة التشغيل عندما يكون الترتيب بأكمله خاطئًا.</li></ul></div>
+      <div class="game-info-section"><h3>الحملة وصعوبة النمو</h3><p>تعلم المسارات المبكرة حدود المحاور والحاصرات الفردية. تستخدم الفصول اللاحقة قطعًا أطول ومخازن مؤقتة ضيقة وتبعيات متداخلة ومعابر متعددة ولوحات نهائية كثيفة.</p>
+<p>تغير كل مرحلة التسلسل المكاني دون إضافة قواعد حركة تعسفية.</p></div>
+      <div class="game-info-section"><h3>مذكرة تصميم المطور</h3><p>يستخدم اتجاه السحب والتقاط الشبكة واختبار التصادم والأعمال الفنية المجسمة نفس هندسة الخلية عند الإدخال باللمس والماوس ولوحة المفاتيح. تستخدم الواجهة الكاملة تخطيطًا منطقيًا مركزيًا بحد أقصى 920 بكسل. تعمل طرق عرض الهاتف والمناظر الطبيعية وسطح المكتب على قياس نفس عناصر التحكم ومناطق الضرب والأعمال الفنية وإحداثيات اللعبة معًا بدلاً من تمديد القطع الفردية. وبالتالي فإن اللمس والماوس ولوحة المفاتيح تعمل بنفس الحالة القانونية. يظل الملصق الرئيسي وإجراءات بدء اللعبة منفصلين عن إدارة المرحلة، بينما يحتفظ اختيار المرحلة والمعركة ومربعات الحوار والنتيجة بالمحتوى المحدود الخاص بهم ومسار العودة.</p></div>
+      <div class="game-info-section game-info-parent"><h3>ملاحظة الوالدين</h3><p>لا يوجد مؤقت أو حساب أو شراء أو نتيجة عامة. تبقى عمليات إلغاء القفل وأفضل أعداد التحركات المحلية في هذا المتصفح. يمكنك اللعب دون إنشاء حساب. يتم حفظ التقدم في وحدة تخزين المتصفح المحلية في ملف تعريف المتصفح الحالي، وليس في حساب عبر الإنترنت أو قاعدة بيانات عبر الأجهزة. يمكن أن يؤدي مسح بيانات الموقع، أو استخدام التصفح الخاص، أو تغيير المتصفحات، أو الانتقال إلى جهاز آخر إلى إنشاء عملية حفظ منفصلة أو إزالة القائمة الحالية. تتبع تفضيلات اللغة والصوت والحركة المنخفضة عناصر التحكم WeightPlay المشتركة عندما يسمح المتصفح بالتخزين. لا توجد نتيجة إرشادية عبارة عن تقييم طبي أو مدرسي أو مهني.</p></div>
+      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل يمكن تدوير الكتل؟</dt><dd>لا، كل كتلة تحافظ على اتجاهها الأصلي.</dd></div><div><dt>لماذا توقف السحب؟</dt><dd>كانت الخلية التالية مشغولة أو خارج اللوحة.</dd></div><div><dt>ما هي الكتلة التي يجب الخروج منها؟</dt><dd>المستكشف الأحمر المميز بوضوح.</dd></div><div><dt>هل جميع المسارات الثلاثين قابلة للحل؟</dt><dd>نعم، كل تخطيط مؤلف له حل تم التحقق منه.</dd></div><div><dt>ما هي عناصر التحكم وأحجام الشاشة المدعومة؟</dt><dd>تدعم نفس القواعد اللمس والماوس ولوحة المفاتيح حيث تستخدم اللعبة تلك المدخلات. يتم تحجيم الواجهة كتخطيط منطقي واحد عبر إطارات العرض المطلوبة للهاتف والمناظر الطبيعية وسطح المكتب.</dd></div><div><dt>هل يمكن أن ينتقل التقدم تلقائيًا إلى جهاز آخر؟</dt><dd>لا. يتم حفظ هذه اللعبة حاليًا في مساحة تخزين المتصفح المحلي فقط، لذلك يبدأ ملف تعريف متصفح آخر أو جهاز آخر بالتقدم المحلي المنفصل الخاص به ما لم تتم إضافة نظام حساب مستقبلي.</dd></div></dl></div>
+      
+    </div>
+  </section>
+</body>
+</html>

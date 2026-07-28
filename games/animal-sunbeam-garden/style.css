@@ -22,6 +22,9 @@ body #stage{grid-template-rows:76px minmax(0,1fr) 62px}
 .cell{z-index:1;border-radius:4px}
 .cell.beam{box-shadow:inset 0 0 0 2px #fff4a933;filter:brightness(1.05)}
 .cell.source,.cell.goal,.cell.mirror{z-index:4}
+.cell.goal{background-image:none}
+.cell.goal::before{content:"";position:absolute;inset:0;background:url("../../assets/animal-sunbeam-garden-flower-v1.webp") center/contain no-repeat;transform:translate(7%,3%);pointer-events:none}
+.cell.goal.hit::before{background-image:url("../../assets/animal-sunbeam-garden-flower-hit-v1.webp")}
 .cell.mirror::after{transition:transform .3s cubic-bezier(.2,.85,.25,1.25),filter .3s ease;transform-origin:center}
 .cell.mirror[data-rot="1"]::after{transform:rotate(90deg)}
 .cell.mirror.turning[data-rot="0"]::after{transform:rotate(90deg) scale(1.08);filter:drop-shadow(0 0 7px #fff7b8)}

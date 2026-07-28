@@ -1437,6 +1437,20 @@
     if (state.soundEnabled) playSfx("toggle");
   }
 
+  // The shared Version 4 Settings switch owns the visible control while this
+  // adapter preserves Beast Guardian's existing SFX state and storage key.
+  window.WonderSound = window.WonderSound || {};
+  window.WonderSound.isMuted = () => !state.soundEnabled;
+  window.WonderSound.setMuted = (muted) => setSoundEnabled(!Boolean(muted), true);
+  nodes.soundBtn?.setAttribute("data-sound-toggle", "");
+  document.addEventListener("keydown", (event) => {
+    if (event.repeat
+      && (event.key === "Enter" || event.key === " ")
+      && event.target?.matches?.(".wp-shell-combined-sound-toggle")) {
+      event.preventDefault();
+    }
+  }, true);
+
   function ensureAudioContext() {
     if (!state.soundEnabled) return null;
     const AudioContext = window.AudioContext || window.webkitAudioContext;

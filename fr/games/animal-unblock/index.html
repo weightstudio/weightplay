@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <base href="/games/animal-unblock/" />
+    <link rel="canonical" href="https://weightplay.com/fr/games/animal-unblock/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-unblock/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-unblock/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-unblock/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-unblock/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-unblock/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-unblock/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-unblock/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-unblock/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-unblock/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-unblock/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-unblock/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-unblock/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-unblock/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-unblock/" />
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="robots" content="index,follow" />
+    <meta name="weightplay-audience" content="general" />
+    <title>Débloquer le sentier | WeightPlay</title>
+    <link
+      rel="stylesheet"
+      href="../../src/stage-selector-standard.css"
+      data-wp-stage-standard
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="result-v4.css" />
+    <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
+  <meta name="description" content="Faites glisser les blocs horizontaux et verticaux le long de leurs propres axes jusqu&#39;à ce que l&#39;explorateur rouge obtienne un itinéraire clair vers la..." />
+    <meta property="og:title" content="Débloquer le sentier | WeightPlay" />
+    <meta property="og:description" content="Faites glisser les blocs horizontaux et verticaux le long de leurs propres axes jusqu&#39;à ce que l&#39;explorateur rouge obtienne un itinéraire clair vers la..." />
+    <meta property="og:url" content="https://weightplay.com/fr/games/animal-unblock/" />
+    <meta name="twitter:title" content="Débloquer le sentier | WeightPlay" />
+    <meta name="twitter:description" content="Faites glisser les blocs horizontaux et verticaux le long de leurs propres axes jusqu&#39;à ce que l&#39;explorateur rouge obtienne un itinéraire clair vers la..." />
+  </head>
+  <body data-wp-game-id="animal-unblock" data-wp-combined-sound="true">
+    <main id="main" class="screen main main-screen" data-screen="main">
+      <header>
+        <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
+        <strong data-t="shortTitle">UNBLOCK</strong>
+        <select id="locale"></select>
+      </header>
+      <section class="hero">
+        <img
+          src="../../assets/animal-unblock-cover-v2.webp"
+          data-t-alt="coverAlt"
+          alt="Illustration du jeu Débloquer le sentier"
+        />
+        <div>
+          <p data-t="kicker">PANKO'S SLIDE PUZZLE</p>
+          <h1 data-t="title">Débloquer le sentier</h1>
+          <p data-t="summary"></p>
+          <button id="start" data-wp-main-start data-t="start">
+            Start game
+          </button></div>
+      </section><section class="public-guide guide" aria-label="Game guide"><h2 data-t="guideTitle"></h2><p data-t="guideBody"></p></section>
+    </main>
+    <main
+      id="stage"
+      class="screen canvas stage-canvas"
+      data-wp-standard-stage-screen
+      data-wp-logical-stage-canvas
+      data-wp-canvas-max-width="920"
+      data-wp-stage-landscape-width="760"
+      data-wp-stage-landscape-height="334"
+      style="--wp-stage-art: url('../../assets/animal-unblock-cover-v2.webp')"
+      hidden
+    >
+      <header>
+        <button data-back data-t-aria="back" aria-label="Back">←</button>
+        <h2 data-t="choose"></h2>
+        <span id="progress"></span>
+      </header>
+      <section
+        id="stageGrid"
+        class="stage-rail"
+        data-wp-stage-rail
+        data-wp-stage-recommendation="last"
+        data-t-aria="stageList"
+        aria-label="Trail list"
+      ></section>
+    </main>
+    <main id="battle" class="screen canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
+      <header>
+        <button data-back data-t-aria="back" aria-label="Back">←</button>
+        <div>
+          <small id="chapter"></small>
+          <h2 id="trailName"></h2>
+        </div>
+        <span id="moveCount"></span>
+      </header>
+      <section class="battle">
+        <div
+          id="board"
+          data-t-aria="boardLabel"
+          aria-label="Unblock Trail game board"
+        ></div>
+        <div class="tools">
+          <button id="undo" data-t="undo"></button>
+          <button id="hint" data-t="hint"></button>
+          <button id="restart" data-t="restart"></button>
+        </div>
+        <p id="status"></p>
+      </section>
+    </main>
+    <aside id="generalReserve" class="ad-reserve" hidden aria-hidden="true"></aside>
+    <dialog id="result">
+      <img
+        class="result-character"
+        src="../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp"
+        alt=""
+      />
+      <h2 data-t="resultTitle"></h2>
+      <p id="resultBody"></p>
+      <div class="result-actions">
+        <button id="resultStages" data-t="stageList"></button>
+        <button id="next" data-t="next"></button>
+        <button id="retry" data-t="retry"></button>
+      </div>
+    </dialog>
+    <script src="../../src/site-config.js"></script>
+    <script>
+      window.WONDER_SITE.localization.useLocaleRoutes = false;
+    </script>
+    <script src="/src/i18n.js?v=20260721-locale13-1"></script>
+    <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
+    <script src="levels.js"></script>
+    <script src="locales.js?v=20260726-zh-hant3"></script>
+    <script src="game.js"></script>
+    <script
+      src="../../src/stage-selector-standard.js"
+      data-wp-stage-standard
+    ></script>
+    <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
+<section class="game-page-info game-page-info-static" aria-label="Informations sur le jeu Débloquer le sentier">
+    
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Guide de jeu original</span><h2>Débloquer le sentier</h2><p>Faites glisser les blocs horizontaux et verticaux le long de leurs propres axes jusqu&#39;à ce que l&#39;explorateur rouge obtienne un itinéraire clair vers la sortie.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Type de jeu</span><strong>Puzzle de sortie de bloc coulissant</strong></div><div class="game-info-fact"><span>Genre</span><strong>Casse-tête · Stratégie · Animal</strong></div><div class="game-info-fact"><span>Difficulté</span><strong>Facile à difficile</strong></div><div class="game-info-fact"><span>Durée estimée</span><strong>2 à 8 minutes par étape</strong></div><div class="game-info-fact"><span>Compétences travaillées</span><strong>Logique · Planification · Résolution de problèmes</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Univers et mission</h3><p>Panko cartographie trente portes forestières bondées. Chaque bloc commence sur une grille fixe et chaque puzzle possède une séquence vérifiée qui libère l&#39;explorateur marqué.</p>
+<p>Les blocs ne tournent jamais, ne sautent pas et ne quittent jamais le plateau. Le défi consiste à décider quels mouvements temporaires créent de la place pour la glissade finale décisive.</p></div>
+      <div class="game-info-section"><h3>Fonctionnement du jeu</h3><p>Les blocs horizontaux se déplacent uniquement à gauche et à droite ; les blocs verticaux se déplacent uniquement de haut en bas.</p>
+<p>Un mouvement s&#39;arrête avant le bord du plateau ou un autre bloc. Les cellules occupées ne peuvent pas se chevaucher.</p>
+<p>L&#39;explorateur rouge quitte la scène lorsque son chemin atteint la voie de sortie balisée.</p>
+<p>Annuler restaure une diapositive, Hint identifie un bloc utile et Redémarrer restaure la disposition d&#39;ouverture exacte.</p></div>
+      <div class="game-info-section"><h3>Comment jouer</h3><ol><li>Choisissez un sentier débloqué.</li><li>Identifiez chaque bloc traversant la ligne de sortie de l&#39;explorateur.</li><li>Déplacez ces bloqueurs uniquement après avoir créé un espace le long de leur axe légal.</li><li>Faites glisser l’explorateur par la sortie et continuez vers le sentier suivant.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Conseils</h3><ul><li>Travaillez en arrière depuis la voie de sortie.</li><li>Déplacez un bloqueur plus loin que nécessaire lorsqu&#39;il doit faire de la place à un autre bloc.</li><li>Évitez de remplir la seule colonne ouverte avec un bloc nécessaire plus tard.</li><li>Utilisez Annuler pour une erreur de positionnement récente et Redémarrer lorsque l&#39;ensemble de la commande est erroné.</li></ul></div>
+      <div class="game-info-section"><h3>Progression et difficulté</h3><p>Les premiers sentiers enseignent les limites des axes et les bloqueurs simples. Les chapitres suivants utilisent des pièces plus longues, des tampons étroits, des dépendances imbriquées, des croisements multiples et des tableaux finaux denses.</p>
+<p>Chaque étape modifie la séquence spatiale sans ajouter de règles de mouvement arbitraires.</p></div>
+      <div class="game-info-section"><h3>Note de conception</h3><p>La direction du glissement, l&#39;accrochage à la grille, le test de collision et l&#39;illustration de bloc utilisent la même géométrie de cellule lors de la saisie tactile, de la souris et du clavier. L&#39;interface complète utilise une disposition logique centrée avec un maximum de 920 pixels. Les vues du téléphone, du paysage et du bureau mettent à l&#39;échelle les mêmes commandes, zones touchées, illustrations et coordonnées de jeu ensemble au lieu d&#39;étirer des éléments individuels. Toucher, souris et clavier agissent donc sur le même état juridique. L&#39;affiche principale et l&#39;action de démarrage du jeu restent séparées de la gestion de la scène, tandis que la sélection de la scène, la bataille, les dialogues et le résultat conservent leur propre contenu délimité et leur propre chemin de retour.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Pour les parents</h3><p>Il n&#39;y a pas de minuterie, de compte, d&#39;achat ou de score public. Les déverrouillages et le nombre de meilleurs coups locaux restent dans ce navigateur. Vous pouvez jouer sans créer de compte. La progression est enregistrée dans le stockage local du navigateur sur le profil de navigateur actuel, et non dans un compte en ligne ou une base de données multi-appareils. Effacer les données du site, utiliser la navigation privée, changer de navigateur ou passer à un autre appareil peut créer une sauvegarde distincte ou supprimer celle existante. Les préférences de langue, de son et de réduction des mouvements suivent les commandes partagées WeightPlay lorsque le navigateur autorise le stockage. Aucun résultat du guide n’est une évaluation médicale, scolaire ou professionnelle.</p></div>
+      <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Les blocs peuvent-ils tourner ?</dt><dd>Non, chaque bloc conserve son orientation d&#39;origine.</dd></div><div><dt>Pourquoi une traînée s&#39;est-elle arrêtée ?</dt><dd>La cellule suivante était occupée ou en dehors du plateau.</dd></div><div><dt>Quel bloc doit sortir ?</dt><dd>L&#39;explorateur rouge clairement marqué.</dd></div><div><dt>Les trente sentiers sont-ils résolubles ?</dt><dd>Oui, chaque mise en page créée a une solution vérifiée.</dd></div><div><dt>Quels contrôles et tailles d’écran sont pris en charge ?</dt><dd>Les mêmes règles prennent en charge le toucher, la souris et le clavier lorsque le jeu utilise ces entrées. L&#39;interface s&#39;adapte comme une disposition logique à travers les fenêtres d&#39;affichage requises du téléphone, du paysage et du bureau.</dd></div><div><dt>La progression peut-elle être automatiquement transférée vers un autre appareil ?</dt><dd>Non. Ce jeu est actuellement enregistré uniquement sur le stockage du navigateur local, donc un autre profil de navigateur ou un autre appareil commence avec sa propre progression locale distincte, à moins qu&#39;un futur système de compte ne soit ajouté.</dd></div></dl></div>
+      
+    </div>
+  </section>
+</body>
+</html>

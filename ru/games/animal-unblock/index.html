@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <base href="/games/animal-unblock/" />
+    <link rel="canonical" href="https://weightplay.com/ru/games/animal-unblock/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-unblock/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-unblock/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-unblock/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-unblock/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-unblock/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-unblock/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-unblock/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-unblock/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-unblock/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-unblock/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-unblock/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-unblock/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-unblock/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-unblock/" />
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="robots" content="index,follow" />
+    <meta name="weightplay-audience" content="general" />
+    <title>Разблокировать след | WeightPlay</title>
+    <link
+      rel="stylesheet"
+      href="../../src/stage-selector-standard.css"
+      data-wp-stage-standard
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="result-v4.css" />
+    <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
+  <meta name="description" content="Перемещайте горизонтальные и вертикальные блоки вдоль своих осей, пока красный исследователь не найдет свободный путь через выход." />
+    <meta property="og:title" content="Разблокировать след | WeightPlay" />
+    <meta property="og:description" content="Перемещайте горизонтальные и вертикальные блоки вдоль своих осей, пока красный исследователь не найдет свободный путь через выход." />
+    <meta property="og:url" content="https://weightplay.com/ru/games/animal-unblock/" />
+    <meta name="twitter:title" content="Разблокировать след | WeightPlay" />
+    <meta name="twitter:description" content="Перемещайте горизонтальные и вертикальные блоки вдоль своих осей, пока красный исследователь не найдет свободный путь через выход." />
+  </head>
+  <body data-wp-game-id="animal-unblock" data-wp-combined-sound="true">
+    <main id="main" class="screen main main-screen" data-screen="main">
+      <header>
+        <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
+        <strong data-t="shortTitle">UNBLOCK</strong>
+        <select id="locale"></select>
+      </header>
+      <section class="hero">
+        <img
+          src="../../assets/animal-unblock-cover-v2.webp"
+          data-t-alt="coverAlt"
+          alt="Изображение игры «Разблокировать след»"
+        />
+        <div>
+          <p data-t="kicker">PANKO'S SLIDE PUZZLE</p>
+          <h1 data-t="title">Разблокировать след</h1>
+          <p data-t="summary"></p>
+          <button id="start" data-wp-main-start data-t="start">
+            Start game
+          </button></div>
+      </section><section class="public-guide guide" aria-label="Game guide"><h2 data-t="guideTitle"></h2><p data-t="guideBody"></p></section>
+    </main>
+    <main
+      id="stage"
+      class="screen canvas stage-canvas"
+      data-wp-standard-stage-screen
+      data-wp-logical-stage-canvas
+      data-wp-canvas-max-width="920"
+      data-wp-stage-landscape-width="760"
+      data-wp-stage-landscape-height="334"
+      style="--wp-stage-art: url('../../assets/animal-unblock-cover-v2.webp')"
+      hidden
+    >
+      <header>
+        <button data-back data-t-aria="back" aria-label="Back">←</button>
+        <h2 data-t="choose"></h2>
+        <span id="progress"></span>
+      </header>
+      <section
+        id="stageGrid"
+        class="stage-rail"
+        data-wp-stage-rail
+        data-wp-stage-recommendation="last"
+        data-t-aria="stageList"
+        aria-label="Trail list"
+      ></section>
+    </main>
+    <main id="battle" class="screen canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
+      <header>
+        <button data-back data-t-aria="back" aria-label="Back">←</button>
+        <div>
+          <small id="chapter"></small>
+          <h2 id="trailName"></h2>
+        </div>
+        <span id="moveCount"></span>
+      </header>
+      <section class="battle">
+        <div
+          id="board"
+          data-t-aria="boardLabel"
+          aria-label="Unblock Trail game board"
+        ></div>
+        <div class="tools">
+          <button id="undo" data-t="undo"></button>
+          <button id="hint" data-t="hint"></button>
+          <button id="restart" data-t="restart"></button>
+        </div>
+        <p id="status"></p>
+      </section>
+    </main>
+    <aside id="generalReserve" class="ad-reserve" hidden aria-hidden="true"></aside>
+    <dialog id="result">
+      <img
+        class="result-character"
+        src="../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp"
+        alt=""
+      />
+      <h2 data-t="resultTitle"></h2>
+      <p id="resultBody"></p>
+      <div class="result-actions">
+        <button id="resultStages" data-t="stageList"></button>
+        <button id="next" data-t="next"></button>
+        <button id="retry" data-t="retry"></button>
+      </div>
+    </dialog>
+    <script src="../../src/site-config.js"></script>
+    <script>
+      window.WONDER_SITE.localization.useLocaleRoutes = false;
+    </script>
+    <script src="/src/i18n.js?v=20260721-locale13-1"></script>
+    <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
+    <script src="levels.js"></script>
+    <script src="locales.js?v=20260726-zh-hant3"></script>
+    <script src="game.js"></script>
+    <script
+      src="../../src/stage-selector-standard.js"
+      data-wp-stage-standard
+    ></script>
+    <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
+<section class="game-page-info game-page-info-static" aria-label="Разблокировать след информация об игре">
+    
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Оригинальное руководство по игре</span><h2>Разблокировать след</h2><p>Перемещайте горизонтальные и вертикальные блоки вдоль своих осей, пока красный исследователь не найдет свободный путь через выход.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Геймплей</span><strong>Головоломка с раздвижным блоком и выходом</strong></div><div class="game-info-fact"><span>Жанр</span><strong>Головоломка · Стратегия · Животное</strong></div><div class="game-info-fact"><span>Сложность</span><strong>Легко и сложно</strong></div><div class="game-info-fact"><span>Расчетное время игры</span><strong>2-8 минут на этап</strong></div><div class="game-info-fact"><span>Обученные навыки</span><strong>Логика · Планирование · Решение проблем</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Мир и миссия</h3><p>Панко наносит на карту тридцать многолюдных лесных ворот. Каждый блок начинается с фиксированной сетки, и каждая головоломка имеет проверенную последовательность, которая освобождает отмеченного исследователя.</p>
+<p>Блоки никогда не вращаются, не прыгают и не покидают доску. Задача состоит в том, чтобы решить, какие временные ходы оставят место для решающего финального скольжения.</p></div>
+      <div class="game-info-section"><h3>Как работают системы</h3><p>Горизонтальные блоки перемещаются только влево и вправо; вертикальные блоки перемещаются только вверх и вниз.</p>
+<p>Ход останавливается перед краем доски или другим блоком. Занятые ячейки не могут перекрываться.</p>
+<p>Красный исследователь покидает сцену, когда его путь достигает отмеченной полосы выхода.</p>
+<p>«Отмена» восстанавливает один слайд, «Подсказка» идентифицирует полезный блок, а «Перезапуск» восстанавливает точный макет открытия.</p></div>
+      <div class="game-info-section"><h3>Как играть</h3><ol><li>Выберите разблокированный маршрут.</li><li>Определите каждый блок, пересекающий выходной ряд исследователя.</li><li>Перемещайте эти блокираторы только после того, как освободите пространство вдоль их допустимой оси.</li><li>Проведите исследователя через выход и продолжайте идти по следующему маршруту.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Советы по стратегии</h3><ul><li>Двигайтесь назад от полосы выезда.</li><li>Переместите блокирующий блок дальше, чем кажется необходимым, когда он должен освободить место для другого блока.</li><li>Не заполняйте единственный открытый столбец блоком, который понадобится позже.</li><li>Используйте «Отменить» для недавней ошибки позиционирования и «Перезапустить», если весь порядок неверен.</li></ul></div>
+      <div class="game-info-section"><h3>Кампания и рост сложности</h3><p>Ранние трейлы учат ограничениям осей и одиночным блокировщикам. В последующих главах используются более длинные фрагменты, узкие буферы, вложенные зависимости, множественные пересечения и плотные финальные доски.</p>
+<p>Каждый этап меняет пространственную последовательность без добавления произвольных правил движения.</p></div>
+      <div class="game-info-section"><h3>Примечание разработчика к проекту</h3><p>Направление перетаскивания, привязка к сетке, проверка столкновений и графическое изображение блока используют одну и ту же геометрию ячеек при касании, вводе с помощью мыши и клавиатуры. Полный интерфейс использует один центрированный логический макет с максимальным разрешением 920 пикселей. Представления телефона, альбомной ориентации и рабочего стола масштабируют одни и те же элементы управления, области попадания, изображения и координаты игры вместе, а не растягивают отдельные части. Таким образом, сенсорный экран, мышь и клавиатура действуют в одном и том же правовом состоянии. Главный плакат и действие «Начать игру» остаются отдельными от управления сценой, в то время как выбор сцены, битва, диалоги и результат сохраняют собственное ограниченное содержимое и путь возврата.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Примечание для родителей</h3><p>Здесь нет таймера, учетной записи, покупки или публичного счета. Разблокировки и локальный подсчет лучших ходов остаются в этом браузере. Вы можете играть без создания учетной записи. Прогресс сохраняется в локальном хранилище браузера в текущем профиле браузера, а не в онлайн-аккаунте или базе данных между устройствами. Удаление данных сайта, использование приватного просмотра, смена браузера или переход на другое устройство может привести к созданию отдельного сохранения или удалению существующего. Настройки языка, звука и ограниченного движения соответствуют общим элементам управления WeightPlay, когда браузер разрешает хранение. Ни один из результатов руководства не является медицинской, школьной или профессиональной оценкой.</p></div>
+      <div class="game-info-section"><h3>Часто задаваемые вопросы</h3><dl><div><dt>Могут ли блоки вращаться?</dt><dd>Нет, каждый блок сохраняет свою первоначальную ориентацию.</dd></div><div><dt>Почему прекратилось перетаскивание?</dt><dd>Следующая клетка была занята или находилась за пределами доски.</dd></div><div><dt>Какой блок должен выйти?</dt><dd>Четко обозначенный красный исследователь.</dd></div><div><dt>Все ли тридцать маршрутов решаемы?</dt><dd>Да, у каждого авторского макета есть проверенное решение.</dd></div><div><dt>Какие элементы управления и размеры экрана поддерживаются?</dt><dd>Те же правила поддерживают сенсорное управление, мышь и клавиатуру, если игра использует эти вводы. Интерфейс масштабируется как один логический макет для необходимых видов экрана телефона, альбомной ориентации и рабочего стола.</dd></div><div><dt>Может ли прогресс автоматически переместиться на другое устройство?</dt><dd>Нет. В настоящее время эта игра сохраняется только в локальном хранилище браузера, поэтому другой профиль браузера или устройство начинается с собственного отдельного локального прогресса, если не будет добавлена ​​будущая система учетных записей.</dd></div></dl></div>
+      
+    </div>
+  </section>
+</body>
+</html>

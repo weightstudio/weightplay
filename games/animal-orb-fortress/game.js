@@ -419,6 +419,21 @@
     arenaControlCooldownLabel: "एनिमल ऑर्ब किले का युद्ध क्षेत्र। केंद्र से {angle} डिग्री पर निशाना है। ऑर्ब को फिर तैयार होने में लगभग {seconds} सेकंड हैं; अभी नहीं दाग सकते।",
     arenaControlLimitLabel: "एनिमल ऑर्ब किले का युद्ध क्षेत्र। केंद्र से {angle} डिग्री पर निशाना है। {active}/{limit} स्पिरिट ऑर्ब उड़ रहे हैं और सीमा पूरी है; अभी नहीं दाग सकते।",
   };
+  Object.assign(text.hi, {
+    waves: "लहरें",
+    ruleBoss: "बॉस का प्रतिकार",
+    pause: "विराम",
+    pausedTitle: "हमला रुका हुआ है",
+    pausedText: "किले की लड़ाई रुकी हुई है। इस हमले को जारी रखने के लिए खेल जारी रखें, या मौजूदा लहर और अस्थायी आशीर्वाद छोड़ने के लिए मार्ग मानचित्र चुनें।",
+    resume: "जारी रखें",
+    raidMap: "मार्ग मानचित्र",
+    aimHint: "लॉन्चर से खींचकर निशाना लगाएँ, टकराकर लौटने वाला रास्ता देखें, फिर छोड़ें।",
+    keyboardAim: "केंद्र से {angle}° पर निशाना है। बाएँ/दाएँ तीर से बदलें; Space या Enter से दागें।",
+    arenaControlLabel: "एनिमल ऑर्ब किले का युद्ध क्षेत्र। केंद्र से {angle} डिग्री पर निशाना है। बाएँ और दाएँ तीर से समायोजित करें; Space या Enter से दागें।",
+    arenaControlReadyLabel: "एनिमल ऑर्ब किले का युद्ध क्षेत्र। केंद्र से {angle} डिग्री पर निशाना है। ऑर्ब तैयार है; Space या Enter से अभी दागें।",
+    arenaControlCooldownLabel: "एनिमल ऑर्ब किले का युद्ध क्षेत्र। केंद्र से {angle} डिग्री पर निशाना है। ऑर्ब को फिर तैयार होने में लगभग {seconds} सेकंड लगेंगे; अभी दाग नहीं सकते।",
+    arenaControlLimitLabel: "एनिमल ऑर्ब किले का युद्ध क्षेत्र। केंद्र से {angle} डिग्री पर निशाना है। {active}/{limit} स्पिरिट ऑर्ब उड़ रहे हैं और सक्रिय सीमा पूरी है; अभी दाग नहीं सकते।",
+  });
   text.ar = {
     arenaLabel: "ساحة حصن كرات الحيوانات",
     arenaControlLabel: "ساحة حصن كرات الحيوانات. التصويب بزاوية {angle} درجة من المركز. استخدم سهمي اليسار واليمين للضبط، واضغط مفتاح المسافة أو الإدخال للإطلاق.",
@@ -616,6 +631,25 @@
     const actualLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale;
     const value = text[actualLocale]?.[key] || text[locale]?.[key] || text.en[key] || key;
     return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
+  }
+
+  function assertHindiJourneyOwnership(actualLocale) {
+    if (actualLocale !== "hi") return;
+    const required = {
+      waves: "लहरें",
+      ruleBoss: "बॉस का प्रतिकार",
+      pausedTitle: "हमला रुका हुआ है",
+      resume: "जारी रखें",
+    };
+    const invalid = Object.entries(required)
+      .filter(([key, expected]) => text.hi?.[key] !== expected)
+      .map(([key]) => key);
+    const keyboardCopy = `${text.hi.keyboardAim || ""} ${text.hi.arenaControlLabel || ""}`;
+    const pauseCopy = text.hi.pausedText || "";
+    if (!keyboardCopy.includes("Space") || !keyboardCopy.includes("Enter")) invalid.push("keyboard tokens");
+    if (/\b(?:waves|Boss counterplay|RAID|Resume)\b/i.test(Object.values(text.hi).join(" "))) invalid.push("English fallback");
+    if (!pauseCopy.includes("मौजूदा लहर") || !pauseCopy.includes("अस्थायी आशीर्वाद")) invalid.push("pausedText");
+    if (invalid.length) throw new Error(`animal-orb-fortress Hindi ownership failed: ${[...new Set(invalid)].join(", ")}`);
   }
 
   function localized(value) {
@@ -914,6 +948,7 @@
     const requested = next === "zh-Hant" && current === "zh-Hans" ? current : next || "en";
     if (current !== requested) window.WonderI18n?.setLocale?.(requested);
     locale = window.WonderI18n?.legacyLocale?.(requested) || requested;
+    assertHindiJourneyOwnership(requested);
     const gameOwnedLocalizationRoots = [
       document.querySelector(".brand"),
       document.querySelector(".menu-copy > strong"),
@@ -923,6 +958,10 @@
     ];
     gameOwnedLocalizationRoots.forEach((node) => {
       if (["es", "it", "ja"].includes(requested)) node?.setAttribute("data-runtime-localize", "off");
+      else node?.removeAttribute("data-runtime-localize");
+    });
+    [nodes.hintText, nodes.pausePanel].forEach((node) => {
+      if (requested === "hi") node?.setAttribute("data-runtime-localize", "off");
       else node?.removeAttribute("data-runtime-localize");
     });
     writeStorage(localeKey, requested);
@@ -1942,12 +1981,13 @@
     nodes.nextStageBtn.disabled = !hasNextStage;
     nodes.nextStageBtn.classList.toggle("primary-btn", hasNextStage);
     nodes.nextStageBtn.classList.toggle("secondary-btn", !hasNextStage);
-    nodes.resultMenuBtn.classList.toggle("primary-btn", !hasNextStage);
-    nodes.resultMenuBtn.classList.toggle("secondary-btn", hasNextStage);
-    nodes.retryBtn.classList.remove("primary-btn");
-    nodes.retryBtn.classList.add("secondary-btn");
+    const menuIsPrimary = win && !hasNextStage;
+    nodes.resultMenuBtn.classList.toggle("primary-btn", menuIsPrimary);
+    nodes.resultMenuBtn.classList.toggle("secondary-btn", !menuIsPrimary);
+    nodes.retryBtn.classList.toggle("primary-btn", !win);
+    nodes.retryBtn.classList.toggle("secondary-btn", win);
     show(nodes.resultPanel);
-    (hasNextStage ? nodes.nextStageBtn : nodes.resultMenuBtn).focus({ preventScroll: true });
+    (hasNextStage ? nodes.nextStageBtn : win ? nodes.resultMenuBtn : nodes.retryBtn).focus({ preventScroll: true });
     renderMenu();
     playSound(win ? "success" : "wrong", 0.2);
     window.WonderAnalytics?.track("raid_result", { game_id: GAME_ID, win, wave: Math.min(3, state.wave), stones });

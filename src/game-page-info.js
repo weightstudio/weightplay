@@ -7912,7 +7912,7 @@
   }, "動物三消收納", "动物三消收纳");
 
   registerExpandedGuide("animal-unblock", {
-    title: "Animal Unblock Trail", gameplay: "Sliding Block Exit Puzzle",
+    title: "Unblock Trail", gameplay: "Sliding Block Exit Puzzle",
     intro: "Slide horizontal and vertical blocks along their own axes until the red explorer gains a clear route through the exit.",
     story: ["Panko maps thirty crowded forest gates. Every block begins on a fixed grid and every puzzle has a verified sequence that releases the marked explorer.", "Blocks never rotate, jump, or leave the board. The challenge is deciding which temporary moves create room for the decisive final slide."],
     systems: ["Horizontal blocks move only left and right; vertical blocks move only up and down.", "A move stops before the board edge or another block. Occupied cells cannot overlap.", "The red explorer clears the stage when its path reaches the marked exit lane.", "Undo restores one slide, Hint identifies a useful block, and Restart restores the exact opening layout."],
@@ -7922,7 +7922,7 @@
     designNote: "The drag direction, grid snapping, collision test, and block artwork use the same cell geometry on touch, mouse, and keyboard input.",
     parent: "There is no timer, account, purchase, or public score. Unlocks and local best move counts stay in this browser.",
     faq: [["Can blocks rotate?", "No, each block keeps its original orientation."], ["Why did a drag stop?", "The next cell was occupied or outside the board."], ["Which block must exit?", "The clearly marked red explorer."], ["Are all thirty trails solvable?", "Yes, each authored layout has a verified solution."]]
-  }, "動物暢通小徑", "动物畅通小径");
+  }, "解鎖滑塊", "解锁滑块");
 
   registerExpandedGuide("animal-spectrum-pulse", {
     title: "Animal Spectrum Pulse", gameplay: "One-Touch Timing Arcade",

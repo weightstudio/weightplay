@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="hi">
+  <head>
+    <base href="/games/animal-unblock/" />
+    <link rel="canonical" href="https://weightplay.com/hi/games/animal-unblock/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-unblock/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-unblock/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-unblock/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-unblock/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-unblock/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-unblock/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-unblock/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-unblock/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-unblock/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-unblock/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-unblock/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-unblock/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-unblock/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-unblock/" />
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="robots" content="index,follow" />
+    <meta name="weightplay-audience" content="general" />
+    <title>ट्रेल को अनब्लॉक करें | WeightPlay</title>
+    <link
+      rel="stylesheet"
+      href="../../src/stage-selector-standard.css"
+      data-wp-stage-standard
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="result-v4.css" />
+    <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
+  <meta name="description" content="क्षैतिज और ऊर्ध्वाधर ब्लॉकों को उनकी अपनी धुरी पर तब तक स्लाइड करें जब तक कि लाल एक्सप्लोरर को निकास के माध्यम से एक स्पष्ट मार्ग न मिल जाए।" />
+    <meta property="og:title" content="ट्रेल को अनब्लॉक करें | WeightPlay" />
+    <meta property="og:description" content="क्षैतिज और ऊर्ध्वाधर ब्लॉकों को उनकी अपनी धुरी पर तब तक स्लाइड करें जब तक कि लाल एक्सप्लोरर को निकास के माध्यम से एक स्पष्ट मार्ग न मिल जाए।" />
+    <meta property="og:url" content="https://weightplay.com/hi/games/animal-unblock/" />
+    <meta name="twitter:title" content="ट्रेल को अनब्लॉक करें | WeightPlay" />
+    <meta name="twitter:description" content="क्षैतिज और ऊर्ध्वाधर ब्लॉकों को उनकी अपनी धुरी पर तब तक स्लाइड करें जब तक कि लाल एक्सप्लोरर को निकास के माध्यम से एक स्पष्ट मार्ग न मिल जाए।" />
+  </head>
+  <body data-wp-game-id="animal-unblock" data-wp-combined-sound="true">
+    <main id="main" class="screen main main-screen" data-screen="main">
+      <header>
+        <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
+        <strong data-t="shortTitle">UNBLOCK</strong>
+        <select id="locale"></select>
+      </header>
+      <section class="hero">
+        <img
+          src="../../assets/animal-unblock-cover-v2.webp"
+          data-t-alt="coverAlt"
+          alt="ट्रेल को अनब्लॉक करें game artwork"
+        />
+        <div>
+          <p data-t="kicker">PANKO'S SLIDE PUZZLE</p>
+          <h1 data-t="title">ट्रेल को अनब्लॉक करें</h1>
+          <p data-t="summary"></p>
+          <button id="start" data-wp-main-start data-t="start">
+            Start game
+          </button></div>
+      </section><section class="public-guide guide" aria-label="Game guide"><h2 data-t="guideTitle"></h2><p data-t="guideBody"></p></section>
+    </main>
+    <main
+      id="stage"
+      class="screen canvas stage-canvas"
+      data-wp-standard-stage-screen
+      data-wp-logical-stage-canvas
+      data-wp-canvas-max-width="920"
+      data-wp-stage-landscape-width="760"
+      data-wp-stage-landscape-height="334"
+      style="--wp-stage-art: url('../../assets/animal-unblock-cover-v2.webp')"
+      hidden
+    >
+      <header>
+        <button data-back data-t-aria="back" aria-label="Back">←</button>
+        <h2 data-t="choose"></h2>
+        <span id="progress"></span>
+      </header>
+      <section
+        id="stageGrid"
+        class="stage-rail"
+        data-wp-stage-rail
+        data-wp-stage-recommendation="last"
+        data-t-aria="stageList"
+        aria-label="Trail list"
+      ></section>
+    </main>
+    <main id="battle" class="screen canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
+      <header>
+        <button data-back data-t-aria="back" aria-label="Back">←</button>
+        <div>
+          <small id="chapter"></small>
+          <h2 id="trailName"></h2>
+        </div>
+        <span id="moveCount"></span>
+      </header>
+      <section class="battle">
+        <div
+          id="board"
+          data-t-aria="boardLabel"
+          aria-label="Unblock Trail game board"
+        ></div>
+        <div class="tools">
+          <button id="undo" data-t="undo"></button>
+          <button id="hint" data-t="hint"></button>
+          <button id="restart" data-t="restart"></button>
+        </div>
+        <p id="status"></p>
+      </section>
+    </main>
+    <aside id="generalReserve" class="ad-reserve" hidden aria-hidden="true"></aside>
+    <dialog id="result">
+      <img
+        class="result-character"
+        src="../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp"
+        alt=""
+      />
+      <h2 data-t="resultTitle"></h2>
+      <p id="resultBody"></p>
+      <div class="result-actions">
+        <button id="resultStages" data-t="stageList"></button>
+        <button id="next" data-t="next"></button>
+        <button id="retry" data-t="retry"></button>
+      </div>
+    </dialog>
+    <script src="../../src/site-config.js"></script>
+    <script>
+      window.WONDER_SITE.localization.useLocaleRoutes = false;
+    </script>
+    <script src="/src/i18n.js?v=20260721-locale13-1"></script>
+    <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
+    <script src="levels.js"></script>
+    <script src="locales.js?v=20260726-zh-hant3"></script>
+    <script src="game.js"></script>
+    <script
+      src="../../src/stage-selector-standard.js"
+      data-wp-stage-standard
+    ></script>
+    <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
+<section class="game-page-info game-page-info-static" aria-label="ट्रेल को अनब्लॉक करें खेल की जानकारी">
+    
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मूल गेम गाइड</span><h2>ट्रेल को अनब्लॉक करें</h2><p>क्षैतिज और ऊर्ध्वाधर ब्लॉकों को उनकी अपनी धुरी पर तब तक स्लाइड करें जब तक कि लाल एक्सप्लोरर को निकास के माध्यम से एक स्पष्ट मार्ग न मिल जाए।</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>गेमप्ले</span><strong>स्लाइडिंग ब्लॉक निकास पहेली</strong></div><div class="game-info-fact"><span>शैली</span><strong>पहेली · रणनीति · पशु</strong></div><div class="game-info-fact"><span>कठिनाई</span><strong>चुनौती देना आसान</strong></div><div class="game-info-fact"><span>खेलने का अनुमानित समय</span><strong>प्रति चरण 2-8 मिनट</strong></div><div class="game-info-fact"><span>कौशल प्रशिक्षित</span><strong>तर्क · योजना · समस्या का समाधान</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>विश्व और मिशन</h3><p>पैंको तीस भीड़ भरे वन द्वारों का नक्शा बनाता है। प्रत्येक ब्लॉक एक निश्चित ग्रिड पर शुरू होता है और प्रत्येक पहेली में एक सत्यापित अनुक्रम होता है जो चिह्नित एक्सप्लोरर को जारी करता है।</p>
+<p>ब्लॉक कभी भी घूमते नहीं हैं, कूदते नहीं हैं, या बोर्ड से बाहर नहीं निकलते हैं। चुनौती यह तय करना है कि कौन सी अस्थायी चालें निर्णायक अंतिम स्लाइड के लिए जगह बनाती हैं।</p></div>
+      <div class="game-info-section"><h3>सिस्टम कैसे काम करते हैं</h3><p>क्षैतिज ब्लॉक केवल बाएँ और दाएँ चलते हैं; ऊर्ध्वाधर ब्लॉक केवल ऊपर और नीचे चलते हैं।</p>
+<p>एक चाल बोर्ड किनारे या किसी अन्य ब्लॉक से पहले रुक जाती है। अधिगृहीत कोशिकाएँ ओवरलैप नहीं हो सकतीं।</p>
+<p>जब लाल खोजकर्ता का मार्ग चिह्नित निकास लेन तक पहुँच जाता है तो वह मंच साफ़ कर देता है।</p>
+<p>पूर्ववत करें एक स्लाइड को पुनर्स्थापित करता है, संकेत एक उपयोगी ब्लॉक की पहचान करता है, और रीस्टार्ट सटीक उद्घाटन लेआउट को पुनर्स्थापित करता है।</p></div>
+      <div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>एक खुला मार्ग चुनें.</li><li>एक्सप्लोरर की निकास पंक्ति को पार करने वाले प्रत्येक ब्लॉक की पहचान करें।</li><li>उन अवरोधकों को उनकी कानूनी धुरी पर जगह बनाने के बाद ही हटाएँ।</li><li>एक्सप्लोरर को निकास के माध्यम से स्लाइड करें और अगले पथ पर जारी रखें।</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>रणनीति युक्तियाँ</h3><ul><li>निकास लेन से पीछे की ओर कार्य करें।</li><li>एक अवरोधक को आवश्यकता से अधिक दूर ले जाएँ जब उसे दूसरे ब्लॉक के लिए जगह बनानी पड़े।</li><li>एकमात्र खुले कॉलम को बाद में आवश्यक ब्लॉक से भरने से बचें।</li><li>हाल की स्थिति निर्धारण त्रुटि के लिए पूर्ववत करें का उपयोग करें और संपूर्ण ऑर्डर गलत होने पर पुनरारंभ करें।</li></ul></div>
+      <div class="game-info-section"><h3>अभियान और कठिनाई वृद्धि</h3><p>प्रारंभिक ट्रेल्स अक्ष सीमा और एकल अवरोधक सिखाते हैं। बाद के अध्यायों में लंबे टुकड़े, संकीर्ण बफ़र्स, नेस्टेड निर्भरताएँ, एकाधिक क्रॉसिंग और घने समापन बोर्ड का उपयोग किया जाता है।</p>
+<p>प्रत्येक चरण मनमाने ढंग से गति नियमों को जोड़े बिना स्थानिक अनुक्रम को बदलता है।</p></div>
+      <div class="game-info-section"><h3>डेवलपर डिज़ाइन नोट</h3><p>ड्रैग दिशा, ग्रिड स्नैपिंग, टकराव परीक्षण और ब्लॉक आर्टवर्क टच, माउस और कीबोर्ड इनपुट पर समान सेल ज्यामिति का उपयोग करते हैं। संपूर्ण इंटरफ़ेस 920-पिक्सेल अधिकतम के साथ एक केंद्रित तार्किक लेआउट का उपयोग करता है। फ़ोन, लैंडस्केप और डेस्कटॉप दृश्य अलग-अलग टुकड़ों को फैलाने के बजाय समान नियंत्रण, हिट क्षेत्र, कलाकृति और गेम समन्वय को एक साथ मापते हैं। इसलिए टच, माउस और कीबोर्ड एक ही कानूनी स्थिति पर कार्य करते हैं। मुख्य पोस्टर और स्टार्ट गेम एक्शन स्टेज प्रबंधन से अलग रहते हैं, जबकि स्टेज चयन, लड़ाई, संवाद और परिणाम अपनी स्वयं की सीमित सामग्री और वापसी पथ रखते हैं।</p></div>
+      <div class="game-info-section game-info-parent"><h3>अभिभावक नोट</h3><p>कोई टाइमर, खाता, खरीदारी या सार्वजनिक स्कोर नहीं है। अनलॉक और स्थानीय सर्वोत्तम चाल गणनाएँ इस ब्राउज़र में रहती हैं। आप बिना अकाउंट बनाये खेल सकते हैं. प्रगति को वर्तमान ब्राउज़र प्रोफ़ाइल पर स्थानीय ब्राउज़र संग्रहण में सहेजा जाता है, किसी ऑनलाइन खाते या क्रॉस-डिवाइस डेटाबेस में नहीं। साइट डेटा साफ़ करना, निजी ब्राउज़िंग का उपयोग करना, ब्राउज़र बदलना, या किसी अन्य डिवाइस पर ले जाना एक अलग सेव बना सकता है या मौजूदा को हटा सकता है। जब ब्राउज़र भंडारण की अनुमति देता है तो भाषा, ध्वनि और कम-गति प्राथमिकताएँ साझा WeightPlay नियंत्रणों का पालन करती हैं। कोई भी मार्गदर्शक परिणाम चिकित्सा, स्कूल या व्यावसायिक मूल्यांकन नहीं है।</p></div>
+      <div class="game-info-section"><h3>अक्सर पूछे जाने वाले प्रश्न</h3><dl><div><dt>क्या ब्लॉक घूम सकते हैं?</dt><dd>नहीं, प्रत्येक ब्लॉक अपना मूल अभिविन्यास रखता है।</dd></div><div><dt>एक घसीटना क्यों रुक गया?</dt><dd>अगली सेल पर कब्जा कर लिया गया या बोर्ड के बाहर।</dd></div><div><dt>किस ब्लॉक से बाहर निकलना चाहिए?</dt><dd>स्पष्ट रूप से चिह्नित लाल खोजकर्ता.</dd></div><div><dt>क्या सभी तीस रास्ते हल करने योग्य हैं?</dt><dd>हां, प्रत्येक लिखित लेआउट का एक सत्यापित समाधान होता है।</dd></div><div><dt>कौन से नियंत्रण और स्क्रीन आकार समर्थित हैं?</dt><dd>वही नियम स्पर्श, माउस और कीबोर्ड का समर्थन करते हैं जहां गेम उन इनपुट का उपयोग करता है। इंटरफ़ेस आवश्यक फ़ोन, लैंडस्केप और डेस्कटॉप व्यूपोर्ट में एक तार्किक लेआउट के रूप में स्केल करता है।</dd></div><div><dt>क्या प्रगति स्वचालित रूप से किसी अन्य डिवाइस पर जा सकती है?</dt><dd>नहीं, यह गेम वर्तमान में केवल स्थानीय ब्राउज़र संग्रहण में सहेजता है, इसलिए कोई अन्य ब्राउज़र प्रोफ़ाइल या डिवाइस अपनी अलग स्थानीय प्रगति के साथ शुरू होता है जब तक कि कोई भविष्य खाता सिस्टम नहीं जोड़ा जाता है।</dd></div></dl></div>
+      
+    </div>
+  </section>
+</body>
+</html>
