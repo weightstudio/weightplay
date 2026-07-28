@@ -1620,6 +1620,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "ArrowDown": "तीर नीचे",
   "ArrowLeft": "एरोलेफ्ट",
   "ArrowLeft ArrowRight A D": "तीर बायां तीर दायां ए डी",
+  "ArrowLeft ArrowRight A D Space": "एरोलेफ्ट एरोराइट ए डी स्पेस",
   "ArrowLeft ArrowRight ArrowUp ArrowDown": "तीरबायाँ तीरदायाँ तीरऊपर तीरनीचे",
   "ArrowLeft ArrowRight ArrowUp ArrowDown w a s d": "एरोलेफ्ट एरोराइट एरोअप एरोडाउन डब्ल्यू ए एस डी",
   "ArrowRight": "तीरदाएँ",

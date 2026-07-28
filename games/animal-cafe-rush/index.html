@@ -38,7 +38,7 @@
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260711-cafe-release1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="style.css?v=20260722-stage-upgrades1" data-wp-stage-standard data-wp-battle-standard />
+    <link rel="stylesheet" href="style.css?v=20260729-interface-v4-1" data-wp-stage-standard data-wp-battle-standard />
     <script data-wp-stage-standard>/* Shared Kids Stage selector owns pointer drag and settle; Animal Cafe Rush owns selected-day state and activation. */</script>
     <script data-wp-battle-standard>/* Animal Cafe Rush owns its native Kids Battle Canvas. */</script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Animal Cafe Rush","url":"https://weightplay.com/games/animal-cafe-rush/","image":"https://weightplay.com/assets/animal-cafe-rush-cover.png","description":"Run a 30-day animal cafe campaign with pictured recipes, numbered cooking order, VIP priority, alternating tables, animal variety rules, and six Cafe Reviews.","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":["en","zh-Hant","zh-Hans"],"isAccessibleForFree":true,"genre":["Animal Games","Time Management","Family Browser Game"],"audience":{"@type":"Audience","audienceType":"Kids and families","suggestedMinAge":6}}</script>
@@ -73,14 +73,16 @@
           <button id="startBtn" class="primary-btn" type="button" data-ui="startSelected" hidden>Start Selected Day</button>
         </div>
       </section>
-      <section id="playPanel" class="play-panel is-hidden" data-no-mobile-immersive="true" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
-        <button id="backToMenuBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to menu">&larr;</button>
-        <div class="play-hud"><div><span data-ui="day">Day</span><b id="playDay">1</b></div><div><span data-ui="served">Served</span><b id="servedText">0/3</b></div><div><span data-ui="coins">Coins</span><b id="playCoins">0</b></div></div>
+      <section id="playPanel" class="play-panel is-hidden" data-no-mobile-immersive="true" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="360">
+        <header class="play-head">
+          <button id="backToMenuBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to menu">&larr;</button>
+          <div class="play-hud"><div><span data-ui="day">Day</span><b id="playDay">1</b></div><div><span data-ui="served">Served</span><b id="servedText">0/3</b></div><div><span data-ui="coins">Coins</span><b id="playCoins">0</b></div></div>
+        </header>
         <div id="objectiveRow" class="objective-row"></div>
         <div class="cafe-scene"><img class="cafe-bg" src="../../assets/animal-cafe-rush-cafe-bg.webp" alt="" /><div id="customerRow" class="customer-row"></div></div>
         <div class="prep-row"><div id="stationRow" class="station-row"></div><div id="tray" class="tray" aria-live="polite"></div></div>
         <div id="playMessage" class="play-message" aria-live="polite"></div>
-        <section id="resultPanel" class="result-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle"><div class="result-card"><img src="../../assets/animal-cafe-rush-lion-guide.webp" alt="" /><h2 id="resultTitle"></h2><p id="resultText"></p><p id="skillText"></p><div><button id="retryBtn" class="secondary-btn is-hidden" type="button" data-ui="retry">Try again</button><button id="nextBtn" class="primary-btn" type="button" data-ui="next">Next day</button><button id="menuBtn" class="secondary-btn" type="button" data-ui="backStage">Back to Days</button></div></div></section>
+        <section id="resultPanel" class="result-panel battle-screen is-hidden" data-screen="battle" role="dialog" aria-modal="true" aria-labelledby="resultTitle"><div class="result-card"><img src="../../assets/animal-cafe-rush-lion-guide.webp" alt="" /><h2 id="resultTitle"></h2><p id="resultText"></p><p id="skillText"></p><div class="result-actions"><button id="menuBtn" class="secondary-btn" type="button" data-ui="backStage">Back to Days</button><button id="nextBtn" class="secondary-btn" type="button" data-ui="next">Next day</button><button id="retryBtn" class="secondary-btn" type="button" data-ui="retry">Try again</button></div></div></section>
       </section>
     </main>
     <!-- adsense-static-guide:start -->
@@ -149,7 +151,7 @@
     <script src="../../src/sound.js?v=20260720-locale11"></script>
     <script src="../../src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
-    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script src="game.js?v=20260729-interface-v4-1"></script>
     <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
     <script>window.addEventListener("load", () => document.querySelector("#loadingPanel")?.classList.add("hidden"), { once: true });</script>
     <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>

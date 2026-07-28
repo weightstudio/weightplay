@@ -486,6 +486,10 @@
     return replay;
   }
   function commitResultDecision(action){if(resultDecisionCommitted||$("result").classList.contains("hidden"))return;resultDecisionCommitted=true;action();}
+  function resultAnalyticsPayload(){
+    const config=routeConfig();
+    return{gameId:"animal-abyss-diver",stage:state.route,mode:"mission",result:state.resultOutcome,won:state.resultOutcome==="clear",salvage:state.salvage,target:config.target,zones:config.zones,oxygen:state.oxygen,coins_earned:state.resultEarned};
+  }
   function resultBackgroundNodes(){return [...document.querySelectorAll(".battle-canvas > :not(#result)")];}
   function setResultOwnership(active){resultBackgroundNodes().forEach(node=>{node.inert=active;if(active)node.setAttribute("aria-hidden","true");else node.removeAttribute("aria-hidden");});if(active)requestAnimationFrame(()=>resultPrimaryAction?.focus({preventScroll:true}));}
   function syncSoundToggle(activeViewport){const toggle=document.querySelector("button[data-sound-toggle]");if(toggle)toggle.style.setProperty("display",activeViewport?"none":"grid","important");}
@@ -619,6 +623,8 @@
     resultDecisionCommitted=false;
     resultPrimaryAction=canAdvance?$("nextBtn"):finalClear?$("menuBtn"):replayBtn;
     const earned=mode==="fail"||mode==="combat"?Math.floor(state.salvage/2):state.salvage+(clear?2:0);
+    state.resultOutcome=mode;
+    state.resultEarned=earned;
     const unlockedBefore=save.unlocked;
     save.coins+=earned;
     if(clear){save.rank+=1;save.unlocked=Math.max(save.unlocked,Math.min(routes.length,state.route+1));}
@@ -771,9 +777,9 @@
   $("quitKeep").onclick=()=>setQuit(false,{resume:true});
   $("quitLeave").onclick=leaveDive;
   ensureResultActions();
-  $("menuBtn").onclick=()=>commitResultDecision(leaveDive);
-  $("nextBtn").onclick=()=>commitResultDecision(()=>start(Math.min(routes.length,state.route+1)));
-  $("replayBtn").onclick=()=>commitResultDecision(()=>start(state.route));
+  $("menuBtn").onclick=()=>commitResultDecision(()=>{window.WonderAnalytics?.track?.("game_result_menu",resultAnalyticsPayload());leaveDive();});
+  $("nextBtn").onclick=()=>commitResultDecision(()=>{const payload=resultAnalyticsPayload(),nextRoute=Math.min(routes.length,state.route+1);window.WonderAnalytics?.track?.("game_next_stage",{...payload,next_stage:nextRoute});start(nextRoute);});
+  $("replayBtn").onclick=()=>commitResultDecision(()=>{window.WonderAnalytics?.track?.("game_restart",{...resultAnalyticsPayload(),source:"result"});start(state.route);});
   window.addEventListener("blur",()=>{windowFocused=false;suspendDiveAsync();});
   window.addEventListener("focus",()=>{windowFocused=true;resumeDiveAsync();});
   document.addEventListener("visibilitychange",()=>{if(document.hidden)suspendDiveAsync();else if(windowFocused)resumeDiveAsync();});

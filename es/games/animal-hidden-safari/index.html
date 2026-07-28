@@ -37,7 +37,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-hidden-safari/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-hidden-safari/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-hidden-safari/" />
-    <link rel="stylesheet" href="style.css?v=20260715-kids-canvas1" data-wp-stage-standard data-wp-battle-standard />
+    <link rel="stylesheet" href="style.css?v=20260729-interface-v4-1" data-wp-stage-standard data-wp-battle-standard />
     <script data-wp-stage-standard>/* Hidden Safari owns its native Kids Stage rail. */</script>
     <script data-wp-battle-standard>/* Hidden Safari owns its native Kids Battle Canvas. */</script>
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
@@ -111,7 +111,7 @@
       </section>
 
       <section id="playPanel" class="play-panel hidden" data-wp-canvas-max-width="920">
-        <div class="play-head">
+        <header class="play-head">
           <button id="backToStagesBtn" class="play-return" data-wp-return="battle" type="button" data-aria="backToHabitats" aria-label="Back to habitats">&larr;</button>
           <div class="progress-card">
             <span id="stageText">Stage 1</span>
@@ -119,7 +119,7 @@
           </div>
           <button id="hintBtn" class="hint-btn" type="button"><span data-ui="hint">Hint</span> <b id="hintCount">2</b></button>
           <p id="hintStatus" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></p>
-        </div>
+        </header>
 
         <div id="scene" class="scene" data-aria="hiddenAnimalScene" aria-label="Hidden animal scene">
           <div id="targetsLayer" class="targets-layer"></div>
@@ -135,7 +135,7 @@
           </div>
         </section>
 
-      <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText">
+      <div id="resultPanel" class="result-panel battle-screen hidden" data-screen="battle" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText">
         <div class="result-card">
         <img class="result-celebration" src="../../assets/animal-hidden-safari-result-celebration.webp" alt="" draggable="false" />
           <strong id="resultTitle">Great find!</strong>
@@ -150,9 +150,11 @@
             </dl>
             <p id="progressComparison"></p>
           </section>
-          <button id="nextStageBtn" class="result-primary-action" type="button" data-ui="nextStage">Next Habitat</button>
-          <button id="retryBtn" type="button" data-ui="retry">Try Again</button>
-          <button id="resultStagesBtn" type="button" data-ui="stages">Habitats</button>
+          <div class="result-actions">
+            <button id="resultStagesBtn" type="button" data-ui="stages">Habitats</button>
+            <button id="nextStageBtn" class="result-primary-action" type="button" data-ui="nextStage">Next Habitat</button>
+            <button id="retryBtn" type="button" data-ui="retry">Try Again</button>
+          </div>
         </div>
       </div>
 
@@ -206,7 +208,7 @@
     <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
-    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script src="game.js?v=20260729-interface-v4-1"></script>
     <script>
       (() => {
         const loadGameInfo = () => {

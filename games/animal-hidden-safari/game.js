@@ -704,7 +704,9 @@
     nodes.resultPanel.classList.add("hidden");
     document.documentElement.classList.remove("safari-stage");
     document.body.classList.remove("safari-stage", "safari-playing", "safari-result");
-    nodes.startGameBtn.focus({ preventScroll: true });
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => nodes.startGameBtn.focus({ preventScroll: true }));
+    });
   }
 
   function startStage(index) {
@@ -1030,7 +1032,8 @@
     saveProgress(starCount, seconds, hintsUsed);
     renderResult();
     const isFinalStage = currentStage >= stages.length - 1;
-    nodes.nextStageBtn.classList.toggle("hidden", isFinalStage);
+    nodes.nextStageBtn.disabled = isFinalStage;
+    nodes.nextStageBtn.setAttribute("aria-disabled", String(isFinalStage));
     nodes.nextStageBtn.classList.toggle("result-primary-action", !isFinalStage);
     nodes.resultStagesBtn.classList.toggle("result-primary-action", isFinalStage);
     nodes.resultPanel.classList.remove("hidden");

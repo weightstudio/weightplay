@@ -373,7 +373,7 @@ body:not(.safari-main) .wp-tutorial-button { display: none !important; }
   .result-stats { grid-column: 2 / 4; grid-row: 3; }
   .reward-row { grid-column: 2; grid-row: 4; }
   .skill-report { grid-column: 3; grid-row: 4; height: 100%; }
-  .result-actions { grid-column: 2 / 4; grid-row: 5; width: 100%; }
+  .result-actions { grid-column: 1 / 4; grid-row: 5; width: auto; margin-left: 188px; }
   .result-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: 54px; gap: 8px; }
 }
 

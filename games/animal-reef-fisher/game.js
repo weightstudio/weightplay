@@ -814,7 +814,13 @@
   }
 
   function focusMainAction() {
-    nodes.startBtn.focus({ preventScroll: true });
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        if (state === "main" && !nodes.mainPanel.classList.contains("is-hidden")) {
+          nodes.startBtn.focus({ preventScroll: true });
+        }
+      });
+    });
   }
 
   function updateSonarButton() {

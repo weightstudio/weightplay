@@ -61,7 +61,8 @@
     const board=$("#board");board.innerHTML="";
     values.forEach((value,index)=>{
       const button=document.createElement("button");button.className=`tile${value===null?" empty":""}${picked===index?" selected":""}`;button.dataset.index=index;button.setAttribute("role","gridcell");
-      if(value!==null){button.textContent=value;button.setAttribute("aria-label",t("tileLabel",{value,row:Math.floor(index/level.cols)+1,col:index%level.cols+1}));button.onclick=()=>choose(index)}
+      if(value===null){button.disabled=true;button.tabIndex=-1;button.setAttribute("aria-hidden","true")}
+      else{button.textContent=value;button.setAttribute("aria-selected",picked===index?"true":"false");button.setAttribute("aria-label",t("tileLabel",{value,row:Math.floor(index/level.cols)+1,col:index%level.cols+1}));button.onclick=()=>choose(index)}
       board.append(button);
     });
     $("#pairsLeft").textContent=t("pairsLeft",{n:values.filter(value=>value!==null).length/2});$("#undo").disabled=!history.length;

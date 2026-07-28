@@ -734,3 +734,148 @@ body.is-cafe-playing :is(#resultPanel, #leavePanel) .result-card {
     max-height: 48px;
   }
 }
+
+/* Interface V4: semantic Battle header and three persistent Result tracks. */
+.play-head {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.play-return {
+  position: static;
+  width: 48px;
+  min-width: 48px;
+  max-width: 48px;
+  height: 48px;
+  min-height: 48px;
+  max-height: 48px;
+}
+
+.play-hud { padding-left: 0; }
+
+body.is-cafe-playing #playPanel.play-panel {
+  grid-template-rows: 48px 44px minmax(0, 1fr) 142px 30px;
+}
+
+#resultPanel .result-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+}
+
+#resultPanel .result-actions > button {
+  width: 100%;
+  min-width: 0;
+  height: 48px;
+  min-height: 48px;
+  max-height: 48px;
+  padding: 0 10px;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 1.2;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+#resultPanel .result-actions > button:disabled {
+  cursor: not-allowed;
+  opacity: .48;
+  box-shadow: none;
+  filter: saturate(.45);
+}
+
+body.is-cafe-playing :is(.wp-generated-battle-header, .wp-generated-main-header, .wp-shell-settings) {
+  display: none !important;
+}
+
+@media (max-height: 430px) and (orientation: landscape) {
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing #playPanel.play-panel {
+    grid-template-columns: 430px minmax(0, 1fr);
+    grid-template-rows: 48px 44px minmax(0, 1fr) 30px;
+    gap: 6px;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing .play-head {
+    position: absolute;
+    inset: 8px 8px auto;
+    z-index: 4;
+    grid-template-columns: 48px minmax(0, 1fr) 306px;
+    height: 48px;
+    pointer-events: none;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing .play-head > * {
+    pointer-events: auto;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing .play-hud {
+    grid-column: 3;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing .cafe-scene {
+    grid-column: 1;
+    grid-row: 1 / 5;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing .objective-row {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing .prep-row {
+    grid-column: 2;
+    grid-row: 3;
+    grid-template-columns: minmax(0, 1fr) 90px;
+    gap: 6px;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing .station-row {
+    gap: 4px;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing .station.food-tile .food-icon {
+    width: min(34px, 72%);
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing .tray .food-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing .play-message {
+    grid-column: 2;
+    grid-row: 4;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing #resultPanel .result-card {
+    grid-template-columns: 132px minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(0, 1fr) 48px;
+    align-content: center;
+    width: min(100%, 680px);
+    height: 328px;
+    min-height: 328px;
+    max-height: 328px;
+    overflow: hidden;
+    text-align: left;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing #resultPanel .result-card > img {
+    grid-column: 1;
+    grid-row: 1 / 4;
+    width: 118px;
+    height: 118px;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing #resultPanel .result-card > :is(h2, p) {
+    grid-column: 2;
+  }
+
+  body[data-wp-game-id="animal-cafe-rush"].is-cafe-playing #resultPanel .result-actions {
+    grid-column: 1 / 3;
+    grid-row: 4;
+  }
+}

@@ -102,7 +102,7 @@
     });
     if (center) centerStage(selected);
   }
-  function renderBoard() {
+  function renderBoard(focusIndex = -1) {
     const wet = water(), board = $("board"); board.innerHTML = "";
     run.tiles.forEach((tile, index) => {
       const pipe = document.createElement("button");
@@ -115,11 +115,12 @@
       pipe.disabled = tile.target || run.completed;
       const flow = flowSvg(tile, index, wet.has(index));
       if (flow) pipe.append(flow);
-      if (!tile.target) pipe.onclick = () => { if(run.completed)return;run.history.push(run.tiles.map(item => item.rot)); tile.rot = (tile.rot + 1) % 4; run.moves++; renderBoard(); if (winReady()) complete(); };
+      if (!tile.target) pipe.onclick = event => { if(run.completed)return;run.history.push(run.tiles.map(item => item.rot)); tile.rot = (tile.rot + 1) % 4; run.moves++; renderBoard(event.detail === 0 ? index : -1); if (winReady()) complete(); };
       board.append(pipe);
     });
     $("moves").textContent = text("moves", { n: run.moves });
     $("cue").textContent = text("cue");
+    if (focusIndex >= 0 && !board.children[focusIndex]?.disabled) board.children[focusIndex].focus();
   }
   function startStage() {
     cancelCompletionReveal();

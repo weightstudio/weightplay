@@ -162,3 +162,22 @@
   $("#stageBack")?.addEventListener("click",()=>settleNavigationFocus("main","#start"));
   ["#leaveStage","#resultStage"].forEach(selector=>$(selector)?.addEventListener("click",()=>settleNavigationFocus("stage",'.stage-card.centered[aria-current="true"]',".stage-card")));
 })();
+
+(()=>{
+  const arena=document.querySelector("#arena");
+  if(!arena)return;
+  arena.tabIndex=0;
+  arena.setAttribute("aria-keyshortcuts","ArrowLeft ArrowRight A D Space");
+  const movementKeys=new Set(["ArrowLeft","ArrowRight","a","d"]);
+  const ownsKeyboard=event=>event.target===arena;
+
+  document.addEventListener("keydown",event=>{
+    if(document.body.dataset.screen!=="battle"||!movementKeys.has(event.key))return;
+    if(!ownsKeyboard(event))event.stopImmediatePropagation();
+  },true);
+
+  arena.addEventListener("pointerdown",()=>arena.focus({preventScroll:true}));
+  document.addEventListener("click",event=>{
+    if(event.target.closest?.("#launchBall"))arena.focus({preventScroll:true});
+  },true);
+})();

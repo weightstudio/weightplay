@@ -1620,6 +1620,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "ArrowDown": "아래쪽 화살표",
   "ArrowLeft": "화살표왼쪽",
   "ArrowLeft ArrowRight A D": "화살표왼쪽 화살표오른쪽 A D",
+  "ArrowLeft ArrowRight A D Space": "화살표왼쪽 화살표오른쪽 AD 공간",
   "ArrowLeft ArrowRight ArrowUp ArrowDown": "화살표왼쪽 화살표오른쪽 화살표위쪽 화살표아래쪽",
   "ArrowLeft ArrowRight ArrowUp ArrowDown w a s d": "화살표왼쪽 화살표오른쪽 화살표위쪽 화살표아래쪽 wa s d",
   "ArrowRight": "화살표오른쪽",

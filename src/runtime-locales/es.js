@@ -1620,6 +1620,7 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "ArrowDown": "Flecha abajo",
   "ArrowLeft": "FlechaIzquierda",
   "ArrowLeft ArrowRight A D": "FlechaFlecha izquierdaDerecha A D",
+  "ArrowLeft ArrowRight A D Space": "FlechaFlecha izquierdaDerecha A D Espacio",
   "ArrowLeft ArrowRight ArrowUp ArrowDown": "FlechaFlecha izquierdaFlecha derechaFlecha arribaAbajo",
   "ArrowLeft ArrowRight ArrowUp ArrowDown w a s d": "FlechaFlecha izquierdaFlecha derechaFlecha arribaFlecha abajo w a s d",
   "ArrowRight": "FlechaDerecha",

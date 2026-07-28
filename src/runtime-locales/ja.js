@@ -1620,6 +1620,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "ArrowDown": "下矢印",
   "ArrowLeft": "左矢印",
   "ArrowLeft ArrowRight A D": "矢印左矢印右矢印D",
+  "ArrowLeft ArrowRight A D Space": "矢印左矢印右 A D スペース",
   "ArrowLeft ArrowRight ArrowUp ArrowDown": "矢印左矢印右矢印上矢印下",
   "ArrowLeft ArrowRight ArrowUp ArrowDown w a s d": "矢印左矢印右矢印上矢印下矢印",
   "ArrowRight": "右矢印",
