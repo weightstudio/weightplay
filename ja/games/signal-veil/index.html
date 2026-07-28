@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <base href="/games/signal-veil/">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="weightplay-audience" content="general">
+  <meta name="theme-color" content="#071923">
+  <meta name="robots" content="index,follow">
+  <meta name="description" content="つながった町、森、研究所を探索し、隠れた脅威を暴いて最初のリザード司令官を倒そう。">
+  <meta property="og:site_name" content="WeightPlay">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="シグナル・ヴェール | WeightPlay">
+  <meta property="og:description" content="つながった町、森、研究所を探索し、隠れた脅威を暴いて最初のリザード司令官を倒そう。">
+  <meta property="og:url" content="https://weightplay.com/ja/games/signal-veil/">
+  <meta property="og:image" content="https://weightplay.com/assets/signal-veil-cover.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>シグナル・ヴェール | WeightPlay</title>
+  <link rel="canonical" href="https://weightplay.com/ja/games/signal-veil/">
+  <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/signal-veil/">
+  <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/signal-veil/">
+  <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/signal-veil/">
+  <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/signal-veil/">
+  <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/signal-veil/">
+  <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/signal-veil/">
+  <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/signal-veil/">
+  <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/signal-veil/">
+  <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/signal-veil/">
+  <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/signal-veil/">
+  <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/signal-veil/">
+  <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/signal-veil/">
+  <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/signal-veil/">
+  <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/signal-veil/">
+  <link rel="stylesheet" href="../../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../../src/game-shell-controls-standard.css">
+  <link rel="stylesheet" href="../../../src/game-page-info.css">
+  <link rel="stylesheet" href="../../../games/signal-veil/style.css">
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"VideoGame",
+    "name":"Signal Veil",
+    "alternateName":"訊號帷幕",
+    "url":"https://weightplay.com/en/games/signal-veil/",
+    "image":"https://weightplay.com/assets/signal-veil-cover.webp",
+    "description":"A connected-world top-down pixel action RPG about neural disguises and a cosmic signal.",
+    "applicationCategory":"Game",
+    "operatingSystem":"Web browser",
+    "publisher":{"@type":"Organization","name":"WeightStudio"},
+    "inLanguage":["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"],
+    "isAccessibleForFree":true,
+    "genre":["Action RPG","Pixel Art","Mystery","Adventure"],
+    "audience":{"@type":"Audience","audienceType":"General","suggestedMinAge":13}
+  }
+  </script>
+</head>
+<body data-wp-locale="ja" data-game-id="signal-veil" data-wp-game-id="signal-veil" data-wp-combined-sound="true" data-runtime-localize="off">
+  <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
+    <div class="loading-card">
+      <img src="../../../assets/signal-veil-items.webp" alt="" aria-hidden="true">
+      <strong data-t="loading">ニューラルビジョンを調整中…</strong>
+      <span class="loading-bar"><i></i></span>
+    </div>
+  </div>
+
+  <main id="main" class="screen main-screen" data-screen="main">
+    <header class="main-header">
+      <a class="lobby-return" data-wp-return="main" href="/ja/" aria-label="Back to WeightPlay">
+        <span aria-hidden="true">←</span><img src="/assets/weightplay-logo.png" alt="">
+      </a>
+      <div class="title-slot">
+        <small>WEIGHTPLAY ORIGINAL</small>
+        <strong data-t="title">シグナル・ヴェール</strong>
+      </div>
+      <label class="locale-picker">
+        <span data-t="language">言語</span>
+        <select id="localeSelect" aria-label="Language"></select>
+      </label>
+    </header>
+    <section class="main-hero">
+      <img class="main-poster" src="../../../assets/signal-veil-cover.webp" alt="Spark Paw Fia reveals a Lizard Commander with a neural-vision device" data-t-alt="posterAlt">
+      <div class="main-copy">
+        <p class="kicker" data-t="kicker">2042・ファーストコンタクト</p>
+        <h1 data-t="title">シグナル・ヴェール</h1>
+        <p class="main-summary" data-t="summary">つながった町、森、研究所を探索し、隠れた脅威を暴いて最初のリザード司令官を倒そう。</p>
+        <p id="mainProgress" class="main-progress" data-wp-main-progress>0 / 3</p>
+        <button id="startGame" class="primary standard-main-start" data-runtime-localize="off" type="button" data-t="start">ゲーム開始</button>
+      </div>
+    </section>
+    <section class="game-guide game-page-info" aria-labelledby="guideTitle">
+      <h2 id="guideTitle" data-t="guideTitle">調査ガイド</h2>
+      <section><h3 data-t="guideOverviewTitle">任務</h3><p data-t="guideOverview">2042年、失踪と襲撃が地球各地で続発する。スパークポー・フィアは偽物扱いされたリザード人の映像を追ってシグナルタウンへ来た。十人の証言を集め、月夜の森を抜け、放棄された神経研究所へ入ろう。本作はステージ選択のない連続世界で、位置、レベル、装備、任務、宝箱、敵、物語の進行をこのブラウザに保存する。</p></section>
+      <section><h3 data-t="guideControlsTitle">操作と戦闘</h3><p data-t="guideControls">PCはWASDまたは矢印キーで移動。Space/Jで正面近接攻撃、Kで遠距離弾、Vでビジョン切替、Eで会話や宝箱、Escapeでメニュー。モバイルは左スティックと攻撃・スキル・ビジョンボタンを使う。敵は巡回、追跡、近接攻撃を行い、司令官は体力に応じて攻撃を変える。</p></section>
+      <section><h3 data-t="guideVisionTitle">ニューラルビジョン</h3><p data-t="guideVision">通常視界は人々が認識する世界を映す。真実視界は隠し道、偽装したリザード人、透明な敵、秘密の扉、宝をシアンで示す。試作レンズは資源を消費しない。司令官の安定装置は、相手が変身したのではなく、人間の視覚が干渉されていた事実を示す。</p></section>
+      <section><h3 data-t="guideProgressTitle">成長と装備</h3><p data-t="guideProgress">十五体の敵を倒して経験値を得る。レベルアップで最大体力、攻撃、防御が上がる。三つの隠し宝箱にはパルスブレード、レンジャーアーマー、シグナルチャームがあり、取得すると即座に装備され保存される。遠距離スキルには短いクールダウンがあり、近接は素早く強い。</p></section>
+      <section><h3 data-t="guideWinTitle">成功・失敗・保存</h3><p data-t="guideWin">最初のリザード司令官を倒し装置を回収すると章クリア。体力がゼロでも安全なチェックポイントから復帰し、レベル、装備、任務、主要撃破は残る。アカウント不要で保存先はこの端末のブラウザ。サイトデータ削除や端末変更で失われる場合がある。</p></section>
+      <section><h3 data-t="guideTipsTitle">調査のコツ</h3><p data-t="guideTips">森の門を開く前に全員と話そう。警戒範囲を見て一体ずつ誘い出す。重装兵や術士にはスキルを当てて隙を攻める。シアンの火花、怪しい壁、変化する会話では真実視界を使う。司令官の弾幕中は動き続け、突進を避け、気絶中に反撃しよう。</p></section>
+      <section><dl><dt><span data-t="guideFaqTitle">FAQ</span></dt><dd data-t="guideFaq">初回版には町一つ、森一つ、研究所一つ、NPC十人、敵十五体、複数パターンのボス一体、装備三種、レベル、ローカル保存、タッチとキーボード、ニューラルビジョンが含まれる。想定プレイ時間は30〜60分。三地域はステージではなく連続世界で、将来は同じ再利用可能な仕組みで山、軍事基地、遺跡、月面基地へ拡張できる。</dd></dl></section>
+    </section>
+  </main>
+
+  <section id="battleShell" class="screen battle-shell" data-screen="battle" hidden>
+    <div id="battleCanvas" class="battle-canvas" data-wp-logical-battle-canvas>
+      <header class="battle-header">
+        <button id="battleBack" class="back-button" data-wp-return="battle" type="button" aria-label="Leave investigation">←</button>
+        <div class="battle-title"><strong data-t="title">シグナル・ヴェール</strong><span id="zoneLabel">Town</span></div>
+        <button id="menuButton" class="menu-button" type="button" data-t="menu">メニュー</button>
+      </header>
+      <div class="hud" aria-live="polite">
+        <div><span data-t="level">LV</span> <b id="levelValue">1</b></div>
+        <div class="meter hp"><i id="hpFill"></i><span id="hpText">40 / 40</span></div>
+        <div class="meter xp"><i id="xpFill"></i><span id="xpText">0 / 30</span></div>
+        <div id="visionState" class="vision-state" data-t="normalVision">通常</div>
+      </div>
+      <div id="gameViewport" class="game-viewport">
+        <canvas id="gameCanvas" width="960" height="540" aria-label="Signal Veil connected action RPG world" tabindex="0"></canvas>
+        <div id="objective" class="objective"></div>
+        <div id="toast" class="toast" role="status" aria-live="polite"></div>
+        <div id="dialogue" class="dialogue" role="dialog" aria-modal="true" hidden>
+          <strong id="speaker"></strong>
+          <p id="dialogueText"></p>
+          <button id="dialogueNext" type="button" data-t="continue">続ける</button>
+        </div>
+      </div>
+      <div class="mobile-controls" aria-label="Touch controls">
+        <div id="joystick" class="joystick"><i id="stick"></i></div>
+        <div class="action-buttons">
+          <button id="visionButton" class="vision-button" type="button" aria-label="Toggle Neural Vision">V</button>
+          <button id="skillButton" type="button" data-t="skill">スキル</button>
+          <button id="attackButton" class="attack-button" type="button" data-t="attack">攻撃</button>
+        </div>
+      </div>
+      <div id="overlay" class="overlay" hidden>
+        <section id="pausePanel" class="panel pause-panel" hidden>
+          <h2 data-t="paused">調査を一時停止</h2>
+          <button id="resumeButton" class="primary" type="button" data-t="resume">再開</button>
+          <button id="inventoryButton" type="button" data-t="equipment">装備</button>
+          <button id="saveButton" type="button" data-t="save">保存</button>
+          <button id="returnButton" type="button" data-t="returnMain">メインへ戻る</button>
+        </section>
+        <section id="inventoryPanel" class="panel inventory-panel" hidden>
+          <h2 data-t="equipment">装備</h2>
+          <div class="stats" id="stats"></div>
+          <div class="equipment-grid">
+            <div><span class="atlas-icon icon-weapon"></span><b data-t="weapon">武器</b><small id="weaponName"></small></div>
+            <div><span class="atlas-icon icon-armor"></span><b data-t="armor">防具</b><small id="armorName"></small></div>
+            <div><span class="atlas-icon icon-accessory"></span><b data-t="accessory">アクセサリー</b><small id="accessoryName"></small></div>
+          </div>
+          <div class="diamond-upgrade">
+            <div class="diamond-balance"><img src="../../../assets/weightplay-diamond.svg" alt=""><span data-t="diamonds">ダイヤ</span><b id="diamondBalance">0</b></div>
+            <h3 data-t="anchorTitle">シグナルアンカー</h3>
+            <p data-t="anchorEffect">永久：今回と今後の調査で最大体力+12。任意で、攻略には不要です。</p>
+            <button id="buyAnchor" type="button" data-t="anchorBuy">設置・ダイヤ5個</button>
+            <small id="anchorStatus" aria-live="polite"></small>
+          </div>
+          <button id="closeInventory" class="primary" type="button" data-t="back">戻る</button>
+        </section>
+        <section id="leavePanel" class="panel leave-panel" role="dialog" aria-modal="true" hidden>
+          <h2 data-t="leaveTitle">調査を離れますか？</h2>
+          <p data-t="leaveText">チェックポイントと永続進行は保存されています。</p>
+          <button id="continueButton" class="primary" type="button" data-t="continue">続ける</button>
+          <button id="confirmLeaveButton" type="button" data-t="returnMain">メインへ戻る</button>
+        </section>
+        <section id="resultPanel" class="panel result-panel" role="dialog" aria-modal="true" hidden>
+          <span class="result-device atlas-icon icon-device"></span>
+          <p class="kicker" data-t="demoComplete">チャプタークリア</p>
+          <h2 data-t="resultTitle">幕は破られた。</h2>
+          <blockquote data-t="bossQuote">「我々は侵略者ではない。」</blockquote>
+          <p data-t="resultText">司令官の装置が人間に紛れたリザード人を映し、信号は地球外を指した。</p>
+          <strong data-t="ending">地球は始まりにすぎない。</strong>
+          <div class="result-actions">
+            <button id="continueExplore" class="primary" type="button" data-t="explore">探索を続ける</button>
+            <button id="newGameButton" type="button" data-t="newGame">新しい調査</button>
+          </div>
+        </section>
+      </div>
+    </div>
+    <div class="ad-reserve" aria-hidden="true"></div>
+  </section>
+
+  <script src="../../../src/sound.js?v=20260720-locale11"></script>
+  <script src="../../../src/site-config.js"></script>
+  <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
+  <script src="../../../src/i18n.js?v=20260721-locale13-1"></script>
+  <script src="../../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
+  <script src="../../../src/wallet.js"></script>
+  <script src="../../../games/signal-veil/locales.js"></script>
+  <script src="../../../games/signal-veil/game.js"></script>
+  <script src="../../../src/game-shell-controls-standard.js"></script>
+</body>
+</html>

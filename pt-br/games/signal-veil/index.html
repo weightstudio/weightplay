@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <base href="/games/signal-veil/">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="weightplay-audience" content="general">
+  <meta name="theme-color" content="#071923">
+  <meta name="robots" content="index,follow">
+  <meta name="description" content="Explore cidade, floresta e laboratório conectados. Revele ameaças ocultas e derrote o primeiro comandante lagarto.">
+  <meta property="og:site_name" content="WeightPlay">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Véu do Sinal | WeightPlay">
+  <meta property="og:description" content="Explore cidade, floresta e laboratório conectados. Revele ameaças ocultas e derrote o primeiro comandante lagarto.">
+  <meta property="og:url" content="https://weightplay.com/pt-br/games/signal-veil/">
+  <meta property="og:image" content="https://weightplay.com/assets/signal-veil-cover.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Véu do Sinal | WeightPlay</title>
+  <link rel="canonical" href="https://weightplay.com/pt-br/games/signal-veil/">
+  <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/signal-veil/">
+  <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/signal-veil/">
+  <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/signal-veil/">
+  <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/signal-veil/">
+  <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/signal-veil/">
+  <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/signal-veil/">
+  <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/signal-veil/">
+  <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/signal-veil/">
+  <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/signal-veil/">
+  <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/signal-veil/">
+  <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/signal-veil/">
+  <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/signal-veil/">
+  <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/signal-veil/">
+  <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/signal-veil/">
+  <link rel="stylesheet" href="../../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../../src/game-shell-controls-standard.css">
+  <link rel="stylesheet" href="../../../src/game-page-info.css">
+  <link rel="stylesheet" href="../../../games/signal-veil/style.css">
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"VideoGame",
+    "name":"Signal Veil",
+    "alternateName":"訊號帷幕",
+    "url":"https://weightplay.com/en/games/signal-veil/",
+    "image":"https://weightplay.com/assets/signal-veil-cover.webp",
+    "description":"A connected-world top-down pixel action RPG about neural disguises and a cosmic signal.",
+    "applicationCategory":"Game",
+    "operatingSystem":"Web browser",
+    "publisher":{"@type":"Organization","name":"WeightStudio"},
+    "inLanguage":["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"],
+    "isAccessibleForFree":true,
+    "genre":["Action RPG","Pixel Art","Mystery","Adventure"],
+    "audience":{"@type":"Audience","audienceType":"General","suggestedMinAge":13}
+  }
+  </script>
+</head>
+<body data-wp-locale="pt-BR" data-game-id="signal-veil" data-wp-game-id="signal-veil" data-wp-combined-sound="true" data-runtime-localize="off">
+  <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
+    <div class="loading-card">
+      <img src="../../../assets/signal-veil-items.webp" alt="" aria-hidden="true">
+      <strong data-t="loading">Calibrando a visão neural…</strong>
+      <span class="loading-bar"><i></i></span>
+    </div>
+  </div>
+
+  <main id="main" class="screen main-screen" data-screen="main">
+    <header class="main-header">
+      <a class="lobby-return" data-wp-return="main" href="/pt-br/" aria-label="Back to WeightPlay">
+        <span aria-hidden="true">←</span><img src="/assets/weightplay-logo.png" alt="">
+      </a>
+      <div class="title-slot">
+        <small>WEIGHTPLAY ORIGINAL</small>
+        <strong data-t="title">Véu do Sinal</strong>
+      </div>
+      <label class="locale-picker">
+        <span data-t="language">Idioma</span>
+        <select id="localeSelect" aria-label="Language"></select>
+      </label>
+    </header>
+    <section class="main-hero">
+      <img class="main-poster" src="../../../assets/signal-veil-cover.webp" alt="Spark Paw Fia reveals a Lizard Commander with a neural-vision device" data-t-alt="posterAlt">
+      <div class="main-copy">
+        <p class="kicker" data-t="kicker">2042 · PRIMEIRO CONTATO</p>
+        <h1 data-t="title">Véu do Sinal</h1>
+        <p class="main-summary" data-t="summary">Explore cidade, floresta e laboratório conectados. Revele ameaças ocultas e derrote o primeiro comandante lagarto.</p>
+        <p id="mainProgress" class="main-progress" data-wp-main-progress>0 / 3</p>
+        <button id="startGame" class="primary standard-main-start" data-runtime-localize="off" type="button" data-t="start">Iniciar jogo</button>
+      </div>
+    </section>
+    <section class="game-guide game-page-info" aria-labelledby="guideTitle">
+      <h2 id="guideTitle" data-t="guideTitle">Guia de campo</h2>
+      <section><h3 data-t="guideOverviewTitle">Missão</h3><p data-t="guideOverview">Em 2042, desaparecimentos e ataques se espalham pela Terra. Spark Paw Fia chega à Cidade Sinal depois que um vídeo de um povo-lagarto é tratado como falso. Converse com dez testemunhas, atravesse a floresta lunar e entre no laboratório neural abandonado. Este primeiro capítulo é um mundo contínuo sem seleção de fases; posição, nível, equipamento, missões e história ficam salvos neste navegador.</p></section>
+      <section><h3 data-t="guideControlsTitle">Controles e combate</h3><p data-t="guideControls">No computador, mova com WASD ou setas. Space/J ataca de perto, K dispara, V alterna a visão, E conversa ou abre baús e Escape abre o menu. No celular, use o joystick esquerdo e os botões Ataque, Habilidade e Visão. Inimigos patrulham, perseguem e atacam; o comandante muda de padrão ao perder vida.</p></section>
+      <section><h3 data-t="guideVisionTitle">Visão neural</h3><p data-t="guideVision">A visão normal mostra o mundo percebido pela maioria. A visão real revela caminhos ciano, pessoas-lagarto disfarçadas, monstros ocultos, portas secretas e tesouros. A lente protótipo não gasta recurso. O aparelho estável prova que eles nunca mudaram de forma: interferiram na percepção humana.</p></section>
+      <section><h3 data-t="guideProgressTitle">Crescimento e equipamento</h3><p data-t="guideProgress">Derrote quinze monstros para ganhar EXP. Cada nível aumenta vida máxima, ataque e defesa. Três baús guardam Lâmina de Pulso, Armadura de Patrulha e Amuleto do Sinal; o efeito é imediato e salvo. O projétil tem recarga curta, enquanto o ataque próximo é rápido e forte.</p></section>
+      <section><h3 data-t="guideWinTitle">Vitória, derrota e salvamento</h3><p data-t="guideWin">O capítulo termina ao derrotar o primeiro comandante e recuperar o dispositivo. Se Fia perder toda a vida, volta ao ponto seguro mantendo nível, equipamento, missões e alvos principais. Não é preciso conta. O progresso fica no armazenamento deste navegador e pode sumir ao apagar dados ou mudar de aparelho.</p></section>
+      <section><h3 data-t="guideTipsTitle">Dicas de campo</h3><p data-t="guideTips">Fale com todas as testemunhas antes do portão. Observe o alcance de alerta e atraia um inimigo por vez. Use o disparo em brutos e conjuradores. Ative a visão real perto de faíscas ciano e paredes suspeitas. Contra o comandante, mova-se nas rajadas, desvie da investida e ataque durante o atordoamento.</p></section>
+      <section><dl><dt><span data-t="guideFaqTitle">Perguntas frequentes</span></dt><dd data-t="guideFaq">A primeira versão inclui uma cidade, uma floresta, um laboratório, dez NPCs, quinze monstros, um chefe de vários padrões, três equipamentos, níveis, salvamento local, toque, teclado e visão neural. A jornada dura cerca de 30–60 minutos. As regiões são contínuas, não fases. Os sistemas podem ampliar o mundo para montanha, base militar, ruínas e base lunar.</dd></dl></section>
+    </section>
+  </main>
+
+  <section id="battleShell" class="screen battle-shell" data-screen="battle" hidden>
+    <div id="battleCanvas" class="battle-canvas" data-wp-logical-battle-canvas>
+      <header class="battle-header">
+        <button id="battleBack" class="back-button" data-wp-return="battle" type="button" aria-label="Leave investigation">←</button>
+        <div class="battle-title"><strong data-t="title">Véu do Sinal</strong><span id="zoneLabel">Town</span></div>
+        <button id="menuButton" class="menu-button" type="button" data-t="menu">Menu</button>
+      </header>
+      <div class="hud" aria-live="polite">
+        <div><span data-t="level">NV</span> <b id="levelValue">1</b></div>
+        <div class="meter hp"><i id="hpFill"></i><span id="hpText">40 / 40</span></div>
+        <div class="meter xp"><i id="xpFill"></i><span id="xpText">0 / 30</span></div>
+        <div id="visionState" class="vision-state" data-t="normalVision">Normal</div>
+      </div>
+      <div id="gameViewport" class="game-viewport">
+        <canvas id="gameCanvas" width="960" height="540" aria-label="Signal Veil connected action RPG world" tabindex="0"></canvas>
+        <div id="objective" class="objective"></div>
+        <div id="toast" class="toast" role="status" aria-live="polite"></div>
+        <div id="dialogue" class="dialogue" role="dialog" aria-modal="true" hidden>
+          <strong id="speaker"></strong>
+          <p id="dialogueText"></p>
+          <button id="dialogueNext" type="button" data-t="continue">Continuar</button>
+        </div>
+      </div>
+      <div class="mobile-controls" aria-label="Touch controls">
+        <div id="joystick" class="joystick"><i id="stick"></i></div>
+        <div class="action-buttons">
+          <button id="visionButton" class="vision-button" type="button" aria-label="Toggle Neural Vision">V</button>
+          <button id="skillButton" type="button" data-t="skill">Habilidade</button>
+          <button id="attackButton" class="attack-button" type="button" data-t="attack">Ataque</button>
+        </div>
+      </div>
+      <div id="overlay" class="overlay" hidden>
+        <section id="pausePanel" class="panel pause-panel" hidden>
+          <h2 data-t="paused">Investigação pausada</h2>
+          <button id="resumeButton" class="primary" type="button" data-t="resume">Retomar</button>
+          <button id="inventoryButton" type="button" data-t="equipment">Equipamento</button>
+          <button id="saveButton" type="button" data-t="save">Salvar</button>
+          <button id="returnButton" type="button" data-t="returnMain">Voltar ao início</button>
+        </section>
+        <section id="inventoryPanel" class="panel inventory-panel" hidden>
+          <h2 data-t="equipment">Equipamento</h2>
+          <div class="stats" id="stats"></div>
+          <div class="equipment-grid">
+            <div><span class="atlas-icon icon-weapon"></span><b data-t="weapon">Arma</b><small id="weaponName"></small></div>
+            <div><span class="atlas-icon icon-armor"></span><b data-t="armor">Armadura</b><small id="armorName"></small></div>
+            <div><span class="atlas-icon icon-accessory"></span><b data-t="accessory">Acessório</b><small id="accessoryName"></small></div>
+          </div>
+          <div class="diamond-upgrade">
+            <div class="diamond-balance"><img src="../../../assets/weightplay-diamond.svg" alt=""><span data-t="diamonds">Diamantes</span><b id="diamondBalance">0</b></div>
+            <h3 data-t="anchorTitle">Âncora de sinal</h3>
+            <p data-t="anchorEffect">Permanente: +12 de vida máxima nesta e nas próximas investigações. É opcional.</p>
+            <button id="buyAnchor" type="button" data-t="anchorBuy">Instalar · 5 diamantes</button>
+            <small id="anchorStatus" aria-live="polite"></small>
+          </div>
+          <button id="closeInventory" class="primary" type="button" data-t="back">Voltar</button>
+        </section>
+        <section id="leavePanel" class="panel leave-panel" role="dialog" aria-modal="true" hidden>
+          <h2 data-t="leaveTitle">Sair da investigação?</h2>
+          <p data-t="leaveText">O ponto seguro e o progresso permanente estão salvos.</p>
+          <button id="continueButton" class="primary" type="button" data-t="continue">Continuar</button>
+          <button id="confirmLeaveButton" type="button" data-t="returnMain">Voltar ao início</button>
+        </section>
+        <section id="resultPanel" class="panel result-panel" role="dialog" aria-modal="true" hidden>
+          <span class="result-device atlas-icon icon-device"></span>
+          <p class="kicker" data-t="demoComplete">CAPÍTULO CONCLUÍDO</p>
+          <h2 data-t="resultTitle">O véu foi rompido.</h2>
+          <blockquote data-t="bossQuote">“Não estamos invadindo.”</blockquote>
+          <p data-t="resultText">O dispositivo revela pessoas-lagarto entre humanos comuns. O sinal aponta além da Terra.</p>
+          <strong data-t="ending">A Terra era apenas o começo.</strong>
+          <div class="result-actions">
+            <button id="continueExplore" class="primary" type="button" data-t="explore">Continuar explorando</button>
+            <button id="newGameButton" type="button" data-t="newGame">Nova investigação</button>
+          </div>
+        </section>
+      </div>
+    </div>
+    <div class="ad-reserve" aria-hidden="true"></div>
+  </section>
+
+  <script src="../../../src/sound.js?v=20260720-locale11"></script>
+  <script src="../../../src/site-config.js"></script>
+  <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
+  <script src="../../../src/i18n.js?v=20260721-locale13-1"></script>
+  <script src="../../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
+  <script src="../../../src/wallet.js"></script>
+  <script src="../../../games/signal-veil/locales.js"></script>
+  <script src="../../../games/signal-veil/game.js"></script>
+  <script src="../../../src/game-shell-controls-standard.js"></script>
+</body>
+</html>

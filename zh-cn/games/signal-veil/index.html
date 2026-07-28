@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <base href="/games/signal-veil/">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="weightplay-audience" content="general">
+  <meta name="theme-color" content="#071923">
+  <meta name="robots" content="index,follow">
+  <meta name="description" content="探索相连的城镇、森林与实验室，揭露隐藏威胁并击败第一名蜥蜴指挥官。">
+  <meta property="og:site_name" content="WeightPlay">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="信号帷幕 | WeightPlay">
+  <meta property="og:description" content="探索相连的城镇、森林与实验室，揭露隐藏威胁并击败第一名蜥蜴指挥官。">
+  <meta property="og:url" content="https://weightplay.com/zh-cn/games/signal-veil/">
+  <meta property="og:image" content="https://weightplay.com/assets/signal-veil-cover.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>信号帷幕 | WeightPlay</title>
+  <link rel="canonical" href="https://weightplay.com/zh-cn/games/signal-veil/">
+  <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/signal-veil/">
+  <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/signal-veil/">
+  <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/signal-veil/">
+  <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/signal-veil/">
+  <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/signal-veil/">
+  <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/signal-veil/">
+  <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/signal-veil/">
+  <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/signal-veil/">
+  <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/signal-veil/">
+  <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/signal-veil/">
+  <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/signal-veil/">
+  <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/signal-veil/">
+  <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/signal-veil/">
+  <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/signal-veil/">
+  <link rel="stylesheet" href="../../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../../src/game-shell-controls-standard.css">
+  <link rel="stylesheet" href="../../../src/game-page-info.css">
+  <link rel="stylesheet" href="../../../games/signal-veil/style.css">
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"VideoGame",
+    "name":"Signal Veil",
+    "alternateName":"訊號帷幕",
+    "url":"https://weightplay.com/en/games/signal-veil/",
+    "image":"https://weightplay.com/assets/signal-veil-cover.webp",
+    "description":"A connected-world top-down pixel action RPG about neural disguises and a cosmic signal.",
+    "applicationCategory":"Game",
+    "operatingSystem":"Web browser",
+    "publisher":{"@type":"Organization","name":"WeightStudio"},
+    "inLanguage":["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"],
+    "isAccessibleForFree":true,
+    "genre":["Action RPG","Pixel Art","Mystery","Adventure"],
+    "audience":{"@type":"Audience","audienceType":"General","suggestedMinAge":13}
+  }
+  </script>
+</head>
+<body data-wp-locale="zh-Hans" data-game-id="signal-veil" data-wp-game-id="signal-veil" data-wp-combined-sound="true" data-runtime-localize="off">
+  <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
+    <div class="loading-card">
+      <img src="../../../assets/signal-veil-items.webp" alt="" aria-hidden="true">
+      <strong data-t="loading">正在校准神经视界……</strong>
+      <span class="loading-bar"><i></i></span>
+    </div>
+  </div>
+
+  <main id="main" class="screen main-screen" data-screen="main">
+    <header class="main-header">
+      <a class="lobby-return" data-wp-return="main" href="/zh-cn/" aria-label="Back to WeightPlay">
+        <span aria-hidden="true">←</span><img src="/assets/weightplay-logo.png" alt="">
+      </a>
+      <div class="title-slot">
+        <small>WEIGHTPLAY ORIGINAL</small>
+        <strong data-t="title">信号帷幕</strong>
+      </div>
+      <label class="locale-picker">
+        <span data-t="language">语言</span>
+        <select id="localeSelect" aria-label="Language"></select>
+      </label>
+    </header>
+    <section class="main-hero">
+      <img class="main-poster" src="../../../assets/signal-veil-cover.webp" alt="Spark Paw Fia reveals a Lizard Commander with a neural-vision device" data-t-alt="posterAlt">
+      <div class="main-copy">
+        <p class="kicker" data-t="kicker">2042 · 第一次接觸</p>
+        <h1 data-t="title">信号帷幕</h1>
+        <p class="main-summary" data-t="summary">探索相连的城镇、森林与实验室，揭露隐藏威胁并击败第一名蜥蜴指挥官。</p>
+        <p id="mainProgress" class="main-progress" data-wp-main-progress>0 / 3</p>
+        <button id="startGame" class="primary standard-main-start" data-runtime-localize="off" type="button" data-t="start">开始游戏</button>
+      </div>
+    </section>
+    <section class="game-guide game-page-info" aria-labelledby="guideTitle">
+      <h2 id="guideTitle" data-t="guideTitle">调查指南</h2>
+      <section><h3 data-t="guideOverviewTitle">任務</h3><p data-t="guideOverview">2042 年，地球各地接連發生失蹤與襲擊事件。火花狐菲雅來到訊號鎮，一段蜥蜴人影片卻被所有人視為造假。調查十名目擊者、穿越月光森林並進入廢棄神經實驗室。本作首發章節是一個沒有選關畫面的相連世界；位置、等級、裝備、任務、寶箱、怪物與劇情進度都會儲存在此瀏覽器。</p></section>
+      <section><h3 data-t="guideControlsTitle">操作與戰鬥</h3><p data-t="guideControls">桌面使用 WASD 或方向鍵移動，菲雅永遠朝向最後移動方向。Space 或 J 向前近戰，K 發射訊號彈，取得奧拉的原型鏡片後用 V 切換神經視界，E 交談或開啟鄰近寶箱，Escape 開啟選單。手機以左側虛擬搖桿移動，並使用攻擊、技能、視界按鈕。敵人會巡邏、追擊與近身攻擊；指揮官會隨生命下降改變攻擊模式。</p></section>
+      <section><h3 data-t="guideVisionTitle">神經視界</h3><p data-t="guideVision">普通視界呈現大多數人所感知的世界；真實視界會揭露青色隱藏路徑、偽裝蜥蜴人、隱形怪物、秘密門與寶藏。原型鏡片不消耗資源，遇到阻路時可隨時切換。有些威脅存在於兩種視界，卻只有被揭露後才能成為目標。最終指揮官掉落的穩定裝置，證明對方並未改變外貌，而是干擾了人類視覺。</p></section>
+      <section><h3 data-t="guideProgressTitle">成長與裝備</h3><p data-t="guideProgress">擊敗十五隻場景怪物獲得經驗值。升級會自動提高最大生命、攻擊與防禦，讓即時戰鬥中的角色扮演系統保持清楚。三個隱藏寶箱分別裝有脈衝刃、遊俠護甲與訊號護符，取得後立即生效並寫入本機存檔。技能彈有短冷卻，適合拉開距離；近戰則更快，安全貼近時傷害更高。</p></section>
+      <section><h3 data-t="guideWinTitle">完成、失敗與存檔</h3><p data-t="guideWin">擊敗第一名蜥蜴指揮官並取得裝置即可完成章節。菲雅生命歸零時，會從最近的安全檢查點恢復；永久等級、裝備、任務與主要擊破紀錄仍會保留。可在選單中立即存檔。本作不需要帳號，進度只存在此裝置的瀏覽器儲存空間；清除網站資料或改用其他瀏覽器、裝置可能失去或分開存檔。</p></section>
+      <section><h3 data-t="guideTipsTitle">調查訣竅</h3><p data-t="guideTips">打開森林門前先和每位標記目擊者交談。觀察敵人的警戒範圍，一次引開一支巡邏。對重裝兵與神經術士先用遠程技能，再趁恢復空檔進攻。青色火花、可疑牆面或 NPC 對話改變時切換真實視界。進實驗室前搜尋支路寶箱。面對指揮官的彈幕要持續移動，閃過直線衝鋒，再把握短暫暈眩窗口反擊。</p></section>
+      <section><dl><dt><span data-t="guideFaqTitle">常見問題</span></dt><dd data-t="guideFaq">首發版本包含一座城鎮、一片森林、一間實驗室、十名 NPC、十五隻怪物、一名多模式頭目、三件裝備、升級、本機存檔、觸控、鍵盤操作與神經視界。一般首輪約需 30–60 分鐘，熟練動作玩家可能更快。三個地區是連續世界而非關卡。未來可沿用相同的世界、任務、敵人、裝備、對話、存檔與視界系統，擴展至山區、軍事基地、遺跡與月球基地。</dd></dl></section>
+    </section>
+  </main>
+
+  <section id="battleShell" class="screen battle-shell" data-screen="battle" hidden>
+    <div id="battleCanvas" class="battle-canvas" data-wp-logical-battle-canvas>
+      <header class="battle-header">
+        <button id="battleBack" class="back-button" data-wp-return="battle" type="button" aria-label="Leave investigation">←</button>
+        <div class="battle-title"><strong data-t="title">信号帷幕</strong><span id="zoneLabel">Town</span></div>
+        <button id="menuButton" class="menu-button" type="button" data-t="menu">菜单</button>
+      </header>
+      <div class="hud" aria-live="polite">
+        <div><span data-t="level">等級</span> <b id="levelValue">1</b></div>
+        <div class="meter hp"><i id="hpFill"></i><span id="hpText">40 / 40</span></div>
+        <div class="meter xp"><i id="xpFill"></i><span id="xpText">0 / 30</span></div>
+        <div id="visionState" class="vision-state" data-t="normalVision">普通</div>
+      </div>
+      <div id="gameViewport" class="game-viewport">
+        <canvas id="gameCanvas" width="960" height="540" aria-label="Signal Veil connected action RPG world" tabindex="0"></canvas>
+        <div id="objective" class="objective"></div>
+        <div id="toast" class="toast" role="status" aria-live="polite"></div>
+        <div id="dialogue" class="dialogue" role="dialog" aria-modal="true" hidden>
+          <strong id="speaker"></strong>
+          <p id="dialogueText"></p>
+          <button id="dialogueNext" type="button" data-t="continue">继续</button>
+        </div>
+      </div>
+      <div class="mobile-controls" aria-label="Touch controls">
+        <div id="joystick" class="joystick"><i id="stick"></i></div>
+        <div class="action-buttons">
+          <button id="visionButton" class="vision-button" type="button" aria-label="Toggle Neural Vision">V</button>
+          <button id="skillButton" type="button" data-t="skill">技能</button>
+          <button id="attackButton" class="attack-button" type="button" data-t="attack">攻击</button>
+        </div>
+      </div>
+      <div id="overlay" class="overlay" hidden>
+        <section id="pausePanel" class="panel pause-panel" hidden>
+          <h2 data-t="paused">调查已暂停</h2>
+          <button id="resumeButton" class="primary" type="button" data-t="resume">继续调查</button>
+          <button id="inventoryButton" type="button" data-t="equipment">装备</button>
+          <button id="saveButton" type="button" data-t="save">保存</button>
+          <button id="returnButton" type="button" data-t="returnMain">返回主画面</button>
+        </section>
+        <section id="inventoryPanel" class="panel inventory-panel" hidden>
+          <h2 data-t="equipment">装备</h2>
+          <div class="stats" id="stats"></div>
+          <div class="equipment-grid">
+            <div><span class="atlas-icon icon-weapon"></span><b data-t="weapon">武器</b><small id="weaponName"></small></div>
+            <div><span class="atlas-icon icon-armor"></span><b data-t="armor">护甲</b><small id="armorName"></small></div>
+            <div><span class="atlas-icon icon-accessory"></span><b data-t="accessory">饰品</b><small id="accessoryName"></small></div>
+          </div>
+          <div class="diamond-upgrade">
+            <div class="diamond-balance"><img src="../../../assets/weightplay-diamond.svg" alt=""><span data-t="diamonds">钻石</span><b id="diamondBalance">0</b></div>
+            <h3 data-t="anchorTitle">信号锚</h3>
+            <p data-t="anchorEffect">永久：本次与未来调查的最大生命 +12。完全选用，通关不需要。</p>
+            <button id="buyAnchor" type="button" data-t="anchorBuy">安装 · 5 钻石</button>
+            <small id="anchorStatus" aria-live="polite"></small>
+          </div>
+          <button id="closeInventory" class="primary" type="button" data-t="back">返回</button>
+        </section>
+        <section id="leavePanel" class="panel leave-panel" role="dialog" aria-modal="true" hidden>
+          <h2 data-t="leaveTitle">离开调查？</h2>
+          <p data-t="leaveText">最近檢查點與永久進度都已保留。</p>
+          <button id="continueButton" class="primary" type="button" data-t="continue">继续</button>
+          <button id="confirmLeaveButton" type="button" data-t="returnMain">返回主画面</button>
+        </section>
+        <section id="resultPanel" class="panel result-panel" role="dialog" aria-modal="true" hidden>
+          <span class="result-device atlas-icon icon-device"></span>
+          <p class="kicker" data-t="demoComplete">章节完成</p>
+          <h2 data-t="resultTitle">帷幕已被揭开。</h2>
+          <blockquote data-t="bossQuote">“我们不是来入侵的。”</blockquote>
+          <p data-t="resultText">指挥官的装置让藏在人类之中的蜥蜴人显形，信号则指向地球之外。</p>
+          <strong data-t="ending">地球只是一个开始。</strong>
+          <div class="result-actions">
+            <button id="continueExplore" class="primary" type="button" data-t="explore">继续探索</button>
+            <button id="newGameButton" type="button" data-t="newGame">重新调查</button>
+          </div>
+        </section>
+      </div>
+    </div>
+    <div class="ad-reserve" aria-hidden="true"></div>
+  </section>
+
+  <script src="../../../src/sound.js?v=20260720-locale11"></script>
+  <script src="../../../src/site-config.js"></script>
+  <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
+  <script src="../../../src/i18n.js?v=20260721-locale13-1"></script>
+  <script src="../../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
+  <script src="../../../src/wallet.js"></script>
+  <script src="../../../games/signal-veil/locales.js"></script>
+  <script src="../../../games/signal-veil/game.js"></script>
+  <script src="../../../src/game-shell-controls-standard.js"></script>
+</body>
+</html>

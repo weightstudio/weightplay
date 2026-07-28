@@ -10,10 +10,10 @@
   const WORLD = {width:3072,height:1024};
   const BASE_VIEW = {width:960,height:540};
   const atlas = {sprites:new Image(),items:new Image(),npcs:new Image(),world:new Image()};
-  atlas.sprites.src = "/assets/signal-veil-sprites.png";
-  atlas.items.src = "/assets/signal-veil-items.png";
-  atlas.npcs.src = "/assets/signal-veil-npcs.png";
-  atlas.world.src = "/assets/signal-veil-world.png";
+  atlas.sprites.src = "/assets/signal-veil-sprites.webp";
+  atlas.items.src = "/assets/signal-veil-items.webp";
+  atlas.npcs.src = "/assets/signal-veil-npcs.webp";
+  atlas.world.src = "/assets/signal-veil-world.webp";
 
   function readSave() {
     try { return JSON.parse(localStorage.getItem(SAVE_KEY) || "null"); } catch { return null; }
@@ -43,13 +43,14 @@
     dialogueText:$("#dialogueText"), dialogueNext:$("#dialogueNext"), overlay:$("#overlay"),
     pause:$("#pausePanel"), inventory:$("#inventoryPanel"), leave:$("#leavePanel"), result:$("#resultPanel"),
     weaponName:$("#weaponName"), armorName:$("#armorName"), accessoryName:$("#accessoryName"), stats:$("#stats"),
+    diamondBalance:$("#diamondBalance"), buyAnchor:$("#buyAnchor"), anchorStatus:$("#anchorStatus"),
     joystick:$("#joystick"), stick:$("#stick"), attack:$("#attackButton"), skill:$("#skillButton"), vision:$("#visionButton")
   };
 
   const fresh = {
     x:420,y:545,facing:"right",level:1,xp:0,hp:40,maxHp:40,attack:8,defense:2,
     visionUnlocked:false,trueVision:false,talked:[],defeated:[],chests:[],bossDefeated:false,
-    equipment:{weapon:false,armor:false,accessory:false},checkpoint:{x:420,y:545}
+    equipment:{weapon:false,armor:false,accessory:false},signalAnchor:false,checkpoint:{x:420,y:545}
   };
   let state = Object.assign({}, fresh, readSave() || {});
   state.talked = new Set(state.talked || []);
@@ -169,6 +170,19 @@
     nodes.armorName.textContent=state.equipment.armor?t("armorName"):t("none");
     nodes.accessoryName.textContent=state.equipment.accessory?t("accessoryName"):t("none");
     nodes.stats.innerHTML=`<span><b>${t("statHp")}</b><br>${state.maxHp}</span><span><b>${t("statAtk")}</b><br>${effectiveAttack()}</span><span><b>${t("statDef")}</b><br>${effectiveDefense()}</span>`;
+    const diamonds=window.WeightPlayWallet?.read?.().diamonds || 0;
+    nodes.diamondBalance.textContent=String(diamonds);
+    nodes.buyAnchor.disabled=Boolean(state.signalAnchor);
+    nodes.buyAnchor.textContent=state.signalAnchor?t("anchorOwned"):t("anchorBuy");
+    nodes.anchorStatus.textContent=state.signalAnchor?t("anchorPermanent"):template(t("anchorBalance"),{n:diamonds});
+  }
+  function buySignalAnchor(){
+    if(state.signalAnchor)return;
+    const wallet=window.WeightPlayWallet;
+    if(!wallet?.spendDiamonds?.(5)){nodes.anchorStatus.textContent=template(t("anchorNeed"),{n:wallet?.read?.().diamonds || 0});return}
+    state.signalAnchor=true;state.maxHp+=12;state.hp=Math.min(state.maxHp,state.hp+12);
+    saveGame();renderInventory();updateHud();showToast(t("anchorInstalled"),2200);
+    window.WonderAnalytics?.track?.("diamond_spend",{game_id:"signal-veil",item:"signal_anchor",cost:5,balance:wallet.read().diamonds});
   }
   function effectiveAttack(){return state.attack+(state.equipment.weapon?5:0)+(state.equipment.accessory?2:0)}
   function effectiveDefense(){return state.defense+(state.equipment.armor?4:0)+(state.equipment.accessory?1:0)}
@@ -423,7 +437,8 @@
     saveGame();playing=false;paused=false;nodes.battle.hidden=true;nodes.main.hidden=false;setPanel(null);closeDialogue();scrollTo({top:0,behavior:"instant"});updateMainProgress();
   }
   function restartGame() {
-    clearSave();state={...fresh,talked:new Set(),defeated:new Set(),chests:new Set(),equipment:{...fresh.equipment},checkpoint:{...fresh.checkpoint}};
+    const keepAnchor=Boolean(state.signalAnchor);clearSave();
+    state={...fresh,maxHp:fresh.maxHp+(keepAnchor?12:0),hp:fresh.hp+(keepAnchor?12:0),signalAnchor:keepAnchor,talked:new Set(),defeated:new Set(),chests:new Set(),equipment:{...fresh.equipment},checkpoint:{...fresh.checkpoint}};
     trueVision=false;enemies=enemySeeds.map(([x,y,sprite],id)=>({id,x,y,homeX:x,homeY:y,sprite,hp:26+(id>7?15:0),maxHp:26+(id>7?15:0),speed:50+(id%3)*10,attackTimer:0,phase:id*.73,hidden:sprite===7,dead:false}));
     boss={x:2890,y:520,hp:260,maxHp:260,attackTimer:1.2,pattern:0,dead:false,sprite:12,stun:0,charge:0};bossIntroduced=false;
     projectiles.length=0;enemyProjectiles.length=0;setPanel(null);showBattle();saveGame();
@@ -459,6 +474,7 @@
   $("#battleBack").addEventListener("click",()=>setPanel(nodes.leave));
   $("#resumeButton").addEventListener("click",()=>setPanel(null));
   $("#inventoryButton").addEventListener("click",()=>{renderInventory();setPanel(nodes.inventory)});
+  nodes.buyAnchor.addEventListener("click",buySignalAnchor);
   $("#closeInventory").addEventListener("click",()=>setPanel(nodes.pause));
   $("#saveButton").addEventListener("click",()=>saveGame(true));
   $("#returnButton").addEventListener("click",()=>setPanel(nodes.leave));
