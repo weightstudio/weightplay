@@ -1898,7 +1898,9 @@
     nodes.stagePanel.classList.add("is-hidden");
     nodes.menuPanel.classList.remove("is-hidden");
     document.body.classList.remove("wp-standard-stage-page");
-    requestAnimationFrame(() => nodes.mainStartBtn.focus({ preventScroll: true }));
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      nodes.mainStartBtn.focus({ preventScroll: true });
+    }));
   }
 
   function startMission(mission = selectedMission) {

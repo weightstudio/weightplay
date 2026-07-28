@@ -14,7 +14,7 @@ body #stage{grid-template-rows:76px minmax(0,1fr) 56px}.stage-tabs{display:grid;
 .battle-coach{position:absolute;top:10px;right:10px;width:clamp(64px,18vw,112px);height:auto;filter:drop-shadow(0 10px 12px #173f3855);animation:coach-float 3.2s ease-in-out infinite;pointer-events:none}
 .board{position:relative;border:2px solid #f6d56c;background:linear-gradient(145deg,#376f57,#8ab686);box-shadow:inset 0 0 0 5px #d7ad4f88,0 16px 38px #173f3844;animation:board-arrive .45s cubic-bezier(.2,.85,.2,1)}
 .tile{position:relative;isolation:isolate;transition:transform .16s ease,filter .16s ease,color .16s ease}
-.tile.selected{z-index:2;background-image:url("../../assets/animal-number-match-tile-v1.webp");color:#fff;filter:drop-shadow(0 0 5px #ffe889) drop-shadow(0 0 10px #f4b638);transform:translateY(-3px) scale(1.06)}
+.tile.selected{z-index:2;background-image:url("../../assets/animal-number-match-tile-v1.webp");background-position:center;background-repeat:no-repeat;background-size:100% 100%;color:#fff;filter:drop-shadow(0 0 5px #ffe889) drop-shadow(0 0 10px #f4b638);transform:translateY(-3px) scale(1.06)}
 .tile.selected::before{content:"";position:absolute;z-index:-1;inset:22%;border-radius:24%;background:linear-gradient(145deg,#2d8a70,#155c50);box-shadow:inset 0 0 0 2px #fff0a0}
 .match-echo{position:absolute;z-index:4;display:grid;place-items:center;background:url("../../assets/animal-number-match-hint-v1.webp") center/100% 100% no-repeat;color:#fff;font-weight:950;font-size:clamp(1rem,5vw,2rem);text-shadow:0 2px 4px #16483f;pointer-events:none;animation:match-bloom .42s ease-out forwards}
 .tools button,dialog button{box-shadow:0 5px 14px #173f3822;transition:transform .14s ease,box-shadow .14s ease}

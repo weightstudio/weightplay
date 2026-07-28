@@ -38,21 +38,7 @@
     return raw.map(port => (port + tile.rot) % 4);
   }
   function targetIndex(level) {
-    const solved = level.tiles.map(tile => ({ ...tile, target: false, rot: tile.solved }));
-    const distance = Array(25).fill(-1), queue = [level.source];
-    distance[level.source] = 0;
-    while (queue.length) {
-      const index = queue.shift(), row = Math.floor(index / 5), col = index % 5;
-      DIRS.forEach(([dr, dc, direction, reverse]) => {
-        const nr = row + dr, nc = col + dc, next = nr * 5 + nc;
-        if (nr < 0 || nr > 4 || nc < 0 || nc > 4 || distance[next] >= 0) return;
-        if (ports(solved[index]).includes(direction) && ports(solved[next]).includes(reverse)) {
-          distance[next] = distance[index] + 1;
-          queue.push(next);
-        }
-      });
-    }
-    return solved.reduce((best, tile, index) => tile.shape === "goal" && distance[index] > distance[best] ? index : best, solved.findIndex(tile => tile.shape === "goal"));
+    return level.target;
   }
   function basePorts(tile) {
     return tile.shape === "x" ? [0,1,2,3] : tile.shape === "s" ? [0,2] : tile.shape === "e" ? [0,1] : tile.shape === "t" ? [0,1,3] : tile.shape === "source" ? [2] : [0];
@@ -85,7 +71,7 @@
     return wet;
   }
   function winReady() {
-    return water().size === run.tiles.length;
+    return water().has(run.tiles.findIndex(tile => tile.target));
   }
   function renderStages() {
     const rail = $("rail"); rail.innerHTML = "";
@@ -125,7 +111,7 @@
       pipe.dataset.shape = tile.shape;
       pipe.style.setProperty("--pipe-rotation", `${tile.rot * 90}deg`);
       pipe.dataset.rotation = String(tile.rot);
-      pipe.setAttribute("aria-label", text("pipeLabel", { n: index + 1 }));
+      pipe.setAttribute("aria-label", tile.target ? `${text("objective")} — ${text("pipeLabel", { n: index + 1 })}` : text("pipeLabel", { n: index + 1 }));
       pipe.disabled = tile.target || run.completed;
       const flow = flowSvg(tile, index, wet.has(index));
       if (flow) pipe.append(flow);
@@ -299,7 +285,7 @@
   });
   $("undo").onclick = () => { if(run?.completed)return;const prior = run?.history.pop(); if (prior) { run.tiles.forEach((tile, i) => { tile.rot = prior[i]; }); run.moves--; renderBoard(); } };
   $("restart").onclick = startStage;
-  $("hint").onclick = () => { if(run?.completed)return;const tile = run.tiles.find(item => ports(item).slice().sort().join(",") !== ports({ ...item, rot: item.solved }).slice().sort().join(",")); if (tile) { run.history.push(run.tiles.map(item => item.rot)); tile.rot = tile.solved; run.moves++; renderBoard(); if (winReady()) complete(); } };
+  $("hint").onclick = () => { if(run?.completed)return;const tile = run.tiles.find(item => item.required&&ports(item).slice().sort().join(",") !== ports({ ...item, rot: item.solved }).slice().sort().join(",")); if (tile) { run.history.push(run.tiles.map(item => item.rot)); tile.rot = tile.solved; run.moves++; renderBoard(); if (winReady()) complete(); } };
   $("rail").addEventListener("wonder:stage-snap", event => {
     const index = Number(event.detail?.index);
     if (Number.isInteger(index) && index >= 0) selectStage(index, false);

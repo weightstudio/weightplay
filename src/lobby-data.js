@@ -74,11 +74,11 @@ window.WONDER_LOBBY = {
         es: "Jardín de rayos de sol", "pt-BR": "Jardim Raio de Sol", fr: "Jardin rayon de soleil", de: "Sonnenstrahl-Garten",
         it: "Giardino Raggio di Sole", ru: "Сад солнечных лучей", hi: "सनबीम गार्डन", ar: "حديقة شعاع الشمس",
       },
-      status: "planned",
+      status: "playable",
       statusText: {
-        en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정",
-        es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente",
-        ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا",
+        en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능",
+        es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile",
+        ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
       },
       type: {
         en: "Sunlight Mirror Puzzle", "zh-Hant": "陽光鏡子益智", "zh-Hans": "阳光镜子益智", ja: "光線ミラーパズル",
@@ -87,7 +87,8 @@ window.WONDER_LOBBY = {
         ru: "Головоломка с солнечными зеркалами", hi: "सूर्य दर्पण पहेली", ar: "لغز مرايا ضوء الشمس",
       },
       categories: ["Animal Games", "Puzzle", "Strategy"], skills: ["Logic", "Planning"], ages: ["9", "family"],
-      href: "games/animal-sunbeam-garden/", internalTrial: "index.html?trial=1",
+      href: "games/animal-sunbeam-garden/",
+      previewVideo: "assets/previews/animal-sunbeam-garden-battle.webm",
       description: {
         en: "Rotate mirrors, trace a real sunbeam cell by cell, and wake each plant across 30 gardens.",
         "zh-Hant": "旋轉鏡子，逐格追蹤真正的陽光，在 30 座花園喚醒植物。",

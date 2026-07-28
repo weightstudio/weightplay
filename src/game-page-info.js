@@ -7886,17 +7886,18 @@
     faq: [["Why can two matching values not clear?", "A number still blocks their shared row or column."], ["Do diagonal pairs count?", "No, pairs use adjacency or a straight horizontal or vertical sight line."], ["What does Reorder do?", "It rearranges the remaining values without changing the pairing rule."], ["Are stages timed?", "No, you can inspect the board at your own pace."]]
   }, "潘可的數字花園", "胖达数字花园");
 
+  // Public guide owner: games["animal-sunbeam-garden"] is populated below.
   registerExpandedGuide("animal-sunbeam-garden", {
-    title: "Animal Sunbeam Garden", gameplay: "Mirror Route Logic Puzzle",
-    intro: "Rotate mirrors on a six-by-six garden board until the visible sunbeam follows a valid path from its source to the sleeping plant.",
-    story: ["Panko is reopening thirty shaded gardens. Each plant has one authored mirror arrangement that brings real light to its cell.", "The animated beam always follows the current board, so it shows exactly where a route turns, loops, leaves the garden, or reaches its goal."],
-    systems: ["Tap a mirror to rotate it between its two diagonal reflection states.", "The beam advances one cell at a time, reflects only from a mirror it actually reaches, and stops at an edge or repeated loop.", "A stage clears only when the traced beam enters the plant cell; a nearby line or decorative glow does not count.", "Hint corrects one mirror that differs from the solution. Reset restores every authored starting rotation."],
-    how: ["Choose an unlocked garden.", "Trace backward from the plant and forward from the source.", "Rotate one mirror, then read the complete updated beam.", "Connect the final reflected segment to the plant and continue from Result."],
+    title: "Sunbeam Garden", gameplay: "Mirror Route Logic Puzzle",
+    intro: "Rotate mirrors on a six-by-six garden board until every visible sunbeam follows a valid path from its source to the sleeping lotus.",
+    story: ["Panko is reopening thirty shaded gardens. The opening gardens teach distinct route shapes, Garden 6 introduces two simultaneous suns, and the final chapter combines dense dual-source networks.", "Every animated beam follows the current board, so it shows exactly where a route turns, loops, leaves the garden, or reaches the shared lotus."],
+    systems: ["Tap a mirror to rotate it between its two diagonal reflection states.", "Each beam advances one cell at a time, reflects only from a mirror it actually reaches, and stops at an edge or repeated loop.", "A dual-source stage clears only when both independently traced beams enter the lotus cell; a nearby line or one completed route does not count.", "Hint corrects one route mirror that differs from the authored solution and ignores untouched decoys. Reset restores every starting rotation."],
+    how: ["Choose an unlocked garden.", "Trace backward from the lotus and forward from every visible sun.", "Rotate one mirror, then read all updated beam paths.", "Connect every final reflected segment to the lotus and continue from Result."],
     strategyTips: ["Begin with mirrors already touched by the beam.", "Use edge exits to eliminate impossible reflection choices.", "When a loop appears, change the first mirror that sends light back into an earlier cell.", "Do not rotate untouched mirrors until the route is close enough to use them."],
-    progression: ["Early gardens use a few mirrors and one clear bend. Later chapters add longer routes, decoy mirrors, crossing possibilities, edge escapes, and loops.", "All thirty stages keep the same two-state mirror rule while requiring more complete route planning."],
+    progression: ["Gardens 1-10 use ten different route topologies and rise from two to six required rotations. Garden 6 introduces the dual-source completion rule.", "Gardens 11-20 vary multi-source networks and decoys. Gardens 21-30 use dense dual-source routes whose verified shortest solutions require ten or eleven rotations."],
     designNote: "The beam, mirror center, grid cell, and solved-state trace share one coordinate system, so the visual route and the rule cannot drift apart at different screen sizes.",
     parent: "There is no timer, account, purchase, or public ranking. Cleared gardens and local move records stay in this browser.",
-    faq: [["Why did the plant not wake?", "The traced beam did not enter its exact cell."], ["Can light pass through a mirror?", "No, a reached mirror always reflects according to its current state."], ["Can the beam loop?", "Yes; rotate the first mirror that repeats the route."], ["Does Hint finish the board?", "No, it corrects one useful mirror."]]
+    faq: [["Why did the lotus not wake?", "Every active beam must enter its exact cell; one completed beam is not enough on a dual-source garden."], ["Can light pass through a mirror?", "No, a reached mirror always reflects according to its current state."], ["Can a beam loop?", "Yes; rotate the first mirror that repeats that route."], ["Does Hint finish the board?", "No, it corrects one useful route mirror."]]
   }, "動物陽光花園", "动物阳光花园");
 
   registerExpandedGuide("animal-triple-match", {

@@ -62,30 +62,76 @@
     }
     throw new Error("Unsupported bamboo connection");
   }
+  function traceRequiredPath(links,source){
+    const parent=Array(25).fill(-1),distance=Array(25).fill(-1),queue=[source];
+    distance[source]=0;
+    while(queue.length){
+      const current=queue.shift();
+      links[current].forEach(direction=>{
+        const [dr,dc]=directions[direction],row=Math.floor(current/size)+dr,col=current%size+dc,next=row*size+col;
+        if(distance[next]>=0)return;
+        distance[next]=distance[current]+1;parent[next]=current;queue.push(next);
+      });
+    }
+    const target=links.reduce((best,set,index)=>set.size===1&&index!==source&&distance[index]>distance[best]?index:best,source);
+    const required=[];let current=target;
+    while(current>=0){required.push(current);current=parent[current]}
+    return{target,required};
+  }
   function build(index){
     const links=index===0?snake(false):index===1?snake(true):index===2?spiral():tree(0x9e3779b9^(index*2654435761));
     const leaves=links.map((set,i)=>set.size===1?i:-1).filter(i=>i>=0);
     const source=leaves[(index*5)%leaves.length];
-    const tiles=links.map((set,i)=>matchShape([...set],i===source));
-    return{index,size,source,tiles};
+    const {target,required}=traceRequiredPath(links,source),requiredSet=new Set(required);
+    const decoyShapes=["s","e","t"];
+    const tiles=links.map((set,i)=>{
+      let tile=matchShape([...set],i===source);
+      if(!requiredSet.has(i)&&(tile.shape==="goal"||tile.shape==="x")){
+        const shape=decoyShapes[(index+i)%decoyShapes.length];
+        tile={shape,solved:mod(index*3+i)};
+      }
+      const blockedPort=requiredSet.has(i)?null:[...set].find(direction=>{
+        const [dr,dc]=directions[direction],next=(Math.floor(i/size)+dr)*size+i%size+dc;
+        return requiredSet.has(next);
+      });
+      return{...tile,required:requiredSet.has(i),blockedPort:blockedPort??null};
+    });
+    return{index,size,source,target,required,decoys:25-required.length,tiles};
   }
   function structureScore(level){
     return level.tiles.reduce((score,tile)=>score+(tile.shape==="t"?1:tile.shape==="x"?2:0),0);
   }
   const authored=Array.from({length:30},(_,index)=>build(index));
-  const levels=[
+  const ordered=[
     ...authored.slice(0,3),
-    ...authored.slice(3).sort((a,b)=>structureScore(a)-structureScore(b)||a.index-b.index)
-  ].map((level,index)=>({...level,index,difficulty:{
-    turns:index+2,
-    pieces:Math.min(level.tiles.filter(tile=>tile.shape!=="x").length-1,2+Math.floor(index/2)),
-    structure:structureScore(level)
+    ...authored.slice(3).sort((a,b)=>a.decoys-b.decoys||structureScore(a)-structureScore(b)||a.index-b.index)
+  ];
+  const budgets=Array(30),pieceBudgets=Array(30);let nextTurns=Infinity,nextPieces=Infinity;
+  for(let index=29;index>=0;index--){
+    const level=ordered[index],candidates=level.tiles.filter((tile,tileIndex)=>tile.required&&tileIndex!==level.target&&tile.shape!=="x");
+    const turnCapacity=candidates.reduce((total,tile)=>total+(tile.shape==="s"?1:3),0);
+    budgets[index]=Math.min(index+2,turnCapacity,nextTurns);
+    pieceBudgets[index]=Math.min(2+Math.floor(index/2),candidates.length,nextPieces);
+    nextTurns=budgets[index];nextPieces=pieceBudgets[index];
+  }
+  const levels=ordered.map((level,index)=>({...level,index,difficulty:{
+    turns:budgets[index],
+    pieces:pieceBudgets[index],
+    structure:level.decoys,
+    branches:structureScore(level)
   }}));
   function createStageTiles(level,index,target){
     const tiles=level.tiles.map((tile,tileIndex)=>({...tile,target:tileIndex===target,rot:tile.solved}));
+    tiles.forEach((tile,tileIndex)=>{
+      if(tile.required||tile.target)return;
+      const rank=(((tileIndex+1)*1664525+(index+1)*1013904223)>>>0);
+      const rotations=[0,1,2,3].filter(rotation=>tile.blockedPort===null||!raw[tile.shape].map(port=>mod(port+rotation)).includes(tile.blockedPort));
+      const scrambled=rotations.filter(rotation=>rotation!==tile.solved);
+      tile.rot=(scrambled.length?scrambled:rotations)[rank%(scrambled.length||rotations.length)];
+    });
     const candidates=tiles
       .map((tile,tileIndex)=>({tile,tileIndex,rank:((tileIndex+1)*1103515245+(index+1)*12345)>>>0}))
-      .filter(({tile})=>tile.shape!=="x"&&!tile.target)
+      .filter(({tile})=>tile.required&&tile.shape!=="x"&&!tile.target)
       .sort((a,b)=>{
         const aCap=a.tile.shape==="s"?1:3,bCap=b.tile.shape==="s"?1:3;
         return bCap-aCap||a.rank-b.rank||a.tileIndex-b.tileIndex;
