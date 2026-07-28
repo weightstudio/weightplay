@@ -838,6 +838,10 @@ body.lunch-stage .stage-card.locked.is-centered {
   min-height: 0;
 }
 
+body.lunch-playing:has(#resultPanel:not(.hidden)) .wp-generated-battle-header {
+  display: none !important;
+}
+
 .result-card h2 {
   font-size: 30px;
   font-weight: 1000;
@@ -975,8 +979,8 @@ body.lunch-stage .stage-card.locked.is-centered {
 }
 
 .result-actions {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 6px;
   width: 100%;
 }
@@ -997,65 +1001,96 @@ body.lunch-stage .stage-card.locked.is-centered {
   transition: transform 0.1s ease, box-shadow 0.1s ease;
   display: grid;
   place-items: center;
+  padding: 0 8px;
+  white-space: nowrap;
 }
 
-@media (max-height: 560px) {
+.result-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+  filter: grayscale(0.35);
+  transform: none;
+  box-shadow: 0 2px 0 #b7a57d;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
   .result-card {
-    width: min(100%, 1120px);
-    gap: 6px;
-    padding: 12px;
+    grid-template-columns: minmax(180px, 0.75fr) minmax(0, 1.25fr);
+    grid-template-rows: auto auto auto 48px;
+    gap: 4px 8px;
+    width: min(100%, 720px);
+    max-height: calc(100% - 8px);
+    padding: 8px;
   }
 
   .result-card h2 {
-    font-size: 40px;
-  }
-
-  .reward-parade {
-    min-height: 60px;
-  }
-
-  .reward-parade img {
-    width: 58px;
-    height: 58px;
-  }
-
-  .result-summary {
-    font-size: 28px;
-  }
-
-  .result-stats span {
-    font-size: 20px;
-  }
-
-  .skill-report > strong {
+    grid-column: 1;
+    grid-row: 1;
     font-size: 24px;
   }
 
+  .result-guardian {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .reward-parade {
+    grid-column: 1;
+    grid-row: 3;
+    min-height: 44px;
+  }
+
+  .reward-parade img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .result-report {
+    grid-column: 2;
+    grid-row: 1 / 4;
+    align-content: center;
+    gap: 4px;
+  }
+
+  .result-summary {
+    font-size: 16px;
+  }
+
+  .result-stats span {
+    min-height: 34px;
+    font-size: 11px;
+  }
+
+  .skill-report > strong {
+    font-size: 14px;
+  }
+
   .skill-report-row {
-    font-size: 22px;
+    font-size: 12px;
   }
 
   .skill-report-row b {
-    font-size: 22px;
+    font-size: 12px;
   }
 
   .progress-message {
-    font-size: 22px;
+    font-size: 13px;
   }
 
   .result-report small {
-    font-size: 18px;
+    font-size: 10px;
   }
 
   .result-actions {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-column: 1 / -1;
+    grid-row: 4;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .result-actions button,
   .result-actions a {
-    min-height: 90px;
-    font-size: 30px;
+    min-height: 44px;
+    font-size: 14px;
   }
 }
 
@@ -1244,6 +1279,9 @@ body.lunch-playing.weightplay-active-viewport .lunch-game {
   transform: scale(var(--lunch-frame-scale, 1)) !important;
   transform-origin: top left !important;
   overflow: hidden !important;
+  background:
+    linear-gradient(rgba(76, 47, 12, 0.58), rgba(76, 47, 12, 0.68)),
+    url("../../assets/lunchbox-cover.webp") center / cover no-repeat;
 }
 
 body.lunch-stage .topbar {
@@ -1252,8 +1290,11 @@ body.lunch-stage .topbar {
 
 body.lunch-stage .stage-select {
   flex: 1 1 auto;
+  display: grid;
+  grid-template-rows: 56px minmax(0, 1fr) 56px;
+  align-items: stretch;
   min-height: 0;
-  padding: 8px 0;
+  padding: 0;
   overflow: hidden;
 }
 
@@ -1268,7 +1309,12 @@ body.lunch-stage .wp-standard-stage-heading {
   align-items: center;
   gap: 8px;
   width: 100%;
-  padding: 0 12px;
+  min-height: 56px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  background: rgba(23, 36, 58, 0.94);
+  color: #f8fafc;
 }
 
 body.lunch-stage .wp-standard-stage-heading h2 {
@@ -1278,18 +1324,26 @@ body.lunch-stage .wp-standard-stage-heading h2 {
 }
 
 body.lunch-stage .wp-standard-stage-heading > button {
-  width: 44px;
-  min-width: 44px;
-  height: 44px;
-  min-height: 44px;
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  min-height: 48px;
   padding: 0;
 }
 
+body.lunch-stage .stage-workspace {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+}
+
 body.lunch-stage .stage-status {
-  flex: 0 0 48px;
+  position: absolute;
+  z-index: 3;
+  inset: 6px 12px auto;
   width: calc(100% - 24px);
-  min-height: 48px;
-  margin: 0 12px 8px;
+  min-height: 44px;
+  margin: 0;
   padding: 6px 12px;
   border: 2px solid transparent;
   border-radius: 12px;
@@ -1309,13 +1363,17 @@ body.lunch-stage .stage-status:not(:empty) {
 }
 
 body.lunch-stage .stage-grid {
+  position: absolute;
+  top: clamp(56px, calc(38% - 95px), calc(100% - 198px));
+  left: 0;
   display: flex;
-  flex: 1 1 auto;
   width: 100%;
+  height: 190px;
   max-width: none;
-  min-height: 0;
+  min-height: 190px;
+  max-height: 190px;
   gap: 12px;
-  padding: 0 47px 8px;
+  padding: 0 63px;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
@@ -1324,9 +1382,46 @@ body.lunch-stage .stage-grid {
 
 body.lunch-stage .stage-card {
   flex: 0 0 264px;
-  min-height: 0;
+  width: 264px;
+  min-width: 264px;
+  max-width: 264px;
+  height: 190px;
+  min-height: 190px;
+  max-height: 190px;
   scroll-snap-align: center;
   scroll-snap-stop: always;
+  overflow: hidden;
+}
+
+body.lunch-stage .stage-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  gap: 8px;
+  height: 56px;
+  min-height: 56px;
+  padding: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(23, 36, 58, 0.94);
+}
+
+body.lunch-stage .stage-tab {
+  grid-column: 2;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 44px;
+  min-height: 44px;
+  padding: 0 10px;
+  border: 2px solid #ffd23f;
+  border-radius: 14px;
+  background: #f5c84c;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.2;
+  white-space: nowrap;
+  box-shadow: 0 0 18px rgba(255, 190, 48, 0.56);
 }
 
 body.lunch-playing .game-hud {
@@ -1408,17 +1503,7 @@ body.lunch-playing .game-hud {
   }
 
   html body.wp-logical-battle-active.lunch-playing #gameHud {
-    grid-template-columns: 96px minmax(0, 1.2fr) minmax(96px, 0.9fr) minmax(96px, 0.9fr) 88px !important;
-  }
-
-  body.lunch-playing .battle-return,
-  body.lunch-playing #battleHelpBtn {
-    width: 88px !important;
-    min-width: 88px !important;
-    max-width: 88px !important;
-    height: 88px !important;
-    min-height: 88px !important;
-    max-height: 88px !important;
+    grid-template-columns: 48px minmax(0, 1.2fr) minmax(48px, 0.9fr) minmax(48px, 0.9fr) 44px !important;
   }
 
   body.lunch-playing .game-play-content {
@@ -1427,14 +1512,14 @@ body.lunch-playing .game-hud {
     gap: 8px 12px;
   }
 
+  html body.wp-logical-battle-active.lunch-playing .game-play-content {
+    grid-template-rows: minmax(0, 1fr) 48px !important;
+  }
+
   body.lunch-playing .lunchboxes {
     grid-column: 1;
     grid-row: 1 / 3;
     align-content: center;
-  }
-
-  body.lunch-playing .lunchbox {
-    min-height: 88px !important;
   }
 
   body.lunch-playing .food-stage {

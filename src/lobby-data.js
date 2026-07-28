@@ -51,11 +51,11 @@ window.WONDER_LOBBY = {
         ko: "시그널 베일", es: "Velo de Señal", "pt-BR": "Véu do Sinal", fr: "Voile du Signal",
         de: "Signal-Schleier", it: "Velo del Segnale", ru: "Сигнальная завеса", hi: "सिग्नल वेल", ar: "حجاب الإشارة",
       },
-      status: "playable",
+      status: "planned",
       statusText: {
-        en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능",
-        es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile",
-        ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
+        en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정",
+        es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente",
+        ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا",
       },
       type: {
         en: "Top-Down Action RPG", "zh-Hant": "俯視角動作 RPG", "zh-Hans": "俯视角动作 RPG", ja: "見下ろし型アクションRPG",
@@ -67,7 +67,7 @@ window.WONDER_LOBBY = {
       skills: ["Exploration", "Combat"],
       ages: ["13", "teen", "adult", "family"],
       href: "games/signal-veil/",
-      previewVideo: "assets/previews/signal-veil-battle.webm",
+      internalTrial: "index.html?trial=1",
       art: { kind: "image", background: "assets/signal-veil-cover.webp", hideHero: true },
       description: {
         en: "Cross one connected 2042 town, forest, and neural lab. Reveal disguised Lizard People, grow stronger, and defeat their first commander.",

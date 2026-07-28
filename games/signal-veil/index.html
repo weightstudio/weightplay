@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol)) location.replace("/en/games/signal-veil/" + location.search + location.hash);</script>
+  <script data-wp-internal-trial-gate>if(/^https?:$/.test(location.protocol)&&new URLSearchParams(location.search).get("trial")!=="1")location.replace("/");</script>
   <meta charset="utf-8">
   <base href="/games/signal-veil/">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#071923">
-  <meta name="robots" content="index,follow">
+  <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="description" content="Explore a connected 2042 town, forest, and hidden laboratory in Signal Veil, a real-time pixel action RPG starring Spark Paw Fia.">
   <meta property="og:site_name" content="WeightPlay">
   <meta property="og:type" content="website">
@@ -36,24 +36,6 @@
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css">
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="style.css">
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"VideoGame",
-    "name":"Signal Veil",
-    "alternateName":"訊號帷幕",
-    "url":"https://weightplay.com/en/games/signal-veil/",
-    "image":"https://weightplay.com/assets/signal-veil-cover.webp",
-    "description":"A connected-world top-down pixel action RPG about neural disguises and a cosmic signal.",
-    "applicationCategory":"Game",
-    "operatingSystem":"Web browser",
-    "publisher":{"@type":"Organization","name":"WeightStudio"},
-    "inLanguage":["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"],
-    "isAccessibleForFree":true,
-    "genre":["Action RPG","Pixel Art","Mystery","Adventure"],
-    "audience":{"@type":"Audience","audienceType":"General","suggestedMinAge":13}
-  }
-  </script>
 </head>
 <body data-game-id="signal-veil" data-wp-game-id="signal-veil" data-wp-combined-sound="true" data-runtime-localize="off">
   <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite">

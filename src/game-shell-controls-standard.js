@@ -678,6 +678,18 @@
         header = ownedStageHeader;
       }
     }
+    if (type === "battle" && header?.classList.contains("wp-generated-battle-header")) {
+      const ownedBattleHeader = [...screen.querySelectorAll("header")]
+        .find((candidate) => (
+          !candidate.classList.contains("wp-generated-battle-header")
+          && visible(candidate)
+          && first(['[data-wp-return="battle"]'], candidate)
+        ));
+      if (ownedBattleHeader) {
+        header.remove();
+        header = ownedBattleHeader;
+      }
+    }
     if (!header) {
       header = document.createElement("header");
       header.className = type === "stage"
@@ -692,7 +704,11 @@
       currentHeader?.classList.remove("wp-shell-header", "wp-main-shell-header", "wp-stage-shell-header");
       currentHeader = header;
       if (header.classList.contains("wp-generated-battle-header") && !first(RETURN_SELECTORS, header)) {
-        const externalBattleReturn = first(['[data-wp-return="battle"]'], document);
+        const battleRoot = screen.closest(
+          "#battle,#battleScreen,#battleView,[data-screen='battle'],.battle-screen",
+        ) || screen;
+        const externalBattleReturn = [...battleRoot.querySelectorAll('[data-wp-return="battle"]')]
+          .find((control) => !control.classList.contains("lobby-return") && control.id !== "lobbyReturn");
         if (externalBattleReturn && !header.contains(externalBattleReturn)) {
           externalBattleReturn.hidden = false;
           externalBattleReturn.classList.remove("is-hidden", "hidden", "wp-shell-legacy-control");

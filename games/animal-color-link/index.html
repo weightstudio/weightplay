@@ -38,10 +38,12 @@
   <main id="stage" class="screen canvas stage stage-canvas" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-color-link-cover-kids-v2.webp')" hidden>
     <header class="scene-header stage-header">
       <button class="icon-button" data-back data-wp-return="stage" data-t-aria="back" aria-label="Back">←</button>
-      <div><small data-t="choose">CHOOSE A GARDEN</small><h2 data-t="title">Color Link Garden</h2></div>
-      <span id="progressBadge" class="badge"></span>
+      <h2 data-t="title">Color Link Garden</h2>
     </header>
-    <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="Stage list"></section>
+    <section class="stage-workspace">
+      <div class="stage-summary"><small data-t="choose">CHOOSE A GARDEN</small><span id="progressBadge" class="badge"></span></div>
+      <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="Stage list"></section>
+    </section>
     <nav class="stage-tabs" data-t-aria="stageList" aria-label="Stage list">
       <button id="previousGroup" type="button" aria-label="Previous gardens">←</button>
       <button id="stageTab" type="button" class="stage-tab active" aria-current="page">Stages</button>
@@ -52,13 +54,12 @@
   <main id="battle" class="screen canvas battle" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
     <header class="scene-header battle-header">
       <button class="icon-button" data-back data-wp-return="battle" data-t-aria="back" aria-label="Back">←</button>
-      <div><small id="chapter"></small><h2 id="stageName"></h2></div>
-      <span id="moves"></span>
+      <h2 id="stageName"></h2>
     </header>
     <section class="battle-content">
       <div class="hud">
-        <span id="linkStatus"></span>
-        <span id="fillStatus"></span>
+        <span id="chapter"></span><span id="moves"></span>
+        <span id="linkStatus"></span><span id="fillStatus"></span>
       </div>
       <div id="grid" class="grid" role="grid" tabindex="0" data-t-aria="boardLabel" aria-label="Color Link puzzle board"></div>
       <div class="tools">

@@ -1460,6 +1460,36 @@
     },
   };
 
+  const generalGuideIdentity = {
+    en: { kicker: "WeightPlay Original Game Guide", suffix: "Game Guide" },
+    "zh-Hant": { kicker: "WeightPlay 原創遊戲指南", suffix: "遊戲指南" },
+    "zh-Hans": { kicker: "WeightPlay 原创游戏指南", suffix: "游戏指南" },
+    ja: { kicker: "WeightPlayオリジナルゲームガイド", suffix: "ゲームガイド" },
+    ko: { kicker: "WeightPlay 오리지널 게임 가이드", suffix: "게임 가이드" },
+    es: { kicker: "Guía original de WeightPlay", suffix: "Guía del juego" },
+    "pt-BR": { kicker: "Guia original do WeightPlay", suffix: "Guia do jogo" },
+    fr: { kicker: "Guide original WeightPlay", suffix: "Guide du jeu" },
+    de: { kicker: "Originaler WeightPlay-Spielguide", suffix: "Spielanleitung" },
+    it: { kicker: "Guida originale WeightPlay", suffix: "Guida al gioco" },
+    ru: { kicker: "Оригинальное руководство WeightPlay", suffix: "Руководство по игре" },
+    hi: { kicker: "WeightPlay की मौलिक गेम गाइड", suffix: "गेम गाइड" },
+    ar: { kicker: "دليل لعبة WeightPlay الأصلية", suffix: "دليل اللعبة" },
+  };
+
+  function guideIdentity(game, audience) {
+    if (audience !== "general") {
+      return {
+        kicker: game.guideKicker || uiLabel("kicker"),
+        suffix: game.guideTitleSuffix || uiLabel("titleSuffix"),
+      };
+    }
+    const identity = generalGuideIdentity[locale()] || generalGuideIdentity.en;
+    return {
+      kicker: game.guideKicker || identity.kicker,
+      suffix: game.guideTitleSuffix || identity.suffix,
+    };
+  }
+
   const skillLabels = {
     en: {},
     "zh-Hant": {
@@ -6621,13 +6651,18 @@
     return spanishResourcePromise;
   }
 
+  const reviewedJapaneseGuideOverrides = {};
+
   function installJapaneseResource() {
     const resource = window.WeightPlayGameInfoLocales?.ja;
     if (!resource) return false;
     labels.ja = resource.labels || {};
     skillLabels.ja = resource.skillLabels || {};
     localizedGameplayProfiles.ja = resource.gameplayProfiles || {};
-    localizedGames.ja = resource.games || {};
+    localizedGames.ja = {
+      ...(resource.games || {}),
+      ...reviewedJapaneseGuideOverrides,
+    };
     return true;
   }
 
@@ -6649,7 +6684,10 @@
     const base = games[id];
     if (!base) return null;
     const activeLocale = locale();
-    const override = localizedGames[activeLocale]?.[id] || {};
+    const override = {
+      ...(localizedGames[activeLocale]?.[id] || {}),
+      ...(activeLocale === "ja" ? reviewedJapaneseGuideOverrides[id] || {} : {}),
+    };
     const profile = gameplayProfiles[id] || {};
     const localizedProfile = localizedGameplayProfiles[activeLocale]?.[id] || {};
     const skills = override.skills || localizedProfile.skills || profile.skills || base.skills || [];
@@ -6901,9 +6939,9 @@
     return `${clipped.slice(0, boundary > 110 ? boundary : clipped.length).replace(/[,:;.!?\s]+$/u, "")}…`;
   }
 
-  function syncLocalizedMetadata(game) {
+  function syncLocalizedMetadata(game, identity) {
     const activeLocale = locale();
-    const title = `${game.title} - ${game.guideTitleSuffix || uiLabel("titleSuffix")} | WeightPlay`;
+    const title = `${game.title} - ${identity.suffix} | WeightPlay`;
     const description = compactMetaDescription(game.intro);
     document.documentElement.lang = activeLocale;
     document.title = title;
@@ -6952,12 +6990,17 @@
     const baseGame = games[id];
     const main = document.querySelector("main");
     if (!baseGame || !main) return;
-    if (id === "animal-number-match" && document.querySelector("script[data-wp-internal-trial-gate]")) return;
+    if (
+      id === "animal-number-match"
+      && document.querySelector("script[data-wp-internal-trial-gate]")
+      && locale() !== "ja"
+    ) return;
     const game = localizedGame(id);
     if (!game) return;
-    syncLocalizedMetadata(game);
-    const gameSkills = game.skills || [];
     const audience = document.querySelector('meta[name="weightplay-audience"]')?.content?.trim().toLowerCase() || "general";
+    const identity = guideIdentity(game, audience);
+    syncLocalizedMetadata(game, identity);
+    const gameSkills = game.skills || [];
     const showSkills = audience === "kids" && game.showSkills !== false;
     const showRecommendedAge = Boolean(baseGame.age) && !/^(12|13)\+$/.test(baseGame.age);
 
@@ -6968,7 +7011,9 @@
 
     document.documentElement.classList.add("has-game-page-info");
     document.body.classList.add("has-game-page-info");
-    const related = relatedGames(id, baseGame);
+    const related = Array.isArray(game.relatedIds) && game.relatedIds.length
+      ? game.relatedIds.filter((relatedId) => relatedId !== id && games[relatedId]).slice(0, 3)
+      : relatedGames(id, baseGame);
     const scoreBands = scoreBandsFor(baseGame);
     const section = document.createElement("section");
     section.className = "game-page-info";
@@ -6976,8 +7021,8 @@
     section.innerHTML = `
       <div class="game-info-hero">
         <div class="game-info-title">
-          <span class="game-info-kicker">${escapeHtml(game.guideKicker || uiLabel("kicker"))}</span>
-          <h2>${escapeHtml(game.title)} - ${escapeHtml(game.guideTitleSuffix || uiLabel("titleSuffix"))}</h2>
+          <span class="game-info-kicker">${escapeHtml(identity.kicker)}</span>
+          <h2>${escapeHtml(game.title)} - ${escapeHtml(identity.suffix)}</h2>
           <p>${escapeHtml(game.intro)}</p>
         </div>
         <div class="game-info-facts">
@@ -7875,16 +7920,66 @@
 
   registerExpandedGuide("animal-number-match", {
     title: "Panko's Number Grove", gameplay: "Visible-Line Number Pair Puzzle",
-    intro: "Remove equal numbers or pairs that total ten when they touch or can see each other through cleared spaces, opening new sight lines across the board.",
-    story: ["Thirty number groves have become crowded with paired rune tiles. Panko clears them by matching values under one consistent visibility rule.", "The board never asks the player to guess a hidden value. Every number and every empty space needed for the next deduction remains visible."],
-    systems: ["A legal pair contains equal values or two values whose sum is ten.", "The two tiles must be adjacent in the same row or column, or share a straight line containing only cleared cells.", "Removing a pair creates new empty cells and may expose a longer match that was blocked before.", "Undo restores one pair. Reorder rearranges only remaining values when available, while Restart restores the authored board."],
+    intro: "Remove pairs that total ten when they touch or can see each other through cleared spaces, opening new sight lines across the board.",
+    story: ["Thirty number groves have become crowded with paired rune tiles. Panko clears them by making sums of ten under one consistent visibility rule.", "The board never asks the player to guess a hidden value. Every number and every empty space needed for the next deduction remains visible."],
+    systems: ["A legal pair contains two values whose sum is ten. Equal values are legal only when both tiles are five.", "The two tiles must be adjacent in the same row or column, or share a straight line containing only cleared cells.", "Removing a pair creates new empty cells and may expose a longer match that was blocked before.", "Undo restores one pair. Reorder rearranges only remaining values when available, while Restart restores the authored board."],
     how: ["Choose an unlocked grove.", "Tap one number and then a legal partner.", "Use the new empty cells to find longer horizontal or vertical sight lines.", "Clear every pair to complete the grove."],
-    strategyTips: ["Prefer matches that open the center or connect two separated empty regions.", "Check equal values before spending a flexible pair that totals ten.", "Scan rows and columns again after every removal because visibility changes immediately.", "Use Hint to learn the current legality rule, not as a substitute for reading the board."],
-    progression: ["Six chapters expand board size and introduce denser blockers, longer sight lines, competing pair choices, and layouts that require careful opening order.", "Difficulty comes from spatial consequences while the arithmetic remains limited to equality and sums of ten."],
+    strategyTips: ["Prefer matches that open the center or connect two separated empty regions.", "Before spending a flexible number, check whether its complement has another useful sight line.", "Scan rows and columns again after every removal because visibility changes immediately.", "Use Hint to learn the current legality rule, not as a substitute for reading the board."],
+    progression: ["Six chapters expand board size and introduce denser blockers, longer sight lines, competing pair choices, and layouts that require careful opening order.", "Difficulty comes from spatial consequences while the arithmetic remains limited to sums of ten."],
     designNote: "Numbers remain visible as text and the selection state uses more than color, supporting keyboard, touch, and mouse play.",
     parent: "No account, countdown, purchase, or public score is required. Local clears and best move counts remain in this browser.",
-    faq: [["Why can two matching values not clear?", "A number still blocks their shared row or column."], ["Do diagonal pairs count?", "No, pairs use adjacency or a straight horizontal or vertical sight line."], ["What does Reorder do?", "It rearranges the remaining values without changing the pairing rule."], ["Are stages timed?", "No, you can inspect the board at your own pace."]]
+    faq: [["Why can two equal values not clear?", "Equal values are not a pair unless both are five; every legal pair must total ten and share a clear row or column."], ["Do diagonal pairs count?", "No, pairs use adjacency or a straight horizontal or vertical sight line."], ["What does Reorder do?", "It rearranges the remaining values without changing the sum-to-ten rule."], ["Are stages timed?", "No, you can inspect the board at your own pace."]]
   }, "潘可的數字花園", "胖达数字花园");
+
+  localizedGames.ja ||= {};
+  reviewedJapaneseGuideOverrides["animal-number-match"]
+    = localizedGames.ja["animal-number-match"] = {
+    ...games["animal-number-match"],
+    title: "パンコのナンバーグローブ",
+    difficulty: "やさしい〜チャレンジ",
+    time: "1ステージ約2〜8分",
+    gameplay: "見通しを使う「合計10」数字ペアパズル",
+    genre: ["パズル", "ストラテジー", "アニマル"],
+    relatedIds: ["animal-habitat-mahjong", "garden-tiles", "animal-rope-rescue"],
+    guideKicker: "WeightPlayオリジナルゲームガイド",
+    guideTitleSuffix: "ゲームガイド",
+    intro: "合計が10になる2枚を選びます。隣り合うか、消したマスだけを通る縦横の直線で見通せるペアを消し、竹林の盤面をすべて片づけましょう。",
+    story: [
+      "30のナンバーグローブには、対になる数字のルーンタイルが積み重なっています。パンコは一貫した見通しルールを使って、森を少しずつ開いていきます。",
+      "隠れた数字を当てる必要はありません。次の判断に必要な数字と空きマスは、いつでも盤面に表示されています。",
+    ],
+    systems: [
+      "合法なペアは、合計が10になる2枚です。同じ数字で組めるのは5と5だけです。",
+      "2枚は同じ行か列で隣り合うか、その間がすべて空きマスでなければなりません。斜めのペアは選べません。",
+      "ペアを消すと新しい空きマスが生まれ、それまで遮られていた長い見通しが開くことがあります。",
+      "「元に戻す」は直前の1ペアを復元します。「並べ替え」は残った数字だけを再配置し、「やり直す」は最初の盤面へ戻します。",
+    ],
+    how: [
+      "横スクロールのステージ一覧から、解放済みのグローブを選びます。",
+      "数字を1枚選び、合計10になる相手を選びます。",
+      "ペアを消すたびに行と列を見直し、新しく開いた見通しを探します。",
+      "すべてのペアを消すとグローブクリアです。",
+    ],
+    strategyTips: [
+      "中央を開くペアや、離れた空き領域をつなぐペアを優先しましょう。",
+      "柔軟に使える数字を消す前に、その補数へつながる別の見通しがないか確認しましょう。",
+      "1組消すたびに見通しが変わるため、行と列を最初から見直すのが有効です。",
+      "ヒントは現在選べるペアを示します。答えを丸ごと解く機能ではありません。",
+    ],
+    progression: [
+      "全30ステージは6章構成です。盤面が広がり、遮る数字が増え、より長い見通しと複数の候補順を扱うようになります。",
+      "計算は合計10だけに保たれ、難しさは空きマスの作り方と消す順番から生まれます。",
+    ],
+    designNote: "数字は常に文字として表示され、選択状態は色だけでなく枠と形でも伝わります。タッチ、マウス、キーボードは同じ盤面ルールを使い、スマートフォン、横画面、デスクトップでも同じ論理レイアウトを一括で拡大縮小します。",
+    parent: "アカウント、制限時間、購入、公開ランキングはありません。クリア状況と手数は現在のブラウザーにだけ保存されます。サイトデータを削除したり、別のブラウザーや端末を使ったりすると、別のセーブとして扱われることがあります。",
+    faq: [
+      ["なぜ同じ数字なのに消せないのですか？", "同じ数字で組めるのは5と5だけです。すべてのペアは合計10になり、同じ行か列で見通せる必要があります。"],
+      ["斜めのペアも選べますか？", "いいえ。隣接または縦横の直線で見通せるペアだけが有効です。"],
+      ["「並べ替え」は何をしますか？", "残っている数字だけを、合計10のルールを変えずに再配置します。"],
+      ["ステージに制限時間はありますか？", "ありません。自分のペースで盤面を確認できます。"],
+      ["進行状況は別の端末にも移りますか？", "いいえ。現在はこのブラウザー内のローカル保存だけです。"],
+    ],
+  };
 
   // Public guide owner: games["animal-sunbeam-garden"] is populated below.
   registerExpandedGuide("animal-sunbeam-garden", {

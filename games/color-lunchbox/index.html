@@ -82,7 +82,7 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
 </head>
-  <body>
+  <body data-audience="kids" data-wp-game-id="color-lunchbox" data-wp-combined-sound="true">
     <main class="lunch-game" data-wp-logical-battle-canvas="390x788">
       <header class="topbar">
         <a class="home-link" data-wp-return="main" href="/kids/" id="homeLink" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
@@ -107,11 +107,11 @@
         <div class="main-copy">
           <h2 id="mainTitle">Animal Color Lunchbox</h2>
           <p id="mainIntro">Sort colorful foods through 30 short levels and six friendly Guardian checks.</p>
-          <button id="startBtn" type="button">Choose Level</button>
+          <button id="startBtn" data-wp-main-start type="button">Start Game</button>
         </div>
       </section>
 
-      <section id="gameHud" class="game-hud hidden" aria-label="Game stats">
+      <header id="gameHud" class="game-hud hidden" aria-label="Game stats">
         <button id="battleBackBtn" class="battle-return" data-wp-return="battle" type="button" aria-label="Back to levels">&larr;</button>
         <div class="hud-item">
           <span id="levelIndicator">Level 1 / 30</span>
@@ -126,12 +126,19 @@
           <strong id="roundText">1 / 5</strong>
         </div>
         <button id="battleHelpBtn" class="in-game-help" type="button" aria-label="How to play">?</button>
-      </section>
+      </header>
 
       <section id="stageSelectPanel" class="stage-select hidden">
-        <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><h2 id="stageSelectTitle">Choose Level</h2><button id="stageHelpBtn" class="in-game-help" type="button" aria-label="How to play">?</button></header>
-        <p id="stageStatus" class="stage-status" role="status" aria-live="polite" aria-atomic="true"></p>
-        <div id="stageGrid" class="stage-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep"></div>
+        <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><h2 id="stageSelectTitle">Animal Color Lunchbox</h2><button id="helpBtn" class="in-game-help" type="button" aria-label="How to play">?</button></header>
+        <div class="stage-workspace">
+          <p id="stageStatus" class="stage-status" role="status" aria-live="polite" aria-atomic="true"></p>
+          <div id="stageGrid" class="stage-grid" data-wp-stage-rail data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep"></div>
+        </div>
+        <nav class="stage-tabs" aria-label="Stage pages">
+          <span aria-hidden="true"></span>
+          <button id="stageTabBtn" class="stage-tab active" type="button" aria-current="page">Levels</button>
+          <span aria-hidden="true"></span>
+        </nav>
       </section>
 
       <div id="gamePlayContent" class="game-play-content play-area hidden">
@@ -164,10 +171,9 @@
           <div id="resultText" class="result-report"></div>
 
           <div class="result-actions">
+            <button id="stageSelectBtn" type="button">Levels</button>
             <button id="nextStageBtn" type="button">Next Level</button>
             <button id="againBtn" type="button">Play Again</button>
-            <button id="stageSelectBtn" type="button">Levels</button>
-            <a id="lobbyLink" href="/kids/" class="lobby-btn">Lobby</a>
           </div>
         </div>
       </div>

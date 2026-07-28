@@ -9,7 +9,8 @@
   const stageSelectPanel = document.querySelector("#stageSelectPanel");
   const stageSelectTitle = document.querySelector("#stageSelectTitle");
   const stageBackBtn = document.querySelector("#stageBackBtn");
-  const stageHelpBtn = document.querySelector("#stageHelpBtn");
+  const stageHelpBtn = document.querySelector("#helpBtn");
+  const stageTabBtn = document.querySelector("#stageTabBtn");
   const stageGrid = document.querySelector("#stageGrid");
   const stageStatus = document.querySelector("#stageStatus");
   const gameHud = document.querySelector("#gameHud");
@@ -44,7 +45,6 @@
   const nextStageBtn = document.querySelector("#nextStageBtn");
   const againBtn = document.querySelector("#againBtn");
   const stageSelectBtn = document.querySelector("#stageSelectBtn");
-  const lobbyLink = document.querySelector("#lobbyLink");
   const homeLink = document.querySelector("#homeLink");
   const battleBackBtn = document.querySelector("#battleBackBtn");
   const battleHelpBtn = document.querySelector("#battleHelpBtn");
@@ -777,14 +777,14 @@
           ? "Organize alimentos coloridos em 30 níveis curtos e seis desafios amigáveis dos Guardiões."
           : "Sort colorful foods through 30 short levels and six friendly Guardian checks.";
     startBtn.textContent = t("startGame");
-    stageSelectTitle.textContent = t("chooseLevel");
+    stageSelectTitle.textContent = t("title");
+    stageTabBtn.textContent = t("levels");
     document.querySelector("#scoreLabel").textContent = t("scoreLabel");
     document.querySelector("#roundLabel").textContent = t("roundLabel");
     document.querySelector("#loadingTitle").textContent = t("loading");
     nextStageBtn.textContent = t("nextStage");
     againBtn.textContent = t("again");
     stageSelectBtn.textContent = t("levels");
-    lobbyLink.textContent = t("lobby");
     homeLink.setAttribute("aria-label", t("lobby"));
     leaveConfirmTitle.textContent = t("leaveTitle");
     leaveConfirmText.textContent = t("leaveText");
@@ -835,29 +835,11 @@
 
   function updateLunchFrame() {
     if (!document.body.classList.contains("lunch-stage") && !document.body.classList.contains("lunch-playing")) return;
-    const viewportWidth = visualViewport?.width || innerWidth;
-    const viewportHeight = visualViewport?.height || innerHeight;
-    const shortLandscape = viewportWidth > viewportHeight && viewportHeight <= 500;
-    const battleTargetSize = shortLandscape ? "88px" : "48px";
     [battleBackBtn, battleHelpBtn].forEach((button) => {
       ["width", "min-width", "max-width", "height", "min-height", "max-height"].forEach((property) => {
-        button.style.setProperty(property, battleTargetSize, "important");
+        button.style.setProperty(property, "48px", "important");
       });
     });
-    const scale = Math.min(Math.max(1, viewportWidth) / 390, Math.max(1, viewportHeight) / 788);
-    const logicalWidth = viewportWidth / scale;
-    const logicalHeight = viewportHeight / scale;
-    document.documentElement.style.setProperty("--lunch-frame-scale", String(scale));
-    document.documentElement.style.setProperty("--lunch-frame-left", "0px");
-    document.documentElement.style.setProperty("--lunch-frame-top", "0px");
-    document.documentElement.style.setProperty("--lunch-logical-width", `${logicalWidth}px`);
-    document.documentElement.style.setProperty("--lunch-logical-height", `${logicalHeight}px`);
-    document.documentElement.style.setProperty("--lunch-frame-width", `${viewportWidth}px`);
-    document.documentElement.style.setProperty("--lunch-frame-height", `${viewportHeight}px`);
-    lunchGame.dataset.wpCommonScale = String(scale);
-    lunchGame.dataset.wpLogicalWidth = String(logicalWidth);
-    lunchGame.dataset.wpLogicalHeight = String(logicalHeight);
-    lunchGame.dataset.wpLogicalBattleCanvas = `${logicalWidth.toFixed(3)}x${logicalHeight.toFixed(3)}`;
   }
 
   function exitSharedPlayViewport() {
@@ -1301,11 +1283,6 @@
         return element;
       }),
     );
-    const shortLandscape = (visualViewport?.width || innerWidth) > (visualViewport?.height || innerHeight)
-      && (visualViewport?.height || innerHeight) <= 500;
-    if (shortLandscape) {
-      dropZone.querySelectorAll(".lunchbox").forEach((box) => box.style.setProperty("min-height", "88px", "important"));
-    }
   }
 
   function startStage(stageIndex, focusChoice = false) {
@@ -1449,9 +1426,11 @@
       ? t(isPerfect ? "perfectAllClearDesc" : "allClearDesc")
       : t(isPerfect ? "perfectDesc" : "winDesc", { score: state.score });
     renderResultReport(message, progress);
-    nextStageBtn.classList.toggle("hidden", isFinalStage);
+    nextStageBtn.classList.remove("hidden");
+    nextStageBtn.disabled = isFinalStage;
+    nextStageBtn.setAttribute("aria-disabled", String(isFinalStage));
     const primaryAction = isFinalStage ? stageSelectBtn : nextStageBtn;
-    [nextStageBtn, againBtn, stageSelectBtn, lobbyLink].forEach((action) => {
+    [stageSelectBtn, nextStageBtn, againBtn].forEach((action) => {
       action.classList.toggle("result-primary", action === primaryAction);
       action.classList.toggle("result-secondary", action !== primaryAction);
     });
