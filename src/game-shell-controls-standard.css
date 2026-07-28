@@ -295,6 +295,8 @@
 
 .wp-stage-shell-header {
   box-sizing: border-box !important;
+  position: relative !important;
+  z-index: 80 !important;
   display: grid !important;
   grid-template-columns: 48px minmax(0, 1fr) 48px !important;
   align-items: center !important;
@@ -302,6 +304,7 @@
   width: 100% !important;
   min-height: 56px !important;
   padding: 4px !important;
+  overflow: visible !important;
 }
 
 /* Battle screens without a recognized native header receive this overlay.

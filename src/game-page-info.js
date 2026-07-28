@@ -1483,11 +1483,7 @@
         suffix: game.guideTitleSuffix || uiLabel("titleSuffix"),
       };
     }
-    const identity = generalGuideIdentity[locale()] || generalGuideIdentity.en;
-    return {
-      kicker: game.guideKicker || identity.kicker,
-      suffix: game.guideTitleSuffix || identity.suffix,
-    };
+    return generalGuideIdentity[locale()] || generalGuideIdentity.en;
   }
 
   const skillLabels = {

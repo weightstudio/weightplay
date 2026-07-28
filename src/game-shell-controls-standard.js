@@ -706,7 +706,7 @@
       setOpen(false);
     }
     if (type === "stage") {
-      const helpAction = screen.querySelector("#helpBtn");
+      const helpAction = screen.querySelector("#helpBtn,#stageHelpBtn");
       if (helpAction && !popover.contains(helpAction)) {
         helpAction.classList.add("wp-shell-settings-extra");
         popover.append(helpAction);
