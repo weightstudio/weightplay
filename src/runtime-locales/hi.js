@@ -1554,6 +1554,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Area cleared.": "क्षेत्र साफ़ कर दिया गया.",
   "Area control.": "क्षेत्र नियंत्रण.",
   "Area giochi per la cura degli animali": "क्षेत्र गियोची प्रति ला क्यूरा डेगली एनिमली",
+  "Arena da Fortaleza de Orbes Animais": "एरेना दा फ़ोर्टालेज़ा डे ऑर्ब्स एनिमाइस",
   "Arena de Fortaleza de Orbes Animal": "एरिना डी फोर्टालेज़ा डी ऑर्ब्स एनिमल",
   "Arena de la Melena de Brasas": "एरेना डे ला मेलेना डे ब्रसास",
   "Arena de rescate y crecimiento": "एरेना डे रेस्केट वाई क्रेसिमिएंटो",

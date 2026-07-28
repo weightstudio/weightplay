@@ -1554,6 +1554,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Area cleared.": "تم تطهير المنطقة.",
   "Area control.": "السيطرة على المنطقة.",
   "Area giochi per la cura degli animali": "منطقة جيوتشي للعناية بالحيوانات",
+  "Arena da Fortaleza de Orbes Animais": "ساحة فورتاليزا دي أوربس أنيمايس",
   "Arena de Fortaleza de Orbes Animal": "ساحة فورتاليزا دي أوربيس للحيوانات",
   "Arena de la Melena de Brasas": "أرينا دي لا ميلينا دي براساس",
   "Arena de rescate y crecimiento": "ساحة الإنقاذ والنمو",

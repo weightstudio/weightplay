@@ -187,6 +187,103 @@ body.wp-logical-battle-active.reef-fisher-playing .battle-shell > .play-frame > 
 body.wp-logical-battle-active.reef-fisher-playing .battle-shell > .catch-hud { grid-column: 1 !important; grid-row: 3 !important; width: 100% !important; height: 64px !important; }
 body.wp-logical-battle-active.reef-fisher-playing .battle-shell > .tension-panel { grid-column: 1 !important; grid-row: 4 !important; width: 100% !important; height: 176px !important; align-self: stretch !important; }
 
+@media (orientation: portrait) {
+  body.wp-logical-battle-active.reef-fisher-playing .battle-shell[data-wp-logical-battle-canvas] {
+    grid-template-rows: 56px minmax(0, 1fr) 64px 202px !important;
+  }
+  body.wp-logical-battle-active.reef-fisher-playing .battle-shell > .tension-panel {
+    height: 202px !important;
+    min-height: 202px !important;
+    max-height: 202px !important;
+  }
+  body.wp-logical-battle-active.reef-fisher-playing .tension-control {
+    grid-template-rows: 46px 64px 64px !important;
+  }
+  body.wp-logical-battle-active.reef-fisher-playing .tension-head {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: auto auto !important;
+    align-content: center !important;
+    gap: 0 !important;
+  }
+  body.wp-logical-battle-active.reef-fisher-playing .tension-head span {
+    overflow: visible !important;
+    text-align: left !important;
+    text-overflow: clip !important;
+    white-space: normal !important;
+  }
+  body.wp-logical-battle-active.reef-fisher-playing .tension-coach {
+    height: 64px !important;
+    min-height: 64px !important;
+    max-height: 64px !important;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  body.wp-logical-battle-active.reef-fisher-playing .battle-shell[data-wp-logical-battle-canvas] {
+    grid-template-columns: 160px minmax(300px, 1fr) 240px !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    gap: 6px !important;
+    padding: 6px !important;
+  }
+  body.wp-logical-battle-active.reef-fisher-playing .battle-shell > .hud-row {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: repeat(3, minmax(0, 1fr)) !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+  body.wp-logical-battle-active.reef-fisher-playing .battle-shell > .hud-row > div:first-of-type {
+    padding-left: 58px !important;
+  }
+  body.wp-logical-battle-active.reef-fisher-playing .battle-shell > .play-frame {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    width: auto !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    aspect-ratio: 48 / 59 !important;
+    place-self: center !important;
+  }
+  body.wp-logical-battle-active.reef-fisher-playing .battle-shell > .catch-hud {
+    grid-column: 3 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
+    height: 64px !important;
+    align-self: start !important;
+  }
+  body.wp-logical-battle-active.reef-fisher-playing .battle-shell > .tension-panel {
+    grid-column: 3 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
+    height: 242px !important;
+    min-height: 242px !important;
+    max-height: 242px !important;
+    align-self: end !important;
+  }
+  body.wp-logical-battle-active.reef-fisher-playing .tension-control {
+    grid-template-rows: 46px 64px 96px !important;
+  }
+  body.wp-logical-battle-active.reef-fisher-playing .tension-head {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: auto auto !important;
+    align-content: center !important;
+    gap: 0 !important;
+  }
+  body.wp-logical-battle-active.reef-fisher-playing .tension-head span {
+    overflow: visible !important;
+    text-align: left !important;
+    text-overflow: clip !important;
+    white-space: normal !important;
+  }
+  body.wp-logical-battle-active.reef-fisher-playing .tension-coach {
+    height: 96px !important;
+    min-height: 96px !important;
+    max-height: 96px !important;
+  }
+}
+
 /* Relic Hunters keeps arena and inventory stacked in its portrait Canvas. */
 body.wp-logical-battle-active.relic-playing .game-layout[data-wp-logical-battle-canvas] {
   grid-template-columns: minmax(0, 1fr) !important;

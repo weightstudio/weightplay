@@ -130,13 +130,13 @@
       </section>
 
       <section id="gamePanel" class="panel game-panel is-hidden" data-play-viewport data-no-mobile-immersive="true">
-        <div class="battle-shell" data-wp-canvas-max-width="920">
-        <div class="hud-row">
+        <div class="battle-shell" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+        <header class="hud-row">
           <button id="mapBtn" class="secondary-btn play-return" data-wp-return="battle" type="button" aria-label="Return to reef map">&larr;</button>
           <div><span data-ui="zone">Zone</span><strong id="zoneText">Sunny Shore</strong></div>
           <div><span data-ui="time">Time</span><strong id="timeText">90</strong></div>
           <div><span data-ui="goal">Goal</span><strong id="goalText">0/2</strong></div>
-        </div>
+        </header>
         <div class="play-frame">
           <canvas id="gameCanvas" width="960" height="540" tabindex="0" aria-label="Animal Reef Fisher play area. Hold Space to charge and release to cast; use Left and Right arrows to control tension."></canvas>
           <div id="catchToast" class="catch-toast is-hidden" aria-live="polite"></div>

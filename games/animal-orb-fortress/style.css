@@ -1070,6 +1070,10 @@ body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel .hud-ro
   min-height: 48px !important;
 }
 
+.stage-header .wp-shell-settings-popover .wp-shell-settings-row > span:first-child {
+  margin: 0;
+}
+
 @media (max-height:560px) {
   body.orb-fortress-playing #gamePanel.game-panel>#resultPanel.result-panel{grid-template-columns:92px minmax(0,1fr);grid-template-rows:minmax(0,1fr);align-items:center;gap:10px;padding:10px}
   body.orb-fortress-playing #resultPanel .result-lion{width:88px;height:88px;justify-self:center}
@@ -1211,16 +1215,16 @@ body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel .hud-ro
   body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel > .wp-generated-battle-header {
     top: 14px !important;
     left: 14px !important;
-    width: 96px;
-    height: 96px;
+    width: 48px;
+    height: 48px;
   }
 
   body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel > .wp-generated-battle-header #battleBackBtn.wp-shell-return {
-    width: 96px !important;
-    min-width: 96px !important;
-    height: 96px !important;
-    min-height: 96px !important;
-    font-size: 2rem;
+    width: 48px !important;
+    min-width: 48px !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    font-size: 1rem;
   }
 
   body.orb-fortress-playing #gamePanel.game-panel #battleLive #gameCanvas {

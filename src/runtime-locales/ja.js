@@ -1554,6 +1554,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Area cleared.": "エリアはクリアされました。",
   "Area control.": "エリアコントロール。",
   "Area giochi per la cura degli animali": "動物の生息地エリア",
+  "Arena da Fortaleza de Orbes Animais": "アレーナ ダ フォルタレザ デ オルベス アニメーション",
   "Arena de Fortaleza de Orbes Animal": "アリーナ デ フォルタレザ デ オルベス 動物",
   "Arena de la Melena de Brasas": "アレナ デ ラ メレナ デ ブラサス",
   "Arena de rescate y crecimiento": "アリーナ デ レスケート アンド クリシミエント",

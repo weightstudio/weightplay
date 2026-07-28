@@ -1554,6 +1554,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Area cleared.": "지역이 삭제되었습니다.",
   "Area control.": "지역 통제.",
   "Area giochi per la cura degli animali": "지역 giochi per la cura degli Animali",
+  "Arena da Fortaleza de Orbes Animais": "아레나 다 포르탈레자 데 오르베스 아니마이스",
   "Arena de Fortaleza de Orbes Animal": "아레나 데 포르탈레자 데 오르베스 동물",
   "Arena de la Melena de Brasas": "아레나 데 라 멜레나 데 브라사스",
   "Arena de rescate y crecimiento": "Arena de rescate y crecimiento",

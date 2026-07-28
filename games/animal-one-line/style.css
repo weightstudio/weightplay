@@ -17,33 +17,40 @@
 /* Essential recovery and progression actions retain a 44px rendered target. */
 .result-actions button{min-height:44px}
 @media(max-height:480px) and (orientation:landscape){
-  .main-screen{height:100svh;min-height:0;padding:8px;grid-template-rows:64px minmax(0,1fr);gap:8px}
-  .main-header{grid-template-columns:58px minmax(0,1fr) 160px;padding:4px 8px;gap:8px;border-radius:16px}
+  .main-screen{height:100svh;min-height:0;padding:4px;grid-template-rows:56px minmax(0,1fr);gap:4px}
+  .main-header{grid-template-columns:52px minmax(0,1fr) 160px;padding:4px 8px;gap:8px;border-radius:16px}
   .main-header>strong{font-size:22px}
-  .main-return{width:48px;height:48px;border-radius:12px;font-size:24px}
-  .main-hero{height:auto;min-height:0;grid-template-columns:minmax(210px,270px) minmax(0,1fr);padding:10px;gap:16px}
-  .main-poster{width:min(270px,calc(100svh - 112px));height:auto;aspect-ratio:1;margin:auto}
+  .main-return{width:44px;height:44px;border-radius:12px;font-size:22px}
+  .main-hero{height:auto;min-height:0;grid-template-columns:300px minmax(0,1fr);padding:6px;gap:12px}
+  .main-poster{width:300px;height:300px;aspect-ratio:1;margin:auto}
   .main-copy{min-height:0;gap:5px}
   .main-copy h1{font-size:30px;line-height:1}
   .main-copy p{font-size:14px;line-height:1.3}
   .main-progress{padding:7px;font-size:13px;line-height:1.2}
   .main-copy .primary-action{min-height:44px;font-size:16px;box-shadow:0 4px 0 #b77d00}
-  .battle-canvas{grid-template-rows:116px 42px minmax(0,1fr) 80px}
-  .battle-header{grid-template-columns:108px minmax(0,1fr) 92px 92px}
-  .battle-header>button{width:104px;height:104px}
-  .battle-actions button,.result-actions button{min-height:104px}
+  .tutorial-overlay{padding:8px}
+  .tutorial-card{width:min(720px,100%);max-height:calc(100svh - 16px);padding:12px;grid-template-columns:96px minmax(0,1fr);grid-template-areas:"image title" "image steps" "image action";gap:7px 14px}
+  .tutorial-card>img{grid-area:image;width:96px;height:96px;align-self:center}
+  .tutorial-card h2{grid-area:title;padding-right:44px;font-size:20px;line-height:1.15}
+  .tutorial-card ol{grid-area:steps;margin:0;padding-left:22px;font-size:14px;line-height:1.2}
+  .tutorial-card li{margin:3px 0}
+  .tutorial-card .primary-action{grid-area:action;min-height:44px;font-size:16px;box-shadow:0 4px 0 #b77d00}
+  .battle-actions button,.result-actions button{min-height:44px}
 }
 
 @media(max-height:480px) and (orientation:landscape){
-  body[data-screen="main"] .main-screen.wp-standard-main-screen{height:100svh!important;min-height:0!important;padding:8px!important}
-  .main-screen.wp-standard-main-screen .wp-standard-main-composition{grid-template-columns:minmax(210px,270px) minmax(0,1fr)!important;padding:10px!important;gap:16px}
-  .main-poster.wp-standard-main-poster-media{width:min(270px,calc(100svh - 112px))!important;min-width:0!important;max-width:270px!important;height:auto!important;min-height:0!important;max-height:calc(100svh - 112px)!important;margin:auto!important}
-  .wp-standard-main-composition .wp-standard-main-copy{height:270px!important;min-height:0!important;gap:5px!important}
+  body[data-screen="main"] .main-screen.wp-standard-main-screen{height:100svh!important;min-height:0!important;padding:4px!important}
+  .main-screen.wp-standard-main-screen .wp-standard-main-composition{grid-template-columns:300px minmax(0,1fr)!important;padding:6px!important;gap:12px}
+  .main-screen.wp-standard-main-screen .wp-standard-main-poster{width:300px!important;height:300px!important}
+  .main-poster.wp-standard-main-poster-media{width:300px!important;min-width:300px!important;max-width:300px!important;height:300px!important;min-height:300px!important;max-height:300px!important;margin:auto!important}
+  .wp-standard-main-composition .wp-standard-main-copy{height:300px!important;min-height:0!important;gap:5px!important}
   .wp-standard-main-composition .wp-standard-main-copy>small{font-size:11px!important;line-height:1.1!important}
   .wp-standard-main-composition .wp-standard-main-copy h1{font-size:26px!important;line-height:1!important}
   .wp-standard-main-composition .wp-standard-main-copy p{font-size:12px!important;line-height:1.2!important}
   .wp-standard-main-composition .wp-standard-main-copy .main-progress{padding-inline:7px!important;font-size:12px!important;line-height:1.15!important}
 }
+
+.battle-header>button{align-self:start}
 
 /* Grid-fill gameplay replaces the retired freehand corridor tracer. */
 .trace-board{display:grid;place-items:center;padding:clamp(8px,1.8vmin,18px);background:linear-gradient(145deg,rgba(237,238,204,.98),rgba(203,224,185,.98));container-type:size}

@@ -22,11 +22,11 @@
     "animal-hero-trials": ["#battleView", 390, 788],
     "animal-hidden-safari": ["#playPanel", 382, 780],
     "animal-moonlight-heist": [".battle-canvas", 390, 788],
-    "animal-one-line": [".battle-canvas", 390, 788],
+    "animal-one-line": [".battle-canvas", 390, 788, 760, 334],
     "animal-orb-fortress": ["#gamePanel", 382, 780],
     "animal-parking-patrol": [".battle-canvas", 390, 844],
     "animal-quiz": [".animal-game", 390, 788],
-    "animal-reef-fisher": [".battle-shell", 382, 780],
+    "animal-reef-fisher": [".battle-shell", 382, 780, 760, 334],
     "animal-relic-hunters": ["#gamePanel", 382, 780],
     "animal-rescue": [".rescue-game", 382, 780],
     "animal-rope-rescue": ["#gamePanel", 382, 780],
@@ -68,7 +68,10 @@
     return style.display !== "none" && style.visibility !== "hidden" && Number(style.opacity) > 0.02 && rect.width > 4 && rect.height > 4;
   };
   const findRoot = () => [...document.querySelectorAll(config[0])].find(visible) || null;
-  const findBack = (root) => root?.querySelector('[data-wp-return="battle"],#battleBack,#battleBackBtn,#backToStagesBtn,#backToMenuBtn') || null;
+  const findBack = (root) => root?.querySelector('[data-wp-return="battle"],#battleBack,#battleBackBtn,#backToStagesBtn,#backToMenuBtn')
+    || (gameId === "animal-reef-fisher"
+      ? document.querySelector('[data-wp-return="battle"],#battleBack,#battleBackBtn,#backToStagesBtn,#backToMenuBtn')
+      : null);
   const findBattleOverlay = (root) => root && [...root.querySelectorAll('[role="dialog"],.result-panel,.result-overlay,.result-canvas,#resultPanel,#resultScreen,#resultModal,#result')].find(visible);
   const findReserve = () => [...document.querySelectorAll(reserveSelector)]
     .find((node) => visible(node) && !node.closest("[data-wp-logical-battle-canvas]")) || null;

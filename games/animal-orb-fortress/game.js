@@ -384,6 +384,49 @@
     orbReady: "星珠已准备好。用墙面反弹击中影兽，别让它们靠近核心。",
   };
 
+  Object.assign(text["zh-Hans"], {
+    arenaLabel: "动物星珠要塞竞技场",
+    arenaControlLabel: "动物星珠要塞竞技场。瞄准偏移 {angle} 度。使用左右方向键调整，按空格键或 Enter 发射。",
+    arenaControlReadyLabel: "动物星珠要塞竞技场。瞄准偏移 {angle} 度。星珠已准备好；按空格键或 Enter 立即发射。",
+    arenaControlCooldownLabel: "动物星珠要塞竞技场。瞄准偏移 {angle} 度。星珠还需约 {seconds} 秒冷却；暂时无法发射。",
+    arenaControlLimitLabel: "动物星珠要塞竞技场。瞄准偏移 {angle} 度。目前有 {active}/{limit} 颗星珠飞行中，已达上限；暂时无法发射。",
+  });
+  text.ko = {
+    arenaLabel: "애니멀 오브 포트리스 전장",
+    arenaControlLabel: "애니멀 오브 포트리스 전장. 중앙에서 {angle}도 조준합니다. 왼쪽과 오른쪽 화살표로 조정하고 Space 또는 Enter로 발사하세요.",
+    arenaControlReadyLabel: "애니멀 오브 포트리스 전장. 중앙에서 {angle}도 조준합니다. 오브가 준비되었습니다. Space 또는 Enter로 지금 발사하세요.",
+    arenaControlCooldownLabel: "애니멀 오브 포트리스 전장. 중앙에서 {angle}도 조준합니다. 오브 재충전까지 약 {seconds}초 남았습니다. 아직 발사할 수 없습니다.",
+    arenaControlLimitLabel: "애니멀 오브 포트리스 전장. 중앙에서 {angle}도 조준합니다. 정령 오브 {active}/{limit}개가 비행 중이며 한도에 도달했습니다. 아직 발사할 수 없습니다.",
+  };
+  text["pt-BR"] = {
+    arenaLabel: "Arena da Fortaleza de Orbes Animais",
+    arenaControlLabel: "Arena da Fortaleza de Orbes Animais. Mira a {angle} graus do centro. Use as setas Esquerda e Direita para ajustar; Espaço ou Enter dispara.",
+    arenaControlReadyLabel: "Arena da Fortaleza de Orbes Animais. Mira a {angle} graus do centro. Orbe pronto; Espaço ou Enter dispara agora.",
+    arenaControlCooldownLabel: "Arena da Fortaleza de Orbes Animais. Mira a {angle} graus do centro. O orbe recarrega por cerca de {seconds} segundos; ainda não é possível disparar.",
+    arenaControlLimitLabel: "Arena da Fortaleza de Orbes Animais. Mira a {angle} graus do centro. Há {active}/{limit} orbes espirituais em voo, o limite ativo; ainda não é possível disparar.",
+  };
+  text.ru = {
+    arenaLabel: "Арена Крепости звериных сфер",
+    arenaControlLabel: "Арена Крепости звериных сфер. Прицел смещён от центра на {angle} градусов. Используйте стрелки влево и вправо; Пробел или Enter — выстрел.",
+    arenaControlReadyLabel: "Арена Крепости звериных сфер. Прицел смещён от центра на {angle} градусов. Сфера готова; Пробел или Enter — выстрел.",
+    arenaControlCooldownLabel: "Арена Крепости звериных сфер. Прицел смещён от центра на {angle} градусов. До перезарядки около {seconds} секунд; стрелять пока нельзя.",
+    arenaControlLimitLabel: "Арена Крепости звериных сфер. Прицел смещён от центра на {angle} градусов. В полёте {active}/{limit} духовных сфер — достигнут предел; стрелять пока нельзя.",
+  };
+  text.hi = {
+    arenaLabel: "एनिमल ऑर्ब किले का युद्ध क्षेत्र",
+    arenaControlLabel: "एनिमल ऑर्ब किले का युद्ध क्षेत्र। केंद्र से {angle} डिग्री पर निशाना है। बाएँ और दाएँ तीर से समायोजित करें; स्पेस या एंटर कुंजी से दागें।",
+    arenaControlReadyLabel: "एनिमल ऑर्ब किले का युद्ध क्षेत्र। केंद्र से {angle} डिग्री पर निशाना है। ऑर्ब तैयार है; स्पेस या एंटर कुंजी से अभी दागें।",
+    arenaControlCooldownLabel: "एनिमल ऑर्ब किले का युद्ध क्षेत्र। केंद्र से {angle} डिग्री पर निशाना है। ऑर्ब को फिर तैयार होने में लगभग {seconds} सेकंड हैं; अभी नहीं दाग सकते।",
+    arenaControlLimitLabel: "एनिमल ऑर्ब किले का युद्ध क्षेत्र। केंद्र से {angle} डिग्री पर निशाना है। {active}/{limit} स्पिरिट ऑर्ब उड़ रहे हैं और सीमा पूरी है; अभी नहीं दाग सकते।",
+  };
+  text.ar = {
+    arenaLabel: "ساحة حصن كرات الحيوانات",
+    arenaControlLabel: "ساحة حصن كرات الحيوانات. التصويب بزاوية {angle} درجة من المركز. استخدم سهمي اليسار واليمين للضبط، واضغط مفتاح المسافة أو الإدخال للإطلاق.",
+    arenaControlReadyLabel: "ساحة حصن كرات الحيوانات. التصويب بزاوية {angle} درجة من المركز. الكرة جاهزة؛ اضغط مفتاح المسافة أو الإدخال للإطلاق الآن.",
+    arenaControlCooldownLabel: "ساحة حصن كرات الحيوانات. التصويب بزاوية {angle} درجة من المركز. تبقّى نحو {seconds} ثانية لإعادة الشحن؛ لا يمكن الإطلاق الآن.",
+    arenaControlLimitLabel: "ساحة حصن كرات الحيوانات. التصويب بزاوية {angle} درجة من المركز. توجد {active}/{limit} كرات روحية في الجو، وهو الحد الأقصى؛ لا يمكن الإطلاق الآن.",
+  };
+
   const assets = {
     bg: "../../assets/animal-orb-fortress-arena-bg.webp",
     lion: "../../assets/weightplay-boom-mane-lion.png",

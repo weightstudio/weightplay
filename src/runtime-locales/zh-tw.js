@@ -1554,6 +1554,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "Area cleared.": "區域已清理。",
   "Area control.": "區域控制。",
   "Area giochi per la cura degli animali": "動物保護區",
+  "Arena da Fortaleza de Orbes Animais": "動物堡壘競技場",
   "Arena de Fortaleza de Orbes Animal": "福塔雷薩德奧爾布斯動物競技場",
   "Arena de la Melena de Brasas": "布拉薩斯梅萊娜競技場",
   "Arena de rescate y crecimiento": "救援與創造競技場",

@@ -1554,6 +1554,7 @@ window.WeightPlayGameRuntimeLocales["de"] = {
   "Area cleared.": "Bereich geräumt.",
   "Area control.": "Bereichskontrolle.",
   "Area giochi per la cura degli animali": "Bereich giochi per la cura degli animali",
+  "Arena da Fortaleza de Orbes Animais": "Arena da Fortaleza de Orbes Animais",
   "Arena de Fortaleza de Orbes Animal": "Arena de Fortaleza de Orbes Tier",
   "Arena de la Melena de Brasas": "Arena de la Melena de Brasas",
   "Arena de rescate y crecimiento": "Arena für Rettung und Crecimiento",
