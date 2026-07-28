@@ -973,7 +973,8 @@
     nodes.starText.textContent = `${"★".repeat(starCount)}${"☆".repeat(3 - starCount)}`;
     const hasNextStage = success && currentStage < stages.length;
     const primaryAction = hasNextStage ? nodes.nextStageBtn : success ? nodes.resultStagesBtn : nodes.retryBtn;
-    nodes.nextStageBtn.classList.toggle("hidden", !hasNextStage);
+    nodes.nextStageBtn.disabled = !hasNextStage;
+    nodes.nextStageBtn.setAttribute("aria-disabled", String(!hasNextStage));
     [nodes.nextStageBtn, nodes.retryBtn, nodes.resultStagesBtn].forEach((action) => {
       action.classList.toggle("result-primary", action === primaryAction);
       action.classList.toggle("result-secondary", action !== primaryAction);
@@ -1164,6 +1165,7 @@
     const logicalWidth = viewportWidth / scale;
     const logicalHeight = viewportHeight / scale;
     document.documentElement.style.setProperty("--vine-stage-scale", String(scale));
+    document.documentElement.style.setProperty("--vine-stage-inverse-scale", String(1 / scale));
     document.documentElement.style.setProperty("--vine-stage-logical-width", `${logicalWidth}px`);
     document.documentElement.style.setProperty("--vine-stage-logical-height", `${logicalHeight}px`);
     document.documentElement.style.setProperty("--vine-stage-left", `${frameLeft}px`);

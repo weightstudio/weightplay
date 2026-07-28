@@ -34,7 +34,7 @@
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260715-kids-release1" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260715-kids-release1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260715-kids-fullscreen1" />
-    <link rel="stylesheet" href="style.css?v=20260722-habitat-main1" />
+    <link rel="stylesheet" href="style.css?v=20260729-interface4-1" />
     <script data-wp-stage-standard>/* Shared Kids Stage selector owns pointer drag and settle; the game owns preview and card activation. */</script>
     <script data-wp-battle-standard>/* Animal Habitat Mahjong owns its native Kids Battle Canvas. */</script>
     <script type="application/ld+json">
@@ -70,10 +70,10 @@
   <meta name="twitter:title" content="पशु आवास माहजोंग | WeightPlay" />
     <meta name="twitter:description" content="एनिमल हैबिटेट माहजोंग एक नि:शुल्क द्विभाषी किड्स माहजोंग-सॉलिटेयर पहेली है जिसमें 30 सहेजे गए बोर्ड, दस स्तरित संरचनाएं, छह नियम अध्याय और बोर्ड 5, 10,..." />
   </head>
-  <body>
+  <body data-wp-combined-sound="true">
     <main id="app">
       <section id="mainScreen" class="main-screen">
-        <header class="main-top"><a class="home-link" href="/kids/" data-wp-return="main" data-aria="backToLobby" aria-label="Back to lobby">&larr;<img src="../../assets/weightplay-logo.png" alt="" /></a><label><span data-ui="language">Language</span><select id="localeSelect"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option></select></label></header>
+        <header class="main-top"><a class="home-link" href="/kids/" data-wp-return="main" data-aria="backToLobby" aria-label="Back to lobby">&larr;<img src="../../assets/weightplay-logo.png" alt="" /></a><label><span data-ui="language">Language</span><select id="localeSelect"><option value="en">English</option><option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option><option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option><option value="ja">&#26085;&#26412;&#35486;</option><option value="ko">&#54620;&#44397;&#50612;</option><option value="es">Espa&ntilde;ol</option><option value="pt-BR">Portugu&ecirc;s</option><option value="fr">Fran&ccedil;ais</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</option><option value="hi">&#2361;&#2367;&#2344;&#2381;&#2342;&#2368;</option><option value="ar">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</option></select></label></header>
         <article class="main-card"><img class="cover" src="../../assets/animal-habitat-mahjong-cover.webp" alt="पशु आवास माहजोंग game artwork" /><div class="main-copy"><p class="eyebrow" data-ui="gameType">Mahjong solitaire puzzle</p><h1 data-ui="title">पशु आवास माहजोंग</h1><p data-ui="mainHint">Match two free tiles to open every animal habitat.</p><div id="progressSummary" class="progress-summary"></div><button id="startBtn" class="primary" type="button" data-ui="startGame">Start Game</button></div></article>
       </section>
 
@@ -84,7 +84,7 @@
       </section>
 
       <section id="battleScreen" class="fixed-screen hidden" data-aria="battleScreen" aria-label="Mahjong play">
-        <div id="battleSlot" class="canvas-slot"><div class="logical-canvas battle-canvas" data-wp-canvas-max-width="920"><div id="battleLive"><header class="battle-header"><button class="back-btn" data-back="stage" data-wp-return="battle" type="button" data-aria="back" aria-label="Back">&larr;</button><div class="stat"><span data-ui="moves">Moves</span><b id="movesValue">0</b></div><div class="objective"><b id="battleStageName"></b><span id="objectiveText"></span></div><div class="stat"><span data-ui="pairs">Pairs</span><b id="pairsValue">0/0</b></div></header><div id="board" class="board" aria-live="polite"></div><p id="feedback" class="feedback"></p><nav class="tool-row"><button id="hintBtn" type="button"><img src="../../assets/animal-habitat-mahjong-icon-hint.webp" alt="" /><span data-ui="hint">Hint</span></button><button id="undoBtn" type="button"><img src="../../assets/animal-habitat-mahjong-icon-undo.webp" alt="" /><span data-ui="undo">Undo</span></button><button id="shuffleBtn" type="button"><img src="../../assets/animal-habitat-mahjong-icon-shuffle.webp" alt="" /><span data-ui="shuffle">Shuffle</span></button></nav></div><section id="resultScreen" class="result-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle"><section class="result-card"><p class="eyebrow" data-ui="habitatCleared">Habitat cleared</p><h2 id="resultTitle"></h2><p id="resultStats"></p><p id="resultBest" class="result-best"></p><div class="skill-report"><b data-ui="skillReport">Skill Report</b><span id="resultReport"></span></div><div class="result-actions"><button id="retryBtn" type="button" data-ui="retry">Retry</button><button id="nextBtn" class="primary" type="button" data-ui="nextStage">Next Stage</button><button id="stagesBtn" type="button" data-ui="stages">Stages</button></div></section></section></div></div>
+        <div id="battleSlot" class="canvas-slot"><div class="logical-canvas battle-canvas" data-wp-canvas-max-width="920"><div id="battleLive"><header class="battle-header"><button class="back-btn" data-back="stage" data-wp-return="battle" type="button" data-aria="back" aria-label="Back">&larr;</button><div class="stat"><span data-ui="moves">Moves</span><b id="movesValue">0</b></div><div class="objective"><b id="battleStageName"></b><span id="objectiveText"></span></div><div class="stat"><span data-ui="pairs">Pairs</span><b id="pairsValue">0/0</b></div></header><div id="board" class="board" aria-live="polite"></div><p id="feedback" class="feedback"></p><nav class="tool-row"><button id="hintBtn" type="button"><img src="../../assets/animal-habitat-mahjong-icon-hint.webp" alt="" /><span data-ui="hint">Hint</span></button><button id="undoBtn" type="button"><img src="../../assets/animal-habitat-mahjong-icon-undo.webp" alt="" /><span data-ui="undo">Undo</span></button><button id="shuffleBtn" type="button"><img src="../../assets/animal-habitat-mahjong-icon-shuffle.webp" alt="" /><span data-ui="shuffle">Shuffle</span></button></nav></div><section id="resultScreen" class="result-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle"><section class="result-card"><p class="eyebrow" data-ui="habitatCleared">Habitat cleared</p><h2 id="resultTitle" data-result-title></h2><p id="resultStats" data-result-stat></p><p id="resultBest" class="result-best"></p><div class="skill-report"><b data-ui="skillReport">Skill Report</b><span id="resultReport" data-result-description></span></div><div class="result-actions"><button id="stagesBtn" type="button" data-ui="stages">Stages</button><button id="nextBtn" class="primary" type="button" data-ui="nextStage">Next Stage</button><button id="retryBtn" type="button" data-ui="retry">Retry</button></div></section></section></div></div>
       </section>
     </main>
     <!-- adsense-static-guide:start -->
@@ -120,7 +120,8 @@
     <script src="../../src/edge-guard.js?v=20260715-kids-fullscreen1"></script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
     <script src="../../src/tutorial.js?v=20260715-kids-release1"></script>
-    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script src="../../src/sound.js?v=20260720-locale11"></script>
+    <script src="game.js?v=20260729-interface4-1"></script>
     <script src="../../src/game-page-info.js?v=20260720-locale11-2" defer></script>
     <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
 </body>

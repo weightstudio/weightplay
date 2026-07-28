@@ -107,7 +107,7 @@
   const persist = () => writeStorage(saveKey, JSON.stringify(save));
   function applyLocale() { locale = actualLocale(); document.documentElement.lang = locale; document.title = `${t("title")} - WeightPlay`; document.querySelectorAll("[data-ui]").forEach((el) => { el.textContent = t(el.dataset.ui); }); document.querySelectorAll("[data-aria]").forEach((el) => { el.setAttribute("aria-label", t(el.dataset.aria)); }); nodes.localeSelect.value = locale; renderMain(); renderStage(); if (state) renderBattle(); window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail:{ locale } })); }
   function setScreen(name) { const result = name === "result"; nodes.mainScreen.classList.toggle("hidden", name !== "main"); nodes.stageScreen.classList.toggle("hidden", name !== "stage"); nodes.battleScreen.classList.toggle("hidden", name !== "battle" && !result); nodes.resultScreen.classList.toggle("hidden", !result); nodes.battleLive.classList.toggle("hidden", result); nodes.battleLive.inert = result; if (result) nodes.battleLive.setAttribute("aria-hidden", "true"); else nodes.battleLive.removeAttribute("aria-hidden"); document.body.classList.toggle("playing", name !== "main"); document.body.classList.toggle("habitat-result", result); if (name !== "main") scheduleFitCanvases(); }
-  function fitCanvases() { const viewportWidth = Math.max(1, document.documentElement.clientWidth || innerWidth); const viewportHeight = Math.max(1, document.documentElement.clientHeight || innerHeight); const scale = Math.min(viewportWidth / LOGICAL_W, viewportHeight / LOGICAL_H); const logicalWidth = viewportWidth / scale; const logicalHeight = viewportHeight / scale; document.documentElement.style.setProperty("--scale", scale); document.documentElement.style.setProperty("--slot-w", `${viewportWidth}px`); document.documentElement.style.setProperty("--slot-h", `${viewportHeight}px`); document.documentElement.style.setProperty("--logical-w", `${logicalWidth}px`); document.documentElement.style.setProperty("--logical-h", `${logicalHeight}px`); }
+  function fitCanvases() { const viewportWidth = Math.max(1, document.documentElement.clientWidth || innerWidth); const viewportHeight = Math.max(1, document.documentElement.clientHeight || innerHeight); const canvasWidth = Math.min(viewportWidth, 920); const scale = Math.min(canvasWidth / LOGICAL_W, viewportHeight / LOGICAL_H); const logicalWidth = canvasWidth / scale; const logicalHeight = viewportHeight / scale; document.documentElement.style.setProperty("--scale", scale); document.documentElement.style.setProperty("--slot-w", `${canvasWidth}px`); document.documentElement.style.setProperty("--slot-h", `${viewportHeight}px`); document.documentElement.style.setProperty("--logical-w", `${logicalWidth}px`); document.documentElement.style.setProperty("--logical-h", `${logicalHeight}px`); }
   let fitFrame = 0, fitTimer = 0;
   function scheduleFitCanvases() { fitCanvases(); cancelAnimationFrame(fitFrame); clearTimeout(fitTimer); fitFrame = requestAnimationFrame(fitCanvases); fitTimer = setTimeout(fitCanvases, 60); }
   const stageLabel = (habitat, index = stageIndex) => t("boardName", { habitat:t(habitat.title), number:index + 1 });
@@ -265,7 +265,9 @@
     nodes.resultBest.classList.toggle("new-best", improved);
     nodes.resultReport.textContent = t("result", { pairs:state.removedPairs, moves:state.moves });
     const terminal = stageIndex >= habitats.length - 1;
-    nodes.nextBtn.classList.toggle("hidden", terminal);
+    nodes.nextBtn.hidden = false;
+    nodes.nextBtn.disabled = terminal;
+    nodes.nextBtn.setAttribute("aria-disabled", String(terminal));
     nodes.nextBtn.classList.toggle("primary", !terminal);
     nodes.stagesBtn.classList.toggle("primary", terminal);
     nodes.retryBtn.classList.remove("primary");
@@ -299,7 +301,7 @@
     if (target === "stage") renderStage();
     setScreen(target);
     if (target === "stage") focusCurrentStage();
-    if (target === "main") requestAnimationFrame(() => nodes.startBtn.focus({ preventScroll:true }));
+    if (target === "main") requestAnimationFrame(() => requestAnimationFrame(() => nodes.startBtn.focus({ preventScroll:true })));
   }));
   const stageCardAtPoint = (x, y) => [...nodes.stageRail.querySelectorAll(".stage-card")].find((card) => { const rect = card.getBoundingClientRect(); return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom; });
   let undoKeyHeld = false;

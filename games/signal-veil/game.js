@@ -875,6 +875,7 @@
   }
   function showMain() {
     saveGame();playing=false;paused=false;nodes.battle.hidden=true;nodes.main.hidden=false;setPanel(null);closeDialogue();scrollTo({top:0,behavior:"instant"});updateMainProgress();
+    requestAnimationFrame(()=>requestAnimationFrame(()=>$("#startGame").focus({preventScroll:true})));
   }
   function restartGame() {
     const keepAnchor=Boolean(state.signalAnchor);clearSave();

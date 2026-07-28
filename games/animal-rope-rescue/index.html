@@ -39,7 +39,7 @@
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260714-play-area-fill1" data-wp-battle-standard />
-    <link rel="stylesheet" href="style.css?v=20260720-canvas-max920-1" />
+    <link rel="stylesheet" href="style.css?v=20260729-interface-v4-1" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260715-stage-swipe2" data-wp-stage-standard />
     <script type="application/ld+json">
       {
@@ -120,9 +120,9 @@
             <strong id="resultTitle">Fruit rescued!</strong>
             <div id="starText" class="stars">&#9733;&#9733;&#9733;</div>
             <span id="resultText"></span>
+            <button id="resultStagesBtn" type="button" data-ui="stages">Stages</button>
             <button id="nextStageBtn" type="button" data-ui="nextStage">Next Stage</button>
             <button id="retryBtn" type="button" data-ui="retry">Try Again</button>
-            <button id="resultStagesBtn" type="button" data-ui="stages">Stages</button>
           </div>
         </div>
       </section>
@@ -235,7 +235,7 @@
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script data-wp-stage-standard data-wp-native-stage>/* This Kids route owns its zero-reserve Stage Canvas; the shared selector owns Stage pointer drag and settle. */</script>
     <script src="battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-    <script src="game.js?v=20260720-canvas-max920-1"></script>
+    <script src="game.js?v=20260729-interface-v4-1"></script>
     <script>
       window.addEventListener(
         "load",
