@@ -56,11 +56,14 @@
     ar:{Score:"النقاط",Blocks:"البلورات",Orbs:"كرات الضوء",Combo:"سلسلة","Stage Map":"خريطة المراحل"}
   }[locale];
   if(contextual)Object.entries(contextual).forEach(([source,translated])=>exact.set(source,translated));
+  const ownedRules=ruleCopies[locale];
+  if(ownedRules)[...ownedRules.objectives,ownedRules.advance,ownedRules.pressureFail,ownedRules.hazardFail].forEach(value=>exact.set(value,value));
   copies.en.chapters.forEach((chapter,index)=>{
     const translated=copy.chapters[index];
     exact.set(chapter,translated);
     exact.set(shared(chapter),translated);
   });
+  [...exact.values()].forEach(value=>{if(typeof value==="string"&&value)exact.set(value,value)});
   const translate=value=>{if(typeof value!=="string"||!value)return value;if(exact.has(value))return exact.get(value);const stage=value.match(/^Stage (\d+)$/u);return stage?copy.stage.replace("{n}",stage[1]):shared(value)};
   const C=window.BlockTrilogyConfig;
   const genericKeys=["title","posterAlt","pitch","guideTitle","guideIntro","growth","objective","help","win"],originals={};

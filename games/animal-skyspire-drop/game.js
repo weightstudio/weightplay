@@ -72,7 +72,21 @@
     relatedGame.textContent=commonText("Animal Block Grove");
     guide.querySelector(".guide-related-links").setAttribute("aria-label",commonText("Related Games"));
   }
-  function applyLocale(){document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";document.title=`${t("title")} | WeightPlay`;document.querySelectorAll("[data-t]").forEach(node=>{node.textContent=t(node.dataset.t)});document.querySelectorAll("[data-t-aria]").forEach(node=>node.setAttribute("aria-label",t(node.dataset.tAria)));document.querySelectorAll("[data-t-alt]").forEach(node=>node.setAttribute("alt",t(node.dataset.tAlt)));refreshPublicGuide();renderMainProgress();renderStages();renderForge();if(run)renderHud()}
+  function applyLocale(){
+    document.documentElement.lang=lang;
+    document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+    document.title=`${t("title")} | WeightPlay`;
+    for(const selector of ['meta[property="og:title"]','meta[name="twitter:title"]']){
+      const meta=document.querySelector(selector);
+      if(meta)meta.content=document.title;
+    }
+    const guide=document.querySelector(".game-page-info");
+    if(guide)guide.setAttribute("aria-label",lang==="ar"?`دليل لعبة ${t("title")}`:t("guideLabel"));
+    document.querySelectorAll("[data-t]").forEach(node=>{node.textContent=t(node.dataset.t)});
+    document.querySelectorAll("[data-t-aria]").forEach(node=>node.setAttribute("aria-label",t(node.dataset.tAria)));
+    document.querySelectorAll("[data-t-alt]").forEach(node=>node.setAttribute("alt",t(node.dataset.tAlt)));
+    refreshPublicGuide();renderMainProgress();renderStages();renderForge();if(run)renderHud()
+  }
   function initLocale(){els.localeSelect.innerHTML=localeOrder.map(code=>`<option value="${code}">${localeLabels[code]}</option>`).join("");els.localeSelect.value=lang;els.localeSelect.addEventListener("change",()=>{const next=els.localeSelect.value;try{localStorage.setItem("weightplayLocale",next)}catch{}if(/^https?:$/.test(location.protocol)){location.assign(`/${localeRoutes[next]}/games/animal-skyspire-drop/${location.search}${location.hash}`);return}lang=next;window.WonderI18n?.setLocale?.(lang);applyLocale()})}
   function track(event,details={}){window.WonderAnalytics?.track?.(event,{game_id:"animal-skyspire-drop",stage:stageIndex+1,locale:lang,...details})}
 
