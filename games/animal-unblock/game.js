@@ -28,6 +28,8 @@
   let history = [];
   let moves = 0;
   let drag = null;
+  let moveLocked = false;
+  let animationToken = 0;
   let resultActionClaimed = false;
 
   const saveKey = "unblockProgress";
@@ -99,6 +101,15 @@
   }
 
   function show(nextScreen) {
+    if (nextScreen !== "battle") {
+      animationToken += 1;
+      moveLocked = false;
+      if (drag) {
+        drag.element.classList.remove("dragging");
+        drag.element.style.removeProperty("transform");
+        clearDrag();
+      }
+    }
     ["main", "stage", "battle"].forEach((id) => {
       $(id).hidden = id !== nextScreen;
     });
@@ -170,6 +181,8 @@
     blocks = levels[levelIndex].blocks.map((block) => ({ ...block }));
     history = [];
     moves = 0;
+    animationToken += 1;
+    moveLocked = false;
     show("battle");
     render();
   }
@@ -263,19 +276,31 @@
   }
 
   function clearDrag() {
+    document.removeEventListener("pointermove", dragMove, true);
     document.removeEventListener("pointerup", dragEnd, true);
     document.removeEventListener("pointercancel", dragCancel, true);
     drag = null;
   }
 
   function dragStart(event, blockIndex) {
-    if (drag) return;
+    if (drag || moveLocked) return;
+    const board = $("board");
+    const cells = board.querySelectorAll(".cell");
+    const first = cells[0]?.getBoundingClientRect();
+    const right = cells[1]?.getBoundingClientRect();
+    const down = cells[6]?.getBoundingClientRect();
+    const element = event.currentTarget;
     drag = {
       blockIndex,
       pointerId: event.pointerId,
       x: event.clientX,
       y: event.clientY,
+      element,
+      unitX: right && first ? right.left - first.left : 0,
+      unitY: down && first ? down.top - first.top : 0,
+      visualDelta: 0,
     };
+    element.classList.add("dragging");
     event.preventDefault();
     try {
       event.currentTarget.setPointerCapture?.(event.pointerId);
@@ -283,20 +308,12 @@
       // The document-level listeners below also support surfaces where
       // pointer capture is unavailable or not retained through a drag.
     }
+    document.addEventListener("pointermove", dragMove, true);
     document.addEventListener("pointerup", dragEnd, true);
     document.addEventListener("pointercancel", dragCancel, true);
   }
 
-  function dragCancel(event) {
-    if (
-      drag &&
-      (event.pointerId == null || event.pointerId === drag.pointerId)
-    ) {
-      clearDrag();
-    }
-  }
-
-  function dragEnd(event) {
+  function dragMove(event) {
     if (
       !drag ||
       (event.pointerId != null && event.pointerId !== drag.pointerId)
@@ -307,24 +324,99 @@
     const distance = block.dir
       ? event.clientY - drag.y
       : event.clientX - drag.x;
-    const step = distance > 18 ? 1 : distance < -18 ? -1 : 0;
+    const unit = block.dir ? drag.unitY : drag.unitX;
+    const negativeLimit = legalStep(block, -1) ? -unit : -8;
+    const positiveLimit = legalStep(block, 1) ? unit : 8;
+    drag.visualDelta = Math.max(
+      negativeLimit,
+      Math.min(positiveLimit, distance),
+    );
+    drag.element.style.transform = block.dir
+      ? `translateY(${drag.visualDelta}px)`
+      : `translateX(${drag.visualDelta}px)`;
+    event.preventDefault();
+  }
+
+  function settleElement(element, block, from, to, onSettled) {
+    const token = ++animationToken;
+    moveLocked = true;
+    element.classList.remove("dragging");
+    element.classList.add("settling");
+    element.style.transform = block.dir
+      ? `translateY(${from}px)`
+      : `translateX(${from}px)`;
+    requestAnimationFrame(() => {
+      element.style.transform = block.dir
+        ? `translateY(${to}px)`
+        : `translateX(${to}px)`;
+    });
+    window.setTimeout(() => {
+      if (token !== animationToken) return;
+      moveLocked = false;
+      onSettled();
+    }, 240);
+  }
+
+  function dragCancel(event) {
+    if (
+      drag &&
+      (event.pointerId == null || event.pointerId === drag.pointerId)
+    ) {
+      const { element, blockIndex, visualDelta } = drag;
+      const block = blocks[blockIndex];
+      clearDrag();
+      settleElement(element, block, visualDelta, 0, () => {
+        element.classList.remove("settling");
+        element.style.removeProperty("transform");
+      });
+    }
+  }
+
+  function legalStep(block, step) {
+    if (!step) return false;
     const nextX = block.x + (block.dir ? 0 : step);
     const nextY = block.y + (block.dir ? step : 0);
-    clearDrag();
-
-    if (
-      step &&
+    return (
       nextX >= 0 &&
       nextY >= 0 &&
       nextX + block.w <= 6 &&
       nextY + block.h <= 6 &&
       !occupied(block, nextX, nextY, block.w, block.h)
+    );
+  }
+
+  function dragEnd(event) {
+    if (
+      !drag ||
+      (event.pointerId != null && event.pointerId !== drag.pointerId)
     ) {
-      commitMove(block, nextX, nextY);
+      return;
+    }
+    const { blockIndex, element, visualDelta, unitX, unitY } = drag;
+    const block = blocks[blockIndex];
+    const distance = block.dir
+      ? event.clientY - drag.y
+      : event.clientX - drag.x;
+    const step = distance > 18 ? 1 : distance < -18 ? -1 : 0;
+    const nextX = block.x + (block.dir ? 0 : step);
+    const nextY = block.y + (block.dir ? step : 0);
+    clearDrag();
+
+    if (legalStep(block, step)) {
+      const target = step * (block.dir ? unitY : unitX);
+      settleElement(element, block, visualDelta, target, () =>
+        commitMove(block, nextX, nextY),
+      );
+    } else {
+      settleElement(element, block, visualDelta, 0, () => {
+        element.classList.remove("settling");
+        element.style.removeProperty("transform");
+      });
     }
   }
 
   function undo() {
+    if (moveLocked || drag) return;
     const previous = history.pop();
     if (previous) {
       blocks = previous;
@@ -333,9 +425,29 @@
   }
 
   function hint() {
+    if (moveLocked || drag) return;
     const move = UNBLOCK_LEVELS.nextMove(blocks);
     if (!move) return;
-    commitMove(blocks[move.pieceIndex], move.x, move.y);
+    const block = blocks[move.pieceIndex];
+    const element = $("board").querySelector(
+      `[data-block="${move.pieceIndex}"]`,
+    );
+    const cells = $("board").querySelectorAll(".cell");
+    const first = cells[0]?.getBoundingClientRect();
+    const right = cells[1]?.getBoundingClientRect();
+    const down = cells[6]?.getBoundingClientRect();
+    const unitX = right && first ? right.left - first.left : 0;
+    const unitY = down && first ? down.top - first.top : 0;
+    const delta = block.dir
+      ? (move.y - block.y) * unitY
+      : (move.x - block.x) * unitX;
+    if (!element || !delta) {
+      commitMove(block, move.x, move.y);
+      return;
+    }
+    settleElement(element, block, 0, delta, () =>
+      commitMove(block, move.x, move.y),
+    );
   }
 
   $("start").onclick = () => {

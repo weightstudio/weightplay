@@ -194,6 +194,10 @@ body.orb-fortress-playing .game-page-info {
   font-weight: 800;
 }
 
+body.wp-stage-select-active #stageProgressText {
+  display: none;
+}
+
 .stage-content {
   display: grid;
   grid-template-rows: 58px 204px 24px minmax(0, 1fr);

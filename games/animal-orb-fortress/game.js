@@ -747,6 +747,16 @@
     return window.WeightPlayWallet?.read?.().diamonds || 0;
   }
 
+  function settleMainStartFocus() {
+    const focusStart = () => {
+      if (!nodes.menuPanel.classList.contains("is-hidden") && nodes.startBtn.isConnected) {
+        nodes.startBtn.focus({ preventScroll: true });
+      }
+    };
+    window.requestAnimationFrame(focusStart);
+    [80, 240, 560].forEach((delay) => window.setTimeout(focusStart, delay));
+  }
+
   function show(panel) {
     if (panel !== nodes.gamePanel) cancelPointerAim();
     [nodes.menuPanel, nodes.stagePanel, nodes.gamePanel, nodes.upgradePanel, nodes.pausePanel, nodes.resultPanel].forEach((node) => node.classList.add("is-hidden"));
@@ -767,7 +777,7 @@
       window.requestAnimationFrame(centerUnlockedStage);
       window.requestAnimationFrame(focusUnlockedStage);
     } else if (panel === nodes.menuPanel) {
-      window.requestAnimationFrame(() => nodes.startBtn.focus({ preventScroll: true }));
+      settleMainStartFocus();
     }
   }
 

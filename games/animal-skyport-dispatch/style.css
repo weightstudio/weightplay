@@ -53,7 +53,7 @@
 /* Short landscape uses a native landscape envelope so Stage controls remain
    readable while the Canvas still owns the complete 334px safe height. */
 @media(max-height:500px) and (min-aspect-ratio:3/2){
-  .stage-screen{grid-template-rows:40px 30px 50px minmax(0,1fr);gap:6px;padding:8px 0}
+  .stage-screen{grid-template-rows:40px 30px 50px minmax(0,1fr);gap:6px;padding:2px 0 14px}
   .stage-screen>.return{width:44px;height:40px}
   .stage-copy{font-size:.86rem}
   .contract-row{height:50px;min-height:50px}
