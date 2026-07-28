@@ -2610,7 +2610,7 @@ window.WeightPlayGameInfoLocales.es = {
       ]
     },
     "shadow-wolf": {
-      "title": "Leyenda del lobo de las sombras",
+      "title": "Lobo Sombrío",
       "difficulty": "duro",
       "time": "3-8 minutos por etapa",
       "gameplay": "RPG de plataformas y acción de desplazamiento lateral",
@@ -2629,10 +2629,10 @@ window.WeightPlayGameInfoLocales.es = {
       "guideTitleSuffix": "Guía del juego",
       "noteTitle": "Información del jugador y guardado",
       "hideScoreBands": true,
-      "intro": "Shadow Wolf Legend es una campaña de plataformas de acción de desplazamiento lateral de 30 etapas. Guía al lobo explorador a través de cornisas en ruinas, lee advertencias de peligro visibles, lucha contra criaturas de las sombras, recolecta EXP y gasta dos puntos de atributo exactos cada vez que subes de nivel. Cada quinta etapa termina con un jefe regional cuyo patrón de defensa o ataque requiere una respuesta diferente.",
+      "intro": "Lobo Sombrío es una campaña de plataformas de acción de desplazamiento lateral de 30 niveles. Guía al lobo explorador a través de cornisas en ruinas, lee advertencias de peligro visibles, lucha contra criaturas de las sombras, recolecta EXP y gasta dos puntos de atributo exactos cada vez que subes de nivel. Cada quinto nivel termina con un jefe regional cuyo patrón de defensa o ataque requiere una respuesta diferente.",
       "story": [
-        "Una vez, seis focas mantuvieron abierta la ruta Moonshade entre la frontera del bosque y la Corona Behemoth. Su fractura cambió cada región: los cristales caen en las cavernas, las raíces cierran caminos en Rootwild, los respiraderos de los hornos encienden la Bóveda de Ascuas, los vientos de la grieta distorsionan el Puente Eclipse y Crown Road combina amenazas transmitidas desde todas las regiones.",
-        "Juegas como el explorador Shadow Wolf marcado con runas. Un escenario se restaura solo después de que todas las criaturas asignadas sean derrotadas. Un borrado guarda esa sección de ruta y desbloquea la siguiente tarjeta; La etapa 30 representa romper el sello final de Behemoth, mientras que cada etapa completada permanece disponible para reproducirse."
+        "Seis sellos mantenían abierta la ruta Moonshade entre la frontera del bosque y la Corona de Behemoth. Su fractura cambió cada región: los cristales caen en las cavernas, las raíces cierran caminos en Rootwild, los respiraderos de los hornos encienden la Bóveda de Ascuas, los vientos de la grieta distorsionan el Puente Eclipse y Crown Road combina amenazas de todas las regiones.",
+        "Juegas como el explorador Lobo Sombrío marcado con runas. Un nivel se restaura solo después de que todas las criaturas asignadas sean derrotadas. Una victoria guarda esa sección de ruta y desbloquea la siguiente tarjeta. El nivel 30 representa romper el sello final de Behemoth, mientras que cada nivel completado permanece disponible para volver a jugarse."
       ],
       "systems": [
         "Movimiento y combate: corre, salta dos veces, corta en la dirección que miras y atraviesa el peligro durante un breve momento protegido. El contacto enemigo, los proyectiles, los picos y el terreno activo reducen el HP del lobo. Al caer, el lobo regresa a terreno estable con una penalización de cinco HP.",
@@ -2657,7 +2657,7 @@ window.WeightPlayGameInfoLocales.es = {
         "Deja espacio antes de derrotar a un Lobo Espejo porque aparecen dos ecos alrededor del punto de división."
       ],
       "progression": [
-        "Las etapas 1 a 5 enseñan patrullas, repisas, disparos dirigidos, plataformas móviles y púas. Basilisk Hollow agrega zonas de veneno y un abanico de proyectiles cada vez más amplio.",
+        "Los niveles 1 a 5 enseñan patrullas, repisas, disparos dirigidos, plataformas móviles y púas. Basilisk Hollow agrega zonas de veneno y un abanico de proyectiles cada vez más amplio.",
         "Las etapas 6 a 10 agregan advertencias de caída de cristales, extensiones de murciélagos de cristal y jabalíes blindados. Stone Guardian bloquea las garras frontales y se expone después de un golpe en el suelo con dos ondas de choque saltables.",
         "Las etapas 11 a 15 combinan caminos de zarzas, cargas, armaduras y prioridad a distancia. Thorn Colossus protege su núcleo hasta que un golpe de raíz fallido abre una breve ventana de daño.",
         "Las etapas 16 a 20 circulan por carriles contra incendios, agregan senderos de Ember Wolf y Dive Bats, luego terminan con Cinder Wyvern: sobrevive a su abanico aéreo protegido y castiga el aterrizaje vulnerable.",
@@ -2668,7 +2668,7 @@ window.WeightPlayGameInfoLocales.es = {
       "parent": "Este navegador almacena la etapa desbloqueada más alta, la etapa seleccionada, la lista de etapas completadas, los intentos, la mejor eliminación, las eliminaciones finales de Crown y la propiedad de Mist Amulet localmente. Un guardado heredado de ocho habitaciones avanza sin volver a bloquear el progreso obtenido. No es necesario iniciar sesión para el juego básico; borrar el almacenamiento del sitio o cambiar de navegador puede eliminar este registro. Los diamantes son moneda de soporte opcional.",
       "faq": [
         [
-          "¿Shadow Wolf Legend es un juego gratuito?",
+          "¿Lobo Sombrío es un juego gratuito?",
           "Sí. La campaña completa de 30 etapas se ejecuta en el navegador sin necesidad de realizar ninguna compra ni iniciar sesión."
         ],
         [
@@ -3170,6 +3170,27 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
     if (titles[id]) game.title = titles[id];
     if (difficulties[game.difficulty]) game.difficulty = difficulties[game.difficulty];
   });
+  const repairShadowWolfSpanish = (value) => {
+    if (typeof value === "string") {
+      return value
+        .replaceAll("Shadow Wolf Legend", "Lobo Sombrío")
+        .replace(/\bCada quinta nivel\b/g, "Cada quinto nivel")
+        .replace(/\bcada quinta nivel\b/g, "cada quinto nivel")
+        .replace(/\bLas niveles\b/g, "Los niveles")
+        .replace(/\blas niveles\b/g, "los niveles")
+        .replace(/\bLa nivel\b/g, "El nivel")
+        .replace(/\bla nivel\b/g, "el nivel")
+        .replace(/\buna Nivel\b/g, "un nivel")
+        .replace(/\buna nivel\b/g, "un nivel")
+        .replace(/\bcada nivel completada\b/g, "cada nivel completado");
+    }
+    if (Array.isArray(value)) return value.map(repairShadowWolfSpanish);
+    if (value && typeof value === "object") {
+      return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, repairShadowWolfSpanish(item)]));
+    }
+    return value;
+  };
+  resource.games["shadow-wolf"] = repairShadowWolfSpanish(resource.games["shadow-wolf"]);
 })(window.WeightPlayGameInfoLocales.es);
 
 window.WeightPlayGameInfoLocales.es.games["animal-2048"] = {

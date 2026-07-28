@@ -235,6 +235,7 @@
     style.setProperty("--wp-stage-logical-width", `${logicalWidth}px`);
     style.setProperty("--wp-stage-logical-height", `${logicalHeight}px`);
     style.setProperty("--wp-stage-canvas-scale", String(scale));
+    style.setProperty("--wp-stage-canvas-inverse-scale", String(1 / scale));
     style.setProperty("--wp-stage-canvas-left", `${left}px`);
     style.setProperty("--wp-stage-canvas-top", `${top}px`);
     style.setProperty("--wp-stage-canvas-rendered-width", `${renderedWidth}px`);

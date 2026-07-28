@@ -534,6 +534,18 @@ body:is(.wp-shell-stage-active, .wp-shell-battle-active)
   display: none;
 }
 
+/* The Stage header belongs to the uniformly scaled logical Canvas, but its
+   open Settings surface is physical UI. Cancel the parent Canvas scale so
+   short-landscape labels and controls remain readable and operable. */
+body.wp-stage-select-active
+  [data-wp-logical-stage-canvas]
+  .wp-stage-shell-header
+  > .wp-shell-settings
+  > .wp-shell-settings-popover {
+  transform: scale(var(--wp-stage-canvas-inverse-scale, 1)) !important;
+  transform-origin: top right !important;
+}
+
 @media (max-width: 699px) {
   .wp-main-shell-header > .wp-shell-main-title,
   .wp-stage-shell-header > :is(h1, h2, strong) {

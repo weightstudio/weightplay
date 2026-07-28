@@ -30,6 +30,22 @@
     ar: ["الإعدادات", "اللغة", "الموسيقى", "المؤثرات الصوتية"],
   };
 
+  const COMBINED_SOUND_COPY = {
+    en: "Combined Sound",
+    "zh-Hant": "整體音效",
+    "zh-Hans": "整体音效",
+    ja: "サウンド",
+    ko: "전체 사운드",
+    es: "Sonido",
+    "pt-BR": "Som",
+    fr: "Son",
+    de: "Sound",
+    it: "Audio",
+    ru: "Звук",
+    hi: "ध्वनि",
+    ar: "الصوت",
+  };
+
   const MAIN_SELECTORS = [
     "#main", "#mainScreen", "[data-screen='main']", ".main-screen",
     ".main-canvas", "main.main",
@@ -181,8 +197,9 @@
     soundRow.querySelector("span").textContent = copy[3];
     musicRange.setAttribute("aria-label", copy[2]);
     soundRange.setAttribute("aria-label", copy[3]);
-    if (combinedSoundRow) combinedSoundRow.querySelector("span").textContent = copy[3];
-    if (combinedSoundToggle) combinedSoundToggle.setAttribute("aria-label", copy[3]);
+    const combinedSoundCopy = COMBINED_SOUND_COPY[localeCode()] || COMBINED_SOUND_COPY.en;
+    if (combinedSoundRow) combinedSoundRow.querySelector("span").textContent = combinedSoundCopy;
+    if (combinedSoundToggle) combinedSoundToggle.setAttribute("aria-label", combinedSoundCopy);
   }
 
   function build() {
