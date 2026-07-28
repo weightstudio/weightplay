@@ -81,7 +81,7 @@
     <script data-wp-stage-standard>/* Bubble Bakery owns its native Stage scaler and pointer rail. */</script>
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
 </head>
-  <body>
+  <body data-audience="kids" data-wp-game-id="bubble-bakery" data-wp-combined-sound="true">
     <main class="bakery-game" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="360">
       <header class="topbar">
         <a class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby">
@@ -143,9 +143,9 @@
 
       <div id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
         <div class="result-card">
-          <strong id="resultTitle">Order complete!</strong>
-          <div id="starText" class="stars">&#9734;&#9734;&#9734;</div>
-          <span id="resultText"></span>
+          <strong id="resultTitle" data-result-title>Order complete!</strong>
+          <div id="starText" class="stars" data-result-stat>&#9734;&#9734;&#9734;</div>
+          <span id="resultText" data-result-description></span>
           <div id="resultNextOrder" class="result-next-order" aria-live="polite"></div>
           <div id="skillReport" class="skill-report" aria-live="polite"></div>
           <button id="nextStageBtn" type="button" data-ui="nextStage">Next Stage</button>

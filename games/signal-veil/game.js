@@ -12,6 +12,7 @@
   const PLAYER_RADIUS = 24;
   const MAP_SIGNAL_TOWN = "signalTown";
   const MAP_MOONFALL = "moonfallRelay";
+  const QUESTS = window.SIGNAL_VEIL_QUESTS || [];
   const WORLD_OBJECTS = [
     // Every visible object owns its own matching collision footprint.
     {sprite:3,x:520,y:150,w:430,h:286,collision:{kind:"rect",w:360,h:200,oy:18}},
@@ -67,9 +68,6 @@
   atlas.objects = new Image();
   atlas.objects.src = "/assets/signal-veil-world-objects-v2.webp";
 
-  function readSave() {
-    try { return JSON.parse(localStorage.getItem(SAVE_KEY) || "null"); } catch { return null; }
-  }
   function routeLocale() {
     const match = location.pathname.match(/^\/([^/]+)\/games\/signal-veil\//);
     return PATH_LOCALES[match?.[1]?.toLowerCase()] || localStorage.getItem("weightPlayLocale") || "en";
@@ -95,6 +93,9 @@
     dialogueText:$("#dialogueText"), dialogueNext:$("#dialogueNext"), overlay:$("#overlay"),
     pause:$("#pausePanel"), inventory:$("#inventoryPanel"), leave:$("#leavePanel"), result:$("#resultPanel"),
     weaponName:$("#weaponName"), armorName:$("#armorName"), accessoryName:$("#accessoryName"), stats:$("#stats"),
+    weaponEffect:$("#weaponEffect"),armorEffect:$("#armorEffect"),accessoryEffect:$("#accessoryEffect"),
+    weaponToggle:$("#weaponToggle"),armorToggle:$("#armorToggle"),accessoryToggle:$("#accessoryToggle"),
+    pauseLevel:$("#pauseLevel"),pauseZone:$("#pauseZone"),pauseObjective:$("#pauseObjective"),
     diamondBalance:$("#diamondBalance"), buyAnchor:$("#buyAnchor"), anchorStatus:$("#anchorStatus"),
     joystick:$("#joystick"), stick:$("#stick"), attack:$("#attackButton"), skill:$("#skillButton"), vision:$("#visionButton")
   };
@@ -102,18 +103,14 @@
   const fresh = {
     x:420,y:545,facing:"right",level:1,xp:0,hp:40,maxHp:40,attack:8,defense:2,
     visionUnlocked:false,trueVision:false,talked:[],defeated:[],chests:[],bossDefeated:false,
-    equipment:{weapon:false,armor:false,accessory:false},signalAnchor:false,
-    mapId:MAP_SIGNAL_TOWN,chapter2Started:false,relays:[],storyComplete:false,
+    equipment:{weapon:false,armor:false,accessory:false},equipped:{weapon:false,armor:false,accessory:false},
+    enemyHp:{},bossHp:260,signalAnchor:false,
+    mapId:MAP_SIGNAL_TOWN,witnessReport:false,chapter2Started:false,relays:[],storyComplete:false,
+    discoveries:{forest:false,lab:false,boss:false,moonfall:false},
     checkpoint:{x:420,y:545,mapId:MAP_SIGNAL_TOWN}
   };
-  let state = Object.assign({}, fresh, readSave() || {});
-  state.talked = new Set(state.talked || []);
-  state.defeated = new Set(state.defeated || []);
-  state.chests = new Set(state.chests || []);
-  state.relays = new Set(state.relays || []);
-  state.equipment = Object.assign({}, fresh.equipment, state.equipment || {});
-  state.checkpoint = Object.assign({}, fresh.checkpoint, state.checkpoint || {});
-  if(!MAP_OBJECTS[state.mapId])state.mapId=MAP_SIGNAL_TOWN;
+  const stateStore=window.SignalVeilStateStore;
+  let state=stateStore.load(SAVE_KEY,fresh,Object.keys(MAP_OBJECTS));
   let playing = false, paused = false, trueVision = Boolean(state.trueVision), currentDialogue = null;
   let attackCooldown = 0, skillCooldown = 0, invulnerability = 0, swingTimer = 0, lastTime = 0, toastTimer = 0;
   let bossIntroduced = false, resultClaimed = false, playerMoving = false, walkCycle = 0;
@@ -122,6 +119,7 @@
   const enemyProjectiles = [];
   const effects = [];
   const touchMove = {x:0,y:0};
+  const INTERACT_PROMPT = {x:BASE_VIEW.width/2-96,y:BASE_VIEW.height-62,w:192,h:44};
 
   const npcs = [
     {x:430,y:490,index:0,reveal:false},{x:345,y:300,index:1,reveal:true},{x:680,y:300,index:2,reveal:true},
@@ -139,31 +137,27 @@
   ];
   const makeEnemies = () => [
     ...enemySeeds.map(([x,y,sprite],id) => ({
-      id,x,y,homeX:x,homeY:y,mapId:MAP_SIGNAL_TOWN,sprite,hp:26 + (id > 7 ? 15 : 0),maxHp:26 + (id > 7 ? 15 : 0),
+      id,x,y,homeX:x,homeY:y,mapId:MAP_SIGNAL_TOWN,sprite,hp:state.enemyHp[id]??(26 + (id > 7 ? 15 : 0)),maxHp:26 + (id > 7 ? 15 : 0),
       speed:50 + (id % 3) * 10,attackTimer:0,phase:id*.73,hidden:sprite===7,dead:state.defeated.has(id)
     })),
     ...moonfallEnemySeeds.map(([x,y,sprite],offset) => {
       const id=enemySeeds.length+offset;
-      return {id,x,y,homeX:x,homeY:y,mapId:MAP_MOONFALL,sprite,hp:52,maxHp:52,speed:62+(offset%3)*8,attackTimer:0,phase:id*.73,hidden:offset===3||offset===7,dead:state.defeated.has(id)};
+      return {id,x,y,homeX:x,homeY:y,mapId:MAP_MOONFALL,sprite,hp:state.enemyHp[id]??52,maxHp:52,speed:62+(offset%3)*8,attackTimer:0,phase:id*.73,hidden:offset===3||offset===7,dead:state.defeated.has(id)};
     }),
   ];
   let enemies = makeEnemies();
-  let boss = {x:2890,y:520,hp:260,maxHp:260,attackTimer:1.2,pattern:0,dead:state.bossDefeated,sprite:12,stun:0,charge:0};
+  let boss = {x:2890,y:520,hp:state.bossHp??260,maxHp:260,attackTimer:1.2,pattern:0,dead:state.bossDefeated,sprite:12,stun:0,charge:0};
   const chests = [
     {id:"weapon",x:1430,y:270,item:"weapon",hidden:true},{id:"accessory",x:1840,y:810,item:"accessory",hidden:true},
     {id:"armor",x:2360,y:250,item:"armor",hidden:false}
   ];
 
-  function serializedState() {
-    return {...state,trueVision,talked:[...state.talked],defeated:[...state.defeated],chests:[...state.chests],relays:[...state.relays]};
-  }
-  function saveGame(showNotice=false) {
-    try { localStorage.setItem(SAVE_KEY, JSON.stringify(serializedState())); } catch {}
+  function saveGame() {
+    stateStore.save(SAVE_KEY,state,trueVision);
     updateMainProgress();
-    if (showNotice) showToast(t("saved"));
   }
   function clearSave() {
-    try { localStorage.removeItem(SAVE_KEY); } catch {}
+    stateStore.clear(SAVE_KEY);
   }
 
   function applyLocale() {
@@ -194,9 +188,7 @@
   });
 
   function updateMainProgress() {
-    const milestones = Number(state.talked.size >= 10) + Number(firstMapDefeated() >= 15) + Number(state.bossDefeated)
-      + Number(state.chapter2Started) + Number(moonfallDefeated() >= moonfallEnemySeeds.length&&state.relays.size>=3) + Number(state.storyComplete);
-    nodes.progress.textContent = `${milestones} / 6`;
+    nodes.progress.textContent = `${t("questProgress")} ${completedQuestCount()} / ${QUESTS.length}`;
   }
   function zoneKey() {
     if(state.mapId===MAP_MOONFALL)return "zoneMoonfall";
@@ -206,22 +198,71 @@
   }
   function firstMapDefeated(){return [...state.defeated].filter(id=>id<enemySeeds.length).length}
   function moonfallDefeated(){return [...state.defeated].filter(id=>id>=enemySeeds.length).length}
+  function questComplete(quest){
+    switch(quest.type){
+      case "talk":return state.talked.has(quest.target);
+      case "witnessReport":return state.witnessReport;
+      case "visit":return Boolean(state.discoveries[quest.target]);
+      case "defeatFirst":return firstMapDefeated()>=quest.target;
+      case "chest":return state.chests.has(quest.target);
+      case "bossEncounter":return state.discoveries.boss;
+      case "bossDefeated":return state.bossDefeated;
+      case "chapter2Started":return state.chapter2Started;
+      case "defeatMoonfall":return moonfallDefeated()>=quest.target;
+      case "relay":return state.relays.has(quest.target);
+      case "storyComplete":return state.storyComplete;
+      default:return false;
+    }
+  }
+  function completedQuestCount(){
+    let count=0;
+    for(const quest of QUESTS){if(!questComplete(quest))break;count++}
+    return count;
+  }
+  function activeQuest(){
+    const index=QUESTS.findIndex(quest=>!questComplete(quest));
+    return index<0?null:{quest:QUESTS[index],index};
+  }
+  function questPlace(quest){
+    if(quest.type==="visit"){
+      return t({forest:"zoneForest",lab:"zoneLab",moonfall:"zoneMoonfall"}[quest.target]);
+    }
+    return t(quest.place||"zoneTown");
+  }
+  function questTitle(quest){
+    if(quest.type==="talk")return t("questInterviewTitle",{name:(copy.npcNames||en.npcNames)[quest.target]});
+    if(quest.type==="witnessReport")return t("questWitnessReportTitle");
+    if(quest.type==="visit")return t("questVisitTitle",{place:questPlace(quest)});
+    if(quest.type==="defeatFirst"||quest.type==="defeatMoonfall")return t("questThreatTitle",{place:questPlace(quest),target:quest.target});
+    if(quest.type==="chest")return t("questRecoverTitle",{item:t(`${quest.target}Name`)});
+    if(quest.type==="bossEncounter")return t("questCommanderTitle");
+    if(quest.type==="bossDefeated")return t("questVeilTitle");
+    if(quest.type==="chapter2Started")return t("questAnswerTitle");
+    if(quest.type==="relay")return t("questDecodeTitle",{record:t(quest.name)});
+    return t("questProofTitle");
+  }
+  function questObjective(quest){
+    if(quest.type==="talk")return t("questTalkObjective",{name:(copy.npcNames||en.npcNames)[quest.target]});
+    if(quest.type==="witnessReport")return t("questWitnessReportObjective");
+    if(quest.type==="visit")return t("questVisitObjective",{place:questPlace(quest)});
+    if(quest.type==="defeatFirst")return t("questDefeatObjective",{n:firstMapDefeated(),target:quest.target,place:questPlace(quest)});
+    if(quest.type==="defeatMoonfall")return t("questDefeatObjective",{n:moonfallDefeated(),target:quest.target,place:questPlace(quest)});
+    if(quest.type==="chest")return t("questRecoverObjective",{item:t(`${quest.target}Name`)});
+    if(quest.type==="bossEncounter")return t("questFindCommanderObjective");
+    if(quest.type==="bossDefeated")return t("objectiveBoss");
+    if(quest.type==="chapter2Started")return t("objectiveReturnOrla");
+    if(quest.type==="relay")return t("questRelayObjective",{record:t(quest.name)});
+    return t("objectiveFinalReturn");
+  }
+  function currentQuestText(){
+    const active=activeQuest();
+    if(!active)return t("questsComingSoon");
+    return `${active.index+1}/${QUESTS.length} · ${questTitle(active.quest)} — ${questObjective(active.quest)}`;
+  }
   function updateObjective() {
-    let text;
-    if(state.storyComplete)text=t("objectiveStoryComplete");
-    else if(state.mapId===MAP_MOONFALL&&moonfallDefeated()<moonfallEnemySeeds.length)text=t("objectiveMoonfallEnemies",{n:moonfallDefeated()});
-    else if(state.mapId===MAP_MOONFALL&&state.relays.size<RELAY_NODES.length)text=t("objectiveRelays",{n:state.relays.size});
-    else if(state.mapId===MAP_MOONFALL)text=t("objectiveFinalReturn");
-    else if(state.bossDefeated&&!state.chapter2Started)text=t("objectiveReturnOrla");
-    else if(state.chapter2Started&&moonfallDefeated()<moonfallEnemySeeds.length)text=t("objectiveEnterMoonfall");
-    else if(state.chapter2Started&&state.relays.size<RELAY_NODES.length)text=t("objectiveReturnMoonfall");
-    else if(state.chapter2Started)text=t("objectiveFinalReturn");
-    else if (!state.visionUnlocked) text=t("objectiveTalk");
-    else if (state.talked.size < 10) text=t("objectiveWitnesses",{n:state.talked.size});
-    else if (firstMapDefeated() < 8) text=t("objectiveForest",{n:firstMapDefeated()});
-    else if (firstMapDefeated() < 15) text=t("objectiveLab",{n:firstMapDefeated()});
-    else text=t("objectiveBoss");
+    const text=currentQuestText();
     nodes.objective.textContent=text;
+    nodes.pauseObjective.textContent=text;
   }
   function updateHud() {
     nodes.level.textContent=state.level;
@@ -235,6 +276,8 @@
     nodes.vision.classList.toggle("ready",state.visionUnlocked);
     nodes.skill.classList.toggle("cooldown",skillCooldown>0);
     nodes.zone.textContent=t(zoneKey());
+    nodes.pauseLevel.textContent=state.level;
+    nodes.pauseZone.textContent=t(zoneKey());
     canvas.dataset.playerX=String(Math.round(state.x));
     canvas.dataset.playerY=String(Math.round(state.y));
     canvas.dataset.facing=state.facing;
@@ -249,19 +292,38 @@
     canvas.dataset.mapId=state.mapId;
     canvas.dataset.relays=String(state.relays.size);
     canvas.dataset.storyComplete=state.storyComplete?"true":"false";
+    canvas.dataset.questsCompleted=String(completedQuestCount());
+    canvas.dataset.totalQuests=String(QUESTS.length);
     canvas.dataset.walking=playerMoving?"true":"false";
     canvas.dataset.walkCycle=walkCycle.toFixed(2);
   }
   function renderInventory() {
-    nodes.weaponName.textContent=state.equipment.weapon?t("weaponName"):t("none");
-    nodes.armorName.textContent=state.equipment.armor?t("armorName"):t("none");
-    nodes.accessoryName.textContent=state.equipment.accessory?t("accessoryName"):t("none");
+    const slots={
+      weapon:{name:"weaponName",effect:`+5 ${t("statAtk")}`,nameNode:nodes.weaponName,effectNode:nodes.weaponEffect,toggle:nodes.weaponToggle},
+      armor:{name:"armorName",effect:`+4 ${t("statDef")}`,nameNode:nodes.armorName,effectNode:nodes.armorEffect,toggle:nodes.armorToggle},
+      accessory:{name:"accessoryName",effect:`+2 ${t("statAtk")} · +1 ${t("statDef")}`,nameNode:nodes.accessoryName,effectNode:nodes.accessoryEffect,toggle:nodes.accessoryToggle},
+    };
+    for(const [slot,view] of Object.entries(slots)){
+      const owned=Boolean(state.equipment[slot]),equipped=owned&&Boolean(state.equipped[slot]);
+      view.nameNode.textContent=owned?t(view.name):t("none");
+      view.effectNode.textContent=view.effect;
+      view.toggle.disabled=!owned;
+      view.toggle.textContent=!owned?t("none"):t(equipped?"unequip":"equip");
+      view.toggle.closest(".equipment-slot")?.classList.toggle("is-equipped",equipped);
+      view.toggle.setAttribute("aria-pressed",equipped?"true":"false");
+    }
     nodes.stats.innerHTML=`<span><b>${t("statHp")}</b><br>${state.maxHp}</span><span><b>${t("statAtk")}</b><br>${effectiveAttack()}</span><span><b>${t("statDef")}</b><br>${effectiveDefense()}</span>`;
     const diamonds=window.WeightPlayWallet?.read?.().diamonds || 0;
     nodes.diamondBalance.textContent=String(diamonds);
     nodes.buyAnchor.disabled=Boolean(state.signalAnchor);
     nodes.buyAnchor.textContent=state.signalAnchor?t("anchorOwned"):t("anchorBuy");
     nodes.anchorStatus.textContent=state.signalAnchor?t("anchorPermanent"):template(t("anchorBalance"),{n:diamonds});
+  }
+  function toggleEquipment(slot){
+    if(!state.equipment[slot])return;
+    state.equipped[slot]=!state.equipped[slot];
+    renderInventory();updateHud();saveGame();
+    showToast(t(state.equipped[slot]?"equipmentEquipped":"equipmentRemoved",{item:t(`${slot}Name`)}),1800);
   }
   function buySignalAnchor(){
     if(state.signalAnchor)return;
@@ -271,12 +333,15 @@
     saveGame();renderInventory();updateHud();showToast(t("anchorInstalled"),2200);
     window.WonderAnalytics?.track?.("diamond_spend",{game_id:"signal-veil",item:"signal_anchor",cost:5,balance:wallet.read().diamonds});
   }
-  function effectiveAttack(){return state.attack+(state.equipment.weapon?5:0)+(state.equipment.accessory?2:0)}
-  function effectiveDefense(){return state.defense+(state.equipment.armor?4:0)+(state.equipment.accessory?1:0)}
+  function effectiveAttack(){return state.attack+(state.equipped.weapon?5:0)+(state.equipped.accessory?2:0)}
+  function effectiveDefense(){return state.defense+(state.equipped.armor?4:0)+(state.equipped.accessory?1:0)}
 
   function showToast(message,duration=1800) {
     nodes.toast.textContent=message; nodes.toast.classList.add("show");
     clearTimeout(toastTimer); toastTimer=setTimeout(()=>nodes.toast.classList.remove("show"),duration);
+  }
+  function showCurrentQuest(){
+    showToast(state.storyComplete?t("questsComingSoon"):`${t("currentQuest")} · ${nodes.objective.textContent}`,3400);
   }
   function setPanel(panel) {
     [nodes.pause,nodes.inventory,nodes.leave,nodes.result].forEach(item => item.hidden=item!==panel);
@@ -298,6 +363,14 @@
       nodes.dialogueText.textContent=t(lineKey);
       nodes.dialogue.hidden=false;nodes.dialogueNext.focus();
       saveGame();updateObjective();updateHud();
+      return;
+    }
+    if(index===0&&state.talked.size>=10&&!state.witnessReport){
+      state.witnessReport=true;currentDialogue="story-witness-report";paused=true;
+      nodes.speaker.textContent=(copy.npcNames||en.npcNames)[0] || en.npcNames[0];
+      nodes.dialogueText.textContent=t("witnessDebrief");
+      nodes.dialogue.hidden=false;nodes.dialogueNext.focus();
+      showToast(t("forestRouteUnlocked"),2200);saveGame();updateObjective();updateHud();
       return;
     }
     const wasNew=!state.talked.has(index);
@@ -421,7 +494,8 @@
     if(state.mapId===MAP_SIGNAL_TOWN)npcs.forEach((npc,index)=>{
       if(trueVision&&npc.reveal) drawSprite(8+(index%4),npc.x-cam.x,npc.y-cam.y,80,80);
       else drawAtlas(atlas.npcs,index,5,2,npc.x-cam.x,npc.y-cam.y,76,82);
-      if(!state.talked.has(index)){ctx.fillStyle="#ffc550";ctx.font="900 23px sans-serif";ctx.textAlign="center";ctx.fillText("!",npc.x-cam.x,npc.y-cam.y-47)}
+      const storyReady=index===0&&((state.talked.size>=10&&!state.witnessReport)||(state.bossDefeated&&!state.chapter2Started)||(moonfallDefeated()>=moonfallEnemySeeds.length&&state.relays.size>=RELAY_NODES.length&&!state.storyComplete));
+      if(!state.talked.has(index)||storyReady){ctx.fillStyle="#ffc550";ctx.font="900 23px sans-serif";ctx.textAlign="center";ctx.fillText("!",npc.x-cam.x,npc.y-cam.y-47)}
     });
     enemies.forEach(enemy=>{
       if(enemy.dead||enemy.mapId!==state.mapId)return;
@@ -448,11 +522,12 @@
     }
     drawEnemyGuide(cam);
     const target=nearestInteractable();
+    canvas.dataset.interactAvailable=target&&!paused?target.kind:"";
     if(target&&!paused){
-      ctx.fillStyle="#05141be8";ctx.strokeStyle="#4ff4f4";ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(BASE_VIEW.width/2-90,BASE_VIEW.height-52,180,34,12);ctx.fill();ctx.stroke();
-      ctx.fillStyle="#fff";ctx.font="800 14px sans-serif";ctx.textAlign="center";ctx.fillText(t("interact"),BASE_VIEW.width/2,BASE_VIEW.height-30);
+      ctx.fillStyle="#05141be8";ctx.strokeStyle="#4ff4f4";ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(INTERACT_PROMPT.x,INTERACT_PROMPT.y,INTERACT_PROMPT.w,INTERACT_PROMPT.h,14);ctx.fill();ctx.stroke();
+      ctx.fillStyle="#fff";ctx.font="800 15px sans-serif";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(target.kind==="npc"?t("talk"):t("interact"),BASE_VIEW.width/2,INTERACT_PROMPT.y+INTERACT_PROMPT.h/2);
     }
-    if(state.mapId===MAP_SIGNAL_TOWN&&state.x<1000&&state.talked.size<10){ctx.fillStyle="#ffb13b";ctx.fillRect(996-cam.x,350-cam.y,8,340)}
+    if(state.mapId===MAP_SIGNAL_TOWN&&state.x<1000&&!state.witnessReport){ctx.fillStyle="#ffb13b";ctx.fillRect(996-cam.x,350-cam.y,8,340)}
     if(state.mapId===MAP_SIGNAL_TOWN&&state.x<2050&&!trueVision){ctx.fillStyle="#43eef255";ctx.fillRect(2038-cam.x,280-cam.y,14,480)}
     ctx.restore();
   }
@@ -483,7 +558,7 @@
     if(!blocked(entity.x,nextY)||wasBlocked)entity.y=nextY;
   }
   function drawEnemyGuide(cam) {
-    if(state.mapId===MAP_SIGNAL_TOWN&&state.talked.size<10)return;
+    if(state.mapId===MAP_SIGNAL_TOWN&&!state.witnessReport)return;
     const living=enemies.filter(enemy=>enemy.mapId===state.mapId&&!enemy.dead);
     if(!living.length)return;
     const target=living.sort((a,b)=>distance(state,a)-distance(state,b))[0];
@@ -522,13 +597,19 @@
     setFacing(move);const speed=185;
     const beforeX=state.x,beforeY=state.y;
     let nx=clamp(state.x+move.x*speed*dt,55,WORLD.width-55),ny=clamp(state.y+move.y*speed*dt,75,WORLD.height-55);
-    if(state.mapId===MAP_SIGNAL_TOWN&&nx>995&&state.x<=1020&&state.talked.size<10){nx=995;showToast(t("lockedForest"))}
+    if(state.mapId===MAP_SIGNAL_TOWN&&nx>995&&state.x<=1020&&!state.witnessReport){nx=995;showToast(t("lockedForest"))}
     if(state.mapId===MAP_SIGNAL_TOWN&&nx>2040&&state.x<=2070&&!trueVision){nx=2040;showToast(t("lockedLab"))}
     moveEntityWithTerrain(state,nx-state.x,ny-state.y,PLAYER_RADIUS,true);
     playerMoving=Math.hypot(state.x-beforeX,state.y-beforeY)>.1;
     if(playerMoving)walkCycle+=dt*10.5;
+    if(state.mapId===MAP_SIGNAL_TOWN&&state.x>1024)markDiscovery("forest");
+    if(state.mapId===MAP_SIGNAL_TOWN&&state.x>2048)markDiscovery("lab");
     if(state.mapId===MAP_SIGNAL_TOWN&&state.x>1060&&state.checkpoint.mapId===MAP_SIGNAL_TOWN&&state.checkpoint.x<1000)state.checkpoint={x:1080,y:520,mapId:MAP_SIGNAL_TOWN};
     if(state.mapId===MAP_SIGNAL_TOWN&&state.x>2100&&state.checkpoint.mapId===MAP_SIGNAL_TOWN&&state.checkpoint.x<2000)state.checkpoint={x:2110,y:520,mapId:MAP_SIGNAL_TOWN};
+  }
+  function markDiscovery(key){
+    if(state.discoveries[key])return;
+    state.discoveries[key]=true;saveGame();updateObjective();updateHud();
   }
   function nearestInteractable() {
     const candidates=[];
@@ -545,6 +626,7 @@
   }
   function interact() {
     if(paused)return;const target=nearestInteractable();if(!target)return;
+    canvas.dataset.lastAction="interact";
     if(target.kind==="npc")showDialogue(target.index);
     else if(target.kind==="chest")openChest(target);
     else if(target.kind==="relay")activateRelay(target);
@@ -552,6 +634,7 @@
   }
   function switchMap(portal) {
     state.mapId=portal.to;state.x=portal.spawnX;state.y=portal.spawnY;
+    if(state.mapId===MAP_MOONFALL)state.discoveries.moonfall=true;
     state.checkpoint={x:portal.spawnX,y:portal.spawnY,mapId:portal.to};
     projectiles.length=0;enemyProjectiles.length=0;effects.length=0;
     showToast(t(state.mapId===MAP_MOONFALL?"moonfallArrival":"townReturn"),2400);
@@ -559,6 +642,8 @@
   }
   function activateRelay(relay) {
     if(moonfallDefeated()<moonfallEnemySeeds.length){showToast(t("relayLocked"),2200);return}
+    const expected=RELAY_NODES.find(node=>!state.relays.has(node.id));
+    if(expected&&relay.id!==expected.id){showToast(t("relaySequenceLocked",{record:t(expected.name)}),2400);return}
     state.relays.add(relay.id);gainXp(24);playTone(660,.2);
     showToast(t("relayActivated",{n:state.relays.size}),2200);
     currentDialogue=`relay-${relay.id}`;paused=true;
@@ -568,7 +653,7 @@
     saveGame();updateObjective();updateHud();
   }
   function openChest(chest) {
-    state.chests.add(chest.id);state.equipment[chest.item]=true;
+    state.chests.add(chest.id);state.equipment[chest.item]=true;state.equipped[chest.item]=true;
     if(chest.item==="armor")state.hp=Math.min(state.maxHp,state.hp+12);
     showToast(t("chest",{item:t(`${chest.item}Name`)}),2400);renderInventory();saveGame();
   }
@@ -592,15 +677,15 @@
     canvas.dataset.lastAction=trueVision?"vision-on":"vision-off";
   }
   function damageEnemy(enemy,amount) {
-    enemy.hp-=amount;effects.push({x:enemy.x,y:enemy.y,index:10,size:52,life:.35});
+    enemy.hp-=amount;state.enemyHp[enemy.id]=Math.max(0,enemy.hp);effects.push({x:enemy.x,y:enemy.y,index:10,size:52,life:.35});
     if(enemy.hp<=0){
       enemy.dead=true;state.defeated.add(enemy.id);gainXp(12+(enemy.id>7?6:0));playTone(240,.12);
       updateObjective();saveGame();
-    }
+    }else saveGame();
   }
   function damageBoss(amount) {
-    if(boss.stun>0)amount*=1.45;boss.hp-=amount;effects.push({x:boss.x,y:boss.y,index:10,size:72,life:.35});
-    if(boss.hp<=0)finishBoss();
+    if(boss.stun>0)amount*=1.45;boss.hp-=amount;state.bossHp=Math.max(0,boss.hp);effects.push({x:boss.x,y:boss.y,index:10,size:72,life:.35});
+    if(boss.hp<=0)finishBoss();else saveGame();
   }
   function gainXp(amount) {
     state.xp+=amount;let need=30+(state.level-1)*22;
@@ -614,6 +699,7 @@
       state.hp=state.maxHp;state.mapId=state.checkpoint.mapId||MAP_SIGNAL_TOWN;state.x=state.checkpoint.x;state.y=state.checkpoint.y;
       enemyProjectiles.length=0;showToast(t("defeated"),2500);saveGame();
     }
+    else saveGame();
     updateHud();
   }
   function updateEnemies(dt) {
@@ -633,7 +719,7 @@
   function updateBoss(dt) {
     if(state.mapId!==MAP_SIGNAL_TOWN||boss.dead||firstMapDefeated()<15)return;
     const dist=distance(state,boss);
-    if(dist<500&&!bossIntroduced){bossIntroduced=true;showToast(t("bossAppears"),3000)}
+    if(dist<500&&!bossIntroduced){bossIntroduced=true;markDiscovery("boss");showToast(t("bossAppears"),3000)}
     if(dist>600)return;
     boss.attackTimer-=dt;boss.stun=Math.max(0,boss.stun-dt);
     if(boss.charge>0){
@@ -665,7 +751,7 @@
   }
   function finishBoss() {
     boss.dead=true;state.bossDefeated=true;state.visionUnlocked=true;trueVision=true;state.trueVision=true;
-    state.xp+=80;saveGame();updateObjective();updateHud();resultClaimed=false;
+    state.bossHp=0;state.xp+=80;saveGame();updateObjective();updateHud();resultClaimed=false;
     setTimeout(()=>setPanel(nodes.result),500);playTone(820,.35);
   }
 
@@ -689,7 +775,7 @@
   }
   function restartGame() {
     const keepAnchor=Boolean(state.signalAnchor);clearSave();
-    state={...fresh,maxHp:fresh.maxHp+(keepAnchor?12:0),hp:fresh.hp+(keepAnchor?12:0),signalAnchor:keepAnchor,talked:new Set(),defeated:new Set(),chests:new Set(),relays:new Set(),equipment:{...fresh.equipment},checkpoint:{...fresh.checkpoint}};
+    state={...fresh,maxHp:fresh.maxHp+(keepAnchor?12:0),hp:fresh.hp+(keepAnchor?12:0),signalAnchor:keepAnchor,talked:new Set(),defeated:new Set(),chests:new Set(),relays:new Set(),equipment:{...fresh.equipment},equipped:{...fresh.equipped},enemyHp:{},discoveries:{...fresh.discoveries},checkpoint:{...fresh.checkpoint}};
     trueVision=false;enemies=makeEnemies();
     boss={x:2890,y:520,hp:260,maxHp:260,attackTimer:1.2,pattern:0,dead:false,sprite:12,stun:0,charge:0};bossIntroduced=false;
     projectiles.length=0;enemyProjectiles.length=0;setPanel(null);showBattle();saveGame();
@@ -718,13 +804,19 @@
   addEventListener("blur",()=>{keys.clear();playerMoving=false;if(playing&&!paused)setPanel(nodes.pause)});
   document.addEventListener("visibilitychange",()=>{if(document.hidden&&playing&&!paused)setPanel(nodes.pause)});
   $("#startGame").addEventListener("click",showBattle);
-  $("#menuButton").addEventListener("click",()=>setPanel(nodes.pause));
+  $("#questButton").addEventListener("click",event=>{
+    showCurrentQuest();
+    if(event.detail>0)event.currentTarget.blur();
+  });
+  $("#menuButton").addEventListener("click",()=>{updateHud();updateObjective();setPanel(nodes.pause)});
   $("#battleBack").addEventListener("click",()=>setPanel(nodes.leave));
   $("#resumeButton").addEventListener("click",()=>setPanel(null));
   $("#inventoryButton").addEventListener("click",()=>{renderInventory();setPanel(nodes.inventory)});
+  nodes.weaponToggle.addEventListener("click",()=>toggleEquipment("weapon"));
+  nodes.armorToggle.addEventListener("click",()=>toggleEquipment("armor"));
+  nodes.accessoryToggle.addEventListener("click",()=>toggleEquipment("accessory"));
   nodes.buyAnchor.addEventListener("click",buySignalAnchor);
   $("#closeInventory").addEventListener("click",()=>setPanel(nodes.pause));
-  $("#saveButton").addEventListener("click",()=>saveGame(true));
   $("#returnButton").addEventListener("click",()=>setPanel(nodes.leave));
   $("#continueButton").addEventListener("click",()=>setPanel(null));
   $("#confirmLeaveButton").addEventListener("click",showMain);
@@ -734,7 +826,23 @@
   nodes.attack.addEventListener("pointerdown",event=>{event.preventDefault();attack()});
   nodes.skill.addEventListener("pointerdown",event=>{event.preventDefault();useSkill()});
   nodes.vision.addEventListener("pointerdown",event=>{event.preventDefault();toggleVision()});
-  canvas.addEventListener("pointerdown",event=>{if(event.pointerType==="mouse"&&event.button===0)attack()});
+  function canvasPoint(event) {
+    const rect=canvas.getBoundingClientRect(),tr=viewTransform();
+    const pixelX=(event.clientX-rect.left)*canvas.width/rect.width;
+    const pixelY=(event.clientY-rect.top)*canvas.height/rect.height;
+    return{x:(pixelX-tr.ox)/tr.scale,y:(pixelY-tr.oy)/tr.scale};
+  }
+  function hitsInteractPrompt(event) {
+    if(paused||!nearestInteractable())return false;
+    const point=canvasPoint(event);
+    return point.x>=INTERACT_PROMPT.x&&point.x<=INTERACT_PROMPT.x+INTERACT_PROMPT.w&&point.y>=INTERACT_PROMPT.y&&point.y<=INTERACT_PROMPT.y+INTERACT_PROMPT.h;
+  }
+  canvas.addEventListener("pointerdown",event=>{
+    if(hitsInteractPrompt(event)){event.preventDefault();interact();return}
+    if(event.pointerType==="mouse"&&event.button===0)attack();
+  });
+  canvas.addEventListener("pointermove",event=>{if(event.pointerType==="mouse")canvas.style.cursor=hitsInteractPrompt(event)?"pointer":""});
+  canvas.addEventListener("pointerleave",()=>{canvas.style.cursor=""});
 
   let joystickPointer=null;
   function updateJoystick(event) {
@@ -760,6 +868,8 @@
       moonfallEnemySeeds:moonfallEnemySeeds.map(([x,y])=>({x,y})),
       relayPositions:RELAY_NODES.map(({x,y})=>({x,y})),
       portalPositions:Object.fromEntries(Object.entries(MAP_PORTALS).map(([mapId,{x,y}])=>[mapId,{x,y}])),
+      questCount:QUESTS.length,
+      questState(){const active=activeQuest();return{completed:completedQuestCount(),activeId:active?.quest.id||null,activeNumber:active?active.index+1:null}},
       setPlayer(x,y,mapId=state.mapId){state.mapId=mapId;state.x=x;state.y=y;updateHud();},
       unlockMoonfall(){state.bossDefeated=true;boss.dead=true;state.chapter2Started=true;saveGame();updateObjective();updateHud()},
       switchMap(mapId){const portal=Object.values(MAP_PORTALS).find(candidate=>candidate.to===mapId);if(portal)switchMap(portal)},

@@ -82,7 +82,7 @@ window.WeightPlayI18nLocales.es = {
   "daily.day": "Día {day}",
   "daily.done": "Listo",
   "daily.next": "Siguiente",
-  "daily.claim": "Recoger",
+  "daily.claim": "Cobrar",
   "daily.claimed": "Recogido hoy",
   "daily.toast": "Diamantes {diamonds} reclamados. ¡Día de racha {count}!",
   "daily.toast_claimed": "El regalo de hoy ya ha sido reclamado.",

@@ -66,7 +66,7 @@
         <p class="kicker" data-t="kicker">2042 · FIRST CONTACT</p>
         <h1 data-t="title">Signal Veil</h1>
         <p class="main-summary" data-t="summary">Explore a connected town, forest, and laboratory. Expose hidden threats and defeat the first Lizard Commander.</p>
-        <p id="mainProgress" class="main-progress" data-wp-main-progress>0 / 6</p>
+        <p id="mainProgress" class="main-progress" data-wp-main-progress>MISSIONS 0 / 33</p>
         <button id="startGame" class="primary standard-main-start" data-runtime-localize="off" type="button" data-t="start">Start Game</button>
       </div>
     </section>
@@ -88,12 +88,15 @@
       <header class="battle-header">
         <button id="battleBack" class="back-button" data-wp-return="battle" type="button" aria-label="Leave investigation">←</button>
         <div class="battle-title"><strong data-t="title">Signal Veil</strong><span id="zoneLabel">Town</span></div>
-        <button id="menuButton" class="menu-button" type="button" data-t="menu">Menu</button>
+        <div class="battle-actions">
+          <button id="questButton" class="quest-button" type="button" data-t="questButton">Quest</button>
+          <button id="menuButton" class="menu-button" type="button" data-t="menu">Menu</button>
+        </div>
       </header>
       <div class="hud" aria-live="polite">
-        <div><span data-t="level">LV</span> <b id="levelValue">1</b></div>
-        <div class="meter hp"><i id="hpFill"></i><span id="hpText">40 / 40</span></div>
-        <div class="meter xp"><i id="xpFill"></i><span id="xpText">0 / 30</span></div>
+        <div class="hud-level"><small data-t="hudLevel">Level</small><b id="levelValue">1</b></div>
+        <div class="meter hp" data-t-aria="hudHealth" aria-label="Health"><i id="hpFill"></i><span><small data-t="hudHealth">Health</small><b id="hpText">40 / 40</b></span></div>
+        <div class="meter xp" data-t-aria="hudExperience" aria-label="Experience"><i id="xpFill"></i><span><small data-t="hudExperience">EXP</small><b id="xpText">0 / 30</b></span></div>
         <div id="visionState" class="vision-state" data-t="normalVision">Normal</div>
       </div>
       <div id="gameViewport" class="game-viewport">
@@ -116,19 +119,23 @@
       </div>
       <div id="overlay" class="overlay" hidden>
         <section id="pausePanel" class="panel pause-panel" hidden>
-          <h2 data-t="paused">Investigation paused</h2>
+          <div class="panel-heading"><small data-t="fieldStatus">Field Status</small><h2 data-t="paused">Investigation paused</h2></div>
+          <div class="pause-status">
+            <span><small data-t="hudLevel">Level</small><b id="pauseLevel">1</b></span>
+            <span><small data-t="location">Location</small><b id="pauseZone">Signal Town</b></span>
+          </div>
+          <p id="pauseObjective" class="pause-objective"></p>
           <button id="resumeButton" class="primary" type="button" data-t="resume">Resume</button>
           <button id="inventoryButton" type="button" data-t="equipment">Equipment</button>
-          <button id="saveButton" type="button" data-t="save">Save</button>
           <button id="returnButton" type="button" data-t="returnMain">Return to Main</button>
         </section>
         <section id="inventoryPanel" class="panel inventory-panel" hidden>
           <h2 data-t="equipment">Equipment</h2>
           <div class="stats" id="stats"></div>
           <div class="equipment-grid">
-            <div><span class="atlas-icon icon-weapon"></span><b data-t="weapon">Weapon</b><small id="weaponName"></small></div>
-            <div><span class="atlas-icon icon-armor"></span><b data-t="armor">Armor</b><small id="armorName"></small></div>
-            <div><span class="atlas-icon icon-accessory"></span><b data-t="accessory">Accessory</b><small id="accessoryName"></small></div>
+            <div class="equipment-slot" data-slot="weapon"><span class="atlas-icon icon-weapon"></span><b data-t="weapon">Weapon</b><small id="weaponName"></small><em id="weaponEffect"></em><button id="weaponToggle" type="button"></button></div>
+            <div class="equipment-slot" data-slot="armor"><span class="atlas-icon icon-armor"></span><b data-t="armor">Armor</b><small id="armorName"></small><em id="armorEffect"></em><button id="armorToggle" type="button"></button></div>
+            <div class="equipment-slot" data-slot="accessory"><span class="atlas-icon icon-accessory"></span><b data-t="accessory">Accessory</b><small id="accessoryName"></small><em id="accessoryEffect"></em><button id="accessoryToggle" type="button"></button></div>
           </div>
           <div class="diamond-upgrade">
             <div class="diamond-balance"><img src="../../assets/weightplay-diamond.svg" alt=""><span data-t="diamonds">Diamonds</span><b id="diamondBalance">0</b></div>
@@ -169,6 +176,8 @@
   <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
   <script src="../../src/wallet.js"></script>
   <script src="locales.js"></script>
+  <script src="state-store.js"></script>
+  <script src="quest-data.js"></script>
   <script src="game.js"></script>
   <script src="../../src/game-shell-controls-standard.js"></script>
 </body>

@@ -1434,6 +1434,7 @@ body.lunch-playing .game-hud {
 html body.wp-logical-battle-active.lunch-playing #gameHud {
   grid-template-columns: 48px minmax(0, 1.2fr) minmax(48px, 0.9fr) minmax(48px, 0.9fr) 44px !important;
   gap: 6px !important;
+  padding-left: 10px !important;
 }
 
 body.lunch-playing .game-play-content {

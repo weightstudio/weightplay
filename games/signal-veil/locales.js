@@ -112,6 +112,163 @@
   for(const [code,value] of Object.entries(visionSkillCopy)){
     localeRegistry[code].visionSkill=value;
   }
+  const hudCopy={
+    en:["Level","Health","EXP"],"zh-Hant":["等級","生命","經驗"],"zh-Hans":["等级","生命","经验"],
+    ja:["レベル","体力","経験"],ko:["레벨","체력","경험"],es:["NIVEL","VIDA","EXP"],
+    "pt-BR":["NÍVEL","VIDA","EXP"],fr:["NIV","VIE","EXP"],de:["STUFE","LP","EP"],
+    it:["LIV","VITA","ESP"],ru:["УР","ЖИЗНЬ","ОПЫТ"],hi:["स्तर","जीवन","अनुभव"],ar:["مستوى","صحة","خبرة"],
+  };
+  for(const [code,[hudLevel,hudHealth,hudExperience]] of Object.entries(hudCopy)){
+    Object.assign(localeRegistry[code],{hudLevel,hudHealth,hudExperience});
+  }
+  const menuKeys=["questButton","currentQuest","questsComingSoon","fieldStatus","location","equip","unequip","equipmentEquipped","equipmentRemoved"];
+  const menuCopy={
+    en:["Quest","Current Quest","All current quests are complete. More adventures coming soon.","Field Status","Location","Equip","Remove","{item} equipped.","{item} removed."],
+    "zh-Hant":["任務","目前任務","目前任務已全部完成，後續故事敬請期待。","探索狀態","所在地","裝備","卸除","已裝備：{item}","已卸除：{item}"],
+    "zh-Hans":["任务","当前任务","当前任务已全部完成，后续故事敬请期待。","探索状态","所在地","装备","卸下","已装备：{item}","已卸下：{item}"],
+    ja:["任務","現在の任務","現在の任務はすべて完了しました。続きはお楽しみに。","探索状況","場所","装備","外す","{item}を装備しました。","{item}を外しました。"],
+    ko:["임무","현재 임무","현재 임무를 모두 완료했습니다. 다음 이야기를 기대해 주세요.","탐사 상태","위치","장착","해제","{item} 장착.","{item} 해제."],
+    es:["Misión","Misión actual","Has completado todas las misiones actuales. Próximamente habrá más.","Estado de campo","Lugar","Equipar","Quitar","{item} equipado.","{item} retirado."],
+    "pt-BR":["Missão","Missão atual","Todas as missões atuais foram concluídas. Mais aventuras em breve.","Estado de campo","Local","Equipar","Remover","{item} equipado.","{item} removido."],
+    fr:["Quête","Quête actuelle","Toutes les quêtes actuelles sont terminées. La suite arrive bientôt.","État de terrain","Lieu","Équiper","Retirer","{item} équipé.","{item} retiré."],
+    de:["Auftrag","Aktueller Auftrag","Alle aktuellen Aufträge sind abgeschlossen. Fortsetzung folgt.","Feldstatus","Ort","Anlegen","Ablegen","{item} angelegt.","{item} abgelegt."],
+    it:["Missione","Missione attuale","Tutte le missioni attuali sono complete. Nuove avventure in arrivo.","Stato sul campo","Luogo","Equipaggia","Rimuovi","{item} equipaggiato.","{item} rimosso."],
+    ru:["Задание","Текущее задание","Все текущие задания выполнены. Продолжение скоро.","Полевой статус","Место","Надеть","Снять","Надето: {item}.","Снято: {item}."],
+    hi:["मिशन","वर्तमान मिशन","सभी वर्तमान मिशन पूरे हुए। आगे की कहानी जल्द आएगी।","मैदान स्थिति","स्थान","लगाएँ","हटाएँ","{item} लगाया गया।","{item} हटाया गया।"],
+    ar:["المهمة","المهمة الحالية","اكتملت كل المهام الحالية. مغامرات جديدة قريباً.","حالة الميدان","الموقع","تجهيز","إزالة","تم تجهيز {item}.","تمت إزالة {item}."]
+  };
+  for(const [code,values] of Object.entries(menuCopy)){
+    Object.assign(localeRegistry[code],Object.fromEntries(menuKeys.map((key,index)=>[key,values[index]])));
+  }
+  const questSystemKeys=[
+    "questProgress","questInterviewTitle","questWitnessReportTitle","questVisitTitle","questThreatTitle",
+    "questRecoverTitle","questCommanderTitle","questVeilTitle","questAnswerTitle","questDecodeTitle","questProofTitle",
+    "questTalkObjective","questWitnessReportObjective","questVisitObjective","questDefeatObjective",
+    "questRecoverObjective","questFindCommanderObjective","questRelayObjective",
+    "witnessDebrief","forestRouteUnlocked","relaySequenceLocked"
+  ];
+  const questSystemCopy={
+    en:[
+      "MISSIONS","Interview: {name}","Ten Witnesses, One Signal","Reach {place}","Secure {place}",
+      "Recover {item}","The Commander Signal","Break the Veil","The Device Answers","Decode {record}","Proof for the World",
+      "Speak with {name} and record their evidence.","Return to Orla and connect all ten witness accounts.","Find a safe route into {place}.",
+      "Defeat the signal-corrupted threats in {place} ({n}/{target}).","Locate and recover {item}.","Follow the strongest signal and locate the Lizard Commander.",
+      "Activate {record} in the required sequence.",
+      "Every account shares the same blue pulse, but the times form coordinates. The forest signal is a relay, not a source. I have aligned the prototype lens and opened the eastern route—follow it before whoever erased the footage moves again.",
+      "Witness evidence aligned. The eastern forest route is open.","The records are chained. Decode {record} first."
+    ],
+    "zh-Hant":[
+      "任務","訪談：{name}","十名證人，同一道訊號","前往{place}","掃除{place}威脅",
+      "回收{item}","指揮官訊號","揭開帷幕","裝置的回應","解讀{record}","向世界公開證據",
+      "與{name}交談並記錄證詞。","回去找奧拉，將十份證詞拼成完整線索。","找出前往{place}的安全路線。",
+      "擊敗{place}中受訊號侵蝕的威脅（{n}/{target}）。","找出並回收{item}。","追蹤最強訊號，找出蜥蜴指揮官。",
+      "依照正確順序啟動{record}。",
+      "十份證詞都有同一道藍色脈衝，而發生時間組合起來竟是座標。森林裡的訊號只是中繼，不是源頭。我已校準原型鏡片並開啟東側通路；在抹除影片的人再次行動前追上去。",
+      "證詞已完成定位，東側森林通路開啟。","紀錄彼此相連，必須先解讀{record}。"
+    ],
+    "zh-Hans":[
+      "任务","访谈：{name}","十名证人，同一道信号","前往{place}","清除{place}威胁",
+      "回收{item}","指挥官信号","揭开帷幕","装置的回应","解读{record}","向世界公开证据",
+      "与{name}交谈并记录证词。","回去找奥拉，把十份证词拼成完整线索。","找出前往{place}的安全路线。",
+      "击败{place}中受信号侵蚀的威胁（{n}/{target}）。","找出并回收{item}。","追踪最强信号，找出蜥蜴指挥官。",
+      "依照正确顺序启动{record}。",
+      "十份证词都有同一道蓝色脉冲，而发生时间组合起来竟是坐标。森林里的信号只是中继，不是源头。我已校准原型镜片并开启东侧通路；在抹除视频的人再次行动前追上去。",
+      "证词已完成定位，东侧森林通路开启。","记录彼此相连，必须先解读{record}。"
+    ],
+    ja:[
+      "任務","聞き込み：{name}","十人の証言、一つの信号","{place}へ","{place}の脅威排除",
+      "{item}を回収","司令官の信号","ヴェールを破る","装置の応答","{record}を解読","世界への証拠",
+      "{name}と話し、証言を記録する。","オルラに戻り、十人の証言をつなぎ合わせる。","{place}への安全な経路を探す。",
+      "{place}の信号汚染体を倒す（{n}/{target}）。","{item}を見つけて回収する。","最強の信号を追い、トカゲ司令官を探す。",
+      "正しい順序で{record}を起動する。",
+      "全証言に同じ青い脈動がある。時刻を並べると座標になった。森の信号は発信源ではなく中継だ。レンズを調整して東の道を開いた。映像を消した者が再び動く前に追って。",
+      "証言の座標を特定。東の森への道が開いた。","記録は連結されている。先に{record}を解読しよう。"
+    ],
+    ko:[
+      "임무","면담: {name}","열 명의 증인, 하나의 신호","{place} 진입","{place} 위협 제거",
+      "{item} 회수","사령관 신호","장막을 깨다","장치의 응답","{record} 해독","세상을 위한 증거",
+      "{name}와 대화하고 증언을 기록하세요.","오를라에게 돌아가 열 개의 증언을 연결하세요.","{place}로 가는 안전한 길을 찾으세요.",
+      "{place}의 신호 오염체를 처치하세요 ({n}/{target}).","{item}을 찾아 회수하세요.","가장 강한 신호를 따라 도마뱀 사령관을 찾으세요.",
+      "올바른 순서로 {record}을 작동하세요.",
+      "모든 증언에 같은 푸른 파동이 있어. 발생 시간을 합치니 좌표가 됐어. 숲의 신호는 발신지가 아니라 중계점이야. 렌즈를 조정하고 동쪽 길을 열었어. 영상을 지운 자가 다시 움직이기 전에 따라가.",
+      "증언 좌표 확인. 동쪽 숲길이 열렸습니다.","기록은 연결되어 있습니다. 먼저 {record}을 해독하세요."
+    ],
+    es:[
+      "MISIONES","Entrevista: {name}","Diez testigos, una señal","Llegar a {place}","Asegurar {place}",
+      "Recuperar {item}","La señal del comandante","Romper el velo","El dispositivo responde","Descifrar {record}","Pruebas para el mundo",
+      "Habla con {name} y registra su testimonio.","Vuelve con Orla y conecta los diez testimonios.","Encuentra una ruta segura hacia {place}.",
+      "Derrota las amenazas corrompidas de {place} ({n}/{target}).","Encuentra y recupera {item}.","Sigue la señal más fuerte y encuentra al comandante.",
+      "Activa {record} en la secuencia correcta.",
+      "Todos recuerdan el mismo pulso azul. Al ordenar las horas aparecen coordenadas. La señal del bosque es un repetidor, no el origen. Ajusté la lente y abrí la ruta oriental. Síguela antes de que vuelvan a borrar las pruebas.",
+      "Testimonios alineados. La ruta oriental está abierta.","Los registros están encadenados. Descifra primero {record}."
+    ],
+    "pt-BR":[
+      "MISSÕES","Entrevista: {name}","Dez testemunhas, um sinal","Chegar a {place}","Proteger {place}",
+      "Recuperar {item}","O sinal do comandante","Romper o véu","O dispositivo responde","Decodificar {record}","Provas para o mundo",
+      "Fale com {name} e registre o depoimento.","Volte a Orla e conecte os dez depoimentos.","Encontre uma rota segura para {place}.",
+      "Derrote as ameaças corrompidas em {place} ({n}/{target}).","Encontre e recupere {item}.","Siga o sinal mais forte e encontre o comandante.",
+      "Ative {record} na sequência correta.",
+      "Todos lembram do mesmo pulso azul. Os horários formam coordenadas. O sinal da floresta é um retransmissor, não a origem. Ajustei a lente e abri a rota leste. Siga antes que apaguem as provas novamente.",
+      "Depoimentos alinhados. A rota leste está aberta.","Os registros estão ligados. Decodifique primeiro {record}."
+    ],
+    fr:[
+      "QUÊTES","Interroger : {name}","Dix témoins, un signal","Atteindre {place}","Sécuriser {place}",
+      "Récupérer {item}","Le signal du commandant","Briser le voile","L'appareil répond","Décoder {record}","La preuve pour le monde",
+      "Parlez à {name} et consignez son témoignage.","Retournez voir Orla et reliez les dix témoignages.","Trouvez un passage sûr vers {place}.",
+      "Éliminez les menaces corrompues de {place} ({n}/{target}).","Trouvez et récupérez {item}.","Suivez le signal le plus fort et trouvez le commandant.",
+      "Activez {record} dans le bon ordre.",
+      "Tous décrivent la même impulsion bleue. Les heures forment des coordonnées. Le signal de la forêt est un relais, pas la source. J'ai réglé la lentille et ouvert la route est. Suis-la avant qu'ils n'effacent encore les preuves.",
+      "Témoignages alignés. La route est ouverte.","Les archives sont enchaînées. Décodez d'abord {record}."
+    ],
+    de:[
+      "AUFTRÄGE","Befragung: {name}","Zehn Zeugen, ein Signal","{place} erreichen","{place} sichern",
+      "{item} bergen","Das Signal des Kommandanten","Den Schleier brechen","Das Gerät antwortet","{record} entschlüsseln","Beweise für die Welt",
+      "Sprich mit {name} und sichere die Aussage.","Kehre zu Orla zurück und verbinde alle zehn Aussagen.","Finde einen sicheren Weg nach {place}.",
+      "Besiege die signalverseuchten Gefahren in {place} ({n}/{target}).","Finde und berge {item}.","Folge dem stärksten Signal zum Kommandanten.",
+      "Aktiviere {record} in der richtigen Reihenfolge.",
+      "Alle Aussagen nennen denselben blauen Impuls. Die Zeiten ergeben Koordinaten. Das Waldsignal ist ein Relais, nicht die Quelle. Ich habe die Linse justiert und den Ostweg geöffnet. Folge ihm, bevor die Beweise wieder verschwinden.",
+      "Aussagen abgeglichen. Der Ostweg ist offen.","Die Akten sind verkettet. Entschlüssle zuerst {record}."
+    ],
+    it:[
+      "MISSIONI","Intervista: {name}","Dieci testimoni, un segnale","Raggiungi {place}","Metti in sicurezza {place}",
+      "Recupera {item}","Il segnale del comandante","Spezza il velo","Il dispositivo risponde","Decodifica {record}","Prove per il mondo",
+      "Parla con {name} e registra la testimonianza.","Torna da Orla e collega le dieci testimonianze.","Trova un percorso sicuro verso {place}.",
+      "Sconfiggi le minacce corrotte di {place} ({n}/{target}).","Trova e recupera {item}.","Segui il segnale più forte e trova il comandante.",
+      "Attiva {record} nella sequenza corretta.",
+      "Tutti ricordano lo stesso impulso blu. Gli orari formano coordinate. Il segnale della foresta è un ripetitore, non la fonte. Ho regolato la lente e aperto la via est. Seguila prima che cancellino di nuovo le prove.",
+      "Testimonianze allineate. La via est è aperta.","I registri sono concatenati. Decodifica prima {record}."
+    ],
+    ru:[
+      "ЗАДАНИЯ","Опрос: {name}","Десять свидетелей, один сигнал","Достичь {place}","Зачистить {place}",
+      "Найти {item}","Сигнал командира","Разорвать завесу","Ответ устройства","Расшифровать {record}","Доказательства для мира",
+      "Поговорите с {name} и запишите показания.","Вернитесь к Орле и сопоставьте десять показаний.","Найдите безопасный путь в {place}.",
+      "Уничтожьте заражённые угрозы в {place} ({n}/{target}).","Найдите и заберите {item}.","Следуйте сильнейшему сигналу и найдите командира.",
+      "Активируйте {record} в правильном порядке.",
+      "Все описывают один синий импульс. Время событий складывается в координаты. Лесной сигнал — ретранслятор, не источник. Я настроила линзу и открыла восточный путь. Иди, пока доказательства снова не стёрли.",
+      "Показания сопоставлены. Восточный путь открыт.","Записи связаны. Сначала расшифруйте {record}."
+    ],
+    hi:[
+      "मिशन","साक्षात्कार: {name}","दस गवाह, एक संकेत","{place} पहुँचें","{place} सुरक्षित करें",
+      "{item} प्राप्त करें","कमांडर का संकेत","परदा तोड़ें","उपकरण का उत्तर","{record} पढ़ें","दुनिया के लिए प्रमाण",
+      "{name} से बात कर उनका बयान दर्ज करें।","ऑर्ला के पास लौटकर दसों बयान जोड़ें।","{place} तक सुरक्षित रास्ता खोजें।",
+      "{place} में सिग्नल से दूषित खतरों को हराएँ ({n}/{target})।","{item} खोजकर प्राप्त करें।","सबसे मजबूत संकेत का पीछा कर कमांडर को खोजें।",
+      "{record} को सही क्रम में सक्रिय करें।",
+      "हर बयान में वही नीला स्पंदन है। समय जोड़ने पर निर्देशांक बने। जंगल का संकेत स्रोत नहीं, रिले है। मैंने लेंस मिलाकर पूर्वी रास्ता खोल दिया है। प्रमाण फिर मिटने से पहले आगे बढ़ो।",
+      "बयानों से स्थान मिला। पूर्वी रास्ता खुला।","अभिलेख जुड़े हैं। पहले {record} पढ़ें।"
+    ],
+    ar:[
+      "المهام","استجواب: {name}","عشرة شهود، إشارة واحدة","الوصول إلى {place}","تأمين {place}",
+      "استعادة {item}","إشارة القائد","كسر الحجاب","استجابة الجهاز","فك {record}","دليل للعالم",
+      "تحدث مع {name} وسجل الشهادة.","عد إلى أورلا واربط شهادات الشهود العشرة.","اعثر على طريق آمن إلى {place}.",
+      "اهزم التهديدات الملوثة في {place} ({n}/{target}).","اعثر على {item} واستعده.","اتبع أقوى إشارة واعثر على القائد.",
+      "فعّل {record} بالترتيب الصحيح.",
+      "كل الشهادات تذكر النبضة الزرقاء نفسها. أوقاتها ترسم إحداثيات. إشارة الغابة مرحل وليست المصدر. عايرت العدسة وفتحت الطريق الشرقي. اتبعه قبل أن يمحوا الأدلة من جديد.",
+      "تم ربط الشهادات. الطريق الشرقي مفتوح.","السجلات مترابطة. فك أولاً {record}."
+    ]
+  };
+  for(const [code,values] of Object.entries(questSystemCopy)){
+    Object.assign(localeRegistry[code],Object.fromEntries(questSystemKeys.map((key,index)=>[key,values[index]])));
+  }
   const chapterTwoKeys=[
     "zoneMoonfall","objectiveReturnOrla","objectiveEnterMoonfall","objectiveMoonfallEnemies",
     "objectiveRelays","objectiveReturnMoonfall","objectiveFinalReturn","objectiveStoryComplete",

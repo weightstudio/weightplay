@@ -856,6 +856,11 @@
     });
   }
 
+  function restoreNativeBattleHeader() {
+    if (battleBackBtn.parentElement !== gameHud) gameHud.prepend(battleBackBtn);
+    document.querySelectorAll(".wp-generated-battle-header").forEach((header) => header.remove());
+  }
+
   function setLeaveConfirmOpen(open, restoreFocus = true) {
     if (open === leaveConfirmOpen) return;
     leaveConfirmOpen = open;
@@ -940,6 +945,7 @@
     setHelpOpen(false, null, false);
     setLeaveConfirmOpen(false, false);
     invalidateRoundTransition();
+    restoreNativeBattleHeader();
     document.body.classList.remove("lunch-stage", "lunch-playing");
     document.body.classList.add("lunch-main");
     resultPanel.classList.add("hidden");
@@ -956,6 +962,7 @@
     setHelpOpen(false, null, false);
     setLeaveConfirmOpen(false, false);
     invalidateRoundTransition();
+    restoreNativeBattleHeader();
     document.body.classList.remove("lunch-main");
     document.body.classList.remove("lunch-playing");
     document.body.classList.add("lunch-stage");
@@ -1289,6 +1296,7 @@
     setHelpOpen(false, null, false);
     setLeaveConfirmOpen(false, false);
     invalidateRoundTransition();
+    restoreNativeBattleHeader();
     document.body.classList.remove("lunch-stage");
     document.body.classList.add("lunch-playing");
     const stage = stages[stageIndex];
@@ -1412,6 +1420,7 @@
   function finishStage() {
     setHelpOpen(false, null, false);
     invalidateRoundTransition();
+    restoreNativeBattleHeader();
     progressFill.style.width = "100%";
     const stage = stages[state.stageIndex];
     saveUnlockedStage(stage.id + 1);
@@ -1435,7 +1444,6 @@
       action.classList.toggle("result-secondary", action !== primaryAction);
     });
     foodCard.style.pointerEvents = "none";
-    gameHud.classList.add("hidden");
     gamePlayContent.classList.add("hidden");
     resultPanel.classList.remove("hidden");
     setBattleCovered(true);

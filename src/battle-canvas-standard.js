@@ -40,7 +40,7 @@
     "animal-zoo-idle": ["#gamePanel", 382, 780],
     "beast-deck": ["#gamePanel", 382, 780],
     "beast-tactician": ["#gamePanel", 382, 780],
-    "bubble-bakery": [".bakery-game", 382, 780],
+    "bubble-bakery": [".bakery-game", 382, 780, 760, 360],
     "campus-dash": [".dash-game", 382, 780, 844, 390],
     "color-lunchbox": [".lunch-game", 382, 780, 760, 350],
     "fruit-merge": [".fixed-game-shell", 382, 780],
