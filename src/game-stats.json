@@ -1,45 +1,63 @@
 {
-  "updatedAt": "2026-07-27T17:39:14.890Z",
+  "updatedAt": "2026-07-28T17:22:55.866Z",
   "source": "ga4",
   "metric": "game_page_view",
   "windowDays": 7,
   "totals": {
-    "plays7d": 584,
-    "playsTotal": 2407,
-    "users7d": 143,
-    "lobbyVisits7d": 288,
-    "lobbyVisitsTotal": 1557,
-    "lobbyUsers7d": 18
+    "plays7d": 565,
+    "playsTotal": 2513,
+    "users7d": 157,
+    "lobbyVisits7d": 257,
+    "lobbyVisitsTotal": 1607,
+    "lobbyUsers7d": 21
   },
   "games": {
+    "animal-unblock": {
+      "plays7d": 0,
+      "playsTotal": 0,
+      "users7d": 0,
+      "rank7d": null
+    },
     "animal-bus-jam": {
       "plays7d": 0,
       "playsTotal": 0,
       "users7d": 0,
       "rank7d": null
     },
-    "wonder-crash": {
-      "plays7d": 4,
-      "playsTotal": 96,
-      "users7d": 1,
-      "rank7d": 35
-    },
-    "color-lunchbox": {
+    "animal-sunbeam-garden": {
       "plays7d": 0,
-      "playsTotal": 58,
+      "playsTotal": 0,
       "users7d": 0,
       "rank7d": null
     },
+    "animal-triple-match": {
+      "plays7d": 54,
+      "playsTotal": 54,
+      "users7d": 8,
+      "rank7d": 3
+    },
+    "wonder-crash": {
+      "plays7d": 4,
+      "playsTotal": 97,
+      "users7d": 2,
+      "rank7d": 32
+    },
+    "color-lunchbox": {
+      "plays7d": 3,
+      "playsTotal": 61,
+      "users7d": 1,
+      "rank7d": 37
+    },
     "bubble-bakery": {
-      "plays7d": 10,
+      "plays7d": 7,
       "playsTotal": 116,
       "users7d": 1,
-      "rank7d": 17
+      "rank7d": 27
     },
     "animal-rope-rescue": {
-      "plays7d": 73,
-      "playsTotal": 176,
-      "users7d": 68,
+      "plays7d": 62,
+      "playsTotal": 177,
+      "users7d": 59,
       "rank7d": 1
     },
     "animal-zoo-idle": {
@@ -49,130 +67,130 @@
       "rank7d": null
     },
     "star-memory": {
-      "plays7d": 12,
+      "plays7d": 10,
       "playsTotal": 56,
       "users7d": 1,
-      "rank7d": 14
+      "rank7d": 15
     },
     "campus-dash": {
-      "plays7d": 9,
+      "plays7d": 8,
       "playsTotal": 47,
       "users7d": 1,
-      "rank7d": 20
+      "rank7d": 25
     },
     "snack-blocks": {
       "plays7d": 8,
       "playsTotal": 55,
       "users7d": 1,
-      "rank7d": 27
+      "rank7d": 24
     },
     "fruit-merge": {
       "plays7d": 9,
       "playsTotal": 85,
       "users7d": 1,
-      "rank7d": 19
+      "rank7d": 17
     },
     "animal-2048": {
-      "plays7d": 58,
-      "playsTotal": 70,
-      "users7d": 3,
+      "plays7d": 62,
+      "playsTotal": 81,
+      "users7d": 6,
       "rank7d": 2
     },
     "garden-tiles": {
       "plays7d": 19,
       "playsTotal": 52,
       "users7d": 2,
-      "rank7d": 9
+      "rank7d": 7
     },
     "animal-rescue": {
-      "plays7d": 4,
+      "plays7d": 1,
       "playsTotal": 42,
       "users7d": 1,
-      "rank7d": 36
+      "rank7d": 43
     },
     "animal-hidden-safari": {
-      "plays7d": 9,
+      "plays7d": 4,
       "playsTotal": 45,
-      "users7d": 1,
-      "rank7d": 21
-    },
-    "animal-guard-yard": {
-      "plays7d": 5,
-      "playsTotal": 140,
-      "users7d": 1,
-      "rank7d": 32
-    },
-    "animal-crystal-survivor": {
-      "plays7d": 21,
-      "playsTotal": 65,
-      "users7d": 7,
-      "rank7d": 6
-    },
-    "animal-quiz": {
-      "plays7d": 11,
-      "playsTotal": 43,
-      "users7d": 1,
-      "rank7d": 16
-    },
-    "zoo-helper-day": {
-      "plays7d": 5,
-      "playsTotal": 49,
       "users7d": 1,
       "rank7d": 33
     },
+    "animal-guard-yard": {
+      "plays7d": 3,
+      "playsTotal": 140,
+      "users7d": 1,
+      "rank7d": 36
+    },
+    "animal-crystal-survivor": {
+      "plays7d": 35,
+      "playsTotal": 82,
+      "users7d": 22,
+      "rank7d": 5
+    },
+    "animal-quiz": {
+      "plays7d": 9,
+      "playsTotal": 42,
+      "users7d": 1,
+      "rank7d": 19
+    },
+    "zoo-helper-day": {
+      "plays7d": 1,
+      "playsTotal": 49,
+      "users7d": 1,
+      "rank7d": 42
+    },
     "shape-train": {
-      "plays7d": 6,
+      "plays7d": 4,
       "playsTotal": 33,
       "users7d": 1,
-      "rank7d": 30
+      "rank7d": 35
     },
     "tiny-weather-rescue": {
-      "plays7d": 7,
+      "plays7d": 4,
       "playsTotal": 40,
       "users7d": 1,
-      "rank7d": 29
+      "rank7d": 34
     },
     "beast-deck": {
-      "plays7d": 7,
-      "playsTotal": 54,
+      "plays7d": 8,
+      "playsTotal": 55,
       "users7d": 2,
-      "rank7d": 28
+      "rank7d": 23
     },
     "animal-relic-hunters": {
-      "plays7d": 8,
-      "playsTotal": 61,
-      "users7d": 3,
-      "rank7d": 26
+      "plays7d": 9,
+      "playsTotal": 63,
+      "users7d": 4,
+      "rank7d": 18
     },
     "animal-rune-tactics": {
-      "plays7d": 18,
-      "playsTotal": 72,
+      "plays7d": 17,
+      "playsTotal": 73,
       "users7d": 3,
-      "rank7d": 10
+      "rank7d": 9
     },
     "animal-orb-fortress": {
-      "plays7d": 20,
-      "playsTotal": 89,
+      "plays7d": 21,
+      "playsTotal": 90,
       "users7d": 2,
-      "rank7d": 8
+      "rank7d": 6
     },
     "animal-auto-squad": {
       "plays7d": 8,
-      "playsTotal": 129,
+      "playsTotal": 132,
       "users7d": 3,
-      "rank7d": 25
+      "rank7d": 22
     },
     "beast-tactician": {
-      "plays7d": 54,
-      "playsTotal": 78,
+      "plays7d": 46,
+      "playsTotal": 79,
       "users7d": 3,
-      "rank7d": 3
+      "rank7d": 4
     },
     "shadow-wolf": {
-      "plays7d": 10,
+      "plays7d": 8,
       "playsTotal": 36,
-      "users7d": 3,
-      "rank7d": 18
+      "users7d": 2,
+      "rank7d": 26
     },
     "animal-block-grove": {
       "plays7d": 3,
@@ -184,7 +202,7 @@
       "plays7d": 14,
       "playsTotal": 39,
       "users7d": 2,
-      "rank7d": 12
+      "rank7d": 10
     },
     "animal-rune-reels": {
       "plays7d": 0,
@@ -199,40 +217,40 @@
       "rank7d": null
     },
     "animal-rootvault-pins": {
-      "plays7d": 4,
+      "plays7d": 3,
       "playsTotal": 4,
-      "users7d": 2,
-      "rank7d": 37
+      "users7d": 1,
+      "rank7d": 40
     },
     "animal-sketchwheel-rally": {
-      "plays7d": 6,
-      "playsTotal": 6,
+      "plays7d": 9,
+      "playsTotal": 9,
+      "users7d": 2,
+      "rank7d": 21
+    },
+    "animal-sanctuary-loop": {
+      "plays7d": 11,
+      "playsTotal": 25,
+      "users7d": 1,
+      "rank7d": 14
+    },
+    "animal-prism-battalion": {
+      "plays7d": 5,
+      "playsTotal": 13,
       "users7d": 2,
       "rank7d": 31
     },
-    "animal-sanctuary-loop": {
-      "plays7d": 26,
-      "playsTotal": 25,
-      "users7d": 3,
-      "rank7d": 5
-    },
-    "animal-prism-battalion": {
-      "plays7d": 13,
-      "playsTotal": 13,
-      "users7d": 3,
-      "rank7d": 13
-    },
     "animal-skybridge-rivals": {
-      "plays7d": 21,
+      "plays7d": 12,
       "playsTotal": 20,
       "users7d": 3,
-      "rank7d": 7
+      "rank7d": 11
     },
     "animal-skyspire-drop": {
-      "plays7d": 32,
+      "plays7d": 19,
       "playsTotal": 32,
-      "users7d": 3,
-      "rank7d": 4
+      "users7d": 2,
+      "rank7d": 8
     },
     "animal-rift-salvage": {
       "plays7d": 0,
@@ -247,22 +265,22 @@
       "rank7d": null
     },
     "animal-starlight-trails": {
-      "plays7d": 9,
+      "plays7d": 6,
       "playsTotal": 42,
       "users7d": 1,
-      "rank7d": 22
+      "rank7d": 29
     },
     "animal-one-line": {
-      "plays7d": 12,
+      "plays7d": 11,
       "playsTotal": 50,
       "users7d": 2,
-      "rank7d": 15
+      "rank7d": 12
     },
     "animal-abyss-diver": {
-      "plays7d": 5,
-      "playsTotal": 23,
+      "plays7d": 7,
+      "playsTotal": 25,
       "users7d": 1,
-      "rank7d": 34
+      "rank7d": 28
     },
     "animal-bubble-safari": {
       "plays7d": 0,
@@ -280,13 +298,13 @@
       "plays7d": 2,
       "playsTotal": 10,
       "users7d": 1,
-      "rank7d": 42
+      "rank7d": 41
     },
     "animal-parking-patrol": {
-      "plays7d": 2,
+      "plays7d": 1,
       "playsTotal": 13,
-      "users7d": 2,
-      "rank7d": 41
+      "users7d": 1,
+      "rank7d": 44
     },
     "animal-habitat-mahjong": {
       "plays7d": 0,
@@ -313,34 +331,34 @@
       "rank7d": null
     },
     "animal-reef-fisher": {
-      "plays7d": 9,
-      "playsTotal": 41,
+      "plays7d": 10,
+      "playsTotal": 44,
       "users7d": 1,
-      "rank7d": 23
+      "rank7d": 16
     },
     "animal-cafe-rush": {
-      "plays7d": 16,
+      "plays7d": 11,
       "playsTotal": 29,
       "users7d": 1,
-      "rank7d": 11
+      "rank7d": 13
     },
     "animal-hero-trials": {
       "plays7d": 3,
       "playsTotal": 19,
       "users7d": 1,
-      "rank7d": 40
+      "rank7d": 39
     },
     "animal-gearpack-expedition": {
-      "plays7d": 3,
-      "playsTotal": 23,
-      "users7d": 1,
-      "rank7d": 39
+      "plays7d": 5,
+      "playsTotal": 26,
+      "users7d": 2,
+      "rank7d": 30
     },
     "animal-moonlight-heist": {
       "plays7d": 9,
       "playsTotal": 26,
       "users7d": 1,
-      "rank7d": 24
+      "rank7d": 20
     }
   }
 }
