@@ -8084,7 +8084,7 @@
     designNote: "Numbers remain visible as text and the selection state uses more than color, supporting keyboard, touch, and mouse play.",
     parent: "No account, countdown, purchase, or public score is required. Local clears and best move counts remain in this browser.",
     faq: [["Why can two equal values not clear?", "Equal values are not a pair unless both are five; every legal pair must total ten and share a clear row or column."], ["Do diagonal pairs count?", "No, pairs use adjacency or a straight horizontal or vertical sight line."], ["What does Reorder do?", "It rearranges the remaining values without changing the sum-to-ten rule."], ["Are stages timed?", "No, you can inspect the board at your own pace."]]
-  }, "潘可的數字花園", "胖达数字花园");
+  }, "胖達數字花園", "胖达数字花园");
 
   localizedGames.ja ||= {};
   reviewedJapaneseGuideOverrides["animal-number-match"]
