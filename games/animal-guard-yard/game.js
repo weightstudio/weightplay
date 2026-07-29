@@ -1517,7 +1517,9 @@
       const button = document.createElement("button");
       button.className = "unit-card";
       button.type = "button";
+      button.dataset.unitId = unit.id;
       button.setAttribute("aria-label", `${t(unit.nameKey)}: ${t(unit.roleKey)}. ${t(unit.abilityKey)}`);
+      button.setAttribute("aria-pressed", String(unit.id === selectedUnit));
       if (unit.id === selectedUnit) button.classList.add("selected");
       if (energy < trained.cost) button.classList.add("disabled");
       button.innerHTML = `
@@ -1532,9 +1534,13 @@
         </span>
       `;
       button.addEventListener("click", () => {
+        const restoreFocus = document.activeElement === button;
         selectedUnit = unit.id;
         playSound("click");
         renderUnits();
+        if (restoreFocus) {
+          nodes.unitBar.querySelector(`[data-unit-id="${unit.id}"]`)?.focus({ preventScroll: true });
+        }
       });
       nodes.unitBar.appendChild(button);
     });

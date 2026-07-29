@@ -1742,7 +1742,9 @@
       button.dataset.trainingKey = def.key;
       button.textContent = level >= def.max ? t("trainMax") : t("trainAction");
       button.disabled = level >= def.max || profile.statPoints <= 0;
-      button.addEventListener("click", (event) => spendTrainingPoint(def.key, event.detail === 0));
+      button.addEventListener("click", (event) => {
+        spendTrainingPoint(def.key, document.activeElement === event.currentTarget);
+      });
       row.appendChild(button);
       nodes.trainingList.appendChild(row);
     });

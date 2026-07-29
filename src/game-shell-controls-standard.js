@@ -608,6 +608,15 @@
         battleHeader.hidden = true;
       });
     }
+    if (type !== "stage") {
+      document.querySelectorAll(".wp-generated-stage-header").forEach((stageHeader) => {
+        stageHeader.hidden = true;
+      });
+    } else {
+      const stageHeader = document.querySelector('[data-wp-return="stage"]')
+        ?.closest(".wp-generated-stage-header");
+      if (stageHeader) stageHeader.hidden = false;
+    }
     document.body.classList.toggle("wp-shell-main-active", type === "main");
     document.body.classList.toggle("wp-shell-stage-active", type === "stage");
     document.body.classList.toggle("wp-shell-battle-active", type === "battle");
@@ -642,6 +651,7 @@
       header = firstVisible(['[data-wp-return="stage"]'], document)?.closest("header") || null;
     }
     if (type === "stage" && header?.classList.contains("wp-generated-stage-header")) {
+      header.hidden = false;
       const ownedStageHeader = firstVisible(['[data-wp-return="stage"]'], document)?.closest("header");
       if (ownedStageHeader && ownedStageHeader !== header) {
         header.remove();

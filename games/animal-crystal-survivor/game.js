@@ -959,8 +959,9 @@
       card.className = `stage-card${selected ? " is-selected is-browsed" : ""}${cleared ? " is-cleared" : ""}${config.bossImage ? " is-boss-stage" : ""}`;
       card.dataset.stage = String(config.number);
       card.setAttribute("aria-disabled", String(locked));
+      card.tabIndex = selected ? 0 : -1;
+      if (selected) card.setAttribute("aria-current", "true");
       card.style.setProperty("--stage-overlay", region.color);
-      if (locked) card.tabIndex = -1;
       const regionName = locale === "zh-Hant" ? region.zh : locale === "es" ? region.es : region.en;
       const bossText = config.bossImage ? `<small>${t("bossCheckpoint")}</small>` : "";
       const objective = t("objective", { keys: config.targetKeys, boss: config.bossImage ? t("bossObjective") : "" });
@@ -972,6 +973,7 @@
           save.selectedStage = config.number;
           persist();
           renderStageSelector(true);
+          requestAnimationFrame(() => nodes.stageRail.querySelector(`.stage-card[data-stage="${config.number}"]`)?.focus({ preventScroll: true }));
           return;
         }
         startRun();
@@ -1002,6 +1004,7 @@
         const active = card === nearest;
         card.classList.toggle("is-selected", active);
         card.classList.toggle("is-browsed", active);
+        card.tabIndex = active ? 0 : -1;
         if (active) card.setAttribute("aria-current", "true");
         else card.removeAttribute("aria-current");
       });
@@ -2137,7 +2140,28 @@
     nodes.startBtn.focus({ preventScroll: true });
   });
   nodes.stageRail.addEventListener("keydown", (event) => {
-    if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest(".stage-card")) event.preventDefault();
+    const activeCard = event.target.closest(".stage-card");
+    if (!activeCard) return;
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      return;
+    }
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+    const cards = [...nodes.stageRail.querySelectorAll(".stage-card")]
+      .filter((card) => Number(card.dataset.stage) <= save.unlockedStage);
+    const currentIndex = Math.max(0, cards.indexOf(activeCard));
+    const nextIndex = event.key === "Home"
+      ? 0
+      : event.key === "End"
+        ? cards.length - 1
+        : Math.max(0, Math.min(cards.length - 1, currentIndex + (event.key === "ArrowRight" ? 1 : -1)));
+    const nextCard = cards[nextIndex];
+    if (!nextCard) return;
+    event.preventDefault();
+    save.selectedStage = Number(nextCard.dataset.stage);
+    persist();
+    renderStageSelector(true);
+    requestAnimationFrame(() => nodes.stageRail.querySelector(`.stage-card[data-stage="${save.selectedStage}"]`)?.focus({ preventScroll: true }));
   });
   nodes.stageRail.addEventListener("scroll", syncStageFromRail, { passive: true });
   nodes.charmBtn?.addEventListener("keydown", (event) => {

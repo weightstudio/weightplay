@@ -35,7 +35,14 @@ body.wonder-playing :is(#backToMenuBtn, #settingsBtn) {
   min-height: var(--wonder-battle-control-size, 48px) !important;
 }
 
-body:is(.wonder-stage-select, .wonder-playing) .weightplay-version-badge {
+body :is(.weightplay-version-badge, .version-badge) {
+  display: none !important;
+}
+
+/* The shared Stage header is retained for the next Stage entry, but it may
+   still contain a previously adopted title owner. Never expose that retained
+   Stage chrome after returning to canonical Main. */
+body:not(.wonder-stage-select) .wp-generated-stage-header {
   display: none !important;
 }
 
@@ -130,6 +137,7 @@ body.wonder-stage-select #overlay {
 }
 
 body.wonder-stage-select #wonderStageBack {
+  display: grid !important;
   width: var(--wonder-stage-back-size, 48px) !important;
   min-width: var(--wonder-stage-back-size, 48px) !important;
   height: var(--wonder-stage-back-size, 48px) !important;
