@@ -1801,7 +1801,7 @@
       const bestStars = Number(state.save.stars?.[stage.id] || 0);
       const status = !unlocked ? t("locked") : bestStars ? t("starRating", { stars: bestStars }) : state.save.clears[stage.id] ? t("cleared") : stage.boss ? t("bossStage") : t("stage");
       const rewardText = `+${stage.reward.points} ${t("upgradePoints")} / +${stage.reward.diamonds} ${t("diamonds")}`;
-      button.innerHTML = `<strong>${stage.id}. ${localizedValue(stage.name)}</strong><span class="stage-status">${status}</span><span class="stage-intel"><b>${t("threatIntel")}:</b> ${localizedValue(stage.intel.threat)}</span><span class="stage-meta">${stage.waves} ${t("wave")} · ${stage.boss ? t("boss") : t("guardianRoute")}</span><span class="stage-reward"><b>${t("rewardIntel")}:</b> ${rewardText}</span>`;
+      button.innerHTML = `<strong>${stage.id}. ${localizedValue(stage.name)}</strong><span class="stage-status">${status}</span><span class="stage-intel"><span class="stage-threat"><b>${t("threatIntel")}:</b> ${localizedValue(stage.intel.threat)}</span><span class="stage-plan"><b>${t("recommendedPlan")}:</b> ${localizedValue(stage.intel.plan)}</span></span><span class="stage-meta">${stage.waves} ${t("wave")} · ${stage.boss ? t("boss") : t("guardianRoute")}</span><span class="stage-reward"><b>${t("rewardIntel")}:</b> ${rewardText}</span>`;
       button.addEventListener("click", () => {
         if (!unlocked) return showToast(t("lockedStage"));
         startStage(stage.id);
@@ -5251,6 +5251,7 @@
       unlockText: nodes.resultUnlockText.textContent,
       resultParent: nodes.resultPanel.parentElement?.id || "",
       nextHidden: nodes.nextStageBtn.classList.contains("is-hidden"),
+      nextDisabled: nodes.nextStageBtn.disabled,
     };
   }
 

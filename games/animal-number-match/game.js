@@ -4,7 +4,7 @@
   const $=selector=>document.querySelector(selector),screens=[...document.querySelectorAll(".screen")],levels=window.NUMBER_MATCH_LEVELS.levels;
   const storageKey="wp-animal-number-match-v1";
   let locale=window.WonderI18n?.actualLocale?.()||window.__WONDER_FORCED_LOCALE||read("weightPlayLocale")||read("wp-locale")||window.WonderI18n?.locale?.()||"en";if(!codes.includes(locale))locale="en";
-  let unlocked=Number(read(storageKey))||1,selected=Math.min(unlocked,30)-1,level=null,values=[],picked=null,history=[],moves=0,resultActionClaimed=false,inputLocked=false;
+  let unlocked=Number(read(storageKey))||1,selected=Math.min(unlocked,30)-1,level=null,values=[],picked=null,history=[],moves=0,resultActionClaimed=false,inputLocked=false,tileFocusIndex=0;
   function read(key){try{return localStorage.getItem(key)}catch{return null}}
   function write(key,value){try{localStorage.setItem(key,value)}catch{}}
   function t(key,vars={}){const value=window.NUMBER_MATCH_LOCALES[locale]?.[key]??window.NUMBER_MATCH_LOCALES.en[key]??key;return String(value).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??"")}
@@ -28,7 +28,7 @@
     selectStage(selected);
   }
   function startLevel(index){
-    selected=index;level=levels[index];values=level.cells.slice();picked=null;history=[];moves=0;inputLocked=false;
+    selected=index;level=levels[index];values=level.cells.slice();picked=null;history=[];moves=0;inputLocked=false;tileFocusIndex=values.findIndex(value=>value!==null);
     $("#board").style.setProperty("--cols",level.cols);$("#chapter").textContent=t("chapter",{n:Math.floor(index/5)+1});$("#stageName").textContent=t("grove",{n:index+1});$("#status").textContent=t("selectFirst");show("battle");renderBoard();
   }
   const matches=(a,b)=>Number.isFinite(a)&&Number.isFinite(b)&&a+b===10;
@@ -45,6 +45,7 @@
   }
   function choose(index){
     if(inputLocked||values[index]===null)return;
+    tileFocusIndex=index;
     if(picked===null){picked=index;$("#status").textContent=t("selectFirst");renderBoard();return}
     if(index===picked){picked=null;renderBoard();return}
     if(!matches(values[picked],values[index])){
@@ -58,14 +59,35 @@
     $("#status").textContent=t("match");renderBoard();showMatchEffect(matched);if(values.every(value=>value===null))complete();
   }
   function renderBoard(){
-    const board=$("#board");board.innerHTML="";
+    const board=$("#board"),restoreFocus=board.contains(document.activeElement),activeIndices=values.map((value,index)=>value===null?-1:index).filter(index=>index>=0);
+    if(!activeIndices.includes(tileFocusIndex))tileFocusIndex=activeIndices.reduce((nearest,index)=>Math.abs(index-tileFocusIndex)<Math.abs(nearest-tileFocusIndex)?index:nearest,activeIndices[0]??-1);
+    board.innerHTML="";
     values.forEach((value,index)=>{
       const button=document.createElement("button");button.className=`tile${value===null?" empty":""}${picked===index?" selected":""}`;button.dataset.index=index;button.setAttribute("role","gridcell");
       if(value===null){button.disabled=true;button.tabIndex=-1;button.setAttribute("aria-hidden","true")}
-      else{button.textContent=value;button.setAttribute("aria-selected",picked===index?"true":"false");button.setAttribute("aria-label",t("tileLabel",{value,row:Math.floor(index/level.cols)+1,col:index%level.cols+1}));button.onclick=()=>choose(index)}
+      else{button.tabIndex=index===tileFocusIndex?0:-1;button.textContent=value;button.setAttribute("aria-selected",picked===index?"true":"false");button.setAttribute("aria-label",t("tileLabel",{value,row:Math.floor(index/level.cols)+1,col:index%level.cols+1}));button.onclick=()=>choose(index)}
       board.append(button);
     });
+    if(restoreFocus&&tileFocusIndex>=0)board.querySelector(`[data-index="${tileFocusIndex}"]`)?.focus();
     $("#pairsLeft").textContent=t("pairsLeft",{n:values.filter(value=>value!==null).length/2});$("#undo").disabled=!history.length;
+  }
+  function moveTileFocus(key,current){
+    const activeIndices=values.map((value,index)=>value===null?-1:index).filter(index=>index>=0);
+    if(!activeIndices.length)return;
+    let next=current;
+    if(key==="Home")next=activeIndices[0];
+    else if(key==="End")next=activeIndices[activeIndices.length-1];
+    else{
+      const rtl=document.documentElement.dir==="rtl",horizontal=key==="ArrowLeft"||key==="ArrowRight";
+      const step=horizontal?((key==="ArrowRight")!==rtl?1:-1):(key==="ArrowDown"?level.cols:-level.cols);
+      for(let candidate=current+step;candidate>=0&&candidate<values.length;candidate+=step){
+        if(horizontal&&Math.floor(candidate/level.cols)!==Math.floor(current/level.cols))break;
+        if(values[candidate]!==null){next=candidate;break}
+      }
+    }
+    tileFocusIndex=next;
+    document.querySelectorAll("#board .tile:not(.empty)").forEach(tile=>tile.tabIndex=Number(tile.dataset.index)===next?0:-1);
+    document.querySelector(`#board [data-index="${next}"]`)?.focus();
   }
   function flash(index,className){requestAnimationFrame(()=>document.querySelector(`[data-index="${index}"]`)?.classList.add(className))}
   function showMatchEffect(matched){
@@ -122,6 +144,11 @@
   $("#continueBattle").onclick=continueBattle;
   $("#leaveBattle").onclick=()=>{inputLocked=false;picked=null;show("stage")};
   $("#leaveDialog").addEventListener("cancel",event=>{event.preventDefault();continueBattle()});
+  $("#board").addEventListener("keydown",event=>{
+    if(!["ArrowLeft","ArrowRight","ArrowUp","ArrowDown","Home","End"].includes(event.key))return;
+    const tile=event.target.closest(".tile:not(.empty)");if(!tile)return;
+    event.preventDefault();moveTileFocus(event.key,Number(tile.dataset.index));
+  });
   $("#undo").onclick=()=>{const last=history.pop();if(!last)return;values[last.a]=last.va;values[last.b]=last.vb;picked=null;moves=Math.max(0,moves-1);$("#status").textContent=t("undone");renderBoard()};
   $("#hint").onclick=hint;$("#shuffle").onclick=reorder;$("#restart").onclick=()=>startLevel(selected);
   $("#resultStages").onclick=()=>claimResultAction(()=>{selected=Math.min(29,unlocked-1);show("stage")});$("#next").onclick=()=>claimResultAction(()=>startLevel(selected+1));$("#retry").onclick=()=>claimResultAction(()=>startLevel(selected));

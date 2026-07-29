@@ -615,6 +615,7 @@ html[lang="ru"] body.guardian-stage .stage-card .stage-reward {
 }
 
 .stage-card .stage-intel b,
+.stage-card .stage-plan b,
 .stage-card .stage-reward b {
   color: #dff6df;
 }
@@ -2196,11 +2197,17 @@ body.guardian-stage .stage-card {
 }
 
 body.guardian-stage .stage-card .stage-intel {
-  display: -webkit-box;
+  display: grid;
+  gap: 2px;
   margin: 2px 0 0;
   overflow: hidden;
   font-size: 12px;
   line-height: 1.3;
+}
+
+body.guardian-stage .stage-card :is(.stage-threat, .stage-plan) {
+  display: -webkit-box;
+  overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
