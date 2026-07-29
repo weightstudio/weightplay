@@ -746,6 +746,19 @@
       canonicalTitle.classList.add("wp-shell-main-title");
       if (canonicalTitle.parentElement !== header) header.append(canonicalTitle);
       if (
+        type === "stage"
+        && document.body.dataset.wpGameId === "animal-cratebound"
+        && legacyTitleContainer
+        && legacyTitleContainer !== header
+      ) {
+        const stageSummary = legacyTitleContainer.querySelector("#stageSummary,.stage-summary,[data-wp-stage-summary]");
+        if (stageSummary) {
+          stageSummary.classList.add("wp-stage-header-action");
+          stageSummary.dataset.wpStageSummary = "";
+          header.append(stageSummary);
+        }
+      }
+      if (
         legacyTitleContainer
         && legacyTitleContainer !== header
         && !legacyTitleContainer.querySelector("button,a,input,select,textarea")

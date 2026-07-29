@@ -1643,6 +1643,7 @@
     const active = actualGameLocale();
     const source = (active === "fr" && frenchRuntimeText[key]) || (locale === "zh-Hant" && zhRuntimeText[key]) || text[locale]?.[key] || text.en[key] || key;
     const value = Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), source);
+    if (active === "es" && key === "battleArena") return value;
     return runtimeTranslate(value);
   }
 
@@ -2437,6 +2438,7 @@
     nodes.stageRail.setAttribute("aria-label", t("stageSelection"));
     nodes.squadGrid.setAttribute("aria-label", t("activeSquadSlots"));
     nodes.shopRow.setAttribute("aria-label", t("shopShelfItems"));
+    nodes.gameCanvas.dataset.runtimeLocalize = "off";
     nodes.gameCanvas.setAttribute("aria-label", t("battleArena"));
     nodes.quitRunBtn.textContent = "\u2190";
     nodes.quitRunBtn.setAttribute("aria-label", t("quitRun"));

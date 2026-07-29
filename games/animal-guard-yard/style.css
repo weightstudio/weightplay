@@ -2655,6 +2655,9 @@ body.guard-yard-playing .play-head {
   grid-template-columns: 48px minmax(0, 1fr) 48px;
   gap: 6px;
 }
+body.guard-yard-playing .play-head > .play-return { grid-column: 1; }
+body.guard-yard-playing .play-head > .resource-pill { grid-column: 2; }
+body.guard-yard-playing .play-head > .play-settings { grid-column: 3; }
 body.guard-yard-playing .play-return,
 body.guard-yard-playing .play-settings {
   width: 48px;
@@ -2686,6 +2689,7 @@ body.guard-yard-playing .unit-info { gap: 4px; overflow: hidden; }
 body.guard-yard-playing .unit-info strong { font-size: 11px; line-height: 1.15; }
 body.guard-yard-playing .role-badge { display: none; }
 body.guard-yard-playing .unit-stats { flex-wrap: nowrap; justify-content: flex-start; gap: 3px; overflow: hidden; font-size: 8px; line-height: 1.1; }
+body.guard-yard-playing .unit-stats span:last-child { display: none; }
 body.guard-yard-playing .yard-board {
   width: min(100%, 372px);
   height: 240px;
@@ -2808,6 +2812,14 @@ body.guard-yard-playing .result-panel .result-card > button:disabled {
   background: #071a2b;
   border-top: 1px solid rgba(121, 250, 210, 0.28);
   pointer-events: none;
+}
+
+body.guard-yard-playing .battle-ad-reserve {
+  position: fixed;
+  inset: auto 0 0;
+  display: block;
+  width: min(100vw, 920px);
+  margin-inline: auto;
 }
 
 body.wp-logical-battle-active .battle-ad-reserve[data-wp-battle-physical-reserve] {
