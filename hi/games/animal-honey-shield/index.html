@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <base href="/games/animal-honey-shield/" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <meta name="weightplay-audience" content="general" />
+  <meta name="theme-color" content="#153f35" />
+  <title>Animal Honey Shield | WeightPlay Internal Trial</title>
+  <meta name="description" content="Draw and repair glowing nectar lines to protect Clover Pup Pip through thirty original bee-wave puzzles." />
+  <link rel="stylesheet" href="../../src/loading-screen.css" />
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
+  <link rel="stylesheet" href="../../src/game-page-info.css" />
+  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-screen="main" data-game-id="animal-honey-shield" data-wp-combined-sound="true">
+  <section id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
+    <div class="loading-card">
+      <img src="../../assets/weightplay-logo.png" alt="" />
+      <strong data-i18n="loading">Waking the clover meadow…</strong>
+      <div class="loading-track"><i id="loadingFill"></i></div>
+    </div>
+  </section>
+
+  <div id="mainGroup">
+    <main id="mainScreen" class="main-screen">
+      <header class="main-header">
+        <a class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="Back to WeightPlay">
+          <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" />
+        </a>
+        <strong data-i18n="title">Animal Honey Shield</strong>
+        <label class="locale-control">
+          <span class="sr-only" data-i18n="language">Language</span>
+          <select id="localeSelect" data-i18n-aria="language">
+            <option value="en">English</option><option value="zh-Hant">繁體中文</option>
+            <option value="zh-Hans">简体中文</option><option value="ja">日本語</option>
+            <option value="ko">한국어</option><option value="es">Español</option>
+            <option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option>
+            <option value="de">Deutsch</option><option value="it">Italiano</option>
+            <option value="ru">Русский</option><option value="hi">हिन्दी</option>
+            <option value="ar">العربية</option>
+          </select>
+        </label>
+      </header>
+      <section class="main-hero">
+        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="posterAlt" alt="Pip sheltered by a glowing line as bees approach" />
+        <div class="main-copy">
+          <small data-i18n="eyebrow">Cloverlight Meadow rescue puzzles</small>
+          <h1 data-i18n="title">Animal Honey Shield</h1>
+          <p data-i18n="pitch">Draw glowing nectar lines, repair weak spots during each wave, and keep Clover Pup Pip safe.</p>
+          <div id="mainProgress" class="main-progress"></div>
+          <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start">Start Game</button>
+        </div>
+      </section>
+    </main>
+
+    <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="Game guide">
+      <div class="game-info-hero"><div class="game-info-title">
+        <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay Original Game Guide</span>
+        <h2 data-i18n="guideTitle">Protect Pip with the shortest strong line</h2>
+        <p data-i18n="guideIntro">Pip has wandered beside Cloverlight Meadow's hives. Draw barriers while the startled bees fly, then reinforce openings before they reach the puppy.</p>
+      </div></div>
+      <div class="game-info-sections guide-grid">
+        <article class="game-info-section"><h3 data-i18n="howTitle">How to play</h3><ol>
+          <li data-i18n="how1">Drag across the meadow to draw a glowing nectar barrier.</li>
+          <li data-i18n="how2">Release to begin the bee wave; keep drawing new segments while it runs.</li>
+          <li data-i18n="how3">Survive until the timer reaches zero without letting a bee touch Pip.</li>
+        </ol></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">Rules and results</h3><p data-i18n="rulesText">Each line spends nectar and weakens when bees collide with it. A touch on Pip fails the attempt. A safe countdown clears the stage; shorter lines and unused nectar earn more stars.</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">Thirty meadow routes</h3><p data-i18n="progressText">Six chapters add extra hives, split approaches, stone anchors, moving gusts, fragile gaps, and mixed mastery waves. Every clear unlocks the next route.</p></article>
+        <article class="game-info-section"><h3 data-i18n="tipsTitle">Practical tips</h3><p data-i18n="tipsText">Anchor short curves between stones, leave room around Pip, and watch where the barrier glows red. A small repair is often stronger than drawing a second full circle.</p></article>
+        <article class="game-info-section"><h3 data-i18n="saveTitle">Save and privacy</h3><p data-i18n="saveText">Unlocked stages and best stars stay only in this browser. No account, upload, or personal information is required.</p></article>
+        <article class="game-info-section"><h3 data-i18n="faqTitle">FAQ</h3><dl>
+          <div><dt data-i18n="faq1q">Can I draw after the bees start?</dt><dd data-i18n="faq1a">Yes. Live repairs are the heart of the game, as long as nectar remains.</dd></div>
+          <div><dt data-i18n="faq2q">Do bees get hurt?</dt><dd data-i18n="faq2a">No. Nectar barriers gently bounce the startled bees back toward the flowers.</dd></div>
+          <div><dt data-i18n="faq3q">What should I play next?</dt><dd data-i18n="faq3a">Try One Line for careful tracing or Animal Guard Yard for a larger defense challenge.</dd></div>
+        </dl></article>
+      </div>
+    </section>
+  </div>
+
+  <section id="stageScreen" class="stage-screen" hidden>
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-honey-shield-cover.webp')">
+      <header class="stage-header">
+        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Back">←</button>
+        <div><strong data-i18n="title">Animal Honey Shield</strong><span id="stageSummary"></span></div>
+        <span class="stage-header-spacer" aria-hidden="true"></span>
+      </header>
+      <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Meadow stage selection"></div>
+      <nav class="stage-tabs" aria-label="Stage tabs"><span></span><span aria-current="page" data-i18n="stages">Stages</span><span></span></nav>
+    </div>
+  </section>
+
+  <section id="battleScreen" class="battle-screen" hidden>
+    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <div id="battleLive" class="battle-live">
+        <header class="battle-header">
+          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Back">←</button>
+          <div class="battle-title"><small id="stageLabel"></small><strong id="objectiveText"></strong></div>
+          <div class="battle-stat"><small data-i18n="time">Time</small><strong id="timeValue">10.0</strong></div>
+          <div class="battle-stat"><small data-i18n="nectar">Nectar</small><strong id="nectarValue">100</strong></div>
+          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="Pause">Ⅱ</button>
+        </header>
+        <section class="wave-meter" aria-hidden="true"><i id="waveFill"></i></section>
+        <section id="boardWrap" class="board-wrap">
+          <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="Draw a nectar barrier to protect Pip"></canvas>
+          <div id="drawHint" class="draw-hint" data-i18n="drawHint">Draw anywhere to build Pip's shield</div>
+        </section>
+        <div class="battle-feedback"><strong id="feedbackText" aria-live="polite"></strong><span id="lineReadout"></span></div>
+        <div class="battle-actions"><button id="clearBtn" type="button" data-i18n="clear">Clear lines</button><button id="restartBtn" type="button" data-i18n="restart">Restart</button></div>
+      </div>
+
+      <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
+        <h2 id="leaveTitle" data-i18n="leaveTitle">Leave this meadow?</h2><p data-i18n="leaveText">Continue keeps this wave frozen. Returning to Stages ends only this attempt.</p>
+        <div class="modal-actions two"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Return to Stages</button></div>
+      </div></section>
+      <section id="pausePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden><div class="dialog-card">
+        <h2 id="pauseTitle" data-i18n="pauseTitle">Meadow paused</h2><p data-i18n="pauseText">The bee wave is frozen while you take a break.</p>
+        <div class="modal-actions two"><button id="resumeBtn" class="primary-action" type="button" data-i18n="resume">Resume</button><button id="pauseHelpBtn" type="button" data-i18n="howTitle">How to play</button></div>
+      </div></section>
+      <section id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card">
+        <div class="result-pup sprite sprite-pup" aria-hidden="true"></div><small data-i18n="resultKicker">Meadow report</small><h2 id="resultTitle"></h2>
+        <div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p>
+        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next Stage</button><button id="retryBtn" type="button" data-i18n="retry">Replay</button></div>
+      </div></section>
+    </div>
+    <div class="battle-ad-reserve" aria-hidden="true"></div>
+  </section>
+
+  <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card">
+    <button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close" aria-label="Close">×</button>
+    <div class="sprite sprite-pup" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">Draw, watch, and repair</h2><ol>
+      <li data-i18n="tutorial1">Drag one short barrier between Pip and the hive.</li>
+      <li data-i18n="tutorial2">Releasing starts the wave. Red flashes show a weakening line.</li>
+      <li data-i18n="tutorial3">Draw another short segment before a gap opens.</li>
+    </ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Protect Pip</button>
+  </div></section>
+
+  <script src="../../src/site-config.js"></script>
+  <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
+  <script src="../../src/i18n.js?v=20260721-locale13-1"></script>
+  <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
+  <script src="../../src/analytics.js"></script>
+  <script src="../../src/sound.js?v=20260720-locale11"></script>
+  <script src="locales.js"></script><script src="game.js"></script>
+  <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
+  <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
+  <script src="../../src/game-page-info.js"></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
+</body>
+</html>

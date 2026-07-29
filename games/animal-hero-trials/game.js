@@ -613,6 +613,7 @@
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     document.title = localizedValue("Animal Hero Trials - WeightPlay", "動物英雄試煉 - WeightPlay", "Pruebas de Héroes Animales - WeightPlay");
     $("#game").setAttribute("aria-label", t("arenaLabel"));
+    $("#game").setAttribute("aria-keyshortcuts", "ArrowUp ArrowDown ArrowLeft ArrowRight W A S D Space");
     $$('[data-t]').forEach((node) => {
       node.textContent = t(node.dataset.t);
     });

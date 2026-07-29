@@ -150,7 +150,30 @@
     for(const burst of run.impactBursts){const progress=1-burst.life/.34,x=burst.x*w,y=burst.y*h,r=(10+progress*38)*Math.min(w,h)/390;ctx.globalAlpha=Math.max(0,burst.life/.34);ctx.strokeStyle=colors[burst.color];ctx.lineWidth=5;ctx.shadowColor=colors[burst.color];ctx.shadowBlur=24;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.stroke()}
     ctx.restore();
   }
-  function drawBombs(w,h){for(const bomb of run.bombs){if(bomb.cooldown>0&&bomb.explosion<=0)continue;const x=bomb.x*w,y=bomb.y*h;if(bomb.explosion>0){const progress=1-bomb.explosion/.7,radius=(24+progress*90)*Math.min(w,h)/390;ctx.save();ctx.globalAlpha=Math.max(0,bomb.explosion/.7);ctx.fillStyle="rgba(255,103,42,.28)";ctx.strokeStyle="#fff176";ctx.lineWidth=6;ctx.shadowColor="#ff5b22";ctx.shadowBlur=28;ctx.beginPath();ctx.arc(x,y,radius,0,Math.PI*2);ctx.fill();ctx.stroke();for(let i=0;i<12;i++){const angle=i*Math.PI/6+progress;ctx.beginPath();ctx.moveTo(x+Math.cos(angle)*radius*.45,y+Math.sin(angle)*radius*.45);ctx.lineTo(x+Math.cos(angle)*radius*1.15,y+Math.sin(angle)*radius*1.15);ctx.stroke()}ctx.restore();continue}const pulse=1+Math.sin(run.elapsed*5+bomb.pulse)*.08;ctx.save();ctx.font=`${Math.round(28*pulse)}px system-ui`;ctx.textAlign="center";if(bomb.fuse>0){ctx.shadowColor="#ff3d2e";ctx.shadowBlur=24;ctx.globalAlpha=.55+.45*Math.sin(run.elapsed*35)**2}ctx.fillText("💣",x,y+10);ctx.restore()}}
+  function drawBombIcon(x,y,size){
+    ctx.save();ctx.translate(x,y);ctx.scale(size/30,size/30);
+    ctx.shadowColor="#ff4c39";ctx.shadowBlur=18;
+    ctx.fillStyle="#18213c";ctx.strokeStyle="#ffe285";ctx.lineWidth=2.4;
+    ctx.beginPath();ctx.arc(0,3,11,0,Math.PI*2);ctx.fill();ctx.stroke();
+    ctx.shadowBlur=0;ctx.fillStyle="#5d6c91";ctx.beginPath();ctx.arc(-4,-1,3.3,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle="#ffb84f";ctx.lineWidth=3;ctx.lineCap="round";
+    ctx.beginPath();ctx.moveTo(5,-7);ctx.quadraticCurveTo(9,-14,14,-10);ctx.stroke();
+    ctx.fillStyle="#fff176";ctx.strokeStyle="#ff6b45";ctx.lineWidth=1.4;
+    ctx.beginPath();for(let i=0;i<8;i++){const angle=-Math.PI/2+i*Math.PI/4,r=i%2?2.8:6;const px=14+Math.cos(angle)*r,py=-10+Math.sin(angle)*r;i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.restore();
+  }
+  function drawMonsterIcon(x,y,size){
+    ctx.save();ctx.translate(x,y);ctx.scale(size/30,size/30);
+    ctx.shadowColor="#c36cff";ctx.shadowBlur=16;
+    ctx.fillStyle="#552a87";ctx.strokeStyle="#f2c8ff";ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(-10,8);ctx.quadraticCurveTo(-13,-2,-7,-8);ctx.lineTo(-10,-14);ctx.lineTo(-2,-10);ctx.quadraticCurveTo(0,-12,2,-10);ctx.lineTo(10,-14);ctx.lineTo(7,-8);ctx.quadraticCurveTo(13,-2,10,8);ctx.quadraticCurveTo(5,13,0,10);ctx.quadraticCurveTo(-5,13,-10,8);ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.shadowBlur=0;ctx.fillStyle="#8ffcff";
+    ctx.beginPath();ctx.ellipse(-4,-1,2.3,3,0,0,Math.PI*2);ctx.ellipse(4,-1,2.3,3,0,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle="#f2c8ff";ctx.lineWidth=2.2;ctx.lineCap="round";
+    ctx.beginPath();ctx.moveTo(-7,9);ctx.lineTo(-9,14);ctx.moveTo(0,10);ctx.lineTo(0,15);ctx.moveTo(7,9);ctx.lineTo(9,14);ctx.stroke();
+    ctx.restore();
+  }
+  function drawBombs(w,h){for(const bomb of run.bombs){if(bomb.cooldown>0&&bomb.explosion<=0)continue;const x=bomb.x*w,y=bomb.y*h;if(bomb.explosion>0){const progress=1-bomb.explosion/.7,radius=(24+progress*90)*Math.min(w,h)/390;ctx.save();ctx.globalAlpha=Math.max(0,bomb.explosion/.7);ctx.fillStyle="rgba(255,103,42,.28)";ctx.strokeStyle="#fff176";ctx.lineWidth=6;ctx.shadowColor="#ff5b22";ctx.shadowBlur=28;ctx.beginPath();ctx.arc(x,y,radius,0,Math.PI*2);ctx.fill();ctx.stroke();for(let i=0;i<12;i++){const angle=i*Math.PI/6+progress;ctx.beginPath();ctx.moveTo(x+Math.cos(angle)*radius*.45,y+Math.sin(angle)*radius*.45);ctx.lineTo(x+Math.cos(angle)*radius*1.15,y+Math.sin(angle)*radius*1.15);ctx.stroke()}ctx.restore();continue}const pulse=1+Math.sin(run.elapsed*5+bomb.pulse)*.08;ctx.save();if(bomb.fuse>0){ctx.shadowColor="#ff3d2e";ctx.shadowBlur=24;ctx.globalAlpha=.55+.45*Math.sin(run.elapsed*35)**2}drawBombIcon(x,y,28*pulse);ctx.restore()}}
   function drawCourseGeometry(w,h){
     const path=(points,color,width=22)=>{ctx.save();ctx.strokeStyle=color;ctx.lineWidth=Math.max(12,w*width/390);ctx.lineCap="round";ctx.lineJoin="round";ctx.beginPath();points.forEach(([x,y],index)=>index?ctx.lineTo(x*w,y*h):ctx.moveTo(x*w,y*h));ctx.stroke();ctx.restore()};
     if(run.stage.layout==="meadow")path([[.12,.72],[.30,.58],[.50,.72],[.70,.58],[.88,.72]],"rgba(121,255,205,.13)",28);
@@ -196,7 +219,7 @@
     run.rivals.forEach((r,i)=>drawBridge(r,i+1,w,h));drawBridge(run.player,0,w,h);drawAssault(w,h);
     for(const p of run.pickups){const x=p.x*w,y=p.y*h;ctx.save();ctx.shadowBlur=16;ctx.shadowColor=colors[p.color];ctx.fillStyle=colors[p.color];ctx.translate(x,y);ctx.rotate(Math.PI/4);ctx.fillRect(-8,-8,16,16);ctx.restore()}
     drawModeObjects(w,h);drawBombs(w,h);
-    for(const m of run.monsters){ctx.font="30px system-ui";ctx.textAlign="center";ctx.fillText("👾",m.x*w,m.y*h+10)}
+    for(const m of run.monsters)drawMonsterIcon(m.x*w,m.y*h,30);
     for(const item of run.powerups)if(item.active)drawPowerupIcon(item.kind,item.x*w,item.y*h);
     if(run.stage.moving)for(const b of run.boosts){ctx.strokeStyle="#fff176";ctx.lineWidth=5;ctx.beginPath();ctx.arc(b.x*w,b.y*h,19,0,Math.PI*2);ctx.stroke()}
     drawGuidance(w,h);

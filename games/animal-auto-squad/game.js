@@ -2586,18 +2586,30 @@
       : t("relicRerollNeed", { balance: before }));
   }
 
-  function renderRelicChoices() {
+  function relicChoiceSignature() {
+    return [...nodes.relicChoices.querySelectorAll(".relic-card")]
+      .map((card) => Number(card.dataset.relicId))
+      .sort((a, b) => a - b)
+      .join(",");
+  }
+
+  function renderRelicChoices(avoidSignature = "") {
     clearActionNotice(nodes.relicDraftNotice);
     nodes.relicChoices.innerHTML = "";
-    // Pick 2 random relics
-    const pool = [...RELIC_METADATA];
-    const shuffled = pool.sort(() => 0.5 - Math.random());
-    const choices = shuffled.slice(0, 2);
+    const pairs = [];
+    for (let first = 0; first < RELIC_METADATA.length; first += 1) {
+      for (let second = first + 1; second < RELIC_METADATA.length; second += 1) {
+        pairs.push([RELIC_METADATA[first], RELIC_METADATA[second]]);
+      }
+    }
+    const eligible = pairs.filter((pair) => pair.map((relic) => relic.id).sort((a, b) => a - b).join(",") !== avoidSignature);
+    const choices = eligible[Math.floor(Math.random() * eligible.length)] || pairs[0];
 
     choices.forEach((relic) => {
       const card = document.createElement("button");
       card.type = "button";
       card.className = "relic-card";
+      card.dataset.relicId = String(relic.id);
       card.innerHTML = `
         <div class="relic-icon-art relic-icon-${relic.id}" aria-hidden="true"><span></span></div>
         <h4>${localizedField(relic, "name")}</h4>
@@ -2635,7 +2647,7 @@
     }
     if (spendWalletDiamonds(3)) {
       playSynth("revive");
-      renderRelicChoices();
+      renderRelicChoices(relicChoiceSignature());
       window.WonderAnalytics?.track("relic_reroll", { game_id: GAME_ID, cost: 3 });
     }
   }
