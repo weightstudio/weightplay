@@ -2916,3 +2916,141 @@ body.zoo-playing #gamePanel #backToMenuBtn.play-return {
   min-width: 44px !important;
   max-width: 44px !important;
 }
+
+/* Interface V4: keep the report summary and recovery action stable while the
+   detailed milestone/album content owns the only Result scroll region. */
+body.zoo-playing .result-card {
+  width: min(100%, 410px);
+  height: min(744px, calc(100% - 24px));
+  max-height: none;
+  grid-template-rows: auto auto auto auto minmax(0, 1fr) 48px;
+  gap: 8px;
+  padding: 14px;
+  overflow: hidden;
+}
+
+body.zoo-playing .result-scroll-region {
+  min-width: 0;
+  min-height: 0;
+  padding: 2px 4px 8px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  touch-action: pan-y;
+}
+
+body.zoo-playing #closeReportBtn {
+  width: 100%;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* A short landscape phone owns a wider logical Canvas. The park scene and
+   management controls share one row instead of shrinking a portrait stack. */
+@media (min-aspect-ratio: 3 / 2) and (max-height: 500px) {
+  body.zoo-playing #gamePanel.game-panel {
+    grid-template-rows: 48px minmax(0, 1fr) !important;
+  }
+
+  body.zoo-playing .zoo-stage-card {
+    grid-template-columns: minmax(0, 1fr) 300px !important;
+    grid-template-rows: 42px minmax(0, 1fr) !important;
+    gap: 6px !important;
+    padding: 6px !important;
+    border-radius: 16px;
+  }
+
+  body.zoo-playing .park-hud {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  body.zoo-playing .savanna-stage {
+    grid-column: 1;
+    grid-row: 2;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    border-radius: 14px;
+  }
+
+  body.zoo-playing .care-panel {
+    grid-column: 2;
+    grid-row: 2;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    gap: 6px;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+  }
+
+  body.zoo-playing .happy-meter {
+    min-height: 40px;
+  }
+
+  body.zoo-playing .resource-row .resource-card {
+    width: min(100%, 694px);
+    max-width: none;
+  }
+
+  body.zoo-playing #resultPanel .result-card {
+    width: min(720px, calc(100% - 24px));
+    max-width: none;
+    height: calc(100% - 24px);
+    grid-template-columns: 214px minmax(0, 1fr);
+    grid-template-rows: auto 72px auto minmax(0, 1fr) 48px;
+    column-gap: 12px;
+    row-gap: 6px;
+    padding: 12px;
+    text-align: left;
+  }
+
+  body.zoo-playing .result-card > #zooReportTitle,
+  body.zoo-playing .result-card > #reportScore,
+  body.zoo-playing .result-card > #reportText,
+  body.zoo-playing .result-card > .skill-lines,
+  body.zoo-playing .result-card > #closeReportBtn {
+    grid-column: 1;
+  }
+
+  body.zoo-playing .result-card > #zooReportTitle { grid-row: 1; }
+  body.zoo-playing .result-card > #reportScore { grid-row: 2; }
+  body.zoo-playing .result-card > #reportText {
+    grid-row: 3;
+    margin: 0;
+    overflow: hidden;
+    font-size: .78rem;
+    line-height: 1.2;
+  }
+  body.zoo-playing .result-card > .skill-lines {
+    grid-row: 4;
+    align-self: start;
+    font-size: .76rem;
+  }
+  body.zoo-playing .result-card > #closeReportBtn { grid-row: 5; }
+
+  body.zoo-playing .report-score {
+    width: 112px;
+    height: 72px;
+    margin: 0 auto;
+    border-radius: 36px;
+    font-size: 1rem;
+    overflow-wrap: normal;
+    white-space: nowrap;
+  }
+
+  body.zoo-playing .result-scroll-region {
+    grid-column: 2;
+    grid-row: 1 / 6;
+    padding: 0 6px 6px 0;
+  }
+}

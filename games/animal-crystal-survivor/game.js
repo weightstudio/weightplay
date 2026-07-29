@@ -1589,7 +1589,8 @@
       ? t("objectiveMissedLine", { keys: state.stageConfig.targetKeys, boss: state.stageConfig.bossImage ? t("bossStillActive") : "" })
       : improved ? t("improved") : t("keepGoing");
     nodes.resultText.textContent = `${t("resultLine", { keys: state.keys, level: state.level, time: survived, best })} ${objectiveLine}`;
-    nodes.nextStageBtn.classList.toggle("hidden", !stageCleared || state.stage >= STAGE_COUNT);
+    nodes.nextStageBtn.classList.remove("hidden");
+    nodes.nextStageBtn.disabled = !stageCleared || state.stage >= STAGE_COUNT;
     const rank = patrolRankFor(save.totalKeys);
     nodes.resultRankText.textContent = rank.index > previousRankIndex
       ? t("patrolRankUp", { rank: t(rank.current.name) })
@@ -2161,7 +2162,7 @@
       return;
     }
     if (event.key !== "Tab" || nodes.resultPanel.classList.contains("hidden")) return;
-    const actions = [nodes.retryBtn, nodes.nextStageBtn, nodes.resultMenuBtn].filter((button) => !button.disabled && !button.classList.contains("hidden"));
+    const actions = [nodes.resultMenuBtn, nodes.nextStageBtn, nodes.retryBtn].filter((button) => !button.disabled && !button.classList.contains("hidden"));
     if (event.shiftKey && document.activeElement === actions[0]) {
       event.preventDefault();
       actions.at(-1).focus();

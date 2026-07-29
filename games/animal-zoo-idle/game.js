@@ -547,6 +547,13 @@
   };
 
   const $ = (id) => document.getElementById(id);
+  const legacyBattleHeader = document.querySelector("#gamePanel > .resource-row");
+  if (legacyBattleHeader && legacyBattleHeader.tagName !== "HEADER") {
+    const nativeBattleHeader = document.createElement("header");
+    [...legacyBattleHeader.attributes].forEach(({ name, value }) => nativeBattleHeader.setAttribute(name, value));
+    legacyBattleHeader.replaceWith(nativeBattleHeader);
+    nativeBattleHeader.append(...legacyBattleHeader.childNodes);
+  }
   const pageMeta = {
     en: {
       title: "Animal Zoo Idle - WeightPlay",
@@ -598,6 +605,15 @@
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
   };
+  const resultCard = nodes.resultPanel?.querySelector(".result-card");
+  if (resultCard && !resultCard.querySelector(".result-scroll-region")) {
+    const resultScrollRegion = document.createElement("div");
+    resultScrollRegion.className = "result-scroll-region";
+    resultScrollRegion.setAttribute("tabindex", "0");
+    resultScrollRegion.append(nodes.tourReport, nodes.animalAlbum);
+    resultCard.insertBefore(resultScrollRegion, nodes.closeReportBtn);
+  }
+  nodes.menuProgress?.classList.add("main-progress");
 
   let locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || readStorage(localeKey) || "en";
   if (!text[locale] && locale !== "zh-Hans") locale = "en";
@@ -1823,11 +1839,16 @@
     nodes.animalStars.textContent = starText(unlockedAnimals().length * 95);
     renderTourReport(nodes.tourReport);
     renderAnimalAlbum(nodes.animalAlbum);
+    const resultScrollRegion = nodes.resultPanel.querySelector(".result-scroll-region");
     nodes.gamePanel.classList.add("report-open");
     nodes.habitatGrid.inert = true;
     nodes.gamePanel.querySelector(".resource-row").inert = true;
     nodes.resultPanel.classList.remove("hidden");
-    requestAnimationFrame(() => nodes.closeReportBtn.focus({ preventScroll: true }));
+    requestAnimationFrame(() => {
+      if (resultScrollRegion) resultScrollRegion.scrollTop = 0;
+      nodes.closeReportBtn.focus({ preventScroll: true });
+      if (resultScrollRegion) resultScrollRegion.scrollTop = 0;
+    });
     window.WonderAnalytics?.track("game_complete", { game_id: GAME_ID, score, animals: unlockedAnimals().length });
   }
 
@@ -1935,7 +1956,9 @@
     renderMenuProgress();
     closeReport(false);
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    requestAnimationFrame(() => nodes.startBtn.focus({ preventScroll: true }));
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => nodes.startBtn.focus({ preventScroll: true }));
+    });
   }
 
   function updateZooViewportScales() {
@@ -2037,7 +2060,7 @@
     event.preventDefault();
     actions[nextIndex].focus({ preventScroll: true });
   }, true);
-  nodes.backToMenuBtn.addEventListener("click", showMenu);
+  nodes.backToMenuBtn.addEventListener("click", () => setParkLeaveOpen(true));
   nodes.keepParkOpenBtn.addEventListener("click", () => setParkLeaveOpen(false));
   nodes.leaveParkBtn.addEventListener("click", showMenu);
   nodes.parkLeavePanel.addEventListener("keydown", (event) => {

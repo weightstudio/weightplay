@@ -37,7 +37,7 @@
     "animal-screw-workshop": [".battle-canvas", 390, 844, 760, 360],
     "animal-starlight-trails": [".trail-battle-canvas", 390, 788, 760, 334],
     "animal-word-trails": [".battle-canvas", 382, 780],
-    "animal-zoo-idle": ["#gamePanel", 382, 780],
+    "animal-zoo-idle": ["#gamePanel", 382, 780, 760, 350],
     "beast-deck": ["#gamePanel", 382, 780],
     "beast-tactician": ["#gamePanel", 382, 780],
     "bubble-bakery": [".bakery-game", 382, 780, 760, 360],
