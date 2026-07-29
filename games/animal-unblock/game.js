@@ -33,7 +33,40 @@
   let resultActionClaimed = false;
 
   const saveKey = "unblockProgress";
-  const progress = JSON.parse(localStorage.getItem(saveKey) || "[]");
+  const storageFallback = new Map();
+
+  function readStorage(key) {
+    try {
+      const value = localStorage.getItem(key);
+      if (value !== null) storageFallback.set(key, value);
+      return value ?? storageFallback.get(key) ?? null;
+    } catch {
+      return storageFallback.get(key) ?? null;
+    }
+  }
+
+  function writeStorage(key, value) {
+    const serialized = String(value);
+    storageFallback.set(key, serialized);
+    try {
+      localStorage.setItem(key, serialized);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  function loadProgress() {
+    try {
+      const stored = JSON.parse(readStorage(saveKey) || "[]");
+      if (!Array.isArray(stored)) return Array(30).fill(false);
+      return Array.from({ length: 30 }, (_, stageIndex) => stored[stageIndex] === true);
+    } catch {
+      return Array(30).fill(false);
+    }
+  }
+
+  const progress = loadProgress();
   while (selected < 29 && progress[selected]) selected += 1;
   const t = (key, values = {}) =>
     String((dict[locale] || dict.en)[key] ?? dict.en[key] ?? key).replace(
@@ -45,8 +78,8 @@
     try {
       return (
         window.WonderI18n?.actualLocale?.() ||
-        localStorage.getItem("weightPlayLocale") ||
-        localStorage.getItem("wp-locale")
+        readStorage("weightPlayLocale") ||
+        readStorage("wp-locale")
       );
     } catch {
       return null;
@@ -84,8 +117,8 @@
     );
     if (synchronize) {
       try {
-        localStorage.setItem("weightPlayLocale", locale);
-        localStorage.setItem("wp-locale", locale);
+        writeStorage("weightPlayLocale", locale);
+        writeStorage("wp-locale", locale);
       } catch {
         // This session still owns the selected locale without Storage.
       }
@@ -130,11 +163,29 @@
         if (active) owner = card;
       });
     if (center) {
-      owner?.scrollIntoView({
-        behavior: "smooth",
-        inline: "center",
-        block: "nearest",
-      });
+      const rail = $("stageGrid");
+      if (owner && rail?.getClientRects().length) {
+        const railRect = rail.getBoundingClientRect();
+        const ownerRect = owner.getBoundingClientRect();
+        const coordinateScale = railRect.width > 0
+          ? rail.clientWidth / railRect.width
+          : 1;
+        const target = rail.scrollLeft
+          + ((ownerRect.left + ownerRect.width / 2)
+            - (railRect.left + railRect.width / 2)) * coordinateScale;
+        const maximum = Math.max(0, rail.scrollWidth - rail.clientWidth);
+        const previousBehavior = rail.style.getPropertyValue("scroll-behavior");
+        const previousPriority = rail.style.getPropertyPriority("scroll-behavior");
+        rail.style.setProperty("scroll-behavior", "auto", "important");
+        rail.scrollLeft = getComputedStyle(rail).direction === "rtl"
+          ? Math.max(-maximum, Math.min(0, target))
+          : Math.max(0, Math.min(maximum, target));
+        if (previousBehavior) {
+          rail.style.setProperty("scroll-behavior", previousBehavior, previousPriority);
+        } else {
+          rail.style.removeProperty("scroll-behavior");
+        }
+      }
     }
     if (focus) owner?.focus({ preventScroll: true });
   }
@@ -274,7 +325,7 @@
     moves += 1;
     if (block.hero && block.x >= 4) {
       progress[index] = true;
-      localStorage.setItem(saveKey, JSON.stringify(progress));
+      writeStorage(saveKey, JSON.stringify(progress));
       $("resultBody").textContent = t("resultBody", {
         n: index + 1,
         moves,

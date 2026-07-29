@@ -1368,10 +1368,12 @@
     nodes.resultPanel.classList.add("hidden");
     nodes.pausePanel.classList.add("hidden");
     const restoreLobbyReturn = () => {
-      const lobbyReturn = document.querySelector('.home-link[data-wp-return="main"]');
-      const mainHeader = nodes.mainPanel.querySelector(":scope > .wp-generated-main-header")
+      const lobbyReturn = document.querySelector(".home-link");
+      const mainHeader = document.querySelector(".wp-main-shell-header")
+        || nodes.mainPanel.querySelector(":scope > .wp-generated-main-header")
         || document.querySelector(".topbar");
       if (!lobbyReturn) return;
+      lobbyReturn.dataset.wpReturn = "main";
       if (mainHeader && !mainHeader.contains(lobbyReturn)) mainHeader.prepend(lobbyReturn);
       lobbyReturn.hidden = false;
       lobbyReturn.classList.remove("hidden", "is-hidden", "wp-shell-legacy-control");
@@ -2252,7 +2254,20 @@
     return true;
   }
 
-  function handleKennelAction(unitId) {
+  function restoreKennelActionFocus(unitId, ownerGrid) {
+    window.requestAnimationFrame(() => {
+      const sameAction = ownerGrid?.querySelector(
+        `button[data-kennel-unit="${unitId}"]:not(:disabled)`
+      );
+      const fallbackAction = ownerGrid?.querySelector("button[data-kennel-unit]:not(:disabled)");
+      const ownerTab = nodes.menuTabs?.querySelector(
+        `[data-menu-tab="${ownerGrid === nodes.shopGrid ? "shop" : "animals"}"]`
+      );
+      (sameAction || fallbackAction || ownerTab)?.focus({ preventScroll: true });
+    });
+  }
+
+  function handleKennelAction(unitId, ownerGrid) {
     const unit = units.find((item) => item.id === unitId);
     if (!unit) return;
     if (!isOwned(unitId)) {
@@ -2282,6 +2297,7 @@
     renderKennel();
     renderShop();
     renderUnits();
+    restoreKennelActionFocus(unitId, ownerGrid);
   }
 
   function initLoading() {
@@ -2331,12 +2347,12 @@
   nodes.kennelGrid?.addEventListener("click", (event) => {
     const button = event.target.closest("button[data-kennel-unit]");
     if (!button) return;
-    handleKennelAction(button.dataset.kennelUnit);
+    handleKennelAction(button.dataset.kennelUnit, nodes.kennelGrid);
   });
   nodes.shopGrid?.addEventListener("click", (event) => {
     const button = event.target.closest("button[data-kennel-unit]");
     if (!button) return;
-    handleKennelAction(button.dataset.kennelUnit);
+    handleKennelAction(button.dataset.kennelUnit, nodes.shopGrid);
   });
   nodes.menuTabs?.addEventListener("click", (event) => {
     const button = event.target.closest("button[data-menu-tab]");
@@ -2346,6 +2362,8 @@
   });
   nodes.startGameBtn?.addEventListener("keydown", rejectRepeatedScreenActivation, true);
   nodes.stageGrid.addEventListener("keydown", rejectRepeatedScreenActivation, true);
+  nodes.kennelGrid?.addEventListener("keydown", rejectRepeatedScreenActivation, true);
+  nodes.shopGrid?.addEventListener("keydown", rejectRepeatedScreenActivation, true);
   nodes.startGameBtn?.addEventListener("click", () => showMenu());
   nodes.stageBackMainBtn?.addEventListener("click", showMain);
   nodes.backToStagesBtn.addEventListener("click", showPause);

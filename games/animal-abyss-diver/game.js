@@ -801,7 +801,9 @@
     if(!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;
     event.preventDefault();
     const cards=[...routeRail.querySelectorAll(".route-card")],current=Math.max(0,cards.indexOf(card));
-    const next=event.key==="Home"?0:event.key==="End"?cards.length-1:Math.max(0,Math.min(cards.length-1,current+(event.key==="ArrowRight"?1:-1)));
+    const rtl=document.documentElement.dir==="rtl";
+    const step=event.key==="ArrowRight"?(rtl?-1:1):(rtl?1:-1);
+    const next=event.key==="Home"?0:event.key==="End"?cards.length-1:Math.max(0,Math.min(cards.length-1,current+step));
     cards.forEach((candidate,index)=>{const selected=index===next;candidate.tabIndex=selected?0:-1;candidate.classList.toggle("is-selected",selected);if(selected)candidate.setAttribute("aria-current","step");else candidate.removeAttribute("aria-current");});
     cards[next]?.focus({preventScroll:true});
     cards[next]?.scrollIntoView({behavior:"auto",block:"nearest",inline:"center"});
