@@ -47,6 +47,10 @@
   <title>رالي رسم الحيوانات | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css">
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css">
+  <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <script defer src="../../src/game-page-info.js"></script>
+  <script defer src="../../src/edge-guard.js"></script>
   <link rel="stylesheet" href="style.css?v=20260721-hands-on1">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <meta name="description" content="ارسم ملفًا تعريفيًا للعجلة قبل كل قسم من التضاريس، وشاهد كيفية أداء شكلها المُقاس، وقم بتكييف العجلة التالية حتى يصل المتسابق الحيواني إلى النهاية قبل منافسه." />
@@ -56,8 +60,8 @@
     <meta name="twitter:title" content="رالي رسم الحيوانات | WeightPlay" />
     <meta name="twitter:description" content="ارسم ملفًا تعريفيًا للعجلة قبل كل قسم من التضاريس، وشاهد كيفية أداء شكلها المُقاس، وقم بتكييف العجلة التالية حتى يصل المتسابق الحيواني إلى النهاية قبل منافسه." />
   </head>
-<body data-screen="loading" data-wp-combined-sound="true">
-  <section id="loading" class="loading" aria-live="polite"><img src="../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp" alt=""><strong>WeightPlay</strong><div><i id="loadingFill"></i></div></section>
+<body data-screen="loading" data-wp-game-id="animal-sketchwheel-rally" data-wp-combined-sound="true">
+  <section id="loadingPanel" class="loading" role="status" aria-live="polite"><span id="loading" hidden aria-hidden="true"></span><img src="../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp" alt=""><strong>WeightPlay</strong><div><i id="loadingFill"></i></div></section>
 
   <div id="mainGroup" class="main-group" hidden>
     <main class="main-screen">
@@ -67,11 +71,29 @@
         <div class="main-copy"><small data-t="kicker">DRAW-TO-DRIVE RALLY</small><h1 data-t="title">رالي رسم الحيوانات</h1><p data-t="pitch">Draw Rux a wheel that matches the next terrain. Redraw during the live race before Fia reaches the finish.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">Start Game</button></div>
       </section>
     </main>
-    <article class="public-guide game-page-info">
-      <h2 data-t="guideTitle">Build the right wheel for every obstacle</h2>
-      <p data-t="guideIntro">Your line becomes both rune wheels. Its measured shape changes the cart's speed, height, grip, and clearance.</p>
-      <div class="guide-grid"><section><h3 data-t="guideHowTitle">How a race works</h3><p data-t="guideHow">Inspect the next terrain, draw in the forge pad, and release to commit. Keep drawing new profiles while the carts continue moving.</p></section><section><h3 data-t="guidePlanTitle">Plan the profile</h3><p data-t="guidePlan">Round profiles are fast, tall ones climb, corners grip mud, low shapes fit tunnels, and wide shapes span gaps.</p></section><section><h3 data-t="guideDesignTitle">Design idea</h3><p data-t="guideDesign">The game turns a freehand drawing into a readable mechanical decision instead of judging artistic accuracy.</p></section></div>
-    </article>
+    <section class="game-page-info game-page-info-static" aria-label="رالي رسم الحيوانات معلومات اللعبة">
+    
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay دليل اللعبة الأصلي</span><h2>رالي رسم الحيوانات</h2><p>ارسم ملفًا تعريفيًا للعجلة قبل كل قسم من التضاريس، وشاهد كيفية أداء شكلها المُقاس، وقم بتكييف العجلة التالية حتى يصل المتسابق الحيواني إلى النهاية قبل منافسه.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>سباقات السحب والاختبار</strong></div><div class="game-info-fact"><span>النوع</span><strong>أركيد · الرسم · الإستراتيجية · حيوان</strong></div><div class="game-info-fact"><span>صعوبة</span><strong>من السهل التحدي</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>2-8 دقائق لكل مرحلة</strong></div><div class="game-info-fact"><span>المهارات المدربة</span><strong>تصميم الشكل · التكيف · الملاحظة</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>العالم والرسالة</h3><p>ثلاثون مسارًا للتجمع يعبرون الطرق المسطحة والسلالم والطين والأنفاق والفجوات والجليد والرياح. تتحرك السيارة بشكل مستمر، لكن تقدمها يعتمد على ما إذا كانت العجلة المسحوبة الحالية تناسب التضاريس القادمة.</p>
+<p>تستخدم كل دورة تسلسل تضاريس مؤلف وموضع عائق. الهدف ليس رسم دائرة جميلة في كل مرة؛ أقسام مختلفة تكافئ نسب مختلفة.</p></div>
+      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>ارسم العجلة في اللوحة المرئية باستخدام المؤشر أو الإصبع. تقيس اللعبة الاستدارة والطول والعرض والقبضة والسرعة من هذا الشكل، ثم تثبتها على السيارة المتحركة.</p>
+<p>الطريق المسطح يكافئ عجلة مستديرة متوازنة. تفضل السلالم الارتفاع، ويحتاج الطين والجليد إلى التماسك، وتتطلب الأنفاق مظهرًا منخفضًا وواسعًا، وتحتاج الفجوات إلى العرض والسرعة، وتكافئ الرياح الشكل الضيق المستقر.</p>
+<p>الملف الشخصي الذي يناسب التضاريس الحالية يحافظ على الزخم. تؤدي المباراة الضعيفة إلى إبطاء العائق أو انزلاقه أو اصطدامه أو فشله بينما يستمر المنافس في ذلك.</p>
+<p>توفر ترقيات ورشة العمل سرعة متواضعة أو تسامحًا أو دعمًا للتحكم. إنهم لا يحولون عجلة عالمية واحدة إلى الإجابة الصحيحة لكل التضاريس.</p></div>
+      <div class="game-info-section"><h3>كيفية اللعب</h3><ol><li>اختر تجمعًا مفتوحًا واقرأ تسلسل التضاريس.</li><li>ارسم شكل عجلة مغلقة للقسم الأول.</li><li>شاهد العجلة وهي تدور وقارن استجابة السيارة مع إشارة التضاريس.</li><li>أعد الرسم للأجزاء اللاحقة عندما يتغير الملف الشخصي المطلوب، وتصل إلى النهاية قبل المنافس.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>نصائح الاستراتيجية</h3><ul><li>استخدم صورة ظلية متعمدة بسيطة لأن النتوءات الزخرفية الصغيرة تقلل من المظهر الجانبي المقاس.</li><li>بالنسبة للسلالم، أكد على الارتفاع العمودي؛ بالنسبة للنفق، قم بخفض الجزء العلوي مع الحفاظ على العرض الكافي.</li><li>يمكن أن تكون العجلة ذات الفجوة الواسعة ضعيفة في مواجهة الرياح، لذا أعد الرسم بدلاً من فرض تصميم واحد على كليهما.</li><li>لاحظ السمة التي تم قياسها والتي فشلت وقم بضبط تلك السمة فقط في المحاولة التالية.</li></ul></div>
+      <div class="game-info-section"><h3>الحملة وصعوبة النمو</h3><p>تعزل الدورات الأولى الطرق والسلالم المسطحة. تضيف الفصول اللاحقة الطين والجليد والرياح والأنفاق والفجوات والمسارات المختلطة التي تتطلب عدة عمليات إعادة رسم.</p>
+<p>ثلاثون تسلسلاً مؤلفًا يغير ترتيب التضاريس، وتباعد العوائق، وشكل المسار، ووتيرة المنافس.</p></div>
+      <div class="game-info-section"><h3>مذكرة تصميم المطور</h3><p>يتم ربط العجلة بالمركبة بشكل واضح، وتدور مع الحركة، وتلتقي بالخط الأرضي، وتواجه اتجاه الحركة. ارسم الإحداثيات والشكل المعروض بمقياس واحد على الهاتف وسطح المكتب. تستخدم الواجهة الكاملة تخطيطًا منطقيًا مركزيًا بحد أقصى 920 بكسل. تعمل طرق عرض الهاتف والمناظر الطبيعية وسطح المكتب على قياس نفس عناصر التحكم ومناطق الضرب والأعمال الفنية وإحداثيات اللعبة معًا بدلاً من تمديد القطع الفردية. وبالتالي فإن اللمس والماوس ولوحة المفاتيح تعمل بنفس الحالة القانونية. يظل الملصق الرئيسي وإجراءات بدء اللعبة منفصلين عن إدارة المرحلة، بينما يحتفظ اختيار المرحلة والمعركة ومربعات الحوار والنتيجة بالمحتوى المحدود الخاص بهم ومسار العودة.</p></div>
+      <div class="game-info-section game-info-parent"><h3>ملاحظة الوالدين</h3><p>لا يلزم وجود حساب أو شراء أو لوحة صدارة عامة. تظل عمليات المسح والمسامير والترقيات وحالة العدسة وأفضل الأوقات المحلية في هذا المتصفح. يمكنك اللعب دون إنشاء حساب. يتم حفظ التقدم في وحدة تخزين المتصفح المحلية في ملف تعريف المتصفح الحالي، وليس في حساب عبر الإنترنت أو قاعدة بيانات عبر الأجهزة. يمكن أن يؤدي مسح بيانات الموقع، أو استخدام التصفح الخاص، أو تغيير المتصفحات، أو الانتقال إلى جهاز آخر إلى إنشاء عملية حفظ منفصلة أو إزالة القائمة الحالية. تتبع تفضيلات اللغة والصوت والحركة المنخفضة عناصر التحكم WeightPlay المشتركة عندما يسمح المتصفح بالتخزين. لا توجد نتيجة إرشادية عبارة عن تقييم طبي أو مدرسي أو مهني.</p></div>
+      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل يجب أن تكون كل عجلة دائرة؟</dt><dd>لا، كل تضاريس تكافئ ملفًا شخصيًا مُقاسًا مختلفًا.</dd></div><div><dt>هل يمكنني إعادة الرسم خلال المسيرة؟</dt><dd>نعم، المسرحية المقصودة هي التكيف قبل أقسام التضاريس اللاحقة.</dd></div><div><dt>لماذا تباطأت السيارة على الدرج؟</dt><dd>من المحتمل أن العجلة الحالية تفتقر إلى الارتفاع أو الثبات الكافي.</dd></div><div><dt>هل يستخدم المنافس عجلتي؟</dt><dd>لا، فالمنافس يوفر ضغط السباق بينما يأتي أدائك من الشكل المرسوم.</dd></div><div><dt>ما هي عناصر التحكم وأحجام الشاشة المدعومة؟</dt><dd>تدعم نفس القواعد اللمس والماوس ولوحة المفاتيح حيث تستخدم اللعبة تلك المدخلات. يتم تحجيم الواجهة كتخطيط منطقي واحد عبر إطارات العرض المطلوبة للهاتف والمناظر الطبيعية وسطح المكتب.</dd></div><div><dt>هل يمكن أن ينتقل التقدم تلقائيًا إلى جهاز آخر؟</dt><dd>لا. يتم حفظ هذه اللعبة حاليًا في مساحة تخزين المتصفح المحلي فقط، لذلك يبدأ ملف تعريف متصفح آخر أو جهاز آخر بالتقدم المحلي المنفصل الخاص به ما لم تتم إضافة نظام حساب مستقبلي.</dd></div></dl></div>
+      
+    </div>
+  </section>
   </div>
 
   <section id="stageScreen" class="screen-shell" hidden>
@@ -79,7 +101,7 @@
       <header class="stage-header"><button id="stageBack" type="button" data-wp-return="stage" aria-label="Back" data-t-aria="back">←</button><div><strong data-t="chooseRace">Choose a forge rally</strong><span id="stageSummary"></span></div><span class="rux-chip" aria-hidden="true"></span></header>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Race selector" data-t-aria="raceSelector"></div>
       <nav class="stage-tabs"><button id="raceTab" class="active" type="button" data-t="raceBrief">Race</button><button id="forgeTab" type="button" data-t="forge">Rune Forge</button></nav>
-      <section id="racePanel" class="stage-panel"><div class="selected-brief"><span id="selectedNumber"></span><div><strong id="selectedName"></strong><p id="selectedRule"></p></div><button id="enterRace" class="primary" type="button"></button></div><p class="stage-hint" data-t="stageHint">Drag the rail. The glowing card is the selected race.</p></section>
+      <section id="racePanel" class="stage-panel"><div class="selected-brief"><span id="selectedNumber"></span><div><strong id="selectedName"></strong><p id="selectedRule"></p></div><button id="enterRace" class="primary" type="button" data-t="enterRace">Enter race</button></div><p class="stage-hint" data-t="stageHint">Drag the rail. The glowing card is the selected race.</p></section>
       <section id="forgePanel" class="stage-panel forge-panel" hidden><div class="forge-heading"><div><strong data-t="forgeTitle">Rune Forge</strong><p data-t="forgeIntro">Spend Forge Bolts on tools that immediately help every race.</p></div><b id="boltCount"></b></div><div id="upgradeList" class="upgrade-list"></div><button id="lensBuy" class="lens-buy" type="button"></button><p id="forgeFeedback" role="status"></p></section>
     </div>
     <div class="wp-stage-physical-reserve" aria-hidden="true"></div>
@@ -111,28 +133,5 @@
   <script src="game.js?v=20260721-hands-on1"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
-<section class="game-page-info game-page-info-static" aria-label="رالي رسم الحيوانات معلومات اللعبة">
-    
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay دليل اللعبة الأصلي</span><h2>رالي رسم الحيوانات</h2><p>ارسم ملفًا تعريفيًا للعجلة قبل كل قسم من التضاريس، وشاهد كيفية أداء شكلها المُقاس، وقم بتكييف العجلة التالية حتى يصل المتسابق الحيواني إلى النهاية قبل منافسه.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>سباقات السحب والاختبار</strong></div><div class="game-info-fact"><span>النوع</span><strong>أركيد · الرسم · الإستراتيجية · حيوان</strong></div><div class="game-info-fact"><span>صعوبة</span><strong>من السهل التحدي</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>2-8 دقائق لكل مرحلة</strong></div><div class="game-info-fact"><span>المهارات المدربة</span><strong>تصميم الشكل · التكيف · الملاحظة</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>العالم والرسالة</h3><p>ثلاثون مسارًا للتجمع يعبرون الطرق المسطحة والسلالم والطين والأنفاق والفجوات والجليد والرياح. تتحرك السيارة بشكل مستمر، لكن تقدمها يعتمد على ما إذا كانت العجلة المسحوبة الحالية تناسب التضاريس القادمة.</p>
-<p>تستخدم كل دورة تسلسل تضاريس مؤلف وموضع عائق. الهدف ليس رسم دائرة جميلة في كل مرة؛ أقسام مختلفة تكافئ نسب مختلفة.</p></div>
-      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>ارسم العجلة في اللوحة المرئية باستخدام المؤشر أو الإصبع. تقيس اللعبة الاستدارة والطول والعرض والقبضة والسرعة من هذا الشكل، ثم تثبتها على السيارة المتحركة.</p>
-<p>الطريق المسطح يكافئ عجلة مستديرة متوازنة. تفضل السلالم الارتفاع، ويحتاج الطين والجليد إلى التماسك، وتتطلب الأنفاق مظهرًا منخفضًا وواسعًا، وتحتاج الفجوات إلى العرض والسرعة، وتكافئ الرياح الشكل الضيق المستقر.</p>
-<p>الملف الشخصي الذي يناسب التضاريس الحالية يحافظ على الزخم. تؤدي المباراة الضعيفة إلى إبطاء العائق أو انزلاقه أو اصطدامه أو فشله بينما يستمر المنافس في ذلك.</p>
-<p>توفر ترقيات ورشة العمل سرعة متواضعة أو تسامحًا أو دعمًا للتحكم. إنهم لا يحولون عجلة عالمية واحدة إلى الإجابة الصحيحة لكل التضاريس.</p></div>
-      <div class="game-info-section"><h3>كيفية اللعب</h3><ol><li>اختر تجمعًا مفتوحًا واقرأ تسلسل التضاريس.</li><li>ارسم شكل عجلة مغلقة للقسم الأول.</li><li>شاهد العجلة وهي تدور وقارن استجابة السيارة مع إشارة التضاريس.</li><li>أعد الرسم للأجزاء اللاحقة عندما يتغير الملف الشخصي المطلوب، وتصل إلى النهاية قبل المنافس.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>نصائح الاستراتيجية</h3><ul><li>استخدم صورة ظلية متعمدة بسيطة لأن النتوءات الزخرفية الصغيرة تقلل من المظهر الجانبي المقاس.</li><li>بالنسبة للسلالم، أكد على الارتفاع العمودي؛ بالنسبة للنفق، قم بخفض الجزء العلوي مع الحفاظ على العرض الكافي.</li><li>يمكن أن تكون العجلة ذات الفجوة الواسعة ضعيفة في مواجهة الرياح، لذا أعد الرسم بدلاً من فرض تصميم واحد على كليهما.</li><li>لاحظ السمة التي تم قياسها والتي فشلت وقم بضبط تلك السمة فقط في المحاولة التالية.</li></ul></div>
-      <div class="game-info-section"><h3>الحملة وصعوبة النمو</h3><p>تعزل الدورات الأولى الطرق والسلالم المسطحة. تضيف الفصول اللاحقة الطين والجليد والرياح والأنفاق والفجوات والمسارات المختلطة التي تتطلب عدة عمليات إعادة رسم.</p>
-<p>ثلاثون تسلسلاً مؤلفًا يغير ترتيب التضاريس، وتباعد العوائق، وشكل المسار، ووتيرة المنافس.</p></div>
-      <div class="game-info-section"><h3>مذكرة تصميم المطور</h3><p>يتم ربط العجلة بالمركبة بشكل واضح، وتدور مع الحركة، وتلتقي بالخط الأرضي، وتواجه اتجاه الحركة. ارسم الإحداثيات والشكل المعروض بمقياس واحد على الهاتف وسطح المكتب. تستخدم الواجهة الكاملة تخطيطًا منطقيًا مركزيًا بحد أقصى 920 بكسل. تعمل طرق عرض الهاتف والمناظر الطبيعية وسطح المكتب على قياس نفس عناصر التحكم ومناطق الضرب والأعمال الفنية وإحداثيات اللعبة معًا بدلاً من تمديد القطع الفردية. وبالتالي فإن اللمس والماوس ولوحة المفاتيح تعمل بنفس الحالة القانونية. يظل الملصق الرئيسي وإجراءات بدء اللعبة منفصلين عن إدارة المرحلة، بينما يحتفظ اختيار المرحلة والمعركة ومربعات الحوار والنتيجة بالمحتوى المحدود الخاص بهم ومسار العودة.</p></div>
-      <div class="game-info-section game-info-parent"><h3>ملاحظة الوالدين</h3><p>لا يلزم وجود حساب أو شراء أو لوحة صدارة عامة. تظل عمليات المسح والمسامير والترقيات وحالة العدسة وأفضل الأوقات المحلية في هذا المتصفح. يمكنك اللعب دون إنشاء حساب. يتم حفظ التقدم في وحدة تخزين المتصفح المحلية في ملف تعريف المتصفح الحالي، وليس في حساب عبر الإنترنت أو قاعدة بيانات عبر الأجهزة. يمكن أن يؤدي مسح بيانات الموقع، أو استخدام التصفح الخاص، أو تغيير المتصفحات، أو الانتقال إلى جهاز آخر إلى إنشاء عملية حفظ منفصلة أو إزالة القائمة الحالية. تتبع تفضيلات اللغة والصوت والحركة المنخفضة عناصر التحكم WeightPlay المشتركة عندما يسمح المتصفح بالتخزين. لا توجد نتيجة إرشادية عبارة عن تقييم طبي أو مدرسي أو مهني.</p></div>
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل يجب أن تكون كل عجلة دائرة؟</dt><dd>لا، كل تضاريس تكافئ ملفًا شخصيًا مُقاسًا مختلفًا.</dd></div><div><dt>هل يمكنني إعادة الرسم خلال المسيرة؟</dt><dd>نعم، المسرحية المقصودة هي التكيف قبل أقسام التضاريس اللاحقة.</dd></div><div><dt>لماذا تباطأت السيارة على الدرج؟</dt><dd>من المحتمل أن العجلة الحالية تفتقر إلى الارتفاع أو الثبات الكافي.</dd></div><div><dt>هل يستخدم المنافس عجلتي؟</dt><dd>لا، فالمنافس يوفر ضغط السباق بينما يأتي أدائك من الشكل المرسوم.</dd></div><div><dt>ما هي عناصر التحكم وأحجام الشاشة المدعومة؟</dt><dd>تدعم نفس القواعد اللمس والماوس ولوحة المفاتيح حيث تستخدم اللعبة تلك المدخلات. يتم تحجيم الواجهة كتخطيط منطقي واحد عبر إطارات العرض المطلوبة للهاتف والمناظر الطبيعية وسطح المكتب.</dd></div><div><dt>هل يمكن أن ينتقل التقدم تلقائيًا إلى جهاز آخر؟</dt><dd>لا. يتم حفظ هذه اللعبة حاليًا في مساحة تخزين المتصفح المحلي فقط، لذلك يبدأ ملف تعريف متصفح آخر أو جهاز آخر بالتقدم المحلي المنفصل الخاص به ما لم تتم إضافة نظام حساب مستقبلي.</dd></div></dl></div>
-      
-    </div>
-  </section>
 </body>
 </html>

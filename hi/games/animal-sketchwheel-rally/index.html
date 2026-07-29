@@ -47,6 +47,10 @@
   <title>पशु स्केचव्हील रैली | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css">
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css">
+  <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <script defer src="../../src/game-page-info.js"></script>
+  <script defer src="../../src/edge-guard.js"></script>
   <link rel="stylesheet" href="style.css?v=20260721-hands-on1">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <meta name="description" content="प्रत्येक भूभाग खंड से पहले एक पहिया प्रोफ़ाइल बनाएं, देखें कि उसका मापा आकार कैसा प्रदर्शन करता है, और अगले पहिये को अनुकूलित करें ताकि पशु रेसर..." />
@@ -56,8 +60,8 @@
     <meta name="twitter:title" content="पशु स्केचव्हील रैली | WeightPlay" />
     <meta name="twitter:description" content="प्रत्येक भूभाग खंड से पहले एक पहिया प्रोफ़ाइल बनाएं, देखें कि उसका मापा आकार कैसा प्रदर्शन करता है, और अगले पहिये को अनुकूलित करें ताकि पशु रेसर..." />
   </head>
-<body data-screen="loading" data-wp-combined-sound="true">
-  <section id="loading" class="loading" aria-live="polite"><img src="../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp" alt=""><strong>WeightPlay</strong><div><i id="loadingFill"></i></div></section>
+<body data-screen="loading" data-wp-game-id="animal-sketchwheel-rally" data-wp-combined-sound="true">
+  <section id="loadingPanel" class="loading" role="status" aria-live="polite"><span id="loading" hidden aria-hidden="true"></span><img src="../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp" alt=""><strong>WeightPlay</strong><div><i id="loadingFill"></i></div></section>
 
   <div id="mainGroup" class="main-group" hidden>
     <main class="main-screen">
@@ -67,11 +71,29 @@
         <div class="main-copy"><small data-t="kicker">DRAW-TO-DRIVE RALLY</small><h1 data-t="title">पशु स्केचव्हील रैली</h1><p data-t="pitch">Draw Rux a wheel that matches the next terrain. Redraw during the live race before Fia reaches the finish.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">Start Game</button></div>
       </section>
     </main>
-    <article class="public-guide game-page-info">
-      <h2 data-t="guideTitle">Build the right wheel for every obstacle</h2>
-      <p data-t="guideIntro">Your line becomes both rune wheels. Its measured shape changes the cart's speed, height, grip, and clearance.</p>
-      <div class="guide-grid"><section><h3 data-t="guideHowTitle">How a race works</h3><p data-t="guideHow">Inspect the next terrain, draw in the forge pad, and release to commit. Keep drawing new profiles while the carts continue moving.</p></section><section><h3 data-t="guidePlanTitle">Plan the profile</h3><p data-t="guidePlan">Round profiles are fast, tall ones climb, corners grip mud, low shapes fit tunnels, and wide shapes span gaps.</p></section><section><h3 data-t="guideDesignTitle">Design idea</h3><p data-t="guideDesign">The game turns a freehand drawing into a readable mechanical decision instead of judging artistic accuracy.</p></section></div>
-    </article>
+    <section class="game-page-info game-page-info-static" aria-label="पशु स्केचव्हील रैली खेल की जानकारी">
+    
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मूल गेम गाइड</span><h2>पशु स्केचव्हील रैली</h2><p>प्रत्येक भूभाग खंड से पहले एक पहिया प्रोफ़ाइल बनाएं, देखें कि उसका मापा आकार कैसा प्रदर्शन करता है, और अगले पहिये को अनुकूलित करें ताकि पशु रेसर प्रतिद्वंद्वी से पहले फिनिश तक पहुंच जाए।</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>गेमप्ले</span><strong>ड्रा-एंड-टेस्ट व्हील रेसिंग</strong></div><div class="game-info-fact"><span>शैली</span><strong>आर्केड · चित्रकारी · रणनीति · पशु</strong></div><div class="game-info-fact"><span>कठिनाई</span><strong>चुनौती देना आसान</strong></div><div class="game-info-fact"><span>खेलने का अनुमानित समय</span><strong>प्रति चरण 2-8 मिनट</strong></div><div class="game-info-fact"><span>कौशल प्रशिक्षित</span><strong>आकार डिज़ाइन · अनुकूलन · अवलोकन</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>विश्व और मिशन</h3><p>तीस रैली पाठ्यक्रम समतल सड़क, सीढ़ियों, कीचड़, सुरंगों, अंतरालों, बर्फ और हवा को पार करते हैं। वाहन निरंतर चलता रहता है, लेकिन उसकी प्रगति इस बात पर निर्भर करती है कि वर्तमान में खींचा गया पहिया आगामी भूभाग के अनुकूल है या नहीं।</p>
+<p>प्रत्येक कोर्स एक लिखित इलाके अनुक्रम और बाधा स्थिति का उपयोग करता है। उद्देश्य हर बार एक सुंदर वृत्त बनाना नहीं है; अलग-अलग अनुभाग अलग-अलग अनुपात में इनाम देते हैं।</p></div>
+      <div class="game-info-section"><h3>सिस्टम कैसे काम करते हैं</h3><p>एक पॉइंटर या उंगली से दृश्यमान पैड में पहिया बनाएं। गेम उस आकार से गोलाई, ऊंचाई, चौड़ाई, पकड़ और गति को मापता है, फिर उसे चलती गाड़ी पर चढ़ाता है।</p>
+<p>समतल सड़क एक गोल संतुलित पहिये का प्रतिफल देती है। सीढ़ियाँ ऊंचाई को अनुकूल बनाती हैं, कीचड़ और बर्फ को पकड़ की आवश्यकता होती है, सुरंगों को कम चौड़ी प्रोफ़ाइल की आवश्यकता होती है, अंतरालों को चौड़ाई और गति की आवश्यकता होती है, और हवा एक संकीर्ण स्थिर आकार को पुरस्कृत करती है।</p>
+<p>एक प्रोफ़ाइल जो वर्तमान इलाके के अनुकूल है, गति बनाए रखती है। एक ख़राब मैच धीमा हो जाता है, फिसल जाता है, टकरा जाता है, या बाधा को विफल कर देता है जबकि प्रतिद्वंद्वी जारी रहता है।</p>
+<p>वर्कशॉप अपग्रेड मामूली गति, सहनशीलता या नियंत्रण समर्थन प्रदान करते हैं। वे हर इलाके के लिए एक सार्वभौमिक पहिये को सही उत्तर में नहीं बदलते हैं।</p></div>
+      <div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>एक अनलॉक रैली चुनें और इलाके का क्रम पढ़ें।</li><li>पहले खंड के लिए एक बंद पहिये का आकार बनाएं।</li><li>पहिए को घूमते हुए देखें और इलाके के संकेत के साथ वाहन की प्रतिक्रिया की तुलना करें।</li><li>आवश्यक प्रोफ़ाइल बदलने पर बाद के अनुभागों के लिए पुनः आरेखण करें और प्रतिद्वंद्वी से पहले समापन तक पहुंचें।</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>रणनीति युक्तियाँ</h3><ul><li>एक सरल सुविचारित सिल्हूट का उपयोग करें क्योंकि छोटे सजावटी उभार मापी गई प्रोफ़ाइल को कम कर देते हैं।</li><li>सीढ़ियों के लिए, ऊर्ध्वाधर ऊंचाई पर जोर दें; सुरंग के लिए, पर्याप्त चौड़ाई रखते हुए शीर्ष को नीचे करें।</li><li>चौड़े गैप वाले पहिये में हवा का असर कम हो सकता है, इसलिए दोनों में से एक डिज़ाइन को थोपने के बजाय दोबारा बनाएं।</li><li>देखें कि कौन सा मापा गया गुण विफल रहा और अगले प्रयास में केवल उस गुण को समायोजित करें।</li></ul></div>
+      <div class="game-info-section"><h3>अभियान और कठिनाई वृद्धि</h3><p>पहला कोर्स समतल सड़क और सीढ़ियों को अलग करता है। बाद के अध्यायों में मिट्टी, बर्फ, हवा, सुरंगें, अंतराल और मिश्रित पाठ्यक्रम शामिल किए गए हैं जिनके लिए कई पुनर्रचना की आवश्यकता होती है।</p>
+<p>तीस लिखित अनुक्रम इलाके के क्रम, बाधा दूरी, पाठ्यक्रम आकार और प्रतिद्वंद्वी गति को बदलते हैं।</p></div>
+      <div class="game-info-section"><h3>डेवलपर डिज़ाइन नोट</h3><p>पहिया स्पष्ट रूप से वाहन से जुड़ा हुआ है, यात्रा के साथ घूमता है, जमीन की रेखा से मिलता है, और गति की दिशा का सामना करता है। निर्देशांक बनाएं और प्रदान की गई आकृतियों को फ़ोन और डेस्कटॉप पर एक स्केल साझा करें। संपूर्ण इंटरफ़ेस 920-पिक्सेल अधिकतम के साथ एक केंद्रित तार्किक लेआउट का उपयोग करता है। फ़ोन, लैंडस्केप और डेस्कटॉप दृश्य अलग-अलग टुकड़ों को फैलाने के बजाय समान नियंत्रण, हिट क्षेत्र, कलाकृति और गेम समन्वय को एक साथ मापते हैं। इसलिए टच, माउस और कीबोर्ड एक ही कानूनी स्थिति पर कार्य करते हैं। मुख्य पोस्टर और स्टार्ट गेम एक्शन स्टेज प्रबंधन से अलग रहते हैं, जबकि स्टेज चयन, लड़ाई, संवाद और परिणाम अपनी स्वयं की सीमित सामग्री और वापसी पथ रखते हैं।</p></div>
+      <div class="game-info-section game-info-parent"><h3>अभिभावक नोट</h3><p>किसी खाते, खरीदारी या सार्वजनिक लीडरबोर्ड की आवश्यकता नहीं है। क्लीयर, बोल्ट, अपग्रेड, लेंस स्थिति और स्थानीय सर्वोत्तम समय इस ब्राउज़र में रहते हैं। आप बिना अकाउंट बनाये खेल सकते हैं. प्रगति को वर्तमान ब्राउज़र प्रोफ़ाइल पर स्थानीय ब्राउज़र संग्रहण में सहेजा जाता है, किसी ऑनलाइन खाते या क्रॉस-डिवाइस डेटाबेस में नहीं। साइट डेटा साफ़ करना, निजी ब्राउज़िंग का उपयोग करना, ब्राउज़र बदलना, या किसी अन्य डिवाइस पर ले जाना एक अलग सेव बना सकता है या मौजूदा को हटा सकता है। जब ब्राउज़र भंडारण की अनुमति देता है तो भाषा, ध्वनि और कम-गति प्राथमिकताएँ साझा WeightPlay नियंत्रणों का पालन करती हैं। कोई भी मार्गदर्शक परिणाम चिकित्सा, स्कूल या व्यावसायिक मूल्यांकन नहीं है।</p></div>
+      <div class="game-info-section"><h3>अक्सर पूछे जाने वाले प्रश्न</h3><dl><div><dt>क्या हर पहिया एक वृत्त होना चाहिए?</dt><dd>नहीं, प्रत्येक भूभाग एक अलग मापी गई प्रोफ़ाइल प्रदान करता है।</dd></div><div><dt>क्या मैं किसी रैली के दौरान पुनः आरेखण कर सकता हूँ?</dt><dd>हाँ, इच्छित खेल बाद के भू-भागों से पहले अनुकूलित करना है।</dd></div><div><dt>सीढ़ियों पर गाड़ी धीमी क्यों हुई?</dt><dd>वर्तमान पहिये में संभवतः पर्याप्त ऊंचाई या पकड़ का अभाव है।</dd></div><div><dt>क्या प्रतिद्वंद्वी मेरे पहिये का उपयोग करता है?</dt><dd>नहीं, प्रतिद्वंद्वी दौड़ का दबाव प्रदान करता है जबकि आपका प्रदर्शन तैयार आकार से आता है।</dd></div><div><dt>कौन से नियंत्रण और स्क्रीन आकार समर्थित हैं?</dt><dd>वही नियम स्पर्श, माउस और कीबोर्ड का समर्थन करते हैं जहां गेम उन इनपुट का उपयोग करता है। इंटरफ़ेस आवश्यक फ़ोन, लैंडस्केप और डेस्कटॉप व्यूपोर्ट में एक तार्किक लेआउट के रूप में स्केल करता है।</dd></div><div><dt>क्या प्रगति स्वचालित रूप से किसी अन्य डिवाइस पर जा सकती है?</dt><dd>नहीं, यह गेम वर्तमान में केवल स्थानीय ब्राउज़र संग्रहण में सहेजता है, इसलिए कोई अन्य ब्राउज़र प्रोफ़ाइल या डिवाइस अपनी अलग स्थानीय प्रगति के साथ शुरू होता है जब तक कि कोई भविष्य खाता सिस्टम नहीं जोड़ा जाता है।</dd></div></dl></div>
+      
+    </div>
+  </section>
   </div>
 
   <section id="stageScreen" class="screen-shell" hidden>
@@ -79,7 +101,7 @@
       <header class="stage-header"><button id="stageBack" type="button" data-wp-return="stage" aria-label="Back" data-t-aria="back">←</button><div><strong data-t="chooseRace">Choose a forge rally</strong><span id="stageSummary"></span></div><span class="rux-chip" aria-hidden="true"></span></header>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Race selector" data-t-aria="raceSelector"></div>
       <nav class="stage-tabs"><button id="raceTab" class="active" type="button" data-t="raceBrief">Race</button><button id="forgeTab" type="button" data-t="forge">Rune Forge</button></nav>
-      <section id="racePanel" class="stage-panel"><div class="selected-brief"><span id="selectedNumber"></span><div><strong id="selectedName"></strong><p id="selectedRule"></p></div><button id="enterRace" class="primary" type="button"></button></div><p class="stage-hint" data-t="stageHint">Drag the rail. The glowing card is the selected race.</p></section>
+      <section id="racePanel" class="stage-panel"><div class="selected-brief"><span id="selectedNumber"></span><div><strong id="selectedName"></strong><p id="selectedRule"></p></div><button id="enterRace" class="primary" type="button" data-t="enterRace">Enter race</button></div><p class="stage-hint" data-t="stageHint">Drag the rail. The glowing card is the selected race.</p></section>
       <section id="forgePanel" class="stage-panel forge-panel" hidden><div class="forge-heading"><div><strong data-t="forgeTitle">Rune Forge</strong><p data-t="forgeIntro">Spend Forge Bolts on tools that immediately help every race.</p></div><b id="boltCount"></b></div><div id="upgradeList" class="upgrade-list"></div><button id="lensBuy" class="lens-buy" type="button"></button><p id="forgeFeedback" role="status"></p></section>
     </div>
     <div class="wp-stage-physical-reserve" aria-hidden="true"></div>
@@ -111,28 +133,5 @@
   <script src="game.js?v=20260721-hands-on1"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
-<section class="game-page-info game-page-info-static" aria-label="पशु स्केचव्हील रैली खेल की जानकारी">
-    
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मूल गेम गाइड</span><h2>पशु स्केचव्हील रैली</h2><p>प्रत्येक भूभाग खंड से पहले एक पहिया प्रोफ़ाइल बनाएं, देखें कि उसका मापा आकार कैसा प्रदर्शन करता है, और अगले पहिये को अनुकूलित करें ताकि पशु रेसर प्रतिद्वंद्वी से पहले फिनिश तक पहुंच जाए।</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>गेमप्ले</span><strong>ड्रा-एंड-टेस्ट व्हील रेसिंग</strong></div><div class="game-info-fact"><span>शैली</span><strong>आर्केड · चित्रकारी · रणनीति · पशु</strong></div><div class="game-info-fact"><span>कठिनाई</span><strong>चुनौती देना आसान</strong></div><div class="game-info-fact"><span>खेलने का अनुमानित समय</span><strong>प्रति चरण 2-8 मिनट</strong></div><div class="game-info-fact"><span>कौशल प्रशिक्षित</span><strong>आकार डिज़ाइन · अनुकूलन · अवलोकन</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>विश्व और मिशन</h3><p>तीस रैली पाठ्यक्रम समतल सड़क, सीढ़ियों, कीचड़, सुरंगों, अंतरालों, बर्फ और हवा को पार करते हैं। वाहन निरंतर चलता रहता है, लेकिन उसकी प्रगति इस बात पर निर्भर करती है कि वर्तमान में खींचा गया पहिया आगामी भूभाग के अनुकूल है या नहीं।</p>
-<p>प्रत्येक कोर्स एक लिखित इलाके अनुक्रम और बाधा स्थिति का उपयोग करता है। उद्देश्य हर बार एक सुंदर वृत्त बनाना नहीं है; अलग-अलग अनुभाग अलग-अलग अनुपात में इनाम देते हैं।</p></div>
-      <div class="game-info-section"><h3>सिस्टम कैसे काम करते हैं</h3><p>एक पॉइंटर या उंगली से दृश्यमान पैड में पहिया बनाएं। गेम उस आकार से गोलाई, ऊंचाई, चौड़ाई, पकड़ और गति को मापता है, फिर उसे चलती गाड़ी पर चढ़ाता है।</p>
-<p>समतल सड़क एक गोल संतुलित पहिये का प्रतिफल देती है। सीढ़ियाँ ऊंचाई को अनुकूल बनाती हैं, कीचड़ और बर्फ को पकड़ की आवश्यकता होती है, सुरंगों को कम चौड़ी प्रोफ़ाइल की आवश्यकता होती है, अंतरालों को चौड़ाई और गति की आवश्यकता होती है, और हवा एक संकीर्ण स्थिर आकार को पुरस्कृत करती है।</p>
-<p>एक प्रोफ़ाइल जो वर्तमान इलाके के अनुकूल है, गति बनाए रखती है। एक ख़राब मैच धीमा हो जाता है, फिसल जाता है, टकरा जाता है, या बाधा को विफल कर देता है जबकि प्रतिद्वंद्वी जारी रहता है।</p>
-<p>वर्कशॉप अपग्रेड मामूली गति, सहनशीलता या नियंत्रण समर्थन प्रदान करते हैं। वे हर इलाके के लिए एक सार्वभौमिक पहिये को सही उत्तर में नहीं बदलते हैं।</p></div>
-      <div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>एक अनलॉक रैली चुनें और इलाके का क्रम पढ़ें।</li><li>पहले खंड के लिए एक बंद पहिये का आकार बनाएं।</li><li>पहिए को घूमते हुए देखें और इलाके के संकेत के साथ वाहन की प्रतिक्रिया की तुलना करें।</li><li>आवश्यक प्रोफ़ाइल बदलने पर बाद के अनुभागों के लिए पुनः आरेखण करें और प्रतिद्वंद्वी से पहले समापन तक पहुंचें।</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>रणनीति युक्तियाँ</h3><ul><li>एक सरल सुविचारित सिल्हूट का उपयोग करें क्योंकि छोटे सजावटी उभार मापी गई प्रोफ़ाइल को कम कर देते हैं।</li><li>सीढ़ियों के लिए, ऊर्ध्वाधर ऊंचाई पर जोर दें; सुरंग के लिए, पर्याप्त चौड़ाई रखते हुए शीर्ष को नीचे करें।</li><li>चौड़े गैप वाले पहिये में हवा का असर कम हो सकता है, इसलिए दोनों में से एक डिज़ाइन को थोपने के बजाय दोबारा बनाएं।</li><li>देखें कि कौन सा मापा गया गुण विफल रहा और अगले प्रयास में केवल उस गुण को समायोजित करें।</li></ul></div>
-      <div class="game-info-section"><h3>अभियान और कठिनाई वृद्धि</h3><p>पहला कोर्स समतल सड़क और सीढ़ियों को अलग करता है। बाद के अध्यायों में मिट्टी, बर्फ, हवा, सुरंगें, अंतराल और मिश्रित पाठ्यक्रम शामिल किए गए हैं जिनके लिए कई पुनर्रचना की आवश्यकता होती है।</p>
-<p>तीस लिखित अनुक्रम इलाके के क्रम, बाधा दूरी, पाठ्यक्रम आकार और प्रतिद्वंद्वी गति को बदलते हैं।</p></div>
-      <div class="game-info-section"><h3>डेवलपर डिज़ाइन नोट</h3><p>पहिया स्पष्ट रूप से वाहन से जुड़ा हुआ है, यात्रा के साथ घूमता है, जमीन की रेखा से मिलता है, और गति की दिशा का सामना करता है। निर्देशांक बनाएं और प्रदान की गई आकृतियों को फ़ोन और डेस्कटॉप पर एक स्केल साझा करें। संपूर्ण इंटरफ़ेस 920-पिक्सेल अधिकतम के साथ एक केंद्रित तार्किक लेआउट का उपयोग करता है। फ़ोन, लैंडस्केप और डेस्कटॉप दृश्य अलग-अलग टुकड़ों को फैलाने के बजाय समान नियंत्रण, हिट क्षेत्र, कलाकृति और गेम समन्वय को एक साथ मापते हैं। इसलिए टच, माउस और कीबोर्ड एक ही कानूनी स्थिति पर कार्य करते हैं। मुख्य पोस्टर और स्टार्ट गेम एक्शन स्टेज प्रबंधन से अलग रहते हैं, जबकि स्टेज चयन, लड़ाई, संवाद और परिणाम अपनी स्वयं की सीमित सामग्री और वापसी पथ रखते हैं।</p></div>
-      <div class="game-info-section game-info-parent"><h3>अभिभावक नोट</h3><p>किसी खाते, खरीदारी या सार्वजनिक लीडरबोर्ड की आवश्यकता नहीं है। क्लीयर, बोल्ट, अपग्रेड, लेंस स्थिति और स्थानीय सर्वोत्तम समय इस ब्राउज़र में रहते हैं। आप बिना अकाउंट बनाये खेल सकते हैं. प्रगति को वर्तमान ब्राउज़र प्रोफ़ाइल पर स्थानीय ब्राउज़र संग्रहण में सहेजा जाता है, किसी ऑनलाइन खाते या क्रॉस-डिवाइस डेटाबेस में नहीं। साइट डेटा साफ़ करना, निजी ब्राउज़िंग का उपयोग करना, ब्राउज़र बदलना, या किसी अन्य डिवाइस पर ले जाना एक अलग सेव बना सकता है या मौजूदा को हटा सकता है। जब ब्राउज़र भंडारण की अनुमति देता है तो भाषा, ध्वनि और कम-गति प्राथमिकताएँ साझा WeightPlay नियंत्रणों का पालन करती हैं। कोई भी मार्गदर्शक परिणाम चिकित्सा, स्कूल या व्यावसायिक मूल्यांकन नहीं है।</p></div>
-      <div class="game-info-section"><h3>अक्सर पूछे जाने वाले प्रश्न</h3><dl><div><dt>क्या हर पहिया एक वृत्त होना चाहिए?</dt><dd>नहीं, प्रत्येक भूभाग एक अलग मापी गई प्रोफ़ाइल प्रदान करता है।</dd></div><div><dt>क्या मैं किसी रैली के दौरान पुनः आरेखण कर सकता हूँ?</dt><dd>हाँ, इच्छित खेल बाद के भू-भागों से पहले अनुकूलित करना है।</dd></div><div><dt>सीढ़ियों पर गाड़ी धीमी क्यों हुई?</dt><dd>वर्तमान पहिये में संभवतः पर्याप्त ऊंचाई या पकड़ का अभाव है।</dd></div><div><dt>क्या प्रतिद्वंद्वी मेरे पहिये का उपयोग करता है?</dt><dd>नहीं, प्रतिद्वंद्वी दौड़ का दबाव प्रदान करता है जबकि आपका प्रदर्शन तैयार आकार से आता है।</dd></div><div><dt>कौन से नियंत्रण और स्क्रीन आकार समर्थित हैं?</dt><dd>वही नियम स्पर्श, माउस और कीबोर्ड का समर्थन करते हैं जहां गेम उन इनपुट का उपयोग करता है। इंटरफ़ेस आवश्यक फ़ोन, लैंडस्केप और डेस्कटॉप व्यूपोर्ट में एक तार्किक लेआउट के रूप में स्केल करता है।</dd></div><div><dt>क्या प्रगति स्वचालित रूप से किसी अन्य डिवाइस पर जा सकती है?</dt><dd>नहीं, यह गेम वर्तमान में केवल स्थानीय ब्राउज़र संग्रहण में सहेजता है, इसलिए कोई अन्य ब्राउज़र प्रोफ़ाइल या डिवाइस अपनी अलग स्थानीय प्रगति के साथ शुरू होता है जब तक कि कोई भविष्य खाता सिस्टम नहीं जोड़ा जाता है।</dd></div></dl></div>
-      
-    </div>
-  </section>
 </body>
 </html>

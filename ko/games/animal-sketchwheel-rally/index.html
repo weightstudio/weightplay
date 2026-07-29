@@ -47,6 +47,10 @@
   <title>동물 스케치휠 랠리 | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css">
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css">
+  <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <script defer src="../../src/game-page-info.js"></script>
+  <script defer src="../../src/edge-guard.js"></script>
   <link rel="stylesheet" href="style.css?v=20260721-hands-on1">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <meta name="description" content="각 지형 섹션 앞에 바퀴 프로필을 그리고, 측정된 모양이 어떻게 작동하는지 관찰하고, 동물 경주자가 경쟁자보다 먼저 결승선에 도달할 수 있도록 다음 바퀴를 조정합니다." />
@@ -56,8 +60,8 @@
     <meta name="twitter:title" content="동물 스케치휠 랠리 | WeightPlay" />
     <meta name="twitter:description" content="각 지형 섹션 앞에 바퀴 프로필을 그리고, 측정된 모양이 어떻게 작동하는지 관찰하고, 동물 경주자가 경쟁자보다 먼저 결승선에 도달할 수 있도록 다음 바퀴를 조정합니다." />
   </head>
-<body data-screen="loading" data-wp-combined-sound="true">
-  <section id="loading" class="loading" aria-live="polite"><img src="../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp" alt=""><strong>WeightPlay</strong><div><i id="loadingFill"></i></div></section>
+<body data-screen="loading" data-wp-game-id="animal-sketchwheel-rally" data-wp-combined-sound="true">
+  <section id="loadingPanel" class="loading" role="status" aria-live="polite"><span id="loading" hidden aria-hidden="true"></span><img src="../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp" alt=""><strong>WeightPlay</strong><div><i id="loadingFill"></i></div></section>
 
   <div id="mainGroup" class="main-group" hidden>
     <main class="main-screen">
@@ -67,11 +71,29 @@
         <div class="main-copy"><small data-t="kicker">DRAW-TO-DRIVE RALLY</small><h1 data-t="title">동물 스케치휠 랠리</h1><p data-t="pitch">Draw Rux a wheel that matches the next terrain. Redraw during the live race before Fia reaches the finish.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">Start Game</button></div>
       </section>
     </main>
-    <article class="public-guide game-page-info">
-      <h2 data-t="guideTitle">Build the right wheel for every obstacle</h2>
-      <p data-t="guideIntro">Your line becomes both rune wheels. Its measured shape changes the cart's speed, height, grip, and clearance.</p>
-      <div class="guide-grid"><section><h3 data-t="guideHowTitle">How a race works</h3><p data-t="guideHow">Inspect the next terrain, draw in the forge pad, and release to commit. Keep drawing new profiles while the carts continue moving.</p></section><section><h3 data-t="guidePlanTitle">Plan the profile</h3><p data-t="guidePlan">Round profiles are fast, tall ones climb, corners grip mud, low shapes fit tunnels, and wide shapes span gaps.</p></section><section><h3 data-t="guideDesignTitle">Design idea</h3><p data-t="guideDesign">The game turns a freehand drawing into a readable mechanical decision instead of judging artistic accuracy.</p></section></div>
-    </article>
+    <section class="game-page-info game-page-info-static" aria-label="동물 스케치휠 랠리 게임 정보">
+    
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>동물 스케치휠 랠리</h2><p>각 지형 섹션 앞에 바퀴 프로필을 그리고, 측정된 모양이 어떻게 작동하는지 관찰하고, 동물 경주자가 경쟁자보다 먼저 결승선에 도달할 수 있도록 다음 바퀴를 조정합니다.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>그리기 및 테스트 휠 레이싱</strong></div><div class="game-info-fact"><span>장르</span><strong>아케이드 · 그리기 · 전략 · 동물</strong></div><div class="game-info-fact"><span>난이도</span><strong>도전하기 쉬움</strong></div><div class="game-info-fact"><span>예상 플레이 시간</span><strong>스테이지당 2~8분</strong></div><div class="game-info-fact"><span>훈련된 기술</span><strong>모양 디자인 · 적응 · 관찰</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>세계와 사명</h3><p>30개의 랠리 코스는 평지, 계단, 진흙, 터널, 틈새, 얼음, 바람을 가로지릅니다. 차량은 계속해서 움직이지만 현재 그려진 바퀴가 다가오는 지형에 적합한지 여부에 따라 진행 상황이 달라집니다.</p>
+<p>각 코스는 작성된 지형 시퀀스와 장애물 위치를 사용합니다. 목표는 매번 예쁜 원을 그리는 것이 아닙니다. 섹션마다 보상 비율이 다릅니다.</p></div>
+      <div class="game-info-section"><h3>시스템 작동 방식</h3><p>포인터나 손가락으로 보이는 패드에 휠을 그립니다. 게임은 해당 모양의 진원도, 높이, 너비, 그립 및 속도를 측정한 다음 움직이는 차량에 장착합니다.</p>
+<p>평평한 도로는 둥근 균형 잡힌 바퀴를 보상합니다. 계단은 높이를 선호하고, 진흙과 얼음은 접지력을 필요로 하고, 터널은 낮고 넓은 프로필을 필요로 하며, 틈은 폭과 속도를 필요로 하며, 바람은 좁고 안정적인 모양을 보상합니다.</p>
+<p>현재 지형에 맞는 프로필이 추진력을 유지합니다. 경기가 좋지 않으면 라이벌이 계속되는 동안 속도가 느려지거나, 미끄러지거나, 충돌하거나, 장애물에 실패합니다.</p>
+<p>워크샵 업그레이드는 적당한 속도, 허용 오차 또는 제어 지원을 제공합니다. 하나의 범용 휠을 모든 지형에 대한 정답으로 바꾸지는 않습니다.</p></div>
+      <div class="game-info-section"><h3>플레이 방법</h3><ol><li>잠금 해제된 랠리를 선택하고 지형 순서를 읽어보세요.</li><li>첫 번째 단면에 대해 닫힌 바퀴 모양을 그립니다.</li><li>바퀴가 회전하는 것을 관찰하고 차량의 반응을 지형 신호와 비교하십시오.</li><li>필요한 프로필이 변경되면 이후 섹션을 위해 다시 그려서 라이벌보다 먼저 결승점에 도달하세요.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>작은 장식 돌기로 인해 측정된 프로필이 줄어들기 때문에 단순하고 의도적인 실루엣을 사용하십시오.</li><li>계단의 경우 수직 높이를 강조합니다. 터널의 경우 충분한 너비를 유지하면서 상단을 낮추십시오.</li><li>넓은 간격의 휠은 바람에 약할 수 있으므로 하나의 디자인을 두 디자인 모두에 강제로 적용하는 대신 다시 그리십시오.</li><li>어떤 측정된 특성이 실패했는지 관찰하고 다음 시도에서 해당 특성만 조정합니다.</li></ul></div>
+      <div class="game-info-section"><h3>캠페인 및 난이도 성장</h3><p>첫 번째 코스는 평탄한 도로와 계단을 분리합니다. 이후 장에서는 여러 번 다시 그려야 하는 진흙, 얼음, 바람, 터널, 간격 및 혼합 코스를 추가합니다.</p>
+<p>30개의 저작된 시퀀스는 지형 순서, 장애물 간격, 코스 모양 및 경쟁 속도를 변경합니다.</p></div>
+      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>바퀴는 차량에 눈에 띄게 부착되어 있고, 이동하면서 회전하고, 지면과 만나고, 움직이는 방향을 향합니다. 그리기 좌표와 렌더링된 모양은 휴대폰과 데스크톱에서 하나의 축척을 공유합니다. 전체 인터페이스는 최대 920픽셀의 중앙 집중식 논리적 레이아웃을 사용합니다. 휴대폰, 가로 및 데스크탑 보기는 개별 부분을 늘리는 대신 동일한 컨트롤, 히트 영역, 아트워크 및 게임 좌표를 함께 확장합니다. 따라서 터치, 마우스 및 키보드는 동일한 법적 상태에서 작동합니다. 메인 포스터와 게임 시작 작업은 스테이지 관리와 별도로 유지되는 반면, 스테이지 선택, 전투, 대화 및 결과는 자체적으로 제한된 콘텐츠와 반환 경로를 유지합니다.</p></div>
+      <div class="game-info-section game-info-parent"><h3>학부모 메모</h3><p>계정, 구매 또는 공개 리더보드가 필요하지 않습니다. 클리어, 볼트, 업그레이드, 렌즈 상태 및 로컬 최고 시간이 이 브라우저에 유지됩니다. 계정을 만들지 않고도 플레이할 수 있습니다. 진행 상황은 온라인 계정이나 교차 장치 데이터베이스가 아닌 현재 브라우저 프로필의 로컬 브라우저 저장소에 저장됩니다. 사이트 데이터 삭제, 시크릿 브라우징 사용, 브라우저 변경, 다른 기기로 이동 시 별도의 저장을 생성하거나 기존 저장을 제거할 수 있습니다. 브라우저가 저장을 허용하는 경우 언어, 소리 및 모션 감소 기본 설정은 공유된 WeightPlay 컨트롤을 따릅니다. 가이드 결과는 의학적, 학교 또는 전문적 평가가 아닙니다.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>모든 바퀴는 원이어야 할까요?</dt><dd>아니요. 각 지형은 서로 다른 측정 프로필을 제공합니다.</dd></div><div><dt>집회 중에 다시 그릴 수 있나요?</dt><dd>예, 의도된 플레이는 이후 지형 섹션 전에 적응하는 것입니다.</dd></div><div><dt>계단에서 차량 속도가 느려진 이유는 무엇입니까?</dt><dd>현재 휠에는 높이나 그립력이 부족했을 가능성이 높습니다.</dd></div><div><dt>라이벌이 내 휠을 사용하나요?</dt><dd>아니요. 경쟁자는 경주에 대한 압력을 가하는 반면 당신의 성과는 그려진 모양에서 나옵니다.</dd></div><div><dt>어떤 컨트롤과 화면 크기가 지원되나요?</dt><dd>동일한 규칙은 게임에서 해당 입력을 사용하는 터치, 마우스 및 키보드를 지원합니다. 인터페이스는 필요한 휴대폰, 가로 및 데스크톱 뷰포트에 걸쳐 하나의 논리적 레이아웃으로 확장됩니다.</dd></div><div><dt>진행 상황이 자동으로 다른 장치로 이동할 수 있나요?</dt><dd>아니요. 이 게임은 현재 로컬 브라우저 저장소에만 저장되므로 향후 계정 시스템이 추가되지 않는 한 다른 브라우저 프로필이나 장치는 별도의 로컬 진행 상황으로 시작됩니다.</dd></div></dl></div>
+      
+    </div>
+  </section>
   </div>
 
   <section id="stageScreen" class="screen-shell" hidden>
@@ -79,7 +101,7 @@
       <header class="stage-header"><button id="stageBack" type="button" data-wp-return="stage" aria-label="Back" data-t-aria="back">←</button><div><strong data-t="chooseRace">Choose a forge rally</strong><span id="stageSummary"></span></div><span class="rux-chip" aria-hidden="true"></span></header>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Race selector" data-t-aria="raceSelector"></div>
       <nav class="stage-tabs"><button id="raceTab" class="active" type="button" data-t="raceBrief">Race</button><button id="forgeTab" type="button" data-t="forge">Rune Forge</button></nav>
-      <section id="racePanel" class="stage-panel"><div class="selected-brief"><span id="selectedNumber"></span><div><strong id="selectedName"></strong><p id="selectedRule"></p></div><button id="enterRace" class="primary" type="button"></button></div><p class="stage-hint" data-t="stageHint">Drag the rail. The glowing card is the selected race.</p></section>
+      <section id="racePanel" class="stage-panel"><div class="selected-brief"><span id="selectedNumber"></span><div><strong id="selectedName"></strong><p id="selectedRule"></p></div><button id="enterRace" class="primary" type="button" data-t="enterRace">Enter race</button></div><p class="stage-hint" data-t="stageHint">Drag the rail. The glowing card is the selected race.</p></section>
       <section id="forgePanel" class="stage-panel forge-panel" hidden><div class="forge-heading"><div><strong data-t="forgeTitle">Rune Forge</strong><p data-t="forgeIntro">Spend Forge Bolts on tools that immediately help every race.</p></div><b id="boltCount"></b></div><div id="upgradeList" class="upgrade-list"></div><button id="lensBuy" class="lens-buy" type="button"></button><p id="forgeFeedback" role="status"></p></section>
     </div>
     <div class="wp-stage-physical-reserve" aria-hidden="true"></div>
@@ -111,28 +133,5 @@
   <script src="game.js?v=20260721-hands-on1"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
-<section class="game-page-info game-page-info-static" aria-label="동물 스케치휠 랠리 게임 정보">
-    
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>동물 스케치휠 랠리</h2><p>각 지형 섹션 앞에 바퀴 프로필을 그리고, 측정된 모양이 어떻게 작동하는지 관찰하고, 동물 경주자가 경쟁자보다 먼저 결승선에 도달할 수 있도록 다음 바퀴를 조정합니다.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>그리기 및 테스트 휠 레이싱</strong></div><div class="game-info-fact"><span>장르</span><strong>아케이드 · 그리기 · 전략 · 동물</strong></div><div class="game-info-fact"><span>난이도</span><strong>도전하기 쉬움</strong></div><div class="game-info-fact"><span>예상 플레이 시간</span><strong>스테이지당 2~8분</strong></div><div class="game-info-fact"><span>훈련된 기술</span><strong>모양 디자인 · 적응 · 관찰</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>세계와 사명</h3><p>30개의 랠리 코스는 평지, 계단, 진흙, 터널, 틈새, 얼음, 바람을 가로지릅니다. 차량은 계속해서 움직이지만 현재 그려진 바퀴가 다가오는 지형에 적합한지 여부에 따라 진행 상황이 달라집니다.</p>
-<p>각 코스는 작성된 지형 시퀀스와 장애물 위치를 사용합니다. 목표는 매번 예쁜 원을 그리는 것이 아닙니다. 섹션마다 보상 비율이 다릅니다.</p></div>
-      <div class="game-info-section"><h3>시스템 작동 방식</h3><p>포인터나 손가락으로 보이는 패드에 휠을 그립니다. 게임은 해당 모양의 진원도, 높이, 너비, 그립 및 속도를 측정한 다음 움직이는 차량에 장착합니다.</p>
-<p>평평한 도로는 둥근 균형 잡힌 바퀴를 보상합니다. 계단은 높이를 선호하고, 진흙과 얼음은 접지력을 필요로 하고, 터널은 낮고 넓은 프로필을 필요로 하며, 틈은 폭과 속도를 필요로 하며, 바람은 좁고 안정적인 모양을 보상합니다.</p>
-<p>현재 지형에 맞는 프로필이 추진력을 유지합니다. 경기가 좋지 않으면 라이벌이 계속되는 동안 속도가 느려지거나, 미끄러지거나, 충돌하거나, 장애물에 실패합니다.</p>
-<p>워크샵 업그레이드는 적당한 속도, 허용 오차 또는 제어 지원을 제공합니다. 하나의 범용 휠을 모든 지형에 대한 정답으로 바꾸지는 않습니다.</p></div>
-      <div class="game-info-section"><h3>플레이 방법</h3><ol><li>잠금 해제된 랠리를 선택하고 지형 순서를 읽어보세요.</li><li>첫 번째 단면에 대해 닫힌 바퀴 모양을 그립니다.</li><li>바퀴가 회전하는 것을 관찰하고 차량의 반응을 지형 신호와 비교하십시오.</li><li>필요한 프로필이 변경되면 이후 섹션을 위해 다시 그려서 라이벌보다 먼저 결승점에 도달하세요.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>작은 장식 돌기로 인해 측정된 프로필이 줄어들기 때문에 단순하고 의도적인 실루엣을 사용하십시오.</li><li>계단의 경우 수직 높이를 강조합니다. 터널의 경우 충분한 너비를 유지하면서 상단을 낮추십시오.</li><li>넓은 간격의 휠은 바람에 약할 수 있으므로 하나의 디자인을 두 디자인 모두에 강제로 적용하는 대신 다시 그리십시오.</li><li>어떤 측정된 특성이 실패했는지 관찰하고 다음 시도에서 해당 특성만 조정합니다.</li></ul></div>
-      <div class="game-info-section"><h3>캠페인 및 난이도 성장</h3><p>첫 번째 코스는 평탄한 도로와 계단을 분리합니다. 이후 장에서는 여러 번 다시 그려야 하는 진흙, 얼음, 바람, 터널, 간격 및 혼합 코스를 추가합니다.</p>
-<p>30개의 저작된 시퀀스는 지형 순서, 장애물 간격, 코스 모양 및 경쟁 속도를 변경합니다.</p></div>
-      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>바퀴는 차량에 눈에 띄게 부착되어 있고, 이동하면서 회전하고, 지면과 만나고, 움직이는 방향을 향합니다. 그리기 좌표와 렌더링된 모양은 휴대폰과 데스크톱에서 하나의 축척을 공유합니다. 전체 인터페이스는 최대 920픽셀의 중앙 집중식 논리적 레이아웃을 사용합니다. 휴대폰, 가로 및 데스크탑 보기는 개별 부분을 늘리는 대신 동일한 컨트롤, 히트 영역, 아트워크 및 게임 좌표를 함께 확장합니다. 따라서 터치, 마우스 및 키보드는 동일한 법적 상태에서 작동합니다. 메인 포스터와 게임 시작 작업은 스테이지 관리와 별도로 유지되는 반면, 스테이지 선택, 전투, 대화 및 결과는 자체적으로 제한된 콘텐츠와 반환 경로를 유지합니다.</p></div>
-      <div class="game-info-section game-info-parent"><h3>학부모 메모</h3><p>계정, 구매 또는 공개 리더보드가 필요하지 않습니다. 클리어, 볼트, 업그레이드, 렌즈 상태 및 로컬 최고 시간이 이 브라우저에 유지됩니다. 계정을 만들지 않고도 플레이할 수 있습니다. 진행 상황은 온라인 계정이나 교차 장치 데이터베이스가 아닌 현재 브라우저 프로필의 로컬 브라우저 저장소에 저장됩니다. 사이트 데이터 삭제, 시크릿 브라우징 사용, 브라우저 변경, 다른 기기로 이동 시 별도의 저장을 생성하거나 기존 저장을 제거할 수 있습니다. 브라우저가 저장을 허용하는 경우 언어, 소리 및 모션 감소 기본 설정은 공유된 WeightPlay 컨트롤을 따릅니다. 가이드 결과는 의학적, 학교 또는 전문적 평가가 아닙니다.</p></div>
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>모든 바퀴는 원이어야 할까요?</dt><dd>아니요. 각 지형은 서로 다른 측정 프로필을 제공합니다.</dd></div><div><dt>집회 중에 다시 그릴 수 있나요?</dt><dd>예, 의도된 플레이는 이후 지형 섹션 전에 적응하는 것입니다.</dd></div><div><dt>계단에서 차량 속도가 느려진 이유는 무엇입니까?</dt><dd>현재 휠에는 높이나 그립력이 부족했을 가능성이 높습니다.</dd></div><div><dt>라이벌이 내 휠을 사용하나요?</dt><dd>아니요. 경쟁자는 경주에 대한 압력을 가하는 반면 당신의 성과는 그려진 모양에서 나옵니다.</dd></div><div><dt>어떤 컨트롤과 화면 크기가 지원되나요?</dt><dd>동일한 규칙은 게임에서 해당 입력을 사용하는 터치, 마우스 및 키보드를 지원합니다. 인터페이스는 필요한 휴대폰, 가로 및 데스크톱 뷰포트에 걸쳐 하나의 논리적 레이아웃으로 확장됩니다.</dd></div><div><dt>진행 상황이 자동으로 다른 장치로 이동할 수 있나요?</dt><dd>아니요. 이 게임은 현재 로컬 브라우저 저장소에만 저장되므로 향후 계정 시스템이 추가되지 않는 한 다른 브라우저 프로필이나 장치는 별도의 로컬 진행 상황으로 시작됩니다.</dd></div></dl></div>
-      
-    </div>
-  </section>
 </body>
 </html>

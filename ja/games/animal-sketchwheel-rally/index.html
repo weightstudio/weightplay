@@ -47,6 +47,10 @@
   <title>動物スケッチホイールラリー | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css">
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css">
+  <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <script defer src="../../src/game-page-info.js"></script>
+  <script defer src="../../src/edge-guard.js"></script>
   <link rel="stylesheet" href="style.css?v=20260721-hands-on1">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <meta name="description" content="各地形セクションの前に車輪のプロファイルを描き、その測定された形状がどのように機能するかを観察し、アニマル レーサーがライバルより先にゴールできるように次の車輪を調整します。" />
@@ -56,8 +60,8 @@
     <meta name="twitter:title" content="動物スケッチホイールラリー | WeightPlay" />
     <meta name="twitter:description" content="各地形セクションの前に車輪のプロファイルを描き、その測定された形状がどのように機能するかを観察し、アニマル レーサーがライバルより先にゴールできるように次の車輪を調整します。" />
   </head>
-<body data-screen="loading" data-wp-combined-sound="true">
-  <section id="loading" class="loading" aria-live="polite"><img src="../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp" alt=""><strong>WeightPlay</strong><div><i id="loadingFill"></i></div></section>
+<body data-screen="loading" data-wp-game-id="animal-sketchwheel-rally" data-wp-combined-sound="true">
+  <section id="loadingPanel" class="loading" role="status" aria-live="polite"><span id="loading" hidden aria-hidden="true"></span><img src="../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp" alt=""><strong>WeightPlay</strong><div><i id="loadingFill"></i></div></section>
 
   <div id="mainGroup" class="main-group" hidden>
     <main class="main-screen">
@@ -67,11 +71,29 @@
         <div class="main-copy"><small data-t="kicker">DRAW-TO-DRIVE RALLY</small><h1 data-t="title">動物スケッチホイールラリー</h1><p data-t="pitch">Draw Rux a wheel that matches the next terrain. Redraw during the live race before Fia reaches the finish.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">Start Game</button></div>
       </section>
     </main>
-    <article class="public-guide game-page-info">
-      <h2 data-t="guideTitle">Build the right wheel for every obstacle</h2>
-      <p data-t="guideIntro">Your line becomes both rune wheels. Its measured shape changes the cart's speed, height, grip, and clearance.</p>
-      <div class="guide-grid"><section><h3 data-t="guideHowTitle">How a race works</h3><p data-t="guideHow">Inspect the next terrain, draw in the forge pad, and release to commit. Keep drawing new profiles while the carts continue moving.</p></section><section><h3 data-t="guidePlanTitle">Plan the profile</h3><p data-t="guidePlan">Round profiles are fast, tall ones climb, corners grip mud, low shapes fit tunnels, and wide shapes span gaps.</p></section><section><h3 data-t="guideDesignTitle">Design idea</h3><p data-t="guideDesign">The game turns a freehand drawing into a readable mechanical decision instead of judging artistic accuracy.</p></section></div>
-    </article>
+    <section class="game-page-info game-page-info-static" aria-label="動物スケッチホイールラリー のゲーム情報">
+    
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>動物スケッチホイールラリー</h2><p>各地形セクションの前に車輪のプロファイルを描き、その測定された形状がどのように機能するかを観察し、アニマル レーサーがライバルより先にゴールできるように次の車輪を調整します。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>ドローアンドテストホイールレーシング</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>アーケード · 図面 · 戦略 · 動物</strong></div><div class="game-info-fact"><span>難易度</span><strong>挑戦しやすい</strong></div><div class="game-info-fact"><span>目安時間</span><strong>1ステージあたり2～8分</strong></div><div class="game-info-fact"><span>育てる力</span><strong>形状設計 · 適応 · 観察</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界とミッション</h3><p>平坦な道、階段、ぬかるみ、トンネル、ギャップ、氷、そして風を横断する30のラリーコース。車両は継続的に移動しますが、その進行状況は、現在描画されている車輪が次の地形に適合するかどうかによって決まります。</p>
+<p>各コースでは、作成された地形シーケンスと障害物の位置が使用されます。目的は、毎回きれいな円を描くことではありません。セクションが異なれば報酬の割合も異なります。</p></div>
+      <div class="game-info-section"><h3>ゲームのしくみ</h3><p>ポインターまたは指を使用して、表示されているパッドにホイールを描画します。その形状から真円度、高さ、幅、グリップ、速度を測定し、走行中の車両に搭載するゲームです。</p>
+<p>平らな道にはバランスの取れた丸いホイールが最適です。階段は高さを優先し、泥と氷にはグリップが必要で、トンネルには低くて広いプロファイルが必要で、隙間には幅と速度が必要で、風は狭くて安定した形状に有利です。</p>
+<p>現在の地形に適したプロファイルが勢いを維持します。マッチングが悪いと、ライバルが続行している間に速度が低下したり、滑ったり、衝突したり、障害物に失敗したりします。</p>
+<p>ワークショップのアップグレードでは、適度な速度、許容範囲、または制御のサポートが提供されます。彼らは、1 つの普遍的な車輪をあらゆる地形に対する正しい答えに変えるわけではありません。</p></div>
+      <div class="game-info-section"><h3>遊び方</h3><ol><li>ロックが解除されているラリーを選択し、地形の順序を読み取ります。</li><li>最初のセクションに閉じたホイールの形状を描画します。</li><li>ホイールの回転を観察し、車両の反応を地形の手がかりと比較します。</li><li>必要なプロファイルが変更された場合は後のセクションに再描画し、ライバルよりも先にゴールします。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>小さな装飾的な凹凸があると測定されたプロファイルが小さくなるため、シンプルで意図的なシルエットを使用してください。</li><li>階段の場合は垂直の高さを強調します。トンネルの場合は、十分な幅を保ちながら上部を下げます。</li><li>ギャップの広いホイールは風に弱い可能性があるため、1 つのデザインを両方に強制的に適用するのではなく、再描画してください。</li><li>どの測定された特性が失敗したかを観察し、次回の試行ではその特性のみを調整します。</li></ul></div>
+      <div class="game-info-section"><h3>進行と難易度</h3><p>最初のコースは平坦な道と階段が分離されています。後の章では、泥、氷、風、トンネル、ギャップ、および数回の再描画が必要な混合コースが追加されます。</p>
+<p>30 の作成されたシーケンスは、地形の順序、障害物の間隔、コースの形状、ライバルのペースを変更します。</p></div>
+      <div class="game-info-section"><h3>デザインノート</h3><p>ホイールは車両に目に見えて取り付けられており、移動に伴って回転し、地面と接触し、進行方向を向いています。描画座標とレンダリングされた形状は、携帯電話とデスクトップで 1 つのスケールを共有します。 完全なインターフェイスは、最大 920 ピクセルの中央に配置された 1 つの論理レイアウトを使用します。電話、風景、およびデスクトップのビューは、個々の部分を引き伸ばすのではなく、同じコントロール、ヒット領域、アートワーク、およびゲーム座標を一緒に拡大縮小します。したがって、タッチ、マウス、キーボードは同じ法的状態に基づいて動作します。メイン ポスターとゲーム開始アクションはステージ管理から分離されたままですが、ステージ選択、バトル、ダイアログ、結果は独自の境界付きコンテンツとリターン パスを保持します。</p></div>
+      <div class="game-info-section game-info-parent"><h3>保護者の方へ</h3><p>アカウント、購入、公開リーダーボードは必要ありません。クリア、ボルト、アップグレード、レンズの状態、ローカルのベストタイムはこのブラウザーに残ります。 アカウントを作成しなくてもプレイできます。進行状況は、オンライン アカウントやクロスデバイス データベースではなく、現在のブラウザ プロファイル上のローカル ブラウザ ストレージに保存されます。サイト データのクリア、プライベート ブラウジングの使用、ブラウザの変更、または別のデバイスへの移動により、別の保存が作成されたり、既存の保存が削除されたりすることがあります。言語、サウンド、モーション軽減の設定は、ブラウザーが保存を許可する場合の共有 WeightPlay コントロールに従います。ガイド結果は、医学、学校、または専門家の評価ではありません。</p></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>すべての車輪は円であるべきですか?</dt><dd>いいえ、地形ごとに異なる測定プロファイルが得られます。</dd></div><div><dt>ラリー中に引き直しはできますか？</dt><dd>はい、意図されたプレイは、後の地形セクションの前に適応することです。</dd></div><div><dt>なぜ車は階段で速度を落としたのでしょうか?</dt><dd>現在のホイールには高さまたはグリップが不足している可能性があります。</dd></div><div><dt>ライバルは私のホイールを使用しますか?</dt><dd>いいえ、ライバルはレースのプレッシャーを与えますが、あなたのパフォーマンスは描かれた形状から生まれます。</dd></div><div><dt>どのコントロールと画面サイズがサポートされていますか?</dt><dd>ゲームでこれらの入力が使用されるタッチ、マウス、キーボードも同じルールでサポートされます。このインターフェイスは、必要な電話、ランドスケープ、デスクトップのビューポート全体にわたって 1 つの論理レイアウトとして拡張されます。</dd></div><div><dt>進行状況を別のデバイスに自動的に移動できますか?</dt><dd>いいえ。現在、このゲームはローカル ブラウザ ストレージにのみ保存されるため、将来のアカウント システムが追加されない限り、別のブラウザ プロファイルまたはデバイスは独自のローカルの進行状況で開始されます。</dd></div></dl></div>
+      
+    </div>
+  </section>
   </div>
 
   <section id="stageScreen" class="screen-shell" hidden>
@@ -79,7 +101,7 @@
       <header class="stage-header"><button id="stageBack" type="button" data-wp-return="stage" aria-label="Back" data-t-aria="back">←</button><div><strong data-t="chooseRace">Choose a forge rally</strong><span id="stageSummary"></span></div><span class="rux-chip" aria-hidden="true"></span></header>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Race selector" data-t-aria="raceSelector"></div>
       <nav class="stage-tabs"><button id="raceTab" class="active" type="button" data-t="raceBrief">Race</button><button id="forgeTab" type="button" data-t="forge">Rune Forge</button></nav>
-      <section id="racePanel" class="stage-panel"><div class="selected-brief"><span id="selectedNumber"></span><div><strong id="selectedName"></strong><p id="selectedRule"></p></div><button id="enterRace" class="primary" type="button"></button></div><p class="stage-hint" data-t="stageHint">Drag the rail. The glowing card is the selected race.</p></section>
+      <section id="racePanel" class="stage-panel"><div class="selected-brief"><span id="selectedNumber"></span><div><strong id="selectedName"></strong><p id="selectedRule"></p></div><button id="enterRace" class="primary" type="button" data-t="enterRace">Enter race</button></div><p class="stage-hint" data-t="stageHint">Drag the rail. The glowing card is the selected race.</p></section>
       <section id="forgePanel" class="stage-panel forge-panel" hidden><div class="forge-heading"><div><strong data-t="forgeTitle">Rune Forge</strong><p data-t="forgeIntro">Spend Forge Bolts on tools that immediately help every race.</p></div><b id="boltCount"></b></div><div id="upgradeList" class="upgrade-list"></div><button id="lensBuy" class="lens-buy" type="button"></button><p id="forgeFeedback" role="status"></p></section>
     </div>
     <div class="wp-stage-physical-reserve" aria-hidden="true"></div>
@@ -112,29 +134,6 @@
   <script src="game.js?v=20260721-hands-on1"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
-<section class="game-page-info game-page-info-static" aria-label="動物スケッチホイールラリー のゲーム情報">
-    
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>動物スケッチホイールラリー</h2><p>各地形セクションの前に車輪のプロファイルを描き、その測定された形状がどのように機能するかを観察し、アニマル レーサーがライバルより先にゴールできるように次の車輪を調整します。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>ドローアンドテストホイールレーシング</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>アーケード · 図面 · 戦略 · 動物</strong></div><div class="game-info-fact"><span>難易度</span><strong>挑戦しやすい</strong></div><div class="game-info-fact"><span>目安時間</span><strong>1ステージあたり2～8分</strong></div><div class="game-info-fact"><span>育てる力</span><strong>形状設計 · 適応 · 観察</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界とミッション</h3><p>平坦な道、階段、ぬかるみ、トンネル、ギャップ、氷、そして風を横断する30のラリーコース。車両は継続的に移動しますが、その進行状況は、現在描画されている車輪が次の地形に適合するかどうかによって決まります。</p>
-<p>各コースでは、作成された地形シーケンスと障害物の位置が使用されます。目的は、毎回きれいな円を描くことではありません。セクションが異なれば報酬の割合も異なります。</p></div>
-      <div class="game-info-section"><h3>ゲームのしくみ</h3><p>ポインターまたは指を使用して、表示されているパッドにホイールを描画します。その形状から真円度、高さ、幅、グリップ、速度を測定し、走行中の車両に搭載するゲームです。</p>
-<p>平らな道にはバランスの取れた丸いホイールが最適です。階段は高さを優先し、泥と氷にはグリップが必要で、トンネルには低くて広いプロファイルが必要で、隙間には幅と速度が必要で、風は狭くて安定した形状に有利です。</p>
-<p>現在の地形に適したプロファイルが勢いを維持します。マッチングが悪いと、ライバルが続行している間に速度が低下したり、滑ったり、衝突したり、障害物に失敗したりします。</p>
-<p>ワークショップのアップグレードでは、適度な速度、許容範囲、または制御のサポートが提供されます。彼らは、1 つの普遍的な車輪をあらゆる地形に対する正しい答えに変えるわけではありません。</p></div>
-      <div class="game-info-section"><h3>遊び方</h3><ol><li>ロックが解除されているラリーを選択し、地形の順序を読み取ります。</li><li>最初のセクションに閉じたホイールの形状を描画します。</li><li>ホイールの回転を観察し、車両の反応を地形の手がかりと比較します。</li><li>必要なプロファイルが変更された場合は後のセクションに再描画し、ライバルよりも先にゴールします。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>小さな装飾的な凹凸があると測定されたプロファイルが小さくなるため、シンプルで意図的なシルエットを使用してください。</li><li>階段の場合は垂直の高さを強調します。トンネルの場合は、十分な幅を保ちながら上部を下げます。</li><li>ギャップの広いホイールは風に弱い可能性があるため、1 つのデザインを両方に強制的に適用するのではなく、再描画してください。</li><li>どの測定された特性が失敗したかを観察し、次回の試行ではその特性のみを調整します。</li></ul></div>
-      <div class="game-info-section"><h3>進行と難易度</h3><p>最初のコースは平坦な道と階段が分離されています。後の章では、泥、氷、風、トンネル、ギャップ、および数回の再描画が必要な混合コースが追加されます。</p>
-<p>30 の作成されたシーケンスは、地形の順序、障害物の間隔、コースの形状、ライバルのペースを変更します。</p></div>
-      <div class="game-info-section"><h3>デザインノート</h3><p>ホイールは車両に目に見えて取り付けられており、移動に伴って回転し、地面と接触し、進行方向を向いています。描画座標とレンダリングされた形状は、携帯電話とデスクトップで 1 つのスケールを共有します。 完全なインターフェイスは、最大 920 ピクセルの中央に配置された 1 つの論理レイアウトを使用します。電話、風景、およびデスクトップのビューは、個々の部分を引き伸ばすのではなく、同じコントロール、ヒット領域、アートワーク、およびゲーム座標を一緒に拡大縮小します。したがって、タッチ、マウス、キーボードは同じ法的状態に基づいて動作します。メイン ポスターとゲーム開始アクションはステージ管理から分離されたままですが、ステージ選択、バトル、ダイアログ、結果は独自の境界付きコンテンツとリターン パスを保持します。</p></div>
-      <div class="game-info-section game-info-parent"><h3>保護者の方へ</h3><p>アカウント、購入、公開リーダーボードは必要ありません。クリア、ボルト、アップグレード、レンズの状態、ローカルのベストタイムはこのブラウザーに残ります。 アカウントを作成しなくてもプレイできます。進行状況は、オンライン アカウントやクロスデバイス データベースではなく、現在のブラウザ プロファイル上のローカル ブラウザ ストレージに保存されます。サイト データのクリア、プライベート ブラウジングの使用、ブラウザの変更、または別のデバイスへの移動により、別の保存が作成されたり、既存の保存が削除されたりすることがあります。言語、サウンド、モーション軽減の設定は、ブラウザーが保存を許可する場合の共有 WeightPlay コントロールに従います。ガイド結果は、医学、学校、または専門家の評価ではありません。</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>すべての車輪は円であるべきですか?</dt><dd>いいえ、地形ごとに異なる測定プロファイルが得られます。</dd></div><div><dt>ラリー中に引き直しはできますか？</dt><dd>はい、意図されたプレイは、後の地形セクションの前に適応することです。</dd></div><div><dt>なぜ車は階段で速度を落としたのでしょうか?</dt><dd>現在のホイールには高さまたはグリップが不足している可能性があります。</dd></div><div><dt>ライバルは私のホイールを使用しますか?</dt><dd>いいえ、ライバルはレースのプレッシャーを与えますが、あなたのパフォーマンスは描かれた形状から生まれます。</dd></div><div><dt>どのコントロールと画面サイズがサポートされていますか?</dt><dd>ゲームでこれらの入力が使用されるタッチ、マウス、キーボードも同じルールでサポートされます。このインターフェイスは、必要な電話、ランドスケープ、デスクトップのビューポート全体にわたって 1 つの論理レイアウトとして拡張されます。</dd></div><div><dt>進行状況を別のデバイスに自動的に移動できますか?</dt><dd>いいえ。現在、このゲームはローカル ブラウザ ストレージにのみ保存されるため、将来のアカウント システムが追加されない限り、別のブラウザ プロファイルまたはデバイスは独自のローカルの進行状況で開始されます。</dd></div></dl></div>
-      
-    </div>
-  </section>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="動物スケッチホイールラリー";document.title="動物スケッチホイールラリー | WeightPlay";},{once:true});</script>
 </body>
 </html>

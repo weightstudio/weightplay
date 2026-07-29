@@ -21,3 +21,10 @@
   .main-hero{display:grid;grid-template-columns:1fr;grid-template-rows:auto auto;min-height:0}
   .main-hero>.poster{width:100%;height:auto;max-height:none}
 }
+@media(max-height:500px) and (orientation:landscape){
+  .main-screen{height:100svh}
+  .main-hero .wp-standard-main-composition{grid-template-columns:minmax(0,calc(100svh - 86px)) minmax(0,1fr)!important;align-items:start!important;min-height:0;padding:9px 12px!important;gap:14px!important}
+  .main-hero .wp-standard-main-poster{width:100%!important;height:calc(100svh - 86px)!important;min-width:0!important;min-height:0!important;max-width:none!important;max-height:100%!important}
+  .main-hero .wp-standard-main-poster-media,.main-hero .wp-standard-main-poster-media>img,.main-hero .wp-standard-main-poster>img{width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;max-width:none!important;max-height:none!important}
+  .main-hero .wp-standard-main-copy{height:auto!important}
+}

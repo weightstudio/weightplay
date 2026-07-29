@@ -27,11 +27,15 @@
   <title>Animal Sketchwheel Rally | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css">
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css">
+  <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <script defer src="../../src/game-page-info.js"></script>
+  <script defer src="../../src/edge-guard.js"></script>
   <link rel="stylesheet" href="style.css?v=20260721-hands-on1">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
 </head>
-<body data-screen="loading" data-wp-combined-sound="true">
-  <section id="loading" class="loading" aria-live="polite"><img src="../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp" alt=""><strong>WeightPlay</strong><div><i id="loadingFill"></i></div></section>
+<body data-screen="loading" data-wp-game-id="animal-sketchwheel-rally" data-wp-combined-sound="true">
+  <section id="loadingPanel" class="loading" role="status" aria-live="polite"><span id="loading" hidden aria-hidden="true"></span><img src="../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp" alt=""><strong>WeightPlay</strong><div><i id="loadingFill"></i></div></section>
 
   <div id="mainGroup" class="main-group" hidden>
     <main class="main-screen">
@@ -41,11 +45,7 @@
         <div class="main-copy"><small data-t="kicker">DRAW-TO-DRIVE RALLY</small><h1 data-t="title">Animal Sketchwheel Rally</h1><p data-t="pitch">Draw Rux a wheel that matches the next terrain. Redraw during the live race before Fia reaches the finish.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">Start Game</button></div>
       </section>
     </main>
-    <article class="public-guide game-page-info">
-      <h2 data-t="guideTitle">Build the right wheel for every obstacle</h2>
-      <p data-t="guideIntro">Your line becomes both rune wheels. Its measured shape changes the cart's speed, height, grip, and clearance.</p>
-      <div class="guide-grid"><section><h3 data-t="guideHowTitle">How a race works</h3><p data-t="guideHow">Inspect the next terrain, draw in the forge pad, and release to commit. Keep drawing new profiles while the carts continue moving.</p></section><section><h3 data-t="guidePlanTitle">Plan the profile</h3><p data-t="guidePlan">Round profiles are fast, tall ones climb, corners grip mud, low shapes fit tunnels, and wide shapes span gaps.</p></section><section><h3 data-t="guideDesignTitle">Design idea</h3><p data-t="guideDesign">The game turns a freehand drawing into a readable mechanical decision instead of judging artistic accuracy.</p></section></div>
-    </article>
+    <section class="game-page-info first-steps" aria-label="Animal Sketchwheel Rally game information"></section>
   </div>
 
   <section id="stageScreen" class="screen-shell" hidden>
@@ -53,7 +53,7 @@
       <header class="stage-header"><button id="stageBack" type="button" data-wp-return="stage" aria-label="Back" data-t-aria="back">←</button><div><strong data-t="chooseRace">Choose a forge rally</strong><span id="stageSummary"></span></div><span class="rux-chip" aria-hidden="true"></span></header>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Race selector" data-t-aria="raceSelector"></div>
       <nav class="stage-tabs"><button id="raceTab" class="active" type="button" data-t="raceBrief">Race</button><button id="forgeTab" type="button" data-t="forge">Rune Forge</button></nav>
-      <section id="racePanel" class="stage-panel"><div class="selected-brief"><span id="selectedNumber"></span><div><strong id="selectedName"></strong><p id="selectedRule"></p></div><button id="enterRace" class="primary" type="button"></button></div><p class="stage-hint" data-t="stageHint">Drag the rail. The glowing card is the selected race.</p></section>
+      <section id="racePanel" class="stage-panel"><div class="selected-brief"><span id="selectedNumber"></span><div><strong id="selectedName"></strong><p id="selectedRule"></p></div><button id="enterRace" class="primary" type="button" data-t="enterRace">Enter race</button></div><p class="stage-hint" data-t="stageHint">Drag the rail. The glowing card is the selected race.</p></section>
       <section id="forgePanel" class="stage-panel forge-panel" hidden><div class="forge-heading"><div><strong data-t="forgeTitle">Rune Forge</strong><p data-t="forgeIntro">Spend Forge Bolts on tools that immediately help every race.</p></div><b id="boltCount"></b></div><div id="upgradeList" class="upgrade-list"></div><button id="lensBuy" class="lens-buy" type="button"></button><p id="forgeFeedback" role="status"></p></section>
     </div>
     <div class="wp-stage-physical-reserve" aria-hidden="true"></div>
