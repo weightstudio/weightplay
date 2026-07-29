@@ -289,7 +289,7 @@
     nodes.stagePanel.classList.remove("hidden");
     document.body.classList.add("wp-standard-stage-page");
     renderProgressUI();
-    requestAnimationFrame(() => nodes.stageGrid.querySelector(".stage-card.selected:not(:disabled)")?.focus({ preventScroll: true }));
+    requestAnimationFrame(() => nodes.stageGrid.querySelector(".stage-card.selected")?.focus({ preventScroll: true }));
   }
 
   function showMainFromStage() {
@@ -1800,8 +1800,8 @@
       const button = document.createElement("button");
       button.type = "button";
       button.className = `stage-card${profile.selectedMission === i ? " selected" : ""}`;
-      button.disabled = !unlocked;
       button.dataset.mission = String(i);
+      button.setAttribute("aria-disabled", unlocked ? "false" : "true");
       button.setAttribute("aria-pressed", profile.selectedMission === i ? "true" : "false");
       button.innerHTML = `
         <span>${t("missionLabel", { mission: i })}</span>
@@ -1847,6 +1847,7 @@
       const centered = Number(card.dataset.mission) === browsedMission;
       card.classList.toggle("selected", selected);
       card.classList.toggle("centered", centered);
+      card.tabIndex = centered ? 0 : -1;
       card.setAttribute("aria-pressed", selected ? "true" : "false");
       if (centered) card.setAttribute("aria-current", "true");
       else card.removeAttribute("aria-current");
@@ -1896,11 +1897,20 @@
     const mission = Number(nearest?.dataset.mission);
     if (!mission || mission === browsedMission) return;
     browsedMission = clamp(mission, 1, maxMission);
-    if (!nearest.disabled && mission !== profile.selectedMission) {
+    if (nearest.getAttribute("aria-disabled") !== "true" && mission !== profile.selectedMission) {
       profile.selectedMission = clamp(mission, 1, profile.unlockedMission);
       saveLocalState();
     }
     updateStageSelectionUI();
+  }
+
+  function browseStageByKeyboard(mission) {
+    browsedMission = clamp(mission, 1, maxMission);
+    updateStageSelectionUI();
+    scrollStageToSelected();
+    requestAnimationFrame(() => {
+      nodes.stageGrid.querySelector(`.stage-card[data-mission="${browsedMission}"]`)?.focus({ preventScroll: true });
+    });
   }
   function addXp(amount) {
     const gained = Math.max(0, Math.round(amount));
@@ -3314,7 +3324,17 @@
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
     });
     nodes.stageGrid.addEventListener("keydown", (event) => {
-      if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest(".stage-card")) event.preventDefault();
+      const card = event.target.closest(".stage-card");
+      if (!card) return;
+      if (event.key === "Home" || event.key === "End" || event.key === "ArrowLeft" || event.key === "ArrowRight") {
+        const rtl = document.documentElement.dir === "rtl";
+        const direction = event.key === "ArrowRight" ? (rtl ? -1 : 1) : event.key === "ArrowLeft" ? (rtl ? 1 : -1) : 0;
+        const mission = event.key === "Home" ? 1 : event.key === "End" ? maxMission : Number(card.dataset.mission) + direction;
+        event.preventDefault();
+        browseStageByKeyboard(mission);
+        return;
+      }
+      if ((event.repeat || card.getAttribute("aria-disabled") === "true") && (event.key === "Enter" || event.key === " ")) event.preventDefault();
     });
     nodes.stageBackBtn.addEventListener("click", showMainFromStage);
     nodes.stagePanel.querySelectorAll("[data-stage-tab]").forEach((button) => {

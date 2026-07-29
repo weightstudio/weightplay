@@ -2,8 +2,9 @@
   "use strict";
   const codes=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"],segments={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"},levels=window.SUNBEAM_LEVELS.levels;
   const $=s=>document.querySelector(s),screens=[...document.querySelectorAll(".screen")],key="wp-animal-sunbeam-v1";
-  let locale=read("wp-locale")||"en";if(!codes.includes(locale))locale="en";let unlocked=Number(read(key))||1,selected=Math.min(unlocked,30)-1,level=null,mirrors=[],moves=0,resultActionClaimed=false,rotationLocked=false;
+  let locale=read("wp-locale")||"en";if(!codes.includes(locale))locale="en";const storedUnlock=read(key);let unlocked=normalizeUnlock(storedUnlock),selected=Math.min(unlocked,30)-1,level=null,mirrors=[],moves=0,resultActionClaimed=false,rotationLocked=false;if(storedUnlock!==null&&storedUnlock!==String(unlocked))write(key,String(unlocked));
   function read(k){try{return localStorage.getItem(k)}catch{return null}}function write(k,v){try{localStorage.setItem(k,v)}catch{}}
+  function normalizeUnlock(value){const parsed=Number(value);return Number.isInteger(parsed)&&parsed>=1&&parsed<=31?parsed:1}
   function t(k,v={}){const value=window.SUNBEAM_LOCALES[locale]?.[k]??window.SUNBEAM_LOCALES.en[k]??k;return String(value).replace(/\{(\w+)\}/g,(_,n)=>v[n]??"")}
   function show(id){screens.forEach(screen=>screen.hidden=screen.id!==id);$("#generalReserve").hidden=id!=="battle";document.body.dataset.screen=id;window.scrollTo(0,0);if(id==="stage")renderStages()}
   function selectStage(index,center=false){selected=Math.max(0,Math.min(29,index));document.querySelectorAll("#stageGrid .stage-card").forEach((card,cardIndex)=>{const active=cardIndex===selected;card.classList.toggle("selected",active);card.classList.toggle("centered",active);card.setAttribute("aria-current",active?"true":"false")});if(center)document.querySelector(`#stageGrid [data-index="${selected}"]`)?.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"})}
