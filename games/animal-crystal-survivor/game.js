@@ -804,9 +804,11 @@
       playSound("wrong", 0.2);
       return;
     }
+    const transferFocus = document.activeElement === nodes.charmBtn;
     save.crystalCharm = true;
     persist();
     updateDiamondShop(t("charmBought", { balance: diamondBalance() }));
+    if (transferFocus) nodes.equipmentTabBtn?.focus({ preventScroll: true });
     playSound("success", 0.2);
     window.WonderAnalytics?.track("diamond_spend", { game_id: GAME_ID, item: "crystal_charm", cost: crystalCharmCost, balance: diamondBalance() });
   }
