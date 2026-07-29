@@ -14083,6 +14083,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Voltar ao menu do parque": "Voltar ao 메뉴 do parque",
   "Voltar ao menu principal": "Voltar ao 메뉴 주요",
   "Volver": "볼버",
+  "Volver a jugar": "주스를 마시다",
   "Volver a la pantalla principal": "볼베르 알라 판탈라 프린시펄",
   "Volver a la sala": "볼베르 아 라 살라",
   "Volver a la sala de juegos": "Volver a la sala de juegos",

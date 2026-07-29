@@ -111,6 +111,7 @@ body.wp-logical-battle-active .battle-ad-reserve[data-wp-battle-physical-reserve
 }
 .stage-header.wp-stage-shell-header{
   z-index:20!important;
+  width:auto!important;
   height:64px!important;
   min-height:64px!important;
 }
@@ -144,6 +145,17 @@ body.wp-logical-battle-active .battle-ad-reserve[data-wp-battle-physical-reserve
 }
 .stage-mode-tabs button:first-child{grid-column:2}
 .stage-mode-tabs button:last-child{grid-column:3}
+
+/* The game-local Stage anchors own the horizontal safe inset. Keep the shared
+   shell's full-width default from extending the native header past the Canvas. */
+body .stage-header.wp-stage-shell-header{
+  position:absolute!important;
+  width:auto!important;
+}
+
+/* First-session teaching is the active Stage decision layer and must remain
+   above the shared Stage header, including its Settings control. */
+body .tutorial-overlay{z-index:100!important}
 
 @media(max-width:700px){
   .main-header.wp-main-shell-header>.wp-shell-main-title{font-size:20px!important}

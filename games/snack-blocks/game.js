@@ -93,6 +93,7 @@
       failedText: "Score {score}. Goal {goal}. Try a bigger combo.",
       next: "Next Stage",
       again: "Try Again",
+      replay: "Replay",
       menu: "Stages",
       lobby: "Lobby",
       skillReport: "Skill Report",
@@ -255,7 +256,7 @@
     goalScoreKind: "Objetivo de puntos", goalCollectKind: "Objetivo de recogida", goalCollectPairKind: "Objetivo doble", goalCascadeKind: "Objetivo de cascada", goalBurstKind: "Objetivo de grupo grande", goalDualKind: "Punto de control",
     goalProgress: "{count} / {target}", goalReady: "¡Objetivo alcanzado! Usa los movimientos restantes para ganar más puntos.", loading: "Cargando", clear: "¡Nivel completado!", failed: "¡Inténtalo de nuevo!",
     clearText: "Puntuación {score}. Objetivo {goal}. Mejor {best}.", finalClearText: "Puntuación {score}. Objetivo {goal}. ¡Todos los niveles completados!", failedText: "Puntuación {score}. Objetivo {goal}. Prueba un combo mayor.",
-    next: "Siguiente nivel", again: "Intentar de nuevo", menu: "Niveles", lobby: "Sala de juegos", skillReport: "Informe de habilidades", todayScore: "Puntuación de hoy", previousBest: "Mejor anterior", improvement: "Mejora",
+    next: "Siguiente nivel", again: "Intentar de nuevo", replay: "Volver a jugar", menu: "Niveles", lobby: "Sala de juegos", skillReport: "Informe de habilidades", todayScore: "Puntuación de hoy", previousBest: "Mejor anterior", improvement: "Mejora",
     logicSkill: "Lógica", problemSolvingSkill: "Resolución de problemas", focusSkill: "Concentración", progressNewBest: "¡Gran progreso! Mejoraste tu récord.", progressImproved: "¡Buena mejora! Esta vez planificaste mejor.", progressSteady: "¡Buen esfuerzo! Inténtalo otra vez para mejorar la atención y los combos.", progressNote: "Las puntuaciones solo sirven para divertirse y seguir el progreso local.",
     boardAria: "Tablero de Bloques de Merienda", tileAria: "{snack}, fila {row}, columna {column}", homeAria: "Volver a la sala Kids", languageAria: "Idioma", gameStatsAria: "Estadísticas del juego", stageSelectAria: "Selección de nivel", stageBackAria: "Volver al inicio", battleBackAria: "Volver a los niveles", leaveTitle: "¿Salir de esta etapa?", leaveText: "Perderás el tablero, los movimientos, la puntuación y el combo.", keepPlaying: "Seguir jugando", leaveStage: "Salir de la etapa",
     snackST: "Fresa", snackCK: "Galleta", snackJM: "Caramelo", snackGR: "Uva", snackCH: "Queso", snackPR: "Pretzel",
@@ -266,12 +267,14 @@
     pauseTitle: "\u904a\u6232\u5df2\u66ab\u505c",
     pauseText: "\u68cb\u76e4\u6b63\u5728\u7b49\u4f60\uff0c\u6e96\u5099\u597d\u518d\u7e7c\u7e8c\u3002",
     resume: "\u7e7c\u7e8c\u904a\u73a9",
+    replay: "\u518d\u73a9\u4e00\u6b21",
   });
   Object.assign(text.es, {
     pauseAria: "Pausar el juego",
     pauseTitle: "Juego en pausa",
     pauseText: "Tu tablero te espera. Continúa cuando quieras.",
     resume: "Continuar",
+    replay: "Volver a jugar",
   });
 
   const stageNameTranslations = {
@@ -372,7 +375,6 @@
     nextBtn: document.getElementById("nextBtn"),
     againBtn: document.getElementById("againBtn"),
     menuBtn: document.getElementById("menuBtn"),
-    lobbyLink: document.getElementById("lobbyLink"),
     loadingPanel: document.getElementById("loadingPanel"),
     loadingTitle: document.getElementById("loadingTitle"),
     loadingText: document.getElementById("loadingText"),
@@ -404,6 +406,7 @@
     focusIndex: null,
     leaveConfirmOpen: false,
     decisionMode: null,
+    resultActionCommitted: false,
   };
   let boardGeneration = 0;
   let boardWindowFocused = document.hasFocus();
@@ -695,7 +698,6 @@
   }
 
   function applyText() {
-    updateMetadata();
     nodes.brandText.textContent = t("brand");
     nodes.titleText.textContent = t("title");
     nodes.languageLabel.textContent = t("language");
@@ -711,9 +713,8 @@
     nodes.hintText.textContent = t("hint");
     nodes.loadingTitle.textContent = t("loading");
     nodes.nextBtn.textContent = t("next");
-    nodes.againBtn.textContent = t("again");
+    nodes.againBtn.textContent = t("replay");
     nodes.menuBtn.textContent = t("menu");
-    nodes.lobbyLink.textContent = t("lobby");
     nodes.homeLink.setAttribute("aria-label", t("homeAria"));
     nodes.localeSelect.setAttribute("aria-label", t("languageAria"));
     nodes.hud.setAttribute("aria-label", t("gameStatsAria"));
@@ -1358,6 +1359,7 @@
     state.running = false;
     state.busy = true;
     const stage = activeStage();
+    state.resultActionCommitted = false;
     const progress = saveRecord(stage.id, state.score)[stage.id];
     const best = progress.bestScore || state.score;
     if (cleared && stage.id < stages.length) {
@@ -1370,9 +1372,12 @@
       : t("failedText", { score: state.score, goal: goalLabel(stage) });
     nodes.resultStars.textContent = cleared ? ratingStars() : "";
     renderSkillReport(progress, cleared);
-    nodes.nextBtn.classList.toggle("hidden", !cleared || stage.id >= stages.length);
+    const nextAvailable = cleared && stage.id < stages.length;
+    nodes.nextBtn.classList.remove("hidden");
+    nodes.nextBtn.disabled = !nextAvailable;
+    nodes.nextBtn.setAttribute("aria-disabled", String(!nextAvailable));
     const primaryAction = cleared
-      ? (stage.id < stages.length ? nodes.nextBtn : nodes.menuBtn)
+      ? (nextAvailable ? nodes.nextBtn : nodes.menuBtn)
       : nodes.againBtn;
     [nodes.nextBtn, nodes.againBtn, nodes.menuBtn].forEach((action) => {
       action.classList.toggle("primary-action", action === primaryAction);
@@ -1492,15 +1497,26 @@
     },
   };
 
-  nodes.nextBtn.addEventListener("click", () => startStage(Math.min(state.currentStageIndex + 1, stages.length - 1)));
-  nodes.againBtn.addEventListener("click", () => {
-    window.WonderAnalytics?.track("game_restart", {
-      game_id: GAME_ID,
-      stage: activeStage().id,
-    });
-    startStage(state.currentStageIndex);
+  function commitResultAction(action) {
+    if (state.resultActionCommitted) return;
+    state.resultActionCommitted = true;
+    action();
+  }
+
+  nodes.nextBtn.addEventListener("click", () => {
+    if (nodes.nextBtn.disabled) return;
+    commitResultAction(() => startStage(Math.min(state.currentStageIndex + 1, stages.length - 1)));
   });
-  nodes.menuBtn.addEventListener("click", showMenu);
+  nodes.againBtn.addEventListener("click", () => {
+    commitResultAction(() => {
+      window.WonderAnalytics?.track("game_restart", {
+        game_id: GAME_ID,
+        stage: activeStage().id,
+      });
+      startStage(state.currentStageIndex);
+    });
+  });
+  nodes.menuBtn.addEventListener("click", () => commitResultAction(showMenu));
   nodes.startBtn.addEventListener("keydown", rejectRepeatedScreenActivation, true);
   nodes.stageGrid.addEventListener("keydown", rejectRepeatedScreenActivation, true);
   nodes.startBtn.addEventListener("click", () => showStage());

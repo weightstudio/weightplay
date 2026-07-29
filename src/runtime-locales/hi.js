@@ -14083,6 +14083,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Voltar ao menu do parque": "वोल्टार एओ मेन्यू दो पार्के",
   "Voltar ao menu principal": "वोल्टार एओ मेनू प्रिंसिपल",
   "Volver": "वोल्वर",
+  "Volver a jugar": "वॉल्वर ए जगर",
   "Volver a la pantalla principal": "वोल्वर ए ला पैंटाला प्रिंसिपल",
   "Volver a la sala": "वोल्वर ए ला साला",
   "Volver a la sala de juegos": "वॉल्वर ए ला साला डे जुएगोस",

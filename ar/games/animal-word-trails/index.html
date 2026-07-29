@@ -63,7 +63,7 @@
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/play-viewport.css">
-  <link rel="stylesheet" href="style.css?v=20260720-tile-interaction1">
+  <link rel="stylesheet" href="style.css?v=20260729-result-v4">
   <script data-wp-stage-standard>/* Animal Word Trails owns its native Kids Stage rail. */</script>
   <script data-wp-battle-standard>/* Animal Word Trails owns its native Kids Battle Canvas. */</script>
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
@@ -106,7 +106,7 @@
         <section id="resultPanel" class="result-overlay result-screen hidden" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="wordResultTitle">
         <img class="leo" src="../../assets/animal-word-trails-lion-guide.webp" alt="">
         <h2 id="wordResultTitle" data-copy="complete">Trail complete</h2><p id="resultSummary"></p><p class="skill" data-copy="skill">Reading &middot; Focus &middot; Logic &middot; Animal knowledge</p>
-        <div class="result-actions"><button class="primary" id="next" data-copy="next">Next trail</button><button class="secondary" id="resultsBack" data-wp-return="battle" data-copy="trails">Trail menu</button></div>
+        <div class="result-actions" data-wp-result-actions><button class="secondary" id="resultsBack" data-wp-return="battle" data-copy="trails">Trail menu</button><button class="primary" id="next" data-copy="next">Next trail</button><button class="secondary" id="replay" data-copy="replay">Replay</button></div>
         </section>
         <section id="leaveConfirmPanel" class="leave-confirm-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="leaveConfirmTitle" aria-describedby="leaveConfirmMessage">
           <div class="leave-confirm-card"><h2 id="leaveConfirmTitle" data-copy="leaveTitle">Leave this trail?</h2><p id="leaveConfirmMessage" data-copy="leaveMessage">Found words, the current path, and star progress in this run will reset.</p><div class="leave-confirm-actions"><button id="keepReading" class="primary" data-copy="keepReading">Keep reading</button><button id="leaveTrail" class="secondary" data-copy="leaveTrail">Leave trail</button></div></div>
@@ -121,7 +121,7 @@
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js"></script>
-  <script src="game.js?v=20260720-tile-interaction1"></script>
+  <script src="game.js?v=20260729-result-v4"></script>
   <section class="game-page-info game-page-info-static" aria-label="مسارات كلمة الحيوان معلومات اللعبة">
     
     <div class="game-info-hero">

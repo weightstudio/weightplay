@@ -14083,6 +14083,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
   "Voltar ao menu do parque": "Voltar ao 公园菜单",
   "Voltar ao menu principal": "Voltar ao菜单主要",
   "Volver": "沃尔弗",
+  "Volver a jugar": "沃尔沃一壶",
   "Volver a la pantalla principal": "沃尔弗·拉·潘塔拉校长",
   "Volver a la sala": "萨拉萨拉",
   "Volver a la sala de juegos": "游戏大厅",

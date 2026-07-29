@@ -14083,6 +14083,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Voltar ao menu do parque": "Voltar ao メニュー ド パルケ",
   "Voltar ao menu principal": "Voltar ao メニュー プリンシパル",
   "Volver": "ボルベール",
+  "Volver a jugar": "ボルベール・ア・ジュガール",
   "Volver a la pantalla principal": "ヴォルベール・ア・ラ・パンタラ・プリンシパル",
   "Volver a la sala": "ボルベール・ア・ラ・サラ",
   "Volver a la sala de juegos": "ボルベール・ア・ラ・サラ・デ・ジュエゴス",

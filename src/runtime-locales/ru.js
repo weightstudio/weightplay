@@ -14083,6 +14083,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "Voltar ao menu do parque": "Загляните в меню до парка",
   "Voltar ao menu principal": "Включить основное меню",
   "Volver": "Волвер",
+  "Volver a jugar": "Волвер кувшин",
   "Volver a la pantalla principal": "Волвер а-ля панталла главный",
   "Volver a la sala": "Волвер а ля сала",
   "Volver a la sala de juegos": "Продолжайте играть в зале игры",

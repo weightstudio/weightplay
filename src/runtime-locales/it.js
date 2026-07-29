@@ -14083,6 +14083,7 @@ window.WeightPlayGameRuntimeLocales["it"] = {
   "Voltar ao menu do parque": "Voltar ao menu do parque",
   "Voltar ao menu principal": "Torna al menu principale",
   "Volver": "Volver",
+  "Volver a jugar": "Volver a jugar",
   "Volver a la pantalla principal": "Volver alla pantalla principale",
   "Volver a la sala": "Volver a la sala",
   "Volver a la sala de juegos": "Volver a la sala de juegos",

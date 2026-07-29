@@ -65,7 +65,7 @@
   <link rel="stylesheet" href="../../src/loading-screen.css" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="style.css?v=20260720-ball-flight3" />
+  <link rel="stylesheet" href="style.css?v=20260729-interface-v4" />
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
 </head>
 <body data-screen="loading" data-game-id="animal-color-springs">
@@ -106,7 +106,7 @@
       <section id="vesselBoard" class="vessel-board" aria-label="彩泉分類盤" data-i18n-aria="boardLabel"></section>
       <div class="battle-actions"><button id="undoBtn" type="button"><span aria-hidden="true">↶</span><b data-i18n="undo">復原</b></button><button id="restartBtn" type="button"><span aria-hidden="true">↻</span><b data-i18n="restart">重來</b></button><button id="hintBtn" type="button"><span aria-hidden="true">✦</span><b data-i18n="hint">提示</b></button></div>
 
-      <section id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt="" /><small data-i18n="resultKicker">彩泉修復完成</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p><div class="modal-actions"><button id="retryBtn" type="button" data-i18n="retry">再玩一次</button><button id="resultStagesBtn" type="button" data-i18n="stages">回到關卡</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">下一關</button></div></div></section>
+      <section id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" alt="" /><small data-i18n="resultKicker">彩泉修復完成</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p><div class="modal-actions" data-wp-result-actions><button id="resultStagesBtn" type="button" data-i18n="stages">回到關卡</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">下一關</button><button id="retryBtn" type="button" data-i18n="retry">再玩一次</button></div></div></section>
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-i18n="leaveTitle">要保留這次整理嗎？</h2><p data-i18n="leaveText">繼續會回到目前局面；回到關卡會結束這一局。</p><div class="modal-actions"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">繼續遊戲</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">回到關卡</button></div></div></section>
     </div>
   </section>
@@ -115,7 +115,7 @@
 
   <div id="toast" class="toast" aria-live="polite"></div>
   <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="../../src/edge-guard.js"></script>
-  <script src="locales.js"></script><script src="game.js?v=20260720-ball-flight3"></script><script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script><section class="game-page-info game-page-info-static" aria-label="Animal Color Springs game information">
+  <script src="locales.js"></script><script src="game.js?v=20260729-interface-v4"></script><script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script><section class="game-page-info game-page-info-static" aria-label="Animal Color Springs game information">
     
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Animal Color Springs</h2><p>Animal Color Springs is a 30-stage sorting puzzle about moving colored spring orbs between ornate vessels until every vessel contains one color.</p></div>

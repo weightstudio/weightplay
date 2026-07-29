@@ -28,6 +28,39 @@ body {
     var(--bg);
 }
 
+/* Short landscape keeps the complete first-session poster and Start action in
+   the initial viewport. This is a compact form of the same two-track Main
+   composition, not an independently reflowed or cropped child layout. */
+@media (max-height: 480px) and (orientation: landscape) {
+  body #menuPanel.wp-standard-main-composition {
+    grid-template-columns: 300px minmax(0, 1fr) !important;
+    gap: 14px !important;
+    padding: 4px 10px !important;
+  }
+
+  body #menuPanel .wp-standard-main-poster,
+  body #menuPanel .wp-standard-main-poster-media,
+  body #menuPanel .wp-standard-main-poster-media > img,
+  body #menuPanel .wp-standard-main-poster > img {
+    width: 300px !important;
+    min-width: 300px !important;
+    max-width: 300px !important;
+    height: 300px !important;
+    min-height: 300px !important;
+    max-height: 300px !important;
+  }
+
+  body #menuPanel .wp-standard-main-poster {
+    position: relative !important;
+    top: -4px !important;
+  }
+
+  body #menuPanel .wp-standard-main-copy {
+    height: 300px !important;
+    gap: 10px !important;
+  }
+}
+
 button,
 select {
   font: inherit;

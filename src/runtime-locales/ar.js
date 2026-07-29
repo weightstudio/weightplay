@@ -14083,6 +14083,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Voltar ao menu do parque": "فولتار أو قائمة باركيه",
   "Voltar ao menu principal": "فولتار أو القائمة الرئيسية",
   "Volver": "فولفر",
+  "Volver a jugar": "فولفر إبريق",
   "Volver a la pantalla principal": "فولفر على الشاشة الرئيسية",
   "Volver a la sala": "فولفر لا سالا",
   "Volver a la sala de juegos": "استمتع بلعب الألعاب",

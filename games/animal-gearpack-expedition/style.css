@@ -42,6 +42,15 @@ body.wp-logical-battle-active.is-game-playing #battleScreen .battle-canvas[data-
 .stage-badges{min-height:22px;display:flex;justify-content:center;gap:5px;overflow:hidden}
 .stage-badges b,.stage-badges em{padding:3px 6px;border-radius:999px;font-size:10px;font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .stage-badges b{color:#271500;background:var(--gold)}.stage-badges em{color:#04251d;background:var(--teal)}
+
+/* Keep the Stage exit legible after the shared return-control treatment wins
+   the cascade. The pale blue arrow was visually lost against its white tile. */
+.stage-header>#stageBackBtn[data-wp-return="stage"]{
+  border:2px solid #8ef0cd!important;
+  background:#082f2a!important;
+  color:#fff!important;
+  text-shadow:0 1px 0 #000!important;
+}
 .region-card.is-selected{border-color:#8fffe0;box-shadow:0 0 0 3px #42d8c077,0 0 24px #42d8c0aa,0 10px 24px #000b}.region-card.is-selected img{filter:brightness(.92)}
 .region-card.is-checkpoint{border-color:#c69a45}.region-card.is-checkpoint.is-selected{border-color:#fff0a8}
 .region-card:disabled{opacity:.48;filter:saturate(.3)}.region-card:disabled.is-selected{opacity:1}

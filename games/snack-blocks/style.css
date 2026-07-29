@@ -120,6 +120,20 @@ button {
   font-weight: 800;
 }
 
+.wp-shell-language-row > .language-picker {
+  display: contents;
+}
+
+.wp-shell-language-row > .language-picker > span {
+  display: none !important;
+}
+
+.wp-shell-language-row > .language-picker > select {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+}
+
 .hud {
   display: grid;
   grid-template-columns: 48px repeat(3, minmax(0, 1fr)) 48px;
@@ -167,7 +181,14 @@ button {
   flex-direction: column;
   justify-content: center;
   gap: 12px;
+}
+
+.menu-panel {
   animation: snack-panel-pop 0.4s cubic-bezier(0.17, 0.9, 0.28, 1.2);
+}
+
+.result-card {
+  animation: snack-panel-fade 0.24s ease-out;
 }
 
 .primary-action {
@@ -233,7 +254,7 @@ button {
   font-size: 1.5rem;
 }
 
-.menu-panel img {
+.menu-panel > img {
   width: min(260px, 68%);
   aspect-ratio: 1;
   object-fit: cover;
@@ -243,14 +264,14 @@ button {
   box-shadow: 0 16px 38px rgba(0, 0, 0, 0.25);
 }
 
-.menu-panel strong,
+.menu-panel > strong,
 .result-card strong {
   font-size: clamp(1.35rem, 7vw, 2rem);
   line-height: 1.05;
   text-align: center;
 }
 
-.menu-panel span,
+.menu-panel > span,
 .result-card span,
 .hint {
   color: #f5e0b1;
@@ -272,7 +293,7 @@ button {
     overflow: hidden;
   }
 
-  body:not(.snack-stage):not(.snack-playing) .menu-panel img {
+  body:not(.snack-stage):not(.snack-playing) .menu-panel > img {
     grid-column: 1;
     grid-row: 1 / 4;
     width: 100%;
@@ -281,21 +302,21 @@ button {
     aspect-ratio: auto;
   }
 
-  body:not(.snack-stage):not(.snack-playing) .menu-panel strong {
+  body:not(.snack-stage):not(.snack-playing) .menu-panel > strong {
     grid-column: 2;
     grid-row: 1;
     align-self: start;
     text-align: left;
   }
 
-  body:not(.snack-stage):not(.snack-playing) .menu-panel span {
+  body:not(.snack-stage):not(.snack-playing) .menu-panel > span {
     grid-column: 2;
     grid-row: 2;
     align-self: start;
     text-align: left;
   }
 
-  body:not(.snack-stage):not(.snack-playing) .menu-panel .primary-action {
+  body:not(.snack-stage):not(.snack-playing) .menu-panel > .primary-action {
     grid-column: 2;
     grid-row: 3;
     width: 100%;
@@ -308,11 +329,11 @@ button {
     gap: 8px 12px;
   }
 
-  body:not(.snack-stage):not(.snack-playing) .menu-panel strong {
+  body:not(.snack-stage):not(.snack-playing) .menu-panel > strong {
     font-size: 1.75rem;
   }
 
-  body:not(.snack-stage):not(.snack-playing) .menu-panel span {
+  body:not(.snack-stage):not(.snack-playing) .menu-panel > span {
     font-size: 0.95rem;
   }
 }
@@ -615,6 +636,10 @@ button:active {
   background: rgba(18, 21, 31, 0.86);
   border: 1px solid rgba(255, 255, 255, 0.16);
   box-shadow: 0 22px 54px rgba(0, 0, 0, 0.34);
+}
+
+.result-card > button {
+  flex: 0 0 44px;
 }
 
 .result-stars {
@@ -944,6 +969,15 @@ body.snack-playing .wp-tutorial-button {
   }
 }
 
+@keyframes snack-panel-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @keyframes snack-tile-appear {
   from {
     opacity: 0;
@@ -1114,7 +1148,7 @@ body.snack-playing .wp-tutorial-button {
 
   body.snack-playing .result-card {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-auto-rows: auto;
     align-content: center;
     gap: 5px 8px;
@@ -1165,7 +1199,7 @@ body.snack-playing .wp-tutorial-button {
     line-height: 1.15;
   }
 
-  body.snack-playing .result-card > :is(button, a) {
+  body.snack-playing .result-card > button {
     min-height: 44px;
     padding: 5px;
     font-size: 0.76rem;
