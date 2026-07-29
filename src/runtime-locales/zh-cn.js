@@ -4671,6 +4671,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
   "Empezar a jugar": "恩佩扎壶",
   "Empezar batalla": "恩佩扎·巴塔拉",
   "Empezar encuentro": "恩佩扎·恩昆恩特罗",
+  "Empezar juego": "恩佩扎游戏",
   "Empezar nivel": "恩佩扎·尼韦尔",
   "Empezar partida": "红叶蜂",
   "Empieza cada batalla con {amount} de bloqueo": "Empieza cada batalla con {amount} de bloqueo",

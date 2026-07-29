@@ -4671,6 +4671,7 @@ window.WeightPlayGameRuntimeLocales["pt-BR"] = {
   "Empezar a jugar": "Empezar um jogo",
   "Empezar batalla": "Batalha de Empezar",
   "Empezar encuentro": "Encontro de Empezar",
+  "Empezar juego": "Empezar jogo",
   "Empezar nivel": "Empezar nível",
   "Empezar partida": "Partida de Empezar",
   "Empieza cada batalla con {amount} de bloqueo": "Empieza cada batalha com {amount} de bloqueio",

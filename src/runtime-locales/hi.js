@@ -4671,6 +4671,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Empezar a jugar": "एम्पेज़ार एक गुड़",
   "Empezar batalla": "एम्पेज़र बटाला",
   "Empezar encuentro": "एम्पेज़र एन्कुएंट्रो",
+  "Empezar juego": "एम्पेज़र जुएगो",
   "Empezar nivel": "एम्पेज़र निवेल",
   "Empezar partida": "एम्पेज़र पार्टिडा",
   "Empieza cada batalla con {amount} de bloqueo": "ब्लोकेओ से {amount} तक का आनंद लें",

@@ -143,6 +143,7 @@ const dictionary = {
     moves: "Moves",
     fruit: "Fruit",
     chooseTrail: "Choose Trail",
+    startGame: "Start Game",
     start: "Start",
     locked: "Locked",
     complete: "Complete",
@@ -216,6 +217,7 @@ const dictionary = {
     moves: "\u6b65\u6578",
     fruit: "\u6c34\u679c",
     chooseTrail: "\u9078\u64c7\u8def\u7dda",
+    startGame: "\u958b\u59cb\u904a\u6232",
     start: "\u958b\u59cb",
     locked: "\u672a\u89e3\u9396",
     complete: "\u5b8c\u6210",
@@ -289,6 +291,7 @@ const dictionary = {
     moves: "Movimientos",
     fruit: "Fruta",
     chooseTrail: "Seleccionar ruta",
+    startGame: "Empezar juego",
     start: "Empezar",
     locked: "Bloqueada",
     complete: "Completada",
@@ -580,7 +583,7 @@ function renderStaticText() {
   mainTitle.textContent = t("title");
   mainIntro.textContent = t("hint");
   mainProgress.textContent = `${t("stage")} ${unlocked} / ${levels.length}`;
-  showStageBtn.textContent = t("chooseTrail");
+  showStageBtn.textContent = t("startGame");
   stageLabel.textContent = t("stage");
   moveLabel.textContent = t("moves");
   fruitLabel.textContent = t("fruit");

@@ -27,12 +27,12 @@ body.playing > .game-page-info { display: none; }
 #mainScreen.wp-standard-main-screen { height:100vh !important; height:100dvh !important; min-height:100vh !important; min-height:100dvh !important; overflow:hidden !important; }
 #mainScreen .wp-standard-main-composition { min-height:calc(100vh - 72px); min-height:calc(100dvh - 72px); align-content:center; }
 @media (max-height:500px) and (min-width:700px) {
-  #mainScreen .wp-standard-main-composition { grid-template-columns:260px minmax(0,1fr) !important; min-height:calc(100vh - 64px); min-height:calc(100dvh - 64px); gap:14px !important; padding:8px !important; }
+  #mainScreen .wp-standard-main-composition { grid-template-columns:300px minmax(0,1fr) !important; min-height:calc(100vh - 64px); min-height:calc(100dvh - 64px); gap:14px !important; padding:8px !important; }
   #mainScreen .wp-standard-main-poster,
   #mainScreen .wp-standard-main-poster-media,
   #mainScreen .wp-standard-main-poster-media > img,
-  #mainScreen .wp-standard-main-poster > img { width:260px !important; min-width:260px !important; max-width:260px !important; height:260px !important; min-height:260px !important; max-height:260px !important; }
-  #mainScreen .wp-standard-main-copy { height:260px; }
+  #mainScreen .wp-standard-main-poster > img { width:300px !important; min-width:300px !important; max-width:300px !important; height:300px !important; min-height:300px !important; max-height:300px !important; }
+  #mainScreen .wp-standard-main-copy { height:300px; }
   .result-overlay { padding:20px; }
   .result-card { width:700px; max-width:calc(100% - 40px); max-height:730px; padding:28px 38px; gap:15px; }
   .result-card h2 { font-size:40px; }

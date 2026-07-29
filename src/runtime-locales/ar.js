@@ -4671,6 +4671,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Empezar a jugar": "امبزار إبريق",
   "Empezar batalla": "إمبيزار باتالا",
   "Empezar encuentro": "قم باللقاء مرة أخرى",
+  "Empezar juego": "لعبة إمبزار",
   "Empezar nivel": "مستوى الامبيزار",
   "Empezar partida": "المشاركة",
   "Empieza cada batalla con {amount} de bloqueo": "العب كل معركة مع {amount} من القفل",

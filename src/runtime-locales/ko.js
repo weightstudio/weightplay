@@ -4671,6 +4671,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Empezar a jugar": "엠페자르 아 주가르",
   "Empezar batalla": "엠페자르 바탈라",
   "Empezar encuentro": "엠페자르 엔쿠엔트로",
+  "Empezar juego": "엠페자르 게임",
   "Empezar nivel": "엠페자르 니벨",
   "Empezar partida": "엠페자르 파르티다",
   "Empieza cada batalla con {amount} de bloqueo": "Empieza cada batalla con {amount} de bloqueo",

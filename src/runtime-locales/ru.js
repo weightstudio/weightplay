@@ -4671,6 +4671,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "Empezar a jugar": "Эмпезар - кувшин",
   "Empezar batalla": "Эмпезар Баталла",
   "Empezar encuentro": "Эмпезар в гостях",
+  "Empezar juego": "Эмпесар игра",
   "Empezar nivel": "Эмпезар нивель",
   "Empezar partida": "Эмпезар партида",
   "Empieza cada batalla con {amount} de bloqueo": "Empieza cada batalla con {amount} de bloqueo",

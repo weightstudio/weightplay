@@ -4671,6 +4671,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Empezar a jugar": "エンペザール・ア・ジュガー",
   "Empezar batalla": "エンペザル・バタラ",
   "Empezar encuentro": "エンペザールエンクエントロ",
+  "Empezar juego": "エンペザル・フエゴ",
   "Empezar nivel": "エンペザール・ニベル",
   "Empezar partida": "エンペザール・パルティダ",
   "Empieza cada batalla con {amount} de bloqueo": "エンピエサ カダ バタラ コン {amount} デ ブロック",
