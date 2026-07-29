@@ -81,6 +81,9 @@
     }
     root ||= rail.closest([
       "[data-wp-standard-stage-screen]",
+      "[data-wp-logical-stage-canvas]",
+    ].join(","));
+    root ||= rail.closest([
       "[data-screen='stage']",
       "#stageScreen",
       "#stageView",

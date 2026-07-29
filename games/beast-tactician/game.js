@@ -1966,11 +1966,13 @@
       window.requestAnimationFrame(() => nodes.techGrid.querySelector('[data-cosmetic-id="goldenFrame"]')?.focus({ preventScroll: true }));
       return;
     }
+    const transferFocus = document.activeElement?.dataset?.cosmeticId === "goldenFrame";
     clearGoldenFrameConfirmation();
     state.save.diamonds -= 15;
     state.save.cosmetics.goldenFrame = true;
     save();
     renderTech();
+    if (transferFocus) nodes.equipmentTabBtn?.focus({ preventScroll: true });
     playSfx("unlock");
     track("game_spend_virtual_currency", { stage: state.currentStage, item: "golden_defender_frame", currency: "diamonds", amount: 15 });
   }

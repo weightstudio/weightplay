@@ -27,6 +27,12 @@
   let moves = 0;
   let departingBusIndexes = [];
   let departureTimer = 0;
+  let departureDeadline = 0;
+  let departureRemaining = 0;
+  let lifecycleSuspended = false;
+  let windowActive = true;
+  let pageVisible = !document.hidden;
+  let pageCached = false;
   let resultActionClaimed = false;
   const progressKey = "animalBusJamProgress";
   let progress;
@@ -89,6 +95,8 @@
     if (name !== "battle") {
       window.clearTimeout(departureTimer);
       departureTimer = 0;
+      departureDeadline = 0;
+      departureRemaining = 0;
       departingBusIndexes = [];
       $("buses").replaceChildren();
     }
@@ -97,6 +105,43 @@
     document.body.dataset.screen = name;
     screen = name;
     window.scrollTo(0, 0);
+  }
+
+  function settleDeparture() {
+    departureTimer = 0;
+    departureDeadline = 0;
+    departureRemaining = 0;
+    if (lifecycleSuspended || screen !== "battle" || !departingBusIndexes.length) return;
+    departingBusIndexes = [];
+    render();
+    if (engine.isComplete(levels[levelIndex], state)) finishLevel();
+  }
+
+  function scheduleDeparture(duration) {
+    window.clearTimeout(departureTimer);
+    departureRemaining = Math.max(0, duration);
+    if (lifecycleSuspended) {
+      departureTimer = 0;
+      departureDeadline = 0;
+      return;
+    }
+    departureDeadline = performance.now() + departureRemaining;
+    departureTimer = window.setTimeout(settleDeparture, departureRemaining);
+  }
+
+  function suspendDeparture() {
+    lifecycleSuspended = true;
+    if (!departureTimer) return;
+    departureRemaining = Math.max(0, departureDeadline - performance.now());
+    window.clearTimeout(departureTimer);
+    departureTimer = 0;
+    departureDeadline = 0;
+  }
+
+  function resumeDeparture() {
+    if (!lifecycleSuspended || !windowActive || !pageVisible || pageCached) return;
+    lifecycleSuspended = false;
+    if (screen === "battle" && departingBusIndexes.length) scheduleDeparture(departureRemaining);
   }
 
   function selectStage(index, center = false) {
@@ -225,6 +270,8 @@
   function startLevel(index) {
     window.clearTimeout(departureTimer);
     departureTimer = 0;
+    departureDeadline = 0;
+    departureRemaining = 0;
     departingBusIndexes = [];
     $("buses").replaceChildren();
     levelIndex = index;
@@ -270,12 +317,7 @@
       window.clearTimeout(departureTimer);
       const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
       const departureDuration = reducedMotion ? 80 : 560 + (departingBusIndexes.length - 1) * 90;
-      departureTimer = window.setTimeout(() => {
-        departingBusIndexes = [];
-        departureTimer = 0;
-        render();
-        if (engine.isComplete(level, state)) finishLevel();
-      }, departureDuration);
+      scheduleDeparture(departureDuration);
     }
     render();
     $("status").textContent = color === activeColor ? t("boarded") : t("held");
@@ -311,6 +353,8 @@
     if (!saved) return;
     window.clearTimeout(departureTimer);
     departureTimer = 0;
+    departureDeadline = 0;
+    departureRemaining = 0;
     departingBusIndexes = [];
     restore(saved);
     render();
@@ -390,6 +434,27 @@
     write("wp-locale", locale);
     applyLocale();
     window.setTimeout(() => { if (locale === next) applyLocale(); }, 0);
+  });
+  window.addEventListener("blur", () => {
+    windowActive = false;
+    suspendDeparture();
+  });
+  window.addEventListener("focus", () => {
+    windowActive = true;
+    resumeDeparture();
+  });
+  window.addEventListener("pagehide", () => {
+    pageCached = true;
+    suspendDeparture();
+  });
+  window.addEventListener("pageshow", () => {
+    pageCached = false;
+    resumeDeparture();
+  });
+  document.addEventListener("visibilitychange", () => {
+    pageVisible = !document.hidden;
+    if (pageVisible) resumeDeparture();
+    else suspendDeparture();
   });
 
   applyLocale();

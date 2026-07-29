@@ -122,10 +122,16 @@ function renderWorkshop(){
   $$("[data-upgrade]").forEach(button=>button.addEventListener("click",()=>buyUpgrade(button.dataset.upgrade)));
 }
 function buyUpgrade(id){
+  const restoreDecisionFocus=document.activeElement?.dataset?.upgrade===id;
   const level=save.upgrades[id],cost=(level+1)*3;
   if(level>=3)return;
   if(save.bolts<cost){$("workshopFeedback").textContent=t("needBolts");return}
   save.bolts-=cost;save.upgrades[id]++;persist();$("workshopFeedback").textContent=t("upgradeDone");renderStage();
+  if(restoreDecisionFocus)requestAnimationFrame(()=>{
+    const current=document.querySelector(`[data-upgrade="${id}"]`);
+    const target=current&&!current.disabled?current:document.querySelector("[data-upgrade]:not(:disabled)")||$("workshopTab");
+    target?.focus({preventScroll:true});
+  });
 }
 
 function startMission(index){
