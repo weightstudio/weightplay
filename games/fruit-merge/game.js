@@ -907,9 +907,9 @@
     const isStage = document.body.classList.contains("fruit-stage");
     const safeWidth = visualViewport?.width || innerWidth;
     const viewportHeight = visualViewport?.height || innerHeight;
-    const shortLandscapeStage = isStage && viewportHeight <= 430 && safeWidth > viewportHeight;
-    const minimumLogicalWidth = shortLandscapeStage ? 760 : isStage ? 390 : 382;
-    const minimumLogicalHeight = shortLandscapeStage ? 360 : isStage ? 788 : 780;
+    const shortLandscape = viewportHeight <= 430 && safeWidth > viewportHeight;
+    const minimumLogicalWidth = shortLandscape ? 760 : isStage ? 390 : 382;
+    const minimumLogicalHeight = shortLandscape ? (isStage ? 360 : 350) : isStage ? 788 : 780;
     const viewportWidth = Math.min(Math.max(1, safeWidth), 920);
     const scale = Math.max(0.1, Math.min(viewportWidth / minimumLogicalWidth, viewportHeight / minimumLogicalHeight));
     const logicalWidth = viewportWidth / scale;

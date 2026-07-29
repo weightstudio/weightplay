@@ -35,6 +35,8 @@ body[data-screen="stage"] .sound-toggle,body[data-screen="battle"] .sound-toggle
   .result-actions .primary-action{grid-column:auto}
 }
 @media(max-height:520px) and (orientation:landscape){
+  .block-grove-battle-canvas .result-card h2{font-size:28px}
+  .block-grove-battle-canvas .result-card p{font-size:22px}
   .block-grove-battle-canvas .leave-card button,
-  .block-grove-battle-canvas .result-card button{min-height:96px}
+  .block-grove-battle-canvas .result-card button{min-height:96px;font-size:22px}
 }

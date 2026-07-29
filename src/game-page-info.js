@@ -22,7 +22,7 @@
   }
   if (!document.querySelector('script[src*="battle-canvas-standard.js"]')) {
     const script = document.createElement("script");
-    script.src = new URL("battle-canvas-standard.js?v=20260720-native-coloring1", sharedAssetBase).href;
+    script.src = new URL("battle-canvas-standard.js?v=20260729-kids-result-landscape1", sharedAssetBase).href;
     script.dataset.wpBattleStandard = "true";
     document.head.appendChild(script);
   }

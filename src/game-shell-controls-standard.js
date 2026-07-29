@@ -439,6 +439,20 @@
     mainFlowObservers.set(owner, observer);
   }
 
+  function restoreMainFlowLayout(standardScreen, composition) {
+    if (!standardScreen || !composition) return;
+    const owner = standardScreen.closest("main") || standardScreen;
+    owner.classList.add("wp-standard-main-flow-owner");
+    for (
+      let node = composition.parentElement;
+      node && node !== owner;
+      node = node.parentElement
+    ) {
+      node.classList.add("wp-standard-main-flow-node");
+    }
+    syncMainFlowHeight(owner, composition);
+  }
+
   function normalizeMainLayout(screen) {
     if (!screen) return;
     let start = firstVisible(MAIN_START_SELECTORS, screen);
@@ -449,8 +463,7 @@
       if (existingSummary) existingSummary.textContent = conciseCopy(existingSummary.textContent);
       ensureMainProgress(existingStandardScreen);
       const existingComposition = existingStandardScreen.querySelector(".wp-standard-main-composition");
-      const existingOwner = existingStandardScreen.closest(".wp-standard-main-flow-owner");
-      syncMainFlowHeight(existingOwner, existingComposition);
+      restoreMainFlowLayout(existingStandardScreen, existingComposition);
       return;
     }
     if ((screen === document.body || screen === document.documentElement) && start && poster) {

@@ -20,7 +20,7 @@
     "animal-guard-yard": ["#playPanel", 390, 450],
     "animal-habitat-mahjong": [".battle-canvas", 390, 788],
     "animal-hero-trials": ["#battleView", 390, 788],
-    "animal-hidden-safari": ["#playPanel", 382, 780],
+    "animal-hidden-safari": ["#playPanel", 382, 780, 760, 350],
     "animal-moonlight-heist": [".battle-canvas", 390, 788],
     "animal-one-line": [".battle-canvas", 390, 788, 760, 334],
     "animal-orb-fortress": ["#gamePanel", 382, 780],
@@ -43,7 +43,7 @@
     "bubble-bakery": [".bakery-game", 382, 780, 760, 360],
     "campus-dash": [".dash-game", 382, 780, 844, 390],
     "color-lunchbox": [".lunch-game", 382, 780, 760, 350],
-    "fruit-merge": [".fixed-game-shell", 382, 780],
+    "fruit-merge": [".fixed-game-shell", 382, 780, 760, 350],
     "garden-tiles": [".garden-game", 382, 780, 760, 350],
     "shadow-wolf": [".game-layout", 390, 788],
     "shape-train": ["#playPanel", 362, 710],
@@ -51,7 +51,7 @@
     "star-memory": [".memory-game", 382, 780],
     "tiny-weather-rescue": [".weather-game", 366, 764],
     "wonder-crash": [".game-shell", 390, 788, 760, 360],
-    "zoo-helper-day": [".zoo-game", 374, 776],
+    "zoo-helper-day": [".zoo-game", 374, 776, 760, 350],
   };
   const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1] || "";
   const config = games[gameId];
@@ -106,6 +106,26 @@
     });
     savedStyles.delete(node);
   };
+  const restoreRoot = (node) => {
+    restore(node);
+    node?.removeAttribute("data-wp-logical-battle-canvas");
+  };
+  const restoreReserve = (node) => {
+    restore(node);
+    node?.removeAttribute("data-wp-battle-physical-reserve");
+  };
+  const clearCanvasVariables = () => {
+    const style = document.documentElement.style;
+    [
+      "--wp-battle-viewport-height",
+      "--wp-battle-logical-width",
+      "--wp-battle-logical-height",
+      "--wp-battle-canvas-scale",
+      "--wp-battle-canvas-rendered-width",
+      "--wp-battle-canvas-rendered-height",
+      "--wp-battle-canvas-top",
+    ].forEach((property) => style.removeProperty(property));
+  };
 
   function update() {
     const root = findRoot();
@@ -113,10 +133,12 @@
     const active = Boolean(root && (visible(back) || findBattleOverlay(root)));
     document.body.classList.toggle("wp-logical-battle-active", active);
     if (!active) {
-      restore(activeRoot);
-      restore(activeReserve);
+      restoreRoot(activeRoot);
+      restoreReserve(activeReserve);
+      clearCanvasVariables();
       activeRoot = null;
       activeReserve = null;
+      appliedStateSignature = "";
       appliedRootStyleSignature = "";
       return;
     }
@@ -166,7 +188,7 @@
     style.setProperty("--wp-battle-canvas-rendered-width", `${renderedWidth}px`);
     style.setProperty("--wp-battle-canvas-rendered-height", `${renderedHeight}px`);
     style.setProperty("--wp-battle-canvas-top", `${top}px`);
-    if (activeRoot && activeRoot !== root) restore(activeRoot);
+    if (activeRoot && activeRoot !== root) restoreRoot(activeRoot);
     activeRoot = root;
     appliedViewportWidth = width;
     appliedViewportHeight = height;
@@ -189,7 +211,7 @@
       overflow: "hidden",
     });
     appliedRootStyleSignature = rootStyleSignature(root);
-    if (activeReserve && activeReserve !== reserve) restore(activeReserve);
+    if (activeReserve && activeReserve !== reserve) restoreReserve(activeReserve);
     activeReserve = reserve;
     if (reserve) {
       reserve.setAttribute("data-wp-battle-physical-reserve", "");

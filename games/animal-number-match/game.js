@@ -3,7 +3,7 @@
   const codes=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
   const $=selector=>document.querySelector(selector),screens=[...document.querySelectorAll(".screen")],levels=window.NUMBER_MATCH_LEVELS.levels;
   const storageKey="wp-animal-number-match-v1";
-  let locale=read("weightPlayLocale")||read("wp-locale")||window.WonderI18n?.locale?.()||"en";if(!codes.includes(locale))locale="en";
+  let locale=window.WonderI18n?.actualLocale?.()||window.__WONDER_FORCED_LOCALE||read("weightPlayLocale")||read("wp-locale")||window.WonderI18n?.locale?.()||"en";if(!codes.includes(locale))locale="en";
   let unlocked=Number(read(storageKey))||1,selected=Math.min(unlocked,30)-1,level=null,values=[],picked=null,history=[],moves=0,resultActionClaimed=false,inputLocked=false;
   function read(key){try{return localStorage.getItem(key)}catch{return null}}
   function write(key,value){try{localStorage.setItem(key,value)}catch{}}
@@ -105,6 +105,7 @@
     $("#locale").value=locale;if(!$("#stage").hidden)renderStages();if(!$("#battle").hidden){$("#chapter").textContent=t("chapter",{n:Math.floor(selected/5)+1});$("#stageName").textContent=t("grove",{n:selected+1});$("#status").textContent=t("selectFirst");renderBoard()}
   }
   codes.forEach(code=>{const option=document.createElement("option");option.value=code;option.textContent=window.NUMBER_MATCH_LOCALES[code].label;$("#locale").append(option)});
+  write("weightPlayLocale",locale);write("wp-locale",locale);
   document.addEventListener("change",event=>{if(event.target.id!=="locale")return;locale=event.target.value;write("wp-locale",locale);try{window.WonderI18n?.setLocale?.(locale)}catch{}applyLocale()});
   window.addEventListener("wonder:locale-change",event=>{
     const next=event.detail?.actualLocale||event.detail?.locale;
@@ -112,7 +113,7 @@
     locale=next;write("weightPlayLocale",locale);write("wp-locale",locale);applyLocale();
     window.setTimeout(()=>{if(locale===next)applyLocale()},0);
   });
-  $("#start").onclick=()=>show("stage");$("#stageGrid").addEventListener("wonder:stage-snap",event=>{const index=Number(event.detail?.index);if(Number.isInteger(index)&&index>=0)selectStage(index)});$("#stage [data-back]").onclick=()=>show("main");
+  $("#start").onclick=()=>show("stage");$("#tutorialOpen").onclick=()=>$("#tutorialPanel").showModal();$("#tutorialStart").onclick=()=>{$("#tutorialPanel").close();show("stage")};$("#tutorialPanel").addEventListener("cancel",()=>$("#tutorialPanel").close());$("#stageGrid").addEventListener("wonder:stage-snap",event=>{const index=Number(event.detail?.index);if(Number.isInteger(index)&&index>=0)selectStage(index)});$("#stage [data-back]").onclick=()=>show("main");
   $("#battle [data-back]").onclick=()=>{
     if(picked===null&&!history.length&&!moves){show("stage");return}
     inputLocked=true;$("#leaveDialog").showModal();$("#continueBattle").focus();
@@ -124,5 +125,5 @@
   $("#undo").onclick=()=>{const last=history.pop();if(!last)return;values[last.a]=last.va;values[last.b]=last.vb;picked=null;moves=Math.max(0,moves-1);$("#status").textContent=t("undone");renderBoard()};
   $("#hint").onclick=hint;$("#shuffle").onclick=reorder;$("#restart").onclick=()=>startLevel(selected);
   $("#resultStages").onclick=()=>claimResultAction(()=>{selected=Math.min(29,unlocked-1);show("stage")});$("#next").onclick=()=>claimResultAction(()=>startLevel(selected+1));$("#retry").onclick=()=>claimResultAction(()=>startLevel(selected));
-  applyLocale();show("main");window.__NUMBER_MATCH_TEST__={matches,visiblePair,availablePair,currentSolution:()=>level?.solution?.map(pair=>pair.slice())||[]};
+  applyLocale();show("main");$("#loadingPanel").classList.add("hidden");window.addEventListener("load",()=>requestAnimationFrame(()=>{const copy=document.querySelector(".wp-standard-main-copy");if(copy&&!copy.contains($("#tutorialOpen")))copy.append($("#tutorialOpen"))}));window.__NUMBER_MATCH_TEST__={matches,visiblePair,availablePair,currentSolution:()=>level?.solution?.map(pair=>pair.slice())||[]};
 })();

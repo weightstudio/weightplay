@@ -8,7 +8,15 @@
     [[.45,.40,315],[.55,.40,45],[.50,.28,0],[.30,.50,0],[.70,.50,180],[.43,.62,0],[.57,.62,0]],
     [[.38,.43,45],[.62,.43,315],[.50,.29,0],[.28,.53,90],[.72,.53,270],[.42,.64,0],[.58,.64,0]]
   ];
-  const pieces=["large-a","large-b","medium","small-a","small-b","square","parallelogram"];
+  const pieces=[
+    {id:"large-a",size:"large"},
+    {id:"large-b",size:"large"},
+    {id:"medium",size:"medium"},
+    {id:"small-a",size:"small"},
+    {id:"small-b",size:"small"},
+    {id:"square",size:"square"},
+    {id:"parallelogram",size:"parallelogram"}
+  ];
   function build(index){const base=layouts[index%layouts.length],angle=(index%4)*90,mirror=index%2===1,offset=((index%5)-2)*.012;const targets=base.map(([x,y,r])=>{let dx=x-.5,dy=y-.5;if(mirror)dx=-dx;const rad=angle*Math.PI/180,nx=.5+dx*Math.cos(rad)-dy*Math.sin(rad),ny=.5+dx*Math.sin(rad)+dy*Math.cos(rad);return{x:Math.max(.12,Math.min(.88,nx+offset)),y:Math.max(.13,Math.min(.75,ny+offset/2)),r:(mirror?-r:r+angle+360)%360}});return{index,targets,names:["turtle","cat","bird","fox","fish","rabbit"][index%6]}}
   root.TANGRAM_LEVELS={pieces,levels:Array.from({length:30},(_,i)=>build(i)),build};if(typeof module!=="undefined")module.exports=root.TANGRAM_LEVELS;
 })(typeof window!=="undefined"?window:globalThis);

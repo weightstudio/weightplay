@@ -760,8 +760,8 @@
     const viewportWidth = Math.min(Math.max(1, safeWidth), 920);
     const root = document.documentElement.style;
     const isShortLandscape = viewportHeight <= 430 && viewportWidth > viewportHeight;
-    const logicalWidth = isStage && isShortLandscape ? 760 : isShortLandscape ? 780 : 390;
-    const logicalHeight = isStage ? (isShortLandscape ? 360 : 788) : isShortLandscape ? 390 : 390 * 16 / 9;
+    const logicalWidth = isShortLandscape ? 760 : 390;
+    const logicalHeight = isStage ? (isShortLandscape ? 360 : 788) : isShortLandscape ? 350 : 390 * 16 / 9;
     const scale = Math.min(viewportWidth / logicalWidth, viewportHeight / logicalHeight);
     const envelopeWidth = viewportWidth / scale;
     const envelopeHeight = viewportHeight / scale;

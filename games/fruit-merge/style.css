@@ -945,6 +945,7 @@ html body.fruit-playing #resultPanel.result-panel .result-actions {
 .result-actions button {
   display: grid;
   place-items: center;
+  min-height: 48px;
 }
 
 .result-actions .result-primary {

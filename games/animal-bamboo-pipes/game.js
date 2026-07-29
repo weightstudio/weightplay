@@ -251,6 +251,12 @@
       if (locale === nextLocale) applyLocale();
     }, 0);
   });
+  document.addEventListener("keydown", event => {
+    if (!event.repeat || (event.key !== "Enter" && event.key !== " ")) return;
+    if (![battleBack(), $("continueBattle"), $("leaveBattle")].includes(event.target)) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }, true);
   $("start").onclick = () => { show("stage"); renderStages(); };
   document.querySelector("#stage [data-back]").onclick = () => show("main");
   document.addEventListener("click", event => {

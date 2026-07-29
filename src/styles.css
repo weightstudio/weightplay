@@ -5057,7 +5057,8 @@ body.general-lobby-page {
   max-height: none;
   aspect-ratio: 4 / 3;
   flex: 0 0 auto;
-  border-bottom: 1px solid #d4ddd9;
+  border-top: 1px solid #d4ddd9;
+  border-bottom: 0;
 }
 
 .general-lobby-page .game-card-bg-blur {
@@ -5077,25 +5078,28 @@ body.general-lobby-page {
 
 .general-lobby-page .game-card-body {
   display: grid;
-  height: 111px;
-  grid-template-rows: 42px 42px;
-  align-content: space-between;
-  gap: 9px;
-  padding: 9px;
+  order: -1;
+  height: 58px;
+  min-height: 58px;
+  padding: 7px 10px;
+  flex: 0 0 58px;
+  place-items: center;
 }
 
 .general-lobby-page .game-card h2 {
   display: -webkit-box;
-  min-height: 42px;
+  min-height: 0;
   max-height: 42px;
   overflow: hidden;
   color: #172d2a;
   font-size: 18px;
   line-height: 1.16;
+  text-align: center;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
 
+.general-lobby-page .game-card-body > :not(h2),
 .general-lobby-page .game-card p,
 .general-lobby-page .game-card-state,
 .general-lobby-page .game-card-categories,
@@ -5119,19 +5123,12 @@ body.general-lobby-page {
 }
 
 .general-lobby-page .game-card-actions {
-  display: block;
+  display: none;
 }
 
-.general-lobby-page .game-card-actions span:first-child {
-  display: grid;
-  min-height: 42px;
-  place-items: center;
-  border-radius: 6px;
-  background: #315f56;
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: 1000;
-  box-shadow: 0 4px 0 #193a33;
+.general-lobby-page .favorite-toggle,
+.general-lobby-page .continue-badge {
+  top: 66px;
 }
 
 .general-lobby-page .favorite-toggle {
@@ -5371,7 +5368,10 @@ body.general-lobby-page {
   }
 
   .general-lobby-page .game-card-body {
-    padding: 9px;
+    height: 54px;
+    min-height: 54px;
+    padding: 6px 8px;
+    flex-basis: 54px;
   }
 
   .general-lobby-page .game-card h2 {
@@ -5380,12 +5380,17 @@ body.general-lobby-page {
     min-height: 36px;
     font-size: 16px;
     line-height: 1.12;
+    text-align: center;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
 
+  .general-lobby-page .favorite-toggle,
+  .general-lobby-page .continue-badge {
+    top: 61px;
+  }
+
   .general-lobby-page .favorite-toggle {
-    top: 7px;
     right: 7px;
     width: 40px;
     height: 40px;
@@ -5575,11 +5580,6 @@ body.general-lobby-page {
 
 .general-lobby-page .game-card-art.image-art {
   border-bottom-color: #2c3849;
-}
-
-.general-lobby-page .game-card-actions span:first-child {
-  background: linear-gradient(135deg, #6f5ad8, #355fc5);
-  box-shadow: 0 4px 13px rgba(62, 68, 180, 0.38);
 }
 
 .general-lobby-page .favorite-toggle {

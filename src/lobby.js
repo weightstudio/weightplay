@@ -852,7 +852,7 @@ function createGameCard(game) {
         openGame(game, title, ageLabel);
       }
     });
-  } else {
+  } else if (isKidsLobby) {
     card.tabIndex = 0;
     card.setAttribute("role", "button");
     card.addEventListener("click", () => showPlannedGame(game));
@@ -862,6 +862,9 @@ function createGameCard(game) {
         showPlannedGame(game);
       }
     });
+  } else {
+    card.setAttribute("aria-disabled", "true");
+    card.setAttribute("aria-label", `${title} — ${i18n.t("action.coming_soon")}`);
   }
 
   const meta = isPlayable ? text(game.meta).map((item) => `<span>${item}</span>`).join("") : "";
