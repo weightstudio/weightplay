@@ -34,7 +34,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/fruit-merge/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/fruit-merge/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/fruit-merge/" />
-    <link rel="stylesheet" href="style.css?v=20260723-aim-coach1" data-wp-battle-standard />
+    <link rel="stylesheet" href="style.css?v=20260729-interface-v4" data-wp-battle-standard />
     <script data-wp-battle-standard>/* Animal Merge Tower owns its native Kids Battle Canvas. */</script>
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <script type="application/ld+json">
@@ -95,8 +95,10 @@
       </header>
 
       <section id="playPanel" class="fixed-shell-host" data-no-mobile-immersive="true">
-        <div class="fixed-game-shell play-area" aria-label="Animal Merge Tower fixed game screen">
-          <button id="backToMenuBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to menu">&larr;</button>
+        <div class="fixed-game-shell play-area" data-wp-logical-battle-canvas aria-label="Animal Merge Tower fixed game screen">
+          <header class="battle-return-header">
+            <button id="backToMenuBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to menu">&larr;</button>
+          </header>
           <section class="scorebar" aria-label="Score">
             <div>
               <span id="scoreLabel">Score</span>
@@ -149,13 +151,11 @@
       </section>
 
       <section id="stagePanel" class="merge-stage-panel wp-stage-art-shell hidden" data-wp-logical-stage-canvas data-wp-stage-art="../../assets/fruit-merge-cover.webp" style="--wp-stage-art:url('../../assets/fruit-merge-cover.webp')" aria-label="Challenge selection">
-        <div class="merge-stage-heading">
+        <header class="merge-stage-heading stage-heading">
           <button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="Back">&larr;</button>
-          <div>
-            <strong id="stageTitle">Festival Challenges</strong>
-            <span id="stageHelp">Drag sideways and choose an unlocked challenge.</span>
-          </div>
-        </div>
+          <strong id="stageTitle">Festival Challenges</strong>
+          <span id="stageHelp" class="stage-help-copy">Drag sideways and choose an unlocked challenge.</span>
+        </header>
         <div id="stageRail" class="merge-stage-rail stage-rail" data-wp-stage-rail></div>
         <div id="stageDots" class="merge-stage-dots" aria-hidden="true"></div>
         <div id="stageTools" class="merge-stage-tools">
@@ -179,8 +179,9 @@
             <div id="resultLeaderboard" class="leaderboard-panel" aria-live="polite"></div>
           </div>
           <div class="result-actions">
+            <button id="menuBtn" type="button">Challenges</button>
+            <button id="nextChallengeBtn" type="button">Next Challenge</button>
             <button id="playAgainBtn" type="button">Play Again</button>
-            <button id="menuBtn" type="button">Game Menu</button>
           </div>
         </div>
       </section>
@@ -231,7 +232,7 @@
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/vendor/matter.min.js?v=20260630-matter1"></script>
     <script src="../../src/vendor/matter-global.js?v=20260630-matter1"></script>
-    <script src="game.js?v=20260723-aim-coach1"></script>
+    <script src="game.js?v=20260729-interface-v4"></script>
     <script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script>
     <script>
       (() => {

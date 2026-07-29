@@ -173,6 +173,16 @@
       workshopButton.textContent = t("diamondShopTitle");
       nodes.mapPanel?.querySelector(".stage-header")?.append(workshopButton);
     }
+    workshopButton.classList.add("wp-stage-header-action");
+    workshopButton.dataset.uiAria = "diamondShopTitle";
+
+    const stageHeader = nodes.mapPanel?.querySelector(".stage-header");
+    const stageTitle = stageHeader?.querySelector("[data-ui='stageTitle']");
+    const stageTitleGroup = stageTitle?.parentElement;
+    if (stageHeader && stageTitle && stageTitleGroup && stageTitleGroup !== stageHeader) {
+      stageHeader.insertBefore(stageTitle, stageTitleGroup);
+      stageTitleGroup.remove();
+    }
 
     let managementPanel = $("stageManagementPanel");
     if (!managementPanel) {

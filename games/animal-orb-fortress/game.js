@@ -55,6 +55,7 @@
   nodes.stagePanel.dataset.wpStageLandscapeHeight = "334";
   nodes.gamePanel.dataset.wpCanvasMaxWidth = "920";
   const canvas = $("gameCanvas");
+  const ARENA_KEYBOARD_SHORTCUTS = "ArrowLeft ArrowRight Space Enter";
   canvas.dataset.runtimeLocalize = "off";
   const ctx = canvas.getContext("2d");
 
@@ -1435,6 +1436,7 @@
   }
 
   function updateArenaControlLabel(force = false) {
+    canvas.setAttribute("aria-keyshortcuts", ARENA_KEYBOARD_SHORTCUTS);
     const angle = Math.round(keyboardAimDeg + 90);
     let status = "inactive";
     let label = t("arenaLabel");

@@ -156,6 +156,21 @@ img{-webkit-user-drag:none}
 .enemy-cd{position:absolute;z-index:5;left:3px;bottom:17px;min-width:42px;padding:3px 7px;border:1px solid #79e7ff;border-radius:999px;background:#07122bea;color:#bff8ff;font-size:.68rem;font-weight:1000;line-height:1;letter-spacing:.03em;box-shadow:0 0 12px #36dff477;text-shadow:0 1px 3px #000}
 .enemy-unit.enemy-ready .enemy-cd,.enemy-unit.enemy-attacking .enemy-cd{border-color:#ffdf69;background:#4a1b16ee;color:#fff3a8;box-shadow:0 0 16px #ff7a3d}
 .enemy-unit.enemy-attacking{animation:enemyAttackStep .92s cubic-bezier(.2,.7,.25,1)}
+.enemy-intent{position:absolute;z-index:6;left:50%;top:-24px;max-width:142px;transform:translateX(-50%);padding:3px 7px;border:1px solid #8fdcff;border-radius:999px;background:#07142eee;color:#dffaff;font-size:.58rem;font-weight:900;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 0 10px #40cfff44}
+.enemy-intent.intent-heavy,.enemy-intent.intent-corrupt{border-color:#ff9e73;color:#ffe0c9;background:#42131fee}
+.enemy-intent.intent-shield{border-color:#6be7ff;color:#d9fbff}
+.enemy-intent.intent-heal{border-color:#6ff0a4;color:#dfffe9;background:#073327ee}
+.v3-battle .reel{padding:0;color:inherit}
+.v3-battle .reel.selected{border-color:#fff19a;box-shadow:0 0 0 2px #8d67ff,0 0 22px #ffe66caa}
+.v3-battle .reel.held::after{content:"🔒";display:grid;place-items:center;left:auto;right:5px;top:5px;width:25px;height:25px;border-radius:50%;background:#211b43e8;color:#ffe56d;font-size:.74rem}
+.tactics-panel{max-width:650px;margin:5px auto 0;display:grid;grid-template-rows:20px 48px;gap:4px}
+.tactics-copy{min-width:0;display:flex;align-items:center;justify-content:center;gap:8px;color:#dce8ff;font-size:.68rem;line-height:1}
+.tactics-copy strong{flex:none;color:#ffe47a}
+.tactics-copy span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tactics-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+.tactics-actions button{min-width:0;min-height:44px;padding:4px;border:1px solid #7382bc;border-radius:11px;background:#202b58;color:#fff;font-size:.7rem;font-weight:900;line-height:1.1;cursor:pointer}
+.tactics-actions .tactic-accept{border-color:#ffe16c;background:linear-gradient(135deg,#6f4aff,#a74fff);box-shadow:0 0 13px #795cff66}
+.tactics-actions button:disabled,.auto-btn:disabled{cursor:not-allowed;filter:grayscale(.65);opacity:.46}
 @keyframes enemyAttackStep{0%,100%{transform:none}34%{transform:translateY(18px) scale(1.08);filter:brightness(1.35) drop-shadow(0 0 14px #ff724d)}62%{transform:translateY(12px) scale(1.04)}}
 .party-hero.active{transform:none;filter:drop-shadow(0 0 14px #ffe36a)}
 .party-hero.attack-launch{animation:heroLaunchV7 1.04s both}
@@ -167,6 +182,7 @@ img{-webkit-user-drag:none}
 .summon-bank img,.resource-bank img{width:27px;height:27px;object-fit:contain;filter:drop-shadow(0 0 7px #ffe36b)}
 .summon-bank i{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 @media(max-width:560px){.roster-grid{grid-auto-rows:178px}.enemy-squad{width:min(calc(var(--enemy-count,3)*150px),94%)}}
+@media(max-width:560px){.enemy-intent{top:-20px;max-width:102px;font-size:.48rem;padding:3px 5px}.tactics-copy{font-size:.58rem}.tactics-copy span{display:none}.tactics-actions button{font-size:.62rem}}
 @media(min-width:561px){.roster-grid{grid-auto-rows:154px}.roster-card{height:154px;grid-template-rows:50px 15px 18px 16px 28px}.roster-card img{width:50px;height:50px}}
 @media(max-height:520px) and (orientation:landscape){.roster-grid{grid-auto-rows:166px}.roster-card{height:166px;grid-template-rows:54px 16px 18px 17px 28px}.roster-card img{width:54px;height:54px}}
 @media(max-height:520px) and (orientation:landscape){.v3-stage #stagesPanel{grid-template-columns:132px minmax(0,1fr);grid-template-rows:minmax(0,1fr);gap:8px}.v3-stage #stagesPanel .mission-tabs{grid-column:1;grid-row:1;grid-template-columns:1fr;grid-template-rows:repeat(3,minmax(44px,1fr));gap:6px}.v3-stage #stagesPanel .stage-rail{grid-column:2;grid-row:1;padding-inline:calc(50% - 132px)}.v3-stage #stagesPanel .stage-card{height:190px}}
@@ -192,6 +208,7 @@ img{-webkit-user-drag:none}
     clip-path:inset(0);
   }
 }
+@media(max-height:520px) and (orientation:landscape){.tactics-panel{grid-template-rows:44px;margin:0}.tactics-copy{display:none}.tactics-actions{height:44px;gap:3px}.tactics-actions button{min-height:44px;padding:2px;font-size:.54rem}.enemy-intent{top:-17px;max-width:92px;font-size:.45rem}.v3-battle .reel.selected{box-shadow:0 0 0 1px #8d67ff,0 0 12px #ffe66caa}}
 @media(prefers-reduced-motion:reduce){
   .party-hero.attack-launch,.enemy-unit.enemy-attacking,.summoner-hp.player-hit{animation-duration:.01ms!important}
   .loader-orb,.enemy-unit.targeted .target-marker,.reel.effect-active,.reel.effect-active .reel-cell img{animation:none!important}

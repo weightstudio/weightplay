@@ -307,6 +307,25 @@
   overflow: visible !important;
 }
 
+.wp-stage-shell-header:has(> .wp-stage-header-action) {
+  grid-template-columns: 48px minmax(0, 1fr) minmax(96px, auto) 48px !important;
+}
+
+.wp-stage-shell-header > .wp-stage-header-action {
+  grid-column: 3 !important;
+  grid-row: 1 !important;
+  justify-self: end;
+  width: auto !important;
+  min-width: 96px !important;
+  max-width: min(148px, 32vw) !important;
+  margin: 0 !important;
+  white-space: normal !important;
+}
+
+.wp-stage-shell-header:has(> .wp-stage-header-action) > .wp-shell-settings {
+  grid-column: 4;
+}
+
 /* Battle screens without a recognized native header receive this overlay.
    It must never participate in the Battle grid, or the adopted return action
    can become a final row underneath the play controls. */
@@ -568,6 +587,13 @@ body.wp-stage-select-active
   .wp-main-shell-header {
     grid-template-columns: 58px minmax(0, 1fr) 58px !important;
     gap: 4px !important;
+  }
+
+  .wp-stage-shell-header:has(> .wp-stage-header-action) > :is(h1, h2, strong) {
+    font-size: 16px !important;
+    line-height: 1.05 !important;
+    text-overflow: clip;
+    white-space: normal !important;
   }
 
   .wp-shell-return {

@@ -76,7 +76,9 @@
     [55,45,230,220],[365,42,225,220],[642,42,228,220],[990,42,190,230],
     [75,345,150,190],[360,298,225,245],[680,350,180,180],[985,310,210,240],
     [20,590,230,230],[305,580,275,245],[625,548,270,275],[895,565,345,275],
-    [20,860,260,340],[285,875,305,310],[620,860,330,340],[910,860,310,335],
+    [20,860,260,340],[285,875,305,310],
+    {bounds:[620,790,330,410],parts:[[620,790,310,410]]},
+    {bounds:[930,790,288,410],parts:[[990,790,190,45],[936,830,282,370]]},
   ];
   const atlas = {sprites:new Image(),items:new Image(),npcs:new Image(),world:new Image()};
   atlas.sprites.src = "/assets/signal-veil-sprites.webp";
@@ -132,6 +134,7 @@
   const stateStore=window.SignalVeilStateStore;
   let state=stateStore.load(SAVE_KEY,fresh,Object.keys(MAP_OBJECTS));
   let playing = false, paused = false, trueVision = Boolean(state.trueVision), currentDialogue = null;
+  if(applyLevelUps(false)>0)stateStore.save(SAVE_KEY,state,trueVision);
   let attackCooldown = 0, skillCooldown = 0, invulnerability = 0, swingTimer = 0, lastTime = 0, toastTimer = 0;
   let bossIntroduced = false, resultClaimed = false, playerMoving = false, walkCycle = 0;
   const keys = new Set();
@@ -268,7 +271,7 @@
     if(quest.type==="talk")return t("questInterviewTitle",{name:(copy.npcNames||en.npcNames)[quest.target]});
     if(quest.type==="witnessReport")return t("questWitnessReportTitle");
     if(quest.type==="visit")return t("questVisitTitle",{place:questPlace(quest)});
-    if(quest.type==="defeatFirst"||quest.type==="defeatMoonfall")return t("questThreatTitle",{place:questPlace(quest),target:quest.target});
+    if(quest.type==="defeatFirst"||quest.type==="defeatMoonfall")return t("questThreatTitle",{place:questPlace(quest),target:questDisplayTarget(quest)});
     if(quest.type==="chest")return t("questRecoverTitle",{item:t(`${quest.target}Name`)});
     if(quest.type==="bossEncounter")return t("questCommanderTitle");
     if(quest.type==="bossDefeated")return t("questVeilTitle");
@@ -276,18 +279,24 @@
     if(quest.type==="relay")return t("questDecodeTitle",{record:t(quest.name)});
     if(quest.type==="chapter3Started")return t("questAnswerTitle");
     if(quest.type==="ashfallFinding")return t("questDecodeTitle",{record:t(quest.name)});
-    if(quest.type==="defeatAshfall")return t("questThreatTitle",{place:questPlace(quest),target:quest.target});
+    if(quest.type==="defeatAshfall")return t("questThreatTitle",{place:questPlace(quest),target:questDisplayTarget(quest)});
     if(quest.type==="ashfallChoice")return t("questProofTitle");
     if(quest.type==="ashfallReturned")return t("questAnswerTitle");
     if(quest.type==="chapter3Complete")return t("questProofTitle");
     return t("questProofTitle");
   }
+  function questDisplayTarget(quest){
+    if(quest.type==="defeatMoonfall")return moonfallEnemySeeds.length;
+    if(quest.type==="defeatAshfall")return ashfallEnemySeeds.length;
+    if(quest.type==="defeatFirst")return quest.place==="zoneForest"?8:enemySeeds.length;
+    return quest.target;
+  }
   function questObjective(quest){
     if(quest.type==="talk")return t("questTalkObjective",{name:(copy.npcNames||en.npcNames)[quest.target]});
     if(quest.type==="witnessReport")return t("questWitnessReportObjective");
     if(quest.type==="visit")return t("questVisitObjective",{place:questPlace(quest)});
-    if(quest.type==="defeatFirst")return t("questDefeatObjective",{n:firstMapDefeated(),target:quest.target,place:questPlace(quest)});
-    if(quest.type==="defeatMoonfall")return t("questDefeatObjective",{n:moonfallDefeated(),target:quest.target,place:questPlace(quest)});
+    if(quest.type==="defeatFirst")return t("questDefeatObjective",{n:firstMapDefeated(),target:questDisplayTarget(quest),place:questPlace(quest)});
+    if(quest.type==="defeatMoonfall")return t("questDefeatObjective",{n:moonfallDefeated(),target:questDisplayTarget(quest),place:questPlace(quest)});
     if(quest.type==="chest")return t("questRecoverObjective",{item:t(`${quest.target}Name`)});
     if(quest.type==="bossEncounter")return t("questFindCommanderObjective");
     if(quest.type==="bossDefeated")return t("objectiveBoss");
@@ -295,7 +304,7 @@
     if(quest.type==="relay")return t("questRelayObjective",{record:t(quest.name)});
     if(quest.type==="chapter3Started")return t("objectiveAshfallBriefing");
     if(quest.type==="ashfallFinding")return t("questAshfallEvidenceObjective",{evidence:t(quest.name)});
-    if(quest.type==="defeatAshfall")return t("questDefeatObjective",{n:ashfallDefeated(),target:quest.target,place:questPlace(quest)});
+    if(quest.type==="defeatAshfall")return t("questDefeatObjective",{n:ashfallDefeated(),target:questDisplayTarget(quest),place:questPlace(quest)});
     if(quest.type==="ashfallChoice")return t("objectiveAshfallChoice");
     if(quest.type==="ashfallReturned")return t("objectiveAshfallReturn");
     if(quest.type==="chapter3Complete")return t("objectiveAshfallFinal");
@@ -478,12 +487,20 @@
   }
   function drawSprite(index,x,y,maxWidth,maxHeight,alpha=1) {
     if(!atlas.sprites.complete||!atlas.sprites.naturalWidth)return;
-    const [sourceX,sourceY,sourceWidth,sourceHeight]=SPRITE_FRAMES[index];
+    const definition=SPRITE_FRAMES[index];
+    const [sourceX,sourceY,sourceWidth,sourceHeight]=definition.bounds||definition;
+    const parts=definition.parts||[definition];
     const scale=Math.min(maxWidth/sourceWidth,maxHeight/sourceHeight);
     const width=sourceWidth*scale,height=sourceHeight*scale;
     ctx.save();
     ctx.globalAlpha=alpha;
-    ctx.drawImage(atlas.sprites,sourceX,sourceY,sourceWidth,sourceHeight,x-width/2,y-height/2,width,height);
+    for(const [partX,partY,partWidth,partHeight] of parts){
+      ctx.drawImage(
+        atlas.sprites,partX,partY,partWidth,partHeight,
+        x-width/2+(partX-sourceX)*scale,y-height/2+(partY-sourceY)*scale,
+        partWidth*scale,partHeight*scale
+      );
+    }
     ctx.restore();
   }
   function drawWorld(cam) {
@@ -790,9 +807,17 @@
     if(boss.stun>0)amount*=1.45;boss.hp-=amount;state.bossHp=Math.max(0,boss.hp);effects.push({x:boss.x,y:boss.y,index:10,size:72,life:.35});
     if(boss.hp<=0)finishBoss();else saveGame();
   }
+  function xpNeeded(level=state.level){return 30+(level-1)*22}
+  function applyLevelUps(announce=true) {
+    let levels=0;
+    while(state.xp>=xpNeeded()){
+      state.xp-=xpNeeded();state.level++;state.maxHp+=8;state.attack+=2;state.defense+=1;state.hp=state.maxHp;levels++;
+      if(announce){showToast(t("levelUp",{n:state.level}),2400);playTone(720,.18)}
+    }
+    return levels;
+  }
   function gainXp(amount) {
-    state.xp+=amount;let need=30+(state.level-1)*22;
-    while(state.xp>=need){state.xp-=need;state.level++;state.maxHp+=8;state.attack+=2;state.defense+=1;state.hp=state.maxHp;showToast(t("levelUp",{n:state.level}),2400);need=30+(state.level-1)*22;playTone(720,.18)}
+    state.xp+=amount;applyLevelUps(true);
     updateHud();
   }
   function hurt(amount) {
@@ -854,7 +879,7 @@
   }
   function finishBoss() {
     boss.dead=true;state.bossDefeated=true;state.visionUnlocked=true;trueVision=true;state.trueVision=true;
-    state.bossHp=0;state.xp+=80;saveGame();updateObjective();updateHud();resultClaimed=false;
+    state.bossHp=0;gainXp(80);saveGame();updateObjective();updateHud();resultClaimed=false;
     setTimeout(()=>setPanel(nodes.result),500);playTone(820,.35);
   }
 
@@ -977,7 +1002,11 @@
       ashfallNodePositions:ASHFALL_NODES.map(({id,x,y})=>({id,x,y})),
       portalPositions:Object.fromEntries(Object.entries(MAP_PORTALS).map(([mapId,portals])=>[mapId,portals.map(({x,y,to})=>({x,y,to}))])),
       questCount:QUESTS.length,
+      bossSpriteFrames:SPRITE_FRAMES.slice(12).map(frame=>frame.bounds?{bounds:[...frame.bounds],parts:frame.parts.map(part=>[...part])}:{bounds:[...frame],parts:[[...frame]]}),
       questState(){const active=activeQuest();return{completed:completedQuestCount(),activeId:active?.quest.id||null,activeNumber:active?active.index+1:null}},
+      progressState(){return{level:state.level,xp:state.xp,need:xpNeeded(),text:nodes.xpText.textContent}},
+      objectiveText(){return currentQuestText()},
+      inspectBossSprite(index){state.mapId=MAP_SIGNAL_TOWN;state.x=2140;state.y=520;boss.x=2200;boss.dead=false;boss.sprite=index;boss.attackTimer=999;boss.charge=0;boss.stun=0;updateHud()},
       setPlayer(x,y,mapId=state.mapId){state.mapId=mapId;state.x=x;state.y=y;updateHud();},
       unlockMoonfall(){state.bossDefeated=true;boss.dead=true;state.chapter2Started=true;saveGame();updateObjective();updateHud()},
       switchMap(mapId){const portal=Object.values(MAP_PORTALS).flat().find(candidate=>candidate.to===mapId);if(portal)switchMap(portal)},

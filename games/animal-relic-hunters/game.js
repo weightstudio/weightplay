@@ -740,6 +740,64 @@
     return bulletVisualProfiles[weaponKey] || bulletVisualProfiles.default;
   }
 
+  const enemyShotVisualProfiles = Object.freeze({
+    bolt: Object.freeze({ fill: "#f59e0b", stroke: "#fff7d6", shadow: "#f59e0b", shape: "chevron" }),
+    pulse: Object.freeze({ fill: "#fb7185", stroke: "#fff1f2", shadow: "#fb7185", shape: "double-ring" }),
+    silence: Object.freeze({ fill: "#c084fc", stroke: "#faf5ff", shadow: "#c084fc", shape: "diamond-cross" }),
+  });
+
+  function getEnemyShotVisualProfile(kind) {
+    return enemyShotVisualProfiles[kind] || enemyShotVisualProfiles.bolt;
+  }
+
+  function drawEnemyShot(ctx, shot) {
+    const profile = getEnemyShotVisualProfile(shot.kind);
+    const size = Math.max(8, Number(shot.size) || 8);
+    ctx.save();
+    ctx.translate(shot.x, shot.y);
+    ctx.fillStyle = profile.fill;
+    ctx.strokeStyle = profile.stroke;
+    ctx.shadowColor = profile.shadow;
+    ctx.shadowBlur = 11;
+    ctx.lineWidth = Math.max(2, size * 0.22);
+
+    if (profile.shape === "double-ring") {
+      ctx.beginPath();
+      ctx.arc(0, 0, size, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+      ctx.beginPath();
+      ctx.arc(0, 0, size * 0.42, 0, Math.PI * 2);
+      ctx.stroke();
+    } else if (profile.shape === "diamond-cross") {
+      ctx.rotate(Math.PI / 4);
+      ctx.beginPath();
+      ctx.rect(-size * 0.72, -size * 0.72, size * 1.44, size * 1.44);
+      ctx.fill();
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+      ctx.beginPath();
+      ctx.moveTo(-size * 0.38, 0);
+      ctx.lineTo(size * 0.38, 0);
+      ctx.moveTo(0, -size * 0.38);
+      ctx.lineTo(0, size * 0.38);
+      ctx.stroke();
+    } else {
+      const angle = Math.atan2(Number(shot.vy) || 0, Number(shot.vx) || 1);
+      ctx.rotate(angle);
+      ctx.beginPath();
+      ctx.moveTo(size, 0);
+      ctx.lineTo(-size * 0.7, -size * 0.78);
+      ctx.lineTo(-size * 0.28, 0);
+      ctx.lineTo(-size * 0.7, size * 0.78);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
   const expeditionBlueprints = [
     ["Moss Gate", "\u82d4\u75d5\u4e4b\u9580", "chase"],
     ["Rootway Ambush", "\u6839\u9053\u4f0f\u64ca", "rush"],
@@ -3149,20 +3207,7 @@
       ctx.restore();
     });
 
-    state.enemyShots.forEach((shot) => {
-      const silence = shot.kind === "silence";
-      ctx.save();
-      ctx.fillStyle = silence ? "#c084fc" : shot.kind === "pulse" ? "#fb7185" : "#f59e0b";
-      ctx.strokeStyle = silence ? "#f5d0fe" : "#fef3c7";
-      ctx.shadowColor = ctx.fillStyle;
-      ctx.shadowBlur = 10;
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.arc(shot.x, shot.y, shot.size, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.stroke();
-      ctx.restore();
-    });
+    state.enemyShots.forEach((shot) => drawEnemyShot(ctx, shot));
 
     // 5. Draw Enemies
     state.enemies.forEach((enemy) => {
@@ -3816,6 +3861,33 @@
             key,
             ...getBulletVisualProfile(key),
           }));
+        },
+        enemyShotVisuals() {
+          return ["bolt", "pulse", "silence"].map((kind) => ({
+            kind,
+            ...getEnemyShotVisualProfile(kind),
+          }));
+        },
+        previewEnemyShotVisuals() {
+          startRun();
+          state.gameActive = false;
+          cancelAnimationFrame(state.gameLoopId);
+          state.enemies = [];
+          state.pickups = [];
+          state.orbs = [];
+          state.bullets = [];
+          state.enemyShots = ["bolt", "pulse", "silence"].flatMap((kind, row) =>
+            Array.from({ length: 3 }, (_, column) => ({
+              kind,
+              x: 250 + column * 150,
+              y: 260 + row * 220,
+              vx: kind === "bolt" ? 4 : 0,
+              vy: kind === "bolt" ? 1 : 0,
+              size: 11,
+              damage: 1,
+            })));
+          drawCanvasFrame();
+          return state.enemyShots.map(({ kind, x, y, size }) => ({ kind, x, y, size }));
         },
         refreshShopForTest() {
           updateDiamondShopUI();

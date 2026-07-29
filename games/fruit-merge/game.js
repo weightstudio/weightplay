@@ -98,9 +98,42 @@
   const stageHelp = document.querySelector("#stageHelp");
   const stageRail = document.querySelector("#stageRail");
   const stageDots = document.querySelector("#stageDots");
+  let stageHeading = document.querySelector(".merge-stage-heading");
+  if (stageHeading?.tagName !== "HEADER") {
+    const ownedStageHeading = document.createElement("header");
+    ownedStageHeading.className = `${stageHeading.className} stage-heading`;
+    while (stageHeading.firstChild) ownedStageHeading.append(stageHeading.firstChild);
+    stageHeading.replaceWith(ownedStageHeading);
+    stageHeading = ownedStageHeading;
+  } else {
+    stageHeading.classList.add("stage-heading");
+  }
+  if (stageHeading && stageTitle?.parentElement !== stageHeading) {
+    const legacyStageCopy = stageTitle.parentElement;
+    stageHeading.append(stageTitle);
+    if (stageHelp) stageHeading.append(stageHelp);
+    if (legacyStageCopy && legacyStageCopy !== stageHeading && !legacyStageCopy.children.length) {
+      legacyStageCopy.remove();
+    }
+  }
+  stageHelp?.classList.add("stage-help-copy");
+  const generatedStageHeader = document.querySelector(".wp-generated-stage-header");
+  if (generatedStageHeader?.contains(stageBackBtn)) {
+    stageHeading.prepend(stageBackBtn);
+    generatedStageHeader.remove();
+  }
   const menuPanel = document.querySelector("#menuPanel");
   const playPanel = document.querySelector("#playPanel");
   const battleShell = playPanel.querySelector(".fixed-game-shell");
+  battleShell.setAttribute("data-wp-logical-battle-canvas", "");
+  const existingBattleHeader = backToMenuBtn.closest("header");
+  if (!existingBattleHeader || existingBattleHeader.classList.contains("wp-generated-battle-header")) {
+    const battleReturnHeader = document.createElement("header");
+    battleReturnHeader.className = "battle-return-header";
+    battleShell.prepend(battleReturnHeader);
+    battleReturnHeader.append(backToMenuBtn);
+    existingBattleHeader?.remove();
+  }
   const leaveConfirmPanel = document.querySelector("#leaveConfirmPanel");
   const leaveConfirmTitle = document.querySelector("#leaveConfirmTitle");
   const leaveConfirmText = document.querySelector("#leaveConfirmText");
@@ -131,8 +164,17 @@
     resultText.before(resultScroll);
     resultScroll.append(resultText, resultMilestone, resultLeaderboard);
   }
-  const playAgainBtn = document.querySelector("#playAgainBtn");
   const menuBtn = document.querySelector("#menuBtn");
+  let nextChallengeBtn = document.querySelector("#nextChallengeBtn");
+  const playAgainBtn = document.querySelector("#playAgainBtn");
+  const resultActions = resultPanel.querySelector(".result-actions");
+  if (!nextChallengeBtn) {
+    nextChallengeBtn = document.createElement("button");
+    nextChallengeBtn.id = "nextChallengeBtn";
+    nextChallengeBtn.type = "button";
+    playAgainBtn.before(nextChallengeBtn);
+  }
+  resultActions.append(menuBtn, nextChallengeBtn, playAgainBtn);
   const loadingPanel = document.querySelector("#loadingPanel");
   const loadingText = document.querySelector("#loadingText");
   const loadingFill = document.querySelector("#loadingFill");
@@ -722,8 +764,9 @@
     stagePanel.setAttribute("aria-label", t("ariaStage"));
     stageHelp.textContent = t("stageHelp");
     stageBackBtn.setAttribute("aria-label", t("stageBack"));
+    nextChallengeBtn.textContent = t("nextChallenge");
     playAgainBtn.textContent = t("playAgain");
-    menuBtn.textContent = t("menu");
+    menuBtn.textContent = t("challengeMenu");
     leaveConfirmTitle.textContent = t(decisionMode === "pause" ? "pauseTitle" : "leaveTitle");
     leaveConfirmText.textContent = t(decisionMode === "pause" ? "pauseText" : "leaveText");
     keepPlayingBtn.textContent = t(decisionMode === "pause" ? "resume" : "keepPlaying");
@@ -853,7 +896,9 @@
       startBtn.disabled = false;
       stopAnimationLoop();
       draw();
-      requestAnimationFrame(() => startBtn.focus({ preventScroll: true }));
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => startBtn.focus({ preventScroll: true }));
+      });
     }
   }
 
@@ -1349,10 +1394,13 @@
     renderLeaderboard(resultLeaderboard, leaderboard);
     const hasNextChallenge = Boolean(challenge && cleared && challenge.id < challenges.length);
     const terminalChallengeClear = Boolean(challenge && cleared && challenge.id >= challenges.length);
-    playAgainBtn.textContent = challenge ? t(hasNextChallenge ? "nextChallenge" : "retryChallenge") : t("playAgain");
-    menuBtn.textContent = challenge ? t("challengeMenu") : t("menu");
-    const primaryResultAction = terminalChallengeClear ? menuBtn : playAgainBtn;
-    [playAgainBtn, menuBtn].forEach((action) => {
+    menuBtn.textContent = t("challengeMenu");
+    nextChallengeBtn.textContent = t("nextChallenge");
+    playAgainBtn.textContent = challenge ? t("retryChallenge") : t("playAgain");
+    nextChallengeBtn.disabled = !hasNextChallenge;
+    nextChallengeBtn.setAttribute("aria-disabled", String(!hasNextChallenge));
+    const primaryResultAction = terminalChallengeClear ? menuBtn : hasNextChallenge ? nextChallengeBtn : playAgainBtn;
+    [menuBtn, nextChallengeBtn, playAgainBtn].forEach((action) => {
       action.classList.toggle("result-primary", action === primaryResultAction);
       action.classList.toggle("result-secondary", action !== primaryResultAction);
     });
@@ -1914,22 +1962,31 @@
   stageBackBtn.addEventListener("click", () => resetGame(true, "stage-return"));
   playAgainBtn.addEventListener("click", () => {
     window.WonderAnalytics?.track?.("game_restart", { game_id: GAME_ID, score, source: "result" });
-    const challenge = activeChallenge();
-    if (challenge && lastChallengeCleared && challenge.id < challenges.length) startChallenge(challenge.id + 1);
-    else resetGame(false, "result");
+    resetGame(false, "result-replay");
   });
-  menuBtn.addEventListener("click", () => activeChallenge() ? showStage() : resetGame(true, "result-menu"));
+  nextChallengeBtn.addEventListener("click", () => {
+    const challenge = activeChallenge();
+    if (!challenge || !lastChallengeCleared || challenge.id >= challenges.length) return;
+    startChallenge(challenge.id + 1);
+  });
+  menuBtn.addEventListener("click", showStage);
   resultPanel.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) {
       event.preventDefault();
       return;
     }
     if (event.key !== "Tab" || resultPanel.classList.contains("hidden")) return;
-    const actions = [playAgainBtn, menuBtn].filter((button) => !button.hidden && !button.disabled);
+    const actions = [menuBtn, nextChallengeBtn, playAgainBtn].filter((button) => !button.hidden && !button.disabled);
     if (!actions.length) return;
     const first = actions[0];
     const last = actions.at(-1);
     if (event.shiftKey && (document.activeElement === first || !actions.includes(document.activeElement))) {
+      event.preventDefault();
+      last.focus({ preventScroll: true });
+    } else if (event.shiftKey && actions.length === 2 && document.activeElement === last) {
+      event.preventDefault();
+      first.focus({ preventScroll: true });
+    } else if (!event.shiftKey && actions.length === 2 && document.activeElement === first) {
       event.preventDefault();
       last.focus({ preventScroll: true });
     } else if (!event.shiftKey && document.activeElement === last) {
