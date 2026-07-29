@@ -11,7 +11,7 @@
   let locale=read("wp-locale")||"en";
   let unlocked=Math.max(1,Math.min(30,Number(read(saveKey))||1));
   let selected=unlocked-1;
-  let level=null,paths={},history=[],activeColor=null,pointerId=null,moves=0,resultClaimed=false,soundOn=true,audioContext=null;
+  let level=null,paths={},history=[],activeColor=null,pointerId=null,moves=0,resultClaimed=false,audioContext=null;
 
   function read(key){try{return localStorage.getItem(key)}catch{return null}}
   function write(key,value){try{localStorage.setItem(key,String(value))}catch{}}
@@ -179,8 +179,8 @@
     const nextUnlocked=Math.min(30,Math.max(unlocked,selected+2));
     if(nextUnlocked!==unlocked){unlocked=nextUnlocked;write(saveKey,unlocked)}
     $("#resultBody").textContent=t("resultBody",{n:selected+1,moves});
-    $("#next").hidden=selected>=29;
-    setTimeout(()=>{openModal($("#result"),$("#next").hidden?$("#retry"):$("#next"));successTone()},280);
+    $("#next").disabled=selected>=29;
+    setTimeout(()=>{openModal($("#result"),$("#next").disabled?$("#retry"):$("#next"));successTone()},280);
     window.WonderAnalytics?.track?.("game_complete",{game_id:"animal-prism-garden",stage:selected+1,moves});
   }
   function hint(){
@@ -202,7 +202,7 @@
     $("#status").textContent=t("fresh");renderBoard();
   }
   function tone(frequency,duration){
-    if(!soundOn)return;
+    if(window.WonderSound?.isMuted?.())return;
     try{
       audioContext ||= new(window.AudioContext||window.webkitAudioContext)();
       const oscillator=audioContext.createOscillator(),gain=audioContext.createGain();
@@ -229,9 +229,6 @@
   $("#resultStages").addEventListener("click",()=>show("stage"));
   $("#retry").addEventListener("click",()=>startLevel(selected));
   $("#next").addEventListener("click",()=>startLevel(Math.min(29,selected+1)));
-  $("#sound").addEventListener("click",()=>{
-    soundOn=!soundOn;$("#sound").textContent=soundOn?"♪":"×";$("#sound").setAttribute("aria-label",t(soundOn?"soundOn":"soundOff"));if(soundOn)tone(640,.08);
-  });
   $("#stageGrid").addEventListener("wonder:stage-snap",event=>{
     const index=Number(event.detail?.index),card=$("#stageGrid").children[index];
     if(!Number.isInteger(index)||!card)return;
@@ -241,12 +238,6 @@
       item.toggleAttribute("aria-current",itemIndex===index);
     });
   });
-  function scrollGroup(delta){
-    const target=Math.max(0,Math.min(29,Math.floor(selected/10)*10+delta*10));
-    $("#stageGrid").children[target]?.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});
-  }
-  $("#previousGroup").addEventListener("click",()=>scrollGroup(-1));
-  $("#nextGroup").addEventListener("click",()=>scrollGroup(1));
   $("#stageTab").addEventListener("click",()=>$("#stageGrid").children[selected]?.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"}));
 
   initLocale();renderStages();show("main");

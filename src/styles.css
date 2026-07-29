@@ -3722,8 +3722,6 @@ body.kids-lobby-page {
   max-height: none;
   aspect-ratio: 4 / 3;
   flex: 0 0 auto;
-  border-top: 3px solid #ffffff;
-  border-bottom: 3px solid #ffffff;
 }
 
 .kids-lobby-page .game-card-bg-blur {
@@ -3742,13 +3740,18 @@ body.kids-lobby-page {
 }
 
 .kids-lobby-page .game-card-body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
   display: grid;
-  order: -1;
+  width: 100%;
   height: 58px;
   min-height: 58px;
   padding: 7px 10px;
-  flex: 0 0 58px;
   place-items: center;
+  background: linear-gradient(180deg, rgba(13, 42, 57, 0.9) 0%, rgba(13, 42, 57, 0.58) 66%, transparent 100%);
+  pointer-events: none;
 }
 
 .kids-lobby-page .game-card h2 {
@@ -3756,10 +3759,11 @@ body.kids-lobby-page {
   min-height: 0;
   max-height: 42px;
   overflow: hidden;
-  color: #17324a;
+  color: #ffffff;
   font-size: 18px;
   line-height: 1.16;
   text-align: center;
+  text-shadow: 0 2px 6px rgba(5, 24, 34, 0.86);
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
@@ -4265,7 +4269,6 @@ body.kids-lobby-page {
     height: 48px;
     min-height: 48px;
     padding: 6px 8px;
-    flex-basis: 48px;
   }
 
   .kids-lobby-page .game-card h2 {
