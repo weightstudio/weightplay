@@ -99,7 +99,42 @@
     if(focusUpgrade)requestAnimationFrame(()=>$("upgrades").querySelector(`[data-upgrade="${focusUpgrade}"]`)?.focus());
   }
   function buyUpgrade(id){const level=save.upgrades[id];if(level>=5)return;const cost=upgradeCost(level),name=t(upgradeData[id].name);if(save.shards<cost){$("labFeedback").textContent=t("needShardsDetail",{name,cost,balance:save.shards});return}save.shards-=cost;save.upgrades[id]+=1;persist();renderLab(id);$("labFeedback").textContent=t("upgradePurchasedDetail",{name,level:save.upgrades[id],balance:save.shards});window.WonderSound?.play?.("success")}
-  document.querySelectorAll("[data-tab]").forEach((button)=>button.addEventListener("click",()=>{document.querySelectorAll("[data-tab]").forEach((item)=>{const active=item===button;item.classList.toggle("active",active);item.setAttribute("aria-selected",active?"true":"false")});$("missionsTab").hidden=button.dataset.tab!=="missions";$("labTab").hidden=button.dataset.tab!=="lab";if(button.dataset.tab==="lab"){renderLab();$("labFeedback").textContent=""}}));
+  const stageTabs=[...document.querySelectorAll("[data-tab]")];
+  function activateStageTab(name){
+    stageTabs.forEach((button)=>{
+      const active=button.dataset.tab===name;
+      button.classList.toggle("active",active);
+      button.setAttribute("aria-selected",active?"true":"false");
+      button.tabIndex=active?0:-1;
+    });
+    $("missionsTab").hidden=name!=="missions";
+    $("labTab").hidden=name!=="lab";
+    if(name==="lab"){renderLab();$("labFeedback").textContent=""}
+  }
+  document.querySelector(".stage-tabs")?.setAttribute("role","tablist");
+  stageTabs.forEach((button,index)=>{
+    const name=button.dataset.tab;
+    const panel=$(name==="missions"?"missionsTab":"labTab");
+    button.id=`${name}TabButton`;
+    button.setAttribute("role","tab");
+    button.setAttribute("aria-controls",panel.id);
+    panel.setAttribute("role","tabpanel");
+    panel.setAttribute("aria-labelledby",button.id);
+    button.addEventListener("click",()=>activateStageTab(name));
+    button.addEventListener("keydown",(event)=>{
+      let targetIndex=null;
+      if(event.key==="ArrowRight"||event.key==="ArrowDown")targetIndex=(index+1)%stageTabs.length;
+      else if(event.key==="ArrowLeft"||event.key==="ArrowUp")targetIndex=(index-1+stageTabs.length)%stageTabs.length;
+      else if(event.key==="Home")targetIndex=0;
+      else if(event.key==="End")targetIndex=stageTabs.length-1;
+      if(targetIndex===null)return;
+      event.preventDefault();
+      const target=stageTabs[targetIndex];
+      activateStageTab(target.dataset.tab);
+      target.focus({preventScroll:true});
+    });
+  });
+  activateStageTab("missions");
   $("start").addEventListener("click",()=>showScreen("stage"));$("stageBack").addEventListener("click",()=>showScreen("main"));
   $("locale").addEventListener("change",(event)=>{locale=canonicalLocale(event.target.value);storage.set("wonderLocale",locale);window.WonderI18n?.setLocale?.(locale);applyLocale()});
   $("soundToggle").addEventListener("keydown",(event)=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});

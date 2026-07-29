@@ -62,7 +62,6 @@ const againBtn = document.querySelector("#againBtn");
 const nextStageBtn = document.querySelector("#nextStageBtn");
 const stageSelectBtn = document.querySelector("#stageSelectBtn");
 const homeLink = document.querySelector("#homeLink");
-const homeText = document.querySelector("#homeText");
 const loadingPanel = document.querySelector("#loadingPanel");
 const loadingTitle = document.querySelector("#loadingTitle");
 const loadingText = document.querySelector("#loadingText");
@@ -884,7 +883,6 @@ function renderStaticText() {
   againBtn.textContent = t("again");
   nextStageBtn.textContent = t("nextStage");
   stageSelectBtn.textContent = t("stages");
-  homeText.textContent = t("lobby");
   leaveTitle.textContent = t("leaveTitle");
   leaveText.textContent = t("leaveText");
   keepPlayingBtn.textContent = t("keepPlaying");
@@ -1217,9 +1215,11 @@ function finishStage() {
   saveUnlockedStage(state.stageIndex + 1);
   updateProgress();
   renderResultText();
-  nextStageBtn.classList.toggle("hidden", isFinalStage);
+  nextStageBtn.classList.remove("hidden");
+  nextStageBtn.disabled = isFinalStage;
+  nextStageBtn.setAttribute("aria-disabled", String(isFinalStage));
   const primaryAction = isFinalStage ? stageSelectBtn : nextStageBtn;
-  [againBtn, nextStageBtn, stageSelectBtn, homeText].forEach((action) => {
+  [stageSelectBtn, nextStageBtn, againBtn].forEach((action) => {
     action.classList.toggle("result-primary", action === primaryAction);
   });
   resultPanel.classList.remove("hidden");
@@ -1321,6 +1321,11 @@ window.addEventListener("focus", () => {
   quizWindowFocused = true;
   resumeQuizTasks();
 });
+window.addEventListener("load", () => {
+  requestAnimationFrame(() => {
+    if (document.body.classList.contains("quiz-main")) renderStaticText();
+  });
+}, { once: true });
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) suspendQuizTasks();
   else resumeQuizTasks();
@@ -1374,7 +1379,7 @@ resultPanel.addEventListener("keydown", (event) => {
     return;
   }
   if (event.key !== "Tab") return;
-  const actions = [...resultPanel.querySelectorAll("button:not([disabled]), a[href]")]
+  const actions = [...resultPanel.querySelectorAll("[data-wp-result-actions] > button:not([disabled])")]
     .filter((action) => !action.classList.contains("hidden") && getComputedStyle(action).display !== "none");
   if (!actions.length) return;
   const currentIndex = actions.indexOf(document.activeElement);
@@ -1422,7 +1427,7 @@ nextStageBtn.addEventListener("click", () => {
 
 stageSelectBtn.addEventListener("click", () => {
   window.WonderSound?.play("click");
-  showStageSelect(state.stageIndex);
+  showStageSelect();
 });
 
 if (new URLSearchParams(window.location.search).get("smoke") === "1") {

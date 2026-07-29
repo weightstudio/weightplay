@@ -864,8 +864,21 @@
 
   function restoreNativeBattleHeader() {
     if (battleBackBtn.parentElement !== gameHud) gameHud.prepend(battleBackBtn);
-    document.querySelectorAll(".wp-generated-battle-header").forEach((header) => header.remove());
+    document.querySelectorAll(".wp-generated-battle-header, .wp-generated-stage-header").forEach((header) => header.remove());
   }
+
+  let nativeHeaderRepairFrame = 0;
+  const nativeHeaderObserver = new MutationObserver(() => {
+    if (!document.body.matches(".lunch-playing, .lunch-stage")) return;
+    const polluted = battleBackBtn.parentElement !== gameHud
+      || document.querySelector(".wp-generated-battle-header, .wp-generated-stage-header");
+    if (!polluted || nativeHeaderRepairFrame) return;
+    nativeHeaderRepairFrame = requestAnimationFrame(() => {
+      nativeHeaderRepairFrame = 0;
+      restoreNativeBattleHeader();
+    });
+  });
+  nativeHeaderObserver.observe(lunchGame, { childList: true, subtree: true });
 
   function setLeaveConfirmOpen(open, restoreFocus = true) {
     if (open === leaveConfirmOpen) return;

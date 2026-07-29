@@ -1,21 +1,23 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <script data-wp-internal-trial-gate>if(/^https?:$/.test(location.protocol)&&new URLSearchParams(location.search).get("trial")!=="1")location.replace("/");</script>
+    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol)) location.replace("/en/games/signal-veil/" + location.search + location.hash);</script>
   <meta charset="utf-8">
   <base href="/games/signal-veil/">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#071923">
-  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="robots" content="index,follow">
   <meta name="description" content="Explore a connected 2042 town, forest, and hidden laboratory in Signal Veil, a real-time pixel action RPG starring Spark Paw Fia.">
   <meta property="og:site_name" content="WeightPlay">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Signal Veil | WeightPlay">
-  <meta property="og:description" content="Expose neural disguises, fight 15 monsters, grow stronger, and confront the first Lizard Commander.">
+  <meta property="og:description" content="Complete 45 story missions across Signal Town, Moonfall Relay, and Ashfall Observatory in a real-time animal action RPG.">
   <meta property="og:url" content="https://weightplay.com/en/games/signal-veil/">
   <meta property="og:image" content="https://weightplay.com/assets/signal-veil-cover.webp">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Signal Veil | WeightPlay">
+  <meta name="twitter:description" content="Complete 45 story missions across three connected investigations, reveal hidden threats, and decide how the truth reaches Earth.">
   <title>Signal Veil | WeightPlay</title>
   <link rel="canonical" href="https://weightplay.com/en/games/signal-veil/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/signal-veil/" />
@@ -32,6 +34,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/signal-veil/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/signal-veil/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/signal-veil/" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Signal Veil","url":"https://weightplay.com/en/games/signal-veil/","image":"https://weightplay.com/assets/signal-veil-cover.webp","description":"A real-time top-down animal action RPG with 45 story missions across Signal Town, Moonfall Relay, and Ashfall Observatory.","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"en","isAccessibleForFree":true,"genre":["Action RPG","Adventure","Animal"],"audience":{"@type":"Audience","audienceType":"General players age 13 and older"}}</script>
     <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css">
   <link rel="stylesheet" href="../../src/game-page-info.css">
@@ -47,8 +50,8 @@
   </div>
 
   <main id="main" class="screen main-screen" data-screen="main">
-    <header class="main-header">
-      <a class="lobby-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay">
+    <header class="main-header wp-shell-header wp-main-shell-header">
+      <a class="lobby-return wp-shell-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay">
         <span aria-hidden="true">←</span><img src="/assets/weightplay-logo.png" alt="">
       </a>
       <div class="title-slot">
@@ -70,6 +73,7 @@
         <button id="startGame" class="primary standard-main-start" data-runtime-localize="off" type="button" data-t="start">Start Game</button>
       </div>
     </section>
+    <!-- adsense-static-guide:start -->
     <section class="game-guide game-page-info" aria-labelledby="guideTitle">
       <h2 id="guideTitle" data-t="guideTitle">Field Guide</h2>
       <section><h3 data-t="guideOverviewTitle">Mission</h3><p data-t="guideOverview"></p></section>
@@ -82,12 +86,13 @@
       <section><h3 data-t="guideTipsTitle">Field tips</h3><p data-t="guideTips"></p></section>
       <section><dl><dt><span data-t="guideFaqTitle">FAQ</span></dt><dd data-t="guideFaq"></dd></dl></section>
     </section>
+    <!-- adsense-static-guide:end -->
   </main>
 
   <section id="battleShell" class="screen battle-shell" data-screen="battle" hidden>
     <div id="battleCanvas" class="battle-canvas" data-wp-logical-battle-canvas>
       <header class="battle-header">
-        <button id="battleBack" class="back-button" data-wp-return="battle" type="button" aria-label="Leave investigation">←</button>
+        <button id="battleBack" class="back-button wp-shell-return" data-wp-return="battle" type="button" aria-label="Leave investigation">←</button>
         <div class="battle-title"><strong data-t="title">Signal Veil</strong><span id="zoneLabel">Town</span></div>
         <div class="battle-actions">
           <button id="questButton" class="quest-button" type="button" data-t="questButton">Quest</button>

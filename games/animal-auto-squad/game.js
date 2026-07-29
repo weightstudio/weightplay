@@ -2011,6 +2011,8 @@
     nodes.trainingTabBtn?.classList.toggle("is-active", training);
     nodes.stageTabBtn?.setAttribute("aria-selected", String(!training));
     nodes.trainingTabBtn?.setAttribute("aria-selected", String(training));
+    nodes.stageTabBtn?.setAttribute("tabindex", training ? "-1" : "0");
+    nodes.trainingTabBtn?.setAttribute("tabindex", training ? "0" : "-1");
     nodes.stageSelectPane?.classList.toggle("is-active", !training);
     nodes.trainingPane?.classList.toggle("is-active", training);
     if (nodes.stageSelectPane) nodes.stageSelectPane.hidden = training;
@@ -2021,6 +2023,29 @@
     } else {
       requestAnimationFrame(() => renderStageSelector(true));
     }
+  }
+
+  function handleStageTabKeydown(event) {
+    const tabs = [nodes.stageTabBtn, nodes.trainingTabBtn].filter(Boolean);
+    const currentIndex = tabs.indexOf(event.currentTarget);
+    if (currentIndex < 0 || tabs.length < 2) return;
+
+    let targetIndex = null;
+    if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+      targetIndex = (currentIndex + 1) % tabs.length;
+    } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+      targetIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+    } else if (event.key === "Home") {
+      targetIndex = 0;
+    } else if (event.key === "End") {
+      targetIndex = tabs.length - 1;
+    }
+    if (targetIndex === null) return;
+
+    event.preventDefault();
+    const target = tabs[targetIndex];
+    setStageTab(target === nodes.trainingTabBtn ? "training" : "stages");
+    target.focus({ preventScroll: true });
   }
 
   function stageLabel(stage) {
@@ -4657,6 +4682,8 @@
     nodes.stageBackBtn.addEventListener("click", renderMenu);
     nodes.stageTabBtn?.addEventListener("click", () => setStageTab("stages"));
     nodes.trainingTabBtn?.addEventListener("click", () => setStageTab("training"));
+    nodes.stageTabBtn?.addEventListener("keydown", handleStageTabKeydown);
+    nodes.trainingTabBtn?.addEventListener("keydown", handleStageTabKeydown);
     nodes.stageRail.addEventListener("scroll", scheduleStageBrowseUpdate, { passive: true });
     nodes.stageRail.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest(".stage-card")) event.preventDefault();

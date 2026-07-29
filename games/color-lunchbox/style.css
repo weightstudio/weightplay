@@ -838,7 +838,10 @@ body.lunch-stage .stage-card.locked.is-centered {
   min-height: 0;
 }
 
-body.lunch-playing:has(#resultPanel:not(.hidden)) .wp-generated-battle-header {
+body.lunch-playing .wp-generated-battle-header,
+body.lunch-playing .wp-generated-stage-header,
+body.lunch-stage .wp-generated-battle-header,
+body.lunch-stage .wp-generated-stage-header {
   display: none !important;
 }
 
