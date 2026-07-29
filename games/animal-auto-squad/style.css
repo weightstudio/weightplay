@@ -160,7 +160,7 @@ body.squad-stage-select .stage-panel { border: 0 !important; outline: 0; isolati
 .stage-pane:not(.is-active), .stage-pane[hidden] { display: none !important; }
 #stageSelectPane { display: grid; grid-template-rows: 58px minmax(0,1fr) 36px; gap: 8px; }
 .stage-setup-text { margin: 0; padding: 9px 12px; border-radius: 12px; color: #d8eee4; background: rgba(3,15,12,.83); font-size: .79rem; font-weight: 700; line-height: 1.3; }
-.stage-rail { display: grid; grid-auto-flow: column; grid-auto-columns: 264px; align-items: center; gap: 14px; height: 100%; overflow-x: auto; padding: 0 51px; scroll-snap-type: x mandatory; scrollbar-width: none; touch-action: pan-x; overscroll-behavior-inline: contain; }
+.stage-rail { display: grid; grid-auto-flow: column; grid-auto-columns: 264px; align-items: center; gap: 14px; height: 100%; overflow-x: auto; padding: 0 max(51px, calc((100% - 264px) / 2)); scroll-snap-type: x mandatory; scrollbar-width: none; touch-action: pan-x; overscroll-behavior-inline: contain; }
 .stage-rail::-webkit-scrollbar { display: none; }
 .stage-card { position: relative; width: 264px; height: 190px; display: grid; align-content: end; gap: 3px; padding: 14px 18px; overflow: hidden; scroll-snap-align: center; scroll-snap-stop: always; border: 2px solid rgba(255,255,255,.22); border-radius: 18px; color: #fff; background: linear-gradient(0deg, rgba(2,10,8,.96), var(--stage-overlay,rgba(2,10,8,.18))), url("../../assets/animal-auto-squad-bg.webp") center/cover; text-align: left; box-shadow: 0 12px 30px rgba(0,0,0,.4); }
 .stage-card em { color:#b9ffe2; font-size:.66rem; font-style:normal; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }

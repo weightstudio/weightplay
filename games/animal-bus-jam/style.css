@@ -321,14 +321,14 @@ body:not([data-screen="main"]) > .game-page-info { display: none !important; }
 .bus-head { display: flex; align-items: center; justify-content: space-between; gap: 5px; }
 .bus strong { font-size: .76rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .bus-route { color: var(--bus); font-size: .6rem; font-weight: 950; }
-.bus-shape {
-  height: 27px;
-  margin: 6px 0;
-  border-radius: 8px 8px 5px 5px;
-  background:
-    linear-gradient(90deg, transparent 7%, #d9f7ffb8 8% 28%, transparent 29% 34%, #d9f7ffb8 35% 55%, transparent 56% 61%, #d9f7ffb8 62% 83%, transparent 84%),
-    linear-gradient(var(--bus), color-mix(in srgb, var(--bus) 60%, #101820));
-  box-shadow: inset 0 -4px #0005;
+.bus-art {
+  display: block;
+  width: 100%;
+  height: 34px;
+  margin: 2px 0;
+  object-fit: contain;
+  object-position: center;
+  filter: drop-shadow(0 2px 3px #0008);
 }
 .seats { display: flex; gap: 4px; }
 .seats i { width: 13px; height: 6px; border: 1px solid var(--bus); border-radius: 6px; }
@@ -353,11 +353,32 @@ body:not([data-screen="main"]) > .game-page-info { display: none !important; }
   font-size: .61rem;
 }
 .holding-slot.occupied {
+  position: relative;
+  overflow: hidden;
   border-style: solid;
   border-color: var(--person);
   background: color-mix(in srgb, var(--person) 22%, #0a1520);
   color: #fff;
   box-shadow: inset 0 0 15px color-mix(in srgb, var(--person) 15%, transparent);
+}
+.holding-passenger-art {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.holding-slot.occupied > b {
+  position: absolute;
+  right: 2px;
+  bottom: 1px;
+  min-width: 13px;
+  border-radius: 999px;
+  background: #06101ddd;
+  color: #fff;
+  font-size: .5rem;
+  line-height: 13px;
+}
+.holding-slot[data-color="1"] .holding-passenger-art {
+  clip-path: inset(0 9% 0 0);
 }
 .queues {
   min-height: 0;
@@ -393,7 +414,7 @@ body:not([data-screen="main"]) > .game-page-info { display: none !important; }
   background: linear-gradient(90deg, color-mix(in srgb, var(--person) 33%, #111d28), #0b1621);
   color: #eaf2f7;
   display: grid;
-  grid-template-columns: 25px minmax(0, 1fr);
+  grid-template-columns: 28px minmax(0, 1fr);
   align-items: center;
   gap: 5px;
   padding: 3px 6px;
@@ -406,17 +427,33 @@ body:not([data-screen="main"]) > .game-page-info { display: none !important; }
   outline: 2px solid var(--person);
   box-shadow: 0 0 14px color-mix(in srgb, var(--person) 35%, transparent);
 }
-.passenger-token {
-  width: 23px;
-  height: 23px;
-  border: 2px solid #fff9;
-  border-radius: 50%;
+.passenger-art-frame {
+  position: relative;
+  width: 26px;
+  height: 28px;
   display: grid;
   place-items: center;
-  background: var(--person);
-  color: #07111b;
-  font-size: .62rem;
-  font-weight: 1000;
+  overflow: hidden;
+}
+.passenger-art {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.passenger-art-frame > b {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  min-width: 11px;
+  border-radius: 999px;
+  background: #06101ddd;
+  color: #fff;
+  font-size: .45rem;
+  line-height: 11px;
+  text-align: center;
+}
+.passenger[data-color="1"] .passenger-art {
+  clip-path: inset(0 9% 0 0);
 }
 .queue-empty { margin: auto; color: #677a88; }
 .tools { display: flex; justify-content: center; gap: 8px; }
@@ -607,7 +644,7 @@ dialog button:disabled { opacity: .42; cursor: not-allowed; }
   .bus { height: 50px; flex-basis: 92px; padding: 3px 6px; }
   .bus.active { flex-basis: 118px; }
   .bus.departing { --departing-bus-width: 118px; }
-  .bus-shape { height: 16px; margin: 3px 0; }
+  .bus-art { height: 18px; margin: 1px 0; }
   .bus strong { font-size: .6rem; }
   .dispatch-floor { grid-template-columns: 116px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); gap: 5px; }
   .holding-panel { width: auto; height: 100%; padding: 4px 6px; }
@@ -616,8 +653,9 @@ dialog button:disabled { opacity: .42; cursor: not-allowed; }
   .holding-slot { width: 100%; height: auto; min-height: 20px; }
   .queue { padding: 3px; gap: 2px; }
   .queue-label { font-size: .48rem; }
-  .passenger { min-height: 23px; grid-template-columns: 16px minmax(0, 1fr); font-size: .55rem; padding: 1px 3px; }
-  .passenger-token { width: 15px; height: 15px; font-size: .43rem; border-width: 1px; }
+  .passenger { min-height: 23px; grid-template-columns: 18px minmax(0, 1fr); font-size: .55rem; padding: 1px 3px; }
+  .passenger-art-frame { width: 17px; height: 19px; }
+  .passenger-art-frame > b { min-width: 8px; font-size: .34rem; line-height: 8px; }
   .tools button { min-height: 32px; padding: 3px 12px; }
   .status { position: absolute; left: 10px; right: 10px; bottom: 5px; font-size: .56rem; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   dialog[open] { top: calc((100svh - 56px) / 2); bottom: auto; margin: 0 auto; transform: translateY(-50%); max-height: calc(100svh - 72px); padding: 12px 20px; overflow: auto; }

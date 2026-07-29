@@ -1551,6 +1551,7 @@
     if (nodes.stagePanel) {
       nodes.stagePanel.querySelector("strong").textContent = t("missionSelect");
       nodes.stageBackBtn.setAttribute("aria-label", t("backToMain"));
+      nodes.stagePanel.querySelector(".rune-stage-tabs")?.setAttribute("aria-label", t("missionSelect"));
     }
     renderMenu();
     if (state) render();
@@ -1855,14 +1856,14 @@
     stagePanel.innerHTML = `
       <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" aria-label="${t("backToMain")}">&larr;</button><strong>${t("missionSelect")}</strong></header>
       <div class="rune-stage-workspace">
-        <section class="rune-stage-view is-active" data-rune-stage-view="missions"></section>
-        <section class="rune-stage-view" data-rune-stage-view="heroes"></section>
-        <section class="rune-stage-view" data-rune-stage-view="training"></section>
+        <section id="rune-stage-view-missions" class="rune-stage-view is-active" data-rune-stage-view="missions" role="tabpanel" aria-labelledby="rune-stage-tab-missions"></section>
+        <section id="rune-stage-view-heroes" class="rune-stage-view" data-rune-stage-view="heroes" role="tabpanel" aria-labelledby="rune-stage-tab-heroes" hidden></section>
+        <section id="rune-stage-view-training" class="rune-stage-view" data-rune-stage-view="training" role="tabpanel" aria-labelledby="rune-stage-tab-training" hidden></section>
       </div>
-      <nav class="rune-stage-tabs">
-        <button class="is-active" type="button" data-rune-stage-tab="missions" data-ui="stageTabMissions">Missions</button>
-        <button type="button" data-rune-stage-tab="heroes" data-ui="stageTabHeroes">Heroes</button>
-        <button type="button" data-rune-stage-tab="training" data-ui="stageTabTraining">Training</button>
+      <nav class="rune-stage-tabs" role="tablist" aria-label="${t("missionSelect")}">
+        <button id="rune-stage-tab-missions" class="is-active" type="button" role="tab" aria-selected="true" aria-controls="rune-stage-view-missions" tabindex="0" data-rune-stage-tab="missions" data-ui="stageTabMissions">Missions</button>
+        <button id="rune-stage-tab-heroes" type="button" role="tab" aria-selected="false" aria-controls="rune-stage-view-heroes" tabindex="-1" data-rune-stage-tab="heroes" data-ui="stageTabHeroes">Heroes</button>
+        <button id="rune-stage-tab-training" type="button" role="tab" aria-selected="false" aria-controls="rune-stage-view-training" tabindex="-1" data-rune-stage-tab="training" data-ui="stageTabTraining">Training</button>
       </nav>`;
     missionList.querySelector(":scope > .section-head")?.remove();
     stagePanel.querySelector('[data-rune-stage-view="missions"]').append(missionList);
@@ -1877,12 +1878,40 @@
     nodes.missionGrid.addEventListener("wonder:stage-snap", (event) => {
       setCenteredMission(Number(event.detail?.index) + 1);
     });
-    stagePanel.querySelectorAll("[data-rune-stage-tab]").forEach((button) => button.addEventListener("click", () => {
+    const stageTabs = [...stagePanel.querySelectorAll("[data-rune-stage-tab]")];
+    const activateStageTab = (button, { focus = false } = {}) => {
       const tab = button.dataset.runeStageTab;
       if (tab !== "training") resetTrainingIntent();
-      stagePanel.querySelectorAll("[data-rune-stage-tab]").forEach((item) => item.classList.toggle("is-active", item === button));
-      stagePanel.querySelectorAll("[data-rune-stage-view]").forEach((view) => view.classList.toggle("is-active", view.dataset.runeStageView === tab));
-    }));
+      stageTabs.forEach((item) => {
+        const active = item === button;
+        item.classList.toggle("is-active", active);
+        item.setAttribute("aria-selected", String(active));
+        item.tabIndex = active ? 0 : -1;
+      });
+      stagePanel.querySelectorAll("[data-rune-stage-view]").forEach((view) => {
+        const active = view.dataset.runeStageView === tab;
+        view.classList.toggle("is-active", active);
+        view.hidden = !active;
+      });
+      if (focus) button.focus({ preventScroll: true });
+    };
+    stageTabs.forEach((button) => button.addEventListener("click", () => activateStageTab(button)));
+    stagePanel.querySelector(".rune-stage-tabs").addEventListener("keydown", (event) => {
+      const current = event.target.closest?.("[data-rune-stage-tab]");
+      if (!current) return;
+      const index = stageTabs.indexOf(current);
+      const rtl = getComputedStyle(stagePanel.querySelector(".rune-stage-tabs")).direction === "rtl";
+      let next = index;
+      if (event.key === "Home") next = 0;
+      else if (event.key === "End") next = stageTabs.length - 1;
+      else if (event.key === "ArrowDown") next = (index + 1) % stageTabs.length;
+      else if (event.key === "ArrowUp") next = (index - 1 + stageTabs.length) % stageTabs.length;
+      else if (event.key === "ArrowRight") next = (index + (rtl ? -1 : 1) + stageTabs.length) % stageTabs.length;
+      else if (event.key === "ArrowLeft") next = (index + (rtl ? 1 : -1) + stageTabs.length) % stageTabs.length;
+      else return;
+      event.preventDefault();
+      activateStageTab(stageTabs[next], { focus: true });
+    });
   }
 
   function showStage() {

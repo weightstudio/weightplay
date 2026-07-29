@@ -168,6 +168,23 @@
   if(!arena)return;
   arena.tabIndex=0;
   arena.setAttribute("aria-keyshortcuts","ArrowLeft ArrowRight A D Space");
+  const installKeyDiscovery=()=>{
+    if(document.querySelector(".key-discovery"))return true;
+    const target=document.querySelector(".game-info-systems");
+    if(!target)return false;
+    const keys=document.createElement("p");
+    keys.className="key-discovery";
+    keys.setAttribute("aria-hidden","true");
+    keys.innerHTML="<kbd>&larr;</kbd><kbd>&rarr;</kbd><span>/</span><kbd>A</kbd><kbd>D</kbd>";
+    target.append(keys);
+    return true;
+  };
+  let discoveryAttempts=0;
+  const discoveryTimer=setInterval(()=>{
+    discoveryAttempts+=1;
+    if(installKeyDiscovery()||discoveryAttempts>=32)clearInterval(discoveryTimer);
+  },250);
+  installKeyDiscovery();
   const movementKeys=new Set(["ArrowLeft","ArrowRight","a","d"]);
   const ownsKeyboard=event=>event.target===arena;
 

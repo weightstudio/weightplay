@@ -545,21 +545,38 @@
     }).join("");
     syncCentered();
   }
+  function centerStageCard(card, behavior = "smooth") {
+    if (!card || !els.stageRail) return;
+    const railRect = els.stageRail.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
+    const scale = railRect.width / Math.max(1, els.stageRail.clientWidth);
+    const renderedDelta = cardRect.left + cardRect.width / 2 - (railRect.left + railRect.width / 2);
+    els.stageRail.scrollBy({ left: renderedDelta / Math.max(.01, scale), behavior });
+  }
   function centerUnlocked() {
     const target = els.stageRail.querySelector(`[data-stage="${Math.max(0, save.unlocked - 1)}"]`);
-    target?.scrollIntoView({ behavior: "auto", inline: "center", block: "nearest" });
-    setTimeout(syncCentered, 30);
+    centerStageCard(target, "auto");
+    setTimeout(() => {
+      syncCentered();
+      els.stageRail.querySelector(".stage-card[aria-current='true']")?.focus({ preventScroll: true });
+    }, 30);
   }
   function syncCentered() {
     if (!els.stageRail || els.stageScreen.hidden) return;
-    const center = els.stageRail.getBoundingClientRect().left + els.stageRail.clientWidth / 2;
+    const railRect = els.stageRail.getBoundingClientRect();
+    const center = railRect.left + railRect.width / 2;
     let best = null, distance = Infinity;
     els.stageRail.querySelectorAll(".stage-card").forEach(card => {
       const r = card.getBoundingClientRect(), d = Math.abs(r.left + r.width / 2 - center);
       card.classList.remove("is-centered");
       if (d < distance) { distance = d; best = card; }
     });
-    best?.classList.add("is-centered");
+    els.stageRail.querySelectorAll(".stage-card").forEach(card => {
+      const active = card === best;
+      card.classList.toggle("is-centered", active);
+      card.setAttribute("aria-current", String(active));
+      card.tabIndex = active ? 0 : -1;
+    });
     const chapter = Math.floor(+(best?.dataset.stage || 0) / 5);
     els.chapterName.textContent = t(CHAPTERS[chapter]);
   }
@@ -568,6 +585,30 @@
     const card = event.target.closest?.(".stage-card");
     if (!card || card.getAttribute("aria-disabled") === "true") return;
     startBattle(+card.dataset.stage);
+  });
+  els.stageRail.addEventListener("keydown", event => {
+    const card = event.target.closest?.(".stage-card");
+    if (!card) return;
+    const cards = [...els.stageRail.querySelectorAll(".stage-card")];
+    const current = cards.indexOf(card);
+    const rtl = document.documentElement.dir === "rtl";
+    let next = null;
+    if (event.key === "Home") next = 0;
+    else if (event.key === "End") next = cards.length - 1;
+    else if (event.key === "ArrowRight") next = current + (rtl ? -1 : 1);
+    else if (event.key === "ArrowLeft") next = current + (rtl ? 1 : -1);
+    if (next == null) return;
+    event.preventDefault();
+    const target = cards[Math.max(0, Math.min(cards.length - 1, next))];
+    cards.forEach(item => {
+      const active = item === target;
+      item.classList.toggle("is-centered", active);
+      item.setAttribute("aria-current", String(active));
+      item.tabIndex = active ? 0 : -1;
+    });
+    centerStageCard(target);
+    target.focus({ preventScroll: true });
+    els.chapterName.textContent = t(CHAPTERS[Math.floor(+target.dataset.stage / 5)]);
   });
 
   function rng(seed) { let value = seed >>> 0; return () => ((value = Math.imul(value ^ value >>> 15, 1 | value), value ^= value + Math.imul(value ^ value >>> 7, 61 | value), ((value ^ value >>> 14) >>> 0) / 4294967296)); }

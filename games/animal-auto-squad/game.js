@@ -2092,7 +2092,7 @@
       card.style.setProperty("--stage-overlay", region.overlay);
       // Keep locked cards draggable as part of the horizontal rail.
       card.setAttribute("aria-disabled", String(locked));
-      if (locked) card.tabIndex = -1;
+      card.tabIndex = stage === save.selectedStage ? 0 : -1;
       const firstWave = enemyWaveStats(stage, 1);
       const finalWave = enemyWaveStats(stage, WAVES_PER_STAGE);
       const enemyRange = t("stageEnemyRange", { first: firstWave.count, last: finalWave.count });
@@ -2102,7 +2102,11 @@
       card.innerHTML = `<em>${regionName}</em><strong>${stageLabel(stage)}</strong><span>${stageName}</span><small>${t("stageWaveCount", { count: WAVES_PER_STAGE })}${bossText}</small><small>${enemyRange}</small><small>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</small>`;
       card.setAttribute("aria-label", `${regionName}. ${stageLabel(stage)}. ${stageName}. ${t("stageWaveCount", { count: WAVES_PER_STAGE })}${bossText}. ${enemyRange}. ${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}`);
       card.addEventListener("click", () => {
-        if (locked) return;
+        if (locked) {
+          setBrowsedStageOwner(card);
+          card.scrollIntoView({ block: "nearest", inline: "center" });
+          return;
+        }
         selectStage(stage, false);
         startExpedition();
       });
@@ -2135,12 +2139,45 @@
         nearestDistance = distance;
       }
     });
-    cards.forEach((card) => {
-      const browsed = card === nearest;
+    const focusedCard = document.activeElement?.closest?.(".stage-card");
+    setBrowsedStageOwner(nearest);
+    if (focusedCard && focusedCard !== nearest && rail.contains(focusedCard)) {
+      nearest.focus({ preventScroll: true });
+    }
+  }
+
+  function setBrowsedStageOwner(owner) {
+    if (!nodes.stageRail || !owner) return;
+    [...nodes.stageRail.querySelectorAll(".stage-card")].forEach((card) => {
+      const browsed = card === owner;
       card.classList.toggle("is-browsed", browsed);
+      card.tabIndex = browsed ? 0 : -1;
       if (browsed) card.setAttribute("aria-current", "true");
       else card.removeAttribute("aria-current");
     });
+  }
+
+  function handleStageCardKeydown(event) {
+    const card = event.target.closest(".stage-card");
+    if (!card || !nodes.stageRail?.contains(card)) return;
+    const cards = [...nodes.stageRail.querySelectorAll(".stage-card")];
+    const currentIndex = cards.indexOf(card);
+    if (currentIndex < 0) return;
+
+    const rtl = getComputedStyle(nodes.stageRail).direction === "rtl"
+      || document.documentElement.dir === "rtl";
+    let targetIndex = null;
+    if (event.key === "ArrowRight") targetIndex = currentIndex + (rtl ? -1 : 1);
+    else if (event.key === "ArrowLeft") targetIndex = currentIndex + (rtl ? 1 : -1);
+    else if (event.key === "Home") targetIndex = 0;
+    else if (event.key === "End") targetIndex = cards.length - 1;
+    if (targetIndex === null) return;
+
+    event.preventDefault();
+    const target = cards[Math.max(0, Math.min(cards.length - 1, targetIndex))];
+    setBrowsedStageOwner(target);
+    target.scrollIntoView({ block: "nearest", inline: "center" });
+    target.focus({ preventScroll: true });
   }
 
   function scheduleStageBrowseUpdate() {
@@ -4689,6 +4726,7 @@
     nodes.stageRail.addEventListener("scroll", scheduleStageBrowseUpdate, { passive: true });
     nodes.stageRail.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest(".stage-card")) event.preventDefault();
+      handleStageCardKeydown(event);
     });
     nodes.rerollShopBtn.addEventListener("click", rerollShop);
     nodes.rerollRelicsBtn.addEventListener("keydown", (event) => {

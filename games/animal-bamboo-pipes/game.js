@@ -5,7 +5,7 @@
   const LOCALE_ROUTES = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const BASE = window.BAMBOO_LOCALES.en;
   const LEVELS = window.BAMBOO_LEVELS.levels;
-  let locale = localRead("weightPlayLocale") || localRead("wp-locale") || "en", selected = 0, run = null, resultActionClaimed = false, leaveOpen = false, completionTimer = 0;
+  let locale = localRead("weightPlayLocale") || localRead("wp-locale") || "en", selected = 0, run = null, resultActionClaimed = false, leaveOpen = false, completionTimer = 0, boardFocusIndex = 0;
   if (!CODES.includes(locale)) locale = "en";
   let save = { unlocked: 1, done: {} };
   try { save = { ...save, ...JSON.parse(localStorage.getItem("wp:bamboo") || "{}") }; } catch {}
@@ -104,6 +104,8 @@
   }
   function renderBoard(focusIndex = -1) {
     const wet = water(), board = $("board"); board.innerHTML = "";
+    const enabledIndexes = run.tiles.map((tile, index) => tile.target || run.completed ? -1 : index).filter(index => index >= 0);
+    if (!enabledIndexes.includes(boardFocusIndex)) boardFocusIndex = enabledIndexes[0] ?? 0;
     run.tiles.forEach((tile, index) => {
       const pipe = document.createElement("button");
       pipe.className = `pipe${wet.has(index) ? " wet" : ""}`;
@@ -113,9 +115,10 @@
       pipe.dataset.rotation = String(tile.rot);
       pipe.setAttribute("aria-label", tile.target ? `${text("objective")} — ${text("pipeLabel", { n: index + 1 })}` : text("pipeLabel", { n: index + 1 }));
       pipe.disabled = tile.target || run.completed;
+      pipe.tabIndex = !pipe.disabled && index === boardFocusIndex ? 0 : -1;
       const flow = flowSvg(tile, index, wet.has(index));
       if (flow) pipe.append(flow);
-      if (!tile.target) pipe.onclick = event => { if(run.completed)return;run.history.push(run.tiles.map(item => item.rot)); tile.rot = (tile.rot + 1) % 4; run.moves++; renderBoard(event.detail === 0 ? index : -1); if (winReady()) complete(); };
+      if (!tile.target) pipe.onclick = event => { if(run.completed)return;boardFocusIndex=index;run.history.push(run.tiles.map(item => item.rot)); tile.rot = (tile.rot + 1) % 4; run.moves++; renderBoard(event.detail === 0 ? index : -1); if (winReady()) complete(); };
       board.append(pipe);
     });
     $("moves").textContent = text("moves", { n: run.moves });
@@ -126,15 +129,19 @@
     cancelCompletionReveal();
     setResultOpen(false);
     run = { tiles: stageData(selected), history: [], moves: 0, completed: false };
+    boardFocusIndex = run.tiles.findIndex(tile => !tile.target);
     $("chapter").textContent = text("chapter", { n: Math.floor(selected / 5) + 1 });
     $("stageName").textContent = text("waterway", { n: selected + 1 });
-    show("battle"); renderBoard();
+    show("battle"); renderBoard(boardFocusIndex);
+    window.WonderAnalytics?.track?.("game_start", { game_id: "animal-bamboo-pipes", stage: selected + 1 });
+    requestAnimationFrame(() => $("board").children[boardFocusIndex]?.focus({ preventScroll: true }));
   }
   function complete() {
     if(run.completed)return;
     run.completed = true;
     save.done[selected] = true;
     save.unlocked = Math.max(save.unlocked, Math.min(30, selected + 2)); persist();
+    window.WonderAnalytics?.track?.("game_complete", { game_id: "animal-bamboo-pipes", stage: selected + 1, turns: run.moves });
     updateMainProgress();
     $("resultText").textContent = text("resultText", { moves: run.moves, n: selected + 1 });
     $("retry").disabled = false;
@@ -289,6 +296,36 @@
       event.preventDefault();
       actions[0].focus();
     }
+  });
+  $("board").addEventListener("focusin", event => {
+    const pipe = event.target.closest?.(".pipe:not(:disabled)");
+    if (!pipe) return;
+    boardFocusIndex = [...$("board").children].indexOf(pipe);
+    [...$("board").children].forEach((child, index) => { child.tabIndex = index === boardFocusIndex && !child.disabled ? 0 : -1; });
+  });
+  $("board").addEventListener("keydown", event => {
+    const pipe = event.target.closest?.(".pipe:not(:disabled)");
+    if (!pipe) return;
+    const current = [...$("board").children].indexOf(pipe);
+    const delta = event.key === "ArrowLeft" ? -1
+      : event.key === "ArrowRight" ? 1
+        : event.key === "ArrowUp" ? -5
+          : event.key === "ArrowDown" ? 5
+            : 0;
+    let next = event.key === "Home" ? 0 : event.key === "End" ? 24 : current;
+    if (delta) {
+      next += delta;
+      while (next >= 0 && next < 25 && $("board").children[next]?.disabled) next += delta;
+      if ((delta === -1 || delta === 1) && Math.floor(next / 5) !== Math.floor(current / 5)) next = current;
+    } else if (event.key !== "Home" && event.key !== "End") {
+      return;
+    }
+    while (next >= 0 && next < 25 && $("board").children[next]?.disabled) next += event.key === "End" ? -1 : 1;
+    if (next < 0 || next >= 25 || next === current) return;
+    event.preventDefault();
+    boardFocusIndex = next;
+    [...$("board").children].forEach((child, index) => { child.tabIndex = index === next && !child.disabled ? 0 : -1; });
+    $("board").children[next].focus({ preventScroll: true });
   });
   $("undo").onclick = () => { if(run?.completed)return;const prior = run?.history.pop(); if (prior) { run.tiles.forEach((tile, i) => { tile.rot = prior[i]; }); run.moves--; renderBoard(); } };
   $("restart").onclick = startStage;

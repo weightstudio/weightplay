@@ -172,6 +172,7 @@
   let runClockStartedAt = 0;
   let activePointer = null;
   let hintNode = null;
+  let graphFocusIndex = 0;
   let completing = false;
   let completionTimer = 0;
   let completionDeadline = 0;
@@ -303,7 +304,7 @@
   function updateChapterPanel(index){stageIndex=Math.max(0,Math.min(29,index));const stage=stages[stageIndex];dom.chapterKicker.textContent=t("chapter",{number:stage.chapter});dom.chapterTitle.textContent=t(`chapter${stage.chapter}`);dom.chapterRule.textContent=t(`rule${stage.chapter}`);$$('.stage-card.selected').forEach(card=>card.classList.remove("selected"));dom.stageRail.querySelector(`[data-index="${stageIndex}"]`)?.classList.add("selected");}
 
   function startStage(index){
-    clearCompletionTransition();stageIndex=index;path=[];hints=0;mistakes=0;restarts=0;hintNode=null;completing=false;runElapsed=0;runClockStartedAt=0;dom.result.hidden=true;dom.leave.hidden=true;setBattleLeaveCoverage(false);setResultCoverage(false);setScreen("battle");resumeRunClock();buildGraph();renderBattleLabels();updateGraph();setFeedback(t("ready"));analytics("game_start",{stage:index+1});window.dispatchEvent(new CustomEvent("weightplay:battle-open"));
+    clearCompletionTransition();stageIndex=index;path=[];hints=0;mistakes=0;restarts=0;hintNode=null;completing=false;runElapsed=0;runClockStartedAt=0;dom.result.hidden=true;dom.leave.hidden=true;setBattleLeaveCoverage(false);setResultCoverage(false);setScreen("battle");resumeRunClock();const stage=currentStage();graphFocusIndex=stage.forcedStart??stage.points.map((_,node)=>node).find(validStart)??0;buildGraph();renderBattleLabels();updateGraph();setFeedback(t("ready"));requestAnimationFrame(()=>dom.svg.querySelector(`[data-node="${graphFocusIndex}"]`)?.focus({preventScroll:true}));analytics("game_start",{stage:index+1});window.dispatchEvent(new CustomEvent("weightplay:battle-open"));
   }
 
   function currentStage(){return stages[stageIndex];}
@@ -349,10 +350,23 @@
   function restartAttempt(count=true){if(completing)return;if(count&&path.length)restarts+=1;path=[];hintNode=null;sound("click");setFeedback(t("ready"));updateGraph();if(count)analytics("game_restart",{stage:stageIndex+1});}
   function showHint(){if(completing)return;const stage=currentStage();let node=null;if(path.length===0){node=stage.forcedStart??stage.points.map((_,index)=>index).find(validStart);setFeedback(t("hintStart"));}else{const state=deriveState();node=solveFrom(state.current,state.used,state.checkpointProgress,state.keyFound)?.[0]??null;setFeedback(node===null?t("deadEnd"):t("hintNext"));}if(node!==null){hints+=1;hintNode=node;sound("click");updateGraph();updateAssist();}}
 
+  function setGraphFocus(index,focus=false){
+    const nodes=$$(".graph-node");if(!nodes.length)return;
+    graphFocusIndex=Math.max(0,Math.min(nodes.length-1,index));
+    nodes.forEach((node,nodeIndex)=>node.setAttribute("tabindex",nodeIndex===graphFocusIndex?"0":"-1"));
+    if(focus)nodes[graphFocusIndex]?.focus({preventScroll:true});
+  }
+  function directionalGraphNode(index,key){
+    const points=currentStage().points;const [x,y]=points[index];const horizontal=key==="ArrowLeft"||key==="ArrowRight";const sign=key==="ArrowLeft"||key==="ArrowUp"?-1:1;
+    return points.map(([nextX,nextY],node)=>{const dx=nextX-x,dy=nextY-y,primary=(horizontal?dx:dy)*sign,cross=Math.abs(horizontal?dy:dx);return {node,primary,cross,distance:Math.hypot(dx,dy)};})
+      .filter(candidate=>candidate.primary>.01)
+      .sort((a,b)=>(a.cross*4+a.distance)-(b.cross*4+b.distance)||a.node-b.node)[0]?.node??index;
+  }
+
   function buildGraph(){
     const stage=currentStage();const ns="http://www.w3.org/2000/svg";dom.svg.replaceChildren();
     const edgeLayer=document.createElementNS(ns,"g");edgeLayer.setAttribute("class","edge-layer");stage.edges.forEach(edge=>{const line=document.createElementNS(ns,"line");const [x1,y1]=stage.points[edge.from],[x2,y2]=stage.points[edge.to];line.setAttribute("x1",x1);line.setAttribute("y1",y1);line.setAttribute("x2",x2);line.setAttribute("y2",y2);line.dataset.edge=edge.key;line.classList.add("graph-edge");if(edge.directed)line.classList.add("directed");if(edge.gate)line.classList.add("gate");line.setAttribute("aria-label",t("edgeLabel",{from:edge.from+1,to:edge.to+1}));edgeLayer.append(line);if(edge.directed){const arrow=document.createElementNS(ns,"path");const midpointX=(x1+x2)/2,midpointY=(y1+y2)/2,angle=Math.atan2(y2-y1,x2-x1)*180/Math.PI;arrow.classList.add("direction-arrow");arrow.dataset.edge=edge.key;arrow.setAttribute("d","M -3.6 -2.7 L 3.8 0 L -3.6 2.7 Z");arrow.setAttribute("transform",`translate(${midpointX} ${midpointY}) rotate(${angle})`);arrow.setAttribute("aria-hidden","true");edgeLayer.append(arrow);}});dom.svg.append(edgeLayer);
-    const nodeLayer=document.createElementNS(ns,"g");nodeLayer.setAttribute("class","node-layer");stage.points.forEach(([x,y],index)=>{const group=document.createElementNS(ns,"g");group.classList.add("graph-node");group.dataset.node=index;group.setAttribute("role","button");group.setAttribute("tabindex","0");group.setAttribute("transform",`translate(${x} ${y})`);const halo=document.createElementNS(ns,"circle");halo.setAttribute("r","6.7");halo.classList.add("node-halo");const core=document.createElementNS(ns,"circle");core.setAttribute("r","4.5");core.classList.add("node-core");const label=document.createElementNS(ns,"text");label.classList.add("node-label");label.setAttribute("y",".4");group.append(halo,core,label);group.addEventListener("pointerdown",event=>{if(activePointer!==null||event.isPrimary===false||(event.pointerType==="mouse"&&event.button!==0))return;event.preventDefault();activePointer=event.pointerId;try{dom.svg.setPointerCapture?.(event.pointerId);}catch{}chooseNode(index);});group.addEventListener("keydown",event=>{if(event.repeat)return;if(event.key==="Enter"||event.key===" "){event.preventDefault();chooseNode(index);}});nodeLayer.append(group);});dom.svg.append(nodeLayer);
+    const nodeLayer=document.createElementNS(ns,"g");nodeLayer.setAttribute("class","node-layer");stage.points.forEach(([x,y],index)=>{const group=document.createElementNS(ns,"g");group.classList.add("graph-node");group.dataset.node=index;group.setAttribute("role","button");group.setAttribute("tabindex",index===graphFocusIndex?"0":"-1");group.setAttribute("transform",`translate(${x} ${y})`);const halo=document.createElementNS(ns,"circle");halo.setAttribute("r","6.7");halo.classList.add("node-halo");const core=document.createElementNS(ns,"circle");core.setAttribute("r","4.5");core.classList.add("node-core");const label=document.createElementNS(ns,"text");label.classList.add("node-label");label.setAttribute("y",".4");group.append(halo,core,label);group.addEventListener("focus",()=>setGraphFocus(index));group.addEventListener("pointerdown",event=>{if(activePointer!==null||event.isPrimary===false||(event.pointerType==="mouse"&&event.button!==0))return;event.preventDefault();setGraphFocus(index);activePointer=event.pointerId;try{dom.svg.setPointerCapture?.(event.pointerId);}catch{}chooseNode(index);});group.addEventListener("keydown",event=>{if(event.repeat)return;if(event.key==="Enter"||event.key===" "){event.preventDefault();chooseNode(index);return;}if(event.key==="Home"||event.key==="End"){event.preventDefault();setGraphFocus(event.key==="Home"?0:stage.points.length-1,true);return;}if(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(event.key)){event.preventDefault();setGraphFocus(directionalGraphNode(index,event.key),true);}});nodeLayer.append(group);});dom.svg.append(nodeLayer);
   }
 
   function updateGraph(){

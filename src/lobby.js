@@ -852,7 +852,7 @@ function createGameCard(game) {
         openGame(game, title, ageLabel);
       }
     });
-  } else if (isKidsLobby) {
+  } else {
     card.tabIndex = 0;
     card.setAttribute("role", "button");
     card.addEventListener("click", () => showPlannedGame(game));
@@ -862,9 +862,6 @@ function createGameCard(game) {
         showPlannedGame(game);
       }
     });
-  } else {
-    card.setAttribute("aria-disabled", "true");
-    card.setAttribute("aria-label", `${title} — ${i18n.t("action.coming_soon")}`);
   }
 
   const meta = isPlayable ? text(game.meta).map((item) => `<span>${item}</span>`).join("") : "";
@@ -886,12 +883,14 @@ function createGameCard(game) {
   const favoriteAction = i18n.t(favorite ? "action.remove_favorite" : "action.add_favorite");
   const favoriteLabel = i18n.t(favorite ? "action.remove_favorite_title" : "action.add_favorite_title", { title });
   const primaryAction = isPlayable ? i18n.t(recent ? "action.continue" : "action.play") : i18n.t("action.coming_soon");
+  const ageOverlay = isKidsLobby && showAgeLabels ? `<span class="game-card-age-overlay">${ageLabel}</span>` : "";
   const continueBadge = isPlayable && recent ? `<span class="continue-badge">${i18n.t("action.continue")}</span>` : "";
   const popularBadge = hasRealStats() && stats.rank7d && stats.rank7d <= 5 ? `<span class="popular-card-badge">${rankLabel(game, stats.rank7d)}</span>` : "";
   const updatedBadge = recentlyUpdatedGameIds.has(game.id) ? `<span class="updated-card-badge">${i18n.t("badge.updated")}</span>` : "";
 
   card.innerHTML = `
     ${art}
+    ${ageOverlay}
     ${continueBadge}
     <button class="favorite-toggle ${favorite ? "active" : ""}" type="button" aria-label="${favoriteLabel}" title="${favoriteAction}">
       <svg class="favorite-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -916,10 +915,12 @@ function createGameCard(game) {
       ${quickFacts ? `<div class="game-card-facts" aria-label="${i18n.t("aria.game_quick_facts")}">${quickFacts}</div>` : ""}
       <div class="game-card-meta">${meta}</div>
       ${isPlayable ? `<div class="game-card-plays">${playCountText(game)}</div>` : ""}
-      <div class="game-card-actions">
-        <span>${primaryAction}</span>
-        <span>${type}</span>
-      </div>
+      ${isKidsLobby ? "" : `
+        <div class="game-card-actions">
+          <span>${primaryAction}</span>
+          <span>${type}</span>
+        </div>
+      `}
     </div>
   `;
 

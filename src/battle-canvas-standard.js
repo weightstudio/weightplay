@@ -19,6 +19,7 @@
     "animal-gearpack-expedition": [".battle-canvas", 390, 788],
     "animal-guard-yard": ["#playPanel", 390, 450],
     "animal-habitat-mahjong": [".battle-canvas", 390, 788],
+    "animal-honey-shield": [".battle-canvas", 390, 788, 760, 334],
     "animal-hero-trials": ["#battleView", 390, 788],
     "animal-hidden-safari": ["#playPanel", 382, 780, 760, 350],
     "animal-moonlight-heist": [".battle-canvas", 390, 788],
@@ -216,7 +217,7 @@
     if (reserve) {
       reserve.setAttribute("data-wp-battle-physical-reserve", "");
       const reserveTop = availableHeight;
-      const reserveFollowsCanvas = gameId === "animal-2048" || gameId === "animal-relic-hunters" || gameId === "animal-guard-yard";
+      const reserveFollowsCanvas = gameId === "animal-2048" || gameId === "animal-relic-hunters" || gameId === "animal-guard-yard" || gameId === "animal-bamboo-pipes" || gameId === "animal-honey-shield";
       const reserveLeft = reserveFollowsCanvas ? left : 0;
       const reserveWidth = reserveFollowsCanvas ? renderedWidth : width;
       rememberAndSet(reserve, {

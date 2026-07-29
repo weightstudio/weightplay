@@ -23,6 +23,7 @@ window.WONDER_LOBBY = {
       "animal-gearpack-expedition", "animal-moonlight-heist",
       "animal-starlight-trails",
       "animal-one-line",
+      "animal-honey-shield",
       "animal-2048",
       "animal-sanctuary-loop",
       "animal-prism-battalion",
@@ -38,6 +39,7 @@ window.WONDER_LOBBY = {
       "animal-prism-breakers",
       "animal-triple-match",
       "animal-bamboo-pipes",
+      "animal-prism-garden",
       "animal-number-match",
       "animal-sunbeam-garden",
       "animal-bus-jam",
@@ -46,6 +48,59 @@ window.WONDER_LOBBY = {
     ],
   },
   games: [
+    {
+      id: "animal-honey-shield",
+      title: {
+        en: "Animal Honey Shield", "zh-Hant": "動物花蜜防線", "zh-Hans": "动物花蜜防线",
+        ja: "どうぶつハニーシールド", ko: "애니멀 허니 실드", es: "Escudo de Miel Animal",
+        "pt-BR": "Escudo de Mel Animal", fr: "Bouclier de Miel Animal",
+        de: "Tierischer Honigschild", it: "Scudo di Miele Animale",
+        ru: "Звериный медовый щит", hi: "एनिमल हनी शील्ड", ar: "درع العسل الحيواني",
+      },
+      status: "planned",
+      statusText: {
+        en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開",
+        ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible",
+        de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا",
+      },
+      type: {
+        en: "Live Drawing Defense", "zh-Hant": "即時畫線防守", "zh-Hans": "即时画线防守",
+        ja: "リアルタイム描画防衛", ko: "실시간 그리기 방어", es: "Defensa de dibujo en vivo",
+        "pt-BR": "Defesa de desenho ao vivo", fr: "Défense par dessin en direct",
+        de: "Live-Zeichenverteidigung", it: "Difesa a disegno in tempo reale",
+        ru: "Защита рисованием", hi: "लाइव ड्रॉइंग डिफेंस", ar: "دفاع بالرسم المباشر",
+      },
+      categories: ["Animal Games", "Puzzle", "Defense", "Family"],
+      skills: ["Planning", "Timing", "Adaptation"],
+      ages: ["9", "family"],
+      href: "games/animal-honey-shield/",
+      internalTrial: "index.html?trial=1",
+      description: {
+        en: "Draw and repair nectar lines during live bee waves to protect Clover Pup Pip across 30 original meadow stages.",
+        "zh-Hant": "在即時蜂群波次中畫線並修補花蜜防線，於 30 個原創草原關卡保護苜蓿小犬皮普。",
+        "zh-Hans": "在实时蜂群波次中画线并修补花蜜防线，于 30 个原创草原关卡保护苜蓿小犬皮普。",
+        ja: "飛んでくるハチを見ながら蜜の線を描き直し、30の草原ステージで子犬ピップを守ります。",
+        ko: "실시간 벌 떼를 보며 꿀빛 선을 그리고 고쳐 30개 초원 스테이지에서 강아지 핍을 지키세요.",
+        es: "Dibuja y repara líneas de néctar durante oleadas de abejas para proteger a Pip en 30 niveles originales.",
+        "pt-BR": "Desenhe e conserte linhas de néctar durante ondas de abelhas para proteger Pip em 30 fases originais.",
+        fr: "Tracez et réparez des lignes de nectar pendant les vagues d'abeilles afin de protéger Pip dans 30 niveaux.",
+        de: "Zeichne und repariere Nektarlinien während der Bienenwellen und beschütze Pip in 30 originalen Stufen.",
+        it: "Disegna e ripara linee di nettare durante le ondate di api e proteggi Pip in 30 livelli originali.",
+        ru: "Рисуйте и чините нектарные линии во время пчелиных волн, защищая Пипа на 30 этапах.",
+        hi: "मधुमक्खी लहरों के दौरान नेक्टर रेखाएँ बनाएँ और सुधारें, फिर 30 चरणों में पिप को बचाएँ।",
+        ar: "ارسم خطوط الرحيق وأصلحها أثناء موجات النحل لحماية بيب عبر 30 مرحلة أصلية.",
+      },
+      meta: {
+        en: ["30 Stages", "Live Repairs", "Short-Line Stars"], "zh-Hant": ["30 關", "即時修補", "短線星級"],
+        "zh-Hans": ["30 关", "即时修补", "短线星级"], ja: ["30ステージ", "リアルタイム修理", "短い線で星"],
+        ko: ["30개 스테이지", "실시간 수리", "짧은 선 별점"], es: ["30 niveles", "Reparación en vivo", "Estrellas por líneas cortas"],
+        "pt-BR": ["30 fases", "Conserto ao vivo", "Estrelas por linhas curtas"], fr: ["30 niveaux", "Réparations en direct", "Étoiles pour lignes courtes"],
+        de: ["30 Stufen", "Live-Reparaturen", "Sterne für kurze Linien"], it: ["30 livelli", "Riparazioni in tempo reale", "Stelle per linee corte"],
+        ru: ["30 этапов", "Ремонт в реальном времени", "Звёзды за короткие линии"], hi: ["30 चरण", "लाइव सुधार", "छोटी रेखा के सितारे"],
+        ar: ["30 مرحلة", "إصلاح مباشر", "نجوم للخطوط القصيرة"],
+      },
+      art: { kind: "image", background: "assets/animal-honey-shield-cover.webp", hideHero: true },
+    },
     {
       id: "signal-veil",
       title: {
@@ -218,7 +273,7 @@ window.WONDER_LOBBY = {
         en: "Panko's Tangram Trail", "zh-Hant": "胖達七巧板", "zh-Hans": "胖达七巧板", ja: "パンコのタングラム",
         ko: "판코의 탱그램", es: "Tangram de Panko", "pt-BR": "Tangram do Panko", fr: "Tangram de Panko",
         de: "Pankos Tangram", it: "Tangram di Panko", ru: "Танграм Панко", hi: "पैंको का टैंग्राम", ar: "تانغرام بانكو",
-      }, status: "planned",
+      }, status: "playable",
       statusText: {
         en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정",
         es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente",
@@ -230,7 +285,8 @@ window.WONDER_LOBBY = {
       },
       categories: ["Animal Games", "Puzzle"], skills: ["Spatial Reasoning", "Planning"], ages: ["9", "family"],
       ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", ja: "9+", ko: "9+", es: "9+", "pt-BR": "9+", fr: "9+", de: "9+", it: "9+", ru: "9+", hi: "9+", ar: "9+" },
-      href: "games/animal-tangram/", internalTrial: "index.html?trial=1",
+      href: "games/animal-tangram/",
+      previewVideo: "assets/previews/animal-tangram-battle.webm",
       description: {
         en: "Move and rotate seven bright pieces to rebuild animal silhouettes across 30 shapes.",
         "zh-Hant": "移動並旋轉七片明亮形狀，在 30 個拼圖中重組動物輪廓。",
@@ -259,7 +315,7 @@ window.WONDER_LOBBY = {
         "pt-BR": "Jardim das Cores", fr: "Jardin des couleurs", de: "Farbverbindungs-Garten",
         it: "Giardino dei colori", ru: "Сад цветных линий", hi: "कलर लिंक गार्डन", ar: "حديقة وصل الألوان",
       },
-      status: "planned",
+      status: "playable",
       statusText: {
         en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開",
         ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible",
@@ -273,7 +329,8 @@ window.WONDER_LOBBY = {
       },
       categories: ["Animal Games", "Puzzle"], skills: ["Logic", "Spatial Reasoning"], ages: ["9", "family"],
       ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", ja: "9+", ko: "9+", es: "9+", "pt-BR": "9+", fr: "9+", de: "9+", it: "9+", ru: "9+", hi: "9+", ar: "9+" },
-      href: "games/animal-color-link/", internalTrial: "index.html?trial=1",
+      href: "games/animal-color-link/",
+      previewVideo: "assets/previews/animal-color-link-battle.webm",
       description: {
         en: "Connect matching garden seeds without crossing paths, then fill every tile.",
         "zh-Hant": "連接相同顏色的花種，路線不能交叉，並填滿每一格。",
@@ -299,6 +356,57 @@ window.WONDER_LOBBY = {
         ar: ["مسارات ملونة", "دون تقاطع", "لوحة كاملة"],
       },
       art: { kind: "image", background: "assets/animal-color-link-cover-kids-v2.webp", hideHero: true },
+    },
+    {
+      id: "animal-prism-garden",
+      title: {
+        en: "Prism Route Garden", "zh-Hant": "幻彩連線庭園", "zh-Hans": "幻彩连线庭园",
+        ja: "プリズム・ルートガーデン", ko: "프리즘 루트 가든", es: "Jardín de Rutas Prisma",
+        "pt-BR": "Jardim de Rotas Prisma", fr: "Jardin des Routes Prismatiques", de: "Prisma-Pfadgarten",
+        it: "Giardino dei Percorsi Prisma", ru: "Сад призматических маршрутов", hi: "प्रिज़्म रूट गार्डन", ar: "حديقة مسارات الموشور",
+      },
+      status: "planned",
+      statusText: {
+        en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開",
+        ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible",
+        de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا",
+      },
+      type: {
+        en: "Advanced Route Puzzle", "zh-Hant": "進階連線策略", "zh-Hans": "进阶连线策略",
+        ja: "上級ルートパズル", ko: "상급 경로 퍼즐", es: "Puzle avanzado de rutas",
+        "pt-BR": "Quebra-cabeça avançado de rotas", fr: "Puzzle de routes avancé", de: "Fortgeschrittenes Pfadrätsel",
+        it: "Puzzle avanzato di percorsi", ru: "Сложная головоломка с маршрутами", hi: "उन्नत मार्ग पहेली", ar: "لغز مسارات متقدم",
+      },
+      categories: ["Animal Games", "Puzzle", "Strategy"],
+      skills: ["Route Planning", "Constraint Solving", "Spatial Strategy"],
+      ages: ["family"],
+      href: "games/animal-prism-garden/",
+      internalTrial: "index.html?trial=1",
+      description: {
+        en: "Design luminous routes across 30 expanded gardens, obey color-locked prism gates, and illuminate every open tile.",
+        "zh-Hant": "在 30 座大型庭園規劃幻彩路線，遵守限定顏色的閘門規則，並點亮每一個開放格。",
+        "zh-Hans": "在 30 座大型庭园规划幻彩路线，遵守限定颜色的闸门规则，并点亮每一个开放格。",
+        ja: "30の大型庭園で光る経路を設計し、色指定ゲートを守って全マスを照らそう。",
+        ko: "30개의 대형 정원에 빛의 경로를 설계하고 색상 관문을 지켜 모든 칸을 밝히세요.",
+        es: "Diseña rutas luminosas en 30 jardines ampliados, respeta puertas de color e ilumina cada casilla.",
+        "pt-BR": "Crie rotas luminosas em 30 jardins maiores, respeite portões de cor e ilumine todas as casas.",
+        fr: "Tracez des routes lumineuses dans 30 grands jardins, respectez les portes colorées et éclairez chaque case.",
+        de: "Plane leuchtende Pfade in 30 großen Gärten, beachte Farbtore und erhelle jedes Feld.",
+        it: "Progetta percorsi luminosi in 30 grandi giardini, rispetta i portali colorati e illumina ogni casella.",
+        ru: "Прокладывайте светящиеся пути в 30 больших садах, соблюдайте цветные ворота и освещайте каждую клетку.",
+        hi: "30 बड़े बगीचों में चमकते मार्ग बनाएँ, रंग वाले द्वार मानें और हर खुला खाना रोशन करें।",
+        ar: "صمّم مسارات مضيئة عبر 30 حديقة كبيرة، والتزم ببوابات الألوان وأضئ كل خانة مفتوحة.",
+      },
+      meta: {
+        en: ["30 Large Boards", "7×7 to 10×10", "Color-Locked Gates"], "zh-Hant": ["30 座大型棋盤", "7×7 至 10×10", "限定顏色閘門"],
+        "zh-Hans": ["30 座大型棋盘", "7×7 至 10×10", "限定颜色闸门"], ja: ["30の大型盤面", "7×7～10×10", "色指定ゲート"],
+        ko: ["30개 대형 보드", "7×7~10×10", "색상 관문"], es: ["30 tableros grandes", "De 7×7 a 10×10", "Puertas de color"],
+        "pt-BR": ["30 tabuleiros grandes", "De 7×7 a 10×10", "Portões de cor"], fr: ["30 grandes grilles", "De 7×7 à 10×10", "Portes colorées"],
+        de: ["30 große Bretter", "7×7 bis 10×10", "Farbtore"], it: ["30 griglie grandi", "Da 7×7 a 10×10", "Portali colorati"],
+        ru: ["30 больших полей", "От 7×7 до 10×10", "Цветные ворота"], hi: ["30 बड़े बोर्ड", "7×7 से 10×10", "रंग वाले द्वार"],
+        ar: ["30 لوحة كبيرة", "من 7×7 إلى 10×10", "بوابات ألوان"],
+      },
+      art: { kind: "image", background: "assets/animal-prism-garden/cover.webp", hideHero: true },
     },
     {
       id: "animal-bamboo-pipes",
@@ -351,6 +459,7 @@ window.WONDER_LOBBY = {
         ar: ["30 مجرى", "تدوير الأنابيب", "دون مؤقت"],
       },
       art: { kind: "image", background: "assets/animal-bamboo-pipes-cover.webp", hideHero: true },
+      previewVideo: "assets/previews/animal-bamboo-pipes-battle.webm",
     },
     {
       id: "animal-triple-match",
@@ -1686,17 +1795,17 @@ window.WONDER_LOBBY = {
     {
       id: "animal-prism-breakers",
       title: { en: "Animal Prism Breakers", "zh-Hant": "動物稜光破磚隊", "zh-Hans": "动物棱光破砖队", ja: "アニマル・プリズムブレイカーズ", ko: "동물 프리즘 브레이커", es: "Rompeprismas Animales", "pt-BR": "Quebra-Prismas Animais", fr: "Brise-Prismes Animaux", de: "Tierische Prismabrecher", it: "Spaccaprismi Animali", ru: "Звери: Разрушители призм", hi: "पशु प्रिज़्म ब्रेकर", ar: "محطمو موشور الحيوانات" },
-      status: "planned",
-      statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
+      status: "playable",
+      statusText: {"en":"Playable","zh-Hant":"立即遊玩","zh-Hans":"立即游玩","ja":"プレイ可能","ko":"플레이 가능","es":"Disponible","pt-BR":"Disponível","fr":"Disponible","de":"Spielbar","it":"Disponibile","ru":"Доступно","hi":"खेलने योग्य","ar":"متاحة للعب"},
       type: { en: "Prism Brick-Breaker Arcade", "zh-Hant": "稜光反彈破磚", "zh-Hans": "棱光反弹破砖", ja: "プリズム・ブロック崩し", ko: "프리즘 벽돌깨기", es: "Arcade rompebloques", "pt-BR": "Arcade quebra-blocos", fr: "Casse-briques prismatique", de: "Prisma-Breakout", it: "Rompiblocchi prismatico", ru: "Призматический арканоид", hi: "प्रिज़्म ईंट-तोड़ आर्केड", ar: "آركيد تحطيم الطوب الموشوري" },
       categories: ["Animal Games", "Arcade", "Action", "Featured"],
       skills: ["Timing", "Spatial Control", "Reaction"],
       ages: ["13"],
       href: "games/animal-prism-breakers/",
-      internalTrial: "index.html?trial=1",
       description: { en: "Control the return angle, catch prism powers and shatter 30 authored crystal formations with moving bands, mirrors and gravity wells.", "zh-Hant": "掌握反彈角度、接住稜光能力，擊破 30 組手工設計的水晶陣形，挑戰移動磚帶、反射鏡與重力井。", "zh-Hans": "掌握反弹角度、接住棱光能力，击破 30 组手工设计的水晶阵形，挑战移动砖带、反射镜与重力井。", ja: "反射角を操り、プリズム能力を拾い、移動列、鏡、重力井を備えた30の水晶陣形を砕きます。", ko: "반사 각도를 조절하고 프리즘 능력을 받아 이동 띠, 거울, 중력 우물이 있는 30개 수정 진형을 깨뜨리세요.", es: "Controla el ángulo, recoge poderes prismáticos y rompe 30 formaciones con bandas móviles, espejos y pozos gravitatorios.", "pt-BR": "Controle o ângulo, pegue poderes prismáticos e quebre 30 formações com faixas móveis, espelhos e poços gravitacionais.", fr: "Maîtrisez l'angle, récupérez les pouvoirs prismatiques et brisez 30 formations avec rangées mobiles, miroirs et puits gravitationnels.", de: "Steuere den Rückprallwinkel, fange Prismakräfte und zerbrich 30 Formationen mit beweglichen Reihen, Spiegeln und Gravitationsfeldern.", it: "Controlla l'angolo, raccogli i poteri prismatici e infrangi 30 formazioni con file mobili, specchi e pozzi gravitazionali.", ru: "Управляйте углом отскока, ловите силы призм и разбивайте 30 построений с движущимися рядами, зеркалами и гравитационными колодцами.", hi: "वापसी कोण नियंत्रित करें, प्रिज़्म शक्तियाँ पकड़ें और गतिशील पट्टियों, दर्पणों व गुरुत्व कुओं वाली 30 संरचनाएँ तोड़ें।", ar: "تحكم بزاوية الارتداد والتقط قوى الموشور وحطم 30 تشكيلًا بلوريًا مع صفوف متحركة ومرايا وآبار جاذبية." },
       meta: { en: ["30 Formations", "Angle Control", "Six Arcade Chapters"], "zh-Hant": ["30 組陣形", "角度操控", "六章街機變化"], "zh-Hans": ["30 组阵形", "角度操控", "六章街机变化"], ja: ["30の陣形", "角度操作", "6章のアーケード"], ko: ["30개 진형", "각도 조절", "6개 아케이드 장"], es: ["30 formaciones", "Control de ángulo", "Seis capítulos"], "pt-BR": ["30 formações", "Controle de ângulo", "Seis capítulos"], fr: ["30 formations", "Contrôle de l'angle", "Six chapitres"], de: ["30 Formationen", "Winkelkontrolle", "Sechs Arcade-Kapitel"], it: ["30 formazioni", "Controllo dell'angolo", "Sei capitoli"], ru: ["30 построений", "Контроль угла", "Шесть глав"], hi: ["30 संरचनाएँ", "कोण नियंत्रण", "छह आर्केड अध्याय"], ar: ["30 تشكيلًا", "تحكم بالزاوية", "ستة فصول آركيد"] },
       art: { kind: "image", background: "assets/animal-prism-breakers/cover.webp", hideHero: true },
+      previewVideo: "assets/previews/animal-prism-breakers-battle.webm",
     },
   ],
 };
@@ -1953,6 +2062,15 @@ for (const game of window.WONDER_LOBBY.games) {
   game.description["zh-Hant"] = clean.description;
   game.meta["zh-Hant"] = clean.meta;
   delete game.internalTrial;
+}
+
+const bambooPipesPublic = window.WONDER_LOBBY.games.find((game) => game.id === "animal-bamboo-pipes");
+const playableStatusCopy = window.WONDER_LOBBY.games.find((game) => game.id === "animal-triple-match")?.statusText;
+if (bambooPipesPublic) {
+  bambooPipesPublic.status = "playable";
+  if (playableStatusCopy) bambooPipesPublic.statusText = { ...playableStatusCopy };
+  bambooPipesPublic.previewVideo = "assets/previews/animal-bamboo-pipes-battle.webm";
+  delete bambooPipesPublic.internalTrial;
 }
 
 // Owner-approved General releases. Keep this as the single release-state

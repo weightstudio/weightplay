@@ -85,6 +85,11 @@
   font: 900 22px/1 system-ui, sans-serif;
 }
 
+.wp-stage-shell-header > [data-wp-return="stage"] > .wp-shell-return-arrow {
+  color: var(--wp-stage-return-arrow-color, #176a9d) !important;
+  opacity: 1 !important;
+}
+
 .wp-shell-settings {
   grid-column: 3;
   justify-self: end;

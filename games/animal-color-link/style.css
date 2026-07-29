@@ -31,6 +31,7 @@ h1{margin:0;font-size:clamp(2.7rem,7vw,5.4rem);line-height:.92;letter-spacing:-.
 .canvas{height:100svh;min-height:430px;background:linear-gradient(155deg,#f6fff3e8,#cce9d4e8),url("../../assets/animal-color-link-cover-kids-v2.webp") center/cover;overflow:hidden}
 .scene-header{height:76px;padding:max(10px,env(safe-area-inset-top)) 16px 8px;background:#164e46;color:#fff}
 .scene-header .icon-button{background:#e8f8df}
+.stage-header .wp-shell-return-arrow,.battle-header .wp-shell-return-arrow{color:#176a9d;font-weight:900}
 .scene-header>div{min-width:0}
 .scene-header small{display:block;font-size:.67rem;letter-spacing:.14em;opacity:.78}
 .scene-header h2{margin:2px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:1.2rem}

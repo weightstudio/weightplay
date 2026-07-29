@@ -27,6 +27,22 @@
     document.head.appendChild(script);
   }
   const games = {
+    "animal-color-link": {
+      title: "Color Link Garden",
+      age: "9+",
+      difficulty: "Easy to Challenging",
+      time: "2-8 minutes per garden",
+      skills: ["Logic", "Spatial Reasoning", "Focus"],
+      intro: "Color Link Garden is an original 30-stage full-board route puzzle starring a red panda garden keeper. Connect each pair of matching flower seeds without crossing paths, then fill every cell so the complete garden can bloom.",
+      story: ["Panko tends a garden whose colored flower routes have faded. Each stage restores one garden bed by reconnecting every matching seed.", "The campaign grows from compact 5 by 5 beds with four colors to 7 by 7 beds with six colors. Every authored layout has a verified full-board solution."],
+      systems: ["A route may begin at either endpoint and move only up, down, left, or right. Paths cannot cross, share a cell, enter another color's seed, or pass through themselves.", "Undo removes the latest completed path, Hint commits one safe unresolved route, and Reset restores the current garden without affecting saved unlocks.", "Touch, mouse, and keyboard use the same state. Keyboard players select a seed with Enter or Space and extend the route with Arrow keys.", "Completion requires every pair to be connected and every board cell to be filled. Finishing a garden unlocks the next stage in this browser."],
+      how: ["Choose an unlocked garden from the horizontal Stage rail.", "Drag from one flower seed to the matching seed.", "Keep routes separate and use every board cell.", "Use Undo, Hint, or Reset when a path blocks another color.", "Complete all pairs to unlock the next garden."],
+      strategyTips: ["Check edge seeds and narrow corridors first.", "Leave room for long routes before closing short pairs.", "Backtrack early when a route blocks the center.", "Use Hint to study one safe route rather than guessing repeatedly."],
+      progression: ["Gardens 1-10 use 5 by 5 boards and four colors.", "Gardens 11-20 expand to 6 by 6 boards and five colors.", "Gardens 21-30 use 7 by 7 boards and six colors in the densest route plans."],
+      designNote: "The challenge comes from spatial planning rather than a timer, lives, or hidden information. Thirty deterministic solutions keep every puzzle reproducible, while one responsive Canvas preserves the same board state across phone, tablet, short landscape, and desktop.",
+      parent: "Color Link Garden is an ad-free Kids puzzle recommended for ages 9+ and family play. Progress is stored only in this browser. Stars and completion feedback are playful summaries, not a formal assessment.",
+      faq: [["Do all cells need a path?", "Yes. Connecting every pair is not enough; the complete board must be filled."], ["Can paths cross?", "No. Every cell belongs to exactly one color path."], ["Are hints limited?", "No. Hint commits one safe unresolved route and does not spend currency."], ["Does progress save?", "Yes. Unlocks are stored locally in this browser."], ["Does the game show ads?", "No. The Kids lobby and game request no advertising."]],
+    },
     "wonder-crash": {
       title: "Fantasy Lion Defense",
       age: "5+",
@@ -1617,6 +1633,18 @@
 
   const localizedGames = {
     "zh-Hant": {
+      "animal-color-link": {
+        title: "彩色連線花園", age: "9+", difficulty: "簡單到具挑戰性", time: "每座花園約 2～8 分鐘", skills: ["邏輯", "空間推理", "專注"],
+        intro: "《彩色連線花園》是由小熊貓園丁領路的 30 關全盤路線益智遊戲。把相同顏色的花朵種子連起來，路線不能交叉，並填滿每一格讓花園盛開。",
+        story: ["Panko 照顧的花園失去了彩色路線。每一關都要重新連好所有相同種子，修復一座花圃。", "關卡從四種顏色的 5×5 花圃，逐步成長為六種顏色的 7×7 花圃；每個版面都有驗證過的全盤解法。"],
+        systems: ["路線可從任一端點開始，只能上下左右移動；不能交叉、共用格子、進入其他顏色的種子或穿過自己。", "復原會移除最近完成的路線；提示會完成一條安全路線；重設只重開目前花園，不影響解鎖進度。", "觸控、滑鼠與鍵盤共用同一個遊戲狀態。鍵盤可用 Enter 或空白鍵選種子，再用方向鍵延伸。", "必須連好每一對種子並填滿全部格子才算完成；過關後會在此瀏覽器解鎖下一關。"],
+        how: ["從橫向關卡列選擇已解鎖的花園。", "從一顆花朵種子拖曳到相同顏色的種子。", "保持路線分離並使用每一格。", "路線擋住其他顏色時，可使用復原、提示或重設。", "完成所有配對並填滿版面，解鎖下一座花園。"],
+        strategyTips: ["先查看邊緣種子與狹窄通道。", "先替較長的路線保留空間，再完成短路線。", "發現中央被堵住時要提早回退。", "可用提示觀察一條安全路線，不必反覆猜測。"],
+        progression: ["花園 1～10 使用 5×5 版面與四種顏色。", "花園 11～20 擴大為 6×6 版面與五種顏色。", "花園 21～30 使用 7×7 版面與六種顏色，路線規劃最密集。"],
+        designNote: "挑戰來自空間規劃，不使用倒數、生命或隱藏資訊。30 組固定解答讓每一關都能重現；同一個響應式 Canvas 會在手機、平板、短橫向與桌面保留完全相同的盤面狀態。",
+        parent: "《彩色連線花園》是無廣告的 Kids 益智遊戲，建議 9 歲以上與家庭一起遊玩。進度只存於此瀏覽器；星星與完成回饋是遊戲摘要，不是正式評量。",
+        faq: [["每一格都要有路線嗎？", "是。只連好所有配對還不夠，必須填滿整個版面。"], ["路線可以交叉嗎？", "不可以，每一格只能屬於一種顏色。"], ["提示有限制嗎？", "沒有。提示會完成一條安全路線，也不會消耗貨幣。"], ["進度會保存嗎？", "會，解鎖進度會儲存在此瀏覽器。"], ["遊戲會顯示廣告嗎？", "不會，Kids 大廳與遊戲都不會請求廣告。"]],
+      },
       "wonder-crash": zhGuide("奇幻獅子守城", "彈幕守城防禦", ["拖曳角色左右移動。", "武器冷卻完成後會自動攻擊敵人。", "守住城牆並完成所有波次即可過關。"]),
       "color-lunchbox": zhGuide("動物顏色便當盒", "顏色分類", ["觀察食物或動物圖案的顏色。", "把物品拖到相同顏色的便當盒。", "完成每關指定題目即可進入下一關。"]),
       "bubble-bakery": zhGuide("動物泡泡烘焙坊", "泡泡連線益智", ["點擊兩顆以上相連的同色泡泡。", "消除泡泡後，上方泡泡會落下補位。", "在步數內完成關卡目標。"]),

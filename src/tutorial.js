@@ -20,9 +20,101 @@
       aria: "\u73a9\u6cd5\u8aaa\u660e",
       lobbyAria: "\u8fd4\u56de\u5927\u5ef3",
     },
+    "zh-Hans": { close: "开始游戏", closeAria: "关闭教学", aria: "玩法说明", lobbyAria: "返回大厅" },
+    ja: { close: "プレイ開始", closeAria: "チュートリアルを閉じる", aria: "遊び方", lobbyAria: "ロビーに戻る" },
+    ko: { close: "플레이 시작", closeAria: "튜토리얼 닫기", aria: "플레이 방법", lobbyAria: "로비로 돌아가기" },
+    es: { close: "Empezar a jugar", closeAria: "Cerrar tutorial", aria: "Cómo jugar", lobbyAria: "Volver al vestíbulo" },
+    "pt-BR": { close: "Começar a jogar", closeAria: "Fechar tutorial", aria: "Como jogar", lobbyAria: "Voltar ao lobby" },
+    fr: { close: "Commencer", closeAria: "Fermer le tutoriel", aria: "Comment jouer", lobbyAria: "Retour au lobby" },
+    de: { close: "Spielen", closeAria: "Tutorial schließen", aria: "Spielanleitung", lobbyAria: "Zur Lobby" },
+    it: { close: "Inizia a giocare", closeAria: "Chiudi tutorial", aria: "Come giocare", lobbyAria: "Torna alla lobby" },
+    ru: { close: "Начать игру", closeAria: "Закрыть обучение", aria: "Как играть", lobbyAria: "Вернуться в лобби" },
+    hi: { close: "खेलना शुरू करें", closeAria: "ट्यूटोरियल बंद करें", aria: "कैसे खेलें", lobbyAria: "लॉबी में वापस जाएँ" },
+    ar: { close: "ابدأ اللعب", closeAria: "إغلاق التعليمات", aria: "طريقة اللعب", lobbyAria: "العودة إلى الردهة" },
   };
 
   const tutorials = {
+    "animal-bamboo-pipes": {
+      title: Object.fromEntries(Object.entries(window.BAMBOO_LOCALES || {}).map(([lang, copy]) => [lang, copy.summary])),
+      steps: [
+        {
+          icon: "1",
+          ...Object.fromEntries(Object.entries(window.BAMBOO_LOCALES || {}).map(([lang, copy]) => [lang, [copy.choose, copy.objective]])),
+        },
+        {
+          icon: "2",
+          ...Object.fromEntries(Object.entries(window.BAMBOO_LOCALES || {}).map(([lang, copy]) => [lang, [copy.cue, `${copy.undo} · ${copy.hint} · ${copy.restart}`]])),
+        },
+        {
+          icon: "3",
+          ...Object.fromEntries(Object.entries(window.BAMBOO_LOCALES || {}).map(([lang, copy]) => [lang, [copy.clear, `${copy.restored}. ${copy.next}`]])),
+        },
+      ],
+    },
+    "animal-tangram": {
+      title: {
+        en: "Build every animal with seven pieces.", "zh-Hant": "\u7528\u4e03\u584a\u4e03\u5de7\u677f\u5b8c\u6210\u6bcf\u96bb\u52d5\u7269\u3002", "zh-Hans": "用七块七巧板完成每只动物。",
+        ja: "7つのピースで動物を完成させよう。", ko: "일곱 조각으로 동물을 완성하세요.", es: "Construye cada animal con siete piezas.",
+        "pt-BR": "Monte cada animal com sete peças.", fr: "Construisez chaque animal avec sept pièces.", de: "Baue jedes Tier aus sieben Teilen.",
+        it: "Crea ogni animale con sette pezzi.", ru: "Соберите каждое животное из семи деталей.", hi: "सात टुकड़ों से हर जानवर बनाएँ।", ar: "كوّن كل حيوان من سبع قطع.",
+      },
+      steps: [
+        {
+          icon: "1", en: ["Read the Outline", "Find a colored piece that matches one faint target."], "zh-Hant": ["\u89c0\u5bdf\u8f2a\u5ed3", "\u627e\u51fa\u8207\u6de1\u8272\u76ee\u6a19\u76f8\u7b26\u7684\u5f69\u8272\u677f\u584a\u3002"], "zh-Hans": ["观察轮廓", "找出与淡色目标相符的彩色板块。"],
+          ja: ["輪郭を見る", "薄い目標と同じ形の色付きピースを探します。"], ko: ["윤곽 확인", "희미한 목표와 맞는 색 조각을 찾으세요."], es: ["Observa el contorno", "Busca la pieza de color que coincide con un objetivo tenue."],
+          "pt-BR": ["Observe o contorno", "Encontre a peça colorida que corresponde ao alvo claro."], fr: ["Observez le contour", "Trouvez la pièce colorée correspondant à une cible pâle."], de: ["Kontur lesen", "Finde das farbige Teil für die blasse Zielform."],
+          it: ["Osserva il contorno", "Trova il pezzo colorato che corrisponde al bersaglio chiaro."], ru: ["Изучите контур", "Найдите цветную деталь для бледной цели."], hi: ["रूपरेखा देखें", "हल्के लक्ष्य से मेल खाता रंगीन टुकड़ा खोजें।"], ar: ["راقب المخطط", "اعثر على القطعة الملونة المطابقة للهدف الباهت."],
+        },
+        {
+          icon: "2", en: ["Drag and Rotate", "Drag the piece into place. Tap it to rotate by 45 degrees."], "zh-Hant": ["\u62d6\u66f3\u4e26\u65cb\u8f49", "\u628a\u677f\u584a\u62d6\u5230\u76ee\u6a19\uff0c\u9ede\u4e00\u4e0b\u53ef\u65cb\u8f49 45 \u5ea6\u3002"], "zh-Hans": ["拖动并旋转", "把板块拖到目标，点一下可旋转 45 度。"],
+          ja: ["ドラッグと回転", "ピースを目標へ動かし、タップして45度回転します。"], ko: ["드래그와 회전", "조각을 목표로 옮기고 탭하여 45도 돌리세요."], es: ["Arrastra y gira", "Lleva la pieza a su lugar y tócala para girarla 45 grados."],
+          "pt-BR": ["Arraste e gire", "Leve a peça ao lugar e toque para girá-la 45 graus."], fr: ["Glissez et tournez", "Placez la pièce puis touchez-la pour la tourner de 45 degrés."], de: ["Ziehen und drehen", "Ziehe das Teil an seinen Platz und tippe für eine 45-Grad-Drehung."],
+          it: ["Trascina e ruota", "Porta il pezzo al suo posto e toccalo per ruotarlo di 45 gradi."], ru: ["Двигайте и вращайте", "Перетащите деталь и нажмите, чтобы повернуть её на 45 градусов."], hi: ["खींचें और घुमाएँ", "टुकड़े को जगह पर खींचें और 45 डिग्री घुमाने के लिए टैप करें।"], ar: ["اسحب وأدر", "اسحب القطعة إلى مكانها واضغط لتدويرها 45 درجة."],
+        },
+        {
+          icon: "3", en: ["Use All Seven", "Match every center and angle to complete the animal and unlock the next shape."], "zh-Hant": ["\u7528\u5b8c\u4e03\u584a", "\u5c0d\u6e96\u6bcf\u584a\u7684\u4e2d\u5fc3\u8207\u89d2\u5ea6\uff0c\u5b8c\u6210\u52d5\u7269\u4e26\u89e3\u9396\u4e0b\u4e00\u95dc\u3002"], "zh-Hans": ["用完七块", "对准每块的中心与角度，完成动物并解锁下一关。"],
+          ja: ["7つ全部を使う", "中心と角度を合わせて動物を完成し、次の形を解放します。"], ko: ["일곱 조각 모두 사용", "중심과 각도를 맞춰 동물을 완성하고 다음 모양을 여세요."], es: ["Usa las siete", "Alinea centros y ángulos para completar el animal y abrir la siguiente forma."],
+          "pt-BR": ["Use as sete", "Alinhe centros e ângulos para completar o animal e liberar a próxima forma."], fr: ["Utilisez les sept", "Alignez centres et angles pour terminer l’animal et ouvrir la forme suivante."], de: ["Alle sieben nutzen", "Richte Mittelpunkt und Winkel aus, um das Tier und die nächste Form freizuschalten."],
+          it: ["Usa tutti e sette", "Allinea centri e angoli per completare l’animale e sbloccare la forma successiva."], ru: ["Используйте все семь", "Совместите центры и углы, завершите животное и откройте следующую форму."], hi: ["सभी सात लगाएँ", "हर केंद्र और कोण मिलाकर जानवर पूरा करें और अगली आकृति खोलें।"], ar: ["استخدم القطع السبع", "طابق المراكز والزوايا لإكمال الحيوان وفتح الشكل التالي."],
+        },
+      ],
+    },
+    "animal-prism-garden": {
+      title: {
+        en: "Calibrate the moonlit prism garden.", "zh-Hant": "校準月光下的幻彩庭園。", "zh-Hans": "校准月光下的幻彩庭园。",
+        ja: "月夜のプリズム庭園を調整しよう。", ko: "달빛 프리즘 정원을 조정하세요.", es: "Calibra el jardín prismático nocturno.",
+        "pt-BR": "Calibre o jardim prismático noturno.", fr: "Calibrez le jardin prismatique nocturne.", de: "Kalibriere den nächtlichen Prismagarten.",
+        it: "Calibra il giardino prismatico notturno.", ru: "Настройте лунный призматический сад.", hi: "चाँदनी प्रिज़्म बगीचा तैयार करें।", ar: "عاير حديقة الموشور القمرية.",
+      },
+      steps: [
+        {
+          icon: "1", en: ["Connect Matching Prisms", "Drag from one prism flower to its matching color."], "zh-Hant": ["連接同色晶花", "從一顆晶花拖曳到相同顏色的另一顆。"], "zh-Hans": ["连接同色晶花", "从一颗晶花拖到相同颜色的另一颗。"],
+          ja: ["同色をつなぐ", "プリズム花から同色の相手までドラッグします。"], ko: ["같은 프리즘 연결", "프리즘 꽃에서 같은 색 짝까지 드래그하세요."], es: ["Une prismas iguales", "Arrastra de una flor prisma hasta su pareja."],
+          "pt-BR": ["Ligue prismas iguais", "Arraste de uma flor prisma até seu par."], fr: ["Reliez les prismes", "Glissez d'une fleur prismatique jusqu'à sa jumelle."], de: ["Gleiche Prismen verbinden", "Ziehe von einer Prismenblume zu ihrem Partner."],
+          it: ["Collega i prismi", "Trascina da un fiore prisma fino alla sua coppia."], ru: ["Соединяйте призмы", "Проведите путь от цветка-призмы к его паре."], hi: ["समान प्रिज़्म जोड़ें", "एक प्रिज़्म फूल से उसके समान जोड़े तक खींचें।"], ar: ["صِل الموشورات", "اسحب من زهرة موشور إلى شريكتها المطابقة."],
+        },
+        {
+          icon: "2", en: ["Obey Color Gates", "Only the matching route may cross a marked prism gate."], "zh-Hant": ["遵守顏色閘門", "有標記的閘門只能讓對應顏色通過。"], "zh-Hans": ["遵守颜色闸门", "有标记的闸门只能让对应颜色通过。"],
+          ja: ["色ゲートを守る", "印のあるゲートは同色の経路だけ通れます。"], ko: ["색 관문 지키기", "표시된 관문은 같은 색 경로만 통과합니다."], es: ["Respeta las puertas", "Solo la ruta del mismo color cruza una puerta marcada."],
+          "pt-BR": ["Respeite os portões", "Só a rota da mesma cor cruza um portão marcado."], fr: ["Respectez les portes", "Seule la route de même couleur franchit une porte marquée."], de: ["Farbtore beachten", "Nur der gleichfarbige Pfad darf ein markiertes Tor passieren."],
+          it: ["Rispetta i portali", "Solo il percorso dello stesso colore attraversa un portale."], ru: ["Соблюдайте ворота", "Через ворота проходит только путь соответствующего цвета."], hi: ["रंग द्वार मानें", "चिह्नित द्वार से केवल समान रंग का मार्ग गुजरता है।"], ar: ["التزم بالبوابات", "لا يعبر البوابة المعلّمة إلا المسار المطابق للونها."],
+        },
+        {
+          icon: "3", en: ["Fill Every Tile", "Connect every pair and illuminate the complete board."], "zh-Hant": ["填滿所有格子", "連完每組配對並點亮整個棋盤。"], "zh-Hans": ["填满所有格子", "连完每组配对并点亮整个棋盘。"],
+          ja: ["全マスを埋める", "全ペアを結び、盤面全体を光らせます。"], ko: ["모든 칸 채우기", "모든 쌍을 잇고 보드 전체를 밝히세요."], es: ["Llena cada casilla", "Une todas las parejas e ilumina todo el tablero."],
+          "pt-BR": ["Preencha todas as casas", "Ligue todos os pares e ilumine o tabuleiro inteiro."], fr: ["Remplissez chaque case", "Reliez toutes les paires et illuminez toute la grille."], de: ["Jedes Feld füllen", "Verbinde alle Paare und beleuchte das ganze Brett."],
+          it: ["Riempi ogni casella", "Collega tutte le coppie e illumina l'intera griglia."], ru: ["Заполните все клетки", "Соедините все пары и осветите всё поле."], hi: ["हर खाना भरें", "सभी जोड़े जोड़कर पूरा बोर्ड रोशन करें।"], ar: ["املأ كل الخانات", "صِل كل الأزواج وأضئ اللوحة كاملة."],
+        },
+      ],
+    },
+    "animal-color-link": {
+      title: { en: "Help every garden bloom.", "zh-Hant": "讓每座花園都盛開。" },
+      steps: [
+        { icon: "1", en: ["Connect Seeds", "Drag from one colored flower seed to its matching seed."], "zh-Hant": ["連接種子", "從彩色花朵種子拖曳到相同顏色的種子。"] },
+        { icon: "2", en: ["Do Not Cross", "Each path owns its cells and cannot cross another color."], "zh-Hant": ["路線不交叉", "每條路線都有自己的格子，不能穿過其他顏色。"] },
+        { icon: "3", en: ["Fill the Garden", "Connect every pair and fill every cell to complete the garden."], "zh-Hant": ["填滿花園", "連好所有配對並填滿每一格，就能完成花園。"] },
+      ],
+    },
     "animal-starlight-trails": {
       title: { en: "Restore every starlight trail.", "zh-Hant": "修復每一條動物星路。" },
       steps: [
@@ -226,7 +318,7 @@
 
   function locale() {
     const value = window.WonderI18n?.locale?.() || readStorage("weightPlayLocale") || readStorage("weightplayLocale") || "en";
-    return value === "zh-Hant" ? "zh-Hant" : "en";
+    return ["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"].includes(value) ? value : "en";
   }
 
   function textFor(item) {

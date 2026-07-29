@@ -104,7 +104,46 @@
   function centerCurrentStage(){const card=els.stageRail.querySelector(`[data-stage="${stageIndex}"]`);card?.scrollIntoView({inline:"center",block:"nearest",behavior:"instant"});requestAnimationFrame(markCentered)}
   function markCentered(){const cards=[...els.stageRail.querySelectorAll(".stage-card")];if(!cards.length)return;const railRect=els.stageRail.getBoundingClientRect(),cx=(railRect.left+railRect.right)/2;let best=cards[0],distance=Infinity;for(const card of cards){const rect=card.getBoundingClientRect(),d=Math.abs((rect.left+rect.right)/2-cx);if(d<distance){best=card;distance=d}}cards.forEach(card=>{const current=card===best;card.classList.toggle("centered",current);if(current)card.setAttribute("aria-current","true");else card.removeAttribute("aria-current")});if(best)stageIndex=Number(best.dataset.stage)}
   let stageScrollTimer=0;els.stageRail.addEventListener("scroll",()=>{clearTimeout(stageScrollTimer);stageScrollTimer=setTimeout(markCentered,80)},{passive:true});
-  function setTab(tab){activeTab=tab;const towers=tab==="towers";els.towerPanel.hidden=!towers;els.forgePanel.hidden=towers;els.racesTab.classList.toggle("active",towers);els.forgeTab.classList.toggle("active",!towers);if(towers)requestAnimationFrame(centerCurrentStage)}
+  const stageTabs=[
+    {id:"towers",button:els.racesTab,panel:els.towerPanel},
+    {id:"forge",button:els.forgeTab,panel:els.forgePanel}
+  ];
+  const stageTablist=els.racesTab.closest(".stage-tabs");
+  stageTablist.setAttribute("role","tablist");
+  stageTablist.dataset.tAria="chooseStage";
+  stageTablist.setAttribute("aria-label",t("chooseStage"));
+  stageTabs.forEach(item=>{
+    item.button.setAttribute("role","tab");
+    item.button.setAttribute("aria-controls",item.panel.id);
+    item.panel.setAttribute("role","tabpanel");
+    item.panel.setAttribute("aria-labelledby",item.button.id);
+  });
+  function setTab(tab){
+    const selected=stageTabs.find(item=>item.id===tab)||stageTabs[0];
+    activeTab=selected.id;
+    for(const item of stageTabs){
+      const active=item===selected;
+      item.panel.hidden=!active;
+      item.button.classList.toggle("active",active);
+      item.button.setAttribute("aria-selected",String(active));
+      item.button.tabIndex=active?0:-1;
+    }
+    if(activeTab==="towers")requestAnimationFrame(centerCurrentStage);
+  }
+  function moveStageTab(event){
+    const current=stageTabs.findIndex(item=>item.button===event.currentTarget);
+    let next=current;
+    if(["ArrowRight","ArrowDown"].includes(event.key))next=(current+1)%stageTabs.length;
+    else if(["ArrowLeft","ArrowUp"].includes(event.key))next=(current-1+stageTabs.length)%stageTabs.length;
+    else if(event.key==="Home")next=0;
+    else if(event.key==="End")next=stageTabs.length-1;
+    else return;
+    event.preventDefault();
+    setTab(stageTabs[next].id);
+    stageTabs[next].button.focus({preventScroll:true});
+  }
+  stageTabs.forEach(item=>item.button.addEventListener("keydown",moveStageTab));
+  setTab(activeTab);
   function renderForge(){els.shardCount.textContent=t("shards",{n:save.shards});const defs=[{id:"grip",title:"upgradeGrip",desc:"upgradeGripDesc",cost:[12,24,42]},{id:"aegis",title:"upgradeAegis",desc:"upgradeAegisDesc",cost:[18,34,54]},{id:"spark",title:"upgradeSpark",desc:"upgradeSparkDesc",cost:[28,52]}];els.upgrades.innerHTML="";for(const def of defs){const level=save.upgrades[def.id],max=def.cost.length,cost=def.cost[level];const button=document.createElement("button");button.type="button";button.dataset.upgrade=def.id;button.className=`upgrade${level>=max?" maxed":""}`;button.innerHTML=`<strong>${t(def.title)} · ${level}/${max}</strong><small>${t(def.desc)}</small><b>${level>=max?t("maxed"):t("upgradeButton",{n:cost})}</b>`;button.disabled=level>=max;button.addEventListener("click",()=>{if(save.upgrades[def.id]!==level||performance.now()<(forgeDecisionReadyAt[def.id]||0))return;if(save.shards<cost){els.forgeFeedback.textContent=`${t("shards",{n:save.shards})} / ${t("upgradeButton",{n:cost})}`;return}forgeDecisionReadyAt[def.id]=performance.now()+400;save.shards-=cost;save.upgrades[def.id]++;els.forgeFeedback.textContent="";persist();renderForge();track("skyspire_upgrade",{upgrade:def.id,level:save.upgrades[def.id]})});els.upgrades.append(button)}els.auraButton.textContent=save.aura?t("auraOwned"):t("auraBuy");els.auraButton.disabled=save.aura}
 
   function setBattleIsolation(active){els.battleLive.inert=active;if(active)els.battleLive.setAttribute("aria-hidden","true");else els.battleLive.removeAttribute("aria-hidden")}

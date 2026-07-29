@@ -116,8 +116,9 @@
     window.scrollTo(0, 0);
   }
 
-  function selectStage(levelIndex, center = false) {
+  function selectStage(levelIndex, center = false, focus = false) {
     selected = Math.max(0, Math.min(29, levelIndex));
+    let owner = null;
     document
       .querySelectorAll("#stageGrid .stage-card")
       .forEach((card, cardIndex) => {
@@ -125,16 +126,32 @@
         card.classList.toggle("selected", active);
         card.classList.toggle("centered", active);
         card.setAttribute("aria-current", active ? "true" : "false");
+        card.tabIndex = active ? 0 : -1;
+        if (active) owner = card;
       });
     if (center) {
-      document
-        .querySelector(`#stageGrid [data-index="${selected}"]`)
-        ?.scrollIntoView({
-          behavior: "smooth",
-          inline: "center",
-          block: "nearest",
-        });
+      owner?.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      });
     }
+    if (focus) owner?.focus({ preventScroll: true });
+  }
+
+  function handleStageCardKeydown(event) {
+    const card = event.currentTarget;
+    const currentIndex = Number(card.dataset.index);
+    if (!Number.isInteger(currentIndex)) return;
+    const rtl = document.documentElement.dir === "rtl";
+    let nextIndex = null;
+    if (event.key === "Home") nextIndex = 0;
+    else if (event.key === "End") nextIndex = levels.length - 1;
+    else if (event.key === "ArrowRight") nextIndex = currentIndex + (rtl ? -1 : 1);
+    else if (event.key === "ArrowLeft") nextIndex = currentIndex + (rtl ? 1 : -1);
+    if (nextIndex == null) return;
+    event.preventDefault();
+    selectStage(Math.max(0, Math.min(levels.length - 1, nextIndex)), true, true);
   }
 
   function renderStage() {
@@ -170,6 +187,7 @@
           start(levelIndex);
         }
       };
+      button.addEventListener("keydown", handleStageCardKeydown);
     });
     selectStage(selected);
   }
@@ -507,6 +525,11 @@
   $("start").onclick = () => {
     show("stage");
     renderStage();
+    requestAnimationFrame(() => {
+      document.querySelector("#stageGrid .stage-card[aria-current='true']")?.focus({
+        preventScroll: true,
+      });
+    });
   };
   document.querySelectorAll("[data-back]").forEach((button) => {
     button.onclick = () => show(screen === "battle" ? "stage" : "main");

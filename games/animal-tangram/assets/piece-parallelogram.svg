@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 104" role="img" aria-label="Orange polished tangram parallelogram">
+  <defs>
+    <linearGradient id="g" x1="20" y1="10" x2="138" y2="94" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffc07b"/><stop offset=".5" stop-color="#ec8750"/><stop offset="1" stop-color="#af492d"/>
+    </linearGradient>
+    <filter id="s" x="-20%" y="-25%" width="150%" height="160%"><feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#62301f" flood-opacity=".4"/></filter>
+  </defs>
+  <path d="M40 8h112l-32 88H8Z" fill="url(#g)" stroke="#fff0df" stroke-width="4" stroke-linejoin="round" filter="url(#s)"/>
+  <path d="M48 20h78" fill="none" stroke="#fff" stroke-opacity=".34" stroke-width="6" stroke-linecap="round"/>
+</svg>

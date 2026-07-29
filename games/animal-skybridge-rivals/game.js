@@ -161,6 +161,30 @@
     else{ctx.save();ctx.strokeStyle="rgba(124,163,255,.17)";ctx.lineWidth=Math.max(18,w*.065);ctx.lineCap="round";ctx.beginPath();ctx.moveTo(.12*w,.86*h);ctx.bezierCurveTo(.88*w,.86*h,.12*w,.58*h,.88*w,.58*h);ctx.stroke();ctx.restore()}
   }
   function drawGuidance(w,h){const hasCargo=run.player.stack>0;let target;if(hasCargo){const lane=lanes.reduce((best,x,index)=>Math.abs(x-run.player.x)<Math.abs(lanes[best]-run.player.x)?index:best,0);target={x:lanes[lane],y:.505}}else target=nearestPickup(0,run.player.x,run.player.y);if(!target)return;const x=target.x*w,y=target.y*h,pulse=3+Math.sin(run.elapsed*6)*2;ctx.save();ctx.strokeStyle=hasCargo?"#ffe176":"#f5ffff";ctx.lineWidth=3;ctx.shadowBlur=18;ctx.shadowColor=hasCargo?"#ffd85a":"#3df2ff";ctx.beginPath();ctx.arc(x,y,22+pulse,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=.82;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x-8,y-31-pulse);ctx.lineTo(x,y-23-pulse);ctx.lineTo(x+8,y-31-pulse);ctx.stroke();ctx.restore()}
+  function drawPowerupIcon(kind,x,y,size=34){
+    ctx.save();ctx.translate(x,y);ctx.scale(size/34,size/34);
+    ctx.shadowColor="#67f4ff";ctx.shadowBlur=18;
+    ctx.fillStyle="rgba(7,35,70,.88)";ctx.strokeStyle="#e9ffff";ctx.lineWidth=2;
+    ctx.beginPath();ctx.arc(0,0,16,0,Math.PI*2);ctx.fill();ctx.stroke();
+    ctx.shadowBlur=8;ctx.lineCap="round";ctx.lineJoin="round";
+    if(kind==="shield"){
+      ctx.fillStyle="#5ce7ff";ctx.strokeStyle="#fff7ae";ctx.lineWidth=2.5;
+      ctx.beginPath();ctx.moveTo(0,-11);ctx.lineTo(9,-7);ctx.lineTo(8,2);
+      ctx.quadraticCurveTo(6,9,0,12);ctx.quadraticCurveTo(-6,9,-8,2);
+      ctx.lineTo(-9,-7);ctx.closePath();ctx.fill();ctx.stroke();
+      ctx.strokeStyle="#ffffff";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,-7);ctx.lineTo(0,7);ctx.stroke();
+    }else if(kind==="magnet"){
+      ctx.strokeStyle="#ff617a";ctx.lineWidth=6;
+      ctx.beginPath();ctx.arc(0,0,9,.12*Math.PI,.88*Math.PI,true);ctx.stroke();
+      ctx.strokeStyle="#e9ffff";ctx.lineWidth=3;
+      ctx.beginPath();ctx.moveTo(-9,-3);ctx.lineTo(-9,-10);ctx.moveTo(9,-3);ctx.lineTo(9,-10);ctx.stroke();
+    }else if(kind==="dash"){
+      ctx.fillStyle="#ffe05d";ctx.strokeStyle="#ffffff";ctx.lineWidth=1.7;
+      ctx.beginPath();ctx.moveTo(3,-13);ctx.lineTo(-8,2);ctx.lineTo(-1,2);
+      ctx.lineTo(-4,13);ctx.lineTo(10,-3);ctx.lineTo(3,-3);ctx.closePath();ctx.fill();ctx.stroke();
+    }
+    ctx.restore();
+  }
   function draw(){
     const w=els.arena.width,h=els.arena.height;
     ctx.clearRect(0,0,w,h);drawCover(bg,w,h);
@@ -173,7 +197,7 @@
     for(const p of run.pickups){const x=p.x*w,y=p.y*h;ctx.save();ctx.shadowBlur=16;ctx.shadowColor=colors[p.color];ctx.fillStyle=colors[p.color];ctx.translate(x,y);ctx.rotate(Math.PI/4);ctx.fillRect(-8,-8,16,16);ctx.restore()}
     drawModeObjects(w,h);drawBombs(w,h);
     for(const m of run.monsters){ctx.font="30px system-ui";ctx.textAlign="center";ctx.fillText("👾",m.x*w,m.y*h+10)}
-    for(const item of run.powerups)if(item.active){ctx.save();ctx.shadowBlur=18;ctx.shadowColor="#fff176";ctx.font="30px system-ui";ctx.textAlign="center";ctx.fillText(item.kind==="shield"?"🛡️":item.kind==="magnet"?"🧲":"⚡",item.x*w,item.y*h+10);ctx.restore()}
+    for(const item of run.powerups)if(item.active)drawPowerupIcon(item.kind,item.x*w,item.y*h);
     if(run.stage.moving)for(const b of run.boosts){ctx.strokeStyle="#fff176";ctx.lineWidth=5;ctx.beginPath();ctx.arc(b.x*w,b.y*h,19,0,Math.PI*2);ctx.stroke()}
     drawGuidance(w,h);
     const actorSize=Math.max(52,Math.min(82,Math.min(w,h)*.17));

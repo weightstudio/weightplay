@@ -396,11 +396,15 @@
     document.querySelectorAll(
       "#battle,#battleScreen,#battleView,[data-screen='battle'],.battle-screen",
     ).forEach((screen) => {
+      // body[data-screen] is the global scene-state owner, not the Battle
+      // scene itself. Treating it as Battle makes the first header in the
+      // document (usually Main) lose its WeightPlay return identity.
+      if (screen === document.body || screen === document.documentElement) return;
       const header = first(HEADER_SELECTORS, screen);
       if (!header) return;
-      normalizeReturn(header);
       const control = first(RETURN_SELECTORS, header);
       if (control) control.dataset.wpReturn = "battle";
+      normalizeReturn(header);
     });
   }
 
@@ -702,9 +706,9 @@
           header.prepend(externalBattleReturn);
         }
       }
-      normalizeReturn(header);
       const battleReturn = first(RETURN_SELECTORS, header);
       if (battleReturn) battleReturn.dataset.wpReturn = "battle";
+      normalizeReturn(header);
       host.hidden = true;
       return;
     }
@@ -781,10 +785,15 @@
       currentHeader?.classList.remove("wp-shell-header", "wp-main-shell-header", "wp-stage-shell-header");
       currentHeader = header;
       header.classList.add("wp-shell-header", type === "stage" ? "wp-stage-shell-header" : "wp-main-shell-header");
-      normalizeReturn(header);
       header.append(host);
       setOpen(false);
     }
+    // Return controls belong permanently to their owning scene. Reassert the
+    // identity synchronously on every placement so a prior scene can never
+    // leak its arrow/logo contract into Main or Stage.
+    const ownedReturn = first(RETURN_SELECTORS, header);
+    if (ownedReturn) ownedReturn.dataset.wpReturn = type;
+    normalizeReturn(header);
     if (type === "stage") {
       const helpAction = screen.querySelector("#helpBtn,#stageHelpBtn");
       if (helpAction && !popover.contains(helpAction)) {

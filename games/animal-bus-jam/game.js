@@ -4,6 +4,8 @@
   const codes = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const palette = ["#ef6b62", "#4da8e8", "#f0bb4d", "#9a7ae9"];
   const routeCodes = ["A", "B", "C", "D"];
+  const busArt = ["coral", "sky", "sun", "violet"].map((color) => `/assets/animal-bus-jam-bus-${color}.webp`);
+  const passengerArt = ["coral", "sky", "sun", "violet"].map((color) => `/assets/animal-bus-jam-passenger-${color}.webp`);
   const root = document;
   const engine = window.BUS_JAM_LEVELS;
   const levels = engine.levels;
@@ -146,6 +148,7 @@
     const filled = departing ? bus.seats : active ? state.busFilled : 0;
     element.className = `bus${active ? " active" : ""}${departing ? " departing" : ""}`;
     element.dataset.busIndex = String(index);
+    element.dataset.color = String(bus.color);
     element.dataset.departureOrder = departing ? String(departureOrder) : "";
     element.style.setProperty("--bus", palette[bus.color]);
     element.style.setProperty("--departure-order", departureOrder);
@@ -153,7 +156,7 @@
     else element.removeAttribute("aria-hidden");
     element.innerHTML = `
       <div class="bus-head"><strong>${t("colors")[bus.color]}</strong><span class="bus-route">${active ? t("activeBus") : `R-${index + 1}`}</span></div>
-      <div class="bus-shape" aria-hidden="true"></div>
+      <img class="bus-art" src="${busArt[bus.color]}" alt="" aria-hidden="true">
       <div class="seats" aria-label="${t("busLabel", { color: t("colors")[bus.color], filled, capacity: bus.seats })}">${Array.from({ length: bus.seats }, (_, seat) => `<i class="${seat < filled ? "filled" : ""}"></i>`).join("")}</div>
     `;
   }
@@ -186,8 +189,8 @@
 
   function passenger(color, queueIndex, itemIndex) {
     const front = itemIndex === 0;
-    return `<button class="passenger ${front ? "front" : ""}" data-queue="${queueIndex}" style="--person:${palette[color]}" aria-label="${t("personLabel", { color: t("colors")[color] })}" ${front ? "" : "tabindex=\"-1\" aria-hidden=\"true\""}>
-      <span class="passenger-token">${routeCodes[color]}</span>
+    return `<button class="passenger ${front ? "front" : ""}" data-queue="${queueIndex}" data-color="${color}" style="--person:${palette[color]}" aria-label="${t("personLabel", { color: t("colors")[color] })}" ${front ? "" : "tabindex=\"-1\" aria-hidden=\"true\""}>
+      <span class="passenger-art-frame" aria-hidden="true"><img class="passenger-art" src="${passengerArt[color]}" alt=""><b>${routeCodes[color]}</b></span>
       <span>${t("colors")[color]}</span>
     </button>`;
   }
@@ -205,7 +208,7 @@
       const color = state.waiting[index];
       return color === undefined
         ? `<span class="holding-slot">${index + 1}</span>`
-        : `<span class="holding-slot occupied" style="--person:${palette[color]}"><b>${routeCodes[color]}</b></span>`;
+        : `<span class="holding-slot occupied" data-color="${color}" style="--person:${palette[color]}"><img class="holding-passenger-art" src="${passengerArt[color]}" alt="" aria-hidden="true"><b>${routeCodes[color]}</b></span>`;
     }).join("");
     $("queues").innerHTML = state.queues.map((queue, queueIndex) => `
       <div class="queue" role="listitem">

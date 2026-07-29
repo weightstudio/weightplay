@@ -47,12 +47,30 @@
     panel.hidden=false;
     requestAnimationFrame(()=>focusTarget?.focus?.({preventScroll:true}));
   }
+  function syncSceneShell(id){
+    const host=document.querySelector(".wp-shell-settings[data-wp-settings-control]");
+    if(!host)return;
+    const popover=host.querySelector(".wp-shell-settings-popover");
+    const settingsButton=host.querySelector(".wp-shell-settings-button");
+    if(popover)popover.hidden=true;
+    settingsButton?.setAttribute("aria-expanded","false");
+    const header=id==="main"?$("#main .main-header"):id==="stage"?$("#stage .stage-header"):null;
+    if(!header){
+      host.hidden=true;
+      host.dataset.screenOwner=id;
+      return;
+    }
+    if(host.parentElement!==header)header.append(host);
+    host.hidden=false;
+    host.dataset.screenOwner=id;
+  }
   function show(id){
     $("#leavePanel").hidden=true;
     $("#result").hidden=true;
     setBattleCovered(false,null);
     screens.forEach(screen=>screen.hidden=screen.id!==id);
     document.body.dataset.screen=id;
+    syncSceneShell(id);
     if(id==="stage")renderStages();
   }
   const {levels,buildLevel}=window.COLOR_LINK_LEVELS;

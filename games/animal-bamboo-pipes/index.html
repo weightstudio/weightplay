@@ -1,10 +1,54 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <script data-wp-internal-trial-gate>if(/^https?:$/.test(location.protocol)&&new URLSearchParams(location.search).get("trial")!=="1")location.replace("/");</script>
+    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol)) location.replace("/en/games/animal-bamboo-pipes/" + location.search + location.hash);</script>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="robots" content="noindex,nofollow"><meta name="weightplay-audience" content="general"><meta name="theme-color" content="#063f3c">
+  <meta name="robots" content="index,follow"><meta name="weightplay-audience" content="general"><meta name="theme-color" content="#063f3c">
   <title>Panko's Bamboo Waterway | WeightPlay</title>
+  <meta name="description" content="Rotate bamboo pipes across 30 handcrafted waterways and guide the spring to Panko's flowering grove.">
+  <meta property="og:site_name" content="WeightPlay"><meta property="og:type" content="website">
+  <meta property="og:title" content="Panko's Bamboo Waterway | WeightPlay">
+  <meta property="og:description" content="Restore 30 bamboo waterways by connecting each spring to its flowering basin.">
+  <meta property="og:url" content="https://weightplay.com/en/games/animal-bamboo-pipes/">
+  <meta property="og:image" content="https://weightplay.com/assets/animal-bamboo-pipes-cover.webp">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Panko's Bamboo Waterway | WeightPlay">
+  <meta name="twitter:description" content="Turn bamboo pipes and bring water back to Panko's flowering grove.">
+  <meta name="twitter:image" content="https://weightplay.com/assets/animal-bamboo-pipes-cover.webp">
+  <link rel="canonical" href="https://weightplay.com/en/games/animal-bamboo-pipes/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-bamboo-pipes/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-bamboo-pipes/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-bamboo-pipes/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-bamboo-pipes/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-bamboo-pipes/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-bamboo-pipes/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-bamboo-pipes/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-bamboo-pipes/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-bamboo-pipes/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-bamboo-pipes/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-bamboo-pipes/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-bamboo-pipes/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-bamboo-pipes/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-bamboo-pipes/" />
+    <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "Panko's Bamboo Waterway",
+    "description": "Rotate bamboo pipes across 30 handcrafted waterways and guide the spring to Panko's flowering grove.",
+    "url": "https://weightplay.com/en/games/animal-bamboo-pipes/",
+    "image": "https://weightplay.com/assets/animal-bamboo-pipes-cover.webp",
+    "applicationCategory": "Game",
+    "operatingSystem": "Web browser",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "genre": ["Puzzle", "Strategy", "Animal"],
+    "publisher": {"@type": "Organization", "name": "WeightStudio", "url": "https://weightplay.com/"},
+    "audience": {"@type": "PeopleAudience", "suggestedMinAge": 9}
+  }
+  </script>
+  <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/tutorial.css">
+  <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260726-bamboo-flow1" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260726-bamboo-flow1" data-wp-battle-standard>
   <link rel="stylesheet" href="style.css?v=20260726-screen-flow2">
@@ -21,8 +65,9 @@
   </style>
 </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="animal-bamboo-pipes" data-runtime-localize="off">
-  <div id="mainGroup" class="main-group"><main id="main" class="screen main"><header class="main-header"><a class="return" data-wp-return="main" href="/" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><strong data-bamboo-t="title">Panko's Bamboo Waterway</strong><label class="locale">Language <select id="locale"></select></label></header><section class="hero"><img src="../../assets/animal-bamboo-pipes-cover.webp" alt="Panko connecting a glowing bamboo waterway to a flowering grove"><div><p class="eyebrow" data-bamboo-t="kicker">PANKO'S PUZZLE GARDEN</p><h1 data-bamboo-t="title">Panko's Bamboo Waterway</h1><p data-bamboo-t="summary">Turn the bamboo. Let every drop reach the flowering grove.</p><strong id="mainProgress" class="main-progress"></strong><button id="start" class="primary" type="button" data-bamboo-t="start">Start Game</button></div></section></main><section id="publicGuide" class="public-guide" aria-label="Game guide"><p class="eyebrow" data-bamboo-t="kicker">PANKO'S PUZZLE GARDEN</p><h2 data-bamboo-t="guideTitle">How to play</h2><p data-bamboo-t="summary">Turn the bamboo. Let every drop reach the flowering grove.</p><p data-bamboo-t="cue">Tap bamboo to turn it clockwise. Connect the spring to the flowering basin.</p></section></div>
-  <main id="stage" class="screen stage stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/animal-bamboo-pipes-cover.webp" style="--wp-stage-art:url('../../assets/animal-bamboo-pipes-cover.webp')" hidden><header class="stage-header"><button class="back" type="button" data-back data-wp-return="stage">←</button><div><small data-bamboo-t="choose">CHOOSE A WATERWAY</small><h2 data-bamboo-t="title">Panko's Bamboo Waterway</h2></div></header><div id="rail" class="rail stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" aria-label="Stage selector"></div></main>
+  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-bamboo-t="title">Panko's Bamboo Waterway</strong><span data-bamboo-t="summary">Preparing the waterways...</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
+  <div id="mainGroup" class="main-group"><main id="main" class="screen main"><header class="main-header"><a class="return" data-wp-return="main" href="/" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><strong data-bamboo-t="title">Panko's Bamboo Waterway</strong><label class="locale"><span data-bamboo-t="language">Language</span><select id="locale"></select></label></header><section class="hero"><img src="../../assets/animal-bamboo-pipes-cover.webp" alt="Panko connecting a glowing bamboo waterway to a flowering grove"><div><p class="eyebrow" data-bamboo-t="kicker">PANKO'S PUZZLE GARDEN</p><h1 data-bamboo-t="title">Panko's Bamboo Waterway</h1><p data-bamboo-t="summary">Turn the bamboo. Let every drop reach the flowering grove.</p><strong id="mainProgress" class="main-progress"></strong><button id="start" class="primary" type="button" data-bamboo-t="start">Start Game</button></div></section></main><section id="publicGuide" class="game-page-info game-page-info-static" aria-label="Panko's Bamboo Waterway game information"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Panko's Bamboo Waterway</h2><p>Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin.</p></div></div><div class="game-info-sections"><div class="game-info-section"><h3>How to Play</h3><ol><li>Choose any unlocked waterway.</li><li>Tap or activate a bamboo pipe to rotate it clockwise.</li><li>Connect the spring to the flowering basin without a broken joint.</li><li>Use Undo, Hint, or Restart whenever you need them.</li></ol></div><div class="game-info-section"><h3>Controls and Rules</h3><p>Use touch, mouse, Enter, or Space to rotate pipes. Arrow keys, Home, and End move focus around the five-by-five board. Water flows only through matching openings between neighboring pipes.</p></div><div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Trace backward from the flowering basin.</li><li>Use corners to eliminate impossible orientations.</li><li>Check every junction before spending a hint.</li></ul></div><div class="game-info-section"><h3>Campaign</h3><p>Thirty handcrafted waterways across six chapters grow from compact routes into branching bamboo networks. Completed waterways remain replayable and progress is saved in this browser.</p></div><div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>Recommended for ages 9+ and family puzzle play. The game has no timer, account requirement, or competitive ranking.</p></div><div class="game-info-section"><h3>Frequently Asked Questions</h3><dl><div><dt>Are hints limited?</dt><dd>No. Hint rotates one unresolved required pipe correctly.</dd></div><div><dt>Can I replay a waterway?</dt><dd>Yes. Every unlocked waterway remains available.</dd></div><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div></div></section></div>
+  <main id="stage" class="screen stage stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/animal-bamboo-pipes-cover.webp" style="--wp-stage-art:url('../../assets/animal-bamboo-pipes-cover.webp')" hidden><header class="stage-header"><button class="back" type="button" data-back data-wp-return="stage">←</button><div><small data-bamboo-t="choose">CHOOSE A WATERWAY</small><h2 data-bamboo-t="title">Panko's Bamboo Waterway</h2></div></header><div id="rail" class="rail stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" aria-label="Stage selector"></div><nav class="stage-tabs" aria-label="Waterways"><span aria-hidden="true"></span><button class="stage-tab active" type="button" aria-current="page" data-bamboo-t="waterways">Waterways</button><span aria-hidden="true"></span></nav></main>
   <main id="battle" class="screen battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden><header><button class="back" type="button" data-back data-wp-return="battle">←</button><div><small id="chapter"></small><h2 id="stageName"></h2></div><span id="moves" aria-live="polite"></span></header><section class="battle-panel"><p id="cue" class="battle-objective"></p><div id="board" class="board" role="grid" aria-label="Bamboo pipe puzzle"></div><div class="tools"><button id="undo" data-bamboo-t="undo">Undo</button><button id="hint" data-bamboo-t="hint">Hint</button><button id="restart" data-bamboo-t="restart">Restart</button></div></section><section id="result" class="result-panel" data-wp-result-audit role="dialog" aria-modal="true" hidden><img src="../../assets/animal-bamboo-pipes-panko-guide.webp" alt=""><p class="eyebrow" data-bamboo-t="clear">WATERWAY RESTORED</p><h2 data-bamboo-t="clearTitle">The grove is blooming!</h2><p id="resultText"></p><div><button id="resultStages" data-bamboo-t="waterways">Waterways</button><button id="next" data-bamboo-t="next">Next waterway</button><button id="retry" data-bamboo-t="replay">Replay</button></div></section></main>
   <template id="leaveDialogTemplate"><section id="leaveDialog" class="leave-panel" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveText" hidden><h2 id="leaveTitle" data-bamboo-t="leaveTitle">Keep this waterway?</h2><p id="leaveText" data-bamboo-t="leaveText">Continue keeps every pipe in place. Returning to Waterways ends this attempt.</p><div><button id="continueBattle" class="primary" type="button" data-bamboo-t="continue">Continue playing</button><button id="leaveBattle" type="button" data-bamboo-t="returnMap">Waterways</button></div></section></template>
   <div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
@@ -30,6 +75,8 @@
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
   <script src="../../src/i18n.js?v=20260721-locale13-1"></script>
   <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
-  <script src="levels.js"></script><script src="locales.js?v=20260726-screen-flow2"></script><script src="../../src/stage-selector-standard.js?v=20260726-bamboo-flow1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260726-bamboo-flow1" data-wp-battle-standard></script><script src="game.js?v=20260726-screen-flow2"></script><script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
+  <script src="../../src/analytics.js"></script>
+  <script src="levels.js"></script><script src="locales.js?v=20260729-public1"></script><script src="../../src/tutorial.js?v=20260729-bamboo-public1"></script><script src="../../src/stage-selector-standard.js?v=20260726-bamboo-flow1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260726-bamboo-flow1" data-wp-battle-standard></script><script src="game.js?v=20260729-public1"></script><script src="../../src/game-page-info.js?v=20260720-locale11-2"></script><script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
+  <script>window.addEventListener("load",()=>{document.getElementById("loadingPanel")?.classList.add("hidden");window.WonderAnalytics?.track?.("game_view",{game_id:"animal-bamboo-pipes"});},{once:true});</script>
 </body>
 </html>
