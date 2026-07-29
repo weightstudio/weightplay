@@ -792,6 +792,7 @@
     nodes.playPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("is-result");
+    document.body.classList.remove("shape-result-active");
     setResultOwnership(false);
     document.body.classList.remove("shape-playing");
     document.body.classList.add("wp-standard-stage-page");
@@ -847,6 +848,7 @@
     nodes.playPanel.classList.remove("hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.playPanel.classList.remove("is-result");
+    document.body.classList.remove("shape-result-active");
     setResultOwnership(false);
     document.body.classList.remove("wp-standard-stage-page");
     document.body.classList.add("shape-playing");
@@ -992,6 +994,7 @@
     renderResult(lastResult);
     nodes.playPanel.classList.add("is-result");
     nodes.resultPanel.classList.remove("hidden");
+    document.body.classList.add("shape-result-active");
     updateResultControlSize();
     setResultOwnership(true);
     nodes.playPanel.scrollTop = 0;

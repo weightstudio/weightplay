@@ -14,6 +14,7 @@
     state.chests=new Set(saved.chests||[]);
     state.relays=new Set(saved.relays||[]);
     state.ashfallFindings=new Set(saved.ashfallFindings||[]);
+    state.lunarFindings=new Set(saved.lunarFindings||[]);
     state.equipment=Object.assign({},fresh.equipment,saved.equipment||{});
     state.equipped=Object.assign({},fresh.equipped,saved.equipped||saved.equipment||{});
     state.enemyHp=Object.assign({},saved.enemyHp||{});
@@ -33,6 +34,7 @@
       chests:[...state.chests],
       relays:[...state.relays],
       ashfallFindings:[...state.ashfallFindings],
+      lunarFindings:[...state.lunarFindings],
     };
   }
 

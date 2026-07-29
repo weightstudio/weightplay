@@ -759,10 +759,11 @@
     nodes.diamondText.textContent = diamondBalance;
     nodes.zoneRow.innerHTML = zones.map((zone, index) => {
       const locked = index + 1 > save.unlockedZone;
+      const activeTabStop = !locked && zone.id === selectedZone;
       const missionLabel = t("mission", { stage:zone.stage });
       const ruleLabel = stageT(`rule${zone.rule[0].toUpperCase()}${zone.rule.slice(1)}`);
       return `
-        <button class="zone-card stage-card region-${zone.region} ${zone.checkpoint ? "is-checkpoint" : ""} ${zone.id === selectedZone ? "is-selected" : ""} ${locked ? "is-locked" : ""}" data-zone="${zone.id}" data-stage="${zone.stage}" type="button" aria-label="${missionLabel} · ${zone.name[locale]} · ${zone.checkpoint ? t("bossMission") : ruleLabel} · ${locked ? t("locked") : `${t("goal")} ${zone.goal}`}">
+        <button class="zone-card stage-card region-${zone.region} ${zone.checkpoint ? "is-checkpoint" : ""} ${zone.id === selectedZone ? "is-selected" : ""} ${locked ? "is-locked" : ""}" data-zone="${zone.id}" data-stage="${zone.stage}" type="button" aria-disabled="${locked}" tabindex="${activeTabStop ? "0" : "-1"}" aria-label="${missionLabel} · ${zone.name[locale]} · ${zone.checkpoint ? t("bossMission") : ruleLabel} · ${locked ? t("locked") : `${t("goal")} ${zone.goal}`}">
           <span class="zone-art"><img src="${zone.img}" alt="" /></span>
           <strong>${missionLabel} · ${zone.name[locale]}</strong>
           <span>${locked ? t("locked") : `${zone.checkpoint ? t("bossMission") : ruleLabel} · ${t("goal")} ${zone.goal}`}</span>
@@ -811,6 +812,27 @@
 
   function focusSelectedZone() {
     nodes.zoneRow.querySelector(".zone-card.is-selected:not(:disabled)")?.focus({ preventScroll: true });
+  }
+
+  function moveZoneFocus(event) {
+    const current = event.target?.closest?.(".zone-card");
+    if (!current) return;
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+    const unlockedCards = [...nodes.zoneRow.querySelectorAll('.zone-card[aria-disabled="false"]')];
+    if (!unlockedCards.length) return;
+    const currentIndex = Math.max(0, unlockedCards.indexOf(current));
+    let nextIndex = currentIndex;
+    if (event.key === "Home") nextIndex = 0;
+    else if (event.key === "End") nextIndex = unlockedCards.length - 1;
+    else if (event.key === "ArrowLeft") nextIndex = Math.max(0, currentIndex - 1);
+    else nextIndex = Math.min(unlockedCards.length - 1, currentIndex + 1);
+    event.preventDefault();
+    unlockedCards.forEach((card, index) => {
+      card.tabIndex = index === nextIndex ? 0 : -1;
+    });
+    const next = unlockedCards[nextIndex];
+    next.focus({ preventScroll: true });
+    next.scrollIntoView({ block: "nearest", inline: "center" });
   }
 
   function focusMainAction() {
@@ -2071,6 +2093,14 @@
   });
   nodes.zoneRow.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest("[data-zone]")) event.preventDefault();
+    moveZoneFocus(event);
+  });
+  nodes.zoneRow.addEventListener("focusin", (event) => {
+    const card = event.target?.closest?.('.zone-card[aria-disabled="false"]');
+    if (!card) return;
+    nodes.zoneRow.querySelectorAll(".zone-card").forEach((item) => {
+      item.tabIndex = item === card ? 0 : -1;
+    });
   });
   for (const button of [nodes.lureBtn, nodes.sonarPrepBtn]) {
     button.addEventListener("keydown", (event) => {

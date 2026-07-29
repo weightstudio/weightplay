@@ -16,6 +16,7 @@ window.WONDER_LOBBY = {
   heroGameIds: ["animal-guard-yard", "animal-zoo-idle", "bubble-bakery"],
   audiences: {
     generalGameIds: [
+      "wonder-crash",
       "signal-veil", "animal-crystal-survivor", "beast-deck", "animal-relic-hunters", "animal-rune-tactics",
       "animal-orb-fortress", "animal-auto-squad", "beast-tactician", "shadow-wolf",
       "animal-skyport-dispatch", "animal-abyss-diver", "animal-reef-fisher", "animal-hero-trials",

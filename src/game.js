@@ -768,7 +768,9 @@ function syncBattleCanvasOrientation(shortLandscape) {
 function updateBattleShell() {
   if (!document.body.classList.contains("wonder-playing")) return;
   const width = Math.max(1, window.innerWidth);
-  const height = Math.max(1, window.innerHeight);
+  const viewportHeight = Math.max(1, window.innerHeight);
+  const reserveHeight = Math.max(0, Number(window.WeightPlayAudience?.reserveHeight) || 0);
+  const height = Math.max(1, viewportHeight - reserveHeight);
   const shortLandscape = useShortLandscapeBattle(width, height);
   syncBattleCanvasOrientation(shortLandscape);
   const logicalWidth = shortLandscape ? BATTLE_LANDSCAPE_WIDTH : BATTLE_PORTRAIT_WIDTH;

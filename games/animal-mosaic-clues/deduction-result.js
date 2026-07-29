@@ -53,7 +53,43 @@
     if(result.hidden)return;const current=state(),engine=current?.engine;if(engine?.kind!=="mosaic"||!engine.cells.every((row,y)=>row.every((value,x)=>(value===1)===engine.solution[y][x])))return;
     const record=recordFor(engine),image=result.querySelector(".result-art"),labels=result.querySelectorAll(".result-stats b");image.src=resultImage(engine);image.alt=t.alt;image.dataset.completedMosaic="true";[t.time,t.mistakes,t.hints].forEach((value,index)=>labels[index].textContent=value);document.querySelector("#resultA").textContent=`${Math.floor(record.elapsed/60)}:${String(Math.floor(record.elapsed%60)).padStart(2,"0")}`;document.querySelector("#resultB").textContent=String(engine.mistakes);document.querySelector("#resultC").textContent=String(record.hints);
   }
+  const canvas=document.querySelector("#arena"),arenaWrap=document.querySelector("#arenaWrap"),keyboardCursor=document.createElement("div");
+  let keyboardEngine=null,keyboardActive=false,boardLabel="";
+  keyboardCursor.id="mosaicKeyboardCursor";
+  keyboardCursor.setAttribute("aria-hidden","true");
+  keyboardCursor.style.cssText="position:absolute;z-index:4;pointer-events:none;border:3px solid #fff176;border-radius:7px;box-shadow:0 0 0 2px #071326,0 0 18px #63f6d3;display:none";
+  arenaWrap.append(keyboardCursor);
+  function cursorLabel(engine){
+    return `${boardLabel} · ${t.row} ${engine.cursor.y+1}, ${t.column} ${engine.cursor.x+1}`;
+  }
+  function syncKeyboardCursor(engine,announceMove=false){
+    const geometry=window.__blockTrilogyTest?.geometry?.(),canvasRect=canvas.getBoundingClientRect(),wrapRect=arenaWrap.getBoundingClientRect();
+    if(!keyboardActive||!geometry||!canvasRect.width){keyboardCursor.style.display="none";return}
+    const scaleX=canvasRect.width/wrapRect.width,scaleY=canvasRect.height/wrapRect.height;
+    const cell=Math.min(geometry.cell*scaleX,geometry.cell*scaleY),left=canvasRect.left-wrapRect.left+geometry.ox*scaleX+engine.cursor.x*cell,top=canvasRect.top-wrapRect.top+geometry.oy*scaleY+engine.cursor.y*cell;
+    Object.assign(keyboardCursor.style,{display:"block",left:`${left+2}px`,top:`${top+2}px`,width:`${Math.max(0,cell-4)}px`,height:`${Math.max(0,cell-4)}px`});
+    const label=cursorLabel(engine);canvas.setAttribute("aria-label",label);if(announceMove)feedback.textContent=label;
+  }
+  document.addEventListener("keydown",event=>{
+    const current=state(),engine=current?.engine;if(current?.screen!=="battle"||engine?.kind!=="mosaic"||document.activeElement!==canvas)return;
+    const moves={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]},move=moves[event.key];
+    if(move){
+      event.preventDefault();keyboardActive=true;
+      engine.cursor.x=Math.max(0,Math.min(engine.size-1,engine.cursor.x+move[0]));
+      engine.cursor.y=Math.max(0,Math.min(engine.size-1,engine.cursor.y+move[1]));
+      syncKeyboardCursor(engine,true);return;
+    }
+    if(event.key!=="Enter"&&event.key!==" ")return;
+    event.preventDefault();if(event.repeat)return;keyboardActive=true;
+    const geometry=window.__blockTrilogyTest.geometry(),rect=canvas.getBoundingClientRect(),wrapRect=arenaWrap.getBoundingClientRect(),before=feedback.textContent;
+    const scaleX=rect.width/wrapRect.width,scaleY=rect.height/wrapRect.height;
+    canvas.dispatchEvent(new PointerEvent("pointerdown",{bubbles:true,clientX:rect.left+(geometry.ox+(engine.cursor.x+.5)*geometry.cell)*scaleX,clientY:rect.top+(geometry.oy+(engine.cursor.y+.5)*geometry.cell)*scaleY,pointerId:1,pointerType:"mouse"}));
+    keyboardActive=true;
+    if(feedback.textContent===before){const mode=document.querySelector(engine.mode===1?"#paintMode":"#markMode")?.textContent.trim()||"";feedback.textContent=`${mode} · ${t.row} ${engine.cursor.y+1}, ${t.column} ${engine.cursor.x+1}`}
+    syncKeyboardCursor(engine);
+  },true);
+  canvas.addEventListener("pointerdown",()=>{keyboardActive=false;keyboardCursor.style.display="none"});
   document.addEventListener("click",event=>{if(event.target.closest?.("#mosaicHint")){event.preventDefault();event.stopImmediatePropagation();offerHint()}},true);
   new MutationObserver(updateResult).observe(result,{attributes:true,attributeFilter:["hidden"]});
-  const tick=now=>{const current=state(),engine=current?.engine;if(engine?.kind==="mosaic"&&engine!==active){active=engine;recordFor(engine);last=now}if(engine===active&&current?.screen==="battle"&&result.hidden&&document.querySelector("#helpModal")?.hidden&&document.querySelector("#leaveModal")?.hidden&&!document.hidden)recordFor(engine).elapsed+=(now-last)/1000;last=now;requestAnimationFrame(tick)};requestAnimationFrame(tick);
+  const tick=now=>{const current=state(),engine=current?.engine;if(engine?.kind==="mosaic"&&engine!==active){active=engine;recordFor(engine);last=now}if(engine?.kind==="mosaic"&&engine!==keyboardEngine){keyboardEngine=engine;keyboardActive=false;boardLabel=canvas.getAttribute("aria-label")||"";canvas.tabIndex=0;canvas.setAttribute("aria-keyshortcuts","ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space");canvas.setAttribute("aria-describedby","feedback")}if(engine===active&&current?.screen==="battle"&&result.hidden&&document.querySelector("#helpModal")?.hidden&&document.querySelector("#leaveModal")?.hidden&&!document.hidden)recordFor(engine).elapsed+=(now-last)/1000;if(current?.screen==="battle"&&engine===keyboardEngine)syncKeyboardCursor(engine);else keyboardCursor.style.display="none";last=now;requestAnimationFrame(tick)};requestAnimationFrame(tick);
 })();

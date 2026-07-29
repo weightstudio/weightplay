@@ -423,6 +423,10 @@
     gameShell: document.querySelector(".zoo-game"),
   };
   nodes.resultPanel?.querySelector("[data-ui='lobby']")?.remove();
+  const resultActions = document.createElement("div");
+  resultActions.className = "result-actions";
+  resultActions.append(nodes.resultStagesBtn, nodes.nextStageBtn, nodes.retryBtn);
+  nodes.resultPanel?.querySelector(".result-card")?.append(resultActions);
   const leavePanel = document.createElement("section");
   leavePanel.className = "zoo-leave-panel hidden";
   leavePanel.setAttribute("role", "dialog");
@@ -461,6 +465,7 @@
   let memoryFrame = 0;
   let memoryToken = 0;
   let leaveConfirmOpen = false;
+  let resultSettled = false;
 
   function cancelMemoryCue() {
     memoryToken += 1;
@@ -819,6 +824,38 @@
     preferred.focus();
   }
 
+  function updateResultControlSize() {
+    const declaredScale = Number.parseFloat(
+      getComputedStyle(document.documentElement).getPropertyValue("--wp-battle-canvas-scale")
+    );
+    const transform = getComputedStyle(nodes.resultPanel).transform;
+    const renderedScale = transform && transform !== "none"
+      ? Math.abs(new DOMMatrixReadOnly(transform).a)
+      : Number.NaN;
+    const scale = Number.isFinite(renderedScale) && renderedScale > 0
+      ? renderedScale
+      : Number.isFinite(declaredScale) && declaredScale > 0 ? declaredScale : 1;
+    const root = document.documentElement.style;
+    root.setProperty("--zoo-result-control-min-height", `${Math.max(50, 50 / scale)}px`);
+    root.setProperty("--zoo-result-action-font-size", `${Math.max(14, 13 / scale)}px`);
+    root.setProperty("--zoo-result-title-font-size", `${Math.max(20, 17 / scale)}px`);
+    root.setProperty("--zoo-result-detail-font-size", `${Math.max(12, 11 / scale)}px`);
+    requestAnimationFrame(() => calibrateResultControlSize(0));
+  }
+
+  function calibrateResultControlSize(attempt) {
+    if (nodes.resultPanel.classList.contains("hidden") || attempt >= 3) return;
+    const button = nodes.resultPanel.querySelector(".result-actions button");
+    const renderedHeight = button?.getBoundingClientRect().height || 0;
+    if (renderedHeight >= 49) return;
+    const root = document.documentElement.style;
+    const currentHeight = Number.parseFloat(
+      getComputedStyle(document.documentElement).getPropertyValue("--zoo-result-control-min-height")
+    ) || 48;
+    root.setProperty("--zoo-result-control-min-height", `${currentHeight * (49.5 / Math.max(1, renderedHeight))}px`);
+    requestAnimationFrame(() => calibrateResultControlSize(attempt + 1));
+  }
+
   function focusStageSelection(preferCurrent = false) {
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
@@ -862,7 +899,13 @@
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("wp-standard-stage-page");
     clearBattleShellStyles();
-    if (focusStart) requestAnimationFrame(() => nodes.startGameBtn.focus({ preventScroll:true }));
+    if (focusStart) {
+      const restoreStartFocus = () => {
+        if (!nodes.menuPanel.classList.contains("hidden")) nodes.startGameBtn.focus({ preventScroll:true });
+      };
+      requestAnimationFrame(() => requestAnimationFrame(restoreStartFocus));
+      setTimeout(restoreStartFocus, 240);
+    }
   }
 
   function startStage(index) {
@@ -875,6 +918,7 @@
     firstTryTasks = 0;
     currentTaskMistakes = 0;
     lastResult = null;
+    resultSettled = false;
     acceptingInput = true;
     nodes.menuPanel.classList.add("hidden");
     nodes.stagePanel.classList.add("hidden");
@@ -1088,6 +1132,7 @@
     renderResult();
     setResultOwnership(true);
     nodes.resultPanel.classList.remove("hidden");
+    updateResultControlSize();
     requestAnimationFrame(focusResultAction);
     playSound("win");
     track("game_complete", { level: stageNo, stars: earned, mistakes });
@@ -1165,13 +1210,20 @@
       ? t("firstFinish", { stars: earned })
       : t(earned > previousBest ? "newBest" : "progress", { stars: earned, previous: previousBest });
     const hasNextStage = currentStage < stages.length - 1;
-    nodes.nextStageBtn.classList.toggle("hidden", !hasNextStage);
+    nodes.nextStageBtn.classList.remove("hidden");
+    nodes.nextStageBtn.disabled = !hasNextStage;
+    nodes.nextStageBtn.setAttribute("aria-disabled", String(!hasNextStage));
     nodes.nextStageBtn.classList.toggle("primary-action", hasNextStage);
     nodes.resultStagesBtn.classList.toggle("primary-action", !hasNextStage);
     nodes.retryBtn.classList.remove("primary-action");
   }
 
   function bindEvents() {
+    const settleResult = (action) => {
+      if (resultSettled || nodes.resultPanel.classList.contains("hidden")) return;
+      resultSettled = true;
+      action();
+    };
     nodes.startGameBtn.addEventListener("click", () => showMenu({ focusStage:true }));
     nodes.stageBackBtn.addEventListener("click", () => showMain({ focusStart:true }));
     nodes.localeSelect.addEventListener("change", () => {
@@ -1206,12 +1258,15 @@
       if (event.shiftKey && document.activeElement === nodes.keepHelpingBtn) { event.preventDefault(); nodes.leaveShiftBtn.focus({ preventScroll:true }); }
       else if (!event.shiftKey && document.activeElement === nodes.leaveShiftBtn) { event.preventDefault(); nodes.keepHelpingBtn.focus({ preventScroll:true }); }
     }, true);
-    nodes.resultStagesBtn.addEventListener("click", () => showMenu({ focusStage:true }));
-    nodes.retryBtn.addEventListener("click", () => {
+    nodes.resultStagesBtn.addEventListener("click", () => settleResult(() => showMenu({ focusStage:true })));
+    nodes.retryBtn.addEventListener("click", () => settleResult(() => {
       track("game_restart", { level: currentStage + 1, mistakes });
       startStage(currentStage);
+    }));
+    nodes.nextStageBtn.addEventListener("click", () => {
+      if (nodes.nextStageBtn.disabled) return;
+      settleResult(() => startStage(Math.min(currentStage + 1, stages.length - 1)));
     });
-    nodes.nextStageBtn.addEventListener("click", () => startStage(Math.min(currentStage + 1, stages.length - 1)));
     nodes.animalCard.addEventListener("click", () => {
       const stage = stages[currentStage];
       if (!stage?.memory || !nodes.requestText.dataset.fullText || nodes.playPanel.classList.contains("hidden")) return;
@@ -1260,6 +1315,9 @@
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) suspendCareTransition();
       else resumeCareTransition();
+    });
+    window.addEventListener("resize", () => {
+      if (!nodes.resultPanel.classList.contains("hidden")) updateResultControlSize();
     });
 
   }

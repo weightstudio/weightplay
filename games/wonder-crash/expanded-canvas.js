@@ -13,16 +13,15 @@
     const activeLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || "en";
     const runtimeTranslate = (value) => window.WeightPlayGameRuntimeLocalizer?.translate?.(value) || value;
     const nativeTaglines = {
-      en: "Free Kids Game",
-      "zh-Hant": "免費兒童遊戲",
-      "zh-Hans": "免费儿童游戏",
-      es: "Juego gratuito para niños",
+      en: "Free Browser Game",
+      "zh-Hant": "\u514d\u8cbb\u7db2\u9801\u904a\u6232",
+      "zh-Hans": "\u514d\u8d39\u7f51\u9875\u6e38\u620f",
+      es: "Juego de navegador gratuito",
     };
     const visibleTitle = document.querySelector("#wonderMain [data-i18n='game_title']")?.textContent?.trim();
     const gameTitle = visibleTitle || runtimeTranslate("Fantasy Lion Defense");
-    const tagline = nativeTaglines[activeLocale] || runtimeTranslate("Free Kids Game");
-    // The shared runtime localizer treats the ASCII "title - tagline" shape as
-    // a repeated-value template. An em dash keeps both localized fields intact.
+    const tagline = nativeTaglines[activeLocale] || runtimeTranslate("Free Browser Game");
+    // The em dash keeps the localized title and tagline as separate values.
     const title = `${gameTitle} \u2014 ${tagline} | WeightPlay`;
     document.title = title;
     document.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]').forEach((meta) => meta.setAttribute("content", title));
@@ -67,12 +66,17 @@
 
   function updateViewport() {
     const width = Math.max(1, window.innerWidth);
-    const height = Math.max(1, window.innerHeight);
+    const viewportHeight = Math.max(1, window.innerHeight);
     const availableWidth = Math.min(width, DESKTOP_CANVAS_MAX_WIDTH);
-    document.documentElement.style.setProperty("--wonder-vw", `${width}px`);
-    document.documentElement.style.setProperty("--wonder-vh", `${height}px`);
     const playing = document.body.classList.contains("wonder-playing");
-    const menuScale = Math.min(width / MENU_LOGICAL_WIDTH, height / MENU_LOGICAL_HEIGHT);
+    const selectingStage = document.body.classList.contains("wonder-stage-select") && !playing;
+    const reserveHeight = (playing || selectingStage)
+      ? Math.max(0, Number(window.WeightPlayAudience?.reserveHeight) || 0)
+      : 0;
+    const height = Math.max(1, viewportHeight - reserveHeight);
+    document.documentElement.style.setProperty("--wonder-vw", `${width}px`);
+    document.documentElement.style.setProperty("--wonder-vh", `${viewportHeight}px`);
+    const menuScale = Math.min(width / MENU_LOGICAL_WIDTH, viewportHeight / MENU_LOGICAL_HEIGHT);
     const useStageLandscape = availableWidth / height >= 1.5;
     const stageMinimumWidth = useStageLandscape ? STAGE_LANDSCAPE_WIDTH : MENU_LOGICAL_WIDTH;
     const stageMinimumHeight = useStageLandscape ? STAGE_LANDSCAPE_HEIGHT : MENU_LOGICAL_HEIGHT;
@@ -93,9 +97,12 @@
     const stageTabHeight = Math.max(44, 44 / stageScale);
     const battleLogicalWidth = availableWidth / battleScale;
     const battleLogicalHeight = height / battleScale;
+    const battleControlSize = Math.max(48, 44 / battleScale);
     const centeredLeft = Math.max(0, (width - availableWidth) / 2);
     const shell = document.querySelector(".game-shell");
-    const selectingStage = document.body.classList.contains("wonder-stage-select") && !playing;
+    const reserve = document.querySelector("#battleAdReserve");
+    reserve?.toggleAttribute("data-active", playing || selectingStage);
+    if (reserve) reserve.style.width = `${availableWidth}px`;
     document.documentElement.style.setProperty("--wonder-shell-scale", String(selectingStage ? stageScale : menuScale));
     document.documentElement.style.setProperty("--wonder-menu-rendered-width", `${MENU_LOGICAL_WIDTH * menuScale}px`);
     document.documentElement.style.setProperty("--wonder-menu-rendered-height", `${MENU_LOGICAL_HEIGHT * menuScale}px`);
@@ -111,6 +118,7 @@
       document.documentElement.style.setProperty("--wonder-battle-left", `${centeredLeft}px`);
       document.documentElement.style.setProperty("--wonder-battle-logical-width", `${battleLogicalWidth}px`);
       document.documentElement.style.setProperty("--wonder-battle-logical-height", `${battleLogicalHeight}px`);
+      document.documentElement.style.setProperty("--wonder-battle-control-size", `${battleControlSize}px`);
       shell?.setAttribute("data-wp-logical-battle-canvas", `${battleLogicalWidth.toFixed(3)}x${battleLogicalHeight.toFixed(3)}`);
     } else {
       shell?.removeAttribute("data-wp-logical-battle-canvas");

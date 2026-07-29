@@ -47,5 +47,17 @@
     {id:"q43_choose_the_signal",chapter:3,type:"ashfallChoice"},
     {id:"q44_bring_aster_home",chapter:3,type:"ashfallReturned"},
     {id:"q45_the_world_hears",chapter:3,type:"chapter3Complete"},
+    {id:"q46_lunar_briefing",chapter:4,type:"chapter4Started"},
+    {id:"q47_enter_lunar_archive",chapter:4,type:"visit",target:"lunar"},
+    {id:"q48_read_arrival_beacon",chapter:4,type:"lunarFinding",target:"beacon",name:"lunarBeaconName"},
+    {id:"q49_clear_outer_ring",chapter:4,type:"defeatLunar",target:2,place:"zoneLunar"},
+    {id:"q50_decode_cipher_well",chapter:4,type:"lunarFinding",target:"cipher",name:"lunarCipherName"},
+    {id:"q51_cross_silent_stacks",chapter:4,type:"defeatLunar",target:4,place:"zoneLunar"},
+    {id:"q52_open_nursery_record",chapter:4,type:"lunarFinding",target:"nursery",name:"lunarNurseryName"},
+    {id:"q53_break_archive_guard",chapter:4,type:"defeatLunar",target:6,place:"zoneLunar"},
+    {id:"q54_reach_hollow_core",chapter:4,type:"lunarFinding",target:"core",name:"lunarCoreName"},
+    {id:"q55_end_the_pursuit",chapter:4,type:"defeatLunar",target:8,place:"zoneLunar"},
+    {id:"q56_choose_the_route",chapter:4,type:"lunarChoice"},
+    {id:"q57_a_sky_for_refugees",chapter:4,type:"chapter4Complete"},
   ]);
 })();

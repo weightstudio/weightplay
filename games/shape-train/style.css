@@ -732,6 +732,11 @@ body.shape-playing .weightplay-version-badge {
   backdrop-filter: blur(8px);
 }
 
+body.shape-result-active .wp-generated-battle-header {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 .shape-leave-confirm {
   position: absolute;
   inset: 0;
@@ -1121,6 +1126,11 @@ body.shape-playing .passenger-area {
 
   .shape-game.wp-standard-main-flow-owner .wp-standard-main-copy {
     height: 300px;
+  }
+
+  body.shape-playing .result-card {
+    width: min(100%, 680px);
+    padding: 22px 26px;
   }
 
   body.shape-playing .shape-game,

@@ -1007,7 +1007,10 @@ body:has(#resultPanel.battle-result:not(.hidden)) .mobile-controls-row {
   body[data-shadow-wolf-screen="main"] .campaign-summary { grid-column: 2; margin: 0; font-size: .8rem; }
   body[data-shadow-wolf-screen="main"] .start-btn { grid-column: 2; min-height: 44px; padding: 9px 12px; }
   body[data-shadow-wolf-screen="main"] .desktop-controls { grid-column: 2; margin: 0; padding: 6px; font-size: .64rem; }
-  .world-map-grid.stage-rail .stage-card { height: 176px; min-height: 176px; }
+  body[data-shadow-wolf-screen="stage"] .world-map-grid.stage-rail {
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
   .stage-management-card { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); padding-top: 50px; }
   .stage-management-card .goals-card,
   .stage-management-card .menu-shop { padding: 10px; }
@@ -1032,6 +1035,25 @@ body:has(#resultPanel.battle-result:not(.hidden)) .mobile-controls-row {
     left: 12px;
     width: auto;
     margin: 0;
+  }
+}
+
+@media (min-width: 1000px) and (min-height: 600px) {
+  body[data-shadow-wolf-screen="stage"] .wp-stage-shell-header:has(> .wp-stage-header-action) {
+    grid-template-columns: 53px minmax(0, 1fr) minmax(112px, auto) 53px !important;
+  }
+  body.wp-stage-select-active[data-shadow-wolf-screen="stage"] [data-wp-logical-stage-canvas] .stage-header > .play-return[data-wp-return="stage"],
+  body[data-shadow-wolf-screen="stage"] .stage-header .wp-shell-settings-button {
+    width: 53px !important;
+    min-width: 53px !important;
+    max-width: 53px !important;
+    height: 53px !important;
+    min-height: 53px !important;
+    max-height: 53px !important;
+  }
+  body[data-shadow-wolf-screen="stage"] .stage-workshop-btn {
+    min-height: 53px;
+    font-size: 15px !important;
   }
 }
 

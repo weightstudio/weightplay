@@ -8,6 +8,33 @@ body.wonder-playing {
   text-size-adjust: 100%;
 }
 
+#battleAdReserve {
+  display: none;
+  height: 56px;
+  min-height: 56px;
+  pointer-events: none;
+  background: #071a2b;
+  border-top: 1px solid rgba(104, 181, 211, 0.24);
+}
+
+body:is(.wonder-playing, .wonder-stage-select) #battleAdReserve[data-active] {
+  position: fixed;
+  right: auto;
+  bottom: 0;
+  left: 50%;
+  z-index: 40;
+  display: block;
+  width: min(100vw, 920px);
+  transform: translateX(-50%);
+}
+
+body.wonder-playing :is(#backToMenuBtn, #settingsBtn) {
+  width: var(--wonder-battle-control-size, 48px) !important;
+  min-width: var(--wonder-battle-control-size, 48px) !important;
+  height: var(--wonder-battle-control-size, 48px) !important;
+  min-height: var(--wonder-battle-control-size, 48px) !important;
+}
+
 body:is(.wonder-stage-select, .wonder-playing) .weightplay-version-badge {
   display: none !important;
 }

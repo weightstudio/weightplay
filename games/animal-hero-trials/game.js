@@ -684,6 +684,7 @@
       const rule=localizedPair(region.rule);
       const boss=definition.boss?` · ${localizedPair(definition.boss.name)}`:"";
       button.innerHTML = `<img src="${ASSET_ROOT}${definition.boss?.asset || "animal-hero-trials-arena.png"}" alt=""><strong>${localizedValue("Trial", "試煉", "Prueba")} ${stage} · ${title}</strong><span>${detail}<br>${rule}${boss}<br>${interpolate("recommended",{hero:localizedPair(heroNames[definition.recommended])})}</span>`;
+      button.tabIndex = stage === Math.min(TRIAL_COUNT, unlocked) ? 0 : -1;
       button.onclick = () => stage <= unlocked && startTrial(stage);
       rail.append(button);
     }
@@ -705,6 +706,7 @@
     cards.forEach((card)=>{
       const active=card===centered;
       card.classList.toggle("is-browsed",active);
+      card.tabIndex=active?0:-1;
       if(active)card.setAttribute("aria-current","true");
       else card.removeAttribute("aria-current");
     });
@@ -715,8 +717,18 @@
     stageSelectionFrame=requestAnimationFrame(updateCenteredStageCard);
   }
 
+  function setStageTabStop(card, focus = false) {
+    if (!card) return;
+    $$("#stageRail .stage-card").forEach((item) => { item.tabIndex = item === card ? 0 : -1; });
+    if (focus) {
+      card.scrollIntoView({ block: "nearest", inline: "center" });
+      card.focus({ preventScroll: true });
+      scheduleCenteredStageCard();
+    }
+  }
+
   function focusStage(stage = Math.min(TRIAL_COUNT, unlocked)) {
-    requestAnimationFrame(() => $(`#stageRail .stage-card[data-stage="${stage}"]`)?.focus({ preventScroll: true }));
+    requestAnimationFrame(() => setStageTabStop($(`#stageRail .stage-card[data-stage="${stage}"]`), true));
   }
 
   function focusMain() {
@@ -1324,7 +1336,32 @@
     };
   }
   $("#startBtn").addEventListener("keydown", (event) => { if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault(); });
-  $("#stageRail").addEventListener("keydown", (event) => { if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest(".stage-card")) event.preventDefault(); });
+  $("#stageRail").addEventListener("keydown", (event) => {
+    const card = event.target.closest(".stage-card");
+    if (!card) return;
+    if (event.repeat && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      return;
+    }
+    const cards = $$("#stageRail .stage-card");
+    const current = cards.indexOf(card);
+    const targetIndex = event.key === "ArrowRight"
+      ? Math.min(cards.length - 1, current + 1)
+      : event.key === "ArrowLeft"
+        ? Math.max(0, current - 1)
+        : event.key === "Home"
+          ? 0
+          : event.key === "End"
+            ? cards.length - 1
+            : -1;
+    if (targetIndex < 0) return;
+    event.preventDefault();
+    setStageTabStop(cards[targetIndex], true);
+  });
+  $("#stageRail").addEventListener("focusin", (event) => {
+    const card = event.target.closest(".stage-card");
+    if (card) setStageTabStop(card);
+  });
   $("#startBtn").onclick = () => { playSound("click"); show("stage"); focusStage(); };
   $("#stageBack").onclick = () => { playSound("click"); show("main"); focusMain(); };
   $("#battleBack").onclick = openQuitDecision;

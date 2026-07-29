@@ -13,6 +13,7 @@
   const MAP_SIGNAL_TOWN = "signalTown";
   const MAP_MOONFALL = "moonfallRelay";
   const MAP_ASHFALL = "ashfallObservatory";
+  const MAP_LUNAR = "lunarArchive";
   const QUESTS = window.SIGNAL_VEIL_QUESTS || [];
   const WORLD_OBJECTS = [
     // Every visible object owns its own matching collision footprint.
@@ -52,14 +53,25 @@
     sprite:(object.sprite+5+(index%2))%12,
     collision:{...object.collision,ox:index%2?-(object.collision.ox||0):(object.collision.ox||0)}
   }));
-  const MAP_OBJECTS = {[MAP_SIGNAL_TOWN]:WORLD_OBJECTS,[MAP_MOONFALL]:MOONFALL_OBJECTS,[MAP_ASHFALL]:ASHFALL_OBJECTS};
+  const LUNAR_OBJECTS = [
+    {...WORLD_OBJECTS[3],x:270,y:190,sprite:10},{...WORLD_OBJECTS[4],x:820,y:830,sprite:8},
+    {...WORLD_OBJECTS[0],x:1536,y:135,sprite:3},{...WORLD_OBJECTS[15],x:1510,y:865,sprite:11},
+    {...WORLD_OBJECTS[1],x:2220,y:170,sprite:2},{...WORLD_OBJECTS[2],x:2800,y:820,sprite:1},
+    {...WORLD_OBJECTS[5],x:420,y:800,sprite:4},{...WORLD_OBJECTS[6],x:1080,y:170,sprite:6},
+    {...WORLD_OBJECTS[7],x:2050,y:850,sprite:5},{...WORLD_OBJECTS[8],x:2760,y:180,sprite:6},
+  ].map(object=>({...object,collision:{...object.collision}}));
+  const MAP_OBJECTS = {[MAP_SIGNAL_TOWN]:WORLD_OBJECTS,[MAP_MOONFALL]:MOONFALL_OBJECTS,[MAP_ASHFALL]:ASHFALL_OBJECTS,[MAP_LUNAR]:LUNAR_OBJECTS};
   const MAP_PORTALS = {
     [MAP_SIGNAL_TOWN]:[{x:2700,y:520,to:MAP_MOONFALL,spawnX:430,spawnY:520,label:"portalToMoonfall",requires:"chapter2"}],
     [MAP_MOONFALL]:[
       {x:390,y:520,to:MAP_SIGNAL_TOWN,spawnX:2630,spawnY:520,label:"portalToTown"},
       {x:2700,y:520,to:MAP_ASHFALL,spawnX:430,spawnY:520,label:"portalToAshfall",requires:"chapter3"},
     ],
-    [MAP_ASHFALL]:[{x:390,y:520,to:MAP_MOONFALL,spawnX:2630,spawnY:520,label:"portalToMoonfallReturn"}],
+    [MAP_ASHFALL]:[
+      {x:390,y:520,to:MAP_MOONFALL,spawnX:2630,spawnY:520,label:"portalToMoonfallReturn"},
+      {x:2700,y:520,to:MAP_LUNAR,spawnX:430,spawnY:520,label:"portalToLunar",requires:"chapter4"},
+    ],
+    [MAP_LUNAR]:[{x:390,y:520,to:MAP_ASHFALL,spawnX:2630,spawnY:520,label:"portalToAshfallReturn"}],
   };
   const RELAY_NODES = [
     {id:"origin",x:720,y:260,index:5,name:"relayOrigin"},
@@ -71,6 +83,12 @@
     {id:"manifest",x:1210,y:270,index:5,name:"ashfallManifestName",message:"ashfallManifestMessage",questId:"q38_read_manifest"},
     {id:"jammer",x:1810,y:630,index:13,name:"ashfallJammerName",message:"ashfallJammerMessage",questId:"q40_disable_jammer"},
     {id:"core",x:2460,y:390,index:15,name:"ashfallCoreName",message:"ashfallCoreMessage",questId:"q42_open_blackbox"},
+  ];
+  const LUNAR_NODES = [
+    {id:"beacon",x:720,y:520,index:15,name:"lunarBeaconName",message:"lunarBeaconMessage",questId:"q48_read_arrival_beacon"},
+    {id:"cipher",x:1260,y:360,index:5,name:"lunarCipherName",message:"lunarCipherMessage",questId:"q50_decode_cipher_well"},
+    {id:"nursery",x:1840,y:650,index:7,name:"lunarNurseryName",message:"lunarNurseryMessage",questId:"q52_open_nursery_record"},
+    {id:"core",x:2460,y:410,index:13,name:"lunarCoreName",message:"lunarCoreMessage",questId:"q54_reach_hollow_core"},
   ];
   const SPRITE_FRAMES = [
     [55,45,230,220],[365,42,225,220],[642,42,228,220],[990,42,190,230],
@@ -128,7 +146,8 @@
     enemyHp:{},bossHp:260,signalAnchor:false,
     mapId:MAP_SIGNAL_TOWN,witnessReport:false,chapter2Started:false,relays:[],storyComplete:false,
     chapter3Started:false,ashfallFindings:[],ashfallChoice:null,ashfallReturned:false,chapter3Complete:false,
-    discoveries:{forest:false,lab:false,boss:false,moonfall:false,ashfall:false},
+    chapter4Started:false,lunarFindings:[],lunarChoice:null,lunarReturned:false,chapter4Complete:false,
+    discoveries:{forest:false,lab:false,boss:false,moonfall:false,ashfall:false,lunar:false},
     checkpoint:{x:420,y:545,mapId:MAP_SIGNAL_TOWN}
   };
   const stateStore=window.SignalVeilStateStore;
@@ -161,6 +180,10 @@
   const ashfallEnemySeeds = [
     [980,690,10],[1380,470,11],[1640,270,9],[2020,650,11],[2360,650,10],[2680,700,12],
   ];
+  const lunarEnemySeeds = [
+    [930,300,8],[1060,720,10],[1450,560,11],[1650,300,9],
+    [2010,430,12],[2200,720,10],[2580,690,11],[2820,360,9],
+  ];
   const makeEnemies = () => [
     ...enemySeeds.map(([x,y,sprite],id) => ({
       id,x,y,homeX:x,homeY:y,mapId:MAP_SIGNAL_TOWN,sprite,hp:state.enemyHp[id]??(26 + (id > 7 ? 15 : 0)),maxHp:26 + (id > 7 ? 15 : 0),
@@ -173,6 +196,10 @@
     ...ashfallEnemySeeds.map(([x,y,sprite],offset) => {
       const id=enemySeeds.length+moonfallEnemySeeds.length+offset;
       return {id,x,y,homeX:x,homeY:y,mapId:MAP_ASHFALL,sprite,hp:state.enemyHp[id]??68,maxHp:68,speed:68+(offset%2)*9,attackTimer:0,phase:id*.73,hidden:offset===2,dead:state.defeated.has(id)};
+    }),
+    ...lunarEnemySeeds.map(([x,y,sprite],offset) => {
+      const id=enemySeeds.length+moonfallEnemySeeds.length+ashfallEnemySeeds.length+offset;
+      return {id,x,y,homeX:x,homeY:y,mapId:MAP_LUNAR,sprite,hp:state.enemyHp[id]??82,maxHp:82,speed:72+(offset%3)*7,attackTimer:0,phase:id*.73,hidden:offset===1||offset===6,dead:state.defeated.has(id)};
     }),
   ];
   let enemies = makeEnemies();
@@ -221,6 +248,7 @@
     nodes.progress.textContent = `${t("questProgress")} ${completedQuestCount()} / ${QUESTS.length}`;
   }
   function zoneKey() {
+    if(state.mapId===MAP_LUNAR)return "zoneLunar";
     if(state.mapId===MAP_ASHFALL)return "zoneAshfall";
     if(state.mapId===MAP_MOONFALL)return "zoneMoonfall";
     if (state.x < 1024) return "zoneTown";
@@ -229,7 +257,14 @@
   }
   function firstMapDefeated(){return [...state.defeated].filter(id=>id<enemySeeds.length).length}
   function moonfallDefeated(){return [...state.defeated].filter(id=>id>=enemySeeds.length&&id<enemySeeds.length+moonfallEnemySeeds.length).length}
-  function ashfallDefeated(){return [...state.defeated].filter(id=>id>=enemySeeds.length+moonfallEnemySeeds.length).length}
+  function ashfallDefeated(){
+    const start=enemySeeds.length+moonfallEnemySeeds.length;
+    return [...state.defeated].filter(id=>id>=start&&id<start+ashfallEnemySeeds.length).length;
+  }
+  function lunarDefeated(){
+    const start=enemySeeds.length+moonfallEnemySeeds.length+ashfallEnemySeeds.length;
+    return [...state.defeated].filter(id=>id>=start).length;
+  }
   function questComplete(quest){
     switch(quest.type){
       case "talk":return state.talked.has(quest.target);
@@ -249,6 +284,11 @@
       case "ashfallChoice":return Boolean(state.ashfallChoice);
       case "ashfallReturned":return state.ashfallReturned;
       case "chapter3Complete":return state.chapter3Complete;
+      case "chapter4Started":return state.chapter4Started;
+      case "lunarFinding":return state.lunarFindings.has(quest.target);
+      case "defeatLunar":return lunarDefeated()>=quest.target;
+      case "lunarChoice":return Boolean(state.lunarChoice);
+      case "chapter4Complete":return state.chapter4Complete;
       default:return false;
     }
   }
@@ -263,7 +303,7 @@
   }
   function questPlace(quest){
     if(quest.type==="visit"){
-      return t({forest:"zoneForest",lab:"zoneLab",moonfall:"zoneMoonfall",ashfall:"zoneAshfall"}[quest.target]);
+      return t({forest:"zoneForest",lab:"zoneLab",moonfall:"zoneMoonfall",ashfall:"zoneAshfall",lunar:"zoneLunar"}[quest.target]);
     }
     return t(quest.place||"zoneTown");
   }
@@ -283,11 +323,16 @@
     if(quest.type==="ashfallChoice")return t("questProofTitle");
     if(quest.type==="ashfallReturned")return t("questAnswerTitle");
     if(quest.type==="chapter3Complete")return t("questProofTitle");
+    if(quest.type==="chapter4Started")return t("questAnswerTitle");
+    if(quest.type==="lunarFinding")return t("questDecodeTitle",{record:t(quest.name)});
+    if(quest.type==="defeatLunar")return t("questThreatTitle",{place:questPlace(quest),target:questDisplayTarget(quest)});
+    if(quest.type==="lunarChoice"||quest.type==="chapter4Complete")return t("questProofTitle");
     return t("questProofTitle");
   }
   function questDisplayTarget(quest){
     if(quest.type==="defeatMoonfall")return moonfallEnemySeeds.length;
     if(quest.type==="defeatAshfall")return ashfallEnemySeeds.length;
+    if(quest.type==="defeatLunar")return lunarEnemySeeds.length;
     if(quest.type==="defeatFirst")return quest.place==="zoneForest"?8:enemySeeds.length;
     return quest.target;
   }
@@ -308,6 +353,11 @@
     if(quest.type==="ashfallChoice")return t("objectiveAshfallChoice");
     if(quest.type==="ashfallReturned")return t("objectiveAshfallReturn");
     if(quest.type==="chapter3Complete")return t("objectiveAshfallFinal");
+    if(quest.type==="chapter4Started")return t("objectiveLunarBriefing");
+    if(quest.type==="lunarFinding")return t("questLunarEvidenceObjective",{evidence:t(quest.name)});
+    if(quest.type==="defeatLunar")return t("questDefeatObjective",{n:lunarDefeated(),target:questDisplayTarget(quest),place:questPlace(quest)});
+    if(quest.type==="lunarChoice")return t("objectiveLunarChoice");
+    if(quest.type==="chapter4Complete")return t("objectiveLunarReturn");
     return t("objectiveFinalReturn");
   }
   function currentQuestText(){
@@ -340,10 +390,12 @@
     canvas.dataset.enemiesDefeated=String(firstMapDefeated());
     canvas.dataset.moonfallEnemiesDefeated=String(moonfallDefeated());
     canvas.dataset.ashfallEnemiesDefeated=String(ashfallDefeated());
+    canvas.dataset.lunarEnemiesDefeated=String(lunarDefeated());
     canvas.dataset.witnesses=String(state.talked.size);
     canvas.dataset.totalEnemies=String(enemySeeds.length);
     canvas.dataset.totalMoonfallEnemies=String(moonfallEnemySeeds.length);
     canvas.dataset.totalAshfallEnemies=String(ashfallEnemySeeds.length);
+    canvas.dataset.totalLunarEnemies=String(lunarEnemySeeds.length);
     canvas.dataset.totalNpcs=String(npcs.length);
     canvas.dataset.bossHp=String(Math.max(0,Math.ceil(boss?.hp ?? 0)));
     canvas.dataset.vision=trueVision?"true":"normal";
@@ -353,6 +405,9 @@
     canvas.dataset.chapter3Complete=state.chapter3Complete?"true":"false";
     canvas.dataset.ashfallFindings=String(state.ashfallFindings.size);
     canvas.dataset.ashfallChoice=state.ashfallChoice||"";
+    canvas.dataset.chapter4Complete=state.chapter4Complete?"true":"false";
+    canvas.dataset.lunarFindings=String(state.lunarFindings.size);
+    canvas.dataset.lunarChoice=state.lunarChoice||"";
     canvas.dataset.questsCompleted=String(completedQuestCount());
     canvas.dataset.totalQuests=String(QUESTS.length);
     canvas.dataset.walking=playerMoving?"true":"false";
@@ -402,7 +457,7 @@
     clearTimeout(toastTimer); toastTimer=setTimeout(()=>nodes.toast.classList.remove("show"),duration);
   }
   function showCurrentQuest(){
-    showToast(state.chapter3Complete?t("questsComingSoon"):`${t("currentQuest")} · ${nodes.objective.textContent}`,3400);
+    showToast(state.chapter4Complete?t("questsComingSoon"):`${t("currentQuest")} · ${nodes.objective.textContent}`,3400);
   }
   function setPanel(panel) {
     [nodes.pause,nodes.inventory,nodes.leave,nodes.result].forEach(item => item.hidden=item!==panel);
@@ -422,8 +477,14 @@
         state.chapter3Started=true;lineKey="chapter3Briefing";showToast(t("ashfallUnlocked"),2600);
       }else if(state.ashfallReturned&&!state.chapter3Complete){
         state.chapter3Complete=true;lineKey=state.ashfallChoice==="broadcast"?"chapter3DebriefBroadcast":"chapter3DebriefProtect";playTone(880,.35);
+      }else if(state.chapter3Complete&&!state.chapter4Started){
+        state.chapter4Started=true;lineKey=state.ashfallChoice==="broadcast"?"chapter4BriefingBroadcast":"chapter4BriefingProtect";showToast(t("lunarUnlocked"),2600);
+      }else if(state.lunarReturned&&!state.chapter4Complete){
+        state.chapter4Complete=true;lineKey=state.lunarChoice==="answer"?"chapter4DebriefAnswer":"chapter4DebriefShield";playTone(920,.4);
+      }else if(state.chapter4Started){
+        lineKey=state.chapter4Complete?"chapter4After":"chapter4Reminder";
       }else if(state.chapter3Started){
-        lineKey=state.chapter3Complete?"chapter3After":"chapter3Reminder";
+        lineKey="chapter3Reminder";
       }
       currentDialogue=`story-${lineKey}`;paused=true;
       nodes.speaker.textContent=(copy.npcNames||en.npcNames)[0] || en.npcNames[0];
@@ -529,6 +590,13 @@
       for(let x=-80;x<BASE_VIEW.width+80;x+=110){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x+180,BASE_VIEW.height);ctx.stroke()}
       ctx.setLineDash([]);
     }
+    if(state.mapId===MAP_LUNAR){
+      const lunar=ctx.createRadialGradient(BASE_VIEW.width*.5,BASE_VIEW.height*.45,30,BASE_VIEW.width*.5,BASE_VIEW.height*.45,620);
+      lunar.addColorStop(0,"#143a5250");lunar.addColorStop(.55,"#10152f70");lunar.addColorStop(1,"#050817a8");
+      ctx.fillStyle=lunar;ctx.fillRect(0,0,BASE_VIEW.width,BASE_VIEW.height);
+      ctx.strokeStyle=trueVision?"#8fffe86b":"#7796ff42";ctx.lineWidth=2;
+      for(let r=70;r<520;r+=86){ctx.beginPath();ctx.arc(BASE_VIEW.width*.5,BASE_VIEW.height*.45,r,0,Math.PI*2);ctx.stroke()}
+    }
     if(trueVision&&state.mapId===MAP_SIGNAL_TOWN){
       ctx.save();ctx.globalCompositeOperation="screen";ctx.strokeStyle="#45ffff99";ctx.lineWidth=8;ctx.setLineDash([10,14]);
       ctx.beginPath();ctx.moveTo(930-cam.x,520-cam.y);ctx.bezierCurveTo(1400-cam.x,260-cam.y,1750-cam.x,780-cam.y,2070-cam.x,520-cam.y);ctx.stroke();ctx.restore();
@@ -537,6 +605,7 @@
   function portalVisible(portal){
     if(portal.requires==="chapter2")return state.chapter2Started;
     if(portal.requires==="chapter3")return state.chapter3Started;
+    if(portal.requires==="chapter4")return state.chapter4Started;
     return true;
   }
   function drawMapFeatures(cam) {
@@ -556,6 +625,12 @@
       if(node.npc)drawAtlas(atlas.npcs,7,5,2,node.x-cam.x,node.y-cam.y,76,82,active ? .7 : 1);
       else drawAtlas(atlas.items,active?13:node.index,4,4,node.x-cam.x,node.y-cam.y,82,82,available||active?1:.42);
       if(available){ctx.strokeStyle="#ffd66b";ctx.lineWidth=3;ctx.beginPath();ctx.arc(node.x-cam.x,node.y-cam.y,44+Math.sin(performance.now()/180)*4,0,Math.PI*2);ctx.stroke()}
+    });
+    if(state.mapId===MAP_LUNAR)LUNAR_NODES.forEach(node=>{
+      const active=state.lunarFindings.has(node.id);
+      const available=activeQuest()?.quest.id===node.questId||(node.id==="core"&&activeQuest()?.quest.type==="lunarChoice");
+      drawAtlas(atlas.items,active?13:node.index,4,4,node.x-cam.x,node.y-cam.y,84,84,available||active?1:.38);
+      if(available){ctx.strokeStyle="#8fffe8";ctx.lineWidth=3;ctx.beginPath();ctx.arc(node.x-cam.x,node.y-cam.y,45+Math.sin(performance.now()/170)*5,0,Math.PI*2);ctx.stroke()}
     });
   }
   function drawPlayer(cam) {
@@ -639,6 +714,7 @@
     if(state.mapId===MAP_SIGNAL_TOWN&&npcs.some(npc=>overlaps(npc,22)))return true;
     if(state.mapId===MAP_SIGNAL_TOWN&&chests.some(chest=>!state.chests.has(chest.id)&&overlaps(chest,25)))return true;
     if(state.mapId===MAP_ASHFALL&&ASHFALL_NODES.some(node=>!state.ashfallFindings.has(node.id)&&overlaps(node,25)))return true;
+    if(state.mapId===MAP_LUNAR&&LUNAR_NODES.some(node=>!state.lunarFindings.has(node.id)&&overlaps(node,25)))return true;
     if(enemies.some(enemy=>enemy.mapId===state.mapId&&!enemy.dead&&(!enemy.hidden||trueVision)&&overlaps(enemy,25)))return true;
     return state.mapId===MAP_SIGNAL_TOWN&&!boss.dead&&firstMapDefeated()>=15&&overlaps(boss,48);
   }
@@ -698,6 +774,7 @@
     if(state.mapId===MAP_SIGNAL_TOWN&&state.x>1024)markDiscovery("forest");
     if(state.mapId===MAP_SIGNAL_TOWN&&state.x>2048)markDiscovery("lab");
     if(state.mapId===MAP_ASHFALL)markDiscovery("ashfall");
+    if(state.mapId===MAP_LUNAR)markDiscovery("lunar");
     if(state.mapId===MAP_SIGNAL_TOWN&&state.x>1060&&state.checkpoint.mapId===MAP_SIGNAL_TOWN&&state.checkpoint.x<1000)state.checkpoint={x:1080,y:520,mapId:MAP_SIGNAL_TOWN};
     if(state.mapId===MAP_SIGNAL_TOWN&&state.x>2100&&state.checkpoint.mapId===MAP_SIGNAL_TOWN&&state.checkpoint.x<2000)state.checkpoint={x:2110,y:520,mapId:MAP_SIGNAL_TOWN};
   }
@@ -715,6 +792,11 @@
       candidates.push(...RELAY_NODES.map((relay,relayIndex)=>({...relay,relayIndex})).filter(relay=>!state.relays.has(relay.id)&&distance(state,relay)<92).map(relay=>({...relay,kind:"relay"})));
     }else if(state.mapId===MAP_ASHFALL){
       candidates.push(...ASHFALL_NODES.filter(node=>!state.ashfallFindings.has(node.id)&&activeQuest()?.quest.id===node.questId&&distance(state,node)<92).map(node=>({...node,kind:"ashfallNode"})));
+    }else if(state.mapId===MAP_LUNAR){
+      candidates.push(...LUNAR_NODES.filter(node=>{
+        const quest=activeQuest()?.quest;
+        return distance(state,node)<92&&((!state.lunarFindings.has(node.id)&&quest?.id===node.questId)||(node.id==="core"&&quest?.type==="lunarChoice"));
+      }).map(node=>({...node,kind:"lunarNode"})));
     }
     candidates.push(...MAP_PORTALS[state.mapId].filter(portal=>portalVisible(portal)&&distance(state,portal)<105).map(portal=>({...portal,kind:"portal"})));
     return candidates.sort((a,b)=>distance(state,a)-distance(state,b))[0]||null;
@@ -727,16 +809,19 @@
     else if(target.kind==="chest")openChest(target);
     else if(target.kind==="relay")activateRelay(target);
     else if(target.kind==="ashfallNode")activateAshfallNode(target);
+    else if(target.kind==="lunarNode")activateLunarNode(target);
     else if(target.kind==="portal")switchMap(target);
   }
   function switchMap(portal) {
     state.mapId=portal.to;state.x=portal.spawnX;state.y=portal.spawnY;
     if(state.mapId===MAP_MOONFALL)state.discoveries.moonfall=true;
     if(state.mapId===MAP_ASHFALL)state.discoveries.ashfall=true;
+    if(state.mapId===MAP_LUNAR)state.discoveries.lunar=true;
     if(portal.label==="portalToMoonfallReturn"&&state.ashfallChoice)state.ashfallReturned=true;
+    if(portal.label==="portalToAshfallReturn"&&state.lunarChoice)state.lunarReturned=true;
     state.checkpoint={x:portal.spawnX,y:portal.spawnY,mapId:portal.to};
     projectiles.length=0;enemyProjectiles.length=0;effects.length=0;
-    const arrivalKey=state.mapId===MAP_ASHFALL?"ashfallArrival":state.mapId===MAP_MOONFALL?(portal.label==="portalToMoonfallReturn"?"ashfallReturn":"moonfallArrival"):"townReturn";
+    const arrivalKey=state.mapId===MAP_LUNAR?"lunarArrival":state.mapId===MAP_ASHFALL?(portal.label==="portalToAshfallReturn"?"lunarReturn":"ashfallArrival"):state.mapId===MAP_MOONFALL?(portal.label==="portalToMoonfallReturn"?"ashfallReturn":"moonfallArrival"):"townReturn";
     showToast(t(arrivalKey),2400);
     saveGame();updateObjective();updateHud();
   }
@@ -760,6 +845,8 @@
     nodes.dialogue.hidden=false;
     if(node.id==="core"){
       nodes.dialogueNext.hidden=true;nodes.dialogueChoices.hidden=false;nodes.broadcastChoice.focus();
+      nodes.broadcastChoice.textContent=t("ashfallBroadcast");
+      nodes.protectChoice.textContent=t("ashfallProtect");
     }else nodes.dialogueNext.focus();
     saveGame();updateObjective();updateHud();
   }
@@ -770,6 +857,32 @@
     else {state.defense+=2;state.maxHp+=8;state.hp=Math.min(state.maxHp,state.hp+8)}
     saveGame();updateObjective();updateHud();
     showToast(t(choice==="broadcast"?"ashfallBroadcastChosen":"ashfallProtectChosen"),2600);
+    closeDialogue();
+  }
+  function activateLunarNode(node) {
+    const choosing=node.id==="core"&&activeQuest()?.quest.type==="lunarChoice";
+    if(!choosing){
+      state.lunarFindings.add(node.id);gainXp(node.id==="core"?42:24);playTone(node.id==="core"?820:680,.22);
+    }
+    currentDialogue=choosing?"lunar-choice":`lunar-${node.id}`;paused=true;
+    nodes.speaker.textContent=t(node.name);
+    nodes.dialogueText.textContent=t(choosing?"lunarChoiceMessage":node.message);
+    nodes.dialogue.hidden=false;
+    if(choosing){
+      nodes.dialogueNext.hidden=true;nodes.dialogueChoices.hidden=false;
+      nodes.broadcastChoice.textContent=t("lunarAnswer");
+      nodes.protectChoice.textContent=t("lunarShield");
+      nodes.broadcastChoice.focus();
+    }else nodes.dialogueNext.focus();
+    saveGame();updateObjective();updateHud();
+  }
+  function chooseLunar(choice) {
+    if(state.lunarChoice)return;
+    state.lunarChoice=choice;
+    if(choice==="answer"){state.attack+=1;state.defense+=1}
+    else {state.maxHp+=12;state.hp=Math.min(state.maxHp,state.hp+12)}
+    saveGame();updateObjective();updateHud();
+    showToast(t(choice==="answer"?"lunarAnswerChosen":"lunarShieldChosen"),2800);
     closeDialogue();
   }
   function openChest(chest) {
@@ -904,7 +1017,7 @@
   }
   function restartGame() {
     const keepAnchor=Boolean(state.signalAnchor);clearSave();
-    state={...fresh,maxHp:fresh.maxHp+(keepAnchor?12:0),hp:fresh.hp+(keepAnchor?12:0),signalAnchor:keepAnchor,talked:new Set(),defeated:new Set(),chests:new Set(),relays:new Set(),ashfallFindings:new Set(),equipment:{...fresh.equipment},equipped:{...fresh.equipped},enemyHp:{},discoveries:{...fresh.discoveries},checkpoint:{...fresh.checkpoint}};
+    state={...fresh,maxHp:fresh.maxHp+(keepAnchor?12:0),hp:fresh.hp+(keepAnchor?12:0),signalAnchor:keepAnchor,talked:new Set(),defeated:new Set(),chests:new Set(),relays:new Set(),ashfallFindings:new Set(),lunarFindings:new Set(),equipment:{...fresh.equipment},equipped:{...fresh.equipped},enemyHp:{},discoveries:{...fresh.discoveries},checkpoint:{...fresh.checkpoint}};
     trueVision=false;enemies=makeEnemies();
     boss={x:2890,y:520,hp:260,maxHp:260,attackTimer:1.2,pattern:0,dead:false,sprite:12,stun:0,charge:0};bossIntroduced=false;
     projectiles.length=0;enemyProjectiles.length=0;setPanel(null);showBattle();saveGame();
@@ -950,8 +1063,8 @@
   $("#continueButton").addEventListener("click",()=>setPanel(null));
   $("#confirmLeaveButton").addEventListener("click",showMain);
   $("#dialogueNext").addEventListener("click",closeDialogue);
-  nodes.broadcastChoice.addEventListener("click",()=>chooseAshfall("broadcast"));
-  nodes.protectChoice.addEventListener("click",()=>chooseAshfall("protect"));
+  nodes.broadcastChoice.addEventListener("click",()=>currentDialogue==="lunar-choice"?chooseLunar("answer"):chooseAshfall("broadcast"));
+  nodes.protectChoice.addEventListener("click",()=>currentDialogue==="lunar-choice"?chooseLunar("shield"):chooseAshfall("protect"));
   $("#continueExplore").addEventListener("click",()=>{if(resultClaimed)return;resultClaimed=true;setPanel(null)});
   $("#newGameButton").addEventListener("click",()=>{if(resultClaimed)return;resultClaimed=true;restartGame()});
   nodes.attack.addEventListener("pointerdown",event=>{event.preventDefault();attack()});
@@ -998,8 +1111,10 @@
       terrainCount:WORLD_OBJECTS.length,
       moonfallEnemySeeds:moonfallEnemySeeds.map(([x,y])=>({x,y})),
       ashfallEnemySeeds:ashfallEnemySeeds.map(([x,y])=>({x,y})),
+      lunarEnemySeeds:lunarEnemySeeds.map(([x,y])=>({x,y})),
       relayPositions:RELAY_NODES.map(({x,y})=>({x,y})),
       ashfallNodePositions:ASHFALL_NODES.map(({id,x,y})=>({id,x,y})),
+      lunarNodePositions:LUNAR_NODES.map(({id,x,y})=>({id,x,y})),
       portalPositions:Object.fromEntries(Object.entries(MAP_PORTALS).map(([mapId,portals])=>[mapId,portals.map(({x,y,to})=>({x,y,to}))])),
       questCount:QUESTS.length,
       bossSpriteFrames:SPRITE_FRAMES.slice(12).map(frame=>frame.bounds?{bounds:[...frame.bounds],parts:frame.parts.map(part=>[...part])}:{bounds:[...frame],parts:[[...frame]]}),
@@ -1013,6 +1128,8 @@
       completeMoonfallCombat(){moonfallEnemySeeds.forEach((_,offset)=>{const id=enemySeeds.length+offset;state.defeated.add(id);const enemy=enemies.find(candidate=>candidate.id===id);if(enemy)enemy.dead=true});saveGame();updateObjective();updateHud()},
       beginChapter3(){state.storyComplete=true;state.chapter3Started=true;state.discoveries.ashfall=false;saveGame();updateObjective();updateHud()},
       completeAshfallCombat(){ashfallEnemySeeds.forEach((_,offset)=>{const id=enemySeeds.length+moonfallEnemySeeds.length+offset;state.defeated.add(id);const enemy=enemies.find(candidate=>candidate.id===id);if(enemy)enemy.dead=true});saveGame();updateObjective();updateHud()},
+      beginChapter4(){state.chapter3Complete=true;state.chapter4Started=true;state.discoveries.lunar=false;saveGame();updateObjective();updateHud()},
+      completeLunarCombat(){lunarEnemySeeds.forEach((_,offset)=>{const id=enemySeeds.length+moonfallEnemySeeds.length+ashfallEnemySeeds.length+offset;state.defeated.add(id);const enemy=enemies.find(candidate=>candidate.id===id);if(enemy)enemy.dead=true});saveGame();updateObjective();updateHud()},
     };
   }
   applyLocale();updateMainProgress();renderInventory();requestAnimationFrame(frame);

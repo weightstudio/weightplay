@@ -5,12 +5,12 @@
   if(!locales)return;
 
   const en={
-    summary:"Complete 45 story missions across five connected regions, reveal hidden threats with Neural Vision, recover equipment, and decide how Ashfall's evidence reaches Earth.",
+    summary:"Complete 57 story missions across six connected regions, reveal hidden threats with Neural Vision, recover equipment, and decide the future of a lunar refugee sanctuary.",
     guideTitle:"Signal Veil Field Guide",
-    guideLead:"A complete guide to Fia's 45-mission investigation, real-time combat, Neural Vision, equipment, and local progress.",
+    guideLead:"A complete guide to Fia's 57-mission investigation, real-time combat, Neural Vision, equipment, and local progress.",
     guideOverviewTitle:"Overview and mission",
-    guideOverviewA:"In 2042, Spark Paw Fia follows a dismissed Lizard Person recording to Signal Town. Ten witnesses, a hidden laboratory, and the stolen Neural Vision project point toward a larger cover-up. The campaign contains 45 authored missions across Signal Town, Veilwood Forest, the neural laboratory, Moonfall Relay, and Ashfall Observatory.",
-    guideOverviewB:"The investigation is one connected action-RPG journey rather than a stage list. Talk to witnesses, follow visible and hidden trails, defeat patrols, recover equipment, decode records, and decide how Ashfall evidence should be handled. Success means completing the current objective and returning key evidence to Orla; the final Ashfall decision completes the current story while leaving every unlocked region open for exploration.",
+    guideOverviewA:"In 2042, Spark Paw Fia follows a dismissed Lizard Person recording to Signal Town. Ten witnesses, a hidden laboratory, and the stolen Neural Vision project point toward a larger cover-up. The campaign contains 57 authored missions across Signal Town, Veilwood Forest, the neural laboratory, Moonfall Relay, Ashfall Observatory, and the Hollow Moon Archive.",
+    guideOverviewB:"The investigation is one connected action-RPG journey rather than a stage list. Talk to witnesses, follow visible and hidden trails, defeat patrols, recover equipment, decode records, and carry earlier decisions into later chapters. Ashfall's evidence opens a fourth chapter at a lunar refugee archive, where Fia must decide whether to answer its fleet or shield its route.",
     guideHowTitle:"How to play and complete the loop",
     guideStep1:"Move through the current region and read the objective shown above the world.",
     guideStep2:"Tap the nearby interaction prompt, or press E, to talk, open chests, activate records, and use gates.",
@@ -19,7 +19,7 @@
     guideStep5:"Finish the objective, follow the next mission, and return evidence to Orla when the story asks.",
     guideLoop:"Desktop players move with WASD or the arrow keys, attack with Space or J, fire Skill with K, switch Vision with V, interact with E, and open the menu with Escape. On phones, use the joystick and the three action buttons; every visible world-interaction prompt is also a touch target. Enemies patrol and chase, while the Commander adds volleys, a line charge, and a punishable stun window. Losing all health returns Fia to a safe checkpoint instead of deleting permanent progress.",
     guideProgressTitle:"Progression and difficulty",
-    guideProgression:"The opening investigation teaches conversation, melee spacing, and hidden trails before Veilwood and the laboratory combine groups of patrols with vision-dependent targets. Defeating enemies grants EXP; each level automatically improves maximum health, attack, and defense. Three chests unlock the Pulse Blade, Ranger Armor, and Signal Charm, whose abilities can be inspected, equipped, or removed in the Equipment menu. Moonfall then asks you to clear eight sentries and decode three records in order. Ashfall adds six defenders, four evidence interactions, two linked maps, and a final choice between broadcasting the proof and protecting the witness.",
+    guideProgression:"The opening investigation teaches conversation, melee spacing, and hidden trails before Veilwood and the laboratory combine groups of patrols with vision-dependent targets. Defeating enemies grants EXP; each level automatically improves maximum health, attack, and defense. Three chests unlock the Pulse Blade, Ranger Armor, and Signal Charm, whose abilities can be inspected, equipped, or removed in the Equipment menu. Moonfall asks you to clear eight sentries and decode three records. Ashfall adds six defenders and a witness choice. Chapter Four then opens a sixth playable region with eight stronger pursuers, four new archive records, and a second lasting choice: answer the sanctuary for attack and defense, or shield its route for maximum health.",
     guideTipsTitle:"Practical field tips",
     guideTip1:"Watch the objective and Quest FloatBar; mission counters show the complete encounter total even when the story advances through smaller milestones.",
     guideTip2:"Pull one patrol away from a group. The melee wave is faster, but the ranged Skill is safer against brutes and neural casters.",
@@ -27,15 +27,15 @@
     guideTip4:"Inspect every recovered item. A defensive loadout helps while learning a Boss pattern, and equipment can be removed without losing ownership.",
     guideTip5:"During the Commander fight, keep moving through volleys, step away from the charge line, then attack during the short stun.",
     guideDesignTitle:"Developer design note",
-    guideDesign:"Signal Veil uses one continuous world because investigation clues are easier to remember when places remain connected. Neural Vision changes what can be seen and targeted without adding an energy meter, so the decision is about observation rather than conserving a consumable. Keyboard shortcuts support quick action on desktop, while the same combat and interaction transactions have visible touch controls on phones. The 45-mission catalog records meaningful discoveries, combat thresholds, equipment, decoded evidence, and returns to Orla; it is not a set of repeated levels with larger numbers.",
+    guideDesign:"Signal Veil uses one continuous world because investigation clues are easier to remember when places remain connected. Neural Vision changes what can be seen and targeted without adding an energy meter, so the decision is about observation rather than conserving a consumable. Keyboard shortcuts support quick action on desktop, while the same combat and interaction transactions have visible touch controls on phones. The 57-mission catalog records meaningful discoveries, combat thresholds, equipment, decoded evidence, and returns to Orla; it is not a set of repeated levels with larger numbers.",
     guideSaveTitle:"Player, device, and save information",
     guideSave:"Signal Veil is free to start and requires no account. Important changes—quests, EXP, levels, health, equipment, opened chests, defeated targets, map checkpoints, and story choices—save automatically in this browser; ordinary movement does not write every frame. The optional five-Diamond Signal Anchor permanently adds maximum health but is never required. Clearing site data or changing browser or device can remove or separate local progress.",
     guideFaqTitle:"Frequently asked questions",
-    guideFaqQ1:"How many missions and regions are playable?",guideFaqA1:"The current story has 45 missions across Signal Town, Veilwood Forest, the neural laboratory, Moonfall Relay, and Ashfall Observatory. Gates connect the regions as the investigation advances.",
+    guideFaqQ1:"How many missions and regions are playable?",guideFaqA1:"The current story has 57 missions across six connected regions, ending in the Hollow Moon Archive. Gates open as the investigation advances.",
     guideFaqQ2:"Does True Vision consume energy?",guideFaqA2:"No. It can be switched freely after the prototype lens is unlocked. Use it to reveal cloaked threats, disguised characters, hidden routes, secret doors, and treasure.",
     guideFaqQ3:"Can equipment be removed or lost?",guideFaqA3:"Owned equipment can be equipped or removed from the menu, and its exact stat effect is shown there. Removing an item does not delete it from the save.",
     guideFaqQ4:"What happens when Fia is defeated?",guideFaqA4:"Fia returns to the latest safe checkpoint with permanent progression intact. Partial combat health and meaningful state changes are also saved automatically.",
-    guideFaqQ5:"How long does the investigation take?",guideFaqA5:"Play time depends on exploration and combat, but the three-chapter, 45-mission route is designed for a longer RPG session. You can leave and continue from the locally saved checkpoint.",
+    guideFaqQ5:"How long does the investigation take?",guideFaqA5:"Play time depends on exploration and combat, but the four-chapter, 57-mission route is designed for a longer RPG session. You can leave and continue from the locally saved checkpoint.",
     guideRelatedTitle:"Related WeightPlay games",
     guideRelated1Title:"Animal Relic Hunters",guideRelated1Text:"A room-based action expedition with collectible relics and changing Guardian phases.",
     guideRelated2Title:"Animal Crystal Survivor",guideRelated2Text:"Build a combat loadout while surviving thirty crystal routes and six distinct Bosses.",
@@ -43,12 +43,12 @@
   };
 
   const zhHant={
-    summary:"完成橫跨五個相連地區的 45 項劇情任務，以神經視界揭露威脅、取得裝備，並決定灰燼證據如何傳向地球。",
+    summary:"完成橫跨六個相連地區的 57 項劇情任務，以神經視界揭露威脅，並決定月背難民庇護所的未來。",
     guideTitle:"《訊號帷幕》完整調查指南",
-    guideLead:"從菲雅的 45 項任務、即時戰鬥與神經視界，到裝備和本機進度的完整說明。",
+    guideLead:"從菲雅的 57 項任務、即時戰鬥與神經視界，到裝備和本機進度的完整說明。",
     guideOverviewTitle:"世界與調查目標",
-    guideOverviewA:"2042 年，火花狐菲雅循著一段被判定為造假的蜥蜴人影片來到訊號鎮。十名目擊者、藏在森林後方的神經實驗室，以及遭竊用的神經視界計畫，逐步指向 Helix 理事會掩蓋的真相。目前劇情共有 45 項實際任務，範圍包括訊號鎮、帷幕森林、神經實驗室、月墜中繼站與灰燼天文台。",
-    guideOverviewB:"本作不是選關式 RPG，而是一段連續的調查旅程。你要訪談目擊者、追蹤普通與隱藏路線、清除巡邏、取得裝備、依序解讀紀錄，最後決定如何處理灰燼天文台的證據。每次完成畫面上的當前目標，任務就會向前推進；重要證據還要帶回給奧拉。完成灰燼篇最後的選擇後，現有劇情告一段落，已開啟的地區仍可自由探索。",
+    guideOverviewA:"2042 年，火花狐菲雅循著一段被判定為造假的蜥蜴人影片來到訊號鎮。十名目擊者、神經實驗室與遭竊用的神經視界計畫，逐步指向 Helix 掩蓋的真相。目前劇情共有 57 項實際任務，範圍包括訊號鎮、帷幕森林、神經實驗室、月墜中繼站、灰燼天文台與月背空心檔案庫。",
+    guideOverviewB:"本作不是選關式 RPG，而是一段連續調查旅程。前一章的選擇會改變第四章簡報；灰燼證據會開啟新的月背難民檔案庫，菲雅必須調查四份紀錄、擊退追兵，並決定回應庇護艦隊或屏蔽航線。",
     guideHowTitle:"操作方式與完整遊戲循環",
     guideStep1:"在目前地區移動，先閱讀世界畫面上方的任務目標。",
     guideStep2:"點擊靠近物件時出現的互動提示，或按 E 交談、開寶箱、啟動紀錄與使用傳送門。",
@@ -57,7 +57,7 @@
     guideStep5:"完成目前目標後繼續下一項任務；劇情要求時，把取得的證據帶回給奧拉。",
     guideLoop:"桌面可用 WASD 或方向鍵移動，Space／J 攻擊、K 使用技能、V 切換視界、E 互動、Escape 開啟選單。手機使用左側搖桿與攻擊、技能、真視界三個按鈕，世界中所有可見的互動提示也都能直接點擊。普通敵人會巡邏與追擊；指揮官則會使用環形彈幕、直線衝鋒與短暫暈眩窗口。生命歸零只會讓菲雅回到安全檢查點，不會刪除永久進度。",
     guideProgressTitle:"成長、裝備與難度變化",
-    guideProgression:"前段調查先教你交談、近戰距離與隱藏路線；進入帷幕森林和實驗室後，敵群、遠程威脅與必須用真實視界揭露的目標會開始混合。擊敗敵人可取得經驗，升級會自動提高最大生命、攻擊與防禦。三個寶箱分別解鎖脈衝刃、遊俠護甲與訊號護符，能力可在裝備選單查看，也能自由裝備或卸除。月墜篇要求清除八名哨兵並依序解碼三份紀錄；灰燼篇再加入六名守衛、四個證據互動、兩張相連地圖，以及「公開證據」或「保護目擊者」的最終選擇。",
+    guideProgression:"前段調查先教你交談、近戰距離與隱藏路線；帷幕森林和實驗室開始混合敵群、遠程威脅與真實視界目標。擊敗敵人可取得經驗，升級會自動提高最大生命、攻擊與防禦。三個寶箱能自由裝備或卸除。月墜篇要求清除八名哨兵並解碼三份紀錄；灰燼篇加入六名守衛與見證者抉擇；第四章則開啟第六個地區，加入八名更強追兵、四份新檔案，以及「回應庇護所」或「屏蔽路線」的永久獎勵選擇。",
     guideTipsTitle:"實用調查技巧",
     guideTip1:"留意任務列與任務 FloatBar；即使劇情內部會分段推進，討伐計數仍會顯示完整目標總數。",
     guideTip2:"先把單一巡邏引離敵群。近戰劍氣出手較快，對重裝兵與神經術士則用遠程技能更安全。",
@@ -65,15 +65,15 @@
     guideTip4:"取得裝備後記得查看能力。學習頭目招式時可偏重防禦，卸除裝備也不會失去所有權。",
     guideTip5:"指揮官施放彈幕時持續移動，離開衝鋒直線，等牠短暫暈眩再集中攻擊。",
     guideDesignTitle:"開發設計說明",
-    guideDesign:"《訊號帷幕》採用連續世界，是因為調查線索與地點維持連結時更容易被記住。神經視界會改變可以看見與攻擊的對象，但不設能量條；這個選擇考驗的是觀察，而不是節省消耗品。桌面提供快速鍵，手機則把相同的戰鬥與互動行為做成可見的觸控操作。45 項任務分別記錄重要發現、戰鬥里程碑、裝備、解碼證據與回報奧拉的劇情，而不是把相同關卡只換成更大的數字。",
+    guideDesign:"《訊號帷幕》採用連續世界，是因為調查線索與地點維持連結時更容易被記住。神經視界會改變可以看見與攻擊的對象，但不設能量條；這個選擇考驗的是觀察，而不是節省消耗品。桌面提供快速鍵，手機則把相同的戰鬥與互動行為做成可見的觸控操作。57 項任務分別記錄重要發現、戰鬥里程碑、裝備、解碼證據與回報奧拉的劇情，而不是把相同關卡只換成更大的數字。",
     guideSaveTitle:"玩家、裝置與存檔資訊",
     guideSave:"遊戲可免費開始，不需要帳號。任務、經驗、等級、生命、裝備、寶箱、擊破目標、地圖檢查點與劇情選擇等重要變動會自動存入此瀏覽器；普通移動不會每幀寫入。可選購的五鑽石「訊號錨點」會永久增加最大生命，但絕非通關必要。清除網站資料或更換瀏覽器、裝置，可能使本機進度消失或分開保存。",
     guideFaqTitle:"常見問題",
-    guideFaqQ1:"目前可以玩多少任務與地區？",guideFaqA1:"現有故事共有 45 項任務，涵蓋訊號鎮、帷幕森林、神經實驗室、月墜中繼站與灰燼天文台；劇情推進後會開啟連接各地的傳送門。",
+    guideFaqQ1:"目前可以玩多少任務與地區？",guideFaqA1:"現有故事共有 57 項任務，涵蓋六個相連地區，最後抵達月背空心檔案庫。",
     guideFaqQ2:"真實視界會消耗能量嗎？",guideFaqA2:"不會。取得原型鏡片後即可自由切換，用來揭露隱形威脅、偽裝人物、隱藏路線、秘密入口與寶藏。",
     guideFaqQ3:"裝備可以卸除嗎？會不會消失？",guideFaqA3:"已取得的裝備能在選單中查看能力、裝備或卸除。卸除只會暫時取消能力，不會把物品從存檔刪除。",
     guideFaqQ4:"菲雅被擊敗後會失去什麼？",guideFaqA4:"菲雅會回到最近的安全檢查點，永久進度仍會保留。局部戰鬥生命與其他重要狀態也會在變動時自動保存。",
-    guideFaqQ5:"完整調查大約要玩多久？",guideFaqA5:"時間會依探索與戰鬥速度而異；三章、45 任務的內容適合分段完成。離開遊戲後，可從儲存在本機的檢查點繼續。",
+    guideFaqQ5:"完整調查大約要玩多久？",guideFaqA5:"時間會依探索與戰鬥速度而異；四章、57 任務的內容適合分段完成。離開遊戲後，可從儲存在本機的檢查點繼續。",
     guideRelatedTitle:"推薦的 WeightPlay 遊戲",
     guideRelated1Title:"動物遺物獵人",guideRelated1Text:"進入三房間遠征，收集遺物並對付會改變階段的守護者。",
     guideRelated2Title:"動物水晶生存者",guideRelated2Text:"在三十條水晶路線中建立戰鬥配置，迎戰六名不同頭目。",
@@ -209,16 +209,33 @@
     "pt-BR":["Caçadores de Relíquias Animais","Sobrevivente de Cristal Animal","Lenda do Lobo Sombrio"]
   };
   const sentences=value=>String(value||"").split(/(?<=[.!?。！？])\s*/).filter(Boolean);
+  const currentFacts=value=>{
+    if(Array.isArray(value))return value.map(currentFacts);
+    if(!value||typeof value!=="string")return value;
+    return value
+      .replaceAll("45","57")
+      .replaceAll("五个主要地区","六个主要地区").replaceAll("5つの主要地域","6つの主要地域").replaceAll("5개 주요 지역","6개 주요 지역")
+      .replaceAll("cinco regiones principales","seis regiones principales").replaceAll("cinco regiões principais","seis regiões principais")
+      .replaceAll("cinq régions principales","six régions principales").replaceAll("fünf Hauptgebiete","sechs Hauptgebiete")
+      .replaceAll("cinque regioni principali","sei regioni principali").replaceAll("пять основных регионов","шесть основных регионов")
+      .replaceAll("पाँच मुख्य क्षेत्र","छह मुख्य क्षेत्र").replaceAll("خمس مناطق رئيسية","ست مناطق رئيسية")
+      .replaceAll("三章","四章").replaceAll("3章","4章").replaceAll("3개 장","4개 장")
+      .replaceAll("tres capítulos","cuatro capítulos").replaceAll("três capítulos","quatro capítulos")
+      .replaceAll("trois chapitres","quatre chapitres").replaceAll("drei Kapitel","vier Kapitel")
+      .replaceAll("tre capitoli","quattro capitoli").replaceAll("Три главы","Четыре главы")
+      .replaceAll("तीन अध्याय","चार अध्याय").replaceAll("الفصول الثلاثة","الفصول الأربعة");
+  };
   const fillRegional=(code,text)=>{
+    text=Object.fromEntries(Object.entries(text).map(([key,value])=>[key,currentFacts(value)]));
     const base=locales[code],tips=sentences(base.guideTips);
     Object.assign(base,{
       summary:text.lead,
       guideTitle:text.title,guideLead:text.lead,
-      guideOverviewTitle:text.section[0],guideOverviewA:base.guideOverview,guideOverviewB:text.overview,
+      guideOverviewTitle:text.section[0],guideOverviewA:base.guideOverview,guideOverviewB:`${text.overview} ${base.guideChapterFour}`,
       guideHowTitle:text.section[1],
       guideStep1:text.steps[0],guideStep2:text.steps[1],guideStep3:text.steps[2],guideStep4:text.steps[3],guideStep5:text.steps[4],
       guideLoop:`${base.guideControls} ${base.guideVision}`,
-      guideProgressTitle:text.section[2],guideProgression:`${base.guideProgress} ${base.guideChapterTwo} ${base.guideChapterThree}`,
+      guideProgressTitle:text.section[2],guideProgression:`${base.guideProgress} ${base.guideChapterTwo} ${base.guideChapterThree} ${base.guideChapterFour}`,
       guideTipsTitle:text.section[3],
       guideTip1:tips[0]||base.guideTips,guideTip2:tips[1]||text.steps[2],guideTip3:tips[2]||text.steps[3],guideTip4:tips[3]||text.overview,guideTip5:tips[4]||tips.at(-1)||base.guideTips,
       guideDesignTitle:text.section[4],guideDesign:text.design,

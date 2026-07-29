@@ -360,7 +360,7 @@ body.wp-shell-battle-active .wp-generated-battle-header > [data-wp-return="battl
   pointer-events: auto;
 }
 
-.wp-stage-shell-header > :not(.wp-shell-return):not(.wp-shell-settings):not(.wp-shell-legacy-control) {
+.wp-stage-shell-header > :not(.wp-shell-return):not(.wp-shell-settings):not(.wp-shell-legacy-control):not(.wp-stage-header-action) {
   grid-column: 2;
   grid-row: 1;
   min-width: 0;

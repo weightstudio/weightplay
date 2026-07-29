@@ -1056,7 +1056,7 @@
       .map((raid) => {
         const locked = raid.tier > unlocked;
         return `
-          <button class="raid-card${locked ? " is-locked" : ""}" type="button" data-tier="${raid.tier}" data-zone="${raid.zone}" aria-disabled="${locked}">
+          <button class="raid-card${locked ? " is-locked" : ""}" type="button" data-tier="${raid.tier}" data-zone="${raid.zone}" aria-disabled="${locked}" tabindex="${raid.tier === unlocked ? "0" : "-1"}">
             <span class="raid-number">${raid.tier}</span>
             <strong>${localized(raid.name)}</strong>
             <span>${localized(raid.desc)}</span>
@@ -1141,6 +1141,28 @@
   function focusUnlockedStage() {
     const unlocked = Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1));
     nodes.stageRail.querySelector(`[data-tier="${unlocked}"]`)?.focus({ preventScroll: true });
+  }
+
+  function moveStageFocus(event) {
+    const current = event.target?.closest?.(".raid-card");
+    if (!current) return;
+    const supported = ["ArrowLeft", "ArrowRight", "Home", "End"];
+    if (!supported.includes(event.key)) return;
+    const unlockedCards = [...nodes.stageRail.querySelectorAll('.raid-card[aria-disabled="false"]')];
+    if (!unlockedCards.length) return;
+    const currentIndex = Math.max(0, unlockedCards.indexOf(current));
+    let nextIndex = currentIndex;
+    if (event.key === "Home") nextIndex = 0;
+    else if (event.key === "End") nextIndex = unlockedCards.length - 1;
+    else if (event.key === "ArrowLeft") nextIndex = Math.max(0, currentIndex - 1);
+    else nextIndex = Math.min(unlockedCards.length - 1, currentIndex + 1);
+    event.preventDefault();
+    unlockedCards.forEach((card, index) => {
+      card.tabIndex = index === nextIndex ? 0 : -1;
+    });
+    const next = unlockedCards[nextIndex];
+    next.focus({ preventScroll: true });
+    next.scrollIntoView({ block: "nearest", inline: "center" });
   }
 
   function restoreRoomUpgradeFocus(id) {
@@ -2242,6 +2264,14 @@
   nodes.stageBackBtn.addEventListener("click", () => show(nodes.menuPanel));
   nodes.stageRail.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest(".raid-card")) event.preventDefault();
+    moveStageFocus(event);
+  });
+  nodes.stageRail.addEventListener("focusin", (event) => {
+    const card = event.target?.closest?.('.raid-card[aria-disabled="false"]');
+    if (!card) return;
+    nodes.stageRail.querySelectorAll(".raid-card").forEach((item) => {
+      item.tabIndex = item === card ? 0 : -1;
+    });
   });
   nodes.stageRail.addEventListener("scroll", queueCenteredStageUpdate, { passive: true });
   window.addEventListener("resize", queueCenteredStageUpdate, { passive: true });

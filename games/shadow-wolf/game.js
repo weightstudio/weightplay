@@ -152,6 +152,11 @@
   };
 
   function ensureMainInformationScope() {
+    if (nodes.mapPanel) {
+      nodes.mapPanel.dataset.wpCanvasMaxWidth = "920";
+      nodes.mapPanel.dataset.wpStageLandscapeWidth = "760";
+      nodes.mapPanel.dataset.wpStageLandscapeHeight = "334";
+    }
     let campaignSummary = $("campaignSummary");
     if (!campaignSummary) {
       const summary = document.createElement("p");
