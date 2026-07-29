@@ -7078,6 +7078,8 @@
     if (!game) return;
     const audience = document.querySelector('meta[name="weightplay-audience"]')?.content?.trim().toLowerCase() || "general";
     const identity = guideIdentity(game, audience);
+    const isGeneralGuardYard = id === "animal-guard-yard" && audience === "general";
+    const publicFaq = isGeneralGuardYard ? game.faq.slice(0, -1) : game.faq;
     syncLocalizedMetadata(game, identity);
     const gameSkills = game.skills || [];
     const showSkills = audience === "kids" && game.showSkills !== false;
@@ -7170,10 +7172,16 @@
             `
             : ""
         }
-        <div class="game-info-section game-info-parent">
-          <h3>${escapeHtml(game.noteTitle || uiLabel("parentNote"))}</h3>
-          <p>${escapeHtml(game.parent)}</p>
-        </div>
+        ${
+          isGeneralGuardYard
+            ? ""
+            : `
+              <div class="game-info-section game-info-parent">
+                <h3>${escapeHtml(game.noteTitle || uiLabel("parentNote"))}</h3>
+                <p>${escapeHtml(game.parent)}</p>
+              </div>
+            `
+        }
         ${
           game.hideScoreBands
             ? ""
@@ -7200,7 +7208,7 @@
         }
         <div class="game-info-section">
           <h3>${escapeHtml(uiLabel("faq"))}</h3>
-          <dl>${game.faq.map(([q, a]) => `<div><dt>${escapeHtml(q)}</dt><dd>${escapeHtml(a)}</dd></div>`).join("")}</dl>
+          <dl>${publicFaq.map(([q, a]) => `<div><dt>${escapeHtml(q)}</dt><dd>${escapeHtml(a)}</dd></div>`).join("")}</dl>
         </div>
         <div class="game-info-section">
           <h3>${escapeHtml(uiLabel("relatedGames"))}</h3>
@@ -7215,7 +7223,7 @@
     const faqJsonLd = {
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      mainEntity: game.faq.map(([name, text]) => ({
+      mainEntity: publicFaq.map(([name, text]) => ({
         "@type": "Question",
         name,
         acceptedAnswer: { "@type": "Answer", text },

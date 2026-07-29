@@ -6,9 +6,9 @@ const isKidsLobby = audienceMode === "kids";
 const catalogGames = lobby.games.filter((game) => isKidsLobby ? !generalGameIds.has(game.id) : generalGameIds.has(game.id));
 const showAgeLabels = isKidsLobby;
 const modeHeroGameIds = isKidsLobby
-  ? ["animal-guard-yard", "animal-zoo-idle", "bubble-bakery", "fruit-merge", "snack-blocks"]
+  ? ["color-lunchbox", "animal-zoo-idle", "bubble-bakery", "fruit-merge", "snack-blocks"]
   : ["animal-hero-trials", "animal-relic-hunters", "beast-deck", "animal-rune-tactics", "animal-orb-fortress"];
-const modeFeaturedGameId = isKidsLobby ? "animal-guard-yard" : "animal-hero-trials";
+const modeFeaturedGameId = isKidsLobby ? "color-lunchbox" : "animal-hero-trials";
 lobby.games = catalogGames;
 lobby.heroGameIds = modeHeroGameIds;
 lobby.featuredGameId = modeFeaturedGameId;

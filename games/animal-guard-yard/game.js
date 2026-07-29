@@ -714,9 +714,13 @@
     viewportWidth = safeWidth;
     viewportHeight = height;
     viewportMode = mode;
+    const reserveHeight = mode === "main"
+      ? 0
+      : Math.max(0, Number(window.WeightPlayAudience?.reserveHeight) || 0);
+    const availableHeight = Math.max(1, height - reserveHeight);
     const width = Math.min(Math.max(1, safeWidth), 920);
     document.documentElement.style.setProperty("--guard-yard-vw", `${width}px`);
-    document.documentElement.style.setProperty("--guard-yard-vh", `${height}px`);
+    document.documentElement.style.setProperty("--guard-yard-vh", `${availableHeight}px`);
     const isStage = mode === "stage";
     const isPlaying = mode === "playing";
     if (isStage || isPlaying) {
@@ -724,10 +728,10 @@
       const minimumLogicalHeight = isStage ? 788 : 450;
       const scale = Math.min(
         Math.max(1, width) / minimumLogicalWidth,
-        Math.max(1, height) / minimumLogicalHeight
+        availableHeight / minimumLogicalHeight
       );
       const logicalWidth = width / scale;
-      const logicalHeight = height / scale;
+      const logicalHeight = availableHeight / scale;
       document.documentElement.style.setProperty("--guard-yard-frame-scale", String(scale));
       document.documentElement.style.setProperty("--guard-yard-frame-left", `${Math.max(0, (safeWidth - width) / 2)}px`);
       document.documentElement.style.setProperty("--guard-yard-frame-top", "0px");
@@ -859,11 +863,6 @@
   }
 
   function renderResultReport(message, progress) {
-    const rows = [
-      [t("planning"), progress.skillScores.planning],
-      [t("focusSkill"), progress.skillScores.focus],
-      [t("problemSolving"), progress.skillScores.problemSolving],
-    ];
     nodes.resultText.replaceChildren();
 
     const summary = document.createElement("p");
@@ -902,23 +901,6 @@
       mastery.appendChild(milestoneNote);
     }
     nodes.resultText.appendChild(mastery);
-
-    const report = document.createElement("section");
-    report.className = "skill-report";
-    const title = document.createElement("strong");
-    title.textContent = t("skillReport");
-    report.appendChild(title);
-    rows.forEach(([label, stars]) => {
-      const row = document.createElement("div");
-      row.className = "skill-row";
-      const name = document.createElement("span");
-      name.textContent = label;
-      const value = document.createElement("b");
-      value.textContent = starRating(stars);
-      row.append(name, value);
-      report.appendChild(row);
-    });
-    nodes.resultText.appendChild(report);
 
     const encouragement = document.createElement("p");
     encouragement.className = "progress-message";
@@ -1385,9 +1367,30 @@
     nodes.gameShell.removeAttribute("aria-hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.pausePanel.classList.add("hidden");
+    const restoreLobbyReturn = () => {
+      const lobbyReturn = document.querySelector('.home-link[data-wp-return="main"]');
+      const mainHeader = nodes.mainPanel.querySelector(":scope > .wp-generated-main-header")
+        || document.querySelector(".topbar");
+      if (!lobbyReturn) return;
+      if (mainHeader && !mainHeader.contains(lobbyReturn)) mainHeader.prepend(lobbyReturn);
+      lobbyReturn.hidden = false;
+      lobbyReturn.classList.remove("hidden", "is-hidden", "wp-shell-legacy-control");
+      lobbyReturn.removeAttribute("aria-hidden");
+      lobbyReturn.tabIndex = 0;
+      if (mainHeader) {
+        mainHeader.hidden = false;
+        mainHeader.classList.remove("hidden", "is-hidden", "wp-shell-legacy-control");
+        mainHeader.removeAttribute("aria-hidden");
+      }
+    };
+    restoreLobbyReturn();
     window.requestAnimationFrame(() => {
+      restoreLobbyReturn();
       nodes.startGameBtn?.focus({ preventScroll: true });
-      window.setTimeout(() => nodes.startGameBtn?.focus({ preventScroll: true }), 120);
+      window.setTimeout(() => {
+        restoreLobbyReturn();
+        nodes.startGameBtn?.focus({ preventScroll: true });
+      }, 120);
     });
   }
 

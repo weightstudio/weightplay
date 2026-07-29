@@ -3,7 +3,7 @@
   <head>
     <base href="/games/animal-guard-yard/" />
     <meta charset="UTF-8" />
-    <meta name="weightplay-audience" content="kids" />
+    <meta name="weightplay-audience" content="general" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#4aa866" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -34,9 +34,10 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-guard-yard/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-guard-yard/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-guard-yard/" />
-    <link rel="stylesheet" href="style.css?v=20260729-interface-v4-2" data-wp-stage-standard data-wp-battle-standard />
-    <script data-wp-stage-standard>/* Shared Kids Stage selector owns pointer drag and settle; Animal Guard Yard owns selection state and activation. */</script>
-    <script data-wp-battle-standard>/* Animal Guard Yard owns its native Kids Battle Canvas. */</script>
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260729-guard-general1" data-wp-battle-standard />
+    <link rel="stylesheet" href="style.css?v=20260729-guard-general1" data-wp-stage-standard data-wp-battle-standard />
+    <script data-wp-stage-standard>/* Shared General Stage selector owns pointer drag, settle, and the physical reserve. */</script>
+    <script data-wp-battle-standard>/* Shared General Battle Canvas owns capped scaling and the physical reserve. */</script>
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <script type="application/ld+json">
 {
@@ -54,14 +55,11 @@
   ],
   "gamePlatform": "Web browser",
   "playMode": "SinglePlayer",
-  "keywords": "animal games, lane defense game, strategy game for kids, family browser game, animal tower defense, free kids game",
+  "keywords": "animal games, lane defense game, strategy game, browser game, animal tower defense",
   "audience": {
     "@type": "Audience",
-    "audienceType": "Kids and families",
-    "suggestedMinAge": 6
+    "audienceType": "General players and families"
   },
-  "learningResourceType": "Skill practice through play",
-  "educationalUse": "Practice focus, logic, and problem solving through family-friendly lane defense gameplay.",
   "applicationCategory": "Game",
   "operatingSystem": "Web browser",
   "publisher": {
@@ -75,14 +73,14 @@
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
+<link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260729-return-owner1">
   <meta name="twitter:title" content="Pátio da Guarda Animal | WeightPlay" />
     <meta name="twitter:description" content="Clover Yard conecta seis regiões de jardins que compartilham luz solar, sementes e água. Quando feras selvagens lotam os caminhos, o jogador se torna o..." />
   </head>
   <body data-tutorial-auto-show="false">
     <main class="yard-game" data-no-mobile-immersive="true">
       <header class="topbar">
-        <a class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <a class="home-link" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="title-block">
           <p>WeightPlay</p>
           <h1 data-ui="gameTitle">Pátio da Guarda Animal</h1>
@@ -184,6 +182,7 @@
           </div>
         </div>
       </section>
+      <div id="battleAdReserve" class="battle-ad-reserve" aria-hidden="true"></div>
 
       <div id="loadingPanel" class="loading-panel">
         <div class="loading-card">
@@ -225,7 +224,8 @@
     <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
-    <script src="game.js?v=20260729-interface-v4-1"></script>
+    <script src="game.js?v=20260729-guard-general1"></script>
+    <script src="../../src/battle-canvas-standard.js?v=20260729-guard-general1" data-wp-battle-standard></script>
     <script>
       (() => {
         const loadGameInfo = () => {
@@ -246,6 +246,6 @@
         else window.addEventListener("load", schedule, { once: true });
       })();
     </script>
-    <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
+<script src="../../src/game-shell-controls-standard.js?v=20260729-return-owner1"></script>
 </body>
 </html>

@@ -146,5 +146,8 @@
       enemyHealed: "استعاد العدو {value} صحة."
     }
   };
-  Object.keys(L).forEach(code => Object.assign(L[code], patches[code] || patches.en));
+  Object.keys(L).forEach(code => {
+    Object.assign(L[code], patches[code] || patches.en);
+    L[code].tipTactics = `${L[code].tacticsHint} ${L[code].rerollReel} / ${L[code].holdReel} / ${L[code].leaderTactic}.`;
+  });
 })();

@@ -76,6 +76,9 @@ body.wp-logical-battle-active .battle-ad-reserve[data-wp-battle-physical-reserve
   .battle-actions button,.direction-pad button{min-width:44px;min-height:44px}
 }
 
+/* First-session tutorial actions follow the current physical touch minimum. */
+.tutorial-card>button:first-child{width:44px;height:44px}
+
 /* 2048 Main / Stage calibration against the shared shell geometry. */
 .main-header.wp-main-shell-header{
   height:64px!important;

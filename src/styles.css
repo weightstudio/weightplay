@@ -5368,16 +5368,17 @@ body.general-lobby-page {
   }
 
   .general-lobby-page .game-card-body {
-    height: 54px;
-    min-height: 54px;
+    height: 48px;
+    min-height: 48px;
     padding: 6px 8px;
-    flex-basis: 54px;
+    flex-basis: 48px;
   }
 
   .general-lobby-page .game-card h2 {
     display: -webkit-box;
     overflow: hidden;
-    min-height: 36px;
+    min-height: 0;
+    max-height: 36px;
     font-size: 16px;
     line-height: 1.12;
     text-align: center;
@@ -5385,9 +5386,15 @@ body.general-lobby-page {
     -webkit-line-clamp: 2;
   }
 
+  .general-lobby-page .game-card-art.image-art .game-card-fg {
+    position: absolute;
+    inset: 0;
+    display: block;
+  }
+
   .general-lobby-page .favorite-toggle,
   .general-lobby-page .continue-badge {
-    top: 61px;
+    top: 55px;
   }
 
   .general-lobby-page .favorite-toggle {

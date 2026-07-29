@@ -136,21 +136,52 @@ body.wonder-stage-select #wonderStageBack {
   min-height: var(--wonder-stage-back-size, 48px) !important;
 }
 
+/* The shared shell may adopt #menuContent as the Stage owner and insert the
+   generated header there. Anchor it to the Stage Canvas in either DOM shape so
+   the legacy wallet/title rows can never push navigation down the poster. */
+body.wonder-stage-select .game-shell > .wp-generated-stage-header,
 body.wonder-stage-select #overlay > .wp-generated-stage-header {
-  position: absolute !important;
+  box-sizing: border-box !important;
+  /* menuContent keeps an identity transform after its entrance animation,
+     which makes absolute positioning local to that panel. Fixed positioning
+     is still local to the transformed game-shell and therefore pins the
+     header to the logical Stage Canvas. */
+  position: fixed !important;
   z-index: 20;
   top: 6px;
   right: 8px;
   left: 8px;
   width: auto !important;
   height: 56px;
+  margin: 0 !important;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 10px;
-  background: rgba(8, 18, 31, 0.88);
+  background: rgb(8, 18, 31);
   backdrop-filter: blur(8px);
 }
 
+body.wonder-stage-select .wp-generated-stage-header > #wonderStageBack {
+  position: static !important;
+  inset: auto !important;
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  justify-self: start !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+body.wonder-stage-select .wp-generated-stage-header > .wp-shell-settings {
+  position: static !important;
+  inset: auto !important;
+  grid-column: 3 !important;
+  grid-row: 1 !important;
+  justify-self: end !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
 body.wonder-stage-select #menuContent {
+  box-sizing: border-box;
   align-self: stretch;
   width: 100%;
   max-height: none;
@@ -158,11 +189,56 @@ body.wonder-stage-select #menuContent {
   overflow: hidden;
 }
 
+/* Upgrade and equipment workspaces need an opaque reading surface. The poster
+   remains decorative and must not show through item slots or text rows. */
+body.wonder-stage-select #profilePanel:not(.hidden) {
+  box-sizing: border-box;
+  align-content: start;
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px;
+  border: 1px solid rgba(255, 226, 122, 0.32);
+  border-radius: 12px;
+  background: rgb(9, 20, 35);
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+body.wonder-stage-select #profilePanel :is(
+  .character-card,
+  .profile-row,
+  .equip-slot,
+  .backpack-item,
+  .backpack-empty
+) {
+  background-color: rgb(22, 35, 53);
+}
+
 body.wonder-stage-select #levelGrid {
   width: 100%;
   height: 100%;
   max-height: none;
   margin-top: 0;
+}
+
+body.wonder-stage-select #menuTabs {
+  box-sizing: border-box;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+  padding: 6px;
+  background: rgb(7, 16, 28);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.46),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+body.wonder-stage-select #menuTabs button {
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  margin: 0 !important;
 }
 
 body.wonder-playing .game-shell[data-battle-shell] {
@@ -304,7 +380,7 @@ body.wonder-stage-select .menu-tabs span {
 
   body.wonder-stage-select #overlay {
     gap: 6px;
-    padding: 124px 24px 8px;
+    padding: calc(78px + var(--wonder-stage-tab-height, 44px)) 24px 8px;
   }
 
   body.wonder-stage-select :is(#menuCoinLine, #overlayText) {
@@ -317,7 +393,8 @@ body.wonder-stage-select .menu-tabs span {
     bottom: auto;
     left: 24px;
     width: auto;
-    height: 54px;
+    height: calc(var(--wonder-stage-tab-height, 44px) + 8px);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     padding: 4px;
     transform: none;
   }

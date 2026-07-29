@@ -2588,7 +2588,7 @@ body.guard-yard-stage .stage-grid { padding-inline: calc((100% - 264px) / 2); to
   }
 }
 
-/* Kids Stage, Battle, and Result use game-owned logical Canvases with no ad track. */
+/* General Stage, Battle, and Result use capped logical Canvases above one physical reserve. */
 html.guard-yard-playing,
 body.guard-yard-playing,
 html.guard-yard-stage,
@@ -2801,6 +2801,30 @@ body.guard-yard-playing .result-panel .result-card > button:disabled {
   cursor: not-allowed;
 }
 
+.battle-ad-reserve {
+  display: none;
+  height: 56px;
+  min-height: 56px;
+  background: #071a2b;
+  border-top: 1px solid rgba(121, 250, 210, 0.28);
+  pointer-events: none;
+}
+
+body.wp-logical-battle-active .battle-ad-reserve[data-wp-battle-physical-reserve] {
+  left: calc((100vw - var(--wp-battle-canvas-rendered-width, 100vw)) / 2) !important;
+  width: var(--wp-battle-canvas-rendered-width, 100vw) !important;
+  max-width: 920px !important;
+}
+
+/* General games do not expose Kids-only assessment or parent-facing guide blocks. */
+.game-page-info-parent {
+  display: none !important;
+}
+
+.game-page-info-static .game-info-section dl > div:last-child {
+  display: none;
+}
+
 /* Guard Yard Stage keeps navigation and resources stable while only tab content scrolls. */
 body.guard-yard-stage .weightplay-version-badge,
 body.guard-yard-stage .version-badge,
@@ -2815,6 +2839,8 @@ body.guard-yard-playing .sound-toggle {
 }
 
 body.guard-yard-stage .menu-shell {
+  width: 100% !important;
+  max-width: none !important;
   grid-template-rows: 48px 42px minmax(0, 1fr);
   gap: 8px;
   padding: 8px;
@@ -2930,8 +2956,8 @@ body.guard-yard-stage .mastery-summary small { font-size: 0.62rem; }
 body.guard-yard-stage .stage-grid {
   height: 100%;
   min-height: 0;
-  align-items: center;
-  padding-block: 4px 12px;
+  align-items: start !important;
+  padding-block: clamp(22px, 6vh, 52px) 12px;
 }
 
 body.guard-yard-stage .stage-card {

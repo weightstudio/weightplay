@@ -297,9 +297,14 @@
     const activeRail = STAGE_RAIL_SELECTORS
       .map((selector) => document.querySelector(selector))
       .find(visible);
-    const inferredStage = activeRail?.closest(
-      "[data-wp-logical-stage-canvas],[data-wp-standard-stage-screen],.stage-screen,.stage-panel",
-    ) || activeRail?.parentElement;
+    /* An explicit logical Stage Canvas owns the full shell. Prefer it over a
+       nearer rail wrapper marked by the selector runtime; otherwise generated
+       navigation can be inserted inside a scrolling/animated content panel. */
+    const inferredStage = activeRail?.closest("[data-wp-logical-stage-canvas]")
+      || activeRail?.closest(
+        "[data-wp-standard-stage-screen],.stage-screen,.stage-panel",
+      )
+      || activeRail?.parentElement;
     const stage = stages.find(visible)
       || (document.body.matches(".wp-stage-select-active,.wp-standard-stage-page") && inferredStage);
     if (stage) return { type: "stage", screen: stage };
@@ -582,6 +587,18 @@
     if (!existingProgress) copy.insertBefore(progress, start);
   }
 
+  function removeGeneratedMainHeader(header, returnDestination) {
+    if (!header) return;
+    const returnControl = first(['[data-wp-return="main"]'], header);
+    if (returnControl && returnDestination && !returnDestination.contains(returnControl)) {
+      returnControl.hidden = false;
+      returnControl.classList.remove("hidden", "is-hidden", "wp-shell-legacy-control");
+      returnControl.removeAttribute("aria-hidden");
+      returnDestination.prepend(returnControl);
+    }
+    header.remove();
+  }
+
   function place() {
     adoptControls();
     normalizeBattleReturns();
@@ -607,7 +624,7 @@
     });
     if (type === "main") {
       screen?.querySelectorAll(".wp-standard-main-composition .wp-generated-main-header").forEach((nestedHeader) => {
-        nestedHeader.remove();
+        removeGeneratedMainHeader(nestedHeader, screen);
       });
       [...(screen?.children || [])].forEach((child) => {
         if (!child.classList?.contains("wp-generated-main-header")) return;
@@ -629,6 +646,12 @@
       if (ownedStageHeader && ownedStageHeader !== header) {
         header.remove();
         header = ownedStageHeader;
+      }
+      if (
+        screen?.matches?.("[data-wp-logical-stage-canvas]")
+        && header.parentElement !== screen
+      ) {
+        screen.prepend(header);
       }
     }
     if (type === "battle" && header?.classList.contains("wp-generated-battle-header")) {
@@ -675,11 +698,13 @@
       host.hidden = true;
       return;
     }
-    const externalReturn = firstVisible(RETURN_SELECTORS, screen)
-      || (type === "stage" && header.classList.contains("wp-generated-stage-header")
-        ? first(['[data-wp-return="stage"]'], document)
-        : null)
-      || (type === "main" && header.classList.contains("wp-generated-main-header") ? firstVisible(RETURN_SELECTORS, document) : null);
+    const untypedExternalReturn = [...screen.querySelectorAll(RETURN_SELECTORS.join(","))]
+      .find((control) => visible(control) && !control.dataset.wpReturn);
+    const externalReturn = firstVisible([`[data-wp-return="${type}"]`], screen)
+      || untypedExternalReturn
+      || (header.classList.contains(`wp-generated-${type}-header`)
+        ? firstVisible([`[data-wp-return="${type}"]`], document)
+        : null);
     const legacyHeader = externalReturn?.closest("header");
     if (externalReturn && !header.contains(externalReturn)) {
       externalReturn.hidden = false;
@@ -691,7 +716,7 @@
     }
     if (!header.classList.contains("wp-generated-main-header")) {
       screen.querySelectorAll(".wp-generated-main-header").forEach((generatedHeader) => {
-        if (generatedHeader !== header) generatedHeader.remove();
+        if (generatedHeader !== header) removeGeneratedMainHeader(generatedHeader, header);
       });
       if (generatedTitle && !generatedTitle.isConnected) generatedTitle = null;
     }
@@ -717,8 +742,17 @@
     }
     const canonicalTitle = firstVisible([".wp-generated-main-title", "h1", "h2", "strong"], header);
     if (canonicalTitle && !canonicalTitle.closest(".wp-shell-settings,.wp-shell-return")) {
+      const legacyTitleContainer = canonicalTitle.parentElement;
       canonicalTitle.classList.add("wp-shell-main-title");
       if (canonicalTitle.parentElement !== header) header.append(canonicalTitle);
+      if (
+        legacyTitleContainer
+        && legacyTitleContainer !== header
+        && !legacyTitleContainer.querySelector("button,a,input,select,textarea")
+      ) {
+        legacyTitleContainer.classList.add("wp-shell-legacy-control");
+        legacyTitleContainer.setAttribute("aria-hidden", "true");
+      }
     }
     if (header !== currentHeader || host.parentElement !== header) {
       currentHeader?.classList.remove("wp-shell-header", "wp-main-shell-header", "wp-stage-shell-header");

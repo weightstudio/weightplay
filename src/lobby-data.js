@@ -12,8 +12,8 @@ window.WONDER_LOBBY = {
     },
     defaultLocale: "en",
   },
-  featuredGameId: "animal-guard-yard",
-  heroGameIds: ["animal-guard-yard", "animal-zoo-idle", "bubble-bakery"],
+  featuredGameId: "color-lunchbox",
+  heroGameIds: ["color-lunchbox", "animal-zoo-idle", "bubble-bakery"],
   audiences: {
     generalGameIds: [
       "wonder-crash",
@@ -42,6 +42,7 @@ window.WONDER_LOBBY = {
       "animal-sunbeam-garden",
       "animal-bus-jam",
       "animal-unblock",
+      "animal-guard-yard",
     ],
   },
   games: [
