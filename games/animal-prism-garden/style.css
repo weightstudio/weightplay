@@ -23,9 +23,10 @@ h1{font-size:clamp(2rem,5vw,3.45rem);line-height:1.02;margin:0}
 .main-meta span,.badge{border:1px solid rgba(119,222,255,.28);border-radius:999px;background:rgba(16,55,69,.8);padding:7px 11px;font-size:.76rem;color:#c8f5ff}
 .primary{border-color:#45d8f4!important;background:linear-gradient(135deg,#20b9da,#5b44d5)!important;color:#fff!important;box-shadow:0 10px 26px rgba(36,175,220,.28)}
 #start{width:100%;height:52px;border:0;border-radius:14px;font-weight:900;font-size:1.05rem}
-.game-page-info{margin:0 14px 50px;border-radius:24px;border:1px solid var(--line);background:rgba(5,21,30,.92);color:var(--ink)}
-.game-page-info h2,.game-page-info h3{color:var(--ink)}
-.game-page-info p,.game-page-info li{color:#bad0da}
+.game-page-info{margin:0 14px 50px;border-radius:24px;border:1px solid rgba(112,220,244,.34);background:#071923;color:var(--ink)}
+.game-page-info .game-info-hero,.game-page-info .game-info-section{border-color:rgba(112,220,244,.24);background:linear-gradient(145deg,#0d3040,#081d29);box-shadow:0 12px 28px rgba(0,0,0,.22)}
+.game-page-info h2,.game-page-info h3{color:#f4fcff}
+.game-page-info p,.game-page-info li{color:#c6dce5}
 .canvas{position:relative;width:min(100%,920px);margin:0 auto;background:linear-gradient(180deg,#071d29,#06131c);overflow:hidden}
 .stage,.battle{height:calc(100svh - 56px);min-height:0}
 .ad-reserve{display:block;width:min(100%,920px);height:56px;margin:auto;background:#06131c;border-top:1px solid rgba(127,216,239,.12)}
@@ -51,11 +52,11 @@ h1{font-size:clamp(2rem,5vw,3.45rem);line-height:1.02;margin:0}
 .stage-tabs button{height:44px;border:1px solid var(--line);border-radius:13px;background:#0e3040;color:var(--ink);font-weight:850}
 .stage-tabs .stage-tab{grid-column:2}
 .battle{display:grid;grid-template-rows:70px minmax(0,1fr)}
-.battle-content{min-height:0;display:grid;grid-template-rows:34px 30px minmax(250px,1fr) 46px 28px;gap:6px;justify-items:center;padding:8px 14px 10px}
+.battle-content{min-height:0;display:grid;grid-template-rows:34px 30px minmax(250px,1fr) 46px 28px;row-gap:10px;justify-items:center;padding:8px 14px 10px}
 .hud{width:min(100%,760px);display:grid;grid-template-columns:repeat(3,1fr);align-items:center;gap:5px;color:#a9d8e3;font-size:.72rem}
 .hud span{text-align:center;padding:5px 7px;border:1px solid rgba(116,205,226,.18);border-radius:9px;background:rgba(12,44,57,.75)}
 .battle-objective{margin:0;color:#d7edf3;font-size:.77rem;text-align:center}
-.grid{--size:7;--board:min(520px,calc(100svh - 314px),calc(100vw - 28px));width:min(var(--board),100%);aspect-ratio:1;align-self:center;display:grid;grid-template-columns:repeat(var(--size),1fr);grid-template-rows:repeat(var(--size),1fr);gap:clamp(2px,.6vw,5px);padding:clamp(5px,1vw,10px);border:1px solid rgba(117,220,243,.34);border-radius:22px;background:linear-gradient(145deg,#092832,#071923);box-shadow:inset 0 0 36px rgba(0,0,0,.48),0 18px 42px rgba(0,0,0,.35);touch-action:none;user-select:none}
+.grid{--size:7;--board:min(520px,calc(100svh - 330px),calc(100vw - 28px));width:min(var(--board),100%);aspect-ratio:1;align-self:end;display:grid;grid-template-columns:repeat(var(--size),1fr);grid-template-rows:repeat(var(--size),1fr);gap:clamp(2px,.6vw,5px);padding:clamp(5px,1vw,10px);border:1px solid rgba(117,220,243,.34);border-radius:22px;background:linear-gradient(145deg,#092832,#071923);box-shadow:inset 0 0 36px rgba(0,0,0,.48),0 18px 42px rgba(0,0,0,.35);touch-action:none;user-select:none}
 .cell{position:relative;border:1px solid rgba(111,184,201,.15);border-radius:22%;background:rgba(14,46,55,.74);overflow:hidden}
 .cell::before{content:"";position:absolute;inset:17%;border-radius:32%;background:var(--path,transparent);opacity:0;filter:drop-shadow(0 0 5px var(--path,transparent));transition:opacity .08s,transform .08s}
 .cell.path::before{opacity:.88;transform:scale(1.07)}
@@ -92,7 +93,7 @@ body.modal-open .battle-content{pointer-events:none}
   #start{height:52px}
   .game-page-info{margin:20px 12px 42px}
   .battle-content{padding-inline:8px}
-  .grid{--board:min(calc(100vw - 16px),calc(100svh - 274px),590px);border-radius:16px}
+  .grid{--board:min(calc(100vw - 16px),calc(100svh - 314px),590px);border-radius:16px}
 }
 @media(max-height:500px) and (orientation:landscape){
   .stage,.battle{height:calc(100svh - 56px)}

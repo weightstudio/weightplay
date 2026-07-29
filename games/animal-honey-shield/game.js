@@ -23,6 +23,7 @@
   ];
   const state={mode:"idle",paused:false,modal:false,started:false,planElapsed:0,elapsed:0,duration:8,nectar:100,strokes:[],drawing:null,bees:[],spawnClock:0,spawned:0,frame:0,last:0,flash:0,wallMoves:0,keyboard:{x:500,y:310},result:null};
   let raf=0;
+  const LINE_PIXELS_PER_NECTAR=14;
   const THEMES=[
     {sky:"#71c98b",ground:"#2d7a4d",accent:"#d8ff9b",terrain:"meadow"},
     {sky:"#65bad1",ground:"#237a70",accent:"#8ff7e8",terrain:"brook"},
@@ -213,9 +214,9 @@
     for(const sample of samples){
       const point=pointerPoint(sample),last=state.drawing.points.at(-1),distance=Math.hypot(point.x-last.x,point.y-last.y);
       if(distance<5)continue;
-      const allowed=Math.min(distance,state.nectar*7.2);if(allowed<=0)break;
+      const allowed=Math.min(distance,state.nectar*LINE_PIXELS_PER_NECTAR);if(allowed<=0)break;
       const ratio=allowed/distance,next={x:last.x+(point.x-last.x)*ratio,y:last.y+(point.y-last.y)*ratio};
-      state.drawing.points.push(next);state.nectar=Math.max(0,state.nectar-allowed/7.2);state.keyboard={...next};
+      state.drawing.points.push(next);state.nectar=Math.max(0,state.nectar-allowed/LINE_PIXELS_PER_NECTAR);state.keyboard={...next};
     }
     updateHud();draw();event.preventDefault();
   });
@@ -237,8 +238,8 @@
       state.keyboard.x=Math.max(30,Math.min(970,state.keyboard.x));state.keyboard.y=Math.max(30,Math.min(590,state.keyboard.y));draw();event.preventDefault();
     }
     if(event.key===" "||event.key==="Enter"){
-      const x=state.keyboard.x,y=state.keyboard.y,length=Math.min(170,state.nectar*7.2);
-      state.nectar=Math.max(0,state.nectar-length/7.2);
+      const x=state.keyboard.x,y=state.keyboard.y,length=Math.min(220,state.nectar*LINE_PIXELS_PER_NECTAR);
+      state.nectar=Math.max(0,state.nectar-length/LINE_PIXELS_PER_NECTAR);
       const stroke={points:[{x,y:y-length/2},{x,y:y+length/2}],health:100,flash:0,blockedFlash:0,moves:0};
       stroke.anchored=strokeTouchesSolid(stroke,level(stageIndex),20);state.strokes.push(stroke);
       if(!state.started)beginWave();
@@ -330,12 +331,7 @@
     state.spawned++;
   }
   function update(dt){
-    if(state.paused||state.modal||state.result)return;
-    if(!state.started){
-      state.planElapsed+=dt;
-      if(state.planElapsed>=1.15)beginWave();
-      else return;
-    }
+    if(state.paused||state.modal||state.result||!state.started)return;
     if(state.mode!=="wave")return;
     const spec=level(stageIndex);state.elapsed+=dt;state.spawnClock+=dt;state.nectar=Math.min(100,state.nectar+dt*1.35);
     if(state.spawnClock>=spec.interval&&state.spawned<spec.maxBees){state.spawnClock=0;spawnBee()}
@@ -387,9 +383,9 @@
   function drawSprite(cell,x,y,w,h,flip=false){
     if(!atlas.complete||!atlas.naturalWidth)return;
     const crop=SPRITE_CROPS[cell],sx=(cell%3)*512+crop.x,sy=Math.floor(cell/3)*512+crop.y;
-    const rect=canvas.getBoundingClientRect(),physicalX=rect.width/1000,physicalY=rect.height/620,uniform=Math.sqrt(Math.max(.0001,physicalX*physicalY));
-    const correctedW=w*uniform/Math.max(.0001,physicalX),correctedH=h*uniform/Math.max(.0001,physicalY);
-    const scale=Math.min(correctedW/crop.w,correctedH/crop.h),dw=crop.w*scale,dh=crop.h*scale,dx=x+(w-dw)/2,dy=y+(h-dh)/2;
+    const rect=canvas.getBoundingClientRect(),physicalX=Math.max(.0001,rect.width/1000),physicalY=Math.max(.0001,rect.height/620),uniform=Math.sqrt(physicalX*physicalY);
+    const physicalScale=Math.min((w*uniform)/crop.w,(h*uniform)/crop.h);
+    const dw=crop.w*physicalScale/physicalX,dh=crop.h*physicalScale/physicalY,dx=x+(w-dw)/2,dy=y+(h-dh)/2;
     ctx.save();
     if(flip){ctx.translate(dx+dw,dy);ctx.scale(-1,1);ctx.drawImage(atlas,sx,sy,crop.w,crop.h,0,0,dw,dh)}
     else ctx.drawImage(atlas,sx,sy,crop.w,crop.h,dx,dy,dw,dh);
@@ -479,7 +475,12 @@
     if(!$("leavePanel").hidden){closeModal($("leavePanel"),"battleBackBtn");return}
     if(!$("pausePanel").hidden){closeModal($("pausePanel"),"pauseBtn");return}
   });
-  document.addEventListener("visibilitychange",()=>{if(document.hidden&&screen==="battle"&&!state.result&&!state.modal)openModal($("pausePanel"),"resumeBtn")});
+  function suspendForeground(){
+    if(screen==="battle"&&!state.result&&!state.modal)openModal($("pausePanel"),"resumeBtn");
+  }
+  window.addEventListener("blur",suspendForeground);
+  window.addEventListener("pagehide",suspendForeground);
+  document.addEventListener("visibilitychange",()=>{if(document.hidden)suspendForeground()});
 
   function loadAssets(){
     const sources=[[atlas,"../../assets/animal-honey-shield-sprites.webp"],...themeBackgrounds.map((image,index)=>[image,themeBackgroundSources[index]])];
@@ -487,7 +488,12 @@
     for(const [image,src] of sources){image.onload=done;image.onerror=done;image.src=src}
   }
   window.__animalHoneyShieldSmoke={
-    startStage,resetStage,snapshot:()=>({screen,stage:stageIndex+1,mode:state.mode,elapsed:state.elapsed,nectar:state.nectar,strokes:state.strokes.length,bees:state.bees.length,wallMoves:state.wallMoves,result:state.result,save:structuredClone(save)}),
+    startStage,resetStage,snapshot:()=>({
+      screen,stage:stageIndex+1,mode:state.mode,elapsed:state.elapsed,nectar:state.nectar,
+      strokes:state.strokes.length,
+      strokeLengths:state.strokes.map(stroke=>stroke.points.slice(1).reduce((sum,point,index)=>sum+Math.hypot(point.x-stroke.points[index].x,point.y-stroke.points[index].y),0)),
+      bees:state.bees.length,wallMoves:state.wallMoves,result:state.result,save:structuredClone(save)
+    }),
     drawBarrier(x=650){state.strokes.push({points:[{x,y:190},{x,y:560}],health:100,flash:0,blockedFlash:0,moves:0,anchored:false});state.nectar=Math.max(0,state.nectar-52);beginWave();updateHud();draw()},
     protect(){state.strokes=[{points:[{x:300,y:315},{x:360,y:210},{x:640,y:210},{x:700,y:315},{x:680,y:560},{x:320,y:560},{x:300,y:315}],health:10000,flash:0,blockedFlash:0,moves:0,anchored:true}];beginWave();state.nectar=40},
     advance(seconds){for(let t=0;t<seconds&&!state.result;t+=.02)update(.02);draw();return this.snapshot?.()},
