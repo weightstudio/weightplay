@@ -102,6 +102,13 @@ body.wonder-stage-select #overlay {
   padding: 68px 18px 96px;
 }
 
+body.wonder-stage-select #wonderStageBack {
+  width: var(--wonder-stage-back-size, 48px) !important;
+  min-width: var(--wonder-stage-back-size, 48px) !important;
+  height: var(--wonder-stage-back-size, 48px) !important;
+  min-height: var(--wonder-stage-back-size, 48px) !important;
+}
+
 body.wonder-stage-select #overlay > .wp-generated-stage-header {
   position: absolute !important;
   z-index: 20;
@@ -197,8 +204,25 @@ body.wonder-playing .overlay.settlement-screen .profile-panel {
   background: rgb(12, 29, 34);
 }
 
-body.wonder-playing .settlement-actions button[data-settlement-action="home"].wonder-terminal-primary {
-  background: #ffcb3f;
+.wp-main-shell-header .wp-shell-settings-popover :is(
+  .wp-shell-settings-title,
+  .wp-shell-settings-row
+) {
+  font-size: 16px !important;
+}
+
+body.wonder-stage-select .wp-stage-shell-header .wp-shell-settings-popover .wp-shell-settings-row {
+  font-size: 16px !important;
+}
+
+body.wonder-stage-select .wp-stage-shell-header .wp-shell-settings-popover .wp-shell-combined-sound-toggle {
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+}
+
+body.wonder-stage-select .wp-stage-shell-header .wp-shell-settings-popover .wp-shell-combined-sound-toggle::after {
+  top: 5px;
 }
 
 #levelGrid {
@@ -273,9 +297,9 @@ body.wonder-stage-select .menu-tabs span {
 
   body.wonder-stage-select #menuTabs button {
     grid-template-columns: 30px minmax(0, 1fr);
-    height: 44px;
-    min-height: 44px;
-    max-height: 44px;
+    height: var(--wonder-stage-tab-height, 44px);
+    min-height: var(--wonder-stage-tab-height, 44px);
+    max-height: var(--wonder-stage-tab-height, 44px);
     padding: 2px 6px;
   }
 

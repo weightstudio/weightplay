@@ -3274,3 +3274,52 @@ window.WeightPlayGameInfoLocales.es.games["animal-screw-workshop"] = {
   faq: [["¿Cuántos puzles hay?", "Treinta en seis capítulos."], ["¿Por qué cae una placa?", "Porque todos sus soportes quedaron sin tornillos."], ["¿Qué es un tornillo bloqueado?", "Se vuelve móvil al retirar suficientes capas superiores."], ["¿Pista juega por mí?", "No, solo señala una ruta segura."], ["¿Qué restaura Deshacer?", "Tornillos, placas y movimientos."], ["¿Se guarda el progreso?", "Sí, solo en este navegador."]]
 };
 window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-screw-workshop"] = { gameplay: "Puzle lógico de traslado de tornillos", genre: ["Puzle", "Lógica", "Animales"] };
+
+window.WeightPlayGameInfoLocales.es.games["animal-rune-reels"] = {
+  title: "Carretes de Runas Animales",
+  difficulty: "Fácil a desafiante",
+  time: "2-8 minutos por etapa",
+  gameplay: "Batalla de rol táctica con carretes",
+  genre: ["Táctica", "Juego de rol", "Animales"],
+  skills: ["Formación de equipos", "Gestión de probabilidades", "Planificación"],
+  relatedIds: ["beast-tactician", "animal-rune-tactics", "animal-hero-trials"],
+  intro: "Forma un equipo de hasta cinco héroes animales invocados, gira tres carretes de runas, corrige una vez el resultado y sobrevive a las treinta misiones de guardianes.",
+  story: [
+    "Un invocador cruza seis regiones de grietas con un grupo de animales cada vez mayor. Cada héroe posee ataque, defensa, curación y una habilidad definitiva distinta, por lo que la formación cambia la resolución de los mismos símbolos.",
+    "La campaña principal contiene treinta misiones de varias oleadas. Las misiones diarias y los eventos programados entregan materiales opcionales sin sustituir el progreso principal."
+  ],
+  systems: [
+    "Cada giro detiene tres carretes. Antes de resolver, acepta el resultado o usa una sola corrección: repetir un carrete, conservar una runa para el próximo giro o convertirla mediante el líder.",
+    "Las runas de ataque activan por separado a cada héroe. Defensa y curación combinan las estadísticas del equipo; las demás runas conservan sus efectos especializados.",
+    "Los enemigos anuncian su próxima acción. Ataques fuertes, escudos, curaciones y corrupción de carretes cambian la decisión correcta en cada capítulo.",
+    "Invocar desbloquea héroes, las copias mejoran niveles y los materiales mejoran runas. El progreso permanente permanece guardado localmente aunque se abandone un intento."
+  ],
+  how: [
+    "Abre Etapas y elige una misión principal, diaria o de evento.",
+    "Forma un equipo de uno a cinco héroes y revisa sus runas.",
+    "Gira, lee la intención enemiga y selecciona el carrete que quieras corregir.",
+    "Resuelve el turno y supera todas las oleadas."
+  ],
+  strategyTips: [
+    "Busca ataque, defensa o curación según la acción enemiga anunciada.",
+    "Conserva una runa cuando facilite una combinación útil en el siguiente giro.",
+    "La táctica del líder convierte una runa según el rol del héroe que ocupa el primer puesto.",
+    "AUTO se desbloquea después de superar una misión principal y sirve para repetir contenido ya conocido."
+  ],
+  progression: [
+    "Los seis capítulos presentan en orden ataques, escudos, corrupción, curación, acciones mixtas y tácticas rotativas de jefes.",
+    "La dificultad cambia las decisiones y las combinaciones enemigas, no solo sus cifras."
+  ],
+  designNote: "El resultado aleatorio crea la situación, pero el jugador decide cómo corregirla. Los controles tácticos permanecen dentro del mismo lienzo adaptable en móvil y escritorio.",
+  parent: "No se requiere cuenta. Héroes, equipo, progreso, monedas, materiales y niveles de runa se guardan solo en este navegador.",
+  faq: [
+    ["¿Qué hace una línea de runas iguales?", "Potencia el efecto de esa runa después de que se detienen los tres carretes."],
+    ["¿Puedo corregir todos los carretes?", "No. Cada turno permite una sola corrección antes de resolver."],
+    ["¿Cuándo está disponible AUTO?", "Después de completar esa misión principal, o en modos de repetición de recursos."],
+    ["¿Qué ocurre al salir de la batalla?", "El inventario permanente se conserva, pero el intento actual termina."]
+  ]
+};
+window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-rune-reels"] = {
+  gameplay: "Batalla de rol táctica con carretes",
+  genre: ["Táctica", "Juego de rol", "Animales"]
+};

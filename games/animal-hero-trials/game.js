@@ -589,7 +589,7 @@
     if (open && focusPrimary) requestAnimationFrame(() => $("#choices .choice")?.focus({ preventScroll: true }));
   }
 
-  function setResultModal(open, focusPrimary = true) {
+  function setResultModal(open, focusTarget = $("#resultHome")) {
     if (open) clearMovementInput();
     $("#resultModal").classList.toggle("hidden", !open);
     resultCoveredLayers().forEach((layer) => {
@@ -597,7 +597,7 @@
       if (open) layer.setAttribute("aria-hidden", "true");
       else layer.removeAttribute("aria-hidden");
     });
-    if (open && focusPrimary) requestAnimationFrame(() => $("#resultHome").focus({ preventScroll: true }));
+    if (open && focusTarget) requestAnimationFrame(() => focusTarget.focus({ preventScroll: true }));
   }
 
   function commitResultDecision(action) {
@@ -1091,6 +1091,14 @@
     $("#resultHome").textContent = t("stages");
     $("#resultNext").textContent = t("next");
     resultReplay.textContent = t("replay");
+    const resultPrimary = won && run.stage < TRIAL_COUNT
+      ? $("#resultNext")
+      : won
+        ? $("#resultHome")
+        : resultReplay;
+    [$("#resultHome"), $("#resultNext"), resultReplay].forEach((button) => {
+      button.classList.toggle("primary", button === resultPrimary);
+    });
     $("#resultHome").onclick = () => commitResultDecision(() => {
       playSound("click");
       show("stage");
@@ -1123,7 +1131,7 @@
         : interpolate("failCopy", { hero: heroName(run.heroId) });
       $("#resultNext").onclick = null;
     }
-    setResultModal(true);
+    setResultModal(true, resultPrimary);
     playSound(won ? "win" : "wrong");
   }
 

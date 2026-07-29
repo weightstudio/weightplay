@@ -304,10 +304,17 @@
     nextStageBtn: $("nextStageBtn"),
     retryBtn: $("retryBtn"),
     resultStagesBtn: $("resultStagesBtn"),
+    resultLobby: document.querySelector("#resultPanel [data-ui='lobby']"),
     loadingPanel: $("loadingPanel"),
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
   };
+  const resultActions = document.createElement("div");
+  resultActions.className = "result-actions";
+  resultActions.append(nodes.resultStagesBtn, nodes.nextStageBtn, nodes.retryBtn);
+  nodes.resultLobby?.before(resultActions);
+  nodes.resultLobby?.classList.add("hidden");
+  nodes.resultLobby?.setAttribute("aria-hidden", "true");
 
   const ruleBadge = document.createElement("span");
   ruleBadge.id = "ruleBadge";
@@ -679,7 +686,50 @@
     nodes.playPanel.dataset.wpCommonScale = String(scale);
     nodes.playPanel.dataset.wpLogicalWidth = String(width / scale);
     nodes.playPanel.dataset.wpLogicalHeight = String(height / scale);
+    requestAnimationFrame(updateResultControlSize);
   }
+
+  function updateResultControlSize() {
+    const declaredScale = Number.parseFloat(
+      getComputedStyle(document.documentElement).getPropertyValue("--wp-battle-canvas-scale")
+    );
+    const transform = getComputedStyle(nodes.playPanel).transform;
+    const renderedScale = transform && transform !== "none"
+      ? Math.abs(new DOMMatrixReadOnly(transform).a)
+      : Number.NaN;
+    const scale = Number.isFinite(renderedScale) && renderedScale > 0
+      ? renderedScale
+      : Number.isFinite(declaredScale) && declaredScale > 0 ? declaredScale : 1;
+    const root = document.documentElement.style;
+    root.setProperty(
+      "--shape-result-control-min-height",
+      `${Math.max(50, 50 / scale)}px`
+    );
+    root.setProperty("--shape-result-action-font-size", `${Math.max(14, 13 / scale)}px`);
+    root.setProperty("--shape-result-essential-font-size", `${Math.max(17, 13 / scale)}px`);
+    root.setProperty("--shape-result-detail-font-size", `${Math.max(12, 12 / scale)}px`);
+    requestAnimationFrame(() => calibrateResultControlSize(0));
+  }
+
+  function calibrateResultControlSize(attempt) {
+    if (nodes.resultPanel.classList.contains("hidden") || attempt >= 3) return;
+    const button = nodes.resultPanel.querySelector(".result-actions button");
+    const renderedHeight = button?.getBoundingClientRect().height || 0;
+    if (renderedHeight >= 49) return;
+    const root = document.documentElement.style;
+    const currentHeight = Number.parseFloat(
+      getComputedStyle(document.documentElement).getPropertyValue("--shape-result-control-min-height")
+    ) || 48;
+    root.setProperty(
+      "--shape-result-control-min-height",
+      `${currentHeight * (49.5 / Math.max(1, renderedHeight))}px`
+    );
+    requestAnimationFrame(() => calibrateResultControlSize(attempt + 1));
+  }
+
+  new MutationObserver(() => {
+    if (!nodes.resultPanel.classList.contains("hidden")) updateResultControlSize();
+  }).observe(nodes.resultPanel, { attributes: true, attributeFilter: ["class", "style"] });
 
   function exitSharedPlayViewport() {
     window.WeightPlayGame?.exitMobileGameMode?.();
@@ -761,7 +811,13 @@
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("wp-standard-stage-page");
     requestAnimationFrame(positionMainSoundToggle);
-    if (focusStart) nodes.startGameBtn.focus({ preventScroll: true });
+    if (focusStart) restoreMainStartFocus();
+  }
+
+  function restoreMainStartFocus() {
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (!nodes.menuPanel.classList.contains("hidden")) nodes.startGameBtn.focus({ preventScroll: true });
+    }));
   }
 
   function focusPlayPanel() {
@@ -936,6 +992,7 @@
     renderResult(lastResult);
     nodes.playPanel.classList.add("is-result");
     nodes.resultPanel.classList.remove("hidden");
+    updateResultControlSize();
     setResultOwnership(true);
     nodes.playPanel.scrollTop = 0;
     nodes.playPanel.scrollLeft = 0;
@@ -954,7 +1011,9 @@
     nodes.resultText.textContent = t("result", { count: result.count });
     renderSkillReport(result.earned, result.previousBest);
     const hasNextStage = currentStage < stages.length - 1;
-    nodes.nextStageBtn.classList.toggle("hidden", !hasNextStage);
+    nodes.nextStageBtn.classList.remove("hidden");
+    nodes.nextStageBtn.disabled = !hasNextStage;
+    nodes.nextStageBtn.setAttribute("aria-disabled", String(!hasNextStage));
     nodes.nextStageBtn.classList.toggle("primary-action", hasNextStage);
     nodes.resultStagesBtn.classList.toggle("primary-action", !hasNextStage);
     nodes.retryBtn.classList.remove("primary-action");
@@ -1109,6 +1168,7 @@
       if (event.target.closest(".stage-card")) rejectRepeatedScreenActivation(event);
     });
     nodes.startGameBtn.addEventListener("click", () => showMenu(true));
+    nodes.stageBackBtn.addEventListener("click", restoreMainStartFocus, true);
     nodes.stageBackBtn.addEventListener("click", () => showMain(true));
     nodes.localeSelect.addEventListener("change", () => {
       const requested = nodes.localeSelect.value;

@@ -89,6 +89,8 @@
     );
     const stageLogicalWidth = availableWidth / stageScale;
     const stageLogicalHeight = height / stageScale;
+    const stageBackSize = Math.max(48, 44 / stageScale);
+    const stageTabHeight = Math.max(44, 44 / stageScale);
     const battleLogicalWidth = availableWidth / battleScale;
     const battleLogicalHeight = height / battleScale;
     const centeredLeft = Math.max(0, (width - availableWidth) / 2);
@@ -100,6 +102,8 @@
     document.documentElement.style.setProperty("--wonder-stage-left", `${centeredLeft}px`);
     document.documentElement.style.setProperty("--wonder-stage-logical-width", `${stageLogicalWidth}px`);
     document.documentElement.style.setProperty("--wonder-stage-logical-height", `${stageLogicalHeight}px`);
+    document.documentElement.style.setProperty("--wonder-stage-back-size", `${stageBackSize}px`);
+    document.documentElement.style.setProperty("--wonder-stage-tab-height", `${stageTabHeight}px`);
     if (selectingStage) shell?.setAttribute("data-wp-logical-stage-canvas", `${stageLogicalWidth.toFixed(3)}x${stageLogicalHeight.toFixed(3)}`);
     else shell?.removeAttribute("data-wp-logical-stage-canvas");
     if (playing) {
@@ -222,6 +226,16 @@
     pausePanel.setAttribute("aria-modal", "true");
     pausePanel.setAttribute("aria-labelledby", overlayTitle.id);
 
+    battleBackButton?.addEventListener("click", (event) => {
+      if (!document.body.classList.contains("wonder-playing")
+        || !pausePanel.classList.contains("hidden")
+        || resultOverlay?.classList.contains("settlement-screen")) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      settingsButton.click();
+      overlayTitle.textContent = leaveButton.textContent.trim();
+    }, true);
+
     settingsButton.addEventListener("click", () => {
       if (pausePanel.classList.contains("hidden")) return;
       setPausedBattleCovered(true);
@@ -271,10 +285,6 @@
     let resultOwned = false;
     const syncResultOwnership = () => {
       const actions = resultActions();
-      actions.forEach((action) => action.classList.remove("wonder-terminal-primary"));
-      if (resultVisible() && actions.length === 1 && actions[0].dataset.settlementAction === "home") {
-        actions[0].classList.add("wonder-terminal-primary");
-      }
       if (resultVisible()) {
         resultOwned = true;
         resultOverlay.setAttribute("role", "dialog");
@@ -282,7 +292,8 @@
         resultOverlay.setAttribute("aria-labelledby", overlayTitle.id);
         setPausedBattleCovered(true);
         if (actions.length && !actions.includes(document.activeElement)) {
-          requestAnimationFrame(() => actions[0]?.focus({ preventScroll: true }));
+          const preferred = actions.find((action) => action.dataset.settlementFocus === "true") || actions[0];
+          requestAnimationFrame(() => preferred?.focus({ preventScroll: true }));
         }
         return;
       }

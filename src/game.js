@@ -599,6 +599,7 @@ let draggedBackpackIndex = null;
 let selectedWeaponInfo = { source: "equip", index: 0 };
 let suppressEquipmentClick = false;
 let floatingMessageTimer = null;
+let settlementDecisionPending = false;
 const equipmentPointerDrag = {
   active: false,
   started: false,
@@ -1408,7 +1409,28 @@ function buildWinText(drops, wasChallenge) {
   return t("victory_stage_clear") + ` ` + t("hud_stage") + ` ${state.level.id} ${unlockText}`;
 }
 
+function renderResultActions(won) {
+  const canAdvance = won && state.levelIndex + 1 < LEVELS.length;
+  const preferredAction = canAdvance ? "next" : (won ? "stages" : "replay");
+  const button = (action, label, { disabled = false } = {}) => `
+    <button
+      type="button"
+      data-settlement-action="${action}"
+      ${action === preferredAction ? 'class="is-primary" data-settlement-focus="true"' : ""}
+      ${disabled ? 'disabled aria-disabled="true"' : ""}
+    >${label}</button>
+  `;
+  return `
+    <div class="settlement-actions" aria-label="${t("settlement_title")}">
+      ${button("stages", t("btn_stage_select"))}
+      ${button("next", t("btn_next"), { disabled: !canAdvance })}
+      ${button("replay", t("btn_play_again"))}
+    </div>
+  `;
+}
+
 function renderSettlement(drops, wasChallenge, diamondReward = 0) {
+  settlementDecisionPending = false;
   const dropItems = drops.map((item) => renderRewardItem(item)).join("");
   const diamondItem = diamondReward > 0 ? renderDiamondReward(diamondReward) : "";
   const coinItem = state.coins > 0
@@ -1428,10 +1450,7 @@ function renderSettlement(drops, wasChallenge, diamondReward = 0) {
         ${rewards || `<div class="reward-empty">${diamondReward > 0 ? t("settlement_diamond_hint") : t("settlement_no_drops")}</div>`}
       </div>
       ${renderSkillReport(true)}
-      <div class="settlement-actions">
-        ${state.levelIndex + 1 < LEVELS.length ? `<button type="button" data-settlement-action="next">${t("btn_next")}</button>` : ""}
-        <button type="button" data-settlement-action="home">${t("btn_confirm")}</button>
-      </div>
+      ${renderResultActions(true)}
     </div>
   `;
 }
@@ -1446,7 +1465,11 @@ function renderDiamondReward(amount) {
 }
 
 function handleSettlementAction(action) {
-  if (action === "retry") {
+  if (settlementDecisionPending) return;
+  if (action === "next" && state.levelIndex + 1 >= LEVELS.length) return;
+  if (!["stages", "next", "replay"].includes(action)) return;
+  settlementDecisionPending = true;
+  if (action === "replay") {
     restart();
     return;
   }
@@ -1454,10 +1477,11 @@ function handleSettlementAction(action) {
     startLevel(state.levelIndex + 1);
     return;
   }
-  if (action === "home") showMainMenu("battle");
+  if (action === "stages") showMainMenu("battle");
 }
 
 function renderDefeatActions() {
+  settlementDecisionPending = false;
   return `
     <div class="settlement-panel">
       <div class="settlement-row">
@@ -1465,10 +1489,7 @@ function renderDefeatActions() {
         <span>${t("defeat_desc", { lvl: state.level.id, coins: state.coins })}</span>
       </div>
       ${renderSkillReport(false)}
-      <div class="settlement-actions">
-        <button type="button" data-settlement-action="retry">${t("btn_play_again")}</button>
-        <button type="button" data-settlement-action="home">${t("btn_stage_select")}</button>
-      </div>
+      ${renderResultActions(false)}
     </div>
   `;
 }

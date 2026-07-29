@@ -501,9 +501,9 @@
     requestAnimationFrame(()=>target?.focus({preventScroll:true}));
   }
   function focusRoute(route=state.route){requestAnimationFrame(()=>{
-    const cards=[...document.querySelectorAll("#routeRail .route-card:not(:disabled)")];
+    const cards=[...document.querySelectorAll("#routeRail .route-card")];
     const target=cards[Math.max(0,Math.min(cards.length-1,(route||1)-1))]||cards[0];
-    document.querySelectorAll("#routeRail .route-card").forEach(card=>{const selected=card===target;card.classList.toggle("is-selected",selected);if(selected)card.setAttribute("aria-current","step");else card.removeAttribute("aria-current");});
+    document.querySelectorAll("#routeRail .route-card").forEach(card=>{const selected=card===target;card.tabIndex=selected?0:-1;card.classList.toggle("is-selected",selected);if(selected)card.setAttribute("aria-current","step");else card.removeAttribute("aria-current");});
     target?.focus({preventScroll:true});
   });}
   function quitBackgroundNodes(){return [...document.querySelectorAll(".battle-canvas > :not(#quitPanel):not(#result)")];}
@@ -535,7 +535,7 @@
     renderRoutes();
     focusRoute();
   }
-  function renderRoutes(){ $("routeRail").innerHTML=""; routes.forEach((route,index)=>{const n=index+1, card=document.createElement("button"),locked=n>save.unlocked;card.className=`route-card${n===state.route?" is-selected":""}`;card.disabled=locked;card.innerHTML=`<strong>${routeText(route,"name")}</strong><span>${t("route",{n})} · ${t("relic")}: ${routeText(route,"relic")}</span><small>${t("zones",{n:route.zones})} · ${t("stageTarget",{n:route.target})} · ${t("risk",{n:route.risk})}<br><b>${routeText(route,"rule")}</b></small><em>${t(locked?"locked":"routeAction")}</em>`;card.setAttribute("aria-label",`${t("route",{n})} · ${routeText(route,"name")} · ${routeText(route,"rule")} · ${locked?t("locked"):t("routeAction")}`);card.onclick=()=>start(n);$("routeRail").append(card);});}
+  function renderRoutes(){ $("routeRail").innerHTML=""; routes.forEach((route,index)=>{const n=index+1, card=document.createElement("button"),locked=n>save.unlocked,selected=n===Math.max(1,state.route||save.unlocked);card.className=`route-card${selected?" is-selected":""}`;card.setAttribute("aria-disabled",String(locked));card.tabIndex=selected?0:-1;card.innerHTML=`<strong>${routeText(route,"name")}</strong><span>${t("route",{n})} · ${t("relic")}: ${routeText(route,"relic")}</span><small>${t("zones",{n:route.zones})} · ${t("stageTarget",{n:route.target})} · ${t("risk",{n:route.risk})}<br><b>${routeText(route,"rule")}</b></small><em>${t(locked?"locked":"routeAction")}</em>`;card.setAttribute("aria-label",`${t("route",{n})} · ${routeText(route,"name")} · ${routeText(route,"rule")} · ${locked?t("locked"):t("routeAction")}`);card.onclick=()=>{if(!locked)start(n);};$("routeRail").append(card);});}
   function routeConfig(){return routes[state.route-1];}
   function encounter(direction){const pair=routeConfig().encounters[state.zone-1];return outcomes[pair[direction==="left"?0:1]];}
   function sonarMessage(){return t("sonarRead",{left:t(encounter("left").label),right:t(encounter("right").label)});}
@@ -793,7 +793,19 @@
   let drag;
   let suppressRouteClickUntil = 0;
   const routeRail = $("routeRail");
-  routeRail.addEventListener("keydown",event=>{if(mainEntryKeyboardKey&&event.repeat&&event.key===mainEntryKeyboardKey)event.preventDefault();});
+  routeRail.addEventListener("keydown",event=>{
+    if(mainEntryKeyboardKey&&event.repeat&&event.key===mainEntryKeyboardKey)event.preventDefault();
+    const card=event.target.closest(".route-card");
+    if(!card)return;
+    if((event.key==="Enter"||event.key===" ")&&card.getAttribute("aria-disabled")==="true"){event.preventDefault();return;}
+    if(!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;
+    event.preventDefault();
+    const cards=[...routeRail.querySelectorAll(".route-card")],current=Math.max(0,cards.indexOf(card));
+    const next=event.key==="Home"?0:event.key==="End"?cards.length-1:Math.max(0,Math.min(cards.length-1,current+(event.key==="ArrowRight"?1:-1)));
+    cards.forEach((candidate,index)=>{const selected=index===next;candidate.tabIndex=selected?0:-1;candidate.classList.toggle("is-selected",selected);if(selected)candidate.setAttribute("aria-current","step");else candidate.removeAttribute("aria-current");});
+    cards[next]?.focus({preventScroll:true});
+    cards[next]?.scrollIntoView({behavior:"auto",block:"nearest",inline:"center"});
+  });
   document.addEventListener("keyup",event=>{screenDecisionKeyboardKeys.delete(event.key);if(event.key===mainEntryKeyboardKey)mainEntryKeyboardKey="";});
   window.addEventListener("blur",()=>{screenDecisionKeyboardKeys.clear();mainEntryKeyboardKey="";});
   function syncCenteredRouteSelection(){
@@ -801,7 +813,7 @@
     if(!cards.length||!routeRail.getClientRects().length)return;
     const railRect=routeRail.getBoundingClientRect(),center=railRect.left+railRect.width/2;
     const nearest=cards.reduce((best,card)=>{const rect=card.getBoundingClientRect(),distance=Math.abs(rect.left+rect.width/2-center);return!best||distance<best.distance?{card,distance}:best;},null)?.card;
-    cards.forEach(card=>{const selected=card===nearest;card.classList.toggle("is-selected",selected);if(selected)card.setAttribute("aria-current","step");else card.removeAttribute("aria-current");});
+    cards.forEach(card=>{const selected=card===nearest;card.tabIndex=selected?0:-1;card.classList.toggle("is-selected",selected);if(selected)card.setAttribute("aria-current","step");else card.removeAttribute("aria-current");});
   }
   routeRail.addEventListener("wonder:stage-snap",()=>requestAnimationFrame(syncCenteredRouteSelection));
   routeRail.addEventListener("pointerdown", (event) => {

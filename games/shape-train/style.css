@@ -84,6 +84,13 @@ select {
   gap: 14px;
 }
 
+.shape-game.wp-standard-main-flow-owner {
+  height: 100vh !important;
+  height: 100dvh !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+}
+
 .topbar {
   display: grid;
   grid-template-columns: 48px minmax(0, 1fr) auto;
@@ -835,7 +842,7 @@ body.shape-playing .weightplay-version-badge {
 }
 
 .shape-skill-report h3 {
-  font-size: 17px;
+  font-size: var(--shape-result-essential-font-size, 17px);
 }
 
 .shape-skill-grid {
@@ -859,20 +866,20 @@ body.shape-playing .weightplay-version-badge {
 
 .shape-skill-grid span {
   min-height: 30px;
-  font-size: 11px;
+  font-size: var(--shape-result-detail-font-size, 12px);
   font-weight: 900;
 }
 
 .shape-skill-grid b {
   margin-top: 3px;
-  font-size: 11px;
+  font-size: var(--shape-result-detail-font-size, 12px);
 }
 
 #progressComparison {
   padding: 5px 7px;
   border-radius: 8px;
   background: rgba(255, 202, 58, 0.3);
-  font-size: 12px;
+  font-size: var(--shape-result-detail-font-size, 12px);
   font-weight: 900;
 }
 
@@ -893,14 +900,39 @@ body.shape-playing .weightplay-version-badge {
   background: #ffdf70;
 }
 
-.result-card button:nth-of-type(2),
-.result-card button:nth-of-type(3) {
+.result-card > [data-ui="lobby"] {
+  display: none !important;
+}
+
+.result-actions {
+  position: sticky;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+  padding-top: 4px;
+  background: #fffdf2;
+}
+
+.result-actions button {
+  min-width: 0;
+  min-height: var(--shape-result-control-min-height, 48px);
+  padding: 6px 4px;
   background: rgba(255, 255, 255, 0.94);
+  font-size: var(--shape-result-action-font-size, 14px);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
 }
 
 .result-card button.primary-action {
   background: #ffdf70;
   box-shadow: 0 0 0 3px rgba(255, 223, 112, 0.44), 0 8px 18px rgba(49, 77, 92, 0.24);
+}
+
+.result-actions button:disabled {
+  opacity: 0.48;
+  box-shadow: none;
 }
 
 @keyframes cardIn {
@@ -1067,6 +1099,30 @@ body.shape-playing .passenger-area {
 }
 
 @media (max-height: 560px) {
+  .shape-game.wp-standard-main-flow-owner .wp-standard-main-composition {
+    grid-template-columns: 300px minmax(0, 1fr) !important;
+    gap: 14px !important;
+    padding: 8px !important;
+  }
+
+  .shape-game.wp-standard-main-flow-owner :is(
+    .wp-standard-main-poster,
+    .wp-standard-main-poster-media,
+    .wp-standard-main-poster-media > img,
+    .wp-standard-main-poster > img
+  ) {
+    width: 300px !important;
+    min-width: 300px !important;
+    max-width: 300px !important;
+    height: 300px !important;
+    min-height: 300px !important;
+    max-height: 300px !important;
+  }
+
+  .shape-game.wp-standard-main-flow-owner .wp-standard-main-copy {
+    height: 300px;
+  }
+
   body.shape-playing .shape-game,
   body.shape-playing.weightplay-active-viewport .shape-game {
     display: grid;

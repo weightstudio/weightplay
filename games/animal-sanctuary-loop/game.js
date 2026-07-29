@@ -352,15 +352,39 @@
     window.WonderSound?.play?.("success");
   }
 
-  document.querySelectorAll("[data-tab]").forEach((button) => button.addEventListener("click", () => {
-    document.querySelectorAll("[data-tab]").forEach((item) => {
+  const stageTabButtons = [...document.querySelectorAll(".stage-tabs [data-tab]")];
+  function activateStageTab(button, restoreFocus = false) {
+    stageTabButtons.forEach((item) => {
       const active = item === button;
       item.classList.toggle("active", active);
       item.setAttribute("aria-selected", active ? "true" : "false");
+      item.tabIndex = active ? 0 : -1;
     });
     $("missionsTab").hidden = button.dataset.tab !== "missions";
     $("atelierTab").hidden = button.dataset.tab !== "atelier";
-  }));
+    if (restoreFocus) button.focus({ preventScroll: true });
+  }
+  document.querySelector(".stage-tabs")?.setAttribute("role", "tablist");
+  stageTabButtons.forEach((button, index) => {
+    const panel = $(button.dataset.tab === "missions" ? "missionsTab" : "atelierTab");
+    button.id ||= `stageTab-${button.dataset.tab}`;
+    button.setAttribute("role", "tab");
+    button.setAttribute("aria-controls", panel.id);
+    panel.setAttribute("role", "tabpanel");
+    panel.setAttribute("aria-labelledby", button.id);
+    button.addEventListener("click", () => activateStageTab(button));
+    button.addEventListener("keydown", (event) => {
+      if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+      event.preventDefault();
+      const next = event.key === "Home"
+        ? 0
+        : event.key === "End"
+          ? stageTabButtons.length - 1
+          : (index + (event.key === "ArrowRight" ? 1 : -1) + stageTabButtons.length) % stageTabButtons.length;
+      activateStageTab(stageTabButtons[next], true);
+    });
+  });
+  activateStageTab(stageTabButtons.find((button) => button.classList.contains("active")) || stageTabButtons[0]);
 
   let heldScreenTransition = "";
   const activationKey = (event) => event.key === "Enter" || event.key === " " || event.key === "Spacebar";
