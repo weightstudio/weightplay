@@ -167,6 +167,7 @@
   function makeEncounters(stage){return encounterRows(stage).flat()}
   function startBattle(index){
     const stageIndex=Math.max(0,Math.min(29,Math.trunc(index))),stage=stages[stageIndex];
+    clearArenaPointer();
     lifecyclePaused=false;
     const maxCore=100+save.upgrades.armor*20,encounters=makeEncounters(stage);
     run={stageIndex,stage,time:stage.time,core:maxCore,maxCore,wave:1,totalWaves:stage.waves,bossDefeated:false,lane:1,aimX:laneCenters[1],attack:6+save.upgrades.power*2,weapon:"single",units:[],encounters,gates:encounters,enemies:encounters.filter(entry=>entry.kind==="enemy"),particles:[],texts:[],fireClock:0,charge:0,overdrive:0,feedbackLock:0,peak:6+save.upgrades.power*2,coreHits:0,resolved:0,paused:false,finished:false,lastGateMessage:""};
@@ -248,9 +249,25 @@
   new ResizeObserver(resizeCanvas).observe(canvas);
   function setLane(value,announce=false){if(!run||run.paused||run.finished)return false;const lane=Math.max(0,Math.min(2,Math.round(Number(value))));if(lane===run.lane)return true;run.lane=lane;run.aimX=laneCenters[lane];addBurst(run.aimX,.86,"#72f4d8",10);if(announce)$("feedback").textContent=t("laneReady",{lane:lane+1});updateHud(true);draw();return true}
   function aimFromEvent(event){if(!run||run.paused||run.finished)return;const rect=canvas.getBoundingClientRect(),x=(event.clientX-rect.left)/rect.width,lane=laneCenters.reduce((best,center,index)=>Math.abs(center-x)<Math.abs(laneCenters[best]-x)?index:best,0);setLane(lane,true)}
-  canvas.addEventListener("pointerdown",(event)=>{canvas.focus({preventScroll:true});canvas.setPointerCapture?.(event.pointerId);aimFromEvent(event)});canvas.addEventListener("pointermove",(event)=>{if(event.buttons||event.pointerType==="touch")aimFromEvent(event)});
+  let arenaPointerId=null;
+  function clearArenaPointer(){
+    if(arenaPointerId===null)return;
+    if(canvas.hasPointerCapture?.(arenaPointerId))canvas.releasePointerCapture?.(arenaPointerId);
+    arenaPointerId=null;
+  }
+  canvas.addEventListener("pointerdown",(event)=>{
+    if(!event.isPrimary||arenaPointerId!==null)return;
+    arenaPointerId=event.pointerId;
+    canvas.focus({preventScroll:true});
+    try{canvas.setPointerCapture?.(event.pointerId)}catch{/* synthetic/retired pointer */}
+    aimFromEvent(event);
+  });
+  canvas.addEventListener("pointermove",(event)=>{if(event.pointerId===arenaPointerId&&(event.buttons||event.pointerType==="touch"))aimFromEvent(event)});
+  canvas.addEventListener("pointerup",(event)=>{if(event.pointerId===arenaPointerId)clearArenaPointer()});
+  canvas.addEventListener("pointercancel",(event)=>{if(event.pointerId===arenaPointerId)clearArenaPointer()});
+  canvas.addEventListener("lostpointercapture",(event)=>{if(event.pointerId===arenaPointerId)arenaPointerId=null});
   const held=new Set();window.addEventListener("keydown",(event)=>{const arenaOwnsInput=event.target===canvas;if(arenaOwnsInput&&["ArrowLeft","ArrowRight","a","A","d","D"].includes(event.key)&&currentScreen==="battle"&&!activeModal()){event.preventDefault();if(!event.repeat){const right=["ArrowRight","d","D"].includes(event.key);setLane(run.lane+(right?1:-1),true)}held.add(event.key)}if(arenaOwnsInput&&event.key===" "&&currentScreen==="battle"&&!activeModal()){event.preventDefault();activateOverdrive()}if(event.key==="Escape"&&!event.defaultPrevented&&currentScreen==="battle"&&!activeModal())openLeave()});window.addEventListener("keyup",(event)=>held.delete(event.key));
-  function suspendForLifecycle(){held.clear();if(!run||run.finished||run.paused||currentScreen!=="battle")return;lifecyclePaused=true;run.paused=true;stopLoop()}
+  function suspendForLifecycle(){held.clear();clearArenaPointer();if(!run||run.finished||run.paused||currentScreen!=="battle")return;lifecyclePaused=true;run.paused=true;stopLoop()}
   function resumeFromLifecycle(){held.clear();if(!lifecyclePaused||document.hidden||!windowFocused)return;lifecyclePaused=false;if(!run||run.finished||currentScreen!=="battle"||activeModal())return;run.paused=false;resumeLoop()}
   window.addEventListener("blur",()=>{windowFocused=false;suspendForLifecycle()});window.addEventListener("focus",()=>{windowFocused=true;resumeFromLifecycle()});window.addEventListener("pagehide",suspendForLifecycle);window.addEventListener("pageshow",resumeFromLifecycle);document.addEventListener("visibilitychange",()=>document.hidden?suspendForLifecycle():resumeFromLifecycle());
   function activateOverdrive(){if(!run||run.paused||run.finished)return false;if(run.charge<100){$("feedback").textContent=t("overdriveNeed",{charge:Math.floor(run.charge)});return false}run.charge=0;run.overdrive=3.6;run.feedbackLock=.7;$("feedback").textContent=t("overdriveUsed");updateHud(true);addBurst(run.aimX,.86,"#ffe273",24);window.WonderSound?.play?.("success");return true}
@@ -258,14 +275,14 @@
 
   function activeModal(){return[$("leave"),$("tutorial"),$("result")].find((modal)=>!modal.hidden)||null}
   function modalButtons(modal){return[...modal.querySelectorAll("button:not([hidden]):not(:disabled)")]}
-  function openModal(modal,focusTarget){modalReturnFocus=document.activeElement;if(run)run.paused=true;stopLoop();modal.hidden=false;$("battleLive").inert=true;requestAnimationFrame(()=>(focusTarget||modalButtons(modal)[0])?.focus())}
+  function openModal(modal,focusTarget){clearArenaPointer();modalReturnFocus=document.activeElement;if(run)run.paused=true;stopLoop();modal.hidden=false;$("battleLive").inert=true;requestAnimationFrame(()=>(focusTarget||modalButtons(modal)[0])?.focus())}
   function closeModal(modal,restore=true){modal.hidden=true;$("battleLive").inert=false;if(run&&!run.finished&&!lifecyclePaused&&!document.hidden&&windowFocused){run.paused=false;resumeLoop()}if(restore)(modalReturnFocus?.isConnected?modalReturnFocus:$("battleBack"))?.focus();modalReturnFocus=null}
   document.addEventListener("keydown",(event)=>{const modal=activeModal();if(!modal)return;if(event.key==="Tab"){const buttons=modalButtons(modal),first=buttons[0],last=buttons.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus()}}if(event.key==="Escape"&&modal===$("leave")){event.preventDefault();closeModal(modal)}});
   function openTutorial(){if(!run||run.finished)return;openModal($("tutorial"),$("tutorialDone"))}
   $("tutorialDone").addEventListener("click",()=>{save.tutorialSeen=true;persist();closeModal($("tutorial"))});
   function openLeave(){if(!run||run.finished||activeModal())return;openModal($("leave"),$("continueBattle"))}
   function finish(won){
-    if(!run||run.finished)return;run.finished=true;run.won=Boolean(won);run.paused=true;resultDecisionCommitted=false;stopLoop();const remaining=Math.max(0,Math.ceil(run.time)),stars=won?1+(remaining>run.stage.time*.25?1:0)+(run.core===run.maxCore?1:0):0,earned=won?3+stars+run.stage.chapter:0;
+    if(!run||run.finished)return;clearArenaPointer();run.finished=true;run.won=Boolean(won);run.paused=true;resultDecisionCommitted=false;stopLoop();const remaining=Math.max(0,Math.ceil(run.time)),stars=won?1+(remaining>run.stage.time*.25?1:0)+(run.core===run.maxCore?1:0):0,earned=won?3+stars+run.stage.chapter:0;
     if(won){save.stars[run.stage.n]=Math.max(Number(save.stars[run.stage.n])||0,stars);save.unlocked=Math.max(save.unlocked,Math.min(30,run.stage.n+1));save.shards=Math.min(9999,save.shards+earned);persist()}
     $("resultKicker").textContent=won?`${t("shardsEarned")} +${earned}`:t("missionFailedKicker");$("resultTitle").textContent=t(won?"missionComplete":"missionFailed");$("resultText").textContent=t(won?"victoryText":"failureText");$("resultStats").innerHTML=`<span><b>${t("strength")}</b><strong>${run.peak}</strong></span><span><b>${t("coreHits")}</b><strong>${Math.max(0,Math.ceil(run.core))}/${run.maxCore}</strong></span><span><b>${t("stars")}</b><strong>${"★".repeat(stars)}${"☆".repeat(3-stars)}</strong></span>`;[$("retry"),$("resultStage"),$("nextMission")].forEach((button)=>{button.disabled=false;button.classList.remove("primary")});$("nextMission").hidden=false;$("nextMission").disabled=!won||run.stage.n>=30;const primary=$("nextMission").disabled?$("resultStage"):$("nextMission");primary.classList.add("primary");$("result").hidden=false;$("battleLive").hidden=true;$("battleLive").inert=true;requestAnimationFrame(()=>primary.focus());window.WonderSound?.play?.(won?"win":"wrong")
   }

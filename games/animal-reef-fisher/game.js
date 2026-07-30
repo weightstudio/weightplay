@@ -759,11 +759,11 @@
     nodes.diamondText.textContent = diamondBalance;
     nodes.zoneRow.innerHTML = zones.map((zone, index) => {
       const locked = index + 1 > save.unlockedZone;
-      const activeTabStop = !locked && zone.id === selectedZone;
+      const activeTabStop = zone.id === selectedZone;
       const missionLabel = t("mission", { stage:zone.stage });
       const ruleLabel = stageT(`rule${zone.rule[0].toUpperCase()}${zone.rule.slice(1)}`);
       return `
-        <button class="zone-card stage-card region-${zone.region} ${zone.checkpoint ? "is-checkpoint" : ""} ${zone.id === selectedZone ? "is-selected" : ""} ${locked ? "is-locked" : ""}" data-zone="${zone.id}" data-stage="${zone.stage}" type="button" aria-disabled="${locked}" tabindex="${activeTabStop ? "0" : "-1"}" aria-label="${missionLabel} · ${zone.name[locale]} · ${zone.checkpoint ? t("bossMission") : ruleLabel} · ${locked ? t("locked") : `${t("goal")} ${zone.goal}`}">
+        <button class="zone-card stage-card region-${zone.region} ${zone.checkpoint ? "is-checkpoint" : ""} ${zone.id === selectedZone ? "is-selected" : ""} ${locked ? "is-locked" : ""}" data-zone="${zone.id}" data-stage="${zone.stage}" type="button" aria-disabled="${locked}" aria-current="${activeTabStop ? "step" : "false"}" tabindex="${activeTabStop ? "0" : "-1"}" aria-label="${missionLabel} · ${zone.name[locale]} · ${zone.checkpoint ? t("bossMission") : ruleLabel} · ${locked ? t("locked") : `${t("goal")} ${zone.goal}`}">
           <span class="zone-art"><img src="${zone.img}" alt="" /></span>
           <strong>${missionLabel} · ${zone.name[locale]}</strong>
           <span>${locked ? t("locked") : `${zone.checkpoint ? t("bossMission") : ruleLabel} · ${t("goal")} ${zone.goal}`}</span>
@@ -818,19 +818,24 @@
     const current = event.target?.closest?.(".zone-card");
     if (!current) return;
     if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
-    const unlockedCards = [...nodes.zoneRow.querySelectorAll('.zone-card[aria-disabled="false"]')];
-    if (!unlockedCards.length) return;
-    const currentIndex = Math.max(0, unlockedCards.indexOf(current));
+    const cards = [...nodes.zoneRow.querySelectorAll(".zone-card")];
+    if (!cards.length) return;
+    const currentIndex = Math.max(0, cards.indexOf(current));
     let nextIndex = currentIndex;
     if (event.key === "Home") nextIndex = 0;
-    else if (event.key === "End") nextIndex = unlockedCards.length - 1;
-    else if (event.key === "ArrowLeft") nextIndex = Math.max(0, currentIndex - 1);
-    else nextIndex = Math.min(unlockedCards.length - 1, currentIndex + 1);
+    else if (event.key === "End") nextIndex = cards.length - 1;
+    else {
+      const rtl = document.documentElement.dir === "rtl";
+      const direction = event.key === "ArrowLeft" ? (rtl ? 1 : -1) : (rtl ? -1 : 1);
+      nextIndex = Math.max(0, Math.min(cards.length - 1, currentIndex + direction));
+    }
     event.preventDefault();
-    unlockedCards.forEach((card, index) => {
+    cards.forEach((card, index) => {
       card.tabIndex = index === nextIndex ? 0 : -1;
+      card.classList.toggle("is-selected", index === nextIndex);
+      card.setAttribute("aria-current", index === nextIndex ? "step" : "false");
     });
-    const next = unlockedCards[nextIndex];
+    const next = cards[nextIndex];
     next.focus({ preventScroll: true });
     next.scrollIntoView({ block: "nearest", inline: "center" });
   }
@@ -2096,10 +2101,12 @@
     moveZoneFocus(event);
   });
   nodes.zoneRow.addEventListener("focusin", (event) => {
-    const card = event.target?.closest?.('.zone-card[aria-disabled="false"]');
+    const card = event.target?.closest?.(".zone-card");
     if (!card) return;
     nodes.zoneRow.querySelectorAll(".zone-card").forEach((item) => {
       item.tabIndex = item === card ? 0 : -1;
+      item.classList.toggle("is-selected", item === card);
+      item.setAttribute("aria-current", item === card ? "step" : "false");
     });
   });
   for (const button of [nodes.lureBtn, nodes.sonarPrepBtn]) {

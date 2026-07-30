@@ -56,18 +56,24 @@
   });
 
   const guardianTypes = [
-    {id:"grove", image:"../../assets/weightplay-character-moss-shell-turtle-cutout.webp", power:1.12, rate:1.0, color:"#65e3a5"},
-    {id:"spark", image:"../../assets/weightplay-character-spark-paw-fox-cutout.webp", power:.62, rate:1.75, color:"#c084fc"},
-    {id:"moon", image:"../../assets/weightplay-character-moon-cap-owl-cutout.webp", power:.86, rate:.78, slow:.28, color:"#67e8f9"},
-    {id:"forge", image:"../../assets/weightplay-character-gear-horn-rhino-cutout.webp", power:1.02, rate:.86, armorBreak:.45, color:"#f59e0b"},
-    {id:"tide", image:"../../assets/weightplay-character-bubble-fin-otter-cutout.webp", power:.74, rate:1.02, splash:.45, color:"#60a5fa"}
+    {id:"grove", image:"../../assets/animal-dice-bastion/guardian-grove.webp", power:1.12, rate:1.0, color:"#65e3a5"},
+    {id:"spark", image:"../../assets/animal-dice-bastion/guardian-spark.webp", power:.62, rate:1.75, color:"#c084fc"},
+    {id:"moon", image:"../../assets/animal-dice-bastion/guardian-moon.webp", power:.86, rate:.78, slow:.28, color:"#67e8f9"},
+    {id:"forge", image:"../../assets/animal-dice-bastion/guardian-forge.webp", power:1.02, rate:.86, armorBreak:.45, color:"#f59e0b"},
+    {id:"tide", image:"../../assets/animal-dice-bastion/guardian-tide.webp", power:.74, rate:1.02, splash:.45, color:"#60a5fa"}
   ];
   const guardianMap = Object.fromEntries(guardianTypes.map((item) => [item.id, item]));
   const enemyImages = {
-    normal:"../../assets/beast-tactician-enemy-wolf-cutout.webp",
-    fast:"../../assets/shadow-wolf-enemy-bat-cutout.webp",
-    armor:"../../assets/shadow-wolf-enemy-boar-cutout.webp",
-    boss:"../../assets/shadow-wolf-boss-behemoth-cutout.webp"
+    normal:"../../assets/animal-dice-bastion/enemy-wisp.webp",
+    fast:"../../assets/animal-dice-bastion/enemy-wisp.webp",
+    armor:"../../assets/animal-dice-bastion/enemy-beetle.webp",
+    healer:"../../assets/animal-dice-bastion/enemy-healer.webp",
+    boss0:"../../assets/animal-dice-bastion/boss-briarhorn-ram.webp",
+    boss1:"../../assets/animal-dice-bastion/boss-moonwing-owl.webp",
+    boss2:"../../assets/animal-dice-bastion/boss-deeptide-crocodile.webp",
+    boss3:"../../assets/animal-dice-bastion/boss-forge-colossus.webp",
+    boss4:"../../assets/animal-dice-bastion/boss-astral-lion.webp",
+    boss5:"../../assets/animal-dice-bastion/boss-rift-stag.webp"
   };
   const loadedImages = {};
   Object.entries(enemyImages).forEach(([key, src]) => { const image = new Image(); image.src = src; loadedImages[key] = image; });
@@ -198,13 +204,18 @@
       const count = 4 + stage.chapter + Math.floor(wave * .72) + (stage.threat === "threatSwarm" ? 3 : 0);
       const enemies = [];
       for (let i = 0; i < count; i += 1) {
-        let kind = stage.chapter >= 1 && random() < .2 ? "armor" : stage.chapter >= 1 && random() < .18 ? "fast" : "normal";
-        const hp = stage.enemyHp * (1 + wave * .11) * (kind === "armor" ? 1.65 : kind === "fast" ? .72 : 1);
-        enemies.push({kind, hp, maxHp:hp, armor:kind === "armor" ? .42 : 0, speed:stage.speed * (kind === "fast" ? 1.65 : kind === "armor" ? .72 : 1), x:-.08-i*.09, hit:false, slow:0});
+        const roll = random();
+        let kind = stage.chapter >= 2 && roll < .12 ? "healer" : stage.chapter >= 1 && roll < .3 ? "armor" : stage.chapter >= 1 && roll < .48 ? "fast" : "normal";
+        const hp = stage.enemyHp * (1 + wave * .11) * (kind === "armor" ? 1.65 : kind === "fast" ? .72 : kind === "healer" ? .9 : 1);
+        enemies.push({
+          kind, hp, maxHp:hp, armor:kind === "armor" ? .42 : 0,
+          speed:stage.speed * (kind === "fast" ? 1.65 : kind === "armor" ? .72 : kind === "healer" ? .82 : 1),
+          x:-.08-i*.09, hit:false, slow:0, healClock:kind === "healer" ? 2.4 : 0
+        });
       }
       if (stage.boss && wave === stage.waves) {
         const hp = stage.enemyHp * (9 + stage.chapter * 2.2);
-        enemies.push({kind:"boss", hp, maxHp:hp, armor:.22 + stage.chapter*.02, speed:stage.speed*.45, x:-.32, hit:false, slow:0, boss:true});
+        enemies.push({kind:`boss${stage.chapter}`, hp, maxHp:hp, armor:.22 + stage.chapter*.02, speed:stage.speed*.45, x:-.32, hit:false, slow:0, boss:true});
       }
       plan.push(enemies);
     }
@@ -316,6 +327,7 @@
   }
   function updateSimulation(dt) {
     if (!run || run.paused || run.finished) return;
+    const hadEnemies = run.enemies.length > 0;
     run.time += dt; run.rally = Math.max(0, run.rally-dt); run.rallyCooldown = Math.max(0, run.rallyCooldown-dt);
     if (!run.spawnQueue.length && !run.enemies.length) {
       run.between -= dt;
@@ -331,9 +343,19 @@
     for (const enemy of run.enemies) {
       enemy.slow = Math.max(0, enemy.slow-dt);
       enemy.x += enemy.speed * dt * (enemy.slow > 0 ? .62 : 1);
+      if (enemy.kind === "healer") {
+        enemy.healClock -= dt;
+        if (enemy.healClock <= 0) {
+          run.enemies.filter((ally) => ally !== enemy && Math.abs(ally.x-enemy.x) < .14).forEach((ally) => {
+            ally.hp = Math.min(ally.maxHp, ally.hp + ally.maxHp * .08);
+          });
+          enemy.healClock = 2.4;
+        }
+      }
       if (enemy.x >= 1.02) { enemy.hit = true; run.core -= enemy.boss ? 3 : 1; announce(t("coreHit",{core:Math.max(0,run.core)})); window.WonderSound?.play?.("wrong"); }
     }
     run.enemies = run.enemies.filter((enemy) => !enemy.hit && enemy.hp > 0);
+    if (hadEnemies && !run.enemies.length && !run.spawnQueue.length) run.between = 1.6;
     if (run.core <= 0) return finish(false);
     const attackSpeed = run.rally > 0 ? 1.72 : 1;
     for (const unit of run.board) if (unit) {
@@ -349,7 +371,6 @@
       run.charge = Math.min(100, run.charge + .48 + unit.rank*.08); run.burst = Math.min(100, run.burst + .72 + unit.rank*.12);
       unit.cooldown = 1 / type.rate;
     }
-    if (!run.spawnQueue.length && !run.enemies.length && run.wave > 0) run.between = Math.max(run.between, 1.6);
     updateBattleHud();
   }
   function updateBattleHud(force = false) {
@@ -375,13 +396,10 @@
     if (canvas.width !== width || canvas.height !== height) { canvas.width = width; canvas.height = height; }
     const w=canvas.width,h=canvas.height,d=devicePixelRatio;
     ctx.clearRect(0,0,w,h);
-    const gradient=ctx.createLinearGradient(0,0,0,h);gradient.addColorStop(0,"#163e49");gradient.addColorStop(1,"#173928");ctx.fillStyle=gradient;ctx.fillRect(0,0,w,h);
-    ctx.strokeStyle="#d8b86a";ctx.lineWidth=48*d;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(-20*d,h*.7);ctx.bezierCurveTo(w*.25,h*.18,w*.62,h*.86,w+20*d,h*.34);ctx.stroke();
-    ctx.strokeStyle="#f7d986";ctx.lineWidth=4*d;ctx.setLineDash([12*d,15*d]);ctx.stroke();ctx.setLineDash([]);
-    ctx.fillStyle="#70f0c5";ctx.shadowColor="#70f0c5";ctx.shadowBlur=18*d;ctx.beginPath();ctx.arc(w*.96,h*.34,22*d,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
     if (!run) return;
     for (const enemy of run.enemies) {
-      const x=enemy.x*w,y=h*(.68-.28*Math.sin(Math.max(0,Math.min(1,enemy.x))*Math.PI*2));
+      const progress=Math.max(0,Math.min(1,enemy.x));
+      const x=progress*w,y=h*(.72-.12*Math.sin(progress*Math.PI));
       const image=loadedImages[enemy.kind],size=(enemy.boss?72:42)*d;
       if(image?.complete)ctx.drawImage(image,x-size/2,y-size*.8,size,size);
       else{ctx.fillStyle=enemy.boss?"#8b5cf6":"#3b1b55";ctx.beginPath();ctx.arc(x,y,size*.35,0,Math.PI*2);ctx.fill()}
@@ -472,6 +490,19 @@
     snapshot(){return{locale,screen,save:JSON.parse(JSON.stringify(save)),stagePanel,run:run&&{stage:run.stage.n,board:run.board.map((unit)=>unit&&{...unit}),selected:run.selected,cursor:run.cursor,charge:run.charge,summonCost:run.summonCost,drought:run.drought,core:run.core,maxCore:run.maxCore,wave:run.wave,enemies:run.enemies.map((enemy)=>({...enemy})),burst:run.burst,rally:run.rally,rallyCooldown:run.rallyCooldown,rerolls:run.rerolls,merges:run.merges,finished:run.finished,paused:run.paused}}},
     setCharge(value){if(run){run.charge=Math.max(0,Math.min(100,Number(value)||0));updateBattleHud(true)}},
     setBoard(board){if(run){run.board=Array.from({length:15},(_,i)=>board[i]?{...board[i],cooldown:0}:null);renderBoard()}},
+    setRandomSeed(seed){if(run)run.random=seeded(Number(seed)||1)},
+    randomSample(seed,count=5000){
+      const random=seeded(Number(seed)||1),counts=Object.fromEntries(guardianTypes.map((type)=>[type.id,0]));
+      for(let i=0;i<count;i+=1)counts[guardianTypes[Math.floor(random()*guardianTypes.length)].id]+=1;
+      return counts;
+    },
+    advance(seconds){
+      if(!run)return null;
+      const wasPaused=run.paused;run.paused=false;
+      for(let elapsed=0;elapsed<seconds&&!run.finished;elapsed+=.05)updateSimulation(.05);
+      if(!run.finished)run.paused=wasPaused;
+      drawRoad();return this.snapshot();
+    },
     finish
   };
 

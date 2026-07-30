@@ -42,6 +42,12 @@ body:not(.snack-stage):not(.snack-playing) .snack-game {
   overflow: hidden;
 }
 
+/* The shared Main normalizer converts the shell back to document flow.
+   Kids Main still owns one complete live viewport before the public guide. */
+body:not(.snack-stage):not(.snack-playing) .snack-game.wp-standard-main-flow-owner {
+  min-height: 100svh !important;
+}
+
 .topbar,
 .hud,
 .menu-panel,

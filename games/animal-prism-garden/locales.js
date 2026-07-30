@@ -63,6 +63,7 @@
   Object.assign(en,guideExtras.en);
   Object.assign(zhHant,guideExtras["zh-Hant"]);
   Object.assign(zhHans,guideExtras["zh-Hans"]);
+  Object.assign(zhHans,{guideKicker:"WeightPlay 原创游戏指南"});
   for(const [code,target] of [["ja",ja],["ko",ko],["es",es],["pt-BR",pt],["fr",fr],["de",de],["it",it],["ru",ru],["hi",hi],["ar",ar]]){
     const values=compactGuide[code];
     Object.assign(target,{guideRulesDetail:values[0],guideTipsDetail:values[1],guideCampaignDetail:values[2],guideControlsTitle:values[3],guideControlsDetail:values[4],guideSaveDetail:values[5],guideFaqTitle:values[6],guideFaqDetail:values[7]});
@@ -70,12 +71,28 @@
   Object.assign(ja,{guideKicker:"WeightPlay オリジナルゲームガイド"});
   Object.assign(ko,{guideKicker:"WeightPlay 오리지널 게임 가이드"});
   Object.assign(es,{guideKicker:"Guía original de WeightPlay"});
-  Object.assign(pt,{guideKicker:"Guia original WeightPlay"});
+  Object.assign(pt,{name:"Português",guideKicker:"Guia original WeightPlay"});
   Object.assign(fr,{guideKicker:"Guide de jeu original WeightPlay"});
   Object.assign(de,{guideKicker:"Originaler WeightPlay-Spielguide"});
   Object.assign(it,{guideKicker:"Guida originale WeightPlay"});
   Object.assign(ru,{guideKicker:"Оригинальное руководство WeightPlay"});
   Object.assign(hi,{guideKicker:"WeightPlay मूल खेल मार्गदर्शिका"});
   Object.assign(ar,{guideKicker:"دليل لعبة WeightPlay الأصلية"});
+  const hardCampaign={
+    en:{difficulty:"Difficulty: Very Hard",guideCampaignDetail:"All 30 boards now use fixed but heavily braided routes. Matching endpoints are usually far apart, so long paths and narrow regions must be planned before drawing. Gates begin in Garden 5 and are limited to one to three per board, acting as constraints instead of a map of the full answer."},
+    "zh-Hant":{difficulty:"難度：極難",guideCampaignDetail:"30 關改用固定但高度交錯的路線配置；同色端點通常相距很遠，必須先規劃長路線與狹窄區域。閘門從第 5 關出現，每關只放 1 至 3 個，作為限制而不是完整答案提示。"},
+    "zh-Hans":{difficulty:"难度：极难",guideCampaignDetail:"30 关改用固定但高度交错的路线配置；同色端点通常相距很远，必须先规划长路线与狭窄区域。闸门从第 5 关出现，每关只放 1 至 3 个，作为限制而不是完整答案提示。"},
+    ja:{difficulty:"難易度：最高",guideCampaignDetail:"30面は固定された複雑な編み込み経路を使います。同色の端点は離れていることが多いため、長い経路と狭い場所を先に計画してください。ゲートは第5面から1～3個だけ登場し、答えを示す地図ではなく制約として働きます。"},
+    ko:{difficulty:"난이도: 매우 어려움",guideCampaignDetail:"30개 보드는 고정된 복잡한 교차 경로로 구성됩니다. 같은 색 끝점이 멀리 떨어져 있어 긴 경로와 좁은 구역을 먼저 계획해야 합니다. 관문은 5단계부터 보드당 1~3개만 등장하며 정답 표시가 아닌 제약으로 작동합니다."},
+    es:{difficulty:"Dificultad: muy alta",guideCampaignDetail:"Los 30 tableros usan rutas fijas y muy entrelazadas. Los extremos iguales suelen estar lejos, así que hay que planificar primero los trayectos largos y las zonas estrechas. Las puertas aparecen desde el Jardín 5, solo de una a tres por tablero, como restricciones y no como un mapa de la solución."},
+    "pt-BR":{difficulty:"Dificuldade: muito difícil",guideCampaignDetail:"Os 30 tabuleiros usam rotas fixas e bem entrelaçadas. Pontas da mesma cor costumam ficar distantes, exigindo planejar primeiro rotas longas e áreas estreitas. Os portões aparecem a partir do Jardim 5, apenas um a três por tabuleiro, como restrições e não como um mapa da solução."},
+    fr:{difficulty:"Difficulté : très élevée",guideCampaignDetail:"Les 30 grilles utilisent des routes fixes fortement entrelacées. Les extrémités identiques sont souvent éloignées : planifiez d'abord les longs trajets et les zones étroites. Les portes apparaissent dès le Jardin 5, une à trois par grille, comme contraintes plutôt que comme carte de la solution."},
+    de:{difficulty:"Schwierigkeit: Sehr schwer",guideCampaignDetail:"Alle 30 Bretter verwenden feste, stark verflochtene Pfade. Gleiche Endpunkte liegen meist weit auseinander, daher müssen lange Wege und enge Bereiche zuerst geplant werden. Tore erscheinen ab Garten 5 nur ein- bis dreimal pro Brett und dienen als Einschränkung statt als Lösungskarte."},
+    it:{difficulty:"Difficoltà: molto alta",guideCampaignDetail:"Tutte le 30 griglie usano percorsi fissi e molto intrecciati. Gli estremi dello stesso colore sono spesso lontani, quindi vanno pianificati prima i tragitti lunghi e le zone strette. I portali compaiono dal Giardino 5, solo da uno a tre per griglia, come vincoli e non come mappa della soluzione."},
+    ru:{difficulty:"Сложность: очень высокая",guideCampaignDetail:"Все 30 полей используют фиксированные, сильно переплетённые маршруты. Одинаковые концы обычно далеко друг от друга, поэтому сначала планируйте длинные пути и узкие зоны. Ворота появляются с Сада 5 по одному–три на поле и служат ограничением, а не картой решения."},
+    hi:{difficulty:"कठिनाई: अत्यंत कठिन",guideCampaignDetail:"सभी 30 बोर्ड तय लेकिन बहुत उलझे मार्गों से बने हैं। समान रंग के सिरे अक्सर दूर होते हैं, इसलिए लंबे रास्तों और संकरे क्षेत्रों की योजना पहले बनाएँ। द्वार बगीचा 5 से हर बोर्ड पर केवल एक से तीन आते हैं और उत्तर दिखाने के बजाय बाधा बनते हैं।"},
+    ar:{difficulty:"الصعوبة: شديدة جدًا",guideCampaignDetail:"تستخدم اللوحات الثلاثون مسارات ثابتة شديدة التشابك. غالبًا ما تتباعد النهايات المتطابقة، لذا خطط للمسارات الطويلة والمناطق الضيقة أولًا. تبدأ البوابات من الحديقة 5 بعدد بوابة إلى ثلاث فقط في كل لوحة، لتكون قيودًا لا خريطة للحل."}
+  };
+  for(const [code,copy] of Object.entries(hardCampaign))Object.assign({en,"zh-Hant":zhHant,"zh-Hans":zhHans,ja,ko,es,"pt-BR":pt,fr,de,it,ru,hi,ar}[code],copy);
   root.PRISM_GARDEN_LOCALES={en,"zh-Hant":zhHant,"zh-Hans":zhHans,ja,ko,es,"pt-BR":pt,fr,de,it,ru,hi,ar};
 })(window);

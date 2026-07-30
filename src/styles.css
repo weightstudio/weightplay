@@ -4103,9 +4103,17 @@ body.kids-lobby-page {
     white-space: nowrap;
   }
 
-  .kids-lobby-page .desktop-filter-rail .filter-hint,
-  .kids-lobby-page .desktop-filter-rail .filter-count {
+  .kids-lobby-page .desktop-filter-rail .filter-hint {
     display: none;
+  }
+
+  .kids-lobby-page .desktop-filter-rail .filter-count {
+    display: grid;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 5px;
+    flex: 0 0 auto;
+    place-items: center;
   }
 
   .kids-lobby-page .desktop-filter-reset {

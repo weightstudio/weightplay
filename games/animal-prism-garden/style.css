@@ -56,16 +56,15 @@ h1{font-size:clamp(2rem,5vw,3.45rem);line-height:1.02;margin:0}
 .hud{width:min(100%,760px);display:grid;grid-template-columns:repeat(3,1fr);align-items:center;gap:5px;color:#a9d8e3;font-size:.72rem}
 .hud span{text-align:center;padding:5px 7px;border:1px solid rgba(116,205,226,.18);border-radius:9px;background:rgba(12,44,57,.75)}
 .battle-objective{margin:0;color:#d7edf3;font-size:.77rem;text-align:center}
-.grid{--size:7;--board:min(520px,calc(100svh - 330px),calc(100vw - 28px));width:min(var(--board),100%);aspect-ratio:1;align-self:end;display:grid;grid-template-columns:repeat(var(--size),1fr);grid-template-rows:repeat(var(--size),1fr);gap:clamp(2px,.6vw,5px);padding:clamp(5px,1vw,10px);border:1px solid rgba(117,220,243,.34);border-radius:22px;background:linear-gradient(145deg,#092832,#071923);box-shadow:inset 0 0 36px rgba(0,0,0,.48),0 18px 42px rgba(0,0,0,.35);touch-action:none;user-select:none}
+.grid{--size:7;--board:min(520px,calc(100svh - 330px),calc(100vw - 28px));width:min(var(--board),100%);aspect-ratio:1;align-self:center;display:grid;grid-template-columns:repeat(var(--size),1fr);grid-template-rows:repeat(var(--size),1fr);gap:clamp(2px,.6vw,5px);padding:clamp(5px,1vw,10px);border:1px solid rgba(117,220,243,.34);border-radius:22px;background:linear-gradient(145deg,#092832,#071923);box-shadow:inset 0 0 36px rgba(0,0,0,.48),0 18px 42px rgba(0,0,0,.35);touch-action:none;user-select:none}
 .cell{position:relative;border:1px solid rgba(111,184,201,.15);border-radius:22%;background:rgba(14,46,55,.74);overflow:hidden}
 .cell::before{content:"";position:absolute;inset:17%;border-radius:32%;background:var(--path,transparent);opacity:0;filter:drop-shadow(0 0 5px var(--path,transparent));transition:opacity .08s,transform .08s}
 .cell.path::before{opacity:.88;transform:scale(1.07)}
 .cell.seed::after{content:"";position:absolute;inset:19%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 8%,var(--seed) 22% 60%,#07121a 64% 72%,var(--seed) 76% 100%);box-shadow:0 0 11px var(--seed),inset 0 0 0 2px rgba(255,255,255,.34)}
-.cell.gate{background:linear-gradient(135deg,rgba(11,37,48,.94),rgba(22,56,68,.94))}
-.cell.gate .gate-mark{position:absolute;inset:26% 12%;border:2px solid var(--gate);border-radius:28%;box-shadow:0 0 7px var(--gate);z-index:2;pointer-events:none}
-.cell.gate .gate-mark::before,.cell.gate .gate-mark::after{content:"";position:absolute;background:var(--gate);opacity:.78}
-.cell.gate .gate-mark::before{width:35%;height:2px;left:32%;top:-5px}
-.cell.gate .gate-mark::after{width:35%;height:2px;left:32%;bottom:-5px}
+.cell.gate{background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--gate) 10%,transparent),transparent 58%),linear-gradient(145deg,rgba(11,37,48,.96),rgba(18,48,60,.96))}
+.cell.gate .gate-mark{position:absolute;inset:22%;aspect-ratio:1;border:clamp(1px,.32vw,3px) solid color-mix(in srgb,var(--gate) 72%,#fff);border-radius:24%;background:color-mix(in srgb,var(--gate) 9%,#071923);box-shadow:0 0 0 2px rgba(3,15,22,.8),0 0 10px color-mix(in srgb,var(--gate) 65%,transparent),inset 0 0 8px rgba(255,255,255,.12);transform:rotate(45deg);z-index:2;pointer-events:none}
+.cell.gate .gate-mark::before{content:"";position:absolute;inset:27%;border:1px solid color-mix(in srgb,var(--gate) 78%,#fff);border-radius:50%;background:#071923;box-shadow:0 0 7px var(--gate)}
+.cell.gate .gate-mark::after{content:"";position:absolute;width:18%;height:18%;top:41%;left:41%;border-radius:50%;background:color-mix(in srgb,var(--gate) 84%,#fff);box-shadow:0 0 5px var(--gate)}
 .cell.blocked{animation:blocked .24s ease}
 @keyframes blocked{50%{background:#7d2938;transform:scale(.9)}}
 .tools{width:min(100%,560px);display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
@@ -93,7 +92,7 @@ body.modal-open .battle-content{pointer-events:none}
   #start{height:52px}
   .game-page-info{margin:20px 12px 42px}
   .battle-content{padding-inline:8px}
-  .grid{--board:min(calc(100vw - 16px),calc(100svh - 314px),590px);border-radius:16px}
+  .grid{--board:min(calc(100vw - 16px),calc(100svh - 314px),590px);align-self:end;border-radius:16px}
 }
 @media(max-height:500px) and (orientation:landscape){
   .stage,.battle{height:calc(100svh - 56px)}

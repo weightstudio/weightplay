@@ -153,6 +153,7 @@ function renderHud(){
   $("stabilityFill").style.transform=`scaleX(${clamp(run.stability)})`;
   $("targetList").innerHTML=run.targets.map(kind=>`<span class="target-chip ${run.delivered.some(entry=>entry.target&&entry.kind===kind)?"done":""}">${prizeName(kind)}</span>`).join("");
   $("dropBtn").disabled=run.phase!=="aim";$("restartBtn").disabled=!!run.result;
+  if(run.phase!=="lift")$("steerAction").hidden=true;
   announce(run.feedback||"phaseAim");
 }
 function beginDrop(){
@@ -232,10 +233,11 @@ function finish(won){
 function commitResult(action){if(settledDecision||$("resultPanel").hidden)return;settledDecision=true;[$("resultStagesBtn"),$("nextBtn"),$("retryBtn")].forEach(button=>button.disabled=true);action()}
 
 function updateSteerCoach(swing,counter){
-  const hint=$("phaseHint");if(!hint)return;
-  const hasInput=Math.abs(counter)>=.12,correct=hasInput&&Math.sign(counter)===-Math.sign(swing);
-  hint.dataset.steer=correct?"correct":hasInput?"wrong":"prompt";
-  hint.textContent=t(correct?"steadyGood":hasInput?"steadyWrong":swing>0?"counterLeft":"counterRight");
+  const hint=$("phaseHint"),action=$("steerAction");if(!hint||!action)return;
+  const hasInput=Math.abs(counter)>=.12,correct=hasInput&&Math.sign(counter)===-Math.sign(swing),state=correct?"correct":hasInput?"wrong":"prompt",dragLeft=swing>0;
+  hint.dataset.steer=state;action.dataset.steer=state;action.hidden=false;
+  action.textContent=t(dragLeft?"dragLeftAction":"dragRightAction");
+  hint.textContent=t(correct?"steadyGood":hasInput?"steadyWrong":dragLeft?"counterLeft":"counterRight");
 }
 
 function activeModal(){return["tutorialPanel","leavePanel","pausePanel","resultPanel"].some(id=>!$(id).hidden)}
@@ -270,8 +272,6 @@ function draw(){
     ctx.rect(clawX-clawSize/2,clawTop+clawSize*.42,clawSize*.34,clawSize*.58);
     ctx.rect(clawX+clawSize*.16,clawTop+clawSize*.42,clawSize*.34,clawSize*.58);ctx.clip();
     drawCell(images.atlas,3,clawX-clawSize/2,clawTop,clawSize,clawSize);ctx.restore();
-    const desired=run.swing>0?"←":"→",correct=Math.abs(run.stabilizer||keyStabilize)>=.12&&Math.sign(run.stabilizer||keyStabilize)===-Math.sign(run.swing);
-    ctx.fillStyle=correct?"#65ffe1":"#ffdb68";ctx.font=`900 ${clamp(min*.12,30,58)}px sans-serif`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(desired,clamp(clawX,45,w-45),clamp(clawY-clawSize*.82,32,h-32));
   }
   if(run.phase==="aim"){
     const landingX=px(claw.x),landingY=py(run.aimY),active=run.prizes.filter(prize=>prize.active);

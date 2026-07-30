@@ -206,7 +206,7 @@
   }
   canvas.addEventListener("pointerdown",event=>{
     if(!canDraw())return;canvas.setPointerCapture(event.pointerId);const point=pointerPoint(event);
-    state.drawing={points:[point],health:100,flash:0,blockedFlash:0,moves:0};state.keyboard={...point};$("drawHint").hidden=true;event.preventDefault();
+    state.drawing={points:[point],flash:0,blockedFlash:0,moves:0};state.keyboard={...point};$("drawHint").hidden=true;event.preventDefault();
   });
   canvas.addEventListener("pointermove",event=>{
     if(!state.drawing||!canDraw())return;
@@ -240,7 +240,7 @@
     if(event.key===" "||event.key==="Enter"){
       const x=state.keyboard.x,y=state.keyboard.y,length=Math.min(220,state.nectar*LINE_PIXELS_PER_NECTAR);
       state.nectar=Math.max(0,state.nectar-length/LINE_PIXELS_PER_NECTAR);
-      const stroke={points:[{x,y:y-length/2},{x,y:y+length/2}],health:100,flash:0,blockedFlash:0,moves:0};
+      const stroke={points:[{x,y:y-length/2},{x,y:y+length/2}],flash:0,blockedFlash:0,moves:0};
       stroke.anchored=strokeTouchesSolid(stroke,level(stageIndex),20);state.strokes.push(stroke);
       if(!state.started)beginWave();
       updateHud();draw();event.preventDefault();
@@ -255,13 +255,26 @@
     if(solid.kind==="platform")return point.x>=solid.x-margin&&point.x<=solid.x+solid.w+margin&&point.y>=solid.y-margin&&point.y<=solid.y+solid.h+margin;
     return Math.hypot(point.x-solid.x,point.y-solid.y)<=solid.r+margin;
   }
+  function strokeGeometryBlocked(points,spec,margin=12){
+    const blocked=point=>point.x<=margin||point.x>=1000-margin||point.y<=margin||point.y>=620-margin||spec.solids.some(solid=>pointHitsSolid(point,solid,margin));
+    for(let i=0;i<points.length;i++){
+      if(blocked(points[i]))return true;
+      if(!i)continue;
+      const a=points[i-1],b=points[i],distance=Math.hypot(b.x-a.x,b.y-a.y),steps=Math.ceil(distance/12);
+      for(let step=1;step<steps;step++){
+        const t=step/steps;
+        if(blocked({x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t}))return true;
+      }
+    }
+    return false;
+  }
   function strokeTouchesSolid(stroke,spec,margin=12){
-    return stroke.points.some(point=>spec.solids.some(solid=>pointHitsSolid(point,solid,margin)));
+    return strokeGeometryBlocked(stroke.points,spec,margin);
   }
   function tryMoveStroke(stroke,dx,dy,spec){
     if(stroke.anchored)return false;
     const next=stroke.points.map(point=>({x:point.x+dx,y:point.y+dy}));
-    const blocked=next.some(point=>point.x<18||point.x>982||point.y<18||point.y>602||spec.solids.some(solid=>pointHitsSolid(point,solid,15)));
+    const blocked=strokeGeometryBlocked(next,spec,18);
     if(blocked){
       stroke.anchored=true;stroke.blockedFlash=.3;return false;
     }
@@ -317,8 +330,7 @@
           bee.vx-=2*dot*hit.nx;bee.vy-=2*dot*hit.ny;bee.vx-=hit.nx*sign*42;bee.vy-=hit.ny*sign*42;
           bee.x=hit.x+hit.nx*sign*22;bee.y=hit.y+hit.ny*sign*22;bee.cooldown=.18;bee.route*=-1;
         }
-        bee.bounced=true;stroke.health-=moved?5+stageIndex*.1:8+stageIndex*.14;stroke.flash=.18;state.flash=.1;announce("barrierHit");
-        if(stroke.health<=0)state.strokes.splice(s,1);
+        bee.bounced=true;stroke.flash=.18;state.flash=.06;announce(moved?"barrierMoved":"barrierHeld");
         return true;
       }
     }
@@ -347,15 +359,15 @@
       if(Math.hypot(bee.x-target.x,bee.y-target.y)<48){finish(false);return}
     }
     state.bees=state.bees.filter(bee=>bee.life<18&&bee.x>-80&&bee.x<1080&&bee.y>-80&&bee.y<700);
-    state.strokes.forEach(stroke=>{stroke.flash=Math.max(0,stroke.flash-dt);stroke.blockedFlash=Math.max(0,(stroke.blockedFlash||0)-dt);if(stroke.health<100)stroke.health=Math.min(100,stroke.health+dt*.35)});
+    state.strokes.forEach(stroke=>{stroke.flash=Math.max(0,stroke.flash-dt);stroke.blockedFlash=Math.max(0,(stroke.blockedFlash||0)-dt)});
     state.flash=Math.max(0,state.flash-dt);
     if(state.nectar<16)announce("lowNectar");
     if(state.elapsed>=state.duration){finish(true);return}
     updateHud();
   }
   function scoreStars(){
-    const used=100-state.nectar,damaged=state.strokes.reduce((sum,stroke)=>sum+(100-stroke.health),0);
-    if(used<=45&&damaged<60)return 3;if(used<=72)return 2;return 1;
+    const used=100-state.nectar;
+    if(used<=45)return 3;if(used<=72)return 2;return 1;
   }
   function finish(won){
     if(state.result)return;state.result={won,stars:won?scoreStars():0};state.mode="result";
@@ -429,15 +441,15 @@
     const strokes=state.drawing?[...state.strokes,state.drawing]:state.strokes;
     ctx.lineCap="round";ctx.lineJoin="round";
     for(const stroke of strokes){
-      if(stroke.points.length<2)continue;const danger=stroke.health<38||stroke.flash>0,blocked=stroke.anchored||stroke.blockedFlash>0;
+      if(stroke.points.length<2)continue;const moved=stroke.flash>0,blocked=stroke.anchored||stroke.blockedFlash>0;
       ctx.save();ctx.beginPath();stroke.points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
-      ctx.strokeStyle=danger?"#ff746d":blocked?"#ffe47a":"#6effdf";ctx.lineWidth=16;ctx.shadowColor=danger?"#ff3f3f":blocked?"#ffc83b":"#36f5cf";ctx.shadowBlur=danger?24:18;ctx.globalAlpha=.94;ctx.stroke();
+      ctx.strokeStyle=blocked?"#ffe47a":moved?"#b8fff3":"#6effdf";ctx.lineWidth=16;ctx.shadowColor=blocked?"#ffc83b":"#36f5cf";ctx.shadowBlur=moved?24:18;ctx.globalAlpha=.94;ctx.stroke();
       ctx.strokeStyle="#ecfff8";ctx.lineWidth=4;ctx.globalAlpha=.85;ctx.stroke();ctx.restore();
     }
     if(document.activeElement===canvas){
       ctx.save();ctx.strokeStyle="#fff";ctx.lineWidth=3;ctx.setLineDash([8,6]);ctx.beginPath();ctx.arc(state.keyboard.x,state.keyboard.y,19,0,Math.PI*2);ctx.stroke();ctx.restore();
     }
-    if(state.flash>0){ctx.fillStyle=`rgba(255,105,80,${state.flash*1.5})`;ctx.fillRect(0,0,1000,620)}
+    if(state.flash>0){ctx.fillStyle=`rgba(91,255,226,${state.flash})`;ctx.fillRect(0,0,1000,620)}
   }
 
   function openModal(panel,focusId){
@@ -494,16 +506,28 @@
       strokeLengths:state.strokes.map(stroke=>stroke.points.slice(1).reduce((sum,point,index)=>sum+Math.hypot(point.x-stroke.points[index].x,point.y-stroke.points[index].y),0)),
       bees:state.bees.length,wallMoves:state.wallMoves,result:state.result,save:structuredClone(save)
     }),
-    drawBarrier(x=650){state.strokes.push({points:[{x,y:190},{x,y:560}],health:100,flash:0,blockedFlash:0,moves:0,anchored:false});state.nectar=Math.max(0,state.nectar-52);beginWave();updateHud();draw()},
-    protect(){state.strokes=[{points:[{x:300,y:315},{x:360,y:210},{x:640,y:210},{x:700,y:315},{x:680,y:560},{x:320,y:560},{x:300,y:315}],health:10000,flash:0,blockedFlash:0,moves:0,anchored:true}];beginWave();state.nectar=40},
+    drawBarrier(x=650){state.strokes.push({points:[{x,y:190},{x,y:560}],flash:0,blockedFlash:0,moves:0,anchored:false});state.nectar=Math.max(0,state.nectar-52);beginWave();updateHud();draw()},
+    protect(){state.strokes=[{points:[{x:300,y:315},{x:360,y:210},{x:640,y:210},{x:700,y:315},{x:680,y:560},{x:320,y:560},{x:300,y:315}],flash:0,blockedFlash:0,moves:0,anchored:true}];beginWave();state.nectar=40},
     advance(seconds){for(let t=0;t<seconds&&!state.result;t+=.02)update(.02);draw();return this.snapshot?.()},
     noDrawProbe(){startStage(0);this.advance(7);return this.snapshot()},
     wallProbe(){
-      const free={points:[{x:710,y:210},{x:710,y:470}],health:100,flash:0,blockedFlash:0,moves:0,anchored:false};
+      const free={points:[{x:710,y:210},{x:710,y:470}],flash:0,blockedFlash:0,moves:0,anchored:false};
       const freeBefore=free.points[0].x,freeMoved=tryMoveStroke(free,-20,0,level(0));
-      const blocked={points:[{x:710,y:335},{x:710,y:420}],health:100,flash:0,blockedFlash:0,moves:0,anchored:false};
+      const blocked={points:[{x:710,y:335},{x:710,y:420}],flash:0,blockedFlash:0,moves:0,anchored:false};
       const blockedBefore=blocked.points[0].x,blockedMoved=tryMoveStroke(blocked,-50,0,level(2));
-      return{freeMoved,freeDistance:Math.abs(free.points[0].x-freeBefore),blocked:!blockedMoved,blockedDistance:Math.abs(blocked.points[0].x-blockedBefore)};
+      const edgePinned=strokeTouchesSolid({points:[{x:4,y:220},{x:180,y:220}]},{solids:[]},18);
+      const segmentPinned=strokeTouchesSolid({points:[{x:300,y:300},{x:700,y:300}]},{solids:[{kind:"anchor",x:500,y:300,r:30}]},12);
+      return{freeMoved,freeDistance:Math.abs(free.points[0].x-freeBefore),blocked:!blockedMoved,blockedDistance:Math.abs(blocked.points[0].x-blockedBefore),edgePinned,segmentPinned};
+    },
+    durabilityProbe(){
+      startStage(0);
+      const stroke={points:[{x:700,y:190},{x:700,y:560}],flash:0,blockedFlash:0,moves:0,anchored:true};
+      state.strokes=[stroke];
+      for(let i=0;i<40;i++){
+        const bee={x:700,y:310,vx:-160,vy:0,cooldown:0,bounced:false,route:1};
+        collideLine(bee);
+      }
+      return{strokes:state.strokes.length,points:state.strokes[0]?.points.length||0,hasHealth:Object.hasOwn(stroke,"health"),anchored:stroke.anchored};
     },
     assetStatus:()=>({atlas:atlas.naturalWidth,backgrounds:themeBackgrounds.map(image=>image.naturalWidth)}),
     levelDigest:()=>Array.from({length:30},(_,index)=>{const spec=level(index);return{theme:spec.theme.terrain,dog:[spec.dog.x,spec.dog.y],hives:spec.hives.map(hive=>[hive.x,hive.y]),solids:spec.solids.map(solid=>solid.kind==="platform"?[solid.kind,solid.x,solid.y,solid.w,solid.h]:[solid.kind,solid.x,solid.y,solid.r]),speed:spec.speed}}),
