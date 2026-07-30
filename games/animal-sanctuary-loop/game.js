@@ -280,13 +280,13 @@
       const earned = Number(save.stars[stage.n]) || 0;
       button.setAttribute("aria-label", `${locked ? `${t("lockedBadge")}, ` : ""}${t(chapters[stage.chapter])}, ${stage.n}, ${rule}`);
       button.innerHTML = `<small>${locked ? t("lockedBadge") : t(chapters[stage.chapter])}</small><strong>${stage.n}</strong><span>${rule}</span><small class="stage-twist">${describeStage(stage)}</small><small>${"★".repeat(earned)}${"☆".repeat(3 - earned)}</small>`;
-      button.addEventListener("click", () => {
+      button.addEventListener("click", (event) => {
         if (heldScreenTransition === "main") return;
         if (stage.n > save.unlocked) {
           $("stageHint").textContent = t("stageLocked");
           return;
         }
-        startBattle(index);
+        startBattle(index, event);
       });
       return button;
     }));
@@ -530,7 +530,8 @@
     return { ...spawn, type, imageKey: type, speed: stats.speed + stage.chapter * 0.06, size: stats.size, cutRadius: stats.cutRadius, patrolStep: enemyIndex % 4, abilityClock: enemyIndex * 0.7, burst: false, markerIndex: type === "sentry" && markers.length ? enemyIndex % markers.length : -1, angle: 0 };
   }
 
-  function startBattle(index) {
+  function startBattle(index, event) {
+    reclaimVisibleForeground(event);
     lifecycleSuspended = false;
     const stageIndex = Math.max(0, Math.min(29, Math.trunc(index)));
     const stage = stages[stageIndex];
@@ -579,7 +580,10 @@
     updateBattleHud(true);
     $("feedback").textContent = "";
     lastTime = performance.now();
-    raf = requestAnimationFrame(frame);
+    stopLoop();
+    lifecycleSuspended = document.hidden || !windowFocused;
+    run.paused = lifecycleSuspended;
+    if (!lifecycleSuspended) raf = requestAnimationFrame(frame);
     window.WonderSound?.play?.("start");
     if (!save.tutorialSeen) requestAnimationFrame(() => openTutorial(false));
   }
@@ -612,6 +616,14 @@
     resumeLoop();
   }
 
+  function reclaimVisibleForeground(event) {
+    if (!event?.isTrusted || document.hidden) return false;
+    if (windowFocused) return true;
+    windowFocused = true;
+    resumeFromLifecycle();
+    return true;
+  }
+
   window.addEventListener("blur", () => {
     windowFocused = false;
     suspendForLifecycle();
@@ -626,6 +638,8 @@
     if (document.hidden) suspendForLifecycle();
     else resumeFromLifecycle();
   });
+  $("battle").addEventListener("pointerdown", reclaimVisibleForeground, true);
+  $("battle").addEventListener("keydown", reclaimVisibleForeground, true);
 
   function updateBattleHud(force = false) {
     if (!run) return;
@@ -1237,6 +1251,9 @@
       return {
         locale,
         screen: currentScreen,
+        windowFocused,
+        lifecycleSuspended,
+        rafActive: Boolean(raf),
         save: JSON.parse(JSON.stringify(save)),
         run: run && {
           stageIndex: run.stageIndex,

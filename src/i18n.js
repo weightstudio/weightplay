@@ -352,6 +352,20 @@
     };
   });
   Object.assign(dictionaries.ar, {
+    "filter.all_topics": "جميع المواضيع",
+    "library.all_games": "جميع الألعاب",
+    "library.recent": "لُعبت مؤخرًا",
+    "library.favorites": "المفضلة",
+    "topic.featured": "مميزة",
+    "topic.animal": "ألعاب الحيوانات",
+    "topic.puzzle": "ألغاز",
+    "topic.strategy": "استراتيجية",
+    "topic.arcade": "أركيد",
+    "category.Featured": "مميزة",
+    "category.Animal Games": "ألعاب الحيوانات",
+    "category.Puzzle": "ألغاز",
+    "category.Strategy": "استراتيجية",
+    "category.Arcade": "أركيد",
     "availability.all": "كل الحالات",
     "availability.playable": "العب الآن",
     "availability.preview": "قريبًا",

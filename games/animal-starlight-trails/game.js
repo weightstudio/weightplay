@@ -191,6 +191,7 @@
   function scheduleCompletionTransition(completion,delay=420){clearCompletionTransition();pendingCompletion=completion;completionRemaining=delay;armCompletionTransition();}
   function suspendCompletionTransition(){if(!completionTimer)return;completionRemaining=Math.max(0,completionDeadline-performance.now());clearTimeout(completionTimer);completionTimer=0;completionDeadline=0;}
   function resumeCompletionTransition(){armCompletionTransition();}
+  function reclaimVisibleForeground(event){if(!event?.isTrusted||document.hidden)return false;if(windowFocused)return true;windowFocused=true;resumeRunClock();resumeCompletionTransition();return true;}
   function totalStars(){return save.stars.reduce((sum,value)=>sum+Number(value||0),0);}
   function clearedCount(){return save.cleared.filter(Boolean).length;}
   function formatTime(ms){const seconds=Math.max(0,Math.round(ms/1000));return `${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,"0")}`;}
@@ -304,7 +305,8 @@
   function updateChapterPanel(index){stageIndex=Math.max(0,Math.min(29,index));const stage=stages[stageIndex];dom.chapterKicker.textContent=t("chapter",{number:stage.chapter});dom.chapterTitle.textContent=t(`chapter${stage.chapter}`);dom.chapterRule.textContent=t(`rule${stage.chapter}`);$$('.stage-card').forEach(card=>{const current=Number(card.dataset.index)===stageIndex;card.classList.toggle("selected",current);card.classList.toggle("centered",current);card.tabIndex=current?0:-1;if(current)card.setAttribute("aria-current","true");else card.removeAttribute("aria-current")});}
   function focusStageOwner(card){if(!card)return;card.scrollIntoView({inline:"center",block:"nearest",behavior:"auto"});updateChapterPanel(Number(card.dataset.index));card.focus({preventScroll:true});requestAnimationFrame(()=>updateChapterPanel(Number(card.dataset.index)))}
 
-  function startStage(index){
+  function startStage(index,event){
+    reclaimVisibleForeground(event);
     clearCompletionTransition();stageIndex=index;path=[];hints=0;mistakes=0;restarts=0;hintNode=null;completing=false;runElapsed=0;runClockStartedAt=0;dom.result.hidden=true;dom.leave.hidden=true;setBattleLeaveCoverage(false);setResultCoverage(false);setScreen("battle");resumeRunClock();const stage=currentStage();graphFocusIndex=stage.forcedStart??stage.points.map((_,node)=>node).find(validStart)??0;buildGraph();renderBattleLabels();updateGraph();setFeedback(t("ready"));requestAnimationFrame(()=>dom.svg.querySelector(`[data-node="${graphFocusIndex}"]`)?.focus({preventScroll:true}));analytics("game_start",{stage:index+1});window.dispatchEvent(new CustomEvent("weightplay:battle-open"));
   }
 
@@ -388,8 +390,10 @@
 
   dom.svg.addEventListener("pointermove",event=>{if(activePointer!==event.pointerId||path.length===0||completing)return;const rect=dom.svg.getBoundingClientRect();const x=(event.clientX-rect.left)/rect.width*100;const y=(event.clientY-rect.top)/rect.height*100;let nearest=-1,best=8.5;currentStage().points.forEach(([nx,ny],index)=>{const distance=Math.hypot(nx-x,ny-y);if(distance<best){best=distance;nearest=index;}});if(nearest>=0&&nearest!==path.at(-1))chooseNode(nearest);});
   const endPointer=event=>cancelActivePointer(event.pointerId);dom.svg.addEventListener("pointerup",endPointer);dom.svg.addEventListener("pointercancel",endPointer);dom.svg.addEventListener("lostpointercapture",endPointer);window.addEventListener("blur",()=>{windowFocused=false;cancelActivePointer();pauseRunClock();suspendCompletionTransition();});window.addEventListener("focus",()=>{windowFocused=true;resumeRunClock();resumeCompletionTransition();});
+  dom.battle.addEventListener("pointerdown",reclaimVisibleForeground,true);
+  dom.battle.addEventListener("keydown",reclaimVisibleForeground,true);
   [dom.undo,dom.restart,dom.hint].forEach(control=>control.addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();}));
-  dom.stageRail.addEventListener("click",event=>{const card=event.target.closest(".stage-card.unlocked");if(!card)return;startStage(Number(card.dataset.index));});
+  dom.stageRail.addEventListener("click",event=>{const card=event.target.closest(".stage-card.unlocked");if(!card)return;startStage(Number(card.dataset.index),event);});
   dom.stageRail.addEventListener("keydown",event=>{const card=event.target.closest?.(".stage-card");if(!card)return;const cards=[...dom.stageRail.querySelectorAll(".stage-card")],current=cards.indexOf(card),rtl=document.documentElement.dir==="rtl";let next=null;if(event.key==="Home")next=0;else if(event.key==="End")next=cards.length-1;else if(event.key==="ArrowRight")next=current+(rtl?-1:1);else if(event.key==="ArrowLeft")next=current+(rtl?1:-1);if(next===null)return;event.preventDefault();focusStageOwner(cards[Math.max(0,Math.min(cards.length-1,next))])});
   dom.stageRail.addEventListener("wonder:stage-snap",event=>{const card=event.detail?.card||document.elementFromPoint(innerWidth/2,Math.min(innerHeight-120,innerHeight*.78))?.closest?.(".stage-card");if(card)updateChapterPanel(Number(card.dataset.index));});
   document.addEventListener("keydown",event=>{if(event.repeat&&heldLeaveDecisionKeys.has(event.key)){event.preventDefault();event.stopImmediatePropagation();}},true);
@@ -405,7 +409,7 @@
       stages: stages.map(stage => ({id:stage.id,route:[...stage.route],edges:stage.edges.length,chapter:stage.chapter})),
       leaveCopy: () => Object.fromEntries(Object.entries(STRINGS).map(([key,strings])=>[key,[strings.leaveTitle,strings.leaveText,strings.continueBattle,strings.returnStages]])),
       startStage,
-      snapshot: () => ({stage:stageIndex+1,path:[...path],hints,mistakes,restarts,elapsed:elapsedPlayTime(),screen:document.body.dataset.screen,resultVisible:!dom.result.hidden,pointerOwner:activePointer,save:JSON.parse(JSON.stringify(save))}),
+      snapshot: () => ({stage:stageIndex+1,path:[...path],hints,mistakes,restarts,elapsed:elapsedPlayTime(),screen:document.body.dataset.screen,resultVisible:!dom.result.hidden,pointerOwner:activePointer,windowFocused,completionPending:Boolean(pendingCompletion),completionTimerActive:Boolean(completionTimer),save:JSON.parse(JSON.stringify(save))}),
     };
   }
   boot();
