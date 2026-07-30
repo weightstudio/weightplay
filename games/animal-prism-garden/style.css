@@ -97,6 +97,7 @@ body.modal-open .battle-content{pointer-events:none}
   .grid{--board:min(calc(100vw - 16px),calc(100svh - 314px),590px);align-self:end;border-radius:16px}
 }
 @media(max-height:500px) and (orientation:landscape){
+  .hero>img{width:min(100%,380px);height:auto;justify-self:center}
   .stage,.battle{height:calc(100svh - 56px)}
   .scene-header{height:48px}
   .battle .scene-header{padding:2px 10px}
