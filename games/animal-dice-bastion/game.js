@@ -173,7 +173,11 @@
 
   function setStagePanel(panel, focus = true) {
     stagePanel = panel;
-    $("stageRail").hidden = panel !== "stages";
+    const rail=$("stageRail"),stagesActive=panel==="stages";
+    rail.hidden=false;
+    rail.classList.toggle("stage-panel-suspended",!stagesActive);
+    rail.inert=!stagesActive;
+    rail.setAttribute("aria-hidden",String(!stagesActive));
     $("teamPanel").hidden = panel !== "team";
     $("equipmentPanel").hidden = panel !== "equipment";
     [["team",$("teamTab")],["stages",$("stagesTab")],["equipment",$("equipmentTab")]].forEach(([name, button]) => {

@@ -18,7 +18,24 @@
     try { localStorage.setItem(key, value); } catch {}
   };
 
-  let locale = read("weightPlayLocale") || read("wp-locale") || window.WonderI18n?.actualLocale?.() || "en";
+  const routeLocales = {
+    en: "en",
+    "zh-tw": "zh-Hant",
+    "zh-cn": "zh-Hans",
+    ja: "ja",
+    ko: "ko",
+    es: "es",
+    "pt-br": "pt-BR",
+    fr: "fr",
+    de: "de",
+    it: "it",
+    ru: "ru",
+    hi: "hi",
+    ar: "ar",
+  };
+  const routeSegment = location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
+  const routeLocale = routeLocales[routeSegment];
+  let locale = routeLocale || read("weightPlayLocale") || read("wp-locale") || window.WonderI18n?.actualLocale?.() || "en";
   let screen = "main";
   let selected = 0;
   let levelIndex = 0;
@@ -39,6 +56,11 @@
   try { progress = JSON.parse(read(progressKey) || "[]"); } catch { progress = []; }
   if (!Array.isArray(progress)) progress = [];
   if (!codes.includes(locale)) locale = "en";
+  if (routeLocale) {
+    write("weightPlayLocale", locale);
+    write("wp-locale", locale);
+    try { window.WonderI18n?.setLocale?.(locale); } catch {}
+  }
   while (selected < 29 && progress[selected]) selected += 1;
 
   function t(key, vars = {}) {

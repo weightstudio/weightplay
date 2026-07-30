@@ -94,7 +94,7 @@
     const generation=++sceneGeneration,name=sceneName(id);
     removeStaleGeneratedMainHeaders();
     if(locale){document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr"}
-    ["mainPage","stagePage","battlePage"].forEach(x=>{const root=$("#"+x),inactive=x!==id;root.hidden=inactive;if(inactive)root.style.setProperty("display","none","important");else root.style.removeProperty("display")});
+    ["mainPage","stagePage","battlePage"].forEach(x=>{const root=$("#"+x),inactive=x!==id;root.hidden=inactive;root.inert=inactive;if(inactive){root.setAttribute("aria-hidden","true");root.style.setProperty("display","none","important")}else{root.removeAttribute("aria-hidden");root.style.removeProperty("display")}});
     prepareSceneHeader(id,name);
     document.body.dataset.screen=name;
     ["main","stage","battle"].forEach(scene=>document.body.classList.toggle(`wp-shell-${scene}-active`,scene===name));

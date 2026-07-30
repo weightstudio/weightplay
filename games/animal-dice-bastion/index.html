@@ -95,19 +95,19 @@
         <span class="stage-header-spacer" aria-hidden="true"></span>
       </header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
-      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Bastion Stage selection"></div>
-      <section id="teamPanel" class="prep-panel" hidden>
+      <div id="stageRail" class="stage-rail" role="tabpanel" aria-labelledby="stagesTab" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Bastion Stage selection"></div>
+      <section id="teamPanel" class="prep-panel" role="tabpanel" aria-labelledby="teamTab" hidden>
         <img src="../../assets/weightplay-character-moss-shell-turtle-cutout.webp" alt="">
         <div><small data-i18n="teamKicker">Bastion keeper</small><strong data-i18n="taroName">Moss Shell Taro</strong><p data-i18n="teamText">Taro steadies every guardian. Merge timing and active orders decide the defense.</p></div>
       </section>
-      <section id="equipmentPanel" class="prep-panel workshop" hidden>
+      <section id="equipmentPanel" class="prep-panel workshop" role="tabpanel" aria-labelledby="equipmentTab" hidden>
         <header><div><small data-i18n="workshopKicker">Permanent upgrades</small><strong data-i18n="workshop">Bastion Workshop</strong></div><b id="dustValue"></b></header>
         <div id="upgradeList" class="upgrade-list"></div><p id="upgradeFeedback" aria-live="polite"></p>
       </section>
       <nav class="stage-tabs" aria-label="Stage tabs" role="tablist">
-        <button id="teamTab" type="button" role="tab" data-panel="team" data-i18n="team">Team</button>
-        <button id="stagesTab" type="button" role="tab" data-panel="stages" data-i18n="stages">Stages</button>
-        <button id="equipmentTab" type="button" role="tab" data-panel="equipment" data-i18n="equipment">Equipment</button>
+        <button id="teamTab" type="button" role="tab" aria-controls="teamPanel" data-panel="team" data-i18n="team">Team</button>
+        <button id="stagesTab" type="button" role="tab" aria-controls="stageRail" data-panel="stages" data-i18n="stages">Stages</button>
+        <button id="equipmentTab" type="button" role="tab" aria-controls="equipmentPanel" data-panel="equipment" data-i18n="equipment">Equipment</button>
       </nav>
     </div>
   </section>
