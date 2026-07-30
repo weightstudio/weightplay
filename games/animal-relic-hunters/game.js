@@ -1358,7 +1358,14 @@
       if (active) layer.setAttribute("aria-hidden", "true");
       else layer.removeAttribute("aria-hidden");
     });
-    if (active) requestAnimationFrame(() => (nodes.resultNextBtn.disabled ? nodes.resultMenuBtn : nodes.resultNextBtn).focus({ preventScroll: true }));
+    if (active) {
+      requestAnimationFrame(() => {
+        const primaryAction = resultNextExpedition
+          ? nodes.resultNextBtn
+          : (resultMapIsPrimary ? nodes.resultMenuBtn : nodes.retryBtn);
+        primaryAction.focus({ preventScroll: true });
+      });
+    }
   }
 
   function setDraftModalActive(active, restoreBattleFocus = true) {
@@ -1431,8 +1438,8 @@
     nodes.resultNextBtn.setAttribute("aria-disabled", String(!hasNext));
     nodes.resultNextBtn.classList.toggle("primary-btn", hasNext);
     nodes.resultNextBtn.classList.toggle("menu-btn", !hasNext);
-    nodes.resultMenuBtn.className = "menu-btn";
-    nodes.retryBtn.className = "menu-btn retry-btn";
+    nodes.resultMenuBtn.className = resultMapIsPrimary ? "primary-btn" : "menu-btn";
+    nodes.retryBtn.className = !hasNext && !resultMapIsPrimary ? "primary-btn retry-btn" : "menu-btn retry-btn";
   }
 
   const stageTabText = {
@@ -2589,27 +2596,21 @@
     return getLocale() === "zh-Hant" ? expedition.zh : getLocale() === "es" ? expedition.es : expedition.en;
   }
 
-  const levelValueLabels = {
-    en: "Level",
-    "zh-Hant": "等級",
-    "zh-Hans": "等级",
-    ja: "レベル",
-    ko: "레벨",
-    es: "Nivel",
-    "pt-BR": "Nível",
-    fr: "Niveau",
-    de: "Stufe",
-    it: "Livello",
-    ru: "Уровень",
-    hi: "स्तर",
-    ar: "المستوى",
+  const resultLevelLabels = {
+    en: "Saved Level",
+    "zh-Hant": "保存等級",
+    "zh-Hans": "保存等级",
+    ja: "保存レベル",
+    ko: "저장된 레벨",
+    es: "Nivel guardado",
+    "pt-BR": "Nível salvo",
+    fr: "Niveau sauvegardé",
+    de: "Gespeicherte Stufe",
+    it: "Livello salvato",
+    ru: "Сохранённый уровень",
+    hi: "सहेजा गया स्तर",
+    ar: "المستوى المحفوظ",
   };
-
-  function formatLevelValue(level) {
-    const locale = getLocale();
-    const label = levelValueLabels[locale] || levelValueLabels.en;
-    return `${label} ${Math.max(1, Math.floor(Number(level) || 1))}`;
-  }
 
   function renderResultSummary({ cleared, newlyUnlocked = 0, won = false }) {
     if (!nodes.resultSummary) return;
@@ -2620,7 +2621,7 @@
         ? t("resultAllCleared")
         : t("resultReady", { region: expeditionName(highestUnlocked) });
     const rows = [
-      [t("resultSummaryLevel"), String(Math.max(1, Math.floor(Number(profile.level) || 1)))],
+      [resultLevelLabels[getLocale()] || resultLevelLabels.en, String(Math.max(1, Math.floor(Number(profile.level) || 1)))],
       [t("resultSummaryRooms"), `${cleared}/${ROOMS_PER_EXPEDITION}`],
       [t("resultSummaryKeys"), String(state.runKeys)],
       [t("resultSummaryGold"), String(state.runGold)],
@@ -3111,29 +3112,59 @@
         ctx.fillText("$", pickup.x, pickup.y + 3);
         ctx.restore();
       } else if (pickup.type === "chest") {
-        // Draw locked chest box
+        ctx.save();
+        ctx.translate(pickup.x, pickup.y);
+        ctx.shadowColor = "#fbbf24";
+        ctx.shadowBlur = 10;
+        ctx.fillStyle = "#78350f";
+        ctx.strokeStyle = "#fde68a";
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.roundRect(-23, -17, 46, 34, 6);
+        ctx.fill();
+        ctx.stroke();
+        ctx.shadowBlur = 0;
         ctx.fillStyle = "#a16207";
-        ctx.fillRect(pickup.x - 20, pickup.y - 15, 40, 30);
-        ctx.strokeStyle = "#fbbf24";
-        ctx.lineWidth = 2;
-        ctx.strokeRect(pickup.x - 20, pickup.y - 15, 40, 30);
+        ctx.fillRect(-21, -4, 42, 17);
         ctx.fillStyle = "#fbbf24";
-        ctx.font = "12px Outfit";
-        ctx.fillText("CHEST", pickup.x - 20, pickup.y - 20);
+        ctx.fillRect(-3, -16, 6, 32);
+        ctx.beginPath();
+        ctx.arc(0, -1, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#3b2500";
+        ctx.beginPath();
+        ctx.arc(0, -2, 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillRect(-1, -1, 2, 6);
+        ctx.restore();
       } else if (pickup.type === "portal") {
-        // Draw glowing cyan portal
+        const pulse = 1 + Math.sin(performance.now() / 180) * 0.08;
+        ctx.save();
+        ctx.translate(pickup.x, pickup.y);
+        ctx.scale(pulse, pulse);
+        ctx.shadowColor = "#22d3ee";
+        ctx.shadowBlur = 14;
         ctx.strokeStyle = "#22d3ee";
         ctx.lineWidth = 3;
         ctx.beginPath();
-        ctx.arc(pickup.x, pickup.y, 25, 0, Math.PI * 2);
+        ctx.arc(0, 0, 25, 0, Math.PI * 2);
         ctx.stroke();
         ctx.fillStyle = "rgba(34, 211, 238, 0.15)";
         ctx.beginPath();
-        ctx.arc(pickup.x, pickup.y, 25, 0, Math.PI * 2);
+        ctx.arc(0, 0, 25, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = "#22d3ee";
-        ctx.font = "12px Outfit";
-        ctx.fillText("PORTAL", pickup.x - 22, pickup.y - 32);
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = "#a5f3fc";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(0, 0, 16, -Math.PI * 0.72, Math.PI * 0.72);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(-5, -8);
+        ctx.lineTo(5, 0);
+        ctx.lineTo(-5, 8);
+        ctx.stroke();
+        ctx.restore();
       }
     });
 
@@ -3770,6 +3801,14 @@
             enemy.y = state.playerY;
           });
           return this.snapshot();
+        },
+        previewObjectivePickups() {
+          state.pickups = [
+            { x: 300, y: ARENA_HEIGHT / 2, type: "chest" },
+            { x: 500, y: ARENA_HEIGHT / 2, type: "portal" },
+          ];
+          drawCanvasFrame();
+          return state.pickups.map((pickup) => pickup.type);
         },
         campaignPreview() {
           return {

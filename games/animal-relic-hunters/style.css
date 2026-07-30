@@ -2124,6 +2124,11 @@ body.relic-result .weightplay-version-badge {
   display: none !important;
 }
 
+/* Release builds never expose the shared development-version badge. */
+.weightplay-version-badge {
+  display: none !important;
+}
+
 body.relic-result .relic-app {
   width: 100%;
   height: 100%;
@@ -2896,8 +2901,11 @@ body.relic-playing.relic-result .result-ad-reserve {
 
   body.relic-playing.relic-result #resultTitle { grid-column: 1 / -1; font-size: 58px; line-height: 68px; }
   body.relic-playing.relic-result .result-score-box { grid-column: 1; grid-row: 2; margin: 0; }
-  body.relic-playing.relic-result .result-flavor { grid-column: 1; grid-row: 3; margin: 0; font-size: 28px; line-height: 38px; }
-  body.relic-playing.relic-result .result-summary { grid-column: 2; grid-row: 2 / 4; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; font-size: 26px; line-height: 34px; }
+  body.relic-playing.relic-result .result-flavor { grid-column: 1; grid-row: 3; margin: 0; font-size: 30px; line-height: 40px; }
+  body.relic-playing.relic-result .result-summary { grid-column: 2; grid-row: 2 / 4; grid-template-columns: repeat(2, minmax(0, 1fr)); align-content: center; gap: 12px; margin: 0; }
+  body.relic-playing.relic-result .result-summary-row { min-height: 72px; padding: 10px 14px; gap: 12px; }
+  body.relic-playing.relic-result .result-summary-row span { font-size: 28px; line-height: 36px; letter-spacing: .02em; }
+  body.relic-playing.relic-result .result-summary-row strong { font-size: 30px; line-height: 38px; }
   body.relic-playing.relic-result .result-action-shell { padding: 10px 18px; }
   body.relic-playing.relic-result .result-action-shell .result-btn-row { gap: 18px; }
   body.relic-playing.relic-result .result-action-shell .result-btn-row button { height: 112px; min-height: 112px; font-size: 30px; line-height: 38px; }

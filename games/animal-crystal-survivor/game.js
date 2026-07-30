@@ -479,7 +479,7 @@
   ];
 
   const images = {};
-  let locale = window.WonderI18n?.locale?.() || localStorage.getItem(localeKey) || "en";
+  let locale = initialLocale();
   let save = loadSave();
   let state = makeState();
   let playfieldLabelSignature = "";
@@ -500,6 +500,31 @@
   const keys = new Set();
   const movementKeys = new Set(["arrowleft", "arrowright", "arrowup", "arrowdown", "a", "d", "w", "s"]);
 
+  function readStorage(key) {
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  }
+
+  function writeStorage(key, value) {
+    try {
+      localStorage.setItem(key, value);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  function initialLocale() {
+    try {
+      return window.WonderI18n?.locale?.() || readStorage(localeKey) || "en";
+    } catch {
+      return readStorage(localeKey) || "en";
+    }
+  }
+
   function playSound(name, gap = 0.08) {
     const now = performance.now();
     if (soundGate[name] && now - soundGate[name] < gap * 1000) return;
@@ -509,7 +534,7 @@
 
   function loadSave() {
     try {
-      const stored = JSON.parse(localStorage.getItem(saveKey) || "{}");
+      const stored = JSON.parse(readStorage(saveKey) || "{}");
       const source = stored && typeof stored === "object" && !Array.isArray(stored) ? stored : {};
       const wholeNumber = (value, fallback, minimum = 0) => {
         const parsed = Number(value);
@@ -536,7 +561,7 @@
   }
 
   function persist() {
-    localStorage.setItem(saveKey, JSON.stringify(save));
+    writeStorage(saveKey, JSON.stringify(save));
   }
 
   function t(key, data = {}) {
@@ -703,9 +728,15 @@
     clearCharmConfirmation();
     const current = window.WonderI18n?.actualLocale?.();
     const requested = next === "zh-Hant" && current === "zh-Hans" ? current : next || "en";
-    if (current !== requested) window.WonderI18n?.setLocale?.(requested);
+    if (current !== requested) {
+      try {
+        window.WonderI18n?.setLocale?.(requested);
+      } catch {
+        // The game keeps this session usable when browser policy blocks locale persistence.
+      }
+    }
     locale = window.WonderI18n?.legacyLocale?.(requested) || requested;
-    localStorage.setItem(localeKey, requested);
+    writeStorage(localeKey, requested);
     document.documentElement.lang = requested;
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
