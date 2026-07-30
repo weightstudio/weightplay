@@ -421,7 +421,7 @@ window.WeightPlayGameInfoLocales.es = {
         "Enfoque",
         "Resolución de problemas"
       ],
-      "intro": "Animal Star Memory es un viaje de 30 etapas de combinación de imágenes a través del cielo nocturno. Los jugadores ayudan a seis amigables Star Keepers a reconectar constelaciones de animales encontrando cartas iguales. La campaña comienza con parejas clásicas, luego cambia el funcionamiento de la memoria mediante vistas previas de apertura, cambios de luna después de errores, orden requerido de animales y cambios de constelaciones después de coincidencias exitosas. Cada quinta etapa es un Keeper Check, y la etapa 30 combina las cuatro reglas avanzadas en un tablero completo de doce pares.",
+      "intro": "Animal Star Memory es un viaje de 30 etapas de parejas por el cielo nocturno. Cada carta permanece en la misma posición durante toda la etapa; las vistas previas, los tableros grandes, los límites de movimientos y el orden requerido aumentan el reto. Cada quinta etapa es una prueba del guardián y la etapa 30 combina una vista previa de doce parejas con memoria ordenada.",
       "story": [
         "El Animal Star Map alguna vez ayudó a los animales de bosques, ríos, praderas y polares a encontrar el camino a casa después del atardecer. Una suave lluvia de meteoritos no destruyó el mapa, sino que separó cada luz animal en dos cartas ocultas. El jugador se convierte en el joven lector de mapas de los Guardianes y reconecta cada par para que su constelación pueda brillar nuevamente.",
         "El gato, el oso, el búho, el león, el pingüino y el koala imparten cada uno una lección de cinco etapas. Pasar un Keeper Check repara esa parte del cielo. Completar el último Koala Grand Star Check significa que las doce constelaciones de animales han regresado a sus rutas adecuadas."
@@ -430,47 +430,47 @@ window.WeightPlayGameInfoLocales.es = {
         "Elija un escenario desbloqueado del riel horizontal.",
         "Voltee dos cartas y recuerde ambas posiciones.",
         "Un par coincidente permanece despejado; una discrepancia se oculta nuevamente después de una breve pausa visible.",
-        "Lea la insignia de la regla porque las etapas posteriores pueden obtener una vista previa, mezclar, requerir un par con nombre a continuación o mover símbolos ocultos después de una coincidencia.",
+        "Cada carta conserva su animal y posición hasta que termina la etapa, así que cada revelación ofrece información fiable.",
+        "Lea la insignia porque algunas etapas muestran una vista previa o piden una pareja concreta.",
         "Elimina todos los pares dentro del límite de movimientos para desbloquear la siguiente etapa."
       ],
       "systems": [
-        "Las etapas clásicas mantienen todos los símbolos ocultos en su lugar, haciendo que la posición recuerde la única regla.",
+        "Posiciones fijas: cada animal permanece en su carta original después de una vista previa, un fallo o un acierto.",
         "Las etapas de vista previa revelan brevemente el tablero completo y luego ocultan cada tarjeta antes de que comience la entrada.",
-        "Las etapas de Moon Shuffle mueven los mismos símbolos inigualables después de una suposición incorrecta, por lo que las ubicaciones antiguas deben actualizarse en lugar de repetirse a ciegas.",
         "Las etapas ordenadas nombran la pareja de animales que debe eliminarse a continuación. Un par correcto que se encuentra desordenado se muestra y luego se oculta sin avanzar.",
-        "Las etapas de Constellation Shift rotan todos los símbolos ocultos restantes después de un par exitoso, cambiando el mapa y preservando cada par requerido.",
+        "Los tableros grandes y los límites de movimientos aumentan la dificultad sin borrar posiciones ya aprendidas.",
         "Movimientos, parejas, mejor racha, puntuación, estrellas, desbloqueos de etapas y mejores puntuaciones proporcionan información sobre el progreso local. No se utiliza ninguna tabla de clasificación."
       ],
       "progression": [
-        "Las etapas 1 a 5 enseñan la combinación de posiciones clásica y finalizan con la verificación previa de apertura de Cat. Las etapas 6 a 10 acortan la vista previa y terminan con la apertura aleatoria única de Bear.",
-        "Las etapas 11 a 15 introducen cambios de luna después de errores. Las etapas 16 a 20 requieren el orden de los animales mostrado, y eventualmente combinan el orden con la mezcla en el cheque del León.",
-        "Las etapas 21 a 25 rotan la constelación restante después de cada éxito. Las etapas 26 a 30 mezclan vista previa, orden, barajado y rotación, culminando en un final de doce pares con todas las reglas activas."
+        "Las etapas 1 a 5 enseñan las posiciones clásicas. Las etapas 6 a 10 acortan las vistas previas mientras crece el tablero.",
+        "Las etapas 11 a 15 refuerzan el recuerdo estable. Las etapas 16 a 20 exigen el orden de animales mostrado.",
+        "Las etapas 21 a 25 llegan a doce parejas fijas. Las etapas 26 a 30 combinan vista previa y orden en tableros grandes."
       ],
       "strategyTips": [
         "Durante una vista previa, escanee en filas o grupos pequeños en lugar de intentar nombrar todo el tablero a la vez.",
-        "Después de una mezcla lunar, descarta posiciones antiguas y reconstruye el mapa a partir de nuevas revelaciones.",
+        "Confía en las posiciones recordadas: las cartas no se mueven durante una etapa.",
         "En etapas ordenadas, localice el animal solicitado antes de gastar movimientos en otras parejas conocidas.",
-        "Después de un cambio de constelación, recuerde qué símbolos aún estaban ocultos, pero no confíe en sus posiciones anteriores.",
-        "Utilice la pausa de discrepancia visible para comparar ambas cartas antes de que se den la vuelta."
+        "Utilice la pausa de discrepancia visible para comparar ambas cartas antes de que se den la vuelta.",
+        "En tableros grandes, complete una zona pequeña antes de revisar la siguiente."
       ],
-      "designNote": "El juego comienza con una regla de coincidencia familiar para que los controles sean legibles de inmediato, pero su profundidad proviene de cambiar la información que sigue siendo confiable. La vista previa prueba las primeras impresiones, la mezcla prueba la actualización de la memoria, el orden cambia la prioridad del objetivo y la rotación hace que un movimiento exitoso altere la siguiente decisión. Estas mecánicas utilizan las mismas tarjetas con imágenes grandes en las pantallas táctiles y los teclados, evitando una complejidad de control adicional. Los Friendly Keeper Checks reemplazan el combate porque la historia trata sobre la reparación de un mapa estelar compartido. Los límites de movimiento crean un final claro mientras que los reintentos siguen siendo inmediatos y de apoyo.",
-      "parent": "Animal Star Memory puede respaldar el recuerdo visual, la atención, la actualización flexible y el seguimiento de una secuencia corta. Los adultos pueden preguntar qué ubicaciones siguen siendo confiables después de una mezcla o por qué se debe encontrar primero un par ordenado. El juego no tiene combates, requisitos de cuenta, clasificación pública ni solicitud de publicidad en esta página para niños. Las estrellas y el Informe de habilidades fomentan la retroalimentación local sobre el juego, no una evaluación de inteligencia, escuela, salud o desarrollo.",
+      "designNote": "La dificultad crece con tableros estables más grandes, vistas previas breves, límites de movimientos y objetivos ordenados. Las posiciones aprendidas siempre siguen siendo fiables, por lo que el juego recompensa la atención en lugar de obligar a adivinar.",
+      "parent": "Animal Star Memory puede apoyar el recuerdo visual, la atención y el seguimiento de una secuencia corta. Los adultos pueden preguntar qué dos posiciones forman una pareja o por qué debe encontrarse primero un animal concreto. No hay combate, cuenta, clasificación pública ni publicidad.",
       "faq": [
         [
           "¿Cuántas etapas hay?",
           "Hay 30 etapas con nombre en seis lecciones, con Keeper Checks en 5, 10, 15, 20, 25 y 30."
         ],
         [
-          "¿Qué sucede en una etapa Moon Shuffle?",
-          "Después de una discrepancia, los mismos símbolos no coincidentes se mueven a diferentes posiciones ocultas."
+          "¿Las cartas se mueven después de revelarlas?",
+          "No. Cada carta conserva el mismo animal y posición hasta terminar o reiniciar la etapa."
         ],
         [
           "¿Por qué se escondió de nuevo una pareja coincidente?",
           "En una etapa ordenada, la retroalimentación nombra qué pareja de animales debe eliminarse a continuación."
         ],
         [
-          "¿Qué hace Constellation Shift?",
-          "Después de un par exitoso, todos los símbolos ocultos restantes giran una posición."
+          "¿Cómo aumentan la dificultad las etapas posteriores?",
+          "Usan tableros mayores, vistas previas más cortas, límites de movimientos y objetivos ordenados sin mover cartas recordadas."
         ],
         [
           "¿Una vista previa consume movimientos?",

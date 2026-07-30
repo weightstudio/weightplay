@@ -10,11 +10,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="robots" content="index,follow" />
-    <meta name="description" content="《动物星星翻牌》是一段有 30 关的夜空图片配对旅程。玩家帮助六位友善的星光守护者重新连起动物星座。前期从经典配对开始，之后透过开场预览、答错后月光洗牌、指定动物顺序，以及答对后星座移位，改变每一关需要使用的记忆方法。每五关都有一次守护者检查，第 30 关会在完整十二组牌面同时使用四种进阶规则。" />
+    <meta name="description" content="《动物星星翻牌》是一段有 30 关的夜空图片配对旅程。同一局内每张卡牌的位置永远固定，后期透过开场预览、更大牌面、步数限制与指定动物顺序提高挑战。每五关都有一次守护者检查，第 30 关会预览完整十二组牌面，再依提示顺序完成配对。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="动物星星翻牌 | WeightPlay" />
-    <meta property="og:description" content="《动物星星翻牌》是一段有 30 关的夜空图片配对旅程。玩家帮助六位友善的星光守护者重新连起动物星座。前期从经典配对开始，之后透过开场预览、答错后月光洗牌、指定动物顺序，以及答对后星座移位，改变每一关需要使用的记忆方法。每五关都有一次守护者检查，第 30 关会在完整十二组牌面同时使用四种进阶规则。" />
+    <meta property="og:description" content="《动物星星翻牌》是一段有 30 关的夜空图片配对旅程。同一局内每张卡牌的位置永远固定，后期透过开场预览、更大牌面、步数限制与指定动物顺序提高挑战。每五关都有一次守护者检查，第 30 关会预览完整十二组牌面，再依提示顺序完成配对。" />
     <meta property="og:url" content="https://weightplay.com/zh-cn/games/star-memory/" />
     <meta property="og:image" content="https://weightplay.com/assets/memory-cover.png" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -46,7 +46,7 @@
   "alternateName": "動物星星翻牌",
   "url": "https://weightplay.com/zh-cn/games/star-memory/",
   "image": "https://weightplay.com/assets/memory-cover.png",
-  "description": "《动物星星翻牌》是一段有 30 关的夜空图片配对旅程。玩家帮助六位友善的星光守护者重新连起动物星座。前期从经典配对开始，之后透过开场预览、答错后月光洗牌、指定动物顺序，以及答对后星座移位，改变每一关需要使用的记忆方法。每五关都有一次守护者检查，第 30 关会在完整十二组牌面同时使用四种进阶规则。",
+  "description": "《动物星星翻牌》是一段有 30 关的夜空图片配对旅程。同一局内每张卡牌的位置永远固定，后期透过开场预览、更大牌面、步数限制与指定动物顺序提高挑战。每五关都有一次守护者检查，第 30 关会预览完整十二组牌面，再依提示顺序完成配对。",
   "applicationCategory": "Game",
   "operatingSystem": "Web browser",
   "publisher": {
@@ -74,7 +74,7 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <meta name="twitter:title" content="动物星星翻牌 | WeightPlay" />
-    <meta name="twitter:description" content="《动物星星翻牌》是一段有 30 关的夜空图片配对旅程。玩家帮助六位友善的星光守护者重新连起动物星座。前期从经典配对开始，之后透过开场预览、答错后月光洗牌、指定动物顺序，以及答对后星座移位，改变每一关需要使用的记忆方法。每五关都有一次守护者检查，第 30 关会在完整十二组牌面同时使用四种进阶规则。" />
+    <meta name="twitter:description" content="《动物星星翻牌》是一段有 30 关的夜空图片配对旅程。同一局内每张卡牌的位置永远固定，后期透过开场预览、更大牌面、步数限制与指定动物顺序提高挑战。每五关都有一次守护者检查，第 30 关会预览完整十二组牌面，再依提示顺序完成配对。" />
   </head>
   <body>
     <main class="star-memory-game" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="360">
@@ -101,7 +101,7 @@
         <img class="main-poster" src="../../assets/memory-cover.webp" alt="" />
         <div class="main-copy">
           <h2 id="mainTitle">Animal Star Memory</h2>
-          <p id="mainIntro">Follow 30 starlight trails where previews, shuffles, ordered pairs, and rotating constellations change how each board is remembered.</p>
+          <p id="mainIntro">Follow 30 starlight trails where every card stays in place while previews, larger boards, and ordered pairs deepen the memory challenge.</p>
           <button id="startBtn" type="button">Start Game</button>
         </div>
       </section>
@@ -194,26 +194,25 @@
     <section class="game-page-info game-page-info-static" aria-label="动物星星翻牌 游戏资讯">
     
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 儿童游戏指南</span><h2>动物星星翻牌</h2><p>《动物星星翻牌》是一段有 30 关的夜空图片配对旅程。玩家帮助六位友善的星光守护者重新连起动物星座。前期从经典配对开始，之后透过开场预览、答错后月光洗牌、指定动物顺序，以及答对后星座移位，改变每一关需要使用的记忆方法。每五关都有一次守护者检查，第 30 关会在完整十二组牌面同时使用四种进阶规则。</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 儿童游戏指南</span><h2>动物星星翻牌</h2><p>《动物星星翻牌》是一段有 30 关的夜空图片配对旅程。同一局内每张卡牌的位置永远固定，后期透过开场预览、更大牌面、步数限制与指定动物顺序提高挑战。每五关都有一次守护者检查，第 30 关会预览完整十二组牌面，再依提示顺序完成配对。</p></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>记忆翻牌</strong></div><div class="game-info-fact"><span>类型</span><strong>记忆 · 益智 · 动物</strong></div><div class="game-info-fact"><span>难度</span><strong>简单至具挑战性</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>每关约 2 至 8 分钟</strong></div><div class="game-info-fact"><span>练习能力</span><strong>记忆 · 专注 · 问题解决</strong></div></div>
     </div>
     <div class="game-info-sections">
       <div class="game-info-section"><h3>世界与任务</h3><p>动物星图原本会在日落后引导森林、河流、草原与极地动物回家。一场温和流星雨没有破坏星图，却把每一颗动物星光分成两张隐藏卡牌。玩家成为守护者的年轻读图员，把每组图案重新连起来，让星座再次发亮。</p>
 <p>猫咪、熊熊、猫头鹰、狮子、企鹅与无尾熊各自守护一段五关课程。通过守护者检查，就代表那一区夜空已修复；完成最后的无尾熊终极星光检查，表示十二种动物星座都回到正确路线。</p></div>
-      <div class="game-info-section"><h3>游戏系统</h3><p>经典关卡不会移动隐藏图案，重点只有位置记忆。</p>
+      <div class="game-info-section"><h3>游戏系统</h3><p>固定牌位：预览结束、猜错或成功配对后，每张动物卡都维持原本位置。</p>
 <p>预览关卡会先短暂翻开完整牌面，输入会锁定，全部盖回后才开始计步。</p>
-<p>月光洗牌会在猜错后移动尚未配对的相同图案，玩家必须更新记忆，不能重复旧位置。</p>
 <p>顺序关会指定下一组动物；找到其他正确配对仍会盖回，且不会推进进度。</p>
-<p>星座移位会在成功配对后，把所有剩余隐藏图案轮转一格。</p>
+<p>大型牌面与较紧的步数限制会提升挑战，但不会抹去玩家已经记住的位置。</p>
 <p>步数、配对、最佳连续、分数、星星、关卡解锁与最佳成绩只提供本设备进度回馈，没有公开排行榜。</p></div>
-      <div class="game-info-section"><h3>玩法说明</h3><ol><li>从横向关卡列选择已解锁关卡。</li><li>翻开两张卡牌并记住两个位置。</li><li>图案相同会保留为已完成配对；不同时会先停留片刻再盖回去。</li><li>先读规则标签，后期可能预览、洗牌、要求指定顺序，或在答对后移动隐藏图案。</li><li>在步数内清除全部配对，即可解锁下一关。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>预览时分列或分小区观察，不要一次勉强记住整个牌面。</li><li>月光洗牌后放下旧位置，从新翻开的卡牌重新建立地图。</li><li>顺序关先找出指定动物，再处理已知道位置的其他配对。</li><li>星座移位后可记住哪些图案仍存在，但不能再相信原本位置。</li><li>利用猜错后的短暂停留，同时比较两张牌再更新记忆。</li></ul></div>
-      <div class="game-info-section"><h3>关卡与难度成长</h3><p>第 1 至 5 关教授经典位置配对，最后进行猫咪的开场预览检查。第 6 至 10 关逐渐缩短预览时间，并在熊熊检查加入一次开场洗牌。</p>
-<p>第 11 至 15 关加入答错洗牌。第 16 至 20 关要求依提示动物顺序完成，最后在狮子检查把顺序与洗牌结合。</p>
-<p>第 21 至 25 关会在答对后旋转剩余星座。第 26 至 30 关混合预览、顺序、洗牌与旋转，最后以十二组全规则牌面收尾。</p></div>
-      <div class="game-info-section"><h3>开发设计理念</h3><p>游戏先用熟悉的配对规则让操作立即可懂，再借由改变『哪些资讯仍然可靠』建立深度。预览测试第一印象，洗牌练习更新记忆，顺序改变目标优先，旋转则让一次成功选择改变下一个决定。所有机制沿用同一组大型图片卡牌，不增加手机或键盘操作负担。守护者检查采友善修复星图的方式，不使用战斗；步数限制提供明确结束点，重试仍然快速且正向。</p></div>
-      <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>本作可用来练习视觉回忆、注意、弹性更新与遵循短顺序。大人可以询问洗牌后哪些位置仍可信，或为什么要先找到指定动物。游戏没有战斗、帐号要求、公开排名，也不会在 Kids 页面发出广告请求。星星与技能报告只是本设备游戏鼓励，不是智力、学校、健康或发展评量。</p></div>
-      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>共有几关？</dt><dd>共有六段 30 关，守护者检查位于第 5、10、15、20、25、30 关。</dd></div><div><dt>月光洗牌会做什么？</dt><dd>猜错后，相同的一组未配对图案会移到不同的隐藏位置。</dd></div><div><dt>为什么找到相同图案却又盖回去？</dt><dd>顺序关会在提示列指定下一组必须完成的动物。</dd></div><div><dt>星座移位是什么？</dt><dd>成功配对后，所有剩余隐藏图案会轮转一格。</dd></div><div><dt>开场预览会消耗步数吗？</dt><dd>不会。预览期间无法操作，全部盖回后才开始游玩。</dd></div><div><dt>可以重玩关卡吗？</dt><dd>可以重玩任何已解锁关卡，改善本设备分数或星星。</dd></div><div><dt>进度会保存吗？</dt><dd>已解锁关卡、星星与最佳分数存在这个浏览器，不需要登录。</dd></div><div><dt>Kids 页面有广告吗？</dt><dd>没有，这款游戏不会发出广告请求，也没有广告保留区。</dd></div><div><dt>技能报告是正式记忆测验吗？</dt><dd>不是，它只整理本局的配对、步数与连续成功。</dd></div></dl></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>从横向关卡列选择已解锁关卡。</li><li>翻开两张卡牌并记住两个位置。</li><li>图案相同会保留为已完成配对；不同时会先停留片刻再盖回去。</li><li>同一局内每张卡牌都保持原本位置，因此每次翻牌都是可靠资讯。</li><li>先读规则标签，部分关卡会预览牌面或要求指定顺序。</li><li>在步数内清除全部配对，即可解锁下一关。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>预览时分列或分小区观察，不要一次勉强记住整个牌面。</li><li>相信已记住的位置：同一局内卡牌不会移动。</li><li>顺序关先找出指定动物，再处理已知道位置的其他配对。</li><li>利用猜错后的短暂停留，同时比较两张牌再更新记忆。</li><li>大型牌面可以先完成一小区，再观察下一区。</li></ul></div>
+      <div class="game-info-section"><h3>关卡与难度成长</h3><p>第 1 至 5 关教授经典位置配对，最后进行猫咪的开场预览检查。第 6 至 10 关逐渐缩短预览时间并扩大牌面。</p>
+<p>第 11 至 15 关在六至十组固定牌位中加深记忆。第 16 至 20 关要求依提示动物顺序完成。</p>
+<p>第 21 至 25 关扩大至十二组固定配对。第 26 至 30 关结合预览与顺序记忆，最后以完整十二组牌面收尾。</p></div>
+      <div class="game-info-section"><h3>开发设计理念</h3><p>游戏以更大且固定的牌面、较短预览、步数限制与指定顺序建立深度。玩家已经学到的位置永远可靠，难度会奖励注意与记忆，而不是逼迫盲猜。所有机制沿用同一组大型图片卡牌，不增加手机或键盘操作负担。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>本作可用来练习视觉回忆、注意与遵循短顺序。大人可以询问哪两个位置属于同一组，或为什么要先找到指定动物。游戏没有战斗、帐号要求、公开排名，也不会在 Kids 页面发出广告请求。</p></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>共有几关？</dt><dd>共有六段 30 关，守护者检查位于第 5、10、15、20、25、30 关。</dd></div><div><dt>翻过的卡牌会移动吗？</dt><dd>不会，同一局内每张卡牌的动物与位置都固定，只有重玩或进入新关卡才会重新随机。</dd></div><div><dt>为什么找到相同图案却又盖回去？</dt><dd>顺序关会在提示列指定下一组必须完成的动物。</dd></div><div><dt>后期关卡如何变难？</dt><dd>牌面会变大、预览变短，并加入步数限制与指定配对顺序，但不会移动已记住的卡牌。</dd></div><div><dt>开场预览会消耗步数吗？</dt><dd>不会。预览期间无法操作，全部盖回后才开始游玩。</dd></div><div><dt>可以重玩关卡吗？</dt><dd>可以重玩任何已解锁关卡，改善本设备分数或星星。</dd></div><div><dt>进度会保存吗？</dt><dd>已解锁关卡、星星与最佳分数存在这个浏览器，不需要登录。</dd></div><div><dt>Kids 页面有广告吗？</dt><dd>没有，这款游戏不会发出广告请求，也没有广告保留区。</dd></div><div><dt>技能报告是正式记忆测验吗？</dt><dd>不是，它只整理本局的配对、步数与连续成功。</dd></div></dl></div>
       
     </div>
   </section>
@@ -229,7 +228,7 @@
     <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
-    <script src="game.js?v=20260729-result-actions1"></script>
+    <script src="game.js?v=20260730-stable-memory1"></script>
     <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
     <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
 </body>

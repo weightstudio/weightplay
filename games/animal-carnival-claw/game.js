@@ -54,7 +54,10 @@ function prizeSpriteStyle(kind){
   return`background-image:url('../../assets/animal-carnival-claw-prizes-${sheet}.webp');background-position:${x*100}% ${y*100}%`;
 }
 function medalText(value){return value?"★".repeat(value):t("none")}
-function announce(message,data){const node=$("phaseHint");if(node)node.textContent=t(message,data)}
+function announce(message,data){
+  const node=$("phaseHint");if(!node)return;
+  node.textContent=(Array.isArray(message)?message:[message]).map(key=>t(key,data)).join(" ");
+}
 
 function setLocale(next,persistChoice=true){
   if(!window.CARNIVAL_CLAW_LOCALES[next])next="en";
@@ -142,7 +145,7 @@ function startMission(index){
   selected=index;const level=levels[index];
   run={
     index,level,phase:"aim",elapsed:0,phaseTime:0,drops:3,aimX:500,aimY:360,dropX:null,stabilizer:0,stability:1,grip:1,swing:0,held:null,
-    prizes:level.prizes.map(prize=>({...prize,active:true,delivered:false})),targets:[...level.targets],delivered:[],misses:0,result:null,feedback:"phaseAim"
+    prizes:level.prizes.map(prize=>({...prize,active:true,delivered:false})),targets:[...level.targets],delivered:[],misses:0,result:null,feedback:"phaseAim",lastCorrection:"phaseAim"
   };
   settledDecision=false;$("resultPanel").hidden=true;$("leavePanel").hidden=true;$("pausePanel").hidden=true;$("battleLive").hidden=false;$("battleLive").inert=false;
   $("resultStagesBtn").disabled=false;$("retryBtn").disabled=false;$("nextBtn").disabled=true;
@@ -207,20 +210,22 @@ function resolveGrip(){
   if(nearest&&nearest.d<=grabRadius){
     run.held=nearest.prize;run.phase="lift";run.phaseTime=0;run.grip=clamp(1-nearest.d/(grabRadius*1.45));run.stability=1;run.swing=0;run.feedback="phaseLift";
   }else{
-    run.misses++;run.phase="return";run.phaseTime=0;run.grip=0;run.stability=.2;run.feedback="miss";
+    run.misses++;run.phase="return";run.phaseTime=0;run.grip=0;run.stability=.2;run.feedback=["miss","phaseAim"];run.lastCorrection="phaseAim";
   }
   renderHud();
 }
 function dropHeld(){
   const held=run.held;if(held){held.x=clamp(held.x+Math.sin(run.elapsed)*55,90,910);held.y=clamp(held.y+26,300,500)}
-  run.misses++;run.phase="return";run.phaseTime=0;run.held=null;run.grip=0;run.feedback="miss";renderHud();
+  run.misses++;run.phase="return";run.phaseTime=0;run.held=null;run.grip=0;run.feedback=["miss","holdNeeded"];run.lastCorrection="holdNeeded";renderHud();
 }
 function deliverHeld(){
   const held=run.held;if(!held)return;
   held.active=false;held.delivered=true;
   const target=run.targets.includes(held.kind)&&!run.delivered.some(entry=>entry.target&&entry.kind===held.kind);
   run.delivered.push({kind:held.kind,target});save.cabinet[held.kind]=true;persist();
-  run.phase="return";run.phaseTime=0;run.held=null;run.feedback=target?"caught":"wrong";renderHud();
+  run.phase="return";run.phaseTime=0;run.held=null;run.feedback=target?"caught":"wrong";
+  if(!target)run.lastCorrection="objective";
+  renderHud();
 }
 function finish(won){
   if(run.result)return;
@@ -233,7 +238,8 @@ function finish(won){
   $("battleLive").hidden=true;$("battleLive").inert=true;$("resultPanel").hidden=false;
   $("resultStagesBtn").disabled=false;$("retryBtn").disabled=false;
   $("resultTitle").textContent=t(won?"winTitle":"failTitle");$("resultMedal").textContent=medalText(medal);
-  $("resultText").textContent=t(won?"winText":"failText",{drops:run.drops});
+  const resultData={drops:run.drops,count:remainingTargets().length};
+  $("resultText").textContent=won?t("winText",resultData):`${t("failText",resultData)} ${t(run.lastCorrection||"phaseAim",resultData)}`;
   $("bestText").textContent=won?(newBest?t("newBest"):t("best",{medal:medalText(previous)})):"";
   $("nextBtn").disabled=!won||run.index>=29;$("nextBtn").classList.toggle("primary-action",won&&run.index<29);
   requestAnimationFrame(()=>(won&&run.index<29?$("nextBtn"):$("retryBtn")).focus({preventScroll:true}));
@@ -317,6 +323,10 @@ function handlePointerAim(event,release=false){
 
 function bind(){
   $("localeSelect").addEventListener("change",event=>setLocale(event.target.value));
+  window.addEventListener("wonder:locale-change",event=>{
+    const next=event.detail?.locale;
+    if(window.CARNIVAL_CLAW_LOCALES[next])setLocale(next,false);
+  });
   $("startBtn").addEventListener("click",()=>{show("stage");setStagePanel("stages")});
   $("stageBackBtn").addEventListener("click",()=>show("main"));
   $("enterBtn").addEventListener("click",()=>selected<save.unlocked&&startMission(selected));

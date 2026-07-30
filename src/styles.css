@@ -3746,11 +3746,11 @@ body.kids-lobby-page {
   z-index: 2;
   display: grid;
   width: 100%;
-  height: 58px;
-  min-height: 58px;
-  padding: 7px 10px;
+  height: auto;
+  min-height: 0;
+  padding: 7px 52px;
   place-items: center;
-  background: linear-gradient(180deg, rgba(13, 42, 57, 0.9) 0%, rgba(13, 42, 57, 0.58) 66%, transparent 100%);
+  background: transparent;
   pointer-events: none;
 }
 
@@ -3763,7 +3763,9 @@ body.kids-lobby-page {
   font-size: 18px;
   line-height: 1.16;
   text-align: center;
-  text-shadow: 0 2px 6px rgba(5, 24, 34, 0.86);
+  text-shadow:
+    0 2px 3px rgba(5, 24, 34, 0.98),
+    0 0 8px rgba(5, 24, 34, 0.92);
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
@@ -4276,8 +4278,8 @@ body.kids-lobby-page {
   .kids-lobby-page .game-card-body {
     height: 44px;
     min-height: 44px;
-    padding: 4px 8px;
-    background: linear-gradient(180deg, rgba(13, 42, 57, 0.58) 0%, rgba(13, 42, 57, 0.2) 62%, transparent 100%);
+    padding: 5px 44px;
+    background: transparent;
   }
 
   .kids-lobby-page .game-card h2 {

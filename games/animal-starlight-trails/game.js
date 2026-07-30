@@ -266,7 +266,7 @@
   new MutationObserver(localizeTutorial).observe(document.body,{childList:true,subtree:true});
 
   function updateMainProgress(){dom.mainProgress.innerHTML=`<strong>${t("progress",{cleared:clearedCount()})}</strong><span>${t("bestStars",{stars:totalStars()})}</span>`;}
-  function setScreen(screen){document.body.dataset.screen=screen;document.body.classList.toggle("wp-shell-main-active",screen==="main");document.body.classList.toggle("wp-shell-stage-active",screen==="stage");document.body.classList.toggle("wp-shell-battle-active",screen==="battle");document.body.classList.toggle("wp-stage-select-active",screen==="stage");dom.main.hidden=screen!=="main";dom.guide.hidden=screen!=="main";dom.stage.hidden=screen!=="stage";dom.battle.hidden=screen!=="battle";window.scrollTo({top:0,left:0,behavior:"auto"});}
+  function setScreen(screen){document.body.dataset.screen=screen;document.body.classList.toggle("wp-shell-main-active",screen==="main");document.body.classList.toggle("wp-shell-stage-active",screen==="stage");document.body.classList.toggle("wp-shell-battle-active",screen==="battle");document.body.classList.toggle("wp-stage-select-active",screen==="stage");document.body.classList.toggle("wp-logical-battle-active",screen==="battle");document.documentElement.classList.toggle("wp-stage-select-active",screen==="stage");dom.main.hidden=screen!=="main";dom.guide.hidden=screen!=="main";dom.stage.hidden=screen!=="stage";dom.battle.hidden=screen!=="battle";window.scrollTo({top:0,left:0,behavior:"auto"});}
 
   const battleLeaveCovered = () => [$(".battle-header"),dom.objective,dom.scene,dom.feedbackRow,$(".battle-actions")].filter(Boolean);
   function ensureResultActions(){

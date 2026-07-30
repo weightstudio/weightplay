@@ -127,9 +127,9 @@
     en: {
       title: "Animal Star Memory",
       seoTitle: "Animal Star Memory - WeightPlay",
-      seoDescription: "Clear 30 saved animal memory stages with previews, moon shuffles, ordered pairs, rotating constellations, and six friendly Star Keeper checks.",
+      seoDescription: "Clear 30 saved animal memory stages with stable card positions, opening previews, ordered pairs, and six friendly Star Keeper checks.",
       ogTitle: "Animal Star Memory - Memory Matching Game",
-      ogDescription: "Clear 30 animal memory stages with preview, shuffle, order, and rotating-board rules across six Star Keeper checks.",
+      ogDescription: "Clear 30 animal memory stages with stable card positions, previews, and ordered-pair rules across six Star Keeper checks.",
       language: "Language",
       languageAria: "Choose language",
       stageBackAria: "Back to main page",
@@ -139,7 +139,7 @@
       keepPlaying: "Keep Playing",
       leaveLevel: "Leave Level",
       gameStatsAria: "Game stats",
-      mainIntro: "Follow 30 starlight trails where previews, shuffles, ordered pairs, and rotating constellations change how each board is remembered.",
+      mainIntro: "Follow 30 starlight trails where every card stays in place while previews, larger boards, and ordered pairs deepen the memory challenge.",
       start: "Start Game",
       chooseLevel: "Choose Level",
       level: "Level {current} / {total}",
@@ -182,10 +182,8 @@
       parkCheck: "Star Keeper Check",
       ruleNormal: "Classic pairs",
       rulePreview: "Opening preview",
-      ruleShuffle: "Moon shuffle after a miss",
       ruleOrder: "Match the shown animal next",
-      ruleRotate: "Constellation shifts after a match",
-      ruleFinal: "Mixed starlight rules",
+      ruleFinal: "Preview, then match in order",
       previewing: "Watch closely. The cards will hide soon!",
       orderTarget: "Find the {animal} pair next.",
       wrongOrder: "That pair matches, but another animal comes first.",
@@ -206,9 +204,9 @@
     "zh-Hant": {
       title: "\u52d5\u7269\u661f\u661f\u7ffb\u724c",
       seoTitle: "\u52d5\u7269\u661f\u661f\u7ffb\u724c - WeightPlay",
-      seoDescription: "\u5b8c\u6210 30 \u500b\u52d5\u7269\u8a18\u61b6\u95dc\u5361\uff0c\u6311\u6230\u958b\u5834\u9810\u89bd\u3001\u6708\u5149\u6d17\u724c\u3001\u6307\u5b9a\u9806\u5e8f\u3001\u661f\u5ea7\u79fb\u52d5\u8207\u516d\u5834\u5b88\u8b77\u8005\u6aa2\u67e5\u3002",
+      seoDescription: "\u5b8c\u6210 30 \u500b\u52d5\u7269\u8a18\u61b6\u95dc\u5361\uff0c\u5361\u724c\u4f4d\u7f6e\u5728\u540c\u4e00\u5c40\u5167\u56fa\u5b9a\uff0c\u6311\u6230\u958b\u5834\u9810\u89bd\u3001\u5927\u578b\u724c\u9762\u3001\u6307\u5b9a\u9806\u5e8f\u8207\u516d\u5834\u5b88\u8b77\u8005\u6aa2\u67e5\u3002",
       ogTitle: "\u52d5\u7269\u661f\u661f\u7ffb\u724c - \u8a18\u61b6\u914d\u5c0d\u904a\u6232",
-      ogDescription: "\u901a\u904e 30 \u500b\u52d5\u7269\u8a18\u61b6\u95dc\u5361\uff0c\u904b\u7528\u9810\u89bd\u3001\u6d17\u724c\u3001\u9806\u5e8f\u8207\u661f\u5ea7\u79fb\u52d5\u898f\u5247\uff0c\u5b8c\u6210\u516d\u5834\u661f\u5149\u5b88\u8b77\u8005\u6aa2\u67e5\u3002",
+      ogDescription: "\u901a\u904e 30 \u500b\u5361\u4f4d\u56fa\u5b9a\u7684\u52d5\u7269\u8a18\u61b6\u95dc\u5361\uff0c\u904b\u7528\u9810\u89bd\u8207\u9806\u5e8f\u914d\u5c0d\u5b8c\u6210\u516d\u5834\u661f\u5149\u5b88\u8b77\u8005\u6aa2\u67e5\u3002",
       language: "\u8a9e\u8a00",
       languageAria: "\u9078\u64c7\u8a9e\u8a00",
       stageBackAria: "\u8fd4\u56de\u9996\u9801",
@@ -219,7 +217,7 @@
       leaveLevel: "\u96e2\u958b\u9019\u95dc",
       gameStatsAria: "\u904a\u6232\u72c0\u614b",
       start: "\u958b\u59cb\u904a\u6232",
-      mainIntro: "\u8ddf\u8457 30 \u689d\u661f\u5149\u8def\u7dda\u524d\u9032\uff0c\u9810\u89bd\u3001\u6d17\u724c\u3001\u9806\u5e8f\u8207\u661f\u5ea7\u79fb\u52d5\u6703\u6539\u8b8a\u6bcf\u4e00\u76e4\u7684\u8a18\u61b6\u65b9\u5f0f\u3002",
+      mainIntro: "\u8ddf\u8457 30 \u689d\u661f\u5149\u8def\u7dda\u524d\u9032\uff0c\u540c\u4e00\u5c40\u5167\u5361\u724c\u4f4d\u7f6e\u4e0d\u6703\u6539\u8b8a\uff0c\u9810\u89bd\u3001\u5927\u578b\u724c\u9762\u8207\u9806\u5e8f\u914d\u5c0d\u6703\u9010\u6b65\u63d0\u5347\u6311\u6230\u3002",
       chooseLevel: "\u9078\u64c7\u95dc\u5361",
       level: "\u7b2c {current} / {total} \u95dc",
       score: "\u5206\u6578",
@@ -261,10 +259,8 @@
       parkCheck: "\u661f\u5149\u5b88\u8b77\u8005\u6aa2\u67e5",
       ruleNormal: "\u7d93\u5178\u914d\u5c0d",
       rulePreview: "\u958b\u5834\u9810\u89bd",
-      ruleShuffle: "\u7b54\u932f\u5f8c\u6708\u5149\u6d17\u724c",
       ruleOrder: "\u4f9d\u63d0\u793a\u9806\u5e8f\u914d\u5c0d",
-      ruleRotate: "\u914d\u5c0d\u5f8c\u661f\u5ea7\u79fb\u52d5",
-      ruleFinal: "\u6df7\u5408\u661f\u5149\u898f\u5247",
+      ruleFinal: "\u9810\u89bd\u5f8c\u4f9d\u63d0\u793a\u9806\u5e8f\u914d\u5c0d",
       previewing: "\u4ed4\u7d30\u770b\uff0c\u5361\u724c\u5f88\u5feb\u6703\u84cb\u8d77\u4f86\uff01",
       orderTarget: "\u4e0b\u4e00\u7d44\u8acb\u627e {animal}\uff01",
       wrongOrder: "\u9019\u7d44\u5716\u6848\u76f8\u540c\uff0c\u4f46\u8981\u5148\u627e\u53e6\u4e00\u7a2e\u52d5\u7269\u3002",
@@ -285,9 +281,9 @@
     es: {
       title: "Memoria Estelar Animal",
       seoTitle: "Memoria Estelar Animal - WeightPlay",
-      seoDescription: "Completa 30 niveles guardados de memoria animal con vistas previas, barajados lunares, parejas ordenadas, constelaciones giratorias y seis pruebas amistosas de guardianes.",
+      seoDescription: "Completa 30 niveles de memoria animal con posiciones fijas, vistas previas, parejas ordenadas y seis pruebas amistosas de guardianes.",
       ogTitle: "Memoria Estelar Animal - Juego de parejas",
-      ogDescription: "Completa 30 niveles de memoria animal con reglas de vista previa, barajado, orden y tablero giratorio en seis pruebas estelares.",
+      ogDescription: "Completa 30 niveles de memoria animal con posiciones fijas, vistas previas y parejas ordenadas en seis pruebas estelares.",
       language: "Idioma",
       languageAria: "Elegir idioma",
       stageBackAria: "Volver a la página principal",
@@ -297,7 +293,7 @@
       keepPlaying: "Seguir jugando",
       leaveLevel: "Salir del nivel",
       gameStatsAria: "Estadísticas del juego",
-      mainIntro: "Sigue 30 rutas de luz estelar donde las vistas previas, los barajados, el orden y las constelaciones móviles cambian la forma de recordar cada tablero.",
+      mainIntro: "Sigue 30 rutas de luz estelar donde las cartas permanecen en su sitio y las vistas previas, los tableros grandes y el orden aumentan el reto.",
       start: "Empezar",
       chooseLevel: "Elegir nivel",
       level: "Nivel {current} / {total}",
@@ -331,10 +327,8 @@
       parkCheck: "Prueba del guardián estelar",
       ruleNormal: "Parejas clásicas",
       rulePreview: "Vista previa inicial",
-      ruleShuffle: "Barajado lunar tras un fallo",
       ruleOrder: "Encuentra ahora el animal indicado",
-      ruleRotate: "La constelación se mueve tras una pareja",
-      ruleFinal: "Reglas estelares combinadas",
+      ruleFinal: "Vista previa y parejas en orden",
       previewing: "Observa bien. ¡Las cartas se ocultarán pronto!",
       orderTarget: "Encuentra ahora la pareja de {animal}.",
       wrongOrder: "La pareja es correcta, pero antes va otro animal.",
@@ -354,11 +348,11 @@
     },
     de: {
       title: "Tierisches Sternen-Memo", seoTitle: "Tierisches Sternen-Memo - WeightPlay",
-      seoDescription: "Spiele 30 Tier-Memo-Level mit Vorschauen, Mondmischen, Reihenfolgen, drehenden Sternbildern und sechs freundlichen Sternwächter-Prüfungen.",
-      ogTitle: "Tierisches Sternen-Memo - Kartenpaare finden", ogDescription: "Finde Tierpaare in 30 Memo-Leveln mit Vorschau-, Misch-, Reihenfolge- und Drehregeln.",
+      seoDescription: "Spiele 30 Tier-Memo-Level mit festen Kartenplätzen, Vorschauen, Reihenfolgen und sechs freundlichen Sternwächter-Prüfungen.",
+      ogTitle: "Tierisches Sternen-Memo - Kartenpaare finden", ogDescription: "Finde Tierpaare in 30 Memo-Leveln mit festen Kartenplätzen, Vorschau- und Reihenfolgeregeln.",
       language: "Sprache", languageAria: "Sprache auswählen", stageBackAria: "Zurück zur Startseite", battleBackAria: "Zurück zur Rundenauswahl",
       leaveTitle: "Diese Runde verlassen?", leaveText: "Gefundene Paare, Züge, Punkte und deine Serie gehen verloren.", keepPlaying: "Weiterspielen", leaveLevel: "Runde verlassen",
-      gameStatsAria: "Spielstand", mainIntro: "Folge 30 Sternenlichtpfaden. Vorschauen, Mischen, Reihenfolgen und drehende Sternbilder verändern jedes Memo-Feld.",
+      gameStatsAria: "Spielstand", mainIntro: "Folge 30 Sternenlichtpfaden. Die Karten bleiben liegen, während Vorschauen, große Felder und Reihenfolgen die Aufgabe steigern.",
       start: "Spiel starten", chooseLevel: "Spielrunde auswählen", level: "Runde {current} / {total}", score: "Punkte", moves: "Züge",
       movesLimit: "{current} / {limit}", movesInfinite: "{current} / Ohne Limit", locked: "Gesperrt", play: "Spielen",
       victory: "Runde geschafft!", defeat: "Keine Züge mehr!", allClear: "Alle Spielrunden geschafft!",
@@ -369,7 +363,7 @@
       animalPanda: "Panda", animalBear: "Bär", animalLion: "Löwe", animalCat: "Katze", animalRabbit: "Kaninchen", animalFox: "Fuchs",
       animalOwl: "Eule", animalFrog: "Frosch", animalWhale: "Wal", animalChick: "Küken", animalPenguin: "Pinguin", animalKoala: "Koala",
       loading: "Laden", parkCheck: "Sternwächter-Prüfung", ruleNormal: "Klassische Paare", rulePreview: "Vorschau am Anfang",
-      ruleShuffle: "Nach einem Fehlversuch mischt der Mond", ruleOrder: "Finde als Nächstes das gezeigte Tier", ruleRotate: "Nach einem Paar dreht sich das Sternbild", ruleFinal: "Gemischte Sternenregeln",
+      ruleOrder: "Finde als Nächstes das gezeigte Tier", ruleFinal: "Vorschau und Paare in Reihenfolge",
       previewing: "Schau genau hin. Gleich werden die Karten verdeckt!", orderTarget: "Finde als Nächstes das {animal}-Paar.", wrongOrder: "Dieses Paar stimmt, aber ein anderes Tier ist zuerst dran.",
       highScore: "Bestwert: {score}", skillReport: "Spielbericht",
       reportIntroWin: "Diese Runde übte das Merken von Plätzen, aufmerksames Suchen und die Wahl des nächsten Paars.", reportIntroTry: "Guter Versuch! Jedes gefundene Paar trainierte Gedächtnis und Aufmerksamkeit.",
@@ -411,27 +405,27 @@
     memoryStage(7, "Short Starlight", "短暫星光", "Five pairs are visible for a shorter opening moment.", "五組卡牌只在開場短暫出現。", "p5", 15, { previewMs: 1400 }),
     memoryStage(8, "Cloud Window", "雲間窗口", "Six previewed pairs test a complete first impression.", "預覽六組卡牌，測試一次完整觀察。", "p6", 18, { previewMs: 1200 }),
     memoryStage(9, "Fading Meadow", "漸暗草原", "Eight pairs appear briefly before the meadow darkens.", "八組卡牌短暫出現後，草原會恢復遮蓋。", "p8", 24, { previewMs: 1100 }),
-    memoryStage(10, "Bear Keeper Check", "熊熊守護者檢查", "Remember eight pairs, then the moon shuffles them once.", "記住八組卡牌後，月光會在開場重新洗牌一次。", "p8", 25, { previewMs: 1600, shuffleAfterPreview: true }),
-    memoryStage(11, "Moonlit Mix", "月光混牌", "A missed guess shuffles the remaining hidden symbols.", "每次猜錯後，尚未配對的圖案會重新洗牌。", "p6", 22, { mismatchShuffle: true }),
-    memoryStage(12, "Moving Burrows", "移動洞穴", "Eight pairs change places after every miss.", "八組卡牌會在每次猜錯後改變位置。", "p8", 29, { mismatchShuffle: true }),
-    memoryStage(13, "Firefly Confusion", "螢火蟲迷陣", "Ten hidden pairs make every moon shuffle matter.", "十組隱藏配對讓每次月光洗牌都必須重新判斷。", "p10", 37, { mismatchShuffle: true }),
-    memoryStage(14, "Remember, Then Move", "先記住再移動", "An opening preview is followed by shuffles after mistakes.", "開場先預覽，之後猜錯就會洗牌。", "p8", 28, { previewMs: 1300, mismatchShuffle: true }),
-    memoryStage(15, "Owl Keeper Check", "貓頭鷹守護者檢查", "Ten previewed pairs face the Owl Keeper's moon shuffles.", "十組預覽卡牌接受貓頭鷹守護者的月光洗牌檢查。", "p10", 36, { previewMs: 1500, mismatchShuffle: true }),
+    memoryStage(10, "Bear Keeper Check", "熊熊守護者檢查", "Preview eight pairs, then use the same fixed positions to clear the board.", "預覽八組卡牌後，依照不變的位置完成配對。", "p8", 25, { previewMs: 1600 }),
+    memoryStage(11, "Moonlit Recall", "月光回想", "Six hidden pairs stay in place while you build a complete memory map.", "六組隱藏卡牌維持原位，逐步建立完整的位置記憶。", "p6", 22),
+    memoryStage(12, "Wide Burrows", "寬闊洞穴", "Eight fixed pairs expand the board without moving known cards.", "八組固定位置的卡牌擴大牌面，已記住的卡牌不會移動。", "p8", 29),
+    memoryStage(13, "Firefly Grid", "螢火蟲星圖", "Ten stable pairs reward remembering every revealed position.", "十組固定卡牌考驗你記住每一次翻牌的位置。", "p10", 37),
+    memoryStage(14, "Quick Preview", "快速預覽", "Study eight pairs briefly, then recall them from their fixed positions.", "短暫預覽八組卡牌後，從固定位置找回配對。", "p8", 28, { previewMs: 1300 }),
+    memoryStage(15, "Owl Keeper Check", "貓頭鷹守護者檢查", "Preview ten pairs before clearing the Owl Keeper's stable board.", "預覽十組卡牌後，完成貓頭鷹守護者的固定牌面。", "p10", 36, { previewMs: 1500 }),
     memoryStage(16, "Panda Comes First", "貓熊先出發", "Match six animal pairs in the order shown.", "依提示順序完成六組動物配對。", "p6", 24, { ordered: true }),
     memoryStage(17, "Forest Roll Call", "森林點名", "Eight pairs must follow the keeper's animal list.", "八組卡牌必須依照守護者的動物名單完成。", "p8", 31, { ordered: true }),
     memoryStage(18, "Ten-Star Parade", "十星遊行", "A ten-animal parade rewards careful ordered recall.", "十種動物依序遊行，需要仔細記住位置。", "p10", 40, { ordered: true }),
     memoryStage(19, "Previewed Parade", "預覽遊行", "Preview eight pairs, then follow their required order.", "先預覽八組卡牌，再依指定順序配對。", "p8", 30, { previewMs: 1500, ordered: true }),
-    memoryStage(20, "Lion Keeper Check", "獅子守護者檢查", "Ordered pairs and moon shuffles combine in one review.", "順序配對與答錯洗牌在同一次檢查中結合。", "p10", 44, { ordered: true, mismatchShuffle: true }),
-    memoryStage(21, "Turning Sky", "轉動星空", "After each match, the remaining constellation shifts one place.", "每次配對後，其餘星座圖案會移動一格。", "p8", 29, { matchRotate: true }),
-    memoryStage(22, "Orbit of Ten", "十星軌道", "Ten pairs keep rotating after successful matches.", "十組圖案會在每次成功配對後持續轉動。", "p10", 38, { matchRotate: true }),
-    memoryStage(23, "Wide Constellation", "廣闊星座", "The full twelve-pair sky shifts as it becomes emptier.", "完整十二組星空會隨著配對完成而改變。", "p12", 47, { matchRotate: true }),
-    memoryStage(24, "Seen in Motion", "看見移動", "Preview ten pairs before the constellation begins to turn.", "先預覽十組卡牌，再面對持續轉動的星座。", "p10", 38, { previewMs: 1500, matchRotate: true }),
-    memoryStage(25, "Penguin Keeper Check", "企鵝守護者檢查", "Twelve pairs rotate after matches and shuffle after misses.", "十二組卡牌答對會轉動、答錯會洗牌。", "p12", 52, { matchRotate: true, mismatchShuffle: true }),
+    memoryStage(20, "Lion Keeper Check", "獅子守護者檢查", "Find ten stable pairs in the exact order shown.", "在固定牌面中依提示順序完成十組配對。", "p10", 44, { ordered: true }),
+    memoryStage(21, "Steady Sky", "穩定星空", "Eight pairs stay exactly where first revealed.", "八組卡牌會留在第一次翻開時的位置。", "p8", 29),
+    memoryStage(22, "Ten-Star Field", "十星原野", "Ten fixed pairs make a larger memory field.", "十組固定位置的卡牌形成更大的記憶牌面。", "p10", 38),
+    memoryStage(23, "Wide Constellation", "廣闊星座", "Twelve stable pairs fill the widest constellation.", "十二組固定配對填滿最廣闊的星座牌面。", "p12", 47),
+    memoryStage(24, "Constellation Preview", "星座預覽", "Preview ten pairs, then clear them from unchanged positions.", "預覽十組卡牌後，從不變的位置完成配對。", "p10", 38, { previewMs: 1500 }),
+    memoryStage(25, "Penguin Keeper Check", "企鵝守護者檢查", "Preview all twelve fixed pairs for the Penguin Keeper.", "為企鵝守護者預覽全部十二組固定配對。", "p12", 52, { previewMs: 1500 }),
     memoryStage(26, "Ordered Dawn", "晨光順序", "Preview eight pairs, then match the named animals in order.", "預覽八組卡牌後，依提示動物順序完成。", "p8", 32, { previewMs: 1400, ordered: true }),
-    memoryStage(27, "Changing Orbit", "變化軌道", "Ten pairs rotate on success and shuffle on mistakes.", "十組卡牌答對轉動、答錯洗牌。", "p10", 44, { matchRotate: true, mismatchShuffle: true }),
-    memoryStage(28, "Vanishing Star Map", "消失星圖", "Preview all twelve pairs before moon shuffles begin.", "先預覽全部十二組卡牌，再開始月光洗牌。", "p12", 50, { previewMs: 1300, mismatchShuffle: true }),
-    memoryStage(29, "Keeper's Orbit", "守護者軌道", "Ordered twelve-pair recall continues while the sky rotates.", "十二組配對必須依序完成，星空還會持續轉動。", "p12", 54, { ordered: true, matchRotate: true }),
-    memoryStage(30, "Koala Grand Star Check", "無尾熊終極星光檢查", "Preview, order, moon shuffles, and constellation shifts meet in the finale.", "預覽、順序、答錯洗牌與星座移動在最終檢查中全部出現。", "p12", 60, { previewMs: 1600, ordered: true, mismatchShuffle: true, matchRotate: true }),
+    memoryStage(27, "Keeper's Order", "守護者順序", "Ten stable pairs must be matched in the shown order.", "十組固定卡牌必須依照提示順序完成。", "p10", 44, { ordered: true }),
+    memoryStage(28, "Vanishing Star Map", "消失星圖", "Preview all twelve pairs, then rely on their unchanged positions.", "預覽全部十二組卡牌後，依靠不變的位置完成配對。", "p12", 50, { previewMs: 1300 }),
+    memoryStage(29, "Keeper's Grand Order", "守護者大點名", "Recall all twelve fixed pairs in the keeper's order.", "依照守護者提示順序找出全部十二組固定配對。", "p12", 54, { ordered: true }),
+    memoryStage(30, "Koala Grand Star Check", "無尾熊終極星光檢查", "Preview twelve fixed pairs, then match every animal in order.", "預覽十二組固定卡牌後，依提示順序完成所有動物配對。", "p12", 60, { previewMs: 1600, ordered: true }),
   ];
 
   const spanishStageCopy = [
@@ -444,27 +438,27 @@
     ["Luz estelar breve", "Cinco parejas aparecen durante un instante más corto."],
     ["Ventana entre nubes", "Seis parejas visibles ponen a prueba tu primera impresión completa."],
     ["Pradera que se apaga", "Ocho parejas aparecen brevemente antes de que la pradera se oscurezca."],
-    ["Prueba del guardián oso", "Recuerda ocho parejas y luego deja que la luna las baraje una vez."],
-    ["Mezcla a la luz de la luna", "Cada fallo baraja los símbolos ocultos que quedan."],
-    ["Madrigueras móviles", "Ocho parejas cambian de lugar después de cada fallo."],
-    ["Confusión de luciérnagas", "Diez parejas ocultas hacen importante cada barajado lunar."],
-    ["Recuerda y luego muévete", "Tras una vista previa inicial, los fallos vuelven a barajar las cartas."],
-    ["Prueba del guardián búho", "Diez parejas vistas antes afrontan los barajados lunares del búho."],
+    ["Prueba del guardián oso", "Observa ocho parejas y completa el tablero con las mismas posiciones."],
+    ["Recuerdo a la luz de la luna", "Seis parejas permanecen en su sitio mientras construyes el mapa mental."],
+    ["Madrigueras amplias", "Ocho parejas fijas amplían el tablero sin mover las cartas conocidas."],
+    ["Mapa de luciérnagas", "Diez parejas estables premian recordar cada posición revelada."],
+    ["Vista previa rápida", "Observa ocho parejas brevemente y recuérdalas en sus posiciones fijas."],
+    ["Prueba del guardián búho", "Observa diez parejas antes de completar el tablero estable del búho."],
     ["El panda va primero", "Encuentra seis parejas animales en el orden indicado."],
     ["Lista del bosque", "Ocho parejas deben seguir la lista de animales del guardián."],
     ["Desfile de diez estrellas", "Un desfile de diez animales premia el recuerdo ordenado."],
     ["Desfile en vista previa", "Observa ocho parejas y después sigue el orden requerido."],
-    ["Prueba del guardián león", "Las parejas ordenadas y los barajados por fallo se combinan en una prueba."],
-    ["Cielo giratorio", "Tras cada pareja, la constelación restante se mueve un lugar."],
-    ["Órbita de diez", "Diez parejas siguen girando después de cada acierto."],
-    ["Constelación extensa", "El cielo completo de doce parejas se mueve mientras se vacía."],
-    ["Vista en movimiento", "Observa diez parejas antes de que la constelación empiece a girar."],
-    ["Prueba del guardián pingüino", "Doce parejas giran al acertar y se barajan al fallar."],
+    ["Prueba del guardián león", "Encuentra diez parejas estables en el orden exacto indicado."],
+    ["Cielo estable", "Ocho parejas permanecen exactamente donde aparecieron por primera vez."],
+    ["Campo de diez estrellas", "Diez parejas fijas forman un tablero de memoria mayor."],
+    ["Constelación extensa", "Doce parejas estables llenan la constelación más amplia."],
+    ["Vista de la constelación", "Observa diez parejas y complétalas sin que cambien de posición."],
+    ["Prueba del guardián pingüino", "Observa las doce parejas fijas para el guardián pingüino."],
     ["Amanecer ordenado", "Observa ocho parejas y encuentra los animales nombrados en orden."],
-    ["Órbita cambiante", "Diez parejas giran con los aciertos y se barajan con los fallos."],
-    ["Mapa estelar fugaz", "Observa las doce parejas antes de que comiencen los barajados lunares."],
-    ["Órbita del guardián", "El recuerdo ordenado de doce parejas continúa mientras gira el cielo."],
-    ["Gran prueba estelar del koala", "La vista previa, el orden, los barajados y los movimientos de constelación se unen en la final."],
+    ["Orden del guardián", "Encuentra diez parejas estables en el orden indicado."],
+    ["Mapa estelar fugaz", "Observa las doce parejas y confía en que sus posiciones no cambiarán."],
+    ["Gran orden del guardián", "Recuerda las doce parejas fijas en el orden del guardián."],
+    ["Gran prueba estelar del koala", "Observa doce parejas fijas y encuentra cada animal en orden."],
   ];
   if (spanishStageCopy.length !== stages.length) throw new Error("Spanish memory-stage coverage must match all stages.");
   stages.forEach((stage, index) => {
@@ -481,27 +475,27 @@
     ["Kurzes Sternenlicht", "Fünf Paare sind nur für einen kurzen Augenblick sichtbar."],
     ["Wolkenfenster", "Sechs sichtbare Paare prüfen deinen ersten Gesamteindruck."],
     ["Verblassende Wiese", "Acht Paare erscheinen kurz, bevor die Wiese dunkel wird."],
-    ["Bären-Sternwächter-Prüfung", "Merke dir acht Paare; danach mischt der Mond sie einmal."],
-    ["Mischen im Mondlicht", "Nach einem Fehlversuch werden die übrigen verdeckten Tiere gemischt."],
-    ["Wandernde Baue", "Acht Paare wechseln nach jedem Fehlversuch ihre Plätze."],
-    ["Glühwürmchen-Wirrwarr", "Zehn verdeckte Paare machen jedes Mondmischen wichtig."],
-    ["Erst merken, dann bewegen", "Nach der Vorschau mischen Fehlversuche die Karten neu."],
-    ["Eulen-Sternwächter-Prüfung", "Zehn vorher sichtbare Paare treffen auf das Mondmischen der Eule."],
+    ["Bären-Sternwächter-Prüfung", "Sieh acht Paare an und löse das Feld mit denselben festen Plätzen."],
+    ["Erinnern im Mondlicht", "Sechs Paare bleiben liegen, während du dir das ganze Feld merkst."],
+    ["Weite Baue", "Acht feste Paare vergrößern das Feld, ohne bekannte Karten zu bewegen."],
+    ["Glühwürmchen-Karte", "Zehn feste Paare belohnen das Merken jeder aufgedeckten Position."],
+    ["Kurze Vorschau", "Sieh acht Paare kurz an und finde sie an ihren festen Plätzen wieder."],
+    ["Eulen-Sternwächter-Prüfung", "Sieh zehn Paare an und löse danach das feste Feld der Eule."],
     ["Panda zuerst", "Finde sechs Tierpaare in der angezeigten Reihenfolge."],
     ["Tierliste im Wald", "Acht Paare folgen der Tierliste des Sternwächters."],
     ["Parade der zehn Sterne", "Zehn Tiere belohnen sorgfältiges Merken in Reihenfolge."],
     ["Parade mit Vorschau", "Sieh acht Paare an und folge danach der geforderten Reihenfolge."],
-    ["Löwen-Sternwächter-Prüfung", "Reihenfolge und Mondmischen treffen in einer Prüfung zusammen."],
-    ["Drehender Himmel", "Nach jedem Paar rückt das übrige Sternbild um einen Platz weiter."],
-    ["Zehner-Umlaufbahn", "Zehn Paare drehen sich nach jedem Treffer weiter."],
-    ["Weites Sternbild", "Der Himmel mit zwölf Paaren bewegt sich, während er leerer wird."],
-    ["In Bewegung gesehen", "Sieh zehn Paare an, bevor das Sternbild sich zu drehen beginnt."],
-    ["Pinguin-Sternwächter-Prüfung", "Zwölf Paare drehen sich nach Treffern und mischen sich nach Fehlern."],
+    ["Löwen-Sternwächter-Prüfung", "Finde zehn feste Paare genau in der angezeigten Reihenfolge."],
+    ["Stiller Himmel", "Acht Paare bleiben genau dort, wo du sie zuerst aufgedeckt hast."],
+    ["Zehn-Sterne-Feld", "Zehn feste Paare bilden ein größeres Memo-Feld."],
+    ["Weites Sternbild", "Zwölf feste Paare füllen das weiteste Sternbild."],
+    ["Sternbild-Vorschau", "Sieh zehn Paare an und löse sie an unveränderten Plätzen."],
+    ["Pinguin-Sternwächter-Prüfung", "Sieh alle zwölf festen Paare für den Pinguin-Sternwächter an."],
     ["Geordneter Morgen", "Sieh acht Paare an und finde die genannten Tiere der Reihe nach."],
-    ["Wechselnde Umlaufbahn", "Zehn Paare drehen sich bei Treffern und mischen sich bei Fehlern."],
-    ["Verschwindende Sternkarte", "Sieh alle zwölf Paare an, bevor das Mondmischen beginnt."],
-    ["Umlaufbahn der Wächter", "Zwölf Paare bleiben in Reihenfolge, während der Himmel sich dreht."],
-    ["Koalas große Sternenprüfung", "Vorschau, Reihenfolge, Mondmischen und Sternbild-Drehung treffen im Finale zusammen."],
+    ["Reihenfolge der Wächter", "Finde zehn feste Paare in der angezeigten Reihenfolge."],
+    ["Verschwindende Sternkarte", "Sieh alle zwölf Paare an und vertraue auf ihre festen Plätze."],
+    ["Große Reihenfolge der Wächter", "Merke dir alle zwölf festen Paare in der Reihenfolge des Wächters."],
+    ["Koalas große Sternenprüfung", "Sieh zwölf feste Paare an und finde jedes Tier der Reihe nach."],
   ];
   if (germanStageCopy.length !== stages.length) throw new Error("German memory-stage coverage must match all stages.");
   stages.forEach((stage, index) => {
@@ -641,10 +635,8 @@
   }
 
   function stageRuleKey(stage) {
-    if ((stage.previewMs || stage.shuffleAfterPreview) && (stage.ordered || stage.mismatchShuffle || stage.matchRotate)) return "ruleFinal";
+    if (stage.previewMs && stage.ordered) return "ruleFinal";
     if (stage.ordered) return "ruleOrder";
-    if (stage.matchRotate) return "ruleRotate";
-    if (stage.mismatchShuffle || stage.shuffleAfterPreview) return "ruleShuffle";
     if (stage.previewMs) return "rulePreview";
     return "ruleNormal";
   }
@@ -661,7 +653,7 @@
     steps: [
       ["Karte aufdecken", "Tippe auf eine Karte, um das Tier zu sehen."],
       ["Paar finden", "Merke dir die Plätze und decke zwei gleiche Tiere auf."],
-      ["Besondere Runden", "Achte später auf Vorschauen, Mischen und die vorgegebene Reihenfolge."],
+      ["Besondere Runden", "Achte später auf Vorschauen, größere Felder und die vorgegebene Reihenfolge."],
     ],
   };
 
@@ -969,7 +961,7 @@
         button.setAttribute("aria-disabled", String(!isUnlocked));
         button.dataset.stageId = String(stage.id);
         button.dataset.checkpoint = String(stage.checkpoint);
-        button.dataset.rules = [stage.previewMs && "preview", stage.mismatchShuffle && "shuffle", stage.shuffleAfterPreview && "opening-shuffle", stage.ordered && "order", stage.matchRotate && "rotate"].filter(Boolean).join(",") || "classic";
+        button.dataset.rules = [stage.previewMs && "preview", stage.ordered && "order"].filter(Boolean).join(",") || "classic";
         
         let starsStr = "";
         if (isUnlocked) {
@@ -1129,19 +1121,6 @@
     }
   }
 
-  function remapHiddenSymbols(mode = "shuffle") {
-    const cards = [...cardGrid.querySelectorAll(".card:not(.matched):not(.flipped)")];
-    if (cards.length < 2) return;
-    const symbols = cards.map((card) => card.dataset.symbol);
-    const mapped = mode === "rotate" ? [symbols.at(-1), ...symbols.slice(0, -1)] : shuffle(symbols);
-    cards.forEach((card, index) => {
-      const symbol = mapped[index];
-      card.dataset.symbol = symbol;
-      card.querySelector(".card-front img").src = assetLibrary[symbol];
-      updateCardAccessibility(card, "hidden");
-    });
-  }
-
   function beginStagePreview(stage) {
     if (!stage.previewMs) {
       setRoundInstruction(stage);
@@ -1158,7 +1137,6 @@
         card.classList.remove("flipped", "preview-card");
         updateCardAccessibility(card, "hidden");
       });
-      if (stage.shuffleAfterPreview) remapHiddenSymbols("shuffle");
       state.isLocked = false;
       setRoundInstruction(stage);
       cardGrid.querySelector(".card:not(:disabled)")?.focus({ preventScroll: true });
@@ -1258,7 +1236,6 @@
       
       state.selectedCards = [];
       state.isLocked = false;
-      if (stage.matchRotate) remapHiddenSymbols("rotate");
       updateHUD();
       setRoundInstruction(stage);
       focusNextPlayable(card2);
@@ -1280,7 +1257,6 @@
         card2.classList.remove("flipped");
         updateCardAccessibility(card1, "hidden");
         updateCardAccessibility(card2, "hidden");
-        if (stage.mismatchShuffle) remapHiddenSymbols("shuffle");
         state.selectedCards = [];
         state.isLocked = false;
         setRoundInstruction(stage);

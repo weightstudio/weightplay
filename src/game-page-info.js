@@ -360,35 +360,34 @@
       time: "2-8 minutes per stage",
       skills: ["Memory", "Focus", "Problem Solving"],
       intro:
-        "Animal Star Memory is a 30-stage picture-matching journey through the night sky. Players help six friendly Star Keepers reconnect animal constellations by finding matching cards. The campaign begins with classic pairs, then changes how memory works through opening previews, moon shuffles after mistakes, required animal order, and constellation shifts after successful matches. Every fifth stage is a Keeper Check, and Stage 30 combines all four advanced rules on a full twelve-pair board.",
+        "Animal Star Memory is a 30-stage picture-matching journey through the night sky. Players help six friendly Star Keepers reconnect animal constellations by finding matching cards. Every card stays in the same position for the whole stage, while opening previews, larger boards, move limits, and required animal order increase the challenge. Every fifth stage is a Keeper Check, and Stage 30 combines a full twelve-pair preview with ordered recall.",
       story: [
         "The Animal Star Map once helped forest, river, meadow, and polar animals find their way home after sunset. A gentle meteor shower did not destroy the map, but separated every animal light into two hidden cards. The player becomes the Keepers' young map reader, reconnecting each pair so its constellation can shine again.",
         "Cat, Bear, Owl, Lion, Penguin, and Koala each guard one five-stage lesson. Passing a Keeper Check repairs that part of the sky. Completing the final Koala Grand Star Check means all twelve animal constellations have returned to their proper routes.",
       ],
-      how: ["Choose an unlocked stage from the horizontal rail.", "Flip two cards and remember both positions.", "A matching pair stays cleared; a mismatch hides again after a short visible pause.", "Read the rule badge because later stages may preview, shuffle, require a named pair next, or move hidden symbols after a match.", "Clear every pair within the move limit to unlock the next stage."],
+      how: ["Choose an unlocked stage from the horizontal rail.", "Flip two cards and remember both positions.", "A matching pair stays cleared; a mismatch hides again after a short visible pause.", "Every card stays in its original position until the stage ends, so each reveal gives reliable information.", "Read the rule badge because some stages preview the board or require a named pair next.", "Clear every pair within the move limit to unlock the next stage."],
       systems: [
-        "Classic stages keep every hidden symbol in place, making position recall the only rule.",
+        "Stable positions: every animal remains on its original card for the entire stage, including after a preview, mismatch, or successful match.",
         "Preview stages reveal the complete board briefly, then hide every card before input begins.",
-        "Moon Shuffle stages move the same unmatched symbols after a wrong guess, so old locations must be updated rather than blindly repeated.",
         "Ordered stages name the animal pair that must be cleared next. A correct pair found out of order is shown, then hidden without advancing.",
-        "Constellation Shift stages rotate all remaining hidden symbols after a successful pair, changing the map while preserving every required pair.",
+        "Larger boards and tighter move limits deepen the challenge without erasing information the player already learned.",
         "Moves, pairs, best streak, score, stars, stage unlocks, and best scores provide local progress feedback. No leaderboard is used.",
       ],
       progression: [
-        "Stages 1-5 teach classic position matching and end with Cat's opening-preview check. Stages 6-10 shorten the preview and finish with Bear's one-time opening shuffle.",
-        "Stages 11-15 introduce moon shuffles after mistakes. Stages 16-20 require the shown animal order, eventually combining order with shuffling in Lion's check.",
-        "Stages 21-25 rotate the remaining constellation after each success. Stages 26-30 mix preview, order, shuffling, and rotation, culminating in a twelve-pair finale with every rule active.",
+        "Stages 1-5 teach classic position matching and end with Cat's opening-preview check. Stages 6-10 shorten the preview while boards grow.",
+        "Stages 11-15 strengthen stable recall on six-to-ten-pair boards. Stages 16-20 require the shown animal order.",
+        "Stages 21-25 expand to twelve stable pairs. Stages 26-30 combine previews and ordered recall, culminating in a full twelve-pair finale.",
       ],
-      strategyTips: ["During a preview, scan in rows or small groups instead of trying to name the whole board at once.", "After a moon shuffle, discard old positions and rebuild the map from new reveals.", "In ordered stages, locate the requested animal before spending moves on other known pairs.", "After a constellation shift, remember which symbols were still hidden, but do not trust their previous positions.", "Use the visible mismatch pause to compare both cards before they turn over."],
+      strategyTips: ["During a preview, scan in rows or small groups instead of trying to name the whole board at once.", "Trust remembered positions: cards never move during a stage.", "In ordered stages, locate the requested animal before spending moves on other known pairs.", "Use the visible mismatch pause to compare both cards before they turn over.", "On larger boards, finish one small area before scanning the next."],
       designNote:
-        "The game begins with a familiar matching rule so the controls are immediately readable, but its depth comes from changing what information remains reliable. Preview tests first impressions, shuffling tests memory updating, order changes target priority, and rotation makes a successful move alter the next decision. These mechanics use the same large picture cards on touch screens and keyboards, avoiding extra control complexity. Friendly Keeper Checks replace combat because the story is about repairing a shared star map. Move limits create a clear finish while retries remain immediate and supportive.",
+        "The game begins with a familiar matching rule so the controls are immediately readable. Its depth comes from larger stable boards, shorter opening previews, move limits, and ordered targets. Learned positions always remain reliable, so difficulty rewards attention instead of forcing blind guesses. The same large picture cards work on touch screens and keyboards without extra control complexity. Friendly Keeper Checks replace combat because the story is about repairing a shared star map. Retries remain immediate and supportive.",
       parent:
-        "Animal Star Memory may support visual recall, attention, flexible updating, and following a short sequence. Adults can ask which locations are still reliable after a shuffle or why an ordered pair should be found first. The game has no combat, account requirement, public ranking, or advertising request on this Kids page. Stars and the Skill Report are encouraging local game feedback, not an intelligence, school, health, or developmental assessment.",
+        "Animal Star Memory may support visual recall, attention, and following a short sequence. Adults can ask which two positions belong together or why an ordered pair should be found first. The game has no combat, account requirement, public ranking, or advertising request on this Kids page. Stars and the Skill Report are encouraging local game feedback, not an intelligence, school, health, or developmental assessment.",
       faq: [
         ["How many stages are there?", "There are 30 named stages in six lessons, with Keeper Checks at 5, 10, 15, 20, 25, and 30."],
-        ["What happens in a Moon Shuffle stage?", "After a mismatch, the same unmatched symbols move to different hidden positions."],
+        ["Do cards move after I reveal them?", "No. Every card keeps the same animal and position until the stage ends or is restarted."],
         ["Why did a matching pair hide again?", "In an ordered stage, the feedback names which animal pair must be cleared next."],
-        ["What does Constellation Shift do?", "After a successful pair, all remaining hidden symbols rotate one position."],
+        ["How do later stages become harder?", "They use larger boards, shorter previews, move limits, and ordered animal targets without moving remembered cards."],
         ["Does a preview use up moves?", "No. Input is locked while the opening board is visible, and play begins after it hides."],
         ["Can stages be replayed?", "Yes. Any unlocked stage can be replayed to improve its local score or star result."],
         ["Is progress saved?", "Unlocked stages, stars, and best scores are stored in this browser without requiring login."],
@@ -1663,15 +1662,15 @@
       "animal-rope-rescue": zhGuide("動物藤蔓救援", "藤蔓物理解謎", ["觀察藤蔓與目標位置。", "切斷正確藤蔓讓道具落下。", "幫助動物取得需要的物品。"]),
       "star-memory": {
         title: "動物星星翻牌", age: "6+", difficulty: "簡單至具挑戰性", time: "每關約 2 至 8 分鐘", skills: ["記憶", "專注", "問題解決"],
-        intro: "《動物星星翻牌》是一段有 30 關的夜空圖片配對旅程。玩家幫助六位友善的星光守護者重新連起動物星座。前期從經典配對開始，之後透過開場預覽、答錯後月光洗牌、指定動物順序，以及答對後星座移位，改變每一關需要使用的記憶方法。每五關都有一次守護者檢查，第 30 關會在完整十二組牌面同時使用四種進階規則。",
+        intro: "《動物星星翻牌》是一段有 30 關的夜空圖片配對旅程。玩家幫助六位友善的星光守護者重新連起動物星座。同一局內每張卡牌的位置永遠固定，後期透過開場預覽、更大牌面、步數限制與指定動物順序提高挑戰。每五關都有一次守護者檢查，第 30 關會預覽完整十二組牌面，再依提示順序完成配對。",
         story: ["動物星圖原本會在日落後引導森林、河流、草原與極地動物回家。一場溫和流星雨沒有破壞星圖，卻把每一顆動物星光分成兩張隱藏卡牌。玩家成為守護者的年輕讀圖員，把每組圖案重新連起來，讓星座再次發亮。", "貓咪、熊熊、貓頭鷹、獅子、企鵝與無尾熊各自守護一段五關課程。通過守護者檢查，就代表那一區夜空已修復；完成最後的無尾熊終極星光檢查，表示十二種動物星座都回到正確路線。"],
-        how: ["從橫向關卡列選擇已解鎖關卡。", "翻開兩張卡牌並記住兩個位置。", "圖案相同會保留為已完成配對；不同時會先停留片刻再蓋回去。", "先讀規則標籤，後期可能預覽、洗牌、要求指定順序，或在答對後移動隱藏圖案。", "在步數內清除全部配對，即可解鎖下一關。"],
-        systems: ["經典關卡不會移動隱藏圖案，重點只有位置記憶。", "預覽關卡會先短暫翻開完整牌面，輸入會鎖定，全部蓋回後才開始計步。", "月光洗牌會在猜錯後移動尚未配對的相同圖案，玩家必須更新記憶，不能重複舊位置。", "順序關會指定下一組動物；找到其他正確配對仍會蓋回，且不會推進進度。", "星座移位會在成功配對後，把所有剩餘隱藏圖案輪轉一格。", "步數、配對、最佳連續、分數、星星、關卡解鎖與最佳成績只提供本機進度回饋，沒有公開排行榜。"],
-        progression: ["第 1 至 5 關教授經典位置配對，最後進行貓咪的開場預覽檢查。第 6 至 10 關逐漸縮短預覽時間，並在熊熊檢查加入一次開場洗牌。", "第 11 至 15 關加入答錯洗牌。第 16 至 20 關要求依提示動物順序完成，最後在獅子檢查把順序與洗牌結合。", "第 21 至 25 關會在答對後旋轉剩餘星座。第 26 至 30 關混合預覽、順序、洗牌與旋轉，最後以十二組全規則牌面收尾。"],
-        strategyTips: ["預覽時分列或分小區觀察，不要一次勉強記住整個牌面。", "月光洗牌後放下舊位置，從新翻開的卡牌重新建立地圖。", "順序關先找出指定動物，再處理已知道位置的其他配對。", "星座移位後可記住哪些圖案仍存在，但不能再相信原本位置。", "利用猜錯後的短暫停留，同時比較兩張牌再更新記憶。"],
-        designNote: "遊戲先用熟悉的配對規則讓操作立即可懂，再藉由改變『哪些資訊仍然可靠』建立深度。預覽測試第一印象，洗牌練習更新記憶，順序改變目標優先，旋轉則讓一次成功選擇改變下一個決定。所有機制沿用同一組大型圖片卡牌，不增加手機或鍵盤操作負擔。守護者檢查採友善修復星圖的方式，不使用戰鬥；步數限制提供明確結束點，重試仍然快速且正向。",
-        parent: "本作可用來練習視覺回憶、注意、彈性更新與遵循短順序。大人可以詢問洗牌後哪些位置仍可信，或為什麼要先找到指定動物。遊戲沒有戰鬥、帳號要求、公開排名，也不會在 Kids 頁面發出廣告請求。星星與技能報告只是本機遊戲鼓勵，不是智力、學校、健康或發展評量。",
-        faq: [["共有幾關？", "共有六段 30 關，守護者檢查位於第 5、10、15、20、25、30 關。"], ["月光洗牌會做什麼？", "猜錯後，相同的一組未配對圖案會移到不同的隱藏位置。"], ["為什麼找到相同圖案卻又蓋回去？", "順序關會在提示列指定下一組必須完成的動物。"], ["星座移位是什麼？", "成功配對後，所有剩餘隱藏圖案會輪轉一格。"], ["開場預覽會消耗步數嗎？", "不會。預覽期間無法操作，全部蓋回後才開始遊玩。"], ["可以重玩關卡嗎？", "可以重玩任何已解鎖關卡，改善本機分數或星星。"], ["進度會保存嗎？", "已解鎖關卡、星星與最佳分數存在這個瀏覽器，不需要登入。"], ["Kids 頁面有廣告嗎？", "沒有，這款遊戲不會發出廣告請求，也沒有廣告保留區。"], ["技能報告是正式記憶測驗嗎？", "不是，它只整理本局的配對、步數與連續成功。"]],
+        how: ["從橫向關卡列選擇已解鎖關卡。", "翻開兩張卡牌並記住兩個位置。", "圖案相同會保留為已完成配對；不同時會先停留片刻再蓋回去。", "同一局內每張卡牌都保持原本位置，因此每次翻牌都是可靠資訊。", "先讀規則標籤，部分關卡會預覽牌面或要求指定順序。", "在步數內清除全部配對，即可解鎖下一關。"],
+        systems: ["固定牌位：預覽結束、猜錯或成功配對後，每張動物卡都維持原本位置。", "預覽關卡會先短暫翻開完整牌面，輸入會鎖定，全部蓋回後才開始計步。", "順序關會指定下一組動物；找到其他正確配對仍會蓋回，且不會推進進度。", "大型牌面與較緊的步數限制會提升挑戰，但不會抹去玩家已經記住的位置。", "步數、配對、最佳連續、分數、星星、關卡解鎖與最佳成績只提供本機進度回饋，沒有公開排行榜。"],
+        progression: ["第 1 至 5 關教授經典位置配對，最後進行貓咪的開場預覽檢查。第 6 至 10 關逐漸縮短預覽時間並擴大牌面。", "第 11 至 15 關在六至十組固定牌位中加深記憶。第 16 至 20 關要求依提示動物順序完成。", "第 21 至 25 關擴大至十二組固定配對。第 26 至 30 關結合預覽與順序記憶，最後以完整十二組牌面收尾。"],
+        strategyTips: ["預覽時分列或分小區觀察，不要一次勉強記住整個牌面。", "相信已記住的位置：同一局內卡牌不會移動。", "順序關先找出指定動物，再處理已知道位置的其他配對。", "利用猜錯後的短暫停留，同時比較兩張牌再更新記憶。", "大型牌面可以先完成一小區，再觀察下一區。"],
+        designNote: "遊戲先用熟悉的配對規則讓操作立即可懂，再以更大且固定的牌面、較短預覽、步數限制與指定順序建立深度。玩家已經學到的位置永遠可靠，難度會獎勵注意與記憶，而不是逼迫盲猜。所有機制沿用同一組大型圖片卡牌，不增加手機或鍵盤操作負擔。守護者檢查採友善修復星圖的方式，不使用戰鬥；重試仍然快速且正向。",
+        parent: "本作可用來練習視覺回憶、注意與遵循短順序。大人可以詢問哪兩個位置屬於同一組，或為什麼要先找到指定動物。遊戲沒有戰鬥、帳號要求、公開排名，也不會在 Kids 頁面發出廣告請求。星星與技能報告只是本機遊戲鼓勵，不是智力、學校、健康或發展評量。",
+        faq: [["共有幾關？", "共有六段 30 關，守護者檢查位於第 5、10、15、20、25、30 關。"], ["翻過的卡牌會移動嗎？", "不會，同一局內每張卡牌的動物與位置都固定，只有重玩或進入新關卡才會重新隨機。"], ["為什麼找到相同圖案卻又蓋回去？", "順序關會在提示列指定下一組必須完成的動物。"], ["後期關卡如何變難？", "牌面會變大、預覽變短，並加入步數限制與指定配對順序，但不會移動已記住的卡牌。"], ["開場預覽會消耗步數嗎？", "不會。預覽期間無法操作，全部蓋回後才開始遊玩。"], ["可以重玩關卡嗎？", "可以重玩任何已解鎖關卡，改善本機分數或星星。"], ["進度會保存嗎？", "已解鎖關卡、星星與最佳分數存在這個瀏覽器，不需要登入。"], ["Kids 頁面有廣告嗎？", "沒有，這款遊戲不會發出廣告請求，也沒有廣告保留區。"], ["技能報告是正式記憶測驗嗎？", "不是，它只整理本局的配對、步數與連續成功。"]],
       },
       "campus-dash": zhGuide("動物閃電跑", "路線閃避跑酷", ["左右移動切換路線。", "避開障礙並收集獎勵。", "保持反應速度完成挑戰。"]),
       "snack-blocks": zhGuide("動物零食方塊", "三消方塊", ["交換相鄰方塊。", "湊出三個以上相同圖案。", "在限定步數內完成目標。"]),
@@ -4150,7 +4149,7 @@
       "专注",
       "问题解决"
     ],
-    "intro": "《动物星星翻牌》是一段有 30 关的夜空图片配对旅程。玩家帮助六位友善的星光守护者重新连起动物星座。前期从经典配对开始，之后透过开场预览、答错后月光洗牌、指定动物顺序，以及答对后星座移位，改变每一关需要使用的记忆方法。每五关都有一次守护者检查，第 30 关会在完整十二组牌面同时使用四种进阶规则。",
+    "intro": "《动物星星翻牌》是一段有 30 关的夜空图片配对旅程。同一局内每张卡牌的位置永远固定，后期透过开场预览、更大牌面、步数限制与指定动物顺序提高挑战。每五关都有一次守护者检查，第 30 关会预览完整十二组牌面，再依提示顺序完成配对。",
     "story": [
       "动物星图原本会在日落后引导森林、河流、草原与极地动物回家。一场温和流星雨没有破坏星图，却把每一颗动物星光分成两张隐藏卡牌。玩家成为守护者的年轻读图员，把每组图案重新连起来，让星座再次发亮。",
       "猫咪、熊熊、猫头鹰、狮子、企鹅与无尾熊各自守护一段五关课程。通过守护者检查，就代表那一区夜空已修复；完成最后的无尾熊终极星光检查，表示十二种动物星座都回到正确路线。"
@@ -4159,47 +4158,47 @@
       "从横向关卡列选择已解锁关卡。",
       "翻开两张卡牌并记住两个位置。",
       "图案相同会保留为已完成配对；不同时会先停留片刻再盖回去。",
-      "先读规则标签，后期可能预览、洗牌、要求指定顺序，或在答对后移动隐藏图案。",
+      "同一局内每张卡牌都保持原本位置，因此每次翻牌都是可靠资讯。",
+      "先读规则标签，部分关卡会预览牌面或要求指定顺序。",
       "在步数内清除全部配对，即可解锁下一关。"
     ],
     "systems": [
-      "经典关卡不会移动隐藏图案，重点只有位置记忆。",
+      "固定牌位：预览结束、猜错或成功配对后，每张动物卡都维持原本位置。",
       "预览关卡会先短暂翻开完整牌面，输入会锁定，全部盖回后才开始计步。",
-      "月光洗牌会在猜错后移动尚未配对的相同图案，玩家必须更新记忆，不能重复旧位置。",
       "顺序关会指定下一组动物；找到其他正确配对仍会盖回，且不会推进进度。",
-      "星座移位会在成功配对后，把所有剩余隐藏图案轮转一格。",
+      "大型牌面与较紧的步数限制会提升挑战，但不会抹去玩家已经记住的位置。",
       "步数、配对、最佳连续、分数、星星、关卡解锁与最佳成绩只提供本机进度回馈，没有公开排行榜。"
     ],
     "progression": [
-      "第 1 至 5 关教授经典位置配对，最后进行猫咪的开场预览检查。第 6 至 10 关逐渐缩短预览时间，并在熊熊检查加入一次开场洗牌。",
-      "第 11 至 15 关加入答错洗牌。第 16 至 20 关要求依提示动物顺序完成，最后在狮子检查把顺序与洗牌结合。",
-      "第 21 至 25 关会在答对后旋转剩余星座。第 26 至 30 关混合预览、顺序、洗牌与旋转，最后以十二组全规则牌面收尾。"
+      "第 1 至 5 关教授经典位置配对，最后进行猫咪的开场预览检查。第 6 至 10 关逐渐缩短预览时间并扩大牌面。",
+      "第 11 至 15 关在六至十组固定牌位中加深记忆。第 16 至 20 关要求依提示动物顺序完成。",
+      "第 21 至 25 关扩大至十二组固定配对。第 26 至 30 关结合预览与顺序记忆，最后以完整十二组牌面收尾。"
     ],
     "strategyTips": [
       "预览时分列或分小区观察，不要一次勉强记住整个牌面。",
-      "月光洗牌后放下旧位置，从新翻开的卡牌重新建立地图。",
+      "相信已记住的位置：同一局内卡牌不会移动。",
       "顺序关先找出指定动物，再处理已知道位置的其他配对。",
-      "星座移位后可记住哪些图案仍存在，但不能再相信原本位置。",
-      "利用猜错后的短暂停留，同时比较两张牌再更新记忆。"
+      "利用猜错后的短暂停留，同时比较两张牌再更新记忆。",
+      "大型牌面可以先完成一小区，再观察下一区。"
     ],
-    "designNote": "游戏先用熟悉的配对规则让操作立即可懂，再借由改变『哪些资讯仍然可靠』建立深度。预览测试第一印象，洗牌练习更新记忆，顺序改变目标优先，旋转则让一次成功选择改变下一个决定。所有机制沿用同一组大型图片卡牌，不增加手机或键盘操作负担。守护者检查采友善修复星图的方式，不使用战斗；步数限制提供明确结束点，重试仍然快速且正向。",
-    "parent": "本作可用来练习视觉回忆、注意、弹性更新与遵循短顺序。大人可以询问洗牌后哪些位置仍可信，或为什么要先找到指定动物。游戏没有战斗、帐号要求、公开排名，也不会在 Kids 页面发出广告请求。星星与技能报告只是本机游戏鼓励，不是智力、学校、健康或发展评量。",
+    "designNote": "游戏以更大且固定的牌面、较短预览、步数限制与指定顺序建立深度。玩家已经学到的位置永远可靠，难度会奖励注意与记忆，而不是逼迫盲猜。所有机制沿用同一组大型图片卡牌，不增加手机或键盘操作负担。",
+    "parent": "本作可用来练习视觉回忆、注意与遵循短顺序。大人可以询问哪两个位置属于同一组，或为什么要先找到指定动物。游戏没有战斗、帐号要求、公开排名，也不会在 Kids 页面发出广告请求。",
     "faq": [
       [
         "共有几关？",
         "共有六段 30 关，守护者检查位于第 5、10、15、20、25、30 关。"
       ],
       [
-        "月光洗牌会做什么？",
-        "猜错后，相同的一组未配对图案会移到不同的隐藏位置。"
+        "翻过的卡牌会移动吗？",
+        "不会，同一局内每张卡牌的动物与位置都固定，只有重玩或进入新关卡才会重新随机。"
       ],
       [
         "为什么找到相同图案却又盖回去？",
         "顺序关会在提示列指定下一组必须完成的动物。"
       ],
       [
-        "星座移位是什么？",
-        "成功配对后，所有剩余隐藏图案会轮转一格。"
+        "后期关卡如何变难？",
+        "牌面会变大、预览变短，并加入步数限制与指定配对顺序，但不会移动已记住的卡牌。"
       ],
       [
         "开场预览会消耗步数吗？",

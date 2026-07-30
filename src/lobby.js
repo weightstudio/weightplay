@@ -1165,7 +1165,9 @@ function renderHeroGames() {
       const title = text(game.title);
       const type = text(game.type);
       const ageLabel = text(game.ageLabel);
-      const rankText = rankLabel(game, index + 1);
+      // Popular cards are ranked after unavailable games are filtered out, so
+      // their visible Top 5 positions must stay consecutive.
+      const rankText = i18n.t("stats.rank_label", { rank: index + 1 });
       const showHero = game.art?.hero && !game.art.hideHero && !game.art.hero.includes("width='1'");
       const card = document.createElement(isPlayable ? "a" : "button");
       card.className = `hero-game-card ${isPlayable ? "playable" : "planned"}`;

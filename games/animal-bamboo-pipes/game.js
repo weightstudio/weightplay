@@ -3,10 +3,19 @@
   const $ = id => document.getElementById(id);
   const CODES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const LOCALE_ROUTES = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
+  const ROUTE_LOCALES = Object.fromEntries(Object.entries(LOCALE_ROUTES).map(([code, route]) => [route, code]));
   const BASE = window.BAMBOO_LOCALES.en;
   const LEVELS = window.BAMBOO_LEVELS.levels;
-  let locale = localRead("weightPlayLocale") || localRead("wp-locale") || "en", selected = 0, run = null, resultActionClaimed = false, leaveOpen = false, completionTimer = 0, boardFocusIndex = 0;
+  const routeSegment = location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
+  const routeLocale = ROUTE_LOCALES[routeSegment];
+  let locale = routeLocale || localRead("weightPlayLocale") || localRead("wp-locale") || "en", selected = 0, run = null, resultActionClaimed = false, leaveOpen = false, completionTimer = 0, boardFocusIndex = 0;
   if (!CODES.includes(locale)) locale = "en";
+  if (routeLocale) {
+    try {
+      localStorage.setItem("weightPlayLocale", locale);
+      localStorage.setItem("wp-locale", locale);
+    } catch {}
+  }
   let save = { unlocked: 1, done: {} };
   try { save = { ...save, ...JSON.parse(localStorage.getItem("wp:bamboo") || "{}") }; } catch {}
   selected = Math.max(0, Math.min(29, Number(save.unlocked || 1) - 1));
