@@ -9,6 +9,14 @@ const en={
   prize1:"Leo charm",prize2:"Nori charm",prize3:"Fia charm",prize4:"Taro charm",prize5:"Orla charm",prize6:"Panko charm",prize7:"Rux charm",prize8:"Mimi charm"
 };
 Object.assign(en,{
+  how3:"After a catch, press and hold Stabilize until the claw reaches the top.",
+  tutorial3:"After a catch, press and hold Stabilize until the claw reaches the top.",
+  phaseLift:"Caught! Hold Stabilize until the claw reaches the top.",
+  holdGrip:"HOLD TO STABILIZE",
+  holdAction:"CAUGHT! HOLD THE STABILIZE BUTTON BELOW",
+  holdingAction:"STABILIZING — KEEP HOLDING",
+  holdNeeded:"Press and hold Stabilize now. Releasing drains the grip.",
+  holdingGood:"Good! Keep holding until the claw reaches the top.",
   dragLeftAction:"YOUR MOVE: HOLD + DRAG LEFT ←",
   dragRightAction:"YOUR MOVE: HOLD + DRAG RIGHT →",
   guideDeepTitle:"Read the machine before committing a drop",
@@ -23,6 +31,14 @@ Object.assign(en,{
 });
 const zht={...en,localeName:"繁體中文",loading:"正在點亮星鈴嘉年華……",title:"動物嘉年華抓寶機",backLobby:"返回 WeightPlay",language:"語言",posterAlt:"諾里與魯克斯操作藍綠色嘉年華抓寶機",eyebrow:"星鈴技巧遊樂場",pitch:"選定收藏物、抓準擺動時機，再在三次機會用完前穩住上升中的爪子。",start:"開始遊戲",guideLabel:"遊戲指南",guideKicker:"WeightPlay 原創遊戲指南",guideTitle:"讓每一次抓取都有明確判斷",guideIntro:"魯克斯為星鈴嘉年華打造了三十台公平的技巧機台。諾里需要你的時機感取回指定回憶收藏物。",howTitle:"遊玩方式",how1:"拖曳瞄準標記到看得見的目標收藏物上。",how2:"擺動爪子對準時放開，或按下「放下爪子」。",how3:"上升時往載物擺動的反方向拖曳，維持抓力。",rulesTitle:"規則與結果",rulesText:"每關有三次免費抓取，所有目標、重量與抓力需求都會顯示。取回完整目標組即可過關，沒有付費、隨機稀有度或真實獎品。",progressTitle:"三十個嘉年華任務",progressText:"六台機器逐步加入彈墊、移動層架、磁力漂移、易碎堆疊與混合冠軍布局。每次過關都會解鎖下一個原創任務。",tipsTitle:"實用技巧",tipsText:"先抓外露的輕型收藏物，觀察擺動範圍，上升時做小幅反向修正。置中的重型收藏物需要更多穩定操作。",saveTitle:"儲存與隱私",saveText:"解鎖任務、獎章與收藏櫃只保存在這個瀏覽器，不需要帳號、上傳或個人資料。",faqTitle:"常見問題",faq1q:"抓取結果是隨機的嗎？",faq1a:"不是。位置、時機、可見重量與你的穩定操作共同決定結果。",faq2q:"已收藏的物品會消失嗎？",faq2a:"不會。這台裝置上的收藏櫃進度會永久保留。",faq3q:"接下來可以玩什麼？",faq3a:"想挑戰時機可玩《動物珊瑚礁釣手》，想仔細規劃可玩《森林停車疏導隊》。",backMain:"返回主畫面",stageRailLabel:"嘉年華任務選擇",enter:"進入機台",cabinet:"收藏櫃",workshop:"工坊",workshopIntro:"使用獲得的星栓，進行公開透明的永久機台調校。",stages:"任務",stageTabs:"關卡分頁",backStages:"返回任務",drops:"次數",grip:"抓力",targets:"目標",boardLabel:"瞄準並操作嘉年華爪子",stability:"穩定度",drop:"放下爪子",restart:"重新開始",pause:"暫停",tutorialTitle:"瞄準、放下、穩定",tutorial1:"把瞄準標記拖到一個指定收藏物上。",tutorial2:"擺動爪子與目標重疊時放下。",tutorial3:"上升時往擺動反方向拖曳，讓抓力維持在線上。",tutorialStart:"啟動機台",leaveTitle:"離開這台機器？",leaveText:"繼續會保留目前抓取狀態；返回任務只會結束這次挑戰。",continue:"繼續",returnStages:"返回任務",pauseTitle:"機台已暫停",pauseText:"軌道、爪子與獎品槽都已凍結。",resume:"繼續遊戲",resultKicker:"嘉年華報告",next:"下一任務",retry:"再玩一次",progress:"{cleared} / 30 任務 · {charms} / 8 收藏",stageSummary:"已完成 {cleared} · {bolts} 星栓",mission:"任務 {n}",locked:"未解鎖",ready:"可挑戰",cleared:"已完成 · {medal}",objective:"收集 {count} 個目標收藏",phaseAim:"瞄準目標，然後放開或按下「放下爪子」。",phaseDrop:"爪子下降中……",phaseLift:"往擺動反方向拖曳以穩定上升。",phaseReturn:"正在返回軌道……",caught:"收藏物已送達！",miss:"抓力滑落了，換個角度再試。",wrong:"這不是指定目標，但已加入收藏櫃。",winTitle:"機台完成！",failTitle:"目標仍留在槽中",winText:"所有指定收藏物都已送達，剩餘 {drops} 次抓取。",failText:"觀察可見重量，再嘗試更穩定的上升。",newBest:"新的最佳獎章！",best:"最佳：{medal}",none:"尚無",collected:"已收藏",unknown:"尚未發現",starbolts:"{n} 星栓",upgrade:"升級",max:"最高",needBolts:"星栓不足。",upgradeDone:"機台調校已升級。",tuningGrip:"爪墊",tuningGripText:"擴大公平的置中抓取範圍。",tuningStability:"擺動阻尼",tuningStabilityText:"讓反向穩定操作更靈敏。",tuningRail:"軌道導引",tuningRailText:"放下前減緩瞄準漂移。",chapter1:"燈籠街",chapter2:"泡泡彈墊",chapter3:"發條層架",chapter4:"月光磁環",chapter5:"玻璃花園",chapter6:"星冠機台",rule1:"開放槽教你位置、擺動時機與上升控制。",rule2:"圓形彈墊鼓勵乾淨的接近角度。",rule3:"移動層架會開啟短暫時機。",rule4:"溫和磁力漂移需要反向控制。",rule5:"易碎堆疊會懲罰粗心的側面碰撞。",rule6:"冠軍布局組合所有公平機台規則。",prize1:"里歐收藏",prize2:"諾里收藏",prize3:"菲亞收藏",prize4:"塔羅收藏",prize5:"奧拉收藏",prize6:"潘可收藏",prize7:"魯克斯收藏",prize8:"咪咪收藏"};
 Object.assign(zht,{
+  how3:"抓到後，按住「穩住」直到爪子升到頂端。",
+  tutorial3:"抓到後，按住「穩住」直到爪子升到頂端。",
+  phaseLift:"抓到了！按住「穩住」直到爪子升到頂端。",
+  holdGrip:"按住穩住",
+  holdAction:"抓到了！按住下方「穩住」",
+  holdingAction:"穩定中——繼續按住",
+  holdNeeded:"現在按住「穩住」；放開會失去抓力。",
+  holdingGood:"做對了！繼續按住直到爪子升頂。",
   dragLeftAction:"你的操作：按住往左拖 ←",
   dragRightAction:"你的操作：按住往右拖 →",
   tutorial3:"抓到後再按住畫面，照箭頭向左或向右拖，讓抓力維持到爪子升頂。",
@@ -59,5 +75,19 @@ const steerLabels={
   ar:{dragLeftAction:"حركتك: اضغط واسحب لليسار ←",dragRightAction:"حركتك: اضغط واسحب لليمين →"}
 };
 for(const [locale,values] of Object.entries(steerLabels))Object.assign(compact[locale],values);
+const holdLabels={
+  ja:{holdGrip:"押して安定",holdAction:"つかんだ！下の「安定」を押し続ける",holdingAction:"安定中—そのまま押し続ける",holdNeeded:"今すぐ「安定」を押し続けてください。離すとグリップが下がります。",holdingGood:"その調子！上まで押し続けてください。",phaseLift:"つかんだ！上まで「安定」を押し続けてください。"},
+  ko:{holdGrip:"길게 눌러 안정",holdAction:"잡았다! 아래 안정 버튼을 길게 누르세요",holdingAction:"안정 중—계속 누르세요",holdNeeded:"지금 안정 버튼을 길게 누르세요. 놓으면 집게 힘이 줄어듭니다.",holdingGood:"좋아요! 꼭대기까지 계속 누르세요.",phaseLift:"잡았다! 꼭대기까지 안정 버튼을 길게 누르세요."},
+  es:{holdGrip:"MANTÉN PARA ESTABILIZAR",holdAction:"¡ATRAPADO! MANTÉN EL BOTÓN ESTABILIZAR",holdingAction:"ESTABILIZANDO—SIGUE PULSANDO",holdNeeded:"Mantén pulsado Estabilizar ahora. Soltar reduce el agarre.",holdingGood:"¡Bien! Sigue pulsando hasta llegar arriba.",phaseLift:"¡Atrapado! Mantén Estabilizar hasta llegar arriba."},
+  "pt-BR":{holdGrip:"SEGURE PARA ESTABILIZAR",holdAction:"PEGOU! SEGURE O BOTÃO ESTABILIZAR",holdingAction:"ESTABILIZANDO—CONTINUE SEGURANDO",holdNeeded:"Segure Estabilizar agora. Soltar reduz a firmeza.",holdingGood:"Boa! Continue segurando até chegar ao topo.",phaseLift:"Pegou! Segure Estabilizar até chegar ao topo."},
+  fr:{holdGrip:"MAINTENIR POUR STABILISER",holdAction:"ATTRAPÉ ! MAINTIENS STABILISER",holdingAction:"STABILISATION—GARDE APPUYÉ",holdNeeded:"Maintiens Stabiliser maintenant. Relâcher réduit la prise.",holdingGood:"Bien ! Garde appuyé jusqu'en haut.",phaseLift:"Attrapé ! Maintiens Stabiliser jusqu'en haut."},
+  de:{holdGrip:"HALTEN ZUM STABILISIEREN",holdAction:"GEFANGEN! STABILISIEREN GEDRÜCKT HALTEN",holdingAction:"STABILISIERT—WEITER HALTEN",holdNeeded:"Halte Stabilisieren jetzt gedrückt. Loslassen schwächt den Griff.",holdingGood:"Gut! Bis ganz oben weiter halten.",phaseLift:"Gefangen! Stabilisieren bis ganz oben gedrückt halten."},
+  it:{holdGrip:"TIENI PER STABILIZZARE",holdAction:"PRESO! TIENI PREMUTO STABILIZZA",holdingAction:"STABILIZZAZIONE—CONTINUA A TENERE",holdNeeded:"Tieni premuto Stabilizza ora. Lasciare riduce la presa.",holdingGood:"Bene! Continua a tenere fino in cima.",phaseLift:"Preso! Tieni premuto Stabilizza fino in cima."},
+  ru:{holdGrip:"УДЕРЖИВАЙ ДЛЯ СТАБИЛИЗАЦИИ",holdAction:"СХВАЧЕНО! УДЕРЖИВАЙ «СТАБИЛИЗИРОВАТЬ»",holdingAction:"СТАБИЛИЗАЦИЯ—НЕ ОТПУСКАЙ",holdNeeded:"Удерживай «Стабилизировать». Если отпустить, захват ослабнет.",holdingGood:"Хорошо! Не отпускай до самого верха.",phaseLift:"Схвачено! Удерживай «Стабилизировать» до самого верха."},
+  hi:{holdGrip:"स्थिर करने के लिए दबाए रखें",holdAction:"पकड़ लिया! नीचे स्थिर बटन दबाए रखें",holdingAction:"स्थिर हो रहा है—दबाए रखें",holdNeeded:"अभी स्थिर बटन दबाए रखें। छोड़ने पर पकड़ घटेगी।",holdingGood:"अच्छा! ऊपर पहुँचने तक दबाए रखें।",phaseLift:"पकड़ लिया! ऊपर तक स्थिर बटन दबाए रखें।"},
+  ar:{holdGrip:"اضغط مطولاً للتثبيت",holdAction:"تم الالتقاط! اضغط زر التثبيت بالأسفل",holdingAction:"جارٍ التثبيت—استمر بالضغط",holdNeeded:"اضغط زر التثبيت الآن. الإفلات يضعف القبضة.",holdingGood:"جيد! استمر بالضغط حتى الأعلى.",phaseLift:"تم الالتقاط! اضغط زر التثبيت حتى الأعلى."}
+};
+for(const [locale,values] of Object.entries(holdLabels))Object.assign(compact[locale],values);
+Object.assign(zhs,{holdGrip:"按住稳住",holdAction:"抓到了！按住下方“稳住”",holdingAction:"稳定中——继续按住",holdNeeded:"现在按住“稳住”；松开会失去抓力。",holdingGood:"做对了！继续按住直到爪子升顶。",phaseLift:"抓到了！按住“稳住”直到爪子升到顶端。"});
 window.CARNIVAL_CLAW_LOCALES={en,"zh-Hant":zht,"zh-Hans":zhs,...compact};
 })();

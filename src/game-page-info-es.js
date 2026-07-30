@@ -3166,9 +3166,71 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
   resource.gameplayProfiles = normalize(resource.gameplayProfiles);
   const titles = {"wonder-crash":"Fantasía: Defensa del León","color-lunchbox":"Lonchera de Colores Animales","bubble-bakery":"Panadería de Burbujas Animales","animal-rope-rescue":"Rescate Animal con Lianas","animal-zoo-idle":"Zoológico Animal Idle","star-memory":"Memoria Estelar Animal","campus-dash":"Safari a Toda Velocidad","snack-blocks":"Bloques de Aperitivos","fruit-merge":"Torre de Fusión Animal","garden-tiles":"Fichas del Jardín Animal","animal-rescue":"Sendero de Rescate Animal","animal-bubble-safari":"Safari de Burbujas Animales","animal-habitat-mahjong":"Mahjong de Hábitats Animales","animal-hidden-safari":"Safari Oculto de Animales","animal-guard-yard":"Guardianes del Jardín Animal","animal-crystal-survivor":"Superviviente del Cristal Animal","animal-quiz":"Cuestionario de Animales","zoo-helper-day":"Día del Ayudante del Zoológico","shape-train":"Tren de Formas Animales","tiny-weather-rescue":"Misión de Ayuda Animal","beast-deck":"Mazo de Bestias: Bosque de Niebla","animal-relic-hunters":"Cazadores de Reliquias Animales","animal-rune-tactics":"Tácticas de Runas Animales","animal-orb-fortress":"Fortaleza del Orbe Animal","animal-auto-squad":"Escuadrón Animal Automático","beast-tactician":"Guardián de Bestias","animal-reef-fisher":"Pescador del Arrecife Animal","animal-cafe-rush":"Fiebre del Café Animal","animal-hero-trials":"Pruebas de Héroes Animales","animal-gearpack-expedition":"Expedición de la Mochila Animal","shadow-wolf":"Lobo Sombrío","animal-moonlight-heist":"Golpe Animal a la Luz de la Luna","animal-color-springs":"Resortes de Colores Animales","animal-coloring-studio":"Estudio para colorear animales","animal-word-trails":"Senderos de palabras de animales"};
   const difficulties = { "Medio": "Media", "fácil": "Fácil", "Fácil a medio": "Fácil a media", "Fácil de desafiar": "Fácil a desafiante", "De gentil a experto": "De suave a experta", "duro": "Difícil", "Medio a duro": "Media a difícil" };
-  resource.games["animal-color-springs"] = { ...(resource.games["animal-color-springs"] || {}), title: titles["animal-color-springs"] };
+  resource.games["animal-color-springs"] = {
+    title: titles["animal-color-springs"], difficulty: "Fácil a desafiante", time: "2-6 minutos por nivel",
+    gameplay: "Puzle de clasificación por colores", genre: ["Puzle", "Lógica", "Animales"],
+    skills: ["Lógica", "Resolución de problemas", "Concentración"],
+    intro: "Resortes de Colores Animales es un puzle de treinta niveles. Mueve el grupo superior de orbes iguales a un recipiente vacío o sobre el mismo color hasta que cada recipiente contenga un solo color.",
+    story: ["Orla y Mimi encontraron treinta fuentes del bosque cuyos colores se mezclaron durante una tormenta. Cada tablero resuelto restaura una fuente y repara otra parte de la red."],
+    systems: ["Elige un recipiente de origen y después un destino legal. El destino debe tener espacio y estar vacío o mostrar el mismo color en la parte superior.", "Deshacer restaura el tablero y el contador anteriores. Reiniciar reconstruye el mismo puzle y Pista señala un traslado útil sin mover los orbes."],
+    how: ["Elige un recipiente con al menos un orbe.", "Elige un recipiente vacío o con el mismo color arriba.", "Continúa hasta que cada recipiente no vacío tenga un solo color.", "Usa Deshacer, Reiniciar o Pista si la ruta queda bloqueada."],
+    strategyTips: ["Conserva al menos un recipiente vacío como espacio de trabajo.", "Mueve grupos completos siempre que sea posible.", "Comprueba la capacidad antes de trasladar un grupo grande."],
+    progression: ["Los niveles 1-5 enseñan la clasificación básica. Después aparecen más colores, recipientes sellados, capacidades distintas, menos espacio libre y combinaciones de todas las reglas."],
+    designNote: "La selección de origen y destino funciona con toque, ratón y teclado. Las animaciones muestran el mismo traslado que resuelve la lógica; los treinta niveles son deterministas.",
+    parent: "Este juego Kids no contiene anuncios ni requiere cuenta. El progreso y los mejores movimientos permanecen en este navegador y no forman una evaluación.",
+    relatedIds: ["animal-coloring-studio", "animal-word-trails", "animal-cafe-rush"],
+    faq: [["¿Cuántos niveles hay?", "Treinta niveles deterministas."], ["¿Por qué un recipiente no acepta los orbes?", "Está lleno, sellado o su color superior no coincide."], ["¿Pista juega el movimiento?", "No. Solo señala un traslado útil."], ["¿Se guarda el progreso?", "Sí, únicamente en este navegador."]]
+  };
+  resource.gameplayProfiles["animal-color-springs"] = { gameplay: "Puzle de clasificación por colores", genre: ["Puzle", "Lógica", "Animales"] };
   resource.games["animal-coloring-studio"] = { ...(resource.games["animal-coloring-studio"] || {}), title: titles["animal-coloring-studio"] };
   resource.games["animal-word-trails"] = { ...(resource.games["animal-word-trails"] || {}), title: titles["animal-word-trails"] };
+  resource.games["animal-block-grove"] = {
+    title: "Bosque de Bloques Animales", difficulty: "Fácil a desafiante", time: "2-6 minutos por misión",
+    gameplay: "Puzle de colocación en tablero 8×8", genre: ["Puzle", "Lógica", "Animales"],
+    skills: ["Razonamiento espacial", "Planificación visual", "Resolución de problemas"],
+    intro: "Bosque de Bloques Animales es un puzle de treinta misiones protagonizado por Taro Caparazón de Musgo y Mimi Salto Arcoíris. Elige entre tres grupos, coloca todas sus casillas en el tablero 8×8 y completa filas o columnas para liberar espacio.",
+    story: ["Una tormenta cubrió los hábitats del bosque con ramas de distintas formas. Taro y Mimi restauran cada claro al completar líneas y abrir espacio para los animales."],
+    systems: ["Elige uno de los tres grupos y colócalo completo en casillas libres. Una fila o columna llena se elimina. Cuando se usan los tres grupos aparece una nueva selección.", "La misión termina al alcanzar su objetivo. Deshacer restaura el último movimiento, Reiniciar reconstruye el mismo tablero y Pista señala una colocación válida sin jugarla."],
+    how: ["Elige uno de los tres grupos.", "Colócalo completo sobre casillas libres.", "Completa filas o columnas para despejarlas.", "Cumple el objetivo antes de quedarte sin espacio."],
+    strategyTips: ["Mantén libre el centro para las formas grandes.", "Prepara dos líneas para limpiarlas con una sola pieza.", "Revisa los tres grupos antes de colocar el primero."],
+    progression: ["Las primeras misiones enseñan líneas simples. Las siguientes añaden formas mayores, casillas bloqueadas, objetivos dobles y tableros con menos espacio."],
+    designNote: "Las treinta misiones son deterministas y muestran toda la información necesaria. El mismo tablero y las mismas reglas funcionan con toque, ratón y teclado.",
+    parent: "Este juego Kids no contiene anuncios ni requiere cuenta. El progreso se guarda únicamente en este navegador y no es una evaluación formal.",
+    relatedIds: ["animal-parking-patrol", "animal-color-link"],
+    faq: [["¿Debe caber todo el grupo?", "Sí. Ninguna parte puede quedar fuera ni cubrir otra pieza."], ["¿Qué elimina bloques?", "Completar una fila o columna entera."], ["¿La pista juega por mí?", "No. Solo señala una colocación válida."], ["¿Se guarda el progreso?", "Sí, solo en este navegador."]]
+  };
+  resource.gameplayProfiles["animal-block-grove"] = { gameplay: "Puzle de colocación en tablero 8×8", genre: ["Puzle", "Lógica", "Animales"] };
+  resource.games["animal-coloring-studio"] = {
+    title: titles["animal-coloring-studio"], difficulty: "Relajada", time: "Sin límite",
+    gameplay: "Coloreado con relleno y pincel", genre: ["Creatividad", "Arte", "Animales"],
+    skills: ["Creatividad", "Coordinación", "Concentración"],
+    intro: "Estudio para Colorear Animales es una actividad tranquila con doce láminas originales. Elige una imagen y usa Relleno o Pincel sin temporizador ni puntuación.",
+    story: ["Los animales de WeightPlay abrieron un taller de arte en el bosque. Cada dibujo guardado se añade a la galería local; el objetivo es crear, no ganar ni perder."],
+    systems: ["Relleno colorea una zona cerrada. Pincel dibuja trazos de tamaño ajustable y Borrador los elimina. Deshacer y Rehacer recorren los cambios recientes.", "Puedes guardar la obra terminada en la galería de este navegador. Cada lámina conserva su propia creación y puede abrirse de nuevo."],
+    how: ["Elige una de las doce láminas.", "Selecciona un color y Relleno o Pincel.", "Toca una zona o dibuja con dedo, ratón o lápiz.", "Corrige si hace falta y guarda la obra."],
+    strategyTips: ["Rellena primero las zonas grandes.", "Usa un pincel pequeño cerca de los bordes.", "Deshaz un error en vez de borrar toda la página.", "Combina colores contrastantes para distinguir las formas."],
+    progression: ["No hay niveles bloqueados. Las doce láminas ofrecen siluetas y tamaños de zona distintos y pueden abrirse en cualquier orden."],
+    designNote: "El estudio no usa temporizador, puntuación, fracaso ni clasificación. Las herramientas grandes admiten toque, ratón y lápiz; los dibujos permanecen en el dispositivo.",
+    parent: "Esta actividad Kids no contiene anuncios ni requiere cuenta. Los dibujos no se suben y la actividad no es una evaluación artística.",
+    relatedIds: ["animal-skyspire-drop"],
+    faq: [["¿Existe un color correcto?", "No. Cualquier combinación es válida."], ["¿Qué diferencia hay entre Relleno y Pincel?", "Relleno colorea una zona cerrada; Pincel dibuja libremente."], ["¿Puedo deshacer?", "Sí."], ["¿Hay límite de tiempo?", "No."], ["¿Dónde se guarda la galería?", "Solo en este navegador."]]
+  };
+  resource.gameplayProfiles["animal-coloring-studio"] = { gameplay: "Coloreado con relleno y pincel", genre: ["Creatividad", "Arte", "Animales"] };
+  resource.games["animal-parking-patrol"] = {
+    ...(resource.games["animal-parking-patrol"] || {}),
+    title: "Patrulla de Aparcamiento Animal",
+    intro: "Ordena la salida de carros animales mediante planificación visual."
+  };
+  resource.games["animal-color-link"] = {
+    ...(resource.games["animal-color-link"] || {}),
+    title: "Jardín de Conexiones de Color",
+    intro: "Conecta colores y llena el tablero sin cruzar caminos."
+  };
+  resource.games["animal-skyspire-drop"] = {
+    ...(resource.games["animal-skyspire-drop"] || {}),
+    title: "Caída de la Aguja Celeste Animal",
+    intro: "Una aventura animal de reflejos y coordinación."
+  };
   Object.entries(resource.games).forEach(([id, game]) => {
     if (titles[id]) game.title = titles[id];
     if (difficulties[game.difficulty]) game.difficulty = difficulties[game.difficulty];

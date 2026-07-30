@@ -7,10 +7,34 @@
 .main-hero{grid-template-columns:420px minmax(0,1fr);align-items:stretch;overflow:visible}
 .main-hero>.poster{width:420px;height:420px;aspect-ratio:1;object-fit:cover}
 .main-copy button{width:100%;height:52px;min-height:52px}
+.main-header.wp-main-shell-header{grid-template-columns:60px 48px minmax(0,1fr) 48px!important;gap:8px!important}
+.main-header.wp-main-shell-header>#lobbyReturn{grid-column:1}
+.main-header.wp-main-shell-header>#soundToggle{grid-column:2;grid-row:1}
+.main-header.wp-main-shell-header>strong,
+.main-header.wp-main-shell-header>.wp-shell-main-title{grid-column:3!important;grid-row:1!important;min-width:0}
+.main-header.wp-main-shell-header>.wp-shell-settings{grid-column:4;grid-row:1}
+.main-header.wp-main-shell-header>.locale-control{display:none}
 @media(max-width:699px){
   .main-screen{grid-template-rows:auto auto;padding:7px}
+  .main-header.wp-main-shell-header{grid-template-columns:60px 48px minmax(0,1fr) 48px!important;gap:6px!important}
   .main-hero{grid-template-columns:1fr;grid-template-rows:auto auto;align-content:start}
   .main-hero>.poster{width:100%;height:auto;aspect-ratio:1}
+}
+@media(max-height:500px) and (min-aspect-ratio:3/2){
+  body:not(.wp-kids-audience) .main-screen.wp-standard-main-flow-owner{display:grid!important;height:100dvh!important;min-height:0!important;max-height:100dvh!important;grid-template:52px minmax(0,1fr)/1fr!important;gap:6px;padding:6px!important;overflow:hidden!important}
+  .main-header.wp-main-shell-header{grid-template-columns:54px 44px minmax(0,1fr) 44px!important;gap:6px!important;padding:3px}
+  .main-header.wp-main-shell-header .lobby-return{width:54px;height:44px}
+  .main-header.wp-main-shell-header .main-sound{width:44px;height:44px}
+  body:not(.wp-kids-audience) .main-hero.wp-standard-main-flow-node.wp-standard-main-screen{display:block!important;width:100%!important;height:100%!important;min-height:0!important;padding:0!important;overflow:hidden!important}
+  body:not(.wp-kids-audience) .main-hero>.wp-standard-main-composition{width:100%!important;height:100%!important;min-height:0!important;grid-template-columns:minmax(0,1.18fr) minmax(280px,.82fr)!important;align-items:stretch!important;gap:10px!important;padding:0!important;overflow:hidden!important}
+  body:not(.wp-kids-audience) .main-hero .wp-standard-main-poster{width:100%!important;min-width:0!important;max-width:none!important;height:100%!important;min-height:0!important;max-height:none!important;aspect-ratio:auto!important}
+  body:not(.wp-kids-audience) .main-hero>.poster.wp-standard-main-poster-media{width:100%!important;min-width:0!important;max-width:none!important;height:100%!important;min-height:0!important;max-height:none!important;aspect-ratio:auto!important}
+  body:not(.wp-kids-audience) .main-hero .wp-standard-main-poster-media{width:100%!important;min-width:0!important;max-width:none!important;height:100%!important;min-height:0!important;max-height:none!important;aspect-ratio:auto!important}
+  body:not(.wp-kids-audience) .main-copy.wp-standard-main-copy{height:100%!important;min-height:0!important;gap:4px!important;align-content:center}
+  body:not(.wp-kids-audience) .main-copy small,
+  body:not(.wp-kids-audience) .main-copy h1{display:none!important}
+  .main-copy p{font-size:14px;line-height:1.3}
+  body:not(.wp-kids-audience) .main-copy #start{height:44px!important;min-height:44px!important;font-size:18px}
 }
 .stage-card.locked.centered{filter:saturate(.45) brightness(.72)}
 .stage-card.locked>span:first-child{color:#ffd862;text-transform:uppercase;letter-spacing:.08em}

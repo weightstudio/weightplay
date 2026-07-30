@@ -437,13 +437,17 @@ canvas {
 
 .cast-meter {
   position: absolute;
-  left: 18px;
-  right: 18px;
+  left: 50%;
+  right: auto;
   bottom: 16px;
-  height: 12px;
+  width: min(180px, calc(100% - 32px));
+  height: 14px;
   overflow: hidden;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.5);
+  transform: translateX(-50%);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  background: rgba(4, 30, 42, 0.82);
+  box-shadow: 0 2px 10px rgba(4, 30, 42, 0.38);
 }
 
 .cast-fill {
@@ -629,12 +633,12 @@ canvas {
 }
 
 .tension-lane::before {
-  left: calc(50% - 76px);
+  left: 30%;
   content: "<";
 }
 
 .tension-lane::after {
-  right: calc(50% - 76px);
+  right: 30%;
   content: ">";
 }
 
@@ -667,6 +671,10 @@ canvas {
   font-size: 0.7rem;
   font-weight: 1000;
   pointer-events: none;
+  max-width: 26%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .lane-label-left {
@@ -1178,10 +1186,11 @@ canvas {
   }
 
   body.reef-fisher-playing .cast-meter {
-    left: 12px;
-    right: 12px;
+    left: 50%;
+    right: auto;
     bottom: 10px;
-    height: 9px;
+    width: min(180px, calc(100% - 32px));
+    height: 14px;
   }
 
   body.reef-fisher-playing .catch-toast {
@@ -1805,15 +1814,15 @@ body.reef-fisher-stage :is(.topbar, .game-page-info, .wp-tutorial-button, .wp-tu
 }
 
 .stage-upgrades .shop-row {
-  grid-template-columns: repeat(2, 148px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   justify-content: center;
   gap: 10px;
 }
 
 .stage-upgrades .shop-row button {
-  width: 148px;
-  min-width: 148px;
-  max-width: 148px;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
   height: 48px;
   min-height: 48px;
   max-height: 48px;
@@ -2125,7 +2134,7 @@ body.reef-fisher-playing .hint {
 
 @media (max-height: 560px) and (min-aspect-ratio: 3 / 2) {
   body.wp-stage-select-active #stagePanel .stage-workspace {
-    grid-template-columns: minmax(0, 1fr) 280px !important;
+    grid-template-columns: minmax(0, 1fr) 330px !important;
     grid-template-rows: 54px 190px !important;
     gap: 8px !important;
     min-width: 0 !important;
@@ -2159,22 +2168,23 @@ body.reef-fisher-result .tutorial-card {
 }
 
 .result-actions {
-  grid-template-columns: repeat(2, 148px);
+  grid-template-columns: repeat(3, minmax(0, 148px));
   justify-content: center;
+  direction: ltr;
 }
 
 .result-actions button {
-  width: 148px;
-  min-width: 148px;
+  width: 100%;
+  min-width: 0;
   max-width: 148px;
   height: 48px;
   min-height: 48px;
   max-height: 48px;
 }
 
-#nextZoneBtn:not(.is-hidden) {
-  grid-column: 1 / -1;
-}
+.result-actions #resultMenuBtn { grid-column: 1; grid-row: 1; }
+.result-actions #nextZoneBtn { grid-column: 2; grid-row: 1; }
+.result-actions #retryBtn { grid-column: 3; grid-row: 1; }
 
 /* Result remains a Battle-owned substate inside the invariant logical Canvas. */
 body.reef-fisher-playing .battle-shell > #resultPanel.result-panel {
@@ -2276,7 +2286,7 @@ body.reef-fisher-playing #resultPanel p {
 }
 
 body.reef-fisher-playing #resultPanel .result-actions {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
   width: 100%;
 }
@@ -2290,12 +2300,21 @@ body.reef-fisher-playing #resultPanel .result-actions button {
 
 @media (max-width: 350px) {
   .result-actions {
-    grid-template-columns: repeat(2, 132px);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .result-actions button {
-    width: 132px;
-    min-width: 132px;
-    max-width: 132px;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
   }
+}
+
+html[data-reef-state="game"],
+html[data-reef-state="result"] {
+  overflow: hidden;
+}
+
+body.reef-fisher-playing .weightplay-version-badge {
+  display: none !important;
 }

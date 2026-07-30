@@ -2157,6 +2157,30 @@
     });
   }
 
+  function centerStageCard(owner) {
+    const rail = nodes.stageRail;
+    if (!rail || !owner || !rail.contains(owner)) return;
+    const previousSnapType = rail.style.scrollSnapType;
+    const previousScrollBehavior = rail.style.scrollBehavior;
+    rail.style.scrollSnapType = "none";
+    rail.style.scrollBehavior = "auto";
+    const reconcile = () => {
+      if (!rail.contains(owner)) return;
+      const railRect = rail.getBoundingClientRect();
+      const ownerRect = owner.getBoundingClientRect();
+      const centerDelta = ownerRect.left + ownerRect.width / 2
+        - (railRect.left + railRect.width / 2);
+      const canvasScale = owner.offsetWidth ? ownerRect.width / owner.offsetWidth : 1;
+      if (Math.abs(centerDelta) > 0.5) rail.scrollLeft += centerDelta / Math.max(canvasScale, 0.01);
+    };
+    reconcile();
+    requestAnimationFrame(() => {
+      reconcile();
+      rail.style.scrollSnapType = previousSnapType;
+      rail.style.scrollBehavior = previousScrollBehavior;
+    });
+  }
+
   function handleStageCardKeydown(event) {
     const card = event.target.closest(".stage-card");
     if (!card || !nodes.stageRail?.contains(card)) return;
@@ -2176,7 +2200,7 @@
     event.preventDefault();
     const target = cards[Math.max(0, Math.min(cards.length - 1, targetIndex))];
     setBrowsedStageOwner(target);
-    target.scrollIntoView({ block: "nearest", inline: "center" });
+    centerStageCard(target);
     target.focus({ preventScroll: true });
   }
 

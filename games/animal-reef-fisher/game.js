@@ -141,6 +141,9 @@
       startExpedition: "Start Expedition",
       reefMap: "Reef Map",
       nextMission: "Next Mission",
+      stages: "Stages",
+      nextStage: "Next Stage",
+      replay: "Replay",
       leaveTitle: "Leave this expedition?",
       leaveCopy: "Mission {stage}: {catches}/{goal} catches and {time}s left. This expedition, its catches, and any prepared Lure or Sonar will be lost. Saved Album, Reef Notes, and gear stay safe.",
       keepFishing: "Keep Fishing",
@@ -246,6 +249,9 @@
       startExpedition: "開始遠征",
       reefMap: "礁區地圖",
       nextMission: "下一個任務",
+      stages: "關卡",
+      nextStage: "下一關",
+      replay: "重新挑戰",
       leaveTitle: "要離開這次遠征嗎？",
       leaveCopy: "第 {stage} 關：已釣到 {catches}/{goal} 條，剩餘 {time} 秒。本次遠征、漁獲與已準備的魚餌或聲納會消失；已儲存的圖鑑、礁石筆記與裝備不受影響。",
       keepFishing: "繼續釣魚",
@@ -336,6 +342,12 @@
     sonarReady:"El sonar está preparado para esta expedición.",sonarScan:"Sonar: {fish} · {rarity} · {behavior}. Próximo lanzamiento fijado.",sonarStatus:"Siguiente: {fish}",needDiamonds:"Necesitas {cost} diamantes.",lureReady:"El cebo raro está preparado para la próxima expedición.",buyLure:"Cebo raro {cost}💎",buySonar:"Pulso sonar {cost}💎",confirmLure:"Confirmar cebo · {before}→{after}💎",confirmSonar:"Confirmar sonar · {before}→{after}💎",lureBuyLabel:"El Cebo raro aumenta la posibilidad de una marca rara en la próxima expedición. Cuesta 3 diamantes. Saldo {balance}.",sonarBuyLabel:"El Pulso sonar revela y fija el próximo pez antes de lanzar. Cuesta 2 diamantes. Saldo {balance}.",lureConfirmLabel:"Confirma el Cebo raro. Gasta 3 diamantes. Saldo de {before} a {after}.",sonarConfirmLabel:"Confirma el Pulso sonar. Gasta 2 diamantes. Saldo de {before} a {after}.",sonar:"Sonar",upgrade:"Mejorar",max:"Máx.",gearUpgradeLabel:"Mejora {gear} del nivel {beforeLevel} al {afterLevel}. Gasta {cost} Notas. Saldo de {before} a {after}.",gearUpgradeNeedLabel:"{gear} nivel {beforeLevel}. El nivel {afterLevel} cuesta {cost} Notas. Saldo {balance}; faltan {need}.",gearMaxLabel:"{gear} nivel {level}. Nivel máximo.",locked:"Bloqueado",complete:"Completado",
     expeditionWin:"Expedición completada",expeditionFail:"Expedición terminada",result:"Lograste {catches} capturas, descubriste {newFish} entradas nuevas y ganaste {notes} Notas del Arrecife.",score:"Puntuación",catchValue:"Valor de captura",runScore:"Puntuación",runCatchValue:"Notas del Arrecife",lastCatch:"Última captura",noCatchYet:"Sin capturas",newAlbum:"Álbum nuevo",catchSummary:"Capturas de esta expedición",catchToast:"Capturaste {fish}",catchToastMeta:"+{points} pts · +{notes} notas{newTag}",catchHudMeta:"{rarity} · +{points} pts · +{notes} notas{newTag}",newTag:" · ¡Nuevo en el álbum!",noCatch:"Aún no capturaste peces. Haz un lanzamiento más seguro y mantén la línea en SEGURA.",rareFish:"Raro",commonFish:"Común",reportWin:"Informe: buena atención y reacción. Controlaste la tensión mientras elegías lanzamientos seguros.",reportFail:"Informe: buena práctica. Mejora el equipo y devuelve antes el indicador a la zona segura."
   };
+
+  Object.assign(text.es, {
+    stages: "Etapas",
+    nextStage: "Siguiente etapa",
+    replay: "Repetir",
+  });
 
   Object.assign(text.en, {
     mission: "Mission {stage}",
@@ -709,6 +721,9 @@
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
+    nodes.resultMenuBtn.textContent = t("stages");
+    nodes.nextZoneBtn.textContent = t("nextStage");
+    nodes.retryBtn.textContent = t("replay");
     nodes.mapBtn.setAttribute("aria-label", t("reefMap"));
     nodes.leaveTitle.textContent = t("leaveTitle");
     nodes.leaveKeepBtn.textContent = t("keepFishing");
@@ -1011,7 +1026,7 @@
   function syncResultActions(won) {
     const zoneIndex = run ? zones.indexOf(run.zone) : -1;
     const hasNextMission = Boolean(won && zoneIndex >= 0 && zoneIndex < zones.length - 1);
-    nodes.nextZoneBtn.classList.toggle("is-hidden", !hasNextMission);
+    nodes.nextZoneBtn.classList.remove("is-hidden");
     nodes.nextZoneBtn.disabled = !hasNextMission;
     const primary = hasNextMission ? nodes.nextZoneBtn : (won ? nodes.resultMenuBtn : nodes.retryBtn);
     for (const button of [nodes.nextZoneBtn, nodes.retryBtn, nodes.resultMenuBtn]) {
@@ -2081,17 +2096,13 @@
       return;
     }
     if (event.key !== "Tab" || nodes.resultPanel.classList.contains("is-hidden")) return;
-    const actions = [nodes.nextZoneBtn, nodes.retryBtn, nodes.resultMenuBtn].filter((button) => !button.disabled && !button.classList.contains("is-hidden"));
+    const actions = [nodes.resultMenuBtn, nodes.nextZoneBtn, nodes.retryBtn].filter((button) => !button.disabled && !button.classList.contains("is-hidden"));
     if (!actions.length) return;
-    const first = actions[0];
-    const last = actions[actions.length - 1];
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus({ preventScroll: true });
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus({ preventScroll: true });
-    }
+    const currentIndex = actions.indexOf(document.activeElement);
+    if (currentIndex < 0) return;
+    event.preventDefault();
+    const delta = event.shiftKey ? -1 : 1;
+    actions[(currentIndex + delta + actions.length) % actions.length].focus({ preventScroll: true });
   });
   nodes.startBtn.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();

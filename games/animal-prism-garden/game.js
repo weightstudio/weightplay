@@ -30,23 +30,29 @@
   function closeModal(panel,focus){
     panel.hidden=true;setCovered(false,panel);focus?.focus?.({preventScroll:true});
   }
-  function syncShell(screen){
-    const reserve=$("#generalReserve");
-    reserve.hidden=screen==="main";
-    const host=$(".wp-shell-settings[data-wp-settings-control]");
-    if(!host)return;
-    const header=screen==="main"?$("#main .main-header"):screen==="stage"?$("#stage .stage-header"):null;
-    if(!header){host.hidden=true;return}
-    if(host.parentElement!==header)header.append(host);
-    host.hidden=false;
+  function syncBattleHelp(screen){
+    const button=$(".wp-tutorial-button");
+    if(!button)return;
+    const header=$("#battle .battle-header");
+    if(button.parentElement!==header)header.append(button);
+    button.classList.add("prism-battle-help");
+    button.hidden=screen!=="battle";
   }
   function show(id){
     $("#leavePanel").hidden=true;$("#result").hidden=true;setCovered(false,null);
     screens.forEach(screen=>screen.hidden=screen.id!==id);
     $("#mainGroup").hidden=id!=="main";
     document.body.dataset.screen=id;
-    syncShell(id);
+    document.body.classList.toggle("wp-shell-main-active",id==="main");
+    document.body.classList.toggle("wp-shell-stage-active",id==="stage");
+    document.body.classList.toggle("wp-shell-battle-active",id==="battle");
+    document.body.classList.toggle("wp-stage-select-active",id==="stage");
+    $("#generalReserve").hidden=id==="main";
+    syncBattleHelp(id);
     if(id==="stage")renderStages();
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
+    window.dispatchEvent(new Event("weightplay:stage-sync"));
+    window.dispatchEvent(new Event("weightplay:battle-sync"));
   }
   function setLocale(next){
     locale=localeOrder.includes(next)?next:"en";
@@ -75,7 +81,9 @@
   function renderStages(){
     const rail=$("#stageGrid");
     if(!rail)return;
-    $("#progressBadge").textContent=t("progress",{done:Math.max(0,unlocked-1)});
+    const progress=t("progress",{done:Math.max(0,unlocked-1)});
+    $("#progressBadge").textContent=progress;
+    $("#mainProgress").textContent=progress;
     rail.innerHTML="";
     levels.forEach((item,index)=>{
       const locked=index>=unlocked;
@@ -241,8 +249,9 @@
   $("#stageTab").addEventListener("click",()=>$("#stageGrid").children[selected]?.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"}));
 
   initLocale();renderStages();show("main");
+  document.addEventListener("DOMContentLoaded",()=>syncBattleHelp(document.body.dataset.screen),{once:true});
   window.addEventListener("load",()=>{
     $("#loadingPanel")?.classList.add("hidden");
-    window.WonderAnalytics?.track?.("game_view",{game_id:"animal-prism-garden",release_state:"internal"});
+    window.WonderAnalytics?.track?.("game_view",{game_id:"animal-prism-garden",release_state:"public"});
   },{once:true});
 })();

@@ -18,7 +18,7 @@ const images={
 };
 const defaultSave=()=>({unlocked:1,medals:Array(30).fill(0),cabinet:Array(8).fill(false),bolts:0,upgrades:{grip:0,stability:0,rail:0},tutorial:false});
 let save=loadSave();
-let run=null,pointerId=null,pointerStartX=null,keyStabilize=0;
+let run=null,pointerId=null,keyStabilize=0;
 const chapters=[
   {name:"chapter1",rule:"rule1",obstacle:"none"},
   {name:"chapter2",rule:"rule2",obstacle:"bumper"},
@@ -152,7 +152,7 @@ function renderHud(){
   $("dropsValue").textContent=run.drops;$("gripValue").textContent=`${Math.round(run.grip*100)}%`;
   $("stabilityFill").style.transform=`scaleX(${clamp(run.stability)})`;
   $("targetList").innerHTML=run.targets.map(kind=>`<span class="target-chip ${run.delivered.some(entry=>entry.target&&entry.kind===kind)?"done":""}">${prizeName(kind)}</span>`).join("");
-  $("dropBtn").disabled=run.phase!=="aim";$("restartBtn").disabled=!!run.result;
+  $("dropBtn").disabled=!["aim","lift"].includes(run.phase);$("dropBtn").textContent=t(run.phase==="lift"?"holdGrip":"drop");$("restartBtn").disabled=!!run.result;
   if(run.phase!=="lift")$("steerAction").hidden=true;
   announce(run.feedback||"phaseAim");
 }
@@ -170,10 +170,10 @@ function update(dt){
     if(run.phaseTime>=.72)resolveGrip();
   }else if(run.phase==="lift"){
     const held=run.held,swing=Math.sin(run.phaseTime*(3.8+held.weight*.35)+held.kind)*(.34+held.weight*.09+run.level.drift);
-    const response=.42+save.upgrades.stability*.12,counterInput=run.stabilizer||keyStabilize,counter=counterInput*response;
-    run.swing=swing;updateSteerCoach(swing,counterInput);
-    const error=Math.abs(swing+counter),loss=Math.max(0,error-.18)*dt*(.52+held.weight*.14);
-    run.stability=clamp(run.stability-loss+dt*.035);run.grip=clamp(run.grip-loss*.78);
+    const holding=Boolean(run.stabilizer||keyStabilize);
+    run.swing=swing;updateHoldCoach(holding);
+    run.stability=clamp(run.stability+dt*(holding?.1+save.upgrades.stability*.04:-(.72+held.weight*.08)));
+    run.grip=clamp(run.grip+dt*(holding?.16:-.56));
     if(run.stability<=.15||run.grip<=.12){dropHeld();return}
     if(run.phaseTime>=1.55)deliverHeld();
   }else if(run.phase==="return"&&run.phaseTime>=.52){
@@ -232,12 +232,12 @@ function finish(won){
 }
 function commitResult(action){if(settledDecision||$("resultPanel").hidden)return;settledDecision=true;[$("resultStagesBtn"),$("nextBtn"),$("retryBtn")].forEach(button=>button.disabled=true);action()}
 
-function updateSteerCoach(swing,counter){
+function updateHoldCoach(holding){
   const hint=$("phaseHint"),action=$("steerAction");if(!hint||!action)return;
-  const hasInput=Math.abs(counter)>=.12,correct=hasInput&&Math.sign(counter)===-Math.sign(swing),state=correct?"correct":hasInput?"wrong":"prompt",dragLeft=swing>0;
+  const state=holding?"correct":"prompt";
   hint.dataset.steer=state;action.dataset.steer=state;action.hidden=false;
-  action.textContent=t(dragLeft?"dragLeftAction":"dragRightAction");
-  hint.textContent=t(correct?"steadyGood":hasInput?"steadyWrong":dragLeft?"counterLeft":"counterRight");
+  action.textContent=t(holding?"holdingAction":"holdAction");
+  hint.textContent=t(holding?"holdingGood":"holdNeeded");
 }
 
 function activeModal(){return["tutorialPanel","leavePanel","pausePanel","resultPanel"].some(id=>!$(id).hidden)}
@@ -298,7 +298,6 @@ function handlePointerAim(event,release=false){
   if(!run||activeModal())return;
   const point=logicalPoint(event);
   if(run.phase==="aim"){run.aimX=clamp(point.x,70,930);run.aimY=clamp(point.y,210,500);draw();if(release)beginDrop()}
-  else if(run.phase==="lift"&&pointerStartX!==null){run.stabilizer=clamp((point.x-pointerStartX)/72,-1,1)}
 }
 
 function bind(){
@@ -317,16 +316,20 @@ function bind(){
   $("pauseBtn").addEventListener("click",()=>openModal("pausePanel",$("resumeBtn")));
   $("resumeBtn").addEventListener("click",()=>closeModal("pausePanel"));
   $("tutorialStartBtn").addEventListener("click",()=>{save.tutorial=true;persist();closeModal("tutorialPanel")});
-  $("dropBtn").addEventListener("click",beginDrop);$("restartBtn").addEventListener("click",()=>startMission(run.index));
+  $("dropBtn").addEventListener("click",()=>run?.phase==="aim"&&beginDrop());
+  $("dropBtn").addEventListener("pointerdown",event=>{if(run?.phase!=="lift")return;run.stabilizer=1;$("dropBtn").setPointerCapture?.(event.pointerId);updateHoldCoach(true);event.preventDefault()});
+  $("dropBtn").addEventListener("pointerup",event=>{if(run?.phase==="lift"){run.stabilizer=0;updateHoldCoach(false)}event.preventDefault()});
+  $("dropBtn").addEventListener("pointercancel",()=>{if(run){run.stabilizer=0;if(run.phase==="lift")updateHoldCoach(false)}});
+  $("restartBtn").addEventListener("click",()=>startMission(run.index));
   $("resultStagesBtn").addEventListener("click",()=>commitResult(()=>show("stage")));
   $("nextBtn").addEventListener("click",()=>commitResult(()=>startMission(Math.min(29,run.index+1))));
   $("retryBtn").addEventListener("click",()=>commitResult(()=>startMission(run.index)));
-  canvas.addEventListener("pointerdown",event=>{if(pointerId!==null)return;pointerId=event.pointerId;pointerStartX=run?.phase==="lift"?logicalPoint(event).x:null;canvas.setPointerCapture(event.pointerId);handlePointerAim(event);event.preventDefault()});
+  canvas.addEventListener("pointerdown",event=>{if(pointerId!==null||run?.phase!=="aim")return;pointerId=event.pointerId;canvas.setPointerCapture(event.pointerId);handlePointerAim(event);event.preventDefault()});
   canvas.addEventListener("pointermove",event=>{if(pointerId===event.pointerId)handlePointerAim(event)});
-  canvas.addEventListener("pointerup",event=>{if(pointerId!==event.pointerId)return;handlePointerAim(event,run?.phase==="aim");pointerId=null;pointerStartX=null;run&&(run.stabilizer=0);event.preventDefault()});
-  canvas.addEventListener("pointercancel",()=>{pointerId=null;pointerStartX=null;if(run)run.stabilizer=0});
-  canvas.addEventListener("keydown",event=>{if(!run||activeModal())return;const amount=event.shiftKey?28:14;if(run.phase==="aim"&&["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(event.key)){run.aimX=clamp(run.aimX+(event.key==="ArrowLeft"?-amount:event.key==="ArrowRight"?amount:0),70,930);run.aimY=clamp(run.aimY+(event.key==="ArrowUp"?-amount:event.key==="ArrowDown"?amount:0),210,500);draw();event.preventDefault()}else if(run.phase==="lift"&&["ArrowLeft","ArrowRight"].includes(event.key)){keyStabilize=event.key==="ArrowLeft"?-1:1;event.preventDefault()}else if(run.phase==="aim"&&(event.key===" "||event.key==="Enter")){beginDrop();event.preventDefault()}});
-  canvas.addEventListener("keyup",event=>{if(["ArrowLeft","ArrowRight"].includes(event.key))keyStabilize=0});
+  canvas.addEventListener("pointerup",event=>{if(pointerId!==event.pointerId)return;handlePointerAim(event,run?.phase==="aim");pointerId=null;event.preventDefault()});
+  canvas.addEventListener("pointercancel",()=>{pointerId=null});
+  canvas.addEventListener("keydown",event=>{if(!run||activeModal())return;const amount=event.shiftKey?28:14;if(run.phase==="aim"&&["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(event.key)){run.aimX=clamp(run.aimX+(event.key==="ArrowLeft"?-amount:event.key==="ArrowRight"?amount:0),70,930);run.aimY=clamp(run.aimY+(event.key==="ArrowUp"?-amount:event.key==="ArrowDown"?amount:0),210,500);draw();event.preventDefault()}else if(run.phase==="lift"&&(event.key===" "||event.key==="Enter")){keyStabilize=1;updateHoldCoach(true);event.preventDefault()}else if(run.phase==="aim"&&(event.key===" "||event.key==="Enter")){beginDrop();event.preventDefault()}});
+  canvas.addEventListener("keyup",event=>{if([" ","Enter"].includes(event.key)){keyStabilize=0;if(run?.phase==="lift")updateHoldCoach(false)}});
   window.addEventListener("resize",resizeCanvas,{passive:true});
   window.addEventListener("blur",()=>{if(screen==="battle"&&run&&!run.result&&!activeModal())openModal("pausePanel",$("resumeBtn"))});
   document.addEventListener("visibilitychange",()=>{if(document.hidden&&screen==="battle"&&run&&!run.result&&!activeModal())openModal("pausePanel",$("resumeBtn"))});

@@ -478,12 +478,8 @@ window.WONDER_LOBBY = {
         "pt-BR": "Jardim de Rotas Prisma", fr: "Jardin des Routes Prismatiques", de: "Prisma-Pfadgarten",
         it: "Giardino dei Percorsi Prisma", ru: "Сад призматических маршрутов", hi: "प्रिज़्म रूट गार्डन", ar: "حديقة مسارات الموشور",
       },
-      status: "planned",
-      statusText: {
-        en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開",
-        ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible",
-        de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا",
-      },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب" },
       type: {
         en: "Advanced Route Puzzle", "zh-Hant": "進階連線策略", "zh-Hans": "进阶连线策略",
         ja: "上級ルートパズル", ko: "상급 경로 퍼즐", es: "Puzle avanzado de rutas",
@@ -494,7 +490,6 @@ window.WONDER_LOBBY = {
       skills: ["Route Planning", "Constraint Solving", "Spatial Strategy"],
       ages: ["family"],
       href: "games/animal-prism-garden/",
-      internalTrial: "index.html?trial=1",
       description: {
         en: "Design luminous routes across 30 expanded gardens, obey color-locked prism gates, and illuminate every open tile.",
         "zh-Hant": "在 30 座大型庭園規劃幻彩路線，遵守限定顏色的閘門規則，並點亮每一個開放格。",
@@ -520,6 +515,7 @@ window.WONDER_LOBBY = {
         ar: ["30 لوحة كبيرة", "من 7×7 إلى 10×10", "بوابات ألوان"],
       },
       art: { kind: "image", background: "assets/animal-prism-garden/cover.webp", hideHero: true },
+      previewVideo: "assets/previews/animal-prism-garden-battle.webm",
     },
     {
       id: "animal-bamboo-pipes",

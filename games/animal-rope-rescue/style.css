@@ -1041,6 +1041,7 @@ body:not(.is-vine-playing):not(.is-vine-stage-select) #startBtn {
   body.is-vine-stage-select .stage-card small { font-size: .86rem; }
 
   body.is-vine-playing main.vine-app #gamePanel.game-panel {
+    position: relative;
     grid-template-columns: minmax(0, 1fr) 430px;
     grid-template-rows: 88px minmax(0, 1fr) 92px 70px;
     column-gap: 18px;
@@ -1051,15 +1052,21 @@ body:not(.is-vine-playing):not(.is-vine-stage-select) #startBtn {
   body.is-vine-playing .hud-row {
     grid-column: 2;
     grid-row: 1;
-    grid-template-columns: 88px minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 10px;
   }
 
   body.is-vine-playing .hud-row .soft-btn {
-    width: 88px;
-    min-height: 88px;
-    border-radius: 22px;
-    font-size: 1.65rem;
+    position: absolute;
+    z-index: 12;
+    top: 10px;
+    left: 10px;
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
+    min-height: 48px;
+    border-radius: 8px;
+    font-size: 1.5rem;
   }
 
   body.is-vine-playing .hud-pill {

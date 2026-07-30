@@ -2674,8 +2674,19 @@
     return table[skill] || skill;
   }
 
-  function localizeAge(age) {
+  function localizeLegacyAge(age) {
     return ["zh-Hant", "zh-Hans"].includes(locale()) && age === "Family" ? (locale() === "zh-Hans" ? "亲子" : "親子") : age;
+  }
+
+  function localizeAge(age) {
+    const familyLabels = {
+      "zh-Hant": "親子", "zh-Hans": "亲子", ja: "ファミリー", ko: "가족",
+      es: "Familia", "pt-BR": "Família", fr: "Famille", de: "Familie",
+      it: "Famiglia", ru: "Для семьи", hi: "परिवार", ar: "العائلة",
+    };
+    const activeLocale = locale();
+    if (activeLocale === "en" || !String(age).includes("Family")) return age;
+    return String(age).replace("Family", familyLabels[activeLocale] || "Family");
   }
 
   function localizeDifficulty(difficulty) {
@@ -7794,6 +7805,41 @@
     }
   };
   Object.assign(games, publicKidsBatch);
+  games["animal-tangram"] = {
+    title: "Panko's Tangram Trail", age: "9+", difficulty: "Easy to Challenging",
+    time: "2-6 minutes per shape", gameplay: "Seven-Piece Spatial Puzzle",
+    genre: ["Puzzle", "Spatial", "Animal"], skills: ["Spatial Reasoning", "Visual Planning", "Problem Solving"],
+    intro: "Panko's Tangram Trail is a thirty-shape spatial puzzle. Drag and rotate all seven classic tangram pieces until each one matches the faint animal silhouette.",
+    story: ["Panko is rebuilding a woodland shape album one animal at a time. Every finished turtle, cat, bird, fox, fish, rabbit, and later compact silhouette restores another page of the trail."],
+    systems: ["Drag a colored piece over its matching faint target. Tap or keyboard-activate a piece to rotate it in 45-degree steps. A piece snaps only when both its center and angle match the authored target.", "Hint places one unresolved piece correctly. Reset restores the current authored shape, and every completed shape unlocks the next puzzle while keeping earlier shapes replayable."],
+    how: ["Choose an unlocked animal shape.", "Drag a colored piece toward its matching outline.", "Tap the piece until its angle matches.", "Place all seven pieces to complete the animal."],
+    strategyTips: ["Place the two large triangles first.", "Use corners and straight edges to identify the square and parallelogram.", "If a piece looks aligned but does not snap, check its 45-degree rotation."],
+    progression: ["Thirty authored shapes begin with roomy silhouettes and gradually introduce tighter overlaps, mirrored layouts, and compact animal outlines. Every unlocked shape remains available for replay."],
+    designNote: "The same seven-piece geometry is used for the visible pieces, targets, snapping, touch, mouse, and keyboard input. There is no timer or random layout, so every attempt can be solved from visible spatial information.",
+    parent: "This Kids puzzle is ad-free and requires no account. Shape progress stays in the current browser. It is a recreational spatial puzzle, not a formal ability assessment.",
+    faq: [["Must every piece be used?", "Yes. Every shape uses all seven classic tangram pieces."], ["Why did a piece not snap?", "Its center or rotation does not yet match the target."], ["Are hints limited?", "No. Hint places one unresolved piece correctly."], ["Can I replay a shape?", "Yes. Every unlocked shape remains available."]]
+  };
+  localizedGames["zh-Hant"]["animal-tangram"] = {
+    ...games["animal-tangram"],
+    title: "潘可的七巧板小徑", difficulty: "簡單至具挑戰性", time: "每個圖形約 2 至 6 分鐘",
+    gameplay: "七片空間拼圖", genre: ["益智", "空間", "動物"], skills: ["空間推理", "視覺規劃", "問題解決"],
+    intro: "《潘可的七巧板小徑》是一款包含三十個圖形的空間益智遊戲。拖曳並旋轉七片經典七巧板，讓每一片都與淡色動物輪廓吻合。",
+    story: ["潘可正在逐頁重建森林圖形相簿。每完成一隻烏龜、貓、鳥、狐狸、魚、兔子或後期更緊密的動物輪廓，就能修復小徑中的一頁。"],
+    systems: ["把彩色板片拖到相同形狀的淡色目標上。點按或使用鍵盤操作板片，可讓它以 45 度為單位旋轉。只有中心與角度都符合關卡設定時，板片才會吸附。", "提示會放好一片尚未完成的板片；重設會還原目前的固定圖形。完成圖形後會解鎖下一關，已解鎖圖形仍可重玩。"],
+    how: ["選擇一個已解鎖的動物圖形。", "把彩色板片拖向相符的輪廓。", "點按板片直到角度吻合。", "正確放好全部七片即可完成動物。"],
+    strategyTips: ["先放兩片大三角形，建立主要輪廓。", "利用角落與直邊辨認正方形和平行四邊形。", "如果位置看似正確卻沒有吸附，請檢查 45 度旋轉角度。"],
+    progression: ["三十個固定圖形從寬鬆輪廓開始，逐步加入更緊密的重疊、鏡像配置及緊湊動物外形；所有已解鎖圖形都能重玩。"],
+    designNote: "畫面板片、目標、吸附判定、觸控、滑鼠與鍵盤都使用相同的七片幾何資料。遊戲沒有計時或隨機配置，每次都能依照可見空間資訊解題。",
+    parent: "這款 Kids 益智遊戲沒有廣告，也不需要帳號。圖形進度只保存在目前瀏覽器；它是休閒空間拼圖，不是正式能力評量。",
+    faq: [["每一片都必須使用嗎？", "是，每個圖形都使用完整七片經典七巧板。"], ["為什麼板片沒有吸附？", "板片中心或旋轉角度尚未符合目標。"], ["提示有限制嗎？", "沒有，提示會放好一片尚未完成的板片。"], ["可以重玩圖形嗎？", "可以，所有已解鎖圖形都能重玩。"]]
+  };
+  localizedGameplayProfiles["zh-Hant"]["animal-tangram"] = { gameplay: "七片空間拼圖", genre: ["益智", "空間", "動物"] };
+  localizedGames["zh-Hans"]["animal-tangram"] = {
+    ...localizedGames["zh-Hant"]["animal-tangram"],
+    title: "潘可的七巧板小径", difficulty: "简单至具挑战性", time: "每个图形约 2 至 6 分钟",
+    gameplay: "七片空间拼图",
+  };
+  localizedGameplayProfiles["zh-Hans"]["animal-tangram"] = { gameplay: "七片空间拼图", genre: ["益智", "空间", "动物"] };
   games["animal-color-springs"] = {
     title: "Animal Color Springs", age: "9+", difficulty: "Easy to Challenging", time: "2-6 minutes per stage", gameplay: "Color Sorting Puzzle", genre: ["Puzzle", "Logic", "Animal"], skills: ["Logic", "Problem Solving", "Focus"],
     intro: "Animal Color Springs is a thirty-stage sorting puzzle. Move the complete top group of matching spring orbs into an empty vessel or onto the same color, then finish with every non-empty vessel holding one color.",

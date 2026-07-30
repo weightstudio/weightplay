@@ -94,5 +94,21 @@
     ar:{difficulty:"الصعوبة: شديدة جدًا",guideCampaignDetail:"تستخدم اللوحات الثلاثون مسارات ثابتة شديدة التشابك. غالبًا ما تتباعد النهايات المتطابقة، لذا خطط للمسارات الطويلة والمناطق الضيقة أولًا. تبدأ البوابات من الحديقة 5 بعدد بوابة إلى ثلاث فقط في كل لوحة، لتكون قيودًا لا خريطة للحل."}
   };
   for(const [code,copy] of Object.entries(hardCampaign))Object.assign({en,"zh-Hant":zhHant,"zh-Hans":zhHans,ja,ko,es,"pt-BR":pt,fr,de,it,ru,hi,ar}[code],copy);
+  const publicSaveCopy={
+    en:"Progress stays in this browser. No account or purchase is required, and advertising is not currently active.",
+    "zh-Hant":"進度只儲存在此瀏覽器。不需要帳號或購買，目前也沒有啟用廣告。",
+    "zh-Hans":"进度只储存在此浏览器。不需要账号或购买，目前也没有启用广告。",
+    ja:"進行状況はこのブラウザーに保存されます。アカウントや購入は不要で、現在広告は有効になっていません。",
+    ko:"진행 상황은 이 브라우저에 저장됩니다. 계정이나 구매는 필요하지 않으며 현재 광고는 활성화되어 있지 않습니다.",
+    es:"El progreso se guarda en este navegador. No se requiere cuenta ni compra, y actualmente no hay publicidad activa.",
+    "pt-BR":"O progresso fica salvo neste navegador. Não é preciso ter conta nem fazer compras, e a publicidade não está ativa no momento.",
+    fr:"La progression reste dans ce navigateur. Aucun compte ni achat n'est requis, et la publicité n'est pas activée actuellement.",
+    de:"Der Fortschritt bleibt in diesem Browser. Ein Konto oder Kauf ist nicht erforderlich, und Werbung ist derzeit nicht aktiv.",
+    it:"I progressi restano in questo browser. Non servono account o acquisti e al momento la pubblicità non è attiva.",
+    ru:"Прогресс хранится в этом браузере. Аккаунт и покупки не требуются, реклама сейчас не активна.",
+    hi:"प्रगति इसी ब्राउज़र में सहेजी जाती है। खाते या खरीदारी की आवश्यकता नहीं है और अभी विज्ञापन सक्रिय नहीं हैं।",
+    ar:"يُحفظ التقدم في هذا المتصفح. لا يلزم حساب أو شراء، والإعلانات غير مفعّلة حاليًا."
+  };
+  for(const [code,guideSave] of Object.entries(publicSaveCopy))Object.assign({en,"zh-Hant":zhHant,"zh-Hans":zhHans,ja,ko,es,"pt-BR":pt,fr,de,it,ru,hi,ar}[code],{guideSave});
   root.PRISM_GARDEN_LOCALES={en,"zh-Hant":zhHant,"zh-Hans":zhHans,ja,ko,es,"pt-BR":pt,fr,de,it,ru,hi,ar};
 })(window);

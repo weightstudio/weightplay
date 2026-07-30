@@ -52,7 +52,7 @@
     const threat = boss ? "threatBoss" : chapter === 0 ? "threatBasic" : chapter === 1 ? (step % 2 ? "threatHaste" : "threatArmor") :
       chapter === 2 ? (step % 2 ? "threatHeal" : "threatSwarm") : chapter === 3 ? (step % 2 ? "threatLock" : "threatHaste") : "threatChampion";
     const plan = threat === "threatArmor" ? "planForge" : threat === "threatSwarm" || threat === "threatHeal" ? "planTide" : boss || chapter >= 4 ? "planBurst" : "planPairs";
-    return {n, chapter, step, boss, waves, threat, plan, reward:5 + chapter * 2 + step, enemyHp:16 + n * 2.6, speed:.033 + chapter * .0024 + step * .0008};
+    return {n, chapter, step, boss, waves, route:(n-1)%6, threat, plan, reward:5 + chapter * 2 + step, enemyHp:16 + n * 2.6, speed:.033 + chapter * .0024 + step * .0008};
   });
 
   const guardianTypes = [
@@ -63,6 +63,15 @@
     {id:"tide", image:"../../assets/animal-dice-bastion/guardian-tide.webp", power:.74, rate:1.02, splash:.45, color:"#60a5fa"}
   ];
   const guardianMap = Object.fromEntries(guardianTypes.map((item) => [item.id, item]));
+  const roadPaths = [
+    [[0,.68],[.22,.58],[.48,.66],[.73,.5],[1,.58]],
+    [[0,.42],[.22,.7],[.48,.38],[.74,.68],[1,.46]],
+    [[0,.72],[.28,.72],[.34,.35],[.7,.35],[.76,.7],[1,.7]],
+    [[0,.3],[.2,.3],[.32,.7],[.64,.7],[.78,.38],[1,.38]],
+    [[0,.58],[.2,.36],[.42,.64],[.62,.4],[.82,.66],[1,.46]],
+    [[0,.35],[.18,.62],[.4,.62],[.52,.3],[.74,.3],[.86,.66],[1,.66]]
+  ];
+  const projectileColors = {grove:"#78f0a9",spark:"#d8a7ff",moon:"#8cecff",forge:"#ffc15e",tide:"#69a9ff"};
   const enemyImages = {
     normal:"../../assets/animal-dice-bastion/enemy-wisp.webp",
     fast:"../../assets/animal-dice-bastion/enemy-wisp.webp",
@@ -227,12 +236,12 @@
         enemies.push({
           kind, hp, maxHp:hp, armor:kind === "armor" ? .42 : 0,
           speed:stage.speed * (kind === "fast" ? 1.65 : kind === "armor" ? .72 : kind === "healer" ? .82 : 1),
-          x:-.08-i*.09, hit:false, slow:0, healClock:kind === "healer" ? 2.4 : 0
+          x:-.04-i*.035, hit:false, slow:0, healClock:kind === "healer" ? 2.4 : 0
         });
       }
       if (stage.boss && wave === stage.waves) {
         const hp = stage.enemyHp * (9 + stage.chapter * 2.2);
-        enemies.push({kind:`boss${stage.chapter}`, hp, maxHp:hp, armor:.22 + stage.chapter*.02, speed:stage.speed*.45, x:-.32, hit:false, slow:0, boss:true});
+        enemies.push({kind:`boss${stage.chapter}`, hp, maxHp:hp, armor:.22 + stage.chapter*.02, speed:stage.speed*.45, x:-.1, hit:false, slow:0, boss:true});
       }
       plan.push(enemies);
     }
@@ -246,6 +255,7 @@
       stage, stageIndex, random, board:Array(15).fill(null), selected:-1, cursor:0, charge:42 + save.upgrades.charge * 8,
       summonCost:10, drought:0, core:maxCore, maxCore, wave:0, plan:createWavePlan(stage), enemies:[], spawnQueue:[],
       spawnClock:0, between:1.3, attackClock:0, burst:0, rally:0, rallyCooldown:0, rerolls:0, merges:0,
+      projectiles:[], impacts:[], shotsFired:0, hits:0,
       damage:0, finished:false, paused:false, time:0
     };
     resultCommitted = false;
@@ -313,7 +323,7 @@
     if (!run || activeModal()) return;
     if (run.burst < 100) { announce(t("burstNotReady")); return; }
     run.burst = 0;
-    const targets = run.enemies.filter((enemy) => !enemy.hit).sort((a,b) => b.x-a.x).slice(0,5);
+    const targets = run.enemies.filter((enemy) => !enemy.hit&&enemy.x>=0).sort((a,b) => b.x-a.x).slice(0,5);
     targets.forEach((enemy) => { const damage = 28 + run.stage.n * 2.2; enemy.hp -= damage; enemy.slow = Math.max(enemy.slow, 2.5); run.damage += damage; });
     announce(t("burstUsed")); window.WonderSound?.play?.("power");
   }
@@ -341,6 +351,58 @@
       $("bossWarning").hidden = false; $("bossWarning").textContent = t("bossWarning");
       setTimeout(() => { if ($("bossWarning")) $("bossWarning").hidden = true; }, 1800);
     }
+  }
+  function sampleRoadPath(route, progress) {
+    const points=roadPaths[Math.abs(Math.trunc(route||0))%roadPaths.length],lengths=[],total=points.slice(1).reduce((sum,point,index)=>{
+      const previous=points[index],length=Math.hypot(point[0]-previous[0],point[1]-previous[1]);lengths.push(length);return sum+length
+    },0);
+    let distance=Math.max(0,Math.min(1,progress))*total;
+    for(let index=0;index<lengths.length;index+=1){
+      if(distance<=lengths[index]||index===lengths.length-1){
+        const ratio=lengths[index]?distance/lengths[index]:0,from=points[index],to=points[index+1];
+        return{x:from[0]+(to[0]-from[0])*ratio,y:from[1]+(to[1]-from[1])*ratio}
+      }
+      distance-=lengths[index]
+    }
+    return{x:1,y:points.at(-1)[1]}
+  }
+  function roadPoint(progress,width,height,size,route=run?.stage.route||0) {
+    const point=sampleRoadPath(route,progress),horizontalInset=size*.58,topInset=size*.82,bottomInset=size*.28;
+    return{
+      x:horizontalInset+point.x*Math.max(1,width-horizontalInset*2),
+      y:topInset+point.y*Math.max(1,height-topInset-bottomInset)
+    }
+  }
+  function fireProjectile(unitIndex, unit, type, target, baseDamage) {
+    run.projectiles.push({
+      fromX:(unitIndex%5+.5)/5,target,targetProgress:target.x,type:type.id,rank:unit.rank,
+      baseDamage,age:0,duration:Math.max(.14,.25-unit.rank*.012)
+    });
+    run.shotsFired+=1;
+    if(run.projectiles.length>80)run.projectiles.splice(0,run.projectiles.length-80);
+  }
+  function resolveProjectile(projectile) {
+    let target=projectile.target;
+    if(!target||target.hit||target.hp<=0)target=[...run.enemies].filter((enemy)=>!enemy.hit&&enemy.hp>0&&enemy.x>=0).sort((a,b)=>b.x-a.x)[0];
+    const progress=target?.x??projectile.targetProgress;
+    run.impacts.push({progress,type:projectile.type,age:0,duration:.34});
+    if(run.impacts.length>40)run.impacts.splice(0,run.impacts.length-40);
+    if(!target)return;
+    const type=guardianMap[projectile.type],armor=Math.max(0,target.armor-(type.armorBreak||0));
+    const damage=projectile.baseDamage*(1-armor);
+    target.hp-=damage;run.damage+=damage;run.hits+=1;
+    if(type.slow)target.slow=Math.max(target.slow,1.1+projectile.rank*.12);
+    if(type.splash)run.enemies.filter((enemy)=>enemy!==target&&!enemy.hit&&Math.abs(enemy.x-target.x)<.08).forEach((enemy)=>{enemy.hp-=damage*type.splash});
+  }
+  function updateProjectiles(dt) {
+    for(const projectile of run.projectiles){
+      projectile.age+=dt;
+      if(projectile.target&&!projectile.target.hit&&projectile.target.hp>0)projectile.targetProgress=projectile.target.x;
+      if(projectile.age>=projectile.duration)resolveProjectile(projectile);
+    }
+    run.projectiles=run.projectiles.filter((projectile)=>projectile.age<projectile.duration);
+    run.impacts.forEach((impact)=>{impact.age+=dt});
+    run.impacts=run.impacts.filter((impact)=>impact.age<impact.duration);
   }
   function updateSimulation(dt) {
     if (!run || run.paused || run.finished) return;
@@ -371,20 +433,20 @@
       }
       if (enemy.x >= 1.02) { enemy.hit = true; run.core -= enemy.boss ? 3 : 1; announce(t("coreHit",{core:Math.max(0,run.core)})); window.WonderSound?.play?.("wrong"); }
     }
+    updateProjectiles(dt);
     run.enemies = run.enemies.filter((enemy) => !enemy.hit && enemy.hp > 0);
     if (hadEnemies && !run.enemies.length && !run.spawnQueue.length) run.between = 1.6;
     if (run.core <= 0) return finish(false);
     const attackSpeed = run.rally > 0 ? 1.72 : 1;
-    for (const unit of run.board) if (unit) {
+    for (let unitIndex=0;unitIndex<run.board.length;unitIndex+=1) {
+      const unit=run.board[unitIndex];if(!unit)continue;
       const type = guardianMap[unit.type];
       unit.cooldown -= dt * attackSpeed;
       if (unit.cooldown > 0 || !run.enemies.length) continue;
-      const target = [...run.enemies].sort((a,b) => b.x-a.x)[0];
+      const target = [...run.enemies].filter((enemy)=>!enemy.hit&&enemy.hp>0&&enemy.x>=0).sort((a,b) => b.x-a.x)[0];
+      if(!target)continue;
       const rankPower = Math.pow(1.82, unit.rank-1), base = (3.2 + save.upgrades.focus*.13) * type.power * rankPower;
-      const armor = Math.max(0, target.armor - (type.armorBreak || 0));
-      const damage = base * (1-armor); target.hp -= damage; run.damage += damage;
-      if (type.slow) target.slow = Math.max(target.slow, 1.1 + unit.rank*.12);
-      if (type.splash) run.enemies.filter((enemy) => enemy !== target && Math.abs(enemy.x-target.x)<.08).forEach((enemy) => { enemy.hp -= damage*type.splash; });
+      fireProjectile(unitIndex,unit,type,target,base);
       run.charge = Math.min(100, run.charge + .48 + unit.rank*.08); run.burst = Math.min(100, run.burst + .72 + unit.rank*.12);
       unit.cooldown = 1 / type.rate;
     }
@@ -410,9 +472,35 @@
   function enemyRoadRect(enemy, width, height, density = devicePixelRatio) {
     const size=(enemy.boss?72:42)*density;
     if (enemy.x < 0 || enemy.x > 1.02) return null;
-    const progress=Math.max(0,Math.min(1,enemy.x)),safeInset=size*.55;
-    const x=safeInset+progress*(width-safeInset*2),y=height*(.72-.12*Math.sin(progress*Math.PI));
+    const progress=Math.max(0,Math.min(1,enemy.x)),point=roadPoint(progress,width,height,size);
+    const {x,y}=point;
     return {x,y,size,left:x-size/2,right:x+size/2,top:y-size*.8,bottom:y+size*.2};
+  }
+  function drawPath(ctx,w,h,d) {
+    const draw=(stroke,width,alpha)=>{
+      ctx.beginPath();
+      for(let step=0;step<=48;step+=1){
+        const point=roadPoint(step/48,w,h,30*d),x=point.x,y=point.y;
+        if(step===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)
+      }
+      ctx.globalAlpha=alpha;ctx.strokeStyle=stroke;ctx.lineWidth=width*d;ctx.lineCap="round";ctx.lineJoin="round";ctx.stroke()
+    };
+    ctx.save();draw("#061522",34,.72);draw("#6fe4bc",4,.46);ctx.restore()
+  }
+  function drawProjectile(ctx,projectile,w,h,d) {
+    const ratio=Math.max(0,Math.min(1,projectile.age/projectile.duration)),ease=1-Math.pow(1-ratio,2);
+    const target=roadPoint(Math.max(0,Math.min(1,projectile.targetProgress)),w,h,42*d);
+    const start={x:projectile.fromX*w,y:h-5*d};
+    const x=start.x+(target.x-start.x)*ease,y=start.y+(target.y-start.y)*ease-Math.sin(Math.PI*ease)*18*d;
+    const previous=Math.max(0,ease-.14),px=start.x+(target.x-start.x)*previous,py=start.y+(target.y-start.y)*previous-Math.sin(Math.PI*previous)*18*d;
+    const color=projectileColors[projectile.type]||"#fff";
+    ctx.save();ctx.globalCompositeOperation="lighter";ctx.strokeStyle=color;ctx.lineWidth=(2+projectile.rank*.35)*d;ctx.globalAlpha=.58;ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(x,y);ctx.stroke();
+    ctx.shadowColor=color;ctx.shadowBlur=12*d;ctx.fillStyle=color;ctx.globalAlpha=1;ctx.beginPath();ctx.arc(x,y,(3.2+projectile.rank*.35)*d,0,Math.PI*2);ctx.fill();ctx.restore()
+  }
+  function drawImpact(ctx,impact,w,h,d) {
+    const ratio=Math.max(0,Math.min(1,impact.age/impact.duration)),point=roadPoint(Math.max(0,Math.min(1,impact.progress)),w,h,42*d),color=projectileColors[impact.type]||"#fff";
+    ctx.save();ctx.globalCompositeOperation="lighter";ctx.strokeStyle=color;ctx.globalAlpha=1-ratio;ctx.lineWidth=3*d;ctx.beginPath();ctx.arc(point.x,point.y,(5+18*ratio)*d,0,Math.PI*2);ctx.stroke();
+    for(let ray=0;ray<6;ray+=1){const angle=ray*Math.PI/3,length=(7+12*ratio)*d;ctx.beginPath();ctx.moveTo(point.x+Math.cos(angle)*4*d,point.y+Math.sin(angle)*4*d);ctx.lineTo(point.x+Math.cos(angle)*length,point.y+Math.sin(angle)*length);ctx.stroke()}ctx.restore()
   }
   function drawRoad() {
     const canvas = $("roadCanvas"), ctx = canvas.getContext("2d"), rect = canvas.getBoundingClientRect();
@@ -421,6 +509,8 @@
     const w=canvas.width,h=canvas.height,d=devicePixelRatio;
     ctx.clearRect(0,0,w,h);
     if (!run) return;
+    drawPath(ctx,w,h,d);
+    run.projectiles.forEach((projectile)=>drawProjectile(ctx,projectile,w,h,d));
     for (const enemy of run.enemies) {
       const image=loadedImages[enemy.kind],size=(enemy.boss?72:42)*d;
       const geometry=enemyRoadRect(enemy,w,h,d);
@@ -430,6 +520,7 @@
       else{ctx.fillStyle=enemy.boss?"#8b5cf6":"#3b1b55";ctx.beginPath();ctx.arc(x,y,size*.35,0,Math.PI*2);ctx.fill()}
       ctx.fillStyle="#210d1a";ctx.fillRect(x-size*.42,y+size*.1,size*.84,5*d);ctx.fillStyle=enemy.boss?"#ff718d":"#65e3a5";ctx.fillRect(x-size*.42,y+size*.1,size*.84*Math.max(0,enemy.hp/enemy.maxHp),5*d);
     }
+    run.impacts.forEach((impact)=>drawImpact(ctx,impact,w,h,d));
   }
   function frame(now) {
     raf = 0;
@@ -512,7 +603,7 @@
     stages, startBattle, summon, selectOrMerge, reroll, rally, burst,
     setLocale(code){locale=canonicalLocale(code);applyLocale()},
     forceWin(){if(run)finish(true)}, forceLose(){if(run){run.core=0;finish(false)}},
-    snapshot(){return{locale,screen,save:JSON.parse(JSON.stringify(save)),stagePanel,run:run&&{stage:run.stage.n,board:run.board.map((unit)=>unit&&{...unit}),selected:run.selected,cursor:run.cursor,charge:run.charge,summonCost:run.summonCost,drought:run.drought,core:run.core,maxCore:run.maxCore,wave:run.wave,enemies:run.enemies.map((enemy)=>({...enemy})),burst:run.burst,rally:run.rally,rallyCooldown:run.rallyCooldown,rerolls:run.rerolls,merges:run.merges,finished:run.finished,paused:run.paused}}},
+    snapshot(){return{locale,screen,save:JSON.parse(JSON.stringify(save)),stagePanel,run:run&&{stage:run.stage.n,route:run.stage.route,board:run.board.map((unit)=>unit&&{...unit}),selected:run.selected,cursor:run.cursor,charge:run.charge,summonCost:run.summonCost,drought:run.drought,core:run.core,maxCore:run.maxCore,wave:run.wave,enemies:run.enemies.map((enemy)=>({...enemy})),projectiles:run.projectiles.length,impacts:run.impacts.length,shotsFired:run.shotsFired,hits:run.hits,damage:run.damage,burst:run.burst,rally:run.rally,rallyCooldown:run.rallyCooldown,rerolls:run.rerolls,merges:run.merges,finished:run.finished,paused:run.paused}}},
     setCharge(value){if(run){run.charge=Math.max(0,Math.min(100,Number(value)||0));updateBattleHud(true)}},
     setBoard(board){if(run){run.board=Array.from({length:15},(_,i)=>board[i]?{...board[i],cooldown:0}:null);renderBoard()}},
     setRandomSeed(seed){if(run)run.random=seeded(Number(seed)||1)},
@@ -532,6 +623,7 @@
       const canvas=$("roadCanvas"),density=devicePixelRatio;
       return run ? run.enemies.map((enemy)=>enemyRoadRect(enemy,canvas.width,canvas.height,density)).filter(Boolean).map((rect)=>Object.fromEntries(Object.entries(rect).map(([key,value])=>[key,value/density]))) : [];
     },
+    pathSignature(index){return roadPaths[Math.abs(Math.trunc(index||0))%roadPaths.length].map((point)=>point.join(",")).join("|")},
     finish
   };
 

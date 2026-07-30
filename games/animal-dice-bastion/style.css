@@ -55,3 +55,62 @@
   text-overflow:ellipsis;
   white-space:nowrap;
 }
+
+/* Battle v5.1: the road and the guardian console are separate visual owners. */
+.battle-layout{background:#061725}
+.road-panel{
+  isolation:isolate;
+  border-bottom:2px solid #65e3a566;
+  background:
+    linear-gradient(180deg,#06172524 0%,#06172508 58%,#061725b8 100%),
+    url("../../assets/animal-dice-bastion/battle-bg.webp") center/cover no-repeat;
+}
+.command-panel{
+  position:relative;
+  background:linear-gradient(180deg,#0b2a39 0%,#071c2d 100%);
+  box-shadow:0 -12px 28px #020b12a8;
+}
+.guardian-board{
+  isolation:isolate;
+  overflow:hidden;
+  border-color:#86dcbc8c;
+  background:
+    radial-gradient(circle at 50% 12%,#1b53624f 0,transparent 48%),
+    linear-gradient(155deg,#0d3543,#081e2b);
+  box-shadow:inset 0 0 0 1px #ffffff0d,0 10px 24px #0008;
+}
+.rune-slot{
+  border-color:#a5dfc77d;
+  background:linear-gradient(145deg,#123b47,#0a2633);
+  box-shadow:inset 0 0 12px #0005;
+}
+.rune-slot:empty::after{
+  background:#79d8b628;
+  box-shadow:0 0 0 1px #a7ead055,0 0 14px #65e3a51c;
+}
+.command-stack{background:#061927f2;border:1px solid #ffffff14}
+
+@media(max-width:699px) and (orientation:portrait){
+  .battle-layout{grid-template-rows:minmax(190px,34%) minmax(0,66%)}
+  .command-panel{padding:6px;gap:6px}
+  .guardian-board{width:min(100%,520px);justify-self:center}
+}
+
+/* The owner's 832x1280 screenshot maps to an approximately 416x640 CSS
+   viewport. Keep a real road, a square-cell board, and a compact command dock
+   instead of allowing those three regions to overlap. */
+@media(max-height:700px) and (orientation:portrait){
+  .battle-header{min-height:56px;padding:4px}
+  .battle-layout{grid-template-rows:170px minmax(0,1fr)}
+  .road-objective{font-size:.7rem;line-height:1.15;padding:4px 7px}
+  .command-panel{grid-template-rows:minmax(0,1fr) 126px;padding:4px;gap:4px}
+  .guardian-board{width:min(100%,360px);max-height:216px;padding:4px;gap:3px;border-radius:14px}
+  .rune-slot{border-radius:13px}
+  .guardian{width:90%}.guardian b{font-size:.64rem;min-width:19px}
+  .command-stack{grid-template-rows:20px 38px 42px 22px;height:126px;padding:2px 4px;gap:2px}
+  .charge-meter{font-size:.7rem}.charge-meter i{height:5px}
+  .summon-button{min-height:38px;border-radius:11px}
+  .orders{gap:3px}.orders button{min-height:42px;font-size:.64rem;border-radius:10px}
+  .orders small{font-size:.59rem}
+  #battleFeedback{min-height:22px;font-size:.65rem;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+}

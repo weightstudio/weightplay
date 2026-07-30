@@ -874,6 +874,8 @@ body.snack-playing .sound-toggle {
 
 body.snack-playing .hud {
   flex: 0 0 54px;
+  width: 100%;
+  margin: 0;
   height: 54px;
   min-height: 54px;
   max-height: 54px;

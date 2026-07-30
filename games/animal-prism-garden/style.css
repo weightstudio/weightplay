@@ -14,7 +14,7 @@ button{cursor:pointer}
 .locale{justify-self:end;display:grid;gap:3px;font-size:.68rem;color:var(--muted);text-transform:uppercase}
 .locale select{width:132px;min-height:38px;border:1px solid var(--line);border-radius:10px;background:#0b2734;color:var(--ink);padding:0 9px}
 .hero{min-height:620px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(290px,.95fr);align-items:center;gap:clamp(24px,5vw,56px);padding:34px 16px}
-.hero>img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:28px;border:1px solid rgba(171,234,255,.45);box-shadow:0 30px 70px rgba(0,0,0,.42),0 0 44px rgba(41,219,255,.12)}
+.hero>img{width:420px;height:420px;max-width:100%;aspect-ratio:1;object-fit:cover;justify-self:end;border-radius:28px;border:1px solid rgba(171,234,255,.45);box-shadow:0 30px 70px rgba(0,0,0,.42),0 0 44px rgba(41,219,255,.12)}
 .hero-copy{display:grid;gap:18px;align-content:center}
 .eyebrow{margin:0;color:#81e8ff;font-size:.76rem;font-weight:900;letter-spacing:.15em}
 h1{font-size:clamp(2rem,5vw,3.45rem);line-height:1.02;margin:0}
@@ -36,6 +36,8 @@ h1{font-size:clamp(2rem,5vw,3.45rem);line-height:1.02;margin:0}
 .scene-header>div{text-align:center;min-width:0}
 .scene-header small{display:block;color:#7fcedf;font-size:.64rem;letter-spacing:.1em}
 .icon-button{width:48px;height:48px;border:1px solid rgba(154,228,245,.38);border-radius:14px;background:#f6fbff;color:#092f3c;font-size:1.45rem;font-weight:900}
+.battle-header .wp-tutorial-button.prism-battle-help{position:static;display:grid!important;justify-self:end;width:48px;height:48px;margin:0;border:1px solid rgba(154,228,245,.38);border-radius:14px;background:#f6fbff;color:#092f3c;font-size:1.15rem;opacity:1;box-shadow:none;transform:none}
+body.modal-open .battle-header button{visibility:hidden;pointer-events:none}
 .stage{display:grid;grid-template-rows:64px minmax(0,1fr) 56px;background:linear-gradient(rgba(4,21,29,.83),rgba(4,16,23,.96)),var(--wp-stage-art) center/cover}
 .stage .scene-header{height:64px}
 .stage-workspace{position:relative;min-height:0;overflow:hidden}
@@ -85,7 +87,7 @@ body.modal-open .battle-content{pointer-events:none}
   .return{width:68px;height:48px}
   .locale span{display:none}.locale select{width:94px}
   .hero{min-height:calc(100svh - 82px);grid-template-columns:1fr;grid-template-rows:minmax(0,46svh) auto;gap:14px;padding:8px 2px 12px}
-  .hero>img{width:min(100%,430px);max-height:46svh;justify-self:center;border-radius:20px}
+  .hero>img{width:min(100%,46svh,430px);height:auto;justify-self:center;border-radius:20px}
   .hero-copy{gap:9px}
   h1{font-size:1.82rem}.main-summary{font-size:.92rem;line-height:1.4}.eyebrow{font-size:.64rem}
   .main-meta span{padding:5px 8px;font-size:.67rem}
@@ -97,6 +99,8 @@ body.modal-open .battle-content{pointer-events:none}
 @media(max-height:500px) and (orientation:landscape){
   .stage,.battle{height:calc(100svh - 56px)}
   .scene-header{height:48px}
+  .battle .scene-header{padding:2px 10px}
+  .battle .scene-header .icon-button,.battle .scene-header .wp-tutorial-button.prism-battle-help{width:44px;height:44px}
   .stage{grid-template-rows:64px minmax(0,1fr) 56px}
   .stage .scene-header{height:64px}
   .stage-summary{display:none}
@@ -107,4 +111,10 @@ body.modal-open .battle-content{pointer-events:none}
   .tools{grid-column:2;grid-row:2;width:100%;align-self:center}
   .status{grid-column:2;grid-row:3}
   .modal-layer{inset:48px 0 0}
+  #result .result-card{width:min(92%,680px);padding:12px 18px;overflow:visible}
+  #result .result-mark{font-size:2rem;line-height:1}
+  #result .eyebrow{margin:2px 0;font-size:.66rem}
+  #result .result-card h2{margin:2px 0 4px;font-size:1.25rem;line-height:1.2}
+  #result .result-card>p:not(.eyebrow){margin:0;line-height:1.3}
+  #result .result-actions{margin-top:8px}
 }

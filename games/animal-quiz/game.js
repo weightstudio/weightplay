@@ -900,6 +900,7 @@ function renderStaticText() {
 function setQuizVisible(isVisible) {
   stageSelectPanel.classList.toggle("hidden", isVisible);
   levelLine.classList.toggle("hidden", !isVisible);
+  backToStagesBtn.classList.toggle("hidden", !isVisible);
   quizStage.classList.toggle("hidden", !isVisible);
   choiceGrid.classList.toggle("hidden", !isVisible);
   feedback.classList.toggle("hidden", !isVisible);
