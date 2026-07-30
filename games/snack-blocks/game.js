@@ -936,6 +936,7 @@
     exitSharedPlayViewport();
     updateSnackFrame();
     requestAnimationFrame(updateSnackFrame);
+    refreshSharedScreenGeometry();
   }
 
   function showMain() {
@@ -947,6 +948,18 @@
     document.body.classList.remove("snack-stage");
     resetSnackFrame();
     nodes.startBtn.focus({ preventScroll: true });
+    refreshSharedScreenGeometry();
+    requestAnimationFrame(() => {
+      // Stage Canvas restores the inline style snapshot on its first inactive
+      // frame. Clear that delayed snapshot before Main is measured.
+      resetSnackFrame();
+      refreshSharedScreenGeometry();
+      requestAnimationFrame(() => {
+        resetSnackFrame();
+        refreshSharedScreenGeometry();
+        nodes.startBtn.focus({ preventScroll: true });
+      });
+    });
   }
 
   function renderBoard(dropMap = new Map()) {
@@ -1302,6 +1315,15 @@
     if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
   }
 
+  function refreshSharedScreenGeometry(battle = false) {
+    const refresh = () => {
+      window.dispatchEvent(new Event("resize"));
+      if (battle) window.dispatchEvent(new Event("weightplay:battle-open"));
+    };
+    refresh();
+    requestAnimationFrame(refresh);
+  }
+
   window.addEventListener("resize", updateSnackFrame);
   window.addEventListener("orientationchange", updateSnackFrame);
   window.visualViewport?.addEventListener("resize", updateSnackFrame);
@@ -1342,6 +1364,7 @@
     nodes.hintText.textContent = t("hint");
     exitSharedPlayViewport();
     updateSnackFrame();
+    refreshSharedScreenGeometry(true);
     window.WonderAnalytics?.track("game_start", {
       game_id: GAME_ID,
       stage: activeStage().id,

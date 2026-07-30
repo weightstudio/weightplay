@@ -118,7 +118,7 @@
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
           <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Back">←</button>
-          <div class="battle-title"><small id="stageLabel"></small><strong id="objectiveText"></strong></div>
+          <div class="battle-title"><strong id="stageLabel"></strong></div>
           <div class="battle-stat"><small data-i18n="core">Core</small><strong id="coreValue">6/6</strong></div>
           <div class="battle-stat"><small data-i18n="wave">Wave</small><strong id="waveValue">1/5</strong></div>
           <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="Pause">Ⅱ</button>
@@ -126,6 +126,7 @@
         <section class="battle-layout">
           <div class="road-panel">
             <canvas id="roadCanvas" width="920" height="280" aria-hidden="true"></canvas>
+            <p id="objectiveText" class="road-objective"></p>
             <div id="bossWarning" class="boss-warning" hidden></div>
           </div>
           <div class="command-panel">

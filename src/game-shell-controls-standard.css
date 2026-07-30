@@ -85,8 +85,22 @@
   font: 900 22px/1 system-ui, sans-serif;
 }
 
+.wp-shell-return[data-wp-return="main"],
+.wp-shell-return[data-wp-return="main"] > .wp-shell-return-arrow {
+  color: var(--wp-main-return-arrow-color, #176a9d) !important;
+  opacity: 1 !important;
+}
+
 .wp-stage-shell-header > [data-wp-return="stage"] > .wp-shell-return-arrow {
   color: var(--wp-stage-return-arrow-color, #176a9d) !important;
+  opacity: 1 !important;
+}
+
+.wp-shell-return[data-wp-return="stage"],
+.wp-shell-return[data-wp-return="stage"] > .wp-shell-return-arrow,
+.wp-shell-return[data-wp-return="battle"],
+.wp-shell-return[data-wp-return="battle"] > .wp-shell-return-arrow {
+  color: var(--wp-scene-return-arrow-color, #176a9d) !important;
   opacity: 1 !important;
 }
 
@@ -639,4 +653,17 @@ body.wp-stage-select-active
     max-height: none !important;
     aspect-ratio: 1 !important;
   }
+}
+
+/*
+ * Kids game code owns scene activation through its native hidden state.
+ * Several legacy screen rules also declare !important display values, so keep
+ * native hidden authoritative without deriving visibility from the shell's
+ * later observer-owned active class (which would create a feedback loop).
+ */
+body.wp-kids-audience
+  :is([data-screen], #mainScreen, #stageScreen, #battleScreen).hidden,
+body.wp-kids-audience
+  :is([data-screen], #mainScreen, #stageScreen, #battleScreen)[hidden] {
+  display: none !important;
 }

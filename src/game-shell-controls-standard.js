@@ -2,6 +2,8 @@
   "use strict";
 
   const sharedAssetBase = new URL(".", document.currentScript?.src || location.href);
+  const immutableSceneControls =
+    document.querySelector('meta[name="weightplay-audience"]')?.content?.toLowerCase() === "kids";
   const ownedSettingsButton = document.querySelector("#audioMenuBtn[aria-controls='audioPopover']");
   const ownedSettingsGroup = ownedSettingsButton?.closest(".settings-control");
   if (ownedSettingsButton && ownedSettingsGroup?.querySelector("#audioPopover #localeSelect")) {
@@ -354,8 +356,10 @@
   function normalizeReturn(header) {
     const control = first(RETURN_SELECTORS, header);
     if (!control) return;
+    if (immutableSceneControls && !["main", "stage", "battle"].includes(control.dataset.wpReturn)) return;
+    if (immutableSceneControls && control.dataset.wpReturnNormalized === "true") return;
     control.classList.add("wp-shell-return");
-    if (!control.dataset.wpReturn) {
+    if (!immutableSceneControls && !control.dataset.wpReturn) {
       control.dataset.wpReturn = header.classList.contains("wp-stage-shell-header") ? "stage" : "main";
     }
     [...control.childNodes].forEach((node) => {
@@ -378,10 +382,7 @@
       arrow.textContent = "←";
       control.prepend(arrow);
     }
-    const ownsLobbyLogo =
-      control.dataset.wpReturn === "main" &&
-      !header.classList.contains("wp-stage-shell-header") &&
-      !header.classList.contains("wp-battle-shell-header");
+    const ownsLobbyLogo = control.dataset.wpReturn === "main";
     if (!ownsLobbyLogo) {
       control.querySelectorAll(":scope > img").forEach((image) => image.remove());
     } else if (!control.querySelector(":scope > img")) {
@@ -390,6 +391,7 @@
       logo.alt = "";
       control.append(logo);
     }
+    if (immutableSceneControls) control.dataset.wpReturnNormalized = "true";
   }
 
   function normalizeBattleReturns() {
@@ -403,7 +405,7 @@
       const header = first(HEADER_SELECTORS, screen);
       if (!header) return;
       const control = first(RETURN_SELECTORS, header);
-      if (control) control.dataset.wpReturn = "battle";
+      if (control && !immutableSceneControls) control.dataset.wpReturn = "battle";
       normalizeReturn(header);
     });
   }
@@ -432,6 +434,7 @@
     if (!owner || !composition) return;
     const update = () => {
       if (!owner.isConnected || !composition.isConnected) return;
+      if (immutableSceneControls && !visible(composition)) return;
       const ownerRect = owner.getBoundingClientRect();
       const compositionRect = composition.getBoundingClientRect();
       const requiredHeight = Math.max(
@@ -625,6 +628,7 @@
     document.body.classList.toggle("wp-shell-stage-active", type === "stage");
     document.body.classList.toggle("wp-shell-battle-active", type === "battle");
     document.querySelectorAll(".wp-standard-main-flow-owner").forEach((owner) => {
+      if (immutableSceneControls) return;
       if (type !== "main" || (!owner.contains(screen) && !screen?.contains(owner))) {
         owner.classList.remove("wp-standard-main-flow-owner");
         owner.style.removeProperty("--wp-main-flow-min-height");
@@ -647,6 +651,10 @@
       normalizeMainLayout(screen);
     }
     let header = firstVisible(HEADER_SELECTORS, screen);
+    if (immutableSceneControls) {
+      const permanentHeader = firstVisible([`[data-wp-return="${type}"]`], document)?.closest("header");
+      if (permanentHeader) header = permanentHeader;
+    }
     if (!header && type === "battle") {
       header = [...screen.querySelectorAll(".wp-generated-battle-header")]
         .find((candidate) => candidate.parentElement === screen) || null;
@@ -720,7 +728,7 @@
         ? firstVisible([`[data-wp-return="${type}"]`], document)
         : null);
     const legacyHeader = externalReturn?.closest("header");
-    if (externalReturn && !header.contains(externalReturn)) {
+    if (!immutableSceneControls && externalReturn && !header.contains(externalReturn)) {
       externalReturn.hidden = false;
       externalReturn.classList.remove("is-hidden", "hidden");
       header.prepend(externalReturn);
@@ -792,7 +800,7 @@
     // identity synchronously on every placement so a prior scene can never
     // leak its arrow/logo contract into Main or Stage.
     const ownedReturn = first(RETURN_SELECTORS, header);
-    if (ownedReturn) ownedReturn.dataset.wpReturn = type;
+    if (ownedReturn && !immutableSceneControls) ownedReturn.dataset.wpReturn = type;
     normalizeReturn(header);
     if (type === "stage") {
       const helpAction = screen.querySelector("#helpBtn,#stageHelpBtn");
@@ -855,18 +863,20 @@
     window.addEventListener("resize", schedulePlace);
     window.addEventListener("load", schedulePlace, { once: true });
     setTimeout(schedulePlace, 0);
-    setTimeout(schedulePlace, 300);
-    setTimeout(schedulePlace, 1000);
-    setTimeout(schedulePlace, 1300);
-    setTimeout(schedulePlace, 1800);
-    setTimeout(schedulePlace, 3200);
-    setTimeout(schedulePlace, 4800);
-    let recoveryAttempts = 0;
-    const recoveryTimer = setInterval(() => {
-      schedulePlace();
-      recoveryAttempts += 1;
-      if (recoveryAttempts >= 20) clearInterval(recoveryTimer);
-    }, 250);
+    if (!immutableSceneControls) {
+      setTimeout(schedulePlace, 300);
+      setTimeout(schedulePlace, 1000);
+      setTimeout(schedulePlace, 1300);
+      setTimeout(schedulePlace, 1800);
+      setTimeout(schedulePlace, 3200);
+      setTimeout(schedulePlace, 4800);
+      let recoveryAttempts = 0;
+      const recoveryTimer = setInterval(() => {
+        schedulePlace();
+        recoveryAttempts += 1;
+        if (recoveryAttempts >= 20) clearInterval(recoveryTimer);
+      }, 250);
+    }
   }
 
   let initialized = false;

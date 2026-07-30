@@ -81,6 +81,7 @@
   let screen = "loading", run = null, raf = 0, lastTime = 0, currentStageIndex = 0;
   let windowFocused = document.hasFocus(), lifecyclePaused = false, resultCommitted = false, modalReturnFocus = null;
   let stagePanel = "stages";
+  let mainFlowMinHeight = "";
 
   function applyLocale() {
     document.documentElement.lang = locale;
@@ -100,11 +101,25 @@
     $("mainProgress").textContent = t("stageSummary", {unlocked:save.unlocked, stars:total});
   }
   function showScreen(name) {
+    if (screen === "main" && name !== "main") {
+      mainFlowMinHeight = $("mainScreen").style.getPropertyValue("--wp-main-flow-min-height")
+        || `${Math.ceil($("mainScreen").getBoundingClientRect().height)}px`;
+    }
     screen = name;
     document.body.dataset.screen = name;
+    document.body.classList.toggle("wp-shell-main-active", name === "main");
+    document.body.classList.toggle("wp-shell-stage-active", name === "stage");
+    document.body.classList.toggle("wp-shell-battle-active", name === "battle");
+    document.body.classList.toggle("wp-stage-select-active", name === "stage");
+    document.documentElement.classList.toggle("wp-stage-select-active", name === "stage");
+    document.body.classList.toggle("wp-logical-battle-active", name === "battle");
     $("mainGroup").hidden = name !== "main";
     $("stageScreen").hidden = name !== "stage";
     $("battleScreen").hidden = name !== "battle";
+    if (name === "main") {
+      $("mainScreen").classList.add("wp-standard-main-flow-owner");
+      if (mainFlowMinHeight) $("mainScreen").style.setProperty("--wp-main-flow-min-height", mainFlowMinHeight);
+    }
     if (name !== "battle") stopLoop();
     if (name === "main") requestAnimationFrame(() => $("startBtn").focus({preventScroll:true}));
     if (name === "stage") {
@@ -390,6 +405,13 @@
     $("burstBtn").disabled = run.burst < 100;
     if (force) drawRoad();
   }
+  function enemyRoadRect(enemy, width, height, density = devicePixelRatio) {
+    const size=(enemy.boss?72:42)*density;
+    if (enemy.x < 0 || enemy.x > 1.02) return null;
+    const progress=Math.max(0,Math.min(1,enemy.x)),safeInset=size*.55;
+    const x=safeInset+progress*(width-safeInset*2),y=height*(.72-.12*Math.sin(progress*Math.PI));
+    return {x,y,size,left:x-size/2,right:x+size/2,top:y-size*.8,bottom:y+size*.2};
+  }
   function drawRoad() {
     const canvas = $("roadCanvas"), ctx = canvas.getContext("2d"), rect = canvas.getBoundingClientRect();
     const width = Math.max(1,Math.round(rect.width*devicePixelRatio)), height = Math.max(1,Math.round(rect.height*devicePixelRatio));
@@ -398,9 +420,10 @@
     ctx.clearRect(0,0,w,h);
     if (!run) return;
     for (const enemy of run.enemies) {
-      const progress=Math.max(0,Math.min(1,enemy.x));
-      const x=progress*w,y=h*(.72-.12*Math.sin(progress*Math.PI));
       const image=loadedImages[enemy.kind],size=(enemy.boss?72:42)*d;
+      const geometry=enemyRoadRect(enemy,w,h,d);
+      if (!geometry) continue;
+      const {x,y}=geometry;
       if(image?.complete)ctx.drawImage(image,x-size/2,y-size*.8,size,size);
       else{ctx.fillStyle=enemy.boss?"#8b5cf6":"#3b1b55";ctx.beginPath();ctx.arc(x,y,size*.35,0,Math.PI*2);ctx.fill()}
       ctx.fillStyle="#210d1a";ctx.fillRect(x-size*.42,y+size*.1,size*.84,5*d);ctx.fillStyle=enemy.boss?"#ff718d":"#65e3a5";ctx.fillRect(x-size*.42,y+size*.1,size*.84*Math.max(0,enemy.hp/enemy.maxHp),5*d);
@@ -502,6 +525,10 @@
       for(let elapsed=0;elapsed<seconds&&!run.finished;elapsed+=.05)updateSimulation(.05);
       if(!run.finished)run.paused=wasPaused;
       drawRoad();return this.snapshot();
+    },
+    roadRects(){
+      const canvas=$("roadCanvas"),density=devicePixelRatio;
+      return run ? run.enemies.map((enemy)=>enemyRoadRect(enemy,canvas.width,canvas.height,density)).filter(Boolean).map((rect)=>Object.fromEntries(Object.entries(rect).map(([key,value])=>[key,value/density]))) : [];
     },
     finish
   };

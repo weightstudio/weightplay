@@ -1231,7 +1231,13 @@ body.orb-fortress-playing #stagePanel #stageBackBtn {
     min-width: 104px !important;
     height: 104px !important;
     min-height: 104px !important;
-    font-size: 2rem;
+    display: grid !important;
+    place-items: center !important;
+    border: 3px solid rgba(125, 233, 255, 0.78) !important;
+    border-radius: 18px !important;
+    background: rgba(5, 28, 34, 0.96) !important;
+    color: #ffffff !important;
+    font-size: 42px !important;
   }
 
   body.orb-fortress-playing #gamePanel.game-panel #battleLive #gameCanvas {
@@ -1420,7 +1426,9 @@ body.orb-fortress-playing #stagePanel #stageBackBtn {
   }
   body.wp-stage-select-active #stagePanel .room-card span {
     font-size: 11px !important;
-    line-height: 11px !important;
+    line-height: 12px !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
   }
   body.wp-stage-select-active #stagePanel .room-card > div {
     align-self: stretch !important;
@@ -1431,7 +1439,8 @@ body.orb-fortress-playing #stagePanel #stageBackBtn {
   }
   body.wp-stage-select-active #stagePanel .room-card strong {
     font-size: 12px !important;
-    line-height: 13px !important;
+    line-height: 15px !important;
+    overflow: visible !important;
   }
   body.wp-stage-select-active #stagePanel .room-card button {
     grid-column: 1 / -1 !important;
