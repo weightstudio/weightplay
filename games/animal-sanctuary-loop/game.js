@@ -1040,6 +1040,7 @@
 
   canvas.addEventListener("pointerdown", (event) => {
     event.preventDefault();
+    canvas.focus({ preventScroll: true });
     canvas.setPointerCapture?.(event.pointerId);
     pointDirection(event);
   });

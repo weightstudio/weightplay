@@ -56,6 +56,7 @@
   nodes.gamePanel.dataset.wpCanvasMaxWidth = "920";
   const canvas = $("gameCanvas");
   const ARENA_KEYBOARD_SHORTCUTS = "ArrowLeft ArrowRight Space Enter";
+  const STAGE_KEYBOARD_SHORTCUTS = "ArrowLeft ArrowRight Home End Enter Space";
   canvas.dataset.runtimeLocalize = "off";
   const ctx = canvas.getContext("2d");
 
@@ -1056,7 +1057,7 @@
       .map((raid) => {
         const locked = raid.tier > unlocked;
         return `
-          <button class="raid-card${locked ? " is-locked" : ""}" type="button" data-tier="${raid.tier}" data-zone="${raid.zone}" aria-disabled="${locked}" tabindex="${raid.tier === unlocked ? "0" : "-1"}">
+          <button class="raid-card${locked ? " is-locked" : ""}" type="button" data-tier="${raid.tier}" data-zone="${raid.zone}" aria-disabled="${locked}" aria-keyshortcuts="${STAGE_KEYBOARD_SHORTCUTS}" tabindex="${raid.tier === unlocked ? "0" : "-1"}">
             <span class="raid-number">${raid.tier}</span>
             <strong>${localized(raid.name)}</strong>
             <span>${localized(raid.desc)}</span>
