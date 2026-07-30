@@ -97,7 +97,8 @@
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     $("localeSelect").value = locale;
     $("mainReturn").href = `/${pack.segments[locale]}/`;
-    document.querySelectorAll("[data-i18n]").forEach((node) => { node.textContent = t(node.dataset.i18n); });
+    const tacticNames = {rally:t("rally"), burst:t("burst"), reroll:t("reroll")};
+    document.querySelectorAll("[data-i18n]").forEach((node) => { node.textContent = t(node.dataset.i18n, tacticNames); });
     document.querySelectorAll("[data-i18n-aria]").forEach((node) => node.setAttribute("aria-label", t(node.dataset.i18nAria)));
     document.querySelectorAll("[data-i18n-alt]").forEach((node) => node.setAttribute("alt", t(node.dataset.i18nAlt)));
     document.querySelectorAll("[data-i18n-title]").forEach((node) => node.setAttribute("title", t(node.dataset.i18nTitle)));
@@ -267,7 +268,7 @@
     $("tutorialPanel").hidden = true; $("leavePanel").hidden = true; $("pausePanel").hidden = true; $("resultPanel").hidden = true;
     $("battleLive").hidden = false; $("battleLive").inert = false;
     showScreen("battle"); renderBoard(); updateBattleHud(true); announce(t("objective"));
-    lifecyclePaused = !windowFocused || document.hidden; run.paused = lifecyclePaused;
+    lifecyclePaused = document.hidden; run.paused = lifecyclePaused;
     lastTime = performance.now(); stopLoop(); if (!run.paused) raf = requestAnimationFrame(frame);
     window.WonderSound?.play?.("start");
     if (!save.tutorialSeen) requestAnimationFrame(() => openModal($("tutorialPanel"), $("tutorialStartBtn")));
@@ -573,14 +574,22 @@
     }
     run.impacts.forEach((impact)=>drawImpact(ctx,impact,w,h,d));
   }
+  function updateVisibleElapsed(elapsed) {
+    let remaining = Math.min(1, Math.max(0, elapsed));
+    while (remaining > 0 && run && !run.finished) {
+      const step = Math.min(.05, remaining);
+      updateSimulation(step);
+      remaining -= step;
+    }
+  }
   function frame(now) {
     raf = 0;
     if (!run || run.paused || run.finished || screen !== "battle") return;
-    const dt = Math.min(.05, Math.max(0,(now-lastTime)/1000)); lastTime=now;
-    updateSimulation(dt); drawRoad(); raf=requestAnimationFrame(frame);
+    const elapsed = (now-lastTime)/1000; lastTime=now;
+    updateVisibleElapsed(elapsed); drawRoad(); raf=requestAnimationFrame(frame);
   }
   function stopLoop() { if (raf) cancelAnimationFrame(raf); raf=0; }
-  function resumeLoop() { if (!run || run.finished || run.paused || raf || document.hidden || !windowFocused) return; lastTime=performance.now(); raf=requestAnimationFrame(frame); }
+  function resumeLoop() { if (!run || run.finished || run.paused || raf || document.hidden) return; lastTime=performance.now(); raf=requestAnimationFrame(frame); }
 
   function finish(won) {
     if (!run || run.finished) return;
@@ -613,7 +622,7 @@
   }
   function closeModal(modal, restore=true) {
     modal.hidden=true;$("battleLive").inert=false;
-    if(run&&!run.finished&&!lifecyclePaused&&!document.hidden&&windowFocused){run.paused=false;resumeLoop()}
+    if(run&&!run.finished&&!lifecyclePaused&&!document.hidden){run.paused=false;resumeLoop()}
     if(restore)(modalReturnFocus?.isConnected?modalReturnFocus:$("board"))?.focus({preventScroll:true});modalReturnFocus=null;
   }
   function announce(message) { $("battleFeedback").textContent=message; }
@@ -649,16 +658,21 @@
     event.preventDefault();run.cursor=next;const slots=[...$("board").children];slots[next]?.scrollIntoView({block:"nearest",inline:"nearest"});slots.forEach((slot,index)=>slot.classList.toggle("cursor",index===next));
   });
   window.addEventListener("keydown",(event)=>{if(event.key==="Escape"&&screen==="battle"&&!activeModal())openLeave()});
-  window.addEventListener("blur",()=>{windowFocused=false;if(run&&!run.finished&&screen==="battle"){lifecyclePaused=true;run.paused=true;stopLoop()}});
+  // Window focus is not a reliable lifecycle signal in embedded browsers:
+  // their automation/host chrome can blur a still-visible game after every
+  // trusted action. Keep visible play running and suspend only when the
+  // document is actually hidden, frozen, cached, or owned by a game modal.
+  window.addEventListener("blur",()=>{windowFocused=false});
   window.addEventListener("focus",()=>{windowFocused=true;if(lifecyclePaused&&!document.hidden){lifecyclePaused=false;if(run&&!run.finished&&screen==="battle"&&!activeModal()){run.paused=false;resumeLoop()}}});
-  document.addEventListener("visibilitychange",()=>{if(document.hidden){if(run&&!run.finished&&screen==="battle"){lifecyclePaused=true;run.paused=true;stopLoop()}}else if(windowFocused&&lifecyclePaused){lifecyclePaused=false;if(run&&!run.finished&&screen==="battle"&&!activeModal()){run.paused=false;resumeLoop()}}});
+  document.addEventListener("visibilitychange",()=>{if(document.hidden){if(run&&!run.finished&&screen==="battle"){lifecyclePaused=true;run.paused=true;stopLoop()}}else if(lifecyclePaused){lifecyclePaused=false;if(run&&!run.finished&&screen==="battle"&&!activeModal()){run.paused=false;resumeLoop()}}});
   window.addEventListener("resize",()=>{if(run)drawRoad()});
 
   window.__animalDiceBastionSmoke = {
     stages, startBattle, summon, selectOrMerge, reroll, rally, burst,
     setLocale(code){locale=canonicalLocale(code);applyLocale()},
+    advanceVisibleElapsed(seconds){if(run)updateVisibleElapsed(seconds);return this.snapshot()},
     forceWin(){if(run)finish(true)}, forceLose(){if(run){run.core=0;finish(false)}},
-    snapshot(){return{locale,screen,save:JSON.parse(JSON.stringify(save)),stagePanel,run:run&&{stage:run.stage.n,route:run.stage.route,board:run.board.map((unit)=>unit&&{...unit}),selected:run.selected,cursor:run.cursor,charge:run.charge,summonCost:run.summonCost,drought:run.drought,core:run.core,maxCore:run.maxCore,wave:run.wave,enemies:run.enemies.map((enemy)=>({...enemy})),projectiles:run.projectiles.length,impacts:run.impacts.length,shotsFired:run.shotsFired,hits:run.hits,damage:run.damage,burst:run.burst,burstFx:run.burstFx,rally:run.rally,rallyCooldown:run.rallyCooldown,rerolls:run.rerolls,merges:run.merges,finished:run.finished,paused:run.paused}}},
+    snapshot(){return{locale,screen,save:JSON.parse(JSON.stringify(save)),stagePanel,run:run&&{stage:run.stage.n,route:run.stage.route,board:run.board.map((unit)=>unit&&{...unit}),selected:run.selected,cursor:run.cursor,charge:run.charge,summonCost:run.summonCost,drought:run.drought,core:run.core,maxCore:run.maxCore,wave:run.wave,time:run.time,enemies:run.enemies.map((enemy)=>({...enemy})),projectiles:run.projectiles.length,impacts:run.impacts.length,shotsFired:run.shotsFired,hits:run.hits,damage:run.damage,burst:run.burst,burstFx:run.burstFx,rally:run.rally,rallyCooldown:run.rallyCooldown,rerolls:run.rerolls,merges:run.merges,finished:run.finished,paused:run.paused}}},
     setCharge(value){if(run){run.charge=Math.max(0,Math.min(100,Number(value)||0));updateBattleHud(true)}},
     setBoard(board){if(run){run.board=Array.from({length:15},(_,i)=>board[i]?{...board[i],cooldown:0}:null);renderBoard()}},
     setBurst(value){if(run){run.burst=Math.max(0,Math.min(100,Number(value)||0));updateBattleHud(true)}},

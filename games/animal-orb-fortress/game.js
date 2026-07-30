@@ -1539,12 +1539,21 @@
     return state.readyTimer <= 0 && state.orbs.length < activeOrbLimit();
   }
 
+  function updateVisibleElapsed(elapsed) {
+    let remaining = Math.min(1, Math.max(0, elapsed));
+    while (remaining > 0 && state.mode === "running") {
+      const step = Math.min(0.033, remaining);
+      update(step);
+      remaining -= step;
+    }
+  }
+
   function loop(now) {
     if (backgroundSuspended) return;
-    const dt = Math.min(0.033, (now - lastFrame) / 1000 || 0.016);
+    const elapsed = (now - lastFrame) / 1000 || 0.016;
     lastFrame = now;
     if (state.mode === "running") {
-      update(dt);
+      updateVisibleElapsed(elapsed);
       draw();
       raf = requestAnimationFrame(loop);
     }
@@ -2401,7 +2410,6 @@
   canvas.addEventListener("keydown", onCanvasKeydown);
   window.addEventListener("blur", () => {
     windowFocused = false;
-    suspendBackgroundRaid();
   });
   function suspendBackgroundRaid() {
     cancelPointerAim();
@@ -2554,6 +2562,11 @@
   }
 
   window.__animalOrbFortressSmoke = {
+    advanceVisibleElapsed(seconds) {
+      updateVisibleElapsed(seconds);
+      draw();
+      return this.snapshot();
+    },
     snapshot: () => ({
       mode: state.mode,
       wave: state.wave,
