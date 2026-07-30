@@ -1378,7 +1378,7 @@ body.lunch-stage .stage-grid {
   gap: 12px;
   padding: 0 63px;
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: clip;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
 }

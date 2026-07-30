@@ -960,6 +960,17 @@
   visualViewport?.addEventListener("resize", updateLunchFrame, { passive: true });
   visualViewport?.addEventListener("scroll", updateLunchFrame, { passive: true });
 
+  function syncSharedScene(scene) {
+    if (scene === "battle") {
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+      window.dispatchEvent(new Event("weightplay:battle-sync"));
+    } else {
+      window.dispatchEvent(new Event("weightplay:battle-sync"));
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+    }
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
+  }
+
   function showMain(restoreStartFocus = false) {
     setHelpOpen(false, null, false);
     setLeaveConfirmOpen(false, false);
@@ -973,6 +984,7 @@
     gameHud.classList.add("hidden");
     gamePlayContent.classList.add("hidden");
     setBattleCovered(false);
+    syncSharedScene("main");
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     if (restoreStartFocus) requestAnimationFrame(() => startBtn.focus({ preventScroll: true }));
   }
@@ -998,6 +1010,7 @@
       unlocked[Math.min(state.stageIndex, unlocked.length - 1)]?.focus({ preventScroll: true });
     }));
     updateLunchFrame();
+    syncSharedScene("stage");
     requestAnimationFrame(updateLunchFrame);
   }
 
@@ -1064,7 +1077,13 @@
     );
     requestAnimationFrame(() => {
       const unlocked = [...stageGrid.querySelectorAll(".stage-card.unlocked")].at(-1);
-      unlocked?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
+      stageGrid.scrollTop = 0;
+      if (unlocked && !stageGrid.hasAttribute("data-wp-stage-rail")) {
+        stageGrid.scrollLeft = Math.max(
+          0,
+          unlocked.offsetLeft - (stageGrid.clientWidth - unlocked.offsetWidth) / 2,
+        );
+      }
       requestAnimationFrame(updateCenteredStageCard);
     });
   }
@@ -1333,6 +1352,7 @@
     gamePlayContent.classList.remove("hidden");
     exitSharedPlayViewport();
     updateLunchFrame();
+    syncSharedScene("battle");
     feedbackText.textContent = t("ready");
     foodCard.style.pointerEvents = "";
 

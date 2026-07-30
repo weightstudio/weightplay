@@ -679,6 +679,45 @@
     if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
   }
 
+  function resetWeatherFrame() {
+    const shell = document.querySelector(".weather-game");
+    [
+      "position",
+      "inset",
+      "left",
+      "top",
+      "width",
+      "min-width",
+      "max-width",
+      "height",
+      "min-height",
+      "max-height",
+      "margin",
+      "overflow",
+      "transform",
+      "transform-origin",
+    ].forEach((property) => shell?.style.removeProperty(property));
+    const rootStyle = document.documentElement.style;
+    [
+      "--weather-frame-scale",
+      "--weather-logical-width",
+      "--weather-logical-height",
+      "--weather-frame-left",
+      "--weather-frame-top",
+    ].forEach((property) => rootStyle.removeProperty(property));
+  }
+
+  function syncSharedScene(scene) {
+    if (scene === "battle") {
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+      window.dispatchEvent(new Event("weightplay:battle-sync"));
+    } else {
+      window.dispatchEvent(new Event("weightplay:battle-sync"));
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+    }
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
+  }
+
   window.addEventListener("resize", updateWeatherFrame);
   window.addEventListener("orientationchange", updateWeatherFrame);
   window.visualViewport?.addEventListener("resize", updateWeatherFrame, { passive: true });
@@ -712,6 +751,7 @@
     renderRound("", true);
     exitSharedPlayViewport();
     updateWeatherFrame();
+    syncSharedScene("battle");
     track("game_start", { stage: currentStage + 1 });
     requestAnimationFrame(() => {
       exitSharedPlayViewport();
@@ -1086,6 +1126,7 @@
     document.querySelector(".weather-game")?.setAttribute("data-play-viewport", "");
     renderStageGrid(focusIndex);
     updateWeatherFrame();
+    syncSharedScene("stage");
   }
 
   function showMain(focusStart = false) {
@@ -1093,6 +1134,10 @@
     nodes.stagePanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("wp-standard-stage-page");
+    document.body.classList.remove("helper-playing");
+    exitSharedPlayViewport();
+    syncSharedScene("main");
+    resetWeatherFrame();
     if (focusStart) nodes.startGameBtn.focus({ preventScroll: true });
   }
 

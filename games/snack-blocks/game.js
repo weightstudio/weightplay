@@ -1299,12 +1299,22 @@
 
   function resetSnackFrame() {
     const shell = document.querySelector(".snack-game");
-    for (const property of ["position", "inset", "left", "top", "width", "min-width", "max-width", "height", "min-height", "max-height", "transform", "transform-origin"]) shell?.style.removeProperty(property);
+    for (const property of ["position", "inset", "left", "top", "width", "min-width", "max-width", "height", "min-height", "max-height", "margin", "overflow", "transform", "transform-origin"]) shell?.style.removeProperty(property);
     if (shell) {
       delete shell.dataset.logicalWidth;
       delete shell.dataset.logicalHeight;
       delete shell.dataset.commonScale;
     }
+    const rootStyle = document.documentElement.style;
+    [
+      "--snack-frame-scale",
+      "--snack-frame-left",
+      "--snack-frame-top",
+      "--snack-logical-width",
+      "--snack-logical-height",
+      "--snack-frame-width",
+      "--snack-frame-height",
+    ].forEach((property) => rootStyle.removeProperty(property));
   }
 
   function exitSharedPlayViewport() {
@@ -1317,6 +1327,13 @@
 
   function refreshSharedScreenGeometry(battle = false) {
     const refresh = () => {
+      if (battle) {
+        window.dispatchEvent(new Event("weightplay:stage-sync"));
+        window.dispatchEvent(new Event("weightplay:battle-sync"));
+      } else {
+        window.dispatchEvent(new Event("weightplay:battle-sync"));
+        window.dispatchEvent(new Event("weightplay:stage-sync"));
+      }
       window.dispatchEvent(new Event("weightplay:shell-sync"));
       window.dispatchEvent(new Event("resize"));
       if (battle) window.dispatchEvent(new Event("weightplay:battle-open"));

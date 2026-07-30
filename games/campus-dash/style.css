@@ -1028,6 +1028,11 @@ select,
   body:not(.dash-playing) .main-poster {
     grid-column: 1;
     grid-row: 1;
+    width: auto !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    aspect-ratio: 1;
+    object-fit: cover;
   }
 
   body:not(.dash-playing) #startPanel {

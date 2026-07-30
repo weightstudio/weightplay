@@ -670,6 +670,41 @@
     scheduleCenteredStageCard();
   }
 
+  function syncSharedScene(scene) {
+    if (scene === "battle") {
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+      window.dispatchEvent(new Event("weightplay:battle-sync"));
+    } else {
+      window.dispatchEvent(new Event("weightplay:battle-sync"));
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+    }
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
+  }
+
+  function resetSafariFrame() {
+    const root = document.documentElement.style;
+    [
+      "--safari-frame-left",
+      "--safari-frame-top",
+      "--safari-logical-width",
+      "--safari-logical-height",
+      "--safari-frame-width",
+      "--safari-frame-height",
+      "--safari-frame-scale",
+    ].forEach((property) => root.removeProperty(property));
+    const shell = document.querySelector(".safari-game");
+    [
+      "position", "inset", "left", "top", "width", "min-width", "max-width",
+      "height", "min-height", "max-height", "margin", "overflow", "transform",
+      "transform-origin",
+    ].forEach((property) => shell?.style.removeProperty(property));
+    if (shell) {
+      delete shell.dataset.logicalWidth;
+      delete shell.dataset.logicalHeight;
+      delete shell.dataset.commonScale;
+    }
+  }
+
   function showMenu(focusIndex) {
     resetScenePointerOwnership();
     closePause(false);
@@ -688,6 +723,7 @@
     document.body.classList.add("safari-stage");
     renderStageGrid();
     updateSafariFrame();
+    syncSharedScene("stage");
     requestAnimationFrame(() => focusStageCard(focusIndex));
   }
 
@@ -704,6 +740,8 @@
     nodes.resultPanel.classList.add("hidden");
     document.documentElement.classList.remove("safari-stage");
     document.body.classList.remove("safari-stage", "safari-playing", "safari-result");
+    syncSharedScene("main");
+    resetSafariFrame();
     requestAnimationFrame(() => {
       requestAnimationFrame(() => nodes.startGameBtn.focus({ preventScroll: true }));
     });
@@ -744,6 +782,7 @@
     document.body.classList.remove("wp-mobile-game-mode", "weightplay-active-viewport");
     document.querySelector(".safari-game")?.classList.remove("weightplay-active-viewport");
     updateSafariFrame();
+    syncSharedScene("battle");
     requestAnimationFrame(updateSafariFrame);
     startTimer();
     requestAnimationFrame(() => nodes.targetsLayer.querySelector(".target[data-index]:not(:disabled)")?.focus({ preventScroll: true }));

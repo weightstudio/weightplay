@@ -3,7 +3,8 @@
 
   const sharedAssetBase = new URL(".", document.currentScript?.src || location.href);
   const immutableSceneControls =
-    document.querySelector('meta[name="weightplay-audience"]')?.content?.toLowerCase() === "kids";
+    document.querySelector('meta[name="weightplay-audience"]')?.content?.toLowerCase() === "kids"
+    || document.querySelector('meta[name="weightplay-scene-controls"]')?.content?.toLowerCase() === "immutable";
   const ownedSettingsButton = document.querySelector("#audioMenuBtn[aria-controls='audioPopover']");
   const ownedSettingsGroup = ownedSettingsButton?.closest(".settings-control");
   if (ownedSettingsButton && ownedSettingsGroup?.querySelector("#audioPopover #localeSelect")) {
@@ -663,6 +664,23 @@
       }
     });
     if (type === "main") {
+      if (immutableSceneControls) {
+        const permanentMainReturn = firstVisible(
+          ['[data-wp-return="main"]'],
+          document,
+        );
+        const permanentMainHeader = permanentMainReturn?.closest(
+          "header,.topbar,.main-header",
+        );
+        if (permanentMainHeader) {
+          screen?.querySelectorAll(".wp-generated-main-header").forEach(
+            (generatedHeader) => removeGeneratedMainHeader(
+              generatedHeader,
+              permanentMainHeader,
+            ),
+          );
+        }
+      }
       screen?.querySelectorAll(".wp-standard-main-composition .wp-generated-main-header").forEach((nestedHeader) => {
         removeGeneratedMainHeader(nestedHeader, screen);
       });

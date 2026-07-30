@@ -293,7 +293,7 @@
     dom.stageRail.replaceChildren(...stages.map((stage,index)=>{
       const button=document.createElement("button");
       const locked=stage.id>save.unlocked;
-      button.type="button";button.className=`stage-card ${locked?"locked":"unlocked"} ${save.cleared[index]?"cleared":""} ${index===stageIndex?"selected":""}`;button.disabled=locked;button.dataset.index=index;button.dataset.stageId=stage.id;
+      button.type="button";button.className=`stage-card ${locked?"locked":"unlocked"} ${save.cleared[index]?"cleared":""} ${index===stageIndex?"selected":""}`;button.dataset.index=index;button.dataset.stageId=stage.id;button.tabIndex=index===stageIndex?0:-1;button.setAttribute("aria-disabled",String(locked));button.setAttribute("aria-keyshortcuts","ArrowLeft ArrowRight Home End");button.addEventListener("focus",()=>updateChapterPanel(index));
       button.innerHTML=`<small>${t("stage",{})} ${stage.id} · ${t(stage.ruleKey)}</small><strong>${t(`chapter${stage.chapter}`)}</strong><p>${t(`rule${stage.chapter}`)}</p><footer><span>${stageStatus(stage)}</span><span class="card-stars">${"★".repeat(save.stars[index])}${"☆".repeat(3-save.stars[index])}</span></footer>`;
       return button;
     }));
@@ -301,7 +301,8 @@
     updateChapterPanel(stageIndex);
   }
 
-  function updateChapterPanel(index){stageIndex=Math.max(0,Math.min(29,index));const stage=stages[stageIndex];dom.chapterKicker.textContent=t("chapter",{number:stage.chapter});dom.chapterTitle.textContent=t(`chapter${stage.chapter}`);dom.chapterRule.textContent=t(`rule${stage.chapter}`);$$('.stage-card.selected').forEach(card=>card.classList.remove("selected"));dom.stageRail.querySelector(`[data-index="${stageIndex}"]`)?.classList.add("selected");}
+  function updateChapterPanel(index){stageIndex=Math.max(0,Math.min(29,index));const stage=stages[stageIndex];dom.chapterKicker.textContent=t("chapter",{number:stage.chapter});dom.chapterTitle.textContent=t(`chapter${stage.chapter}`);dom.chapterRule.textContent=t(`rule${stage.chapter}`);$$('.stage-card').forEach(card=>{const current=Number(card.dataset.index)===stageIndex;card.classList.toggle("selected",current);card.classList.toggle("centered",current);card.tabIndex=current?0:-1;if(current)card.setAttribute("aria-current","true");else card.removeAttribute("aria-current")});}
+  function focusStageOwner(card){if(!card)return;card.scrollIntoView({inline:"center",block:"nearest",behavior:"auto"});updateChapterPanel(Number(card.dataset.index));card.focus({preventScroll:true});requestAnimationFrame(()=>updateChapterPanel(Number(card.dataset.index)))}
 
   function startStage(index){
     clearCompletionTransition();stageIndex=index;path=[];hints=0;mistakes=0;restarts=0;hintNode=null;completing=false;runElapsed=0;runClockStartedAt=0;dom.result.hidden=true;dom.leave.hidden=true;setBattleLeaveCoverage(false);setResultCoverage(false);setScreen("battle");resumeRunClock();const stage=currentStage();graphFocusIndex=stage.forcedStart??stage.points.map((_,node)=>node).find(validStart)??0;buildGraph();renderBattleLabels();updateGraph();setFeedback(t("ready"));requestAnimationFrame(()=>dom.svg.querySelector(`[data-node="${graphFocusIndex}"]`)?.focus({preventScroll:true}));analytics("game_start",{stage:index+1});window.dispatchEvent(new CustomEvent("weightplay:battle-open"));
@@ -389,6 +390,7 @@
   const endPointer=event=>cancelActivePointer(event.pointerId);dom.svg.addEventListener("pointerup",endPointer);dom.svg.addEventListener("pointercancel",endPointer);dom.svg.addEventListener("lostpointercapture",endPointer);window.addEventListener("blur",()=>{windowFocused=false;cancelActivePointer();pauseRunClock();suspendCompletionTransition();});window.addEventListener("focus",()=>{windowFocused=true;resumeRunClock();resumeCompletionTransition();});
   [dom.undo,dom.restart,dom.hint].forEach(control=>control.addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();}));
   dom.stageRail.addEventListener("click",event=>{const card=event.target.closest(".stage-card.unlocked");if(!card)return;startStage(Number(card.dataset.index));});
+  dom.stageRail.addEventListener("keydown",event=>{const card=event.target.closest?.(".stage-card");if(!card)return;const cards=[...dom.stageRail.querySelectorAll(".stage-card")],current=cards.indexOf(card),rtl=document.documentElement.dir==="rtl";let next=null;if(event.key==="Home")next=0;else if(event.key==="End")next=cards.length-1;else if(event.key==="ArrowRight")next=current+(rtl?-1:1);else if(event.key==="ArrowLeft")next=current+(rtl?1:-1);if(next===null)return;event.preventDefault();focusStageOwner(cards[Math.max(0,Math.min(cards.length-1,next))])});
   dom.stageRail.addEventListener("wonder:stage-snap",event=>{const card=event.detail?.card||document.elementFromPoint(innerWidth/2,Math.min(innerHeight-120,innerHeight*.78))?.closest?.(".stage-card");if(card)updateChapterPanel(Number(card.dataset.index));});
   document.addEventListener("keydown",event=>{if(event.repeat&&heldLeaveDecisionKeys.has(event.key)){event.preventDefault();event.stopImmediatePropagation();}},true);
   document.addEventListener("keyup",event=>heldLeaveDecisionKeys.delete(event.key),true);

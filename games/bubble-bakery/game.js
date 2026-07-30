@@ -939,6 +939,17 @@
     else if (restoreFocus) nodes.backToStagesBtn.focus({ preventScroll: true });
   }
 
+  function syncSharedScene(scene) {
+    if (scene === "battle") {
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+      window.dispatchEvent(new Event("weightplay:battle-sync"));
+    } else {
+      window.dispatchEvent(new Event("weightplay:battle-sync"));
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+    }
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
+  }
+
   function showMain(restoreStartFocus = false) {
     setLeaveConfirmOpen(false, false);
     document.body.classList.remove("is-bakery-playing", "is-bakery-stage-select", "is-bakery-result");
@@ -952,6 +963,7 @@
     setBattleCovered(false);
     busy = false;
     updateBakeryFrame();
+    syncSharedScene("main");
     if (restoreStartFocus) requestAnimationFrame(() => nodes.startGameBtn.focus({ preventScroll: true }));
   }
 
@@ -1005,6 +1017,7 @@
     nodes.resultPanel.classList.add("hidden");
     setBattleCovered(false);
     updateBakeryFrame();
+    syncSharedScene("stage");
     busy = false;
     nodes.stageFeedback.textContent = "";
     renderRecommendedOrder();
@@ -1047,6 +1060,7 @@
     window.WeightPlayGame?.exitMobileGameMode?.();
     nodes.playPanel.classList.remove("weightplay-active-viewport");
     updateBakeryFrame();
+    syncSharedScene("battle");
     nodes.hintText.textContent = stageRule(stage);
     nodes.orderBar.dataset.theme = t("stage", { n: index + 1 });
     renderAll();

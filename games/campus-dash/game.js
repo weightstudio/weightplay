@@ -597,6 +597,17 @@
     if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
   }
 
+  function syncSharedScene(scene) {
+    if (scene === "battle") {
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+      window.dispatchEvent(new Event("weightplay:battle-sync"));
+    } else {
+      window.dispatchEvent(new Event("weightplay:battle-sync"));
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+    }
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
+  }
+
   function showMain() {
     setLeaveOpen(false, false);
     clearPointerInput();
@@ -611,6 +622,7 @@
     resultPanel.classList.add("hidden");
     canvasWrap.inert = false;
     canvasWrap.removeAttribute("aria-hidden");
+    syncSharedScene("main");
     requestAnimationFrame(() => startBtn.focus({ preventScroll: true }));
   }
 
@@ -735,6 +747,7 @@
     renderStageSelector(true);
     exitSharedPlayViewport();
     updateDashFrame();
+    syncSharedScene("stage");
     requestAnimationFrame(() => stageRail.querySelector(".stage-card.is-selected:not(:disabled)")?.focus({ preventScroll: true }));
   }
 
@@ -764,6 +777,7 @@
     window.WonderSound?.play("click");
     exitSharedPlayViewport();
     updateDashFrame();
+    syncSharedScene("battle");
     window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, locale: locale() });
     requestAnimationFrame(loop);
     requestAnimationFrame(() => {

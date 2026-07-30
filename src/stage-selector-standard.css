@@ -93,6 +93,14 @@ body.wp-stage-select-active [data-wp-logical-stage-canvas] :is(button, a)[data-w
   min-height: 198px !important;
 }
 
+/* Color Lunchbox uses an absolutely positioned horizontal rail. `hidden`
+   would still create a programmatically scrollable vertical axis, allowing
+   browser focus/click scrolling to move the cards behind the Stage Header.
+   Clip that axis completely while preserving horizontal drag/snap. */
+body[data-wp-game-id="color-lunchbox"] #stageGrid {
+  overflow-y: clip !important;
+}
+
 :is(.stage-grid, .stage-rail, .mission-grid, .mission-rail, .region-rail, .level-grid, .route-rail, .day-rail, .zone-row, .expedition-rail, .world-map-grid).wp-stage-dragging {
   cursor: grabbing;
 }

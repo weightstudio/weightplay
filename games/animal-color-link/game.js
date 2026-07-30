@@ -53,6 +53,13 @@
     setBattleCovered(false,null);
     screens.forEach(screen=>screen.hidden=screen.id!==id);
     document.body.dataset.screen=id;
+    if(id==="battle"){
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+      window.dispatchEvent(new Event("weightplay:battle-sync"));
+    }else{
+      window.dispatchEvent(new Event("weightplay:battle-sync"));
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+    }
     window.dispatchEvent(new Event("weightplay:shell-sync"));
     if(id==="stage")renderStages();
   }
