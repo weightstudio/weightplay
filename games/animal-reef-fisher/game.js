@@ -1773,8 +1773,15 @@
   }
 
   function startCharge(evt) {
+    reclaimVisiblePlayerInteraction(evt);
     if (evt.isPrimary === false || (evt.button !== undefined && evt.button !== 0)) return;
     if (state !== "game" || !run) return;
+    if (run.phase === "charging" && pointer.down) {
+      evt.preventDefault();
+      if (pointer.source === "keyboard") releaseCast();
+      else releaseCast({ pointerId: pointer.id });
+      return;
+    }
     if (run.phase !== "aim" && run.phase !== "reel") return;
     if (pointer.down && pointer.source !== "keyboard") return;
     pointer.id = Number.isFinite(evt.pointerId) ? evt.pointerId : null;
@@ -1855,10 +1862,13 @@
   }
 
   function handleFishingKeyDown(evt) {
+    reclaimVisiblePlayerInteraction(evt);
     if (state !== "game" || !run) return;
-    if (evt.code === "Space" && run.phase === "aim") {
+    if (evt.code === "Space" && (run.phase === "aim" || (run.phase === "charging" && pointer.source === "keyboard"))) {
       evt.preventDefault();
-      if (!evt.repeat) startKeyboardCharge();
+      if (evt.repeat) return;
+      if (run.phase === "aim") startKeyboardCharge();
+      else releaseCast();
       return;
     }
     if (run.phase !== "reel") return;
@@ -2183,6 +2193,11 @@
     backgroundSuspended = false;
     restartFishingLoop();
   }
+  function reclaimVisiblePlayerInteraction(evt) {
+    if (document.hidden || evt?.isTrusted === false || windowFocused) return;
+    windowFocused = true;
+    resumeBackgroundFishing();
+  }
   window.addEventListener("blur", () => {
     windowFocused = false;
     suspendBackgroundFishing();
@@ -2200,6 +2215,7 @@
   canvas.addEventListener("pointercancel", cancelFishingInput);
   canvas.addEventListener("lostpointercapture", cancelFishingInput);
   nodes.tensionLane.addEventListener("pointerdown", (evt) => {
+    reclaimVisiblePlayerInteraction(evt);
     if (evt.isPrimary === false || (evt.button !== undefined && evt.button !== 0)) return;
     if (pointer.down && pointer.source !== "keyboard") return;
     pointer.down = true;

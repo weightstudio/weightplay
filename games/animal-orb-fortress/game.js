@@ -1371,6 +1371,7 @@
   }
 
   function onPointerStart(event) {
+    reclaimVisiblePlayerInteraction(event);
     if (state.mode !== "running" || !canFireOrb()) return;
     if (event.button !== undefined && event.button !== 0) return;
     if (pointer.active) return;
@@ -1484,6 +1485,7 @@
   }
 
   function onCanvasKeydown(event) {
+    reclaimVisiblePlayerInteraction(event);
     if (state.mode !== "running") return;
     if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
       event.preventDefault();
@@ -2415,6 +2417,11 @@
     if (state.mode !== "running") return;
     lastFrame = performance.now();
     raf = requestAnimationFrame(loop);
+  }
+  function reclaimVisiblePlayerInteraction(event) {
+    if (document.hidden || event?.isTrusted === false || windowFocused) return;
+    windowFocused = true;
+    resumeBackgroundRaid();
   }
   window.addEventListener("pagehide", suspendBackgroundRaid);
   window.addEventListener("pageshow", resumeBackgroundRaid);

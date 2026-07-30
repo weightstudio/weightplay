@@ -155,7 +155,7 @@
       button.dataset.index = String(index);
       button.setAttribute("aria-disabled", String(locked));
       button.innerHTML = `<span>${stage.boss ? `${t("boss")} · ` : ""}${t(chapters[stage.chapter])}</span><strong>${stage.n}</strong><dl><div><dt>${t("threat")}</dt><dd>${stageThreat(stage)}</dd></div><div><dt>${t("plan")}</dt><dd>${t(stage.plan)}</dd></div><div><dt>${t("reward")}</dt><dd>${t("rewardDust",{dust:stage.reward})}</dd></div></dl><small>${locked ? t("locked") : `${"★".repeat(save.stars[stage.n]||0)}${"☆".repeat(3-(save.stars[stage.n]||0))}`}</small>`;
-      button.addEventListener("click", () => locked ? announce(t("locked")) : startBattle(index));
+      button.addEventListener("click", () => locked ? announce(t("locked")) : startBattleFromPlayer(index));
       return button;
     }));
     renderWorkshop();
@@ -268,6 +268,27 @@
     window.WonderSound?.play?.("start");
     if (!save.tutorialSeen) requestAnimationFrame(() => openModal($("tutorialPanel"), $("tutorialStartBtn")));
     else $("board").focus({preventScroll:true});
+  }
+  function startBattleFromPlayer(index) {
+    // A visible Stage/Result activation is authoritative evidence that the
+    // player has returned to the game, even when an embedded browser reports
+    // a stale false value from document.hasFocus(). Real blur/visibility
+    // events continue to suspend the running Battle after entry.
+    if (!document.hidden) {
+      windowFocused = true;
+      lifecyclePaused = false;
+    }
+    startBattle(index);
+  }
+  function reclaimVisiblePlayerAction() {
+    if (document.hidden) return;
+    windowFocused = true;
+    if (!lifecyclePaused) return;
+    lifecyclePaused = false;
+    if (run && !run.finished && screen === "battle" && !activeModal()) {
+      run.paused = false;
+      resumeLoop();
+    }
   }
 
   function hasMergePair(board = run.board) {
@@ -597,18 +618,22 @@
   $("startBtn").addEventListener("click",()=>showScreen("stage"));
   $("stageBackBtn").addEventListener("click",()=>showScreen("main"));
   $("localeSelect").addEventListener("change",(event)=>{locale=canonicalLocale(event.target.value);storage.set("wonderLocale",locale);window.WonderI18n?.setLocale?.(locale);applyLocale()});
-  $("summonBtn").addEventListener("click",summon);$("rerollBtn").addEventListener("click",reroll);$("rallyBtn").addEventListener("click",rally);$("burstBtn").addEventListener("click",burst);
+  $("summonBtn").addEventListener("click",()=>{reclaimVisiblePlayerAction();summon()});
+  $("rerollBtn").addEventListener("click",()=>{reclaimVisiblePlayerAction();reroll()});
+  $("rallyBtn").addEventListener("click",()=>{reclaimVisiblePlayerAction();rally()});
+  $("burstBtn").addEventListener("click",()=>{reclaimVisiblePlayerAction();burst()});
   $("battleBackBtn").addEventListener("click",openLeave);$("pauseBtn").addEventListener("click",()=>openModal($("pausePanel"),$("resumeBtn")));
   $("leaveContinueBtn").addEventListener("click",()=>closeModal($("leavePanel")));$("resumeBtn").addEventListener("click",()=>closeModal($("pausePanel")));
   $("pauseHelpBtn").addEventListener("click",()=>{$("pausePanel").hidden=true;openModal($("tutorialPanel"),$("tutorialStartBtn"))});
   $("tutorialStartBtn").addEventListener("click",()=>{save.tutorialSeen=true;persist();closeModal($("tutorialPanel"))});
   $("leaveStagesBtn").addEventListener("click",()=>{$("leavePanel").hidden=true;$("battleLive").inert=false;run=null;showScreen("stage")});
   $("resultStagesBtn").addEventListener("click",()=>commitResult(()=>{run=null;$("resultPanel").hidden=true;$("battleLive").inert=false;showScreen("stage")}));
-  $("retryBtn").addEventListener("click",()=>commitResult(()=>startBattle(currentStageIndex)));
-  $("nextBtn").addEventListener("click",()=>commitResult(()=>startBattle(Math.min(29,currentStageIndex+1))));
+  $("retryBtn").addEventListener("click",()=>commitResult(()=>startBattleFromPlayer(currentStageIndex)));
+  $("nextBtn").addEventListener("click",()=>commitResult(()=>startBattleFromPlayer(Math.min(29,currentStageIndex+1))));
 
   $("board").addEventListener("keydown",(event)=>{
     if(!run||activeModal())return;let next=run.cursor;
+    reclaimVisiblePlayerAction();
     if(event.key==="ArrowLeft")next=Math.max(0,next-1);else if(event.key==="ArrowRight")next=Math.min(14,next+1);
     else if(event.key==="ArrowUp")next=Math.max(0,next-5);else if(event.key==="ArrowDown")next=Math.min(14,next+5);
     else if(event.key==="Enter"||event.key===" "){event.preventDefault();selectOrMerge(run.cursor);return}
