@@ -445,7 +445,7 @@
     storageWrite(localeKey, legacySavedLocale);
     window.WonderI18n?.setLocale?.(legacySavedLocale);
   }
-  let locale = window.WonderI18n?.locale?.() || canonicalSavedLocale || legacySavedLocale || "en";
+  let locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || canonicalSavedLocale || legacySavedLocale || "en";
   let unlocked = clamp(Number(storageRead(unlockKey)) || 1, 1, stages.length);
   let stars = readStars();
   let currentStage = 0;
@@ -675,6 +675,13 @@
     let value = text[locale] || text.en;
     for (const part of parts) value = value?.[part];
     if (typeof value !== "string") value = key;
+    if (locale !== "en") {
+      let englishValue = text.en;
+      for (const part of parts) englishValue = englishValue?.[part];
+      if (value === englishValue) {
+        value = window.WeightPlayGameRuntimeLocalizer?.translate?.(value) || value;
+      }
+    }
     return Object.entries(data || {}).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, item), value);
   }
 
@@ -1229,7 +1236,7 @@
     nodes.localeSelect.addEventListener("change", () => {
       const requested = nodes.localeSelect.value;
       window.WonderI18n?.setLocale?.(requested);
-      locale = window.WonderI18n?.locale?.() || requested;
+      locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || requested;
       storageWrite(localeKey, requested);
       localizeStatic();
       renderStageGrid();
@@ -1239,8 +1246,9 @@
     });
     window.addEventListener("wonder:locale-change", (event) => {
       const nextLocale = event.detail?.locale || window.WonderI18n?.locale?.() || "en";
-      if (nextLocale === locale) return;
-      locale = window.WonderI18n?.legacyLocale?.(nextLocale) || nextLocale;
+      const actualLocale = window.WonderI18n?.actualLocale?.() || nextLocale;
+      if (actualLocale === locale) return;
+      locale = actualLocale;
       storageWrite(localeKey, event.detail?.locale || nextLocale);
       localizeStatic();
       renderStageGrid();

@@ -1434,7 +1434,7 @@ window.WeightPlayGameInfoLocales.es = {
       "difficulty": "fácil",
       "time": "3-5 minutos",
       "skills": [
-        "Conocimiento animal",
+        "Conocimientos sobre animales",
         "Enfoque",
         "Coordinación ojo-mano"
       ],
@@ -1610,7 +1610,7 @@ window.WeightPlayGameInfoLocales.es = {
       "time": "3-6 minutos por misión",
       "skills": [
         "Resolución de problemas",
-        "Conocimiento animal",
+        "Atención y bienestar animal",
         "Enfoque"
       ],
       "intro": "Animal Helper Quest es un rompecabezas bilingüe gratuito con imágenes para niños con 30 misiones guardadas y seis controles de ayuda. Un conejo, un zorro, un panda, un pingüino, un león o un koala aparecen en uno de los seis barrios. Los jugadores conectan nueve situaciones meteorológicas o cotidianas con un paraguas, una toalla, un ventilador, una lámpara, un refugio, una manzana, unas botas o una manta. Las misiones posteriores eliminan palabras de herramientas visibles, combinan dos pistas, ocultan brevemente la necesidad o mueven la bandeja después de un error. Mission 30 combina todas las reglas avanzadas sin cuenta regresiva, compra, cuenta, límite de vida o solicitud de publicidad.",
@@ -3168,6 +3168,7 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
   const difficulties = { "Medio": "Media", "fácil": "Fácil", "Fácil a medio": "Fácil a media", "Fácil de desafiar": "Fácil a desafiante", "De gentil a experto": "De suave a experta", "duro": "Difícil", "Medio a duro": "Media a difícil" };
   resource.games["animal-color-springs"] = {
     title: titles["animal-color-springs"], difficulty: "Fácil a desafiante", time: "2-6 minutos por nivel",
+    guideKicker: "GUÍA ORIGINAL DE WEIGHTPLAY", guideTitleSuffix: "GUÍA DEL JUEGO",
     gameplay: "Puzle de clasificación por colores", genre: ["Puzle", "Lógica", "Animales"],
     skills: ["Lógica", "Resolución de problemas", "Concentración"],
     intro: "Resortes de Colores Animales es un puzle de treinta niveles. Mueve el grupo superior de orbes iguales a un recipiente vacío o sobre el mismo color hasta que cada recipiente contenga un solo color.",
@@ -3182,8 +3183,28 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
     faq: [["¿Cuántos niveles hay?", "Treinta niveles deterministas."], ["¿Por qué un recipiente no acepta los orbes?", "Está lleno, sellado o su color superior no coincide."], ["¿Pista juega el movimiento?", "No. Solo señala un traslado útil."], ["¿Se guarda el progreso?", "Sí, únicamente en este navegador."]]
   };
   resource.gameplayProfiles["animal-color-springs"] = { gameplay: "Puzle de clasificación por colores", genre: ["Puzle", "Lógica", "Animales"] };
+  resource.skillLabels["Animal Knowledge"] = "Conocimiento de los animales";
+  resource.games["animal-hidden-safari"] = {
+    ...(resource.games["animal-hidden-safari"] || {}),
+    skills: ["Enfoque", "Conocimiento de los animales", "Resolución de problemas"],
+  };
   resource.games["animal-coloring-studio"] = { ...(resource.games["animal-coloring-studio"] || {}), title: titles["animal-coloring-studio"] };
-  resource.games["animal-word-trails"] = { ...(resource.games["animal-word-trails"] || {}), title: titles["animal-word-trails"] };
+  resource.games["animal-word-trails"] = {
+    title: titles["animal-word-trails"], difficulty: "Fácil a moderada", time: "2-5 minutos por sendero",
+    gameplay: "Puzle de rutas de palabras", genre: ["Palabras", "Puzle", "Animales"],
+    skills: ["Comprensión lectora", "Concentración", "Lógica"],
+    intro: "Senderos de Palabras Animales es un tranquilo puzle de treinta niveles. Sigue pistas de animales y conecta letras o caracteres adyacentes para formar una ruta de palabra completa.",
+    story: ["Leo abrió un sendero de lectura en el bosque y las pistas se dispersaron por los tableros. Cada ruta correcta recupera una tarjeta para el álbum de hábitats."],
+    systems: ["La ruta puede avanzar en horizontal, vertical o diagonal sin usar dos veces la misma casilla. Toca las letras una a una o arrastra por una ruta continua y después comprueba la palabra.", "Pista inicia la siguiente palabra pendiente, Limpiar borra la ruta actual y Deshacer elimina su última casilla. Las palabras encontradas permanecen marcadas."],
+    how: ["Elige un sendero desbloqueado.", "Conecta letras o caracteres adyacentes para formar una palabra de la lista.", "Selecciona Comprobar palabra o termina un arrastre continuo.", "Encuentra todas las palabras para completar el sendero."],
+    strategyTips: ["Busca primero los caracteres iniciales menos comunes.", "Usa conexiones diagonales cuando una ruta recta se detenga.", "Lee la lista completa antes de pedir una pista."],
+    progression: ["Los primeros senderos presentan animales y bosque. Los siguientes recorren safari, océano, Ártico y montaña e incorporan casillas bloqueadas, palabras más largas y entradas de una sola dirección."],
+    designNote: "El tablero admite toques deliberados y arrastre continuo. Cada idioma usa objetivos y caracteres que coinciden, no palabras traducidas sobre un tablero inglés.",
+    parent: "Este juego Kids de lectura no contiene anuncios ni requiere cuenta. El progreso se guarda en este navegador y no es una evaluación formal.",
+    relatedIds: ["animal-hidden-safari", "animal-quiz", "animal-coloring-studio"],
+    faq: [["¿Puedo tocar en vez de arrastrar?", "Sí. Ambos métodos crean la misma ruta."], ["¿Puedo usar dos veces una casilla?", "No."], ["¿Qué hace Pista?", "Inicia la siguiente palabra con su primera casilla."], ["¿Cada idioma tiene un tablero propio?", "Sí. Los objetivos y caracteres coinciden con el idioma seleccionado."]]
+  };
+  resource.gameplayProfiles["animal-word-trails"] = { gameplay: "Puzle de rutas de palabras", genre: ["Palabras", "Puzle", "Animales"] };
   resource.games["animal-block-grove"] = {
     title: "Bosque de Bloques Animales", difficulty: "Fácil a desafiante", time: "2-6 minutos por misión",
     gameplay: "Puzle de colocación en tablero 8×8", genre: ["Puzle", "Lógica", "Animales"],
@@ -3217,10 +3238,21 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
   };
   resource.gameplayProfiles["animal-coloring-studio"] = { gameplay: "Coloreado con relleno y pincel", genre: ["Creatividad", "Arte", "Animales"] };
   resource.games["animal-parking-patrol"] = {
-    ...(resource.games["animal-parking-patrol"] || {}),
-    title: "Patrulla de Aparcamiento Animal",
-    intro: "Ordena la salida de carros animales mediante planificación visual."
+    title: "Patrulla de Aparcamiento Animal", difficulty: "Fácil a desafiante",
+    time: "1-5 minutos por ruta", gameplay: "Puzle de orden de tráfico",
+    genre: ["Puzle", "Lógica", "Animales"], skills: ["Lógica", "Planificación visual", "Secuenciación"],
+    intro: "Patrulla de Aparcamiento Animal es un puzle de treinta rutas guiado por Orla. Cada carro solo puede salir en la dirección que indica su flecha, así que debes estudiar toda la plaza y liberarlos en un orden seguro.",
+    story: ["El tráfico del festival bloqueó el cruce del bosque. Zorros, nutrias, pandas, leones, búhos, tortugas, conejos y rinocerontes esperan en carros direccionales. Completar cada ruta abre de nuevo la plaza."],
+    systems: ["Toca un carro cuando todas las casillas entre él y el borde correspondiente estén libres. Un toque bloqueado consume una de las tres comprobaciones de seguridad.", "Las rutas posteriores añaden carros de señal, puertas y convoyes enlazados. Deshacer restaura la salida anterior, Reiniciar reconstruye el mismo puzle y Pista ilumina un carro seguro."],
+    how: ["Lee la dirección de cada carro.", "Busca un carro con camino libre hasta su borde.", "Resuelve señales y convoyes antes de mover carros marcados.", "Guía todos los carros fuera antes de gastar las tres comprobaciones."],
+    strategyTips: ["Explora desde cada borde hacia el centro.", "Libera primero los carros que abren varios caminos.", "Encuentra el carro de señal antes de tocar uno bloqueado.", "Usa Deshacer en cuanto una salida empeore el orden."],
+    progression: ["Las rutas 1-5 enseñan direcciones; 6-10 crean cruces más densos; 11-15 añaden señales; 16-20 introducen convoyes; 21-25 usan los cuatro bordes y 26-30 combinan todas las reglas."],
+    designNote: "Las rutas son breves y deterministas. Flechas visibles y carros grandes usan la misma regla con toque, ratón y teclado. El progreso permanece en este navegador.",
+    parent: "Este puzle Kids no contiene anuncios ni requiere cuenta. Las estrellas y rutas se guardan localmente y no forman una evaluación.",
+    relatedIds: ["animal-block-grove", "animal-color-link"],
+    faq: [["¿Por qué no se mueve un carro?", "Otro carro, una señal roja o una regla de convoy bloquea su ruta."], ["¿Qué hace el carro de señal?", "Abre las señales rojas de esa ruta."], ["¿Cuántos toques bloqueados se permiten?", "Tres por intento."], ["¿Pista resuelve la ruta?", "No. Solo ilumina un carro seguro."], ["¿Cuántas rutas hay?", "Treinta rutas diseñadas."]]
   };
+  resource.gameplayProfiles["animal-parking-patrol"] = { gameplay: "Puzle de orden de tráfico", genre: ["Puzle", "Lógica", "Animales"] };
   resource.games["animal-color-link"] = {
     ...(resource.games["animal-color-link"] || {}),
     title: "Jardín de Conexiones de Color",
@@ -3230,6 +3262,26 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
     ...(resource.games["animal-skyspire-drop"] || {}),
     title: "Caída de la Aguja Celeste Animal",
     intro: "Una aventura animal de reflejos y coordinación."
+  };
+  resource.games["animal-screw-workshop"] = {
+    ...(resource.games["animal-screw-workshop"] || {}),
+    skills: ["Planificación visual", "Lógica", "Resolución de problemas"],
+    relatedIds: ["animal-cratebound", "animal-rootvault-pins", "animal-spectrum-pulse"],
+  };
+  resource.games["animal-cratebound"] = {
+    ...(resource.games["animal-cratebound"] || {}),
+    title: "Cajas Enlazadas Animales",
+    intro: "Empuja y arrastra cajas enlazadas mediante rutas de lógica espacial."
+  };
+  resource.games["animal-rootvault-pins"] = {
+    ...(resource.games["animal-rootvault-pins"] || {}),
+    title: "Pasadores de la Cámara Raíz Animal",
+    intro: "Libera mecanismos en el orden correcto para resolver cámaras de materiales."
+  };
+  resource.games["animal-spectrum-pulse"] = {
+    ...(resource.games["animal-spectrum-pulse"] || {}),
+    title: "Pulso del Espectro Animal",
+    intro: "Lee símbolos y activa pulsos en una aventura animal de precisión."
   };
   Object.entries(resource.games).forEach(([id, game]) => {
     if (titles[id]) game.title = titles[id];
@@ -3324,7 +3376,8 @@ window.WeightPlayGameInfoLocales.es.games["animal-abyss-diver"] = {
 window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-abyss-diver"] = { gameplay: "Aventura estratégica de riesgo submarino", genre: ["Estrategia", "Aventura", "Gestión de riesgos", "Animales"] };
 
 window.WeightPlayGameInfoLocales.es.games["animal-screw-workshop"] = {
-  title: "Taller de Tornillos Animales", difficulty: "Fácil a desafiante", time: "2-6 minutos por puzle", gameplay: "Puzle lógico de traslado de tornillos", genre: ["Puzle", "Lógica", "Animales"], skills: ["Visual Planning", "Logic", "Problem Solving"],
+  title: "Taller de Tornillos Animales", difficulty: "Fácil a desafiante", time: "2-6 minutos por puzle", gameplay: "Puzle lógico de traslado de tornillos", genre: ["Puzle", "Lógica", "Animales"], skills: ["Planificación visual", "Lógica", "Resolución de problemas"],
+  relatedIds: ["animal-cratebound", "animal-rootvault-pins", "animal-spectrum-pulse"],
   intro: "Taller de Tornillos Animales es un juego de lógica espacial con treinta puzles guiados por Rux. Mueve cada tornillo de latón a un hueco libre y suelta todas las placas de madera dentro del límite de movimientos.",
   story: ["Los letreros de animales del taller quedaron sujetos en capas entrelazadas. Cada puzle reparado recupera un letrero; completar los seis capítulos vuelve a abrir todo el taller."],
   systems: ["Elige un tornillo desbloqueado y después un hueco vacío. Una placa cae cuando ninguno de sus soportes conserva un tornillo. Los tornillos compartidos sujetan varias placas y los bloqueados se abren al retirar capas superiores.", "Deshacer restaura el movimiento completo, Reiniciar reconstruye el mismo puzle y Pista señala una ruta segura sin jugarla. Las soluciones eficientes dan hasta tres estrellas."],

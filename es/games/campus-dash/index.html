@@ -194,11 +194,10 @@
       (() => {
         const locale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || "en";
         // Campus Dash owns complete Spanish runtime copy. Loading the shared
-        // English-source translator here would translate that Spanish a second
-        // time and corrupt route names, capitalization, and Result wording.
-        if (locale !== "es") {
-          document.write('<script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"><\/script>');
-        }
+        // English-source translator must still initialize for the locale
+        // contract, but must not translate that Spanish copy a second time.
+        if (locale === "es") document.body.dataset.runtimeLocalize = "off";
+        document.write('<script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"><\/script>');
       })();
     </script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>

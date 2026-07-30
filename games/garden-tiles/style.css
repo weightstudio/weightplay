@@ -386,18 +386,29 @@ body.garden-stage .level-grid button.is-centered {
 }
 
 .tile-image {
+  position: relative;
   display: block;
   width: min(94%, 108px);
   height: min(94%, 108px);
   min-height: 0;
   border-radius: 6px;
-  background-repeat: no-repeat;
-  background-size: 400% 600%;
+  overflow: hidden;
   filter: drop-shadow(0 5px 4px rgba(49, 91, 53, 0.2));
   pointer-events: none;
   opacity: 0;
   transform: scale(.76) rotate(-3deg);
   transition: opacity .14s ease, transform .14s ease;
+}
+
+.tile-atlas-image {
+  position: absolute;
+  display: block;
+  width: 400%;
+  max-width: none;
+  height: 600%;
+  object-fit: fill;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .tile.selected .tile-image,

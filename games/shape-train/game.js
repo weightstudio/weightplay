@@ -362,7 +362,7 @@
     writeStorage(canonicalLocaleKey, legacySavedLocale);
     try { window.WonderI18n?.setLocale?.(legacySavedLocale); } catch {}
   }
-  let locale = window.WonderI18n?.locale?.() || canonicalSavedLocale || legacySavedLocale || "en";
+  let locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || canonicalSavedLocale || legacySavedLocale || "en";
   let unlocked = readUnlocked();
   let stars = readStars();
   let currentStage = 0;
@@ -494,6 +494,13 @@
     let value = text[locale] || text.en;
     for (const part of parts) value = value?.[part];
     if (typeof value !== "string") value = key;
+    if (locale !== "en") {
+      let englishValue = text.en;
+      for (const part of parts) englishValue = englishValue?.[part];
+      if (value === englishValue) {
+        value = window.WeightPlayGameRuntimeLocalizer?.translate?.(value) || value;
+      }
+    }
     return Object.entries(data || {}).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, item), value);
   }
 
@@ -1176,7 +1183,7 @@
     nodes.localeSelect.addEventListener("change", () => {
       const requested = nodes.localeSelect.value;
       try { window.WonderI18n?.setLocale?.(requested); } catch {}
-      locale = window.WonderI18n?.locale?.() || requested;
+      locale = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || requested;
       writeStorage(localeKey, requested);
       localizeStatic();
       preserveGameLocaleAfterSharedGuide();

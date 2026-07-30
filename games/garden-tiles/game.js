@@ -928,8 +928,16 @@
       const face = document.createElement("span");
       face.className = "tile-image";
       face.setAttribute("aria-hidden", "true");
-      face.style.backgroundImage = `url("${CARD_ATLAS}")`;
-      face.style.backgroundPosition = `${(tile.art.atlasIndex % 4) * 100 / 3}% ${Math.floor(tile.art.atlasIndex / 4) * 20}%`;
+      const atlasImage = document.createElement("img");
+      atlasImage.className = "tile-atlas-image";
+      atlasImage.src = CARD_ATLAS;
+      atlasImage.alt = "";
+      atlasImage.draggable = false;
+      atlasImage.dataset.atlasColumn = String(tile.art.atlasIndex % 4);
+      atlasImage.dataset.atlasRow = String(Math.floor(tile.art.atlasIndex / 4));
+      atlasImage.style.left = `${(tile.art.atlasIndex % 4) * -100}%`;
+      atlasImage.style.top = `${Math.floor(tile.art.atlasIndex / 4) * -100}%`;
+      face.append(atlasImage);
       button.append(face);
       const selected = selectedTile?.index === tile.index;
       const revealed = selected || previewing || tile.revealed;

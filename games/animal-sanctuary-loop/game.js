@@ -370,6 +370,7 @@
     button.id ||= `stageTab-${button.dataset.tab}`;
     button.setAttribute("role", "tab");
     button.setAttribute("aria-controls", panel.id);
+    button.setAttribute("aria-keyshortcuts", "ArrowLeft ArrowRight Home End");
     panel.setAttribute("role", "tabpanel");
     panel.setAttribute("aria-labelledby", button.id);
     button.addEventListener("click", () => activateStageTab(button));

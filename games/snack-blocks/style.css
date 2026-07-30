@@ -158,12 +158,14 @@ button {
 .hud div,
 .score-line {
   min-height: 54px;
-  padding: 8px;
+  padding: 6px 8px;
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 8px;
   background: rgba(16, 20, 30, 0.62);
   display: grid;
-  gap: 2px;
+  grid-template-rows: 14px 24px;
+  align-content: center;
+  gap: 0;
   place-items: center;
 }
 
@@ -172,11 +174,14 @@ button {
   color: #f1cf8b;
   font-size: 0.72rem;
   font-weight: 800;
+  line-height: 14px;
 }
 
 .hud strong,
 .score-line strong {
   font-size: 1.35rem;
+  line-height: 24px;
+  align-self: start;
 }
 
 .menu-panel,
@@ -571,20 +576,28 @@ button:active {
   width: min(94vw, 434px, 50.4svh);
   aspect-ratio: 7 / 10;
   margin: 0 auto;
-  padding: 14px;
+  padding: 25px 28px 24px;
   border-radius: 18px;
-  background:
-    url("assets/board-frame-7x10.webp") center / 100% 100% no-repeat,
-    linear-gradient(160deg, #4b2528 0%, #28141c 100%);
+  background: linear-gradient(160deg, #4b2528 0%, #28141c 100%);
   border: 0;
   box-shadow: 0 8px 0 #512716, 0 12px 26px rgba(12, 5, 10, 0.34);
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: repeat(10, minmax(0, 1fr));
-  gap: 6px;
+  gap: 4px;
   touch-action: none;
   overflow: hidden;
   contain: layout paint size;
+}
+
+.board::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  background: url("assets/board-frame-7x10.webp") center / 100% 100% no-repeat;
+  pointer-events: none;
 }
 
 .tile {
@@ -1183,8 +1196,8 @@ body.snack-playing .wp-tutorial-button {
     max-width: 504px !important;
     grid-template-columns: repeat(10, minmax(0, 1fr));
     grid-template-rows: repeat(7, minmax(0, 1fr));
-    gap: 5px;
-    padding: 10px;
+    gap: 3px;
+    padding: 18px 38px;
     place-self: center;
   }
 
@@ -1270,7 +1283,7 @@ body.snack-playing .wp-tutorial-button {
 @media (max-width: 390px) {
   .board {
     gap: 4px;
-    padding: 6px;
+    padding: 25px 29px 24px;
   }
 }
 html,

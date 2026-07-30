@@ -387,6 +387,13 @@
     }
     return best;
   }
+  function segmentIntersection(a,b,c,d){
+    const rx=b.x-a.x,ry=b.y-a.y,sx=d.x-c.x,sy=d.y-c.y,denominator=rx*sy-ry*sx;
+    if(Math.abs(denominator)<.0001)return null;
+    const qx=c.x-a.x,qy=c.y-a.y,t=(qx*sy-qy*sx)/denominator,u=(qx*ry-qy*rx)/denominator;
+    if(t<0||t>1||u<0||u>1)return null;
+    return{x:a.x+t*rx,y:a.y+t*ry};
+  }
   function chooseWallMover(spec,bee){
     const candidates=state.strokes.filter(stroke=>availableStrokeMoves(stroke,spec,10).length).sort((a,b)=>closestStrokePoint(a,bee).d-closestStrokePoint(b,bee).d);
     let best=null;
@@ -408,11 +415,16 @@
     for(let s=state.strokes.length-1;s>=0;s--){
       const stroke=state.strokes[s];
       for(let i=1;i<stroke.points.length;i++){
-        const hit=nearestOnSegment(bee.x,bee.y,stroke.points[i-1],stroke.points[i]);
-        if(hit.d>19)continue;
-        const dot=bee.vx*hit.nx+bee.vy*hit.ny,sign=dot>0?1:-1;
-        bee.vx-=2*dot*hit.nx;bee.vy-=2*dot*hit.ny;bee.vx-=hit.nx*sign*42;bee.vy-=hit.ny*sign*42;
-        bee.x=hit.x+hit.nx*sign*22;bee.y=hit.y+hit.ny*sign*22;bee.cooldown=.14;bee.route*=-1;
+        const start={x:Number.isFinite(bee.prevX)?bee.prevX:bee.x,y:Number.isFinite(bee.prevY)?bee.prevY:bee.y},end={x:bee.x,y:bee.y};
+        const hit=nearestOnSegment(end.x,end.y,stroke.points[i-1],stroke.points[i]),crossing=segmentIntersection(start,end,stroke.points[i-1],stroke.points[i]);
+        if(hit.d>19&&!crossing)continue;
+        const contact=crossing||hit,previousHit=nearestOnSegment(start.x,start.y,stroke.points[i-1],stroke.points[i]);
+        const side=previousHit.nx*(start.x-previousHit.x)+previousHit.ny*(start.y-previousHit.y);
+        const sign=Math.abs(side)>.001?(side>0?1:-1):(bee.vx*hit.nx+bee.vy*hit.ny>0?-1:1);
+        const nx=hit.nx*sign,ny=hit.ny*sign,dot=bee.vx*nx+bee.vy*ny;
+        if(dot<0){bee.vx-=1.9*dot*nx;bee.vy-=1.9*dot*ny}
+        bee.vx+=nx*42;bee.vy+=ny*42;
+        bee.x=contact.x+nx*22;bee.y=contact.y+ny*22;bee.cooldown=.14;bee.route*=-1;
         bee.bounced=true;stroke.flash=.12;
         return true;
       }
@@ -422,7 +434,7 @@
   function spawnBee(){
     const spec=level(stageIndex),hive=spec.hives[state.spawned%spec.hives.length],angle=(state.spawned%5-2)*.08;
     const dx=spec.dog.x-hive.x,dy=spec.dog.y-hive.y,length=Math.hypot(dx,dy)||1;
-    state.bees.push({x:hive.x,y:hive.y+35,vx:dx/length*spec.speed+angle*spec.speed,vy:dy/length*spec.speed,life:0,cooldown:0,bounced:false,phase:state.spawned*.73,route:state.spawned%2?1:-1});
+    state.bees.push({x:hive.x,y:hive.y+35,vx:dx/length*spec.speed+angle*spec.speed,vy:dy/length*spec.speed,life:0,cooldown:0,bounced:false,phase:state.spawned*.73,route:state.spawned%2?1:-1,intent:"attack"});
     state.spawned++;
   }
   function update(dt){
@@ -454,6 +466,7 @@
     for(const bee of state.bees){
       bee.life+=dt;bee.cooldown=Math.max(0,bee.cooldown-dt);
       const route=routes.get(bee),wallTarget=!route&&state.mover?closestStrokePoint(state.mover.stroke,bee):null,target=route||wallTarget||{x:bee.x,y:bee.y};
+      bee.intent=route?"attack":wallTarget?"moveWall":"wait";
       const dx=target.x-bee.x,dy=target.y-bee.y,length=Math.hypot(dx,dy)||1;
       const sideX=-dy/length,sideY=dx/length,flank=route?Math.sin(bee.life*1.8+bee.phase)*Math.min(8,spec.flank*.18):0;
       const avoid=obstacleAvoidance(bee,spec),steer=route?(bee.bounced?4.2:5.4):3.8;
@@ -461,7 +474,7 @@
       const desiredX=dx/length*desiredSpeed+sideX*flank,desiredY=dy/length*desiredSpeed+sideY*flank;
       bee.vx+=(desiredX-bee.vx)*dt*steer+avoid.ax*dt;bee.vy+=(desiredY-bee.vy)*dt*steer+avoid.ay*dt;
       if(route)bee.vx+=Math.sin(bee.life*3+bee.phase)*spec.gust*dt*.2;
-      bee.x+=bee.vx*dt;bee.y+=bee.vy*dt;resolveBeeSolid(bee,spec);collideLine(bee);
+      bee.prevX=bee.x;bee.prevY=bee.y;bee.x+=bee.vx*dt;bee.y+=bee.vy*dt;resolveBeeSolid(bee,spec);collideLine(bee);
       if(Math.hypot(bee.x-spec.dog.x,bee.y-spec.dog.y)<48){finish(false);return}
     }
     if(state.mover&&blockedBees.some(bee=>closestStrokePoint(state.mover.stroke,bee).d<=38)){
@@ -660,13 +673,21 @@
       const initialRoute=!!navigationDirection(buildNavigationField(level(0)),state.bees[0].x,state.bees[0].y);
       for(let time=0;time<12&&!state.result;time+=.02)update(.02);
       const field=buildNavigationField(level(0)),routeNow=state.bees[0]?!!navigationDirection(field,state.bees[0].x,state.bees[0].y):false;
-      return{initialRoute,wallMoves:state.wallMoves,routeNow,moverStopped:state.mover===null,result:state.result,anchored:stroke.anchored};
+      return{initialRoute,wallMoves:state.wallMoves,routeNow,moverStopped:state.mover===null,intent:state.bees[0]?.intent,result:state.result,anchored:stroke.anchored};
     },
     beeSpriteMetrics(){
       const crop=SPRITE_CROPS[1],centroid={x:133.44,y:137.67},rect=canvas.getBoundingClientRect(),physicalX=rect.width/1000,physicalY=rect.height/620,uniform=Math.sqrt(physicalX*physicalY);
       const physicalWidth=58*uniform,physicalHeight=physicalWidth*crop.h/crop.w;
       const drawOrigin={x:-centroid.x/crop.w*physicalWidth,y:-centroid.y/crop.h*physicalHeight};
       return{sourceRatio:crop.w/crop.h,physicalRatio:physicalWidth/physicalHeight,alphaCentroid:[centroid.x,centroid.y],centerOffset:[drawOrigin.x+centroid.x/crop.w*physicalWidth,drawOrigin.y+centroid.y/crop.h*physicalHeight]};
+    },
+    crossingProbe(){
+      startStage(0);
+      const stroke={points:[{x:500,y:100},{x:500,y:560}],flash:0,blockedFlash:0,moves:0,anchored:true};
+      state.strokes=[stroke];
+      const bee={prevX:545,prevY:310,x:482,y:310,vx:-240,vy:0,cooldown:0,bounced:false,route:1};
+      const collided=collideLine(bee);
+      return{collided,x:bee.x,y:bee.y,vx:bee.vx,sameSide:bee.x>500,clearance:bee.x-500};
     },
     assetStatus:()=>({atlas:atlas.naturalWidth,backgrounds:themeBackgrounds.map(image=>image.naturalWidth)}),
     levelDigest:()=>Array.from({length:30},(_,index)=>{const spec=level(index);return{theme:spec.theme.terrain,dog:[spec.dog.x,spec.dog.y],hives:spec.hives.map(hive=>[hive.x,hive.y]),solids:spec.solids.map(solid=>solid.kind==="platform"?[solid.kind,solid.x,solid.y,solid.w,solid.h]:[solid.kind,solid.x,solid.y,solid.r]),speed:spec.speed}}),

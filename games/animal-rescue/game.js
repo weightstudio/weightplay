@@ -291,7 +291,7 @@ const dictionary = {
     moves: "Movimientos",
     fruit: "Fruta",
     chooseTrail: "Seleccionar ruta",
-    startGame: "Empezar juego",
+    startGame: "Empezar a jugar",
     start: "Empezar",
     locked: "Bloqueada",
     complete: "Completada",
