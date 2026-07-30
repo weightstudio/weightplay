@@ -1480,6 +1480,15 @@
     raf = requestAnimationFrame(tick);
   }
 
+  function reclaimVisiblePlayerAction(event) {
+    if (document.hidden || !pageActive) return false;
+    if (windowFocused && !lifecycleSuspended) return true;
+    if (!event?.isTrusted) return false;
+    windowFocused = true;
+    resumeBattleLifecycle();
+    return true;
+  }
+
   function showPause() {
     if (!running || paused) return;
     running = false;
@@ -2384,6 +2393,11 @@
     showMenuTab(button.dataset.menuTab);
     playSound("click");
   });
+  nodes.playPanel.addEventListener("click", (event) => {
+    if (reclaimVisiblePlayerAction(event)) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }, true);
   nodes.startGameBtn?.addEventListener("keydown", rejectRepeatedScreenActivation, true);
   nodes.stageGrid.addEventListener("keydown", rejectRepeatedScreenActivation, true);
   nodes.kennelGrid?.addEventListener("keydown", rejectRepeatedScreenActivation, true);

@@ -18,7 +18,7 @@ const images={
 };
 const defaultSave=()=>({unlocked:1,medals:Array(30).fill(0),cabinet:Array(8).fill(false),bolts:0,upgrades:{grip:0,stability:0,rail:0},tutorial:false});
 let save=loadSave();
-let run=null,pointerId=null,keyStabilize=0;
+let run=null,pointerId=null;
 const chapters=[
   {name:"chapter1",rule:"rule1",obstacle:"none"},
   {name:"chapter2",rule:"rule2",obstacle:"bumper"},
@@ -144,7 +144,7 @@ function buyUpgrade(id){
 function startMission(index){
   selected=index;const level=levels[index];
   run={
-    index,level,phase:"aim",elapsed:0,phaseTime:0,drops:3,aimX:500,aimY:360,dropX:null,stabilizer:0,stability:1,grip:1,swing:0,held:null,
+    index,level,phase:"aim",elapsed:0,phaseTime:0,drops:3,aimX:500,aimY:360,dropX:null,lockValue:.08,lockDirection:1,lockQuality:0,stability:1,grip:1,swing:0,held:null,fallX:0,fallY:0,fallVelocity:0,fallRotation:0,
     prizes:level.prizes.map(prize=>({...prize,active:true,delivered:false})),targets:[...level.targets],delivered:[],misses:0,result:null,feedback:"phaseAim",lastCorrection:"phaseAim"
   };
   settledDecision=false;$("resultPanel").hidden=true;$("leavePanel").hidden=true;$("pausePanel").hidden=true;$("battleLive").hidden=false;$("battleLive").inert=false;
@@ -157,10 +157,14 @@ function renderHud(){
   if(!run)return;
   $("missionLabel").textContent=t("mission",{n:run.index+1});$("objectiveText").textContent=t("objective",{count:remainingTargets().length});
   $("dropsValue").textContent=run.drops;$("gripValue").textContent=`${Math.round(run.grip*100)}%`;
-  $("stabilityFill").style.transform=`scaleX(${clamp(run.stability)})`;
+  $("timingMeter").classList.toggle("timing-active",run.phase==="secure");
+  $("timingMeter").style.setProperty("--timing-position",`${clamp(run.lockValue)*100}%`);
+  const timingWindow=run.phase==="secure"&&run.held?lockWindow():.15;
+  $("timingMeter").style.setProperty("--timing-start",`${(50-timingWindow*100).toFixed(1)}%`);
+  $("timingMeter").style.setProperty("--timing-end",`${(50+timingWindow*100).toFixed(1)}%`);
   $("targetList").innerHTML=run.targets.map(kind=>`<span class="target-chip ${run.delivered.some(entry=>entry.target&&entry.kind===kind)?"done":""}"><i class="target-thumb" aria-hidden="true" style="${prizeSpriteStyle(kind)}"></i><b>${prizeName(kind)}</b></span>`).join("");
-  $("dropBtn").disabled=!["aim","lift"].includes(run.phase);$("dropBtn").textContent=t(run.phase==="lift"?"holdGrip":"drop");$("restartBtn").disabled=!!run.result;
-  if(run.phase!=="lift")$("steerAction").hidden=true;
+  $("dropBtn").disabled=!["aim","secure"].includes(run.phase);$("dropBtn").textContent=t(run.phase==="secure"?"holdGrip":"drop");$("restartBtn").disabled=!!run.result;
+  if(!["secure","lift","fall"].includes(run.phase))$("steerAction").hidden=true;
   announce(run.feedback||"phaseAim");
 }
 function beginDrop(){
@@ -175,18 +179,25 @@ function update(dt){
     run.aimX=clamp(run.aimX+Math.sin(run.elapsed*1.8+run.level.index)*drift*20*dt,80,920);
   }else if(run.phase==="drop"){
     if(run.phaseTime>=.72)resolveGrip();
+  }else if(run.phase==="secure"){
+    const speed=.68+run.held.weight*.045-run.level.drift*.08;
+    run.lockValue+=run.lockDirection*speed*dt;
+    if(run.lockValue>=1){run.lockValue=2-run.lockValue;run.lockDirection=-1}
+    if(run.lockValue<=0){run.lockValue=-run.lockValue;run.lockDirection=1}
+    run.grip=clamp(1-run.phaseTime*.16);
+    updateTimingCoach();
+    if(run.phaseTime>=2.35)beginFall("lockMiss");
   }else if(run.phase==="lift"){
-    const held=run.held,swing=Math.sin(run.phaseTime*(3.8+held.weight*.35)+held.kind)*(.34+held.weight*.09+run.level.drift);
-    const holding=Boolean(run.stabilizer||keyStabilize);
-    run.swing=swing;updateHoldCoach(holding);
-    run.stability=clamp(run.stability+dt*(holding?.1+save.upgrades.stability*.04:-(.72+held.weight*.08)));
-    run.grip=clamp(run.grip+dt*(holding?.16:-.56));
-    if(run.stability<=.15||run.grip<=.12){dropHeld();return}
-    if(run.phaseTime>=1.55)deliverHeld();
+    run.swing=Math.sin(run.phaseTime*(4.2+run.held.weight*.3)+run.held.kind)*(.18+run.held.weight*.035);
+    run.grip=clamp(.72+run.lockQuality*.28);
+    if(run.phaseTime>=1.28)deliverHeld();
+  }else if(run.phase==="fall"){
+    run.fallVelocity+=680*dt;run.fallY+=run.fallVelocity*dt;run.fallRotation+=dt*2.4;
+    if(run.phaseTime>=.82||run.fallY>=540)completeFall();
   }else if(run.phase==="return"&&run.phaseTime>=.52){
     if(!remainingTargets().length){finish(true);return}
     if(run.drops<=0){finish(false);return}
-    run.phase="aim";run.phaseTime=0;run.held=null;run.stabilizer=0;run.feedback="phaseAim";renderHud();
+    run.phase="aim";run.phaseTime=0;run.held=null;run.feedback="phaseAim";renderHud();
   }
 }
 function clawPosition(){
@@ -194,7 +205,8 @@ function clawPosition(){
   const sway=Math.sin(run.elapsed*(2.5-run.level.drift)+run.level.index*.4)*(38+run.level.chapter*6);
   const liveX=clamp(run.aimX+sway,68,932),x=run.phase==="aim"?liveX:(run.dropX??liveX);
   if(run.phase==="drop")return{x,y:80+(run.aimY-80)*clamp(run.phaseTime/.72)};
-  if(run.phase==="lift")return{x,y:run.aimY-(run.aimY-95)*clamp(run.phaseTime/1.55)};
+  if(run.phase==="secure"||run.phase==="fall")return{x,y:run.aimY};
+  if(run.phase==="lift")return{x,y:run.aimY-(run.aimY-95)*clamp(run.phaseTime/1.28)};
   if(run.phase==="return")return{x,y:95};
   return{x,y:80};
 }
@@ -208,15 +220,28 @@ function resolveGrip(){
   const nearest=active.map(prize=>({prize,d:grabMetric(prize,claw.x,run.aimY)})).sort((a,b)=>a.d-b.d)[0];
   const grabRadius=nearest?gripWindowFor(nearest.prize):0;
   if(nearest&&nearest.d<=grabRadius){
-    run.held=nearest.prize;run.phase="lift";run.phaseTime=0;run.grip=clamp(1-nearest.d/(grabRadius*1.45));run.stability=1;run.swing=0;run.feedback="phaseLift";
+    run.held=nearest.prize;run.phase="secure";run.phaseTime=0;run.lockValue=.08;run.lockDirection=1;run.lockQuality=0;run.grip=clamp(1-nearest.d/(grabRadius*1.45));run.stability=1;run.swing=0;run.feedback="phaseLift";
   }else{
     run.misses++;run.phase="return";run.phaseTime=0;run.grip=0;run.stability=.2;run.feedback=["miss","phaseAim"];run.lastCorrection="phaseAim";
   }
   renderHud();
 }
-function dropHeld(){
-  const held=run.held;if(held){held.x=clamp(held.x+Math.sin(run.elapsed)*55,90,910);held.y=clamp(held.y+26,300,500)}
-  run.misses++;run.phase="return";run.phaseTime=0;run.held=null;run.grip=0;run.feedback=["miss","holdNeeded"];run.lastCorrection="holdNeeded";renderHud();
+function lockWindow(){return clamp(.23+save.upgrades.stability*.025-run.held.weight*.015,.16,.28)}
+function attemptLock(){
+  if(!run||run.phase!=="secure"||!run.held)return;
+  const distance=Math.abs(run.lockValue-.5),windowSize=lockWindow();
+  if(distance<=windowSize){
+    run.lockQuality=clamp(1-distance/windowSize);run.phase="lift";run.phaseTime=0;run.grip=.72+run.lockQuality*.28;run.feedback="holdingGood";updateTimingCoach(true);renderHud();
+  }else beginFall("lockMiss");
+}
+function beginFall(reason="lockMiss"){
+  if(!run?.held||!["secure","lift"].includes(run.phase))return;
+  const claw=clawPosition();run.phase="fall";run.phaseTime=0;run.fallX=claw.x;run.fallY=claw.y;run.fallVelocity=45;run.fallRotation=0;run.grip=0;run.feedback=reason;run.lastCorrection=reason;updateTimingCoach(false,true);renderHud();
+}
+function completeFall(){
+  const held=run.held;
+  if(held){held.x=clamp(run.fallX+Math.sin(run.elapsed)*30,90,910);held.y=clamp(run.fallY,300,500)}
+  run.misses++;run.phase="return";run.phaseTime=0;run.held=null;run.feedback=["falling","lockMiss"];renderHud();
 }
 function deliverHeld(){
   const held=run.held;if(!held)return;
@@ -246,12 +271,13 @@ function finish(won){
 }
 function commitResult(action){if(settledDecision||$("resultPanel").hidden)return;settledDecision=true;[$("resultStagesBtn"),$("nextBtn"),$("retryBtn")].forEach(button=>button.disabled=true);action()}
 
-function updateHoldCoach(holding){
+function updateTimingCoach(locked=false,failed=false){
   const hint=$("phaseHint"),action=$("steerAction");if(!hint||!action)return;
-  const state=holding?"correct":"prompt";
+  $("timingMeter").style.setProperty("--timing-position",`${clamp(run.lockValue)*100}%`);
+  const state=locked?"correct":failed?"wrong":"prompt";
   hint.dataset.steer=state;action.dataset.steer=state;action.hidden=false;
-  action.textContent=t(holding?"holdingAction":"holdAction");
-  hint.textContent=t(holding?"holdingGood":"holdNeeded");
+  action.textContent=t(locked?"holdingAction":failed?"falling":"holdAction");
+  hint.textContent=t(locked?"holdingGood":failed?"lockMiss":"holdNeeded");
 }
 
 function activeModal(){return["tutorialPanel","leavePanel","pausePanel","resultPanel"].some(id=>!$(id).hidden)}
@@ -266,10 +292,10 @@ function draw(){
   if(!run)return;const d=+canvas.dataset.dpr||1,w=canvas.width/d,h=canvas.height/d,px=x=>x/1000*w,py=y=>y/620*h,min=Math.min(w,h);
   ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,w,h);drawCover(images.background,0,0,w,h);ctx.save();
   drawObstacles(w,h,px,py);
-  const heldPrize=run.phase==="lift"?run.held:null;
+  const heldPrize=["secure","lift"].includes(run.phase)?run.held:null;
   for(const prize of run.prizes){
     if(!prize.active)continue;
-    if(prize===heldPrize)continue;
+    if(prize===heldPrize||(run.phase==="fall"&&prize===run.held))continue;
     const size=clamp(min*.16+prize.weight*3,42,88),image=prize.kind<4?images.prizesA:images.prizesB,cell=prize.kind%4,x=px(prize.x),y=py(prize.y),isTarget=remainingTargets().includes(prize.kind);
     if(run.phase==="aim"&&isTarget){
       ctx.save();ctx.strokeStyle="#65ffe1";ctx.lineWidth=4;ctx.shadowColor="#65ffe1";ctx.shadowBlur=13;ctx.beginPath();ctx.arc(x,y,size*.58,0,Math.PI*2);ctx.stroke();ctx.restore();
@@ -293,6 +319,10 @@ function draw(){
     ctx.rect(clawX-clawSize/2,clawTop+clawSize*.42,clawSize*.34,clawSize*.58);
     ctx.rect(clawX+clawSize*.16,clawTop+clawSize*.42,clawSize*.34,clawSize*.58);ctx.clip();
     drawCell(images.atlas,3,clawX-clawSize/2,clawTop,clawSize,clawSize);ctx.restore();
+  }
+  if(run.phase==="fall"&&run.held){
+    const fallingSize=clamp(min*.16+run.held.weight*3,54,82),fallingImage=run.held.kind<4?images.prizesA:images.prizesB;
+    ctx.save();ctx.translate(px(run.fallX),py(run.fallY));ctx.rotate(run.fallRotation);drawCell(fallingImage,run.held.kind%4,-fallingSize/2,-fallingSize/2,fallingSize,fallingSize);ctx.restore();
   }
   if(run.phase==="aim"){
     const landingX=px(claw.x),landingY=py(run.aimY),active=run.prizes.filter(prize=>prize.active);
@@ -341,10 +371,7 @@ function bind(){
   $("pauseBtn").addEventListener("click",()=>openModal("pausePanel",$("resumeBtn")));
   $("resumeBtn").addEventListener("click",()=>closeModal("pausePanel"));
   $("tutorialStartBtn").addEventListener("click",()=>{save.tutorial=true;persist();closeModal("tutorialPanel")});
-  $("dropBtn").addEventListener("click",()=>run?.phase==="aim"&&beginDrop());
-  $("dropBtn").addEventListener("pointerdown",event=>{if(run?.phase!=="lift")return;run.stabilizer=1;$("dropBtn").setPointerCapture?.(event.pointerId);updateHoldCoach(true);event.preventDefault()});
-  $("dropBtn").addEventListener("pointerup",event=>{if(run?.phase==="lift"){run.stabilizer=0;updateHoldCoach(false)}event.preventDefault()});
-  $("dropBtn").addEventListener("pointercancel",()=>{if(run){run.stabilizer=0;if(run.phase==="lift")updateHoldCoach(false)}});
+  $("dropBtn").addEventListener("click",()=>{if(run?.phase==="aim")beginDrop();else if(run?.phase==="secure")attemptLock()});
   $("restartBtn").addEventListener("click",()=>startMission(run.index));
   $("resultStagesBtn").addEventListener("click",()=>commitResult(()=>show("stage")));
   $("nextBtn").addEventListener("click",()=>commitResult(()=>startMission(Math.min(29,run.index+1))));
@@ -353,8 +380,7 @@ function bind(){
   canvas.addEventListener("pointermove",event=>{if(pointerId===event.pointerId)handlePointerAim(event)});
   canvas.addEventListener("pointerup",event=>{if(pointerId!==event.pointerId)return;handlePointerAim(event,run?.phase==="aim");pointerId=null;event.preventDefault()});
   canvas.addEventListener("pointercancel",()=>{pointerId=null});
-  canvas.addEventListener("keydown",event=>{if(!run||activeModal())return;const amount=event.shiftKey?28:14;if(run.phase==="aim"&&["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(event.key)){run.aimX=clamp(run.aimX+(event.key==="ArrowLeft"?-amount:event.key==="ArrowRight"?amount:0),70,930);run.aimY=clamp(run.aimY+(event.key==="ArrowUp"?-amount:event.key==="ArrowDown"?amount:0),210,500);draw();event.preventDefault()}else if(run.phase==="lift"&&(event.key===" "||event.key==="Enter")){keyStabilize=1;updateHoldCoach(true);event.preventDefault()}else if(run.phase==="aim"&&(event.key===" "||event.key==="Enter")){beginDrop();event.preventDefault()}});
-  canvas.addEventListener("keyup",event=>{if([" ","Enter"].includes(event.key)){keyStabilize=0;if(run?.phase==="lift")updateHoldCoach(false)}});
+  canvas.addEventListener("keydown",event=>{if(!run||activeModal())return;const amount=event.shiftKey?28:14;if(run.phase==="aim"&&["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(event.key)){run.aimX=clamp(run.aimX+(event.key==="ArrowLeft"?-amount:event.key==="ArrowRight"?amount:0),70,930);run.aimY=clamp(run.aimY+(event.key==="ArrowUp"?-amount:event.key==="ArrowDown"?amount:0),210,500);draw();event.preventDefault()}else if(run.phase==="secure"&&(event.key===" "||event.key==="Enter")){attemptLock();event.preventDefault()}else if(run.phase==="aim"&&(event.key===" "||event.key==="Enter")){beginDrop();event.preventDefault()}});
   window.addEventListener("resize",resizeCanvas,{passive:true});
   window.addEventListener("blur",()=>{if(screen==="battle"&&run&&!run.result&&!activeModal())openModal("pausePanel",$("resumeBtn"))});
   document.addEventListener("visibilitychange",()=>{if(document.hidden&&screen==="battle"&&run&&!run.result&&!activeModal())openModal("pausePanel",$("resumeBtn"))});
@@ -369,7 +395,7 @@ window.__CARNIVAL_CLAW_TEST__={
   prepareLift(kind,phaseTime=.2){
     if(!run)startMission(selected);
     const target=run.prizes.find(prize=>prize.active&&(kind===undefined||prize.kind===kind));if(!target)return null;
-    run.aimX=target.x;run.aimY=target.y;run.dropX=target.x;run.phase="lift";run.phaseTime=phaseTime;run.held=target;run.grip=1;run.stability=1;run.stabilizer=0;run.swing=0;run.feedback="phaseLift";renderHud();draw();return this.contactGeometry();
+    run.aimX=target.x;run.aimY=target.y;run.dropX=target.x;run.phase="secure";run.phaseTime=phaseTime;run.held=target;run.grip=1;run.stability=1;run.lockValue=.08+phaseTime*.7;run.lockDirection=1;run.lockQuality=0;run.swing=0;run.feedback="phaseLift";renderHud();draw();return this.contactGeometry();
   },
   freeze(){cancelAnimationFrame(raf);raf=0;draw();return this.snapshot()},
   contactGeometry(){const claw=clawPosition();return{claw,held:run?.held?{x:claw.x,y:claw.y}:null,dropX:run?.dropX,aimY:run?.aimY}},
@@ -386,7 +412,9 @@ window.__CARNIVAL_CLAW_TEST__={
     run.aimX=desiredX-sway;run.aimY=target.y-(axis==="y"?radius*factor/sy:0);run.dropX=null;run.phase="aim";draw();
     return this.aimWindowGeometry();
   },
-  perfectDrop(kind){if(!run)return;const target=run.prizes.find(prize=>prize.active&&(kind===undefined||prize.kind===kind));if(!target)return;run.aimX=target.x;run.aimY=target.y;run.phase="lift";run.phaseTime=0;run.drops--;run.held=target;run.grip=1;run.stability=1;run.stabilizer=0;for(let time=0;time<1.7&&!run.result;time+=.02){run.stabilizer=-Math.sin(run.phaseTime*(3.8+target.weight*.35)+target.kind);update(.02)}draw();return this.snapshot()},
+  setLockValue(value){if(run?.phase==="secure"){run.lockValue=clamp(value);draw()}return this.snapshot()},
+  attemptLock(){attemptLock();return this.snapshot()},
+  perfectDrop(kind){if(!run)return;const target=run.prizes.find(prize=>prize.active&&(kind===undefined||prize.kind===kind));if(!target)return;run.aimX=target.x;run.aimY=target.y;run.dropX=target.x;run.phase="secure";run.phaseTime=0;run.drops--;run.held=target;run.grip=1;run.stability=1;run.lockValue=.5;attemptLock();for(let time=0;time<1.5&&!run.result;time+=.02)update(.02);draw();return this.snapshot()},
   solve(){for(const kind of [...remainingTargets()])this.perfectDrop(kind);this.step(1);return this.snapshot()},
   snapshot(){return run?JSON.parse(JSON.stringify({screen,run,save})):null},setSave(value){save={...defaultSave(),...value,upgrades:{...defaultSave().upgrades,...(value.upgrades||{})}};persist();renderMain();renderStage()},getSave(){return JSON.parse(JSON.stringify(save))},setLocale,show
 };

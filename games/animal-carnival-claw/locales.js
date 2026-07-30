@@ -10,21 +10,28 @@ const en={
 };
 Object.assign(en,{
   targetMark:"TARGET",
-  how3:"After a catch, press and hold Stabilize until the claw reaches the top.",
-  tutorial3:"After a catch, press and hold Stabilize until the claw reaches the top.",
-  phaseLift:"Caught! Hold Stabilize until the claw reaches the top.",
-  holdGrip:"HOLD TO STABILIZE",
-  holdAction:"CAUGHT! HOLD THE STABILIZE BUTTON BELOW",
-  holdingAction:"STABILIZING — KEEP HOLDING",
-  holdNeeded:"Press and hold Stabilize now. Releasing drains the grip.",
-  holdingGood:"Good! Keep holding until the claw reaches the top.",
+  timing:"Timing",
+  tipsText:"Start with exposed light charms, watch the claw sway, then press Lock Grip near the center of the green timing zone. Heavy charms use a narrower green window.",
+  tuningStability:"Timing guide",
+  tuningStabilityText:"Widens the visible green grip-lock window.",
+  rule4:"Gentle magnetic drift changes drop timing before the grip-lock decision.",
+  how3:"After a catch, press Lock Grip when the moving pointer enters the green zone.",
+  tutorial3:"After a catch, press Lock Grip when the moving pointer enters the green zone.",
+  phaseLift:"Caught! Press Lock Grip when the pointer enters green.",
+  holdGrip:"LOCK GRIP",
+  holdAction:"CAUGHT! PRESS LOCK GRIP IN THE GREEN ZONE",
+  holdingAction:"GREAT TIMING — GRIP LOCKED",
+  holdNeeded:"Watch the pointer. Press Lock Grip when it enters green.",
+  holdingGood:"Great timing! The claw is lifting the charm.",
+  lockMiss:"You missed the green zone. The claw opened.",
+  falling:"The claw opened — the charm is falling!",
   dragLeftAction:"YOUR MOVE: HOLD + DRAG LEFT ←",
   dragRightAction:"YOUR MOVE: HOLD + DRAG RIGHT →",
   guideDeepTitle:"Read the machine before committing a drop",
   guideDeep1:"Every mission is a small spatial puzzle rather than a lottery. The target strip names the charms that matter, while the bin shows their exact locations and relative weights. Move the reticle slowly enough to compare the claw center with the target center. Nearby bumpers, shelves, and stacks are not decoration: they define the safe approach corridor. If the direct route is narrow, begin from the open side and let the visible sway carry the claw into alignment. Releasing at the same rail position can produce different contact when the sway direction differs, so watch both position and motion.",
-  guideDeep2:"The lift is a second decision, not an automatic reward. Once a charm is held, its load swings beneath the claw. Drag against that movement with short corrections. Holding one direction too long creates a new swing and spends stability; alternating small inputs keeps the meter above the marked grip requirement. Light charms forgive wider motion, while heavy charms demand a centered grab and calmer lift. Workshop tuning changes the size or responsiveness of known windows, but never a hidden probability. A clear is always explainable from the same visible rules.",
+  guideDeep2:"The lift is a second timing decision, not an automatic reward. Once a charm is held, a pointer sweeps across the visible timing track. Press Lock Grip while it is inside the green zone. A centered press creates a stronger lock; missing the zone visibly opens the claw and drops the charm. Heavy charms use a slightly narrower window, while Workshop tuning widens that known window. Nothing depends on hidden probability.",
   guideDeep3:"Three drops create a planning budget. A non-target charm can still enter the permanent cabinet, but it does not advance the current objective, so decide whether discovery is worth one attempt. Early missions isolate one lesson at a time. Later chapters combine moving shelves, magnetic drift, fragile neighbors, and mixed weights. When a layout feels crowded, identify the most constrained target first. Removing an exposed charm can also open a safer path to one below it. Failure leaves the authored layout understandable and replayable, making practice more useful than guessing.",
-  guideDeep4:"Keyboard players can focus the machine, use the arrow keys to move the reticle, press Space or Enter to drop, and use left or right during the lift. Pointer and touch players use the same underlying controls by dragging and releasing. Pause freezes the complete attempt, and the protected back action asks before ending it. Result buttons always return to Missions first, then offer the next unlocked mission, then Replay. Progress, medals, cabinet discoveries, starbolts, and transparent tuning remain on this device only. Clearing browser storage resets them without affecting an account because no account is used.",
+  guideDeep4:"Keyboard players can focus the machine, use the arrow keys to move the reticle, press Space or Enter to drop, then press Space or Enter again when the timing pointer enters green. Pointer and touch players drag and release to drop, then tap Lock Grip in the same green window. Pause freezes the complete attempt, and the protected back action asks before ending it. Result buttons always return to Missions first, then offer the next unlocked mission, then Replay. Progress, medals, cabinet discoveries, starbolts, and transparent tuning remain on this device only.",
   counterLeft:"The charm swings right. Follow the player action shown above.",
   counterRight:"The charm swings left. Follow the player action shown above.",
   steadyGood:"Correct move! Keep holding until the claw reaches the top.",
@@ -93,5 +100,35 @@ for(const [locale,values] of Object.entries(holdLabels))Object.assign(compact[lo
 const targetLabels={ja:"ターゲット",ko:"목표",es:"OBJETIVO","pt-BR":"ALVO",fr:"CIBLE",de:"ZIEL",it:"OBIETTIVO",ru:"ЦЕЛЬ",hi:"लक्ष्य",ar:"الهدف"};
 for(const [locale,value] of Object.entries(targetLabels))compact[locale].targetMark=value;
 Object.assign(zhs,{targetMark:"目标",holdGrip:"按住稳住",holdAction:"抓到了！按住下方“稳住”",holdingAction:"稳定中——继续按住",holdNeeded:"现在按住“稳住”；松开会失去抓力。",holdingGood:"做对了！继续按住直到爪子升顶。",phaseLift:"抓到了！按住“稳住”直到爪子升到顶端。"});
+const timingLabels={
+  ja:{timing:"タイミング",holdGrip:"グリップ固定",holdAction:"つかんだ！針が緑に入ったら押す",holdingAction:"成功！グリップ固定",holdNeeded:"針を見て、緑に入ったらグリップ固定を押そう。",holdingGood:"いいタイミング！チャームを持ち上げています。",phaseLift:"つかんだ！針が緑に入ったらグリップ固定。",lockMiss:"緑を外してアームが開きました。",falling:"アームが開き、チャームが落下中！",how3:"つかんだ後、動く針が緑に入ったらグリップ固定を押します。",tutorial3:"つかんだ後、動く針が緑に入ったらグリップ固定を押します。"},
+  ko:{timing:"타이밍",holdGrip:"그립 잠금",holdAction:"잡았다! 바늘이 초록색에 들어오면 누르세요",holdingAction:"성공! 그립 잠금",holdNeeded:"바늘을 보고 초록색 구간에서 그립 잠금을 누르세요.",holdingGood:"좋은 타이밍! 인형을 올리고 있어요.",phaseLift:"잡았다! 바늘이 초록색에 오면 그립 잠금.",lockMiss:"초록색 구간을 놓쳐 집게가 열렸어요.",falling:"집게가 열려 인형이 떨어집니다!",how3:"잡은 뒤 움직이는 바늘이 초록색 구간에 들어오면 그립 잠금을 누르세요.",tutorial3:"잡은 뒤 움직이는 바늘이 초록색 구간에 들어오면 그립 잠금을 누르세요."},
+  es:{timing:"Momento",holdGrip:"FIJAR AGARRE",holdAction:"¡ATRAPADO! PULSA EN LA ZONA VERDE",holdingAction:"¡BUEN MOMENTO! AGARRE FIJADO",holdNeeded:"Mira el indicador y pulsa Fijar agarre dentro de la zona verde.",holdingGood:"¡Buen momento! La garra está subiendo el amuleto.",phaseLift:"¡Atrapado! Pulsa Fijar agarre cuando el indicador entre en verde.",lockMiss:"Fallaste la zona verde. La garra se abrió.",falling:"¡La garra se abrió y el amuleto está cayendo!",how3:"Tras atrapar, pulsa Fijar agarre cuando el indicador móvil entre en la zona verde.",tutorial3:"Tras atrapar, pulsa Fijar agarre cuando el indicador móvil entre en la zona verde."},
+  "pt-BR":{timing:"Momento",holdGrip:"TRAVAR PEGADA",holdAction:"PEGOU! APERTE NA ZONA VERDE",holdingAction:"BOM TEMPO! PEGADA TRAVADA",holdNeeded:"Observe o ponteiro e aperte Travar pegada na zona verde.",holdingGood:"Bom tempo! A garra está levantando o amuleto.",phaseLift:"Pegou! Aperte Travar pegada quando o ponteiro entrar no verde.",lockMiss:"Você errou a zona verde. A garra abriu.",falling:"A garra abriu e o amuleto está caindo!",how3:"Depois de pegar, aperte Travar pegada quando o ponteiro entrar na zona verde.",tutorial3:"Depois de pegar, aperte Travar pegada quando o ponteiro entrar na zona verde."},
+  fr:{timing:"Timing",holdGrip:"VERROUILLER",holdAction:"ATTRAPÉ ! APPUIE DANS LA ZONE VERTE",holdingAction:"BON TIMING ! PRISE VERROUILLÉE",holdNeeded:"Regarde le curseur et appuie sur Verrouiller dans la zone verte.",holdingGood:"Bon timing ! La griffe remonte le charme.",phaseLift:"Attrapé ! Appuie sur Verrouiller quand le curseur entre dans le vert.",lockMiss:"Zone verte manquée. La griffe s'est ouverte.",falling:"La griffe s'ouvre et le charme tombe !",how3:"Après la prise, appuie sur Verrouiller quand le curseur mobile entre dans la zone verte.",tutorial3:"Après la prise, appuie sur Verrouiller quand le curseur mobile entre dans la zone verte."},
+  de:{timing:"Timing",holdGrip:"GRIFF SICHERN",holdAction:"GEFANGEN! IM GRÜNEN BEREICH DRÜCKEN",holdingAction:"GUTES TIMING! GRIFF GESICHERT",holdNeeded:"Beobachte den Zeiger und drücke Griff sichern im grünen Bereich.",holdingGood:"Gutes Timing! Die Kralle hebt den Anhänger.",phaseLift:"Gefangen! Drücke Griff sichern, wenn der Zeiger grün erreicht.",lockMiss:"Grünen Bereich verfehlt. Die Kralle öffnet sich.",falling:"Die Kralle öffnet sich – der Anhänger fällt!",how3:"Drücke nach dem Fangen Griff sichern, sobald der Zeiger den grünen Bereich erreicht.",tutorial3:"Drücke nach dem Fangen Griff sichern, sobald der Zeiger den grünen Bereich erreicht."},
+  it:{timing:"Tempismo",holdGrip:"BLOCCA PRESA",holdAction:"PRESO! PREMI NELLA ZONA VERDE",holdingAction:"OTTIMO TEMPO! PRESA BLOCCATA",holdNeeded:"Guarda l'indicatore e premi Blocca presa nella zona verde.",holdingGood:"Ottimo tempo! L'artiglio sta sollevando il ciondolo.",phaseLift:"Preso! Premi Blocca presa quando l'indicatore entra nel verde.",lockMiss:"Hai mancato la zona verde. L'artiglio si è aperto.",falling:"L'artiglio si apre e il ciondolo cade!",how3:"Dopo la presa, premi Blocca presa quando l'indicatore entra nella zona verde.",tutorial3:"Dopo la presa, premi Blocca presa quando l'indicatore entra nella zona verde."},
+  ru:{timing:"Момент",holdGrip:"ЗАФИКСИРОВАТЬ",holdAction:"СХВАЧЕНО! НАЖМИТЕ В ЗЕЛЁНОЙ ЗОНЕ",holdingAction:"ТОЧНО! ЗАХВАТ ЗАКРЕПЛЁН",holdNeeded:"Следите за указателем и нажмите в зелёной зоне.",holdingGood:"Точный момент! Кран поднимает подвеску.",phaseLift:"Схвачено! Нажмите, когда указатель войдёт в зелёную зону.",lockMiss:"Зелёная зона пропущена. Кран раскрылся.",falling:"Кран раскрылся — подвеска падает!",how3:"После захвата нажмите, когда движущийся указатель войдёт в зелёную зону.",tutorial3:"После захвата нажмите, когда движущийся указатель войдёт в зелёную зону."},
+  hi:{timing:"समय",holdGrip:"पकड़ लॉक करें",holdAction:"पकड़ लिया! हरे क्षेत्र में दबाएँ",holdingAction:"सही समय! पकड़ लॉक",holdNeeded:"सूचक देखें और हरे क्षेत्र में पकड़ लॉक करें दबाएँ।",holdingGood:"सही समय! पंजा वस्तु ऊपर उठा रहा है।",phaseLift:"पकड़ लिया! सूचक हरे क्षेत्र में आए तो पकड़ लॉक करें।",lockMiss:"हरा क्षेत्र चूक गया। पंजा खुल गया।",falling:"पंजा खुल गया—वस्तु गिर रही है!",how3:"पकड़ने के बाद सूचक के हरे क्षेत्र में आते ही पकड़ लॉक करें दबाएँ।",tutorial3:"पकड़ने के बाद सूचक के हरे क्षेत्र में आते ही पकड़ लॉक करें दबाएँ।"},
+  ar:{timing:"التوقيت",holdGrip:"ثبّت القبضة",holdAction:"تم الالتقاط! اضغط داخل المنطقة الخضراء",holdingAction:"توقيت رائع! تم تثبيت القبضة",holdNeeded:"راقب المؤشر واضغط تثبيت القبضة داخل المنطقة الخضراء.",holdingGood:"توقيت رائع! المخلب يرفع التعليقة.",phaseLift:"تم الالتقاط! اضغط عندما يدخل المؤشر المنطقة الخضراء.",lockMiss:"فاتتك المنطقة الخضراء. انفتح المخلب.",falling:"انفتح المخلب والتعليقة تسقط!",how3:"بعد الالتقاط، اضغط تثبيت القبضة عندما يدخل المؤشر المتحرك المنطقة الخضراء.",tutorial3:"بعد الالتقاط، اضغط تثبيت القبضة عندما يدخل المؤشر المتحرك المنطقة الخضراء."}
+};
+for(const [locale,values] of Object.entries(timingLabels))Object.assign(compact[locale],values);
+const timingTuningLabels={
+  ja:{tuningStability:"タイミングガイド",tuningStabilityText:"見える緑の固定ゾーンを広げます。"},
+  ko:{tuningStability:"타이밍 가이드",tuningStabilityText:"보이는 초록색 그립 잠금 구간을 넓힙니다."},
+  es:{tuningStability:"Guía de tiempo",tuningStabilityText:"Amplía la zona verde visible para fijar el agarre."},
+  "pt-BR":{tuningStability:"Guia de tempo",tuningStabilityText:"Amplia a zona verde visível para travar a pegada."},
+  fr:{tuningStability:"Guide de timing",tuningStabilityText:"Élargit la zone verte visible de verrouillage."},
+  de:{tuningStability:"Timinghilfe",tuningStabilityText:"Verbreitert das sichtbare grüne Sicherungsfenster."},
+  it:{tuningStability:"Guida tempismo",tuningStabilityText:"Allarga la zona verde visibile per bloccare la presa."},
+  ru:{tuningStability:"Настройка момента",tuningStabilityText:"Расширяет видимую зелёную зону фиксации."},
+  hi:{tuningStability:"समय मार्गदर्शक",tuningStabilityText:"दिखाई देने वाला हरा पकड़-लॉक क्षेत्र चौड़ा करता है।"},
+  ar:{tuningStability:"دليل التوقيت",tuningStabilityText:"يوسّع منطقة تثبيت القبضة الخضراء الظاهرة."}
+};
+for(const [locale,values] of Object.entries(timingTuningLabels))Object.assign(compact[locale],values);
+Object.assign(zht,{timing:"時機",holdGrip:"看準夾緊",holdAction:"抓到了！指針進綠色區時按「夾緊」",holdingAction:"漂亮！抓力鎖定",holdNeeded:"看指針，進入綠色區時按下「夾緊」。",holdingGood:"時機命中！爪子正在帶娃娃上升。",phaseLift:"抓到了！指針進入綠色區時按下「夾緊」。",lockMiss:"沒按中綠色區，爪子鬆開了。",falling:"爪子鬆開，娃娃掉下來了！",how3:"抓到後，等移動指針進入綠色區，再按下「夾緊」。",tutorial3:"抓到後，等移動指針進入綠色區，再按下「夾緊」。"});
+Object.assign(zhs,{timing:"时机",holdGrip:"看准夹紧",holdAction:"抓到了！指针进绿色区时按“夹紧”",holdingAction:"漂亮！抓力锁定",holdNeeded:"看指针，进入绿色区时按下“夹紧”。",holdingGood:"时机命中！爪子正在带娃娃上升。",phaseLift:"抓到了！指针进入绿色区时按下“夹紧”。",lockMiss:"没按中绿色区，爪子松开了。",falling:"爪子松开，娃娃掉下来了！",how3:"抓到后，等移动指针进入绿色区，再按下“夹紧”。",tutorial3:"抓到后，等移动指针进入绿色区，再按下“夹紧”。"});
+Object.assign(zht,{tipsText:"先抓外露的輕型收藏物，觀察爪子擺動，再在指針接近綠色區中央時按下「夾緊」。重型收藏物的綠色區較窄。",tuningStability:"時機導引",tuningStabilityText:"擴大可見的綠色抓力鎖定區。",rule4:"溫和磁力漂移會先改變放爪時機，再進入抓力鎖定判斷。"});
+Object.assign(zhs,{tipsText:"先抓外露的轻型收藏物，观察爪子摆动，再在指针接近绿色区中央时按下“夹紧”。重型收藏物的绿色区较窄。",tuningStability:"时机引导",tuningStabilityText:"扩大可见的绿色抓力锁定区。",rule4:"温和磁力漂移会先改变放爪时机，再进入抓力锁定判断。"});
 window.CARNIVAL_CLAW_LOCALES={en,"zh-Hant":zht,"zh-Hans":zhs,...compact};
 })();
