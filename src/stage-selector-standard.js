@@ -271,10 +271,9 @@
     Object.entries(declarations).forEach(([property, value]) => root.style.setProperty(property, value, "important"));
     if (reserve) {
       rememberReserveStyles(reserve);
-      const reserveFollowsCanvas = ["animal-relic-hunters", "animal-number-match", "animal-guard-yard", "animal-bamboo-pipes"].includes(gameId());
       const reserveDeclarations = {
-        position: "fixed", inset: "auto", top: `${availableHeight}px`, right: "auto", bottom: "auto", left: `${reserveFollowsCanvas ? left : 0}px`,
-        width: `${reserveFollowsCanvas ? renderedWidth : width}px`, "min-width": "0", "max-width": reserveFollowsCanvas ? `${DESKTOP_CANVAS_MAX_WIDTH}px` : "none", height: `${reserveHeight}px`, "min-height": `${reserveHeight}px`, transform: "none",
+        position: "fixed", inset: "auto", top: `${availableHeight}px`, right: "auto", bottom: "auto", left: `${left}px`,
+        width: `${renderedWidth}px`, "min-width": "0", "max-width": `${DESKTOP_CANVAS_MAX_WIDTH}px`, height: `${reserveHeight}px`, "min-height": `${reserveHeight}px`, transform: "none",
       };
       Object.entries(reserveDeclarations).forEach(([property, value]) => reserve.style.setProperty(property, value, "important"));
       appliedStageReserve = reserve;

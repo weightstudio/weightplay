@@ -813,6 +813,17 @@
     return Math.floor(Math.random() * (poolMax + 1));
   }
 
+  function syncSharedScene(scene) {
+    if (scene === "battle") {
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+      window.dispatchEvent(new Event("weightplay:battle-sync"));
+    } else {
+      window.dispatchEvent(new Event("weightplay:battle-sync"));
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+    }
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
+  }
+
   function showStage() {
     running = false;
     gameOver = true;
@@ -828,6 +839,7 @@
     setBattleContentInert(false);
     document.body.classList.remove("fruit-main", "fruit-playing");
     document.body.classList.add("fruit-stage");
+    syncSharedScene("stage");
     renderChallengeRail(true);
     updateFruitBattleScale();
   }
@@ -841,6 +853,7 @@
     stagePanel.classList.add("hidden");
     document.body.classList.remove("fruit-stage", "fruit-main");
     document.body.classList.add("fruit-playing");
+    syncSharedScene("battle");
     window.WonderSound?.play?.("start");
     resetGame(false, `challenge-${id}`);
   }
@@ -861,6 +874,7 @@
     setBattleContentInert(false);
     menuPanel.classList.toggle("hidden", !showMenu);
     startBtn.disabled = !showMenu;
+    syncSharedScene(showMenu ? "main" : "battle");
     updateFruitBattleScale();
 
     initPhysicsWorld();

@@ -1336,6 +1336,9 @@
       }
       window.dispatchEvent(new Event("weightplay:shell-sync"));
       window.dispatchEvent(new Event("resize"));
+      if (!document.body.classList.contains("snack-stage") && !document.body.classList.contains("snack-playing")) {
+        resetSnackFrame();
+      }
       if (battle) window.dispatchEvent(new Event("weightplay:battle-open"));
     };
     refresh();

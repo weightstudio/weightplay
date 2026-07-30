@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
+  <meta name="weightplay-scene-controls" content="immutable" />
   <meta name="theme-color" content="#07172f" />
   <title>Starlink 星鏈 | WeightPlay</title>
   <meta name="description" content="Starlink 星鏈是月帽奧拉主演的原創 30 關路線益智遊戲。玩家要用一條連續路線走完每條星路一次，並逐步掌握起點星印、彗星箭路、編號星星、鑰匙與星門。" />
@@ -112,7 +113,7 @@
   </section>
 
   <section id="stageScreen" class="stage-shell" data-wp-canvas-max-width="920" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" style="--wp-stage-art:url('../../assets/animal-starlight-trails-bg.webp')">
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-starlight-trails-bg.webp')">
       <header class="stage-header"><button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="Back">&larr;</button><div><strong data-i18n="chooseStage">Choose Constellation</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /></header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Constellations"></div>

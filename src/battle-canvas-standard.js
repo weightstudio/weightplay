@@ -217,16 +217,15 @@
     if (reserve) {
       reserve.setAttribute("data-wp-battle-physical-reserve", "");
       const reserveTop = availableHeight;
-      const reserveFollowsCanvas = gameId === "animal-2048" || gameId === "animal-relic-hunters" || gameId === "animal-guard-yard" || gameId === "animal-bamboo-pipes" || gameId === "animal-honey-shield";
-      const reserveLeft = reserveFollowsCanvas ? left : 0;
-      const reserveWidth = reserveFollowsCanvas ? renderedWidth : width;
+      const reserveLeft = left;
+      const reserveWidth = renderedWidth;
       rememberAndSet(reserve, {
         position: "fixed",
         inset: `${reserveTop}px auto auto ${reserveLeft}px`,
         display: "block",
         width: `${reserveWidth}px`,
         "min-width": "0",
-        "max-width": reserveFollowsCanvas ? `${DESKTOP_CANVAS_MAX_WIDTH}px` : "none",
+        "max-width": `${DESKTOP_CANVAS_MAX_WIDTH}px`,
         height: "56px",
         "min-height": "56px",
         "max-height": "56px",

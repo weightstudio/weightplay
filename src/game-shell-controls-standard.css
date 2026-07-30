@@ -390,6 +390,21 @@ body.wp-shell-battle-active .wp-generated-battle-header > [data-wp-return="battl
   white-space: nowrap;
 }
 
+/* Animal Sanctuary Loop's adopted title must remain complete at the phone and
+   short-landscape Stage envelopes. Its former decorative mascot occupied the
+   Settings column and made the shared ellipsis rule look like a valid layout. */
+body[data-game-id="animal-sanctuary-loop"] .wp-stage-shell-header > strong {
+  overflow: visible !important;
+  overflow-wrap: anywhere;
+  text-overflow: clip !important;
+  white-space: normal !important;
+  line-height: 1.05 !important;
+}
+
+body[data-game-id="animal-sanctuary-loop"] .wp-stage-shell-header > img {
+  display: none !important;
+}
+
 .wp-stage-shell-header > :is(h1, h2, strong) {
   font: 800 22px/1.2 system-ui, sans-serif !important;
   letter-spacing: 0 !important;
@@ -422,6 +437,10 @@ body.wp-kids-audience.wp-shell-main-active .wp-standard-main-flow-owner {
   min-height: var(--wp-main-flow-min-height, 0px) !important;
   max-height: none !important;
   overflow: visible !important;
+}
+
+body:not(.wp-kids-audience) .wp-standard-main-flow-owner[hidden] {
+  display: none !important;
 }
 
 body:not(.wp-kids-audience) .wp-standard-main-flow-owner .wp-standard-main-flow-node,

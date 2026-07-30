@@ -849,6 +849,37 @@
     requestAnimationFrame(() => fitMemoryBoard());
   }
 
+  function resetMemoryFrame() {
+    for (const property of ["position", "inset", "left", "top", "width", "min-width", "max-width", "height", "min-height", "max-height", "margin", "overflow", "transform", "transform-origin"]) {
+      memoryGame.style.removeProperty(property);
+    }
+    delete memoryGame.dataset.wpCommonScale;
+    delete memoryGame.dataset.wpLogicalWidth;
+    delete memoryGame.dataset.wpLogicalHeight;
+    delete memoryGame.dataset.wpLogicalBattleCanvas;
+    [
+      "--memory-frame-scale",
+      "--memory-frame-left",
+      "--memory-frame-top",
+      "--memory-frame-width",
+      "--memory-frame-height",
+      "--memory-logical-width",
+      "--memory-logical-height",
+    ].forEach((property) => document.documentElement.style.removeProperty(property));
+  }
+
+  function syncSharedScene(scene) {
+    if (scene === "battle") {
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+      window.dispatchEvent(new Event("weightplay:battle-sync"));
+    } else {
+      window.dispatchEvent(new Event("weightplay:battle-sync"));
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+    }
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
+    if (scene === "main") resetMemoryFrame();
+  }
+
   const MEMORY_CARD_LOGICAL_SIZE = 112;
   const MEMORY_BOARD_MAX_SCALE = 2.25;
 
@@ -895,6 +926,8 @@
     gameBoardPanel.classList.add("hidden");
     gameFeedback.classList.add("hidden");
     exitSharedPlayViewport();
+    resetMemoryFrame();
+    syncSharedScene("main");
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     requestAnimationFrame(() => {
       requestAnimationFrame(() => startBtn.focus({ preventScroll: true }));
@@ -916,6 +949,7 @@
     stageSelectPanel.classList.remove("hidden");
 
     exitSharedPlayViewport();
+    syncSharedScene("stage");
     renderStageGrid(focusStageIndex);
     updateMemoryFrame();
     requestAnimationFrame(() => {
@@ -1007,6 +1041,7 @@
     document.body.classList.remove("memory-stage");
     document.body.classList.remove("memory-result");
     document.body.classList.add("memory-playing");
+    syncSharedScene("battle");
 
     // Analytics event
     window.WonderAnalytics?.track("game_start", {
