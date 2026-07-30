@@ -326,6 +326,20 @@
       inferredMain = inferredMain?.closest(".wp-standard-main-screen") || inferredMain;
     }
     let main = mains.find(visible) || inferredMain;
+    if (immutableSceneControls && visibleStart && visiblePoster) {
+      const mainReturn = firstVisible(['[data-wp-return="main"]'], document);
+      const sceneOwner = mainReturn?.closest(
+        "[data-screen='main'],.main-screen,.main-canvas,main",
+      );
+      if (
+        sceneOwner
+        && visible(sceneOwner)
+        && sceneOwner.contains(visibleStart)
+        && sceneOwner.contains(visiblePoster)
+      ) {
+        main = sceneOwner;
+      }
+    }
     if (!main && document.body.matches(".wp-shell-stage-active,.wp-shell-battle-active")) {
       const standardScreen = document.querySelector(".wp-standard-main-screen");
       const composition = standardScreen?.querySelector(".wp-standard-main-composition");
@@ -444,6 +458,7 @@
       owner.style.setProperty("--wp-main-flow-min-height", `${requiredHeight}px`);
     };
     update();
+    if (immutableSceneControls) return;
     requestAnimationFrame(update);
     if (mainFlowObservers.has(owner) || typeof ResizeObserver !== "function") return;
     const observer = new ResizeObserver(update);
@@ -554,17 +569,25 @@
       }
     });
     const layoutRoot = composition.parentElement || screen;
-    [...layoutRoot.children].forEach((child) => {
-      if (
-        child !== header
-        && child !== composition
-        && child !== guide
-        && !child.contains(composition)
-        && !["SCRIPT", "STYLE", "TEMPLATE"].includes(child.tagName)
-      ) {
-        child.classList.add("wp-main-legacy-layout");
-      }
-    });
+    if (!immutableSceneControls) {
+      [...layoutRoot.children].forEach((child) => {
+        if (
+          child !== header
+          && child !== composition
+          && child !== guide
+          && !child.contains(composition)
+          && !child.matches(
+            "[data-screen='stage'],[data-screen='battle'],[data-wp-scene-part]",
+          )
+          && !child.querySelector(
+            "[data-wp-return='stage'],[data-wp-return='battle'],[data-screen='stage'],[data-screen='battle'],[data-wp-scene-part]",
+          )
+          && !["SCRIPT", "STYLE", "TEMPLATE"].includes(child.tagName)
+        ) {
+          child.classList.add("wp-main-legacy-layout");
+        }
+      });
+    }
     screen.classList.add("wp-standard-main-screen");
     ensureMainProgress(screen);
     syncMainFlowHeight(flowOwner, composition);
@@ -628,12 +651,12 @@
     document.body.classList.toggle("wp-shell-stage-active", type === "stage");
     document.body.classList.toggle("wp-shell-battle-active", type === "battle");
     document.querySelectorAll(".wp-standard-main-flow-owner").forEach((owner) => {
-      if (immutableSceneControls) return;
       if (type !== "main" || (!owner.contains(screen) && !screen?.contains(owner))) {
-        owner.classList.remove("wp-standard-main-flow-owner");
         owner.style.removeProperty("--wp-main-flow-min-height");
         mainFlowObservers.get(owner)?.disconnect();
         mainFlowObservers.delete(owner);
+        if (immutableSceneControls) return;
+        owner.classList.remove("wp-standard-main-flow-owner");
         owner.querySelectorAll(".wp-standard-main-flow-node").forEach((node) => {
           node.classList.remove("wp-standard-main-flow-node");
         });
@@ -816,6 +839,15 @@
         albumAction.classList.add("wp-stage-bottom-extra");
         screen.append(albumAction);
       }
+    }
+    if (type === "main") {
+      const standardScreen = screen.matches?.(".wp-standard-main-screen")
+        ? screen
+        : screen.querySelector?.(".wp-standard-main-screen");
+      const composition = standardScreen?.querySelector(
+        ".wp-standard-main-composition",
+      );
+      restoreMainFlowLayout(standardScreen, composition);
     }
     host.dataset.screenOwner = type;
     host.hidden = false;

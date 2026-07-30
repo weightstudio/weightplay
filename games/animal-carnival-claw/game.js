@@ -49,6 +49,10 @@ function persist(){safeSet("weightplay_animal_carnival_claw_v1",JSON.stringify(s
 function loadImage(src){const image=new Image();image.src=src;return image}
 function t(key,data){return fmt(copy[key]??window.CARNIVAL_CLAW_LOCALES.en[key]??key,data)}
 function prizeName(kind){return t(`prize${kind+1}`)}
+function prizeSpriteStyle(kind){
+  const sheet=kind<4?"a":"b",cell=kind%4,x=cell%2,y=Math.floor(cell/2);
+  return`background-image:url('../../assets/animal-carnival-claw-prizes-${sheet}.webp');background-position:${x*100}% ${y*100}%`;
+}
 function medalText(value){return value?"★".repeat(value):t("none")}
 function announce(message,data){const node=$("phaseHint");if(node)node.textContent=t(message,data)}
 
@@ -151,7 +155,7 @@ function renderHud(){
   $("missionLabel").textContent=t("mission",{n:run.index+1});$("objectiveText").textContent=t("objective",{count:remainingTargets().length});
   $("dropsValue").textContent=run.drops;$("gripValue").textContent=`${Math.round(run.grip*100)}%`;
   $("stabilityFill").style.transform=`scaleX(${clamp(run.stability)})`;
-  $("targetList").innerHTML=run.targets.map(kind=>`<span class="target-chip ${run.delivered.some(entry=>entry.target&&entry.kind===kind)?"done":""}">${prizeName(kind)}</span>`).join("");
+  $("targetList").innerHTML=run.targets.map(kind=>`<span class="target-chip ${run.delivered.some(entry=>entry.target&&entry.kind===kind)?"done":""}"><i class="target-thumb" aria-hidden="true" style="${prizeSpriteStyle(kind)}"></i><b>${prizeName(kind)}</b></span>`).join("");
   $("dropBtn").disabled=!["aim","lift"].includes(run.phase);$("dropBtn").textContent=t(run.phase==="lift"?"holdGrip":"drop");$("restartBtn").disabled=!!run.result;
   if(run.phase!=="lift")$("steerAction").hidden=true;
   announce(run.feedback||"phaseAim");
@@ -192,9 +196,13 @@ function clawPosition(){
   return{x,y:80};
 }
 function gripWindowFor(prize){return 62+save.upgrades.grip*9-prize.weight*4}
+function grabMetric(prize,x,y,width=canvas.getBoundingClientRect().width,height=canvas.getBoundingClientRect().height){
+  const sx=width/1000,sy=height/620,scale=Math.min(sx,sy)||1;
+  return Math.hypot((prize.x-x)*sx,(prize.y-y)*sy)/scale;
+}
 function resolveGrip(){
   const claw=clawPosition(),active=run.prizes.filter(prize=>prize.active);
-  const nearest=active.map(prize=>({prize,d:Math.hypot(prize.x-claw.x,prize.y-run.aimY)})).sort((a,b)=>a.d-b.d)[0];
+  const nearest=active.map(prize=>({prize,d:grabMetric(prize,claw.x,run.aimY)})).sort((a,b)=>a.d-b.d)[0];
   const grabRadius=nearest?gripWindowFor(nearest.prize):0;
   if(nearest&&nearest.d<=grabRadius){
     run.held=nearest.prize;run.phase="lift";run.phaseTime=0;run.grip=clamp(1-nearest.d/(grabRadius*1.45));run.stability=1;run.swing=0;run.feedback="phaseLift";
@@ -256,9 +264,16 @@ function draw(){
   for(const prize of run.prizes){
     if(!prize.active)continue;
     if(prize===heldPrize)continue;
-    const size=clamp(min*.16+prize.weight*3,42,88),image=prize.kind<4?images.prizesA:images.prizesB,cell=prize.kind%4,x=px(prize.x),y=py(prize.y);
+    const size=clamp(min*.16+prize.weight*3,42,88),image=prize.kind<4?images.prizesA:images.prizesB,cell=prize.kind%4,x=px(prize.x),y=py(prize.y),isTarget=remainingTargets().includes(prize.kind);
+    if(run.phase==="aim"&&isTarget){
+      ctx.save();ctx.strokeStyle="#65ffe1";ctx.lineWidth=4;ctx.shadowColor="#65ffe1";ctx.shadowBlur=13;ctx.beginPath();ctx.arc(x,y,size*.58,0,Math.PI*2);ctx.stroke();ctx.restore();
+    }
     ctx.save();ctx.translate(x,y);ctx.rotate(Math.sin(prize.kind*2.1+run.elapsed*.3)*.05);drawCell(image,cell,-size/2,-size/2,size,size);ctx.restore();
-    if(run.phase==="aim"){const labelY=py(prize.y)-size*.58;ctx.fillStyle="#031c23cc";ctx.strokeStyle="#ffe173";ctx.lineWidth=2;roundRect(px(prize.x)-24,labelY,48,20,9);ctx.fill();ctx.stroke();ctx.fillStyle="#fff";ctx.font="800 12px sans-serif";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("◆".repeat(prize.weight),px(prize.x),labelY+10)}
+    if(run.phase==="aim"){
+      const labelY=py(prize.y)-size*.58,badgeText=isTarget?`${t("targetMark")} · ${"◆".repeat(prize.weight)}`:"◆".repeat(prize.weight);
+      ctx.font="800 12px sans-serif";const badgeWidth=clamp(ctx.measureText(badgeText).width+18,48,104);
+      ctx.fillStyle=isTarget?"#087567ee":"#031c23cc";ctx.strokeStyle=isTarget?"#65ffe1":"#ffe173";ctx.lineWidth=isTarget?3:2;roundRect(px(prize.x)-badgeWidth/2,labelY,badgeWidth,22,10);ctx.fill();ctx.stroke();ctx.fillStyle="#fff";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(badgeText,px(prize.x),labelY+11);
+    }
   }
   const claw=clawPosition(),cell=heldPrize?3:2,clawSize=clamp(min*.28,70,128),clawX=px(claw.x),clawY=py(claw.y);
   drawCell(images.atlas,cell,clawX-clawSize/2,clawY-clawSize*.72,clawSize,clawSize);
@@ -275,8 +290,8 @@ function draw(){
   }
   if(run.phase==="aim"){
     const landingX=px(claw.x),landingY=py(run.aimY),active=run.prizes.filter(prize=>prize.active);
-    const nearest=active.map(prize=>({prize,d:Math.hypot(prize.x-claw.x,prize.y-run.aimY)})).sort((a,b)=>a.d-b.d)[0],grabRadius=nearest?gripWindowFor(nearest.prize):58,catchable=Boolean(nearest&&nearest.d<=grabRadius);
-    ctx.strokeStyle=catchable?"#65ffe1":"#ffdb68";ctx.lineWidth=4;ctx.setLineDash([10,8]);ctx.beginPath();ctx.ellipse(landingX,landingY,grabRadius*w/1000,grabRadius*h/620,0,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=ctx.strokeStyle;ctx.beginPath();ctx.arc(landingX,landingY,5,0,Math.PI*2);ctx.fill();
+    const nearest=active.map(prize=>({prize,d:grabMetric(prize,claw.x,run.aimY,w,h)})).sort((a,b)=>a.d-b.d)[0],grabRadius=nearest?gripWindowFor(nearest.prize):58,catchable=Boolean(nearest&&nearest.d<=grabRadius),grabRadiusPx=grabRadius*Math.min(w/1000,h/620);
+    ctx.strokeStyle=catchable?"#65ffe1":"#ffdb68";ctx.lineWidth=4;ctx.setLineDash([10,8]);ctx.beginPath();ctx.arc(landingX,landingY,grabRadiusPx,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=ctx.strokeStyle;ctx.beginPath();ctx.arc(landingX,landingY,5,0,Math.PI*2);ctx.fill();
     if(catchable){ctx.font="900 20px sans-serif";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("✓",landingX,landingY-24)}
     ctx.strokeStyle="#6bf2e4aa";ctx.lineWidth=2;ctx.setLineDash([5,7]);ctx.beginPath();ctx.moveTo(landingX,py(105));ctx.lineTo(landingX,landingY);ctx.stroke();ctx.setLineDash([]);
     const sway=Math.abs(claw.x-run.aimX),barWidth=clamp(w*.12,70,100),aimX=px(run.aimX);ctx.fillStyle="#ffdc6a";ctx.fillRect(aimX-barWidth/2,py(95),barWidth,7);ctx.fillStyle="#46e6d5";ctx.fillRect(aimX-barWidth/2,py(95),clamp(1-sway/70)*barWidth,7);
@@ -348,6 +363,19 @@ window.__CARNIVAL_CLAW_TEST__={
   },
   freeze(){cancelAnimationFrame(raf);raf=0;draw();return this.snapshot()},
   contactGeometry(){const claw=clawPosition();return{claw,held:run?.held?{x:claw.x,y:claw.y}:null,dropX:run?.dropX,aimY:run?.aimY}},
+  aimWindowGeometry(){
+    if(!run)return null;
+    const rect=canvas.getBoundingClientRect(),claw=clawPosition(),active=run.prizes.filter(prize=>prize.active);
+    const nearest=active.map(prize=>({prize,d:grabMetric(prize,claw.x,run.aimY,rect.width,rect.height)})).sort((a,b)=>a.d-b.d)[0],logicalRadius=nearest?gripWindowFor(nearest.prize):58,radius=logicalRadius*Math.min(rect.width/1000,rect.height/620);
+    return{radiusX:radius,radiusY:radius,distance:nearest?.d??null,logicalRadius,nearestKind:nearest?.prize.kind??null,catchable:Boolean(nearest&&nearest.d<=logicalRadius)};
+  },
+  probeAimWindow(kind,axis="x",factor=1){
+    if(!run)return null;
+    const target=run.prizes.find(prize=>prize.active&&prize.kind===kind);if(!target)return null;
+    const rect=canvas.getBoundingClientRect(),sx=rect.width/1000,sy=rect.height/620,logicalRadius=gripWindowFor(target),radius=logicalRadius*Math.min(sx,sy),desiredX=target.x-(axis==="x"?radius*factor/sx:0),sway=Math.sin(run.elapsed*(2.5-run.level.drift)+run.level.index*.4)*(38+run.level.chapter*6);
+    run.aimX=desiredX-sway;run.aimY=target.y-(axis==="y"?radius*factor/sy:0);run.dropX=null;run.phase="aim";draw();
+    return this.aimWindowGeometry();
+  },
   perfectDrop(kind){if(!run)return;const target=run.prizes.find(prize=>prize.active&&(kind===undefined||prize.kind===kind));if(!target)return;run.aimX=target.x;run.aimY=target.y;run.phase="lift";run.phaseTime=0;run.drops--;run.held=target;run.grip=1;run.stability=1;run.stabilizer=0;for(let time=0;time<1.7&&!run.result;time+=.02){run.stabilizer=-Math.sin(run.phaseTime*(3.8+target.weight*.35)+target.kind);update(.02)}draw();return this.snapshot()},
   solve(){for(const kind of [...remainingTargets()])this.perfectDrop(kind);this.step(1);return this.snapshot()},
   snapshot(){return run?JSON.parse(JSON.stringify({screen,run,save})):null},setSave(value){save={...defaultSave(),...value,upgrades:{...defaultSave().upgrades,...(value.upgrades||{})}};persist();renderMain();renderStage()},getSave(){return JSON.parse(JSON.stringify(save))},setLocale,show

@@ -9,6 +9,7 @@
     const panel = document.createElement("section");
     panel.id = "leaveConfirmPanel";
     panel.className = "leave-confirm-panel hidden";
+    panel.dataset.wpScenePart = "battle";
     panel.setAttribute("role", "dialog");
     panel.setAttribute("aria-modal", "true");
     panel.setAttribute("aria-labelledby", "leaveConfirmTitle");
@@ -652,6 +653,24 @@
     if (!resultPanel.classList.contains("hidden") && resultStarCount > 0) renderResult(resultStarCount, resultPreviousBest);
   }
 
+  function exitSharedPlayViewport() {
+    window.WeightPlayGame?.exitMobileGameMode?.();
+    document.body.classList.remove("weightplay-active-viewport", "wp-mobile-game-mode");
+    document.querySelector(".garden-game")?.classList.remove("weightplay-active-viewport");
+    const rootStyle = document.documentElement.style;
+    [
+      "--garden-frame-scale",
+      "--garden-frame-width",
+      "--garden-frame-height",
+      "--garden-logical-width",
+      "--garden-logical-height",
+      "--garden-frame-left",
+      "--garden-frame-top",
+    ].forEach((property) => rootStyle.removeProperty(property));
+    if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+    if (document.webkitFullscreenElement) document.webkitExitFullscreen?.();
+  }
+
   function showMain() {
     invalidateRoundTasks();
     document.body.classList.remove("garden-stage", "garden-playing");
@@ -665,7 +684,30 @@
     levelSelect.classList.add("hidden");
     boardPanel.classList.add("hidden");
     const shell = document.querySelector(".garden-game");
-    for (const property of ["position", "inset", "left", "top", "width", "height", "min-height", "max-height", "transform", "transform-origin"]) shell?.style.removeProperty(property);
+    for (const property of [
+      "position",
+      "inset",
+      "left",
+      "top",
+      "width",
+      "min-width",
+      "max-width",
+      "height",
+      "min-height",
+      "max-height",
+      "margin",
+      "transform",
+      "transform-origin",
+      "--wp-main-flow-min-height",
+    ]) shell?.style.removeProperty(property);
+    if (shell) {
+      delete shell.dataset.wpCommonScale;
+      delete shell.dataset.wpLogicalWidth;
+      delete shell.dataset.wpLogicalHeight;
+      delete shell.dataset.wpLogicalBattleCanvas;
+    }
+    exitSharedPlayViewport();
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }
 
@@ -792,6 +834,7 @@
 
   function showLevelSelect() {
     invalidateRoundTasks();
+    exitSharedPlayViewport();
     document.body.classList.remove("garden-main", "garden-playing");
     document.body.classList.add("garden-stage");
     resultPanel.classList.add("hidden");
@@ -806,6 +849,7 @@
     levelMessage.textContent = "";
     renderLevelGrid();
     updateHud();
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
     updateGardenFrame();
     requestAnimationFrame(() => {
       if (window.matchMedia("(max-width: 520px)").matches) {
@@ -848,6 +892,7 @@
     boardPanel.classList.remove("hidden");
     resultPanel.classList.add("hidden");
     setBattleCovered(false);
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
     renderBoard();
     showMessage(previewing ? ruleLabel("preview") : t("selectFirst"));
     updateHud();

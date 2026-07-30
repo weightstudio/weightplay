@@ -1317,6 +1317,7 @@
 
   function refreshSharedScreenGeometry(battle = false) {
     const refresh = () => {
+      window.dispatchEvent(new Event("weightplay:shell-sync"));
       window.dispatchEvent(new Event("resize"));
       if (battle) window.dispatchEvent(new Event("weightplay:battle-open"));
     };

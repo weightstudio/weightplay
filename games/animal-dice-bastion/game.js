@@ -71,7 +71,7 @@
     [[0,.58],[.2,.36],[.42,.64],[.62,.4],[.82,.66],[1,.46]],
     [[0,.35],[.18,.62],[.4,.62],[.52,.3],[.74,.3],[.86,.66],[1,.66]]
   ];
-  const projectileColors = {grove:"#78f0a9",spark:"#d8a7ff",moon:"#8cecff",forge:"#ffc15e",tide:"#69a9ff"};
+  const projectileColors = {grove:"#78f0a9",spark:"#d8a7ff",moon:"#8cecff",forge:"#ffc15e",tide:"#69a9ff",burst:"#ffe36e"};
   const enemyImages = {
     normal:"../../assets/animal-dice-bastion/enemy-wisp.webp",
     fast:"../../assets/animal-dice-bastion/enemy-wisp.webp",
@@ -100,6 +100,7 @@
     document.querySelectorAll("[data-i18n]").forEach((node) => { node.textContent = t(node.dataset.i18n); });
     document.querySelectorAll("[data-i18n-aria]").forEach((node) => node.setAttribute("aria-label", t(node.dataset.i18nAria)));
     document.querySelectorAll("[data-i18n-alt]").forEach((node) => node.setAttribute("alt", t(node.dataset.i18nAlt)));
+    document.querySelectorAll("[data-i18n-title]").forEach((node) => node.setAttribute("title", t(node.dataset.i18nTitle)));
     document.title = `${t("title")} | WeightPlay Internal Trial`;
     renderMainProgress();
     if (screen === "stage") renderStage();
@@ -255,7 +256,7 @@
       stage, stageIndex, random, board:Array(15).fill(null), selected:-1, cursor:0, charge:42 + save.upgrades.charge * 8,
       summonCost:10, drought:0, core:maxCore, maxCore, wave:0, plan:createWavePlan(stage), enemies:[], spawnQueue:[],
       spawnClock:0, between:1.3, attackClock:0, burst:0, rally:0, rallyCooldown:0, rerolls:0, merges:0,
-      projectiles:[], impacts:[], shotsFired:0, hits:0,
+      projectiles:[], impacts:[], shotsFired:0, hits:0, burstFx:0, rerollFx:0, rerollIndex:-1,
       damage:0, finished:false, paused:false, time:0
     };
     resultCommitted = false;
@@ -284,6 +285,10 @@
   function randomType(forceMatch = false) {
     return forceMatch ? matchingType() : guardianTypes[Math.floor(run.random() * guardianTypes.length)].id;
   }
+  function randomTypeExcept(excluded) {
+    const choices=guardianTypes.filter((type)=>type.id!==excluded);
+    return choices[Math.floor(run.random()*choices.length)].id;
+  }
   function summon() {
     if (!run || run.finished || activeModal()) return;
     const slot = run.board.findIndex((unit) => !unit);
@@ -298,7 +303,13 @@
   }
   function selectOrMerge(index) {
     if (!run || !run.board[index]) { run.selected = -1; renderBoard(); return; }
-    if (run.selected < 0) { run.selected = index; announce(t("mergeSelect",{guardian:t(run.board[index].type),rank:run.board[index].rank})); renderBoard(); return; }
+    if (run.selected < 0) {
+      const unit=run.board[index];
+      run.selected = index;
+      announce(t("selectedGuardian",{guardian:t(unit.type),rank:unit.rank,role:t(`${unit.type}Role`)}));
+      renderBoard();
+      return;
+    }
     if (run.selected === index) { run.selected = -1; renderBoard(); return; }
     const from = run.board[run.selected], to = run.board[index];
     if (!from || !to || from.type !== to.type || from.rank !== to.rank) { run.selected = index; announce(t("mergeNeedMatch")); renderBoard(); return; }
@@ -311,36 +322,49 @@
     if (!run || activeModal()) return;
     const cost = 12, index = run.selected >= 0 ? run.selected : run.cursor;
     if (!run.board[index] || run.charge < cost) { announce(t("rerollNeed",{cost})); return; }
-    run.charge -= cost; run.rerolls += 1; run.board[index].type = randomType(false); run.board[index].cooldown = .1;
-    run.selected = -1; renderBoard(); updateBattleHud(true); announce(t("rerolled",{guardian:t(run.board[index].type)}));
+    const rank=run.board[index].rank;
+    run.charge -= cost; run.rerolls += 1; run.board[index].type = randomTypeExcept(run.board[index].type); run.board[index].cooldown = .1;
+    run.selected = -1;run.rerollFx=.65;run.rerollIndex=index;renderBoard();updateOrderEffects();updateBattleHud(true);
+    announce(t("rerolled",{guardian:t(run.board[index].type),rank}));
   }
   function rally() {
     if (!run || activeModal()) return;
     if (run.rallyCooldown > 0) { announce(t("rallyNotReady")); return; }
-    run.rally = 6; run.rallyCooldown = 18; announce(t("rallyUsed")); window.WonderSound?.play?.("power");
+    run.rally = 6; run.rallyCooldown = 18;updateOrderEffects();announce(t("rallyUsed"));window.WonderSound?.play?.("power");
   }
   function burst() {
     if (!run || activeModal()) return;
     if (run.burst < 100) { announce(t("burstNotReady")); return; }
-    run.burst = 0;
     const targets = run.enemies.filter((enemy) => !enemy.hit&&enemy.x>=0).sort((a,b) => b.x-a.x).slice(0,5);
-    targets.forEach((enemy) => { const damage = 28 + run.stage.n * 2.2; enemy.hp -= damage; enemy.slow = Math.max(enemy.slow, 2.5); run.damage += damage; });
+    if(!targets.length){announce(t("burstNoTargets"));return}
+    run.burst = 0;run.burstFx=.7;
+    targets.forEach((enemy) => {
+      const damage = 28 + run.stage.n * 2.2; enemy.hp -= damage; enemy.slow = Math.max(enemy.slow, 2.5); run.damage += damage;
+      run.impacts.push({progress:enemy.x,type:"burst",age:0,duration:.7});
+    });
+    updateOrderEffects();
     announce(t("burstUsed")); window.WonderSound?.play?.("power");
   }
   function renderBoard() {
     if (!run) return;
     $("board").replaceChildren(...run.board.map((unit, index) => {
       const slot = document.createElement("button");
-      slot.type = "button"; slot.className = `rune-slot${run.selected === index ? " selected" : ""}`;
+      slot.type = "button"; slot.className = `rune-slot${run.selected === index ? " selected" : ""}${run.rerollFx>0&&run.rerollIndex===index?" rerolling":""}`;
       slot.dataset.index = String(index); slot.setAttribute("role","gridcell"); slot.tabIndex = -1;
-      slot.setAttribute("aria-label", unit ? `${t(unit.type)} · ${t("level")} ${unit.rank}` : `${t("summon")} ${index+1}`);
+      slot.setAttribute("aria-label", unit ? t("selectedGuardian",{guardian:t(unit.type),rank:unit.rank,role:t(`${unit.type}Role`)}) : `${t("summon")} ${index+1}`);
       if (unit) {
         const type = guardianMap[unit.type];
-        slot.innerHTML = `<span class="guardian ${unit.type}"><img src="${type.image}" alt=""><b>${"◆".repeat(unit.rank)}</b></span>`;
+        const roleIcon={grove:"◆",spark:"⚡",moon:"❄",forge:"◇",tide:"◉"}[unit.type];
+        slot.innerHTML = `<span class="guardian ${unit.type}"><img src="${type.image}" alt=""><i aria-hidden="true">${roleIcon}</i><b><span>${unit.rank}</span><small>/6</small></b></span>`;
       }
       slot.addEventListener("click", () => { run.cursor = index; selectOrMerge(index); $("board").focus({preventScroll:true}); });
       return slot;
     }));
+  }
+  function updateOrderEffects(){
+    if(!run)return;
+    $("battleLive").classList.toggle("rally-active",run.rally>0);
+    $("battleLive").classList.toggle("burst-active",run.burstFx>0);
   }
 
   function startNextWave() {
@@ -408,6 +432,7 @@
     if (!run || run.paused || run.finished) return;
     const hadEnemies = run.enemies.length > 0;
     run.time += dt; run.rally = Math.max(0, run.rally-dt); run.rallyCooldown = Math.max(0, run.rallyCooldown-dt);
+    run.burstFx=Math.max(0,run.burstFx-dt);run.rerollFx=Math.max(0,run.rerollFx-dt);updateOrderEffects();
     if (!run.spawnQueue.length && !run.enemies.length) {
       run.between -= dt;
       if (run.between <= 0) {
@@ -461,7 +486,7 @@
     $("chargeValue").textContent = Math.floor(run.charge);
     $("chargeFill").style.width = `${Math.min(100,run.charge)}%`;
     $("summonCost").textContent = String(run.summonCost);
-    $("rallyState").textContent = run.rally > 0 ? t("cooldown",{seconds:run.rally.toFixed(1)}) : run.rallyCooldown > 0 ? t("cooldown",{seconds:Math.ceil(run.rallyCooldown)}) : t("ready");
+    $("rallyState").textContent = run.rally > 0 ? t("activeSeconds",{seconds:run.rally.toFixed(1)}) : run.rallyCooldown > 0 ? t("cooldown",{seconds:Math.ceil(run.rallyCooldown)}) : t("ready");
     $("burstState").textContent = `${Math.floor(run.burst)}%`;
     $("rerollState").textContent = t("cost",{cost:12});
     $("summonBtn").disabled = run.charge < run.summonCost || !run.board.some((unit) => !unit);
@@ -500,7 +525,8 @@
   function drawImpact(ctx,impact,w,h,d) {
     const ratio=Math.max(0,Math.min(1,impact.age/impact.duration)),point=roadPoint(Math.max(0,Math.min(1,impact.progress)),w,h,42*d),color=projectileColors[impact.type]||"#fff";
     ctx.save();ctx.globalCompositeOperation="lighter";ctx.strokeStyle=color;ctx.globalAlpha=1-ratio;ctx.lineWidth=3*d;ctx.beginPath();ctx.arc(point.x,point.y,(5+18*ratio)*d,0,Math.PI*2);ctx.stroke();
-    for(let ray=0;ray<6;ray+=1){const angle=ray*Math.PI/3,length=(7+12*ratio)*d;ctx.beginPath();ctx.moveTo(point.x+Math.cos(angle)*4*d,point.y+Math.sin(angle)*4*d);ctx.lineTo(point.x+Math.cos(angle)*length,point.y+Math.sin(angle)*length);ctx.stroke()}ctx.restore()
+    const rays=impact.type==="burst"?10:6;
+    for(let ray=0;ray<rays;ray+=1){const angle=ray*Math.PI*2/rays,length=((impact.type==="burst"?14:7)+(impact.type==="burst"?28:12)*ratio)*d;ctx.beginPath();ctx.moveTo(point.x+Math.cos(angle)*4*d,point.y+Math.sin(angle)*4*d);ctx.lineTo(point.x+Math.cos(angle)*length,point.y+Math.sin(angle)*length);ctx.stroke()}ctx.restore()
   }
   function drawRoad() {
     const canvas = $("roadCanvas"), ctx = canvas.getContext("2d"), rect = canvas.getBoundingClientRect();
@@ -603,9 +629,11 @@
     stages, startBattle, summon, selectOrMerge, reroll, rally, burst,
     setLocale(code){locale=canonicalLocale(code);applyLocale()},
     forceWin(){if(run)finish(true)}, forceLose(){if(run){run.core=0;finish(false)}},
-    snapshot(){return{locale,screen,save:JSON.parse(JSON.stringify(save)),stagePanel,run:run&&{stage:run.stage.n,route:run.stage.route,board:run.board.map((unit)=>unit&&{...unit}),selected:run.selected,cursor:run.cursor,charge:run.charge,summonCost:run.summonCost,drought:run.drought,core:run.core,maxCore:run.maxCore,wave:run.wave,enemies:run.enemies.map((enemy)=>({...enemy})),projectiles:run.projectiles.length,impacts:run.impacts.length,shotsFired:run.shotsFired,hits:run.hits,damage:run.damage,burst:run.burst,rally:run.rally,rallyCooldown:run.rallyCooldown,rerolls:run.rerolls,merges:run.merges,finished:run.finished,paused:run.paused}}},
+    snapshot(){return{locale,screen,save:JSON.parse(JSON.stringify(save)),stagePanel,run:run&&{stage:run.stage.n,route:run.stage.route,board:run.board.map((unit)=>unit&&{...unit}),selected:run.selected,cursor:run.cursor,charge:run.charge,summonCost:run.summonCost,drought:run.drought,core:run.core,maxCore:run.maxCore,wave:run.wave,enemies:run.enemies.map((enemy)=>({...enemy})),projectiles:run.projectiles.length,impacts:run.impacts.length,shotsFired:run.shotsFired,hits:run.hits,damage:run.damage,burst:run.burst,burstFx:run.burstFx,rally:run.rally,rallyCooldown:run.rallyCooldown,rerolls:run.rerolls,merges:run.merges,finished:run.finished,paused:run.paused}}},
     setCharge(value){if(run){run.charge=Math.max(0,Math.min(100,Number(value)||0));updateBattleHud(true)}},
     setBoard(board){if(run){run.board=Array.from({length:15},(_,i)=>board[i]?{...board[i],cooldown:0}:null);renderBoard()}},
+    setBurst(value){if(run){run.burst=Math.max(0,Math.min(100,Number(value)||0));updateBattleHud(true)}},
+    setEnemies(enemies){if(run){run.enemies=enemies.map((enemy)=>({kind:"normal",hp:100,maxHp:100,armor:0,speed:0,x:.4,hit:false,slow:0,...enemy}));drawRoad()}},
     setRandomSeed(seed){if(run)run.random=seeded(Number(seed)||1)},
     randomSample(seed,count=5000){
       const random=seeded(Number(seed)||1),counts=Object.fromEntries(guardianTypes.map((type)=>[type.id,0]));

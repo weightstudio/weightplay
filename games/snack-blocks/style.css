@@ -595,8 +595,14 @@ button:active {
   position: absolute;
   inset: 0;
   z-index: 3;
+  box-sizing: border-box;
+  border: 25px solid transparent;
+  border-width: 25px 28px 24px;
+  border-image-source: url("assets/board-frame-7x10.webp");
+  border-image-slice: 88;
+  border-image-width: 25px 28px 24px;
+  border-image-repeat: stretch;
   border-radius: inherit;
-  background: url("assets/board-frame-7x10.webp") center / 100% 100% no-repeat;
   pointer-events: none;
 }
 

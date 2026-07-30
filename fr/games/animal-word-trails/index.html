@@ -72,10 +72,12 @@
 <body>
   <main class="word-trails" id="app">
     <section class="screen main-screen" data-screen="main">
-      <a class="lobby-return" data-wp-return="main" href="/kids/" data-aria="backLobby" aria-label="Back to WeightPlay"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
-      <div class="locale-row"><label for="locale" data-copy="language">Language</label><select id="locale" data-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option><option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option><option value="ja">&#26085;&#26412;&#35486;</option><option value="ko">&#54620;&#44397;&#50612;</option><option value="es">Espa&#241;ol</option><option value="pt-BR">Portugu&#234;s</option><option value="fr">Fran&#231;ais</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</option></select></div>
+      <header class="main-header">
+        <a class="lobby-return" data-wp-return="main" href="/kids/" data-aria="backLobby" aria-label="Back to WeightPlay"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
+        <h1 data-copy="title">Sentiers de mots sur les animaux</h1>
+        <div class="locale-row"><label for="locale" data-copy="language">Language</label><select id="locale" data-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option><option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option><option value="ja">&#26085;&#26412;&#35486;</option><option value="ko">&#54620;&#44397;&#50612;</option><option value="es">Espa&#241;ol</option><option value="pt-BR">Portugu&#234;s</option><option value="fr">Fran&#231;ais</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">&#1056;&#1091;&#1089;&#1082;&#1080;&#1081;</option></select></div>
+      </header>
       <img class="cover" src="../../assets/animal-word-trails-cover.webp" alt="Illustration du jeu Sentiers de mots sur les animaux">
-      <h1 data-copy="title">Sentiers de mots sur les animaux</h1>
       <p data-copy="intro">Follow animal clues and connect a word path.</p>
       <button class="primary" id="start" data-copy="start">Start Game</button>
       <section class="guide first-steps"><h2 data-copy="guideTitle">A calm reading puzzle</h2><p data-copy="guideBody">Find animal and habitat words. Your progress stays on this device.</p></section>
@@ -110,7 +112,7 @@
         <section id="resultPanel" class="result-overlay result-screen hidden" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="wordResultTitle">
         <img class="leo" src="../../assets/animal-word-trails-lion-guide.webp" alt="">
         <h2 id="wordResultTitle" data-copy="complete">Trail complete</h2><p id="resultSummary"></p><p class="skill" data-copy="skill">Reading &middot; Focus &middot; Logic &middot; Animal knowledge</p>
-        <div class="result-actions" data-wp-result-actions><button class="secondary" id="resultsBack" data-wp-return="battle" data-copy="trails">Trail menu</button><button class="primary" id="next" data-copy="next">Next trail</button><button class="secondary" id="replay" data-copy="replay">Replay</button></div>
+        <div class="result-actions" data-wp-result-actions><button class="secondary" id="resultsBack" data-copy="trails">Trail menu</button><button class="primary" id="next" data-copy="next">Next trail</button><button class="secondary" id="replay" data-copy="replay">Replay</button></div>
         </section>
         <section id="leaveConfirmPanel" class="leave-confirm-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="leaveConfirmTitle" aria-describedby="leaveConfirmMessage">
           <div class="leave-confirm-card"><h2 id="leaveConfirmTitle" data-copy="leaveTitle">Leave this trail?</h2><p id="leaveConfirmMessage" data-copy="leaveMessage">Found words, the current path, and star progress in this run will reset.</p><div class="leave-confirm-actions"><button id="keepReading" class="primary" data-copy="keepReading">Keep reading</button><button id="leaveTrail" class="secondary" data-copy="leaveTrail">Leave trail</button></div></div>

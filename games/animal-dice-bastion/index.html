@@ -134,9 +134,9 @@
               <div class="charge-meter"><span data-i18n="charge">Charge</span><strong id="chargeValue">0</strong><i><b id="chargeFill"></b></i></div>
               <button id="summonBtn" class="summon-button" type="button"><span data-i18n="summon">Summon</span><b id="summonCost">10</b></button>
               <div class="orders">
-                <button id="rallyBtn" type="button"><span data-i18n="rally">Rally</span><small id="rallyState"></small></button>
-                <button id="burstBtn" type="button"><span data-i18n="burst">Rune Burst</span><small id="burstState"></small></button>
-                <button id="rerollBtn" type="button"><span data-i18n="reroll">Reroll</span><small id="rerollState"></small></button>
+                <button id="rallyBtn" type="button" data-i18n-title="rallyHint"><span><strong data-i18n="rally">Battle Rally</strong><em data-i18n="rallyHint">All attack speed ×1.72 · 6s</em></span><small id="rallyState"></small></button>
+                <button id="burstBtn" type="button" data-i18n-title="burstHint"><span><strong data-i18n="burst">Rune Burst</strong><em data-i18n="burstHint">Hit and slow the front 5</em></span><small id="burstState"></small></button>
+                <button id="rerollBtn" type="button" data-i18n-title="rerollHint"><span><strong data-i18n="reroll">Rune Reforge</strong><em data-i18n="rerollHint">Keep rank · change affinity</em></span><small id="rerollState"></small></button>
               </div>
               <p id="battleFeedback" aria-live="polite"></p>
             </div>
@@ -149,7 +149,17 @@
           <li data-i18n="tutorial1">Summon fills one empty rune slot with a random guardian.</li>
           <li data-i18n="tutorial2">Merge matching affinity and rank. The stronger result rerolls its affinity.</li>
           <li data-i18n="tutorial3">Save Rally and Rune Burst for dense waves or a Boss.</li>
-        </ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Guard the bastion</button>
+        </ol>
+        <h3 class="guardian-guide-title" data-i18n="guardianGuideTitle">Five guardian roles · six ranks</h3>
+        <p class="rank-guide" data-i18n="rankGuide">Diamonds show rank 1–6, not a sixth dice type.</p>
+        <div class="guardian-guide">
+          <article><img src="../../assets/animal-dice-bastion/guardian-grove.webp" alt=""><b data-i18n="grove">Grove</b><small data-i18n="groveRole">Strong steady hits</small></article>
+          <article><img src="../../assets/animal-dice-bastion/guardian-spark.webp" alt=""><b data-i18n="spark">Spark</b><small data-i18n="sparkRole">Fast charge builder</small></article>
+          <article><img src="../../assets/animal-dice-bastion/guardian-moon.webp" alt=""><b data-i18n="moon">Moon</b><small data-i18n="moonRole">Slows the lead enemy</small></article>
+          <article><img src="../../assets/animal-dice-bastion/guardian-forge.webp" alt=""><b data-i18n="forge">Forge</b><small data-i18n="forgeRole">Breaks enemy armor</small></article>
+          <article><img src="../../assets/animal-dice-bastion/guardian-tide.webp" alt=""><b data-i18n="tide">Tide</b><small data-i18n="tideRole">Splash damage to groups</small></article>
+        </div>
+        <button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Guard the bastion</button>
       </div></section>
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
         <h2 id="leaveTitle" data-i18n="leaveTitle">Leave this defense?</h2><p data-i18n="leaveText">Continue keeps this exact Battle frozen. Returning to Stages ends only this attempt.</p>

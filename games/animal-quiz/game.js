@@ -926,7 +926,32 @@ function showMain() {
   mainPanel.classList.remove("hidden");
   setQuizVisible(false);
   stageSelectPanel.classList.add("hidden");
-  updateQuizFrame();
+  resetQuizFrame();
+  window.dispatchEvent(new Event("weightplay:battle-sync"));
+  window.dispatchEvent(new Event("weightplay:stage-sync"));
+  window.dispatchEvent(new Event("weightplay:shell-sync"));
+}
+
+function resetQuizFrame() {
+  const root = document.documentElement.style;
+  [
+    "--quiz-vw",
+    "--quiz-vh",
+    "--quiz-frame-scale",
+    "--quiz-frame-left",
+    "--quiz-frame-top",
+    "--quiz-logical-width",
+    "--quiz-logical-height",
+  ].forEach((property) => root.removeProperty(property));
+  const frame = document.querySelector(".animal-game");
+  if (frame) {
+    delete frame.dataset.logicalWidth;
+    delete frame.dataset.logicalHeight;
+    delete frame.dataset.commonScale;
+    frame.classList.remove("weightplay-active-viewport");
+  }
+  document.body.classList.remove("weightplay-active-viewport", "wp-mobile-game-mode");
+  window.WeightPlayGame?.exitMobileGameMode?.();
 }
 
 function updateQuizFrame() {
@@ -979,6 +1004,9 @@ function showStageSelect(focusStageIndex = state.unlockedStage) {
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   setQuizVisible(false);
   renderStageCards();
+  window.dispatchEvent(new Event("weightplay:battle-sync"));
+  window.dispatchEvent(new Event("weightplay:stage-sync"));
+  window.dispatchEvent(new Event("weightplay:shell-sync"));
   centerLatestUnlockedStage(focusStageIndex);
   window.requestAnimationFrame(() => {
     centerLatestUnlockedStage(focusStageIndex, true);

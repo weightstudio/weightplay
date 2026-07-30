@@ -645,6 +645,14 @@
     setStageState(panel === nodes.stagePanel);
     [nodes.menuPanel, nodes.stagePanel, nodes.gamePanel].forEach((node) => node.classList.add("hidden"));
     panel.classList.remove("hidden");
+    if (panel === nodes.gamePanel) {
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+      window.dispatchEvent(new Event("weightplay:battle-sync"));
+    } else {
+      window.dispatchEvent(new Event("weightplay:battle-sync"));
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+    }
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
     window.scrollTo({ top: 0, left: 0, behavior: panel === nodes.gamePanel ? "auto" : "smooth" });
   }
 
@@ -1178,6 +1186,9 @@
     document.documentElement.style.setProperty("--vine-stage-logical-height", `${logicalHeight}px`);
     document.documentElement.style.setProperty("--vine-stage-left", `${frameLeft}px`);
     document.documentElement.style.setProperty("--vine-stage-top", "0px");
+    nodes.stagePanel.dataset.commonScale = scale.toFixed(6);
+    nodes.stagePanel.dataset.logicalWidth = logicalWidth.toFixed(4);
+    nodes.stagePanel.dataset.logicalHeight = logicalHeight.toFixed(4);
   }
 
   function updateBattleScale() {
@@ -1198,6 +1209,9 @@
     root.style.setProperty("--wp-battle-logical-height", `${logicalHeight}px`);
     root.style.setProperty("--wp-battle-canvas-scale", String(scale));
     root.style.setProperty("--vine-battle-scale", String(scale));
+    nodes.gamePanel.dataset.commonScale = scale.toFixed(6);
+    nodes.gamePanel.dataset.logicalWidth = logicalWidth.toFixed(4);
+    nodes.gamePanel.dataset.logicalHeight = logicalHeight.toFixed(4);
     nodes.gamePanel.setAttribute("data-wp-logical-battle-canvas", `${logicalWidth.toFixed(3)}x${logicalHeight.toFixed(3)}`);
     Object.entries({
       position: "fixed",

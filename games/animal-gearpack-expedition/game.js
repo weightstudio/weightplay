@@ -606,7 +606,7 @@
     row.title=effect.textContent;
     row.setAttribute("aria-label",`${identity.textContent}. ${effect.textContent}`);
   }
-function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){clearTimeout(railSettleTimer);railSettleTimer=0;}Object.entries(screens).forEach(([key,node])=>node.hidden=key!==name);document.body.dataset.screen=name;document.body.classList.toggle("is-game-playing",name==="battle");if(name==="main")renderMain();if(name==="stage")renderStage();if(name==="battle")renderBattle();if(focusTarget)requestAnimationFrame(()=>requestAnimationFrame(()=>{const target=name==="main"?$("#startBtn"):name==="stage"?$(".region-card.is-selected:not(:disabled)"):$(".pack-cell[tabindex='0']");target?.focus({preventScroll:true});}));}
+function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){clearTimeout(railSettleTimer);railSettleTimer=0;}Object.entries(screens).forEach(([key,node])=>node.hidden=key!==name);document.body.dataset.screen=name;document.body.classList.toggle("is-game-playing",name==="battle");if(name==="main")renderMain();if(name==="stage")renderStage();if(name==="battle")renderBattle();if(focusTarget)requestAnimationFrame(()=>requestAnimationFrame(()=>{const target=name==="main"?$("#startBtn"):name==="stage"?$(`.region-card[data-stage="${selectedStage}"]`):$(".pack-cell[tabindex='0']");target?.focus({preventScroll:true});}));}
 
   function applyLocale(next){const current=window.WonderI18n?.actualLocale?.();const requested=next==="zh-Hant"&&current==="zh-Hans"?current:next||"en";if(current!==requested)window.WonderI18n?.setLocale?.(requested);const legacy=window.WonderI18n?.legacyLocale?.(requested)||requested;locale=copy[requested]?requested:runtimeCatalogLocales.has(requested)?requested:copy[legacy]?legacy:"en";writeStorage("weightPlayLocale",requested);document.documentElement.lang=requested;document.documentElement.dir=requested==="ar"?"rtl":"ltr";document.title=`${t("title")} - WeightPlay`;$("#localeSelect").value=requested;startButton.setAttribute("data-runtime-localize","off");const localizeOwned=()=>{document.querySelectorAll("[data-i18n]").forEach((node)=>{node.textContent=t(node.dataset.i18n)});document.querySelectorAll("[data-ui-aria]").forEach((node)=>node.setAttribute("aria-label",t(node.dataset.uiAria)));document.querySelectorAll("[data-ui-alt]").forEach((node)=>node.setAttribute("alt",t(node.dataset.uiAlt)));const stageTab=$('[data-stage-tab="stages"]'),stageTabLabel=stageTabLabels[requested]||stageTabLabels.en;if(stageTab)stageTab.textContent=stageTabLabel;$(".stage-bottom-tabs")?.setAttribute("aria-label",stageTabLabel);const poster=$(".main-poster");if(poster)poster.alt=t("coverAlt");renderMain();if(!screens.stage.hidden)renderStage();if(!screens.battle.hidden)renderBattle();};localizeOwned();setTimeout(localizeOwned,0);requestAnimationFrame(()=>requestAnimationFrame(localizeOwned));syncSoundButton();}
   function renderMain(){
@@ -639,7 +639,7 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
     },null)?.card;
     if(!nearest)return;
     setCenteredStageCard(nearest);
-    if(nearest.disabled)return;
+    if(nearest.getAttribute("aria-disabled")==="true")return;
     selectedStage=centeredStage;progress.selectedStage=selectedStage;saveProgress();
   }
   function recenterStageSelection(){
@@ -648,6 +648,16 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
     if(!card)return;
     setCenteredStageCard(card);
     card.scrollIntoView({behavior:"auto",inline:"center",block:"nearest"});
+  }
+  function focusStageCard(index){
+    const next=Math.max(0,Math.min(STAGE_COUNT-1,Number(index)||0));
+    const card=$(`.region-card[data-stage="${next}"]`);
+    if(!card)return;
+    centeredStage=next;
+    setCenteredStageCard(card);
+    card.parentElement?.querySelectorAll(".region-card").forEach((node)=>{node.tabIndex=node===card?0:-1;});
+    card.scrollIntoView({behavior:"auto",inline:"center",block:"nearest"});
+    card.focus({preventScroll:true});
   }
   function renderStage(){
     const unlocked=Math.max(1,Math.min(STAGE_COUNT,Number(progress.unlockedStage)||1));
@@ -660,10 +670,10 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
       const region=regions[Math.floor(index/5)],available=index<unlocked,cleared=progress.completedStages.includes(index+1),checkpoint=(index+1)%5===0;
       const card=document.createElement("button");
       card.type="button";card.className=`region-card${index===centeredStage?" is-selected":""}${cleared?" is-cleared":""}${checkpoint?" is-checkpoint":""}`;
-      card.dataset.stage=String(index);if(index===centeredStage)card.setAttribute("aria-current","true");if(index%5===0)card.dataset.region=String(Math.floor(index/5));else card.dataset.regionGroup=String(Math.floor(index/5));card.disabled=!available;card.toggleAttribute("data-wp-stage-unlocked",available);
+      card.dataset.stage=String(index);card.tabIndex=index===centeredStage?0:-1;if(index===centeredStage)card.setAttribute("aria-current","true");if(index%5===0)card.dataset.region=String(Math.floor(index/5));else card.dataset.regionGroup=String(Math.floor(index/5));card.setAttribute("aria-disabled",available?"false":"true");card.toggleAttribute("data-wp-stage-unlocked",available);card.setAttribute("aria-keyshortcuts","ArrowLeft ArrowRight Home End");
       card.setAttribute("aria-label",available?`${t("stage")} ${index+1}: ${localized(definition.name)}. ${localized(definition.rule)}`:`${t("stage")} ${index+1}: ${t("locked")}`);
       card.innerHTML=`<img src="${region.background}" alt="${localized(region.name)}"><span class="stage-number">${t("stage")} ${index+1}/30</span><strong>${localized(definition.name)}</strong><span class="stage-rule"${index%5===0?' data-region-meta=""':''}>${available?`${index%5===0?`5 ${t("encounter")} · `:""}${localized(definition.rule)}`:t("locked")}</span><span class="stage-badges">${checkpoint?`<b>${t("checkpoint")} · ${localized(enemyCatalog[definition.enemies[4]].name)}</b>`:""}${cleared?`<em>${t("completed")}</em>`:""}</span>`;
-      card.addEventListener("focus",()=>{centeredStage=index;selectedStage=index;progress.selectedStage=index;setCenteredStageCard(card);});
+      card.addEventListener("focus",()=>{centeredStage=index;setCenteredStageCard(card);rail.querySelectorAll(".region-card").forEach((node)=>{node.tabIndex=node===card?0:-1;});if(available){selectedStage=index;progress.selectedStage=index;saveProgress();}});
       card.addEventListener("click",()=>{if(!available)return;centeredStage=index;selectedStage=index;progress.selectedStage=index;saveProgress();newRun(index);});
       rail.append(card);
     });
@@ -816,7 +826,15 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
   $("#packGrid").addEventListener("keydown",(event)=>{const cell=event.target.closest(".pack-cell");if(!cell)return;if(event.key==="Enter"||event.key===" "){if(event.repeat&&stageEntryKeyboardKey===event.key){event.preventDefault();return;}packFocus.x=Number(cell.dataset.x);packFocus.y=Number(cell.dataset.y);restorePackFocus=true;return;}const move={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[event.key];if(!move)return;event.preventDefault();packFocus.x=Math.max(0,Math.min(PACK_COLS-1,Number(cell.dataset.x)+move[0]));packFocus.y=Math.max(0,Math.min(PACK_ROWS-1,Number(cell.dataset.y)+move[1]));enhancePackKeyboard();focusPackCell();});
   $("#packGrid").addEventListener("click",(event)=>{const cell=event.target.closest(".pack-cell");if(cell&&event.detail===0){packFocus.x=Number(cell.dataset.x);packFocus.y=Number(cell.dataset.y);restorePackFocus=true;}});
   $("#itemTray").addEventListener("click",(event)=>{if(event.target.closest(".tray-item")&&event.detail===0){packFocus.x=0;packFocus.y=0;restorePackFocus=true;}});
-  $("#regionRail").addEventListener("keydown",(event)=>{if(!event.repeat&&(event.key==="Enter"||event.key===" ")&&event.target.closest(".region-card:not(:disabled)"))stageEntryKeyboardKey=event.key;});
+  $("#regionRail").addEventListener("keydown",(event)=>{
+    const card=event.target.closest(".region-card");if(!card)return;
+    if((event.key==="Enter"||event.key===" ")&&card.getAttribute("aria-disabled")!=="true"){if(!event.repeat)stageEntryKeyboardKey=event.key;return;}
+    const rtl=document.documentElement.dir==="rtl";
+    const delta=event.key==="ArrowLeft"?(rtl?1:-1):event.key==="ArrowRight"?(rtl?-1:1):0;
+    const next=event.key==="Home"?0:event.key==="End"?STAGE_COUNT-1:delta?Number(card.dataset.stage)+delta:null;
+    if(next===null)return;
+    event.preventDefault();focusStageCard(next);
+  });
   ["rotateBtn","sellBtn"].forEach((id)=>$("#"+id).addEventListener("keydown",(event)=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();}));
   document.addEventListener("keyup",(event)=>{if(event.key===stageEntryKeyboardKey)stageEntryKeyboardKey="";});
   const suspendWindowOwnedCombat=()=>{suspendCombatFx();pauseCombat();};

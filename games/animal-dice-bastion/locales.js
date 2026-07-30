@@ -38,19 +38,23 @@
     planPairs:"Keep one matching pair ready.",planForge:"Forge guardians strip armor fastest.",
     planTide:"Tide guardians control crowded waves.",planBurst:"Save Rune Burst for the strongest overlap.",
     rewardDust:"+{dust} rune dust",stageSummary:"{unlocked}/30 unlocked · {stars} stars",
-    core:"Core",wave:"Wave",charge:"Charge",summon:"Summon",rally:"Rally",burst:"Rune Burst",reroll:"Reroll",
-    ready:"Ready",cooldown:"{seconds}s",selectGuardian:"Select a guardian",cost:"Cost {cost}",
+    core:"Core",wave:"Wave",charge:"Charge",summon:"Summon",rally:"Battle Rally",burst:"Rune Burst",reroll:"Rune Reforge",
+    rallyHint:"All attack speed ×1.72 · 6s",burstHint:"Hit and slow the front 5",rerollHint:"Keep rank · change affinity",
+    ready:"Ready",cooldown:"{seconds}s",activeSeconds:"Boost {seconds}s",selectGuardian:"Select a guardian",cost:"Cost {cost}",
     boardLabel:"Guardian merge board",objective:"Stop every creature before it reaches the crystal.",
     summoned:"{guardian} guardian summoned.",droughtGift:"Taro steadied fate: a matching {guardian} appeared.",
     boardFull:"The board is full. Merge a matching pair or Reroll one guardian.",
     notEnoughCharge:"Need {cost} charge.",mergeSelect:"{guardian} rank {rank} selected.",
     mergeNeedMatch:"Merge requires the same affinity and rank.",merged:"Merged into rank {rank} {guardian}.",
-    maxRank:"This guardian is already at maximum rank.",rerolled:"Guardian rerolled into {guardian}.",
+    maxRank:"This guardian is already at maximum rank.",rerolled:"Rank {rank} reforged into {guardian}.",
     rerollNeed:"Select a guardian and keep {cost} charge.",rallyUsed:"Rally accelerates every guardian!",
     rallyNotReady:"Rally is still recovering.",burstUsed:"Rune Burst struck the lead threats!",
-    burstNotReady:"Rune Burst charges through guardian attacks.",waveStarts:"Wave {wave} begins.",
+    burstNotReady:"Rune Burst charges through guardian attacks.",burstNoTargets:"Wait for an enemy to enter the road.",waveStarts:"Wave {wave} begins.",
     bossWarning:"BOSS APPROACHING",coreHit:"Core hit! {core} integrity remains.",
     grove:"Grove",spark:"Spark",moon:"Moon",forge:"Forge",tide:"Tide",
+    guardianGuideTitle:"Five guardian roles · six ranks",rankGuide:"Diamonds show rank 1–6, not a sixth dice type.",
+    groveRole:"Strong steady hits",sparkRole:"Fast charge builder",moonRole:"Slows the lead enemy",forgeRole:"Breaks enemy armor",tideRole:"Splash damage to groups",
+    selectedGuardian:"{guardian} · rank {rank}/6 · {role}",
     pause:"Pause",pauseTitle:"Defense paused",pauseText:"The wave and every guardian are frozen while you take a break.",
     resume:"Resume",tutorialTitle:"Summon, match, and defend",
     tutorial1:"Summon fills one empty rune slot with a random guardian.",
@@ -77,6 +81,28 @@
     hi:{title:"पशु पासा दुर्ग",loading:"रक्षक रून्स जाग रहे हैं…",language:"भाषा",start:"खेल शुरू करें",stages:"चरण",team:"दल",equipment:"उपकरण",summon:"बुलाएँ",rally:"एकत्र करें",burst:"रून विस्फोट",reroll:"फिर घुमाएँ",core:"केंद्र",wave:"लहर",charge:"ऊर्जा",victory:"दुर्ग सुरक्षित!",defeat:"छायाएँ क्रिस्टल तक पहुँच गईं",next:"अगला चरण",retry:"फिर खेलें",continue:"जारी रखें",returnStages:"चरणों पर लौटें",locked:"बंद",boss:"बॉस"},
     ar:{title:"حصن نرد الحيوانات",loading:"إيقاظ رُقى الحراس…",language:"اللغة",start:"ابدأ اللعب",stages:"المراحل",team:"الفريق",equipment:"المعدات",summon:"استدعاء",rally:"حشد",burst:"انفجار الرون",reroll:"إعادة الرمي",core:"النواة",wave:"الموجة",charge:"الشحنة",victory:"تم تأمين الحصن!",defeat:"وصلت الظلال إلى البلورة",next:"المرحلة التالية",retry:"إعادة اللعب",continue:"متابعة",returnStages:"العودة للمراحل",locked:"مغلق",boss:"زعيم"}
   };
+  Object.assign(core["zh-Hant"],{rally:"全軍集結",reroll:"符文重塑",rallyHint:"全體攻速 ×1.72 · 6秒",burstHint:"攻擊並緩速最前5名",rerollHint:"保留等級 · 更換屬性",activeSeconds:"強化 {seconds}秒",rerolled:"{rank}級重塑為{guardian}。",burstNoTargets:"等待敵人進入道路再施放。",guardianGuideTitle:"五種守護定位 · 六個等級",rankGuide:"菱形代表1–6級，不是第六種骰子。",groveRole:"穩定強力單擊",sparkRole:"高速累積能量",moonRole:"緩速最前方敵人",forgeRole:"破解敵人護甲",tideRole:"對怪群造成濺射",selectedGuardian:"{guardian} · {rank}/6級 · {role}"});
+  Object.assign(core["zh-Hans"],{rally:"全军集结",reroll:"符文重塑",rallyHint:"全体攻速 ×1.72 · 6秒",burstHint:"攻击并减速最前5名",rerollHint:"保留等级 · 更换属性",activeSeconds:"强化 {seconds}秒",rerolled:"{rank}级重塑为{guardian}。",burstNoTargets:"等待敌人进入道路后再施放。",guardianGuideTitle:"五种守护定位 · 六个等级",rankGuide:"菱形代表1–6级，不是第六种骰子。",groveRole:"稳定强力单击",sparkRole:"高速积累能量",moonRole:"减速最前方敌人",forgeRole:"破解敌人护甲",tideRole:"对怪群造成溅射",selectedGuardian:"{guardian} · {rank}/6级 · {role}"});
+  Object.assign(core.ja,{rally:"全軍ラリー",reroll:"ルーン再鍛造",rallyHint:"全員の攻速 ×1.72・6秒",burstHint:"先頭5体を攻撃・減速",rerollHint:"ランク維持・属性変更",activeSeconds:"強化 {seconds}秒",burstNoTargets:"敵が道に入るまで待ってください。",guardianGuideTitle:"5つの役割・6ランク",rankGuide:"ひし形はランク1～6。6種目ではありません。",groveRole:"安定した強打",sparkRole:"高速チャージ",moonRole:"先頭を減速",forgeRole:"敵の装甲を破壊",tideRole:"群れへ範囲攻撃",selectedGuardian:"{guardian}・ランク{rank}/6・{role}"});
+  Object.assign(core.ko,{rally:"전군 집결",reroll:"룬 재련",rallyHint:"전체 공속 ×1.72 · 6초",burstHint:"선두 5명 공격·감속",rerollHint:"등급 유지 · 속성 변경",activeSeconds:"강화 {seconds}초",burstNoTargets:"적이 길에 들어올 때까지 기다리세요.",guardianGuideTitle:"수호자 5종 · 6등급",rankGuide:"마름모는 1~6등급이며 여섯째 주사위가 아닙니다.",groveRole:"안정적인 강타",sparkRole:"빠른 충전",moonRole:"선두 적 감속",forgeRole:"적 방어력 파괴",tideRole:"무리 범위 피해",selectedGuardian:"{guardian} · {rank}/6등급 · {role}"});
+  Object.assign(core.es,{rally:"Orden de batalla",reroll:"Reforjar runa",rallyHint:"Velocidad de todos ×1,72 · 6 s",burstHint:"Golpea y frena a los 5 primeros",rerollHint:"Conserva rango · cambia afinidad",activeSeconds:"Impulso {seconds} s",burstNoTargets:"Espera a que un enemigo entre en el camino.",guardianGuideTitle:"Cinco roles · seis rangos",rankGuide:"Los diamantes indican rango 1–6, no un sexto dado.",groveRole:"Golpes fuertes y estables",sparkRole:"Carga rápida",moonRole:"Ralentiza al primero",forgeRole:"Rompe armadura",tideRole:"Daño de área",selectedGuardian:"{guardian} · rango {rank}/6 · {role}"});
+  Object.assign(core["pt-BR"],{rally:"Ordem de batalha",reroll:"Reforjar runa",rallyHint:"Velocidade de todos ×1,72 · 6 s",burstHint:"Atinge e atrasa os 5 primeiros",rerollHint:"Mantém nível · muda afinidade",activeSeconds:"Impulso {seconds} s",burstNoTargets:"Espere um inimigo entrar na rota.",guardianGuideTitle:"Cinco funções · seis níveis",rankGuide:"Diamantes indicam níveis 1–6, não um sexto dado.",groveRole:"Golpes fortes e estáveis",sparkRole:"Carga rápida",moonRole:"Atrasa o primeiro",forgeRole:"Quebra armadura",tideRole:"Dano em área",selectedGuardian:"{guardian} · nível {rank}/6 · {role}"});
+  Object.assign(core.fr,{rally:"Ordre de bataille",reroll:"Reforger la rune",rallyHint:"Vitesse de tous ×1,72 · 6 s",burstHint:"Frappe et ralentit les 5 premiers",rerollHint:"Garde le rang · change l’affinité",activeSeconds:"Bonus {seconds} s",burstNoTargets:"Attendez qu’un ennemi entre sur la route.",guardianGuideTitle:"Cinq rôles · six rangs",rankGuide:"Les losanges indiquent les rangs 1–6, pas un sixième dé.",groveRole:"Frappes fortes et stables",sparkRole:"Charge rapide",moonRole:"Ralentit le premier",forgeRole:"Brise l’armure",tideRole:"Dégâts de zone",selectedGuardian:"{guardian} · rang {rank}/6 · {role}"});
+  Object.assign(core.de,{rally:"Kampfbefehl",reroll:"Rune neu schmieden",rallyHint:"Tempo aller ×1,72 · 6 s",burstHint:"Trifft und bremst die ersten 5",rerollHint:"Rang bleibt · Affinität wechselt",activeSeconds:"Bonus {seconds} s",burstNoTargets:"Warte, bis ein Gegner den Weg betritt.",guardianGuideTitle:"Fünf Rollen · sechs Ränge",rankGuide:"Rauten zeigen Rang 1–6, keinen sechsten Würfel.",groveRole:"Starke stetige Treffer",sparkRole:"Schnelles Aufladen",moonRole:"Bremst den vordersten Feind",forgeRole:"Bricht Panzerung",tideRole:"Flächenschaden",selectedGuardian:"{guardian} · Rang {rank}/6 · {role}"});
+  Object.assign(core.it,{rally:"Ordine di battaglia",reroll:"Riforgia runa",rallyHint:"Velocità di tutti ×1,72 · 6 s",burstHint:"Colpisce e rallenta i primi 5",rerollHint:"Mantiene rango · cambia affinità",activeSeconds:"Potenziamento {seconds} s",burstNoTargets:"Attendi che un nemico entri nel percorso.",guardianGuideTitle:"Cinque ruoli · sei ranghi",rankGuide:"I rombi indicano i ranghi 1–6, non un sesto dado.",groveRole:"Colpi forti e costanti",sparkRole:"Carica rapida",moonRole:"Rallenta il primo",forgeRole:"Rompe l’armatura",tideRole:"Danno ad area",selectedGuardian:"{guardian} · rango {rank}/6 · {role}"});
+  Object.assign(core.ru,{rally:"Боевой сбор",reroll:"Перековка руны",rallyHint:"Скорость всех ×1,72 · 6 с",burstHint:"Удар и замедление первых 5",rerollHint:"Ранг сохранён · стихия меняется",activeSeconds:"Усиление {seconds} с",burstNoTargets:"Дождитесь врага на дороге.",guardianGuideTitle:"Пять ролей · шесть рангов",rankGuide:"Ромбы — ранги 1–6, а не шестой куб.",groveRole:"Сильные ровные удары",sparkRole:"Быстрый заряд",moonRole:"Замедляет лидера",forgeRole:"Ломает броню",tideRole:"Урон по группе",selectedGuardian:"{guardian} · ранг {rank}/6 · {role}"});
+  Object.assign(core.hi,{rally:"युद्ध आह्वान",reroll:"रून पुनर्गठन",rallyHint:"सभी की गति ×1.72 · 6 सेकंड",burstHint:"आगे के 5 पर वार व धीमा",rerollHint:"रैंक वही · तत्व बदले",activeSeconds:"शक्ति {seconds} सेकंड",burstNoTargets:"शत्रु के मार्ग में आने की प्रतीक्षा करें।",guardianGuideTitle:"पाँच भूमिकाएँ · छह रैंक",rankGuide:"हीरे रैंक 1–6 दिखाते हैं, छठा पासा नहीं।",groveRole:"स्थिर शक्तिशाली वार",sparkRole:"तेज़ चार्ज",moonRole:"सबसे आगे को धीमा",forgeRole:"कवच तोड़ता है",tideRole:"समूह पर क्षेत्रीय क्षति",selectedGuardian:"{guardian} · रैंक {rank}/6 · {role}"});
+  Object.assign(core.ar,{rally:"نداء المعركة",reroll:"إعادة صوغ الرون",rallyHint:"سرعة الجميع ×1.72 · 6 ث",burstHint:"يضرب ويبطئ أول 5",rerollHint:"يحفظ الرتبة · يبدل النوع",activeSeconds:"تعزيز {seconds} ث",burstNoTargets:"انتظر دخول عدو إلى المسار.",guardianGuideTitle:"خمسة أدوار · ست رتب",rankGuide:"المعينات تعني الرتب 1–6 وليست نرداً سادساً.",groveRole:"ضربات قوية ثابتة",sparkRole:"شحن سريع",moonRole:"يبطئ العدو الأول",forgeRole:"يكسر الدرع",tideRole:"ضرر جماعي",selectedGuardian:"{guardian} · الرتبة {rank}/6 · {role}"});
+  Object.assign(core.ja,{rerolled:"ランク{rank}を{guardian}に再鍛造。"});
+  Object.assign(core.ko,{rerolled:"{rank}등급을 {guardian}(으)로 재련했습니다."});
+  Object.assign(core.es,{rerolled:"Rango {rank} reforjado como {guardian}."});
+  Object.assign(core["pt-BR"],{rerolled:"Nível {rank} reforjado como {guardian}."});
+  Object.assign(core.fr,{rerolled:"Rang {rank} reforgé en {guardian}."});
+  Object.assign(core.de,{rerolled:"Rang {rank} zu {guardian} neu geschmiedet."});
+  Object.assign(core.it,{rerolled:"Rango {rank} riforgiato in {guardian}."});
+  Object.assign(core.ru,{rerolled:"Ранг {rank} перекован в {guardian}."});
+  Object.assign(core.hi,{rerolled:"रैंक {rank} को {guardian} में पुनर्गठित किया।"});
+  Object.assign(core.ar,{rerolled:"أعيد صوغ الرتبة {rank} إلى {guardian}."});
   const dictionaries = { en };
   Object.entries(core).forEach(([code, values]) => {
     dictionaries[code] = window.AnimalDiceBastionLocaleData?.[code] || {...en, ...values};

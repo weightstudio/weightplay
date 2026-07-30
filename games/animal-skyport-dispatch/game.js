@@ -173,6 +173,7 @@
   let save = normalizeSave(saved);
   writeStorage(saveKey, JSON.stringify(save));
   let state = {contract:Boolean(save.insuranceReady)};
+  let centeredShift = save.unlocked;
   let resultActionClaimed = false;
   let dragging = false;
   let inputMode = '';
@@ -185,6 +186,7 @@
   let insuranceConfirmDueAt = 0;
   let insuranceConfirmRemaining = 0;
   let windowFocused = document.hasFocus();
+  let stageSettleTimer = 0;
   const t = (key, values = {}) => Object.entries(values).reduce((value, [name, replacement]) => value.replace(`{${name}}`, replacement), strings[locale][key]);
   function normalizeResultActions() {
     const panel = $('result');
@@ -225,7 +227,7 @@
         const target = id === 'mainScreen'
           ? $('startBtn')
           : id === 'stageScreen'
-            ? document.querySelector('.stage-card.selected:not(:disabled)') || document.querySelector('.stage-card:not(:disabled)')
+            ? document.querySelector(`.stage-card[data-shift="${state.shift}"]`) || document.querySelector('.stage-card[aria-disabled="false"]')
             : id === 'result'
               ? $('nextBtn')
               : $('flight');
@@ -295,21 +297,32 @@
     for (let shift = 1; shift <= TOTAL_SHIFTS; shift += 1) {
       const config = shiftConfig[shift];
       const card = document.createElement('button');
-      card.className = `stage-card${shift === state.shift ? ' selected' : ''}`;
-      card.disabled = shift > save.unlocked;
-      const availability = shift > save.unlocked ? 'stageLocked' : shift === save.unlocked ? 'stageReady' : 'stageReplay';
+      const locked = shift > save.unlocked;
+      card.className = `stage-card${shift === state.shift ? ' selected' : ''}${locked ? ' locked' : ''}`;
+      card.dataset.shift = String(shift);
+      card.tabIndex = shift === centeredShift ? 0 : -1;
+      card.setAttribute('aria-disabled', locked ? 'true' : 'false');
+      card.setAttribute('aria-keyshortcuts', 'ArrowLeft ArrowRight Home End');
+      const availability = locked ? 'stageLocked' : shift === save.unlocked ? 'stageReady' : 'stageReplay';
       card.innerHTML = `<strong>${t('shift', {n:shift})}</strong><span>${t('objective', {done:0, goal:config.goal})}</span><small><span>${t(availability)}</span><span class="stage-medals">${t('medals', {n:save.medals?.[shift] || 0})}</span></small>`;
-      card.onclick = () => { state.shift = shift; startBattle(); };
+      card.addEventListener('focus', () => {
+        centeredShift = shift;
+        $('stageRail').querySelectorAll('.stage-card').forEach((candidate) => { candidate.tabIndex = candidate === card ? 0 : -1; });
+        if (!locked) state.shift = shift;
+        syncCenteredStageHighlight(card);
+      });
+      card.onclick = () => { if (locked) return; state.shift = shift; startBattle(); };
       $('stageRail').append(card);
     }
     requestAnimationFrame(syncCenteredStageHighlight);
   }
-  function syncCenteredStageHighlight() {
+  function syncCenteredStageHighlight(explicitCard = null) {
     const rail = $('stageRail');
     const railRect = rail.getBoundingClientRect();
     const center = railRect.left + railRect.width / 2;
     const cards = [...rail.querySelectorAll('.stage-card')];
-    const nearest = cards.reduce((best, card) => {
+    const preferred = explicitCard?.matches?.('.stage-card') ? explicitCard : null;
+    const nearest = preferred || cards.reduce((best, card) => {
       const rect = card.getBoundingClientRect();
       const distance = Math.abs(rect.left + rect.width / 2 - center);
       return !best || distance < best.distance ? {card, distance} : best;
@@ -320,8 +333,25 @@
       if (centered) card.setAttribute('aria-current', 'true');
       else card.removeAttribute('aria-current');
     });
+    if (nearest) centeredShift = Number(nearest.dataset.shift);
   }
-  $('stageRail').addEventListener('wonder:stage-snap', syncCenteredStageHighlight);
+  function focusStageCard(shift) {
+    const target = Math.max(1, Math.min(TOTAL_SHIFTS, Number(shift) || 1));
+    const card = document.querySelector(`.stage-card[data-shift="${target}"]`);
+    if (!card) return;
+    centeredShift = target;
+    card.scrollIntoView({behavior:'auto', inline:'center', block:'nearest'});
+    syncCenteredStageHighlight(card);
+    card.focus({preventScroll:true});
+  }
+  $('stageRail').addEventListener('scroll', () => {
+    clearTimeout(stageSettleTimer);
+    stageSettleTimer = setTimeout(() => {
+      stageSettleTimer = 0;
+      if (!$('stageScreen').classList.contains('hidden')) syncCenteredStageHighlight();
+    }, 100);
+  }, {passive:true});
+  $('stageRail').addEventListener('wonder:stage-snap', () => syncCenteredStageHighlight());
   function renderHud() {
     $('shiftText').textContent = t('shift', {n:state.shift});
     $('scoreText').textContent = `${state.done}/${state.goal} \u00b7 ${t('errors', {done:state.errors})}`;
@@ -703,7 +733,7 @@
   function focusCurrentBattleAction() {
     $('flight').focus({preventScroll:true});
   }
-  $('startBtn').onclick = () => { state.shift = save.unlocked; show('stageScreen'); renderStages(); };
+  $('startBtn').onclick = () => { state.shift = save.unlocked; centeredShift = state.shift; show('stageScreen'); renderStages(); };
   $('soundToggle').onclick = () => {
     window.WonderSound?.unlock?.();
     const nextMuted = !Boolean(window.WonderSound?.isMuted?.());
@@ -719,7 +749,15 @@
   });
   $('contractToggle').onchange = (event) => { clearInsuranceConfirmation(); state.contract = event.target.checked; renderContractControls(); };
   $('stageRail').addEventListener('keydown', (event) => {
-    if (event.repeat && (event.key === 'Enter' || event.key === ' ')) event.preventDefault();
+    const card = event.target.closest('.stage-card');
+    if (!card) return;
+    if (event.repeat && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); return; }
+    const rtl = document.documentElement.dir === 'rtl';
+    const delta = event.key === 'ArrowLeft' ? (rtl ? 1 : -1) : event.key === 'ArrowRight' ? (rtl ? -1 : 1) : 0;
+    const next = event.key === 'Home' ? 1 : event.key === 'End' ? TOTAL_SHIFTS : delta ? Number(card.dataset.shift) + delta : null;
+    if (next === null) return;
+    event.preventDefault();
+    focusStageCard(next);
   });
   $('insuranceBtn').addEventListener('keydown', (event) => {
     if (event.repeat && (event.key === 'Enter' || event.key === ' ')) event.preventDefault();
@@ -742,7 +780,7 @@
     persist();
     renderContractControls();
     requestAnimationFrame(() => {
-      (document.querySelector('.stage-card.selected:not(:disabled)') || document.querySelector('.stage-card:not(:disabled)'))?.focus({preventScroll:true});
+      (document.querySelector(`.stage-card[data-shift="${state.shift}"]`) || document.querySelector('.stage-card[aria-disabled="false"]'))?.focus({preventScroll:true});
     });
   };
   $('stageBack').onclick = () => { clearInsuranceConfirmation(); renderContractControls(); show('mainScreen'); };

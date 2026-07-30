@@ -400,12 +400,13 @@ body.garden-stage .level-grid button.is-centered {
   transition: opacity .14s ease, transform .14s ease;
 }
 
-.tile-atlas-image {
+.tile-image > .tile-atlas-image {
   position: absolute;
   display: block;
-  width: 400%;
-  max-width: none;
-  height: 600%;
+  width: 400% !important;
+  max-width: none !important;
+  height: 600% !important;
+  max-height: none !important;
   object-fit: fill;
   user-select: none;
   -webkit-user-drag: none;

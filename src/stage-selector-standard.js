@@ -19,7 +19,7 @@
   let appliedStageHeight = 0;
   const savedStageStyles = new WeakMap();
   const savedReserveStyles = new WeakMap();
-  const nativeStageScalers = new Set(["wonder-crash", "campus-dash", "animal-rope-rescue", "animal-coloring-studio", "animal-bubble-safari", "animal-rune-reels", "animal-triple-match"]);
+  const nativeStageScalers = new Set(["wonder-crash", "campus-dash", "animal-rope-rescue", "animal-coloring-studio", "animal-bubble-safari", "animal-rune-reels", "animal-triple-match", "garden-tiles"]);
   const stageRootByGame = {
     "animal-color-link": "#stage",
     "animal-guard-yard": "#menuPanel",
@@ -180,6 +180,21 @@
     return Boolean(root && !root.hidden && !root.classList.contains("hidden") && root.getClientRects().length && getComputedStyle(root).visibility !== "hidden");
   }
 
+  function clearStageVariables() {
+    const style = document.documentElement.style;
+    [
+      "--wp-stage-logical-width",
+      "--wp-stage-logical-height",
+      "--wp-stage-canvas-scale",
+      "--wp-stage-canvas-inverse-scale",
+      "--wp-stage-canvas-left",
+      "--wp-stage-canvas-top",
+      "--wp-stage-canvas-rendered-width",
+      "--wp-stage-canvas-rendered-height",
+      "--wp-stage-reserve-top",
+    ].forEach((property) => style.removeProperty(property));
+  }
+
   function updateStageCanvas() {
     const reserveHeight = isKidsAudience() ? 0 : STAGE_RESERVE_HEIGHT;
     const activeRails = [...document.querySelectorAll("[data-wp-stage-rail]")]
@@ -197,6 +212,7 @@
     if (!useSharedScaler) {
       restoreStageStyles(appliedStageRoot);
       restoreReserveStyles(appliedStageReserve);
+      clearStageVariables();
       appliedStageRoot = null;
       appliedStageReserve = null;
       return;
