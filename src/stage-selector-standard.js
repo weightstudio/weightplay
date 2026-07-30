@@ -288,6 +288,7 @@
     if (isKidsAudience()) return;
     const button = document.querySelector(mainStartByGame[gameId()] || "[data-wp-main-start]");
     if (!button) return;
+    if (button.closest('[data-runtime-localize="off"]')) return;
     button.dataset.wpMainStart = "true";
     const pageLanguage = document.documentElement.lang.toLowerCase();
     const label = pageLanguage.startsWith("zh-hans") || pageLanguage.startsWith("zh-cn")

@@ -65,8 +65,13 @@
     document.querySelectorAll("[data-i18n-alt]").forEach(node=>node.setAttribute("alt",fmt(node.dataset.i18nAlt)));
     updateMainProgress();renderStages();updateStageChapter();updateHud();
     window.dispatchEvent(new CustomEvent("wonder:locale-change",{detail:{locale}}));
+    document.title=`${fmt("title")} | WeightPlay`;
   }
-  $("localeSelect").addEventListener("change",event=>{locale=event.target.value;safeSet("weightplay-locale",locale);applyLocale()});
+  $("localeSelect").addEventListener("change",event=>{
+    locale=event.target.value;safeSet("weightplay-locale",locale);
+    window.WonderI18n?.setLocale?.(locale);
+    applyLocale();
+  });
 
   function updateMainProgress(){
     const done=Object.keys(save.cleared).length,stars=Object.values(save.stars).reduce((sum,n)=>sum+n,0);
@@ -647,7 +652,7 @@
     for(const [image,src] of sources){image.onload=done;image.onerror=done;image.src=src}
   }
   window.__animalHoneyShieldSmoke={
-    startStage,resetStage,snapshot:()=>({
+    startStage,resetStage,finish,snapshot:()=>({
       screen,stage:stageIndex+1,mode:state.mode,elapsed:state.elapsed,nectar:state.nectar,
       strokes:state.strokes.length,
       strokeLengths:state.strokes.map(stroke=>stroke.points.slice(1).reduce((sum,point,index)=>sum+Math.hypot(point.x-stroke.points[index].x,point.y-stroke.points[index].y),0)),

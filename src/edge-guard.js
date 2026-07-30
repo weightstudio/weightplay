@@ -38,6 +38,7 @@
   }
 
   const edgeSize = 44;
+  const hardEdgeSize = 20;
   const minSwipe = 8;
   const mobileGameMaxWidth = 820;
   let gesture = null;
@@ -298,10 +299,15 @@
     const touch = event.touches[0];
     const width = window.innerWidth || document.documentElement.clientWidth || 0;
     const fromEdge = touch.clientX <= edgeSize || touch.clientX >= width - edgeSize;
+    const fromHardEdge = touch.clientX <= hardEdgeSize || touch.clientX >= width - hardEdgeSize;
 
     gesture = fromEdge
-      ? { x: touch.clientX, y: touch.clientY, blocking: false }
+      ? { x: touch.clientX, y: touch.clientY, blocking: fromHardEdge }
       : null;
+
+    // Claim only the native browser-history gutter immediately. The rest of
+    // the edge band keeps directional detection for Stage and game dragging.
+    if (fromHardEdge && event.cancelable) event.preventDefault();
   }
 
   function move(event) {
@@ -313,7 +319,7 @@
     const horizontal = Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > minSwipe;
 
     if (horizontal) gesture.blocking = true;
-    if (gesture.blocking) event.preventDefault();
+    if (gesture.blocking && event.cancelable) event.preventDefault();
   }
 
   function end() {
@@ -355,7 +361,7 @@
   } else {
     installPlayableFocus();
   }
-  window.addEventListener("touchstart", start, { passive: true, capture: true });
+  window.addEventListener("touchstart", start, { passive: false, capture: true });
   window.addEventListener("touchmove", move, { passive: false, capture: true });
   window.addEventListener("touchend", end, { passive: true, capture: true });
   window.addEventListener("touchcancel", end, { passive: true, capture: true });
