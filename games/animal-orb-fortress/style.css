@@ -1336,12 +1336,12 @@ body.orb-fortress-playing #stagePanel #stageBackBtn {
 
 @media (max-height: 560px) and (orientation: landscape) {
   body.wp-stage-select-active #stagePanel.stage-panel {
-    grid-template-rows: 48px minmax(0, 1fr) !important;
-    gap: 6px !important;
+    grid-template-rows: 60px minmax(0, 1fr) !important;
+    gap: 4px !important;
     padding: 6px 8px !important;
   }
   body.wp-stage-select-active #stagePanel .stage-content {
-    grid-template-columns: minmax(0, 1fr) 300px !important;
+    grid-template-columns: minmax(0, 1fr) 360px !important;
     grid-template-rows: 48px minmax(0, 1fr) !important;
     gap: 6px 8px !important;
     min-width: 0 !important;
