@@ -351,17 +351,17 @@
     }
     return false;
   }
-  function buildNavigationField(spec,overrideStroke=null,overridePoints=null){
+  function buildNavigationField(spec,goalPoint=spec.dog){
     const cell=20,cols=50,rows=31,total=cols*rows,blocked=new Uint8Array(total),distance=new Int16Array(total);
     distance.fill(-1);
     const strokes=state.strokes;
     for(let row=0;row<rows;row++)for(let col=0;col<cols;col++){
       const x=col*cell+cell/2,y=row*cell+cell/2,index=row*cols+col;
       const solidBlocked=spec.solids.some(solid=>pointHitsSolid({x,y},solid,19));
-      const lineBlocked=strokes.some(stroke=>pointHitsStroke({x,y},stroke===overrideStroke?{...stroke,points:overridePoints}:stroke,22));
+      const lineBlocked=strokes.some(stroke=>pointHitsStroke({x,y},stroke,22));
       blocked[index]=solidBlocked||lineBlocked?1:0;
     }
-    let goalCol=Math.max(0,Math.min(cols-1,Math.floor(spec.dog.x/cell))),goalRow=Math.max(0,Math.min(rows-1,Math.floor(spec.dog.y/cell)));
+    let goalCol=Math.max(0,Math.min(cols-1,Math.floor(goalPoint.x/cell))),goalRow=Math.max(0,Math.min(rows-1,Math.floor(goalPoint.y/cell)));
     if(blocked[goalRow*cols+goalCol]){
       outer:for(let radius=1;radius<5;radius++)for(let dy=-radius;dy<=radius;dy++)for(let dx=-radius;dx<=radius;dx++){
         const col=goalCol+dx,row=goalRow+dy;if(col<0||col>=cols||row<0||row>=rows||blocked[row*cols+col])continue;
@@ -465,20 +465,23 @@
       state.bees.forEach(bee=>{bee.attachedStroke=null});
       state.mover=null;
     }
-    const wallTargets=new Map();
+    const wallTargets=new Map(),wallApproaches=new Map();
     if(state.mover){
-      if(state.mover.phase==="gather"&&!state.mover.cohort.length&&(blockedBees.length>=3||state.elapsed>2.2))state.mover.cohort=[...blockedBees];
-      const participants=(state.mover.cohort.length?state.mover.cohort:blockedBees).filter(bee=>state.bees.includes(bee));
+      if(state.mover.phase==="gather"&&!state.mover.cohort.length)state.mover.cohort=[...blockedBees];
+      const participants=blockedBees;
       const center={x:participants.reduce((sum,bee)=>sum+bee.x,0)/participants.length,y:participants.reduce((sum,bee)=>sum+bee.y,0)/participants.length};
       const contact=closestStrokePoint(state.mover.stroke,center),side=(center.x-contact.x)*contact.nx+(center.y-contact.y)*contact.ny>=0?1:-1;
+      const approach={x:contact.x+contact.nx*34*side,y:contact.y+contact.ny*34*side},gatherField=buildNavigationField(spec,approach);
       participants.forEach((bee,index)=>{
         const slot=(index-(participants.length-1)/2)*42;
         wallTargets.set(bee,{x:contact.x+contact.nx*22*side-contact.ny*slot,y:contact.y+contact.ny*22*side+contact.nx*slot});
+        wallApproaches.set(bee,navigationDirection(gatherField,bee.x,bee.y));
       });
     }
     for(const bee of state.bees){
       bee.life+=dt;bee.cooldown=Math.max(0,bee.cooldown-dt);
-      const route=routes.get(bee),navigationTarget=route?.distance===0?spec.dog:route,wallTarget=!route?wallTargets.get(bee):null,target=navigationTarget||wallTarget||{x:bee.x,y:bee.y};
+      const route=routes.get(bee),navigationTarget=route?.distance===0?spec.dog:route,wallTarget=!route?wallTargets.get(bee):null,wallApproach=wallApproaches.get(bee);
+      const target=navigationTarget||(wallApproach?.distance===0?wallTarget:wallApproach)||wallTarget||{x:bee.x,y:bee.y};
       bee.intent=route?"attack":wallTarget?"moveWall":"wait";
       if(route)bee.attachedStroke=null;
       const dx=target.x-bee.x,dy=target.y-bee.y,length=Math.hypot(dx,dy)||1;
@@ -496,7 +499,7 @@
       if(Math.hypot(bee.x-spec.dog.x,bee.y-spec.dog.y)<48){finish(false);return}
     }
     if(state.mover&&state.mover.phase==="gather"){
-      const participants=(state.mover.cohort.length?state.mover.cohort:blockedBees).filter(bee=>state.bees.includes(bee));
+      const participants=state.mover.cohort.filter(bee=>state.bees.includes(bee));
       const attached=participants.filter(bee=>bee.attachedStroke===state.mover.stroke);
       state.mover.maxAttached=Math.max(state.mover.maxAttached,attached.length);state.maxGroupAttached=Math.max(state.maxGroupAttached,attached.length);
       if(attached.length===participants.length&&state.mover.cohort.length){
@@ -504,6 +507,8 @@
       }
     }
     if(state.mover&&state.mover.phase==="push"){
+      for(const bee of blockedBees)if(bee.attachedStroke===state.mover.stroke&&!state.mover.cohort.includes(bee))state.mover.cohort.push(bee);
+      state.maxGroupAttached=Math.max(state.maxGroupAttached,state.mover.cohort.length);
       const direction=PUSH_DIRECTIONS[state.mover.directionIndex],attached=state.mover.cohort.filter(bee=>bee.attachedStroke===state.mover.stroke),distance=(80+attached.length*26)*dt;
       if(tryMoveStroke(state.mover.stroke,direction.x*distance,direction.y*distance,spec)){
         attached.forEach(bee=>{bee.x+=direction.x*distance;bee.y+=direction.y*distance;bee.prevX=bee.x;bee.prevY=bee.y});
