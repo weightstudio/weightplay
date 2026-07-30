@@ -2927,6 +2927,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Choose a source vessel, then a destination.": "एक स्रोत पोत चुनें, फिर एक गंतव्य।",
   "Choose a Spring": "एक स्प्रिंग चुनें",
   "Choose a stage from the swipe stage rail and read the threat, plan, and reward notes.": "स्वाइप स्टेज रेल से एक स्टेज चुनें और धमकी, योजना और इनाम नोट्स पढ़ें।",
+  "Choose a stage.": "एक मंच चुनें.",
   "Choose a star and continue through connected stars. A star may be visited more than once, but every connecting trail may be crossed only once. The constellation is complete only after all trails are lit in one continuous route.": "एक तारा चुनें और जुड़े तारों के माध्यम से आगे बढ़ें। किसी तारे का दौरा एक से अधिक बार किया जा सकता है, लेकिन प्रत्येक संपर्क पथ को केवल एक बार ही पार किया जा सकता है। सभी पथों को एक सतत मार्ग में रोशन करने के बाद ही तारामंडल पूरा होता है।",
   "Choose a star connected to the glowing star.": "चमकते तारे से जुड़ा हुआ तारा चुनें।",
   "Choose a star to begin.": "आरंभ करने के लिए एक सितारा चुनें.",

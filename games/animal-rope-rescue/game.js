@@ -649,7 +649,15 @@
   }
 
   function renderStages() {
-    nodes.stagePanel.innerHTML = `<div class="stage-shell-head"><button type="button" class="stage-return" data-wp-return="stage" data-stage-main aria-label="${t("backToMain")}">&larr;</button><div><strong>${t("stages")}</strong><span>${t("menuHint")}</span></div></div><div class="stage-rail" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep">` + stages
+    const stageReturn = nodes.stagePanel.querySelector("[data-stage-main]");
+    const stageTitleNode = nodes.stagePanel.querySelector("#stagePanelTitle");
+    const stageHint = nodes.stagePanel.querySelector("#stagePanelHint");
+    const rail = nodes.stagePanel.querySelector("#stageRail");
+    if (!stageReturn || !stageTitleNode || !stageHint || !rail) return;
+    stageReturn.setAttribute("aria-label", t("backToMain"));
+    stageTitleNode.textContent = t("stages");
+    stageHint.textContent = t("menuHint");
+    rail.innerHTML = stages
       .map((stage, index) => {
         const stageNo = index + 1;
         const locked = stageNo > save.unlocked;
@@ -671,7 +679,7 @@
           </button>
         `;
       })
-      .join("") + `</div>`;
+      .join("");
   }
 
   function focusStage(stageNo = save.unlocked) {

@@ -2927,6 +2927,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Choose a source vessel, then a destination.": "出発船舶を選択してから、目的地を選択します。",
   "Choose a Spring": "スプリングを選ぶ",
   "Choose a stage from the swipe stage rail and read the threat, plan, and reward notes.": "スワイプ ステージ レールからステージを選択し、脅威、計画、報酬に関するメモを読みます。",
+  "Choose a stage.": "ステージを選択してください。",
   "Choose a star and continue through connected stars. A star may be visited more than once, but every connecting trail may be crossed only once. The constellation is complete only after all trails are lit in one continuous route.": "星を選択し、接続された星を続行します。星は複数回訪れることができますが、すべての接続トレイルを横切ることができるのは 1 回だけです。コンステレーションは、1 つの連続したルートですべてのトレイルが点灯した後にのみ完成します。",
   "Choose a star connected to the glowing star.": "光る星とつながっている星を選択してください。",
   "Choose a star to begin.": "開始するには星を選択してください。",

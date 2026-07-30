@@ -652,7 +652,10 @@
     }
     let header = firstVisible(HEADER_SELECTORS, screen);
     if (immutableSceneControls) {
-      const permanentHeader = firstVisible([`[data-wp-return="${type}"]`], document)?.closest("header");
+      const permanentReturn = firstVisible([`[data-wp-return="${type}"]`], document);
+      const permanentHeader = permanentReturn?.closest(
+        "header,.stage-shell-head,.hud,.hud-row,.battle-header,.topbar",
+      ) || permanentReturn?.parentElement;
       if (permanentHeader) header = permanentHeader;
     }
     if (!header && type === "battle") {
@@ -708,14 +711,14 @@
         ) || screen;
         const externalBattleReturn = [...battleRoot.querySelectorAll('[data-wp-return="battle"]')]
           .find((control) => !control.classList.contains("lobby-return") && control.id !== "lobbyReturn");
-        if (externalBattleReturn && !header.contains(externalBattleReturn)) {
+        if (!immutableSceneControls && externalBattleReturn && !header.contains(externalBattleReturn)) {
           externalBattleReturn.hidden = false;
           externalBattleReturn.classList.remove("is-hidden", "hidden", "wp-shell-legacy-control");
           header.prepend(externalBattleReturn);
         }
       }
       const battleReturn = first(RETURN_SELECTORS, header);
-      if (battleReturn) battleReturn.dataset.wpReturn = "battle";
+      if (battleReturn && !immutableSceneControls) battleReturn.dataset.wpReturn = "battle";
       normalizeReturn(header);
       host.hidden = true;
       return;
@@ -859,7 +862,15 @@
     const observer = new MutationObserver((records) => {
       if (records.some(mutationAffectsPlacement)) schedulePlace();
     });
+    const syncPlace = () => {
+      if (placementFrame) cancelAnimationFrame(placementFrame);
+      placementFrame = 0;
+      observer.disconnect();
+      place();
+      observePlacement();
+    };
     observePlacement();
+    window.addEventListener("weightplay:shell-sync", syncPlace);
     window.addEventListener("resize", schedulePlace);
     window.addEventListener("load", schedulePlace, { once: true });
     setTimeout(schedulePlace, 0);

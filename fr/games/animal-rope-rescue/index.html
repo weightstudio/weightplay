@@ -102,7 +102,16 @@
         </div>
       </section>
 
-      <section id="stagePanel" class="stage-panel hidden" aria-label="Stages" data-wp-canvas-max-width="920"></section>
+      <section id="stagePanel" class="stage-panel hidden" aria-label="Stages" data-wp-canvas-max-width="920">
+        <div class="stage-shell-head">
+          <button id="stageMainBackBtn" type="button" class="stage-return" data-wp-return="stage" data-stage-main aria-label="Back to Main">&larr;</button>
+          <div>
+            <strong id="stagePanelTitle">Stages</strong>
+            <span id="stagePanelHint">Choose a stage.</span>
+          </div>
+        </div>
+        <div id="stageRail" class="stage-rail" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep"></div>
+      </section>
 
       <section id="gamePanel" class="game-panel hidden" data-wp-canvas-max-width="920">
         <div class="hud-row">

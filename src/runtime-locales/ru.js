@@ -2927,6 +2927,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "Choose a source vessel, then a destination.": "Выберите судно-источник, а затем пункт назначения.",
   "Choose a Spring": "Выберите весну",
   "Choose a stage from the swipe stage rail and read the threat, plan, and reward notes.": "Выберите этап на панели этапов и прочтите заметки об угрозах, планах и наградах.",
+  "Choose a stage.": "Выберите сцену.",
   "Choose a star and continue through connected stars. A star may be visited more than once, but every connecting trail may be crossed only once. The constellation is complete only after all trails are lit in one continuous route.": "Выберите звезду и продолжайте через связанные звезды. Звезду можно посетить несколько раз, но каждый соединяющий ее путь можно пересечь только один раз. Созвездие будет завершено только после того, как все тропы будут освещены на одном непрерывном маршруте.",
   "Choose a star connected to the glowing star.": "Выберите звезду, связанную с светящейся звездой.",
   "Choose a star to begin.": "Выберите звезду, чтобы начать.",

@@ -271,6 +271,7 @@
   window.addEventListener("resize", queueUpdate, { passive: true });
   window.visualViewport?.addEventListener("resize", queueUpdate, { passive: true });
   document.addEventListener("click", () => window.setTimeout(queueUpdate, 0), true);
+  window.addEventListener("weightplay:battle-sync", update);
   window.addEventListener("weightplay:battle-open", queueUpdate);
   queueUpdate();
 })();

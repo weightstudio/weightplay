@@ -70,8 +70,12 @@
     </section>
 
     <section class="screen stage-screen wp-stage-art-shell hidden" data-screen="stage" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="360" data-wp-stage-art="../../assets/animal-word-trails-cover.webp" style="--wp-stage-art: url('../../assets/animal-word-trails-cover.webp')">
-      <button class="back" id="stageBack" data-wp-return="stage" data-aria="backMain" aria-label="Back">&larr;</button>
-      <header><strong data-copy="chooseStage">Choose a trail</strong><span id="stageProgress"></span><button id="album" class="mini" data-copy="album">Album</button></header>
+      <header class="stage-screen-head">
+        <button class="back" id="stageBack" data-wp-return="stage" data-aria="backMain" aria-label="Back">&larr;</button>
+        <strong data-copy="chooseStage">Choose a trail</strong>
+        <span id="stageProgress"></span>
+        <button id="album" class="mini" data-copy="album">Album</button>
+      </header>
       <div class="stage-rail" id="stageRail" data-aria="stages" aria-label="Stages"></div>
       <p id="stageFeedback" class="stage-feedback" aria-live="polite"></p>
       <button id="playStage" hidden type="button" tabindex="-1" aria-hidden="true"></button>

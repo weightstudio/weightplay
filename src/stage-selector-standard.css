@@ -373,8 +373,8 @@ html:has(body.wp-stage-select-active) {
   overflow: hidden !important;
 }
 
-body.wp-standard-stage-page :is(.topbar, .game-page-info, .wp-tutorial-button, .sound-toggle, .weightplay-version-badge):not([data-wp-logical-stage-canvas] *),
-body.wp-stage-select-active :is(.topbar, .game-page-info, .wp-tutorial-button, .sound-toggle, .weightplay-version-badge):not([data-wp-logical-stage-canvas] *) {
+body.wp-standard-stage-page :is(.topbar, .game-page-info, .wp-tutorial-button, .sound-toggle, .weightplay-version-badge):not([data-wp-logical-stage-canvas] *):not([data-wp-native-stage-canvas] *),
+body.wp-stage-select-active :is(.topbar, .game-page-info, .wp-tutorial-button, .sound-toggle, .weightplay-version-badge):not([data-wp-logical-stage-canvas] *):not([data-wp-native-stage-canvas] *) {
   display: none !important;
 }
 

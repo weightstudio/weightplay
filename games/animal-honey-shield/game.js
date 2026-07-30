@@ -76,8 +76,14 @@
     screen=next;document.body.dataset.screen=next;
     $("mainGroup").hidden=next!=="main";$("stageScreen").hidden=next!=="stage";$("battleScreen").hidden=next!=="battle";
     document.body.classList.toggle("wp-stage-select-active",next==="stage");
+    document.body.classList.toggle("wp-shell-main-active",next==="main");
+    document.body.classList.toggle("wp-shell-stage-active",next==="stage");
     document.body.classList.toggle("wp-shell-battle-active",next==="battle");
-    if(next==="stage"){renderStages();requestAnimationFrame(centerSelected)}
+    if(next==="stage")renderStages();
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
+    window.dispatchEvent(new Event("weightplay:stage-sync"));
+    window.dispatchEvent(new Event("weightplay:battle-sync"));
+    if(next==="stage")requestAnimationFrame(centerSelected);
     if(next==="battle"){
       window.dispatchEvent(new CustomEvent("weightplay:battle-open"));
       cancelAnimationFrame(raf);state.last=performance.now();raf=requestAnimationFrame(loop);

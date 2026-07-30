@@ -2927,6 +2927,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "Choose a source vessel, then a destination.": "選擇來源船，然後選擇目的地。",
   "Choose a Spring": "選擇一個春天",
   "Choose a stage from the swipe stage rail and read the threat, plan, and reward notes.": "從滑動式舞台導軌中選擇一個舞台並閱讀威脅、計劃和獎勵說明。",
+  "Choose a stage.": "選擇一個階段。",
   "Choose a star and continue through connected stars. A star may be visited more than once, but every connecting trail may be crossed only once. The constellation is complete only after all trails are lit in one continuous route.": "選擇一顆星星並繼續瀏覽連接的星星。一顆恆星可能會被多次訪問，但每條連接路徑只能被穿越一次。只有在一條連續路線上的所有路徑都被照亮後，星座才算完整。",
   "Choose a star connected to the glowing star.": "選擇一顆與發光星星相連的星星。",
   "Choose a star to begin.": "選擇一顆星星開始。",

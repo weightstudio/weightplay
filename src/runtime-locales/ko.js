@@ -2927,6 +2927,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Choose a source vessel, then a destination.": "소스 선박을 선택한 다음 목적지를 선택하십시오.",
   "Choose a Spring": "봄을 선택하세요",
   "Choose a stage from the swipe stage rail and read the threat, plan, and reward notes.": "스와이프 스테이지 레일에서 스테이지를 선택하고 위협, 계획, 보상 노트를 읽어보세요.",
+  "Choose a stage.": "스테이지를 선택하세요.",
   "Choose a star and continue through connected stars. A star may be visited more than once, but every connecting trail may be crossed only once. The constellation is complete only after all trails are lit in one continuous route.": "별을 선택하고 연결된 별을 통해 계속 진행하세요. 별은 두 번 이상 방문할 수 있지만 모든 연결 트레일은 한 번만 지나갈 수 있습니다. 하나의 연속 경로에서 모든 트레일이 켜진 후에만 집합이 완성됩니다.",
   "Choose a star connected to the glowing star.": "빛나는 별과 연결된 별을 선택하세요.",
   "Choose a star to begin.": "시작하려면 별을 선택하세요.",

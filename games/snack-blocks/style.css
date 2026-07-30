@@ -361,7 +361,8 @@ button {
 
 @media (min-width: 700px) and (max-height: 500px) {
   body:not(.snack-stage):not(.snack-playing) .menu-panel .wp-standard-main-composition {
-    grid-template-columns: 238px minmax(0, 1fr) !important;
+    grid-template-columns: 300px minmax(0, 1fr) !important;
+    align-items: start !important;
     gap: 8px 12px;
     padding: 8px !important;
   }
@@ -369,13 +370,18 @@ button {
   body:not(.snack-stage):not(.snack-playing) .menu-panel .wp-standard-main-poster,
   body:not(.snack-stage):not(.snack-playing) .menu-panel .wp-standard-main-poster-media,
   body:not(.snack-stage):not(.snack-playing) .menu-panel .wp-standard-main-poster-media > img {
-    width: 238px !important;
-    min-width: 238px !important;
-    max-width: 238px !important;
-    height: 238px !important;
-    min-height: 238px !important;
-    max-height: 238px !important;
+    width: 300px !important;
+    min-width: 300px !important;
+    max-width: 300px !important;
+    height: 300px !important;
+    min-height: 300px !important;
+    max-height: 300px !important;
     aspect-ratio: 1 !important;
+  }
+
+  body:not(.snack-stage):not(.snack-playing) .menu-panel .wp-standard-main-copy {
+    height: 300px !important;
+    align-content: center !important;
   }
 
   body:not(.snack-stage):not(.snack-playing) .menu-panel > strong {

@@ -668,6 +668,7 @@
     window.setTimeout(updateStageState, 700);
   }, true);
   window.addEventListener("wonder:locale-change", standardizeMainStart);
+  window.addEventListener("weightplay:stage-sync", updateStageState);
   window.addEventListener("resize", updateStageCanvas, { passive: true });
   window.visualViewport?.addEventListener("resize", updateStageCanvas, { passive: true });
 })();

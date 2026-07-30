@@ -411,7 +411,8 @@ body.wp-shell-battle-active .wp-generated-battle-header > [data-wp-return="battl
   overflow: visible !important;
 }
 
-.wp-standard-main-flow-owner {
+body:not(.wp-kids-audience) .wp-standard-main-flow-owner,
+body.wp-kids-audience.wp-shell-main-active .wp-standard-main-flow-owner {
   box-sizing: border-box !important;
   display: block !important;
   position: relative !important;
@@ -423,7 +424,8 @@ body.wp-shell-battle-active .wp-generated-battle-header > [data-wp-return="battl
   overflow: visible !important;
 }
 
-.wp-standard-main-flow-owner .wp-standard-main-flow-node {
+body:not(.wp-kids-audience) .wp-standard-main-flow-owner .wp-standard-main-flow-node,
+body.wp-kids-audience.wp-shell-main-active .wp-standard-main-flow-owner .wp-standard-main-flow-node {
   box-sizing: border-box !important;
   display: block !important;
   position: relative !important;

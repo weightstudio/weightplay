@@ -110,9 +110,11 @@
     document.body.classList.toggle("wp-shell-main-active", name === "main");
     document.body.classList.toggle("wp-shell-stage-active", name === "stage");
     document.body.classList.toggle("wp-shell-battle-active", name === "battle");
-    document.body.classList.toggle("wp-stage-select-active", name === "stage");
-    document.documentElement.classList.toggle("wp-stage-select-active", name === "stage");
-    document.body.classList.toggle("wp-logical-battle-active", name === "battle");
+    if (name !== "stage") {
+      document.body.classList.remove("wp-stage-select-active");
+      document.documentElement.classList.remove("wp-stage-select-active");
+    }
+    if (name !== "battle") document.body.classList.remove("wp-logical-battle-active");
     $("mainGroup").hidden = name !== "main";
     $("stageScreen").hidden = name !== "stage";
     $("battleScreen").hidden = name !== "battle";

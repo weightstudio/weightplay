@@ -268,8 +268,8 @@
     dom.gameCanvas.dataset.logicalWidth = logicalWidth.toFixed(3);
     dom.gameCanvas.dataset.logicalHeight = logicalHeight.toFixed(3);
     dom.gameCanvas.dataset.commonScale = scale.toFixed(6);
-    if (currentScreen === "stage") dom.stageScreen.setAttribute("data-wp-logical-stage-canvas", `${logicalWidth.toFixed(3)}x${logicalHeight.toFixed(3)}`);
-    else dom.stageScreen.removeAttribute("data-wp-logical-stage-canvas");
+    if (currentScreen === "stage") dom.stageScreen.setAttribute("data-wp-native-stage-canvas", `${logicalWidth.toFixed(3)}x${logicalHeight.toFixed(3)}`);
+    else dom.stageScreen.removeAttribute("data-wp-native-stage-canvas");
     if (responsiveCanvas || mainCanvas) {
       dom.gameCanvas.style.left = `${frameLeft}px`;
       dom.gameCanvas.style.top = "0";

@@ -2927,6 +2927,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Choose a source vessel, then a destination.": "اختر سفينة المصدر، ثم الوجهة.",
   "Choose a Spring": "اختر الربيع",
   "Choose a stage from the swipe stage rail and read the threat, plan, and reward notes.": "اختر مرحلة من شريط مرحلة التمرير السريع واقرأ ملاحظات التهديد والخطة والمكافأة.",
+  "Choose a stage.": "اختر مرحلة.",
   "Choose a star and continue through connected stars. A star may be visited more than once, but every connecting trail may be crossed only once. The constellation is complete only after all trails are lit in one continuous route.": "اختر نجمة وتابع عبر النجوم المتصلة. يمكن زيارة النجم أكثر من مرة، لكن يمكن عبور كل مسار متصل مرة واحدة فقط. تكتمل الكوكبة فقط بعد إضاءة جميع الممرات في مسار واحد مستمر.",
   "Choose a star connected to the glowing star.": "اختر نجمة متصلة بالنجم المتوهج.",
   "Choose a star to begin.": "اختر نجمة للبدء.",

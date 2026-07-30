@@ -2927,6 +2927,7 @@ window.WeightPlayGameRuntimeLocales["de"] = {
   "Choose a source vessel, then a destination.": "Wählen Sie ein Quellschiff und dann ein Ziel.",
   "Choose a Spring": "Wählen Sie eine Feder",
   "Choose a stage from the swipe stage rail and read the threat, plan, and reward notes.": "Wählen Sie eine Stufe aus der Swipe-Stufenschiene aus und lesen Sie die Bedrohungs-, Plan- und Belohnungshinweise.",
+  "Choose a stage.": "Wählen Sie eine Bühne.",
   "Choose a star and continue through connected stars. A star may be visited more than once, but every connecting trail may be crossed only once. The constellation is complete only after all trails are lit in one continuous route.": "Wählen Sie einen Stern und fahren Sie mit den verbundenen Sternen fort. Ein Stern kann mehrmals besucht werden, jeder Verbindungsweg darf jedoch nur einmal überquert werden. Die Konstellation ist erst dann abgeschlossen, wenn alle Wege in einer durchgehenden Strecke beleuchtet sind.",
   "Choose a star connected to the glowing star.": "Wählen Sie einen Stern, der mit dem leuchtenden Stern verbunden ist.",
   "Choose a star to begin.": "Wählen Sie zunächst einen Stern.",
