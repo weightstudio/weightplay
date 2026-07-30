@@ -68,3 +68,20 @@
 @keyframes hintPulse{50%{transform:scale(.88);background:#fff08d;box-shadow:0 0 0 8px rgba(255,225,73,.35)}}
 @media(max-width:700px){.line-grid{gap:6px}.trace-board{padding:6px}}
 @media(max-height:480px) and (orientation:landscape){.line-grid{height:100%;width:auto;max-width:100%;aspect-ratio:var(--cols)/var(--rows)}.trace-board{padding:5px}.line-cell{border-radius:8px}}
+
+/* Keep the uniformly scaled short-landscape Stage shell inside its own
+   logical Canvas. The shared header uses width:100%; this game also owns
+   absolute side insets, so the explicit bounded width prevents the shell
+   controls from extending beyond the Canvas edge. */
+@media(max-height:480px) and (orientation:landscape){
+  .stage-canvas[data-wp-stage-landscape-width] .stage-header.wp-stage-shell-header{
+    position:absolute!important;
+    left:8px!important;
+    right:8px!important;
+    width:calc(100% - 16px)!important;
+  }
+  .stage-canvas[data-wp-stage-landscape-width] #stageRail{
+    min-width:0!important;
+    max-width:none!important;
+  }
+}

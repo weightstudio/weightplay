@@ -10,7 +10,7 @@ if(!window.CARNIVAL_CLAW_LOCALES[locale])locale="en";
 let copy=window.CARNIVAL_CLAW_LOCALES[locale],screen="main",selected=0,focusReturn=null,raf=0,last=0,settledDecision=false;
 const canvas=$("gameCanvas"),ctx=canvas.getContext("2d",{alpha:false});
 const images={
-  background:loadImage("../../assets/animal-carnival-claw-background.webp"),
+  background:loadImage("../../assets/animal-carnival-claw-background-v2.webp"),
   atlas:loadImage("../../assets/animal-carnival-claw-atlas.webp"),
   prizesA:loadImage("../../assets/animal-carnival-claw-prizes-a.webp"),
   prizesB:loadImage("../../assets/animal-carnival-claw-prizes-b.webp"),
@@ -261,8 +261,15 @@ function draw(){
   const claw=clawPosition(),cell=heldPrize?3:2,clawSize=clamp(min*.28,70,128),clawX=px(claw.x),clawY=py(claw.y);
   drawCell(images.atlas,cell,clawX-clawSize/2,clawY-clawSize*.72,clawSize,clawSize);
   if(heldPrize){
-    const heldSize=clamp(min*.17+heldPrize.weight*3,44,92),heldImage=heldPrize.kind<4?images.prizesA:images.prizesB;
-    drawCell(heldImage,heldPrize.kind%4,clawX-heldSize/2,clawY-heldSize/2,heldSize,heldSize);
+    const heldSize=clamp(min*.16+heldPrize.weight*3,54,82),heldImage=heldPrize.kind<4?images.prizesA:images.prizesB;
+    ctx.save();ctx.fillStyle="#03252ecc";ctx.strokeStyle="#65ffe1";ctx.lineWidth=3;ctx.shadowColor="#65ffe1";ctx.shadowBlur=12;
+    ctx.beginPath();ctx.arc(clawX,clawY,heldSize*.39,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.shadowBlur=0;
+    drawCell(heldImage,heldPrize.kind%4,clawX-heldSize/2,clawY-heldSize/2,heldSize,heldSize);ctx.restore();
+    const clawTop=clawY-clawSize*.72;
+    ctx.save();ctx.beginPath();ctx.rect(clawX-clawSize/2,clawTop,clawSize,clawSize*.5);
+    ctx.rect(clawX-clawSize/2,clawTop+clawSize*.42,clawSize*.34,clawSize*.58);
+    ctx.rect(clawX+clawSize*.16,clawTop+clawSize*.42,clawSize*.34,clawSize*.58);ctx.clip();
+    drawCell(images.atlas,3,clawX-clawSize/2,clawTop,clawSize,clawSize);ctx.restore();
     const desired=run.swing>0?"←":"→",correct=Math.abs(run.stabilizer||keyStabilize)>=.12&&Math.sign(run.stabilizer||keyStabilize)===-Math.sign(run.swing);
     ctx.fillStyle=correct?"#65ffe1":"#ffdb68";ctx.font=`900 ${clamp(min*.12,30,58)}px sans-serif`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(desired,clamp(clawX,45,w-45),clamp(clawY-clawSize*.82,32,h-32));
   }
@@ -330,7 +337,14 @@ function init(){
 }
 window.__CARNIVAL_CLAW_TEST__={
   levels,startMission,beginDrop,step(seconds){for(let time=0;time<seconds&&!run?.result;time+=.02)update(.02);draw();return this.snapshot()},
-  finishResult(won=true){if(!run)startMission(selectedStage);finish(Boolean(won));return this.snapshot()},
+  finishResult(won=true){if(!run)startMission(selected);finish(Boolean(won));return this.snapshot()},
+  prepareLift(kind,phaseTime=.2){
+    if(!run)startMission(selected);
+    const target=run.prizes.find(prize=>prize.active&&(kind===undefined||prize.kind===kind));if(!target)return null;
+    run.aimX=target.x;run.aimY=target.y;run.dropX=target.x;run.phase="lift";run.phaseTime=phaseTime;run.held=target;run.grip=1;run.stability=1;run.stabilizer=0;run.swing=0;run.feedback="phaseLift";renderHud();draw();return this.contactGeometry();
+  },
+  freeze(){cancelAnimationFrame(raf);raf=0;draw();return this.snapshot()},
+  contactGeometry(){const claw=clawPosition();return{claw,held:run?.held?{x:claw.x,y:claw.y}:null,dropX:run?.dropX,aimY:run?.aimY}},
   perfectDrop(kind){if(!run)return;const target=run.prizes.find(prize=>prize.active&&(kind===undefined||prize.kind===kind));if(!target)return;run.aimX=target.x;run.aimY=target.y;run.phase="lift";run.phaseTime=0;run.drops--;run.held=target;run.grip=1;run.stability=1;run.stabilizer=0;for(let time=0;time<1.7&&!run.result;time+=.02){run.stabilizer=-Math.sin(run.phaseTime*(3.8+target.weight*.35)+target.kind);update(.02)}draw();return this.snapshot()},
   solve(){for(const kind of [...remainingTargets()])this.perfectDrop(kind);this.step(1);return this.snapshot()},
   snapshot(){return run?JSON.parse(JSON.stringify({screen,run,save})):null},setSave(value){save={...defaultSave(),...value,upgrades:{...defaultSave().upgrades,...(value.upgrades||{})}};persist();renderMain();renderStage()},getSave(){return JSON.parse(JSON.stringify(save))},setLocale,show
