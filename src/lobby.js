@@ -1638,9 +1638,25 @@ function applyStaticTranslations() {
   document.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
     element.setAttribute("placeholder", i18n.t(element.dataset.i18nPlaceholder));
   });
+  document.querySelectorAll([
+    ".desktop-filter-rail",
+    ".library-tabs",
+    ".topic-filter",
+    ".availability-filter",
+    ".desktop-filter-group",
+    "[data-library-tab]",
+    "[data-topic-filter]",
+    "[data-availability-filter]",
+    "#lobbyAccountStrip",
+    "#lobbyStats",
+    "#gameGrid",
+  ].join(",")).forEach((node) => node.setAttribute("data-runtime-localize-attributes", "off"));
+  document.querySelectorAll("[data-library-tab], [data-topic-filter], [data-availability-filter]")
+    .forEach((node) => node.setAttribute("data-runtime-localize", "off"));
   quickPickBtn?.setAttribute("aria-label", i18n.t("quick_pick.label"));
   const ariaLabels = {
     "#localeSelect": "language.label",
+    "#lobbyAccountStrip": "aria.player_status",
     "#lobbyStats": "aria.platform_status",
     "#dailyReward": "aria.daily_reward",
     ".parent-trust-points": "aria.parent_trust_highlights",
@@ -1649,6 +1665,15 @@ function applyStaticTranslations() {
   Object.entries(ariaLabels).forEach(([selector, key]) => {
     document.querySelector(selector)?.setAttribute("aria-label", i18n.t(key));
   });
+  document.querySelectorAll(".desktop-filter-rail").forEach((node) => node.setAttribute("aria-label", i18n.t("aria.game_filters")));
+  document.querySelectorAll(".library-tabs").forEach((node) => node.setAttribute("aria-label", i18n.t("aria.library_tabs")));
+  document.querySelectorAll(".topic-filter, .desktop-filter-group").forEach((node) => {
+    if (node.querySelector("[data-topic-filter]")) node.setAttribute("aria-label", i18n.t("aria.topic_filters"));
+  });
+  document.querySelectorAll(".availability-filter, .desktop-filter-group").forEach((node) => {
+    if (node.querySelector("[data-availability-filter]")) node.setAttribute("aria-label", i18n.t("aria.availability_filters"));
+  });
+  gameGrid?.setAttribute("aria-label", i18n.t("aria.game_list"));
   renderFilterCounts();
   renderDiscoverySnapshot();
   localeSelect.value = i18n.locale();

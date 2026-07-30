@@ -1527,9 +1527,12 @@
         playerCount: state.combat.playerSquad.length,
         enemyCount: state.combat.enemySquad.length,
         playerHp: state.combat.playerSquad.reduce((total, unit) => total + Math.max(0, unit.hp || 0), 0),
+        timer: state.combat.timer,
         animating: state.combat.animating,
         ending: state.combat.ending,
         resolved: state.combat.resolved,
+        windowFocused,
+        suspended: combatSuspendedForBackground,
         prepVisible: !nodes.prepPhaseArea.classList.contains("is-hidden"),
         combatVisible: !nodes.combatArea.classList.contains("is-hidden")
       }),
@@ -3571,7 +3574,8 @@
   }
 
   // Combat Execution
-  function startBattle() {
+  function startBattle(event) {
+    reclaimVisibleForeground(event);
     initAudio();
     playSynth("click");
     clearActionNotice(nodes.prepNotice);
@@ -4748,6 +4752,31 @@
     showStageSelection();
   }
 
+  function suspendBackgroundCombat() {
+    suspendSkinPurchaseDecision();
+    suspendCombatEndTimer();
+    if (!state.combat.animating) return;
+    combatSuspendedForBackground = true;
+    cancelAnimationFrame(animationId);
+  }
+
+  function resumeBackgroundCombat() {
+    if (document.hidden || !windowFocused) return;
+    resumeSkinPurchaseDecision();
+    resumeCombatEndTimer();
+    if (!combatSuspendedForBackground || !state.combat.animating || quitDecisionOpen) return;
+    combatSuspendedForBackground = false;
+    animationId = requestAnimationFrame(runCombatAnimation);
+  }
+
+  function reclaimVisibleForeground(event) {
+    if (!event?.isTrusted || document.hidden) return false;
+    if (windowFocused) return true;
+    windowFocused = true;
+    resumeBackgroundCombat();
+    return true;
+  }
+
   // Event Listeners Registration
   function setupEvents() {
     nodes.showStageBtn.addEventListener("click", showStageSelection);
@@ -4783,6 +4812,8 @@
       trapBattleDecisionFocus(nodes.quitRunPanel, event);
     });
     nodes.startBattleBtn.addEventListener("click", startBattle);
+    nodes.gamePanel.addEventListener("pointerdown", reclaimVisibleForeground, true);
+    nodes.gamePanel.addEventListener("keydown", reclaimVisibleForeground, true);
     nodes.quitRunBtn.addEventListener("click", openQuitDecision);
     nodes.keepPlayingBtn.addEventListener("click", () => closeQuitDecision(true));
     nodes.confirmQuitBtn.addEventListener("click", confirmQuitRun);
@@ -4834,21 +4865,6 @@
       }
     });
 
-    const suspendBackgroundCombat = () => {
-      suspendSkinPurchaseDecision();
-      suspendCombatEndTimer();
-      if (!state.combat.animating) return;
-      combatSuspendedForBackground = true;
-      cancelAnimationFrame(animationId);
-    };
-    const resumeBackgroundCombat = () => {
-      if (document.hidden || !windowFocused) return;
-      resumeSkinPurchaseDecision();
-      resumeCombatEndTimer();
-      if (!combatSuspendedForBackground || !state.combat.animating || quitDecisionOpen) return;
-      combatSuspendedForBackground = false;
-      animationId = requestAnimationFrame(runCombatAnimation);
-    };
     window.addEventListener("blur", () => {
       windowFocused = false;
       suspendBackgroundCombat();

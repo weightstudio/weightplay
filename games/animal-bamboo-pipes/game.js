@@ -8,7 +8,7 @@
   const LEVELS = window.BAMBOO_LEVELS.levels;
   const routeSegment = location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
   const routeLocale = ROUTE_LOCALES[routeSegment];
-  let locale = routeLocale || localRead("weightPlayLocale") || localRead("wp-locale") || "en", selected = 0, run = null, resultActionClaimed = false, leaveOpen = false, completionTimer = 0, boardFocusIndex = 0;
+  let locale = routeLocale || localRead("weightPlayLocale") || localRead("wp-locale") || "en", selected = 0, run = null, resultActionClaimed = false, leaveOpen = false, completionTimer = 0, boardFocusIndex = 0, hintedPipeIndex = -1;
   if (!CODES.includes(locale)) locale = "en";
   if (routeLocale) {
     try {
@@ -117,7 +117,7 @@
     if (!enabledIndexes.includes(boardFocusIndex)) boardFocusIndex = enabledIndexes[0] ?? 0;
     run.tiles.forEach((tile, index) => {
       const pipe = document.createElement("button");
-      pipe.className = `pipe${wet.has(index) ? " wet" : ""}`;
+      pipe.className = `pipe${wet.has(index) ? " wet" : ""}${index === hintedPipeIndex ? " hint-target" : ""}`;
       if (tile.target) pipe.classList.add("target");
       pipe.dataset.shape = tile.shape;
       pipe.style.setProperty("--pipe-rotation", `${tile.rot * 90}deg`);
@@ -127,17 +127,18 @@
       pipe.tabIndex = !pipe.disabled && index === boardFocusIndex ? 0 : -1;
       const flow = flowSvg(tile, index, wet.has(index));
       if (flow) pipe.append(flow);
-      if (!tile.target) pipe.onclick = event => { if(run.completed)return;boardFocusIndex=index;run.history.push(run.tiles.map(item => item.rot)); tile.rot = (tile.rot + 1) % 4; run.moves++; renderBoard(event.detail === 0 ? index : -1); if (winReady()) complete(); };
+      if (!tile.target) pipe.onclick = event => { if(run.completed)return;hintedPipeIndex=-1;boardFocusIndex=index;run.history.push(run.tiles.map(item => item.rot)); tile.rot = (tile.rot + 1) % 4; run.moves++; renderBoard(event.detail === 0 ? index : -1); if (winReady()) complete(); };
       board.append(pipe);
     });
     $("moves").textContent = text("moves", { n: run.moves });
-    $("cue").textContent = text("cue");
+    $("cue").textContent = hintedPipeIndex >= 0 ? text("hintTarget", { pipe: text("pipeLabel", { n: hintedPipeIndex + 1 }) }) : text("cue");
     if (focusIndex >= 0 && !board.children[focusIndex]?.disabled) board.children[focusIndex].focus();
   }
   function startStage() {
     cancelCompletionReveal();
     setResultOpen(false);
     run = { tiles: stageData(selected), history: [], moves: 0, completed: false };
+    hintedPipeIndex = -1;
     boardFocusIndex = run.tiles.findIndex(tile => !tile.target);
     $("chapter").textContent = text("chapter", { n: Math.floor(selected / 5) + 1 });
     $("stageName").textContent = text("waterway", { n: selected + 1 });
@@ -338,7 +339,13 @@
   });
   $("undo").onclick = () => { if(run?.completed)return;const prior = run?.history.pop(); if (prior) { run.tiles.forEach((tile, i) => { tile.rot = prior[i]; }); run.moves--; renderBoard(); } };
   $("restart").onclick = startStage;
-  $("hint").onclick = () => { if(run?.completed)return;const tile = run.tiles.find(item => item.required&&ports(item).slice().sort().join(",") !== ports({ ...item, rot: item.solved }).slice().sort().join(",")); if (tile) { run.history.push(run.tiles.map(item => item.rot)); tile.rot = tile.solved; run.moves++; renderBoard(); if (winReady()) complete(); } };
+  $("hint").onclick = () => {
+    if (run?.completed) return;
+    hintedPipeIndex = run.tiles.findIndex(item => item.required && ports(item).slice().sort().join(",") !== ports({ ...item, rot: item.solved }).slice().sort().join(","));
+    if (hintedPipeIndex < 0) return;
+    boardFocusIndex = hintedPipeIndex;
+    renderBoard(hintedPipeIndex);
+  };
   $("rail").addEventListener("wonder:stage-snap", event => {
     const index = Number(event.detail?.index);
     if (Number.isInteger(index) && index >= 0) selectStage(index, false);

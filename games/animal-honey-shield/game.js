@@ -268,25 +268,33 @@
   }
   const MOVE_DIRECTIONS=Array.from({length:16},(_,index)=>({x:Math.cos(index*Math.PI/8),y:Math.sin(index*Math.PI/8)}));
   const PUSH_DIRECTIONS=[{x:0,y:-1},{x:0,y:1},{x:-1,y:0},{x:1,y:0}];
-  function strokeBlockScore(points,spec,margin=12){
-    const blocked=point=>point.x<=margin||point.x>=1000-margin||point.y<=margin||point.y>=620-margin||spec.solids.some(solid=>pointHitsSolid(point,solid,margin));
-    let score=0;
+  function sampledStrokePoints(points){
+    const samples=[];
     for(let i=0;i<points.length;i++){
-      if(blocked(points[i]))score++;
+      samples.push(points[i]);
       if(!i)continue;
       const a=points[i-1],b=points[i],distance=Math.hypot(b.x-a.x,b.y-a.y),steps=Math.ceil(distance/12);
       for(let step=1;step<steps;step++){
         const t=step/steps;
-        if(blocked({x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t}))score++;
+        samples.push({x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t});
       }
     }
-    return score;
+    return samples;
+  }
+  function solidPenetration(point,solid,margin){
+    if(solid.kind==="platform"){
+      const left=solid.x-margin,right=solid.x+solid.w+margin,top=solid.y-margin,bottom=solid.y+solid.h+margin;
+      if(point.x<left||point.x>right||point.y<top||point.y>bottom)return 0;
+      return Math.min(point.x-left,right-point.x,point.y-top,bottom-point.y)+.001;
+    }
+    return Math.max(0,solid.r+margin-Math.hypot(point.x-solid.x,point.y-solid.y));
   }
   function canTranslateStroke(stroke,dx,dy,spec){
-    const current=strokeBlockScore(stroke.points,spec,18);
-    const next=stroke.points.map(point=>({x:point.x+dx,y:point.y+dy}));
-    const nextScore=strokeBlockScore(next,spec,18);
-    return nextScore===0||nextScore<current;
+    const margin=18,samples=sampledStrokePoints(stroke.points),epsilon=.05;
+    return samples.every(point=>{
+      const next={x:point.x+dx,y:point.y+dy};
+      return spec.solids.every(solid=>solidPenetration(next,solid,margin)<=solidPenetration(point,solid,margin)+epsilon);
+    });
   }
   function availableStrokeMoves(stroke,spec,distance=10){
     return MOVE_DIRECTIONS.filter(direction=>canTranslateStroke(stroke,direction.x*distance,direction.y*distance,spec));
@@ -502,7 +510,7 @@
         state.mover.stroke.flash=.18;state.flash=.035;announce("barrierMoved");
         state.nav=buildNavigationField(spec);state.navClock=.12;
         const dogClear=!pointHitsStroke(spec.dog,state.mover.stroke,28);
-        if(dogClear&&blockedBees.some(bee=>navigationDirection(state.nav,bee.x,bee.y))){
+        if(dogClear&&blockedBees.every(bee=>navigationDirection(state.nav,bee.x,bee.y))){
           state.pathOpenedAt=state.elapsed;state.bees.forEach(bee=>{bee.attachedStroke=null});state.mover=null;announce("pathFound");
         }
       }else{
@@ -712,6 +720,16 @@
       for(let time=0;time<14&&!state.result;time+=.02)update(.02);
       const field=buildNavigationField(level(0)),routeNow=state.bees.some(bee=>navigationDirection(field,bee.x,bee.y));
       return{participants:4,initialRoute,wallMoves:state.wallMoves,maxAttached:state.maxGroupAttached,routeNow,moverStopped:state.mover===null,intents:[...new Set(state.bees.map(bee=>bee.intent))],result:state.result};
+    },
+    stage11ReportProbe(){
+      startStage(10);state.duration=20;
+      const stroke={points:[{x:5,y:223},{x:160,y:223},{x:250,y:192},{x:360,y:130},{x:470,y:93},{x:580,y:87},{x:690,y:112},{x:730,y:167},{x:810,y:205},{x:940,y:223},{x:995,y:205}],flash:0,blockedFlash:0,moves:0,anchored:false};
+      state.strokes=[stroke];refreshStrokeMobility(stroke,level(10));beginWave();
+      for(let count=0;count<6;count++)spawnBee();
+      state.spawned=level(10).maxBees;
+      const initialRoutes=state.bees.filter(bee=>navigationDirection(buildNavigationField(level(10)),bee.x,bee.y)).length;
+      for(let time=0;time<14&&!state.result;time+=.02)update(.02);
+      return{participants:6,initialRoutes,wallMoves:state.wallMoves,maxAttached:state.maxGroupAttached,pathOpenedAt:state.pathOpenedAt,moverStopped:state.mover===null,intents:[...new Set(state.bees.map(bee=>bee.intent))],result:state.result};
     },
     beeSpriteMetrics(){
       const crop=SPRITE_CROPS[1],centroid={x:133.44,y:137.67},rect=canvas.getBoundingClientRect(),physicalX=rect.width/1000,physicalY=rect.height/620,uniform=Math.sqrt(physicalX*physicalY);

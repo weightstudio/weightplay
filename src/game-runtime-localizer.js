@@ -119,6 +119,7 @@
   const translatedAttributes = new WeakMap();
   const attributes = ["aria-label", "aria-description", "title", "placeholder", "alt"];
   const skipsRuntimeLocalization = (element) => element?.closest?.('[data-runtime-localize="off"]');
+  const ownsLocalizedAttributes = (element) => element?.getAttribute?.("data-runtime-localize-attributes") === "off";
 
   function translateTextNode(node) {
     if (!node?.parentElement || ["SCRIPT", "STYLE", "NOSCRIPT"].includes(node.parentElement.tagName)) return;
@@ -137,6 +138,7 @@
   function translateElement(element) {
     if (!(element instanceof Element)) return;
     if (skipsRuntimeLocalization(element)) return;
+    if (ownsLocalizedAttributes(element)) return;
     let records = translatedAttributes.get(element);
     attributes.forEach((name) => {
       if (!element.hasAttribute(name)) return;

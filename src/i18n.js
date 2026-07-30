@@ -309,6 +309,57 @@
     "skill_path.cta": "查看遊戲",
   });
 
+  const lobbyAriaCopy = {
+    en: ["Game filters", "Game library tabs", "Topic filters", "Game availability filters", "Player status", "Game list"],
+    "zh-Hant": ["遊戲篩選", "遊戲庫分頁", "主題篩選", "遊戲狀態篩選", "玩家狀態", "遊戲清單"],
+    "zh-Hans": ["游戏筛选", "游戏库标签页", "主题筛选", "游戏状态筛选", "玩家状态", "游戏列表"],
+    ja: ["ゲームフィルター", "ゲームライブラリのタブ", "トピックフィルター", "ゲーム提供状況フィルター", "プレイヤー状況", "ゲーム一覧"],
+    ko: ["게임 필터", "게임 라이브러리 탭", "주제 필터", "게임 이용 가능 여부 필터", "플레이어 상태", "게임 목록"],
+    es: ["Filtros de juegos", "Pestañas de la biblioteca de juegos", "Filtros de temas", "Filtros de disponibilidad de juegos", "Estado del jugador", "Lista de juegos"],
+    "pt-BR": ["Filtros de jogos", "Abas da biblioteca de jogos", "Filtros de temas", "Filtros de disponibilidade de jogos", "Status do jogador", "Lista de jogos"],
+    fr: ["Filtres de jeux", "Onglets de la bibliothèque de jeux", "Filtres de thèmes", "Filtres de disponibilité des jeux", "Statut du joueur", "Liste des jeux"],
+    de: ["Spielfilter", "Registerkarten der Spielebibliothek", "Themenfilter", "Verfügbarkeitsfilter für Spiele", "Spielerstatus", "Spieleliste"],
+    it: ["Filtri dei giochi", "Schede della raccolta giochi", "Filtri degli argomenti", "Filtri di disponibilità dei giochi", "Stato del giocatore", "Elenco dei giochi"],
+    ru: ["Фильтры игр", "Вкладки библиотеки игр", "Фильтры тем", "Фильтры доступности игр", "Статус игрока", "Список игр"],
+    hi: ["गेम फ़िल्टर", "गेम लाइब्रेरी टैब", "विषय फ़िल्टर", "गेम उपलब्धता फ़िल्टर", "खिलाड़ी की स्थिति", "गेम सूची"],
+    ar: ["مرشحات الألعاب", "علامات تبويب مكتبة الألعاب", "مرشحات المواضيع", "مرشحات توفر الألعاب", "حالة اللاعب", "قائمة الألعاب"],
+  };
+  const availabilityAriaCopy = {
+    en: ["All Status", "Play Now", "Coming Soon", "Browse all games", "Games available now", "Upcoming games"],
+    "zh-Hant": ["全部狀態", "立即遊玩", "即將推出", "顯示所有遊戲", "目前可遊玩的遊戲", "即將推出的遊戲"],
+    "zh-Hans": ["全部状态", "立即游玩", "即将推出", "显示所有游戏", "当前可玩的游戏", "即将推出的游戏"],
+    ja: ["すべての状態", "今すぐプレイ", "近日公開", "すべてのゲームを表示", "今すぐ遊べるゲーム", "公開予定のゲーム"],
+    ko: ["모든 상태", "지금 플레이", "출시 예정", "모든 게임 표시", "지금 플레이할 수 있는 게임", "출시 예정 게임"],
+    es: ["Todos los estados", "Jugar ahora", "Próximamente", "Mostrar todos los juegos", "Juegos disponibles ahora", "Próximos juegos"],
+    "pt-BR": ["Todos os status", "Jogar agora", "Em breve", "Mostrar todos os jogos", "Jogos disponíveis agora", "Próximos jogos"],
+    fr: ["Tous les statuts", "Jouer maintenant", "Bientôt disponible", "Afficher tous les jeux", "Jeux disponibles maintenant", "Jeux à venir"],
+    de: ["Alle Status", "Jetzt spielen", "Demnächst", "Alle Spiele anzeigen", "Jetzt verfügbare Spiele", "Kommende Spiele"],
+    it: ["Tutti gli stati", "Gioca ora", "Prossimamente", "Mostra tutti i giochi", "Giochi disponibili ora", "Giochi in arrivo"],
+    ru: ["Все статусы", "Играть сейчас", "Скоро", "Показать все игры", "Игры, доступные сейчас", "Предстоящие игры"],
+    hi: ["सभी स्थितियाँ", "अभी खेलें", "जल्द आ रहा है", "सभी गेम दिखाएँ", "अभी उपलब्ध गेम", "आने वाले गेम"],
+    ar: ["كل الحالات", "العب الآن", "قريبًا", "عرض جميع الألعاب", "الألعاب المتاحة الآن", "الألعاب القادمة"],
+  };
+  Object.entries(lobbyAriaCopy).forEach(([locale, copy]) => {
+    const [gameFilters, libraryTabs, topicFilters, availabilityFilters, playerStatus, gameList] = copy;
+    dictionaries[locale] = {
+      ...(dictionaries[locale] || {}),
+      "aria.game_filters": gameFilters,
+      "aria.library_tabs": libraryTabs,
+      "aria.topic_filters": topicFilters,
+      "aria.availability_filters": availabilityFilters,
+      "aria.player_status": playerStatus,
+      "aria.game_list": gameList,
+    };
+  });
+  Object.assign(dictionaries.ar, {
+    "availability.all": "كل الحالات",
+    "availability.playable": "العب الآن",
+    "availability.preview": "قريبًا",
+    "availability_hint.all": "عرض جميع الألعاب",
+    "availability_hint.playable": "الألعاب المتاحة الآن",
+    "availability_hint.preview": "الألعاب القادمة",
+  });
+
   Object.assign(dictionaries["zh-Hant"], {
     "action.continue": "繼續玩",
     "action.continue_title": "繼續玩 {title}",
@@ -1709,6 +1760,30 @@
 
   Object.entries(lifetimeStatsCopy).forEach(([locale, copy]) => {
     dictionaries[locale] = { ...(dictionaries[locale] || {}), ...copy };
+  });
+  Object.entries(lobbyAriaCopy).forEach(([locale, copy]) => {
+    const [gameFilters, libraryTabs, topicFilters, availabilityFilters, playerStatus, gameList] = copy;
+    dictionaries[locale] = {
+      ...(dictionaries[locale] || {}),
+      "aria.game_filters": gameFilters,
+      "aria.library_tabs": libraryTabs,
+      "aria.topic_filters": topicFilters,
+      "aria.availability_filters": availabilityFilters,
+      "aria.player_status": playerStatus,
+      "aria.game_list": gameList,
+    };
+  });
+  Object.entries(availabilityAriaCopy).forEach(([locale, copy]) => {
+    const [all, playable, preview, allHint, playableHint, previewHint] = copy;
+    dictionaries[locale] = {
+      ...(dictionaries[locale] || {}),
+      "availability.all": all,
+      "availability.playable": playable,
+      "availability.preview": preview,
+      "availability_hint.all": allHint,
+      "availability_hint.playable": playableHint,
+      "availability_hint.preview": previewHint,
+    };
   });
 
   function simplifyChineseText(value) {

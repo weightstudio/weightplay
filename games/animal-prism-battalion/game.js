@@ -74,7 +74,7 @@
       const locked=stage.n>save.unlocked,button=document.createElement("button");
       button.type="button";button.className=`stage-card${locked?" locked":""}`;button.dataset.stage=String(stage.n);button.dataset.index=String(index);button.setAttribute("aria-disabled",locked?"true":"false");
       button.innerHTML=`<span>${locked?t("lockedBadge"):chapterName(stage)}</span><strong>${stage.n}</strong><b>${stage.boss?"◆ ":""}${t("waveLabel",{wave:stage.waves,total:stage.waves})}</b><small>${"★".repeat(save.stars[stage.n]||0)}${"☆".repeat(3-(save.stars[stage.n]||0))}</small>`;
-      button.addEventListener("click",()=>{if(locked){$("stageHint").textContent=t("stageLocked");return}startBattle(index)});
+      button.addEventListener("click",(event)=>{if(locked){$("stageHint").textContent=t("stageLocked");return}startBattle(index,event)});
       return button;
     }));
   }
@@ -165,7 +165,8 @@
     return rows;
   }
   function makeEncounters(stage){return encounterRows(stage).flat()}
-  function startBattle(index){
+  function startBattle(index,event){
+    reclaimVisibleForeground(event);
     const stageIndex=Math.max(0,Math.min(29,Math.trunc(index))),stage=stages[stageIndex];
     clearArenaPointer();
     lifecyclePaused=false;
@@ -269,7 +270,9 @@
   const held=new Set();window.addEventListener("keydown",(event)=>{const arenaOwnsInput=event.target===canvas;if(arenaOwnsInput&&["ArrowLeft","ArrowRight","a","A","d","D"].includes(event.key)&&currentScreen==="battle"&&!activeModal()){event.preventDefault();if(!event.repeat){const right=["ArrowRight","d","D"].includes(event.key);setLane(run.lane+(right?1:-1),true)}held.add(event.key)}if(arenaOwnsInput&&event.key===" "&&currentScreen==="battle"&&!activeModal()){event.preventDefault();activateOverdrive()}if(event.key==="Escape"&&!event.defaultPrevented&&currentScreen==="battle"&&!activeModal())openLeave()});window.addEventListener("keyup",(event)=>held.delete(event.key));
   function suspendForLifecycle(){held.clear();clearArenaPointer();if(!run||run.finished||run.paused||currentScreen!=="battle")return;lifecyclePaused=true;run.paused=true;stopLoop()}
   function resumeFromLifecycle(){held.clear();if(!lifecyclePaused||document.hidden||!windowFocused)return;lifecyclePaused=false;if(!run||run.finished||currentScreen!=="battle"||activeModal())return;run.paused=false;resumeLoop()}
+  function reclaimVisibleForeground(event){if(!event?.isTrusted||document.hidden)return false;if(windowFocused)return true;windowFocused=true;resumeFromLifecycle();return true}
   window.addEventListener("blur",()=>{windowFocused=false;suspendForLifecycle()});window.addEventListener("focus",()=>{windowFocused=true;resumeFromLifecycle()});window.addEventListener("pagehide",suspendForLifecycle);window.addEventListener("pageshow",resumeFromLifecycle);document.addEventListener("visibilitychange",()=>document.hidden?suspendForLifecycle():resumeFromLifecycle());
+  $("battle").addEventListener("pointerdown",reclaimVisibleForeground,true);$("battle").addEventListener("keydown",reclaimVisibleForeground,true);
   function activateOverdrive(){if(!run||run.paused||run.finished)return false;if(run.charge<100){$("feedback").textContent=t("overdriveNeed",{charge:Math.floor(run.charge)});return false}run.charge=0;run.overdrive=3.6;run.feedbackLock=.7;$("feedback").textContent=t("overdriveUsed");updateHud(true);addBurst(run.aimX,.86,"#ffe273",24);window.WonderSound?.play?.("success");return true}
   $("overdrive").addEventListener("click",activateOverdrive);
 
@@ -296,6 +299,6 @@
     advance(seconds,step=1/60){const iterations=Math.ceil(seconds/step);for(let i=0;i<iterations&&run&&!run.finished;i+=1)update(step);draw()},
     configureEncounter(id,patch){if(!run)return null;const entry=run.encounters.find(item=>item.id===id)||run.encounters[Math.max(0,Math.trunc(Number(id))||0)];if(entry)Object.assign(entry,patch);return entry?{...entry}:null},injectUnits(units){if(run)run.units=units.map((unit,index)=>({x:laneCenters[unit.lane??run.lane],lane:unit.lane??run.lane,y:.83,damage:run.attack,vy:-.72,hue:188,sprite:index%3,passed:[],...unit}))},setTime(seconds){if(run)run.time=Number(seconds)},clearEnemies(){if(run)for(const entry of run.encounters)if(entry.kind==="enemy")entry.resolved=true},finish,
     grantProgress(unlocked=3,shards=30){save.unlocked=Math.max(1,Math.min(30,unlocked));save.shards=Math.max(save.shards,shards);persist();renderStage();renderLab()},setUpgrades(rate=0,power=0,armor=0){save.upgrades=normalizeSave({upgrades:{rate,power,armor}}).upgrades;persist();renderLab()},resetSave(){save=defaultSave();persist();applyLocale()},
-    snapshot(){return{locale,screen:currentScreen,save:JSON.parse(JSON.stringify(save)),run:run&&{stageIndex:run.stageIndex,time:run.time,core:run.core,maxCore:run.maxCore,wave:run.wave,totalWaves:run.totalWaves,bossDefeated:run.bossDefeated,lane:run.lane,aimX:run.aimX,attack:run.attack,weapon:run.weapon,charge:run.charge,overdrive:run.overdrive,peak:run.peak,resolved:run.resolved,units:run.units.map((unit)=>({...unit})),enemies:run.enemies.map((enemy)=>({...enemy})),encounters:run.encounters.map((entry)=>({...entry})),gates:run.gates.map((entry)=>({...entry})),paused:run.paused,finished:run.finished,won:run.won}}}
+    snapshot(){return{locale,screen:currentScreen,windowFocused,lifecyclePaused,rafActive:Boolean(raf),save:JSON.parse(JSON.stringify(save)),run:run&&{stageIndex:run.stageIndex,stageTime:run.stage.time,time:run.time,core:run.core,maxCore:run.maxCore,wave:run.wave,totalWaves:run.totalWaves,bossDefeated:run.bossDefeated,lane:run.lane,aimX:run.aimX,attack:run.attack,weapon:run.weapon,charge:run.charge,overdrive:run.overdrive,peak:run.peak,resolved:run.resolved,units:run.units.map((unit)=>({...unit})),enemies:run.enemies.map((enemy)=>({...enemy})),encounters:run.encounters.map((entry)=>({...entry})),gates:run.gates.map((entry)=>({...entry})),paused:run.paused,finished:run.finished,won:run.won}}}
   };
 })();
