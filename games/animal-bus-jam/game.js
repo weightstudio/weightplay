@@ -144,21 +144,24 @@
     if (screen === "battle" && departingBusIndexes.length) scheduleDeparture(departureRemaining);
   }
 
-  function selectStage(index, center = false) {
+  function selectStage(index, center = false, focus = false) {
     selected = Math.max(0, Math.min(29, index));
     root.querySelectorAll("#stageGrid .stage-card").forEach((card, cardIndex) => {
       const active = cardIndex === selected;
       card.classList.toggle("selected", active);
       card.classList.toggle("centered", active);
+      card.tabIndex = active ? 0 : -1;
       card.setAttribute("aria-current", active ? "true" : "false");
     });
+    const current = root.querySelector(`#stageGrid [data-index="${selected}"]`);
     if (center) {
-      root.querySelector(`#stageGrid [data-index="${selected}"]`)?.scrollIntoView({
-        behavior: "smooth",
+      current?.scrollIntoView({
+        behavior: center === "auto" ? "auto" : "smooth",
         inline: "center",
         block: "nearest",
       });
     }
+    if (focus) current?.focus({ preventScroll: true });
   }
 
   function renderStage() {
@@ -183,7 +186,7 @@
         if (button.getAttribute("aria-disabled") !== "true") startLevel(index);
       };
     });
-    selectStage(selected);
+    selectStage(selected, "auto");
   }
 
   function updateBusCard(element, bus, index) {
@@ -398,6 +401,20 @@
   $("stageGrid").addEventListener("wonder:stage-snap", (event) => {
     const index = Number(event.detail?.index);
     if (Number.isInteger(index) && index >= 0) selectStage(index);
+  });
+  $("stageGrid").addEventListener("keydown", (event) => {
+    const card = event.target.closest(".stage-card");
+    if (!card) return;
+    const rtl = document.documentElement.dir === "rtl";
+    const step = event.key === "ArrowRight" ? (rtl ? -1 : 1)
+      : event.key === "ArrowLeft" ? (rtl ? 1 : -1) : 0;
+    let target = null;
+    if (step) target = Number(card.dataset.index) + step;
+    else if (event.key === "Home") target = 0;
+    else if (event.key === "End") target = 29;
+    else return;
+    event.preventDefault();
+    selectStage(target, true, true);
   });
   $("undo").onclick = undo;
   $("hint").onclick = hint;

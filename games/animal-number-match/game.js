@@ -9,19 +9,21 @@
   function write(key,value){try{localStorage.setItem(key,value)}catch{}}
   function t(key,vars={}){const value=window.NUMBER_MATCH_LOCALES[locale]?.[key]??window.NUMBER_MATCH_LOCALES.en[key]??key;return String(value).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??"")}
   function show(id){if(id!=="battle"&&$("#leaveDialog").open)$("#leaveDialog").close();screens.forEach(screen=>screen.hidden=screen.id!==id);$("#generalReserve").hidden=id!=="battle";document.body.dataset.screen=id;window.scrollTo(0,0);if(id==="stage")renderStages()}
-  function selectStage(index,center=false){
+  function selectStage(index,center=false,focus=false){
     selected=Math.max(0,Math.min(29,index));
     document.querySelectorAll("#stageGrid .stage-card").forEach((card,cardIndex)=>{
       const active=cardIndex===selected;
-      card.classList.toggle("selected",active);card.classList.toggle("centered",active);card.setAttribute("aria-current",active?"true":"false");
+      card.classList.toggle("selected",active);card.classList.toggle("centered",active);card.setAttribute("aria-current",active?"true":"false");card.tabIndex=active?0:-1;
     });
-    if(center)document.querySelector(`#stageGrid [data-index="${selected}"]`)?.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});
+    const activeCard=document.querySelector(`#stageGrid [data-index="${selected}"]`);
+    if(center)activeCard?.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});
+    if(focus)activeCard?.focus();
   }
   function renderStages(){
     $("#progress").textContent=t("progress",{done:Math.min(unlocked-1,30)});$("#stageGrid").innerHTML="";
     levels.forEach((item,index)=>{
       const button=document.createElement("button"),locked=index+1>unlocked;
-      button.className=`stage-card${index===selected?" selected centered":""}${locked?" locked":""}`;button.dataset.index=index;button.dataset.stageIndex=index;button.setAttribute("aria-current",index===selected?"true":"false");button.setAttribute("aria-disabled",locked?"true":"false");
+      button.className=`stage-card${index===selected?" selected centered":""}${locked?" locked":""}`;button.dataset.index=index;button.dataset.stageIndex=index;button.tabIndex=index===selected?0:-1;button.setAttribute("aria-current",index===selected?"true":"false");button.setAttribute("aria-disabled",locked?"true":"false");
       button.innerHTML=`<strong>${t("grove",{n:index+1})}</strong><span>${item.rows} × ${item.cols}${locked?" · "+t("locked"):""}</span><span class="difficulty-pips" data-tier="${item.tier}" aria-hidden="true"></span>`;
       button.onclick=()=>{selectStage(index,true);if(!locked)startLevel(index)};$("#stageGrid").append(button);
     });
@@ -148,6 +150,13 @@
     if(!["ArrowLeft","ArrowRight","ArrowUp","ArrowDown","Home","End"].includes(event.key))return;
     const tile=event.target.closest(".tile:not(.empty)");if(!tile)return;
     event.preventDefault();moveTileFocus(event.key,Number(tile.dataset.index));
+  });
+  $("#stageGrid").addEventListener("keydown",event=>{
+    if(!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;
+    const rtl=document.documentElement.dir==="rtl";
+    const delta=event.key==="ArrowLeft"?(rtl?1:-1):event.key==="ArrowRight"?(rtl?-1:1):0;
+    const next=event.key==="Home"?0:event.key==="End"?29:selected+delta;
+    event.preventDefault();selectStage(next,true,true);
   });
   $("#undo").onclick=()=>{const last=history.pop();if(!last)return;values[last.a]=last.va;values[last.b]=last.vb;picked=null;moves=Math.max(0,moves-1);$("#status").textContent=t("undone");renderBoard()};
   $("#hint").onclick=hint;$("#shuffle").onclick=reorder;$("#restart").onclick=()=>startLevel(selected);

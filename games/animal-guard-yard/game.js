@@ -1033,6 +1033,7 @@
       button.className = "stage-card";
       button.type = "button";
       button.dataset.stageIndex = String(index);
+      button.tabIndex = index === selectedStageIndex ? 0 : -1;
       if (locked) button.classList.add("locked");
       button.setAttribute("aria-disabled", String(locked));
       button.setAttribute("aria-label", `${t("stage", { n: stageNo })}. ${stageCopy(stage, "title")}${locked ? `. ${t("locked")}` : ""}`);
@@ -1080,6 +1081,7 @@
     cards.forEach((card) => {
       const centered = card === nearest;
       card.classList.toggle("is-centered", centered);
+      card.tabIndex = centered ? 0 : -1;
       if (centered) card.setAttribute("aria-current", "true");
       else card.removeAttribute("aria-current");
     });
@@ -1128,6 +1130,28 @@
       if (!card || card.classList.contains("locked")) return;
       nodes.stageGrid.querySelectorAll(".stage-card").forEach((item) => item.classList.toggle("selected", item === card));
       currentStage = index;
+    });
+    nodes.stageGrid.addEventListener("keydown", (event) => {
+      const card = event.target.closest(".stage-card");
+      if (!card || !["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+      const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
+      const currentIndex = Math.max(0, cards.indexOf(card));
+      const rtl = document.documentElement.dir === "rtl";
+      const nextIndex = event.key === "Home" ? 0
+        : event.key === "End" ? cards.length - 1
+          : clamp(currentIndex + (event.key === "ArrowRight" ? (rtl ? -1 : 1) : (rtl ? 1 : -1)), 0, cards.length - 1);
+      const target = cards[nextIndex];
+      if (!target) return;
+      event.preventDefault();
+      cards.forEach((item) => {
+        const centered = item === target;
+        item.classList.toggle("is-centered", centered);
+        item.tabIndex = centered ? 0 : -1;
+        if (centered) item.setAttribute("aria-current", "true");
+        else item.removeAttribute("aria-current");
+      });
+      centerStageCard(target, "auto");
+      target.focus({ preventScroll: true });
     });
     window.addEventListener("resize", scheduleCenteredStageCard, { passive: true });
     window.visualViewport?.addEventListener("resize", scheduleCenteredStageCard, { passive: true });
