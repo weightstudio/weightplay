@@ -1715,12 +1715,13 @@
     });
   }
 
-  function drawPack() {
+  function drawPack(event) {
     if (profile.coins < packCost) {
       nodes.packStatus.textContent = t("packNeed", { cost: packCost });
       window.WonderSound?.play("wrong");
       return;
     }
+    const keyboardActivation = event?.detail === 0 && document.activeElement === nodes.packBtn;
     profile.coins -= packCost;
     const upgradeableGear = Object.keys(gearDb).filter((gearId) => gearRank(gearId) < maxGearRank);
     const roll = Math.random();
@@ -1732,6 +1733,14 @@
     }
     saveLocalState();
     renderCollectionUI();
+    if (keyboardActivation) {
+      requestAnimationFrame(() => {
+        const target = nodes.packBtn.disabled
+          ? nodes.stagePanel?.querySelector('[data-stage-tab="deck"]')
+          : nodes.packBtn;
+        target?.focus({ preventScroll: true });
+      });
+    }
     window.WonderSound?.play("success");
   }
 

@@ -221,9 +221,9 @@ button {
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
-  gap: 14px;
-  align-content: center;
+  grid-template-rows: 64px minmax(0, 1fr) 62px;
+  gap: 8px;
+  align-content: stretch;
 }
 
 .stage-heading {
@@ -258,6 +258,35 @@ button {
   min-height: 48px;
   padding: 0;
   font-size: 1.5rem;
+}
+
+.stage-tabs {
+  min-width: 0;
+  height: 62px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  padding: 6px;
+  border-radius: 12px;
+  background: rgba(18, 21, 31, 0.92);
+  box-shadow: 0 -3px 0 rgba(255, 255, 255, 0.08);
+}
+
+.stage-tabs > span {
+  min-width: 0;
+}
+
+.stage-tabs button {
+  min-width: 0;
+  min-height: 50px;
+  height: 50px;
+  padding: 0 10px;
+  border: 2px solid #fff0a6;
+  color: #2b1d12;
+  background: linear-gradient(180deg, #ffe899, #ffbd57);
+  box-shadow: 0 3px 0 #9f5520;
+  font-size: 0.92rem;
+  white-space: nowrap;
 }
 
 .menu-panel > img {
@@ -331,8 +360,22 @@ button {
 }
 
 @media (min-width: 700px) and (max-height: 500px) {
-  body:not(.snack-stage):not(.snack-playing) .menu-panel {
+  body:not(.snack-stage):not(.snack-playing) .menu-panel .wp-standard-main-composition {
+    grid-template-columns: 238px minmax(0, 1fr) !important;
     gap: 8px 12px;
+    padding: 8px !important;
+  }
+
+  body:not(.snack-stage):not(.snack-playing) .menu-panel .wp-standard-main-poster,
+  body:not(.snack-stage):not(.snack-playing) .menu-panel .wp-standard-main-poster-media,
+  body:not(.snack-stage):not(.snack-playing) .menu-panel .wp-standard-main-poster-media > img {
+    width: 238px !important;
+    min-width: 238px !important;
+    max-width: 238px !important;
+    height: 238px !important;
+    min-height: 238px !important;
+    max-height: 238px !important;
+    aspect-ratio: 1 !important;
   }
 
   body:not(.snack-stage):not(.snack-playing) .menu-panel > strong {
@@ -790,6 +833,10 @@ body.snack-stage #stagePanel.stage-panel {
   max-width: none !important;
   height: 100% !important;
   margin: 0 !important;
+}
+
+body.snack-stage .stage-grid {
+  align-self: stretch;
 }
 
 /* The shared Kids Stage helper owns the rail gesture and snap, not this outer Canvas. */

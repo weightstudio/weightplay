@@ -357,6 +357,8 @@
     stagePanel: document.getElementById("stagePanel"),
     startBtn: document.getElementById("startBtn"),
     stageBackBtn: document.getElementById("stageBackBtn"),
+    stageTabs: document.getElementById("stageTabs"),
+    stagesTabBtn: document.getElementById("stagesTabBtn"),
     battleBackBtn: document.getElementById("battleBackBtn"),
     pauseBtn: document.getElementById("pauseBtn"),
     stageTitle: document.getElementById("stageTitle"),
@@ -720,6 +722,8 @@
     nodes.hud.setAttribute("aria-label", t("gameStatsAria"));
     nodes.stagePanel.setAttribute("aria-label", t("stageSelectAria"));
     nodes.stageBackBtn.setAttribute("aria-label", t("stageBackAria"));
+    nodes.stageTabs.setAttribute("aria-label", t("stageSelectAria"));
+    nodes.stagesTabBtn.textContent = t("menu");
     nodes.battleBackBtn.setAttribute("aria-label", t("battleBackAria"));
     nodes.pauseBtn.setAttribute("aria-label", t("pauseAria"));
     nodes.board.setAttribute("aria-label", t("boardAria"));

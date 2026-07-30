@@ -34,7 +34,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/snack-blocks/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/snack-blocks/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/snack-blocks/" />
-    <link rel="stylesheet" href="style.css?v=20260729-interface-v4-1" data-wp-stage-standard data-wp-battle-standard />
+    <link rel="stylesheet" href="style.css?v=20260730-interface-v4-2" data-wp-stage-standard data-wp-battle-standard />
     <script data-wp-stage-standard>/* Snack Blocks owns its native Kids Stage rail. */</script>
     <script data-wp-battle-standard>/* Snack Blocks owns its native Kids Battle Canvas. */</script>
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
@@ -94,13 +94,13 @@
         </label>
       </header>
 
-      <section id="hud" class="hud hidden" aria-label="Game stats">
+      <header id="hud" class="hud hidden" aria-label="Game stats">
         <button id="battleBackBtn" data-wp-return="battle" type="button" aria-label="Back to stages">&larr;</button>
         <div><span id="stageLabel">Stage</span><strong id="stageText">1</strong></div>
         <div><span id="movesLabel">Moves</span><strong id="movesText">20</strong></div>
         <div><span id="targetLabel">Target</span><strong id="targetText">800</strong></div>
         <button id="pauseBtn" class="pause-btn" type="button" aria-label="Pause">&#9208;</button>
-      </section>
+      </header>
 
       <section id="menuPanel" class="menu-panel">
         <img class="cover" src="../../assets/snack-blocks-cover.png" alt="Imagen del juego Bloques de Aperitivos" />
@@ -110,14 +110,19 @@
       </section>
 
       <section id="stagePanel" class="stage-panel wp-stage-art-shell hidden" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="350" data-wp-stage-art="../../assets/snack-blocks-cover.png" style="--wp-stage-art: url('../../assets/snack-blocks-cover.png')" aria-label="Stage selection">
-        <div class="stage-heading">
+        <header class="stage-heading">
           <button id="stageBackBtn" class="stage-back" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
           <div>
             <strong id="stageTitle">Choose a snack stage.</strong>
             <span id="stageHelp">Drag sideways and choose an unlocked stage.</span>
           </div>
-        </div>
+        </header>
         <div id="stageGrid" class="stage-grid"></div>
+        <nav id="stageTabs" class="stage-tabs" aria-label="Stage sections">
+          <span aria-hidden="true"></span>
+          <button id="stagesTabBtn" class="active" type="button" aria-current="page">Stages</button>
+          <span aria-hidden="true"></span>
+        </nav>
       </section>
       <section id="playPanel" class="play-panel hidden">
         <div id="scoreLine" class="score-line">
@@ -187,7 +192,7 @@
     <script src="../../src/edge-guard.js?v=20260710-mobile-play-shell2"></script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
-    <script src="game.js?v=20260729-interface-v4-1"></script>
+    <script src="game.js?v=20260730-interface-v4-2"></script>
     <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
     <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
 </body>

@@ -1148,19 +1148,21 @@
     if (!current) return;
     const supported = ["ArrowLeft", "ArrowRight", "Home", "End"];
     if (!supported.includes(event.key)) return;
-    const unlockedCards = [...nodes.stageRail.querySelectorAll('.raid-card[aria-disabled="false"]')];
-    if (!unlockedCards.length) return;
-    const currentIndex = Math.max(0, unlockedCards.indexOf(current));
+    const cards = [...nodes.stageRail.querySelectorAll(".raid-card")];
+    if (!cards.length) return;
+    const currentIndex = Math.max(0, cards.indexOf(current));
     let nextIndex = currentIndex;
     if (event.key === "Home") nextIndex = 0;
-    else if (event.key === "End") nextIndex = unlockedCards.length - 1;
+    else if (event.key === "End") nextIndex = cards.length - 1;
     else if (event.key === "ArrowLeft") nextIndex = Math.max(0, currentIndex - 1);
-    else nextIndex = Math.min(unlockedCards.length - 1, currentIndex + 1);
+    else nextIndex = Math.min(cards.length - 1, currentIndex + 1);
     event.preventDefault();
-    unlockedCards.forEach((card, index) => {
+    cards.forEach((card, index) => {
       card.tabIndex = index === nextIndex ? 0 : -1;
+      if (index === nextIndex) card.setAttribute("aria-current", "true");
+      else card.removeAttribute("aria-current");
     });
-    const next = unlockedCards[nextIndex];
+    const next = cards[nextIndex];
     next.focus({ preventScroll: true });
     next.scrollIntoView({ block: "nearest", inline: "center" });
   }
@@ -2267,10 +2269,12 @@
     moveStageFocus(event);
   });
   nodes.stageRail.addEventListener("focusin", (event) => {
-    const card = event.target?.closest?.('.raid-card[aria-disabled="false"]');
+    const card = event.target?.closest?.(".raid-card");
     if (!card) return;
     nodes.stageRail.querySelectorAll(".raid-card").forEach((item) => {
       item.tabIndex = item === card ? 0 : -1;
+      if (item === card) item.setAttribute("aria-current", "true");
+      else item.removeAttribute("aria-current");
     });
   });
   nodes.stageRail.addEventListener("scroll", queueCenteredStageUpdate, { passive: true });
