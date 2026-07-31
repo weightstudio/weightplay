@@ -290,15 +290,37 @@
     return Math.max(0,solid.r+margin-Math.hypot(point.x-solid.x,point.y-solid.y));
   }
   function canTranslateStroke(stroke,dx,dy,spec){
-    if(stroke.anchored)return false;
-    const margin=10,samples=sampledStrokePoints(stroke.points),epsilon=.05;
-    return samples.every(point=>{
-      const next={x:point.x+dx,y:point.y+dy};
-      return spec.solids.every(solid=>solidPenetration(next,solid,margin)<=solidPenetration(point,solid,margin)+epsilon);
-    });
+    return !stroke.anchored;
   }
   function availableStrokeMoves(stroke,spec,distance=10){
     return MOVE_DIRECTIONS.filter(direction=>canTranslateStroke(stroke,direction.x*distance,direction.y*distance,spec));
+  }
+  function strokePenetrationScore(stroke,spec,dx=0,dy=0){
+    const samples=sampledStrokePoints(stroke.points),margin=10;
+    let score=0;
+    for(const solid of spec.solids)for(const point of samples){
+      const penetration=solidPenetration({x:point.x+dx,y:point.y+dy},solid,margin);
+      score+=penetration*penetration;
+    }
+    return score;
+  }
+  function preferredPushDirectionIndex(stroke,spec){
+    const contact=closestStrokePoint(stroke,spec.dog),away={x:spec.dog.x-contact.x,y:spec.dog.y-contact.y};
+    return PUSH_DIRECTIONS.reduce((best,direction,index)=>{
+      const alignment=direction.x*away.x+direction.y*away.y;
+      return alignment>best.alignment?{index,alignment}:best;
+    },{index:0,alignment:-Infinity}).index;
+  }
+  function escapePushDirectionIndex(stroke,spec,excludedIndex=-1){
+    const before=strokePenetrationScore(stroke,spec),preferred=preferredPushDirectionIndex(stroke,spec);
+    const candidates=PUSH_DIRECTIONS.map((direction,index)=>({direction,index}))
+      .filter(candidate=>candidate.index!==excludedIndex&&canTranslateStroke(stroke,candidate.direction.x*8,candidate.direction.y*8,spec))
+      .map(candidate=>({
+        ...candidate,
+        score:before-strokePenetrationScore(stroke,spec,candidate.direction.x*8,candidate.direction.y*8)+(candidate.index===preferred?100000:0),
+      }))
+      .sort((a,b)=>b.score-a.score);
+    return candidates[0]?.index??-1;
   }
   function pointInsideStroke(point,points){
     if(points.length<4||Math.hypot(points[0].x-points.at(-1).x,points[0].y-points.at(-1).y)>34)return false;
@@ -310,9 +332,15 @@
     return inside;
   }
   function nearbyTurn(points,solid){
-    let turn=0,lastAngle=null;
+    const stable=[points[0]];
     for(let index=1;index<points.length;index++){
-      const a=points[index-1],b=points[index],mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2};
+      const previous=stable.at(-1),point=points[index];
+      if(Math.hypot(point.x-previous.x,point.y-previous.y)>=24)stable.push(point);
+    }
+    if(stable.at(-1)!==points.at(-1)&&Math.hypot(points.at(-1).x-stable.at(-1).x,points.at(-1).y-stable.at(-1).y)>=8)stable.push(points.at(-1));
+    let turn=0,lastAngle=null;
+    for(let index=1;index<stable.length;index++){
+      const a=stable[index-1],b=stable[index],mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2};
       const near=solid.kind==="platform"
         ?mid.x>=solid.x-64&&mid.x<=solid.x+solid.w+64&&mid.y>=solid.y-64&&mid.y<=solid.y+solid.h+64
         :Math.hypot(mid.x-solid.x,mid.y-solid.y)<=solid.r+72;
@@ -352,8 +380,8 @@
       const sides=solidContactSides(stroke,solid),turn=nearbyTurn(stroke.points,solid);
       if(solid.kind==="platform"){
         const adjacent=(sides.has("top")&&(sides.has("left")||sides.has("right")))||(sides.has("bottom")&&(sides.has("left")||sides.has("right")));
-        if(adjacent&&turn>=.9)return true;
-      }else if(sides.size>=2&&turn>=1.05)return true;
+        if(adjacent&&turn>=1.2)return true;
+      }else if(sides.size>=2&&turn>=1.6)return true;
     }
     return false;
   }
@@ -481,8 +509,10 @@
     const center={x:bees.reduce((sum,bee)=>sum+bee.x,0)/bees.length,y:bees.reduce((sum,bee)=>sum+bee.y,0)/bees.length};
     const candidates=state.strokes.filter(stroke=>!stroke.anchored&&PUSH_DIRECTIONS.some(direction=>canTranslateStroke(stroke,direction.x*10,direction.y*10,spec))).sort((a,b)=>closestStrokePoint(a,center).d-closestStrokePoint(b,center).d);
     const stroke=candidates[0];if(!stroke)return null;
-    const directionIndex=PUSH_DIRECTIONS.findIndex(direction=>canTranslateStroke(stroke,direction.x*10,direction.y*10,spec));
-    return{stroke,directionIndex,phase:"gather",cohort:[],maxAttached:0};
+    const desiredDirectionIndex=preferredPushDirectionIndex(stroke,spec);
+    const directionIndex=canTranslateStroke(stroke,PUSH_DIRECTIONS[desiredDirectionIndex].x*8,PUSH_DIRECTIONS[desiredDirectionIndex].y*8,spec)
+      ?desiredDirectionIndex:escapePushDirectionIndex(stroke,spec);
+    return{stroke,directionIndex,desiredDirectionIndex,phase:"gather",cohort:[],maxAttached:0};
   }
   function collideLine(bee){
     if(bee.cooldown>0)return false;
@@ -582,6 +612,8 @@
     if(state.mover&&state.mover.phase==="push"){
       for(const bee of blockedBees)if(bee.attachedStroke===state.mover.stroke&&!state.mover.cohort.includes(bee))state.mover.cohort.push(bee);
       state.maxGroupAttached=Math.max(state.maxGroupAttached,state.mover.cohort.length);
+      const desired=PUSH_DIRECTIONS[state.mover.desiredDirectionIndex];
+      if(canTranslateStroke(state.mover.stroke,desired.x*8,desired.y*8,spec))state.mover.directionIndex=state.mover.desiredDirectionIndex;
       const direction=PUSH_DIRECTIONS[state.mover.directionIndex],attached=state.mover.cohort.filter(bee=>bee.attachedStroke===state.mover.stroke),distance=(80+attached.length*26)*dt;
       if(tryMoveStroke(state.mover.stroke,direction.x*distance,direction.y*distance,spec)){
         attached.forEach(bee=>{bee.x+=direction.x*distance;bee.y+=direction.y*distance;bee.prevX=bee.x;bee.prevY=bee.y});
@@ -592,11 +624,11 @@
           state.pathOpenedAt=state.elapsed;state.bees.forEach(bee=>{bee.attachedStroke=null});state.mover=null;announce("pathFound");
         }
       }else{
-        let found=false;
-        for(let attempt=1;attempt<=PUSH_DIRECTIONS.length;attempt++){
-          const index=(state.mover.directionIndex+attempt)%PUSH_DIRECTIONS.length,next=PUSH_DIRECTIONS[index];
-          if(canTranslateStroke(state.mover.stroke,next.x*8,next.y*8,spec)){state.mover.directionIndex=index;found=true;break}
-        }
+        const reverseIndex=state.mover.directionIndex%2===0?state.mover.directionIndex+1:state.mover.directionIndex-1;
+        let index=escapePushDirectionIndex(state.mover.stroke,spec,reverseIndex);
+        if(index<0)index=escapePushDirectionIndex(state.mover.stroke,spec);
+        const found=index>=0;
+        if(found)state.mover.directionIndex=index;
         if(!found){refreshStrokeMobility(state.mover.stroke,spec);state.bees.forEach(bee=>{bee.attachedStroke=null});announce("barrierHeld");state.mover=null}
       }
     }
@@ -752,11 +784,11 @@
     wallProbe(){
       const free={points:[{x:710,y:210},{x:710,y:470}],flash:0,blockedFlash:0,moves:0,anchored:false};
       const freeBefore=free.points[0].x,freeMoved=tryMoveStroke(free,-20,0,level(0));
-      const blocked={points:[{x:710,y:335},{x:710,y:420}],flash:0,blockedFlash:0,moves:0,anchored:false};
-      const blockedBefore=blocked.points[0].x,blockedMoved=tryMoveStroke(blocked,-50,0,level(2));
+      const contact={points:[{x:710,y:335},{x:710,y:420}],flash:0,blockedFlash:0,moves:0,anchored:false};
+      const contactBefore=contact.points[0].x,contactMoved=tryMoveStroke(contact,-50,0,level(2));
       const edge={points:[{x:4,y:220},{x:180,y:220}],flash:0,blockedFlash:0,moves:0,anchored:false};
       const edgeCanEscape=availableStrokeMoves(edge,{solids:[]},12).length>0;
-      return{freeMoved,freeDistance:Math.abs(free.points[0].x-freeBefore),blocked:!blockedMoved,blockedDistance:Math.abs(blocked.points[0].x-blockedBefore),edgeCanEscape};
+      return{freeMoved,freeDistance:Math.abs(free.points[0].x-freeBefore),contactMoved,contactDistance:Math.abs(contact.points[0].x-contactBefore),edgeCanEscape};
     },
     shapeLockProbe(){
       const spec=level(2);
@@ -839,6 +871,26 @@
       for(let time=0;time<6&&!state.result;time+=.02)update(.02);
       return{participants:1,initialRoute,approachStartedAt:state.wallApproachStartedAt,wallMoves:state.wallMoves,firstMoveAt:state.wallFirstMovedAt,maxAttached:state.maxGroupAttached,pathOpenedAt:state.pathOpenedAt,intents:[...new Set(state.bees.map(bee=>bee.intent))],result:state.result};
     },
+    stage16ScreenshotProbe(){
+      startStage(15);state.duration=10;
+      const controls=[{x:0,y:366},{x:75,y:357},{x:173,y:343},{x:272,y:331},{x:370,y:292},{x:468,y:254},{x:566,y:248},{x:664,y:268},{x:762,y:313},{x:860,y:338},{x:959,y:361},{x:1000,y:369}],points=[controls[0]];
+      for(let index=1;index<controls.length;index++){
+        const a=controls[index-1],b=controls[index],steps=Math.ceil(Math.hypot(b.x-a.x,b.y-a.y)/6);
+        for(let step=1;step<=steps;step++){
+          const t=step/steps;
+          points.push({x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t+Math.sin((points.length+step)*2.31)*1.25});
+        }
+      }
+      const stroke={points,flash:0,blockedFlash:0,moves:0,anchored:false};
+      const spec=level(15),origin={...stroke.points[0]};state.strokes=[stroke];refreshStrokeMobility(stroke,spec);beginWave();
+      for(let count=0;count<4;count++)spawnBee();
+      state.spawned=spec.maxBees;
+      const initialRoutes=state.bees.filter(bee=>navigationDirection(buildNavigationField(spec),bee.x,bee.y)).length;
+      const initiallyMovable=PUSH_DIRECTIONS.some(direction=>canTranslateStroke(stroke,direction.x*8,direction.y*8,spec));
+      update(.02);const initialIntents=[...new Set(state.bees.map(bee=>bee.intent))];
+      for(let time=0;time<10&&!state.result;time+=.02)update(.02);
+      return{participants:4,initialRoutes,anchored:stroke.anchored,initiallyMovable,initialIntents,wallMoves:state.wallMoves,netDisplacement:Math.hypot(stroke.points[0].x-origin.x,stroke.points[0].y-origin.y),maxAttached:state.maxGroupAttached,pathOpenedAt:state.pathOpenedAt,intents:[...new Set(state.bees.map(bee=>bee.intent))],result:state.result};
+    },
     stallSweepProbe(){
       const records=[],failures=[];
       for(const index of [0,5,10,11,15,20,25,29]){
@@ -849,8 +901,8 @@
         const initialRoute=!!navigationDirection(buildNavigationField(spec),state.bees[0].x,state.bees[0].y),movable=PUSH_DIRECTIONS.some(direction=>canTranslateStroke(stroke,direction.x*8,direction.y*8,spec));
         update(.02);const initialIntent=state.bees[0]?.intent;
         for(let time=0;time<5&&!state.result;time+=.02)update(.02);
-        const record={stage:index+1,initialRoute,movable,initialIntent,wallMoves:state.wallMoves,intents:[...new Set(state.bees.map(bee=>bee.intent))],result:state.result};records.push(record);
-        if(!initialRoute&&movable&&(initialIntent==="wait"||state.wallMoves===0&&!state.result))failures.push(record);
+        const record={stage:index+1,initialRoute,movable,initialIntent,anchoredAfter:stroke.anchored,wallMoves:state.wallMoves,intents:[...new Set(state.bees.map(bee=>bee.intent))],result:state.result};records.push(record);
+        if(!initialRoute&&movable&&(initialIntent==="wait"||state.wallMoves===0&&!state.result||record.intents.includes("wait")&&!record.anchoredAfter))failures.push(record);
       }
       return{records,failures};
     },

@@ -288,7 +288,7 @@
   function leaveBattle(){dom.leave.hidden=true;setBattleLeaveCoverage(false);pauseRunClock();sound("click");showStage(stageIndex);}
 
   function showMain(){clearCompletionTransition();completing=false;dom.result.hidden=true;dom.leave.hidden=true;setBattleLeaveCoverage(false);setResultCoverage(false);setScreen("main");updateMainProgress();requestAnimationFrame(()=>dom.start.focus({preventScroll:true}));}
-  function showStage(focusIndex=stageIndex){clearCompletionTransition();completing=false;dom.result.hidden=true;dom.leave.hidden=true;setBattleLeaveCoverage(false);setResultCoverage(false);setScreen("stage");stageIndex=Math.max(0,Math.min(29,focusIndex));renderStages();requestAnimationFrame(()=>{const card=dom.stageRail.querySelector(`[data-index="${Math.min(save.unlocked-1,stageIndex)}"]`);card?.scrollIntoView({inline:"center",block:"nearest",behavior:"auto"});card?.focus({preventScroll:true});});}
+  function showStage(focusIndex=stageIndex){clearCompletionTransition();completing=false;dom.result.hidden=true;dom.leave.hidden=true;setBattleLeaveCoverage(false);setResultCoverage(false);setScreen("stage");stageIndex=Math.max(0,Math.min(29,focusIndex));renderStages();window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));requestAnimationFrame(()=>{window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));const card=dom.stageRail.querySelector(`[data-index="${Math.min(save.unlocked-1,stageIndex)}"]`);card?.scrollIntoView({inline:"center",block:"nearest",behavior:"auto"});card?.focus({preventScroll:true});});}
 
   function stageStatus(stage){if(save.cleared[stage.id-1])return t("cleared");if(stage.id<=save.unlocked)return t("available");return t("locked");}
   function renderStages(){

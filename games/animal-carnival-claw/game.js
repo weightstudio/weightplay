@@ -281,6 +281,7 @@ function updateTimingCoach(locked=false,failed=false){
 }
 
 function activeModal(){return["tutorialPanel","leavePanel","pausePanel","resultPanel"].some(id=>!$(id).hidden)}
+function resolvedAutoplayPhase(){return Boolean(run&&["lift","return"].includes(run.phase))}
 function openModal(id,focus){focusReturn=document.activeElement;$(id).hidden=false;cancelAnimationFrame(raf);raf=0;requestAnimationFrame(()=>focus?.focus({preventScroll:true}))}
 function closeModal(id,resume=true){$(id).hidden=true;focusReturn?.focus?.({preventScroll:true});focusReturn=null;if(resume)resumeLoop()}
 function resumeLoop(){if(!run||run.result||screen!=="battle"||activeModal())return;cancelAnimationFrame(raf);last=performance.now();raf=requestAnimationFrame(loop)}
@@ -391,7 +392,7 @@ function bind(){
   canvas.addEventListener("pointercancel",()=>{pointerId=null});
   canvas.addEventListener("keydown",event=>{if(!run||activeModal())return;const amount=event.shiftKey?28:14;if(run.phase==="aim"&&["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(event.key)){run.aimX=clamp(run.aimX+(event.key==="ArrowLeft"?-amount:event.key==="ArrowRight"?amount:0),70,930);run.aimY=clamp(run.aimY+(event.key==="ArrowUp"?-amount:event.key==="ArrowDown"?amount:0),210,500);draw();event.preventDefault()}else if(run.phase==="secure"&&(event.key===" "||event.key==="Enter")){attemptLock();event.preventDefault()}else if(run.phase==="aim"&&(event.key===" "||event.key==="Enter")){beginDrop();event.preventDefault()}});
   window.addEventListener("resize",resizeCanvas,{passive:true});
-  window.addEventListener("blur",()=>{if(screen==="battle"&&run&&!run.result&&!activeModal())openModal("pausePanel",$("resumeBtn"))});
+  window.addEventListener("blur",()=>{if(screen==="battle"&&run&&!run.result&&!activeModal()&&(document.hidden||!resolvedAutoplayPhase()))openModal("pausePanel",$("resumeBtn"))});
   document.addEventListener("visibilitychange",()=>{if(document.hidden&&screen==="battle"&&run&&!run.result&&!activeModal())openModal("pausePanel",$("resumeBtn"))});
 }
 function init(){
