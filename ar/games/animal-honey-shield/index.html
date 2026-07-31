@@ -69,7 +69,7 @@
           <li data-i18n="how2">Release to begin the bee wave; keep drawing new segments while it runs.</li>
           <li data-i18n="how3">Survive until the timer reaches zero without letting a bee touch Pip.</li>
         </ol></article>
-        <article class="game-info-section"><h3 data-i18n="rulesTitle">Rules and results</h3><p data-i18n="rulesText">Each line spends nectar and weakens when bees collide with it. A touch on Pip fails the attempt. A safe countdown clears the stage; shorter lines and unused nectar earn more stars.</p></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">Rules and results</h3><p data-i18n="rulesText">Lines never break. Bees use every open route and move loose walls only when Pip is sealed off. A touch on Pip immediately fails the attempt.</p></article>
         <article class="game-info-section"><h3 data-i18n="progressTitle">Thirty meadow routes</h3><p data-i18n="progressText">Six chapters add extra hives, split approaches, stone anchors, moving gusts, fragile gaps, and mixed mastery waves. Every clear unlocks the next route.</p></article>
         <article class="game-info-section"><h3 data-i18n="tipsTitle">Practical tips</h3><p data-i18n="tipsText">Anchor short curves between stones, leave room around Pip, and watch where the barrier glows red. A small repair is often stronger than drawing a second full circle.</p></article>
         <article class="game-info-section"><h3 data-i18n="saveTitle">Save and privacy</h3><p data-i18n="saveText">Unlocked stages and best stars stay only in this browser. No account, upload, or personal information is required.</p></article>
@@ -101,11 +101,13 @@
         <header class="battle-header">
           <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Back">←</button>
           <div class="battle-title"><small id="stageLabel"></small><strong id="objectiveText"></strong></div>
-          <div class="battle-stat"><small data-i18n="time">Time</small><strong id="timeValue">10.0</strong></div>
-          <div class="battle-stat"><small data-i18n="nectar">Nectar</small><strong id="nectarValue">100</strong></div>
           <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="Pause">Ⅱ</button>
         </header>
-        <section id="waveMeter" class="wave-meter" aria-hidden="true"><i id="waveFill"></i></section>
+        <section class="battle-metrics" aria-label="Battle status">
+          <div class="battle-stat"><small data-i18n="time">Time</small><strong id="timeValue">10.0</strong></div>
+          <section id="waveMeter" class="wave-meter" aria-hidden="true"><i id="waveFill"></i></section>
+          <div class="battle-stat"><small data-i18n="nectar">Nectar</small><strong id="nectarValue">100</strong></div>
+        </section>
         <section id="boardWrap" class="board-wrap">
           <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="Draw a nectar barrier to protect Pip"></canvas>
           <div id="drawHint" class="draw-hint" data-i18n="drawHint">Draw anywhere to build Pip's shield</div>
@@ -135,8 +137,8 @@
     <button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close" aria-label="Close">×</button>
     <div class="sprite sprite-pup" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">Draw, watch, and repair</h2><ol>
       <li data-i18n="tutorial1">Drag one short barrier between Pip and the hive.</li>
-      <li data-i18n="tutorial2">Releasing starts the wave. Red flashes show a weakening line.</li>
-      <li data-i18n="tutorial3">Draw another short segment before a gap opens.</li>
+      <li data-i18n="tutorial2">Releasing starts the wave. Bees take gaps first and move walls only when no route exists.</li>
+      <li data-i18n="tutorial3">A straight bridge stays movable. Wrap a stone or hook a platform corner to lock the wall.</li>
     </ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Protect Pip</button>
   </div></section>
 
