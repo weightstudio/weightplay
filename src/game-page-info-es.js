@@ -4,15 +4,10 @@ window.WeightPlayGameInfoLocales.es = {
   "games": {
     "wonder-crash": {
       "title": "Defensa del león de fantasía",
-      "age": "5+",
       "difficulty": "Medio",
       "time": "5-8 minutos",
-      "skills": [
-        "Reacción",
-        "Enfoque",
-        "Coordinación ojo-mano"
-      ],
-      "intro": "Fantasy Lion Defense es un juego de defensa de animales de 30 etapas protagonizado por Boom Mane Leo. El león se mueve a lo largo de una pared de fantasía mientras los borradores, lápices y reglas equipados se disparan en tiempos de reutilización separados. Ocho roles de bestia atacan en carriles creados, formaciones alternas, de borde y centrales, y cada quinta etapa termina con un patrón de jefe diferente. Entre oleadas, el jugador elige mejoras de batalla temporales; Después de la liquidación, las monedas guardadas mejoran a Leo, el equipo o el muro. Los niños pueden volver a intentarlo sin cronómetro y el juego permanece permanentemente libre de publicidad.",
+      "noteTitle": "Información del jugador y del guardado",
+      "intro": "Fantasy Lion Defense es un juego de defensa de animales de 30 etapas protagonizado por Boom Mane Leo. El león se mueve a lo largo de una pared de fantasía mientras los borradores, lápices y reglas equipados se disparan en tiempos de reutilización separados. Ocho roles de bestia atacan en carriles creados, formaciones alternas, de borde y centrales, y cada quinta etapa termina con un patrón de jefe diferente. Entre oleadas, el jugador elige mejoras de batalla temporales; después de la liquidación, las monedas guardadas mejoran a Leo, el equipo o el muro. Los jugadores pueden volver a intentarlo sin cronómetro y el juego permanece permanentemente libre de publicidad.",
       "story": [
         "Boom Mane Leo protege la pared fuera de la bóveda encantada de útiles escolares de WeightPlay. Jabalíes, hienas embaucadoras, rinocerontes acorazados, búfalos, halcones, osos, tigres y cocodrilos se sienten atraídos por la magia almacenada dentro de sus lápices, reglas y borradores. Leo no puede dejar la pared desprotegida, por lo que el jugador patrulla su ancho, mantiene las armas automáticas alineadas con los carriles entrantes y repara los daños entre expediciones.",
         "La campaña atraviesa seis rutas de defensa de cinco etapas. Cada ruta termina cuando un comandante de bestias nombrado es derrotado en las Etapas 5, 10, 15, 20, 25 o 30. Una primera limpieza abre la siguiente etapa; una primera limpieza del jefe también otorga la bonificación de diamantes registrada. Limpiar Bear Starfall en la etapa 30 significa que toda la lista de bestias ha sido expulsada y la bóveda puede reabrirse de forma segura."
@@ -47,8 +42,8 @@ window.WeightPlayGameInfoLocales.es = {
         "Las etapas 21 a 25 combinan corredores vigilados, velocistas en zigzag, puertas pesadas y ataques por los flancos. Hawk Dive Squadron acelera repetidamente y dispara dos proyectiles rápidos, lo que recompensa el reposicionamiento temprano.",
         "Las etapas 26 a 30 revisan los ocho roles a través de formaciones de carril, alternancia, centro y borde. Bear Starfall termina la campaña con la lista completa y un patrón de lanzamiento de tres proyectiles en lugar de otra copia numérica de un Jefe anterior."
       ],
-      "designNote": "Usamos disparos de armas automáticas para que la decisión continua del jugador sea dónde debe pararse Leo, no si se registró un pequeño botón de disparo en un teléfono. Los tiempos de reutilización de espacios separados preservan el valor de construcción de equipos, mientras que las actualizaciones entre oleadas crean breves pausas tácticas. La revisión de 30 etapas reemplaza la antigua aleatoriedad de las bestias del final del juego con composiciones de autor y cuatro formaciones de generación legibles. Los patrones de proyectiles de Six Boss proporcionan puntos de control sin agregar imágenes hostiles más allá del tono de defensa animal de fantasía existente. Arrastrar el teléfono, tocar el movimiento y las teclas de flecha del escritorio controlan el mismo campo de batalla lógico limitado. A diferencia de Animal Color Lunchbox, este juego pide reacciones y opciones de construcción, pero mantiene el contrato de Kids: sin publicidad, sin presión de cuenta regresiva, reintento de apoyo y sin afirmar que el Informe de habilidades sea una evaluación formal.",
-      "parent": "Fantasy Lion Defense utiliza combates con animales de dibujos animados, armas automáticas de útiles escolares, HP de pared y decisiones de actualización. Puede apoyar la reacción, la concentración, la planificación y la coordinación ojo-mano durante sesiones cortas, pero el Informe de habilidades y las estrellas son resúmenes divertidos en lugar de una evaluación del desarrollo, médica o escolar. La página para niños no tiene publicidad, no es necesario iniciar sesión y el progreso permanece en el navegador actual a menos que se borre su almacenamiento.",
+      "designNote": "Usamos disparos de armas automáticas para que la decisión continua del jugador sea dónde debe pararse Leo, no si se registró un pequeño botón de disparo en un teléfono. Los tiempos de reutilización de espacios separados preservan el valor de construcción de equipos, mientras que las actualizaciones entre oleadas crean breves pausas tácticas. La revisión de 30 etapas reemplaza la antigua aleatoriedad de las bestias del final del juego con composiciones de autor y cuatro formaciones de generación legibles. Los patrones de proyectiles de Six Boss proporcionan puntos de control sin agregar imágenes hostiles más allá del tono de defensa animal de fantasía existente. Arrastrar el teléfono, tocar el movimiento y las teclas de flecha del escritorio controlan el mismo campo de batalla lógico limitado. A diferencia de Animal Color Lunchbox, este juego pide reacciones y opciones de construcción, pero mantiene una promesa amable para el jugador: sin publicidad, sin presión de cuenta regresiva, reintento de apoyo y un resumen factual del rendimiento de batalla en lugar de una evaluación de capacidades.",
+      "parent": "Fantasy Lion Defense utiliza combates con animales de dibujos animados, armas automáticas de útiles escolares, HP de pared y decisiones de actualización. El rendimiento de batalla resume el estado del muro, las bestias derrotadas y las mejoras elegidas en la partida actual; no es una evaluación de capacidades. La página del juego General no tiene publicidad, no es necesario iniciar sesión y el progreso permanece en el navegador actual a menos que se borre su almacenamiento.",
       "faq": [
         [
           "¿Cuántas etapas hay en Fantasy Lion Defense?",
@@ -75,12 +70,12 @@ window.WeightPlayGameInfoLocales.es = {
           "Sí. Touch admite tocar y arrastrar, y una batalla de escritorio enfocada admite las teclas de flecha izquierda y derecha."
         ],
         [
-          "¿Este juego para niños muestra anuncios o requiere una cuenta?",
+          "¿Este juego muestra anuncios o requiere una cuenta?",
           "No. No solicita publicidad y no requiere inicio de sesión; El progreso se almacena localmente en el navegador."
         ],
         [
-          "¿El Informe de Habilidades mide la habilidad?",
-          "No. Wall HP, las bestias derrotadas, las elecciones, las estrellas y las puntuaciones son solo comentarios del juego, no una prueba o diagnóstico."
+          "¿Qué resume el rendimiento de batalla?",
+          "Muestra el estado del muro, las bestias derrotadas, las mejoras elegidas, las estrellas y la puntuación de la partida actual."
         ]
       ]
     },

@@ -46,6 +46,16 @@ body:not(.wonder-stage-select) .wp-generated-stage-header {
   display: none !important;
 }
 
+/* The canonical Main remains mounted while Stage is active. Keep its controls
+   out of hit testing even if shared shell styling temporarily re-establishes
+   their layout during a responsive viewport change. */
+body.wonder-stage-select .wonder-main.hidden,
+body.wonder-playing .wonder-main.hidden {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 body:not(.wonder-playing) .game-shell {
   left: 50% !important;
   width: 390px !important;

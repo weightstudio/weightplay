@@ -45,12 +45,11 @@
     },
     "wonder-crash": {
       title: "Fantasy Lion Defense",
-      age: "5+",
       difficulty: "Medium",
       time: "5-8 minutes",
-      skills: ["Reaction", "Focus", "Hand-Eye Coordination"],
+      noteTitle: "Player and Save Information",
       intro:
-        "Fantasy Lion Defense is a 30-stage animal defense game starring Boom Mane Leo. The lion moves along a fantasy wall while equipped erasers, pencils, and rulers fire on separate cooldowns. Eight beast roles attack in authored lane, alternating, edge, and center formations, and every fifth stage ends with a different Boss pattern. Between waves, the player chooses temporary Battle upgrades; after settlement, saved coins improve Leo, equipment, or the wall. Kids can retry without a timer, and the game remains permanently ad-free.",
+        "Fantasy Lion Defense is a 30-stage animal defense game starring Boom Mane Leo. The lion moves along a fantasy wall while equipped erasers, pencils, and rulers fire on separate cooldowns. Eight beast roles attack in authored lane, alternating, edge, and center formations, and every fifth stage ends with a different Boss pattern. Between waves, the player chooses temporary Battle upgrades; after settlement, saved coins improve Leo, equipment, or the wall. Players can retry without a timer, and the game remains permanently ad-free.",
       story: [
         "Boom Mane Leo guards the wall outside WeightPlay's enchanted school-supply vault. Wild boars, trickster hyenas, armored rhinos, charging buffalo, hawks, bears, tigers, and crocodiles are drawn toward the magic stored inside its pencils, rulers, and erasers. Leo cannot leave the wall unprotected, so the player patrols its width, keeps the automatic weapons aligned with incoming lanes, and repairs damage between expeditions.",
         "The campaign crosses six five-stage defense routes. Each route ends when a named beast commander is defeated at Stages 5, 10, 15, 20, 25, or 30. A first clear opens the next stage; a Boss first clear also grants the recorded diamond bonus. Clearing Bear Starfall at Stage 30 means the full beast roster has been driven away and the vault can reopen safely."
@@ -79,9 +78,9 @@
         "Stages 26-30 review all eight roles through lane, alternating, center, and edge formations. Bear Starfall finishes the campaign with the complete roster and a three-projectile casting pattern rather than another numeric copy of an earlier Boss."
       ],
       designNote:
-        "We use automatic weapon fire so the player's continuous decision is where Leo should stand, not whether a small fire button registered on a phone. Separate slot cooldowns preserve equipment-building value, while between-wave upgrades create short tactical pauses. The 30-stage revision replaces the old late-game all-beast randomness with authored compositions and four readable spawn formations. Six Boss projectile patterns provide checkpoints without adding hostile imagery beyond the existing fantasy animal defense tone. Phone drag, tap movement, and desktop Arrow keys all control the same bounded logical battlefield. Unlike Animal Color Lunchbox, this game asks for reaction and build choices, but it keeps the Kids contract: no ads, no countdown pressure, supportive retry, and no claim that the Skill Report is a formal assessment.",
+        "We use automatic weapon fire so the player's continuous decision is where Leo should stand, not whether a small fire button registered on a phone. Separate slot cooldowns preserve equipment-building value, while between-wave upgrades create short tactical pauses. The 30-stage revision replaces the old late-game all-beast randomness with authored compositions and four readable spawn formations. Six Boss projectile patterns provide checkpoints without adding hostile imagery beyond the existing fantasy animal defense tone. Phone drag, tap movement, and desktop Arrow keys all control the same bounded logical battlefield. Unlike Animal Color Lunchbox, this game asks for reaction and build choices while keeping a player-friendly promise: no ads, no countdown pressure, supportive retry, and a factual Battle Performance summary rather than an ability assessment.",
       parent:
-        "Fantasy Lion Defense uses cartoon animal combat, automatic school-supply weapons, wall HP, and upgrade decisions. It may support reaction, focus, planning, and hand-eye coordination during short sessions, but the Skill Report and stars are playful summaries rather than a developmental, medical, or school assessment. The Kids page is ad-free, sign-in is not required, and progress stays in the current browser unless its storage is cleared.",
+        "Fantasy Lion Defense uses cartoon animal combat, automatic school-supply weapons, wall HP, and upgrade decisions. Battle Performance summarizes wall condition, defeated beasts, and upgrade choices from the current run; it is not an ability assessment. The General game page is ad-free, sign-in is not required, and progress stays in the current browser unless its storage is cleared.",
       faq: [
         ["How many stages are in Fantasy Lion Defense?", "There are 30 authored stages in six five-stage routes, with Boss battles at Stages 5, 10, 15, 20, 25, and 30."],
         ["Do the weapons fire by themselves?", "Yes. Every equipped slot fires on its own cooldown while the player moves Leo and chooses between-wave upgrades."],
@@ -89,8 +88,8 @@
         ["What happens if the wall reaches zero HP?", "The run ends with a retry and stage-select choice. Permanent progress already saved in the browser remains available."],
         ["How are Boss diamonds earned?", "Each Boss stage grants its recorded diamond bonus only on the first clear; replaying still provides normal stage rewards."],
         ["Can the game be played without a mouse?", "Yes. Touch supports tapping and dragging, and a focused desktop Battle supports Left and Right Arrow keys."],
-        ["Does this Kids game show ads or require an account?", "No. It requests no advertising and does not require sign-in; progress is stored locally in the browser."],
-        ["Does the Skill Report measure ability?", "No. Wall HP, defeated beasts, choices, stars, and scores are game feedback only, not a test or diagnosis."],
+        ["Does this game show ads or require an account?", "No. It requests no advertising and does not require sign-in; progress is stored locally in the browser."],
+        ["What does Battle Performance summarize?", "It shows wall condition, defeated beasts, upgrade choices, stars, and scores from the current run."],
       ],
     },
     "color-lunchbox": {
@@ -2880,10 +2879,10 @@
     title: "奇幻獅子防衛",
     difficulty: "中等",
     time: "5～8 分鐘",
+    noteTitle: "玩家與存檔資訊",
     gameplay: "橫向移動自動射擊防衛",
     genre: ["動作", "守城", "動物"],
-    skills: ["反應", "專注", "手眼協調"],
-    intro: "《奇幻獅子防衛》是由爆鬃獅雷歐擔任主角的 30 關動物守城遊戲。玩家沿著奇幻城牆左右移動，裝備的橡皮擦、鉛筆與尺會依各自冷卻時間自動攻擊。八種野獸依直線、左右交替、外側與中央四種編隊進攻，每五關還有一種不同攻擊規則的王。波次之間可選本場強化，結算後再用保存的金幣提升雷歐、裝備或城牆。Kids 版本沒有計時壓力，也永久無廣告。",
+    intro: "《奇幻獅子防衛》是由爆鬃獅雷歐擔任主角的 30 關動物守城遊戲。玩家沿著奇幻城牆左右移動，裝備的橡皮擦、鉛筆與尺會依各自冷卻時間自動攻擊。八種野獸依直線、左右交替、外側與中央四種編隊進攻，每五關還有一種不同攻擊規則的王。波次之間可選本場強化，結算後再用保存的金幣提升雷歐、裝備或城牆。玩家可在沒有計時壓力的情況下重試，遊戲也永久無廣告。",
     story: [
       "爆鬃獅雷歐守護 WeightPlay 魔法文具庫外的城牆。野豬、鬣狗、犀牛、水牛、猛鷹、黑熊、老虎與鱷魚受到鉛筆、尺和橡皮擦中的魔力吸引而來。雷歐不能離開城牆，因此玩家要在牆前巡守，讓自動武器對準危險路線，並在一場防衛結束後修補長期傷害。",
       "戰役分成六條、每條五關的防衛路線。第 5、10、15、20、25、30 關各有一位野獸指揮者；首次通關會開啟下一關，王關首次通過還會取得已記錄的鑽石獎勵。擊退第 30 關黑熊星落王與完整獸群，代表文具庫可以重新安全開放。"
@@ -2905,8 +2904,8 @@
       "第 21～25 關組合護甲快攻、曲線衝刺、重獸城門與側翼破牆；猛鷹王會反覆加速並射出兩發高速彈。",
       "第 26～30 關用四種編隊複習八種角色；黑熊星落王以三發投射物和完整獸群收尾，不是前一位王的數值放大版本。"
     ],
-    designNote: "我們採用自動射擊，讓玩家持續思考雷歐該站在哪裡，而不是在手機上反覆確認小型射擊按鈕是否按到。每個裝備欄的獨立冷卻保留配裝價值，波次強化則提供短暫的策略停頓。本次 30 關改造以指定敵人編成與四種清楚的進場陣形取代舊後段的全種類隨機，再用六種王的投射物規則建立里程碑。手機點擊、拖曳與桌面方向鍵都控制同一個有邊界的邏輯戰場。本作比《動物顏色便當盒》更要求反應與配裝，但仍遵守 Kids 規則：無廣告、無倒數壓力、可支持性重試，能力報告也不是正式評量。",
-    parent: "本作包含卡通動物攻城、自動文具武器、城牆生命與強化選擇，可陪伴孩子練習反應、專注、規劃與手眼協調。能力報告與星等只是依本場牆血、擊敗數與選擇整理的遊戲回饋，不是發展、醫療或學校測驗。Kids 頁面沒有廣告，也不需要登入；進度保存在目前瀏覽器，清除網站資料可能會移除紀錄。",
+    designNote: "我們採用自動射擊，讓玩家持續思考雷歐該站在哪裡，而不是在手機上反覆確認小型射擊按鈕是否按到。每個裝備欄的獨立冷卻保留配裝價值，波次強化則提供短暫的策略停頓。本次 30 關改造以指定敵人編成與四種清楚的進場陣形取代舊後段的全種類隨機，再用六種王的投射物規則建立里程碑。手機點擊、拖曳與桌面方向鍵都控制同一個有邊界的邏輯戰場。本作比《動物顏色便當盒》更要求反應與配裝，同時保留對玩家友善的承諾：無廣告、無倒數壓力、支持性重試，並以事實性的戰鬥表現摘要取代能力評量。",
+    parent: "本作包含卡通動物攻城、自動文具武器、城牆生命與強化選擇。戰鬥表現只摘要本場城牆狀況、擊敗數與強化選擇，不是能力評量。General 遊戲頁面沒有廣告，也不需要登入；進度保存在目前瀏覽器，清除網站資料可能會移除紀錄。",
     faq: [
       ["一共有多少關？", "共有 30 個具名關卡，分成六條五關路線，王關位於第 5、10、15、20、25、30 關。"],
       ["武器會自動攻擊嗎？", "會。每個裝備欄依自己的冷卻時間射擊，玩家負責移動雷歐與選擇波次強化。"],
@@ -2914,8 +2913,8 @@
       ["城牆生命歸零會怎樣？", "本次防衛結束，可選擇重試或回關卡；已保存的永久進度不會因此消失。"],
       ["王關鑽石怎麼取得？", "每個王關只有首次通關會取得記錄中的鑽石獎勵，重玩仍會有一般關卡收益。"],
       ["不用滑鼠也能玩嗎？", "可以。觸控支援點擊與拖曳，桌面戰鬥聚焦後可用左右方向鍵。"],
-      ["Kids 版本有廣告或需要帳號嗎？", "沒有廣告請求，也不需要登入；進度只存在目前瀏覽器。"],
-      ["能力報告是正式測驗嗎？", "不是。牆血、擊敗數、選擇、星等與分數只代表這一場遊戲。"]
+      ["遊戲有廣告或需要帳號嗎？", "沒有廣告請求，也不需要登入；進度只存在目前瀏覽器。"],
+      ["戰鬥表現會摘要什麼？", "它會顯示本場城牆狀況、擊敗數、強化選擇、星等與分數。"]
     ]
   };
 
@@ -3713,18 +3712,14 @@
     "title": "奇幻狮子防卫",
     "difficulty": "中等",
     "time": "5～8 分钟",
+    "noteTitle": "玩家与存档信息",
     "gameplay": "横向移动自动射击防卫",
     "genre": [
       "动作",
       "守城",
       "动物"
     ],
-    "skills": [
-      "反应",
-      "专注",
-      "手眼协调"
-    ],
-    "intro": "《奇幻狮子防卫》是由爆鬃狮雷欧担任主角的 30 关动物守城游戏。玩家沿著奇幻城墙左右移动，装备的橡皮擦、铅笔与尺会依各自冷却时间自动攻击。八种野兽依直线、左右交替、外侧与中央四种编队进攻，每五关还有一种不同攻击规则的王。波次之间可选本场强化，结算后再用保存的金币提升雷欧、装备或城墙。Kids 版本没有计时压力，也永久无广告。",
+    "intro": "《奇幻狮子防卫》是由爆鬃狮雷欧担任主角的 30 关动物守城游戏。玩家沿著奇幻城墙左右移动，装备的橡皮擦、铅笔与尺会依各自冷却时间自动攻击。八种野兽依直线、左右交替、外侧与中央四种编队进攻，每五关还有一种不同攻击规则的王。波次之间可选本场强化，结算后再用保存的金币提升雷欧、装备或城墙。玩家可在没有计时压力的情况下重试，游戏也永久无广告。",
     "story": [
       "爆鬃狮雷欧守护 WeightPlay 魔法文具库外的城墙。野猪、鬣狗、犀牛、水牛、猛鹰、黑熊、老虎与鳄鱼受到铅笔、尺和橡皮擦中的魔力吸引而来。雷欧不能离开城墙，因此玩家要在墙前巡守，让自动武器对准危险路线，并在一场防卫结束后修补长期伤害。",
       "战役分成六条、每条五关的防卫路线。第 5、10、15、20、25、30 关各有一位野兽指挥者；首次通关会开启下一关，王关首次通过还会取得已记录的钻石奖励。击退第 30 关黑熊星落王与完整兽群，代表文具库可以重新安全开放。"
@@ -3759,8 +3754,8 @@
       "第 21～25 关组合护甲快攻、曲线冲刺、重兽城门与侧翼破墙；猛鹰王会反复加速并射出两发高速弹。",
       "第 26～30 关用四种编队复习八种角色；黑熊星落王以三发投射物和完整兽群收尾，不是前一位王的数值放大版本。"
     ],
-    "designNote": "我们采用自动射击，让玩家持续思考雷欧该站在哪里，而不是在手机上反复确认小型射击按钮是否按到。每个装备栏的独立冷却保留配装价值，波次强化则提供短暂的策略停顿。本次 30 关改造以指定敌人编成与四种清楚的进场阵形取代旧后段的全种类随机，再用六种王的投射物规则建立里程碑。手机点击、拖曳与桌面方向键都控制同一个有边界的逻辑战场。本作比《动物颜色便当盒》更要求反应与配装，但仍遵守 Kids 规则：无广告、无倒数压力、可支持性重试，能力报告也不是正式评量。",
-    "parent": "本作包含卡通动物攻城、自动文具武器、城墙生命与强化选择，可陪伴孩子练习反应、专注、规划与手眼协调。能力报告与星等只是依本场墙血、击败数与选择整理的游戏回馈，不是发展、医疗或学校测验。Kids 页面没有广告，也不需要登入；进度保存在目前浏览器，清除网站资料可能会移除纪录。",
+    "designNote": "我们采用自动射击，让玩家持续思考雷欧该站在哪里，而不是在手机上反复确认小型射击按钮是否按到。每个装备栏的独立冷却保留配装价值，波次强化则提供短暂的策略停顿。本次 30 关改造以指定敌人编成与四种清楚的进场阵形取代旧后段的全种类随机，再用六种王的投射物规则建立里程碑。手机点击、拖曳与桌面方向键都控制同一个有边界的逻辑战场。本作比《动物颜色便当盒》更要求反应与配装，同时保留对玩家友善的承诺：无广告、无倒数压力、支持性重试，并以事实性的战斗表现摘要取代能力评量。",
+    "parent": "本作包含卡通动物攻城、自动文具武器、城墙生命与强化选择。战斗表现只摘要本场城墙状况、击败数与强化选择，不是能力评量。General 游戏页面没有广告，也不需要登入；进度保存在目前浏览器，清除网站资料可能会移除纪录。",
     "faq": [
       [
         "一共有多少关？",
@@ -3787,12 +3782,12 @@
         "可以。触控支援点击与拖曳，桌面战斗聚焦后可用左右方向键。"
       ],
       [
-        "Kids 版本有广告或需要帐号吗？",
+        "游戏有广告或需要帐号吗？",
         "没有广告请求，也不需要登入；进度只存在目前浏览器。"
       ],
       [
-        "能力报告是正式测验吗？",
-        "不是。墙血、击败数、选择、星等与分数只代表这一场游戏。"
+        "战斗表现会摘要什么？",
+        "它会显示本场城墙状况、击败数、强化选择、星等与分数。"
       ]
     ]
   };
