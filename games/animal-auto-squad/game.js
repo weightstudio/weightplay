@@ -950,6 +950,8 @@
   let combatEndDueAt = 0;
   let combatEndRemaining = 0;
   const combatStepTimers = new Set();
+  let combatProgressTimer = null;
+  let combatLastProgressAt = 0;
   let combatSuspendedForBackground = false;
   let windowFocused = true;
   let quitDecisionOpen = false;
@@ -3639,6 +3641,7 @@
     state.combat.resolved = false;
     state.combat.runId = runId;
     state.combat.timer = 0;
+    combatLastProgressAt = performance.now();
     state.combat.activeActor = null;
     state.combat.activeActors = [];
     state.combat.effects = [];
@@ -3649,6 +3652,7 @@
     updateCombatSummary();
     
     // Start animation loop
+    ensureCombatProgressTimer();
     runCombatAnimation();
     window.WonderAnalytics?.track("battle_start", { game_id: GAME_ID, stage: state.stage, wave: state.round });
   }
@@ -3730,6 +3734,11 @@
 
   function stopCombatSession() {
     clearScheduledCombatTimers();
+    if (combatProgressTimer !== null) {
+      clearInterval(combatProgressTimer);
+      combatProgressTimer = null;
+    }
+    combatLastProgressAt = 0;
     cancelAnimationFrame(animationId);
     combatSuspendedForBackground = false;
     quitDecisionOpen = false;
@@ -3746,7 +3755,7 @@
     const timerId = setTimeout(() => {
       combatStepTimers.delete(timerId);
       if (runId !== state.combat.runId || state.combat.resolved) return;
-      if (document.hidden || !windowFocused || quitDecisionOpen) {
+      if (document.hidden || quitDecisionOpen) {
         scheduleCombatStepCleanup(callback, 80);
         return;
       }
@@ -3756,7 +3765,7 @@
   }
 
   function armCombatEndTimer() {
-    if (!combatEndPending || combatEndTimer !== null || document.hidden || !windowFocused || quitDecisionOpen) return;
+    if (!combatEndPending || combatEndTimer !== null || document.hidden || quitDecisionOpen) return;
     const delay = Math.max(0, combatEndRemaining);
     combatEndDueAt = performance.now() + delay;
     combatEndTimer = setTimeout(() => {
@@ -3779,7 +3788,7 @@
   }
 
   function resumeCombatEndTimer() {
-    if (!combatEndPending || document.hidden || !windowFocused || quitDecisionOpen) return;
+    if (!combatEndPending || document.hidden || quitDecisionOpen) return;
     armCombatEndTimer();
   }
 
@@ -3791,16 +3800,42 @@
     armCombatEndTimer();
   }
 
+  function advanceCombatClock() {
+    if (!state.combat.animating || state.combat.ending || state.combat.resolved || quitDecisionOpen || document.hidden) {
+      combatLastProgressAt = 0;
+      return;
+    }
+    const now = performance.now();
+    if (!combatLastProgressAt) {
+      combatLastProgressAt = now;
+      return;
+    }
+    const elapsed = Math.min(1000, Math.max(0, now - combatLastProgressAt));
+    combatLastProgressAt = now;
+    state.combat.timer += elapsed / (1000 / 60);
+    if (state.combat.timer >= 90) {
+      state.combat.timer %= 90;
+      resolveCombatStep();
+    }
+  }
+
+  function ensureCombatProgressTimer() {
+    if (combatProgressTimer !== null) return;
+    combatLastProgressAt = performance.now();
+    combatProgressTimer = setInterval(advanceCombatClock, 250);
+  }
+
   // Rendering Loop for Auto-Battle Canvas
   function runCombatAnimation() {
     if (!state.combat.animating) return;
     if (quitDecisionOpen) return;
-    if (document.hidden || !windowFocused) {
+    if (document.hidden) {
       combatSuspendedForBackground = true;
       return;
     }
     combatSuspendedForBackground = false;
     animationId = requestAnimationFrame(runCombatAnimation);
+    advanceCombatClock();
 
     const canvasWidth = syncCombatCanvasSize();
 
@@ -3850,12 +3885,6 @@
     canvasCtx.fillText("VS", canvasWidth / 2, 640);
     canvasCtx.restore();
 
-    // Step logic every 90 frames
-    state.combat.timer++;
-    if (state.combat.timer >= 90) {
-      state.combat.timer = 0;
-      resolveCombatStep();
-    }
     updateCombatSummary();
 
     // Draw Squad lines
@@ -4476,6 +4505,7 @@
     state.combat.resolved = false;
     state.combat.runId = runId;
     state.combat.timer = 0;
+    combatLastProgressAt = performance.now();
     state.combat.activeActor = null;
     state.combat.activeActors = [];
     state.combat.effects = [];
@@ -4486,6 +4516,7 @@
     const nextBoss = state.combat.enemySquad.find((unit) => unit.isBoss);
     combatLog(nextBoss ? t("bossIncoming", { boss: combatUnitName(nextBoss) }) : t("nextWaveCombat", { round: state.round, total: WAVES_PER_STAGE }));
     updateCombatSummary();
+    ensureCombatProgressTimer();
     runCombatAnimation();
     window.WonderAnalytics?.track("battle_wave_start", { game_id: GAME_ID, stage: state.stage, wave: state.round });
   }
@@ -4737,7 +4768,7 @@
     setBattleDecisionOwnership(nodes.quitRunPanel, false);
     nodes.quitRunPanel.classList.add("is-hidden");
     if (resume) resumeCombatEndTimer();
-    if (resume && state.combat.animating && !document.hidden && windowFocused) {
+    if (resume && state.combat.animating && !document.hidden) {
       cancelAnimationFrame(animationId);
       animationId = requestAnimationFrame(runCombatAnimation);
     }
@@ -4757,15 +4788,18 @@
     suspendCombatEndTimer();
     if (!state.combat.animating) return;
     combatSuspendedForBackground = true;
+    combatLastProgressAt = 0;
     cancelAnimationFrame(animationId);
   }
 
   function resumeBackgroundCombat() {
-    if (document.hidden || !windowFocused) return;
+    if (document.hidden) return;
     resumeSkinPurchaseDecision();
     resumeCombatEndTimer();
     if (!combatSuspendedForBackground || !state.combat.animating || quitDecisionOpen) return;
     combatSuspendedForBackground = false;
+    combatLastProgressAt = performance.now();
+    ensureCombatProgressTimer();
     animationId = requestAnimationFrame(runCombatAnimation);
   }
 
@@ -4867,7 +4901,6 @@
 
     window.addEventListener("blur", () => {
       windowFocused = false;
-      suspendBackgroundCombat();
     });
     window.addEventListener("focus", () => {
       windowFocused = true;
