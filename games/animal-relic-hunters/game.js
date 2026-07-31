@@ -1526,6 +1526,19 @@
     stopTimer = setTimeout(() => observer.disconnect(), 1600);
   }
 
+  function setScreenOwner(screen) {
+    document.body.dataset.screen = screen;
+    for (const candidate of ["main", "stage", "battle"]) {
+      document.body.classList.toggle(`wp-shell-${candidate}-active`, candidate === screen);
+    }
+    document.body.classList.toggle("wp-stage-select-active", screen === "stage");
+    document.documentElement.classList.toggle("wp-stage-select-active", screen === "stage");
+    window.dispatchEvent(new CustomEvent("weightplay:shell-sync", { detail: { screen } }));
+    window.dispatchEvent(new CustomEvent("weightplay:stage-sync", { detail: { screen } }));
+    window.dispatchEvent(new CustomEvent("weightplay:battle-sync", { detail: { screen } }));
+    if (screen === "battle") window.dispatchEvent(new CustomEvent("weightplay:battle-open", { detail: { screen } }));
+  }
+
   function showMain() {
     clearEliteSpawnTimer();
     clearAmuletConfirmation();
@@ -1543,6 +1556,7 @@
     nodes.stagePanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
+    setScreenOwner("main");
     updateDiamondShopUI();
     renderTrainingPanel();
     renderEquippedGear();
@@ -1627,6 +1641,7 @@
     nodes.resultPanel.classList.add("hidden");
     nodes.gamePanel.classList.add("hidden");
     nodes.stagePanel.classList.remove("hidden");
+    setScreenOwner("stage");
     selectStageTab("stages");
     updateDiamondShopUI();
     renderTrainingPanel();
@@ -2043,6 +2058,7 @@
     document.body.classList.remove("relic-stage-select");
     document.body.classList.remove("relic-result");
     document.body.classList.add("relic-playing");
+    setScreenOwner("battle");
     resultNextExpedition = 0;
     resultMapIsPrimary = false;
     setResultModalActive(false);
@@ -3522,6 +3538,7 @@
     updateDiamondShopUI();
     translateUI();
     setupInputs();
+    setScreenOwner("main");
 
     // Event buttons
     nodes.showStageBtn.addEventListener("click", () => {

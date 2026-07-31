@@ -78,7 +78,7 @@
     <meta name="twitter:description" content="Animal Relic Hunters ist eine Raum-Action-Kampagne mit 30 Expeditionen. Führe den Löwenforscher durch drei miteinander verbundene Kammern, lasse die..." />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-relic-hunters-cover.webp" />
   </head>
-  <body data-tutorial-auto-show="false">
+  <body data-tutorial-auto-show="false" data-game-id="animal-relic-hunters" data-audience="general" data-screen="main" class="wp-shell-main-active">
     <!-- Top Nav bar -->
     <header class="top-nav">
       <div class="top-nav-left">
@@ -113,7 +113,7 @@
       </section>
 
       <!-- Start Menu panel -->
-      <section id="menuPanel" class="panel menu-panel">
+      <section id="menuPanel" class="panel menu-panel wp-standard-main-screen">
         <div class="menu-layout">
           <div class="menu-main">
             <div class="menu-cover-box">
@@ -165,7 +165,7 @@
         </div>
       </section>
 
-      <section id="stagePanel" class="panel stage-panel hidden" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" aria-labelledby="stageTitle">
+      <section id="stagePanel" class="panel stage-panel hidden" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" aria-labelledby="stageTitle">
         <div class="stage-panel-head">
           <button id="stageBackBtn" class="play-return stage-return" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
           <strong id="stageTitle">Animal Relic Hunters</strong>
@@ -186,7 +186,7 @@
       </section>
 
       <!-- Active Game / Canvas Viewport -->
-      <section id="gamePanel" class="panel game-panel hidden" data-play-viewport data-no-mobile-immersive="true" data-wp-canvas-max-width="920">
+      <section id="gamePanel" class="panel game-panel hidden" data-play-viewport data-no-mobile-immersive="true" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
         <div class="game-layout">
           <button id="backToStageBtn" class="play-return battle-return" data-wp-return="battle" type="button" aria-label="Back to preparation">&larr;</button>
           <button id="pauseBtn" class="battle-pause" type="button" aria-label="Pause" title="Pause">&#8545;</button>
@@ -385,7 +385,7 @@
     <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
     <script src="../../src/wallet.js?v=20260706-relic-v1"></script>
     <script src="../../src/tutorial.js?v=20260706-relic-v1"></script>
-    <script src="game.js?v=20260717-zh-hans1"></script>
+    <script src="game.js?v=20260801-interface-v5-1"></script>
     <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
 </body>
 </html>

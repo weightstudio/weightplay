@@ -70,10 +70,10 @@
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <meta name="twitter:image" content="https://weightplay.com/assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" />
   </head>
-<body data-screen="main" data-sound-toggle="off">
+<body data-screen="main" data-sound-toggle="off" data-wp-game-id="animal-rootvault-pins" data-audience="general" class="wp-shell-main-active">
   <div id="loadingPanel" class="loading" role="status"><img src="../../assets/animal-rootvault-pins/animal-rootvault-pins-shadow-wisp.webp" alt=""><strong data-t="loading">रूटवॉल्ट खुल रहा है...</strong></div>
 
-  <div id="mainGroup" class="main-group">
+  <div id="mainGroup" class="main-group wp-standard-main-screen" data-screen="main">
     <main class="main-screen">
       <header class="main-header">
         <a class="lobby-return" href="/" aria-label="WeightPlay पर लौटें" data-t-aria="lobbyReturn" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt="पशु रूटवॉल्ट पिन game artwork"></a>
@@ -104,7 +104,7 @@
     <div class="game-info-section"><h3>अक्सर पूछे जाने वाले प्रश्न</h3><dl><div><dt>कितने चरण शामिल हैं?</dt><dd>छह नियम अध्यायों में 30 लिखित चरण हैं। चरण 30 पूरा होने के बाद पुनः चलाने योग्य रहता है।</dd></div><div><dt>क्या प्रगति सहेजी गई है?</dt><dd>हाँ, केवल इस ब्राउज़र में.</dd></div></dl></div></section>
   </div>
 
-  <section id="stageScreen" class="active-screen" hidden>
+  <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" style="--wp-stage-art:url('../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp')">
       <header class="stage-header"><button id="stageBack" type="button" aria-label="वापस" data-t-aria="back" data-wp-return="stage">←</button><div><strong data-t="chooseChamber">एक रूटवॉल्ट चैम्बर चुनें</strong><span id="stageSummary"></span></div><span class="taro-chip" aria-hidden="true"></span></header>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" data-t-aria="stageRailLabel" aria-label="रूटवॉल्ट चैम्बर चयनकर्ता"></div>
@@ -114,7 +114,7 @@
     </div>
   </section>
 
-  <section id="battleScreen" class="active-screen" hidden>
+  <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
         <header class="battle-header"><button id="battleBack" type="button" aria-label="वापस" data-t-aria="back" data-wp-return="battle">←</button><div><small id="battleChapter"></small><strong id="battleStage"></strong></div><span><small data-t="pulls">खींचता है</small><strong id="pullCount">0</strong></span><button id="battleHelp" type="button" data-t-aria="help" aria-label="कैसे खेलें">?</button></header>
@@ -138,7 +138,7 @@
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="locales.js?v=20260723-zh-hans-enter1"></script>
-  <script src="game.js?v=20260721-initial-board-layout1"></script>
+  <script src="game.js?v=20260801-interface-v5-1"></script>
   <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>

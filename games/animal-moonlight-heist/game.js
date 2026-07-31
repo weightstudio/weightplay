@@ -338,7 +338,17 @@
   function localize(){if(window.WonderI18n?.locale?.()!==locale)window.WonderI18n?.setLocale?.(locale);document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";const internal=document.querySelector('meta[name="robots"]')?.content.includes("noindex");document.title=`${t("title")} - ${internal?"Internal Trial":"WeightPlay"}`;document.querySelectorAll("[data-i18n]").forEach(n=>n.textContent=t(n.dataset.i18n));$("#localeSelect").setAttribute("aria-label",t("languageLabel"));$(".main-poster").alt=t("posterAlt");$(".planner > img").alt=t("orlaAlt");nodes.rail.setAttribute("aria-label",t("missionRailLabel"));nodes.fia.alt=t("fiaAlt");$("#stageBackBtn").setAttribute("aria-label",t("stageBackLabel"));$("#battleBackBtn").setAttribute("aria-label",t("battleBackLabel"));renderSummary();renderStage();renderGadgets();renderEconomy();updateGadget();renderGadgetSummary();updatePauseControl();updateAlertMeter();syncSoundToggle()}
   function stopBattleLoop(){if(animationFrame){cancelAnimationFrame(animationFrame);animationFrame=0}}
   function startBattleLoop(){if(!playing||paused||animationFrame)return;lastTime=performance.now();animationFrame=requestAnimationFrame(loop)}
-  function show(name){document.body.dataset.screen=name;document.body.classList.toggle("wp-stage-select-active",name==="stage");document.documentElement.classList.toggle("wp-stage-select-active",name==="stage");nodes.main.hidden=name!=="main";nodes.stage.hidden=name!=="stage";nodes.battle.hidden=name!=="battle";if(name!=="battle"){playing=false;paused=false;stopBattleLoop();cancelPendingMovement();updatePauseControl()}}
+  function show(name){
+    nodes.main.hidden=name!=="main";nodes.stage.hidden=name!=="stage";nodes.battle.hidden=name!=="battle";
+    document.body.dataset.screen=name;
+    for(const candidate of ["main","stage","battle"]){document.body.classList.toggle(`wp-shell-${candidate}-active`,candidate===name)}
+    document.body.classList.toggle("wp-stage-select-active",name==="stage");document.documentElement.classList.toggle("wp-stage-select-active",name==="stage");
+    window.dispatchEvent(new CustomEvent("weightplay:shell-sync",{detail:{screen:name}}));
+    window.dispatchEvent(new CustomEvent("weightplay:stage-sync",{detail:{screen:name}}));
+    window.dispatchEvent(new CustomEvent("weightplay:battle-sync",{detail:{screen:name}}));
+    if(name==="battle")window.dispatchEvent(new CustomEvent("weightplay:battle-open",{detail:{screen:name}}));
+    if(name!=="battle"){playing=false;paused=false;stopBattleLoop();cancelPendingMovement();updatePauseControl()}
+  }
   function renderSummary(){$("#safehouseSummary").textContent=`${Object.keys(state.cleared).length}/${campaign.length}`}
   function medalProgress(index){
     const medals=Math.max(0,Math.min(3,Number(state.cleared[index])||0));
