@@ -180,6 +180,7 @@
       tensionStatusHooked: "Step 2: drag the red knob, or slide on the sea, into SAFE.",
       tensionStatusSafe: "Inside SAFE. Hold steady.",
       tensionStatusDanger: "Move the red knob back into SAFE before the line breaks.",
+      landingProgress: "Landing {progress}%",
       landed: "Catch landed! Keep going before time runs out.",
       broke: "Line broke. The tension marker left the safe band too long.",
       escaped: "The fish escaped. Cast again and keep the marker centered.",
@@ -288,6 +289,7 @@
       tensionStatusHooked: "步驟2：拖紅色鈕，或在海面左右滑，拉進綠色安全區。",
       tensionStatusSafe: "已在安全區，保持穩定。",
       tensionStatusDanger: "快把紅色鈕拖回安全區，不然魚線會斷。",
+      landingProgress: "上岸進度 {progress}%",
       landed: "成功收線！趁時間結束前繼續挑戰。",
       broke: "魚線斷了。張力標記離開安全區太久。",
       escaped: "魚逃走了。再拋一次，讓標記更靠近中央。",
@@ -338,7 +340,7 @@
   text.es = {
     title:"Pescador del Arrecife Animal",pageTitle:"Pescador del Arrecife Animal - Juego de pesca | WeightPlay",pageDescription:"Completa 30 misiones de pesca, controla zonas de tensión cambiantes, documenta 12 criaturas marinas, mejora seis herramientas y captura seis peces Guardianes.",language:"Idioma",backToLobby:"Volver al vestíbulo",back:"Volver",reefZones:"Zonas del arrecife",gearUpgrades:"Mejoras de equipo",menuTitle:"Traza 30 misiones y captura seis peces Guardianes.",menuHint:"Controla reglas de tensión cambiantes, documenta 12 especies, gana Notas del Arrecife y mejora seis herramientas.",reefNotes:"Notas del Arrecife",album:"Álbum",diamonds:"Diamantes",startGame:"Empezar",soundOn:"Sonido: Sí",soundOff:"Sonido: No",enableSound:"Activar sonido",disableSound:"Desactivar sonido",chooseZone:"Elegir misión del arrecife",prepareGear:"Preparar equipo",startExpedition:"Empezar expedición",reefMap:"Mapa del arrecife",nextMission:"Próxima misión",leaveTitle:"¿Salir de esta expedición?",leaveCopy:"Misión {stage}: {catches}/{goal} capturas y {time}s restantes. Se perderán esta expedición, sus capturas y cualquier Cebo o Sonar preparado. El Álbum, las Notas y el equipo guardados quedan seguros.",keepFishing:"Seguir pescando",leaveExpedition:"Salir de la expedición",zone:"Zona",time:"Tiempo",goal:"Objetivo",retry:"Reintentar",
     castHint:"Mantén pulsado el mar para cargar y suelta para lanzar.",charging:"Suelta al alcanzar la profundidad deseada.",hooked:"El pez ha picado. Arrastra el control rojo, desliza en el mar o usa Izquierda y Derecha para mantener el indicador en la zona verde.",hookedBehavior:"{behavior}: {hint} Mantén el indicador en la zona segura.",behaviorSteady:"Pez estable",behaviorSteadyHint:"La fuerza es suave; sigue con movimientos pequeños.",behaviorDart:"Pez veloz",behaviorDartHint:"Cambia de dirección rápido; corrige suavemente tras cada impulso.",behaviorHeavy:"Pez pesado",behaviorHeavyHint:"Tira durante más tiempo; ten paciencia cerca del centro.",tensionTitle:"Tensión de línea",tensionLow:"Muy floja",tensionSafe:"SEGURA",tensionHigh:"Muy tensa",tensionMarker:"Arrastrar",playAreaAria:"Zona de pesca. Mantén Espacio para cargar, suelta para lanzar y usa las flechas para controlar la tensión.",tensionLaneAria:"Carril de tensión. Ajusta con las flechas izquierda y derecha.",sonarAria:"Usar sonar",sonarDecision:"Usa el Sonar preparado para revelar y fijar el próximo pez, su rareza y su comportamiento de arrastre.",
-    tensionCoachAim:"Mantén el mar o Espacio para lanzar. Cuando pique, arrastra el control rojo, desliza o usa las flechas.",tensionCoachReel:"Arrastra el control rojo, desliza en el mar o usa las flechas para permanecer en la zona verde.",tensionCoachSafe:"Bien. Desliza suavemente y permanece en SEGURA hasta capturarlo.",tensionCoachDanger:"Vuelve ahora a la zona segura.",tensionStatusAim:"Paso 1: mantén pulsado para cargar y suelta para lanzar.",tensionStatusCharging:"Suelta para lanzar. El paso 2 empieza cuando pique un pez.",tensionStatusHooked:"Paso 2: arrastra el control rojo o desliza para entrar en la zona verde.",tensionStatusSafe:"En zona segura. Mantén el control.",tensionStatusDanger:"Devuelve el control rojo a la zona segura o se romperá la línea.",landed:"¡Captura lograda! Sigue antes de que termine el tiempo.",broke:"La línea se rompió. El indicador estuvo demasiado tiempo fuera de la zona segura.",escaped:"El pez escapó. Lanza otra vez y mantén el indicador centrado.",
+    tensionCoachAim:"Mantén el mar o Espacio para lanzar. Cuando pique, arrastra el control rojo, desliza o usa las flechas.",tensionCoachReel:"Arrastra el control rojo, desliza en el mar o usa las flechas para permanecer en la zona verde.",tensionCoachSafe:"Bien. Desliza suavemente y permanece en SEGURA hasta capturarlo.",tensionCoachDanger:"Vuelve ahora a la zona segura.",tensionStatusAim:"Paso 1: mantén pulsado para cargar y suelta para lanzar.",tensionStatusCharging:"Suelta para lanzar. El paso 2 empieza cuando pique un pez.",tensionStatusHooked:"Paso 2: arrastra el control rojo o desliza para entrar en la zona verde.",tensionStatusSafe:"En zona segura. Mantén el control.",tensionStatusDanger:"Devuelve el control rojo a la zona segura o se romperá la línea.",landingProgress:"Progreso {progress}%",landed:"¡Captura lograda! Sigue antes de que termine el tiempo.",broke:"La línea se rompió. El indicador estuvo demasiado tiempo fuera de la zona segura.",escaped:"El pez escapó. Lanza otra vez y mantén el indicador centrado.",
     sonarReady:"El sonar está preparado para esta expedición.",sonarScan:"Sonar: {fish} · {rarity} · {behavior}. Próximo lanzamiento fijado.",sonarStatus:"Siguiente: {fish}",needDiamonds:"Necesitas {cost} diamantes.",lureReady:"El cebo raro está preparado para la próxima expedición.",buyLure:"Cebo raro {cost}💎",buySonar:"Pulso sonar {cost}💎",confirmLure:"Confirmar cebo · {before}→{after}💎",confirmSonar:"Confirmar sonar · {before}→{after}💎",lureBuyLabel:"El Cebo raro aumenta la posibilidad de una marca rara en la próxima expedición. Cuesta 3 diamantes. Saldo {balance}.",sonarBuyLabel:"El Pulso sonar revela y fija el próximo pez antes de lanzar. Cuesta 2 diamantes. Saldo {balance}.",lureConfirmLabel:"Confirma el Cebo raro. Gasta 3 diamantes. Saldo de {before} a {after}.",sonarConfirmLabel:"Confirma el Pulso sonar. Gasta 2 diamantes. Saldo de {before} a {after}.",sonar:"Sonar",upgrade:"Mejorar",max:"Máx.",gearUpgradeLabel:"Mejora {gear} del nivel {beforeLevel} al {afterLevel}. Gasta {cost} Notas. Saldo de {before} a {after}.",gearUpgradeNeedLabel:"{gear} nivel {beforeLevel}. El nivel {afterLevel} cuesta {cost} Notas. Saldo {balance}; faltan {need}.",gearMaxLabel:"{gear} nivel {level}. Nivel máximo.",locked:"Bloqueado",complete:"Completado",
     expeditionWin:"Expedición completada",expeditionFail:"Expedición terminada",result:"Lograste {catches} capturas, descubriste {newFish} entradas nuevas y ganaste {notes} Notas del Arrecife.",score:"Puntuación",catchValue:"Valor de captura",runScore:"Puntuación",runCatchValue:"Notas del Arrecife",lastCatch:"Última captura",noCatchYet:"Sin capturas",newAlbum:"Álbum nuevo",catchSummary:"Capturas de esta expedición",catchToast:"Capturaste {fish}",catchToastMeta:"+{points} pts · +{notes} notas{newTag}",catchHudMeta:"{rarity} · +{points} pts · +{notes} notas{newTag}",newTag:" · ¡Nuevo en el álbum!",noCatch:"Aún no capturaste peces. Haz un lanzamiento más seguro y mantén la línea en SEGURA.",rareFish:"Raro",commonFish:"Común",reportWin:"Informe: buena atención y reacción. Controlaste la tensión mientras elegías lanzamientos seguros.",reportFail:"Informe: buena práctica. Mejora el equipo y devuelve antes el indicador a la zona segura."
   };
@@ -973,6 +975,7 @@
       castDir: 1,
       tension: 50,
       fishPower: 0,
+      initialFishPower: 0,
       fishTimer: 0,
       struggle: 0,
       hookFish: null,
@@ -1111,6 +1114,7 @@
     run.tension = 50;
     run.struggle = 0;
     run.fishPower = (45 + Math.random() * 40) * behavior.endurance;
+    run.initialFishPower = run.fishPower;
     run.reelElapsed = 0;
     run.reelControlAge = Infinity;
     run.lastGustCycle = 0;
@@ -1514,7 +1518,12 @@
     if (hasSonarLock) nodes.tensionStatus.textContent = t("sonarStatus", { fish: run.hookFish.name[locale] });
     else if (!run || run.phase === "aim") nodes.tensionStatus.textContent = t("tensionStatusAim");
     else if (run.phase === "charging" || run.phase === "cast") nodes.tensionStatus.textContent = t("tensionStatusCharging");
-    else if (run.phase === "reel") nodes.tensionStatus.textContent = range.safe ? t("tensionStatusSafe") : t("tensionStatusDanger");
+    else if (run.phase === "reel") {
+      const initialPower = Math.max(1, Number(run.initialFishPower) || Number(run.fishPower) || 1);
+      const progress = Math.max(0, Math.min(100, Math.round((1 - run.fishPower / initialPower) * 100)));
+      const tensionCopy = range.safe ? t("tensionStatusSafe") : t("tensionStatusDanger");
+      nodes.tensionStatus.textContent = `${tensionCopy} · ${t("landingProgress", { progress })}`;
+    }
     else nodes.tensionStatus.textContent = t("tensionStatusHooked");
     if (hasSonarLock) nodes.tensionCoach.textContent = sonarScanMessage(run.hookFish);
     else if (!run || run.phase === "aim") nodes.tensionCoach.textContent = t("tensionCoachAim");
@@ -1581,8 +1590,9 @@
       const shieldProfile = ["coral", "abyss"].includes(run.hookFish?.bossProfile);
       run.bossShieldOpen = !shieldProfile || Math.floor(run.reelElapsed / 2) % 2 === 0;
       const baseProgress = 9 + save.gear.rod * 1.7 + save.gear.bait * 0.9;
-      const activeReel = run.reelControlAge < 0.35;
-      const normalProgress = safe && activeReel ? baseProgress : 0;
+      // SAFE is the player-visible success condition. Requiring an additional
+      // hidden recent-input pulse made correct steady control appear inert.
+      const normalProgress = safe ? baseProgress : 0;
       const bossProgress = run.hookFish?.boss ? (normalProgress && run.bossShieldOpen ? baseProgress : 0) : normalProgress;
       run.fishPower -= dt * bossProgress;
       if (run.struggle > 2.2) lineBreak();
@@ -2294,6 +2304,19 @@
         pointer.source = "canvas";
         return this.readState();
       },
+      advancePassive(seconds) {
+        if (!run || run.finished) return this.readState();
+        pointer.down = false;
+        pointer.source = "canvas";
+        pointer.keyboardHeld = false;
+        let remaining = Math.max(0, Number(seconds) || 0);
+        while (remaining > 0 && run && !run.finished) {
+          const step = Math.min(0.05, remaining);
+          update(step);
+          remaining -= step;
+        }
+        return this.readState();
+      },
       forceWin() {
         if (!run || run.finished) startRun();
         const firstFish = fish[0];
@@ -2338,6 +2361,7 @@
                 castPower: run.castPower,
                 tension: run.tension,
                 fishPower: run.fishPower,
+                initialFishPower: run.initialFishPower,
                 struggle: run.struggle,
                 catches: run.catches,
                 newFish: run.newFish,
@@ -2399,6 +2423,7 @@
         run.tension = 50;
         run.struggle = 0;
         run.fishPower = 80;
+        run.initialFishPower = 80;
         updateTensionGuide();
         return this.readState();
       },

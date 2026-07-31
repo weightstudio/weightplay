@@ -500,6 +500,7 @@
   let activePointerId = null;
   let runToken = 0;
   let battleSuspended = false;
+  let resultActionClaimed = false;
   const soundGate = {};
   const keys = new Set();
   const movementKeys = new Set(["arrowleft", "arrowright", "arrowup", "arrowdown", "a", "d", "w", "s"]);
@@ -1370,7 +1371,8 @@
     state.spawnCount += 1;
     const hp = stats.hp * stageHp;
     const shielded = ["shielded", "convergence"].includes(config.modifier) && state.spawnCount % 3 === 0;
-    state.enemies.push({ ...pos, ...stats, hp, maxHp: hp, baseSpeed: stats.speed, hit: 0, touch: 0, shielded, shieldHp: shielded ? 1.5 + config.region * 0.4 : 0, chargeTimer: Math.random() * 2 + 1.2 });
+    const damage = stats.damage * (state.stage === 1 ? 0.4 : 1);
+    state.enemies.push({ ...pos, ...stats, hp, maxHp: hp, damage, baseSpeed: stats.speed, hit: 0, touch: 0, shielded, shieldHp: shielded ? 1.5 + config.region * 0.4 : 0, chargeTimer: Math.random() * 2 + 1.2 });
     state.spawnTimer = Math.max(0.72, 1.9 - elapsed * 0.0035 - config.region * 0.06);
   }
 
@@ -1625,6 +1627,7 @@
     persist();
     renderExpeditionRecord();
     renderResult(reason, previousBestKeys, improved, previousRank.index, stageCleared);
+    resultActionClaimed = false;
     if (document.body) battlePanelMetrics = measureBattlePanel();
     show(nodes.resultPanel);
     const primaryAction = stageCleared && state.stage < STAGE_COUNT
@@ -1638,6 +1641,12 @@
     primaryAction.focus({ preventScroll: true });
     playSound(stageCleared ? "win" : "wrong", 0.4);
     window.WonderAnalytics?.track("game_complete", { game_id: GAME_ID, reason, keys: state.keys, level: state.level, prototype: true });
+  }
+
+  function claimResultAction() {
+    if (resultActionClaimed || nodes.resultPanel.classList.contains("hidden")) return false;
+    resultActionClaimed = true;
+    return true;
   }
 
   function renderResult(reason, previousBestKeys, improved, previousRankIndex, stageCleared = false) {
@@ -2244,8 +2253,12 @@
     window.WonderSound?.setMuted?.(!muted);
     updateMenuSound();
   });
-  nodes.retryBtn.addEventListener("click", startRun);
+  nodes.retryBtn.addEventListener("click", () => {
+    if (!claimResultAction()) return;
+    startRun();
+  });
   nodes.nextStageBtn.addEventListener("click", () => {
+    if (!claimResultAction()) return;
     save.selectedStage = Math.min(save.unlockedStage, state.stage + 1);
     persist();
     showStageSelection(true);
@@ -2273,6 +2286,7 @@
     showStageSelection(true);
   });
   nodes.resultMenuBtn.addEventListener("click", () => {
+    if (!claimResultAction()) return;
     runToken += 1;
     clearInput();
     state.mode = "stage";

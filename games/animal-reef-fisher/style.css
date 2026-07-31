@@ -2003,10 +2003,10 @@ body.reef-fisher-playing .tension-head span {
   overflow: hidden;
   color: #bceaf2;
   font-size: 11px;
-  line-height: 14px;
+  line-height: 15px;
   text-align: right;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  text-overflow: clip;
+  white-space: normal;
 }
 
 body.reef-fisher-playing .tension-lane {

@@ -740,6 +740,7 @@
   let settlementTimer = 0;
   let settlementDeadline = 0;
   let settlementRemaining = 0;
+  let resultActionClaimed = false;
   const SIMULATION_STEP_MS = 1000 / 60;
   const MAX_SIMULATION_STEPS = 6;
   let simulationAccumulator = 0;
@@ -1766,6 +1767,7 @@
   }
 
   function setResultModalOpen(open, focusPrimary = true) {
+    if (open) resultActionClaimed = false;
     nodes.resultPanel.classList[open ? "remove" : "add"]("hidden");
     resultCoveredRegions().forEach((region) => {
       region.inert = open;
@@ -1773,6 +1775,12 @@
       else region.removeAttribute("aria-hidden");
     });
     if (open && focusPrimary) (nodes.resultPanel.querySelector(".result-actions .primary-btn") || nodes.retryBtn).focus({ preventScroll: true });
+  }
+
+  function claimResultAction() {
+    if (resultActionClaimed || nodes.resultPanel.classList.contains("hidden")) return false;
+    resultActionClaimed = true;
+    return true;
   }
 
   function syncResultActionHierarchy(nextAvailable) {
@@ -2928,12 +2936,14 @@
     });
 
     nodes.retryBtn.addEventListener("click", () => {
+      if (!claimResultAction()) return;
       window.WonderSound?.play("click");
       startRun(Number(nodes.resultPanel.dataset.settledStage) || state.selectedStage);
     });
 
     nodes.nextStageBtn.addEventListener("click", () => {
       if (nodes.nextStageBtn.disabled) return;
+      if (!claimResultAction()) return;
       window.WonderSound?.play("click");
       const settledStage = Number(nodes.resultPanel.dataset.settledStage) || state.selectedStage;
       startRun(Math.min(STAGE_COUNT, settledStage + 1));
@@ -2945,6 +2955,7 @@
     });
 
     nodes.resultMenuBtn.addEventListener("click", () => {
+      if (!claimResultAction()) return;
       window.WonderSound?.play("click");
       showStage();
       requestAnimationFrame(() => document.querySelector(".stage-card.is-selected")?.focus({ preventScroll: true }));

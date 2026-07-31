@@ -172,3 +172,7 @@
   .guardian-team-header{grid-template-columns:52px minmax(0,1fr);margin-bottom:5px}.guardian-team-header>img{width:52px;height:52px}.guardian-team-header p{font-size:.65rem}
   .guardian-roster{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}.guardian-choice{min-height:82px;padding:3px;grid-template-columns:1fr;text-align:center}.guardian-choice>img{width:40px;height:40px;margin:auto}.guardian-choice small,.guardian-choice em{font-size:.5rem}.guardian-choice>b{right:3px;top:3px}
 }
+
+/* Stage rating owns the open space beside the stage number, never the reward row. */
+.stage-card{position:relative;grid-template-rows:auto auto minmax(0,1fr)}
+.stage-card>small{position:absolute;inset-block-start:54px;inset-inline-end:12px;min-width:58px;min-height:28px;padding:4px 8px;border:1px solid #ffffff24;background:#071c2de8}
