@@ -224,7 +224,7 @@ body.is-rune-playing .pause-toggle {
 .diamond-card,
 .section-head,
 .reward-card,
-.skill-report {
+.result-plan {
   border: 1px solid var(--line);
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.055);
@@ -248,6 +248,12 @@ body.is-rune-playing .pause-toggle {
   border-radius: 14px;
   background: rgba(103, 242, 190, 0.08);
   padding: 12px;
+}
+
+.result-plan strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--mint);
 }
 
 .growth-summary strong {
@@ -1131,7 +1137,7 @@ body.is-rune-playing .pause-toggle {
     line-height: 28px;
   }
 
-  html body.wp-logical-battle-active.is-rune-playing #resultPanel .skill-report {
+  html body.wp-logical-battle-active.is-rune-playing #resultPanel .result-plan {
     grid-column: 2;
     grid-row: 1 / 4;
     align-self: end;

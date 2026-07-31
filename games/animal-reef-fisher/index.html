@@ -61,7 +61,7 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
-    <link rel="stylesheet" href="style.css?v=20260731-safe-progress2" />
+    <link rel="stylesheet" href="style.css?v=20260801-next-cast" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
 </head>
   <body data-tutorial-auto-show="false" data-sound-toggle="off">
@@ -186,7 +186,7 @@
               <h3 data-ui="catchSummary">This Expedition's Catch</h3>
               <div id="catchList" class="catch-list"></div>
             </div>
-            <p id="skillReportText" class="skill-report"></p>
+            <p id="resultAdviceText" class="result-advice"></p>
             <div class="result-actions">
               <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="stages">Stages</button>
               <button id="nextZoneBtn" class="primary-btn" type="button" data-ui="nextStage">Next Stage</button>
@@ -209,7 +209,7 @@
         <div class="game-info-section"><h3>How to Play</h3><ol><li>Press Start Game, swipe the mission rail, and select an unlocked card after reading its sea-condition line.</li><li>Prepare a Rare Lure or Sonar only if wanted, then spend Reef Notes on the gear that addresses the current problem.</li><li>Hold the water or Space, release the cast, and wait for the named fish to bite.</li><li>Drag the red knob, slide across the sea, or use Left and Right to follow the moving green band.</li><li>When the line breaks, cast again immediately. On Guardian missions, read the boss cue before making a large correction.</li><li>Reach the displayed catch goal before the clock ends, review the catch list, then return to the Reef Map for the newly unlocked mission.</li></ol></div>
         <div class="game-info-section game-info-strategy"><h3>Strategy Notes</h3><ul><li>A full cast does not choose a rarer species; it shortens bite delay. Use it when the mission clock is the main problem.</li><li>If ordinary fish escape, improve Reel Control or Line Durability. If catches are safe but too slow, Rod Strength and Bait Quality shorten each fight.</li><li>Follow the green band instead of forcing every marker back to 50. Kelp, Moon, and Abyss missions deliberately make the safe center move.</li><li>On Coral Ram Ray and Crystal Crown Sovereign, an armored phase is not wasted time. Stabilize the line so the next open phase begins without accumulated danger.</li><li>Storm gusts occur on a three-second rhythm. Hold near the middle of the current safe band before the next flash, then correct after the push.</li><li>Use Sonar when a specific pull identity matters. Use the one-cast Rare Lure when a rare album entry is more valuable than advance information.</li></ul></div>
         <div class="game-info-section"><h3>Development and Design Notes</h3><p>The core loop stays consistent: charge a cast, then manage tension. Difficulty comes from readable water rules. A drifting or narrowing band changes where to aim; a gust changes when to hold; Guardian armor changes when safe control creates progress. Five-mission chapters teach one condition before its Guardian adds a distinct pull profile.</p><p>Phone, desktop, tablet, and short landscape use the same logical Battle composition. Pointer and keyboard share one state, hidden-page time is suspended, and Result remains inside Battle above the physical reserve. Album progress requires repeated tension decisions, while saved gear and mission selection give return visits a concrete planning choice.</p></div>
-        <div class="game-info-section"><h3>Player and Save Information</h3><p>No account is required. Unlocked missions, selected mission, Reef Notes, best catch count, 12 album entries, six gear levels, and prepared Lure or Sonar state are stored in this browser. Clearing site storage or changing browsers may start a separate save. The shared Diamond balance is optional and is used only for the confirmed Lure and Sonar preparations described above. The Skill Report summarizes the current run for entertainment; it is not a diagnosis, rank, or formal ability assessment.</p></div>
+        <div class="game-info-section"><h3>Player and Save Information</h3><p>No account is required. Unlocked missions, selected mission, Reef Notes, best catch count, 12 album entries, six gear levels, and prepared Lure or Sonar state are stored in this browser. Clearing site storage or changing browsers may start a separate save. The shared Diamond balance is optional and is used only for the confirmed Lure and Sonar preparations described above. Result gives tactical next-cast advice from the current expedition and does not assess the player.</p></div>
         <div class="game-info-section"><h3>Frequently Asked Questions</h3><dl><div><dt>How many missions and Guardian fish are there?</dt><dd>There are 30 missions. Missions 5, 10, 15, 20, 25, and 30 contain six different guaranteed Guardian encounters.</dd></div><div><dt>Why does the green safe band move or change size?</dt><dd>That is the mission's sea condition. Kelp drifts, Coral breathes narrower, Moon switches sides, Storm adds gusts, and Abyss combines several rules.</dd></div><div><dt>What happens when the line breaks?</dt><dd>The current fish escapes and the game returns to casting. The expedition continues, but its clock does not reset.</dd></div><div><dt>Does cast power select a better fish?</dt><dd>No. More power shortens the bite wait. Species come from the mission pool, scanner level, one prepared lure, or a locked Sonar result.</dd></div><div><dt>Can Guardian armor be damaged while closed?</dt><dd>No. Coral Ram Ray and Crystal Crown Sovereign require SAFE control during an open phase; staying stable while closed prevents a line break.</dd></div><div><dt>Are Diamonds required?</dt><dd>No. Diamonds only prepare an optional one-cast Rare Lure or a next-fish Sonar lock. All missions, Guardians, gear levels, and ordinary album progress work without them.</dd></div><div><dt>Which progress is saved?</dt><dd>The browser stores mission unlocks, Notes, album discoveries, gear levels, best catches, selected mission, and prepared optional tools.</dd></div><div><dt>Can the game be played with a keyboard?</dt><dd>Yes. Hold and release Space to cast, then use Left and Right on the fishing area or tension slider. Touch and mouse use the same rules.</dd></div></dl></div>
       </div>
     </section>
@@ -222,7 +222,7 @@
     <script src="../../src/sound.js?v=20260720-locale11"></script>
     <script src="../../src/tutorial.js?v=20260708-reef-tension-clarity1"></script>
     <script src="../../src/wallet.js?v=20260706-diamond1"></script>
-  <script src="game.js?v=20260731-safe-progress2"></script>
+  <script src="game.js?v=20260801-next-cast"></script>
     <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
     <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
 </body>

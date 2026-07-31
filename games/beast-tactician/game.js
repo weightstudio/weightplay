@@ -137,7 +137,7 @@
     resultRewardText: $("resultRewardText"),
     resultProgressText: $("resultProgressText"),
     resultUnlockText: $("resultUnlockText"),
-    skillReportText: $("skillReportText"),
+    resultPlanText: $("resultPlanText"),
     nextStageBtn: $("nextStageBtn"),
     rerollRewardBtn: $("rerollRewardBtn"),
     retryBtn: $("retryBtn"),
@@ -285,11 +285,11 @@
       goldenFrameConfirmLabel: "Confirm Golden Defender Frame. Spend 15 Diamonds. Balance {balance} to {result}.",
       victoryText: "Stage {stage} cleared. Routes, blockers, upgrades, and hero timing worked together.",
       defeatText: "Good effort. Try a different route shape or upgrade key blockers earlier.",
-      skillReport: "Skill Report: Logic, Problem Solving, and Focus practiced through path planning and upgrade timing.",
-      skillReportWin3: "Skill Report: {stars}/3 Stars. Strong route planning kept the core at {core}%. Next, time hero focus fire even earlier on bosses.",
-      skillReportWin2: "Skill Report: {stars}/3 Stars. Clear win with {core}% core HP. For a perfect clear, upgrade blockers earlier and stretch the route before burst waves.",
-      skillReportWin1: "Skill Report: {stars}/3 Stars. Close clear with {core}% core HP. Add Medic or Sapper support sooner and avoid sealing the route too early.",
-      skillReportLose: "Skill Report: The core fell. Reshape the route, keep one readable path open, and upgrade key blockers before the next pressure wave.",
+      resultPlan: "Next Defense Plan",
+      resultPlanWin3: "Next defense: {stars}/3 stars with {core}% core HP. Keep this route shape and focus hero fire earlier on the next boss.",
+      resultPlanWin2: "Next defense: {stars}/3 stars with {core}% core HP. Upgrade blockers earlier and stretch the route before burst waves.",
+      resultPlanWin1: "Next defense: {stars}/3 stars with {core}% core HP. Add Medic or Sapper support sooner and keep one readable route open.",
+      resultPlanLose: "Retry plan: reshape the route, keep one readable path open, and upgrade key blockers before the next pressure wave.",
       boss: "Boss",
       bossStage: "Boss Stage",
       bossPressure: "Boss Pressure",
@@ -869,7 +869,7 @@
       goldenFrameConfirmLabel: "確認黃金守衛框。花費 15 鑽石。餘額從 {balance} 變為 {result}。",
       victoryText: "第 {stage} 關通關。路線、阻擋、升級與英雄時機配合成功。",
       defeatText: "打得不錯。試著改變路線形狀，或更早升級關鍵阻擋者。",
-      skillReport: "能力報告：透過路線規劃與升級時機，練習邏輯、解題與專注力。",
+      resultPlan: "下一場防線方案",
       boss: "王",
       bossStage: "王關",
       bossPressure: "王壓力",
@@ -932,14 +932,14 @@
     pauseDecisionText: "\u7e7c\u7e8c\u76ee\u524d\u7684\u7b2c {stage} \u95dc\u6230\u9b25\uff0c\u6216\u8fd4\u56de\u95dc\u5361\u4e26\u5931\u53bb\u672c\u6ce2\u9032\u5ea6\u3001\u5b88\u885b\u3001\u91d1\u5e63\u8207\u6838\u5fc3\u751f\u547d\u3002",
     continueBattle: "\u7e7c\u7e8c\u6230\u9b25",
     returnToStages: "\u8fd4\u56de\u95dc\u5361",
-    skillReportWin3:
-      "\u80fd\u529b\u5831\u544a\uff1a{stars}/3 \u661f\u3002\u8def\u7dda\u898f\u5283\u7a69\u5b9a\uff0c\u6838\u5fc3\u4fdd\u7559 {core}%\uff1b\u4e0b\u4e00\u6b65\u53ef\u4ee5\u66f4\u65e9\u96c6\u4e2d\u706b\u529b\u6253\u738b\u3002",
-    skillReportWin2:
-      "\u80fd\u529b\u5831\u544a\uff1a{stars}/3 \u661f\u3002\u9632\u885b\u6210\u529f\uff0c\u6838\u5fc3\u4fdd\u7559 {core}%\uff1b\u82e5\u60f3\u62ff\u6eff\u661f\uff0c\u63d0\u524d\u5347\u7d1a\u963b\u64cb\u8005\u4e26\u62c9\u9577\u8def\u7dda\u3002",
-    skillReportWin1:
-      "\u80fd\u529b\u5831\u544a\uff1a{stars}/3 \u661f\u3002\u9a5a\u96aa\u901a\u95dc\uff0c\u6838\u5fc3\u53ea\u5269 {core}%\uff1b\u4e0b\u6b21\u5148\u88dc\u91ab\u8b77\u6216\u5de5\u5175\uff0c\u907f\u514d\u592a\u65e9\u5c01\u8def\u5d29\u7dda\u3002",
-    skillReportLose:
-      "\u80fd\u529b\u5831\u544a\uff1a\u9019\u6b21\u6838\u5fc3\u5931\u5b88\u3002\u8abf\u6574\u8def\u7dda\u5f62\u72c0\uff0c\u4fdd\u7559\u53ef\u8b80\u8def\u5f91\uff0c\u4e26\u5728\u58d3\u529b\u6ce2\u524d\u5347\u7d1a\u95dc\u9375\u963b\u64cb\u8005\u3002",
+    resultPlanWin3:
+      "下一場防線：{stars}/3 星，核心保留 {core}%。沿用這條路線，並在下一隻王出現時更早集中英雄火力。",
+    resultPlanWin2:
+      "下一場防線：{stars}/3 星，核心保留 {core}%。更早升級阻擋者，並在爆發波前拉長敵人路線。",
+    resultPlanWin1:
+      "下一場防線：{stars}/3 星，核心保留 {core}%。提早補上醫護或工兵，並保留一條清楚可讀的路線。",
+    resultPlanLose:
+      "重試方案：調整路線形狀、保留一條清楚可讀的路徑，並在下一波壓力前升級關鍵阻擋者。",
     buildFeedback: "\u5df2\u90e8\u7f72",
     upgradeFeedback: "+Lv.{level}",
     sellFeedback: "+{coins} \u91d1\u5e63",
@@ -1081,11 +1081,11 @@
     goldenFrameConfirmLabel: "Confirma el marco dorado. Gasta 15 diamantes. Saldo de {balance} a {result}.",
     victoryText: "Nivel {stage} completado. Las rutas, bloqueos, mejoras y habilidades de héroe funcionaron en conjunto.",
     defeatText: "Buen intento. Prueba otra forma de ruta o mejora antes a los bloqueadores principales.",
-    skillReport: "Informe de habilidades: practicaste lógica, resolución de problemas y concentración al planear rutas y mejoras.",
-    skillReportWin3: "Informe: {stars}/3 estrellas. La buena ruta dejó el núcleo al {core}%. La próxima vez concentra antes el fuego de los héroes en el jefe.",
-    skillReportWin2: "Informe: {stars}/3 estrellas. Victoria con {core}% del núcleo. Para una defensa perfecta, mejora antes a los bloqueadores y alarga la ruta.",
-    skillReportWin1: "Informe: {stars}/3 estrellas. Victoria ajustada con {core}% del núcleo. Añade antes apoyo médico o de zapador y no cierres la ruta demasiado pronto.",
-    skillReportLose: "Informe: el núcleo cayó. Rediseña la ruta, conserva un camino legible y mejora a los bloqueadores antes de la siguiente oleada difícil.",
+    resultPlan: "Plan para la próxima defensa",
+    resultPlanWin3: "Próxima defensa: {stars}/3 estrellas y núcleo al {core}%. Conserva esta ruta y concentra antes el fuego de los héroes en el próximo jefe.",
+    resultPlanWin2: "Próxima defensa: {stars}/3 estrellas y núcleo al {core}%. Mejora antes a los bloqueadores y alarga la ruta antes de las oleadas intensas.",
+    resultPlanWin1: "Próxima defensa: {stars}/3 estrellas y núcleo al {core}%. Añade antes apoyo médico o de zapador y conserva una ruta legible.",
+    resultPlanLose: "Plan de reintento: rediseña la ruta, conserva un camino legible y mejora a los bloqueadores antes de la siguiente oleada difícil.",
     boss: "Jefe",
     bossStage: "Nivel de jefe",
     bossPressure: "Presión del jefe",
@@ -1238,6 +1238,79 @@
     stage.intel.threat.es = repairSpanishCopy(stage.intel.threat.es);
     stage.intel.plan.es = repairSpanishCopy(stage.intel.plan.es);
     stage.bossNameEs = repairSpanishCopy(stage.bossNameEs);
+  });
+
+  Object.assign(text, {
+    "zh-Hans": {
+      resultPlan: "下一场防线方案",
+      resultPlanWin3: "下一场防线：{stars}/3 星，核心保留 {core}%。沿用这条路线，并在下一只首领出现时更早集中英雄火力。",
+      resultPlanWin2: "下一场防线：{stars}/3 星，核心保留 {core}%。更早升级阻挡者，并在爆发波前拉长敌人路线。",
+      resultPlanWin1: "下一场防线：{stars}/3 星，核心保留 {core}%。提前补上医疗或工兵，并保留一条清楚可读的路线。",
+      resultPlanLose: "重试方案：调整路线形状、保留一条清楚可读的路径，并在下一波压力前升级关键阻挡者。",
+    },
+    ja: {
+      resultPlan: "次の防衛プラン",
+      resultPlanWin3: "次の防衛：{stars}/3スター、コアHP {core}%。この経路を活かし、次のボスにはヒーローの集中攻撃を早めよう。",
+      resultPlanWin2: "次の防衛：{stars}/3スター、コアHP {core}%。ブロッカーを早めに強化し、強襲ウェーブ前に経路を長くしよう。",
+      resultPlanWin1: "次の防衛：{stars}/3スター、コアHP {core}%。メディックかサッパーを早めに加え、読みやすい経路を一本残そう。",
+      resultPlanLose: "再挑戦プラン：経路を組み直し、通れる道を一本残して、次の高圧ウェーブ前に重要なブロッカーを強化しよう。",
+    },
+    ko: {
+      resultPlan: "다음 방어 계획",
+      resultPlanWin3: "다음 방어: {stars}/3별, 코어 HP {core}%. 이 경로를 유지하고 다음 보스에게 영웅 집중 공격을 더 일찍 시작하세요.",
+      resultPlanWin2: "다음 방어: {stars}/3별, 코어 HP {core}%. 차단 유닛을 더 일찍 강화하고 강한 웨이브 전에 경로를 늘리세요.",
+      resultPlanWin1: "다음 방어: {stars}/3별, 코어 HP {core}%. 의무병이나 공병을 더 일찍 배치하고 읽기 쉬운 경로 하나를 남기세요.",
+      resultPlanLose: "재도전 계획: 경로를 다시 설계하고 통과 가능한 길 하나를 남긴 뒤 다음 압박 웨이브 전에 핵심 차단 유닛을 강화하세요.",
+    },
+    "pt-BR": {
+      resultPlan: "Plano para a próxima defesa",
+      resultPlanWin3: "Próxima defesa: {stars}/3 estrelas e núcleo com {core}% de PV. Mantenha esta rota e concentre o fogo dos heróis mais cedo no próximo chefe.",
+      resultPlanWin2: "Próxima defesa: {stars}/3 estrelas e núcleo com {core}% de PV. Melhore os bloqueadores mais cedo e alongue a rota antes das ondas intensas.",
+      resultPlanWin1: "Próxima defesa: {stars}/3 estrelas e núcleo com {core}% de PV. Adicione Médico ou Sapador mais cedo e mantenha uma rota legível.",
+      resultPlanLose: "Plano de nova tentativa: redesenhe a rota, mantenha um caminho legível e melhore os bloqueadores antes da próxima onda de pressão.",
+    },
+    fr: {
+      resultPlan: "Plan pour la prochaine défense",
+      resultPlanWin3: "Prochaine défense : {stars}/3 étoiles et noyau à {core} %. Gardez ce tracé et concentrez plus tôt le feu des héros sur le prochain boss.",
+      resultPlanWin2: "Prochaine défense : {stars}/3 étoiles et noyau à {core} %. Améliorez plus tôt les bloqueurs et allongez la route avant les vagues intenses.",
+      resultPlanWin1: "Prochaine défense : {stars}/3 étoiles et noyau à {core} %. Ajoutez plus tôt un Médecin ou un Sapeur et gardez une route lisible.",
+      resultPlanLose: "Plan de nouvelle tentative : redessinez la route, gardez un chemin lisible et améliorez les bloqueurs avant la prochaine vague difficile.",
+    },
+    de: {
+      resultPlan: "Plan für die nächste Verteidigung",
+      resultPlanWin3: "Nächste Verteidigung: {stars}/3 Sterne, Kern bei {core} %. Behalte diese Route bei und bündele das Heldenfeuer beim nächsten Boss früher.",
+      resultPlanWin2: "Nächste Verteidigung: {stars}/3 Sterne, Kern bei {core} %. Verbessere Blocker früher und verlängere die Route vor starken Wellen.",
+      resultPlanWin1: "Nächste Verteidigung: {stars}/3 Sterne, Kern bei {core} %. Setze Sanitäter oder Pionier früher ein und halte einen klaren Weg offen.",
+      resultPlanLose: "Wiederholungsplan: Gestalte die Route neu, halte einen klaren Weg offen und verbessere wichtige Blocker vor der nächsten Druckwelle.",
+    },
+    it: {
+      resultPlan: "Piano per la prossima difesa",
+      resultPlanWin3: "Prossima difesa: {stars}/3 stelle e nucleo al {core}%. Mantieni questo percorso e concentra prima il fuoco degli eroi sul prossimo boss.",
+      resultPlanWin2: "Prossima difesa: {stars}/3 stelle e nucleo al {core}%. Potenzia prima i bloccatori e allunga il percorso prima delle ondate intense.",
+      resultPlanWin1: "Prossima difesa: {stars}/3 stelle e nucleo al {core}%. Aggiungi prima Medico o Geniere e mantieni un percorso leggibile.",
+      resultPlanLose: "Piano di nuovo tentativo: ridisegna il percorso, mantieni un passaggio leggibile e potenzia i bloccatori chiave prima della prossima ondata difficile.",
+    },
+    ru: {
+      resultPlan: "План следующей обороны",
+      resultPlanWin3: "Следующая оборона: {stars}/3 звезды, ядро — {core}%. Сохрани этот маршрут и раньше сосредоточь огонь героев на следующем боссе.",
+      resultPlanWin2: "Следующая оборона: {stars}/3 звезды, ядро — {core}%. Раньше улучшай блокирующих бойцов и удлиняй маршрут перед мощными волнами.",
+      resultPlanWin1: "Следующая оборона: {stars}/3 звезды, ядро — {core}%. Раньше добавь медика или сапёра и оставь один понятный путь.",
+      resultPlanLose: "План повторной попытки: измени маршрут, оставь один понятный путь и улучши ключевых блокирующих бойцов до следующей сложной волны.",
+    },
+    hi: {
+      resultPlan: "अगली रक्षा की योजना",
+      resultPlanWin3: "अगली रक्षा: {stars}/3 सितारे और कोर HP {core}%। यही रास्ता रखें और अगले बॉस पर हीरो की केंद्रित आग पहले शुरू करें।",
+      resultPlanWin2: "अगली रक्षा: {stars}/3 सितारे और कोर HP {core}%। अवरोधकों को पहले उन्नत करें और कठिन लहरों से पहले रास्ता लंबा करें।",
+      resultPlanWin1: "अगली रक्षा: {stars}/3 सितारे और कोर HP {core}%। मेडिक या सैपर को पहले लगाएँ और एक साफ खुला रास्ता रखें।",
+      resultPlanLose: "दोबारा प्रयास की योजना: रास्ता फिर बनाएँ, एक साफ खुला मार्ग रखें और अगली कठिन लहर से पहले मुख्य अवरोधकों को उन्नत करें।",
+    },
+    ar: {
+      resultPlan: "خطة الدفاع التالية",
+      resultPlanWin3: "الدفاع التالي: {stars}/3 نجوم وصحة النواة {core}٪. حافظ على هذا المسار وركّز نيران الأبطال مبكرًا على الزعيم التالي.",
+      resultPlanWin2: "الدفاع التالي: {stars}/3 نجوم وصحة النواة {core}٪. طوّر وحدات الصد مبكرًا وأطل المسار قبل الموجات القوية.",
+      resultPlanWin1: "الدفاع التالي: {stars}/3 نجوم وصحة النواة {core}٪. أضف المسعف أو المهندس مبكرًا واترك مسارًا واضحًا مفتوحًا.",
+      resultPlanLose: "خطة إعادة المحاولة: أعد تشكيل المسار، واترك طريقًا واضحًا مفتوحًا، وطوّر وحدات الصد الأساسية قبل موجة الضغط التالية.",
+    },
   });
 
   const state = {
@@ -3014,10 +3087,10 @@
     return 1;
   }
 
-  function resultSkillReport(won, stars = 0, coreHp = state.coreHp, stage = state.stage) {
-    if (!won) return t("skillReportLose");
+  function resultTacticalPlan(won, stars = 0, coreHp = state.coreHp, stage = state.stage) {
+    if (!won) return t("resultPlanLose");
     const corePercent = Math.max(0, Math.min(100, Math.round((Math.max(0, coreHp) / Math.max(1, stage?.coreHp || 1)) * 100)));
-    const key = stars >= 3 ? "skillReportWin3" : stars >= 2 ? "skillReportWin2" : "skillReportWin1";
+    const key = stars >= 3 ? "resultPlanWin3" : stars >= 2 ? "resultPlanWin2" : "resultPlanWin1";
     return t(key, { stars, core: corePercent });
   }
 
@@ -3094,7 +3167,7 @@
     nodes.resultTitle.textContent = t("victory");
     nodes.resultText.textContent = t("victoryText", { stage: stage.id });
     nodes.resultStars.textContent = t("starRating", { stars });
-    nodes.skillReportText.textContent = resultSkillReport(true, stars, state.coreHp, stage);
+    nodes.resultPlanText.textContent = resultTacticalPlan(true, stars, state.coreHp, stage);
     nodes.nextStageBtn.classList.remove("is-hidden");
     nodes.nextStageBtn.disabled = stage.id >= STAGE_COUNT;
     nodes.reviveBtn.classList.add("is-hidden");
@@ -3119,7 +3192,7 @@
     nodes.rerollRewardBtn.classList.add("is-hidden");
     nodes.reviveBtn.classList.toggle("is-hidden", state.revived);
     nodes.reviveBtn.disabled = state.revived || state.save.diamonds < 5;
-    nodes.skillReportText.textContent = resultSkillReport(false);
+    nodes.resultPlanText.textContent = resultTacticalPlan(false);
     nodes.nextStageBtn.classList.remove("is-hidden");
     nodes.nextStageBtn.disabled = true;
     resultDecisionCommitted = false;
@@ -5302,7 +5375,7 @@
     };
   }
 
-  function runResultSkillReportScenario() {
+  function runResultTacticalPlanScenario() {
     state.manualSimulation = true;
     const previousLocale = state.locale;
     const previousSave = state.save;
@@ -5321,22 +5394,22 @@
     startStage(1);
     state.coreHp = state.stage.coreHp;
     winStage();
-    const perfect = nodes.skillReportText.textContent;
+    const perfect = nodes.resultPlanText.textContent;
     startStage(2);
     state.coreHp = state.stage.coreHp * 0.4;
     winStage();
-    const pressured = nodes.skillReportText.textContent;
+    const pressured = nodes.resultPlanText.textContent;
     startStage(3);
     state.coreHp = 0;
     loseStage();
-    const defeat = nodes.skillReportText.textContent;
+    const defeat = nodes.resultPlanText.textContent;
     state.locale = "zh-Hant";
     nodes.localeSelect.value = "zh-Hant";
     updateLocale();
     startStage(4);
     state.coreHp = state.stage.coreHp * 0.2;
     winStage();
-    const zhClose = nodes.skillReportText.textContent;
+    const zhClose = nodes.resultPlanText.textContent;
     state.locale = previousLocale;
     nodes.localeSelect.value = previousLocale;
     state.save = previousSave;
@@ -6432,7 +6505,7 @@
       transactionConfirmationScenarioState,
       beginInsufficientFundsToastScenario,
       toastScenarioState,
-      runResultSkillReportScenario,
+      runResultTacticalPlanScenario,
       runNextStageResultScenario,
       runWaveIntelScenario,
       runKeyboardControlScenario,

@@ -77,7 +77,7 @@
     resultRewardText: $("resultRewardText"),
     resultProgressText: $("resultProgressText"),
     resultNextText: $("resultNextText"),
-    skillReportText: $("skillReportText"),
+    resultPlanText: $("resultPlanText"),
     nextBtn: $("nextBtn"),
     retryBtn: $("retryBtn"),
     menuBtn: $("menuBtn"),
@@ -168,9 +168,9 @@
       missionFailed: "Mission Failed",
       resultWin: "Cleared Mission {mission}. Gained {xp} XP and {runes} Runes.",
       resultLose: "The rune squad fell in Mission {mission}. Keep your turtle guard near the front.",
-      skillReport: "Skill Report",
-      reportWin: "Strong planning: you used positioning, target focus, and reward choice to protect the squad.",
-      reportLose: "Good practice: try guarding before enemy turns and focus one beast at a time.",
+      resultPlan: "Next Mission Plan",
+      planWin: "Next mission: keep the squad in safe lanes, focus one target, and choose a reward that answers the next enemy trait.",
+      planLose: "Retry plan: Guard before the enemy turn, keep Turtle near the front, and focus one beast until it falls.",
       nextMission: "Next Mission",
       retry: "Retry",
       menu: "Menu",
@@ -265,9 +265,9 @@
       missionFailed: "任務失敗",
       resultWin: "通過任務 {mission}，獲得 {xp} 經驗與 {runes} 符石。",
       resultLose: "符文小隊在任務 {mission} 倒下了。下次讓烏龜守衛站在前線。",
-      skillReport: "能力報告",
-      reportWin: "規劃表現很好：你運用站位、集火與獎勵選擇保護了小隊。",
-      reportLose: "這是很好的練習：敵人回合前先防禦，並一次集火一隻野獸。",
+      resultPlan: "下一任務戰術",
+      planWin: "下一任務：讓小隊留在安全路線、集中攻擊一個目標，並選擇能應對下一種敵人特性的獎勵。",
+      planLose: "重試戰術：敵人回合前先防禦，讓烏龜守衛留在前排，並集中攻擊一隻野獸直到擊倒。",
       nextMission: "下一個任務",
       retry: "重試",
       menu: "選單",
@@ -420,7 +420,7 @@
     heroTileLabel: "{hero}，生命 {hp}/{maxHp}，{status}，第 {row} 列第 {column} 欄。", enemyTileLabel: "{enemy}，生命 {hp}/{maxHp}，第 {row} 列第 {column} 欄。", moveTileLabel: "移動到第 {row} 列第 {column} 欄。", emptyTileLabel: "第 {row} 列第 {column} 欄。",
     moved: "{hero} 已移動。", attacked: "{hero} 攻擊了 {enemy}。", guarded: "{hero} 進入防守。", skillUsed: "{hero} 使用了符文技能。", enemyTurn: "敵人正在行動。",
     chooseReward: "選擇符文獎勵", reroll: "重抽 3", rerollNeed: "重抽需要 3 顆鑽石。", missionClear: "任務完成", missionFailed: "任務失敗", resultWin: "完成任務 {mission}，獲得 {xp} 經驗值和 {runes} 符文。", resultLose: "符文小隊在任務 {mission} 倒下。讓烏龜守在前排，集中攻擊同一隻敵人。",
-    skillReport: "能力報告", reportWin: "規劃很棒：你用站位、集火和獎勵選擇保護了小隊。", reportLose: "這是很好的練習：敵人回合前先防守，並一次專注一隻野獸。", nextMission: "下一個任務", retry: "再試一次", menu: "選單",
+    resultPlan: "下一任务战术", planWin: "下一任务：让小队留在安全路线、集中攻击一个目标，并选择能应对下一种敌人特性的奖励。", planLose: "重试战术：敌人回合前先防守，让乌龟守卫留在前排，并集中攻击一只野兽直到击倒。", nextMission: "下一个任务", retry: "再试一次", menu: "选单",
     lion: "獅王守護者", owl: "月帽貓頭鷹法師", turtle: "苔殼烏龜", wolf: "暗影狼", raven: "水晶渡鴉", stag: "石角巨鹿",
     rewardPower: "力量符文", rewardPowerDesc: "所有英雄攻擊力 +1。", rewardGuard: "守護徽章", rewardGuardDesc: "所有英雄生命上限 +1。", rewardShard: "符文碎片", rewardShardDesc: "任務後額外獲得 35 經驗值。", rewardRevive: "復活代幣", rewardReviveDesc: "保留 1 枚復活代幣；未來戰鬥中可自動復活一位倒下英雄。", rewardFocus: "專注符文", rewardFocusDesc: "下次任務起始能量 +1。",
     missionPlan: "策略：{plan}", missionTactic1: "先學會在兩隻暗影狼前維持站位。", missionTactic2: "保護貓頭鷹，避免被遠程渡鴉擊倒。", missionTactic3: "清除守衛後，集中攻擊石角巨鹿。", missionTactic4: "兩隻渡鴉出手前，讓烏龜先防守。", missionTactic5: "長戰鬥要管理能量並集中目標。", missionTactic6: "Boss 壓力戰：撐過兩隻巨鹿與渡鴉火力。",
@@ -547,9 +547,9 @@
     missionFailed: "Misión fallida",
     resultWin: "Completaste la misión {mission}. Ganaste {xp} XP y {runes} runas.",
     resultLose: "El escuadrón cayó en la misión {mission}. Mantén a la Tortuga cerca del frente.",
-    skillReport: "Informe de habilidades",
-    reportWin: "Buena planificación: usaste posición, concentración de objetivos y premios para proteger al escuadrón.",
-    reportLose: "Buena práctica: defiende antes del turno enemigo y concéntrate en una bestia cada vez.",
+    resultPlan: "Plan para la próxima misión",
+    planWin: "Próxima misión: mantén al escuadrón en rutas seguras, concentra el ataque y elige una recompensa contra el siguiente rasgo enemigo.",
+    planLose: "Plan de reintento: defiende antes del turno enemigo, mantén a Tortuga delante y concentra el ataque hasta derribar una bestia.",
     nextMission: "Siguiente misión",
     retry: "Reintentar",
     menu: "Volver a misiones",
@@ -2827,7 +2827,7 @@
         : t("resultUpgradeNeed", { hero: t(nextHero.hero.name), need: nextHero.cost - (profile.runes || 0) })
       : t("heroUpgradeMax");
     nodes.resultNextText.textContent = `${missionDirection} ${upgradeDirection}`;
-    nodes.skillReportText.textContent = t(win ? "reportWin" : "reportLose");
+    nodes.resultPlanText.textContent = t(win ? "planWin" : "planLose");
     const hasNextMission = win && state.mission < missionDefs.length;
     const primaryResultAction = hasNextMission ? nodes.nextBtn : win ? nodes.menuBtn : nodes.retryBtn;
     nodes.nextBtn.disabled = !hasNextMission;

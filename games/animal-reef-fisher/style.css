@@ -208,7 +208,7 @@ html[data-reef-state="game"] .game-page-info {
 
 .menu-copy > span,
 .hint,
-.skill-report {
+.result-advice {
   color: var(--muted);
   font-weight: 800;
 }

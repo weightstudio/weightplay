@@ -965,7 +965,7 @@ body.guardian-result .game-panel > .command-row {
   object-fit: contain;
 }
 
-.skill-report {
+.result-plan {
   color: var(--green);
   font-weight: 900;
 }
