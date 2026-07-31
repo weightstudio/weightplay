@@ -12,9 +12,9 @@
     "howTitle","how1","how2","how3","chaptersTitle","chaptersText","strategyTitle","strategyText","trustTitle","trustText",
     "back","chooseStage","chapter","stageRailLabel","stageHint","left","stars","sound","help","objective","boardLabel","tray","trayLabel",
     "undo","magnet","shuffle","tutorialTitle","tutorial1","tutorial2","tutorial3","continue","leaveTitle","leaveText","returnStages",
-    "skillReport","retry","next","stages","stage","locked","cleared","best","pieces","openShelf","vineGallery","crystalRoom","mysteryLoft",
+    "nextPlan","retry","next","stages","stage","locked","cleared","best","pieces","openShelf","vineGallery","crystalRoom","mysteryLoft",
     "shiftingHall","grandFinale","tangled","cracked","revealed","matched","trayDanger","noUndo","noPair","shuffled","winKicker","winTitle",
-    "winText","failKicker","failTitle","failText","skillGreat","skillSteady","complete","soundOn","soundOff"
+    "winText","failKicker","failTitle","failText","planWin","planRetry","complete","soundOn","soundOff"
   ];
   const L = {
     en: [
@@ -79,6 +79,25 @@
     ar:["المرحلة {n}","مغلقة","مكتملة","أفضل فراغ: {n}","{n} كنوز","الرفوف المفتوحة","رواق الكروم","غرفة البلور","العلية الغامضة","القاعة المتحركة","الختام الكبير","أزيلت الكرمة، المس مرة أخرى.","انفتح البلور، المس مرة أخرى.","ظهر الكنز الغامض.","اكتملت الثلاثية!","لم تبق إلا خانة واحدة.","لا توجد حركة للتراجع.","لا يظهر زوج آمن بعد.","تحركت الكومة المتبقية.","تم تنظيف الرف","وجدت كل الثلاثيات!","اكتملت المرحلة {n} مع {stars} نجوم.","الصينية ممتلئة","تحتاج المجموعة إلى خطة جديدة.","جرب ترتيباً آخر وابنِ الأزواج الآمنة مبكراً.","أبقيت {n} خانات فارغة. تخطيط ممتاز.","أكملت {n} ثلاثيات. ابنِ الأزواج مبكراً في المرة القادمة.","مكتمل","الصوت يعمل","الصوت متوقف"],
   };
   for (const [code, values] of Object.entries(dynamicTail)) values.forEach((value, index) => { L[code][49 + index] = value; });
+
+  const resultPlanCopy = {
+    en: { nextPlan:"Next shelf", planWin:"Keep one emergency slot open and convert exposed pairs before adding a new singleton.", planRetry:"Build exposed pairs earlier and avoid adding a third singleton type when the tray is tight." },
+    "zh-Hant": { nextPlan:"下一局策略", planWin:"保留一格緊急空間，先把露出的成對物件完成三連，再加入新的單張。", planRetry:"更早建立露出的成對物件；托盤吃緊時，先別加入第三種單張。" },
+    "zh-Hans": { nextPlan:"下一局策略", planWin:"保留一个紧急空位，先把露出的成对物件完成三连，再加入新的单张。", planRetry:"更早建立露出的成对物件；托盘吃紧时，先别加入第三种单张。" },
+    ja: { nextPlan:"次の棚の作戦", planWin:"緊急用の空きを1つ残し、新しい単品を入れる前に見えているペアを3個組にしましょう。", planRetry:"見えているペアを早めに作り、トレイが詰まったら3種類目の単品を増やさないようにしましょう。" },
+    ko: { nextPlan:"다음 선반 전략", planWin:"비상용 한 칸을 남기고 새 단품을 넣기 전에 드러난 짝을 세 개로 완성하세요.", planRetry:"드러난 짝을 더 일찍 만들고 트레이가 빠듯할 때 세 번째 단품 종류를 추가하지 마세요." },
+    es: { nextPlan:"Plan para el próximo estante", planWin:"Conserva una casilla de emergencia y completa las parejas visibles antes de añadir otro objeto suelto.", planRetry:"Forma antes las parejas visibles y evita añadir un tercer tipo suelto cuando la bandeja esté ajustada." },
+    "pt-BR": { nextPlan:"Plano para a próxima prateleira", planWin:"Guarde uma vaga de emergência e complete os pares visíveis antes de adicionar outro item isolado.", planRetry:"Forme os pares visíveis mais cedo e evite um terceiro tipo isolado quando a bandeja estiver apertada." },
+    fr: { nextPlan:"Plan pour la prochaine étagère", planWin:"Gardez une case de secours et complétez les paires visibles avant d'ajouter un nouvel objet isolé.", planRetry:"Formez plus tôt les paires visibles et évitez un troisième type isolé quand le plateau est serré." },
+    de: { nextPlan:"Plan fürs nächste Regal", planWin:"Halte einen Notplatz frei und vervollständige offene Paare, bevor du ein neues Einzelstück aufnimmst.", planRetry:"Bilde offene Paare früher und nimm bei knapper Ablage keine dritte Einzelart hinzu." },
+    it: { nextPlan:"Piano per il prossimo scaffale", planWin:"Tieni libero uno spazio di emergenza e completa le coppie visibili prima di aggiungere un nuovo oggetto singolo.", planRetry:"Crea prima le coppie visibili ed evita un terzo tipo singolo quando il vassoio è quasi pieno." },
+    ru: { nextPlan:"План для следующей полки", planWin:"Оставляйте одну аварийную ячейку и завершайте открытые пары, прежде чем брать новый одиночный предмет.", planRetry:"Создавайте открытые пары раньше и не добавляйте третий одиночный тип при тесном лотке." },
+    hi: { nextPlan:"अगली शेल्फ़ की योजना", planWin:"एक आपात खाना खाली रखें और नई अकेली वस्तु लेने से पहले खुले जोड़ों को तिकड़ी बनाएँ।", planRetry:"खुले जोड़े पहले बनाएँ और ट्रे तंग होने पर तीसरी अकेली किस्म न जोड़ें।" },
+    ar: { nextPlan:"خطة الرف التالي", planWin:"اترك خانة للطوارئ وأكمل الأزواج المكشوفة قبل إضافة عنصر منفرد جديد.", planRetry:"كوّن الأزواج المكشوفة مبكراً وتجنب إضافة نوع منفرد ثالث عندما تضيق الصينية." },
+  };
+  for (const [code, copy] of Object.entries(resultPlanCopy)) {
+    for (const [key, value] of Object.entries(copy)) L[code][K.indexOf(key)] = value;
+  }
 
   const els = Object.fromEntries([...document.querySelectorAll("[id]")].map(el => [el.id, el]));
   const SAVE_KEY = "weightplay_animal_triple_match_v1";
@@ -781,7 +800,7 @@
     els.resultTitle.textContent = t(win ? "winTitle" : "failTitle");
     els.resultStars.textContent = win ? "★".repeat(stars) : "◇◇◇";
     els.resultText.textContent = win ? t("winText", { n: stageIndex + 1, stars }) : t("failText");
-    els.skillText.textContent = win ? t(free >= 4 ? "skillGreat" : "skillSteady", { n: free || run.matches }) : t("skillSteady", { n: run.matches });
+    els.planText.textContent = t(win ? "planWin" : "planRetry");
     const canAdvance = win && stageIndex < 29;
     els.nextBtn.hidden = false;
     resultDecisionCommitted = false;

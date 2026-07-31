@@ -172,10 +172,6 @@
     resultTitle: $("resultTitle"),
     resultScore: $("resultScore"),
     resultText: $("resultText"),
-    skillReportText: $("skillReportText"),
-    logicStars: $("logicStars"),
-    focusStars: $("focusStars"),
-    problemStars: $("problemStars"),
     loadingPanel: $("loadingPanel"),
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
@@ -298,7 +294,11 @@
     nodes.stagePanel.classList.add("hidden");
     nodes.menuPanel.classList.remove("hidden");
     document.body.classList.remove("wp-standard-stage-page");
-    requestAnimationFrame(() => nodes.mainStartBtn.focus({ preventScroll: true }));
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
+    nodes.mainStartBtn.focus({ preventScroll: true });
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (!nodes.menuPanel.classList.contains("hidden")) nodes.mainStartBtn.focus({ preventScroll: true });
+    }));
   }
 
   const metaText = {
@@ -2688,22 +2688,15 @@
     });
     positionBattleSoundControl();
     const cleared = won ? 3 : Math.max(0, state.battle - 1);
-    const stars = cleared === 3 ? "★★★" : cleared === 2 ? "★★" : cleared === 1 ? "★" : "-";
     nodes.resultTitle.textContent = won ? t("runComplete") : t("runFailed");
     nodes.resultScore.textContent = won ? `${state.mission}/${maxMission}` : `${cleared}/3`;
-    nodes.logicStars.textContent = stars;
-    nodes.focusStars.textContent = stars;
-    nodes.problemStars.textContent = stars;
     if (won) {
       nodes.resultText.textContent = t("report_win", { mission: state.mission, xp: state.xpEarned });
-      nodes.skillReportText.textContent = t("report_win", { mission: state.mission, xp: state.xpEarned });
     } else if (cleared > 0) {
       nodes.resultText.textContent = t("report_partial", { mission: state.mission, count: cleared, xp: state.xpEarned });
-      nodes.skillReportText.textContent = t("report_partial", { mission: state.mission, count: cleared, xp: state.xpEarned });
       window.WonderSound?.play("wrong");
     } else {
       nodes.resultText.textContent = t("report_no_wins");
-      nodes.skillReportText.textContent = t("report_no_wins");
       window.WonderSound?.play("wrong");
     }
     nodes.resultRewards.textContent = t("resultRewards", { xp: state.xpEarned, coins: state.coinsEarned });

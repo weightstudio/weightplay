@@ -1512,56 +1512,6 @@ body {
 .result-progress strong { color: #fff; }
 .result-progress span:last-child { color: #fde68a; }
 
-.skill-lines {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  text-align: left;
-}
-
-.skill-lines span {
-  display: flex;
-  justify-content: space-between;
-  font-size: 13px;
-  color: var(--text-secondary);
-}
-
-.skill-lines b {
-  color: var(--accent-color);
-  letter-spacing: 2px;
-}
-
-.skill-report {
-  border-top: 1px solid var(--border-color);
-  padding-top: 14px;
-  text-align: left;
-}
-
-.skill-report strong {
-  font-size: 13px;
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.skill-report p {
-  font-size: 12px;
-  color: var(--text-secondary);
-  line-height: 1.5;
-  margin-top: 4px;
-}
-
-.skill-report small {
-  display: block;
-  font-size: 10px;
-  color: rgba(255,255,255,0.25);
-  margin-top: 8px;
-  text-align: center;
-}
-
 .result-actions {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

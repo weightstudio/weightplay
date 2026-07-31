@@ -78,10 +78,7 @@
     resultTitle: $("resultTitle"),
     resultScore: $("resultScore"),
     resultText: $("resultText"),
-    skillReportText: $("skillReportText"),
-    reactionStars: $("reactionStars"),
-    focusStars: $("focusStars"),
-    problemStars: $("problemStars"),
+    resultPlanText: $("resultPlanText"),
     loadingPanel: $("loadingPanel"),
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
@@ -183,12 +180,16 @@
       resultLine: "Keys {keys} | Level {level} | Time {time}s | Best {best}",
       resultScoreLabel: "Golden Keys Collected",
       improved: "Great progress! You improved your best key score.",
-      keepGoing: "Good effort. Short practice helps reaction and focus.",
+      keepGoing: "Good effort. Retry with an earlier crystal route and leave warning zones before they close.",
       skillReportTitle: "Skill Report",
       skillReportStrong: "Strong run: you kept moving, reached level {level}, and finished with a golden-key score of {keys} while watching the shadows.",
       skillReportFocus: "Good focus practice: your next goal is to collect more crystals early so upgrades arrive sooner.",
       skillReportRecover: "Brave survival effort: watch the danger rings and move early when shadows get close.",
       resultDisclaimer: "For fun and local progress tracking only.",
+      resultPlanTitle: "Next run plan",
+      resultPlanStrong: "Route note: keep circling the grove, collect each golden key, and move before warning zones close.",
+      resultPlanUpgrade: "Next run: collect crystals early so the first upgrades arrive before shadow pressure builds.",
+      resultPlanRecover: "Recovery plan: move as soon as danger rings appear and keep nearby shadows inside attack range.",
       upgradeAttack: "Crystal Power",
       upgradeAttackDesc: "Projectiles calm shadows faster.",
       upgradeRange: "Longer Range",
@@ -294,12 +295,16 @@
       resultLine: "\u91d1\u9470 {keys} | \u7b49\u7d1a {level} | \u5b58\u6d3b {time} \u79d2 | \u6700\u4f73 {best}",
       resultScoreLabel: "\u6536\u96c6\u5230\u7684\u91d1\u9470",
       improved: "\u9032\u6b65\u5f88\u597d\uff01\u4f60\u5237\u65b0\u4e86\u81ea\u5df1\u7684\u91d1\u9470\u7d00\u9304\u3002",
-      keepGoing: "\u8868\u73fe\u4e0d\u932f\u3002\u77ed\u6642\u9593\u7df4\u7fd2\u80fd\u5e6b\u52a9\u53cd\u61c9\u548c\u5c08\u6ce8\u3002",
+      keepGoing: "\u8868\u73fe\u4e0d\u932f\u3002\u4e0b\u4e00\u5c40\u5148\u8d70\u6c34\u6676\u8def\u7dda\uff0c\u4e26\u5728\u8b66\u793a\u5340\u6536\u5408\u524d\u96e2\u958b\u3002",
       skillReportTitle: "\u80fd\u529b\u56de\u994b",
       skillReportStrong: "\u9019\u5c40\u5f88\u7a69\uff1a\u4f60\u6301\u7e8c\u79fb\u52d5\u3001\u9054\u5230 {level} \u7d1a\uff0c\u4e26\u5728\u7559\u610f\u5f71\u5b50\u6642\u6536\u96c6\u4e86 {keys} \u628a\u91d1\u9470\u3002",
       skillReportFocus: "\u9019\u662f\u5f88\u597d\u7684\u5c08\u6ce8\u7df4\u7fd2\uff1a\u4e0b\u4e00\u5c40\u53ef\u4ee5\u65e9\u9ede\u6536\u96c6\u6c34\u6676\uff0c\u8b93\u5347\u7d1a\u66f4\u5feb\u51fa\u73fe\u3002",
       skillReportRecover: "\u751f\u5b58\u8868\u73fe\u5f88\u52c7\u6562\uff1a\u7559\u610f\u5371\u96aa\u5708\uff0c\u5f71\u5b50\u9760\u8fd1\u524d\u5148\u79fb\u52d5\u3002",
       resultDisclaimer: "\u50c5\u4f9b\u904a\u6232\u6a02\u8da3\u8207\u672c\u6a5f\u9032\u6b65\u8ffd\u8e64\u53c3\u8003\u3002",
+      resultPlanTitle: "\u4e0b\u4e00\u5c40\u8def\u7dda",
+      resultPlanStrong: "\u8def\u7dda\u63d0\u793a\uff1a\u6301\u7e8c\u7e5e\u8457\u6797\u5730\u79fb\u52d5\u3001\u6536\u96c6\u6bcf\u628a\u91d1\u9470\uff0c\u4e26\u5728\u8b66\u793a\u5340\u6536\u5408\u524d\u5148\u96e2\u958b\u3002",
+      resultPlanUpgrade: "\u4e0b\u4e00\u5c40\u5148\u6536\u96c6\u6c34\u6676\uff0c\u8b93\u7b2c\u4e00\u6b21\u5347\u7d1a\u5728\u6697\u5f71\u58d3\u529b\u589e\u52a0\u524d\u51fa\u73fe\u3002",
+      resultPlanRecover: "\u6062\u5fa9\u8def\u7dda\uff1a\u5371\u96aa\u5708\u51fa\u73fe\u5c31\u79fb\u52d5\uff0c\u4e26\u8b93\u9644\u8fd1\u6697\u5f71\u7559\u5728\u653b\u64ca\u7bc4\u570d\u5167\u3002",
       upgradeAttack: "\u6c34\u6676\u529b\u91cf",
       upgradeAttackDesc: "\u6295\u5c04\u7269\u66f4\u5feb\u5b89\u64ab\u5f71\u5b50\u3002",
       upgradeRange: "\u5de1\u5b88\u8ddd\u96e2",
@@ -333,6 +338,11 @@
   text.en.mainStart = "Start Game";
   text["zh-Hant"].mainStart = "\u958b\u59cb\u904a\u6232";
   text.es.mainStart = "Comenzar juego";
+  text.es.resultPlanTitle = "Plan para la siguiente partida";
+  text.es.resultPlanStrong = "Ruta: sigue rodeando la arboleda, recoge cada llave y sal antes de que se cierren las zonas de aviso.";
+  text.es.resultPlanUpgrade = "Siguiente partida: recoge cristales pronto para conseguir mejoras antes de que aumente la presión.";
+  text.es.resultPlanRecover = "Recuperación: muévete al aparecer los círculos de peligro y mantén las sombras cercanas dentro del alcance.";
+  text.es.keepGoing = "Buen intento. Reintenta con una ruta temprana de cristales y sal de las zonas de aviso antes de que se cierren.";
   Object.entries({
     en: ["Stages cleared {cleared} / 30", "Stages", "Equipment"],
     "zh-Hant": ["\u5df2\u901a\u95dc {cleared} / 30", "\u95dc\u5361", "\u88dd\u5099"],
@@ -1652,9 +1662,6 @@
   function renderResult(reason, previousBestKeys, improved, previousRankIndex, stageCleared = false) {
     const survived = Math.round(state.survived);
     const best = Math.max(previousBestKeys || 0, state.keys);
-    const reactionScore = Math.min(5, 2 + Math.floor(survived / 44));
-    const focusScore = Math.min(5, 1 + state.keys);
-    const problemScore = Math.min(5, Math.max(1, state.level));
     nodes.resultTitle.textContent = stageCleared ? t("stageClear") : reason === "time" ? t("objectiveMissed") : t("runFailed");
     nodes.resultScore.textContent = String(state.keys);
     const objectiveLine = !stageCleared && reason === "time"
@@ -1669,21 +1676,13 @@
       : rank.next
         ? t("patrolRankNext", { current: rank.total, target: rank.next.threshold, rank: t(rank.next.name) })
         : t("patrolRankComplete", { current: rank.total });
-    nodes.reactionStars.textContent = stars(reactionScore);
-    nodes.focusStars.textContent = stars(focusScore);
-    nodes.problemStars.textContent = stars(problemScore);
-    nodes.skillReportText.textContent = skillReport({ reason, reactionScore, focusScore, problemScore });
+    nodes.resultPlanText.textContent = resultPlan(reason);
   }
 
-  function skillReport({ reason, reactionScore, focusScore, problemScore }) {
-    const data = { keys: state.keys, level: state.level };
-    if (reason === "time" || (reactionScore >= 4 && focusScore >= 3 && problemScore >= 2)) {
-      return t("skillReportStrong", data);
-    }
-    if (focusScore >= 3 || problemScore >= 3) {
-      return t("skillReportFocus", data);
-    }
-    return t("skillReportRecover", data);
+  function resultPlan(reason) {
+    if (reason === "time" || state.keys >= state.stageConfig.targetKeys) return t("resultPlanStrong");
+    if (state.level >= 3 || state.keys >= 1) return t("resultPlanUpgrade");
+    return t("resultPlanRecover");
   }
 
   function installSmokeHooks() {
@@ -1726,7 +1725,7 @@
         floaters: state.floaters.map((floater) => ({ text: floater.text, x: floater.x, y: floater.y, life: floater.life })),
         resultScore: nodes.resultScore.textContent,
         resultText: nodes.resultText.textContent,
-        skillReportText: nodes.skillReportText.textContent,
+        resultPlanText: nodes.resultPlanText.textContent,
         upgradeVisible: !nodes.upgradePanel.classList.contains("hidden"),
         crystalCharm: Boolean(save.crystalCharm),
         diamondBalance: diamondBalance(),
@@ -1822,10 +1821,6 @@
         return enemy;
       },
     };
-  }
-
-  function stars(count) {
-    return "*".repeat(count) + "-".repeat(Math.max(0, 5 - count));
   }
 
   function writeHudValue(key, node, value, property = "textContent") {
