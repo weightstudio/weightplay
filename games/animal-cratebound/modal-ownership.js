@@ -12,6 +12,7 @@
   let resultDecisionCommitted=false;
   let resultWasOpen=false;
   const heldDecisionKeys=new Set();
+  const stageRail=document.querySelector("#stageRail");
 
   const visible=spec=>spec.node&&!spec.node.hidden;
   const actions=modal=>[...modal.querySelectorAll('button:not(:disabled),a[href],select:not(:disabled),[tabindex]:not([tabindex="-1"])')]
@@ -22,6 +23,50 @@
     battleLive.inert=covered;
     if(covered)battleLive.setAttribute("aria-hidden","true");
     else battleLive.removeAttribute("aria-hidden");
+  }
+
+  function stageCards(){
+    return stageRail?[...stageRail.querySelectorAll(".stage-card")]:[];
+  }
+
+  function syncStageTabOwner(preferred=null){
+    const cards=stageCards();
+    if(!cards.length)return;
+    const owner=preferred&&cards.includes(preferred)
+      ?preferred
+      :cards.find(card=>card.getAttribute("aria-current")==="true"||card.classList.contains("centered"))||cards[0];
+    cards.forEach(card=>{card.tabIndex=card===owner?0:-1;});
+  }
+
+  stageRail?.addEventListener("keydown",event=>{
+    const card=event.target.closest?.(".stage-card");
+    if(!card)return;
+    const cards=stageCards();
+    const current=cards.indexOf(card);
+    if(current<0)return;
+    const rtl=getComputedStyle(stageRail).direction==="rtl";
+    const delta=event.key==="ArrowLeft"?(rtl?1:-1):event.key==="ArrowRight"?(rtl?-1:1):0;
+    let target=null;
+    if(delta)target=cards[Math.max(0,Math.min(cards.length-1,current+delta))];
+    else if(event.key==="Home")target=cards[0];
+    else if(event.key==="End")target=cards.at(-1);
+    if(!target)return;
+    event.preventDefault();
+    target.click();
+    syncStageTabOwner(target);
+    target.focus({preventScroll:true});
+  },true);
+
+  stageRail?.addEventListener("focusin",event=>{
+    const card=event.target.closest?.(".stage-card");
+    if(!card)return;
+    if(card.getAttribute("aria-current")!=="true")card.click();
+    syncStageTabOwner(card);
+  });
+
+  if(stageRail){
+    new MutationObserver(()=>syncStageTabOwner()).observe(stageRail,{childList:true,subtree:true,attributes:true,attributeFilter:["aria-current","class"]});
+    syncStageTabOwner();
   }
 
   function sync(){
