@@ -352,7 +352,7 @@
     }
     return false;
   }
-  function buildNavigationField(spec,goalPoint=spec.dog){
+  function buildNavigationField(spec,goalPoint=spec.dog,goalPredicate=null){
     const cell=20,cols=50,rows=31,total=cols*rows,blocked=new Uint8Array(total),distance=new Int16Array(total);
     distance.fill(-1);
     const strokes=state.strokes;
@@ -362,15 +362,24 @@
       const lineBlocked=strokes.some(stroke=>pointHitsStroke({x,y},stroke,22));
       blocked[index]=solidBlocked||lineBlocked?1:0;
     }
-    let goalCol=Math.max(0,Math.min(cols-1,Math.floor(goalPoint.x/cell))),goalRow=Math.max(0,Math.min(rows-1,Math.floor(goalPoint.y/cell)));
-    if(blocked[goalRow*cols+goalCol]){
-      outer:for(let radius=1;radius<5;radius++)for(let dy=-radius;dy<=radius;dy++)for(let dx=-radius;dx<=radius;dx++){
-        const col=goalCol+dx,row=goalRow+dy;if(col<0||col>=cols||row<0||row>=rows||blocked[row*cols+col])continue;
-        goalCol=col;goalRow=row;break outer;
+    const queue=new Int16Array(total);let head=0,tail=0,reachable=0;
+    if(goalPredicate){
+      for(let row=0;row<rows;row++)for(let col=0;col<cols;col++){
+        const index=row*cols+col,point={x:col*cell+cell/2,y:row*cell+cell/2};
+        if(blocked[index]||!goalPredicate(point))continue;
+        queue[tail++]=index;distance[index]=0;
       }
+    }else{
+      const goal=goalPoint||spec.dog;
+      let goalCol=Math.max(0,Math.min(cols-1,Math.floor(goal.x/cell))),goalRow=Math.max(0,Math.min(rows-1,Math.floor(goal.y/cell)));
+      if(blocked[goalRow*cols+goalCol]){
+        outer:for(let radius=1;radius<5;radius++)for(let dy=-radius;dy<=radius;dy++)for(let dx=-radius;dx<=radius;dx++){
+          const col=goalCol+dx,row=goalRow+dy;if(col<0||col>=cols||row<0||row>=rows||blocked[row*cols+col])continue;
+          goalCol=col;goalRow=row;break outer;
+        }
+      }
+      const goalIndex=goalRow*cols+goalCol;queue[tail++]=goalIndex;distance[goalIndex]=0;
     }
-    const queue=new Int16Array(total),goalIndex=goalRow*cols+goalCol;
-    let head=0,tail=0,reachable=0;queue[tail++]=goalIndex;distance[goalIndex]=0;
     while(head<tail){
       const index=queue[head++],col=index%cols,row=Math.floor(index/cols);reachable++;
       for(const direction of MOVE_DIRECTIONS.filter((_,i)=>i%2===0)){
@@ -470,11 +479,13 @@
     if(state.mover){
       if(state.mover.phase==="gather"&&!state.mover.cohort.length)state.mover.cohort=[...blockedBees];
       const participants=blockedBees;
-      const center={x:participants.reduce((sum,bee)=>sum+bee.x,0)/participants.length,y:participants.reduce((sum,bee)=>sum+bee.y,0)/participants.length};
-      const contact=closestStrokePoint(state.mover.stroke,center),side=(center.x-contact.x)*contact.nx+(center.y-contact.y)*contact.ny>=0?1:-1;
-      const approach={x:contact.x+contact.nx*34*side,y:contact.y+contact.ny*34*side},gatherField=buildNavigationField(spec,approach);
-      participants.forEach((bee,index)=>{
-        const slot=(index-(participants.length-1)/2)*34;
+      const gatherField=buildNavigationField(spec,null,point=>{
+        const distance=closestStrokePoint(state.mover.stroke,point).d;
+        return distance>=27&&distance<=54;
+      });
+      participants.forEach(bee=>{
+        const contact=closestStrokePoint(state.mover.stroke,bee),side=(bee.x-contact.x)*contact.nx+(bee.y-contact.y)*contact.ny>=0?1:-1;
+        const slot=Math.sin(bee.phase*2.7)*14;
         wallTargets.set(bee,{x:contact.x+contact.nx*22*side-contact.ny*slot,y:contact.y+contact.ny*22*side+contact.nx*slot});
         wallApproaches.set(bee,navigationDirection(gatherField,bee.x,bee.y));
       });
@@ -746,6 +757,21 @@
       const initialRoute=!!navigationDirection(buildNavigationField(level(11)),state.bees[0].x,state.bees[0].y);
       for(let time=0;time<6&&!state.result;time+=.02)update(.02);
       return{participants:1,initialRoute,approachStartedAt:state.wallApproachStartedAt,wallMoves:state.wallMoves,firstMoveAt:state.wallFirstMovedAt,maxAttached:state.maxGroupAttached,pathOpenedAt:state.pathOpenedAt,intents:[...new Set(state.bees.map(bee=>bee.intent))],result:state.result};
+    },
+    stallSweepProbe(){
+      const records=[],failures=[];
+      for(const index of [0,5,10,11,15,20,25,29]){
+        startStage(index);state.duration=8;
+        const spec=level(index),left=Math.max(20,spec.dog.x-175),right=Math.min(980,spec.dog.x+175),top=Math.max(80,spec.dog.y-115);
+        const stroke={points:[{x:left,y:615},{x:left,y:top},{x:right,y:top},{x:right,y:615}],flash:0,blockedFlash:0,moves:0,anchored:false};
+        state.strokes=[stroke];refreshStrokeMobility(stroke,spec);beginWave();spawnBee();state.spawned=spec.maxBees;
+        const initialRoute=!!navigationDirection(buildNavigationField(spec),state.bees[0].x,state.bees[0].y),movable=PUSH_DIRECTIONS.some(direction=>canTranslateStroke(stroke,direction.x*8,direction.y*8,spec));
+        update(.02);const initialIntent=state.bees[0]?.intent;
+        for(let time=0;time<5&&!state.result;time+=.02)update(.02);
+        const record={stage:index+1,initialRoute,movable,initialIntent,wallMoves:state.wallMoves,intents:[...new Set(state.bees.map(bee=>bee.intent))],result:state.result};records.push(record);
+        if(!initialRoute&&movable&&(initialIntent==="wait"||state.wallMoves===0&&!state.result))failures.push(record);
+      }
+      return{records,failures};
     },
     beeSpriteMetrics(){
       const crop=SPRITE_CROPS[1],centroid={x:133.44,y:137.67},rect=canvas.getBoundingClientRect(),physicalX=rect.width/1000,physicalY=rect.height/620,uniform=Math.sqrt(physicalX*physicalY);

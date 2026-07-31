@@ -1004,15 +1004,27 @@
   function frame(time) {
     const dt=Math.min(.033,(time-lastTime)/1000||0);lastTime=time;update(dt);if(playing)render();requestAnimationFrame(frame);
   }
+  function setScreenOwner(screen) {
+    document.body.dataset.screen=screen;
+    for(const candidate of ["main","stage","battle"]){
+      document.body.classList.toggle(`wp-shell-${candidate}-active`,candidate===screen);
+    }
+    document.body.classList.toggle("wp-stage-select-active",screen==="stage");
+    document.documentElement.classList.toggle("wp-stage-select-active",screen==="stage");
+    dispatchEvent(new CustomEvent("weightplay:shell-sync",{detail:{screen}}));
+    dispatchEvent(new CustomEvent("weightplay:stage-sync",{detail:{screen}}));
+    dispatchEvent(new CustomEvent("weightplay:battle-sync",{detail:{screen}}));
+    if(screen==="battle")dispatchEvent(new CustomEvent("weightplay:battle-open",{detail:{screen}}));
+  }
   function playTone(frequency,duration) {
     if(window.WonderSound?.isMuted?.())return;
     try{const audio=playTone.audio||(playTone.audio=new (window.AudioContext||window.webkitAudioContext)()),osc=audio.createOscillator(),gain=audio.createGain();osc.frequency.value=frequency;osc.type="square";gain.gain.setValueAtTime(.035,audio.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);osc.connect(gain).connect(audio.destination);osc.start();osc.stop(audio.currentTime+duration)}catch{}
   }
   function showBattle() {
-    nodes.main.hidden=true;nodes.battle.hidden=false;playing=true;paused=false;lastTime=performance.now();resizeCanvas();updateHud();updateObjective();renderInventory();canvas.focus({preventScroll:true});
+    nodes.main.hidden=true;nodes.battle.hidden=false;setScreenOwner("battle");playing=true;paused=false;lastTime=performance.now();resizeCanvas();updateHud();updateObjective();renderInventory();canvas.focus({preventScroll:true});
   }
   function showMain() {
-    saveGame();playing=false;paused=false;nodes.battle.hidden=true;nodes.main.hidden=false;setPanel(null);closeDialogue();scrollTo({top:0,behavior:"instant"});updateMainProgress();
+    saveGame();playing=false;paused=false;nodes.battle.hidden=true;nodes.main.hidden=false;setScreenOwner("main");setPanel(null);closeDialogue();scrollTo({top:0,behavior:"instant"});updateMainProgress();
     requestAnimationFrame(()=>requestAnimationFrame(()=>$("#startGame").focus({preventScroll:true})));
   }
   function restartGame() {
@@ -1132,5 +1144,5 @@
       completeLunarCombat(){lunarEnemySeeds.forEach((_,offset)=>{const id=enemySeeds.length+moonfallEnemySeeds.length+ashfallEnemySeeds.length+offset;state.defeated.add(id);const enemy=enemies.find(candidate=>candidate.id===id);if(enemy)enemy.dead=true});saveGame();updateObjective();updateHud()},
     };
   }
-  applyLocale();updateMainProgress();renderInventory();requestAnimationFrame(frame);
+  setScreenOwner("main");applyLocale();updateMainProgress();renderInventory();requestAnimationFrame(frame);
 })();
