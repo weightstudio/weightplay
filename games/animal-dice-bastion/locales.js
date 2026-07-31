@@ -8,7 +8,7 @@
     start:"Start Game",guideLabel:"Game guide",guideKicker:"WeightPlay Original Game Guide",
     guideTitle:"Build a stronger board from every surprise",
     guideIntro:"Moss Shell Taro guards the crystal bastion with living rune dice. Every summon changes the board, but careful merges and timely orders keep luck under your control.",
-    howTitle:"How to play",how1:"Spend charge to summon a random rank-one guardian into an empty rune slot.",
+    howTitle:"How to play",how1:"Choose an opening guardian, then spend charge to summon rank-one guardians into empty rune slots.",
     how2:"Drag two guardians of the same affinity and rank together to create one stronger guardian.",
     how3:"Use {rally}, {reroll}, and {burst} while guardians automatically stop each wave.",
     rulesTitle:"Rules and results",rulesText:"A creature that reaches the bastion removes core integrity. Clear every wave and Boss to win. Keep at least half the core and avoid Reroll to earn all three stars.",
@@ -18,8 +18,12 @@
     faqTitle:"FAQ",faq1q:"Is this a gambling game?",faq1a:"No. Dice only show guardian rank. There is no betting, paid random draw, cash prize, or real-money chance mechanic.",
     faq2q:"Can a bad draw end the run?",faq2a:"A drought breaker guarantees a useful matching affinity after seven summons without a merge candidate.",
     faq3q:"What should I play next?",faq3a:"Try Beast Guardian for route-building defense or Animal Rune Tactics for squad preparation.",
-    stages:"Stages",team:"Team",equipment:"Equipment",teamKicker:"Bastion keeper",taroName:"Moss Shell Taro",
+    stages:"Stages",team:"Guardians",equipment:"Equipment",teamKicker:"Bastion keeper",taroName:"Moss Shell Taro",
     teamText:"Taro steadies every guardian. Merge timing and active orders decide the defense.",
+    guardianTeamKicker:"Opening blessing",guardianTeamTitle:"Choose your first guardian",
+    guardianTeamText:"Your first summon in every Battle uses this affinity. Later summons remain fair and random.",
+    guardianRosterLabel:"Opening guardian selection",openingPending:"Choose one guardian for your next Battle.",
+    openingSelected:"Opening blessing: {guardian}",powerShort:"Power",speedShort:"Speed",
     workshopKicker:"Permanent upgrades",workshop:"Bastion Workshop",dust:"Rune dust",
     upgradeFocus:"Guardian Focus",upgradeFocusText:"+4% guardian attack per level.",
     upgradeHeart:"Bastion Heart",upgradeHeartText:"+1 core integrity per level.",
@@ -81,6 +85,21 @@
     hi:{title:"पशु पासा दुर्ग",loading:"रक्षक रून्स जाग रहे हैं…",language:"भाषा",start:"खेल शुरू करें",stages:"चरण",team:"दल",equipment:"उपकरण",summon:"बुलाएँ",rally:"एकत्र करें",burst:"रून विस्फोट",reroll:"फिर घुमाएँ",core:"केंद्र",wave:"लहर",charge:"ऊर्जा",victory:"दुर्ग सुरक्षित!",defeat:"छायाएँ क्रिस्टल तक पहुँच गईं",next:"अगला चरण",retry:"फिर खेलें",continue:"जारी रखें",returnStages:"चरणों पर लौटें",locked:"बंद",boss:"बॉस"},
     ar:{title:"حصن نرد الحيوانات",loading:"إيقاظ رُقى الحراس…",language:"اللغة",start:"ابدأ اللعب",stages:"المراحل",team:"الفريق",equipment:"المعدات",summon:"استدعاء",rally:"حشد",burst:"انفجار الرون",reroll:"إعادة الرمي",core:"النواة",wave:"الموجة",charge:"الشحنة",victory:"تم تأمين الحصن!",defeat:"وصلت الظلال إلى البلورة",next:"المرحلة التالية",retry:"إعادة اللعب",continue:"متابعة",returnStages:"العودة للمراحل",locked:"مغلق",boss:"زعيم"}
   };
+  const terminology = {
+    "zh-Hant":{planBurst:"保留「符文爆發」，在敵群最密集時施放。",boardLabel:"守護者合成盤"},
+    "zh-Hans":{planBurst:"保留“符文爆发”，在敌群最密集时施放。",boardLabel:"守护者合成盘"},
+    ja:{planBurst:"敵が最も密集した時に「ルーンバースト」を使えるよう温存します。",boardLabel:"ガーディアン合成盤"},
+    ko:{planBurst:"적이 가장 밀집할 때 쓸 수 있도록 룬 폭발을 아껴 두세요.",boardLabel:"수호자 합성 보드"},
+    es:{planBurst:"Guarda Estallido rúnico para la mayor concentración de enemigos.",boardLabel:"Tablero de fusión de guardianes"},
+    "pt-BR":{planBurst:"Guarde Explosão rúnica para a maior concentração de inimigos.",boardLabel:"Quadro de fusão de guardiões"},
+    fr:{planBurst:"Gardez Explosion runique pour le plus grand regroupement d’ennemis.",boardLabel:"Plateau de fusion des gardiens"},
+    de:{planBurst:"Spare Runenstoß für die größte Gegnergruppe auf.",boardLabel:"Wächter-Fusionsfeld"},
+    it:{planBurst:"Conserva Esplosione runica per il gruppo di nemici più fitto.",boardLabel:"Tabellone di fusione dei guardiani"},
+    ru:{planBurst:"Берегите Взрыв рун для самого плотного скопления врагов.",boardLabel:"Доска слияния стражей"},
+    hi:{planBurst:"शत्रुओं के सबसे घने समूह के लिए रून विस्फोट बचाकर रखें।",boardLabel:"रक्षक विलय बोर्ड"},
+    ar:{planBurst:"احتفظ بانفجار الرون لأكبر تجمع من الأعداء.",boardLabel:"لوحة دمج الحراس"}
+  };
+  Object.entries(terminology).forEach(([code, values]) => Object.assign(core[code], values));
   Object.assign(core["zh-Hant"],{rally:"全軍集結",reroll:"符文重塑",rallyHint:"全體攻速 ×1.72 · 6秒",burstHint:"攻擊並緩速最前5名",rerollHint:"保留等級 · 更換屬性",activeSeconds:"強化 {seconds}秒",rerolled:"{rank}級重塑為{guardian}。",burstNoTargets:"等待敵人進入道路再施放。",guardianGuideTitle:"五種守護定位 · 六個等級",rankGuide:"菱形代表1–6級，不是第六種骰子。",groveRole:"穩定強力單擊",sparkRole:"高速累積能量",moonRole:"緩速最前方敵人",forgeRole:"破解敵人護甲",tideRole:"對怪群造成濺射",selectedGuardian:"{guardian} · {rank}/6級 · {role}"});
   Object.assign(core["zh-Hans"],{rally:"全军集结",reroll:"符文重塑",rallyHint:"全体攻速 ×1.72 · 6秒",burstHint:"攻击并减速最前5名",rerollHint:"保留等级 · 更换属性",activeSeconds:"强化 {seconds}秒",rerolled:"{rank}级重塑为{guardian}。",burstNoTargets:"等待敌人进入道路后再施放。",guardianGuideTitle:"五种守护定位 · 六个等级",rankGuide:"菱形代表1–6级，不是第六种骰子。",groveRole:"稳定强力单击",sparkRole:"高速积累能量",moonRole:"减速最前方敌人",forgeRole:"破解敌人护甲",tideRole:"对怪群造成溅射",selectedGuardian:"{guardian} · {rank}/6级 · {role}"});
   Object.assign(core.ja,{rally:"全軍ラリー",reroll:"ルーン再鍛造",rallyHint:"全員の攻速 ×1.72・6秒",burstHint:"先頭5体を攻撃・減速",rerollHint:"ランク維持・属性変更",activeSeconds:"強化 {seconds}秒",burstNoTargets:"敵が道に入るまで待ってください。",guardianGuideTitle:"5つの役割・6ランク",rankGuide:"ひし形はランク1～6。6種目ではありません。",groveRole:"安定した強打",sparkRole:"高速チャージ",moonRole:"先頭を減速",forgeRole:"敵の装甲を破壊",tideRole:"群れへ範囲攻撃",selectedGuardian:"{guardian}・ランク{rank}/6・{role}"});
@@ -103,6 +122,18 @@
   Object.assign(core.ru,{rerolled:"Ранг {rank} перекован в {guardian}."});
   Object.assign(core.hi,{rerolled:"रैंक {rank} को {guardian} में पुनर्गठित किया।"});
   Object.assign(core.ar,{rerolled:"أعيد صوغ الرتبة {rank} إلى {guardian}."});
+  Object.assign(core["zh-Hant"],{how1:"先選擇首發守護者，再消耗充能，將一階守護者召喚到空的符文格。",team:"守護者",guardianTeamKicker:"首發祝福",guardianTeamTitle:"選擇首發守護者",guardianTeamText:"每場戰鬥的第一顆召喚必定是此屬性，後續召喚仍維持公平隨機。",guardianRosterLabel:"首發守護者選擇",openingPending:"為下一場戰鬥選擇一位首發守護者。",openingSelected:"首發祝福：{guardian}",powerShort:"威力",speedShort:"攻速"});
+  Object.assign(core["zh-Hans"],{how1:"先选择首发守护者，再消耗充能，将一阶守护者召唤到空的符文格。",team:"守护者",guardianTeamKicker:"首发祝福",guardianTeamTitle:"选择首发守护者",guardianTeamText:"每场战斗的第一颗召唤必定是此属性，后续召唤仍保持公平随机。",guardianRosterLabel:"首发守护者选择",openingPending:"为下一场战斗选择一位首发守护者。",openingSelected:"首发祝福：{guardian}",powerShort:"威力",speedShort:"攻速"});
+  Object.assign(core.ja,{how1:"初手の守護者を選び、チャージを消費して空のルーン枠にランク1守護者を召喚します。",team:"守護者",guardianTeamKicker:"初手の祝福",guardianTeamTitle:"最初の守護者を選択",guardianTeamText:"各バトルの最初の召喚はこの属性になります。以降は公平なランダムです。",guardianRosterLabel:"初手守護者の選択",openingPending:"次のバトルの守護者を選んでください。",openingSelected:"初手の祝福：{guardian}",powerShort:"威力",speedShort:"攻速"});
+  Object.assign(core.ko,{how1:"첫 수호자를 고른 뒤 충전을 소모해 빈 룬 칸에 1등급 수호자를 소환하세요.",team:"수호자",guardianTeamKicker:"선봉 축복",guardianTeamTitle:"첫 수호자 선택",guardianTeamText:"매 전투 첫 소환은 이 속성입니다. 이후 소환은 공정한 무작위입니다.",guardianRosterLabel:"첫 수호자 선택",openingPending:"다음 전투의 첫 수호자를 선택하세요.",openingSelected:"선봉 축복: {guardian}",powerShort:"위력",speedShort:"공속"});
+  Object.assign(core.es,{how1:"Elige un guardián inicial y gasta carga para invocar guardianes de rango uno en runas vacías.",team:"Guardianes",guardianTeamKicker:"Bendición inicial",guardianTeamTitle:"Elige tu primer guardián",guardianTeamText:"La primera invocación de cada batalla usa esta afinidad. Las siguientes siguen siendo justas y aleatorias.",guardianRosterLabel:"Selección de guardián inicial",openingPending:"Elige un guardián para la próxima batalla.",openingSelected:"Bendición inicial: {guardian}",powerShort:"Poder",speedShort:"Velocidad"});
+  Object.assign(core["pt-BR"],{how1:"Escolha um guardião inicial e gaste carga para invocar guardiões de nível um em runas vazias.",team:"Guardiões",guardianTeamKicker:"Bênção inicial",guardianTeamTitle:"Escolha o primeiro guardião",guardianTeamText:"A primeira invocação de cada batalha usa esta afinidade. As seguintes continuam justas e aleatórias.",guardianRosterLabel:"Seleção do guardião inicial",openingPending:"Escolha um guardião para a próxima batalha.",openingSelected:"Bênção inicial: {guardian}",powerShort:"Poder",speedShort:"Velocidade"});
+  Object.assign(core.fr,{how1:"Choisissez un gardien initial, puis dépensez de la charge pour invoquer des gardiens de rang un dans les runes vides.",team:"Gardiens",guardianTeamKicker:"Bénédiction initiale",guardianTeamTitle:"Choisissez le premier gardien",guardianTeamText:"La première invocation de chaque bataille prend cette affinité. Les suivantes restent équitables et aléatoires.",guardianRosterLabel:"Choix du gardien initial",openingPending:"Choisissez un gardien pour la prochaine bataille.",openingSelected:"Bénédiction initiale : {guardian}",powerShort:"Puissance",speedShort:"Vitesse"});
+  Object.assign(core.de,{how1:"Wähle einen Startwächter und verbrauche Ladung, um Rang-1-Wächter auf leere Runenfelder zu beschwören.",team:"Wächter",guardianTeamKicker:"Startsegen",guardianTeamTitle:"Ersten Wächter wählen",guardianTeamText:"Die erste Beschwörung jedes Kampfes nutzt diese Affinität. Danach bleibt die Auswahl fair und zufällig.",guardianRosterLabel:"Auswahl des Startwächters",openingPending:"Wähle einen Wächter für den nächsten Kampf.",openingSelected:"Startsegen: {guardian}",powerShort:"Kraft",speedShort:"Tempo"});
+  Object.assign(core.it,{how1:"Scegli un guardiano iniziale e spendi carica per evocare guardiani di grado uno nelle rune vuote.",team:"Guardiani",guardianTeamKicker:"Benedizione iniziale",guardianTeamTitle:"Scegli il primo guardiano",guardianTeamText:"La prima evocazione di ogni battaglia usa questa affinità. Le successive restano eque e casuali.",guardianRosterLabel:"Scelta del guardiano iniziale",openingPending:"Scegli un guardiano per la prossima battaglia.",openingSelected:"Benedizione iniziale: {guardian}",powerShort:"Potenza",speedShort:"Velocità"});
+  Object.assign(core.ru,{how1:"Выберите первого стража и тратьте заряд, чтобы призывать стражей первого ранга в пустые руны.",team:"Стражи",guardianTeamKicker:"Стартовое благословение",guardianTeamTitle:"Выберите первого стража",guardianTeamText:"Первый призыв в каждом бою получает эту стихию. Остальные остаются честно случайными.",guardianRosterLabel:"Выбор первого стража",openingPending:"Выберите стража для следующего боя.",openingSelected:"Стартовое благословение: {guardian}",powerShort:"Сила",speedShort:"Скорость"});
+  Object.assign(core.hi,{how1:"पहला रक्षक चुनें, फिर चार्ज खर्च करके खाली रून खानों में प्रथम श्रेणी के रक्षक बुलाएँ।",team:"रक्षक",guardianTeamKicker:"आरंभिक आशीर्वाद",guardianTeamTitle:"पहला रक्षक चुनें",guardianTeamText:"हर युद्ध का पहला आह्वान इस तत्व का होगा। बाद के आह्वान निष्पक्ष और यादृच्छिक रहेंगे।",guardianRosterLabel:"पहले रक्षक का चयन",openingPending:"अगले युद्ध के लिए एक रक्षक चुनें।",openingSelected:"आरंभिक आशीर्वाद: {guardian}",powerShort:"शक्ति",speedShort:"गति"});
+  Object.assign(core.ar,{how1:"اختر حارس البداية، ثم أنفق الشحن لاستدعاء حراس من الرتبة الأولى في خانات الرون الفارغة.",team:"الحراس",guardianTeamKicker:"بركة البداية",guardianTeamTitle:"اختر الحارس الأول",guardianTeamText:"أول استدعاء في كل معركة يستخدم هذا النوع، وتبقى الاستدعاءات التالية عادلة وعشوائية.",guardianRosterLabel:"اختيار الحارس الأول",openingPending:"اختر حارساً للمعركة التالية.",openingSelected:"بركة البداية: {guardian}",powerShort:"القوة",speedShort:"السرعة"});
   const dictionaries = { en };
   Object.entries(core).forEach(([code, values]) => {
     dictionaries[code] = window.AnimalDiceBastionLocaleData?.[code] || {...en, ...values};

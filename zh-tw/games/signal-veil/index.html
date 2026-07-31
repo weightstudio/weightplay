@@ -8,13 +8,13 @@
   <meta name="theme-color" content="#071923">
   <meta name="robots" content="index,follow" />
   <meta name="description" content="穿越 2042 年相連的城鎮、森林與神經實驗室，揭露偽裝的蜥蜴人、強化菲雅並擊敗第一位指揮官。" />
-  <meta property="og:site_name" content="WeightPlay">
-  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="WeightPlay" />
+  <meta property="og:type" content="website" />
   <meta property="og:title" content="訊號帷幕 | WeightPlay" />
   <meta property="og:description" content="穿越 2042 年相連的城鎮、森林與神經實驗室，揭露偽裝的蜥蜴人、強化菲雅並擊敗第一位指揮官。" />
   <meta property="og:url" content="https://weightplay.com/zh-tw/games/signal-veil/" />
-  <meta property="og:image" content="https://weightplay.com/assets/signal-veil-cover.webp">
-  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="https://weightplay.com/assets/signal-veil-cover.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="訊號帷幕 | WeightPlay" />
   <meta name="twitter:description" content="穿越 2042 年相連的城鎮、森林與神經實驗室，揭露偽裝的蜥蜴人、強化菲雅並擊敗第一位指揮官。" />
   <title>訊號帷幕 | WeightPlay</title>
@@ -53,24 +53,28 @@
     "動物遊戲",
     "行動",
     "角色扮演遊戲",
-    "冒險"
+    "冒險",
+    "Browser Game"
   ],
   "audience": {
     "@type": "Audience",
-    "audienceType": "General players age 13 and older"
-  }
+    "audienceType": "General players age 13 and older",
+    "suggestedMinAge": 13
+  },
+  "alternateName": "Signal Veil"
 }
     </script>
     <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css">
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="style.css">
-</head>
+  <meta name="twitter:image" content="https://weightplay.com/assets/signal-veil-cover.webp" />
+  </head>
 <body data-game-id="signal-veil" data-wp-game-id="signal-veil" data-wp-combined-sound="true" data-runtime-localize="off">
   <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
       <img src="../../assets/signal-veil-items.webp" alt="" aria-hidden="true">
-      <strong data-t="loading">Calibrating neural vision…</strong>
+      <strong data-t="loading">正在校準神經視界……</strong>
       <span class="loading-bar"><i></i></span>
     </div>
   </div>
@@ -82,42 +86,118 @@
       </a>
       <div class="title-slot">
         <small>WEIGHTPLAY ORIGINAL</small>
-        <strong data-t="title">Signal Veil</strong>
+        <strong data-t="title">訊號帷幕</strong>
       </div>
       <label class="locale-picker">
-        <span data-t="language">Language</span>
+        <span data-t="language">語言</span>
         <select id="localeSelect" aria-label="Language"></select>
       </label>
     </header>
     <section class="main-hero">
       <img class="main-poster" src="../../assets/signal-veil-cover.webp" alt="Spark Paw Fia reveals a Lizard Commander with a neural-vision device" data-t-alt="《訊號帷幕》遊戲圖片">
       <div class="main-copy">
-        <p class="kicker" data-t="kicker">2042 · FIRST CONTACT</p>
+        <p class="kicker" data-t="kicker">2042 · 第一次接觸</p>
         <h1 data-t="title">訊號帷幕</h1>
-        <p class="main-summary" data-t="summary">Explore a connected town, forest, and laboratory. Expose hidden threats and defeat the first Lizard Commander.</p>
+        <p class="main-summary" data-t="summary">完成橫跨六個相連地區的 57 項劇情任務，以神經視界揭露威脅，並決定月背難民庇護所的未來。</p>
         <p id="mainProgress" class="main-progress" data-wp-main-progress>MISSIONS 0 / 33</p>
-        <button id="startGame" class="primary standard-main-start" data-runtime-localize="off" type="button" data-t="start">Start Game</button>
+        <button id="startGame" class="primary standard-main-start" data-runtime-localize="off" type="button" data-t="start">開始遊戲</button>
       </div>
     </section>
     <!-- adsense-static-guide:start -->
-    <section class="game-page-info game-page-info-static" aria-label="訊號帷幕 遊戲資訊">
-    
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>訊號帷幕</h2><p>穿越 2042 年相連的城鎮、森林與神經實驗室，揭露偽裝的蜥蜴人、強化菲雅並擊敗第一位指揮官。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>俯視角動作 RPG</strong></div><div class="game-info-fact"><span>類型</span><strong>動物遊戲 · 行動 · 角色扮演遊戲 · 冒險</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>進度保存了嗎？</dt><dd>是的，僅在該瀏覽器中。</dd></div></dl></div>
-      
-    </div>
-  </section>
+    <section class="game-guide game-page-info" aria-labelledby="guideTitle">
+      <div class="game-info-hero">
+        <div class="game-info-title">
+          <h2 id="guideTitle" data-t="guideTitle">《訊號帷幕》完整調查指南</h2>
+          <p data-t="guideLead">從菲雅的 57 項任務、即時戰鬥與神經視界，到裝備和本機進度的完整說明。</p>
+        </div>
+      </div>
+      <div class="game-info-sections">
+        <section class="game-info-section">
+          <h3 data-t="guideOverviewTitle">世界與調查目標</h3>
+          <p data-t="guideOverviewA">2042 年，火花狐菲雅循著一段被判定為造假的蜥蜴人影片來到訊號鎮。十名目擊者、神經實驗室與遭竊用的神經視界計畫，逐步指向 Helix 掩蓋的真相。目前劇情共有 57 項實際任務，範圍包括訊號鎮、帷幕森林、神經實驗室、月墜中繼站、灰燼天文台與月背空心檔案庫。</p>
+          <p data-t="guideOverviewB">本作不是選關式 RPG，而是一段連續調查旅程。前一章的選擇會改變第四章簡報；灰燼證據會開啟新的月背難民檔案庫，菲雅必須調查四份紀錄、擊退追兵，並決定回應庇護艦隊或屏蔽航線。</p>
+        </section>
+        <section class="game-info-section game-info-chapter">
+          <div class="game-info-chapter-heading">
+            <h3 data-t="guideChapterOneWalkthroughTitle">第一章：擊破帷幕</h3>
+            <span data-t="guideChapterOneRange">任務 1–23</span>
+          </div>
+          <p data-t="guideChapterOneWalkthrough">先和歐拉交談，再訪問訊號鎮全部十名目擊者；完整回報之前，森林門不會開啟。進入帷幕森林後先擊敗八名巡邏，看到青色痕跡就切換真實視界，揭露隱形敵人與實驗室入口。進實驗室前搜尋支路，取得脈衝刃與訊號護符。接著清除共十五名場景敵人、取得遊俠護甲並接近指揮官。頭目戰要繞開彈幕、離開直線衝鋒範圍，再利用短暫暈眩輸出。取得穩定裝置會完成第 23 項任務，但劇情還沒結束。</p>
+        </section>
+        <section class="game-info-section game-info-chapter">
+          <div class="game-info-chapter-heading">
+            <h3 data-t="guideChapterTwoWalkthroughTitle">第二章：月墜中繼站</h3>
+            <span data-t="guideChapterTwoRange">任務 24–33</span>
+          </div>
+          <p data-t="guideChapterTwoWalkthrough">打倒指揮官後選擇「繼續探索」，再和歐拉交談，東門便會通往月墜中繼站。必須清除全部八名受干擾哨兵才能操作檔案；任務會在 2、4、6 隻時推進，但畫面分母固定顯示完整的 8。戰鬥完成後依序啟動「起源紀錄、記憶紀錄、警告紀錄」。三份紀錄會證明所謂入侵艦隊其實載著難民，而 Helix 把求救訊號改造成武器。從西門返回訊號鎮，向歐拉回報即可完成第 33 項任務。</p>
+        </section>
+        <section class="game-info-section game-info-chapter">
+          <div class="game-info-chapter-heading">
+            <h3 data-t="guideChapterThreeWalkthroughTitle">第三章：灰燼見證者</h3>
+            <span data-t="guideChapterThreeRange">任務 34–45</span>
+          </div>
+          <p data-t="guideChapterThreeWalkthrough">完成月墜回報後再次找歐拉，穿過月墜中繼站並使用東門進入灰燼天文台。先找到艾絲特，接著交替調查與戰鬥：擊敗 2 名特工、讀取撤離清單、累計擊敗 4 名、關閉感知干擾器，最後清除全部 6 名再打開黑盒。公開證據會獲得攻擊 +2，但會暴露消息來源；保護艾絲特則獲得最大生命 +8、防禦 +2。帶著選擇經月墜返回歐拉處。兩條分支都會開啟第四章，而且新簡報會記得你的決定。</p>
+        </section>
+        <section class="game-info-section game-info-chapter">
+          <div class="game-info-chapter-heading">
+            <h3 data-t="guideChapterFourWalkthroughTitle">第四章：月背空心檔案庫</h3>
+            <span data-t="guideChapterFourRange">任務 46–57</span>
+          </div>
+          <p data-t="guideChapterFourWalkthrough">完成第 45 項任務後再和歐拉交談，依序穿越訊號鎮 → 月墜 → 灰燼，使用灰燼天文台的新東門。進入月背空心檔案庫後，讀取抵達信標、擊敗 2 名追兵、解碼密碼井、累計擊敗 4 名、打開月面育幼紀錄、累計擊敗 6 名，再調查空心核心。清除全部 8 名追兵後，回到核心進行最終選擇。回應庇護所會獲得攻擊 +1、防禦 +1；屏蔽座標則獲得最大生命 +12。最後連續穿過三道西門回到歐拉處，即可完成 57/57。</p>
+        </section>
+        <section class="game-info-section">
+          <h3 data-t="guideHowTitle">操作方式與完整遊戲循環</h3>
+          <ol>
+            <li data-t="guideStep1">在目前地區移動，先閱讀世界畫面上方的任務目標。</li>
+            <li data-t="guideStep2">點擊靠近物件時出現的互動提示，或按 E 交談、開寶箱、啟動紀錄與使用傳送門。</li>
+            <li data-t="guideStep3">面向敵人後使用「攻擊」揮出快速劍氣，或使用「技能」發射遠程訊號彈。</li>
+            <li data-t="guideStep4">看到青色線索時切換真實視界，尋找偽裝人物、隱形敵人、寶藏或隱藏道路。</li>
+            <li data-t="guideStep5">完成目前目標後繼續下一項任務；劇情要求時，把取得的證據帶回給奧拉。</li>
+          </ol>
+          <p data-t="guideLoop">桌面可用 WASD 或方向鍵移動，Space／J 攻擊、K 使用技能、V 切換視界、E 互動、Escape 開啟選單。手機使用左側搖桿與攻擊、技能、真視界三個按鈕，世界中所有可見的互動提示也都能直接點擊。普通敵人會巡邏與追擊；指揮官則會使用環形彈幕、直線衝鋒與短暫暈眩窗口。生命歸零只會讓菲雅回到安全檢查點，不會刪除永久進度。</p>
+        </section>
+        <section class="game-info-section game-info-progress">
+          <h3 data-t="guideProgressTitle">成長、裝備與難度變化</h3>
+          <p data-t="guideProgression">前段調查先教你交談、近戰距離與隱藏路線；帷幕森林和實驗室開始混合敵群、遠程威脅與真實視界目標。擊敗敵人可取得經驗，升級會自動提高最大生命、攻擊與防禦。三個寶箱能自由裝備或卸除。月墜篇要求清除八名哨兵並解碼三份紀錄；灰燼篇加入六名守衛與見證者抉擇；第四章則開啟第六個地區，加入八名更強追兵、四份新檔案，以及「回應庇護所」或「屏蔽路線」的永久獎勵選擇。</p>
+        </section>
+        <section class="game-info-section game-info-strategy">
+          <h3 data-t="guideTipsTitle">實用調查技巧</h3>
+          <ul>
+            <li data-t="guideTip1">留意任務列與任務 FloatBar；即使劇情內部會分段推進，討伐計數仍會顯示完整目標總數。</li>
+            <li data-t="guideTip2">先把單一巡邏引離敵群。近戰劍氣出手較快，對重裝兵與神經術士則用遠程技能更安全。</li>
+            <li data-t="guideTip3">真實視界不消耗能量。青色火花、可疑牆面、NPC 對話改變或看似空白的道路都值得切換確認。</li>
+            <li data-t="guideTip4">取得裝備後記得查看能力。學習頭目招式時可偏重防禦，卸除裝備也不會失去所有權。</li>
+            <li data-t="guideTip5">指揮官施放彈幕時持續移動，離開衝鋒直線，等牠短暫暈眩再集中攻擊。</li>
+          </ul>
+        </section>
+        <section class="game-info-section">
+          <h3 data-t="guideDesignTitle">開發設計說明</h3>
+          <p data-t="guideDesign">《訊號帷幕》採用連續世界，是因為調查線索與地點維持連結時更容易被記住。神經視界會改變可以看見與攻擊的對象，但不設能量條；這個選擇考驗的是觀察，而不是節省消耗品。桌面提供快速鍵，手機則把相同的戰鬥與互動行為做成可見的觸控操作。57 項任務分別記錄重要發現、戰鬥里程碑、裝備、解碼證據與回報奧拉的劇情，而不是把相同關卡只換成更大的數字。</p>
+        </section>
+        <section class="game-info-section">
+          <h3 data-t="guideSaveTitle">玩家、裝置與存檔資訊</h3>
+          <p data-t="guideSave">遊戲可免費開始，不需要帳號。任務、經驗、等級、生命、裝備、寶箱、擊破目標、地圖檢查點與劇情選擇等重要變動會自動存入此瀏覽器；普通移動不會每幀寫入。可選購的五鑽石「訊號錨點」會永久增加最大生命，但絕非通關必要。清除網站資料或更換瀏覽器、裝置，可能使本機進度消失或分開保存。</p>
+        </section>
+        <section class="game-info-section">
+          <h3 data-t="guideFaqTitle">常見問題</h3>
+          <dl>
+            <div><dt><span data-t="guideFaqQ1">目前可以玩多少任務與地區？</span></dt><dd data-t="guideFaqA1">現有故事共有 57 項任務，涵蓋六個相連地區，最後抵達月背空心檔案庫。</dd></div>
+            <div><dt><span data-t="guideFaqQ2">真實視界會消耗能量嗎？</span></dt><dd data-t="guideFaqA2">不會。取得原型鏡片後即可自由切換，用來揭露隱形威脅、偽裝人物、隱藏路線、秘密入口與寶藏。</dd></div>
+            <div><dt><span data-t="guideFaqQ3">裝備可以卸除嗎？會不會消失？</span></dt><dd data-t="guideFaqA3">已取得的裝備能在選單中查看能力、裝備或卸除。卸除只會暫時取消能力，不會把物品從存檔刪除。</dd></div>
+            <div><dt><span data-t="guideFaqQ4">菲雅被擊敗後會失去什麼？</span></dt><dd data-t="guideFaqA4">菲雅會回到最近的安全檢查點，永久進度仍會保留。局部戰鬥生命與其他重要狀態也會在變動時自動保存。</dd></div>
+            <div><dt><span data-t="guideFaqQ5">完整調查大約要玩多久？</span></dt><dd data-t="guideFaqA5">時間會依探索與戰鬥速度而異；四章、57 任務的內容適合分段完成。離開遊戲後，可從儲存在本機的檢查點繼續。</dd></div>
+          </dl>
+        </section>
+        <section class="game-info-section">
+          <h3 data-t="guideRelatedTitle">推薦的 WeightPlay 遊戲</h3>
+          <div class="game-info-related">
+            <a class="game-info-related-card" href="/games/animal-relic-hunters/"><img src="../../assets/animal-relic-hunters-cover.webp" alt=""><span class="game-info-related-copy"><strong data-t="guideRelated1Title">動物遺物獵人</strong><span data-t="guideRelated1Text">進入三房間遠征，收集遺物並對付會改變階段的守護者。</span></span></a>
+            <a class="game-info-related-card" href="/games/animal-crystal-survivor/"><img src="../../assets/animal-crystal-survivor-cover.webp" alt=""><span class="game-info-related-copy"><strong data-t="guideRelated2Title">動物水晶生存者</strong><span data-t="guideRelated2Text">在三十條水晶路線中建立戰鬥配置，迎戰六名不同頭目。</span></span></a>
+            <a class="game-info-related-card" href="/games/shadow-wolf-legend/"><img src="../../assets/shadow-wolf-cover.webp" alt=""><span class="game-info-related-copy"><strong data-t="guideRelated3Title">暗影狼傳說</strong><span data-t="guideRelated3Text">探索較黑暗的動作戰役，掌握敵人剋制與頭目階段變化。</span></span></a>
+          </div>
+        </section>
+      </div>
+    </section>
     <!-- adsense-static-guide:end -->
   </main>
 
@@ -125,17 +205,17 @@
     <div id="battleCanvas" class="battle-canvas" data-wp-logical-battle-canvas>
       <header class="battle-header">
         <button id="battleBack" class="back-button wp-shell-return" data-wp-return="battle" type="button" aria-label="Leave investigation">←</button>
-        <div class="battle-title"><strong data-t="title">Signal Veil</strong><span id="zoneLabel">Town</span></div>
+        <div class="battle-title"><strong data-t="title">訊號帷幕</strong><span id="zoneLabel">Town</span></div>
         <div class="battle-actions">
-          <button id="questButton" class="quest-button" type="button" data-t="questButton">Quest</button>
-          <button id="menuButton" class="menu-button" type="button" data-t="menu">Menu</button>
+          <button id="questButton" class="quest-button" type="button" data-t="questButton">任務</button>
+          <button id="menuButton" class="menu-button" type="button" data-t="menu">選單</button>
         </div>
       </header>
       <div class="hud" aria-live="polite">
-        <div class="hud-level"><small data-t="hudLevel">Level</small><b id="levelValue">1</b></div>
-        <div class="meter hp" data-t-aria="hudHealth" aria-label="Health"><i id="hpFill"></i><span><small data-t="hudHealth">Health</small><b id="hpText">40 / 40</b></span></div>
-        <div class="meter xp" data-t-aria="hudExperience" aria-label="Experience"><i id="xpFill"></i><span><small data-t="hudExperience">EXP</small><b id="xpText">0 / 30</b></span></div>
-        <div id="visionState" class="vision-state" data-t="normalVision">Normal</div>
+        <div class="hud-level"><small data-t="hudLevel">等級</small><b id="levelValue">1</b></div>
+        <div class="meter hp" data-t-aria="hudHealth" aria-label="Health"><i id="hpFill"></i><span><small data-t="hudHealth">生命</small><b id="hpText">40 / 40</b></span></div>
+        <div class="meter xp" data-t-aria="hudExperience" aria-label="Experience"><i id="xpFill"></i><span><small data-t="hudExperience">經驗</small><b id="xpText">0 / 30</b></span></div>
+        <div id="visionState" class="vision-state" data-t="normalVision">普通</div>
       </div>
       <div id="gameViewport" class="game-viewport">
         <canvas id="gameCanvas" width="960" height="540" aria-label="Signal Veil connected action RPG world" tabindex="0"></canvas>
@@ -145,65 +225,65 @@
           <strong id="speaker"></strong>
           <p id="dialogueText"></p>
           <div id="dialogueChoices" class="dialogue-choices" hidden>
-            <button id="broadcastChoice" type="button" data-t="ashfallBroadcast">Broadcast the evidence</button>
-            <button id="protectChoice" type="button" data-t="ashfallProtect">Protect the witness</button>
+            <button id="broadcastChoice" type="button" data-t="ashfallBroadcast">立即公開證據</button>
+            <button id="protectChoice" type="button" data-t="ashfallProtect">保護 Aster</button>
           </div>
-          <button id="dialogueNext" type="button" data-t="continue">Continue</button>
+          <button id="dialogueNext" type="button" data-t="continue">繼續</button>
         </div>
       </div>
       <div class="mobile-controls" aria-label="Touch controls">
         <div id="joystick" class="joystick"><i id="stick"></i></div>
         <div class="action-buttons">
-          <button id="visionButton" class="vision-button" type="button" data-t="visionSkill" data-t-aria="visionSkill" aria-label="Vision">Vision</button>
-          <button id="skillButton" type="button" data-t="skill">Skill</button>
-          <button id="attackButton" class="attack-button" type="button" data-t="attack">Attack</button>
+          <button id="visionButton" class="vision-button" type="button" data-t="visionSkill" data-t-aria="visionSkill" aria-label="Vision">真視</button>
+          <button id="skillButton" type="button" data-t="skill">技能</button>
+          <button id="attackButton" class="attack-button" type="button" data-t="attack">攻擊</button>
         </div>
       </div>
       <div id="overlay" class="overlay" hidden>
         <section id="pausePanel" class="panel pause-panel" hidden>
-          <div class="panel-heading"><small data-t="fieldStatus">Field Status</small><h2 data-t="paused">Investigation paused</h2></div>
+          <div class="panel-heading"><small data-t="fieldStatus">探索狀態</small><h2 data-t="paused">調查已暫停</h2></div>
           <div class="pause-status">
-            <span><small data-t="hudLevel">Level</small><b id="pauseLevel">1</b></span>
-            <span><small data-t="location">Location</small><b id="pauseZone">Signal Town</b></span>
+            <span><small data-t="hudLevel">等級</small><b id="pauseLevel">1</b></span>
+            <span><small data-t="location">所在地</small><b id="pauseZone">Signal Town</b></span>
           </div>
           <p id="pauseObjective" class="pause-objective"></p>
-          <button id="resumeButton" class="primary" type="button" data-t="resume">Resume</button>
-          <button id="inventoryButton" type="button" data-t="equipment">Equipment</button>
-          <button id="returnButton" type="button" data-t="returnMain">Return to Main</button>
+          <button id="resumeButton" class="primary" type="button" data-t="resume">繼續調查</button>
+          <button id="inventoryButton" type="button" data-t="equipment">裝備</button>
+          <button id="returnButton" type="button" data-t="returnMain">返回主畫面</button>
         </section>
         <section id="inventoryPanel" class="panel inventory-panel" hidden>
-          <h2 data-t="equipment">Equipment</h2>
+          <h2 data-t="equipment">裝備</h2>
           <div class="stats" id="stats"></div>
           <div class="equipment-grid">
-            <div class="equipment-slot" data-slot="weapon"><span class="atlas-icon icon-weapon"></span><b data-t="weapon">Weapon</b><small id="weaponName"></small><em id="weaponEffect"></em><button id="weaponToggle" type="button"></button></div>
-            <div class="equipment-slot" data-slot="armor"><span class="atlas-icon icon-armor"></span><b data-t="armor">Armor</b><small id="armorName"></small><em id="armorEffect"></em><button id="armorToggle" type="button"></button></div>
-            <div class="equipment-slot" data-slot="accessory"><span class="atlas-icon icon-accessory"></span><b data-t="accessory">Accessory</b><small id="accessoryName"></small><em id="accessoryEffect"></em><button id="accessoryToggle" type="button"></button></div>
+            <div class="equipment-slot" data-slot="weapon"><span class="atlas-icon icon-weapon"></span><b data-t="weapon">武器</b><small id="weaponName"></small><em id="weaponEffect"></em><button id="weaponToggle" type="button"></button></div>
+            <div class="equipment-slot" data-slot="armor"><span class="atlas-icon icon-armor"></span><b data-t="armor">護甲</b><small id="armorName"></small><em id="armorEffect"></em><button id="armorToggle" type="button"></button></div>
+            <div class="equipment-slot" data-slot="accessory"><span class="atlas-icon icon-accessory"></span><b data-t="accessory">飾品</b><small id="accessoryName"></small><em id="accessoryEffect"></em><button id="accessoryToggle" type="button"></button></div>
           </div>
           <div class="diamond-upgrade">
-            <div class="diamond-balance"><img src="../../assets/weightplay-diamond.svg" alt=""><span data-t="diamonds">Diamonds</span><b id="diamondBalance">0</b></div>
-            <h3 data-t="anchorTitle">Signal Anchor</h3>
-            <p data-t="anchorEffect">Permanent: +12 maximum health for this and future investigations. Optional and never required.</p>
-            <button id="buyAnchor" type="button" data-t="anchorBuy">Install · 5 Diamonds</button>
+            <div class="diamond-balance"><img src="../../assets/weightplay-diamond.svg" alt=""><span data-t="diamonds">鑽石</span><b id="diamondBalance">0</b></div>
+            <h3 data-t="anchorTitle">訊號錨</h3>
+            <p data-t="anchorEffect">永久：本次與未來調查的最大生命 +12。完全選用，通關不需要。</p>
+            <button id="buyAnchor" type="button" data-t="anchorBuy">安裝 · 5 鑽石</button>
             <small id="anchorStatus" aria-live="polite"></small>
           </div>
-          <button id="closeInventory" class="primary" type="button" data-t="back">Back</button>
+          <button id="closeInventory" class="primary" type="button" data-t="back">返回</button>
         </section>
         <section id="leavePanel" class="panel leave-panel" role="dialog" aria-modal="true" hidden>
-          <h2 data-t="leaveTitle">Leave the investigation?</h2>
-          <p data-t="leaveText">Your last checkpoint and permanent progress are safe.</p>
-          <button id="continueButton" class="primary" type="button" data-t="continue">Continue</button>
-          <button id="confirmLeaveButton" type="button" data-t="returnMain">Return to Main</button>
+          <h2 data-t="leaveTitle">離開調查？</h2>
+          <p data-t="leaveText">最近檢查點與永久進度都已保留。</p>
+          <button id="continueButton" class="primary" type="button" data-t="continue">繼續</button>
+          <button id="confirmLeaveButton" type="button" data-t="returnMain">返回主畫面</button>
         </section>
         <section id="resultPanel" class="panel result-panel" role="dialog" aria-modal="true" hidden>
           <span class="result-device atlas-icon icon-device"></span>
-          <p class="kicker" data-t="demoComplete">CHAPTER COMPLETE</p>
-          <h2 data-t="resultTitle">The veil is broken.</h2>
-          <blockquote data-t="bossQuote">“We are not invading.”</blockquote>
-          <p data-t="resultText">The Commander's device exposes hidden Lizard People among ordinary humans. The signal points beyond Earth.</p>
-          <strong data-t="ending">Earth was only the beginning.</strong>
+          <p class="kicker" data-t="demoComplete">章節完成</p>
+          <h2 data-t="resultTitle">帷幕已被揭開。</h2>
+          <blockquote data-t="bossQuote">「我們不是來入侵的。」</blockquote>
+          <p data-t="resultText">指揮官的裝置讓藏在人類之中的蜥蜴人顯形，訊號則指向地球之外。</p>
+          <strong data-t="ending">地球只是一個開始。</strong>
           <div class="result-actions">
-            <button id="continueExplore" class="primary" type="button" data-t="explore">Continue Exploring</button>
-            <button id="newGameButton" type="button" data-t="newGame">New Investigation</button>
+            <button id="continueExplore" class="primary" type="button" data-t="explore">繼續探索</button>
+            <button id="newGameButton" type="button" data-t="newGame">重新調查</button>
           </div>
         </section>
       </div>
@@ -214,7 +294,7 @@
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/site-config.js"></script>
   <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="/src/i18n.js?v=20260731-general-ar-lobby1"></script>
+  <script src="/src/i18n.js?v=20260731-adsense-content2"></script>
   <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
   <script src="../../src/wallet.js"></script>
   <script src="locales.js"></script>

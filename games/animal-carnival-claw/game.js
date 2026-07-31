@@ -352,7 +352,16 @@ function handlePointerAim(event,release=false){
 }
 
 function bind(){
-  $("localeSelect").addEventListener("change",event=>setLocale(event.target.value));
+  // Settings owns the live select, so observe the document instead of relying
+  // on the element instance that existed during game bootstrap.
+  document.addEventListener("change",event=>{
+    if(event.target?.id!=="localeSelect")return;
+    setLocale(event.target.value);
+    // The shared locale runtime can already believe it owns this value while
+    // the live game was restored from a conflicting retained locale. Emit the
+    // ownership event explicitly so guide/shell owners cannot stay stale.
+    window.dispatchEvent(new CustomEvent("wonder:locale-change",{detail:{locale:event.target.value}}));
+  },true);
   window.addEventListener("wonder:locale-change",event=>{
     const next=event.detail?.locale;
     if(window.CARNIVAL_CLAW_LOCALES[next])setLocale(next,false);
@@ -416,7 +425,7 @@ window.__CARNIVAL_CLAW_TEST__={
   attemptLock(){attemptLock();return this.snapshot()},
   perfectDrop(kind){if(!run)return;const target=run.prizes.find(prize=>prize.active&&(kind===undefined||prize.kind===kind));if(!target)return;run.aimX=target.x;run.aimY=target.y;run.dropX=target.x;run.phase="secure";run.phaseTime=0;run.drops--;run.held=target;run.grip=1;run.stability=1;run.lockValue=.5;attemptLock();for(let time=0;time<1.5&&!run.result;time+=.02)update(.02);draw();return this.snapshot()},
   solve(){for(const kind of [...remainingTargets()])this.perfectDrop(kind);this.step(1);return this.snapshot()},
-  snapshot(){return run?JSON.parse(JSON.stringify({screen,run,save})):null},setSave(value){save={...defaultSave(),...value,upgrades:{...defaultSave().upgrades,...(value.upgrades||{})}};persist();renderMain();renderStage()},getSave(){return JSON.parse(JSON.stringify(save))},setLocale,show
+  snapshot(){return run?JSON.parse(JSON.stringify({screen,run,save})):null},setSave(value){save={...defaultSave(),...value,upgrades:{...defaultSave().upgrades,...(value.upgrades||{})}};persist();renderMain();renderStage()},getSave(){return JSON.parse(JSON.stringify(save))},getLocale(){return locale},setLocale,show
 };
 document.addEventListener("DOMContentLoaded",init);
 })();

@@ -8,13 +8,13 @@
   <meta name="theme-color" content="#071923">
   <meta name="robots" content="index,follow" />
   <meta name="description" content="Traversez une ville, une forêt et un laboratoire neural reliés en 2042. Révélez les hommes-lézards et battez leur premier commandant." />
-  <meta property="og:site_name" content="WeightPlay">
-  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="WeightPlay" />
+  <meta property="og:type" content="website" />
   <meta property="og:title" content="Voile du Signal | WeightPlay" />
   <meta property="og:description" content="Traversez une ville, une forêt et un laboratoire neural reliés en 2042. Révélez les hommes-lézards et battez leur premier commandant." />
   <meta property="og:url" content="https://weightplay.com/fr/games/signal-veil/" />
-  <meta property="og:image" content="https://weightplay.com/assets/signal-veil-cover.webp">
-  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="https://weightplay.com/assets/signal-veil-cover.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Voile du Signal | WeightPlay" />
   <meta name="twitter:description" content="Traversez une ville, une forêt et un laboratoire neural reliés en 2042. Révélez les hommes-lézards et battez leur premier commandant." />
   <title>Voile du Signal | WeightPlay</title>
@@ -53,24 +53,28 @@
     "Jeux d'animaux",
     "Action",
     "RPG",
-    "Aventure"
+    "Aventure",
+    "Browser Game"
   ],
   "audience": {
     "@type": "Audience",
-    "audienceType": "General players age 13 and older"
-  }
+    "audienceType": "General players age 13 and older",
+    "suggestedMinAge": 13
+  },
+  "alternateName": "Signal Veil"
 }
     </script>
     <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css">
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="style.css">
-</head>
+  <meta name="twitter:image" content="https://weightplay.com/assets/signal-veil-cover.webp" />
+  </head>
 <body data-game-id="signal-veil" data-wp-game-id="signal-veil" data-wp-combined-sound="true" data-runtime-localize="off">
   <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
       <img src="../../assets/signal-veil-items.webp" alt="" aria-hidden="true">
-      <strong data-t="loading">Calibrating neural vision…</strong>
+      <strong data-t="loading">Calibrage de la vision neurale…</strong>
       <span class="loading-bar"><i></i></span>
     </div>
   </div>
@@ -82,42 +86,118 @@
       </a>
       <div class="title-slot">
         <small>WEIGHTPLAY ORIGINAL</small>
-        <strong data-t="title">Signal Veil</strong>
+        <strong data-t="title">Voile du Signal</strong>
       </div>
       <label class="locale-picker">
-        <span data-t="language">Language</span>
+        <span data-t="language">Langue</span>
         <select id="localeSelect" aria-label="Language"></select>
       </label>
     </header>
     <section class="main-hero">
       <img class="main-poster" src="../../assets/signal-veil-cover.webp" alt="Spark Paw Fia reveals a Lizard Commander with a neural-vision device" data-t-alt="Illustration du jeu Voile du Signal">
       <div class="main-copy">
-        <p class="kicker" data-t="kicker">2042 · FIRST CONTACT</p>
+        <p class="kicker" data-t="kicker">2042 · PREMIER CONTACT</p>
         <h1 data-t="title">Voile du Signal</h1>
-        <p class="main-summary" data-t="summary">Explore a connected town, forest, and laboratory. Expose hidden threats and defeat the first Lizard Commander.</p>
+        <p class="main-summary" data-t="summary">Les 57 missions de Fia, le combat, la Vision Neurale, l&#39;équipement et la progression locale.</p>
         <p id="mainProgress" class="main-progress" data-wp-main-progress>MISSIONS 0 / 33</p>
-        <button id="startGame" class="primary standard-main-start" data-runtime-localize="off" type="button" data-t="start">Start Game</button>
+        <button id="startGame" class="primary standard-main-start" data-runtime-localize="off" type="button" data-t="start">Commencer</button>
       </div>
     </section>
     <!-- adsense-static-guide:start -->
-    <section class="game-page-info game-page-info-static" aria-label="Informations sur le jeu Voile du Signal">
-    
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2>Voile du Signal</h2><p>Traversez une ville, une forêt et un laboratoire neural reliés en 2042. Révélez les hommes-lézards et battez leur premier commandant.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Type de jeu</span><strong>Action-RPG en vue du dessus</strong></div><div class="game-info-fact"><span>Genre</span><strong>Jeux d&#39;animaux · Action · RPG · Aventure</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>La progression est-elle enregistrée ?</dt><dd>Oui, uniquement dans ce navigateur.</dd></div></dl></div>
-      
-    </div>
-  </section>
+    <section class="game-guide game-page-info" aria-labelledby="guideTitle">
+      <div class="game-info-hero">
+        <div class="game-info-title">
+          <h2 id="guideTitle" data-t="guideTitle">Guide complet de Voile du Signal</h2>
+          <p data-t="guideLead">Les 57 missions de Fia, le combat, la Vision Neurale, l&#39;équipement et la progression locale.</p>
+        </div>
+      </div>
+      <div class="game-info-sections">
+        <section class="game-info-section">
+          <h3 data-t="guideOverviewTitle">Monde et mission</h3>
+          <p data-t="guideOverviewA">En 2042, disparitions et attaques se multiplient sur Terre. Spark Paw Fia arrive à Signalville après qu’une vidéo de Lézard a été qualifiée de faux. Interrogez dix témoins, traversez la forêt au clair de lune et entrez dans le laboratoire neural abandonné. Ce premier chapitre forme un monde continu sans sélection de niveaux ; position, niveau, équipement, quêtes et histoire sont enregistrés dans ce navigateur.</p>
+          <p data-t="guideOverviewB">L&#39;histoire actuelle compte 57 missions reliant Signalbourg, la forêt du Voile, le laboratoire neural, le Relais Moonfall et l&#39;Observatoire Ashfall. Interrogez les témoins, suivez les voies cachées, combattez les patrouilles, récupérez l&#39;équipement, décodez les archives et choisissez le sort des preuves. La porte est d&#39;Ashfall mène aux Archives. Leur dernier signal attend. Il garde une route aller-retour. Répondre guide la flotte ; la masquer protège les coordonnées.</p>
+        </section>
+        <section class="game-info-section game-info-chapter">
+          <div class="game-info-chapter-heading">
+            <h3 data-t="guideChapterOneWalkthroughTitle">Mission</h3>
+            <span data-t="guideChapterOneRange">1–23</span>
+          </div>
+          <p data-t="guideChapterOneWalkthrough">En 2042, disparitions et attaques se multiplient sur Terre. Spark Paw Fia arrive à Signalville après qu’une vidéo de Lézard a été qualifiée de faux. Interrogez dix témoins, traversez la forêt au clair de lune et entrez dans le laboratoire neural abandonné. Ce premier chapitre forme un monde continu sans sélection de niveaux ; position, niveau, équipement, quêtes et histoire sont enregistrés dans ce navigateur. Parlez à chaque témoin avant d’ouvrir la forêt. Surveillez les zones d’alerte et attirez une patrouille à la fois. Tirez sur les brutes et mages, puis frappez pendant leur récupération. Activez la vision réelle près des lueurs cyan et des murs suspects. Face au commandant, bougez pendant les salves, esquivez la charge et profitez de son étourdissement.</p>
+        </section>
+        <section class="game-info-section game-info-chapter">
+          <div class="game-info-chapter-heading">
+            <h3 data-t="guideChapterTwoWalkthroughTitle">Enquête sur deux cartes</h3>
+            <span data-t="guideChapterTwoRange">24–33</span>
+          </div>
+          <p data-t="guideChapterTwoWalkthrough">Après le commandant, parlez à Orla pour ouvrir Moonfall. Éliminez huit sentinelles, activez trois archives puis revenez. Les portails restent ouverts pour poursuivre les missions sur les deux cartes. Archive un : la flotte Lézard fuyait une lune mourante et demandait refuge. Archive deux : Helix a intercepté l&#39;appel et créé des déguisements avec son motif neural. Archive trois : le commandant protégeait les preuves pour empêcher Helix de les effacer.</p>
+        </section>
+        <section class="game-info-section game-info-chapter">
+          <div class="game-info-chapter-heading">
+            <h3 data-t="guideChapterThreeWalkthroughTitle">Observatoire Ashfall</h3>
+            <span data-t="guideChapterThreeRange">34–45</span>
+          </div>
+          <p data-t="guideChapterThreeWalkthrough">Le Registre d&#39;alerte nomme Ashfall. Helix a signalé une technicienne vivante puis ordonné l&#39;effacement du site. La porte est de Moonfall y mène encore. Trouvez-la avant la purge. Elle peut exposer Helix, mais une diffusion révélera Aster. Diffusez maintenant ou protégez le témoin. J&#39;entretenais le réseau de camouflage d&#39;Helix. Quand j&#39;ai découvert qu&#39;il réécrivait les souvenirs, j&#39;ai copié le manifeste. Ils ont brûlé l&#39;observatoire pour m&#39;effacer. Elle peut exposer Helix, mais une diffusion révélera Aster. Diffusez maintenant ou protégez le témoin. La preuve circule sur le réseau public. Helix ne peut plus parler de faux, mais connaît notre position. Aster et la boîte noire sont en sécurité. Nous publierons par des stations fiables sans révéler sa position.</p>
+        </section>
+        <section class="game-info-section game-info-chapter">
+          <div class="game-info-chapter-heading">
+            <h3 data-t="guideChapterFourWalkthroughTitle">Archives de la Lune creuse</h3>
+            <span data-t="guideChapterFourRange">46–57</span>
+          </div>
+          <p data-t="guideChapterFourWalkthrough">La porte est d&#39;Ashfall mène aux Archives. Leur dernier signal attend. Il garde une route aller-retour. Répondre guide la flotte ; la masquer protège les coordonnées. La balise recense 47 vaisseaux civils renommés débris par Helix. Leur phrase : Nous n&#39;étions pas des envahisseurs. La carte est écrite comme des histoires de famille. Helix ne peut la suivre sans connaître les vrais souvenirs. Les enfants ont appris la météo de Signalbourg par des émissions volées et nomment le monde de Fia le refuge bleu. Les poursuivants sont vaincus. Répondre au refuge ou masquer la route jusqu&#39;au choix des réfugiés ? Vous avez répondu au refuge. Ses pilotes ont une route vers Signalbourg et nous défendrons chaque arrivée. Vous avez effacé les clés. Le refuge reste invisible et ses habitants choisiront quand se révéler.</p>
+        </section>
+        <section class="game-info-section">
+          <h3 data-t="guideHowTitle">Commandes et boucle complète</h3>
+          <ol>
+            <li data-t="guideStep1">Lisez l&#39;objectif en haut puis explorez la région actuelle.</li>
+            <li data-t="guideStep2">Touchez l&#39;invite visible ou appuyez sur E pour parler, ouvrir, activer et franchir les portails.</li>
+            <li data-t="guideStep3">Faites face à l&#39;ennemi puis utilisez Attaque pour l&#39;onde d&#39;épée ou Compétence à distance.</li>
+            <li data-t="guideStep4">Activez la Vision réelle près des indices cyan pour révéler déguisements, ennemis et chemins cachés.</li>
+            <li data-t="guideStep5">Terminez l&#39;objectif et rapportez les preuves à Orla lorsque l&#39;histoire le demande.</li>
+          </ol>
+          <p data-t="guideLoop">Sur ordinateur, déplacez-vous avec WASD ou les flèches. Space/J attaque au corps à corps, K tire, V change de vision, E parle ou ouvre un coffre, Échap ouvre le menu. Sur mobile, utilisez le joystick gauche et les boutons Attaque, Compétence et Vision. Les ennemis patrouillent, poursuivent et frappent ; le commandant change de tactique selon sa santé. La vision normale montre le monde perçu par la majorité. La vision réelle révèle chemins cyan, Lézards déguisés, monstres invisibles, portes secrètes et trésors. La lentille prototype ne consomme rien. L’appareil stable prouve qu’ils ne changeaient pas d’apparence : ils perturbaient la perception humaine.</p>
+        </section>
+        <section class="game-info-section game-info-progress">
+          <h3 data-t="guideProgressTitle">Progression, équipement et difficulté</h3>
+          <p data-t="guideProgression">Battez quinze monstres pour gagner de l’EXP. Chaque niveau augmente santé maximale, attaque et défense. Trois coffres cachent la Lame à impulsion, l’Armure d’éclaireur et le Charme du signal ; ils s’équipent et se sauvegardent immédiatement. Le tir a un court délai, tandis que l’attaque rapprochée est rapide et puissante. Après le commandant, parlez à Orla pour ouvrir Moonfall. Éliminez huit sentinelles, activez trois archives puis revenez. Les portails restent ouverts pour poursuivre les missions sur les deux cartes. Le Registre d&#39;alerte nomme Ashfall. Helix a signalé une technicienne vivante puis ordonné l&#39;effacement du site. La porte est de Moonfall y mène encore. Trouvez-la avant la purge. Elle peut exposer Helix, mais une diffusion révélera Aster. Diffusez maintenant ou protégez le témoin. La porte est d&#39;Ashfall mène aux Archives. Leur dernier signal attend. Il garde une route aller-retour. Répondre guide la flotte ; la masquer protège les coordonnées.</p>
+        </section>
+        <section class="game-info-section game-info-strategy">
+          <h3 data-t="guideTipsTitle">Conseils d&#39;enquête</h3>
+          <ul>
+            <li data-t="guideTip1">Parlez à chaque témoin avant d’ouvrir la forêt.</li>
+            <li data-t="guideTip2">Surveillez les zones d’alerte et attirez une patrouille à la fois.</li>
+            <li data-t="guideTip3">Tirez sur les brutes et mages, puis frappez pendant leur récupération.</li>
+            <li data-t="guideTip4">Activez la vision réelle près des lueurs cyan et des murs suspects.</li>
+            <li data-t="guideTip5">Face au commandant, bougez pendant les salves, esquivez la charge et profitez de son étourdissement.</li>
+          </ul>
+        </section>
+        <section class="game-info-section">
+          <h3 data-t="guideDesignTitle">Note de conception</h3>
+          <p data-t="guideDesign">Le monde continu maintient les lieux et les indices reliés. La Vision réelle ne consomme pas d&#39;énergie : la décision porte sur l&#39;observation. Les raccourcis PC et boutons mobiles exécutent les mêmes actions, et les 57 missions consignent de vraies découvertes, batailles, pièces d&#39;équipement et preuves.</p>
+        </section>
+        <section class="game-info-section">
+          <h3 data-t="guideSaveTitle">Joueur, appareil et sauvegarde</h3>
+          <p data-t="guideSave">Le chapitre est terminé lorsque le premier commandant est vaincu et son appareil récupéré. Si Fia perd toute sa santé, elle revient au point sûr en conservant niveau, équipement, quêtes et cibles majeures. Aucun compte n’est requis. La progression reste dans ce navigateur et peut disparaître si ses données sont effacées. Aucun compte requis. Missions, EXP, niveau, santé, équipement, coffres, victoires, points sûrs et choix sont sauvegardés automatiquement dans ce navigateur. Le déplacement seul n&#39;écrit pas à chaque image. L&#39;Ancre de Signal à cinq Diamants est une amélioration de santé permanente facultative.</p>
+        </section>
+        <section class="game-info-section">
+          <h3 data-t="guideFaqTitle">Questions fréquentes</h3>
+          <dl>
+            <div><dt><span data-t="guideFaqQ1">Combien de missions et de régions ?</span></dt><dd data-t="guideFaqA1">Il existe 57 missions et six régions principales reliées par des portails ouverts par l&#39;histoire.</dd></div>
+            <div><dt><span data-t="guideFaqQ2">La Vision réelle consomme-t-elle de l&#39;énergie ?</span></dt><dd data-t="guideFaqA2">Non. Après avoir obtenu la lentille, changez librement pour révéler menaces, déguisements, passages et trésors.</dd></div>
+            <div><dt><span data-t="guideFaqQ3">Peut-on retirer l&#39;équipement ?</span></dt><dd data-t="guideFaqA3">Oui. Le menu affiche les effets et retirer une pièce ne supprime pas sa propriété.</dd></div>
+            <div><dt><span data-t="guideFaqQ4">Que se passe-t-il si Fia tombe ?</span></dt><dd data-t="guideFaqA4">Fia revient au point sûr en conservant sa progression permanente et les états importants.</dd></div>
+            <div><dt><span data-t="guideFaqQ5">Combien de temps dure l&#39;enquête ?</span></dt><dd data-t="guideFaqA5">Cela dépend de l&#39;exploration et du combat. Les quatre chapitres se jouent en plusieurs sessions grâce à la sauvegarde locale.</dd></div>
+          </dl>
+        </section>
+        <section class="game-info-section">
+          <h3 data-t="guideRelatedTitle">Jeux WeightPlay associés</h3>
+          <div class="game-info-related">
+            <a class="game-info-related-card" href="/games/animal-relic-hunters/"><img src="../../assets/animal-relic-hunters-cover.webp" alt=""><span class="game-info-related-copy"><strong data-t="guideRelated1Title">Chasseurs de Reliques Animaux</strong><span data-t="guideRelated1Text">Expéditions en salles, reliques à collectionner et Gardiens en plusieurs phases.</span></span></a>
+            <a class="game-info-related-card" href="/games/animal-crystal-survivor/"><img src="../../assets/animal-crystal-survivor-cover.webp" alt=""><span class="game-info-related-copy"><strong data-t="guideRelated2Title">Survivant de Cristal Animal</strong><span data-t="guideRelated2Text">Créez une configuration sur trente routes et affrontez six Boss distincts.</span></span></a>
+            <a class="game-info-related-card" href="/games/shadow-wolf-legend/"><img src="../../assets/shadow-wolf-cover.webp" alt=""><span class="game-info-related-copy"><strong data-t="guideRelated3Title">Légende du Loup d&#39;Ombre</strong><span data-t="guideRelated3Text">Campagne d&#39;action sombre avec contres ennemis et Boss à phases.</span></span></a>
+          </div>
+        </section>
+      </div>
+    </section>
     <!-- adsense-static-guide:end -->
   </main>
 
@@ -125,15 +205,15 @@
     <div id="battleCanvas" class="battle-canvas" data-wp-logical-battle-canvas>
       <header class="battle-header">
         <button id="battleBack" class="back-button wp-shell-return" data-wp-return="battle" type="button" aria-label="Leave investigation">←</button>
-        <div class="battle-title"><strong data-t="title">Signal Veil</strong><span id="zoneLabel">Town</span></div>
+        <div class="battle-title"><strong data-t="title">Voile du Signal</strong><span id="zoneLabel">Town</span></div>
         <div class="battle-actions">
-          <button id="questButton" class="quest-button" type="button" data-t="questButton">Quest</button>
+          <button id="questButton" class="quest-button" type="button" data-t="questButton">Quête</button>
           <button id="menuButton" class="menu-button" type="button" data-t="menu">Menu</button>
         </div>
       </header>
       <div class="hud" aria-live="polite">
-        <div class="hud-level"><small data-t="hudLevel">Level</small><b id="levelValue">1</b></div>
-        <div class="meter hp" data-t-aria="hudHealth" aria-label="Health"><i id="hpFill"></i><span><small data-t="hudHealth">Health</small><b id="hpText">40 / 40</b></span></div>
+        <div class="hud-level"><small data-t="hudLevel">NIV</small><b id="levelValue">1</b></div>
+        <div class="meter hp" data-t-aria="hudHealth" aria-label="Health"><i id="hpFill"></i><span><small data-t="hudHealth">VIE</small><b id="hpText">40 / 40</b></span></div>
         <div class="meter xp" data-t-aria="hudExperience" aria-label="Experience"><i id="xpFill"></i><span><small data-t="hudExperience">EXP</small><b id="xpText">0 / 30</b></span></div>
         <div id="visionState" class="vision-state" data-t="normalVision">Normal</div>
       </div>
@@ -145,65 +225,65 @@
           <strong id="speaker"></strong>
           <p id="dialogueText"></p>
           <div id="dialogueChoices" class="dialogue-choices" hidden>
-            <button id="broadcastChoice" type="button" data-t="ashfallBroadcast">Broadcast the evidence</button>
-            <button id="protectChoice" type="button" data-t="ashfallProtect">Protect the witness</button>
+            <button id="broadcastChoice" type="button" data-t="ashfallBroadcast">Diffuser la preuve</button>
+            <button id="protectChoice" type="button" data-t="ashfallProtect">Protéger Aster</button>
           </div>
-          <button id="dialogueNext" type="button" data-t="continue">Continue</button>
+          <button id="dialogueNext" type="button" data-t="continue">Continuer</button>
         </div>
       </div>
       <div class="mobile-controls" aria-label="Touch controls">
         <div id="joystick" class="joystick"><i id="stick"></i></div>
         <div class="action-buttons">
           <button id="visionButton" class="vision-button" type="button" data-t="visionSkill" data-t-aria="visionSkill" aria-label="Vision">Vision</button>
-          <button id="skillButton" type="button" data-t="skill">Skill</button>
-          <button id="attackButton" class="attack-button" type="button" data-t="attack">Attack</button>
+          <button id="skillButton" type="button" data-t="skill">Compétence</button>
+          <button id="attackButton" class="attack-button" type="button" data-t="attack">Attaque</button>
         </div>
       </div>
       <div id="overlay" class="overlay" hidden>
         <section id="pausePanel" class="panel pause-panel" hidden>
-          <div class="panel-heading"><small data-t="fieldStatus">Field Status</small><h2 data-t="paused">Investigation paused</h2></div>
+          <div class="panel-heading"><small data-t="fieldStatus">État de terrain</small><h2 data-t="paused">Enquête en pause</h2></div>
           <div class="pause-status">
-            <span><small data-t="hudLevel">Level</small><b id="pauseLevel">1</b></span>
-            <span><small data-t="location">Location</small><b id="pauseZone">Signal Town</b></span>
+            <span><small data-t="hudLevel">NIV</small><b id="pauseLevel">1</b></span>
+            <span><small data-t="location">Lieu</small><b id="pauseZone">Signal Town</b></span>
           </div>
           <p id="pauseObjective" class="pause-objective"></p>
-          <button id="resumeButton" class="primary" type="button" data-t="resume">Resume</button>
-          <button id="inventoryButton" type="button" data-t="equipment">Equipment</button>
-          <button id="returnButton" type="button" data-t="returnMain">Return to Main</button>
+          <button id="resumeButton" class="primary" type="button" data-t="resume">Reprendre</button>
+          <button id="inventoryButton" type="button" data-t="equipment">Équipement</button>
+          <button id="returnButton" type="button" data-t="returnMain">Retour à l’accueil</button>
         </section>
         <section id="inventoryPanel" class="panel inventory-panel" hidden>
-          <h2 data-t="equipment">Equipment</h2>
+          <h2 data-t="equipment">Équipement</h2>
           <div class="stats" id="stats"></div>
           <div class="equipment-grid">
-            <div class="equipment-slot" data-slot="weapon"><span class="atlas-icon icon-weapon"></span><b data-t="weapon">Weapon</b><small id="weaponName"></small><em id="weaponEffect"></em><button id="weaponToggle" type="button"></button></div>
-            <div class="equipment-slot" data-slot="armor"><span class="atlas-icon icon-armor"></span><b data-t="armor">Armor</b><small id="armorName"></small><em id="armorEffect"></em><button id="armorToggle" type="button"></button></div>
-            <div class="equipment-slot" data-slot="accessory"><span class="atlas-icon icon-accessory"></span><b data-t="accessory">Accessory</b><small id="accessoryName"></small><em id="accessoryEffect"></em><button id="accessoryToggle" type="button"></button></div>
+            <div class="equipment-slot" data-slot="weapon"><span class="atlas-icon icon-weapon"></span><b data-t="weapon">Arme</b><small id="weaponName"></small><em id="weaponEffect"></em><button id="weaponToggle" type="button"></button></div>
+            <div class="equipment-slot" data-slot="armor"><span class="atlas-icon icon-armor"></span><b data-t="armor">Armure</b><small id="armorName"></small><em id="armorEffect"></em><button id="armorToggle" type="button"></button></div>
+            <div class="equipment-slot" data-slot="accessory"><span class="atlas-icon icon-accessory"></span><b data-t="accessory">Accessoire</b><small id="accessoryName"></small><em id="accessoryEffect"></em><button id="accessoryToggle" type="button"></button></div>
           </div>
           <div class="diamond-upgrade">
-            <div class="diamond-balance"><img src="../../assets/weightplay-diamond.svg" alt=""><span data-t="diamonds">Diamonds</span><b id="diamondBalance">0</b></div>
-            <h3 data-t="anchorTitle">Signal Anchor</h3>
-            <p data-t="anchorEffect">Permanent: +12 maximum health for this and future investigations. Optional and never required.</p>
-            <button id="buyAnchor" type="button" data-t="anchorBuy">Install · 5 Diamonds</button>
+            <div class="diamond-balance"><img src="../../assets/weightplay-diamond.svg" alt=""><span data-t="diamonds">Diamants</span><b id="diamondBalance">0</b></div>
+            <h3 data-t="anchorTitle">Ancre de signal</h3>
+            <p data-t="anchorEffect">Permanent : +12 de santé maximale pour cette enquête et les suivantes. Entièrement facultatif.</p>
+            <button id="buyAnchor" type="button" data-t="anchorBuy">Installer · 5 diamants</button>
             <small id="anchorStatus" aria-live="polite"></small>
           </div>
-          <button id="closeInventory" class="primary" type="button" data-t="back">Back</button>
+          <button id="closeInventory" class="primary" type="button" data-t="back">Retour</button>
         </section>
         <section id="leavePanel" class="panel leave-panel" role="dialog" aria-modal="true" hidden>
-          <h2 data-t="leaveTitle">Leave the investigation?</h2>
-          <p data-t="leaveText">Your last checkpoint and permanent progress are safe.</p>
-          <button id="continueButton" class="primary" type="button" data-t="continue">Continue</button>
-          <button id="confirmLeaveButton" type="button" data-t="returnMain">Return to Main</button>
+          <h2 data-t="leaveTitle">Quitter l’enquête ?</h2>
+          <p data-t="leaveText">Le point sûr et la progression permanente sont sauvegardés.</p>
+          <button id="continueButton" class="primary" type="button" data-t="continue">Continuer</button>
+          <button id="confirmLeaveButton" type="button" data-t="returnMain">Retour à l’accueil</button>
         </section>
         <section id="resultPanel" class="panel result-panel" role="dialog" aria-modal="true" hidden>
           <span class="result-device atlas-icon icon-device"></span>
-          <p class="kicker" data-t="demoComplete">CHAPTER COMPLETE</p>
-          <h2 data-t="resultTitle">The veil is broken.</h2>
-          <blockquote data-t="bossQuote">“We are not invading.”</blockquote>
-          <p data-t="resultText">The Commander's device exposes hidden Lizard People among ordinary humans. The signal points beyond Earth.</p>
-          <strong data-t="ending">Earth was only the beginning.</strong>
+          <p class="kicker" data-t="demoComplete">CHAPITRE TERMINÉ</p>
+          <h2 data-t="resultTitle">Le voile est brisé.</h2>
+          <blockquote data-t="bossQuote">« Nous n’envahissons pas. »</blockquote>
+          <p data-t="resultText">L’appareil révèle les Lézards cachés parmi les humains. Le signal pointe au-delà de la Terre.</p>
+          <strong data-t="ending">La Terre n’était que le début.</strong>
           <div class="result-actions">
-            <button id="continueExplore" class="primary" type="button" data-t="explore">Continue Exploring</button>
-            <button id="newGameButton" type="button" data-t="newGame">New Investigation</button>
+            <button id="continueExplore" class="primary" type="button" data-t="explore">Continuer l’exploration</button>
+            <button id="newGameButton" type="button" data-t="newGame">Nouvelle enquête</button>
           </div>
         </section>
       </div>
@@ -214,7 +294,7 @@
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/site-config.js"></script>
   <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="/src/i18n.js?v=20260731-general-ar-lobby1"></script>
+  <script src="/src/i18n.js?v=20260731-adsense-content2"></script>
   <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
   <script src="../../src/wallet.js"></script>
   <script src="locales.js"></script>

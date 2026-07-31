@@ -3,7 +3,9 @@ let activeGamePreview = null;
 const audienceMode = document.body?.dataset.audience === "kids" ? "kids" : "general";
 const generalGameIds = new Set(lobby.audiences?.generalGameIds || []);
 const isKidsLobby = audienceMode === "kids";
-const catalogGames = lobby.games.filter((game) => isKidsLobby ? !generalGameIds.has(game.id) : generalGameIds.has(game.id));
+const catalogGames = lobby.games.filter((game) =>
+  game.status === "playable"
+  && (isKidsLobby ? !generalGameIds.has(game.id) : generalGameIds.has(game.id)));
 const showAgeLabels = isKidsLobby;
 const modeHeroGameIds = isKidsLobby
   ? ["color-lunchbox", "animal-zoo-idle", "bubble-bakery", "fruit-merge", "snack-blocks"]
@@ -192,7 +194,16 @@ let gameStats = {
 };
 
 function text(value) {
-  return i18n.getLocalized(value);
+  const localized = i18n.getLocalized(value);
+  const locale = i18n.actualLocale?.() || i18n.locale?.() || "en";
+  const catalog = window.WeightPlayGameRuntimeLocales?.[locale];
+  const english = value && typeof value === "object" && !Array.isArray(value) ? value.en : value;
+  return catalog?.[localized] || catalog?.[english] || localized;
+}
+
+function normalizeSearch(value) {
+  const locale = i18n.actualLocale?.() || i18n.locale?.() || undefined;
+  return String(value || "").normalize("NFKC").trim().toLocaleLowerCase(locale);
 }
 
 function primaryArt(game) {
@@ -232,7 +243,7 @@ function restoreDiscoveryFiltersFromUrl() {
   activeLibrary = selectedFilterValue(libraryButtons, "libraryTab", params.get("library") || "all");
   activeAvailability = selectedFilterValue(availabilityButtons, "availabilityFilter", params.get("availability") || "all");
   const query = params.get("q") || "";
-  activeSearch = query.trim().toLowerCase();
+  activeSearch = normalizeSearch(query);
   if (gameSearch) gameSearch.value = query;
 
   setActiveButtons(filterButtons, "ageFilter", activeFilter);
@@ -831,7 +842,8 @@ function createGameCard(game) {
     text(game.description),
     ...(game.categories || []).map(categoryText),
     ...(game.skills || []).map(skillText),
-  ].join(" ").toLowerCase();
+  ].join(" ");
+  card.dataset.search = normalizeSearch(card.dataset.search);
   card.dataset.favorite = favorite ? "true" : "false";
   card.dataset.recent = recent ? "true" : "false";
   card.dataset.recentIndex = String(recentGameIds.indexOf(game.id));
@@ -1674,6 +1686,21 @@ function applyStaticTranslations() {
     if (node.querySelector("[data-availability-filter]")) node.setAttribute("aria-label", i18n.t("aria.availability_filters"));
   });
   gameGrid?.setAttribute("aria-label", i18n.t("aria.game_list"));
+  const regionLabels = [
+    [heroGamesSection, "section.hero_games"],
+    [mobilePicksSection, "mobile_picks.title"],
+    [upcomingGamesSection, "availability_hint.preview"],
+    [characterShowcaseSection, "character_showcase.title"],
+    [freshUpdatesSection, "fresh_updates.title"],
+    [challengeSpotlightSection, isKidsLobby ? "kids.challenge.title" : "general.challenge.title"],
+    [recommendationsSection, "recommend.title"],
+    [gameGrid, "aria.game_list"],
+  ];
+  regionLabels.forEach(([node, key]) => {
+    if (!node) return;
+    node.setAttribute("data-runtime-localize-attributes", "off");
+    node.setAttribute("aria-label", text(i18n.t(key)));
+  });
   renderFilterCounts();
   renderDiscoverySnapshot();
   localeSelect.value = i18n.locale();
@@ -1824,7 +1851,7 @@ availabilityButtons.forEach((button) => {
 });
 
 gameSearch?.addEventListener("input", () => {
-  activeSearch = gameSearch.value.trim().toLowerCase();
+  activeSearch = normalizeSearch(gameSearch.value);
   applyFilter();
 });
 

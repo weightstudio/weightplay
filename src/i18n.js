@@ -1778,6 +1778,41 @@
   "龜": "龟"
 });
 
+  const essentialLobbyCopy = {
+    ja: ["すべてのゲーム", "最近プレイ", "お気に入り", "すべてのテーマ", "注目", "どうぶつゲーム", "パズル", "ストラテジー", "アーケードゲーム", "学び"],
+    ko: ["모든 게임", "최근 플레이", "즐겨찾기", "모든 주제", "추천", "동물 게임", "퍼즐", "전략", "아케이드 게임", "교육"],
+    es: ["Todos los juegos", "Jugados recientemente", "Favoritos", "Todos los temas", "Destacados", "Juegos de animales", "Rompecabezas", "Juegos de estrategia", "Juegos arcade", "Educación"],
+    "pt-BR": ["Todos os jogos", "Jogados recentemente", "Favoritos", "Todos os temas", "Destaques", "Jogos de animais", "Quebra-cabeças", "Estratégia", "Jogos arcade", "Educação"],
+    fr: ["Tous les jeux", "Jeux récents", "Favoris", "Tous les thèmes", "À la une", "Jeux d’animaux", "Jeux de réflexion", "Stratégie", "Jeux d’arcade", "Éducation"],
+    de: ["Alle Spiele", "Kürzlich gespielt", "Favoriten", "Alle Themen", "Empfohlen", "Tierspiele", "Rätsel", "Strategie", "Arcade-Spiele", "Lernen"],
+    it: ["Tutti i giochi", "Giocati di recente", "Preferiti", "Tutti i temi", "In evidenza", "Giochi di animali", "Rompicapi", "Strategia", "Giochi arcade", "Educazione"],
+    ru: ["Все игры", "Недавние", "Избранное", "Все темы", "Рекомендуемые", "Игры с животными", "Головоломки", "Стратегии", "Аркадные игры", "Обучение"],
+    hi: ["सभी गेम", "हाल में खेले गए", "पसंदीदा", "सभी विषय", "विशेष गेम", "जानवरों के गेम", "पहेलियाँ", "रणनीति", "आर्केड गेम", "शिक्षा"],
+    ar: ["كل الألعاب", "لُعبت مؤخرًا", "المفضلة", "كل المواضيع", "مختارة", "ألعاب الحيوانات", "ألغاز", "استراتيجية", "ألعاب أركيد", "تعليم"],
+  };
+  Object.entries(essentialLobbyCopy).forEach(([locale, copy]) => {
+    const [allGames, recent, favorites, allTopics, featured, animal, puzzle, strategy, arcade, education] = copy;
+    dictionaries[locale] = {
+      ...(dictionaries[locale] || {}),
+      "library.all_games": allGames,
+      "library.recent": recent,
+      "library.favorites": favorites,
+      "filter.all_topics": allTopics,
+      "topic.featured": featured,
+      "topic.animal": animal,
+      "topic.puzzle": puzzle,
+      "topic.strategy": strategy,
+      "topic.arcade": arcade,
+      "topic.education": education,
+      "category.Featured": featured,
+      "category.Animal Games": animal,
+      "category.Puzzle": puzzle,
+      "category.Strategy": strategy,
+      "category.Arcade": arcade,
+      "category.Education": education,
+    };
+  });
+
   Object.entries(lifetimeStatsCopy).forEach(([locale, copy]) => {
     dictionaries[locale] = { ...(dictionaries[locale] || {}), ...copy };
   });

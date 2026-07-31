@@ -8,13 +8,13 @@
   <meta name="theme-color" content="#071923">
   <meta name="robots" content="index,follow" />
   <meta name="description" content="2042年の町、森、神経研究所をひと続きに探索。偽装したリザード人を暴き、成長して最初の司令官を倒そう。" />
-  <meta property="og:site_name" content="WeightPlay">
-  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="WeightPlay" />
+  <meta property="og:type" content="website" />
   <meta property="og:title" content="シグナル・ヴェール | WeightPlay" />
   <meta property="og:description" content="2042年の町、森、神経研究所をひと続きに探索。偽装したリザード人を暴き、成長して最初の司令官を倒そう。" />
   <meta property="og:url" content="https://weightplay.com/ja/games/signal-veil/" />
-  <meta property="og:image" content="https://weightplay.com/assets/signal-veil-cover.webp">
-  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="https://weightplay.com/assets/signal-veil-cover.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="シグナル・ヴェール | WeightPlay" />
   <meta name="twitter:description" content="2042年の町、森、神経研究所をひと続きに探索。偽装したリザード人を暴き、成長して最初の司令官を倒そう。" />
   <title>シグナル・ヴェール | WeightPlay</title>
@@ -53,24 +53,28 @@
     "動物ゲーム",
     "アクション",
     "RPG",
-    "冒険"
+    "冒険",
+    "Browser Game"
   ],
   "audience": {
     "@type": "Audience",
-    "audienceType": "General players age 13 and older"
-  }
+    "audienceType": "General players age 13 and older",
+    "suggestedMinAge": 13
+  },
+  "alternateName": "Signal Veil"
 }
     </script>
     <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css">
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="style.css">
-</head>
+  <meta name="twitter:image" content="https://weightplay.com/assets/signal-veil-cover.webp" />
+  </head>
 <body data-game-id="signal-veil" data-wp-game-id="signal-veil" data-wp-combined-sound="true" data-runtime-localize="off">
   <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
       <img src="../../assets/signal-veil-items.webp" alt="" aria-hidden="true">
-      <strong data-t="loading">Calibrating neural vision…</strong>
+      <strong data-t="loading">ニューラルビジョンを調整中…</strong>
       <span class="loading-bar"><i></i></span>
     </div>
   </div>
@@ -82,42 +86,118 @@
       </a>
       <div class="title-slot">
         <small>WEIGHTPLAY ORIGINAL</small>
-        <strong data-t="title">Signal Veil</strong>
+        <strong data-t="title">シグナル・ヴェール</strong>
       </div>
       <label class="locale-picker">
-        <span data-t="language">Language</span>
+        <span data-t="language">言語</span>
         <select id="localeSelect" aria-label="Language"></select>
       </label>
     </header>
     <section class="main-hero">
       <img class="main-poster" src="../../assets/signal-veil-cover.webp" alt="Spark Paw Fia reveals a Lizard Commander with a neural-vision device" data-t-alt="シグナル・ヴェールのゲーム画像">
       <div class="main-copy">
-        <p class="kicker" data-t="kicker">2042 · FIRST CONTACT</p>
+        <p class="kicker" data-t="kicker">2042・ファーストコンタクト</p>
         <h1 data-t="title">シグナル・ヴェール</h1>
-        <p class="main-summary" data-t="summary">Explore a connected town, forest, and laboratory. Expose hidden threats and defeat the first Lizard Commander.</p>
+        <p class="main-summary" data-t="summary">フィアの57ミッション、リアルタイム戦闘、ニューラルビジョン、装備、ローカル進行を解説します。</p>
         <p id="mainProgress" class="main-progress" data-wp-main-progress>MISSIONS 0 / 33</p>
-        <button id="startGame" class="primary standard-main-start" data-runtime-localize="off" type="button" data-t="start">Start Game</button>
+        <button id="startGame" class="primary standard-main-start" data-runtime-localize="off" type="button" data-t="start">ゲーム開始</button>
       </div>
     </section>
     <!-- adsense-static-guide:start -->
-    <section class="game-page-info game-page-info-static" aria-label="シグナル・ヴェール のゲーム情報">
-    
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>シグナル・ヴェール</h2><p>2042年の町、森、神経研究所をひと続きに探索。偽装したリザード人を暴き、成長して最初の司令官を倒そう。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>見下ろし型アクションRPG</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>動物ゲーム · アクション · RPG · 冒険</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>進行状況は保存されますか?</dt><dd>はい、このブラウザでのみ可能です。</dd></div></dl></div>
-      
-    </div>
-  </section>
+    <section class="game-guide game-page-info" aria-labelledby="guideTitle">
+      <div class="game-info-hero">
+        <div class="game-info-title">
+          <h2 id="guideTitle" data-t="guideTitle">『シグナル・ヴェール』完全調査ガイド</h2>
+          <p data-t="guideLead">フィアの57ミッション、リアルタイム戦闘、ニューラルビジョン、装備、ローカル進行を解説します。</p>
+        </div>
+      </div>
+      <div class="game-info-sections">
+        <section class="game-info-section">
+          <h3 data-t="guideOverviewTitle">世界と任務</h3>
+          <p data-t="guideOverviewA">2042年、失踪と襲撃が地球各地で続発する。スパークポー・フィアは偽物扱いされたリザード人の映像を追ってシグナルタウンへ来た。十人の証言を集め、月夜の森を抜け、放棄された神経研究所へ入ろう。本作はステージ選択のない連続世界で、位置、レベル、装備、任務、宝箱、敵、物語の進行をこのブラウザに保存する。</p>
+          <p data-t="guideOverviewB">現在の物語は57ミッションで、シグナルタウン、ヴェイルウッド、神経研究所、ムーンフォール中継所、アッシュフォール天文台を結びます。証人への聞き込み、隠し道の追跡、巡回兵との戦闘、装備回収、記録解読、最後の証拠選択までが一つの連続した調査です。 アッシュフォール東門からホロウ・アーカイブへ。最後の信号が待っている。 双方向の避難航路がある。応答すれば帰路を示し、遮蔽すれば座標をHelixから守れる。</p>
+        </section>
+        <section class="game-info-section game-info-chapter">
+          <div class="game-info-chapter-heading">
+            <h3 data-t="guideChapterOneWalkthroughTitle">任務</h3>
+            <span data-t="guideChapterOneRange">1–23</span>
+          </div>
+          <p data-t="guideChapterOneWalkthrough">2042年、失踪と襲撃が地球各地で続発する。スパークポー・フィアは偽物扱いされたリザード人の映像を追ってシグナルタウンへ来た。十人の証言を集め、月夜の森を抜け、放棄された神経研究所へ入ろう。本作はステージ選択のない連続世界で、位置、レベル、装備、任務、宝箱、敵、物語の進行をこのブラウザに保存する。 森の門を開く前に全員と話そう。警戒範囲を見て一体ずつ誘い出す。重装兵や術士にはスキルを当てて隙を攻める。シアンの火花、怪しい壁、変化する会話では真実視界を使う。司令官の弾幕中は動き続け、突進を避け、気絶中に反撃しよう。</p>
+        </section>
+        <section class="game-info-section game-info-chapter">
+          <div class="game-info-chapter-heading">
+            <h3 data-t="guideChapterTwoWalkthroughTitle">2マップ調査</h3>
+            <span data-t="guideChapterTwoRange">24–33</span>
+          </div>
+          <p data-t="guideChapterTwoWalkthrough">司令官を倒したらオルラへ報告し、ムーンフォールを解放する。8体の番兵を倒し、3つの記録を起動して戻ろう。2つのゲートは開いたままなので、両マップを往復できる。 記録1：トカゲ艦隊は死にゆく月から逃れ、保護を求めていた。 記録2：ヘリックス局は救難信号を奪い、神経パターンで偽装を作った。 記録3：司令官は証拠を消されないよう守っていた。</p>
+        </section>
+        <section class="game-info-section game-info-chapter">
+          <div class="game-info-chapter-heading">
+            <h3 data-t="guideChapterThreeWalkthroughTitle">アッシュフォール天文台</h3>
+            <span data-t="guideChapterThreeRange">34–45</span>
+          </div>
+          <p data-t="guideChapterThreeWalkthrough">警告記録はアッシュフォール天文台を示している。Helixは生存中の技術者を一人確認し、施設抹消を命じた。ムーンフォール東門から向かい、粛清前に救出しよう。 Helixを暴けるが、生中継はアスターの位置を明かす。今放送するか、証人を守り持ち帰ろう。 私はHelixの偽装装置を保守していた。人間の記憶を書き換えると知り、発進記録を複製した。彼らは私を消すため天文台を焼いた。 Helixを暴けるが、生中継はアスターの位置を明かす。今放送するか、証人を守り持ち帰ろう。 証拠は公開網へ流れた。Helixは偽物と言えないが、こちらの位置も知られた。 アスターとブラックボックスは無事だ。追跡されないよう、信頼できる局から段階的に公開する。</p>
+        </section>
+        <section class="game-info-section game-info-chapter">
+          <div class="game-info-chapter-heading">
+            <h3 data-t="guideChapterFourWalkthroughTitle">月裏のホロウ・アーカイブ</h3>
+            <span data-t="guideChapterFourRange">46–57</span>
+          </div>
+          <p data-t="guideChapterFourWalkthrough">アッシュフォール東門からホロウ・アーカイブへ。最後の信号が待っている。 双方向の避難航路がある。応答すれば帰路を示し、遮蔽すれば座標をHelixから守れる。 47隻の民間船がHelixによって残骸と改名されている。帰還句は「私たちは侵略者ではない」。 地図は家族史として書かれている。本物の記憶を知らなければHelixは追えない。 子供たちは盗まれた放送でシグナル・タウンの天気を学び、フィアの世界を青い避難所と描いた。 追手は消えた。避難所に応答して船団を導くか、難民が時を選ぶまで航路を遮蔽するか？ 避難所に応答した。船団はシグナル・タウンへの生きた航路を得た。到着する全員を共に守ろう。 進入鍵を消去した。避難所は見えないまま、難民自身が姿を現す時を選べる。</p>
+        </section>
+        <section class="game-info-section">
+          <h3 data-t="guideHowTitle">操作とゲームループ</h3>
+          <ol>
+            <li data-t="guideStep1">画面上部の目的を読み、現在の地域を探索する。</li>
+            <li data-t="guideStep2">見える操作表示をタップ、またはEで会話・宝箱・記録・ゲートを使う。</li>
+            <li data-t="guideStep3">敵の方向を向き、攻撃で剣気、スキルで遠距離弾を放つ。</li>
+            <li data-t="guideStep4">シアンの手掛かりでは真実視界を使い、偽装や透明な対象を探す。</li>
+            <li data-t="guideStep5">目的を完了し、必要な証拠をオーラへ持ち帰る。</li>
+          </ol>
+          <p data-t="guideLoop">PCはWASDまたは矢印キーで移動。Space/Jで正面近接攻撃、Kで遠距離弾、Vでビジョン切替、Eで会話や宝箱、Escapeでメニュー。モバイルは左スティックと攻撃・スキル・ビジョンボタンを使う。敵は巡回、追跡、近接攻撃を行い、司令官は体力に応じて攻撃を変える。 通常視界は人々が認識する世界を映す。真実視界は隠し道、偽装したリザード人、透明な敵、秘密の扉、宝をシアンで示す。試作レンズは資源を消費しない。司令官の安定装置は、相手が変身したのではなく、人間の視覚が干渉されていた事実を示す。</p>
+        </section>
+        <section class="game-info-section game-info-progress">
+          <h3 data-t="guideProgressTitle">成長・装備・難易度</h3>
+          <p data-t="guideProgression">十五体の敵を倒して経験値を得る。レベルアップで最大体力、攻撃、防御が上がる。三つの隠し宝箱にはパルスブレード、レンジャーアーマー、シグナルチャームがあり、取得すると即座に装備され保存される。遠距離スキルには短いクールダウンがあり、近接は素早く強い。 司令官を倒したらオルラへ報告し、ムーンフォールを解放する。8体の番兵を倒し、3つの記録を起動して戻ろう。2つのゲートは開いたままなので、両マップを往復できる。 警告記録はアッシュフォール天文台を示している。Helixは生存中の技術者を一人確認し、施設抹消を命じた。ムーンフォール東門から向かい、粛清前に救出しよう。 Helixを暴けるが、生中継はアスターの位置を明かす。今放送するか、証人を守り持ち帰ろう。 アッシュフォール東門からホロウ・アーカイブへ。最後の信号が待っている。 双方向の避難航路がある。応答すれば帰路を示し、遮蔽すれば座標をHelixから守れる。</p>
+        </section>
+        <section class="game-info-section game-info-strategy">
+          <h3 data-t="guideTipsTitle">実用的な調査のコツ</h3>
+          <ul>
+            <li data-t="guideTip1">森の門を開く前に全員と話そう。</li>
+            <li data-t="guideTip2">警戒範囲を見て一体ずつ誘い出す。</li>
+            <li data-t="guideTip3">重装兵や術士にはスキルを当てて隙を攻める。</li>
+            <li data-t="guideTip4">シアンの火花、怪しい壁、変化する会話では真実視界を使う。</li>
+            <li data-t="guideTip5">司令官の弾幕中は動き続け、突進を避け、気絶中に反撃しよう。</li>
+          </ul>
+        </section>
+        <section class="game-info-section">
+          <h3 data-t="guideDesignTitle">開発デザインノート</h3>
+          <p data-t="guideDesign">連続世界は場所と手掛かりを覚えやすくします。真実視界にはエネルギー消費がなく、資源管理ではなく観察が判断になります。PCのキーとスマホの表示ボタンは同じ行動を実行し、57ミッションは発見、戦闘、装備、解読、報告をそれぞれ記録します。</p>
+        </section>
+        <section class="game-info-section">
+          <h3 data-t="guideSaveTitle">プレイヤー・端末・セーブ情報</h3>
+          <p data-t="guideSave">最初のリザード司令官を倒し装置を回収すると章クリア。体力がゼロでも安全なチェックポイントから復帰し、レベル、装備、任務、主要撃破は残る。アカウント不要で保存先はこの端末のブラウザ。サイトデータ削除や端末変更で失われる場合がある。 アカウント不要。任務、EXP、レベル、体力、装備、宝箱、撃破、チェックポイント、選択はブラウザへ自動保存されます。移動だけでは毎フレーム保存しません。5ダイヤのシグナルアンカーは任意の永続HP強化です。</p>
+        </section>
+        <section class="game-info-section">
+          <h3 data-t="guideFaqTitle">よくある質問</h3>
+          <dl>
+            <div><dt><span data-t="guideFaqQ1">ミッションと地域はいくつ？</span></dt><dd data-t="guideFaqA1">57ミッションと6つの主要地域があり、物語でゲートが順に開きます。</dd></div>
+            <div><dt><span data-t="guideFaqQ2">真実視界はエネルギーを使う？</span></dt><dd data-t="guideFaqA2">使いません。レンズ入手後は自由に切り替え、透明な敵、偽装、隠し道、宝を発見できます。</dd></div>
+            <div><dt><span data-t="guideFaqQ3">装備は外せる？</span></dt><dd data-t="guideFaqA3">外せます。能力はメニューに表示され、外しても所有権は失いません。</dd></div>
+            <div><dt><span data-t="guideFaqQ4">倒されるとどうなる？</span></dt><dd data-t="guideFaqA4">安全なチェックポイントへ戻り、永続進行と重要な状態は残ります。</dd></div>
+            <div><dt><span data-t="guideFaqQ5">所要時間は？</span></dt><dd data-t="guideFaqA5">探索と戦闘で変わります。4章は分けて遊べ、ローカル地点から再開できます。</dd></div>
+          </dl>
+        </section>
+        <section class="game-info-section">
+          <h3 data-t="guideRelatedTitle">関連するWeightPlayゲーム</h3>
+          <div class="game-info-related">
+            <a class="game-info-related-card" href="/games/animal-relic-hunters/"><img src="../../assets/animal-relic-hunters-cover.webp" alt=""><span class="game-info-related-copy"><strong data-t="guideRelated1Title">アニマル・レリックハンターズ</strong><span data-t="guideRelated1Text">遺物を集め、多段階ガーディアンと戦う部屋制アクション。</span></span></a>
+            <a class="game-info-related-card" href="/games/animal-crystal-survivor/"><img src="../../assets/animal-crystal-survivor-cover.webp" alt=""><span class="game-info-related-copy"><strong data-t="guideRelated2Title">アニマル・クリスタルサバイバー</strong><span data-t="guideRelated2Text">30ルートで構成を作り、6体のボスへ挑むサバイバル。</span></span></a>
+            <a class="game-info-related-card" href="/games/shadow-wolf-legend/"><img src="../../assets/shadow-wolf-cover.webp" alt=""><span class="game-info-related-copy"><strong data-t="guideRelated3Title">シャドウウルフ・レジェンド</strong><span data-t="guideRelated3Text">敵対策と段階変化ボスを持つダークなアクション戦役。</span></span></a>
+          </div>
+        </section>
+      </div>
+    </section>
     <!-- adsense-static-guide:end -->
   </main>
 
@@ -125,17 +205,17 @@
     <div id="battleCanvas" class="battle-canvas" data-wp-logical-battle-canvas>
       <header class="battle-header">
         <button id="battleBack" class="back-button wp-shell-return" data-wp-return="battle" type="button" aria-label="Leave investigation">←</button>
-        <div class="battle-title"><strong data-t="title">Signal Veil</strong><span id="zoneLabel">Town</span></div>
+        <div class="battle-title"><strong data-t="title">シグナル・ヴェール</strong><span id="zoneLabel">Town</span></div>
         <div class="battle-actions">
-          <button id="questButton" class="quest-button" type="button" data-t="questButton">Quest</button>
-          <button id="menuButton" class="menu-button" type="button" data-t="menu">Menu</button>
+          <button id="questButton" class="quest-button" type="button" data-t="questButton">任務</button>
+          <button id="menuButton" class="menu-button" type="button" data-t="menu">メニュー</button>
         </div>
       </header>
       <div class="hud" aria-live="polite">
-        <div class="hud-level"><small data-t="hudLevel">Level</small><b id="levelValue">1</b></div>
-        <div class="meter hp" data-t-aria="hudHealth" aria-label="Health"><i id="hpFill"></i><span><small data-t="hudHealth">Health</small><b id="hpText">40 / 40</b></span></div>
-        <div class="meter xp" data-t-aria="hudExperience" aria-label="Experience"><i id="xpFill"></i><span><small data-t="hudExperience">EXP</small><b id="xpText">0 / 30</b></span></div>
-        <div id="visionState" class="vision-state" data-t="normalVision">Normal</div>
+        <div class="hud-level"><small data-t="hudLevel">レベル</small><b id="levelValue">1</b></div>
+        <div class="meter hp" data-t-aria="hudHealth" aria-label="Health"><i id="hpFill"></i><span><small data-t="hudHealth">体力</small><b id="hpText">40 / 40</b></span></div>
+        <div class="meter xp" data-t-aria="hudExperience" aria-label="Experience"><i id="xpFill"></i><span><small data-t="hudExperience">経験</small><b id="xpText">0 / 30</b></span></div>
+        <div id="visionState" class="vision-state" data-t="normalVision">通常</div>
       </div>
       <div id="gameViewport" class="game-viewport">
         <canvas id="gameCanvas" width="960" height="540" aria-label="Signal Veil connected action RPG world" tabindex="0"></canvas>
@@ -145,65 +225,65 @@
           <strong id="speaker"></strong>
           <p id="dialogueText"></p>
           <div id="dialogueChoices" class="dialogue-choices" hidden>
-            <button id="broadcastChoice" type="button" data-t="ashfallBroadcast">Broadcast the evidence</button>
-            <button id="protectChoice" type="button" data-t="ashfallProtect">Protect the witness</button>
+            <button id="broadcastChoice" type="button" data-t="ashfallBroadcast">証拠を放送</button>
+            <button id="protectChoice" type="button" data-t="ashfallProtect">アスターを守る</button>
           </div>
-          <button id="dialogueNext" type="button" data-t="continue">Continue</button>
+          <button id="dialogueNext" type="button" data-t="continue">続ける</button>
         </div>
       </div>
       <div class="mobile-controls" aria-label="Touch controls">
         <div id="joystick" class="joystick"><i id="stick"></i></div>
         <div class="action-buttons">
-          <button id="visionButton" class="vision-button" type="button" data-t="visionSkill" data-t-aria="visionSkill" aria-label="Vision">Vision</button>
-          <button id="skillButton" type="button" data-t="skill">Skill</button>
-          <button id="attackButton" class="attack-button" type="button" data-t="attack">Attack</button>
+          <button id="visionButton" class="vision-button" type="button" data-t="visionSkill" data-t-aria="visionSkill" aria-label="Vision">真視</button>
+          <button id="skillButton" type="button" data-t="skill">スキル</button>
+          <button id="attackButton" class="attack-button" type="button" data-t="attack">攻撃</button>
         </div>
       </div>
       <div id="overlay" class="overlay" hidden>
         <section id="pausePanel" class="panel pause-panel" hidden>
-          <div class="panel-heading"><small data-t="fieldStatus">Field Status</small><h2 data-t="paused">Investigation paused</h2></div>
+          <div class="panel-heading"><small data-t="fieldStatus">探索状況</small><h2 data-t="paused">調査を一時停止</h2></div>
           <div class="pause-status">
-            <span><small data-t="hudLevel">Level</small><b id="pauseLevel">1</b></span>
-            <span><small data-t="location">Location</small><b id="pauseZone">Signal Town</b></span>
+            <span><small data-t="hudLevel">レベル</small><b id="pauseLevel">1</b></span>
+            <span><small data-t="location">場所</small><b id="pauseZone">Signal Town</b></span>
           </div>
           <p id="pauseObjective" class="pause-objective"></p>
-          <button id="resumeButton" class="primary" type="button" data-t="resume">Resume</button>
-          <button id="inventoryButton" type="button" data-t="equipment">Equipment</button>
-          <button id="returnButton" type="button" data-t="returnMain">Return to Main</button>
+          <button id="resumeButton" class="primary" type="button" data-t="resume">再開</button>
+          <button id="inventoryButton" type="button" data-t="equipment">装備</button>
+          <button id="returnButton" type="button" data-t="returnMain">メインへ戻る</button>
         </section>
         <section id="inventoryPanel" class="panel inventory-panel" hidden>
-          <h2 data-t="equipment">Equipment</h2>
+          <h2 data-t="equipment">装備</h2>
           <div class="stats" id="stats"></div>
           <div class="equipment-grid">
-            <div class="equipment-slot" data-slot="weapon"><span class="atlas-icon icon-weapon"></span><b data-t="weapon">Weapon</b><small id="weaponName"></small><em id="weaponEffect"></em><button id="weaponToggle" type="button"></button></div>
-            <div class="equipment-slot" data-slot="armor"><span class="atlas-icon icon-armor"></span><b data-t="armor">Armor</b><small id="armorName"></small><em id="armorEffect"></em><button id="armorToggle" type="button"></button></div>
-            <div class="equipment-slot" data-slot="accessory"><span class="atlas-icon icon-accessory"></span><b data-t="accessory">Accessory</b><small id="accessoryName"></small><em id="accessoryEffect"></em><button id="accessoryToggle" type="button"></button></div>
+            <div class="equipment-slot" data-slot="weapon"><span class="atlas-icon icon-weapon"></span><b data-t="weapon">武器</b><small id="weaponName"></small><em id="weaponEffect"></em><button id="weaponToggle" type="button"></button></div>
+            <div class="equipment-slot" data-slot="armor"><span class="atlas-icon icon-armor"></span><b data-t="armor">防具</b><small id="armorName"></small><em id="armorEffect"></em><button id="armorToggle" type="button"></button></div>
+            <div class="equipment-slot" data-slot="accessory"><span class="atlas-icon icon-accessory"></span><b data-t="accessory">アクセサリー</b><small id="accessoryName"></small><em id="accessoryEffect"></em><button id="accessoryToggle" type="button"></button></div>
           </div>
           <div class="diamond-upgrade">
-            <div class="diamond-balance"><img src="../../assets/weightplay-diamond.svg" alt=""><span data-t="diamonds">Diamonds</span><b id="diamondBalance">0</b></div>
-            <h3 data-t="anchorTitle">Signal Anchor</h3>
-            <p data-t="anchorEffect">Permanent: +12 maximum health for this and future investigations. Optional and never required.</p>
-            <button id="buyAnchor" type="button" data-t="anchorBuy">Install · 5 Diamonds</button>
+            <div class="diamond-balance"><img src="../../assets/weightplay-diamond.svg" alt=""><span data-t="diamonds">ダイヤ</span><b id="diamondBalance">0</b></div>
+            <h3 data-t="anchorTitle">シグナルアンカー</h3>
+            <p data-t="anchorEffect">永久：今回と今後の調査で最大体力+12。任意で、攻略には不要です。</p>
+            <button id="buyAnchor" type="button" data-t="anchorBuy">設置・ダイヤ5個</button>
             <small id="anchorStatus" aria-live="polite"></small>
           </div>
-          <button id="closeInventory" class="primary" type="button" data-t="back">Back</button>
+          <button id="closeInventory" class="primary" type="button" data-t="back">戻る</button>
         </section>
         <section id="leavePanel" class="panel leave-panel" role="dialog" aria-modal="true" hidden>
-          <h2 data-t="leaveTitle">Leave the investigation?</h2>
-          <p data-t="leaveText">Your last checkpoint and permanent progress are safe.</p>
-          <button id="continueButton" class="primary" type="button" data-t="continue">Continue</button>
-          <button id="confirmLeaveButton" type="button" data-t="returnMain">Return to Main</button>
+          <h2 data-t="leaveTitle">調査を離れますか？</h2>
+          <p data-t="leaveText">チェックポイントと永続進行は保存されています。</p>
+          <button id="continueButton" class="primary" type="button" data-t="continue">続ける</button>
+          <button id="confirmLeaveButton" type="button" data-t="returnMain">メインへ戻る</button>
         </section>
         <section id="resultPanel" class="panel result-panel" role="dialog" aria-modal="true" hidden>
           <span class="result-device atlas-icon icon-device"></span>
-          <p class="kicker" data-t="demoComplete">CHAPTER COMPLETE</p>
-          <h2 data-t="resultTitle">The veil is broken.</h2>
-          <blockquote data-t="bossQuote">“We are not invading.”</blockquote>
-          <p data-t="resultText">The Commander's device exposes hidden Lizard People among ordinary humans. The signal points beyond Earth.</p>
-          <strong data-t="ending">Earth was only the beginning.</strong>
+          <p class="kicker" data-t="demoComplete">チャプタークリア</p>
+          <h2 data-t="resultTitle">幕は破られた。</h2>
+          <blockquote data-t="bossQuote">「我々は侵略者ではない。」</blockquote>
+          <p data-t="resultText">司令官の装置が人間に紛れたリザード人を映し、信号は地球外を指した。</p>
+          <strong data-t="ending">地球は始まりにすぎない。</strong>
           <div class="result-actions">
-            <button id="continueExplore" class="primary" type="button" data-t="explore">Continue Exploring</button>
-            <button id="newGameButton" type="button" data-t="newGame">New Investigation</button>
+            <button id="continueExplore" class="primary" type="button" data-t="explore">探索を続ける</button>
+            <button id="newGameButton" type="button" data-t="newGame">新しい調査</button>
           </div>
         </section>
       </div>
@@ -214,7 +294,7 @@
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/site-config.js"></script>
   <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="/src/i18n.js?v=20260731-general-ar-lobby1"></script>
+  <script src="/src/i18n.js?v=20260731-adsense-content2"></script>
   <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
   <script src="../../src/wallet.js"></script>
   <script src="locales.js"></script>

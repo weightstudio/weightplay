@@ -2,7 +2,8 @@
   "use strict";
   const pack = window.AnimalDiceBastionLocales;
   const $ = (id) => document.getElementById(id);
-  const routeLocale = location.pathname.split("/").filter(Boolean)[0] || "";
+  const routeSegment = location.pathname.split("/").filter(Boolean)[0] || "";
+  const routeLocale = Object.values(pack.segments).includes(routeSegment.toLowerCase()) ? routeSegment : "";
   const canonicalLocale = (value) => {
     const raw = String(value || "").toLowerCase();
     if (raw === "zh-tw" || raw.includes("hant")) return "zh-Hant";
@@ -15,11 +16,12 @@
     get(key) { try { return localStorage.getItem(key); } catch { return memory[key] ?? null; } },
     set(key, value) { memory[key] = String(value); try { localStorage.setItem(key, String(value)); } catch {} }
   };
-  let locale = canonicalLocale(routeLocale || window.WonderI18n?.actualLocale?.() || storage.get("wonderLocale") || navigator.language);
+  let locale = canonicalLocale(routeLocale || window.WonderI18n?.actualLocale?.() || storage.get("weightPlayLocale") || storage.get("wonderLocale") || navigator.language);
   const t = (key, vars = {}) => String(pack.dictionaries[locale]?.[key] ?? pack.dictionaries.en[key] ?? key)
     .replace(/\{(\w+)\}/g, (_, name) => vars[name] ?? `{${name}}`);
 
   const SAVE_KEY = "weightplay-animal-dice-bastion-v1";
+  const guardianIds = ["grove","spark","moon","forge","tide"];
   const normalizeSave = (source = {}) => {
     const stars = {};
     if (source.stars && typeof source.stars === "object") {
@@ -37,6 +39,7 @@
         heart: Math.max(0, Math.min(5, Math.trunc(Number(source.upgrades?.heart)) || 0)),
         charge: Math.max(0, Math.min(5, Math.trunc(Number(source.upgrades?.charge)) || 0))
       },
+      openingGuardian: guardianIds.includes(source.openingGuardian) ? source.openingGuardian : "",
       tutorialSeen: Boolean(source.tutorialSeen)
     };
   };
@@ -63,6 +66,35 @@
     {id:"tide", image:"../../assets/animal-dice-bastion/guardian-tide.webp", power:.74, rate:1.02, splash:.45, color:"#60a5fa"}
   ];
   const guardianMap = Object.fromEntries(guardianTypes.map((item) => [item.id, item]));
+  function selectOpeningGuardian(id, focus = false) {
+    if(!guardianMap[id])return;
+    save.openingGuardian=id;persist();renderGuardianRoster();
+    $("teamFeedback").textContent=t("openingSelected",{guardian:t(id)});
+    announce(t("openingSelected",{guardian:t(id)}));
+    if(focus)$("guardianRoster").querySelector(`[data-guardian="${id}"]`)?.focus();
+  }
+  function renderGuardianRoster() {
+    const roster=$("guardianRoster");
+    if(!roster)return;
+    roster.replaceChildren(...guardianTypes.map((type,index)=>{
+      const button=document.createElement("button"),selected=save.openingGuardian===type.id;
+      button.type="button";button.className=`guardian-choice ${type.id}${selected?" selected":""}`;
+      button.dataset.guardian=type.id;button.setAttribute("role","radio");button.setAttribute("aria-checked",String(selected));
+      button.tabIndex=selected||(!save.openingGuardian&&index===0)?0:-1;
+      button.setAttribute("aria-label",`${t(type.id)} · ${t(`${type.id}Role`)} · ${t("powerShort")} ${type.power.toFixed(2)} · ${t("speedShort")} ${type.rate.toFixed(2)}`);
+      button.innerHTML=`<img src="${type.image}" alt=""><span><strong>${t(type.id)}</strong><small>${t(`${type.id}Role`)}</small><em>${t("powerShort")} ${type.power.toFixed(2)} · ${t("speedShort")} ${type.rate.toFixed(2)}</em></span><b aria-hidden="true">${selected?"✓":""}</b>`;
+      button.addEventListener("click",()=>selectOpeningGuardian(type.id,true));
+      button.addEventListener("keydown",(event)=>{
+        let next=index;
+        if(event.key==="ArrowRight"||event.key==="ArrowDown")next=(index+1)%guardianTypes.length;
+        else if(event.key==="ArrowLeft"||event.key==="ArrowUp")next=(index-1+guardianTypes.length)%guardianTypes.length;
+        else if(event.key==="Home")next=0;else if(event.key==="End")next=guardianTypes.length-1;else return;
+        event.preventDefault();selectOpeningGuardian(guardianTypes[next].id,true);
+      });
+      return button;
+    }));
+    $("teamFeedback").textContent=save.openingGuardian?t("openingSelected",{guardian:t(save.openingGuardian)}):t("openingPending");
+  }
   const roadPaths = [
     [[0,.68],[.22,.58],[.48,.66],[.73,.5],[1,.58]],
     [[0,.42],[.22,.7],[.48,.38],[.74,.68],[1,.46]],
@@ -159,6 +191,7 @@
       button.addEventListener("click", () => locked ? announce(t("locked")) : startBattleFromPlayer(index));
       return button;
     }));
+    renderGuardianRoster();
     renderWorkshop();
   }
   function markCentered(index) {
@@ -262,7 +295,7 @@
       summonCost:10, drought:0, core:maxCore, maxCore, wave:0, plan:createWavePlan(stage), enemies:[], spawnQueue:[],
       spawnClock:0, between:1.3, attackClock:0, burst:0, rally:0, rallyCooldown:0, rerolls:0, merges:0,
       projectiles:[], impacts:[], shotsFired:0, hits:0, burstFx:0, rerollFx:0, rerollIndex:-1,
-      damage:0, finished:false, paused:false, time:0
+      damage:0, openingGuardian:save.openingGuardian, openingUsed:false, finished:false, paused:false, time:0
     };
     resultCommitted = false;
     $("tutorialPanel").hidden = true; $("leavePanel").hidden = true; $("pausePanel").hidden = true; $("resultPanel").hidden = true;
@@ -321,7 +354,9 @@
     if (slot < 0) { announce(t("boardFull")); return; }
     if (run.charge < run.summonCost) { announce(t("notEnoughCharge",{cost:run.summonCost})); return; }
     run.charge -= run.summonCost; run.summonCost = Math.min(38, run.summonCost + 2);
-    const forceMatch = run.drought >= 6 && !hasMergePair(), type = randomType(forceMatch);
+    const openingType=!run.openingUsed&&guardianMap[run.openingGuardian]?run.openingGuardian:"";
+    const forceMatch = !openingType&&run.drought >= 6 && !hasMergePair(), type = openingType||randomType(forceMatch);
+    run.openingUsed=true;
     run.board[slot] = {type, rank:1, cooldown:run.random()*.4}; run.drought = hasMergePair() ? 0 : run.drought + 1;
     run.cursor = slot; renderBoard(); updateBattleHud(true);
     announce(forceMatch ? t("droughtGift",{guardian:t(type)}) : t("summoned",{guardian:t(type)}));
@@ -630,7 +665,7 @@
 
   $("startBtn").addEventListener("click",()=>showScreen("stage"));
   $("stageBackBtn").addEventListener("click",()=>showScreen("main"));
-  $("localeSelect").addEventListener("change",(event)=>{locale=canonicalLocale(event.target.value);storage.set("wonderLocale",locale);window.WonderI18n?.setLocale?.(locale);applyLocale()});
+  $("localeSelect").addEventListener("change",(event)=>{locale=canonicalLocale(event.target.value);storage.set("weightPlayLocale",locale);window.WonderI18n?.setLocale?.(locale);applyLocale()});
   $("summonBtn").addEventListener("click",()=>{reclaimVisiblePlayerAction();summon()});
   $("rerollBtn").addEventListener("click",()=>{reclaimVisiblePlayerAction();reroll()});
   $("rallyBtn").addEventListener("click",()=>{reclaimVisiblePlayerAction();rally()});
@@ -672,7 +707,7 @@
     setLocale(code){locale=canonicalLocale(code);applyLocale()},
     advanceVisibleElapsed(seconds){if(run)updateVisibleElapsed(seconds);return this.snapshot()},
     forceWin(){if(run)finish(true)}, forceLose(){if(run){run.core=0;finish(false)}},
-    snapshot(){return{locale,screen,save:JSON.parse(JSON.stringify(save)),stagePanel,run:run&&{stage:run.stage.n,route:run.stage.route,board:run.board.map((unit)=>unit&&{...unit}),selected:run.selected,cursor:run.cursor,charge:run.charge,summonCost:run.summonCost,drought:run.drought,core:run.core,maxCore:run.maxCore,wave:run.wave,time:run.time,enemies:run.enemies.map((enemy)=>({...enemy})),projectiles:run.projectiles.length,impacts:run.impacts.length,shotsFired:run.shotsFired,hits:run.hits,damage:run.damage,burst:run.burst,burstFx:run.burstFx,rally:run.rally,rallyCooldown:run.rallyCooldown,rerolls:run.rerolls,merges:run.merges,finished:run.finished,paused:run.paused}}},
+    snapshot(){return{locale,screen,save:JSON.parse(JSON.stringify(save)),stagePanel,run:run&&{stage:run.stage.n,route:run.stage.route,board:run.board.map((unit)=>unit&&{...unit}),selected:run.selected,cursor:run.cursor,charge:run.charge,summonCost:run.summonCost,drought:run.drought,openingGuardian:run.openingGuardian,openingUsed:run.openingUsed,core:run.core,maxCore:run.maxCore,wave:run.wave,time:run.time,enemies:run.enemies.map((enemy)=>({...enemy})),projectiles:run.projectiles.length,impacts:run.impacts.length,shotsFired:run.shotsFired,hits:run.hits,damage:run.damage,burst:run.burst,burstFx:run.burstFx,rally:run.rally,rallyCooldown:run.rallyCooldown,rerolls:run.rerolls,merges:run.merges,finished:run.finished,paused:run.paused}}},
     setCharge(value){if(run){run.charge=Math.max(0,Math.min(100,Number(value)||0));updateBattleHud(true)}},
     setBoard(board){if(run){run.board=Array.from({length:15},(_,i)=>board[i]?{...board[i],cooldown:0}:null);renderBoard()}},
     setBurst(value){if(run){run.burst=Math.max(0,Math.min(100,Number(value)||0));updateBattleHud(true)}},
