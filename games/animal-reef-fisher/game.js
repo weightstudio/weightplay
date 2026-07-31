@@ -589,8 +589,7 @@
   let pointer = { down: false, id: null, x: 0, y: 0, tensionPct: 50, source: "canvas", keyboardHeld: false };
   let lastTime = performance.now();
   let raf = 0;
-  let windowFocused = document.hasFocus();
-  let backgroundSuspended = document.hidden || !windowFocused;
+  let backgroundSuspended = document.hidden;
   let leaveDecisionOpen = false;
   const images = {};
   const fishThumbCache = {};
@@ -902,7 +901,7 @@
   }
 
   function restartFishingLoop() {
-    if (backgroundSuspended || document.hidden || !windowFocused || leaveDecisionOpen || state !== "game" || !run || run.finished) return;
+    if (backgroundSuspended || document.hidden || leaveDecisionOpen || state !== "game" || !run || run.finished) return;
     cancelAnimationFrame(raf);
     lastTime = performance.now();
     raf = requestAnimationFrame(tick);
@@ -1762,12 +1761,21 @@
     ctx.restore();
   }
 
+  function updateVisibleElapsed(elapsed) {
+    let remaining = Math.min(1, Math.max(0, elapsed));
+    while (remaining > 0 && run && !run.finished) {
+      const step = Math.min(0.05, remaining);
+      update(step);
+      remaining -= step;
+    }
+  }
+
   function tick(now) {
     raf = 0;
-    if (backgroundSuspended || document.hidden || !windowFocused || leaveDecisionOpen || state !== "game" || !run || run.finished) return;
-    const dt = Math.min(0.05, (now - lastTime) / 1000);
+    if (backgroundSuspended || document.hidden || leaveDecisionOpen || state !== "game" || !run || run.finished) return;
+    const elapsed = (now - lastTime) / 1000;
     lastTime = now;
-    update(dt);
+    updateVisibleElapsed(elapsed);
     draw();
     raf = requestAnimationFrame(tick);
   }
@@ -1950,7 +1958,7 @@
   }
 
   function resumeDiamondPurchaseConfirmation() {
-    if (!diamondPurchasePending || diamondConfirmTimer || document.hidden || !windowFocused) return;
+    if (!diamondPurchasePending || diamondConfirmTimer || document.hidden) return;
     armDiamondPurchaseConfirmation(diamondConfirmRemaining);
   }
 
@@ -2187,23 +2195,20 @@
     raf = 0;
   }
   function resumeBackgroundFishing() {
-    if (document.hidden || !windowFocused) return;
+    if (document.hidden) return;
     resumeDiamondPurchaseConfirmation();
     if (!backgroundSuspended) return;
     backgroundSuspended = false;
     restartFishingLoop();
   }
   function reclaimVisiblePlayerInteraction(evt) {
-    if (document.hidden || evt?.isTrusted === false || windowFocused) return;
-    windowFocused = true;
+    if (document.hidden || evt?.isTrusted === false) return;
     resumeBackgroundFishing();
   }
   window.addEventListener("blur", () => {
-    windowFocused = false;
-    suspendBackgroundFishing();
+    cancelFishingInput();
   });
   window.addEventListener("focus", () => {
-    windowFocused = true;
     resumeBackgroundFishing();
   });
   window.addEventListener("pagehide", suspendBackgroundFishing);

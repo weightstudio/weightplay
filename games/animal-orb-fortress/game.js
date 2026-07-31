@@ -836,17 +836,46 @@
     [80, 240, 560].forEach((delay) => window.setTimeout(focusStart, delay));
   }
 
+  function setSceneOwnership(node, active) {
+    node.inert = !active;
+    node.hidden = !active;
+    if (active) {
+      node.removeAttribute("aria-hidden");
+    } else {
+      node.setAttribute("aria-hidden", "true");
+    }
+  }
+
   function show(panel) {
     if (panel !== nodes.gamePanel) cancelPointerAim();
-    [nodes.menuPanel, nodes.stagePanel, nodes.gamePanel, nodes.upgradePanel, nodes.pausePanel, nodes.resultPanel].forEach((node) => node.classList.add("is-hidden"));
+    const previousFocus = document.activeElement;
+    if (previousFocus instanceof HTMLElement && !panel.contains(previousFocus)) {
+      previousFocus.blur();
+    }
+    [nodes.menuPanel, nodes.stagePanel, nodes.gamePanel, nodes.upgradePanel, nodes.pausePanel, nodes.resultPanel].forEach((node) => {
+      node.classList.add("is-hidden");
+      setSceneOwnership(node, false);
+    });
     const resultOpen = panel === nodes.resultPanel;
     const upgradeOpen = panel === nodes.upgradePanel;
     const battleCovered = resultOpen || upgradeOpen;
-    if (battleCovered) nodes.gamePanel.classList.remove("is-hidden");
+    if (battleCovered) {
+      nodes.gamePanel.classList.remove("is-hidden");
+      setSceneOwnership(nodes.gamePanel, true);
+    }
     panel.classList.remove("is-hidden");
+    setSceneOwnership(panel, true);
     $("battleLive").inert = battleCovered;
     $("battleLive").setAttribute("aria-hidden", battleCovered ? "true" : "false");
     document.body.classList.toggle("orb-fortress-playing", panel !== nodes.menuPanel);
+    if (panel === nodes.gamePanel || battleCovered) {
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+      window.dispatchEvent(new Event("weightplay:battle-sync"));
+    } else {
+      window.dispatchEvent(new Event("weightplay:battle-sync"));
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+    }
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
     updateOrbBattleScale();
     if (panel === nodes.gamePanel || battleCovered) {
       window.dispatchEvent(new Event("weightplay:battle-open"));
@@ -1567,6 +1596,7 @@
       cancelAnimationFrame(raf);
       state.mode = "paused";
       nodes.pausePanel.classList.remove("is-hidden");
+      setSceneOwnership(nodes.pausePanel, true);
       $("battleLive").inert = true;
       $("battleLive").setAttribute("aria-hidden", "true");
       nodes.resumeBtn.focus({ preventScroll: true });
@@ -1574,6 +1604,7 @@
     }
     if (state.mode !== "paused") return;
     nodes.pausePanel.classList.add("is-hidden");
+    setSceneOwnership(nodes.pausePanel, false);
     $("battleLive").inert = false;
     $("battleLive").setAttribute("aria-hidden", "false");
     state.mode = "running";
@@ -2314,6 +2345,7 @@
     pauseFocusOwner = null;
     state.mode = "stage";
     nodes.pausePanel.classList.add("is-hidden");
+    setSceneOwnership(nodes.pausePanel, false);
     show(nodes.stagePanel);
     renderMenu();
   });
