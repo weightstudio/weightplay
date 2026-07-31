@@ -55,12 +55,12 @@
   const battleWaiters=new Set(),battleAnimations=new Set(),battleCancellation=Object.freeze({cancelled:true}),isForeground=()=>windowFocused&&!document.hidden,currentBattleSpeed=()=>battle?.speed===2?2:1;
   function reclaimVisiblePlayerAction(event){
     if(document.hidden)return false;
-    if(windowFocused)return true;
+    if(windowFocused&&!battleLifecycleSuspended)return true;
     if(!event?.isTrusted)return false;
     windowFocused=true;
     resumeBattleLifecycle();
     resumeStageToast();
-    return true;
+    return !battleLifecycleSuspended;
   }
   function syncBattleAnimationSpeed(){const speed=currentBattleSpeed();($('#battlePage')?.getAnimations({subtree:true})||[]).forEach(animation=>{if(animation.playbackRate!==speed)animation.playbackRate=speed})}
   function startBattleWait(waiter){if(waiter.timer||battleLifecycleSuspended||!isForeground())return;waiter.startedAt=performance.now();waiter.timer=setTimeout(()=>{waiter.timer=0;battleWaiters.delete(waiter);waiter.resolve()},waiter.remaining);requestAnimationFrame(syncBattleAnimationSpeed)}

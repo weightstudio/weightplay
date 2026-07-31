@@ -54,7 +54,8 @@
     const record=recordFor(engine),image=result.querySelector(".result-art"),labels=result.querySelectorAll(".result-stats b");image.src=resultImage(engine);image.alt=t.alt;image.dataset.completedMosaic="true";[t.time,t.mistakes,t.hints].forEach((value,index)=>labels[index].textContent=value);document.querySelector("#resultA").textContent=`${Math.floor(record.elapsed/60)}:${String(Math.floor(record.elapsed%60)).padStart(2,"0")}`;document.querySelector("#resultB").textContent=String(engine.mistakes);document.querySelector("#resultC").textContent=String(record.hints);
   }
   const canvas=document.querySelector("#arena"),arenaWrap=document.querySelector("#arenaWrap"),keyboardCursor=document.createElement("div");
-  let keyboardEngine=null,keyboardActive=false,boardLabel="";
+  let keyboardEngine=null,keyboardActive=false;
+  const boardLabel=canvas.getAttribute("aria-label")||"";
   keyboardCursor.id="mosaicKeyboardCursor";
   keyboardCursor.setAttribute("aria-hidden","true");
   keyboardCursor.style.cssText="position:absolute;z-index:4;pointer-events:none;border:3px solid #fff176;border-radius:7px;box-shadow:0 0 0 2px #071326,0 0 18px #63f6d3;display:none";
@@ -91,5 +92,5 @@
   canvas.addEventListener("pointerdown",()=>{keyboardActive=false;keyboardCursor.style.display="none"});
   document.addEventListener("click",event=>{if(event.target.closest?.("#mosaicHint")){event.preventDefault();event.stopImmediatePropagation();offerHint()}},true);
   new MutationObserver(updateResult).observe(result,{attributes:true,attributeFilter:["hidden"]});
-  const tick=now=>{const current=state(),engine=current?.engine;if(engine?.kind==="mosaic"&&engine!==active){active=engine;recordFor(engine);last=now}if(engine?.kind==="mosaic"&&engine!==keyboardEngine){keyboardEngine=engine;keyboardActive=false;boardLabel=canvas.getAttribute("aria-label")||"";canvas.tabIndex=0;canvas.setAttribute("aria-keyshortcuts","ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space");canvas.setAttribute("aria-describedby","feedback")}if(engine===active&&current?.screen==="battle"&&result.hidden&&document.querySelector("#helpModal")?.hidden&&document.querySelector("#leaveModal")?.hidden&&!document.hidden)recordFor(engine).elapsed+=(now-last)/1000;if(current?.screen==="battle"&&engine===keyboardEngine)syncKeyboardCursor(engine);else keyboardCursor.style.display="none";last=now;requestAnimationFrame(tick)};requestAnimationFrame(tick);
+  const tick=now=>{const current=state(),engine=current?.engine;if(engine?.kind==="mosaic"&&engine!==active){active=engine;recordFor(engine);last=now}if(engine?.kind==="mosaic"&&engine!==keyboardEngine){keyboardEngine=engine;keyboardActive=false;canvas.setAttribute("aria-label",boardLabel);canvas.tabIndex=0;canvas.setAttribute("aria-keyshortcuts","ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space");canvas.setAttribute("aria-describedby","feedback")}if(engine===active&&current?.screen==="battle"&&result.hidden&&document.querySelector("#helpModal")?.hidden&&document.querySelector("#leaveModal")?.hidden&&!document.hidden)recordFor(engine).elapsed+=(now-last)/1000;if(current?.screen==="battle"&&engine===keyboardEngine)syncKeyboardCursor(engine);else keyboardCursor.style.display="none";last=now;requestAnimationFrame(tick)};requestAnimationFrame(tick);
 })();
