@@ -27,6 +27,11 @@
     moves: "{n} moves",
     exit: "Exit",
     hint: "Hint",
+    hintMove: "Highlighted block: move {direction}.",
+    directionLeft: "left",
+    directionRight: "right",
+    directionUp: "up",
+    directionDown: "down",
     restart: "Restart",
     undo: "Undo",
     status:
@@ -95,5 +100,28 @@
     Object.entries(labels).map(([code, label]) => [code, { ...en, label }]),
   );
   locales["zh-Hant"] = { ...en, ...zhHant };
+  const hintLocalization = {
+    "zh-Hant": ["已標示方塊：請向{direction}移動。", "左", "右", "上", "下"],
+    "zh-Hans": ["已高亮方块：请向{direction}移动。", "左", "右", "上", "下"],
+    ja: ["強調されたブロックを{direction}へ動かしてください。", "左", "右", "上", "下"],
+    ko: ["강조된 블록을 {direction}쪽으로 움직이세요.", "왼쪽", "오른쪽", "위", "아래"],
+    es: ["Mueve el bloque resaltado hacia la {direction}.", "izquierda", "derecha", "parte superior", "parte inferior"],
+    "pt-BR": ["Mova o bloco destacado para a {direction}.", "esquerda", "direita", "cima", "baixo"],
+    fr: ["Déplacez le bloc en surbrillance vers la {direction}.", "gauche", "droite", "haut", "bas"],
+    de: ["Bewege den markierten Block nach {direction}.", "links", "rechts", "oben", "unten"],
+    it: ["Sposta il blocco evidenziato verso {direction}.", "sinistra", "destra", "l’alto", "il basso"],
+    ru: ["Переместите выделенный блок {direction}.", "влево", "вправо", "вверх", "вниз"],
+    hi: ["हाइलाइट किए गए ब्लॉक को {direction} ले जाएँ।", "बाएँ", "दाएँ", "ऊपर", "नीचे"],
+    ar: ["حرّك القطعة المميزة إلى {direction}.", "اليسار", "اليمين", "الأعلى", "الأسفل"]
+  };
+  Object.entries(hintLocalization).forEach(([code, values]) => {
+    Object.assign(locales[code], {
+      hintMove: values[0],
+      directionLeft: values[1],
+      directionRight: values[2],
+      directionUp: values[3],
+      directionDown: values[4],
+    });
+  });
   window.UNBLOCK_LOCALES = locales;
 })();

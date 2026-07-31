@@ -6422,6 +6422,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
   "High Perch Alarm": "高栖警报",
   "High Score: {score}": "高分：{score}",
   "High Wind, Low Calm": "风大，风平浪静",
+  "Highlighted block: move {direction}.": "突出显示的块：移动{direction}。",
   "Hint": "提示",
   "Hint corrects one route mirror that differs from the authored solution and ignores untouched decoys. Reset restores every starting rotation.": "提示会纠正与所编写的解决方案不同的一个路由镜像，并忽略未触及的诱饵。重置可恢复每次开始旋转。",
   "Hint highlights and focuses one currently legal pair. Undo restores exactly the last removed pair, including any seal, rescue, or patrol-route state changed by that match.": "提示突出显示并聚焦当前合法的一对。撤消可准确恢复最后删除的对，包括由该匹配更改的任何密封、救援或巡逻路线状态。",

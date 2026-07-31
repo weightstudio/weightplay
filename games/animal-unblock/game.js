@@ -555,22 +555,24 @@
     const element = $("board").querySelector(
       `[data-block="${move.pieceIndex}"]`,
     );
-    const cells = $("board").querySelectorAll(".cell");
-    const first = cells[0]?.getBoundingClientRect();
-    const right = cells[1]?.getBoundingClientRect();
-    const down = cells[6]?.getBoundingClientRect();
-    const unitX = right && first ? right.left - first.left : 0;
-    const unitY = down && first ? down.top - first.top : 0;
-    const delta = block.dir
-      ? (move.y - block.y) * unitY
-      : (move.x - block.x) * unitX;
-    if (!element || !delta) {
-      commitMove(block, move.x, move.y);
-      return;
-    }
-    settleElement(element, block, 0, delta, () =>
-      commitMove(block, move.x, move.y),
-    );
+    if (!element) return;
+    $("board").querySelectorAll(".hint-target").forEach((node) => {
+      node.classList.remove("hint-target");
+      node.removeAttribute("data-hint-direction");
+      node.removeAttribute("data-hint-symbol");
+      node.removeAttribute("aria-describedby");
+    });
+    const direction = block.dir
+      ? move.y < block.y ? "up" : "down"
+      : move.x < block.x ? "left" : "right";
+    const directionKey = `direction${direction[0].toUpperCase()}${direction.slice(1)}`;
+    const symbols = { left: "←", right: "→", up: "↑", down: "↓" };
+    element.classList.add("hint-target");
+    element.dataset.hintDirection = direction;
+    element.dataset.hintSymbol = symbols[direction];
+    element.setAttribute("aria-describedby", "status");
+    $("status").textContent = t("hintMove", { direction: t(directionKey) });
+    element.focus({ preventScroll: true });
   }
 
   $("start").onclick = () => {

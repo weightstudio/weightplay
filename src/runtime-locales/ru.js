@@ -6422,6 +6422,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "High Perch Alarm": "Сигнализация высокого окуня",
   "High Score: {score}": "Высокий балл: {score}",
   "High Wind, Low Calm": "Сильный ветер, слабый штиль",
+  "Highlighted block: move {direction}.": "Выделенный блок: переместите {direction}.",
   "Hint": "Подсказка",
   "Hint corrects one route mirror that differs from the authored solution and ignores untouched decoys. Reset restores every starting rotation.": "Подсказка исправляет одно зеркало маршрута, которое отличается от авторского решения, и игнорирует нетронутые ложные цели. Сброс восстанавливает каждое начальное вращение.",
   "Hint highlights and focuses one currently legal pair. Undo restores exactly the last removed pair, including any seal, rescue, or patrol-route state changed by that match.": "Подсказка выделяет и фокусирует внимание на одной допустимой в данный момент паре. Отмена восстанавливает именно последнюю удаленную пару, включая любое состояние печати, спасения или маршрута патрулирования, измененное этим совпадением.",

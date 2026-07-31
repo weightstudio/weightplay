@@ -6422,6 +6422,7 @@ window.WeightPlayGameRuntimeLocales["it"] = {
   "High Perch Alarm": "Allarme persico alto",
   "High Score: {score}": "Punteggio alto: {score}",
   "High Wind, Low Calm": "Vento forte, calma bassa",
+  "Highlighted block: move {direction}.": "Blocco evidenziato: muovi {direction}.",
   "Hint": "Suggerimento",
   "Hint corrects one route mirror that differs from the authored solution and ignores untouched decoys. Reset restores every starting rotation.": "Il suggerimento corregge un mirror del percorso che differisce dalla soluzione creata e ignora le esche intatte. Reset ripristina ogni rotazione iniziale.",
   "Hint highlights and focuses one currently legal pair. Undo restores exactly the last removed pair, including any seal, rescue, or patrol-route state changed by that match.": "Il suggerimento evidenzia e focalizza una coppia attualmente legale. Annulla ripristina esattamente l'ultima coppia rimossa, incluso qualsiasi stato di sigillo, salvataggio o percorso di pattuglia modificato da quella corrispondenza.",

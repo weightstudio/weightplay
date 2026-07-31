@@ -6422,6 +6422,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "High Perch Alarm": "إنذار جثم مرتفع",
   "High Score: {score}": "نقاط عالية: {score}",
   "High Wind, Low Calm": "رياح شديدة، وهدوء منخفض",
+  "Highlighted block: move {direction}.": "الكتلة المميزة: تحرك {direction}.",
   "Hint": "تلميح",
   "Hint corrects one route mirror that differs from the authored solution and ignores untouched decoys. Reset restores every starting rotation.": "يقوم التلميح بتصحيح مرآة مسار واحدة تختلف عن الحل المؤلف ويتجاهل الأفخاخ الخداعية التي لم تمسها. إعادة الضبط تعيد كل دورة بداية.",
   "Hint highlights and focuses one currently legal pair. Undo restores exactly the last removed pair, including any seal, rescue, or patrol-route state changed by that match.": "يسلط التلميح الضوء على زوج واحد قانوني حاليًا ويركز عليه. يؤدي التراجع إلى استعادة آخر زوج تمت إزالته بالضبط، بما في ذلك أي حالة ختم أو إنقاذ أو مسار دورية تم تغييرها بواسطة تلك المباراة.",

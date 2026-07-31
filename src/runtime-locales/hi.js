@@ -6422,6 +6422,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "High Perch Alarm": "हाई पर्च अलार्म",
   "High Score: {score}": "उच्च स्कोर: {score}",
   "High Wind, Low Calm": "तेज़ हवा, कम शांति",
+  "Highlighted block: move {direction}.": "हाइलाइट किया गया ब्लॉक: मूव {direction}।",
   "Hint": "संकेत",
   "Hint corrects one route mirror that differs from the authored solution and ignores untouched decoys. Reset restores every starting rotation.": "संकेत एक मार्ग दर्पण को सही करता है जो लिखित समाधान से भिन्न होता है और अछूते डिकॉय को अनदेखा करता है। रीसेट प्रत्येक आरंभिक रोटेशन को पुनर्स्थापित करता है।",
   "Hint highlights and focuses one currently legal pair. Undo restores exactly the last removed pair, including any seal, rescue, or patrol-route state changed by that match.": "संकेत एक वर्तमान कानूनी जोड़ी पर प्रकाश डालता है और उस पर ध्यान केंद्रित करता है। पूर्ववत करें बिल्कुल अंतिम हटाए गए जोड़े को पुनर्स्थापित करता है, जिसमें उस मैच द्वारा बदली गई किसी भी सील, बचाव, या गश्ती-मार्ग की स्थिति भी शामिल है।",

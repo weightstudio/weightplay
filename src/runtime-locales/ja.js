@@ -6422,6 +6422,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "High Perch Alarm": "ハイパーチアラーム",
   "High Score: {score}": "ハイスコア: {score}",
   "High Wind, Low Calm": "強風、穏やか",
+  "Highlighted block: move {direction}.": "ハイライトされたブロック: {direction} に移動します。",
   "Hint": "ヒント",
   "Hint corrects one route mirror that differs from the authored solution and ignores untouched decoys. Reset restores every starting rotation.": "ヒントは、作成されたソリューションとは異なる 1 つのルート ミラーを修正し、未処理のおとりを無視します。リセットすると、すべての開始回転が復元されます。",
   "Hint highlights and focuses one currently legal pair. Undo restores exactly the last removed pair, including any seal, rescue, or patrol-route state changed by that match.": "ヒントは、現在有効なペアの 1 つを強調表示し、焦点を当てます。 「元に戻す」は、その一致によって変更されたシール、レスキュー、またはパトロール ルートの状態を含む、最後に削除されたペアを正確に復元します。",

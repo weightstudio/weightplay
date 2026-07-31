@@ -6422,6 +6422,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "High Perch Alarm": "높은 농어 알람",
   "High Score: {score}": "최고 점수: {score}",
   "High Wind, Low Calm": "강풍, 낮은 진정",
+  "Highlighted block: move {direction}.": "강조 표시된 블록: 이동 {direction}.",
   "Hint": "힌트",
   "Hint corrects one route mirror that differs from the authored solution and ignores untouched decoys. Reset restores every starting rotation.": "힌트는 작성된 솔루션과 다른 하나의 경로 미러를 수정하고 손대지 않은 미끼를 무시합니다. 재설정은 모든 시작 회전을 복원합니다.",
   "Hint highlights and focuses one currently legal pair. Undo restores exactly the last removed pair, including any seal, rescue, or patrol-route state changed by that match.": "힌트는 현재 유효한 쌍 하나를 강조하고 초점을 맞춥니다. 실행 취소는 해당 일치로 인해 변경된 봉인, 구조 또는 순찰 경로 상태를 포함하여 마지막으로 제거된 쌍을 정확하게 복원합니다.",

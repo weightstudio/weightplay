@@ -6422,6 +6422,7 @@ window.WeightPlayGameRuntimeLocales["fr"] = {
   "High Perch Alarm": "Alarme de perchoir élevé",
   "High Score: {score}": "Meilleur score : {score}",
   "High Wind, Low Calm": "Vent fort, calme faible",
+  "Highlighted block: move {direction}.": "Bloc en surbrillance : déplacez {direction}.",
   "Hint": "Indice",
   "Hint corrects one route mirror that differs from the authored solution and ignores untouched decoys. Reset restores every starting rotation.": "L'indice corrige un miroir de route qui diffère de la solution créée et ignore les leurres intacts. La réinitialisation restaure chaque rotation de départ.",
   "Hint highlights and focuses one currently legal pair. Undo restores exactly the last removed pair, including any seal, rescue, or patrol-route state changed by that match.": "L'indice met en évidence et concentre une paire actuellement légale. Annuler restaure exactement la dernière paire supprimée, y compris tout état de sceau, de sauvetage ou d'itinéraire de patrouille modifié par cette correspondance.",

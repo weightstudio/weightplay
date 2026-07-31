@@ -231,6 +231,8 @@
             : id === 'result'
               ? $('nextBtn')
               : $('flight');
+        const active = document.activeElement;
+        if (active && $(id)?.contains(active) && active !== target) return;
         target?.focus({preventScroll:true});
       });
     });
@@ -456,6 +458,7 @@
     playSound('click');
     nextFlight();
     renderHud();
+    focusCurrentBattleAction();
   }
   function nextFlight() {
     const [kind, dock] = flights[state.flightIndex++ % flights.length];
