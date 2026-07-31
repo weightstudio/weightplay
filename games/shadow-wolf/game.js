@@ -214,6 +214,18 @@
     }
     if (shop) managementCard?.append(shop);
 
+    // General games report the run itself, never a player ability score.
+    nodes.resultPanel?.querySelector("[data-ui='skillReportTitle']")?.remove();
+    nodes.resultPanel?.querySelector(".report-grid")?.remove();
+
+    const removeRelatedSkillClaim = () => {
+      const related = document.querySelector(".game-page-info .game-info-related");
+      const claim = related?.previousElementSibling;
+      if (claim?.matches("p")) claim.remove();
+    };
+    removeRelatedSkillClaim();
+    new MutationObserver(removeRelatedSkillClaim).observe(document.body, { childList: true, subtree: true });
+
     nodes.campaignSummary = campaignSummary;
     nodes.stageWorkshopBtn = workshopButton;
     nodes.stageManagementPanel = managementPanel;
@@ -1835,9 +1847,9 @@
     else starsStr = "☆";
 
     starsStr = cleared >= 8 ? "★★★" : cleared >= 5 ? "★★" : cleared >= 1 ? "★" : "—";
-    nodes.logicStars.textContent = starsStr;
-    nodes.focusStars.textContent = starsStr;
-    nodes.problemStars.textContent = starsStr;
+    if (nodes.logicStars) nodes.logicStars.textContent = starsStr;
+    if (nodes.focusStars) nodes.focusStars.textContent = starsStr;
+    if (nodes.problemStars) nodes.problemStars.textContent = starsStr;
 
     if (won) {
       nodes.resultText.textContent = t("report_win");
@@ -1883,9 +1895,9 @@
       window.WonderSound?.play("wrong");
     }
 
-    nodes.logicStars.textContent = won ? "\u2605\u2605\u2605" : "\u2605";
-    nodes.focusStars.textContent = won ? "\u2605\u2605\u2605" : "\u2605";
-    nodes.problemStars.textContent = won ? "\u2605\u2605\u2605" : "\u2605";
+    if (nodes.logicStars) nodes.logicStars.textContent = won ? "\u2605\u2605\u2605" : "\u2605";
+    if (nodes.focusStars) nodes.focusStars.textContent = won ? "\u2605\u2605\u2605" : "\u2605";
+    if (nodes.problemStars) nodes.problemStars.textContent = won ? "\u2605\u2605\u2605" : "\u2605";
     state.selectedStage = won && clearedStage < STAGE_COUNT ? clearedStage + 1 : clearedStage;
     saveLocalState();
     renderAdventureRecord();
