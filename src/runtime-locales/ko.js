@@ -5543,6 +5543,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "First Footprints": "첫 번째 발자국",
   "First Freight": "첫 번째 화물",
   "First Light": "첫 번째 빛",
+  "First loop: stay close to your land and turn back quickly. Hunters can cut a long opening trail.": "첫 번째 루프: 육지에 가까이 머무르고 빠르게 되돌아가세요. 사냥꾼은 긴 오프닝 트레일을 잘라낼 수 있습니다.",
   "First Lunch Bell": "첫 번째 점심 벨",
   "First Pair": "첫 번째 쌍",
   "First Patrol": "첫 번째 순찰",

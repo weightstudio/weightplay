@@ -50,6 +50,7 @@
     tutorial1:["Steer from restored land into corruption.","從已修復的領地駛入腐化區。","从已修复的领地驶入腐化区。","修復済みの土地から汚染地帯へ進みます。","복원된 땅에서 오염 지역으로 이동하세요.","Sal de la tierra restaurada hacia la corrupción.","Saia da terra restaurada para a área corrompida.","Quittez la terre restaurée vers la zone corrompue.","Verlasse das gerettete Land in die Verderbnis.","Esci dalla terra ripristinata verso la corruzione.","Выйдите с восстановленной земли в заражённую зону."],
     tutorial2:["Reconnect to your land to claim the enclosed area.","重新接回領地，奪回被光軌包圍的區域。","重新接回领地，夺回被光轨包围的区域。","自分の土地へ戻ると、囲んだ区域を取り戻せます。","자신의 땅으로 다시 연결해 둘러싼 지역을 되찾으세요.","Vuelve a tu tierra para reclamar el área encerrada.","Reconecte à sua terra para recuperar a área cercada.","Reconnectez votre terre pour récupérer la zone encerclée.","Verbinde dich wieder mit deinem Land und sichere das umschlossene Gebiet.","Ricollegati alla tua terra per conquistare l'area racchiusa.","Вернитесь на свою землю, чтобы занять окружённую область."],
     tutorial3:["A shadow touching your open trail costs one heart.","暗影碰到尚未閉合的光軌時會失去一顆心。","暗影碰到尚未闭合的光轨时会失去一颗心。","影が開いた軌跡に触れるとハートを1つ失います。","그림자가 열린 궤적에 닿으면 하트 하나를 잃습니다.","Si una sombra toca el rastro abierto, pierdes una vida.","Se uma sombra tocar a trilha aberta, você perde uma vida.","Une ombre qui touche la piste ouverte vous coûte une vie.","Berührt ein Schatten die offene Spur, verlierst du ein Herz.","Se un'ombra tocca la scia aperta, perdi una vita.","Если тень коснётся открытого следа, вы потеряете одно сердце."],
+    tutorialFirstLoop:["First loop: stay close to your land and turn back quickly. Hunters can cut a long opening trail.","第一圈：靠近領地並迅速折返。開局光軌太長，容易被獵手切斷。","第一圈：靠近领地并迅速折返。开局光轨太长，容易被猎手切断。","最初のループは自分の土地の近くですぐ戻ろう。序盤の長い光跡はハンターに切られやすい。","첫 고리는 땅 가까이에서 빠르게 돌아오세요. 초반의 긴 궤적은 사냥꾼에게 끊기기 쉽습니다.","Primer bucle: mantente cerca de tu tierra y regresa rápido. Los cazadores pueden cortar un rastro inicial largo.","Primeiro laço: fique perto da sua terra e volte rápido. Caçadores podem cortar uma trilha inicial longa.","Première boucle : restez près de votre terre et revenez vite. Les chasseurs peuvent couper une longue piste initiale.","Erste Schleife: Bleib nahe an deinem Land und kehre schnell zurück. Jäger können eine lange Startspur kappen.","Primo anello: resta vicino alla tua terra e torna subito. I cacciatori possono spezzare una lunga scia iniziale.","Первая петля: держитесь рядом со своей землёй и быстро возвращайтесь. Охотники могут разорвать длинный начальный след."],
     tutorialDone:["Start restoring","開始修復","开始修复","修復を始める","복원 시작","Empezar a restaurar","Começar a restaurar","Commencer la restauration","Rettung beginnen","Inizia il ripristino","Начать восстановление"],
   };
   Object.assign(rows, {
@@ -87,6 +88,7 @@
       styleAlreadySelected:"{style} पहले से सुसज्जित है।",styleEquipped:"{style} सुसज्जित।",noDiamondsDetail:"{cost} हीरे चाहिए · शेष {balance}।",styleBoughtDetail:"{style} अनलॉक और सुसज्जित हुआ।",
       missionFailedKicker:"मिशन समाप्त",layoutHeart:"हृदयभूमि",layoutCross:"चौराहा",layoutTwin:"जुड़वाँ द्वीप",layoutEdge:"सीमांत आश्रय",layoutRing:"चंद्र वलय",layoutIslands:"अभयारण्य द्वीप",
       enemyProwler:"छाया शिकारी",enemyTank:"पत्थर दैत्य",enemySentry:"प्रकाश-स्तंभ प्रहरी",barrierHit:"प्राचीन खंडहर इस मार्ग को रोकते हैं।",borderShrunk:"ग्रहण ने अभयारण्य की सीमा निगल ली!"
+      ,tutorialFirstLoop:"पहला चक्र: अपनी भूमि के पास रहें और जल्दी लौटें। शिकारी लंबे शुरुआती मार्ग को काट सकते हैं।"
     },
     ar:{
       guideIntro:"تكون فيا آمنة على الأرض المستعادة. خارجها يصبح مسار البرق مكشوفًا. أعد الاتصال قبل أن يصل صياد إلى الخط المفتوح.",
@@ -99,6 +101,7 @@
       styleAlreadySelected:"{style} مجهز بالفعل.",styleEquipped:"تم تجهيز {style}.",noDiamondsDetail:"تحتاج إلى {cost} ألماسات · الرصيد {balance}.",styleBoughtDetail:"تم فتح {style} وتجهيزه.",
       missionFailedKicker:"انتهت المهمة",layoutHeart:"قلب المحمية",layoutCross:"ملتقى الطرق",layoutTwin:"الجزيرتان",layoutEdge:"ملاذ الحدود",layoutRing:"حلقة القمر",layoutIslands:"جزر المحمية",
       enemyProwler:"متسلل الظلال",enemyTank:"وحش الحجر",enemySentry:"حارس المنارة",barrierHit:"تسد الأطلال القديمة هذا الطريق.",borderShrunk:"ابتلع الكسوف حافة المحمية!"
+      ,tutorialFirstLoop:"الحلقة الأولى: ابق قريبًا من أرضك وعد بسرعة. يستطيع الصيادون قطع المسار الافتتاحي الطويل."
     }
   };
   codes.push("hi","ar");

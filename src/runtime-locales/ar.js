@@ -5543,6 +5543,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "First Footprints": "آثار الأقدام الأولى",
   "First Freight": "الشحن الأول",
   "First Light": "الضوء الأول",
+  "First loop: stay close to your land and turn back quickly. Hunters can cut a long opening trail.": "الحلقة الأولى: ابق قريبًا من أرضك ثم عد سريعًا. يمكن للصيادين قطع طريق مفتوح طويل.",
   "First Lunch Bell": "جرس الغداء الأول",
   "First Pair": "الزوج الأول",
   "First Patrol": "الدورية الأولى",

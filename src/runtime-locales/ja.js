@@ -5543,6 +5543,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "First Footprints": "最初の足跡",
   "First Freight": "第一貨物",
   "First Light": "ファーストライト",
+  "First loop: stay close to your land and turn back quickly. Hunters can cut a long opening trail.": "最初のループ: 土地の近くに留まり、すぐに引き返します。ハンターは長く続く道を切り開くことができます。",
   "First Lunch Bell": "ファーストランチベル",
   "First Pair": "最初のペア",
   "First Patrol": "最初のパトロール",

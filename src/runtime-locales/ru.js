@@ -5543,6 +5543,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "First Footprints": "Первые следы",
   "First Freight": "Первый груз",
   "First Light": "Первый свет",
+  "First loop: stay close to your land and turn back quickly. Hunters can cut a long opening trail.": "Первый цикл: держитесь ближе к своей земле и быстро поверните назад. Охотники могут проложить длинный открытый след.",
   "First Lunch Bell": "Первый обеденный звонок",
   "First Pair": "Первая пара",
   "First Patrol": "Первый патруль",

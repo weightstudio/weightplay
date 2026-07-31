@@ -5543,6 +5543,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
   "First Footprints": "第一个足迹",
   "First Freight": "首运费",
   "First Light": "第一缕曙光",
+  "First loop: stay close to your land and turn back quickly. Hunters can cut a long opening trail.": "第一个循环：靠近你的土地并快速返回。猎人可以开辟一条很长的开放路径。",
   "First Lunch Bell": "第一顿午餐钟",
   "First Pair": "第一对",
   "First Patrol": "第一次巡逻",

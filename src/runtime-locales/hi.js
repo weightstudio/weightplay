@@ -5543,6 +5543,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "First Footprints": "प्रथम पदचिह्न",
   "First Freight": "पहला माल",
   "First Light": "प्रथम प्रकाश",
+  "First loop: stay close to your land and turn back quickly. Hunters can cut a long opening trail.": "पहला लूप: अपनी ज़मीन के करीब रहें और जल्दी से वापस मुड़ें। शिकारी एक लंबा शुरुआती रास्ता काट सकते हैं।",
   "First Lunch Bell": "पहली लंच बेल",
   "First Pair": "पहली जोड़ी",
   "First Patrol": "पहली गश्त",

@@ -5543,6 +5543,7 @@ window.WeightPlayGameRuntimeLocales["fr"] = {
   "First Footprints": "Premières empreintes",
   "First Freight": "Premier fret",
   "First Light": "Première lumière",
+  "First loop: stay close to your land and turn back quickly. Hunters can cut a long opening trail.": "Première boucle : restez à proximité de votre terrain et rebroussez chemin rapidement. Les chasseurs peuvent tracer une longue piste d’ouverture.",
   "First Lunch Bell": "Première cloche du déjeuner",
   "First Pair": "Première paire",
   "First Patrol": "Première patrouille",
