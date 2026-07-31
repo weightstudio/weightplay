@@ -5581,7 +5581,8 @@ body.general-lobby-page {
 }
 
 .general-lobby-page .lobby-shell {
-  width: min(calc(100% - 24px), 1180px);
+  width: calc(100% - 24px);
+  max-width: none;
 }
 
 .general-lobby-page .desktop-filter-rail {
@@ -5778,8 +5779,8 @@ body.general-lobby-page {
 
 @media (min-width: 1120px) {
   .general-lobby-page .lobby-shell {
-    width: min(calc(100% - 24px), 1440px);
-    max-width: 1440px;
+    width: calc(100% - 24px);
+    max-width: none;
     padding-left: 264px;
     box-sizing: border-box;
   }
@@ -5788,7 +5789,7 @@ body.general-lobby-page {
     position: fixed;
     top: 12px;
     bottom: 12px;
-    left: max(12px, calc((100vw - 1440px) / 2 + 12px));
+    left: 12px;
     z-index: 20;
     display: flex;
     width: 244px;
@@ -5968,7 +5969,7 @@ body.general-lobby-page {
 
 @media (min-width: 721px) {
   .general-lobby-page .continue-playing {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 400px));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 360px));
     justify-content: start;
   }
 
@@ -5987,6 +5988,11 @@ body.general-lobby-page {
 
   .general-lobby-page .hero-game-card {
     grid-template-rows: auto minmax(0, auto);
+  }
+
+  .general-lobby-page .hero-games {
+    grid-template-columns: repeat(5, minmax(180px, 220px));
+    justify-content: start;
   }
 
   .general-lobby-page .hero-game-art {

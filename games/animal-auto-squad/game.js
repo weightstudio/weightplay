@@ -1217,7 +1217,12 @@
   }
 
   function clearActionNotice(node) {
-    if (node) node.textContent = "";
+    if (!node) return;
+    node.textContent = "";
+    if (node === nodes.prepNotice) {
+      node.classList.remove("loss-recap");
+      nodes.selectedAbilityPanel?.classList.remove("is-hidden");
+    }
   }
 
   function clearAllActionNotices() {
@@ -1518,7 +1523,20 @@
       forceQuickOutcome: (result = "win", delay = 40) => {
         if (!state.combat.animating || state.combat.ending) return false;
         if (result === "win") state.combat.enemySquad = [];
-        if (result === "lose") state.combat.playerSquad = [];
+        if (result === "lose") {
+          const fallen = state.combat.playerSquad[0];
+          const enemy = state.combat.enemySquad[0];
+          if (fallen) {
+            state.combat.lastFallen = {
+              name: combatUnitName(fallen),
+              slot: unitFormationSlot(fallen, 0)
+            };
+          }
+          if (!state.combat.lastAction && enemy) {
+            state.combat.lastAction = `${combatUnitName(enemy)} ${localizedPhrase("attacks the front row", "\u653b\u64ca\u524d\u6392", "ataca la fila delantera")}`;
+          }
+          state.combat.playerSquad = [];
+        }
         scheduleCombatEnd(result, Math.max(0, Number(delay) || 0));
         scheduleCombatEnd(result, Math.max(0, Number(delay) || 0));
         return true;
@@ -1536,7 +1554,8 @@
         windowFocused,
         suspended: combatSuspendedForBackground,
         prepVisible: !nodes.prepPhaseArea.classList.contains("is-hidden"),
-        combatVisible: !nodes.combatArea.classList.contains("is-hidden")
+        combatVisible: !nodes.combatArea.classList.contains("is-hidden"),
+        lossRecap: nodes.prepNotice?.textContent?.trim() || ""
       }),
       pauseCombatPreview: () => {
         state.combat.animating = false;
@@ -1637,6 +1656,8 @@
         shakeTarget: "",
         activeActor: null,
         activeActors: [],
+        lastAction: "",
+        lastFallen: null,
         effects: [] // visual particle FX
       },
       earnedTeamXp: 0,
@@ -1715,6 +1736,90 @@
     if (active === "es") return es;
     if (active === "ja") return japanesePhrases[en] || en;
     return combatPhraseCatalog[active]?.[en] || runtimeTranslate(en);
+  }
+
+  const lossRecapCatalog = {
+    en: {
+      recap: "Loss recap: {unit} fell in the {row}. Decisive action: {action}. Counterplay: {counter}",
+      front: "Put a tougher or shielded animal in front, or spend Supplies on Health.",
+      back: "Protect the back row with healing or shields, or move the exposed animal."
+    },
+    "zh-Hant": {
+      recap: "敗因回顧：{unit} 在{row}倒下。關鍵行動：{action}。反制方向：{counter}",
+      front: "把更耐打或有護盾的動物放到前排，或用補給提升生命。",
+      back: "用治療或護盾保護後排，或移動暴露的動物。"
+    },
+    "zh-Hans": {
+      recap: "败因回顾：{unit} 在{row}倒下。关键行动：{action}。反制方向：{counter}",
+      front: "把更耐打或有护盾的动物放到前排，或用补给提升生命。",
+      back: "用治疗或护盾保护后排，或移动暴露的动物。"
+    },
+    ja: {
+      recap: "敗因：{unit}が{row}で倒れました。決定打：{action}。対策：{counter}",
+      front: "耐久力かシールドの高い動物を前列に置くか、物資で体力を上げましょう。",
+      back: "回復やシールドで後列を守るか、無防備な動物を移動しましょう。"
+    },
+    ko: {
+      recap: "패배 요약: {unit}이(가) {row}에서 쓰러졌습니다. 결정적 행동: {action}. 대응: {counter}",
+      front: "더 튼튼하거나 보호막이 있는 동물을 앞줄에 두거나 보급품으로 체력을 올리세요.",
+      back: "회복이나 보호막으로 뒷줄을 지키거나 노출된 동물을 옮기세요."
+    },
+    es: {
+      recap: "Resumen de derrota: {unit} cayó en la {row}. Acción decisiva: {action}. Respuesta: {counter}",
+      front: "Pon delante un animal más resistente o con escudo, o invierte Suministros en Salud.",
+      back: "Protege la fila trasera con curación o escudos, o mueve al animal expuesto."
+    },
+    "pt-BR": {
+      recap: "Resumo da derrota: {unit} caiu na {row}. Ação decisiva: {action}. Resposta: {counter}",
+      front: "Coloque um animal mais resistente ou com escudo na frente, ou invista Suprimentos em Vida.",
+      back: "Proteja a retaguarda com cura ou escudos, ou mova o animal exposto."
+    },
+    fr: {
+      recap: "Bilan de la défaite : {unit} est tombé sur la {row}. Action décisive : {action}. Riposte : {counter}",
+      front: "Placez devant un animal plus robuste ou protégé, ou dépensez des provisions en Santé.",
+      back: "Protégez l'arrière avec des soins ou des boucliers, ou déplacez l'animal exposé."
+    },
+    de: {
+      recap: "Niederlage: {unit} fiel in der {row}. Entscheidende Aktion: {action}. Gegenmaßnahme: {counter}",
+      front: "Stelle ein robusteres oder geschütztes Tier nach vorn oder investiere Vorräte in Gesundheit.",
+      back: "Schütze die hintere Reihe mit Heilung oder Schilden oder versetze das gefährdete Tier."
+    },
+    it: {
+      recap: "Riepilogo sconfitta: {unit} è caduto nella {row}. Azione decisiva: {action}. Contromossa: {counter}",
+      front: "Metti davanti un animale più resistente o protetto, oppure investi Scorte in Salute.",
+      back: "Proteggi la retroguardia con cure o scudi, oppure sposta l'animale esposto."
+    },
+    ru: {
+      recap: "Итог поражения: {unit} пал в зоне «{row}». Решающее действие: {action}. Ответ: {counter}",
+      front: "Поставьте вперед более стойкого или защищенного щитом зверя либо вложите припасы в здоровье.",
+      back: "Защитите задний ряд лечением или щитами либо переместите уязвимого зверя."
+    },
+    hi: {
+      recap: "हार का सार: {unit} {row} में गिरा। निर्णायक चाल: {action}। जवाबी रणनीति: {counter}",
+      front: "अधिक मजबूत या ढाल वाले जानवर को आगे रखें, या आपूर्ति से स्वास्थ्य बढ़ाएँ।",
+      back: "पीछे की पंक्ति को उपचार या ढाल से बचाएँ, या खुले जानवर को दूसरी जगह रखें।"
+    },
+    ar: {
+      recap: "ملخص الخسارة: سقط {unit} في {row}. الحركة الحاسمة: {action}. المواجهة: {counter}",
+      front: "ضع حيوانًا أقوى أو محميًا بدرع في الأمام، أو أنفق المؤن على الصحة.",
+      back: "احمِ الصف الخلفي بالعلاج أو الدروع، أو انقل الحيوان المكشوف."
+    }
+  };
+
+  function buildLossRecap() {
+    const copy = lossRecapCatalog[actualGameLocale()] || lossRecapCatalog.en;
+    const fallen = state.combat.lastFallen;
+    const slot = fallen?.slot ?? 0;
+    const values = {
+      unit: fallen?.name || t("activeSquad"),
+      row: t(slot < 3 ? "formationFrontRow" : "formationBackRow"),
+      action: state.combat.lastAction || t("failText"),
+      counter: copy[slot < 3 ? "front" : "back"]
+    };
+    return Object.entries(values).reduce(
+      (message, [key, value]) => message.replaceAll(`{${key}}`, String(value)),
+      copy.recap
+    );
   }
 
   function updatePageMeta() {
@@ -3457,6 +3562,12 @@
     for (let i = squad.length - 1; i >= 0; i--) {
       if (squad[i].hp <= 0) {
         const fallen = squad.splice(i, 1)[0];
+        if (team === "player") {
+          state.combat.lastFallen = {
+            name: combatUnitName(fallen),
+            slot: unitFormationSlot(fallen, i)
+          };
+        }
         triggerFaintAbility(fallen, team);
       }
     }
@@ -3644,6 +3755,8 @@
     combatLastProgressAt = performance.now();
     state.combat.activeActor = null;
     state.combat.activeActors = [];
+    state.combat.lastAction = "";
+    state.combat.lastFallen = null;
     state.combat.effects = [];
     
     canvasCtx = nodes.gameCanvas.getContext("2d");
@@ -4241,7 +4354,9 @@
     const enemyUnit = unitAtFormationSlot(enemySquad, slot);
     if (playerUnit) actions.push(resolveUnitAbility(playerUnit, "player", Math.max(0, playerSquad.indexOf(playerUnit))));
     if (enemyUnit) actions.push(resolveEnemySlotAction(enemyUnit, Math.max(0, enemySquad.indexOf(enemyUnit))));
-    combatLog(actions.filter(Boolean).join("  |  ") || `${localizedPhrase("Slot", "\u7b2c", "Espacio")} ${slot + 1}`);
+    const actionText = actions.filter(Boolean).join("  |  ") || `${localizedPhrase("Slot", "\u7b2c", "Espacio")} ${slot + 1}`;
+    state.combat.lastAction = actionText;
+    combatLog(actionText);
 
     scheduleCombatStepCleanup(() => {
       const before = playerSquad.length + enemySquad.length;
@@ -4508,6 +4623,8 @@
     combatLastProgressAt = performance.now();
     state.combat.activeActor = null;
     state.combat.activeActors = [];
+    state.combat.lastAction = "";
+    state.combat.lastFallen = null;
     state.combat.effects = [];
     nodes.prepPhaseArea.classList.add("is-hidden");
     nodes.combatArea.classList.remove("is-hidden");
@@ -4561,6 +4678,9 @@
         nodes.combatArea.classList.add("is-hidden");
         nodes.combatSummary?.classList.add("is-hidden");
         startRoundPrep();
+        nodes.prepNotice?.classList.add("loss-recap");
+        nodes.selectedAbilityPanel?.classList.add("is-hidden");
+        showActionNotice(nodes.prepNotice, buildLossRecap(), nodes.startBattleBtn);
       }
     } else {
       awardTrainingCoins(Math.max(2, Math.ceil(state.round / 2)));

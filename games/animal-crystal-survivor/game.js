@@ -12,6 +12,10 @@
   const localeKey = "weightPlayLocale";
   const W = 1024;
   const H = 1760;
+  const CAMERA_ZOOM = 1.6;
+  const CAMERA_VIEW_WIDTH = W / CAMERA_ZOOM;
+  const CAMERA_VIEW_HEIGHT = H / CAMERA_ZOOM;
+  const CAMERA_FOLLOW_SPEED = 8;
   const MAX_BACKING_PIXELS = 900000;
   const MIN_BACKING_SCALE = 0.25;
   const RUN_SECONDS = 180;
@@ -656,12 +660,14 @@
 
   function makeState() {
     const stageNumber = Math.max(1, Math.min(STAGE_COUNT, Number(save?.selectedStage) || 1));
+    const player = makePlayer();
     return {
       mode: "menu",
       stage: stageNumber,
       stageConfig: stages[stageNumber - 1],
       timeLeft: RUN_SECONDS,
-      player: makePlayer(),
+      player,
+      camera: cameraTargetFor(player),
       level: 1,
       xp: 0,
       xpNeed: 4,
@@ -757,6 +763,26 @@
     updateDiamondShop();
     updateMenuSound();
     if (!nodes.stagePanel.classList.contains("hidden")) renderStageSelector(false);
+  }
+
+  function cameraTargetFor(player = state?.player) {
+    const playerX = Number(player?.x) || W / 2;
+    const playerY = Number(player?.y) || H / 2;
+    return {
+      x: Math.max(0, Math.min(W - CAMERA_VIEW_WIDTH, playerX - CAMERA_VIEW_WIDTH / 2)),
+      y: Math.max(0, Math.min(H - CAMERA_VIEW_HEIGHT, playerY - CAMERA_VIEW_HEIGHT / 2)),
+    };
+  }
+
+  function updateCamera(dt, immediate = false) {
+    const target = cameraTargetFor();
+    if (!state.camera || immediate) {
+      state.camera = target;
+      return;
+    }
+    const blend = 1 - Math.exp(-CAMERA_FOLLOW_SPEED * Math.max(0, dt));
+    state.camera.x += (target.x - state.camera.x) * blend;
+    state.camera.y += (target.y - state.camera.y) * blend;
   }
 
   function getWallet() {
@@ -1123,6 +1149,7 @@
     state.timeLeft = Math.max(0, state.timeLeft - elapsedDt);
     state.survived = RUN_SECONDS - state.timeLeft;
     movePlayer(dt);
+    updateCamera(dt);
     updateStageMechanics(dt);
     spawnEnemies(dt);
     updateEnemies(dt);
@@ -1661,6 +1688,12 @@
         keys: state.keys,
         key: { ...state.key },
         player: { ...state.player },
+        camera: {
+          ...state.camera,
+          width: CAMERA_VIEW_WIDTH,
+          height: CAMERA_VIEW_HEIGHT,
+          zoom: CAMERA_ZOOM,
+        },
         level: state.level,
         xp: state.xp,
         xpNeed: state.xpNeed,
@@ -1905,6 +1938,9 @@
   function draw() {
     const frameNow = performance.now();
     ensureArenaLayer();
+    ctx.save();
+    ctx.scale(CAMERA_ZOOM, CAMERA_ZOOM);
+    ctx.translate(-state.camera.x, -state.camera.y);
     if (arenaLayer.width && arenaLayer.height) {
       ctx.drawImage(arenaLayer, 0, 0, arenaLayer.width, arenaLayer.height, 0, 0, W, H);
     } else {
@@ -1932,6 +1968,7 @@
       ctx.restore();
     });
     state.floaters.forEach(drawFloater);
+    ctx.restore();
     displayCtx.drawImage(renderCanvas, 0, 0);
   }
 
@@ -2088,8 +2125,8 @@
     const rect = canvas.getBoundingClientRect();
     const client = event.touches?.[0] || event;
     return {
-      x: ((client.clientX - rect.left) / rect.width) * W,
-      y: ((client.clientY - rect.top) / rect.height) * H,
+      x: Math.max(0, Math.min(W, state.camera.x + (((client.clientX - rect.left) / rect.width) * W) / CAMERA_ZOOM)),
+      y: Math.max(0, Math.min(H, state.camera.y + (((client.clientY - rect.top) / rect.height) * H) / CAMERA_ZOOM)),
     };
   }
 

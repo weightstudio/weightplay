@@ -1481,12 +1481,17 @@
   }
 
   function reclaimVisiblePlayerAction(event) {
-    if (document.hidden || !pageActive) return false;
-    if (windowFocused && !lifecycleSuspended) return true;
+    if (document.hidden) return false;
+    if (windowFocused && pageActive && !lifecycleSuspended) return true;
     if (!event?.isTrusted) return false;
+    // Some embedded browsers can leave a stale pagehide flag behind while the
+    // same document is visibly interactive. A trusted action on that visible
+    // document is stronger evidence than the stale lifecycle flag, so reclaim
+    // both owners before allowing the player's intended target action.
+    pageActive = true;
     windowFocused = true;
     resumeBattleLifecycle();
-    return true;
+    return !lifecycleSuspended;
   }
 
   function showPause() {

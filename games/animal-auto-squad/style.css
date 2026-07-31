@@ -245,6 +245,7 @@ body:not(.squad-active) .battle-ad-reserve { display: none; }
 .shop-section > h3 { grid-row: 1; }
 .shop-section > .shop-controls { grid-row: 2; }
 .shop-section > .action-notice { grid-row: 3; align-self: start; }
+.shop-section > .action-notice.loss-recap { grid-row: 5; max-height:86px; overflow-y:auto; text-align:start; }
 .shop-section > .shop-row { grid-row: 4; }
 .shop-section > .selected-ability-panel { grid-row: 5; }
 .shop-controls { display: flex; gap: 6px; }
