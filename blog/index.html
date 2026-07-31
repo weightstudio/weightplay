@@ -5,28 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" />
     <meta name="description" content="The WeightPlay Blog: honest notes about building original browser games, mobile play, testing, and product decisions." />
-    <meta property="og:type" content="article" />
+    <meta property="og:type" content="website" />
     <meta property="og:site_name" content="WeightPlay" />
-    <meta property="og:title" content="Why We Built WeightPlay - WeightPlay Blog" />
-    <meta property="og:description" content="A behind-the-scenes note about building an original browser-game platform and learning from real players." />
+    <meta property="og:title" content="WeightPlay Blog" />
+    <meta property="og:description" content="Notes about building original browser games, mobile play, testing, and product decisions." />
     <meta property="og:url" content="https://weightplay.com/blog/" />
     <meta property="og:image" content="https://weightplay.com/assets/weightplay-lion-mascot.png" />
-    <meta name="twitter:card" content="summary_large_image" />
     <link rel="canonical" href="https://weightplay.com/blog/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/blog/" />
-    <title>Why We Built WeightPlay - WeightPlay Blog</title>
-    <link rel="stylesheet" href="blog.css?v=20260731-blog1" />
+    <title>WeightPlay Blog</title>
+    <link rel="stylesheet" href="blog.css?v=20260731-blog2" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "headline": "Why We Built WeightPlay",
-        "description": "A behind-the-scenes note about building an original browser-game platform and learning from real players.",
-        "datePublished": "2026-07-31",
-        "dateModified": "2026-07-31",
-        "author": { "@type": "Organization", "name": "WeightStudio" },
-        "publisher": { "@type": "Organization", "name": "WeightStudio" },
-        "mainEntityOfPage": "https://weightplay.com/blog/"
+        "@type": "CollectionPage",
+        "name": "WeightPlay Blog",
+        "description": "Notes about building original browser games, mobile play, testing, and product decisions.",
+        "url": "https://weightplay.com/blog/"
       }
     </script>
   </head>
@@ -40,41 +35,30 @@
           <a href="/contact.html">Contact</a>
         </div>
       </nav>
-      <header class="blog-hero">
+      <header class="blog-hero blog-index-hero">
         <p class="eyebrow">WeightPlay Blog</p>
-        <h1>Why We Built WeightPlay</h1>
-        <p class="dek">A small note about making original browser games, listening to players, and improving one detail at a time.</p>
-        <div class="article-meta"><span>By WeightStudio</span><span>July 31, 2026</span><span>8 min read</span></div>
+        <h1>Ideas behind the games</h1>
+        <p class="dek">Practical notes about making browser games, listening to players, and improving one detail at a time.</p>
       </header>
-      <article class="blog-article">
-        <p class="lead">WeightPlay started with a simple question: can a browser game feel thoughtful even when a player only has a few spare minutes?</p>
-        <p>We wanted a place where someone could open a game without installing anything, understand the first action quickly, and still find a little more depth when they came back. That sounds straightforward. In practice, it means paying attention to the parts players notice immediately: whether a button is reachable on a phone, whether an animation feels smooth, whether a mistake teaches anything, and whether the next screen tells you what to do.</p>
-        <h2>Games are made of small decisions</h2>
-        <p>A game is not only its big idea. It is also the half-second between a tap and a response, the wording on a retry button, the way a card stays readable in a short landscape screen, and the moment a player realizes that a remembered position was actually useful.</p>
-        <p>That is why we keep testing the whole journey: lobby, level selection, play, success, failure, retry, and return. A game can have working code and still feel confusing. Real interaction is the part that reveals the difference.</p>
-        <h2>Building for the browser means respecting the player</h2>
-        <p>WeightPlay is designed around quick browser sessions and mobile screens. We avoid requiring an account for basic play, keep progress local where it makes sense, and treat touch as a first-class input. Desktop support still matters, but a phone should never feel like an afterthought.</p>
-        <p>We also keep the catalogue original. The goal is not to copy a familiar title with a new skin. Each game needs its own decisions, rhythm, and reason to replay. When a concept is too similar to something already in the catalogue, we would rather change the loop than hide the resemblance behind new artwork.</p>
-        <h2>What we are learning</h2>
-        <p>The most useful feedback is often very specific: “this card moved after I remembered it,” “I cannot tell what this icon does,” or “the button is below the fold.” Those comments are not cosmetic. They tell us where the player’s mental model and the game’s behavior have drifted apart.</p>
-        <p>Our process is intentionally iterative. We record the problem, reproduce it in the rendered page, make the smallest complete repair, and test the same journey again. Sometimes the right answer is a code change. Sometimes it is clearer copy, a better layout, or removing a rule that sounded clever but made the game less fair.</p>
-        <h2>A note about AI-assisted work</h2>
-        <p>AI helps us outline ideas, compare options, and prepare drafts. It does not replace playing the game, checking the result, or taking responsibility for what we publish. Articles on this blog will be edited for clarity and checked against the actual WeightPlay project. When a post describes a test or a fix, the evidence should be something a reader can understand and, where practical, reproduce.</p>
-        <h2>What comes next</h2>
-        <p>We will keep adding games, but the more important goal is to make each one easier to start and more satisfying to return to. This blog is where we will share the practical side of that work: small JavaScript patterns, responsive game interfaces, testing lessons, and the design decisions behind WeightPlay.</p>
-        <p>Thanks for playing. If something feels confusing, tell us exactly where the experience stopped making sense. That kind of feedback is often the beginning of a better game.</p>
-        <hr />
-        <section id="zh-Hant" class="localized-article" lang="zh-Hant" aria-labelledby="zh-title">
-          <p class="eyebrow">繁體中文</p>
-          <h2 id="zh-title">我們為什麼建立 WeightPlay</h2>
-          <p class="article-meta"><span>WeightStudio</span><span>2026 年 7 月 31 日</span></p>
-          <p class="lead">WeightPlay 是從一個簡單的問題開始：玩家只有幾分鐘空檔時，瀏覽器遊戲能不能依然讓人感覺用心？</p>
-          <p>我們希望玩家不用安裝任何東西，就能打開遊戲、很快理解第一個操作，回來再玩時也能發現更多變化。實際做起來，代表我們必須重視玩家最先感受到的細節：手機上的按鈕是否按得到、動畫是否順、失敗後有沒有學到東西，以及下一個畫面是否清楚告訴玩家該做什麼。</p>
-          <p>遊戲不只是大方向，也包含點擊後的半秒反應、重試按鈕的文字、短橫向手機畫面裡的可讀性，以及玩家發現「剛才記住的位置真的有用」的那一刻。這也是我們會反覆測試大廳、選關、遊玩、成功、失敗、重試與返回流程的原因。</p>
-          <p>AI 可以協助整理想法與準備初稿，但不能取代實際遊玩、檢查結果，以及對公開內容負責。這個 Blog 會分享遊戲開發、響應式介面、測試經驗與 WeightPlay 背後的設計決定；每篇文章都會以實際專案內容為基礎，再由人重新確認與編輯。</p>
-          <p>謝謝你來玩。如果哪個地方讓你看不懂，歡迎告訴我們是在哪個畫面開始不確定。這類具體回饋，常常就是讓遊戲變得更好的起點。</p>
-        </section>
-      </article>
+      <section class="article-grid" aria-labelledby="latest-heading">
+        <div class="section-heading">
+          <p class="eyebrow">Latest</p>
+          <h2 id="latest-heading">From the WeightPlay team</h2>
+        </div>
+        <a class="article-card" href="why-we-built-weightplay/">
+          <div class="article-card-image"><img src="../assets/weightplay-lion-mascot.png" alt="WeightPlay lion mascot" /></div>
+          <div class="article-card-body">
+            <p class="article-card-type">Behind the scenes · 8 min read</p>
+            <h3>Why We Built WeightPlay</h3>
+            <p>How an original browser-game platform takes shape through small decisions, mobile play, and real player feedback.</p>
+            <span class="read-more">Read article <span aria-hidden="true">→</span></span>
+          </div>
+        </a>
+      </section>
+      <section id="zh-Hant" class="blog-language-note" lang="zh-Hant" aria-labelledby="zh-title">
+        <h2 id="zh-title">繁體中文</h2>
+        <p>目前文章提供繁體中文內容，點選上方文章卡片即可閱讀完整文章。</p>
+      </section>
       <footer class="blog-footer"><a href="/">Back to WeightPlay</a><span>© 2026 WeightStudio</span><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></footer>
     </main>
   </body>

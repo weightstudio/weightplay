@@ -448,6 +448,7 @@
   };
   let raf = 0;
   let lastTime = 0;
+  let visibleTick = 0;
   let lastHud = "";
   let lifecycleSuspended = false;
   let windowFocused = document.hasFocus();
@@ -581,8 +582,9 @@
     $("feedback").textContent = "";
     lastTime = performance.now();
     stopLoop();
-    lifecycleSuspended = document.hidden || !windowFocused;
+    lifecycleSuspended = document.hidden;
     run.paused = lifecycleSuspended;
+    ensureVisibleTick();
     if (!lifecycleSuspended) raf = requestAnimationFrame(frame);
     window.WonderSound?.play?.("start");
     if (!save.tutorialSeen) requestAnimationFrame(() => openTutorial(false));
@@ -594,9 +596,28 @@
   }
 
   function resumeLoop() {
-    if (!run || run.finished || run.paused || raf || document.hidden || !windowFocused) return;
+    if (!run || run.finished || run.paused || raf || document.hidden) return;
     lastTime = performance.now();
     raf = requestAnimationFrame(frame);
+  }
+
+  function ensureVisibleTick() {
+    if (visibleTick) return;
+    visibleTick = setInterval(() => {
+      if (!run || run.finished || run.paused || document.hidden || currentScreen !== "battle" || activeModal()) return;
+      const now = performance.now();
+      const elapsed = Math.min(1, Math.max(0, (now - lastTime) / 1000 || 0));
+      if (elapsed < 0.2) return;
+      lastTime = now;
+      let remaining = elapsed;
+      while (remaining > 0 && run && !run.finished && !run.paused) {
+        const step = Math.min(0.04, remaining);
+        update(step);
+        remaining -= step;
+      }
+      draw();
+      if (run && !run.finished && !run.paused && !raf) raf = requestAnimationFrame(frame);
+    }, 250);
   }
 
   function suspendForLifecycle() {
@@ -609,10 +630,11 @@
   }
 
   function resumeFromLifecycle() {
-    if (!lifecycleSuspended || document.hidden || !windowFocused) return;
+    if (!lifecycleSuspended || document.hidden) return;
     lifecycleSuspended = false;
     if (currentScreen !== "battle" || !run || run.finished || activeModal()) return;
     run.paused = false;
+    ensureVisibleTick();
     resumeLoop();
   }
 
@@ -626,7 +648,10 @@
 
   window.addEventListener("blur", () => {
     windowFocused = false;
-    suspendForLifecycle();
+    if (run) {
+      run.player.dx = 0;
+      run.player.dy = 0;
+    }
   });
   window.addEventListener("focus", () => {
     windowFocused = true;
@@ -1015,7 +1040,11 @@
 
   function frame(now) {
     raf = 0;
-    if (!run || run.finished || run.paused || document.hidden || !windowFocused) return;
+    if (!run || run.finished || run.paused) return;
+    if (document.hidden) {
+      suspendForLifecycle();
+      return;
+    }
     const dt = Math.min(0.04, (now - lastTime) / 1000 || 0);
     lastTime = now;
     update(dt);
@@ -1091,6 +1120,7 @@
     $("battleLive").inert = false;
     if (run && !run.finished && !lifecycleSuspended) {
       run.paused = false;
+      ensureVisibleTick();
       resumeLoop();
     }
     if (restoreFocus) (modalReturnFocus?.isConnected ? modalReturnFocus : $("battleBack"))?.focus();
