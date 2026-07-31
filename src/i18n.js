@@ -1778,7 +1778,7 @@
   "龜": "龟"
 });
 
-  const essentialLobbyCopy = {
+const essentialLobbyCopy = {
     ja: ["すべてのゲーム", "最近プレイ", "お気に入り", "すべてのテーマ", "注目", "どうぶつゲーム", "パズル", "ストラテジー", "アーケードゲーム", "学び"],
     ko: ["모든 게임", "최근 플레이", "즐겨찾기", "모든 주제", "추천", "동물 게임", "퍼즐", "전략", "아케이드 게임", "교육"],
     es: ["Todos los juegos", "Jugados recientemente", "Favoritos", "Todos los temas", "Destacados", "Juegos de animales", "Rompecabezas", "Juegos de estrategia", "Juegos arcade", "Educación"],
@@ -1812,6 +1812,15 @@
       "category.Education": education,
     };
   });
+
+  dictionaries["zh-Hant"] = {
+    ...(dictionaries["zh-Hant"] || {}),
+    "upcoming.title": "\u5373\u5c07\u63a8\u51fa",
+  };
+  dictionaries["zh-Hans"] = {
+    ...(dictionaries["zh-Hans"] || {}),
+    "upcoming.title": "\u5373\u5c06\u63a8\u51fa",
+  };
 
   Object.entries(lifetimeStatsCopy).forEach(([locale, copy]) => {
     dictionaries[locale] = { ...(dictionaries[locale] || {}), ...copy };

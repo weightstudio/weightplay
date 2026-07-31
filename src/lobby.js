@@ -1,10 +1,13 @@
 const lobby = window.WONDER_LOBBY;
 let activeGamePreview = null;
+const ownerPreviewMode = new URLSearchParams(window.location.search).get("preview") === "1";
 const audienceMode = document.body?.dataset.audience === "kids" ? "kids" : "general";
 const generalGameIds = new Set(lobby.audiences?.generalGameIds || []);
 const isKidsLobby = audienceMode === "kids";
-const catalogGames = lobby.games.filter((game) =>
-  game.status === "playable"
+const allLobbyGames = [...lobby.games];
+const catalogGames = allLobbyGames.filter((game) =>
+  (game.status === "playable"
+    || (!ownerPreviewMode && !isKidsLobby && game.id === "animal-dice-bastion"))
   && (isKidsLobby ? !generalGameIds.has(game.id) : generalGameIds.has(game.id)));
 const showAgeLabels = isKidsLobby;
 const modeHeroGameIds = isKidsLobby
@@ -14,6 +17,10 @@ const modeFeaturedGameId = isKidsLobby ? "color-lunchbox" : "animal-hero-trials"
 lobby.games = catalogGames;
 lobby.heroGameIds = modeHeroGameIds;
 lobby.featuredGameId = modeFeaturedGameId;
+if (ownerPreviewMode) {
+  document.querySelector('meta[name="robots"]')?.setAttribute("content", "noindex,nofollow");
+  document.documentElement.dataset.ownerPreview = "true";
+}
 const filterButtons = document.querySelectorAll("[data-age-filter]");
 const topicButtons = document.querySelectorAll("[data-topic-filter]");
 const skillButtons = document.querySelectorAll("[data-skill-filter]");
@@ -644,9 +651,12 @@ function recentlyUpdatedGames(limit = 4) {
     .slice(0, limit);
 }
 
-function upcomingPreviewGames(limit = 3) {
-  return lobby.games
-    .filter((game) => game.status === "planned" && (game.art?.background || game.art?.hero))
+function upcomingPreviewGames(limit = Number.POSITIVE_INFINITY) {
+  return allLobbyGames
+    .filter((game) =>
+      game.status === "planned"
+      && (game.art?.background || game.art?.hero)
+      && (isKidsLobby ? !generalGameIds.has(game.id) : generalGameIds.has(game.id)))
     .slice(0, limit);
 }
 
@@ -1248,7 +1258,13 @@ function renderMobilePicks() {
 
 function renderUpcomingGames() {
   if (!upcomingGames || !upcomingGamesSection) return;
-  const cards = upcomingPreviewGames(3).map((game) => {
+  if (!ownerPreviewMode) {
+    upcomingGamesSection.hidden = true;
+    upcomingGamesSection.classList.add("hidden");
+    upcomingGames.replaceChildren();
+    return;
+  }
+  const cards = upcomingPreviewGames().map((game) => {
     const title = text(game.title);
     const type = text(game.type);
     const ageLabel = text(game.ageLabel);
@@ -1276,6 +1292,7 @@ function renderUpcomingGames() {
 
   upcomingGamesTitle.textContent = i18n.t("upcoming.title");
   upcomingGamesReason.textContent = i18n.t("upcoming.reason");
+  upcomingGamesSection.hidden = cards.length === 0;
   upcomingGamesSection.classList.toggle("hidden", cards.length === 0);
   upcomingGames.replaceChildren(...cards);
 }
@@ -1576,7 +1593,10 @@ function applyFilter({ historyMode = "replace" } = {}) {
   discoverySnapshot?.classList.toggle("hidden", isFiltered);
   continuePlayingSection?.classList.toggle("filtered-out", isFiltered);
   mobilePicksSection?.classList.toggle("hidden", isFiltered);
-  upcomingGamesSection?.classList.toggle("hidden", isFiltered);
+  upcomingGamesSection?.classList.toggle(
+    "hidden",
+    !ownerPreviewMode || upcomingPreviewGames().length === 0 || isFiltered,
+  );
   characterShowcaseSection?.classList.toggle("hidden", isFiltered);
   recommendationsSection?.classList.toggle("hidden", isFiltered);
   freshUpdatesSection?.classList.toggle("hidden", isFiltered);
@@ -1714,6 +1734,16 @@ function showToast(message) {
 }
 
 function showPlannedGame(game) {
+  const trialPath = internalTrialPath(game);
+  if (ownerPreviewMode && trialPath) {
+    try {
+      sessionStorage.setItem(hiddenTrialStorageKey(game), "true");
+    } catch (error) {
+      // The explicit preview route can still open when storage is unavailable.
+    }
+    window.location.href = hiddenTrialUrl(game, trialPath);
+    return;
+  }
   if (handleHiddenTrialGate(game)) return;
   window.WonderSound?.play("wrong");
   window.WonderAnalytics?.track("planned_game_click", {
