@@ -4875,6 +4875,18 @@ body.general-lobby-page {
   order: 8;
 }
 
+@media (min-width: 760px) {
+  .general-lobby-page #continuePlayingSection .section-heading,
+  .general-lobby-page #heroGamesSection .section-heading {
+    justify-content: flex-start;
+  }
+
+  .general-lobby-page #continuePlayingSection .section-heading h2,
+  .general-lobby-page #heroGamesSection .section-heading h2 {
+    display: none;
+  }
+}
+
 .general-lobby-page #gameGrid {
   order: 9;
 }

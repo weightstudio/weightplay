@@ -444,6 +444,22 @@
     arenaControlLimitLabel: "ساحة حصن كرات الحيوانات. التصويب بزاوية {angle} درجة من المركز. توجد {active}/{limit} كرات روحية في الجو، وهو الحد الأقصى؛ لا يمكن الإطلاق الآن.",
   };
 
+  const shotFeedbackCopy = {
+    en: { direct: "Direct hit", bank: "Bank hit", blocked: "Blocked" },
+    "zh-Hant": { direct: "直接命中", bank: "反彈命中", blocked: "攻擊無效" },
+    "zh-Hans": { direct: "直接命中", bank: "反弹命中", blocked: "攻击无效" },
+    es: { direct: "Impacto directo", bank: "Impacto de rebote", blocked: "Bloqueado" },
+    fr: { direct: "Impact direct", bank: "Ricochet réussi", blocked: "Bloqué" },
+    de: { direct: "Direkttreffer", bank: "Abpralltreffer", blocked: "Blockiert" },
+    it: { direct: "Colpo diretto", bank: "Colpo di rimbalzo", blocked: "Bloccato" },
+    ja: { direct: "直接ヒット", bank: "反射ヒット", blocked: "無効" },
+    ko: { direct: "직접 명중", bank: "튕김 명중", blocked: "막힘" },
+    "pt-BR": { direct: "Acerto direto", bank: "Acerto com ricochete", blocked: "Bloqueado" },
+    ru: { direct: "Прямое попадание", bank: "Попадание рикошетом", blocked: "Заблокировано" },
+    hi: { direct: "सीधा प्रहार", bank: "टकराकर प्रहार", blocked: "रोका गया" },
+    ar: { direct: "إصابة مباشرة", bank: "إصابة مرتدة", blocked: "تم الصد" },
+  };
+
   const assets = {
     bg: "../../assets/animal-orb-fortress-arena-bg.webp",
     lion: "../../assets/weightplay-boom-mane-lion.png",
@@ -811,6 +827,7 @@
       enemies: [],
       orbs: [],
       sparks: [],
+      lastShotFeedback: null,
       companionDamage: companionDamage(denLevel),
       companionTimer: 1.2,
       companionHits: 0,
@@ -1557,7 +1574,7 @@
   }
 
   function makeOrb(vx, vy, skin, damageScale = 1) {
-    return { x: state.launcher.x, y: state.launcher.y, vx, vy, r: 20, life: 5.2, damage: Math.max(1, Math.round(state.baseDamage * damageScale)), skin, hits: new Map() };
+    return { x: state.launcher.x, y: state.launcher.y, vx, vy, r: 20, life: 5.2, damage: Math.max(1, Math.round(state.baseDamage * damageScale)), skin, hits: new Map(), bounces: 0 };
   }
 
   function activeOrbLimit() {
@@ -1827,11 +1844,13 @@
     orb.y += orb.vy * dt;
     if (orb.x < 38 || orb.x > W - 38) {
       orb.vx *= -1;
+      orb.bounces += 1;
       orb.x = Math.max(38, Math.min(W - 38, orb.x));
       playSound("click", 0.08);
     }
     if (orb.y < 38 || orb.y > H - 38) {
       orb.vy *= -1;
+      orb.bounces += 1;
       orb.y = Math.max(38, Math.min(H - 38, orb.y));
       playSound("click", 0.08);
     }
@@ -1854,6 +1873,7 @@
       orb.x = pylon.x + nx * (orb.r + pylon.r + 2);
       orb.y = pylon.y + ny * (orb.r + pylon.r + 2);
       orb.pylonHits.set(pylon, 0.16);
+      orb.bounces += 1;
       state.mechanicEvents.push("pylon_bounce");
       playSound("click", 0.06);
     });
@@ -1865,15 +1885,27 @@
       }
       const enemyVisualRadius = enemy.kind === "boss" ? 76 : enemy.size * 1.05;
       if (Math.hypot(orb.x - enemy.x, orb.y - enemy.y) < orb.r + enemyVisualRadius) {
+        const hpBefore = enemy.hp;
+        const shieldBefore = enemy.shield;
         if (canDamageEnemy(enemy)) {
           if (enemy.shield > 0) enemy.shield -= 1;
           else enemy.hp -= orb.damage;
         } else {
           state.mechanicEvents.push(enemy.phased ? "phase_block" : enemy.bossId === "prism" ? "prism_block" : "charge_block");
         }
+        const damage = Math.max(0, hpBefore - enemy.hp);
+        const shieldDamage = Math.max(0, shieldBefore - enemy.shield);
+        const blocked = damage === 0 && shieldDamage === 0;
+        const actualLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale;
+        const copy = shotFeedbackCopy[actualLocale] || shotFeedbackCopy.en;
+        const kind = blocked ? "blocked" : orb.bounces > 0 ? "bank" : "direct";
+        const amount = damage || shieldDamage;
+        const label = `${copy[kind]}${kind === "bank" ? ` ×${orb.bounces}` : ""}${amount ? ` −${amount}` : ""}`;
+        state.lastShotFeedback = { kind, bounces: orb.bounces, damage, shieldDamage, label };
+        nodes.hintText.textContent = label;
         enemy.hitTimer = 0.16;
         orb.hits.set(enemy, state.pierce ? 0.2 : 0.55);
-        state.sparks.push({ x: enemy.x, y: enemy.y, life: 0.25 });
+        state.sparks.push({ kind: "shot-feedback", x: enemy.x, y: enemy.y, life: 0.72, maxLife: 0.72, label, banked: orb.bounces > 0 });
         playSound("hit", 0.06);
       }
     });
@@ -2119,6 +2151,24 @@
         ctx.lineTo(spark.x, spark.y);
         ctx.stroke();
         ctx.shadowBlur = 0;
+      }
+      if (spark.kind === "shot-feedback") {
+        ctx.save();
+        ctx.font = "700 24px system-ui, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        const width = Math.min(300, ctx.measureText(spark.label).width + 34);
+        const y = Math.max(64, spark.y - 58 - (1 - spark.life / maxLife) * 24);
+        ctx.fillStyle = spark.banked ? "rgba(83, 58, 8, 0.94)" : "rgba(5, 55, 72, 0.94)";
+        ctx.strokeStyle = spark.banked ? "#ffe570" : "#80f5ff";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.roundRect(spark.x - width / 2, y - 22, width, 44, 14);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText(spark.label, spark.x, y);
+        ctx.restore();
       }
       drawAtlas(images.fx, 1, 4, spark.x, spark.y, 70);
       ctx.globalAlpha = 1;
@@ -2618,6 +2668,7 @@
       pylons: state.pylons.length,
       spawnedShards: state.spawnedShards,
       mechanicEvents: [...state.mechanicEvents],
+      lastShotFeedback: state.lastShotFeedback,
       orbs: state.orbs.length,
       activeOrbLimit: activeOrbLimit(),
       previewPoints: state.preview.length,
@@ -2644,6 +2695,7 @@
       routes: raidDefs.map((raid) => ({ tier: raid.tier, zone: raid.zone, name: localized(raid.name), description: localized(raid.desc), rule: raid.rule })),
       bosses: bossDefs.map((boss) => ({ tier: boss.tier, id: boss.id, imageKey: boss.imageKey, name: localized(boss.name), loaded: Boolean(images[boss.imageKey]?.complete && images[boss.imageKey]?.naturalWidth) })),
       specialKinds: ["armored", "anchor", "phase", "splitter", "charger"],
+      shotFeedbackLocales: Object.keys(shotFeedbackCopy).sort(),
     }),
     runCampaignMechanicScenario,
     forceClearWave: () => {
@@ -2665,7 +2717,18 @@
       state.orbs = [orb];
       const before = enemy.hp;
       updateOrb(orb, 0.016);
-      return { before, after: enemy.hp, damage: before - enemy.hp, distance: Math.hypot(orb.x - enemy.x, orb.y - enemy.y) };
+      return { before, after: enemy.hp, damage: before - enemy.hp, distance: Math.hypot(orb.x - enemy.x, orb.y - enemy.y), feedback: state.lastShotFeedback };
+    },
+    forceBankCollisionProbe: () => {
+      const enemy = makeEnemy("skitter", state.launcher.x, state.launcher.y - 90, 8, 0, 42);
+      const orb = makeOrb(0, -80, 0);
+      orb.bounces = 2;
+      orb.x = enemy.x;
+      orb.y = enemy.y + orb.r + enemy.size * 0.7 - 2;
+      state.enemies = [enemy];
+      state.orbs = [orb];
+      updateOrb(orb, 0.016);
+      return state.lastShotFeedback;
     },
     setRoomLevel: (id, level) => {
       if (!roomDefs.some((room) => room.id === id)) return null;
