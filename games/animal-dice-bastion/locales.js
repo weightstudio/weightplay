@@ -134,9 +134,36 @@
   Object.assign(core.ru,{how1:"Выберите первого стража и тратьте заряд, чтобы призывать стражей первого ранга в пустые руны.",team:"Стражи",guardianTeamKicker:"Стартовое благословение",guardianTeamTitle:"Выберите первого стража",guardianTeamText:"Первый призыв в каждом бою получает эту стихию. Остальные остаются честно случайными.",guardianRosterLabel:"Выбор первого стража",openingPending:"Выберите стража для следующего боя.",openingSelected:"Стартовое благословение: {guardian}",powerShort:"Сила",speedShort:"Скорость"});
   Object.assign(core.hi,{how1:"पहला रक्षक चुनें, फिर चार्ज खर्च करके खाली रून खानों में प्रथम श्रेणी के रक्षक बुलाएँ।",team:"रक्षक",guardianTeamKicker:"आरंभिक आशीर्वाद",guardianTeamTitle:"पहला रक्षक चुनें",guardianTeamText:"हर युद्ध का पहला आह्वान इस तत्व का होगा। बाद के आह्वान निष्पक्ष और यादृच्छिक रहेंगे।",guardianRosterLabel:"पहले रक्षक का चयन",openingPending:"अगले युद्ध के लिए एक रक्षक चुनें।",openingSelected:"आरंभिक आशीर्वाद: {guardian}",powerShort:"शक्ति",speedShort:"गति"});
   Object.assign(core.ar,{how1:"اختر حارس البداية، ثم أنفق الشحن لاستدعاء حراس من الرتبة الأولى في خانات الرون الفارغة.",team:"الحراس",guardianTeamKicker:"بركة البداية",guardianTeamTitle:"اختر الحارس الأول",guardianTeamText:"أول استدعاء في كل معركة يستخدم هذا النوع، وتبقى الاستدعاءات التالية عادلة وعشوائية.",guardianRosterLabel:"اختيار الحارس الأول",openingPending:"اختر حارساً للمعركة التالية.",openingSelected:"بركة البداية: {guardian}",powerShort:"القوة",speedShort:"السرعة"});
+  Object.assign(core["zh-Hant"],{
+    title:"動物骰靈堡壘",loading:"正在喚醒守護符文…",language:"語言",backLobby:"返回 WeightPlay",backMain:"返回主頁",backStages:"返回關卡",
+    posterAlt:"苔殼太郎指揮動物守護骰抵擋闇影大軍",eyebrow:"符文合成守城",pitch:"召喚隨機動物守護者，合併相同屬性與等級，並在敵人抵達水晶前下達戰術指令。",start:"開始遊戲",
+    guideLabel:"遊戲指南",guideKicker:"WeightPlay 原創遊戲指南",guideTitle:"把每次隨機召喚變成更強的防線",guideIntro:"苔殼太郎以活化符文守護水晶堡壘。每次召喚都會改變陣容；掌握合併時機並正確使用指令，就能把運氣轉化為戰術。",
+    howTitle:"遊戲玩法",how1:"先選擇首發守護者，再消耗能量，將一階守護者召喚到空的符文格。",how2:"選取兩個屬性與等級相同的守護者，將它們合併成更高階守護者。",how3:"守護者會自動攻擊；在適當時機使用{rally}、{reroll}與{burst}改變戰局。",
+    rulesTitle:"勝負規則",rulesText:"敵人抵達堡壘時會扣除核心生命。擊退所有波次與首領即可獲勝；保留至少一半核心生命，並且不使用符文重塑，可取得三顆星。",
+    progressTitle:"30 關原創防線",progressText:"六個章節會依序加入護甲、怪群、治療者、加速、符文格封鎖、菁英護衛與六種不同首領。",
+    tipsTitle:"實戰技巧",tipsText:"不要看到相同守護者就立刻合併。保留一組可合併的低階守護者，等版面需要空位或戰況允許時再升階。",
+    saveTitle:"存檔與隱私",saveText:"已解鎖關卡、星星、符文之塵與工坊升級只會儲存在這個瀏覽器中；不需要帳號，也不會上傳個人資料。",
+    faqTitle:"常見問題",faq1q:"這是賭博遊戲嗎？",faq1a:"不是。骰子只代表守護者等級，遊戲沒有下注、付費抽獎、現金獎勵或任何真錢機率機制。",faq2q:"運氣不好就一定會輸嗎？",faq2a:"若連續七次召喚都沒有可合併組合，系統會保證出現一個能配對的屬性。",faq3q:"接下來可以玩什麼？",faq3a:"喜歡路線守城可試試《獸王守衛》；喜歡戰前編隊則可試試《動物符文戰棋》。",
+    stages:"關卡",team:"守護者",equipment:"裝備",teamKicker:"堡壘守護者",taroName:"苔殼太郎",teamText:"太郎會穩定每位守護者；合併時機與主動指令將決定防線成敗。",
+    guardianTeamKicker:"首發祝福",guardianTeamTitle:"選擇首發守護者",guardianTeamText:"每場戰鬥的第一次召喚必定是此屬性，之後仍採公平隨機。",guardianRosterLabel:"首發守護者選擇",openingPending:"請為下一場戰鬥選擇首發守護者。",openingSelected:"首發祝福：{guardian}",powerShort:"威力",speedShort:"攻速",
+    workshopKicker:"永久升級",workshop:"堡壘工坊",dust:"符文之塵",upgradeFocus:"守護專注",upgradeFocusText:"每級提升守護者 4% 攻擊力。",upgradeHeart:"堡壘之心",upgradeHeartText:"每級增加 1 點核心生命。",upgradeCharge:"初始能量",upgradeChargeText:"每級增加 8 點起始能量。",level:"等級",max:"最高",buy:"升級 · {cost}",needDust:"需要 {cost} 個符文之塵。",upgraded:"{name}已提升至等級 {level}。",
+    stageRailLabel:"堡壘關卡選擇",threat:"威脅",plan:"對策",reward:"獎勵",locked:"未解鎖",boss:"首領",
+    chapter1:"苔光之門",chapter2:"月根隘口",chapter3:"激流高台",chapter4:"餘燼工坊",chapter5:"星落城牆",chapter6:"日蝕堡壘",
+    rule1:"熟悉召喚與合併節奏。",rule2:"在高速敵群重疊前擊破護甲。",rule3:"以範圍攻擊清除怪群並優先阻止治療者。",rule4:"在符文格封鎖與加速敵人之間重整防線。",rule5:"保留戰術指令對付菁英護衛。",rule6:"在裂隙雄鹿來襲前活用所有規則。",
+    threatBasic:"穩定前進的闇影",threatArmor:"裝甲甲蟲",threatSwarm:"密集幽光怪群",threatHeal:"治療幽光",threatHaste:"加速突進者",threatLock:"符文格封鎖脈衝",threatChampion:"菁英護衛",threatBoss:"首領波次",
+    planPairs:"預留一組可合併的守護者。",planForge:"鍛造守護者最擅長破甲。",planTide:"潮汐守護者能控制密集怪群。",planBurst:"把符文爆發留給敵人最密集的時刻。",rewardDust:"+{dust} 符文之塵",stageSummary:"已解鎖 {unlocked}/30 · {stars} 顆星",
+    core:"核心",wave:"波次",charge:"能量",summon:"召喚",rally:"全軍集結",burst:"符文爆發",reroll:"符文重塑",rallyHint:"全體攻速 ×1.72 · 6 秒",burstHint:"攻擊並緩速最前方 5 名敵人",rerollHint:"保留等級 · 更換屬性",ready:"可使用",cooldown:"{seconds} 秒",activeSeconds:"強化 {seconds} 秒",selectGuardian:"選擇守護者",cost:"消耗 {cost}",boardLabel:"守護者合成盤",objective:"在所有敵人抵達水晶前阻止它們。",
+    summoned:"已召喚{guardian}守護者。",droughtGift:"太郎穩定了命運：出現可配對的{guardian}守護者。",boardFull:"版面已滿。請合併一組相同守護者，或重塑一名守護者。",notEnoughCharge:"需要 {cost} 點能量。",mergeSelect:"已選擇 {rank} 階{guardian}。",mergeNeedMatch:"只能合併屬性與等級都相同的守護者。",merged:"已合併成 {rank} 階{guardian}。",maxRank:"這名守護者已達最高等級。",rerolled:"已將 {rank} 階守護者重塑為{guardian}。",rerollNeed:"請先選擇守護者，並保留 {cost} 點能量。",rallyUsed:"全軍集結使所有守護者加速！",rallyNotReady:"全軍集結仍在冷卻。",burstUsed:"符文爆發擊中了最前方的敵人！",burstNotReady:"守護者攻擊時會累積符文爆發。",burstNoTargets:"請等敵人進入道路後再施放。",waveStarts:"第 {wave} 波開始。",bossWarning:"首領逼近",coreHit:"核心受損！剩餘 {core} 點生命。",
+    grove:"樹林",spark:"火花",moon:"月光",forge:"鍛造",tide:"潮汐",guardianGuideTitle:"五種守護定位 · 六個等級",rankGuide:"菱形數字代表 1–6 階，不是第六種骰子。",groveRole:"穩定的強力單體攻擊",sparkRole:"高速攻擊並累積能量",moonRole:"緩速最前方敵人",forgeRole:"擊破敵人護甲",tideRole:"對怪群造成濺射傷害",selectedGuardian:"{guardian} · {rank}/6 階 · {role}",
+    pause:"暫停",pauseTitle:"防線已暫停",pauseText:"暫停期間，波次與所有守護者都會停止。",resume:"繼續遊戲",tutorialTitle:"召喚、合併、守住堡壘",tutorial1:"召喚會在一個空符文格放入隨機守護者。",tutorial2:"合併屬性與等級相同的守護者；升階後會重新決定屬性。",tutorial3:"把{rally}與{burst}留給密集波次或首領。",tutorialStart:"開始守城",leaveTitle:"要離開這場防守嗎？",leaveText:"選擇繼續會保留並恢復目前戰鬥；返回關卡會結束本次挑戰。",continue:"繼續",returnStages:"返回關卡",
+    resultKicker:"堡壘戰報",victory:"成功守住堡壘！",defeat:"闇影突破了水晶防線",victoryText:"你的守護者陣容成功撐過所有波次。",defeatText:"預留一組可合併守護者，並嘗試調整指令時機。",next:"下一關",retry:"再玩一次",coreLeft:"剩餘核心",merges:"合併次數",dustEarned:"符文之塵",noNext:"已完成最終關卡",stage:"第 {stage} 關",starsWord:"星"
+  });
   const dictionaries = { en };
   Object.entries(core).forEach(([code, values]) => {
-    dictionaries[code] = window.AnimalDiceBastionLocaleData?.[code] || {...en, ...values};
+    const generated = window.AnimalDiceBastionLocaleData?.[code] || {};
+    dictionaries[code] = code === "zh-Hant"
+      ? {...en, ...generated, ...values}
+      : {...en, ...values, ...generated};
   });
   window.AnimalDiceBastionLocales = {
     codes:["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"],

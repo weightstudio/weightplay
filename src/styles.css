@@ -4887,6 +4887,13 @@ body.general-lobby-page {
   }
 }
 
+@media (max-width: 759px) {
+  .lobby-page #continuePlayingSection .section-heading,
+  .lobby-page #heroGamesSection .section-heading {
+    display: none;
+  }
+}
+
 .general-lobby-page #gameGrid {
   order: 9;
 }

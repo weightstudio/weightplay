@@ -1,26 +1,81 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <base href="/games/animal-dice-bastion/">
-  <meta charset="utf-8">
+    <base href="/games/animal-dice-bastion/" />
+  <link rel="canonical" href="https://weightplay.com/es/games/animal-dice-bastion/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-dice-bastion/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-dice-bastion/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-dice-bastion/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-dice-bastion/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-dice-bastion/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-dice-bastion/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-dice-bastion/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-dice-bastion/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-dice-bastion/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-dice-bastion/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-dice-bastion/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-dice-bastion/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-dice-bastion/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-dice-bastion/" />
+    <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#071c2d">
-  <title>Animal Dice Bastion | WeightPlay Internal Trial</title>
-  <meta name="description" content="Summon, merge, and command animal guardian dice through thirty original fortress defenses.">
+  <title>Bastión de Dados Animal | WeightPlay</title>
+  <meta name="description" content="Invoca guardianes animales, fusiona rangos iguales y dirige órdenes tácticas en 30 defensas originales." />
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body data-screen="main" data-game-id="animal-dice-bastion" data-wp-combined-sound="true" data-wp-internal-trial-gate data-runtime-localize="off">
+  <link rel="stylesheet" href="style.css?v=20260731-public15">
+  <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Bastión de Dados Animal | WeightPlay" />
+    <meta property="og:description" content="Invoca guardianes animales, fusiona rangos iguales y dirige órdenes tácticas en 30 defensas originales." />
+    <meta property="og:url" content="https://weightplay.com/es/games/animal-dice-bastion/" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-dice-bastion/cover.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Bastión de Dados Animal | WeightPlay" />
+    <meta name="twitter:description" content="Invoca guardianes animales, fusiona rangos iguales y dirige órdenes tácticas en 30 defensas originales." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/animal-dice-bastion/cover.webp" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Bastión de Dados Animal",
+  "alternateName": "Animal Dice Bastion",
+  "url": "https://weightplay.com/es/games/animal-dice-bastion/",
+  "image": "https://weightplay.com/assets/animal-dice-bastion/cover.webp",
+  "description": "Invoca guardianes animales, fusiona rangos iguales y dirige órdenes tácticas en 30 defensas originales.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com"
+  },
+  "inLanguage": "es",
+  "isAccessibleForFree": true,
+  "operatingSystem": "Any modern web browser",
+  "genre": [
+    "Juegos de animales",
+    "Estrategia",
+    "Defensa de la torre",
+    "fusionar"
+  ],
+  "audience": {
+    "@type": "PeopleAudience",
+    "audienceType": "General players",
+    "suggestedMinAge": 13
+  }
+}
+    </script>
+  </head>
+<body data-screen="main" data-game-id="animal-dice-bastion" data-wp-combined-sound="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
       <img src="../../assets/weightplay-logo.png" alt="">
-      <strong data-i18n="loading">Awakening the guardian runes…</strong>
+      <strong data-i18n="loading">Despertando las runas guardianas…</strong>
       <div class="loading-track"><i id="loadingFill"></i></div>
     </div>
   </section>
@@ -31,9 +86,9 @@
         <a id="mainReturn" class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="Back to WeightPlay">
           <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="">
         </a>
-        <strong data-i18n="title">Animal Dice Bastion</strong>
+        <strong data-i18n="title">Bastión de Dados Animal</strong>
         <label class="locale-control">
-          <span class="sr-only" data-i18n="language">Language</span>
+          <span class="sr-only" data-i18n="language">Idioma</span>
           <select id="localeSelect" data-i18n-aria="language" aria-label="Language">
             <option value="en">English</option>
             <option value="zh-Hant">繁體中文</option>
@@ -52,13 +107,13 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-dice-bastion/cover.webp" data-i18n-alt="posterAlt" alt="Taro commands guardian dice against a shadow wave">
+        <img class="main-poster" src="../../assets/animal-dice-bastion/cover.webp" data-i18n-alt="posterAlt" alt="Imagen del juego Bastión de Dados Animal">
         <div class="main-copy">
           <small data-i18n="eyebrow">Mosslight merge defense</small>
-          <h1 data-i18n="title">Animal Dice Bastion</h1>
+          <h1 data-i18n="title">Bastión de Dados Animal</h1>
           <p data-i18n="pitch">Summon random animal guardians, merge matching ranks, and command the right power before each wave reaches the crystal.</p>
           <div id="mainProgress" class="main-progress"></div>
-          <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start">Start Game</button>
+          <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start">Iniciar juego</button>
         </div>
       </section>
     </main>
@@ -71,9 +126,9 @@
       </div></div>
       <div class="game-info-sections guide-grid">
         <article class="game-info-section"><h3 data-i18n="howTitle">How to play</h3><ol>
-          <li data-i18n="how1">Spend charge to summon a random rank-one guardian into an empty rune slot.</li>
+          <li data-i18n="how1">Elige un guardián inicial y gasta carga para invocar guardianes de rango uno en runas vacías.</li>
           <li data-i18n="how2">Drag two guardians of the same affinity and rank together to create one stronger guardian.</li>
-          <li data-i18n="how3">Use Battle Rally, Rune Reforge, and Rune Burst while guardians automatically stop each wave.</li>
+          <li data-i18n="how3">Use {rally}, {reroll}, and {burst} while guardians automatically stop each wave.</li>
         </ol></article>
         <article class="game-info-section"><h3 data-i18n="rulesTitle">Rules and results</h3><p data-i18n="rulesText">A creature that reaches the bastion removes core integrity. Clear every wave and Boss to win. Keep at least half the core and avoid Reroll to earn all three stars.</p></article>
         <article class="game-info-section"><h3 data-i18n="progressTitle">Thirty authored defenses</h3><p data-i18n="progressText">Six chapters add armor, swarms, healers, haste, slot locks, champion escorts, and six distinct Boss defenses.</p></article>
@@ -92,7 +147,7 @@
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-dice-bastion/cover.webp')">
       <header class="stage-header">
         <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Back">←</button>
-        <div><strong data-i18n="title">Animal Dice Bastion</strong><span id="stageSummary"></span></div>
+        <div><strong data-i18n="title">Bastión de Dados Animal</strong><span id="stageSummary"></span></div>
         <span class="stage-header-spacer" aria-hidden="true"></span>
       </header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
@@ -100,19 +155,19 @@
       <section id="teamPanel" class="prep-panel guardian-team" role="tabpanel" aria-labelledby="teamTab" hidden>
         <header class="guardian-team-header">
           <img src="../../assets/weightplay-character-moss-shell-turtle-cutout.webp" alt="">
-          <div><small data-i18n="guardianTeamKicker">Opening blessing</small><strong data-i18n="guardianTeamTitle">Choose your first guardian</strong><p data-i18n="guardianTeamText">Your first summon in every Battle uses this affinity. Later summons remain fair and random.</p></div>
+          <div><small data-i18n="guardianTeamKicker">Bendición inicial</small><strong data-i18n="guardianTeamTitle">Elige tu primer guardián</strong><p data-i18n="guardianTeamText">La primera invocación de cada batalla usa esta afinidad. Las siguientes siguen siendo justas y aleatorias.</p></div>
         </header>
         <div id="guardianRoster" class="guardian-roster" role="radiogroup" data-i18n-aria="guardianRosterLabel" aria-label="Opening guardian"></div>
-        <p id="teamFeedback" class="team-feedback" aria-live="polite" data-i18n="openingPending">Choose one guardian for your next Battle.</p>
+        <p id="teamFeedback" class="team-feedback" aria-live="polite" data-i18n="openingPending">Elige un guardián para la próxima batalla.</p>
       </section>
       <section id="equipmentPanel" class="prep-panel workshop" role="tabpanel" aria-labelledby="equipmentTab" hidden>
         <header><div><small data-i18n="workshopKicker">Permanent upgrades</small><strong data-i18n="workshop">Bastion Workshop</strong></div><b id="dustValue"></b></header>
         <div id="upgradeList" class="upgrade-list"></div><p id="upgradeFeedback" aria-live="polite"></p>
       </section>
       <nav class="stage-tabs" aria-label="Stage tabs" role="tablist">
-        <button id="teamTab" type="button" role="tab" aria-controls="teamPanel" data-panel="team" data-i18n="team">Guardians</button>
-        <button id="stagesTab" type="button" role="tab" aria-controls="stageRail" data-panel="stages" data-i18n="stages">Stages</button>
-        <button id="equipmentTab" type="button" role="tab" aria-controls="equipmentPanel" data-panel="equipment" data-i18n="equipment">Equipment</button>
+        <button id="teamTab" type="button" role="tab" aria-controls="teamPanel" data-panel="team" data-i18n="team">Guardianes</button>
+        <button id="stagesTab" type="button" role="tab" aria-controls="stageRail" data-panel="stages" data-i18n="stages">Fases</button>
+        <button id="equipmentTab" type="button" role="tab" aria-controls="equipmentPanel" data-panel="equipment" data-i18n="equipment">Equipo</button>
       </nav>
     </div>
   </section>
@@ -123,8 +178,8 @@
         <header class="battle-header">
           <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Back">←</button>
           <div class="battle-title"><strong id="stageLabel"></strong></div>
-          <div class="battle-stat"><small data-i18n="core">Core</small><strong id="coreValue">6/6</strong></div>
-          <div class="battle-stat"><small data-i18n="wave">Wave</small><strong id="waveValue">1/5</strong></div>
+          <div class="battle-stat"><small data-i18n="core">Núcleo</small><strong id="coreValue">6/6</strong></div>
+          <div class="battle-stat"><small data-i18n="wave">Oleada</small><strong id="waveValue">1/5</strong></div>
           <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="Pause">Ⅱ</button>
         </header>
         <section class="battle-layout">
@@ -136,12 +191,12 @@
           <div class="command-panel">
             <div id="board" class="guardian-board" role="grid" tabindex="0" data-i18n-aria="boardLabel" aria-label="Guardian merge board" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space S R 1 2 Escape"></div>
             <div class="command-stack">
-              <div class="charge-meter"><span data-i18n="charge">Charge</span><strong id="chargeValue">0</strong><i><b id="chargeFill"></b></i></div>
-              <button id="summonBtn" class="summon-button" type="button"><span data-i18n="summon">Summon</span><b id="summonCost">10</b></button>
+              <div class="charge-meter"><span data-i18n="charge">Carga</span><strong id="chargeValue">0</strong><i><b id="chargeFill"></b></i></div>
+              <button id="summonBtn" class="summon-button" type="button"><span data-i18n="summon">Invocar</span><b id="summonCost">10</b></button>
               <div class="orders">
-                <button id="rallyBtn" type="button" data-i18n-title="rallyHint"><span><strong data-i18n="rally">Battle Rally</strong><em data-i18n="rallyHint">All attack speed ×1.72 · 6s</em></span><small id="rallyState"></small></button>
-                <button id="burstBtn" type="button" data-i18n-title="burstHint"><span><strong data-i18n="burst">Rune Burst</strong><em data-i18n="burstHint">Hit and slow the front 5</em></span><small id="burstState"></small></button>
-                <button id="rerollBtn" type="button" data-i18n-title="rerollHint"><span><strong data-i18n="reroll">Rune Reforge</strong><em data-i18n="rerollHint">Keep rank · change affinity</em></span><small id="rerollState"></small></button>
+                <button id="rallyBtn" type="button" data-i18n-title="rallyHint"><span><strong data-i18n="rally">Orden de batalla</strong><em data-i18n="rallyHint">Velocidad de todos ×1,72 · 6 s</em></span><small id="rallyState"></small></button>
+                <button id="burstBtn" type="button" data-i18n-title="burstHint"><span><strong data-i18n="burst">Estallido rúnico</strong><em data-i18n="burstHint">Golpea y frena a los 5 primeros</em></span><small id="burstState"></small></button>
+                <button id="rerollBtn" type="button" data-i18n-title="rerollHint"><span><strong data-i18n="reroll">Reforjar runa</strong><em data-i18n="rerollHint">Conserva rango · cambia afinidad</em></span><small id="rerollState"></small></button>
               </div>
               <p id="battleFeedback" aria-live="polite"></p>
             </div>
@@ -153,22 +208,22 @@
         <h2 id="tutorialTitle" data-i18n="tutorialTitle">Summon, match, and defend</h2><ol>
           <li data-i18n="tutorial1">Summon fills one empty rune slot with a random guardian.</li>
           <li data-i18n="tutorial2">Merge matching affinity and rank. The stronger result rerolls its affinity.</li>
-          <li data-i18n="tutorial3">Save Battle Rally and Rune Burst for dense waves or a Boss.</li>
+          <li data-i18n="tutorial3">Save {rally} and {burst} for dense waves or a Boss.</li>
         </ol>
-        <h3 class="guardian-guide-title" data-i18n="guardianGuideTitle">Five guardian roles · six ranks</h3>
-        <p class="rank-guide" data-i18n="rankGuide">Diamonds show rank 1–6, not a sixth dice type.</p>
+        <h3 class="guardian-guide-title" data-i18n="guardianGuideTitle">Cinco roles · seis rangos</h3>
+        <p class="rank-guide" data-i18n="rankGuide">Los diamantes indican rango 1–6, no un sexto dado.</p>
         <div class="guardian-guide">
-          <article><img src="../../assets/animal-dice-bastion/guardian-grove.webp" alt=""><b data-i18n="grove">Grove</b><small data-i18n="groveRole">Strong steady hits</small></article>
-          <article><img src="../../assets/animal-dice-bastion/guardian-spark.webp" alt=""><b data-i18n="spark">Spark</b><small data-i18n="sparkRole">Fast charge builder</small></article>
-          <article><img src="../../assets/animal-dice-bastion/guardian-moon.webp" alt=""><b data-i18n="moon">Moon</b><small data-i18n="moonRole">Slows the lead enemy</small></article>
-          <article><img src="../../assets/animal-dice-bastion/guardian-forge.webp" alt=""><b data-i18n="forge">Forge</b><small data-i18n="forgeRole">Breaks enemy armor</small></article>
-          <article><img src="../../assets/animal-dice-bastion/guardian-tide.webp" alt=""><b data-i18n="tide">Tide</b><small data-i18n="tideRole">Splash damage to groups</small></article>
+          <article><img src="../../assets/animal-dice-bastion/guardian-grove.webp" alt=""><b data-i18n="grove">Grove</b><small data-i18n="groveRole">Golpes fuertes y estables</small></article>
+          <article><img src="../../assets/animal-dice-bastion/guardian-spark.webp" alt=""><b data-i18n="spark">Spark</b><small data-i18n="sparkRole">Carga rápida</small></article>
+          <article><img src="../../assets/animal-dice-bastion/guardian-moon.webp" alt=""><b data-i18n="moon">Moon</b><small data-i18n="moonRole">Ralentiza al primero</small></article>
+          <article><img src="../../assets/animal-dice-bastion/guardian-forge.webp" alt=""><b data-i18n="forge">Forge</b><small data-i18n="forgeRole">Rompe armadura</small></article>
+          <article><img src="../../assets/animal-dice-bastion/guardian-tide.webp" alt=""><b data-i18n="tide">Tide</b><small data-i18n="tideRole">Daño de área</small></article>
         </div>
         <button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Guard the bastion</button>
       </div></section>
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
         <h2 id="leaveTitle" data-i18n="leaveTitle">Leave this defense?</h2><p data-i18n="leaveText">Continue keeps this exact Battle frozen. Returning to Stages ends only this attempt.</p>
-        <div class="modal-actions two"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Return to Stages</button></div>
+        <div class="modal-actions two"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continuar</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Volver a fases</button></div>
       </div></section>
       <section id="pausePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden><div class="dialog-card">
         <h2 id="pauseTitle" data-i18n="pauseTitle">Defense paused</h2><p data-i18n="pauseText">The wave and every guardian are frozen while you take a break.</p>
@@ -178,7 +233,7 @@
         <img src="../../assets/weightplay-character-moss-shell-turtle-cutout.webp" alt="">
         <small data-i18n="resultKicker">Bastion report</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div>
         <p id="resultText"></p><div id="resultStats" class="result-stats"></div>
-        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next Stage</button><button id="retryBtn" type="button" data-i18n="retry">Replay</button></div>
+        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">Fases</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Siguiente fase</button><button id="retryBtn" type="button" data-i18n="retry">Repetir</button></div>
       </div></section>
     </div>
     <div class="battle-ad-reserve" aria-hidden="true"></div>
@@ -186,14 +241,14 @@
 
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
-  <script src="../../src/i18n.js?v=20260721-locale13-1"></script>
+  <script src="/src/i18n.js?v=20260731-owner-preview5"></script>
   <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
   <script src="../../src/wallet.js"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
-  <script src="locale-data.js"></script>
-  <script src="locales.js"></script>
-  <script src="game.js"></script>
+  <script src="locale-data.js?v=20260731-public16"></script>
+  <script src="locales.js?v=20260731-public16"></script>
+  <script src="game.js?v=20260731-public16"></script>
   <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js"></script>

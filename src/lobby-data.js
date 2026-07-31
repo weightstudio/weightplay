@@ -2182,6 +2182,14 @@ if (bambooPipesPublic) {
   delete bambooPipesPublic.internalTrial;
 }
 
+const diceBastionPublic = window.WONDER_LOBBY.games.find((game) => game.id === "animal-dice-bastion");
+if (diceBastionPublic) {
+  diceBastionPublic.status = "playable";
+  if (playableStatusCopy) diceBastionPublic.statusText = { ...playableStatusCopy };
+  diceBastionPublic.previewVideo = "assets/previews/animal-dice-bastion-battle.webm";
+  delete diceBastionPublic.internalTrial;
+}
+
 // Owner-approved General releases. Keep this as the single release-state
 // override so later catalogue edits cannot silently restore the private gate.
 const approvedGeneralReleases = {

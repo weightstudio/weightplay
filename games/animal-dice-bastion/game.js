@@ -134,7 +134,7 @@
     document.querySelectorAll("[data-i18n-aria]").forEach((node) => node.setAttribute("aria-label", t(node.dataset.i18nAria)));
     document.querySelectorAll("[data-i18n-alt]").forEach((node) => node.setAttribute("alt", t(node.dataset.i18nAlt)));
     document.querySelectorAll("[data-i18n-title]").forEach((node) => node.setAttribute("title", t(node.dataset.i18nTitle)));
-    document.title = `${t("title")} | WeightPlay Internal Trial`;
+    document.title = `${t("title")} | WeightPlay`;
     renderMainProgress();
     if (screen === "stage") renderStage();
     if (run) updateBattleHud(true);

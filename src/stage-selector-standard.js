@@ -17,6 +17,7 @@
   let appliedStageReserve = null;
   let appliedStageWidth = 0;
   let appliedStageHeight = 0;
+  let appliedStageRootStyleSignature = "";
   const savedStageStyles = new WeakMap();
   const savedReserveStyles = new WeakMap();
   const nativeStageScalers = new Set(["wonder-crash", "campus-dash", "color-lunchbox", "animal-rope-rescue", "animal-coloring-studio", "animal-bubble-safari", "animal-rune-reels", "animal-triple-match", "garden-tiles"]);
@@ -148,6 +149,13 @@
     root.removeAttribute("data-wp-logical-stage-canvas");
   }
 
+  function stageRootStyleSignature(root) {
+    if (!root) return "";
+    return ["position", "top", "left", "width", "height", "transform", "transform-origin"]
+      .map((property) => `${property}:${root.style.getPropertyValue(property)}!${root.style.getPropertyPriority(property)}`)
+      .join("|");
+  }
+
   function rememberReserveStyles(reserve) {
     if (!reserve || savedReserveStyles.has(reserve)) return;
     const properties = ["position", "inset", "top", "right", "bottom", "left", "width", "min-width", "max-width", "height", "min-height", "transform"];
@@ -215,6 +223,7 @@
       clearStageVariables();
       appliedStageRoot = null;
       appliedStageReserve = null;
+      appliedStageRootStyleSignature = "";
       return;
     }
 
@@ -226,7 +235,9 @@
     const height = Math.max(1, document.documentElement.clientHeight || 0, window.innerHeight || 0, viewport?.height || 0);
     if (root === appliedStageRoot
       && Math.abs(width - appliedStageWidth) < 0.5
-      && Math.abs(height - appliedStageHeight) < 0.5) return;
+      && Math.abs(height - appliedStageHeight) < 0.5
+      && root.hasAttribute("data-wp-logical-stage-canvas")
+      && stageRootStyleSignature(root) === appliedStageRootStyleSignature) return;
     const requestedMaximumWidth = Number.parseFloat(root.dataset.wpCanvasMaxWidth || "");
     const maximumWidth = Number.isFinite(requestedMaximumWidth) && requestedMaximumWidth > 0
       ? Math.min(DESKTOP_CANVAS_MAX_WIDTH, requestedMaximumWidth)
@@ -281,6 +292,7 @@
     appliedStageRoot = root;
     appliedStageWidth = width;
     appliedStageHeight = height;
+    appliedStageRootStyleSignature = stageRootStyleSignature(root);
     metrics.stageCanvasApplied += 1;
   }
 
