@@ -81,12 +81,12 @@
   <div id="mainGroup" class="main-group">
     <main id="main" class="screen main main-screen wp-standard-main-screen" data-screen="main">
       <header class="main-header">
-        <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
+        <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Torna a WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
         <strong data-t="title">Giardino dei Percorsi Prisma</strong>
         <label class="locale"><span data-t="language">Lingua</span><select id="locale"></select></label>
       </header>
       <section class="hero">
-        <img src="../../assets/animal-prism-garden/cover.webp" data-t-alt="coverAlt" alt="Immagine del gioco Giardino dei Percorsi Prisma">
+        <img src="../../assets/animal-prism-garden/cover.webp" data-t-alt="Una civetta architetta studia percorsi luminosi in una serra al chiaro di luna" alt="Immagine del gioco Giardino dei Percorsi Prisma">
         <div class="hero-copy">
           <p class="eyebrow" data-t="kicker">GIARDINO NOTTURNO DELLA CIVETTA</p>
           <h1 data-t="title">Giardino dei Percorsi Prisma</h1>
@@ -96,7 +96,7 @@
         </div>
       </section>
     </main>
-    <section id="publicGuide" class="game-page-info game-page-info-static" aria-label="Prism Route Garden guide">
+    <section id="publicGuide" class="game-page-info game-page-info-static" data-t-aria="guideTitle" aria-label="Come giocare">
       <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-t="guideKicker">Guida originale WeightPlay</span><h2 data-t="guideTitle">Come giocare</h2><p data-t="guideLead">Collega i prismi uguali senza incroci. I portali accettano solo il proprio colore e ogni casella va riempita.</p></div></div>
       <div class="game-info-sections">
         <div class="game-info-section"><h3 data-t="guideRulesTitle">Regole base</h3><ol><li data-t="guideRule1">Trascina da un prisma fino alla sua coppia.</li><li data-t="guideRule2">I percorsi vanno in quattro direzioni e non condividono caselle.</li><li data-t="guideRule3">Un portale segnato accetta solo il percorso dello stesso colore.</li><li data-t="guideRule4">Collega tutte le coppie e illumina ogni casella libera.</li></ol><p data-t="guideRulesDetail">Un percorso può iniziare da entrambi gli estremi. Ridisegnare un colore elimina il vecchio tracciato e tornare alla casella precedente lo accorcia. Completa sia i collegamenti sia tutte le caselle.</p></div>
@@ -111,27 +111,27 @@
 
   <main id="stage" class="screen canvas stage stage-canvas" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-prism-garden/cover.webp')" hidden>
     <header class="scene-header stage-header">
-      <button class="icon-button" data-back data-wp-return="stage" data-t-aria="back" aria-label="Back">←</button>
+      <button class="icon-button" data-back data-wp-return="stage" data-t-aria="back" aria-label="Indietro">←</button>
       <h2 data-t="title">Giardino dei Percorsi Prisma</h2>
     </header>
     <section class="stage-workspace">
       <div class="stage-summary"><small data-t="choose">SCEGLI UN GIARDINO</small><span id="progressBadge" class="badge"></span></div>
-      <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="Stage list"></section>
+      <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="Elenco livelli"></section>
     </section>
-    <nav class="stage-tabs" data-t-aria="stageList" aria-label="Stage list">
+    <nav class="stage-tabs" data-t-aria="stageList" aria-label="Elenco livelli">
       <button id="stageTab" type="button" class="stage-tab active" aria-current="page" data-t="stages">Livelli</button>
     </nav>
   </main>
 
   <main id="battle" class="screen canvas battle" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
     <header class="scene-header battle-header">
-      <button class="icon-button" data-back data-wp-return="battle" data-t-aria="back" aria-label="Back">←</button>
+      <button class="icon-button" data-back data-wp-return="battle" data-t-aria="back" aria-label="Indietro">←</button>
       <div><small id="chapter"></small><h2 id="stageName"></h2></div>
     </header>
     <section class="battle-content">
       <div class="hud"><span id="moves"></span><span id="linkStatus"></span><span id="fillStatus"></span></div>
       <p id="objective" class="battle-objective" data-t="objective">Collega tutte le coppie, rispetta i portali e riempi la griglia.</p>
-      <div id="grid" class="grid" role="grid" tabindex="0" data-t-aria="boardLabel" aria-label="Prism route puzzle board"></div>
+      <div id="grid" class="grid" role="grid" tabindex="0" data-t-aria="boardLabel" aria-label="Griglia dei percorsi prisma"></div>
       <div class="tools"><button id="undo" data-t="undo">Annulla</button><button id="hint" data-t="hint">Suggerimento</button><button id="reset" data-t="reset">Ripristina</button></div>
       <p id="status" class="status" aria-live="polite"></p>
     </section>

@@ -165,7 +165,7 @@ function updateBreakerStep(dt){
       }
     }
   }
-  engine.balls=engine.balls.filter(ball=>ball.y<1.05);if(!engine.balls.length){engine.lives--;if(engine.lives<=0)return fail(C.fail);engine.balls=[{x:engine.paddle.x,y:.78,vx:.42,vy:-.86,r:.012,trail:[]}];if(engine.rules.twinStart)engine.balls.push({x:engine.paddle.x,y:.78,vx:-.42,vy:-.86,r:.012,trail:[]});engine.launched=false;engine.combo=0;announce("Orb lost. Launch the next light orb.")}
+  const missedBalls=engine.balls.filter(ball=>ball.y>=1.05);for(const ball of missedBalls)window.dispatchEvent(new CustomEvent("weightplay:breaker-orb-miss",{detail:{gameId:C.id,stage:engine.stage,ballX:ball.x,paddleX:engine.paddle.x,livesAfter:Math.max(0,engine.lives-(missedBalls.length===engine.balls?1:0))}}));engine.balls=engine.balls.filter(ball=>ball.y<1.05);if(!engine.balls.length){engine.lives--;if(engine.lives<=0)return fail(C.fail);engine.balls=[{x:engine.paddle.x,y:.78,vx:.42,vy:-.86,r:.012,trail:[]}];if(engine.rules.twinStart)engine.balls.push({x:engine.paddle.x,y:.78,vx:-.42,vy:-.86,r:.012,trail:[]});engine.launched=false;engine.combo=0;announce("Orb lost. Launch the next light orb.")}
   engine.impactFlash=Math.max(0,engine.impactFlash-dt*2.8);for(const particle of engine.particles){particle.x+=particle.vx*dt*60;particle.y+=particle.vy*dt*60;particle.vy+=dt*.035;particle.life-=dt}engine.particles=engine.particles.filter(particle=>particle.life>0);
   if(!breakerBreakableBlocks().length)complete({score:engine.score,a:`${engine.score} pts`,b:`${engine.bestCombo} combo`,c:`${engine.lives} lives`});updateBreakerStats()
 }

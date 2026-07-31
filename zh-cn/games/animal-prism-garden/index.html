@@ -81,12 +81,12 @@
   <div id="mainGroup" class="main-group">
     <main id="main" class="screen main main-screen wp-standard-main-screen" data-screen="main">
       <header class="main-header">
-        <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
+        <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="返回 WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
         <strong data-t="title">幻彩连线庭园</strong>
         <label class="locale"><span data-t="language">语言</span><select id="locale"></select></label>
       </header>
       <section class="hero">
-        <img src="../../assets/animal-prism-garden/cover.webp" data-t-alt="coverAlt" alt="《幻彩连线庭园》游戏图片">
+        <img src="../../assets/animal-prism-garden/cover.webp" data-t-alt="猫头鹰建筑师在月光温室研究发光路线" alt="《幻彩连线庭园》游戏图片">
         <div class="hero-copy">
           <p class="eyebrow" data-t="kicker">猫头鹰建筑师的夜光庭园</p>
           <h1 data-t="title">幻彩连线庭园</h1>
@@ -96,7 +96,7 @@
         </div>
       </section>
     </main>
-    <section id="publicGuide" class="game-page-info game-page-info-static" aria-label="Prism Route Garden guide">
+    <section id="publicGuide" class="game-page-info game-page-info-static" data-t-aria="guideTitle" aria-label="游戏指南">
       <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-t="guideKicker">WeightPlay 原创游戏指南</span><h2 data-t="guideTitle">游戏指南</h2><p data-t="guideLead">连接每组同色晶花，路线不能互相占格。幻彩闸门只接受对应颜色，且所有开放格都必须填满。</p></div></div>
       <div class="game-info-sections">
         <div class="game-info-section"><h3 data-t="guideRulesTitle">核心规则</h3><ol><li data-t="guideRule1">从一颗晶花拖到相同颜色的另一颗。</li><li data-t="guideRule2">路线只能上下左右移动，而且不能共用格子。</li><li data-t="guideRule3">有标记的幻彩闸门只能让同色路线通过。</li><li data-t="guideRule4">连完所有配对并点亮全部开放格即可完成。</li></ol><p data-t="guideRulesDetail">路线可从任一端点开始。重画同色路线时，旧路线会先清除；拖回上一格可缩短一步，不必重置整盘。其他颜色的端点不能进入。即使所有配对都连上，只要还有一个普通格没有发光，关卡就不算完成，因此要同时查看“连线”与“填满”计数。</p></div>
@@ -111,27 +111,27 @@
 
   <main id="stage" class="screen canvas stage stage-canvas" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-prism-garden/cover.webp')" hidden>
     <header class="scene-header stage-header">
-      <button class="icon-button" data-back data-wp-return="stage" data-t-aria="back" aria-label="Back">←</button>
+      <button class="icon-button" data-back data-wp-return="stage" data-t-aria="back" aria-label="返回">←</button>
       <h2 data-t="title">幻彩连线庭园</h2>
     </header>
     <section class="stage-workspace">
       <div class="stage-summary"><small data-t="choose">选择庭园</small><span id="progressBadge" class="badge"></span></div>
-      <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="Stage list"></section>
+      <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="关卡列表"></section>
     </section>
-    <nav class="stage-tabs" data-t-aria="stageList" aria-label="Stage list">
+    <nav class="stage-tabs" data-t-aria="stageList" aria-label="关卡列表">
       <button id="stageTab" type="button" class="stage-tab active" aria-current="page" data-t="stages">关卡</button>
     </nav>
   </main>
 
   <main id="battle" class="screen canvas battle" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
     <header class="scene-header battle-header">
-      <button class="icon-button" data-back data-wp-return="battle" data-t-aria="back" aria-label="Back">←</button>
+      <button class="icon-button" data-back data-wp-return="battle" data-t-aria="back" aria-label="返回">←</button>
       <div><small id="chapter"></small><h2 id="stageName"></h2></div>
     </header>
     <section class="battle-content">
       <div class="hud"><span id="moves"></span><span id="linkStatus"></span><span id="fillStatus"></span></div>
       <p id="objective" class="battle-objective" data-t="objective">连接全部配对、遵守闸门颜色并填满棋盘。</p>
-      <div id="grid" class="grid" role="grid" tabindex="0" data-t-aria="boardLabel" aria-label="Prism route puzzle board"></div>
+      <div id="grid" class="grid" role="grid" tabindex="0" data-t-aria="boardLabel" aria-label="幻彩连线益智棋盘"></div>
       <div class="tools"><button id="undo" data-t="undo">撤销</button><button id="hint" data-t="hint">提示</button><button id="reset" data-t="reset">重置</button></div>
       <p id="status" class="status" aria-live="polite"></p>
     </section>

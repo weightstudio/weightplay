@@ -81,12 +81,12 @@
   <div id="mainGroup" class="main-group">
     <main id="main" class="screen main main-screen wp-standard-main-screen" data-screen="main">
       <header class="main-header">
-        <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
+        <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Zurück zu WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
         <strong data-t="title">Prisma-Pfadgarten</strong>
         <label class="locale"><span data-t="language">Sprache</span><select id="locale"></select></label>
       </header>
       <section class="hero">
-        <img src="../../assets/animal-prism-garden/cover.webp" data-t-alt="coverAlt" alt="Spielgrafik zu Prisma-Pfadgarten">
+        <img src="../../assets/animal-prism-garden/cover.webp" data-t-alt="Eine Eulenarchitektin prüft leuchtende Pfade in einem Mondgewächshaus" alt="Spielgrafik zu Prisma-Pfadgarten">
         <div class="hero-copy">
           <p class="eyebrow" data-t="kicker">NACHTGARTEN DER EULENARCHITEKTIN</p>
           <h1 data-t="title">Prisma-Pfadgarten</h1>
@@ -96,7 +96,7 @@
         </div>
       </section>
     </main>
-    <section id="publicGuide" class="game-page-info game-page-info-static" aria-label="Prism Route Garden guide">
+    <section id="publicGuide" class="game-page-info game-page-info-static" data-t-aria="guideTitle" aria-label="Spielanleitung">
       <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-t="guideKicker">Originaler WeightPlay-Spielguide</span><h2 data-t="guideTitle">Spielanleitung</h2><p data-t="guideLead">Verbinde gleiche Prismen ohne Kreuzung. Tore nehmen nur ihre Farbe an und alle Felder müssen gefüllt sein.</p></div></div>
       <div class="game-info-sections">
         <div class="game-info-section"><h3 data-t="guideRulesTitle">Grundregeln</h3><ol><li data-t="guideRule1">Ziehe von einem Prisma zu seinem Partner.</li><li data-t="guideRule2">Pfade verlaufen in vier Richtungen und teilen keine Felder.</li><li data-t="guideRule3">Ein markiertes Tor lässt nur den Pfad seiner Farbe durch.</li><li data-t="guideRule4">Verbinde alle Paare und beleuchte jedes freie Feld.</li></ol><p data-t="guideRulesDetail">Ein Pfad kann an beiden Endpunkten beginnen. Beim Neuzeichnen einer Farbe wird der alte Pfad entfernt; ein Schritt zurück kürzt ihn. Sowohl alle Verbindungen als auch alle Felder müssen fertig sein.</p></div>
@@ -111,27 +111,27 @@
 
   <main id="stage" class="screen canvas stage stage-canvas" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-prism-garden/cover.webp')" hidden>
     <header class="scene-header stage-header">
-      <button class="icon-button" data-back data-wp-return="stage" data-t-aria="back" aria-label="Back">←</button>
+      <button class="icon-button" data-back data-wp-return="stage" data-t-aria="back" aria-label="Zurück">←</button>
       <h2 data-t="title">Prisma-Pfadgarten</h2>
     </header>
     <section class="stage-workspace">
       <div class="stage-summary"><small data-t="choose">GARTEN WÄHLEN</small><span id="progressBadge" class="badge"></span></div>
-      <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="Stage list"></section>
+      <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="Level-Liste"></section>
     </section>
-    <nav class="stage-tabs" data-t-aria="stageList" aria-label="Stage list">
+    <nav class="stage-tabs" data-t-aria="stageList" aria-label="Level-Liste">
       <button id="stageTab" type="button" class="stage-tab active" aria-current="page" data-t="stages">Level</button>
     </nav>
   </main>
 
   <main id="battle" class="screen canvas battle" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
     <header class="scene-header battle-header">
-      <button class="icon-button" data-back data-wp-return="battle" data-t-aria="back" aria-label="Back">←</button>
+      <button class="icon-button" data-back data-wp-return="battle" data-t-aria="back" aria-label="Zurück">←</button>
       <div><small id="chapter"></small><h2 id="stageName"></h2></div>
     </header>
     <section class="battle-content">
       <div class="hud"><span id="moves"></span><span id="linkStatus"></span><span id="fillStatus"></span></div>
       <p id="objective" class="battle-objective" data-t="objective">Verbinde alle Paare, beachte Tore und fülle das Brett.</p>
-      <div id="grid" class="grid" role="grid" tabindex="0" data-t-aria="boardLabel" aria-label="Prism route puzzle board"></div>
+      <div id="grid" class="grid" role="grid" tabindex="0" data-t-aria="boardLabel" aria-label="Prisma-Pfadpuzzle"></div>
       <div class="tools"><button id="undo" data-t="undo">Rückgängig</button><button id="hint" data-t="hint">Hinweis</button><button id="reset" data-t="reset">Neu starten</button></div>
       <p id="status" class="status" aria-live="polite"></p>
     </section>

@@ -76,12 +76,12 @@
   <div id="mainGroup" class="main-group">
     <main class="main-screen">
       <header class="main-header">
-        <a class="lobby-return" href="/" aria-label="Return to WeightPlay" data-t-aria="lobbyReturn" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt="どうぶつルートヴォルト・ピンのゲーム画像"></a>
+        <a class="lobby-return" href="/" aria-label="WeightPlayに戻る" data-t-aria="lobbyReturn" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt="どうぶつルートヴォルト・ピンのゲーム画像"></a>
         <strong data-t="titleShort">ルートヴォルト</strong>
-        <label class="locale-control"><span class="sr-only" data-t="language">言語</span><select id="localeSelect" aria-label="Language" data-t-aria="language"></select></label>
+        <label class="locale-control"><span class="sr-only" data-t="language">言語</span><select id="localeSelect" aria-label="言語" data-t-aria="language"></select></label>
       </header>
       <section class="main-hero">
-        <img class="poster" src="../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" data-t-alt="posterAlt" alt="Moss Shell Taro pulling a golden Rootvault pin">
+        <img class="poster" src="../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" data-t-alt="金色の仕掛けピンを抜くモスシェル・タロ" alt="Moss Shell Taro pulling a golden Rootvault pin">
         <div class="main-copy">
           <h1 data-t="title">どうぶつルートヴォルト・ピン</h1>
           <p data-t="mainSummary">部屋を読み、完全な金色のピンを一本抜こう。</p>
@@ -106,8 +106,8 @@
 
   <section id="stageScreen" class="active-screen" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" style="--wp-stage-art:url('../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp')">
-      <header class="stage-header"><button id="stageBack" type="button" aria-label="Back" data-t-aria="back" data-wp-return="stage">←</button><div><strong data-t="chooseChamber">根の宝庫の部屋を選択</strong><span id="stageSummary"></span></div><span class="taro-chip" aria-hidden="true"></span></header>
-      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" data-t-aria="stageRailLabel" aria-label="Rootvault chamber selector"></div>
+      <header class="stage-header"><button id="stageBack" type="button" aria-label="戻る" data-t-aria="back" data-wp-return="stage">←</button><div><strong data-t="chooseChamber">根の宝庫の部屋を選択</strong><span id="stageSummary"></span></div><span class="taro-chip" aria-hidden="true"></span></header>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" data-t-aria="stageRailLabel" aria-label="部屋選択レール"></div>
       <nav class="stage-tabs"><button id="briefTab" class="active" type="button" data-t="chamberBrief">部屋</button><button id="workshopTab" type="button" data-t="workshop">根の工房</button></nav>
       <section id="briefPanel" class="stage-panel"><div class="selected-brief"><span id="selectedNumber"></span><div><strong id="selectedName"></strong><p id="selectedRule"></p></div><button id="enterStage" class="primary" type="button" data-t="enterChamber">部屋に入る</button></div><p class="stage-hint" data-t="stageHint">レールをドラッグ。中央の発光枠が選択中です。</p></section>
       <section id="workshopPanel" class="stage-panel workshop-panel" hidden><div class="workshop-heading"><div><strong data-t="workshopTitle">根の工房</strong><p data-t="workshopIntro">種の印で計画支援を強化。解法は変わりません。</p></div><b id="seedCount"></b></div><p id="workshopHint" class="workshop-hint" data-t="workshopReady" aria-live="polite">計画補助を選んでください。費用と残高は常に表示されます。</p><div id="upgradeList" class="upgrade-list"></div></section>
@@ -117,9 +117,9 @@
   <section id="battleScreen" class="active-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
-        <header class="battle-header"><button id="battleBack" type="button" aria-label="Back" data-t-aria="back" data-wp-return="battle">←</button><div><small id="battleChapter"></small><strong id="battleStage"></strong></div><span><small data-t="pulls">ピン</small><strong id="pullCount">0</strong></span><button id="battleHelp" type="button" data-t-aria="help" aria-label="How to play">?</button></header>
+        <header class="battle-header"><button id="battleBack" type="button" aria-label="戻る" data-t-aria="back" data-wp-return="battle">←</button><div><small id="battleChapter"></small><strong id="battleStage"></strong></div><span><small data-t="pulls">ピン</small><strong id="pullCount">0</strong></span><button id="battleHelp" type="button" data-t-aria="help" aria-label="遊び方">?</button></header>
         <div class="objective-row"><strong data-t="battleObjective">タロ＋スターコアを聖泉へ</strong><span id="ruleCue"></span></div>
-        <div id="chamberBoard" class="chamber-board" tabindex="0" data-t-aria="boardLabel" aria-label="Rootvault chamber puzzle"></div>
+        <div id="chamberBoard" class="chamber-board" tabindex="0" data-t-aria="boardLabel" aria-label="ルートヴォルトの部屋パズル"></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>
         <div class="battle-actions"><button id="restart" type="button" data-t="restart">やり直す</button><button id="pullPin" class="primary" type="button" data-t="pullPin">ピンを抜く</button></div>
       </div>

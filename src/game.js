@@ -2098,15 +2098,18 @@ function renderMenuTabs() {
 }
 
 function renderMenuContent() {
+  menuContent.dataset.menuTab = activeMenuTab;
   menuContent.classList.toggle("equipment-mode", activeMenuTab === "equipment");
   overlay.classList.toggle("equipment-screen", activeMenuTab === "equipment");
   levelGrid.classList.toggle("hidden", activeMenuTab !== "battle");
   profilePanel.classList.toggle("hidden", activeMenuTab === "battle");
   if (activeMenuTab === "battle") {
     renderLevelGrid();
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
     return;
   }
   renderProfilePanel(activeMenuTab);
+  window.dispatchEvent(new Event("weightplay:shell-sync"));
 }
 
 function renderLevelGrid() {

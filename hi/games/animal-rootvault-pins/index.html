@@ -76,12 +76,12 @@
   <div id="mainGroup" class="main-group">
     <main class="main-screen">
       <header class="main-header">
-        <a class="lobby-return" href="/" aria-label="Return to WeightPlay" data-t-aria="lobbyReturn" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt="पशु रूटवॉल्ट पिन game artwork"></a>
+        <a class="lobby-return" href="/" aria-label="WeightPlay पर लौटें" data-t-aria="lobbyReturn" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt="पशु रूटवॉल्ट पिन game artwork"></a>
         <strong data-t="titleShort">रूटवॉल्ट पिन</strong>
-        <label class="locale-control"><span class="sr-only" data-t="language">भाषा</span><select id="localeSelect" aria-label="Language" data-t-aria="language"></select></label>
+        <label class="locale-control"><span class="sr-only" data-t="language">भाषा</span><select id="localeSelect" aria-label="भाषा" data-t-aria="language"></select></label>
       </header>
       <section class="main-hero">
-        <img class="poster" src="../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" data-t-alt="posterAlt" alt="Moss Shell Taro pulling a golden Rootvault pin">
+        <img class="poster" src="../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" data-t-alt="मॉस शैल तारो एक सुनहरा रूटवॉल्ट पिन खींच रहा है" alt="Moss Shell Taro pulling a golden Rootvault pin">
         <div class="main-copy">
           <h1 data-t="title">पशु रूटवॉल्ट पिन</h1>
           <p data-t="mainSummary">कक्षों को पढ़ें, फिर एक पूरी सुनहरी पिन खींचें।</p>
@@ -106,8 +106,8 @@
 
   <section id="stageScreen" class="active-screen" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" style="--wp-stage-art:url('../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp')">
-      <header class="stage-header"><button id="stageBack" type="button" aria-label="Back" data-t-aria="back" data-wp-return="stage">←</button><div><strong data-t="chooseChamber">एक रूटवॉल्ट चैम्बर चुनें</strong><span id="stageSummary"></span></div><span class="taro-chip" aria-hidden="true"></span></header>
-      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" data-t-aria="stageRailLabel" aria-label="Rootvault chamber selector"></div>
+      <header class="stage-header"><button id="stageBack" type="button" aria-label="वापस" data-t-aria="back" data-wp-return="stage">←</button><div><strong data-t="chooseChamber">एक रूटवॉल्ट चैम्बर चुनें</strong><span id="stageSummary"></span></div><span class="taro-chip" aria-hidden="true"></span></header>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" data-t-aria="stageRailLabel" aria-label="रूटवॉल्ट चैम्बर चयनकर्ता"></div>
       <nav class="stage-tabs"><button id="briefTab" class="active" type="button" data-t="chamberBrief">चैम्बर</button><button id="workshopTab" type="button" data-t="workshop">जड़ कार्यशाला</button></nav>
       <section id="briefPanel" class="stage-panel"><div class="selected-brief"><span id="selectedNumber"></span><div><strong id="selectedName"></strong><p id="selectedRule"></p></div><button id="enterStage" class="primary" type="button" data-t="enterChamber">चैम्बर में प्रवेश करें</button></div><p class="stage-hint" data-t="stageHint">रेल खींचें. एक चमकता हुआ फ्रेम केन्द्रित कक्ष को चिह्नित करता है।</p></section>
       <section id="workshopPanel" class="stage-panel workshop-panel" hidden><div class="workshop-heading"><div><strong data-t="workshopTitle">जड़ कार्यशाला</strong><p data-t="workshopIntro">योजना सहायता पर सीड मार्क्स खर्च करें। समाधान कभी नहीं बदलते.</p></div><b id="seedCount"></b></div><p id="workshopHint" class="workshop-hint" data-t="workshopReady" aria-live="polite">एक योजना सहायता चुनें. इसकी कीमत और आपका बैलेंस दिखता रहता है.</p><div id="upgradeList" class="upgrade-list"></div></section>
@@ -117,9 +117,9 @@
   <section id="battleScreen" class="active-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
-        <header class="battle-header"><button id="battleBack" type="button" aria-label="Back" data-t-aria="back" data-wp-return="battle">←</button><div><small id="battleChapter"></small><strong id="battleStage"></strong></div><span><small data-t="pulls">खींचता है</small><strong id="pullCount">0</strong></span><button id="battleHelp" type="button" data-t-aria="help" aria-label="How to play">?</button></header>
+        <header class="battle-header"><button id="battleBack" type="button" aria-label="वापस" data-t-aria="back" data-wp-return="battle">←</button><div><small id="battleChapter"></small><strong id="battleStage"></strong></div><span><small data-t="pulls">खींचता है</small><strong id="pullCount">0</strong></span><button id="battleHelp" type="button" data-t-aria="help" aria-label="कैसे खेलें">?</button></header>
         <div class="objective-row"><strong data-t="battleObjective">तारो + स्टार कोर को अभयारण्य में लाएँ</strong><span id="ruleCue"></span></div>
-        <div id="chamberBoard" class="chamber-board" tabindex="0" data-t-aria="boardLabel" aria-label="Rootvault chamber puzzle"></div>
+        <div id="chamberBoard" class="chamber-board" tabindex="0" data-t-aria="boardLabel" aria-label="रूटवॉल्ट चैम्बर पहेली"></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>
         <div class="battle-actions"><button id="restart" type="button" data-t="restart">पुनः प्रारंभ करें</button><button id="pullPin" class="primary" type="button" data-t="pullPin">पिन खींचो</button></div>
       </div>

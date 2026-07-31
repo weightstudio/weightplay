@@ -81,12 +81,12 @@
   <div id="mainGroup" class="main-group">
     <main id="main" class="screen main main-screen wp-standard-main-screen" data-screen="main">
       <header class="main-header">
-        <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
+        <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Вернуться в WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
         <strong data-t="title">Сад призматических маршрутов</strong>
         <label class="locale"><span data-t="language">Язык</span><select id="locale"></select></label>
       </header>
       <section class="hero">
-        <img src="../../assets/animal-prism-garden/cover.webp" data-t-alt="coverAlt" alt="Изображение игры «Сад призматических маршрутов»">
+        <img src="../../assets/animal-prism-garden/cover.webp" data-t-alt="Сова-архитектор изучает светящиеся пути в лунной оранжерее" alt="Изображение игры «Сад призматических маршрутов»">
         <div class="hero-copy">
           <p class="eyebrow" data-t="kicker">НОЧНОЙ САД СОВЫ-АРХИТЕКТОРА</p>
           <h1 data-t="title">Сад призматических маршрутов</h1>
@@ -96,7 +96,7 @@
         </div>
       </section>
     </main>
-    <section id="publicGuide" class="game-page-info game-page-info-static" aria-label="Prism Route Garden guide">
+    <section id="publicGuide" class="game-page-info game-page-info-static" data-t-aria="guideTitle" aria-label="Как играть">
       <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-t="guideKicker">Оригинальное руководство WeightPlay</span><h2 data-t="guideTitle">Как играть</h2><p data-t="guideLead">Соединяйте одинаковые призмы без пересечений. Ворота пропускают только свой цвет, а все клетки нужно заполнить.</p></div></div>
       <div class="game-info-sections">
         <div class="game-info-section"><h3 data-t="guideRulesTitle">Основные правила</h3><ol><li data-t="guideRule1">Проведите путь от призмы к парной призме.</li><li data-t="guideRule2">Пути идут по четырём направлениям и не делят клетки.</li><li data-t="guideRule3">Отмеченные ворота пропускают только путь своего цвета.</li><li data-t="guideRule4">Соедините все пары и осветите все свободные клетки.</li></ol><p data-t="guideRulesDetail">Путь можно начать с любой конечной призмы. Повторное рисование цвета удаляет старый путь, а возврат на предыдущую клетку сокращает его. Нужно завершить и связи, и все клетки.</p></div>
@@ -111,27 +111,27 @@
 
   <main id="stage" class="screen canvas stage stage-canvas" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-prism-garden/cover.webp')" hidden>
     <header class="scene-header stage-header">
-      <button class="icon-button" data-back data-wp-return="stage" data-t-aria="back" aria-label="Back">←</button>
+      <button class="icon-button" data-back data-wp-return="stage" data-t-aria="back" aria-label="Назад">←</button>
       <h2 data-t="title">Сад призматических маршрутов</h2>
     </header>
     <section class="stage-workspace">
       <div class="stage-summary"><small data-t="choose">ВЫБЕРИТЕ САД</small><span id="progressBadge" class="badge"></span></div>
-      <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="Stage list"></section>
+      <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="Список уровней"></section>
     </section>
-    <nav class="stage-tabs" data-t-aria="stageList" aria-label="Stage list">
+    <nav class="stage-tabs" data-t-aria="stageList" aria-label="Список уровней">
       <button id="stageTab" type="button" class="stage-tab active" aria-current="page" data-t="stages">Уровни</button>
     </nav>
   </main>
 
   <main id="battle" class="screen canvas battle" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
     <header class="scene-header battle-header">
-      <button class="icon-button" data-back data-wp-return="battle" data-t-aria="back" aria-label="Back">←</button>
+      <button class="icon-button" data-back data-wp-return="battle" data-t-aria="back" aria-label="Назад">←</button>
       <div><small id="chapter"></small><h2 id="stageName"></h2></div>
     </header>
     <section class="battle-content">
       <div class="hud"><span id="moves"></span><span id="linkStatus"></span><span id="fillStatus"></span></div>
       <p id="objective" class="battle-objective" data-t="objective">Соедините все пары, соблюдайте ворота и заполните поле.</p>
-      <div id="grid" class="grid" role="grid" tabindex="0" data-t-aria="boardLabel" aria-label="Prism route puzzle board"></div>
+      <div id="grid" class="grid" role="grid" tabindex="0" data-t-aria="boardLabel" aria-label="Поле призматических маршрутов"></div>
       <div class="tools"><button id="undo" data-t="undo">Отменить</button><button id="hint" data-t="hint">Подсказка</button><button id="reset" data-t="reset">Сбросить</button></div>
       <p id="status" class="status" aria-live="polite"></p>
     </section>

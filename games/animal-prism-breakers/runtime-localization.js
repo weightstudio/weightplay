@@ -16,6 +16,21 @@
     hi:{loading:"प्रिज़्म अखाड़ा तैयार हो रहा है…",stage:"चरण {n}",chapters:["धूप वाली खदान","विभाजित स्पेक्ट्रम","चलती दीर्घा","दर्पण तिजोरी","गुरुत्व भट्ठी","ग्रहण प्रिज़्म"],launch:"छोड़ें",lost:"प्रकाश गोला गिर गया। अगला प्रकाश गोला छोड़ें।",split:"विभाजित स्पेक्ट्रम ने एक और प्रकाश गोला बनाया!",fail:"तीनों प्रकाश गोले गिर गए। वापसी का कोण समझकर फिर प्रयास करें।"},
     ar:{loading:"جارٍ شحن ساحة المنشور…",stage:"المرحلة {n}",chapters:["المحجر المشمس","الطيف المنقسم","الرواق المتحرك","قبو المرايا","مسبك الجاذبية","منشور الكسوف"],launch:"إطلاق",lost:"فُقدت كرة الضوء. أطلق كرة الضوء التالية.",split:"أنشأ الطيف المنقسم كرة ضوء أخرى!",fail:"سقطت كرات الضوء الثلاث. راجع زاوية الارتداد وحاول مجددًا."}
   };
+  const missCopies={
+    en:{left:"The orb missed left of the paddle. Move left sooner and meet it near the centre.",right:"The orb missed right of the paddle. Move right sooner and meet it near the centre."},
+    "zh-Hant":{left:"光球從球拍左側漏過。下次提早向左移，盡量用球拍中央接球。",right:"光球從球拍右側漏過。下次提早向右移，盡量用球拍中央接球。"},
+    "zh-Hans":{left:"光球从球拍左侧漏过。下次提早向左移，尽量用球拍中央接球。",right:"光球从球拍右侧漏过。下次提早向右移，尽量用球拍中央接球。"},
+    ja:{left:"光球はパドルの左を抜けました。次は早めに左へ動き、中央付近で受けましょう。",right:"光球はパドルの右を抜けました。次は早めに右へ動き、中央付近で受けましょう。"},
+    ko:{left:"빛 구슬이 패들 왼쪽으로 빠졌습니다. 다음에는 더 일찍 왼쪽으로 움직여 중앙 가까이에서 받으세요.",right:"빛 구슬이 패들 오른쪽으로 빠졌습니다. 다음에는 더 일찍 오른쪽으로 움직여 중앙 가까이에서 받으세요."},
+    es:{left:"El orbe pasó por la izquierda de la pala. Muévete antes a la izquierda y recíbelo cerca del centro.",right:"El orbe pasó por la derecha de la pala. Muévete antes a la derecha y recíbelo cerca del centro."},
+    "pt-BR":{left:"O orbe passou à esquerda da raquete. Vá para a esquerda mais cedo e receba-o perto do centro.",right:"O orbe passou à direita da raquete. Vá para a direita mais cedo e receba-o perto do centro."},
+    fr:{left:"L’orbe est passé à gauche de la raquette. Partez plus tôt à gauche et recevez-le près du centre.",right:"L’orbe est passé à droite de la raquette. Partez plus tôt à droite et recevez-le près du centre."},
+    de:{left:"Die Lichtkugel ging links am Schläger vorbei. Bewege dich früher nach links und triff sie nahe der Mitte.",right:"Die Lichtkugel ging rechts am Schläger vorbei. Bewege dich früher nach rechts und triff sie nahe der Mitte."},
+    it:{left:"La sfera è passata a sinistra della racchetta. Spostati prima a sinistra e prendila vicino al centro.",right:"La sfera è passata a destra della racchetta. Spostati prima a destra e prendila vicino al centro."},
+    ru:{left:"Сфера прошла слева от платформы. В следующий раз двигайтесь влево раньше и встречайте её ближе к центру.",right:"Сфера прошла справа от платформы. В следующий раз двигайтесь вправо раньше и встречайте её ближе к центру."},
+    hi:{left:"प्रकाश गोला पैडल के बाएँ से निकल गया। अगली बार पहले बाएँ जाएँ और उसे पैडल के बीच के पास रोकें।",right:"प्रकाश गोला पैडल के दाएँ से निकल गया। अगली बार पहले दाएँ जाएँ और उसे पैडल के बीच के पास रोकें।"},
+    ar:{left:"مرّت كرة الضوء من يسار المضرب. تحرّك يسارًا أبكر والتقِ بها قرب الوسط.",right:"مرّت كرة الضوء من يمين المضرب. تحرّك يمينًا أبكر والتقِ بها قرب الوسط."}
+  };
   const ruleCopies={
     "zh-Hant":{objectives:["擊碎開場的水晶陣形。","累積連擊來分裂光球，清除分隔的路線。","追蹤橫向掃動的水晶帶，將光球打進空隙。","利用永久鏡面，把光球反射進受保護的水晶。","在水晶牆下壓並補入新水晶前，先清除最下方的水晶。","擊碎所有水晶，但不可碰到虛空雷。"],advance:"水晶牆下壓了——剩下 {n} 次推進。",pressureFail:"水晶牆越過了危險線。",hazardFail:"光球撞上了虛空雷。"},
     "zh-Hans":{objectives:["击碎开场的水晶阵形。","累积连击来分裂光球，清除分隔的路线。","追踪横向扫动的水晶带，将光球打进空隙。","利用永久镜面，把光球反射进受保护的水晶。","在水晶墙下压并补入新水晶前，先清除最下方的水晶。","击碎所有水晶，但不可碰到虚空雷。"],advance:"水晶墙下压了——剩下 {n} 次推进。",pressureFail:"水晶墙越过了危险线。",hazardFail:"光球撞上了虚空雷。"},
@@ -82,5 +97,5 @@
   translateTree(document.documentElement);stabilizeItalianScoreLabels();
   document.addEventListener("DOMContentLoaded",()=>setTimeout(()=>{translateTree(document.documentElement);stabilizeItalianScoreLabels();if(C){genericKeys.forEach(key=>{C[key]=originals[key]});C.how=[...originals.how]}},0),{once:true});
   new MutationObserver(records=>{records.forEach(record=>{if(record.type==="characterData"){if(locale!=="it")translateTree(record.target.parentElement)}else record.addedNodes.forEach(translateTree)});stabilizeItalianScoreLabels()}).observe(document.documentElement,{childList:true,characterData:locale!=="it",subtree:true});
-  window.PrismBreakersLocale=Object.freeze({locale,translate,copy,rules:ruleCopies[locale]||null});
+  window.PrismBreakersLocale=Object.freeze({locale,translate,copy,rules:ruleCopies[locale]||null,miss:side=>(missCopies[locale]||missCopies.en)[side]});
 })();

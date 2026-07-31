@@ -207,6 +207,14 @@ body.wonder-stage-select #menuContent {
   overflow: hidden;
 }
 
+/* Management tabs use denser information rows than the Stage rail. Keep
+   their reading surface bounded on desktop and allow every grid track to
+   shrink on phones instead of pushing purchase controls past the Canvas. */
+body.wonder-stage-select #menuContent[data-menu-tab]:not([data-menu-tab="battle"]) {
+  max-width: min(100%, 720px);
+  margin-inline: auto;
+}
+
 /* Upgrade and equipment workspaces need an opaque reading surface. The poster
    remains decorative and must not show through item slots or text rows. */
 body.wonder-stage-select #profilePanel:not(.hidden) {
@@ -215,6 +223,7 @@ body.wonder-stage-select #profilePanel:not(.hidden) {
   height: 100%;
   min-height: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 12px;
   border: 1px solid rgba(255, 226, 122, 0.32);
   border-radius: 12px;
@@ -222,6 +231,65 @@ body.wonder-stage-select #profilePanel:not(.hidden) {
   box-shadow:
     0 18px 42px rgba(0, 0, 0, 0.42),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+body.wonder-stage-select #profilePanel :is(
+  .character-panel,
+  .character-card,
+  .equipment-panel,
+  .equipment-slots,
+  .backpack-grid,
+  .profile-row,
+  .profile-row > div,
+  .setting-control,
+  .settings-actions
+) {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+}
+
+body.wonder-stage-select #profilePanel .profile-row {
+  grid-template-columns: 56px minmax(0, 1fr) minmax(82px, auto);
+  gap: 8px;
+  width: 100%;
+  padding: 9px 10px;
+}
+
+body.wonder-stage-select #profilePanel .profile-row-icon {
+  width: 56px;
+  height: 56px;
+}
+
+body.wonder-stage-select #profilePanel .profile-row > div > strong,
+body.wonder-stage-select #profilePanel .profile-row > div > span {
+  overflow-wrap: anywhere;
+}
+
+body.wonder-stage-select #profilePanel .profile-row button {
+  box-sizing: border-box;
+  min-width: 82px;
+  max-width: 112px;
+  padding-inline: 8px;
+  white-space: nowrap;
+}
+
+body.wonder-stage-select #menuContent[data-menu-tab="settings"] .profile-row {
+  grid-template-columns: 52px minmax(0, 1fr);
+}
+
+body.wonder-stage-select #menuContent[data-menu-tab="settings"] .profile-row.full {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+body.wonder-stage-select #profilePanel .character-card {
+  grid-template-columns: 64px minmax(0, 1fr);
+  padding: 10px;
+}
+
+body.wonder-stage-select #profilePanel .character-card img {
+  width: 64px;
+  height: 64px;
 }
 
 body.wonder-stage-select #profilePanel :is(
@@ -257,6 +325,87 @@ body.wonder-stage-select #menuTabs button {
   min-width: 0 !important;
   max-width: none !important;
   margin: 0 !important;
+}
+
+@media (max-width: 480px) {
+  body.wonder-stage-select #profilePanel:not(.hidden) {
+    padding: 9px;
+  }
+
+  body.wonder-stage-select #profilePanel .profile-row {
+    grid-template-columns: 48px minmax(0, 1fr) 80px;
+    gap: 7px;
+    padding: 8px;
+  }
+
+  body.wonder-stage-select #profilePanel .profile-row-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  body.wonder-stage-select #profilePanel .profile-row strong {
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  body.wonder-stage-select #profilePanel .profile-row span {
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  body.wonder-stage-select #profilePanel .profile-row button {
+    min-width: 80px;
+    max-width: 80px;
+    min-height: 44px;
+    padding-inline: 6px;
+    font-size: 13px;
+  }
+
+  body.wonder-stage-select #profilePanel :is(.cost-coin, .cost-diamond) {
+    width: 22px;
+    height: 22px;
+  }
+
+  body.wonder-stage-select #profilePanel .character-card {
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 9px;
+    padding: 9px;
+  }
+
+  body.wonder-stage-select #profilePanel .character-card img {
+    width: 56px;
+    height: 56px;
+  }
+
+  body.wonder-stage-select #profilePanel :is(.equipment-slots, .backpack-grid) {
+    grid-auto-rows: 56px;
+    gap: 6px;
+  }
+
+  body.wonder-stage-select #profilePanel :is(.equip-slot, .backpack-item, .backpack-empty) {
+    height: 56px;
+  }
+
+  body.wonder-stage-select #profilePanel :is(.equip-slot, .backpack-item) img {
+    max-width: 46px;
+    max-height: 46px;
+  }
+
+  body.wonder-stage-select #menuTabs {
+    gap: 4px;
+    padding: 5px;
+  }
+
+  body.wonder-stage-select #menuTabs button {
+    min-height: 62px;
+    max-height: 62px;
+    padding: 3px 2px;
+  }
+
+  body.wonder-stage-select #menuTabs img {
+    width: 36px;
+    height: 36px;
+  }
 }
 
 body.wonder-playing .game-shell[data-battle-shell] {

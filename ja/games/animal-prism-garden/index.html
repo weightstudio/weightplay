@@ -81,12 +81,12 @@
   <div id="mainGroup" class="main-group">
     <main id="main" class="screen main main-screen wp-standard-main-screen" data-screen="main">
       <header class="main-header">
-        <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
+        <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="WeightPlayへ戻る"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
         <strong data-t="title">プリズム・ルートガーデン</strong>
         <label class="locale"><span data-t="language">言語</span><select id="locale"></select></label>
       </header>
       <section class="hero">
-        <img src="../../assets/animal-prism-garden/cover.webp" data-t-alt="coverAlt" alt="プリズム・ルートガーデンのゲーム画像">
+        <img src="../../assets/animal-prism-garden/cover.webp" data-t-alt="月夜の温室で光る経路を調べるフクロウ建築家" alt="プリズム・ルートガーデンのゲーム画像">
         <div class="hero-copy">
           <p class="eyebrow" data-t="kicker">フクロウ建築家の夜庭</p>
           <h1 data-t="title">プリズム・ルートガーデン</h1>
@@ -96,7 +96,7 @@
         </div>
       </section>
     </main>
-    <section id="publicGuide" class="game-page-info game-page-info-static" aria-label="Prism Route Garden guide">
+    <section id="publicGuide" class="game-page-info game-page-info-static" data-t-aria="guideTitle" aria-label="遊び方">
       <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-t="guideKicker">WeightPlay オリジナルゲームガイド</span><h2 data-t="guideTitle">遊び方</h2><p data-t="guideLead">同色のプリズムを交差せずにつなぎます。ゲートは同色だけが通れ、全マスを埋めます。</p></div></div>
       <div class="game-info-sections">
         <div class="game-info-section"><h3 data-t="guideRulesTitle">基本ルール</h3><ol><li data-t="guideRule1">プリズムから同色の相手までドラッグします。</li><li data-t="guideRule2">経路は上下左右のみ。マスを共有できません。</li><li data-t="guideRule3">印のあるゲートは同色の経路だけ通れます。</li><li data-t="guideRule4">全ペアを結び、全マスを光らせると完成です。</li></ol><p data-t="guideRulesDetail">経路はどちらの端点からでも開始できます。同色を描き直すと旧経路が消え、直前のマスへ戻れば一歩だけ短くできます。全ペアだけでなく全マスを光らせてください。</p></div>
@@ -111,27 +111,27 @@
 
   <main id="stage" class="screen canvas stage stage-canvas" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-prism-garden/cover.webp')" hidden>
     <header class="scene-header stage-header">
-      <button class="icon-button" data-back data-wp-return="stage" data-t-aria="back" aria-label="Back">←</button>
+      <button class="icon-button" data-back data-wp-return="stage" data-t-aria="back" aria-label="戻る">←</button>
       <h2 data-t="title">プリズム・ルートガーデン</h2>
     </header>
     <section class="stage-workspace">
       <div class="stage-summary"><small data-t="choose">庭を選ぶ</small><span id="progressBadge" class="badge"></span></div>
-      <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="Stage list"></section>
+      <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="ステージ一覧"></section>
     </section>
-    <nav class="stage-tabs" data-t-aria="stageList" aria-label="Stage list">
+    <nav class="stage-tabs" data-t-aria="stageList" aria-label="ステージ一覧">
       <button id="stageTab" type="button" class="stage-tab active" aria-current="page" data-t="stages">ステージ</button>
     </nav>
   </main>
 
   <main id="battle" class="screen canvas battle" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
     <header class="scene-header battle-header">
-      <button class="icon-button" data-back data-wp-return="battle" data-t-aria="back" aria-label="Back">←</button>
+      <button class="icon-button" data-back data-wp-return="battle" data-t-aria="back" aria-label="戻る">←</button>
       <div><small id="chapter"></small><h2 id="stageName"></h2></div>
     </header>
     <section class="battle-content">
       <div class="hud"><span id="moves"></span><span id="linkStatus"></span><span id="fillStatus"></span></div>
       <p id="objective" class="battle-objective" data-t="objective">全ペアを結び、ゲートを守り、盤面を埋めよう。</p>
-      <div id="grid" class="grid" role="grid" tabindex="0" data-t-aria="boardLabel" aria-label="Prism route puzzle board"></div>
+      <div id="grid" class="grid" role="grid" tabindex="0" data-t-aria="boardLabel" aria-label="プリズム経路パズル"></div>
       <div class="tools"><button id="undo" data-t="undo">戻す</button><button id="hint" data-t="hint">ヒント</button><button id="reset" data-t="reset">リセット</button></div>
       <p id="status" class="status" aria-live="polite"></p>
     </section>

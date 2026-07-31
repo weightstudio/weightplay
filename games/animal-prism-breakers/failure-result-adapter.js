@@ -7,6 +7,22 @@
   const next=document.getElementById("next");
   const retry=document.getElementById("retry");
   const actions=result.querySelector(".modal-actions");
+  const feedback=document.getElementById("feedback");
+  const resultText=document.getElementById("resultText");
+  let lastMissSide=null;
+
+  const missCue=()=>lastMissSide&&window.PrismBreakersLocale?.miss?.(lastMissSide);
+
+  window.addEventListener("weightplay:breaker-orb-miss",event=>{
+    const detail=event.detail;
+    if(detail?.gameId!=="animal-prism-breakers"||detail.stage!==1)return;
+    lastMissSide=detail.ballX<detail.paddleX?"left":"right";
+    queueMicrotask(()=>{
+      const cue=missCue();
+      if(cue&&feedback)feedback.textContent=cue;
+      if(cue&&detail.livesAfter===0&&resultText)resultText.textContent=cue;
+    });
+  });
 
   const settleVersion4Actions=()=>{
     if(result.hidden||!resultStage||!next||!retry||!actions)return;
@@ -34,6 +50,8 @@
       const node=document.getElementById(id);
       if(node)node.textContent=String(value);
     }
+    const cue=missCue();
+    if(state.selected===1&&cue&&resultText)resultText.textContent=cue;
     settleVersion4Actions();
   };
 

@@ -290,20 +290,26 @@
     }
     return Math.max(0,solid.r+margin-Math.hypot(point.x-solid.x,point.y-solid.y));
   }
-  function canTranslateStroke(stroke,dx,dy,spec){
-    return !stroke.anchored;
-  }
-  function availableStrokeMoves(stroke,spec,distance=10){
-    return MOVE_DIRECTIONS.filter(direction=>canTranslateStroke(stroke,direction.x*distance,direction.y*distance,spec));
-  }
-  function strokePenetrationScore(stroke,spec,dx=0,dy=0){
-    const samples=sampledStrokePoints(stroke.points),margin=10;
+  function penetrationScoreForPoints(points,spec,dx=0,dy=0){
+    const samples=sampledStrokePoints(points),margin=10;
     let score=0;
     for(const solid of spec.solids)for(const point of samples){
       const penetration=solidPenetration({x:point.x+dx,y:point.y+dy},solid,margin);
       score+=penetration*penetration;
     }
     return score;
+  }
+  function canTranslateStroke(stroke,dx,dy,spec){
+    if(stroke.anchored)return false;
+    const before=penetrationScoreForPoints(stroke.points,spec),tolerance=Math.max(.05,before*.002),steps=Math.max(1,Math.ceil(Math.hypot(dx,dy)/3));
+    for(let step=1;step<=steps;step++)if(penetrationScoreForPoints(stroke.points,spec,dx*step/steps,dy*step/steps)>before+tolerance)return false;
+    return true;
+  }
+  function availableStrokeMoves(stroke,spec,distance=10){
+    return MOVE_DIRECTIONS.filter(direction=>canTranslateStroke(stroke,direction.x*distance,direction.y*distance,spec));
+  }
+  function strokePenetrationScore(stroke,spec,dx=0,dy=0){
+    return penetrationScoreForPoints(stroke.points,spec,dx,dy);
   }
   function preferredPushDirectionIndex(stroke,spec){
     const contact=closestStrokePoint(stroke,spec.dog),away={x:spec.dog.x-contact.x,y:spec.dog.y-contact.y};
@@ -392,27 +398,53 @@
   }
   function tryMoveStroke(stroke,dx,dy,spec){
     if(stroke.anchored){stroke.blockedFlash=.3;return false}
+    let fraction=1;
     if(!canTranslateStroke(stroke,dx,dy,spec)){
-      refreshStrokeMobility(stroke,spec);stroke.blockedFlash=.3;return false;
+      let low=0,high=1;
+      for(let attempt=0;attempt<8;attempt++){
+        const middle=(low+high)/2;
+        if(canTranslateStroke(stroke,dx*middle,dy*middle,spec))low=middle;else high=middle;
+      }
+      fraction=low;
+      if(Math.hypot(dx*fraction,dy*fraction)<.2){stroke.blockedFlash=.3;return false}
     }
+    dx*=fraction;dy*=fraction;
     stroke.points=stroke.points.map(point=>({x:point.x+dx,y:point.y+dy}));
     if(state.wallMoves===0)state.wallFirstMovedAt=state.elapsed;
     stroke.moves=(stroke.moves||0)+Math.hypot(dx,dy);state.wallMoves+=Math.hypot(dx,dy);
     state.navClock=0;
     return true;
   }
-  function rotateStrokeFromImpact(stroke,contact,pushX,pushY){
+  function rotatedPoints(points,center,angle){
+    const cosine=Math.cos(angle),sine=Math.sin(angle);
+    return points.map(point=>{
+      const x=point.x-center.x,y=point.y-center.y;
+      return{x:center.x+x*cosine-y*sine,y:center.y+x*sine+y*cosine};
+    });
+  }
+  function canRotateStroke(stroke,center,angle,spec){
+    const before=penetrationScoreForPoints(stroke.points,spec),tolerance=Math.max(.05,before*.002),radius=Math.max(1,...stroke.points.map(point=>Math.hypot(point.x-center.x,point.y-center.y))),steps=Math.max(1,Math.ceil(radius*Math.abs(angle)/3));
+    for(let step=1;step<=steps;step++)if(penetrationScoreForPoints(rotatedPoints(stroke.points,center,angle*step/steps),spec)>before+tolerance)return false;
+    return true;
+  }
+  function rotateStrokeFromImpact(stroke,contact,pushX,pushY,spec){
     const center=stroke.points.reduce((sum,point)=>({x:sum.x+point.x/stroke.points.length,y:sum.y+point.y/stroke.points.length}),{x:0,y:0});
     const radius=Math.max(1,...stroke.points.map(point=>Math.hypot(point.x-center.x,point.y-center.y)));
     const torque=(contact.x-center.x)*pushY-(contact.y-center.y)*pushX;
     const impulse=Math.hypot(pushX,pushY)||1;
-    const angle=Math.max(-.065,Math.min(.065,torque/(radius*impulse)*.065));
+    let angle=Math.max(-.065,Math.min(.065,torque/(radius*impulse)*.065));
     if(Math.abs(angle)<.002)return 0;
-    const cosine=Math.cos(angle),sine=Math.sin(angle);
-    stroke.points=stroke.points.map(point=>{
-      const x=point.x-center.x,y=point.y-center.y;
-      return{x:center.x+x*cosine-y*sine,y:center.y+x*sine+y*cosine};
-    });
+    let fraction=1;
+    if(!canRotateStroke(stroke,center,angle,spec)){
+      let low=0,high=1;
+      for(let attempt=0;attempt<8;attempt++){
+        const middle=(low+high)/2;
+        if(canRotateStroke(stroke,center,angle*middle,spec))low=middle;else high=middle;
+      }
+      fraction=low;
+      if(radius*Math.abs(angle*fraction)<.2){stroke.blockedFlash=.2;return 0}
+    }
+    angle*=fraction;stroke.points=rotatedPoints(stroke.points,center,angle);
     const movement=radius*Math.abs(angle);stroke.moves=(stroke.moves||0)+movement;state.wallMoves+=movement;
     return movement;
   }
@@ -571,7 +603,7 @@
         const pushX=dogDx/dogDistance*pushDistance,pushY=dogDy/dogDistance*pushDistance;
         const moved=!stroke.anchored&&tryMoveStroke(stroke,pushX,pushY,spec);
         if(moved){
-          rotateStrokeFromImpact(stroke,contact,pushX,pushY);
+          rotateStrokeFromImpact(stroke,contact,pushX,pushY,spec);
           if(state.wallApproachStartedAt===null)state.wallApproachStartedAt=state.elapsed;
           state.maxGroupAttached=Math.max(state.maxGroupAttached,1);
           if(dot<0){bee.vx-=1.15*dot*nx;bee.vy-=1.15*dot*ny}
@@ -580,6 +612,7 @@
         }else{
           if(dot<0){bee.vx-=1.9*dot*nx;bee.vy-=1.9*dot*ny}
           bee.vx+=nx*42;bee.vy+=ny*42;bee.cooldown=.14;stroke.blockedFlash=.16;
+          announce("barrierHeld");
         }
         bee.x=contact.x+nx*22;bee.y=contact.y+ny*22;
         bee.wallSlide=moved?.5:1.05;bee.bounced=true;stroke.flash=Math.max(stroke.flash,.12);
@@ -785,6 +818,13 @@
       refreshStrokeMobility(loop,spec);
       const loopMoved=tryMoveStroke(loop,0,-18,spec);
       return{bridgeAnchored:bridge.anchored,bridgeMoved,bridgeDistance:Math.abs(bridge.points[0].y-335),loopAnchored:loop.anchored,loopMoved};
+    },
+    terrainCollisionProbe(){
+      const spec=level(0),solid=spec.anchors[0],stroke={points:[{x:solid.x+solid.r+18,y:solid.y-95},{x:solid.x+solid.r+18,y:solid.y+95}],flash:0,blockedFlash:0,moves:0,anchored:false};
+      refreshStrokeMobility(stroke,spec);
+      for(let impact=0;impact<12;impact++)tryMoveStroke(stroke,-18,0,spec);
+      const clearance=Math.min(...sampledStrokePoints(stroke.points).map(point=>Math.hypot(point.x-solid.x,point.y-solid.y)-solid.r-10));
+      return{anchored:stroke.anchored,clearance,crossed:stroke.points.every(point=>point.x<solid.x),wallMoves:stroke.moves||0};
     },
     attackContactProbe(){
       startStage(0);state.duration=20;beginWave();state.spawned=level(0).maxBees;

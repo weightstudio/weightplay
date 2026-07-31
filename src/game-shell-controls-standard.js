@@ -300,6 +300,16 @@
     const activeRail = STAGE_RAIL_SELECTORS
       .map((selector) => document.querySelector(selector))
       .find(visible);
+    const stageRouteActive = document.body.matches(
+      ".wp-stage-select-active,.wp-standard-stage-page",
+    );
+    /* A management tab may intentionally hide the Stage rail while keeping
+       the same logical Stage Canvas active. Do not fall back to Main merely
+       because Stages/Levels is not the selected tab; doing so removes the
+       Stage scale/header and makes every sibling workspace overflow. */
+    const explicitStageCanvas = [...document.querySelectorAll(
+      "[data-wp-logical-stage-canvas],[data-wp-standard-stage-screen]",
+    )].find(visible);
     /* An explicit logical Stage Canvas owns the full shell. Prefer it over a
        nearer rail wrapper marked by the selector runtime; otherwise generated
        navigation can be inserted inside a scrolling/animated content panel. */
@@ -309,7 +319,8 @@
       )
       || activeRail?.parentElement;
     const stage = stages.find(visible)
-      || (document.body.matches(".wp-stage-select-active,.wp-standard-stage-page") && inferredStage);
+      || (stageRouteActive && inferredStage)
+      || explicitStageCanvas;
     if (stage) return { type: "stage", screen: stage };
     const mains = MAIN_SELECTORS.map((selector) => document.querySelector(selector)).filter(Boolean);
     const visibleStart = firstVisible(MAIN_START_SELECTORS, document);
