@@ -252,7 +252,7 @@
       
       
       <div class="game-info-section game-info-parent"><h3>플레이어 및 저장 정보</h3><p>스테이지 잠금 해제, 클리어, 최고 키 수, 평생 키, 순찰 순위 및 선택적 Crystal Charm 소유권이 이 브라우저에 유지됩니다. 사이트 저장소를 지우거나 장치를 전환하면 제거될 수 있습니다. 확정된 크리스탈 참 구매는 선택사항이며, 필수 단계는 없습니다. 결과 피드백은 테스트나 진단이 아닌 엔터테인먼트 및 현지 진행 정보입니다.</p></div>
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>몇 단계가 포함되어 있나요?</dt><dd>6개 지역에 걸쳐 30개의 명명된 스테이지가 있으며, 다섯 번째 스테이지마다 보스 체크포인트가 있습니다.</dd></div><div><dt>스테이지를 클리어하는 것은 무엇입니까?</dt><dd>3분 동안 살아남아 인쇄된 주요 목표를 달성하세요. 체크포인트에서는 보스를 물리쳐야 합니다.</dd></div><div><dt>플레이어가 수동으로 조준합니까?</dt><dd>아니요. 레인저는 자동으로 공격합니다. 플레이어는 이동, 수집 및 업그레이드 선택에 중점을 둡니다.</dd></div><div><dt>프리즘 나방 여왕은 왜 피해를 입지 않았나요?</dt><dd>그녀의 눈에 보이는 방패는 한 단계 동안 공격을 차단합니다. 사라지면 피해가 재개됩니다.</dd></div><div><dt>진행 상황이 저장되나요?</dt><dd>그렇습니다. 잠금 해제, 삭제, 최고의 키, 평생 순위 및 부적 소유권은 로컬에 저장됩니다.</dd></div><div><dt>크리스탈 참이 필요합니까?</dt><dd>아니요. HP가 7에서 8로, 픽업 반경이 54에서 68로 확인된 선택 사항입니다.</dd></div><div><dt>모바일과 데스크톱에서 작동하나요?</dt><dd>예. 터치 드래그와 키보드 이동은 동일한 캠페인 규칙을 사용합니다.</dd></div><div><dt>스킬 리포트는 테스트인가요?</dt><dd>아니요. 이 로컬 실행에 대해서만 지원되는 게임 피드백입니다.</dd></div></dl></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>몇 단계가 포함되어 있나요?</dt><dd>6개 지역에 걸쳐 30개의 명명된 스테이지가 있으며, 다섯 번째 스테이지마다 보스 체크포인트가 있습니다.</dd></div><div><dt>스테이지를 클리어하는 것은 무엇입니까?</dt><dd>3분 동안 살아남아 인쇄된 주요 목표를 달성하세요. 체크포인트에서는 보스를 물리쳐야 합니다.</dd></div><div><dt>플레이어가 수동으로 조준합니까?</dt><dd>아니요. 레인저는 자동으로 공격합니다. 플레이어는 이동, 수집 및 업그레이드 선택에 중점을 둡니다.</dd></div><div><dt>프리즘 나방 여왕은 왜 피해를 입지 않았나요?</dt><dd>그녀의 눈에 보이는 방패는 한 단계 동안 공격을 차단합니다. 사라지면 피해가 재개됩니다.</dd></div><div><dt>진행 상황이 저장되나요?</dt><dd>그렇습니다. 잠금 해제, 삭제, 최고의 키, 평생 순위 및 부적 소유권은 로컬에 저장됩니다.</dd></div><div><dt>크리스탈 참이 필요합니까?</dt><dd>아니요. HP가 7에서 8로, 픽업 반경이 54에서 68로 확인된 선택 사항입니다.</dd></div><div><dt>모바일과 데스크톱에서 작동하나요?</dt><dd>예. 터치 드래그와 키보드 이동은 동일한 캠페인 규칙을 사용합니다.</dd></div><div><dt>결과 피드백은 평가인가요?</dt><dd>아니요. 지역 달리기 결과와 다음 경로 전술은 오락용으로만 보고됩니다.</dd></div></dl></div>
       
     </div>
   </section>
@@ -274,7 +274,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-crystal-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20260720-locale11-2";
+          script.src = "../../src/game-page-info.js?v=20260801-crystal-guide2";
           script.dataset.crystalGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);

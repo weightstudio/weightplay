@@ -757,9 +757,11 @@
       skills: ["Reaction", "Focus", "Problem Solving"],
       guideKicker: "WeightPlay Original Game Guide",
       guideTitleSuffix: "30-Stage Campaign Guide",
+      useCustomGuideIdentity: true,
       noteTitle: "Player and Save Information",
       hideScoreBands: true,
       showSkills: false,
+      showRelatedSkill: false,
       intro:
         "Animal Crystal Survivor is a 30-stage real-time patrol campaign built around movement, automatic attacks, temporary upgrades, readable hazards, and six original animal Bosses. Every route lasts up to three minutes and has a named rule, key target, and saved unlock.",
       story: [
@@ -797,7 +799,7 @@
         ["Is progress saved?", "Yes. Unlocks, clears, best keys, lifetime rank, and Charm ownership are saved locally."],
         ["Is Crystal Charm required?", "No. It is an optional confirmed boost from seven to eight HP and pickup radius 54 to 68."],
         ["Does it work on mobile and desktop?", "Yes. Touch dragging and keyboard movement use the same campaign rules."],
-        ["Is the Skill Report a test?", "No. It is supportive game feedback for this local run only."],
+        ["Is Result feedback an assessment?", "No. It reports local run outcomes and next-route tactics for entertainment only."],
       ],
     },
     "animal-guard-yard": {
@@ -1492,7 +1494,7 @@
   };
 
   function guideIdentity(game, audience) {
-    if (audience !== "general") {
+    if (audience !== "general" || game.useCustomGuideIdentity === true) {
       return {
         kicker: game.guideKicker || uiLabel("kicker"),
         suffix: game.guideTitleSuffix || uiLabel("titleSuffix"),
@@ -2165,7 +2167,7 @@
           ["進度會保存嗎？", "會。關卡、金鑰、巡守階級與護符會保存在目前瀏覽器。"],
           ["水晶護符是必要的嗎？", "不是。它只是需要確認的可選起始屬性加成，30 關都可不使用。"],
           ["手機與電腦都能玩嗎？", "可以。手機使用點擊或拖曳，電腦還可使用 WASD 與方向鍵，關卡規則完全相同。"],
-          ["這是正式能力測驗嗎？", "不是。能力回饋只是本機遊戲回饋，僅供娛樂參考。"],
+          ["結果回饋是能力評估嗎？", "不是。它只報告本機遊戲結果與下一局路線策略，僅供娛樂。"],
         ],
       },
       "animal-gearpack-expedition": zhGuide("動物裝備行囊遠征", "空間行囊策略遠征", ["選擇齒輪森林路線。", "選擇、旋轉並把裝備放入行囊空格。", "讓相同材質的裝備彼此相鄰取得連結加成。", "通過五場遭遇並擊敗樹根守衛。"]),
@@ -8318,6 +8320,7 @@
     genre: ["Strategy", "Role-Playing", "Animal"],
     skills: ["Team Building", "Probability Management", "Planning"],
     hideSkillsFact: true,
+    showRelatedSkill: false,
     intro: "Build a team of up to five summoned animal heroes, spin three downward rune reels, combine the stopped symbols, and survive every wave of thirty guardian missions.",
     story: ["A summoner crosses six rift regions with an expanding animal roster. Each hero has attack, defense, healing, and a distinct ultimate, so team composition changes how the same reel result resolves.", "The main campaign contains thirty multi-wave missions. Separate daily and scheduled event missions provide optional materials without replacing campaign progress."],
     systems: ["Press Spin to stop three downward reels one by one. Every visible rune contributes its effect, and a completed line of matching runes doubles that ability.", "Claw runes make each active hero attack. Shield and Heart runes combine the team's total defense or healing for the summoner. Wild completes another line but has no effect alone; Coin, Ultimate, Focus, Echo, Luck, and Dormant runes have their stated specialized effects.", "Enemies act after the rune result resolves. The summoner's health, shield, total defense, total healing, wave count, and enemy intent remain visible throughout Battle.", "Summoning unlocks heroes; duplicate cards support level upgrades. Rune Dust, Sun Shards, Moon Crystals, and Guardian Cores improve rune levels. Permanent cards, materials, coins, and diamonds remain safe if a battle is abandoned, but the current wave resets."],
