@@ -55,9 +55,10 @@
   <meta name="robots" content="index,follow" />
   <meta name="theme-color" content="#07152d">
   <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-scene-controls" content="immutable">
   <title>Récupération des failles animales | WeightPlay</title>
   <link rel="icon" href="../../assets/weightplay-logo.png">
-  <link rel="stylesheet" href="style.css?v=20260721-feedback-timer">
+  <link rel="stylesheet" href="style.css?v=20260802-interface-v5-1">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <meta name="description" content="Dirigez un petit collecteur lunaire à travers une faille circulaire, absorbez les déchets en dessous de leur taille actuelle, construisez une chaîne de..." />
     <meta property="og:site_name" content="WeightPlay" />
@@ -74,8 +75,8 @@
 <body data-screen="main" data-wp-combined-sound="true">
   <div id="loading" class="loading-panel"><img src="../../assets/animal-rift-salvage/orla-ring.webp" alt=""><strong data-t="loading">Calibrating the lunar ring…</strong></div>
 
-  <div id="mainGroup" class="main-group">
-    <main id="mainScreen" class="main-screen">
+  <div id="mainGroup" class="main-group" data-screen="main">
+    <main id="mainScreen" class="main-screen wp-standard-main-screen">
       <header class="main-header">
         <a class="lobby-return" href="/" aria-label="Return to WeightPlay" data-t-aria="backLobby" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt="Illustration du jeu Récupération des failles animales"></a>
         <strong data-t="titleShort">Rift Salvage</strong>
@@ -118,7 +119,7 @@
   </section>
   </div>
 
-  <section id="stageScreen" class="active-screen" hidden>
+  <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-rift-salvage/cover.webp" style="--wp-stage-art:url('../../assets/animal-rift-salvage/cover.webp')">
       <header class="stage-header"><button id="stageBack" type="button" aria-label="Back" data-t-aria="back" data-wp-return="stage">←</button><div><strong data-t="chooseZone">Choose a Salvage Zone</strong><span id="stageSummary"></span></div><img src="../../assets/animal-rift-salvage/orla-ring.webp" alt=""></header>
       <nav class="stage-tabs"><button id="zonesTab" class="active" type="button" data-t="zones">Zones</button><button id="observatoryTab" type="button" data-t="observatory">Observatory</button></nav>
@@ -132,7 +133,7 @@
     </div>
   </section>
 
-  <section id="battleScreen" class="active-screen" hidden>
+  <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
         <header class="battle-header"><button id="battleBack" type="button" aria-label="Back" data-t-aria="back" data-wp-return="battle">←</button><div class="zone-block"><small id="zoneLabel"></small><strong id="timerValue">0:00</strong></div><div class="battle-status"><span><b data-t="salvage">Salvage</b><strong id="scoreValue">0/0</strong></span><span><b data-t="size">Size</b><strong id="sizeValue">1</strong></span><span><b data-t="stability">Stability</b><strong id="stabilityValue">3</strong></span></div><button id="battleHelp" type="button" aria-label="How to play" data-t-aria="help">?</button></header>
@@ -150,7 +151,7 @@
 
   <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260731-owner-preview5"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
   <script src="locales.js"></script>
-  <script src="game.js?v=20260802-return-focus1"></script>
+  <script src="game.js?v=20260802-interface-v5-1"></script>
   <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>

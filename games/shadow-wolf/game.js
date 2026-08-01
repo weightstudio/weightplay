@@ -754,6 +754,9 @@
   let settlementDeadline = 0;
   let settlementRemaining = 0;
   let resultActionClaimed = false;
+  let resultFocusToken = 0;
+  let resultActivationQuarantine = false;
+  const heldActivationKeys = new Set();
   const SIMULATION_STEP_MS = 1000 / 60;
   const MAX_SIMULATION_STEPS = 6;
   let simulationAccumulator = 0;
@@ -1786,6 +1789,7 @@
   }
 
   function setResultModalOpen(open, focusPrimary = true) {
+    const focusToken = ++resultFocusToken;
     if (open) resultActionClaimed = false;
     nodes.resultPanel.classList[open ? "remove" : "add"]("hidden");
     resultCoveredRegions().forEach((region) => {
@@ -1793,7 +1797,37 @@
       if (open) region.setAttribute("aria-hidden", "true");
       else region.removeAttribute("aria-hidden");
     });
-    if (open && focusPrimary) (nodes.resultPanel.querySelector(".result-actions .primary-btn") || nodes.retryBtn).focus({ preventScroll: true });
+    if (!open) {
+      resultActivationQuarantine = false;
+      return;
+    }
+    if (!focusPrimary) return;
+    if (heldActivationKeys.size) {
+      resultActivationQuarantine = true;
+      nodes.resultPanel.tabIndex = -1;
+      nodes.resultPanel.focus({ preventScroll: true });
+      return;
+    }
+    if (focusToken === resultFocusToken) (nodes.resultPanel.querySelector(".result-actions .primary-btn") || nodes.retryBtn).focus({ preventScroll: true });
+  }
+
+  function trackResultActivationKeyDown(event) {
+    if (event.key === "Enter" || event.key === " ") heldActivationKeys.add(event.key);
+  }
+
+  function releaseResultActivationKey(event) {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    heldActivationKeys.delete(event.key);
+    if (!resultActivationQuarantine) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if (heldActivationKeys.size) return;
+    resultActivationQuarantine = false;
+    const focusToken = resultFocusToken;
+    requestAnimationFrame(() => {
+      if (focusToken !== resultFocusToken || nodes.resultPanel.classList.contains("hidden")) return;
+      (nodes.resultPanel.querySelector(".result-actions .primary-btn") || nodes.retryBtn).focus({ preventScroll: true });
+    });
   }
 
   function claimResultAction() {
@@ -2943,6 +2977,8 @@
     });
     nodes.draftPanel.addEventListener("keydown", trapDraftFocus);
     nodes.resultPanel.addEventListener("keydown", trapResultFocus);
+    window.addEventListener("keydown", trackResultActivationKeyDown, true);
+    window.addEventListener("keyup", releaseResultActivationKey, true);
     nodes.pausePanel.addEventListener("keydown", trapPauseFocus);
     nodes.pauseBtn.addEventListener("click", openPause);
     nodes.resumeBtn.addEventListener("click", () => closePause(true));
