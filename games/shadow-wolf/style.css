@@ -1059,6 +1059,7 @@ body:has(#resultPanel.battle-result:not(.hidden)) .mobile-controls-row {
 
 @media (max-width: 560px) and (min-height: 471px) {
   .stage-management-card { grid-template-columns: 1fr; }
+  .battle-result .result-actions { grid-template-columns: 1fr; }
 }
 
 @media (min-aspect-ratio: 5 / 4) {

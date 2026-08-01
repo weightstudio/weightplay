@@ -4,6 +4,7 @@
     <base href="/games/shadow-wolf/" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="robots" content="index,follow" />
     <meta name="description" content="Shadow Wolf Legend est une campagne de plateforme d&#39;action à défilement horizontal en 30 étapes. Guidez le loup explorateur à travers des rebords en..." />
     <meta property="og:site_name" content="WeightPlay" />
@@ -63,7 +64,7 @@
     </script>
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260712-shadow-wolf-public1" />
-    <link rel="stylesheet" href="style.css?v=20260717-shadow-wolf-campaign1" />
+    <link rel="stylesheet" href="style.css?v=20260802-interface-v5-1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260718-full-canvas1" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <meta name="twitter:title" content="Légende du loup de l&#39;ombre | WeightPlay" />
@@ -100,7 +101,7 @@
         </div>
       </section>
 
-      <section id="menuPanel" class="panel menu-panel">
+      <section id="menuPanel" class="panel menu-panel wp-standard-main-screen" data-screen="main">
         <div class="menu-layout">
           <div class="menu-main">
             <div class="menu-cover-box">
@@ -115,7 +116,7 @@
         </div>
       </section>
 
-      <section id="mapPanel" class="panel world-map-panel wp-stage-art-shell hidden" data-wp-stage-art="../../assets/shadow-wolf-cover.webp" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art: url('../../assets/shadow-wolf-cover.webp')" aria-label="Stage selection" data-ui-aria="stageSelection">
+      <section id="mapPanel" class="panel world-map-panel wp-stage-art-shell hidden" data-screen="stage" data-wp-stage-art="../../assets/shadow-wolf-cover.webp" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art: url('../../assets/shadow-wolf-cover.webp')" aria-label="Stage selection" data-ui-aria="stageSelection">
         <div class="stage-header"><button id="mapBackBtn" type="button" class="play-return" data-wp-return="stage" aria-label="Back to main" data-ui-aria="backToMain">&larr;</button><h2 data-ui="stageTitle">Choose an expedition</h2><button id="stageWorkshopBtn" class="stage-workshop-btn wp-stage-header-action" type="button" aria-controls="stageManagementPanel" aria-expanded="false" aria-label="Permanent Upgrade" data-ui="diamondShopTitle" data-ui-aria="diamondShopTitle">Permanent Upgrade</button></div>
         <p class="stage-subtitle" data-ui="stageHint">Pick an unlocked region to begin.</p>
         <div class="world-map-grid stage-rail" aria-label="Stage rail" data-ui-aria="stageRail">
@@ -157,8 +158,20 @@
         <strong>Desktop only</strong><span>This internal platform game requires a keyboard and is not available on mobile.</span>
       </section>
 
-      <section id="gamePanel" class="panel game-panel hidden" data-no-mobile-immersive="true">
+      <section id="gamePanel" class="panel game-panel hidden" data-screen="battle" data-no-mobile-immersive="true">
         <div class="shadow-game-layout" data-wp-logical-battle-canvas="responsive">
+          <section id="resultPanel" class="result-panel battle-result hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText skillReportText">
+            <h2 id="resultTitle">Expedition Success!</h2>
+            <p><span data-ui="regionsCleared">Stage progress</span>: <strong id="resultScore">0/30</strong></p>
+            <p id="resultText"></p>
+            <p id="skillReportText" class="skill-report"></p>
+            <p data-ui="resultDisclaimer"></p>
+            <div class="result-actions">
+              <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="backToMenu">Back to Stages</button>
+              <button id="nextStageBtn" class="primary-btn" type="button" data-ui="nextStage">Next Stage</button>
+              <button id="retryBtn" class="secondary-btn" type="button" data-ui="replayStage">Replay Stage</button>
+            </div>
+          </section>
           <div class="arena-viewport">
             <button id="menuBtn" class="play-return battle-return" data-wp-return="battle" type="button" aria-label="Back to stages" data-ui-aria="backToStages">&larr;</button>
             <button id="pauseBtn" class="battle-pause-btn" type="button" aria-label="Pause battle" aria-controls="pausePanel" aria-expanded="false" data-ui-aria="pauseBattle">&#8545;</button>
@@ -206,18 +219,6 @@
                   <button id="resumeBtn" class="primary-btn" type="button" data-ui="resumeBattle">Resume</button>
                   <button id="pauseStagesBtn" class="secondary-btn" type="button" data-ui="backToStages">Back to Stages</button>
                 </div>
-              </div>
-            </section>
-            <section id="resultPanel" class="result-panel battle-result hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText skillReportText">
-              <h2 id="resultTitle">Expedition Success!</h2>
-              <p><span data-ui="regionsCleared">Stage progress</span>: <strong id="resultScore">0/30</strong></p>
-              <p id="resultText"></p>
-              <p id="skillReportText" class="skill-report"></p>
-              <p data-ui="resultDisclaimer"></p>
-              <div class="result-actions">
-                <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="backToMenu">Back to Stages</button>
-                <button id="nextStageBtn" class="primary-btn" type="button" data-ui="nextStage">Next Stage</button>
-                <button id="retryBtn" class="secondary-btn" type="button" data-ui="replayStage">Replay Stage</button>
               </div>
             </section>
           </div>
@@ -289,7 +290,7 @@
     <script src="/src/i18n.js?v=20260731-owner-preview5"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="game.js?v=20260801-general-scope1"></script>
+    <script src="game.js?v=20260802-interface-v5-1"></script>
     <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
     <script src="../../src/game-shell-controls-standard.js?v=20260726-shell1"></script>
 </body>

@@ -748,6 +748,7 @@
   let backgroundBattleSuspended = false;
   let windowFocused = document.hasFocus();
   let battlePaused = false;
+  let syncResponsiveBattleOwner = () => {};
   let settlementPending = false;
   let settlementTimer = 0;
   let settlementDeadline = 0;
@@ -930,12 +931,27 @@
       rail.appendChild(button);
     });
     nodes.zoneButtons = Array.from(rail.querySelectorAll("[data-zone]"));
-    requestAnimationFrame(() => rail.querySelector(".is-selected")?.scrollIntoView({ block: "nearest", inline: "center" }));
+    rail.querySelector(".is-selected")?.scrollIntoView({ block: "nearest", inline: "center" });
   }
 
   function setScreen(screen) {
+    const panels = {
+      main: nodes.menuPanel,
+      stage: nodes.mapPanel,
+      battle: nodes.gamePanel,
+    };
+    Object.entries(panels).forEach(([name, panel]) => {
+      const active = name === screen;
+      panel.classList.toggle("hidden", !active);
+      panel.hidden = !active;
+      panel.inert = !active;
+      document.body.classList.toggle(`wp-shell-${name}-active`, active);
+    });
     document.body.dataset.shadowWolfScreen = screen;
     document.documentElement.dataset.shadowWolfScreen = screen;
+    syncResponsiveBattleOwner();
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
+    window.dispatchEvent(new Event("weightplay:stage-sync"));
   }
 
   function stageManagementCoveredRegions() {
@@ -998,10 +1014,7 @@
     state.gameActive = false;
     cancelAnimationFrame(state.gameLoopId);
     setResultModalOpen(false, false);
-    nodes.menuPanel.classList.add("hidden");
-    nodes.gamePanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
-    nodes.mapPanel.classList.remove("hidden");
     setScreen("stage");
     renderStageCards();
   }
@@ -1015,10 +1028,7 @@
     setResultModalOpen(false, false);
     state.gameActive = false;
     cancelAnimationFrame(state.gameLoopId);
-    nodes.gamePanel.classList.add("hidden");
-    nodes.mapPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
-    nodes.menuPanel.classList.remove("hidden");
     setScreen("main");
     updateDiamondShopUI();
     renderAdventureRecord();
@@ -1443,10 +1453,7 @@
 
     buildRoomGeometry();
 
-    nodes.menuPanel.classList.add("hidden");
-    nodes.mapPanel.classList.add("hidden");
     nodes.resultPanel.classList.add("hidden");
-    nodes.gamePanel.classList.remove("hidden");
     setScreen("battle");
 
     renderStatsPanel();
@@ -2885,13 +2892,12 @@
         margin: "0", transform: "none",
       }).forEach(([property, value]) => reserve.style.setProperty(property, value, "important"));
       metrics.battleApplied = (metrics.battleApplied || 0) + 1;
-      requestAnimationFrame(syncCanvasViewport);
+      syncCanvasViewport();
     };
+    syncResponsiveBattleOwner = update;
     const schedule = () => {
       if (!scheduled) scheduled = requestAnimationFrame(update);
     };
-    new MutationObserver(schedule).observe(document.body, { attributes: true, attributeFilter: ["data-shadow-wolf-screen", "class"] });
-    new MutationObserver(schedule).observe(nodes.gamePanel, { attributes: true, attributeFilter: ["class", "hidden"] });
     new ResizeObserver(syncCanvasViewport).observe(container);
     addEventListener("resize", schedule, { passive: true });
     window.visualViewport?.addEventListener("resize", schedule, { passive: true });
@@ -2901,7 +2907,6 @@
   function init() {
     ensureMainInformationScope();
     installResponsiveBattleOwner();
-    document.querySelector("#gamePanel .shadow-game-layout")?.append(nodes.resultPanel);
     loadLocalState();
     updateDiamondShopUI();
     translateUI();
@@ -2913,7 +2918,7 @@
     nodes.startBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
       showStage();
-      requestAnimationFrame(() => document.querySelector(".stage-card.is-selected")?.focus({ preventScroll: true }));
+      document.querySelector(".stage-card.is-selected")?.focus({ preventScroll: true });
     });
     document.addEventListener("keyup", (event) => {
       if (event.key === mainEntryKeyboardKey) mainEntryKeyboardKey = "";
@@ -2944,7 +2949,7 @@
     nodes.pauseStagesBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
       showStage();
-      requestAnimationFrame(() => document.querySelector(".stage-card.is-selected")?.focus({ preventScroll: true }));
+      document.querySelector(".stage-card.is-selected")?.focus({ preventScroll: true });
     });
 
     nodes.retryBtn.addEventListener("click", () => {
@@ -2970,7 +2975,7 @@
       if (!claimResultAction()) return;
       window.WonderSound?.play("click");
       showStage();
-      requestAnimationFrame(() => document.querySelector(".stage-card.is-selected")?.focus({ preventScroll: true }));
+      document.querySelector(".stage-card.is-selected")?.focus({ preventScroll: true });
     });
 
     nodes.localeSelect.addEventListener("change", (e) => {

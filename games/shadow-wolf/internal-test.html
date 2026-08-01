@@ -6,7 +6,7 @@
     <meta name="robots" content="noindex,nofollow" />
     <title>Shadow Wolf Legend Internal Test | WeightPlay</title>
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
-    <link rel="stylesheet" href="style.css?v=20260717-shadow-wolf-campaign1" />
+    <link rel="stylesheet" href="style.css?v=20260802-interface-v5-1" />
   </head>
   <body>
     <header class="top-nav">
@@ -90,6 +90,24 @@
 
       <section id="gamePanel" class="panel game-panel hidden">
         <div class="shadow-game-layout" data-wp-logical-battle-canvas="responsive">
+          <section id="resultPanel" class="panel result-panel battle-result hidden" aria-live="polite">
+          <h2 id="resultTitle">Expedition Success!</h2>
+          <p>Stage progress: <strong id="resultScore">0/30</strong></p>
+          <p id="resultText"></p>
+          <h3 data-ui="skillReportTitle">Ability Analysis Report</h3>
+          <div class="report-grid">
+            <div><span data-ui="skillLogic">Logic</span><strong id="logicStars">---</strong></div>
+            <div><span data-ui="skillFocus">Focus</span><strong id="focusStars">---</strong></div>
+            <div><span data-ui="skillProblem">Problem Solving</span><strong id="problemStars">---</strong></div>
+          </div>
+          <p id="skillReportText" class="skill-report"></p>
+          <p data-ui="resultDisclaimer"></p>
+          <div class="result-actions">
+            <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="backToMenu">Back to Stages</button>
+            <button id="nextStageBtn" class="primary-btn" type="button" data-ui="nextStage">Next Stage</button>
+            <button id="retryBtn" class="secondary-btn" type="button" data-ui="replayStage">Replay Stage</button>
+          </div>
+          </section>
           <div class="arena-viewport">
             <button id="battleMenuBtn" class="play-return battle-return" data-wp-return="battle" type="button" aria-label="Back to stages" data-ui-aria="backToStages">&larr;</button>
             <button id="pauseBtn" class="battle-pause-btn" type="button" aria-label="Pause battle" aria-controls="pausePanel" aria-expanded="false" data-ui-aria="pauseBattle">&#8545;</button>
@@ -168,24 +186,6 @@
         <button id="equipLootBtn" class="primary-btn" type="button" data-ui="equipLoot">Equip Gear</button>
       </section>
 
-      <section id="resultPanel" class="panel result-panel hidden" aria-live="polite">
-        <h2 id="resultTitle">Expedition Success!</h2>
-        <p>Stage progress: <strong id="resultScore">0/30</strong></p>
-        <p id="resultText"></p>
-        <h3 data-ui="skillReportTitle">Ability Analysis Report</h3>
-        <div class="report-grid">
-          <div><span data-ui="skillLogic">Logic</span><strong id="logicStars">---</strong></div>
-          <div><span data-ui="skillFocus">Focus</span><strong id="focusStars">---</strong></div>
-          <div><span data-ui="skillProblem">Problem Solving</span><strong id="problemStars">---</strong></div>
-        </div>
-        <p id="skillReportText" class="skill-report"></p>
-        <p data-ui="resultDisclaimer"></p>
-        <div class="result-actions">
-          <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="backToMenu">Back to Stages</button>
-          <button id="nextStageBtn" class="primary-btn" type="button" data-ui="nextStage">Next Stage</button>
-          <button id="retryBtn" class="secondary-btn" type="button" data-ui="replayStage">Replay Stage</button>
-        </div>
-      </section>
     </main>
 
     <script src="../../src/site-config.js?v=20260708-shadow-wolf-internal-route1"></script>
@@ -193,6 +193,6 @@
     <script src="../../src/sound.js?v=20260701-labels1"></script>
     <script src="../../src/i18n.js?v=20260703-i18n-clean1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="game.js?v=20260719-shadow-wolf-multitouch1"></script>
+    <script src="game.js?v=20260802-interface-v5-1"></script>
   </body>
 </html>
