@@ -202,6 +202,7 @@ let gameStats = {
 
 function text(value) {
   const localized = i18n.getLocalized(value);
+  if (value && typeof value === "object" && value.__localizedExact === true) return localized;
   const locale = i18n.actualLocale?.() || i18n.locale?.() || "en";
   const catalog = window.WeightPlayGameRuntimeLocales?.[locale];
   const english = value && typeof value === "object" && !Array.isArray(value) ? value.en : value;
@@ -392,14 +393,31 @@ function gameInfoText(gameId, key) {
 }
 
 function stateCopy(key) {
-  const zh = i18n.locale() === "zh-Hant";
-  const es = i18n.locale() === "es";
-  const ja = i18n.locale() === "ja";
+  const locale = typeof i18n.actualLocale === "function" ? i18n.actualLocale() : i18n.locale();
+  const previewCopy = {
+    en: ["Preview", "Coming Soon, not public yet"],
+    "zh-Hant": ["新遊戲預告", "敬請期待，尚未公開遊玩"],
+    "zh-Hans": ["新游戏预告", "敬请期待，尚未开放游玩"],
+    ja: ["プレビュー", "近日公開。まだ遊べません"],
+    ko: ["미리보기", "출시 예정이며 아직 공개되지 않았습니다"],
+    es: ["Avance", "Próximamente; aún no está disponible"],
+    "pt-BR": ["Prévia", "Em breve; ainda não está disponível ao público"],
+    fr: ["Aperçu", "Bientôt disponible ; pas encore accessible au public"],
+    de: ["Vorschau", "Demnächst; noch nicht öffentlich spielbar"],
+    it: ["Anteprima", "Prossimamente; non è ancora disponibile al pubblico"],
+    ru: ["Предпросмотр", "Скоро; пока недоступно для публичной игры"],
+    hi: ["पूर्वावलोकन", "जल्द आ रहा है; अभी सार्वजनिक रूप से उपलब्ध नहीं है"],
+    ar: ["معاينة", "قريبًا؛ ليست متاحة للعب العام بعد"],
+  };
+  const [previewLabel, previewNote] = previewCopy[locale] || previewCopy.en;
+  const zh = locale === "zh-Hant";
+  const es = locale === "es";
+  const ja = locale === "ja";
   const copy = {
     playableLabel: zh ? "\u53ef\u904a\u73a9" : es ? "Disponible" : ja ? "プレイ可能" : "Playable",
     playableNote: zh ? "\u9ede\u64ca\u5f8c\u7acb\u5373\u9032\u5165" : es ? "Se abre de inmediato" : ja ? "すぐに始められます" : "Opens immediately",
-    previewLabel: zh ? "\u65b0\u904a\u6232\u9810\u544a" : es ? "Avance" : ja ? "プレビュー" : "Preview",
-    previewNote: zh ? "\u656c\u8acb\u671f\u5f85\uff0c\u5c1a\u672a\u516c\u958b\u904a\u73a9" : es ? "Próximamente; aún no está disponible" : ja ? "近日公開。まだ遊べません" : "Coming Soon, not public yet",
+    previewLabel,
+    previewNote,
   };
   return copy[key] || key;
 }
@@ -1273,6 +1291,9 @@ function renderUpcomingGames() {
     const card = document.createElement("button");
     card.className = "upcoming-game-card";
     card.type = "button";
+    card.dataset.gameId = game.id;
+    card.dataset.status = game.status;
+    card.dataset.internalTrial = internalTrialPath(game) ? "true" : "false";
     card.addEventListener("click", () => showPlannedGame(game));
     card.innerHTML = `
       <div class="upcoming-game-art">

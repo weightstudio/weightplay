@@ -5496,14 +5496,18 @@ body.general-lobby-page {
   }
 
   .general-lobby-page .upcoming-games {
-    grid-auto-columns: minmax(250px, 78vw);
-    grid-auto-flow: column;
-    grid-template-columns: none;
+    grid-auto-columns: auto;
+    grid-auto-flow: row;
+    grid-template-columns: minmax(0, 1fr);
+    overflow-x: visible;
+    scroll-snap-type: none;
   }
 
   .general-lobby-page .upcoming-game-card {
     grid-template-columns: 100px minmax(0, 1fr);
     min-height: 154px;
+    width: 100%;
+    scroll-snap-align: none;
   }
 
   .general-lobby-page .upcoming-game-copy strong {

@@ -69,10 +69,6 @@
       masteryMilestone: "Medal milestone +{coins} coins",
       stageCleared: "Cleared",
       stageBest: "Best {score}",
-      skillReport: "Skill Report",
-      planning: "Planning",
-      focusSkill: "Focus",
-      problemSolving: "Problem Solving",
       progressNew: "Great progress! Your yard defense reached a new best.",
       progressSteady: "Good effort. Try placing guards earlier to improve your next run.",
       progressNote: "Scores are for fun and local progress tracking only.",
@@ -214,10 +210,6 @@
       masteryMilestone: "\u52f3\u7ae0\u91cc\u7a0b\u7891 +{coins} \u91d1\u5e63",
       stageCleared: "\u5df2\u901a\u904e",
       stageBest: "\u6700\u4f73 {score}",
-      skillReport: "\u80fd\u529b\u5c0f\u5831\u544a",
-      planning: "\u898f\u5283",
-      focusSkill: "\u5c08\u6ce8\u529b",
-      problemSolving: "\u554f\u984c\u89e3\u6c7a",
       progressNew: "\u5f88\u68d2\u7684\u9032\u6b65\uff01\u9019\u6b21\u7684\u5ead\u9662\u9632\u885b\u9054\u5230\u65b0\u7684\u6700\u4f73\u7d00\u9304\u3002",
       progressSteady: "\u52aa\u529b\u5f97\u5f88\u597d\u3002\u4e0b\u6b21\u53ef\u4ee5\u66f4\u65e9\u653e\u7f6e\u5b88\u885b\uff0c\u8b93\u9632\u7dda\u66f4\u7a69\u3002",
       progressNote: "\u5206\u6578\u53ea\u7528\u65bc\u904a\u6232\u6a02\u8da3\u8207\u672c\u6a5f\u9032\u6b65\u7d00\u9304\u3002",
@@ -367,10 +359,6 @@
     masteryMilestone: "Hito de medallas: +{coins} monedas",
     stageCleared: "Completado",
     stageBest: "Récord {score}",
-    skillReport: "Informe de habilidades",
-    planning: "Planificación",
-    focusSkill: "Concentración",
-    problemSolving: "Resolución de problemas",
     progressNew: "¡Gran progreso! La defensa del jardín alcanzó un nuevo récord.",
     progressSteady: "Buen esfuerzo. Coloca guardianes antes para mejorar el próximo intento.",
     progressNote: "Las puntuaciones solo sirven para divertirse y registrar el progreso local.",
@@ -800,7 +788,7 @@
     }
   }
 
-  function saveProgress(score, skillScores, won = false, perfect = false) {
+  function saveProgress(score, won = false, perfect = false) {
     const previous = loadProgress();
     const previousBest = Number(previous.bestScore) || 0;
     const bestScore = Math.max(previousBest, score);
@@ -829,7 +817,6 @@
       playCount: (Number(previous.playCount) || 0) + 1,
       lastPlayedAt: playedAt,
       improvementPercent,
-      skillScores,
       stage: currentStage + 1,
       stageRecords,
       masteryMilestones: masteryMilestonesClaimed,
@@ -843,22 +830,6 @@
       newMedal: earnedNewMedal,
       newMilestones,
       masteryCoins,
-    };
-  }
-
-  function starRating(value) {
-    const filled = clamp(Math.round(value), 1, 5);
-    return "\u2605".repeat(filled) + "\u2606".repeat(5 - filled);
-  }
-
-  function buildSkillScores(won, score) {
-    const hpRatio = clamp(Math.max(0, baseHp) / 10, 0, 1);
-    const clearRatio = won ? 1 : clamp(spawned / Math.max(1, stages[currentStage].total), 0, 1);
-    const economyRatio = clamp(coinsEarned / Math.max(20, 28 + currentStage * 8), 0, 1);
-    return {
-      planning: 1 + Math.round((won ? 2.2 : 0.8) + hpRatio * 1.4 + economyRatio * 0.4),
-      focus: 1 + Math.round(clearRatio * 3 + hpRatio),
-      problemSolving: 1 + Math.round(clamp(score / Math.max(45, (currentStage + 1) * 35), 0, 1) * 4),
     };
   }
 
@@ -2244,8 +2215,7 @@
       playSound("lose");
     }
     finalScore = (currentStage + 1) * 60 + Math.max(0, baseHp) * 8 + coinsEarned + (won ? 80 : 0);
-    const skillScores = buildSkillScores(won, finalScore);
-    const progress = saveProgress(finalScore, skillScores, won, perfect);
+    const progress = saveProgress(finalScore, won, perfect);
     if (progress.masteryCoins > 0) {
       coinsEarned += progress.masteryCoins;
       resultMessage = `${resultMessage} ${t("masteryMilestone", { coins: progress.masteryCoins })}`;

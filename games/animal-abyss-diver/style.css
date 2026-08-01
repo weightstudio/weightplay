@@ -51,3 +51,6 @@
     line-height:1.15;
   }
 }
+
+.main-group{display:contents}
+.main-group.hidden{display:none!important}

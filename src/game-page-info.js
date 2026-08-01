@@ -807,13 +807,14 @@
       age: "6+",
       difficulty: "Medium",
       time: "5-8 minutes",
+      hideSkillsFact: true,
+      showRelatedSkill: false,
       skills: ["Logic", "Focus", "Problem Solving"],
       intro:
         "Clover Yard connects six garden regions that share sunlight, seeds, and water. When wild beasts crowd the paths, the player becomes the yard keeper and places Cat, Dog, Owl, and the optional Fox across five lanes. The 30-stage campaign introduces a readable rule in each region: healers restore a beast ahead, burrowers warn before changing lanes, and sun thieves remove 12 unspent sun. Every fifth stage has a separate guardian and counterplay, from Moss Horn Rhino's roar and Prism Shell Tortoise's protected phase to Burrow Badger Chief's lane changes, Ember Mane Boar's announced rush, Gale Wing Eagle's attack delay, and Moon Crown Elk's restoring pulse. Clears, scores, Garden Medals, coins, and training stay in this browser.",
       how: ["Choose an unlocked stage and read its enemy icons and plan.", "Place a blocker and ranged support in highlighted incoming lanes.", "Collect sun, react to special enemy cues, and stop every beast before cottage hearts reach zero.", "Earn saved coins for training and replay stages for Garden Medals at 5, 15, and 30 medals."],
       strategyTips: ["Focus a healer before repeatedly attacking the shield it restores.", "Cover neighboring lanes when a burrower appears.", "Spend important sun before a thief's pouch activates.", "Wait for Prism Shell Tortoise's barrier to open before committing burst damage.", "Use Dog to absorb Ember Mane Boar's announced rush while ranged guards fire."],
-      parent:
-        "This friendly fantasy defense game may support planning, attention, and flexible problem solving. Enemy actions use pictures or short cues, and there is no realistic violence. Progress is stored locally and may disappear if browser storage is cleared. The Skill Report is play feedback, not a learning or health assessment. The Kids page requests no advertising and asks for no child profile.",
+      parent: "No account is required. Progress stays in this browser and may reset if site storage is cleared.",
       faq: [
         ["How many stages are included?", "There are 30 named stages across six regions, with a mechanically distinct Boss every fifth stage."],
         ["Why did Prism Shell Tortoise take little damage?", "Its bright barrier reduces damage while closed. Attack strongly after it opens."],
@@ -822,7 +823,6 @@
         ["Can players upgrade animals?", "Yes. Local coins train guards; the Fox is an optional shared-diamond unlock and is not required."],
         ["Is progress saved?", "Stage unlocks, clears, scores, medals, coins, and training are saved in this browser."],
         ["Does it work on phones?", "Yes. Stage selection uses horizontal swiping and battle uses large tap targets."],
-        ["Does the Kids page show ads?", "No. This Kids game does not request advertising."],
       ],
     },
     "animal-quiz": {
@@ -2974,6 +2974,7 @@
     guideTitleSuffix: "Game Guide",
     noteTitle: "Player and Save Information",
     hideScoreBands: true,
+    showRelatedSkill: false,
     intro: "Animal Gearpack Expedition is a 30-stage spatial-inventory strategy adventure starring Gear Horn Rux. Fit equipment into an eleven-column, seven-row pack, connect Forge, Nature, Crystal, and Moon materials, and survive five encounters per stage. Six regions introduce different packing pressures, and every fifth stage ends with a Guardian whose mechanic changes what a safe build looks like.",
     story: [
       "Gearwood's caravan road once linked six workshops. The route failed when its vaults reacted to the cargo: roots blocked the forest, crystals split the quarry, machines restarted in Clockwork Hollow, the foundry overheated, storm coils charged the observatory, and the Eclipse Vault sealed every recovered shipment behind a final mechanical army.",

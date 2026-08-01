@@ -5,6 +5,12 @@
   opacity: 1;
 }
 
+body:not([data-screen="main"]) #mainView,
+body:not([data-screen="stage"]) #stageView,
+body:not([data-screen="battle"]) #battleView {
+  display: none !important;
+}
+
 .stage-card.locked > * {
   filter: grayscale(1);
   opacity: 0.55;

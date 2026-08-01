@@ -910,7 +910,10 @@
     hintText: $("hintText")
   };
 
-  const STARTER_ANIMAL_IDS = [0, 1];
+  // The opening expedition needs a real formation response, not only two
+  // versions of temporary stat growth. Owl adds back-row targeting to Fox
+  // damage and Otter healing for both new and existing saves.
+  const STARTER_ANIMAL_IDS = [0, 1, 3];
   const PREMIUM_ANIMAL_IDS = [8, 9];
   const COMBAT_HEALTH_BAR_HEIGHT = 28;
   const COMBAT_HEALTH_FONT_SIZE = 20;
@@ -1266,6 +1269,13 @@
         premiumCosts: PREMIUM_ANIMAL_IDS.map((id) => ({ id, cost: premiumUnlockCost(id) })),
         normalUnlockCosts: Object.entries(ANIMAL_UNLOCK_COSTS).map(([id, cost]) => ({ id: Number(id), cost }))
       }),
+      starterRosterPreview: () => {
+        const starterSave = normalizeSave(null);
+        return starterSave.unlockedAnimals.map((id) => {
+          const animal = ANIMAL_METADATA.find((candidate) => candidate.id === id);
+          return { id, role: animal?.roleEn || "", description: animal?.descEn || "" };
+        });
+      },
       setTrainingLevel: (id, level) => {
         save = normalizeSave(save);
         save.animalLevels[id] = Math.max(1, Math.min(20, Math.floor(Number(level) || 1)));
@@ -1520,20 +1530,50 @@
         const loneOwlTargetHp = state.combat.enemySquad[0].hp;
         return { owlHp, lionHp, loneOwlTargetHp };
       },
+      stageThreeWaveFiveLossRecapRegression: () => {
+        const previousLocale = locale;
+        const previousLastAction = state.combat.lastAction;
+        const previousDefeatEvent = state.combat.lastDefeatEvent;
+        locale = "en";
+        const frontGuard = { nameEn: "Front Guard", formationSlot: 0, hp: 8, maxHp: 8 };
+        const otter = { nameEn: "Bubble Fin Otter", formationSlot: 3, hp: 0, maxHp: 3 };
+        const squad = [frontGuard, otter];
+        const backlineAction = "Shadow Squirrel attacks the back row";
+        const hpBeforeEnemyAction = new Map([[frontGuard, 8], [otter, 1]]);
+        recordEnemyDefeatEvents(squad, hpBeforeEnemyAction, backlineAction);
+        removeDefeatedUnits(squad, "player");
+        state.combat.lastAction = "Shadow Boar sweeps the front row";
+        const recap = buildLossRecap();
+        const result = {
+          unit: state.combat.lastDefeatEvent?.name || "",
+          slot: state.combat.lastDefeatEvent?.slot ?? -1,
+          action: state.combat.lastDefeatEvent?.action || "",
+          recap,
+          rejectsContradictoryFrontAction: !recap.includes("Shadow Boar") && !recap.includes("front row")
+        };
+        locale = previousLocale;
+        state.combat.lastAction = previousLastAction;
+        state.combat.lastDefeatEvent = previousDefeatEvent;
+        return result;
+      },
       forceQuickOutcome: (result = "win", delay = 40) => {
         if (!state.combat.animating || state.combat.ending) return false;
         if (result === "win") state.combat.enemySquad = [];
         if (result === "lose") {
           const fallen = state.combat.playerSquad[0];
           const enemy = state.combat.enemySquad[0];
+          const defeatAction = enemy
+            ? `${combatUnitName(enemy)} ${localizedPhrase("attacks the front row", "\u653b\u64ca\u524d\u6392", "ataca la fila delantera")}`
+            : t("failText");
           if (fallen) {
-            state.combat.lastFallen = {
+            state.combat.lastDefeatEvent = {
               name: combatUnitName(fallen),
-              slot: unitFormationSlot(fallen, 0)
+              slot: unitFormationSlot(fallen, 0),
+              action: defeatAction
             };
           }
           if (!state.combat.lastAction && enemy) {
-            state.combat.lastAction = `${combatUnitName(enemy)} ${localizedPhrase("attacks the front row", "\u653b\u64ca\u524d\u6392", "ataca la fila delantera")}`;
+            state.combat.lastAction = defeatAction;
           }
           state.combat.playerSquad = [];
         }
@@ -1657,7 +1697,7 @@
         activeActor: null,
         activeActors: [],
         lastAction: "",
-        lastFallen: null,
+        lastDefeatEvent: null,
         effects: [] // visual particle FX
       },
       earnedTeamXp: 0,
@@ -1808,12 +1848,12 @@
 
   function buildLossRecap() {
     const copy = lossRecapCatalog[actualGameLocale()] || lossRecapCatalog.en;
-    const fallen = state.combat.lastFallen;
-    const slot = fallen?.slot ?? 0;
+    const defeat = state.combat.lastDefeatEvent;
+    const slot = defeat?.slot ?? 0;
     const values = {
-      unit: fallen?.name || t("activeSquad"),
+      unit: defeat?.name || t("activeSquad"),
       row: t(slot < 3 ? "formationFrontRow" : "formationBackRow"),
-      action: state.combat.lastAction || t("failText"),
+      action: defeat?.action || t("failText"),
       counter: copy[slot < 3 ? "front" : "back"]
     };
     return Object.entries(values).reduce(
@@ -3563,14 +3603,28 @@
       if (squad[i].hp <= 0) {
         const fallen = squad.splice(i, 1)[0];
         if (team === "player") {
-          state.combat.lastFallen = {
+          state.combat.lastDefeatEvent = {
             name: combatUnitName(fallen),
-            slot: unitFormationSlot(fallen, i)
+            slot: fallen.defeatEvent?.slot ?? unitFormationSlot(fallen, i),
+            action: fallen.defeatEvent?.action || t("failText")
           };
         }
         triggerFaintAbility(fallen, team);
       }
     }
+  }
+
+  function recordEnemyDefeatEvents(playerSquad, hpBeforeEnemyAction, action) {
+    if (!action) return;
+    playerSquad.forEach((unit, index) => {
+      const hpBefore = hpBeforeEnemyAction.get(unit);
+      if (hpBefore > 0 && unit.hp <= 0 && unit.hp < hpBefore) {
+        unit.defeatEvent = {
+          slot: unitFormationSlot(unit, index),
+          action
+        };
+      }
+    });
   }
 
   function combatPoint(team, index = 0) {
@@ -3756,7 +3810,7 @@
     state.combat.activeActor = null;
     state.combat.activeActors = [];
     state.combat.lastAction = "";
-    state.combat.lastFallen = null;
+    state.combat.lastDefeatEvent = null;
     state.combat.effects = [];
     
     canvasCtx = nodes.gameCanvas.getContext("2d");
@@ -4353,7 +4407,12 @@
     const playerUnit = unitAtFormationSlot(playerSquad, slot);
     const enemyUnit = unitAtFormationSlot(enemySquad, slot);
     if (playerUnit) actions.push(resolveUnitAbility(playerUnit, "player", Math.max(0, playerSquad.indexOf(playerUnit))));
-    if (enemyUnit) actions.push(resolveEnemySlotAction(enemyUnit, Math.max(0, enemySquad.indexOf(enemyUnit))));
+    const playerHpBeforeEnemyAction = new Map(playerSquad.map((unit) => [unit, Number(unit.hp) || 0]));
+    const enemyAction = enemyUnit ? resolveEnemySlotAction(enemyUnit, Math.max(0, enemySquad.indexOf(enemyUnit))) : "";
+    if (enemyAction) {
+      recordEnemyDefeatEvents(playerSquad, playerHpBeforeEnemyAction, enemyAction);
+      actions.push(enemyAction);
+    }
     const actionText = actions.filter(Boolean).join("  |  ") || `${localizedPhrase("Slot", "\u7b2c", "Espacio")} ${slot + 1}`;
     state.combat.lastAction = actionText;
     combatLog(actionText);
@@ -4624,7 +4683,7 @@
     state.combat.activeActor = null;
     state.combat.activeActors = [];
     state.combat.lastAction = "";
-    state.combat.lastFallen = null;
+    state.combat.lastDefeatEvent = null;
     state.combat.effects = [];
     nodes.prepPhaseArea.classList.add("is-hidden");
     nodes.combatArea.classList.remove("is-hidden");

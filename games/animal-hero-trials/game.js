@@ -332,6 +332,7 @@
   let rerollConfirmTimer = 0;
   let rerollConfirmDueAt = 0;
   let rerollConfirmRemaining = 0;
+  let rerollConfirmGeneration = 0;
   let pointer = null;
   let moveTarget = null;
   let stageSelectionFrame = 0;
@@ -380,6 +381,16 @@
   $("#resultModal > section").append(resultActions);
   const canvas = $("#game");
   const ctx = canvas.getContext("2d");
+  let activeScene = "main";
+  let sceneGeneration = 0;
+
+  function sceneFrame(scene, callback) {
+    const generation = sceneGeneration;
+    return requestAnimationFrame(() => {
+      if (activeScene !== scene || sceneGeneration !== generation) return;
+      callback();
+    });
+  }
 
   function suspendBackgroundBattle() {
     clearMovementInput();
@@ -396,7 +407,7 @@
     run.active = true;
     run.last = performance.now();
     loop(run.last);
-    requestAnimationFrame(() => $("#game").focus({ preventScroll: true }));
+    sceneFrame("battle", () => $("#game").focus({ preventScroll: true }));
   }
   const images = {
     bg: load("animal-hero-trials-arena.png"),
@@ -519,10 +530,20 @@
   function show(name) {
     clearRerollConfirmation();
     clearMovementInput();
+    if (name !== activeScene) {
+      activeScene = name;
+      sceneGeneration += 1;
+    }
     document.body.dataset.gameView = name;
+    document.body.dataset.screen = name;
+    for (const scene of ["main", "stage", "battle"]) document.body.classList.toggle(`wp-shell-${scene}-active`, scene === name);
+    document.body.classList.toggle("wp-stage-select-active", name === "stage");
+    document.documentElement.classList.toggle("wp-stage-select-active", name === "stage");
     Object.entries(views).forEach(([key, view]) => {
+      view.hidden = key !== name;
       view.classList.toggle("hidden", key !== name);
     });
+    if (name === "stage") updateCenteredStageCard();
     setChoiceModal(false, false);
     closeQuitDecision(false, false);
     setResultModal(false, false);
@@ -531,6 +552,10 @@
       cancelAnimationFrame(frame);
       if (run) run.active = false;
     }
+    dispatchEvent(new CustomEvent("weightplay:shell-sync", { detail: { screen: name, generation: sceneGeneration } }));
+    dispatchEvent(new CustomEvent("weightplay:stage-sync", { detail: { screen: name, generation: sceneGeneration } }));
+    dispatchEvent(new CustomEvent("weightplay:battle-sync", { detail: { screen: name, generation: sceneGeneration } }));
+    if (name === "battle") dispatchEvent(new CustomEvent("weightplay:battle-open", { detail: { screen: name, generation: sceneGeneration } }));
   }
 
   function resultCoveredLayers() {
@@ -557,7 +582,9 @@
       layer.inert = true;
       layer.setAttribute("aria-hidden", "true");
     });
-    requestAnimationFrame(() => $("#quitKeep").focus({ preventScroll: true }));
+    sceneFrame("battle", () => {
+      if (!$("#quitModal").classList.contains("hidden")) $("#quitKeep").focus({ preventScroll: true });
+    });
   }
 
   function closeQuitDecision(resume = false, restoreFocus = true) {
@@ -575,7 +602,7 @@
     run.active = true;
     run.last = performance.now();
     loop(run.last);
-    if (restoreFocus) requestAnimationFrame(() => (opener?.isConnected ? opener : $("#battleBack")).focus({ preventScroll: true }));
+    if (restoreFocus) sceneFrame("battle", () => (opener?.isConnected ? opener : $("#battleBack")).focus({ preventScroll: true }));
   }
 
   function setChoiceModal(open, focusPrimary = true) {
@@ -586,7 +613,9 @@
       if (open) layer.setAttribute("aria-hidden", "true");
       else layer.removeAttribute("aria-hidden");
     });
-    if (open && focusPrimary) requestAnimationFrame(() => $("#choices .choice")?.focus({ preventScroll: true }));
+    if (open && focusPrimary) sceneFrame("battle", () => {
+      if (!$("#choiceModal").classList.contains("hidden")) $("#choices .choice")?.focus({ preventScroll: true });
+    });
   }
 
   function setResultModal(open, focusTarget = $("#resultHome")) {
@@ -597,7 +626,9 @@
       if (open) layer.setAttribute("aria-hidden", "true");
       else layer.removeAttribute("aria-hidden");
     });
-    if (open && focusTarget) requestAnimationFrame(() => focusTarget.focus({ preventScroll: true }));
+    if (open && focusTarget) sceneFrame("battle", () => {
+      if (!$("#resultModal").classList.contains("hidden")) focusTarget.focus({ preventScroll: true });
+    });
   }
 
   function commitResultDecision(action) {
@@ -664,7 +695,7 @@
       };
       picker.append(button);
     });
-    if (focusedHero) requestAnimationFrame(() => {
+    if (focusedHero) sceneFrame("stage", () => {
       picker.querySelector(`.hero-option[data-hero="${focusedHero}"]`)?.focus({ preventScroll: true });
     });
   }
@@ -715,7 +746,7 @@
 
   function scheduleCenteredStageCard() {
     cancelAnimationFrame(stageSelectionFrame);
-    stageSelectionFrame=requestAnimationFrame(updateCenteredStageCard);
+    stageSelectionFrame=sceneFrame("stage", updateCenteredStageCard);
   }
 
   function setStageTabStop(card, focus = false) {
@@ -729,11 +760,11 @@
   }
 
   function focusStage(stage = Math.min(TRIAL_COUNT, unlocked)) {
-    requestAnimationFrame(() => setStageTabStop($(`#stageRail .stage-card[data-stage="${stage}"]`), true));
+    sceneFrame("stage", () => setStageTabStop($(`#stageRail .stage-card[data-stage="${stage}"]`), true));
   }
 
   function focusMain() {
-    requestAnimationFrame(() => $("#startBtn").focus({ preventScroll: true }));
+    sceneFrame("main", () => $("#startBtn").focus({ preventScroll: true }));
   }
 
   function save() {
@@ -1001,7 +1032,7 @@
         spawn();
         run.last = performance.now();
         loop(performance.now());
-        requestAnimationFrame(() => $("#game").focus({ preventScroll: true }));
+        sceneFrame("battle", () => $("#game").focus({ preventScroll: true }));
       };
       box.append(button);
     }
@@ -1031,10 +1062,12 @@
     rerollConfirmTimer = 0;
     rerollConfirmDueAt = 0;
     rerollConfirmRemaining = 0;
+    rerollConfirmGeneration = 0;
     if (run) run.rerollPending = false;
   }
 
   function expireRerollConfirmation() {
+    if (activeScene !== "battle" || rerollConfirmGeneration !== sceneGeneration) return clearRerollConfirmation();
     rerollConfirmTimer = 0;
     rerollConfirmDueAt = 0;
     rerollConfirmRemaining = 0;
@@ -1046,6 +1079,7 @@
   function armRerollConfirmation(delay = 5000) {
     clearTimeout(rerollConfirmTimer);
     rerollConfirmRemaining = Math.max(0, Number(delay) || 0);
+    rerollConfirmGeneration = sceneGeneration;
     if (!rerollConfirmRemaining) return expireRerollConfirmation();
     rerollConfirmDueAt = performance.now() + rerollConfirmRemaining;
     rerollConfirmTimer = setTimeout(expireRerollConfirmation, rerollConfirmRemaining);
@@ -1060,7 +1094,7 @@
   }
 
   function resumeRerollConfirmation() {
-    if (!run?.rerollPending || rerollConfirmTimer || document.hidden || !windowHasFocus) return;
+    if (!run?.rerollPending || rerollConfirmTimer || document.hidden || !windowHasFocus || activeScene !== "battle") return;
     armRerollConfirmation(rerollConfirmRemaining);
   }
 

@@ -364,11 +364,11 @@
     task.timer=window.setTimeout(()=>{
       task.timer=0;
       diveTimers.delete(task);
-      if(task.session===diveSession&&!diveSuspended)task.callback();
+      if(task.session===diveSession&&task.generation===sceneGeneration&&activeScene==="battle"&&!diveSuspended)task.callback();
     },task.remaining);
   }
   function scheduleDive(callback,delay){
-    const task={session:diveSession,callback,remaining:Math.max(0,delay),due:0,timer:0};
+    const task={session:diveSession,generation:sceneGeneration,callback,remaining:Math.max(0,delay),due:0,timer:0};
     diveTimers.add(task);
     if(!diveSuspended)armDiveTask(task);
     return task;
@@ -390,7 +390,7 @@
     resumeBeaconConfirmation();
     if(!diveSuspended)return;
     diveSuspended=false;
-    diveTimers.forEach(task=>{if(task.session===diveSession&&!task.timer)armDiveTask(task);});
+    diveTimers.forEach(task=>{if(task.session===diveSession&&task.generation===sceneGeneration&&!task.timer)armDiveTask(task);});
   }
   const mission=(name,zhName,relic,zhRelic,rule,zhRule,config)=>({name,zhName,relic,zhRelic,rule,zhRule,...config});
   const routes = [
@@ -491,16 +491,18 @@
     return{gameId:"animal-abyss-diver",stage:state.route,mode:"mission",result:state.resultOutcome,won:state.resultOutcome==="clear",salvage:state.salvage,target:config.target,zones:config.zones,oxygen:state.oxygen,coins_earned:state.resultEarned};
   }
   function resultBackgroundNodes(){return [...document.querySelectorAll(".battle-canvas > :not(#result)")];}
-  function setResultOwnership(active){resultBackgroundNodes().forEach(node=>{node.inert=active;if(active)node.setAttribute("aria-hidden","true");else node.removeAttribute("aria-hidden");});if(active)requestAnimationFrame(()=>resultPrimaryAction?.focus({preventScroll:true}));}
+  let activeScene="main",sceneGeneration=0;
+  function sceneFrame(scene,callback){const generation=sceneGeneration;requestAnimationFrame(()=>{if(activeScene!==scene||sceneGeneration!==generation)return;callback();});}
+  function setResultOwnership(active){resultBackgroundNodes().forEach(node=>{node.inert=active;if(active)node.setAttribute("aria-hidden","true");else node.removeAttribute("aria-hidden");});if(active)sceneFrame("battle",()=>{if(!$('result').classList.contains('hidden'))resultPrimaryAction?.focus({preventScroll:true});});}
   function syncSoundToggle(activeViewport){const toggle=document.querySelector("button[data-sound-toggle]");if(toggle)toggle.style.setProperty("display",activeViewport?"none":"grid","important");}
-  function show(id){const resultActive=id==="result",activeViewport=id!=="mainScreen";document.body.classList.toggle("wp-mobile-game-mode",activeViewport);document.documentElement.classList.toggle("wp-mobile-game-mode",activeViewport);syncSoundToggle(activeViewport);$("mainScreen").classList.toggle("hidden",id!=="mainScreen");$("stageScreen").classList.toggle("hidden",id!=="stageScreen");$("battleShell").classList.toggle("hidden",id!=="battleShell"&&!resultActive);$("result").classList.toggle("hidden",!resultActive);$("mainHeader").classList.toggle("hidden",id!=="mainScreen");setResultOwnership(resultActive);}
-  function focusMain(){requestAnimationFrame(()=>$('startBtn').focus({preventScroll:true}));}
+  function show(id){const resultActive=id==="result",scene=id==="mainScreen"?"main":id==="stageScreen"?"stage":"battle",activeViewport=scene!=="main";if(scene!==activeScene){activeScene=scene;sceneGeneration+=1;}document.body.dataset.screen=scene;for(const name of ["main","stage","battle"])document.body.classList.toggle(`wp-shell-${name}-active`,name===scene);document.body.classList.toggle("wp-mobile-game-mode",activeViewport);document.documentElement.classList.toggle("wp-mobile-game-mode",activeViewport);syncSoundToggle(activeViewport);$("mainGroup").classList.toggle("hidden",scene!=="main");$("mainHeader").classList.toggle("hidden",scene!=="main");$("mainScreen").classList.toggle("hidden",scene!=="main");$("stageScreen").classList.toggle("hidden",scene!=="stage");$("battleShell").classList.toggle("hidden",scene!=="battle");$("result").classList.toggle("hidden",!resultActive);setResultOwnership(resultActive);dispatchEvent(new CustomEvent("weightplay:shell-sync",{detail:{screen:scene,generation:sceneGeneration}}));dispatchEvent(new CustomEvent("weightplay:stage-sync",{detail:{screen:scene,generation:sceneGeneration}}));dispatchEvent(new CustomEvent("weightplay:battle-sync",{detail:{screen:scene,generation:sceneGeneration}}));}
+  function focusMain(){sceneFrame("main",()=>$('startBtn').focus({preventScroll:true}));}
   function focusCurrentDiveDecision(){
     const candidates=state.fishActive?[$("dodgeLeftBtn"),$("pulseBtn")]:[$("leftGate"),$("rightGate"),$("surfaceBtn")];
     const target=candidates.find(node=>node&&!node.disabled&&node.getAttribute("aria-disabled")!=="true"&&!node.classList.contains("hidden"))||$("helpBtn");
-    requestAnimationFrame(()=>target?.focus({preventScroll:true}));
+    sceneFrame("battle",()=>target?.focus({preventScroll:true}));
   }
-  function focusRoute(route=state.route){requestAnimationFrame(()=>{
+  function focusRoute(route=state.route){sceneFrame("stage",()=>{
     const cards=[...document.querySelectorAll("#routeRail .route-card")];
     const target=cards[Math.max(0,Math.min(cards.length-1,(route||1)-1))]||cards[0];
     document.querySelectorAll("#routeRail .route-card").forEach(card=>{const selected=card===target;card.tabIndex=selected?0:-1;card.classList.toggle("is-selected",selected);if(selected)card.setAttribute("aria-current","step");else card.removeAttribute("aria-current");});
@@ -523,7 +525,7 @@
     }
     $("quitPanel").classList.toggle("hidden",!open);
     quitBackgroundNodes().forEach(node=>{node.inert=open;if(open)node.setAttribute("aria-hidden","true");else node.removeAttribute("aria-hidden");});
-    if(open){requestAnimationFrame(() => $("quitKeep").focus({preventScroll:true}));return;}
+    if(open){sceneFrame("battle",()=>{if(!$("quitPanel").classList.contains("hidden"))$("quitKeep").focus({preventScroll:true});});return;}
     if(resume)resumeDiveAsync();
     if(focusBack)$("battleBack").focus({preventScroll:true});
     else if(resume)focusCurrentDiveDecision();
@@ -608,8 +610,9 @@
     });
     coach.classList.toggle("hidden",!open);
     if(!open)resumeDiveAsync();
-    window.requestAnimationFrame(()=>{
-      if(open){$("coachStart").focus({preventScroll:true});return;}
+    sceneFrame("battle",()=>{
+      if(open){if(!coach.classList.contains("hidden"))$("coachStart").focus({preventScroll:true});return;}
+      if(!coach.classList.contains("hidden"))return;
       const target=coachReturnFocus&&coachReturnFocus.isConnected&&coachReturnFocus.getClientRects().length?coachReturnFocus:$("leftGate");
       coachReturnFocus=null;
       target?.focus({preventScroll:true});
@@ -703,7 +706,7 @@
   function startFishEncounter(){
     const fish=fishProfile();state.fishActive=true;state.fishBusy=false;state.fishHp=fish.maxHp;state.fishMaxHp=fish.maxHp;
     $("fishEncounter").classList.remove("hidden");renderFish();renderBattle();setFeedback(`${icon("danger")}<b>!</b>`,`${t("fishBattle")}: ${fish.name}`);
-    requestAnimationFrame(() => $("dodgeLeftBtn").focus({preventScroll:true}));
+    sceneFrame("battle",() => $("dodgeLeftBtn").focus({preventScroll:true}));
   }
   function awardFishXp(amount){save.xp+=amount;let gained=0;while(save.xp>=xpNeeded()){save.xp-=xpNeeded();save.level+=1;save.statPoints+=1;gained+=1;}persist();return gained;}
   function statValue(stat){return stat==="hp"?maxHealth():stat==="attack"?diverAttack():maxOxygen();}
@@ -724,18 +727,18 @@
   function setUpgradeModal(open,focusPrimary=true){
     $("upgradePanel").classList.toggle("hidden",!open);
     upgradeBackgroundNodes().forEach(node=>{node.inert=open;if(open)node.setAttribute("aria-hidden","true");else node.removeAttribute("aria-hidden");});
-    if(open&&focusPrimary)requestAnimationFrame(()=>$("upgradePanel").querySelector("button:not(:disabled)")?.focus({preventScroll:true}));
-    if(!open&&focusPrimary)requestAnimationFrame(()=>$("leftGate").getAttribute("aria-disabled")!=="true"?$("leftGate").focus({preventScroll:true}):$("helpBtn").focus({preventScroll:true}));
+    if(open&&focusPrimary)sceneFrame("battle",()=>{if(!$("upgradePanel").classList.contains("hidden"))$("upgradePanel").querySelector("button:not(:disabled)")?.focus({preventScroll:true});});
+    if(!open&&focusPrimary)sceneFrame("battle",()=>{if($("upgradePanel").classList.contains("hidden"))$("leftGate").getAttribute("aria-disabled")!=="true"?$("leftGate").focus({preventScroll:true}):$("helpBtn").focus({preventScroll:true});});
   }
   function openUpgrade(){lastUpgrade=null;renderUpgrade();setUpgradeModal(true);}
   function allocateStat(stat){if(save.statPoints<1)return;const oldMaxHp=maxHealth(),oldMaxOxygen=maxOxygen(),before=statValue(stat);save.statPoints-=1;save.stats[stat]+=1;if(stat==="hp")state.playerHp+=maxHealth()-oldMaxHp;if(stat==="oxygen")state.oxygen=Math.min(maxOxygen(),state.oxygen+maxOxygen()-oldMaxOxygen);lastUpgrade={stat,before,after:statValue(stat)};persist();renderUpgrade();renderBattle();if(save.statPoints===0)$("upgradeDone").focus({preventScroll:true});}
-  function winFish(){const fish=fishProfile(),config=routeConfig(),levels=awardFishXp(fish.xp),salvageGain=1+(config.fishBonus??0);state.fishActive=false;state.fishBusy=false;state.fishResolvedZones.push(state.zone);state.salvage+=salvageGain;state.battery=Math.min(4,state.battery+1);$("fishEncounter").classList.add("hidden");setFeedback(`${icon("salvage")}<b>+${salvageGain}</b><b>XP +${fish.xp}</b>`,`${t("fishWon")} ${routeText(config,"rule")} ${t("xpGain",{n:fish.xp})}${levels?` ${t("levelUp",{n:levels})}`:""}`);renderBattle();if(levels)openUpgrade();else requestAnimationFrame(() => $("leftGate").focus({preventScroll:true}));}
+  function winFish(){const fish=fishProfile(),config=routeConfig(),levels=awardFishXp(fish.xp),salvageGain=1+(config.fishBonus??0);state.fishActive=false;state.fishBusy=false;state.fishResolvedZones.push(state.zone);state.salvage+=salvageGain;state.battery=Math.min(4,state.battery+1);$("fishEncounter").classList.add("hidden");setFeedback(`${icon("salvage")}<b>+${salvageGain}</b><b>XP +${fish.xp}</b>`,`${t("fishWon")} ${routeText(config,"rule")} ${t("xpGain",{n:fish.xp})}${levels?` ${t("levelUp",{n:levels})}`:""}`);renderBattle();if(levels)openUpgrade();else sceneFrame("battle",() => $("leftGate").focus({preventScroll:true}));}
   function attackFish(){
     if(!state.fishActive||state.fishBusy)return;clearBeaconConfirmation();renderBattle();state.fishBusy=true;state.fishHp-=diverAttack();$("fishEncounter").classList.add("is-hit");setFeedback(`${icon("danger")}<b>-${diverAttack()}</b>`,t("attackAction"));renderFish();
     scheduleDive(()=>{$("fishEncounter").classList.remove("is-hit");if(state.fishHp<=0){winFish();return;}const fish=fishProfile();state.playerHp=Math.max(0,state.playerHp-fish.attack);$("fishEncounter").classList.add("is-countering");setFeedback(`<b>-${fish.attack}</b>`,t("fishStrikes"));renderFish();scheduleDive(()=>{$("fishEncounter").classList.remove("is-countering");if(state.playerHp<=0){finish("combat");return;}state.fishBusy=false;renderFish();},700);},650);
   }
   function escapeFish(){
-    if(!state.fishActive||state.fishBusy)return;clearBeaconConfirmation();const cost=routeConfig().escapeCost??8;state.oxygen=Math.max(0,state.oxygen-cost);state.fishActive=false;state.fishResolvedZones.push(state.zone);$("fishEncounter").classList.add("is-escaping");setFeedback(`${icon("oxygen")}<b>-${cost}</b>`,t("fishEscaped",{n:cost}));scheduleDive(()=>{$("fishEncounter").classList.add("hidden");$("fishEncounter").classList.remove("is-escaping");renderBattle();if(state.oxygen<=0)finish("fail");else requestAnimationFrame(() => $("leftGate").focus({preventScroll:true}));},700);
+    if(!state.fishActive||state.fishBusy)return;clearBeaconConfirmation();const cost=routeConfig().escapeCost??8;state.oxygen=Math.max(0,state.oxygen-cost);state.fishActive=false;state.fishResolvedZones.push(state.zone);$("fishEncounter").classList.add("is-escaping");setFeedback(`${icon("oxygen")}<b>-${cost}</b>`,t("fishEscaped",{n:cost}));scheduleDive(()=>{$("fishEncounter").classList.add("hidden");$("fishEncounter").classList.remove("is-escaping");renderBattle();if(state.oxygen<=0)finish("fail");else sceneFrame("battle",() => $("leftGate").focus({preventScroll:true}));},700);
   }
   function useBeacon(){
     if(state.beaconUsed)return;
@@ -817,7 +820,7 @@
     const nearest=cards.reduce((best,card)=>{const rect=card.getBoundingClientRect(),distance=Math.abs(rect.left+rect.width/2-center);return!best||distance<best.distance?{card,distance}:best;},null)?.card;
     cards.forEach(card=>{const selected=card===nearest;card.tabIndex=selected?0:-1;card.classList.toggle("is-selected",selected);if(selected)card.setAttribute("aria-current","step");else card.removeAttribute("aria-current");});
   }
-  routeRail.addEventListener("wonder:stage-snap",()=>requestAnimationFrame(syncCenteredRouteSelection));
+  routeRail.addEventListener("wonder:stage-snap",()=>sceneFrame("stage",syncCenteredRouteSelection));
   routeRail.addEventListener("pointerdown", (event) => {
     if (routeRail.dataset.wpStageRail === "true") return;
     drag = { id: event.pointerId, x: event.clientX, left: routeRail.scrollLeft, active: false };

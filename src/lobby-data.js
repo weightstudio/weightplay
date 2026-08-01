@@ -268,7 +268,7 @@ window.WONDER_LOBBY = {
       type: { en: "Sliding Block Puzzle", "zh-Hant": "滑塊益智", "zh-Hans": "滑块益智", ja: "スライドパズル", ko: "슬라이딩 퍼즐", es: "Puzle de bloques", "pt-BR": "Puzzle de blocos", fr: "Puzzle de blocs", de: "Schiebepuzzle", it: "Puzzle a scorrimento", ru: "Пятнашки", hi: "स्लाइडिंग पहेली", ar: "لغز الكتل المنزلقة" },
       categories: ["Animal Games", "Puzzle", "Strategy"], skills: ["Planning", "Spatial Reasoning"], ages: ["9", "family"], href: "games/animal-unblock/",
       previewVideo: "assets/previews/animal-unblock-battle.webm",
-      art: { kind: "image", background: "assets/animal-unblock-cover-v2.webp", hideHero: true },
+      art: { kind: "image", background: "assets/arrow-escape/cover.webp", hideHero: true },
       description: { en: "Slide the blocks and guide Panko out through the gate across 30 trails, with thousands of deterministic layouts.", "zh-Hant": "滑動木塊讓 Panko 從出口離開，挑戰 30 個關卡與數千種布局。", "zh-Hans": "滑动木块让 Panko 从出口离开，挑战 30 个关卡与数千种布局。", ja: "ブロックを動かしてPankoを出口へ。30ステージと数千の配置。", ko: "블록을 움직여 Panko를 출구로 보내세요. 30개 스테이지와 수천 가지 배치.", es: "Mueve los bloques y guía a Panko a la salida en 30 rutas.", "pt-BR": "Mova os blocos e leve Panko à saída em 30 trilhas.", fr: "Faites glisser les blocs et guidez Panko vers la sortie.", de: "Schiebe Blöcke und führe Panko zum Ausgang.", it: "Sposta i blocchi e guida Panko all'uscita.", ru: "Двигай блоки и выведи Панко к выходу.", hi: "ब्लॉक खिसकाकर पांको को निकास तक पहुंचाएं।", ar: "حرّك الكتل وأوصل بانكو إلى المخرج." },
       meta: { en: ["30 trails", "6×6 board", "Thousands of layouts"], "zh-Hant": ["30 關", "6×6 棋盤", "數千布局"], "zh-Hans": ["30 关", "6×6 棋盘", "数千布局"], ja: ["30ステージ", "6×6盤面", "数千の配置"], ko: ["30 스테이지", "6×6 보드", "수천 가지 배치"], es: ["30 rutas", "Tablero 6×6", "Miles de diseños"], "pt-BR": ["30 trilhas", "Tabuleiro 6×6", "Milhares de layouts"], fr: ["30 pistes", "Plateau 6×6", "Milliers de configurations"], de: ["30 Pfade", "6×6-Brett", "Tausende Layouts"], it: ["30 percorsi", "Tavola 6×6", "Migliaia di layout"], ru: ["30 трасс", "Поле 6×6", "Тысячи раскладок"], hi: ["30 ट्रेल", "6×6 बोर्ड", "हजारों लेआउट"], ar: ["30 مسارًا", "لوحة 6×6", "آلاف التخطيطات"] }
     },
@@ -287,8 +287,10 @@ window.WONDER_LOBBY = {
     {
       id: "arrow-escape",
       title: { en: "Arrow Escape", "zh-Hant": "箭頭大逃亡", "zh-Hans": "箭头大逃亡", ja: "アローエスケープ", ko: "애로우 이스케이프", es: "Escape de Flechas", "pt-BR": "Fuga das Setas", fr: "Évasion des flèches", de: "Pfeilflucht", it: "Fuga delle frecce", ru: "Побег стрелок", hi: "एरो एस्केप", ar: "هروب الأسهم" },
-      status: "playable", type: { en: "Order Puzzle", "zh-Hant": "順序益智", "zh-Hans": "顺序益智" },
-      categories: ["Puzzle", "Strategy", "Family"], skills: ["Planning", "Spatial Reasoning"], ages: ["9", "family"], href: "games/arrow-escape/",
+      status: "planned",
+      statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
+      type: { en: "Order Puzzle", "zh-Hant": "順序益智", "zh-Hans": "顺序益智" },
+      categories: ["Puzzle", "Strategy", "Family"], skills: ["Planning", "Spatial Reasoning"], ages: ["9", "family"], href: "games/arrow-escape/", internalTrial: "internal-test.html?trial=1",
       description: { en: "Clear arrow blocks in the right order across 30 escape puzzles.", "zh-Hant": "依正確順序移除箭頭方塊，完成 30 個逃亡謎題。", "zh-Hans": "按正确顺序移除箭头方块，完成 30 个逃亡谜题。" },
       meta: { en: ["30 Stages", "Order Logic", "No Timer"], "zh-Hant": ["30 關", "順序邏輯", "無計時"] },
       art: { kind: "image", background: "assets/animal-unblock-cover-v2.webp", hideHero: true },
@@ -296,20 +298,24 @@ window.WONDER_LOBBY = {
     {
       id: "block-blast",
       title: { en: "Block Blast", "zh-Hant": "方塊爆破", "zh-Hans": "方块爆破", ja: "ブロックブラスト", ko: "블록 블라스트", es: "Explosión de bloques", "pt-BR": "Explosão de blocos", fr: "Explosion de blocs", de: "Block-Explosion", it: "Esplosione di blocchi", ru: "Взрыв блоков", hi: "ब्लॉक ब्लास्ट", ar: "انفجار المكعبات" },
-      status: "playable", type: { en: "Block Puzzle", "zh-Hant": "方塊益智", "zh-Hans": "方块益智" },
-      categories: ["Puzzle", "Strategy", "Family"], skills: ["Planning", "Spatial Reasoning"], ages: ["9", "family"], href: "games/block-blast/",
+      status: "planned",
+      statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
+      type: { en: "Block Puzzle", "zh-Hant": "方塊益智", "zh-Hans": "方块益智" },
+      categories: ["Puzzle", "Strategy", "Family"], skills: ["Planning", "Spatial Reasoning"], ages: ["9", "family"], href: "games/block-blast/", internalTrial: "internal-test.html?trial=1",
       description: { en: "Place three shapes on an 8x8 board and blast complete lines.", "zh-Hant": "在 8×8 棋盤放入三個形狀，爆破完整橫排與直列。", "zh-Hans": "在 8×8 棋盘放入三个形状，爆破完整横排与直列。" },
       meta: { en: ["8x8 Board", "Three Shapes", "Line Clears"], "zh-Hant": ["8×8 棋盤", "三個方塊", "行列消除"] },
-      art: { kind: "image", background: "assets/snack-blocks-cover.webp", hideHero: true },
+      art: { kind: "image", background: "assets/block-blast/cover.webp", hideHero: true },
     },
     {
       id: "hexa-sort",
       title: { en: "Hexa Sort", "zh-Hant": "六角堆疊", "zh-Hans": "六角堆叠", ja: "ヘキサソート", ko: "헥사 정렬", es: "Clasificación Hexa", "pt-BR": "Hexa Sort", fr: "Hexa Sort", de: "Hexa-Sort", it: "Hexa Sort", ru: "Гекса-сортировка", hi: "हेक्सा सॉर्ट", ar: "ترتيب سداسي" },
-      status: "playable", type: { en: "Hex Stack Puzzle", "zh-Hant": "六角堆疊益智", "zh-Hans": "六角堆叠益智" },
-      categories: ["Puzzle", "Strategy", "Family"], skills: ["Planning", "Color Matching"], ages: ["9", "family"], href: "games/hexa-sort/",
+      status: "planned",
+      statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
+      type: { en: "Hex Stack Puzzle", "zh-Hant": "六角堆疊益智", "zh-Hans": "六角堆叠益智" },
+      categories: ["Puzzle", "Strategy", "Family"], skills: ["Planning", "Color Matching"], ages: ["9", "family"], href: "games/hexa-sort/", internalTrial: "internal-test.html?trial=1",
       description: { en: "Stack colored hex chips, merge matching tops, and clear chains.", "zh-Hant": "堆疊彩色六角片，合併相同頂層並觸發連鎖消除。", "zh-Hans": "堆叠彩色六角片，合并相同顶层并触发连锁消除。" },
       meta: { en: ["30 Stages", "10-chip Clears", "Chain Merges"], "zh-Hant": ["30 關", "10 片消除", "連鎖合併"] },
-      art: { kind: "image", background: "assets/animal-prism-garden-cover.webp", hideHero: true },
+      art: { kind: "image", background: "assets/hexa-sort/cover.webp", hideHero: true },
     },
     {
       id: "animal-sunbeam-garden",
@@ -2199,6 +2205,41 @@ for (const game of window.WONDER_LOBBY.games) {
   game.description["zh-Hant"] = clean.description;
   game.meta["zh-Hant"] = clean.meta;
   delete game.internalTrial;
+}
+
+const newPuzzlePlannedCopy = {
+  "arrow-escape": {
+    title: { en: "Arrow Escape", "zh-Hant": "箭頭大逃亡", "zh-Hans": "箭头大逃亡", ja: "アロー・エスケープ", ko: "화살표 탈출", es: "Escape de Flechas", "pt-BR": "Fuga das Setas", fr: "Évasion des flèches", de: "Pfeilflucht", it: "Fuga delle frecce", ru: "Побег стрелок", hi: "तीरों से बचाव", ar: "هروب الأسهم" },
+    type: { en: "Order Puzzle", "zh-Hant": "順序解謎", "zh-Hans": "顺序解谜", ja: "順番パズル", ko: "순서 퍼즐", es: "Rompecabezas de orden", "pt-BR": "Quebra-cabeça de ordem", fr: "Puzzle d'ordre", de: "Reihenfolge-Puzzle", it: "Puzzle d'ordine", ru: "Головоломка на порядок", hi: "क्रम पहेली", ar: "لغز ترتيب" },
+    description: { en: "Remove arrow blocks in the correct order across 30 escape puzzles.", "zh-Hant": "依照正確順序移除箭頭方塊，破解 30 個逃脫關卡。", "zh-Hans": "按照正确顺序移除箭头方块，破解 30 个逃脱关卡。", ja: "矢印ブロックを正しい順番で外し、30の脱出ステージを攻略します。", ko: "화살표 블록을 올바른 순서로 제거해 30개의 탈출 스테이지를 해결하세요.", es: "Retira los bloques con flechas en el orden correcto y supera 30 puzles de escape.", "pt-BR": "Remova os blocos com setas na ordem certa e resolva 30 fases de fuga.", fr: "Retirez les blocs fléchés dans le bon ordre et résolvez 30 niveaux d'évasion.", de: "Entferne Pfeilblöcke in der richtigen Reihenfolge und löse 30 Fluchtlevel.", it: "Rimuovi i blocchi con frecce nell'ordine corretto e risolvi 30 livelli di fuga.", ru: "Убирайте блоки со стрелками в правильном порядке и пройдите 30 уровней побега.", hi: "तीर वाले ब्लॉकों को सही क्रम में हटाकर 30 बचाव स्तर पूरे करें।", ar: "أزل كتل الأسهم بالترتيب الصحيح وحل 30 مرحلة هروب." },
+    meta: { en: ["30 Stages", "Order Logic", "No Timer"], "zh-Hant": ["30 關", "順序邏輯", "沒有計時"], "zh-Hans": ["30 关", "顺序逻辑", "没有计时"], ja: ["30ステージ", "順番ロジック", "制限時間なし"], ko: ["30 스테이지", "순서 논리", "시간 제한 없음"], es: ["30 niveles", "Lógica de orden", "Sin temporizador"], "pt-BR": ["30 fases", "Lógica de ordem", "Sem cronômetro"], fr: ["30 niveaux", "Logique d'ordre", "Sans chronomètre"], de: ["30 Level", "Reihenfolgelogik", "Ohne Zeitlimit"], it: ["30 livelli", "Logica d'ordine", "Senza timer"], ru: ["30 уровней", "Логика порядка", "Без таймера"], hi: ["30 स्तर", "क्रम तर्क", "बिना टाइमर"], ar: ["30 مرحلة", "منطق الترتيب", "بلا مؤقت"] },
+    art: { kind: "image", background: "assets/arrow-escape/cover.webp", hideHero: true },
+  },
+  "block-blast": {
+    title: { en: "Block Blast", "zh-Hant": "方塊爆破", "zh-Hans": "方块爆破", ja: "ブロックブラスト", ko: "블록 블라스트", es: "Explosión de bloques", "pt-BR": "Explosão de blocos", fr: "Explosion de blocs", de: "Blockexplosion", it: "Esplosione di blocchi", ru: "Взрыв блоков", hi: "ब्लॉक ब्लास्ट", ar: "تفجير المكعبات" },
+    type: { en: "Block Puzzle", "zh-Hant": "方塊解謎", "zh-Hans": "方块解谜", ja: "ブロックパズル", ko: "블록 퍼즐", es: "Rompecabezas de bloques", "pt-BR": "Quebra-cabeça de blocos", fr: "Puzzle de blocs", de: "Blockpuzzle", it: "Puzzle a blocchi", ru: "Головоломка с блоками", hi: "ब्लॉक पहेली", ar: "لغز المكعبات" },
+    description: { en: "Place three shapes on an 8×8 board and clear complete rows and columns.", "zh-Hant": "把三個形狀放進 8×8 棋盤，消除完整橫排與直列。", "zh-Hans": "把三个形状放进 8×8 棋盘，消除完整横排与直列。", ja: "3つの形を8×8盤面に置き、完成した行と列を消します。", ko: "세 가지 모양을 8×8 보드에 놓고 완성된 행과 열을 지우세요.", es: "Coloca tres formas en un tablero de 8×8 y elimina filas y columnas completas.", "pt-BR": "Coloque três formas no tabuleiro 8×8 e elimine linhas e colunas completas.", fr: "Placez trois formes sur une grille 8×8 et effacez les lignes et colonnes complètes.", de: "Platziere drei Formen auf dem 8×8-Brett und lösche vollständige Reihen und Spalten.", it: "Posiziona tre forme sulla griglia 8×8 ed elimina righe e colonne complete.", ru: "Размещайте три фигуры на поле 8×8 и очищайте заполненные ряды и столбцы.", hi: "8×8 बोर्ड पर तीन आकृतियाँ रखें और पूरी पंक्तियाँ व स्तंभ साफ करें।", ar: "ضع ثلاثة أشكال على لوحة 8×8 وامسح الصفوف والأعمدة المكتملة." },
+    meta: { en: ["8×8 Board", "Three Shapes", "Line Clears"], "zh-Hant": ["8×8 棋盤", "三個形狀", "行列消除"], "zh-Hans": ["8×8 棋盘", "三个形状", "行列消除"], ja: ["8×8盤面", "3つの形", "ライン消去"], ko: ["8×8 보드", "세 가지 모양", "줄 지우기"], es: ["Tablero 8×8", "Tres formas", "Líneas completas"], "pt-BR": ["Tabuleiro 8×8", "Três formas", "Limpeza de linhas"], fr: ["Grille 8×8", "Trois formes", "Lignes effacées"], de: ["8×8-Brett", "Drei Formen", "Reihen löschen"], it: ["Griglia 8×8", "Tre forme", "Elimina linee"], ru: ["Поле 8×8", "Три фигуры", "Очистка линий"], hi: ["8×8 बोर्ड", "तीन आकृतियाँ", "लाइन साफ़ करें"], ar: ["لوحة 8×8", "ثلاثة أشكال", "مسح الخطوط"] },
+    art: { kind: "image", background: "assets/block-blast/cover.webp", hideHero: true },
+  },
+  "hexa-sort": {
+    title: { en: "Hexa Sort", "zh-Hant": "六角堆疊", "zh-Hans": "六角堆叠", ja: "ヘキサソート", ko: "헥사 소트", es: "Clasificación hexagonal", "pt-BR": "Classificação Hexa", fr: "Tri hexagonal", de: "Hexa-Sort", it: "Ordinamento esagonale", ru: "Сортировка гексов", hi: "हेक्सा सॉर्ट", ar: "فرز السداسيات" },
+    type: { en: "Hex Stack Puzzle", "zh-Hant": "六角堆疊解謎", "zh-Hans": "六角堆叠解谜", ja: "六角スタックパズル", ko: "육각 스택 퍼즐", es: "Puzle de pilas hexagonales", "pt-BR": "Quebra-cabeça de pilhas hexagonais", fr: "Puzzle de piles hexagonales", de: "Hexa-Stapelpuzzle", it: "Puzzle di pile esagonali", ru: "Головоломка с шестигранными стопками", hi: "षट्भुज स्टैक पहेली", ar: "لغز تكديس سداسي" },
+    description: { en: "Stack colored hex chips, merge matching top colors, and trigger chain clears.", "zh-Hant": "堆疊彩色六角籌碼，合併相同頂層顏色並觸發連鎖消除。", "zh-Hans": "堆叠彩色六角筹码，合并相同顶层颜色并触发连锁消除。", ja: "色付き六角チップを積み、同じ最上段の色をまとめて連鎖消去を狙います。", ko: "색깔 육각 칩을 쌓고 같은 맨 위 색을 합쳐 연쇄 제거를 일으키세요.", es: "Apila fichas hexagonales de colores, une los colores superiores iguales y activa cadenas.", "pt-BR": "Empilhe fichas hexagonais coloridas, junte cores iguais no topo e ative limpezas em cadeia.", fr: "Empilez des jetons hexagonaux colorés, fusionnez les couleurs supérieures identiques et déclenchez des chaînes.", de: "Stapele farbige Sechseckchips, verbinde gleiche obere Farben und löse Ketten aus.", it: "Impila gettoni esagonali colorati, unisci i colori superiori uguali e attiva catene.", ru: "Складывайте цветные шестигранники, объединяйте одинаковые верхние цвета и запускайте цепочки.", hi: "रंगीन षट्भुज चिप्स जमाएँ, समान ऊपरी रंग मिलाएँ और श्रृंखला सफाई शुरू करें।", ar: "كدّس القطع السداسية الملونة وادمج الألوان العلوية المتطابقة لتفعيل سلاسل المسح." },
+    meta: { en: ["30 Stages", "10-Chip Clears", "Chain Merges"], "zh-Hant": ["30 關", "10 片消除", "連鎖合併"], "zh-Hans": ["30 关", "10 片消除", "连锁合并"], ja: ["30ステージ", "10枚で消去", "連鎖合体"], ko: ["30 스테이지", "10개 제거", "연쇄 합치기"], es: ["30 niveles", "Elimina 10 fichas", "Fusiones en cadena"], "pt-BR": ["30 fases", "Limpe 10 fichas", "Fusões em cadeia"], fr: ["30 niveaux", "10 jetons à effacer", "Fusions en chaîne"], de: ["30 Level", "10 Chips löschen", "Kettenfusionen"], it: ["30 livelli", "Elimina 10 gettoni", "Fusioni a catena"], ru: ["30 уровней", "Очистка 10 фишек", "Цепные слияния"], hi: ["30 स्तर", "10 चिप साफ़ करें", "श्रृंखला विलय"], ar: ["30 مرحلة", "مسح 10 قطع", "دمج متسلسل"] },
+    art: { kind: "image", background: "assets/hexa-sort/cover.webp", hideHero: true },
+  },
+};
+
+const newPuzzlePlannedStatus = { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" };
+for (const [id, copy] of Object.entries(newPuzzlePlannedCopy)) {
+  const game = window.WONDER_LOBBY.games.find((entry) => entry.id === id);
+  if (!game) continue;
+  Object.assign(game, copy, { status: "planned", statusText: { ...newPuzzlePlannedStatus }, internalTrial: "internal-test.html?trial=1" });
+  for (const field of ["title", "statusText", "type", "description", "meta"]) {
+    Object.defineProperty(game[field], "__localizedExact", { value: true, enumerable: false });
+  }
+  delete game.previewVideo;
 }
 
 const bambooPipesPublic = window.WONDER_LOBBY.games.find((game) => game.id === "animal-bamboo-pipes");

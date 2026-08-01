@@ -4,11 +4,24 @@
   const $=selector=>document.querySelector(selector),screens=[...document.querySelectorAll(".screen")],levels=window.NUMBER_MATCH_LEVELS.levels;
   const storageKey="wp-animal-number-match-v1";
   let locale=window.WonderI18n?.actualLocale?.()||window.__WONDER_FORCED_LOCALE||read("weightPlayLocale")||read("wp-locale")||window.WonderI18n?.locale?.()||"en";if(!codes.includes(locale))locale="en";
-  let unlocked=Number(read(storageKey))||1,selected=Math.min(unlocked,30)-1,level=null,values=[],picked=null,history=[],moves=0,resultActionClaimed=false,inputLocked=false,tileFocusIndex=0;
+  let unlocked=Number(read(storageKey))||1,selected=Math.min(unlocked,30)-1,level=null,values=[],picked=null,history=[],moves=0,resultActionClaimed=false,inputLocked=false,tileFocusIndex=0,activeScene="main",sceneGeneration=0;
   function read(key){try{return localStorage.getItem(key)}catch{return null}}
   function write(key,value){try{localStorage.setItem(key,value)}catch{}}
   function t(key,vars={}){const value=window.NUMBER_MATCH_LOCALES[locale]?.[key]??window.NUMBER_MATCH_LOCALES.en[key]??key;return String(value).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??"")}
-  function show(id){if(id!=="battle"&&$("#leaveDialog").open)$("#leaveDialog").close();screens.forEach(screen=>screen.hidden=screen.id!==id);$("#generalReserve").hidden=id!=="battle";document.body.dataset.screen=id;window.scrollTo(0,0);if(id==="stage")renderStages()}
+  function show(id){
+    if(id!==activeScene){activeScene=id;sceneGeneration++}
+    if(id!=="battle"&&$("#leaveDialog").open)$("#leaveDialog").close();
+    if(id!=="battle")document.querySelectorAll("#battle .match-echo").forEach(node=>node.remove());
+    screens.forEach(screen=>{const inactive=screen.id!==id;screen.hidden=inactive;screen.classList.toggle("hidden",inactive)});
+    $("#generalReserve").hidden=id!=="battle";
+    document.body.dataset.gameView=id;document.body.dataset.screen=id;
+    for(const scene of ["main","stage","battle"])document.body.classList.toggle(`wp-shell-${scene}-active`,scene===id);
+    document.body.classList.toggle("wp-stage-select-active",id==="stage");document.documentElement.classList.toggle("wp-stage-select-active",id==="stage");
+    window.scrollTo(0,0);
+    dispatchEvent(new CustomEvent("weightplay:shell-sync",{detail:{screen:id,generation:sceneGeneration}}));
+    dispatchEvent(new CustomEvent("weightplay:stage-sync",{detail:{screen:id,generation:sceneGeneration}}));
+    if(id==="stage")renderStages()
+  }
   function selectStage(index,center=false,focus=false){
     selected=Math.max(0,Math.min(29,index));
     document.querySelectorAll("#stageGrid .stage-card").forEach((card,cardIndex)=>{
@@ -91,7 +104,7 @@
     document.querySelectorAll("#board .tile:not(.empty)").forEach(tile=>tile.tabIndex=Number(tile.dataset.index)===next?0:-1);
     document.querySelector(`#board [data-index="${next}"]`)?.focus();
   }
-  function flash(index,className){requestAnimationFrame(()=>document.querySelector(`[data-index="${index}"]`)?.classList.add(className))}
+  function flash(index,className){const generation=sceneGeneration;requestAnimationFrame(()=>{if(activeScene!=="battle"||generation!==sceneGeneration)return;document.querySelector(`#board [data-index="${index}"]`)?.classList.add(className)})}
   function showMatchEffect(matched){
     const board=$("#board");
     matched.forEach(({index,value})=>{
@@ -117,7 +130,7 @@
   function complete(){
     if(selected+2>unlocked){unlocked=Math.min(31,selected+2);write(storageKey,String(unlocked))}
     resultActionClaimed=false;["#resultStages","#retry","#next"].forEach(selector=>$(selector).disabled=false);$("#next").disabled=selected===29;
-    $("#resultBody").textContent=t("resultBody",{n:selected+1,moves});$("#next").textContent=t("next");setTimeout(()=>$("#result").showModal(),180);
+    $("#resultBody").textContent=t("resultBody",{n:selected+1,moves});$("#next").textContent=t("next");const generation=sceneGeneration;setTimeout(()=>{if(activeScene==="battle"&&generation===sceneGeneration)$("#result").showModal()},180);
   }
   function claimResultAction(action){
     if(resultActionClaimed)return;
@@ -135,7 +148,7 @@
     const next=event.detail?.actualLocale||event.detail?.locale;
     if(!codes.includes(next))return;
     locale=next;write("weightPlayLocale",locale);write("wp-locale",locale);applyLocale();
-    window.setTimeout(()=>{if(locale===next)applyLocale()},0);
+    const generation=sceneGeneration;window.setTimeout(()=>{if(locale===next&&generation===sceneGeneration)applyLocale()},0);
   });
   $("#start").onclick=()=>show("stage");$("#tutorialOpen").onclick=()=>$("#tutorialPanel").showModal();$("#tutorialStart").onclick=()=>{$("#tutorialPanel").close();show("stage")};$("#tutorialPanel").addEventListener("cancel",()=>$("#tutorialPanel").close());$("#stageGrid").addEventListener("wonder:stage-snap",event=>{const index=Number(event.detail?.index);if(Number.isInteger(index)&&index>=0)selectStage(index)});$("#stage [data-back]").onclick=()=>show("main");
   $("#battle [data-back]").onclick=()=>{
@@ -161,5 +174,5 @@
   $("#undo").onclick=()=>{const last=history.pop();if(!last)return;values[last.a]=last.va;values[last.b]=last.vb;picked=null;moves=Math.max(0,moves-1);$("#status").textContent=t("undone");renderBoard()};
   $("#hint").onclick=hint;$("#shuffle").onclick=reorder;$("#restart").onclick=()=>startLevel(selected);
   $("#resultStages").onclick=()=>claimResultAction(()=>{selected=Math.min(29,unlocked-1);show("stage")});$("#next").onclick=()=>claimResultAction(()=>startLevel(selected+1));$("#retry").onclick=()=>claimResultAction(()=>startLevel(selected));
-  applyLocale();show("main");$("#loadingPanel").classList.add("hidden");window.addEventListener("load",()=>requestAnimationFrame(()=>{const copy=document.querySelector(".wp-standard-main-copy");if(copy&&!copy.contains($("#tutorialOpen")))copy.append($("#tutorialOpen"))}));window.__NUMBER_MATCH_TEST__={matches,visiblePair,availablePair,currentSolution:()=>level?.solution?.map(pair=>pair.slice())||[]};
+  applyLocale();show("main");$("#loadingPanel").classList.add("hidden");window.__NUMBER_MATCH_TEST__={matches,visiblePair,availablePair,currentSolution:()=>level?.solution?.map(pair=>pair.slice())||[]};
 })();

@@ -82,3 +82,9 @@ body.wp-logical-battle-active.is-game-playing #battleScreen .battle-canvas[data-
   .modal.is-result .modal-choices{grid-column:1/-1;grid-row:3;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
   .modal.is-result .modal-choices button{min-height:104px;padding:12px;font-size:26px;line-height:1.15}
 }
+
+.modal-choices .item-decision{min-height:64px;display:grid;grid-template-columns:46px minmax(0,1fr);align-items:center;gap:8px;text-align:start}
+.modal-choices .item-decision img{margin:0}
+.modal-choices .item-decision span{min-width:0;display:grid;gap:3px}
+.modal-choices .item-decision strong,.modal-choices .item-decision small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.modal-choices .item-decision small{color:var(--muted);font-size:12px;font-weight:700}

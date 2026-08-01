@@ -728,9 +728,20 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
   function trapModalFocus(event){const modal=$("#modal");if(event.key==="Escape"&&modalEscapeHandler){event.preventDefault();modalEscapeHandler();return;}if(event.repeat&&(event.key==="Enter"||event.key===" ")){event.preventDefault();return;}if(event.key!=="Tab"||modal.hidden)return;const choices=[...document.querySelectorAll("#modalChoices button:not(:disabled)")].filter((button)=>button.getClientRects().length);if(!choices.length){event.preventDefault();modal.focus();return;}const first=choices[0],last=choices.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}}
   function closeModal(){const modal=$("#modal");modal.hidden=true;modal.classList.remove("is-result");modalEscapeHandler=null;modalCoveredRegions().forEach((region)=>{region.inert=false;region.removeAttribute("aria-hidden");});const previous=modalReturnFocus;modalReturnFocus=null;const canRestore=previous?.isConnected&&previous.matches?.('button:not(:disabled),a[href],select:not(:disabled),[tabindex]:not([tabindex="-1"])')&&previous.getClientRects().length;if(canRestore){previous.focus({preventScroll:true});return;}const fallback=screens.battle.hidden?$(".region-card.is-selected:not(:disabled)"):$("#fightBtn:not(:disabled)");fallback?.focus({preventScroll:true});}
   function choiceButton(label,handler,item){const button=document.createElement("button");button.type="button";button.innerHTML=item?`<img src="${itemAsset(item)}" alt="">${label}`:label;button.addEventListener("click",handler);return button;}
+  function itemChoiceButton(item,handler,prefix=""){
+    const button=choiceButton("",handler),dimensions=shapeDimensions(item,false),tagKey=`tag${item.tag[0].toUpperCase()}${item.tag.slice(1)}`;
+    const image=document.createElement("img"),copy=document.createElement("span"),name=document.createElement("strong"),details=document.createElement("small");
+    image.src=itemAsset(item);image.alt="";
+    name.textContent=`${prefix}${itemName(item)}`;
+    details.textContent=`${dimensions.width}×${dimensions.height} · ${t(tagKey)} · ${t("attack")} ${item.atk} · ${t("defense")} ${item.armor} · ${t("healing")} ${item.heal}`;
+    copy.append(name,details);button.append(image,copy);
+    button.classList.add("item-decision");
+    button.setAttribute("aria-label",`${name.textContent}. ${details.textContent}`);
+    return button;
+  }
   function openBattleReturn(){if(!run||!$("#modal").hidden)return;const resumeLiveCombat=resolving&&!combatPaused;if(resumeLiveCombat)pauseCombat();const continueExpedition=()=>{closeModal();if(resumeLiveCombat)resumeCombat();};const choices=showModal(t("leaveBattleTitle"),t("leaveBattleText"));const resume=choiceButton(t("continueBattle"),continueExpedition);const leave=choiceButton(t("confirmLeaveBattle"),()=>{closeModal();if(resolving){resetCombatLifecycle();resolving=false;}saveRun();showScreen("stage",true);});choices.append(resume,leave);modalEscapeHandler=continueExpedition;focusModalChoice(resume);}
   function addToTray(item){if(run.tray.length+run.placed.length>=12){setFeedback(t("full"));return false;}run.tray.push(item.id);progress.discoveries=[...new Set([...progress.discoveries,item.id])];saveProgress();return true;}
-  function showLoot(done){const hasRoom=run.tray.length+run.placed.length<12,reward=`${t("reward")}: +${4+run.room*2} ${t("gold")}`;const choices=showModal(t("chooseLoot"),hasRoom?reward:`${reward} · ${t("fullLoot")}`);randomItems(3).forEach((item)=>{const choice=choiceButton(itemName(item),()=>{if(!addToTray(item))return;closeModal();done();},item);choice.disabled=!hasRoom;choices.append(choice);});choices.append(choiceButton(t("leaveLoot"),()=>{closeModal();done();}));focusModalChoice(null,true);}
+  function showLoot(done){const hasRoom=run.tray.length+run.placed.length<12,reward=`${t("reward")}: +${4+run.room*2} ${t("gold")}`;const choices=showModal(t("chooseLoot"),hasRoom?reward:`${reward} · ${t("fullLoot")}`);randomItems(3).forEach((item)=>{const choice=itemChoiceButton(item,()=>{if(!addToTray(item))return;closeModal();done();});choice.disabled=!hasRoom;choices.append(choice);});choices.append(choiceButton(t("leaveLoot"),()=>{closeModal();done();}));focusModalChoice(null,true);}
   function showMerchant(){
     let stock=randomItems(3),refreshPending=false,refreshUsed=false,confirmTimer=0,confirmDueAt=0,confirmRemaining=0,confirmationListening=false;
     let onConfirmationVisibility,onConfirmationBlur,onConfirmationFocus;
@@ -782,11 +793,11 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
       const balance=diamondBalance();
       const message=refreshUsed?t("refreshUsed"):refreshPending?t("refreshDecision",{before:balance,after:balance-3}):`${t("gold")} ${run.gold} · ${t("diamonds")} ${balance}`;
       const choices=showModal(t("merchant"),message,"../../assets/animal-gearpack-expedition-orla.webp");
-      stock.forEach((item)=>choices.append(choiceButton(`${t("buy")} ${item.gold} · ${itemName(item)}`,()=>{
+      stock.forEach((item)=>choices.append(itemChoiceButton(item,()=>{
         clearConfirmation();
         if(run.gold<item.gold){$("#modalText").textContent=t("notEnough");return;}
         if(addToTray(item)){run.gold-=item.gold;saveRun();stock=randomItems(3);render();}
-      },item)));
+      },`${t("buy")} ${item.gold} · `)));
       const refresh=choiceButton(refreshUsed?t("refreshUsed"):refreshPending?t("refreshConfirm",{before:balance,after:balance-3}):t("refresh"),()=>{
         if(refreshUsed)return;
         const current=diamondBalance();
