@@ -632,7 +632,14 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
   }
   function settleStageRailSelection(){
     if(document.body.dataset.screen!=="stage")return;
-    const rail=$("#regionRail"),center=rail.getBoundingClientRect().left+rail.clientWidth/2,cards=[...rail.querySelectorAll(".region-card")];
+    const rail=$("#regionRail"),cards=[...rail.querySelectorAll(".region-card")];
+    const keyboardCard=railKeyboardOwner===null?null:rail.querySelector(`.region-card[data-stage="${railKeyboardOwner}"]`);
+    if(keyboardCard&&document.activeElement===keyboardCard){
+      setCenteredStageCard(keyboardCard);
+      cards.forEach((node)=>{node.tabIndex=node===keyboardCard?0:-1;});
+      return;
+    }
+    const center=rail.getBoundingClientRect().left+rail.clientWidth/2;
     const nearest=cards.reduce((best,card)=>{
       const rect=card.getBoundingClientRect(),distance=Math.abs(rect.left+rect.width/2-center);
       return !best||distance<best.distance?{card,distance}:best;
@@ -653,7 +660,7 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
     const next=Math.max(0,Math.min(STAGE_COUNT-1,Number(index)||0));
     const card=$(`.region-card[data-stage="${next}"]`);
     if(!card)return;
-    centeredStage=next;
+    railKeyboardOwner=next;centeredStage=next;
     setCenteredStageCard(card);
     card.parentElement?.querySelectorAll(".region-card").forEach((node)=>{node.tabIndex=node===card?0:-1;});
     card.scrollIntoView({behavior:"auto",inline:"center",block:"nearest"});
@@ -865,7 +872,7 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
   $("#soundBtn").addEventListener("keydown",(event)=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});
   $("#soundBtn").addEventListener("click",()=>{window.WonderSound?.unlock?.();window.WonderSound?.setMuted?.(!window.WonderSound?.isMuted?.());syncSoundButton();});
   $("#localeSelect").addEventListener("change",(event)=>applyLocale(event.target.value));$("#startBtn").addEventListener("click",()=>showScreen("stage",true));$("#stageBackBtn").addEventListener("click",()=>showScreen("main",true));$("#battleBackBtn").addEventListener("click",()=>{if(resolving&&!combatPaused)return;if(combatPaused){resetCombatLifecycle();resolving=false;}saveRun();showScreen("stage",true)});$("#pauseBtn").addEventListener("keydown",(event)=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("#pauseBtn").addEventListener("click",()=>{if(!resolving){setFeedback(localized(stages[run?.stage??selectedStage].rule));return;}if(combatPaused)resumeCombat();else pauseCombat();});$("#rotateBtn").addEventListener("click",()=>{if(resolving||!selectedItem)return;rotated=!rotated;setItemFeedback(itemById(selectedItem));renderBattle();});$("#sellBtn").addEventListener("click",sellSelected);$("#fightBtn").addEventListener("click",fight);
-let railSettleTimer=0;$("#regionRail").addEventListener("scroll",()=>{clearTimeout(railSettleTimer);railSettleTimer=setTimeout(()=>{railSettleTimer=0;settleStageRailSelection();},100);},{passive:true});
+let railSettleTimer=0,railKeyboardOwner=null;const releaseStageKeyboardOwner=()=>{railKeyboardOwner=null;};$("#regionRail").addEventListener("pointerdown",releaseStageKeyboardOwner,{passive:true});$("#regionRail").addEventListener("wheel",releaseStageKeyboardOwner,{passive:true});$("#regionRail").addEventListener("scroll",()=>{clearTimeout(railSettleTimer);railSettleTimer=setTimeout(()=>{railSettleTimer=0;settleStageRailSelection();},100);},{passive:true});
   $("#regionRail").addEventListener("wonder:stage-snap",settleStageRailSelection);
   addEventListener("resize",()=>requestAnimationFrame(recenterStageSelection));
   if(new URLSearchParams(location.search).has("smoke"))window.__gearpackSmoke={stageCount:STAGE_COUNT,stages:stages.map((definition,index)=>({stage:index+1,region:Math.floor(index/5)+1,name:definition.name[0],rule:definition.rule[0],enemies:[...definition.enemies],checkpoint:(index+1)%5===0})),localeAudit(localeCode){const dictionary={...(copy[localeCode]||{}),...(runtimeCopySupplements[localeCode]||{})},hasOwnedKey=(key)=>Object.prototype.hasOwnProperty.call(dictionary,key),owned=(value)=>translateForLocale(value,localeCode);return {copyMissing:Object.keys(copy.en).filter((key)=>!hasOwnedKey(key)&&owned(copy.en[key])===copy.en[key]),copyEqualEnglish:Object.keys(copy.en).filter((key)=>!hasOwnedKey(key)&&owned(copy.en[key])===copy.en[key]),itemsMissing:items.filter((item)=>(item.name[localeCode]||owned(item.name.en))===item.name.en).map((item)=>item.id),regionsMissing:regions.flatMap((region,index)=>(region.name[localeCode]||owned(region.name[0]))===region.name[0]?[index+1]:[]),stagesMissing:stages.flatMap((definition,index)=>(definition.name[localeCode]||owned(definition.name[0]))===definition.name[0]||(definition.rule[localeCode]||owned(definition.rule[0]))===definition.rule[0]?[index+1]:[]),enemiesMissing:Object.entries(enemyCatalog).filter(([,enemy])=>(enemy.name[localeCode]||owned(enemy.name[0]))===enemy.name[0]).map(([id])=>id)};},unlockAll(){progress.unlockedStage=STAGE_COUNT;progress.selectedStage=STAGE_COUNT-1;selectedStage=STAGE_COUNT-1;centeredStage=selectedStage;saveProgress();showScreen("stage");return progress;},openStageForTest(stage=1){progress.unlockedStage=Math.max(progress.unlockedStage,Math.min(STAGE_COUNT,stage));saveProgress();newRun(Math.max(0,Math.min(STAGE_COUNT-1,stage-1)));return {stage:run.stage+1,enemy:enemyAt(0,run.stage).id};},openEncounterForTest(stage=30,room=5){this.openStageForTest(stage);run.room=Math.max(0,Math.min(ROOMS_PER_STAGE-1,room-1));prepareEnemyState(enemyAt(run.room,run.stage));renderBattle();return {stage:run.stage+1,room:run.room+1,enemy:enemyAt(run.room,run.stage).id};},mechanicPreview(stage=30,room=5){const enemy=enemyAt(room-1,stage-1);return {id:enemy.id,shield:enemy.shield||0,openingHit:enemy.openingHit||0,isolation:enemy.isolation||0,corrosion:enemy.corrosion||0,rowHeat:enemy.rowHeat||0,overload:Boolean(enemy.overload),rotatingSeal:Boolean(enemy.rotatingSeal),phase:enemy.phase||null};},finishRegionForTest(){if(!run)newRun(0);run.room=4;showResult(true);},finishStageForTest(stage=1){if(!run||run.stage!==stage-1)newRun(stage-1);run.room=4;showResult(true);},failStageForTest(stage=1){if(!run||run.stage!==stage-1)newRun(stage-1);showResult(false);},openMerchantForTest(){if(!run)newRun(0);showMerchant();},openFullLootForTest(){if(!run)newRun(0);run.tray=Array.from({length:12},(_,index)=>items[index%6].id);run.placed=[];selectedItem=run.tray[0];selectedTrayIndex=0;showLoot(()=>{run.room=1;prepareEnemyState(enemyAt(run.room,run.stage));saveRun();setFeedback(t("repack"));renderBattle();});}};

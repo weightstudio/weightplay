@@ -60,12 +60,7 @@ window.WONDER_LOBBY = {
         de: "Tierische Jahrmarkt-Kralle", it: "Artiglio del Carnevale Animale",
         ru: "Карнавальный зверо-кран", hi: "एनिमल कार्निवल क्लॉ", ar: "مخلب كرنفال الحيوانات",
       },
-      status: "planned",
-      statusText: {
-        en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開",
-        ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible",
-        de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا",
-      },
+      status: "playable",
       type: {
         en: "Skill Claw Arcade", "zh-Hant": "技巧抓寶街機", "zh-Hans": "技巧抓宝街机",
         ja: "スキルクローアーケード", ko: "스킬 집게 아케이드", es: "Arcade de garra de habilidad",
@@ -77,7 +72,7 @@ window.WONDER_LOBBY = {
       skills: ["Timing", "Focus", "Hand-eye Coordination"],
       ages: ["family", "general"],
       href: "games/animal-carnival-claw/",
-      internalTrial: "index.html?trial=1",
+      previewVideo: "assets/previews/animal-carnival-claw-battle.webm",
       description: {
         en: "Aim, time and stabilize a fair skill claw to retrieve target charms across 30 original carnival missions.",
         "zh-Hant": "在 30 個原創嘉年華任務中瞄準、抓準時機並穩定公平技巧爪，取回指定收藏物。",
@@ -268,7 +263,7 @@ window.WONDER_LOBBY = {
       type: { en: "Sliding Block Puzzle", "zh-Hant": "滑塊益智", "zh-Hans": "滑块益智", ja: "スライドパズル", ko: "슬라이딩 퍼즐", es: "Puzle de bloques", "pt-BR": "Puzzle de blocos", fr: "Puzzle de blocs", de: "Schiebepuzzle", it: "Puzzle a scorrimento", ru: "Пятнашки", hi: "स्लाइडिंग पहेली", ar: "لغز الكتل المنزلقة" },
       categories: ["Animal Games", "Puzzle", "Strategy"], skills: ["Planning", "Spatial Reasoning"], ages: ["9", "family"], href: "games/animal-unblock/",
       previewVideo: "assets/previews/animal-unblock-battle.webm",
-      art: { kind: "image", background: "assets/arrow-escape/cover.webp", hideHero: true },
+      art: { kind: "image", background: "assets/animal-unblock-cover-v2.webp", hideHero: true },
       description: { en: "Slide the blocks and guide Panko out through the gate across 30 trails, with thousands of deterministic layouts.", "zh-Hant": "滑動木塊讓 Panko 從出口離開，挑戰 30 個關卡與數千種布局。", "zh-Hans": "滑动木块让 Panko 从出口离开，挑战 30 个关卡与数千种布局。", ja: "ブロックを動かしてPankoを出口へ。30ステージと数千の配置。", ko: "블록을 움직여 Panko를 출구로 보내세요. 30개 스테이지와 수천 가지 배치.", es: "Mueve los bloques y guía a Panko a la salida en 30 rutas.", "pt-BR": "Mova os blocos e leve Panko à saída em 30 trilhas.", fr: "Faites glisser les blocs et guidez Panko vers la sortie.", de: "Schiebe Blöcke und führe Panko zum Ausgang.", it: "Sposta i blocchi e guida Panko all'uscita.", ru: "Двигай блоки и выведи Панко к выходу.", hi: "ब्लॉक खिसकाकर पांको को निकास तक पहुंचाएं।", ar: "حرّك الكتل وأوصل بانكو إلى المخرج." },
       meta: { en: ["30 trails", "6×6 board", "Thousands of layouts"], "zh-Hant": ["30 關", "6×6 棋盤", "數千布局"], "zh-Hans": ["30 关", "6×6 棋盘", "数千布局"], ja: ["30ステージ", "6×6盤面", "数千の配置"], ko: ["30 스테이지", "6×6 보드", "수천 가지 배치"], es: ["30 rutas", "Tablero 6×6", "Miles de diseños"], "pt-BR": ["30 trilhas", "Tabuleiro 6×6", "Milhares de layouts"], fr: ["30 pistes", "Plateau 6×6", "Milliers de configurations"], de: ["30 Pfade", "6×6-Brett", "Tausende Layouts"], it: ["30 percorsi", "Tavola 6×6", "Migliaia di layout"], ru: ["30 трасс", "Поле 6×6", "Тысячи раскладок"], hi: ["30 ट्रेल", "6×6 बोर्ड", "हजारों लेआउट"], ar: ["30 مسارًا", "لوحة 6×6", "آلاف التخطيطات"] }
     },
@@ -293,7 +288,7 @@ window.WONDER_LOBBY = {
       categories: ["Puzzle", "Strategy", "Family"], skills: ["Planning", "Spatial Reasoning"], ages: ["9", "family"], href: "games/arrow-escape/", internalTrial: "internal-test.html?trial=1",
       description: { en: "Clear arrow blocks in the right order across 30 escape puzzles.", "zh-Hant": "依正確順序移除箭頭方塊，完成 30 個逃亡謎題。", "zh-Hans": "按正确顺序移除箭头方块，完成 30 个逃亡谜题。" },
       meta: { en: ["30 Stages", "Order Logic", "No Timer"], "zh-Hant": ["30 關", "順序邏輯", "無計時"] },
-      art: { kind: "image", background: "assets/animal-unblock-cover-v2.webp", hideHero: true },
+      art: { kind: "image", background: "assets/arrow-escape/cover.webp", hideHero: true },
     },
     {
       id: "block-blast",

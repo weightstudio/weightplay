@@ -88,3 +88,21 @@ body.wp-logical-battle-active.is-game-playing #battleScreen .battle-canvas[data-
 .modal-choices .item-decision span{min-width:0;display:grid;gap:3px}
 .modal-choices .item-decision strong,.modal-choices .item-decision small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .modal-choices .item-decision small{color:var(--muted);font-size:12px;font-weight:700}
+
+/* Short landscape keeps packing decisions physically operable and readable. */
+@media(max-height:460px) and (orientation:landscape){
+  :root{--cell:48px}
+  .pack-panel{grid-template-rows:56px minmax(0,1fr) 104px}
+  .pack-heading,.objective-row,.feedback-row,body[data-screen="battle"] .feedback-row.is-item-details span{font-size:34px;line-height:1}
+  body[data-screen="battle"] .feedback-row.is-item-details{height:104px}
+  .pack-grid{width:552px;height:356px;grid-template-columns:repeat(11,48px)!important;grid-template-rows:repeat(7,48px)!important}
+  .item-tray{min-height:104px}
+  .tray-item{flex-basis:160px;height:104px;grid-template-rows:68px 34px;font-size:34px}
+  .tray-item img{width:68px;height:68px}
+  .tray-item span{line-height:34px}
+  body[data-screen="battle"] #battleScreen .battle-canvas>.battle-actions{grid-template-columns:260px 260px minmax(0,1fr)!important}
+  .battle-actions button{min-width:0;min-height:104px;font-size:34px;overflow:hidden}
+  .battle-actions button:not(.primary){padding-inline:12px}
+  .battle-actions button:not(.primary) span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .battle-actions img{width:52px!important;height:52px!important}
+}

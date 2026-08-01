@@ -19,6 +19,8 @@ const images={
 const defaultSave=()=>({unlocked:1,medals:Array(30).fill(0),cabinet:Array(8).fill(false),bolts:0,upgrades:{grip:0,stability:0,rail:0},tutorial:false});
 let save=loadSave();
 let run=null,pointerId=null;
+const STAGE_CARD_POOL_SIZE=7;
+let stageWindowStart=0,stageCardPool=[];
 const chapters=[
   {name:"chapter1",rule:"rule1",obstacle:"none"},
   {name:"chapter2",rule:"rule2",obstacle:"bumper"},
@@ -87,32 +89,68 @@ function setStagePanel(name){
   for(const key of ["stages","cabinet","workshop"]){const button=$(`${key}Tab`);button.classList.toggle("active",key===name);if(key===name)button.setAttribute("aria-current","page");else button.removeAttribute("aria-current")}
   if(name==="cabinet")renderCabinet();if(name==="workshop")renderWorkshop();
 }
+function stageWindowLimit(){return Math.max(0,levels.length-STAGE_CARD_POOL_SIZE)}
+function desiredStageWindow(index){return clamp(index-Math.floor(STAGE_CARD_POOL_SIZE/2),0,stageWindowLimit())}
+function createStageCard(){
+  const button=document.createElement("button"),image=document.createElement("img"),body=document.createElement("span"),title=document.createElement("strong"),status=document.createElement("small");
+  button.type="button";button.className="stage-card";image.src="../../assets/animal-carnival-claw-cover.webp";image.alt="";
+  body.append(title,status);button.append(image,body);
+  button.addEventListener("click",()=>{const index=Number(button.dataset.stageIndex);if(Number.isInteger(index))selectStage(index,true)});
+  return button;
+}
+function bindStageCard(button,index){
+  const level=levels[index],unlocked=index<save.unlocked,status=unlocked?(save.medals[index]?t("cleared",{medal:medalText(save.medals[index])}):t("ready")):t("locked");
+  button.dataset.stageIndex=index;button.setAttribute("aria-posinset",String(index+1));button.setAttribute("aria-setsize",String(levels.length));button.setAttribute("aria-disabled",String(!unlocked));
+  button.classList.toggle("locked",!unlocked);
+  button.querySelector("strong").textContent=t("mission",{n:index+1});
+  button.querySelector("small").textContent=`${t(chapters[level.chapter].name)} · ${status}`;
+}
+function syncStageCards(){
+  stageCardPool.forEach(button=>{
+    const index=Number(button.dataset.stageIndex),isSelected=index===selected;
+    bindStageCard(button,index);button.tabIndex=isSelected?0:-1;button.classList.toggle("is-centered",isSelected);button.classList.toggle("wp-stage-centered",isSelected);
+    if(isSelected&&index<save.unlocked)button.dataset.wpStageRecommended="true";else delete button.dataset.wpStageRecommended;
+  });
+}
+function buildStageCardPool(){
+  const rail=$("stageRail"),count=Math.min(STAGE_CARD_POOL_SIZE,levels.length);
+  rail.innerHTML="";stageWindowStart=desiredStageWindow(selected);stageCardPool=Array.from({length:count},(_,offset)=>{
+    const button=createStageCard();bindStageCard(button,stageWindowStart+offset);rail.append(button);return button;
+  });
+  rail.dataset.wpStageVirtualized="bounded-recycle";rail.dataset.wpStagePoolSize=String(count);rail.dataset.wpStageTotal=String(levels.length);
+}
+function moveStageWindow(targetStart){
+  const rail=$("stageRail"),target=clamp(targetStart,0,stageWindowLimit());
+  if(!stageCardPool.length){buildStageCardPool();return}
+  const anchor=rail.querySelector(`[data-stage-index="${selected}"]`),before=anchor?.getBoundingClientRect().left;
+  while(stageWindowStart<target){const recycled=rail.firstElementChild;stageWindowStart++;rail.append(recycled);bindStageCard(recycled,stageWindowStart+stageCardPool.length-1)}
+  while(stageWindowStart>target){const recycled=rail.lastElementChild;stageWindowStart--;rail.prepend(recycled);bindStageCard(recycled,stageWindowStart)}
+  stageCardPool=[...rail.children];rail.dataset.wpStageWindowStart=String(stageWindowStart);rail.dataset.wpStageWindowEnd=String(stageWindowStart+stageCardPool.length-1);
+  if(anchor&&Number.isFinite(before)){const after=anchor.getBoundingClientRect().left;if(Number.isFinite(after))rail.scrollLeft+=after-before}
+}
+function ensureStageWindow(index){
+  if(!stageCardPool.length)buildStageCardPool();
+  moveStageWindow(desiredStageWindow(index));syncStageCards();
+}
 function renderStage(){
   const cleared=save.medals.filter(Boolean).length;
   $("stageSummary").textContent=t("stageSummary",{cleared,bolts:save.bolts});
   const chapter=chapters[Math.floor(selected/5)];
   $("chapterKicker").textContent=t("mission",{n:selected+1});
   $("chapterTitle").textContent=t(chapter.name);$("chapterRule").textContent=t(chapter.rule);
-  const rail=$("stageRail");rail.innerHTML="";
-  levels.forEach((level,index)=>{
-    const unlocked=index<save.unlocked,button=document.createElement("button");
-    button.type="button";button.className=`stage-card${unlocked?"":" locked"}`;button.dataset.stageIndex=index;button.setAttribute("aria-disabled",String(!unlocked));button.tabIndex=index===selected?0:-1;
-    const status=unlocked?(save.medals[index]?t("cleared",{medal:medalText(save.medals[index])}):t("ready")):t("locked");
-    button.innerHTML=`<img src="../../assets/animal-carnival-claw-cover.webp" alt=""><span><strong>${t("mission",{n:index+1})}</strong><small>${t(chapters[level.chapter].name)} · ${status}</small></span>`;
-    button.addEventListener("click",()=>selectStage(index,true));rail.append(button);
-  });
+  ensureStageWindow(selected);
   $("enterBtn").disabled=selected>=save.unlocked;
   renderCabinet();renderWorkshop();
 }
 function selectStage(index,center){
   selected=clamp(index,0,29);
-  $$(".stage-card").forEach((card,i)=>{card.tabIndex=i===selected?0:-1;card.classList.toggle("is-centered",i===selected);card.classList.toggle("wp-stage-centered",i===selected)});
+  ensureStageWindow(selected);
   const chapter=chapters[Math.floor(selected/5)];
   $("chapterKicker").textContent=t("mission",{n:selected+1});$("chapterTitle").textContent=t(chapter.name);$("chapterRule").textContent=t(chapter.rule);
   $("enterBtn").disabled=selected>=save.unlocked;
   if(center)centerSelected();
 }
-function centerSelected(smooth=true){const card=$(`stageRail`).querySelector(`[data-stage-index="${selected}"]`);card?.scrollIntoView({behavior:smooth?"smooth":"instant",block:"nearest",inline:"center"});selectStage(selected,false)}
+function centerSelected(smooth=true){ensureStageWindow(selected);const card=$(`stageRail`).querySelector(`[data-stage-index="${selected}"]`);card?.scrollIntoView({behavior:smooth?"smooth":"auto",block:"nearest",inline:"center"});selectStage(selected,false)}
 function renderCabinet(){
   $("cabinetSummary").textContent=t("progress",{cleared:save.medals.filter(Boolean).length,charms:save.cabinet.filter(Boolean).length});
   $("cabinetGrid").innerHTML=Array.from({length:8},(_,kind)=>{
@@ -414,7 +452,7 @@ function init(){
   Promise.all(Object.values(images).map(image=>image.decode?.().catch(()=>{})||Promise.resolve())).finally(()=>setTimeout(()=>{$("loadingPanel").hidden=true;show("main")},350));
 }
 window.__CARNIVAL_CLAW_TEST__={
-  levels,startMission,beginDrop,step(seconds){for(let time=0;time<seconds&&!run?.result;time+=.02)update(.02);draw();return this.snapshot()},
+  levels,startMission,beginDrop,selectStage(index,center=false){selectStage(index,center);return this.stageWindow()},stageWindow(){const rail=$("stageRail");return{selected,start:Number(rail.dataset.wpStageWindowStart),end:Number(rail.dataset.wpStageWindowEnd),pool:Number(rail.dataset.wpStagePoolSize),total:Number(rail.dataset.wpStageTotal),indexes:[...rail.children].map(card=>Number(card.dataset.stageIndex))}},step(seconds){for(let time=0;time<seconds&&!run?.result;time+=.02)update(.02);draw();return this.snapshot()},
   stepResolvedWall(milliseconds){if(!run||!resolvedAutoplayPhase())return this.snapshot();if(!resolvedWallAnchor)resolvedWallAnchor=performance.now()-run.phaseTime*1000;const wallTime=resolvedWallAnchor+milliseconds;update(.04,wallTime);update(.04,wallTime);draw();return this.snapshot()},
   finishResult(won=true){if(!run)startMission(selected);finish(Boolean(won));return this.snapshot()},
   prepareLift(kind,phaseTime=.2){
