@@ -19,7 +19,7 @@ const images={
 const defaultSave=()=>({unlocked:1,medals:Array(30).fill(0),cabinet:Array(8).fill(false),bolts:0,upgrades:{grip:0,stability:0,rail:0},tutorial:false});
 let save=loadSave();
 let run=null,pointerId=null;
-const STAGE_CARD_POOL_SIZE=7;
+const STAGE_CARD_POOL_SIZE=9;
 let stageWindowStart=0,stageCardPool=[];
 const chapters=[
   {name:"chapter1",rule:"rule1",obstacle:"none"},
@@ -131,6 +131,42 @@ function moveStageWindow(targetStart){
 function ensureStageWindow(index){
   if(!stageCardPool.length)buildStageCardPool();
   moveStageWindow(desiredStageWindow(index));syncStageCards();
+}
+function nearestStageCard(){
+  const rail=$("stageRail"),railRect=rail.getBoundingClientRect(),center=railRect.left+railRect.width/2;
+  return stageCardPool.reduce((nearest,card)=>{const rect=card.getBoundingClientRect(),distance=Math.abs(rect.left+rect.width/2-center);return!nearest||distance<nearest.distance?{card,distance}:nearest},null)?.card||null;
+}
+function installVirtualStageDrag(){
+  const rail=$("stageRail");if(!rail||rail.dataset.wpStageVirtualDrag==="true")return;
+  rail.dataset.wpStageVirtualDrag="true";
+  let pointerId=null,startX=0,startScroll=0,moved=false,suppressClick=false,previousBehavior="",previousSnap="";
+  rail.addEventListener("pointerdown",event=>{
+    if(event.isPrimary===false||(event.button!==undefined&&event.button!==0))return;
+    pointerId=event.pointerId;startX=event.clientX;startScroll=rail.scrollLeft;moved=false;
+    previousBehavior=rail.style.getPropertyValue("scroll-behavior");previousSnap=rail.style.getPropertyValue("scroll-snap-type");
+    rail.style.setProperty("scroll-behavior","auto","important");rail.style.setProperty("scroll-snap-type","none","important");rail.dataset.wpDragDown="1";
+    event.stopImmediatePropagation();
+  },true);
+  document.addEventListener("pointermove",event=>{
+    if(event.pointerId!==pointerId)return;
+    const delta=event.clientX-startX;if(!moved&&Math.abs(delta)>4){moved=true;rail.classList.add("wp-stage-dragging")}
+    if(moved){const rect=rail.getBoundingClientRect(),scale=rect.width?rail.clientWidth/rect.width:1;if(event.cancelable)event.preventDefault();rail.scrollLeft=startScroll-delta*scale}
+    event.stopImmediatePropagation();
+  },true);
+  const finish=event=>{
+    if(pointerId===null||(event.pointerId!==undefined&&event.pointerId!==pointerId))return;
+    pointerId=null;rail.dataset.wpDragDown="0";rail.classList.remove("wp-stage-dragging");
+    if(previousBehavior)rail.style.setProperty("scroll-behavior",previousBehavior);else rail.style.removeProperty("scroll-behavior");
+    if(previousSnap)rail.style.setProperty("scroll-snap-type",previousSnap);else rail.style.removeProperty("scroll-snap-type");
+    if(moved){
+      if(event.cancelable)event.preventDefault();const card=nearestStageCard(),index=Number(card?.dataset.stageIndex);
+      if(Number.isInteger(index)){selectStage(index,false);requestAnimationFrame(()=>centerSelected(true))}
+      suppressClick=true;setTimeout(()=>{suppressClick=false},0);
+    }
+    moved=false;event.stopImmediatePropagation();
+  };
+  document.addEventListener("pointerup",finish,true);document.addEventListener("pointercancel",finish,true);
+  rail.addEventListener("click",event=>{if(!suppressClick)return;suppressClick=false;event.preventDefault();event.stopImmediatePropagation()},true);
 }
 function renderStage(){
   const cleared=save.medals.filter(Boolean).length;
@@ -481,5 +517,6 @@ window.__CARNIVAL_CLAW_TEST__={
   solve(){for(const kind of [...remainingTargets()])this.perfectDrop(kind);this.step(1);return this.snapshot()},
   snapshot(){return run?JSON.parse(JSON.stringify({screen,run,save})):null},setSave(value){save={...defaultSave(),...value,upgrades:{...defaultSave().upgrades,...(value.upgrades||{})}};persist();renderMain();renderStage()},getSave(){return JSON.parse(JSON.stringify(save))},getLocale(){return locale},setLocale,show
 };
+installVirtualStageDrag();
 document.addEventListener("DOMContentLoaded",init);
 })();
