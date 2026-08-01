@@ -1675,6 +1675,20 @@
     updateProfile();
   }
 
+  function restoreStageReturnOwnership() {
+    if (state.screen !== "stages" && state.screen !== "tech") return;
+    const stageHeader = nodes.stagePanel?.querySelector(
+      ".wp-stage-shell-header,.wp-generated-stage-header",
+    );
+    if (!stageHeader || !nodes.stageBackBtn) return;
+    if (nodes.stageBackBtn.parentElement !== stageHeader) {
+      stageHeader.prepend(nodes.stageBackBtn);
+    }
+    nodes.stageBackBtn.hidden = false;
+    nodes.stageBackBtn.classList.remove("hidden", "is-hidden", "wp-shell-legacy-control");
+    nodes.stageBackBtn.removeAttribute("aria-hidden");
+  }
+
   function setScreen(screen) {
     if (screen !== "game") cancelCanvasPress();
     if (screen !== "result") clearRewardRerollConfirmation();
@@ -1697,6 +1711,9 @@
     if (stageActive) {
       nodes.stagePanel.classList.remove("is-hidden");
       setStagePage(screen === "tech" ? "equipment" : "stages");
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(restoreStageReturnOwnership);
+      });
     }
     if (screen === "game") nodes.gamePanel.classList.remove("is-hidden");
     if (resultActive) {
