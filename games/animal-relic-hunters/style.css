@@ -9,6 +9,87 @@
   --color-armor: #06b6d4;
   --color-boots: #10b981;
 }
+
+/* Interface V5 Main ownership: one centred 920px envelope, a square poster,
+   a dedicated copy column, and a full-width primary action. The permanent
+   growth panel follows the hero composition in document flow instead of
+   shrinking the copy into a third desktop column. */
+#menuPanel.menu-panel {
+  max-width: 920px;
+}
+
+#menuPanel .menu-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+}
+
+#menuPanel .menu-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+
+#menuPanel .menu-copy {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+}
+
+#menuPanel .menu-cover-box {
+  width: min(100%, 420px);
+  aspect-ratio: 1;
+}
+
+#menuPanel .menu-cover-box .cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#menuPanel .start-btn {
+  width: 100%;
+  min-height: 52px;
+  padding-inline: 24px;
+}
+
+@media (min-width: 760px) {
+  #menuPanel .menu-main {
+    display: grid;
+    grid-template-columns: 320px minmax(0, 1fr);
+    grid-auto-rows: max-content;
+    align-items: start;
+    gap: 0 24px;
+    text-align: left;
+  }
+
+  #menuPanel .menu-cover-box {
+    grid-column: 1;
+    grid-row: 1 / span 6;
+    width: 320px;
+    margin: 0;
+  }
+
+  #menuPanel .menu-copy {
+    grid-column: 2;
+  }
+
+  #menuPanel .goals-card {
+    margin-bottom: 18px;
+  }
+}
+
+@media (min-width: 1000px) {
+  #menuPanel .menu-main {
+    grid-template-columns: 420px minmax(0, 1fr);
+  }
+
+  #menuPanel .menu-cover-box {
+    width: 420px;
+  }
+}
 /* Interface v4 foundation: one Stage workspace, fixed three-track bottom
    navigation, and three stable Result actions. */
 body.relic-stage-select .stage-panel {

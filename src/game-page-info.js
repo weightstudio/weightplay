@@ -1084,6 +1084,7 @@
       guideTitleSuffix: "Game Guide",
       noteTitle: "Player and Save Information",
       hideScoreBands: true,
+      hideSkillsFact: true,
       intro:
         "Animal Rune Tactics is a 30-mission turn-based campaign played on a three-by-four rune board. The Lion Guardian, Owl Mage and Turtle Shield each take one action before the enemy turn: move, attack, guard or spend Energy on a distinct Skill. Six five-mission chapters introduce blocked routes, snares, currents, fire, rotating runes and seals, together with enemies that counter, push, silence, mark, drain Energy or create clones. Missions 5, 10, 15, 20, 25 and 30 end with six different phased Bosses. Mission unlocks, hero training and Rune Rewards are saved in this browser.",
       story: [
@@ -1127,7 +1128,7 @@
       designNote:
         "The board stays three cells wide and four cells tall so every phone decision remains visible without panning. Depth comes from one-action turns: moving to solve a current hazard means giving up that hero's attack, while guarding can be stronger than chasing damage. Six five-mission chapters introduce one vocabulary at a time and then ask the chapter Boss to recombine it. HP rises only once every eight missions and Attack only once every twelve; later pressure therefore comes mainly from terrain, target order, action denial and phase changes. Pointer, touch and a roving arrow-key grid all operate the same logical cells. Unlike Animal Auto Squad's pre-battle formation or Animal Relic Hunters' live movement, Rune Tactics pauses after every decision so the board state itself is the puzzle.",
       parent:
-        "Squad Level, XP, Runes, best mission, unlocked mission, hero levels, Training Slot, saved attack, health and Energy bonuses, and Revive Tokens are stored locally in this browser. No login is required for basic play. Clearing site storage or using another browser may create a separate save. Diamonds are optional platform currency used only for a reward reroll or the confirmed Training Slot; all 30 missions, seven terrain systems, special enemies and six Bosses remain playable without them. Skill Reports describe the completed play session and are not a formal ability test.",
+        "Squad Level, XP, Runes, best mission, unlocked mission, hero levels, Training Slot, saved attack, health and Energy bonuses, and Revive Tokens are stored locally in this browser. No login is required for basic play. Clearing site storage or using another browser may create a separate save. Diamonds are optional platform currency used only for a reward reroll or the confirmed Training Slot; all 30 missions, seven terrain systems, special enemies and six Bosses remain playable without them.",
       faq: [
         ["Is Animal Rune Tactics free?", "Yes. All 30 missions, special enemies, terrain rules, permanent Rune growth and six Bosses are playable in the browser without payment."],
         ["How many missions and Bosses are there?", "There are 30 authored missions. Missions 5, 10, 15, 20, 25 and 30 use six different Bosses with separate artwork, behavior and two health phases."],
@@ -2061,7 +2062,7 @@
           "任務 26-30 加入分身、吸能與相連封印，王冠連戰重組五章規則；符冠奇美拉在兩個可見門檻改變地形並召喚鏡影，形成最終目標順序考驗。"
         ],
         designNote: "棋盤固定為三格寬、四格高，讓手機不需平移就能看清每個決策。深度來自每名英雄每回合只有一個動作：為了離開危險而移動，就代表放棄該英雄這次攻擊；有時防守也比追求傷害更好。六個五關章節一次教一套規則，再由章末首領重新組合。敵方生命只每八關增加一次、攻擊只每十二關增加一次，後期壓力主要來自地形、目標順序、行動限制與階段變化。觸控、滑鼠與方向鍵焦點都操作相同邏輯格；它與《自走小隊》的戰前配置或《動物遺物獵人》的即時移動不同，每一步都停下來讓棋盤本身成為題目。",
-        parent: "小隊等級、經驗、符文、最佳與已解鎖任務、英雄等級、訓練格、永久攻擊／生命／能量加成與復活代幣都保存在目前瀏覽器。基本遊玩不需要登入；清除網站資料或換瀏覽器可能會建立另一份存檔。鑽石只用於選擇性獎勵重抽或確認訓練格，30 任務、七種地形、特殊敵人與六位首領都不需要鑽石。技能報告只描述本次遊玩，不是正式能力測驗。",
+        parent: "小隊等級、經驗、符文、最佳與已解鎖任務、英雄等級、訓練格、永久攻擊／生命／能量加成與復活代幣都保存在目前瀏覽器。基本遊玩不需要登入；清除網站資料或換瀏覽器可能會建立另一份存檔。鑽石只用於選擇性獎勵重抽或確認訓練格，30 任務、七種地形、特殊敵人與六位首領都不需要鑽石。",
         faq: [
           ["動物符文戰棋可以免費玩嗎？", "可以。30 個任務、特殊敵人、地形、永久符文成長與六位首領都能直接在瀏覽器遊玩。"],
           ["共有多少任務與首領？", "共有 30 個設計任務；第 5、10、15、20、25、30 任務有六位不同圖像、行為與兩階段機制的首領。"],
@@ -5983,7 +5984,7 @@
       "任务 26-30 加入分身、吸能与相连封印，王冠连战重组五章规则；符冠奇美拉在两个可见门槛改变地形并召唤镜影，形成最终目标顺序考验。"
     ],
     "designNote": "棋盘固定为三格宽、四格高，让手机不需平移就能看清每个决策。深度来自每名英雄每回合只有一个动作：为了离开危险而移动，就代表放弃该英雄这次攻击；有时防守也比追求伤害更好。六个五关章节一次教一套规则，再由章末首领重新组合。敌方生命只每八关增加一次、攻击只每十二关增加一次，后期压力主要来自地形、目标顺序、行动限制与阶段变化。触控、滑鼠与方向键焦点都操作相同逻辑格；它与《自走小队》的战前配置或《动物遗物猎人》的即时移动不同，每一步都停下来让棋盘本身成为题目。",
-    "parent": "小队等级、经验、符文、最佳与已解锁任务、英雄等级、训练格、永久攻击／生命／能量加成与复活代币都保存在目前浏览器。基本游玩不需要登入；清除网站资料或换浏览器可能会建立另一份存档。钻石只用于选择性奖励重抽或确认训练格，30 任务、七种地形、特殊敌人与六位首领都不需要钻石。技能报告只描述本次游玩，不是正式能力测验。",
+    "parent": "小队等级、经验、符文、最佳与已解锁任务、英雄等级、训练格、永久攻击／生命／能量加成与复活代币都保存在目前浏览器。基本游玩不需要登入；清除网站资料或换浏览器可能会建立另一份存档。钻石只用于选择性奖励重抽或确认训练格，30 任务、七种地形、特殊敌人与六位首领都不需要钻石。",
     "faq": [
       [
         "动物符文战棋可以免费玩吗？",
@@ -7650,6 +7651,8 @@
 
   Object.assign(games, { "animal-abyss-diver": {
     title: "Animal Abyss Diver",
+    hideSkillsFact: true,
+    showRelatedSkill: false,
     difficulty: "Medium to Challenging",
     time: "5-12 minutes per route",
     gameplay: "Deep-Sea Route Risk Adventure",
@@ -8314,6 +8317,7 @@
     title: "Animal Rune Reels", gameplay: "Team Reel Role-Playing Battle",
     genre: ["Strategy", "Role-Playing", "Animal"],
     skills: ["Team Building", "Probability Management", "Planning"],
+    hideSkillsFact: true,
     intro: "Build a team of up to five summoned animal heroes, spin three downward rune reels, combine the stopped symbols, and survive every wave of thirty guardian missions.",
     story: ["A summoner crosses six rift regions with an expanding animal roster. Each hero has attack, defense, healing, and a distinct ultimate, so team composition changes how the same reel result resolves.", "The main campaign contains thirty multi-wave missions. Separate daily and scheduled event missions provide optional materials without replacing campaign progress."],
     systems: ["Press Spin to stop three downward reels one by one. Every visible rune contributes its effect, and a completed line of matching runes doubles that ability.", "Claw runes make each active hero attack. Shield and Heart runes combine the team's total defense or healing for the summoner. Wild completes another line but has no effect alone; Coin, Ultimate, Focus, Echo, Luck, and Dormant runes have their stated specialized effects.", "Enemies act after the rune result resolves. The summoner's health, shield, total defense, total healing, wave count, and enemy intent remain visible throughout Battle.", "Summoning unlocks heroes; duplicate cards support level upgrades. Rune Dust, Sun Shards, Moon Crystals, and Guardian Cores improve rune levels. Permanent cards, materials, coins, and diamonds remain safe if a battle is abandoned, but the current wave resets."],
