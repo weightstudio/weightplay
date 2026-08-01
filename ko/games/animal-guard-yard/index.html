@@ -81,7 +81,7 @@
     <meta name="twitter:description" content="Clover Yard는 햇빛, 씨앗, 물을 공유하는 6개의 정원 지역을 연결합니다. 길에 야생 동물이 몰려들면 플레이어는 마당지기가 되어 고양이, 개, 올빼미, 선택적인 여우를 5개의 레인에 걸쳐 배치합니다. 30단계 캠페인은 각 지역에 읽을 수 있는 규칙을 도입합니다...." />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-guard-yard-poster.webp" />
   </head>
-  <body data-tutorial-auto-show="false">
+  <body data-tutorial-auto-show="false" data-screen="main" data-wp-active-scene="main">
     <main class="yard-game" data-no-mobile-immersive="true">
       <header class="topbar">
         <a class="home-link" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
@@ -99,13 +99,13 @@
         </label>
       </header>
 
-      <section id="mainPanel" class="main-entry-panel">
+      <section id="mainPanel" class="main-entry-panel" data-screen="main" data-wp-standard-main-screen>
         <img class="main-cover" src="../../assets/animal-guard-yard-poster.webp" data-fallback-src="../../assets/animal-guard-yard-poster.png" alt="" />
         <div class="main-entry-copy"><strong data-ui="gameTitle">Animal Guard Yard</strong><span data-ui="menuHint">Place animal guards and stop the wild beasts.</span></div>
         <button id="startGameBtn" class="main-start-btn" type="button" data-ui="chooseStage">Choose Stage</button>
       </section>
 
-      <section id="menuPanel" class="menu-panel wp-stage-art-shell hidden" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/animal-guard-yard-poster.webp" style="--wp-stage-art: url('../../assets/animal-guard-yard-poster.webp')">
+      <section id="menuPanel" class="menu-panel wp-stage-art-shell hidden" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/animal-guard-yard-poster.webp" style="--wp-stage-art: url('../../assets/animal-guard-yard-poster.webp')">
         <div class="menu-shell">
           <div class="stage-screen-head"><button id="stageBackMainBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><strong data-ui="chooseStage">Choose Stage</strong></div>
           <div class="wallet-row" aria-label="Animal Guard Yard wallet">
@@ -147,7 +147,7 @@
         </nav>
       </section>
 
-      <section id="playPanel" class="fixed-shell-host hidden" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <section id="playPanel" class="fixed-shell-host hidden" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
         <div class="fixed-game-shell play-area" aria-label="Animal Guard Yard fixed game screen">
           <div class="play-head">
             <button id="backToStagesBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to stages" data-ui-aria-label="stages">

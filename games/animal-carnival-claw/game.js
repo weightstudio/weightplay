@@ -138,12 +138,13 @@ function nearestStageCard(){
 }
 function installVirtualStageDrag(){
   const rail=$("stageRail");if(!rail||rail.dataset.wpStageVirtualDrag==="true")return;
-  rail.dataset.wpStageVirtualDrag="true";
-  let pointerId=null,startX=0,startScroll=0,moved=false,suppressClick=false,previousBehavior="",previousSnap="";
+  rail.dataset.wpStageVirtualDrag="true";rail.dataset.wpStageCenterObserver="manual";
+  const baseSnap=rail.style.getPropertyValue("scroll-snap-type");
+  let pointerId=null,startX=0,startScroll=0,moved=false,suppressClick=false,previousBehavior="",settleTimer=0;
   rail.addEventListener("pointerdown",event=>{
     if(event.isPrimary===false||(event.button!==undefined&&event.button!==0))return;
     pointerId=event.pointerId;startX=event.clientX;startScroll=rail.scrollLeft;moved=false;
-    previousBehavior=rail.style.getPropertyValue("scroll-behavior");previousSnap=rail.style.getPropertyValue("scroll-snap-type");
+    clearTimeout(settleTimer);previousBehavior=rail.style.getPropertyValue("scroll-behavior");
     rail.style.setProperty("scroll-behavior","auto","important");rail.style.setProperty("scroll-snap-type","none","important");rail.dataset.wpDragDown="1";
     event.stopImmediatePropagation();
   },true);
@@ -157,12 +158,12 @@ function installVirtualStageDrag(){
     if(pointerId===null||(event.pointerId!==undefined&&event.pointerId!==pointerId))return;
     pointerId=null;rail.dataset.wpDragDown="0";rail.classList.remove("wp-stage-dragging");
     if(previousBehavior)rail.style.setProperty("scroll-behavior",previousBehavior);else rail.style.removeProperty("scroll-behavior");
-    if(previousSnap)rail.style.setProperty("scroll-snap-type",previousSnap);else rail.style.removeProperty("scroll-snap-type");
     if(moved){
       if(event.cancelable)event.preventDefault();const card=nearestStageCard(),index=Number(card?.dataset.stageIndex);
       if(Number.isInteger(index)){selectStage(index,false);requestAnimationFrame(()=>centerSelected(true))}
+      settleTimer=setTimeout(()=>{if(baseSnap)rail.style.setProperty("scroll-snap-type",baseSnap);else rail.style.removeProperty("scroll-snap-type")},420);
       suppressClick=true;setTimeout(()=>{suppressClick=false},0);
-    }
+    }else if(baseSnap)rail.style.setProperty("scroll-snap-type",baseSnap);else rail.style.removeProperty("scroll-snap-type");
     moved=false;event.stopImmediatePropagation();
   };
   document.addEventListener("pointerup",finish,true);document.addEventListener("pointercancel",finish,true);

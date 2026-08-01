@@ -81,7 +81,7 @@
     <meta name="twitter:description" content="苜蓿庭院連接六個共享陽光、種子與水源的花園區域。野獸擠進小徑後，玩家成為庭院管理員，把貓騎士、狗戰士、貓頭鷹法師與可選的狐狸遊俠配置在五條路線。30 關會逐區加入可判斷的規則：療癒獸回復前方同路野獸、鑽地獸預警後換到相鄰路線、陽光盜偷走 12..." />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-guard-yard-poster.webp" />
   </head>
-  <body data-tutorial-auto-show="false">
+  <body data-tutorial-auto-show="false" data-screen="main" data-wp-active-scene="main">
     <main class="yard-game" data-no-mobile-immersive="true">
       <header class="topbar">
         <a class="home-link" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
@@ -99,13 +99,13 @@
         </label>
       </header>
 
-      <section id="mainPanel" class="main-entry-panel">
+      <section id="mainPanel" class="main-entry-panel" data-screen="main" data-wp-standard-main-screen>
         <img class="main-cover" src="../../assets/animal-guard-yard-poster.webp" data-fallback-src="../../assets/animal-guard-yard-poster.png" alt="" />
         <div class="main-entry-copy"><strong data-ui="gameTitle">Animal Guard Yard</strong><span data-ui="menuHint">Place animal guards and stop the wild beasts.</span></div>
         <button id="startGameBtn" class="main-start-btn" type="button" data-ui="chooseStage">Choose Stage</button>
       </section>
 
-      <section id="menuPanel" class="menu-panel wp-stage-art-shell hidden" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/animal-guard-yard-poster.webp" style="--wp-stage-art: url('../../assets/animal-guard-yard-poster.webp')">
+      <section id="menuPanel" class="menu-panel wp-stage-art-shell hidden" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/animal-guard-yard-poster.webp" style="--wp-stage-art: url('../../assets/animal-guard-yard-poster.webp')">
         <div class="menu-shell">
           <div class="stage-screen-head"><button id="stageBackMainBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><strong data-ui="chooseStage">Choose Stage</strong></div>
           <div class="wallet-row" aria-label="Animal Guard Yard wallet">
@@ -147,7 +147,7 @@
         </nav>
       </section>
 
-      <section id="playPanel" class="fixed-shell-host hidden" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <section id="playPanel" class="fixed-shell-host hidden" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
         <div class="fixed-game-shell play-area" aria-label="Animal Guard Yard fixed game screen">
           <div class="play-head">
             <button id="backToStagesBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to stages" data-ui-aria-label="stages">

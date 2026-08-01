@@ -446,6 +446,7 @@
   }
 
   function scheduleRecommendedCenter(rail, force = false) {
+    if (rail.dataset.wpStageCenterObserver === "manual") return;
     if (pendingRecommendation.has(rail)) {
       pendingRecommendation.set(rail, pendingRecommendation.get(rail) || force);
       return;

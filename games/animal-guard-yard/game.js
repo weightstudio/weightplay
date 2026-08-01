@@ -684,6 +684,54 @@
   let viewportWidth = 0;
   let viewportHeight = 0;
   let viewportMode = "";
+  let activeScene = "main";
+  let sceneGeneration = 0;
+
+  function activateScene(scene) {
+    if (!['main', 'stage', 'battle'].includes(scene)) return sceneGeneration;
+    activeScene = scene;
+    sceneGeneration += 1;
+    document.documentElement.dataset.screen = scene;
+    document.documentElement.dataset.wpActiveScene = scene;
+    document.body.dataset.screen = scene;
+    document.body.dataset.wpActiveScene = scene;
+    document.documentElement.classList.toggle("guard-yard-stage", scene === "stage");
+    document.body.classList.toggle("guard-yard-stage", scene === "stage");
+    document.documentElement.classList.toggle("guard-yard-playing", scene === "battle");
+    document.body.classList.toggle("guard-yard-playing", scene === "battle");
+    ["main", "stage", "battle"].forEach((name) => {
+      document.documentElement.classList.toggle(`wp-shell-${name}-active`, scene === name);
+      document.body.classList.toggle(`wp-shell-${name}-active`, scene === name);
+    });
+    document.documentElement.classList.toggle("wp-stage-select-active", scene === "stage");
+    document.body.classList.toggle("wp-stage-select-active", scene === "stage");
+    const ownership = [
+      [nodes.mainPanel, scene === "main"],
+      [nodes.menuPanel, scene === "stage"],
+      [nodes.playPanel, scene === "battle"],
+    ];
+    ownership.forEach(([panel, enabled]) => {
+      panel.classList.toggle("hidden", !enabled);
+      panel.inert = !enabled;
+      if (enabled) panel.removeAttribute("aria-hidden");
+      else panel.setAttribute("aria-hidden", "true");
+      panel.dataset.sceneGeneration = String(sceneGeneration);
+    });
+    const mainReturn = document.querySelector('.home-link[data-wp-return="main"]');
+    const mainHeader = mainReturn?.closest(".wp-main-shell-header, .topbar");
+    if (mainReturn) {
+      mainReturn.hidden = scene !== "main";
+      mainReturn.classList.toggle("hidden", scene !== "main");
+      mainReturn.setAttribute("aria-hidden", String(scene !== "main"));
+      mainReturn.tabIndex = scene === "main" ? 0 : -1;
+    }
+    if (mainHeader) {
+      mainHeader.hidden = scene !== "main";
+      mainHeader.classList.toggle("hidden", scene !== "main");
+      mainHeader.setAttribute("aria-hidden", String(scene !== "main"));
+    }
+    return sceneGeneration;
+  }
 
   function updateGuardYardViewport() {
     const viewport = window.visualViewport;
@@ -695,9 +743,7 @@
       && visualHeight <= window.innerHeight + 2;
     const safeWidth = visualMatchesLayout ? visualWidth : window.innerWidth;
     const height = visualMatchesLayout ? visualHeight : window.innerHeight;
-    const mode = document.body.classList.contains("guard-yard-stage")
-      ? "stage"
-      : document.body.classList.contains("guard-yard-playing") ? "playing" : "main";
+    const mode = activeScene === "stage" ? "stage" : activeScene === "battle" ? "playing" : "main";
     if (safeWidth === viewportWidth && height === viewportHeight && mode === viewportMode) return;
     viewportWidth = safeWidth;
     viewportHeight = height;
@@ -1004,6 +1050,7 @@
       button.className = "stage-card";
       button.type = "button";
       button.dataset.stageIndex = String(index);
+      button.dataset.stageLabel = t("stage", { n: stageNo });
       button.tabIndex = index === selectedStageIndex ? 0 : -1;
       if (locked) button.classList.add("locked");
       button.setAttribute("aria-disabled", String(locked));
@@ -1049,9 +1096,23 @@
       const distance = Math.abs(rect.left + rect.width / 2 - center);
       return !best || distance < best.distance ? { card, distance } : best;
     }, null)?.card;
-    cards.forEach((card) => {
+    const nearestIndex = cards.indexOf(nearest);
+    const stagePanel = document.querySelector("#stageTabPanel");
+    if (stagePanel) {
+      stagePanel.dataset.prevStageLabel = cards[nearestIndex - 1]?.dataset.stageLabel || "";
+      stagePanel.dataset.nextStageLabel = cards[nearestIndex + 1]?.dataset.stageLabel || "";
+      const panelRect = stagePanel.getBoundingClientRect();
+      const nearestRect = nearest.getBoundingClientRect();
+      const peekCenter = panelRect.height > 0
+        ? ((nearestRect.top + nearestRect.height / 2 - panelRect.top) / panelRect.height) * 100
+        : 46;
+      stagePanel.style.setProperty("--stage-peek-center", `${peekCenter}%`);
+    }
+    cards.forEach((card, index) => {
       const centered = card === nearest;
       card.classList.toggle("is-centered", centered);
+      card.classList.toggle("is-prev", index === nearestIndex - 1);
+      card.classList.toggle("is-next", index === nearestIndex + 1);
       card.tabIndex = centered ? 0 : -1;
       if (centered) card.setAttribute("aria-current", "true");
       else card.removeAttribute("aria-current");
@@ -1114,9 +1175,17 @@
       const target = cards[nextIndex];
       if (!target) return;
       event.preventDefault();
-      cards.forEach((item) => {
+      const stagePanel = document.querySelector("#stageTabPanel");
+      if (stagePanel) {
+        stagePanel.dataset.prevStageLabel = cards[nextIndex - 1]?.dataset.stageLabel || "";
+        stagePanel.dataset.nextStageLabel = cards[nextIndex + 1]?.dataset.stageLabel || "";
+        window.requestAnimationFrame(scheduleCenteredStageCard);
+      }
+      cards.forEach((item, itemIndex) => {
         const centered = item === target;
         item.classList.toggle("is-centered", centered);
+        item.classList.toggle("is-prev", itemIndex === nextIndex - 1);
+        item.classList.toggle("is-next", itemIndex === nextIndex + 1);
         item.tabIndex = centered ? 0 : -1;
         if (centered) item.setAttribute("aria-current", "true");
         else item.removeAttribute("aria-current");
@@ -1315,10 +1384,7 @@
     paused = false;
     cancelAnimationFrame(raf);
     window.WeightPlayGame?.exitMobileGameMode?.();
-    document.documentElement.classList.remove("guard-yard-playing");
-    document.body.classList.remove("guard-yard-playing");
-    document.documentElement.classList.add("guard-yard-stage");
-    document.body.classList.add("guard-yard-stage");
+    activateScene("stage");
     updateGuardYardViewport();
     if (nodes.spawnWarning) {
       nodes.spawnWarning.remove();
@@ -1330,9 +1396,6 @@
     entities = [];
     projectiles = [];
     cells = [];
-    nodes.menuPanel.classList.remove("hidden");
-    nodes.mainPanel.classList.add("hidden");
-    nodes.playPanel.classList.add("hidden");
     nodes.gameShell.classList.remove("hidden");
     nodes.gameShell.inert = false;
     nodes.gameShell.removeAttribute("aria-hidden");
@@ -1352,42 +1415,15 @@
     paused = false;
     cancelAnimationFrame(raf);
     window.WeightPlayGame?.exitMobileGameMode?.();
-    document.documentElement.classList.remove("guard-yard-playing", "guard-yard-stage");
-    document.body.classList.remove("guard-yard-playing", "guard-yard-stage");
-    nodes.mainPanel.classList.remove("hidden");
-    nodes.menuPanel.classList.add("hidden");
-    nodes.playPanel.classList.add("hidden");
+    activateScene("main");
+    updateGuardYardViewport();
     nodes.gameShell.classList.remove("hidden");
     nodes.gameShell.inert = false;
     nodes.gameShell.removeAttribute("aria-hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.pausePanel.classList.add("hidden");
-    const restoreLobbyReturn = () => {
-      const lobbyReturn = document.querySelector(".home-link");
-      const mainHeader = document.querySelector(".wp-main-shell-header")
-        || nodes.mainPanel.querySelector(":scope > .wp-generated-main-header")
-        || document.querySelector(".topbar");
-      if (!lobbyReturn) return;
-      lobbyReturn.dataset.wpReturn = "main";
-      if (mainHeader && !mainHeader.contains(lobbyReturn)) mainHeader.prepend(lobbyReturn);
-      lobbyReturn.hidden = false;
-      lobbyReturn.classList.remove("hidden", "is-hidden", "wp-shell-legacy-control");
-      lobbyReturn.removeAttribute("aria-hidden");
-      lobbyReturn.tabIndex = 0;
-      if (mainHeader) {
-        mainHeader.hidden = false;
-        mainHeader.classList.remove("hidden", "is-hidden", "wp-shell-legacy-control");
-        mainHeader.removeAttribute("aria-hidden");
-      }
-    };
-    restoreLobbyReturn();
     window.requestAnimationFrame(() => {
-      restoreLobbyReturn();
       nodes.startGameBtn?.focus({ preventScroll: true });
-      window.setTimeout(() => {
-        restoreLobbyReturn();
-        nodes.startGameBtn?.focus({ preventScroll: true });
-      }, 120);
     });
   }
 
@@ -1413,17 +1449,12 @@
     coinsEarned = 0;
     lastDangerAt = 0;
     selectedUnit = units.find((unit) => isOwned(unit.id))?.id || units[0].id;
-    nodes.menuPanel.classList.add("hidden");
-    nodes.playPanel.classList.remove("hidden");
+    activateScene("battle");
     nodes.gameShell.classList.remove("hidden");
     nodes.gameShell.inert = false;
     nodes.gameShell.removeAttribute("aria-hidden");
     nodes.resultPanel.classList.add("hidden");
     nodes.pausePanel.classList.add("hidden");
-    document.documentElement.classList.add("guard-yard-playing");
-    document.body.classList.add("guard-yard-playing");
-    document.documentElement.classList.remove("guard-yard-stage");
-    document.body.classList.remove("guard-yard-stage");
     updateGuardYardViewport();
     nodes.hintText.textContent = t("select");
     buildBoard(stage);
