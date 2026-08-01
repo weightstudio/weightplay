@@ -2668,7 +2668,9 @@
   }
 
   function syncResultPrimaryAction(won, canContinue) {
-    const primaryAction = canContinue ? nodes.nextMissionBtn : nodes.resultMenuBtn;
+    const primaryAction = won
+      ? (canContinue ? nodes.nextMissionBtn : nodes.resultMenuBtn)
+      : nodes.retryBtn;
     [nodes.nextMissionBtn, nodes.retryBtn, nodes.resultMenuBtn].forEach((button) => {
       button?.classList.toggle("result-primary-action", button === primaryAction);
     });

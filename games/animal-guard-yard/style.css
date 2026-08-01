@@ -3007,7 +3007,7 @@ body.guard-yard-stage .mastery-summary small { font-size: 0.62rem; }
 body.guard-yard-stage .stage-grid {
   height: 100%;
   min-height: 0;
-  align-items: center !important;
+  align-items: start !important;
   gap: 14px;
   padding-block: 0 12px;
 }
@@ -3020,18 +3020,14 @@ body.guard-yard-stage .stage-card {
   max-width: none;
   min-height: 190px;
   height: 190px;
+  top: var(--guard-stage-card-top, 0px);
   align-content: center;
   transition: opacity 160ms ease, filter 160ms ease;
-}
-
-body.guard-yard-stage .stage-card.is-centered {
-  transform: translateY(clamp(-100px, -11vh, -40px));
 }
 
 body.guard-yard-stage .stage-card:not(.is-centered) {
   opacity: 0.12;
   filter: saturate(0.62) brightness(0.78);
-  transform: translateY(clamp(-100px, -11vh, -40px)) scale(0.92);
 }
 
 body.guard-yard-stage .stage-card.is-prev,

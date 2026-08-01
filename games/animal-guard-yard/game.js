@@ -730,6 +730,7 @@
       mainHeader.classList.toggle("hidden", scene !== "main");
       mainHeader.setAttribute("aria-hidden", String(scene !== "main"));
     }
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
     return sceneGeneration;
   }
 
@@ -1078,6 +1079,7 @@
       nodes.stageGrid.appendChild(button);
     });
     bindStageGridSelection();
+    updateCenteredStageCard();
     window.requestAnimationFrame(() => {
       centerStageCard(nodes.stageGrid.querySelector(".stage-card.selected"));
       scheduleCenteredStageCard();
@@ -1090,6 +1092,8 @@
     const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
     if (!cards.length || !document.body.classList.contains("guard-yard-stage")) return;
     const gridRect = nodes.stageGrid.getBoundingClientRect();
+    const stageCardTop = Math.max(0, nodes.stageGrid.clientHeight * 0.38 - 95);
+    nodes.stageGrid.style.setProperty("--guard-stage-card-top", `${stageCardTop}px`);
     const center = gridRect.left + gridRect.width / 2;
     const nearest = cards.reduce((best, card) => {
       const rect = card.getBoundingClientRect();
