@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="weightplay-audience" content="general" />
+    <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="theme-color" content="#0b0f19" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -34,7 +35,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/beast-deck/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/beast-deck/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/beast-deck/" />
-    <link rel="stylesheet" href="style.css?v=20260727-battle-layout3" />
+    <link rel="stylesheet" href="style.css?v=20260801-interface-v5-2" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
@@ -71,7 +72,7 @@
     </script>
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
 </head>
-  <body data-tutorial-auto-show="false" data-wp-combined-sound="true">
+  <body data-screen="main" data-tutorial-auto-show="false" data-wp-combined-sound="true" data-wp-game-id="beast-deck" data-audience="general" class="wp-shell-main-active">
     <main class="beast-deck-app" data-no-mobile-immersive="true" data-wp-canvas-max-width="920">
       <header class="topbar">
         <a class="icon-btn" data-wp-return="main" href="/" data-aria="backToLobby" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
@@ -89,11 +90,12 @@
         </label>
       </header>
 
-      <section id="menuPanel" class="menu-panel">
+      <section id="menuPanel" class="menu-panel wp-standard-main-screen" data-screen="main">
         <img class="cover" src="../../assets/beast-deck-cover.webp" alt="" />
         <div class="menu-copy">
           <strong data-ui="menuTitle">Enter the Mist Forest.</strong>
           <span data-ui="menuHint">Build animal-power decks across 30 missions, counter ten regional mechanics, and defeat six phase-changing forest Bosses.</span>
+          <button id="mainStartBtn" class="standard-main-start" data-wp-main-start="true" data-ui="startGame" type="button">Start Game</button>
 
           <div class="prototype-goals" data-aria="progressTitle" aria-label="Local progress">
             <b data-ui="progressTitle">Local Progress</b>
@@ -182,7 +184,21 @@
         </div>
       </section>
 
-      <section id="gamePanel" class="game-panel hidden" data-play-viewport data-wp-canvas-max-width="920">
+      <section id="stagePanel" class="wp-standard-stage-panel hidden" hidden data-screen="stage" data-wp-standard-stage-screen="true" data-wp-logical-stage-canvas data-wp-stage-rail="true" data-wp-stage-initially-hidden="true" data-wp-canvas-max-width="920">
+        <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" data-aria="backToMain" aria-label="Back">&larr;</button><strong data-ui="stageHubTitle">Mission Preparation</strong></header>
+        <div class="beast-stage-workspace">
+          <section class="beast-stage-view is-active" data-stage-view="missions"></section>
+          <section class="beast-stage-view" data-stage-view="deck"></section>
+          <section class="beast-stage-view" data-stage-view="shop"></section>
+        </div>
+        <nav class="beast-stage-tabs" data-aria="preparation" aria-label="Preparation">
+          <button type="button" class="is-active" data-stage-tab="missions" data-ui="stageTabMissions" aria-pressed="true">Missions</button>
+          <button type="button" data-stage-tab="deck" data-ui="stageTabDeck" aria-pressed="false">Deck</button>
+          <button type="button" data-stage-tab="shop" data-ui="stageTabShop" aria-pressed="false">Upgrades</button>
+        </nav>
+      </section>
+
+      <section id="gamePanel" class="game-panel hidden" hidden data-screen="battle" data-play-viewport data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
         <div class="hud-row">
           <button id="menuBtn" class="soft-btn" data-wp-return="battle" type="button" data-aria="backToStage" aria-label="Back to missions">&larr;</button>
           <div><span data-ui="hudStage">Battle</span><b id="stageText">1/3</b></div>
@@ -330,7 +346,7 @@
     <script src="../../src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-beast-economy1"></script>
-    <script src="game.js?v=20260801-general-result1"></script>
+    <script src="game.js?v=20260801-interface-v5-2"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
     <script>
       (() => {

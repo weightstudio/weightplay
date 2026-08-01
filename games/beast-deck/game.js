@@ -112,6 +112,15 @@
     battleTransitions.forEach(armBattleTransition);
   }
 
+  function reclaimVisibleBattleInteraction(event) {
+    if (!backgroundSuspended) return true;
+    if (!event?.isTrusted || document.hidden || leaveDecisionOpen) return false;
+    backgroundSuspended = false;
+    armAmuletConfirmation();
+    battleTransitions.forEach(armBattleTransition);
+    return true;
+  }
+
   const $ = (id) => document.getElementById(id);
   if (!$("leavePanel")) {
     $("gamePanel")?.insertAdjacentHTML("beforeend", `
@@ -216,33 +225,8 @@
     const progressPanel = menuCopy.querySelector(".prototype-goals");
     const profilePanel = $("profilePanel");
     const controlChips = menuCopy.querySelector(".control-chips");
-    const mainStart = document.createElement("button");
-    mainStart.id = "mainStartBtn";
-    mainStart.type = "button";
-    mainStart.className = "standard-main-start";
-    mainStart.dataset.wpMainStart = "true";
-    mainStart.dataset.ui = "startGame";
-    menuCopy.insertBefore(mainStart, menuCopy.querySelector(".prototype-goals"));
-    const stagePanel = document.createElement("section");
-    stagePanel.id = "stagePanel";
-    stagePanel.className = "wp-standard-stage-panel hidden";
-    stagePanel.dataset.wpStandardStageScreen = "true";
-    // The preparation tabs share one logical Stage Canvas. Keep the Stage active
-    // while Missions is hidden, otherwise the shared scaler drops between tabs.
-    stagePanel.dataset.wpStageRail = "true";
-    stagePanel.dataset.wpStageInitiallyHidden = "true";
-    stagePanel.innerHTML = `
-      <header class="wp-standard-stage-heading"><button id="stageBackBtn" data-wp-return="stage" type="button" data-aria="backToMain" aria-label="Back">&larr;</button><strong data-ui="stageHubTitle">Mission Preparation</strong></header>
-      <div class="beast-stage-workspace">
-        <section class="beast-stage-view is-active" data-stage-view="missions"></section>
-        <section class="beast-stage-view" data-stage-view="deck"></section>
-        <section class="beast-stage-view" data-stage-view="shop"></section>
-      </div>
-      <nav class="beast-stage-tabs" data-aria="preparation" aria-label="Preparation">
-        <button type="button" class="is-active" data-stage-tab="missions" data-ui="stageTabMissions" aria-pressed="true">Missions</button>
-        <button type="button" data-stage-tab="deck" data-ui="stageTabDeck" aria-pressed="false">Deck</button>
-        <button type="button" data-stage-tab="shop" data-ui="stageTabShop" aria-pressed="false">Upgrades</button>
-      </nav>`;
+    const mainStart = $("mainStartBtn");
+    const stagePanel = $("stagePanel");
     const missionView = stagePanel.querySelector('[data-stage-view="missions"]');
     const deckView = stagePanel.querySelector('[data-stage-view="deck"]');
     const shopView = stagePanel.querySelector('[data-stage-view="shop"]');
@@ -250,8 +234,27 @@
     nodes.startBtn.remove();
     deckView.append(progressPanel, profilePanel, controlChips, collectionPanel);
     shopView.append(diamondShop);
-    nodes.menuPanel.after(stagePanel);
     Object.assign(nodes, { stagePanel, mainStartBtn: mainStart, stageBackBtn: stagePanel.querySelector("#stageBackBtn") });
+  }
+
+  function syncScene(next) {
+    const owners = { main: nodes.menuPanel, stage: nodes.stagePanel, battle: nodes.gamePanel };
+    for (const [name, owner] of Object.entries(owners)) {
+      const active = name === next;
+      owner.classList.toggle("hidden", !active);
+      owner.hidden = !active;
+      owner.toggleAttribute("inert", !active);
+      owner.setAttribute("aria-hidden", String(!active));
+      document.body.classList.toggle(`wp-shell-${name}-active`, active);
+    }
+    document.body.dataset.screen = next;
+    document.body.classList.toggle("wp-standard-stage-page", next === "stage");
+    document.body.classList.toggle("wp-stage-select-active", next === "stage");
+    document.documentElement.classList.toggle("wp-stage-select-active", next === "stage");
+    window.dispatchEvent(new CustomEvent("weightplay:shell-sync", { detail: { screen: next } }));
+    window.dispatchEvent(new CustomEvent("weightplay:stage-sync", { detail: { screen: next } }));
+    window.dispatchEvent(new CustomEvent("weightplay:battle-sync", { detail: { screen: next } }));
+    if (next === "battle") window.dispatchEvent(new CustomEvent("weightplay:battle-open", { detail: { screen: next } }));
   }
 
   function selectStageTab(tabName) {
@@ -281,9 +284,7 @@
     profile.selectedMission = profile.unlockedMission;
     browsedMission = profile.selectedMission;
     saveLocalState();
-    nodes.menuPanel.classList.add("hidden");
-    nodes.stagePanel.classList.remove("hidden");
-    document.body.classList.add("wp-standard-stage-page");
+    syncScene("stage");
     renderProgressUI();
     requestAnimationFrame(() => nodes.stageGrid.querySelector(".stage-card.selected")?.focus({ preventScroll: true }));
   }
@@ -291,10 +292,7 @@
   function showMainFromStage() {
     cancelStageSettlement();
     clearAmuletConfirmation();
-    nodes.stagePanel.classList.add("hidden");
-    nodes.menuPanel.classList.remove("hidden");
-    document.body.classList.remove("wp-standard-stage-page");
-    window.dispatchEvent(new Event("weightplay:shell-sync"));
+    syncScene("main");
     nodes.mainStartBtn.focus({ preventScroll: true });
     requestAnimationFrame(() => requestAnimationFrame(() => {
       if (!nodes.menuPanel.classList.contains("hidden")) nodes.mainStartBtn.focus({ preventScroll: true });
@@ -2514,8 +2512,8 @@
         effect: t(card.descKey),
         status: t("chooseCardDesc"),
       }));
-      cardEl.addEventListener("click", () => {
-        if (draftLocked) return;
+      cardEl.addEventListener("click", (event) => {
+        if (!reclaimVisibleBattleInteraction(event) || draftLocked) return;
         draftLocked = true;
         nodes.draftCards.querySelectorAll("button").forEach((button) => {
           button.disabled = true;
@@ -2653,7 +2651,9 @@
         effect: t(card.descKey),
         status,
       }));
-      cardEl.addEventListener("click", () => playCard(index));
+      cardEl.addEventListener("click", (event) => {
+        if (reclaimVisibleBattleInteraction(event)) playCard(index);
+      });
       nodes.handRow.appendChild(cardEl);
     });
     nodes.handRow.scrollLeft = 0;
@@ -2811,8 +2811,6 @@
     loadLocalState();
     resetRunState();
     setDraftModalActive(false, false);
-    nodes.menuPanel.classList.add("hidden");
-    nodes.stagePanel.classList.add("hidden");
     leaveStageCanvas();
     nodes.resultPanel.classList.add("hidden");
     nodes.gamePanel.classList.remove("result-open");
@@ -2820,7 +2818,7 @@
       node?.removeAttribute("inert");
       node?.removeAttribute("aria-hidden");
     });
-    nodes.gamePanel.classList.remove("hidden");
+    syncScene("battle");
     document.body.classList.add("beast-deck-playing");
     positionBattleSoundControl();
     startNextBattle();
@@ -3202,6 +3200,7 @@
 
   function init() {
     installStandardStageFlow();
+    syncScene("main");
     dockMainUtilities();
     loadLocalState();
     translateUI();
@@ -3212,7 +3211,8 @@
       window.WonderSound?.play("click");
       startRun();
     });
-    nodes.endTurnBtn.addEventListener("click", () => {
+    nodes.endTurnBtn.addEventListener("click", (event) => {
+      if (!reclaimVisibleBattleInteraction(event)) return;
       window.WonderSound?.play("click");
       endPlayerTurn();
     });

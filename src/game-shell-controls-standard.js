@@ -296,6 +296,14 @@
   }
 
   function activeScreen() {
+    if (immutableSceneControls) {
+      const declaredType = document.body.dataset.screen;
+      if (["main", "stage", "battle"].includes(declaredType)) {
+        const declaredScreen = [...document.querySelectorAll(`[data-screen='${declaredType}']`)]
+          .find((node) => node !== document.body && node !== document.documentElement && visible(node));
+        if (declaredScreen) return { type: declaredType, screen: declaredScreen };
+      }
+    }
     const stages = STAGE_SELECTORS.map((selector) => document.querySelector(selector)).filter(Boolean);
     const activeRail = STAGE_RAIL_SELECTORS
       .map((selector) => document.querySelector(selector))
