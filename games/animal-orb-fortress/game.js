@@ -1223,11 +1223,12 @@
     const cards = [...nodes.stageRail.querySelectorAll(".raid-card")];
     if (!cards.length) return;
     const currentIndex = Math.max(0, cards.indexOf(current));
+    const rtl = getComputedStyle(nodes.stageRail).direction === "rtl";
     let nextIndex = currentIndex;
     if (event.key === "Home") nextIndex = 0;
     else if (event.key === "End") nextIndex = cards.length - 1;
-    else if (event.key === "ArrowLeft") nextIndex = Math.max(0, currentIndex - 1);
-    else nextIndex = Math.min(cards.length - 1, currentIndex + 1);
+    else if (event.key === "ArrowLeft") nextIndex = Math.max(0, Math.min(cards.length - 1, currentIndex + (rtl ? 1 : -1)));
+    else nextIndex = Math.max(0, Math.min(cards.length - 1, currentIndex + (rtl ? -1 : 1)));
     event.preventDefault();
     cards.forEach((card, index) => {
       card.tabIndex = index === nextIndex ? 0 : -1;

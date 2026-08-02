@@ -965,6 +965,11 @@
   let skinPurchaseRemaining = 0;
   let stageRenderVersion = 0;
   let stageBrowseFrame = 0;
+  const STAGE_CARD_POOL_SIZE = 9;
+  let stageCardPool = [];
+  let stageWindowStart = 1;
+  let stageBrowseLogical = 1;
+  let stageSettleFrame = 0;
 
   const zhRuntimeText = {
     combatSummary: "小隊生命 {playerHp}/{playerMax}｜敵方生命 {enemyHp}/{enemyMax}",
@@ -2080,7 +2085,7 @@
     setStageTab("stages");
     renderStageSelector();
     requestAnimationFrame(() => {
-      nodes.stageRail.querySelector(".stage-card.is-selected:not([aria-disabled='true'])")?.focus({ preventScroll: true });
+      nodes.stageRail.querySelector(".stage-card.is-browsed")?.focus({ preventScroll: true });
     });
   }
 
@@ -2219,6 +2224,114 @@
     renderStageSelector(shouldScroll);
   }
 
+  function stageWindowLimit() {
+    return Math.max(1, STAGE_COUNT - STAGE_CARD_POOL_SIZE + 1);
+  }
+
+  function desiredStageWindow(stage) {
+    return Math.max(1, Math.min(stageWindowLimit(), Math.round(stage) - Math.floor(STAGE_CARD_POOL_SIZE / 2)));
+  }
+
+  function bindStageCard(card, stage) {
+    const definition = stageDefinition(stage);
+    const region = regionDefinition(definition.region);
+    const locked = stage > save.unlockedStage;
+    const cleared = save.completedStages.includes(stage);
+    const browsed = stage === Math.round(stageBrowseLogical);
+    const firstWave = enemyWaveStats(stage, 1);
+    const finalWave = enemyWaveStats(stage, WAVES_PER_STAGE);
+    const enemyRange = t("stageEnemyRange", { first: firstWave.count, last: finalWave.count });
+    const stageName = localizedField(definition, "name");
+    const regionName = localizedField(region, "name");
+    const bossText = definition.bossId ? ` \u00b7 ${t("stageBoss")}` : "";
+    card.className = `stage-card${stage === save.selectedStage ? " is-selected" : ""}${browsed ? " is-browsed" : ""}${cleared ? " is-cleared" : ""}${definition.bossId ? " is-boss-stage" : ""}`;
+    card.dataset.stage = String(stage);
+    card.dataset.region = String(definition.region);
+    card.dataset.boss = definition.bossId ? "true" : "false";
+    card.style.setProperty("--stage-overlay", region.overlay);
+    card.setAttribute("aria-disabled", String(locked));
+    card.setAttribute("aria-posinset", String(stage));
+    card.setAttribute("aria-setsize", String(STAGE_COUNT));
+    card.tabIndex = browsed ? 0 : -1;
+    if (browsed) card.setAttribute("aria-current", "true");
+    else card.removeAttribute("aria-current");
+    card.innerHTML = `<em>${regionName}</em><strong>${stageLabel(stage)}</strong><span>${stageName}</span><small>${t("stageWaveCount", { count: WAVES_PER_STAGE })}${bossText}</small><small>${enemyRange}</small><small>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</small>`;
+    card.setAttribute("aria-label", `${regionName}. ${stageLabel(stage)}. ${stageName}. ${t("stageWaveCount", { count: WAVES_PER_STAGE })}${bossText}. ${enemyRange}. ${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}`);
+  }
+
+  function createStageCard() {
+    const card = document.createElement("button");
+    card.type = "button";
+    card.addEventListener("click", () => {
+      const stage = Number(card.dataset.stage);
+      if (stage > save.unlockedStage) {
+        stageBrowseLogical = stage;
+        syncStageCards();
+        centerStageCard(card);
+        return;
+      }
+      selectStage(stage, false);
+      startExpedition();
+    });
+    return card;
+  }
+
+  function syncStageCards() {
+    stageCardPool.forEach((card) => bindStageCard(card, Number(card.dataset.stage)));
+  }
+
+  function moveStageWindow(targetStart) {
+    const rail = nodes.stageRail;
+    const target = Math.max(1, Math.min(stageWindowLimit(), targetStart));
+    let recycled = 0;
+    while (stageWindowStart < target) {
+      const card = rail.firstElementChild;
+      stageWindowStart += 1;
+      rail.append(card);
+      bindStageCard(card, stageWindowStart + stageCardPool.length - 1);
+      recycled += 1;
+    }
+    while (stageWindowStart > target) {
+      const card = rail.lastElementChild;
+      stageWindowStart -= 1;
+      rail.prepend(card);
+      bindStageCard(card, stageWindowStart);
+      recycled += 1;
+    }
+    stageCardPool = [...rail.children];
+    rail.dataset.wpStageWindowStart = String(stageWindowStart);
+    rail.dataset.wpStageWindowEnd = String(stageWindowStart + stageCardPool.length - 1);
+    if (recycled) rail.dataset.wpStageRecycleCount = String(Number(rail.dataset.wpStageRecycleCount || 0) + recycled);
+  }
+
+  function ensureStageWindow(stage) {
+    moveStageWindow(desiredStageWindow(stage));
+    syncStageCards();
+  }
+
+  function stageRailGeometry() {
+    const rail = nodes.stageRail;
+    const cards = [...rail.children];
+    const railRect = rail.getBoundingClientRect();
+    const first = cards[0]?.getBoundingClientRect();
+    const second = cards[1]?.getBoundingClientRect();
+    const pitch = first && second ? Math.abs((second.left + second.width / 2) - (first.left + first.width / 2)) : 278;
+    return { rail, center: railRect.left + railRect.width / 2, pitch: pitch || 278 };
+  }
+
+  function positionStageRail(logical) {
+    const value = Math.max(1, Math.min(STAGE_COUNT, logical));
+    const anchor = Math.round(value);
+    moveStageWindow(desiredStageWindow(anchor));
+    const card = nodes.stageRail.querySelector(`[data-stage="${anchor}"]`);
+    if (!card) return value;
+    card.scrollIntoView({ behavior: "auto", block: "nearest", inline: "center" });
+    const geometry = stageRailGeometry();
+    nodes.stageRail.scrollLeft += (value - anchor) * geometry.pitch;
+    nodes.stageRail.dataset.wpStageDragLogical = value.toFixed(4);
+    return value;
+  }
+
   function renderStageSelector(shouldScroll = true) {
     if (!nodes.stageRail) return;
     const renderVersion = ++stageRenderVersion;
@@ -2226,47 +2339,28 @@
     nodes.stageSelectTitle.textContent = t("chooseStage");
     nodes.stageProgressText.textContent = t("stageProgress", { unlocked: save.unlockedStage, total: STAGE_COUNT });
     nodes.stageSetupText.textContent = t("stageSetup");
+    // Recommend the first playable uncleared expedition while preserving
+    // save.selectedStage as the last committed Battle choice.
+    stageBrowseLogical = save.completedStages.includes(save.selectedStage)
+      ? Array.from({ length: save.unlockedStage }, (_, index) => index + 1).find((stage) => !save.completedStages.includes(stage)) || save.selectedStage
+      : save.selectedStage;
+    stageWindowStart = desiredStageWindow(stageBrowseLogical);
     nodes.stageRail.innerHTML = "";
-
-    for (let stage = 1; stage <= STAGE_COUNT; stage++) {
-      const definition = stageDefinition(stage);
-      const region = regionDefinition(definition.region);
-      const locked = stage > save.unlockedStage;
-      const cleared = save.completedStages.includes(stage);
-      const card = document.createElement("button");
-      card.type = "button";
-      card.className = `stage-card${stage === save.selectedStage ? " is-selected is-browsed" : ""}${cleared ? " is-cleared" : ""}${definition.bossId ? " is-boss-stage" : ""}`;
-      card.dataset.stage = String(stage);
-      card.dataset.region = String(definition.region);
-      card.dataset.boss = definition.bossId ? "true" : "false";
-      card.style.setProperty("--stage-overlay", region.overlay);
-      // Keep locked cards draggable as part of the horizontal rail.
-      card.setAttribute("aria-disabled", String(locked));
-      card.tabIndex = stage === save.selectedStage ? 0 : -1;
-      const firstWave = enemyWaveStats(stage, 1);
-      const finalWave = enemyWaveStats(stage, WAVES_PER_STAGE);
-      const enemyRange = t("stageEnemyRange", { first: firstWave.count, last: finalWave.count });
-      const stageName = localizedField(definition, "name");
-      const regionName = localizedField(region, "name");
-      const bossText = definition.bossId ? ` \u00b7 ${t("stageBoss")}` : "";
-      card.innerHTML = `<em>${regionName}</em><strong>${stageLabel(stage)}</strong><span>${stageName}</span><small>${t("stageWaveCount", { count: WAVES_PER_STAGE })}${bossText}</small><small>${enemyRange}</small><small>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</small>`;
-      card.setAttribute("aria-label", `${regionName}. ${stageLabel(stage)}. ${stageName}. ${t("stageWaveCount", { count: WAVES_PER_STAGE })}${bossText}. ${enemyRange}. ${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}`);
-      card.addEventListener("click", () => {
-        if (locked) {
-          setBrowsedStageOwner(card);
-          card.scrollIntoView({ block: "nearest", inline: "center" });
-          return;
-        }
-        selectStage(stage, false);
-        startExpedition();
-      });
+    stageCardPool = Array.from({ length: Math.min(STAGE_CARD_POOL_SIZE, STAGE_COUNT) }, (_, offset) => {
+      const card = createStageCard();
+      bindStageCard(card, stageWindowStart + offset);
       nodes.stageRail.appendChild(card);
-    }
+      return card;
+    });
+    nodes.stageRail.dataset.wpStageVirtualized = "bounded-recycle";
+    nodes.stageRail.dataset.wpStagePoolSize = String(stageCardPool.length);
+    nodes.stageRail.dataset.wpStageTotal = String(STAGE_COUNT);
+    moveStageWindow(stageWindowStart);
 
     if (shouldScroll) {
       requestAnimationFrame(() => {
         if (renderVersion !== stageRenderVersion) return;
-        nodes.stageRail.querySelector(".stage-card.is-selected")?.scrollIntoView({ block: "nearest", inline: "center" });
+        nodes.stageRail.querySelector(".stage-card.is-browsed")?.scrollIntoView({ block: "nearest", inline: "center" });
         requestAnimationFrame(updateBrowsedStageCard);
       });
     }
@@ -2298,6 +2392,7 @@
 
   function setBrowsedStageOwner(owner) {
     if (!nodes.stageRail || !owner) return;
+    stageBrowseLogical = Number(owner.dataset.stage);
     [...nodes.stageRail.querySelectorAll(".stage-card")].forEach((card) => {
       const browsed = card === owner;
       card.classList.toggle("is-browsed", browsed);
@@ -2334,21 +2429,21 @@
   function handleStageCardKeydown(event) {
     const card = event.target.closest(".stage-card");
     if (!card || !nodes.stageRail?.contains(card)) return;
-    const cards = [...nodes.stageRail.querySelectorAll(".stage-card")];
-    const currentIndex = cards.indexOf(card);
-    if (currentIndex < 0) return;
-
     const rtl = getComputedStyle(nodes.stageRail).direction === "rtl"
       || document.documentElement.dir === "rtl";
-    let targetIndex = null;
-    if (event.key === "ArrowRight") targetIndex = currentIndex + (rtl ? -1 : 1);
-    else if (event.key === "ArrowLeft") targetIndex = currentIndex + (rtl ? 1 : -1);
-    else if (event.key === "Home") targetIndex = 0;
-    else if (event.key === "End") targetIndex = cards.length - 1;
-    if (targetIndex === null) return;
+    const currentStage = Number(card.dataset.stage);
+    let targetStage = null;
+    if (event.key === "ArrowRight") targetStage = currentStage + (rtl ? -1 : 1);
+    else if (event.key === "ArrowLeft") targetStage = currentStage + (rtl ? 1 : -1);
+    else if (event.key === "Home") targetStage = 1;
+    else if (event.key === "End") targetStage = STAGE_COUNT;
+    if (targetStage === null) return;
 
     event.preventDefault();
-    const target = cards[Math.max(0, Math.min(cards.length - 1, targetIndex))];
+    targetStage = Math.max(1, Math.min(STAGE_COUNT, targetStage));
+    stageBrowseLogical = targetStage;
+    ensureStageWindow(targetStage);
+    const target = nodes.stageRail.querySelector(`[data-stage="${targetStage}"]`);
     setBrowsedStageOwner(target);
     centerStageCard(target);
     target.focus({ preventScroll: true });
@@ -2360,6 +2455,86 @@
       stageBrowseFrame = 0;
       updateBrowsedStageCard();
     });
+  }
+
+  function installVirtualStageDrag() {
+    const rail = nodes.stageRail;
+    if (!rail || rail.dataset.wpStageVirtualDrag === "true") return;
+    rail.dataset.wpStageVirtualDrag = "true";
+    rail.dataset.wpStageCenterObserver = "manual";
+    let pointerId = null;
+    let startX = 0;
+    let lastX = 0;
+    let logical = 1;
+    let moved = false;
+    const restore = () => {
+      rail.style.removeProperty("scroll-behavior");
+      rail.style.removeProperty("scroll-snap-type");
+      rail.classList.remove("wp-stage-dragging");
+      delete rail.dataset.wpStageSettling;
+    };
+    rail.addEventListener("pointerdown", (event) => {
+      if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
+      cancelAnimationFrame(stageSettleFrame);
+      stageSettleFrame = 0;
+      pointerId = event.pointerId;
+      startX = lastX = event.clientX;
+      logical = stageBrowseLogical;
+      moved = false;
+      rail.style.setProperty("scroll-behavior", "auto", "important");
+      rail.style.setProperty("scroll-snap-type", "none", "important");
+      rail.dataset.wpDragDown = "1";
+      event.stopImmediatePropagation();
+    }, true);
+    document.addEventListener("pointermove", (event) => {
+      if (event.pointerId !== pointerId) return;
+      const delta = event.clientX - lastX;
+      lastX = event.clientX;
+      if (!moved && Math.abs(event.clientX - startX) > 4) {
+        moved = true;
+        rail.classList.add("wp-stage-dragging");
+      }
+      if (moved) {
+        if (event.cancelable) event.preventDefault();
+        logical = positionStageRail(logical - delta / stageRailGeometry().pitch);
+        stageBrowseLogical = logical;
+        syncStageCards();
+      }
+      event.stopImmediatePropagation();
+    }, true);
+    const finish = (event) => {
+      if (pointerId === null || (event.pointerId !== undefined && event.pointerId !== pointerId)) return;
+      pointerId = null;
+      rail.dataset.wpDragDown = "0";
+      if (!moved) {
+        restore();
+        return;
+      }
+      if (event.cancelable) event.preventDefault();
+      const from = logical;
+      const target = Math.max(1, Math.min(STAGE_COUNT, Math.round(from)));
+      const started = performance.now();
+      rail.dataset.wpStageSettling = "true";
+      const settle = (now) => {
+        const progress = Math.min(1, (now - started) / 340);
+        const eased = progress * progress * (3 - 2 * progress);
+        stageBrowseLogical = positionStageRail(from + (target - from) * eased);
+        if (progress < 1) stageSettleFrame = requestAnimationFrame(settle);
+        else {
+          stageSettleFrame = 0;
+          stageBrowseLogical = target;
+          ensureStageWindow(target);
+          const owner = rail.querySelector(`[data-stage="${target}"]`);
+          setBrowsedStageOwner(owner);
+          restore();
+        }
+      };
+      stageSettleFrame = requestAnimationFrame(settle);
+      moved = false;
+      event.stopImmediatePropagation();
+    };
+    document.addEventListener("pointerup", finish, true);
+    document.addEventListener("pointercancel", finish, true);
   }
 
   function renderCosmeticSection() {
@@ -4992,6 +5167,7 @@
 
   // Event Listeners Registration
   function setupEvents() {
+    installVirtualStageDrag();
     nodes.showStageBtn.addEventListener("click", showStageSelection);
     nodes.showStageBtn.addEventListener("keydown", (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
