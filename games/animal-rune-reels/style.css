@@ -114,6 +114,8 @@ html body .page[hidden]{display:none!important}
 .canvas,.ad-reserve{width:min(var(--live-width,100vw),920px)}
 .play-page{height:var(--live-height,100svh)}
 .play-page>.canvas{height:calc(var(--live-height,100svh) - 56px)}
+#mainPage.wp-standard-main-screen .main-canvas > .poster,
+#mainPage.wp-standard-main-screen .main-canvas > .main-copy{display:none!important}
 .stage-card{flex-basis:264px;height:190px;padding:10px;grid-template-rows:18px 28px 54px 24px 42px!important}
 .stage-card h3,.stage-card p{margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .stage-card small{line-height:18px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}

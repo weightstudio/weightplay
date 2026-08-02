@@ -117,6 +117,7 @@
     const panel=$(name==="missions"?"missionsTab":"labTab");
     button.id=`${name}TabButton`;
     button.setAttribute("role","tab");
+    button.setAttribute("aria-keyshortcuts","ArrowLeft ArrowRight ArrowUp ArrowDown Home End");
     button.setAttribute("aria-controls",panel.id);
     panel.setAttribute("role","tabpanel");
     panel.setAttribute("aria-labelledby",button.id);

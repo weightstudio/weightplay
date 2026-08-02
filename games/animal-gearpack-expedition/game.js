@@ -561,6 +561,11 @@
   let modalEscapeHandler = null;
   let selectedStage = progress.selectedStage;
   let centeredStage = selectedStage;
+  const STAGE_CARD_POOL_SIZE = 9;
+  let stageCardPool = [];
+  let stageWindowStart = 0;
+  let stageBrowseLogical = centeredStage;
+  let stageSettleFrame = 0;
 
   function t(key,vars={}){const source=(copy[locale]?.[key]||runtimeCopySupplements[locale]?.[key]||copy.en[key]||key).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??`{${name}}`);return translateForLocale(source);}
   const levelTerms={en:"Level","zh-Hant":"等級","zh-Hans":"等级",ja:"レベル",ko:"레벨",es:"Nivel","pt-BR":"Nível",fr:"Niveau",de:"Stufe",it:"Livello",ru:"Уровень",hi:"स्तर",ar:"المستوى"};
@@ -620,19 +625,41 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
     summary.textContent=t("campaignProgress",{cleared:progress.completedStages.length});
   }
   function localized(pair){const index=locale==="zh-Hant"?1:locale==="es"?2:0;return pair?.[locale]||translateForLocale(pair?.[index]||pair?.[0]||"");}
-  function setCenteredStageCard(card){
-    if(!card)return;
-    centeredStage=Math.max(0,Math.min(STAGE_COUNT-1,Number(card.dataset.stage)||0));
-    card.parentElement?.querySelectorAll(".region-card").forEach((node)=>{
-      const active=node===card;
-      node.classList.toggle("is-selected",active);
-      if(active)node.setAttribute("aria-current","true");
-      else node.removeAttribute("aria-current");
-    });
+  const clampStage=(index)=>Math.max(0,Math.min(STAGE_COUNT-1,Number(index)||0));
+  const stageWindowLimit=()=>Math.max(0,STAGE_COUNT-STAGE_CARD_POOL_SIZE);
+  const desiredStageWindow=(index)=>Math.max(0,Math.min(stageWindowLimit(),Math.round(index)-Math.floor(STAGE_CARD_POOL_SIZE/2)));
+  function createStageCard(){
+    const card=document.createElement("button");card.type="button";card.className="region-card";
+    card.addEventListener("focus",()=>{const index=clampStage(card.dataset.stage);railKeyboardOwner=index;centeredStage=index;stageBrowseLogical=index;syncStageCards();if(card.getAttribute("aria-disabled")!=="true"){selectedStage=index;progress.selectedStage=index;saveProgress();}});
+    card.addEventListener("click",()=>{const index=clampStage(card.dataset.stage);if(card.getAttribute("aria-disabled")==="true")return;centeredStage=index;selectedStage=index;stageBrowseLogical=index;progress.selectedStage=index;saveProgress();newRun(index);});
+    return card;
   }
+  function bindStageCard(card,index){
+    const definition=stages[index],region=regions[Math.floor(index/5)],unlocked=Math.max(1,Math.min(STAGE_COUNT,Number(progress.unlockedStage)||1)),available=index<unlocked,cleared=progress.completedStages.includes(index+1),checkpoint=(index+1)%5===0;
+    card.className=`region-card${cleared?" is-cleared":""}${checkpoint?" is-checkpoint":""}`;
+    card.dataset.stage=String(index);card.setAttribute("aria-posinset",String(index+1));card.setAttribute("aria-setsize",String(STAGE_COUNT));card.setAttribute("aria-disabled",available?"false":"true");card.toggleAttribute("data-wp-stage-unlocked",available);card.setAttribute("aria-keyshortcuts","ArrowLeft ArrowRight Home End");
+    if(index%5===0){card.dataset.region=String(Math.floor(index/5));delete card.dataset.regionGroup;}else{card.dataset.regionGroup=String(Math.floor(index/5));delete card.dataset.region;}
+    card.setAttribute("aria-label",available?`${t("stage")} ${index+1}: ${localized(definition.name)}. ${localized(definition.rule)}`:`${t("stage")} ${index+1}: ${t("locked")}`);
+    card.innerHTML=`<img src="${region.background}" alt="${localized(region.name)}"><span class="stage-number">${t("stage")} ${index+1}/30</span><strong>${localized(definition.name)}</strong><span class="stage-rule"${index%5===0?' data-region-meta=""':''}>${available?`${index%5===0?`5 ${t("encounter")} 繚 `:""}${localized(definition.rule)}`:t("locked")}</span><span class="stage-badges">${checkpoint?`<b>${t("checkpoint")} 繚 ${localized(enemyCatalog[definition.enemies[4]].name)}</b>`:""}${cleared?`<em>${t("completed")}</em>`:""}</span>`;
+  }
+  function syncStageCards(){stageCardPool.forEach((card)=>{const index=clampStage(card.dataset.stage),active=index===centeredStage;bindStageCard(card,index);card.tabIndex=active?0:-1;card.classList.toggle("is-selected",active);if(active)card.setAttribute("aria-current","true");else card.removeAttribute("aria-current");});}
+  function buildStageCardPool(){
+    const rail=$("#regionRail"),count=Math.min(STAGE_CARD_POOL_SIZE,STAGE_COUNT);stageWindowStart=desiredStageWindow(centeredStage);
+    if(!stageCardPool.length){stageCardPool=Array.from({length:count},()=>createStageCard());rail.replaceChildren(...stageCardPool);}
+    stageCardPool.forEach((card,offset)=>bindStageCard(card,stageWindowStart+offset));
+    rail.dataset.wpStageVirtualized="bounded-recycle";rail.dataset.wpStagePoolSize=String(count);rail.dataset.wpStageTotal=String(STAGE_COUNT);rail.dataset.wpStageWindowStart=String(stageWindowStart);rail.dataset.wpStageWindowEnd=String(stageWindowStart+count-1);if(!rail.dataset.wpStageRecycleCount)rail.dataset.wpStageRecycleCount="0";syncStageCards();
+  }
+  function moveStageWindow(targetStart){
+    const rail=$("#regionRail"),target=Math.max(0,Math.min(stageWindowLimit(),targetStart));if(!stageCardPool.length)buildStageCardPool();let recycled=0;
+    while(stageWindowStart<target){const card=rail.firstElementChild;stageWindowStart++;rail.append(card);bindStageCard(card,stageWindowStart+stageCardPool.length-1);recycled++;}
+    while(stageWindowStart>target){const card=rail.lastElementChild;stageWindowStart--;rail.prepend(card);bindStageCard(card,stageWindowStart);recycled++;}
+    stageCardPool=[...rail.children];rail.dataset.wpStageWindowStart=String(stageWindowStart);rail.dataset.wpStageWindowEnd=String(stageWindowStart+stageCardPool.length-1);if(recycled)rail.dataset.wpStageRecycleCount=String(Number(rail.dataset.wpStageRecycleCount||0)+recycled);return recycled;
+  }
+  function setCenteredStageCard(card){if(!card)return;centeredStage=clampStage(card.dataset.stage);stageBrowseLogical=centeredStage;syncStageCards();}
   function settleStageRailSelection(){
     if(document.body.dataset.screen!=="stage")return;
     const rail=$("#regionRail"),cards=[...rail.querySelectorAll(".region-card")];
+    if(rail.dataset.wpDragDown==="1"||rail.dataset.wpStageSettling==="true")return;
     const keyboardCard=railKeyboardOwner===null?null:rail.querySelector(`.region-card[data-stage="${railKeyboardOwner}"]`);
     if(keyboardCard&&document.activeElement===keyboardCard){
       setCenteredStageCard(keyboardCard);
@@ -651,20 +678,23 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
   }
   function recenterStageSelection(){
     if(document.body.dataset.screen!=="stage")return;
-    const card=$(`.region-card[data-stage="${centeredStage}"]`);
-    if(!card)return;
-    setCenteredStageCard(card);
-    card.scrollIntoView({behavior:"auto",inline:"center",block:"nearest"});
+    positionStageRail(centeredStage);syncStageCards();
   }
   function focusStageCard(index){
-    const next=Math.max(0,Math.min(STAGE_COUNT-1,Number(index)||0));
-    const card=$(`.region-card[data-stage="${next}"]`);
-    if(!card)return;
-    railKeyboardOwner=next;centeredStage=next;
-    setCenteredStageCard(card);
-    card.parentElement?.querySelectorAll(".region-card").forEach((node)=>{node.tabIndex=node===card?0:-1;});
-    card.scrollIntoView({behavior:"auto",inline:"center",block:"nearest"});
-    card.focus({preventScroll:true});
+    const next=clampStage(index);railKeyboardOwner=next;centeredStage=next;stageBrowseLogical=next;moveStageWindow(desiredStageWindow(next));syncStageCards();positionStageRail(next);$(`.region-card[data-stage="${next}"]`)?.focus({preventScroll:true});
+  }
+  function stageRailGeometry(){const rail=$("#regionRail"),cards=[...rail.children],railRect=rail.getBoundingClientRect(),first=cards[0]?.getBoundingClientRect(),second=cards[1]?.getBoundingClientRect(),delta=first&&second?(second.left+second.width/2)-(first.left+first.width/2):0,fallback=(first?.width||264)+(parseFloat(getComputedStyle(rail).columnGap)||12);return{rail,center:railRect.left+railRect.width/2,pitch:Math.abs(delta)||fallback,orientation:Math.sign(delta)||1};}
+  function nearestStageCard(){const geometry=stageRailGeometry();return stageCardPool.reduce((best,card)=>{const rect=card.getBoundingClientRect(),distance=Math.abs(rect.left+rect.width/2-geometry.center);return!best||distance<best.distance?{card,distance}:best},null)?.card||null;}
+  function currentStageLogicalPosition(){const card=nearestStageCard();if(!card)return centeredStage;const index=clampStage(card.dataset.stage),rect=card.getBoundingClientRect(),geometry=stageRailGeometry();return Math.max(0,Math.min(STAGE_COUNT-1,index+(geometry.center-(rect.left+rect.width/2))/(geometry.pitch*geometry.orientation)));}
+  function positionStageRail(logicalPosition){const logical=Math.max(0,Math.min(STAGE_COUNT-1,Number(logicalPosition)||0)),anchorIndex=Math.round(logical);if(moveStageWindow(desiredStageWindow(anchorIndex)))syncStageCards();const card=$("#regionRail").querySelector(`[data-stage="${anchorIndex}"]`);if(!card)return logical;card.scrollIntoView({behavior:"auto",block:"nearest",inline:"center"});const geometry=stageRailGeometry(),fraction=logical-anchorIndex;if(Math.abs(fraction)>.0001)geometry.rail.scrollLeft+=fraction*geometry.orientation*geometry.pitch;geometry.rail.dataset.wpStageDragLogical=logical.toFixed(4);return logical;}
+  function installVirtualStageDrag(){
+    const rail=$("#regionRail");if(!rail||rail.dataset.wpStageVirtualDrag==="true")return;rail.dataset.wpStageVirtualDrag="true";rail.dataset.wpStageCenterObserver="manual";
+    let pointerId=null,startX=0,lastX=0,dragLogical=0,moved=false,suppressClick=false;
+    const restore=()=>{rail.style.removeProperty("scroll-behavior");rail.style.removeProperty("scroll-snap-type");rail.classList.remove("wp-stage-dragging");delete rail.dataset.wpStageSettling;};
+    rail.addEventListener("pointerdown",(event)=>{if(event.isPrimary===false||(event.button!==undefined&&event.button!==0))return;cancelAnimationFrame(stageSettleFrame);stageSettleFrame=0;pointerId=event.pointerId;startX=lastX=event.clientX;dragLogical=currentStageLogicalPosition();moved=false;rail.style.setProperty("scroll-behavior","auto","important");rail.style.setProperty("scroll-snap-type","none","important");rail.dataset.wpDragDown="1";event.stopImmediatePropagation();},true);
+    document.addEventListener("pointermove",(event)=>{if(event.pointerId!==pointerId)return;const delta=event.clientX-lastX;lastX=event.clientX;if(!moved&&Math.abs(event.clientX-startX)>4){moved=true;rail.classList.add("wp-stage-dragging");}if(moved){if(event.cancelable)event.preventDefault();const rect=rail.getBoundingClientRect(),scale=rect.width?rail.clientWidth/rect.width:1;dragLogical=positionStageRail(dragLogical-delta*scale/stageRailGeometry().pitch);stageBrowseLogical=dragLogical;}event.stopImmediatePropagation();},true);
+    const finish=(event)=>{if(pointerId===null||(event.pointerId!==undefined&&event.pointerId!==pointerId))return;pointerId=null;rail.dataset.wpDragDown="0";rail.classList.remove("wp-stage-dragging");if(!moved){restore();return;}if(event.cancelable)event.preventDefault();const from=dragLogical,target=clampStage(Math.round(from)),start=performance.now();centeredStage=target;if(target<Math.max(1,Number(progress.unlockedStage)||1)){selectedStage=target;progress.selectedStage=target;saveProgress();}syncStageCards();rail.dataset.wpStageSettling="true";const settle=(now)=>{const p=Math.min(1,(now-start)/340),eased=p*p*(3-2*p);stageBrowseLogical=positionStageRail(from+(target-from)*eased);if(p<1)stageSettleFrame=requestAnimationFrame(settle);else{stageSettleFrame=0;positionStageRail(target);syncStageCards();restore();}};stageSettleFrame=requestAnimationFrame(settle);suppressClick=true;setTimeout(()=>{suppressClick=false},0);moved=false;event.stopImmediatePropagation();};
+    document.addEventListener("pointerup",finish,true);document.addEventListener("pointercancel",finish,true);rail.addEventListener("click",(event)=>{if(!suppressClick)return;suppressClick=false;event.preventDefault();event.stopImmediatePropagation();},true);
   }
   function renderStage(){
     const unlocked=Math.max(1,Math.min(STAGE_COUNT,Number(progress.unlockedStage)||1));
@@ -672,18 +702,7 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
     centeredStage=Math.max(0,Math.min(STAGE_COUNT-1,centeredStage));
     $("#stageGold").textContent=`${t("diamonds")} ${diamondBalance()}`;
     $("#loadoutText").textContent=`${t("discoveries")} ${progress.discoveries.length}/12 · ${t("workshop")} ${formatLevel(1+Math.floor(progress.workshopXp/40))}`;
-    const rail=$("#regionRail");rail.replaceChildren();
-    stages.forEach((definition,index)=>{
-      const region=regions[Math.floor(index/5)],available=index<unlocked,cleared=progress.completedStages.includes(index+1),checkpoint=(index+1)%5===0;
-      const card=document.createElement("button");
-      card.type="button";card.className=`region-card${index===centeredStage?" is-selected":""}${cleared?" is-cleared":""}${checkpoint?" is-checkpoint":""}`;
-      card.dataset.stage=String(index);card.tabIndex=index===centeredStage?0:-1;if(index===centeredStage)card.setAttribute("aria-current","true");if(index%5===0)card.dataset.region=String(Math.floor(index/5));else card.dataset.regionGroup=String(Math.floor(index/5));card.setAttribute("aria-disabled",available?"false":"true");card.toggleAttribute("data-wp-stage-unlocked",available);card.setAttribute("aria-keyshortcuts","ArrowLeft ArrowRight Home End");
-      card.setAttribute("aria-label",available?`${t("stage")} ${index+1}: ${localized(definition.name)}. ${localized(definition.rule)}`:`${t("stage")} ${index+1}: ${t("locked")}`);
-      card.innerHTML=`<img src="${region.background}" alt="${localized(region.name)}"><span class="stage-number">${t("stage")} ${index+1}/30</span><strong>${localized(definition.name)}</strong><span class="stage-rule"${index%5===0?' data-region-meta=""':''}>${available?`${index%5===0?`5 ${t("encounter")} · `:""}${localized(definition.rule)}`:t("locked")}</span><span class="stage-badges">${checkpoint?`<b>${t("checkpoint")} · ${localized(enemyCatalog[definition.enemies[4]].name)}</b>`:""}${cleared?`<em>${t("completed")}</em>`:""}</span>`;
-      card.addEventListener("focus",()=>{centeredStage=index;setCenteredStageCard(card);rail.querySelectorAll(".region-card").forEach((node)=>{node.tabIndex=node===card?0:-1;});if(available){selectedStage=index;progress.selectedStage=index;saveProgress();}});
-      card.addEventListener("click",()=>{if(!available)return;centeredStage=index;selectedStage=index;progress.selectedStage=index;saveProgress();newRun(index);});
-      rail.append(card);
-    });
+    stageBrowseLogical=centeredStage;buildStageCardPool();moveStageWindow(desiredStageWindow(centeredStage));syncStageCards();
     requestAnimationFrame(recenterStageSelection);
   }
 
@@ -876,6 +895,6 @@ let railSettleTimer=0,railKeyboardOwner=null;const releaseStageKeyboardOwner=()=
   $("#regionRail").addEventListener("wonder:stage-snap",settleStageRailSelection);
   addEventListener("resize",()=>requestAnimationFrame(recenterStageSelection));
   if(new URLSearchParams(location.search).has("smoke"))window.__gearpackSmoke={stageCount:STAGE_COUNT,stages:stages.map((definition,index)=>({stage:index+1,region:Math.floor(index/5)+1,name:definition.name[0],rule:definition.rule[0],enemies:[...definition.enemies],checkpoint:(index+1)%5===0})),localeAudit(localeCode){const dictionary={...(copy[localeCode]||{}),...(runtimeCopySupplements[localeCode]||{})},hasOwnedKey=(key)=>Object.prototype.hasOwnProperty.call(dictionary,key),owned=(value)=>translateForLocale(value,localeCode);return {copyMissing:Object.keys(copy.en).filter((key)=>!hasOwnedKey(key)&&owned(copy.en[key])===copy.en[key]),copyEqualEnglish:Object.keys(copy.en).filter((key)=>!hasOwnedKey(key)&&owned(copy.en[key])===copy.en[key]),itemsMissing:items.filter((item)=>(item.name[localeCode]||owned(item.name.en))===item.name.en).map((item)=>item.id),regionsMissing:regions.flatMap((region,index)=>(region.name[localeCode]||owned(region.name[0]))===region.name[0]?[index+1]:[]),stagesMissing:stages.flatMap((definition,index)=>(definition.name[localeCode]||owned(definition.name[0]))===definition.name[0]||(definition.rule[localeCode]||owned(definition.rule[0]))===definition.rule[0]?[index+1]:[]),enemiesMissing:Object.entries(enemyCatalog).filter(([,enemy])=>(enemy.name[localeCode]||owned(enemy.name[0]))===enemy.name[0]).map(([id])=>id)};},unlockAll(){progress.unlockedStage=STAGE_COUNT;progress.selectedStage=STAGE_COUNT-1;selectedStage=STAGE_COUNT-1;centeredStage=selectedStage;saveProgress();showScreen("stage");return progress;},openStageForTest(stage=1){progress.unlockedStage=Math.max(progress.unlockedStage,Math.min(STAGE_COUNT,stage));saveProgress();newRun(Math.max(0,Math.min(STAGE_COUNT-1,stage-1)));return {stage:run.stage+1,enemy:enemyAt(0,run.stage).id};},openEncounterForTest(stage=30,room=5){this.openStageForTest(stage);run.room=Math.max(0,Math.min(ROOMS_PER_STAGE-1,room-1));prepareEnemyState(enemyAt(run.room,run.stage));renderBattle();return {stage:run.stage+1,room:run.room+1,enemy:enemyAt(run.room,run.stage).id};},mechanicPreview(stage=30,room=5){const enemy=enemyAt(room-1,stage-1);return {id:enemy.id,shield:enemy.shield||0,openingHit:enemy.openingHit||0,isolation:enemy.isolation||0,corrosion:enemy.corrosion||0,rowHeat:enemy.rowHeat||0,overload:Boolean(enemy.overload),rotatingSeal:Boolean(enemy.rotatingSeal),phase:enemy.phase||null};},finishRegionForTest(){if(!run)newRun(0);run.room=4;showResult(true);},finishStageForTest(stage=1){if(!run||run.stage!==stage-1)newRun(stage-1);run.room=4;showResult(true);},failStageForTest(stage=1){if(!run||run.stage!==stage-1)newRun(stage-1);showResult(false);},openMerchantForTest(){if(!run)newRun(0);showMerchant();},openFullLootForTest(){if(!run)newRun(0);run.tray=Array.from({length:12},(_,index)=>items[index%6].id);run.placed=[];selectedItem=run.tray[0];selectedTrayIndex=0;showLoot(()=>{run.room=1;prepareEnemyState(enemyAt(run.room,run.stage));saveRun();setFeedback(t("repack"));renderBattle();});}};
-  if(window.__gearpackSmoke)window.__gearpackSmoke.setBlueprintPackForTest=(id)=>{progress.workshopXp=Math.max(progress.workshopXp,80);run=null;return setBlueprintPackForTest(id);};
-  applyLocale(locale);showScreen("main");
+  if(window.__gearpackSmoke){window.__gearpackSmoke.setBlueprintPackForTest=(id)=>{progress.workshopXp=Math.max(progress.workshopXp,80);run=null;return setBlueprintPackForTest(id);};window.__gearpackSmoke.stageWindow=()=>{const rail=$("#regionRail");return{selected:selectedStage,centered:centeredStage,start:Number(rail.dataset.wpStageWindowStart),end:Number(rail.dataset.wpStageWindowEnd),pool:Number(rail.dataset.wpStagePoolSize),total:Number(rail.dataset.wpStageTotal),recycles:Number(rail.dataset.wpStageRecycleCount),indexes:[...rail.children].map((card)=>Number(card.dataset.stage))};};window.__gearpackSmoke.browseStage=(index)=>{focusStageCard(index);return window.__gearpackSmoke.stageWindow();};}
+  installVirtualStageDrag();applyLocale(locale);showScreen("main");
 })();
