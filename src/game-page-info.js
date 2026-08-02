@@ -8247,6 +8247,10 @@
 
   registerExpandedGuide("animal-unblock", {
     title: "Unblock Trail", gameplay: "Sliding Block Exit Puzzle",
+    genre: ["Puzzle", "Strategy", "Logic", "Animal"],
+    hideSkillsFact: true,
+    showRelatedSkill: false,
+    relatedIds: ["animal-rootvault-pins", "animal-one-line", "animal-2048"],
     intro: "Slide horizontal and vertical blocks along their own axes until the red explorer gains a clear route through the exit.",
     story: ["Panko maps thirty crowded forest gates. Every block begins on a fixed grid and every puzzle has a verified sequence that releases the marked explorer.", "Blocks never rotate, jump, or leave the board. The challenge is deciding which temporary moves create room for the decisive final slide."],
     systems: ["Horizontal blocks move only left and right; vertical blocks move only up and down.", "A move stops before the board edge or another block. Occupied cells cannot overlap.", "The red explorer clears the stage when its path reaches the marked exit lane.", "Undo restores one slide, Hint identifies a useful block, and Restart restores the exact opening layout."],
@@ -8257,6 +8261,74 @@
     parent: "There is no timer, account, purchase, or public score. Unlocks and local best move counts stay in this browser.",
     faq: [["Can blocks rotate?", "No, each block keeps its original orientation."], ["Why did a drag stop?", "The next cell was occupied or outside the board."], ["Which block must exit?", "The clearly marked red explorer."], ["Are all thirty trails solvable?", "Yes, each authored layout has a verified solution."]]
   }, "解鎖滑塊", "解锁滑块");
+  localizedGameplayProfiles["zh-Hant"]["animal-unblock"] = {
+    gameplay: "滑塊出口益智",
+    genre: ["益智", "策略", "邏輯", "動物"],
+  };
+  Object.assign(localizedGames["zh-Hant"]["animal-unblock"], {
+    title: "解鎖滑塊",
+    difficulty: "簡單到具挑戰性",
+    time: "每關約 2–8 分鐘",
+    gameplay: "滑塊出口益智",
+    genre: ["益智", "策略", "邏輯", "動物"],
+    guideKicker: "WeightPlay 原創遊戲指南",
+    guideTitleSuffix: "遊戲指南",
+    noteTitle: "玩家與存檔資訊",
+    intro: "沿著每塊木塊自己的方向滑動，逐步清出出口通道，讓紅色探險家離開擁擠的森林關卡。",
+    story: [
+      "Panko 記錄了三十座被木塊堵住的森林關卡。每塊木塊都從固定格位開始，每個盤面都有一條經過驗證、能讓紅色探險家抵達出口的移動順序。",
+      "木塊不會旋轉、跳躍或離開棋盤。真正的挑戰是判斷哪些暫時移動能騰出空間，最後完成關鍵的出口滑動。",
+    ],
+    systems: [
+      "橫向木塊只能左右移動；直向木塊只能上下移動。",
+      "木塊碰到棋盤邊界或其他木塊前就會停止，任何兩塊木塊都不能占用同一格。",
+      "當紅色探險家的路徑接上標示的出口通道時，本關即告完成。",
+      "復原會撤銷最近一次滑動；提示只指出值得移動的木塊與方向，不會代替玩家移動；重新開始則恢復原始盤面。",
+    ],
+    how: [
+      "從橫向關卡列選擇一條已解鎖的小徑。",
+      "找出所有擋在紅色探險家出口路線上的木塊。",
+      "先沿著合法方向騰出空間，再移開真正阻擋出口的木塊。",
+      "把紅色探險家滑出出口，查看結果並繼續下一條小徑。",
+    ],
+    strategyTips: [
+      "從出口位置反推，先確認最後一格必須由哪塊木塊讓開。",
+      "有些木塊需要移得比眼前看起來更遠，才能替下一塊木塊留下完整空間。",
+      "不要過早占用唯一的空欄，後面的直向木塊可能還需要經過那裡。",
+      "最近一步走錯時使用復原；如果整體順序已經卡死，重新開始會比連續嘗試更清楚。",
+    ],
+    progression: [
+      "前期小徑先教會方向限制與單一阻擋；後續章節逐步加入較長木塊、狹窄緩衝區、巢狀依賴、多重交叉與更密集的終章盤面。",
+      "每一關都改變空間解題順序，不會偷偷加入任意的新移動規則或倒數壓力。",
+    ],
+    designNote: "拖曳方向、格線吸附、碰撞判定與木塊圖像共用同一套格位幾何，因此觸控、滑鼠與鍵盤會操作相同的合法盤面。提示採用可見的木塊與方向指引，只提供下一步線索，不會替玩家增加步數或改變棋盤。",
+    parent: "遊戲沒有倒數、帳號、購買或公開排行榜。已解鎖關卡與本機最佳步數只保存在目前瀏覽器；清除網站資料、使用另一個瀏覽器或更換裝置可能會移除或分開這些紀錄。",
+    faq: [
+      ["木塊可以旋轉嗎？", "不行，每塊木塊都會保持原本的橫向或直向方向。"],
+      ["為什麼拖曳到一半就停下來？", "下一格已被其他木塊占用，或木塊已經碰到棋盤邊界。"],
+      ["哪一塊需要離開棋盤？", "只有清楚標示的紅色探險家需要從出口滑出去。"],
+      ["提示會自動替我移動嗎？", "不會。提示只標出一塊有用的木塊與建議方向，盤面與步數仍保持不變。"],
+      ["三十條小徑都能解開嗎？", "可以，每個手工盤面都有經過驗證的解法。"],
+      ["進度會保存嗎？", "已解鎖小徑與最佳步數會保存在目前瀏覽器的本機儲存空間。"],
+    ],
+  });
+  const simplifyUnblockGuide = (value) => {
+    if (typeof value === "string") return window.WonderI18n?.simplifyChineseText?.(value) || value;
+    if (Array.isArray(value)) return value.map(simplifyUnblockGuide);
+    if (!value || typeof value !== "object") return value;
+    return Object.fromEntries(Object.entries(value).map(([key, entry]) => [key, simplifyUnblockGuide(entry)]));
+  };
+  localizedGames["zh-Hans"]["animal-unblock"] = {
+    ...simplifyUnblockGuide(localizedGames["zh-Hant"]["animal-unblock"]),
+    title: "解锁滑块",
+    guideKicker: "WeightPlay 原创游戏指南",
+    guideTitleSuffix: "游戏指南",
+    noteTitle: "玩家与存档信息",
+  };
+  localizedGameplayProfiles["zh-Hans"]["animal-unblock"] = {
+    gameplay: "滑块出口益智",
+    genre: ["益智", "策略", "逻辑", "动物"],
+  };
 
   registerExpandedGuide("animal-spectrum-pulse", {
     title: "Animal Spectrum Pulse", gameplay: "One-Touch Timing Arcade",
