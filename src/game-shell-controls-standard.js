@@ -667,9 +667,14 @@
     if (existingProgress && existingProgress.dataset.wpMainProgress !== "generated") return;
     const cards = STAGE_CARD_SELECTORS.flatMap((selector) => [...document.querySelectorAll(selector)])
       .filter((card, index, all) => all.indexOf(card) === index);
-    const ownsStage = STAGE_RAIL_SELECTORS.some((selector) => document.querySelector(selector));
+    const stageRails = STAGE_RAIL_SELECTORS.flatMap((selector) => [...document.querySelectorAll(selector)])
+      .filter((rail, index, all) => all.indexOf(rail) === index);
+    const ownsStage = stageRails.length > 0;
     if (cards.length < 2 && !ownsStage) return;
-    const total = cards.length >= 2 ? cards.length : 30;
+    const declaredStageTotal = stageRails
+      .map((rail) => Number(rail.dataset.wpStageTotal))
+      .find((value) => Number.isInteger(value) && value > 0);
+    const total = declaredStageTotal ?? (cards.length >= 2 ? cards.length : 30);
     const unlocked = cards.filter((card) => (
       !card.disabled
       && card.getAttribute("aria-disabled") !== "true"
