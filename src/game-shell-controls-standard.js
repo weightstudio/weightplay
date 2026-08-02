@@ -184,6 +184,52 @@
     return COPY[raw] ? raw : raw.split("-")[0];
   }
 
+  let officialTitleRegistryPromise;
+  function ensureOfficialTitleRegistry() {
+    if (window.WEIGHTPLAY_GAME_TITLES) return Promise.resolve(window.WEIGHTPLAY_GAME_TITLES);
+    if (officialTitleRegistryPromise) return officialTitleRegistryPromise;
+    officialTitleRegistryPromise = new Promise((resolve) => {
+      const existing = document.querySelector('script[data-wp-game-title-registry]');
+      const script = existing || document.createElement("script");
+      const finish = () => resolve(window.WEIGHTPLAY_GAME_TITLES || {});
+      if (!existing) {
+        script.src = new URL("game-title-registry.js", sharedAssetBase).href;
+        script.dataset.wpGameTitleRegistry = "true";
+        document.head.append(script);
+      }
+      if (window.WEIGHTPLAY_GAME_TITLES) finish();
+      else {
+        script.addEventListener("load", finish, { once: true });
+        script.addEventListener("error", finish, { once: true });
+      }
+    });
+    return officialTitleRegistryPromise;
+  }
+
+  function officialGameTitle() {
+    const gameId = document.body?.dataset.wpGameId;
+    return gameId
+      ? window.WEIGHTPLAY_GAME_TITLES?.[gameId]?.[localeCode()]
+      : "";
+  }
+
+  function applyOfficialGameTitle() {
+    const localizedTitle = officialGameTitle();
+    if (!localizedTitle) return;
+    document.querySelectorAll(OFFICIAL_TITLE_SELECTORS).forEach((node) => {
+      node.dataset.runtimeLocalize = "off";
+      if (node.textContent?.trim() !== localizedTitle) node.textContent = localizedTitle;
+    });
+  }
+
+  const OFFICIAL_TITLE_SELECTORS = [
+      '[data-t="title"]',
+      '[data-ui="title"]',
+      "[data-wp-game-title]",
+      ".wp-generated-main-title",
+      ".wp-shell-main-title",
+    ].join(",");
+
   function updateCopy() {
     const copy = COPY[localeCode()] || COPY.en;
     title.textContent = copy[0];
@@ -650,6 +696,7 @@
   }
 
   function place() {
+    applyOfficialGameTitle();
     adoptControls();
     normalizeBattleReturns();
     const { type, screen } = activeScreen();
@@ -829,6 +876,11 @@
     if (canonicalTitle && !canonicalTitle.closest(".wp-shell-settings,.wp-shell-return")) {
       const legacyTitleContainer = canonicalTitle.parentElement;
       canonicalTitle.classList.add("wp-shell-main-title");
+      const localizedTitle = officialGameTitle();
+      if (localizedTitle && canonicalTitle.textContent?.trim() !== localizedTitle) {
+        canonicalTitle.dataset.runtimeLocalize = "off";
+        canonicalTitle.textContent = localizedTitle;
+      }
       if (canonicalTitle.parentElement !== header) header.append(canonicalTitle);
       if (
         type === "stage"
@@ -895,6 +947,10 @@
     ensureStageSelectorRuntime();
     ensureGameInfoRuntime();
     build();
+    ensureOfficialTitleRegistry().then(() => {
+      applyOfficialGameTitle();
+      window.dispatchEvent(new CustomEvent("weightplay:shell-sync"));
+    });
     place();
     const placementWatchSelector = [
       ...MAIN_SELECTORS,
@@ -939,7 +995,33 @@
       observePlacement();
     };
     observePlacement();
+    let titleSyncQueued = false;
+    const titleObserver = new MutationObserver((records) => {
+      const titleChanged = records.some((record) => record.target === document.documentElement
+        || record.target?.matches?.(OFFICIAL_TITLE_SELECTORS)
+        || record.target?.parentElement?.matches?.(OFFICIAL_TITLE_SELECTORS));
+      if (!titleChanged || titleSyncQueued) return;
+      titleSyncQueued = true;
+      queueMicrotask(() => {
+        titleSyncQueued = false;
+        applyOfficialGameTitle();
+      });
+    });
+    titleObserver.observe(document.documentElement, {
+      subtree: true,
+      childList: true,
+      characterData: true,
+      attributes: true,
+      attributeFilter: ["lang"],
+    });
     window.addEventListener("weightplay:shell-sync", syncPlace);
+    document.addEventListener("change", (event) => {
+      if (!event.target?.matches?.("select, [data-locale-select]")) return;
+      setTimeout(() => {
+        applyOfficialGameTitle();
+        schedulePlace();
+      }, 0);
+    });
     window.addEventListener("resize", schedulePlace);
     window.addEventListener("load", schedulePlace, { once: true });
     setTimeout(schedulePlace, 0);

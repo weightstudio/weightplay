@@ -6035,6 +6035,7 @@ body.general-lobby-page {
   .general-lobby-page .game-card-art.image-art .game-card-fg {
     object-fit: contain;
   }
+
 }
 
 @media (min-width: 1505px) {
@@ -7872,5 +7873,181 @@ select,
 
   .general-lobby-page #upcomingGamesSection {
     padding: 14px;
+  }
+}
+
+/* General lobby mobile polish: preserve complete posters and keep discovery compact. */
+.general-lobby-page .continue-playing,
+.general-lobby-page .hero-games {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.general-lobby-page .continue-playing::-webkit-scrollbar,
+.general-lobby-page .hero-games::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .general-lobby-page .continue-playing-section {
+    gap: 8px;
+    padding-bottom: 12px;
+  }
+
+  .general-lobby-page .continue-playing {
+    grid-auto-columns: minmax(272px, 82vw);
+    gap: 8px;
+    padding-bottom: 0;
+  }
+
+  .general-lobby-page .continue-playing-card {
+    grid-template-columns: 104px minmax(0, 1fr);
+    min-height: 106px;
+  }
+
+  .general-lobby-page .continue-playing-card img {
+    width: 104px;
+    height: 104px;
+    min-height: 104px;
+    align-self: center;
+    background: #0c121b;
+    object-fit: contain;
+  }
+
+  .general-lobby-page .continue-playing-copy strong {
+    display: -webkit-box;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .general-lobby-page .hero-games-section {
+    gap: 8px;
+    padding: 4px 0 12px;
+  }
+
+  .general-lobby-page .hero-games {
+    grid-auto-columns: minmax(252px, 78vw);
+    gap: 8px;
+    padding-bottom: 0;
+  }
+
+  .general-lobby-page .hero-game-card {
+    grid-template-columns: 110px minmax(0, 1fr);
+    grid-template-rows: 110px;
+    min-height: 112px;
+    height: 112px;
+  }
+
+  .general-lobby-page .hero-game-art {
+    width: 110px;
+    height: 110px;
+    aspect-ratio: 1 / 1;
+    background: #0c121b;
+  }
+
+  .general-lobby-page .hero-game-art > img:not(.hero-game-character) {
+    object-fit: contain;
+  }
+
+  .general-lobby-page .hero-game-art span {
+    top: 6px;
+    left: 6px;
+    min-width: 58px;
+    min-height: 28px;
+    padding: 0 8px;
+    font-size: 12px;
+  }
+
+  .general-lobby-page .hero-game-copy {
+    align-content: center;
+    gap: 4px;
+    padding: 9px 10px;
+  }
+
+  .general-lobby-page .hero-game-card strong {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 16px;
+    line-height: 1.15;
+    text-overflow: clip;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .general-lobby-page .hero-game-card small {
+    font-size: 11px;
+  }
+
+  .general-lobby-page .hero-game-card em {
+    min-height: 24px;
+    padding: 4px 7px;
+    font-size: 11px;
+  }
+
+  .general-lobby-page .game-card-art.image-art,
+  .general-lobby-page .game-card.coming-soon .game-card-art.image-art {
+    aspect-ratio: 1 / 1;
+    background: #0c121b;
+  }
+
+  .general-lobby-page .game-card-art.image-art .game-card-fg {
+    object-fit: contain;
+  }
+
+  .general-lobby-page .favorite-toggle {
+    top: 51px;
+    right: 3px;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  .general-lobby-page .favorite-toggle::before {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 50%;
+    background: rgba(12, 18, 27, 0.9);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
+  }
+
+  .general-lobby-page .favorite-toggle.active {
+    color: #4b2606;
+  }
+
+  .general-lobby-page .favorite-toggle.active::before {
+    border-color: rgba(255, 212, 106, 0.95);
+    background: #ffcf63;
+  }
+
+  .general-lobby-page .favorite-icon {
+    position: relative;
+    z-index: 1;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (min-width: 721px) {
+  .general-lobby-page .hero-game-card strong {
+    display: -webkit-box;
+    font-size: 16px;
+    line-height: 1.15;
+    text-overflow: clip;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+}
+
+@media (min-width: 721px) and (max-width: 1119px) {
+  .general-lobby-page .hero-games {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }

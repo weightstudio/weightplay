@@ -6,7 +6,28 @@
     [[0,1],[2,5],[3,4]],
     [[0,5],[1,4],[2,3]],
   ];
+  const earlyCells=[
+    [1,9,2,8,3,7, 4,6,1,9,2,8, 3,7,4,6,1,9, 2,8,3,7,4,6],
+    [1,2,3,7,8,9, 4,1,2,8,9,6, 2,3,4,6,7,8, 3,4,1,9,6,7],
+    [1,2,3,4,1,2, 3,4,1,2,3,4, 7,6,9,8,7,6, 9,8,7,6,9,8],
+    [1,2,3,7,8,9, 4,1,2,8,9,6, 1,2,3,4,1,2, 9,8,7,6,9,8],
+  ];
+  function earlyLevel(index){
+    const solution=[];
+    if(index===0){
+      for(let row=0;row<4;row++)for(const [left,right] of layouts[0])solution.push([row*6+left,row*6+right]);
+    }else if(index===1){
+      for(let row=0;row<4;row++)for(const [left,right] of layouts[2].slice().reverse())solution.push([row*6+left,row*6+right]);
+    }else if(index===2){
+      for(let col=0;col<6;col++)solution.push([6+col,12+col],[col,18+col]);
+    }else{
+      for(let col=0;col<6;col++)solution.push([12+col,18+col]);
+      for(const row of[0,1])for(const [left,right] of layouts[2].slice().reverse())solution.push([row*6+left,row*6+right]);
+    }
+    return{index,rows:4,cols:6,cells:earlyCells[index].slice(),solution,tier:1,layoutDepth:index+1,difficulty:index+1};
+  }
   function build(index){
+    if(index<4)return earlyLevel(index);
     const rows=index<10?4:index<20?5:6,cols=6,roll=rng(0x45d9f3b^(index*2654435761)),cells=[],solution=[];
     const tier=Math.min(5,Math.floor(index/6)+1);
     const layoutDepth=index<5?1:2;

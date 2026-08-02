@@ -111,6 +111,13 @@ img{-webkit-user-drag:none}
 .mission-schedule{font-size:.58rem;line-height:18px;color:#ffe08a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .resource-bank,.summon-bank{height:46px;display:flex;justify-content:center;gap:28px;align-items:center;margin-bottom:8px;border-radius:12px;background:#111943dd}
 .resource-bank span,.summon-bank span{display:flex;gap:8px;align-items:center}.resource-bank i,.summon-bank i{font-style:normal;color:#afbbe8}.resource-bank b,.summon-bank b{color:#ffe06b;font-size:1.15rem}
+#runesPanel{display:grid;grid-template-rows:auto minmax(0,1fr);gap:6px}
+#runesPanel[hidden]{display:none!important}
+.rune-material-bank{box-sizing:border-box;min-height:48px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:5px 7px;border:1px solid #4d5b92;border-radius:12px;background:#111943dd}
+.rune-material-bank span{min-width:0;display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:5px;align-items:center;padding:2px 5px;border-radius:9px;background:#1a2552}
+.rune-material-bank img{width:24px;height:24px;object-fit:contain;filter:drop-shadow(0 0 6px #ffe36b88)}
+.rune-material-bank i{min-width:0;font-style:normal;color:#dbe2ff;font-size:.68rem;font-weight:800;line-height:1.15;overflow-wrap:anywhere}
+.rune-material-bank b{color:#ffe06b;font-size:.84rem;white-space:nowrap}
 .material-grid{height:calc(100% - 54px);overflow:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:112px;gap:10px;padding:4px}
 .material-card{display:grid;grid-template-columns:78px minmax(0,1fr) auto;align-items:center;gap:10px;padding:10px;border:1px solid #53619b;border-radius:14px;background:#10183f}
 .material-card img{width:74px;height:74px;object-fit:contain}.material-card div{min-width:0}.material-card b,.material-card small{display:block}.material-card small{margin-top:5px;color:#bdc8ef;font-size:.7rem;line-height:1.35}.material-card strong{color:#ffe06b;font-size:1.1rem}
@@ -122,7 +129,9 @@ img{-webkit-user-drag:none}
 .rune-guide-card img{grid-row:1/5}.rune-guide-card b{grid-row:1}.rune-guide-card>span{grid-column:2;grid-row:2;color:#ffe06b;font-size:.72rem;font-weight:900}.rune-guide-card small{grid-row:3;overflow:hidden}.rune-guide-card button{grid-column:2;grid-row:4;border:1px solid #8170dc;border-radius:9px;background:#33256c;color:#fff;font-size:.68rem;font-weight:900}.rune-guide-card button:disabled{opacity:.55}
 .stage-name em{font-style:normal;color:#ffe06b;font-size:.62rem;font-weight:900}.reward-details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:12px 0}.reward-details span{display:flex;justify-content:space-between;gap:7px;padding:9px;border-radius:10px;background:#0a1132;color:#cbd5fa;font-size:.75rem}.reward-details b{color:#ffe06b}
 @media(max-width:560px){.stage-tabs button{font-size:.62rem}.material-grid{grid-template-columns:1fr;grid-auto-rows:94px}.material-card{grid-template-columns:64px minmax(0,1fr) auto}.material-card img{width:60px;height:60px}.summon-pools{gap:7px}.summon-pools article{grid-template-rows:78px auto auto 52px;padding:7px}.summon-pools img{width:76px;height:76px}.summon-pools h3{font-size:.82rem}.summon-pools p{font-size:.62rem}.rune-guide-card{height:150px;flex-basis:150px}}
+@media(max-width:560px){.rune-material-bank{grid-template-columns:repeat(2,minmax(0,1fr));min-height:76px}.rune-material-bank i{font-size:.64rem}}
 @media(max-height:520px) and (orientation:landscape){#stagesPanel{grid-template-rows:34px minmax(0,1fr)}#stagesPanel .progress-card{display:none}.v3-stage .stage-card{height:210px}.material-grid{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:minmax(0,1fr)}.material-card{grid-template-columns:52px minmax(0,1fr);padding:7px}.material-card img{width:50px;height:50px}.material-card strong{grid-column:1/3}.summon-pools article{grid-template-columns:78px 1fr;grid-template-rows:auto auto 50px;text-align:start}.summon-pools img{grid-row:1/4}.summon-pools .primary{grid-column:2}.rune-guide-card{flex-basis:132px;height:132px}}
+@media(max-height:520px) and (orientation:landscape){.rune-material-bank{grid-template-columns:repeat(4,minmax(0,1fr));min-height:44px;padding:3px 6px}.rune-material-bank span{grid-template-columns:22px minmax(0,1fr) auto}.rune-material-bank img{width:22px;height:22px}}
 
 /* V5: five-slot formation, explicit rune transfers, stable Battle framing and wave changes. */
 .v3-battle #battleBack{grid-column:1}.v3-battle .stage-name{grid-column:2}.v3-battle .speed-btn{grid-column:3;justify-self:end!important}

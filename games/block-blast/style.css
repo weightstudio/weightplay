@@ -51,6 +51,8 @@
   border-radius: 20px;
   background: #101f3d;
   box-shadow: inset 0 0 0 2px #718cff55;
+  position: relative;
+  overflow: visible;
 }
 .block-cell {
   min-width: 0;
@@ -73,14 +75,47 @@
   box-shadow: inset 0 0 0 3px #fff9;
   background: #71d8ff80;
 }
+.block-cell.will-clear {
+  z-index: 3;
+  box-shadow: inset 0 0 0 3px #fff, inset 0 0 12px #ffe56b, 0 0 11px #ffd35acc;
+  filter: brightness(1.35) saturate(1.25);
+  animation: clearReadyPulse 0.58s ease-in-out infinite alternate;
+}
+.block-cell.preview.will-clear {
+  background: linear-gradient(135deg, #fff4aacc, #77efffcc);
+}
 .block-cell.invalid {
   background: #ff668b99 !important;
   box-shadow: inset 0 0 0 3px #ffb0c2;
 }
+.terrain-dirt {
+  background:
+    radial-gradient(circle at 28% 27%, #efc17a 0 8%, transparent 10%),
+    radial-gradient(circle at 70% 66%, #6d341d 0 11%, transparent 13%),
+    linear-gradient(145deg, #c47a3d, #8d4829 62%, #67321f);
+  box-shadow:
+    inset 0 2px 0 #ffd291aa,
+    inset 0 -5px #4b2418aa,
+    0 2px 4px #0008;
+}
 .terrain-dirt::after {
-  content: "·";
-  color: #b9875e;
-  font-size: 2rem;
+  content: "";
+  position: absolute;
+  inset: 5px 7px 7px 5px;
+  border: 0;
+  border-radius: 4px 7px 5px 8px;
+  background:
+    linear-gradient(135deg, transparent 42%, #5f2c1c 44% 49%, transparent 51%),
+    linear-gradient(35deg, transparent 55%, #e4a75e 57% 61%, transparent 63%);
+  opacity: 0.85;
+  pointer-events: none;
+}
+.terrain-dirt.filled::after {
+  inset: 5px 7px 7px 5px;
+  border: 0;
+  background:
+    linear-gradient(135deg, transparent 42%, #5f2c1c 44% 49%, transparent 51%),
+    linear-gradient(35deg, transparent 55%, #e4a75e 57% 61%, transparent 63%);
 }
 .terrain-ice::after {
   content: "❄";
@@ -154,14 +189,111 @@
 .drag-ghost.invalid i {
   background: #ff668b;
 }
-.clear-flash {
-  animation: clearFlash 0.28s;
+.block-board.line-burst {
+  animation: boardBurst 0.7s cubic-bezier(0.2, 0.9, 0.3, 1);
 }
-@keyframes clearFlash {
-  50% {
-    filter: brightness(2);
-    transform: scale(0.85);
-  }
+.line-beam {
+  position: absolute;
+  z-index: 12;
+  pointer-events: none;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #62efff, #fff, #ffd35a, #ff668b, #9a72ff);
+  box-shadow: 0 0 12px #fff, 0 0 26px #66eaff, 0 0 40px #ff668b99;
+  mix-blend-mode: screen;
+  animation: lineBeam 0.66s ease-out both;
+}
+.line-beam.row {
+  left: 3px;
+  right: 3px;
+  top: calc(7px + (100% - 14px) / 8 * (var(--line) + 0.5));
+  height: calc((100% - 14px) / 8 * 0.42);
+  --beam-x: 0;
+  --beam-y: -50%;
+}
+.line-beam.col {
+  top: 3px;
+  bottom: 3px;
+  left: calc(7px + (100% - 14px) / 8 * (var(--line) + 0.5));
+  width: calc((100% - 14px) / 8 * 0.42);
+  --beam-x: -50%;
+  --beam-y: 0;
+  background: linear-gradient(#62efff, #fff, #ffd35a, #ff668b, #9a72ff);
+}
+.clear-flash {
+  z-index: 4;
+  background: var(--burst) !important;
+  box-shadow:
+    inset 0 2px #fff9,
+    inset 0 -4px #0004,
+    0 0 22px color-mix(in srgb, var(--burst), white 28%),
+    0 0 34px color-mix(in srgb, var(--burst), #64eaff 35%);
+  animation: clearBurst 0.68s var(--burst-delay, 0ms) cubic-bezier(0.15, 0.8, 0.25, 1) both;
+}
+.clear-flash::before,
+.clear-flash::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  pointer-events: none;
+}
+.clear-flash::before {
+  border: 4px solid color-mix(in srgb, var(--burst), white 45%);
+  border-radius: 50%;
+  box-shadow: 0 0 16px #fff, 0 0 28px var(--burst);
+  animation: burstRing 0.44s var(--burst-delay, 0ms) ease-out both;
+}
+.clear-flash::after {
+  background:
+    radial-gradient(circle, #fff 0 12%, transparent 14%) 0 0/50% 50%,
+    radial-gradient(circle, #ffd35a 0 10%, transparent 12%) 100% 0/45% 45%,
+    radial-gradient(circle, #62efff 0 10%, transparent 12%) 0 100%/45% 45%,
+    radial-gradient(circle, #ff668b 0 10%, transparent 12%) 100% 100%/45% 45%;
+  filter: drop-shadow(0 0 5px var(--burst));
+  animation: burstShards 0.52s var(--burst-delay, 0ms) ease-out both;
+}
+@keyframes clearBurst {
+  0% { transform: scale(1); filter: brightness(1); opacity: 1; }
+  34% { transform: scale(1.2) rotate(2deg); filter: brightness(2.7) saturate(1.5); opacity: 1; }
+  62% { transform: scale(0.72) rotate(-3deg); filter: brightness(3); opacity: 0.9; }
+  100% { transform: scale(0.08); filter: brightness(4); opacity: 0; }
+}
+@keyframes clearReadyPulse {
+  to { filter: brightness(1.7) saturate(1.45); box-shadow: inset 0 0 0 4px #fff, inset 0 0 17px #ffe56b, 0 0 17px #ffd35a; }
+}
+@keyframes lineBeam {
+  0% { opacity: 0; transform: translate(var(--beam-x), var(--beam-y)) scale(0.12); filter: brightness(1); }
+  24% { opacity: 1; transform: translate(var(--beam-x), var(--beam-y)) scale(1); filter: brightness(2.3); }
+  65% { opacity: 0.92; filter: brightness(1.5); }
+  100% { opacity: 0; transform: translate(var(--beam-x), var(--beam-y)) scale(1.08); filter: brightness(2); }
+}
+@keyframes burstRing {
+  0% { transform: scale(0.35); opacity: 0; }
+  25% { opacity: 1; }
+  100% { transform: scale(1.75); opacity: 0; }
+}
+@keyframes burstShards {
+  0% { transform: scale(0.3) rotate(0); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: scale(2.1) rotate(28deg); opacity: 0; }
+}
+@keyframes boardBurst {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  22% { transform: scale(1.018); filter: brightness(1.24); }
+  44% { transform: scale(0.992); }
+  68% { transform: scale(1.007); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .block-board.line-burst { animation: none; }
+  .clear-flash { animation: clearBurstReduced 0.24s both; }
+  .clear-flash::before,
+  .clear-flash::after { animation: none; }
+  .block-cell.will-clear { animation: none; }
+  .line-beam { animation: clearBurstReduced 0.28s both; }
+}
+@keyframes clearBurstReduced {
+  0% { filter: brightness(1); opacity: 1; }
+  55% { filter: brightness(2.4); opacity: 1; }
+  100% { filter: brightness(1.4); opacity: 0; }
 }
 @media (max-width: 680px) {
   .block-board {

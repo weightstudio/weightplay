@@ -1,4 +1,8 @@
 const lobby = window.WONDER_LOBBY;
+const officialGameTitles = window.WEIGHTPLAY_GAME_TITLES || {};
+lobby.games.forEach((game) => {
+  if (officialGameTitles[game.id]) game.title = officialGameTitles[game.id];
+});
 let activeGamePreview = null;
 const ownerPreviewMode = new URLSearchParams(window.location.search).get("preview") === "1";
 const audienceMode = document.body?.dataset.audience === "kids" ? "kids" : "general";
@@ -946,7 +950,7 @@ function createGameCard(game) {
           <span>${isPlayable ? stateCopy("playableLabel") : text(game.statusText)}</span>
         </span>
       </div>
-      <h2>${title}</h2>
+      <h2 data-runtime-localize="off">${title}</h2>
       <p>${text(game.description)}</p>
       ${gameStateCard(game, isPlayable)}
       <div class="game-card-categories">${categoryBadges}</div>
@@ -1032,7 +1036,9 @@ function renderLobby() {
     if (featured) {
       featuredGame.href = featured.href;
       featuredGame.querySelector("img").src = primaryArt(featured);
-      featuredGame.querySelector("strong").textContent = text(featured.title);
+      const featuredTitle = featuredGame.querySelector("strong");
+      featuredTitle.dataset.runtimeLocalize = "off";
+      featuredTitle.textContent = text(featured.title);
     }
   } else {
     featuredGame.href = "kids/";
@@ -1077,7 +1083,7 @@ function renderContinuePlaying() {
       <img src="${game.art?.background || primaryArt(game)}" alt="" />
       <div class="continue-playing-copy">
         ${showAgeLabels ? `<span>${ageLabel}</span>` : ""}
-        <strong>${title}</strong>
+        <strong data-runtime-localize="off">${title}</strong>
         <small>${type}</small>
         <b>${i18n.t("action.continue")}</b>
       </div>
@@ -1224,7 +1230,7 @@ function renderHeroGames() {
           <span>${rankText}</span>
         </div>
         <div class="hero-game-copy">
-          <strong>${title}</strong>
+          <strong data-runtime-localize="off">${title}</strong>
           <small>${showAgeLabels ? `${type} / ${ageLabel}` : type}</small>
           <em>${playCountText(game)}</em>
         </div>
@@ -1259,7 +1265,7 @@ function renderMobilePicks() {
         <span>${i18n.t("mobile_picks.badge")}</span>
       </div>
       <div class="mobile-pick-copy">
-        <strong>${title}</strong>
+        <strong data-runtime-localize="off">${title}</strong>
         <small>${showAgeLabels ? `${type} / ${ageLabel}` : type}</small>
         <em>${i18n.t("mobile_picks.note")}</em>
         ${skillBadges ? `<div class="mobile-pick-skills" aria-label="${i18n.t("aria.skills_trained")}">${skillBadges}</div>` : ""}
@@ -1302,7 +1308,7 @@ function renderUpcomingGames() {
         <span>${i18n.t("action.coming_soon")}</span>
       </div>
       <div class="upcoming-game-copy">
-        <strong>${title}</strong>
+        <strong data-runtime-localize="off">${title}</strong>
         <small>${showAgeLabels ? `${type} / ${ageLabel}` : type}</small>
         ${gameStateCard(game, false)}
         <em>${description}</em>
@@ -1376,7 +1382,7 @@ function renderRecommendations() {
       <img src="${game.art?.background || primaryArt(game)}" alt="" />
       <div class="recommendation-copy">
         <span class="recommendation-labels">${showAgeLabels ? `<span class="recommendation-age">${ageLabel}</span>` : ""}${updatedBadge}</span>
-        <strong>${title}</strong>
+        <strong data-runtime-localize="off">${title}</strong>
         <small>${type}</small>
         <em>${note}</em>
         ${skillBadges ? `<div class="recommendation-skills" aria-label="${i18n.t("aria.skills_trained")}">${skillBadges}</div>` : ""}
@@ -1415,7 +1421,7 @@ function renderFreshUpdates() {
         <span>${i18n.t("badge.updated")}</span>
       </div>
       <div class="fresh-update-copy">
-        <strong>${title}</strong>
+        <strong data-runtime-localize="off">${title}</strong>
         <small>${showAgeLabels ? `${type} / ${ageLabel}` : type}</small>
         <em>${description}</em>
         ${skillBadges ? `<div class="fresh-update-skills" aria-label="${i18n.t("aria.skills_trained")}">${skillBadges}</div>` : ""}
@@ -1454,7 +1460,7 @@ function renderChallengeSpotlight() {
         <span>${i18n.t("challenge_spotlight.badge")}</span>
       </div>
       <div class="challenge-spotlight-copy">
-        <strong>${title}</strong>
+        <strong data-runtime-localize="off">${title}</strong>
         <small>${type}</small>
         <em>${description}</em>
         ${skillBadges ? `<div class="challenge-spotlight-skills" aria-label="${i18n.t("aria.skills_trained")}">${skillBadges}</div>` : ""}

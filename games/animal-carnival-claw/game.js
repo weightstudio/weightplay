@@ -20,7 +20,7 @@ const defaultSave=()=>({unlocked:1,medals:Array(30).fill(0),cabinet:Array(8).fil
 let save=loadSave();
 let run=null,pointerId=null;
 const STAGE_CARD_POOL_SIZE=9;
-let stageWindowStart=0,stageCardPool=[];
+let stageWindowStart=0,stageCardPool=[],stageSettleRaf=0;
 const chapters=[
   {name:"chapter1",rule:"rule1",obstacle:"none"},
   {name:"chapter2",rule:"rule2",obstacle:"bumper"},
@@ -77,7 +77,7 @@ function show(next){
   cancelAnimationFrame(raf);raf=0;screen=next;document.body.dataset.screen=next;
   $("mainGroup").hidden=next!=="main";$("stageScreen").hidden=next!=="stage";$("battleScreen").hidden=next!=="battle";
   if(next==="main")renderMain();
-  if(next==="stage"){renderStage();requestAnimationFrame(()=>centerSelected(false))}
+  if(next==="stage"){selected=clamp(save.unlocked-1,0,levels.length-1);renderStage();requestAnimationFrame(()=>centerSelected(false))}
   if(next==="battle"&&run)resumeLoop();
 }
 function renderMain(){
@@ -121,49 +121,92 @@ function buildStageCardPool(){
 }
 function moveStageWindow(targetStart){
   const rail=$("stageRail"),target=clamp(targetStart,0,stageWindowLimit());
-  if(!stageCardPool.length){buildStageCardPool();return}
-  const anchor=rail.querySelector(`[data-stage-index="${selected}"]`),before=anchor?.getBoundingClientRect().left;
-  while(stageWindowStart<target){const recycled=rail.firstElementChild;stageWindowStart++;rail.append(recycled);bindStageCard(recycled,stageWindowStart+stageCardPool.length-1)}
-  while(stageWindowStart>target){const recycled=rail.lastElementChild;stageWindowStart--;rail.prepend(recycled);bindStageCard(recycled,stageWindowStart)}
+  if(!stageCardPool.length){buildStageCardPool();return 0}
+  let recycledCount=0;
+  while(stageWindowStart<target){
+    const recycled=rail.firstElementChild,anchor=recycled?.nextElementSibling,before=anchor?.getBoundingClientRect().left;
+    stageWindowStart++;rail.append(recycled);bindStageCard(recycled,stageWindowStart+stageCardPool.length-1);recycledCount++;
+    const after=anchor?.getBoundingClientRect().left;if(Number.isFinite(before)&&Number.isFinite(after))rail.scrollLeft+=after-before;
+  }
+  while(stageWindowStart>target){
+    const recycled=rail.lastElementChild,anchor=recycled?.previousElementSibling,before=anchor?.getBoundingClientRect().left;
+    stageWindowStart--;rail.prepend(recycled);bindStageCard(recycled,stageWindowStart);recycledCount++;
+    const after=anchor?.getBoundingClientRect().left;if(Number.isFinite(before)&&Number.isFinite(after))rail.scrollLeft+=after-before;
+  }
   stageCardPool=[...rail.children];rail.dataset.wpStageWindowStart=String(stageWindowStart);rail.dataset.wpStageWindowEnd=String(stageWindowStart+stageCardPool.length-1);
-  if(anchor&&Number.isFinite(before)){const after=anchor.getBoundingClientRect().left;if(Number.isFinite(after))rail.scrollLeft+=after-before}
+  if(recycledCount)rail.dataset.wpStageRecycleCount=String(Number(rail.dataset.wpStageRecycleCount||0)+recycledCount);
+  return recycledCount;
 }
 function ensureStageWindow(index){
   if(!stageCardPool.length)buildStageCardPool();
   moveStageWindow(desiredStageWindow(index));syncStageCards();
 }
+function stageRailGeometry(){
+  const rail=$("stageRail"),cards=[...rail.children],railRect=rail.getBoundingClientRect(),first=cards[0]?.getBoundingClientRect(),second=cards[1]?.getBoundingClientRect();
+  const delta=first&&second?(second.left+second.width/2)-(first.left+first.width/2):0;
+  const fallback=(first?.width||264)+(parseFloat(getComputedStyle(rail).columnGap)||12);
+  return{rail,center:railRect.left+railRect.width/2,pitch:Math.abs(delta)||fallback,orientation:Math.sign(delta)||1};
+}
 function nearestStageCard(){
   const rail=$("stageRail"),railRect=rail.getBoundingClientRect(),center=railRect.left+railRect.width/2;
   return stageCardPool.reduce((nearest,card)=>{const rect=card.getBoundingClientRect(),distance=Math.abs(rect.left+rect.width/2-center);return!nearest||distance<nearest.distance?{card,distance}:nearest},null)?.card||null;
 }
+function currentStageLogicalPosition(){
+  const card=nearestStageCard();if(!card)return selected;
+  const index=Number(card.dataset.stageIndex),rect=card.getBoundingClientRect(),geometry=stageRailGeometry();
+  return clamp(index+(geometry.center-(rect.left+rect.width/2))/(geometry.pitch*geometry.orientation),0,levels.length-1);
+}
+function positionStageRail(logicalPosition){
+  const logical=clamp(logicalPosition,0,levels.length-1),anchorIndex=Math.round(logical),recycled=moveStageWindow(desiredStageWindow(anchorIndex));
+  if(recycled)syncStageCards();
+  const card=$("stageRail").querySelector(`[data-stage-index="${anchorIndex}"]`);if(!card)return logical;
+  card.scrollIntoView({behavior:"auto",block:"nearest",inline:"center"});
+  const geometry=stageRailGeometry(),fraction=logical-anchorIndex;
+  if(Math.abs(fraction)>.0001)geometry.rail.scrollLeft+=fraction*geometry.orientation*geometry.pitch;
+  geometry.rail.dataset.wpStageDragLogical=logical.toFixed(4);
+  return logical;
+}
 function installVirtualStageDrag(){
   const rail=$("stageRail");if(!rail||rail.dataset.wpStageVirtualDrag==="true")return;
   rail.dataset.wpStageVirtualDrag="true";rail.dataset.wpStageCenterObserver="manual";
-  const baseSnap=rail.style.getPropertyValue("scroll-snap-type");
-  let pointerId=null,startX=0,startScroll=0,moved=false,suppressClick=false,previousBehavior="",settleTimer=0;
+  const baseSnap=rail.style.getPropertyValue("scroll-snap-type"),baseBehavior=rail.style.getPropertyValue("scroll-behavior");
+  let pointerId=null,startX=0,lastX=0,dragLogical=0,moved=false,suppressClick=false;
+  const restoreRailBehavior=()=>{
+    if(baseBehavior)rail.style.setProperty("scroll-behavior",baseBehavior);else rail.style.removeProperty("scroll-behavior");
+    if(baseSnap)rail.style.setProperty("scroll-snap-type",baseSnap);else rail.style.removeProperty("scroll-snap-type");
+    delete rail.dataset.wpStageSettling;
+  };
   rail.addEventListener("pointerdown",event=>{
     if(event.isPrimary===false||(event.button!==undefined&&event.button!==0))return;
-    pointerId=event.pointerId;startX=event.clientX;startScroll=rail.scrollLeft;moved=false;
-    clearTimeout(settleTimer);previousBehavior=rail.style.getPropertyValue("scroll-behavior");
+    cancelAnimationFrame(stageSettleRaf);stageSettleRaf=0;
+    pointerId=event.pointerId;startX=lastX=event.clientX;dragLogical=currentStageLogicalPosition();moved=false;
     rail.style.setProperty("scroll-behavior","auto","important");rail.style.setProperty("scroll-snap-type","none","important");rail.dataset.wpDragDown="1";
     event.stopImmediatePropagation();
   },true);
   document.addEventListener("pointermove",event=>{
     if(event.pointerId!==pointerId)return;
-    const delta=event.clientX-startX;if(!moved&&Math.abs(delta)>4){moved=true;rail.classList.add("wp-stage-dragging")}
-    if(moved){const rect=rail.getBoundingClientRect(),scale=rect.width?rail.clientWidth/rect.width:1;if(event.cancelable)event.preventDefault();rail.scrollLeft=startScroll-delta*scale}
+    const delta=event.clientX-lastX;lastX=event.clientX;if(!moved&&Math.abs(event.clientX-startX)>4){moved=true;rail.classList.add("wp-stage-dragging")}
+    if(moved){
+      const rect=rail.getBoundingClientRect(),scale=rect.width?rail.clientWidth/rect.width:1,pitch=stageRailGeometry().pitch;
+      if(event.cancelable)event.preventDefault();dragLogical=positionStageRail(dragLogical-delta*scale/pitch);
+    }
     event.stopImmediatePropagation();
   },true);
   const finish=event=>{
     if(pointerId===null||(event.pointerId!==undefined&&event.pointerId!==pointerId))return;
     pointerId=null;rail.dataset.wpDragDown="0";rail.classList.remove("wp-stage-dragging");
-    if(previousBehavior)rail.style.setProperty("scroll-behavior",previousBehavior);else rail.style.removeProperty("scroll-behavior");
     if(moved){
-      if(event.cancelable)event.preventDefault();const card=nearestStageCard(),index=Number(card?.dataset.stageIndex);
-      if(Number.isInteger(index)){selectStage(index,false);requestAnimationFrame(()=>centerSelected(true))}
-      settleTimer=setTimeout(()=>{if(baseSnap)rail.style.setProperty("scroll-snap-type",baseSnap);else rail.style.removeProperty("scroll-snap-type")},420);
+      if(event.cancelable)event.preventDefault();
+      const from=dragLogical,index=clamp(Math.round(from),0,levels.length-1),duration=Number(rail.dataset.wpStageSettleDuration)||340,start=performance.now();
+      selectStage(index,false);positionStageRail(from);rail.dataset.wpStageSettling="true";
+      const settle=now=>{
+        const progress=clamp((now-start)/duration),eased=progress*progress*(3-2*progress);
+        positionStageRail(from+(index-from)*eased);
+        if(progress<1)stageSettleRaf=requestAnimationFrame(settle);else{stageSettleRaf=0;positionStageRail(index);syncStageCards();restoreRailBehavior()}
+      };
+      stageSettleRaf=requestAnimationFrame(settle);
       suppressClick=true;setTimeout(()=>{suppressClick=false},0);
-    }else if(baseSnap)rail.style.setProperty("scroll-snap-type",baseSnap);else rail.style.removeProperty("scroll-snap-type");
+    }else restoreRailBehavior();
     moved=false;event.stopImmediatePropagation();
   };
   document.addEventListener("pointerup",finish,true);document.addEventListener("pointercancel",finish,true);

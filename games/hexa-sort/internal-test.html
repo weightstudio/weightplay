@@ -22,7 +22,7 @@
     />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css" />
     <link rel="stylesheet" href="../arrow-escape/style.css?v=20260801-shell1" />
-    <link rel="stylesheet" href="style.css?v=20260801-rebuild1" />
+    <link rel="stylesheet" href="style.css?v=20260802-layer-art1" />
     <script data-wp-internal-trial-gate>
       (() => {
         if (
@@ -209,11 +209,16 @@
                 class="hex-board"
                 role="grid"
                 aria-label="Hex stack board"
+                aria-describedby="hexaCoach"
               ></div>
+              <div id="hexaCoach" class="hexa-coach" aria-live="polite">
+                <b>1</b><span data-i18n="how1">Choose one of three stacks, then an empty hex.</span>
+              </div>
               <div
                 id="stackTray"
                 class="stack-tray"
                 aria-label="Stack tray"
+                aria-describedby="hexaCoach"
               ></div>
             </div>
             <p id="feedback" class="feedback" aria-live="polite"></p>
@@ -225,6 +230,11 @@
                 Operations lock during merging. Only contiguous matching chips
                 on top may move.
               </p>
+              <ol class="battle-help-steps">
+                <li data-i18n="how1">Choose one of three stacks, then an empty hex.</li>
+                <li data-i18n="how2">Adjacent matching top runs gather into the strongest stack.</li>
+                <li data-i18n="how3">Ten matching chips clear and reveal the next chain.</li>
+              </ol>
               <button
                 id="helpClose"
                 class="primary"
@@ -284,7 +294,7 @@
     <script src="../../src/site-config.js"></script>
     <script src="../../src/sound.js"></script>
     <script src="../../src/edge-guard.js"></script>
-    <script src="game.js?v=20260801-rebuild1"></script>
+    <script src="game.js?v=20260802-layer-art1"></script>
     <script
       src="../../src/stage-selector-standard.js"
       data-wp-stage-standard
