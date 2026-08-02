@@ -66,10 +66,21 @@
   font-size: clamp(0.65rem, 2.5vmin, 1.1rem);
   position: relative;
 }
-.block-cell.filled {
+.block-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--block-color);
   box-shadow:
     inset 0 -4px #0004,
     0 2px 4px #0007;
+  pointer-events: none;
+}
+.block-fill.dirt-fill {
+  background:
+    radial-gradient(circle at 28% 27%, #efc17a 0 8%, transparent 10%),
+    radial-gradient(circle at 70% 66%, #6d341d 0 11%, transparent 13%),
+    linear-gradient(145deg, #c47a3d, #8d4829 62%, #67321f);
 }
 .block-cell.preview {
   box-shadow: inset 0 0 0 3px #fff9;
@@ -87,6 +98,9 @@
 .block-cell.invalid {
   background: #ff668b99 !important;
   box-shadow: inset 0 0 0 3px #ffb0c2;
+}
+.block-cell.invalid .block-fill {
+  opacity: 0.22;
 }
 .terrain-dirt {
   background:
@@ -221,7 +235,7 @@
 }
 .clear-flash {
   z-index: 4;
-  background: var(--burst) !important;
+  background: var(--burst);
   box-shadow:
     inset 0 2px #fff9,
     inset 0 -4px #0004,
