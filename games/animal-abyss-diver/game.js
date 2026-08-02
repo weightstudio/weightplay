@@ -502,12 +502,16 @@
     const target=candidates.find(node=>node&&!node.disabled&&node.getAttribute("aria-disabled")!=="true"&&!node.classList.contains("hidden"))||$("helpBtn");
     sceneFrame("battle",()=>target?.focus({preventScroll:true}));
   }
-  function focusRoute(route=state.route){sceneFrame("stage",()=>{
-    const cards=[...document.querySelectorAll("#routeRail .route-card")];
-    const target=cards[Math.max(0,Math.min(cards.length-1,(route||1)-1))]||cards[0];
-    document.querySelectorAll("#routeRail .route-card").forEach(card=>{const selected=card===target;card.tabIndex=selected?0:-1;card.classList.toggle("is-selected",selected);if(selected)card.setAttribute("aria-current","step");else card.removeAttribute("aria-current");});
-    target?.focus({preventScroll:true});
-  });}
+  const ROUTE_POOL_SIZE=9;
+  let selectedRoute=Math.max(1,state.route||save.unlocked),routeWindowStart=0,routeCardPool=[];
+  function routeWindowLimit(){return Math.max(0,routes.length-ROUTE_POOL_SIZE);}
+  function desiredRouteWindow(route){return Math.max(0,Math.min(routeWindowLimit(),route-1-Math.floor(ROUTE_POOL_SIZE/2)));}
+  function bindRouteCard(card,index){const route=routes[index],n=index+1,locked=n>save.unlocked;card.dataset.route=String(n);card.setAttribute("aria-posinset",String(n));card.setAttribute("aria-setsize",String(routes.length));card.setAttribute("aria-disabled",String(locked));card.innerHTML=`<strong>${routeText(route,"name")}</strong><span>${t("route",{n})} · ${t("relic")}: ${routeText(route,"relic")}</span><small>${t("zones",{n:route.zones})} · ${t("stageTarget",{n:route.target})} · ${t("risk",{n:route.risk})}<br><b>${routeText(route,"rule")}</b></small><em>${t(locked?"locked":"routeAction")}</em>`;card.setAttribute("aria-label",`${t("route",{n})} · ${routeText(route,"name")} · ${routeText(route,"rule")} · ${locked?t("locked"):t("routeAction")}`);}
+  function syncRouteCards(){routeCardPool.forEach(card=>{const n=Number(card.dataset.route),selected=n===selectedRoute;bindRouteCard(card,n-1);card.tabIndex=selected?0:-1;card.classList.toggle("is-selected",selected);if(selected)card.setAttribute("aria-current","step");else card.removeAttribute("aria-current");});}
+  function buildRoutePool(){const rail=$("routeRail");rail.innerHTML="";routeWindowStart=desiredRouteWindow(selectedRoute);routeCardPool=Array.from({length:Math.min(ROUTE_POOL_SIZE,routes.length)},(_,offset)=>{const card=document.createElement("button");card.type="button";card.className="route-card";bindRouteCard(card,routeWindowStart+offset);card.onclick=()=>{const n=Number(card.dataset.route);if(n<=save.unlocked)start(n);};rail.append(card);return card;});rail.dataset.wpStageVirtualized="bounded-recycle";rail.dataset.wpStagePoolSize=String(routeCardPool.length);rail.dataset.wpStageTotal=String(routes.length);}
+  function moveRouteWindow(target){const rail=$("routeRail");target=Math.max(0,Math.min(routeWindowLimit(),target));let recycled=0;while(routeWindowStart<target){const card=rail.firstElementChild;routeWindowStart++;rail.append(card);bindRouteCard(card,routeWindowStart+routeCardPool.length-1);recycled++;}while(routeWindowStart>target){const card=rail.lastElementChild;routeWindowStart--;rail.prepend(card);bindRouteCard(card,routeWindowStart);recycled++;}routeCardPool=[...rail.children];rail.dataset.wpStageWindowStart=String(routeWindowStart);rail.dataset.wpStageWindowEnd=String(routeWindowStart+routeCardPool.length-1);if(recycled)rail.dataset.wpStageRecycleCount=String(Number(rail.dataset.wpStageRecycleCount||0)+recycled);return recycled;}
+  function selectRoute(route,{center=false,focus=false}={}){selectedRoute=Math.max(1,Math.min(routes.length,route));if(!routeCardPool.length)buildRoutePool();moveRouteWindow(desiredRouteWindow(selectedRoute));syncRouteCards();const card=$("routeRail").querySelector(`[data-route="${selectedRoute}"]`);if(center)card?.scrollIntoView({behavior:"auto",block:"nearest",inline:"center"});if(focus)card?.focus({preventScroll:true});}
+  function focusRoute(route=state.route||save.unlocked){sceneFrame("stage",()=>selectRoute(route,{center:true,focus:true}));}
   function quitBackgroundNodes(){return [...document.querySelectorAll(".battle-canvas > :not(#quitPanel):not(#result)")];}
   function renderQuit(){
     const route=routes[Math.max(0,(state.route||1)-1)]||routes[0];
@@ -537,7 +541,7 @@
     renderRoutes();
     focusRoute();
   }
-  function renderRoutes(){ $("routeRail").innerHTML=""; routes.forEach((route,index)=>{const n=index+1, card=document.createElement("button"),locked=n>save.unlocked,selected=n===Math.max(1,state.route||save.unlocked);card.className=`route-card${selected?" is-selected":""}`;card.setAttribute("aria-disabled",String(locked));card.tabIndex=selected?0:-1;card.innerHTML=`<strong>${routeText(route,"name")}</strong><span>${t("route",{n})} · ${t("relic")}: ${routeText(route,"relic")}</span><small>${t("zones",{n:route.zones})} · ${t("stageTarget",{n:route.target})} · ${t("risk",{n:route.risk})}<br><b>${routeText(route,"rule")}</b></small><em>${t(locked?"locked":"routeAction")}</em>`;card.setAttribute("aria-label",`${t("route",{n})} · ${routeText(route,"name")} · ${routeText(route,"rule")} · ${locked?t("locked"):t("routeAction")}`);card.onclick=()=>{if(!locked)start(n);};$("routeRail").append(card);});}
+  function renderRoutes(){if(!routeCardPool.length)buildRoutePool();selectRoute(selectedRoute,{center:true});}
   function routeConfig(){return routes[state.route-1];}
   function encounter(direction){const pair=routeConfig().encounters[state.zone-1];return outcomes[pair[direction==="left"?0:1]];}
   function sonarMessage(){return t("sonarRead",{left:t(encounter("left").label),right:t(encounter("right").label)});}
@@ -793,8 +797,6 @@
   $("result").addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){if(event.repeat){event.preventDefault();return;}screenDecisionKeyboardKeys.add(event.key);}if(event.key!=="Tab"||$("result").classList.contains("hidden"))return;const actions=[$("menuBtn"),$("nextBtn"),$("replayBtn")].filter(button=>!button.disabled&&!button.classList.contains("hidden"));if(!actions.length)return;event.preventDefault();const current=actions.indexOf(document.activeElement),index=event.shiftKey?(current<=0?actions.length-1:current-1):(current<0||current===actions.length-1?0:current+1);actions[index].focus({preventScroll:true});});
   $("quitPanel").addEventListener("keydown",event=>{if($("quitPanel").classList.contains("hidden"))return;if(event.key==="Enter"||event.key===" "){if(event.repeat){event.preventDefault();return;}screenDecisionKeyboardKeys.add(event.key);}if(event.key==="Escape"){event.preventDefault();setQuit(false,{resume:true,focusBack:true});return;}if(event.key!=="Tab")return;const first=$("quitKeep"),last=$("quitLeave");if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}});
   for(const direction of ["left","right"]){$(`${direction}Gate`).addEventListener("keydown",event=>{if(event.key!=="Enter"&&event.key!==" ")return;event.preventDefault();if(event.repeat)return;if($(`${direction}Gate`).getAttribute("aria-disabled")!=="true")move(direction);});}
-  let drag;
-  let suppressRouteClickUntil = 0;
   const routeRail = $("routeRail");
   routeRail.addEventListener("keydown",event=>{
     if(mainEntryKeyboardKey&&event.repeat&&event.key===mainEntryKeyboardKey)event.preventDefault();
@@ -803,52 +805,21 @@
     if((event.key==="Enter"||event.key===" ")&&card.getAttribute("aria-disabled")==="true"){event.preventDefault();return;}
     if(!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;
     event.preventDefault();
-    const cards=[...routeRail.querySelectorAll(".route-card")],current=Math.max(0,cards.indexOf(card));
     const rtl=document.documentElement.dir==="rtl";
     const step=event.key==="ArrowRight"?(rtl?-1:1):(rtl?1:-1);
-    const next=event.key==="Home"?0:event.key==="End"?cards.length-1:Math.max(0,Math.min(cards.length-1,current+step));
-    cards.forEach((candidate,index)=>{const selected=index===next;candidate.tabIndex=selected?0:-1;candidate.classList.toggle("is-selected",selected);if(selected)candidate.setAttribute("aria-current","step");else candidate.removeAttribute("aria-current");});
-    cards[next]?.focus({preventScroll:true});
-    cards[next]?.scrollIntoView({behavior:"auto",block:"nearest",inline:"center"});
+    const current=Number(card.dataset.route),next=event.key==="Home"?1:event.key==="End"?routes.length:Math.max(1,Math.min(routes.length,current+step));
+    selectRoute(next,{center:true,focus:true});
   });
   document.addEventListener("keyup",event=>{screenDecisionKeyboardKeys.delete(event.key);if(event.key===mainEntryKeyboardKey)mainEntryKeyboardKey="";});
   window.addEventListener("blur",()=>{screenDecisionKeyboardKeys.clear();mainEntryKeyboardKey="";});
-  function syncCenteredRouteSelection(){
-    const cards=[...routeRail.querySelectorAll(".route-card")];
-    if(!cards.length||!routeRail.getClientRects().length)return;
-    const railRect=routeRail.getBoundingClientRect(),center=railRect.left+railRect.width/2;
-    const nearest=cards.reduce((best,card)=>{const rect=card.getBoundingClientRect(),distance=Math.abs(rect.left+rect.width/2-center);return!best||distance<best.distance?{card,distance}:best;},null)?.card;
-    cards.forEach(card=>{const selected=card===nearest;card.tabIndex=selected?0:-1;card.classList.toggle("is-selected",selected);if(selected)card.setAttribute("aria-current","step");else card.removeAttribute("aria-current");});
-  }
-  routeRail.addEventListener("wonder:stage-snap",()=>sceneFrame("stage",syncCenteredRouteSelection));
-  routeRail.addEventListener("pointerdown", (event) => {
-    if (routeRail.dataset.wpStageRail === "true") return;
-    drag = { id: event.pointerId, x: event.clientX, left: routeRail.scrollLeft, active: false };
-  });
-  routeRail.addEventListener("pointermove", (event) => {
-    if (drag?.id !== event.pointerId) return;
-    const delta = event.clientX - drag.x;
-    if (!drag.active && Math.abs(delta) > 8) {
-      drag.active = true;
-      routeRail.setPointerCapture(event.pointerId);
-    }
-    if (!drag.active) return;
-    event.preventDefault();
-    routeRail.scrollLeft = drag.left - delta;
-  });
-  const finishRoutePointer = (event) => {
-    if (drag?.id !== event.pointerId) return;
-    if (routeRail.hasPointerCapture(event.pointerId)) routeRail.releasePointerCapture(event.pointerId);
-    if (drag.active) suppressRouteClickUntil = performance.now() + 100;
-    drag = null;
-  };
-  routeRail.addEventListener("pointerup", finishRoutePointer);
-  routeRail.addEventListener("pointercancel", finishRoutePointer);
-  routeRail.addEventListener("click", (event) => {
-    if (performance.now() >= suppressRouteClickUntil) return;
-    event.preventDefault();
-    event.stopPropagation();
-  }, true);
+  let routeDrag=null,routeSettle=0,suppressRouteClick=false;
+  function positionRouteLogical(logical){logical=Math.max(1,Math.min(routes.length,logical));const anchor=Math.round(logical);selectRoute(anchor,{center:true});const pitch=276,rtl=document.documentElement.dir==="rtl"?-1:1;routeRail.scrollLeft+=(logical-anchor)*pitch*rtl;routeRail.dataset.wpStageDragLogical=logical.toFixed(4);return logical;}
+  routeRail.dataset.wpStageVirtualDrag="true";routeRail.dataset.wpStageCenterObserver="manual";
+  routeRail.addEventListener("pointerdown",event=>{if(event.isPrimary===false||(event.button!==undefined&&event.button!==0))return;cancelAnimationFrame(routeSettle);routeSettle=0;routeDrag={id:event.pointerId,startX:event.clientX,lastX:event.clientX,logical:selectedRoute,moved:false};routeRail.setPointerCapture?.(event.pointerId);routeRail.style.setProperty("scroll-snap-type","none","important");event.stopImmediatePropagation();},true);
+  document.addEventListener("pointermove",event=>{if(event.pointerId!==routeDrag?.id)return;const delta=event.clientX-routeDrag.lastX;routeDrag.lastX=event.clientX;if(!routeDrag.moved&&Math.abs(event.clientX-routeDrag.startX)>4)routeDrag.moved=true;if(routeDrag.moved){event.preventDefault();const rtl=document.documentElement.dir==="rtl"?-1:1;routeDrag.logical=positionRouteLogical(routeDrag.logical-delta*rtl/276);}event.stopImmediatePropagation();},true);
+  const finishRouteDrag=event=>{if(event.pointerId!==routeDrag?.id)return;const drag=routeDrag;routeDrag=null;if(routeRail.hasPointerCapture?.(event.pointerId))routeRail.releasePointerCapture(event.pointerId);if(!drag.moved){routeRail.style.removeProperty("scroll-snap-type");const card=document.elementFromPoint(event.clientX,event.clientY)?.closest?.(".route-card"),n=Number(card?.dataset.route);if(card&&n<=save.unlocked){suppressRouteClick=true;setTimeout(()=>{suppressRouteClick=false;},0);start(n);}return;}event.preventDefault();const from=drag.logical,target=Math.round(from),started=performance.now();routeRail.dataset.wpStageSettling="true";const settle=now=>{const progress=Math.min(1,(now-started)/340),eased=progress*progress*(3-2*progress);positionRouteLogical(from+(target-from)*eased);if(progress<1)routeSettle=requestAnimationFrame(settle);else{routeSettle=0;selectRoute(target,{center:true});routeRail.style.removeProperty("scroll-snap-type");delete routeRail.dataset.wpStageSettling;}};routeSettle=requestAnimationFrame(settle);suppressRouteClick=true;setTimeout(()=>{suppressRouteClick=false;},0);event.stopImmediatePropagation();};
+  document.addEventListener("pointerup",finishRouteDrag,true);document.addEventListener("pointercancel",finishRouteDrag,true);
+  routeRail.addEventListener("click",event=>{const card=event.target.closest(".route-card");if(!card)return;if(suppressRouteClick){suppressRouteClick=false;event.preventDefault();event.stopImmediatePropagation();return;}const n=Number(card.dataset.route);if(n<=save.unlocked){event.preventDefault();event.stopImmediatePropagation();start(n);}},true);
   for(const id of ["sonarBtn","shieldBtn","helpBtn"]){$(id).addEventListener("click",clearBeaconConfirmation,{capture:true});}
   localize();
   if(new URLSearchParams(location.search).has("smoke"))window.__AbyssDiverSmoke={setOxygen(value){if(!state.route)return;clearBeaconConfirmation();state.oxygen=Math.max(0,Math.min(maxOxygen(),Math.round(value)));renderBattle();if(state.fishActive)renderFish();},beaconState(){return{pending:!!state?.beaconPending,remaining:beaconConfirmRemaining,wallet:wallet()};}};

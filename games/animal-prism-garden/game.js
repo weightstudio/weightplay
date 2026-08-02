@@ -3,7 +3,7 @@
   const $=selector=>document.querySelector(selector);
   const $$=selector=>[...document.querySelectorAll(selector)];
   const localeOrder=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
-  const localeRoute={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
+  const localeLang={en:"en","zh-Hant":"zh-Hant","zh-Hans":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const palette=["#22dfff","#ff4fcf","#ffbf45","#946cff","#68e56c","#ff786d","#4589ff","#ff6298","#f7d85a"];
   const saveKey="wp-animal-prism-garden-v1";
   const {levels}=window.PRISM_GARDEN_LEVELS;
@@ -57,7 +57,8 @@
   function setLocale(next){
     locale=localeOrder.includes(next)?next:"en";
     write("wp-locale",locale);
-    document.documentElement.lang=localeRoute[locale]||"en";
+    window.WonderI18n?.setLocale?.(locale);
+    document.documentElement.lang=localeLang[locale]||"en";
     document.documentElement.dir=locale==="ar"?"rtl":"ltr";
     $$("[data-t]").forEach(node=>{node.textContent=t(node.dataset.t)});
     $$("[data-t-aria]").forEach(node=>node.setAttribute("aria-label",t(node.dataset.tAria)));

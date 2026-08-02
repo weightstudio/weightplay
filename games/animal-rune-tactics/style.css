@@ -2316,6 +2316,9 @@ html body.wp-logical-battle-active.is-rune-playing .topbar {
   transform: none !important;
   z-index: 20;
 }
+html body.wp-logical-battle-active.is-rune-playing .topbar :is(.brand, .locale, .wp-generated-main-title, .wp-shell-main-title) {
+  display: none !important;
+}
 html body.wp-logical-battle-active.is-rune-playing .pause-toggle {
   position: absolute !important;
   top: 0 !important;

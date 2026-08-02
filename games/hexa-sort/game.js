@@ -14,7 +14,7 @@ ru:["Гекса-сортировка","Язык","ГОЛОВОЛОМКА СО С
 hi:["हेक्सा सॉर्ट","भाषा","हेक्स स्टैक पहेली","ढेर रखें, समान ऊपरी रंग मिलाएँ और श्रृंखला हटाएँ।","खेल शुरू करें","मालिक पूर्वावलोकन · नियम जाँच","केवल समान ऊपरी परतें चल सकती हैं।","कैसे खेलें","तीन ढेरों में से एक चुनें, फिर खाली षट्भुज चुनें।","पास की समान ऊपरी परतें सबसे मजबूत ढेर में जाती हैं।","दस समान चिप मिटकर अगली श्रृंखला खोलते हैं।","निश्चित प्राथमिकता","सबसे अधिक संख्या जीतती है; बराबरी में नया स्थान, फिर बोर्ड क्रम।","चरण चुनें","खुला छँटाई मिशन चुनें।","प्रवेश","चालें","हटाए","मिलाते समय नियंत्रण बंद रहता है। केवल लगातार समान ऊपरी चिप चलते हैं।","जारी रखें","यह छँटाई छोड़ें?","जारी रखने पर सभी ढेर बचते हैं।","चरण नक्शा","मिशन पूरा!","अगला चरण","फिर खेलें","पहले ढेर चुनें।","खाली खुला षट्भुज चुनें।","यह षट्भुज बंद है।","जमा ढेर पास में रखने से पिघलता है।","समान ऊपरी परतें मिल गईं।","{n} समान चिप हटे!","कोई खाली षट्भुज नहीं।","चाल सीमा पूरी हुई।","{score} अंक · {cleared} चिप · {moves} चाल","रंग","स्कोर","हटाना","बर्फ","रत्न","मिश्रित"],
 ar:["ترتيب سداسي","اللغة","لغز الأكوام السداسية","ضع الأكوام واجمع ألوان القمة المتطابقة وشغّل السلاسل.","ابدأ اللعب","معاينة المالك · فحص القواعد","تتحرك الطبقات العليا المتطابقة فقط.","طريقة اللعب","اختر كومة من ثلاث ثم خلية سداسية فارغة.","تتجمع الطبقات العليا المتجاورة في أقوى كومة.","تُحذف عشر قطع متطابقة وتكشف السلسلة التالية.","أولوية ثابتة","تفوز الكمية الأكبر؛ التعادل للموقع الجديد ثم لترتيب اللوحة الثابت.","اختر مرحلة","اختر مهمة ترتيب مفتوحة.","دخول","الحركات","المحذوف","يُقفل التحكم أثناء الدمج. تتحرك السلسلة العليا المتطابقة فقط.","متابعة","مغادرة هذا الترتيب؟","المتابعة تحفظ كل الأكوام.","خريطة المراحل","اكتملت المهمة!","المرحلة التالية","العب مجدداً","اختر كومة أولاً.","اختر خلية فارغة ومفتوحة.","هذه الخلية محظورة.","تذوب الكومة المجمدة بوضع كومة مجاورة.","تجمعت الطبقات العليا المتطابقة.","تم حذف {n} قطعة متطابقة!","لا توجد خلية فارغة.","تم بلوغ حد الحركات.","{score} نقطة · {cleared} قطعة · {moves} حركة","اللون","النقاط","الحذف","الجليد","الجواهر","مختلط"]};
 const N={en:"English","zh-Hant":"繁體中文","zh-Hans":"简体中文",ja:"日本語",ko:"한국어",es:"Español","pt-BR":"Português",fr:"Français",de:"Deutsch",it:"Italiano",ru:"Русский",hi:"हिन्दी",ar:"العربية"},I=Object.fromEntries(Object.entries(P).map(([l,v])=>[l,Object.fromEntries(K.map((k,i)=>[k,v[i]]))])),COLORS=["red","blue","green","gold","violet"],HEX={red:"#ff6685",blue:"#4c8cff",green:"#2ccbb4",gold:"#ffbd45",violet:"#a567e7",bomb:"#3d455c",rainbow:"#fff"},DIRECTIONS=[[1,0],[-1,0],[0,1],[0,-1],[1,-1],[-1,1]],COORDS=[];for(let r=-2;r<=2;r++)for(let q=-2;q<=2;q++)if(Math.max(Math.abs(q),Math.abs(r),Math.abs(-q-r))<=2)COORDS.push({q,r});const indexByCoord=new Map(COORDS.map((c,i)=>[`${c.q},${c.r}`,i])),neighbors=i=>DIRECTIONS.map(([dq,dr])=>indexByCoord.get(`${COORDS[i].q+dq},${COORDS[i].r+dr}`)).filter(Number.isInteger);
-const ANCHORED_RULES={
+const DEPRECATED_FIXED_ANCHOR_COPY={
   en:["Adjacent matching top runs move into the newly placed stack.","Anchored merge order","The newly placed stack stays put; only directly adjacent matching top runs move into it.","New placement = destination · adjacent same-color tops → move in","OUT","IN"],
   "zh-Hant":["相鄰的同色頂層會移入新放置的堆疊。","定點合併順序","新放置的堆疊固定不動；只有直接相鄰的同色頂層會移入。","新放下＝目的堆 · 相鄰同色頂層 → 移入","移出","移入"],
   "zh-Hans":["相邻的同色顶层会移入新放置的堆叠。","定点合并顺序","新放置的堆叠固定不动；只有直接相邻的同色顶层会移入。","新放下＝目的堆 · 相邻同色顶层 → 移入","移出","移入"],
@@ -29,7 +29,23 @@ const ANCHORED_RULES={
   hi:["पास की समान ऊपरी परतें नई रखी गई ढेरी में जाती हैं।","स्थिर विलय क्रम","नई ढेरी अपनी जगह रहती है; केवल सीधे पास की समान ऊपरी परतें उसमें जाती हैं।","नई ढेरी = लक्ष्य · पास की समान ऊपरी परतें → अंदर","स्रोत","लक्ष्य"],
   ar:["تنتقل الطبقات العليا المتطابقة المجاورة إلى الكومة الموضوعة حديثاً.","دمج ثابت الموقع","تبقى الكومة الجديدة في مكانها ولا تستقبل إلا الطبقات المتطابقة المجاورة مباشرة.","الكومة الجديدة = الهدف · الطبقات المجاورة المتطابقة ← تدخل","المصدر","الهدف"]
 };
-for(const [language,[how2,priorityTitle,priority,flowRule,sourceLabel,targetLabel]] of Object.entries(ANCHORED_RULES))Object.assign(I[language],{how2,priorityTitle,priority,flowRule,sourceLabel,targetLabel});
+void DEPRECATED_FIXED_ANCHOR_COPY;
+const MERGE_PRIORITY_RULES={
+  en:["The full adjacent chain is planned before any top run moves.","Clear, open-space, and color priority","The whole chain is compared first. Ten-chip clears win, then the result with fewer occupied cells, then the strongest same-color groups.","Clear first → empty a stack → concentrate colors","OUT","IN"],
+  "zh-Hant":["頂層移動前，會先計算完整的相鄰連鎖。","消除、空位與同色優先","系統會先比較整段連鎖結果：十片消除最優先，其次是讓較多堆位清空，最後才比較同色集中程度。","先消除 → 再搬空堆位 → 最後集中同色","移出","移入"],
+  "zh-Hans":["顶层移动前，会先计算完整的相邻连锁。","消除、空位与同色优先","系统会先比较整段连锁结果：十片消除最优先，其次是让更多堆位清空，最后才比较同色集中程度。","先消除 → 再搬空堆位 → 最后集中同色","移出","移入"],
+  ja:["最上段を動かす前に、隣接する連鎖全体を計算します。","消去・空き・同色を優先","連鎖全体を比較し、10枚消去、空くマスの多さ、同色の集中度の順に優先します。","消去 → 山を空ける → 同色を集める","移動元","移動先"],
+  ko:["맨 위 층을 옮기기 전에 인접 연쇄 전체를 계산합니다.","제거·빈칸·같은 색 우선","전체 연쇄를 비교해 10개 제거, 비워지는 칸 수, 같은 색 집중도 순으로 선택합니다.","제거 → 더미 비우기 → 같은 색 모으기","나감","들어옴"],
+  es:["Se calcula toda la cadena vecina antes de mover una capa superior.","Prioridad: eliminar, liberar y agrupar","Se compara la cadena completa: primero eliminar diez, luego dejar menos celdas ocupadas y por último concentrar colores iguales.","Eliminar → vaciar una pila → agrupar colores","SALE","ENTRA"],
+  "pt-BR":["A cadeia vizinha inteira é calculada antes de mover o topo.","Prioridade: eliminar, liberar e agrupar","A cadeia completa é comparada: primeiro eliminar dez, depois deixar menos casas ocupadas e por fim concentrar cores iguais.","Eliminar → esvaziar uma pilha → agrupar cores","SAI","ENTRA"],
+  fr:["Toute la chaîne voisine est calculée avant de déplacer le sommet.","Priorité : effacer, libérer, regrouper","La chaîne complète est comparée : effacer dix jetons, puis libérer des cases, puis concentrer les couleurs identiques.","Effacer → vider une pile → regrouper les couleurs","SORTIE","ENTRÉE"],
+  de:["Die ganze Nachbarkette wird berechnet, bevor eine Deckschicht wandert.","Löschen, Platz und Farben zuerst","Die ganze Kette wird verglichen: zuerst zehn löschen, dann weniger Felder belegen, zuletzt gleiche Farben bündeln.","Löschen → Stapel leeren → Farben bündeln","AUS","EIN"],
+  it:["L'intera catena adiacente viene calcolata prima di muovere lo strato superiore.","Priorità: elimina, libera, raggruppa","Si confronta tutta la catena: prima eliminare dieci, poi liberare celle, infine concentrare i colori uguali.","Elimina → svuota una pila → raggruppa i colori","ESCE","ENTRA"],
+  ru:["Вся соседняя цепочка рассчитывается до движения верхнего слоя.","Сначала очистка, место и цвет","Сравнивается вся цепочка: сначала удаление десяти, затем меньше занятых клеток, потом концентрация одинаковых цветов.","Очистка → освободить стопку → собрать цвет","ВЫХОД","ВХОД"],
+  hi:["ऊपरी परत चलने से पहले पूरी पास वाली श्रृंखला की गणना होती है।","हटाना, जगह और रंग प्राथमिकता","पूरी श्रृंखला की तुलना होती है: पहले दस चिप हटाना, फिर कम भरे खाने, और अंत में समान रंगों को जोड़ना।","हटाएँ → ढेर खाली करें → रंग मिलाएँ","बाहर","अंदर"],
+  ar:["تُحسب السلسلة المجاورة كاملة قبل تحريك الطبقة العليا.","أولوية الإزالة والمساحة واللون","تُقارن السلسلة كاملة: إزالة عشر قطع أولاً، ثم تقليل الخانات المشغولة، ثم تجميع الألوان المتطابقة.","إزالة ← إفراغ كومة ← تجميع الألوان","خروج","دخول"]
+};
+for(const [language,[how2,priorityTitle,priority,flowRule,sourceLabel,targetLabel]] of Object.entries(MERGE_PRIORITY_RULES))Object.assign(I[language],{how2,priorityTitle,priority,flowRule,sourceLabel,targetLabel});
 const MECHANIC_COPY={
 en:["THAW ICE","COLLECT GEMS","Place the same top color beside a frozen stack to thaw it.","Clear 10 chips on or beside a ◆ gem cell to collect that gem.","Complete every shown goal before the move limit."],
 "zh-Hant":["解凍冰塊","收集寶石","把同色頂層放在冰凍堆旁邊，才能解凍。","在 ◆ 寶石格或相鄰格消除 10 片，才能收集寶石。","在步數限制內完成畫面上的全部條件。"],
@@ -84,8 +100,105 @@ function topRun(stack,color=null){if(!stack.length)return{color:null,count:0};le
 function effectiveColor(cell,fallback=null){const top=cell?.stack.at(-1);return top==="rainbow"?fallback||"rainbow":top||null;}
 function normalizeRainbow(cells,index,objectiveColor){if(cells[index]?.stack.at(-1)!=="rainbow")return;const counts=new Map();for(const n of neighbors(index)){const color=effectiveColor(cells[n]);if(color&&color!=="rainbow"&&color!=="bomb")counts.set(color,(counts.get(color)||0)+topRun(cells[n].stack,color).count);}const color=[...counts].sort((a,b)=>b[1]-a[1]||COLORS.indexOf(a[0])-COLORS.indexOf(b[0]))[0]?.[0]||objectiveColor||COLORS[0];for(let i=cells[index].stack.length-1;i>=0&&cells[index].stack[i]==="rainbow";i--)cells[index].stack[i]=color;}
 function component(cells,start,color){const found=[],queue=[start],seen=new Set();while(queue.length){const index=queue.shift();if(seen.has(index))continue;seen.add(index);const cell=cells[index],current=effectiveColor(cell);if(!cell||cell.frozen||cell.chained||(current!==color&&current!=="rainbow"))continue;if(current==="rainbow")for(let layer=cell.stack.length-1;layer>=0&&cell.stack[layer]==="rainbow";layer--)cell.stack[layer]=color;found.push(index);queue.push(...neighbors(index));}return found;}
-function resolveModel(input,placedIndex,objectiveColor=null,threshold=10){const cells=cloneCells(input),trace=[],queue=[placedIndex],queued=new Set([placedIndex]),stats={cleared:0,clears:0,gems:0,thawed:0,score:0},placedColor=effectiveColor(cells[placedIndex]);for(const n of neighbors(placedIndex)){if(!cells[n])continue;const frozenColor=effectiveColor(cells[n],placedColor),matchesFrozen=placedColor==="rainbow"||placedColor===frozenColor;if(cells[n].frozen&&matchesFrozen){stats.thawed++;cells[n].frozen=false;trace.push({type:"thaw",target:n,sources:[placedIndex],color:frozenColor,count:1});}if(cells[n].chained)cells[n].chained=false;}const enqueue=index=>{if(Number.isInteger(index)&&!queued.has(index)){queued.add(index);queue.push(index);}};let guard=0;while(queue.length&&guard++<120){const index=queue.shift();queued.delete(index);const cell=cells[index];if(!cell?.stack.length||cell.frozen||cell.chained)continue;normalizeRainbow(cells,index,objectiveColor);const color=effectiveColor(cell);if(color==="bomb"){cell.stack.pop();const affected=[];for(const n of neighbors(index)){const run=topRun(cells[n].stack);if(run.count){cells[n].stack.splice(-run.count);stats.cleared+=run.count;stats.score+=run.count*12;affected.push(n);}}trace.push({type:"bomb",target:index,sources:affected,color:"bomb",count:affected.length});enqueue(index);affected.forEach(enqueue);continue;}if(!color)continue;const sources=neighbors(index).filter(source=>{const sourceCell=cells[source],sourceColor=effectiveColor(sourceCell,color);return sourceCell?.stack.length&&!sourceCell.frozen&&!sourceCell.chained&&(sourceColor===color||sourceColor==="rainbow");}).sort((a,b)=>a-b);if(!sources.length)continue;const target=index,transfers=[];let moved=0;for(const source of sources){const run=topRun(cells[source].stack,color);if(!run.count)continue;const chips=cells[source].stack.splice(-run.count).map(chip=>chip==="rainbow"?color:chip);cells[target].stack.push(...chips);moved+=chips.length;transfers.push({source,count:chips.length});}if(!moved)continue;trace.push({type:"merge",target,sources:transfers.map(item=>item.source),transfers,color,count:moved});stats.score+=moved*3;const targetRun=topRun(cells[target].stack,color);if(targetRun.count>=threshold){cells[target].stack.splice(-targetRun.count);stats.cleared+=targetRun.count;stats.clears++;stats.score+=targetRun.count*10;if(cells[target].gem){cells[target].gem=false;stats.gems++;}const blocked=cells.find(cell=>cell.blocked);if(blocked)blocked.blocked=false;trace.push({type:"clear",target,sources:[],color,count:targetRun.count});}enqueue(target);transfers.forEach(({source})=>enqueue(source));}
-return{cells,trace,stats};}
+function stackIsPure(stack){if(!stack.length)return true;const color=stack.find(chip=>chip!=="rainbow");if(!color||color==="bomb")return false;return stack.every(chip=>chip===color||chip==="rainbow");}
+function mergeCandidate(cells,source,target,color,placedIndex,threshold){const sourceRun=topRun(cells[source].stack,color),targetRun=topRun(cells[target].stack,color);if(!sourceRun.count||!targetRun.count)return null;const sourceAfter=cells[source].stack.slice(0,-sourceRun.count),targetAfter=[...cells[target].stack,...cells[source].stack.slice(-sourceRun.count).map(chip=>chip==="rainbow"?color:chip)],beforePure=Number(stackIsPure(cells[source].stack))+Number(stackIsPure(cells[target].stack)),afterPure=Number(stackIsPure(sourceAfter))+Number(stackIsPure(targetAfter));return{source,target,color,count:sourceRun.count,score:[Number(sourceRun.count+targetRun.count>=threshold),afterPure-beforePure,afterPure,Number(stackIsPure(cells[target].stack)),Number(stackIsPure(sourceAfter)),Number(target===placedIndex),targetRun.count,-target,-source]};}
+function compareMergeCandidates(a,b){for(let i=0;i<a.score.length;i++){if(a.score[i]!==b.score[i])return b.score[i]-a.score[i];}return 0;}
+function collectMergeCandidates(cells,active,placedIndex,threshold){
+  const candidates=[],seenPairs=new Set();
+  for(const index of active){
+    const cell=cells[index];
+    if(!cell?.stack.length||cell.frozen||cell.chained)continue;
+    for(const n of neighbors(index)){
+      const pair=`${Math.min(index,n)}:${Math.max(index,n)}`;
+      if(seenPairs.has(pair))continue;
+      seenPairs.add(pair);
+      const neighbor=cells[n];
+      if(!neighbor?.stack.length||neighbor.frozen||neighbor.chained)continue;
+      const color=effectiveColor(cell),neighborColor=effectiveColor(neighbor,color);
+      if(!COLORS.includes(color)||!(neighborColor===color||neighborColor==="rainbow"))continue;
+      const towardIndex=mergeCandidate(cells,n,index,color,placedIndex,threshold),towardNeighbor=mergeCandidate(cells,index,n,color,placedIndex,threshold);
+      if(towardIndex)candidates.push(towardIndex);
+      if(towardNeighbor)candidates.push(towardNeighbor);
+    }
+  }
+  return candidates.sort(compareMergeCandidates);
+}
+function applyProjectedMerge(cells,candidate,threshold){
+  const {source,target,color,count}=candidate,chips=cells[source].stack.splice(-count).map(chip=>chip==="rainbow"?color:chip);
+  cells[target].stack.push(...chips);
+  const targetRun=topRun(cells[target].stack,color),result={clears:0,cleared:0};
+  if(targetRun.count>=threshold){
+    cells[target].stack.splice(-targetRun.count);
+    result.clears=1;
+    result.cleared=targetRun.count;
+  }
+  return result;
+}
+function projectedOutcomeScore(cells,stats){
+  let occupied=0,concentration=0,pureMass=0;
+  for(const cell of cells){
+    if(!cell.stack.length)continue;
+    occupied++;
+    const run=topRun(cell.stack);
+    concentration+=run.count*run.count;
+    if(stackIsPure(cell.stack))pureMass+=cell.stack.length*cell.stack.length;
+  }
+  return[stats.clears,stats.cleared,-occupied,concentration,pureMass,-stats.moves];
+}
+function compareProjectedScores(a,b){for(let i=0;i<a.length;i++){if(a[i]!==b[i])return a[i]-b[i];}return 0;}
+function projectedStateKey(cells,active){return`${[...active].sort((a,b)=>a-b).join(",")}|${cells.map(cell=>cell.stack.join(".")).join("/")}`;}
+function searchProjectedMerges(cells,active,placedIndex,threshold,stats,depth,path,budget){
+  let best={score:projectedOutcomeScore(cells,stats),sequence:[]};
+  if(depth>=5||budget.remaining--<=0)return best;
+  const candidates=collectMergeCandidates(cells,active,placedIndex,threshold).slice(0,8);
+  for(const candidate of candidates){
+    const nextCells=cloneCells(cells),nextActive=new Set(active),step=applyProjectedMerge(nextCells,candidate,threshold);
+    nextActive.add(candidate.source);nextActive.add(candidate.target);
+    const key=projectedStateKey(nextCells,nextActive);
+    if(path.has(key))continue;
+    path.add(key);
+    const child=searchProjectedMerges(nextCells,nextActive,placedIndex,threshold,{clears:stats.clears+step.clears,cleared:stats.cleared+step.cleared,moves:stats.moves+1},depth+1,path,budget);
+    path.delete(key);
+    const comparison=compareProjectedScores(child.score,best.score);
+    if(comparison>0||(comparison===0&&(!best.sequence.length||compareMergeCandidates(candidate,best.sequence[0])<0)))best={score:child.score,sequence:[candidate,...child.sequence]};
+  }
+  return best;
+}
+function chooseBestMergeCandidate(cells,active,placedIndex,threshold,forbiddenStates=new Set()){
+  const candidates=collectMergeCandidates(cells,active,placedIndex,threshold).filter(candidate=>{
+    const nextCells=cloneCells(cells),nextActive=new Set(active);
+    applyProjectedMerge(nextCells,candidate,threshold);nextActive.add(candidate.source);nextActive.add(candidate.target);
+    return!forbiddenStates.has(projectedStateKey(nextCells,nextActive));
+  });
+  if(candidates.length<2)return candidates[0]||null;
+  let best=null;
+  for(const candidate of candidates){
+    const nextCells=cloneCells(cells),nextActive=new Set(active),step=applyProjectedMerge(nextCells,candidate,threshold);
+    nextActive.add(candidate.source);nextActive.add(candidate.target);
+    const key=projectedStateKey(nextCells,nextActive),path=new Set([projectedStateKey(cells,active),key]);
+    const projected=searchProjectedMerges(nextCells,nextActive,placedIndex,threshold,{clears:step.clears,cleared:step.cleared,moves:1},1,path,{remaining:32});
+    if(!best||compareProjectedScores(projected.score,best.score)>0||(compareProjectedScores(projected.score,best.score)===0&&compareMergeCandidates(candidate,best.candidate)<0))best={candidate,score:projected.score};
+  }
+  return best.candidate;
+}
+function resolveModel(input,placedIndex,objectiveColor=null,threshold=10){
+  const cells=cloneCells(input),trace=[],active=new Set([placedIndex]),stats={cleared:0,clears:0,gems:0,thawed:0,score:0},placedColor=effectiveColor(cells[placedIndex]);
+  for(const n of neighbors(placedIndex)){if(!cells[n])continue;const frozenColor=effectiveColor(cells[n],placedColor),matchesFrozen=placedColor==="rainbow"||placedColor===frozenColor;if(cells[n].frozen&&matchesFrozen){stats.thawed++;cells[n].frozen=false;active.add(n);trace.push({type:"thaw",target:n,sources:[placedIndex],color:frozenColor,count:1});}if(cells[n].chained){cells[n].chained=false;active.add(n);}}
+  let guard=0,settledStates=new Set([projectedStateKey(cells,active)]);
+  while(active.size&&guard++<120){
+    for(const index of active)if(cells[index]?.stack.length&&!cells[index].frozen&&!cells[index].chained)normalizeRainbow(cells,index,objectiveColor);
+    const bombIndex=[...active].filter(index=>effectiveColor(cells[index])==="bomb").sort((a,b)=>a-b)[0];
+    if(Number.isInteger(bombIndex)){const cell=cells[bombIndex];cell.stack.pop();const affected=[];for(const n of neighbors(bombIndex)){const run=topRun(cells[n].stack);if(run.count){cells[n].stack.splice(-run.count);stats.cleared+=run.count;stats.score+=run.count*12;affected.push(n);active.add(n);}}trace.push({type:"bomb",target:bombIndex,sources:affected,color:"bomb",count:affected.length});active.add(bombIndex);continue;}
+    const selectedCandidate=chooseBestMergeCandidate(cells,active,placedIndex,threshold,settledStates);
+    if(!selectedCandidate)break;
+    const {source,target,color,count}=selectedCandidate,chips=cells[source].stack.splice(-count).map(chip=>chip==="rainbow"?color:chip);
+    cells[target].stack.push(...chips);trace.push({type:"merge",target,sources:[source],transfers:[{source,count:chips.length}],color,count:chips.length});stats.score+=chips.length*3;active.add(source);active.add(target);
+    const targetRun=topRun(cells[target].stack,color);
+    if(targetRun.count>=threshold){cells[target].stack.splice(-targetRun.count);stats.cleared+=targetRun.count;stats.clears++;stats.score+=targetRun.count*10;if(cells[target].gem){cells[target].gem=false;stats.gems++;}const blocked=cells.find(cell=>cell.blocked);if(blocked)blocked.blocked=false;trace.push({type:"clear",target,sources:[],color,count:targetRun.count});}
+    settledStates.add(projectedStateKey(cells,active));
+  }
+  return{cells,trace,stats};
+}
 const resolveWithoutAdjacentGemReward=resolveModel;
 resolveModel=(input,placedIndex,objectiveColor=null,threshold=10)=>{
   const result=resolveWithoutAdjacentGemReward(input,placedIndex,objectiveColor,threshold),expanded=[],rewarded=new Set();
@@ -105,7 +218,7 @@ resolveModel=(input,placedIndex,objectiveColor=null,threshold=10)=>{
   result.trace=expanded;
   return result;
 };
-function validateMergeContracts(){const blank=()=>COORDS.map(emptyCell),center=indexByCoord.get("0,0"),ns=neighbors(center);let cells=blank();cells[center].stack=["red","red","red"];cells[ns[0]].stack=["red","red","red"];let result=resolveModel(cells,center,"red",10);if(result.cells[center].stack.length!==6||result.cells[ns[0]].stack.length)throw new Error("Hexa Sort placed anchor failed");cells=blank();cells[center].stack=["red"];cells[ns[0]].stack=["red","red","red"];cells[ns[1]].stack=["red","red","red"];result=resolveModel(cells,center,"red",10);if(result.cells[center].stack.length!==7||result.trace.some(step=>step.type==="merge"&&step.sources.some(source=>!neighbors(step.target).includes(source))))throw new Error("Hexa Sort direct-neighbor anchor failed");cells=blank();cells[center].stack=["rainbow"];cells[ns[0]].stack=["green","green","green"];result=resolveModel(cells,center,"red",10);if(result.cells[center].stack.length!==4||result.cells[center].stack.at(-1)!=="green")throw new Error("Hexa Sort rainbow resolution failed");cells=blank();cells[center].stack=["bomb"];cells[ns[0]].stack=["red","red"];cells[ns[1]].stack=["blue","blue","blue"];result=resolveModel(cells,center,"red",10);if(result.stats.cleared!==5||result.cells[ns[0]].stack.length||result.cells[ns[1]].stack.length)throw new Error("Hexa Sort bomb resolution failed");return true;}
+function validateMergeContracts(){const blank=()=>COORDS.map(emptyCell),center=indexByCoord.get("0,0"),ns=neighbors(center);let cells=blank();cells[center].stack=["blue","red","red"];cells[ns[0]].stack=["red"];let result=resolveModel(cells,ns[0],"red",10);if(result.cells[center].stack.join(",")!=="blue,red,red,red"||result.cells[ns[0]].stack.length)throw new Error("Hexa Sort placed-stack evacuation priority failed");cells=blank();cells[center].stack=Array(4).fill("red");cells[ns[0]].stack=["blue",...Array(6).fill("red")];result=resolveModel(cells,center,"red",10);if(result.stats.clears!==1||result.cells[ns[0]].stack.join(",")!=="blue")throw new Error("Hexa Sort clear priority failed");cells=blank();cells[center].stack=["blue","red","red"];cells[ns[0]].stack=["red","blue","blue"];cells[ns[1]].stack=["green","red","red"];result=resolveModel(cells,center,"red",10);if(result.cells[center].stack.length||result.cells[ns[0]].stack.join(",")!=="red,blue,blue,blue"||result.cells[ns[1]].stack.join(",")!=="green,red,red,red,red")throw new Error("Hexa Sort full-chain distribution priority failed");cells=blank();cells[center].stack=["red"];cells[ns[0]].stack=["red","red","red"];const bridged=neighbors(ns[0]).find(index=>index!==center&&!neighbors(center).includes(index));cells[bridged].stack=["red","red"];result=resolveModel(cells,center,"red",10);if(result.trace.some(step=>step.type==="merge"&&step.sources.some(source=>!neighbors(step.target).includes(source))))throw new Error("Hexa Sort direct-neighbor priority failed");cells=blank();cells[center].stack=["rainbow"];cells[ns[0]].stack=["green","green","green"];result=resolveModel(cells,center,"red",10);if(!result.cells.some(cell=>cell.stack.length===4&&cell.stack.at(-1)==="green"))throw new Error("Hexa Sort rainbow resolution failed");cells=blank();cells[center].stack=["bomb"];cells[ns[0]].stack=["red","red"];cells[ns[1]].stack=["blue","blue","blue"];result=resolveModel(cells,center,"red",10);if(result.stats.cleared!==5||result.cells[ns[0]].stack.length||result.cells[ns[1]].stack.length)throw new Error("Hexa Sort bomb resolution failed");return true;}
 const MERGE_CONTRACTS_VALID=validateMergeContracts();
 let locale=localStorage.wpLang||"en",sound=localStorage.wpSound!=="off",unlocked=Math.max(1,Math.min(30,Number(localStorage.hexaSortUnlocked)||1)),selectedStage=unlocked,currentStage=1,cells=[],tray=[],selected=-1,moves=0,cleared=0,clears=0,gems=0,thawed=0,score=0,generation=0,busy=false,lastFocus=null,chipObjectSerial=0,clearedByColor=Object.fromEntries(COLORS.map(c=>[c,0])),animTarget=-1,animSources=[];
 const t=(k,v={})=>String((I[locale]||I.en)[k]||k).replace(/\{(\w+)\}/g,(_,n)=>v[n]??"");
@@ -180,7 +293,6 @@ async function animateTrace(trace){
   const clearDuration=reduced?260:520;
   const revealBeat=reduced?140:280;
   const board=$("hexBoard");
-  const showMergeRole=(cell,key,kind)=>{cell?.querySelector(".merge-role")?.remove();if(!cell)return;const badge=document.createElement("span");badge.className=`merge-role ${kind}`;badge.setAttribute("aria-hidden","true");badge.textContent=t(key);cell.append(badge);};
   board.dataset.departures="0";
   board.dataset.arrivals="0";
   board.dataset.maxLandingError="0";
@@ -280,22 +392,18 @@ async function animateTrace(trace){
       const targetStack=targetCell?.querySelector(".chip-stack");
       if(!targetCell||!targetStack)continue;
       targetCell.classList.add("merge-target");
-      showMergeRole(targetCell,"targetLabel","target-role");
       for(const {source,count} of (step.transfers||step.sources.map(source=>({source,count:1})))){
         const sourceCell=board.querySelector(`[data-hex="${source}"]`);
         if(!sourceCell)continue;
         sourceCell.classList.add("merge-source");
-        showMergeRole(sourceCell,"sourceLabel","source-role");
         for(let layer=0;layer<count;layer++){
           const sourceChip=sourceCell.querySelector(".chip-stack > .chip:last-child");
           await moveObject(sourceCell,targetCell,sourceChip,step.color);
         }
         sourceCell.classList.remove("merge-source");
-        sourceCell.querySelector(".merge-role")?.remove();
       }
       await new Promise(r=>setTimeout(r,landingBeat));
       targetCell.classList.remove("merge-target");
-      targetCell.querySelector(".merge-role")?.remove();
       animTarget=-1;
       animSources=[];
     }
