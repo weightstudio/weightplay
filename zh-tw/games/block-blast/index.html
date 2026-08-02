@@ -1,7 +1,7 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-Hant">
   <head>
-    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol)) location.replace("/en/games/block-blast/" + location.search + location.hash);</script>
+    <base href="/games/block-blast/" />
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -11,19 +11,19 @@
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="theme-color" content="#17243d" />
-    <title>Block Blast | Free 8×8 Puzzle | WeightPlay</title>
-    <meta name="description" content="Play Block Blast free in your browser. Fit three fixed shapes, clear rows and columns, solve 30 terrain missions, or chase an endless high score." />
+    <title>方塊爆破 | WeightPlay</title>
+    <meta name="description" content="Block Blast 是一款原創的 8 x 8 空間謎題，包含 30 個編寫的地形任務和無盡的高分模式。放置目前組中的每個固定形狀，清除完整的行或列，並為仍在托盤中等待的形狀保留足夠的開放空間。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Block Blast | WeightPlay" />
-    <meta property="og:description" content="Plan space for three shapes, clear complete lines, and master 30 puzzle missions plus Endless mode." />
-    <meta property="og:url" content="https://weightplay.com/en/games/block-blast/" />
-    <meta property="og:image" content="https://weightplay.com/assets/block-blast/cover.png" />
+    <meta property="og:title" content="方塊爆破 | WeightPlay" />
+    <meta property="og:description" content="Block Blast 是一款原創的 8 x 8 空間謎題，包含 30 個編寫的地形任務和無盡的高分模式。放置目前組中的每個固定形狀，清除完整的行或列，並為仍在托盤中等待的形狀保留足夠的開放空間。" />
+    <meta property="og:url" content="https://weightplay.com/zh-tw/games/block-blast/" />
+    <meta property="og:image" content="https://weightplay.com/assets/block-blast/cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Block Blast | WeightPlay" />
-    <meta name="twitter:description" content="A free 8×8 line-clearing puzzle with 30 missions and Endless mode." />
-    <meta name="twitter:image" content="https://weightplay.com/assets/block-blast/cover.png" />
-    <link rel="canonical" href="https://weightplay.com/en/games/block-blast/" />
+    <meta name="twitter:title" content="方塊爆破 | WeightPlay" />
+    <meta name="twitter:description" content="Block Blast 是一款原創的 8 x 8 空間謎題，包含 30 個編寫的地形任務和無盡的高分模式。放置目前組中的每個固定形狀，清除完整的行或列，並為仍在托盤中等待的形狀保留足夠的開放空間。" />
+    <meta name="twitter:image" content="https://weightplay.com/assets/block-blast/cover.webp" />
+    <link rel="canonical" href="https://weightplay.com/zh-tw/games/block-blast/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/block-blast/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/block-blast/" />
     <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/block-blast/" />
@@ -53,7 +53,36 @@
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css" />
     <link rel="stylesheet" href="../arrow-escape/style.css?v=20260801-shell1" />
     <link rel="stylesheet" href="style.css?v=20260802-stable-clear-ice-v19" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Block Blast","url":"https://weightplay.com/en/games/block-blast/","image":"https://weightplay.com/assets/block-blast/cover.png","description":"Fit fixed block shapes on an 8 by 8 board, clear complete lines, solve 30 terrain missions, and play an endless score challenge.","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"en","isAccessibleForFree":true,"genre":["Puzzle","Strategy","Browser Game"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9}}</script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "方塊爆破",
+  "url": "https://weightplay.com/zh-tw/games/block-blast/",
+  "image": "https://weightplay.com/assets/block-blast/cover.png",
+  "description": "Block Blast 是一款原創的 8 x 8 空間謎題，包含 30 個編寫的地形任務和無盡的高分模式。放置目前組中的每個固定形狀，清除完整的行或列，並為仍在托盤中等待的形狀保留足夠的開放空間。",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "zh-Hant",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Puzzle",
+    "Strategy",
+    "Family",
+    "Browser Game"
+  ],
+  "audience": {
+    "@type": "PeopleAudience",
+    "audienceType": "General players",
+    "suggestedMinAge": 9
+  },
+  "alternateName": "Block Blast"
+}
+    </script>
   </head>
   <body
     data-screen="main"
@@ -92,11 +121,11 @@
           <img
             class="poster"
             src="../../assets/block-blast/cover.webp"
-            alt="Colorful blocks clearing lines on a puzzle board"
+            alt="《方塊爆破》遊戲圖片"
           />
           <div class="hero-copy">
             <small data-i18n="genre">8×8 BLOCK PUZZLE</small>
-            <h1 data-i18n="title">Block Blast</h1>
+            <h1 data-i18n="title">方塊爆破</h1>
             <p data-i18n="pitch">
               Place all three shapes and clear complete rows or columns.
             </p>
@@ -116,16 +145,30 @@
           </div>
         </section>
       </main>
-      <section class="game-page-info game-page-info-static" aria-label="Block Blast game guide">
-        <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Block Blast — How to Play</h2><p>Block Blast is an 8×8 spatial puzzle with 30 authored missions and an Endless score mode. Every turn offers three fixed shapes. Place them without rotating, complete full rows or columns, and preserve enough open space for the whole set.</p></div><div class="game-info-facts"><div class="game-info-fact"><span>Recommended age</span><strong>9+</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>Play time</span><strong>2–10 minutes</strong></div><div class="game-info-fact"><span>Skills</span><strong>Planning · Spatial Reasoning</strong></div></div></div>
-        <div class="game-info-sections">
-          <div class="game-info-section"><h3>How to Play</h3><ol><li>Choose one of the three shapes below the board.</li><li>Tap an open cell or drag the shape to a legal fit.</li><li>Complete a full row or column to clear it and score.</li><li>Use all three shapes to receive the next set.</li><li>The run ends when no remaining shape can fit.</li></ol></div>
-          <div class="game-info-section"><h3>Campaign and Endless</h3><p>Campaign stages add dirt, ice, stone, gems, locks, color goals, and set limits across thirty missions. Endless mode removes the mission objective and mixes small, medium, large, five-cell, and occasional 3×3 shapes so space eventually becomes scarce.</p></div>
-          <div class="game-info-section"><h3>Strategy Tips</h3><ul><li>Keep several regions open instead of filling one corner perfectly.</li><li>Check all three shapes before committing the first placement.</li><li>Prepare intersecting row and column clears for larger scores.</li><li>Do not depend on tiny pieces; large shapes are deliberately part of Endless mode.</li></ul></div>
-          <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>Block Blast is free to play in a modern phone or desktop browser and does not require an account. Campaign unlocks and preferences are stored only in this browser. Clearing site data or changing devices can remove local progress.</p></div>
-          <div class="game-info-section"><h3>Frequently Asked Questions</h3><dl><div><dt>Can shapes rotate?</dt><dd>No. Each tray shape keeps its displayed orientation.</dd></div><div><dt>When do points increase?</dt><dd>Only completed rows or columns award points; simply placing a shape does not.</dd></div><div><dt>How many stages are included?</dt><dd>There are 30 authored Campaign missions plus an unlimited Endless run.</dd></div><div><dt>What do ice and stone do?</dt><dd>Ice remains visible beneath a placed block until its line clears; stone cannot be occupied.</dd></div></dl></div>
-        </div>
-      </section>
+      <section class="game-page-info game-page-info-static" aria-label="方塊爆破 遊戲資訊">
+    
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>方塊爆破</h2><p>Block Blast 是一款原創的 8 x 8 空間謎題，包含 30 個編寫的地形任務和無盡的高分模式。放置目前組中的每個固定形狀，清除完整的行或列，並為仍在托盤中等待的形狀保留足夠的開放空間。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>難度</span><strong>容易挑戰</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>2-10分鐘</strong></div><div class="game-info-fact"><span>練習能力</span><strong>規劃 · 空間推理 · 焦點</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界與任務</h3><p>戰役由三十個緊湊的謎題任務組成，而不是一張空板的三十個副本。泥土、冰、石頭、寶石、鎖、顏色目標和設定限制組合成不同的規劃問題。</p>
+<p>無盡模式會移除任務目標並繼續處理三形狀套裝。其平衡的形狀池包括小型連接器、中等角、長的五單元件、較大的矩形，以及偶爾的 3 x 3 正方形，因此粗心的板最終會耗盡合法空間。</p></div>
+      <div class="game-info-section"><h3>遊戲系統</h3><p>形狀保持托盤中顯示的方向，放置後無法移動。選擇一個形狀並點擊合法板單元，或將其拖曳到凸起的著陸預覽上。</p>
+<p>整行或整列會立即清除。只有清除線路才獎勵積分；單獨放置方塊不會增加分數。</p>
+<p>使用所有三種形狀可以得到一個新的固定集。戰役任務還可以要求路線、地形、寶石、顏色或有限設定的目標。一旦未使用的托盤形狀都不符合合法配合，則運行結束。</p>
+<p>冰塊在放置的方塊下方仍然可見，直到該線清除為止，而石頭和鎖會阻擋放置。寶石細胞在被覆蓋時會打開相連的鎖。</p></div>
+      <div class="game-info-section"><h3>玩法說明</h3><ol><li>選擇「戰役」進行三十個任務，或選擇「無盡」進行一次連續的得分運行。</li><li>選擇板下方的三個形狀之一。</li><li>點擊打開的儲存格或將形狀拖曳到適當的位置。</li><li>完成一行或一列即可清除並得分。</li><li>使用所有三個形狀接收下一組，同時為每個剩餘形狀留出空間。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>在進行第一次放置之前檢查所有三個形狀。</li><li>保留幾個開放區域，而不是完美填充一個角落。</li><li>當下一個形狀確保安全時，建置相交的行和列清除。</li><li>不要計劃只接收小件；長形狀和偶爾的 3 x 3 正方形是無盡模式的一部分。</li><li>在地形任務中，區分必須清除的單元和永遠無法被佔領的石單元。</li></ul></div>
+      <div class="game-info-section"><h3>關卡與難度成長</h3><p>階段 1-5 介紹生產線目標和乾淨的董事會規劃。</p>
+<p>後面的章節會分層泥土、冰、石頭、寶石、鎖、顏色目標、混合目標和更嚴格的設定限制。</p>
+<p>玩家選擇創建的棋盤狀態會帶來無盡的難度，而形狀分佈則保證了常規的大塊壓力，而不僅僅是處理硬形狀。</p></div>
+      <div class="game-info-section"><h3>開發設計理念</h3><p>分數和效果與實際的清線有關。清除光束保持在已完成的行或列​​的中心，碎片從清除的單元格中落下，並且當玩家立即選擇下一個托盤塊時，白色得分增益會出現在清除的區域上，而不會重播。 完整的介面使用居中的邏輯佈局，最大像素為 920。手機、風景和桌面視圖將相同的控制、點擊區域、藝術作品和遊戲座標一起縮放，而不是拉伸各個部分。因此，觸控、滑鼠和鍵盤作用於相同的合法狀態。主海報和開始遊戲操作與舞台管理保持分離，而舞台選擇、戰鬥、對話和結果保留自己的有限內容和返迴路徑。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>Block Blast 是一款適合一般觀眾的瀏覽器益智遊戲，建議 9 歲以上兒童與家庭遊戲。無需帳戶。活動解鎖和首選項僅儲存在此瀏覽器中，因此清除網站資料或變更裝置可能會刪除本機進度。 您無需建立帳戶即可玩。進度保存在目前瀏覽器設定檔的本機瀏覽器儲存中，而不是線上帳戶或跨裝置資料庫中。清除網站資料、使用隱私瀏覽、變更瀏覽器或移動到另一台裝置可以建立單獨的儲存或刪除現有的儲存。當瀏覽器允許儲存時，語言、聲音和簡化動作首選項遵循共享的 WeightPlay 控制。沒有任何指導結果是醫學、學校或專業評估。</p></div>
+      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>形狀可以旋轉嗎？</dt><dd>不會。每個托盤形狀都會保持其顯示方向。</dd></div><div><dt>積分什麼時候增加？</dt><dd>只有完成的行或列​​才獎勵積分；簡單地放置一個形狀不會。</dd></div><div><dt>包括幾個階段？</dt><dd>有 30 個編寫的戰役任務以及無限的無盡運行。</dd></div><div><dt>冰和石頭有什麼作用？</dt><dd>冰塊在放置的方塊下方仍然可見，直到其線條消失為止；石頭不能被佔用。</dd></div><div><dt>為什麼跑步結束了？</dt><dd>當目前托盤中沒有未使用的形狀具有合法位置時，運行結束。</dd></div><div><dt>進度保存了嗎？</dt><dd>活動解鎖和偏好設定會本地儲存在此瀏覽器中。</dd></div><div><dt>支援哪些控制和螢幕尺寸？</dt><dd>相同的規則支援遊戲使用這些輸入的觸控、滑鼠和鍵盤。此介面可擴展為跨所需的手機、橫向和桌面視窗的一種邏輯佈局。</dd></div><div><dt>進度可以自動轉移到另一台設備嗎？</dt><dd>不會。該遊戲目前僅保存到本地瀏覽器存儲，因此另一個瀏覽器配置文件或設備會以其自己單獨的本地進度開始，除非添加未來的帳戶系統。</dd></div></dl></div>
+      
+    </div>
+  </section>
     </div>
     <section id="stageScreen" class="active-screen" hidden>
       <div class="stage-shell">
@@ -298,7 +341,7 @@
     <script src="../../src/site-config.js"></script>
     <script src="../../src/analytics.js"></script>
     <script>window.WonderAnalytics?.track("game_view",{game_id:"block-blast"});</script>
-    <script src="../../src/i18n.js?v=20260721-locale13-1"></script>
+    <script src="/src/i18n.js?v=20260731-owner-preview5"></script>
     <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
     <script src="../../src/tutorial.js?v=20260802-block-blast1"></script>
     <script src="../../src/sound.js?v=20260720-locale11"></script>

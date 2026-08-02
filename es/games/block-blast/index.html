@@ -1,7 +1,7 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
-    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol)) location.replace("/en/games/block-blast/" + location.search + location.hash);</script>
+    <base href="/games/block-blast/" />
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -11,19 +11,19 @@
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="theme-color" content="#17243d" />
-    <title>Block Blast | Free 8×8 Puzzle | WeightPlay</title>
-    <meta name="description" content="Play Block Blast free in your browser. Fit three fixed shapes, clear rows and columns, solve 30 terrain missions, or chase an endless high score." />
+    <title>Explosión de bloques | WeightPlay</title>
+    <meta name="description" content="Block Blast es un rompecabezas espacial original de 8 por 8 con 30 misiones de terreno creadas por el autor y un modo sin fin de puntuación alta. Coloque..." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Block Blast | WeightPlay" />
-    <meta property="og:description" content="Plan space for three shapes, clear complete lines, and master 30 puzzle missions plus Endless mode." />
-    <meta property="og:url" content="https://weightplay.com/en/games/block-blast/" />
-    <meta property="og:image" content="https://weightplay.com/assets/block-blast/cover.png" />
+    <meta property="og:title" content="Explosión de bloques | WeightPlay" />
+    <meta property="og:description" content="Block Blast es un rompecabezas espacial original de 8 por 8 con 30 misiones de terreno creadas por el autor y un modo sin fin de puntuación alta. Coloque..." />
+    <meta property="og:url" content="https://weightplay.com/es/games/block-blast/" />
+    <meta property="og:image" content="https://weightplay.com/assets/block-blast/cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Block Blast | WeightPlay" />
-    <meta name="twitter:description" content="A free 8×8 line-clearing puzzle with 30 missions and Endless mode." />
-    <meta name="twitter:image" content="https://weightplay.com/assets/block-blast/cover.png" />
-    <link rel="canonical" href="https://weightplay.com/en/games/block-blast/" />
+    <meta name="twitter:title" content="Explosión de bloques | WeightPlay" />
+    <meta name="twitter:description" content="Block Blast es un rompecabezas espacial original de 8 por 8 con 30 misiones de terreno creadas por el autor y un modo sin fin de puntuación alta. Coloque..." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/block-blast/cover.webp" />
+    <link rel="canonical" href="https://weightplay.com/es/games/block-blast/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/block-blast/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/block-blast/" />
     <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/block-blast/" />
@@ -53,7 +53,36 @@
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css" />
     <link rel="stylesheet" href="../arrow-escape/style.css?v=20260801-shell1" />
     <link rel="stylesheet" href="style.css?v=20260802-stable-clear-ice-v19" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Block Blast","url":"https://weightplay.com/en/games/block-blast/","image":"https://weightplay.com/assets/block-blast/cover.png","description":"Fit fixed block shapes on an 8 by 8 board, clear complete lines, solve 30 terrain missions, and play an endless score challenge.","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"en","isAccessibleForFree":true,"genre":["Puzzle","Strategy","Browser Game"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9}}</script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Explosión de bloques",
+  "url": "https://weightplay.com/es/games/block-blast/",
+  "image": "https://weightplay.com/assets/block-blast/cover.png",
+  "description": "Block Blast es un rompecabezas espacial original de 8 por 8 con 30 misiones de terreno creadas por el autor y un modo sin fin de puntuación alta. Coloque...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "es",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Puzzle",
+    "Strategy",
+    "Family",
+    "Browser Game"
+  ],
+  "audience": {
+    "@type": "PeopleAudience",
+    "audienceType": "General players",
+    "suggestedMinAge": 9
+  },
+  "alternateName": "Block Blast"
+}
+    </script>
   </head>
   <body
     data-screen="main"
@@ -92,11 +121,11 @@
           <img
             class="poster"
             src="../../assets/block-blast/cover.webp"
-            alt="Colorful blocks clearing lines on a puzzle board"
+            alt="Imagen del juego Explosión de bloques"
           />
           <div class="hero-copy">
             <small data-i18n="genre">8×8 BLOCK PUZZLE</small>
-            <h1 data-i18n="title">Block Blast</h1>
+            <h1 data-i18n="title">Explosión de bloques</h1>
             <p data-i18n="pitch">
               Place all three shapes and clear complete rows or columns.
             </p>
@@ -116,16 +145,30 @@
           </div>
         </section>
       </main>
-      <section class="game-page-info game-page-info-static" aria-label="Block Blast game guide">
-        <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Block Blast — How to Play</h2><p>Block Blast is an 8×8 spatial puzzle with 30 authored missions and an Endless score mode. Every turn offers three fixed shapes. Place them without rotating, complete full rows or columns, and preserve enough open space for the whole set.</p></div><div class="game-info-facts"><div class="game-info-fact"><span>Recommended age</span><strong>9+</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>Play time</span><strong>2–10 minutes</strong></div><div class="game-info-fact"><span>Skills</span><strong>Planning · Spatial Reasoning</strong></div></div></div>
-        <div class="game-info-sections">
-          <div class="game-info-section"><h3>How to Play</h3><ol><li>Choose one of the three shapes below the board.</li><li>Tap an open cell or drag the shape to a legal fit.</li><li>Complete a full row or column to clear it and score.</li><li>Use all three shapes to receive the next set.</li><li>The run ends when no remaining shape can fit.</li></ol></div>
-          <div class="game-info-section"><h3>Campaign and Endless</h3><p>Campaign stages add dirt, ice, stone, gems, locks, color goals, and set limits across thirty missions. Endless mode removes the mission objective and mixes small, medium, large, five-cell, and occasional 3×3 shapes so space eventually becomes scarce.</p></div>
-          <div class="game-info-section"><h3>Strategy Tips</h3><ul><li>Keep several regions open instead of filling one corner perfectly.</li><li>Check all three shapes before committing the first placement.</li><li>Prepare intersecting row and column clears for larger scores.</li><li>Do not depend on tiny pieces; large shapes are deliberately part of Endless mode.</li></ul></div>
-          <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>Block Blast is free to play in a modern phone or desktop browser and does not require an account. Campaign unlocks and preferences are stored only in this browser. Clearing site data or changing devices can remove local progress.</p></div>
-          <div class="game-info-section"><h3>Frequently Asked Questions</h3><dl><div><dt>Can shapes rotate?</dt><dd>No. Each tray shape keeps its displayed orientation.</dd></div><div><dt>When do points increase?</dt><dd>Only completed rows or columns award points; simply placing a shape does not.</dd></div><div><dt>How many stages are included?</dt><dd>There are 30 authored Campaign missions plus an unlimited Endless run.</dd></div><div><dt>What do ice and stone do?</dt><dd>Ice remains visible beneath a placed block until its line clears; stone cannot be occupied.</dd></div></dl></div>
-        </div>
-      </section>
+      <section class="game-page-info game-page-info-static" aria-label="Guía de Explosión de bloques">
+    
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2>Explosión de bloques</h2><p>Block Blast es un rompecabezas espacial original de 8 por 8 con 30 misiones de terreno creadas por el autor y un modo sin fin de puntuación alta. Coloque cada forma fija del conjunto actual, borre filas o columnas completas y proteja suficiente espacio abierto para las formas que aún esperan en la bandeja.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Dificultad</span><strong>Fácil de desafiar</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>2-10 minutos</strong></div><div class="game-info-fact"><span>Habilidades</span><strong>Planificación · Razonamiento espacial · Enfoque</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Historia y misión</h3><p>La campaña está organizada como treinta misiones de rompecabezas compactas en lugar de treinta copias de un tablero vacío. La suciedad, el hielo, las piedras, las gemas, las cerraduras, los objetivos de color y los límites establecidos se combinan en diferentes problemas de planificación.</p>
+<p>El modo sin fin elimina el objetivo de la misión y sigue repartiendo conjuntos de tres formas. Su conjunto de formas equilibradas incluye conectores pequeños, esquinas medianas, piezas largas de cinco celdas, rectángulos más grandes y, ocasionalmente, cuadrados de 3 por 3, por lo que un tablero descuidado eventualmente se queda sin espacio legal.</p></div>
+      <div class="game-info-section"><h3>Reglas del juego</h3><p>Las formas mantienen la orientación que se muestra en la bandeja y no pueden moverse después de su colocación. Seleccione una forma y toque una celda del tablero legal, o arrástrela a la vista previa del rellano elevado.</p>
+<p>Una fila o columna completa se borra inmediatamente. Sólo las líneas despejadas otorgan puntos; Colocar un bloque por sí solo no aumenta la puntuación.</p>
+<p>El uso de las tres formas crea un nuevo conjunto fijo. Las misiones de campaña también pueden solicitar líneas, terreno, gemas, colores u objetivos de conjunto limitado. La tirada finaliza cuando ninguna de las formas de bandeja no utilizadas encaja correctamente.</p>
+<p>El hielo permanece visible debajo de un bloque colocado hasta que esa línea se aclara, mientras que la piedra y las cerraduras bloquean la colocación. Las celdas de gemas abren cerraduras vinculadas cuando están cubiertas.</p></div>
+      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Elija Campaña para treinta misiones o Sin fin para una carrera de puntuación continua.</li><li>Selecciona una de las tres formas debajo del tablero.</li><li>Toque una celda abierta o arrastre la forma hasta que encaje legalmente.</li><li>Complete una fila o columna para borrarla y puntuar.</li><li>Utilice las tres formas para recibir el siguiente conjunto, dejando espacio para cada forma restante.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consejos</h3><ul><li>Inspeccione las tres formas antes de realizar la primera colocación.</li><li>Conserve varias regiones abiertas en lugar de llenar perfectamente una esquina.</li><li>Construya espacios de intersección de filas y columnas cuando las siguientes formas lo hagan seguro.</li><li>No planee recibir solo piezas pequeñas; formas largas y ocasionales cuadrados de 3 por 3 son deliberadamente parte del modo Sin Fin.</li><li>En las misiones de terreno, distinga las celdas que deben limpiarse de las celdas de piedra que nunca podrán ocuparse.</li></ul></div>
+      <div class="game-info-section"><h3>Progresión y dificultad</h3><p>Las etapas 1 a 5 introducen objetivos lineales y una planificación limpia del tablero.</p>
+<p>Los capítulos posteriores cubren capas de tierra, hielo, piedras, gemas, candados, objetivos de colores, objetivos mixtos y límites establecidos más estrictos.</p>
+<p>La dificultad infinita surge del estado del tablero creado por las elecciones del jugador, mientras que la distribución de formas garantiza una presión regular de piezas grandes sin tener que lidiar solo con formas difíciles.</p></div>
+      <div class="game-info-section"><h3>Nota de diseño</h3><p>La puntuación y los efectos están vinculados a la limpieza de líneas reales. Los rayos despejados permanecen centrados en la fila o columna completada, los fragmentos caen de las celdas despejadas y la ganancia de puntuación blanca aparece sobre el área despejada sin volver a reproducirse cuando el jugador selecciona inmediatamente la siguiente pieza de la bandeja. La interfaz completa utiliza un diseño lógico centrado con un máximo de 920 píxeles. Las vistas de teléfono, paisaje y escritorio escalan los mismos controles, áreas de impacto, ilustraciones y coordenadas del juego juntas en lugar de estirar piezas individuales. Por tanto, el tacto, el ratón y el teclado actúan bajo el mismo estado jurídico. El cartel principal y la acción Iniciar juego permanecen separados de la gestión del escenario, mientras que la selección del escenario, la batalla, los diálogos y el resultado mantienen su propio contenido delimitado y ruta de regreso.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota para familias</h3><p>Block Blast es un rompecabezas de navegador para público general recomendado para mayores de 9 años y para juegos familiares. No se requiere cuenta. Los desbloqueos y las preferencias de la campaña se almacenan únicamente en este navegador, por lo que borrar los datos del sitio o cambiar los dispositivos puede eliminar el progreso local. Puedes jugar sin crear una cuenta. El progreso se guarda en el almacenamiento del navegador local en el perfil del navegador actual, no en una cuenta en línea ni en una base de datos entre dispositivos. Borrar los datos del sitio, usar la navegación privada, cambiar de navegador o pasar a otro dispositivo puede crear un guardado por separado o eliminar el existente. Las preferencias de idioma, sonido y movimiento reducido siguen los controles compartidos WeightPlay cuando el navegador permite el almacenamiento. Ningún resultado guía es una evaluación médica, escolar o profesional.</p></div>
+      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Pueden las formas girar?</dt><dd>No. Cada forma de bandeja mantiene su orientación mostrada.</dd></div><div><dt>¿Cuándo aumentan los puntos?</dt><dd>Sólo las filas o columnas completas otorgan puntos; simplemente colocar una forma no lo hace.</dd></div><div><dt>¿Cuántas etapas están incluidas?</dt><dd>Hay 30 misiones de campaña creadas además de una carrera sin fin ilimitada.</dd></div><div><dt>¿Qué hacen el hielo y la piedra?</dt><dd>El hielo permanece visible debajo de un bloque colocado hasta que su línea se aclara; la piedra no puede ser ocupada.</dd></div><div><dt>¿Por qué terminó la carrera?</dt><dd>La ejecución finaliza cuando ninguna de las formas no utilizadas en la bandeja actual tiene una ubicación legal.</dd></div><div><dt>¿Se guarda el progreso?</dt><dd>Los desbloqueos y las preferencias de campañas se almacenan localmente en este navegador.</dd></div><div><dt>¿Qué controles y tamaños de pantalla son compatibles?</dt><dd>Las mismas reglas admiten el tacto, el mouse y el teclado cuando el juego usa esas entradas. La interfaz se escala como un diseño lógico en las ventanas gráficas requeridas de teléfono, paisaje y escritorio.</dd></div><div><dt>¿Puede el progreso pasar automáticamente a otro dispositivo?</dt><dd>No. Actualmente, este juego solo se guarda en el almacenamiento del navegador local, por lo que otro perfil de navegador o dispositivo comienza con su propio progreso local separado a menos que se agregue un sistema de cuenta futuro.</dd></div></dl></div>
+      
+    </div>
+  </section>
     </div>
     <section id="stageScreen" class="active-screen" hidden>
       <div class="stage-shell">
@@ -298,7 +341,7 @@
     <script src="../../src/site-config.js"></script>
     <script src="../../src/analytics.js"></script>
     <script>window.WonderAnalytics?.track("game_view",{game_id:"block-blast"});</script>
-    <script src="../../src/i18n.js?v=20260721-locale13-1"></script>
+    <script src="/src/i18n.js?v=20260731-owner-preview5"></script>
     <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
     <script src="../../src/tutorial.js?v=20260802-block-blast1"></script>
     <script src="../../src/sound.js?v=20260720-locale11"></script>

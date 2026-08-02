@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="hi">
+  <head>
+    <base href="/games/block-blast/" />
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"
+    />
+    <meta name="robots" content="index,follow" />
+    <meta name="weightplay-audience" content="general" />
+    <meta name="weightplay-scene-controls" content="immutable" />
+    <meta name="theme-color" content="#17243d" />
+    <title>ब्लॉक ब्लास्ट | WeightPlay</title>
+    <meta name="description" content="ब्लॉक ब्लास्ट एक मूल 8 बाय 8 स्थानिक पहेली है जिसमें 30 लिखित भू-भाग मिशन और एक अंतहीन उच्च-स्कोर मोड है। वर्तमान सेट से प्रत्येक निश्चित आकृति को रखें,..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="ब्लॉक ब्लास्ट | WeightPlay" />
+    <meta property="og:description" content="ब्लॉक ब्लास्ट एक मूल 8 बाय 8 स्थानिक पहेली है जिसमें 30 लिखित भू-भाग मिशन और एक अंतहीन उच्च-स्कोर मोड है। वर्तमान सेट से प्रत्येक निश्चित आकृति को रखें,..." />
+    <meta property="og:url" content="https://weightplay.com/hi/games/block-blast/" />
+    <meta property="og:image" content="https://weightplay.com/assets/block-blast/cover.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ब्लॉक ब्लास्ट | WeightPlay" />
+    <meta name="twitter:description" content="ब्लॉक ब्लास्ट एक मूल 8 बाय 8 स्थानिक पहेली है जिसमें 30 लिखित भू-भाग मिशन और एक अंतहीन उच्च-स्कोर मोड है। वर्तमान सेट से प्रत्येक निश्चित आकृति को रखें,..." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/block-blast/cover.webp" />
+    <link rel="canonical" href="https://weightplay.com/hi/games/block-blast/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/block-blast/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/block-blast/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/block-blast/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/block-blast/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/block-blast/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/block-blast/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/block-blast/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/block-blast/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/block-blast/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/block-blast/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/block-blast/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/block-blast/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/block-blast/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/block-blast/" />
+    <link rel="stylesheet" href="../../src/loading-screen.css" />
+    <link rel="stylesheet" href="../../src/game-page-info.css" />
+    <link
+      rel="stylesheet"
+      href="../../src/stage-selector-standard.css"
+      data-wp-stage-standard
+    />
+    <link
+      rel="stylesheet"
+      href="../../src/battle-canvas-standard.css"
+      data-wp-battle-standard
+    />
+    <link rel="stylesheet" href="../../src/game-shell-controls-standard.css" />
+    <link rel="stylesheet" href="../arrow-escape/style.css?v=20260801-shell1" />
+    <link rel="stylesheet" href="style.css?v=20260802-stable-clear-ice-v19" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "ब्लॉक ब्लास्ट",
+  "url": "https://weightplay.com/hi/games/block-blast/",
+  "image": "https://weightplay.com/assets/block-blast/cover.png",
+  "description": "ब्लॉक ब्लास्ट एक मूल 8 बाय 8 स्थानिक पहेली है जिसमें 30 लिखित भू-भाग मिशन और एक अंतहीन उच्च-स्कोर मोड है। वर्तमान सेट से प्रत्येक निश्चित आकृति को रखें,...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "hi",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Puzzle",
+    "Strategy",
+    "Family",
+    "Browser Game"
+  ],
+  "audience": {
+    "@type": "PeopleAudience",
+    "audienceType": "General players",
+    "suggestedMinAge": 9
+  },
+  "alternateName": "Block Blast"
+}
+    </script>
+  </head>
+  <body
+    data-screen="main"
+    data-wp-game-id="block-blast"
+    data-wp-audience="general"
+  >
+    <section id="loadingPanel" class="loading-panel" aria-live="polite">
+      <div class="loading-card"><strong>Block Blast</strong><span>Preparing the board…</span><div class="loading-track"><i></i></div></div>
+    </section>
+    <div id="mainGroup" class="main-group">
+      <main class="main-canvas">
+        <header class="main-header">
+          <a
+            class="lobby-return"
+            href="/"
+            data-wp-return="main"
+            aria-label="Back to WeightPlay"
+            ><span>←</span><b>W</b></a
+          ><strong data-i18n="title">Block Blast</strong>
+          <div class="main-controls">
+            <button
+              id="soundToggle"
+              class="icon-control"
+              type="button"
+              aria-pressed="true"
+              data-sound-toggle
+            >
+              🔊</button
+            ><label class="locale-control"
+              ><span class="sr-only" data-i18n="language">Language</span
+              ><select id="localeSelect" aria-label="Language"></select
+            ></label>
+          </div>
+        </header>
+        <section class="hero">
+          <img
+            class="poster"
+            src="../../assets/block-blast/cover.webp"
+            alt="ब्लॉक ब्लास्ट game artwork"
+          />
+          <div class="hero-copy">
+            <small data-i18n="genre">8×8 BLOCK PUZZLE</small>
+            <h1 data-i18n="title">ब्लॉक ब्लास्ट</h1>
+            <p data-i18n="pitch">
+              Place all three shapes and clear complete rows or columns.
+            </p>
+            <strong id="mainProgress">1 / 30</strong>
+            <div class="main-actions">
+              <button
+                id="startBtn"
+                class="primary"
+                type="button"
+                data-i18n="campaign"
+              >
+                Campaign</button
+              ><button id="endlessBtn" type="button" data-i18n="endless">
+                Endless
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+      <section class="game-page-info game-page-info-static" aria-label="ब्लॉक ब्लास्ट खेल की जानकारी">
+    
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>ब्लॉक ब्लास्ट</h2><p>ब्लॉक ब्लास्ट एक मूल 8 बाय 8 स्थानिक पहेली है जिसमें 30 लिखित भू-भाग मिशन और एक अंतहीन उच्च-स्कोर मोड है। वर्तमान सेट से प्रत्येक निश्चित आकृति को रखें, पूरी पंक्तियों या स्तंभों को साफ़ करें, और ट्रे में अभी भी प्रतीक्षा कर रही आकृतियों के लिए पर्याप्त खुली जगह सुरक्षित रखें।</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>कठिनाई</span><strong>चुनौती देना आसान</strong></div><div class="game-info-fact"><span>खेलने का अनुमानित समय</span><strong>2-10 मिनट</strong></div><div class="game-info-fact"><span>कौशल प्रशिक्षित</span><strong>योजना · स्थानिक तर्क · फोकस</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>विश्व और मिशन</h3><p>अभियान को एक खाली बोर्ड की तीस प्रतियों के बजाय तीस कॉम्पैक्ट पहेली मिशन के रूप में आयोजित किया गया है। गंदगी, बर्फ, पत्थर, रत्न, ताले, रंग लक्ष्य और निर्धारित सीमाएँ अलग-अलग नियोजन समस्याओं में मिल जाती हैं।</p>
+<p>अंतहीन मोड मिशन लक्ष्य को हटा देता है और तीन-आकार के सेटों को निपटाता रहता है। इसके संतुलित आकार के पूल में छोटे कनेक्टर, मध्यम कोने, लंबे पांच-सेल टुकड़े, बड़े आयताकार और कभी-कभी 3 बाय 3 वर्ग शामिल होते हैं, इसलिए एक लापरवाह बोर्ड अंततः कानूनी स्थान से बाहर हो जाता है।</p></div>
+      <div class="game-info-section"><h3>सिस्टम कैसे काम करते हैं</h3><p>आकृतियाँ ट्रे में दिखाए गए अभिविन्यास को बनाए रखती हैं और प्लेसमेंट के बाद हिल नहीं सकतीं। एक आकृति चुनें और एक कानूनी बोर्ड सेल पर टैप करें, या इसे उभरे हुए लैंडिंग पूर्वावलोकन पर खींचें।</p>
+<p>एक पूरी पंक्ति या स्तंभ तुरंत साफ़ हो जाता है। केवल साफ़ की गई पंक्तियाँ ही अंक प्रदान करती हैं; अकेले ब्लॉक रखने से स्कोर नहीं बढ़ता।</p>
+<p>तीनों आकृतियों का उपयोग करने से एक नया निश्चित सेट मिलता है। अभियान मिशन रेखा, भू-भाग, रत्न, रंग या सीमित-निर्धारित उद्देश्य भी पूछ सकते हैं। जैसे ही अप्रयुक्त ट्रे आकृतियों में से कोई भी कानूनी रूप से फिट नहीं होती, रन समाप्त हो जाता है।</p>
+<p>किसी रखे गए ब्लॉक के नीचे बर्फ तब तक दिखाई देती रहती है जब तक वह रेखा साफ नहीं हो जाती, जबकि पत्थर और ताले प्लेसमेंट को अवरुद्ध कर देते हैं। ढकने पर जेम कोशिकाएं जुड़े हुए ताले खोल देती हैं।</p></div>
+      <div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>तीस मिशनों के लिए अभियान चुनें या एक सतत स्कोर रन के लिए एंडलेस चुनें।</li><li>बोर्ड के नीचे तीन आकृतियों में से एक का चयन करें।</li><li>किसी खुले सेल पर टैप करें या आकृति को कानूनी रूप से फिट होने तक खींचें।</li><li>इसे साफ़ करने और स्कोर करने के लिए एक पंक्ति या कॉलम को पूरा करें।</li><li>प्रत्येक शेष आकार के लिए जगह रखते हुए, अगला सेट प्राप्त करने के लिए सभी तीन आकृतियों का उपयोग करें।</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>रणनीति युक्तियाँ</h3><ul><li>पहला प्लेसमेंट करने से पहले तीनों आकृतियों का निरीक्षण करें।</li><li>एक कोने को पूरी तरह से भरने के बजाय कई खुले क्षेत्रों को संरक्षित करें।</li><li>जब अगली आकृतियाँ उसे सुरक्षित बनाती हैं तो प्रतिच्छेदी पंक्ति और स्तंभ का निर्माण साफ़ हो जाता है।</li><li>केवल छोटे टुकड़े प्राप्त करने की योजना न बनाएं; लंबी आकृतियाँ और कभी-कभी 3 गुणा 3 वर्ग जानबूझकर एंडलेस मोड का हिस्सा हैं।</li><li>इलाके के मिशनों में, उन कोशिकाओं को अलग करें जिन्हें पत्थर की कोशिकाओं से साफ़ किया जाना चाहिए जिन पर कभी भी कब्जा नहीं किया जा सकता है।</li></ul></div>
+      <div class="game-info-section"><h3>अभियान और कठिनाई वृद्धि</h3><p>चरण 1-5 लाइन लक्ष्यों और स्वच्छ बोर्ड योजना का परिचय देते हैं।</p>
+<p>बाद के अध्यायों में गंदगी, बर्फ, पत्थर, रत्न, ताले, रंग लक्ष्य, मिश्रित उद्देश्य और सख्त सीमाएँ शामिल हैं।</p>
+<p>खिलाड़ी की पसंद द्वारा बनाई गई बोर्ड स्थिति से अंतहीन कठिनाई बढ़ती है, जबकि आकार वितरण केवल कठोर आकृतियों से निपटने के बिना नियमित बड़े-टुकड़े दबाव की गारंटी देता है।</p></div>
+      <div class="game-info-section"><h3>डेवलपर डिज़ाइन नोट</h3><p>स्कोर और प्रभाव वास्तविक लाइन क्लीयर से जुड़े होते हैं। स्पष्ट किरणें पूर्ण पंक्ति या स्तंभ पर केंद्रित रहती हैं, टुकड़े साफ कोशिकाओं से गिरते हैं, और जब खिलाड़ी तुरंत अगले ट्रे टुकड़े का चयन करता है तो सफेद स्कोर लाभ बिना दोबारा खेले साफ क्षेत्र पर दिखाई देता है। संपूर्ण इंटरफ़ेस 920-पिक्सेल अधिकतम के साथ एक केंद्रित तार्किक लेआउट का उपयोग करता है। फ़ोन, लैंडस्केप और डेस्कटॉप दृश्य अलग-अलग टुकड़ों को फैलाने के बजाय समान नियंत्रण, हिट क्षेत्र, कलाकृति और गेम समन्वय को एक साथ मापते हैं। इसलिए टच, माउस और कीबोर्ड एक ही कानूनी स्थिति पर कार्य करते हैं। मुख्य पोस्टर और स्टार्ट गेम एक्शन स्टेज प्रबंधन से अलग रहते हैं, जबकि स्टेज चयन, लड़ाई, संवाद और परिणाम अपनी स्वयं की सीमित सामग्री और वापसी पथ रखते हैं।</p></div>
+      <div class="game-info-section game-info-parent"><h3>अभिभावक नोट</h3><p>ब्लॉक ब्लास्ट एक सामान्य-दर्शक ब्राउज़र पहेली है जिसे 9+ उम्र और पारिवारिक खेल के लिए अनुशंसित किया गया है। किसी खाते की आवश्यकता नहीं है. अभियान अनलॉक और प्राथमिकताएं केवल इस ब्राउज़र में संग्रहीत की जाती हैं, इसलिए साइट डेटा साफ़ करने या डिवाइस बदलने से स्थानीय प्रगति को हटाया जा सकता है। आप बिना अकाउंट बनाये खेल सकते हैं. प्रगति को वर्तमान ब्राउज़र प्रोफ़ाइल पर स्थानीय ब्राउज़र संग्रहण में सहेजा जाता है, किसी ऑनलाइन खाते या क्रॉस-डिवाइस डेटाबेस में नहीं। साइट डेटा साफ़ करना, निजी ब्राउज़िंग का उपयोग करना, ब्राउज़र बदलना, या किसी अन्य डिवाइस पर ले जाना एक अलग सेव बना सकता है या मौजूदा को हटा सकता है। जब ब्राउज़र भंडारण की अनुमति देता है तो भाषा, ध्वनि और कम-गति प्राथमिकताएँ साझा WeightPlay नियंत्रणों का पालन करती हैं। कोई भी मार्गदर्शक परिणाम चिकित्सा, स्कूल या व्यावसायिक मूल्यांकन नहीं है।</p></div>
+      <div class="game-info-section"><h3>अक्सर पूछे जाने वाले प्रश्न</h3><dl><div><dt>क्या आकृतियाँ घूम सकती हैं?</dt><dd>नहीं, प्रत्येक ट्रे का आकार अपना प्रदर्शित अभिविन्यास रखता है।</dd></div><div><dt>अंक कब बढ़ते हैं?</dt><dd>केवल पूर्ण पंक्तियाँ या स्तंभ ही अंक प्रदान करते हैं; केवल एक आकृति रख देने से काम नहीं चलता।</dd></div><div><dt>कितने चरण शामिल हैं?</dt><dd>इसमें 30 लिखित अभियान मिशन और असीमित अंतहीन रन हैं।</dd></div><div><dt>बर्फ और पत्थर क्या करते हैं?</dt><dd>किसी रखे हुए ब्लॉक के नीचे बर्फ तब तक दिखाई देती रहती है जब तक उसकी रेखा साफ नहीं हो जाती; पत्थर पर कब्जा नहीं किया जा सकता.</dd></div><div><dt>दौड़ क्यों ख़त्म हुई?</dt><dd>रन तब समाप्त होता है जब वर्तमान ट्रे में किसी भी अप्रयुक्त आकृति का कानूनी स्थान नहीं होता है।</dd></div><div><dt>क्या प्रगति सहेजी गई है?</dt><dd>अभियान अनलॉक और प्राथमिकताएँ इस ब्राउज़र में स्थानीय रूप से संग्रहीत की जाती हैं।</dd></div><div><dt>कौन से नियंत्रण और स्क्रीन आकार समर्थित हैं?</dt><dd>वही नियम स्पर्श, माउस और कीबोर्ड का समर्थन करते हैं जहां गेम उन इनपुट का उपयोग करता है। इंटरफ़ेस आवश्यक फ़ोन, लैंडस्केप और डेस्कटॉप व्यूपोर्ट में एक तार्किक लेआउट के रूप में स्केल करता है।</dd></div><div><dt>क्या प्रगति स्वचालित रूप से किसी अन्य डिवाइस पर जा सकती है?</dt><dd>नहीं, यह गेम वर्तमान में केवल स्थानीय ब्राउज़र संग्रहण में सहेजता है, इसलिए कोई अन्य ब्राउज़र प्रोफ़ाइल या डिवाइस अपनी अलग स्थानीय प्रगति के साथ शुरू होता है जब तक कि कोई भविष्य खाता सिस्टम नहीं जोड़ा जाता है।</dd></div></dl></div>
+      
+    </div>
+  </section>
+    </div>
+    <section id="stageScreen" class="active-screen" hidden>
+      <div class="stage-shell">
+        <div
+          class="stage-canvas"
+          data-wp-standard-stage-screen
+          data-wp-logical-stage-canvas
+          data-wp-canvas-max-width="920"
+        >
+          <header class="stage-header">
+            <button
+              id="stageBack"
+              class="return-button"
+              type="button"
+              data-wp-return="stage"
+              aria-label="Back"
+            >
+              ←
+            </button>
+            <div>
+              <strong data-i18n="chooseStage">Choose a Stage</strong
+              ><span id="stageSummary">1 / 30</span>
+            </div>
+            <button id="stageSound" class="icon-control" type="button" hidden>
+              🔊
+            </button>
+          </header>
+          <div id="stageRail" class="stage-rail" data-wp-stage-rail></div>
+          <p class="stage-hint" data-i18n="stageHint">
+            Select an unlocked mission.
+          </p>
+          <button
+            id="enterStage"
+            class="primary stage-enter"
+            type="button"
+            data-i18n="enter"
+          >
+            Enter Stage
+          </button>
+        </div>
+        <div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div>
+      </div>
+    </section>
+    <section id="battleScreen" class="active-screen" hidden>
+      <div class="battle-shell">
+        <div
+          id="battleCanvas"
+          class="battle-canvas"
+          data-wp-logical-battle-canvas
+          data-wp-canvas-max-width="920"
+        >
+          <div id="battleLive" class="battle-live block-live">
+            <header class="battle-header">
+              <button
+                id="battleBack"
+                class="return-button"
+                type="button"
+                data-wp-return="battle"
+                aria-label="Back"
+              >
+                ←
+              </button>
+              <div class="battle-title">
+                <small id="stageLabel">STAGE 1</small
+                ><strong data-i18n="title">Block Blast</strong>
+              </div>
+              <div class="battle-stats">
+                <span
+                  ><b data-i18n="score">Score</b
+                  ><strong id="scoreValue">0</strong></span
+                ><span
+                  ><b data-i18n="sets">Sets</b
+                  ><strong id="setsValue">0</strong></span
+                >
+              </div>
+              <button
+                id="battleHelp"
+                class="icon-control"
+                type="button"
+                aria-label="How to play"
+              >
+                ?
+              </button>
+            </header>
+            <div class="objective-row">
+              <strong id="objectiveKind">LINES</strong
+              ><span id="objectiveText">0 / 1</span>
+            </div>
+            <div class="block-play">
+              <div
+                id="blockBoard"
+                class="block-board"
+                role="grid"
+                aria-label="8 by 8 block board"
+              ></div>
+              <div
+                id="pieceTray"
+                class="piece-tray"
+                aria-label="Shape tray"
+              ></div>
+            </div>
+            <p id="feedback" class="feedback" aria-live="polite"></p>
+          </div>
+          <section id="helpModal" class="modal" hidden>
+            <div class="dialog">
+              <h2 data-i18n="howTitle">How to play</h2>
+              <p data-i18n="helpText">
+                Shapes cannot move or rotate after placement. Complete lines
+                clear immediately.
+              </p>
+              <button
+                id="helpClose"
+                class="primary"
+                type="button"
+                data-i18n="continue"
+              >
+                Continue
+              </button>
+            </div>
+          </section>
+          <section id="leaveModal" class="modal" hidden>
+            <div class="dialog">
+              <h2 data-i18n="leaveTitle">Leave this run?</h2>
+              <p data-i18n="leaveText">Continue keeps the exact board.</p>
+              <div class="modal-actions">
+                <button
+                  id="leaveContinue"
+                  class="primary"
+                  type="button"
+                  data-i18n="continue"
+                >
+                  Continue</button
+                ><button id="leaveStage" type="button" data-i18n="stageMap">
+                  Stage Map
+                </button>
+              </div>
+            </div>
+          </section>
+          <section id="resultModal" class="modal" hidden>
+            <div class="dialog result-layout">
+              <img
+                src="../../assets/block-blast/cover.webp"
+                alt="Block Blast"
+              />
+              <div>
+                <small id="resultStage">STAGE 1</small>
+                <h2 id="resultTitle" data-i18n="clear">Mission Complete!</h2>
+                <p id="resultText"></p>
+              </div>
+              <div class="modal-actions result-actions">
+                <button id="resultStageBtn" type="button" data-i18n="stageMap">
+                  Stage Map</button
+                ><button
+                  id="nextBtn"
+                  class="primary"
+                  type="button"
+                  data-i18n="next"
+                >
+                  Next Stage</button
+                ><button id="retryBtn" type="button" data-i18n="retry">
+                  Play Again
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class="ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
+      </div>
+    </section>
+    <script src="../../src/site-config.js"></script>
+    <script src="../../src/analytics.js"></script>
+    <script>window.WonderAnalytics?.track("game_view",{game_id:"block-blast"});</script>
+    <script src="/src/i18n.js?v=20260731-owner-preview5"></script>
+    <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
+    <script src="../../src/tutorial.js?v=20260802-block-blast1"></script>
+    <script src="../../src/sound.js?v=20260720-locale11"></script>
+    <script src="../../src/edge-guard.js"></script>
+    <script src="game.js?v=20260802-stable-clear-ice-v19"></script>
+    <script
+      src="../../src/stage-selector-standard.js"
+      data-wp-stage-standard
+    ></script>
+    <script
+      src="../../src/battle-canvas-standard.js"
+      data-wp-battle-standard
+    ></script>
+    <script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>
+    <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+    <script>(()=>{const close=()=>{const panel=document.querySelector("#loadingPanel");if(panel){panel.classList.add("hidden");panel.hidden=true;}};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",close,{once:true});else close();window.addEventListener("load",close,{once:true});window.setTimeout(close,1500);})();</script>
+  </body>
+</html>

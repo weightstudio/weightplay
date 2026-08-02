@@ -282,8 +282,7 @@ window.WONDER_LOBBY = {
     {
       id: "arrow-escape",
       title: { en: "Arrow Escape", "zh-Hant": "箭頭大逃亡", "zh-Hans": "箭头大逃亡", ja: "アローエスケープ", ko: "애로우 이스케이프", es: "Escape de Flechas", "pt-BR": "Fuga das Setas", fr: "Évasion des flèches", de: "Pfeilflucht", it: "Fuga delle frecce", ru: "Побег стрелок", hi: "एरो एस्केप", ar: "هروب الأسهم" },
-      status: "planned",
-      statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
+      status: "playable",
       type: { en: "Order Puzzle", "zh-Hant": "順序益智", "zh-Hans": "顺序益智" },
       categories: ["Puzzle", "Strategy", "Family"], skills: ["Planning", "Spatial Reasoning"], ages: ["9", "family"], href: "games/arrow-escape/", internalTrial: "internal-test.html?trial=1",
       description: { en: "Clear arrow blocks in the right order across 30 escape puzzles.", "zh-Hant": "依正確順序移除箭頭方塊，完成 30 個逃亡謎題。", "zh-Hans": "按正确顺序移除箭头方块，完成 30 个逃亡谜题。" },
@@ -293,10 +292,9 @@ window.WONDER_LOBBY = {
     {
       id: "block-blast",
       title: { en: "Block Blast", "zh-Hant": "方塊爆破", "zh-Hans": "方块爆破", ja: "ブロックブラスト", ko: "블록 블라스트", es: "Explosión de bloques", "pt-BR": "Explosão de blocos", fr: "Explosion de blocs", de: "Block-Explosion", it: "Esplosione di blocchi", ru: "Взрыв блоков", hi: "ब्लॉक ब्लास्ट", ar: "انفجار المكعبات" },
-      status: "planned",
-      statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
+      status: "playable",
       type: { en: "Block Puzzle", "zh-Hant": "方塊益智", "zh-Hans": "方块益智" },
-      categories: ["Puzzle", "Strategy", "Family"], skills: ["Planning", "Spatial Reasoning"], ages: ["9", "family"], href: "games/block-blast/", internalTrial: "internal-test.html?trial=1",
+      categories: ["Puzzle", "Strategy", "Family"], skills: ["Planning", "Spatial Reasoning"], ages: ["9", "family"], href: "games/block-blast/", previewVideo: "assets/previews/block-blast-battle.webm",
       description: { en: "Place three shapes on an 8x8 board and blast complete lines.", "zh-Hant": "在 8×8 棋盤放入三個形狀，爆破完整橫排與直列。", "zh-Hans": "在 8×8 棋盘放入三个形状，爆破完整横排与直列。" },
       meta: { en: ["8x8 Board", "Three Shapes", "Line Clears"], "zh-Hant": ["8×8 棋盤", "三個方塊", "行列消除"] },
       art: { kind: "image", background: "assets/block-blast/cover.webp", hideHero: true },
@@ -2235,6 +2233,14 @@ for (const [id, copy] of Object.entries(newPuzzlePlannedCopy)) {
     Object.defineProperty(game[field], "__localizedExact", { value: true, enumerable: false });
   }
   delete game.previewVideo;
+}
+
+const blockBlastPublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "block-blast");
+if (blockBlastPublic) {
+  blockBlastPublic.status = "playable";
+  blockBlastPublic.previewVideo = "assets/previews/block-blast-battle.webm";
+  delete blockBlastPublic.statusText;
+  delete blockBlastPublic.internalTrial;
 }
 
 const bambooPipesPublic = window.WONDER_LOBBY.games.find((game) => game.id === "animal-bamboo-pipes");

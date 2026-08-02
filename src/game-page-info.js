@@ -27,6 +27,22 @@
     document.head.appendChild(script);
   }
   const games = {
+    "block-blast": {
+      title: "Block Blast",
+      age: "9+",
+      difficulty: "Easy to Challenging",
+      time: "2-10 minutes",
+      skills: ["Planning", "Spatial Reasoning", "Focus"],
+      intro: "Block Blast is an original 8 by 8 spatial puzzle with 30 authored terrain missions and an Endless high-score mode. Place every fixed shape from the current set, clear complete rows or columns, and protect enough open space for the shapes still waiting in the tray.",
+      story: ["The Campaign is organized as thirty compact puzzle missions rather than thirty copies of one empty board. Dirt, ice, stone, gems, locks, color targets, and set limits combine into different planning problems.", "Endless mode removes the mission target and keeps dealing three-shape sets. Its balanced shape pool includes small connectors, medium corners, long five-cell pieces, larger rectangles, and occasional 3 by 3 squares so a careless board eventually runs out of legal space."],
+      systems: ["Shapes keep the orientation shown in the tray and cannot move after placement. Select a shape and tap a legal board cell, or drag it onto the raised landing preview.", "A full row or column clears immediately. Only cleared lines award points; placing a block by itself does not increase the score.", "Using all three shapes deals a new fixed set. Campaign missions can also ask for line, terrain, gem, color, or limited-set objectives. The run ends as soon as none of the unused tray shapes has a legal fit.", "Ice remains visible beneath a placed block until that line clears, while stone and locks block placement. Gem cells open linked locks when covered."],
+      how: ["Choose Campaign for thirty missions or Endless for one continuing score run.", "Select one of the three shapes below the board.", "Tap an open cell or drag the shape to a legal fit.", "Complete a row or column to clear it and score.", "Use all three shapes to receive the next set, while keeping room for every remaining shape."],
+      strategyTips: ["Inspect all three shapes before committing the first placement.", "Preserve several open regions instead of perfectly filling one corner.", "Build intersecting row and column clears when the next shapes make that safe.", "Do not plan around receiving only tiny pieces; long shapes and occasional 3 by 3 squares are deliberately part of Endless mode.", "In terrain missions, distinguish cells that must be cleared from stone cells that can never be occupied."],
+      progression: ["Stages 1-5 introduce line goals and clean board planning.", "Later chapters layer dirt, ice, stone, gems, locks, color targets, mixed objectives, and stricter set limits.", "Endless difficulty grows from the board state created by the player's choices, while the shape distribution guarantees regular large-piece pressure without dealing only hard shapes."],
+      designNote: "The score and effects are tied to actual line clears. Clear beams stay centered on the completed row or column, fragments fall from cleared cells, and the white score gain appears over the cleared area without replaying when the player immediately selects the next tray piece.",
+      parent: "Block Blast is a general-audience browser puzzle recommended for ages 9+ and family play. No account is required. Campaign unlocks and preferences are stored only in this browser, so clearing site data or changing devices can remove local progress.",
+      faq: [["Can shapes rotate?", "No. Each tray shape keeps its displayed orientation."], ["When do points increase?", "Only completed rows or columns award points; simply placing a shape does not."], ["How many stages are included?", "There are 30 authored Campaign missions plus an unlimited Endless run."], ["What do ice and stone do?", "Ice remains visible beneath a placed block until its line clears; stone cannot be occupied."], ["Why did the run end?", "The run ends when none of the unused shapes in the current tray has a legal placement."], ["Is progress saved?", "Campaign unlocks and preferences are stored locally in this browser."]],
+    },
     "animal-color-link": {
       title: "Color Link Garden",
       age: "9+",
@@ -8168,6 +8184,53 @@
     faq: [["Why can two equal values not clear?", "Equal values are not a pair unless both are five; every legal pair must total ten and share a clear row or column."], ["Do diagonal pairs count?", "No, pairs use adjacency or a straight horizontal or vertical sight line."], ["What does Reorder do?", "It rearranges the remaining values without changing the sum-to-ten rule."], ["Are stages timed?", "No, you can inspect the board at your own pace."]]
   }, "胖達數字花園", "胖达数字花园");
 
+  localizedGames["zh-Hant"]["animal-number-match"] = {
+    ...games["animal-number-match"],
+    title: "胖達數字花園",
+    difficulty: "簡單至具挑戰性",
+    time: "每座花園約 2 至 8 分鐘",
+    gameplay: "直線視野數字配對益智",
+    genre: ["益智", "策略", "動物"],
+    skills: ["邏輯", "規劃", "問題解決"],
+    guideKicker: "WeightPlay 原創遊戲指南",
+    guideTitleSuffix: "遊戲指南",
+    intro: "選出相加等於 10 的兩個數字；它們必須彼此相鄰，或能沿著只有空格的同一橫列或直欄互相看見。消除配對會打開新的視線，目標是清空整座花園。",
+    story: [
+      "30 座數字花園擠滿了成對的符文數字牌。胖達要依照同一套視線規則，找出相加等於 10 的配對，逐步讓每座花園恢復通暢。",
+      "棋盤不會要求玩家猜測隱藏數值。下一步判斷所需的每個數字與空格都清楚顯示在畫面上。",
+    ],
+    systems: [
+      "合法配對的兩個數字相加必須等於 10。只有 5 與 5 能以相同數字配對；6 與 6 等其他相同數字都不合法。",
+      "兩張數字牌必須在同一橫列或直欄中相鄰，或兩者之間只剩空格而能沿直線互相看見。斜線不算有效視線。",
+      "消除一組配對會留下新空格，也可能打開原本被其他數字牌擋住的較長視線。",
+      "「復原」會還原上一組配對；「重新排列」只重排尚未消除的數字；「重新開始」則恢復本關原始棋盤。",
+    ],
+    how: [
+      "從橫向關卡軌道選擇一座已解鎖的花園。",
+      "先選一張數字牌，再選一張能與它相加等於 10 的合法配對。",
+      "每次消除後重新查看橫列與直欄，尋找剛打開的新視線。",
+      "消除全部配對即可清空花園並開啟下一關。",
+    ],
+    strategyTips: [
+      "優先消除能打開棋盤中央，或能連通兩片空白區域的配對。",
+      "使用選擇較多的數字前，先確認它的互補數字是否還有另一條重要視線。",
+      "每次消除後都重新掃描橫列與直欄，因為合法視線會立即改變。",
+      "把「提示」當成理解目前合法配對的協助，而不是取代觀察棋盤。",
+    ],
+    progression: [
+      "六個章節會逐步擴大棋盤，加入更密集的阻擋、較長的直線視野、互相競爭的配對選擇，以及必須依正確順序打開的版面。",
+      "難度來自消除後的空間變化；算術規則始終維持兩數相加等於 10。",
+    ],
+    designNote: "數字始終以文字清楚顯示，選取狀態也不只依賴顏色，因此鍵盤、觸控與滑鼠玩家都能讀懂同一個棋盤。每次消除都會改變後續視線，讓簡單的湊十規則產生真正的空間規劃。",
+    parent: "基本遊玩不需要帳號、倒數計時、付費或公開排名。已清空的花園與最佳步數會保存在目前瀏覽器；清除網站資料可能會移除這些本機進度。",
+    faq: [
+      ["為什麼兩個相同數字不能消除？", "只有 5 與 5 能以相同數字配對。每組合法配對都必須相加等於 10，並位於同一條暢通的橫列或直欄視線上。"],
+      ["斜對角的數字可以配對嗎？", "不可以。兩張數字牌必須相鄰，或能沿著同一橫列或直欄的空格互相看見。"],
+      ["「重新排列」有什麼作用？", "它只會重新排列尚未消除的數字，不會改變相加等於 10 的規則。"],
+      ["每個關卡有時間限制嗎？", "沒有。你可以按照自己的步調觀察棋盤。"],
+    ],
+  };
+
   localizedGames.ja ||= {};
   reviewedJapaneseGuideOverrides["animal-number-match"]
     = localizedGames.ja["animal-number-match"] = {
@@ -8461,6 +8524,7 @@
     }
   };
   [
+    "block-blast",
     "animal-bamboo-pipes",
     "animal-bus-jam",
     "animal-cratebound",

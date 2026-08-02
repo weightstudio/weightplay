@@ -122,7 +122,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "pt-BR": "Explosão de blocos",
     "fr": "Explosion de blocs",
     "de": "Blockexplosion",
-    "it": "Esplosione dei blocchi",
+    "it": "Esplosione di blocchi",
     "ru": "Взрыв блоков",
     "hi": "ब्लॉक ब्लास्ट",
     "ar": "تفجير المكعبات"
