@@ -9,6 +9,16 @@ const audienceMode = document.body?.dataset.audience === "kids" ? "kids" : "gene
 const generalGameIds = new Set(lobby.audiences?.generalGameIds || []);
 const isKidsLobby = audienceMode === "kids";
 const allLobbyGames = [...lobby.games];
+// GENERATED GAMEPLAY REVIEW PASSES START
+// Derived from review/database/GAMEPLAY_REVIEW_STATUS.md. Do not edit by hand.
+const verifiedGameplayReviewPasses = Object.freeze({
+  "animal-dice-bastion": {
+    "gameVersion": "v17",
+    "interfaceVersion": 5,
+    "overall": 8.3
+  }
+});
+// GENERATED GAMEPLAY REVIEW PASSES END
 const catalogGames = allLobbyGames.filter((game) =>
   (game.status === "playable"
     || (!ownerPreviewMode && !isKidsLobby && game.id === "animal-dice-bastion"))
@@ -414,6 +424,21 @@ function stateCopy(key) {
     ar: ["معاينة", "قريبًا؛ ليست متاحة للعب العام بعد"],
   };
   const [previewLabel, previewNote] = previewCopy[locale] || previewCopy.en;
+  const reviewPassCopy = {
+    en: "Reviewer PASS",
+    "zh-Hant": "評測員 PASS",
+    "zh-Hans": "评测员 PASS",
+    ja: "レビュアー PASS",
+    ko: "리뷰어 PASS",
+    es: "Evaluador PASS",
+    "pt-BR": "Avaliador PASS",
+    fr: "Évaluateur PASS",
+    de: "Prüfer PASS",
+    it: "Valutatore PASS",
+    ru: "Проверка PASS",
+    hi: "समीक्षक PASS",
+    ar: "اجتاز المراجع",
+  };
   const zh = locale === "zh-Hant";
   const es = locale === "es";
   const ja = locale === "ja";
@@ -422,6 +447,7 @@ function stateCopy(key) {
     playableNote: zh ? "\u9ede\u64ca\u5f8c\u7acb\u5373\u9032\u5165" : es ? "Se abre de inmediato" : ja ? "すぐに始められます" : "Opens immediately",
     previewLabel,
     previewNote,
+    reviewPassLabel: reviewPassCopy[locale] || reviewPassCopy.en,
   };
   return copy[key] || key;
 }
@@ -976,34 +1002,58 @@ function createGameCard(game) {
 
   const preview = card.querySelector(".game-card-preview");
   if (preview) {
-    const canPreview = () =>
-      window.matchMedia("(hover: hover) and (pointer: fine)").matches &&
-      !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let previewAttempt = 0;
+    const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const hasHoverPointer = () => window.matchMedia("(any-hover: hover) and (any-pointer: fine)").matches;
+    const canPreviewPointer = (event) =>
+      !reducedMotion() &&
+      (event?.pointerType === "mouse" || hasHoverPointer());
+    const canPreviewFocus = () => !reducedMotion() && hasHoverPointer();
+    const clearPreviewState = () => {
+      card.classList.remove("is-preview-loading", "is-previewing");
+    };
     const stopPreview = () => {
+      previewAttempt += 1;
       preview.pause();
-      card.classList.remove("is-previewing");
+      clearPreviewState();
       if (activeGamePreview === preview) activeGamePreview = null;
     };
-    const startPreview = () => {
-      if (!canPreview()) return;
+    const startPreview = (event) => {
+      const fromKeyboardFocus = event?.type === "focusin";
+      if (fromKeyboardFocus ? !canPreviewFocus() : !canPreviewPointer(event)) return;
       if (activeGamePreview && activeGamePreview !== preview) {
         activeGamePreview.pause();
-        activeGamePreview.closest(".game-card")?.classList.remove("is-previewing");
+        activeGamePreview.closest(".game-card")?.classList.remove("is-preview-loading", "is-previewing");
       }
+      const attempt = ++previewAttempt;
       activeGamePreview = preview;
+      card.classList.add("is-preview-loading");
       if (!preview.getAttribute("src")) {
+        preview.preload = "auto";
         preview.src = preview.dataset.previewSrc;
         preview.load();
       }
       preview.play()
         .then(() => {
-          if (activeGamePreview === preview) card.classList.add("is-previewing");
+          if (activeGamePreview !== preview || attempt !== previewAttempt) return;
+          card.classList.remove("is-preview-loading");
+          card.classList.add("is-previewing");
         })
         .catch(() => {
-          card.classList.remove("is-previewing");
+          if (attempt !== previewAttempt) return;
+          clearPreviewState();
           if (activeGamePreview === preview) activeGamePreview = null;
         });
     };
+    preview.addEventListener("playing", () => {
+      if (activeGamePreview !== preview) return;
+      card.classList.remove("is-preview-loading");
+      card.classList.add("is-previewing");
+    });
+    preview.addEventListener("error", () => {
+      clearPreviewState();
+      if (activeGamePreview === preview) activeGamePreview = null;
+    });
     card.addEventListener("pointerenter", startPreview);
     card.addEventListener("pointerleave", stopPreview);
     card.addEventListener("focusin", startPreview);
@@ -1294,17 +1344,20 @@ function renderUpcomingGames() {
     const ageLabel = text(game.ageLabel);
     const description = text(game.description);
     const showHero = game.art?.hero && !game.art.hideHero && !game.art.hero.includes("width='1'");
+    const reviewPass = verifiedGameplayReviewPasses[game.id] || null;
     const card = document.createElement("button");
     card.className = "upcoming-game-card";
     card.type = "button";
     card.dataset.gameId = game.id;
     card.dataset.status = game.status;
     card.dataset.internalTrial = internalTrialPath(game) ? "true" : "false";
+    card.dataset.reviewPass = reviewPass ? "true" : "false";
     card.addEventListener("click", () => showPlannedGame(game));
     card.innerHTML = `
       <div class="upcoming-game-art">
         <img src="${game.art?.background || primaryArt(game)}" alt="" />
         ${showHero ? `<img class="upcoming-game-hero" src="${game.art.hero}" alt="" />` : ""}
+        ${reviewPass ? `<div class="review-pass-art-badge" aria-label="${stateCopy("reviewPassLabel")} ${reviewPass.gameVersion}" title="${reviewPass.gameVersion}">✓ ${stateCopy("reviewPassLabel")}</div>` : ""}
         <span>${i18n.t("action.coming_soon")}</span>
       </div>
       <div class="upcoming-game-copy">

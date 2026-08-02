@@ -37,6 +37,7 @@
   const routeLocale = routeLocales[routeSegment];
   let locale = routeLocale || read("weightPlayLocale") || read("wp-locale") || window.WonderI18n?.actualLocale?.() || "en";
   let screen = "main";
+  let sceneGeneration = 0;
   let selected = 0;
   let levelIndex = 0;
   let state = null;
@@ -122,11 +123,28 @@
       departingBusIndexes = [];
       $("buses").replaceChildren();
     }
-    ["main", "stage", "battle"].forEach((id) => { $(id).hidden = id !== name; });
+    const generation = ++sceneGeneration;
+    ["main", "stage", "battle"].forEach((id) => {
+      $(id).hidden = id !== name;
+      document.body.classList.toggle(`wp-shell-${id}-active`, id === name);
+    });
+    document.body.classList.toggle("wp-stage-select-active", name === "stage");
+    document.documentElement.classList.toggle("wp-stage-select-active", name === "stage");
     $("generalReserve").hidden = name !== "battle";
     document.body.dataset.screen = name;
+    document.body.dataset.gameView = name;
     screen = name;
     window.scrollTo(0, 0);
+    const sync = () => {
+      if (generation !== sceneGeneration || screen !== name) return;
+      const detail = { screen: name, generation };
+      window.dispatchEvent(new CustomEvent("weightplay:battle-sync", { detail }));
+      window.dispatchEvent(new CustomEvent("weightplay:shell-sync", { detail }));
+      window.dispatchEvent(new CustomEvent("weightplay:stage-sync", { detail }));
+      if (name === "battle") window.dispatchEvent(new CustomEvent("weightplay:battle-open", { detail }));
+    };
+    sync();
+    requestAnimationFrame(() => requestAnimationFrame(sync));
   }
 
   function settleDeparture() {

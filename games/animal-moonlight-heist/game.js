@@ -135,6 +135,39 @@
     campaignMission("Triple Lock","三重封鎖","Treasure first, then the relic; extraction relocates after pickup.","先取寶藏再取任務物；取得後撤離門會移位。",{object:[20,24],treasure:[80,72],exit:[50,10],phaseExit:[82,12],patrols:[[18,36,82,36],[18,56,82,56],[22,78,78,78]],safeZones:[[50,66,9]],order:"treasure-first",clockCycle:5.5,speed:.95}),
     campaignMission("Eclipse Curator","日蝕館長","Master seals, shadows, shifting markers, pulses, and a moving exit.","綜合封印、陰影、標記換位、警報脈衝與移動出口。",{object:[78,24],treasure:[20,72],exit:[50,10],phaseExit:[82,12],patrols:[[18,38,82,38],[18,58,82,58],[24,80,76,80]],safeZones:[[28,50,9],[70,66,9]],order:"treasure-first",mirrorInterval:5.5,clockCycle:5.5,bellPulse:5,guardian:guardianCatalog.eclipse,speed:.94})
   ];
+  const campaignZhHans=[
+    ["静谧门廊","观察单一路线，取得封印后撤离。"],
+    ["灯火大厅","从两条巡逻线的空档穿过。"],
+    ["分岔画廊","在巡逻交会前选择安静的一侧。"],
+    ["信使阶梯","额外宝藏位于直接撤离路线之外。"],
+    ["提灯审查","审查官会扩大探照光，等光圈缩小再移动。"],
+    ["天鹅绒暗室","站进阴影圆圈可避开巡逻视线。"],
+    ["双层书架","依序利用两个阴影圈前进。"],
+    ["破损天窗","狭窄阴影通道位于交叉巡逻之间。"],
+    ["低语侧厅","离开最后阴影前决定是否取得宝藏。"],
+    ["月钟守卫","月钟脉冲会提高阴影圈外的警报。"],
+    ["银光岔路","警示闪光后，任务物与宝藏会交换位置。"],
+    ["倒影账册","等待标记换位，或承担较长路线。"],
+    ["伪北厅","先取得宝藏，镜中的任务物才会成真。"],
+    ["棱镜大厅","在两个标记准备交换时利用阴影。"],
+    ["星镜看守","看守会快速交换两个标记，注意闪光预告。"],
+    ["慢齿走廊","巡逻会在慢速监看与快速扫荡间交替。"],
+    ["快摆长廊","在蓝色慢速阶段穿越，避开琥珀加速。"],
+    ["分秒暗室","把阴影掩护与发条节奏结合。"],
+    ["秒针宝库","在巡逻速度持续变化时先取得宝藏。"],
+    ["发条巡察长","巡察长会预告每次全速追踪。"],
+    ["第一封印","宝藏是第一道封印，之后才能取得任务物。"],
+    ["交错钥匙","穿过三条交错路线依序开启两道封印。"],
+    ["封锁月井","带着第一道封印穿过两处阴影掩护。"],
+    ["双重守望","封印顺序与发条加速同时生效。"],
+    ["宝库封印官","依序解除两道封印，同时避开中央封印官。"],
+    ["暗影子午线","扩张探照光会扫过连续阴影掩护。"],
+    ["寂静月钟","月钟脉冲、阴影时机与高风险宝藏路线同时出现。"],
+    ["位移天球仪","标记会在变动的发条节奏中交换。"],
+    ["三重封锁","先取宝藏再取任务物；取得后撤离门会移位。"],
+    ["日蚀馆长","综合封印、阴影、标记换位、警报脉冲与移动出口。"]
+  ];
+  campaign.forEach((mission,index)=>{mission.name[4]=campaignZhHans[index][0];mission.rule[4]=campaignZhHans[index][1]});
   const campaignEs = [
     ["Umbral silencioso","Observa una patrulla, recupera el sello y evacúa."],
     ["Sala de faroles","Cruza por detrás de dos líneas de patrulla."],
@@ -207,11 +240,23 @@
     [guardianCatalog.seals,"Guardasellos de la cámara"], [guardianCatalog.eclipse,"Conservador del eclipse"]
   ].forEach(([guardian, name]) => { guardian.name[2] = name; });
   [[guardianCatalog.spotlight,"Фонарный ревизор"],[guardianCatalog.bell,"Колокольный страж"],[guardianCatalog.mirror,"Хранитель зеркал"],[guardianCatalog.clock,"Часовой маршал"],[guardianCatalog.seals,"Хранитель печатей"],[guardianCatalog.eclipse,"Хранитель затмения"]].forEach(([guardian,name])=>{guardian.name[3]=name});
+  [[guardianCatalog.spotlight,"提灯审查官"],[guardianCatalog.bell,"月钟守卫"],[guardianCatalog.mirror,"星镜看守"],[guardianCatalog.clock,"发条巡察长"],[guardianCatalog.seals,"宝库封印官"],[guardianCatalog.eclipse,"日蚀馆长"]].forEach(([guardian,name])=>{guardian.name[4]=name});
   function normalizeLocale(value){if(value==="zh-TW")return"zh-Hant";if(value==="zh-CN")return"zh-Hans";if(value?.startsWith("pt"))return"pt-BR";return value||"en"}
   let state=load(),locale=normalizeLocale(window.WonderI18n?.locale?.()||readOptionalStorage(localeKey)||readOptionalStorage(legacyLocaleKey)||"en"),selectedMission=0,centeredMission=Math.max(0,Math.min(campaign.length-1,(state.unlocked||1)-1)),gadget="dash",gadgetOffers=createOffers(),insuranceActive=state.insuranceReady===true,preservedTreasure=false,playing=false,paused=false,alert=0,objectFound=false,treasureFound=false,caught=false,patrols=[],lastTime=0,missionStartedAt=0,freezeUntil=0,smokeUntil=0,pickupCoverUntil=0,preview=null,arrivalTimer=0,animationFrame=0,routePointerId=null,lastPulseCycle=-1,lastMirrorCycle=-1,guardianPhase=1,resultActionClaimed=false;
-  const gameLocales=new Set(["en","zh-Hant","es","ru"]);
-  const localeArrayIndex=()=>locale==="zh-Hant"?1:locale==="es"?2:locale==="ru"?3:0;
-  function sharedText(value){const text=String(value??"");return window.WeightPlayGameRuntimeLocalizer?.translate?.(text)||text}
+  const gameLocales=new Set(["en","zh-Hant","zh-Hans","es","ru"]);
+  const localeArrayIndex=()=>locale==="zh-Hant"?1:locale==="es"?2:locale==="ru"?3:locale==="zh-Hans"?4:0;
+  const runtimeLocaleSegments={"zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
+  const runtimeCatalogLoads=new Map();
+  function ensureRuntimeCatalog(code){
+    if(code==="en"||window.WeightPlayGameRuntimeLocales?.[code])return Promise.resolve();
+    if(runtimeCatalogLoads.has(code))return runtimeCatalogLoads.get(code);
+    const segment=runtimeLocaleSegments[code];
+    if(!segment)return Promise.resolve();
+    const pending=new Promise((resolve,reject)=>{const script=document.createElement("script");script.src=`/src/runtime-locales/${segment}.js?v=20260802-moonlight-semantic-v7-1`;script.onload=resolve;script.onerror=()=>reject(new Error(`Moonlight Heist locale catalog failed: ${code}`));document.head.append(script)});
+    runtimeCatalogLoads.set(code,pending);
+    return pending;
+  }
+  function sharedText(value){const text=String(value??""),exact=window.WeightPlayGameRuntimeLocales?.[locale]?.[text];if(exact)return exact;const localizer=window.WeightPlayGameRuntimeLocalizer;return localizer?.locale===locale?localizer.translate(text):text}
   function runtimeText(value){
     const text=String(value??"");
     return gameLocales.has(locale)?text:sharedText(text);
@@ -342,8 +387,6 @@
   function t(key,vars={}){const owned=copy[locale]?.[key];let value=owned||copy.en[key]||key;value=owned?String(value):sharedText(value);Object.entries(vars).forEach(([k,v])=>value=value.replace(`{${k}}`,v));return value}
   function applyOwnedLocaleSurface(){const internal=document.querySelector('meta[name="robots"]')?.content.includes("noindex");document.title=`${t("title")} - ${internal?"Internal Trial":"WeightPlay"}`;document.querySelectorAll("[data-i18n],[data-game-i18n]").forEach(n=>{const key=n.dataset.gameI18n||n.dataset.i18n;n.dataset.gameI18n=key;n.dataset.runtimeLocalize="off";delete n.dataset.i18n;n.textContent=t(key)});const ownedNodes=[$("#localeSelect"),$(".main-poster"),$(".planner > img"),nodes.rail,nodes.fia,$("#stageBackBtn"),$("#battleBackBtn")].filter(Boolean);ownedNodes.forEach(node=>node.dataset.runtimeLocalize="off");$("#localeSelect").setAttribute("aria-label",t("languageLabel"));$(".main-poster").alt=t("posterAlt");$(".planner > img").alt=t("orlaAlt");nodes.rail.setAttribute("aria-label",t("missionRailLabel"));nodes.fia.alt=t("fiaAlt");$("#stageBackBtn").setAttribute("aria-label",t("stageBackLabel"));$("#battleBackBtn").setAttribute("aria-label",t("battleBackLabel"))}
   function localize(){if(window.WonderI18n?.locale?.()!==locale)window.WonderI18n?.setLocale?.(locale);document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";applyOwnedLocaleSurface();renderSummary();renderStage();renderGadgets();renderEconomy();updateGadget();renderGadgetSummary();updatePauseControl();updateAlertMeter();syncSoundToggle();setTimeout(applyOwnedLocaleSurface,0);requestAnimationFrame(()=>requestAnimationFrame(applyOwnedLocaleSurface))}
-  const ownedLocaleObserver=new MutationObserver(()=>{document.querySelectorAll("[data-game-i18n]").forEach(node=>{const value=t(node.dataset.gameI18n);if(node.textContent!==value)node.textContent=value})});
-  ownedLocaleObserver.observe(document.body,{subtree:true,childList:true,characterData:true});
   function stopBattleLoop(){if(animationFrame){cancelAnimationFrame(animationFrame);animationFrame=0}}
   function startBattleLoop(){if(!playing||paused||animationFrame)return;lastTime=performance.now();animationFrame=requestAnimationFrame(loop)}
   function show(name){
@@ -558,10 +601,10 @@
       soundToggle.addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
       soundToggle.addEventListener("click",()=>{window.WonderSound?.unlock?.();window.WonderSound?.setMuted?.(!window.WonderSound?.isMuted?.());syncSoundToggle()});
     }
-    const handleLocaleSelect=event=>{if(event.target?.id!=="localeSelect")return;const requested=event.target.value;if(normalizeLocale(requested)===locale)return;locale=normalizeLocale(requested);window.WonderI18n?.setLocale?.(requested);writeOptionalStorage(localeKey,requested);localize()};
+    const handleLocaleSelect=async event=>{if(event.target?.id!=="localeSelect")return;const requested=normalizeLocale(event.target.value);if(requested===locale)return;try{await ensureRuntimeCatalog(requested)}catch(error){console.error(error);event.target.value=locale;return}locale=requested;window.WonderI18n?.setLocale?.(requested);writeOptionalStorage(localeKey,requested);localize()};
     document.addEventListener("input",handleLocaleSelect,true);
     document.addEventListener("change",handleLocaleSelect,true);
-    window.addEventListener("wonder:locale-change",event=>{if(!event.detail?.locale)return;const requested=normalizeLocale(event.detail.locale);if(requested===locale)return;locale=requested;writeOptionalStorage(localeKey,requested);localize()});
+  window.addEventListener("wonder:locale-change",async event=>{if(!event.detail?.locale)return;const requested=normalizeLocale(event.detail.locale);if(requested===locale)return;try{await ensureRuntimeCatalog(requested)}catch(error){console.error(error);return}locale=requested;writeOptionalStorage(localeKey,requested);localize()});
     $("#startBtn").addEventListener("click",()=>{show("stage");renderStage();focusMission()});
     $("#stageBackBtn").addEventListener("click",()=>{show("main");focusMain()});
     $("#battleBackBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
@@ -601,7 +644,7 @@
     if(!direction)return;
     event.preventDefault();
     const current=point(nodes.fia),next=[Math.max(6,Math.min(94,current[0]+direction[0]*6)),Math.max(8,Math.min(92,current[1]+direction[1]*6))];
-    nodes.route.hidden=true;nodes.fia.style.transitionDuration="120ms";place(nodes.fia,next);scheduleArrival(140);
+    nodes.route.hidden=true;nodes.fia.style.transitionDuration="120ms";place(nodes.fia,next);resolveArrival();
   });
   [$("#rerollBtn"),$("#insuranceBtn")].forEach(button=>button.addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()}));
   $("#startBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});

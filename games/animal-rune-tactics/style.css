@@ -2594,3 +2594,17 @@ html body.wp-logical-battle-active.is-rune-playing .battle-ad-reserve {
     line-height: 30px !important;
   }
 }
+.back-btn[hidden] {
+  display: none !important;
+}
+
+/* Give the shared Battle Canvas detector a measurable bootstrap root before
+   it installs the final logical Canvas geometry. */
+body.wp-shell-battle-active.is-rune-playing .rune-app:not([data-wp-logical-battle-canvas]) {
+  position: fixed !important;
+  inset: 0 0 56px !important;
+  display: block !important;
+  width: 100vw !important;
+  height: calc(100dvh - 56px) !important;
+  min-height: 1px !important;
+}

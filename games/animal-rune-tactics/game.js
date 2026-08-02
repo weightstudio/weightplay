@@ -1430,7 +1430,7 @@
     battlePaused = false;
     nodes.pausePanel.classList.add("is-hidden");
     nodes.pauseBtn.setAttribute("aria-expanded", "false");
-    nodes.backBtn.setAttribute("aria-expanded", "false");
+    nodes.battleBackBtn.setAttribute("aria-expanded", "false");
     setPauseActionAvailable(true);
     setBattleCovered(false);
     if (resume) resumeTurnTransition();
@@ -1446,7 +1446,7 @@
     setBattleCovered(true);
     nodes.pausePanel.classList.remove("is-hidden");
     nodes.pauseBtn.setAttribute("aria-expanded", "true");
-    nodes.backBtn.setAttribute("aria-expanded", "true");
+    nodes.battleBackBtn.setAttribute("aria-expanded", "true");
     setPauseActionAvailable(false);
     requestAnimationFrame(() => nodes.resumeBtn.focus({ preventScroll: true }));
   }
@@ -1538,7 +1538,8 @@
     document.querySelector('meta[property="og:description"]')?.setAttribute("content", description);
     document.querySelector('meta[name="twitter:title"]')?.setAttribute("content", `${t("title")} - WeightPlay`);
     document.querySelector('meta[name="twitter:description"]')?.setAttribute("content", description);
-    nodes.backBtn.setAttribute("aria-label", state ? t("backToMenu") : t("backToLobby"));
+    nodes.backBtn.setAttribute("aria-label", t("backToLobby"));
+    if (nodes.battleBackBtn) nodes.battleBackBtn.setAttribute("aria-label", t("backToMenu"));
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
@@ -1848,6 +1849,16 @@
     mainStart.dataset.wpMainStart = "true";
     mainStart.textContent = t("startGame");
     menuCopy.insertBefore(mainStart, menuCopy.querySelector(".profile-grid"));
+    const battleBack = document.createElement("button");
+    battleBack.id = "battleBackBtn";
+    battleBack.className = "back-btn";
+    battleBack.type = "button";
+    battleBack.dataset.wpReturn = "battle";
+    battleBack.setAttribute("aria-controls", "pausePanel");
+    battleBack.setAttribute("aria-expanded", "false");
+    battleBack.hidden = true;
+    battleBack.textContent = "\u2190";
+    nodes.backBtn.after(battleBack);
     const stagePanel = document.createElement("section");
     stagePanel.id = "stagePanel";
     stagePanel.className = "wp-standard-stage-panel is-hidden";
@@ -1874,7 +1885,7 @@
     stagePanel.querySelector('[data-rune-stage-view="heroes"]').append(profileGrid, nodes.growthSummary, heroList);
     stagePanel.querySelector('[data-rune-stage-view="training"]').append(diamondCard);
     nodes.menuPanel.after(stagePanel);
-    Object.assign(nodes, { stagePanel, mainStartBtn: mainStart, stageBackBtn: stagePanel.querySelector("#stageBackBtn"), missionBriefing });
+    Object.assign(nodes, { stagePanel, mainStartBtn: mainStart, stageBackBtn: stagePanel.querySelector("#stageBackBtn"), battleBackBtn: battleBack, missionBriefing });
     nodes.missionGrid.addEventListener("wonder:stage-snap", (event) => {
       setCenteredMission(Number(event.detail?.index) + 1);
     });
@@ -1914,22 +1925,52 @@
     });
   }
 
+  let sceneGeneration = 0;
+
+  function setScene(scene) {
+    const generation = ++sceneGeneration;
+    const main = scene === "main";
+    const stage = scene === "stage";
+    const battle = scene === "battle";
+    document.body.dataset.screen = scene;
+    document.body.dataset.gameView = scene;
+    for (const name of ["main", "stage", "battle"]) document.body.classList.toggle(`wp-shell-${name}-active`, name === scene);
+    document.body.classList.toggle("wp-stage-select-active", stage);
+    document.documentElement.classList.toggle("wp-stage-select-active", stage);
+    document.body.classList.toggle("wp-standard-stage-page", stage);
+    document.body.classList.toggle("is-rune-playing", battle);
+    nodes.menuPanel.classList.toggle("is-hidden", !main);
+    nodes.stagePanel.classList.toggle("is-hidden", !stage);
+    nodes.gamePanel.classList.toggle("is-hidden", !battle);
+    nodes.backBtn.hidden = !main;
+    nodes.battleBackBtn.hidden = !battle;
+    window.dispatchEvent(new Event("weightplay:battle-sync"));
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
+    window.dispatchEvent(new Event("weightplay:stage-sync"));
+    if (battle) window.dispatchEvent(new CustomEvent("weightplay:battle-open"));
+    document.body.dataset.screen = scene;
+    document.body.dataset.gameView = scene;
+    if (!battle) requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (generation !== sceneGeneration) return;
+      window.dispatchEvent(new Event("weightplay:shell-sync"));
+      window.dispatchEvent(new Event("weightplay:stage-sync"));
+      document.body.dataset.screen = scene;
+      document.body.dataset.gameView = scene;
+    }));
+  }
+
   function showStage() {
     resetTrainingIntent();
     selectedMission = Math.min(profile.unlockedMission, MISSION_COUNT);
     centeredMission = selectedMission;
-    nodes.menuPanel.classList.add("is-hidden");
-    nodes.stagePanel.classList.remove("is-hidden");
-    document.body.classList.add("wp-standard-stage-page");
+    setScene("stage");
     renderMenu();
     focusSelectedMission();
   }
 
   function showMainFromStage() {
     resetTrainingIntent();
-    nodes.stagePanel.classList.add("is-hidden");
-    nodes.menuPanel.classList.remove("is-hidden");
-    document.body.classList.remove("wp-standard-stage-page");
+    setScene("main");
     requestAnimationFrame(() => requestAnimationFrame(() => {
       nodes.mainStartBtn.focus({ preventScroll: true });
     }));
@@ -1976,16 +2017,7 @@
       }),
       enemies: makeEnemies(mission),
     };
-    nodes.menuPanel.classList.add("is-hidden");
-    nodes.stagePanel.classList.add("is-hidden");
-    document.body.classList.remove("wp-standard-stage-page");
-    document.body.classList.add("is-rune-playing");
-    nodes.backBtn.setAttribute("href", "#stage");
-    nodes.backBtn.setAttribute("aria-label", t("backToMenu"));
-    nodes.backBtn.setAttribute("data-wp-return", "battle");
-    nodes.backBtn.setAttribute("aria-controls", "pausePanel");
-    nodes.backBtn.setAttribute("aria-expanded", "false");
-    nodes.backBtn.replaceChildren(document.createTextNode("\u2190"));
+    setScene("battle");
     nodes.resultPanel.classList.add("is-hidden");
     nodes.rewardPanel.classList.add("is-hidden");
     nodes.pausePanel.classList.add("is-hidden");
@@ -1993,7 +2025,6 @@
     battlePaused = false;
     setPauseActionAvailable(true);
     setBattleCovered(false);
-    nodes.gamePanel.classList.remove("is-hidden");
     log("chooseHero");
     render();
     focusPanel(nodes.gamePanel);
@@ -2880,17 +2911,7 @@
     clearTurnTransition();
     endTurnKeyboardFocusRequested = false;
     state = null;
-    document.body.classList.remove("is-rune-playing");
-    nodes.backBtn.setAttribute("href", "/");
-    nodes.backBtn.setAttribute("aria-label", t("backToLobby"));
-    nodes.backBtn.setAttribute("data-wp-return", "main");
-    nodes.backBtn.removeAttribute("aria-controls");
-    nodes.backBtn.removeAttribute("aria-expanded");
-    const logo = document.createElement("img");
-    logo.src = "../../assets/weightplay-logo.png";
-    logo.alt = "";
-    nodes.backBtn.replaceChildren(document.createTextNode("\u2190"), logo);
-    nodes.gamePanel.classList.add("is-hidden");
+    setScene("stage");
     nodes.rewardPanel.classList.add("is-hidden");
     nodes.resultPanel.classList.add("is-hidden");
     nodes.pausePanel.classList.add("is-hidden");
@@ -2898,9 +2919,6 @@
     battlePaused = false;
     setPauseActionAvailable(false);
     setBattleCovered(false);
-    nodes.menuPanel.classList.add("is-hidden");
-    nodes.stagePanel.classList.remove("is-hidden");
-    document.body.classList.add("wp-standard-stage-page");
     centeredMission = selectedMission;
     renderMenu();
     focusSelectedMission();
@@ -3065,10 +3083,10 @@
     queueMicrotask(syncRuntimeLocale);
     nodes.mainStartBtn.addEventListener("click", showStage);
     nodes.stageBackBtn.addEventListener("click", showMainFromStage);
-    nodes.backBtn.addEventListener("click", (event) => {
+    nodes.battleBackBtn.addEventListener("click", (event) => {
       if (!state) return;
       event.preventDefault();
-      openPause(nodes.backBtn);
+      openPause(nodes.battleBackBtn);
     });
     nodes.localeSelect.addEventListener("change", () => {
       resetTrainingIntent();
@@ -3144,6 +3162,7 @@
 
   function boot() {
     installStandardStageFlow();
+    setScene("main");
     bind();
     installTestHooks();
     let progress = 0;

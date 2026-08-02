@@ -875,8 +875,8 @@
     const canonicalTitle = firstVisible([".wp-generated-main-title", "h1", "h2", "strong"], header);
     if (canonicalTitle && !canonicalTitle.closest(".wp-shell-settings,.wp-shell-return")) {
       const legacyTitleContainer = canonicalTitle.parentElement;
-      canonicalTitle.classList.add("wp-shell-main-title");
-      const localizedTitle = officialGameTitle();
+      canonicalTitle.classList.toggle("wp-shell-main-title", type === "main");
+      const localizedTitle = type === "main" ? officialGameTitle() : "";
       if (localizedTitle && canonicalTitle.textContent?.trim() !== localizedTitle) {
         canonicalTitle.dataset.runtimeLocalize = "off";
         canonicalTitle.textContent = localizedTitle;

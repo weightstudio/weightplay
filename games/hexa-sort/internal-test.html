@@ -22,7 +22,7 @@
     />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css" />
     <link rel="stylesheet" href="../arrow-escape/style.css?v=20260801-shell1" />
-    <link rel="stylesheet" href="style.css?v=20260802-layer-art1" />
+    <link rel="stylesheet" href="style.css?v=20260802-mechanics-v15-1" />
     <script data-wp-internal-trial-gate>
       (() => {
         if (
@@ -99,7 +99,7 @@
                 Choose one of three stacks, then an empty hex.
               </li>
               <li data-i18n="how2">
-                Adjacent matching top runs gather into the strongest stack.
+                Adjacent matching top runs move into the newly placed stack.
               </li>
               <li data-i18n="how3">
                 Ten matching chips clear and reveal the next chain.
@@ -107,10 +107,10 @@
             </ol>
           </article>
           <article>
-            <h3 data-i18n="priorityTitle">Deterministic priority</h3>
+            <h3 data-i18n="priorityTitle">Anchored merge order</h3>
             <p data-i18n="priority">
-              Largest matching run wins; ties prefer the new placement, then
-              fixed board order.
+              The newly placed stack stays put; only directly adjacent
+              matching top runs move into it.
             </p>
           </article>
         </div>
@@ -202,6 +202,7 @@
             <div class="objective-row">
               <strong id="objectiveKind">COLOR</strong
               ><span id="objectiveText">0 / 10</span>
+              <small id="objectiveRule" class="objective-rule"></small>
             </div>
             <div class="hexa-play">
               <div
@@ -230,9 +231,10 @@
                 Operations lock during merging. Only contiguous matching chips
                 on top may move.
               </p>
+              <p id="helpObjectiveRule" class="help-objective-rule"></p>
               <ol class="battle-help-steps">
                 <li data-i18n="how1">Choose one of three stacks, then an empty hex.</li>
-                <li data-i18n="how2">Adjacent matching top runs gather into the strongest stack.</li>
+                <li data-i18n="how2">Adjacent matching top runs move into the newly placed stack.</li>
                 <li data-i18n="how3">Ten matching chips clear and reveal the next chain.</li>
               </ol>
               <button
@@ -294,7 +296,7 @@
     <script src="../../src/site-config.js"></script>
     <script src="../../src/sound.js"></script>
     <script src="../../src/edge-guard.js"></script>
-    <script src="game.js?v=20260802-layer-art1"></script>
+    <script src="game.js?v=20260802-mechanics-v15-1"></script>
     <script
       src="../../src/stage-selector-standard.js"
       data-wp-stage-standard

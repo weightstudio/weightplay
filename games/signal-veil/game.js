@@ -154,7 +154,7 @@
   let state=stateStore.load(SAVE_KEY,fresh,Object.keys(MAP_OBJECTS));
   let playing = false, paused = false, trueVision = Boolean(state.trueVision), currentDialogue = null;
   if(applyLevelUps(false)>0)stateStore.save(SAVE_KEY,state,trueVision);
-  let attackCooldown = 0, skillCooldown = 0, invulnerability = 0, swingTimer = 0, lastTime = 0, toastTimer = 0;
+  let attackCooldown = 0, skillCooldown = 0, invulnerability = 0, swingTimer = 0, lastTime = 0, toastTimer = 0, resultRevealTimer = 0;
   let bossIntroduced = false, resultClaimed = false, playerMoving = false, walkCycle = 0;
   const keys = new Set();
   const projectiles = [];
@@ -993,7 +993,12 @@
   function finishBoss() {
     boss.dead=true;state.bossDefeated=true;state.visionUnlocked=true;trueVision=true;state.trueVision=true;
     state.bossHp=0;gainXp(80);saveGame();updateObjective();updateHud();resultClaimed=false;
-    setTimeout(()=>setPanel(nodes.result),500);playTone(820,.35);
+    clearTimeout(resultRevealTimer);
+    resultRevealTimer=setTimeout(()=>{
+      resultRevealTimer=0;
+      if(!playing||document.body.dataset.screen!=="battle"||nodes.battle.hidden)return;
+      setPanel(nodes.result);
+    },500);playTone(820,.35);
   }
 
   function update(dt) {
@@ -1024,6 +1029,7 @@
     nodes.main.hidden=true;nodes.battle.hidden=false;setScreenOwner("battle");playing=true;paused=false;lastTime=performance.now();resizeCanvas();updateHud();updateObjective();renderInventory();canvas.focus({preventScroll:true});
   }
   function showMain() {
+    clearTimeout(resultRevealTimer);resultRevealTimer=0;
     saveGame();playing=false;paused=false;nodes.battle.hidden=true;nodes.main.hidden=false;setScreenOwner("main");setPanel(null);closeDialogue();scrollTo({top:0,behavior:"instant"});updateMainProgress();
     requestAnimationFrame(()=>requestAnimationFrame(()=>$("#startGame").focus({preventScroll:true})));
   }
