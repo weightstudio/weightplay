@@ -8089,7 +8089,8 @@ select,
   }
 
   .general-lobby-page .game-card-art.image-art .game-card-fg {
-    object-fit: contain;
+    object-fit: cover;
+    object-position: center;
   }
 
   .general-lobby-page .favorite-toggle {

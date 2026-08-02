@@ -36,11 +36,21 @@
 .hexa-play {
   min-height: 0;
   display: grid;
-  grid-template-rows: minmax(0, 1fr) 38px 126px;
+  grid-template-rows: minmax(0, 1fr) 52px 116px;
   gap: 5px;
 }
+.hexa-board-track {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  container-type: size;
+}
 .hex-board {
-  width: min(100%, 62vh, 570px);
+  width: min(100cqw, 100cqh, 570px);
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
   aspect-ratio: 1;
   justify-self: center;
   align-self: center;
@@ -266,7 +276,9 @@
   font-size: clamp(0.76rem, 2.7vw, 0.94rem);
   line-height: 1.15;
   text-align: center;
-  overflow: hidden;
+  position: relative;
+  z-index: 20;
+  overflow: visible;
 }
 .hexa-coach b {
   flex: 0 0 25px;
@@ -279,8 +291,19 @@
   font-size: 0.82rem;
 }
 .hexa-coach span {
-  overflow: hidden;
-  text-overflow: ellipsis;
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+.hexa-coach span strong {
+  font-size: 0.82rem;
+  line-height: 1.05;
+}
+.hexa-coach span small {
+  color: #8ff5ff;
+  font-size: clamp(0.63rem, 2.15vw, 0.76rem);
+  line-height: 1.05;
+  font-weight: 900;
 }
 .tray-stack.coach-choice {
   outline: 3px solid #ffcb49;
@@ -392,6 +415,30 @@
   --cell-rim: #8ff5ff;
   animation: targetGlow 0.72s ease-in-out infinite alternate;
 }
+.merge-role {
+  position: absolute;
+  z-index: 180;
+  top: -9%;
+  min-width: 38px;
+  padding: 3px 7px;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  color: #07172f;
+  font-size: clamp(.52rem, 1.8vw, .7rem);
+  line-height: 1;
+  font-weight: 1000;
+  letter-spacing: .02em;
+  box-shadow: 0 3px 10px #000b;
+  pointer-events: none;
+}
+.merge-role.source-role {
+  left: -8%;
+  background: #ffcf6b;
+}
+.merge-role.target-role {
+  right: -8%;
+  background: #8ff5ff;
+}
 .active-flight-source {
   filter: brightness(1.28) drop-shadow(0 0 8px #ffcf6ba8);
 }
@@ -435,17 +482,17 @@
 }
 @media (max-width: 680px) {
   .hex-board {
-    width: min(100%, 59vh, 430px);
+    width: min(100cqw, 100cqh, 430px);
   }
   .hexa-play {
-    grid-template-rows: minmax(0, 1fr) 38px 116px;
+    grid-template-rows: minmax(0, 1fr) 52px 108px;
   }
   .stack-tray {
     width: min(94%, 600px);
-    height: 112px;
+    height: 106px;
   }
   .tray-stack {
-    height: 91px;
+    height: 85px;
   }
 }
 @media (max-height: 500px) and (orientation: landscape) {
@@ -468,10 +515,14 @@
     grid-template-columns: minmax(0, 1fr) 230px;
     grid-template-rows: 42px minmax(0, 1fr);
   }
-  .hex-board {
+  .hexa-board-track {
     width: min(66vh, 250px);
     grid-column: 1;
     grid-row: 1/3;
+    justify-self: center;
+  }
+  .hex-board {
+    width: min(100cqw, 100cqh, 250px);
   }
   .hexa-coach {
     grid-column: 2;
