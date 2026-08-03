@@ -1029,6 +1029,7 @@
       card.className = `stage-card${selected ? " is-selected is-browsed" : ""}${cleared ? " is-cleared" : ""}${config.bossImage ? " is-boss-stage" : ""}`;
       card.dataset.stage = String(config.number);
       card.setAttribute("aria-disabled", String(locked));
+      card.setAttribute("aria-keyshortcuts", "ArrowLeft ArrowRight Home End");
       card.tabIndex = selected ? 0 : -1;
       if (selected) card.setAttribute("aria-current", "true");
       card.style.setProperty("--stage-overlay", region.color);

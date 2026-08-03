@@ -548,6 +548,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "2–6 minutes per mission": "每個任務 2-6 分鐘",
   "2–8 Minuten pro Stufe": "2–8 分鐘職業賽",
   "2–8 minutes per warehouse": "每個倉庫 2–8 分鐘",
+  "2?? minutes per mission": "2??每次任務分鐘數",
   "20260708-zoo-helper-day-clear-icons1": "20260708-zoo-helper-day-clear-icons1",
   "2042 · FIRST CONTACT": "2042 · 第一次接觸",
   "2048 Grid Merge": "2048 網格合併",

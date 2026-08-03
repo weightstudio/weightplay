@@ -548,6 +548,7 @@ window.WeightPlayGameRuntimeLocales["fr"] = {
   "2–6 minutes per mission": "2 à 6 minutes par mission",
   "2–8 Minuten pro Stufe": "2 à 8 minutes pour le travail",
   "2–8 minutes per warehouse": "2 à 8 minutes par entrepôt",
+  "2?? minutes per mission": "2 ?? minutes par mission",
   "20260708-zoo-helper-day-clear-icons1": "20260708-zoo-helper-day-clear-icons1",
   "2042 · FIRST CONTACT": "2042 · PREMIER CONTACT",
   "2048 Grid Merge": "Fusion de grille 2048",

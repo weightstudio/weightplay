@@ -567,7 +567,7 @@
     els.stageSummary.textContent = `${Math.min(30, save.unlocked)} / 30 · ${totalStars} ★`;
     els.stageRail.innerHTML = Array.from({ length: 30 }, (_, i) => {
       const c = stageConfig(i), locked = i + 1 > save.unlocked, stars = save.stars[i] || 0;
-      return `<button class="stage-card${locked ? " locked" : ""}" data-stage="${i}" type="button" aria-disabled="${locked}">
+      return `<button class="stage-card${locked ? " locked" : ""}" data-stage="${i}" type="button" aria-disabled="${locked}" aria-keyshortcuts="ArrowLeft ArrowRight Home End">
         <b>${t("stage", { n: i + 1 })}</b><span>${t(CHAPTERS[c.chapter])}<br>${t("pieces", { n: c.types * c.sets * 3 })}</span>
         <small>${locked ? `◆ ${t("locked")}` : stars ? `${"★".repeat(stars)} · ${t("best", { n: Object.prototype.hasOwnProperty.call(save.best, i) ? save.best[i] : 0 })}` : "◇◇◇"}</small></button>`;
     }).join("");
@@ -579,7 +579,17 @@
     const cardRect = card.getBoundingClientRect();
     const scale = railRect.width / Math.max(1, els.stageRail.clientWidth);
     const renderedDelta = cardRect.left + cardRect.width / 2 - (railRect.left + railRect.width / 2);
-    els.stageRail.scrollBy({ left: renderedDelta / Math.max(.01, scale), behavior });
+    const left = els.stageRail.scrollLeft + renderedDelta / Math.max(.01, scale);
+    if (behavior === "auto") {
+      const previousBehavior = els.stageRail.style.getPropertyValue("scroll-behavior");
+      const previousPriority = els.stageRail.style.getPropertyPriority("scroll-behavior");
+      els.stageRail.style.setProperty("scroll-behavior", "auto", "important");
+      els.stageRail.scrollLeft = left;
+      if (previousBehavior) els.stageRail.style.setProperty("scroll-behavior", previousBehavior, previousPriority);
+      else els.stageRail.style.removeProperty("scroll-behavior");
+      return;
+    }
+    els.stageRail.scrollTo({ left, behavior });
   }
   function centerUnlocked() {
     const target = els.stageRail.querySelector(`[data-stage="${Math.max(0, save.unlocked - 1)}"]`);
@@ -634,7 +644,7 @@
       item.setAttribute("aria-current", String(active));
       item.tabIndex = active ? 0 : -1;
     });
-    centerStageCard(target);
+    centerStageCard(target, "auto");
     target.focus({ preventScroll: true });
     els.chapterName.textContent = t(CHAPTERS[Math.floor(+target.dataset.stage / 5)]);
   });

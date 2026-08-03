@@ -548,6 +548,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "2–6 minutes per mission": "임무당 2~6분",
   "2–8 Minuten pro Stufe": "2–8 Minuten 프로 Stufe",
   "2–8 minutes per warehouse": "창고당 2~8분",
+  "2?? minutes per mission": "2?? 임무당 분",
   "20260708-zoo-helper-day-clear-icons1": "20260708-동물원-도우미-일-클리어-아이콘1",
   "2042 · FIRST CONTACT": "2042년 · 첫 번째 접촉",
   "2048 Grid Merge": "2048 그리드 병합",

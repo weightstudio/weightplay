@@ -109,6 +109,7 @@ function syncStageCards(){
   stageCardPool.forEach(button=>{
     const index=Number(button.dataset.stageIndex),isSelected=index===selected;
     bindStageCard(button,index);button.tabIndex=isSelected?0:-1;button.classList.toggle("is-centered",isSelected);button.classList.toggle("wp-stage-centered",isSelected);
+    if(isSelected)button.setAttribute("aria-current","true");else button.removeAttribute("aria-current");
     if(isSelected&&index<save.unlocked)button.dataset.wpStageRecommended="true";else delete button.dataset.wpStageRecommended;
   });
 }
@@ -505,7 +506,7 @@ function bind(){
   $("stagesTab").addEventListener("click",()=>setStagePanel("stages"));
   $("cabinetTab").addEventListener("click",()=>setStagePanel("cabinet"));
   $("workshopTab").addEventListener("click",()=>setStagePanel("workshop"));
-  $("stageRail").addEventListener("keydown",event=>{if(!["ArrowLeft","ArrowRight","Home","End","Enter"," "].includes(event.key))return;event.preventDefault();if(event.key==="Enter"||event.key===" "){if(selected<save.unlocked)startMission(selected);return}let next=event.key==="Home"?0:event.key==="End"?Math.min(29,save.unlocked-1):selected+(event.key==="ArrowLeft"?-1:1);selectStage(clamp(next,0,29),true);$(`stageRail`).querySelector(`[data-stage-index="${selected}"]`)?.focus()});
+  $("stageRail").addEventListener("keydown",event=>{if(!["ArrowLeft","ArrowRight","Home","End","Enter"," "].includes(event.key))return;event.preventDefault();if(event.key==="Enter"||event.key===" "){if(selected<save.unlocked)startMission(selected);return}let next=event.key==="Home"?0:event.key==="End"?29:selected+(event.key==="ArrowLeft"?-1:1);selectStage(clamp(next,0,29),true);$(`stageRail`).querySelector(`[data-stage-index="${selected}"]`)?.focus()});
   $("stageRail").addEventListener("wonder:stage-snap",event=>{const index=Number(event.detail?.index);if(Number.isInteger(index)&&levels[index])selectStage(index,false)});
   $("battleBackBtn").addEventListener("click",()=>openModal("leavePanel",$("leaveContinueBtn")));
   $("leaveContinueBtn").addEventListener("click",()=>closeModal("leavePanel"));

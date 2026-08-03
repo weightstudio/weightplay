@@ -548,6 +548,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "2–6 minutes per mission": "ミッションごとに 2 ～ 6 分",
   "2–8 Minuten pro Stufe": "2–8 ミニテン・プロ・シュトゥーフェ",
   "2–8 minutes per warehouse": "倉庫あたり 2 ～ 8 分",
+  "2?? minutes per mission": "2??ミッションあたりの分数",
   "20260708-zoo-helper-day-clear-icons1": "20260708-動物園ヘルパーデー-クリア-アイコン1",
   "2042 · FIRST CONTACT": "2042 · ファーストコンタクト",
   "2048 Grid Merge": "2048 グリッド マージ",

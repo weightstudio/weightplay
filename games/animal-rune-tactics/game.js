@@ -1710,6 +1710,7 @@
     btn.className = `mission-card ${active ? "is-active" : ""} ${centered ? "is-centered" : ""}`;
     btn.setAttribute("aria-posinset", String(index + 1));
     btn.setAttribute("aria-setsize", String(MISSION_COUNT));
+    btn.setAttribute("aria-keyshortcuts", "ArrowLeft ArrowRight Home End");
     btn.setAttribute("aria-disabled", String(locked));
     btn.setAttribute("aria-pressed", String(active));
     btn.tabIndex = centered ? 0 : -1;
@@ -1955,7 +1956,11 @@
   }
 
   function installStandardStageFlow() {
-    const menuCopy = nodes.menuPanel.querySelector(".menu-copy");
+    // Locale hydration can replace the generated Main root while this large
+    // runtime is initializing. Reclaim the live root before moving its
+    // workspaces so localized routes cannot boot against a detached snapshot.
+    nodes.menuPanel = $("menuPanel");
+    const menuCopy = nodes.menuPanel.querySelector(".menu-copy") || nodes.menuPanel;
     const profileGrid = menuCopy.querySelector(".profile-grid");
     const missionList = nodes.missionGrid.closest(".mission-list");
     const heroList = nodes.heroUpgradeGrid.closest(".hero-upgrade-list");

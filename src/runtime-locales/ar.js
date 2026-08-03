@@ -548,6 +548,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "2–6 minutes per mission": "2-6 دقائق لكل مهمة",
   "2–8 Minuten pro Stufe": "2-8 دقائق احترافية",
   "2–8 minutes per warehouse": "2-8 دقائق لكل مستودع",
+  "2?? minutes per mission": "2؟؟ دقائق لكل مهمة",
   "20260708-zoo-helper-day-clear-icons1": "20260708-حديقة الحيوان-مساعد-يوم-مسح-أيقونات1",
   "2042 · FIRST CONTACT": "2042 · الاتصال الأول",
   "2048 Grid Merge": "2048 دمج الشبكة",

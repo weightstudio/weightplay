@@ -371,7 +371,12 @@
     selected = target;
     if (immediate) {
       positionStageRail(target);
-      syncCenteredStageCard();
+      // scrollIntoView updates the rail position asynchronously in Chromium.
+      // Keyboard ownership already has an exact logical target, so committing
+      // from pre-scroll geometry here could restore the previous card while
+      // focus moved to the new one.
+      selected = target;
+      stageCardPool.forEach((card) => bindStageCard(card, Number(card.dataset.index)));
       return;
     }
     const rail = $("stageGrid");

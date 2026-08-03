@@ -35,7 +35,10 @@
     const owner=preferred&&cards.includes(preferred)
       ?preferred
       :cards.find(card=>card.getAttribute("aria-current")==="true"||card.classList.contains("centered"))||cards[0];
-    cards.forEach(card=>{card.tabIndex=card===owner?0:-1;});
+    cards.forEach(card=>{
+      card.tabIndex=card===owner?0:-1;
+      card.setAttribute("aria-keyshortcuts","ArrowLeft ArrowRight Home End");
+    });
   }
 
   stageRail?.addEventListener("keydown",event=>{
@@ -55,6 +58,7 @@
     target.click();
     syncStageTabOwner(target);
     target.focus({preventScroll:true});
+    target.scrollIntoView({behavior:"instant",inline:"center",block:"nearest"});
   },true);
 
   stageRail?.addEventListener("focusin",event=>{

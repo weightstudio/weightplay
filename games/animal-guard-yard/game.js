@@ -1210,7 +1210,16 @@
     stageBrowseIndex = target;
     if (immediate) {
       positionStageRail(target);
-      syncCenteredStageCard();
+      // Chromium may defer the geometry update from scrollIntoView. Keyboard
+      // navigation already owns an exact logical target, so commit that target
+      // directly instead of letting pre-scroll geometry restore the old card.
+      stageBrowseIndex = target;
+      stageCardPool.forEach((card) => bindStageCard(card, Number(card.dataset.stageIndex)));
+      const stagePanel = document.querySelector("#stageTabPanel");
+      if (stagePanel) {
+        stagePanel.dataset.prevStageLabel = target > 0 ? t("stage", { n: target }) : "";
+        stagePanel.dataset.nextStageLabel = target + 1 < stages.length ? t("stage", { n: target + 2 }) : "";
+      }
       return;
     }
     const started = performance.now();
@@ -1267,7 +1276,7 @@
       if (!target) return;
       event.preventDefault();
       settleStageRail(currentStageLogicalPosition(), nextIndex, true);
-      target.focus({ preventScroll: true });
+      nodes.stageGrid.querySelector(`[data-stage-index="${nextIndex}"]`)?.focus({ preventScroll: true });
     });
     const recenterStagePool = () => {
       if (activeScene === "stage") requestAnimationFrame(() => settleStageRail(stageBrowseIndex, stageBrowseIndex, true));
