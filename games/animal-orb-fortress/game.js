@@ -698,6 +698,9 @@
   let save = loadSave();
   let selectedTier = 1;
   let centeredStageFrame = 0;
+  const STAGE_POOL_SIZE = 9;
+  let stagePool = [], stageWindowStart = 1, stageBrowseLogical = 1, stageSettleFrame = 0;
+  let cancelStagePointer = () => {};
   let state = makeState();
   let lastFrame = 0;
   let raf = 0;
@@ -934,6 +937,7 @@
   }
 
   function show(panel) {
+    if (panel !== nodes.stagePanel) cancelStageMotion();
     if (panel !== nodes.gamePanel) cancelPointerAim();
     const previousFocus = document.activeElement;
     if (previousFocus instanceof HTMLElement && !panel.contains(previousFocus)) {
@@ -969,8 +973,10 @@
     }
     queueOrbArenaFit();
     if (panel === nodes.stagePanel) {
-      window.requestAnimationFrame(centerUnlockedStage);
-      window.requestAnimationFrame(focusUnlockedStage);
+      if (nodes.stageRail.children.length) {
+        centerUnlockedStage();
+        focusUnlockedStage();
+      }
     } else if (panel === nodes.menuPanel) {
       settleMainStartFocus();
     }
@@ -1169,20 +1175,18 @@
     nodes.starStoneText.textContent = String(save.starStones || 0);
     nodes.diamondText.textContent = String(walletDiamonds());
     nodes.stageProgressText.textContent = t("stageProgress", { unlocked });
-    nodes.stageRail.innerHTML = raidDefs
-      .map((raid) => {
-        const locked = raid.tier > unlocked;
-        return `
-          <button class="raid-card${locked ? " is-locked" : ""}" type="button" data-tier="${raid.tier}" data-zone="${raid.zone}" aria-disabled="${locked}" aria-keyshortcuts="${STAGE_KEYBOARD_SHORTCUTS}" tabindex="${raid.tier === unlocked ? "0" : "-1"}">
-            <span class="raid-number">${raid.tier}</span>
-            <strong>${localized(raid.name)}</strong>
-            <span>${localized(raid.desc)}</span>
-            <em><span>${t(raid.rule)}</span><span aria-hidden="true"> · </span>${locked
-              ? `<span>${t("tierLocked")}</span>`
-              : `<span>${t("enterRaid")}</span><span aria-hidden="true"> · </span><span>${WAVES_PER_RAID}</span> <span>${t("waves")}</span>`}</em>
-          </button>`;
-      })
-      .join("");
+    stageBrowseLogical = unlocked;
+    stageWindowStart = desiredStageWindow(unlocked);
+    stagePool = Array.from({ length: Math.min(STAGE_POOL_SIZE, MAX_RAID_TIER) }, (_, poolIndex) => createStageCard(poolIndex));
+    nodes.stageRail.replaceChildren(...stagePool);
+    stagePool.forEach((card, offset) => bindStageCard(card, stageWindowStart + offset));
+    nodes.stageRail.dataset.wpStageVirtualized = "bounded-recycle";
+    nodes.stageRail.dataset.wpStagePoolSize = String(stagePool.length);
+    nodes.stageRail.dataset.wpStageTotal = String(MAX_RAID_TIER);
+    nodes.stageRail.dataset.wpStageWindowStart = String(stageWindowStart);
+    nodes.stageRail.dataset.wpStageWindowEnd = String(stageWindowStart + stagePool.length - 1);
+    nodes.stageRail.dataset.wpStageRecycleCount = "0";
+    setCenteredStage(unlocked);
     nodes.roomGrid.innerHTML = roomDefs
       .map((room) => {
         const level = save.rooms[room.id] || 0;
@@ -1202,11 +1206,102 @@
           </div>`;
       })
       .join("");
-    if (!nodes.stagePanel.classList.contains("is-hidden")) window.requestAnimationFrame(centerUnlockedStage);
+    if (!nodes.stagePanel.classList.contains("is-hidden")) {
+      centerUnlockedStage();
+      focusUnlockedStage();
+    }
+  }
+
+  function stageWindowLimit() { return Math.max(1, MAX_RAID_TIER - STAGE_POOL_SIZE + 1); }
+  function desiredStageWindow(tier) {
+    return Math.max(1, Math.min(stageWindowLimit(), Math.round(tier) - Math.floor(STAGE_POOL_SIZE / 2)));
+  }
+  function bindStageCard(card, tier) {
+    const raid = raidDefs[tier - 1], unlocked = Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1));
+    const locked = raid.tier > unlocked;
+    card.className = `raid-card${locked ? " is-locked" : ""}`;
+    card.dataset.tier = String(raid.tier);
+    card.dataset.index = String(raid.tier);
+    card.dataset.zone = String(raid.zone);
+    card.setAttribute("aria-disabled", String(locked));
+    card.setAttribute("aria-keyshortcuts", STAGE_KEYBOARD_SHORTCUTS);
+    card.setAttribute("aria-posinset", String(raid.tier));
+    card.setAttribute("aria-setsize", String(MAX_RAID_TIER));
+    card.innerHTML = `<span class="raid-number">${raid.tier}</span><strong>${localized(raid.name)}</strong><span>${localized(raid.desc)}</span><em><span>${t(raid.rule)}</span><span aria-hidden="true"> · </span>${locked ? `<span>${t("tierLocked")}</span>` : `<span>${t("enterRaid")}</span><span aria-hidden="true"> · </span><span>${WAVES_PER_RAID}</span> <span>${t("waves")}</span>`}</em>`;
+  }
+  function createStageCard(poolIndex) {
+    const card = document.createElement("button");
+    card.type = "button";
+    card.dataset.poolId = String(poolIndex);
+    return card;
+  }
+  function setCenteredStage(tier) {
+    stageBrowseLogical = tier;
+    nodes.stageRail.querySelectorAll(".raid-card").forEach((card) => {
+      const centered = Number(card.dataset.tier) === tier;
+      card.classList.toggle("is-centered", centered);
+      card.tabIndex = centered ? 0 : -1;
+      if (centered) card.setAttribute("aria-current", "true");
+      else card.removeAttribute("aria-current");
+    });
+  }
+  function moveStageWindow(targetStart) {
+    const target = Math.max(1, Math.min(stageWindowLimit(), targetStart));
+    let recycled = 0;
+    while (stageWindowStart < target) {
+      const card = nodes.stageRail.firstElementChild;
+      stageWindowStart += 1;
+      nodes.stageRail.append(card);
+      bindStageCard(card, stageWindowStart + stagePool.length - 1);
+      recycled += 1;
+    }
+    while (stageWindowStart > target) {
+      const card = nodes.stageRail.lastElementChild;
+      stageWindowStart -= 1;
+      nodes.stageRail.prepend(card);
+      bindStageCard(card, stageWindowStart);
+      recycled += 1;
+    }
+    stagePool = [...nodes.stageRail.children];
+    nodes.stageRail.dataset.wpStageWindowStart = String(stageWindowStart);
+    nodes.stageRail.dataset.wpStageWindowEnd = String(stageWindowStart + stagePool.length - 1);
+    if (recycled) nodes.stageRail.dataset.wpStageRecycleCount = String(Number(nodes.stageRail.dataset.wpStageRecycleCount || 0) + recycled);
+  }
+  function ensureStageWindow(tier) {
+    moveStageWindow(desiredStageWindow(tier));
+    stagePool.forEach((card) => bindStageCard(card, Number(card.dataset.tier)));
+    setCenteredStage(Math.round(stageBrowseLogical));
+  }
+  function stageRailGeometry() {
+    const cards = [...nodes.stageRail.children];
+    const first = cards[0]?.getBoundingClientRect(), second = cards[1]?.getBoundingClientRect();
+    const pitch = first && second ? Math.abs((second.left + second.width / 2) - (first.left + first.width / 2)) : 274;
+    return { pitch: pitch || 274 };
+  }
+  function positionStageRail(logical) {
+    const value = Math.max(1, Math.min(MAX_RAID_TIER, logical)), anchor = Math.round(value);
+    moveStageWindow(desiredStageWindow(anchor));
+    const card = nodes.stageRail.querySelector(`[data-tier="${anchor}"]`);
+    card?.scrollIntoView({ block:"nearest", inline:"center", behavior:"auto" });
+    nodes.stageRail.scrollLeft += (value - anchor) * stageRailGeometry().pitch;
+    nodes.stageRail.dataset.wpStageDragLogical = value.toFixed(4);
+    return value;
+  }
+  function cancelStageMotion() {
+    if (centeredStageFrame) cancelAnimationFrame(centeredStageFrame);
+    if (stageSettleFrame) cancelAnimationFrame(stageSettleFrame);
+    centeredStageFrame = stageSettleFrame = 0;
+    cancelStagePointer();
+    nodes.stageRail.style.removeProperty("scroll-behavior");
+    nodes.stageRail.style.removeProperty("scroll-snap-type");
+    nodes.stageRail.classList.remove("wp-stage-dragging");
+    delete nodes.stageRail.dataset.wpStageSettling;
   }
 
   function centerUnlockedStage() {
     const unlocked = Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1));
+    stageBrowseLogical = unlocked;
+    ensureStageWindow(unlocked);
     const card = nodes.stageRail.querySelector(`[data-tier="${unlocked}"]`);
     if (!card || !nodes.stageRail.getClientRects().length) return;
     const railRect = nodes.stageRail.getBoundingClientRect();
@@ -1239,12 +1334,7 @@
         centeredDistance = distance;
       }
     });
-    cards.forEach((card) => {
-      const centered = card === centeredCard;
-      card.classList.toggle("is-centered", centered);
-      if (centered) card.setAttribute("aria-current", "true");
-      else card.removeAttribute("aria-current");
-    });
+    setCenteredStage(Number(centeredCard.dataset.tier));
   }
 
   function queueCenteredStageUpdate() {
@@ -1265,22 +1355,18 @@
     if (!current) return;
     const supported = ["ArrowLeft", "ArrowRight", "Home", "End"];
     if (!supported.includes(event.key)) return;
-    const cards = [...nodes.stageRail.querySelectorAll(".raid-card")];
-    if (!cards.length) return;
-    const currentIndex = Math.max(0, cards.indexOf(current));
     const rtl = getComputedStyle(nodes.stageRail).direction === "rtl";
-    let nextIndex = currentIndex;
-    if (event.key === "Home") nextIndex = 0;
-    else if (event.key === "End") nextIndex = cards.length - 1;
-    else if (event.key === "ArrowLeft") nextIndex = Math.max(0, Math.min(cards.length - 1, currentIndex + (rtl ? 1 : -1)));
-    else nextIndex = Math.max(0, Math.min(cards.length - 1, currentIndex + (rtl ? -1 : 1)));
+    const currentTier = Number(current.dataset.tier);
+    let nextTier = currentTier;
+    if (event.key === "Home") nextTier = 1;
+    else if (event.key === "End") nextTier = MAX_RAID_TIER;
+    else if (event.key === "ArrowLeft") nextTier = Math.max(1, Math.min(MAX_RAID_TIER, currentTier + (rtl ? 1 : -1)));
+    else nextTier = Math.max(1, Math.min(MAX_RAID_TIER, currentTier + (rtl ? -1 : 1)));
     event.preventDefault();
-    cards.forEach((card, index) => {
-      card.tabIndex = index === nextIndex ? 0 : -1;
-      if (index === nextIndex) card.setAttribute("aria-current", "true");
-      else card.removeAttribute("aria-current");
-    });
-    const next = cards[nextIndex];
+    stageBrowseLogical = nextTier;
+    ensureStageWindow(nextTier);
+    const next = nodes.stageRail.querySelector(`[data-tier="${nextTier}"]`);
+    setCenteredStage(nextTier);
     next.focus({ preventScroll: true });
     next.scrollIntoView({ block: "nearest", inline: "center" });
   }
@@ -2419,6 +2505,74 @@
     }
   }
 
+  function installVirtualStageDrag() {
+    const rail = nodes.stageRail;
+    rail.dataset.wpStageVirtualDrag = "true";
+    rail.dataset.wpStageCenterObserver = "manual";
+    let pointerId = null, startX = 0, lastX = 0, logical = 1, moved = false, suppressClick = false;
+    const restore = () => {
+      rail.style.removeProperty("scroll-behavior");
+      rail.style.removeProperty("scroll-snap-type");
+      rail.classList.remove("wp-stage-dragging");
+      delete rail.dataset.wpStageSettling;
+    };
+    cancelStagePointer = () => { pointerId = null; moved = false; restore(); };
+    rail.addEventListener("pointerdown", (event) => {
+      if (nodes.stagePanel.classList.contains("is-hidden") || event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
+      if (stageSettleFrame) cancelAnimationFrame(stageSettleFrame);
+      stageSettleFrame = 0;
+      pointerId = event.pointerId;
+      startX = lastX = event.clientX;
+      logical = stageBrowseLogical;
+      moved = false;
+      rail.style.setProperty("scroll-behavior", "auto", "important");
+      rail.style.setProperty("scroll-snap-type", "none", "important");
+      event.stopImmediatePropagation();
+    }, true);
+    document.addEventListener("pointermove", (event) => {
+      if (event.pointerId !== pointerId) return;
+      const delta = event.clientX - lastX;
+      lastX = event.clientX;
+      if (!moved && Math.abs(event.clientX - startX) > 4) { moved = true; rail.classList.add("wp-stage-dragging"); }
+      if (moved) {
+        if (event.cancelable) event.preventDefault();
+        logical = positionStageRail(logical - delta / stageRailGeometry().pitch);
+        stageBrowseLogical = logical;
+        stagePool.forEach((card) => bindStageCard(card, Number(card.dataset.tier)));
+        setCenteredStage(Math.round(logical));
+      }
+      event.stopImmediatePropagation();
+    }, true);
+    const finish = (event) => {
+      if (pointerId === null || (event.pointerId !== undefined && event.pointerId !== pointerId)) return;
+      pointerId = null;
+      if (!moved) { restore(); return; }
+      if (event.cancelable) event.preventDefault();
+      suppressClick = true;
+      setTimeout(() => { suppressClick = false; }, 0);
+      const from = logical, target = Math.max(1, Math.min(MAX_RAID_TIER, Math.round(from))), started = performance.now();
+      rail.dataset.wpStageSettling = "true";
+      const settle = (now) => {
+        const progress = Math.min(1, (now - started) / 340), eased = progress * progress * (3 - 2 * progress);
+        stageBrowseLogical = positionStageRail(from + (target - from) * eased);
+        if (progress < 1) stageSettleFrame = requestAnimationFrame(settle);
+        else { stageSettleFrame = 0; ensureStageWindow(target); setCenteredStage(target); restore(); }
+      };
+      stageSettleFrame = requestAnimationFrame(settle);
+      moved = false;
+      event.stopImmediatePropagation();
+    };
+    document.addEventListener("pointerup", finish, true);
+    document.addEventListener("pointercancel", finish, true);
+    rail.addEventListener("click", (event) => {
+      if (!suppressClick) return;
+      suppressClick = false;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }, true);
+  }
+  installVirtualStageDrag();
+
   nodes.localeSelect.addEventListener("change", (event) => setLocale(event.target.value));
   nodes.startBtn.addEventListener("click", () => {
     show(nodes.stagePanel);
@@ -2435,13 +2589,9 @@
   nodes.stageRail.addEventListener("focusin", (event) => {
     const card = event.target?.closest?.(".raid-card");
     if (!card) return;
-    nodes.stageRail.querySelectorAll(".raid-card").forEach((item) => {
-      item.tabIndex = item === card ? 0 : -1;
-      if (item === card) item.setAttribute("aria-current", "true");
-      else item.removeAttribute("aria-current");
-    });
+    setCenteredStage(Number(card.dataset.tier));
   });
-  nodes.stageRail.addEventListener("scroll", queueCenteredStageUpdate, { passive: true });
+  nodes.stageRail.addEventListener("wonder:stage-snap", (event) => setCenteredStage(Number(event.detail?.index) || 1));
   window.addEventListener("resize", queueCenteredStageUpdate, { passive: true });
   nodes.stageRail.addEventListener("click", (event) => {
     const tier = Number(event.target?.closest?.("[data-tier]")?.dataset?.tier);
