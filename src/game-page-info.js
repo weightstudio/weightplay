@@ -6830,7 +6830,56 @@
       || (activeLocale === "ru" && id === "animal-one-line")
       || (["zh-Hant", "zh-Hans"].includes(activeLocale) && id === "block-blast")) return merged;
     const translateValue = (value) => {
-      if (typeof value === "string") return catalog[value] || value;
+      if (typeof value === "string") {
+        let translated = catalog[value] || value;
+        if (activeLocale === "ar" && id === "animal-orb-fortress") {
+          const reviewedSentences = {
+            "Against chargers and Tempest Horn Guardian, read the marked line and wait for recovery. Faster Recharge helps only if the shots are released during a useful window.": "في مواجهة المهاجمين وحارس قرن العاصفة، راقب المسار المحدد وانتظر فترة التعافي بعد الاندفاع. لا تفيد إعادة الشحن الأسرع إلا عند إطلاق الكرات في التوقيت المناسب.",
+            "Routes 6-10 introduce hit-count armor and stationary thorn anchors. Routes 11-15 replace constant firing with phase timing and then add the first moving reflection gate. Brambleback Colossus summons protection during the fight, while Lunar Wisp Matriarch alternates invulnerability with a recovery window.": "تقدم المسارات 6-10 دروعًا تحتاج إلى عدد محدد من الضربات ومراسي شوكية ثابتة. تستبدل المسارات 11-15 الإطلاق المستمر بتوقيت الطور، ثم تضيف أول بوابة انعكاس متحركة. يستدعي عملاق الظهر الشوكي الحماية أثناء القتال، بينما تتناوب سيدة خصلات القمر بين الحصانة ونافذة تعافٍ قصيرة.",
+            "Protect the crystal core through three waves. Clearing Wave 3 saves the route, awards Star Stones, and unlocks the next route.": "احمِ النواة البلورية خلال ثلاث موجات. يؤدي إنهاء الموجة الثالثة إلى حفظ المسار ومنح أحجار النجوم وفتح المسار التالي.",
+          };
+          translated = reviewedSentences[value] || translated;
+          [
+            "Animal Orb Fortress",
+            "Star Stones",
+            "Faster Recharge",
+            "Core Shield",
+            "Scout Magnet",
+            "Orb Forge",
+            "Companion Den",
+            "Scout Tower",
+            "Split Orb",
+            "Piercing Shine",
+            "Bigger Orb",
+            "Raid Map",
+            "Mirror Vault", "Eclipse Heart",
+            "Rootbound Golem", "Brambleback Colossus", "Lunar Wisp Matriarch", "Prism Shell Regent", "Tempest Horn Guardian", "Voidcore Emperor",
+          ].forEach((term) => {
+            if (catalog[term]) translated = translated.replaceAll(term, catalog[term]);
+          });
+          [
+            [/Crystal Fortress/gu, "الحصن البلوري"],
+            [/Crystal Woodland/gu, "الغابة البلورية"],
+            [/Thornworks/gu, "مشاغل الأشواك"],
+            [/Moon Ruins/gu, "أطلال القمر"],
+            [/Storm Bastion/gu, "حصن العاصفة"],
+            [/Rootbound Crown/gu, "تاج الجذور"],
+            [/Rootbound/gu, "متجذر"],
+            [/Brambleback/gu, "ظهر شوكي"],
+            [/Lunar Wisp/gu, "خصلة قمرية"],
+            [/Prism Shell/gu, "صدفة منشورية"],
+            [/Tempest Horn/gu, "قرن العاصفة"],
+            [/Voidcore/gu, "نواة الفراغ"],
+            [/Golem/gu, "غول"],
+            [/Beast Guardian/gu, "حارس الوحوش"],
+            [/Animal Auto Squad/gu, "فرقة الحيوانات الآلية"],
+            [/\bHP\b/gu, "نقاط الصحة"],
+          ].forEach(([pattern, replacement]) => {
+            translated = translated.replace(pattern, replacement);
+          });
+        }
+        return translated;
+      }
       if (Array.isArray(value)) return value.map(translateValue);
       if (value && typeof value === "object") {
         return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, translateValue(item)]));

@@ -444,6 +444,47 @@
     arenaControlLimitLabel: "ساحة حصن كرات الحيوانات. التصويب بزاوية {angle} درجة من المركز. توجد {active}/{limit} كرات روحية في الجو، وهو الحد الأقصى؛ لا يمكن الإطلاق الآن.",
   };
 
+  Object.assign(text.ar, {
+    title: "حصن كرات الحيوانات",
+    language: "اللغة",
+    backToLobby: "العودة إلى الردهة",
+    fortressRooms: "غرف الحصن",
+    menuTitle: "وجّه الكرة الروحية عبر الحصن البلوري.",
+    menuHint: "اختر مسار غارة، وخطط لطلقات مرتدة، واحمِ نواة الحصن.",
+    bestRaid: "أفضل غارة",
+    starStones: "أحجار النجوم",
+    diamonds: "الماس",
+    openRaidMap: "اختر غارة",
+    raidMap: "خريطة الغارات",
+    battleReturnDecision: "أوقف الغارة مؤقتًا وراجع خيارات الخروج",
+    pause: "إيقاف مؤقت",
+    pausedTitle: "الغارة متوقفة مؤقتًا",
+    pausedText: "توقفت معركة الحصن. استأنف لمتابعة هذه الغارة، أو اختر خريطة الغارات للتخلي عن الموجة الحالية والبركات المؤقتة.",
+    resume: "استئناف",
+    raidTiers: "مسارات الغارة",
+    returnMain: "العودة إلى الرئيسية",
+    fortressWorkshop: "ورشة الحصن",
+    stageProgress: "تم فتح {unlocked}/30 مسارًا · 3 موجات لكل مسار",
+    tierLocked: "مغلق",
+    enterRaid: "دخول",
+    nextStage: "المرحلة التالية",
+    wave: "الموجة",
+    waves: "موجات",
+    core: "النواة",
+    shots: "الطلقات",
+    aimHint: "اسحب من القاذف، وعاين مسار الارتداد، ثم أفلت.",
+    retry: "إعادة المحاولة",
+    raidClear: "اكتملت الغارة",
+    raidFailed: "فشلت الغارة",
+    resultWin: "أنهيت المسار {tier}، والموجة {wave}/3، وربحت {stones} من أحجار النجوم، وحميت {core} من صحة النواة.",
+    resultLose: "وصلت إلى المسار {tier}، والموجة {wave}/3، وربحت {stones} من أحجار النجوم. طوّر الغرف وجرّب مسار ارتداد أكثر أمانًا.",
+    progressUnlocked: "تم حفظ التقدم: إجمالي أحجار النجوم {total}؛ تم فتح المسار {best}.",
+    progressComplete: "تم حفظ التقدم: إجمالي أحجار النجوم {total}؛ اكتملت المسارات الثلاثون.",
+    progressSaved: "تم حفظ التقدم: إجمالي أحجار النجوم {total}؛ أفضل مسار مفتوح هو {best}.",
+    raidPlanWin: "خطة الغارة: واصل استخدام الارتدادات في الممرات المزدحمة واختر بركة تناسب الموجة التالية.",
+    raidPlanLose: "الغارة التالية: صوّب قبل أن تُغلق الجبهة واستخدم ارتداد الجدار لضرب عدة أعداء.",
+  });
+
   Object.assign(text["zh-Hans"], {
     raidPlanWin: "突袭策略：继续利用墙面反弹穿过密集路线，并选择能应对下一波的祝福。",
     raidPlanLose: "下次突袭：在前线逼近前先瞄准，利用墙面反弹一次击中多只影兽。",
@@ -672,7 +713,11 @@
 
   function t(key, data = {}) {
     const actualLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale;
-    const value = text[actualLocale]?.[key] || text[locale]?.[key] || text.en[key] || key;
+    const english = text.en[key];
+    const runtimeValue = actualLocale === "ar" && english
+      ? window.WeightPlayGameRuntimeLocales?.ar?.[english]
+      : "";
+    const value = text[actualLocale]?.[key] || runtimeValue || text[locale]?.[key] || english || key;
     return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
   }
 

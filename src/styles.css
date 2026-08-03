@@ -8232,34 +8232,10 @@ select,
   }
 }
 
-/* General lobby 9.5 pass: one clear discovery path, readable fixed-size
-   catalog cards, and topic accents that distinguish similar fantasy covers. */
+/* General lobby 9.5 pass: one clear discovery path and readable fixed-size
+   catalog cards. */
 .general-lobby-page .game-card {
-  --game-card-accent: #7768d8;
   transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
-}
-
-.general-lobby-page .game-card[data-topic*="Puzzle"] {
-  --game-card-accent: #42c9ba;
-}
-
-.general-lobby-page .game-card[data-topic*="Strategy"] {
-  --game-card-accent: #e2ae4f;
-}
-
-.general-lobby-page .game-card[data-topic*="Arcade"] {
-  --game-card-accent: #ed765f;
-}
-
-.general-lobby-page .game-card::after {
-  content: "";
-  position: absolute;
-  inset: 0 auto 0 0;
-  z-index: 4;
-  width: 3px;
-  background: var(--game-card-accent);
-  opacity: 0.82;
-  pointer-events: none;
 }
 
 @media (min-width: 721px) {
@@ -8272,8 +8248,8 @@ select,
   .general-lobby-page .game-card:hover,
   .general-lobby-page .game-card:focus-visible {
     z-index: 2;
-    border-color: var(--game-card-accent);
-    box-shadow: 0 13px 30px rgba(0, 0, 0, 0.46), 0 0 0 1px var(--game-card-accent);
+    border-color: rgba(137, 164, 201, 0.72);
+    box-shadow: 0 13px 30px rgba(0, 0, 0, 0.46), 0 0 0 1px rgba(137, 164, 201, 0.42);
     transform: translateY(-3px);
   }
 
@@ -8439,6 +8415,191 @@ select,
 @media (prefers-reduced-motion: reduce) {
   .general-lobby-page .game-card,
   .general-lobby-page .favorite-toggle {
+    transition: none;
+  }
+}
+
+/* Kids lobby card refinement: keep titles and age guidance on the poster while
+   replacing the heavy frame and full-width title band with compact overlays. */
+.kids-lobby-page .game-card {
+  border: 1px solid rgba(91, 133, 146, 0.32);
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(62, 111, 124, 0.16);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.kids-lobby-page .game-card-art.image-art {
+  border-radius: 15px;
+}
+
+.kids-lobby-page .game-card-art.image-art .game-card-fg {
+  object-position: center;
+}
+
+.kids-lobby-page .game-card-body {
+  top: 8px;
+  left: 8px;
+  width: calc(100% - 16px);
+  height: 46px;
+  min-height: 46px;
+  padding: 5px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 11px;
+  background-color: rgba(17, 48, 62, 0.78);
+  box-shadow: 0 5px 14px rgba(9, 39, 52, 0.18);
+  backdrop-filter: blur(6px);
+}
+
+.kids-lobby-page .game-card h2 {
+  max-height: 35px;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 1.08;
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 3px rgba(5, 28, 38, 0.72);
+}
+
+.kids-lobby-page .game-card-age-overlay {
+  top: 62px;
+  left: 9px;
+  min-width: 42px;
+  min-height: 28px;
+  padding: 5px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.94);
+  background: rgba(255, 222, 103, 0.95);
+  font-size: 12px;
+  box-shadow: 0 4px 12px rgba(98, 68, 9, 0.2);
+}
+
+.kids-lobby-page .favorite-toggle {
+  top: 54px;
+  right: 3px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.kids-lobby-page .favorite-toggle::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.88);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 5px 14px rgba(35, 70, 78, 0.2);
+  backdrop-filter: blur(6px);
+}
+
+.kids-lobby-page .favorite-toggle.active::before {
+  border-color: rgba(255, 210, 77, 0.96);
+  background: #ffdd66;
+}
+
+.kids-lobby-page .favorite-icon {
+  position: relative;
+  z-index: 1;
+  width: 20px;
+  height: 20px;
+}
+
+.kids-lobby-page .continue-badge {
+  top: 62px;
+  left: 58px;
+  min-height: 28px;
+  max-width: calc(100% - 108px);
+  padding: 5px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .kids-lobby-page .game-card.playable:hover,
+  .kids-lobby-page .game-card.playable:focus-visible {
+    border-color: rgba(64, 143, 157, 0.62);
+    background: #ffffff;
+    box-shadow: 0 14px 30px rgba(62, 111, 124, 0.24);
+    transform: translateY(-3px);
+  }
+}
+
+@media (max-width: 720px) {
+  .kids-lobby-page .lobby-grid {
+    width: min(100%, 374px);
+    margin-inline: auto;
+    gap: 10px;
+  }
+
+  .kids-lobby-page .game-card-body {
+    top: 6px;
+    left: 6px;
+    width: calc(100% - 12px);
+    height: 44px;
+    min-height: 44px;
+    padding: 4px 8px;
+    border-radius: 10px;
+  }
+
+  .kids-lobby-page .game-card h2 {
+    max-height: 34px;
+    font-size: 13.5px;
+    line-height: 1.08;
+  }
+
+  .kids-lobby-page .game-card-age-overlay {
+    top: 58px;
+    left: 7px;
+    min-width: 38px;
+    min-height: 26px;
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+
+  .kids-lobby-page .favorite-toggle {
+    top: 50px;
+    right: 1px;
+  }
+
+  .kids-lobby-page .favorite-toggle::before {
+    inset: 6px;
+  }
+
+  .kids-lobby-page .favorite-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .kids-lobby-page .continue-badge {
+    top: 58px;
+    left: 51px;
+    max-width: calc(100% - 96px);
+  }
+
+  .kids-lobby-page .game-card:active {
+    transform: scale(0.985);
+  }
+}
+
+@media (max-width: 340px) {
+  .kids-lobby-page .lobby-grid {
+    gap: 8px;
+  }
+
+  .kids-lobby-page .game-card-body {
+    padding-inline: 6px;
+  }
+
+  .kids-lobby-page .game-card h2 {
+    font-size: 12.5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kids-lobby-page .game-card,
+  .kids-lobby-page .favorite-toggle {
     transition: none;
   }
 }

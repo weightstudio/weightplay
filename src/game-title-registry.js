@@ -621,7 +621,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Fortezza delle Sfere Animali",
     "ru": "Крепость Сферы Животных",
     "hi": "पशु गोला किला",
-    "ar": "قلعة الحيوان الجرم السماوي"
+    "ar": "حصن كرات الحيوانات"
   },
   "animal-auto-squad": {
     "__localizedExact": true,
