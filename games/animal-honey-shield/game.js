@@ -763,6 +763,17 @@
     if(t<0||t>1||u<0||u>1)return null;
     return{x:a.x+t*rx,y:a.y+t*ry};
   }
+  function strokeCollision(stroke,start,end,limit){
+    let nearest=null,earliestCrossing=null;
+    for(let index=1;index<stroke.points.length;index++){
+      const a=stroke.points[index-1],b=stroke.points[index],hit=nearestOnSegment(end.x,end.y,a,b),crossing=segmentIntersection(start,end,a,b);
+      if(crossing){
+        const travel=Math.hypot(crossing.x-start.x,crossing.y-start.y);
+        if(!earliestCrossing||travel<earliestCrossing.travel)earliestCrossing={hit,crossing,contact:crossing,segmentIndex:index,travel};
+      }else if(hit.d<=limit&&(!nearest||hit.d<nearest.hit.d))nearest={hit,crossing:null,contact:hit,segmentIndex:index};
+    }
+    return earliestCrossing||nearest;
+  }
   function chooseWallMover(spec,bees){
     const center={x:bees.reduce((sum,bee)=>sum+bee.x,0)/bees.length,y:bees.reduce((sum,bee)=>sum+bee.y,0)/bees.length};
     const candidates=state.strokes.filter(stroke=>!stroke.anchored&&PUSH_DIRECTIONS.some(direction=>canTranslateStroke(stroke,direction.x*10,direction.y*10,spec))).sort((a,b)=>closestStrokePoint(a,center).d-closestStrokePoint(b,center).d);
@@ -775,11 +786,9 @@
   function separateBeeFromWalls(bee){
     for(let s=state.strokes.length-1;s>=0;s--){
       const stroke=state.strokes[s];
-      for(let i=1;i<stroke.points.length;i++){
-        const start={x:Number.isFinite(bee.prevX)?bee.prevX:bee.x,y:Number.isFinite(bee.prevY)?bee.prevY:bee.y},end={x:bee.x,y:bee.y};
-        const hit=nearestOnSegment(end.x,end.y,stroke.points[i-1],stroke.points[i]),crossing=segmentIntersection(start,end,stroke.points[i-1],stroke.points[i]);
-        if(hit.d>22&&!crossing)continue;
-        const contact=crossing||hit,previousHit=nearestOnSegment(start.x,start.y,stroke.points[i-1],stroke.points[i]);
+      const start={x:Number.isFinite(bee.prevX)?bee.prevX:bee.x,y:Number.isFinite(bee.prevY)?bee.prevY:bee.y},end={x:bee.x,y:bee.y},collision=strokeCollision(stroke,start,end,22);
+      if(collision){
+        const {hit,contact,segmentIndex}=collision,previousHit=nearestOnSegment(start.x,start.y,stroke.points[segmentIndex-1],stroke.points[segmentIndex]);
         const side=previousHit.nx*(start.x-previousHit.x)+previousHit.ny*(start.y-previousHit.y);
         const sign=Math.abs(side)>.001?(side>0?1:-1):(bee.vx*hit.nx+bee.vy*hit.ny>0?-1:1),nx=hit.nx*sign,ny=hit.ny*sign,dot=bee.vx*nx+bee.vy*ny;
         if(dot<0){bee.vx-=1.55*dot*nx;bee.vy-=1.55*dot*ny}
@@ -812,11 +821,9 @@
     const spec=level(stageIndex);
     for(let s=state.strokes.length-1;s>=0;s--){
       const stroke=state.strokes[s];
-      for(let i=1;i<stroke.points.length;i++){
-        const start={x:Number.isFinite(bee.prevX)?bee.prevX:bee.x,y:Number.isFinite(bee.prevY)?bee.prevY:bee.y},end={x:bee.x,y:bee.y};
-        const hit=nearestOnSegment(end.x,end.y,stroke.points[i-1],stroke.points[i]),crossing=segmentIntersection(start,end,stroke.points[i-1],stroke.points[i]);
-        if(hit.d>27&&!crossing)continue;
-        const contact=crossing||hit,previousHit=nearestOnSegment(start.x,start.y,stroke.points[i-1],stroke.points[i]);
+      const start={x:Number.isFinite(bee.prevX)?bee.prevX:bee.x,y:Number.isFinite(bee.prevY)?bee.prevY:bee.y},end={x:bee.x,y:bee.y},collision=strokeCollision(stroke,start,end,27);
+      if(collision){
+        const {hit,contact,segmentIndex}=collision,previousHit=nearestOnSegment(start.x,start.y,stroke.points[segmentIndex-1],stroke.points[segmentIndex]);
         const side=previousHit.nx*(start.x-previousHit.x)+previousHit.ny*(start.y-previousHit.y);
         const sign=Math.abs(side)>.001?(side>0?1:-1):(bee.vx*hit.nx+bee.vy*hit.ny>0?-1:1);
         const nx=hit.nx*sign,ny=hit.ny*sign,dot=bee.vx*nx+bee.vy*ny;
@@ -1350,6 +1357,14 @@
       const bee={prevX:545,prevY:310,x:482,y:310,vx:-240,vy:0,cooldown:0,bounced:false,route:1};
       const collided=collideLine(bee);
       return{collided,x:bee.x,y:bee.y,vx:bee.vx,sameSide:bee.x>500,clearance:bee.x-500};
+    },
+    antiSlideProbe(){
+      startStage(0);
+      const stroke={points:[{x:500,y:100},{x:500,y:560}],flash:0,blockedFlash:0,moves:0,anchored:true};
+      state.strokes=[stroke];
+      const bee={prevX:545,prevY:250,x:482,y:302,vx:-240,vy:198,cooldown:0,bounced:false,route:1,wallSlide:0};
+      const collided=collideLine(bee),contact=closestStrokePoint(stroke,bee);
+      return{collided,x:bee.x,y:bee.y,vx:bee.vx,vy:bee.vy,clearance:contact.d,tangentSpeed:Math.abs(bee.vy),wallSlide:bee.wallSlide};
     },
     assetStatus:()=>({atlas:atlas.naturalWidth,backgrounds:themeBackgrounds.map(image=>image.naturalWidth)}),
     loopTailProbe(){

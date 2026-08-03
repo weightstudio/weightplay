@@ -96,6 +96,23 @@ const STAGES=[
   {"number":29,"band":6,"colors":5,"objective":{"kind":"mixed","clearsTarget":3,"gemsTarget":2,"thawTarget":2,"movesLimit":15},"features":{"blocked":3,"frozen":3,"gems":3,"chains":3,"stone":2,"rainbow":true,"bomb":true}},
   {"number":30,"band":6,"colors":5,"objective":{"kind":"mixed","clearsTarget":4,"gemsTarget":2,"thawTarget":2,"movesLimit":14},"features":{"blocked":3,"frozen":3,"gems":3,"chains":3,"stone":2,"rainbow":true,"bomb":true}}
 ];
+// Each opening layout keeps a readable common drop cell while changing the
+// board silhouette. The first eight stages deliberately use eight different
+// arrangements instead of rotating one three-stack tutorial fixture.
+const EARLY_LAYOUTS=[
+  {anchor:[0,0],targets:[[1,0],[0,1]],extra:[-1,0],split:[4,3]},
+  {anchor:[1,0],targets:[[0,0],[1,-1]],extra:[-1,1],split:[5,2]},
+  {anchor:[-1,0],targets:[[0,0],[-1,1]],extra:[1,-1],split:[3,4]},
+  {anchor:[0,1],targets:[[0,0],[1,0]],extra:[-2,1],split:[2,5]},
+  {anchor:[1,1],targets:[[0,1],[1,0]],extra:[-1,0],split:[4,3]},
+  {anchor:[-1,-1],targets:[[0,-1],[-1,0]],extra:[1,0],split:[5,2]},
+  {anchor:[2,-1],targets:[[1,-1],[1,0]],extra:[-1,1],split:[3,4]},
+  {anchor:[-2,1],targets:[[-1,0],[-1,1]],extra:[1,-1],split:[2,5]},
+  {anchor:[0,-1],targets:[[0,0],[-1,0]],extra:[2,-1],split:[4,3]},
+  {anchor:[1,-1],targets:[[0,0],[1,0]],extra:[-2,2],split:[5,2]},
+  {anchor:[-1,1],targets:[[0,0],[0,1]],extra:[2,-2],split:[3,4]},
+  {anchor:[0,2],targets:[[0,1],[-1,2]],extra:[1,-1],split:[2,5]}
+];
 function topRun(stack,color=null){if(!stack.length)return{color:null,count:0};let resolved=color||stack[stack.length-1];if(resolved==="rainbow")return{color:"rainbow",count:1};if(resolved==="bomb")return{color:"bomb",count:1};let count=0;for(let i=stack.length-1;i>=0;i--){if(stack[i]===resolved||stack[i]==="rainbow")count++;else break;}return{color:resolved,count};}
 function effectiveColor(cell,fallback=null){const top=cell?.stack.at(-1);return top==="rainbow"?fallback||"rainbow":top||null;}
 function normalizeRainbow(cells,index,objectiveColor){if(cells[index]?.stack.at(-1)!=="rainbow")return;const counts=new Map();for(const n of neighbors(index)){const color=effectiveColor(cells[n]);if(color&&color!=="rainbow"&&color!=="bomb")counts.set(color,(counts.get(color)||0)+topRun(cells[n].stack,color).count);}const color=[...counts].sort((a,b)=>b[1]-a[1]||COLORS.indexOf(a[0])-COLORS.indexOf(b[0]))[0]?.[0]||objectiveColor||COLORS[0];for(let i=cells[index].stack.length-1;i>=0&&cells[index].stack[i]==="rainbow";i--)cells[index].stack[i]=color;}
@@ -230,12 +247,11 @@ function setupBoard(def){
   cells=COORDS.map(emptyCell);
   const center=indexByCoord.get("0,0"),ring=neighbors(center),palette=COLORS.slice(0,def.colors);
   if(def.number<=15){
-    const a=ring[0],b=ring[2],target=def.objective.color||COLORS[(def.number-1)%def.colors],lower=COLORS[(COLORS.indexOf(target)+1)%def.colors];
-    cells[a].stack=[lower,target,target,target,target];
-    cells[b].stack=[target,target,target];
-    const extras=ring.filter(i=>i!==a&&i!==b);
-    if(extras[0]!=null)cells[extras[0]].stack=[lower,lower];
-    const obstacleCandidates=cells.map((cell,index)=>({cell,index})).filter(({index})=>index!==center&&!cells[index].stack.length).map(({index})=>index),takeObstacle=seed=>obstacleCandidates.splice(seed%obstacleCandidates.length,1)[0];
+    const layout=def.number<=10?EARLY_LAYOUTS[def.number-1]:EARLY_LAYOUTS[0],at=coord=>indexByCoord.get(coord.join(",")),a=at(layout.targets[0]),b=at(layout.targets[1]),extra=at(layout.extra),anchor=at(layout.anchor),target=def.objective.color||COLORS[(def.number-1)%def.colors],lower=COLORS[(COLORS.indexOf(target)+1)%def.colors],accent=palette[(COLORS.indexOf(target)+2)%palette.length],firstCount=layout.split[0],secondCount=layout.split[1];
+    cells[a].stack=[lower,...Array(firstCount).fill(target)];
+    cells[b].stack=[accent,...Array(secondCount).fill(target)];
+    if(Number.isInteger(extra))cells[extra].stack=def.number>=6?[accent,lower,lower]:[lower,lower];
+    const obstacleCandidates=cells.map((cell,index)=>({cell,index})).filter(({index})=>index!==anchor&&!cells[index].stack.length).map(({index})=>index),takeObstacle=seed=>obstacleCandidates.splice(seed%obstacleCandidates.length,1)[0];
     for(let i=0;i<def.features.blocked&&obstacleCandidates.length;i++)cells[takeObstacle(def.number*3+i*5)].blocked=true;
     for(let i=0;i<def.features.stone&&obstacleCandidates.length;i++)cells[takeObstacle(def.number*7+i*4+2)].stone=true;
     return;
