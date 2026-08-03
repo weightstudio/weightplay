@@ -218,8 +218,8 @@
           }${
             levelIndex && !progress[levelIndex - 1] ? " locked" : ""
           }" data-index="${levelIndex}" data-stage-index="${levelIndex}" aria-current="${
-            levelIndex === selected
-          }" aria-disabled="${
+             levelIndex === selected
+          }" aria-posinset="${levelIndex + 1}" aria-setsize="${levels.length}" aria-keyshortcuts="ArrowLeft ArrowRight Home End" aria-disabled="${
             Boolean(levelIndex && !progress[levelIndex - 1])
           }"><b>${t("trail", { n: levelIndex + 1 })}</b><small>${
             progress[levelIndex]
