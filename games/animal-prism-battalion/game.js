@@ -41,7 +41,7 @@
   const staticText=[...document.querySelectorAll("[data-t]")];
   const assistiveText=[...document.querySelectorAll("[data-ta]")];
   const resultReplayLabels={en:"Replay","zh-Hant":"重玩","zh-Hans":"重玩",ja:"リプレイ",ko:"다시 플레이",es:"Repetir","pt-BR":"Jogar novamente",fr:"Rejouer",de:"Erneut spielen",it:"Rigioca",ru:"Играть снова",hi:"फिर खेलें",ar:"إعادة اللعب"};
-  let currentScreen="loading",run=null,raf=0,lastTime=0,visibleTick=0,lastHud="",modalReturnFocus=null,lifecyclePaused=false,windowFocused=document.hasFocus(),resultDecisionCommitted=false;
+  let currentScreen="loading",run=null,raf=0,lastTime=0,visibleTick=0,lastHud="",modalReturnFocus=null,lifecyclePaused=false,windowFocused=document.hasFocus(),resultDecisionCommitted=false,selectedStageIndex=0;
 
   function applyLocale(){
     document.documentElement.lang=locale;
@@ -59,10 +59,11 @@
     renderMain();renderStage();renderLab();updateSoundToggle();if(run)updateHud(true);
   }
   function showScreen(name){
+    if(name!=="stage")window.PrismBattalionStageRenderer?.cancel?.();
     currentScreen=name;document.body.dataset.screen=name;
     $("mainGroup").hidden=name!=="main";$("stage").hidden=name!=="stage";$("battle").hidden=name!=="battle";
     if(name==="main"){$("start").focus();scrollTo(0,0)}
-    if(name==="stage"){renderStage();renderLab();$("labFeedback").textContent="";requestAnimationFrame(()=>centerStage(Math.min(save.unlocked-1,29)))}
+    if(name==="stage"){selectedStageIndex=Math.min(save.unlocked-1,29);renderStage();renderLab();$("labFeedback").textContent="";requestAnimationFrame(()=>centerStage(selectedStageIndex))}
   }
   function renderMain(){$("mainProgress").textContent=`${Object.keys(save.stars).length} / 30`}
   function updateSoundToggle(){const button=$("soundToggle"),muted=Boolean(window.WonderSound?.isMuted?.());if(!button)return;button.textContent=muted?"🔇":"🔊";button.title=t("sound");button.setAttribute("aria-label",t(muted?"enableSound":"disableSound"));button.classList.toggle("muted",muted)}
@@ -70,6 +71,7 @@
   function renderStage(){
     if(!$("stageRail"))return;
     $("stageProgress").textContent=`${save.unlocked} / 30`;
+    if(window.PrismBattalionStageRenderer){window.PrismBattalionStageRenderer.render({rail:$("stageRail"),stages,save,t,chapterName,getSelected:()=>selectedStageIndex+1,setSelected:value=>{selectedStageIndex=Math.max(0,Math.min(29,Number(value)-1))},announce:()=>{$("stageHint").textContent=t("stageLocked")},enter:(stage,event)=>startBattle(stage-1,event)});return}
     $("stageRail").replaceChildren(...stages.map((stage,index)=>{
       const locked=stage.n>save.unlocked,button=document.createElement("button");
       button.type="button";button.className=`stage-card${locked?" locked":""}`;button.dataset.stage=String(stage.n);button.dataset.index=String(index);button.setAttribute("aria-disabled",locked?"true":"false");
@@ -79,11 +81,12 @@
     }));
   }
   function markCentered(index){
+    if(window.PrismBattalionStageRenderer){selectedStageIndex=Math.max(0,Math.min(29,Number(index)||0));window.PrismBattalionStageRenderer.select(selectedStageIndex+1,false);return}
     const cards=[...$("stageRail").children];
     cards.forEach((card,i)=>{const active=i===Number(index);card.classList.toggle("centered",active);card.setAttribute("aria-current",active?"true":"false")});
   }
   function centerStage(index){const card=$("stageRail").querySelector(`[data-index="${index}"]`);card?.scrollIntoView({behavior:"auto",inline:"center",block:"nearest"});requestAnimationFrame(()=>markCentered(index))}
-  $("stageRail").addEventListener("wonder:stage-snap",(event)=>markCentered(event.detail?.index));
+  $("stageRail").addEventListener("wonder:stage-snap",(event)=>{if(!window.PrismBattalionStageRenderer)markCentered(event.detail?.index)});
 
   const upgradeData={rate:{icon:"⚡",name:"upgradeRate",desc:"upgradeRateDesc"},power:{icon:"✦",name:"upgradePower",desc:"upgradePowerDesc"},armor:{icon:"◆",name:"upgradeArmor",desc:"upgradeArmorDesc"}};
   const upgradeCost=(level)=>6+level*6;

@@ -6,7 +6,8 @@
   const TUTORIAL_KEY="weightplay_tutorial_seen_animal_honey_shield_v1";
   const ROUTE_LOCALES={"zh-tw":"zh-Hant","zh-cn":"zh-Hans","pt-br":"pt-BR",en:"en",ja:"ja",ko:"ko",es:"es",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const routeSegment=location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
-  let locale=ROUTE_LOCALES[routeSegment]||safeGet("weightplay-locale")||"en";
+  const platformLocale=window.WonderI18n?.actualLocale?.();
+  let locale=ROUTE_LOCALES[routeSegment]||safeGet("weightPlayLocale")||safeGet("weightplay-locale")||platformLocale||"en";
   if(!LOCALES[locale])locale="en";
   const fallbackSave={unlocked:1,cleared:{},stars:{}};
   let save=loadSave(),screen="main",stageIndex=0,selectedStage=0,tutorialReturnFocus=null;
@@ -116,7 +117,7 @@
     document.title=`${fmt("title")} | WeightPlay`;
   }
   $("localeSelect").addEventListener("change",event=>{
-    locale=event.target.value;safeSet("weightplay-locale",locale);
+    locale=event.target.value;safeSet("weightPlayLocale",locale);safeSet("weightplay-locale",locale);
     window.WonderI18n?.setLocale?.(locale);
     applyLocale();
   });

@@ -8419,8 +8419,8 @@ select,
   }
 }
 
-/* Kids lobby card refinement: keep titles and age guidance on the poster while
-   replacing the heavy frame and full-width title band with compact overlays. */
+/* Kids lobby card refinement: preserve age guidance on the poster while the
+   localized title sits in a clean row below the artwork. */
 .kids-lobby-page .game-card {
   border: 1px solid rgba(91, 133, 146, 0.32);
   border-radius: 16px;
@@ -8430,7 +8430,8 @@ select,
 }
 
 .kids-lobby-page .game-card-art.image-art {
-  border-radius: 15px;
+  border-bottom: 1px solid rgba(91, 133, 146, 0.2);
+  border-radius: 15px 15px 0 0;
 }
 
 .kids-lobby-page .game-card-art.image-art .game-card-fg {
@@ -8438,30 +8439,31 @@ select,
 }
 
 .kids-lobby-page .game-card-body {
-  top: 8px;
-  left: 8px;
-  width: calc(100% - 16px);
-  height: 46px;
-  min-height: 46px;
-  padding: 5px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 11px;
-  background-color: rgba(17, 48, 62, 0.78);
-  box-shadow: 0 5px 14px rgba(9, 39, 52, 0.18);
-  backdrop-filter: blur(6px);
+  position: static;
+  order: 1;
+  width: 100%;
+  height: 56px;
+  min-height: 56px;
+  padding: 8px 10px;
+  flex: 0 0 56px;
+  border: 0;
+  border-radius: 0 0 15px 15px;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
 }
 
 .kids-lobby-page .game-card h2 {
-  max-height: 35px;
-  color: #ffffff;
-  font-size: 15px;
-  line-height: 1.08;
+  max-height: 38px;
+  color: #17324a;
+  font-size: 16px;
+  line-height: 1.15;
   letter-spacing: 0.01em;
-  text-shadow: 0 1px 3px rgba(5, 28, 38, 0.72);
+  text-shadow: none;
 }
 
 .kids-lobby-page .game-card-age-overlay {
-  top: 62px;
+  top: 9px;
   left: 9px;
   min-width: 42px;
   min-height: 28px;
@@ -8473,7 +8475,7 @@ select,
 }
 
 .kids-lobby-page .favorite-toggle {
-  top: 54px;
+  top: 2px;
   right: 3px;
   width: 44px;
   height: 44px;
@@ -8507,8 +8509,9 @@ select,
 }
 
 .kids-lobby-page .continue-badge {
-  top: 62px;
-  left: 58px;
+  top: auto;
+  bottom: 64px;
+  left: 9px;
   min-height: 28px;
   max-width: calc(100% - 108px);
   padding: 5px 8px;
@@ -8534,23 +8537,22 @@ select,
   }
 
   .kids-lobby-page .game-card-body {
-    top: 6px;
-    left: 6px;
-    width: calc(100% - 12px);
-    height: 44px;
-    min-height: 44px;
-    padding: 4px 8px;
-    border-radius: 10px;
+    width: 100%;
+    height: 48px;
+    min-height: 48px;
+    padding: 6px 8px;
+    flex-basis: 48px;
+    border-radius: 0 0 15px 15px;
   }
 
   .kids-lobby-page .game-card h2 {
     max-height: 34px;
-    font-size: 13.5px;
-    line-height: 1.08;
+    font-size: 14px;
+    line-height: 1.15;
   }
 
   .kids-lobby-page .game-card-age-overlay {
-    top: 58px;
+    top: 7px;
     left: 7px;
     min-width: 38px;
     min-height: 26px;
@@ -8559,7 +8561,7 @@ select,
   }
 
   .kids-lobby-page .favorite-toggle {
-    top: 50px;
+    top: 1px;
     right: 1px;
   }
 
@@ -8573,9 +8575,10 @@ select,
   }
 
   .kids-lobby-page .continue-badge {
-    top: 58px;
-    left: 51px;
-    max-width: calc(100% - 96px);
+    top: auto;
+    bottom: 55px;
+    left: 7px;
+    max-width: calc(100% - 14px);
   }
 
   .kids-lobby-page .game-card:active {
