@@ -52,6 +52,10 @@
   let pageVisible = !document.hidden;
   let pageCached = false;
   let resultActionClaimed = false;
+  const STAGE_POOL_SIZE = 9;
+  let stageWindowStart = 0;
+  let stageCardPool = [];
+  let stageSettleFrame = 0;
   const progressKey = "animalBusJamProgress";
   let progress;
   try { progress = JSON.parse(read(progressKey) || "[]"); } catch { progress = []; }
@@ -115,6 +119,7 @@
   }
 
   function show(name) {
+    if (name !== "stage") cancelStageSettlement();
     if (name !== "battle") {
       window.clearTimeout(departureTimer);
       departureTimer = 0;
@@ -186,47 +191,270 @@
 
   function selectStage(index, center = false, focus = false) {
     selected = Math.max(0, Math.min(29, index));
-    root.querySelectorAll("#stageGrid .stage-card").forEach((card, cardIndex) => {
-      const active = cardIndex === selected;
+    ensureStageWindow(selected);
+    stageCardPool.forEach((card) => {
+      const active = Number(card.dataset.index) === selected;
       card.classList.toggle("selected", active);
       card.classList.toggle("centered", active);
       card.tabIndex = active ? 0 : -1;
       card.setAttribute("aria-current", active ? "true" : "false");
     });
     const current = root.querySelector(`#stageGrid [data-index="${selected}"]`);
-    if (center) {
-      current?.scrollIntoView({
-        behavior: center === "auto" ? "auto" : "smooth",
-        inline: "center",
-        block: "nearest",
-      });
-    }
+    if (center) settleStageRail(currentStageLogicalPosition(), selected, center === "auto");
     if (focus) current?.focus({ preventScroll: true });
+  }
+
+  function cancelStageSettlement() {
+    if (stageSettleFrame) cancelAnimationFrame(stageSettleFrame);
+    stageSettleFrame = 0;
+    const rail = $("stageGrid");
+    rail?.style.removeProperty("scroll-behavior");
+    rail?.style.removeProperty("scroll-snap-type");
+    if (rail) delete rail.dataset.wpStageSettling;
+  }
+
+  function stageWindowLimit() {
+    return Math.max(0, levels.length - STAGE_POOL_SIZE);
+  }
+
+  function desiredStageWindow(index) {
+    return Math.max(0, Math.min(stageWindowLimit(), index - Math.floor(STAGE_POOL_SIZE / 2)));
+  }
+
+  function createStageCard(poolIndex) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "stage-card";
+    button.dataset.wpStagePoolNode = String(poolIndex + 1);
+    button.addEventListener("click", (event) => {
+      event.stopImmediatePropagation();
+      const index = Number(button.dataset.index);
+      if (!Number.isInteger(index)) return;
+      selectStage(index, "auto");
+      if (button.getAttribute("aria-disabled") !== "true") startLevel(index);
+    });
+    return button;
+  }
+
+  function bindStageCard(button, index) {
+    const level = levels[index];
+    if (!level) return;
+    const locked = index > 0 && !progress[index - 1];
+    const active = index === selected;
+    const stateLabel = locked ? `🔒 ${t("locked")}` : progress[index] ? `✓ ${t("complete")}` : t("stageMeta", {
+      buses: level.buses.length,
+      bay: level.baySize,
+    });
+    button.dir = document.documentElement.dir || "ltr";
+    button.className = `stage-card${active ? " selected centered" : ""}${locked ? " locked" : ""}`;
+    button.dataset.index = String(index);
+    button.dataset.stageIndex = String(index);
+    button.setAttribute("aria-posinset", String(index + 1));
+    button.setAttribute("aria-setsize", String(levels.length));
+    button.setAttribute("aria-disabled", String(locked));
+    button.setAttribute("aria-current", String(active));
+    button.tabIndex = active ? 0 : -1;
+    if (active && !locked) button.dataset.wpStageRecommended = "true";
+    else delete button.dataset.wpStageRecommended;
+    button.innerHTML = `<strong>${t("stop", { n: index + 1 })}</strong><span>${t("chapter", { n: level.chapter + 1 })}</span><span>${stateLabel}</span>`;
+  }
+
+  function buildStagePool() {
+    const rail = $("stageGrid");
+    rail.dir = "ltr";
+    rail.replaceChildren();
+    stageWindowStart = desiredStageWindow(selected);
+    stageCardPool = Array.from({ length: Math.min(STAGE_POOL_SIZE, levels.length) }, (_, offset) => {
+      const button = createStageCard(offset);
+      bindStageCard(button, stageWindowStart + offset);
+      rail.append(button);
+      return button;
+    });
+    Object.assign(rail.dataset, {
+      wpStageVirtualized: "bounded-recycle",
+      wpStagePoolSize: String(stageCardPool.length),
+      wpStageTotal: String(levels.length),
+      wpStageRecycleCount: "0",
+      wpStageCenterObserver: "manual",
+    });
+  }
+
+  function moveStageWindow(targetStart) {
+    const rail = $("stageGrid");
+    const target = Math.max(0, Math.min(stageWindowLimit(), targetStart));
+    if (!stageCardPool.length || stageCardPool.some((card) => !card.isConnected)) buildStagePool();
+    let recycled = 0;
+    while (stageWindowStart < target) {
+      const card = rail.firstElementChild;
+      const anchor = card?.nextElementSibling;
+      const before = anchor?.getBoundingClientRect().left;
+      stageWindowStart += 1;
+      rail.append(card);
+      bindStageCard(card, stageWindowStart + stageCardPool.length - 1);
+      const after = anchor?.getBoundingClientRect().left;
+      if (Number.isFinite(before) && Number.isFinite(after)) rail.scrollLeft += after - before;
+      recycled += 1;
+    }
+    while (stageWindowStart > target) {
+      const card = rail.lastElementChild;
+      const anchor = card?.previousElementSibling;
+      const before = anchor?.getBoundingClientRect().left;
+      stageWindowStart -= 1;
+      rail.prepend(card);
+      bindStageCard(card, stageWindowStart);
+      const after = anchor?.getBoundingClientRect().left;
+      if (Number.isFinite(before) && Number.isFinite(after)) rail.scrollLeft += after - before;
+      recycled += 1;
+    }
+    stageCardPool = [...rail.children];
+    rail.dataset.wpStageWindowStart = String(stageWindowStart + 1);
+    rail.dataset.wpStageWindowEnd = String(stageWindowStart + stageCardPool.length);
+    if (recycled) rail.dataset.wpStageRecycleCount = String(Number(rail.dataset.wpStageRecycleCount || 0) + recycled);
+  }
+
+  function ensureStageWindow(index) {
+    if (!stageCardPool.length || stageCardPool.some((card) => !card.isConnected)) buildStagePool();
+    moveStageWindow(desiredStageWindow(index));
+    stageCardPool.forEach((card) => bindStageCard(card, Number(card.dataset.index)));
+  }
+
+  function stageRailGeometry() {
+    const rail = $("stageGrid");
+    const first = stageCardPool[0]?.getBoundingClientRect();
+    const second = stageCardPool[1]?.getBoundingClientRect();
+    const railRect = rail.getBoundingClientRect();
+    const delta = first && second ? (second.left + second.width / 2) - (first.left + first.width / 2) : 0;
+    return { center: railRect.left + railRect.width / 2, pitch: Math.abs(delta) || 280, orientation: Math.sign(delta) || 1 };
+  }
+
+  function nearestStageCard() {
+    const { center } = stageRailGeometry();
+    return stageCardPool.reduce((nearest, card) => {
+      const box = card.getBoundingClientRect();
+      const distance = Math.abs(box.left + box.width / 2 - center);
+      return !nearest || distance < nearest.distance ? { card, distance } : nearest;
+    }, null)?.card || null;
+  }
+
+  function currentStageLogicalPosition() {
+    const card = nearestStageCard();
+    if (!card) return selected;
+    const box = card.getBoundingClientRect();
+    const geometry = stageRailGeometry();
+    return Math.max(0, Math.min(levels.length - 1, Number(card.dataset.index) + (geometry.center - (box.left + box.width / 2)) / (geometry.pitch * geometry.orientation)));
+  }
+
+  function positionStageRail(logicalPosition) {
+    const rail = $("stageGrid");
+    const logical = Math.max(0, Math.min(levels.length - 1, logicalPosition));
+    const anchorIndex = Math.round(logical);
+    moveStageWindow(desiredStageWindow(anchorIndex));
+    const card = rail.querySelector(`[data-index="${anchorIndex}"]`);
+    card?.scrollIntoView({ behavior: "auto", block: "nearest", inline: "center" });
+    const fraction = logical - anchorIndex;
+    if (card && Math.abs(fraction) > 0.0001) rail.scrollLeft += fraction * stageRailGeometry().orientation * stageRailGeometry().pitch;
+    rail.dataset.wpStageDragLogical = logical.toFixed(4);
+    return logical;
+  }
+
+  function syncCenteredStageCard() {
+    const nearest = nearestStageCard();
+    const index = Number(nearest?.dataset.index);
+    if (Number.isInteger(index)) selected = index;
+    stageCardPool.forEach((card) => bindStageCard(card, Number(card.dataset.index)));
+    return nearest;
+  }
+
+  function settleStageRail(from, targetIndex, immediate = false) {
+    cancelStageSettlement();
+    const target = Math.max(0, Math.min(levels.length - 1, targetIndex));
+    selected = target;
+    if (immediate) {
+      positionStageRail(target);
+      syncCenteredStageCard();
+      return;
+    }
+    const rail = $("stageGrid");
+    const started = performance.now();
+    rail.style.setProperty("scroll-behavior", "auto", "important");
+    rail.style.setProperty("scroll-snap-type", "none", "important");
+    rail.dataset.wpStageSettling = "true";
+    const animate = (now) => {
+      const progressValue = Math.max(0, Math.min(1, (now - started) / 340));
+      const eased = progressValue * progressValue * (3 - 2 * progressValue);
+      positionStageRail(from + (target - from) * eased);
+      if (progressValue < 1) stageSettleFrame = requestAnimationFrame(animate);
+      else {
+        stageSettleFrame = 0;
+        positionStageRail(target);
+        syncCenteredStageCard();
+        rail.style.removeProperty("scroll-behavior");
+        rail.style.removeProperty("scroll-snap-type");
+        delete rail.dataset.wpStageSettling;
+        rail.dispatchEvent(new CustomEvent("wonder:stage-snap", { detail: { index: target } }));
+      }
+    };
+    stageSettleFrame = requestAnimationFrame(animate);
+  }
+
+  function installVirtualStageDrag() {
+    const rail = $("stageGrid");
+    let pointerId = null;
+    let startX = 0;
+    let lastX = 0;
+    let logical = 0;
+    let moved = false;
+    let suppressClick = false;
+    rail.dataset.wpStageVirtualDrag = "true";
+    rail.addEventListener("pointerdown", (event) => {
+      if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
+      cancelStageSettlement();
+      pointerId = event.pointerId;
+      startX = lastX = event.clientX;
+      logical = currentStageLogicalPosition();
+      moved = false;
+      rail.style.setProperty("scroll-snap-type", "none", "important");
+      event.stopImmediatePropagation();
+    }, true);
+    document.addEventListener("pointermove", (event) => {
+      if (event.pointerId !== pointerId) return;
+      const delta = event.clientX - lastX;
+      lastX = event.clientX;
+      if (!moved && Math.abs(event.clientX - startX) > 4) moved = true;
+      if (moved) {
+        if (event.cancelable) event.preventDefault();
+        logical = positionStageRail(logical - delta / stageRailGeometry().pitch);
+      }
+      event.stopImmediatePropagation();
+    }, true);
+    const finish = (event) => {
+      if (pointerId === null || (event.pointerId !== undefined && event.pointerId !== pointerId)) return;
+      pointerId = null;
+      if (moved) {
+        if (event.cancelable) event.preventDefault();
+        settleStageRail(logical, Math.round(logical));
+        suppressClick = true;
+        setTimeout(() => { suppressClick = false; }, 0);
+      } else rail.style.removeProperty("scroll-snap-type");
+      moved = false;
+      event.stopImmediatePropagation();
+    };
+    document.addEventListener("pointerup", finish, true);
+    document.addEventListener("pointercancel", finish, true);
+    rail.addEventListener("click", (event) => {
+      if (!suppressClick) return;
+      suppressClick = false;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }, true);
   }
 
   function renderStage() {
     if (screen !== "stage") return;
     $("progress").textContent = t("progress", { done: progress.filter(Boolean).length });
-    $("stageGrid").innerHTML = levels.map((level, index) => {
-      const locked = index > 0 && !progress[index - 1];
-      const stateLabel = locked ? `🔒 ${t("locked")}` : progress[index] ? `✓ ${t("complete")}` : t("stageMeta", {
-        buses: level.buses.length,
-        bay: level.baySize,
-      });
-      return `<button class="stage-card ${index === selected ? "selected centered" : ""}${locked ? " locked" : ""}" data-index="${index}" data-stage-index="${index}" aria-current="${index === selected}" aria-disabled="${locked}">
-        <strong>${t("stop", { n: index + 1 })}</strong>
-        <span>${t("chapter", { n: level.chapter + 1 })}</span>
-        <span>${stateLabel}</span>
-      </button>`;
-    }).join("");
-    root.querySelectorAll("#stageGrid .stage-card").forEach((button) => {
-      button.onclick = () => {
-        const index = Number(button.dataset.index);
-        selectStage(index, true);
-        if (button.getAttribute("aria-disabled") !== "true") startLevel(index);
-      };
-    });
-    selectStage(selected, "auto");
+    ensureStageWindow(selected);
+    stageCardPool.forEach((card) => bindStageCard(card, Number(card.dataset.index)));
+    requestAnimationFrame(() => settleStageRail(selected, selected, true));
   }
 
   function updateBusCard(element, bus, index) {
@@ -454,8 +682,10 @@
     else if (event.key === "End") target = 29;
     else return;
     event.preventDefault();
-    selectStage(target, true, true);
+    event.stopImmediatePropagation();
+    selectStage(target, "auto", true);
   });
+  installVirtualStageDrag();
   $("undo").onclick = undo;
   $("hint").onclick = hint;
   $("restart").onclick = () => startLevel(levelIndex);

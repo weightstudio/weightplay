@@ -1727,10 +1727,20 @@ body.reef-fisher-stage :is(.topbar, .game-page-info, .wp-tutorial-button, .wp-tu
 }
 
 #stagePanel .zone-row {
+  grid-auto-flow: column;
+  grid-template-columns: none;
+  grid-auto-columns: minmax(160px, 34%);
   height: 190px;
   min-height: 190px;
   max-height: 190px;
   margin: 0;
+  overflow-x: auto;
+  touch-action: pan-y;
+}
+
+#stagePanel .zone-row.wp-stage-dragging {
+  cursor: grabbing;
+  user-select: none;
 }
 
 #stagePanel .zone-card {

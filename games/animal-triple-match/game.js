@@ -99,6 +99,16 @@
     for (const [key, value] of Object.entries(copy)) L[code][K.indexOf(key)] = value;
   }
 
+  const generatedGuidePatchCopy = {
+    "pt-BR": {
+      design: "Objetos grandes, sombras de sobreposição estáveis, ordem visível na bandeja e animação automática dos trios tornam cada consequência fácil de entender sem piscar o tabuleiro inteiro. A interface usa um único layout lógico centralizado, com largura máxima de 920 pixels. Celular, paisagem e desktop dimensionam juntos controles, áreas de toque, arte e coordenadas. Toque, mouse e teclado atuam sobre o mesmo estado válido. O pôster e o botão Começar ficam separados da gestão de fases; seleção, Batalha, diálogos e Resultado mantêm seus próprios limites e caminhos de retorno.",
+      parent: "Não é preciso criar conta, comprar itens, enfrentar contagem regressiva ou participar de ranking público. Fases concluídas, estrelas e o melhor espaço livre na bandeja ficam neste navegador. O progresso usa o armazenamento local do perfil atual; limpar os dados, usar navegação privada, trocar de navegador ou dispositivo pode criar outro progresso ou apagar o atual. Idioma, som e preferência de movimento reduzido seguem os controles do WeightPlay quando o navegador permite. O guia e o Relatório de habilidade não são avaliações médicas, escolares ou profissionais.",
+      strategyFrom: ["Use o Hint", "um novo tipo de singleton"],
+      strategyTo: ["Use a dica", "um novo tipo isolado"],
+      relatedIntro: "Como este jogo pratica lógica, experimente também:",
+    },
+  };
+
   const els = Object.fromEntries([...document.querySelectorAll("[id]")].map(el => [el.id, el]));
   const SAVE_KEY = "weightplay_animal_triple_match_v1";
   const CHAPTERS = ["openShelf","vineGallery","crystalRoom","mysteryLoft","shiftingHall","grandFinale"];
@@ -219,19 +229,18 @@
     const guideLabel = `${catalog["Animal Triple Match"] || t("title")} — ${t("guideLabel")}`;
     if (guide.getAttribute("aria-label") !== guideLabel) guide.setAttribute("aria-label", guideLabel);
     if (code === "pt-BR") {
+      const copy = generatedGuidePatchCopy[code];
       const design = guide.querySelector(".game-info-design p");
       const parent = guide.querySelector(".game-info-parent p");
       const strategy = guide.querySelector(".game-info-strategy");
       const related = [...guide.querySelectorAll(".game-info-section")].find((section) => section.querySelector(".game-info-related"));
-      if (design) design.textContent = "Objetos grandes, sombras de sobreposição estáveis, ordem visível na bandeja e animação automática dos trios tornam cada consequência fácil de entender sem piscar o tabuleiro inteiro. A interface usa um único layout lógico centralizado, com largura máxima de 920 pixels. Celular, paisagem e desktop dimensionam juntos controles, áreas de toque, arte e coordenadas. Toque, mouse e teclado atuam sobre o mesmo estado válido. O pôster e o botão Começar ficam separados da gestão de fases; seleção, Batalha, diálogos e Resultado mantêm seus próprios limites e caminhos de retorno.";
-      if (parent) parent.textContent = "Não é preciso criar conta, comprar itens, enfrentar contagem regressiva ou participar de ranking público. Fases concluídas, estrelas e o melhor espaço livre na bandeja ficam neste navegador. O progresso usa o armazenamento local do perfil atual; limpar os dados, usar navegação privada, trocar de navegador ou dispositivo pode criar outro progresso ou apagar o atual. Idioma, som e preferência de movimento reduzido seguem os controles do WeightPlay quando o navegador permite. O guia e o Relatório de habilidade não são avaliações médicas, escolares ou profissionais.";
+      if (design) design.textContent = copy.design;
+      if (parent) parent.textContent = copy.parent;
       strategy?.querySelectorAll("li").forEach((item) => {
-        item.textContent = item.textContent.replace("Use o Hint", "Use a dica").replace("um novo tipo de singleton", "um novo tipo isolado");
+        item.textContent = item.textContent.replace(copy.strategyFrom[0], copy.strategyTo[0]).replace(copy.strategyFrom[1], copy.strategyTo[1]);
       });
       const relatedIntro = related?.querySelector(":scope > p");
-      if (relatedIntro) relatedIntro.textContent = "Como este jogo pratica lógica, experimente também:";
-      const rootvault = related?.querySelector('a[href*="animal-rootvault-pins"] .game-info-related-copy > span');
-      if (rootvault) rootvault.textContent = "Resolva trinta câmaras de pinos com Taro Casco de Musgo, liberando cada mecanismo na ordem segura.";
+      if (relatedIntro) relatedIntro.textContent = copy.relatedIntro;
     }
     if (code === "de") {
       const sections = [...guide.querySelectorAll(".game-info-section")];

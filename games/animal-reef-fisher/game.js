@@ -583,6 +583,12 @@
   let save = loadSave();
   let selectedZone = legacyZoneMission[save.selectedZone] || save.selectedZone || "mission-1";
   if (!zones.some((zone) => zone.id === selectedZone)) selectedZone = "mission-1";
+  const STAGE_CARD_POOL_SIZE = 9;
+  let stageCardPool = [];
+  let stageWindowStart = 0;
+  let selectedStageIndex = Math.max(0, zones.findIndex((zone) => zone.id === selectedZone));
+  let stageSettleRaf = 0;
+  let cancelStageRailInteraction = () => {};
   let state = "loading";
   let run = null;
   let resultDecisionCommitted = false;
@@ -775,19 +781,9 @@
     nodes.albumText.textContent = `${save.album.length}/12`;
     const diamondBalance = wallet().diamonds;
     nodes.diamondText.textContent = diamondBalance;
-    nodes.zoneRow.innerHTML = zones.map((zone, index) => {
-      const locked = index + 1 > save.unlockedZone;
-      const activeTabStop = zone.id === selectedZone;
-      const missionLabel = t("mission", { stage:zone.stage });
-      const ruleLabel = stageT(`rule${zone.rule[0].toUpperCase()}${zone.rule.slice(1)}`);
-      return `
-        <button class="zone-card stage-card region-${zone.region} ${zone.checkpoint ? "is-checkpoint" : ""} ${zone.id === selectedZone ? "is-selected" : ""} ${locked ? "is-locked" : ""}" data-zone="${zone.id}" data-stage="${zone.stage}" type="button" aria-disabled="${locked}" aria-current="${activeTabStop ? "step" : "false"}" tabindex="${activeTabStop ? "0" : "-1"}" aria-label="${missionLabel} · ${zone.name[locale]} · ${zone.checkpoint ? t("bossMission") : ruleLabel} · ${locked ? t("locked") : `${t("goal")} ${zone.goal}`}">
-          <span class="zone-art"><img src="${zone.img}" alt="" /></span>
-          <strong>${missionLabel} · ${zone.name[locale]}</strong>
-          <span>${locked ? t("locked") : `${zone.checkpoint ? t("bossMission") : ruleLabel} · ${t("goal")} ${zone.goal}`}</span>
-        </button>
-      `;
-    }).join("");
+    selectedStageIndex = Math.max(0, zones.findIndex((zone) => zone.id === selectedZone));
+    ensureStageWindow(selectedStageIndex);
+    syncStageCards();
     nodes.gearGrid.innerHTML = gear.map((item) => {
       const level = Number(save.gear[item.id]) || 1;
       const cost = item.cost * level;
@@ -822,40 +818,282 @@
     nodes.sonarPrepBtn.setAttribute("aria-label", save.sonarReady ? t("sonarReady") : diamondPurchasePending === "sonar" ? t("sonarConfirmLabel", { before:diamondBalance, after:Math.max(0,diamondBalance-sonarCost) }) : t("sonarBuyLabel", { balance:diamondBalance }));
     nodes.lureBtn.classList.toggle("is-confirming", diamondPurchasePending === "lure");
     nodes.sonarPrepBtn.classList.toggle("is-confirming", diamondPurchasePending === "sonar");
-    window.requestAnimationFrame(() => {
-      const selectedCard = nodes.zoneRow.querySelector(".zone-card.is-selected");
-      selectedCard?.scrollIntoView({ block: "nearest", inline: "center", behavior: "auto" });
+    if (state === "stage") window.requestAnimationFrame(() => positionStageRail(selectedStageIndex));
+  }
+
+  function stageWindowLimit() {
+    return Math.max(0, zones.length - Math.min(STAGE_CARD_POOL_SIZE, zones.length));
+  }
+
+  function desiredStageWindow(index) {
+    return Math.max(0, Math.min(stageWindowLimit(), index - Math.floor(Math.min(STAGE_CARD_POOL_SIZE, zones.length) / 2)));
+  }
+
+  function createStageCard(poolIndex) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "zone-card stage-card";
+    button.dataset.wpStagePoolNode = String(poolIndex + 1);
+    button.innerHTML = '<span class="zone-art"><img alt="" /></span><strong></strong><span></span>';
+    return button;
+  }
+
+  function bindStageCard(button, index) {
+    const zone = zones[index];
+    const locked = index + 1 > save.unlockedZone;
+    const missionLabel = t("mission", { stage: zone.stage });
+    const ruleLabel = stageT(`rule${zone.rule[0].toUpperCase()}${zone.rule.slice(1)}`);
+    button.dataset.zone = zone.id;
+    button.dataset.stage = String(zone.stage);
+    button.dataset.stageIndex = String(index);
+    button.setAttribute("aria-posinset", String(index + 1));
+    button.setAttribute("aria-setsize", String(zones.length));
+    button.setAttribute("aria-disabled", String(locked));
+    button.setAttribute("aria-label", `${missionLabel} · ${zone.name[locale]} · ${zone.checkpoint ? t("bossMission") : ruleLabel} · ${locked ? t("locked") : `${t("goal")} ${zone.goal}`}`);
+    button.className = `zone-card stage-card region-${zone.region}${zone.checkpoint ? " is-checkpoint" : ""}${locked ? " is-locked" : ""}`;
+    const image = button.querySelector("img");
+    image.src = zone.img;
+    button.querySelector("strong").textContent = `${missionLabel} · ${zone.name[locale]}`;
+    button.querySelector(":scope > span:last-child").textContent = locked ? t("locked") : `${zone.checkpoint ? t("bossMission") : ruleLabel} · ${t("goal")} ${zone.goal}`;
+  }
+
+  function syncStageCards() {
+    stageCardPool.forEach((button) => {
+      const index = Number(button.dataset.stageIndex);
+      bindStageCard(button, index);
+      const selected = index === selectedStageIndex;
+      button.tabIndex = selected ? 0 : -1;
+      button.classList.toggle("is-selected", selected);
+      button.classList.toggle("wp-stage-centered", selected);
+      button.setAttribute("aria-current", selected ? "step" : "false");
     });
   }
 
+  function buildStageCardPool() {
+    const count = Math.min(STAGE_CARD_POOL_SIZE, zones.length);
+    nodes.zoneRow.replaceChildren();
+    stageWindowStart = desiredStageWindow(selectedStageIndex);
+    stageCardPool = Array.from({ length: count }, (_, offset) => {
+      const button = createStageCard(offset);
+      bindStageCard(button, stageWindowStart + offset);
+      nodes.zoneRow.append(button);
+      return button;
+    });
+    nodes.zoneRow.dataset.wpStageVirtualized = "bounded-recycle";
+    nodes.zoneRow.dataset.wpStagePoolSize = String(count);
+    nodes.zoneRow.dataset.wpStageTotal = String(zones.length);
+    nodes.zoneRow.dataset.wpStageWindowStart = String(stageWindowStart);
+    nodes.zoneRow.dataset.wpStageWindowEnd = String(stageWindowStart + count - 1);
+  }
+
+  function moveStageWindow(targetStart) {
+    const target = Math.max(0, Math.min(stageWindowLimit(), targetStart));
+    let recycledCount = 0;
+    while (stageWindowStart < target) {
+      const recycled = nodes.zoneRow.firstElementChild;
+      const anchor = recycled?.nextElementSibling;
+      const before = anchor?.getBoundingClientRect().left;
+      stageWindowStart += 1;
+      nodes.zoneRow.append(recycled);
+      bindStageCard(recycled, stageWindowStart + stageCardPool.length - 1);
+      recycledCount += 1;
+      const after = anchor?.getBoundingClientRect().left;
+      if (Number.isFinite(before) && Number.isFinite(after)) nodes.zoneRow.scrollLeft += after - before;
+    }
+    while (stageWindowStart > target) {
+      const recycled = nodes.zoneRow.lastElementChild;
+      const anchor = recycled?.previousElementSibling;
+      const before = anchor?.getBoundingClientRect().left;
+      stageWindowStart -= 1;
+      nodes.zoneRow.prepend(recycled);
+      bindStageCard(recycled, stageWindowStart);
+      recycledCount += 1;
+      const after = anchor?.getBoundingClientRect().left;
+      if (Number.isFinite(before) && Number.isFinite(after)) nodes.zoneRow.scrollLeft += after - before;
+    }
+    stageCardPool = [...nodes.zoneRow.children];
+    nodes.zoneRow.dataset.wpStageWindowStart = String(stageWindowStart);
+    nodes.zoneRow.dataset.wpStageWindowEnd = String(stageWindowStart + stageCardPool.length - 1);
+    if (recycledCount) nodes.zoneRow.dataset.wpStageRecycleCount = String(Number(nodes.zoneRow.dataset.wpStageRecycleCount || 0) + recycledCount);
+    return recycledCount;
+  }
+
+  function ensureStageWindow(index) {
+    if (!stageCardPool.length) buildStageCardPool();
+    moveStageWindow(desiredStageWindow(index));
+  }
+
+  function stageRailGeometry() {
+    const cards = [...nodes.zoneRow.children];
+    const railRect = nodes.zoneRow.getBoundingClientRect();
+    const first = cards[0]?.getBoundingClientRect();
+    const second = cards[1]?.getBoundingClientRect();
+    const delta = first && second ? (second.left + second.width / 2) - (first.left + first.width / 2) : 0;
+    const fallback = (first?.width || 184) + (parseFloat(getComputedStyle(nodes.zoneRow).columnGap) || 12);
+    return { center: railRect.left + railRect.width / 2, pitch: Math.abs(delta) || fallback, orientation: Math.sign(delta) || 1 };
+  }
+
+  function nearestStageCard() {
+    const geometry = stageRailGeometry();
+    return stageCardPool.reduce((nearest, card) => {
+      const rect = card.getBoundingClientRect();
+      const distance = Math.abs(rect.left + rect.width / 2 - geometry.center);
+      return !nearest || distance < nearest.distance ? { card, distance } : nearest;
+    }, null)?.card || null;
+  }
+
+  function currentStageLogicalPosition() {
+    const card = nearestStageCard();
+    if (!card) return selectedStageIndex;
+    const index = Number(card.dataset.stageIndex);
+    const rect = card.getBoundingClientRect();
+    const geometry = stageRailGeometry();
+    return Math.max(0, Math.min(zones.length - 1, index + (geometry.center - (rect.left + rect.width / 2)) / (geometry.pitch * geometry.orientation)));
+  }
+
+  function positionStageRail(logicalPosition) {
+    const logical = Math.max(0, Math.min(zones.length - 1, logicalPosition));
+    const anchorIndex = Math.round(logical);
+    const recycled = moveStageWindow(desiredStageWindow(anchorIndex));
+    if (recycled) syncStageCards();
+    const card = nodes.zoneRow.querySelector(`[data-stage-index="${anchorIndex}"]`);
+    if (!card) return logical;
+    card.scrollIntoView({ behavior: "auto", block: "nearest", inline: "center" });
+    const geometry = stageRailGeometry();
+    const fraction = logical - anchorIndex;
+    if (Math.abs(fraction) > 0.0001) nodes.zoneRow.scrollLeft += fraction * geometry.orientation * geometry.pitch;
+    nodes.zoneRow.dataset.wpStageDragLogical = logical.toFixed(4);
+    return logical;
+  }
+
+  function selectStage(index, restoreFocus = false) {
+    selectedStageIndex = Math.max(0, Math.min(zones.length - 1, index));
+    selectedZone = zones[selectedStageIndex].id;
+    ensureStageWindow(selectedStageIndex);
+    positionStageRail(selectedStageIndex);
+    syncStageCards();
+    if (restoreFocus) nodes.zoneRow.querySelector(`[data-stage-index="${selectedStageIndex}"]`)?.focus({ preventScroll: true });
+  }
+
+  function installVirtualStageDrag() {
+    const rail = nodes.zoneRow;
+    if (rail.dataset.wpStageVirtualDrag === "true") return;
+    rail.dataset.wpStageVirtualDrag = "true";
+    rail.dataset.wpStageCenterObserver = "manual";
+    let pointerId = null;
+    let startX = 0;
+    let lastX = 0;
+    let dragLogical = 0;
+    let moved = false;
+    let suppressClick = false;
+    const restore = () => {
+      rail.style.removeProperty("scroll-behavior");
+      rail.style.removeProperty("scroll-snap-type");
+      delete rail.dataset.wpStageSettling;
+      delete rail.dataset.wpDragDown;
+      rail.classList.remove("wp-stage-dragging");
+    };
+    cancelStageRailInteraction = () => {
+      pointerId = null;
+      cancelAnimationFrame(stageSettleRaf);
+      stageSettleRaf = 0;
+      restore();
+    };
+    rail.addEventListener("pointerdown", (event) => {
+      if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
+      cancelAnimationFrame(stageSettleRaf);
+      stageSettleRaf = 0;
+      pointerId = event.pointerId;
+      startX = lastX = event.clientX;
+      dragLogical = currentStageLogicalPosition();
+      moved = false;
+      rail.style.setProperty("scroll-behavior", "auto", "important");
+      rail.style.setProperty("scroll-snap-type", "none", "important");
+      rail.dataset.wpDragDown = "1";
+      event.stopImmediatePropagation();
+    }, true);
+    document.addEventListener("pointermove", (event) => {
+      if (event.pointerId !== pointerId) return;
+      const delta = event.clientX - lastX;
+      lastX = event.clientX;
+      if (!moved && Math.abs(event.clientX - startX) > 4) {
+        moved = true;
+        rail.classList.add("wp-stage-dragging");
+      }
+      if (moved) {
+        const rect = rail.getBoundingClientRect();
+        const scale = rect.width ? rail.clientWidth / rect.width : 1;
+        if (event.cancelable) event.preventDefault();
+        dragLogical = positionStageRail(dragLogical - delta * scale / stageRailGeometry().pitch);
+      }
+      event.stopImmediatePropagation();
+    }, true);
+    const finish = (event) => {
+      if (pointerId === null || (event.pointerId !== undefined && event.pointerId !== pointerId)) return;
+      pointerId = null;
+      delete rail.dataset.wpDragDown;
+      rail.classList.remove("wp-stage-dragging");
+      if (moved) {
+        if (event.cancelable) event.preventDefault();
+        const from = dragLogical;
+        const index = Math.max(0, Math.min(zones.length - 1, Math.round(from)));
+        const start = performance.now();
+        selectedStageIndex = index;
+        selectedZone = zones[index].id;
+        syncStageCards();
+        positionStageRail(from);
+        rail.dataset.wpStageSettling = "true";
+        const settle = (now) => {
+          const progress = Math.max(0, Math.min(1, (now - start) / 340));
+          const eased = progress * progress * (3 - 2 * progress);
+          positionStageRail(from + (index - from) * eased);
+          if (progress < 1 && state === "stage") stageSettleRaf = requestAnimationFrame(settle);
+          else {
+            stageSettleRaf = 0;
+            if (state === "stage") {
+              positionStageRail(index);
+              syncStageCards();
+            }
+            restore();
+          }
+        };
+        stageSettleRaf = requestAnimationFrame(settle);
+        suppressClick = true;
+        setTimeout(() => { suppressClick = false; }, 0);
+      } else restore();
+      moved = false;
+      event.stopImmediatePropagation();
+    };
+    document.addEventListener("pointerup", finish, true);
+    document.addEventListener("pointercancel", finish, true);
+    rail.addEventListener("click", (event) => {
+      if (!suppressClick) return;
+      suppressClick = false;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }, true);
+  }
+
   function focusSelectedZone() {
-    nodes.zoneRow.querySelector(".zone-card.is-selected:not(:disabled)")?.focus({ preventScroll: true });
+    positionStageRail(selectedStageIndex);
+    nodes.zoneRow.querySelector(".zone-card.is-selected")?.focus({ preventScroll: true });
   }
 
   function moveZoneFocus(event) {
     const current = event.target?.closest?.(".zone-card");
     if (!current) return;
     if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
-    const cards = [...nodes.zoneRow.querySelectorAll(".zone-card")];
-    if (!cards.length) return;
-    const currentIndex = Math.max(0, cards.indexOf(current));
+    const currentIndex = Number(current.dataset.stageIndex);
     let nextIndex = currentIndex;
     if (event.key === "Home") nextIndex = 0;
-    else if (event.key === "End") nextIndex = cards.length - 1;
+    else if (event.key === "End") nextIndex = zones.length - 1;
     else {
       const rtl = document.documentElement.dir === "rtl";
       const direction = event.key === "ArrowLeft" ? (rtl ? 1 : -1) : (rtl ? -1 : 1);
-      nextIndex = Math.max(0, Math.min(cards.length - 1, currentIndex + direction));
+      nextIndex = Math.max(0, Math.min(zones.length - 1, currentIndex + direction));
     }
     event.preventDefault();
-    cards.forEach((card, index) => {
-      card.tabIndex = index === nextIndex ? 0 : -1;
-      card.classList.toggle("is-selected", index === nextIndex);
-      card.setAttribute("aria-current", index === nextIndex ? "step" : "false");
-    });
-    const next = cards[nextIndex];
-    next.focus({ preventScroll: true });
-    next.scrollIntoView({ block: "nearest", inline: "center" });
+    selectStage(nextIndex, true);
   }
 
   function focusMainAction() {
@@ -877,6 +1115,7 @@
   }
 
   function showPanel(which) {
+    if (which !== "stage") cancelStageRailInteraction();
     if (which !== "game") {
       cancelAnimationFrame(raf);
       raf = 0;
@@ -2057,6 +2296,7 @@
     state = "stage";
     showPanel("stage");
     renderMenu();
+    installVirtualStageDrag();
     focusPanel(nodes.stagePanel);
     focusSelectedZone();
   });
@@ -2150,11 +2390,9 @@
   nodes.zoneRow.addEventListener("focusin", (event) => {
     const card = event.target?.closest?.(".zone-card");
     if (!card) return;
-    nodes.zoneRow.querySelectorAll(".zone-card").forEach((item) => {
-      item.tabIndex = item === card ? 0 : -1;
-      item.classList.toggle("is-selected", item === card);
-      item.setAttribute("aria-current", item === card ? "step" : "false");
-    });
+    selectedStageIndex = Number(card.dataset.stageIndex);
+    selectedZone = zones[selectedStageIndex].id;
+    syncStageCards();
   });
   for (const button of [nodes.lureBtn, nodes.sonarPrepBtn]) {
     button.addEventListener("keydown", (event) => {

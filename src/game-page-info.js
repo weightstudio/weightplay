@@ -6822,10 +6822,13 @@
     // those finished sentences back through the runtime catalog can match
     // Spanish text as if it were an English source fragment and corrupt titles
     // or grammar. Other locales still use the runtime catalog to complete any
-    // fields not owned by a dedicated guide resource.
+    // fields not owned by a dedicated guide resource. Block Blast likewise
+    // owns complete Traditional and Simplified Chinese guide records here;
+    // keep those exact sentences out of the generic runtime catalog.
     if (!catalog || activeLocale === "en" || activeLocale === "es"
       || (activeLocale === "pt-BR" && id === "animal-rune-tactics")
-      || (activeLocale === "ru" && id === "animal-one-line")) return merged;
+      || (activeLocale === "ru" && id === "animal-one-line")
+      || (["zh-Hant", "zh-Hans"].includes(activeLocale) && id === "block-blast")) return merged;
     const translateValue = (value) => {
       if (typeof value === "string") return catalog[value] || value;
       if (Array.isArray(value)) return value.map(translateValue);
@@ -8498,6 +8501,47 @@
     parent: "No account or purchase is required. Unlocks, stars, shards, workshop upgrades, and local best results remain in this browser.",
     faq: [["What is required to submit tiles?", "Carry at least one matching tile and enter a dock's visible submission area."], ["Must I use docks in number order?", "No. Choose any reachable dock."], ["Why did a tile not enter my stack?", "It did not match your color or your current capacity was full."], ["How do I win?", "Reach the displayed bridge goal before the rival crews."]]
   }, "動物天橋爭霸", "动物天桥争霸");
+
+  localizedGames["zh-Hant"]["block-blast"] = {
+    ...games["block-blast"],
+    title: "方塊爆破",
+    difficulty: "簡單至具挑戰性",
+    time: "每局約 2 至 10 分鐘",
+    gameplay: "8×8 方塊配置益智",
+    genre: ["益智", "策略", "空間推理"],
+    skills: ["規劃", "空間推理", "專注"],
+    intro: "《方塊爆破》是原創的 8×8 空間益智遊戲，包含 30 個精心設計的地形任務與無限計分模式。把每組三個固定形狀放進棋盤，完成整列或整行，並為尚未放置的形狀保留足夠空間。",
+    story: ["戰役由三十個小型益智任務組成，不是重複同一張空棋盤。泥土、冰塊、石頭、寶石、鎖定格、顏色目標與組數限制會組合成不同的規劃問題。", "無限模式不設任務目標，會持續提供三個形狀。形狀池包含小型連接塊、中型轉角、五格長條、較大矩形與偶爾出現的 3×3 方塊，因此疏忽配置終究會耗盡合法空間。"],
+    systems: ["形狀維持托盤顯示的方向，放置後不能移動。選取形狀後點擊合法棋盤格，或拖曳到抬高的落點預覽。", "填滿的橫列或直行會立即消除。只有消除行列才會得分，單純放下一個方塊不會增加分數。", "用完三個形狀後會取得下一組固定形狀。戰役任務也可能要求消除行列、處理地形、收集寶石、完成顏色目標或遵守組數限制。當托盤中所有未使用形狀都無法合法放置時，本局立即結束。", "冰塊會留在已放置方塊下方，直到該行列被消除；石頭與鎖定格不能放置。覆蓋寶石格會開啟相連的鎖。"],
+    how: ["選擇包含三十個任務的戰役，或持續計分的無限模式。", "選取棋盤下方三個形狀之一。", "點擊空格或把形狀拖到合法位置。", "完成橫列或直行以消除並得分。", "用完三個形狀以取得下一組，同時為所有剩餘形狀保留空間。"],
+    strategyTips: ["放下第一個形狀前，先檢查整組三個形狀。", "保留數個開放區域，不要把單一角落填得過滿。", "當後續形狀允許時，規劃互相交會的橫列與直行消除。", "不要假設只會抽到小方塊；長條與偶爾出現的 3×3 方塊刻意構成無限模式的空間壓力。", "在地形任務中，要分辨必須消除的格子與永遠不能放置的石頭格。"],
+    progression: ["第 1 至 5 關介紹行列目標與乾淨棋盤的空間規劃。", "後續章節逐步加入泥土、冰塊、石頭、寶石、鎖定格、顏色目標、混合任務與更嚴格的組數限制。", "無限模式的難度由玩家留下的棋盤狀態成長；平衡的形狀分布會定期帶來大型方塊壓力，但不會只提供困難形狀。"],
+    designNote: "分數與效果只對應真正完成的行列消除。消除光束保持在完成的橫列或直行中央，碎片從被消除的格子落下，白色加分提示顯示在消除區域，而且玩家立即選取下一個形狀時不會重播。",
+    parent: "《方塊爆破》是適合 9 歲以上與親子遊玩的普通大廳瀏覽器益智遊戲。不需要帳號；戰役解鎖與偏好只儲存在這個瀏覽器，清除網站資料或更換裝置可能移除本機進度。",
+    faq: [["形狀可以旋轉嗎？", "不可以。每個托盤形狀都維持顯示時的方向。"], ["什麼時候會增加分數？", "只有完成橫列或直行才會得分；單純放置形狀不會加分。"], ["共有多少關？", "包含 30 個精心設計的戰役任務，以及沒有固定終點的無限模式。"], ["冰塊與石頭有什麼作用？", "冰塊會留在方塊下方，直到該行列消除；石頭不能被占用。"], ["為什麼本局結束？", "當目前托盤中所有未使用形狀都沒有合法位置時，本局就會結束。"], ["進度會儲存嗎？", "戰役解鎖與偏好會儲存在這個瀏覽器。"]],
+  };
+  localizedGameplayProfiles["zh-Hant"]["block-blast"] = { gameplay: "8×8 方塊配置益智", genre: ["益智", "策略", "空間推理"] };
+
+  localizedGames["zh-Hans"]["block-blast"] = {
+    ...games["block-blast"],
+    title: "方块爆破",
+    difficulty: "简单至具挑战性",
+    time: "每局约 2 至 10 分钟",
+    gameplay: "8×8 方块配置益智",
+    genre: ["益智", "策略", "空间推理"],
+    skills: ["规划", "空间推理", "专注"],
+    intro: "《方块爆破》是原创的 8×8 空间益智游戏，包含 30 个精心设计的地形任务与无限计分模式。把每组三个固定形状放进棋盘，完成整列或整行，并为尚未放置的形状保留足够空间。",
+    story: ["战役由三十个小型益智任务组成，不是重复同一张空棋盘。泥土、冰块、石头、宝石、锁定格、颜色目标与组数限制会组合成不同的规划问题。", "无限模式不设任务目标，会持续提供三个形状。形状池包含小型连接块、中型转角、五格长条、较大矩形与偶尔出现的 3×3 方块，因此疏忽配置终究会耗尽合法空间。"],
+    systems: ["形状维持托盘显示的方向，放置后不能移动。选取形状后点击合法棋盘格，或拖动到抬高的落点预览。", "填满的横列或直行会立即消除。只有消除行列才会得分，单纯放下一个方块不会增加分数。", "用完三个形状后会取得下一组固定形状。战役任务也可能要求消除行列、处理地形、收集宝石、完成颜色目标或遵守组数限制。当托盘中所有未使用形状都无法合法放置时，本局立即结束。", "冰块会留在已放置方块下方，直到该行列被消除；石头与锁定格不能放置。覆盖宝石格会开启相连的锁。"],
+    how: ["选择包含三十个任务的战役，或持续计分的无限模式。", "选取棋盘下方三个形状之一。", "点击空格或把形状拖到合法位置。", "完成横列或直行以消除并得分。", "用完三个形状以取得下一组，同时为所有剩余形状保留空间。"],
+    strategyTips: ["放下第一个形状前，先检查整组三个形状。", "保留数个开放区域，不要把单一角落填得过满。", "当后续形状允许时，规划互相交会的横列与直行消除。", "不要假设只会抽到小方块；长条与偶尔出现的 3×3 方块刻意构成无限模式的空间压力。", "在地形任务中，要分辨必须消除的格子与永远不能放置的石头格。"],
+    progression: ["第 1 至 5 关介绍行列目标与干净棋盘的空间规划。", "后续章节逐步加入泥土、冰块、石头、宝石、锁定格、颜色目标、混合任务与更严格的组数限制。", "无限模式的难度由玩家留下的棋盘状态成长；平衡的形状分布会定期带来大型方块压力，但不会只提供困难形状。"],
+    designNote: "分数与效果只对应真正完成的行列消除。消除光束保持在完成的横列或直行中央，碎片从被消除的格子落下，白色加分提示显示在消除区域，而且玩家立即选取下一个形状时不会重播。",
+    parent: "《方块爆破》是适合 9 岁以上与亲子游玩的普通大厅浏览器益智游戏。不需要账号；战役解锁与偏好只储存在这个浏览器，清除网站数据或更换设备可能移除本机进度。",
+    faq: [["形状可以旋转吗？", "不可以。每个托盘形状都维持显示时的方向。"], ["什么时候会增加分数？", "只有完成横列或直行才会得分；单纯放置形状不会加分。"], ["共有多少关？", "包含 30 个精心设计的战役任务，以及没有固定终点的无限模式。"], ["冰块与石头有什么作用？", "冰块会留在方块下方，直到该行列消除；石头不能被占用。"], ["为什么本局结束？", "当目前托盘中所有未使用形状都没有合法位置时，本局就会结束。"], ["进度会储存吗？", "战役解锁与偏好会储存在这个浏览器。"]],
+  };
+  localizedGameplayProfiles["zh-Hans"] ||= {};
+  localizedGameplayProfiles["zh-Hans"]["block-blast"] = { gameplay: "8×8 方块配置益智", genre: ["益智", "策略", "空间推理"] };
 
   const completeGuideStandard = (id) => {
     const game = games[id];
