@@ -56,17 +56,19 @@
     $("nextMission").textContent=t("nextMission");
     $("retry").textContent=resultReplayLabels[locale]||resultReplayLabels.en;
     document.title=`${t("title")} | WeightPlay`;
-    renderMain();renderStage();renderLab();updateSoundToggle();if(run)updateHud(true);
+    renderMain();renderStage();renderLab();if(run)updateHud(true);
   }
   function showScreen(name){
     if(name!=="stage")window.PrismBattalionStageRenderer?.cancel?.();
     currentScreen=name;document.body.dataset.screen=name;
-    $("mainGroup").hidden=name!=="main";$("stage").hidden=name!=="stage";$("battle").hidden=name!=="battle";
+    for(const [scene,node] of [["main",$("mainGroup")],["stage",$("stage")],["battle",$("battle")]]){const active=scene===name;node.hidden=!active;node.inert=!active;node.setAttribute("aria-hidden",String(!active))}
     if(name==="main"){$("start").focus();scrollTo(0,0)}
     if(name==="stage"){selectedStageIndex=Math.min(save.unlocked-1,29);renderStage();renderLab();$("labFeedback").textContent="";requestAnimationFrame(()=>centerStage(selectedStageIndex))}
+    window.dispatchEvent(new CustomEvent("weightplay:shell-sync",{detail:{screen:name}}));
+    window.dispatchEvent(new CustomEvent("weightplay:stage-sync",{detail:{screen:name}}));
+    window.dispatchEvent(new CustomEvent("weightplay:battle-sync",{detail:{screen:name}}));
   }
   function renderMain(){$("mainProgress").textContent=`${Object.keys(save.stars).length} / 30`}
-  function updateSoundToggle(){const button=$("soundToggle"),muted=Boolean(window.WonderSound?.isMuted?.());if(!button)return;button.textContent=muted?"🔇":"🔊";button.title=t("sound");button.setAttribute("aria-label",t(muted?"enableSound":"disableSound"));button.classList.toggle("muted",muted)}
   function chapterName(stage){return t(chapters[stage.chapter])}
   function renderStage(){
     if(!$("stageRail"))return;
@@ -141,8 +143,6 @@
   activateStageTab("missions");
   $("start").addEventListener("click",()=>showScreen("stage"));$("stageBack").addEventListener("click",()=>showScreen("main"));
   $("locale").addEventListener("change",(event)=>{locale=canonicalLocale(event.target.value);storage.set("wonderLocale",locale);window.WonderI18n?.setLocale?.(locale);applyLocale()});
-  $("soundToggle").addEventListener("keydown",(event)=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
-  $("soundToggle").addEventListener("click",()=>{const sound=window.WonderSound;if(!sound)return;sound.unlock();sound.setMuted(!sound.isMuted());updateSoundToggle();if(!sound.isMuted())sound.play("click")});
   window.addEventListener("keyup",(event)=>{if(event.key===labPurchaseKeyboardKey)labPurchaseKeyboardKey=null});
   window.addEventListener("blur",()=>{labPurchaseKeyboardKey=null});
 
