@@ -678,15 +678,20 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
   }
   function recenterStageSelection(){
     if(document.body.dataset.screen!=="stage")return;
-    positionStageRail(centeredStage);syncStageCards();
+    const rail=$("#regionRail");rail.style.setProperty("scroll-behavior","auto","important");rail.style.setProperty("scroll-snap-type","none","important");positionStageRail(centeredStage);syncStageCards();requestAnimationFrame(()=>{rail.style.removeProperty("scroll-behavior");rail.style.removeProperty("scroll-snap-type");});
   }
   function focusStageCard(index){
-    const next=clampStage(index);railKeyboardOwner=next;centeredStage=next;stageBrowseLogical=next;moveStageWindow(desiredStageWindow(next));syncStageCards();positionStageRail(next);$(`.region-card[data-stage="${next}"]`)?.focus({preventScroll:true});
+    const next=clampStage(index),rail=$("#regionRail");railKeyboardOwner=next;centeredStage=next;stageBrowseLogical=next;moveStageWindow(desiredStageWindow(next));syncStageCards();rail.style.setProperty("scroll-behavior","auto","important");rail.style.setProperty("scroll-snap-type","none","important");positionStageRail(next);$(`.region-card[data-stage="${next}"]`)?.focus({preventScroll:true});requestAnimationFrame(()=>{rail.style.removeProperty("scroll-behavior");rail.style.removeProperty("scroll-snap-type");});
   }
   function stageRailGeometry(){const rail=$("#regionRail"),cards=[...rail.children],railRect=rail.getBoundingClientRect(),first=cards[0]?.getBoundingClientRect(),second=cards[1]?.getBoundingClientRect(),delta=first&&second?(second.left+second.width/2)-(first.left+first.width/2):0,fallback=(first?.width||264)+(parseFloat(getComputedStyle(rail).columnGap)||12);return{rail,center:railRect.left+railRect.width/2,pitch:Math.abs(delta)||fallback,orientation:Math.sign(delta)||1};}
   function nearestStageCard(){const geometry=stageRailGeometry();return stageCardPool.reduce((best,card)=>{const rect=card.getBoundingClientRect(),distance=Math.abs(rect.left+rect.width/2-geometry.center);return!best||distance<best.distance?{card,distance}:best},null)?.card||null;}
   function currentStageLogicalPosition(){const card=nearestStageCard();if(!card)return centeredStage;const index=clampStage(card.dataset.stage),rect=card.getBoundingClientRect(),geometry=stageRailGeometry();return Math.max(0,Math.min(STAGE_COUNT-1,index+(geometry.center-(rect.left+rect.width/2))/(geometry.pitch*geometry.orientation)));}
-  function positionStageRail(logicalPosition){const logical=Math.max(0,Math.min(STAGE_COUNT-1,Number(logicalPosition)||0)),anchorIndex=Math.round(logical);if(moveStageWindow(desiredStageWindow(anchorIndex)))syncStageCards();const card=$("#regionRail").querySelector(`[data-stage="${anchorIndex}"]`);if(!card)return logical;card.scrollIntoView({behavior:"auto",block:"nearest",inline:"center"});const geometry=stageRailGeometry(),fraction=logical-anchorIndex;if(Math.abs(fraction)>.0001)geometry.rail.scrollLeft+=fraction*geometry.orientation*geometry.pitch;geometry.rail.dataset.wpStageDragLogical=logical.toFixed(4);return logical;}
+  function positionStageRail(logicalPosition){
+    const logical=Math.max(0,Math.min(STAGE_COUNT-1,Number(logicalPosition)||0)),anchorIndex=Math.round(logical);if(moveStageWindow(desiredStageWindow(anchorIndex)))syncStageCards();const rail=$("#regionRail"),card=rail.querySelector(`[data-stage="${anchorIndex}"]`);if(!card)return logical;
+    const target=card.offsetLeft+card.offsetWidth/2-rail.clientWidth/2;rail.scrollTo({left:Math.max(0,target),behavior:"auto"});
+    const railRect=rail.getBoundingClientRect(),cardRect=card.getBoundingClientRect(),scale=railRect.width?rail.clientWidth/railRect.width:1,correction=(cardRect.left+cardRect.width/2-(railRect.left+railRect.width/2))*scale;if(Math.abs(correction)>.01)rail.scrollLeft+=correction;
+    const geometry=stageRailGeometry(),fraction=logical-anchorIndex;if(Math.abs(fraction)>.0001)geometry.rail.scrollLeft+=fraction*geometry.orientation*geometry.pitch;geometry.rail.dataset.wpStageDragLogical=logical.toFixed(4);return logical;
+  }
   function installVirtualStageDrag(){
     const rail=$("#regionRail");if(!rail||rail.dataset.wpStageVirtualDrag==="true")return;rail.dataset.wpStageVirtualDrag="true";rail.dataset.wpStageCenterObserver="manual";
     let pointerId=null,startX=0,lastX=0,dragLogical=0,moved=false,suppressClick=false;

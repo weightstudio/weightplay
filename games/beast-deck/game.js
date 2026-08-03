@@ -1950,6 +1950,24 @@
     if (!selected) return;
     isAutoPositioningStage = true;
     requestAnimationFrame(() => {
+      if (nodes.stageGrid.dataset.wpStageVirtualized === "bounded-recycle") {
+        // The bounded pool owns its own logical geometry. Re-reading the
+        // nearest visible card after a native endpoint scroll can select a
+        // neighbor in short landscape, where Mission 1/30 cannot be centered
+        // by the rail's ordinary scroll range. Keep keyboard ownership atomic
+        // and settle the exact logical Mission through the virtualization
+        // owner instead.
+        nodes.stageGrid.style.setProperty("scroll-behavior", "auto", "important");
+        nodes.stageGrid.style.setProperty("scroll-snap-type", "none", "important");
+        positionStageRail((browsedMission || profile.selectedMission) - 1);
+        updateStageSelectionUI();
+        isAutoPositioningStage = false;
+        requestAnimationFrame(() => {
+          nodes.stageGrid.style.removeProperty("scroll-behavior");
+          nodes.stageGrid.style.removeProperty("scroll-snap-type");
+        });
+        return;
+      }
       // Work in the rail's logical coordinates. scrollIntoView() uses transformed
       // screen geometry and can choose the wrong card after the Stage Canvas scales.
       const target = selected.offsetLeft + selected.offsetWidth / 2 - nodes.stageGrid.clientWidth / 2;
@@ -2041,7 +2059,16 @@
     if (recycled) updateStageSelectionUI();
     const card = nodes.stageGrid.querySelector(`[data-mission="${anchorIndex + 1}"]`);
     if (!card) return logical;
-    card.scrollIntoView({ behavior: "auto", block: "nearest", inline: "center" });
+    // Use the unscaled rail coordinate system. Native scrollIntoView() bases
+    // its inline-center decision on transformed screen geometry, which can
+    // leave bounded endpoint cards off-center in short landscape.
+    const target = card.offsetLeft + card.offsetWidth / 2 - nodes.stageGrid.clientWidth / 2;
+    nodes.stageGrid.scrollTo({ left: Math.max(0, target), behavior: "auto" });
+    const railRect = nodes.stageGrid.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
+    const scale = railRect.width ? nodes.stageGrid.clientWidth / railRect.width : 1;
+    const centerCorrection = (cardRect.left + cardRect.width / 2 - (railRect.left + railRect.width / 2)) * scale;
+    if (Math.abs(centerCorrection) > 0.01) nodes.stageGrid.scrollLeft += centerCorrection;
     const geometry = stageRailGeometry();
     const fraction = logical - anchorIndex;
     if (Math.abs(fraction) > 0.0001) nodes.stageGrid.scrollLeft += fraction * geometry.orientation * geometry.pitch;

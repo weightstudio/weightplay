@@ -160,8 +160,11 @@ function currentStageLogicalPosition(){
 function positionStageRail(logicalPosition){
   const logical=clamp(logicalPosition,0,levels.length-1),anchorIndex=Math.round(logical),recycled=moveStageWindow(desiredStageWindow(anchorIndex));
   if(recycled)syncStageCards();
-  const card=$("stageRail").querySelector(`[data-stage-index="${anchorIndex}"]`);if(!card)return logical;
-  card.scrollIntoView({behavior:"auto",block:"nearest",inline:"center"});
+  const rail=$("stageRail"),card=rail.querySelector(`[data-stage-index="${anchorIndex}"]`);if(!card)return logical;
+  rail.scrollTo({left:card.offsetLeft+card.offsetWidth/2-rail.clientWidth/2,behavior:"auto"});
+  const railRect=rail.getBoundingClientRect(),cardRect=card.getBoundingClientRect(),scale=railRect.width?rail.clientWidth/railRect.width:1;
+  const correction=((cardRect.left+cardRect.width/2)-(railRect.left+railRect.width/2))*scale;
+  if(Math.abs(correction)>.01)rail.scrollLeft+=correction;
   const geometry=stageRailGeometry(),fraction=logical-anchorIndex;
   if(Math.abs(fraction)>.0001)geometry.rail.scrollLeft+=fraction*geometry.orientation*geometry.pitch;
   geometry.rail.dataset.wpStageDragLogical=logical.toFixed(4);
@@ -231,7 +234,7 @@ function selectStage(index,center){
   $("enterBtn").disabled=selected>=save.unlocked;
   if(center)centerSelected();
 }
-function centerSelected(smooth=true){ensureStageWindow(selected);const card=$(`stageRail`).querySelector(`[data-stage-index="${selected}"]`);card?.scrollIntoView({behavior:smooth?"smooth":"auto",block:"nearest",inline:"center"});selectStage(selected,false)}
+function centerSelected(){ensureStageWindow(selected);positionStageRail(selected);selectStage(selected,false)}
 function renderCabinet(){
   $("cabinetSummary").textContent=t("progress",{cleared:save.medals.filter(Boolean).length,charms:save.cabinet.filter(Boolean).length});
   $("cabinetGrid").innerHTML=Array.from({length:8},(_,kind)=>{
@@ -506,7 +509,7 @@ function bind(){
   $("stagesTab").addEventListener("click",()=>setStagePanel("stages"));
   $("cabinetTab").addEventListener("click",()=>setStagePanel("cabinet"));
   $("workshopTab").addEventListener("click",()=>setStagePanel("workshop"));
-  $("stageRail").addEventListener("keydown",event=>{if(!["ArrowLeft","ArrowRight","Home","End","Enter"," "].includes(event.key))return;event.preventDefault();if(event.key==="Enter"||event.key===" "){if(selected<save.unlocked)startMission(selected);return}let next=event.key==="Home"?0:event.key==="End"?29:selected+(event.key==="ArrowLeft"?-1:1);selectStage(clamp(next,0,29),true);$(`stageRail`).querySelector(`[data-stage-index="${selected}"]`)?.focus()});
+  $("stageRail").addEventListener("keydown",event=>{if(!["ArrowLeft","ArrowRight","Home","End","Enter"," "].includes(event.key))return;event.preventDefault();if(event.key==="Enter"||event.key===" "){if(selected<save.unlocked)startMission(selected);return}const rail=$("stageRail"),baseSnap=rail.style.getPropertyValue("scroll-snap-type"),baseBehavior=rail.style.getPropertyValue("scroll-behavior"),next=event.key==="Home"?0:event.key==="End"?29:selected+(event.key==="ArrowLeft"?-1:1);rail.style.setProperty("scroll-behavior","auto","important");rail.style.setProperty("scroll-snap-type","none","important");selectStage(clamp(next,0,29),false);rail.querySelector(`[data-stage-index="${selected}"]`)?.focus({preventScroll:true});positionStageRail(selected);requestAnimationFrame(()=>{if(baseBehavior)rail.style.setProperty("scroll-behavior",baseBehavior);else rail.style.removeProperty("scroll-behavior");if(baseSnap)rail.style.setProperty("scroll-snap-type",baseSnap);else rail.style.removeProperty("scroll-snap-type")})});
   $("stageRail").addEventListener("wonder:stage-snap",event=>{const index=Number(event.detail?.index);if(Number.isInteger(index)&&levels[index])selectStage(index,false)});
   $("battleBackBtn").addEventListener("click",()=>openModal("leavePanel",$("leaveContinueBtn")));
   $("leaveContinueBtn").addEventListener("click",()=>closeModal("leavePanel"));

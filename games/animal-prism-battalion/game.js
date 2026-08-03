@@ -77,7 +77,7 @@
     $("stageRail").replaceChildren(...stages.map((stage,index)=>{
       const locked=stage.n>save.unlocked,button=document.createElement("button");
       button.type="button";button.className=`stage-card${locked?" locked":""}`;button.dataset.stage=String(stage.n);button.dataset.index=String(index);button.setAttribute("aria-disabled",locked?"true":"false");
-      button.innerHTML=`<span>${locked?t("lockedBadge"):chapterName(stage)}</span><strong>${stage.n}</strong><b>${stage.boss?"◆ ":""}${t("waveLabel",{wave:stage.waves,total:stage.waves})}</b><small>${"★".repeat(save.stars[stage.n]||0)}${"☆".repeat(3-(save.stars[stage.n]||0))}</small>`;
+      button.innerHTML=`<span>${locked?t("lockedBadge"):chapterName(stage)}</span><strong>${stage.n}</strong><b>${stage.boss?"◆ ":""}${t("waveLabel",{wave:0,total:stage.waves})}</b><small>${"★".repeat(save.stars[stage.n]||0)}${"☆".repeat(3-(save.stars[stage.n]||0))}</small>`;
       button.addEventListener("click",(event)=>{if(locked){$("stageHint").textContent=t("stageLocked");return}startBattle(index,event)});
       return button;
     }));
