@@ -10,6 +10,7 @@
   const rows = 4;
   const MISSION_COUNT = 30;
   const CHAPTER_SIZE = 5;
+  const STAGE_CARD_POOL_SIZE = 9;
   const testMode = new URLSearchParams(window.location.search).get("test") === "1";
 
   const $ = (id) => document.getElementById(id);
@@ -1247,6 +1248,10 @@
   window.visualViewport?.addEventListener("resize", updateBattleScale, { passive: true });
   let selectedMission = 1;
   let centeredMission = 1;
+  let stageCardPool = [];
+  let stageWindowStart = 0;
+  let stageSettleFrame = 0;
+  let cancelStageRailInteraction = () => {};
   let profile = loadProfile();
   let state = null;
   let claimedRewardId = null;
@@ -1672,6 +1677,155 @@
     requestAnimationFrame(() => nodes.stagePanel?.querySelector('[data-rune-stage-tab="training"]')?.focus({ preventScroll: true }));
   }
 
+  function desiredStageWindow(index) {
+    return Math.max(0, Math.min(MISSION_COUNT - STAGE_CARD_POOL_SIZE, index - Math.floor(STAGE_CARD_POOL_SIZE / 2)));
+  }
+
+  function missionLocaleCopy(mission) {
+    const nameSource = locale === "zh-Hant" || locale === "zh-Hans" ? mission.nameZht : locale === "es" ? mission.nameEs : locale === "pt-BR" ? mission.namePt : mission.nameEn;
+    const tacticSource = locale === "zh-Hant" || locale === "zh-Hans" ? mission.tacticZht : locale === "es" ? mission.tacticEs : locale === "pt-BR" ? mission.tacticPt : mission.tacticEn;
+    return {
+      name: locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(nameSource) || nameSource : nameSource,
+      tactic: locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(tacticSource) || tacticSource : tacticSource,
+    };
+  }
+
+  function bindMissionCard(btn, index) {
+    const mission = missionDefs[index];
+    if (!mission) { btn.hidden = true; return; }
+    btn.hidden = false;
+    const locked = mission.id > profile.unlockedMission;
+    const active = selectedMission === mission.id;
+    const centered = centeredMission === mission.id;
+    const { name, tactic } = missionLocaleCopy(mission);
+    const enemies = mission.enemies.map((id) => t(enemyDefs.find((enemy) => enemy.id === id)?.name || id)).join(" / ");
+    const traits = [...new Set(mission.enemies.map((id) => enemyDefs.find((enemy) => enemy.id === id)?.trait).filter(Boolean))].map((key) => t(key)).join(" / ");
+    btn.dataset.missionId = String(mission.id);
+    btn.dataset.stageIndex = String(index);
+    btn.dataset.wpStageCentered = String(centered);
+    btn.className = `mission-card ${active ? "is-active" : ""} ${centered ? "is-centered" : ""}`;
+    btn.setAttribute("aria-posinset", String(index + 1));
+    btn.setAttribute("aria-setsize", String(MISSION_COUNT));
+    btn.setAttribute("aria-disabled", String(locked));
+    btn.setAttribute("aria-pressed", String(active));
+    btn.tabIndex = centered ? 0 : -1;
+    if (centered) btn.setAttribute("aria-current", "true"); else btn.removeAttribute("aria-current");
+    btn.setAttribute("aria-label", `${t("missionCard", { n: mission.id })}. ${name}. ${locked ? t("locked") : t("missionGoal", { enemies })}. ${t("missionPlan", { plan: tactic })}`);
+    btn.innerHTML = `<span class="mission-card__top"><strong>${t("missionCard", { n: mission.id })} · ${name}</strong><b>${locked ? t("locked") : active ? t("missionStatusCurrent") : t("missionStatusUnlocked")}</b></span><small>${t("missionRewardLabel")}: ${locked ? t("locked") : t("missionReward", { xp: mission.xp, runes: mission.runes })}</small><span>${t("missionGoal", { enemies })}</span><em>${t("missionPlan", { plan: tactic })}<b class="mission-card__traits">${t("enemyTraits", { traits })}</b></em>`;
+  }
+
+  function createMissionCard() {
+    const card = document.createElement("button");
+    card.type = "button";
+    card.addEventListener("click", () => {
+      const missionId = Number(card.dataset.missionId);
+      setCenteredMission(missionId, { focus: true });
+      if (missionId <= profile.unlockedMission) { selectedMission = missionId; startMission(missionId); }
+    });
+    return card;
+  }
+
+  function buildMissionCardPool() {
+    nodes.missionGrid.replaceChildren();
+    stageWindowStart = desiredStageWindow(centeredMission - 1);
+    stageCardPool = Array.from({ length: STAGE_CARD_POOL_SIZE }, (_, offset) => {
+      const card = createMissionCard();
+      card.dataset.wpStagePoolId = String(offset);
+      bindMissionCard(card, stageWindowStart + offset);
+      nodes.missionGrid.append(card);
+      return card;
+    });
+    Object.assign(nodes.missionGrid.dataset, { wpStageVirtualized: "bounded-recycle", wpStagePoolSize: String(STAGE_CARD_POOL_SIZE), wpStageTotal: String(MISSION_COUNT), wpStageRecycleCount: "0" });
+  }
+
+  function moveMissionWindow(targetStart) {
+    const target = Math.max(0, Math.min(MISSION_COUNT - STAGE_CARD_POOL_SIZE, targetStart));
+    let recycled = 0;
+    while (stageWindowStart < target) { const card = nodes.missionGrid.firstElementChild; stageWindowStart += 1; nodes.missionGrid.append(card); bindMissionCard(card, stageWindowStart + STAGE_CARD_POOL_SIZE - 1); recycled += 1; }
+    while (stageWindowStart > target) { const card = nodes.missionGrid.lastElementChild; stageWindowStart -= 1; nodes.missionGrid.prepend(card); bindMissionCard(card, stageWindowStart); recycled += 1; }
+    stageCardPool = [...nodes.missionGrid.children];
+    Object.assign(nodes.missionGrid.dataset, { wpStageWindowStart: String(stageWindowStart), wpStageWindowEnd: String(stageWindowStart + STAGE_CARD_POOL_SIZE - 1) });
+    if (recycled) nodes.missionGrid.dataset.wpStageRecycleCount = String(Number(nodes.missionGrid.dataset.wpStageRecycleCount || 0) + recycled);
+    return recycled;
+  }
+
+  function syncMissionCards() { stageCardPool.forEach((card) => bindMissionCard(card, Number(card.dataset.stageIndex))); }
+
+  function stageRailGeometry() {
+    const cards = [...nodes.missionGrid.children], rail = nodes.missionGrid.getBoundingClientRect(), first = cards[0]?.getBoundingClientRect(), second = cards[1]?.getBoundingClientRect();
+    const delta = first && second ? second.left + second.width / 2 - first.left - first.width / 2 : 0;
+    return { center: rail.left + rail.width / 2, pitch: Math.abs(delta) || (first?.width || 272) + 12, orientation: Math.sign(delta) || 1 };
+  }
+
+  function positionMissionRail(logicalPosition) {
+    const logical = Math.max(0, Math.min(MISSION_COUNT - 1, logicalPosition)), anchor = Math.round(logical);
+    if (moveMissionWindow(desiredStageWindow(anchor))) syncMissionCards();
+    const card = nodes.missionGrid.querySelector(`[data-stage-index="${anchor}"]`);
+    if (!card) return logical;
+    card.scrollIntoView({ behavior: "auto", block: "nearest", inline: "center" });
+    const geometry = stageRailGeometry(), fraction = logical - anchor;
+    if (Math.abs(fraction) > 0.0001) nodes.missionGrid.scrollLeft += fraction * geometry.orientation * geometry.pitch;
+    nodes.missionGrid.dataset.wpStageDragLogical = logical.toFixed(4);
+    return logical;
+  }
+
+  function currentMissionLogicalPosition() {
+    const geometry = stageRailGeometry();
+    const card = stageCardPool.reduce((best, item) => { const rect = item.getBoundingClientRect(), distance = Math.abs(rect.left + rect.width / 2 - geometry.center); return !best || distance < best.distance ? { item, distance } : best; }, null)?.item;
+    if (!card) return centeredMission - 1;
+    const rect = card.getBoundingClientRect();
+    return Math.max(0, Math.min(MISSION_COUNT - 1, Number(card.dataset.stageIndex) + (geometry.center - rect.left - rect.width / 2) / (geometry.pitch * geometry.orientation)));
+  }
+
+  function installVirtualMissionRail() {
+    const rail = nodes.missionGrid;
+    if (rail.dataset.wpStageVirtualDrag === "true") return;
+    rail.dataset.wpStageVirtualDrag = "true";
+    rail.dataset.wpStageCenterObserver = "manual";
+    let pointerId = null, startX = 0, lastX = 0, dragLogical = 0, moved = false, suppressClick = false;
+    const restore = () => { rail.style.removeProperty("scroll-behavior"); rail.style.removeProperty("scroll-snap-type"); delete rail.dataset.wpStageSettling; delete rail.dataset.wpDragDown; rail.classList.remove("wp-stage-dragging"); };
+    cancelStageRailInteraction = () => { pointerId = null; cancelAnimationFrame(stageSettleFrame); stageSettleFrame = 0; restore(); };
+    window.addEventListener("pointerdown", (event) => {
+      if (!event.target?.closest?.("#missionGrid") || event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
+      cancelAnimationFrame(stageSettleFrame); stageSettleFrame = 0; pointerId = event.pointerId; startX = lastX = event.clientX; dragLogical = currentMissionLogicalPosition(); moved = false;
+      rail.style.setProperty("scroll-behavior", "auto", "important"); rail.style.setProperty("scroll-snap-type", "none", "important"); rail.dataset.wpDragDown = "1"; event.stopImmediatePropagation();
+    }, true);
+    window.addEventListener("pointermove", (event) => {
+      if (event.pointerId !== pointerId) return;
+      const delta = event.clientX - lastX; lastX = event.clientX;
+      if (!moved && Math.abs(event.clientX - startX) > 4) { moved = true; rail.classList.add("wp-stage-dragging"); }
+      if (moved) { const rect = rail.getBoundingClientRect(), scale = rect.width ? rail.clientWidth / rect.width : 1; if (event.cancelable) event.preventDefault(); dragLogical = positionMissionRail(dragLogical - delta * scale / stageRailGeometry().pitch); }
+      event.stopImmediatePropagation();
+    }, true);
+    const finish = (event) => {
+      if (pointerId === null || (event.pointerId !== undefined && event.pointerId !== pointerId)) return;
+      pointerId = null;
+      if (moved) {
+        if (event.cancelable) event.preventDefault();
+        const from = dragLogical, index = Math.max(0, Math.min(MISSION_COUNT - 1, Math.round(from))), started = performance.now();
+        centeredMission = index + 1; syncMissionCards(); positionMissionRail(from); rail.dataset.wpStageSettling = "true";
+        const settle = (now) => {
+          const progress = Math.max(0, Math.min(1, (now - started) / 340)), eased = progress * progress * (3 - 2 * progress);
+          positionMissionRail(from + (index - from) * eased);
+          if (progress < 1 && document.body.dataset.screen === "stage") stageSettleFrame = requestAnimationFrame(settle);
+          else { stageSettleFrame = 0; if (document.body.dataset.screen === "stage") { positionMissionRail(index); syncMissionCards(); renderMissionBriefing(); } restore(); }
+        };
+        stageSettleFrame = requestAnimationFrame(settle); suppressClick = true; setTimeout(() => { suppressClick = false; }, 0);
+      } else restore();
+      moved = false; event.stopImmediatePropagation();
+    };
+    window.addEventListener("pointerup", finish, true);
+    window.addEventListener("pointercancel", finish, true);
+    rail.addEventListener("click", (event) => { if (!suppressClick) return; suppressClick = false; event.preventDefault(); event.stopImmediatePropagation(); }, true);
+    rail.addEventListener("keydown", (event) => {
+      const rtl = getComputedStyle(rail).direction === "rtl";
+      let next = centeredMission - 1;
+      if (event.key === "Home") next = 0; else if (event.key === "End") next = MISSION_COUNT - 1;
+      else if (event.key === "ArrowRight") next += rtl ? -1 : 1; else if (event.key === "ArrowLeft") next += rtl ? 1 : -1; else return;
+      event.preventDefault(); setCenteredMission(Math.max(1, Math.min(MISSION_COUNT, next + 1)), { focus: true });
+    });
+  }
+
   function renderMenu(focusHeroId = null) {
     nodes.profileLevel.textContent = profile.level;
     nodes.profileXp.textContent = `${profile.xp}/100`;
@@ -1680,71 +1834,31 @@
     renderGrowthSummary();
     renderTrainingChoice();
     renderHeroUpgrades();
-    nodes.missionGrid.innerHTML = "";
-    missionDefs.forEach((mission) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.dataset.missionId = String(mission.id);
-      const isLocked = mission.id > profile.unlockedMission;
-      const isActive = selectedMission === mission.id;
-      const isCentered = centeredMission === mission.id;
-      btn.className = `mission-card ${isActive ? "is-active" : ""} ${isCentered ? "is-centered" : ""}`;
-      btn.dataset.stageIndex = String(mission.id - 1);
-      btn.dataset.wpStageCentered = String(isCentered);
-      btn.disabled = isLocked;
-      btn.setAttribute("aria-pressed", String(isActive));
-      if (isCentered) btn.setAttribute("aria-current", "true");
-      const enemyNames = mission.enemies.map((id) => t(enemyDefs.find((enemy) => enemy.id === id)?.name || id)).join(" / ");
-      const traitNames = [...new Set(mission.enemies.map((id) => enemyDefs.find((enemy) => enemy.id === id)?.trait).filter(Boolean))]
-        .map((key) => t(key))
-        .join(" / ");
-      const missionNameSource = locale === "zh-Hant" || locale === "zh-Hans" ? mission.nameZht : locale === "es" ? mission.nameEs : locale === "pt-BR" ? mission.namePt : mission.nameEn;
-      const missionTacticSource = locale === "zh-Hant" || locale === "zh-Hans" ? mission.tacticZht : locale === "es" ? mission.tacticEs : locale === "pt-BR" ? mission.tacticPt : mission.tacticEn;
-      const missionName = locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(missionNameSource) || missionNameSource : missionNameSource;
-      const missionTactic = locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(missionTacticSource) || missionTacticSource : missionTacticSource;
-      btn.innerHTML = `
-        <span class="mission-card__top">
-          <strong>${t("missionCard", { n: mission.id })} · ${missionName}</strong>
-          <b>${isLocked ? t("locked") : isActive ? t("missionStatusCurrent") : t("missionStatusUnlocked")}</b>
-        </span>
-        <small>${t("missionRewardLabel")}: ${isLocked ? t("locked") : t("missionReward", { xp: mission.xp, runes: mission.runes })}</small>
-        <span>${t("missionGoal", { enemies: enemyNames })}</span>
-        <em>${t("missionPlan", { plan: missionTactic })}<b class="mission-card__traits">${t("enemyTraits", { traits: traitNames })}</b></em>`;
-      btn.addEventListener("click", () => {
-        selectedMission = mission.id;
-        startMission(selectedMission);
-      });
-      nodes.missionGrid.appendChild(btn);
-    });
+    if (stageCardPool.length !== STAGE_CARD_POOL_SIZE || !stageCardPool.every((card) => card.isConnected)) buildMissionCardPool();
+    moveMissionWindow(desiredStageWindow(centeredMission - 1));
+    syncMissionCards();
+    installVirtualMissionRail();
     renderMissionBriefing();
     scrollSelectedMissionIntoView();
     if (focusHeroId !== null) {
       const preferred = nodes.heroUpgradeGrid.querySelector(`[data-hero-upgrade="${focusHeroId}"]:not(:disabled)`);
-      const fallback = nodes.heroUpgradeGrid.querySelector("[data-hero-upgrade]:not(:disabled)")
-        || nodes.stagePanel?.querySelector('[data-rune-stage-tab="heroes"]');
+      const fallback = nodes.heroUpgradeGrid.querySelector("[data-hero-upgrade]:not(:disabled)") || nodes.stagePanel?.querySelector('[data-rune-stage-tab="heroes"]');
       (preferred || fallback)?.focus({ preventScroll: true });
     }
   }
 
   function scrollSelectedMissionIntoView() {
-    const active = nodes.missionGrid.querySelector(".mission-card.is-active");
-    if (!active) return;
-    requestAnimationFrame(() => {
-      active.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-    });
+    requestAnimationFrame(() => positionMissionRail(centeredMission - 1));
   }
 
-  function setCenteredMission(missionId) {
+  function setCenteredMission(missionId, { focus = false } = {}) {
     const nextMission = Math.max(1, Math.min(MISSION_COUNT, Number(missionId) || selectedMission));
     centeredMission = nextMission;
-    nodes.missionGrid.querySelectorAll(".mission-card").forEach((card) => {
-      const isCentered = Number(card.dataset.missionId) === centeredMission;
-      card.classList.toggle("is-centered", isCentered);
-      card.dataset.wpStageCentered = String(isCentered);
-      if (isCentered) card.setAttribute("aria-current", "true");
-      else card.removeAttribute("aria-current");
-    });
+    moveMissionWindow(desiredStageWindow(centeredMission - 1));
+    syncMissionCards();
+    positionMissionRail(centeredMission - 1);
     renderMissionBriefing();
+    if (focus) nodes.missionGrid.querySelector(`[data-mission-id="${centeredMission}"]`)?.focus({ preventScroll: true });
   }
 
   function renderMissionBriefing() {
@@ -1766,7 +1880,7 @@
   }
 
   function focusSelectedMission() {
-    requestAnimationFrame(() => nodes.missionGrid.querySelector(".mission-card.is-active:not(:disabled)")?.focus({ preventScroll: true }));
+    requestAnimationFrame(() => nodes.missionGrid.querySelector(".mission-card.is-centered")?.focus({ preventScroll: true }));
   }
 
   function heroUpgradeCost(id) {
@@ -1928,6 +2042,7 @@
   let sceneGeneration = 0;
 
   function setScene(scene) {
+    if (scene !== "stage") cancelStageRailInteraction();
     const generation = ++sceneGeneration;
     const main = scene === "main";
     const stage = scene === "stage";

@@ -372,11 +372,13 @@ body.is-rune-playing .pause-toggle {
     inset 0 0 22px rgba(103, 242, 190, 0.16);
 }
 
-.mission-card.is-centered:disabled {
+.mission-card.is-centered:disabled,
+.mission-card.is-centered[aria-disabled="true"] {
   opacity: 0.78;
 }
 
-.mission-card:disabled {
+.mission-card:disabled,
+.mission-card[aria-disabled="true"] {
   opacity: 0.45;
   cursor: not-allowed;
 }
