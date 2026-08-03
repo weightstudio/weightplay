@@ -849,6 +849,7 @@
     button.setAttribute("aria-posinset", String(index + 1));
     button.setAttribute("aria-setsize", String(zones.length));
     button.setAttribute("aria-disabled", String(locked));
+    button.setAttribute("aria-keyshortcuts", "ArrowLeft ArrowRight Home End");
     button.setAttribute("aria-label", `${missionLabel} · ${zone.name[locale]} · ${zone.checkpoint ? t("bossMission") : ruleLabel} · ${locked ? t("locked") : `${t("goal")} ${zone.goal}`}`);
     button.className = `zone-card stage-card region-${zone.region}${zone.checkpoint ? " is-checkpoint" : ""}${locked ? " is-locked" : ""}`;
     const image = button.querySelector("img");
