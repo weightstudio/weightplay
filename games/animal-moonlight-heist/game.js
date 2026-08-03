@@ -242,7 +242,9 @@
   [[guardianCatalog.spotlight,"Фонарный ревизор"],[guardianCatalog.bell,"Колокольный страж"],[guardianCatalog.mirror,"Хранитель зеркал"],[guardianCatalog.clock,"Часовой маршал"],[guardianCatalog.seals,"Хранитель печатей"],[guardianCatalog.eclipse,"Хранитель затмения"]].forEach(([guardian,name])=>{guardian.name[3]=name});
   [[guardianCatalog.spotlight,"提灯审查官"],[guardianCatalog.bell,"月钟守卫"],[guardianCatalog.mirror,"星镜看守"],[guardianCatalog.clock,"发条巡察长"],[guardianCatalog.seals,"宝库封印官"],[guardianCatalog.eclipse,"日蚀馆长"]].forEach(([guardian,name])=>{guardian.name[4]=name});
   function normalizeLocale(value){if(value==="zh-TW")return"zh-Hant";if(value==="zh-CN")return"zh-Hans";if(value?.startsWith("pt"))return"pt-BR";return value||"en"}
+  const STAGE_CARD_POOL_SIZE=9;
   let state=load(),locale=normalizeLocale(window.WonderI18n?.locale?.()||readOptionalStorage(localeKey)||readOptionalStorage(legacyLocaleKey)||"en"),selectedMission=0,centeredMission=Math.max(0,Math.min(campaign.length-1,(state.unlocked||1)-1)),gadget="dash",gadgetOffers=createOffers(),insuranceActive=state.insuranceReady===true,preservedTreasure=false,playing=false,paused=false,alert=0,objectFound=false,treasureFound=false,caught=false,patrols=[],lastTime=0,missionStartedAt=0,freezeUntil=0,smokeUntil=0,pickupCoverUntil=0,preview=null,arrivalTimer=0,animationFrame=0,routePointerId=null,lastPulseCycle=-1,lastMirrorCycle=-1,guardianPhase=1,resultActionClaimed=false;
+  let stageWindowStart=0,stageCardPool=[],stageBrowseLogical=centeredMission,stageSettleFrame=0,cancelStagePointer=()=>{};
   const gameLocales=new Set(["en","zh-Hant","zh-Hans","es","ru"]);
   const localeArrayIndex=()=>locale==="zh-Hant"?1:locale==="es"?2:locale==="ru"?3:locale==="zh-Hans"?4:0;
   const runtimeLocaleSegments={"zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
@@ -390,6 +392,7 @@
   function stopBattleLoop(){if(animationFrame){cancelAnimationFrame(animationFrame);animationFrame=0}}
   function startBattleLoop(){if(!playing||paused||animationFrame)return;lastTime=performance.now();animationFrame=requestAnimationFrame(loop)}
   function show(name){
+    if(name!=="stage")cancelStageMotion();
     nodes.main.hidden=name!=="main";nodes.stage.hidden=name!=="stage";nodes.battle.hidden=name!=="battle";
     document.body.dataset.screen=name;
     for(const candidate of ["main","stage","battle"]){document.body.classList.toggle(`wp-shell-${candidate}-active`,candidate===name)}
@@ -408,34 +411,46 @@
     const detail=medals===3?t("perfectMedals"):`${t("bestMedals",{medals})} · ${t("bonusMedal")}`;
     return{visible:`${stars} · ${detail}`,accessible:detail};
   }
+  const stageWindowLimit=()=>Math.max(0,campaign.length-STAGE_CARD_POOL_SIZE);
+  const desiredStageWindow=index=>Math.max(0,Math.min(stageWindowLimit(),Math.round(index)-Math.floor(STAGE_CARD_POOL_SIZE/2)));
+  function createMissionCard(poolIndex){const card=document.createElement("button");card.type="button";card.dataset.wpStagePoolNode=String(poolIndex+1);return card}
+  function bindMissionCard(card,index){
+    const mission=campaign[index];if(!mission)return;
+    const missionName=`${t("mission",{n:index+1})}: ${campaignText(mission.name)}`;
+    const locked=index+1>state.unlocked,progress=medalProgress(index),guardian=mission.guardian;
+    const art=guardian?`../../assets/animal-moonlight-heist-guardian-${guardian.id}.webp`:"../../assets/animal-moonlight-heist-archive-background.png";
+    const checkpoint=guardian?`<span class="checkpoint-tag">${t("checkpoint")} · ${campaignText(guardian.name)}</span>`:"";
+    card.className=`mission-card${locked?" locked":""}${guardian?" checkpoint":""}`;
+    card.dataset.index=String(index);card.dataset.stage=String(index+1);card.dataset.stageIndex=String(index);
+    card.setAttribute("aria-disabled",String(locked));card.setAttribute("aria-posinset",String(index+1));card.setAttribute("aria-setsize",String(campaign.length));card.setAttribute("aria-keyshortcuts","ArrowLeft ArrowRight Home End Enter Space");
+    card.innerHTML=`<img src="${art}" alt=""><div><strong>${missionName}</strong>${checkpoint}<span class="mission-rule">${campaignText(mission.rule)}</span><span>${locked?t("locked"):progress.visible}</span></div>`;
+    card.setAttribute("aria-label",`${missionName}. ${campaignText(mission.rule)}. ${locked?t("locked"):progress.accessible}`);
+  }
+  function buildStagePool(){
+    stageWindowStart=desiredStageWindow(centeredMission);stageCardPool=Array.from({length:Math.min(STAGE_CARD_POOL_SIZE,campaign.length)},(_,index)=>createMissionCard(index));
+    nodes.rail.replaceChildren(...stageCardPool);stageCardPool.forEach((card,index)=>bindMissionCard(card,stageWindowStart+index));
+    Object.assign(nodes.rail.dataset,{wpStageVirtualized:"bounded-recycle",wpStagePoolSize:String(stageCardPool.length),wpStageTotal:String(campaign.length),wpStageWindowStart:String(stageWindowStart),wpStageWindowEnd:String(stageWindowStart+stageCardPool.length-1),wpStageRecycleCount:"0",wpStageCenterObserver:"manual",wpStageVirtualDrag:"true"});
+  }
+  function moveStageWindow(targetStart){
+    const target=Math.max(0,Math.min(stageWindowLimit(),targetStart));let recycled=0;
+    while(stageWindowStart<target){const card=nodes.rail.firstElementChild;stageWindowStart+=1;nodes.rail.append(card);bindMissionCard(card,stageWindowStart+stageCardPool.length-1);recycled+=1}
+    while(stageWindowStart>target){const card=nodes.rail.lastElementChild;stageWindowStart-=1;nodes.rail.prepend(card);bindMissionCard(card,stageWindowStart);recycled+=1}
+    stageCardPool=[...nodes.rail.children];nodes.rail.dataset.wpStageWindowStart=String(stageWindowStart);nodes.rail.dataset.wpStageWindowEnd=String(stageWindowStart+stageCardPool.length-1);if(recycled)nodes.rail.dataset.wpStageRecycleCount=String(Number(nodes.rail.dataset.wpStageRecycleCount||0)+recycled);
+  }
+  function ensureStageWindow(index){if(!stageCardPool.length||stageCardPool.some(card=>!card.isConnected))buildStagePool();moveStageWindow(desiredStageWindow(index));stageCardPool.forEach(card=>bindMissionCard(card,Number(card.dataset.index)));markCenteredMission(Math.round(stageBrowseLogical))}
+  function stageRailPitch(){const cards=[...nodes.rail.children],first=cards[0]?.getBoundingClientRect(),second=cards[1]?.getBoundingClientRect();return first&&second?Math.abs((second.left+second.width/2)-(first.left+first.width/2)):166}
+  function positionStageRail(logical){const value=Math.max(0,Math.min(campaign.length-1,logical)),anchor=Math.round(value);moveStageWindow(desiredStageWindow(anchor));const card=nodes.rail.querySelector(`[data-index="${anchor}"]`);card?.scrollIntoView({behavior:"auto",inline:"center",block:"nearest"});nodes.rail.scrollLeft+=(value-anchor)*stageRailPitch();nodes.rail.dataset.wpStageDragLogical=value.toFixed(4);return value}
+  function centerMission(index){ensureStageWindow(index);nodes.rail.querySelector(`[data-index="${index}"]`)?.scrollIntoView({behavior:"instant",inline:"center",block:"nearest"});markCenteredMission(index)}
+  function cancelStageMotion(){if(stageSettleFrame)cancelAnimationFrame(stageSettleFrame);stageSettleFrame=0;cancelStagePointer();nodes.rail?.style.removeProperty("scroll-behavior");nodes.rail?.style.removeProperty("scroll-snap-type");nodes.rail?.classList.remove("wp-stage-dragging");if(nodes.rail)delete nodes.rail.dataset.wpStageSettling}
   function renderStage(){
     if(!nodes.rail)return;
-    $("#coinLabel").textContent=`${t("coins")}: ${state.coins}`;
-    nodes.rail.innerHTML="";
-    campaign.forEach((m,i)=>{
-      const b=document.createElement("button");
-      const missionName=`${t("mission",{n:i+1})}: ${campaignText(m.name)}`;
-      const locked=i+1>state.unlocked;
-      const progress=medalProgress(i);
-      b.type="button";
-      b.className=`mission-card${locked?" locked":""}${i===centeredMission?" centered":""}`;
-      b.dataset.index=String(i);
-      if(i===centeredMission&&!locked)b.dataset.wpStageRecommended="true";
-      const guardian=m.guardian;
-      const art=guardian?`../../assets/animal-moonlight-heist-guardian-${guardian.id}.webp`:"../../assets/animal-moonlight-heist-archive-background.png";
-      const checkpoint=guardian?`<span class="checkpoint-tag">${t("checkpoint")} · ${campaignText(guardian.name)}</span>`:"";
-      b.classList.toggle("checkpoint",Boolean(guardian));
-      b.innerHTML=`<img src="${art}" alt=""><div><strong>${missionName}</strong>${checkpoint}<span class="mission-rule">${campaignText(m.rule)}</span><span>${locked?t("locked"):progress.visible}</span></div>`;
-      b.setAttribute("aria-label",`${missionName}. ${campaignText(m.rule)}. ${locked?t("locked"):progress.accessible}`);
-      b.setAttribute("aria-current",i===centeredMission?"true":"false");
-      b.addEventListener("click",()=>{if(!locked)startMission(i)});
-      nodes.rail.append(b);
-    });
+    $("#coinLabel").textContent=`${t("coins")}: ${state.coins}`;stageBrowseLogical=centeredMission;
+    if(!stageCardPool.length||stageCardPool.some(card=>!card.isConnected))buildStagePool();ensureStageWindow(centeredMission);centerMission(centeredMission);requestAnimationFrame(()=>centerMission(centeredMission));
   }
   function markCenteredMission(index=centeredMission){
     centeredMission=Math.max(0,Math.min(campaign.length-1,Number(index)||0));
-    nodes.rail.querySelectorAll(".mission-card").forEach((card,i)=>{
-      const centered=i===centeredMission;
+    nodes.rail.querySelectorAll(".mission-card").forEach(card=>{
+      const centered=Number(card.dataset.index)===centeredMission;
       card.classList.toggle("centered",centered);
       card.setAttribute("aria-current",centered?"true":"false");
       if(centered&&!card.classList.contains("locked"))card.dataset.wpStageRecommended="true";
@@ -455,7 +470,10 @@
   function focusMission(index=Math.max(0,Math.min(campaign.length-1,state.unlocked-1))){
     centeredMission=Math.max(0,Math.min(campaign.length-1,index));
     requestAnimationFrame(()=>{
-      const card=nodes.rail.querySelectorAll(".mission-card")[centeredMission];
+      const active=document.activeElement;
+      if(active&&nodes.stage.contains(active)&&!nodes.rail.contains(active))return;
+      stageBrowseLogical=centeredMission;ensureStageWindow(centeredMission);
+      const card=nodes.rail.querySelector(`[data-index="${centeredMission}"]`);
       card?.scrollIntoView({behavior:"auto",inline:"center",block:"nearest"});
       markCenteredMission();
       card?.focus({preventScroll:true});
@@ -630,12 +648,22 @@
   }
   function bindMissionRailDrag(){
     const rail=nodes.rail;
-    rail.addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
+    rail.addEventListener("click",event=>{const card=event.target.closest(".mission-card");if(!card)return;const index=Number(card.dataset.index);if(index>=0&&index<state.unlocked)startMission(index)});
+    rail.addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" ")){event.preventDefault();return}const card=event.target.closest(".mission-card");if(!card||!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;const rtl=getComputedStyle(rail).direction==="rtl",index=Number(card.dataset.index);let next=index;if(event.key==="Home")next=0;else if(event.key==="End")next=campaign.length-1;else if(event.key==="ArrowLeft")next=Math.max(0,Math.min(campaign.length-1,index+(rtl?1:-1)));else next=Math.max(0,Math.min(campaign.length-1,index+(rtl?-1:1)));event.preventDefault();stageBrowseLogical=next;ensureStageWindow(next);const target=rail.querySelector(`[data-index="${next}"]`);markCenteredMission(next);target?.focus({preventScroll:true});target?.scrollIntoView({behavior:"auto",inline:"center",block:"nearest"})});
     rail.addEventListener("wonder:stage-snap",event=>{
       const index=Number(event.detail?.index);
       if(Number.isInteger(index)&&index>=0)markCenteredMission(index);
       else markGeometricMission();
     });
+  }
+  function installVirtualStageDrag(){
+    const rail=nodes.rail;let pointerId=null,startX=0,lastX=0,logical=0,moved=false,suppressClick=false;
+    const restore=()=>{rail.style.removeProperty("scroll-behavior");rail.style.removeProperty("scroll-snap-type");rail.classList.remove("wp-stage-dragging");delete rail.dataset.wpStageSettling};
+    cancelStagePointer=()=>{pointerId=null;moved=false;restore()};
+    rail.addEventListener("pointerdown",event=>{if(document.body.dataset.screen!=="stage"||event.isPrimary===false||(event.button!==undefined&&event.button!==0))return;if(stageSettleFrame)cancelAnimationFrame(stageSettleFrame);stageSettleFrame=0;pointerId=event.pointerId;startX=lastX=event.clientX;logical=stageBrowseLogical;moved=false;rail.style.setProperty("scroll-behavior","auto","important");rail.style.setProperty("scroll-snap-type","none","important");event.stopImmediatePropagation()},true);
+    document.addEventListener("pointermove",event=>{if(event.pointerId!==pointerId)return;const delta=event.clientX-lastX;lastX=event.clientX;if(!moved&&Math.abs(event.clientX-startX)>4){moved=true;rail.classList.add("wp-stage-dragging")}if(moved){if(event.cancelable)event.preventDefault();logical=positionStageRail(logical-delta/stageRailPitch());stageBrowseLogical=logical;stageCardPool.forEach(card=>bindMissionCard(card,Number(card.dataset.index)));markCenteredMission(Math.round(logical))}event.stopImmediatePropagation()},true);
+    const finish=event=>{if(pointerId===null||(event.pointerId!==undefined&&event.pointerId!==pointerId))return;pointerId=null;if(!moved){restore();return}if(event.cancelable)event.preventDefault();suppressClick=true;setTimeout(()=>{suppressClick=false},0);const from=logical,target=Math.max(0,Math.min(campaign.length-1,Math.round(from))),started=performance.now();rail.dataset.wpStageSettling="true";const settle=now=>{const progress=Math.min(1,(now-started)/340),eased=progress*progress*(3-2*progress);stageBrowseLogical=positionStageRail(from+(target-from)*eased);if(progress<1)stageSettleFrame=requestAnimationFrame(settle);else{stageSettleFrame=0;ensureStageWindow(target);centerMission(target);restore()}};stageSettleFrame=requestAnimationFrame(settle);moved=false;event.stopImmediatePropagation()};
+    document.addEventListener("pointerup",finish,true);document.addEventListener("pointercancel",finish,true);rail.addEventListener("click",event=>{if(!suppressClick)return;suppressClick=false;event.preventDefault();event.stopImmediatePropagation()},true);
   }
   window.addEventListener("keydown",event=>{
     if(!playing||paused||event.target.matches("button,select,input,textarea"))return;
@@ -703,5 +731,5 @@
     };
   }
   $("#battleBackBtn")?.setAttribute("data-wp-return","battle");
-  renderGadgets();bind();bindMissionRailDrag();localize();$("#localeSelect option[value='zh-Hant']").textContent=decodeZh("\\u7e41\\u9ad4\\u4e2d\\u6587");show("main");
+  renderGadgets();bind();bindMissionRailDrag();installVirtualStageDrag();localize();$("#localeSelect option[value='zh-Hant']").textContent=decodeZh("\\u7e41\\u9ad4\\u4e2d\\u6587");show("main");
 })();

@@ -75,7 +75,7 @@
   <section id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
       <img src="../../assets/animal-carnival-claw-cover.webp" alt="">
-      <strong data-i18n="loading">Lighting the Starbell Carnival…</strong>
+      <strong data-i18n="loading">正在點亮星鈴嘉年華……</strong>
       <div class="loading-track"><i id="loadingFill"></i></div>
     </div>
   </section>
@@ -83,12 +83,12 @@
   <div id="mainGroup">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
-        <a class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="Back to WeightPlay">
+        <a class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="返回 WeightPlay">
           <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="">
         </a>
-        <strong data-i18n="title">Animal Carnival Claw</strong>
+        <strong data-i18n="title">動物嘉年華抓寶機</strong>
         <label class="locale-control">
-          <span class="sr-only" data-i18n="language">Language</span>
+          <span class="sr-only" data-i18n="language">語言</span>
           <select id="localeSelect" data-i18n-aria="language">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option>
             <option value="zh-Hans">简体中文</option><option value="ja">日本語</option>
@@ -103,55 +103,66 @@
       <section class="main-hero">
         <img class="main-poster" src="../../assets/animal-carnival-claw-cover.webp" data-i18n-alt="posterAlt" alt="《動物嘉年華抓寶機》遊戲圖片">
         <div class="main-copy">
-          <small data-i18n="eyebrow">Starbell skill arcade</small>
+          <small data-i18n="eyebrow">星鈴技巧遊樂場</small>
           <h1 data-i18n="title">動物嘉年華抓寶機</h1>
-          <p data-i18n="pitch">Choose a charm, time the swaying claw, then steady the lift before three drops run out.</p>
+          <p data-i18n="pitch">選定收藏物、抓準擺動時機，再在三次機會用完前穩住上升中的爪子。</p>
           <div id="mainProgress" class="main-progress"></div>
-          <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start">Start Game</button>
+          <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start">開始遊戲</button>
         </div>
       </section>
     </main>
 
-    <section class="game-page-info game-page-info-static" aria-label="動物嘉年華抓寶機 遊戲資訊">
-    
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>動物嘉年華抓寶機</h2><p>在 30 個原創嘉年華任務中瞄準、抓準時機並穩定公平技巧爪，取回指定收藏物。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>技巧抓寶街機</strong></div><div class="game-info-fact"><span>類型</span><strong>動物遊戲 · 街機 · 模擬 · 收藏 · 家庭</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>進度保存了嗎？</dt><dd>是的，僅在該瀏覽器中。</dd></div></dl></div>
-      
-    </div>
-  </section>
+    <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="遊戲指南">
+      <div class="game-info-hero"><div class="game-info-title">
+        <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay 原創遊戲指南</span>
+        <h2 data-i18n="guideTitle">讓每一次抓取都有明確判斷</h2>
+        <p data-i18n="guideIntro">魯克斯為星鈴嘉年華打造了三十台公平的技巧機台。諾里需要你的時機感取回指定回憶收藏物。</p>
+      </div></div>
+      <div class="game-info-sections guide-grid">
+        <article class="game-info-section"><h3 data-i18n="howTitle">遊玩方式</h3><ol>
+          <li data-i18n="how1">拖曳瞄準標記到看得見的目標收藏物上。</li>
+          <li data-i18n="how2">擺動爪子對準時放開，或按下「放下爪子」。</li>
+          <li data-i18n="how3">抓到後，等移動指針進入綠色區，再按下「夾緊」。</li>
+        </ol></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">規則與結果</h3><p data-i18n="rulesText">每關有三次免費抓取，所有目標、重量與抓力需求都會顯示。取回完整目標組即可過關，沒有付費、隨機稀有度或真實獎品。</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">三十個嘉年華任務</h3><p data-i18n="progressText">六台機器逐步加入彈墊、移動層架、磁力漂移、易碎堆疊與混合冠軍布局。每次過關都會解鎖下一個原創任務。</p></article>
+        <article class="game-info-section"><h3 data-i18n="tipsTitle">實用技巧</h3><p data-i18n="tipsText">先抓外露的輕型收藏物，觀察爪子擺動，再在指針接近綠色區中央時按下「夾緊」。重型收藏物的綠色區較窄。</p></article>
+        <article class="game-info-section"><h3 data-i18n="saveTitle">儲存與隱私</h3><p data-i18n="saveText">解鎖任務、獎章與收藏櫃只保存在這個瀏覽器，不需要帳號、上傳或個人資料。</p></article>
+        <article class="game-info-section"><h3 data-i18n="faqTitle">常見問題</h3><dl>
+          <div><dt data-i18n="faq1q">抓取結果是隨機的嗎？</dt><dd data-i18n="faq1a">不是。位置、時機、可見重量與你的穩定操作共同決定結果。</dd></div>
+          <div><dt data-i18n="faq2q">已收藏的物品會消失嗎？</dt><dd data-i18n="faq2a">不會。這台裝置上的收藏櫃進度會永久保留。</dd></div>
+          <div><dt data-i18n="faq3q">接下來可以玩什麼？</dt><dd data-i18n="faq3a">想挑戰時機可玩《動物珊瑚礁釣手》，想仔細規劃可玩《森林停車疏導隊》。</dd></div>
+        </dl></article>
+        <article class="game-info-section"><h3 data-i18n="guideDeepTitle">Read the machine before committing a drop</h3>
+          <p data-i18n="guideDeep1">Every mission is a small spatial puzzle rather than a lottery. The target strip names the charms that matter, while the bin shows their exact locations and relative weights. Move the reticle slowly enough to compare the claw center with the target center. Nearby bumpers, shelves, and stacks are not decoration: they define the safe approach corridor. If the direct route is narrow, begin from the open side and let the visible sway carry the claw into alignment. Releasing at the same rail position can produce different contact when the sway direction differs, so watch both position and motion.</p>
+          <p data-i18n="guideDeep2">The lift is a second timing decision, not an automatic reward. Once a charm is held, a pointer sweeps across the visible timing track. Press Lock Grip while it is inside the green zone. A centered press creates a stronger lock; missing the zone visibly opens the claw and drops the charm. Heavy charms use a slightly narrower window, while Workshop tuning widens that known window. Nothing depends on hidden probability.</p>
+          <p data-i18n="guideDeep3">Three drops create a planning budget. A non-target charm can still enter the permanent cabinet, but it does not advance the current objective, so decide whether discovery is worth one attempt. Early missions isolate one lesson at a time. Later chapters combine moving shelves, magnetic drift, fragile neighbors, and mixed weights. When a layout feels crowded, identify the most constrained target first. Removing an exposed charm can also open a safer path to one below it. Failure leaves the authored layout understandable and replayable, making practice more useful than guessing.</p>
+          <p data-i18n="guideDeep4">Keyboard players can focus the machine, use the arrow keys to move the reticle, press Space or Enter to drop, then press Space or Enter again when the timing pointer enters green. Pointer and touch players drag and release to drop, then tap Lock Grip in the same green window. Pause freezes the complete attempt, and the protected back action asks before ending it. Result buttons always return to Missions first, then offer the next unlocked mission, then Replay. Progress, medals, cabinet discoveries, starbolts, and transparent tuning remain on this device only.</p>
+        </article>
+      </div>
+    </section>
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-carnival-claw-cover.webp')">
       <header class="stage-header">
-        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Back">←</button>
-        <div><strong data-i18n="title">Animal Carnival Claw</strong><span id="stageSummary"></span></div>
+        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="返回主畫面">←</button>
+        <div><strong data-i18n="title">動物嘉年華抓寶機</strong><span id="stageSummary"></span></div>
         <span aria-hidden="true"></span>
       </header>
       <section id="stageWorkspace" class="stage-workspace">
         <section id="stagesPanel" class="stage-panel">
           <div class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></div>
-          <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Carnival mission selection"></div>
-          <button id="enterBtn" class="enter-button primary-action" type="button" data-i18n="enter">Enter Machine</button>
+          <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="嘉年華任務選擇"></div>
+          <button id="enterBtn" class="enter-button primary-action" type="button" data-i18n="enter">進入機台</button>
         </section>
-        <section id="cabinetPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="cabinet">Cabinet</h2><p id="cabinetSummary"></p></div><div id="cabinetGrid" class="cabinet-grid"></div></section>
-        <section id="workshopPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="workshop">Workshop</h2><p data-i18n="workshopIntro">Spend earned starbolts on permanent, transparent machine tuning.</p></div><div id="upgradeGrid" class="upgrade-grid"></div><p id="workshopFeedback" role="status"></p></section>
+        <section id="cabinetPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="cabinet">收藏櫃</h2><p id="cabinetSummary"></p></div><div id="cabinetGrid" class="cabinet-grid"></div></section>
+        <section id="workshopPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="workshop">工坊</h2><p data-i18n="workshopIntro">使用獲得的星栓，進行公開透明的永久機台調校。</p></div><div id="upgradeGrid" class="upgrade-grid"></div><p id="workshopFeedback" role="status"></p></section>
       </section>
-      <nav class="stage-tabs" data-i18n-aria="stageTabs" aria-label="Stage tabs">
-        <button id="cabinetTab" type="button" data-i18n="cabinet">Cabinet</button>
-        <button id="stagesTab" class="active" type="button" aria-current="page" data-i18n="stages">Missions</button>
-        <button id="workshopTab" type="button" data-i18n="workshop">Workshop</button>
+      <nav class="stage-tabs" data-i18n-aria="stageTabs" aria-label="關卡分頁">
+        <button id="cabinetTab" type="button" data-i18n="cabinet">收藏櫃</button>
+        <button id="stagesTab" class="active" type="button" aria-current="page" data-i18n="stages">任務</button>
+        <button id="workshopTab" type="button" data-i18n="workshop">工坊</button>
       </nav>
     </div>
     <div class="stage-ad-reserve" aria-hidden="true"></div>
@@ -161,44 +172,44 @@
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
-          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Back">←</button>
+          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="返回任務">←</button>
           <div class="battle-title"><small id="missionLabel"></small><strong id="objectiveText"></strong></div>
-          <div class="battle-stat"><small data-i18n="drops">Drops</small><strong id="dropsValue">3</strong></div>
-          <div class="battle-stat"><small data-i18n="grip">Grip</small><strong id="gripValue">100%</strong></div>
-          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="Pause">Ⅱ</button>
+          <div class="battle-stat"><small data-i18n="drops">次數</small><strong id="dropsValue">3</strong></div>
+          <div class="battle-stat"><small data-i18n="grip">抓力</small><strong id="gripValue">100%</strong></div>
+          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="暫停">Ⅱ</button>
         </header>
-        <section class="target-strip"><strong data-i18n="targets">Targets</strong><div id="targetList"></div></section>
+        <section class="target-strip"><strong data-i18n="targets">目標</strong><div id="targetList"></div></section>
         <section class="machine-wrap">
-          <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="Aim and operate the carnival claw"></canvas>
+          <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="瞄準並操作嘉年華爪子"></canvas>
           <div id="steerAction" class="steer-action" aria-live="polite" hidden></div>
           <div id="phaseHint" class="phase-hint" aria-live="polite"></div>
         </section>
         <div class="battle-controls">
-          <div id="timingMeter" class="stability-meter"><span data-i18n="timing">Timing</span><i><b id="stabilityFill"></b></i></div>
-          <button id="dropBtn" class="primary-action" type="button" data-i18n="drop">Drop Claw</button>
-          <button id="restartBtn" type="button" data-i18n="restart">Restart</button>
+          <div id="timingMeter" class="stability-meter"><span data-i18n="timing">時機</span><i><b id="stabilityFill"></b></i></div>
+          <button id="dropBtn" class="primary-action" type="button" data-i18n="drop">放下爪子</button>
+          <button id="restartBtn" type="button" data-i18n="restart">重新開始</button>
         </div>
       </div>
 
       <section id="tutorialPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card">
-        <div class="tutorial-nori sprite-cell atlas-nori" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">Aim, drop, stabilize</h2><ol>
-          <li data-i18n="tutorial1">Drag the reticle over one requested charm.</li>
-          <li data-i18n="tutorial2">Drop when the swaying claw overlaps the target.</li>
-          <li data-i18n="tutorial3">During the lift, drag opposite the swing to keep grip above the line.</li>
-        </ol><button id="tutorialStartBtn" class="primary-action wp-tutorial-action" type="button" data-i18n="tutorialStart">Start the machine</button>
+        <div class="tutorial-nori sprite-cell atlas-nori" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">瞄準、放下、穩定</h2><ol>
+          <li data-i18n="tutorial1">把瞄準標記拖到一個指定收藏物上。</li>
+          <li data-i18n="tutorial2">擺動爪子與目標重疊時放下。</li>
+          <li data-i18n="tutorial3">抓到後，等移動指針進入綠色區，再按下「夾緊」。</li>
+        </ol><button id="tutorialStartBtn" class="primary-action wp-tutorial-action" type="button" data-i18n="tutorialStart">啟動機台</button>
       </div></section>
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
-        <h2 id="leaveTitle" data-i18n="leaveTitle">Leave this machine?</h2><p data-i18n="leaveText">Continue keeps this exact drop frozen. Returning to Missions ends only this attempt.</p>
-        <div class="modal-actions two"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Return to Missions</button></div>
+        <h2 id="leaveTitle" data-i18n="leaveTitle">離開這台機器？</h2><p data-i18n="leaveText">繼續會保留目前抓取狀態；返回任務只會結束這次挑戰。</p>
+        <div class="modal-actions two"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">繼續</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">返回任務</button></div>
       </div></section>
       <section id="pausePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden><div class="dialog-card">
-        <h2 id="pauseTitle" data-i18n="pauseTitle">Machine paused</h2><p data-i18n="pauseText">The rail, claw and prize bin are frozen.</p>
-        <button id="resumeBtn" class="primary-action" type="button" data-i18n="resume">Resume</button>
+        <h2 id="pauseTitle" data-i18n="pauseTitle">機台已暫停</h2><p data-i18n="pauseText">軌道、爪子與獎品槽都已凍結。</p>
+        <button id="resumeBtn" class="primary-action" type="button" data-i18n="resume">繼續遊戲</button>
       </div></section>
       <section id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card">
-        <div class="result-rux sprite-cell atlas-rux" aria-hidden="true"></div><small data-i18n="resultKicker">Carnival report</small><h2 id="resultTitle"></h2>
+        <div class="result-rux sprite-cell atlas-rux" aria-hidden="true"></div><small data-i18n="resultKicker">嘉年華報告</small><h2 id="resultTitle"></h2>
         <div id="resultMedal" class="result-medal"></div><p id="resultText"></p><p id="bestText" class="best-text"></p>
-        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">Missions</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next Mission</button><button id="retryBtn" type="button" data-i18n="retry">Replay</button></div>
+        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">任務</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">下一任務</button><button id="retryBtn" type="button" data-i18n="retry">再玩一次</button></div>
       </div></section>
     </div>
     <div class="battle-ad-reserve" aria-hidden="true"></div>
@@ -210,7 +221,7 @@
   <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
-  <script src="locales.js?v=20260801-guide14"></script><script src="game.js?v=20260802-stage-v19"></script>
+  <script src="locales.js?v=20260803-guide-v21"></script><script src="game.js?v=20260803-guide-v21"></script>
   <script src="../../src/stage-selector-standard.js?v=20260801-claw-v17" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>

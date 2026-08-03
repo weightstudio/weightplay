@@ -4,6 +4,11 @@
   --gold: #ffcb49;
   --rounded-hex: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 86.6'%3E%3Cpath fill='%23000' d='M26 1h48c3 0 5 1 7 4l18 34c1.4 2.7 1.4 5.9 0 8.6L81 81.6c-2 3-4 4-7 4H26c-3 0-5-1-7-4L1 47.6c-1.4-2.7-1.4-5.9 0-8.6L19 5c2-3 4-4 7-4Z'/%3E%3C/svg%3E");
 }
+.hero-copy .endless-action {
+  margin-top: 10px;
+  background: linear-gradient(135deg, #1b6d78, #24508c);
+  box-shadow: 0 10px 24px #165c753d;
+}
 .battle-canvas > .modal {
   z-index: 200;
 }

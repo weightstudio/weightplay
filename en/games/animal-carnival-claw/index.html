@@ -111,30 +111,41 @@
       </section>
     </main>
 
-    <section class="game-page-info game-page-info-static" aria-label="Animal Carnival Claw game information">
-    
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Animal Carnival Claw</h2><p>Aim, time and stabilize a fair skill claw to retrieve target charms across 30 original carnival missions.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Skill Claw Arcade</strong></div><div class="game-info-fact"><span>Genre</span><strong>Animal Games · Arcade · Simulation · Collection · Family</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-      
-    </div>
-  </section>
+    <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="Game guide">
+      <div class="game-info-hero"><div class="game-info-title">
+        <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay Original Game Guide</span>
+        <h2 data-i18n="guideTitle">Turn every drop into a deliberate rescue</h2>
+        <p data-i18n="guideIntro">Rux built thirty fair skill machines for Starbell Carnival. Nori needs your timing to retrieve the requested memory charms.</p>
+      </div></div>
+      <div class="game-info-sections guide-grid">
+        <article class="game-info-section"><h3 data-i18n="howTitle">How to play</h3><ol>
+          <li data-i18n="how1">Drag the aiming reticle over a visible target charm.</li>
+          <li data-i18n="how2">Release or press Drop when the swaying claw lines up.</li>
+          <li data-i18n="how3">After a catch, press Lock Grip when the moving pointer enters the green zone.</li>
+        </ol></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">Rules and results</h3><p data-i18n="rulesText">Each mission gives three free drops and shows every target, weight and grip need. Retrieve the complete target set to clear. No payment, random rarity or real prize is involved.</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">Thirty carnival missions</h3><p data-i18n="progressText">Six machines add bumpers, shelves, magnetic drift, fragile stacks and mixed championship layouts. Every clear unlocks the next authored mission.</p></article>
+        <article class="game-info-section"><h3 data-i18n="tipsTitle">Practical tips</h3><p data-i18n="tipsText">Start with exposed light charms, watch the claw sway, then press Lock Grip near the center of the green timing zone. Heavy charms use a narrower green window.</p></article>
+        <article class="game-info-section"><h3 data-i18n="saveTitle">Save and privacy</h3><p data-i18n="saveText">Unlocked missions, medals and cabinet charms stay only in this browser. No account, upload or personal information is required.</p></article>
+        <article class="game-info-section"><h3 data-i18n="faqTitle">FAQ</h3><dl>
+          <div><dt data-i18n="faq1q">Is a grab random?</dt><dd data-i18n="faq1a">No. Position, timing, visible weight and your stabilization determine the result.</dd></div>
+          <div><dt data-i18n="faq2q">Can I lose collected charms?</dt><dd data-i18n="faq2a">No. Cabinet progress is permanent on this device.</dd></div>
+          <div><dt data-i18n="faq3q">What should I play next?</dt><dd data-i18n="faq3a">Try Animal Reef Fisher for another timing challenge or Animal Parking Patrol for careful planning.</dd></div>
+        </dl></article>
+        <article class="game-info-section"><h3 data-i18n="guideDeepTitle">Read the machine before committing a drop</h3>
+          <p data-i18n="guideDeep1">Every mission is a small spatial puzzle rather than a lottery. The target strip names the charms that matter, while the bin shows their exact locations and relative weights. Move the reticle slowly enough to compare the claw center with the target center. Nearby bumpers, shelves, and stacks are not decoration: they define the safe approach corridor. If the direct route is narrow, begin from the open side and let the visible sway carry the claw into alignment. Releasing at the same rail position can produce different contact when the sway direction differs, so watch both position and motion.</p>
+          <p data-i18n="guideDeep2">The lift is a second timing decision, not an automatic reward. Once a charm is held, a pointer sweeps across the visible timing track. Press Lock Grip while it is inside the green zone. A centered press creates a stronger lock; missing the zone visibly opens the claw and drops the charm. Heavy charms use a slightly narrower window, while Workshop tuning widens that known window. Nothing depends on hidden probability.</p>
+          <p data-i18n="guideDeep3">Three drops create a planning budget. A non-target charm can still enter the permanent cabinet, but it does not advance the current objective, so decide whether discovery is worth one attempt. Early missions isolate one lesson at a time. Later chapters combine moving shelves, magnetic drift, fragile neighbors, and mixed weights. When a layout feels crowded, identify the most constrained target first. Removing an exposed charm can also open a safer path to one below it. Failure leaves the authored layout understandable and replayable, making practice more useful than guessing.</p>
+          <p data-i18n="guideDeep4">Keyboard players can focus the machine, use the arrow keys to move the reticle, press Space or Enter to drop, then press Space or Enter again when the timing pointer enters green. Pointer and touch players drag and release to drop, then tap Lock Grip in the same green window. Pause freezes the complete attempt, and the protected back action asks before ending it. Result buttons always return to Missions first, then offer the next unlocked mission, then Replay. Progress, medals, cabinet discoveries, starbolts, and transparent tuning remain on this device only.</p>
+        </article>
+      </div>
+    </section>
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-carnival-claw-cover.webp')">
       <header class="stage-header">
-        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Back">←</button>
+        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Back to Main">←</button>
         <div><strong data-i18n="title">Animal Carnival Claw</strong><span id="stageSummary"></span></div>
         <span aria-hidden="true"></span>
       </header>
@@ -160,7 +171,7 @@
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
-          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Back">←</button>
+          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Back to Missions">←</button>
           <div class="battle-title"><small id="missionLabel"></small><strong id="objectiveText"></strong></div>
           <div class="battle-stat"><small data-i18n="drops">Drops</small><strong id="dropsValue">3</strong></div>
           <div class="battle-stat"><small data-i18n="grip">Grip</small><strong id="gripValue">100%</strong></div>
@@ -183,7 +194,7 @@
         <div class="tutorial-nori sprite-cell atlas-nori" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">Aim, drop, stabilize</h2><ol>
           <li data-i18n="tutorial1">Drag the reticle over one requested charm.</li>
           <li data-i18n="tutorial2">Drop when the swaying claw overlaps the target.</li>
-          <li data-i18n="tutorial3">During the lift, drag opposite the swing to keep grip above the line.</li>
+          <li data-i18n="tutorial3">After a catch, press Lock Grip when the moving pointer enters the green zone.</li>
         </ol><button id="tutorialStartBtn" class="primary-action wp-tutorial-action" type="button" data-i18n="tutorialStart">Start the machine</button>
       </div></section>
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
@@ -209,7 +220,7 @@
   <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
-  <script src="locales.js?v=20260801-guide14"></script><script src="game.js?v=20260802-stage-v19"></script>
+  <script src="locales.js?v=20260803-guide-v21"></script><script src="game.js?v=20260803-guide-v21"></script>
   <script src="../../src/stage-selector-standard.js?v=20260801-claw-v17" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>

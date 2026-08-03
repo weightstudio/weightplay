@@ -75,7 +75,7 @@
   <section id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
       <img src="../../assets/animal-carnival-claw-cover.webp" alt="">
-      <strong data-i18n="loading">Lighting the Starbell Carnival…</strong>
+      <strong data-i18n="loading">スターべル・カーニバルを点灯中…</strong>
       <div class="loading-track"><i id="loadingFill"></i></div>
     </div>
   </section>
@@ -83,12 +83,12 @@
   <div id="mainGroup">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
-        <a class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="Back to WeightPlay">
+        <a class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="WeightPlayへ戻る">
           <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="">
         </a>
-        <strong data-i18n="title">Animal Carnival Claw</strong>
+        <strong data-i18n="title">アニマル・カーニバルクロー</strong>
         <label class="locale-control">
-          <span class="sr-only" data-i18n="language">Language</span>
+          <span class="sr-only" data-i18n="language">言語</span>
           <select id="localeSelect" data-i18n-aria="language">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option>
             <option value="zh-Hans">简体中文</option><option value="ja">日本語</option>
@@ -103,55 +103,66 @@
       <section class="main-hero">
         <img class="main-poster" src="../../assets/animal-carnival-claw-cover.webp" data-i18n-alt="posterAlt" alt="アニマル・カーニバルクローのゲーム画像">
         <div class="main-copy">
-          <small data-i18n="eyebrow">Starbell skill arcade</small>
+          <small data-i18n="eyebrow">スターベルスキルアーケード</small>
           <h1 data-i18n="title">アニマル・カーニバルクロー</h1>
-          <p data-i18n="pitch">Choose a charm, time the swaying claw, then steady the lift before three drops run out.</p>
+          <p data-i18n="pitch">チャームを選び、揺れるクローのタイミングを合わせ、3回以内に持ち上げを安定させよう。</p>
           <div id="mainProgress" class="main-progress"></div>
-          <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start">Start Game</button>
+          <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start">ゲーム開始</button>
         </div>
       </section>
     </main>
 
-    <section class="game-page-info game-page-info-static" aria-label="アニマル・カーニバルクロー のゲーム情報">
-    
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>アニマル・カーニバルクロー</h2><p>30のオリジナルミッションで狙い、タイミングを合わせ、クローを安定させて目標チャームを集めよう。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>スキルクローアーケード</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>動物ゲーム · アーケード · シミュレーション · コレクション · 家族</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>進行状況は保存されますか?</dt><dd>はい、このブラウザでのみ可能です。</dd></div></dl></div>
-      
-    </div>
-  </section>
+    <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="ゲームガイド">
+      <div class="game-info-hero"><div class="game-info-title">
+        <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay オリジナルゲームガイド</span>
+        <h2 data-i18n="guideTitle">一滴一滴を意図的な救助に変える</h2>
+        <p data-i18n="guideIntro">ラックスはスターベルカーニバルのために30台のフェアスキルマシンを作りました。ノリは、要求されたメモリーチャームを取得するためにあなたのタイミングを必要としています。</p>
+      </div></div>
+      <div class="game-info-sections guide-grid">
+        <article class="game-info-section"><h3 data-i18n="howTitle">遊び方</h3><ol>
+          <li data-i18n="how1">照準レティクルを、表示されているターゲット チャーム上にドラッグします。</li>
+          <li data-i18n="how2">揺れる爪が揃ったら放すかドロップを押します。</li>
+          <li data-i18n="how3">キャッチ後、移動ポインタが緑色のゾーンに入ったときにロック グリップを押します。</li>
+        </ol></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">ルールと結果</h3><p data-i18n="rulesText">各ミッションでは 3 つの無料ドロップが提供され、あらゆるターゲット、重量、グリップのニーズが表示されます。クリアする完全なターゲット セットを取得します。支払い、ランダムな希少性、または実際の賞品は含まれません。</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">30のカーニバルミッション</h3><p data-i18n="progressText">6 台のマシンにバンパー、シェルフ、磁気ドリフト、壊れやすいスタック、混合チャンピオンシップ レイアウトが追加されます。クリアするたびに、次の作成されたミッションのロックが解除されます。</p></article>
+        <article class="game-info-section"><h3 data-i18n="tipsTitle">実践的なヒント</h3><p data-i18n="tipsText">露出した光のチャームから始めて、スウェイコーンを観察し、リフト中に反対側の小さな修正を加えます。中心にある重いチャームは、軽いチャームよりも安定させる必要があります。</p></article>
+        <article class="game-info-section"><h3 data-i18n="saveTitle">保存とプライバシー</h3><p data-i18n="saveText">ロック解除されたミッション、メダル、キャビネットのチャームはこのブラウザ内にのみ残ります。アカウント、アップロード、個人情報は必要ありません。</p></article>
+        <article class="game-info-section"><h3 data-i18n="faqTitle">よくある質問</h3><dl>
+          <div><dt data-i18n="faq1q">グラブはランダムですか？</dt><dd data-i18n="faq1a">いいえ、位置、タイミング、目に見える重量、そして安定性が結果を左右します。</dd></div>
+          <div><dt data-i18n="faq2q">集めたチャームは失われることはありますか?</dt><dd data-i18n="faq2a">いいえ。キャビネットの進行状況はこのデバイスでは永続的です。</dd></div>
+          <div><dt data-i18n="faq3q">次は何を遊べばいいでしょうか？</dt><dd data-i18n="faq3a">別のタイミング チャレンジにはアニマル リーフ フィッシャーを、慎重な計画にはアニマル パーキング パトロールをお試しください。</dd></div>
+        </dl></article>
+        <article class="game-info-section"><h3 data-i18n="guideDeepTitle">ドロップをコミットする前にマシンを読む</h3>
+          <p data-i18n="guideDeep1">すべてのミッションは宝くじではなく、小さな空間パズルです。ターゲット ストリップには重要なチャームの名前が記載され、ビンにはそれらの正確な位置と相対的な重さが表示されます。レチクルをゆっくりと移動させて、クローの中心とターゲットの中心を比較します。近くのバンパー、棚、書庫は装飾ではなく、安全なアプローチ廊下を定義します。直接のルートが狭い場合は、開いた側から始めて、目に見える揺れによって爪の位置を調整します。同じレール位置でリリースしても、揺れ方向が異なると接触が異なる場合がありますので、位置と動作の両方に注意してください。</p>
+          <p data-i18n="guideDeep2">リフトは第二の決定であり、自動的に得られる報酬ではありません。短い修正で目に見えるスイングに対抗し、グリップラインより上の安定性を保ちます。</p>
+          <p data-i18n="guideDeep3">3 滴で計画予算が作成されます。対象外のお守りも常設キャビネットに入れることはできますが、現在の目的を前進させることはできないため、発見が一度試みる価値があるかどうかを判断してください。初期のミッションでは、一度に 1 つのレッスンが分離されます。後の章では、移動棚、磁気ドリフト、壊れやすい隣接物、および混合重量を組み合わせます。レイアウトが混雑していると感じた場合は、最も制限されたターゲットを最初に特定します。露出したチャームを削除すると、その下にあるチャームへのより安全なパスが開かれる場合もあります。失敗しても、作成されたレイアウトは理解可能で再現可能になるため、推測するよりも練習する方が役立ちます。</p>
+          <p data-i18n="guideDeep4">タッチ、ポインター、およびキーボード コントロールは、同じ公正なルールを共有します。このデバイスでは進行状況が残り、保護されたナビゲーションにより慎重な決定が保持されます。</p>
+        </article>
+      </div>
+    </section>
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-carnival-claw-cover.webp')">
       <header class="stage-header">
-        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Back">←</button>
-        <div><strong data-i18n="title">Animal Carnival Claw</strong><span id="stageSummary"></span></div>
+        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="メインへ戻る">←</button>
+        <div><strong data-i18n="title">アニマル・カーニバルクロー</strong><span id="stageSummary"></span></div>
         <span aria-hidden="true"></span>
       </header>
       <section id="stageWorkspace" class="stage-workspace">
         <section id="stagesPanel" class="stage-panel">
           <div class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></div>
-          <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Carnival mission selection"></div>
-          <button id="enterBtn" class="enter-button primary-action" type="button" data-i18n="enter">Enter Machine</button>
+          <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="カーニバルミッション選択"></div>
+          <button id="enterBtn" class="enter-button primary-action" type="button" data-i18n="enter">マシンに入る</button>
         </section>
-        <section id="cabinetPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="cabinet">Cabinet</h2><p id="cabinetSummary"></p></div><div id="cabinetGrid" class="cabinet-grid"></div></section>
-        <section id="workshopPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="workshop">Workshop</h2><p data-i18n="workshopIntro">Spend earned starbolts on permanent, transparent machine tuning.</p></div><div id="upgradeGrid" class="upgrade-grid"></div><p id="workshopFeedback" role="status"></p></section>
+        <section id="cabinetPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="cabinet">キャビネット</h2><p id="cabinetSummary"></p></div><div id="cabinetGrid" class="cabinet-grid"></div></section>
+        <section id="workshopPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="workshop">工房</h2><p data-i18n="workshopIntro">獲得したスターボルトは、永続的で透明性のあるマシンのチューニングに費やします。</p></div><div id="upgradeGrid" class="upgrade-grid"></div><p id="workshopFeedback" role="status"></p></section>
       </section>
-      <nav class="stage-tabs" data-i18n-aria="stageTabs" aria-label="Stage tabs">
-        <button id="cabinetTab" type="button" data-i18n="cabinet">Cabinet</button>
-        <button id="stagesTab" class="active" type="button" aria-current="page" data-i18n="stages">Missions</button>
-        <button id="workshopTab" type="button" data-i18n="workshop">Workshop</button>
+      <nav class="stage-tabs" data-i18n-aria="stageTabs" aria-label="ステージタブ">
+        <button id="cabinetTab" type="button" data-i18n="cabinet">キャビネット</button>
+        <button id="stagesTab" class="active" type="button" aria-current="page" data-i18n="stages">ミッション</button>
+        <button id="workshopTab" type="button" data-i18n="workshop">工房</button>
       </nav>
     </div>
     <div class="stage-ad-reserve" aria-hidden="true"></div>
@@ -161,44 +172,44 @@
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
-          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Back">←</button>
+          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="ミッションへ戻る">←</button>
           <div class="battle-title"><small id="missionLabel"></small><strong id="objectiveText"></strong></div>
-          <div class="battle-stat"><small data-i18n="drops">Drops</small><strong id="dropsValue">3</strong></div>
-          <div class="battle-stat"><small data-i18n="grip">Grip</small><strong id="gripValue">100%</strong></div>
-          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="Pause">Ⅱ</button>
+          <div class="battle-stat"><small data-i18n="drops">回数</small><strong id="dropsValue">3</strong></div>
+          <div class="battle-stat"><small data-i18n="grip">グリップ</small><strong id="gripValue">100%</strong></div>
+          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="一時停止">Ⅱ</button>
         </header>
-        <section class="target-strip"><strong data-i18n="targets">Targets</strong><div id="targetList"></div></section>
+        <section class="target-strip"><strong data-i18n="targets">目標</strong><div id="targetList"></div></section>
         <section class="machine-wrap">
-          <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="Aim and operate the carnival claw"></canvas>
+          <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="カーニバルクローを狙って操作する"></canvas>
           <div id="steerAction" class="steer-action" aria-live="polite" hidden></div>
           <div id="phaseHint" class="phase-hint" aria-live="polite"></div>
         </section>
         <div class="battle-controls">
-          <div id="timingMeter" class="stability-meter"><span data-i18n="timing">Timing</span><i><b id="stabilityFill"></b></i></div>
-          <button id="dropBtn" class="primary-action" type="button" data-i18n="drop">Drop Claw</button>
-          <button id="restartBtn" type="button" data-i18n="restart">Restart</button>
+          <div id="timingMeter" class="stability-meter"><span data-i18n="timing">タイミング</span><i><b id="stabilityFill"></b></i></div>
+          <button id="dropBtn" class="primary-action" type="button" data-i18n="drop">クローを下ろす</button>
+          <button id="restartBtn" type="button" data-i18n="restart">リスタート</button>
         </div>
       </div>
 
       <section id="tutorialPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card">
-        <div class="tutorial-nori sprite-cell atlas-nori" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">Aim, drop, stabilize</h2><ol>
-          <li data-i18n="tutorial1">Drag the reticle over one requested charm.</li>
-          <li data-i18n="tutorial2">Drop when the swaying claw overlaps the target.</li>
-          <li data-i18n="tutorial3">During the lift, drag opposite the swing to keep grip above the line.</li>
-        </ol><button id="tutorialStartBtn" class="primary-action wp-tutorial-action" type="button" data-i18n="tutorialStart">Start the machine</button>
+        <div class="tutorial-nori sprite-cell atlas-nori" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">狙う・下ろす・安定</h2><ol>
+          <li data-i18n="tutorial1">要求されたチャームの 1 つ上にレティクルをドラッグします。</li>
+          <li data-i18n="tutorial2">揺れる爪がターゲットに重なるとドロップ。</li>
+          <li data-i18n="tutorial3">つかんだ後、動く針が緑に入ったらグリップ固定を押します。</li>
+        </ol><button id="tutorialStartBtn" class="primary-action wp-tutorial-action" type="button" data-i18n="tutorialStart">マシン開始</button>
       </div></section>
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
-        <h2 id="leaveTitle" data-i18n="leaveTitle">Leave this machine?</h2><p data-i18n="leaveText">Continue keeps this exact drop frozen. Returning to Missions ends only this attempt.</p>
-        <div class="modal-actions two"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Return to Missions</button></div>
+        <h2 id="leaveTitle" data-i18n="leaveTitle">このマシンを離れますか？</h2><p data-i18n="leaveText">続行すると、この正確なドロップが凍結されたままになります。ミッションに戻ると、この試みのみが終了します。</p>
+        <div class="modal-actions two"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">続ける</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">ミッションへ</button></div>
       </div></section>
       <section id="pausePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden><div class="dialog-card">
-        <h2 id="pauseTitle" data-i18n="pauseTitle">Machine paused</h2><p data-i18n="pauseText">The rail, claw and prize bin are frozen.</p>
-        <button id="resumeBtn" class="primary-action" type="button" data-i18n="resume">Resume</button>
+        <h2 id="pauseTitle" data-i18n="pauseTitle">一時停止中</h2><p data-i18n="pauseText">レール、爪、景品箱は凍結しています。</p>
+        <button id="resumeBtn" class="primary-action" type="button" data-i18n="resume">再開</button>
       </div></section>
       <section id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card">
-        <div class="result-rux sprite-cell atlas-rux" aria-hidden="true"></div><small data-i18n="resultKicker">Carnival report</small><h2 id="resultTitle"></h2>
+        <div class="result-rux sprite-cell atlas-rux" aria-hidden="true"></div><small data-i18n="resultKicker">カーニバル報告</small><h2 id="resultTitle"></h2>
         <div id="resultMedal" class="result-medal"></div><p id="resultText"></p><p id="bestText" class="best-text"></p>
-        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">Missions</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next Mission</button><button id="retryBtn" type="button" data-i18n="retry">Replay</button></div>
+        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">ミッション</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">次のミッション</button><button id="retryBtn" type="button" data-i18n="retry">リプレイ</button></div>
       </div></section>
     </div>
     <div class="battle-ad-reserve" aria-hidden="true"></div>
@@ -211,7 +222,7 @@
   <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
-  <script src="locales.js?v=20260801-guide14"></script><script src="game.js?v=20260802-stage-v19"></script>
+  <script src="locales.js?v=20260803-guide-v21"></script><script src="game.js?v=20260803-guide-v21"></script>
   <script src="../../src/stage-selector-standard.js?v=20260801-claw-v17" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>

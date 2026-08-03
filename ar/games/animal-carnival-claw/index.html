@@ -75,7 +75,7 @@
   <section id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
       <img src="../../assets/animal-carnival-claw-cover.webp" alt="">
-      <strong data-i18n="loading">Lighting the Starbell Carnival…</strong>
+      <strong data-i18n="loading">جارٍ إضاءة كرنفال جرس النجوم…</strong>
       <div class="loading-track"><i id="loadingFill"></i></div>
     </div>
   </section>
@@ -83,12 +83,12 @@
   <div id="mainGroup">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
-        <a class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="Back to WeightPlay">
+        <a class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="العودة إلى WeightPlay">
           <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="">
         </a>
-        <strong data-i18n="title">Animal Carnival Claw</strong>
+        <strong data-i18n="title">مخلب كرنفال الحيوانات</strong>
         <label class="locale-control">
-          <span class="sr-only" data-i18n="language">Language</span>
+          <span class="sr-only" data-i18n="language">اللغة</span>
           <select id="localeSelect" data-i18n-aria="language">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option>
             <option value="zh-Hans">简体中文</option><option value="ja">日本語</option>
@@ -103,55 +103,66 @@
       <section class="main-hero">
         <img class="main-poster" src="../../assets/animal-carnival-claw-cover.webp" data-i18n-alt="posterAlt" alt="شعار WeightPlay">
         <div class="main-copy">
-          <small data-i18n="eyebrow">Starbell skill arcade</small>
+          <small data-i18n="eyebrow">ممر مهارة ستاربيل</small>
           <h1 data-i18n="title">مخلب كرنفال الحيوانات</h1>
-          <p data-i18n="pitch">Choose a charm, time the swaying claw, then steady the lift before three drops run out.</p>
+          <p data-i18n="pitch">اختر تعويذة واضبط توقيت المخلب المتأرجح ثم ثبّت الرفع خلال ثلاث محاولات.</p>
           <div id="mainProgress" class="main-progress"></div>
-          <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start">Start Game</button>
+          <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start">ابدأ اللعب</button>
         </div>
       </section>
     </main>
 
-    <section class="game-page-info game-page-info-static" aria-label="مخلب كرنفال الحيوانات معلومات اللعبة">
-    
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>مخلب كرنفال الحيوانات</h2><p>صوّب واضبط التوقيت وثبّت المخلب العادل عبر 30 مهمة كرنفال أصلية.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>أركيد مخلب مهاري</strong></div><div class="game-info-fact"><span>النوع</span><strong>العاب الحيوانات · أركيد · محاكاة · المجموعة · العائلة</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل يتم حفظ التقدم؟</dt><dd>نعم، فقط في هذا المتصفح.</dd></div></dl></div>
-      
-    </div>
-  </section>
+    <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="دليل اللعبة">
+      <div class="game-info-hero"><div class="game-info-title">
+        <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay دليل اللعبة الأصلي</span>
+        <h2 data-i18n="guideTitle">تحويل كل قطرة إلى إنقاذ متعمد</h2>
+        <p data-i18n="guideIntro">قامت Rux ببناء ثلاثين آلة ذات مهارات عادلة لـ Starbell Carnival. يحتاج نوري إلى توقيتك لاستعادة تعويذات الذاكرة المطلوبة.</p>
+      </div></div>
+      <div class="game-info-sections guide-grid">
+        <article class="game-info-section"><h3 data-i18n="howTitle">كيف تلعب</h3><ol>
+          <li data-i18n="how1">اسحب شبكاني التصويب فوق سحر الهدف المرئي.</li>
+          <li data-i18n="how2">حرر أو اضغط على Drop عندما يصطف المخلب المتمايل.</li>
+          <li data-i18n="how3">بعد الإمساك، اضغط على Lock Grip عندما يدخل المؤشر المتحرك إلى المنطقة الخضراء.</li>
+        </ol></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">القواعد والنتائج</h3><p data-i18n="rulesText">تعطي كل مهمة ثلاث قطرات مجانية وتُظهر كل هدف ووزن واحتياجات القبضة. استرداد مجموعة الهدف كاملة لمسحها. لا يوجد أي دفع أو ندرة عشوائية أو جائزة حقيقية.</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">ثلاثون مهمة كرنفال</h3><p data-i18n="progressText">تشتمل ست آلات على مصدات وأرفف وانجراف مغناطيسي ومداخن هشة وتخطيطات بطولة مختلطة. كل واضح يفتح المهمة المؤلفة التالية.</p></article>
+        <article class="game-info-section"><h3 data-i18n="tipsTitle">نصائح عملية</h3><p data-i18n="tipsText">ابدأ بسحر الضوء المكشوف، وشاهد مخروط التأثير، وقم بإجراء تصحيحات صغيرة معاكسة أثناء الرفع. يحتاج السحر الثقيل المتمركز إلى ثبات أكثر من السحر الخفيف.</p></article>
+        <article class="game-info-section"><h3 data-i18n="saveTitle">حفظ والخصوصية</h3><p data-i18n="saveText">تبقى المهام والميداليات وتمائم الخزانة غير المقفلة في هذا المتصفح فقط. لا يلزم وجود حساب أو تحميل أو معلومات شخصية.</p></article>
+        <article class="game-info-section"><h3 data-i18n="faqTitle">الأسئلة الشائعة</h3><dl>
+          <div><dt data-i18n="faq1q">هل الاستيلاء عشوائي؟</dt><dd data-i18n="faq1a">لا، فالوضعية والتوقيت والوزن المرئي وثباتك هي التي تحدد النتيجة.</dd></div>
+          <div><dt data-i18n="faq2q">هل يمكنني أن أفقد السحر الذي تم جمعه؟</dt><dd data-i18n="faq2a">لا. إن تقدم الخزانة يكون دائمًا على هذا الجهاز.</dd></div>
+          <div><dt data-i18n="faq3q">ماذا يجب أن ألعب بعد ذلك؟</dt><dd data-i18n="faq3a">جرب Animal Reef Fisher لتحدي توقيت آخر أو Animal Parking Patrol للتخطيط الدقيق.</dd></div>
+        </dl></article>
+        <article class="game-info-section"><h3 data-i18n="guideDeepTitle">قراءة الجهاز قبل ارتكاب قطرة</h3>
+          <p data-i18n="guideDeep1">كل مهمة عبارة عن لغز مكاني صغير وليس يانصيب. يقوم الشريط المستهدف بتسمية التعويذات المهمة، بينما يعرض الصندوق مواقعها الدقيقة وأوزانها النسبية. حرك الشبكة ببطء بما يكفي لمقارنة مركز المخلب بالمركز المستهدف. إن المصدات والأرفف والأكوام القريبة ليست من الزخارف: فهي تحدد ممر الاقتراب الآمن. إذا كان الطريق المباشر ضيقًا، فابدأ من الجانب المفتوح ودع التأثير المرئي يحمل المخلب إلى المحاذاة. يمكن أن يؤدي التحرير في نفس موضع السكة إلى إنتاج اتصال مختلف عندما يختلف اتجاه التأرجح، لذا راقب الموضع والحركة.</p>
+          <p data-i18n="guideDeep2">الرفع هو قرار ثان، وليس مكافأة تلقائية. واجه التأرجح المرئي بتصحيحات قصيرة وحافظ على الثبات فوق خط الإمساك.</p>
+          <p data-i18n="guideDeep3">ثلاث قطرات تنشئ ميزانية التخطيط. لا يزال من الممكن أن يدخل السحر غير المستهدف إلى الخزانة الدائمة، لكنه لا يعزز الهدف الحالي، لذا قرر ما إذا كان الاكتشاف يستحق محاولة واحدة. تعزل المهمات المبكرة درسًا واحدًا في كل مرة. تجمع الفصول اللاحقة بين الرفوف المتحركة، والانجراف المغناطيسي، والجيران الهش، والأوزان المختلطة. عندما يبدو التخطيط مزدحمًا، حدد الهدف الأكثر تقييدًا أولاً. يمكن أن تؤدي إزالة التعويذة المكشوفة أيضًا إلى فتح مسار أكثر أمانًا إلى التعويذة الموجودة أسفلها. الفشل يترك التصميم المؤلف مفهومًا وقابلاً لإعادة التشغيل، مما يجعل الممارسة أكثر فائدة من التخمين.</p>
+          <p data-i18n="guideDeep4">تشترك عناصر التحكم باللمس والمؤشر ولوحة المفاتيح في نفس القواعد العادلة. يبقى التقدم على هذا الجهاز، ويحافظ التنقل المحمي على القرارات المتعمدة.</p>
+        </article>
+      </div>
+    </section>
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-carnival-claw-cover.webp')">
       <header class="stage-header">
-        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Back">←</button>
-        <div><strong data-i18n="title">Animal Carnival Claw</strong><span id="stageSummary"></span></div>
+        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="العودة للرئيسية">←</button>
+        <div><strong data-i18n="title">مخلب كرنفال الحيوانات</strong><span id="stageSummary"></span></div>
         <span aria-hidden="true"></span>
       </header>
       <section id="stageWorkspace" class="stage-workspace">
         <section id="stagesPanel" class="stage-panel">
           <div class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></div>
-          <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Carnival mission selection"></div>
-          <button id="enterBtn" class="enter-button primary-action" type="button" data-i18n="enter">Enter Machine</button>
+          <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="اختيار مهمة الكرنفال"></div>
+          <button id="enterBtn" class="enter-button primary-action" type="button" data-i18n="enter">ادخل الآلة</button>
         </section>
-        <section id="cabinetPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="cabinet">Cabinet</h2><p id="cabinetSummary"></p></div><div id="cabinetGrid" class="cabinet-grid"></div></section>
-        <section id="workshopPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="workshop">Workshop</h2><p data-i18n="workshopIntro">Spend earned starbolts on permanent, transparent machine tuning.</p></div><div id="upgradeGrid" class="upgrade-grid"></div><p id="workshopFeedback" role="status"></p></section>
+        <section id="cabinetPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="cabinet">الخزانة</h2><p id="cabinetSummary"></p></div><div id="cabinetGrid" class="cabinet-grid"></div></section>
+        <section id="workshopPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="workshop">الورشة</h2><p data-i18n="workshopIntro">أنفق ستاربولتس المكتسبة على ضبط الآلة الدائم والشفاف.</p></div><div id="upgradeGrid" class="upgrade-grid"></div><p id="workshopFeedback" role="status"></p></section>
       </section>
-      <nav class="stage-tabs" data-i18n-aria="stageTabs" aria-label="Stage tabs">
-        <button id="cabinetTab" type="button" data-i18n="cabinet">Cabinet</button>
-        <button id="stagesTab" class="active" type="button" aria-current="page" data-i18n="stages">Missions</button>
-        <button id="workshopTab" type="button" data-i18n="workshop">Workshop</button>
+      <nav class="stage-tabs" data-i18n-aria="stageTabs" aria-label="علامات تبويب المرحلة">
+        <button id="cabinetTab" type="button" data-i18n="cabinet">الخزانة</button>
+        <button id="stagesTab" class="active" type="button" aria-current="page" data-i18n="stages">المهمات</button>
+        <button id="workshopTab" type="button" data-i18n="workshop">الورشة</button>
       </nav>
     </div>
     <div class="stage-ad-reserve" aria-hidden="true"></div>
@@ -161,44 +172,44 @@
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
-          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Back">←</button>
+          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="العودة للمهمات">←</button>
           <div class="battle-title"><small id="missionLabel"></small><strong id="objectiveText"></strong></div>
-          <div class="battle-stat"><small data-i18n="drops">Drops</small><strong id="dropsValue">3</strong></div>
-          <div class="battle-stat"><small data-i18n="grip">Grip</small><strong id="gripValue">100%</strong></div>
-          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="Pause">Ⅱ</button>
+          <div class="battle-stat"><small data-i18n="drops">المحاولات</small><strong id="dropsValue">3</strong></div>
+          <div class="battle-stat"><small data-i18n="grip">القبضة</small><strong id="gripValue">100%</strong></div>
+          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="إيقاف مؤقت">Ⅱ</button>
         </header>
-        <section class="target-strip"><strong data-i18n="targets">Targets</strong><div id="targetList"></div></section>
+        <section class="target-strip"><strong data-i18n="targets">الأهداف</strong><div id="targetList"></div></section>
         <section class="machine-wrap">
-          <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="Aim and operate the carnival claw"></canvas>
+          <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="الهدف وتشغيل مخلب الكرنفال"></canvas>
           <div id="steerAction" class="steer-action" aria-live="polite" hidden></div>
           <div id="phaseHint" class="phase-hint" aria-live="polite"></div>
         </section>
         <div class="battle-controls">
-          <div id="timingMeter" class="stability-meter"><span data-i18n="timing">Timing</span><i><b id="stabilityFill"></b></i></div>
-          <button id="dropBtn" class="primary-action" type="button" data-i18n="drop">Drop Claw</button>
-          <button id="restartBtn" type="button" data-i18n="restart">Restart</button>
+          <div id="timingMeter" class="stability-meter"><span data-i18n="timing">التوقيت</span><i><b id="stabilityFill"></b></i></div>
+          <button id="dropBtn" class="primary-action" type="button" data-i18n="drop">أنزل المخلب</button>
+          <button id="restartBtn" type="button" data-i18n="restart">إعادة البدء</button>
         </div>
       </div>
 
       <section id="tutorialPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card">
-        <div class="tutorial-nori sprite-cell atlas-nori" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">Aim, drop, stabilize</h2><ol>
-          <li data-i18n="tutorial1">Drag the reticle over one requested charm.</li>
-          <li data-i18n="tutorial2">Drop when the swaying claw overlaps the target.</li>
-          <li data-i18n="tutorial3">During the lift, drag opposite the swing to keep grip above the line.</li>
-        </ol><button id="tutorialStartBtn" class="primary-action wp-tutorial-action" type="button" data-i18n="tutorialStart">Start the machine</button>
+        <div class="tutorial-nori sprite-cell atlas-nori" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">صوّب وأنزل وثبّت</h2><ol>
+          <li data-i18n="tutorial1">اسحب الشبيكة فوق السحر المطلوب.</li>
+          <li data-i18n="tutorial2">أسقط عندما يتداخل المخلب المتمايل مع الهدف.</li>
+          <li data-i18n="tutorial3">بعد الالتقاط، اضغط تثبيت القبضة عندما يدخل المؤشر المتحرك المنطقة الخضراء.</li>
+        </ol><button id="tutorialStartBtn" class="primary-action wp-tutorial-action" type="button" data-i18n="tutorialStart">شغّل الآلة</button>
       </div></section>
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
-        <h2 id="leaveTitle" data-i18n="leaveTitle">Leave this machine?</h2><p data-i18n="leaveText">Continue keeps this exact drop frozen. Returning to Missions ends only this attempt.</p>
-        <div class="modal-actions two"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Return to Missions</button></div>
+        <h2 id="leaveTitle" data-i18n="leaveTitle">مغادرة هذه الآلة؟</h2><p data-i18n="leaveText">الاستمرار يبقي هذا الانخفاض مجمداً. العودة إلى المهمات تنتهي بهذه المحاولة فقط.</p>
+        <div class="modal-actions two"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">متابعة</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">العودة للمهمات</button></div>
       </div></section>
       <section id="pausePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden><div class="dialog-card">
-        <h2 id="pauseTitle" data-i18n="pauseTitle">Machine paused</h2><p data-i18n="pauseText">The rail, claw and prize bin are frozen.</p>
-        <button id="resumeBtn" class="primary-action" type="button" data-i18n="resume">Resume</button>
+        <h2 id="pauseTitle" data-i18n="pauseTitle">الآلة متوقفة</h2><p data-i18n="pauseText">تم تجميد السكة والمخلب وصندوق الجوائز.</p>
+        <button id="resumeBtn" class="primary-action" type="button" data-i18n="resume">استئناف</button>
       </div></section>
       <section id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card">
-        <div class="result-rux sprite-cell atlas-rux" aria-hidden="true"></div><small data-i18n="resultKicker">Carnival report</small><h2 id="resultTitle"></h2>
+        <div class="result-rux sprite-cell atlas-rux" aria-hidden="true"></div><small data-i18n="resultKicker">تقرير الكرنفال</small><h2 id="resultTitle"></h2>
         <div id="resultMedal" class="result-medal"></div><p id="resultText"></p><p id="bestText" class="best-text"></p>
-        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">Missions</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next Mission</button><button id="retryBtn" type="button" data-i18n="retry">Replay</button></div>
+        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">المهمات</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">المهمة التالية</button><button id="retryBtn" type="button" data-i18n="retry">إعادة</button></div>
       </div></section>
     </div>
     <div class="battle-ad-reserve" aria-hidden="true"></div>
@@ -210,7 +221,7 @@
   <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
-  <script src="locales.js?v=20260801-guide14"></script><script src="game.js?v=20260802-stage-v19"></script>
+  <script src="locales.js?v=20260803-guide-v21"></script><script src="game.js?v=20260803-guide-v21"></script>
   <script src="../../src/stage-selector-standard.js?v=20260801-claw-v17" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>

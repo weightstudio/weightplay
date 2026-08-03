@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -21,7 +21,7 @@
     <div class="stage-canvas" data-wp-standard-stage-screen>
       <header class="stage-header"><button id="stageBackBtn" class="icon-btn" type="button">&larr;</button><strong data-i18n="missions">Moon Archive</strong><span id="coinLabel"></span></header>
       <section class="planner"><img src="../../assets/animal-moonlight-heist-orla.webp" alt="" /><div class="planner-body"><div class="planner-heading"><strong data-i18n="chooseGadget">Choose Gadget</strong><span id="diamondLabel"></span></div><div class="gadget-row"><div id="gadgetChoices" class="gadget-choices"></div><button id="rerollBtn" class="economy-btn" type="button"></button><button id="insuranceBtn" class="economy-btn" type="button"></button></div><span id="economyFeedback" class="economy-feedback" aria-live="polite"></span></div></section>
-      <div id="missionRail" class="mission-rail" aria-label="Missions"></div>
+      <div id="missionRail" class="mission-rail" aria-label="Missions" data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-easing="smoothstep"></div>
     </div>
     <div class="stage-ad-reserve" aria-hidden="true"></div>
   </section>
@@ -46,7 +46,7 @@
   </section>
 
   <script src="../../src/wallet.js"></script>
-<script src="game.js?v=20260802-semantic-stage-v7-1"></script>
+<script src="game.js?v=20260803-interface-v6-1"></script>
   <script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1"></script>
 </body>

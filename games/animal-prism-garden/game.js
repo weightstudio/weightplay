@@ -4,11 +4,13 @@
   const $$=selector=>[...document.querySelectorAll(selector)];
   const localeOrder=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
   const localeLang={en:"en","zh-Hant":"zh-Hant","zh-Hans":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
+  const localeByRoute={en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const palette=["#22dfff","#ff4fcf","#ffbf45","#946cff","#68e56c","#ff786d","#4589ff","#ff6298","#f7d85a"];
   const saveKey="wp-animal-prism-garden-v1";
   const {levels}=window.PRISM_GARDEN_LEVELS;
   const screens=$$(".screen");
-  let locale=read("wp-locale")||"en";
+  const routeSegment=location.pathname.split("/").filter(Boolean)[0]||"";
+  let locale=localeByRoute[routeSegment]||read("wp-locale")||document.documentElement.lang||"en";
   let unlocked=Math.max(1,Math.min(30,Number(read(saveKey))||1));
   let selected=unlocked-1;
   let level=null,paths={},history=[],activeColor=null,pointerId=null,moves=0,resultClaimed=false,audioContext=null;

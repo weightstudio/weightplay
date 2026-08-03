@@ -75,7 +75,7 @@
   <section id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
       <img src="../../assets/animal-carnival-claw-cover.webp" alt="">
-      <strong data-i18n="loading">Lighting the Starbell Carnival…</strong>
+      <strong data-i18n="loading">스타벨 카니발에 불을 켜는 중…</strong>
       <div class="loading-track"><i id="loadingFill"></i></div>
     </div>
   </section>
@@ -83,12 +83,12 @@
   <div id="mainGroup">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
-        <a class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="Back to WeightPlay">
+        <a class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="WeightPlay로 돌아가기">
           <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="">
         </a>
-        <strong data-i18n="title">Animal Carnival Claw</strong>
+        <strong data-i18n="title">애니멀 카니발 클로</strong>
         <label class="locale-control">
-          <span class="sr-only" data-i18n="language">Language</span>
+          <span class="sr-only" data-i18n="language">언어</span>
           <select id="localeSelect" data-i18n-aria="language">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option>
             <option value="zh-Hans">简体中文</option><option value="ja">日本語</option>
@@ -103,55 +103,66 @@
       <section class="main-hero">
         <img class="main-poster" src="../../assets/animal-carnival-claw-cover.webp" data-i18n-alt="posterAlt" alt="애니멀 카니발 클로 게임 이미지">
         <div class="main-copy">
-          <small data-i18n="eyebrow">Starbell skill arcade</small>
+          <small data-i18n="eyebrow">스타벨 스킬 아케이드</small>
           <h1 data-i18n="title">애니멀 카니발 클로</h1>
-          <p data-i18n="pitch">Choose a charm, time the swaying claw, then steady the lift before three drops run out.</p>
+          <p data-i18n="pitch">장식을 고르고 흔들리는 집게의 때를 맞춘 뒤 세 번 안에 들어 올림을 안정시키세요.</p>
           <div id="mainProgress" class="main-progress"></div>
-          <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start">Start Game</button>
+          <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start">게임 시작</button>
         </div>
       </section>
     </main>
 
-    <section class="game-page-info game-page-info-static" aria-label="애니멀 카니발 클로 게임 정보">
-    
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>애니멀 카니발 클로</h2><p>30개의 오리지널 카니발 미션에서 조준하고 타이밍을 맞추며 집게를 안정시켜 목표 장식을 모으세요.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>스킬 집게 아케이드</strong></div><div class="game-info-fact"><span>장르</span><strong>동물 게임 · 아케이드 · 시뮬레이션 · 컬렉션 · 가족</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>진행 상황이 저장되나요?</dt><dd>예, 이 브라우저에서만 가능합니다.</dd></div></dl></div>
-      
-    </div>
-  </section>
+    <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="게임 가이드">
+      <div class="game-info-hero"><div class="game-info-title">
+        <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay 오리지널 게임 가이드</span>
+        <h2 data-i18n="guideTitle">모든 방울을 고의적인 구조로 전환</h2>
+        <p data-i18n="guideIntro">Rux는 Starbell Carnival을 위해 30개의 공정한 기술 기계를 만들었습니다. 노리가 요청한 기억의 부적을 되찾으려면 타이밍이 필요합니다.</p>
+      </div></div>
+      <div class="game-info-sections guide-grid">
+        <article class="game-info-section"><h3 data-i18n="howTitle">플레이 방법</h3><ol>
+          <li data-i18n="how1">조준 십자선을 눈에 보이는 표적 참 위로 드래그하세요.</li>
+          <li data-i18n="how2">흔들리는 발톱이 정렬되면 놓거나 놓기를 누릅니다.</li>
+          <li data-i18n="how3">캐치 후 움직이는 포인터가 녹색 영역에 들어갈 때 잠금 그립을 누릅니다.</li>
+        </ol></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">규칙 및 결과</h3><p data-i18n="rulesText">각 임무마다 3개의 무료 낙하가 제공되며 모든 목표, 무게 및 그립 요구 사항이 표시됩니다. 지우려는 전체 대상 세트를 검색합니다. 결제, 무작위 희귀성 또는 실제 상품이 포함되지 않습니다.</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">30개의 카니발 임무</h3><p data-i18n="progressText">6개의 기계에는 범퍼, 선반, 자기 드리프트, 깨지기 쉬운 스택 및 혼합 챔피언십 레이아웃이 추가됩니다. 클리어할 때마다 다음으로 작성된 미션이 잠금 해제됩니다.</p></article>
+        <article class="game-info-section"><h3 data-i18n="tipsTitle">실용적인 팁</h3><p data-i18n="tipsText">노출된 빛의 참으로 시작하고, 흔들리는 원뿔을 관찰하고, 들어올리는 동안 약간의 반대 수정을 가하십시오. 중심에 있는 무거운 매력은 가벼운 매력보다 안정감이 더 필요합니다.</p></article>
+        <article class="game-info-section"><h3 data-i18n="saveTitle">저장 및 개인정보 보호</h3><p data-i18n="saveText">잠금 해제된 임무, 메달, 캐비닛 참은 이 브라우저에만 유지됩니다. 계정, 업로드 또는 개인 정보가 필요하지 않습니다.</p></article>
+        <article class="game-info-section"><h3 data-i18n="faqTitle">FAQ</h3><dl>
+          <div><dt data-i18n="faq1q">그랩은 랜덤인가요?</dt><dd data-i18n="faq1a">아니요. 위치, 타이밍, 눈에 보이는 무게 및 안정성이 결과를 결정합니다.</dd></div>
+          <div><dt data-i18n="faq2q">수집한 부적을 잃을 수도 있나요?</dt><dd data-i18n="faq2a">아니요. 캐비닛 진행 상황은 이 장치에서 영구적입니다.</dd></div>
+          <div><dt data-i18n="faq3q">다음에는 무엇을 플레이해야 할까요?</dt><dd data-i18n="faq3a">또 다른 타이밍 도전을 위해 Animal Reef Fisher를 시도하거나 신중한 계획을 위해 Animal Parking Patrol을 시도해보세요.</dd></div>
+        </dl></article>
+        <article class="game-info-section"><h3 data-i18n="guideDeepTitle">드롭을 하기 전에 머신을 읽어보세요</h3>
+          <p data-i18n="guideDeep1">모든 임무는 복권이 아닌 작은 공간 퍼즐입니다. 대상 스트립에는 중요한 참의 이름이 지정되고, 상자에는 정확한 위치와 상대적 무게가 표시됩니다. 클로 중심과 목표 중심을 비교할 수 있을 정도로 레티클을 천천히 움직입니다. 근처의 범퍼, 선반, 더미는 장식이 아닙니다. 안전한 접근 통로를 정의합니다. 직접 경로가 좁은 경우 열린 쪽에서 시작하여 눈에 보이는 흔들림으로 집게발이 정렬되도록 하세요. 동일한 레일 위치에서 놓으면 흔들리는 방향이 다를 때 다른 접촉이 발생할 수 있으므로 위치와 동작을 모두 관찰하십시오.</p>
+          <p data-i18n="guideDeep2">리프트는 자동 보상이 아닌 두 번째 결정입니다. 짧은 수정으로 눈에 보이는 스윙에 대응하고 그립 라인 위에서 안정성을 유지하세요.</p>
+          <p data-i18n="guideDeep3">세 방울이면 계획 예산이 생성됩니다. 대상이 아닌 부적은 여전히 ​​영구 캐비닛에 들어갈 수 있지만 현재 목표를 진전시키지 않으므로 발견이 한 번 시도할 가치가 있는지 결정하십시오. 초기 임무는 한 번에 하나의 교훈을 분리합니다. 이후 장에서는 움직이는 선반, 자기 드리프트, 깨지기 쉬운 이웃 및 혼합 무게를 결합합니다. 레이아웃이 혼잡하다고 느껴지면 가장 제한된 대상을 먼저 식별하십시오. 노출된 부적을 제거하면 그 아래에 있는 부적까지 더 안전한 경로가 열릴 수도 있습니다. 실패하면 작성된 레이아웃을 이해하고 재생할 수 있게 되므로 추측보다 연습이 더 유용해집니다.</p>
+          <p data-i18n="guideDeep4">터치, 포인터 및 키보드 컨트롤은 동일한 공정한 규칙을 공유합니다. 이 장치에는 진행 상황이 유지되며 보호된 탐색 기능을 통해 신중한 결정이 유지됩니다.</p>
+        </article>
+      </div>
+    </section>
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-carnival-claw-cover.webp')">
       <header class="stage-header">
-        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Back">←</button>
-        <div><strong data-i18n="title">Animal Carnival Claw</strong><span id="stageSummary"></span></div>
+        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="메인으로">←</button>
+        <div><strong data-i18n="title">애니멀 카니발 클로</strong><span id="stageSummary"></span></div>
         <span aria-hidden="true"></span>
       </header>
       <section id="stageWorkspace" class="stage-workspace">
         <section id="stagesPanel" class="stage-panel">
           <div class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></div>
-          <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Carnival mission selection"></div>
-          <button id="enterBtn" class="enter-button primary-action" type="button" data-i18n="enter">Enter Machine</button>
+          <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="카니발 미션 선택"></div>
+          <button id="enterBtn" class="enter-button primary-action" type="button" data-i18n="enter">기계 입장</button>
         </section>
-        <section id="cabinetPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="cabinet">Cabinet</h2><p id="cabinetSummary"></p></div><div id="cabinetGrid" class="cabinet-grid"></div></section>
-        <section id="workshopPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="workshop">Workshop</h2><p data-i18n="workshopIntro">Spend earned starbolts on permanent, transparent machine tuning.</p></div><div id="upgradeGrid" class="upgrade-grid"></div><p id="workshopFeedback" role="status"></p></section>
+        <section id="cabinetPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="cabinet">진열장</h2><p id="cabinetSummary"></p></div><div id="cabinetGrid" class="cabinet-grid"></div></section>
+        <section id="workshopPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="workshop">작업장</h2><p data-i18n="workshopIntro">획득한 스타볼트를 영구적이고 투명한 기계 튜닝에 사용하세요.</p></div><div id="upgradeGrid" class="upgrade-grid"></div><p id="workshopFeedback" role="status"></p></section>
       </section>
-      <nav class="stage-tabs" data-i18n-aria="stageTabs" aria-label="Stage tabs">
-        <button id="cabinetTab" type="button" data-i18n="cabinet">Cabinet</button>
-        <button id="stagesTab" class="active" type="button" aria-current="page" data-i18n="stages">Missions</button>
-        <button id="workshopTab" type="button" data-i18n="workshop">Workshop</button>
+      <nav class="stage-tabs" data-i18n-aria="stageTabs" aria-label="스테이지 탭">
+        <button id="cabinetTab" type="button" data-i18n="cabinet">진열장</button>
+        <button id="stagesTab" class="active" type="button" aria-current="page" data-i18n="stages">미션</button>
+        <button id="workshopTab" type="button" data-i18n="workshop">작업장</button>
       </nav>
     </div>
     <div class="stage-ad-reserve" aria-hidden="true"></div>
@@ -161,44 +172,44 @@
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
-          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Back">←</button>
+          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="미션으로">←</button>
           <div class="battle-title"><small id="missionLabel"></small><strong id="objectiveText"></strong></div>
-          <div class="battle-stat"><small data-i18n="drops">Drops</small><strong id="dropsValue">3</strong></div>
-          <div class="battle-stat"><small data-i18n="grip">Grip</small><strong id="gripValue">100%</strong></div>
-          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="Pause">Ⅱ</button>
+          <div class="battle-stat"><small data-i18n="drops">횟수</small><strong id="dropsValue">3</strong></div>
+          <div class="battle-stat"><small data-i18n="grip">그립</small><strong id="gripValue">100%</strong></div>
+          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="일시 정지">Ⅱ</button>
         </header>
-        <section class="target-strip"><strong data-i18n="targets">Targets</strong><div id="targetList"></div></section>
+        <section class="target-strip"><strong data-i18n="targets">목표</strong><div id="targetList"></div></section>
         <section class="machine-wrap">
-          <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="Aim and operate the carnival claw"></canvas>
+          <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="카니발 발톱을 조준하고 조작하세요"></canvas>
           <div id="steerAction" class="steer-action" aria-live="polite" hidden></div>
           <div id="phaseHint" class="phase-hint" aria-live="polite"></div>
         </section>
         <div class="battle-controls">
-          <div id="timingMeter" class="stability-meter"><span data-i18n="timing">Timing</span><i><b id="stabilityFill"></b></i></div>
-          <button id="dropBtn" class="primary-action" type="button" data-i18n="drop">Drop Claw</button>
-          <button id="restartBtn" type="button" data-i18n="restart">Restart</button>
+          <div id="timingMeter" class="stability-meter"><span data-i18n="timing">타이밍</span><i><b id="stabilityFill"></b></i></div>
+          <button id="dropBtn" class="primary-action" type="button" data-i18n="drop">집게 내리기</button>
+          <button id="restartBtn" type="button" data-i18n="restart">다시 시작</button>
         </div>
       </div>
 
       <section id="tutorialPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card">
-        <div class="tutorial-nori sprite-cell atlas-nori" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">Aim, drop, stabilize</h2><ol>
-          <li data-i18n="tutorial1">Drag the reticle over one requested charm.</li>
-          <li data-i18n="tutorial2">Drop when the swaying claw overlaps the target.</li>
-          <li data-i18n="tutorial3">During the lift, drag opposite the swing to keep grip above the line.</li>
-        </ol><button id="tutorialStartBtn" class="primary-action wp-tutorial-action" type="button" data-i18n="tutorialStart">Start the machine</button>
+        <div class="tutorial-nori sprite-cell atlas-nori" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">조준, 내리기, 안정</h2><ol>
+          <li data-i18n="tutorial1">요청한 부적 위에 십자선을 드래그하세요.</li>
+          <li data-i18n="tutorial2">흔들리는 발톱이 대상과 겹치면 떨어뜨립니다.</li>
+          <li data-i18n="tutorial3">잡은 뒤 움직이는 바늘이 초록색 구간에 들어오면 그립 잠금을 누르세요.</li>
+        </ol><button id="tutorialStartBtn" class="primary-action wp-tutorial-action" type="button" data-i18n="tutorialStart">기계 시작</button>
       </div></section>
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
-        <h2 id="leaveTitle" data-i18n="leaveTitle">Leave this machine?</h2><p data-i18n="leaveText">Continue keeps this exact drop frozen. Returning to Missions ends only this attempt.</p>
-        <div class="modal-actions two"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Return to Missions</button></div>
+        <h2 id="leaveTitle" data-i18n="leaveTitle">이 기계를 나갈까요?</h2><p data-i18n="leaveText">계속해서 이 정확한 드롭을 동결 상태로 유지하세요. 임무로 돌아가면 이번 시도만 종료됩니다.</p>
+        <div class="modal-actions two"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">계속</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">미션으로</button></div>
       </div></section>
       <section id="pausePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden><div class="dialog-card">
-        <h2 id="pauseTitle" data-i18n="pauseTitle">Machine paused</h2><p data-i18n="pauseText">The rail, claw and prize bin are frozen.</p>
-        <button id="resumeBtn" class="primary-action" type="button" data-i18n="resume">Resume</button>
+        <h2 id="pauseTitle" data-i18n="pauseTitle">기계 일시 정지</h2><p data-i18n="pauseText">레일, 집게발, 상품통이 얼어있습니다.</p>
+        <button id="resumeBtn" class="primary-action" type="button" data-i18n="resume">계속하기</button>
       </div></section>
       <section id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card">
-        <div class="result-rux sprite-cell atlas-rux" aria-hidden="true"></div><small data-i18n="resultKicker">Carnival report</small><h2 id="resultTitle"></h2>
+        <div class="result-rux sprite-cell atlas-rux" aria-hidden="true"></div><small data-i18n="resultKicker">카니발 보고서</small><h2 id="resultTitle"></h2>
         <div id="resultMedal" class="result-medal"></div><p id="resultText"></p><p id="bestText" class="best-text"></p>
-        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">Missions</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next Mission</button><button id="retryBtn" type="button" data-i18n="retry">Replay</button></div>
+        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">미션</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">다음 미션</button><button id="retryBtn" type="button" data-i18n="retry">다시 플레이</button></div>
       </div></section>
     </div>
     <div class="battle-ad-reserve" aria-hidden="true"></div>
@@ -210,7 +221,7 @@
   <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
-  <script src="locales.js?v=20260801-guide14"></script><script src="game.js?v=20260802-stage-v19"></script>
+  <script src="locales.js?v=20260803-guide-v21"></script><script src="game.js?v=20260803-guide-v21"></script>
   <script src="../../src/stage-selector-standard.js?v=20260801-claw-v17" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>

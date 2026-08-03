@@ -75,7 +75,7 @@
   <section id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
       <img src="../../assets/animal-carnival-claw-cover.webp" alt="">
-      <strong data-i18n="loading">Lighting the Starbell Carnival…</strong>
+      <strong data-i18n="loading">Encendiendo el Carnaval Estrella…</strong>
       <div class="loading-track"><i id="loadingFill"></i></div>
     </div>
   </section>
@@ -83,12 +83,12 @@
   <div id="mainGroup">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
-        <a class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="Back to WeightPlay">
+        <a class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="Volver a WeightPlay">
           <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="">
         </a>
-        <strong data-i18n="title">Animal Carnival Claw</strong>
+        <strong data-i18n="title">Garra de Carnaval Animal</strong>
         <label class="locale-control">
-          <span class="sr-only" data-i18n="language">Language</span>
+          <span class="sr-only" data-i18n="language">Idioma</span>
           <select id="localeSelect" data-i18n-aria="language">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option>
             <option value="zh-Hans">简体中文</option><option value="ja">日本語</option>
@@ -103,55 +103,66 @@
       <section class="main-hero">
         <img class="main-poster" src="../../assets/animal-carnival-claw-cover.webp" data-i18n-alt="posterAlt" alt="Imagen del juego Garra de Carnaval Animal">
         <div class="main-copy">
-          <small data-i18n="eyebrow">Starbell skill arcade</small>
+          <small data-i18n="eyebrow">Arcade de habilidades Starbell</small>
           <h1 data-i18n="title">Garra de Carnaval Animal</h1>
-          <p data-i18n="pitch">Choose a charm, time the swaying claw, then steady the lift before three drops run out.</p>
+          <p data-i18n="pitch">Elige un amuleto, calcula el balanceo y estabiliza la subida antes de gastar tres intentos.</p>
           <div id="mainProgress" class="main-progress"></div>
-          <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start">Start Game</button>
+          <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start">Comenzar</button>
         </div>
       </section>
     </main>
 
-    <section class="game-page-info game-page-info-static" aria-label="Guía de Garra de Carnaval Animal">
-    
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2>Garra de Carnaval Animal</h2><p>Apunta, calcula y estabiliza una garra justa para recuperar objetivos en 30 misiones originales.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Cómo se juega</span><strong>Arcade de garra de habilidad</strong></div><div class="game-info-fact"><span>Género</span><strong>Juegos de animales · Arcada · Simulación · Colección · familia</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Se guarda el progreso?</dt><dd>Sí, sólo en este navegador.</dd></div></dl></div>
-      
-    </div>
-  </section>
+    <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="guía del juego">
+      <div class="game-info-hero"><div class="game-info-title">
+        <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay Guía del juego original</span>
+        <h2 data-i18n="guideTitle">Convierta cada gota en un rescate deliberado</h2>
+        <p data-i18n="guideIntro">Rux construyó treinta máquinas de habilidad justas para Starbell Carnival. Nori necesita tu tiempo para recuperar los amuletos de memoria solicitados.</p>
+      </div></div>
+      <div class="game-info-sections guide-grid">
+        <article class="game-info-section"><h3 data-i18n="howTitle">como jugar</h3><ol>
+          <li data-i18n="how1">Arrastra la retícula de puntería sobre un amuleto de objetivo visible.</li>
+          <li data-i18n="how2">Suelta o presiona Soltar cuando la garra oscilante se alinee.</li>
+          <li data-i18n="how3">Después de atraparlo, presione Lock Grip cuando el puntero en movimiento ingrese a la zona verde.</li>
+        </ol></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">Reglas y resultados</h3><p data-i18n="rulesText">Cada misión ofrece tres caídas gratuitas y muestra cada objetivo, peso y necesidad de agarre. Recupera el conjunto de objetivos completo para borrar. No se trata de pagos, rarezas aleatorias ni premios reales.</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">Treinta misiones de carnaval</h3><p data-i18n="progressText">Seis máquinas añaden parachoques, estantes, deriva magnética, pilas frágiles y diseños de campeonato mixtos. Cada limpieza desbloquea la siguiente misión creada.</p></article>
+        <article class="game-info-section"><h3 data-i18n="tipsTitle">Consejos prácticos</h3><p data-i18n="tipsText">Comience con encantos de luz expuestos, observe el cono de balanceo y haga pequeñas correcciones opuestas durante el levantamiento. Un amuleto pesado centrado necesita más estabilidad que uno ligero.</p></article>
+        <article class="game-info-section"><h3 data-i18n="saveTitle">Guardar y privacidad</h3><p data-i18n="saveText">Las misiones, medallas y amuletos de gabinete desbloqueados solo permanecen en este navegador. No se requiere cuenta, carga o información personal.</p></article>
+        <article class="game-info-section"><h3 data-i18n="faqTitle">Preguntas frecuentes</h3><dl>
+          <div><dt data-i18n="faq1q">¿La captura es aleatoria?</dt><dd data-i18n="faq1a">No. La posición, el tiempo, el peso visible y su estabilización determinan el resultado.</dd></div>
+          <div><dt data-i18n="faq2q">¿Puedo perder los amuletos recolectados?</dt><dd data-i18n="faq2a">No. El progreso del gabinete es permanente en este dispositivo.</dd></div>
+          <div><dt data-i18n="faq3q">¿Qué debería jugar a continuación?</dt><dd data-i18n="faq3a">Pruebe Animal Reef Fisher para otro desafío de cronometraje o Animal Parking Patrol para una planificación cuidadosa.</dd></div>
+        </dl></article>
+        <article class="game-info-section"><h3 data-i18n="guideDeepTitle">Leer la máquina antes de cometer una caída.</h3>
+          <p data-i18n="guideDeep1">Cada misión es un pequeño rompecabezas espacial más que una lotería. La tira objetivo nombra los amuletos que importan, mientras que el contenedor muestra sus ubicaciones exactas y pesos relativos. Mueva la retícula lo suficientemente lento para comparar el centro de la garra con el centro del objetivo. Los parachoques, estantes y pilas cercanos no son decoración: definen el corredor de acceso seguro. Si la ruta directa es estrecha, comience desde el lado abierto y deje que el balanceo visible alinee la garra. Soltar en la misma posición del riel puede producir un contacto diferente cuando la dirección de balanceo difiere, así que observe tanto la posición como el movimiento.</p>
+          <p data-i18n="guideDeep2">El ascenso es una segunda decisión, no una recompensa automática. Contrarresta el swing visible con correcciones breves y mantén la estabilidad por encima de la línea de agarre.</p>
+          <p data-i18n="guideDeep3">Tres gotas crean un presupuesto de planificación. Un amuleto que no sea el objetivo aún puede ingresar al gabinete permanente, pero no avanza hacia el objetivo actual, así que decide si vale la pena intentar descubrirlo. Las primeras misiones aíslan una lección a la vez. Los capítulos posteriores combinan estantes móviles, deriva magnética, vecinos frágiles y pesos mixtos. Cuando un diseño se siente abarrotado, identifique primero el objetivo más restringido. Quitar un amuleto expuesto también puede abrir un camino más seguro hacia uno que se encuentra debajo de él. Un error hace que el diseño creado sea comprensible y reproducible, lo que hace que la práctica sea más útil que las adivinanzas.</p>
+          <p data-i18n="guideDeep4">Los controles táctiles, del puntero y del teclado comparten las mismas reglas justas. El progreso continúa en este dispositivo y la navegación protegida preserva las decisiones deliberadas.</p>
+        </article>
+      </div>
+    </section>
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-carnival-claw-cover.webp')">
       <header class="stage-header">
-        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Back">←</button>
-        <div><strong data-i18n="title">Animal Carnival Claw</strong><span id="stageSummary"></span></div>
+        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Volver al inicio">←</button>
+        <div><strong data-i18n="title">Garra de Carnaval Animal</strong><span id="stageSummary"></span></div>
         <span aria-hidden="true"></span>
       </header>
       <section id="stageWorkspace" class="stage-workspace">
         <section id="stagesPanel" class="stage-panel">
           <div class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></div>
-          <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Carnival mission selection"></div>
-          <button id="enterBtn" class="enter-button primary-action" type="button" data-i18n="enter">Enter Machine</button>
+          <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Selección de misión de carnaval"></div>
+          <button id="enterBtn" class="enter-button primary-action" type="button" data-i18n="enter">Entrar en la máquina</button>
         </section>
-        <section id="cabinetPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="cabinet">Cabinet</h2><p id="cabinetSummary"></p></div><div id="cabinetGrid" class="cabinet-grid"></div></section>
-        <section id="workshopPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="workshop">Workshop</h2><p data-i18n="workshopIntro">Spend earned starbolts on permanent, transparent machine tuning.</p></div><div id="upgradeGrid" class="upgrade-grid"></div><p id="workshopFeedback" role="status"></p></section>
+        <section id="cabinetPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="cabinet">Vitrina</h2><p id="cabinetSummary"></p></div><div id="cabinetGrid" class="cabinet-grid"></div></section>
+        <section id="workshopPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="workshop">Taller</h2><p data-i18n="workshopIntro">Gaste los rayos estelares obtenidos en el ajuste permanente y transparente de las máquinas.</p></div><div id="upgradeGrid" class="upgrade-grid"></div><p id="workshopFeedback" role="status"></p></section>
       </section>
-      <nav class="stage-tabs" data-i18n-aria="stageTabs" aria-label="Stage tabs">
-        <button id="cabinetTab" type="button" data-i18n="cabinet">Cabinet</button>
-        <button id="stagesTab" class="active" type="button" aria-current="page" data-i18n="stages">Missions</button>
-        <button id="workshopTab" type="button" data-i18n="workshop">Workshop</button>
+      <nav class="stage-tabs" data-i18n-aria="stageTabs" aria-label="Pestañas de escenario">
+        <button id="cabinetTab" type="button" data-i18n="cabinet">Vitrina</button>
+        <button id="stagesTab" class="active" type="button" aria-current="page" data-i18n="stages">Misiones</button>
+        <button id="workshopTab" type="button" data-i18n="workshop">Taller</button>
       </nav>
     </div>
     <div class="stage-ad-reserve" aria-hidden="true"></div>
@@ -161,44 +172,44 @@
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
-          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Back">←</button>
+          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Volver a Misiones">←</button>
           <div class="battle-title"><small id="missionLabel"></small><strong id="objectiveText"></strong></div>
-          <div class="battle-stat"><small data-i18n="drops">Drops</small><strong id="dropsValue">3</strong></div>
-          <div class="battle-stat"><small data-i18n="grip">Grip</small><strong id="gripValue">100%</strong></div>
-          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="Pause">Ⅱ</button>
+          <div class="battle-stat"><small data-i18n="drops">Intentos</small><strong id="dropsValue">3</strong></div>
+          <div class="battle-stat"><small data-i18n="grip">Agarre</small><strong id="gripValue">100%</strong></div>
+          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="Pausa">Ⅱ</button>
         </header>
-        <section class="target-strip"><strong data-i18n="targets">Targets</strong><div id="targetList"></div></section>
+        <section class="target-strip"><strong data-i18n="targets">Objetivos</strong><div id="targetList"></div></section>
         <section class="machine-wrap">
-          <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="Aim and operate the carnival claw"></canvas>
+          <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="Apunta y opera la garra de carnaval."></canvas>
           <div id="steerAction" class="steer-action" aria-live="polite" hidden></div>
           <div id="phaseHint" class="phase-hint" aria-live="polite"></div>
         </section>
         <div class="battle-controls">
-          <div id="timingMeter" class="stability-meter"><span data-i18n="timing">Timing</span><i><b id="stabilityFill"></b></i></div>
-          <button id="dropBtn" class="primary-action" type="button" data-i18n="drop">Drop Claw</button>
-          <button id="restartBtn" type="button" data-i18n="restart">Restart</button>
+          <div id="timingMeter" class="stability-meter"><span data-i18n="timing">Momento</span><i><b id="stabilityFill"></b></i></div>
+          <button id="dropBtn" class="primary-action" type="button" data-i18n="drop">Bajar garra</button>
+          <button id="restartBtn" type="button" data-i18n="restart">Reiniciar</button>
         </div>
       </div>
 
       <section id="tutorialPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card">
-        <div class="tutorial-nori sprite-cell atlas-nori" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">Aim, drop, stabilize</h2><ol>
-          <li data-i18n="tutorial1">Drag the reticle over one requested charm.</li>
-          <li data-i18n="tutorial2">Drop when the swaying claw overlaps the target.</li>
-          <li data-i18n="tutorial3">During the lift, drag opposite the swing to keep grip above the line.</li>
-        </ol><button id="tutorialStartBtn" class="primary-action wp-tutorial-action" type="button" data-i18n="tutorialStart">Start the machine</button>
+        <div class="tutorial-nori sprite-cell atlas-nori" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">Apunta, baja y estabiliza</h2><ol>
+          <li data-i18n="tutorial1">Arrastre la retícula sobre un amuleto solicitado.</li>
+          <li data-i18n="tutorial2">Suelta cuando la garra oscilante se superpone al objetivo.</li>
+          <li data-i18n="tutorial3">Tras atrapar, pulsa Fijar agarre cuando el indicador móvil entre en la zona verde.</li>
+        </ol><button id="tutorialStartBtn" class="primary-action wp-tutorial-action" type="button" data-i18n="tutorialStart">Iniciar máquina</button>
       </div></section>
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
-        <h2 id="leaveTitle" data-i18n="leaveTitle">Leave this machine?</h2><p data-i18n="leaveText">Continue keeps this exact drop frozen. Returning to Missions ends only this attempt.</p>
-        <div class="modal-actions two"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Return to Missions</button></div>
+        <h2 id="leaveTitle" data-i18n="leaveTitle">¿Salir de esta máquina?</h2><p data-i18n="leaveText">Continuar mantiene congelada esta gota exacta. El regreso a Misiones pone fin únicamente a este intento.</p>
+        <div class="modal-actions two"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continuar</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Volver a Misiones</button></div>
       </div></section>
       <section id="pausePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden><div class="dialog-card">
-        <h2 id="pauseTitle" data-i18n="pauseTitle">Machine paused</h2><p data-i18n="pauseText">The rail, claw and prize bin are frozen.</p>
-        <button id="resumeBtn" class="primary-action" type="button" data-i18n="resume">Resume</button>
+        <h2 id="pauseTitle" data-i18n="pauseTitle">Máquina en pausa</h2><p data-i18n="pauseText">El riel, la garra y el contenedor de premios están congelados.</p>
+        <button id="resumeBtn" class="primary-action" type="button" data-i18n="resume">Reanudar</button>
       </div></section>
       <section id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card">
-        <div class="result-rux sprite-cell atlas-rux" aria-hidden="true"></div><small data-i18n="resultKicker">Carnival report</small><h2 id="resultTitle"></h2>
+        <div class="result-rux sprite-cell atlas-rux" aria-hidden="true"></div><small data-i18n="resultKicker">Informe del carnaval</small><h2 id="resultTitle"></h2>
         <div id="resultMedal" class="result-medal"></div><p id="resultText"></p><p id="bestText" class="best-text"></p>
-        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">Missions</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next Mission</button><button id="retryBtn" type="button" data-i18n="retry">Replay</button></div>
+        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">Misiones</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Siguiente misión</button><button id="retryBtn" type="button" data-i18n="retry">Repetir</button></div>
       </div></section>
     </div>
     <div class="battle-ad-reserve" aria-hidden="true"></div>
@@ -210,7 +221,7 @@
   <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
-  <script src="locales.js?v=20260801-guide14"></script><script src="game.js?v=20260802-stage-v19"></script>
+  <script src="locales.js?v=20260803-guide-v21"></script><script src="game.js?v=20260803-guide-v21"></script>
   <script src="../../src/stage-selector-standard.js?v=20260801-claw-v17" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>

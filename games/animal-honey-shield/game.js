@@ -1015,14 +1015,26 @@
     else ctx.drawImage(atlas,sx,sy,crop.w,crop.h,dx,dy,dw,dh);
     ctx.restore();
   }
+  function wallRamVisual(bee){
+    if(!bee.attachedStroke||(bee.intent!=="moveWall"&&bee.intent!=="supportWall"))return{x:bee.x,y:bee.y,scaleX:1,scaleY:1,phase:"flight",offset:0};
+    const contact=closestStrokePoint(bee.attachedStroke,bee),distance=Math.max(.001,Math.hypot(bee.x-contact.x,bee.y-contact.y));
+    const nx=(bee.x-contact.x)/distance,ny=(bee.y-contact.y)/distance,duration=.56,phase=((bee.life+(bee.id||0)*.031)%duration)/duration;
+    let offset=0,scaleX=1,scaleY=1,name="recover";
+    if(phase<.4){const t=phase/.4,eased=1-(1-t)*(1-t);offset=18*eased;name="recoil"}
+    else if(phase<.72){const t=(phase-.4)/.32,eased=t*t*(3-2*t);offset=18*(1-eased);name="charge"}
+    else if(phase<.84){const pulse=Math.sin((phase-.72)/.12*Math.PI);scaleX=1+pulse*.13;scaleY=1-pulse*.1;name="impact"}
+    return{x:bee.x+nx*offset,y:bee.y+ny*offset,scaleX,scaleY,phase:name,offset,faceX:contact.x-bee.x,faceY:contact.y-bee.y};
+  }
   function drawBee(bee){
     if(!atlas.complete||!atlas.naturalWidth)return;
     const crop=SPRITE_CROPS[1],centroid={x:133.44,y:137.67},sx=512+crop.x,sy=crop.y,rect=canvas.getBoundingClientRect();
     const physicalX=Math.max(.0001,rect.width/1000),physicalY=Math.max(.0001,rect.height/620),uniform=Math.sqrt(physicalX*physicalY);
     const physicalWidth=58*uniform,physicalHeight=physicalWidth*crop.h/crop.w,dw=physicalWidth/physicalX,dh=physicalHeight/physicalY;
-    const facing=bee.vx<0?-1:1,tilt=Math.max(-.58,Math.min(.58,Math.atan2(bee.vy,Math.abs(bee.vx)||1))),cos=Math.cos(tilt),sin=Math.sin(tilt);
-    ctx.save();ctx.translate(bee.x,bee.y);
+    const ram=wallRamVisual(bee),faceX=Number.isFinite(ram.faceX)?ram.faceX:bee.vx,faceY=Number.isFinite(ram.faceY)?ram.faceY:bee.vy;
+    const facing=faceX<0?-1:1,tilt=Math.max(-.58,Math.min(.58,Math.atan2(faceY,Math.abs(faceX)||1))),cos=Math.cos(tilt),sin=Math.sin(tilt);
+    ctx.save();ctx.translate(ram.x,ram.y);
     ctx.transform(cos*facing,sin*facing*physicalX/physicalY,-sin*physicalY/physicalX,cos,0,0);
+    ctx.scale(ram.scaleX,ram.scaleY);
     ctx.drawImage(atlas,sx,sy,crop.w,crop.h,-centroid.x/crop.w*dw,-centroid.y/crop.h*dh,dw,dh);
     ctx.restore();
   }
@@ -1365,6 +1377,11 @@
       const bee={prevX:545,prevY:250,x:482,y:302,vx:-240,vy:198,cooldown:0,bounced:false,route:1,wallSlide:0};
       const collided=collideLine(bee),contact=closestStrokePoint(stroke,bee);
       return{collided,x:bee.x,y:bee.y,vx:bee.vx,vy:bee.vy,clearance:contact.d,tangentSpeed:Math.abs(bee.vy),wallSlide:bee.wallSlide};
+    },
+    wallRamVisualProbe(){
+      const stroke={points:[{x:500,y:100},{x:500,y:560}]},bee={id:0,x:522,y:300,vx:-120,vy:0,intent:"moveWall",attachedStroke:stroke,life:0};
+      const sample=life=>{bee.life=life;const visual=wallRamVisual(bee);return{phase:visual.phase,offset:visual.offset,x:visual.x,scaleX:visual.scaleX,scaleY:visual.scaleY}};
+      return{start:sample(0),recoil:sample(.18),charge:sample(.31),impact:sample(.4368),recover:sample(.52)};
     },
     assetStatus:()=>({atlas:atlas.naturalWidth,backgrounds:themeBackgrounds.map(image=>image.naturalWidth)}),
     loopTailProbe(){
