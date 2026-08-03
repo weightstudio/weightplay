@@ -1137,6 +1137,10 @@
     document.body.classList.toggle("has-game-page-info", which === "main" && guideIsReady);
     document.body.dataset.reefState = which;
     document.documentElement.dataset.reefState = which;
+    const sceneDetail = { screen: which === "game" || which === "result" ? "battle" : which };
+    window.dispatchEvent(new CustomEvent("weightplay:shell-sync", { detail: sceneDetail }));
+    window.dispatchEvent(new CustomEvent("weightplay:stage-sync", { detail: sceneDetail }));
+    window.dispatchEvent(new CustomEvent("weightplay:battle-sync", { detail: sceneDetail }));
   }
 
   function battleDecisionLayers() {
@@ -2305,7 +2309,7 @@
     playSound("click");
     state = "main";
     showPanel("main");
-    focusPanel(nodes.mainPanel);
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     focusMainAction();
   });
   nodes.mapBtn.addEventListener("keydown", (event) => {

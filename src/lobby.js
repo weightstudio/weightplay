@@ -234,6 +234,27 @@ function primaryArt(game) {
   return game.art?.background || "assets/hero.png";
 }
 
+function lobbyThumbnail(source, width = 480) {
+  const clean = String(source || "").split(/[?#]/, 1)[0].replace(/^\/+/, "");
+  if (!/^(?:assets|games)\/.+\.(?:avif|jpe?g|png|webp)$/i.test(clean)) return source;
+  const encoded = clean.replace(/[^A-Za-z0-9._-]+/g, "__").replace(/\.[^.]+$/, ".webp");
+  return `assets/lobby-thumbs/w${width}/${encoded}`;
+}
+
+function lobbyImageAttributes(source, { priority = false, width = 480 } = {}) {
+  const loading = priority ? "eager" : "lazy";
+  const fetchPriority = priority ? ' fetchpriority="high"' : "";
+  return `src="${lobbyThumbnail(source, width)}" loading="${loading}" decoding="async"${fetchPriority}`;
+}
+
+function setLobbyImage(image, source, { priority = false, width = 480 } = {}) {
+  if (!image) return;
+  image.src = lobbyThumbnail(source, width);
+  image.loading = priority ? "eager" : "lazy";
+  image.decoding = "async";
+  image.fetchPriority = priority ? "high" : "auto";
+}
+
 function categoryText(category) {
   return i18n.t(`category.${category}`);
 }
@@ -948,7 +969,7 @@ function createGameCard(game) {
   const comingSoonBadge = isPlayable ? "" : `<span class="coming-soon-art-badge">${i18n.t("action.coming_soon")}</span>`;
   const art =
     cardArt.kind === "image"
-      ? `<div class="game-card-art image-art"><img class="game-card-bg-blur" src="${cardArt.background}" alt="" /><img class="game-card-fg" src="${cardArt.background}" alt="" />${showHero ? `<img class="game-card-hero" src="${cardArt.hero}" alt="" />` : ""}${isPlayable && game.previewVideo ? `<video class="game-card-preview" data-preview-src="${game.previewVideo}" muted loop playsinline preload="none" aria-hidden="true"></video>` : ""}${comingSoonBadge}</div>`
+      ? `<div class="game-card-art image-art"><img class="game-card-fg" ${lobbyImageAttributes(cardArt.background)} alt="" width="480" height="480" />${showHero ? `<img class="game-card-hero" ${lobbyImageAttributes(cardArt.hero)} alt="" />` : ""}${isPlayable && game.previewVideo ? `<video class="game-card-preview" data-preview-src="${game.previewVideo}" muted loop playsinline preload="none" aria-hidden="true"></video>` : ""}${comingSoonBadge}</div>`
       : `<div class="game-card-art ${cardArt.className || ""}">${showAgeLabels ? `<span>${ageLabel}</span>` : ""}${comingSoonBadge}</div>`;
   const favoriteAction = i18n.t(favorite ? "action.remove_favorite" : "action.add_favorite");
   const favoriteLabel = i18n.t(favorite ? "action.remove_favorite_title" : "action.add_favorite_title", { title });
@@ -1085,14 +1106,14 @@ function renderLobby() {
     const featured = lobby.games.find((game) => game.id === lobby.featuredGameId);
     if (featured) {
       featuredGame.href = featured.href;
-      featuredGame.querySelector("img").src = primaryArt(featured);
+      setLobbyImage(featuredGame.querySelector("img"), primaryArt(featured), { priority: true });
       const featuredTitle = featuredGame.querySelector("strong");
       featuredTitle.dataset.runtimeLocalize = "off";
       featuredTitle.textContent = text(featured.title);
     }
   } else {
     featuredGame.href = "kids/";
-    featuredGame.querySelector("img").src = "assets/animal-zoo-idle-cover.webp";
+    setLobbyImage(featuredGame.querySelector("img"), "assets/animal-zoo-idle-cover.webp", { priority: true });
     featuredGame.querySelector("strong").textContent = i18n.t("kids.portal.title");
     featuredGame.setAttribute("aria-label", i18n.t("kids.portal.action"));
   }
@@ -1130,7 +1151,7 @@ function renderContinuePlaying() {
       recordRecentGame(game.id);
     });
     card.innerHTML = `
-      <img src="${game.art?.background || primaryArt(game)}" alt="" />
+      <img ${lobbyImageAttributes(game.art?.background || primaryArt(game))} alt="" />
       <div class="continue-playing-copy">
         ${showAgeLabels ? `<span>${ageLabel}</span>` : ""}
         <strong data-runtime-localize="off">${title}</strong>
@@ -1276,8 +1297,8 @@ function renderHeroGames() {
       }
       card.innerHTML = `
         <div class="hero-game-art">
-          <img src="${game.art?.background || game.art?.hero || "assets/hero.png"}" alt="" />
-          ${showHero ? `<img class="hero-game-character" src="${game.art.hero}" alt="" />` : ""}
+          <img ${lobbyImageAttributes(game.art?.background || game.art?.hero || "assets/hero.png")} alt="" />
+          ${showHero ? `<img class="hero-game-character" ${lobbyImageAttributes(game.art.hero)} alt="" />` : ""}
           <span>${rankText}</span>
         </div>
         <div class="hero-game-copy">
@@ -1312,7 +1333,7 @@ function renderMobilePicks() {
     });
     card.innerHTML = `
       <div class="mobile-pick-art">
-        <img src="${game.art?.background || primaryArt(game)}" alt="" />
+        <img ${lobbyImageAttributes(game.art?.background || primaryArt(game))} alt="" />
         <span>${i18n.t("mobile_picks.badge")}</span>
       </div>
       <div class="mobile-pick-copy">
@@ -1356,8 +1377,8 @@ function renderUpcomingGames() {
     card.addEventListener("click", () => showPlannedGame(game));
     card.innerHTML = `
       <div class="upcoming-game-art">
-        <img src="${game.art?.background || primaryArt(game)}" alt="" />
-        ${showHero ? `<img class="upcoming-game-hero" src="${game.art.hero}" alt="" />` : ""}
+        <img ${lobbyImageAttributes(game.art?.background || primaryArt(game))} alt="" />
+        ${showHero ? `<img class="upcoming-game-hero" ${lobbyImageAttributes(game.art.hero)} alt="" />` : ""}
         ${reviewPass ? `<div class="review-pass-art-badge" aria-label="${stateCopy("reviewPassLabel")} ${reviewPass.gameVersion}" title="${reviewPass.gameVersion}">✓ ${stateCopy("reviewPassLabel")}</div>` : ""}
         <span>${i18n.t("action.coming_soon")}</span>
       </div>
@@ -1394,7 +1415,7 @@ function renderCharacterShowcase() {
     card.setAttribute("aria-label", i18n.t("character_showcase.open", { name, skill }));
     card.addEventListener("click", () => selectCharacterPath(character));
     card.innerHTML = `
-      <img src="${character.image}" alt="" />
+      <img ${lobbyImageAttributes(character.image)} alt="" />
       <div class="character-showcase-copy">
         <strong>${name}</strong>
         <small>${i18n.t(character.roleKey)}</small>
@@ -1433,7 +1454,7 @@ function renderRecommendations() {
       recordRecentGame(game.id);
     });
     card.innerHTML = `
-      <img src="${game.art?.background || primaryArt(game)}" alt="" />
+      <img ${lobbyImageAttributes(game.art?.background || primaryArt(game))} alt="" />
       <div class="recommendation-copy">
         <span class="recommendation-labels">${showAgeLabels ? `<span class="recommendation-age">${ageLabel}</span>` : ""}${updatedBadge}</span>
         <strong data-runtime-localize="off">${title}</strong>
@@ -1471,7 +1492,7 @@ function renderFreshUpdates() {
     });
     card.innerHTML = `
       <div class="fresh-update-art">
-        <img src="${game.art?.background || primaryArt(game)}" alt="" />
+        <img ${lobbyImageAttributes(game.art?.background || primaryArt(game))} alt="" />
         <span>${i18n.t("badge.updated")}</span>
       </div>
       <div class="fresh-update-copy">
@@ -1510,7 +1531,7 @@ function renderChallengeSpotlight() {
     });
     card.innerHTML = `
       <div class="challenge-spotlight-art">
-        <img src="${game.art?.background || primaryArt(game)}" alt="" />
+        <img ${lobbyImageAttributes(game.art?.background || primaryArt(game))} alt="" />
         <span>${i18n.t("challenge_spotlight.badge")}</span>
       </div>
       <div class="challenge-spotlight-copy">
@@ -1564,7 +1585,7 @@ function renderSkillPaths() {
         <span>${i18n.t(count === 1 ? "skill_path.count_one" : "skill_path.count", { count })}</span>
         <strong>${skillText(skill)}</strong>
         <div class="skill-path-thumbs" aria-hidden="true">
-          ${games.map((game) => `<img src="${game.art?.background || primaryArt(game)}" alt="" />`).join("")}
+          ${games.map((game) => `<img ${lobbyImageAttributes(game.art?.background || primaryArt(game))} alt="" />`).join("")}
         </div>
         <small>${i18n.t("skill_path.cta")}</small>
       `;
