@@ -6261,6 +6261,10 @@ body.general-lobby-page {
 
   .general-lobby-page .continue-badge {
     left: 7px;
+    box-sizing: border-box;
+    max-width: calc(100% - 14px);
+    padding-inline: 9px;
+    font-size: 11px;
   }
 }
 
@@ -8225,5 +8229,216 @@ select,
 @media (min-width: 721px) and (max-width: 1119px) {
   .general-lobby-page .hero-games {
     grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+/* General lobby 9.5 pass: one clear discovery path, readable fixed-size
+   catalog cards, and topic accents that distinguish similar fantasy covers. */
+.general-lobby-page .game-card {
+  --game-card-accent: #7768d8;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.general-lobby-page .game-card[data-topic*="Puzzle"] {
+  --game-card-accent: #42c9ba;
+}
+
+.general-lobby-page .game-card[data-topic*="Strategy"] {
+  --game-card-accent: #e2ae4f;
+}
+
+.general-lobby-page .game-card[data-topic*="Arcade"] {
+  --game-card-accent: #ed765f;
+}
+
+.general-lobby-page .game-card::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  z-index: 4;
+  width: 3px;
+  background: var(--game-card-accent);
+  opacity: 0.82;
+  pointer-events: none;
+}
+
+@media (min-width: 721px) {
+  .general-lobby-page .lobby-grid {
+    grid-template-columns: repeat(auto-fill, minmax(164px, 182px));
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .general-lobby-page .game-card:hover,
+  .general-lobby-page .game-card:focus-visible {
+    z-index: 2;
+    border-color: var(--game-card-accent);
+    box-shadow: 0 13px 30px rgba(0, 0, 0, 0.46), 0 0 0 1px var(--game-card-accent);
+    transform: translateY(-3px);
+  }
+
+  .general-lobby-page .game-card .favorite-toggle {
+    opacity: 0.76;
+    transform: scale(0.94);
+  }
+
+  .general-lobby-page .game-card:hover .favorite-toggle,
+  .general-lobby-page .game-card:focus-within .favorite-toggle,
+  .general-lobby-page .game-card .favorite-toggle.active {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 720px) {
+  .general-lobby-page .lobby-hero {
+    height: 196px;
+  }
+
+  .general-lobby-page .lobby-hero-copy {
+    top: 27px;
+  }
+
+  .general-lobby-page .lobby-hero h1 {
+    font-size: 32px;
+  }
+
+  .general-lobby-page .lobby-subtitle {
+    max-width: 214px;
+    margin-top: 5px;
+    font-size: 11px;
+  }
+
+  .general-lobby-page .general-play-heading {
+    margin: 5px 0 2px;
+  }
+
+  .general-lobby-page .general-play-heading h2 {
+    font-size: 22px;
+  }
+
+  .general-lobby-page .vibe-strip {
+    margin-bottom: 4px;
+  }
+
+  .general-lobby-page .vibe-options {
+    gap: 7px;
+    padding: 1px 0 4px;
+    overscroll-behavior-inline: contain;
+    scroll-padding-inline: 1px;
+  }
+
+  .general-lobby-page .vibe-options button {
+    min-width: 96px;
+    min-height: 44px;
+    padding-inline: 9px;
+  }
+
+  .general-lobby-page .lobby-search-row {
+    grid-template-columns: minmax(0, 1fr) 100px;
+    margin: 2px 0 6px;
+  }
+
+  .general-lobby-page .lobby-search input,
+  .general-lobby-page .quick-pick-btn {
+    min-height: 48px;
+  }
+
+  .general-lobby-page .quick-pick-btn {
+    padding-inline: 8px;
+    font-size: 12px;
+  }
+
+  .general-lobby-page .library-tabs {
+    gap: 6px;
+    padding-bottom: 6px;
+  }
+
+  .general-lobby-page .library-tabs button {
+    min-height: 48px;
+    padding: 7px 8px;
+    font-size: 14px;
+  }
+
+  .general-lobby-page.has-recent-games #heroGamesSection {
+    display: none;
+  }
+
+  .general-lobby-page .continue-playing-section {
+    padding-bottom: 7px;
+  }
+
+  .general-lobby-page .continue-playing {
+    grid-auto-columns: minmax(250px, 296px);
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-inline: contain;
+  }
+
+  .general-lobby-page .continue-playing-card {
+    scroll-snap-align: start;
+  }
+
+  .general-lobby-page .lobby-grid {
+    width: min(100%, 356px);
+    margin-inline: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    padding-top: 8px;
+  }
+
+  .general-lobby-page .game-card-body {
+    height: 48px;
+    min-height: 48px;
+    padding: 6px 7px;
+    flex-basis: 48px;
+  }
+
+  .general-lobby-page .game-card h2 {
+    max-height: 34px;
+    font-size: 14px;
+    line-height: 1.15;
+  }
+
+  .general-lobby-page .favorite-toggle {
+    top: 3px;
+    right: 1px;
+    width: 44px;
+    height: 44px;
+  }
+
+  .general-lobby-page .favorite-toggle::before {
+    inset: 6px;
+  }
+
+  .general-lobby-page .favorite-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .general-lobby-page .continue-badge {
+    top: 7px;
+    left: 7px;
+    min-height: 30px;
+    max-width: calc(100% - 58px);
+    padding: 6px 8px;
+    font-size: 10.5px;
+  }
+
+  .general-lobby-page .game-card:active {
+    transform: scale(0.985);
+  }
+}
+
+@media (min-width: 431px) and (max-width: 720px) {
+  .general-lobby-page .lobby-grid {
+    width: min(100%, 524px);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .general-lobby-page .game-card,
+  .general-lobby-page .favorite-toggle {
+    transition: none;
   }
 }

@@ -1144,6 +1144,7 @@ function renderContinuePlaying() {
   continuePlayingReason.textContent = i18n.t("continue_playing.reason");
   continuePlayingSection.setAttribute("aria-label", i18n.t("continue_playing.title"));
   continuePlayingSection.classList.toggle("hidden", cards.length === 0);
+  document.body.classList.toggle("has-recent-games", cards.length > 0);
   continuePlaying.replaceChildren(...cards);
 }
 

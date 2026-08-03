@@ -305,9 +305,23 @@
     }
     updateHud();draw();event.preventDefault();
   });
+  function trimClosedLoopTail(points,dog){
+    if(points.length<12)return points;
+    let best=null;
+    for(let start=1;start<points.length-9;start++)for(let end=start+9;end<points.length;end++){
+      const distance=Math.hypot(points[start].x-points[end].x,points[start].y-points[end].y);if(distance>30)continue;
+      const loop=points.slice(start,end+1),width=Math.max(...loop.map(point=>point.x))-Math.min(...loop.map(point=>point.x)),height=Math.max(...loop.map(point=>point.y))-Math.min(...loop.map(point=>point.y));
+      const left=Math.min(...loop.map(point=>point.x)),right=Math.max(...loop.map(point=>point.x)),top=Math.min(...loop.map(point=>point.y)),bottom=Math.max(...loop.map(point=>point.y));
+      if(width<120||height<120||!dog||dog.x<=left||dog.x>=right||dog.y<=top||dog.y>=bottom)continue;
+      const span=end-start;if(!best||span>best.span)best={start,end,span};
+    }
+    if(!best)return points;
+    const loop=points.slice(best.start,best.end+1);loop[loop.length-1]={...loop[0]};return loop;
+  }
   function finishStroke(){
     if(!state.drawing)return;
     if(state.drawing.points.length>1){
+      state.drawing.points=trimClosedLoopTail(state.drawing.points,level(stageIndex).dog);
       refreshStrokeMobility(state.drawing,level(stageIndex));
       state.strokes.push(state.drawing);
       state.wallNav=null;state.wallNavClock=0;
@@ -737,7 +751,7 @@
     let best={x:stroke.points[0].x,y:stroke.points[0].y,d:Infinity};
     for(let index=1;index<stroke.points.length;index++){
       const candidate=nearestOnSegment(point.x,point.y,stroke.points[index-1],stroke.points[index]);
-      if(candidate.d<best.d)best=candidate;
+      if(candidate.d<best.d)best={...candidate,segmentIndex:index};
     }
     return best;
   }
@@ -784,7 +798,7 @@
     for(const supporter of supporters){
       const before=beforeContacts.get(supporter);if(!before||before.d>34)continue;
       const oldX=supporter.x,oldY=supporter.y,side=before.nx*(oldX-before.x)+before.ny*(oldY-before.y),sign=Math.abs(side)>.001?(side>0?1:-1):1;
-      const after=closestStrokePoint(stroke,supporter);
+      const segmentIndex=clamp(before.segmentIndex||1,1,stroke.points.length-1),after=nearestOnSegment(supporter.x,supporter.y,stroke.points[segmentIndex-1],stroke.points[segmentIndex]);
       supporter.x=after.x+after.nx*sign*22;supporter.y=after.y+after.ny*sign*22;
       const dx=supporter.x-oldX,dy=supporter.y-oldY;
       supporter.prevX=(Number.isFinite(supporter.prevX)?supporter.prevX:oldX)+dx;supporter.prevY=(Number.isFinite(supporter.prevY)?supporter.prevY:oldY)+dy;supporter.vx=dx/frameTime;supporter.vy=dy/frameTime;
@@ -1019,7 +1033,7 @@
       }else if(zone.kind==="rough"){
         ctx.fillStyle="rgba(76,68,37,.34)";ctx.fillRect(zone.x,zone.y,zone.w,zone.h);ctx.fillStyle="rgba(236,215,144,.38)";for(let y=zone.y+18;y<zone.y+zone.h;y+=38)for(let x=zone.x+18;x<zone.x+zone.w;x+=44){ctx.beginPath();ctx.arc(x+(y%2)*.35,y,7,0,Math.PI*2);ctx.fill()}
       }else if(zone.kind==="ruins"){
-        ctx.fillStyle="rgba(101,69,39,.28)";ctx.fillRect(zone.x,zone.y,zone.w,zone.h);ctx.strokeStyle="rgba(255,224,150,.34)";ctx.lineWidth=3;for(let y=zone.y;y<zone.y+zone.h;y+=54)for(let x=zone.x-(Math.floor((y-zone.y)/54)%2)*32;x<zone.x+zone.w;x+=64)ctx.strokeRect(x,y,60,50)
+        ctx.fillStyle="rgba(255,224,150,.045)";ctx.fillRect(zone.x,zone.y,zone.w,zone.h);ctx.strokeStyle="rgba(255,239,192,.18)";ctx.lineWidth=2;const cx=zone.x+zone.w/2,cy=zone.y+zone.h/2,max=Math.min(zone.w,zone.h)*.42;for(let radius=34;radius<=max;radius+=42){ctx.beginPath();ctx.arc(cx,cy,radius,0,Math.PI*2);ctx.stroke()}ctx.beginPath();ctx.moveTo(cx-max,cy);ctx.lineTo(cx+max,cy);ctx.moveTo(cx,cy-max);ctx.lineTo(cx,cy+max);ctx.stroke()
       }else{
         ctx.fillStyle="rgba(209,255,154,.12)";ctx.fillRect(zone.x,zone.y,zone.w,zone.h);ctx.fillStyle="rgba(255,241,128,.45)";for(let y=zone.y+20;y<zone.y+zone.h;y+=45)for(let x=zone.x+20;x<zone.x+zone.w;x+=48){ctx.beginPath();ctx.arc(x,y,5,0,Math.PI*2);ctx.fill()}
       }
@@ -1337,6 +1351,12 @@
       return{collided,x:bee.x,y:bee.y,vx:bee.vx,sameSide:bee.x>500,clearance:bee.x-500};
     },
     assetStatus:()=>({atlas:atlas.naturalWidth,backgrounds:themeBackgrounds.map(image=>image.naturalWidth)}),
+    loopTailProbe(){
+      const points=[{x:500,y:360},{x:500,y:300},{x:430,y:235}];
+      for(let step=0;step<=24;step++){const angle=Math.PI*2*step/24;points.push({x:500+190*Math.cos(angle),y:350+150*Math.sin(angle)})}
+      const cleaned=trimClosedLoopTail(points,{x:500,y:350});
+      return{before:points.length,after:cleaned.length,removed:points.length-cleaned.length,closed:Math.hypot(cleaned[0].x-cleaned.at(-1).x,cleaned[0].y-cleaned.at(-1).y)<1};
+    },
     levelDigest:()=>Array.from({length:30},(_,index)=>{const spec=level(index);return{theme:spec.theme.terrain,topology:spec.topology,dog:[spec.dog.x,spec.dog.y],hives:spec.hives.map(hive=>[hive.x,hive.y]),solids:spec.solids.map(solid=>solid.kind==="platform"?[solid.kind,solid.x,solid.y,solid.w,solid.h]:[solid.kind,solid.x,solid.y,solid.r]),zones:spec.zones.map(zone=>[zone.kind,zone.x,zone.y,zone.w,zone.h,zone.dx||0,zone.dy||0]),speed:spec.speed}}),
     stagePool:()=>({count:stageCardPool.length,start:stageWindowStart,total:Number($("stageRail")?.dataset.wpStageTotal||0),ids:stageCardPool.map(card=>card.dataset.stageIndex)}),
     fail(){finish(false)},locale:()=>locale

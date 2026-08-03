@@ -686,9 +686,15 @@
   let viewportMode = "";
   let activeScene = "main";
   let sceneGeneration = 0;
+  const STAGE_POOL_SIZE = 9;
+  let stageWindowStart = 0;
+  let stageCardPool = [];
+  let stageBrowseIndex = 0;
+  let stageSettleFrame = 0;
 
   function activateScene(scene) {
     if (!['main', 'stage', 'battle'].includes(scene)) return sceneGeneration;
+    if (scene !== "stage") cancelStageSettlement();
     activeScene = scene;
     sceneGeneration += 1;
     document.documentElement.dataset.screen = scene;
@@ -1038,104 +1044,195 @@
     window.setTimeout(() => bubble.remove(), 900);
   }
 
-  function renderStageGrid() {
-    nodes.stageGrid.innerHTML = "";
+  function cancelStageSettlement() {
+    if (stageSettleFrame) cancelAnimationFrame(stageSettleFrame);
+    stageSettleFrame = 0;
+    nodes.stageGrid?.style.removeProperty("scroll-behavior");
+    nodes.stageGrid?.style.removeProperty("scroll-snap-type");
+    if (nodes.stageGrid) delete nodes.stageGrid.dataset.wpStageSettling;
+  }
+
+  const stageWindowLimit = () => Math.max(0, stages.length - STAGE_POOL_SIZE);
+  const desiredStageWindow = (index) => clamp(index - Math.floor(STAGE_POOL_SIZE / 2), 0, stageWindowLimit());
+
+  function createStageCard(poolIndex) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "stage-card";
+    button.dataset.wpStagePoolNode = String(poolIndex + 1);
+    return button;
+  }
+
+  function bindStageCard(button, index) {
+    const stage = stages[index];
+    if (!stage) return;
+    const stageNo = index + 1;
+    const locked = stageNo > unlocked;
+    const active = index === stageBrowseIndex;
+    const selected = index === clamp(Math.max(currentStage, unlocked - 1), 0, stages.length - 1);
     const progress = loadProgress();
-    const stageRecords = typeof progress.stageRecords === "object" && progress.stageRecords ? progress.stageRecords : {};
-    const legacyBestStage = Number(readStorage(bestKey)) || 0;
-    const selectedStageIndex = clamp(Math.max(currentStage, unlocked - 1), 0, stages.length - 1);
-    stages.forEach((stage, index) => {
-      const stageNo = index + 1;
-      const locked = stageNo > unlocked;
-      const button = document.createElement("button");
-      button.className = "stage-card";
-      button.type = "button";
-      button.dataset.stageIndex = String(index);
-      button.dataset.stageLabel = t("stage", { n: stageNo });
-      button.tabIndex = index === selectedStageIndex ? 0 : -1;
-      if (locked) button.classList.add("locked");
-      button.setAttribute("aria-disabled", String(locked));
-      button.setAttribute("aria-label", `${t("stage", { n: stageNo })}. ${stageCopy(stage, "title")}${locked ? `. ${t("locked")}` : ""}`);
-      if (index === selectedStageIndex) button.classList.add("selected");
-      const stageRecord = typeof stageRecords[String(stageNo)] === "object" && stageRecords[String(stageNo)] ? stageRecords[String(stageNo)] : {};
-      const cleared = Boolean(stageRecord.cleared) || stageNo <= legacyBestStage;
-      const perfect = Boolean(stageRecord.perfect);
-      const bestScore = Number(stageRecord.bestScore) || 0;
-      if (cleared) button.classList.add("cleared");
-      const iconUnit = units[Math.min(index, units.length - 1)]?.id || "cat";
-      const progressMeta = locked
-        ? `<div class="stage-progress"><em class="stage-lock">${t("locked")}</em></div>`
-        : cleared || bestScore > 0
+    const records = typeof progress.stageRecords === "object" && progress.stageRecords ? progress.stageRecords : {};
+    const record = typeof records[String(stageNo)] === "object" && records[String(stageNo)] ? records[String(stageNo)] : {};
+    const cleared = Boolean(record.cleared) || stageNo <= (Number(readStorage(bestKey)) || 0);
+    const perfect = Boolean(record.perfect);
+    const bestScore = Number(record.bestScore) || 0;
+    const progressMeta = locked
+      ? `<div class="stage-progress"><em class="stage-lock">${t("locked")}</em></div>`
+      : cleared || bestScore > 0
         ? `<div class="stage-progress">${cleared ? `<em>${t("stageCleared")}</em>` : ""}${perfect ? `<em class="perfect">${t("perfectBadge")}</em>` : ""}${bestScore > 0 ? `<small>${t("stageBest", { score: bestScore })}</small>` : ""}</div>`
         : "";
-      button.innerHTML = `
-        <b class="stage-animal">${animalSprite(iconUnit)}</b>
-        <strong>${t("stage", { n: stageNo })}</strong>
-        <span>${stageCopy(stage, "title")}</span>
-        <small class="stage-plan">${stageCopy(stage, "plan")}</small>
-        ${progressMeta}
-        ${stageThreatPreview(stage)}
-      `;
-      nodes.stageGrid.appendChild(button);
+    const iconUnit = units[Math.min(index, units.length - 1)]?.id || "cat";
+    button.dir = document.documentElement.dir || "ltr";
+    button.className = `stage-card${selected ? " selected" : ""}${active ? " is-centered" : ""}${locked ? " locked" : ""}${cleared ? " cleared" : ""}`;
+    button.dataset.stageIndex = String(index);
+    button.dataset.stageLabel = t("stage", { n: stageNo });
+    button.setAttribute("aria-label", `${t("stage", { n: stageNo })}. ${stageCopy(stage, "title")}${locked ? `. ${t("locked")}` : ""}`);
+    button.setAttribute("aria-disabled", String(locked));
+    button.setAttribute("aria-current", String(active));
+    button.setAttribute("aria-posinset", String(stageNo));
+    button.setAttribute("aria-setsize", String(stages.length));
+    button.tabIndex = active ? 0 : -1;
+    if (active && !locked) button.dataset.wpStageRecommended = "true";
+    else delete button.dataset.wpStageRecommended;
+    button.innerHTML = `<b class="stage-animal">${animalSprite(iconUnit)}</b><strong>${t("stage", { n: stageNo })}</strong><span>${stageCopy(stage, "title")}</span><small class="stage-plan">${stageCopy(stage, "plan")}</small>${progressMeta}${stageThreatPreview(stage)}`;
+  }
+
+  function buildStagePool() {
+    nodes.stageGrid.dir = "ltr";
+    nodes.stageGrid.replaceChildren();
+    stageWindowStart = desiredStageWindow(stageBrowseIndex);
+    stageCardPool = Array.from({ length: Math.min(STAGE_POOL_SIZE, stages.length) }, (_, offset) => {
+      const button = createStageCard(offset);
+      bindStageCard(button, stageWindowStart + offset);
+      nodes.stageGrid.append(button);
+      return button;
     });
-    bindStageGridSelection();
-    updateCenteredStageCard();
-    window.requestAnimationFrame(() => {
-      centerStageCard(nodes.stageGrid.querySelector(".stage-card.selected"));
-      scheduleCenteredStageCard();
+    Object.assign(nodes.stageGrid.dataset, {
+      wpStageVirtualized: "bounded-recycle",
+      wpStagePoolSize: String(stageCardPool.length),
+      wpStageTotal: String(stages.length),
+      wpStageRecycleCount: "0",
+      wpStageCenterObserver: "manual",
     });
   }
 
-  let centeredStageFrame = 0;
-  function updateCenteredStageCard() {
-    centeredStageFrame = 0;
-    const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
-    if (!cards.length || !document.body.classList.contains("guard-yard-stage")) return;
-    const gridRect = nodes.stageGrid.getBoundingClientRect();
-    const stageCardTop = Math.max(0, nodes.stageGrid.clientHeight * 0.38 - 95);
-    nodes.stageGrid.style.setProperty("--guard-stage-card-top", `${stageCardTop}px`);
-    const center = gridRect.left + gridRect.width / 2;
-    const nearest = cards.reduce((best, card) => {
-      const rect = card.getBoundingClientRect();
-      const distance = Math.abs(rect.left + rect.width / 2 - center);
-      return !best || distance < best.distance ? { card, distance } : best;
-    }, null)?.card;
-    const nearestIndex = cards.indexOf(nearest);
+  function moveStageWindow(targetStart) {
+    const target = clamp(targetStart, 0, stageWindowLimit());
+    if (!stageCardPool.length || stageCardPool.some((card) => !card.isConnected)) buildStagePool();
+    let recycled = 0;
+    while (stageWindowStart < target) {
+      const card = nodes.stageGrid.firstElementChild;
+      const anchor = card?.nextElementSibling;
+      const before = anchor?.getBoundingClientRect().left;
+      stageWindowStart += 1;
+      nodes.stageGrid.append(card);
+      bindStageCard(card, stageWindowStart + stageCardPool.length - 1);
+      const after = anchor?.getBoundingClientRect().left;
+      if (Number.isFinite(before) && Number.isFinite(after)) nodes.stageGrid.scrollLeft += after - before;
+      recycled += 1;
+    }
+    while (stageWindowStart > target) {
+      const card = nodes.stageGrid.lastElementChild;
+      const anchor = card?.previousElementSibling;
+      const before = anchor?.getBoundingClientRect().left;
+      stageWindowStart -= 1;
+      nodes.stageGrid.prepend(card);
+      bindStageCard(card, stageWindowStart);
+      const after = anchor?.getBoundingClientRect().left;
+      if (Number.isFinite(before) && Number.isFinite(after)) nodes.stageGrid.scrollLeft += after - before;
+      recycled += 1;
+    }
+    stageCardPool = [...nodes.stageGrid.children];
+    nodes.stageGrid.dataset.wpStageWindowStart = String(stageWindowStart + 1);
+    nodes.stageGrid.dataset.wpStageWindowEnd = String(stageWindowStart + stageCardPool.length);
+    if (recycled) nodes.stageGrid.dataset.wpStageRecycleCount = String(Number(nodes.stageGrid.dataset.wpStageRecycleCount || 0) + recycled);
+  }
+
+  function ensureStageWindow(index) {
+    if (!stageCardPool.length || stageCardPool.some((card) => !card.isConnected)) buildStagePool();
+    moveStageWindow(desiredStageWindow(index));
+    stageCardPool.forEach((card) => bindStageCard(card, Number(card.dataset.stageIndex)));
+  }
+
+  function stageRailGeometry() {
+    const first = stageCardPool[0]?.getBoundingClientRect();
+    const second = stageCardPool[1]?.getBoundingClientRect();
+    const rail = nodes.stageGrid.getBoundingClientRect();
+    const delta = first && second ? (second.left + second.width / 2) - (first.left + first.width / 2) : 0;
+    return { center: rail.left + rail.width / 2, pitch: Math.abs(delta) || 280, orientation: Math.sign(delta) || 1 };
+  }
+
+  function nearestStageCard() {
+    const { center } = stageRailGeometry();
+    return stageCardPool.reduce((nearest, card) => {
+      const box = card.getBoundingClientRect();
+      const distance = Math.abs(box.left + box.width / 2 - center);
+      return !nearest || distance < nearest.distance ? { card, distance } : nearest;
+    }, null)?.card || null;
+  }
+
+  function currentStageLogicalPosition() {
+    const card = nearestStageCard();
+    if (!card) return stageBrowseIndex;
+    const box = card.getBoundingClientRect();
+    const geometry = stageRailGeometry();
+    return clamp(Number(card.dataset.stageIndex) + (geometry.center - (box.left + box.width / 2)) / (geometry.pitch * geometry.orientation), 0, stages.length - 1);
+  }
+
+  function positionStageRail(logicalPosition) {
+    const logical = clamp(logicalPosition, 0, stages.length - 1);
+    const anchorIndex = Math.round(logical);
+    moveStageWindow(desiredStageWindow(anchorIndex));
+    const card = nodes.stageGrid.querySelector(`[data-stage-index="${anchorIndex}"]`);
+    card?.scrollIntoView({ behavior: "auto", block: "nearest", inline: "center" });
+    const fraction = logical - anchorIndex;
+    if (card && Math.abs(fraction) > 0.0001) nodes.stageGrid.scrollLeft += fraction * stageRailGeometry().orientation * stageRailGeometry().pitch;
+    nodes.stageGrid.dataset.wpStageDragLogical = logical.toFixed(4);
+    return logical;
+  }
+
+  function syncCenteredStageCard() {
+    const nearest = nearestStageCard();
+    const index = Number(nearest?.dataset.stageIndex);
+    if (Number.isInteger(index)) stageBrowseIndex = index;
+    stageCardPool.forEach((card) => bindStageCard(card, Number(card.dataset.stageIndex)));
     const stagePanel = document.querySelector("#stageTabPanel");
     if (stagePanel) {
-      stagePanel.dataset.prevStageLabel = cards[nearestIndex - 1]?.dataset.stageLabel || "";
-      stagePanel.dataset.nextStageLabel = cards[nearestIndex + 1]?.dataset.stageLabel || "";
-      const panelRect = stagePanel.getBoundingClientRect();
-      const nearestRect = nearest.getBoundingClientRect();
-      const peekCenter = panelRect.height > 0
-        ? ((nearestRect.top + nearestRect.height / 2 - panelRect.top) / panelRect.height) * 100
-        : 46;
-      stagePanel.style.setProperty("--stage-peek-center", `${peekCenter}%`);
+      stagePanel.dataset.prevStageLabel = stageBrowseIndex > 0 ? t("stage", { n: stageBrowseIndex }) : "";
+      stagePanel.dataset.nextStageLabel = stageBrowseIndex + 1 < stages.length ? t("stage", { n: stageBrowseIndex + 2 }) : "";
     }
-    cards.forEach((card, index) => {
-      const centered = card === nearest;
-      card.classList.toggle("is-centered", centered);
-      card.classList.toggle("is-prev", index === nearestIndex - 1);
-      card.classList.toggle("is-next", index === nearestIndex + 1);
-      card.tabIndex = centered ? 0 : -1;
-      if (centered) card.setAttribute("aria-current", "true");
-      else card.removeAttribute("aria-current");
-    });
+    return nearest;
   }
 
-  function scheduleCenteredStageCard() {
-    if (centeredStageFrame) window.cancelAnimationFrame(centeredStageFrame);
-    centeredStageFrame = window.requestAnimationFrame(updateCenteredStageCard);
-  }
-
-  function centerStageCard(card, behavior = "auto") {
-    if (!card) return;
-    const gridRect = nodes.stageGrid.getBoundingClientRect();
-    const cardRect = card.getBoundingClientRect();
-    const renderedScale = gridRect.width > 0 ? gridRect.width / nodes.stageGrid.clientWidth : 1;
-    const horizontalDelta = ((cardRect.left + cardRect.width / 2) - (gridRect.left + gridRect.width / 2)) / renderedScale;
-    nodes.stageGrid.scrollTo({ left: nodes.stageGrid.scrollLeft + horizontalDelta, behavior });
-    scheduleCenteredStageCard();
+  function settleStageRail(from, targetIndex, immediate = false) {
+    cancelStageSettlement();
+    const target = clamp(targetIndex, 0, stages.length - 1);
+    stageBrowseIndex = target;
+    if (immediate) {
+      positionStageRail(target);
+      syncCenteredStageCard();
+      return;
+    }
+    const started = performance.now();
+    nodes.stageGrid.style.setProperty("scroll-behavior", "auto", "important");
+    nodes.stageGrid.style.setProperty("scroll-snap-type", "none", "important");
+    nodes.stageGrid.dataset.wpStageSettling = "true";
+    const animate = (now) => {
+      if (activeScene !== "stage") return cancelStageSettlement();
+      const progress = clamp((now - started) / 340, 0, 1);
+      const eased = progress * progress * (3 - 2 * progress);
+      positionStageRail(from + (target - from) * eased);
+      if (progress < 1) stageSettleFrame = requestAnimationFrame(animate);
+      else {
+        stageSettleFrame = 0;
+        positionStageRail(target);
+        syncCenteredStageCard();
+        nodes.stageGrid.style.removeProperty("scroll-behavior");
+        nodes.stageGrid.style.removeProperty("scroll-snap-type");
+        delete nodes.stageGrid.dataset.wpStageSettling;
+      }
+    };
+    stageSettleFrame = requestAnimationFrame(animate);
   }
 
   function rejectRepeatedScreenActivation(event) {
@@ -1146,59 +1243,37 @@
   }
 
   function focusSelectedStage() {
-    const card = nodes.stageGrid.querySelector(".stage-card.selected:not(.locked)")
-      || nodes.stageGrid.querySelector(".stage-card:not(.locked)");
+    const card = nodes.stageGrid.querySelector('.stage-card[aria-current="true"]') || nodes.stageGrid.querySelector(".stage-card:not(.locked)");
     card?.focus({ preventScroll: true });
-    centerStageCard(card);
+    settleStageRail(stageBrowseIndex, Number(card?.dataset.stageIndex) || 0, true);
   }
 
   function bindStageGridSelection() {
     if (nodes.stageGrid.dataset.selectionBound === "1") return;
     nodes.stageGrid.dataset.selectionBound = "1";
     nodes.stageGrid.addEventListener("dragstart", (event) => event.preventDefault());
-    nodes.stageGrid.addEventListener("scroll", scheduleCenteredStageCard, { passive: true });
-    nodes.stageGrid.addEventListener("wonder:stage-snap", (event) => {
-      scheduleCenteredStageCard();
-      const index = Number(event.detail?.index);
-      const card = Number.isInteger(index)
-        ? nodes.stageGrid.querySelector(`.stage-card[data-stage-index="${index}"]`)
-        : null;
-      if (!card || card.classList.contains("locked")) return;
-      nodes.stageGrid.querySelectorAll(".stage-card").forEach((item) => item.classList.toggle("selected", item === card));
-      currentStage = index;
-    });
     nodes.stageGrid.addEventListener("keydown", (event) => {
       const card = event.target.closest(".stage-card");
       if (!card || !["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
-      const cards = [...nodes.stageGrid.querySelectorAll(".stage-card")];
-      const currentIndex = Math.max(0, cards.indexOf(card));
+      const currentIndex = Number(card.dataset.stageIndex);
       const rtl = document.documentElement.dir === "rtl";
       const nextIndex = event.key === "Home" ? 0
-        : event.key === "End" ? cards.length - 1
-          : clamp(currentIndex + (event.key === "ArrowRight" ? (rtl ? -1 : 1) : (rtl ? 1 : -1)), 0, cards.length - 1);
-      const target = cards[nextIndex];
+        : event.key === "End" ? stages.length - 1
+          : clamp(currentIndex + (event.key === "ArrowRight" ? (rtl ? -1 : 1) : (rtl ? 1 : -1)), 0, stages.length - 1);
+      event.stopImmediatePropagation();
+      stageBrowseIndex = nextIndex;
+      ensureStageWindow(nextIndex);
+      const target = nodes.stageGrid.querySelector(`[data-stage-index="${nextIndex}"]`);
       if (!target) return;
       event.preventDefault();
-      const stagePanel = document.querySelector("#stageTabPanel");
-      if (stagePanel) {
-        stagePanel.dataset.prevStageLabel = cards[nextIndex - 1]?.dataset.stageLabel || "";
-        stagePanel.dataset.nextStageLabel = cards[nextIndex + 1]?.dataset.stageLabel || "";
-        window.requestAnimationFrame(scheduleCenteredStageCard);
-      }
-      cards.forEach((item, itemIndex) => {
-        const centered = item === target;
-        item.classList.toggle("is-centered", centered);
-        item.classList.toggle("is-prev", itemIndex === nextIndex - 1);
-        item.classList.toggle("is-next", itemIndex === nextIndex + 1);
-        item.tabIndex = centered ? 0 : -1;
-        if (centered) item.setAttribute("aria-current", "true");
-        else item.removeAttribute("aria-current");
-      });
-      centerStageCard(target, "auto");
+      settleStageRail(currentStageLogicalPosition(), nextIndex, true);
       target.focus({ preventScroll: true });
     });
-    window.addEventListener("resize", scheduleCenteredStageCard, { passive: true });
-    window.visualViewport?.addEventListener("resize", scheduleCenteredStageCard, { passive: true });
+    const recenterStagePool = () => {
+      if (activeScene === "stage") requestAnimationFrame(() => settleStageRail(stageBrowseIndex, stageBrowseIndex, true));
+    };
+    window.addEventListener("resize", recenterStagePool, { passive: true });
+    window.visualViewport?.addEventListener("resize", recenterStagePool, { passive: true });
     nodes.stageGrid.addEventListener("click", (event) => {
       const button = event.target.closest(".stage-card");
       if (!button || !nodes.stageGrid.contains(button)) return;
@@ -1211,6 +1286,63 @@
       }
       startStage(index);
     });
+    let pointerId = null;
+    let startX = 0;
+    let lastX = 0;
+    let logical = 0;
+    let moved = false;
+    let suppressClick = false;
+    nodes.stageGrid.dataset.wpStageVirtualDrag = "true";
+    nodes.stageGrid.addEventListener("pointerdown", (event) => {
+      if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
+      cancelStageSettlement();
+      pointerId = event.pointerId;
+      startX = lastX = event.clientX;
+      logical = currentStageLogicalPosition();
+      moved = false;
+      nodes.stageGrid.style.setProperty("scroll-snap-type", "none", "important");
+      event.stopImmediatePropagation();
+    }, true);
+    document.addEventListener("pointermove", (event) => {
+      if (event.pointerId !== pointerId) return;
+      const delta = event.clientX - lastX;
+      lastX = event.clientX;
+      if (!moved && Math.abs(event.clientX - startX) > 4) moved = true;
+      if (moved) {
+        if (event.cancelable) event.preventDefault();
+        logical = positionStageRail(logical - delta / stageRailGeometry().pitch);
+      }
+      event.stopImmediatePropagation();
+    }, true);
+    const finish = (event) => {
+      if (pointerId === null || (event.pointerId !== undefined && event.pointerId !== pointerId)) return;
+      pointerId = null;
+      if (moved) {
+        if (event.cancelable) event.preventDefault();
+        settleStageRail(logical, Math.round(logical));
+        suppressClick = true;
+        setTimeout(() => { suppressClick = false; }, 0);
+      } else nodes.stageGrid.style.removeProperty("scroll-snap-type");
+      moved = false;
+      event.stopImmediatePropagation();
+    };
+    document.addEventListener("pointerup", finish, true);
+    document.addEventListener("pointercancel", finish, true);
+    nodes.stageGrid.addEventListener("click", (event) => {
+      if (!suppressClick) return;
+      suppressClick = false;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }, true);
+  }
+
+  function renderStageGrid() {
+    stageBrowseIndex = clamp(Math.max(currentStage, unlocked - 1), 0, stages.length - 1);
+    ensureStageWindow(stageBrowseIndex);
+    bindStageGridSelection();
+    const stageCardTop = Math.max(0, nodes.stageGrid.clientHeight * 0.38 - 95);
+    nodes.stageGrid.style.setProperty("--guard-stage-card-top", `${stageCardTop}px`);
+    window.requestAnimationFrame(() => settleStageRail(stageBrowseIndex, stageBrowseIndex, true));
   }
 
   function renderBeastGuide() {
