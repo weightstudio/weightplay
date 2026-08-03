@@ -127,6 +127,7 @@
     $("mainProgress").textContent=fmt("progress",{done,stars});
   }
   function showScreen(next){
+    if(document.activeElement instanceof HTMLElement)document.activeElement.blur();
     screen=next;document.body.dataset.screen=next;
     $("mainGroup").hidden=next!=="main";$("stageScreen").hidden=next!=="stage";$("battleScreen").hidden=next!=="battle";
     document.body.classList.toggle("wp-stage-select-active",next==="stage");
@@ -137,6 +138,8 @@
     window.dispatchEvent(new Event("weightplay:shell-sync"));
     window.dispatchEvent(new Event("weightplay:stage-sync"));
     window.dispatchEvent(new Event("weightplay:battle-sync"));
+    if(next==="stage")$("stageScreen").querySelector(".stage-canvas").scrollTop=0;
+    window.scrollTo({left:0,top:0,behavior:"instant"});
     if(next==="stage")requestAnimationFrame(centerSelected);
     if(next==="battle"){
       window.dispatchEvent(new CustomEvent("weightplay:battle-open"));
@@ -175,7 +178,8 @@
   function stageRailGeometry(){const rail=$("stageRail"),cards=[...rail.children],rect=rail.getBoundingClientRect(),first=cards[0]?.getBoundingClientRect(),second=cards[1]?.getBoundingClientRect(),delta=first&&second?(second.left+second.width/2)-(first.left+first.width/2):0;return{rail,center:rect.left+rect.width/2,pitch:Math.abs(delta)||282,orientation:Math.sign(delta)||1}}
   function nearestStageCard(){const rail=$("stageRail"),rect=rail.getBoundingClientRect(),center=rect.left+rect.width/2;return stageCardPool.reduce((best,card)=>{const box=card.getBoundingClientRect(),distance=Math.abs(box.left+box.width/2-center);return!best||distance<best.distance?{card,distance}:best},null)?.card||null}
   function currentStageLogicalPosition(){const card=nearestStageCard();if(!card)return selectedStage;const index=Number(card.dataset.stageIndex),rect=card.getBoundingClientRect(),geometry=stageRailGeometry();return clamp(index+(geometry.center-(rect.left+rect.width/2))/(geometry.pitch*geometry.orientation),0,29)}
-  function positionStageRail(position){const logical=clamp(position,0,29),anchorIndex=Math.round(logical),recycled=moveStageWindow(desiredStageWindow(anchorIndex));if(recycled)syncStageSelection();const card=$("stageRail").querySelector(`[data-stage-index="${anchorIndex}"]`);if(!card)return logical;card.scrollIntoView({behavior:"auto",block:"nearest",inline:"center"});const geometry=stageRailGeometry(),fraction=logical-anchorIndex;if(Math.abs(fraction)>.0001)geometry.rail.scrollLeft+=fraction*geometry.orientation*geometry.pitch;return logical}
+  function centerStageCard(card,smooth=false){const rail=$("stageRail");if(!rail||!card)return;const railRect=rail.getBoundingClientRect(),cardRect=card.getBoundingClientRect(),left=rail.scrollLeft+(cardRect.left+cardRect.width/2)-(railRect.left+railRect.width/2);rail.scrollTo({left,behavior:smooth?"smooth":"auto"})}
+  function positionStageRail(position){const logical=clamp(position,0,29),anchorIndex=Math.round(logical),recycled=moveStageWindow(desiredStageWindow(anchorIndex));if(recycled)syncStageSelection();const card=$("stageRail").querySelector(`[data-stage-index="${anchorIndex}"]`);if(!card)return logical;centerStageCard(card);const geometry=stageRailGeometry(),fraction=logical-anchorIndex;if(Math.abs(fraction)>.0001)geometry.rail.scrollLeft+=fraction*geometry.orientation*geometry.pitch;return logical}
   function selectStage(index,center=false){selectedStage=clamp(index,0,29);ensureStageWindow(selectedStage);updateStageChapter();if(center)centerSelected(false)}
   function installVirtualStageDrag(){
     const rail=$("stageRail");if(!rail||rail.dataset.wpStageVirtualDrag==="true")return;rail.dataset.wpStageVirtualDrag="true";rail.dataset.wpStageCenterObserver="manual";
@@ -198,7 +202,7 @@
     const chapter=Math.floor(selectedStage/5),titles=fmt("chapters"),rules=fmt("chapterRules");
     $("chapterKicker").textContent=fmt("chapter",{n:chapter+1});$("chapterTitle").textContent=titles[chapter]||titles[0];$("chapterRule").textContent=rules[chapter]||rules[0];
   }
-  function centerSelected(smooth=false){ensureStageWindow(selectedStage);const card=$("stageRail")?.querySelector(`[data-stage-index="${selectedStage}"]`);card?.scrollIntoView({behavior:smooth?"smooth":"auto",block:"nearest",inline:"center"})}
+  function centerSelected(smooth=false){ensureStageWindow(selectedStage);const card=$("stageRail")?.querySelector(`[data-stage-index="${selectedStage}"]`);centerStageCard(card,smooth)}
   function level(index){
     const chapter=Math.floor(index/5),slot=index%5,theme=THEMES[chapter];
     const dogPositions=[

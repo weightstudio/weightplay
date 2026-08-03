@@ -661,6 +661,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
   "30 Shifts": "30 个班次",
   "30 Sky Races": "30场天空竞赛",
   "30 Skyspires": "30 天空尖塔",
+  "30 stage campaign": "30个阶段的活动",
   "30 Stages": "30 个阶段",
   "30 Stufen": "30 斯图芬",
   "30 tableros grandes": "30 大桌",

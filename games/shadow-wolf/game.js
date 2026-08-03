@@ -4,6 +4,7 @@
   const localeKey = "weightPlayLocale";
   const storageSession = new Map();
   const STAGE_COUNT = 30;
+  const STAGE_CARD_POOL_SIZE = 9;
   const BOSS_STAGES = new Set([5, 10, 15, 20, 25, 30]);
 
   function readStorage(key) {
@@ -238,6 +239,13 @@
   let amuletConfirmRemaining = 0;
   let amuletConfirmDueAt = 0;
   let mainEntryKeyboardKey = "";
+  let stageCardPool = [];
+  let stageWindowStart = 0;
+  let stageBrowseIndex = 0;
+  let stageScrollFrame = 0;
+  let stageRailInstalled = false;
+  let stageScrollLockUntil = 0;
+  let stageDragClickSuppressed = false;
 
   const text = {
     en: {
@@ -898,7 +906,7 @@
     ],
   };
 
-  function renderStageCards() {
+  function renderStageCardsLegacy() {
     const rail = document.querySelector(".world-map-grid.stage-rail");
     if (!rail) return;
     rail.innerHTML = "";
@@ -935,6 +943,176 @@
     });
     nodes.zoneButtons = Array.from(rail.querySelectorAll("[data-zone]"));
     rail.querySelector(".is-selected")?.scrollIntoView({ block: "nearest", inline: "center" });
+  }
+
+  function stageCardCopy(definition) {
+    const locale = getLocale();
+    const locked = definition.id > state.unlockedStage;
+    const cleared = state.completedStages.includes(definition.id);
+    const title = locale === "zh-Hant" ? definition.nameZht : locale === "es" ? definition.nameEs : definition.nameEn;
+    const hint = locale === "zh-Hant" ? definition.hintZht : locale === "es" ? definition.hintEs : definition.hintEn;
+    const stateLabel = locked
+      ? locale === "zh-Hant" ? "\u5c1a\u672a\u89e3\u9396" : locale === "es" ? "Bloqueado" : "Locked"
+      : cleared
+        ? locale === "zh-Hant" ? "\u5df2\u901a\u95dc" : locale === "es" ? "Completado" : "Cleared"
+        : locale === "zh-Hant" ? "\u53ef\u6311\u6230" : locale === "es" ? "Disponible" : "Ready";
+    const regionLabel = locale === "zh-Hant" ? `\u5340\u57df ${definition.region}` : locale === "es" ? `Region ${definition.region}` : `Region ${definition.region}`;
+    return { locked, cleared, title, hint, stateLabel, regionLabel };
+  }
+
+  function bindStageCard(button, logicalIndex) {
+    const definition = STAGE_DEFINITIONS[logicalIndex];
+    const copy = stageCardCopy(definition);
+    button.className = `zone-node stage-card${definition.boss ? " boss-zone" : ""}${logicalIndex === stageBrowseIndex ? " is-selected" : ""}${copy.cleared ? " is-cleared" : ""}${copy.locked ? " is-locked" : ""}`;
+    button.dataset.zone = String(definition.id);
+    button.dataset.logicalIndex = String(logicalIndex);
+    button.tabIndex = logicalIndex === stageBrowseIndex ? 0 : -1;
+    button.setAttribute("role", "option");
+    button.setAttribute("aria-selected", String(logicalIndex === stageBrowseIndex));
+    button.setAttribute("aria-disabled", String(copy.locked));
+    button.setAttribute("aria-posinset", String(definition.id));
+    button.setAttribute("aria-setsize", String(STAGE_COUNT));
+    button.innerHTML = `<b>${String(definition.id).padStart(2, "0")} - ${copy.regionLabel}</b><span>${copy.title}</span><small>${copy.hint}</small><small>${copy.stateLabel}</small>`;
+    button.setAttribute("aria-label", `${definition.id}. ${copy.title}: ${copy.hint}. ${copy.stateLabel}`);
+  }
+
+  function stageRailStep(rail) {
+    const first = stageCardPool[0];
+    if (!first) return 278;
+    const styles = getComputedStyle(rail);
+    return first.getBoundingClientRect().width + (Number.parseFloat(styles.columnGap || styles.gap) || 14);
+  }
+
+  function positionStageRail(behavior = "auto") {
+    const rail = document.querySelector(".world-map-grid.stage-rail");
+    if (!rail || !stageCardPool.length) return;
+    const physicalIndex = Math.max(0, Math.min(stageCardPool.length - 1, stageBrowseIndex - stageWindowStart));
+    rail.scrollTo({ left: physicalIndex * stageRailStep(rail), behavior });
+  }
+
+  function selectStageBrowseIndex(logicalIndex, focus = false, behavior = "auto") {
+    cancelAnimationFrame(stageScrollFrame);
+    stageScrollLockUntil = performance.now() + 800;
+    stageBrowseIndex = Math.max(0, Math.min(STAGE_COUNT - 1, logicalIndex));
+    const maxStart = STAGE_COUNT - STAGE_CARD_POOL_SIZE;
+    if (stageBrowseIndex < stageWindowStart + 2 || stageBrowseIndex > stageWindowStart + STAGE_CARD_POOL_SIZE - 3) {
+      stageWindowStart = Math.max(0, Math.min(maxStart, stageBrowseIndex - Math.floor(STAGE_CARD_POOL_SIZE / 2)));
+    }
+    renderStageCards();
+    positionStageRail(behavior);
+    if (focus) stageCardPool.find((card) => Number(card.dataset.logicalIndex) === stageBrowseIndex)?.focus({ preventScroll: true });
+  }
+
+  function installVirtualStageRail(rail) {
+    if (stageRailInstalled) return;
+    stageRailInstalled = true;
+    rail.setAttribute("role", "listbox");
+    rail.setAttribute("aria-label", "30 stage campaign");
+    rail.dataset.virtualized = "bounded-recycle";
+    rail.dataset.poolSize = String(STAGE_CARD_POOL_SIZE);
+    let dragPointerId = null;
+    let dragLastX = 0;
+    let dragMoved = false;
+    rail.addEventListener("pointerdown", (event) => {
+      if (event.button !== 0) return;
+      dragPointerId = event.pointerId;
+      dragLastX = event.clientX;
+      dragMoved = false;
+    });
+    rail.addEventListener("pointermove", (event) => {
+      if (event.pointerId !== dragPointerId) return;
+      const delta = event.clientX - dragLastX;
+      if (Math.abs(delta) > 1) dragMoved = true;
+      dragLastX = event.clientX;
+      rail.scrollLeft -= delta;
+    });
+    const finishDrag = (event) => {
+      if (event.pointerId !== dragPointerId) return;
+      dragPointerId = null;
+      if (dragMoved) {
+        stageDragClickSuppressed = true;
+        positionStageRail("auto");
+        setTimeout(() => { stageDragClickSuppressed = false; }, 0);
+      }
+    };
+    rail.addEventListener("pointerup", finishDrag);
+    rail.addEventListener("pointercancel", finishDrag);
+    rail.addEventListener("scroll", () => {
+      cancelAnimationFrame(stageScrollFrame);
+      stageScrollFrame = requestAnimationFrame(() => {
+        if (performance.now() < stageScrollLockUntil) {
+          rail.dataset.windowStart = String(stageWindowStart + 1);
+          rail.dataset.currentStage = String(stageBrowseIndex + 1);
+          return;
+        }
+        const step = stageRailStep(rail);
+        const atRailEnd = rail.scrollLeft >= rail.scrollWidth - rail.clientWidth - 2;
+        const physicalIndex = atRailEnd
+          ? stageCardPool.length - 1
+          : Math.max(0, Math.min(stageCardPool.length - 1, Math.round(rail.scrollLeft / step)));
+        stageBrowseIndex = stageWindowStart + physicalIndex;
+        const maxStart = STAGE_COUNT - STAGE_CARD_POOL_SIZE;
+        let shift = 0;
+        if (physicalIndex <= 1 && stageWindowStart > 0) shift = -Math.min(3, stageWindowStart);
+        if (physicalIndex >= STAGE_CARD_POOL_SIZE - 2 && stageWindowStart < maxStart) shift = Math.min(3, maxStart - stageWindowStart);
+        if (shift) {
+          stageWindowStart += shift;
+          stageCardPool.forEach((card, index) => bindStageCard(card, stageWindowStart + index));
+          rail.scrollLeft -= shift * step;
+        } else {
+          stageCardPool.forEach((card) => {
+            const current = Number(card.dataset.logicalIndex) === stageBrowseIndex;
+            card.classList.toggle("is-selected", current);
+            card.tabIndex = current ? 0 : -1;
+            card.setAttribute("aria-selected", String(current));
+          });
+        }
+        rail.dataset.windowStart = String(stageWindowStart + 1);
+        rail.dataset.currentStage = String(stageBrowseIndex + 1);
+      });
+    }, { passive: true });
+    rail.addEventListener("keydown", (event) => {
+      const rtl = getComputedStyle(rail).direction === "rtl";
+      let target = null;
+      if (event.key === "Home") target = 0;
+      if (event.key === "End") target = STAGE_COUNT - 1;
+      if (event.key === "ArrowRight") target = stageBrowseIndex + (rtl ? -1 : 1);
+      if (event.key === "ArrowLeft") target = stageBrowseIndex + (rtl ? 1 : -1);
+      if (target === null) return;
+      event.preventDefault();
+      selectStageBrowseIndex(target, true);
+    });
+  }
+
+  function renderStageCards() {
+    const rail = document.querySelector(".world-map-grid.stage-rail");
+    if (!rail) return;
+    installVirtualStageRail(rail);
+    if (!stageCardPool.length) {
+      rail.innerHTML = "";
+      stageCardPool = Array.from({ length: STAGE_CARD_POOL_SIZE }, (_, poolIndex) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.dataset.poolSlot = String(poolIndex);
+        button.addEventListener("keydown", (event) => {
+          if (mainEntryKeyboardKey && event.repeat && event.key === mainEntryKeyboardKey) event.preventDefault();
+        });
+        button.addEventListener("click", () => {
+          if (stageDragClickSuppressed) return;
+          if (button.getAttribute("aria-disabled") === "true") return;
+          window.WonderSound?.play("click");
+          state.selectedStage = Number(button.dataset.zone);
+          saveLocalState();
+          startRun(state.selectedStage);
+        });
+        rail.appendChild(button);
+        return button;
+      });
+    }
+    stageCardPool.forEach((card, index) => bindStageCard(card, stageWindowStart + index));
+    nodes.zoneButtons = stageCardPool;
+    rail.dataset.windowStart = String(stageWindowStart + 1);
+    rail.dataset.currentStage = String(stageBrowseIndex + 1);
   }
 
   function setScreen(screen) {
@@ -1018,8 +1196,11 @@
     cancelAnimationFrame(state.gameLoopId);
     setResultModalOpen(false, false);
     nodes.resultPanel.classList.add("hidden");
+    stageBrowseIndex = Math.max(0, state.selectedStage - 1);
+    stageWindowStart = Math.max(0, Math.min(STAGE_COUNT - STAGE_CARD_POOL_SIZE, stageBrowseIndex - Math.floor(STAGE_CARD_POOL_SIZE / 2)));
     setScreen("stage");
     renderStageCards();
+    requestAnimationFrame(() => positionStageRail("auto"));
   }
 
   function showMain() {

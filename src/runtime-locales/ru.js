@@ -661,6 +661,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "30 Shifts": "30 смен",
   "30 Sky Races": "30 небесных гонок",
   "30 Skyspires": "30 небесных шпилей",
+  "30 stage campaign": "30-этапная кампания",
   "30 Stages": "30 этапов",
   "30 Stufen": "30 Штуфен",
   "30 tableros grandes": "30 гранде-таблеро",

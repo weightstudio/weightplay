@@ -1326,10 +1326,14 @@
       const longest = Math.max(...lastMovementEvidence.map((item) => item.duration));
       movementAnimationTimer = window.setTimeout(() => {
         movementAnimationTimer = 0;
+        nodes.grid.querySelectorAll("[data-unit-key]").forEach((unit) => {
+          unit.getAnimations().forEach((animation) => animation.cancel());
+          unit.classList.remove("is-moving");
+        });
         movementAnimationActive = false;
         nodes.grid.removeAttribute("aria-busy");
         if (state && !nodes.gamePanel.classList.contains("is-hidden")) {
-          render();
+          updateActionButtons();
           if (endTurnKeyboardFocusRequested && state.phase === "player") {
             endTurnKeyboardFocusRequested = false;
             requestAnimationFrame(() => nodes.endTurnBtn.focus({ preventScroll: true }));

@@ -143,6 +143,7 @@
     repair: '\u7dad\u4fee\u78bc\u982d C'
   });
   const TOTAL_SHIFTS = 30;
+  const STAGE_CARD_POOL_SIZE = 9;
   const shiftConfig = [null,...Array.from({length:TOTAL_SHIFTS},(_,index)=>{const shift=index+1,chapter=Math.floor(index/5),within=index%5;return{goal:4+chapter+(within%3),coin:24+index*6,stamps:1+Math.floor(chapter/2),chapter,layout:within,barriers:shift<=2?0:Math.min(7,1+Math.floor((shift-3)/4)),beacons:Math.min(10,1+Math.floor(index/3))}})];
   const boundedInteger = (value, fallback, minimum, maximum = Number.MAX_SAFE_INTEGER) => {
     const number = Number(value);
@@ -187,6 +188,11 @@
   let insuranceConfirmRemaining = 0;
   let windowFocused = document.hasFocus();
   let stageSettleTimer = 0;
+  let stageWindowStart = 0;
+  let stageCardPool = [];
+  let stageBrowseLogical = Math.max(0, centeredShift - 1);
+  let stageSettleFrame = 0;
+  let cancelStagePointer = () => {};
   const t = (key, values = {}) => Object.entries(values).reduce((value, [name, replacement]) => value.replace(`{${name}}`, replacement), strings[locale][key]);
   function normalizeResultActions() {
     const panel = $('result');
@@ -214,6 +220,7 @@
   normalizeResultActions();
   const persist = () => writeStorage(saveKey, JSON.stringify(save));
   const show = (id) => {
+    if (id !== 'stageScreen') cancelStageMotion();
     ['mainScreen','stageScreen','battleShell','result'].forEach((screen) => $(screen).classList.toggle('hidden', screen !== id && !(id === 'result' && screen === 'battleShell')));
     const resultOpen = id === 'result';
     $('battleLive').inert = resultOpen;
@@ -292,7 +299,7 @@
     $('insuranceBtn').classList.toggle('is-confirming', insurancePending);
     $('insuranceBtn').setAttribute('aria-label', insurancePending ? t('insuranceConfirmLabel', {before:balance, after:Math.max(0,balance-5)}) : t('insuranceLabel', {balance}));
   }
-  function renderStages() {
+  function renderStagesLegacy() {
     if ($('stageScreen').classList.contains('hidden')) return;
     $('bestText').textContent = t('best', {n:save.best || 1});
     $('stageRail').innerHTML = '';
@@ -337,7 +344,7 @@
     });
     if (nearest) centeredShift = Number(nearest.dataset.shift);
   }
-  function focusStageCard(shift) {
+  function focusStageCardLegacy(shift) {
     const target = Math.max(1, Math.min(TOTAL_SHIFTS, Number(shift) || 1));
     const card = document.querySelector(`.stage-card[data-shift="${target}"]`);
     if (!card) return;
@@ -346,14 +353,140 @@
     syncCenteredStageHighlight(card);
     card.focus({preventScroll:true});
   }
-  $('stageRail').addEventListener('scroll', () => {
+  const stageWindowLimit = () => Math.max(0, TOTAL_SHIFTS - STAGE_CARD_POOL_SIZE);
+  const desiredStageWindow = (index) => Math.max(0, Math.min(stageWindowLimit(), Math.round(index) - Math.floor(STAGE_CARD_POOL_SIZE / 2)));
+  function createStageCard(poolIndex) {
+    const card = document.createElement('button');
+    card.type = 'button';
+    card.dataset.wpStagePoolNode = String(poolIndex + 1);
+    return card;
+  }
+  function bindStageCard(card, index) {
+    const shift = index + 1;
+    const config = shiftConfig[shift];
+    if (!config) return;
+    const locked = shift > save.unlocked;
+    const availability = locked ? 'stageLocked' : shift === save.unlocked ? 'stageReady' : 'stageReplay';
+    card.className = `stage-card${shift === state.shift ? ' selected' : ''}${locked ? ' locked' : ''}`;
+    card.dataset.shift = String(shift);
+    card.dataset.stage = String(shift);
+    card.dataset.stageIndex = String(index);
+    card.tabIndex = shift === centeredShift ? 0 : -1;
+    card.setAttribute('aria-disabled', locked ? 'true' : 'false');
+    card.setAttribute('aria-current', shift === centeredShift ? 'true' : 'false');
+    card.setAttribute('aria-posinset', String(shift));
+    card.setAttribute('aria-setsize', String(TOTAL_SHIFTS));
+    card.setAttribute('aria-keyshortcuts', 'ArrowLeft ArrowRight Home End');
+    card.innerHTML = `<strong>${t('shift', {n:shift})}</strong><span>${t('objective', {done:0, goal:config.goal})}</span><small><span>${t(availability)}</span><span class="stage-medals">${t('medals', {n:save.medals?.[shift] || 0})}</span></small>`;
+  }
+  function buildStagePool() {
+    stageWindowStart = desiredStageWindow(stageBrowseLogical);
+    stageCardPool = Array.from({length:Math.min(STAGE_CARD_POOL_SIZE, TOTAL_SHIFTS)}, (_, index) => createStageCard(index));
+    $('stageRail').replaceChildren(...stageCardPool);
+    stageCardPool.forEach((card, index) => bindStageCard(card, stageWindowStart + index));
+    Object.assign($('stageRail').dataset, {wpStageVirtualized:'bounded-recycle', wpStagePoolSize:String(stageCardPool.length), wpStageTotal:String(TOTAL_SHIFTS), wpStageWindowStart:String(stageWindowStart), wpStageWindowEnd:String(stageWindowStart + stageCardPool.length - 1), wpStageRecycleCount:'0', wpStageCenterObserver:'manual', wpStageVirtualDrag:'true'});
+  }
+  function moveStageWindow(targetStart) {
+    const target = Math.max(0, Math.min(stageWindowLimit(), targetStart));
+    let recycled = 0;
+    while (stageWindowStart < target) {
+      const card = $('stageRail').firstElementChild;
+      stageWindowStart += 1;
+      $('stageRail').append(card);
+      bindStageCard(card, stageWindowStart + stageCardPool.length - 1);
+      recycled += 1;
+    }
+    while (stageWindowStart > target) {
+      const card = $('stageRail').lastElementChild;
+      stageWindowStart -= 1;
+      $('stageRail').prepend(card);
+      bindStageCard(card, stageWindowStart);
+      recycled += 1;
+    }
+    stageCardPool = [...$('stageRail').children];
+    Object.assign($('stageRail').dataset, {wpStageWindowStart:String(stageWindowStart), wpStageWindowEnd:String(stageWindowStart + stageCardPool.length - 1)});
+    if (recycled) $('stageRail').dataset.wpStageRecycleCount = String(Number($('stageRail').dataset.wpStageRecycleCount || 0) + recycled);
+  }
+  function ensureStageWindow(index) {
+    if (!stageCardPool.length || stageCardPool.some((card) => !card.isConnected)) buildStagePool();
+    moveStageWindow(desiredStageWindow(index));
+    stageCardPool.forEach((card) => bindStageCard(card, Number(card.dataset.stageIndex)));
+    syncCenteredStageHighlight($('stageRail').querySelector(`[data-shift="${Math.round(stageBrowseLogical) + 1}"]`));
+  }
+  function stageRailPitch() {
+    const [first, second] = [...$('stageRail').children].map((card) => card.getBoundingClientRect());
+    return first && second ? Math.abs((second.left + second.width / 2) - (first.left + first.width / 2)) : 276;
+  }
+  function positionStageRail(logical) {
+    const value = Math.max(0, Math.min(TOTAL_SHIFTS - 1, logical));
+    const anchor = Math.round(value);
+    moveStageWindow(desiredStageWindow(anchor));
+    $('stageRail').querySelector(`[data-shift="${anchor + 1}"]`)?.scrollIntoView({behavior:'auto', inline:'center', block:'nearest'});
+    $('stageRail').scrollLeft += (value - anchor) * stageRailPitch();
+    $('stageRail').dataset.wpStageDragLogical = value.toFixed(4);
+    return value;
+  }
+  function cancelStageMotion() {
     clearTimeout(stageSettleTimer);
-    stageSettleTimer = setTimeout(() => {
-      stageSettleTimer = 0;
-      if (!$('stageScreen').classList.contains('hidden')) syncCenteredStageHighlight();
-    }, 100);
-  }, {passive:true});
-  $('stageRail').addEventListener('wonder:stage-snap', () => syncCenteredStageHighlight());
+    if (stageSettleFrame) cancelAnimationFrame(stageSettleFrame);
+    stageSettleFrame = 0;
+    cancelStagePointer();
+    const rail = $('stageRail');
+    rail.style.removeProperty('scroll-behavior');
+    rail.style.removeProperty('scroll-snap-type');
+    rail.classList.remove('wp-stage-dragging');
+    delete rail.dataset.wpStageSettling;
+  }
+  function renderStages() {
+    if ($('stageScreen').classList.contains('hidden')) return;
+    $('bestText').textContent = t('best', {n:save.best || 1});
+    stageBrowseLogical = Math.max(0, centeredShift - 1);
+    ensureStageWindow(stageBrowseLogical);
+    positionStageRail(stageBrowseLogical);
+    requestAnimationFrame(() => positionStageRail(stageBrowseLogical));
+  }
+  function focusStageCard(shift) {
+    const target = Math.max(1, Math.min(TOTAL_SHIFTS, Number(shift) || 1));
+    centeredShift = target;
+    stageBrowseLogical = target - 1;
+    ensureStageWindow(stageBrowseLogical);
+    const card = $('stageRail').querySelector(`[data-shift="${target}"]`);
+    positionStageRail(stageBrowseLogical);
+    syncCenteredStageHighlight(card);
+    card?.focus({preventScroll:true});
+  }
+  function installVirtualStageDrag() {
+    const rail = $('stageRail');
+    let pointerId = null, startX = 0, lastX = 0, logical = stageBrowseLogical, moved = false, suppressStageClick = false;
+    const restore = () => { rail.style.removeProperty('scroll-behavior'); rail.style.removeProperty('scroll-snap-type'); rail.classList.remove('wp-stage-dragging'); delete rail.dataset.wpStageSettling; };
+    cancelStagePointer = () => { pointerId = null; moved = false; restore(); };
+    rail.addEventListener('pointerdown', (event) => {
+      if ($('stageScreen').classList.contains('hidden') || event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
+      if (stageSettleFrame) cancelAnimationFrame(stageSettleFrame);
+      stageSettleFrame = 0; pointerId = event.pointerId; startX = lastX = event.clientX; logical = stageBrowseLogical; moved = false;
+      rail.style.setProperty('scroll-behavior', 'auto', 'important'); rail.style.setProperty('scroll-snap-type', 'none', 'important'); event.stopImmediatePropagation();
+    }, true);
+    document.addEventListener('pointermove', (event) => {
+      if (event.pointerId !== pointerId) return;
+      const delta = event.clientX - lastX; lastX = event.clientX;
+      if (!moved && Math.abs(event.clientX - startX) > 4) { moved = true; rail.classList.add('wp-stage-dragging'); }
+      if (moved) { if (event.cancelable) event.preventDefault(); logical = positionStageRail(logical - delta / stageRailPitch()); stageBrowseLogical = logical; stageCardPool.forEach((card) => bindStageCard(card, Number(card.dataset.stageIndex))); syncCenteredStageHighlight(rail.querySelector(`[data-shift="${Math.round(logical) + 1}"]`)); }
+      event.stopImmediatePropagation();
+    }, true);
+    const finish = (event) => {
+      if (pointerId === null || (event.pointerId !== undefined && event.pointerId !== pointerId)) return;
+      pointerId = null;
+      if (!moved) { restore(); return; }
+      if (event.cancelable) event.preventDefault(); suppressStageClick = true; setTimeout(() => { suppressStageClick = false; }, 0);
+      const from = logical, target = Math.max(0, Math.min(TOTAL_SHIFTS - 1, Math.round(from))), started = performance.now(); rail.dataset.wpStageSettling = 'true';
+      const settle = (now) => { const progress = Math.min(1, (now - started) / 340), eased = progress * progress * (3 - 2 * progress); stageBrowseLogical = positionStageRail(from + (target - from) * eased); if (progress < 1) stageSettleFrame = requestAnimationFrame(settle); else { stageSettleFrame = 0; centeredShift = target + 1; ensureStageWindow(target); focusStageCard(target + 1); restore(); } };
+      stageSettleFrame = requestAnimationFrame(settle); moved = false; event.stopImmediatePropagation();
+    };
+    document.addEventListener('pointerup', finish, true); document.addEventListener('pointercancel', finish, true);
+    rail.addEventListener('click', (event) => { if (!suppressStageClick) return; suppressStageClick = false; event.preventDefault(); event.stopImmediatePropagation(); }, true);
+    rail.addEventListener('click', (event) => { const card = event.target.closest('.stage-card'); if (!card || card.getAttribute('aria-disabled') === 'true') return; state.shift = Number(card.dataset.shift); startBattle(); });
+    rail.addEventListener('focusin', (event) => { const card = event.target.closest('.stage-card'); if (!card) return; centeredShift = Number(card.dataset.shift); stageBrowseLogical = centeredShift - 1; if (card.getAttribute('aria-disabled') !== 'true') state.shift = centeredShift; syncCenteredStageHighlight(card); });
+  }
   function renderHud() {
     $('shiftText').textContent = t('shift', {n:state.shift});
     $('scoreText').textContent = `${state.done}/${state.goal} \u00b7 ${t('errors', {done:state.errors})}`;
@@ -755,13 +888,14 @@
     const card = event.target.closest('.stage-card');
     if (!card) return;
     if (event.repeat && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); return; }
-    const rtl = document.documentElement.dir === 'rtl';
+    const rtl = getComputedStyle($('stageRail')).direction === 'rtl';
     const delta = event.key === 'ArrowLeft' ? (rtl ? 1 : -1) : event.key === 'ArrowRight' ? (rtl ? -1 : 1) : 0;
     const next = event.key === 'Home' ? 1 : event.key === 'End' ? TOTAL_SHIFTS : delta ? Number(card.dataset.shift) + delta : null;
     if (next === null) return;
     event.preventDefault();
+    event.stopImmediatePropagation();
     focusStageCard(next);
-  });
+  }, true);
   $('insuranceBtn').addEventListener('keydown', (event) => {
     if (event.repeat && (event.key === 'Enter' || event.key === ' ')) event.preventDefault();
   });
@@ -903,5 +1037,6 @@
       auditSafeRoute(){const field=$("routeField"),points=(state.safeRoute||[]).map(point=>({x:point.x*field.clientWidth,y:point.y*field.clientHeight}));return routeProgress(points)},
     };
   }
+  installVirtualStageDrag();
   localize();
 })();

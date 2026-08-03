@@ -100,7 +100,7 @@ function createStageCard(){
 }
 function bindStageCard(button,index){
   const level=levels[index],unlocked=index<save.unlocked,status=unlocked?(save.medals[index]?t("cleared",{medal:medalText(save.medals[index])}):t("ready")):t("locked");
-  button.dataset.stageIndex=index;button.setAttribute("aria-posinset",String(index+1));button.setAttribute("aria-setsize",String(levels.length));button.setAttribute("aria-disabled",String(!unlocked));
+  button.dataset.stageIndex=index;button.setAttribute("aria-posinset",String(index+1));button.setAttribute("aria-setsize",String(levels.length));button.setAttribute("aria-disabled",String(!unlocked));button.setAttribute("aria-keyshortcuts","ArrowLeft ArrowRight Home End");
   button.classList.toggle("locked",!unlocked);
   button.querySelector("strong").textContent=t("mission",{n:index+1});
   button.querySelector("small").textContent=`${t(chapters[level.chapter].name)} · ${status}`;

@@ -661,6 +661,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "30 Shifts": "30 교대",
   "30 Sky Races": "30개의 스카이 레이스",
   "30 Skyspires": "스카이스파이어 30개",
+  "30 stage campaign": "30스테이지 캠페인",
   "30 Stages": "30단계",
   "30 Stufen": "30 슈투펜",
   "30 tableros grandes": "30 테이블로스 그란데스",

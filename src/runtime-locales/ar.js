@@ -661,6 +661,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "30 Shifts": "30 التحولات",
   "30 Sky Races": "30 سباقات السماء",
   "30 Skyspires": "30 ناطحة سحاب",
+  "30 stage campaign": "حملة 30 مرحلة",
   "30 Stages": "30 مرحلة",
   "30 Stufen": "30 ستوفين",
   "30 tableros grandes": "30 طاولة كبيرة",

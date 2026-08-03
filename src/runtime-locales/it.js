@@ -661,6 +661,7 @@ window.WeightPlayGameRuntimeLocales["it"] = {
   "30 Shifts": "30 turni",
   "30 Sky Races": "30 gare nel cielo",
   "30 Skyspires": "30 guglie celesti",
+  "30 stage campaign": "Campagna in 30 tappe",
   "30 Stages": "30 tappe",
   "30 Stufen": "30 Stufen",
   "30 tableros grandes": "30 tavoli grandi",

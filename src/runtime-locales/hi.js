@@ -661,6 +661,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "30 Shifts": "30 शिफ्ट",
   "30 Sky Races": "30 स्काई रेस",
   "30 Skyspires": "30 स्काईस्पायर",
+  "30 stage campaign": "30 चरणों का अभियान",
   "30 Stages": "30 चरण",
   "30 Stufen": "30 स्टुफेन",
   "30 tableros grandes": "30 टेबलरोस ग्रांडेस",

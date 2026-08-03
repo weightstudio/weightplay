@@ -661,6 +661,7 @@ window.WeightPlayGameRuntimeLocales["pt-BR"] = {
   "30 Shifts": "30 turnos",
   "30 Sky Races": "30 corridas celestes",
   "30 Skyspires": "30 torres celestes",
+  "30 stage campaign": "Campanha de 30 etapas",
   "30 Stages": "30 etapas",
   "30 Stufen": "30 Estufas",
   "30 tableros grandes": "30 mesas grandes",
