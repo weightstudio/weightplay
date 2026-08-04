@@ -60,6 +60,7 @@ WeightPlay covers these game and content clusters:
 ## Current Playable Games
 
 - Arrow Escape: https://weightplay.com/en/games/arrow-escape/
+- Hexa Sort: https://weightplay.com/en/games/hexa-sort/
 - Panko's Number Grove: https://weightplay.com/games/animal-number-match/
 - Sunbeam Garden: https://weightplay.com/games/animal-sunbeam-garden/
 - Fantasy Lion Defense: https://weightplay.com/games/wonder-crash/

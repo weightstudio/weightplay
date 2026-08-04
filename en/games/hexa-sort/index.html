@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <base href="/games/hexa-sort/" />
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"
+    />
+    <meta name="robots" content="index,follow" />
+    <meta name="weightplay-audience" content="general" />
+    <meta name="weightplay-scene-controls" content="immutable" />
+    <meta name="theme-color" content="#081a32" />
+    <title>Hexa Sort | WeightPlay</title>
+    <meta name="description" content="Hexa Sort is a deterministic stack puzzle with 30 handcrafted stages and an Endless score mode. Place one offered stack on an open hex, then watch..." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Hexa Sort | WeightPlay" />
+    <meta property="og:description" content="Hexa Sort is a deterministic stack puzzle with 30 handcrafted stages and an Endless score mode. Place one offered stack on an open hex, then watch..." />
+    <meta property="og:url" content="https://weightplay.com/en/games/hexa-sort/" />
+    <meta property="og:image" content="https://weightplay.com/assets/hexa-sort/cover.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Hexa Sort | WeightPlay" />
+    <meta name="twitter:description" content="Hexa Sort is a deterministic stack puzzle with 30 handcrafted stages and an Endless score mode. Place one offered stack on an open hex, then watch..." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/hexa-sort/cover.webp" />
+    <link rel="canonical" href="https://weightplay.com/en/games/hexa-sort/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/hexa-sort/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/hexa-sort/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/hexa-sort/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/hexa-sort/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/hexa-sort/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/hexa-sort/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/hexa-sort/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/hexa-sort/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/hexa-sort/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/hexa-sort/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/hexa-sort/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/hexa-sort/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/hexa-sort/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/hexa-sort/" />
+    <link rel="stylesheet" href="../../src/loading-screen.css" />
+    <link rel="stylesheet" href="../../src/game-page-info.css" />
+    <link
+      rel="stylesheet"
+      href="../../src/stage-selector-standard.css"
+      data-wp-stage-standard
+    />
+    <link
+      rel="stylesheet"
+      href="../../src/battle-canvas-standard.css"
+      data-wp-battle-standard
+    />
+    <link rel="stylesheet" href="../../src/game-shell-controls-standard.css" />
+    <link rel="stylesheet" href="../arrow-escape/style.css?v=20260801-shell1" />
+    <link rel="stylesheet" href="style.css?v=20260804-stage-v26" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Hexa Sort",
+  "url": "https://weightplay.com/en/games/hexa-sort/",
+  "image": "https://weightplay.com/assets/hexa-sort/cover.png",
+  "description": "Hexa Sort is a deterministic stack puzzle with 30 handcrafted stages and an Endless score mode. Place one offered stack on an open hex, then watch...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Puzzle",
+    "Strategy",
+    "Family",
+    "Browser Game"
+  ],
+  "audience": {
+    "@type": "PeopleAudience",
+    "audienceType": "General players",
+    "suggestedMinAge": 9
+  }
+}
+    </script>
+  </head>
+  <body
+    data-screen="main"
+    data-wp-game-id="hexa-sort"
+    data-wp-audience="general"
+  >
+    <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Hexa Sort</strong><span>Preparing the stacks…</span><div class="loading-track"><i></i></div></div></section>
+    <div id="mainGroup" class="main-group">
+      <main class="main-canvas">
+        <header class="main-header">
+          <a
+            class="lobby-return"
+            href="/"
+            data-wp-return="main"
+            aria-label="Back to WeightPlay"
+            ><span>←</span><b>W</b></a
+          ><strong data-i18n="title">Hexa Sort</strong>
+          <div class="main-controls">
+            <button
+              id="soundToggle"
+              class="icon-control"
+              type="button"
+              aria-pressed="true"
+              data-sound-toggle
+            >
+              🔊</button
+            ><label class="locale-control"
+              ><span class="sr-only" data-i18n="language">Language</span
+              ><select id="localeSelect" aria-label="Language"></select
+            ></label>
+          </div>
+        </header>
+        <section class="hero">
+          <img
+            class="poster"
+            src="../../assets/hexa-sort/cover.webp"
+            alt="Hexa Sort game artwork"
+          />
+          <div class="hero-copy">
+            <small data-i18n="genre">HEX STACK PUZZLE</small>
+            <h1 data-i18n="title">Hexa Sort</h1>
+            <p data-i18n="pitch">
+              Place stacks, gather matching top colors, and trigger chain
+              clears.
+            </p>
+            <strong id="mainProgress">1 / 30</strong
+            ><button
+              id="startBtn"
+              class="primary"
+              type="button"
+              data-i18n="start"
+            >
+              Start Game
+            </button>
+            <button
+              id="endlessBtn"
+              class="primary endless-action"
+              type="button"
+            >
+              Endless · Best 0
+            </button>
+          </div>
+        </section>
+      </main>
+      <section class="game-page-info game-page-info-static" aria-label="Hexa Sort game information">
+    
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Hexa Sort</h2><p>Hexa Sort is a deterministic stack puzzle with 30 handcrafted stages and an Endless score mode. Place one offered stack on an open hex, then watch adjacent matching top colors combine until the board becomes stable.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Difficulty</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>2-10 minutes</strong></div><div class="game-info-fact"><span>Skills Trained</span><strong>Planning · Color Matching · Spatial Reasoning</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>World and Mission</h3><p>Every stage begins with an authored arrangement, objective, move budget, and stack offer sequence. The early campaign teaches clean color planning before frozen cells, gems, blocked spaces, rainbow chips, bombs, and mixed objectives appear.</p>
+<p>Endless mode removes the campaign target and keeps increasing color and special-tile pressure until no legal open hex remains.</p></div>
+      <div class="game-info-section"><h3>How the Systems Work</h3><p>Only the contiguous matching run at the top of a stack can move. Lower colors remain hidden until the layers above them leave or clear.</p>
+<p>Automatic movement is deterministic: the resolver favors clears and useful objectives, keeps transfers adjacent, and avoids revisiting the same board state.</p>
+<p>Ten matching chips clear together and reveal the next color. Frozen stacks thaw from adjacent placements, gems are collected from neighboring activity, and special chips resolve inside the same locked turn.</p>
+<p>The tray always offers three stacks. A placement is final, so inspect both visible top colors and the lower layers before choosing a hex.</p></div>
+      <div class="game-info-section"><h3>How to Play</h3><ol><li>Choose one of the 30 stages, or start Endless from Main.</li><li>Select one of the three offered stacks.</li><li>Tap an open hex to place the complete stack.</li><li>Let every adjacent merge and clear finish before planning the next placement.</li><li>Complete the displayed objective within the move budget, or keep scoring in Endless until the board fills.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Prefer placements that concentrate one top color without sealing every open hex.</li><li>Count how many matching chips a chain can reveal before committing.</li><li>Keep more than one useful landing area for awkward tray stacks.</li><li>Treat frozen cells, gems, and objectives as part of the same plan instead of chasing only the largest visible stack.</li><li>When two merge directions look equal, consider which lower color will be exposed next.</li></ul></div>
+      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Stages 1-10 use ten distinct opening silhouettes and teach placement, top runs, and ten-chip clears.</p>
+<p>Middle stages add frozen cells, stones, gems, rainbow chips, bombs, color objectives, and tighter move limits.</p>
+<p>Stages 26-30 combine several systems under five-color pressure. Endless mode increases pressure continuously and stores the best score in this browser.</p></div>
+      <div class="game-info-section"><h3>Developer Design Note</h3><p>Chip transfers use persistent visible layers and sequential readable motion. The board resolves one deterministic transaction at a time, while the Stage selector recycles nine stable cards so long campaigns remain smooth without building one permanent item per stage. The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Parent Note</h3><p>Hexa Sort is a general-audience browser puzzle recommended for ages 9+ and family play. No account or purchase is required. Campaign unlocks, Endless best score, language, and sound preferences are stored only in this browser. You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>How many stages are included?</dt><dd>There are 30 handcrafted campaign stages plus Endless mode.</dd></div><div><dt>Can I move a stack after placing it?</dt><dd>No. Choose carefully; the placement is final and matching top runs resolve automatically.</dd></div><div><dt>Which chips are allowed to move?</dt><dd>Only one contiguous run of the same color at the top of a stack can move to an adjacent stack.</dd></div><div><dt>When does a color clear?</dt><dd>A connected resolved stack clears when it reaches ten matching chips.</dd></div><div><dt>Is Endless random?</dt><dd>Offers vary, but the rules and every merge decision are deterministic from the current state.</dd></div><div><dt>Is progress saved?</dt><dd>Campaign unlocks, Endless best score, and preferences are stored locally in this browser.</dd></div><div><dt>Which controls and screen sizes are supported?</dt><dd>The same rules support touch, mouse, and keyboard where the game uses those inputs. The interface scales as one logical layout across the required phone, landscape, and desktop viewports.</dd></div><div><dt>Can progress move automatically to another device?</dt><dd>No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.</dd></div></dl></div>
+      
+    </div>
+  </section>
+      <section class="guide" aria-label="Game guide">
+        <h2 data-i18n="guideTitle">Only matching top layers can travel.</h2>
+        <div class="guide-grid">
+          <article>
+            <h3 data-i18n="howTitle">How to play</h3>
+            <ol>
+              <li data-i18n="how1">
+                Choose one of three stacks, then an empty hex.
+              </li>
+              <li data-i18n="how2">
+                Adjacent matching top runs move into the newly placed stack.
+              </li>
+              <li data-i18n="how3">
+                Ten matching chips clear and reveal the next chain.
+              </li>
+            </ol>
+          </article>
+          <article>
+            <h3 data-i18n="priorityTitle">Anchored merge order</h3>
+            <p data-i18n="priority">
+              The newly placed stack stays put; only directly adjacent
+              matching top runs move into it.
+            </p>
+          </article>
+        </div>
+      </section>
+    </div>
+    <section id="stageScreen" class="active-screen" hidden>
+      <div class="stage-shell">
+        <div
+          class="stage-canvas"
+          data-wp-standard-stage-screen
+          data-wp-logical-stage-canvas
+          data-wp-canvas-max-width="920"
+        >
+          <header class="stage-header">
+            <button
+              id="stageBack"
+              class="return-button"
+              type="button"
+              data-wp-return="stage"
+              aria-label="Back"
+            >
+              ←
+            </button>
+            <div>
+              <strong data-i18n="chooseStage">Choose a Stage</strong
+              ><span id="stageSummary">1 / 30</span>
+            </div>
+            <button id="stageSound" class="icon-control" type="button" hidden>
+              🔊
+            </button>
+          </header>
+          <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep"></div>
+          <p class="stage-hint" data-i18n="stageHint">
+            Select an unlocked sorting mission.
+          </p>
+          <button
+            id="enterStage"
+            class="primary stage-enter"
+            type="button"
+            data-i18n="enter"
+          >
+            Enter Stage
+          </button>
+        </div>
+        <div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div>
+      </div>
+    </section>
+    <section id="battleScreen" class="active-screen" hidden>
+      <div class="battle-shell">
+        <div
+          id="battleCanvas"
+          class="battle-canvas"
+          data-wp-logical-battle-canvas
+          data-wp-canvas-max-width="920"
+        >
+          <div id="battleLive" class="battle-live hexa-live">
+            <header class="battle-header">
+              <button
+                id="battleBack"
+                class="return-button"
+                type="button"
+                data-wp-return="battle"
+                aria-label="Back"
+              >
+                ←
+              </button>
+              <div class="battle-title">
+                <small id="stageLabel">STAGE 1</small
+                ><strong data-i18n="title">Hexa Sort</strong>
+              </div>
+              <div class="battle-stats">
+                <span
+                  ><b data-i18n="moves">Moves</b
+                  ><strong id="movesValue">0</strong></span
+                ><span
+                  ><b data-i18n="cleared">Cleared</b
+                  ><strong id="clearedValue">0</strong></span
+                >
+              </div>
+              <button
+                id="battleHelp"
+                class="icon-control"
+                type="button"
+                aria-label="How to play"
+              >
+                ?
+              </button>
+            </header>
+            <div class="objective-row">
+              <strong id="objectiveKind">COLOR</strong
+              ><span id="objectiveText">0 / 10</span>
+              <small id="objectiveRule" class="objective-rule"></small>
+            </div>
+            <div class="hexa-play">
+              <div class="hexa-board-track">
+                <div
+                  id="hexBoard"
+                  class="hex-board"
+                  role="grid"
+                  aria-label="Hex stack board"
+                  aria-describedby="hexaCoach"
+                ></div>
+              </div>
+              <div id="hexaCoach" class="hexa-coach" aria-live="polite">
+                <b>1</b><span data-i18n="how1">Choose one of three stacks, then an empty hex.</span>
+              </div>
+              <div
+                id="stackTray"
+                class="stack-tray"
+                aria-label="Stack tray"
+                aria-describedby="hexaCoach"
+              ></div>
+            </div>
+            <p id="feedback" class="feedback" aria-live="polite"></p>
+          </div>
+          <section id="helpModal" class="modal" hidden>
+            <div class="dialog">
+              <h2 data-i18n="howTitle">How to play</h2>
+              <p data-i18n="helpText">
+                Operations lock during merging. Only contiguous matching chips
+                on top may move.
+              </p>
+              <p id="helpObjectiveRule" class="help-objective-rule"></p>
+              <ol class="battle-help-steps">
+                <li data-i18n="how1">Choose one of three stacks, then an empty hex.</li>
+                <li data-i18n="how2">Adjacent matching top runs move into the newly placed stack.</li>
+                <li data-i18n="how3">Ten matching chips clear and reveal the next chain.</li>
+              </ol>
+              <button
+                id="helpClose"
+                class="primary"
+                type="button"
+                data-i18n="continue"
+              >
+                Continue
+              </button>
+            </div>
+          </section>
+          <section id="leaveModal" class="modal" hidden>
+            <div class="dialog">
+              <h2 data-i18n="leaveTitle">Leave this sort?</h2>
+              <p data-i18n="leaveText">Continue keeps the exact stacks.</p>
+              <div class="modal-actions">
+                <button
+                  id="leaveContinue"
+                  class="primary"
+                  type="button"
+                  data-i18n="continue"
+                >
+                  Continue</button
+                ><button id="leaveStage" type="button" data-i18n="stageMap">
+                  Stage Map
+                </button>
+              </div>
+            </div>
+          </section>
+          <section id="resultModal" class="modal" hidden>
+            <div class="dialog result-layout">
+              <img src="../../assets/hexa-sort/cover.webp" alt="Hexa Sort" />
+              <div>
+                <small id="resultStage">STAGE 1</small>
+                <h2 id="resultTitle" data-i18n="clear">Mission Complete!</h2>
+                <p id="resultText"></p>
+              </div>
+              <div class="modal-actions result-actions">
+                <button id="resultStageBtn" type="button" data-i18n="stageMap">
+                  Stage Map</button
+                ><button
+                  id="nextBtn"
+                  class="primary"
+                  type="button"
+                  data-i18n="next"
+                >
+                  Next Stage</button
+                ><button id="retryBtn" type="button" data-i18n="retry">
+                  Play Again
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class="ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
+      </div>
+    </section>
+    <script src="../../src/site-config.js"></script>
+    <script src="../../src/analytics.js"></script><script>window.WonderAnalytics?.track("game_view",{game_id:"hexa-sort"});</script>
+    <script src="/src/i18n.js?v=20260731-owner-preview5"></script>
+    <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
+    <script src="../../src/sound.js"></script>
+    <script src="../../src/edge-guard.js"></script>
+    <script src="game.js?v=20260804-stage-v26"></script>
+    <script
+      src="../../src/stage-selector-standard.js"
+      data-wp-stage-standard
+    ></script>
+    <script
+      src="../../src/battle-canvas-standard.js"
+      data-wp-battle-standard
+    ></script>
+    <script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>
+    <script src="../../src/game-page-info.js?v=20260804-hexa-release-v26"></script>
+    <script src="/src/game-title-registry.js?v=20260804-hexa-release-v26" data-wp-game-title-registry></script>
+    <script>(()=>{const close=()=>{const panel=document.querySelector("#loadingPanel");if(panel){panel.classList.add("hidden");panel.hidden=true;}};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",close,{once:true});else close();window.addEventListener("load",close,{once:true});window.setTimeout(close,1500);})();</script>
+  </body>
+</html>

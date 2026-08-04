@@ -2251,6 +2251,21 @@ if (arrowEscapePublic) {
   delete arrowEscapePublic.internalTrial;
 }
 
+const hexaSortPublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "hexa-sort");
+if (hexaSortPublic) {
+  hexaSortPublic.status = "playable";
+  Object.assign(hexaSortPublic.title, {
+    en: "Hexa Sort", "zh-Hant": "六角堆疊", "zh-Hans": "六角堆叠",
+    ja: "ヘキサソート", ko: "헥사 소트", es: "Clasificación hexagonal",
+    "pt-BR": "Classificação Hexa", fr: "Tri hexagonal", de: "Hexa-Sortierung",
+    it: "Ordinamento esagonale", ru: "Сортировка гексов", hi: "हेक्सा सॉर्ट",
+    ar: "فرز السداسيات",
+  });
+  hexaSortPublic.previewVideo = "assets/previews/hexa-sort-battle.webm";
+  delete hexaSortPublic.statusText;
+  delete hexaSortPublic.internalTrial;
+}
+
 const bambooPipesPublic = window.WONDER_LOBBY.games.find((game) => game.id === "animal-bamboo-pipes");
 const playableStatusCopy = window.WONDER_LOBBY.games.find((game) => game.id === "animal-triple-match")?.statusText;
 if (bambooPipesPublic) {

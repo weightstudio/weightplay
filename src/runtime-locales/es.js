@@ -6657,7 +6657,7 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Hex stack board": "Tablero de pila hexagonal",
   "Hex Stack Puzzle": "Rompecabezas de pila hexagonal",
   "HEX STACK PUZZLE": "ROMPECABEZAS DE PILA HEXAGONAL",
-  "Hexa Sort": "Orden hexadecimal",
+  "Hexa Sort": "Clasificación hexagonal",
   "Hexa Sort | Coming Soon": "Orden hexadecimal | Próximamente",
   "Hexa Sort | WeightPlay Owner Preview": "Orden hexadecimal | WeightPlay Vista previa del propietario",
   "Hexa Sort bomb resolution failed": "La resolución de la bomba Hexa Sort falló",

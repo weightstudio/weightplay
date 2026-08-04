@@ -6657,7 +6657,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
   "Hex stack board": "六角堆叠板",
   "Hex Stack Puzzle": "六角堆叠拼图",
   "HEX STACK PUZZLE": "六角堆叠拼图",
-  "Hexa Sort": "六角排序",
+  "Hexa Sort": "六角堆叠",
   "Hexa Sort | Coming Soon": "六角排序 |即将推出",
   "Hexa Sort | WeightPlay Owner Preview": "六角排序 | WeightPlay 所有者预览",
   "Hexa Sort bomb resolution failed": "六分类炸弹解析失败",

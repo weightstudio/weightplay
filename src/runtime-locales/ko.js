@@ -6657,7 +6657,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Hex stack board": "육각 스택 보드",
   "Hex Stack Puzzle": "육각 스택 퍼즐",
   "HEX STACK PUZZLE": "육각형 스택 퍼즐",
-  "Hexa Sort": "헥사 정렬",
+  "Hexa Sort": "헥사 소트",
   "Hexa Sort | Coming Soon": "헥사 정렬 | 출시 예정",
   "Hexa Sort | WeightPlay Owner Preview": "헥사 정렬 | WeightPlay 소유자 미리보기",
   "Hexa Sort bomb resolution failed": "Hexa Sort 폭탄 해결 실패",
