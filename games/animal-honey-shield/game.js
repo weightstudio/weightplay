@@ -81,6 +81,50 @@
       [{kind:"ruins",x:285,y:100,w:430,h:420}],
     ],
   ];
+  const TERRAIN_LAYOUTS=[
+    [
+      {name:"twin-anchor-clearing",anchors:[{x:350,y:420,r:43},{x:650,y:420,r:43}]},
+      {name:"left-cliff-pocket",platforms:[{x:70,y:300,w:250,h:250},{x:320,y:535,w:300,h:70}],anchors:[{x:705,y:330,r:42}]},
+      {name:"center-island-crossfire",platforms:[{x:455,y:535,w:240,h:70}],anchors:[{x:350,y:335,r:42},{x:650,y:335,r:42}]},
+      {name:"overhang-alcove",platforms:[{x:285,y:235,w:430,h:58},{x:335,y:535,w:330,h:70}],gates:[{x:500,y:375,r:48}]},
+      {name:"split-cliffs",platforms:[{x:0,y:320,w:270,h:300},{x:730,y:320,w:270,h:300}],anchors:[{x:390,y:470,r:42},{x:610,y:470,r:42}]},
+    ],
+    [
+      {name:"twin-brook-islands",platforms:[{x:70,y:355,w:265,h:58},{x:665,y:355,w:265,h:58},{x:375,y:540,w:250,h:70}]},
+      {name:"stair-step-channel",platforms:[{x:70,y:250,w:270,h:58},{x:360,y:390,w:250,h:58},{x:650,y:520,w:280,h:70}],anchors:[{x:790,y:270,r:40}]},
+      {name:"vertical-water-gates",platforms:[{x:235,y:115,w:72,h:340},{x:693,y:255,w:72,h:310}],anchors:[{x:500,y:300,r:42}]},
+      {name:"island-under-bridge",platforms:[{x:275,y:210,w:450,h:55},{x:390,y:535,w:220,h:70}],anchors:[{x:210,y:430,r:40},{x:790,y:430,r:40}]},
+      {name:"offset-canal-mouths",platforms:[{x:0,y:410,w:310,h:210},{x:690,y:245,w:310,h:375},{x:400,y:535,w:200,h:70}],gates:[{x:500,y:330,r:46}]},
+    ],
+    [
+      {name:"stone-pry-yard",anchors:[{x:300,y:315,r:46},{x:700,y:315,r:46}],platforms:[{x:390,y:190,w:220,h:58}]},
+      {name:"stone-u-basin",anchors:[{x:318,y:315,r:46},{x:682,y:315,r:46}],platforms:[{x:390,y:210,w:220,h:58}]},
+      {name:"terraced-slope",platforms:[{x:40,y:470,w:300,h:150},{x:350,y:365,w:220,h:255},{x:660,y:260,w:300,h:360}],anchors:[{x:500,y:245,r:42}]},
+      {name:"narrow-stone-well",platforms:[{x:180,y:120,w:95,h:390},{x:725,y:120,w:95,h:390},{x:365,y:535,w:270,h:70}],gates:[{x:500,y:315,r:48}]},
+      {name:"broken-causeway",platforms:[{x:0,y:405,w:300,h:215},{x:350,y:505,w:300,h:115},{x:700,y:325,w:300,h:295}],anchors:[{x:330,y:275,r:42},{x:670,y:430,r:42}]},
+    ],
+    [
+      {name:"crosswind-shelves",platforms:[{x:110,y:255,w:230,h:58},{x:660,y:430,w:230,h:58}],anchors:[{x:500,y:330,r:44}]},
+      {name:"high-low-airlocks",platforms:[{x:40,y:180,w:300,h:60},{x:660,y:475,w:300,h:60},{x:390,y:535,w:220,h:70}],gates:[{x:500,y:315,r:46}]},
+      {name:"wind-tunnel",platforms:[{x:205,y:80,w:72,h:410},{x:723,y:130,w:72,h:410}],anchors:[{x:390,y:330,r:40},{x:610,y:330,r:40}]},
+      {name:"floating-crown",platforms:[{x:285,y:175,w:430,h:58},{x:365,y:525,w:270,h:80}],anchors:[{x:170,y:430,r:42},{x:830,y:430,r:42}]},
+      {name:"double-wind-bowl",platforms:[{x:0,y:420,w:315,h:200},{x:685,y:420,w:315,h:200}],gates:[{x:350,y:500,r:48},{x:650,y:500,r:48}]},
+    ],
+    [
+      {name:"bramble-ring-break",anchors:[{x:250,y:295,r:45},{x:750,y:295,r:45}],gates:[{x:500,y:215,r:48}]},
+      {name:"asymmetric-thicket",platforms:[{x:45,y:355,w:315,h:265},{x:715,y:120,w:90,h:315}],anchors:[{x:555,y:385,r:44}]},
+      {name:"three-pocket-garden",platforms:[{x:0,y:450,w:260,h:170},{x:370,y:510,w:260,h:110},{x:740,y:350,w:260,h:270}],gates:[{x:500,y:250,r:48}]},
+      {name:"bramble-corridor",platforms:[{x:225,y:90,w:95,h:430},{x:680,y:190,w:95,h:430}],anchors:[{x:500,y:135,r:42},{x:500,y:500,r:42}]},
+      {name:"thorn-crown",platforms:[{x:245,y:200,w:510,h:58},{x:385,y:535,w:230,h:70}],anchors:[{x:185,y:405,r:44},{x:815,y:405,r:44}],gates:[{x:500,y:350,r:46}]},
+    ],
+    [
+      {name:"ruin-courtyard",platforms:[{x:110,y:245,w:230,h:58},{x:660,y:410,w:230,h:58},{x:365,y:535,w:270,h:70}],anchors:[{x:500,y:275,r:44}]},
+      {name:"sunken-chamber",platforms:[{x:0,y:300,w:300,h:320},{x:700,y:300,w:300,h:320},{x:330,y:165,w:340,h:58}],gates:[{x:500,y:430,r:50}]},
+      {name:"three-door-keep",platforms:[{x:185,y:80,w:80,h:430},{x:735,y:80,w:80,h:430},{x:365,y:535,w:270,h:70}],gates:[{x:350,y:320,r:46},{x:650,y:320,r:46}]},
+      {name:"broken-spiral-hall",platforms:[{x:0,y:445,w:250,h:175},{x:250,y:285,w:250,h:58},{x:500,y:125,w:250,h:58},{x:750,y:365,w:250,h:255}],anchors:[{x:500,y:450,r:42}]},
+      {name:"final-honey-fortress",platforms:[{x:135,y:95,w:90,h:430},{x:775,y:95,w:90,h:430},{x:300,y:210,w:400,h:58},{x:345,y:535,w:310,h:70}],anchors:[{x:285,y:430,r:42},{x:715,y:430,r:42},{x:500,y:105,r:40}],gates:[{x:500,y:370,r:50}]},
+    ],
+  ];
 
   function safeGet(key){try{return localStorage.getItem(key)}catch{return null}}
   function safeSet(key,value){try{localStorage.setItem(key,value);return true}catch{return false}}
@@ -221,42 +265,17 @@
       [[{x:120,y:90},{x:880,y:90}],[{x:500,y:60},{x:865,y:190}],[{x:135,y:170},{x:865,y:170},{x:500,y:65}],[{x:105,y:90},{x:895,y:90},{x:500,y:185}],[{x:110,y:125},{x:890,y:125},{x:500,y:60}]],
       [[{x:110,y:90},{x:890,y:90}],[{x:500,y:60},{x:110,y:185},{x:890,y:185}],[{x:100,y:90},{x:900,y:90},{x:500,y:190}],[{x:115,y:70},{x:885,y:70},{x:500,y:155}],[{x:95,y:105},{x:905,y:105},{x:500,y:55}]],
     ];
-    const anchors=[],platforms=[],gates=[];
-    if(chapter===0){
-      if(slot===0)anchors.push({x:350,y:420,r:43},{x:650,y:420,r:43});
-      if(slot===1)anchors.push({x:300,y:395,r:43},{x:650,y:330,r:43});
-      if(slot===2)anchors.push({x:350,y:335,r:43},{x:650,y:335,r:43});
-      if(slot===3){gates.push({x:500,y:275,r:48});anchors.push({x:330,y:410,r:42})}
-      if(slot===4)anchors.push({x:330,y:410,r:43},{x:650,y:330,r:43});
-    }else if(chapter===1){
-      const left=slot%2?250:330,right=slot%2?750:670;
-      platforms.push({x:left-125,y:330,w:250,h:58},{x:right-125,y:500,w:250,h:58});
-      if(slot>=2)anchors.push({x:500,y:285,r:42});
-    }else if(chapter===2){
-      anchors.push({x:300+slot*18,y:315,r:46},{x:700-slot*18,y:315,r:46});
-      platforms.push({x:390,y:190+slot*20,w:220,h:58});
-      if(slot>=3)gates.push({x:500,y:510,r:50});
-    }else if(chapter===3){
-      platforms.push({x:110+slot*35,y:255,w:230,h:58},{x:660-slot*35,y:430,w:230,h:58});
-      anchors.push({x:500,y:330,r:44});
-      if(slot===4)gates.push({x:350,y:500,r:48},{x:650,y:500,r:48});
-    }else if(chapter===4){
-      anchors.push({x:255,y:280+slot*28,r:45},{x:745,y:280+slot*28,r:45});
-      gates.push({x:500,y:210+slot*22,r:48});
-      if(slot>=2)platforms.push({x:375,y:480,w:250,h:58});
-    }else{
-      anchors.push({x:270,y:270,r:46},{x:730,y:270,r:46});
-      platforms.push({x:365,y:170+slot*25,w:270,h:58},{x:365,y:500-slot*18,w:270,h:58});
-      if(slot>=1)gates.push({x:500,y:340,r:50});
-      if(slot>=3)anchors.push({x:500,y:105,r:40});
-    }
+    const layout=TERRAIN_LAYOUTS[chapter][slot];
+    const anchors=(layout.anchors||[]).map(item=>({...item}));
+    const platforms=(layout.platforms||[]).map(item=>({...item}));
+    const gates=(layout.gates||[]).map(item=>({...item}));
     const solids=[
       ...anchors.map(item=>({...item,kind:"anchor"})),
       ...gates.map(item=>({...item,kind:"gate"})),
       ...platforms.map(item=>({...item,kind:"platform"})),
     ];
     return{
-      dog:dogPositions[chapter][slot],hives:hiveSets[chapter][slot],anchors,platforms,gates,solids,zones:TERRAIN_ZONES[chapter][slot],theme,chapter,slot,topology:`${theme.terrain}-${slot+1}`,
+      dog:dogPositions[chapter][slot],hives:hiveSets[chapter][slot],anchors,platforms,gates,solids,zones:TERRAIN_ZONES[chapter][slot],theme,chapter,slot,topology:layout.name,
       duration:7.5+chapter*.7+slot*.18,
       speed:128+chapter*13+slot*5,
       interval:Math.max(.38,.82-chapter*.065-slot*.018),
@@ -1080,7 +1099,14 @@
       else if(spec.theme.terrain==="wind"){ctx.save();ctx.fillStyle="rgba(184,241,255,.78)";ctx.strokeStyle="#ecffff";ctx.lineWidth=5;ctx.beginPath();ctx.roundRect(platform.x,platform.y,platform.w,platform.h,28);ctx.fill();ctx.stroke();ctx.restore()}
       else if(spec.theme.terrain==="bramble"){ctx.save();ctx.fillStyle="#512847";ctx.strokeStyle="#ff9fcf";ctx.lineWidth=5;ctx.beginPath();ctx.roundRect(platform.x,platform.y,platform.w,platform.h,18);ctx.fill();ctx.stroke();ctx.restore()}
       else if(spec.theme.terrain==="ruins"){ctx.save();ctx.fillStyle="#8b6c45";ctx.strokeStyle="#f9d98e";ctx.lineWidth=5;ctx.beginPath();ctx.roundRect(platform.x,platform.y,platform.w,platform.h,8);ctx.fill();ctx.stroke();ctx.restore()}
-      else drawSprite(5,platform.x,platform.y-72,platform.w,platform.h+110);
+      else if(spec.theme.terrain==="meadow"){
+        ctx.save();ctx.fillStyle="#76502f";ctx.strokeStyle="#d8ff9b";ctx.lineWidth=5;ctx.beginPath();ctx.roundRect(platform.x,platform.y,platform.w,platform.h,Math.min(18,platform.h*.22));ctx.fill();ctx.stroke();
+        ctx.fillStyle="#5aa94d";ctx.fillRect(platform.x+3,platform.y+3,platform.w-6,Math.min(18,platform.h-6));
+        ctx.strokeStyle="rgba(255,235,174,.2)";ctx.lineWidth=2;for(let y=platform.y+42;y<platform.y+platform.h;y+=36){ctx.beginPath();ctx.moveTo(platform.x+8,y);ctx.lineTo(platform.x+platform.w-8,y);ctx.stroke()}ctx.restore();
+      }else{
+        ctx.save();ctx.fillStyle="#716a45";ctx.strokeStyle="#e8d08a";ctx.lineWidth=5;ctx.beginPath();ctx.roundRect(platform.x,platform.y,platform.w,platform.h,10);ctx.fill();ctx.stroke();
+        ctx.strokeStyle="rgba(255,244,195,.25)";ctx.lineWidth=2;for(let y=platform.y+34;y<platform.y+platform.h;y+=34){ctx.beginPath();ctx.moveTo(platform.x+5,y);ctx.lineTo(platform.x+platform.w-5,y);ctx.stroke()}for(let x=platform.x+42;x<platform.x+platform.w;x+=70){ctx.beginPath();ctx.moveTo(x,platform.y+4);ctx.lineTo(x,platform.y+platform.h-4);ctx.stroke()}ctx.restore();
+      }
     }
     for(const anchor of spec.anchors){if(spec.theme.terrain==="bramble"){ctx.save();ctx.fillStyle="#552245";ctx.strokeStyle="#ff9ed4";ctx.lineWidth=6;ctx.beginPath();ctx.arc(anchor.x,anchor.y,anchor.r,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore()}else drawSprite(3,anchor.x-48,anchor.y-48,96,96)}
     for(const gate of spec.gates){if(spec.theme.terrain==="ruins"){ctx.save();ctx.strokeStyle="#ffe09a";ctx.lineWidth=14;ctx.beginPath();ctx.arc(gate.x,gate.y,gate.r,Math.PI,0);ctx.stroke();ctx.restore()}else drawSprite(4,gate.x-52,gate.y-58,104,116)}

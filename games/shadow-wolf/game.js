@@ -972,6 +972,7 @@
     button.setAttribute("aria-disabled", String(copy.locked));
     button.setAttribute("aria-posinset", String(definition.id));
     button.setAttribute("aria-setsize", String(STAGE_COUNT));
+    button.setAttribute("aria-keyshortcuts", "ArrowLeft ArrowRight Home End");
     button.innerHTML = `<b>${String(definition.id).padStart(2, "0")} - ${copy.regionLabel}</b><span>${copy.title}</span><small>${copy.hint}</small><small>${copy.stateLabel}</small>`;
     button.setAttribute("aria-label", `${definition.id}. ${copy.title}: ${copy.hint}. ${copy.stateLabel}`);
   }

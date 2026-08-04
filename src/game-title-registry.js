@@ -130,18 +130,18 @@ window.WEIGHTPLAY_GAME_TITLES = {
   "hexa-sort": {
     "__localizedExact": true,
     "en": "Hexa Sort",
-    "zh-Hant": "六角堆疊",
-    "zh-Hans": "六角堆叠",
+    "zh-Hant": "六角排序",
+    "zh-Hans": "六角排序",
     "ja": "ヘキサソート",
-    "ko": "헥사 소트",
-    "es": "Clasificación hexagonal",
-    "pt-BR": "Classificação Hexa",
+    "ko": "헥사 정렬",
+    "es": "Orden hexadecimal",
+    "pt-BR": "Classificação hexa",
     "fr": "Tri hexagonal",
     "de": "Hexa-Sortierung",
     "it": "Ordinamento esagonale",
-    "ru": "Сортировка гексов",
+    "ru": "Шестнадцатеричная сортировка",
     "hi": "हेक्सा सॉर्ट",
-    "ar": "فرز السداسيات"
+    "ar": "الترتيب السداسي"
   },
   "animal-sunbeam-garden": {
     "__localizedExact": true,

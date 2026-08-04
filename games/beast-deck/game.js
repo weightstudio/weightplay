@@ -2913,7 +2913,19 @@
     const cards = [...nodes.handRow.querySelectorAll(".card:not(:disabled)")];
     const nextCard = cards.find((card) => Number(card.dataset.handIndex) >= preferredIndex)
       || cards.at(-1);
-    (nextCard || nodes.endTurnBtn)?.focus({ preventScroll: true });
+    const nextDecision = nextCard || nodes.endTurnBtn;
+    nextDecision?.focus({ preventScroll: true });
+    if (!nextCard) return;
+
+    const cardLeft = nextCard.offsetLeft;
+    const cardRight = cardLeft + nextCard.offsetWidth;
+    const visibleLeft = nodes.handRow.scrollLeft;
+    const visibleRight = visibleLeft + nodes.handRow.clientWidth;
+    if (cardLeft < visibleLeft) {
+      nodes.handRow.scrollLeft = cardLeft;
+    } else if (cardRight > visibleRight) {
+      nodes.handRow.scrollLeft = cardRight - nodes.handRow.clientWidth;
+    }
   }
 
   function syncResultPrimaryAction(won, canContinue) {

@@ -190,6 +190,7 @@
     button.setAttribute("aria-disabled", String(locked));
     button.setAttribute("aria-posinset", String(index + 1));
     button.setAttribute("aria-setsize", String(stages.length));
+    button.setAttribute("aria-keyshortcuts", "ArrowLeft ArrowRight Home End");
     button.innerHTML = `<span>${stage.boss ? `${t("boss")} · ` : ""}${t(chapters[stage.chapter])}</span><strong>${stage.n}</strong><dl><div><dt>${t("threat")}</dt><dd>${stageThreat(stage)}</dd></div><div><dt>${t("plan")}</dt><dd>${t(stage.plan)}</dd></div><div><dt>${t("reward")}</dt><dd>${t("rewardDust",{dust:stage.reward})}</dd></div></dl><small>${locked ? t("locked") : `${"★".repeat(save.stars[stage.n]||0)}${"☆".repeat(3-(save.stars[stage.n]||0))}`}</small>`;
   }
   function createStageCard(poolIndex) {

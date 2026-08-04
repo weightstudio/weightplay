@@ -687,6 +687,7 @@
   let activeScene = "main";
   let sceneGeneration = 0;
   const STAGE_POOL_SIZE = 9;
+  const STAGE_NAV_SHORTCUTS = "ArrowLeft ArrowRight Home End";
   let stageWindowStart = 0;
   let stageCardPool = [];
   let stageBrowseIndex = 0;
@@ -1091,6 +1092,7 @@
     button.setAttribute("aria-current", String(active));
     button.setAttribute("aria-posinset", String(stageNo));
     button.setAttribute("aria-setsize", String(stages.length));
+    button.setAttribute("aria-keyshortcuts", STAGE_NAV_SHORTCUTS);
     button.tabIndex = active ? 0 : -1;
     if (active && !locked) button.dataset.wpStageRecommended = "true";
     else delete button.dataset.wpStageRecommended;

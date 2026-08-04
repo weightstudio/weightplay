@@ -710,6 +710,7 @@
       const button = document.createElement("button");
       button.className = `stage-card${locked ? " locked" : ""}${definition.checkpoint ? " checkpoint" : ""}`;
       button.dataset.stage = String(stage);
+      button.setAttribute("aria-keyshortcuts", "ArrowLeft ArrowRight Home End");
       if(locked)button.setAttribute("aria-disabled","true");
       const detail = locked ? t("locked") : interpolate("roomsAndMarks",{marks:definition.reward});
       const title=localizedValue(definition.titleEn,definition.titleZh,definition.titleEs);

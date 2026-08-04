@@ -538,9 +538,15 @@
       </div>
     `).join("");
     root.querySelectorAll(".passenger.front").forEach((button) => {
-      button.onclick = () => dispatch(Number(button.dataset.queue));
+      button.onclick = (event) => dispatch(Number(button.dataset.queue), event.detail === 0);
     });
     $("undo").disabled = history.length === 0;
+  }
+
+  function focusNextPassenger(queueIndex) {
+    const nextPassenger = root.querySelector(`.passenger.front[data-queue="${queueIndex}"]`)
+      || root.querySelector(".passenger.front");
+    nextPassenger?.focus({ preventScroll: true });
   }
 
   function startLevel(index) {
@@ -568,7 +574,7 @@
     $("status").textContent = t("status");
   }
 
-  function dispatch(queueIndex) {
+  function dispatch(queueIndex, restoreKeyboardFocus = false) {
     const level = levels[levelIndex];
     const color = state.queues[queueIndex]?.[0];
     const activeColor = level.buses[state.busIndex]?.color;
@@ -596,6 +602,7 @@
       scheduleDeparture(departureDuration);
     }
     render();
+    if (restoreKeyboardFocus) focusNextPassenger(queueIndex);
     $("status").textContent = color === activeColor ? t("boarded") : t("held");
 
     if (engine.isComplete(level, state)) {
