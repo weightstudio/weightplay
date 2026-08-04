@@ -438,9 +438,10 @@
     stageCardPool=[...nodes.rail.children];nodes.rail.dataset.wpStageWindowStart=String(stageWindowStart);nodes.rail.dataset.wpStageWindowEnd=String(stageWindowStart+stageCardPool.length-1);if(recycled)nodes.rail.dataset.wpStageRecycleCount=String(Number(nodes.rail.dataset.wpStageRecycleCount||0)+recycled);
   }
   function ensureStageWindow(index){if(!stageCardPool.length||stageCardPool.some(card=>!card.isConnected))buildStagePool();moveStageWindow(desiredStageWindow(index));stageCardPool.forEach(card=>bindMissionCard(card,Number(card.dataset.index)));markCenteredMission(Math.round(stageBrowseLogical))}
-  function stageRailPitch(){const cards=[...nodes.rail.children],first=cards[0]?.getBoundingClientRect(),second=cards[1]?.getBoundingClientRect();return first&&second?Math.abs((second.left+second.width/2)-(first.left+first.width/2)):166}
-  function positionStageRail(logical){const value=Math.max(0,Math.min(campaign.length-1,logical)),anchor=Math.round(value);moveStageWindow(desiredStageWindow(anchor));const card=nodes.rail.querySelector(`[data-index="${anchor}"]`);card?.scrollIntoView({behavior:"auto",inline:"center",block:"nearest"});nodes.rail.scrollLeft+=(value-anchor)*stageRailPitch();nodes.rail.dataset.wpStageDragLogical=value.toFixed(4);return value}
-  function centerMission(index){ensureStageWindow(index);nodes.rail.querySelector(`[data-index="${index}"]`)?.scrollIntoView({behavior:"instant",inline:"center",block:"nearest"});markCenteredMission(index)}
+  function stageRailGeometry(){const cards=[...nodes.rail.children],railRect=nodes.rail.getBoundingClientRect(),first=cards[0]?.getBoundingClientRect(),second=cards[1]?.getBoundingClientRect(),delta=first&&second?(second.left+second.width/2)-(first.left+first.width/2):0,fallback=(first?.width||154)+(parseFloat(getComputedStyle(nodes.rail).columnGap)||12);return{center:railRect.left+railRect.width/2,pitch:Math.abs(delta)||fallback,orientation:Math.sign(delta)||1}}
+  function stageRailPitch(){return stageRailGeometry().pitch}
+  function positionStageRail(logical){const value=Math.max(0,Math.min(campaign.length-1,logical)),anchor=Math.round(value);moveStageWindow(desiredStageWindow(anchor));const rail=nodes.rail,card=rail.querySelector(`[data-index="${anchor}"]`);if(!card)return value;rail.scrollTo({left:card.offsetLeft+card.offsetWidth/2-rail.clientWidth/2,behavior:"auto"});const railRect=rail.getBoundingClientRect(),cardRect=card.getBoundingClientRect(),scale=railRect.width?rail.clientWidth/railRect.width:1,correction=((cardRect.left+cardRect.width/2)-(railRect.left+railRect.width/2))*scale;if(Math.abs(correction)>.01)rail.scrollLeft+=correction;const geometry=stageRailGeometry(),fraction=value-anchor;if(Math.abs(fraction)>.0001)rail.scrollLeft+=fraction*geometry.orientation*geometry.pitch;rail.dataset.wpStageDragLogical=value.toFixed(4);return value}
+  function centerMission(index){ensureStageWindow(index);positionStageRail(index);markCenteredMission(index)}
   function cancelStageMotion(){if(stageSettleFrame)cancelAnimationFrame(stageSettleFrame);stageSettleFrame=0;cancelStagePointer();nodes.rail?.style.removeProperty("scroll-behavior");nodes.rail?.style.removeProperty("scroll-snap-type");nodes.rail?.classList.remove("wp-stage-dragging");if(nodes.rail)delete nodes.rail.dataset.wpStageSettling}
   function renderStage(){
     if(!nodes.rail)return;
@@ -474,7 +475,7 @@
       if(active&&nodes.stage.contains(active)&&!nodes.rail.contains(active))return;
       stageBrowseLogical=centeredMission;ensureStageWindow(centeredMission);
       const card=nodes.rail.querySelector(`[data-index="${centeredMission}"]`);
-      card?.scrollIntoView({behavior:"auto",inline:"center",block:"nearest"});
+      positionStageRail(centeredMission);
       markCenteredMission();
       card?.focus({preventScroll:true});
       requestAnimationFrame(markGeometricMission);
@@ -649,8 +650,9 @@
   function bindMissionRailDrag(){
     const rail=nodes.rail;
     rail.addEventListener("click",event=>{const card=event.target.closest(".mission-card");if(!card)return;const index=Number(card.dataset.index);if(index>=0&&index<state.unlocked)startMission(index)});
-    rail.addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" ")){event.preventDefault();return}const card=event.target.closest(".mission-card");if(!card||!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;const rtl=getComputedStyle(rail).direction==="rtl",index=Number(card.dataset.index);let next=index;if(event.key==="Home")next=0;else if(event.key==="End")next=campaign.length-1;else if(event.key==="ArrowLeft")next=Math.max(0,Math.min(campaign.length-1,index+(rtl?1:-1)));else next=Math.max(0,Math.min(campaign.length-1,index+(rtl?-1:1)));event.preventDefault();stageBrowseLogical=next;ensureStageWindow(next);const target=rail.querySelector(`[data-index="${next}"]`);markCenteredMission(next);target?.focus({preventScroll:true});target?.scrollIntoView({behavior:"auto",inline:"center",block:"nearest"})});
+    rail.addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" ")){event.preventDefault();return}const card=event.target.closest(".mission-card");if(!card||!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;const rtl=getComputedStyle(rail).direction==="rtl",index=Number(card.dataset.index);let next=index;if(event.key==="Home")next=0;else if(event.key==="End")next=campaign.length-1;else if(event.key==="ArrowLeft")next=Math.max(0,Math.min(campaign.length-1,index+(rtl?1:-1)));else next=Math.max(0,Math.min(campaign.length-1,index+(rtl?-1:1)));event.preventDefault();const baseSnap=rail.style.getPropertyValue("scroll-snap-type"),baseBehavior=rail.style.getPropertyValue("scroll-behavior");rail.style.setProperty("scroll-behavior","auto","important");rail.style.setProperty("scroll-snap-type","none","important");stageBrowseLogical=next;ensureStageWindow(next);const target=rail.querySelector(`[data-index="${next}"]`);markCenteredMission(next);target?.focus({preventScroll:true});positionStageRail(next);requestAnimationFrame(()=>{if(baseBehavior)rail.style.setProperty("scroll-behavior",baseBehavior);else rail.style.removeProperty("scroll-behavior");if(baseSnap)rail.style.setProperty("scroll-snap-type",baseSnap);else rail.style.removeProperty("scroll-snap-type")})});
     rail.addEventListener("wonder:stage-snap",event=>{
+      if(rail.dataset.wpStageVirtualized==="bounded-recycle"){markGeometricMission();return}
       const index=Number(event.detail?.index);
       if(Number.isInteger(index)&&index>=0)markCenteredMission(index);
       else markGeometricMission();

@@ -1043,6 +1043,8 @@
 
   addEventListener("keydown",event=>{
     const key=event.key.toLowerCase();
+    const interactiveTarget=event.target instanceof Element&&event.target.closest("button,a,input,select,textarea,[contenteditable='true']");
+    if(interactiveTarget&&key!=="escape")return;
     if(["arrowup","arrowdown","arrowleft","arrowright"," ","w","a","s","d","j","k","v","e","escape"].includes(key))event.preventDefault();
     keys.add(key);
     if(event.repeat)return;
