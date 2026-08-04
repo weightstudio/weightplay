@@ -17,6 +17,6 @@
   }[locale];
   if (!segment) return;
   const base = new URL(".", document.currentScript?.src || document.baseURI).href;
-  document.write(`<script src="${base}runtime-locales/${segment}.js?v=20260726-block-trilogy-copy1"><\/script>`);
+  document.write(`<script src="${base}runtime-locales/${segment}.js?v=20260804-rune-copy-v27"><\/script>`);
   document.write(`<script src="${base}game-runtime-localizer.js?v=20260721-pattern1"><\/script>`);
 })();
