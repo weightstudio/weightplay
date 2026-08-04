@@ -43,6 +43,24 @@
       parent: "Block Blast is a general-audience browser puzzle recommended for ages 9+ and family play. No account is required. Campaign unlocks and preferences are stored only in this browser, so clearing site data or changing devices can remove local progress.",
       faq: [["Can shapes rotate?", "No. Each tray shape keeps its displayed orientation."], ["When do points increase?", "Only completed rows or columns award points; simply placing a shape does not."], ["How many stages are included?", "There are 30 authored Campaign missions plus an unlimited Endless run."], ["What do ice and stone do?", "Ice remains visible beneath a placed block until its line clears; stone cannot be occupied."], ["Why did the run end?", "The run ends when none of the unused shapes in the current tray has a legal placement."], ["Is progress saved?", "Campaign unlocks and preferences are stored locally in this browser."]],
     },
+    "arrow-escape": {
+      title: "Arrow Escape",
+      age: "9+",
+      difficulty: "Easy to Challenging",
+      time: "2-8 minutes",
+      skills: ["Planning", "Spatial Reasoning", "Focus"],
+      intro: "Arrow Escape is a 30-stage order puzzle. Read the full path in front of each arrow, remove a block only when that path is clear, and uncover a safe sequence through walls, rotating arrows, matching locks, ice, portals, and one-way gates.",
+      story: ["Each stage is a deterministic escape board rather than a random layout. The same stage always begins with the same blocks and always has a verified complete solution.", "Six teaching chapters introduce one rule at a time before combining every mechanic in the final five puzzles."],
+      systems: ["A normal arrow can leave only when every cell on its ray is clear. A blocked choice shakes and identifies the first obstacle without spending a move.", "Rotating arrows turn once before they can escape. Keys open only their matching locks, and removing a neighboring block thaws ice.", "Portals continue the same ray from their paired exit. A one-way gate accepts only the matching direction.", "Hint marks one safe next arrow and moves keyboard focus to it, but never plays the move for you or changes the board."],
+      how: ["Choose an unlocked stage from the horizontal Stage rail.", "Inspect the direction and complete route of every arrow.", "Tap, click, or focus and activate an arrow whose route is clear.", "Use the blocker outline to understand an unsafe choice, or use Hint for one advisory move.", "Remove every arrow to clear the stage and unlock the next puzzle."],
+      strategyTips: ["Begin with arrows that already face an open edge.", "Trace the complete ray, including the space after a portal, before committing.", "When a key or frozen block appears, plan what its removal changes for nearby arrows.", "A blocked attempt costs no move, so use the highlighted first blocker as information instead of guessing repeatedly."],
+      progression: ["Stages 1-5 teach clear rays and removal order.", "Stages 6-15 add interlocking rows and fixed walls.", "Stages 16-25 introduce rotation, matching locks, keys, and ice.", "Stages 26-30 combine portals and one-way gates with the earlier rules."],
+      designNote: "Distinct legal arrows respond immediately, so quick players can tap consecutive safe moves without waiting for an earlier flight animation. The board state still resolves deterministically, and duplicate taps on an already removed arrow are ignored.",
+      parent: "Arrow Escape is a general-audience browser puzzle recommended for ages 9+ and family play. No account is required. Stage unlocks, language, and sound preferences are stored only in this browser, so clearing site data or changing devices can remove local progress.",
+      related: [],
+      relatedIds: ["arrow-escape"],
+      faq: [["How many stages are included?", "There are 30 handcrafted stages across six rule chapters, and Stage 30 remains replayable."], ["Does a blocked tap use a move?", "No. It identifies the first blocker and leaves the board unchanged."], ["Does Hint solve the puzzle automatically?", "No. Hint marks and focuses one safe next arrow, but you still choose whether to play it."], ["Can several arrows move at once?", "Yes. Distinct legal arrows can begin their escape animations immediately without a global input cooldown."], ["How do portals work?", "An arrow enters one portal and continues in the same direction immediately beyond the paired exit."], ["Is progress saved?", "Stage unlocks and preferences are stored locally in this browser."]],
+    },
     "animal-color-link": {
       title: "Color Link Garden",
       age: "9+",
@@ -8551,6 +8569,26 @@
     faq: [["What is required to submit tiles?", "Carry at least one matching tile and enter a dock's visible submission area."], ["Must I use docks in number order?", "No. Choose any reachable dock."], ["Why did a tile not enter my stack?", "It did not match your color or your current capacity was full."], ["How do I win?", "Reach the displayed bridge goal before the rival crews."]]
   }, "動物天橋爭霸", "动物天桥争霸");
 
+  localizedGames["zh-Hant"]["arrow-escape"] = {
+    ...games["arrow-escape"],
+    title: "箭頭大逃亡",
+    difficulty: "簡單到具挑戰性",
+    time: "每關 2–8 分鐘",
+    gameplay: "箭頭順序解謎",
+    genre: ["益智", "策略", "空間推理"],
+    skills: ["規劃", "空間推理", "專注"],
+    intro: "《箭頭大逃亡》是一款 30 關的順序解謎遊戲。先看清楚每個箭頭前方的完整路線，只有整條路都暢通時才能移除方塊，並逐步破解牆壁、旋轉箭頭、配對鎖、冰塊、傳送門與單向閘門。",
+    story: ["每一關都是固定設計的逃脫棋盤，不是隨機排列。相同關卡每次都會從同一組方塊開始，而且都經過完整解法驗證。", "六個教學章節會先逐一介紹規則，最後五關再把所有機制組合成完整挑戰。"],
+    systems: ["一般箭頭只有在前方射線上的每一格都沒有障礙時才能離開。點到受阻的箭頭會搖動並標出第一個障礙，而且不會消耗步數。", "旋轉箭頭要先轉向一次；鑰匙只會打開相同顏色的鎖；移除相鄰方塊則能解凍冰塊。", "箭頭進入傳送門後，會從成對出口沿原方向繼續前進；單向閘門只允許相符方向通過。", "提示只會標出一個安全的下一步，並把鍵盤焦點移到該箭頭，不會代替玩家行動或改變棋盤。"],
+    how: ["從橫向關卡列選擇已解鎖關卡。", "查看每個箭頭的方向與完整離場路線。", "用觸控、滑鼠或鍵盤選擇路線暢通的箭頭。", "從障礙標示理解錯誤選擇，或使用提示取得一個建議步驟。", "移除全部箭頭即可過關並解鎖下一關。"],
+    strategyTips: ["先找已朝向棋盤外側、路線明顯暢通的箭頭。", "遇到傳送門時，要連同出口後方的路線一起檢查。", "出現鑰匙或冰塊時，先思考移除後會改變哪些鄰近箭頭。", "受阻操作不會消耗步數，可利用第一個障礙的標示找出真正的依賴順序。"],
+    progression: ["第 1–5 關教導直線路徑與移除順序。", "第 6–15 關加入互相卡住的排列與固定牆壁。", "第 16–25 關加入旋轉、配對鎖、鑰匙與冰塊。", "第 26–30 關把傳送門、單向閘門與先前規則結合。"],
+    designNote: "不同且合法的箭頭會立即回應，因此熟練玩家可以連續快速點擊，不必等待前一段飛出動畫結束。棋盤狀態仍維持固定順序，同一個已移除箭頭的重複輸入會被安全忽略。",
+    parent: "《箭頭大逃亡》是建議 9 歲以上與家庭玩家遊玩的瀏覽器益智遊戲，不需要帳號。關卡解鎖、語言與音效偏好只儲存在目前瀏覽器；清除網站資料或更換裝置可能失去本機進度。",
+    faq: [["共有多少關？", "共有 30 個手工設計關卡，分成六個規則章節；第 30 關完成後仍可重玩。"], ["點到受阻箭頭會消耗步數嗎？", "不會。遊戲只會標出第一個障礙，棋盤保持不變。"], ["提示會自動解題嗎？", "不會。提示只會標出並聚焦一個安全箭頭，是否執行仍由玩家決定。"], ["可以連續快速點多個箭頭嗎？", "可以。不同的合法箭頭能立即開始飛出，不受全域冷卻限制。"], ["傳送門怎麼運作？", "箭頭會從其中一個傳送門進入，並從成對出口沿相同方向繼續。"], ["進度會儲存嗎？", "關卡解鎖與偏好會儲存在目前瀏覽器。"]],
+  };
+  localizedGameplayProfiles["zh-Hant"]["arrow-escape"] = { gameplay: "箭頭順序解謎", genre: ["益智", "策略", "空間推理"] };
+
   localizedGames["zh-Hant"]["block-blast"] = {
     ...games["block-blast"],
     title: "方塊爆破",
@@ -8619,6 +8657,7 @@
   };
   [
     "block-blast",
+    "arrow-escape",
     "animal-bamboo-pipes",
     "animal-bus-jam",
     "animal-cratebound",

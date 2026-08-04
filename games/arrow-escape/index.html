@@ -1,19 +1,89 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol)) location.replace("/en/games/arrow-escape/" + location.search + location.hash);</script>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="robots" content="index,follow">
   <meta name="weightplay-audience" content="general">
-  <title>Arrow Escape | Coming Soon</title>
-  <style>body{margin:0;min-height:100vh;display:grid;place-items:center;font-family:system-ui,sans-serif;background:#edf4ff;color:#17233b}.hold{width:min(560px,calc(100% - 32px));padding:36px;border-radius:24px;background:#fff;box-shadow:0 18px 44px #24406b24;text-align:center}.hold a{display:inline-block;margin-top:18px;padding:12px 18px;border-radius:12px;background:#315ca8;color:#fff;text-decoration:none;font-weight:800}</style>
+  <meta name="weightplay-scene-controls" content="immutable">
+  <meta name="theme-color" content="#081a32">
+  <title>Arrow Escape | Free Order Puzzle | WeightPlay</title>
+  <meta name="description" content="Play Arrow Escape free in your browser. Clear 30 handcrafted arrow puzzles by finding the safe order through walls, locks, ice, portals and one-way gates.">
+  <meta property="og:site_name" content="WeightPlay">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Arrow Escape | WeightPlay">
+  <meta property="og:description" content="Read every arrow path, remove blocks in the safe order, and master 30 handcrafted puzzles.">
+  <meta property="og:url" content="https://weightplay.com/en/games/arrow-escape/">
+  <meta property="og:image" content="https://weightplay.com/assets/arrow-escape/cover.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Arrow Escape | WeightPlay">
+  <meta name="twitter:description" content="A free 30-stage order puzzle with arrows, walls, keys, ice, portals and gates.">
+  <meta name="twitter:image" content="https://weightplay.com/assets/arrow-escape/cover.png">
+  <link rel="canonical" href="https://weightplay.com/en/games/arrow-escape/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/arrow-escape/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/arrow-escape/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/arrow-escape/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/arrow-escape/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/arrow-escape/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/arrow-escape/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/arrow-escape/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/arrow-escape/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/arrow-escape/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/arrow-escape/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/arrow-escape/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/arrow-escape/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/arrow-escape/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/arrow-escape/" />
+    <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
+  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css">
+  <link rel="stylesheet" href="style.css?v=20260802-stage-direct1">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Arrow Escape","url":"https://weightplay.com/en/games/arrow-escape/","image":"https://weightplay.com/assets/arrow-escape/cover.png","description":"Clear 30 handcrafted arrow puzzles by finding the safe order through walls, locks, ice, portals and one-way gates.","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"en","isAccessibleForFree":true,"genre":["Puzzle","Strategy","Browser Game"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9}}</script>
 </head>
-<body>
-  <main class="hold">
-    <p>WEIGHTPLAY OWNER PREVIEW</p>
-    <h1>Arrow Escape</h1>
-    <p>This game is still being tested and is not publicly playable yet.</p>
-    <a href="/?preview=1">Back to Coming Soon</a>
-  </main>
+<body data-screen="main" data-wp-game-id="arrow-escape" data-wp-audience="general">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Arrow Escape</strong><span>Preparing the puzzle…</span><div class="loading-track"><i></i></div></div></section>
+  <div id="mainGroup" class="main-group">
+    <main id="mainScreen" class="main-canvas">
+      <header class="main-header">
+        <a class="lobby-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span>←</span><b>W</b></a>
+        <strong data-i18n="title">Arrow Escape</strong>
+        <div class="main-controls"><button id="soundToggle" class="icon-control" type="button" aria-pressed="true" data-sound-toggle data-i18n-aria="sound">🔊</button><label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"></select></label></div>
+      </header>
+      <section class="hero">
+        <img class="poster" src="../../assets/arrow-escape/cover.webp" alt="3D arrow blocks escaping a puzzle board">
+        <div class="hero-copy"><small data-i18n="genre">ORDER PUZZLE</small><h1 data-i18n="title">Arrow Escape</h1><p data-i18n="pitch">Clear every arrow block in the only safe order.</p><strong id="mainProgress">1 / 30</strong><button id="startBtn" class="primary" type="button" data-i18n="start">Start Game</button></div>
+      </section>
+    </main>
+    <section class="game-page-info game-page-info-static" aria-label="Arrow Escape game guide"></section>
+  </div>
+  <section id="stageScreen" class="active-screen" hidden>
+    <div class="stage-shell"><div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920">
+      <header class="stage-header"><button id="stageBack" class="return-button" type="button" data-wp-return="stage" aria-label="Back">←</button><div><strong data-i18n="chooseStage">Choose a Stage</strong><span id="stageSummary">1 / 30</span></div><button id="stageSound" class="icon-control" type="button" aria-pressed="true" data-i18n-aria="sound" hidden>🔊</button></header>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" aria-label="Stage selector"></div><p class="stage-hint" data-i18n="stageHint">Swipe or scroll. Tap an unlocked stage to play.</p>
+    </div><div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div></div>
+  </section>
+  <section id="battleScreen" class="active-screen" hidden>
+    <div class="battle-shell"><div id="battleCanvas" class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <div id="battleLive" class="battle-live"><header class="battle-header"><button id="battleBack" class="return-button" type="button" data-wp-return="battle" aria-label="Back">←</button><div class="battle-title"><small id="stageLabel">STAGE 1</small><strong data-i18n="title">Arrow Escape</strong></div><div class="battle-stats"><span><b data-i18n="movesLabel">Moves</b><strong id="movesValue">0</strong></span><span><b data-i18n="leftLabel">Left</b><strong id="leftValue">0</strong></span></div><button id="battleHelp" class="icon-control" type="button" aria-label="How to play">?</button></header>
+        <div class="objective-row"><strong id="mechanicLabel">BASICS</strong><span id="objectiveText" data-i18n="objective">Clear every arrow block.</span></div><div class="board-track"><div id="board" class="arrow-board" role="grid" aria-label="Arrow puzzle board"></div></div><div class="battle-controls"><button id="hintBtn" type="button" data-i18n="hint">Hint</button><button id="restartBtn" type="button" data-i18n="restart">Restart</button></div><p id="feedback" class="feedback" aria-live="polite"></p>
+      </div>
+      <section id="helpModal" class="modal" hidden><div class="dialog"><h2 data-i18n="howTitle">How to play</h2><p data-i18n="helpText">Only a completely clear arrow path can escape. Special tiles never choose a random outcome.</p><button id="helpClose" class="primary" type="button" data-i18n="continue">Continue</button></div></section>
+      <section id="leaveModal" class="modal" hidden><div class="dialog"><h2 data-i18n="leaveTitle">Leave this attempt?</h2><p data-i18n="leaveText">Continue keeps the exact board. Stage Map restarts this attempt later.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-i18n="continue">Continue</button><button id="leaveStage" type="button" data-i18n="stageMap">Stage Map</button></div></div></section>
+      <section id="resultModal" class="modal" hidden><div class="dialog result-layout"><img src="../../assets/arrow-escape/cover.webp" alt="Arrow Escape"><div><small id="resultStage">STAGE 1</small><h2 data-i18n="clear">Stage Cleared!</h2><p id="resultText"></p></div><div class="modal-actions result-actions"><button id="resultStageBtn" type="button" data-i18n="stageMap">Stage Map</button><button id="nextBtn" class="primary" type="button" data-i18n="next">Next Stage</button><button id="retryBtn" type="button" data-i18n="retry">Play Again</button></div></div></section>
+    </div><div class="ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></div>
+  </section>
+  <script src="../../src/site-config.js"></script>
+  <script src="../../src/analytics.js"></script><script>window.WonderAnalytics?.track("game_view",{game_id:"arrow-escape"});</script>
+  <script src="../../src/i18n.js?v=20260721-locale13-1"></script>
+  <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
+  <script src="../../src/sound.js?v=20260720-locale11"></script><script src="../../src/edge-guard.js"></script>
+  <script src="game.js?v=20260804-public-release-v12"></script>
+  <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
+  <script src="../../src/game-page-info.js?v=20260804-arrow-release-v12"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>
+  <script>(()=>{const close=()=>{const panel=document.querySelector("#loadingPanel");if(panel){panel.classList.add("hidden");panel.hidden=true;}};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",close,{once:true});else close();window.addEventListener("load",close,{once:true});window.setTimeout(close,1500);})();</script>
 </body>
 </html>

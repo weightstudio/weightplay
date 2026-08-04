@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <base href="/games/arrow-escape/" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="robots" content="index,follow" />
+  <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-scene-controls" content="immutable">
+  <meta name="theme-color" content="#081a32">
+  <title>アローエスケープ | WeightPlay</title>
+  <meta name="description" content="Arrow Escapeは30段階のオーダーパズルです。各矢印の前にある完全なパスを読み取り、そのパスが空いている場合にのみブロックを削除し、壁、回転矢印、一致するロック、氷、ポータル、および一方通行のゲートを通過する安全なシーケンスを発見します。" />
+  <meta property="og:site_name" content="WeightPlay" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="アローエスケープ | WeightPlay" />
+  <meta property="og:description" content="Arrow Escapeは30段階のオーダーパズルです。各矢印の前にある完全なパスを読み取り、そのパスが空いている場合にのみブロックを削除し、壁、回転矢印、一致するロック、氷、ポータル、および一方通行のゲートを通過する安全なシーケンスを発見します。" />
+  <meta property="og:url" content="https://weightplay.com/ja/games/arrow-escape/" />
+  <meta property="og:image" content="https://weightplay.com/assets/arrow-escape/cover.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="アローエスケープ | WeightPlay" />
+  <meta name="twitter:description" content="Arrow Escapeは30段階のオーダーパズルです。各矢印の前にある完全なパスを読み取り、そのパスが空いている場合にのみブロックを削除し、壁、回転矢印、一致するロック、氷、ポータル、および一方通行のゲートを通過する安全なシーケンスを発見します。" />
+  <meta name="twitter:image" content="https://weightplay.com/assets/arrow-escape/cover.webp" />
+  <link rel="canonical" href="https://weightplay.com/ja/games/arrow-escape/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/arrow-escape/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/arrow-escape/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/arrow-escape/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/arrow-escape/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/arrow-escape/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/arrow-escape/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/arrow-escape/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/arrow-escape/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/arrow-escape/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/arrow-escape/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/arrow-escape/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/arrow-escape/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/arrow-escape/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/arrow-escape/" />
+    <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
+  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css">
+  <link rel="stylesheet" href="style.css?v=20260802-stage-direct1">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "アローエスケープ",
+  "url": "https://weightplay.com/ja/games/arrow-escape/",
+  "image": "https://weightplay.com/assets/arrow-escape/cover.png",
+  "description": "Arrow Escapeは30段階のオーダーパズルです。各矢印の前にある完全なパスを読み取り、そのパスが空いている場合にのみブロックを削除し、壁、回転矢印、一致するロック、氷、ポータル、および一方通行のゲートを通過する安全なシーケンスを発見します。",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "ja",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Puzzle",
+    "Strategy",
+    "Family",
+    "Browser Game"
+  ],
+  "audience": {
+    "@type": "PeopleAudience",
+    "audienceType": "General players",
+    "suggestedMinAge": 9
+  },
+  "alternateName": "Arrow Escape"
+}
+    </script>
+</head>
+<body data-screen="main" data-wp-game-id="arrow-escape" data-wp-audience="general">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Arrow Escape</strong><span>Preparing the puzzle…</span><div class="loading-track"><i></i></div></div></section>
+  <div id="mainGroup" class="main-group">
+    <main id="mainScreen" class="main-canvas">
+      <header class="main-header">
+        <a class="lobby-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span>←</span><b>W</b></a>
+        <strong data-i18n="title">Arrow Escape</strong>
+        <div class="main-controls"><button id="soundToggle" class="icon-control" type="button" aria-pressed="true" data-sound-toggle data-i18n-aria="sound">🔊</button><label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"></select></label></div>
+      </header>
+      <section class="hero">
+        <img class="poster" src="../../assets/arrow-escape/cover.webp" alt="アローエスケープのゲーム画像">
+        <div class="hero-copy"><small data-i18n="genre">ORDER PUZZLE</small><h1 data-i18n="title">アローエスケープ</h1><p data-i18n="pitch">Clear every arrow block in the only safe order.</p><strong id="mainProgress">1 / 30</strong><button id="startBtn" class="primary" type="button" data-i18n="start">Start Game</button></div>
+      </section>
+    </main>
+    <section class="game-page-info game-page-info-static" aria-label="アローエスケープ のゲーム情報">
+    
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>アローエスケープ</h2><p>Arrow Escapeは30段階のオーダーパズルです。各矢印の前にある完全なパスを読み取り、そのパスが空いている場合にのみブロックを削除し、壁、回転矢印、一致するロック、氷、ポータル、および一方通行のゲートを通過する安全なシーケンスを発見します。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>難易度</span><strong>挑戦しやすい</strong></div><div class="game-info-fact"><span>目安時間</span><strong>2～8分</strong></div><div class="game-info-fact"><span>育てる力</span><strong>企画 · 空間推論 · フォーカス</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界とミッション</h3><p>各ステージはランダムなレイアウトではなく、決定的な脱出ボードです。同じステージは常に同じブロックから始まり、常に検証された完全なソリューションが存在します。</p>
+<p>6 つの教則章では、最後の 5 つのパズルですべてのメカニズムを組み合わせる前に、一度に 1 つのルールを紹介します。</p></div>
+      <div class="game-info-section"><h3>ゲームのしくみ</h3><p>通常の矢印は、その光線上のすべてのセルがクリアな場合にのみ離れることができます。ブロックされた選択肢は動揺し、移動を費やすことなく最初の障害物を特定します。</p>
+<p>回転矢印は逃げる前に 1 回転します。キーは対応するロックのみを開き、隣接するブロックを削除すると氷が解けます。</p>
+<p>ポータルは、ペアの出口から同じ光線を継続します。一方向ゲートは、一致する方向のみを受け入れます。</p>
+<p>ヒントは次の安全な矢印をマークし、キーボードのフォーカスをそれに移動しますが、その手をプレイしたり、ボードを変更したりすることはありません。</p></div>
+      <div class="game-info-section"><h3>遊び方</h3><ol><li>水平ステージレールからロックが解除されたステージを選択します。</li><li>すべての矢印の方向と完全なルートを検査します。</li><li>ルートが明確な矢印をタップ、クリック、またはフォーカスしてアクティブにします。</li><li>ブロッカーの概要を使用して安全でない選択を理解するか、ヒントを 1 つのアドバイスとして使用します。</li><li>すべての矢印を削除してステージをクリアし、次のパズルのロックを解除します。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>すでに開いたエッジに面している矢印から始めます。</li><li>コミットする前に、ポータルの後のスペースを含む完全なレイをトレースします。</li><li>キーまたは凍結ブロックが表示されたら、それを削除すると近くの矢印がどう変化するかを計画します。</li><li>ブロックされた試みには移動コストがかからないため、繰り返し推測するのではなく、強調表示された最初のブロッカーを情報として使用します。</li></ul></div>
+      <div class="game-info-section"><h3>進行と難易度</h3><p>ステージ 1 ～ 5 では、クリア レイと除去順序を学びます。</p>
+<p>ステージ 6 ～ 15 では、連動する列と固定壁を追加します。</p>
+<p>ステージ 16 ～ 25 では、回転、ロック、キー、氷のマッチングを紹介します。</p>
+<p>ステージ 26 ～ 30 では、ポータルと一方通行のゲートを以前のルールと組み合わせます。</p></div>
+      <div class="game-info-section"><h3>デザインノート</h3><p>明確な法的矢印が即座に反応するため、素早いプレイヤーは、前の飛行アニメーションを待たずに連続して安全な動きをタップできます。ボードの状態は依然として決定論的に解決され、すでに削除された矢印の重複タップは無視されます。 完全なインターフェイスは、最大 920 ピクセルの中央に配置された 1 つの論理レイアウトを使用します。電話、風景、およびデスクトップのビューは、個々の部分を引き伸ばすのではなく、同じコントロール、ヒット領域、アートワーク、およびゲーム座標を一緒に拡大縮小します。したがって、タッチ、マウス、キーボードは同じ法的状態に基づいて動作します。メイン ポスターとゲーム開始アクションはステージ管理から分離されたままですが、ステージ選択、バトル、ダイアログ、結果は独自の境界付きコンテンツとリターン パスを保持します。</p></div>
+      <div class="game-info-section game-info-parent"><h3>保護者の方へ</h3><p>Arrow Escape は、9 歳以上および家族でのプレイを推奨する一般向けのブラウザ パズルです。アカウントは必要ありません。ステージのロック解除、言語、およびサウンドの設定はこのブラウザーにのみ保存されるため、サイト データをクリアしたりデバイスを変更すると、ローカルの進行状況が削除される可能性があります。 アカウントを作成しなくてもプレイできます。進行状況は、オンライン アカウントやクロスデバイス データベースではなく、現在のブラウザ プロファイル上のローカル ブラウザ ストレージに保存されます。サイト データのクリア、プライベート ブラウジングの使用、ブラウザの変更、または別のデバイスへの移動により、別の保存が作成されたり、既存の保存が削除されたりすることがあります。言語、サウンド、モーション軽減の設定は、ブラウザーが保存を許可する場合の共有 WeightPlay コントロールに従います。ガイド結果は、医学、学校、または専門家の評価ではありません。</p></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>ステージは何段階まで含まれていますか?</dt><dd>ルールの 6 章にわたって 30 の手作りステージがあり、ステージ 30 は引き続きリプレイ可能です。</dd></div><div><dt>ブロックされたタップは移動を使用しますか?</dt><dd>いいえ、最初のブロッカーを特定し、ボードを変更しないままにします。</dd></div><div><dt>ヒントは自動的にパズルを解決しますか?</dt><dd>いいえ。ヒントは次の安全な矢印をマークしてフォーカスしますが、それを再生するかどうかはユーザーが選択できます。</dd></div><div><dt>複数の矢を同時に動かすことはできますか?</dt><dd>はい。個別の合法的な矢は、グローバル入力クールダウンなしですぐに脱出アニメーションを開始できます。</dd></div><div><dt>ポータルはどのように機能しますか?</dt><dd>矢印は 1 つのポータルに入り、ペアの出口のすぐ先で同じ方向に進みます。</dd></div><div><dt>進行状況は保存されますか?</dt><dd>ステージのロック解除と設定は、このブラウザにローカルに保存されます。</dd></div><div><dt>どのコントロールと画面サイズがサポートされていますか?</dt><dd>ゲームでこれらの入力が使用されるタッチ、マウス、キーボードも同じルールでサポートされます。このインターフェイスは、必要な電話、ランドスケープ、デスクトップのビューポート全体にわたって 1 つの論理レイアウトとして拡張されます。</dd></div><div><dt>進行状況を別のデバイスに自動的に移動できますか?</dt><dd>いいえ。現在、このゲームはローカル ブラウザ ストレージにのみ保存されるため、将来のアカウント システムが追加されない限り、別のブラウザ プロファイルまたはデバイスは独自のローカルの進行状況で開始されます。</dd></div></dl></div>
+      
+    </div>
+  </section>
+  </div>
+  <section id="stageScreen" class="active-screen" hidden>
+    <div class="stage-shell"><div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920">
+      <header class="stage-header"><button id="stageBack" class="return-button" type="button" data-wp-return="stage" aria-label="Back">←</button><div><strong data-i18n="chooseStage">Choose a Stage</strong><span id="stageSummary">1 / 30</span></div><button id="stageSound" class="icon-control" type="button" aria-pressed="true" data-i18n-aria="sound" hidden>🔊</button></header>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" aria-label="Stage selector"></div><p class="stage-hint" data-i18n="stageHint">Swipe or scroll. Tap an unlocked stage to play.</p>
+    </div><div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div></div>
+  </section>
+  <section id="battleScreen" class="active-screen" hidden>
+    <div class="battle-shell"><div id="battleCanvas" class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <div id="battleLive" class="battle-live"><header class="battle-header"><button id="battleBack" class="return-button" type="button" data-wp-return="battle" aria-label="Back">←</button><div class="battle-title"><small id="stageLabel">STAGE 1</small><strong data-i18n="title">Arrow Escape</strong></div><div class="battle-stats"><span><b data-i18n="movesLabel">Moves</b><strong id="movesValue">0</strong></span><span><b data-i18n="leftLabel">Left</b><strong id="leftValue">0</strong></span></div><button id="battleHelp" class="icon-control" type="button" aria-label="How to play">?</button></header>
+        <div class="objective-row"><strong id="mechanicLabel">BASICS</strong><span id="objectiveText" data-i18n="objective">Clear every arrow block.</span></div><div class="board-track"><div id="board" class="arrow-board" role="grid" aria-label="Arrow puzzle board"></div></div><div class="battle-controls"><button id="hintBtn" type="button" data-i18n="hint">Hint</button><button id="restartBtn" type="button" data-i18n="restart">Restart</button></div><p id="feedback" class="feedback" aria-live="polite"></p>
+      </div>
+      <section id="helpModal" class="modal" hidden><div class="dialog"><h2 data-i18n="howTitle">How to play</h2><p data-i18n="helpText">Only a completely clear arrow path can escape. Special tiles never choose a random outcome.</p><button id="helpClose" class="primary" type="button" data-i18n="continue">Continue</button></div></section>
+      <section id="leaveModal" class="modal" hidden><div class="dialog"><h2 data-i18n="leaveTitle">Leave this attempt?</h2><p data-i18n="leaveText">Continue keeps the exact board. Stage Map restarts this attempt later.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-i18n="continue">Continue</button><button id="leaveStage" type="button" data-i18n="stageMap">Stage Map</button></div></div></section>
+      <section id="resultModal" class="modal" hidden><div class="dialog result-layout"><img src="../../assets/arrow-escape/cover.webp" alt="Arrow Escape"><div><small id="resultStage">STAGE 1</small><h2 data-i18n="clear">Stage Cleared!</h2><p id="resultText"></p></div><div class="modal-actions result-actions"><button id="resultStageBtn" type="button" data-i18n="stageMap">Stage Map</button><button id="nextBtn" class="primary" type="button" data-i18n="next">Next Stage</button><button id="retryBtn" type="button" data-i18n="retry">Play Again</button></div></div></section>
+    </div><div class="ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></div>
+  </section>
+  <script src="../../src/site-config.js"></script>
+  <script src="../../src/analytics.js"></script><script>window.WonderAnalytics?.track("game_view",{game_id:"arrow-escape"});</script>
+  <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
+  <script src="/src/i18n.js?v=20260731-owner-preview5"></script>
+  <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
+  <script src="../../src/sound.js?v=20260720-locale11"></script><script src="../../src/edge-guard.js"></script>
+  <script src="game.js?v=20260804-public-release-v12"></script>
+  <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
+  <script src="../../src/game-page-info.js?v=20260804-arrow-release-v12"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>
+  <script>(()=>{const close=()=>{const panel=document.querySelector("#loadingPanel");if(panel){panel.classList.add("hidden");panel.hidden=true;}};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",close,{once:true});else close();window.addEventListener("load",close,{once:true});window.setTimeout(close,1500);})();</script>
+  <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="アローエスケープ";document.title="アローエスケープ | WeightPlay";},{once:true});</script>
+</body>
+</html>

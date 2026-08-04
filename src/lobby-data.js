@@ -2243,6 +2243,14 @@ if (blockBlastPublic) {
   delete blockBlastPublic.internalTrial;
 }
 
+const arrowEscapePublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "arrow-escape");
+if (arrowEscapePublic) {
+  arrowEscapePublic.status = "playable";
+  arrowEscapePublic.previewVideo = "assets/previews/arrow-escape-battle.webm";
+  delete arrowEscapePublic.statusText;
+  delete arrowEscapePublic.internalTrial;
+}
+
 const bambooPipesPublic = window.WONDER_LOBBY.games.find((game) => game.id === "animal-bamboo-pipes");
 const playableStatusCopy = window.WONDER_LOBBY.games.find((game) => game.id === "animal-triple-match")?.statusText;
 if (bambooPipesPublic) {

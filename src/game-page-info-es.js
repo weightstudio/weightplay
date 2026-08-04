@@ -2788,9 +2788,28 @@ window.WeightPlayGameInfoLocales.es = {
           "Sí. Cada misión desbloqueada sigue siendo rejugable. Finalizar Eclipse Curator finaliza la campaña actual de 30 misiones y no muestra una próxima misión inexistente."
         ]
       ]
+    },
+    "arrow-escape": {
+      "title": "Escape de Flechas",
+      "difficulty": "Fácil a desafiante",
+      "time": "2-8 minutos por nivel",
+      "gameplay": "Puzle de orden con flechas",
+      "genre": ["Puzle de lógica", "Planificación táctica", "Visión espacial"],
+      "skills": ["Planificación", "Razonamiento espacial", "Concentración"],
+      "intro": "Escape de Flechas es un puzle de orden con 30 niveles. Lee la ruta completa de cada flecha, retira un bloque solo cuando el camino esté libre y descubre una secuencia segura entre muros, flechas giratorias, cerraduras, hielo, portales y puertas de un solo sentido.",
+      "story": ["Cada nivel usa un tablero determinista, no una distribución aleatoria. El mismo nivel siempre comienza igual y cuenta con una solución completa verificada.", "Seis capítulos presentan las reglas por separado antes de combinarlas en los cinco puzles finales."],
+      "systems": ["Una flecha normal solo puede salir cuando todas las casillas de su trayectoria están libres. Una elección bloqueada señala el primer obstáculo sin gastar un movimiento.", "Las flechas giratorias dan una vuelta antes de escapar. Las llaves abren solo la cerradura correspondiente y retirar un bloque adyacente descongela el hielo.", "Los portales continúan la misma trayectoria desde la salida emparejada. Una puerta de un solo sentido acepta únicamente la dirección indicada.", "Pista marca una acción segura y mueve el foco del teclado hasta ella, pero nunca juega el movimiento ni cambia el tablero."],
+      "how": ["Elige un nivel desbloqueado en el carril horizontal.", "Comprueba la dirección y toda la ruta de cada flecha.", "Toca, haz clic o activa con el teclado una flecha cuyo camino esté libre.", "Usa el contorno del obstáculo para comprender una elección insegura o pide una pista.", "Retira todas las flechas para superar el nivel y desbloquear el siguiente."],
+      "strategyTips": ["Empieza por las flechas que ya apuntan hacia un borde abierto.", "Sigue la ruta completa después de un portal antes de decidir.", "Con llaves o hielo, anticipa qué rutas cambiarán al retirar el bloque.", "Una elección bloqueada no gasta movimientos; usa el primer obstáculo como información."],
+      "progression": ["Los niveles 1-5 enseñan trayectorias libres y orden de retirada.", "Los niveles 6-15 añaden filas entrelazadas y muros fijos.", "Los niveles 16-25 presentan giros, llaves, cerraduras y hielo.", "Los niveles 26-30 combinan portales y puertas de un solo sentido con las reglas anteriores."],
+      "designNote": "Las flechas legales responden de inmediato, por lo que puedes tocar varias acciones seguras sin esperar a que termine la animación anterior. El estado sigue siendo determinista y los toques repetidos sobre una flecha ya retirada se ignoran.",
+      "parent": "Escape de Flechas es un puzle de navegador para público general recomendado a partir de 9 años. No requiere cuenta. Los niveles desbloqueados y las preferencias se guardan solo en este navegador.",
+      "faq": [["¿Cuántos niveles incluye?", "Hay 30 niveles diseñados a mano en seis capítulos; el nivel 30 se puede repetir."], ["¿Una flecha bloqueada gasta un movimiento?", "No. Señala el primer obstáculo y deja el tablero sin cambios."], ["¿Pista resuelve el puzle?", "No. Solo marca una flecha segura; tú decides si la juegas."], ["¿Puedo tocar varias flechas rápidamente?", "Sí. Distintas flechas legales pueden salir de inmediato sin una espera global."], ["¿Cómo funcionan los portales?", "La flecha entra en un portal y continúa en la misma dirección desde la salida emparejada."], ["¿Se guarda el progreso?", "Los niveles y las preferencias se guardan localmente en este navegador."]],
+      "related": []
     }
   },
   "gameplayProfiles": {
+    "arrow-escape": { "gameplay": "Puzle de orden con flechas", "genre": ["Puzle de lógica", "Planificación táctica", "Visión espacial"] },
     "wonder-crash": {
       "gameplay": "Defensa del cielo bala",
       "genre": [

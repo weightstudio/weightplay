@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <base href="/games/arrow-escape/" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="robots" content="index,follow" />
+  <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-scene-controls" content="immutable">
+  <meta name="theme-color" content="#081a32">
+  <title>Flèche d&#39;évasion | WeightPlay</title>
+  <meta name="description" content="Arrow Escape est un puzzle d&#39;ordre en 30 étapes. Lisez le chemin complet devant chaque flèche, supprimez un bloc uniquement lorsque ce chemin est dégagé..." />
+  <meta property="og:site_name" content="WeightPlay" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Flèche d&#39;évasion | WeightPlay" />
+  <meta property="og:description" content="Arrow Escape est un puzzle d&#39;ordre en 30 étapes. Lisez le chemin complet devant chaque flèche, supprimez un bloc uniquement lorsque ce chemin est dégagé..." />
+  <meta property="og:url" content="https://weightplay.com/fr/games/arrow-escape/" />
+  <meta property="og:image" content="https://weightplay.com/assets/arrow-escape/cover.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Flèche d&#39;évasion | WeightPlay" />
+  <meta name="twitter:description" content="Arrow Escape est un puzzle d&#39;ordre en 30 étapes. Lisez le chemin complet devant chaque flèche, supprimez un bloc uniquement lorsque ce chemin est dégagé..." />
+  <meta name="twitter:image" content="https://weightplay.com/assets/arrow-escape/cover.webp" />
+  <link rel="canonical" href="https://weightplay.com/fr/games/arrow-escape/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/arrow-escape/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/arrow-escape/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/arrow-escape/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/arrow-escape/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/arrow-escape/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/arrow-escape/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/arrow-escape/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/arrow-escape/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/arrow-escape/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/arrow-escape/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/arrow-escape/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/arrow-escape/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/arrow-escape/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/arrow-escape/" />
+    <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
+  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css">
+  <link rel="stylesheet" href="style.css?v=20260802-stage-direct1">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Flèche d'évasion",
+  "url": "https://weightplay.com/fr/games/arrow-escape/",
+  "image": "https://weightplay.com/assets/arrow-escape/cover.png",
+  "description": "Arrow Escape est un puzzle d'ordre en 30 étapes. Lisez le chemin complet devant chaque flèche, supprimez un bloc uniquement lorsque ce chemin est dégagé...",
+  "applicationCategory": "Game",
+  "operatingSystem": "Web browser",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio"
+  },
+  "inLanguage": "fr",
+  "isAccessibleForFree": true,
+  "genre": [
+    "Puzzle",
+    "Strategy",
+    "Family",
+    "Browser Game"
+  ],
+  "audience": {
+    "@type": "PeopleAudience",
+    "audienceType": "General players",
+    "suggestedMinAge": 9
+  },
+  "alternateName": "Arrow Escape"
+}
+    </script>
+</head>
+<body data-screen="main" data-wp-game-id="arrow-escape" data-wp-audience="general">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Arrow Escape</strong><span>Preparing the puzzle…</span><div class="loading-track"><i></i></div></div></section>
+  <div id="mainGroup" class="main-group">
+    <main id="mainScreen" class="main-canvas">
+      <header class="main-header">
+        <a class="lobby-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span>←</span><b>W</b></a>
+        <strong data-i18n="title">Arrow Escape</strong>
+        <div class="main-controls"><button id="soundToggle" class="icon-control" type="button" aria-pressed="true" data-sound-toggle data-i18n-aria="sound">🔊</button><label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"></select></label></div>
+      </header>
+      <section class="hero">
+        <img class="poster" src="../../assets/arrow-escape/cover.webp" alt="Illustration du jeu Flèche d&#39;évasion">
+        <div class="hero-copy"><small data-i18n="genre">ORDER PUZZLE</small><h1 data-i18n="title">Flèche d&#39;évasion</h1><p data-i18n="pitch">Clear every arrow block in the only safe order.</p><strong id="mainProgress">1 / 30</strong><button id="startBtn" class="primary" type="button" data-i18n="start">Start Game</button></div>
+      </section>
+    </main>
+    <section class="game-page-info game-page-info-static" aria-label="Informations sur le jeu Flèche d&#39;évasion">
+    
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2>Flèche d&#39;évasion</h2><p>Arrow Escape est un puzzle d&#39;ordre en 30 étapes. Lisez le chemin complet devant chaque flèche, supprimez un bloc uniquement lorsque ce chemin est dégagé et découvrez une séquence sûre à travers les murs, les flèches tournantes, les serrures correspondantes, la glace, les portails et les portes à sens unique.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Difficulté</span><strong>Facile à difficile</strong></div><div class="game-info-fact"><span>Durée estimée</span><strong>2 à 8 minutes</strong></div><div class="game-info-fact"><span>Compétences travaillées</span><strong>Planification · Raisonnement spatial · Concentrez-vous</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Univers et mission</h3><p>Chaque étape est un tableau d&#39;évasion déterministe plutôt qu&#39;une disposition aléatoire. La même étape commence toujours par les mêmes blocs et a toujours une solution complète vérifiée.</p>
+<p>Six chapitres pédagogiques présentent une règle à la fois avant de combiner chaque mécanique dans les cinq énigmes finales.</p></div>
+      <div class="game-info-section"><h3>Fonctionnement du jeu</h3><p>Une flèche normale ne peut partir que lorsque chaque cellule de son rayon est dégagée. Un choix bloqué secoue et identifie le premier obstacle sans dépenser un coup.</p>
+<p>Les flèches rotatives tournent une fois avant de pouvoir s&#39;échapper. Les clés n&#39;ouvrent que les serrures correspondantes et le retrait d&#39;un bloc voisin fait fondre la glace.</p>
+<p>Les portails continuent le même rayon depuis leur sortie jumelée. Une porte à sens unique n&#39;accepte que la direction correspondante.</p>
+<p>L&#39;indice marque une flèche suivante sûre et y déplace le focus du clavier, mais ne joue jamais le mouvement à votre place ni ne change le tableau.</p></div>
+      <div class="game-info-section"><h3>Comment jouer</h3><ol><li>Choisissez une scène déverrouillée sur le rail horizontal de la scène.</li><li>Inspectez la direction et le parcours complet de chaque flèche.</li><li>Appuyez, cliquez ou concentrez-vous et activez une flèche dont l&#39;itinéraire est clair.</li><li>Utilisez le plan du bloqueur pour comprendre un choix dangereux, ou utilisez l&#39;indice pour un mouvement consultatif.</li><li>Supprimez toutes les flèches pour terminer la scène et débloquer le puzzle suivant.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Conseils</h3><ul><li>Commencez par des flèches qui font déjà face à un bord ouvert.</li><li>Tracez le rayon complet, y compris l&#39;espace après un portail, avant de vous engager.</li><li>Lorsqu&#39;une clé ou un bloc gelé apparaît, planifiez ce que sa suppression change pour les flèches à proximité.</li><li>Une tentative bloquée ne coûte rien, alors utilisez le premier bloqueur en surbrillance comme information au lieu de deviner à plusieurs reprises.</li></ul></div>
+      <div class="game-info-section"><h3>Progression et difficulté</h3><p>Les étapes 1 à 5 enseignent les rayons clairs et l&#39;ordre de suppression.</p>
+<p>Les étapes 6 à 15 ajoutent des rangées imbriquées et des murs fixes.</p>
+<p>Les étapes 16 à 25 introduisent la rotation, l&#39;appariement des serrures, des clés et de la glace.</p>
+<p>Les étapes 26 à 30 combinent les portails et les portes à sens unique avec les règles précédentes.</p></div>
+      <div class="game-info-section"><h3>Note de conception</h3><p>Des flèches légales distinctes répondent immédiatement, afin que les joueurs rapides puissent exécuter des mouvements sûrs consécutifs sans attendre une animation de vol antérieure. L&#39;état du tableau est toujours résolu de manière déterministe et les appuis en double sur une flèche déjà supprimée sont ignorés. L&#39;interface complète utilise une disposition logique centrée avec un maximum de 920 pixels. Les vues du téléphone, du paysage et du bureau mettent à l&#39;échelle les mêmes commandes, zones touchées, illustrations et coordonnées de jeu ensemble au lieu d&#39;étirer des éléments individuels. Toucher, souris et clavier agissent donc sur le même état juridique. L&#39;affiche principale et l&#39;action de démarrage du jeu restent séparées de la gestion de la scène, tandis que la sélection de la scène, la bataille, les dialogues et le résultat conservent leur propre contenu délimité et leur propre chemin de retour.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Pour les parents</h3><p>Arrow Escape est un puzzle de navigateur grand public recommandé pour les 9 ans et plus et pour les jeux en famille. Aucun compte n&#39;est requis. Les déverrouillages de scène, la langue et les préférences sonores sont stockés uniquement dans ce navigateur, donc effacer les données du site ou changer d&#39;appareil peut supprimer la progression locale. Vous pouvez jouer sans créer de compte. La progression est enregistrée dans le stockage local du navigateur sur le profil de navigateur actuel, et non dans un compte en ligne ou une base de données multi-appareils. Effacer les données du site, utiliser la navigation privée, changer de navigateur ou passer à un autre appareil peut créer une sauvegarde distincte ou supprimer celle existante. Les préférences de langue, de son et de réduction des mouvements suivent les commandes partagées WeightPlay lorsque le navigateur autorise le stockage. Aucun résultat du guide n’est une évaluation médicale, scolaire ou professionnelle.</p></div>
+      <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Combien d’étapes sont incluses ?</dt><dd>Il y a 30 étapes créées à la main réparties en six chapitres de règles, et l&#39;étape 30 reste rejouable.</dd></div><div><dt>Un robinet bloqué utilise-t-il un mouvement ?</dt><dd>Non. Il identifie le premier bloqueur et laisse le tableau inchangé.</dd></div><div><dt>Est-ce que Hint résout le puzzle automatiquement ?</dt><dd>Non. L&#39;indice marque et concentre la prochaine flèche sûre, mais vous choisissez toujours de la jouer ou non.</dd></div><div><dt>Plusieurs flèches peuvent-elles bouger en même temps ?</dt><dd>Oui. Des flèches légales distinctes peuvent commencer leurs animations d&#39;évasion immédiatement sans temps de recharge global.</dd></div><div><dt>Comment fonctionnent les portails ?</dt><dd>Une flèche entre dans un portail et continue dans la même direction immédiatement au-delà de la sortie jumelée.</dd></div><div><dt>La progression est-elle enregistrée ?</dt><dd>Les déverrouillages de scène et les préférences sont stockés localement dans ce navigateur.</dd></div><div><dt>Quels contrôles et tailles d’écran sont pris en charge ?</dt><dd>Les mêmes règles prennent en charge le toucher, la souris et le clavier lorsque le jeu utilise ces entrées. L&#39;interface s&#39;adapte comme une disposition logique à travers les fenêtres d&#39;affichage requises du téléphone, du paysage et du bureau.</dd></div><div><dt>La progression peut-elle être automatiquement transférée vers un autre appareil ?</dt><dd>Non. Ce jeu est actuellement enregistré uniquement sur le stockage du navigateur local, donc un autre profil de navigateur ou un autre appareil commence avec sa propre progression locale distincte, à moins qu&#39;un futur système de compte ne soit ajouté.</dd></div></dl></div>
+      
+    </div>
+  </section>
+  </div>
+  <section id="stageScreen" class="active-screen" hidden>
+    <div class="stage-shell"><div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920">
+      <header class="stage-header"><button id="stageBack" class="return-button" type="button" data-wp-return="stage" aria-label="Back">←</button><div><strong data-i18n="chooseStage">Choose a Stage</strong><span id="stageSummary">1 / 30</span></div><button id="stageSound" class="icon-control" type="button" aria-pressed="true" data-i18n-aria="sound" hidden>🔊</button></header>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" aria-label="Stage selector"></div><p class="stage-hint" data-i18n="stageHint">Swipe or scroll. Tap an unlocked stage to play.</p>
+    </div><div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div></div>
+  </section>
+  <section id="battleScreen" class="active-screen" hidden>
+    <div class="battle-shell"><div id="battleCanvas" class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <div id="battleLive" class="battle-live"><header class="battle-header"><button id="battleBack" class="return-button" type="button" data-wp-return="battle" aria-label="Back">←</button><div class="battle-title"><small id="stageLabel">STAGE 1</small><strong data-i18n="title">Arrow Escape</strong></div><div class="battle-stats"><span><b data-i18n="movesLabel">Moves</b><strong id="movesValue">0</strong></span><span><b data-i18n="leftLabel">Left</b><strong id="leftValue">0</strong></span></div><button id="battleHelp" class="icon-control" type="button" aria-label="How to play">?</button></header>
+        <div class="objective-row"><strong id="mechanicLabel">BASICS</strong><span id="objectiveText" data-i18n="objective">Clear every arrow block.</span></div><div class="board-track"><div id="board" class="arrow-board" role="grid" aria-label="Arrow puzzle board"></div></div><div class="battle-controls"><button id="hintBtn" type="button" data-i18n="hint">Hint</button><button id="restartBtn" type="button" data-i18n="restart">Restart</button></div><p id="feedback" class="feedback" aria-live="polite"></p>
+      </div>
+      <section id="helpModal" class="modal" hidden><div class="dialog"><h2 data-i18n="howTitle">How to play</h2><p data-i18n="helpText">Only a completely clear arrow path can escape. Special tiles never choose a random outcome.</p><button id="helpClose" class="primary" type="button" data-i18n="continue">Continue</button></div></section>
+      <section id="leaveModal" class="modal" hidden><div class="dialog"><h2 data-i18n="leaveTitle">Leave this attempt?</h2><p data-i18n="leaveText">Continue keeps the exact board. Stage Map restarts this attempt later.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-i18n="continue">Continue</button><button id="leaveStage" type="button" data-i18n="stageMap">Stage Map</button></div></div></section>
+      <section id="resultModal" class="modal" hidden><div class="dialog result-layout"><img src="../../assets/arrow-escape/cover.webp" alt="Arrow Escape"><div><small id="resultStage">STAGE 1</small><h2 data-i18n="clear">Stage Cleared!</h2><p id="resultText"></p></div><div class="modal-actions result-actions"><button id="resultStageBtn" type="button" data-i18n="stageMap">Stage Map</button><button id="nextBtn" class="primary" type="button" data-i18n="next">Next Stage</button><button id="retryBtn" type="button" data-i18n="retry">Play Again</button></div></div></section>
+    </div><div class="ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></div>
+  </section>
+  <script src="../../src/site-config.js"></script>
+  <script src="../../src/analytics.js"></script><script>window.WonderAnalytics?.track("game_view",{game_id:"arrow-escape"});</script>
+  <script src="/src/i18n.js?v=20260731-owner-preview5"></script>
+  <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
+  <script src="../../src/sound.js?v=20260720-locale11"></script><script src="../../src/edge-guard.js"></script>
+  <script src="game.js?v=20260804-public-release-v12"></script>
+  <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
+  <script src="../../src/game-page-info.js?v=20260804-arrow-release-v12"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>
+  <script>(()=>{const close=()=>{const panel=document.querySelector("#loadingPanel");if(panel){panel.classList.add("hidden");panel.hidden=true;}};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",close,{once:true});else close();window.addEventListener("load",close,{once:true});window.setTimeout(close,1500);})();</script>
+</body>
+</html>

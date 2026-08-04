@@ -760,6 +760,7 @@
   });
   const STAGE_COUNT = stages.length;
   const STAGE_CARD_POOL_SIZE = 9;
+  const STAGE_NAV_SHORTCUTS = "ArrowLeft ArrowRight Home End";
   let stageWindowStart = 0;
   let stageCardPool = [];
   let stageBrowseId = 0;
@@ -1895,6 +1896,7 @@
     button.dataset.index = String(stageId - 1);
     button.setAttribute("aria-posinset", String(stageId));
     button.setAttribute("aria-setsize", String(STAGE_COUNT));
+    button.setAttribute("aria-keyshortcuts", STAGE_NAV_SHORTCUTS);
     button.setAttribute("aria-disabled", String(!unlocked));
     button.tabIndex = current ? 0 : -1;
     if (current) button.setAttribute("aria-current", "true");
