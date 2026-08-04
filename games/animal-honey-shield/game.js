@@ -170,6 +170,13 @@
     const done=Object.keys(save.cleared).length,stars=Object.values(save.stars).reduce((sum,n)=>sum+n,0);
     $("mainProgress").textContent=fmt("progress",{done,stars});
   }
+  function pinViewportTop(active){
+    document.documentElement.style.overflow=active?"hidden":"";
+    document.body.style.position=active?"fixed":"";document.body.style.inset=active?"0":"";document.body.style.width=active?"100%":"";
+    document.documentElement.scrollTop=0;document.body.scrollTop=0;
+    window.scrollTo({left:0,top:0,behavior:"instant"});
+    if(active)requestAnimationFrame(()=>{document.documentElement.scrollTop=0;document.body.scrollTop=0;window.scrollTo({left:0,top:0,behavior:"instant"})});
+  }
   function showScreen(next){
     if(document.activeElement instanceof HTMLElement)document.activeElement.blur();
     screen=next;document.body.dataset.screen=next;
@@ -183,7 +190,7 @@
     window.dispatchEvent(new Event("weightplay:stage-sync"));
     window.dispatchEvent(new Event("weightplay:battle-sync"));
     if(next==="stage")$("stageScreen").querySelector(".stage-canvas").scrollTop=0;
-    window.scrollTo({left:0,top:0,behavior:"instant"});
+    pinViewportTop(next==="stage"||next==="battle");
     if(next==="stage")requestAnimationFrame(centerSelected);
     if(next==="battle"){
       window.dispatchEvent(new CustomEvent("weightplay:battle-open"));

@@ -46,6 +46,55 @@
     });
   }
 
+  const stageCards = () => [...document.querySelectorAll("#levelGrid button[data-level]:not(.campaign-continue)")];
+
+  function recommendedStageCard(cards = stageCards()) {
+    const focused = cards.find((button) => button === document.activeElement);
+    const current = cards.find((button) => button.getAttribute("aria-current") === "true");
+    const challenge = cards.find((button) => button.classList.contains("challenge"));
+    const lastUnlocked = cards.filter((button) => !button.classList.contains("locked")).at(-1);
+    return focused || current || challenge || lastUnlocked || cards[0] || null;
+  }
+
+  function centerStageCard(button) {
+    const rail = button?.closest("#levelGrid");
+    if (!rail || !rail.getClientRects().length) return;
+    const railRect = rail.getBoundingClientRect();
+    const buttonRect = button.getBoundingClientRect();
+    const coordinateScale = railRect.width > 0 ? rail.clientWidth / railRect.width : 1;
+    const target = rail.scrollLeft
+      + ((buttonRect.left + buttonRect.width / 2) - (railRect.left + railRect.width / 2)) * coordinateScale;
+    const maximum = Math.max(0, rail.scrollWidth - rail.clientWidth);
+    const bounded = getComputedStyle(rail).direction === "rtl"
+      ? Math.max(-maximum, Math.min(0, target))
+      : Math.max(0, Math.min(maximum, target));
+    const previousBehavior = rail.style.getPropertyValue("scroll-behavior");
+    const previousPriority = rail.style.getPropertyPriority("scroll-behavior");
+    rail.style.setProperty("scroll-behavior", "auto", "important");
+    rail.scrollLeft = bounded;
+    if (previousBehavior) rail.style.setProperty("scroll-behavior", previousBehavior, previousPriority);
+    else rail.style.removeProperty("scroll-behavior");
+  }
+
+  function syncStageKeyboardSemantics(preferred = null, { focus = false, center = false } = {}) {
+    const cards = stageCards();
+    if (!cards.length) return null;
+    const target = cards.includes(preferred) ? preferred : recommendedStageCard(cards);
+    cards.forEach((button) => {
+      const owned = button === target;
+      button.tabIndex = owned ? 0 : -1;
+      button.setAttribute("aria-keyshortcuts", "ArrowLeft ArrowRight Home End");
+      if (owned) button.setAttribute("aria-current", "true");
+      else button.removeAttribute("aria-current");
+    });
+    if (focus) target?.focus({ preventScroll: true });
+    if (center) {
+      centerStageCard(target);
+      requestAnimationFrame(() => centerStageCard(target));
+    }
+    return target;
+  }
+
   function syncLocalizedAccessibility() {
     const isTraditionalChinese = ["zh-Hant", "zh-Hans"].includes(document.documentElement.lang);
     const board = document.querySelector("#game");
@@ -130,6 +179,10 @@
     requestAnimationFrame(() => requestAnimationFrame(() => {
       updateViewport();
       syncCanonicalBrowserTitle();
+      if (document.body.classList.contains("wonder-stage-select")
+        && !document.body.classList.contains("wonder-playing")) {
+        syncStageKeyboardSemantics(null, { center: true });
+      }
       if (document.body.classList.contains("wonder-playing")
         && document.querySelector("#overlay")?.classList.contains("hidden")) {
         document.querySelector("#game")?.focus({ preventScroll: true });
@@ -149,6 +202,9 @@
   const stageRail = document.querySelector("#levelGrid");
   const stageStatus = document.querySelector("#wonderStageStatus");
   if (stageRail) {
+    // Wonder Crash owns initial/current centering locally so the shared
+    // recommendation writer cannot race a just-committed keyboard target.
+    stageRail.dataset.wpStageCenterObserver = "manual";
     const announceLockedStage = (button) => {
       if (!button?.classList.contains("locked")) return;
       if (stageStatus) {
@@ -159,7 +215,44 @@
     };
 
     stageRail.addEventListener("click", (event) => {
-      announceLockedStage(event.target.closest("button.locked[data-level]"));
+      const button = event.target.closest("button[data-level]:not(.campaign-continue)");
+      if (button && document.body.classList.contains("wonder-stage-select")) {
+        syncStageKeyboardSemantics(button, { focus: button.classList.contains("locked"), center: true });
+      }
+      if (button && document.body.classList.contains("wonder-playing")) {
+        const focusBattle = () => {
+          if (document.body.classList.contains("wonder-playing")
+            && document.querySelector("#overlay")?.classList.contains("hidden")) {
+            document.querySelector("#game")?.focus({ preventScroll: true });
+          }
+        };
+        requestAnimationFrame(() => requestAnimationFrame(focusBattle));
+        setTimeout(focusBattle, 50);
+      }
+      announceLockedStage(button?.classList.contains("locked") ? button : null);
+    });
+
+    stageRail.addEventListener("focusin", (event) => {
+      const button = event.target.closest("button[data-level]:not(.campaign-continue)");
+      if (button) syncStageKeyboardSemantics(button);
+    });
+
+    stageRail.addEventListener("keydown", (event) => {
+      const button = event.target.closest("button[data-level]:not(.campaign-continue)");
+      if (!button || event.altKey || event.ctrlKey || event.metaKey) return;
+      const cards = stageCards();
+      const index = cards.indexOf(button);
+      if (index < 0 || !["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+      const rtl = getComputedStyle(stageRail).direction === "rtl" || document.documentElement.dir === "rtl";
+      const step = event.key === "ArrowRight" ? (rtl ? -1 : 1) : event.key === "ArrowLeft" ? (rtl ? 1 : -1) : 0;
+      const nextIndex = event.key === "Home"
+        ? 0
+        : event.key === "End"
+          ? cards.length - 1
+          : Math.max(0, Math.min(cards.length - 1, index + step));
+      event.preventDefault();
+      event.stopPropagation();
+      syncStageKeyboardSemantics(cards[nextIndex], { focus: true, center: true });
     });
 
     let lockedPointer = null;
@@ -202,8 +295,12 @@
     document.addEventListener("pointerup", finishLockedPointer, true);
     document.addEventListener("pointercancel", finishLockedPointer, true);
 
-    new MutationObserver(syncLockedStageSemantics).observe(stageRail, { childList: true });
+    new MutationObserver(() => {
+      syncLockedStageSemantics();
+      syncStageKeyboardSemantics();
+    }).observe(stageRail, { childList: true });
     syncLockedStageSemantics();
+    syncStageKeyboardSemantics();
   }
   const pausePanel = document.querySelector("#pausePanel");
   const battleBackButton = document.querySelector("#backToMenuBtn");
