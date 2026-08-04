@@ -548,7 +548,6 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "2–6 minutes per mission": "2–6 минут на миссию",
   "2–8 Minuten pro Stufe": "2–8 минут про Стуфе",
   "2–8 minutes per warehouse": "2–8 минут на склад",
-  "2?? minutes per mission": "2?? минут на миссию",
   "20260708-zoo-helper-day-clear-icons1": "20260708-зоопомощник-день-clear-icons1",
   "2042 · FIRST CONTACT": "2042 · ПЕРВЫЙ КОНТАКТ",
   "2048 Grid Merge": "2048 Слияние сетки",

@@ -548,7 +548,6 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "2–6 minutes per mission": "2 a 6 minutos por misión",
   "2–8 Minuten pro Stufe": "2–8 minutos por cosas",
   "2–8 minutes per warehouse": "2 a 8 minutos por almacén",
-  "2?? minutes per mission": "2?? minutos por misión",
   "20260708-zoo-helper-day-clear-icons1": "20260708-iconos-claros-del-dia-del-ayudante-del-zoo1",
   "2042 · FIRST CONTACT": "2042 · PRIMER CONTACTO",
   "2048 Grid Merge": "2048 Fusión de cuadrícula",

@@ -105,7 +105,23 @@
     while (stageWindowStart > target) { const card = rail.lastElementChild; stageWindowStart--; rail.prepend(card); bindStageCard(card, stageWindowStart); recycled++; }
     stageCardPool = [...rail.children]; rail.dataset.wpStageWindowStart = String(stageWindowStart); rail.dataset.wpStageWindowEnd = String(stageWindowStart + stageCardPool.length - 1); if (recycled) rail.dataset.wpStageRecycleCount = String(Number(rail.dataset.wpStageRecycleCount || 0) + recycled); return recycled;
   }
-  function centerStage(index, behavior = "smooth") { $("rail").querySelector(`[data-index="${index}"]`)?.scrollIntoView({ behavior, inline: "center", block: "nearest" }); }
+  function centerStage(index, behavior = "smooth") {
+    const rail = $("rail"), card = rail.querySelector(`[data-index="${index}"]`);
+    if (!card || !rail.getClientRects().length) return;
+    const previousSnap = rail.style.scrollSnapType, previousBehavior = rail.style.scrollBehavior;
+    rail.style.scrollSnapType = "none"; rail.style.scrollBehavior = behavior === "auto" ? "auto" : behavior;
+    const reconcile = () => {
+      if (!rail.contains(card)) return;
+      const railRect = rail.getBoundingClientRect(), cardRect = card.getBoundingClientRect();
+      const delta = cardRect.left + cardRect.width / 2 - (railRect.left + railRect.width / 2);
+      const scale = card.offsetWidth ? cardRect.width / card.offsetWidth : 1;
+      if (Math.abs(delta) > .5) rail.scrollLeft += delta / Math.max(scale, .01);
+    };
+    reconcile();
+    requestAnimationFrame(() => {
+      reconcile(); rail.style.scrollSnapType = previousSnap; rail.style.scrollBehavior = previousBehavior;
+    });
+  }
   function selectStage(index, center) { selected = Math.max(0, Math.min(LEVELS.length - 1, index)); if (!stageCardPool.length) buildStagePool(); moveStageWindow(desiredStageWindow(selected)); syncStageCards(); if (center) centerStage(selected, "auto"); }
   function renderStages() { if (!stageCardPool.length) buildStagePool(); selectStage(selected, true); }
   const stageRail = $("rail");

@@ -548,7 +548,6 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "2–6 minutes per mission": "प्रति मिशन 2-6 मिनट",
   "2–8 Minuten pro Stufe": "2-8 मिनट प्रो स्टुफ़े",
   "2–8 minutes per warehouse": "प्रति गोदाम 2-8 मिनट",
-  "2?? minutes per mission": "2?? प्रति मिशन मिनट",
   "20260708-zoo-helper-day-clear-icons1": "20260708-चिड़ियाघर-सहायक-दिन-स्पष्ट-आइकन1",
   "2042 · FIRST CONTACT": "2042 · पहला संपर्क",
   "2048 Grid Merge": "2048 ग्रिड मर्ज",

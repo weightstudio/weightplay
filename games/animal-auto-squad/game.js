@@ -965,6 +965,7 @@
   let skinPurchaseRemaining = 0;
   let stageRenderVersion = 0;
   let stageBrowseFrame = 0;
+  let stageBrowseInputOwner = "";
   const STAGE_CARD_POOL_SIZE = 9;
   let stageCardPool = [];
   let stageWindowStart = 1;
@@ -2259,9 +2260,10 @@
     card.setAttribute("aria-label", `${regionName}. ${stageLabel(stage)}. ${stageName}. ${t("stageWaveCount", { count: WAVES_PER_STAGE })}${bossText}. ${enemyRange}. ${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}`);
   }
 
-  function createStageCard() {
+  function createStageCard(poolIndex) {
     const card = document.createElement("button");
     card.type = "button";
+    card.dataset.poolNode = `node-${poolIndex}`;
     card.addEventListener("click", () => {
       const stage = Number(card.dataset.stage);
       if (stage > save.unlockedStage) {
@@ -2347,7 +2349,7 @@
     stageWindowStart = desiredStageWindow(stageBrowseLogical);
     nodes.stageRail.innerHTML = "";
     stageCardPool = Array.from({ length: Math.min(STAGE_CARD_POOL_SIZE, STAGE_COUNT) }, (_, offset) => {
-      const card = createStageCard();
+      const card = createStageCard(offset);
       bindStageCard(card, stageWindowStart + offset);
       nodes.stageRail.appendChild(card);
       return card;
@@ -2361,7 +2363,10 @@
       requestAnimationFrame(() => {
         if (renderVersion !== stageRenderVersion) return;
         nodes.stageRail.querySelector(".stage-card.is-browsed")?.scrollIntoView({ block: "nearest", inline: "center" });
-        requestAnimationFrame(updateBrowsedStageCard);
+        requestAnimationFrame(() => {
+          if (renderVersion !== stageRenderVersion) return;
+          centerStageCard(nodes.stageRail.querySelector(".stage-card.is-browsed"));
+        });
       });
     }
   }
@@ -2440,6 +2445,9 @@
     if (targetStage === null) return;
 
     event.preventDefault();
+    stageBrowseInputOwner = "keyboard";
+    cancelAnimationFrame(stageBrowseFrame);
+    stageBrowseFrame = 0;
     targetStage = Math.max(1, Math.min(STAGE_COUNT, targetStage));
     stageBrowseLogical = targetStage;
     ensureStageWindow(targetStage);
@@ -2447,10 +2455,22 @@
     setBrowsedStageOwner(target);
     centerStageCard(target);
     target.focus({ preventScroll: true });
+    requestAnimationFrame(() => {
+      if (!nodes.stageRail?.contains(target)) {
+        stageBrowseInputOwner = "";
+        return;
+      }
+      setBrowsedStageOwner(target);
+      centerStageCard(target);
+      target.focus({ preventScroll: true });
+      requestAnimationFrame(() => {
+        stageBrowseInputOwner = "";
+      });
+    });
   }
 
   function scheduleStageBrowseUpdate() {
-    if (stageBrowseFrame) return;
+    if (stageBrowseFrame || stageBrowseInputOwner) return;
     stageBrowseFrame = requestAnimationFrame(() => {
       stageBrowseFrame = 0;
       updateBrowsedStageCard();
@@ -2468,15 +2488,22 @@
     let logical = 1;
     let moved = false;
     const restore = () => {
-      rail.style.removeProperty("scroll-behavior");
-      rail.style.removeProperty("scroll-snap-type");
+      // The bounded virtual rail owns its own drag and 340ms settle. Native
+      // CSS snap retains recycled anchors and can move the rail after the
+      // logical owner has committed, so it must not become a second writer.
+      rail.style.setProperty("scroll-behavior", "auto", "important");
+      rail.style.setProperty("scroll-snap-type", "none", "important");
       rail.classList.remove("wp-stage-dragging");
       delete rail.dataset.wpStageSettling;
     };
+    restore();
     rail.addEventListener("pointerdown", (event) => {
       if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
       cancelAnimationFrame(stageSettleFrame);
       stageSettleFrame = 0;
+      cancelAnimationFrame(stageBrowseFrame);
+      stageBrowseFrame = 0;
+      stageBrowseInputOwner = "pointer";
       pointerId = event.pointerId;
       startX = lastX = event.clientX;
       logical = stageBrowseLogical;
@@ -2507,6 +2534,7 @@
       pointerId = null;
       rail.dataset.wpDragDown = "0";
       if (!moved) {
+        stageBrowseInputOwner = "";
         restore();
         return;
       }
@@ -2526,7 +2554,21 @@
           ensureStageWindow(target);
           const owner = rail.querySelector(`[data-stage="${target}"]`);
           setBrowsedStageOwner(owner);
+          centerStageCard(owner);
+          owner?.focus({ preventScroll: true });
           restore();
+          requestAnimationFrame(() => {
+            if (!rail.contains(owner)) {
+              stageBrowseInputOwner = "";
+              return;
+            }
+            setBrowsedStageOwner(owner);
+            centerStageCard(owner);
+            owner.focus({ preventScroll: true });
+            requestAnimationFrame(() => {
+              stageBrowseInputOwner = "";
+            });
+          });
         }
       };
       stageSettleFrame = requestAnimationFrame(settle);

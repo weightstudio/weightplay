@@ -352,10 +352,10 @@ function mountEndlessEntry(attempt=0){const copy=document.querySelector(".wp-sta
 function show(id,focus){lastFocus=document.activeElement;$(id).hidden=false;$(focus).focus();}function hide(id){$(id).hidden=true;lastFocus?.focus?.();}
 async function animateTrace(trace){
   const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const flightDuration=reduced?250:470;
-  const settleDuration=reduced?45:90;
-  const landingBeat=reduced?110:190;
-  const clearDuration=reduced?260:520;
+  const flightDuration=reduced?180:330;
+  const settleDuration=reduced?12:24;
+  const landingBeat=reduced?70:110;
+  const clearDuration=reduced?220:420;
   const revealBeat=reduced?140:280;
   const board=$("hexBoard");
   board.dataset.departures="0";
@@ -406,7 +406,8 @@ async function animateTrace(trace){
     Object.assign(chip.style,{left:`${from.left-boardRect.left}px`,top:`${from.top-boardRect.top}px`,bottom:"auto",width:`${from.width}px`,height:`${from.height}px`});
     const dx=to.left-from.left;
     const dy=to.top-from.top;
-    const arc=reduced?12:32;
+    const distance=Math.hypot(dx,dy);
+    const arc=reduced?Math.min(6,distance*.04):Math.min(14,distance*.09);
     const active=Number(board.dataset.activeFlights)+1;
     board.dataset.activeFlights=String(active);
     board.dataset.maxConcurrent=String(Math.max(Number(board.dataset.maxConcurrent),active));
@@ -416,10 +417,11 @@ async function animateTrace(trace){
     sourceCell.classList.add("active-flight-source");
     chip.classList.add("chip-in-transit");
     const motion=chip.animate([
-      {transform:"translate(0,0) scale(.98)"},
-      {transform:`translate(${dx*.52}px,${dy*.52-arc}px) scale(1.08)`,offset:.52},
-      {transform:`translate(${dx}px,${dy}px) scale(1)`}
-    ],{duration:flightDuration,easing:"cubic-bezier(.22,.66,.2,1)",fill:"both"});
+      {transform:"translate3d(0,0,0) scale(1)"},
+      {transform:`translate3d(${dx*.24}px,${dy*.24-arc*.72}px,0) scale(1.018)`,offset:.24},
+      {transform:`translate3d(${dx*.66}px,${dy*.66-arc}px,0) scale(1.024)`,offset:.66},
+      {transform:`translate3d(${dx}px,${dy}px,0) scale(1)`}
+    ],{duration:flightDuration,easing:"cubic-bezier(.2,.72,.24,1)",fill:"both"});
     try{await motion.finished;}catch{}
     motion.cancel();
     targetStack.append(chip);
