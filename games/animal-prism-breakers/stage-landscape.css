@@ -50,6 +50,7 @@
 
 #resultModal .modal-actions button {
   min-width: 0;
+  min-height: 54px;
 }
 
 .key-discovery {

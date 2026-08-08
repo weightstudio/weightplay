@@ -1844,6 +1844,7 @@
     button.setAttribute("aria-posinset", String(mission));
     button.setAttribute("aria-setsize", String(maxMission));
     button.setAttribute("aria-disabled", unlocked ? "false" : "true");
+    button.setAttribute("aria-keyshortcuts", "ArrowLeft ArrowRight Home End");
     button.innerHTML = `
       <span>${t("missionLabel", { mission })}</span>
       <strong>${unlocked ? missionTitle(mission) : t("lockedMission")}</strong>

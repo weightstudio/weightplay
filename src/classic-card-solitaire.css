@@ -29,6 +29,10 @@ button { touch-action: manipulation; }
 .main-screen { width: 100%; max-width: 920px; min-height: 100vh; margin: 0 auto; padding-bottom: 28px; }
 .main-header, .battle-header { display: flex; align-items: center; gap: 8px; }
 .main-header { min-height: 64px; padding: 10px 16px; }
+/* The shared shell owns Main Settings/locale/audio. The legacy card-game
+   header utility remains in the static page for the engine, but must not
+   occupy a second visible header slot after shell adoption. */
+body.wp-shell-main-active .main-header .header-utilities { display: none !important; }
 .main-return, .header-icon-btn, .battle-back { display: inline-flex; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,.18); border-radius: 14px; color: var(--classic-text); background: rgba(255,255,255,.1); text-decoration: none; }
 .main-return img { width: 28px; height: 28px; object-fit: contain; }
 .main-header > strong { flex: 1; overflow: hidden; font-size: 22px; line-height: 1.2; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
@@ -72,6 +76,8 @@ button:focus-visible, select:focus-visible { outline: 3px solid rgba(255,209,102
 .header-stat strong { font-size: 15px; }
 .board-shell { position: relative; display: flex; min-height: 0; height: calc(100% - 58px); flex-direction: column; gap: 8px; padding: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,.16); border-radius: 20px; background: radial-gradient(120% 120% at 50% -10%, rgba(255,255,255,.06), transparent 42%), rgba(7,25,48,.84); box-shadow: 0 18px 35px rgba(0,0,0,.28); }
 .board-top, .board-middle { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; min-height: calc(var(--classic-card-height) + 8px); }
+.board-top[data-visible-groups="1"], .board-middle[data-visible-groups="1"] { grid-template-columns: minmax(0, 1fr); }
+.board-top[data-visible-groups="0"], .board-middle[data-visible-groups="0"] { display: none; }
 .board-group { min-width: 0; }
 .board-label { display: block; margin-bottom: 4px; color: var(--classic-muted); font-size: 10px; font-weight: 800; text-transform: uppercase; }
 .slot-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
@@ -85,11 +91,15 @@ button:focus-visible, select:focus-visible { outline: 3px solid rgba(255,209,102
 .stock-pile b { position: absolute; right: 4px; bottom: 3px; min-width: 20px; padding: 2px 4px; border-radius: 6px; color: #122038; background: var(--classic-gold); font-size: 10px; text-align: center; }
 .board-status { min-height: 18px; color: var(--classic-gold); font-size: 12px; font-weight: 800; text-align: center; }
 .tableau-area { position: relative; display: flex; min-height: 0; flex: 1; gap: 6px; align-items: flex-start; justify-content: center; overflow: auto; padding: 4px 2px 36px; }
+.tableau-area.variant-pyramid, .tableau-area.variant-tripeaks { --classic-card-width: clamp(38px, 9vw, 68px); --classic-card-height: calc(var(--classic-card-width) * 1.42); flex-direction: column; align-items: center; justify-content: flex-start; overflow: auto; }
+.tableau-area.variant-pyramid > .pyramid-row, .tableau-area.variant-tripeaks > .peak-row { width: 100%; flex: 0 0 calc(var(--classic-card-height) * .62); height: calc(var(--classic-card-height) * .62); overflow: visible; }
 .tableau-area.variant-freecell, .tableau-area.variant-yukon { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); align-items: start; }
 .tableau-area.variant-yukon { grid-template-columns: repeat(7, minmax(0, 1fr)); }
 .tableau-area.variant-golf { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); align-items: start; }
 .classic-pile { min-height: var(--classic-card-height); }
-.classic-pile .classic-card { position: absolute; left: 0; width: 100%; }
+.classic-pile .classic-card { position: absolute; left: 50%; width: min(100%, var(--classic-card-width)); height: var(--classic-card-height); transform: translateX(-50%); }
+.classic-pile .classic-card.slot-card, .classic-slot .classic-card.slot-card { inset: 50% auto auto 50%; width: min(100%, var(--classic-card-width)); height: var(--classic-card-height); transform: translate(-50%, -50%); }
+.tableau-area .classic-card.available:hover, .tableau-area .classic-card.selected { transform: translate(-50%, -4px); }
 .tableau-area.variant-yukon .classic-pile { min-height: calc(var(--classic-card-height) + 100px); }
 .tableau-area.variant-golf .classic-pile { min-height: calc(var(--classic-card-height) + 56px); }
 .classic-pile.empty-pile { display: grid; place-items: center; color: rgba(255,255,255,.42); }
@@ -165,11 +175,26 @@ button:focus-visible, select:focus-visible { outline: 3px solid rgba(255,209,102
 }
 
 @media (orientation: landscape) and (max-height: 560px) {
-  :root { --classic-card-width: clamp(32px, 8.5vh, 52px); }
-  .battle-canvas { padding-top: 5px; }
-  .board-shell { gap: 3px; padding: 5px; }
-  .classic-pile .classic-card { top: calc(var(--row) * 12px); }
-  .pyramid-row, .peak-row { min-height: calc(var(--classic-card-height) * .48); }
+  :root { --classic-card-width: clamp(28px, 7.2vh, 42px); }
+  .battle-canvas { display: flex; flex-direction: column; padding: 4px 8px; }
+  .battle-header { flex: 0 0 auto; min-height: 42px; gap: 4px; }
+  .battle-header .battle-back { min-width: 42px; min-height: 42px; padding: 6px; border-radius: 10px; }
+  .header-stat { padding: 2px 4px; border-radius: 8px; }
+  .header-stat small { font-size: 8px; }
+  .header-stat strong { font-size: 12px; }
+  .board-shell { display: grid; grid-template-rows: auto auto auto minmax(calc(var(--classic-card-height) + 6px), 1fr) auto; align-content: start; flex: 1 1 auto; height: auto; min-height: 0; gap: 3px; padding: 5px; }
+  .board-top, .board-middle { gap: 3px; min-height: 0; }
+  .board-label { margin-bottom: 2px; font-size: 8px; }
+  .slot-row { gap: 3px; }
+  .classic-slot, .classic-pile { min-height: calc(var(--classic-card-height) + 2px); border-radius: 8px; }
+  .board-status { min-height: 12px; font-size: 10px; }
+  .tableau-area { min-height: calc(var(--classic-card-height) + 6px); gap: 2px; overflow: auto; padding: 1px 0 2px; }
+  .classic-pile .classic-card { top: calc(var(--row) * 10px); }
+  .tableau-area.variant-pyramid, .tableau-area.variant-tripeaks { --classic-card-width: clamp(27px, 6.8vh, 36px); --classic-card-height: calc(var(--classic-card-width) * 1.42); }
+  .tableau-area.variant-pyramid > .pyramid-row, .tableau-area.variant-tripeaks > .peak-row { flex-basis: calc(var(--classic-card-height) * .4); height: calc(var(--classic-card-height) * .4); }
+  .pyramid-row .classic-card, .peak-row .classic-card { margin-inline: -3px; }
+  .battle-actions { height: 32px; min-height: 32px; align-self: end; align-items: center; gap: 4px; }
+  .mini-btn { min-height: 32px; padding: 5px 8px; border-radius: 10px; font-size: 12px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

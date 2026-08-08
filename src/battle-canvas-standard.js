@@ -11,6 +11,7 @@
     "animal-2048": [".battle-canvas", 390, 788, 760, 334],
     "animal-sanctuary-loop": [".battle-canvas", 390, 788, 760, 334],
     "animal-prism-battalion": [".battle-canvas", 390, 788, 760, 334],
+    "animal-prism-breakers": ["#battleScreen", 390, 788, 760, 334],
     "animal-skybridge-rivals": [".battle-canvas", 390, 788, 760, 334],
     "animal-skyspire-drop": [".battle-canvas", 390, 788, 760, 334],
     "animal-rift-salvage": [".battle-canvas", 390, 788, 760, 334],
@@ -84,7 +85,15 @@
     const rect = node.getBoundingClientRect();
     return style.display !== "none" && style.visibility !== "hidden" && Number(style.opacity) > 0.02 && rect.width > 4 && rect.height > 4;
   };
-  const findRoot = () => [...document.querySelectorAll(config[0])].find(visible) || null;
+  const findRoot = () => {
+    const candidates = [...document.querySelectorAll(config[0])].filter(visible);
+    // Scene state is published on <body> for shell synchronization, but the
+    // body is never the playable Battle Canvas. Prefer the actual descendant
+    // screen so the shared scaler cannot shrink a game into a narrow column.
+    return candidates.find((node) => node !== document.body && node !== document.documentElement)
+      || candidates[0]
+      || null;
+  };
   const findBack = (root) => root?.querySelector('[data-wp-return="battle"],#battleBack,#battleBackBtn,#backToStagesBtn,#backToMenuBtn')
     || (gameId === "animal-reef-fisher"
       ? document.querySelector('[data-wp-return="battle"],#battleBack,#battleBackBtn,#backToStagesBtn,#backToMenuBtn')

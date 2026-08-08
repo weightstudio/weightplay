@@ -314,7 +314,7 @@
     drawStock(initial = false) {
       if (!this.stock.length) { if (!initial) this.lost = true; return false; }
       if (!initial) this.pushHistory();
-      const card = this.stock.pop(); card.faceUp = true; this.waste.push(card); this.combo = 0; if (!initial) this.moves += 1; return true;
+      const card = this.stock.pop(); card.faceUp = true; this.waste.push(card); this.combo = 0; if (!initial) { this.moves += 1; this.checkWin(); } return true;
     }
 
     checkWin() {
@@ -323,6 +323,7 @@
       if (this.variant === "golf" && this.tableau.every((pile) => pile.length === 0)) this.won = true;
       if ((this.variant === "freecell" || this.variant === "yukon") && this.foundations.every((pile) => pile.cards.length === 13)) this.won = true;
       if (this.won) this.lost = false;
+      if (!this.won && !this.stock.length && this.legalMoves().length === 0) this.lost = true;
     }
 
     legalMoves() {
@@ -510,11 +511,21 @@
     }
     renderSlots() {
       const selectedClass = (source) => this.game.selected && JSON.stringify(this.game.selected) === JSON.stringify(source) ? " selected" : "";
-      if (this.nodes.freeCells) this.nodes.freeCells.innerHTML = this.game.variant === "freecell" ? this.game.freeCells.map((card, index) => `<div class="classic-slot free-slot" data-dest='${JSON.stringify({ zone: "free", index })}' aria-label="${this.t("freeCells")} ${index + 1}">${card ? cardMarkup(card, { zone: "free", index }, `slot-card${selectedClass({ zone: "free", index })}`) : `<span>${this.t("empty")}</span>`}</div>`).join("") : "";
-      if (this.nodes.foundationArea) this.nodes.foundationArea.innerHTML = this.game.foundations.map((pile, index) => { const card = pile.top(); return `<div class="classic-slot foundation-slot" data-dest='${JSON.stringify({ zone: "foundation", index })}' aria-label="${this.t("foundations")} ${index + 1}">${card ? cardMarkup(card, { zone: "foundation", index }, "slot-card") : `<span>${SYMBOLS[SUITS[index]]}</span>`}</div>`; }).join("");
+      const usesFreeCells = this.game.variant === "freecell";
+      const usesFoundations = this.game.variant === "freecell" || this.game.variant === "yukon";
+      const usesStock = ["pyramid", "tripeaks", "golf"].includes(this.game.variant);
+      const setGroup = (node, visible) => { const group = node?.closest(".board-group"); if (group) group.hidden = !visible; return group; };
+      const updateGroupLayout = (node) => { const container = node?.closest(".board-top, .board-middle"); if (!container) return; const count = [...container.children].filter((child) => !child.hidden).length; container.dataset.visibleGroups = String(count); container.hidden = count === 0; };
+      if (this.nodes.freeCells) this.nodes.freeCells.innerHTML = usesFreeCells ? this.game.freeCells.map((card, index) => `<div class="classic-slot free-slot" data-dest='${JSON.stringify({ zone: "free", index })}' aria-label="${this.t("freeCells")} ${index + 1}">${card ? cardMarkup(card, { zone: "free", index }, `slot-card${selectedClass({ zone: "free", index })}`) : `<span>${this.t("empty")}</span>`}</div>`).join("") : "";
+      if (this.nodes.foundationArea) this.nodes.foundationArea.innerHTML = usesFoundations ? this.game.foundations.map((pile, index) => { const card = pile.top(); return `<div class="classic-slot foundation-slot" data-dest='${JSON.stringify({ zone: "foundation", index })}' aria-label="${this.t("foundations")} ${index + 1}">${card ? cardMarkup(card, { zone: "foundation", index }, "slot-card") : `<span>${SYMBOLS[SUITS[index]]}</span>`}</div>`; }).join("") : "";
       const stockCount = this.game.stock.length;
       if (this.nodes.stockPile) this.nodes.stockPile.innerHTML = stockCount ? `<span class="stock-back">✦</span><b>${stockCount}</b>` : `<span>${this.t("empty")}</span>`;
       if (this.nodes.wastePile) { const card = this.game.waste.at(-1); this.nodes.wastePile.innerHTML = card ? cardMarkup(card, { zone: "waste" }, `slot-card${selectedClass({ zone: "waste" })}`) : `<span>${this.t("empty")}</span>`; }
+      setGroup(this.nodes.freeCells, usesFreeCells);
+      setGroup(this.nodes.foundationArea, usesFoundations);
+      setGroup(this.nodes.stockPile, usesStock);
+      setGroup(this.nodes.wastePile, usesStock);
+      updateGroupLayout(this.nodes.freeCells); updateGroupLayout(this.nodes.stockPile);
     }
     renderTableau() {
       const area = this.nodes.tableauArea; if (!area) return;
