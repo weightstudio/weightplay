@@ -91,7 +91,7 @@ body[data-wp-game-id="spider-solitaire"] .game-page-info {
 }
 
 .battle-screen { min-height: var(--wp-battle-viewport-height, 100vh); }
-.battle-canvas { --card-width: clamp(32px, 8.6vw, 78px); --card-height: calc(var(--card-width) * 1.42); --spider-step: 24px; width: 100%; max-width: min(100%,920px); height: calc(100vh - 56px); margin: 0 auto; padding: .65rem .55rem .45rem; box-sizing: border-box; animation: sp-board-in 360ms ease both; }
+.battle-canvas { --card-width: clamp(32px, 8.6vw, 78px); --card-height: calc(var(--card-width) * 1.397); --spider-step: 24px; width: 100%; max-width: min(100%,920px); height: calc(100vh - 56px); margin: 0 auto; padding: .65rem .55rem .45rem; box-sizing: border-box; animation: sp-board-in 360ms ease both; }
 .battle-header { display: grid; grid-template-columns: auto repeat(4,minmax(0,1fr)); align-items: center; gap: .35rem; padding: 0 .1rem .45rem; }
 .battle-header > button:first-child { min-width: 40px; min-height: 40px; padding: .35rem; border: 1px solid rgba(255,255,255,.2); border-radius: 12px; color: #fff; background: rgba(255,255,255,.12); cursor: pointer; }
 .header-stat { min-width: 0; padding: .25rem .2rem; border: 1px solid rgba(255,255,255,.13); border-radius: 9px; background: rgba(255,255,255,.08); text-align: center; }
@@ -205,7 +205,7 @@ body[data-wp-game-id="spider-solitaire"] .game-page-info {
 @media (orientation: landscape) and (max-height: 560px) {
   .battle-canvas {
     --card-width: clamp(36px, 10vh, 52px);
-    --card-height: calc(var(--card-width) * 1.42);
+    --card-height: calc(var(--card-width) * 1.397);
     padding-top: .35rem;
   }
   .foundation-row { margin-bottom: .2rem; }

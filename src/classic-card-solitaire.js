@@ -201,9 +201,13 @@
 
     legalTableauSource(source) {
       const group = this.groupFrom(source);
-      if (!group.length || !this.validDescending(group)) return false;
-      if (this.variant === "freecell") return true;
+      if (!group.length) return false;
+      // Yukon deliberately permits an arbitrary exposed tail. Only the first
+      // card must fit the destination; the cards below it do not need to form
+      // a red-black descending sequence of their own.
       if (this.variant === "yukon") return group.every((card) => card.faceUp);
+      if (!this.validDescending(group)) return false;
+      if (this.variant === "freecell") return true;
       return group.length === 1;
     }
 
@@ -224,12 +228,14 @@
     }
 
     moveFreeCell(source, destination) {
-      const group = this.groupFrom(source);
-      if (!group.length || !this.legalTableauSource(source) && source.zone === "tableau") return false;
+      const card = this.sourceCard(source);
+      if (!card || !card.faceUp) return false;
+      const group = destination.zone === "tableau" ? this.groupFrom(source) : [card];
+      if (!group.length || (destination.zone === "tableau" && source.zone === "tableau" && !this.legalTableauSource(source))) return false;
       if (destination.zone === "free") {
         if (group.length !== 1 || this.freeCells[destination.index]) return false;
       } else if (destination.zone === "foundation") {
-        if (group.length !== 1 || !this.foundationReady(group[0])) return false;
+        if (group.length !== 1 || destination.index !== SUITS.indexOf(group[0].suit) || !this.foundationReady(group[0])) return false;
       } else if (destination.zone === "tableau") {
         if (source.zone === "tableau" && source.pile === destination.pile) return false;
         if (!this.canMoveToTableau(group, this.top(destination.pile))) return false;
@@ -247,10 +253,11 @@
     }
 
     moveYukon(source, destination) {
-      const group = this.groupFrom(source);
-      if (source.zone !== "tableau" || !group.length || !this.legalTableauSource(source)) return false;
-      if (destination.zone === "foundation") { if (group.length !== 1 || !this.foundationReady(group[0])) return false; }
-      else if (destination.zone === "tableau") { if (source.pile === destination.pile || !this.canMoveToTableau(group, this.top(destination.pile))) return false; }
+      const card = this.sourceCard(source);
+      if (source.zone !== "tableau" || !card || !card.faceUp) return false;
+      const group = destination.zone === "tableau" ? this.groupFrom(source) : [card];
+      if (destination.zone === "foundation") { if (destination.index !== SUITS.indexOf(card.suit) || !this.foundationReady(card)) return false; }
+      else if (destination.zone === "tableau") { if (!this.legalTableauSource(source) || source.pile === destination.pile || !this.canMoveToTableau(group, this.top(destination.pile))) return false; }
       else return false;
       this.pushHistory();
       const moving = this.removeSource(source, group.length);
@@ -316,17 +323,25 @@
       if (this.variant === "freecell" || this.variant === "yukon") {
         const sources = [];
         if (this.variant === "freecell") this.freeCells.forEach((card, index) => { if (card) sources.push({ zone: "free", index }); });
-        this.tableau.forEach((pile, pileIndex) => pile.forEach((card, row) => { if (card.faceUp && this.legalTableauSource({ zone: "tableau", pile: pileIndex, row })) sources.push({ zone: "tableau", pile: pileIndex, row }); }));
+        this.tableau.forEach((pile, pileIndex) => pile.forEach((card, row) => { if (card.faceUp) sources.push({ zone: "tableau", pile: pileIndex, row }); }));
         sources.forEach((source) => {
+          const card = this.sourceCard(source);
           const group = this.groupFrom(source);
-          if (group.length === 1 && this.foundationReady(group[0])) moves.push({ source, destination: { zone: "foundation" }, kind: "foundation" });
+          if (card && this.foundationReady(card)) moves.push({ source, destination: { zone: "foundation", index: SUITS.indexOf(card.suit) }, kind: "foundation" });
+          if (source.zone === "tableau" && !this.legalTableauSource(source)) return;
           this.tableau.forEach((_pile, pile) => { if (pile !== source.pile && this.canMoveToTableau(group, this.top(pile)) && (this.variant === "yukon" || group.length <= this.freeCellCapacity(pile))) moves.push({ source, destination: { zone: "tableau", pile }, kind: "tableau" });
           });
         });
       } else if (this.variant === "pyramid") {
         this.cards.forEach((entry, index) => { if (this.available(index)) { if (entry.card.rank === 13) moves.push({ source: { zone: "pyramid", index }, kind: "clear" }); else this.cards.forEach((other, otherIndex) => { if (otherIndex > index && this.available(otherIndex) && entry.card.rank + other.card.rank === 13) moves.push({ source: { zone: "pyramid", index }, destination: { zone: "pyramid", index: otherIndex }, kind: "pair" }); }); } });
       } else {
-        this.tableau.forEach((pile, pileIndex) => pile.forEach((card, row) => { const source = this.variant === "tripeaks" ? { zone: "peak", index: pileIndex } : { zone: "tableau", pile: pileIndex, row }; if ((this.variant === "tripeaks" ? this.available(pileIndex) : row === pile.length - 1) && this.waste.at(-1) && Math.abs(card.rank - this.waste.at(-1).rank) === 1) moves.push({ source, kind: "sequence" }); }));
+        if (this.variant === "tripeaks") {
+          this.cards.forEach((entry, index) => {
+            if (!entry.removed && this.available(index) && this.waste.at(-1) && Math.abs(entry.card.rank - this.waste.at(-1).rank) === 1) moves.push({ source: { zone: "peak", index }, kind: "sequence" });
+          });
+        } else {
+          this.tableau.forEach((pile, pileIndex) => pile.forEach((card, row) => { const source = { zone: "tableau", pile: pileIndex, row }; if (row === pile.length - 1 && this.waste.at(-1) && Math.abs(card.rank - this.waste.at(-1).rank) === 1) moves.push({ source, kind: "sequence" }); }));
+        }
       }
       return moves;
     }
@@ -351,6 +366,7 @@
       this.active = false;
       this.drag = null;
       this.hintTimer = null;
+      this.renderedCombo = 0;
       this.nodes = {};
     }
 
@@ -457,6 +473,13 @@
       this.nodes.moveCount.textContent = String(this.game.moves);
       this.nodes.scoreValue.textContent = this.config.variant === "tripeaks" || this.config.variant === "golf" ? String(this.game.bestCombo) : String(this.game.foundations.reduce((sum, pile) => sum + pile.cards.length, 0));
       this.nodes.comboValue.textContent = this.game.combo ? `×${this.game.combo}` : "—";
+      this.nodes.comboValue.setAttribute("aria-live", "polite");
+      if ((this.config.variant === "tripeaks" || this.config.variant === "golf") && this.game.combo > 0 && this.game.combo !== this.renderedCombo) {
+        this.nodes.comboValue.classList.remove("combo-pop");
+        void this.nodes.comboValue.offsetWidth;
+        this.nodes.comboValue.classList.add("combo-pop");
+      } else if (!this.game.combo) this.nodes.comboValue.classList.remove("combo-pop");
+      this.renderedCombo = this.game.combo;
       this.nodes.boardStatus.textContent = this.game.won ? this.t("win") : this.game.lost ? this.t("lose") : "";
       this.renderSlots(); this.renderTableau(); this.showResult();
     }

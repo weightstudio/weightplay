@@ -487,11 +487,20 @@
   function fitTableau() {
     const canvas = ui.battleScreen?.querySelector(".battle-canvas");
     if (!canvas || !ui.boardShell) return;
-    const cardWidth = Number.parseFloat(getComputedStyle(canvas).getPropertyValue("--card-width")) || 36;
-    const cardHeight = cardWidth * 1.397;
+    const tableauStyle = ui.tableauRow ? getComputedStyle(ui.tableauRow) : null;
+    const tableauGap = Number.parseFloat(tableauStyle?.columnGap || tableauStyle?.gap) || 0;
+    const tableauWidth = ui.tableauRow?.clientWidth || 0;
+    const columnWidth = (tableauWidth - tableauGap * 9) / 10;
     const maxRows = Math.max(1, ...game.tableau.columns.map((column) => column.length));
     const available = Math.max(170, ui.boardShell.clientHeight - 132);
-    const step = clamp((available - cardHeight - 12) / Math.max(1, maxRows - 1), 11, 28);
+    const isCompactLandscape = window.matchMedia("(orientation: landscape) and (max-height: 560px)").matches;
+    const compactStep = isCompactLandscape ? 8 : 11;
+    const heightLimitedWidth = (available - compactStep * Math.max(1, maxRows - 1) - 12) / 1.397;
+    const measuredWidth = columnWidth >= 24 ? columnWidth : 36;
+    const cardWidth = Math.max(24, isCompactLandscape ? Math.min(measuredWidth, heightLimitedWidth) : measuredWidth);
+    canvas.style.setProperty("--card-width", `${cardWidth}px`);
+    const cardHeight = cardWidth * 1.397;
+    const step = clamp((available - cardHeight - 12) / Math.max(1, maxRows - 1), isCompactLandscape ? 7 : 11, 28);
     canvas.style.setProperty("--spider-step", `${step}px`);
     canvas.style.setProperty("--spider-pile-height", `${Math.ceil(cardHeight + (maxRows - 1) * step + 10)}px`);
   }
@@ -528,13 +537,13 @@
     showHint(t("move_hint"));
   }
 
-  function createCardNode(card, row, isNew = false, previousFace = false, animationDelay = null) {
-    let node = state.cardPool.get(card.id);
+  function createCardNode(card, row, isNew = false, previousFace = false, animationDelay = null, usePool = true) {
+    let node = usePool ? state.cardPool.get(card.id) : null;
     if (!node) {
       node = document.createElement("div");
       node.className = "card";
       node.dataset.cardId = card.id;
-      state.cardPool.set(card.id, node);
+      if (usePool) state.cardPool.set(card.id, node);
     }
     node.className = `card ${card.faceUp ? "front" : "back"} ${card.colorClass}`;
     node.dataset.row = String(row);
@@ -634,7 +643,7 @@
     stack.style.left = `${event.clientX - dragging.offsetX}px`;
     stack.style.top = `${event.clientY - dragging.offsetY - dragging.touchLift}px`;
     dragging.cards.forEach((card, index) => {
-      const ghost = createCardNode(card, index, false, true).cloneNode(true);
+      const ghost = createCardNode(card, index, false, true, null, false);
       ghost.classList.add("ghost-card");
       ghost.style.position = "absolute";
       ghost.style.width = "100%";
@@ -1083,6 +1092,43 @@
           [makeCard("spades", 13, "flip-hidden", false), makeCard("spades", 12, "flip-source")],
           [makeCard("hearts", 13, "flip-target")],
           ...Array.from({ length: 8 }, (_value, index) => [makeCard("spades", 13, `flip-blocker-${index}`)]),
+        ];
+        game.stock = new SpiderStock([]);
+        game.completed = new CompletedSequenceManager();
+        game.history = new UndoStack();
+        game.moveCount = 0;
+        game.score = 500;
+        game.dealCount = 0;
+        game.lastMove = null;
+        game.recentMoves = [];
+        game.visitedStates = new Set();
+        game.rememberState();
+        game.initialSnapshot = game.snapshot();
+        state.difficulty = 1;
+        state.active = true;
+        state.hasStarted = true;
+        state.elapsed = 0;
+        state.winRecorded = false;
+        state.lastFrameCards = new Map();
+        state.cardPool = new Map();
+        state.pendingDealDelays = null;
+        clearCompletionFlyouts();
+        ui.resultOverlay.hidden = true;
+        ui.tutorialOverlay.hidden = true;
+        ui.confirmOverlay.hidden = true;
+        showBattle();
+        renderBoard();
+        startClock();
+      },
+      loadGroupDragFixture() {
+        const Card = window.WPCardEngine.Card;
+        const makeCard = (suit, rank, id, faceUp = true) => new Card(suit, rank, id, faceUp);
+        stopClock();
+        game = new SpiderBoard(1);
+        game.tableau.columns = [
+          [makeCard("spades", 13, "group-hidden", false), makeCard("spades", 12, "group-queen"), makeCard("spades", 11, "group-jack")],
+          [makeCard("spades", 13, "group-target")],
+          ...Array.from({ length: 8 }, (_value, index) => [makeCard("hearts", 13, `group-blocker-${index}`)]),
         ];
         game.stock = new SpiderStock([]);
         game.completed = new CompletedSequenceManager();
