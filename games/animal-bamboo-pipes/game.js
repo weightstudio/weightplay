@@ -253,6 +253,9 @@
     window.WonderAnalytics?.track?.("game_complete", { game_id: "animal-bamboo-pipes", stage: selected + 1, turns: run.moves });
     updateMainProgress();
     $("resultText").textContent = text("resultText", { moves: run.moves, n: selected + 1 });
+    $("resultPreview").textContent = selected < LEVELS.length - 1
+      ? text("nextPreview", { n: selected + 2, chapter: text("chapter", { n: Math.floor((selected + 1) / 5) + 1 }) })
+      : "";
     $("retry").disabled = false;
     $("resultStages").disabled = false;
     $("next").disabled = selected >= 29;
@@ -343,6 +346,9 @@
     updateMainProgress();
     if (run) {
       $("resultText").textContent = text("resultText", { moves: run.moves, n: selected + 1 });
+      $("resultPreview").textContent = run?.completed && selected < LEVELS.length - 1
+        ? text("nextPreview", { n: selected + 2, chapter: text("chapter", { n: Math.floor((selected + 1) / 5) + 1 }) })
+        : "";
     }
     renderStages();
   }

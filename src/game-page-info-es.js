@@ -3428,6 +3428,7 @@ window.WeightPlayGameInfoLocales.es.games["animal-2048"] = {
 window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-2048"] = { gameplay: "Estrategia de fusión de tablero completo", genre: ["Puzle", "Estrategia", "Lógica", "Animales"] };
 
 window.WeightPlayGameInfoLocales.es.games["animal-abyss-diver"] = {
+  noteTitle: "Información del jugador y guardado",
   title: "Buzo del Abismo Animal", difficulty: "Media a desafiante", time: "5-12 minutos por ruta", gameplay: "Aventura estratégica de riesgo submarino", genre: ["Estrategia", "Aventura", "Gestión de riesgos", "Animales"], skills: ["Logic", "Focus", "Problem Solving"], guideTitleSuffix: "Guía del juego", hideScoreBands: true,
   intro: "Buzo del Abismo Animal es una aventura estratégica de treinta rutas protagonizada por Nori. Cada zona ofrece un objetivo a la izquierda y otro a la derecha con distintas consecuencias de botín, peligro y oxígeno. Lee las estimaciones, decide cuándo vale la pena gastar energía en un Sonar exacto y emerge antes de convertir una buena expedición en una emergencia.",
   story: ["Nori explora seis capas de un abismo coralino para recuperar antiguas reliquias entre corrientes, bolsas de aire, pecios y animales territoriales. Cada ruta tiene nombre, reliquia, orden de encuentros, peces, objetivo y regla propios.", "El objetivo no es bajar sin límite. Hay que decidir cuándo buscar otro tesoro, proteger una carga frágil, guardar energía para el combate o emerger con una recuperación parcial. La ruta 30 combina todas las reglas aprendidas."],
