@@ -12,6 +12,7 @@
     "animal-sanctuary-loop": [".battle-canvas", 390, 788, 760, 334],
     "animal-prism-battalion": [".battle-canvas", 390, 788, 760, 334],
     "animal-prism-breakers": ["#battleScreen", 390, 788, 760, 334],
+    "animal-prism-garden": ["#battle", 390, 788, 760, 334],
     "animal-skybridge-rivals": [".battle-canvas", 390, 788, 760, 334],
     "animal-skyspire-drop": [".battle-canvas", 390, 788, 760, 334],
     "animal-rift-salvage": [".battle-canvas", 390, 788, 760, 334],
