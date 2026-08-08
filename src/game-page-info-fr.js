@@ -169,8 +169,55 @@
   };
 
   games["spider-solitaire"] = {
-    ...(games["spider-solitaire"] || {}),
-    title: "Spider Solitaire",
+    title: "Solitaire Spider",
+    age: "9+",
+    difficulty: "Facile à difficile",
+    time: "5 à 20 minutes",
+    skills: ["Planification", "Reconnaissance des formes", "Concentration"],
+    intro: "Solitaire Spider utilise deux jeux de cartes dans dix colonnes. Construisez des suites décroissantes, séparez les couleurs mélangées quand c'est possible et complétez huit suites de même couleur du Roi à l'As pour vider la table.",
+    story: [
+      "Solitaire Spider conserve la sensation familière du moteur de cartes de Klondike, mais change l'espace de décision : chaque colonne compte, une nouvelle ligne du talon touche les dix colonnes et une colonne vide est puissante, tout en bloquant temporairement la distribution.",
+      "Une couleur enseigne le rythme, deux couleurs ajoutent la séparation des couleurs et quatre couleurs demandent une planification à long terme sans changer les commandes principales."
+    ],
+    systems: [
+      "Les cartes se placent par rang décroissant. Une carte face visible peut être posée sur le rang immédiatement supérieur ; un groupe ne se déplace ensemble que s'il est visible, décroissant et de la même couleur.",
+      "Complétez une suite Roi-As de même couleur : elle est récupérée avec une animation lisible. Huit suites récupérées remportent la partie.",
+      "Le talon distribue une carte face visible dans chacune des dix colonnes non vides. Annuler restaure la table, l'état visible, le talon, les distributions, le score et les suites complétées.",
+      "Indice met en évidence un mouvement légal utile en privilégiant les cartes cachées révélées, les suites de même couleur, les suites terminées et les colonnes vides créées."
+    ],
+    how: [
+      "Choisissez 1 couleur, 2 couleurs ou 4 couleurs sur l'écran principal.",
+      "Faites glisser une carte visible ou une suite valide de même couleur sur le rang immédiatement supérieur.",
+      "Utilisez les colonnes vides pour réorganiser n'importe quelle carte ou suite valide.",
+      "Révélez les cartes cachées, puis distribuez une nouvelle ligne seulement lorsque chaque colonne contient une carte.",
+      "Complétez les huit suites de même couleur du Roi à l'As pour gagner."
+    ],
+    strategyTips: [
+      "Révélez une carte cachée avant un mouvement qui ne change que la surface.",
+      "Gardez les suites de même couleur ensemble ; les suites mélangées servent d'appui, mais ne peuvent pas se déplacer en groupe.",
+      "Considérez une colonne vide comme une réserve : utilisez-la pour séparer les couleurs ou révéler une carte cachée.",
+      "Ne distribuez pas automatiquement lorsqu'une révélation ou une fusion de même couleur reste possible.",
+      "À quatre couleurs, protégez la suite la plus propre et utilisez Annuler pour comparer les destinations."
+    ],
+    progression: [
+      "1 couleur enseigne le rythme, 2 couleurs ajoutent les conflits de couleurs et 4 couleurs est le mode classique le plus exigeant.",
+      "Chaque difficulté conserve séparément les parties jouées, les victoires, le taux de victoire, le meilleur temps et le plus petit nombre de coups.",
+      "Recommencer utilise la même graine sans changer la donne ; Nouvelle partie crée un nouveau mélange."
+    ],
+    designNote: "Spider partage avec Klondike le moteur de cartes, le canevas de bataille adaptatif, la couche de glisser-déposer, l'entrée tactile, le rythme des animations, la préférence sonore, les instantanés d'annulation et le langage visuel des cartes.",
+    parent: "Solitaire Spider est un jeu de stratégie avec des cartes destiné au grand public, recommandé dès 9 ans et adapté au jeu en famille. Aucun compte n'est nécessaire ; les statistiques par difficulté et les préférences restent dans ce navigateur.",
+    related: ["klondike-solitaire"],
+    relatedIds: ["klondike-solitaire"],
+    faq: [
+      ["Combien de cartes sont utilisées ?", "Deux jeux standard sont utilisés : 104 cartes, dont 54 dans la table initiale et 50 dans le talon."],
+      ["Combien y a-t-il de colonnes ?", "Il y a dix colonnes ; les quatre premières commencent avec six cartes et les six autres avec cinq."],
+      ["Peut-on empiler des couleurs différentes ?", "Oui. Les rangs peuvent descendre entre les couleurs, mais seule une suite décroissante de même couleur peut être déplacée en groupe ou récupérée."],
+      ["Pourquoi le talon est-il bloqué ?", "Le Spider classique exige que les dix colonnes contiennent au moins une carte avant de distribuer une nouvelle ligne."],
+      ["Combien de suites faut-il pour gagner ?", "Il faut récupérer huit suites de même couleur du Roi à l'As."],
+      ["Qu'est-ce qui change selon la difficulté ?", "1 couleur, 2 couleurs et 4 couleurs changent le mélange des couleurs, mais gardent les mêmes règles à dix colonnes."],
+      ["Puis-je recommencer la même donne ?", "Oui. Recommencer utilise la même graine ; Nouvelle partie mélange une nouvelle donne."],
+      ["Annuler restaure-t-il une suite terminée ?", "Oui. Annuler restaure toute la table précédente et le nombre de groupes récupérés."]
+    ]
   };
 
   const gameplayProfiles = {

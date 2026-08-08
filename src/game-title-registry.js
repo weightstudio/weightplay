@@ -168,7 +168,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ko": "스파이더 솔리테어",
     "es": "Solitario Spider",
     "pt-BR": "Paciência Aranha",
-    "fr": "Spider Solitaire",
+    "fr": "Solitaire Spider",
     "de": "Spider-Solitär",
     "it": "Solitario Ragno",
     "ru": "Пасьянс Паук",

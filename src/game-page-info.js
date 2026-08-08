@@ -7692,7 +7692,7 @@
     ko: "스파이더 솔리테어",
     es: "Solitario Spider",
     "pt-BR": "Spider Solitaire",
-    fr: "Spider Solitaire",
+    fr: "Solitaire Spider",
     de: "Spider-Solitär",
     it: "Spider Solitaire",
     ru: "Пасьянс Паук",

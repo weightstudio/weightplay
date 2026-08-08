@@ -906,7 +906,7 @@ const KL_I18N = {
         });
       }
 
-      for (let i = 0; i < this.foundations.length; i += 1) {
+      for (let i = 0; i < this.tableau.columns.length; i += 1) {
         const target = this.tableau.top(i);
         if (this.rules.canPlaceOnTableau(top, target)) {
           moves.push({
@@ -939,7 +939,7 @@ const KL_I18N = {
         }
       }
 
-      for (let i = 0; i < this.foundations.length; i += 1) {
+      for (let i = 0; i < this.tableau.columns.length; i += 1) {
         if (i === columnIndex) continue;
         const target = this.tableau.top(i);
         if (this.rules.canPlaceOnTableau(firstCard, target)) {
@@ -959,7 +959,7 @@ const KL_I18N = {
       const moves = [];
       const wasteMoves = this.legalMovesForWaste();
       moves.push(...wasteMoves.map((move) => ({ ...move, kind: "waste" })));
-      for (let column = 0; column < this.foundations.length; column += 1) {
+      for (let column = 0; column < this.tableau.columns.length; column += 1) {
         const columnCards = this.tableau.columns[column];
         if (!columnCards.length) continue;
         for (let row = 0; row < columnCards.length; row += 1) {
@@ -976,7 +976,7 @@ const KL_I18N = {
 
     foundationMoveableMoves() {
       const foundationMoves = [];
-      for (let column = 0; column < this.foundations.length; column += 1) {
+      for (let column = 0; column < this.tableau.columns.length; column += 1) {
         const top = this.tableau.top(column);
         if (!top) continue;
         const moves = this.legalMovesForTableau(column, this.tableau.columns[column].length - 1);
@@ -2378,12 +2378,28 @@ const KL_I18N = {
     window.addEventListener("keydown", unlock, { once: true });
   }
 
-  function isQaWinFixtureEnabled() {
+  function isQaFixtureEnabled(name) {
     const host = String(window.location.hostname || "");
     const params = new URLSearchParams(window.location.search);
     return ["localhost", "127.0.0.1", "::1"].includes(host)
       && params.get("trial") === "1"
-      && params.get("qa") === "win";
+      && params.get("qa") === name;
+  }
+
+  function isQaWinFixtureEnabled() {
+    return isQaFixtureEnabled("win");
+  }
+
+  function isQaAutoFinishFixtureEnabled() {
+    return isQaFixtureEnabled("autofinish");
+  }
+
+  function isQaMoveFixtureEnabled() {
+    return isQaFixtureEnabled("move");
+  }
+
+  function isQaTableauFixtureEnabled() {
+    return isQaFixtureEnabled("tableau");
   }
 
   function applyQaWinFixture() {
@@ -2422,6 +2438,142 @@ const KL_I18N = {
     postMoveChecks();
   }
 
+  function applyQaMoveFixture() {
+    if (!isQaMoveFixtureEnabled() || game.completed) return;
+    if (!state.active) openBattle();
+    if (!state.active) return;
+    clearDealAnimationTimers();
+    const cards = [
+      ...game.tableau.columns.flat(),
+      ...game.stock.cards,
+      ...game.waste.cards,
+      ...game.foundations.flatMap((foundation) => foundation.cards),
+    ];
+    const targetFoundation = game.foundations[0];
+    const ace = cards.find((card) => card.suit === targetFoundation.suit && Number(card.rank) === 1);
+    const moveCard = cards.find((card) => card.suit === targetFoundation.suit && Number(card.rank) === 2);
+    if (!ace || !moveCard) return;
+    game.tableau.columns.forEach((column) => {
+      column.length = 0;
+    });
+    game.stock.clear();
+    game.waste.clear();
+    game.foundations.forEach((foundation) => foundation.clear());
+    ace.faceUp = true;
+    targetFoundation.cards.push(ace);
+    cards
+      .filter((card) => card !== ace && card !== moveCard)
+      .forEach((card, index) => {
+        card.faceUp = false;
+        game.tableau.columns[index % game.tableau.columns.length].push(card);
+      });
+    moveCard.faceUp = true;
+    game.tableau.columns[6].push(moveCard);
+    game.moveCount = 0;
+    game.moveHistory = [];
+    game.completed = false;
+    state.dealSequence = null;
+    state.elapsed = 0;
+    state.boardAnimationInProgress = false;
+    state.autoFinishing = false;
+    state.resultShown = false;
+    state.lossRecordedForCurrentBoard = false;
+    renderBoard();
+  }
+
+  function applyQaTableauFixture() {
+    if (!isQaTableauFixtureEnabled() || game.completed) return;
+    if (!state.active) openBattle();
+    if (!state.active) return;
+    clearDealAnimationTimers();
+    const cards = [
+      ...game.tableau.columns.flat(),
+      ...game.stock.cards,
+      ...game.waste.cards,
+      ...game.foundations.flatMap((foundation) => foundation.cards),
+    ];
+    const sourceCard = cards.find((card) => Number(card.rank) === 7 && !card.isRed);
+    const targetCard = cards.find((card) => Number(card.rank) === 8 && card.isRed && card !== sourceCard);
+    if (!sourceCard || !targetCard) return;
+    game.tableau.columns.forEach((column) => {
+      column.length = 0;
+    });
+    game.stock.clear();
+    game.waste.clear();
+    game.foundations.forEach((foundation) => foundation.clear());
+    sourceCard.faceUp = true;
+    targetCard.faceUp = true;
+    game.tableau.columns[0].push(sourceCard);
+    game.tableau.columns[6].push(targetCard);
+    cards
+      .filter((card) => card !== sourceCard && card !== targetCard)
+      .forEach((card) => {
+        card.faceUp = false;
+        game.stock.cards.push(card);
+      });
+    game.moveCount = 0;
+    game.moveHistory = [];
+    game.completed = false;
+    state.dealSequence = null;
+    state.elapsed = 0;
+    state.boardAnimationInProgress = false;
+    state.autoFinishing = false;
+    state.resultShown = false;
+    state.lossRecordedForCurrentBoard = false;
+    renderBoard();
+  }
+
+  function applyQaAutoFinishFixture() {
+    if (!isQaAutoFinishFixtureEnabled() || game.completed) return;
+    if (!state.active) openBattle();
+    if (!state.active) return;
+    clearDealAnimationTimers();
+    const cards = [
+      ...game.tableau.columns.flat(),
+      ...game.stock.cards,
+      ...game.waste.cards,
+      ...game.foundations.flatMap((foundation) => foundation.cards),
+    ];
+    game.tableau.columns.forEach((column) => {
+      column.length = 0;
+    });
+    game.stock.clear();
+    game.waste.clear();
+    game.foundations.forEach((foundation) => foundation.clear());
+    const finalFoundation = game.foundations[3];
+    cards
+      .filter((card) => card.suit === finalFoundation.suit && Number(card.rank) <= 12)
+      .sort((left, right) => Number(left.rank) - Number(right.rank))
+      .forEach((card) => {
+        card.faceUp = true;
+        finalFoundation.cards.push(card);
+      });
+    const aceCards = game.foundations.slice(0, 3).map((foundation) => cards.find((card) => card.suit === foundation.suit && Number(card.rank) === 1)).filter(Boolean);
+    const kingCards = cards.filter((card) => Number(card.rank) === 13);
+    const finalKing = kingCards.find((card) => card.suit === finalFoundation.suit);
+    const tableauCards = [...aceCards, ...kingCards.filter((card) => card !== finalKing), finalKing].filter(Boolean);
+    tableauCards.forEach((card, index) => {
+      card.faceUp = true;
+      game.tableau.columns[index].push(card);
+    });
+    cards
+      .filter((card) => !tableauCards.includes(card) && !finalFoundation.cards.includes(card))
+      .forEach((card) => {
+        card.faceUp = false;
+        game.stock.cards.push(card);
+      });
+    game.moveCount = 0;
+    game.moveHistory = [];
+    game.completed = false;
+    state.dealSequence = null;
+    state.elapsed = 0;
+    state.boardAnimationInProgress = false;
+    state.autoFinishing = false;
+    state.resultShown = false;
+    state.lossRecordedForCurrentBoard = false;
+    renderBoard();
+  }
+
   function bootstrap() {
     statsStorage.load();
     setSoundButtons(audio.enabled);
@@ -2449,6 +2601,18 @@ const KL_I18N = {
     if (isQaWinFixtureEnabled()) {
       const totalCards = state.dealSequence?.size || 28;
       window.setTimeout(applyQaWinFixture, DEAL_INITIAL_DELAY_MS + totalCards * DEAL_STEP_MS + 80);
+    }
+    if (isQaAutoFinishFixtureEnabled()) {
+      const totalCards = state.dealSequence?.size || 28;
+      window.setTimeout(applyQaAutoFinishFixture, DEAL_INITIAL_DELAY_MS + totalCards * DEAL_STEP_MS + 80);
+    }
+    if (isQaMoveFixtureEnabled()) {
+      const totalCards = state.dealSequence?.size || 28;
+      window.setTimeout(applyQaMoveFixture, DEAL_INITIAL_DELAY_MS + totalCards * DEAL_STEP_MS + 80);
+    }
+    if (isQaTableauFixtureEnabled()) {
+      const totalCards = state.dealSequence?.size || 28;
+      window.setTimeout(applyQaTableauFixture, DEAL_INITIAL_DELAY_MS + totalCards * DEAL_STEP_MS + 80);
     }
     window.setTimeout(() => {
       window.dispatchEvent(new CustomEvent("weightplay:shell-sync"));

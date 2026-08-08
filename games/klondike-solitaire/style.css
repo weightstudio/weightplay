@@ -772,6 +772,7 @@ button.control-mini {
 .hint-overlay {
   color: #fff;
   text-align: center;
+  pointer-events: none;
 }
 
 .hint-overlay p {
@@ -780,6 +781,8 @@ button.control-mini {
   background: rgba(8, 27, 53, 0.92);
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  pointer-events: auto;
 }
 
 @media (max-width: 740px) {

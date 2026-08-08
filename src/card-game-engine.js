@@ -172,6 +172,12 @@
       return drawn;
     }
 
+    recycle(cards = []) {
+      const recycled = [...cards].reverse();
+      recycled.forEach((card) => { card.faceUp = false; });
+      return recycled;
+    }
+
     toJSON() {
       return this.cards.map((card) => card.toJSON());
     }
@@ -211,6 +217,7 @@
     canPlaceOnTableau(card, targetCard) {
       if (!card) return false;
       if (!targetCard) return card.rank === 13;
+      if (!targetCard.faceUp) return false;
       return card.isRed !== targetCard.isRed && card.rank + 1 === targetCard.rank;
     }
 

@@ -3362,8 +3362,55 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
 })(window.WeightPlayGameInfoLocales.es);
 
 window.WeightPlayGameInfoLocales.es.games["spider-solitaire"] = {
-  ...(window.WeightPlayGameInfoLocales.es.games["spider-solitaire"] || {}),
   title: "Solitario Spider",
+  age: "9+",
+  difficulty: "De fácil a difícil",
+  time: "5-20 minutos",
+  skills: ["Planificación", "Reconocimiento de patrones", "Concentración"],
+  intro: "Solitario Spider usa dos barajas en diez columnas. Forma secuencias descendentes, separa los palos mezclados cuando puedas y completa ocho secuencias del mismo palo de Rey a As para despejar la mesa.",
+  story: [
+    "Solitario Spider conserva la sensación familiar del motor de cartas de Klondike, pero cambia el espacio de decisiones: cada columna importa, una nueva fila del mazo toca las diez columnas y el espacio vacío es poderoso, aunque bloquea temporalmente el reparto.",
+    "Un palo enseña el ritmo, dos palos añaden la separación por palo y cuatro palos exigen una planificación cuidadosa sin cambiar los controles principales."
+  ],
+  systems: [
+    "Las cartas se colocan hacia abajo por rango. Una carta boca arriba puede moverse sobre el rango siguiente; un grupo solo se mueve junto cuando está boca arriba, en orden descendente y es del mismo palo.",
+    "Completa una secuencia K-A del mismo palo y se recoge con una animación clara. Ocho secuencias recogidas ganan la partida.",
+    "El mazo reparte una carta boca arriba en cada una de las diez columnas no vacías. Deshacer restaura la mesa, el estado boca arriba, el mazo, los repartos, la puntuación y las secuencias completadas.",
+    "Pista resalta un movimiento legal útil y prioriza revelar cartas ocultas, ampliar secuencias del mismo palo, completar grupos y crear columnas vacías."
+  ],
+  how: [
+    "Elige 1 palo, 2 palos o 4 palos en la pantalla principal.",
+    "Arrastra una carta boca arriba o una secuencia válida del mismo palo sobre el rango siguiente.",
+    "Usa las columnas vacías para reorganizar cualquier carta o secuencia válida.",
+    "Revela las cartas boca abajo y reparte una nueva fila solo cuando todas las columnas contengan una carta.",
+    "Completa las ocho secuencias del mismo palo de Rey a As para ganar."
+  ],
+  strategyTips: [
+    "Revela una carta boca abajo antes de hacer un movimiento que solo cambie la superficie.",
+    "Mantén juntas las secuencias del mismo palo; las secuencias mezcladas sirven de apoyo, pero no pueden moverse como grupo.",
+    "Trata una columna vacía como reserva: úsala para separar palos o descubrir una carta oculta.",
+    "No repartas automáticamente cuando aún puedes revelar una carta o unir una secuencia del mismo palo.",
+    "En cuatro palos, protege la secuencia más limpia y usa Deshacer para comparar destinos."
+  ],
+  progression: [
+    "1 palo enseña el ritmo, 2 palos añade conflictos entre palos y 4 palos es el modo clásico de mayor dificultad.",
+    "Cada dificultad guarda por separado las partidas, victorias, porcentaje de victorias, mejor tiempo y menor número de movimientos.",
+    "Reiniciar usa la misma semilla sin cambiar el reparto; Nueva partida crea una mezcla nueva."
+  ],
+  designNote: "Spider comparte con Klondike el motor de cartas, el lienzo de batalla adaptable, la capa de arrastre, la entrada táctil, el ritmo de animación, la preferencia de sonido, los estados de Deshacer y el lenguaje visual de las cartas.",
+  parent: "Solitario Spider es un juego de estrategia con cartas para público general, recomendado a partir de 9 años y para jugar en familia. No requiere cuenta; las estadísticas por dificultad y las preferencias se guardan en este navegador.",
+  related: ["klondike-solitaire"],
+  relatedIds: ["klondike-solitaire"],
+  faq: [
+    ["¿Cuántas cartas se usan?", "Se usan dos barajas estándar: 104 cartas, con 54 en la mesa inicial y 50 en el mazo."],
+    ["¿Cuántas columnas hay?", "Hay diez columnas; las cuatro primeras empiezan con seis cartas y las otras seis con cinco."],
+    ["¿Se pueden apilar palos diferentes?", "Sí. Los rangos pueden bajar entre palos, pero solo una secuencia descendente del mismo palo puede moverse como grupo o recogerse."],
+    ["¿Por qué se bloquea el mazo?", "El Spider clásico exige que las diez columnas contengan al menos una carta antes de repartir una fila nueva."],
+    ["¿Cuántas secuencias hacen falta para ganar?", "Hay que recoger ocho secuencias del mismo palo de Rey a As."],
+    ["¿Qué cambia entre las dificultades?", "1 palo, 2 palos y 4 palos cambian la mezcla de palos, pero mantienen las mismas reglas de diez columnas."],
+    ["¿Puedo reiniciar el mismo reparto?", "Sí. Reiniciar partida usa la misma semilla; Nueva partida mezcla un reparto nuevo."],
+    ["¿Deshacer restaura una secuencia completada?", "Sí. Deshacer restaura la mesa anterior completa y el número de grupos recogidos."]
+  ]
 };
 
 window.WeightPlayGameInfoLocales.es.games["animal-2048"] = {
