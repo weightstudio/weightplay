@@ -48,6 +48,29 @@
     ar: { title: "سوليتير العنكبوت", loading: "جارٍ تجهيز الطاولة", back: "رجوع", settings: "الإعدادات", sound: "المؤثرات الصوتية", language: "اللغة", kicker: "لعبة ورق كلاسيكية", hero: "كوّن سلاسل من K إلى A من النوع نفسه في عشرة أعمدة. اختر الصعوبة وأكمل المجموعات الثماني.", start: "بدء اللعبة", restart: "إعادة بدء اللعبة الحالية", new_game: "لعبة جديدة", target_label: "الهدف", target: "أكمل ثماني سلاسل K → A من النوع نفسه.", controls_label: "التحكم", controls: "اسحب بطاقة أو سلسلة من النوع نفسه. اضغط عندما تكون الوجهة واحدة.", mobile_label: "الهاتف أولاً", mobile: "تبقى الأعمدة العشرة واضحة وتضغط الأكوام الطويلة تداخلها تلقائياً.", one_suit: "نوع واحد", two_suits: "نوعان", four_suits: "أربعة أنواع", easy: "سهل", medium: "متوسط", hard: "صعب", moves: "الحركات", time: "الوقت", score: "النتيجة", completed: "المجموعات المكتملة", foundations: "المجموعات المكتملة", stock: "الرزمة", tableau: "الطاولة", deal: "توزيع 10", deals_left: "تبقى {count} توزيعات", undo: "تراجع", hint: "تلميح", help: "طريقة اللعب", fill_empty: "املأ كل الأعمدة الفارغة قبل التوزيع.", no_moves: "لا توجد حركات. وزّع عندما يحتوي كل عمود على بطاقة.", multiple: "هناك وجهات متعددة. اسحب للاختيار.", invalid: "هذه الحركة غير مسموحة.", move_hint: "انقل السلسلة المضيئة إلى العمود المضيء.", deal_hint: "وزّع بطاقة واحدة على كل عمود.", sequence_complete: "اكتملت مجموعة!", card_face_down: "بطاقة مقلوبة", card_face: "{rank} من {suit}", learn_kicker: "بداية سريعة", learn_title: "العنكبوت في خمس خطوات", tip_1: "رتّب البطاقات تنازلياً من K إلى A.", tip_2: "تتحرك السلاسل من النوع نفسه معاً فقط.", tip_3: "تُزال سلسلة K → A المكتملة من النوع نفسه.", tip_4: "اضغط الرزمة لتوزيع بطاقة على كل عمود.", tip_5: "لا يمكن التوزيع عند وجود عمود فارغ.", skip: "تخطٍ", got_it: "فهمت", confirm_title: "بدء لعبة جديدة؟", confirm_copy: "بعد مغادرة هذه اللعبة لن تعود إلا باستخدام التراجع.", cancel: "إلغاء", confirm: "لعبة جديدة", victory: "اكتملت لعبة العنكبوت!", return: "رجوع", result_summary: "{sets} مجموعات · {moves} حركات · {time} · النتيجة {score}", stats_games: "الألعاب: {count}", stats_wins: "الانتصارات: {count}", stats_rate: "نسبة الفوز: {rate}%", stats_best_time: "أفضل وقت: {time}", stats_fewest: "أقل حركات: {moves}", sound_on: "الصوت مفعّل", sound_off: "الصوت متوقف", aria_sound_on: "إيقاف الصوت", aria_sound_off: "تشغيل الصوت", meta_title: "سوليتير العنكبوت مجاناً عبر الإنترنت", meta_description: "العب سوليتير العنكبوت بنوع واحد أو نوعين أو أربعة أنواع على الهاتف والكمبيوتر.", meta_keywords: "سوليتير العنكبوت,لعبة ورق" },
   };
 
+  const difficultyLabels = {
+    en: "Difficulty", "zh-Hant": "難度", "zh-Hans": "难度", ja: "難易度", ko: "난이도", es: "Dificultad",
+    "pt-BR": "Dificuldade", fr: "Difficulté", de: "Schwierigkeit", it: "Difficoltà", ru: "Сложность", hi: "कठिनाई", ar: "الصعوبة",
+  };
+  Object.entries(difficultyLabels).forEach(([key, value]) => { I18N[key].difficulty_label = value; });
+
+  const SUIT_LABELS = Object.freeze({
+    en: { spades: "Spades", hearts: "Hearts", clubs: "Clubs", diamonds: "Diamonds" },
+    "zh-Hant": { spades: "黑桃", hearts: "紅心", clubs: "梅花", diamonds: "方塊" },
+    "zh-Hans": { spades: "黑桃", hearts: "红心", clubs: "梅花", diamonds: "方块" },
+    ja: { spades: "スペード", hearts: "ハート", clubs: "クラブ", diamonds: "ダイヤ" },
+    ko: { spades: "스페이드", hearts: "하트", clubs: "클럽", diamonds: "다이아몬드" },
+    es: { spades: "picas", hearts: "corazones", clubs: "tréboles", diamonds: "diamantes" },
+    "pt-BR": { spades: "espadas", hearts: "copas", clubs: "paus", diamonds: "ouros" },
+    fr: { spades: "piques", hearts: "cœurs", clubs: "trèfles", diamonds: "carreaux" },
+    de: { spades: "Pik", hearts: "Herz", clubs: "Kreuz", diamonds: "Karo" },
+    it: { spades: "picche", hearts: "cuori", clubs: "fiori", diamonds: "quadri" },
+    ru: { spades: "пики", hearts: "черви", clubs: "трефы", diamonds: "бубны" },
+    hi: { spades: "हुकुम", hearts: "पान", clubs: "चिड़ी", diamonds: "ईंट" },
+    ar: { spades: "بستوني", hearts: "قلوب", clubs: "سباتي", diamonds: "ديناري" },
+  });
+  const suitLabel = (suit) => SUIT_LABELS[locale()]?.[suit] || SUIT_LABELS.en[suit] || suit;
+
   const ui = {};
   const get = (id) => document.getElementById(id);
   ["loadingPanel", "loadingText", "loadingFill", "mainScreen", "battleScreen", "audioMenuBtn", "audioPopover", "soundBtn", "soundStateText", "localeSelect", "statistics", "startBtn", "restartBtn", "newGameBtn", "battleBackBtn", "moveCount", "timeValue", "scoreValue", "completedValue", "foundationRow", "stockPile", "dealLabel", "dealsLeft", "undoBtn", "hintBtn", "helpBtn", "boardShell", "tableauRow", "sequenceFx", "tutorialOverlay", "tutorialSkip", "tutorialDone", "confirmOverlay", "confirmNo", "confirmYes", "resultOverlay", "resultText", "resultNewGame", "resultRestart", "resultClose", "hintOverlay", "dragLayer"].forEach((id) => { ui[id] = get(id); });
@@ -375,7 +398,12 @@
         const extendsSameSuit = destination.at(-1)?.suit === cards[0].suit;
         const nextStateKey = this.resultingStateKey(board, move);
         const wouldRepeat = Boolean(nextStateKey && board.visitedStates?.has(nextStateKey));
-        return { move, wouldRepeat, score: (reveals ? 120 : 0) + (completes ? 100 : 0) + (extendsSameSuit ? 35 : 0) + (createsEmpty ? 25 : 0) + Math.min(cards.length, 8) };
+        const score = (reveals ? 100000 : 0)
+          + (extendsSameSuit ? 10000 : 0)
+          + (completes ? 1000 : 0)
+          + (createsEmpty ? 100 : 0)
+          + Math.min(cards.length, 8);
+        return { move, wouldRepeat, score };
       }).sort((a, b) => b.score - a.score);
       const meaningful = scored.find((candidate) => {
         const source = board.tableau.columns[candidate.move.fromColumn];
@@ -506,7 +534,7 @@
     node.dataset.cardRank = String(card.rank);
     node.dataset.cardSuit = card.suit;
     node.setAttribute("role", "img");
-    node.setAttribute("aria-label", card.faceUp ? t("card_face", { rank: card.rankLabel, suit: card.suit }) : t("card_face_down"));
+    node.setAttribute("aria-label", card.faceUp ? t("card_face", { rank: card.rankLabel, suit: suitLabel(card.suit) }) : t("card_face_down"));
     node.innerHTML = card.faceUp ? `<span class="rank-top" aria-hidden="true">${card.rankLabel}</span><span class="suit" aria-hidden="true">${SUIT_SYMBOLS[card.suit]}</span><span class="rank-bottom" aria-hidden="true">${card.rankLabel}</span>` : `<span class="card-back-pattern" aria-hidden="true"></span>`;
     node.style.top = `calc(${row} * var(--spider-step))`;
     node.style.zIndex = String(row + 1);
@@ -596,7 +624,7 @@
     stack.className = "ghost-stack";
     stack.style.width = `${origin.width}px`;
     stack.style.left = `${event.clientX - dragging.offsetX}px`;
-    stack.style.top = `${event.clientY - dragging.offsetY}px`;
+    stack.style.top = `${event.clientY - dragging.offsetY - dragging.touchLift}px`;
     dragging.cards.forEach((card, index) => {
       const ghost = createCardNode(card, index, false, true).cloneNode(true);
       ghost.classList.add("ghost-card");
@@ -614,7 +642,7 @@
   function moveGhost(event) {
     if (!state.dragging?.ghost) return;
     state.dragging.ghost.style.left = `${event.clientX - state.dragging.offsetX}px`;
-    state.dragging.ghost.style.top = `${event.clientY - state.dragging.offsetY}px`;
+    state.dragging.ghost.style.top = `${event.clientY - state.dragging.offsetY - state.dragging.touchLift}px`;
     const targetNode = document.elementFromPoint(event.clientX, event.clientY)?.closest?.(".tableau-pile");
     if (targetNode) updateDragHover(targetNode);
   }
@@ -629,7 +657,8 @@
     if (!take) return;
     event.preventDefault();
     const rect = node.getBoundingClientRect();
-    state.dragging = { pointerId: event.pointerId, fromColumn, row, cards: take.cards, legalMoves: game.legalMovesForTableau(fromColumn, row), originNode: node, startX: event.clientX, startY: event.clientY, offsetX: event.clientX - rect.left, offsetY: event.clientY - rect.top, moved: false, hoverTarget: null, ghost: null };
+    const touchLift = event.pointerType === "touch" ? Math.min(72, Math.max(36, rect.height * 0.9)) : 0;
+    state.dragging = { pointerId: event.pointerId, fromColumn, row, cards: take.cards, legalMoves: game.legalMovesForTableau(fromColumn, row), originNode: node, startX: event.clientX, startY: event.clientY, offsetX: event.clientX - rect.left, offsetY: event.clientY - rect.top, touchLift, moved: false, hoverTarget: null, ghost: null };
   }
 
   function finishDrag(event) {
@@ -921,17 +950,47 @@
     const params = new URLSearchParams(window.location.search);
     if (params.get("trial") !== "1" || params.get("smoke") !== "1") return;
     window.__spiderSolitaireSmoke = {
-      loadVictoryFixture() {
+      loadVictoryFixture(difficulty = 1) {
         const Card = window.WPCardEngine.Card;
         const makeRun = (prefix) => Array.from({ length: 13 }, (_, index) => new Card("spades", 13 - index, `${prefix}-${index}`, true));
         stopClock();
-        game = new SpiderBoard(1);
+        game = new SpiderBoard(difficulty);
         game.tableau.columns = Array.from({ length: 10 }, () => []);
         game.tableau.columns[0] = makeRun("smoke-run-a");
         game.tableau.columns[1] = makeRun("smoke-run-b");
         game.stock = new SpiderStock([]);
         game.completed = new CompletedSequenceManager();
         for (let index = 0; index < 6; index += 1) game.completed.complete("spades");
+        game.history = new UndoStack();
+        game.moveCount = 0;
+        game.score = 500;
+        game.dealCount = 0;
+        game.lastMove = null;
+        game.recentMoves = [];
+        game.visitedStates = new Set();
+        game.rememberState();
+        game.initialSnapshot = game.snapshot();
+        state.difficulty = DIFFICULTIES[difficulty] ? Number(difficulty) : 1;
+        state.active = true;
+        state.hasStarted = true;
+        state.elapsed = 0;
+        state.winRecorded = false;
+        state.lastFrameCards = new Map();
+        state.cardPool = new Map();
+        state.pendingDealDelays = null;
+        clearCompletionFlyouts();
+        ui.resultOverlay.hidden = true;
+        ui.tutorialOverlay.hidden = true;
+        ui.confirmOverlay.hidden = true;
+        showBattle();
+        renderBoard();
+        startClock();
+      },
+      loadEmptyColumnFixture() {
+        stopClock();
+        game = new SpiderBoard(1);
+        game.newGame(13579);
+        game.tableau.columns[0] = [];
         game.history = new UndoStack();
         game.moveCount = 0;
         game.score = 500;
@@ -957,11 +1016,18 @@
         renderBoard();
         startClock();
       },
-      loadEmptyColumnFixture() {
+      loadFlipFixture() {
+        const Card = window.WPCardEngine.Card;
+        const makeCard = (suit, rank, id, faceUp = true) => new Card(suit, rank, id, faceUp);
         stopClock();
         game = new SpiderBoard(1);
-        game.newGame(13579);
-        game.tableau.columns[0] = [];
+        game.tableau.columns = [
+          [makeCard("spades", 13, "flip-hidden", false), makeCard("spades", 12, "flip-source")],
+          [makeCard("hearts", 13, "flip-target")],
+          ...Array.from({ length: 8 }, (_value, index) => [makeCard("spades", 13, `flip-blocker-${index}`)]),
+        ];
+        game.stock = new SpiderStock([]);
+        game.completed = new CompletedSequenceManager();
         game.history = new UndoStack();
         game.moveCount = 0;
         game.score = 500;

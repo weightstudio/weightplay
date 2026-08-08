@@ -111,7 +111,7 @@
           <div id="audioPopover" class="audio-popover settings-popover is-hidden" role="group">
             <strong class="settings-title" data-sl="settings">Settings</strong>
             <button id="soundBtn" class="audio-setting-row" type="button" aria-pressed="true"><span class="audio-row-icon" aria-hidden="true">SFX</span><span data-sl="sound">Sound Effects</span><span id="soundStateText" class="visually-hidden"></span><span class="audio-switch" aria-hidden="true"></span></button>
-            <label class="locale-box settings-locale-row"><span aria-hidden="true">◎</span><span data-sl="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
+            <label class="locale-box settings-locale-row"><span aria-hidden="true">◎</span><span data-sl="language">Language</span><select id="localeSelect" data-sl-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
           </div>
         </div>
       </div>
@@ -125,7 +125,7 @@
         <p class="menu-hint" data-sl="hero">Build same-suit K to A runs across ten columns. Choose a suit count, then clear all eight sets.</p>
         <div class="main-progress spider-main-progress" data-wp-main-progress>
           <div id="statistics" class="stats-panel" role="status" aria-live="polite"></div>
-          <div class="difficulty-picker" role="group" aria-label="Difficulty">
+          <div class="difficulty-picker" role="group" data-sl-aria="difficulty_label" aria-label="Difficulty">
           <button type="button" class="difficulty-btn" data-difficulty="1"><span data-sl="one_suit">1 Suit</span><small data-sl="easy">Easy</small></button>
           <button type="button" class="difficulty-btn" data-difficulty="2"><span data-sl="two_suits">2 Suits</span><small data-sl="medium">Medium</small></button>
           <button type="button" class="difficulty-btn" data-difficulty="4"><span data-sl="four_suits">4 Suits</span><small data-sl="hard">Hard</small></button>
@@ -167,7 +167,7 @@
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine1"></script>
-  <script src="game.js?v=20260808-spider-v11"></script>
+  <script src="game.js?v=20260808-spider-v15"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>
