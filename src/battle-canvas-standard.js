@@ -19,6 +19,7 @@
     "animal-gearpack-expedition": [".battle-canvas", 390, 788],
     "animal-guard-yard": ["#playPanel", 390, 450],
     "animal-habitat-mahjong": [".battle-canvas", 390, 788],
+    "animal-dice-bastion": [".battle-canvas", 390, 788, 760, 334],
     "animal-honey-shield": [".battle-canvas", 390, 788, 760, 334],
     "animal-hero-trials": ["#battleView", 390, 788],
     "animal-hidden-safari": ["#playPanel", 382, 780, 760, 350],
@@ -54,11 +55,20 @@
     "wonder-crash": [".game-shell", 390, 788, 760, 360],
     "klondike-solitaire": [".battle-canvas", 390, 788, 760, 334],
     "spider-solitaire": [".battle-canvas", 390, 788, 760, 334],
+    "freecell-solitaire": [".battle-canvas", 390, 788, 760, 334],
+    "pyramid-solitaire": [".battle-canvas", 390, 788, 760, 334],
+    "tripeaks-solitaire": [".battle-canvas", 390, 788, 760, 334],
+    "golf-solitaire": [".battle-canvas", 390, 788, 760, 334],
+    "yukon-solitaire": [".battle-canvas", 390, 788, 760, 334],
     "zoo-helper-day": [".zoo-game", 374, 776, 760, 350],
   };
   const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1] || "";
-  const config = games[gameId];
-  if (!config) return;
+  const defaultConfig = [
+    "[data-wp-logical-battle-canvas],#battleScreen,#battleView,#battlePage,#battle,[data-screen='battle'],.battle-screen,.battle-shell,.battle-page",
+    390,
+    788,
+  ];
+  const config = games[gameId] || defaultConfig;
   const reserveSelector = ".battle-ad-reserve,.battle-ad,.ad-reserve,.result-ad-reserve,#battleAdReserve,#battleAd";
   const metrics = window.__weightPlayLayoutMetrics ||= {};
   metrics.battleQueued ||= 0;

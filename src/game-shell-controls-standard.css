@@ -582,6 +582,55 @@ body:is(.wp-shell-stage-active, .wp-shell-battle-active) .wp-standard-main-compo
   display: none !important;
 }
 
+/* Active play owns the browser edge. A downward gesture must stay inside the
+   Stage/Battle surface instead of handing control to document scrolling or
+   mobile pull-to-refresh. The fallback class is maintained by the shared
+   Shell runtime for browsers without :has support. */
+html:has(body:is(.wp-shell-stage-active, .wp-shell-battle-active)),
+html.wp-shell-active-play {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+}
+
+body:is(.wp-shell-stage-active, .wp-shell-battle-active) {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+}
+
+/* game-page-info.css intentionally restores document flow for Main and has a
+   more specific selector. These explicit active-play selectors keep that
+   Main-only rule from reopening the browser edge during a live scene. */
+html.has-game-page-info:has(body.wp-shell-stage-active),
+html.has-game-page-info:has(body.wp-shell-battle-active),
+html:has(body.has-game-page-info.wp-shell-stage-active),
+html:has(body.has-game-page-info.wp-shell-battle-active),
+html:not(.wp-mobile-game-mode):has(body.has-game-page-info.wp-shell-stage-active:not(.wp-mobile-game-mode):not(.zoo-playing)),
+html:not(.wp-mobile-game-mode):has(body.has-game-page-info.wp-shell-battle-active:not(.wp-mobile-game-mode):not(.zoo-playing)) {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+}
+
+body.has-game-page-info.wp-shell-stage-active:not(.wp-mobile-game-mode):not(.zoo-playing),
+body.has-game-page-info.wp-shell-battle-active:not(.wp-mobile-game-mode):not(.zoo-playing),
+body.has-game-page-info.wp-shell-stage-active,
+body.has-game-page-info.wp-shell-battle-active {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+}
+
 body:is(.wp-shell-stage-active, .wp-shell-battle-active)
   :is(.game-page-info, .public-guide, .game-guide, .guide) {
   display: none !important;

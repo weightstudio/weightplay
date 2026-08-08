@@ -1260,6 +1260,10 @@
   let turnTransitionTimer = 0;
   let turnTransitionTask = null;
   let turnTransitionDueAt = 0;
+  let rewardSettlementTimer = 0;
+  let rewardSettlementTask = null;
+  let rewardSettlementDueAt = 0;
+  let rewardSettlementGeneration = 0;
   let endTurnKeyboardFocusRequested = false;
   let trainingIntentPending = false;
   let trainingIntentTimer = 0;
@@ -1356,10 +1360,11 @@
     const task = turnTransitionTask;
     turnTransitionDueAt = performance.now() + task.delay;
     turnTransitionTimer = window.setTimeout(() => {
+      const remaining = Math.max(0, turnTransitionDueAt - performance.now());
       turnTransitionTimer = 0;
       turnTransitionDueAt = 0;
-      if (document.hidden) {
-        if (turnTransitionTask === task) task.delay = 0;
+      if (document.hidden || lifecycleSuspended) {
+        if (turnTransitionTask === task) task.delay = remaining;
         return;
       }
       if (turnTransitionTask !== task) return;
@@ -1384,6 +1389,60 @@
   function resumeTurnTransition() {
     if (battlePaused || lifecycleSuspended) return;
     armTurnTransition();
+  }
+
+  // Reward reveal is a Battle-owned lifecycle beat. Keep its remaining
+  // foreground time across backgrounding and invalidate stale callbacks when
+  // Battle/Result ownership changes.
+  function clearRewardSettlement() {
+    clearTimeout(rewardSettlementTimer);
+    rewardSettlementTimer = 0;
+    rewardSettlementTask = null;
+    rewardSettlementDueAt = 0;
+    rewardSettlementGeneration += 1;
+  }
+
+  function armRewardSettlement() {
+    if (!rewardSettlementTask || rewardSettlementTimer || lifecycleSuspended || document.hidden) return;
+    const task = rewardSettlementTask;
+    const generation = rewardSettlementGeneration;
+    const delay = Math.max(0, Number(task.remaining) || 0);
+    rewardSettlementDueAt = performance.now() + delay;
+    rewardSettlementTimer = window.setTimeout(() => {
+      const remaining = Math.max(0, rewardSettlementDueAt - performance.now());
+      rewardSettlementTimer = 0;
+      rewardSettlementDueAt = 0;
+      if (rewardSettlementTask !== task || generation !== rewardSettlementGeneration) return;
+      if (document.hidden || lifecycleSuspended) {
+        task.remaining = remaining;
+        return;
+      }
+      rewardSettlementTask = null;
+      task.remaining = 0;
+      if (!state || state.phase !== "reward" || livingEnemies().length || !nodes.rewardPanel.classList.contains("is-hidden")) return;
+      setBattleCovered(true);
+      nodes.rewardPanel.classList.remove("is-hidden");
+      renderRewards(false);
+    }, delay);
+  }
+
+  function scheduleRewardSettlement(delay) {
+    clearRewardSettlement();
+    rewardSettlementTask = { remaining: Math.max(0, Number(delay) || 0) };
+    armRewardSettlement();
+  }
+
+  function suspendRewardSettlement() {
+    if (!rewardSettlementTask || !rewardSettlementTimer) return;
+    rewardSettlementTask.remaining = Math.max(0, rewardSettlementDueAt - performance.now());
+    clearTimeout(rewardSettlementTimer);
+    rewardSettlementTimer = 0;
+    rewardSettlementDueAt = 0;
+  }
+
+  function resumeRewardSettlement() {
+    if (!rewardSettlementTask || rewardSettlementTimer || lifecycleSuspended || document.hidden) return;
+    armRewardSettlement();
   }
 
   function t(key, vars = {}) {
@@ -1615,6 +1674,7 @@
   function suspendAppLifecycle() {
     lifecycleSuspended = true;
     suspendTurnTransition();
+    suspendRewardSettlement();
     suspendTrainingIntent();
   }
 
@@ -1622,6 +1682,7 @@
     if (document.hidden || !document.hasFocus()) return;
     lifecycleSuspended = false;
     resumeTurnTransition();
+    resumeRewardSettlement();
     resumeTrainingIntent();
   }
 
@@ -1629,6 +1690,7 @@
     if (!event.isTrusted || document.hidden || !lifecycleSuspended) return;
     lifecycleSuspended = false;
     resumeTurnTransition();
+    resumeRewardSettlement();
     resumeTrainingIntent();
   }
 
@@ -2103,6 +2165,7 @@
   function startMission(mission = selectedMission) {
     resetTrainingIntent();
     clearTurnTransition();
+    clearRewardSettlement();
     endTurnKeyboardFocusRequested = false;
     claimedRewardId = null;
     const extraEnergy = (profile.training ? 1 : 0) + (profile.bonusEnergy || 0);
@@ -2872,17 +2935,13 @@
   function showReward() {
     if (!state || livingEnemies().length) return;
     clearTurnTransition();
+    clearRewardSettlement();
     state.phase = "reward";
     setPauseActionAvailable(false);
     playFx("mission-clear", 2, 1);
     playCue("win");
     render();
-    scheduleTurnTransition(() => {
-      if (!state || state.phase !== "reward" || livingEnemies().length) return;
-      setBattleCovered(true);
-      nodes.rewardPanel.classList.remove("is-hidden");
-      renderRewards(false);
-    }, 320);
+    scheduleRewardSettlement(320);
   }
 
   function renderRewards(isReroll) {
@@ -2934,6 +2993,7 @@
   function showResult(win) {
     resultDecisionCommitted = false;
     clearTurnTransition();
+    clearRewardSettlement();
     nodes.rewardPanel.classList.add("is-hidden");
     nodes.gamePanel.classList.add("is-hidden");
     setBattleCovered(true);
@@ -3033,6 +3093,7 @@
   function showMenu() {
     resetTrainingIntent();
     clearTurnTransition();
+    clearRewardSettlement();
     endTurnKeyboardFocusRequested = false;
     state = null;
     setScene("stage");

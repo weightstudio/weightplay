@@ -903,6 +903,8 @@
     else nodes.topbar?.append(nodes.settingsControl);
     document.body?.classList.toggle("crystal-stage-select", stageOpen);
     document.body?.classList.toggle("crystal-playing", panel !== nodes.menuPanel && !stageOpen);
+    document.body?.classList.toggle("wp-shell-stage-active", stageOpen);
+    document.body?.classList.toggle("wp-shell-battle-active", panel !== nodes.menuPanel && !stageOpen);
     updateCrystalBattleViewport();
     if (resultOpen) requestAnimationFrame(updateCrystalBattleViewport);
   }

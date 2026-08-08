@@ -405,15 +405,15 @@
     }
     bind() {
       this.nodes.startBtn?.addEventListener("click", () => this.showBattle());
-      this.nodes.restartBtn?.addEventListener("click", () => { this.game.newGame(this.game.seed); this.showBattle(); });
-      this.nodes.newGameBtn?.addEventListener("click", () => { this.game.newGame(Date.now()); this.showBattle(); });
+      this.nodes.restartBtn?.addEventListener("click", () => { this.clearFeedback(); this.game.newGame(this.game.seed); this.showBattle(); });
+      this.nodes.newGameBtn?.addEventListener("click", () => { this.clearFeedback(); this.game.newGame(Date.now()); this.showBattle(); });
       this.nodes.battleBackBtn?.addEventListener("click", () => this.showMain());
-      this.nodes.battleNewBtn?.addEventListener("click", () => { this.game.newGame(Date.now()); this.render(); });
-      this.nodes.battleRestartBtn?.addEventListener("click", () => { this.game.newGame(this.game.seed); this.render(); });
+      this.nodes.battleNewBtn?.addEventListener("click", () => { this.clearFeedback(); this.game.newGame(Date.now()); this.render(); });
+      this.nodes.battleRestartBtn?.addEventListener("click", () => { this.clearFeedback(); this.game.newGame(this.game.seed); this.render(); });
       this.nodes.undoBtn?.addEventListener("click", () => { if (this.game.undo()) { this.feedback(this.t("undo")); this.render(); } else this.feedback(this.t("noMoves")); });
       this.nodes.hintBtn?.addEventListener("click", () => this.hint());
-      this.nodes.resultNewGame?.addEventListener("click", () => { this.game.newGame(Date.now()); this.hideResult(); this.render(); });
-      this.nodes.resultRestart?.addEventListener("click", () => { this.game.newGame(this.game.seed); this.hideResult(); this.render(); });
+      this.nodes.resultNewGame?.addEventListener("click", () => { this.clearFeedback(); this.game.newGame(Date.now()); this.hideResult(); this.render(); });
+      this.nodes.resultRestart?.addEventListener("click", () => { this.clearFeedback(); this.game.newGame(this.game.seed); this.hideResult(); this.render(); });
       this.nodes.resultClose?.addEventListener("click", () => this.showMain());
       this.nodes.localeSelect?.addEventListener("change", (event) => { this.locale = event.target.value; try { localStorage.setItem("weightPlayLocale", this.locale); } catch (_error) {} this.refreshCopy(); this.render(); });
       this.nodes.soundBtn?.addEventListener("click", () => { this.audio.setEnabled(!this.audio.enabled); this.refreshSound(); });
@@ -425,7 +425,7 @@
       this.nodes.board.addEventListener("pointerdown", (event) => this.handlePointerDown(event));
       this.nodes.board.addEventListener("pointermove", (event) => this.handlePointerMove(event));
       this.nodes.board.addEventListener("pointerup", (event) => this.handlePointerUp(event));
-      this.nodes.stockPile?.addEventListener("click", () => { if (["pyramid", "tripeaks", "golf"].includes(this.config.variant)) { if (this.game.drawStock()) { this.audio.draw(); this.render(); } else this.feedback(this.t("stockEmpty")); } });
+      this.nodes.stockPile?.addEventListener("click", () => { if (["pyramid", "tripeaks", "golf"].includes(this.config.variant)) { if (this.game.drawStock()) { this.clearFeedback(); this.audio.draw(); this.render(); } else this.feedback(this.t("stockEmpty")); } });
       root.addEventListener("wonder:locale-change", () => { this.locale = safeLocale(); this.refreshCopy(); this.render(); });
     }
     refreshSound() { if (this.nodes.soundBtn) { this.nodes.soundBtn.setAttribute("aria-pressed", String(this.audio.enabled)); this.nodes.soundBtn.textContent = this.audio.enabled ? this.t("soundOn") : this.t("soundOff"); } }
@@ -467,10 +467,10 @@
         this.render();
         return;
       }
-      if (this.config.variant === "pyramid") { if (source) { if (this.game.pairPyramid(source)) { this.hintMove = null; this.audio.place(); this.render(); } else this.feedback(this.t("pairWrong")); } return; }
-      if (this.config.variant === "tripeaks" || this.config.variant === "golf") { if (source && this.game.sequencePlay(source)) { this.hintMove = null; this.audio.place(); this.render(); } else if (source) this.feedback(this.t("wrong")); return; }
+      if (this.config.variant === "pyramid") { if (source) { if (this.game.pairPyramid(source)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); } else this.feedback(this.t("pairWrong")); } return; }
+      if (this.config.variant === "tripeaks" || this.config.variant === "golf") { if (source && this.game.sequencePlay(source)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); } else if (source) this.feedback(this.t("wrong")); return; }
       if (!source && !dest) return;
-      if (this.game.selected && dest) { if (this.game.moveClassic(this.game.selected, dest)) { this.hintMove = null; this.audio.place(); this.game.selected = null; this.render(); } else this.feedback(this.t("wrong")); return; }
+      if (this.game.selected && dest) { if (this.game.moveClassic(this.game.selected, dest)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.game.selected = null; this.render(); } else this.feedback(this.t("wrong")); return; }
       if (source) { this.hintMove = null; this.game.selected = this.game.selected && JSON.stringify(this.game.selected) === JSON.stringify(source) ? null : source; this.render(); }
     }
     handlePointerDown(event) {
@@ -484,11 +484,12 @@
       const target = document.elementFromPoint(event.clientX, event.clientY)?.closest?.("[data-source], [data-dest]");
       if (!target) return;
       const source = drag.source; const targetSource = target.dataset.source ? JSON.parse(target.dataset.source) : null; const dest = target.dataset.dest ? JSON.parse(target.dataset.dest) : this.cardDestination(targetSource);
-      if ((this.config.variant === "freecell" || this.config.variant === "yukon") && dest && this.game.moveClassic(source, dest)) { this.hintMove = null; this.audio.place(); this.render(); }
-      else if ((this.config.variant === "tripeaks" || this.config.variant === "golf") && this.game.sequencePlay(source)) { this.hintMove = null; this.audio.place(); this.render(); }
+      if ((this.config.variant === "freecell" || this.config.variant === "yukon") && dest && this.game.moveClassic(source, dest)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); }
+      else if ((this.config.variant === "tripeaks" || this.config.variant === "golf") && this.game.sequencePlay(source)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); }
       else this.feedback(this.t("wrong"));
     }
-    hint() { const move = this.game.tryHint(); if (!move) { this.hintMove = null; this.feedback(this.game.won ? this.t("winText") : this.t("noMoves")); return; } this.hintMove = move; this.render(); clearTimeout(this.hintTimer); this.hintTimer = setTimeout(() => { this.game.selected = null; this.hintMove = null; this.render(); }, 2400); }
+    hint() { const move = this.game.tryHint(); if (!move) { this.hintMove = null; this.feedback(this.game.won ? this.t("winText") : this.t("noMoves")); return; } this.clearFeedback(); this.hintMove = move; this.render(); clearTimeout(this.hintTimer); this.hintTimer = setTimeout(() => { this.game.selected = null; this.hintMove = null; this.render(); }, 2400); }
+    clearFeedback() { if (!this.nodes.toast) return; this.nodes.toast.hidden = true; this.nodes.toast.textContent = ""; clearTimeout(this.toastTimer); }
     feedback(message) { if (!this.nodes.toast) return; this.nodes.toast.textContent = message; this.nodes.toast.hidden = false; clearTimeout(this.toastTimer); this.toastTimer = setTimeout(() => { this.nodes.toast.hidden = true; }, 1800); }
     hideResult() { if (this.nodes.resultOverlay) this.nodes.resultOverlay.hidden = true; }
     showResult() { if (!this.nodes.resultOverlay || (!this.game.won && !this.game.lost)) return; this.nodes.resultOverlay.hidden = false; this.nodes.resultTitle.textContent = this.game.won ? this.t("win") : this.t("lose"); this.nodes.resultText.textContent = this.game.won ? this.t("winText") : this.t("loseText"); }

@@ -119,6 +119,22 @@
     }
   }
 
+  function ensureBattleCanvasRuntime() {
+    if (!document.querySelector('link[href*="battle-canvas-standard.css"]')) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = new URL("battle-canvas-standard.css", sharedAssetBase).href;
+      link.dataset.wpBattleStandard = "true";
+      document.head.append(link);
+    }
+    if (!document.querySelector('script[src*="battle-canvas-standard.js"]')) {
+      const script = document.createElement("script");
+      script.src = new URL("battle-canvas-standard.js", sharedAssetBase).href;
+      script.dataset.wpBattleStandard = "true";
+      document.body.append(script);
+    }
+  }
+
   function ensureGameInfoRuntime() {
     if (!document.querySelector('link[href*="game-page-info.css"]')) {
       const link = document.createElement("link");
@@ -155,6 +171,26 @@
     const style = getComputedStyle(element);
     if (style.display === "none" || style.visibility === "hidden") return false;
     return Boolean(element.getClientRects().length);
+  }
+
+  let activePlayRootLocked = false;
+  function syncActivePlayRootLock() {
+    const active = document.body?.matches(".wp-shell-stage-active,.wp-shell-battle-active") || false;
+    document.documentElement.classList.toggle("wp-shell-active-play", active);
+    if (active && !activePlayRootLocked) {
+      activePlayRootLocked = true;
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      window.scrollTo({ left: 0, top: 0, behavior: "instant" });
+      requestAnimationFrame(() => {
+        if (!document.body?.matches(".wp-shell-stage-active,.wp-shell-battle-active")) return;
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        window.scrollTo({ left: 0, top: 0, behavior: "instant" });
+      });
+    } else if (!active) {
+      activePlayRootLocked = false;
+    }
   }
 
   function first(selectors, root = document) {
@@ -722,6 +758,7 @@
     document.body.classList.toggle("wp-shell-main-active", type === "main");
     document.body.classList.toggle("wp-shell-stage-active", type === "stage");
     document.body.classList.toggle("wp-shell-battle-active", type === "battle");
+    syncActivePlayRootLock();
     document.querySelectorAll(".wp-standard-main-flow-owner").forEach((owner) => {
       if (type !== "main" || (!owner.contains(screen) && !screen?.contains(owner))) {
         owner.style.removeProperty("--wp-main-flow-min-height");
@@ -950,6 +987,7 @@
   function init() {
     window.__weightPlayShellControlsPhase = "init";
     ensureStageSelectorRuntime();
+    ensureBattleCanvasRuntime();
     ensureGameInfoRuntime();
     build();
     ensureOfficialTitleRegistry().then(() => {
