@@ -57,6 +57,11 @@ html body .page[hidden]{display:none!important}
   .main-canvas #runeStartBtn{min-height:46px}
 }
 
+/* The shared Battle scaler claims the page shell; keep the game canvas inside
+   that logical shell so its 100vw fallback cannot be scaled a second time. */
+#battlePage > .battle-canvas{width:100%!important;max-width:none!important;height:100%!important;min-height:0!important;max-height:none!important}
+#battlePage > .battle-canvas #tutorialClose{min-height:max(45px,calc(45px / var(--wp-battle-canvas-scale,1)))}
+
 /* Canonical Main entrance geometry. */
 .main-canvas {
   min-height: 0;

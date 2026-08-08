@@ -22,6 +22,7 @@
     "animal-guard-yard": ["#playPanel", 390, 450],
     "animal-habitat-mahjong": [".battle-canvas", 390, 788],
     "animal-dice-bastion": [".battle-canvas", 390, 788, 760, 334],
+    "animal-rune-reels": [".battle-canvas", 390, 788, 760, 334],
     "animal-honey-shield": [".battle-canvas", 390, 788, 760, 334],
     "animal-hero-trials": ["#battleView", 390, 788],
     "animal-hidden-safari": ["#playPanel", 382, 780, 760, 350],
