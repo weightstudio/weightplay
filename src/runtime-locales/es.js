@@ -14422,7 +14422,6 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Target missed": "Objetivo perdido",
   "Target order": "Orden objetivo",
   "Target Order": "Orden objetivo",
-  "Target reached · cross {remaining} more zones to complete.": "Objetivo alcanzado · cruza {remaining} zonas más para completar.",
   "Target reached: {n}/{target} salvage across {zones} zones.": "Objetivo alcanzado: {n}/{target} salvamento en {zones} zonas.",
   "Target: {value} -> {value}": "Objetivo: {value} -> {value}",
   "Targets": "Objetivos",
@@ -15822,7 +15821,6 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Unsupported bamboo connection": "Conexión de bambú sin soporte",
   "Untimed": "Sin tiempo",
   "Up": "arriba",
-  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "Próximo cambio del arrecife: {mission} · {name}. {special}Regla: {rule}. Objetivo: {goal} capturas.",
   "Updated": "Actualizado",
   "Upgrade": "Actualizar",
   "Upgrade · {cost}": "Actualizar · {cost}",
@@ -17006,5 +17004,8 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusionsverteidigung",
   "Zuglimit erreicht.": "Erreicht Zuglimit.",
   "Zur Lobby": "Vestíbulo Zur",
-  "Zwei Hinweise": "Zwei Hinweise"
+  "Zwei Hinweise": "Zwei Hinweise",
+  "Estrategia": "Estrategia",
+  "Target reached · cross {remaining} more zones to complete.": "Objetivo alcanzado · cruza {remaining} zonas más para completar.",
+  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "Próximo cambio del arrecife: {mission} · {name}. {special}Regla: {rule}. Objetivo: {goal} capturas."
 };

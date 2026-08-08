@@ -14423,7 +14423,6 @@ window.WeightPlayGameRuntimeLocales["pt-BR"] = {
   "Target missed": "Alvo perdido",
   "Target order": "Ordem alvo",
   "Target Order": "Ordem alvo",
-  "Target reached · cross {remaining} more zones to complete.": "Meta alcançada · atravesse mais {remaining} zonas para concluir.",
   "Target reached: {n}/{target} salvage across {zones} zones.": "Meta alcançada: {n}/{target} salvamento em {zones} zonas.",
   "Target: {value} -> {value}": "Alvo: {value} -> {value}",
   "Targets": "Alvos",
@@ -15823,7 +15822,6 @@ window.WeightPlayGameRuntimeLocales["pt-BR"] = {
   "Unsupported bamboo connection": "Conexão de bambu não suportada",
   "Untimed": "De duração indeterminada",
   "Up": "Acima",
-  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "Próxima mudança no recife: {mission} · {name}. {special}Regra: {rule}. Meta: {goal} capturas.",
   "Updated": "Atualizado",
   "Upgrade": "Atualizar",
   "Upgrade · {cost}": "Atualizar · {cost}",
@@ -17007,5 +17005,7 @@ window.WeightPlayGameRuntimeLocales["pt-BR"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusionsverteidigung",
   "Zuglimit erreicht.": "Zuglimit errado.",
   "Zur Lobby": "Lobby do Zur",
-  "Zwei Hinweise": "Zwei Hinweise"
+  "Zwei Hinweise": "Zwei Hinweise",
+  "Target reached · cross {remaining} more zones to complete.": "Meta alcançada · atravesse mais {remaining} zonas para concluir.",
+  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "Próxima mudança no recife: {mission} · {name}. {special}Regra: {rule}. Meta: {goal} capturas."
 };

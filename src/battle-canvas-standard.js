@@ -4,6 +4,7 @@
   const DESKTOP_CANVAS_MAX_WIDTH = 920;
   const games = {
     "arrow-escape": [".battle-canvas", 390, 788, 760, 334],
+    "block-blast": [".battle-canvas", 390, 788, 760, 334],
     "animal-block-grove": [".block-grove-battle-canvas", 390, 844],
     "animal-bamboo-pipes": ["#battle", 390, 788, 760, 334],
     "animal-abyss-diver": [".battle-canvas", 390, 788],

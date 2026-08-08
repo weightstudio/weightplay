@@ -14423,7 +14423,6 @@ window.WeightPlayGameRuntimeLocales["fr"] = {
   "Target missed": "Cible manquée",
   "Target order": "Ordre cible",
   "Target Order": "Ordre cible",
-  "Target reached · cross {remaining} more zones to complete.": "Objectif atteint · traversez encore {remaining} zones pour terminer.",
   "Target reached: {n}/{target} salvage across {zones} zones.": "Objectif atteint : {n}/{target} récupération sur {zones} zones.",
   "Target: {value} -> {value}": "Cible : {value} -> {value}",
   "Targets": "Cibles",
@@ -15823,7 +15822,6 @@ window.WeightPlayGameRuntimeLocales["fr"] = {
   "Unsupported bamboo connection": "Connexion bambou non prise en charge",
   "Untimed": "Intemporel",
   "Up": "Vers le haut",
-  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "Prochain changement du récif : {mission} · {name}. {special}Règle : {rule}. Objectif : {goal} captures.",
   "Updated": "Mis à jour",
   "Upgrade": "Mise à niveau",
   "Upgrade · {cost}": "Mise à niveau · {cost}",
@@ -17007,5 +17005,7 @@ window.WeightPlayGameRuntimeLocales["fr"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusionsverteidigung",
   "Zuglimit erreicht.": "Zuglimit erreicht.",
   "Zur Lobby": "Dans le hall d'entrée",
-  "Zwei Hinweise": "Deux langues"
+  "Zwei Hinweise": "Deux langues",
+  "Target reached · cross {remaining} more zones to complete.": "Objectif atteint · traversez encore {remaining} zones pour terminer.",
+  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "Prochain changement du récif : {mission} · {name}. {special}Règle : {rule}. Objectif : {goal} captures."
 };
