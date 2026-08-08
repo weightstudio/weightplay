@@ -860,3 +860,85 @@ button.control-mini {
     font-size: 0.72rem;
   }
 }
+
+/* Keep the complete tableau inside the logical Battle Canvas.  The shared
+   Canvas owns the viewport height; this game only needs to let the board
+   consume the space that remains below its HUD instead of sizing piles from
+   the physical viewport (which can extend past the logical canvas). */
+.battle-canvas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  overflow: hidden;
+}
+
+.board-shell {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  height: auto;
+  max-height: none;
+}
+
+.tableau-row {
+  flex: 0 0 auto;
+  min-height: 0;
+}
+
+.tableau-pile {
+  min-height: calc(var(--card-height) + 9 * var(--card-step) + 2px);
+}
+
+@media (orientation: landscape) {
+  .battle-canvas {
+    --card-width: clamp(36px, 5vw, 46px);
+    --card-height: calc(var(--card-width) * 1.42);
+    --card-step: clamp(6px, 1vw, 9px);
+    --tableau-gap: 0.45rem;
+    padding: 0.5rem 0.6rem 0.35rem;
+    gap: 0.3rem;
+  }
+
+  .battle-header {
+    padding-bottom: 0.3rem;
+  }
+
+  .board-shell {
+    border-radius: 12px;
+  }
+
+  .foundation-row,
+  .stock-row {
+    gap: 0.4rem;
+  }
+
+  .foundation-row {
+    margin-bottom: 0.3rem;
+  }
+
+  .stock-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(0, 2fr);
+    margin-bottom: 0.35rem;
+  }
+
+  .pile,
+  .foundation-slot {
+    min-height: calc(var(--card-height) + 2px);
+  }
+
+  .tableau-pile {
+    min-height: calc(var(--card-height) + 9 * var(--card-step) + 2px);
+  }
+
+  .stock-row .control-row {
+    flex-wrap: nowrap;
+    gap: 0.3rem;
+  }
+
+  .stock-row .control-row button {
+    min-height: 34px;
+    padding: 0.3rem 0.45rem;
+    font-size: 0.78rem;
+  }
+}
