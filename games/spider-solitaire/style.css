@@ -129,8 +129,13 @@ body[data-wp-game-id="spider-solitaire"] .game-page-info {
 .card.card-flip { animation: sp-flip 210ms ease both; }
 .card.card-deal { animation: sp-deal 220ms ease both; }
 .card.is-selected { box-shadow: 0 0 0 3px rgba(255,241,168,.95), 0 0 14px rgba(255,241,168,.45); transform: translateY(-2px); }
+.card.returning-origin { opacity: .2; }
+.card.invalid-return { animation: sp-invalid-return 220ms ease both; }
 .ghost-stack { position: fixed; z-index: 100; pointer-events: none; filter: drop-shadow(0 12px 14px rgba(0,0,0,.35)); }
 .ghost-card { pointer-events: none !important; transition: none; }
+.ghost-stack.ghost-return { animation: sp-ghost-return 220ms cubic-bezier(.2,.8,.2,1) both; transform: translate(var(--return-x), var(--return-y)); }
+.drag-layer { position: fixed; inset: 0; z-index: 110; pointer-events: none; }
+.sequence-fly-card { position: fixed !important; z-index: 120; pointer-events: none !important; animation: sp-sequence-fly 560ms cubic-bezier(.2,.8,.2,1) both; }
 .tableau-pile.drag-hover { box-shadow: 0 0 0 3px rgba(255,241,168,.95), 0 0 18px rgba(255,241,168,.48); }
 .hint-source { box-shadow: 0 0 0 2px #fff1a8, 0 0 12px rgba(255,241,168,.45); }
 .hint-target { box-shadow: 0 0 0 3px var(--sp-accent), 0 0 14px rgba(78,205,196,.35); animation: sp-hint-pulse 740ms ease-in-out infinite alternate; }
@@ -246,4 +251,7 @@ body[data-wp-game-id="spider-solitaire"] .game-page-info {
 @keyframes sp-hint-pulse { from { transform: translateY(0); } to { transform: translateY(-2px); } }
 @keyframes sp-complete-slot { from { transform: scale(.8); opacity: .35; } 60% { transform: scale(1.08); opacity: 1; } to { transform: scale(1); } }
 @keyframes sp-sequence { from { opacity: 0; transform: translate(-50%,-20%) scale(.84); } 28% { opacity: 1; transform: translate(-50%,-50%) scale(1.05); } to { opacity: 0; transform: translate(-50%,-78%) scale(1); } }
+@keyframes sp-sequence-fly { from { opacity: 1; transform: translate(0,0) scale(1); } 58% { opacity: 1; transform: translate(calc(var(--sequence-x) * .74),calc(var(--sequence-y) * .74)) scale(.78); } to { opacity: .05; transform: translate(var(--sequence-x),var(--sequence-y)) scale(.42); } }
+@keyframes sp-invalid-return { 0% { transform: translateX(0); } 30% { transform: translateX(-5px); } 60% { transform: translateX(4px); } 100% { transform: translateX(0); } }
+@keyframes sp-ghost-return { from { opacity: 1; transform: translate(0,0); } to { opacity: .2; transform: translate(var(--return-x),var(--return-y)); } }
 @keyframes sp-card-pop { from { opacity: 0; transform: translateY(8px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }

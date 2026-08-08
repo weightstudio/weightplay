@@ -1214,6 +1214,14 @@ const KL_I18N = {
   }
 
   function clearHints() {
+    if (state.hintTimer) {
+      clearTimeout(state.hintTimer);
+      state.hintTimer = 0;
+    }
+    if (ui.hintOverlay) {
+      ui.hintOverlay.hidden = true;
+      ui.hintOverlay.textContent = "";
+    }
     ui.foundationRow?.querySelectorAll("[data-hint]").forEach((node) => node.classList.remove("hint-source", "hint-target"));
     ui.tableauRow?.querySelectorAll("[data-hint]").forEach((node) => node.classList.remove("hint-source", "hint-target"));
     ui.stockPile?.classList.remove("hint-source");

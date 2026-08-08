@@ -393,7 +393,7 @@
   }
 
   const stats = loadStats();
-  const state = { difficulty: Number(safeGet(STORAGE.difficulty, "1")) || 1, active: false, hasStarted: false, elapsed: 0, timer: null, hintTimer: null, pendingAction: null, dragging: null, renderGeneration: 0, winRecorded: false, lastFrameCards: new Map(), cardPool: new Map() };
+  const state = { difficulty: Number(safeGet(STORAGE.difficulty, "1")) || 1, active: false, hasStarted: false, elapsed: 0, timer: null, hintTimer: null, pendingAction: null, dragging: null, renderGeneration: 0, winRecorded: false, lastFrameCards: new Map(), cardPool: new Map(), pendingDealDelays: null };
   state.difficulty = DIFFICULTIES[state.difficulty] ? state.difficulty : 1;
   let game = new SpiderBoard(state.difficulty);
   const audio = new SoundEngine(STORAGE.sound);
@@ -470,7 +470,7 @@
     showHint(t("move_hint"));
   }
 
-  function createCardNode(card, row, isNew = false, previousFace = false) {
+  function createCardNode(card, row, isNew = false, previousFace = false, animationDelay = null) {
     let node = state.cardPool.get(card.id);
     if (!node) {
       node = document.createElement("div");
@@ -491,7 +491,8 @@
     node.onpointerdown = card.faceUp ? beginDrag : null;
     if (isNew) {
       node.classList.add("card-deal");
-      node.style.animationDelay = `${clamp(row, 0, CARD_DEAL_MAX_DELAY) * DEAL_STEP_MS}ms`;
+      const delay = animationDelay == null ? clamp(row, 0, CARD_DEAL_MAX_DELAY) * DEAL_STEP_MS : Math.max(0, animationDelay);
+      node.style.animationDelay = `${delay}ms`;
     } else if (!previousFace && card.faceUp) {
       node.classList.add("card-flip");
       node.style.animationDelay = "0ms";
@@ -540,13 +541,14 @@
       });
       cards.forEach((card, row) => {
         const previous = state.lastFrameCards.get(card.id);
-        const node = createCardNode(card, row, !previous, previous ? previous.faceUp : false);
+        const node = createCardNode(card, row, !previous, previous ? previous.faceUp : false, state.pendingDealDelays?.get(card.id));
         if (pile.children[row] !== node) pile.insertBefore(node, pile.children[row] || null);
         currentCards.set(card.id, { faceUp: card.faceUp });
       });
       if (ui.tableauRow.children[columnIndex] !== pile) ui.tableauRow.insertBefore(pile, ui.tableauRow.children[columnIndex] || null);
     });
     state.lastFrameCards = currentCards;
+    state.pendingDealDelays = null;
     renderHeader();
     requestAnimationFrame(fitTableau);
   }
@@ -613,7 +615,6 @@
     if (!dragging || dragging.pointerId !== event.pointerId) return;
     const wasMoved = dragging.moved;
     const hoverTarget = dragging.hoverTarget;
-    if (dragging.ghost) dragging.ghost.remove();
     dragging.originNode.classList.remove("is-selected");
     ui.tableauRow.querySelectorAll(".drag-hover").forEach((node) => node.classList.remove("drag-hover"));
     state.dragging = null;
@@ -623,10 +624,26 @@
     }
     const move = dragging.legalMoves.find((candidate) => candidate.toColumn === hoverTarget);
     if (!move) {
+      if (dragging.ghost) {
+        const originRect = dragging.originNode.getBoundingClientRect();
+        const ghostRect = dragging.ghost.getBoundingClientRect();
+        dragging.originNode.classList.add("returning-origin");
+        dragging.ghost.classList.add("ghost-return");
+        dragging.ghost.style.setProperty("--return-x", `${originRect.left - ghostRect.left}px`);
+        dragging.ghost.style.setProperty("--return-y", `${originRect.top - ghostRect.top}px`);
+        window.setTimeout(() => {
+          dragging.ghost?.remove();
+          dragging.originNode.classList.remove("returning-origin");
+        }, 230);
+      } else {
+        dragging.originNode.classList.add("invalid-return");
+        window.setTimeout(() => dragging.originNode.classList.remove("invalid-return"), 230);
+      }
       audio.reject();
       showHint(t("invalid"));
       return;
     }
+    dragging.ghost?.remove();
     performMove(move);
   }
 
@@ -652,18 +669,55 @@
       showHint(t("invalid"));
       return false;
     }
-    if (action.type === "deal") audio.deal();
+    if (action.type === "deal") {
+      audio.deal();
+      state.pendingDealDelays = new Map(action.cards.map((card, columnIndex) => [card.id, columnIndex * DEAL_STEP_MS]));
+    }
     else audio.place();
     if (action.revealed?.length) audio.flip();
+    const completedFlyouts = action.completed?.length ? captureCompletedFlyouts(action.completed, game.completed.total - action.completed.length) : [];
     renderBoard();
     if (action.completed?.length) {
       audio.complete();
+      animateCompletedFlyouts(completedFlyouts);
       showSequenceFeedback(action.completed.length);
       if (game.hasWon()) {
         window.setTimeout(showVictory, 620);
       }
     }
     return true;
+  }
+
+  function captureCompletedFlyouts(completed, firstSlot) {
+    return completed.map((group, groupIndex) => ({
+      slotIndex: firstSlot + groupIndex,
+      cards: group.cards.map((card) => {
+        const node = state.cardPool.get(card.id);
+        return node ? { node: node.cloneNode(true), rect: node.getBoundingClientRect() } : null;
+      }).filter(Boolean),
+    }));
+  }
+
+  function animateCompletedFlyouts(flyouts) {
+    const slots = [...(ui.foundationRow?.children || [])];
+    flyouts.forEach((flyout, groupIndex) => {
+      const target = slots[flyout.slotIndex]?.getBoundingClientRect();
+      if (!target) return;
+      flyout.cards.forEach(({ node, rect }, cardIndex) => {
+        const clone = node;
+        clone.classList.remove("card-deal", "card-flip", "is-selected", "returning-origin");
+        clone.classList.add("sequence-fly-card");
+        clone.style.left = `${rect.left}px`;
+        clone.style.top = `${rect.top}px`;
+        clone.style.width = `${rect.width}px`;
+        clone.style.setProperty("--sequence-x", `${target.left + target.width / 2 - (rect.left + rect.width / 2)}px`);
+        clone.style.setProperty("--sequence-y", `${target.top + target.height / 2 - (rect.top + rect.height / 2)}px`);
+        clone.style.animationDelay = `${groupIndex * 70 + cardIndex * 12}ms`;
+        clone.addEventListener("animationend", () => clone.remove(), { once: true });
+        ui.dragLayer?.append(clone);
+        window.setTimeout(() => clone.remove(), 1100 + groupIndex * 70 + cardIndex * 12);
+      });
+    });
   }
 
   function showSequenceFeedback(count) {
@@ -758,6 +812,10 @@
     state.elapsed = 0;
     state.winRecorded = false;
     state.lastFrameCards = new Map();
+    state.pendingDealDelays = new Map();
+    game.tableau.columns.forEach((cards, columnIndex) => cards.forEach((card, row) => {
+      state.pendingDealDelays.set(card.id, Math.min(CARD_DEAL_MAX_DELAY, row * 10 + columnIndex) * DEAL_STEP_MS);
+    }));
     ui.resultOverlay.hidden = true;
     showBattle();
     renderBoard();
@@ -783,6 +841,11 @@
     state.active = true;
     state.elapsed = 0;
     state.winRecorded = false;
+    state.lastFrameCards = new Map();
+    state.pendingDealDelays = new Map();
+    game.tableau.columns.forEach((cards, columnIndex) => cards.forEach((card, row) => {
+      state.pendingDealDelays.set(card.id, Math.min(CARD_DEAL_MAX_DELAY, row * 10 + columnIndex) * DEAL_STEP_MS);
+    }));
     ui.resultOverlay.hidden = true;
     renderBoard();
     startClock();
@@ -851,6 +914,7 @@
         state.winRecorded = false;
         state.lastFrameCards = new Map();
         state.cardPool = new Map();
+        state.pendingDealDelays = null;
         ui.resultOverlay.hidden = true;
         ui.tutorialOverlay.hidden = true;
         ui.confirmOverlay.hidden = true;
@@ -868,6 +932,7 @@
           winRecorded: state.winRecorded,
           stats: { ...stats[1] },
           completionToastVisible: Boolean(document.querySelector(".sequence-toast")),
+          completionFlyoutCount: document.querySelectorAll(".sequence-fly-card").length,
         };
       },
     };
