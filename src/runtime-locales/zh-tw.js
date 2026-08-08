@@ -14423,6 +14423,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "Target missed": "未達目標",
   "Target order": "目標訂單",
   "Target Order": "目標訂單",
+  "Target reached · cross {remaining} more zones to complete.": "已達成目標・再穿越 {remaining} 個區域即可完成。",
   "Target reached: {n}/{target} salvage across {zones} zones.": "達到目標：在 {zones} 區域進行 {n}/{target} 打撈。",
   "Target: {value} -> {value}": "目標：{value} -> {value}",
   "Targets": "目標",
@@ -15822,6 +15823,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "Unsupported bamboo connection": "無支撐的竹連接",
   "Untimed": "不定時",
   "Up": "向上",
+  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "即將發生的礁區變化：{mission}・{name}。{special}規則：{rule}。目標：捕獲 {goal} 條。",
   "Updated": "已更新",
   "Upgrade": "升級",
   "Upgrade · {cost}": "升級·{cost}",
@@ -17005,7 +17007,5 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "Zufalls-Fusionsverteidigung": "融合融合",
   "Zuglimit erreicht.": "楚格限制權利。",
   "Zur Lobby": "祖爾大廳",
-  "Zwei Hinweise": "茨威‧欣威斯",
-  "Target reached · cross {remaining} more zones to complete.": "已達成目標・再穿越 {remaining} 個區域即可完成。",
-  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "即將發生的礁區變化：{mission}・{name}。{special}規則：{rule}。目標：捕獲 {goal} 條。",
+  "Zwei Hinweise": "茨威‧欣威斯"
 };
