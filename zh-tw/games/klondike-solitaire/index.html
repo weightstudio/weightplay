@@ -20,7 +20,7 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/klondike-solitaire/" />
     <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="robots" content="index,follow" />
+  <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="theme-color" content="#0a1f3a" />
   <title data-klocale="ui.meta.title">Klondike Solitaire Online - Play Free Classic Solitaire</title>
@@ -31,11 +31,11 @@
   <meta property="og:title" content="克朗代克紙牌 | WeightPlay" />
   <meta property="og:description" content="Klondike Solitaire 是一款經典的 52 張紙牌遊戲，您可以在其中建立從 A 到 K 的四種基礎，同時控制畫面、庫存和浪費。" />
   <meta property="og:url" content="https://weightplay.com/zh-tw/games/klondike-solitaire/" />
-  <meta property="og:image" content="https://weightplay.com/assets/weightplay-logo.webp" />
+  <meta property="og:image" content="https://weightplay.com/assets/klondike-solitaire-cover.webp" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="克朗代克紙牌 | WeightPlay" />
   <meta name="twitter:description" content="Klondike Solitaire 是一款經典的 52 張紙牌遊戲，您可以在其中建立從 A 到 K 的四種基礎，同時控制畫面、庫存和浪費。" />
-  <meta name="twitter:image" content="https://weightplay.com/assets/weightplay-logo.webp" />
+  <meta name="twitter:image" content="https://weightplay.com/assets/klondike-solitaire-cover.webp" />
   <link id="metaCanonical" rel="canonical" href="https://weightplay.com/en/games/klondike-solitaire/" />
   <link id="metaAlternateEn" rel="alternate" hreflang="en" href="https://weightplay.com/en/games/klondike-solitaire/" />
   <link id="metaAlternateDefault" rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/klondike-solitaire/" />
@@ -45,7 +45,7 @@
       "@type": "VideoGame",
       "name": "Klondike Solitaire Online",
       "url": "https://weightplay.com/en/games/klondike-solitaire/",
-      "image": "https://weightplay.com/assets/weightplay-logo.png",
+      "image": "https://weightplay.com/assets/klondike-solitaire-cover.webp",
       "description": "Classic Klondike Solitaire with drag/drop, Undo, Hint, Auto Finish, Draw 1/3 modes, animations, and cross-device support.",
       "publisher": { "@type": "Organization", "name": "WeightStudio" },
       "operatingSystem": "Web Browser",
@@ -61,7 +61,7 @@
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260808-klondike-v6" />
+  <link rel="stylesheet" href="style.css?v=20260808-klondike-v10" />
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -69,7 +69,7 @@
   "name": "克朗代克紙牌",
   "alternateName": "Klondike Solitaire",
   "url": "https://weightplay.com/zh-tw/games/klondike-solitaire/",
-  "image": "https://weightplay.com/assets/weightplay-logo.webp",
+  "image": "https://weightplay.com/assets/klondike-solitaire-cover.webp",
   "description": "Klondike Solitaire 是一款經典的 52 張紙牌遊戲，您可以在其中建立從 A 到 K 的四種基礎，同時控制畫面、庫存和浪費。",
   "publisher": {
     "@type": "Organization",
@@ -105,7 +105,7 @@
     <header class="main-header">
       <a class="main-return" href="/" data-wp-return="main" data-klocale-aria="ui.nav.back_to_lobby">
         <span aria-hidden="true">&larr;</span>
-        <img src="../../assets/weightplay-logo.png" alt="" />
+        <img src="/assets/klondike-solitaire-cover.webp" alt="" />
       </a>
       <strong data-klocale="ui.hero.title">Klondike Solitaire</strong>
       <div class="header-utilities">
@@ -147,7 +147,7 @@
 
     <section class="main-hero">
       <div class="poster-frame">
-        <img class="cover" src="../../assets/weightplay-logo.png" alt="《克朗代克紙牌》遊戲圖片" />
+        <img class="cover" src="/assets/klondike-solitaire-cover.webp" alt="《克朗代克紙牌》遊戲圖片" />
       </div>
       <article class="main-copy">
         <small class="eyebrow" data-klocale="ui.hero.kicker">Classic Card Game</small>
@@ -197,21 +197,21 @@
         </section>
         <section id="tableauRow" class="tableau-row" data-klocale-aria="ui.board.tableau" aria-label="Tableau"></section>
       </section>
-    </div>
-    <div class="battle-ad-reserve" aria-hidden="true"></div>
-    <div id="resultOverlay" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
-      <div class="result-card">
-        <h2 id="resultTitle" data-klocale="ui.result.title">Game Complete</h2>
-        <p id="resultText"></p>
-        <div class="result-actions">
-          <button id="resultNewGame" type="button" class="primary-btn" data-klocale="ui.result.new_game">New Game</button>
-          <button id="resultRestart" type="button" class="secondary-btn" data-klocale="ui.result.restart">Restart</button>
-          <button id="resultClose" type="button" class="secondary-btn" data-klocale="ui.result.return">Return</button>
+      <div id="resultOverlay" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
+        <div class="result-card">
+          <h2 id="resultTitle" data-klocale="ui.result.title">Game Complete</h2>
+          <p id="resultText"></p>
+          <div class="result-actions">
+            <button id="resultNewGame" type="button" class="primary-btn" data-klocale="ui.result.new_game">New Game</button>
+            <button id="resultRestart" type="button" class="secondary-btn" data-klocale="ui.result.restart">Restart</button>
+            <button id="resultClose" type="button" class="secondary-btn" data-klocale="ui.result.return">Return</button>
+          </div>
         </div>
       </div>
+      <div id="hintOverlay" class="hint-overlay" role="status" aria-live="polite" hidden></div>
+      <div id="dragLayer" class="drag-layer" aria-hidden="true"></div>
     </div>
-    <div id="hintOverlay" class="hint-overlay" role="status" aria-live="polite"></div>
-    <div id="dragLayer" class="drag-layer" aria-hidden="true"></div>
+    <div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
   </section>
 
   <script src="../../src/site-config.js"></script>

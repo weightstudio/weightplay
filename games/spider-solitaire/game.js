@@ -863,6 +863,7 @@
       state.pendingDealDelays.set(card.id, Math.min(CARD_DEAL_MAX_DELAY, row * 10 + columnIndex) * DEAL_STEP_MS);
     }));
     ui.resultOverlay.hidden = true;
+    showBattle();
     renderBoard();
     startClock();
   }
@@ -914,6 +915,87 @@
         game.stock = new SpiderStock([]);
         game.completed = new CompletedSequenceManager();
         for (let index = 0; index < 6; index += 1) game.completed.complete("spades");
+        game.history = new UndoStack();
+        game.moveCount = 0;
+        game.score = 500;
+        game.dealCount = 0;
+        game.lastMove = null;
+        game.recentMoves = [];
+        game.visitedStates = new Set();
+        game.rememberState();
+        game.initialSnapshot = game.snapshot();
+        state.difficulty = 1;
+        state.active = true;
+        state.hasStarted = true;
+        state.elapsed = 0;
+        state.winRecorded = false;
+        state.lastFrameCards = new Map();
+        state.cardPool = new Map();
+        state.pendingDealDelays = null;
+        clearCompletionFlyouts();
+        ui.resultOverlay.hidden = true;
+        ui.tutorialOverlay.hidden = true;
+        ui.confirmOverlay.hidden = true;
+        showBattle();
+        renderBoard();
+        startClock();
+      },
+      loadEmptyColumnFixture() {
+        stopClock();
+        game = new SpiderBoard(1);
+        game.newGame(13579);
+        game.tableau.columns[0] = [];
+        game.history = new UndoStack();
+        game.moveCount = 0;
+        game.score = 500;
+        game.dealCount = 0;
+        game.lastMove = null;
+        game.recentMoves = [];
+        game.visitedStates = new Set();
+        game.rememberState();
+        game.initialSnapshot = game.snapshot();
+        state.difficulty = 1;
+        state.active = true;
+        state.hasStarted = true;
+        state.elapsed = 0;
+        state.winRecorded = false;
+        state.lastFrameCards = new Map();
+        state.cardPool = new Map();
+        state.pendingDealDelays = null;
+        clearCompletionFlyouts();
+        ui.resultOverlay.hidden = true;
+        ui.tutorialOverlay.hidden = true;
+        ui.confirmOverlay.hidden = true;
+        showBattle();
+        renderBoard();
+        startClock();
+      },
+      loadFullHandFixture() {
+        const Card = window.WPCardEngine.Card;
+        const makeSegment = (runIndex, ranks) => ranks.map((rank, index) => new Card("spades", rank, `full-hand-${runIndex}-${index}`, true));
+        const longRuns = Array.from({ length: 4 }, (_, index) => makeSegment(index, Array.from({ length: 11 }, (_value, rankIndex) => 13 - rankIndex)));
+        const shortRuns = Array.from({ length: 4 }, (_, index) => makeSegment(index + 4, Array.from({ length: 10 }, (_value, rankIndex) => 13 - rankIndex)));
+        const smallRuns = [
+          makeSegment(0, [2, 1]), makeSegment(1, [2, 1]), makeSegment(2, [2, 1]), makeSegment(3, [2, 1]),
+          makeSegment(4, [3, 2, 1]), makeSegment(5, [3, 2, 1]), makeSegment(6, [3, 2, 1]), makeSegment(7, [3, 2, 1]),
+        ];
+        const finalColumns = [...longRuns, ...shortRuns, [...smallRuns[0], ...smallRuns[1], ...smallRuns[4], ...smallRuns[5]], [...smallRuns[2], ...smallRuns[3], ...smallRuns[6], ...smallRuns[7]]];
+        const initialCounts = [6, 6, 6, 6, 5, 5, 5, 5, 5, 5];
+        const tableau = finalColumns.map((column, columnIndex) => column.slice(0, initialCounts[columnIndex]));
+        const stockCards = [];
+        for (let dealIndex = 4; dealIndex >= 0; dealIndex -= 1) {
+          for (let columnIndex = 0; columnIndex < finalColumns.length; columnIndex += 1) {
+            const card = finalColumns[columnIndex][initialCounts[columnIndex] + dealIndex];
+            card.faceUp = false;
+            stockCards.push(card);
+          }
+        }
+        stopClock();
+        game = new SpiderBoard(1);
+        game.seed = 24681357;
+        game.tableau.columns = tableau;
+        game.stock = new SpiderStock(stockCards);
+        game.completed = new CompletedSequenceManager();
         game.history = new UndoStack();
         game.moveCount = 0;
         game.score = 500;

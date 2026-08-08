@@ -6897,7 +6897,7 @@
     // fields not owned by a dedicated guide resource. Block Blast likewise
     // owns complete Traditional and Simplified Chinese guide records here;
     // keep those exact sentences out of the generic runtime catalog.
-    if (!catalog || activeLocale === "en" || activeLocale === "es"
+    if (!catalog || activeLocale === "en" || (activeLocale === "es" && localizedGames[activeLocale]?.[id])
       || (activeLocale === "pt-BR" && id === "animal-rune-tactics")
       || (activeLocale === "ru" && id === "animal-one-line")
       || (["zh-Hant", "zh-Hans"].includes(activeLocale) && id === "block-blast")) return merged;
