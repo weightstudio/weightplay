@@ -5,6 +5,7 @@
   const games = {
     "arrow-escape": [".battle-canvas", 390, 788, 760, 334],
     "block-blast": [".battle-canvas", 390, 788, 760, 334],
+    "hexa-sort": [".battle-canvas", 390, 788, 760, 334],
     "animal-block-grove": [".block-grove-battle-canvas", 390, 844],
     "animal-bamboo-pipes": ["#battle", 390, 788, 760, 334],
     "animal-abyss-diver": [".battle-canvas", 390, 788],
@@ -103,8 +104,12 @@
       ? document.querySelector('[data-wp-return="battle"],#battleBack,#battleBackBtn,#backToStagesBtn,#backToMenuBtn')
       : null);
   const findBattleOverlay = (root) => root && [...root.querySelectorAll('[role="dialog"],.result-panel,.result-overlay,.result-canvas,#resultPanel,#resultScreen,#resultModal,#result')].find(visible);
-  const findReserve = () => [...document.querySelectorAll(reserveSelector)]
-    .find((node) => visible(node) && !node.closest("[data-wp-logical-battle-canvas]")) || null;
+  const findReserve = (root) => {
+    const nearby = root?.parentElement?.querySelector(reserveSelector);
+    if (visible(nearby)) return nearby;
+    return [...document.querySelectorAll(reserveSelector)]
+      .find((node) => visible(node) && !node.closest("[data-wp-logical-battle-canvas]")) || null;
+  };
 
   const savedStyles = new WeakMap();
   let activeRoot = null;
@@ -176,7 +181,7 @@
     const viewport = window.visualViewport;
     const width = Math.max(1, document.documentElement.clientWidth || 0, innerWidth || 0, viewport?.width || 0);
     const height = Math.max(1, document.documentElement.clientHeight || 0, innerHeight || 0, viewport?.height || 0);
-    const reserve = findReserve();
+    const reserve = findReserve(root);
     const stateSignature = [
       document.body.className,
       root.className,
