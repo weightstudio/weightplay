@@ -79,6 +79,42 @@
       relatedIds: ["hexa-sort"],
       faq: [["How many stages are included?", "There are 30 handcrafted campaign stages plus Endless mode."], ["Can I move a stack after placing it?", "No. Choose carefully; the placement is final and matching top runs resolve automatically."], ["Which chips are allowed to move?", "Only one contiguous run of the same color at the top of a stack can move to an adjacent stack."], ["When does a color clear?", "A connected resolved stack clears when it reaches ten matching chips."], ["Is Endless random?", "Offers vary, but the rules and every merge decision are deterministic from the current state."], ["Is progress saved?", "Campaign unlocks, Endless best score, and preferences are stored locally in this browser."]],
     },
+    "spider-solitaire": {
+      title: "Spider Solitaire",
+      age: "9+",
+      difficulty: "Easy to Hard",
+      time: "5-20 minutes",
+      skills: ["Planning", "Pattern Recognition", "Focus"],
+      intro: "Spider Solitaire uses two decks in ten tableau columns. Build descending sequences, separate mixed suits when you can, and complete eight same-suit King-to-Ace runs to clear the table.",
+      story: ["Spider keeps the familiar card-engine feel of Klondike while changing the decision space: every column matters, a new stock row touches all ten columns, and empty space is powerful but temporarily blocks dealing.", "One Suit teaches the rhythm, Two Suits adds suit separation, and Four Suits asks for careful long-term planning without changing the core controls."],
+      systems: ["Cards build downward by rank. A single face-up card can move onto the next rank, while a group moves together only when it is face-up, descending, and the same suit.", "Complete a same-suit K-to-A sequence and it is collected with a readable completion animation. Eight collected sequences win the game.", "The Stock deals one face-up card to each of ten non-empty columns. Undo restores tableau, face-up state, stock, deals, score, and completed sequences.", "Hint highlights one useful legal move, favoring hidden-card reveals, same-suit extensions, completed runs, and new empty columns."],
+      how: ["Choose 1 Suit, 2 Suits, or 4 Suits on Main.", "Drag a face-up card or a valid same-suit run onto the next higher rank.", "Use empty columns to reorganize any card or valid run.", "Reveal face-down cards, then deal a new row only when every column contains a card.", "Complete all eight same-suit K-to-A runs to win."],
+      strategyTips: ["Reveal a face-down card before making a move that only changes the surface.", "Keep same-suit runs together; mixed-suit runs are useful scaffolding but cannot move as a group.", "Treat an empty column as a reserve: use it to separate suits or expose a hidden card.", "Do not deal automatically when a useful reveal or same-suit merge is available.", "In Four Suits, protect the cleanest run and use Undo to compare competing destinations."],
+      progression: ["1 Suit is the teaching mode, 2 Suits adds planning around suit conflicts, and 4 Suits is the classic high-challenge mode.", "Each difficulty stores its own games played, wins, win rate, best time, and fewest moves.", "The same seed can be restarted without changing the deal; New Game creates a fresh shuffle."],
+      designNote: "Spider shares WeightPlay's Card Engine, responsive battle canvas, drag layer, touch input, animation rhythm, sound preference, undo snapshots, and card visual language with Klondike.",
+      parent: "Spider Solitaire is a general-audience card strategy game recommended for ages 9+ and family play. No account is required; difficulty statistics and preferences stay in this browser.",
+      related: ["klondike-solitaire"],
+      relatedIds: ["klondike-solitaire"],
+      faq: [["How many cards are used?", "Spider Solitaire uses two standard decks: 104 cards, with 54 in the initial tableau and 50 in Stock."], ["How many columns are there?", "There are ten tableau columns; the first four begin with six cards and the other six with five."], ["Can different suits be stacked?", "Yes. Ranks can descend across suits, but only a same-suit descending run can move as a group or be collected."], ["Why is Stock blocked?", "Classic Spider requires all ten columns to contain at least one card before a new row can be dealt."], ["How many sequences are needed to win?", "Eight same-suit King-to-Ace sequences must be collected."], ["What changes between difficulties?", "1 Suit, 2 Suits, and 4 Suits change the suit mix while keeping the same ten-column rules."], ["Can I restart the same deal?", "Yes. Restart Current Game uses the same seed, while New Game shuffles a fresh deal."], ["Does Undo restore a completed sequence?", "Yes. Undo restores the complete prior tableau and collected-set count."]],
+    },
+    "klondike-solitaire": {
+      title: "Klondike Solitaire",
+      age: "9+",
+      difficulty: "Easy to Challenging",
+      time: "2-12 minutes",
+      skills: ["Planning", "Pattern Recognition", "Focus"],
+      intro: "Klondike Solitaire is a classic 52-card card game where you build four foundations from Ace to King while controlling tableau, stock, and waste.",
+      story: ["A standard Klondike layout is dealt each game. Expose facedown cards, maintain descending alternating-color tableau sequences, and clear stable runs toward each foundation.", "Undo, Hint, and Auto-Finish are designed to keep long sessions fluid while preserving full move reversibility and board consistency."],
+      systems: ["Drag or tap legal cards; single cards and valid tableau runs move together with standard Klondike order rules.", "You can switch Draw 1 and Draw 3 modes any time; draw mode is stored locally and affects stock draw behavior.", "Hint only highlights one recommended legal move; it never performs moves automatically.", "Auto-Finish can complete foundation-safe endgame moves when only non-strategic moves remain."],
+      how: ["Use New Game for a fresh deal or Restart Current Game to return to the initial seed board.", "Choose Draw 1 or Draw 3 from the battle header and draw from Stock into Waste.", "Tap a card with only one legal destination for one-click auto-move, or drag to place on a target Tableau/Foundation.", "Use Undo freely to step back from uncertain routes and continue with fresh decisions.", "When no strategy remains, use Auto-Finish to settle remaining legal foundation moves and finish quickly."],
+      strategyTips: ["Expose face-down cards early; each reveal usually increases legal options.", "Prioritize freeing blocked Kings and Aces to open deeper tableau movement.", "In Draw 3 mode, avoid rapid cycles without clearing tableau space first.", "Use Undo only when a move reduces future flexibility, not after every uncertainty.", "Treat Auto-Finish as an endgame tool once tableau arrangement is stable."],
+      progression: ["Each session is a single classic table challenge with unlimited repeats and local stat tracking.", "Longer play emphasizes cleaner move sequencing and fewer speculative Stock cycles.", "Steady hands and careful tableau planning improve completion reliability over repeated boards."],
+      designNote: "The gameplay uses transform-based motion for readable and smooth card movement, with compact object updates to support longer sessions on desktop and mobile.",
+      parent: "Klondike Solitaire is a general-audience card strategy game recommended for ages 9+ and family play. No account is required. Progress and stats are stored in this browser.",
+      related: [],
+      relatedIds: ["klondike-solitaire"],
+      faq: [["How many cards are used?", "Klondike Solitaire uses one standard deck of 52 cards."], ["What is the win condition?", "Each foundation must be completed from Ace to King in suit order."], ["What are Draw 1 and Draw 3?", "Draw 1 reveals one card per Stock draw; Draw 3 reveals three."], ["Can cards be moved one by one?", "Yes, and valid descending alternating-color runs can be moved as a group."], ["How do I know a move is legal?", "Hint highlights one legal target. Use legal tableau or foundation matches only."], ["What does Auto-Finish do?", "It moves only legal foundation-safe moves after non-strategic tableau moves are exhausted."], ["Can I Undo?", "Yes. Undo supports repeated use and fully restores board state."], ["What if no suggested move exists?", "Hint returns 0 moves available when no move is found."]],
+    },
     "animal-color-link": {
       title: "Color Link Garden",
       age: "9+",
@@ -7647,6 +7683,29 @@
   localizedGameplayProfiles["zh-Hant"]["animal-sanctuary-loop"] = { gameplay: "即時領地光環遊戲", genre: ["動作", "策略", "動物"] };
   localizedGames["zh-Hans"]["animal-sanctuary-loop"] = { ...localizedGames["zh-Hant"]["animal-sanctuary-loop"], title: "动物圣域光环", gameplay: "即时领地光环游戏", intro: "《动物圣域光环》是星爪菲亚主演的 30 关即时领地游戏。离开已修复土地、在腐化区画出脆弱光轨，并在猎影碰到开放路线前重新接回。" };
   localizedGameplayProfiles["zh-Hans"]["animal-sanctuary-loop"] = { gameplay: "即时领地光环游戏", genre: ["动作", "策略", "动物"] };
+
+  const spiderGuideTitles = {
+    en: "Spider Solitaire",
+    "zh-Hant": "蜘蛛接龍",
+    "zh-Hans": "蜘蛛接龙",
+    ja: "スパイダーソリティア",
+    ko: "스파이더 솔리테어",
+    es: "Solitario Spider",
+    "pt-BR": "Spider Solitaire",
+    fr: "Spider Solitaire",
+    de: "Spider-Solitär",
+    it: "Spider Solitaire",
+    ru: "Пасьянс Паук",
+    hi: "स्पाइडर सॉलिटेयर",
+    ar: "سوليتير العنكبوت",
+  };
+  for (const [guideLocale, title] of Object.entries(spiderGuideTitles)) {
+    localizedGames[guideLocale] = localizedGames[guideLocale] || {};
+    localizedGames[guideLocale]["spider-solitaire"] = {
+      ...(localizedGames[guideLocale]["spider-solitaire"] || {}),
+      title,
+    };
+  }
 
   window.WeightPlayGameInfo = {
     render,

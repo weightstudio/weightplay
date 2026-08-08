@@ -157,6 +157,11 @@
     },
   };
 
+  games["spider-solitaire"] = {
+    ...(games["spider-solitaire"] || {}),
+    title: "Spider-Solitär",
+  };
+
   const gameplayProfiles = {
     "animal-quiz": { gameplay: "Tierquiz", genre: ["Quiz", "Lernspiel", "Tiere"] },
     "animal-orb-fortress": { gameplay: "Abprall-Verteidigungs-Roguelite", genre: ["Abpraller", "Actionstrategie", "Roguelite", "Tiere"] },

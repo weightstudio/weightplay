@@ -52,6 +52,8 @@
     "star-memory": [".memory-game", 382, 780],
     "tiny-weather-rescue": [".weather-game", 366, 764],
     "wonder-crash": [".game-shell", 390, 788, 760, 360],
+    "klondike-solitaire": [".battle-canvas", 390, 788, 760, 334],
+    "spider-solitaire": [".battle-canvas", 390, 788, 760, 334],
     "zoo-helper-day": [".zoo-game", 374, 776, 760, 350],
   };
   const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1] || "";

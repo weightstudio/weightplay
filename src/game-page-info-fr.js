@@ -168,6 +168,11 @@
     },
   };
 
+  games["spider-solitaire"] = {
+    ...(games["spider-solitaire"] || {}),
+    title: "Spider Solitaire",
+  };
+
   const gameplayProfiles = {
     "bubble-bakery": {
       gameplay: "Puzzle de groupes de bulles",

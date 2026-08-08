@@ -724,8 +724,7 @@ function upcomingPreviewGames(limit = Number.POSITIVE_INFINITY) {
   return allLobbyGames
     .filter((game) =>
       game.status === "planned"
-      && (game.art?.background || game.art?.hero)
-      && (isKidsLobby ? !generalGameIds.has(game.id) : generalGameIds.has(game.id)))
+      && (game.art?.background || game.art?.hero))
     .slice(0, limit);
 }
 

@@ -3361,6 +3361,11 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
   resource.games["shadow-wolf"] = repairShadowWolfSpanish(resource.games["shadow-wolf"]);
 })(window.WeightPlayGameInfoLocales.es);
 
+window.WeightPlayGameInfoLocales.es.games["spider-solitaire"] = {
+  ...(window.WeightPlayGameInfoLocales.es.games["spider-solitaire"] || {}),
+  title: "Solitario Spider",
+};
+
 window.WeightPlayGameInfoLocales.es.games["animal-2048"] = {
   title: "Animales 2048: Evolución del bosque", noteTitle: "Información del jugador y la partida", difficulty: "Fácil a desafiante", time: "2-6 minutos por misión", gameplay: "Estrategia de fusión de tablero completo", genre: ["Puzle", "Estrategia", "Lógica", "Animales"], skills: ["Logic", "Spatial Reasoning", "Sequencing"],
   intro: "Animales 2048 es un puzle estratégico por turnos guiado por la lechuza Orla. Cada dirección desplaza todo el tablero de 4 por 4, de modo que un movimiento puede abrir espacio, preparar varias evoluciones o bloquear el animal que exige la misión.",

@@ -146,6 +146,10 @@ window.WeightPlayGameInfoLocales.ja.games["animal-color-springs"] = {
     ["広告はありますか？", "ありません。Kidsゲームには広告も広告用の空きスペースもありません。"]
   ]
 };
+window.WeightPlayGameInfoLocales.ja.games["spider-solitaire"] = {
+  ...(window.WeightPlayGameInfoLocales.ja.games["spider-solitaire"] || {}),
+  title: "スパイダーソリティア",
+};
 window.WeightPlayGameInfoLocales.ja.gameplayProfiles["animal-color-springs"] = {
   gameplay: "色分けパズル",
   genre: ["パズル", "論理", "どうぶつ"]

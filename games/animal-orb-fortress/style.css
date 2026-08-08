@@ -1061,6 +1061,17 @@ body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel > .wp-g
   min-width: 54px !important;
   height: 54px !important;
   min-height: 54px !important;
+  color: #ffffff !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 2px solid rgba(125, 233, 255, 0.78) !important;
+  border-radius: 12px !important;
+  background: rgba(5, 28, 34, 0.96) !important;
+}
+
+body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel > .wp-generated-battle-header #battleBackBtn.wp-shell-return .wp-shell-return-arrow,
+body.orb-fortress-playing #gamePanel.game-panel > .wp-generated-battle-header #battleBackBtn.wp-shell-return .wp-shell-return-arrow {
+  color: #ffffff !important;
 }
 
 body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel .hud-row .pause-btn {
@@ -1238,6 +1249,11 @@ body.orb-fortress-playing #stagePanel #stageBackBtn {
     background: rgba(5, 28, 34, 0.96) !important;
     color: #ffffff !important;
     font-size: 42px !important;
+  }
+
+  body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel > .wp-generated-battle-header #battleBackBtn.wp-shell-return .wp-shell-return-arrow {
+    font-size: 42px !important;
+    line-height: 1 !important;
   }
 
   body.orb-fortress-playing #gamePanel.game-panel #battleLive #gameCanvas {

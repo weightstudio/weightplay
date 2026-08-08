@@ -143,6 +143,38 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "हेक्सा सॉर्ट",
     "ar": "الترتيب السداسي"
   },
+  "klondike-solitaire": {
+    "__localizedExact": true,
+    "en": "Klondike Solitaire",
+    "zh-Hant": "克朗代克紙牌",
+    "zh-Hans": "克朗代克纸牌",
+    "ja": "クロンダイク ソリティア",
+    "ko": "클론다이크 솔리테어",
+    "es": "Solitario Klondike",
+    "pt-BR": "Paciência Klondike",
+    "fr": "Solitaire Klondike",
+    "de": "Klondike Solitaire",
+    "it": "Solitario Klondike",
+    "ru": "Косынка Пасьянс",
+    "hi": "क्लोंडाइक सॉलिटेयर",
+    "ar": "كلوندايك سوليتير"
+  },
+  "spider-solitaire": {
+    "__localizedExact": true,
+    "en": "Spider Solitaire",
+    "zh-Hant": "蜘蛛接龍",
+    "zh-Hans": "蜘蛛接龙",
+    "ja": "スパイダーソリティア",
+    "ko": "스파이더 솔리테어",
+    "es": "Solitario Spider",
+    "pt-BR": "Paciência Aranha",
+    "fr": "Spider Solitaire",
+    "de": "Spider-Solitär",
+    "it": "Solitario Ragno",
+    "ru": "Пасьянс Паук",
+    "hi": "स्पाइडर सॉलिटेयर",
+    "ar": "سوليتير العنكبوت"
+  },
   "animal-sunbeam-garden": {
     "__localizedExact": true,
     "en": "Sunbeam Garden",
