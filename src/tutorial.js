@@ -33,7 +33,44 @@
     ar: { close: "ابدأ اللعب", closeAria: "إغلاق التعليمات", aria: "طريقة اللعب", lobbyAria: "العودة إلى الردهة" },
   };
 
+  const classicLocales = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const classicNames = {
+    freecell: { en: "FreeCell", "zh-Hant": "FreeCell", "zh-Hans": "FreeCell", ja: "フリーセル", ko: "프리셀", es: "FreeCell", "pt-BR": "FreeCell", fr: "FreeCell", de: "FreeCell", it: "FreeCell", ru: "FreeCell", hi: "फ्रीसेल", ar: "فري سيل" },
+    pyramid: { en: "Pyramid", "zh-Hant": "金字塔", "zh-Hans": "金字塔", ja: "ピラミッド", ko: "피라미드", es: "Pirámide", "pt-BR": "Pirâmide", fr: "Pyramide", de: "Pyramide", it: "Piramide", ru: "Пирамида", hi: "पिरामिड", ar: "الهرم" },
+    tripeaks: { en: "TriPeaks", "zh-Hant": "三峰", "zh-Hans": "三峰", ja: "トライピークス", ko: "트라이픽스", es: "TriPeaks", "pt-BR": "TriPeaks", fr: "TriPeaks", de: "TriPeaks", it: "TriPeaks", ru: "Три Пика", hi: "ट्राईपीक्स", ar: "القمم الثلاث" },
+    golf: { en: "Golf", "zh-Hant": "高爾夫", "zh-Hans": "高尔夫", ja: "ゴルフ", ko: "골프", es: "Golf", "pt-BR": "Golf", fr: "Golf", de: "Golf", it: "Golf", ru: "Гольф", hi: "गोल्फ", ar: "الغولف" },
+    yukon: { en: "Yukon", "zh-Hant": "育空", "zh-Hans": "育空", ja: "ユーコン", ko: "유콘", es: "Yukon", "pt-BR": "Yukon", fr: "Yukon", de: "Yukon", it: "Yukon", ru: "Юкон", hi: "युकोन", ar: "يوكون" },
+  };
+  const classicTutorialCopy = {
+    en: { suffix: "first moves", choose: "Find a legal card", chooseText: "The highlighted face-up cards are ready for your next decision.", action: "Tap or drag to play", actionText: "Tap a card and its destination, or drag it on desktop.", finish: "Use your helpers", finishText: "Hint suggests one move, Undo rewinds it, and Restart keeps the same deal." },
+    "zh-Hant": { suffix: "開始三步", choose: "找出合法牌", chooseText: "高亮的正面牌就是下一步可選的牌。", action: "點按或拖曳出牌", actionText: "點按牌與目的地，桌面版也能直接拖曳。", finish: "使用輔助功能", finishText: "提示會建議一步，還原可以回退，重新開始會保留同一副牌。" },
+    "zh-Hans": { suffix: "开始三步", choose: "找出合法牌", chooseText: "高亮的正面牌就是下一步可选的牌。", action: "点按或拖曳出牌", actionText: "点按牌与目的地，桌面版也能直接拖曳。", finish: "使用辅助功能", finishText: "提示会建议一步，撤销可以回退，重新开始会保留同一副牌。" },
+    ja: { suffix: "最初の3手", choose: "合法なカードを探す", chooseText: "ハイライトされた表向きのカードが次に選べます。", action: "タップまたはドラッグ", actionText: "カードと移動先をタップするか、デスクトップではドラッグします。", finish: "ヘルパーを使う", finishText: "ヒントは1手を示し、元に戻すは巻き戻し、リスタートは同じ配りを保ちます。" },
+    ko: { suffix: "첫 세 수", choose: "가능한 카드 찾기", chooseText: "강조된 앞면 카드가 다음에 선택할 수 있는 카드입니다.", action: "탭하거나 드래그하기", actionText: "카드와 목적지를 탭하거나 데스크톱에서 드래그하세요.", finish: "도움말 사용하기", finishText: "힌트는 한 수를 제안하고 실행 취소는 되돌리며 재시작은 같은 딜을 유지합니다." },
+    es: { suffix: "primeros movimientos", choose: "Busca una carta legal", chooseText: "Las cartas descubiertas resaltadas están listas para tu siguiente decisión.", action: "Toca o arrastra para jugar", actionText: "Toca una carta y su destino, o arrástrala en escritorio.", finish: "Usa tus ayudas", finishText: "Pista sugiere un movimiento, Deshacer lo revierte y Reiniciar conserva la partida." },
+    "pt-BR": { suffix: "primeiros movimentos", choose: "Encontre uma carta válida", chooseText: "As cartas viradas para cima destacadas estão prontas para sua próxima decisão.", action: "Toque ou arraste para jogar", actionText: "Toque na carta e no destino, ou arraste no computador.", finish: "Use seus auxiliares", finishText: "Dica sugere uma jogada, Desfazer volta atrás e Reiniciar mantém a mesma partida." },
+    fr: { suffix: "premiers coups", choose: "Trouvez une carte légale", chooseText: "Les cartes visibles mises en évidence sont prêtes pour votre prochaine décision.", action: "Touchez ou glissez pour jouer", actionText: "Touchez une carte et sa destination, ou glissez-la sur ordinateur.", finish: "Utilisez les aides", finishText: "Indice propose un coup, Annuler le défait et Redémarrer garde la même donne." },
+    de: { suffix: "erste Züge", choose: "Finde eine legale Karte", chooseText: "Hervorgehobene offene Karten sind für deine nächste Entscheidung bereit.", action: "Tippen oder ziehen", actionText: "Tippe Karte und Ziel an oder ziehe sie am Desktop.", finish: "Nutze die Helfer", finishText: "Tipp schlägt einen Zug vor, Rückgängig macht ihn zurück und Neustart behält das gleiche Blatt." },
+    it: { suffix: "prime mosse", choose: "Trova una carta valida", chooseText: "Le carte scoperte evidenziate sono pronte per la prossima decisione.", action: "Tocca o trascina per giocare", actionText: "Tocca una carta e la destinazione, oppure trascinala sul desktop.", finish: "Usa gli aiuti", finishText: "Suggerimento propone una mossa, Annulla la riavvolge e Riavvia conserva la stessa mano." },
+    ru: { suffix: "первых ходов", choose: "Найдите допустимую карту", chooseText: "Выделенные открытые карты готовы для следующего решения.", action: "Нажмите или перетащите", actionText: "Нажмите карту и место назначения или перетащите её на компьютере.", finish: "Используйте подсказки", finishText: "Подсказка предлагает ход, отмена возвращает его, а перезапуск сохраняет ту же раздачу." },
+    hi: { suffix: "पहली चालें", choose: "सही कार्ड खोजें", chooseText: "हाइलाइट किए गए खुले कार्ड आपके अगले निर्णय के लिए तैयार हैं।", action: "टैप या ड्रैग करके खेलें", actionText: "कार्ड और लक्ष्य पर टैप करें या डेस्कटॉप पर ड्रैग करें।", finish: "सहायकों का उपयोग करें", finishText: "संकेत एक चाल सुझाता है, अनडू उसे वापस करता है और रीस्टार्ट वही डील रखता है।" },
+    ar: { suffix: "الحركات الأولى", choose: "اعثر على بطاقة قانونية", chooseText: "البطاقات المكشوفة المميزة جاهزة لقرارك التالي.", action: "اضغط أو اسحب للعب", actionText: "اضغط البطاقة ووجهتها أو اسحبها على الكمبيوتر.", finish: "استخدم المساعدات", finishText: "يقترح التلميح حركة، ويعيد التراجع الخطوة، وتحافظ إعادة البدء على التوزيع نفسه." },
+  };
+  const classicTutorial = (variant) => ({
+    title: Object.fromEntries(classicLocales.map((locale) => [locale, `${classicNames[variant][locale]} — ${classicTutorialCopy[locale].suffix}`])),
+    steps: [
+      { icon: "1", ...Object.fromEntries(classicLocales.map((locale) => [locale, [classicTutorialCopy[locale].choose, classicTutorialCopy[locale].chooseText]])) },
+      { icon: "2", ...Object.fromEntries(classicLocales.map((locale) => [locale, [classicTutorialCopy[locale].action, classicTutorialCopy[locale].actionText]])) },
+      { icon: "3", ...Object.fromEntries(classicLocales.map((locale) => [locale, [classicTutorialCopy[locale].finish, classicTutorialCopy[locale].finishText]])) },
+    ],
+  });
+
   const tutorials = {
+    "freecell-solitaire": classicTutorial("freecell"),
+    "pyramid-solitaire": classicTutorial("pyramid"),
+    "tripeaks-solitaire": classicTutorial("tripeaks"),
+    "golf-solitaire": classicTutorial("golf"),
+    "yukon-solitaire": classicTutorial("yukon"),
     "block-blast": {
       title: {
         en: "Plan space for every shape.", "zh-Hant": "替每個方塊預留空間。", "zh-Hans": "为每个方块预留空间。", ja: "すべてのピース用に空間を残そう。", ko: "모든 블록을 위한 공간을 남기세요.", es: "Reserva espacio para cada pieza.", "pt-BR": "Reserve espaço para cada peça.", fr: "Gardez de la place pour chaque pièce.", de: "Halte Platz für jede Form frei.", it: "Lascia spazio per ogni pezzo.", ru: "Оставляйте место для каждой фигуры.", hi: "हर आकृति के लिए जगह रखें।", ar: "اترك مساحة لكل قطعة."

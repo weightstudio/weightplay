@@ -290,9 +290,10 @@
       while (column.length >= 13) {
         const candidate = column.slice(-13);
         if (!SequenceValidator.isComplete(candidate)) break;
+        const startRow = column.length - 13;
         column.splice(-13);
         this.completed.complete(candidate[0].suit);
-        completed.push({ suit: candidate[0].suit, cards: candidate });
+        completed.push({ suit: candidate[0].suit, cards: candidate, columnIndex, startRow });
         if (column.at(-1) && !column.at(-1).faceUp) {
           column.at(-1).faceUp = true;
           revealed.push(column.at(-1).id);
@@ -325,13 +326,20 @@
       this.pushHistory();
       const cards = this.stock.dealRow(this.tableau.columns);
       if (!cards) return false;
+      const revealed = [];
+      const completed = [];
+      this.tableau.columns.forEach((_column, columnIndex) => {
+        const resolved = this.resolveColumn(columnIndex);
+        revealed.push(...resolved.revealed);
+        completed.push(...resolved.completed);
+      });
       this.moveCount += 1;
       this.dealCount += 1;
-      this.score = Math.max(0, this.score - 1);
+      this.score = Math.max(0, this.score - 1 + completed.length * 100);
       this.lastMove = { type: "deal", cardIds: cards.map((card) => card.id) };
       this.recentMoves = [];
       this.rememberState();
-      return { type: "deal", cards };
+      return { type: "deal", cards, revealed, completed };
     }
 
     legalMovesForTableau(fromColumn, startRow) {
@@ -744,7 +752,18 @@
       slotIndex: firstSlot + groupIndex,
       cards: group.cards.map((card) => {
         const node = state.cardPool.get(card.id);
-        return node ? { node: node.cloneNode(true), rect: node.getBoundingClientRect() } : null;
+        if (node) return { node: node.cloneNode(true), rect: node.getBoundingClientRect() };
+        const pile = ui.tableauRow?.querySelector(`.tableau-pile[data-index="${group.columnIndex}"]`);
+        const canvas = ui.battleScreen?.querySelector(".battle-canvas");
+        const pileRect = pile?.getBoundingClientRect();
+        if (!pileRect || !canvas) return null;
+        const cssCardWidth = Number.parseFloat(getComputedStyle(canvas).getPropertyValue("--card-width"));
+        const width = Math.min(pileRect.width, Number.isFinite(cssCardWidth) ? cssCardWidth : pileRect.width);
+        const height = width * (88 / 63);
+        const step = Number.parseFloat(getComputedStyle(canvas).getPropertyValue("--spider-step")) || 24;
+        const row = (group.startRow || 0) + group.cards.indexOf(card);
+        const fallback = createCardNode(card, row, false, true, 0).cloneNode(true);
+        return { node: fallback, rect: { left: pileRect.left, top: pileRect.top + row * step, width, height } };
       }).filter(Boolean),
     }));
   }
@@ -986,6 +1005,45 @@
         renderBoard();
         startClock();
       },
+      loadDealCompletionFixture() {
+        const Card = window.WPCardEngine.Card;
+        const makeCard = (suit, rank, id) => new Card(suit, rank, id, true);
+        stopClock();
+        game = new SpiderBoard(1);
+        game.tableau.columns = [
+          Array.from({ length: 12 }, (_value, index) => makeCard("spades", 13 - index, `deal-run-${index}`)),
+          ...Array.from({ length: 9 }, (_value, index) => [makeCard("hearts", 13, `deal-blocker-${index}`)]),
+        ];
+        game.stock = new SpiderStock([
+          ...Array.from({ length: 9 }, (_value, index) => makeCard("hearts", 2 + (index % 8), `deal-side-${index}`)),
+          makeCard("spades", 1, "deal-run-ace"),
+        ]);
+        game.completed = new CompletedSequenceManager();
+        game.history = new UndoStack();
+        game.moveCount = 0;
+        game.score = 500;
+        game.dealCount = 0;
+        game.lastMove = null;
+        game.recentMoves = [];
+        game.visitedStates = new Set();
+        game.rememberState();
+        game.initialSnapshot = game.snapshot();
+        state.difficulty = 1;
+        state.active = true;
+        state.hasStarted = true;
+        state.elapsed = 0;
+        state.winRecorded = false;
+        state.lastFrameCards = new Map();
+        state.cardPool = new Map();
+        state.pendingDealDelays = null;
+        clearCompletionFlyouts();
+        ui.resultOverlay.hidden = true;
+        ui.tutorialOverlay.hidden = true;
+        ui.confirmOverlay.hidden = true;
+        showBattle();
+        renderBoard();
+        startClock();
+      },
       loadEmptyColumnFixture() {
         stopClock();
         game = new SpiderBoard(1);
@@ -1053,7 +1111,7 @@
         renderBoard();
         startClock();
       },
-      loadTapFixture() {
+      loadTapFixture(ambiguous = false) {
         const Card = window.WPCardEngine.Card;
         const makeCard = (rank, id) => new Card("spades", rank, id, true);
         stopClock();
@@ -1061,7 +1119,8 @@
         game.tableau.columns = [
           [makeCard(7, "tap-source")],
           [makeCard(8, "tap-target")],
-          ...Array.from({ length: 8 }, (_value, index) => [makeCard(13, `tap-blocker-${index}`)]),
+          ...(ambiguous ? [[makeCard(8, "tap-target-b")]] : []),
+          ...Array.from({ length: ambiguous ? 7 : 8 }, (_value, index) => [makeCard(13, `tap-blocker-${index}`)]),
         ];
         game.stock = new SpiderStock([]);
         game.completed = new CompletedSequenceManager();
@@ -1145,6 +1204,7 @@
         return {
           completed: game.completed.total,
           moveCount: game.moveCount,
+          score: game.score,
           stock: game.stock.cards.length,
           tableau: game.tableau.columns.map((column) => column.map((card) => ({ id: card.id, rank: card.rank, faceUp: card.faceUp }))),
           resultVisible: !ui.resultOverlay.hidden,

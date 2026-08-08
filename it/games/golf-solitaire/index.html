@@ -1,0 +1,77 @@
+<!doctype html><html lang="it"><head>
+    <base href="/games/golf-solitaire/" /><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" /><meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general" /><title>Solitario del golf | WeightPlay</title><meta name="description" content="Golf Solitaire è un veloce puzzle con una catena di rifiuti. Cancella sette colonne di cinque carte scoperte giocando la carta esposta un rango sopra o..." /><meta property="og:title" content="Solitario del golf | WeightPlay" /><meta property="og:description" content="Golf Solitaire è un veloce puzzle con una catena di rifiuti. Cancella sette colonne di cinque carte scoperte giocando la carta esposta un rango sopra o..." /><meta property="og:image" content="https://weightplay.com/assets/golf-solitaire-cover.svg" /><link rel="canonical" href="https://weightplay.com/it/games/golf-solitaire/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/golf-solitaire/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/golf-solitaire/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/golf-solitaire/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/golf-solitaire/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/golf-solitaire/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/golf-solitaire/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/golf-solitaire/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/golf-solitaire/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/golf-solitaire/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/golf-solitaire/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/golf-solitaire/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/golf-solitaire/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/golf-solitaire/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/golf-solitaire/" />
+    <link rel="stylesheet" href="../../src/classic-card-solitaire.css" /><link rel="stylesheet" href="../../src/tutorial.css" /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-shell-controls-standard.css" />  <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://weightplay.com/it/games/golf-solitaire/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Solitario del golf | WeightPlay" />
+    <meta name="twitter:description" content="Golf Solitaire è un veloce puzzle con una catena di rifiuti. Cancella sette colonne di cinque carte scoperte giocando la carta esposta un rango sopra o..." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/golf-solitaire-cover.svg" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Solitario del golf",
+  "alternateName": "Golf Solitaire",
+  "url": "https://weightplay.com/it/games/golf-solitaire/",
+  "image": "https://weightplay.com/assets/golf-solitaire-cover.svg",
+  "description": "Golf Solitaire è un veloce puzzle con una catena di rifiuti. Cancella sette colonne di cinque carte scoperte giocando la carta esposta un rango sopra o...",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com"
+  },
+  "inLanguage": "it",
+  "isAccessibleForFree": true,
+  "operatingSystem": "Any modern web browser",
+  "genre": [
+    "Puzzle",
+    "Card",
+    "Family"
+  ],
+  "audience": {
+    "@type": "PeopleAudience",
+    "audienceType": "General players",
+    "suggestedMinAge": 9
+  }
+}
+    </script>
+  </head><body data-screen="main" data-audience="general" data-wp-game-id="golf-solitaire"><section id="loadingPanel" class="loading-panel"><div class="loading-card"><strong data-copy="title">Golf Solitaire</strong><span>Preparing your deck</span><div class="loading-track"><i class="loading-fill"></i></div></div></section><main id="mainScreen" class="main-screen"><header class="main-header"><a class="main-return" href="/" data-wp-return="main" aria-label="Back">←</a><strong data-copy="title">Golf Solitaire</strong><button id="audioMenuBtn" class="header-icon-btn" type="button">⚙</button><div id="audioPopover" class="settings-popover is-hidden"><button id="soundBtn" class="settings-row" type="button">Sound: On</button><label class="settings-row"><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></header><section class="main-hero"><div class="poster-frame"><img src="../../assets/golf-solitaire-cover.svg" class="cover" alt="Immagine del gioco Solitario del golf" /></div><article class="main-copy"><small class="eyebrow">Classic Card Game</small><h1 data-copy="title">Solitario del golf</h1><p data-copy="target">Clear the seven columns by playing a card one rank above or below the waste card.</p><div id="statistics" class="stats-panel"></div><div class="main-actions"><button id="startBtn" class="primary-btn" type="button">Start Game</button><button id="restartBtn" class="secondary-btn" type="button">Restart</button><button id="newGameBtn" class="secondary-btn" type="button">New Game</button></div></article><div class="feature-list"><div><strong class="feature-title">Goal</strong><p>Clear all 35 tableau cards.</p></div><div><strong class="feature-title">Rhythm</strong><p>Plan the longest run.</p></div><div><strong class="feature-title">Assist</strong><p>Hint, Undo, and Restart.</p></div></div></section><section class="game-page-info game-page-info-static" aria-label="Solitario del golf informazioni sul gioco">
+    
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guida ai giochi originali WeightPlay</span><h2>Solitario del golf</h2><p>Golf Solitaire è un veloce puzzle con una catena di rifiuti. Cancella sette colonne di cinque carte scoperte giocando la carta esposta un rango sopra o sotto la carta Scarto, quindi gira il Mazzo quando il percorso termina.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Difficoltà</span><strong>Facile da impegnativo</strong></div><div class="game-info-fact"><span>Durata stimata</span><strong>3–10 minuti</strong></div><div class="game-info-fact"><span>Competenze addestrate</span><strong>Riconoscimento di modelli · Pianificazione · Concentrazione</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mondo e missione</h3><p>Il golf mantiene visibile ogni carta del tableau ma dà importanza alle estremità esposte. Il percorso migliore è una corsa lunga che apre una colonna prima che sia necessaria l&#39;azione.</p>
+<p>Questa rigorosa versione classica non racchiude l&#39;Asso al Re, mantenendo ogni percorso leggibile e rendendo il timing del Titolo la decisione centrale.</p></div>
+      <div class="game-info-section"><h3>Come funzionano i sistemi</h3><p>Il tableau ha sette colonne con cinque carte scoperte ciascuna. Solo la carta finale scoperta di una colonna è giocabile.</p>
+<p>Una carta giocabile è esattamente un rango sopra o sotto la carta Scarto; i vestiti non contano.</p>
+<p>Il tableau consecutivo gioca a costruire Combo. Le carte Magazzino forniscono una fonte unidirezionale di nuove carte Rifiuti.</p>
+<p>Il suggerimento evidenzia una carta scoperta giocabile. Annulla ripristina ogni colonna, Scarto, Stock, combo e punteggio.</p></div>
+      <div class="game-info-section"><h3>Come giocare</h3><ol><li>Utilizza la carta Rifiuti iniziale come inizio del percorso.</li><li>Tocca una carta colonna esposta un rango sopra o sotto di essa.</li><li>Continua la corsa utile più lunga per cancellare le colonne.</li><li>Gira il Mazzo quando non rimane alcuna carta legale sul tableau.</li><li>Cancella tutte le 35 carte del tableau prima che le scorte siano esaurite.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Suggerimenti strategici</h3><ul><li>Guarda tutte e sette le carte esposte prima di scegliere la prima mossa.</li><li>Preferisci una mossa che esponga una nuova estremità di colonna e mantenga diversi ranghi disponibili.</li><li>Ricorda che Asso e Re non finiscono in questa versione.</li><li>Proteggi il titolo per i momenti in cui non rimane alcun percorso sul tableau.</li><li>Utilizza Annulla per verificare se il percorso più lungo apre effettivamente più carte.</li></ul></div>
+      <div class="game-info-section"><h3>Campagna e crescita della difficoltà</h3><p>Ogni distribuzione utilizza 35 carte del tableau scoperte e un mazzo di supporto.</p>
+<p>Il giro breve è di facile apprendimento ma premia la scelta sempre più attenta del percorso.</p>
+<p>Le catene più lunghe migliorano la Combo e rendono il completamento soddisfacente senza fare affidamento su un timer.</p></div>
+      <div class="game-info-section"><h3>Nota di progettazione dello sviluppatore</h3><p>Golf utilizza il Card Engine condiviso e l&#39;area di battaglia con un layout compatto a sette colonne, immagini originali, gioco tramite tocco e mouse, tutorial, suggerimento, annullamento e preferenza audio.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota del genitore</h3><p>Golf Solitaire è un puzzle di carte adatto a un pubblico generale, consigliato dai 9 anni in su e per il gioco in famiglia. Non è richiesto alcun account; le preferenze rimangono in questo browser.</p></div>
+      <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Quante carte del tableau ci sono?</dt><dd>Sette colonne contengono cinque carte ciascuna, per 35 carte del tableau.</dd></div><div><dt>Gli abiti contano?</dt><dd>No. Per la regola uno sopra o uno sotto conta solo la classificazione.</dd></div><div><dt>L&#39;Asso finisce con il Re?</dt><dd>No. Questa versione classica e rigorosa mantiene l&#39;asso e il re alle estremità.</dd></div><div><dt>Quando dovrei prelevare azioni?</dt><dd>Pareggia quando nessuna carta utile del tableau esposta può continuare la catena degli scarti.</dd></div><div><dt>Posso annullare?</dt><dd>Sì. Annulla ripristina l&#39;intera tavola e catena precedenti.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Giochi correlati</h3><p>Poiché questo gioco fa pratica con Riconoscimento di modelli, prova questi di seguito:</p><div class="game-info-related"><a class="game-info-related-card" href="/it/games/tripeaks-solitaire/"><img src="/assets/tripeaks-solitaire-cover.svg" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Solitario TriPeaks</strong><span>TriPeaks Solitaire utilizza tre picchi sovrapposti e una catena di rifiuti.</span></span></a><a class="game-info-related-card" href="/it/games/pyramid-solitaire/"><img src="/assets/pyramid-solitaire-cover.svg" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Solitario Piramide</strong><span>Pyramid Solitaire è un classico puzzle di carte: rimuovi le coppie esposte che si sommano a 13, cancella la piramide a sette file e usa il Mazzo solo quando il layout corrente non offre coppie utili.</span></span></a></div></div>
+    </div>
+  </section></main><section id="battleScreen" class="battle-screen" hidden><div class="battle-canvas" data-wp-logical-battle-canvas><header class="battle-header"><button id="battleBackBtn" class="battle-back" type="button">←</button><div class="header-stat"><small>Moves</small><strong id="moveCount">0</strong></div><div class="header-stat"><small>Score</small><strong id="scoreValue">0</strong></div><div class="header-stat"><small>Combo</small><strong id="comboValue">—</strong></div></header><section id="classicBoard" class="board-shell"><div class="board-top"><div class="board-group"><span class="board-label" data-label="free-cells">Free Cells</span><div id="freeCells" class="slot-row"></div></div><div class="board-group"><span class="board-label" data-label="foundations">Foundations</span><div id="foundationArea" class="slot-row"></div></div></div><div class="board-middle"><div class="board-group"><span class="board-label" data-label="stock">Stock</span><button id="stockPile" class="classic-slot stock-pile" type="button"></button></div><div class="board-group"><span class="board-label" data-label="waste">Waste</span><div id="wastePile" class="classic-slot waste-pile"></div></div></div><div id="boardStatus" class="board-status" role="status"></div><div id="tableauArea" class="tableau-area variant-golf"></div><div class="battle-actions"><button id="undoBtn" class="mini-btn" type="button">Undo</button><button id="hintBtn" class="mini-btn" type="button">Hint</button><button id="battleRestartBtn" class="mini-btn" type="button">Restart</button><button id="battleNewBtn" class="mini-btn" type="button">New Game</button></div><div id="toast" class="classic-toast" hidden></div><div id="resultOverlay" class="result-overlay" role="dialog" aria-modal="true" hidden><div class="result-card"><h2 id="resultTitle">Game Complete</h2><p id="resultText"></p><div class="result-actions"><button id="resultNewGame" class="primary-btn" type="button">New Game</button><button id="resultRestart" class="secondary-btn" type="button">Restart</button><button id="resultClose" class="secondary-btn" type="button">Close</button></div></div></div></section></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></section><script src="../../src/card-game-engine.js"></script><script src="../../src/tutorial.js"></script><script src="../../src/classic-card-solitaire.js"></script><script src="game.js"></script><script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script></body></html>
