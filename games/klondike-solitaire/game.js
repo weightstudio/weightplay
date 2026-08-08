@@ -576,11 +576,26 @@ const KL_I18N = {
       "ui.meta.description": "العب سوليتير كلوندايك الكلاسيكي مجانًا على الجوال أو الكمبيوتر بدون تنزيل.",
     },
   };
+  const KL_RUNTIME_HEADER_OVERRIDES = {
+    en: { "ui.header.moves": "Moves", "ui.header.time": "Time", "ui.battle.controls_label": "Controls" },
+    "zh-Hant": { "ui.header.moves": "步數", "ui.header.time": "時間", "ui.battle.controls_label": "操作控制" },
+    "zh-Hans": { "ui.header.moves": "步数", "ui.header.time": "时间", "ui.battle.controls_label": "控制项" },
+    ja: { "ui.header.moves": "手数", "ui.header.time": "時間", "ui.battle.controls_label": "操作" },
+    ko: { "ui.header.moves": "이동 횟수", "ui.header.time": "시간", "ui.battle.controls_label": "조작" },
+    es: { "ui.header.moves": "Movimientos", "ui.header.time": "Tiempo", "ui.battle.controls_label": "Controles" },
+    "pt-BR": { "ui.header.moves": "Movimentos", "ui.header.time": "Tempo", "ui.battle.controls_label": "Controles" },
+    fr: { "ui.header.moves": "Mouvements", "ui.header.time": "Temps", "ui.battle.controls_label": "Commandes" },
+    de: { "ui.header.moves": "Züge", "ui.header.time": "Zeit", "ui.battle.controls_label": "Steuerung" },
+    it: { "ui.header.moves": "Mosse", "ui.header.time": "Tempo", "ui.battle.controls_label": "Controlli" },
+    ru: { "ui.header.moves": "Ходы", "ui.header.time": "Время", "ui.battle.controls_label": "Управление" },
+    hi: { "ui.header.moves": "चालें", "ui.header.time": "समय", "ui.battle.controls_label": "नियंत्रण" },
+    ar: { "ui.header.moves": "عدد الحركات", "ui.header.time": "الوقت", "ui.battle.controls_label": "عناصر التحكم" },
+  };
   SUPPORTED_LOCALES.forEach((locale) => {
     const baseLocale = KL_I18N.en;
     const localeOverrides = LOCALE_I18N_OVERRIDES[locale] || {};
     const existingLocale = KL_I18N[locale];
-    KL_I18N[locale] = Object.assign({}, baseLocale, existingLocale, localeOverrides);
+    KL_I18N[locale] = Object.assign({}, baseLocale, existingLocale, localeOverrides, KL_RUNTIME_HEADER_OVERRIDES[locale] || {});
     if (!KL_I18N[locale]["ui.meta.keywords"]) {
       KL_I18N[locale]["ui.meta.keywords"] = DEFAULT_META_KEYWORDS;
     }
@@ -736,6 +751,10 @@ const KL_I18N = {
     hintOverlay: el("hintOverlay"),
     dragLayer: el("dragLayer"),
   };
+
+  ui.mainScreen?.setAttribute("data-screen", "main");
+  ui.battleScreen?.setAttribute("data-screen", "battle");
+  document.body?.removeAttribute("data-screen");
 
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -980,9 +999,10 @@ const KL_I18N = {
       }
       const drawModes = this.config.drawModes || DRAW_MODES;
       const drawCount = drawModes[this.drawModeIndex] || DRAW_MODES[this.drawModeIndex];
+      const previous = this.snapshot();
       const drawn = this.stock.draw(drawCount);
       if (!drawn.length) return false;
-      this.pushHistory();
+      this.moveHistory.push(previous);
       this.waste.cards.push(...drawn);
       this.moveCount += 1;
       return { type: "draw", drawCount: drawn.length };
@@ -1069,6 +1089,7 @@ const KL_I18N = {
     dealEndTimer: null,
     lastFrameCards: new Map(),
     lossRecordedForCurrentBoard: false,
+    resultShown: false,
   };
 
   const cardNodePool = new Map();
@@ -1322,6 +1343,10 @@ const KL_I18N = {
       }
     }
     victoryAnimationState.cards = [];
+  }
+
+  function forceCloseResultOverlay() {
+    if (ui.resultOverlay) ui.resultOverlay.hidden = true;
   }
 
   function createCardElement(card, isNew, withDelay = 0, animateFace = false, row = 0) {
@@ -1953,6 +1978,9 @@ const KL_I18N = {
   }
 
   function onWin() {
+    if (state.resultShown) return;
+    state.resultShown = true;
+    clearHints();
     pauseClock();
     clearVictoryClasses();
     audio.win();
@@ -2122,9 +2150,6 @@ const KL_I18N = {
     if (state.boardAnimationInProgress) return;
     if (!game.canUndo()) {
       audio.reject();
-    if (state.boardAnimationInProgress) return;
-    if (!game.canUndo()) {
-      audio.reject();
       return;
     }
     const ok = game.undo();
@@ -2165,6 +2190,7 @@ const KL_I18N = {
     markLossIfAbandoned();
     state.deadlockHintShown = false;
     state.lossRecordedForCurrentBoard = false;
+    state.resultShown = false;
     const drawMode = game.drawModeIndex;
     game.restore(game.initialSnapshot);
     game.drawModeIndex = drawMode;
@@ -2185,13 +2211,12 @@ const KL_I18N = {
     markLossIfAbandoned();
     state.deadlockHintShown = false;
     state.lossRecordedForCurrentBoard = false;
+    state.resultShown = false;
     clearDealAnimationTimers();
     resetRenderCaches();
     game.newGame(now());
     state.dealSequence = buildDealSequence();
     renderBoard();
-      ui.resultOverlay.hidden = true;
-    }
   }
 
   function setDrawModeFromStorage() {
@@ -2270,7 +2295,7 @@ const KL_I18N = {
     ui.mainScreen.hidden = true;
     ui.battleScreen.hidden = false;
     if (game.completed) {
-      game.completed = false;
+      createNewGame();
     }
     forceCloseResultOverlay();
     clearVictoryClasses();
@@ -2301,6 +2326,9 @@ const KL_I18N = {
 
   function bindEvents() {
     ui.enterBtn?.addEventListener("click", () => {
+      openBattle();
+    });
+    ui.startBtn?.addEventListener("click", () => {
       openBattle();
     });
     ui.newGameBtn?.addEventListener("click", () => {
@@ -2342,6 +2370,50 @@ const KL_I18N = {
     window.addEventListener("keydown", unlock, { once: true });
   }
 
+  function isQaWinFixtureEnabled() {
+    const host = String(window.location.hostname || "");
+    const params = new URLSearchParams(window.location.search);
+    return ["localhost", "127.0.0.1", "::1"].includes(host)
+      && params.get("trial") === "1"
+      && params.get("qa") === "win";
+  }
+
+  function applyQaWinFixture() {
+    if (!isQaWinFixtureEnabled() || game.completed) return;
+    if (!state.active) openBattle();
+    if (!state.active) return;
+    clearDealAnimationTimers();
+    const cards = [
+      ...game.tableau.columns.flat(),
+      ...game.stock.cards,
+      ...game.waste.cards,
+      ...game.foundations.flatMap((foundation) => foundation.cards),
+    ];
+    game.tableau.columns.forEach((column) => {
+      column.length = 0;
+    });
+    game.stock.clear();
+    game.waste.clear();
+    game.foundations.forEach((foundation) => foundation.clear());
+    game.foundations.forEach((foundation) => {
+      cards
+        .filter((card) => card.suit === foundation.suit)
+        .sort((left, right) => Number(left.rank) - Number(right.rank))
+        .forEach((card) => {
+          card.faceUp = true;
+          foundation.cards.push(card);
+        });
+    });
+    game.moveCount = 52;
+    game.moveHistory = [];
+    state.dealSequence = null;
+    state.elapsed = 7;
+    state.boardAnimationInProgress = false;
+    renderBoard();
+    game.completed = true;
+    postMoveChecks();
+  }
+
   function bootstrap() {
     statsStorage.load();
     setSoundButtons(audio.enabled);
@@ -2366,6 +2438,10 @@ const KL_I18N = {
     state.elapsed = 0;
     renderBoard();
     maybeAnimateDeal({ showLoading: true });
+    if (isQaWinFixtureEnabled()) {
+      const totalCards = state.dealSequence?.size || 28;
+      window.setTimeout(applyQaWinFixture, DEAL_INITIAL_DELAY_MS + totalCards * DEAL_STEP_MS + 80);
+    }
     window.setTimeout(() => {
       window.dispatchEvent(new CustomEvent("weightplay:shell-sync"));
     }, 80);

@@ -8982,8 +8982,8 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Mover a la derecha": "ムーバー・ア・ラ・デレチャ",
   "Mover a la izquierda": "イズキエルダの引っ越し",
   "Mover la hoja": "ムーバー・ラ・ホージャ",
-  "Moves": "移動",
-  "Moves {n}": "移動{n}",
+  "Moves": "手数",
+  "Moves {n}": "手数 {n}",
   "Moves and stars: Moves count complete two-card attempts. Efficient recall earns more stars, but any cleared board progresses and never removes an older best.": "ムーブとスター: ムーブは、2 枚のカードの試行を完了したものとしてカウントされます。効率的にリコールするとより多くの星が獲得できますが、クリアされたボードは進歩し、古いベストが削除されることはありません。",
   "Moves and stars: Normal ground costs one move; Sticky Mud costs two. Authored move goals and fruit collection determine one to three stars.": "移動とスター: 通常の地上では 1 移動のコストがかかります。スティッキーマッドのコストは 2 です。作成された移動目標とフルーツ収集により、1 つ星から 3 つ星が決定されます。",
   "Moves count matches and Shuffles. Visible time pauses with the page hidden. Each board stores best score, fewest moves, fastest visible time, and progression in this browser.": "ムーブカウントマッチとシャッフル。ページが非表示になったまま、表示されている時間が停止します。各ボードは、最高のスコア、最小の手数、最速の表示時間、および進行状況をこのブラウザーに保存します。",
@@ -16655,5 +16655,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusions の詳細情報",
   "Zuglimit erreicht.": "ズーグリミット・エレヒト。",
   "Zur Lobby": "ズール・ロビー",
-  "Zwei Hinweise": "ツヴァイ・ヒンヴァイゼ"
+  "Zwei Hinweise": "ツヴァイ・ヒンヴァイゼ",
+  "Controlli": "??",
+  "Mouvements": "??"
 };

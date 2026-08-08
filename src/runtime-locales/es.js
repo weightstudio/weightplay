@@ -8982,7 +8982,7 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Mover a la derecha": "Mover a la derecha",
   "Mover a la izquierda": "Mover a la izquierda",
   "Mover la hoja": "Mueve la hoja",
-  "Moves": "se mueve",
+  "Moves": "Movimientos",
   "Moves {n}": "Movimientos {n}",
   "Moves and stars: Moves count complete two-card attempts. Efficient recall earns more stars, but any cleared board progresses and never removes an older best.": "Movimientos y estrellas: los movimientos cuentan intentos completos de dos cartas. La retirada eficiente gana más estrellas, pero cualquier tablero superado progresa y nunca elimina un mejor anterior.",
   "Moves and stars: Normal ground costs one move; Sticky Mud costs two. Authored move goals and fruit collection determine one to three stars.": "Movimientos y estrellas: el terreno normal cuesta un movimiento; Sticky Mud cuesta dos. Los objetivos de movimiento escritos y la recolección de frutas determinan de una a tres estrellas.",
@@ -16655,5 +16655,7 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusionsverteidigung",
   "Zuglimit erreicht.": "Erreicht Zuglimit.",
   "Zur Lobby": "Vestíbulo Zur",
-  "Zwei Hinweise": "Zwei Hinweise"
+  "Zwei Hinweise": "Zwei Hinweise",
+  "Controlli": "Controles",
+  "Mouvements": "Movimientos"
 };

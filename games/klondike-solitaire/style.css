@@ -38,6 +38,37 @@ body[data-game-id="klondike-solitaire"] {
   color: var(--kl-text);
   z-index: 9999;
 }
+#loadingPanel[hidden], #mainScreen[hidden], #battleScreen[hidden] {
+  display: none !important;
+}
+
+body[data-wp-game-id="klondike-solitaire"] .wp-shell-settings-popover {
+  box-sizing: border-box;
+}
+
+body[data-wp-game-id="klondike-solitaire"] .wp-shell-language-row .settings-locale-row {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  height: auto;
+}
+
+body[data-wp-game-id="klondike-solitaire"] .wp-shell-language-row .settings-locale-row svg {
+  width: 24px;
+  height: 24px;
+}
+
+body[data-wp-game-id="klondike-solitaire"] .wp-shell-language-row .settings-locale-row > span {
+  display: none !important;
+}
+
+body[data-wp-game-id="klondike-solitaire"] .wp-shell-language-row .settings-locale-row select {
+  grid-column: 2;
+  width: 100% !important;
+  max-width: none !important;
+}
 
 .loading-card {
   width: min(86vw, 380px);

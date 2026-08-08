@@ -16655,5 +16655,7 @@ window.WeightPlayGameRuntimeLocales["pt-BR"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusionsverteidigung",
   "Zuglimit erreicht.": "Zuglimit errado.",
   "Zur Lobby": "Lobby do Zur",
-  "Zwei Hinweise": "Zwei Hinweise"
+  "Zwei Hinweise": "Zwei Hinweise",
+  "Controlli": "Controles",
+  "Mouvements": "Movimentos"
 };

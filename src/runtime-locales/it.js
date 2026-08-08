@@ -8982,7 +8982,7 @@ window.WeightPlayGameRuntimeLocales["it"] = {
   "Mover a la derecha": "Mover a la derecha",
   "Mover a la izquierda": "Mover a la izquierda",
   "Mover la hoja": "Mover la hoja",
-  "Moves": "Si muove",
+  "Moves": "Mosse",
   "Moves {n}": "Mosse {n}",
   "Moves and stars: Moves count complete two-card attempts. Efficient recall earns more stars, but any cleared board progresses and never removes an older best.": "Mosse e stelle: le mosse contano i tentativi completi di due carte. Un richiamo efficiente fa guadagnare più stelle, ma qualsiasi tabellone eliminato progredisce e non rimuove mai un migliore più vecchio.",
   "Moves and stars: Normal ground costs one move; Sticky Mud costs two. Authored move goals and fruit collection determine one to three stars.": "Mosse e stelle: il terreno normale costa una mossa; Il fango appiccicoso costa due. Gli obiettivi di movimento stabiliti e la raccolta dei frutti determinano da una a tre stelle.",
@@ -16655,5 +16655,7 @@ window.WeightPlayGameRuntimeLocales["it"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusionsverteidigung",
   "Zuglimit erreicht.": "Zuglimit erreicht.",
   "Zur Lobby": "Zur Lobby",
-  "Zwei Hinweise": "Zwei Hinweise"
+  "Zwei Hinweise": "Zwei Hinweise",
+  "Controlli": "Controlli",
+  "Mouvements": "Mosse"
 };

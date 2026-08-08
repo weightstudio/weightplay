@@ -178,6 +178,8 @@
       this.moveCount = 0;
       this.score = 500;
       this.dealCount = 0;
+      this.lastMove = null;
+      this.recentMoves = [];
       const deck = Deck.buildShuffled(this.seed, this.config.suits, this.config.copies);
       let pointer = 0;
       for (let column = 0; column < 10; column += 1) {
@@ -191,6 +193,8 @@
       }
       deck.cards.slice(pointer).forEach((card) => { card.faceUp = false; });
       this.stock = new SpiderStock(deck.cards.slice(pointer));
+      this.visitedStates = new Set();
+      this.rememberState();
       this.initialSnapshot = this.snapshot();
       return this.initialSnapshot;
     }
@@ -200,7 +204,16 @@
     }
 
     snapshot() {
-      return { difficulty: this.difficulty, seed: this.seed, moveCount: this.moveCount, score: this.score, dealCount: this.dealCount, completed: this.completed.snapshot(), tableau: this.tableau.toJSON(), stock: this.stock.toJSON() };
+      return { difficulty: this.difficulty, seed: this.seed, moveCount: this.moveCount, score: this.score, dealCount: this.dealCount, lastMove: this.lastMove ? { ...this.lastMove, cardIds: [...(this.lastMove.cardIds || [])] } : null, recentMoves: this.recentMoves.map((entry) => ({ ...entry, cardIds: [...entry.cardIds] })), completed: this.completed.snapshot(), tableau: this.tableau.toJSON(), stock: this.stock.toJSON() };
+    }
+
+    stateKey() {
+      return JSON.stringify({ tableau: this.tableau.toJSON(), stock: this.stock.toJSON(), completed: this.completed.snapshot() });
+    }
+
+    rememberState() {
+      this.visitedStates.add(this.stateKey());
+      while (this.visitedStates.size > 128) this.visitedStates.delete(this.visitedStates.values().next().value);
     }
 
     restore(raw) {
@@ -210,10 +223,14 @@
       this.moveCount = Number(raw.moveCount) || 0;
       this.score = Number(raw.score) || 0;
       this.dealCount = Number(raw.dealCount) || 0;
+      this.lastMove = raw.lastMove ? { ...raw.lastMove, cardIds: [...(raw.lastMove.cardIds || [])] } : null;
+      this.recentMoves = Array.isArray(raw.recentMoves) ? raw.recentMoves.map((entry) => ({ ...entry, cardIds: [...(entry.cardIds || [])] })).slice(-8) : [];
       this.tableau = Tableau.fromJSON(raw.tableau || []);
       this.stock = SpiderStock.fromJSON(raw.stock || []);
       this.completed = new CompletedSequenceManager();
       this.completed.restore(raw.completed || {});
+      this.visitedStates = new Set();
+      this.rememberState();
       return true;
     }
 
@@ -273,6 +290,9 @@
       const second = this.resolveColumn(move.toColumn);
       this.moveCount += 1;
       this.score = Math.max(0, this.score + 5 + (first.revealed.length + second.revealed.length) * 10 + (first.completed.length + second.completed.length) * 100);
+      this.lastMove = { type: "move", fromColumn: move.fromColumn, toColumn: move.toColumn, cardIds: moving.map((card) => card.id) };
+      this.recentMoves = [...this.recentMoves, { fromColumn: move.fromColumn, toColumn: move.toColumn, cardIds: moving.map((card) => card.id) }].slice(-8);
+      this.rememberState();
       return { type: "move", revealed: [...first.revealed, ...second.revealed], completed: [...first.completed, ...second.completed] };
     }
 
@@ -285,6 +305,9 @@
       this.moveCount += 1;
       this.dealCount += 1;
       this.score = Math.max(0, this.score - 10);
+      this.lastMove = { type: "deal", cardIds: cards.map((card) => card.id) };
+      this.recentMoves = [];
+      this.rememberState();
       return { type: "deal", cards };
     }
 
@@ -316,6 +339,28 @@
   }
 
   class SpiderHintSystem {
+    static resultingStateKey(board, move) {
+      const columns = board.tableau.columns.map((column) => column.map((card) => ({ suit: card.suit, rank: card.rank, id: card.id, faceUp: card.faceUp })));
+      const completed = board.completed.snapshot();
+      const resolve = (columnIndex) => {
+        const column = columns[columnIndex];
+        if (column.at(-1) && !column.at(-1).faceUp) column.at(-1).faceUp = true;
+        while (column.length >= 13) {
+          const candidate = column.slice(-13);
+          if (!SequenceValidator.isComplete(candidate)) break;
+          column.splice(-13);
+          completed.counts[candidate[0].suit] = (completed.counts[candidate[0].suit] || 0) + 1;
+          completed.total += 1;
+          if (column.at(-1) && !column.at(-1).faceUp) column.at(-1).faceUp = true;
+        }
+      };
+      const moving = columns[move.fromColumn].splice(move.startRow);
+      columns[move.toColumn].push(...moving);
+      resolve(move.fromColumn);
+      resolve(move.toColumn);
+      return JSON.stringify({ tableau: columns, stock: board.stock.toJSON(), completed });
+    }
+
     static find(board) {
       const moves = board.allLegalMoves();
       const scored = moves.map((move) => {
@@ -328,9 +373,22 @@
         const reveals = remaining.at(-1) && !remaining.at(-1).faceUp;
         const createsEmpty = remaining.length === 0;
         const extendsSameSuit = destination.at(-1)?.suit === cards[0].suit;
-        return { move, score: (reveals ? 120 : 0) + (completes ? 100 : 0) + (extendsSameSuit ? 35 : 0) + (createsEmpty ? 25 : 0) + Math.min(cards.length, 8) };
+        const nextStateKey = this.resultingStateKey(board, move);
+        const wouldRepeat = Boolean(nextStateKey && board.visitedStates?.has(nextStateKey));
+        return { move, wouldRepeat, score: (reveals ? 120 : 0) + (completes ? 100 : 0) + (extendsSameSuit ? 35 : 0) + (createsEmpty ? 25 : 0) + Math.min(cards.length, 8) };
       }).sort((a, b) => b.score - a.score);
-      return scored[0]?.move || (board.canDeal().ok ? { type: "deal" } : null);
+      const meaningful = scored.find((candidate) => {
+        const source = board.tableau.columns[candidate.move.fromColumn];
+        const cards = source.slice(candidate.move.startRow);
+        if (candidate.wouldRepeat) return false;
+        return !board.recentMoves.some((previous) => {
+          const sameCards = cards.length === previous.cardIds.length && cards.every((card, index) => card.id === previous.cardIds[index]);
+          const sameDirection = candidate.move.fromColumn === previous.fromColumn && candidate.move.toColumn === previous.toColumn;
+          const reverseDirection = candidate.move.fromColumn === previous.toColumn && candidate.move.toColumn === previous.fromColumn;
+          return sameCards && (sameDirection || reverseDirection);
+        });
+      });
+      return meaningful?.move || (board.canDeal().ok ? { type: "deal" } : null);
     }
   }
 
@@ -458,23 +516,35 @@
     ui.stockPile.innerHTML = `<span class="stock-count">${game.stock.cards.length}</span>`;
     ui.stockPile.disabled = game.stock.cards.length < 10;
     ui.stockPile.classList.toggle("is-empty", game.stock.cards.length < 10);
-    ui.tableauRow.textContent = "";
-    const currentCards = new Map();
-    game.tableau.columns.forEach((cards, columnIndex) => {
-      const pile = document.createElement("section");
-      pile.className = `pile tableau-pile ${cards.length ? "" : "empty"}`;
+    const pileNodes = Array.from({ length: 10 }, (_, columnIndex) => {
+      let pile = ui.tableauRow.querySelector(`.tableau-pile[data-index="${columnIndex}"]`);
+      if (pile) return pile;
+      pile = document.createElement("section");
+      pile.className = "pile tableau-pile";
       pile.dataset.type = "tableau";
       pile.dataset.index = String(columnIndex);
-      pile.setAttribute("aria-label", `${t("tableau")} ${columnIndex + 1}`);
       pile.addEventListener("pointerenter", () => { if (state.dragging) updateDragHover(pile); });
       pile.addEventListener("pointerleave", () => { if (state.dragging) pile.classList.remove("drag-hover"); });
+      ui.tableauRow.append(pile);
+      return pile;
+    });
+    const currentCards = new Map();
+    game.tableau.columns.forEach((cards, columnIndex) => {
+      const pile = pileNodes[columnIndex];
+      pile.className = `pile tableau-pile ${cards.length ? "" : "empty"}`;
+      pile.dataset.index = String(columnIndex);
+      pile.setAttribute("aria-label", `${t("tableau")} ${columnIndex + 1}`);
+      const wantedIds = new Set(cards.map((card) => card.id));
+      pile.querySelectorAll(":scope > .card").forEach((node) => {
+        if (!wantedIds.has(node.dataset.cardId)) node.remove();
+      });
       cards.forEach((card, row) => {
         const previous = state.lastFrameCards.get(card.id);
         const node = createCardNode(card, row, !previous, previous ? previous.faceUp : false);
-        pile.append(node);
+        if (pile.children[row] !== node) pile.insertBefore(node, pile.children[row] || null);
         currentCards.set(card.id, { faceUp: card.faceUp });
       });
-      ui.tableauRow.append(pile);
+      if (ui.tableauRow.children[columnIndex] !== pile) ui.tableauRow.insertBefore(pile, ui.tableauRow.children[columnIndex] || null);
     });
     state.lastFrameCards = currentCards;
     renderHeader();
@@ -750,6 +820,59 @@
     ui.tutorialOverlay.hidden = true;
   }
 
+  function installSmokeHook() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("trial") !== "1" || params.get("smoke") !== "1") return;
+    window.__spiderSolitaireSmoke = {
+      loadVictoryFixture() {
+        const Card = window.WPCardEngine.Card;
+        const makeRun = (prefix) => Array.from({ length: 13 }, (_, index) => new Card("spades", 13 - index, `${prefix}-${index}`, true));
+        stopClock();
+        game = new SpiderBoard(1);
+        game.tableau.columns = Array.from({ length: 10 }, () => []);
+        game.tableau.columns[0] = makeRun("smoke-run-a");
+        game.tableau.columns[1] = makeRun("smoke-run-b");
+        game.stock = new SpiderStock([]);
+        game.completed = new CompletedSequenceManager();
+        for (let index = 0; index < 6; index += 1) game.completed.complete("spades");
+        game.history = new UndoStack();
+        game.moveCount = 0;
+        game.score = 500;
+        game.dealCount = 0;
+        game.lastMove = null;
+        game.recentMoves = [];
+        game.visitedStates = new Set();
+        game.rememberState();
+        game.initialSnapshot = game.snapshot();
+        state.difficulty = 1;
+        state.active = true;
+        state.hasStarted = true;
+        state.elapsed = 0;
+        state.winRecorded = false;
+        state.lastFrameCards = new Map();
+        state.cardPool = new Map();
+        ui.resultOverlay.hidden = true;
+        ui.tutorialOverlay.hidden = true;
+        ui.confirmOverlay.hidden = true;
+        showBattle();
+        renderBoard();
+        startClock();
+      },
+      snapshot() {
+        return {
+          completed: game.completed.total,
+          moveCount: game.moveCount,
+          stock: game.stock.cards.length,
+          tableau: game.tableau.columns.map((column) => column.map((card) => ({ id: card.id, rank: card.rank, faceUp: card.faceUp }))),
+          resultVisible: !ui.resultOverlay.hidden,
+          winRecorded: state.winRecorded,
+          stats: { ...stats[1] },
+          completionToastVisible: Boolean(document.querySelector(".sequence-toast")),
+        };
+      },
+    };
+  }
+
   function setSoundButton() {
     const enabled = Boolean(audio.enabled);
     ui.soundBtn.setAttribute("aria-pressed", String(enabled));
@@ -800,4 +923,5 @@
   }
 
   init();
+  installSmokeHook();
 })();

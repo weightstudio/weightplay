@@ -8982,8 +8982,8 @@ window.WeightPlayGameRuntimeLocales["de"] = {
   "Mover a la derecha": "Mover a la derecha",
   "Mover a la izquierda": "Mover a la izquierda",
   "Mover la hoja": "Mover la hoja",
-  "Moves": "Bewegt sich",
-  "Moves {n}": "Bewegt sich {n}",
+  "Moves": "Züge",
+  "Moves {n}": "Züge {n}",
   "Moves and stars: Moves count complete two-card attempts. Efficient recall earns more stars, but any cleared board progresses and never removes an older best.": "Züge und Sterne: Züge zählen vollständige Zwei-Karten-Versuche. Effizienter Rückruf bringt mehr Sterne, aber jedes gelöschte Board macht Fortschritte und entfernt niemals eine ältere Bestleistung.",
   "Moves and stars: Normal ground costs one move; Sticky Mud costs two. Authored move goals and fruit collection determine one to three stars.": "Züge und Sterne: Normaler Boden kostet einen Zug; Klebriger Schlamm kostet zwei. Verfasste Bewegungsziele und Obstsammlung ergeben ein bis drei Sterne.",
   "Moves count matches and Shuffles. Visible time pauses with the page hidden. Each board stores best score, fewest moves, fastest visible time, and progression in this browser.": "Bewegungen zählen Übereinstimmungen und Mischvorgänge. Die sichtbare Zeit pausiert mit ausgeblendeter Seite. Jedes Spielbrett speichert in diesem Browser das beste Ergebnis, die wenigsten Züge, die schnellste sichtbare Zeit und den Fortschritt.",
@@ -16655,5 +16655,7 @@ window.WeightPlayGameRuntimeLocales["de"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusionsverteidigung",
   "Zuglimit erreicht.": "Zuglimit erreicht.",
   "Zur Lobby": "Zur Lobby",
-  "Zwei Hinweise": "Zwei Hinweise"
+  "Zwei Hinweise": "Zwei Hinweise",
+  "Controlli": "Steuerung",
+  "Mouvements": "Z?ge"
 };

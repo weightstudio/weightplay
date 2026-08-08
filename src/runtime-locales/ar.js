@@ -8982,8 +8982,8 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Mover a la derecha": "المحرك على النحو الصحيح",
   "Mover a la izquierda": "المحرك لا izquierda",
   "Mover la hoja": "المحرك لا هوجا",
-  "Moves": "التحركات",
-  "Moves {n}": "التحركات {n}",
+  "Moves": "عدد الحركات",
+  "Moves {n}": "عدد الحركات {n}",
   "Moves and stars: Moves count complete two-card attempts. Efficient recall earns more stars, but any cleared board progresses and never removes an older best.": "التحركات والنجوم: يتم احتساب الحركات المحاولات الكاملة لبطاقتين. يؤدي الاستدعاء الفعال إلى كسب المزيد من النجوم، ولكن أي لوحة تم مسحها تتقدم ولا تزيل أبدًا أفضل لوحة أقدم.",
   "Moves and stars: Normal ground costs one move; Sticky Mud costs two. Authored move goals and fruit collection determine one to three stars.": "الحركات والنجوم: الأرض العادية تكلف حركة واحدة؛ الطين اللزج يكلف اثنين. تحدد أهداف الحركة المؤلفة وجمع الفاكهة من نجمة إلى ثلاث نجوم.",
   "Moves count matches and Shuffles. Visible time pauses with the page hidden. Each board stores best score, fewest moves, fastest visible time, and progression in this browser.": "يتحرك عدد المباريات والمراوغات. يتوقف الوقت المرئي مع إخفاء الصفحة. تقوم كل لوحة بتخزين أفضل النتائج وأقل عدد من التحركات وأسرع وقت مرئي والتقدم في هذا المتصفح.",
@@ -16655,5 +16655,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusionsverteidigung",
   "Zuglimit erreicht.": "زوغليميت erreicht.",
   "Zur Lobby": "زور لوبي",
-  "Zwei Hinweise": "زوي هينويز"
+  "Zwei Hinweise": "زوي هينويز",
+  "Controlli": "????? ??????",
+  "Mouvements": "???????"
 };

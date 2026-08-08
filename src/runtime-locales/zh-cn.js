@@ -8982,8 +8982,8 @@ window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
   "Mover a la derecha": "移动拉德雷查",
   "Mover a la izquierda": "移动拉伊斯奎尔达",
   "Mover la hoja": "莫弗拉霍哈",
-  "Moves": "动作",
-  "Moves {n}": "移动{n}",
+  "Moves": "步数",
+  "Moves {n}": "步数 {n}",
   "Moves and stars: Moves count complete two-card attempts. Efficient recall earns more stars, but any cleared board progresses and never removes an older best.": "移动和星星：移动计算完整的两张牌尝试。有效的回忆可以赢得更多的星星，但任何清除的棋盘都会进步，并且永远不会删除旧的最佳棋盘。",
   "Moves and stars: Normal ground costs one move; Sticky Mud costs two. Authored move goals and fruit collection determine one to three stars.": "移动和星星：普通地面花费一移动；粘泥要花两块钱。编写的移动目标和水果收集确定一到三颗星。",
   "Moves count matches and Shuffles. Visible time pauses with the page hidden. Each board stores best score, fewest moves, fastest visible time, and progression in this browser.": "移动计数匹配和随机播放。可见时间暂停，页面隐藏。每个棋盘都在此浏览器中存储最佳得分、最少移动、最快可见时间和进度。",
@@ -16655,5 +16655,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
   "Zufalls-Fusionsverteidigung": "融合融合",
   "Zuglimit erreicht.": "楚格限制权利。",
   "Zur Lobby": "祖尔大厅",
-  "Zwei Hinweise": "茨威·欣威斯"
+  "Zwei Hinweise": "茨威·欣威斯",
+  "Controlli": "??",
+  "Mouvements": "??"
 };

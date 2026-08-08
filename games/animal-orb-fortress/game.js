@@ -255,6 +255,7 @@
       ruleGuardian: "菁英守衛",
       tierShort: "關{tier}",
       wave: "波次",
+      waves: "波次",
       core: "核心",
       shots: "射擊",
       aimHint: "從發射器拖曳瞄準，預覽反彈路線後放開。",

@@ -8982,7 +8982,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Mover a la derecha": "मूवर अ ला डेरेचा",
   "Mover a la izquierda": "प्रस्तावक एक ला izquierda",
   "Mover la hoja": "मूवर ला होजा",
-  "Moves": "चलता है",
+  "Moves": "चालें",
   "Moves {n}": "चालें {n}",
   "Moves and stars: Moves count complete two-card attempts. Efficient recall earns more stars, but any cleared board progresses and never removes an older best.": "चालें और सितारे: चालें पूर्ण दो-कार्ड प्रयासों की गणना करती हैं। कुशल रिकॉल अधिक सितारे अर्जित करता है, लेकिन कोई भी साफ़ किया गया बोर्ड प्रगति करता है और पुराने सर्वश्रेष्ठ को कभी नहीं हटाता है।",
   "Moves and stars: Normal ground costs one move; Sticky Mud costs two. Authored move goals and fruit collection determine one to three stars.": "चालें और सितारे: सामान्य ज़मीन पर एक चाल की लागत होती है; चिपचिपी मिट्टी की कीमत दो है। लेखकीय चाल लक्ष्य और फल संग्रह एक से तीन सितारे निर्धारित करते हैं।",
@@ -16655,5 +16655,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Zufalls-Fusionsverteidigung": "ज़ुफॉल्स-फ़्यूज़न्सवर्टीडिगंग",
   "Zuglimit erreicht.": "ज़ुग्लिमिट एरीच्ट.",
   "Zur Lobby": "ज़ूर लॉबी",
-  "Zwei Hinweise": "ज़ेवेई हिंवेइज़"
+  "Zwei Hinweise": "ज़ेवेई हिंवेइज़",
+  "Controlli": "????????",
+  "Mouvements": "?????"
 };

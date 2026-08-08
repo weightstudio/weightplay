@@ -8982,8 +8982,8 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Mover a la derecha": "무버 알라 데레차",
   "Mover a la izquierda": "무버 알라 이즈퀴에르다",
   "Mover la hoja": "무버 라 호자",
-  "Moves": "이동",
-  "Moves {n}": "이동 {n}",
+  "Moves": "이동 횟수",
+  "Moves {n}": "이동 횟수 {n}",
   "Moves and stars: Moves count complete two-card attempts. Efficient recall earns more stars, but any cleared board progresses and never removes an older best.": "이동 및 별표: 이동 횟수는 두 장의 카드 시도를 완료합니다. 효율적인 리콜은 더 많은 별을 얻지만 클리어된 보드는 진행되며 이전 최고 항목은 제거되지 않습니다.",
   "Moves and stars: Normal ground costs one move; Sticky Mud costs two. Authored move goals and fruit collection determine one to three stars.": "이동 및 별: 일반 지상에서는 한 번의 이동이 필요합니다. 끈끈한 진흙 비용은 2입니다. 작성된 이동 목표와 과일 수집에 따라 별 1~3개가 결정됩니다.",
   "Moves count matches and Shuffles. Visible time pauses with the page hidden. Each board stores best score, fewest moves, fastest visible time, and progression in this browser.": "카운트 매치와 셔플을 이동합니다. 페이지가 숨겨진 상태로 표시 시간이 일시 중지됩니다. 각 보드는 이 브라우저에 최고 점수, 최소 이동, 가장 빠른 표시 시간 및 진행 상황을 저장합니다.",
@@ -16655,5 +16655,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusionsverteidigung",
   "Zuglimit erreicht.": "Zuglimit erreicht.",
   "Zur Lobby": "주르 로비",
-  "Zwei Hinweise": "츠바이 힌바이제"
+  "Zwei Hinweise": "츠바이 힌바이제",
+  "Controlli": "???",
+  "Mouvements": "?? ??"
 };

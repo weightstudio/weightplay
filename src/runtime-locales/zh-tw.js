@@ -16655,5 +16655,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "Zufalls-Fusionsverteidigung": "融合融合",
   "Zuglimit erreicht.": "楚格限制權利。",
   "Zur Lobby": "祖爾大廳",
-  "Zwei Hinweise": "茨威‧欣威斯"
+  "Zwei Hinweise": "茨威‧欣威斯",
+  "Controlli": "???",
+  "Mouvements": "??"
 };

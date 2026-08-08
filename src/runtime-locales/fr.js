@@ -1640,7 +1640,7 @@ window.WeightPlayGameRuntimeLocales["fr"] = {
   "Animals follow a known Mouse-Rabbit-Fox rhythm for multi-drop planning.": "Les animaux suivent un rythme connu Souris-Lapin-Renard pour la planification de plusieurs chutes.",
   "Animals Rescued": "Animaux sauvés",
   "Animaux": "Animaux",
-  "Annuler": "Annuleur",
+  "Annuler": "Annuler",
   "Annulla": "Annule",
   "Another active object still covers it.": "Un autre objet actif le recouvre encore.",
   "Another cart in that path means it is blocked.": "Un autre chariot sur ce chemin signifie qu'il est bloqué.",
@@ -8982,7 +8982,7 @@ window.WeightPlayGameRuntimeLocales["fr"] = {
   "Mover a la derecha": "Déménager à la derecha",
   "Mover a la izquierda": "Déménager à la izquierda",
   "Mover la hoja": "Déplacer la maison",
-  "Moves": "Se déplace",
+  "Moves": "Mouvements",
   "Moves {n}": "Déplace {n}",
   "Moves and stars: Moves count complete two-card attempts. Efficient recall earns more stars, but any cleared board progresses and never removes an older best.": "Mouvements et étoiles : les mouvements comptent des tentatives complètes avec deux cartes. Un rappel efficace rapporte plus d'étoiles, mais tout tableau effacé progresse et ne supprime jamais un meilleur ancien.",
   "Moves and stars: Normal ground costs one move; Sticky Mud costs two. Authored move goals and fruit collection determine one to three stars.": "Mouvements et étoiles : le terrain normal coûte un mouvement ; Sticky Mud en coûte deux. Les objectifs de mouvement créés et la collecte de fruits déterminent une à trois étoiles.",
@@ -15008,8 +15008,8 @@ window.WeightPlayGameRuntimeLocales["fr"] = {
   "Tipp": "Astuce",
   "Tippe auf eine Karte, um das Tier zu sehen.": "Tippe sur une carte, um das Tier zu voir.",
   "Tippe ein freies Objekt an.": "Tippe ein freies Objekt an.",
-  "Tirer 1": "Tireur 1",
-  "Tirer 3": "Tireur 3",
+  "Tirer 1": "Tirer 1",
+  "Tirer 3": "Tirer 3",
   "Tiri": "Tiri",
   "Tiros": "Tiros",
   "Tiros restantes": "Tiros restantes",
@@ -16655,5 +16655,7 @@ window.WeightPlayGameRuntimeLocales["fr"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusionsverteidigung",
   "Zuglimit erreicht.": "Zuglimit erreicht.",
   "Zur Lobby": "Dans le hall d'entrée",
-  "Zwei Hinweise": "Deux langues"
+  "Zwei Hinweise": "Deux langues",
+  "Controlli": "Commandes",
+  "Mouvements": "Mouvements"
 };

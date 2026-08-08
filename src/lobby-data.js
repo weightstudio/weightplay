@@ -322,7 +322,7 @@ window.WONDER_LOBBY = {
       internalTrial: "index.html?trial=1",
       description: { en: "Classic solitaire with a full deck drag-and-drop flow, draw 1/3 modes, auto-finish, and undo support.", "zh-Hant": "經典單人紙牌接龍，提供 1 或 3 張抽牌、拖拉放置、底部自動收尾與還原支援。", "zh-Hans": "经典单人纸牌接龙，提供 1 或 3 张抽牌、拖拉放置、底部自动收尾与撤销支持。", ja: "1枚または3枚取りソリティア。ドラッグ&ドロップ、オートフィニッシュ、元に戻す機能付きのクラシック・ソリティア。", ko: "1장 또는 3장 드로우를 지원하는 클래식 솔리테어. 드래그 앤 드롭, 오토 피니시, 되돌리기 기능을 제공합니다.", es: "Solitario clásico con flujo completo de arrastrar y soltar, modos de 1 o 3 cartas, auto-finish y soporte de deshacer.", "pt-BR": "Solitário clássico com fluxo de arrastar e soltar, modos de compra 1/3, auto-finalização e suporte a desfazer.", fr: "Solitaire classique avec glisser-déposer complet, modes 1 ou 3 cartes, auto-fini et support d'annulation.", de: "Klassisches Klondike-Solitär mit Drag-and-Drop, Ziehmodi 1/3, Auto-Finish und Undo.", it: "Solitario classico con drag-and-drop completo, modalità pesca 1/3, auto-finish e supporto annulla.", ru: "Классический пасьянс с перетаскиванием карт, режимами взятия 1/3, автозавершением и отменой хода.", hi: "क्लासिक सोलिटेयर, जिसमें ड्रैग-एंड-ड्रॉप, 1/3 ड्रॉ मोड, ऑटो-फिनिश और अंडू सपोर्ट मौजूद हैं।", ar: "لعبة سوليتير كلاسيكية بنمط السحب 1 أو 3 وبالتحكم بالسحب والإفلات، مع إنهاء تلقائي وإمكانية التراجع." },
       meta: { en: ["One Deck", "Draw 1 or 3", "Undo"], "zh-Hant": ["一副牌", "抽1/3", "還原"], "zh-Hans": ["一副牌", "抽1/3", "撤销"], ja: ["1デッキ", "1枚/3枚", "元に戻す"], ko: ["한 덱", "1장/3장", "되돌리기"], es: ["Un mazo", "Robar 1 o 3", "Deshacer"], "pt-BR": ["Um Baralho", "Compra 1 ou 3", "Desfazer"], fr: ["Un Jeu", "Piocher 1 ou 3", "Annuler"], de: ["Ein Deck", "1 oder 3 ziehen", "Rückgängig"], it: ["Un Mazzo", "Pesca 1 o 3", "Annulla"], ru: ["Колода", "Взять 1 или 3", "Отменить"], hi: ["एक डेक", "1 या 3 खींचें", "पूर्ववत"], ar: ["مجموعة واحدة", "اسحب 1 أو 3", "تراجع"] },
-      art: { kind: "image", background: "assets/weightplay-logo.png", hideHero: true },
+      art: { kind: "image", background: "assets/weightplay-logo.webp", hideHero: true },
     },
     {
       id: "spider-solitaire",
@@ -336,7 +336,7 @@ window.WONDER_LOBBY = {
       internalTrial: "index.html?trial=1",
       description: { en: "Classic Spider Solitaire with 1 Suit, 2 Suits, 4 Suits, smooth drag-and-drop, Hint, and unlimited Undo.", "zh-Hant": "經典蜘蛛接龍，提供 1、2、4 花色、順暢拖曳、提示與不限次數回退。", "zh-Hans": "经典蜘蛛接龙，提供 1、2、4 花色、流畅拖拽、提示与不限次数撤销。", ja: "1・2・4スート、スムーズなドラッグ、ヒント、無制限Undoに対応したクラシック・スパイダーソリティア。", ko: "1·2·4무늬, 부드러운 드래그, 힌트와 무제한 실행 취소를 지원하는 클래식 스파이더 솔리테어.", es: "Solitario Spider clásico con 1, 2 y 4 palos, arrastre fluido, pistas y deshacer ilimitado.", "pt-BR": "Spider Solitaire clássico com 1, 2 e 4 naipes, arraste fluido, dicas e desfazer ilimitado.", fr: "Spider Solitaire classique avec 1, 2 et 4 couleurs, glisser-déposer fluide, indices et annulation illimitée.", de: "Klassisches Spider-Solitär mit 1, 2 und 4 Farben, flüssigem Drag-and-Drop, Hinweisen und unbegrenztem Rückgängigmachen.", it: "Spider Solitaire classico con 1, 2 e 4 semi, trascinamento fluido, suggerimenti e annullamenti illimitati.", ru: "Классический Пасьянс Паук на 1, 2 или 4 масти с плавным перетаскиванием, подсказками и отменой ходов.", hi: "1, 2 और 4 सूट, सहज ड्रैग, संकेत और असीमित वापस लेने के साथ क्लासिक स्पाइडर सॉलिटेयर।", ar: "سوليتير العنكبوت الكلاسيكي بنوع واحد أو نوعين أو أربعة أنواع مع سحب سلس وتلميحات وتراجع غير محدود." },
       meta: { en: ["1 / 2 / 4 Suits", "8 Completed Sets", "Undo + Hint"], "zh-Hant": ["1 / 2 / 4 花色", "8 組完成", "回退 + 提示"] },
-      art: { kind: "image", background: "assets/weightplay-logo.png", hideHero: true },
+      art: { kind: "image", background: "assets/weightplay-logo.webp", hideHero: true },
     },
     {
       id: "animal-sunbeam-garden",
@@ -2261,6 +2261,26 @@ for (const [id, copy] of Object.entries(newPuzzlePlannedCopy)) {
     Object.defineProperty(game[field], "__localizedExact", { value: true, enumerable: false });
   }
   delete game.previewVideo;
+}
+
+const spiderSolitairePlanned = window.WONDER_LOBBY.games.find((entry) => entry.id === "spider-solitaire");
+if (spiderSolitairePlanned) {
+  spiderSolitairePlanned.status = "planned";
+  spiderSolitairePlanned.statusText = {
+    en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정",
+    es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente",
+    ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا",
+  };
+}
+
+const klondikeSolitairePlanned = window.WONDER_LOBBY.games.find((entry) => entry.id === "klondike-solitaire");
+if (klondikeSolitairePlanned) {
+  klondikeSolitairePlanned.status = "planned";
+  klondikeSolitairePlanned.statusText = {
+    en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정",
+    es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente",
+    ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا",
+  };
 }
 
 const blockBlastPublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "block-blast");
