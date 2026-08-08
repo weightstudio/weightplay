@@ -9948,7 +9948,6 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "One correction has already been used this turn.": "このターンではすでに 1 つの修正が使用されています。",
   "One Deck": "ワンデッキ",
   "One fixed logical Canvas scales uniformly across phones, tablets, desktop, and short landscape. Touch, mouse, and keyboard feed the same aiming state, while lifecycle cancellation prevents a stale finger release after changing apps from firing a shot. Unlike Bubble Bakery’s tap-to-clear orders, Safari requires trajectory control and wall reflection. Unlike Animal Helper Quest, its decisions are spatial rather than choosing an item from a scene. Kids screens contain no advertising code or reserve.": "1 つの固定論理キャンバスは、携帯電話、タブレット、デスクトップ、短いランドスケープ全体にわたって均一に拡張されます。タッチ、マウス、キーボードは同じ照準状態を提供しますが、ライフサイクル キャンセルにより、アプリを変更した後に指が離れてショットが発砲されるのを防ぎます。 Bubble Bakery のタップしてクリアする注文とは異なり、Safari では軌道制御と壁の反射が必要です。 Animal Helper Quest とは異なり、その決定はシーンからアイテムを選択するのではなく、空間的なものになります。キッズスクリーンには広告コードや予約は含まれていません。",
-  "One Line": "一行",
   "One Line | WeightPlay": "一行 | WeightPlay",
   "One Line game guide": "ワンラインゲームガイド",
   "One Line is an original 30-stage grid puzzle starring Rainbow Hop Mimi. Begin on the glowing paw, move through edge-sharing open cells, and color the entire board with one continuous route without visiting any cell twice.": "「One Line」は、レインボーホップミミが主役のオリジナル30段階方眼パズルです。光る足から始めて、エッジを共有するオープン セルを移動し、どのセルにも 2 回アクセスすることなく、1 つの連続したルートでボード全体を色付けします。",

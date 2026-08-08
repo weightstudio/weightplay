@@ -89,7 +89,9 @@
       this.tableau = lengths.map((length, column) => {
         const cards = this.deck.cards.slice(offset, offset + length);
         offset += length;
-        cards.forEach((card, index) => { card.faceUp = column === 0 || index >= Math.max(0, length - 6); });
+        // Yukon deals one face-up card in the first column and five face-up
+        // cards at the bottom of every other column.
+        cards.forEach((card, index) => { card.faceUp = column === 0 || index >= Math.max(0, length - 5); });
         return cards;
       });
     }
@@ -189,7 +191,7 @@
     canMoveToTableau(group, target) {
       const first = group[0];
       if (!first) return false;
-      if (!target) return first.rank === 13;
+      if (!target) return this.variant === "freecell" || first.rank === 13;
       return target.faceUp && target.rank === first.rank + 1 && isRed(target) !== isRed(first);
     }
 
@@ -209,6 +211,12 @@
       if (!this.validDescending(group)) return false;
       if (this.variant === "freecell") return true;
       return group.length === 1;
+    }
+
+    exposedTableauSource(source) {
+      if (source?.zone !== "tableau") return true;
+      const pile = this.tableau[source.pile] || [];
+      return source.row === pile.length - 1;
     }
 
     removeSource(source, count = null) {
@@ -233,9 +241,9 @@
       const group = destination.zone === "tableau" ? this.groupFrom(source) : [card];
       if (!group.length || (destination.zone === "tableau" && source.zone === "tableau" && !this.legalTableauSource(source))) return false;
       if (destination.zone === "free") {
-        if (group.length !== 1 || this.freeCells[destination.index]) return false;
+        if (group.length !== 1 || this.freeCells[destination.index] || !this.exposedTableauSource(source)) return false;
       } else if (destination.zone === "foundation") {
-        if (group.length !== 1 || destination.index !== SUITS.indexOf(group[0].suit) || !this.foundationReady(group[0])) return false;
+        if (group.length !== 1 || destination.index !== SUITS.indexOf(group[0].suit) || !this.foundationReady(group[0]) || !this.exposedTableauSource(source)) return false;
       } else if (destination.zone === "tableau") {
         if (source.zone === "tableau" && source.pile === destination.pile) return false;
         if (!this.canMoveToTableau(group, this.top(destination.pile))) return false;
@@ -256,7 +264,7 @@
       const card = this.sourceCard(source);
       if (source.zone !== "tableau" || !card || !card.faceUp) return false;
       const group = destination.zone === "tableau" ? this.groupFrom(source) : [card];
-      if (destination.zone === "foundation") { if (destination.index !== SUITS.indexOf(card.suit) || !this.foundationReady(card)) return false; }
+      if (destination.zone === "foundation") { if (destination.index !== SUITS.indexOf(card.suit) || !this.foundationReady(card) || !this.exposedTableauSource(source)) return false; }
       else if (destination.zone === "tableau") { if (!this.legalTableauSource(source) || source.pile === destination.pile || !this.canMoveToTableau(group, this.top(destination.pile))) return false; }
       else return false;
       this.pushHistory();
@@ -327,13 +335,20 @@
         sources.forEach((source) => {
           const card = this.sourceCard(source);
           const group = this.groupFrom(source);
-          if (card && this.foundationReady(card)) moves.push({ source, destination: { zone: "foundation", index: SUITS.indexOf(card.suit) }, kind: "foundation" });
+          if (card && this.foundationReady(card) && this.exposedTableauSource(source)) moves.push({ source, destination: { zone: "foundation", index: SUITS.indexOf(card.suit) }, kind: "foundation" });
+          if (this.variant === "freecell" && source.zone === "tableau" && this.exposedTableauSource(source)) {
+            const freeIndex = this.freeCells.findIndex((cell) => !cell);
+            if (freeIndex >= 0) moves.push({ source, destination: { zone: "free", index: freeIndex }, kind: "free" });
+          }
           if (source.zone === "tableau" && !this.legalTableauSource(source)) return;
           this.tableau.forEach((_pile, pile) => { if (pile !== source.pile && this.canMoveToTableau(group, this.top(pile)) && (this.variant === "yukon" || group.length <= this.freeCellCapacity(pile))) moves.push({ source, destination: { zone: "tableau", pile }, kind: "tableau" });
           });
         });
       } else if (this.variant === "pyramid") {
         this.cards.forEach((entry, index) => { if (this.available(index)) { if (entry.card.rank === 13) moves.push({ source: { zone: "pyramid", index }, kind: "clear" }); else this.cards.forEach((other, otherIndex) => { if (otherIndex > index && this.available(otherIndex) && entry.card.rank + other.card.rank === 13) moves.push({ source: { zone: "pyramid", index }, destination: { zone: "pyramid", index: otherIndex }, kind: "pair" }); }); } });
+        const waste = this.waste.at(-1);
+        if (waste?.rank === 13) moves.push({ source: { zone: "waste" }, kind: "clear" });
+        if (waste && waste.rank !== 13) this.cards.forEach((entry, index) => { if (this.available(index) && waste.rank + entry.card.rank === 13) moves.push({ source: { zone: "waste" }, destination: { zone: "pyramid", index }, kind: "pair" }); });
       } else {
         if (this.variant === "tripeaks") {
           this.cards.forEach((entry, index) => {
@@ -366,6 +381,7 @@
       this.active = false;
       this.drag = null;
       this.hintTimer = null;
+      this.hintMove = null;
       this.renderedCombo = 0;
       this.nodes = {};
     }
@@ -432,22 +448,30 @@
       const destination = event.target.closest("[data-dest]");
       if (!card && !destination) return;
       const source = card ? JSON.parse(card.dataset.source) : null;
-      if (card && this.game.selected && JSON.stringify(source) === JSON.stringify(this.game.selected)) {
+      const hintedSequenceSource = this.hintMove
+        && (this.config.variant === "tripeaks" || this.config.variant === "golf")
+        && JSON.stringify(source) === JSON.stringify(this.hintMove.source);
+      const hintedPyramidClear = this.hintMove
+        && this.config.variant === "pyramid"
+        && this.hintMove.kind === "clear"
+        && JSON.stringify(source) === JSON.stringify(this.hintMove.source);
+      if (card && this.game.selected && JSON.stringify(source) === JSON.stringify(this.game.selected) && !hintedSequenceSource && !hintedPyramidClear) {
         this.game.selected = null;
         this.render();
         return;
       }
+      if (hintedPyramidClear) { this.game.selected = null; this.hintMove = null; }
       const dest = destination ? JSON.parse(destination.dataset.dest) : (source ? this.cardDestination(source) : null);
-      if (card && this.game.selected && source?.zone === "tableau" && this.game.selected.zone === "tableau" && dest?.zone === "tableau" && dest.pile === this.game.selected.pile) {
+      if (card && (this.config.variant === "freecell" || this.config.variant === "yukon") && this.game.selected && source?.zone === "tableau" && this.game.selected.zone === "tableau" && dest?.zone === "tableau" && dest.pile === this.game.selected.pile) {
         this.game.selected = source;
         this.render();
         return;
       }
-      if (this.config.variant === "pyramid") { if (source) { if (this.game.pairPyramid(source)) { this.audio.place(); this.render(); } else this.feedback(this.t("pairWrong")); } return; }
-      if (this.config.variant === "tripeaks" || this.config.variant === "golf") { if (source && this.game.sequencePlay(source)) { this.audio.place(); this.render(); } else if (source) this.feedback(this.t("wrong")); return; }
+      if (this.config.variant === "pyramid") { if (source) { if (this.game.pairPyramid(source)) { this.hintMove = null; this.audio.place(); this.render(); } else this.feedback(this.t("pairWrong")); } return; }
+      if (this.config.variant === "tripeaks" || this.config.variant === "golf") { if (source && this.game.sequencePlay(source)) { this.hintMove = null; this.audio.place(); this.render(); } else if (source) this.feedback(this.t("wrong")); return; }
       if (!source && !dest) return;
-      if (this.game.selected && dest) { if (this.game.moveClassic(this.game.selected, dest)) { this.audio.place(); this.game.selected = null; this.render(); } else this.feedback(this.t("wrong")); return; }
-      if (source) { this.game.selected = this.game.selected && JSON.stringify(this.game.selected) === JSON.stringify(source) ? null : source; this.render(); }
+      if (this.game.selected && dest) { if (this.game.moveClassic(this.game.selected, dest)) { this.hintMove = null; this.audio.place(); this.game.selected = null; this.render(); } else this.feedback(this.t("wrong")); return; }
+      if (source) { this.hintMove = null; this.game.selected = this.game.selected && JSON.stringify(this.game.selected) === JSON.stringify(source) ? null : source; this.render(); }
     }
     handlePointerDown(event) {
       const card = event.target.closest("[data-source]"); if (!card) return;
@@ -460,11 +484,11 @@
       const target = document.elementFromPoint(event.clientX, event.clientY)?.closest?.("[data-source], [data-dest]");
       if (!target) return;
       const source = drag.source; const targetSource = target.dataset.source ? JSON.parse(target.dataset.source) : null; const dest = target.dataset.dest ? JSON.parse(target.dataset.dest) : this.cardDestination(targetSource);
-      if ((this.config.variant === "freecell" || this.config.variant === "yukon") && dest && this.game.moveClassic(source, dest)) { this.audio.place(); this.render(); }
-      else if ((this.config.variant === "tripeaks" || this.config.variant === "golf") && this.game.sequencePlay(source)) { this.audio.place(); this.render(); }
+      if ((this.config.variant === "freecell" || this.config.variant === "yukon") && dest && this.game.moveClassic(source, dest)) { this.hintMove = null; this.audio.place(); this.render(); }
+      else if ((this.config.variant === "tripeaks" || this.config.variant === "golf") && this.game.sequencePlay(source)) { this.hintMove = null; this.audio.place(); this.render(); }
       else this.feedback(this.t("wrong"));
     }
-    hint() { const move = this.game.tryHint(); if (!move) { this.feedback(this.game.won ? this.t("winText") : this.t("noMoves")); return; } this.render(); clearTimeout(this.hintTimer); this.hintTimer = setTimeout(() => { this.game.selected = null; this.render(); }, 2400); }
+    hint() { const move = this.game.tryHint(); if (!move) { this.hintMove = null; this.feedback(this.game.won ? this.t("winText") : this.t("noMoves")); return; } this.hintMove = move; this.render(); clearTimeout(this.hintTimer); this.hintTimer = setTimeout(() => { this.game.selected = null; this.hintMove = null; this.render(); }, 2400); }
     feedback(message) { if (!this.nodes.toast) return; this.nodes.toast.textContent = message; this.nodes.toast.hidden = false; clearTimeout(this.toastTimer); this.toastTimer = setTimeout(() => { this.nodes.toast.hidden = true; }, 1800); }
     hideResult() { if (this.nodes.resultOverlay) this.nodes.resultOverlay.hidden = true; }
     showResult() { if (!this.nodes.resultOverlay || (!this.game.won && !this.game.lost)) return; this.nodes.resultOverlay.hidden = false; this.nodes.resultTitle.textContent = this.game.won ? this.t("win") : this.t("lose"); this.nodes.resultText.textContent = this.game.won ? this.t("winText") : this.t("loseText"); }
@@ -484,11 +508,12 @@
       this.renderSlots(); this.renderTableau(); this.showResult();
     }
     renderSlots() {
-      if (this.nodes.freeCells) this.nodes.freeCells.innerHTML = this.game.variant === "freecell" ? this.game.freeCells.map((card, index) => `<div class="classic-slot free-slot" data-dest='${JSON.stringify({ zone: "free", index })}' aria-label="${this.t("freeCells")} ${index + 1}">${card ? cardMarkup(card, { zone: "free", index }, "slot-card") : `<span>${this.t("empty")}</span>`}</div>`).join("") : "";
+      const selectedClass = (source) => this.game.selected && JSON.stringify(this.game.selected) === JSON.stringify(source) ? " selected" : "";
+      if (this.nodes.freeCells) this.nodes.freeCells.innerHTML = this.game.variant === "freecell" ? this.game.freeCells.map((card, index) => `<div class="classic-slot free-slot" data-dest='${JSON.stringify({ zone: "free", index })}' aria-label="${this.t("freeCells")} ${index + 1}">${card ? cardMarkup(card, { zone: "free", index }, `slot-card${selectedClass({ zone: "free", index })}`) : `<span>${this.t("empty")}</span>`}</div>`).join("") : "";
       if (this.nodes.foundationArea) this.nodes.foundationArea.innerHTML = this.game.foundations.map((pile, index) => { const card = pile.top(); return `<div class="classic-slot foundation-slot" data-dest='${JSON.stringify({ zone: "foundation", index })}' aria-label="${this.t("foundations")} ${index + 1}">${card ? cardMarkup(card, { zone: "foundation", index }, "slot-card") : `<span>${SYMBOLS[SUITS[index]]}</span>`}</div>`; }).join("");
       const stockCount = this.game.stock.length;
       if (this.nodes.stockPile) this.nodes.stockPile.innerHTML = stockCount ? `<span class="stock-back">✦</span><b>${stockCount}</b>` : `<span>${this.t("empty")}</span>`;
-      if (this.nodes.wastePile) { const card = this.game.waste.at(-1); this.nodes.wastePile.innerHTML = card ? cardMarkup(card, { zone: "waste" }, "slot-card") : `<span>${this.t("empty")}</span>`; }
+      if (this.nodes.wastePile) { const card = this.game.waste.at(-1); this.nodes.wastePile.innerHTML = card ? cardMarkup(card, { zone: "waste" }, `slot-card${selectedClass({ zone: "waste" })}`) : `<span>${this.t("empty")}</span>`; }
     }
     renderTableau() {
       const area = this.nodes.tableauArea; if (!area) return;

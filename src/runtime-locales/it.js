@@ -5584,7 +5584,6 @@ window.WeightPlayGameRuntimeLocales["it"] = {
   "Espere as marmitas pararem": "Espere as marmitas pararem",
   "Espiral del Pantano": "Spirale del Pantano",
   "Esploratore volpe della burrasca": "Esploratore volpe della burrasca",
-  "Esplosione di blocchi": "Esplosione dei blocchi",
   "Essaim": "Saggio",
   "Esta bandeja necesita un grupo conectado de {count}.": "Questa banda necessita di un gruppo collegato a {count}.",
   "Esta vez {time} · Mejor {best}": "Esta vez {time} · Mejor {best}",

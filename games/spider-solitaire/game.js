@@ -492,8 +492,10 @@
     const tableauWidth = ui.tableauRow?.clientWidth || 0;
     const columnWidth = (tableauWidth - tableauGap * 9) / 10;
     const maxRows = Math.max(1, ...game.tableau.columns.map((column) => column.length));
-    const available = Math.max(170, ui.boardShell.clientHeight - 132);
     const isCompactLandscape = window.matchMedia("(orientation: landscape) and (max-height: 560px)").matches;
+    const available = isCompactLandscape
+      ? Math.max(140, ui.boardShell.clientHeight - 144)
+      : Math.max(170, ui.boardShell.clientHeight - 132);
     const compactStep = isCompactLandscape ? 8 : 11;
     const heightLimitedWidth = (available - compactStep * Math.max(1, maxRows - 1) - 12) / 1.397;
     const measuredWidth = columnWidth >= 24 ? columnWidth : 36;
@@ -509,6 +511,11 @@
     ui.tableauRow?.querySelectorAll(".hint-source,.hint-target,.drag-hover").forEach((node) => node.classList.remove("hint-source", "hint-target", "drag-hover"));
     ui.stockPile?.classList.remove("hint-source");
     if (state.hintTimer) window.clearTimeout(state.hintTimer);
+    state.hintTimer = null;
+    if (ui.hintOverlay) {
+      ui.hintOverlay.hidden = true;
+      ui.hintOverlay.textContent = "";
+    }
   }
 
   function clearCompletionFlyouts() {
@@ -521,7 +528,11 @@
     ui.hintOverlay.textContent = message;
     ui.hintOverlay.hidden = false;
     if (state.hintTimer) window.clearTimeout(state.hintTimer);
-    state.hintTimer = window.setTimeout(() => { ui.hintOverlay.hidden = true; }, HINT_MS);
+    state.hintTimer = window.setTimeout(() => {
+      ui.hintOverlay.hidden = true;
+      ui.hintOverlay.textContent = "";
+      state.hintTimer = null;
+    }, HINT_MS);
   }
 
   function highlightMove(move) {
@@ -868,10 +879,29 @@
 
   function resetClock() { state.elapsed = 0; startClock(); }
 
+  function setBattleViewportLock(active) {
+    const rootStyle = document.documentElement.style;
+    const bodyStyle = document.body.style;
+    document.documentElement.classList.toggle("spider-battle-active", active);
+    if (active) {
+      rootStyle.setProperty("overflow-x", "hidden", "important");
+      rootStyle.setProperty("overflow-y", "hidden", "important");
+      rootStyle.setProperty("touch-action", "none", "important");
+      rootStyle.setProperty("overscroll-behavior", "none", "important");
+      bodyStyle.setProperty("overflow", "hidden", "important");
+      bodyStyle.setProperty("touch-action", "none", "important");
+      bodyStyle.setProperty("overscroll-behavior", "none", "important");
+      return;
+    }
+    ["overflow-x", "overflow-y", "touch-action", "overscroll-behavior"].forEach((property) => rootStyle.removeProperty(property));
+    ["overflow", "touch-action", "overscroll-behavior"].forEach((property) => bodyStyle.removeProperty(property));
+  }
+
   function showBattle() {
     ui.mainScreen.hidden = true;
     ui.battleScreen.hidden = false;
     document.body.dataset.screen = "battle";
+    setBattleViewportLock(true);
     window.dispatchEvent(new Event("resize"));
   }
 
@@ -884,6 +914,7 @@
     ui.resultOverlay.hidden = true;
     ui.tutorialOverlay.hidden = true;
     ui.confirmOverlay.hidden = true;
+    setBattleViewportLock(false);
     state.active = false;
     state.pendingAction = null;
     renderStatistics();

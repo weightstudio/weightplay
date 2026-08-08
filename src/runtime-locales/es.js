@@ -5601,7 +5601,6 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Estela Triple": "Estela Triple",
   "Estimated Play Time": "Tiempo de juego estimado",
   "Estrai perni dorati per guidare Taro, acqua, braci, scudi, chiavi, ombre e Nucleo in 30 camere progettate.": "Estrai perni dorati per guidare Taro, acqua, braci, scudi, chiavi, ombre e Nucleo in 30 camere progettate.",
-  "Estrategia": "estrategia",
   "Estrategia arcade de multiplicadores": "Estrategia arcade de multiplicadores",
   "Estrategia de bloqueo": "Estrategia de bloqueo",
   "Estrategia de cartas": "Estrategia de cartas",
@@ -9948,7 +9947,6 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "One correction has already been used this turn.": "Este turno ya se ha utilizado una corrección.",
   "One Deck": "Una cubierta",
   "One fixed logical Canvas scales uniformly across phones, tablets, desktop, and short landscape. Touch, mouse, and keyboard feed the same aiming state, while lifecycle cancellation prevents a stale finger release after changing apps from firing a shot. Unlike Bubble Bakery’s tap-to-clear orders, Safari requires trajectory control and wall reflection. Unlike Animal Helper Quest, its decisions are spatial rather than choosing an item from a scene. Kids screens contain no advertising code or reserve.": "Un lienzo lógico fijo se escala uniformemente en teléfonos, tabletas, computadoras de escritorio y paisajes cortos. El tacto, el mouse y el teclado alimentan el mismo estado de apuntar, mientras que la cancelación del ciclo de vida evita que la liberación del dedo obsoleto después de cambiar de aplicación dispare. A diferencia de los pedidos de tocar para borrar de Bubble Bakery, Safari requiere control de trayectoria y reflejo en la pared. A diferencia de Animal Helper Quest, sus decisiones son espaciales en lugar de elegir un elemento de una escena. Las pantallas infantiles no contienen código publicitario ni reserva.",
-  "One Line": "Una línea",
   "One Line | WeightPlay": "Una línea | ⟦MARCA WP⟧",
   "One Line game guide": "Guía del juego de una línea.",
   "One Line is an original 30-stage grid puzzle starring Rainbow Hop Mimi. Begin on the glowing paw, move through edge-sharing open cells, and color the entire board with one continuous route without visiting any cell twice.": "One Line es un original rompecabezas de cuadrícula de 30 etapas protagonizado por Rainbow Hop Mimi. Comience con la pata brillante, muévase a través de celdas abiertas que comparten bordes y coloree todo el tablero con una ruta continua sin visitar ninguna celda dos veces.",
@@ -17005,5 +17003,7 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusionsverteidigung",
   "Zuglimit erreicht.": "Erreicht Zuglimit.",
   "Zur Lobby": "Vestíbulo Zur",
-  "Zwei Hinweise": "Zwei Hinweise"
+  "Zwei Hinweise": "Zwei Hinweise",
+  "Estrategia": "Estrategia",
+
 };

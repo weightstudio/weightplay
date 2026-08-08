@@ -59,7 +59,7 @@
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260808-spider-v5" />
+  <link rel="stylesheet" href="style.css?v=20260808-spider-v6" />
   <meta name="description" content="Spider Solitaire utilizza due mazzi in dieci colonne del tableau. Costruisci sequenze discendenti, separa i semi misti quando puoi e completa otto serie..." />
     <meta property="og:title" content="Solitario Ragno | WeightPlay" />
     <meta property="og:description" content="Spider Solitaire utilizza due mazzi in dieci colonne del tableau. Costruisci sequenze discendenti, separa i semi misti quando puoi e completa otto serie..." />
@@ -158,7 +158,7 @@
     <div id="tutorialOverlay" class="dialog-overlay" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card tutorial-card"><span class="dialog-kicker" data-sl="learn_kicker">Quick Start</span><h2 id="tutorialTitle" data-sl="learn_title">Spider in five moves</h2><div class="tutorial-visual" aria-hidden="true"><div class="tutorial-visual-row"><span class="tutorial-mini-card tutorial-k">K</span><span class="tutorial-arrow">↓</span><span class="tutorial-mini-card">Q</span><span class="tutorial-arrow">↓</span><span class="tutorial-mini-card tutorial-a">A</span></div><div class="tutorial-visual-row"><span class="tutorial-mini-card tutorial-red">9</span><span class="tutorial-arrow">→</span><span class="tutorial-drop-zone">10</span><span class="tutorial-suit-dot"></span><span class="tutorial-mini-card tutorial-red">8</span></div><div class="tutorial-visual-row tutorial-visual-stock"><span class="tutorial-stock-icon">▦</span><span class="tutorial-arrow">→</span><span class="tutorial-column-dots"><i></i><i></i><i></i><i></i><i></i></span><strong>× 10</strong></div><div class="tutorial-complete-badge">K → A <span>× 8</span></div></div><ol><li data-sl="tip_1">Build cards downward from K to A.</li><li data-sl="tip_2">Only same-suit runs move together.</li><li data-sl="tip_3">Finish a same-suit K → A run to clear it.</li><li data-sl="tip_4">Deal one card to every column from Stock.</li><li data-sl="tip_5">Fill every empty column before dealing.</li></ol><div class="dialog-actions"><button id="tutorialSkip" class="secondary-btn" type="button" data-sl="skip">Skip</button><button id="tutorialDone" class="primary-btn" type="button" data-sl="got_it">Got it</button></div></div></div>
     <div id="confirmOverlay" class="dialog-overlay" role="dialog" aria-modal="true" aria-labelledby="confirmTitle" hidden><div class="dialog-card"><h2 id="confirmTitle" data-sl="confirm_title">Start a new game?</h2><p data-sl="confirm_copy">Your current run will stay available through Undo only until you leave it.</p><div class="dialog-actions"><button id="confirmNo" class="secondary-btn" type="button" data-sl="cancel">Cancel</button><button id="confirmYes" class="primary-btn" type="button" data-sl="confirm">New Game</button></div></div></div>
     <div id="resultOverlay" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><h2 id="resultTitle" data-sl="victory">Spider Complete!</h2><p id="resultText"></p><div class="result-actions"><button id="resultNewGame" class="primary-btn" type="button" data-sl="new_game">New Game</button><button id="resultRestart" class="secondary-btn" type="button" data-sl="restart">Restart</button><button id="resultClose" class="secondary-btn" type="button" data-sl="return">Return</button></div></div></div>
-    <div id="hintOverlay" class="hint-overlay" role="status" aria-live="polite"></div><div id="dragLayer" class="drag-layer" aria-hidden="true"></div>
+    <div id="hintOverlay" class="hint-overlay" role="status" aria-live="polite" hidden></div><div id="dragLayer" class="drag-layer" aria-hidden="true"></div>
   </section>
 
   <script src="../../src/site-config.js"></script>
@@ -169,7 +169,7 @@
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine1"></script>
-  <script src="game.js?v=20260808-spider-v17"></script>
+  <script src="game.js?v=20260808-spider-v19"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>

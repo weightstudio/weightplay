@@ -21,6 +21,17 @@ body[data-wp-game-id="spider-solitaire"] {
   text-rendering: geometricPrecision;
 }
 
+html.spider-battle-active,
+html.spider-battle-active body[data-wp-game-id="spider-solitaire"],
+html.has-game-page-info.spider-battle-active:not(.wp-mobile-game-mode),
+html.has-game-page-info.spider-battle-active body.has-game-page-info:not(.wp-mobile-game-mode):not(.zoo-playing) {
+  overflow: hidden !important;
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+}
+
 body[data-wp-game-id="spider-solitaire"] button,
 body[data-wp-game-id="spider-solitaire"] select { font: inherit; }
 
@@ -90,7 +101,7 @@ body[data-wp-game-id="spider-solitaire"] .game-page-info {
   width: min(1040px, calc(100% - 24px));
 }
 
-.battle-screen { min-height: var(--wp-battle-viewport-height, 100vh); }
+.battle-screen { min-height: var(--wp-battle-viewport-height, 100vh); overscroll-behavior: none; touch-action: none; }
 .battle-canvas { --card-width: clamp(32px, 8.6vw, 78px); --card-height: calc(var(--card-width) * 1.397); --spider-step: 24px; width: 100%; max-width: min(100%,920px); height: calc(100vh - 56px); margin: 0 auto; padding: .65rem .55rem .45rem; box-sizing: border-box; animation: sp-board-in 360ms ease both; }
 .battle-header { display: grid; grid-template-columns: auto repeat(4,minmax(0,1fr)); align-items: center; gap: .35rem; padding: 0 .1rem .45rem; }
 .battle-header > button:first-child { min-width: 40px; min-height: 40px; padding: .35rem; border: 1px solid rgba(255,255,255,.2); border-radius: 12px; color: #fff; background: rgba(255,255,255,.12); cursor: pointer; }
