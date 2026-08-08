@@ -17005,5 +17005,5 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusionsverteidigung",
   "Zuglimit erreicht.": "Зуглимит эррайхт.",
   "Zur Lobby": "Цур Лобби",
-  "Zwei Hinweise": "Цвай Хинвайзе"
+  "Zwei Hinweise": "Цвай Хинвайзе",
 };
