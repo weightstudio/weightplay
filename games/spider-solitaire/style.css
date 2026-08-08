@@ -11,7 +11,7 @@
   --sp-font: "Poppins", "Manrope", "Inter", "Segoe UI", "Noto Sans TC", "Microsoft YaHei", sans-serif;
 }
 
-body[data-game-id="spider-solitaire"] {
+body[data-wp-game-id="spider-solitaire"] {
   margin: 0;
   min-width: 320px;
   font-family: var(--sp-font);
@@ -21,8 +21,8 @@ body[data-game-id="spider-solitaire"] {
   text-rendering: geometricPrecision;
 }
 
-body[data-game-id="spider-solitaire"] button,
-body[data-game-id="spider-solitaire"] select { font: inherit; }
+body[data-wp-game-id="spider-solitaire"] button,
+body[data-wp-game-id="spider-solitaire"] select { font: inherit; }
 
 .loading-panel { position: fixed; inset: 0; display: grid; place-items: center; background: #06101e; z-index: 9999; }
 .loading-panel[hidden], .battle-screen[hidden], .dialog-overlay[hidden], .result-overlay[hidden], .hint-overlay[hidden] { display: none !important; }
@@ -152,6 +152,39 @@ button:focus-visible, select:focus-visible { outline: 2px solid rgba(78,205,196,
   .stock-copy strong { font-size: .62rem; }
   .stock-row .control-row { gap: .18rem; }
   .mini-btn { padding-inline: .35rem !important; font-size: .64rem; }
+}
+
+@media (min-width: 700px) and (max-height: 560px) {
+  body[data-wp-game-id="spider-solitaire"] .wp-shell-settings-popover {
+    box-sizing: border-box;
+    width: min(280px, calc(100vw - 24px));
+  }
+  body[data-wp-game-id="spider-solitaire"] .wp-shell-language-row {
+    height: 44px !important;
+    min-height: 44px !important;
+  }
+  body[data-wp-game-id="spider-solitaire"] .wp-shell-language-row > label {
+    height: 44px !important;
+    min-height: 44px !important;
+    overflow: hidden;
+  }
+  .spider-main-progress #statistics { display: none !important; }
+}
+
+@media (max-width: 699px) {
+  body[data-wp-game-id="spider-solitaire"] .wp-shell-settings-popover {
+    box-sizing: border-box;
+    width: min(280px, calc(100vw - 24px));
+  }
+  body[data-wp-game-id="spider-solitaire"] .wp-shell-language-row {
+    height: 44px !important;
+    min-height: 44px !important;
+  }
+  body[data-wp-game-id="spider-solitaire"] .wp-shell-language-row > label {
+    height: 44px !important;
+    min-height: 44px !important;
+    overflow: hidden;
+  }
 }
 
 @media (max-width: 460px) {

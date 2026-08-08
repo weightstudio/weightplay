@@ -117,7 +117,8 @@ html body .page[hidden]{display:none!important}
 #mainPage.wp-standard-main-screen .main-canvas > .poster,
 #mainPage.wp-standard-main-screen .main-canvas > .main-copy{display:none!important}
 .stage-card{flex-basis:264px;height:190px;padding:10px;grid-template-rows:18px 28px 54px 24px 42px!important}
-.stage-card h3,.stage-card p{margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stage-card h3{margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stage-card p{margin:0;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;overflow-wrap:anywhere;white-space:normal}
 .stage-card small{line-height:18px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .stage-card h3{line-height:28px}
 .stage-card p{line-height:24px}
