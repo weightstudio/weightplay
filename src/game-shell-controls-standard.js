@@ -175,7 +175,9 @@
 
   let activePlayRootLocked = false;
   function syncActivePlayRootLock() {
+    const main = document.body?.classList.contains("wp-shell-main-active") || false;
     const active = document.body?.matches(".wp-shell-stage-active,.wp-shell-battle-active") || false;
+    document.documentElement.classList.toggle("wp-shell-main-flow", main && !active);
     document.documentElement.classList.toggle("wp-shell-active-play", active);
     if (active && !activePlayRootLocked) {
       activePlayRootLocked = true;

@@ -48,6 +48,10 @@
     "fruit-merge": [".fixed-game-shell", 382, 780, 760, 350],
     "garden-tiles": [".garden-game", 382, 780, 760, 350],
     "shadow-wolf": [".game-layout", 390, 788],
+    // Signal Veil owns a no-Stage Battle shell while the body also exposes
+    // data-screen="battle". Select the actual shell explicitly so the shared
+    // scaler cannot claim the body and leave the mobile playfield narrow.
+    "signal-veil": ["#battleShell", 390, 788, 760, 334],
     "shape-train": ["#playPanel", 362, 710],
     "snack-blocks": [".snack-game", 382, 780, 760, 350],
     "star-memory": [".memory-game", 382, 780],

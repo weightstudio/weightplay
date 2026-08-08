@@ -1318,8 +1318,9 @@
     showPanel("result");
     focusPanel(nodes.resultPanel);
     nodes.resultPanel.scrollTop = 0;
-    window.requestAnimationFrame(() => primaryResultAction.focus({ preventScroll: true }));
     renderMenu();
+    primaryResultAction.focus({ preventScroll: true });
+    window.requestAnimationFrame(() => primaryResultAction.focus({ preventScroll: true }));
     playSound(won ? "win" : "wrong");
     track("game_complete", { zone: run.zone.id, won, catches: run.catches, newFish: run.newFish, notes: run.notes, score: run.finalScore });
   }
@@ -2256,7 +2257,7 @@
     track(type === "lure" ? "rare_lure_purchase" : "sonar_purchase", { cost });
   }
 
-  function upgradeGear(id) {
+  function upgradeGear(id, restoreFocus = false) {
     clearDiamondPurchaseConfirmation();
     const item = gear.find((g) => g.id === id);
     const level = Number(save.gear[id]) || 1;
@@ -2270,8 +2271,15 @@
     save.gear[id] = level + 1;
     saveProgress();
     renderMenu();
+    if (restoreFocus) restoreGearFocus(id);
     playSound("upgrade");
     track("gear_upgrade", { gear: id, level: level + 1 });
+  }
+
+  function restoreGearFocus(id) {
+    const focus = () => nodes.gearGrid.querySelector(`[data-gear="${id}"]`)?.focus({ preventScroll: true });
+    focus();
+    window.requestAnimationFrame(focus);
   }
 
   nodes.zoneRow.addEventListener("click", (evt) => {
@@ -2290,12 +2298,21 @@
     if (!btn) return;
     const gearId = btn.dataset.gear;
     const restoreKeyboardFocus = evt.detail === 0;
-    upgradeGear(gearId);
-    if (restoreKeyboardFocus) window.requestAnimationFrame(() => nodes.gearGrid.querySelector(`[data-gear="${gearId}"]`)?.focus({ preventScroll: true }));
+    upgradeGear(gearId, restoreKeyboardFocus);
   });
   nodes.gearGrid.addEventListener("keydown", (event) => {
-    if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest("[data-gear]")) event.preventDefault();
-  });
+    const btn = event.target.closest("[data-gear]");
+    if (!btn) return;
+    if (event.key === "Enter") {
+      event.preventDefault();
+      event.stopPropagation();
+      if (event.repeat) return;
+      const gearId = btn.dataset.gear;
+      upgradeGear(gearId, true);
+      return;
+    }
+    if (event.repeat && event.key === " ") event.preventDefault();
+  }, true);
   nodes.startBtn.addEventListener("click", () => {
     playSound("click");
     state = "stage";

@@ -582,6 +582,34 @@ body:is(.wp-shell-stage-active, .wp-shell-battle-active) .wp-standard-main-compo
   display: none !important;
 }
 
+/* Main owns a document-flow page so the complete public guide remains
+   reachable. Contain the browser edge without disabling vertical scrolling;
+   Stage/Battle below use the stronger active-play lock. */
+html:has(body.wp-shell-main-active),
+html.wp-shell-main-flow {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 100% !important;
+  max-height: none !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior-x: none !important;
+  overscroll-behavior-y: contain !important;
+  touch-action: pan-y !important;
+}
+
+body.wp-shell-main-active {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 100vh !important;
+  max-height: none !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior-x: none !important;
+  overscroll-behavior-y: contain !important;
+  touch-action: pan-y !important;
+}
+
 /* Active play owns the browser edge. A downward gesture must stay inside the
    Stage/Battle surface instead of handing control to document scrolling or
    mobile pull-to-refresh. The fallback class is maintained by the shared

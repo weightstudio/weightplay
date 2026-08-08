@@ -124,7 +124,7 @@
   const ctx = canvas.getContext("2d");
   ctx.imageSmoothingEnabled = false;
   const nodes = {
-    main:$("#main"), battle:$("#battleShell"), loading:$("#loadingPanel"), locale:$("#localeSelect"),
+    main:$("#main"), battle:$("#battleShell"), reserve:$(".ad-reserve"), loading:$("#loadingPanel"), locale:$("#localeSelect"),
     progress:$("#mainProgress"), level:$("#levelValue"), hpFill:$("#hpFill"), hpText:$("#hpText"),
     xpFill:$("#xpFill"), xpText:$("#xpText"), visionState:$("#visionState"), zone:$("#zoneLabel"),
     objective:$("#objective"), toast:$("#toast"), dialogue:$("#dialogue"), speaker:$("#speaker"),
@@ -1011,6 +1011,7 @@
   }
   function setScreenOwner(screen) {
     document.body.dataset.screen=screen;
+    if(nodes.reserve) nodes.reserve.hidden=screen!=="battle";
     for(const candidate of ["main","stage","battle"]){
       document.body.classList.toggle(`wp-shell-${candidate}-active`,candidate===screen);
     }
