@@ -17004,5 +17004,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusions の詳細情報",
   "Zuglimit erreicht.": "ズーグリミット・エレヒト。",
   "Zur Lobby": "ズール・ロビー",
-  "Zwei Hinweise": "ツヴァイ・ヒンヴァイゼ"
+  "Zwei Hinweise": "ツヴァイ・ヒンヴァイゼ",
+  "Target reached · cross {remaining} more zones to complete.": "目標達成・あと {remaining} ゾーンを越えると完了です。",
+  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "次のリーフ変化：{mission}・{name}。{special}ルール：{rule}。目標：{goal}匹捕獲。",
 };

@@ -54,3 +54,6 @@
 
 .main-group{display:contents}
 .main-group.hidden{display:none!important}
+
+.completion-hint,.result-completion-hint{margin:0;padding:4px 8px;border-radius:8px;background:#153f50;color:#ffe79a;font-size:.75rem;font-weight:800;text-align:center}
+.completion-hint.hidden,.result-completion-hint.hidden{display:none!important}

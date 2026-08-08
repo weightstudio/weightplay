@@ -127,6 +127,7 @@
     objectiveScan:"Choose a target to swim into. Compare both signals; use SONAR when unsure.",
     objectiveChoose:"Sonar complete: choose the result you want.",
     objectiveContinue:"Reach the salvage target, or SURFACE to bank a partial haul.",
+    completionRemaining:"Target reached · cross {remaining} more zones to complete.",
     coachTitle:"Dive plan",
     coachStep1:"Each zone places one target on the left and one on the right. Nori waits for your choice.",
     coachStep2:"Power is shared: exact Sonar costs 2⚡, a one-hit Shield costs 1⚡, and fish Pulse counters cost 1⚡.",
@@ -232,6 +233,7 @@
     objectiveScan:"選擇要游向的目標；先比較兩側訊號，不確定時再使用聲納。",
     objectiveChoose:u("\\u8072\\u7d0d\\u5b8c\\u6210\\uff1a\\u9078\\u64c7\\u4f60\\u8981\\u7684\\u7d50\\u679c\\u3002"),
     objectiveContinue:u("\\u9054\\u6210\\u6253\\u6488\\u76ee\\u6a19\\uff0c\\u6216\\u63d0\\u524d\\u4e0a\\u6d6e\\u4fdd\\u4f4f\\u90e8\\u5206\\u6210\\u679c\\u3002"),
+    completionRemaining:u("\\u5df2\\u9054\\u6253\\u6488\\u76ee\\u6a19\\uff0c\\u9084\\u9700\\u7a7f\\u8d8a {remaining} \\u500b\\u6d77\\u57df\\u624d\\u80fd\\u5b8c\\u6210\\u3002"),
     coachTitle:"潛航計畫",
     coachStep1:"每個海域各有一個左側與右側目標；諾里會停在中央等你選擇。",
     coachStep2:"裝備共用電力：精準聲納消耗 2⚡、一次衝擊盾消耗 1⚡，魚戰的脈衝反制也消耗 1⚡。",
@@ -569,6 +571,8 @@
     const objectiveLabel=state.fishActive?t("fishObjective"):state.oxygen<=30?t("objectiveLow"):state.sonar?t("objectiveChoose"):state.zone===1?t("objectiveScan"):t("objectiveContinue");
     $("objectiveText").innerHTML=state.fishActive?`${icon("danger")}<strong>${t("shortReadAttack")}</strong>`:state.oxygen<=30?`${icon("oxygen")}<strong>${t("shortLow")}</strong>`:state.sonar?`${icon("sonar")}<strong>${t("shortConfirmed")}</strong>`:`<strong>${t("shortChoose")}</strong>`;$("objectiveText").setAttribute("aria-label",`${routeText(config,"rule")} ${objectiveLabel}`);
     $("salvageText").innerHTML=`<span>${icon("salvage")}<em>${t("shortTarget")}</em><b>${state.salvage}/${config.target}</b></span><span>${icon("power")}<em>${t("shortPower")}</em><b>${state.battery}/4</b></span>`;$("salvageText").setAttribute("aria-label",`${t("target",{n:state.salvage,target:config.target})} · ${t("power",{n:state.battery})}`);
+    const remainingZones=Math.max(0,config.zones-state.zone),targetReachedEarly=state.salvage>=config.target&&remainingZones>0,completionHint=$("completionHint");
+    if(completionHint){completionHint.textContent=targetReachedEarly?t("completionRemaining",{remaining:remainingZones}):"";completionHint.classList.toggle("hidden",!targetReachedEarly);completionHint.setAttribute("aria-label",targetReachedEarly?t("completionRemaining",{remaining:remainingZones}):"");}
     $("depthProgress").style.width=`${((state.zone-1)/Math.max(1,config.zones-1))*100}%`;
     $("fxArt").classList.toggle("hidden",!state.sonar);
     $("diamondText").querySelector("b").textContent=wallet();
@@ -639,6 +643,8 @@
     $("resultTitle").textContent=clear?t("clear"):mode==="combat"?t("combatDefeat"):mode==="fail"?t("oxygenLost"):mode==="miss"?t("missed"):t("partial");
     const copyKey=clear?"resultClear":mode==="combat"?"resultCombat":mode==="fail"?"resultFail":mode==="miss"?"resultMiss":"resultSurface";
     $("resultCopy").textContent=t(copyKey,{n:state.salvage,target:config.target,zones:config.zones});
+    const remainingZones=Math.max(0,config.zones-state.zone),targetReachedEarly=state.salvage>=config.target&&remainingZones>0,resultCompletionHint=$("resultCompletionHint");
+    if(resultCompletionHint){resultCompletionHint.textContent=targetReachedEarly?t("completionRemaining",{remaining:remainingZones}):"";resultCompletionHint.classList.toggle("hidden",!targetReachedEarly);}
     let routeEvidence=t("routeRetry",{target:config.target,zones:config.zones});
     if(finalClear)routeEvidence=t("routeComplete");
     else if(clear){const nextRoute=Math.min(routes.length,state.route+1),key=save.unlocked>unlockedBefore?"routeUnlocked":"routeReady";routeEvidence=t(key,{n:nextRoute,name:routeText(routes[nextRoute-1],"name")});}
@@ -821,6 +827,7 @@
   document.addEventListener("pointerup",finishRouteDrag,true);document.addEventListener("pointercancel",finishRouteDrag,true);
   routeRail.addEventListener("click",event=>{const card=event.target.closest(".route-card");if(!card)return;if(suppressRouteClick){suppressRouteClick=false;event.preventDefault();event.stopImmediatePropagation();return;}const n=Number(card.dataset.route);if(n<=save.unlocked){event.preventDefault();event.stopImmediatePropagation();start(n);}},true);
   for(const id of ["sonarBtn","shieldBtn","helpBtn"]){$(id).addEventListener("click",clearBeaconConfirmation,{capture:true});}
+  $("result")?.setAttribute("aria-describedby","resultCopy resultCompletionHint");
   localize();
   if(new URLSearchParams(location.search).has("smoke"))window.__AbyssDiverSmoke={setOxygen(value){if(!state.route)return;clearBeaconConfirmation();state.oxygen=Math.max(0,Math.min(maxOxygen(),Math.round(value)));renderBattle();if(state.fishActive)renderFish();},beaconState(){return{pending:!!state?.beaconPending,remaining:beaconConfirmRemaining,wallet:wallet()};}};
   if(window.__AbyssDiverSmoke)Object.assign(window.__AbyssDiverSmoke,{

@@ -17005,5 +17005,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusionsverteidigung",
   "Zuglimit erreicht.": "زوغليميت erreicht.",
   "Zur Lobby": "زور لوبي",
-  "Zwei Hinweise": "زوي هينويز"
+  "Zwei Hinweise": "زوي هينويز",
+  "Target reached · cross {remaining} more zones to complete.": "تم الوصول إلى الهدف · اعبر {remaining} مناطق أخرى للإكمال.",
+  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "تغيير الشعاب القادم: {mission} · {name}. {special}القاعدة: {rule}. الهدف: {goal} عمليات صيد.",
 };

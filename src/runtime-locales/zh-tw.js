@@ -17005,5 +17005,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "Zufalls-Fusionsverteidigung": "融合融合",
   "Zuglimit erreicht.": "楚格限制權利。",
   "Zur Lobby": "祖爾大廳",
-  "Zwei Hinweise": "茨威‧欣威斯"
+  "Zwei Hinweise": "茨威‧欣威斯",
+  "Target reached · cross {remaining} more zones to complete.": "已達成目標・再穿越 {remaining} 個區域即可完成。",
+  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "即將發生的礁區變化：{mission}・{name}。{special}規則：{rule}。目標：捕獲 {goal} 條。",
 };

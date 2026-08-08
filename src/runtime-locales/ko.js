@@ -17005,5 +17005,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusionsverteidigung",
   "Zuglimit erreicht.": "Zuglimit erreicht.",
   "Zur Lobby": "주르 로비",
-  "Zwei Hinweise": "츠바이 힌바이제"
+  "Zwei Hinweise": "츠바이 힌바이제",
+  "Target reached · cross {remaining} more zones to complete.": "목표 달성 · {remaining}개 구역을 더 통과하면 완료됩니다.",
+  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "예정된 암초 변화: {mission} · {name}. {special}규칙: {rule}. 목표: {goal}마리 포획.",
 };

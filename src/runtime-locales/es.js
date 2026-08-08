@@ -17005,5 +17005,6 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Zur Lobby": "Vestíbulo Zur",
   "Zwei Hinweise": "Zwei Hinweise",
   "Estrategia": "Estrategia",
-
+  "Target reached · cross {remaining} more zones to complete.": "Objetivo alcanzado · cruza {remaining} zonas más para completar.",
+  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "Próximo cambio del arrecife: {mission} · {name}. {special}Regla: {rule}. Objetivo: {goal} capturas.",
 };

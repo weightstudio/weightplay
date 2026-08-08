@@ -17005,5 +17005,7 @@ window.WeightPlayGameRuntimeLocales["fr"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusionsverteidigung",
   "Zuglimit erreicht.": "Zuglimit erreicht.",
   "Zur Lobby": "Dans le hall d'entrée",
-  "Zwei Hinweise": "Deux langues"
+  "Zwei Hinweise": "Deux langues",
+  "Target reached · cross {remaining} more zones to complete.": "Objectif atteint · traversez encore {remaining} zones pour terminer.",
+  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "Prochain changement du récif : {mission} · {name}. {special}Règle : {rule}. Objectif : {goal} captures.",
 };

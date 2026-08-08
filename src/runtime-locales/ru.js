@@ -17006,4 +17006,6 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "Zuglimit erreicht.": "Зуглимит эррайхт.",
   "Zur Lobby": "Цур Лобби",
   "Zwei Hinweise": "Цвай Хинвайзе",
+  "Target reached · cross {remaining} more zones to complete.": "Цель достигнута · пройдите ещё {remaining} зон до завершения.",
+  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "Предстоящее изменение рифа: {mission} · {name}. {special}Правило: {rule}. Цель: {goal} уловов.",
 };

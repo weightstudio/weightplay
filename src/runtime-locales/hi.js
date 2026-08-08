@@ -17005,5 +17005,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Zufalls-Fusionsverteidigung": "ज़ुफॉल्स-फ़्यूज़न्सवर्टीडिगंग",
   "Zuglimit erreicht.": "ज़ुग्लिमिट एरीच्ट.",
   "Zur Lobby": "ज़ूर लॉबी",
-  "Zwei Hinweise": "ज़ेवेई हिंवेइज़"
+  "Zwei Hinweise": "ज़ेवेई हिंवेइज़",
+  "Target reached · cross {remaining} more zones to complete.": "लक्ष्य पूरा · पूरा करने के लिए {remaining} और ज़ोन पार करें।",
+  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "आगामी रीफ़ बदलाव: {mission} · {name}। {special}नियम: {rule}। लक्ष्य: {goal} कैच।",
 };

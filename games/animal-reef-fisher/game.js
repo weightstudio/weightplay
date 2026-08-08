@@ -114,6 +114,7 @@
     runValueText: $("runValueText"),
     lastCatchText: $("lastCatchText"),
     resultAdviceText: $("resultAdviceText"),
+    resultMissionPreview: $("resultMissionPreview"),
   };
 
   const text = {
@@ -226,6 +227,7 @@
       nextCastWin: "Next cast: keep the same steady tension pattern, then use a fuller cast when the mission clock is tight.",
       nextCastFail: "Next cast: return the marker to SAFE earlier. If it keeps drifting out, upgrade Reel Control or Line Durability.",
       nextCastFailSafe: "Next cast: tension stayed mostly SAFE. Use a stronger cast or upgrade Rod Strength and Bait Quality to create more landing time.",
+      nextMissionPreview: "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.",
     },
     "zh-Hant": {
       title: "動物珊瑚釣手",
@@ -336,6 +338,7 @@
       nextCastWin: "下一竿：維持這次穩定的張力節奏；若任務時間吃緊，再提高拋竿蓄力。",
       nextCastFail: "下一竿：更早把標記拉回安全區；若仍反覆偏離，優先升級捲線控制或魚線耐久。",
       nextCastFailSafe: "下一竿：本局大多保持安全張力。提高拋竿蓄力，或升級釣竿強度與魚餌品質，爭取更多上岸時間。",
+      nextMissionPreview: "即將出現的海況變化：{mission} · {name}。{special}規則：{rule}。目標：{goal} 尾。",
     },
   };
 
@@ -344,7 +347,7 @@
     castHint:"Mantén pulsado el mar para cargar y suelta para lanzar.",charging:"Suelta al alcanzar la profundidad deseada.",hooked:"El pez ha picado. Arrastra el control rojo, desliza en el mar o usa Izquierda y Derecha para mantener el indicador en la zona verde.",hookedBehavior:"{behavior}: {hint} Mantén el indicador en la zona segura.",behaviorSteady:"Pez estable",behaviorSteadyHint:"La fuerza es suave; sigue con movimientos pequeños.",behaviorDart:"Pez veloz",behaviorDartHint:"Cambia de dirección rápido; corrige suavemente tras cada impulso.",behaviorHeavy:"Pez pesado",behaviorHeavyHint:"Tira durante más tiempo; ten paciencia cerca del centro.",tensionTitle:"Tensión de línea",tensionLow:"Muy floja",tensionSafe:"SEGURA",tensionHigh:"Muy tensa",tensionMarker:"Arrastrar",playAreaAria:"Zona de pesca. Mantén Espacio para cargar, suelta para lanzar y usa las flechas para controlar la tensión.",tensionLaneAria:"Carril de tensión. Ajusta con las flechas izquierda y derecha.",sonarAria:"Usar sonar",sonarDecision:"Usa el Sonar preparado para revelar y fijar el próximo pez, su rareza y su comportamiento de arrastre.",
     tensionCoachAim:"Mantén el mar o Espacio para lanzar. Cuando pique, arrastra el control rojo, desliza o usa las flechas.",tensionCoachReel:"Arrastra el control rojo, desliza en el mar o usa las flechas para permanecer en la zona verde.",tensionCoachSafe:"Bien. Desliza suavemente y permanece en SEGURA hasta capturarlo.",tensionCoachDanger:"Vuelve ahora a la zona segura.",tensionStatusAim:"Paso 1: mantén pulsado para cargar y suelta para lanzar.",tensionStatusCharging:"Suelta para lanzar. El paso 2 empieza cuando pique un pez.",tensionStatusHooked:"Paso 2: arrastra el control rojo o desliza para entrar en la zona verde.",tensionStatusSafe:"En zona segura. Mantén el control.",tensionStatusDanger:"Devuelve el control rojo a la zona segura o se romperá la línea.",landingProgress:"Progreso {progress}%",landed:"¡Captura lograda! Sigue antes de que termine el tiempo.",broke:"La línea se rompió. El indicador estuvo demasiado tiempo fuera de la zona segura.",escaped:"El pez escapó. Lanza otra vez y mantén el indicador centrado.",
     sonarReady:"El sonar está preparado para esta expedición.",sonarScan:"Sonar: {fish} · {rarity} · {behavior}. Próximo lanzamiento fijado.",sonarStatus:"Siguiente: {fish}",needDiamonds:"Necesitas {cost} diamantes.",lureReady:"El cebo raro está preparado para la próxima expedición.",buyLure:"Cebo raro {cost}💎",buySonar:"Pulso sonar {cost}💎",confirmLure:"Confirmar cebo · {before}→{after}💎",confirmSonar:"Confirmar sonar · {before}→{after}💎",lureBuyLabel:"El Cebo raro aumenta la posibilidad de una marca rara en la próxima expedición. Cuesta 3 diamantes. Saldo {balance}.",sonarBuyLabel:"El Pulso sonar revela y fija el próximo pez antes de lanzar. Cuesta 2 diamantes. Saldo {balance}.",lureConfirmLabel:"Confirma el Cebo raro. Gasta 3 diamantes. Saldo de {before} a {after}.",sonarConfirmLabel:"Confirma el Pulso sonar. Gasta 2 diamantes. Saldo de {before} a {after}.",sonar:"Sonar",upgrade:"Mejorar",max:"Máx.",gearUpgradeLabel:"Mejora {gear} del nivel {beforeLevel} al {afterLevel}. Gasta {cost} Notas. Saldo de {before} a {after}.",gearUpgradeNeedLabel:"{gear} nivel {beforeLevel}. El nivel {afterLevel} cuesta {cost} Notas. Saldo {balance}; faltan {need}.",gearMaxLabel:"{gear} nivel {level}. Nivel máximo.",locked:"Bloqueado",complete:"Completado",
-    expeditionWin:"Expedición completada",expeditionFail:"Expedición terminada",result:"Lograste {catches} capturas, descubriste {newFish} entradas nuevas y ganaste {notes} Notas del Arrecife.",score:"Puntuación",catchValue:"Valor de captura",runScore:"Puntuación",runCatchValue:"Notas del Arrecife",lastCatch:"Última captura",noCatchYet:"Sin capturas",newAlbum:"Álbum nuevo",catchSummary:"Capturas de esta expedición",catchToast:"Capturaste {fish}",catchToastMeta:"+{points} pts · +{notes} notas{newTag}",catchHudMeta:"{rarity} · +{points} pts · +{notes} notas{newTag}",newTag:" · ¡Nuevo en el álbum!",noCatch:"Aún no capturaste peces. Haz un lanzamiento más seguro y mantén la línea en SEGURA.",rareFish:"Raro",commonFish:"Común",nextCastWin:"Próximo lanzamiento: repite el patrón de tensión estable y carga más si el reloj aprieta.",nextCastFail:"Próximo lanzamiento: devuelve antes el indicador a SEGURA. Si sigue saliendo, mejora el control del carrete o la resistencia de línea.",nextCastFailSafe:"Próximo lanzamiento: la tensión estuvo casi siempre SEGURA. Carga más o mejora la fuerza de caña y la calidad del cebo para ganar tiempo de captura."
+     expeditionWin:"Expedición completada",expeditionFail:"Expedición terminada",result:"Lograste {catches} capturas, descubriste {newFish} entradas nuevas y ganaste {notes} Notas del Arrecife.",score:"Puntuación",catchValue:"Valor de captura",runScore:"Puntuación",runCatchValue:"Notas del Arrecife",lastCatch:"Última captura",noCatchYet:"Sin capturas",newAlbum:"Álbum nuevo",catchSummary:"Capturas de esta expedición",catchToast:"Capturaste {fish}",catchToastMeta:"+{points} pts · +{notes} notas{newTag}",catchHudMeta:"{rarity} · +{points} pts · +{notes} notas{newTag}",newTag:" · ¡Nuevo en el álbum!",noCatch:"Aún no capturaste peces. Haz un lanzamiento más seguro y mantén la línea en SEGURA.",rareFish:"Raro",commonFish:"Común",nextCastWin:"Próximo lanzamiento: repite el patrón de tensión estable y carga más si el reloj aprieta.",nextCastFail:"Próximo lanzamiento: devuelve antes el indicador a SEGURA. Si sigue saliendo, mejora el control del carrete o la resistencia de línea.",nextCastFailSafe:"Próximo lanzamiento: la tensión estuvo casi siempre SEGURA. Carga más o mejora la fuerza de caña y la calidad del cebo para ganar tiempo de captura.",nextMissionPreview:"Próximo cambio del arrecife: {mission} · {name}. {special}Regla: {rule}. Objetivo: {goal} capturas."
   };
 
   Object.assign(text.es, {
@@ -632,6 +635,14 @@
     return stageLocaleOverrides[activeLocale]?.[key] || t(key);
   }
 
+  function missionRuleLabel(zone) {
+    return stageT(`rule${zone.rule[0].toUpperCase()}${zone.rule.slice(1)}`);
+  }
+
+  function missionName(zone) {
+    return zone.name[locale] || zone.name.en;
+  }
+
   const levelTerms = {
     en: "Level",
     "zh-Hant": "等級",
@@ -842,7 +853,7 @@
     const zone = zones[index];
     const locked = index + 1 > save.unlockedZone;
     const missionLabel = t("mission", { stage: zone.stage });
-    const ruleLabel = stageT(`rule${zone.rule[0].toUpperCase()}${zone.rule.slice(1)}`);
+    const ruleLabel = missionRuleLabel(zone);
     button.dataset.zone = zone.id;
     button.dataset.stage = String(zone.stage);
     button.dataset.stageIndex = String(index);
@@ -1312,6 +1323,26 @@
     const totalReelTime = run.safeReelTime + run.dangerReelTime;
     const mostlySafe = totalReelTime >= 0.75 && run.safeReelTime / totalReelTime >= 0.7;
     nodes.resultAdviceText.textContent = won ? t("nextCastWin") : t(mostlySafe ? "nextCastFailSafe" : "nextCastFail");
+    const zoneIndex = zones.indexOf(run.zone);
+    const nextVariation = won
+      ? zones.slice(zoneIndex + 1).find((zone) => zone.checkpoint || zone.rule !== run.zone.rule)
+      : null;
+    if (nextVariation) {
+      const special = nextVariation.checkpoint && nextVariation.boss
+        ? `${t("bossMission")}: ${missionName(nextVariation.boss)} · `
+        : "";
+      nodes.resultMissionPreview.textContent = t("nextMissionPreview", {
+        mission: t("mission", { stage: nextVariation.stage }),
+        name: missionName(nextVariation),
+        special,
+        rule: missionRuleLabel(nextVariation),
+        goal: nextVariation.goal,
+      });
+      nodes.resultMissionPreview.classList.remove("is-hidden");
+    } else {
+      nodes.resultMissionPreview.textContent = "";
+      nodes.resultMissionPreview.classList.add("is-hidden");
+    }
     resultDecisionCommitted = false;
     for (const button of [nodes.nextZoneBtn, nodes.retryBtn, nodes.resultMenuBtn]) button.disabled = false;
     const primaryResultAction = syncResultActions(won);
