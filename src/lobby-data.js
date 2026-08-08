@@ -338,7 +338,7 @@ window.WONDER_LOBBY = {
       internalTrial: "index.html?trial=1",
       description: { en: "Classic Spider Solitaire with 1 Suit, 2 Suits, 4 Suits, smooth drag-and-drop, Hint, and unlimited Undo.", "zh-Hant": "經典蜘蛛接龍，提供 1、2、4 花色、順暢拖曳、提示與不限次數回退。", "zh-Hans": "经典蜘蛛接龙，提供 1、2、4 花色，流畅拖拽、提示与不限次数撤销。", ja: "1・2・4スート、スムーズなドラッグ、ヒント、無制限Undoに対応したクラシック・スパイダーソリティア。", ko: "1·2·4무늬, 부드러운 드래그, 힌트와 무제한 실행 취소를 지원하는 클래식 스파이더 솔리테어.", es: "Solitario Spider clásico con 1, 2 y 4 palos, arrastre fluido, pistas y deshacer ilimitado.", "pt-BR": "Spider Solitaire clássico com 1, 2 e 4 naipes, arraste fluido, dicas e desfazer ilimitado.", fr: "Solitaire Spider classique avec 1, 2 et 4 couleurs, glisser-déposer fluide, indices et annulation illimitée.", de: "Klassisches Spider-Solitär mit 1, 2 und 4 Farben, flüssigem Drag-and-Drop, Hinweisen und unbegrenztem Rückgängigmachen.", it: "Spider Solitaire classico con 1, 2 e 4 semi, trascinamento fluido, suggerimenti e annullamenti illimitati.", ru: "Классический Пасьянс Паук на 1, 2 или 4 масти с плавным перетаскиванием, подсказками и отменой ходов.", hi: "1, 2 और 4 सूट, सहज ड्रैग, संकेत और असीमित वापस लेने के साथ क्लासिक स्पाइडर सॉलिटेयर।", ar: "سوليتير العنكبوت الكلاسيكي بنوع واحد أو نوعين أو أربعة أنواع مع سحب سلس وتلميحات وتراجع غير محدود." },
       meta: { en: ["1 / 2 / 4 Suits", "8 Completed Sets", "Undo + Hint"], "zh-Hant": ["1 / 2 / 4 花色", "8 組完成", "回退 + 提示"] },
-      art: { kind: "image", background: "assets/weightplay-logo.webp", hideHero: true },
+      art: { kind: "image", background: "assets/spider-solitaire-cover.png", hideHero: true },
     },
     {
       id: "animal-sunbeam-garden",

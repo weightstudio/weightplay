@@ -1022,10 +1022,10 @@ const KL_I18N = {
       }
       if (move.type === "tableauToFoundation") {
         const source = this.tableau.columns[move.fromColumn];
-        const card = source[move.startRow];
-        if (move.startRow === null || move.startRow === undefined) return false;
-        const moved = source.slice(move.startRow);
-        if (moved.length !== 1) return false;
+        if (!source || !Number.isInteger(move.startRow)) return false;
+        const moveGroup = this.tableau.canTakeFrom(move.fromColumn, move.startRow);
+        if (!moveGroup || moveGroup.cards.length !== 1) return false;
+        const card = moveGroup.cards[0];
         const foundation = this.foundations[move.foundationIndex];
         if (!this.rules.canPlaceOnFoundation(card, foundation)) return false;
         source.splice(move.startRow);
@@ -1038,10 +1038,11 @@ const KL_I18N = {
       }
       if (move.type === "tableauToTableau") {
         const source = this.tableau.columns[move.fromColumn];
-        if (move.startRow === null || move.startRow === undefined) return false;
-        const group = source.slice(move.startRow);
-      if (!group.length) return false;
         const destination = this.tableau.columns[move.toColumn];
+        if (!source || !destination || !Number.isInteger(move.startRow)) return false;
+        const moveGroup = this.tableau.canTakeFrom(move.fromColumn, move.startRow);
+        if (!moveGroup) return false;
+        const group = moveGroup.cards;
         if (!this.rules.canPlaceOnTableau(group[0], destination.at(-1))) return false;
         const moving = source.splice(move.startRow);
         destination.push(...moving);
@@ -2402,6 +2403,10 @@ const KL_I18N = {
     return isQaFixtureEnabled("tableau");
   }
 
+  function isQaDrawFixtureEnabled() {
+    return isQaFixtureEnabled("draw");
+  }
+
   function applyQaWinFixture() {
     if (!isQaWinFixtureEnabled() || game.completed) return;
     if (!state.active) openBattle();
@@ -2523,6 +2528,50 @@ const KL_I18N = {
     renderBoard();
   }
 
+  function applyQaDrawFixture() {
+    if (!isQaDrawFixtureEnabled() || game.completed) return;
+    if (!state.active) openBattle();
+    if (!state.active) return;
+    clearDealAnimationTimers();
+    const cards = [
+      ...game.tableau.columns.flat(),
+      ...game.stock.cards,
+      ...game.waste.cards,
+      ...game.foundations.flatMap((foundation) => foundation.cards),
+    ];
+    const firstCard = cards.find((card) => card.suit === "spades" && Number(card.rank) === 1);
+    const secondCard = cards.find((card) => card.suit === "hearts" && Number(card.rank) === 2);
+    const thirdCard = cards.find((card) => card.suit === "clubs" && Number(card.rank) === 3);
+    const drawCards = [firstCard, secondCard, thirdCard].filter(Boolean);
+    if (drawCards.length !== 3) return;
+    game.tableau.columns.forEach((column) => {
+      column.length = 0;
+    });
+    game.stock.clear();
+    game.waste.clear();
+    game.foundations.forEach((foundation) => foundation.clear());
+    cards
+      .filter((card) => !drawCards.includes(card))
+      .forEach((card, index) => {
+        card.faceUp = false;
+        game.tableau.columns[index % game.tableau.columns.length].push(card);
+      });
+    [thirdCard, secondCard, firstCard].forEach((card) => {
+      card.faceUp = false;
+      game.stock.cards.push(card);
+    });
+    game.moveCount = 0;
+    game.moveHistory = [];
+    game.completed = false;
+    state.dealSequence = null;
+    state.elapsed = 0;
+    state.boardAnimationInProgress = false;
+    state.autoFinishing = false;
+    state.resultShown = false;
+    state.lossRecordedForCurrentBoard = false;
+    renderBoard();
+  }
+
   function applyQaAutoFinishFixture() {
     if (!isQaAutoFinishFixtureEnabled() || game.completed) return;
     if (!state.active) openBattle();
@@ -2613,6 +2662,10 @@ const KL_I18N = {
     if (isQaTableauFixtureEnabled()) {
       const totalCards = state.dealSequence?.size || 28;
       window.setTimeout(applyQaTableauFixture, DEAL_INITIAL_DELAY_MS + totalCards * DEAL_STEP_MS + 80);
+    }
+    if (isQaDrawFixtureEnabled()) {
+      const totalCards = state.dealSequence?.size || 28;
+      window.setTimeout(applyQaDrawFixture, DEAL_INITIAL_DELAY_MS + totalCards * DEAL_STEP_MS + 80);
     }
     window.setTimeout(() => {
       window.dispatchEvent(new CustomEvent("weightplay:shell-sync"));

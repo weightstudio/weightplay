@@ -289,7 +289,7 @@
       const first = this.resolveColumn(move.fromColumn);
       const second = this.resolveColumn(move.toColumn);
       this.moveCount += 1;
-      this.score = Math.max(0, this.score + 5 + (first.revealed.length + second.revealed.length) * 10 + (first.completed.length + second.completed.length) * 100);
+      this.score = Math.max(0, this.score - 1 + (first.completed.length + second.completed.length) * 100);
       this.lastMove = { type: "move", fromColumn: move.fromColumn, toColumn: move.toColumn, cardIds: moving.map((card) => card.id) };
       this.recentMoves = [...this.recentMoves, { fromColumn: move.fromColumn, toColumn: move.toColumn, cardIds: moving.map((card) => card.id) }].slice(-8);
       this.rememberState();
@@ -304,7 +304,7 @@
       if (!cards) return false;
       this.moveCount += 1;
       this.dealCount += 1;
-      this.score = Math.max(0, this.score - 10);
+      this.score = Math.max(0, this.score - 1);
       this.lastMove = { type: "deal", cardIds: cards.map((card) => card.id) };
       this.recentMoves = [];
       this.rememberState();
@@ -1030,15 +1030,15 @@
         const longRuns = Array.from({ length: 4 }, (_, index) => makeSegment(index, Array.from({ length: 11 }, (_value, rankIndex) => 13 - rankIndex)));
         const shortRuns = Array.from({ length: 4 }, (_, index) => makeSegment(index + 4, Array.from({ length: 10 }, (_value, rankIndex) => 13 - rankIndex)));
         const smallRuns = [
-          makeSegment(0, [2, 1]), makeSegment(1, [2, 1]), makeSegment(2, [2, 1]), makeSegment(3, [2, 1]),
-          makeSegment(4, [3, 2, 1]), makeSegment(5, [3, 2, 1]), makeSegment(6, [3, 2, 1]), makeSegment(7, [3, 2, 1]),
+          makeSegment(8, [2, 1]), makeSegment(9, [2, 1]), makeSegment(10, [2, 1]), makeSegment(11, [2, 1]),
+          makeSegment(12, [3, 2, 1]), makeSegment(13, [3, 2, 1]), makeSegment(14, [3, 2, 1]), makeSegment(15, [3, 2, 1]),
         ];
         const finalColumns = [...longRuns, ...shortRuns, [...smallRuns[0], ...smallRuns[1], ...smallRuns[4], ...smallRuns[5]], [...smallRuns[2], ...smallRuns[3], ...smallRuns[6], ...smallRuns[7]]];
         const initialCounts = [6, 6, 6, 6, 5, 5, 5, 5, 5, 5];
         const tableau = finalColumns.map((column, columnIndex) => column.slice(0, initialCounts[columnIndex]));
         const stockCards = [];
         for (let dealIndex = 4; dealIndex >= 0; dealIndex -= 1) {
-          for (let columnIndex = 0; columnIndex < finalColumns.length; columnIndex += 1) {
+          for (let columnIndex = finalColumns.length - 1; columnIndex >= 0; columnIndex -= 1) {
             const card = finalColumns[columnIndex][initialCounts[columnIndex] + dealIndex];
             card.faceUp = false;
             stockCards.push(card);

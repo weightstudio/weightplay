@@ -167,8 +167,12 @@
     }
 
     draw(count = 1) {
-      const drawn = this.cards.splice(-count);
-      drawn.forEach((card) => { card.faceUp = true; });
+      const drawn = [];
+      for (let index = 0; index < count && this.cards.length; index += 1) {
+        const card = this.cards.pop();
+        card.faceUp = true;
+        drawn.push(card);
+      }
       return drawn;
     }
 
