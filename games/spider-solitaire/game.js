@@ -393,7 +393,7 @@
   }
 
   const stats = loadStats();
-  const state = { difficulty: Number(safeGet(STORAGE.difficulty, "1")) || 1, active: false, hasStarted: false, elapsed: 0, timer: null, hintTimer: null, pendingAction: null, dragging: null, renderGeneration: 0, winRecorded: false, lastFrameCards: new Map(), cardPool: new Map(), pendingDealDelays: null };
+  const state = { difficulty: Number(safeGet(STORAGE.difficulty, "1")) || 1, active: false, hasStarted: false, elapsed: 0, timer: null, hintTimer: null, pendingAction: null, dragging: null, renderGeneration: 0, winRecorded: false, lastFrameCards: new Map(), cardPool: new Map(), pendingDealDelays: null, completionFlyouts: new Set() };
   state.difficulty = DIFFICULTIES[state.difficulty] ? state.difficulty : 1;
   let game = new SpiderBoard(state.difficulty);
   const audio = new SoundEngine(STORAGE.sound);
@@ -447,6 +447,11 @@
     ui.tableauRow?.querySelectorAll(".hint-source,.hint-target,.drag-hover").forEach((node) => node.classList.remove("hint-source", "hint-target", "drag-hover"));
     ui.stockPile?.classList.remove("hint-source");
     if (state.hintTimer) window.clearTimeout(state.hintTimer);
+  }
+
+  function clearCompletionFlyouts() {
+    state.completionFlyouts.forEach((node) => node.remove());
+    state.completionFlyouts.clear();
   }
 
   function showHint(message) {
@@ -713,9 +718,16 @@
         clone.style.setProperty("--sequence-x", `${target.left + target.width / 2 - (rect.left + rect.width / 2)}px`);
         clone.style.setProperty("--sequence-y", `${target.top + target.height / 2 - (rect.top + rect.height / 2)}px`);
         clone.style.animationDelay = `${groupIndex * 70 + cardIndex * 12}ms`;
-        clone.addEventListener("animationend", () => clone.remove(), { once: true });
+        state.completionFlyouts.add(clone);
+        clone.addEventListener("animationend", () => {
+          state.completionFlyouts.delete(clone);
+          clone.remove();
+        }, { once: true });
         ui.dragLayer?.append(clone);
-        window.setTimeout(() => clone.remove(), 1100 + groupIndex * 70 + cardIndex * 12);
+        window.setTimeout(() => {
+          state.completionFlyouts.delete(clone);
+          clone.remove();
+        }, 1100 + groupIndex * 70 + cardIndex * 12);
       });
     });
   }
@@ -757,6 +769,7 @@
 
   function requestUndo() {
     clearHints();
+    clearCompletionFlyouts();
     if (!game.undo()) {
       showHint(t("no_moves"));
       return;
@@ -790,6 +803,7 @@
 
   function showMain() {
     stopClock();
+    clearCompletionFlyouts();
     ui.battleScreen.hidden = true;
     ui.mainScreen.hidden = false;
     document.body.dataset.screen = "main";
@@ -803,6 +817,7 @@
   }
 
   function beginNewGame() {
+    clearCompletionFlyouts();
     game = new SpiderBoard(state.difficulty);
     game.newGame(seedNow());
     state.hasStarted = true;
@@ -837,6 +852,7 @@
       beginNewGame();
       return;
     }
+    clearCompletionFlyouts();
     game.restart();
     state.active = true;
     state.elapsed = 0;
@@ -915,6 +931,7 @@
         state.lastFrameCards = new Map();
         state.cardPool = new Map();
         state.pendingDealDelays = null;
+        clearCompletionFlyouts();
         ui.resultOverlay.hidden = true;
         ui.tutorialOverlay.hidden = true;
         ui.confirmOverlay.hidden = true;
