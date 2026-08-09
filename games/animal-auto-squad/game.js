@@ -1703,6 +1703,7 @@
         activeActor: null,
         activeActors: [],
         lastAction: "",
+        waveInsight: "",
         lastDefeatEvent: null,
         effects: [] // visual particle FX
       },
@@ -2207,6 +2208,25 @@
 
   function stageLabel(stage) {
     return locale === "zh-Hant" ? `\u7b2c ${stage} \u95dc` : locale === "es" ? `Nivel ${stage}` : locale === "ja" ? `ステージ ${stage}` : `Stage ${stage}`;
+  }
+
+  function nextStagePreview(stageValue) {
+    const nextStage = Number(stageValue) + 1;
+    if (!Number.isFinite(nextStage) || nextStage > STAGE_COUNT) return "";
+    const definition = stageDefinition(nextStage);
+    const firstWave = enemyWaveStats(nextStage, 1);
+    const finalWave = enemyWaveStats(nextStage, WAVES_PER_STAGE);
+    const previewSquad = generateEnemySquad(nextStage, 1).slice(0, 2);
+    const pattern = previewSquad
+      .map((enemy) => {
+        const name = localizedField(enemy, "name");
+        const role = localizedField(enemy, "role");
+        return role ? `${name} - ${role}` : name;
+      })
+      .filter(Boolean)
+      .join(", ");
+    const bossText = definition.bossId ? ` \u00b7 ${t("stageBoss")}` : "";
+    return `${t("nextStage")}: ${stageLabel(nextStage)} - ${localizedField(definition, "name")}. ${t("stageWaveCount", { count: WAVES_PER_STAGE })}. ${t("stageEnemyRange", { first: firstWave.count, last: finalWave.count })}${bossText}${pattern ? `. ${pattern}` : ""}`;
   }
 
   function stageDefinition(stageValue) {
@@ -4027,6 +4047,7 @@
     state.combat.activeActor = null;
     state.combat.activeActors = [];
     state.combat.lastAction = "";
+    state.combat.waveInsight = "";
     state.combat.lastDefeatEvent = null;
     state.combat.effects = [];
     
@@ -4469,7 +4490,8 @@
     const enemyRole = enemyFront ? localizedField(enemyFront, "role") : "";
     const summary = t("combatSummary", { playerHp, playerMax, enemyHp, enemyMax });
     const front = t("combatFront", { player: playerName, enemy: enemyRole ? `${enemyName} - ${enemyRole}` : enemyName });
-    nodes.combatSummary.innerHTML = `<strong>${summary}</strong><span>${front}</span>`;
+    const insight = state.combat.lastAction || state.combat.waveInsight;
+    nodes.combatSummary.innerHTML = `<strong>${summary}</strong><span>${front}</span>${insight ? `<span data-combat-insight>${insight}</span>` : ""}`;
   }
 
   function drawEffectSprite(fx, progress, radius) {
@@ -4924,6 +4946,7 @@
     clearScheduledCombatTimers();
 
     if (result === "win") {
+      state.combat.waveInsight = state.combat.lastAction || state.combat.waveInsight;
       awardTeamXp(4 + state.stage * 2 + state.round);
       awardTrainingCoins(6 + state.stage * 2 + state.round);
       state.gold += 4 + Math.floor((state.stage + state.round) / 2);
@@ -5128,7 +5151,11 @@
     const remaining = Math.max(0, goal - save.teamXp);
     nodes.resultXpText.textContent = t("resultXpEarned", { earned: state.earnedTeamXp || 0, level: save.teamLevel, xp: save.teamXp, goal });
     nodes.resultGoldText.textContent = t("resultGoldEarned", { earned: state.earnedTrainingCoins || 0, total: save.coins });
-    nodes.resultStageText.textContent = t("resultStageSaved", { unlocked: save.unlockedStage, total: STAGE_COUNT });
+    const stagePreview = canAdvance ? nextStagePreview(state.stage) : "";
+    nodes.resultStageText.textContent = [
+      t("resultStageSaved", { unlocked: save.unlockedStage, total: STAGE_COUNT }),
+      stagePreview,
+    ].filter(Boolean).join(". ");
     nodes.resultGrowthText.textContent = t("resultGrowthNext", { atk: bonus.atk, hp: bonus.hp, remaining });
     [nodes.resultMenuBtn, nodes.nextStageBtn, nodes.retryBtn].forEach((button) => {
       button.classList.remove("is-hidden");

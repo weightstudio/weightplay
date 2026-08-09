@@ -7,3 +7,21 @@
 @media(max-height:500px) and (min-aspect-ratio:3/2){.main-screen{height:100vh;min-height:0;padding:7px;grid-template-rows:58px minmax(0,1fr);gap:7px}.main-hero{min-height:0;padding:7px 12px;gap:14px}.poster{height:100%;min-height:0}.main-copy{gap:3px;align-content:start}.main-copy small{font-size:11px}.main-copy h1{font-size:30px;line-height:1}.main-copy p{font-size:12px;line-height:1.15}.main-copy>span{font-size:12px}.main-copy button{min-height:42px;font-size:17px}.stage-canvas{grid-template-rows:58px 40px minmax(0,1fr)}.zone-panel{grid-template-rows:minmax(0,1fr)}#stageHint{display:none}.battle-live{grid-template-rows:52px 23px minmax(0,1fr) 16px;gap:3px;padding:4px}.battle-header{grid-template-columns:52px minmax(0,1fr) 220px 52px;padding:2px 4px}.battle-header>button{font-size:23px}.objective-row{font-size:12px;padding:1px 7px}.feedback{z-index:2;align-self:center;margin:0 120px 0 2px;padding:1px 4px;pointer-events:none}.result-card{width:min(760px,100%);display:grid;grid-template-columns:130px 1fr;gap:3px 12px;padding:9px}.result-card>img{grid-row:1/5;width:125px;height:125px}.result-card .modal-actions{grid-column:1/-1;margin-top:5px}.observatory-intro{grid-template-columns:70px 1fr}.observatory-intro img{width:64px;height:64px}.upgrades{grid-template-columns:repeat(3,1fr)}.upgrade{min-height:110px}.wake-card{grid-template-columns:58px 1fr auto}.wake-card img{width:56px;height:56px}.observatory-feedback{position:sticky;bottom:0;z-index:2;background:#06172ded}}
 body.wp-stage-select-active .stage-header>img,
 body.wp-stage-select-active #stageSummary{display:none}
+
+/* Main composition contract: square media, fixed primary height, and a deliberate
+   short-landscape poster/action split. */
+.main-hero{grid-template-columns:420px minmax(0,1fr);min-height:0}
+.poster{height:auto;aspect-ratio:1}
+.main-copy button{min-height:52px}
+@media(max-width:640px){
+  .main-hero{grid-template-columns:1fr;grid-template-rows:auto auto}
+  .poster{height:auto;aspect-ratio:1}
+  .main-copy button{min-height:52px}
+}
+@media(max-height:500px) and (min-aspect-ratio:3/2){
+  .main-screen{height:auto;min-height:0;grid-template-rows:58px auto}
+  .main-hero{grid-template-columns:300px minmax(0,1fr);grid-template-rows:minmax(0,1fr);min-height:0}
+  .poster{width:300px;height:300px;aspect-ratio:1}
+  .main-copy{align-self:start}
+  .main-copy button{min-height:52px}
+}
