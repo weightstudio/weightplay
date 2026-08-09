@@ -368,7 +368,7 @@
       stageSettleTimer = window.setTimeout(() => {
         stageSettleTimer = 0;
         restoreStageRail();
-      }, Math.max(420, Number(stageRail.dataset.wpStageSettleDuration || 360) + 80));
+      }, Math.max(600, Number(stageRail.dataset.wpStageSettleDuration || 360) + 240));
     };
     stageRail.addEventListener("pointerdown", (event) => {
       if (stageRail.dataset.wpStageVirtualDrag !== "true" || event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
