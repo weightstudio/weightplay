@@ -17083,5 +17083,7 @@ window.WeightPlayGameRuntimeLocales["de"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusionsverteidigung",
   "Zuglimit erreicht.": "Zuglimit erreicht.",
   "Zur Lobby": "Zur Lobby",
-  "Zwei Hinweise": "Zwei Hinweise"
+  "Zwei Hinweise": "Zwei Hinweise",
+  "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "Ein Impuls gelingt nur, wenn Farbe und Emblem innerhalb des sichtbaren Zeitfensters ausgerichtet sind.",
+  "The nearest marker did not match both required properties inside the window.": "Die nächste Markierung stimmte innerhalb des Fensters nicht mit beiden erforderlichen Eigenschaften überein."
 };

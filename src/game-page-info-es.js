@@ -3308,11 +3308,6 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
     title: "Pasadores de la Cámara Raíz Animal",
     intro: "Libera mecanismos en el orden correcto para resolver cámaras de materiales."
   };
-  resource.games["animal-spectrum-pulse"] = {
-    ...(resource.games["animal-spectrum-pulse"] || {}),
-    title: "Pulso del Espectro Animal",
-    intro: "Lee símbolos y activa pulsos en una aventura animal de precisión."
-  };
   Object.entries(resource.games).forEach(([id, game]) => {
     if (titles[id]) game.title = titles[id];
     if (difficulties[game.difficulty]) game.difficulty = difficulties[game.difficulty];

@@ -2308,11 +2308,11 @@ html body.wp-logical-battle-active.is-rune-playing .rune-app {
 }
 html body.wp-logical-battle-active.is-rune-playing .topbar {
   position: absolute !important;
-  inset: 8px auto auto 8px !important;
+  inset: 8px 8px auto 8px !important;
   display: grid !important;
-  grid-template-columns: 44px !important;
-  width: 44px !important;
-  height: 44px !important;
+  grid-template-columns: 48px minmax(0, 1fr) 48px !important;
+  width: auto !important;
+  height: 48px !important;
   margin: 0 !important;
   padding: 0 !important;
   transform: none !important;
@@ -2321,10 +2321,15 @@ html body.wp-logical-battle-active.is-rune-playing .topbar {
 html body.wp-logical-battle-active.is-rune-playing .topbar :is(.brand, .locale, .wp-generated-main-title, .wp-shell-main-title) {
   display: none !important;
 }
+html body.wp-logical-battle-active.is-rune-playing :is(.wp-generated-main-header, .wp-generated-main-title, .wp-shell-main-title) {
+  display: none !important;
+}
 html body.wp-logical-battle-active.is-rune-playing .pause-toggle {
-  position: absolute !important;
-  top: 0 !important;
-  right: -328px !important;
+  position: static !important;
+  top: auto !important;
+  right: auto !important;
+  grid-column: 3 !important;
+  justify-self: end !important;
 }
 html body.wp-logical-battle-active.is-rune-playing #gamePanel.game-panel {
   position: absolute !important;

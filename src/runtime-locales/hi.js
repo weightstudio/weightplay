@@ -17084,5 +17084,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Zufalls-Fusionsverteidigung": "ज़ुफॉल्स-फ़्यूज़न्सवर्टीडिगंग",
   "Zuglimit erreicht.": "ज़ुग्लिमिट एरीच्ट.",
   "Zur Lobby": "ज़ूर लॉबी",
-  "Zwei Hinweise": "ज़ेवेई हिंवेइज़"
+  "Zwei Hinweise": "ज़ेवेई हिंवेइज़",
+  "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "पल्स तभी सफल होता है जब दिखाई देने वाली समय विंडो में रंग और प्रतीक मेल खाते हैं।",
+  "The nearest marker did not match both required properties inside the window.": "सबसे निकटतम मार्कर विंडो के भीतर दोनों आवश्यक गुणों से मेल नहीं खाता था।"
 };

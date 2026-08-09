@@ -17083,5 +17083,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusions の詳細情報",
   "Zuglimit erreicht.": "ズーグリミット・エレヒト。",
   "Zur Lobby": "ズール・ロビー",
-  "Zwei Hinweise": "ツヴァイ・ヒンヴァイゼ"
+  "Zwei Hinweise": "ツヴァイ・ヒンヴァイゼ",
+  "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "見えるタイミングウィンドウ内で色とエンブレムが揃うと、パルスが成功します。",
+  "The nearest marker did not match both required properties inside the window.": "最も近いマーカーはウィンドウ内で必要な2つの属性に一致しませんでした。"
 };

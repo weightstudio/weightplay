@@ -318,6 +318,23 @@
     $("undo").disabled = !history.length;
   }
 
+  function boardCellMetrics(board) {
+    const cells = board.querySelectorAll(".cell");
+    const first = cells[0]?.getBoundingClientRect();
+    const right = cells[1]?.getBoundingClientRect();
+    const down = cells[6]?.getBoundingClientRect();
+    const boardRect = board.getBoundingClientRect();
+    const boardLayoutWidth = board.offsetWidth || boardRect.width;
+    const scale = boardLayoutWidth > 0
+      ? boardRect.width / boardLayoutWidth
+      : 1;
+    return {
+      scale: scale > 0 ? scale : 1,
+      unitX: right && first ? right.left - first.left : 0,
+      unitY: down && first ? down.top - first.top : 0,
+    };
+  }
+
   function commitMove(block, nextX, nextY, restoreFocusIndex = null) {
     history.push(blocks.map((entry) => ({ ...entry })));
     block.x = nextX;
@@ -370,19 +387,21 @@
   function dragStart(event, blockIndex) {
     if (drag || moveLocked) return;
     const board = $("board");
-    const cells = board.querySelectorAll(".cell");
-    const first = cells[0]?.getBoundingClientRect();
-    const right = cells[1]?.getBoundingClientRect();
-    const down = cells[6]?.getBoundingClientRect();
+    const { scale, unitX, unitY } = boardCellMetrics(board);
     const element = event.currentTarget;
+    const block = blocks[blockIndex];
+    const { minSteps, maxSteps } = legalRange(block);
     drag = {
       blockIndex,
       pointerId: event.pointerId,
       x: event.clientX,
       y: event.clientY,
       element,
-      unitX: right && first ? right.left - first.left : 0,
-      unitY: down && first ? down.top - first.top : 0,
+      scale,
+      unitX: unitX / scale,
+      unitY: unitY / scale,
+      minSteps,
+      maxSteps,
       visualDelta: 0,
     };
     element.classList.add("dragging");
@@ -407,11 +426,11 @@
     }
     const block = blocks[drag.blockIndex];
     const distance = block.dir
-      ? event.clientY - drag.y
-      : event.clientX - drag.x;
+      ? (event.clientY - drag.y) / drag.scale
+      : (event.clientX - drag.x) / drag.scale;
     const unit = block.dir ? drag.unitY : drag.unitX;
-    const negativeLimit = legalStep(block, -1) ? -unit : -8;
-    const positiveLimit = legalStep(block, 1) ? unit : 8;
+    const negativeLimit = drag.minSteps * unit;
+    const positiveLimit = drag.maxSteps * unit;
     drag.visualDelta = Math.max(
       negativeLimit,
       Math.min(positiveLimit, distance),
@@ -461,6 +480,10 @@
     if (!step) return false;
     const nextX = block.x + (block.dir ? 0 : step);
     const nextY = block.y + (block.dir ? step : 0);
+    return legalPosition(block, nextX, nextY);
+  }
+
+  function legalPosition(block, nextX, nextY) {
     return (
       nextX >= 0 &&
       nextY >= 0 &&
@@ -468,6 +491,14 @@
       nextY + block.h <= 6 &&
       !occupied(block, nextX, nextY, block.w, block.h)
     );
+  }
+
+  function legalRange(block) {
+    let minSteps = 0;
+    let maxSteps = 0;
+    while (legalStep(block, minSteps - 1)) minSteps -= 1;
+    while (legalStep(block, maxSteps + 1)) maxSteps += 1;
+    return { minSteps, maxSteps };
   }
 
   function keyboardMove(event, blockIndex) {
@@ -487,15 +518,8 @@
     event.preventDefault();
     if (event.repeat || moveLocked || drag || !legalStep(block, step)) return;
 
-    const cells = $("board").querySelectorAll(".cell");
-    const first = cells[0]?.getBoundingClientRect();
-    const adjacent = cells[block.dir ? 6 : 1]?.getBoundingClientRect();
-    const unit =
-      first && adjacent
-        ? block.dir
-          ? adjacent.top - first.top
-          : adjacent.left - first.left
-        : 0;
+    const { scale, unitX, unitY } = boardCellMetrics($("board"));
+    const unit = (block.dir ? unitY : unitX) / scale;
     const element = event.currentTarget;
     const nextX = block.x + (block.dir ? 0 : step);
     const nextY = block.y + (block.dir ? step : 0);
@@ -517,15 +541,25 @@
     }
     const { blockIndex, element, visualDelta, unitX, unitY } = drag;
     const block = blocks[blockIndex];
-    const distance = block.dir
-      ? event.clientY - drag.y
-      : event.clientX - drag.x;
-    const step = distance > 18 ? 1 : distance < -18 ? -1 : 0;
+    const unit = block.dir ? unitY : unitX;
+    const rawStep = unit ? visualDelta / unit : 0;
+    const step = Math.max(
+      drag.minSteps,
+      Math.min(drag.maxSteps, Math.round(rawStep)),
+    );
     const nextX = block.x + (block.dir ? 0 : step);
     const nextY = block.y + (block.dir ? step : 0);
     clearDrag();
 
-    if (legalStep(block, step)) {
+    if (!step) {
+      settleElement(element, block, visualDelta, 0, () => {
+        element.classList.remove("settling");
+        element.style.removeProperty("transform");
+      });
+      return;
+    }
+
+    if (legalPosition(block, nextX, nextY)) {
       const target = step * (block.dir ? unitY : unitX);
       settleElement(element, block, visualDelta, target, () =>
         commitMove(block, nextX, nextY),

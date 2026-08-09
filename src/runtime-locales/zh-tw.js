@@ -17084,5 +17084,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "Zufalls-Fusionsverteidigung": "融合融合",
   "Zuglimit erreicht.": "楚格限制權利。",
   "Zur Lobby": "祖爾大廳",
-  "Zwei Hinweise": "茨威‧欣威斯"
+  "Zwei Hinweise": "茨威‧欣威斯",
+  "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "只要顏色與徽章在可見的時機窗口內對齊，脈衝就會成功。",
+  "The nearest marker did not match both required properties inside the window.": "最近的標記在窗口內沒有同時符合兩項必要屬性。"
 };

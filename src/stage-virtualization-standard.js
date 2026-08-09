@@ -21,10 +21,14 @@
 
   function copyCard(source, target, index, total, poolNode) {
     const keep = new Set(["data-wp-stage-pool-node", "data-wp-stage-virtual-index"]);
+    const sourceClass = source.dataset.wpStageSourceClass || source.className;
     [...target.attributes].forEach((attribute) => {
       if (!keep.has(attribute.name)) target.removeAttribute(attribute.name);
     });
-    [...source.attributes].forEach((attribute) => target.setAttribute(attribute.name, attribute.value));
+    [...source.attributes].forEach((attribute) => {
+      if (attribute.name !== "class" && attribute.name !== "data-wp-stage-source-class") target.setAttribute(attribute.name, attribute.value);
+    });
+    target.className = sourceClass;
     target.dataset.wpStagePoolNode = poolNode;
     target.dataset.wpStageVirtualIndex = String(index);
     target.dataset.stageIndex = String(index);
@@ -32,7 +36,7 @@
     target.setAttribute("aria-setsize", String(total));
     target.setAttribute("aria-keyshortcuts", "ArrowLeft ArrowRight Home End");
     const locked = source.disabled || source.getAttribute("aria-disabled") === "true"
-      || source.classList.contains("locked") || source.classList.contains("is-locked");
+      || /(?:^|\s)(?:locked|is-locked)(?:\s|$)/.test(sourceClass);
     target.disabled = false;
     target.setAttribute("aria-disabled", String(locked));
     target.innerHTML = source.innerHTML;
@@ -53,6 +57,7 @@
     let lastPointer = 0;
     let moved = false;
     let settlingFrame = 0;
+    let anchorTimer = 0;
     let suppressClick = false;
     let rebuilding = false;
     let rebuildQueued = false;
@@ -156,6 +161,8 @@
     }
 
     function focusLogical(index) {
+      clearTimeout(anchorTimer);
+      anchorTimer = 0;
       position(index);
       const target = pool.find((card) => Number(card.dataset.wpStageVirtualIndex) === Math.round(logical));
       target?.focus({ preventScroll: true });
@@ -196,8 +203,21 @@
       logical = recommendedSource
         ? logicalIndex(recommendedSource, sources.indexOf(recommendedSource), options)
         : 0;
+      const focusedSourceIndex = sources.indexOf(document.activeElement);
+      const restoreFocus = focusedSourceIndex >= 0;
       sourceStore.replaceChildren(...sources);
-      sources.forEach((source) => source.classList.add("wp-stage-source-card"));
+      sources.forEach((source) => {
+        source.dataset.wpStageSourceClass = source.className;
+        source.classList.remove("stage-card", "page-card", "mission-card", "region-card", "route-card", "day-card", "zone-card", "expedition-card", "merge-stage-card", "zone-node");
+        source.setAttribute("aria-hidden", "true");
+        source.tabIndex = -1;
+        source.removeAttribute("aria-current");
+        source.removeAttribute("aria-keyshortcuts");
+        source.removeAttribute("aria-posinset");
+        source.removeAttribute("aria-setsize");
+        source.removeAttribute("data-wp-stage-recommended");
+        source.classList.add("wp-stage-source-card");
+      });
       pool = Array.from({ length: Math.min(poolSize, total) }, (_, index) => {
         const card = document.createElement(sources[0].tagName || "button");
         card.type = "button";
@@ -214,11 +234,19 @@
       rail.dataset.wpStageRecycleCount = "0";
       bindPool();
       position(logical);
+      if (restoreFocus) {
+        requestAnimationFrame(() => {
+          const focusedTarget = pool.find((card) => Number(card.dataset.wpStageVirtualIndex) === focusedSourceIndex);
+          focusedTarget?.focus({ preventScroll: true });
+        });
+      }
       const anchoredLogical = logical;
       requestAnimationFrame(() => {
         if (pointerId === null && rail.getClientRects().length) position(anchoredLogical);
       });
-      setTimeout(() => {
+      clearTimeout(anchorTimer);
+      anchorTimer = setTimeout(() => {
+        anchorTimer = 0;
         if (pointerId === null && rail.getClientRects().length) position(anchoredLogical);
       }, 120);
       return true;

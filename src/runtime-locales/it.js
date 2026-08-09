@@ -7359,7 +7359,7 @@ window.WeightPlayGameRuntimeLocales["it"] = {
   "Improvement: {value}%": "Miglioramento: {value}%",
   "Impulso a un tocco": "Impulso a un tocco",
   "Impulso de brasas": "Impulso di brasate",
-  "Impulso Spettrale Animale": "Impulso Spettarale Animale",
+  "Impulso Spettrale Animale": "Impulso Spettrale Animale",
   "IN": "IN",
   "In 2042, disappearances and attacks are spreading across Earth. Spark Paw Fia arrives in Signal Town after a video of a Lizard Person is dismissed as a fake. Explore the town, follow ten witnesses, cross the moonlit forest, and enter the abandoned neural laboratory. This release is one connected first chapter with no stage selection: your position, level, equipment, quests, opened chests, defeated monsters, and story checkpoints remain in this browser.": "Nel 2042, sparizioni e attacchi si stanno diffondendo su tutta la Terra. Spark Paw Fia arriva a Signal Town dopo che un video di un Lizard Person è stato liquidato come falso. Esplora la città, segui dieci testimoni, attraversa la foresta illuminata dalla luna ed entra nel laboratorio neurale abbandonato. Questa versione è un primo capitolo connesso senza selezione di fasi: la tua posizione, livello, equipaggiamento, missioni, forzieri aperti, mostri sconfitti e punti di controllo della storia rimangono in questo browser.",
   "In 2042, Fia follows a dismissed recording into a 57-mission investigation spanning six connected regions and a lunar refugee archive.": "Nel 2042, Fia segue una registrazione respinta in un'indagine di 57 missioni che abbraccia sei regioni collegate e un archivio di rifugiati lunari.",
@@ -17083,5 +17083,7 @@ window.WeightPlayGameRuntimeLocales["it"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusionsverteidigung",
   "Zuglimit erreicht.": "Zuglimit erreicht.",
   "Zur Lobby": "Zur Lobby",
-  "Zwei Hinweise": "Zwei Hinweise"
+  "Zwei Hinweise": "Zwei Hinweise",
+  "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "Un impulso riesce solo quando colore ed emblema si allineano entro la finestra di sincronizzazione visibile.",
+  "The nearest marker did not match both required properties inside the window.": "Il marcatore più vicino non coincideva con entrambe le proprietà richieste nella finestra."
 };

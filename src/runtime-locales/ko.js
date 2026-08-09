@@ -17084,5 +17084,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusionsverteidigung",
   "Zuglimit erreicht.": "Zuglimit erreicht.",
   "Zur Lobby": "주르 로비",
-  "Zwei Hinweise": "츠바이 힌바이제"
+  "Zwei Hinweise": "츠바이 힌바이제",
+  "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "보이는 타이밍 창 안에서 색상과 엠블럼이 모두 맞아야 펄스가 성공합니다.",
+  "The nearest marker did not match both required properties inside the window.": "가장 가까운 마커는 창 안에서 필요한 두 속성을 모두 충족하지 못했습니다."
 };

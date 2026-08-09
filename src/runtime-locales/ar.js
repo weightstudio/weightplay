@@ -17084,5 +17084,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusionsverteidigung",
   "Zuglimit erreicht.": "زوغليميت erreicht.",
   "Zur Lobby": "زور لوبي",
-  "Zwei Hinweise": "زوي هينويز"
+  "Zwei Hinweise": "زوي هينويز",
+  "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "ينجح النبض فقط عندما يتطابق اللون والشعار داخل نافذة التوقيت المرئية.",
+  "The nearest marker did not match both required properties inside the window.": "لم يتطابق المؤشر الأقرب مع الخاصيتين المطلوبتين داخل النافذة."
 };

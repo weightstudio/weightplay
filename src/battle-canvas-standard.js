@@ -24,6 +24,7 @@
     "animal-crystal-survivor": ["#gamePanel", 382, 780, 760, 334],
     "animal-triple-match": [".battle-canvas", 390, 788, 760, 334],
     "animal-gearpack-expedition": [".battle-canvas", 390, 788],
+    "animal-carnival-claw": [".battle-canvas", 390, 788, 760, 334],
     "animal-guard-yard": ["#playPanel", 390, 450],
     "animal-habitat-mahjong": [".battle-canvas", 390, 788],
     "animal-dice-bastion": [".battle-canvas", 390, 788, 760, 334],

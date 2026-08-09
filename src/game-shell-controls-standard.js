@@ -141,7 +141,7 @@
     }
     if (document.querySelector('script[src*="stage-virtualization-standard.js"]')) return;
     const script = document.createElement("script");
-    script.src = `${new URL("stage-virtualization-standard.js", sharedAssetBase).href}?v=20260809-stage-v6-2`;
+    script.src = `${new URL("stage-virtualization-standard.js", sharedAssetBase).href}?v=20260809-stage-v6-source-demotion-v8`;
     script.dataset.wpStageVirtualizationStandard = "true";
     document.body.append(script);
   }

@@ -204,8 +204,9 @@ body[data-wp-game-id="tripeaks-solitaire"] .tableau-area.variant-tripeaks {
   justify-content: center;
 }
 body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid {
-  --classic-card-width: clamp(44px, 10vw, 70px);
+  --classic-card-width: clamp(44px, min(10vw, 5.5vh), 70px);
   --classic-card-height: calc(var(--classic-card-width) * 1.42);
+  padding-bottom: 4px;
 }
 body[data-wp-game-id="tripeaks-solitaire"] .tableau-area.variant-tripeaks {
   --classic-card-width: clamp(42px, 9vw, 68px);
@@ -243,7 +244,7 @@ body[data-wp-game-id="pyramid-solitaire"] .stock-pile .stock-back {
   box-shadow: 0 7px 13px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.35);
   font-size: clamp(22px, 3vw, 30px);
 }
-body[data-wp-game-id="pyramid-solitaire"] .stock-pile { --pyramid-stock-card-width: clamp(44px, 10vw, 70px); }
+body[data-wp-game-id="pyramid-solitaire"] .stock-pile { --pyramid-stock-card-width: clamp(44px, min(10vw, 5.5vh), 70px); }
 body[data-wp-game-id="pyramid-solitaire"] .stock-pile b {
   min-width: 24px;
   padding: 3px 6px;
@@ -253,6 +254,15 @@ body[data-wp-game-id="pyramid-solitaire"] .stock-pile b {
 body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyramid-row {
   flex-basis: var(--classic-card-height);
   height: var(--classic-card-height);
+}
+
+@media (orientation: landscape) and (min-width: 700px) {
+  body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid {
+    --classic-card-width: clamp(48px, min(10vw, 7vh), 70px);
+  }
+  body[data-wp-game-id="pyramid-solitaire"] .stock-pile {
+    --pyramid-stock-card-width: clamp(48px, min(10vw, 7vh), 70px);
+  }
 }
 
 @media (orientation: landscape) and (max-height: 560px) {
@@ -285,7 +295,7 @@ body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyram
 }
 
 @media (max-width: 699px) {
-  body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid { --classic-card-width: clamp(44px, 10vw, 70px); }
+  body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid { --classic-card-width: clamp(44px, min(10vw, 5.5vh), 70px); }
   body[data-wp-game-id="tripeaks-solitaire"] .tableau-area.variant-tripeaks { --classic-card-width: clamp(42px, 9vw, 68px); }
   body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyramid-row,
   body[data-wp-game-id="tripeaks-solitaire"] .tableau-area.variant-tripeaks > .peak-row { flex-basis: calc(var(--classic-card-height) * .9); height: calc(var(--classic-card-height) * .9); }
