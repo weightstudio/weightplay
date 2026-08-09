@@ -103,7 +103,7 @@ window.WONDER_LOBBY = {
     {
       id: "animal-honey-shield",
       title: {
-        en: "Animal Honey Shield", "zh-Hant": "動物花蜜防線", "zh-Hans": "动物花蜜防线",
+        en: "Animal Honey Shield", "zh-Hant": "動物蜂蜜盾", "zh-Hans": "动物花蜜防线",
         ja: "どうぶつハニーシールド", ko: "애니멀 허니 실드", es: "Escudo de Miel Animal",
         "pt-BR": "Escudo de Mel Animal", fr: "Bouclier de Miel Animal",
         de: "Tierischer Honigschild", it: "Scudo di Miele Animale",

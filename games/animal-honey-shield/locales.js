@@ -23,7 +23,7 @@
     tutorialTitle:"Draw, watch, and repair",tutorial1:"Drag one short barrier between Pip and the hive.",tutorial2:"Releasing starts the wave. Red flashes show a weakening line.",tutorial3:"Draw another short segment before a gap opens.",tutorialStart:"Protect Pip",close:"Close"
   };
   const zhHant={
-    loading:"正在喚醒苜蓿草原…",title:"動物花蜜防線",language:"語言",backLobby:"返回 WeightPlay",
+    loading:"正在喚醒苜蓿草原…",title:"動物蜂蜜盾",language:"語言",backLobby:"返回 WeightPlay",
     posterAlt:"蜜蜂接近時，皮普躲在發光防線後方",eyebrow:"苜蓿光原救援解謎",pitch:"畫出發光花蜜線，在蜂群波次中修補弱點，保護苜蓿小犬皮普。",start:"開始遊戲",
     guideLabel:"遊戲指南",guideKicker:"WeightPlay 原創遊戲指南",guideTitle:"用最短又堅固的線保護皮普",guideIntro:"皮普走到苜蓿光原的蜂巢旁。蜂群飛行時畫出屏障，並在牠們碰到小犬前修補缺口。",
     howTitle:"遊玩方式",how1:"在草原上拖曳，畫出發光花蜜屏障。",how2:"放開後蜂群開始飛行；波次進行中仍可繼續補畫。",how3:"在倒數結束前，不讓任何蜜蜂碰到皮普。",

@@ -22,7 +22,7 @@
   }
   const defaultSave={unlocked:1,stars:{},best:{},shards:0,upgrades:{grip:0,aegis:0,spark:0},tutorial:false,aura:false};
   let lang=detectLocale(),save=loadSave(),stageIndex=Math.max(0,Math.min(29,save.unlocked-1)),run=null,raf=0,lastFrame=0,screen="main",sceneGeneration=0,activeTab="towers",resizeObserver=null,lifecycleSuspended=document.hidden,windowFocused=document.hasFocus(),modalOpener=null,resultActionClaimed=false,forgeDecisionReadyAt={};
-  const GAME_VERSION="v9";
+  const GAME_VERSION="v10";
   const STAGE_CARD_POOL_SIZE=9;
   let stageCardPool=[],stageWindowStart=0,stageBrowseLogical=stageIndex,stageSettleFrame=0;
   const images={};

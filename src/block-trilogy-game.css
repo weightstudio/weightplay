@@ -14,4 +14,9 @@ body[data-wp-game-id="animal-cratebound"] .stage-header>strong{grid-column:2!imp
 body[data-wp-game-id="animal-cratebound"] .stage-header #stageSummary{display:block;grid-column:3!important;grid-row:1!important;justify-self:end!important;width:auto!important;min-width:0!important;max-width:none!important;font-size:16px;line-height:1.05!important;white-space:nowrap}
 body[data-wp-game-id="animal-cratebound"] .stage-header>.stage-badge{display:none!important}
 @media(max-width:699px){body[data-wp-game-id="animal-cratebound"] .stage-header>strong{font-size:18px!important}}
-@media(max-height:500px) and (min-aspect-ratio:3/2){body[data-wp-game-id="animal-cratebound"] .stage-header>strong,body[data-wp-game-id="animal-cratebound"] .stage-header #stageSummary{font-size:30px!important}}
+body[data-wp-game-id="animal-cratebound"] [data-wp-logical-stage-canvas].stage-canvas{grid-template-rows:68px minmax(0,1fr) auto!important}
+body[data-wp-game-id="animal-cratebound"] [data-wp-logical-stage-canvas] .stage-hint{min-height:36px;padding-inline:8px;display:flex;align-items:center;justify-content:center;line-height:1.35}
+body[data-wp-game-id="animal-cratebound"] .stage-header>strong,
+body[data-wp-game-id="animal-cratebound"] .stage-header>div>strong{line-height:1.5!important}
+body[data-wp-game-id="animal-cratebound"] .stage-header #stageSummary{line-height:1.5!important}
+@media(max-height:500px) and (min-aspect-ratio:3/2){body[data-wp-game-id="animal-cratebound"] [data-wp-logical-stage-canvas].stage-canvas{grid-template-rows:58px minmax(0,1fr)!important}body[data-wp-game-id="animal-cratebound"] [data-wp-logical-stage-canvas] .stage-hint{display:none}body[data-wp-game-id="animal-cratebound"] .stage-header>strong,body[data-wp-game-id="animal-cratebound"] .stage-header>div>strong{font-size:20px!important;line-height:1.5!important}body[data-wp-game-id="animal-cratebound"] .stage-header #stageSummary{font-size:20px!important;line-height:1.5!important}}
