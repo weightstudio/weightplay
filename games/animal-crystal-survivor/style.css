@@ -1649,6 +1649,17 @@ body:not(.crystal-playing):not(.crystal-stage-select) .menu-copy {
   margin-inline: auto;
 }
 
+/* Interface V6: the shared shell owns Main/Stage Settings; keep the legacy
+   game-local control alive for its state bridge without rendering a duplicate. */
+#settingsControl {
+  display: none !important;
+}
+
+body.crystal-stage-select .wp-shell-settings-row,
+body.crystal-stage-select .wp-shell-settings-row > span:first-child {
+  font-size: 13.25px !important;
+}
+
 .stage-tabs {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

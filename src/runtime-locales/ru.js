@@ -14423,6 +14423,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "Target missed": "Цель пропущена",
   "Target order": "Целевой заказ",
   "Target Order": "Целевой заказ",
+  "Target reached · cross {remaining} more zones to complete.": "Цель достигнута · пройдите ещё {remaining} зон до завершения.",
   "Target reached: {n}/{target} salvage across {zones} zones.": "Цель достигнута: {n}/{target} спасти в {zones} зонах.",
   "Target: {value} -> {value}": "Цель: {value} -> {value}",
   "Targets": "Цели",
@@ -15822,6 +15823,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "Unsupported bamboo connection": "Неподдерживаемое бамбуковое соединение",
   "Untimed": "Безвременный",
   "Up": "Вверх",
+  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "Предстоящее изменение рифа: {mission} · {name}. {special}Правило: {rule}. Цель: {goal} уловов.",
   "Updated": "Обновлено",
   "Upgrade": "Обновление",
   "Upgrade · {cost}": "Обновление · {cost}",
@@ -17006,6 +17008,5 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "Zuglimit erreicht.": "Зуглимит эррайхт.",
   "Zur Lobby": "Цур Лобби",
   "Zwei Hinweise": "Цвай Хинвайзе",
-  "Target reached · cross {remaining} more zones to complete.": "Цель достигнута · пройдите ещё {remaining} зон до завершения.",
-  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "Предстоящее изменение рифа: {mission} · {name}. {special}Правило: {rule}. Цель: {goal} уловов.",
+  "The three gadgets support different approaches. Lightning Dash shortens committed movement time, useful when crossing a patrol line. Star Decoy pauses patrol movement for a level-based duration. Smoke Leaf resets Alert and grants a short cover window. Gadget strengths are rolled from Level 1 to Level 3 before a mission. A confirmed three-Diamond reroll changes those strengths, while confirmed five-Diamond insurance preserves optional treasure through one capture. Neither purchase unlocks a mission or replaces free Retry.": "Три устройства поддерживают разные подходы. «Молниеносный рывок» сокращает время выбранного перемещения и полезен для пересечения линии патруля. «Звёздная приманка» останавливает патрули на время, зависящее от уровня. «Дымчатый лист» сбрасывает тревогу и ненадолго создаёт окно укрытия. Сила гаджетов определяется от 1-го до 3-го уровня перед миссией. Подтверждённая смена за три алмаза изменяет эту силу, а подтверждённая страховка за пять алмазов сохраняет необязательное сокровище после одного захвата. Ни одна покупка не открывает миссию и не заменяет бесплатную кнопку «Повторить»."
 };

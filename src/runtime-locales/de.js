@@ -2194,7 +2194,6 @@ window.WeightPlayGameRuntimeLocales["de"] = {
   "Begin with one armed Shock Shield.": "Beginnen Sie mit einem bewaffneten Schockschild.",
   "Beginne am leuchtenden Startsiegel.": "Beginne am leuchtenden Startsiegel.",
   "Beginner": "Anfänger",
-  "Behalte vorhandene Paare in der Ablage im Blick, bevor du eine neue einzelne Schatzart aufnimmst.": "Behalte zwei Paare in der Ablage im Blick, bevor du eine neue einzelne Schatzart aufnimmst.",
   "Behavior Clue": "Verhaltenshinweis",
   "Behemot del Bosque": "Behemot del Bosque",
   "Behemot Lomo de Piedra": "Behemot Lomo de Piedra",
@@ -14423,6 +14422,7 @@ window.WeightPlayGameRuntimeLocales["de"] = {
   "Target missed": "Ziel verfehlt",
   "Target order": "Zielreihenfolge",
   "Target Order": "Zielreihenfolge",
+  "Target reached · cross {remaining} more zones to complete.": "Ziel erreicht · Durchquere noch {remaining} Zonen zum Abschluss.",
   "Target reached: {n}/{target} salvage across {zones} zones.": "Ziel erreicht: {n}/{target} Bergung in {zones} Zonen.",
   "Target: {value} -> {value}": "Ziel: {value} -> {value}",
   "Targets": "Ziele",
@@ -15822,6 +15822,7 @@ window.WeightPlayGameRuntimeLocales["de"] = {
   "Unsupported bamboo connection": "Freitragende Bambusverbindung",
   "Untimed": "Ohne Zeitangabe",
   "Up": "Auf",
+  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "Nächste Riffänderung: {mission} · {name}. {special}Regel: {rule}. Ziel: {goal} Fänge.",
   "Updated": "Aktualisiert",
   "Upgrade": "Upgrade",
   "Upgrade · {cost}": "Upgrade · {cost}",
@@ -17005,7 +17006,5 @@ window.WeightPlayGameRuntimeLocales["de"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusionsverteidigung",
   "Zuglimit erreicht.": "Zuglimit erreicht.",
   "Zur Lobby": "Zur Lobby",
-  "Zwei Hinweise": "Zwei Hinweise",
-  "Target reached · cross {remaining} more zones to complete.": "Ziel erreicht · Durchquere noch {remaining} Zonen zum Abschluss.",
-  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "Nächste Riffänderung: {mission} · {name}. {special}Regel: {rule}. Ziel: {goal} Fänge."
+  "Zwei Hinweise": "Zwei Hinweise"
 };

@@ -26,6 +26,7 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260720-canvas-max920-1" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -103,8 +104,7 @@
     </section>
   </div>
 
-  <section id="stageScreen" class="active-screen" hidden>
-    <div class="physical-canvas" data-wp-native-stage-canvas><div class="logical-canvas stage-canvas wp-stage-art-shell" data-wp-stage-art="../../assets/animal-triple-match-cover.webp" style="--wp-stage-art:url('../../assets/animal-triple-match-cover.webp')">
+  <section id="stageScreen" class="active-screen stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/animal-triple-match-cover.webp" style="--wp-stage-art:url('../../assets/animal-triple-match-cover.webp')" hidden>
       <header class="stage-header">
         <button id="stageBack" class="back-btn" type="button" aria-label="Back" data-t-aria="back" data-wp-return="stage">&larr;</button>
         <strong data-t="chooseStage">Choose a shelf</strong>
@@ -117,12 +117,10 @@
         <button class="stage-tab" type="button" aria-current="page" data-t="stages">Stages</button>
         <span aria-hidden="true"></span>
       </nav>
-    </div></div>
-    <div class="ad-reserve" aria-hidden="true"></div>
   </section>
 
   <section id="battleScreen" class="active-screen" hidden>
-    <div class="physical-canvas"><div class="logical-canvas battle-canvas">
+    <div class="physical-canvas"><div class="logical-canvas battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
           <button id="battleBack" class="back-btn" type="button" aria-label="Back" data-t-aria="back" data-wp-return="battle">&larr;</button>
@@ -171,6 +169,7 @@
   <script src="../../src/analytics.js"></script>
   <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
   <script src="game.js?v=20260804-stage-shortcuts-v4-60a0ee6c"></script>
+  <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-main-pull-guard1"></script>
 <section class="game-page-info game-page-info-static" aria-label="Jogo Triplo Animal informações do jogo">

@@ -14422,6 +14422,7 @@ window.WeightPlayGameRuntimeLocales["it"] = {
   "Target missed": "Obiettivo mancato",
   "Target order": "Ordine di destinazione",
   "Target Order": "Ordine di destinazione",
+  "Target reached · cross {remaining} more zones to complete.": "Obiettivo raggiunto · attraversa altre {remaining} zone per completare.",
   "Target reached: {n}/{target} salvage across {zones} zones.": "Obiettivo raggiunto: {n}/{target} salvataggio in {zones} zone.",
   "Target: {value} -> {value}": "Obiettivo: {value} -> {value}",
   "Targets": "Obiettivi",
@@ -15821,6 +15822,7 @@ window.WeightPlayGameRuntimeLocales["it"] = {
   "Unsupported bamboo connection": "Connessione in bambù non supportata",
   "Untimed": "Senza orario",
   "Up": "Su",
+  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "Prossimo cambio della barriera: {mission} · {name}. {special}Regola: {rule}. Obiettivo: {goal} catture.",
   "Updated": "Aggiornato",
   "Upgrade": "Aggiorna",
   "Upgrade · {cost}": "Migliora · {cost}",
@@ -17004,7 +17006,5 @@ window.WeightPlayGameRuntimeLocales["it"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusionsverteidigung",
   "Zuglimit erreicht.": "Zuglimit erreicht.",
   "Zur Lobby": "Zur Lobby",
-  "Zwei Hinweise": "Zwei Hinweise",
-  "Target reached · cross {remaining} more zones to complete.": "Obiettivo raggiunto · attraversa altre {remaining} zone per completare.",
-  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "Prossimo cambio della barriera: {mission} · {name}. {special}Regola: {rule}. Obiettivo: {goal} catture.",
+  "Zwei Hinweise": "Zwei Hinweise"
 };

@@ -14423,6 +14423,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Target missed": "الهدف غاب",
   "Target order": "ترتيب الهدف",
   "Target Order": "ترتيب الهدف",
+  "Target reached · cross {remaining} more zones to complete.": "تم الوصول إلى الهدف · اعبر {remaining} مناطق أخرى للإكمال.",
   "Target reached: {n}/{target} salvage across {zones} zones.": "تم الوصول إلى الهدف: {n}/{target} الإنقاذ عبر مناطق {zones}.",
   "Target: {value} -> {value}": "الهدف: {value} -> {value}",
   "Targets": "الأهداف",
@@ -15822,6 +15823,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Unsupported bamboo connection": "اتصال الخيزران غير معتمد",
   "Untimed": "غير محدد بوقت",
   "Up": "لأعلى",
+  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "تغيير الشعاب القادم: {mission} · {name}. {special}القاعدة: {rule}. الهدف: {goal} عمليات صيد.",
   "Updated": "تم التحديث",
   "Upgrade": "ترقية",
   "Upgrade · {cost}": "يرقي ·{cost}",
@@ -17005,7 +17007,5 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusionsverteidigung",
   "Zuglimit erreicht.": "زوغليميت erreicht.",
   "Zur Lobby": "زور لوبي",
-  "Zwei Hinweise": "زوي هينويز",
-  "Target reached · cross {remaining} more zones to complete.": "تم الوصول إلى الهدف · اعبر {remaining} مناطق أخرى للإكمال.",
-  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "تغيير الشعاب القادم: {mission} · {name}. {special}القاعدة: {rule}. الهدف: {goal} عمليات صيد.",
+  "Zwei Hinweise": "زوي هينويز"
 };

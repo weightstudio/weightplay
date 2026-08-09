@@ -22,6 +22,7 @@
     "animal-rift-salvage": [".battle-canvas", 390, 788, 760, 334],
     "animal-cafe-rush": ["#playPanel", 382, 780, 760, 360],
     "animal-crystal-survivor": ["#gamePanel", 382, 780, 760, 334],
+    "animal-triple-match": [".battle-canvas", 390, 788, 760, 334],
     "animal-gearpack-expedition": [".battle-canvas", 390, 788],
     "animal-guard-yard": ["#playPanel", 390, 450],
     "animal-habitat-mahjong": [".battle-canvas", 390, 788],

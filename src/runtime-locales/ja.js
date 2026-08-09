@@ -14422,6 +14422,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Target missed": "ターゲットを外した",
   "Target order": "目標注文",
   "Target Order": "ターゲットオーダー",
+  "Target reached · cross {remaining} more zones to complete.": "目標達成・あと {remaining} ゾーンを越えると完了です。",
   "Target reached: {n}/{target} salvage across {zones} zones.": "目標達成: {zones} ゾーン全体で{n}/{target} サルベージ。",
   "Target: {value} -> {value}": "ターゲット: {value} -> {value}",
   "Targets": "ターゲット",
@@ -15821,6 +15822,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Unsupported bamboo connection": "サポートされていない竹の接続",
   "Untimed": "期限なし",
   "Up": "上へ",
+  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "次のリーフ変化：{mission}・{name}。{special}ルール：{rule}。目標：{goal}匹捕獲。",
   "Updated": "更新されました",
   "Upgrade": "アップグレード",
   "Upgrade · {cost}": "アップグレード · {cost}",
@@ -17004,7 +17006,5 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusions の詳細情報",
   "Zuglimit erreicht.": "ズーグリミット・エレヒト。",
   "Zur Lobby": "ズール・ロビー",
-  "Zwei Hinweise": "ツヴァイ・ヒンヴァイゼ",
-  "Target reached · cross {remaining} more zones to complete.": "目標達成・あと {remaining} ゾーンを越えると完了です。",
-  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "次のリーフ変化：{mission}・{name}。{special}ルール：{rule}。目標：{goal}匹捕獲。"
+  "Zwei Hinweise": "ツヴァイ・ヒンヴァイゼ"
 };

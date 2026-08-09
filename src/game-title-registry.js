@@ -1128,7 +1128,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ko": "동물 상자에 묶인 동물",
     "es": "Cajas Enlazadas Animales",
     "pt-BR": "Caixa de animais",
-    "fr": "Caisse d'animaux",
+    "fr": "Animal Cratebound",
     "de": "Tierkistengebunden",
     "it": "Animale legato alla cassa",
     "ru": "Животное в ящике",

@@ -14423,6 +14423,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Target missed": "목표를 놓쳤습니다",
   "Target order": "대상 주문",
   "Target Order": "목표 주문",
+  "Target reached · cross {remaining} more zones to complete.": "목표 달성 · {remaining}개 구역을 더 통과하면 완료됩니다.",
   "Target reached: {n}/{target} salvage across {zones} zones.": "목표 도달: {n}/{target} {zones} 구역 전체에서 인양.",
   "Target: {value} -> {value}": "대상: {value} -> {value}",
   "Targets": "대상",
@@ -15822,6 +15823,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Unsupported bamboo connection": "지원되지 않는 대나무 연결",
   "Untimed": "시간 제한 없음",
   "Up": "위로",
+  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "예정된 암초 변화: {mission} · {name}. {special}규칙: {rule}. 목표: {goal}마리 포획.",
   "Updated": "업데이트됨",
   "Upgrade": "업그레이드",
   "Upgrade · {cost}": "업그레이드 · {cost}",
@@ -17005,7 +17007,5 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Zufalls-Fusionsverteidigung": "Zufalls-Fusionsverteidigung",
   "Zuglimit erreicht.": "Zuglimit erreicht.",
   "Zur Lobby": "주르 로비",
-  "Zwei Hinweise": "츠바이 힌바이제",
-  "Target reached · cross {remaining} more zones to complete.": "목표 달성 · {remaining}개 구역을 더 통과하면 완료됩니다.",
-  "Upcoming reef change: {mission} · {name}. {special}Rule: {rule}. Goal: {goal} catches.": "예정된 암초 변화: {mission} · {name}. {special}규칙: {rule}. 목표: {goal}마리 포획."
+  "Zwei Hinweise": "츠바이 힌바이제"
 };
