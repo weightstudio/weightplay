@@ -524,6 +524,24 @@
       return Boolean(this.game.sourceCard(source)?.faceUp && this.game.legalTableauSource(source));
     }
     cardDestination(source) { if (source.zone === "tableau") return { zone: "tableau", pile: source.pile }; if (source.zone === "free") return { zone: "free", index: source.index }; return null; }
+    sequenceCueSize(source, destination) {
+      if (this.config.variant !== "freecell" || source?.zone !== "tableau" || destination?.zone !== "tableau") return 0;
+      return this.game.groupFrom(source).length;
+    }
+    showSequenceCue(size) {
+      if (size < 2 || !this.nodes.boardStatus) return;
+      const message = this.config.sequenceCue?.[this.locale];
+      if (!message) return;
+      this.nodes.boardStatus.dataset.state = "success";
+      this.nodes.boardStatus.textContent = text(message, { count: size });
+      clearTimeout(this.statusTimer);
+      this.statusTimer = setTimeout(() => {
+        if (this.nodes.boardStatus && !this.game.won && !this.game.lost) {
+          delete this.nodes.boardStatus.dataset.state;
+          this.nodes.boardStatus.textContent = "";
+        }
+      }, 1400);
+    }
     handleClick(event) {
       if (event.target.closest("[data-action=clear-toast]")) return;
       const card = event.target.closest("[data-source]");
@@ -572,7 +590,8 @@
       if (!source && !dest) return;
       if (this.game.selected && dest) {
         this.pendingMoveRects = this.captureMoveRects();
-        if (this.game.moveClassic(this.game.selected, dest)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.game.selected = null; this.render(); }
+        const sequenceSize = this.sequenceCueSize(this.game.selected, dest);
+        if (this.game.moveClassic(this.game.selected, dest)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.game.selected = null; this.render(); this.showSequenceCue(sequenceSize); }
         else { this.pendingMoveRects = null; this.feedback(this.t("wrong")); }
         return;
       }
@@ -602,7 +621,8 @@
       const source = drag.source; const targetSource = target.dataset.source ? JSON.parse(target.dataset.source) : null; const dest = target.dataset.dest ? JSON.parse(target.dataset.dest) : this.cardDestination(targetSource);
       if ((this.config.variant === "freecell" || this.config.variant === "yukon") && dest) {
         this.pendingMoveRects = this.captureMoveRects();
-        if (this.game.moveClassic(source, dest)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); }
+        const sequenceSize = this.sequenceCueSize(source, dest);
+        if (this.game.moveClassic(source, dest)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); this.showSequenceCue(sequenceSize); }
         else { this.pendingMoveRects = null; this.feedback(this.t("wrong")); }
       }
       else if (this.config.variant === "pyramid") {
@@ -638,7 +658,8 @@
         this.nodes.comboValue.classList.add("combo-pop");
       } else if (!this.game.combo) this.nodes.comboValue.classList.remove("combo-pop");
       this.renderedCombo = this.game.combo;
-      this.nodes.boardStatus.textContent = this.game.won ? this.t("win") : this.game.lost ? this.t("lose") : "";
+       delete this.nodes.boardStatus.dataset.state;
+       this.nodes.boardStatus.textContent = this.game.won ? this.t("win") : this.game.lost ? this.t("lose") : "";
       this.renderSlots(); this.renderTableau(); this.markValidTargets(); this.showResult(); this.animateMovedCards(); this.animateRemovedCards();
     }
     renderSlots() {

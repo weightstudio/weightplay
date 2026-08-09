@@ -100,6 +100,7 @@ body[data-wp-game-id="tripeaks-solitaire"] .feature-list { display: none !import
 .stock-back, .back-mark { color: #bfe2ff; font-size: 24px; font-weight: 900; }
 .stock-pile b { position: absolute; right: 4px; bottom: 3px; min-width: 20px; padding: 2px 4px; border-radius: 6px; color: #122038; background: var(--classic-gold); font-size: 10px; text-align: center; }
 .board-status { min-height: 18px; color: var(--classic-gold); font-size: 12px; font-weight: 800; text-align: center; }
+.board-status[data-state="success"] { animation: classic-sequence-cue 420ms cubic-bezier(.2,.8,.3,1); }
 .tableau-area { --classic-pile-step: 19px; position: relative; display: flex; min-height: 0; flex: 1; gap: 6px; align-items: flex-start; justify-content: center; overflow: auto; padding: 4px 2px 36px; }
 .tableau-area.variant-pyramid, .tableau-area.variant-tripeaks { --classic-card-width: clamp(42px, 11vw, 68px); --classic-card-height: calc(var(--classic-card-width) * 1.42); flex-direction: column; align-items: center; justify-content: center; overflow: auto; }
 .tableau-area.variant-pyramid > .pyramid-row, .tableau-area.variant-tripeaks > .peak-row { width: 100%; flex: 0 0 calc(var(--classic-card-height) * .62); height: calc(var(--classic-card-height) * .62); overflow: visible; }
@@ -156,6 +157,11 @@ body[data-wp-game-id="tripeaks-solitaire"] .feature-list { display: none !import
   0% { opacity: .45; transform: scale(.72); color: var(--classic-text); }
   58% { opacity: 1; transform: scale(1.28); color: var(--classic-gold); }
   100% { opacity: 1; transform: scale(1); color: inherit; }
+}
+@keyframes classic-sequence-cue {
+  0% { opacity: .45; transform: scale(.92); }
+  55% { opacity: 1; transform: scale(1.04); }
+  100% { opacity: 1; transform: scale(1); }
 }
 .removed-card + .removed-card { display: none; }
 .classic-toast { position: absolute; left: 50%; bottom: 10px; z-index: 20; max-width: calc(100% - 24px); padding: 8px 14px; border: 1px solid rgba(255,255,255,.18); border-radius: 99px; color: #17233a; background: var(--classic-gold); font-size: 12px; font-weight: 800; transform: translateX(-50%); }
