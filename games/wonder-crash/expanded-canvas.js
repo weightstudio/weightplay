@@ -327,7 +327,10 @@
       const pitch = stageCardPitch();
       const fraction = value - anchor;
       const adjustment = (cardRect.left + cardRect.width / 2 - (railRect.left + railRect.width / 2)) + fraction * pitch;
-      const nextScrollLeft = stageRail.scrollLeft + adjustment;
+      const maximum = Math.max(0, stageRail.scrollWidth - stageRail.clientWidth);
+      const nextScrollLeft = getComputedStyle(stageRail).direction === "rtl"
+        ? Math.max(-maximum, Math.min(0, stageRail.scrollLeft + adjustment))
+        : Math.max(0, Math.min(maximum, stageRail.scrollLeft + adjustment));
       if (smooth) animateStageRailTo(nextScrollLeft, Math.max(240, Number(stageRail.dataset.wpStageSettleDuration || 360)));
       else stageRail.scrollLeft = nextScrollLeft;
       return value;

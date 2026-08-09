@@ -2133,7 +2133,13 @@ function stageWindowLimit() {
 }
 
 function desiredStageWindow(index) {
-  return clamp(Math.floor(Number(index) || 0) - Math.floor(STAGE_CARD_POOL_SIZE / 2), 0, stageWindowLimit());
+  const safeIndex = Math.floor(Number(index) || 0);
+  if (!stageCardPool.length) return clamp(safeIndex - Math.floor(STAGE_CARD_POOL_SIZE / 2), 0, stageWindowLimit());
+  const currentEnd = stageWindowStart + stageCardPool.length - 1;
+  if (safeIndex < stageWindowStart + 2 || safeIndex > currentEnd - 2) {
+    return clamp(safeIndex - Math.floor(STAGE_CARD_POOL_SIZE / 2), 0, stageWindowLimit());
+  }
+  return stageWindowStart;
 }
 
 function bindStageCard(button, index) {
