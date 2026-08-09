@@ -145,7 +145,10 @@
       if (center && target) {
         const railRect = rail.getBoundingClientRect();
         const cardRect = target.getBoundingClientRect();
-        rail.scrollLeft += (cardRect.left + cardRect.width / 2 - (railRect.left + railRect.width / 2));
+        const coordinateScale = rail.clientWidth > 0 && railRect.width > 0
+          ? railRect.width / rail.clientWidth
+          : 1;
+        rail.scrollLeft += (cardRect.left + cardRect.width / 2 - (railRect.left + railRect.width / 2)) / coordinateScale;
       }
       rail.dataset.wpStageDragLogical = logical.toFixed(4);
       syncCurrent();

@@ -103,7 +103,7 @@
 
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
-      <a class="main-return" href="/" data-wp-return="main" data-klocale-aria="ui.nav.back_to_lobby">
+      <a class="main-return" href="/en/" data-wp-return="main" data-klocale-aria="ui.nav.back_to_lobby">
         <span aria-hidden="true">&larr;</span>
         <img src="/assets/klondike-solitaire-cover.webp" alt="" />
       </a>
@@ -195,6 +195,7 @@
             <button id="autoFinishBtn" type="button" class="mini-btn" data-klocale="ui.action.auto_finish">Auto Finish</button>
           </div>
         </section>
+        <p id="battleTip" class="battle-tip" aria-live="polite">Tap a legal card to move it automatically. Drag a card when you want to choose the destination.</p>
         <section id="tableauRow" class="tableau-row" data-klocale-aria="ui.board.tableau" aria-label="Tableau"></section>
       </section>
       <div id="resultOverlay" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
@@ -222,11 +223,9 @@
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine3"></script>
-  <script src="game.js?v=20260809-klondike-v20"></script>
+  <script src="game.js?v=20260809-klondike-v21"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-main-pull-guard1"></script>
-<section class="game-page-info game-page-info-static" aria-label="克朗代克紙牌 遊戲資訊">
+  <section class="game-page-info game-page-info-static" aria-label="克朗代克紙牌 遊戲資訊">
     
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>克朗代克紙牌</h2><p>Klondike Solitaire 是一款經典的 52 張紙牌遊戲，您可以在其中建立從 A 到 K 的四種基礎，同時控制畫面、庫存和浪費。</p></div>
@@ -245,11 +244,14 @@
 <p>較長的遊戲強調更清晰的移動順序和更少的投機股票週期。</p>
 <p>穩定的雙手和仔細的畫面規劃可以提高重複板的完成可靠性。</p></div>
       <div class="game-info-section"><h3>開發設計理念</h3><p>遊戲玩法使用基於變換的運動來實現可讀且流暢的卡片移動，並透過緊湊的物件更新來支援桌面和行動裝置上的較長會話。</p></div>
-      <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>Klondike Solitaire 是一款適合一般玩家的紙牌策略遊戲，建議 9 歲以上兒童和家庭一起玩。無需帳戶。進度和統計資料儲存在此瀏覽器中。</p></div>
+      <div class="game-info-section game-info-parent"><h3>玩家和保存訊息</h3><p>Klondike Solitaire 是一款針對一般玩家的紙牌策略遊戲。無需帳戶。進度和統計資料儲存在此瀏覽器中。</p></div>
       <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>使用了多少張卡片？</dt><dd>克朗代克紙牌使用一副標準的 52 張紙牌。</dd></div><div><dt>獲勝條件是什麼？</dt><dd>每個基礎必須依照花色順序從 A 到 K 完成。</dd></div><div><dt>什麼是抽獎1和抽獎3？</dt><dd>抽牌 1 揭示每次庫存抽牌一張牌；抽 3 揭示了 3。</dd></div><div><dt>卡牌可以一張一張移動嗎？</dt><dd>是的，有效的降序交替顏色運行可以作為一個群組移動。</dd></div><div><dt>我如何知道搬家是否合法？</dt><dd>提示強調了一個合法目標。僅使用合法畫面或基礎匹配。</dd></div><div><dt>自動完成有什麼作用？</dt><dd>在非策略性的畫面動作用盡之後，它只會移動合法的基礎安全動作。</dd></div><div><dt>我可以撤銷嗎？</dt><dd>是的。撤銷支援重複使用，完全恢復板子狀態。</dd></div><div><dt>如果不存在建議的移動怎麼辦？</dt><dd>當未找到移動時，提示會傳回 0 個可用移動。</dd></div></dl></div>
       
     </div>
   </section>
+<script src="../../src/game-page-info.js?v=20260809-card-guide1"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>
 </html>
 

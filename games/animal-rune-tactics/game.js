@@ -1005,7 +1005,7 @@
       "Un eroe silenziato può ancora muoversi, attaccare o difendere: usa quel turno per uscire dalla corsia di carica.",
       "Colpisci il Serpente Mirecoil con due eroi diversi nello stesso turno per fermarne la rigenerazione.",
       "Usa il Leone mentre il Grifone dell'Eclissi vola, poi separati prima del suo spazzamento a terra.",
-      "Elimina il clone specchio da 1 HP prima che blocchi la casella di movimento necessaria.",
+      "Distruggi il clone specchio da 1 HP prima che occupi la casella necessaria per muoverti.",
       "Considera le caselle di raffreddamento, sigillo e orbita come risorse; le statistiche permanenti non sostituiscono il posizionamento.",
     ],
     ru: [
@@ -2210,6 +2210,55 @@
   }
 
   let sceneGeneration = 0;
+  const battleShellStyleProperties = [
+    "position", "inset", "top", "right", "bottom", "left", "width", "min-width", "max-width",
+    "height", "min-height", "max-height", "margin", "overflow", "transform", "transform-origin",
+  ];
+  let battleShellStyleSnapshot = null;
+
+  function captureBattleShellStyle() {
+    if (battleShellStyleSnapshot) return;
+    const root = document.querySelector(".rune-app");
+    if (!root) return;
+    battleShellStyleSnapshot = Object.fromEntries(
+      battleShellStyleProperties.map((property) => [property, [root.style.getPropertyValue(property), root.style.getPropertyPriority(property)]]),
+    );
+  }
+
+  function restoreBattleShellStyle() {
+    const root = document.querySelector(".rune-app");
+    if (!root) return;
+    if (battleShellStyleSnapshot) {
+      Object.entries(battleShellStyleSnapshot).forEach(([property, [value, priority]]) => {
+        if (value) root.style.setProperty(property, value, priority);
+        else root.style.removeProperty(property);
+      });
+    }
+    // The shared scaler can lose its private saved-style entry when a scene
+    // owner changes several visibility/class attributes in one task. Clear
+    // only the recognizable Battle envelope in that failure mode; preserve
+    // Main flow custom properties and all ordinary game-local styles.
+    if (root.style.getPropertyValue("position") === "fixed" && root.style.getPropertyValue("transform").includes("scale(")) {
+      battleShellStyleProperties.forEach((property) => root.style.removeProperty(property));
+    }
+    root.removeAttribute("data-wp-logical-battle-canvas");
+    battleShellStyleSnapshot = null;
+  }
+
+  function settleNonBattleShell(generation) {
+    if (generation !== sceneGeneration || document.body.dataset.screen === "battle") return;
+    window.WeightPlayBattleCanvas?.sync?.();
+    restoreBattleShellStyle();
+  }
+
+  function enforceSceneOwnership(scene, generation) {
+    if (generation !== sceneGeneration || document.body.dataset.screen !== scene) return;
+    for (const name of ["main", "stage", "battle"]) document.body.classList.toggle(`wp-shell-${name}-active`, name === scene);
+    const stage = scene === "stage";
+    document.body.classList.toggle("wp-stage-select-active", stage);
+    document.documentElement.classList.toggle("wp-stage-select-active", stage);
+    document.body.classList.toggle("wp-standard-stage-page", stage);
+  }
 
   function setScene(scene) {
     if (scene !== "stage") cancelStageRailInteraction();
@@ -2217,6 +2266,7 @@
     const main = scene === "main";
     const stage = scene === "stage";
     const battle = scene === "battle";
+    if (battle) captureBattleShellStyle();
     document.body.dataset.screen = scene;
     document.body.dataset.gameView = scene;
     for (const name of ["main", "stage", "battle"]) document.body.classList.toggle(`wp-shell-${name}-active`, name === scene);
@@ -2233,12 +2283,19 @@
     window.dispatchEvent(new Event("weightplay:shell-sync"));
     window.dispatchEvent(new Event("weightplay:stage-sync"));
     if (battle) window.dispatchEvent(new CustomEvent("weightplay:battle-open"));
+    window.WeightPlayBattleCanvas?.sync?.();
+    enforceSceneOwnership(scene, generation);
+    if (!battle) {
+      settleNonBattleShell(generation);
+      requestAnimationFrame(() => requestAnimationFrame(() => settleNonBattleShell(generation)));
+    }
     document.body.dataset.screen = scene;
     document.body.dataset.gameView = scene;
     if (!battle) requestAnimationFrame(() => requestAnimationFrame(() => {
       if (generation !== sceneGeneration) return;
       window.dispatchEvent(new Event("weightplay:shell-sync"));
       window.dispatchEvent(new Event("weightplay:stage-sync"));
+      enforceSceneOwnership(scene, generation);
       document.body.dataset.screen = scene;
       document.body.dataset.gameView = scene;
     }));
@@ -3223,6 +3280,7 @@
     setBattleCovered(false);
     centeredMission = selectedMission;
     renderMenu();
+    window.WeightPlayBattleCanvas?.sync?.();
     focusSelectedMission();
   }
 

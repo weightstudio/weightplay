@@ -1017,6 +1017,7 @@
   let centeredStageFrame = 0;
   function updateCenteredStageCard() {
     centeredStageFrame = 0;
+    if (stageGrid.dataset.wpStageVirtualizationInstalled === "true") return;
     const cards = [...stageGrid.querySelectorAll(".stage-card")];
     if (!cards.length || !document.body.classList.contains("lunch-stage")) return;
     const railRect = stageGrid.getBoundingClientRect();

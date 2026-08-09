@@ -102,7 +102,7 @@
 
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
-      <a class="main-return" href="/" data-wp-return="main" data-klocale-aria="ui.nav.back_to_lobby">
+      <a class="main-return" href="/en/" data-wp-return="main" data-klocale-aria="ui.nav.back_to_lobby">
         <span aria-hidden="true">&larr;</span>
         <img src="/assets/klondike-solitaire-cover.webp" alt="" />
       </a>
@@ -194,6 +194,7 @@
             <button id="autoFinishBtn" type="button" class="mini-btn" data-klocale="ui.action.auto_finish">Auto Finish</button>
           </div>
         </section>
+        <p id="battleTip" class="battle-tip" aria-live="polite">Tap a legal card to move it automatically. Drag a card when you want to choose the destination.</p>
         <section id="tableauRow" class="tableau-row" data-klocale-aria="ui.board.tableau" aria-label="Tableau"></section>
       </section>
       <div id="resultOverlay" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
@@ -220,11 +221,9 @@
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine3"></script>
-  <script src="game.js?v=20260809-klondike-v20"></script>
+  <script src="game.js?v=20260809-klondike-v21"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-main-pull-guard1"></script>
-<section class="game-page-info game-page-info-static" aria-label="Klondike Solitaire game information">
+  <section class="game-page-info game-page-info-static" aria-label="Klondike Solitaire game information">
     
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Klondike Solitaire</h2><p>Klondike Solitaire is a classic 52-card card game where you build four foundations from Ace to King while controlling tableau, stock, and waste.</p></div>
@@ -243,11 +242,14 @@
 <p>Longer play emphasizes cleaner move sequencing and fewer speculative Stock cycles.</p>
 <p>Steady hands and careful tableau planning improve completion reliability over repeated boards.</p></div>
       <div class="game-info-section"><h3>Developer Design Note</h3><p>The gameplay uses transform-based motion for readable and smooth card movement, with compact object updates to support longer sessions on desktop and mobile.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Parent Note</h3><p>Klondike Solitaire is a general-audience card strategy game recommended for ages 9+ and family play. No account is required. Progress and stats are stored in this browser.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>Klondike Solitaire is a general-audience card strategy game. No account is required. Progress and stats are stored in this browser.</p></div>
       <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>How many cards are used?</dt><dd>Klondike Solitaire uses one standard deck of 52 cards.</dd></div><div><dt>What is the win condition?</dt><dd>Each foundation must be completed from Ace to King in suit order.</dd></div><div><dt>What are Draw 1 and Draw 3?</dt><dd>Draw 1 reveals one card per Stock draw; Draw 3 reveals three.</dd></div><div><dt>Can cards be moved one by one?</dt><dd>Yes, and valid descending alternating-color runs can be moved as a group.</dd></div><div><dt>How do I know a move is legal?</dt><dd>Hint highlights one legal target. Use legal tableau or foundation matches only.</dd></div><div><dt>What does Auto-Finish do?</dt><dd>It moves only legal foundation-safe moves after non-strategic tableau moves are exhausted.</dd></div><div><dt>Can I Undo?</dt><dd>Yes. Undo supports repeated use and fully restores board state.</dd></div><div><dt>What if no suggested move exists?</dt><dd>Hint returns 0 moves available when no move is found.</dd></div></dl></div>
       
     </div>
   </section>
+<script src="../../src/game-page-info.js?v=20260809-card-guide1"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>
 </html>
 

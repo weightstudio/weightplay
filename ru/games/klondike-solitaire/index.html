@@ -103,7 +103,7 @@
 
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
-      <a class="main-return" href="/" data-wp-return="main" data-klocale-aria="ui.nav.back_to_lobby">
+      <a class="main-return" href="/en/" data-wp-return="main" data-klocale-aria="ui.nav.back_to_lobby">
         <span aria-hidden="true">&larr;</span>
         <img src="/assets/klondike-solitaire-cover.webp" alt="" />
       </a>
@@ -195,6 +195,7 @@
             <button id="autoFinishBtn" type="button" class="mini-btn" data-klocale="ui.action.auto_finish">Auto Finish</button>
           </div>
         </section>
+        <p id="battleTip" class="battle-tip" aria-live="polite">Tap a legal card to move it automatically. Drag a card when you want to choose the destination.</p>
         <section id="tableauRow" class="tableau-row" data-klocale-aria="ui.board.tableau" aria-label="Tableau"></section>
       </section>
       <div id="resultOverlay" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
@@ -222,11 +223,9 @@
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine3"></script>
-  <script src="game.js?v=20260809-klondike-v20"></script>
+  <script src="game.js?v=20260809-klondike-v21"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-main-pull-guard1"></script>
-<section class="game-page-info game-page-info-static" aria-label="Косынка Пасьянс информация об игре">
+  <section class="game-page-info game-page-info-static" aria-label="Косынка Пасьянс информация об игре">
     
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2>Косынка Пасьянс</h2><p>Пасьянс «Клондайк» — это классическая карточная игра из 52 карт, в которой вы строите четыре основы от туза до короля, контролируя при этом таблицу, запас и отходы.</p></div>
@@ -245,11 +244,14 @@
 <p>Более длительная игра требует более четкой последовательности ходов и меньшего количества спекулятивных циклов акций.</p>
 <p>Твердые руки и тщательное планирование таблицы повышают надежность завершения при повторных досках.</p></div>
       <div class="game-info-section"><h3>Примечание разработчика к проекту</h3><p>В игровом процессе используется движение на основе трансформации для читаемости и плавности перемещения карт, а также компактные обновления объектов для поддержки более длительных сеансов на настольных компьютерах и мобильных устройствах.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Примечание для родителей</h3><p>Пасьянс «Клондайк» — это карточная стратегическая игра для широкой аудитории, рекомендуемая для детей от 9 лет и для семейной игры. Никакой учетной записи не требуется. Прогресс и статистика сохраняются в этом браузере.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Информация о проигрывателе и сохранении</h3><p>Пасьянс «Клондайк» — это карточная стратегическая игра, рассчитанная на широкую аудиторию. Никакой учетной записи не требуется. Прогресс и статистика сохраняются в этом браузере.</p></div>
       <div class="game-info-section"><h3>Часто задаваемые вопросы</h3><dl><div><dt>Сколько карточек используется?</dt><dd>В пасьянсе «Клондайк» используется одна стандартная колода из 52 карт.</dd></div><div><dt>Каково условие победы?</dt><dd>Каждое основание должно быть заполнено от туза до короля в порядке масти.</dd></div><div><dt>Что такое розыгрыш 1 и розыгрыш 3?</dt><dd>При розыгрыше 1 открывается одна карта на каждый розыгрыш запаса; На рис. 3 показаны три.</dd></div><div><dt>Можно ли перемещать карты по одной?</dt><dd>Да, и допустимые нисходящие серии с чередующимися цветами можно перемещать как группу.</dd></div><div><dt>Как я узнаю, что переезд законен?</dt><dd>Подсказка подчеркивает одну законную цель. Используйте только легальную таблицу или совпадения фундамента.</dd></div><div><dt>Что делает автофиниш?</dt><dd>Он выполняет только законные, безопасные для фундамента ходы после того, как нестратегические ходы таблицы исчерпаны.</dd></div><div><dt>Могу ли я отменить?</dt><dd>Да. Отмена поддерживает повторное использование и полностью восстанавливает состояние платы.</dd></div><div><dt>Что делать, если предложенного хода не существует?</dt><dd>Подсказка возвращает 0 доступных ходов, если ход не найден.</dd></div></dl></div>
       
     </div>
   </section>
+<script src="../../src/game-page-info.js?v=20260809-card-guide1"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>
 </html>
 

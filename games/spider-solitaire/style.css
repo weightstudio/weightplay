@@ -45,6 +45,7 @@ body[data-wp-game-id="spider-solitaire"] select { font: inherit; }
 #loadingFill { width: 0; height: 100%; margin: 0; border-radius: inherit; background: linear-gradient(90deg,#3d7fff,#4ecdc4); transition: width 200ms ease; }
 
 .main-screen { width: 100%; max-width: 920px; margin: 0 auto; box-sizing: border-box; }
+.stage-screen[hidden] { display: none !important; }
 .main-header { display: flex; align-items: center; gap: .55rem; padding: 1rem 1.1rem; }
 .main-return { display: inline-flex; width: 2.6rem; height: 2.6rem; align-items: center; justify-content: center; border-radius: 50%; color: var(--sp-text); text-decoration: none; background: rgba(255,255,255,.1); }
 .main-return img { width: 1.6rem; height: 1.6rem; object-fit: contain; margin-left: .15rem; }
@@ -66,7 +67,7 @@ body[data-wp-game-id="spider-solitaire"] select { font: inherit; }
 .settings-locale-row select { min-width: 0; flex: 1; border: 0; color: #fff; background: transparent; }
 .settings-locale-row option { color: #12213a; }
 
-.main-hero { display: grid; grid-template-columns: 200px minmax(0,1fr) minmax(0,240px); gap: 1rem; padding: 0 1rem 1.4rem; animation: sp-fade-in 420ms ease both; }
+.main-hero { display: grid; grid-template-columns: 200px minmax(0,1fr); gap: 1rem; padding: 0 1rem 1.4rem; animation: sp-fade-in 420ms ease both; }
 .poster-frame { display: flex; align-items: flex-start; justify-content: center; }
 .poster-frame .cover { width: 100%; max-width: 200px; aspect-ratio: 1; object-fit: cover; border: 1px solid rgba(255,255,255,.15); border-radius: 18px; box-shadow: 0 14px 28px rgba(0,0,0,.32); }
 .eyebrow, .feature-list strong { color: var(--sp-gold); font-size: .85rem; }
@@ -89,6 +90,19 @@ button:focus-visible, select:focus-visible { outline: 2px solid rgba(78,205,196,
 .difficulty-btn.is-selected { border-color: var(--sp-accent); background: rgba(78,205,196,.18); box-shadow: 0 0 0 2px rgba(78,205,196,.22); }
 .feature-list { color: var(--sp-muted); }
 .feature-list p { margin-top: .2rem; }
+.stage-screen { min-height: var(--wp-stage-viewport-height, 100vh); overscroll-behavior: none; touch-action: none; }
+.stage-canvas { width: 100%; max-width: min(100%, 920px); min-height: var(--wp-stage-viewport-height, 100vh); margin: 0 auto; padding: .65rem .8rem 1.2rem; box-sizing: border-box; }
+.stage-header { display: flex; align-items: flex-start; gap: .7rem; padding: .35rem 0 1rem; }
+.stage-back { flex: 0 0 auto; min-width: 42px; min-height: 42px; padding: .35rem; border: 1px solid rgba(255,255,255,.2); border-radius: 12px; color: #fff; background: rgba(255,255,255,.12); cursor: pointer; }
+.stage-title-group { min-width: 0; }
+.stage-title-group small { color: var(--sp-gold); font-size: .78rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+.stage-title-group h1 { margin: .2rem 0 .35rem; font-size: clamp(1.35rem, 3vw, 2rem); }
+.stage-title-group p { margin: 0; color: var(--sp-muted); line-height: 1.45; }
+.stage-content { width: min(100%, 560px); margin: 0 auto; padding: clamp(1rem, 3vw, 2rem); border: 1px solid rgba(255,255,255,.16); border-radius: 20px; background: rgba(15,42,74,.76); box-shadow: 0 18px 38px rgba(0,0,0,.25); }
+.stage-content .stats-panel { margin-bottom: 1rem; }
+.stage-content .difficulty-picker { margin: 0 0 1rem; }
+.stage-actions { display: flex; flex-wrap: wrap; gap: .6rem; }
+.stage-actions button { flex: 1 1 160px; }
 body[data-wp-game-id="spider-solitaire"] .wp-shell-settings-popover {
   box-sizing: border-box;
   width: min(280px, calc(100vw - 24px));
@@ -184,6 +198,7 @@ body[data-wp-game-id="spider-solitaire"] .game-page-info {
   .poster-frame .cover { max-width: 150px; }
   .feature-list { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: .55rem; }
   .feature-list p { font-size: .76rem; }
+  .stage-canvas { padding-inline: .65rem; }
   .battle-canvas { padding-inline: .28rem; }
   .battle-header { grid-template-columns: auto repeat(4,minmax(0,1fr)); }
   .header-stat { padding-inline: .1rem; }
@@ -210,7 +225,7 @@ body[data-wp-game-id="spider-solitaire"] .game-page-info {
     min-height: 44px !important;
     overflow: hidden;
   }
-  .spider-main-progress #statistics { display: none !important; }
+  .stage-content { padding: 1rem; }
 }
 
 @media (orientation: landscape) and (max-height: 560px) {

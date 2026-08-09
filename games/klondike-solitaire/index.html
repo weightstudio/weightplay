@@ -73,7 +73,7 @@
 
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
-      <a class="main-return" href="/" data-wp-return="main" data-klocale-aria="ui.nav.back_to_lobby">
+      <a class="main-return" href="/en/" data-wp-return="main" data-klocale-aria="ui.nav.back_to_lobby">
         <span aria-hidden="true">&larr;</span>
         <img src="/assets/klondike-solitaire-cover.webp" alt="" />
       </a>
@@ -165,6 +165,7 @@
             <button id="autoFinishBtn" type="button" class="mini-btn" data-klocale="ui.action.auto_finish">Auto Finish</button>
           </div>
         </section>
+        <p id="battleTip" class="battle-tip" aria-live="polite">Tap a legal card to move it automatically. Drag a card when you want to choose the destination.</p>
         <section id="tableauRow" class="tableau-row" data-klocale-aria="ui.board.tableau" aria-label="Tableau"></section>
       </section>
       <div id="resultOverlay" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
@@ -191,8 +192,9 @@
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine3"></script>
-  <script src="game.js?v=20260809-klondike-v20"></script>
+  <script src="game.js?v=20260809-klondike-v21"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
+  <script src="../../src/game-page-info.js?v=20260809-card-guide1"></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>
 </body>
 </html>

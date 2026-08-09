@@ -102,9 +102,10 @@
     <div class="loading-card"><strong data-sl="title">Spider Solitaire</strong><span id="loadingText" data-sl="loading">Preparing your table</span><div class="loading-track"><span id="loadingFill"></span></div></div>
   </section>
 
+  <div id="mainGroup">
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
-      <a class="main-return" href="/" data-wp-return="main" data-sl-aria="back"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+      <a class="main-return" href="/en/" data-wp-return="main" data-sl-aria="back"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
       <strong data-sl="title">Spider Solitaire</strong>
       <div class="header-utilities">
         <div class="audio-control settings-control">
@@ -124,19 +125,37 @@
         <small class="eyebrow" data-sl="kicker">Classic Card Game</small>
         <h1 data-sl="title">Solitaire Spider</h1>
         <p class="menu-hint" data-sl="hero">Build same-suit K to A runs across ten columns. Choose a suit count, then clear all eight sets.</p>
-        <div class="main-progress spider-main-progress" data-wp-main-progress>
-          <div id="statistics" class="stats-panel" role="status" aria-live="polite"></div>
-          <div class="difficulty-picker" role="group" data-sl-aria="difficulty_label" aria-label="Difficulty">
+        <div class="main-actions"><button id="startBtn" class="primary-btn standard-main-start" data-wp-main-start type="button" data-sl="start">Start Game</button></div>
+      </article>
+    </section>
+  </main>
+  </div>
+
+  <section id="stageScreen" class="stage-screen" data-screen="stage" hidden>
+    <div class="stage-canvas" data-wp-logical-stage-canvas data-wp-canvas-max-width="920">
+      <header class="stage-header">
+        <button id="stageBackBtn" class="stage-back" type="button" data-wp-return="stage" data-sl-aria="back"><span aria-hidden="true">&larr;</span></button>
+        <div class="stage-title-group">
+          <small data-stage-copy="kicker">Choose a difficulty</small>
+          <h1 data-stage-copy="title">Spider Solitaire</h1>
+          <p data-stage-copy="copy">Choose the suit count before entering the table.</p>
+        </div>
+      </header>
+      <div class="stage-content">
+        <div id="statistics" class="stats-panel" role="status" aria-live="polite"></div>
+        <div class="difficulty-picker" role="group" data-sl-aria="difficulty_label" aria-label="Difficulty">
           <button type="button" class="difficulty-btn" data-difficulty="1"><span data-sl="one_suit">1 Suit</span><small data-sl="easy">Easy</small></button>
           <button type="button" class="difficulty-btn" data-difficulty="2"><span data-sl="two_suits">2 Suits</span><small data-sl="medium">Medium</small></button>
           <button type="button" class="difficulty-btn" data-difficulty="4"><span data-sl="four_suits">4 Suits</span><small data-sl="hard">Hard</small></button>
-          </div>
-          <div class="main-actions"><button id="startBtn" class="primary-btn standard-main-start" data-wp-main-start type="button" data-sl="start">Start Game</button><button id="restartBtn" class="secondary-btn" type="button" data-sl="restart">Restart Current Game</button><button id="newGameBtn" class="secondary-btn" type="button" data-sl="new_game">New Game</button></div>
         </div>
-      </article>
-      <aside class="feature-list"><div><strong data-sl="target_label">Target</strong><p data-sl="target">Complete eight same-suit K → A sequences.</p></div><div><strong data-sl="controls_label">Controls</strong><p data-sl="controls">Drag a card or same-suit run. Tap when one destination is clear.</p></div><div><strong data-sl="mobile_label">Mobile First</strong><p data-sl="mobile">Ten columns stay visible while long stacks compress their overlap.</p></div></aside>
-    </section>
-  </main>
+        <div class="stage-actions">
+          <button id="stageStartBtn" class="primary-btn" type="button" data-sl="start">Start Game</button>
+          <button id="restartBtn" class="secondary-btn" type="button" data-sl="restart">Restart Current Game</button>
+          <button id="newGameBtn" class="secondary-btn" type="button" data-sl="new_game">New Game</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section id="battleScreen" class="battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas>
@@ -169,11 +188,9 @@
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine1"></script>
-  <script src="game.js?v=20260809-spider-v20"></script>
+  <script src="game.js?v=20260809-spider-v21-geometry2"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260809-battle-first-action1" data-wp-battle-standard></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-main-pull-guard1"></script>
-<section class="game-page-info game-page-info-static" aria-label="Informations sur le jeu Solitaire Spider">
+  <section class="game-page-info game-page-info-static" aria-label="Informations sur le jeu Solitaire Spider">
     
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2>Solitaire Spider</h2><p>Solitaire Spider utilise deux jeux de cartes dans dix colonnes. Construisez des suites décroissantes, séparez les couleurs mélangées quand c&#39;est possible et complétez huit suites de même couleur du Roi à l&#39;As pour vider la table.</p></div>
@@ -192,10 +209,13 @@
 <p>Chaque difficulté conserve séparément les parties jouées, les victoires, le taux de victoire, le meilleur temps et le plus petit nombre de coups.</p>
 <p>Recommencer utilise la même graine sans changer la donne ; Nouvelle partie crée un nouveau mélange.</p></div>
       <div class="game-info-section"><h3>Note de conception</h3><p>Spider partage avec Klondike le moteur de cartes, le canevas de bataille adaptatif, la couche de glisser-déposer, l&#39;entrée tactile, le rythme des animations, la préférence sonore, les instantanés d&#39;annulation et le langage visuel des cartes.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Pour les parents</h3><p>Solitaire Spider est un jeu de stratégie avec des cartes destiné au grand public, recommandé dès 9 ans et adapté au jeu en famille. Aucun compte n&#39;est nécessaire ; les statistiques par difficulté et les préférences restent dans ce navigateur.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>Solitaire Spider est un jeu de stratégie avec des cartes destiné au grand public, recommandé dès 9 ans et adapté au jeu en famille. Aucun compte n&#39;est nécessaire ; les statistiques par difficulté et les préférences restent dans ce navigateur.</p></div>
       <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Combien de cartes sont utilisées ?</dt><dd>Deux jeux standard sont utilisés : 104 cartes, dont 54 dans la table initiale et 50 dans le talon.</dd></div><div><dt>Combien y a-t-il de colonnes ?</dt><dd>Il y a dix colonnes ; les quatre premières commencent avec six cartes et les six autres avec cinq.</dd></div><div><dt>Peut-on empiler des couleurs différentes ?</dt><dd>Oui. Les rangs peuvent descendre entre les couleurs, mais seule une suite décroissante de même couleur peut être déplacée en groupe ou récupérée.</dd></div><div><dt>Pourquoi le talon est-il bloqué ?</dt><dd>Le Spider classique exige que les dix colonnes contiennent au moins une carte avant de distribuer une nouvelle ligne.</dd></div><div><dt>Combien de suites faut-il pour gagner ?</dt><dd>Il faut récupérer huit suites de même couleur du Roi à l&#39;As.</dd></div><div><dt>Qu&#39;est-ce qui change selon la difficulté ?</dt><dd>1 couleur, 2 couleurs et 4 couleurs changent le mélange des couleurs, mais gardent les mêmes règles à dix colonnes.</dd></div><div><dt>Puis-je recommencer la même donne ?</dt><dd>Oui. Recommencer utilise la même graine ; Nouvelle partie mélange une nouvelle donne.</dd></div><div><dt>Annuler restaure-t-il une suite terminée ?</dt><dd>Oui. Annuler restaure toute la table précédente et le nombre de groupes récupérés.</dd></div></dl></div>
       <div class="game-info-section"><h3>Jeux associés</h3><p>Pour continuer à exercer Planification, essayez aussi :</p><div class="game-info-related"><a class="game-info-related-card" href="/fr/games/klondike-solitaire/"><img src="/assets/klondike-solitaire-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Solitaire Klondike</strong><span>Klondike Solitaire est un jeu de cartes classique de 52 cartes dans lequel vous construisez quatre fondations, de l&#39;As au Roi, tout en contrôlant le tableau, le stock et les déchets.</span></span></a></div></div>
     </div>
   </section>
+<script src="../../src/game-page-info.js?v=20260809-card-guide1"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>
 </html>

@@ -102,9 +102,10 @@
     <div class="loading-card"><strong data-sl="title">Spider Solitaire</strong><span id="loadingText" data-sl="loading">Preparing your table</span><div class="loading-track"><span id="loadingFill"></span></div></div>
   </section>
 
+  <div id="mainGroup">
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
-      <a class="main-return" href="/" data-wp-return="main" data-sl-aria="back"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+      <a class="main-return" href="/en/" data-wp-return="main" data-sl-aria="back"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
       <strong data-sl="title">Spider Solitaire</strong>
       <div class="header-utilities">
         <div class="audio-control settings-control">
@@ -124,19 +125,37 @@
         <small class="eyebrow" data-sl="kicker">Classic Card Game</small>
         <h1 data-sl="title">स्पाइडर सॉलिटेयर</h1>
         <p class="menu-hint" data-sl="hero">Build same-suit K to A runs across ten columns. Choose a suit count, then clear all eight sets.</p>
-        <div class="main-progress spider-main-progress" data-wp-main-progress>
-          <div id="statistics" class="stats-panel" role="status" aria-live="polite"></div>
-          <div class="difficulty-picker" role="group" data-sl-aria="difficulty_label" aria-label="Difficulty">
+        <div class="main-actions"><button id="startBtn" class="primary-btn standard-main-start" data-wp-main-start type="button" data-sl="start">Start Game</button></div>
+      </article>
+    </section>
+  </main>
+  </div>
+
+  <section id="stageScreen" class="stage-screen" data-screen="stage" hidden>
+    <div class="stage-canvas" data-wp-logical-stage-canvas data-wp-canvas-max-width="920">
+      <header class="stage-header">
+        <button id="stageBackBtn" class="stage-back" type="button" data-wp-return="stage" data-sl-aria="back"><span aria-hidden="true">&larr;</span></button>
+        <div class="stage-title-group">
+          <small data-stage-copy="kicker">Choose a difficulty</small>
+          <h1 data-stage-copy="title">Spider Solitaire</h1>
+          <p data-stage-copy="copy">Choose the suit count before entering the table.</p>
+        </div>
+      </header>
+      <div class="stage-content">
+        <div id="statistics" class="stats-panel" role="status" aria-live="polite"></div>
+        <div class="difficulty-picker" role="group" data-sl-aria="difficulty_label" aria-label="Difficulty">
           <button type="button" class="difficulty-btn" data-difficulty="1"><span data-sl="one_suit">1 Suit</span><small data-sl="easy">Easy</small></button>
           <button type="button" class="difficulty-btn" data-difficulty="2"><span data-sl="two_suits">2 Suits</span><small data-sl="medium">Medium</small></button>
           <button type="button" class="difficulty-btn" data-difficulty="4"><span data-sl="four_suits">4 Suits</span><small data-sl="hard">Hard</small></button>
-          </div>
-          <div class="main-actions"><button id="startBtn" class="primary-btn standard-main-start" data-wp-main-start type="button" data-sl="start">Start Game</button><button id="restartBtn" class="secondary-btn" type="button" data-sl="restart">Restart Current Game</button><button id="newGameBtn" class="secondary-btn" type="button" data-sl="new_game">New Game</button></div>
         </div>
-      </article>
-      <aside class="feature-list"><div><strong data-sl="target_label">Target</strong><p data-sl="target">Complete eight same-suit K → A sequences.</p></div><div><strong data-sl="controls_label">Controls</strong><p data-sl="controls">Drag a card or same-suit run. Tap when one destination is clear.</p></div><div><strong data-sl="mobile_label">Mobile First</strong><p data-sl="mobile">Ten columns stay visible while long stacks compress their overlap.</p></div></aside>
-    </section>
-  </main>
+        <div class="stage-actions">
+          <button id="stageStartBtn" class="primary-btn" type="button" data-sl="start">Start Game</button>
+          <button id="restartBtn" class="secondary-btn" type="button" data-sl="restart">Restart Current Game</button>
+          <button id="newGameBtn" class="secondary-btn" type="button" data-sl="new_game">New Game</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section id="battleScreen" class="battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas>
@@ -169,11 +188,9 @@
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine1"></script>
-  <script src="game.js?v=20260809-spider-v20"></script>
+  <script src="game.js?v=20260809-spider-v21-geometry2"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260809-battle-first-action1" data-wp-battle-standard></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-main-pull-guard1"></script>
-<section class="game-page-info game-page-info-static" aria-label="स्पाइडर सॉलिटेयर खेल की जानकारी">
+  <section class="game-page-info game-page-info-static" aria-label="स्पाइडर सॉलिटेयर खेल की जानकारी">
     
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>स्पाइडर सॉलिटेयर</h2><p>स्पाइडर सॉलिटेयर दस झांकी स्तंभों में दो डेक का उपयोग करता है। अवरोही क्रम बनाएं, जब संभव हो तो मिश्रित सूटों को अलग करें, और तालिका को खाली करने के लिए आठ समान-सूट किंग-टू-ऐस रन पूरे करें।</p></div>
@@ -192,10 +209,13 @@
 <p>प्रत्येक कठिनाई अपने स्वयं के खेले गए गेम, जीत, जीत दर, सर्वोत्तम समय और सबसे कम चाल को संग्रहीत करती है।</p>
 <p>सौदा बदले बिना उसी बीज को दोबारा शुरू किया जा सकता है; नया गेम एक ताज़ा फेरबदल बनाता है।</p></div>
       <div class="game-info-section"><h3>डेवलपर डिज़ाइन नोट</h3><p>स्पाइडर ने Klondike के साथ WeightPlay का कार्ड इंजन, रिस्पॉन्सिव बैटल कैनवास, ड्रैग लेयर, टच इनपुट, एनीमेशन रिदम, ध्वनि प्राथमिकता, पूर्ववत स्नैपशॉट और कार्ड विज़ुअल भाषा साझा की है।</p></div>
-      <div class="game-info-section game-info-parent"><h3>अभिभावक नोट</h3><p>स्पाइडर सॉलिटेयर एक सामान्य-दर्शक कार्ड रणनीति गेम है जिसे 9+ उम्र और पारिवारिक खेल के लिए अनुशंसित किया जाता है। किसी खाते की आवश्यकता नहीं है; कठिनाई आँकड़े और प्राथमिकताएँ इस ब्राउज़र में रहती हैं।</p></div>
+      <div class="game-info-section game-info-parent"><h3>प्लेयर और जानकारी सहेजें</h3><p>स्पाइडर सॉलिटेयर एक सामान्य-दर्शक कार्ड रणनीति गेम है। किसी खाते की आवश्यकता नहीं है; कठिनाई आँकड़े और प्राथमिकताएँ इस ब्राउज़र में रहती हैं।</p></div>
       <div class="game-info-section"><h3>अक्सर पूछे जाने वाले प्रश्न</h3><dl><div><dt>कितने कार्ड का उपयोग किया जाता है?</dt><dd>स्पाइडर सॉलिटेयर दो मानक डेक का उपयोग करता है: 104 कार्ड, प्रारंभिक झांकी में 54 और स्टॉक में 50।</dd></div><div><dt>वहां कितने कॉलम हैं?</dt><dd>दस झांकी स्तंभ हैं; पहले चार छह कार्ड से शुरू होते हैं और अन्य छह पांच से शुरू होते हैं।</dd></div><div><dt>क्या अलग-अलग सूटों को एक साथ रखा जा सकता है?</dt><dd>हाँ। सभी सूटों में रैंक नीचे आ सकती है, लेकिन केवल एक समान-सूट में उतरने वाली दौड़ ही एक समूह के रूप में आगे बढ़ सकती है या एकत्र की जा सकती है।</dd></div><div><dt>स्टॉक क्यों ब्लॉक किया गया है?</dt><dd>क्लासिक स्पाइडर के लिए आवश्यक है कि नई पंक्ति बांटने से पहले सभी दस कॉलमों में कम से कम एक कार्ड हो।</dd></div><div><dt>जीतने के लिए कितने अनुक्रमों की आवश्यकता है?</dt><dd>आठ समान-सूट किंग-टू-ऐस अनुक्रम एकत्र किए जाने चाहिए।</dd></div><div><dt>कठिनाइयों के बीच क्या परिवर्तन होता है?</dt><dd>1 सूट, 2 सूट और 4 सूट समान दस-स्तंभ नियमों को ध्यान में रखते हुए सूट मिश्रण को बदलते हैं।</dd></div><div><dt>क्या मैं वही डील दोबारा शुरू कर सकता हूँ?</dt><dd>हाँ. रीस्टार्ट करंट गेम उसी बीज का उपयोग करता है, जबकि न्यू गेम एक नए सौदे में फेरबदल करता है।</dd></div><div><dt>क्या पूर्ववत पूर्ण अनुक्रम को पुनर्स्थापित करता है?</dt><dd>हाँ। पूर्ववत् पूर्ण पूर्व झांकी और एकत्रित-सेट गिनती को पुनर्स्थापित करता है।</dd></div></dl></div>
       <div class="game-info-section"><h3>संबंधित खेल</h3><p>क्योंकि यह गेम योजना का अभ्यास करता है, इन्हें आगे आज़माएँ:</p><div class="game-info-related"><a class="game-info-related-card" href="/hi/games/klondike-solitaire/"><img src="/assets/klondike-solitaire-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>क्लोंडाइक सॉलिटेयर</strong><span>क्लोंडाइक सॉलिटेयर एक क्लासिक 52-कार्ड कार्ड गेम है जहां आप झांकी, स्टॉक और अपशिष्ट को नियंत्रित करते हुए ऐस से किंग तक चार फाउंडेशन बनाते हैं।</span></span></a></div></div>
     </div>
   </section>
+<script src="../../src/game-page-info.js?v=20260809-card-guide1"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>
 </html>

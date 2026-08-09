@@ -102,9 +102,10 @@
     <div class="loading-card"><strong data-sl="title">Spider Solitaire</strong><span id="loadingText" data-sl="loading">Preparing your table</span><div class="loading-track"><span id="loadingFill"></span></div></div>
   </section>
 
+  <div id="mainGroup">
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
-      <a class="main-return" href="/" data-wp-return="main" data-sl-aria="back"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+      <a class="main-return" href="/en/" data-wp-return="main" data-sl-aria="back"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
       <strong data-sl="title">Spider Solitaire</strong>
       <div class="header-utilities">
         <div class="audio-control settings-control">
@@ -124,19 +125,37 @@
         <small class="eyebrow" data-sl="kicker">Classic Card Game</small>
         <h1 data-sl="title">스파이더 솔리테어</h1>
         <p class="menu-hint" data-sl="hero">Build same-suit K to A runs across ten columns. Choose a suit count, then clear all eight sets.</p>
-        <div class="main-progress spider-main-progress" data-wp-main-progress>
-          <div id="statistics" class="stats-panel" role="status" aria-live="polite"></div>
-          <div class="difficulty-picker" role="group" data-sl-aria="difficulty_label" aria-label="Difficulty">
+        <div class="main-actions"><button id="startBtn" class="primary-btn standard-main-start" data-wp-main-start type="button" data-sl="start">Start Game</button></div>
+      </article>
+    </section>
+  </main>
+  </div>
+
+  <section id="stageScreen" class="stage-screen" data-screen="stage" hidden>
+    <div class="stage-canvas" data-wp-logical-stage-canvas data-wp-canvas-max-width="920">
+      <header class="stage-header">
+        <button id="stageBackBtn" class="stage-back" type="button" data-wp-return="stage" data-sl-aria="back"><span aria-hidden="true">&larr;</span></button>
+        <div class="stage-title-group">
+          <small data-stage-copy="kicker">Choose a difficulty</small>
+          <h1 data-stage-copy="title">Spider Solitaire</h1>
+          <p data-stage-copy="copy">Choose the suit count before entering the table.</p>
+        </div>
+      </header>
+      <div class="stage-content">
+        <div id="statistics" class="stats-panel" role="status" aria-live="polite"></div>
+        <div class="difficulty-picker" role="group" data-sl-aria="difficulty_label" aria-label="Difficulty">
           <button type="button" class="difficulty-btn" data-difficulty="1"><span data-sl="one_suit">1 Suit</span><small data-sl="easy">Easy</small></button>
           <button type="button" class="difficulty-btn" data-difficulty="2"><span data-sl="two_suits">2 Suits</span><small data-sl="medium">Medium</small></button>
           <button type="button" class="difficulty-btn" data-difficulty="4"><span data-sl="four_suits">4 Suits</span><small data-sl="hard">Hard</small></button>
-          </div>
-          <div class="main-actions"><button id="startBtn" class="primary-btn standard-main-start" data-wp-main-start type="button" data-sl="start">Start Game</button><button id="restartBtn" class="secondary-btn" type="button" data-sl="restart">Restart Current Game</button><button id="newGameBtn" class="secondary-btn" type="button" data-sl="new_game">New Game</button></div>
         </div>
-      </article>
-      <aside class="feature-list"><div><strong data-sl="target_label">Target</strong><p data-sl="target">Complete eight same-suit K → A sequences.</p></div><div><strong data-sl="controls_label">Controls</strong><p data-sl="controls">Drag a card or same-suit run. Tap when one destination is clear.</p></div><div><strong data-sl="mobile_label">Mobile First</strong><p data-sl="mobile">Ten columns stay visible while long stacks compress their overlap.</p></div></aside>
-    </section>
-  </main>
+        <div class="stage-actions">
+          <button id="stageStartBtn" class="primary-btn" type="button" data-sl="start">Start Game</button>
+          <button id="restartBtn" class="secondary-btn" type="button" data-sl="restart">Restart Current Game</button>
+          <button id="newGameBtn" class="secondary-btn" type="button" data-sl="new_game">New Game</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section id="battleScreen" class="battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas>
@@ -169,11 +188,9 @@
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine1"></script>
-  <script src="game.js?v=20260809-spider-v20"></script>
+  <script src="game.js?v=20260809-spider-v21-geometry2"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260809-battle-first-action1" data-wp-battle-standard></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-main-pull-guard1"></script>
-<section class="game-page-info game-page-info-static" aria-label="스파이더 솔리테어 게임 정보">
+  <section class="game-page-info game-page-info-static" aria-label="스파이더 솔리테어 게임 정보">
     
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>스파이더 솔리테어</h2><p>스파이더 솔리테어는 10개의 테이블 열에 2개의 데크를 사용합니다. 내림차순 시퀀스를 구축하고, 가능한 경우 혼합 슈트를 분리하고, 동일한 슈트의 King-to-Ace 실행을 8번 완료하여 테이블을 클리어하세요.</p></div>
@@ -192,10 +209,13 @@
 <p>각 난이도에는 플레이한 게임, 승리, 승률, 최고 시간, 최소 이동 횟수가 저장됩니다.</p>
 <p>거래를 변경하지 않고도 동일한 시드를 다시 시작할 수 있습니다. New Game은 새로운 셔플을 만듭니다.</p></div>
       <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>Spider는 WeightPlay의 카드 엔진, 반응형 전투 캔버스, 드래그 레이어, 터치 입력, 애니메이션 리듬, 사운드 기본 설정, 실행 취소 스냅샷 및 카드 시각적 언어를 Klondike와 공유합니다.</p></div>
-      <div class="game-info-section game-info-parent"><h3>학부모 메모</h3><p>스파이더 솔리테어(Spider Solitaire)는 9세 이상 및 가족 플레이에 권장되는 일반 대중용 카드 전략 게임입니다. 계정이 필요하지 않습니다. 난이도 통계 및 기본 설정은 이 브라우저에 유지됩니다.</p></div>
+      <div class="game-info-section game-info-parent"><h3>플레이어 및 저장 정보</h3><p>스파이더 솔리테어(Spider Solitaire)는 일반 관객을 위한 카드 전략 게임입니다. 계정이 필요하지 않습니다. 난이도 통계 및 기본 설정은 이 브라우저에 유지됩니다.</p></div>
       <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>카드는 몇 장 사용되나요?</dt><dd>Spider Solitaire는 두 개의 표준 데크를 사용합니다. 즉, 104장의 카드(초기 테이블에는 54장, 재고는 50장)가 있습니다.</dd></div><div><dt>열은 몇 개인가요?</dt><dd>Tableau 열은 10개입니다. 처음 4개는 6개의 카드로 시작하고 나머지 6개는 5개로 시작합니다.</dd></div><div><dt>다양한 슈트를 겹쳐서 사용할 수 있나요?</dt><dd>예. 순위는 슈트 전체에 걸쳐 내려갈 수 있지만 동일한 슈트의 하강 실행만 그룹으로 이동하거나 수집할 수 있습니다.</dd></div><div><dt>주식이 차단된 이유는 무엇입니까?</dt><dd>Classic Spider에서는 새 행을 처리하기 전에 10개의 열 모두에 최소 한 장의 카드가 포함되어야 합니다.</dd></div><div><dt>승리하려면 몇 개의 시퀀스가 필요합니까?</dt><dd>동일한 수트의 King-to-Ace 시퀀스 8개를 수집해야 합니다.</dd></div><div><dt>어려움 사이에는 어떤 변화가 있나요?</dt><dd>1개의 슈트, 2개의 슈트, 4개의 슈트는 동일한 10열 규칙을 유지하면서 슈트 혼합을 변경합니다.</dd></div><div><dt>동일한 거래를 다시 시작할 수 있나요?</dt><dd>그렇습니다. 현재 게임 다시 시작은 동일한 시드를 사용하는 반면 새 게임은 새로운 거래를 섞습니다.</dd></div><div><dt>실행 취소는 완료된 시퀀스를 복원합니까?</dt><dd>예. 실행 취소는 전체 이전 테이블 및 수집된 세트 수를 복원합니다.</dd></div></dl></div>
       <div class="game-info-section"><h3>관련 게임</h3><p>이 게임은 기획를 연습하므로 다음을 시도해 보세요.</p><div class="game-info-related"><a class="game-info-related-card" href="/ko/games/klondike-solitaire/"><img src="/assets/klondike-solitaire-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>클론다이크 솔리테어</strong><span>Klondike Solitaire는 테이블, 재고, 낭비를 제어하면서 에이스부터 킹까지 4가지 기반을 구축하는 클래식 52카드 카드 게임입니다.</span></span></a></div></div>
     </div>
   </section>
+<script src="../../src/game-page-info.js?v=20260809-card-guide1"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>
 </html>

@@ -56,12 +56,28 @@
     hi: { suffix: "पहली चालें", choose: "सही कार्ड खोजें", chooseText: "हाइलाइट किए गए खुले कार्ड आपके अगले निर्णय के लिए तैयार हैं।", action: "टैप या ड्रैग करके खेलें", actionText: "कार्ड और लक्ष्य पर टैप करें या डेस्कटॉप पर ड्रैग करें।", finish: "सहायकों का उपयोग करें", finishText: "संकेत एक चाल सुझाता है, अनडू उसे वापस करता है और रीस्टार्ट वही डील रखता है।" },
     ar: { suffix: "الحركات الأولى", choose: "اعثر على بطاقة قانونية", chooseText: "البطاقات المكشوفة المميزة جاهزة لقرارك التالي.", action: "اضغط أو اسحب للعب", actionText: "اضغط البطاقة ووجهتها أو اسحبها على الكمبيوتر.", finish: "استخدم المساعدات", finishText: "يقترح التلميح حركة، ويعيد التراجع الخطوة، وتحافظ إعادة البدء على التوزيع نفسه." },
   };
+  const freecellRuleCopy = {
+    en: ["Use the four Free Cells", "Store one card in an empty Free Cell, or move it to a legal alternating-color column or its suit Foundation."],
+    "zh-Hant": ["使用 4 個暫存格", "空的暫存格一次放 1 張牌；也可以把牌移到合法的紅黑交替主牌欄或對應花色收牌區。"],
+    "zh-Hans": ["使用 4 个暂存格", "空的暂存格一次放 1 张牌；也可以把牌移到合法的红黑交替主牌列或对应花色收牌区。"],
+    ja: ["4つのフリーセルを使う", "空いているフリーセルには1枚だけ置けます。赤黒交互の場札列か、対応する組札にも移せます。"],
+    ko: ["네 프리 셀 사용하기", "빈 프리 셀에는 카드 한 장만 둘 수 있습니다. 합법적인 색 교차 열이나 해당 기초 더미로도 옮길 수 있습니다."],
+    es: ["Usa las cuatro celdas libres", "Guarda una carta en una celda libre vacía, o muévela a una columna legal de colores alternos o a su fundación."],
+    "pt-BR": ["Use as quatro células livres", "Guarde uma carta em uma célula livre vazia ou mova-a para uma coluna legal de cores alternadas ou para sua fundação."],
+    fr: ["Utilisez les quatre cellules libres", "Placez une carte dans une cellule libre vide, ou déplacez-la vers une colonne légale de couleurs alternées ou sa fondation."],
+    de: ["Nutze die vier freien Felder", "Lege eine Karte in ein freies Feld oder bewege sie in eine gültige abwechselnde Spalte oder auf ihr Fundament."],
+    it: ["Usa le quattro celle libere", "Metti una carta in una cella libera vuota oppure spostala in una colonna valida a colori alterni o nella sua base."],
+    ru: ["Используйте четыре свободные ячейки", "Положите одну карту в свободную ячейку или переместите её в допустимую колонку с чередованием цветов либо в её фундамент."],
+    hi: ["चार खाली सेल का उपयोग करें", "खाली सेल में एक कार्ड रखें, या उसे वैध लाल-काले कॉलम या उसके फाउंडेशन में ले जाएँ।"],
+    ar: ["استخدم الخلايا الحرة الأربع", "ضع بطاقة واحدة في خلية حرة فارغة، أو انقلها إلى عمود قانوني متناوب الألوان أو إلى أساسها."],
+  };
   const classicTutorial = (variant) => ({
     title: Object.fromEntries(classicLocales.map((locale) => [locale, `${classicNames[variant][locale]} — ${classicTutorialCopy[locale].suffix}`])),
     steps: [
       { icon: "1", ...Object.fromEntries(classicLocales.map((locale) => [locale, [classicTutorialCopy[locale].choose, classicTutorialCopy[locale].chooseText]])) },
       { icon: "2", ...Object.fromEntries(classicLocales.map((locale) => [locale, [classicTutorialCopy[locale].action, classicTutorialCopy[locale].actionText]])) },
       { icon: "3", ...Object.fromEntries(classicLocales.map((locale) => [locale, [classicTutorialCopy[locale].finish, classicTutorialCopy[locale].finishText]])) },
+      ...(variant === "freecell" ? [{ icon: "4", ...Object.fromEntries(classicLocales.map((locale) => [locale, freecellRuleCopy[locale]])) }] : []),
     ],
   });
 

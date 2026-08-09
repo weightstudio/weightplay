@@ -357,6 +357,14 @@ button.mini-btn {
   margin-bottom: 0.85rem;
 }
 
+.battle-tip {
+  margin: -0.15rem 0 0.7rem;
+  color: var(--kl-muted);
+  font-size: 0.78rem;
+  line-height: 1.4;
+  text-align: center;
+}
+
 .tableau-row {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));

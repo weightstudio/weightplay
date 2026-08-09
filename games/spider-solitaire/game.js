@@ -48,6 +48,22 @@
     ar: { title: "سوليتير العنكبوت", loading: "جارٍ تجهيز الطاولة", back: "رجوع", settings: "الإعدادات", sound: "المؤثرات الصوتية", language: "اللغة", kicker: "لعبة ورق كلاسيكية", hero: "كوّن سلاسل من K إلى A من النوع نفسه في عشرة أعمدة. اختر الصعوبة وأكمل المجموعات الثماني.", start: "بدء اللعبة", restart: "إعادة بدء اللعبة الحالية", new_game: "لعبة جديدة", target_label: "الهدف", target: "أكمل ثماني سلاسل K → A من النوع نفسه.", controls_label: "التحكم", controls: "اسحب بطاقة أو سلسلة من النوع نفسه. اضغط عندما تكون الوجهة واحدة.", mobile_label: "الهاتف أولاً", mobile: "تبقى الأعمدة العشرة واضحة وتضغط الأكوام الطويلة تداخلها تلقائياً.", one_suit: "نوع واحد", two_suits: "نوعان", four_suits: "أربعة أنواع", easy: "سهل", medium: "متوسط", hard: "صعب", moves: "الحركات", time: "الوقت", score: "النتيجة", completed: "المجموعات المكتملة", foundations: "المجموعات المكتملة", stock: "الرزمة", tableau: "الطاولة", deal: "توزيع 10", deals_left: "تبقى {count} توزيعات", undo: "تراجع", hint: "تلميح", help: "طريقة اللعب", fill_empty: "املأ كل الأعمدة الفارغة قبل التوزيع.", no_moves: "لا توجد حركات. وزّع عندما يحتوي كل عمود على بطاقة.", multiple: "هناك وجهات متعددة. اسحب للاختيار.", invalid: "هذه الحركة غير مسموحة.", move_hint: "انقل السلسلة المضيئة إلى العمود المضيء.", deal_hint: "وزّع بطاقة واحدة على كل عمود.", sequence_complete: "اكتملت مجموعة!", card_face_down: "بطاقة مقلوبة", card_face: "{rank} من {suit}", learn_kicker: "بداية سريعة", learn_title: "العنكبوت في خمس خطوات", tip_1: "رتّب البطاقات تنازلياً من K إلى A.", tip_2: "تتحرك السلاسل من النوع نفسه معاً فقط.", tip_3: "تُزال سلسلة K → A المكتملة من النوع نفسه.", tip_4: "اضغط الرزمة لتوزيع بطاقة على كل عمود.", tip_5: "لا يمكن التوزيع عند وجود عمود فارغ.", skip: "تخطٍ", got_it: "فهمت", confirm_title: "بدء لعبة جديدة؟", confirm_copy: "بعد مغادرة هذه اللعبة لن تعود إلا باستخدام التراجع.", cancel: "إلغاء", confirm: "لعبة جديدة", victory: "اكتملت لعبة العنكبوت!", return: "رجوع", result_summary: "{sets} مجموعات · {moves} حركات · {time} · النتيجة {score}", stats_games: "الألعاب: {count}", stats_wins: "الانتصارات: {count}", stats_rate: "نسبة الفوز: {rate}%", stats_best_time: "أفضل وقت: {time}", stats_fewest: "أقل حركات: {moves}", sound_on: "الصوت مفعّل", sound_off: "الصوت متوقف", aria_sound_on: "إيقاف الصوت", aria_sound_off: "تشغيل الصوت", meta_title: "سوليتير العنكبوت مجاناً عبر الإنترنت", meta_description: "العب سوليتير العنكبوت بنوع واحد أو نوعين أو أربعة أنواع على الهاتف والكمبيوتر.", meta_keywords: "سوليتير العنكبوت,لعبة ورق" },
   };
 
+  const STAGE_COPY = Object.freeze({
+    en: { kicker: "Choose a difficulty", copy: "Choose the suit count before entering the table." },
+    "zh-Hant": { kicker: "選擇難度", copy: "進入牌桌前，先選擇花色數量。" },
+    "zh-Hans": { kicker: "选择难度", copy: "进入牌桌前，先选择花色数量。" },
+    ja: { kicker: "難易度を選択", copy: "テーブルに入る前にスート数を選択してください。" },
+    ko: { kicker: "난이도 선택", copy: "테이블에 들어가기 전에 무늬 수를 선택하세요." },
+    es: { kicker: "Elige la dificultad", copy: "Elige el número de palos antes de entrar a la mesa." },
+    "pt-BR": { kicker: "Escolha a dificuldade", copy: "Escolha o número de naipes antes de entrar na mesa." },
+    fr: { kicker: "Choisissez la difficulté", copy: "Choisissez le nombre de couleurs avant d'entrer à la table." },
+    de: { kicker: "Schwierigkeit wählen", copy: "Wähle die Anzahl der Farben vor dem Spiel." },
+    it: { kicker: "Scegli la difficoltà", copy: "Scegli il numero di semi prima di entrare al tavolo." },
+    ru: { kicker: "Выберите сложность", copy: "Выберите число мастей перед началом игры." },
+    hi: { kicker: "कठिनाई चुनें", copy: "टेबल में जाने से पहले सूट की संख्या चुनें।" },
+    ar: { kicker: "اختر مستوى الصعوبة", copy: "اختر عدد الأنواع قبل دخول الطاولة." },
+  });
+
   const difficultyLabels = {
     en: "Difficulty", "zh-Hant": "難度", "zh-Hans": "难度", ja: "難易度", ko: "난이도", es: "Dificultad",
     "pt-BR": "Dificuldade", fr: "Difficulté", de: "Schwierigkeit", it: "Difficoltà", ru: "Сложность", hi: "कठिनाई", ar: "الصعوبة",
@@ -73,7 +89,7 @@
 
   const ui = {};
   const get = (id) => document.getElementById(id);
-  ["loadingPanel", "loadingText", "loadingFill", "mainScreen", "battleScreen", "audioMenuBtn", "audioPopover", "soundBtn", "soundStateText", "localeSelect", "statistics", "startBtn", "restartBtn", "newGameBtn", "battleBackBtn", "moveCount", "timeValue", "scoreValue", "completedValue", "foundationRow", "stockPile", "dealLabel", "dealsLeft", "undoBtn", "hintBtn", "helpBtn", "boardShell", "tableauRow", "sequenceFx", "tutorialOverlay", "tutorialSkip", "tutorialDone", "confirmOverlay", "confirmNo", "confirmYes", "resultOverlay", "resultText", "resultNewGame", "resultRestart", "resultClose", "hintOverlay", "dragLayer"].forEach((id) => { ui[id] = get(id); });
+  ["loadingPanel", "loadingText", "loadingFill", "mainGroup", "mainScreen", "stageScreen", "stageBackBtn", "stageStartBtn", "battleScreen", "audioMenuBtn", "audioPopover", "soundBtn", "soundStateText", "localeSelect", "statistics", "startBtn", "restartBtn", "newGameBtn", "battleBackBtn", "moveCount", "timeValue", "scoreValue", "completedValue", "foundationRow", "stockPile", "dealLabel", "dealsLeft", "undoBtn", "hintBtn", "helpBtn", "boardShell", "tableauRow", "sequenceFx", "tutorialOverlay", "tutorialSkip", "tutorialDone", "confirmOverlay", "confirmNo", "confirmYes", "resultOverlay", "resultText", "resultNewGame", "resultRestart", "resultClose", "hintOverlay", "dragLayer"].forEach((id) => { ui[id] = get(id); });
 
   const safeGet = (key, fallback = null) => { try { return localStorage.getItem(key) ?? fallback; } catch (_error) { return fallback; } };
   const safeSet = (key, value) => { try { localStorage.setItem(key, value); } catch (_error) { } };
@@ -89,6 +105,13 @@
   function t(key, params = {}) {
     const value = I18N[locale()]?.[key] || I18N.en[key] || key;
     return String(value).replace(/\{(\w+)\}/g, (_match, name) => params[name] == null ? "" : String(params[name]));
+  }
+
+  function syncStageLocale() {
+    const copy = STAGE_COPY[locale()] || STAGE_COPY.en;
+    ui.stageScreen?.querySelector('[data-stage-copy="kicker"]')?.replaceChildren(document.createTextNode(copy.kicker));
+    ui.stageScreen?.querySelector('[data-stage-copy="title"]')?.replaceChildren(document.createTextNode(t("title")));
+    ui.stageScreen?.querySelector('[data-stage-copy="copy"]')?.replaceChildren(document.createTextNode(copy.copy));
   }
 
   function syncLocale() {
@@ -115,9 +138,12 @@
     const ogUrl = document.getElementById("ogUrl");
     if (canonicalNode) canonicalNode.href = canonical;
     if (ogUrl) ogUrl.content = canonical;
+    const mainReturn = document.querySelector('[data-wp-return="main"]');
+    if (mainReturn) mainReturn.href = `/${routeLocale}/`;
     renderStatistics();
     renderHeader();
     updateDifficultyButtons();
+    syncStageLocale();
   }
 
   class SequenceValidator {
@@ -429,7 +455,7 @@
   }
 
   const stats = loadStats();
-  const state = { difficulty: Number(safeGet(STORAGE.difficulty, "1")) || 1, active: false, hasStarted: false, elapsed: 0, timer: null, hintTimer: null, pendingAction: null, dragging: null, renderGeneration: 0, winRecorded: false, lastFrameCards: new Map(), layoutMaxRows: 0, cardPool: new Map(), pendingDealDelays: null, completionFlyouts: new Set() };
+  const state = { difficulty: Number(safeGet(STORAGE.difficulty, "1")) || 1, active: false, hasStarted: false, elapsed: 0, timer: null, hintTimer: null, pendingAction: null, dragging: null, renderGeneration: 0, winRecorded: false, lastFrameCards: new Map(), layoutMaxRows: 0, layoutFitKey: "", fitRaf: 0, cardPool: new Map(), pendingDealDelays: null, completionFlyouts: new Set() };
   state.difficulty = DIFFICULTIES[state.difficulty] ? state.difficulty : 1;
   let game = new SpiderBoard(state.difficulty);
   const audio = new SoundEngine(STORAGE.sound);
@@ -484,26 +510,29 @@
     document.querySelectorAll("[data-difficulty]").forEach((button) => button.classList.toggle("is-selected", Number(button.dataset.difficulty) === state.difficulty));
   }
 
-  function fitTableau() {
+  function fitTableau(force = false) {
     const canvas = ui.battleScreen?.querySelector(".battle-canvas");
-    if (!canvas || !ui.boardShell) return;
+    if (!canvas || !ui.boardShell || ui.battleScreen.hidden) return false;
     const tableauStyle = ui.tableauRow ? getComputedStyle(ui.tableauRow) : null;
     const tableauGap = Number.parseFloat(tableauStyle?.columnGap || tableauStyle?.gap) || 0;
     const tableauWidth = ui.tableauRow?.clientWidth || 0;
+    const canvasWidth = canvas.clientWidth || 0;
+    const canvasHeight = canvas.clientHeight || 0;
+    const boardWidth = ui.boardShell.clientWidth || 0;
+    const boardHeight = ui.boardShell.clientHeight || 0;
+    if (!tableauWidth || !canvasWidth || !canvasHeight || !boardWidth || !boardHeight) return false;
+    const isCompactLandscape = window.matchMedia("(orientation: landscape) and (max-height: 560px)").matches;
+    const fitKey = [canvasWidth, canvasHeight, boardWidth, boardHeight, tableauWidth, tableauGap, isCompactLandscape ? "landscape" : "portrait"].join("|");
+    if (!force && fitKey === state.layoutFitKey) return true;
     const columnWidth = (tableauWidth - tableauGap * 9) / 10;
     const currentMaxRows = Math.max(1, ...game.tableau.columns.map((column) => column.length));
-    // Keep the first settled Tableau envelope as the floor for later renders.
-    // Removing a card from the tallest pile must not increase the overlap step
-    // and make the whole board appear to reflow after the player's first move.
-    // A newly taller pile may still reduce the step to keep every card inside
-    // the available Battle surface.
-    state.layoutMaxRows = state.lastFrameCards.size === 0
-      ? currentMaxRows
-      : Math.max(state.layoutMaxRows, currentMaxRows);
+    // The opening tableau determines the Battle envelope. A normal move may
+    // change card counts, but it must never change the card scale or overlap
+    // step; only a real viewport/geometry change may request a new fit.
+    state.layoutMaxRows = Math.max(1, state.layoutMaxRows || currentMaxRows);
     const maxRows = Math.max(1, state.layoutMaxRows);
-    const isCompactLandscape = window.matchMedia("(orientation: landscape) and (max-height: 560px)").matches;
     const available = isCompactLandscape
-      ? Math.max(140, ui.boardShell.clientHeight - 144)
+      ? Math.max(96, ui.boardShell.clientHeight - 170)
       : Math.max(170, ui.boardShell.clientHeight - 132);
     const compactStep = isCompactLandscape ? 8 : 11;
     const heightLimitedWidth = (available - compactStep * Math.max(1, maxRows - 1) - 12) / 1.397;
@@ -514,6 +543,21 @@
     const step = clamp((available - cardHeight - 12) / Math.max(1, maxRows - 1), isCompactLandscape ? 7 : 11, 28);
     canvas.style.setProperty("--spider-step", `${step}px`);
     canvas.style.setProperty("--spider-pile-height", `${Math.ceil(cardHeight + (maxRows - 1) * step + 10)}px`);
+    state.layoutFitKey = fitKey;
+    return true;
+  }
+
+  function scheduleTableauFit(force = false) {
+    if (force) {
+      state.layoutFitKey = "";
+      state.layoutMaxRows = 0;
+    }
+    if (fitTableau(force)) return;
+    if (state.fitRaf || ui.battleScreen?.hidden) return;
+    state.fitRaf = requestAnimationFrame(() => {
+      state.fitRaf = 0;
+      scheduleTableauFit(false);
+    });
   }
 
   function clearHints() {
@@ -592,7 +636,7 @@
   function renderBoard() {
     if (!ui.tableauRow || !game) return;
     state.renderGeneration += 1;
-    fitTableau();
+    scheduleTableauFit();
     ui.foundationRow.textContent = "";
     for (let index = 0; index < 8; index += 1) {
       const slot = document.createElement("div");
@@ -637,7 +681,41 @@
     state.lastFrameCards = currentCards;
     state.pendingDealDelays = null;
     renderHeader();
-    requestAnimationFrame(fitTableau);
+  }
+
+  function captureCardRects() {
+    const rects = new Map();
+    ui.tableauRow?.querySelectorAll(":scope .card[data-card-id]").forEach((node) => {
+      const rect = node.getBoundingClientRect();
+      rects.set(node.dataset.cardId, { x: rect.left, y: rect.top });
+    });
+    return rects;
+  }
+
+  function animateCardMoves(beforeRects) {
+    if (!beforeRects?.size) return;
+    const moving = [];
+    ui.tableauRow?.querySelectorAll(":scope .card[data-card-id]").forEach((node) => {
+      if (node.classList.contains("card-flip") || node.classList.contains("card-deal")) return;
+      const before = beforeRects.get(node.dataset.cardId);
+      if (!before) return;
+      const after = node.getBoundingClientRect();
+      const dx = before.x - after.left;
+      const dy = before.y - after.top;
+      if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return;
+      moving.push({ node, dx, dy });
+    });
+    if (!moving.length) return;
+    moving.forEach(({ node, dx, dy }) => {
+      node.style.transition = "none";
+      node.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
+    });
+    requestAnimationFrame(() => {
+      moving.forEach(({ node }) => {
+        node.style.transition = "";
+        node.style.transform = "";
+      });
+    });
   }
 
   function updateDragHover(pile) {
@@ -751,6 +829,7 @@
 
   function performMove(move) {
     clearHints();
+    const beforeRects = move.type === "tableauToTableau" ? captureCardRects() : null;
     const action = move.type === "deal" ? game.dealStock() : game.applyMove(move);
     if (!action) {
       audio.reject();
@@ -765,6 +844,7 @@
     if (action.revealed?.length) audio.flip();
     const completedFlyouts = action.completed?.length ? captureCompletedFlyouts(action.completed, game.completed.total - action.completed.length) : [];
     renderBoard();
+    if (move.type === "tableauToTableau") animateCardMoves(beforeRects);
     if (action.completed?.length) {
       audio.complete();
       animateCompletedFlyouts(completedFlyouts);
@@ -907,9 +987,13 @@
   }
 
   function showBattle() {
+    ui.mainGroup.hidden = true;
+    ui.stageScreen.hidden = true;
     ui.mainScreen.hidden = true;
     ui.battleScreen.hidden = false;
     document.body.dataset.screen = "battle";
+    state.layoutFitKey = "";
+    state.layoutMaxRows = 0;
     setBattleViewportLock(true);
     window.dispatchEvent(new Event("weightplay:battle-sync"));
     window.dispatchEvent(new Event("weightplay:shell-sync"));
@@ -917,11 +1001,35 @@
     window.dispatchEvent(new Event("resize"));
   }
 
-  function showMain() {
+  function showStage({ focusStart = false } = {}) {
     stopClock();
     clearCompletionFlyouts();
+    ui.mainGroup.hidden = true;
+    ui.mainScreen.hidden = true;
+    ui.stageScreen.hidden = false;
     ui.battleScreen.hidden = true;
+    document.body.dataset.screen = "stage";
+    ui.resultOverlay.hidden = true;
+    ui.tutorialOverlay.hidden = true;
+    ui.confirmOverlay.hidden = true;
+    setBattleViewportLock(false);
+    state.active = false;
+    state.pendingAction = null;
+    renderStatistics();
+    window.dispatchEvent(new Event("weightplay:stage-sync"));
+    window.dispatchEvent(new Event("weightplay:battle-sync"));
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
+    window.dispatchEvent(new Event("resize"));
+    if (focusStart) requestAnimationFrame(() => ui.stageStartBtn?.focus({ preventScroll: true }));
+  }
+
+  function showMain({ focusStart = false } = {}) {
+    stopClock();
+    clearCompletionFlyouts();
+    ui.mainGroup.hidden = false;
     ui.mainScreen.hidden = false;
+    ui.stageScreen.hidden = true;
+    ui.battleScreen.hidden = true;
     document.body.dataset.screen = "main";
     ui.resultOverlay.hidden = true;
     ui.tutorialOverlay.hidden = true;
@@ -933,6 +1041,7 @@
     window.dispatchEvent(new Event("weightplay:battle-sync"));
     window.dispatchEvent(new Event("weightplay:shell-sync"));
     window.dispatchEvent(new Event("resize"));
+    if (focusStart) requestAnimationFrame(() => ui.startBtn?.focus({ preventScroll: true }));
   }
 
   function beginNewGame() {
@@ -1005,10 +1114,10 @@
 
   function requestBack() {
     if (!state.active || game.hasWon() || game.moveCount === 0) {
-      showMain();
+      showStage();
       return;
     }
-    state.pendingAction = showMain;
+    state.pendingAction = showStage;
     ui.confirmOverlay.hidden = false;
   }
 
@@ -1371,7 +1480,9 @@
       updateDifficultyButtons();
       renderStatistics();
     }));
-    ui.startBtn.addEventListener("click", beginNewGame);
+    ui.startBtn.addEventListener("click", () => showStage({ focusStart: true }));
+    ui.stageStartBtn.addEventListener("click", beginNewGame);
+    ui.stageBackBtn.addEventListener("click", () => showMain({ focusStart: true }));
     ui.restartBtn.addEventListener("click", restartGame);
     ui.newGameBtn.addEventListener("click", requestNewGame);
     ui.battleBackBtn.addEventListener("click", requestBack);
@@ -1388,11 +1499,11 @@
     ui.confirmYes.addEventListener("click", () => { const action = state.pendingAction; closeConfirm(); action?.(); });
     ui.resultNewGame.addEventListener("click", beginNewGame);
     ui.resultRestart.addEventListener("click", restartGame);
-    ui.resultClose.addEventListener("click", showMain);
+    ui.resultClose.addEventListener("click", showStage);
     window.addEventListener("pointermove", (event) => { if (!state.dragging) return; const dx = event.clientX - state.dragging.startX; const dy = event.clientY - state.dragging.startY; if (!state.dragging.moved && Math.hypot(dx, dy) > 8) { state.dragging.moved = true; buildGhost(event); } if (state.dragging.moved) { event.preventDefault(); moveGhost(event); } }, { passive: false });
     window.addEventListener("pointerup", finishDrag);
     window.addEventListener("pointercancel", finishDrag);
-    window.addEventListener("resize", () => { if (!ui.battleScreen.hidden) { fitTableau(); } });
+    window.addEventListener("resize", () => { if (!ui.battleScreen.hidden) scheduleTableauFit(true); });
     window.addEventListener("wonder:locale-change", () => { syncLocale(); setSoundButton(); if (!ui.battleScreen.hidden) renderBoard(); });
     document.addEventListener("keydown", (event) => { if (event.key === "Escape") { if (!ui.confirmOverlay.hidden) closeConfirm(); else if (!ui.tutorialOverlay.hidden) finishTutorial(); else if (!ui.audioPopover.classList.contains("is-hidden")) ui.audioPopover.classList.add("is-hidden"); } });
   }

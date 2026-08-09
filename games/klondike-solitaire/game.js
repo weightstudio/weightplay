@@ -703,6 +703,22 @@ const KL_I18N = {
     Object.assign(KL_I18N[locale], copy);
   });
 
+  const KL_QUICK_RULE_COPY = Object.freeze({
+    en: "Tap a legal card to move it automatically. Drag a card when you want to choose the destination.",
+    "zh-Hant": "點選合法牌會自動移動；需要選擇目的地時，請拖曳牌。",
+    "zh-Hans": "点击合法牌会自动移动；需要选择目的地时，请拖动牌。",
+    ja: "合法なカードをタップすると自動で移動します。移動先を選ぶときはドラッグしてください。",
+    ko: "가능한 카드를 누르면 자동으로 이동합니다. 목적지를 직접 고르려면 카드를 드래그하세요.",
+    es: "Toca una carta válida para moverla automáticamente. Arrástrala si quieres elegir el destino.",
+    "pt-BR": "Toque em uma carta válida para movê-la automaticamente. Arraste-a para escolher o destino.",
+    fr: "Touchez une carte valide pour la déplacer automatiquement. Faites-la glisser pour choisir la destination.",
+    de: "Tippe auf eine gültige Karte, um sie automatisch zu bewegen. Ziehe sie, um das Ziel selbst zu wählen.",
+    it: "Tocca una carta valida per spostarla automaticamente. Trascinala per scegliere la destinazione.",
+    ru: "Нажмите на допустимую карту для автоматического хода. Перетащите её, чтобы выбрать место.",
+    hi: "कानूनी कार्ड पर टैप करने से वह अपने आप चलेगा। जगह चुनने के लिए कार्ड को खींचें।",
+    ar: "اضغط على بطاقة قانونية لتحريكها تلقائياً. اسحبها لاختيار الوجهة بنفسك.",
+  });
+
   function mapLocalePathPrefix(locale) {
     const normalized = String(locale || LOCALE_DEFAULT);
     const normalizedLower = normalized.toLowerCase();
@@ -754,6 +770,11 @@ const KL_I18N = {
     });
   }
 
+  function syncQuickRule() {
+    const locale = getKlLocale();
+    if (ui.battleTip) ui.battleTip.textContent = KL_QUICK_RULE_COPY[locale] || KL_QUICK_RULE_COPY.en;
+  }
+
   function syncLocalizedMeta() {
     const locale = getKlLocale();
     const localeCode = String(locale || LOCALE_DEFAULT);
@@ -786,6 +807,8 @@ const KL_I18N = {
     if (alternateDefault) alternateDefault.href = "https://weightplay.com/en/games/klondike-solitaire/";
     const ogUrl = document.getElementById("metaOgUrl");
     if (ogUrl) ogUrl.setAttribute("content", canonical);
+    const mainReturn = document.querySelector('[data-wp-return="main"]');
+    if (mainReturn) mainReturn.href = `/${localeSegment}/`;
 
     const structuredData = document.getElementById("klStructuredData");
     if (structuredData) {
@@ -805,6 +828,7 @@ const KL_I18N = {
   function refreshLocalization() {
     syncLocalizedTextNodes();
     syncLocalizedMeta();
+    syncQuickRule();
     renderStatistics();
     syncDrawLabel();
     setSoundButtons(audio.enabled);
@@ -835,6 +859,7 @@ const KL_I18N = {
     drawModeValue: el("drawModeValue"),
     stockPile: el("stockPile"),
     wastePile: el("wastePile"),
+    battleTip: el("battleTip"),
     foundationRow: el("foundationRow"),
     tableauRow: el("tableauRow"),
     undoBtn: el("undoBtn"),
@@ -2023,9 +2048,63 @@ const KL_I18N = {
       || game.foundations.flatMap((f) => f.cards).find((card) => card.id === cardId);
   }
 
+  function moveCardIds(move) {
+    if (move.type === "wasteToFoundation" || move.type === "wasteToTableau") {
+      const card = game.waste.top();
+      return card ? [card.id] : [];
+    }
+    if (move.type === "tableauToFoundation" || move.type === "tableauToTableau") {
+      return game.tableau.columns[move.fromColumn]?.slice(move.startRow).map((card) => card.id) || [];
+    }
+    return [];
+  }
+
+  function captureMoveRects(cardIds) {
+    const rects = new Map();
+    cardIds.forEach((cardId) => {
+      const node = cardNodePool.get(cardId);
+      if (!node?.isConnected) return;
+      const rect = node.getBoundingClientRect();
+      rects.set(cardId, { x: rect.left, y: rect.top });
+    });
+    return rects;
+  }
+
+  function animateMoveCards(cardIds, beforeRects) {
+    if (state.autoFinishing || !beforeRects?.size) return;
+    const moving = [];
+    cardIds.forEach((cardId) => {
+      const node = cardNodePool.get(cardId);
+      const before = beforeRects.get(cardId);
+      if (!node?.isConnected || !before || node.classList.contains("card-flip")) return;
+      const after = node.getBoundingClientRect();
+      const dx = before.x - after.left;
+      const dy = before.y - after.top;
+      if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return;
+      moving.push({ node, dx, dy });
+    });
+    if (!moving.length) return;
+    moving.forEach(({ node, dx, dy }) => {
+      node.style.transition = "none";
+      node.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
+    });
+    requestAnimationFrame(() => {
+      moving.forEach(({ node }) => {
+        node.style.transition = "transform 220ms cubic-bezier(.2,.8,.2,1)";
+        node.style.transform = "";
+      });
+      window.setTimeout(() => moving.forEach(({ node }) => {
+        node.style.removeProperty("transition");
+        node.style.removeProperty("transform");
+      }), 240);
+    });
+  }
+
   function tryPerformMove(move) {
     if (!move) return false;
     if (move.type === "wasteToFoundation" || move.type === "tableauToFoundation" || move.type === "tableauToTableau" || move.type === "wasteToTableau") {
+      const cardIds = moveCardIds(move);
+      const beforeRects = captureMoveRects(cardIds);
       game.pushHistory();
       const result = game.applyMove(move);
       if (!result) {
@@ -2037,7 +2116,8 @@ const KL_I18N = {
         audio.place();
         state.boardAnimationInProgress = true;
         renderBoard();
-        const settleDelay = state.autoFinishing ? 0 : 90;
+        animateMoveCards(cardIds, beforeRects);
+        const settleDelay = state.autoFinishing ? 0 : 240;
         window.setTimeout(() => {
           state.boardAnimationInProgress = false;
           postMoveChecks();
@@ -2410,6 +2490,7 @@ const KL_I18N = {
     state.deadlockHintShown = false;
     ui.mainScreen.hidden = true;
     ui.battleScreen.hidden = false;
+    document.body.dataset.screen = "battle";
     if (game.completed) {
       createNewGame();
     }
@@ -2432,12 +2513,14 @@ const KL_I18N = {
     }
     ui.mainScreen.hidden = false;
     ui.battleScreen.hidden = true;
+    document.body.dataset.screen = "main";
     pauseClock();
     forceCloseResultOverlay();
     clearVictoryClasses();
     clearHints();
     window.dispatchEvent(new CustomEvent("weightplay:battle-open"));
     window.dispatchEvent(new CustomEvent("weightplay:battle-sync"));
+    window.dispatchEvent(new CustomEvent("weightplay:shell-sync"));
   }
 
   function bindEvents() {
@@ -2753,7 +2836,10 @@ const KL_I18N = {
     pauseClock();
     state.elapsed = 0;
     renderBoard();
-    maybeAnimateDeal({ showLoading: true });
+    // Main is available immediately; the seeded deal is prepared behind the
+    // scenes instead of blocking the first screen with a full deal timer.
+    if (ui.loadingPanel) ui.loadingPanel.hidden = true;
+    maybeAnimateDeal({ showLoading: false });
     if (isQaWinFixtureEnabled()) {
       const totalCards = state.dealSequence?.size || 28;
       window.setTimeout(applyQaWinFixture, DEAL_INITIAL_DELAY_MS + totalCards * DEAL_STEP_MS + 80);

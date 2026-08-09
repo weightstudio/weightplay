@@ -103,7 +103,7 @@
 
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
-      <a class="main-return" href="/" data-wp-return="main" data-klocale-aria="ui.nav.back_to_lobby">
+      <a class="main-return" href="/en/" data-wp-return="main" data-klocale-aria="ui.nav.back_to_lobby">
         <span aria-hidden="true">&larr;</span>
         <img src="/assets/klondike-solitaire-cover.webp" alt="" />
       </a>
@@ -195,6 +195,7 @@
             <button id="autoFinishBtn" type="button" class="mini-btn" data-klocale="ui.action.auto_finish">Auto Finish</button>
           </div>
         </section>
+        <p id="battleTip" class="battle-tip" aria-live="polite">Tap a legal card to move it automatically. Drag a card when you want to choose the destination.</p>
         <section id="tableauRow" class="tableau-row" data-klocale-aria="ui.board.tableau" aria-label="Tableau"></section>
       </section>
       <div id="resultOverlay" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
@@ -222,11 +223,9 @@
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine3"></script>
-  <script src="game.js?v=20260809-klondike-v20"></script>
+  <script src="game.js?v=20260809-klondike-v21"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-main-pull-guard1"></script>
-<section class="game-page-info game-page-info-static" aria-label="Guía de Solitario Klondike">
+  <section class="game-page-info game-page-info-static" aria-label="Guía de Solitario Klondike">
     
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2>Solitario Klondike</h2><p>Klondike Solitaire es un clásico juego de cartas de 52 cartas en el que construyes cuatro bases, desde el As hasta el Rey, mientras controlas el cuadro, las existencias y el desperdicio.</p></div>
@@ -245,11 +244,14 @@
 <p>Un juego más largo enfatiza una secuencia de movimientos más limpia y menos ciclos bursátiles especulativos.</p>
 <p>Manos firmes y una cuidadosa planificación del cuadro mejoran la confiabilidad de la finalización en tableros repetidos.</p></div>
       <div class="game-info-section"><h3>Nota de diseño</h3><p>El juego utiliza movimiento basado en transformaciones para un movimiento de tarjetas fluido y legible, con actualizaciones de objetos compactos para admitir sesiones más largas en computadoras de escritorio y dispositivos móviles.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Nota para familias</h3><p>Klondike Solitaire es un juego de estrategia de cartas para público general recomendado para mayores de 9 años y para jugar en familia. No se requiere cuenta. El progreso y las estadísticas se almacenan en este navegador.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Información del jugador y guardado</h3><p>Klondike Solitaire es un juego de estrategia de cartas para público general. No se requiere cuenta. El progreso y las estadísticas se almacenan en este navegador.</p></div>
       <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cuántas tarjetas se utilizan?</dt><dd>Klondike Solitaire utiliza una baraja estándar de 52 cartas.</dd></div><div><dt>¿Cuál es la condición de victoria?</dt><dd>Cada base debe completarse del As al Rey en orden de palo.</dd></div><div><dt>¿Qué son el Sorteo 1 y el Sorteo 3?</dt><dd>El sorteo 1 revela una carta por sorteo de acciones; El sorteo 3 revela tres.</dd></div><div><dt>¿Se pueden mover las cartas una por una?</dt><dd>Sí, y los tramos descendentes válidos de colores alternos se pueden mover como grupo.</dd></div><div><dt>¿Cómo sé que una mudanza es legal?</dt><dd>La pista destaca un objetivo legal. Utilice únicamente cuadros legales o coincidencias de fundamentos.</dd></div><div><dt>¿Qué hace el finalizado automático?</dt><dd>Sólo mueve movimientos legales que son seguros para los fundamentos después de que se agotan los movimientos del cuadro no estratégicos.</dd></div><div><dt>¿Puedo deshacer?</dt><dd>Sí. Deshacer admite el uso repetido y restaura completamente el estado de la placa.</dd></div><div><dt>¿Qué pasa si no existe ningún movimiento sugerido?</dt><dd>La sugerencia devuelve 0 movimientos disponibles cuando no se encuentra ningún movimiento.</dd></div></dl></div>
       
     </div>
   </section>
+<script src="../../src/game-page-info.js?v=20260809-card-guide1"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>
 </html>
 

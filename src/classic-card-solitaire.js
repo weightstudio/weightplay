@@ -370,7 +370,7 @@
     const rank = rankName(card.rank);
     const symbol = SYMBOLS[card.suit] || "";
     const label = card.faceUp ? text((COMMON[safeLocale()] || COMMON.en).ariaCard, { rank, suit: card.suit }) : (COMMON[safeLocale()] || COMMON.en).ariaBack;
-    return `<button type="button" class="classic-card ${card.faceUp ? `front ${isRed(card) ? "red" : "black"}` : "back"} ${extra}" data-source='${JSON.stringify(source)}' aria-label="${label.replaceAll('"', "&quot;")}">${card.faceUp ? `<span class="rank top">${rank}</span><span class="suit">${symbol}</span><span class="rank bottom">${rank}</span>` : "<span class=\"back-mark\">✦</span>"}</button>`;
+    return `<button type="button" class="classic-card ${card.faceUp ? `front ${isRed(card) ? "red" : "black"}` : "back"} ${extra}" data-card-id="${String(card.id).replaceAll('"', "&quot;")}" data-source='${JSON.stringify(source)}' aria-label="${label.replaceAll('"', "&quot;")}">${card.faceUp ? `<span class="rank top">${rank}</span><span class="suit">${symbol}</span><span class="rank bottom">${rank}</span>` : "<span class=\"back-mark\">✦</span>"}</button>`;
   }
 
   class ClassicView {
@@ -384,6 +384,7 @@
       this.hintTimer = null;
       this.hintMove = null;
       this.renderedCombo = 0;
+      this.pendingMoveRects = null;
       this.nodes = {};
     }
 
@@ -441,6 +442,50 @@
     showMain() { this.active = false; this.nodes.battleScreen.hidden = true; this.nodes.mainScreen.hidden = false; document.body.dataset.screen = "main"; this.renderMain(); window.dispatchEvent(new Event("weightplay:shell-sync")); }
     showBattle() { this.active = true; this.nodes.mainScreen.hidden = true; this.nodes.battleScreen.hidden = false; document.body.dataset.screen = "battle"; this.render(); window.dispatchEvent(new Event("weightplay:battle-open")); window.dispatchEvent(new Event("weightplay:battle-sync")); window.dispatchEvent(new Event("weightplay:shell-sync")); this.nodes.battleBackBtn?.focus({ preventScroll: true }); }
     renderMain() { this.setText("#statistics", `${this.variantCopy().target}`); }
+    captureMoveRects() {
+      if (this.config.variant !== "freecell") return null;
+      return new Map([...this.nodes.board.querySelectorAll("[data-card-id]")].map((node) => [node.dataset.cardId, node.getBoundingClientRect()]));
+    }
+    animateMovedCards() {
+      const previous = this.pendingMoveRects;
+      this.pendingMoveRects = null;
+      if (!previous || typeof Element.prototype.animate !== "function") return;
+      this.nodes.board.querySelectorAll("[data-card-id]").forEach((node) => {
+        const from = previous.get(node.dataset.cardId);
+        if (!from) return;
+        const to = node.getBoundingClientRect();
+        const x = from.left - to.left;
+        const y = from.top - to.top;
+        if (Math.abs(x) < 1 && Math.abs(y) < 1) return;
+        node.classList.add("is-moving");
+        const animation = node.animate(
+          [{ translate: `${x}px ${y}px` }, { translate: "0 0" }],
+          { duration: 260, easing: "cubic-bezier(.2,.8,.25,1)", fill: "none" },
+        );
+        animation.addEventListener("finish", () => node.classList.remove("is-moving"), { once: true });
+      });
+    }
+    validTargets() {
+      if (this.config.variant !== "freecell" || !this.game.selected) return new Set();
+      const selected = JSON.stringify(this.game.selected);
+      return new Set(this.game.legalMoves()
+        .filter((move) => JSON.stringify(move.source) === selected)
+        .map((move) => JSON.stringify(move.destination)));
+    }
+    markValidTargets() {
+      const targets = this.validTargets();
+      this.nodes.board.querySelectorAll("[data-dest]").forEach((node) => {
+        let destination = null;
+        try { destination = JSON.parse(node.dataset.dest); } catch (_error) {}
+        node.classList.toggle("valid-target", Boolean(destination && targets.has(JSON.stringify(destination))));
+      });
+    }
+    canSelect(source) {
+      if (!source) return false;
+      if (source.zone === "free") return Boolean(this.game.freeCells[source.index]);
+      if (source.zone !== "tableau") return false;
+      return Boolean(this.game.sourceCard(source)?.faceUp && this.game.legalTableauSource(source));
+    }
     cardDestination(source) { if (source.zone === "tableau") return { zone: "tableau", pile: source.pile }; if (source.zone === "free") return { zone: "free", index: source.index }; return null; }
     handleClick(event) {
       if (event.target.closest("[data-action=clear-toast]")) return;
@@ -470,8 +515,24 @@
       if (this.config.variant === "pyramid") { if (source) { if (this.game.pairPyramid(source)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); } else this.feedback(this.t("pairWrong")); } return; }
       if (this.config.variant === "tripeaks" || this.config.variant === "golf") { if (source && this.game.sequencePlay(source)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); } else if (source) this.feedback(this.t("wrong")); return; }
       if (!source && !dest) return;
-      if (this.game.selected && dest) { if (this.game.moveClassic(this.game.selected, dest)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.game.selected = null; this.render(); } else this.feedback(this.t("wrong")); return; }
-      if (source) { this.hintMove = null; this.game.selected = this.game.selected && JSON.stringify(this.game.selected) === JSON.stringify(source) ? null : source; this.render(); }
+      if (this.game.selected && dest) {
+        this.pendingMoveRects = this.captureMoveRects();
+        if (this.game.moveClassic(this.game.selected, dest)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.game.selected = null; this.render(); }
+        else { this.pendingMoveRects = null; this.feedback(this.t("wrong")); }
+        return;
+      }
+      if (dest && !source && !this.game.selected) { this.feedback(this.t("wrong")); return; }
+      if (source) {
+        if (!this.canSelect(source)) { this.feedback(this.t("wrong")); return; }
+        this.clearFeedback();
+        this.hintMove = null;
+        this.game.selected = this.game.selected && JSON.stringify(this.game.selected) === JSON.stringify(source) ? null : source;
+        if (this.game.selected && !this.game.legalMoves().some((move) => JSON.stringify(move.source) === JSON.stringify(this.game.selected))) {
+          this.game.selected = null;
+          this.feedback(this.t("noMoves"));
+        }
+        this.render();
+      }
     }
     handlePointerDown(event) {
       const card = event.target.closest("[data-source]"); if (!card) return;
@@ -482,9 +543,13 @@
     handlePointerUp(event) {
       if (!this.drag) return; const drag = this.drag; this.drag = null; if (!drag.moved) return;
       const target = document.elementFromPoint(event.clientX, event.clientY)?.closest?.("[data-source], [data-dest]");
-      if (!target) return;
+      if (!target) { this.feedback(this.t("wrong")); return; }
       const source = drag.source; const targetSource = target.dataset.source ? JSON.parse(target.dataset.source) : null; const dest = target.dataset.dest ? JSON.parse(target.dataset.dest) : this.cardDestination(targetSource);
-      if ((this.config.variant === "freecell" || this.config.variant === "yukon") && dest && this.game.moveClassic(source, dest)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); }
+      if ((this.config.variant === "freecell" || this.config.variant === "yukon") && dest) {
+        this.pendingMoveRects = this.captureMoveRects();
+        if (this.game.moveClassic(source, dest)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); }
+        else { this.pendingMoveRects = null; this.feedback(this.t("wrong")); }
+      }
       else if ((this.config.variant === "tripeaks" || this.config.variant === "golf") && this.game.sequencePlay(source)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); }
       else this.feedback(this.t("wrong"));
     }
@@ -506,7 +571,7 @@
       } else if (!this.game.combo) this.nodes.comboValue.classList.remove("combo-pop");
       this.renderedCombo = this.game.combo;
       this.nodes.boardStatus.textContent = this.game.won ? this.t("win") : this.game.lost ? this.t("lose") : "";
-      this.renderSlots(); this.renderTableau(); this.showResult();
+      this.renderSlots(); this.renderTableau(); this.markValidTargets(); this.showResult(); this.animateMovedCards();
     }
     renderSlots() {
       const selectedClass = (source) => this.game.selected && JSON.stringify(this.game.selected) === JSON.stringify(source) ? " selected" : "";

@@ -11,13 +11,7 @@ const isKidsLobby = audienceMode === "kids";
 const allLobbyGames = [...lobby.games];
 // GENERATED GAMEPLAY REVIEW PASSES START
 // Derived from review/database/GAMEPLAY_REVIEW_STATUS.md. Do not edit by hand.
-const verifiedGameplayReviewPasses = Object.freeze({
-  "animal-dice-bastion": {
-    "gameVersion": "v17",
-    "interfaceVersion": 5,
-    "overall": 8.3
-  }
-});
+const verifiedGameplayReviewPasses = Object.freeze({});
 // GENERATED GAMEPLAY REVIEW PASSES END
 const catalogGames = allLobbyGames.filter((game) =>
   (game.status === "playable"

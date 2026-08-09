@@ -20,7 +20,7 @@
   let appliedStageRootStyleSignature = "";
   const savedStageStyles = new WeakMap();
   const savedReserveStyles = new WeakMap();
-  const nativeStageScalers = new Set(["campus-dash", "color-lunchbox", "animal-rope-rescue", "animal-coloring-studio", "animal-bubble-safari", "animal-rift-salvage", "animal-rune-reels"]);
+  const nativeStageScalers = new Set(["campus-dash", "animal-rope-rescue", "animal-coloring-studio", "animal-bubble-safari", "animal-rift-salvage", "animal-rune-reels"]);
   const stageRootByGame = {
     "animal-color-link": "#stage",
     "animal-guard-yard": "#menuPanel",

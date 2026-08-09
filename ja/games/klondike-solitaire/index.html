@@ -103,7 +103,7 @@
 
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
-      <a class="main-return" href="/" data-wp-return="main" data-klocale-aria="ui.nav.back_to_lobby">
+      <a class="main-return" href="/en/" data-wp-return="main" data-klocale-aria="ui.nav.back_to_lobby">
         <span aria-hidden="true">&larr;</span>
         <img src="/assets/klondike-solitaire-cover.webp" alt="" />
       </a>
@@ -195,6 +195,7 @@
             <button id="autoFinishBtn" type="button" class="mini-btn" data-klocale="ui.action.auto_finish">Auto Finish</button>
           </div>
         </section>
+        <p id="battleTip" class="battle-tip" aria-live="polite">Tap a legal card to move it automatically. Drag a card when you want to choose the destination.</p>
         <section id="tableauRow" class="tableau-row" data-klocale-aria="ui.board.tableau" aria-label="Tableau"></section>
       </section>
       <div id="resultOverlay" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
@@ -223,11 +224,9 @@
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine3"></script>
-  <script src="game.js?v=20260809-klondike-v20"></script>
+  <script src="game.js?v=20260809-klondike-v21"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-main-pull-guard1"></script>
-<section class="game-page-info game-page-info-static" aria-label="クロンダイク ソリティア のゲーム情報">
+  <section class="game-page-info game-page-info-static" aria-label="クロンダイク ソリティア のゲーム情報">
     
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>クロンダイク ソリティア</h2><p>クロンダイク ソリティアは、絵札、ストック、無駄をコントロールしながらエースからキングまでの 4 つの基盤を構築する、52 枚のカードからなる古典的なカード ゲームです。</p></div>
@@ -246,11 +245,14 @@
 <p>プレイが長くなると、よりクリーンなムーブシーケンスと、投機的なストックサイクルが少なくなることが強調されます。</p>
 <p>安定した手と慎重なタブローの計画により、ボードを繰り返した場合でも完了の信頼性が向上します。</p></div>
       <div class="game-info-section"><h3>デザインノート</h3><p>ゲームプレイでは、変換ベースのモーションを使用して読みやすくスムーズなカードの動きを実現し、コンパクトなオブジェクトの更新によりデスクトップとモバイルでの長時間のセッションをサポートします。</p></div>
-      <div class="game-info-section game-info-parent"><h3>保護者の方へ</h3><p>クロンダイク ソリティアは、9 歳以上の年齢層と家族でのプレイを推奨する一般向けのカード ストラテジー ゲームです。アカウントは必要ありません。進行状況と統計はこのブラウザに保存されます。</p></div>
+      <div class="game-info-section game-info-parent"><h3>プレーヤーとセーブ情報</h3><p>クロンダイク ソリティアは、一般向けのカード ストラテジー ゲームです。アカウントは必要ありません。進行状況と統計はこのブラウザに保存されます。</p></div>
       <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>カードは何枚使用されますか？</dt><dd>クロンダイク ソリティアでは、52 枚のカードからなる標準デッキ 1 組を使用します。</dd></div><div><dt>勝利条件は何ですか？</dt><dd>各基礎は、スーツの順序でエースからキングまで完了する必要があります。</dd></div><div><dt>ドロー 1 とドロー 3 とは何ですか?</dt><dd>ドロー 1 では、ストック ドローごとに 1 枚のカードが公開されます。 3 を引くと 3 つが表示されます。</dd></div><div><dt>カードを1枚ずつ移動することはできますか?</dt><dd>はい、有効な降順の交互色のランはグループとして移動できます。</dd></div><div><dt>移動が合法であることをどうやって確認できますか?</dt><dd>ヒントは 1 つの法的ターゲットを強調しています。合法的なタブローまたはファンデーションマッチのみを使用してください。</dd></div><div><dt>自動終了は何をしますか?</dt><dd>非戦略的な場札の動きが使い果たされた後、合法的な基盤安全な動きのみを動かします。</dd></div><div><dt>元に戻すことはできますか?</dt><dd>はい。アンドゥは繰り返しの使用をサポートし、ボードの状態を完全に復元します。</dd></div><div><dt>提案された動きが存在しない場合はどうなりますか?</dt><dd>手が見つからない場合、ヒントは利用可能な 0 手を返します。</dd></div></dl></div>
       
     </div>
   </section>
+<script src="../../src/game-page-info.js?v=20260809-card-guide1"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="クロンダイク ソリティア";document.title="クロンダイク ソリティア | WeightPlay";},{once:true});</script>
 </body>
 </html>
