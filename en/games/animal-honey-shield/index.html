@@ -166,6 +166,20 @@
         <section id="boardWrap" class="board-wrap">
           <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="Draw a nectar barrier to protect Pip"></canvas>
           <div id="drawHint" class="draw-hint" data-i18n="drawHint">Draw anywhere to build Pip&#39;s shield</div>
+          <div id="anchorCoach" class="anchor-coach" role="note" aria-labelledby="anchorCoachTitle" hidden>
+            <strong id="anchorCoachTitle" data-i18n="anchorCoachTitle">Before your first line</strong>
+            <p data-i18n="anchorCoachText">Two separate terrain contacts hold a wall. A single contact can still move.</p>
+            <div class="anchor-coach-examples" aria-hidden="true">
+              <div class="anchor-example anchor-example-good">
+                <svg viewBox="0 0 120 42" focusable="false"><circle cx="22" cy="21" r="9"></circle><circle cx="98" cy="21" r="9"></circle><path d="M22 21 C38 7 47 7 60 21 S82 35 98 21"></path></svg>
+                <span data-i18n="anchorGoodLabel">Two anchors: holds</span>
+              </div>
+              <div class="anchor-example anchor-example-loose">
+                <svg viewBox="0 0 120 42" focusable="false"><circle cx="22" cy="21" r="9"></circle><path d="M22 21 C42 8 70 8 98 21"></path><path class="motion-mark" d="M94 10 l10 11 -10 11"></path></svg>
+                <span data-i18n="anchorLooseLabel">One anchor: moves</span>
+              </div>
+            </div>
+          </div>
         </section>
         <div class="battle-feedback"><strong id="feedbackText" aria-live="polite"></strong><span id="lineReadout"></span></div>
         <div class="battle-actions"><button id="clearBtn" type="button" data-i18n="clear">Clear lines</button><button id="restartBtn" type="button" data-i18n="restart">Restart</button></div>
@@ -203,7 +217,7 @@
   <script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
-  <script src="locales.js"></script><script src="game.js?v=20260804-viewport36"></script>
+  <script src="locales.js"></script><script src="game.js?v=20260810-anchor-coach-v40"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js"></script>

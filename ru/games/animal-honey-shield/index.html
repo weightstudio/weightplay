@@ -125,7 +125,7 @@
           <li data-i18n="how2">Пчёлы ждут, пока вы рисуете. Отпустите первую подходящую линию, чтобы начать волну; затем можно укреплять защиту.</li>
           <li data-i18n="how3">Дождитесь нуля на таймере, не позволив пчеле коснуться Пипа.</li>
         </ol></article>
-        <article class="game-info-section"><h3 data-i18n="rulesTitle">Правила и результат</h3><p data-i18n="rulesText">Линии не рвутся. Если путь открыт, пчёлы сразу летят по нему; иначе они толкают, крутят и гнут стену. Круг вокруг одного камня — лишь шарнир: рой стягивает стену к камню. Золотой становится только одна линия, зацепленная за две разнесённые точки рельефа.</p><p data-i18n="guideExtra">Start by studying the meadow before you draw. Pip is safest when the barrier creates a short route that bees cannot simply walk around, but a long wall is expensive and gives the swarm more surface to push. Leave a little breathing room around the puppy so a repair does not trap your next stroke. When a barrier flashes red, repair that weak section first instead of replacing the whole shape. The first valid line starts the wave, so you have time to plan while the meadow is quiet. Once bees are moving, watch their approach rather than the line you are drawing: a safe-looking wall can still leave an open corner behind Pip. Two separated terrain anchors are stronger than one loop. A single stone lets a wall pivot or peel; wrapping the same stroke around two distinct stones, corners, or approved terrain points makes the wall hold and glow gold. If bees push a loose wall, do not chase the wall with frantic redraws. Wait for the gap they are trying to open, then add a short hook that closes that route. Nectar is limited, and efficient repairs usually earn more stars than a second large circle. Before each later chapter, reread the chapter hint: new hives, split approaches, gusts, fragile gaps, and mixed waves each change what the shortest safe line should look like. After a clear, the next route unlocks automatically and your best stars remain in this browser. A failed attempt costs no account data; simply return to the stage list, study the red opening, and try a different shape. You can also replay an earlier route to practice efficient shapes, compare the stars earned from short repairs, and learn which side of the meadow gives the bees the fewest choices. The stage summary records your progress, while the guide remains available whenever you need to refresh the basic rules.</p></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">Правила и результат</h3><p data-i18n="rulesText">Линии не рвутся. Если путь открыт, пчёлы сразу летят по нему; иначе они толкают, крутят и гнут стену. Круг вокруг одного камня — лишь шарнир: рой стягивает стену к камню. Золотой становится только одна линия, зацепленная за две разнесённые точки рельефа.</p><p data-i18n="guideExtra">Сначала изучите луг, а уже потом рисуйте. Пипу безопаснее, когда стена создаёт короткий путь, который пчёлы не могут просто обойти, но длинная стена тратит больше нектара и даёт рою большую поверхность для толчков. Оставьте вокруг щенка немного места, чтобы ремонт не запер следующую линию. Если стена мигает красным, сначала укрепите слабый участок. Первая правильная линия запускает волну, поэтому план можно подготовить в тишине. Когда пчёлы полетят, следите за их маршрутом, а не только за линией: за Пипом может остаться открытый угол. Два раздельных контакта с рельефом надёжнее одной петли. О камень стена может поворачиваться или сжиматься; одна и та же линия, зацепленная за две разные точки, станет золотой и неподвижной. Если пчёлы толкают свободную стену, дождитесь прохода, который они пытаются открыть, и добавьте короткий крюк. Нектар ограничен, поэтому аккуратный ремонт приносит больше звёзд, чем ещё один большой круг. Перед каждой главой перечитайте подсказку: новые ульи, разделённые подходы, порывы, хрупкие проходы и смешанные волны меняют самый короткий безопасный рисунок. После победы открывается следующий маршрут, а лучшие звёзды остаются в этом браузере. Поражение не стирает данные: вернитесь к этапам, изучите красный разрыв и попробуйте другую форму. Повторяйте маршруты, чтобы сравнивать звёзды и находить сторону луга с меньшим числом вариантов для пчёл.</p></article>
         <article class="game-info-section"><h3 data-i18n="progressTitle">Тридцать маршрутов</h3><p data-i18n="progressText">Шесть глав добавляют ульи, разные направления, каменные опоры, порывы ветра, хрупкие проходы и смешанные волны.</p></article>
         <article class="game-info-section"><h3 data-i18n="tipsTitle">Полезные советы</h3><p data-i18n="tipsText">Прямой мост и круг вокруг одного камня остаются подвижными. Нужны две петли, встречные крюки или настоящая выемка рельефа.</p></article>
         <article class="game-info-section"><h3 data-i18n="saveTitle">Сохранение и конфиденциальность</h3><p data-i18n="saveText">Открытые этапы и лучшие звёзды хранятся только в браузере. Учётная запись и личные данные не нужны.</p></article>
@@ -167,6 +167,20 @@
         <section id="boardWrap" class="board-wrap">
           <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="Нарисуйте преграду для защиты Пипа"></canvas>
           <div id="drawHint" class="draw-hint" data-i18n="drawHint">Рисуйте, чтобы создать щит Пипа</div>
+          <div id="anchorCoach" class="anchor-coach" role="note" aria-labelledby="anchorCoachTitle" hidden>
+            <strong id="anchorCoachTitle" data-i18n="anchorCoachTitle">Перед первой линией</strong>
+            <p data-i18n="anchorCoachText">Два раздельных контакта с рельефом удерживают стену. Один контакт всё ещё позволяет ей двигаться.</p>
+            <div class="anchor-coach-examples" aria-hidden="true">
+              <div class="anchor-example anchor-example-good">
+                <svg viewBox="0 0 120 42" focusable="false"><circle cx="22" cy="21" r="9"></circle><circle cx="98" cy="21" r="9"></circle><path d="M22 21 C38 7 47 7 60 21 S82 35 98 21"></path></svg>
+                <span data-i18n="anchorGoodLabel">Два якоря: держит</span>
+              </div>
+              <div class="anchor-example anchor-example-loose">
+                <svg viewBox="0 0 120 42" focusable="false"><circle cx="22" cy="21" r="9"></circle><path d="M22 21 C42 8 70 8 98 21"></path><path class="motion-mark" d="M94 10 l10 11 -10 11"></path></svg>
+                <span data-i18n="anchorLooseLabel">Один якорь: движется</span>
+              </div>
+            </div>
+          </div>
         </section>
         <div class="battle-feedback"><strong id="feedbackText" aria-live="polite"></strong><span id="lineReadout"></span></div>
         <div class="battle-actions"><button id="clearBtn" type="button" data-i18n="clear">Стереть линии</button><button id="restartBtn" type="button" data-i18n="restart">Заново</button></div>
@@ -205,7 +219,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
-  <script src="locales.js"></script><script src="game.js?v=20260804-viewport36"></script>
+  <script src="locales.js"></script><script src="game.js?v=20260810-anchor-coach-v40"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js"></script>

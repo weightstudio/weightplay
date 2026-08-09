@@ -4,6 +4,7 @@
   const LOCALES=window.ANIMAL_HONEY_SHIELD_LOCALES;
   const STORAGE_KEY="weightplay_animal_honey_shield_v1";
   const TUTORIAL_KEY="weightplay_tutorial_seen_animal_honey_shield_v1";
+  const GAME_VERSION="v40";
   const ROUTE_LOCALES={"zh-tw":"zh-Hant","zh-cn":"zh-Hans","pt-br":"pt-BR",en:"en",ja:"ja",ko:"ko",es:"es",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const routeSegment=location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
   const platformLocale=window.WonderI18n?.actualLocale?.();
@@ -25,6 +26,21 @@
   const state={mode:"idle",paused:false,modal:false,started:false,planElapsed:0,elapsed:0,duration:8,nectar:100,strokes:[],drawing:null,bees:[],spawnClock:0,spawned:0,frame:0,last:0,flash:0,wallMoves:0,wallApproachStartedAt:null,wallFirstMovedAt:null,maxGroupAttached:0,pathOpenedAt:null,navClock:0,nav:null,wallNavClock:0,wallNav:null,mover:null,wallImpactContacts:0,wallMoveSolves:0,wallSupportContributions:0,frameWallMoveSolves:0,maxFrameWallMoveSolves:0,carrierChanges:0,beeWallCorrections:0,wallNavBuilds:0,directWallTargets:0,supporterCarryDistance:0,keyboard:{x:500,y:310},result:null};
   let raf=0;
   const LINE_PIXELS_PER_NECTAR=14;
+  function viewportBucket(){
+    const width=window.innerWidth||0,height=window.innerHeight||0;
+    if(width<=480&&height>width)return"phone-portrait";
+    if(width<=900&&height<=520)return"phone-landscape";
+    if(width<=720)return"tablet-portrait";
+    return"desktop";
+  }
+  function trackEvent(name,params={}){
+    try{
+      window.WonderAnalytics?.track?.(name,{
+        game_id:"animal-honey-shield",game_version:GAME_VERSION,stage:stageIndex+1,
+        locale,viewport_bucket:viewportBucket(),viewport:`${window.innerWidth||0}x${window.innerHeight||0}`,...params
+      });
+    }catch{}
+  }
   const PIP_CONTACT_RADIUS=90;
   const THEMES=[
     {sky:"#71c98b",ground:"#2d7a4d",accent:"#d8ff9b",terrain:"meadow"},
@@ -156,7 +172,7 @@
     document.querySelectorAll("[data-i18n]").forEach(node=>node.textContent=fmt(node.dataset.i18n));
     document.querySelectorAll("[data-i18n-aria]").forEach(node=>node.setAttribute("aria-label",fmt(node.dataset.i18nAria)));
     document.querySelectorAll("[data-i18n-alt]").forEach(node=>node.setAttribute("alt",fmt(node.dataset.i18nAlt)));
-    updateMainProgress();renderStages();updateStageChapter();updateHud();
+    updateMainProgress();renderStages();updateStageChapter();updateHud();updateAnchorCoach();
     window.dispatchEvent(new CustomEvent("wonder:locale-change",{detail:{locale}}));
     document.title=`${fmt("title")} | WeightPlay`;
   }
@@ -296,12 +312,14 @@
     const spec=level(stageIndex);
     Object.assign(state,{mode:"idle",paused:false,modal:false,started:false,planElapsed:0,elapsed:0,duration:spec.duration,nectar:100,strokes:[],drawing:null,bees:[],spawnClock:spec.interval,spawned:0,frame:0,flash:0,wallMoves:0,wallApproachStartedAt:null,wallFirstMovedAt:null,maxGroupAttached:0,pathOpenedAt:null,navClock:0,nav:null,wallNavClock:0,wallNav:null,mover:null,wallImpactContacts:0,wallMoveSolves:0,wallSupportContributions:0,frameWallMoveSolves:0,maxFrameWallMoveSolves:0,carrierChanges:0,beeWallCorrections:0,wallNavBuilds:0,directWallTargets:0,supporterCarryDistance:0,result:null});
     $("resultPanel").hidden=true;$("leavePanel").hidden=true;$("pausePanel").hidden=true;$("battleLive").inert=false;$("battleLive").hidden=false;
-    $("clearBtn").disabled=false;$("drawHint").hidden=false;
+    $("clearBtn").disabled=false;
     $("stageLabel").textContent=fmt("stage",{n:stageIndex+1});$("objectiveText").textContent=fmt("objective",{n:spec.duration});
-    announce("ready");updateHud();draw();
+    announce("ready");updateHud();updateAnchorCoach();draw();
   }
   function startStage(index){
     stageIndex=Math.max(0,Math.min(29,index));selectedStage=stageIndex;showScreen("battle");resetStage();
+    trackEvent("stage_start",{entry:stageIndex===0?"first_stage":"stage_select"});
+    if(stageIndex===0)trackEvent("anchor_preview",{preview:"two-anchor-vs-single-anchor"});
   }
   function updateHud(){
     if(!$("timeValue"))return;
@@ -309,6 +327,26 @@
     $("nectarValue").textContent=Math.round(state.nectar);
     $("waveFill").style.width=`${Math.min(100,state.elapsed/state.duration*100)}%`;
     const used=Math.round(100-state.nectar);$("lineReadout").textContent=fmt("lineStatus",{used,left:Math.round(state.nectar)});
+  }
+  function updateAnchorCoach(){
+    const visible=screen==="battle"&&stageIndex===0&&!state.started&&!state.result&&state.strokes.length===0;
+    $("anchorCoach").hidden=!visible;
+    $("drawHint").hidden=visible;
+  }
+  function strokeLength(points){
+    return points.slice(1).reduce((sum,point,index)=>sum+Math.hypot(point.x-points[index].x,point.y-points[index].y),0);
+  }
+  function recordStrokeCommit(stroke,input){
+    const first=state.strokes.length===0;
+    const length=strokeLength(stroke.points);
+    const anchorContacts=stroke.lockContacts||0;
+    trackEvent("stroke_commit",{input,first_stroke:first,stroke_index:state.strokes.length+1,stroke_length:Math.round(length),anchor_contacts:anchorContacts,anchored:Boolean(stroke.anchored)});
+    trackEvent("anchor_contacts",{input,first_stroke:first,stroke_index:state.strokes.length+1,stroke_length:Math.round(length),anchor_contacts:anchorContacts,anchored:Boolean(stroke.anchored)});
+  }
+  function noteWallMove(stroke,movement,source){
+    if(movement<=0||stroke.wallMoveTracked)return;
+    stroke.wallMoveTracked=true;
+    trackEvent("wall_move",{source,movement:Math.round(movement),stroke_length:Math.round(strokeLength(stroke.points)),anchor_contacts:stroke.lockContacts||0});
   }
 
   function pointerPoint(event){
@@ -319,11 +357,12 @@
   function beginWave(){
     if(state.started||state.result)return;
     state.started=true;state.mode="wave";state.spawnClock=level(stageIndex).interval;
-    $("clearBtn").disabled=true;$("drawHint").hidden=true;announce("waveStarted");
+    $("clearBtn").disabled=true;updateAnchorCoach();announce("waveStarted");
   }
   canvas.addEventListener("pointerdown",event=>{
     if(!canDraw())return;canvas.focus({preventScroll:true});canvas.setPointerCapture(event.pointerId);const point=pointerPoint(event);
-    state.drawing={points:[point],flash:0,blockedFlash:0,moves:0};state.keyboard={...point};$("drawHint").hidden=true;event.preventDefault();
+    trackEvent("stroke_start",{input:"pointer",first_stroke:state.strokes.length===0});
+    state.drawing={points:[point],flash:0,blockedFlash:0,moves:0};state.keyboard={...point};$("drawHint").hidden=true;$("anchorCoach").hidden=true;event.preventDefault();
   });
   canvas.addEventListener("pointermove",event=>{
     if(!state.drawing||!canDraw())return;
@@ -355,6 +394,7 @@
     if(state.drawing.points.length>1){
       state.drawing.points=trimClosedLoopTail(state.drawing.points,level(stageIndex).dog);
       refreshStrokeMobility(state.drawing,level(stageIndex));
+      recordStrokeCommit(state.drawing,"pointer");
       state.strokes.push(state.drawing);
       state.wallNav=null;state.wallNavClock=0;
     }
@@ -371,9 +411,10 @@
     }
     if(event.key===" "||event.key==="Enter"){
       const x=state.keyboard.x,y=state.keyboard.y,length=Math.min(220,state.nectar*LINE_PIXELS_PER_NECTAR);
+      trackEvent("stroke_start",{input:"keyboard",first_stroke:state.strokes.length===0});
       state.nectar=Math.max(0,state.nectar-length/LINE_PIXELS_PER_NECTAR);
       const stroke={points:[{x,y:y-length/2},{x,y:y+length/2}],flash:0,blockedFlash:0,moves:0};
-      refreshStrokeMobility(stroke,level(stageIndex));state.strokes.push(stroke);
+      refreshStrokeMobility(stroke,level(stageIndex));recordStrokeCommit(stroke,"keyboard");state.strokes.push(stroke);
       state.wallNav=null;state.wallNavClock=0;
       if(!state.started)beginWave();
       updateHud();draw();event.preventDefault();
@@ -571,7 +612,7 @@
     dx*=fraction;dy*=fraction;
     stroke.points=stroke.points.map(point=>({x:point.x+dx,y:point.y+dy}));
     if(state.wallMoves===0)state.wallFirstMovedAt=state.elapsed;
-    stroke.moves=(stroke.moves||0)+Math.hypot(dx,dy);state.wallMoves+=Math.hypot(dx,dy);
+    const movement=Math.hypot(dx,dy);stroke.moves=(stroke.moves||0)+movement;state.wallMoves+=movement;noteWallMove(stroke,movement,"translate");
     state.navClock=0;state.nav=null;
     return true;
   }
@@ -599,7 +640,7 @@
       }
       if(pushDistance*low<.2)continue;
       stroke.points=displaced(low);
-      const movement=pushDistance*low;stroke.moves=(stroke.moves||0)+movement;state.wallMoves+=movement;
+      const movement=pushDistance*low;stroke.moves=(stroke.moves||0)+movement;state.wallMoves+=movement;noteWallMove(stroke,movement,"flex");
       stroke.flexAngle=Math.atan2(direction.y,direction.x);
       if(state.wallFirstMovedAt===null)state.wallFirstMovedAt=state.elapsed;
       state.navClock=0;state.nav=null;
@@ -628,7 +669,7 @@
       if(penetrationScoreForPoints(contracted(middle),spec)<=before+tolerance)low=middle;else high=middle;
     }
     const movement=pushDistance*low;if(movement<.2)return 0;
-    stroke.points=contracted(low);stroke.moves=(stroke.moves||0)+movement;state.wallMoves+=movement;
+    stroke.points=contracted(low);stroke.moves=(stroke.moves||0)+movement;state.wallMoves+=movement;noteWallMove(stroke,movement,"peel");
     if(state.wallFirstMovedAt===null)state.wallFirstMovedAt=state.elapsed;
     state.navClock=0;state.nav=null;return movement;
   }
@@ -663,7 +704,7 @@
       if(radius*Math.abs(angle*fraction)<.2){stroke.blockedFlash=.2;return 0}
     }
     angle*=fraction;stroke.points=rotatedPoints(stroke.points,center,angle);
-    const movement=radius*Math.abs(angle);stroke.moves=(stroke.moves||0)+movement;state.wallMoves+=movement;
+    const movement=radius*Math.abs(angle);stroke.moves=(stroke.moves||0)+movement;state.wallMoves+=movement;noteWallMove(stroke,movement,"rotate");
     return movement;
   }
   function resolveBeeSolid(bee,spec){
@@ -997,7 +1038,7 @@
       else if(zone?.kind==="rough"||zone?.kind==="bramble"){bee.vx*=Math.max(.55,1-dt*2);bee.vy*=Math.max(.55,1-dt*2)}
       else if(zone?.kind==="wind"){bee.vx+=(zone.dx||0)*95*dt;bee.vy+=(zone.dy||0)*95*dt}
       bee.prevX=bee.x;bee.prevY=bee.y;bee.x+=bee.vx*dt;bee.y+=bee.vy*dt;resolveBeeSolid(bee,spec);collideLine(bee,dt);
-      if(beeTouchesPip(bee,spec.dog)){finish(false);return}
+      if(beeTouchesPip(bee,spec.dog)){finish(false,"pip_contact");return}
     }
     for(const bee of state.bees)separateBeeFromWalls(bee);
     if(state.mover&&state.mover.bee.routeOpen)state.mover=null;
@@ -1012,8 +1053,11 @@
     const used=100-state.nectar;
     if(used<=45)return 3;if(used<=72)return 2;return 1;
   }
-  function finish(won){
+  function finish(won,reason=won?"timer_complete":"pip_contact"){
     if(state.result)return;state.result={won,stars:won?scoreStars():0};state.mode="result";state.mover=null;for(const bee of state.bees){bee.intent="attack";bee.attachedStroke=null}
+    const outcome=won?"complete":"fail";
+    trackEvent(won?"stage_complete":"stage_fail",{outcome,failure_reason:won?"":reason,stroke_count:state.strokes.length,wall_moves:Math.round(state.wallMoves),nectar_remaining:Math.round(state.nectar)});
+    if(!won)trackEvent("failure_reason",{reason,stroke_count:state.strokes.length,wall_moves:Math.round(state.wallMoves)});
     const previous=save.stars[stageIndex]||0;let isBest=false;
     if(won){
       save.cleared[stageIndex]=true;save.unlocked=Math.max(save.unlocked,Math.min(30,stageIndex+2));
@@ -1148,15 +1192,15 @@
   $("stageBackBtn").addEventListener("click",()=>{showScreen("main");requestAnimationFrame(()=>$("startBtn").focus())});
   $("battleBackBtn").addEventListener("click",()=>openModal($("leavePanel"),"leaveContinueBtn"));
   $("leaveContinueBtn").addEventListener("click",()=>closeModal($("leavePanel"),"battleBackBtn"));
-  $("leaveStagesBtn").addEventListener("click",()=>{state.modal=false;state.paused=false;showScreen("stage");requestAnimationFrame(centerSelected)});
+  $("leaveStagesBtn").addEventListener("click",()=>{trackEvent("return_stage",{from:"battle_leave"});state.modal=false;state.paused=false;showScreen("stage");requestAnimationFrame(centerSelected)});
   $("pauseBtn").addEventListener("click",()=>openModal($("pausePanel"),"resumeBtn"));
   $("resumeBtn").addEventListener("click",()=>closeModal($("pausePanel"),"pauseBtn"));
   $("pauseHelpBtn").addEventListener("click",()=>{$("pausePanel").hidden=true;tutorialReturnFocus=$("pauseHelpBtn");$("tutorialPanel").hidden=false;requestAnimationFrame(()=>$("tutorialStartBtn").focus())});
   $("clearBtn").addEventListener("click",()=>{if(state.started)return;state.strokes=[];state.nectar=100;announce("ready");updateHud();draw()});
   $("restartBtn").addEventListener("click",resetStage);
-  $("resultStagesBtn").addEventListener("click",()=>{selectedStage=Math.min(29,save.unlocked-1);showScreen("stage");requestAnimationFrame(centerSelected)});
-  $("nextBtn").addEventListener("click",()=>{if(!$("nextBtn").disabled)startStage(stageIndex+1)});
-  $("retryBtn").addEventListener("click",resetStage);
+  $("resultStagesBtn").addEventListener("click",()=>{trackEvent("return_stage",{from:"result"});selectedStage=Math.min(29,save.unlocked-1);showScreen("stage");requestAnimationFrame(centerSelected)});
+  $("nextBtn").addEventListener("click",()=>{if(!$("nextBtn").disabled){trackEvent("next_stage",{from_stage:stageIndex+1,to_stage:stageIndex+2});startStage(stageIndex+1)}});
+  $("retryBtn").addEventListener("click",()=>{trackEvent("retry",{outcome:state.result?.won?"replay_after_win":"retry_after_fail"});resetStage()});
   function closeTutorial(){
     $("tutorialPanel").hidden=true;safeSet(TUTORIAL_KEY,"1");
     if(screen==="stage"){requestAnimationFrame(centerSelected)}else{state.paused=false;state.modal=false;$("battleLive").inert=false}

@@ -125,7 +125,7 @@
           <li data-i18n="how2">Le api aspettano mentre disegni. Rilascia la prima linea valida per avviare l&#39;ondata, poi continua a rinforzarla.</li>
           <li data-i18n="how3">Resisti fino allo zero senza lasciare che un&#39;ape tocchi Pip.</li>
         </ol></article>
-        <article class="game-info-section"><h3 data-i18n="rulesTitle">Regole e risultati</h3><p data-i18n="rulesText">Le linee non si rompono. Se esiste un percorso, le api lo usano prima; altrimenti spingono, torcono e flettono il muro. Un cerchio su una sola pietra è solo un perno e lo sciame lo stringe attorno alla pietra. Solo la stessa linea agganciata a due punti separati diventa dorata e fissa.</p><p data-i18n="guideExtra">Start by studying the meadow before you draw. Pip is safest when the barrier creates a short route that bees cannot simply walk around, but a long wall is expensive and gives the swarm more surface to push. Leave a little breathing room around the puppy so a repair does not trap your next stroke. When a barrier flashes red, repair that weak section first instead of replacing the whole shape. The first valid line starts the wave, so you have time to plan while the meadow is quiet. Once bees are moving, watch their approach rather than the line you are drawing: a safe-looking wall can still leave an open corner behind Pip. Two separated terrain anchors are stronger than one loop. A single stone lets a wall pivot or peel; wrapping the same stroke around two distinct stones, corners, or approved terrain points makes the wall hold and glow gold. If bees push a loose wall, do not chase the wall with frantic redraws. Wait for the gap they are trying to open, then add a short hook that closes that route. Nectar is limited, and efficient repairs usually earn more stars than a second large circle. Before each later chapter, reread the chapter hint: new hives, split approaches, gusts, fragile gaps, and mixed waves each change what the shortest safe line should look like. After a clear, the next route unlocks automatically and your best stars remain in this browser. A failed attempt costs no account data; simply return to the stage list, study the red opening, and try a different shape. You can also replay an earlier route to practice efficient shapes, compare the stars earned from short repairs, and learn which side of the meadow gives the bees the fewest choices. The stage summary records your progress, while the guide remains available whenever you need to refresh the basic rules.</p></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">Regole e risultati</h3><p data-i18n="rulesText">Le linee non si rompono. Se esiste un percorso, le api lo usano prima; altrimenti spingono, torcono e flettono il muro. Un cerchio su una sola pietra è solo un perno e lo sciame lo stringe attorno alla pietra. Solo la stessa linea agganciata a due punti separati diventa dorata e fissa.</p><p data-i18n="guideExtra">Prima di disegnare, osserva il prato. Pip è più al sicuro quando la barriera crea un percorso breve che le api non possono aggirare facilmente, ma un muro lungo consuma più nettare e offre allo sciame più superficie da spingere. Lascia spazio attorno al cucciolo, così una riparazione non intrappola la linea successiva. Se una barriera lampeggia in rosso, ripara prima quel punto debole. La prima linea valida avvia l&#39;ondata, quindi puoi pianificare mentre il prato è tranquillo. Quando le api si muovono, guarda il loro percorso e non solo la linea: una difesa sicura può lasciare un angolo aperto dietro Pip. Due ancoraggi separati nel terreno sono più forti di un solo anello. Una pietra lascia ruotare o sfilare il muro; collegare la stessa linea a due punti diversi la rende dorata e ferma. Se le api spingono un muro libero, aspetta il varco che cercano e aggiungi un piccolo gancio. Il nettare è limitato e le riparazioni efficienti danno più stelle di un altro cerchio grande. Prima di ogni capitolo rileggi l&#39;indizio: nuovi alveari, percorsi divisi, raffiche, varchi fragili e ondate miste cambiano la linea più breve. Dopo una vittoria si sblocca il percorso successivo e le stelle migliori restano in questo browser. Una sconfitta non cancella dati: torna ai livelli, studia l&#39;apertura rossa e prova una forma diversa. Puoi anche rigiocare i percorsi per confrontare le stelle e scoprire quale lato del prato lascia meno scelte alle api.</p></article>
         <article class="game-info-section"><h3 data-i18n="progressTitle">Trenta percorsi</h3><p data-i18n="progressText">Sei capitoli aggiungono alveari, approcci divisi, ancoraggi di pietra, raffiche, varchi fragili e ondate miste.</p></article>
         <article class="game-info-section"><h3 data-i18n="tipsTitle">Consigli pratici</h3><p data-i18n="tipsText">Un ponte diritto e un cerchio su una pietra restano mobili. Usa due avvolgimenti, ganci opposti o una vera scanalatura del terreno.</p></article>
         <article class="game-info-section"><h3 data-i18n="saveTitle">Salvataggio e privacy</h3><p data-i18n="saveText">Livelli e stelle migliori restano solo in questo browser. Non servono account o dati personali.</p></article>
@@ -167,6 +167,20 @@
         <section id="boardWrap" class="board-wrap">
           <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="Disegna una barriera per proteggere Pip"></canvas>
           <div id="drawHint" class="draw-hint" data-i18n="drawHint">Disegna per creare lo scudo di Pip</div>
+          <div id="anchorCoach" class="anchor-coach" role="note" aria-labelledby="anchorCoachTitle" hidden>
+            <strong id="anchorCoachTitle" data-i18n="anchorCoachTitle">Prima della prima linea</strong>
+            <p data-i18n="anchorCoachText">Due contatti separati con il terreno bloccano il muro. Un solo contatto lo lascia ancora muovere.</p>
+            <div class="anchor-coach-examples" aria-hidden="true">
+              <div class="anchor-example anchor-example-good">
+                <svg viewBox="0 0 120 42" focusable="false"><circle cx="22" cy="21" r="9"></circle><circle cx="98" cy="21" r="9"></circle><path d="M22 21 C38 7 47 7 60 21 S82 35 98 21"></path></svg>
+                <span data-i18n="anchorGoodLabel">Due ancoraggi: fermo</span>
+              </div>
+              <div class="anchor-example anchor-example-loose">
+                <svg viewBox="0 0 120 42" focusable="false"><circle cx="22" cy="21" r="9"></circle><path d="M22 21 C42 8 70 8 98 21"></path><path class="motion-mark" d="M94 10 l10 11 -10 11"></path></svg>
+                <span data-i18n="anchorLooseLabel">Un ancoraggio: si muove</span>
+              </div>
+            </div>
+          </div>
         </section>
         <div class="battle-feedback"><strong id="feedbackText" aria-live="polite"></strong><span id="lineReadout"></span></div>
         <div class="battle-actions"><button id="clearBtn" type="button" data-i18n="clear">Cancella linee</button><button id="restartBtn" type="button" data-i18n="restart">Ricomincia</button></div>
@@ -205,7 +219,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
-  <script src="locales.js"></script><script src="game.js?v=20260804-viewport36"></script>
+  <script src="locales.js"></script><script src="game.js?v=20260810-anchor-coach-v40"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js"></script>

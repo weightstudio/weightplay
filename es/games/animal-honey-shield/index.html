@@ -125,7 +125,7 @@
           <li data-i18n="how2">Las abejas esperan mientras dibujas. Al soltar la primera línea válida empieza la oleada; después puedes repararla.</li>
           <li data-i18n="how3">Resiste hasta que el tiempo llegue a cero sin que una abeja toque a Pip.</li>
         </ol></article>
-        <article class="game-info-section"><h3 data-i18n="rulesTitle">Reglas y resultados</h3><p data-i18n="rulesText">Las líneas no se rompen. Si hay una ruta, las abejas la usan primero; si no, empujan, giran y flexionan el muro. Un círculo en una sola piedra es solo un pivote y el enjambre lo pela alrededor de ella. Solo una línea enganchada a dos puntos de terreno separados queda dorada y fija.</p><p data-i18n="guideExtra">Start by studying the meadow before you draw. Pip is safest when the barrier creates a short route that bees cannot simply walk around, but a long wall is expensive and gives the swarm more surface to push. Leave a little breathing room around the puppy so a repair does not trap your next stroke. When a barrier flashes red, repair that weak section first instead of replacing the whole shape. The first valid line starts the wave, so you have time to plan while the meadow is quiet. Once bees are moving, watch their approach rather than the line you are drawing: a safe-looking wall can still leave an open corner behind Pip. Two separated terrain anchors are stronger than one loop. A single stone lets a wall pivot or peel; wrapping the same stroke around two distinct stones, corners, or approved terrain points makes the wall hold and glow gold. If bees push a loose wall, do not chase the wall with frantic redraws. Wait for the gap they are trying to open, then add a short hook that closes that route. Nectar is limited, and efficient repairs usually earn more stars than a second large circle. Before each later chapter, reread the chapter hint: new hives, split approaches, gusts, fragile gaps, and mixed waves each change what the shortest safe line should look like. After a clear, the next route unlocks automatically and your best stars remain in this browser. A failed attempt costs no account data; simply return to the stage list, study the red opening, and try a different shape. You can also replay an earlier route to practice efficient shapes, compare the stars earned from short repairs, and learn which side of the meadow gives the bees the fewest choices. The stage summary records your progress, while the guide remains available whenever you need to refresh the basic rules.</p></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">Reglas y resultados</h3><p data-i18n="rulesText">Las líneas no se rompen. Si hay una ruta, las abejas la usan primero; si no, empujan, giran y flexionan el muro. Un círculo en una sola piedra es solo un pivote y el enjambre lo pela alrededor de ella. Solo una línea enganchada a dos puntos de terreno separados queda dorada y fija.</p><p data-i18n="guideExtra">Empieza observando el prado antes de dibujar. Pip está más seguro cuando la barrera crea un camino corto que las abejas no pueden rodear, pero un muro largo cuesta más néctar y ofrece más superficie para empujar. Deja espacio alrededor del cachorro para que una reparación no encierre tu siguiente línea. Si una barrera parpadea en rojo, repara esa parte débil antes de rehacerla. La primera línea válida inicia la oleada, así que puedes planear mientras el prado está tranquilo. Cuando las abejas se muevan, observa su ruta y no solo la línea: una defensa segura puede dejar una esquina abierta detrás de Pip. Dos anclajes de terreno separados son más fuertes que un solo lazo. Una piedra permite que el muro gire o se deslice; rodear dos puntos distintos fija la línea y la vuelve dorada. Si las abejas empujan un muro suelto, espera a ver qué hueco intentan abrir y añade un gancho corto. El néctar es limitado y las reparaciones eficientes dan más estrellas que otro círculo grande. Antes de cada capítulo, lee su pista: nuevas colmenas, rutas divididas, ráfagas, huecos frágiles y oleadas mixtas cambian la línea más corta. Tras superar una fase, la siguiente ruta se desbloquea y tus mejores estrellas quedan guardadas en este navegador. Fallar no borra datos; vuelve a las fases, estudia la abertura roja y prueba otra forma. También puedes repetir rutas para comparar estrellas y aprender qué lado del prado ofrece menos opciones a las abejas.</p></article>
         <article class="game-info-section"><h3 data-i18n="progressTitle">Treinta rutas del prado</h3><p data-i18n="progressText">Seis capítulos añaden más colmenas, ataques divididos, anclajes de piedra, ráfagas, huecos frágiles y oleadas combinadas.</p></article>
         <article class="game-info-section"><h3 data-i18n="tipsTitle">Consejos prácticos</h3><p data-i18n="tipsText">Un puente recto y un círculo de una piedra siguen sueltos. Usa dos vueltas, ganchos opuestos o una ranura real del terreno.</p></article>
         <article class="game-info-section"><h3 data-i18n="saveTitle">Guardado y privacidad</h3><p data-i18n="saveText">Los niveles y mejores estrellas se guardan solo en este navegador. No se necesita cuenta ni información personal.</p></article>
@@ -167,6 +167,20 @@
         <section id="boardWrap" class="board-wrap">
           <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="Dibuja una barrera para proteger a Pip"></canvas>
           <div id="drawHint" class="draw-hint" data-i18n="drawHint">Dibuja para crear el escudo de Pip</div>
+          <div id="anchorCoach" class="anchor-coach" role="note" aria-labelledby="anchorCoachTitle" hidden>
+            <strong id="anchorCoachTitle" data-i18n="anchorCoachTitle">Antes de tu primera línea</strong>
+            <p data-i18n="anchorCoachText">Dos contactos separados con el terreno fijan el muro. Un solo contacto todavía permite que se mueva.</p>
+            <div class="anchor-coach-examples" aria-hidden="true">
+              <div class="anchor-example anchor-example-good">
+                <svg viewBox="0 0 120 42" focusable="false"><circle cx="22" cy="21" r="9"></circle><circle cx="98" cy="21" r="9"></circle><path d="M22 21 C38 7 47 7 60 21 S82 35 98 21"></path></svg>
+                <span data-i18n="anchorGoodLabel">Dos anclajes: fijo</span>
+              </div>
+              <div class="anchor-example anchor-example-loose">
+                <svg viewBox="0 0 120 42" focusable="false"><circle cx="22" cy="21" r="9"></circle><path d="M22 21 C42 8 70 8 98 21"></path><path class="motion-mark" d="M94 10 l10 11 -10 11"></path></svg>
+                <span data-i18n="anchorLooseLabel">Un anclaje: se mueve</span>
+              </div>
+            </div>
+          </div>
         </section>
         <div class="battle-feedback"><strong id="feedbackText" aria-live="polite"></strong><span id="lineReadout"></span></div>
         <div class="battle-actions"><button id="clearBtn" type="button" data-i18n="clear">Borrar líneas</button><button id="restartBtn" type="button" data-i18n="restart">Reiniciar</button></div>
@@ -205,7 +219,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
-  <script src="locales.js"></script><script src="game.js?v=20260804-viewport36"></script>
+  <script src="locales.js"></script><script src="game.js?v=20260810-anchor-coach-v40"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js"></script>
