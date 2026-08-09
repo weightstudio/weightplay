@@ -606,6 +606,103 @@ const KL_I18N = {
     });
   });
 
+  const KL_REVIEW_EXPERIENCE_COPY = {
+    en: {
+      "ui.hint.reason.waste_foundation": "Why this move: it advances a suit toward the Foundation.",
+      "ui.hint.reason.waste_tableau": "Why this move: it opens the Waste and builds a useful Tableau sequence.",
+      "ui.hint.reason.tableau_foundation": "Why this move: it advances a face-up card toward the Foundation.",
+      "ui.hint.reason.tableau_stack": "Why this move: it exposes a hidden card or opens a new sequence.",
+      "ui.result.deal_identity": "Deal {id} · Replay this deal to beat your best.",
+    },
+    "zh-Hant": {
+      "ui.hint.reason.waste_foundation": "為什麼是這步：把同一花色往收牌區推進。",
+      "ui.hint.reason.waste_tableau": "為什麼是這步：清出棄牌並建立有用的牌列。",
+      "ui.hint.reason.tableau_foundation": "為什麼是這步：把明牌往收牌區推進。",
+      "ui.hint.reason.tableau_stack": "為什麼是這步：翻出暗牌，或開啟新的牌列。",
+      "ui.result.deal_identity": "牌局 {id}・重玩這局，挑戰你的最佳紀錄。",
+    },
+    "zh-Hans": {
+      "ui.hint.reason.waste_foundation": "为什么是这步：将同一花色推进到收牌区。",
+      "ui.hint.reason.waste_tableau": "为什么是这步：清出弃牌并建立有用的牌列。",
+      "ui.hint.reason.tableau_foundation": "为什么是这步：将明牌推进到收牌区。",
+      "ui.hint.reason.tableau_stack": "为什么是这步：翻出暗牌，或开启新的牌列。",
+      "ui.result.deal_identity": "牌局 {id}・重玩这局，挑战你的最佳纪录。",
+    },
+    ja: {
+      "ui.hint.reason.waste_foundation": "この手を選んだ理由：同じスートを組み札へ進めます。",
+      "ui.hint.reason.waste_tableau": "この手を選んだ理由：場札を空け、次の列を組みやすくします。",
+      "ui.hint.reason.tableau_foundation": "この手を選んだ理由：表向きのカードを組み札へ進めます。",
+      "ui.hint.reason.tableau_stack": "この手を選んだ理由：裏向きのカードをめくるか、新しい列を開きます。",
+      "ui.result.deal_identity": "ディール {id}・このディールを再挑戦してベスト記録を更新しましょう。",
+    },
+    ko: {
+      "ui.hint.reason.waste_foundation": "이 수를 고른 이유: 같은 무늬를 파운데이션으로 전진시킵니다.",
+      "ui.hint.reason.waste_tableau": "이 수를 고른 이유: 버린 카드 더미를 비우고 유용한 열을 만듭니다.",
+      "ui.hint.reason.tableau_foundation": "이 수를 고른 이유: 앞면 카드를 파운데이션으로 전진시킵니다.",
+      "ui.hint.reason.tableau_stack": "이 수를 고른 이유: 뒷면 카드를 열거나 새 열을 만듭니다.",
+      "ui.result.deal_identity": "딜 {id} · 이 딜을 다시 플레이해 최고 기록에 도전하세요.",
+    },
+    es: {
+      "ui.hint.reason.waste_foundation": "Por qué esta jugada: avanza un palo hacia la Fundación.",
+      "ui.hint.reason.waste_tableau": "Por qué esta jugada: libera el Descarte y crea una secuencia útil del Tableau.",
+      "ui.hint.reason.tableau_foundation": "Por qué esta jugada: avanza una carta descubierta hacia la Fundación.",
+      "ui.hint.reason.tableau_stack": "Por qué esta jugada: descubre una carta oculta o abre una nueva secuencia.",
+      "ui.result.deal_identity": "Reparto {id} · Repite este reparto para superar tu mejor marca.",
+    },
+    "pt-BR": {
+      "ui.hint.reason.waste_foundation": "Por que esta jogada: avança um naipe para a Fundação.",
+      "ui.hint.reason.waste_tableau": "Por que esta jogada: libera o descarte e cria uma sequência útil no Tableau.",
+      "ui.hint.reason.tableau_foundation": "Por que esta jogada: avança uma carta virada para cima até a Fundação.",
+      "ui.hint.reason.tableau_stack": "Por que esta jogada: revela uma carta virada para baixo ou abre uma nova sequência.",
+      "ui.result.deal_identity": "Distribuição {id} · Jogue esta distribuição de novo para superar seu melhor resultado.",
+    },
+    fr: {
+      "ui.hint.reason.waste_foundation": "Pourquoi ce coup : il avance une couleur vers la Fondation.",
+      "ui.hint.reason.waste_tableau": "Pourquoi ce coup : il libère la défausse et construit une suite utile au Tableau.",
+      "ui.hint.reason.tableau_foundation": "Pourquoi ce coup : il avance une carte visible vers la Fondation.",
+      "ui.hint.reason.tableau_stack": "Pourquoi ce coup : il révèle une carte cachée ou ouvre une nouvelle suite.",
+      "ui.result.deal_identity": "Donne {id} · Rejouez cette donne pour battre votre meilleur score.",
+    },
+    de: {
+      "ui.hint.reason.waste_foundation": "Warum dieser Zug: Er bringt eine Farbe zum Fundament voran.",
+      "ui.hint.reason.waste_tableau": "Warum dieser Zug: Er leert den Ablagestapel und bildet eine nützliche Tableau-Reihe.",
+      "ui.hint.reason.tableau_foundation": "Warum dieser Zug: Er bringt eine offene Karte zum Fundament voran.",
+      "ui.hint.reason.tableau_stack": "Warum dieser Zug: Er deckt eine verdeckte Karte auf oder öffnet eine neue Reihe.",
+      "ui.result.deal_identity": "Ausgabe {id} · Spiele diese Ausgabe erneut und übertriff deinen Bestwert.",
+    },
+    it: {
+      "ui.hint.reason.waste_foundation": "Perché questa mossa: porta un seme verso la Fondazione.",
+      "ui.hint.reason.waste_tableau": "Perché questa mossa: libera gli scarti e crea una sequenza utile nel Tableau.",
+      "ui.hint.reason.tableau_foundation": "Perché questa mossa: porta una carta scoperta verso la Fondazione.",
+      "ui.hint.reason.tableau_stack": "Perché questa mossa: scopre una carta coperta o apre una nuova sequenza.",
+      "ui.result.deal_identity": "Distribuzione {id} · Ripeti questa distribuzione per battere il tuo record.",
+    },
+    ru: {
+      "ui.hint.reason.waste_foundation": "Почему этот ход: он продвигает масть в основание.",
+      "ui.hint.reason.waste_tableau": "Почему этот ход: он освобождает сброс и строит полезную последовательность.",
+      "ui.hint.reason.tableau_foundation": "Почему этот ход: он продвигает открытую карту в основание.",
+      "ui.hint.reason.tableau_stack": "Почему этот ход: он открывает скрытую карту или новую последовательность.",
+      "ui.result.deal_identity": "Раздача {id} · Повторите её, чтобы побить свой лучший результат.",
+    },
+    hi: {
+      "ui.hint.reason.waste_foundation": "यह चाल क्यों: यह एक सूट को फाउंडेशन की ओर आगे बढ़ाती है।",
+      "ui.hint.reason.waste_tableau": "यह चाल क्यों: यह वेस्ट को खोलती है और उपयोगी टैब्लो क्रम बनाती है।",
+      "ui.hint.reason.tableau_foundation": "यह चाल क्यों: यह खुले कार्ड को फाउंडेशन की ओर आगे बढ़ाती है।",
+      "ui.hint.reason.tableau_stack": "यह चाल क्यों: यह छिपा कार्ड खोलती है या नया क्रम शुरू करती है।",
+      "ui.result.deal_identity": "डील {id} · अपने सर्वश्रेष्ठ रिकॉर्ड को बेहतर करने के लिए यह डील फिर खेलें।",
+    },
+    ar: {
+      "ui.hint.reason.waste_foundation": "سبب هذه الحركة: إنها تقدّم نوعًا نحو الأساس.",
+      "ui.hint.reason.waste_tableau": "سبب هذه الحركة: إنها تفتح كومة المهملات وتبني تسلسلًا مفيدًا.",
+      "ui.hint.reason.tableau_foundation": "سبب هذه الحركة: إنها تقدّم بطاقة مكشوفة نحو الأساس.",
+      "ui.hint.reason.tableau_stack": "سبب هذه الحركة: إنها تكشف بطاقة مخفية أو تفتح تسلسلًا جديدًا.",
+      "ui.result.deal_identity": "التوزيع {id} · أعد هذا التوزيع لتحطّم أفضل نتيجة لك.",
+    },
+  };
+  Object.entries(KL_REVIEW_EXPERIENCE_COPY).forEach(([locale, copy]) => {
+    Object.assign(KL_I18N[locale], copy);
+  });
+
   function mapLocalePathPrefix(locale) {
     const normalized = String(locale || LOCALE_DEFAULT);
     const normalizedLower = normalized.toLowerCase();
@@ -764,6 +861,7 @@ const KL_I18N = {
     const sec = String(total % 60).padStart(2, "0");
     return `${min}:${sec}`;
   };
+  const formatDealId = (value) => `#${(Number(value) >>> 0).toString(16).toUpperCase().padStart(8, "0")}`;
 
   const KL_RULESET = Object.freeze(new RuleEngine());
   const KLO_RULE_CONFIG = {
@@ -793,6 +891,7 @@ const KL_I18N = {
     }
 
     newGame(seed = now()) {
+      this.dealId = seed >>> 0;
       const deck = Deck.buildShuffled(seed >>> 0, this.config.suits || SUITS);
       const suits = this.config.suits || SUITS;
       const tableauPiles = this.config.tableauPiles || 7;
@@ -825,6 +924,7 @@ const KL_I18N = {
 
     snapshot() {
       return {
+        dealId: this.dealId,
         drawModeIndex: this.drawModeIndex,
         moveCount: this.moveCount,
         tableau: this.tableau.toJSON(),
@@ -837,6 +937,8 @@ const KL_I18N = {
 
     restore(raw) {
       if (!raw) return;
+      const dealId = Number(raw.dealId);
+      if (Number.isFinite(dealId)) this.dealId = dealId >>> 0;
       this.drawModeIndex = Number(raw.drawModeIndex) || 0;
       this.moveCount = Number(raw.moveCount) || 0;
       this.tableau = Tableau.fromJSON(raw.tableau || []);
@@ -2034,13 +2136,15 @@ const KL_I18N = {
       if (timeRecord) recordLines.push(t("ui.result.record_time"));
       if (moveRecord) recordLines.push(t("ui.result.record_moves"));
       const recordText = recordLines.length > 0 ? ` ${recordLines.join(" ")}` : "";
+      const dealId = formatDealId(game.dealId);
+      ui.resultText.dataset.dealId = dealId;
       ui.resultText.innerHTML = `${t("ui.result.victory_prefix", {
         time: formatTime(state.elapsed),
         moves: game.moveCount,
       })}${recordText}<br>${t("ui.result.victory_body", {
         fastest,
         least,
-      })}<br>${records}`;
+      })}<br>${records}<br><span class="result-deal-id">${t("ui.result.deal_identity", { id: dealId })}</span>`;
     }
     if (ui.resultOverlay) {
       ui.resultOverlay.classList.remove("result-enter");
@@ -2102,14 +2206,17 @@ const KL_I18N = {
     }
     highlightMoveHint(hint);
     if (hint.type === "wasteToFoundation" || hint.type === "wasteToTableau") {
-      showHint(t("ui.hint.move_waste_destination"));
+      const reasonKey = hint.type === "wasteToFoundation"
+        ? "ui.hint.reason.waste_foundation"
+        : "ui.hint.reason.waste_tableau";
+      showHint(`<span>${t("ui.hint.move_waste_destination")}</span><br><small class="hint-reason">${t(reasonKey)}</small>`);
       return;
     }
     if (hint.type === "tableauToFoundation") {
-      showHint(t("ui.hint.move_tableau_foundation"));
+      showHint(`<span>${t("ui.hint.move_tableau_foundation")}</span><br><small class="hint-reason">${t("ui.hint.reason.tableau_foundation")}</small>`);
       return;
     }
-    showHint(t("ui.hint.move_tableau_stack"));
+    showHint(`<span>${t("ui.hint.move_tableau_stack")}</span><br><small class="hint-reason">${t("ui.hint.reason.tableau_stack")}</small>`);
   }
 
   async function onAutoFinish() {

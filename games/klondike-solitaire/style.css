@@ -785,6 +785,14 @@ button.control-mini {
   pointer-events: auto;
 }
 
+.hint-overlay .hint-reason {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--kl-muted);
+  font-size: 0.88em;
+  line-height: 1.35;
+}
+
 @media (max-width: 740px) {
   .main-hero {
     grid-template-columns: 1fr;

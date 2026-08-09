@@ -119,6 +119,33 @@
     }
   }
 
+  const stageV6Targets = new Set([
+    "block-blast", "animal-2048", "animal-block-grove", "animal-bubble-safari", "animal-cafe-rush",
+    "animal-coloring-studio", "animal-color-link", "animal-color-springs", "animal-cratebound",
+    "animal-habitat-mahjong", "animal-hero-trials", "animal-hidden-safari", "animal-parking-patrol",
+    "animal-quiz", "animal-rescue", "animal-rope-rescue", "animal-screw-workshop",
+    "animal-skybridge-rivals", "animal-spectrum-pulse", "animal-tangram", "animal-unblock",
+    "animal-word-trails", "bubble-bakery", "campus-dash", "color-lunchbox", "fruit-merge",
+    "garden-tiles", "shape-train", "snack-blocks", "star-memory", "tiny-weather-rescue", "zoo-helper-day",
+  ]);
+
+  function ensureStageV6Runtime() {
+    const gameId = document.body?.dataset.wpGameId || location.pathname.match(/\/games\/([^/]+)/)?.[1] || "";
+    if (!stageV6Targets.has(gameId)) return;
+    const rail = STAGE_RAIL_SELECTORS.map((selector) => document.querySelector(selector)).find(Boolean);
+    if (!rail) return;
+    rail.dataset.wpStageV6Auto = "true";
+    if (rail.dataset.wpStageV6Total === undefined) {
+      const declaredTotal = rail.querySelectorAll(STAGE_CARD_SELECTORS.join(",")).length;
+      if (declaredTotal > 1) rail.dataset.wpStageV6Total = String(declaredTotal);
+    }
+    if (document.querySelector('script[src*="stage-virtualization-standard.js"]')) return;
+    const script = document.createElement("script");
+    script.src = new URL("stage-virtualization-standard.js", sharedAssetBase).href;
+    script.dataset.wpStageVirtualizationStandard = "true";
+    document.body.append(script);
+  }
+
   function ensureBattleCanvasRuntime() {
     if (!document.querySelector('link[href*="battle-canvas-standard.css"]')) {
       const link = document.createElement("link");
@@ -1029,6 +1056,7 @@
   function init() {
     window.__weightPlayShellControlsPhase = "init";
     ensureStageSelectorRuntime();
+    ensureStageV6Runtime();
     ensureBattleCanvasRuntime();
     ensureGameInfoRuntime();
     build();

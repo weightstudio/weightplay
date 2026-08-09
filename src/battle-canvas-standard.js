@@ -282,6 +282,12 @@
       update();
     });
   };
+  // Scene owners that complete their own transaction need a deterministic
+  // geometry checkpoint before the next synchronous interaction can inspect
+  // the Battle return. Keep the observer/rAF queue for ordinary mutations,
+  // while exposing the same idempotent update for an owner-level checkpoint.
+  window.WeightPlayBattleCanvas ||= {};
+  window.WeightPlayBattleCanvas.sync = update;
   const overlaySelector = '[role="dialog"],.result-panel,.result-overlay,.result-canvas,#resultPanel,#resultScreen,#resultModal,#result';
   const geometrySelector = `${config[0]},[data-wp-return="battle"],${reserveSelector},${overlaySelector}`;
   const containsGeometryNode = (node) => node instanceof Element

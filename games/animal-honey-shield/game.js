@@ -191,6 +191,7 @@
     window.dispatchEvent(new Event("weightplay:battle-sync"));
     if(next==="stage")$("stageScreen").querySelector(".stage-canvas").scrollTop=0;
     pinViewportTop(next==="stage"||next==="battle");
+    window.WeightPlayBattleCanvas?.sync?.();
     if(next==="stage")requestAnimationFrame(centerSelected);
     if(next==="battle"){
       window.dispatchEvent(new CustomEvent("weightplay:battle-open"));

@@ -962,6 +962,105 @@
     ),
   });
 
+  const localizedStrategyCopy = {
+    ja: [
+      "狼が隣接したままダメージを交換する前に崩します。1回の移動で2体の攻撃から群れの牙を外せます。",
+      "フクロウを2マス離して使い、イバラボアの近接反撃を受けないようにします。",
+      "沈黙した英雄も移動・攻撃・ガードはできます。そのターンで突進レーンから離れます。",
+      "ミアコイルサーペントには同じターンに異なる2人の英雄で攻撃し、再生を止めます。",
+      "エクリプスグリフィンが飛行中はライオンを使い、着地後の横掃射の前に広がります。",
+      "1 HPのミラークローンが必要な移動レーンを塞ぐ前に倒します。",
+      "冷却・封印・軌道マスを資源として扱い、恒久ステータスだけに頼らないようにします。",
+    ],
+    ko: [
+      "늑대가 붙어 있는 상태에서 피해를 주고받기 전에 진형을 끊으세요. 한 번 움직이면 두 공격에서 무리의 송곳니를 없앨 수 있습니다.",
+      "부엉이를 두 칸 떨어뜨려 사용해 가시 멧돼지의 근접 반격을 피하세요.",
+      "침묵된 영웅도 이동, 공격, 방어를 할 수 있으니 그 턴에 돌진 경로를 벗어나세요.",
+      "미어코일 서펜트는 같은 턴에 서로 다른 영웅 둘로 공격해 재생을 막으세요.",
+      "이클립스 그리핀이 비행 중일 때 사자를 쓰고, 착지 후 가로 휩쓸기 전에 흩어지세요.",
+      "1 HP 미러 클론이 필요한 이동 칸을 막기 전에 제거하세요.",
+      "냉각, 봉인, 궤도 칸을 자원으로 보고 영구 능력치에만 의존하지 마세요.",
+    ],
+    fr: [
+      "Brisez la proximité des loups avant d'échanger des dégâts : un déplacement peut retirer le Croc de meute de deux attaques.",
+      "Utilisez la Chouette à deux cases pour éviter la riposte au corps à corps du Sanglier épineux.",
+      "Un héros réduit au silence peut encore se déplacer, attaquer ou garder : profitez du tour pour quitter la ligne de charge.",
+      "Frappez le Serpent Mirecoil avec deux héros différents pendant le même tour pour arrêter sa régénération.",
+      "Utilisez le Lion pendant le vol du Griffon de l'éclipse, puis écartez-vous avant son balayage au sol.",
+      "Éliminez le clone miroir à 1 PV avant qu'il ne bloque la case de déplacement nécessaire.",
+      "Traitez les cases de refroidissement, de sceau et d'orbite comme des ressources ; les statistiques permanentes ne remplacent pas le placement.",
+    ],
+    de: [
+      "Trenne die Wölfe, bevor du Schaden tauschst: Eine Bewegung kann den Rudelzahn aus zwei Angriffen entfernen.",
+      "Setze die Eule zwei Felder entfernt ein, damit der Dorneneber nicht mit einem Nahkampfkonter antwortet.",
+      "Ein verstummter Held kann sich noch bewegen, angreifen oder schützen; nutze den Zug, um die Angriffsbahn zu verlassen.",
+      "Triff die Mirecoil-Schlange im selben Zug mit zwei verschiedenen Helden, um ihre Regeneration zu stoppen.",
+      "Nutze den Löwen, solange der Eclipse-Greif fliegt, und verteile dich vor seinem Bodenschwung.",
+      "Besiege den Spiegelklon mit 1 LP, bevor er das benötigte Bewegungsfeld blockiert.",
+      "Behandle Kühl-, Siegel- und Orbitfelder als Ressourcen; permanente Werte ersetzen keine gute Positionierung.",
+    ],
+    it: [
+      "Spezza l'adiacenza dei lupi prima di scambiare danni: un movimento può rimuovere Zanna del Branco da due attacchi.",
+      "Usa il Gufo a due caselle di distanza per evitare il contrattacco in mischia del Cinghiale spinoso.",
+      "Un eroe silenziato può ancora muoversi, attaccare o difendere: usa quel turno per uscire dalla corsia di carica.",
+      "Colpisci il Serpente Mirecoil con due eroi diversi nello stesso turno per fermarne la rigenerazione.",
+      "Usa il Leone mentre il Grifone dell'Eclissi vola, poi separati prima del suo spazzamento a terra.",
+      "Elimina il clone specchio da 1 HP prima che blocchi la casella di movimento necessaria.",
+      "Considera le caselle di raffreddamento, sigillo e orbita come risorse; le statistiche permanenti non sostituiscono il posizionamento.",
+    ],
+    ru: [
+      "Разорвите соседство волков до обмена уроном: одно перемещение убирает Зуб стаи сразу из двух атак.",
+      "Используйте Сову с расстояния в две клетки, чтобы Шипастый кабан не ответил атакой ближнего боя.",
+      "Оглушённый герой всё ещё может двигаться, атаковать или защищаться; используйте ход, чтобы уйти с линии рывка.",
+      "Атакуйте Змея Мироиск двумя разными героями за один ход, чтобы остановить регенерацию.",
+      "Используйте Льва, пока Грифон затмения летит, затем расступитесь до его наземного sweep-удара.",
+      "Уничтожьте зеркального клона с 1 ОЗ, прежде чем он перекроет нужную клетку движения.",
+      "Считайте клетки охлаждения, печати и орбиты ресурсами; постоянные характеристики не заменяют позиционирование.",
+    ],
+    hi: [
+      "नुकसान का आदान-प्रदान करने से पहले भेड़ियों की सटी हुई स्थिति तोड़ें; एक चाल दो हमलों से पैक फैंग हटा सकती है।",
+      "उल्लू को दो खाने दूर से इस्तेमाल करें ताकि थॉर्न बोअर पलटवार न कर सके।",
+      "मौन किया गया नायक अभी भी चल, हमला या रक्षा कर सकता है; उस चाल में चार्ज लेन से बाहर निकलें।",
+      "मीरकॉइल सर्प को पुनर्जीवन रोकने के लिए उसी चाल में दो अलग नायकों से मारें।",
+      "एक्लिप्स ग्रिफिन के उड़ते समय शेर का उपयोग करें, फिर उसके जमीन वाले स्वीप से पहले फैल जाएँ।",
+      "1 HP वाले मिरर क्लोन को आपकी जरूरी चाल की जगह रोकने से पहले हटा दें।",
+      "कूलिंग, सील और ऑर्बिट खानों को संसाधन मानें; स्थायी आँकड़े सही स्थिति का विकल्प नहीं हैं।",
+    ],
+    ar: [
+      "اقطع تجاور الذئاب قبل تبادل الضرر؛ حركة واحدة قد تزيل ناب القطيع من هجومين.",
+      "استخدم البومة من مسافة خانتين حتى لا يرد الخنزير الشوكي بهجوم قريب.",
+      "يستطيع البطل المصاب بالصمت التحرك والهجوم والحراسة؛ استغل الدور للخروج من مسار الاندفاع.",
+      "اضرب ثعبان ميركويل ببطلين مختلفين في الدور نفسه لإيقاف تجدد صحته.",
+      "استخدم الأسد أثناء طيران غريفين الكسوف، ثم تفرق قبل كنسه الأرضي.",
+      "أزل نسخة المرآة ذات نقطة الصحة الواحدة قبل أن تسد خانة الحركة التي تحتاجها.",
+      "اعتبر خانات التبريد والختم والمدار موارد؛ الإحصاءات الدائمة لا تعوض التموضع الصحيح.",
+    ],
+  };
+  Object.entries(localizedStrategyCopy).forEach(([code, tips]) => {
+    text[code] ||= {};
+    text[code].strategyTips = tips;
+  });
+
+  const growthThreatCopy = {
+    en: "Next threat preview: {enemy} — {detail} Example: if {hero} has the lowest HP, move {hero} out of range before the first enemy turn.",
+    "zh-Hant": "下一個威脅：{enemy}——{detail}。例如，若{hero}目前生命最低，先把他移出射程，再結束回合。",
+    "zh-Hans": "下一个威胁：{enemy}——{detail}。例如，若{hero}当前生命最低，先把他移出射程，再结束回合。",
+    ja: "次の脅威：{enemy}——{detail}。例：{hero}のHPが最低なら、敵ターン前に射程外へ移動させます。",
+    ko: "다음 위협: {enemy} — {detail} 예: {hero}의 HP가 가장 낮다면 적 턴 전에 사거리 밖으로 이동하세요.",
+    es: "Próxima amenaza: {enemy} — {detail} Ejemplo: si {hero} tiene menos PV, muévelo fuera del alcance antes del turno enemigo.",
+    "pt-BR": "Ameaça seguinte: {enemy} — {detail} Exemplo: se {hero} tiver menos Vida, mova-o para fora do alcance antes do turno inimigo.",
+    fr: "Menace suivante : {enemy} — {detail} Exemple : si {hero} a le moins de PV, éloignez-le avant le tour ennemi.",
+    de: "Nächste Bedrohung: {enemy} — {detail} Beispiel: Hat {hero} die wenigsten LP, bewege ihn vor dem Gegnerzug aus der Reichweite.",
+    it: "Prossima minaccia: {enemy} — {detail} Esempio: se {hero} ha meno Salute, portalo fuori portata prima del turno nemico.",
+    ru: "Следующая угроза: {enemy} — {detail} Пример: если у героя {hero} меньше всего здоровья, отведите его за пределы дальности до хода врага.",
+    hi: "अगला खतरा: {enemy} — {detail} उदाहरण: अगर {hero} का स्वास्थ्य सबसे कम है, तो ход से पहले उसे हमले की सीमा से बाहर ले जाएँ।",
+    ar: "التهديد التالي: {enemy} — {detail} مثال: إذا كانت صحة {hero} هي الأقل، انقله خارج المدى قبل دور العدو.",
+  };
+  Object.entries(growthThreatCopy).forEach(([code, value]) => {
+    text[code] ||= {};
+    text[code].nextThreatPreview = value;
+  });
+
   const heroDefs = [
     { id: "lion", name: "lion", role: "lionRole", img: "weightplay-boom-mane-lion.png", hp: 7, atk: 3, skillName: "skillLion", skillDesc: "skillLionDesc", skill: "animal-rune-tactics-skill-lion-strike.webp" },
     { id: "owl", name: "owl", role: "owlRole", img: "animal-rune-tactics-hero-owl.png", hp: 5, atk: 2, range: 2, skillName: "skillOwl", skillDesc: "skillOwlDesc", skill: "animal-rune-tactics-skill-owl-rune-bolt.webp" },
@@ -3042,7 +3141,25 @@
         : t("resultUpgradeNeed", { hero: t(nextHero.hero.name), need: nextHero.cost - (profile.runes || 0) })
       : t("heroUpgradeMax");
     nodes.resultNextText.textContent = `${missionDirection} ${upgradeDirection}`;
-    nodes.resultPlanText.textContent = t(win ? "planWin" : "planLose");
+    const nextMissionDef = missionDefs.find((item) => item.id === state.mission + 1);
+    const previewEnemy = nextMissionDef?.enemies
+      .map((id) => enemyDefs.find((enemy) => enemy.id === id))
+      .find((enemy) => enemy?.id === "raven" && enemy.trait);
+    const previewHero = state.heroes
+      .filter((hero) => hero.hp > 0)
+      .slice()
+      .sort((a, b) => (a.hp / a.maxHp) - (b.hp / b.maxHp))[0] || state.heroes[0];
+    const previewDetailKey = previewEnemy ? `${previewEnemy.trait}Desc` : "";
+    const nextThreatPreview = win && previewEnemy && previewHero
+      ? t("nextThreatPreview", {
+        enemy: t(previewEnemy.name),
+        detail: t(previewDetailKey),
+        hero: t(previewHero.name),
+      })
+      : "";
+    nodes.resultPlanText.textContent = [t(win ? "planWin" : "planLose"), nextThreatPreview]
+      .filter(Boolean)
+      .join(" ");
     const hasNextMission = win && state.mission < missionDefs.length;
     const primaryResultAction = hasNextMission ? nodes.nextBtn : win ? nodes.menuBtn : nodes.retryBtn;
     nodes.nextBtn.disabled = !hasNextMission;
