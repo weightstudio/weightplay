@@ -123,5 +123,17 @@
   Object.assign(it,{rotateCue:"Rotazione registrata: allinea l'apertura luminosa."});
   Object.assign(ru,{rotateCue:"Вращение принято — совместите светящийся проём."});
   Object.assign(ar,{rotateCue:"تم تسجيل الدوران - حاذِ الفتحة المضيئة."});
+  Object.assign(en,{nextRule:"Next Tower {n}: {name} · New rule: {rule}"});
+  Object.assign(zhHant,{nextRule:"下一座塔 {n}：{name} · 新規則：{rule}"});
+  Object.assign(zhHans,{nextRule:"下一座塔 {n}：{name} · 新规则：{rule}"});
+  Object.assign(ja,{nextRule:"次の塔 {n}：{name} · 新ルール：{rule}"});
+  Object.assign(ko,{nextRule:"다음 타워 {n}: {name} · 새 규칙: {rule}"});
+  Object.assign(es,{nextRule:"Siguiente torre {n}: {name} · Nueva regla: {rule}"});
+  Object.assign(pt,{nextRule:"Próxima torre {n}: {name} · Nova regra: {rule}"});
+  Object.assign(fr,{nextRule:"Tour suivant {n} : {name} · Nouvelle règle : {rule}"});
+  Object.assign(de,{nextRule:"Nächster Turm {n}: {name} · Neue Regel: {rule}"});
+  Object.assign(it,{nextRule:"Torre successiva {n}: {name} · Nuova regola: {rule}"});
+  Object.assign(ru,{nextRule:"Следующая башня {n}: {name} · Новое правило: {rule}"});
+  Object.assign(ar,{nextRule:"البرج التالي {n}: {name} · قاعدة جديدة: {rule}"});
   window.SKYDROP_LOCALES={en,"zh-Hant":zhHant,"zh-Hans":zhHans,ja,ko,es,"pt-BR":pt,fr,de,it,ru,ar};
 })();

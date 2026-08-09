@@ -1,5 +1,6 @@
 (() => {
   const GAME_ID = "animal-orb-fortress";
+  const GAME_VERSION = "v16";
   const saveKey = "weightplay_animal_orb_fortress_v1";
   const localeKey = "weightPlayLocale";
   let W = 960;
@@ -527,6 +528,40 @@
     ar: { direct: "إصابة مباشرة", bank: "إصابة مرتدة", blocked: "تم الصد" },
   };
 
+  const firstShotMissCopy = {
+    en: "First shot missed",
+    "zh-Hant": "首發未命中",
+    "zh-Hans": "首发未命中",
+    es: "El primer disparo falló",
+    fr: "Premier tir manqué",
+    de: "Erster Schuss verfehlt",
+    it: "Primo tiro a vuoto",
+    ja: "初弾は外れました",
+    ko: "첫 발이 빗나갔습니다",
+    "pt-BR": "O primeiro disparo errou",
+    ru: "Первый выстрел промахнулся",
+    hi: "पहली गोली चूक गई",
+    ar: "أخطأت الطلقة الأولى",
+  };
+  Object.entries(firstShotMissCopy).forEach(([key, value]) => {
+    if (shotFeedbackCopy[key]) shotFeedbackCopy[key].miss = value;
+  });
+  const nextRaidPreviewCopy = {
+    en: "Next Raid: Route {tier}, {name} · New rule: {rule}.",
+    "zh-Hant": "下一場突襲：路線 {tier}「{name}」· 新規則：{rule}。",
+    "zh-Hans": "下一场突袭：路线 {tier}「{name}」· 新规则：{rule}。",
+    es: "Próxima incursión: ruta {tier}, {name} · Regla nueva: {rule}.",
+    fr: "Prochain raid : parcours {tier}, {name} · Nouvelle règle : {rule}.",
+    de: "Nächster Überfall: Route {tier}, {name} · Neue Regel: {rule}.",
+    it: "Prossima incursione: percorso {tier}, {name} · Nuova regola: {rule}.",
+    ja: "次のレイド：ルート{tier}「{name}」・新ルール：{rule}。",
+    ko: "다음 레이드: 루트 {tier} {name} · 새 규칙: {rule}.",
+    "pt-BR": "Próxima incursão: rota {tier}, {name} · Nova regra: {rule}.",
+    ru: "Следующий рейд: маршрут {tier}, {name} · Новое правило: {rule}.",
+    hi: "अगला रेड: रूट {tier}, {name} · नया नियम: {rule}।",
+    ar: "الغارة التالية: المسار {tier}، {name} · القاعدة الجديدة: {rule}.",
+  };
+
   const assets = {
     bg: "../../assets/animal-orb-fortress-arena-bg.webp",
     lion: "../../assets/weightplay-boom-mane-lion.png",
@@ -696,6 +731,7 @@
     try { localStorage.setItem(key, value); return true; } catch { return false; }
   };
   let locale = window.WonderI18n?.locale?.() || readStorage(localeKey) || "en";
+  let lastAimTrackedAt = 0;
   let save = loadSave();
   let selectedTier = 1;
   let centeredStageFrame = 0;
@@ -714,6 +750,37 @@
   let preloadFinished = false;
   let pauseFocusOwner = null;
   let resultDecisionCommitted = false;
+
+  function viewportBucket() {
+    const width = Math.max(1, window.innerWidth || document.documentElement.clientWidth || 1);
+    const height = Math.max(1, window.innerHeight || document.documentElement.clientHeight || 1);
+    if (width <= 480) return "phone";
+    if (width <= 900) return height > width ? "tablet-portrait" : "tablet-landscape";
+    return height > width ? "desktop-portrait" : "desktop-landscape";
+  }
+
+  function track(eventName, details = {}) {
+    try {
+      window.WonderAnalytics?.track?.(eventName, {
+        game_id: GAME_ID,
+        game_version: GAME_VERSION,
+        locale: window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale,
+        viewport_bucket: viewportBucket(),
+        ...details,
+      });
+    } catch {
+      // Analytics must never interrupt play.
+    }
+  }
+
+  function trackAimChange(x, y, source) {
+    if (state.mode !== "running") return;
+    const now = performance.now();
+    if (now - lastAimTrackedAt < 250) return;
+    lastAimTrackedAt = now;
+    const angle = Math.round((Math.atan2(y - state.launcher.y, x - state.launcher.x) * 180) / Math.PI + 90);
+    track("angle_change", { angle, source, wave: state.wave, shot_count: state.shotCount });
+  }
 
   function t(key, data = {}) {
     const actualLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale;
@@ -749,6 +816,14 @@
     return value[locale] || value.en || "";
   }
 
+  function nextRaidPreviewText(tier) {
+    const raid = raidDefs[tier - 1] || raidDefs[0];
+    const actualLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale;
+    const template = nextRaidPreviewCopy[actualLocale] || nextRaidPreviewCopy.en;
+    return Object.entries({ tier: raid.tier, name: localized(raid.name), rule: t(raid.rule) })
+      .reduce((out, [key, value]) => out.replaceAll(`{${key}}`, String(value)), template);
+  }
+
   function setMeta(selector, value) {
     document.querySelector(selector)?.setAttribute("content", value);
   }
@@ -773,7 +848,7 @@
       guide.innerHTML = `
         <div class="game-info-hero">
           <div class="game-info-title"><span class="game-info-kicker">Guía original de WeightPlay</span><h2>Fortaleza de Orbes Animal</h2><p>Fortaleza de Orbes Animal es una campaña de defensa con 30 rutas. Apunta un orbe espiritual, anticipa sus rebotes y protege el núcleo de cristal durante tres oleadas continuas. Cada región añade enemigos, obstáculos y jefes con reglas propias; entre oleadas eliges una bendición y entre rutas mejoras las salas de la fortaleza con Piedras Estelares.</p></div>
-          <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Defensa de rebotes roguelite</strong></div><div class="game-info-fact"><span>Género</span><strong>Rebotes · Acción estratégica · Animales</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Difícil</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>5-8 minutos por ruta</strong></div><div class="game-info-fact"><span>Habilidades practicadas</span><strong>Lógica · Resolución de problemas · Concentración</strong></div></div>
+          <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Defensa de rebotes roguelite</strong></div><div class="game-info-fact"><span>Género</span><strong>Rebotes · Acción estratégica · Animales</strong></div><div class="game-info-fact"><span>dificultad</span><strong>Difícil</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>5-8 minutos por ruta</strong></div><div class="game-info-fact"><span>Habilidades practicadas</span><strong>Lógica · Resolución de problemas · Concentración</strong></div></div>
         </div>
         <div class="game-info-sections">
           <div class="game-info-section"><h3>Mundo y misión</h3><p>La Fortaleza de Cristal se alza donde confluyen seis caminos guardianes: Bosque de Cristal, Forja de Espinas, Ruinas Lunares, Bóveda de Espejos, Bastión de Tormenta y Corazón del Eclipse. Un pulso inestable del núcleo atrajo a las bestias sombrías. Leo, el guardián de los orbes, debe defender cada camino desde la cámara del lanzador.</p><p>Superar una ruta permite que los equipos de reparación vuelvan a abrirla. Cada quinta ruta culmina contra un jefe regional distinto. Completar la ruta 30 reconecta los seis caminos y detiene el pulso corrupto.</p></div>
@@ -902,6 +977,8 @@
       orbs: [],
       sparks: [],
       lastShotFeedback: null,
+      firstShotPending: false,
+      firstShotCueUntil: 0,
       companionDamage: companionDamage(denLevel),
       companionTimer: 1.2,
       companionHits: 0,
@@ -1390,7 +1467,7 @@
     playSound("success", 0.2);
     renderMenu();
     if (restoreFocus) restoreRoomUpgradeFocus(id);
-    window.WonderAnalytics?.track("room_upgrade", { game_id: GAME_ID, room: id, level: save.rooms[id] });
+    track("room_upgrade", { room: id, level: save.rooms[id] });
   }
 
   function startRaid(tier = selectedTier) {
@@ -1415,7 +1492,7 @@
     });
     lastFrame = performance.now();
     playSound("start", 0.2);
-    window.WonderAnalytics?.track("raid_start", { game_id: GAME_ID, tier: state.raidTier });
+    track("raid_start", { tier: state.raidTier, wave: state.wave });
     loop(lastFrame);
   }
 
@@ -1585,6 +1662,7 @@
     pointer.id = event.pointerId;
     canvas.setPointerCapture?.(event.pointerId);
     Object.assign(pointer, canvasPoint(event));
+    trackAimChange(pointer.x, pointer.y, "pointer");
     state.preview = previewPath(pointer.x, pointer.y);
   }
 
@@ -1592,6 +1670,7 @@
     if (!pointer.active || event.pointerId !== pointer.id) return;
     event.preventDefault();
     Object.assign(pointer, canvasPoint(event));
+    trackAimChange(pointer.x, pointer.y, "drag");
     state.preview = previewPath(pointer.x, pointer.y);
   }
 
@@ -1695,6 +1774,8 @@
     if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
       event.preventDefault();
       keyboardAimDeg = Math.max(-165, Math.min(-15, keyboardAimDeg + (event.key === "ArrowLeft" ? -6 : 6)));
+      const target = keyboardAimPoint();
+      trackAimChange(target.x, target.y, "keyboard");
       updateKeyboardAimPreview();
       return;
     }
@@ -1711,6 +1792,11 @@
 
   function releaseOrb(x, y) {
     if (!canFireOrb()) return;
+    const firstShot = state.shotCount === 0;
+    if (firstShot) {
+      state.firstShotPending = true;
+      state.firstShotCueUntil = 0;
+    }
     const v = aimVector(x, y);
     const limit = activeOrbLimit();
     const volley = [
@@ -1719,7 +1805,11 @@
     ];
     if (state.split) volley.push({ vx: v.vx * 0.82 + 74, vy: v.vy * 0.88, skin: (state.shotCount + 2) % 5, scale: 0.62 });
     volley.forEach((shot) => {
-      if (state.orbs.length < limit) state.orbs.push(makeOrb(shot.vx, shot.vy, shot.skin, shot.scale));
+      if (state.orbs.length < limit) {
+        const orb = makeOrb(shot.vx, shot.vy, shot.skin, shot.scale);
+        orb.firstShot = firstShot;
+        state.orbs.push(orb);
+      }
     });
     state.preview = [];
     state.shotCount += 1;
@@ -1727,7 +1817,7 @@
     nodes.hintText.textContent = t("orbFlying");
     updateArenaControlLabel(true);
     playSound("shoot", 0.08);
-    window.WonderAnalytics?.track("shot_fired", { game_id: GAME_ID, wave: state.wave, split: state.split });
+    track("shot_fired", { wave: state.wave, split: state.split, first_shot: firstShot, angle: Math.round((Math.atan2(y - state.launcher.y, x - state.launcher.x) * 180) / Math.PI + 90) });
     renderHud();
   }
 
@@ -1775,6 +1865,7 @@
       $("battleLive").inert = true;
       $("battleLive").setAttribute("aria-hidden", "true");
       nodes.resumeBtn.focus({ preventScroll: true });
+      track("pause_resume", { paused: true, wave: state.wave });
       return;
     }
     if (state.mode !== "paused") return;
@@ -1788,6 +1879,7 @@
     const focusTarget = pauseFocusOwner instanceof HTMLElement && pauseFocusOwner.isConnected ? pauseFocusOwner : canvas;
     pauseFocusOwner = null;
     window.requestAnimationFrame(() => focusTarget.focus({ preventScroll: true }));
+    track("pause_resume", { paused: false, wave: state.wave });
   }
 
   function update(dt) {
@@ -1806,9 +1898,11 @@
       enemy.y += (dy / len) * enemy.speed * dt;
       enemy.hitTimer = Math.max(0, enemy.hitTimer - dt);
       if (Math.hypot(enemy.x - state.launcher.x, enemy.y - state.launcher.y) < enemy.size * 0.7) {
-        state.core -= enemy.kind === "boss" ? 4 : enemy.kind === "thorn" || enemy.kind === "charger" ? 3 : 2;
+        const coreDamage = enemy.kind === "boss" ? 4 : enemy.kind === "thorn" || enemy.kind === "charger" ? 3 : 2;
+        state.core -= coreDamage;
         enemy.hp = 0;
         nodes.hintText.textContent = t("fortressHit");
+        track("core_damage", { amount: coreDamage, core_remaining: Math.max(0, Math.ceil(state.core)), wave: state.wave, enemy_kind: enemy.kind });
         playSound("wrong", 0.2);
         renderHud();
       }
@@ -1817,6 +1911,13 @@
 
     state.orbs.forEach((orb) => updateOrb(orb, dt));
     state.orbs = state.orbs.filter((orb) => orb.life > 0);
+    if (state.firstShotPending && !state.orbs.some((orb) => orb.firstShot)) {
+      state.firstShotPending = false;
+      state.firstShotCueUntil = performance.now() + 900;
+      const copy = shotFeedbackCopy[window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale] || shotFeedbackCopy.en;
+      nodes.hintText.textContent = copy.miss;
+      track("hit_result", { result: "miss", first_shot: true, wave: state.wave, bounces: 0, damage: 0, shield_damage: 0 });
+    }
     updateArenaControlLabel();
     resolveEnemyDeaths();
     state.enemies = state.enemies.filter((enemy) => enemy.hp > 0);
@@ -1827,7 +1928,7 @@
     else if (state.enemies.length === 0) {
       if (state.wave >= WAVES_PER_RAID) finishRaid(true);
       else showUpgrade();
-    } else if (canFireOrb() && state.preview.length === 0) {
+    } else if (canFireOrb() && state.preview.length === 0 && performance.now() >= state.firstShotCueUntil) {
       nodes.hintText.textContent = activeEncounterCue() || t("orbReady");
     }
   }
@@ -2060,7 +2161,13 @@
         const amount = damage || shieldDamage;
         const label = `${copy[kind]}${kind === "bank" ? ` ×${orb.bounces}` : ""}${amount ? ` −${amount}` : ""}`;
         state.lastShotFeedback = { kind, bounces: orb.bounces, damage, shieldDamage, label };
+        const isFirstShot = Boolean(orb.firstShot);
+        if (state.firstShotPending && isFirstShot) {
+          state.firstShotPending = false;
+          state.firstShotCueUntil = performance.now() + 900;
+        }
         nodes.hintText.textContent = label;
+        track("hit_result", { result: kind, first_shot: isFirstShot, wave: state.wave, bounces: orb.bounces, damage, shield_damage: shieldDamage });
         enemy.hitTimer = 0.16;
         orb.hits.set(enemy, state.pierce ? 0.2 : 0.55);
         state.sparks.push({ kind: "shot-feedback", x: enemy.x, y: enemy.y, life: 0.72, maxLife: 0.72, label, banked: orb.bounces > 0 });
@@ -2084,7 +2191,7 @@
     renderUpgradeCards();
     show(nodes.upgradePanel);
     window.requestAnimationFrame(() => nodes.upgradeCards.querySelector(".upgrade-card")?.focus({ preventScroll: true }));
-    window.WonderAnalytics?.track("wave_clear", { game_id: GAME_ID, wave: state.wave });
+    track("wave_clear", { wave: state.wave });
   }
 
   function currentUpgradeChoices() {
@@ -2179,7 +2286,8 @@
     show(nodes.gamePanel);
     window.requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
     playSound("success", 0.2);
-    window.WonderAnalytics?.track("upgrade_pick", { game_id: GAME_ID, upgrade: id, wave: state.wave });
+    track("blessing_choice", { upgrade: id, wave: state.wave });
+    track("upgrade_pick", { upgrade: id, wave: state.wave });
     lastFrame = performance.now();
     loop(lastFrame);
   }
@@ -2209,7 +2317,7 @@
     }
     state.rerolled = true;
     renderUpgradeCards();
-    window.WonderAnalytics?.track("relic_reroll", { game_id: GAME_ID, cost: rerollCost });
+    track("relic_reroll", { cost: rerollCost, wave: state.wave });
   }
 
   function finishRaid(win) {
@@ -2234,8 +2342,10 @@
       total: save.starStones,
       best: Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1)),
     })}`;
-    nodes.raidPlanText.textContent = t(win ? "raidPlanWin" : "raidPlanLose");
     const hasNextStage = win && state.raidTier < MAX_RAID_TIER;
+    nodes.raidPlanText.textContent = win
+      ? `${t("raidPlanWin")}${hasNextStage ? ` ${nextRaidPreviewText(state.raidTier + 1)}` : ""}`
+      : t("raidPlanLose");
     nodes.nextStageBtn.classList.toggle("is-unavailable", !hasNextStage);
     nodes.nextStageBtn.disabled = !hasNextStage;
     nodes.nextStageBtn.classList.toggle("primary-btn", hasNextStage);
@@ -2249,7 +2359,7 @@
     (hasNextStage ? nodes.nextStageBtn : win ? nodes.resultMenuBtn : nodes.retryBtn).focus({ preventScroll: true });
     renderMenu();
     playSound(win ? "success" : "wrong", 0.2);
-    window.WonderAnalytics?.track("raid_result", { game_id: GAME_ID, win, wave: Math.min(3, state.wave), stones });
+    track("raid_result", { win, outcome: win ? "win" : "loss", wave: Math.min(3, state.wave), stones, next_tier: hasNextStage ? state.raidTier + 1 : null });
   }
 
   function commitResultDecision(action) {
@@ -2582,7 +2692,10 @@
   nodes.startBtn.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });
-  nodes.stageBackBtn.addEventListener("click", () => show(nodes.menuPanel));
+  nodes.stageBackBtn.addEventListener("click", () => {
+    track("return_session", { from: "stage" });
+    show(nodes.menuPanel);
+  });
   nodes.stageRail.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest(".raid-card")) event.preventDefault();
     moveStageFocus(event);
@@ -2598,10 +2711,16 @@
     const tier = Number(event.target?.closest?.("[data-tier]")?.dataset?.tier);
     if (tier && tier <= Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1))) startRaid(tier);
   });
-  nodes.retryBtn.addEventListener("click", () => commitResultDecision(() => startRaid(state.raidTier)));
+  nodes.retryBtn.addEventListener("click", () => commitResultDecision(() => {
+    track("retry", { tier: state.raidTier, wave: state.wave });
+    startRaid(state.raidTier);
+  }));
   nodes.nextStageBtn.addEventListener("click", () => {
     if (!nodes.nextStageBtn.disabled && state.raidTier < MAX_RAID_TIER) {
-      commitResultDecision(() => startRaid(state.raidTier + 1));
+      commitResultDecision(() => {
+        track("next_raid", { from_tier: state.raidTier, to_tier: state.raidTier + 1 });
+        startRaid(state.raidTier + 1);
+      });
     }
   });
   nodes.mapBtn.addEventListener("keydown", (event) => {
@@ -2615,6 +2734,7 @@
   nodes.resumeBtn.addEventListener("click", () => setPaused(false));
   nodes.pauseMapBtn.addEventListener("click", () => {
     pauseFocusOwner = null;
+    track("map_return", { from: "pause", tier: state.raidTier, wave: state.wave });
     state.mode = "stage";
     nodes.pausePanel.classList.add("is-hidden");
     setSceneOwnership(nodes.pausePanel, false);
@@ -2642,6 +2762,7 @@
   });
   nodes.resultMenuBtn.addEventListener("click", () => {
     commitResultDecision(() => {
+      track("map_return", { from: "result", tier: state.raidTier, wave: state.wave });
       state.mode = "stage";
       show(nodes.stagePanel);
       renderMenu();

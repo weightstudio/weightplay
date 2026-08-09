@@ -2,6 +2,8 @@
   "use strict";
 
   const $ = (id) => document.getElementById(id);
+  const GAME_ID = "animal-sanctuary-loop";
+  const GAME_VERSION = "v8";
   const localePack = window.AnimalSanctuaryLoopLocales;
   const localeCodes = localePack.codes;
   // The reviewed French action is already localized. Do not let the generic
@@ -46,6 +48,25 @@
   const routeLocale = routeLocales[location.pathname.split("/").filter(Boolean)[0]];
   let locale = canonicalLocale(routeLocale || storage.get("wonderLocale") || navigator.language);
   const runtimeLocales = new Set(["hi", "ar"]);
+  function viewportBucket() {
+    const width = Math.min(window.innerWidth || 0, window.innerHeight || 0);
+    if (width <= 480) return "phone";
+    if (width <= 720) return "tablet";
+    return "desktop";
+  }
+  function track(event, details = {}) {
+    try {
+      window.WonderAnalytics?.track?.(event, {
+        game_id: GAME_ID,
+        game_version: GAME_VERSION,
+        locale,
+        viewport_bucket: viewportBucket(),
+        ...details,
+      });
+    } catch {
+      // Funnel measurement must never interrupt a playable run.
+    }
+  }
   function navigateToLocale(next) {
     const segment = routeSegments[next];
     const currentSegment = location.pathname.split("/").filter(Boolean)[0];
@@ -246,6 +267,7 @@
     if (name !== "stage" && currentScreen === "stage") cancelStageMotion();
     const previousScreen = currentScreen;
     currentScreen = name;
+    if (name === "main" && previousScreen !== "loading") track("return_session", { from: previousScreen });
     document.body.dataset.screen = name;
     $("mainGroup").hidden = name !== "main";
     $("stage").hidden = name !== "stage";
@@ -829,6 +851,7 @@
     redrawLand();
     updateBattleHud(true);
     $("feedback").textContent = "";
+    track("mission_start", { mission: stage.n, entry: "stage" });
     lastTime = performance.now();
     stopLoop();
     lifecycleSuspended = document.hidden;
@@ -1006,6 +1029,7 @@
     checkMarkers();
     redrawLand();
     $("feedback").textContent = t("loopClosed");
+    track("loop_close", { mission: run.stage.n, filled, restored: Math.round(territoryPercent()) });
     window.WonderSound?.play?.("success");
     return filled;
   }
@@ -1019,6 +1043,8 @@
     run.player.dx = 0;
     run.player.dy = 0;
     $("feedback").textContent = t("trailCut");
+    track("hunter_cut", { mission: run.stage.n, hearts: run.hearts });
+    track("hearts_loss", { mission: run.stage.n, hearts: run.hearts });
     window.WonderSound?.play?.("wrong");
     if (run.hearts <= 0) finish(false);
     return true;
@@ -1090,7 +1116,14 @@
       }
       const index = indexFor(player.x, player.y);
       const inside = Boolean(run.owned[index]);
-      if (!inside) run.trail.add(index);
+      const hadOpenTrail = run.trail.size > 0;
+      if (!inside) {
+        run.trail.add(index);
+        if (!hadOpenTrail && run.trail.size === 1) {
+          $("feedback").textContent = t("trailStarted");
+          track("trail_start", { mission: run.stage.n });
+        }
+      }
       else if (run.trail.size > 1) enclosedFill();
     }
 
@@ -1424,6 +1457,13 @@
     stopLoop();
     const restored = Math.round(territoryPercent());
     const remaining = Math.max(0, Math.ceil(run.time));
+    track("mission_result", {
+      mission: run.stage.n,
+      outcome: won ? "success" : "failure",
+      hearts: run.hearts,
+      restored,
+      time_remaining: remaining,
+    });
     const stars = won ? 1 + (remaining > run.stage.time * 0.25 ? 1 : 0) + (run.hearts === 3 ? 1 : 0) : 0;
     if (won) {
       save.stars[run.stage.n] = Math.max(Number(save.stars[run.stage.n]) || 0, stars);
@@ -1458,19 +1498,27 @@
   $("tutorialDone").addEventListener("click", closeTutorial);
   $("continueBattle").addEventListener("click", () => closeModal($("leave")));
   $("leaveStage").addEventListener("click", () => {
+    track("stage_return", { mission: run?.stage?.n, reason: "leave" });
     $("leave").hidden = true;
     $("battleLive").inert = false;
     run = null;
     showScreen("stage");
   });
-  $("retry").addEventListener("click", () => commitResultDecision(() => startBattle(run.stageIndex)));
+  $("retry").addEventListener("click", () => commitResultDecision(() => {
+    track("retry", { mission: run?.stage?.n });
+    startBattle(run.stageIndex);
+  }));
   $("resultStage").addEventListener("click", () => commitResultDecision(() => {
+    track("stage_return", { mission: run?.stage?.n, reason: "result" });
     $("result").hidden = true;
     $("battleLive").inert = false;
     run = null;
     showScreen("stage");
   }));
-  $("nextMission").addEventListener("click", () => commitResultDecision(() => startBattle(Math.min(29, run.stageIndex + 1))));
+  $("nextMission").addEventListener("click", () => commitResultDecision(() => {
+    track("next_mission", { mission: run?.stage?.n, next_mission: Math.min(30, run.stageIndex + 2) });
+    startBattle(Math.min(29, run.stageIndex + 1));
+  }));
 
   function loadImages() {
     return Promise.all(Object.entries(imageSources).map(([key, src]) => new Promise((resolve) => {
@@ -1490,6 +1538,7 @@
   });
 
   applyLocale();
+  track("game_view");
 
   window.__animalSanctuaryLoopTest = {
     stages,

@@ -74,6 +74,7 @@
     barrierHit:["Ancient ruins block this route.","古代遺跡擋住了這條路。","古代遗迹挡住了这条路。","古代遺跡が進路を塞いでいる。","고대 유적이 길을 막고 있습니다.","Las ruinas antiguas bloquean esta ruta.","Ruínas antigas bloqueiam esta rota.","Des ruines antiques bloquent ce passage.","Alte Ruinen blockieren diesen Weg.","Le rovine antiche bloccano il percorso.","Древние руины преграждают путь."],
     borderShrunk:["The eclipse consumed the sanctuary edge!","月蝕吞噬了聖域外圍！","月蚀吞噬了圣域外围！","蝕が聖域の外縁を奪った！","월식이 성역 가장자리를 삼켰습니다!","¡El eclipse consumió el borde del santuario!","O eclipse consumiu a borda do santuário!","L’éclipse a dévoré la lisière du sanctuaire !","Die Finsternis hat den Rand verschlungen!","L’eclissi ha divorato il bordo del santuario!","Затмение поглотило край святилища!"],
   });
+  Object.assign(rows, { trailStarted:["Trail started — turn back before a hunter reaches it.","光軌已展開，獵手靠近前快點折返。","光轨已展开，猎手靠近前快点折返。","光跡開始！ハンターが来る前に戻ろう。","궤적 시작! 사냥꾼이 오기 전에 돌아가세요.","¡Rastro iniciado! Regresa antes de que llegue un cazador.","Trilha iniciada! Volte antes que um caçador chegue.","Piste ouverte ! Revenez avant l'arrivée d'un chasseur.","Spur gestartet! Kehre um, bevor ein Jäger sie erreicht.","Scia iniziata! Torna indietro prima che arrivi un cacciatore.","След начат! Возвращайтесь, пока охотник не добрался до него."] });
   const dictionaries={};
   codes.forEach((code,index)=>{dictionaries[code]={};Object.entries(rows).forEach(([key,values])=>{dictionaries[code][key]=values[index]||values[0];});});
   const supplemental={
@@ -104,6 +105,8 @@
       ,tutorialFirstLoop:"الحلقة الأولى: ابق قريبًا من أرضك وعد بسرعة. يستطيع الصيادون قطع المسار الافتتاحي الطويل."
     }
   };
+  supplemental.hi.trailStarted="पहला रास्ता शुरू — शिकारी के पहुँचने से पहले लौटें।";
+  supplemental.ar.trailStarted="بدأ المسار — عُد قبل أن يصل الصياد إليه.";
   codes.push("hi","ar");
   dictionaries.hi={...dictionaries.en,...supplemental.hi};
   dictionaries.ar={...dictionaries.en,...supplemental.ar};

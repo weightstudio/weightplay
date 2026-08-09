@@ -3094,7 +3094,7 @@ window.WeightPlayGameInfoLocales.es = {
     "gameplay": "Jugabilidad",
     "genre": "Género",
     "recommendedAge": "Edad recomendada",
-    "difficulty": "Dificultad",
+    "difficulty": "dificultad",
     "estimatedTime": "Tiempo estimado",
     "skills": "Habilidades practicadas",
     "worldAndMission": "Mundo y misión",
