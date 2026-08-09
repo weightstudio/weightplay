@@ -25,11 +25,6 @@
   .main-header.wp-main-shell-header{grid-template-columns:54px 44px minmax(0,1fr) 44px!important;gap:6px!important;padding:3px}
   .main-header.wp-main-shell-header .lobby-return{width:54px;height:44px}
   .main-header.wp-main-shell-header .main-sound{width:44px;height:44px}
-  body:not(.wp-kids-audience) .main-hero.wp-standard-main-flow-node.wp-standard-main-screen{display:block!important;width:100%!important;height:100%!important;min-height:0!important;padding:0!important;overflow:hidden!important}
-  body:not(.wp-kids-audience) .main-hero>.wp-standard-main-composition{width:100%!important;height:100%!important;min-height:0!important;grid-template-columns:minmax(0,1.18fr) minmax(280px,.82fr)!important;align-items:stretch!important;gap:10px!important;padding:0!important;overflow:hidden!important}
-  body:not(.wp-kids-audience) .main-hero .wp-standard-main-poster{width:100%!important;min-width:0!important;max-width:none!important;height:100%!important;min-height:0!important;max-height:none!important;aspect-ratio:auto!important}
-  body:not(.wp-kids-audience) .main-hero>.poster.wp-standard-main-poster-media{width:100%!important;min-width:0!important;max-width:none!important;height:100%!important;min-height:0!important;max-height:none!important;aspect-ratio:auto!important}
-  body:not(.wp-kids-audience) .main-hero .wp-standard-main-poster-media{width:100%!important;min-width:0!important;max-width:none!important;height:100%!important;min-height:0!important;max-height:none!important;aspect-ratio:auto!important}
   body:not(.wp-kids-audience) .main-copy.wp-standard-main-copy{height:100%!important;min-height:0!important;gap:4px!important;align-content:center}
   body:not(.wp-kids-audience) .main-copy small,
   body:not(.wp-kids-audience) .main-copy h1{display:none!important}

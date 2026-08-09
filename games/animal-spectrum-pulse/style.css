@@ -8,4 +8,5 @@
 
 #resultModal .modal-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
 #resultModal .modal-actions button{min-width:0}
+.result-layer .modal-actions button{min-height:max(52px,calc(44.5px / var(--wp-battle-canvas-scale,1)))}
 .guide-faq{margin-top:18px}.guide-faq h3{margin:0 0 10px}.guide-faq details{margin-top:8px;padding:12px 14px;border:1px solid #d5c9f1;border-radius:12px;background:#fff}.guide-faq summary{cursor:pointer;font-weight:900}.guide-faq p{margin:10px 0 0}

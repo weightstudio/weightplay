@@ -83,7 +83,7 @@
     ".poster-wrap > img", "picture img",
   ];
   const MAIN_SUMMARY_SELECTORS = [
-    ".wp-standard-main-summary", ".main-summary", ".main-description", ".summary", ".tagline",
+    ".wp-standard-main-summary", ".main-summary", ".summary-strip", ".main-description", ".summary", ".tagline",
     "[data-ui='menuHint']", "#menuHint", ".menu-copy p", ".hero-copy p",
     ".poster-copy p", ".poster-copy strong", ".main-copy p", "#intro",
   ];
