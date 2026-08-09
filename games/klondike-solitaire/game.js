@@ -719,6 +719,77 @@ const KL_I18N = {
     ar: "اضغط على بطاقة قانونية لتحريكها تلقائياً. اسحبها لاختيار الوجهة بنفسك.",
   });
 
+  const KL_SELECTION_RULE_COPY = Object.freeze({
+    en: "Tap a card to select it. Drag it, or tap a highlighted destination, to move it.",
+    "zh-Hant": "點一下牌先選取。拖曳牌，或點選高亮目的地，才會移動。",
+    "zh-Hans": "点一下牌先选中。拖动牌，或点击高亮目标，才会移动。",
+    ja: "カードをタップして選択します。ドラッグするか、光った移動先をタップすると移動します。",
+    ko: "카드를 눌러 선택하세요. 드래그하거나 강조된 목적지를 누르면 이동합니다.",
+    es: "Toca una carta para seleccionarla. Arrástrala o toca un destino resaltado para moverla.",
+    "pt-BR": "Toque em uma carta para selecioná-la. Arraste-a ou toque em um destino destacado para movê-la.",
+    fr: "Touchez une carte pour la sélectionner. Faites-la glisser ou touchez une destination mise en évidence pour la déplacer.",
+    de: "Tippe auf eine Karte, um sie auszuwählen. Ziehe sie oder tippe auf ein hervorgehobenes Ziel, um sie zu bewegen.",
+    it: "Tocca una carta per selezionarla. Trascinala o tocca una destinazione evidenziata per spostarla.",
+    ru: "Нажмите на карту, чтобы выбрать её. Перетащите её или нажмите на подсвеченную цель, чтобы переместить.",
+    hi: "कार्ड चुनने के लिए उसे टैप करें। उसे खींचें या हाइलाइट किए गए लक्ष्य को टैप करके चलाएँ।",
+    ar: "اضغط على بطاقة لتحديدها. اسحبها أو اضغط على الوجهة المميزة لنقلها.",
+  });
+
+  const KL_UI_COPY_OVERRIDES = Object.freeze({
+    en: {
+      "ui.hero.copy": "Play with drag-and-drop and clear card selection. Draw 1/3, Hint, Auto Finish, and Undo keep the table readable.",
+      "ui.feature.features_text": "Single/multi-card drag, tap-to-select, Draw 1/3, hint, and auto finish.",
+    },
+    "zh-Hant": {
+      "ui.hero.copy": "使用拖曳與清楚的選牌操作。抽 1/3 張、提示、自動完成與回退讓牌局更容易理解。",
+      "ui.feature.features_text": "單/多張牌拖曳、點擊選牌、抽 1/3 張、提示與自動完成。",
+    },
+    "zh-Hans": {
+      "ui.hero.copy": "使用拖动与清晰的选牌操作。抽 1/3 张、提示、自动完成与撤销让牌局更容易理解。",
+      "ui.feature.features_text": "单/多张牌拖动、点击选牌、抽 1/3 张、提示与自动完成。",
+    },
+    ja: {
+      "ui.hero.copy": "ドラッグ操作と分かりやすいカード選択で遊べます。1枚/3枚ドロー、ヒント、自動完了、元に戻すを使えます。",
+      "ui.feature.features_text": "単数/複数カードのドラッグ、タップ選択、1/3枚ドロー、ヒント、自動完了。",
+    },
+    ko: {
+      "ui.hero.copy": "드래그와 명확한 카드 선택으로 플레이하세요. 1장/3장 뽑기, 힌트, 자동 완료, 실행 취소를 사용할 수 있습니다.",
+      "ui.feature.features_text": "한 장/여러 장 드래그, 탭으로 선택, 1장/3장 뽑기, 힌트, 자동 완료.",
+    },
+    es: {
+      "ui.hero.copy": "Juega arrastrando y seleccionando cartas con claridad. Usa Robar 1/3, Pista, Autocompletar y Deshacer.",
+      "ui.feature.features_text": "Arrastre de una o varias cartas, selección al tocar, Robar 1/3, pista y autocompletar.",
+    },
+    "pt-BR": {
+      "ui.hero.copy": "Jogue arrastando e selecionando cartas com clareza. Use Comprar 1/3, Dica, Autocompletar e Desfazer.",
+      "ui.feature.features_text": "Arraste uma ou várias cartas, selecione com um toque, compre 1/3, use dica e autocompletar.",
+    },
+    fr: {
+      "ui.hero.copy": "Jouez avec le glisser-déposer et une sélection claire des cartes. Utilisez Pioche 1/3, Indice, Fin automatique et Annuler.",
+      "ui.feature.features_text": "Glisser une ou plusieurs cartes, sélection au toucher, Pioche 1/3, indice et fin automatique.",
+    },
+    de: {
+      "ui.hero.copy": "Spiele mit Drag-and-drop und klarer Kartenauswahl. Nutze 1/3 ziehen, Tipp, Auto-Fertigstellen und Rückgängig.",
+      "ui.feature.features_text": "Eine oder mehrere Karten ziehen, per Tippen auswählen, 1/3 ziehen, Tipp und Auto-Fertigstellen.",
+    },
+    it: {
+      "ui.hero.copy": "Gioca trascinando e selezionando le carte in modo chiaro. Usa Pesca 1/3, Suggerimento, Completamento automatico e Annulla.",
+      "ui.feature.features_text": "Trascinamento di una o più carte, selezione al tocco, Pesca 1/3, suggerimento e completamento automatico.",
+    },
+    ru: {
+      "ui.hero.copy": "Играйте перетаскиванием и понятным выбором карт. Используйте добор 1/3, подсказку, автозавершение и отмену.",
+      "ui.feature.features_text": "Перетаскивание одной или нескольких карт, выбор нажатием, добор 1/3, подсказка и автозавершение.",
+    },
+    hi: {
+      "ui.hero.copy": "कार्ड को खींचकर और स्पष्ट चयन के साथ खेलें। 1/3 कार्ड लें, संकेत, ऑटो-फिनिश और वापस करें का उपयोग करें।",
+      "ui.feature.features_text": "एक या कई कार्ड खींचें, टैप से चुनें, 1/3 कार्ड लें, संकेत और ऑटो-फिनिश।",
+    },
+    ar: {
+      "ui.hero.copy": "العب بالسحب والإفلات مع اختيار واضح للبطاقات. استخدم سحب 1/3 والتلميح والإكمال التلقائي والتراجع.",
+      "ui.feature.features_text": "سحب بطاقة واحدة أو عدة بطاقات، الاختيار بالضغط، سحب 1/3، التلميح والإكمال التلقائي.",
+    },
+  });
+
   function mapLocalePathPrefix(locale) {
     const normalized = String(locale || LOCALE_DEFAULT);
     const normalizedLower = normalized.toLowerCase();
@@ -747,7 +818,7 @@ const KL_I18N = {
     const locale = getKlLocale();
     const table = KL_I18N[locale] || KL_I18N.en;
     const fallback = KL_I18N.en[key];
-    const value = table[key] || fallback || key;
+    const value = KL_UI_COPY_OVERRIDES[locale]?.[key] || table[key] || fallback || key;
     return resolveI18nValue(value, params);
   }
 
@@ -772,7 +843,7 @@ const KL_I18N = {
 
   function syncQuickRule() {
     const locale = getKlLocale();
-    if (ui.battleTip) ui.battleTip.textContent = KL_QUICK_RULE_COPY[locale] || KL_QUICK_RULE_COPY.en;
+    if (ui.battleTip) ui.battleTip.textContent = KL_SELECTION_RULE_COPY[locale] || KL_SELECTION_RULE_COPY.en;
   }
 
   function syncLocalizedMeta() {
@@ -1203,6 +1274,7 @@ const KL_I18N = {
   const state = {
     active: false,
     dragging: null,
+    selectedSource: null,
     renderGeneration: 0,
     dragLayerActive: false,
     autoFinishing: false,
@@ -1342,6 +1414,7 @@ const KL_I18N = {
   }
 
   function clearHints() {
+    state.selectedSource = null;
     if (state.hintTimer) {
       clearTimeout(state.hintTimer);
       state.hintTimer = 0;
@@ -1584,15 +1657,15 @@ const KL_I18N = {
         if (shouldAttachInteraction(card, row) && pileType === "tableau") {
           if (card.faceUp) {
             node.onpointerdown = beginDrag;
-            node.onclick = onTableauCardClick;
+            node.onkeydown = onCardKeydown;
           } else {
             node.onpointerdown = null;
-            node.onclick = null;
+            node.onkeydown = null;
           }
           node.tabIndex = 0;
         } else {
           node.onpointerdown = null;
-          node.onclick = null;
+          node.onkeydown = null;
           node.tabIndex = -1;
         }
         pileNode.append(node);
@@ -1607,10 +1680,10 @@ const KL_I18N = {
         const card = cards[cards.length - visible.length + row];
         if (row === visible.length - 1) {
           node.onpointerdown = beginDrag;
-          node.onclick = onWasteClick;
+          node.onkeydown = onCardKeydown;
         } else {
           node.onpointerdown = null;
-          node.onclick = null;
+          node.onkeydown = null;
           node.tabIndex = 0;
         }
         node.tabIndex = row === visible.length - 1 ? 0 : -1;
@@ -1640,6 +1713,7 @@ const KL_I18N = {
       node.dataset.index = index;
       node.dataset.hint = "true";
       node.type = "button";
+      node.onclick = onDestinationClick;
       node.setAttribute("aria-label", t("ui.aria.foundation", { suit: SUITS[index] }));
       if (!foundation.cards.length) {
         const note = document.createElement("span");
@@ -1677,6 +1751,7 @@ const KL_I18N = {
       node.dataset.type = "tableau";
       node.dataset.index = index;
       node.dataset.hint = "true";
+      node.onclick = onDestinationClick;
       positionCardsOnPile(node, columnCards, "tableau", index, 1);
       ui.tableauRow.append(node);
     });
@@ -1740,43 +1815,94 @@ const KL_I18N = {
     return game.allLegalMoves().length > 0;
   }
 
+  function selectedMoveForTarget(target) {
+    if (!state.selectedSource || !target) return null;
+    return state.selectedSource.legalMoves.find((move) => {
+      if (target.type === "tableau") {
+        return (move.type === "tableauToTableau" || move.type === "wasteToTableau")
+          && move.toColumn === target.index;
+      }
+      if (target.type === "foundation") {
+        return (move.type === "tableauToFoundation" || move.type === "wasteToFoundation")
+          && move.foundationIndex === target.index;
+      }
+      return false;
+    }) || null;
+  }
+
+  function selectMoveSource(source, legalMoves) {
+    clearHints();
+    state.selectedSource = { ...source, legalMoves };
+    legalMoves.forEach((move) => highlightMoveHint(move));
+    showHint(KL_SELECTION_RULE_COPY[getKlLocale()] || KL_SELECTION_RULE_COPY.en);
+  }
+
   function handleTableauTap(sourceColumn, row) {
     if (!Number.isFinite(sourceColumn) || sourceColumn < 0 || !Number.isFinite(row) || row < 0) return false;
     const moveList = game.legalMovesForTableau(sourceColumn, row);
-    if (moveList.length === 1) {
-      return !!tryPerformMove(moveList[0]);
-    }
-    clearHints();
-    if (moveList.length > 1) {
-    moveList.forEach((move) => {
-        highlightMoveHint(move);
-      });
-      showHint(t("ui.hint.multi_destinations"));
+    if (state.selectedSource?.from === "tableau"
+      && state.selectedSource.fromColumn === sourceColumn
+      && state.selectedSource.startRow === row) {
+      clearHints();
       return true;
     }
-    if (!hasAnyLegalMoves()) {
-      showNoMoveHint();
+    if (!moveList.length) {
+      clearHints();
+      if (!hasAnyLegalMoves()) showNoMoveHint();
+      return true;
     }
+    selectMoveSource({ from: "tableau", fromColumn: sourceColumn, startRow: row }, moveList);
     return true;
   }
 
   function handleWasteTap() {
     const moveList = game.legalMovesForWaste();
-    if (moveList.length === 1) {
-      return !!tryPerformMove(moveList[0]);
-    }
-    clearHints();
-    if (moveList.length > 1) {
-    moveList.forEach((move) => {
-        highlightMoveHint(move);
-      });
-      showHint(t("ui.hint.multi_destinations"));
+    if (state.selectedSource?.from === "waste") {
+      clearHints();
       return true;
     }
-    if (!hasAnyLegalMoves()) {
-      showNoMoveHint();
+    if (!moveList.length) {
+      clearHints();
+      if (!hasAnyLegalMoves()) showNoMoveHint();
+      return true;
     }
+    selectMoveSource({ from: "waste" }, moveList);
     return true;
+  }
+
+  function onDestinationClick(event) {
+    const pile = event.currentTarget;
+    const target = {
+      type: pile?.dataset.type,
+      index: Number(pile?.dataset.index),
+    };
+    const move = selectedMoveForTarget(target);
+    if (event.target.closest?.(".card") && !move) return;
+    if (!move) return;
+    const moved = tryPerformMove(move);
+    if (!moved) audio.reject();
+  }
+
+  function onCardKeydown(event) {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    event.stopPropagation();
+    const cardNode = event.currentTarget;
+    const pile = cardNode.closest("[data-type]");
+    const sourceType = pile?.dataset.type;
+    const targetMove = selectedMoveForTarget({
+      type: sourceType,
+      index: Number(pile?.dataset.index),
+    });
+    if (targetMove) {
+      const moved = tryPerformMove(targetMove);
+      if (!moved) audio.reject();
+      return;
+    }
+    const moved = sourceType === "tableau"
+      ? handleTableauTap(Number(pile.dataset.index), Number(cardNode.dataset.row))
+      : sourceType === "waste" ? handleWasteTap() : false;
+    if (!moved) audio.reject();
   }
 
   function syncDrawLabel() {
@@ -1796,6 +1922,7 @@ const KL_I18N = {
 
   function switchDrawMode() {
     if (state.boardAnimationInProgress) return;
+    clearHints();
     game.drawModeIndex = (game.drawModeIndex + 1) % DRAW_MODES.length;
     syncDrawLabel();
     localStorage.setItem(STORAGE_LAYOUT, String(game.drawModeIndex));
@@ -1808,6 +1935,11 @@ const KL_I18N = {
     const sourceType = cardNode.closest("[data-type]")?.dataset.type;
     const pileNode = cardNode.closest("[data-type]");
     if (!sourceType || !pileNode) return;
+    const target = selectedMoveForTarget({
+      type: sourceType,
+      index: Number(pileNode.dataset.index),
+    });
+    if (target) return;
     if (sourceType === "tableau") {
       const col = Number(pileNode.dataset.index);
       const row = cardNode.dataset.row !== undefined
@@ -2304,6 +2436,8 @@ const KL_I18N = {
     if (state.autoFinishing || !state.active) return;
     if (game.completed) return;
 
+    clearHints();
+
     const strategicMoves = game.allLegalMoves().filter((move) => move.type === "wasteToTableau" || move.type === "tableauToTableau");
     if (strategicMoves.length > 0) {
       audio.reject();
@@ -2363,6 +2497,7 @@ const KL_I18N = {
 
   function onDraw() {
     if (state.boardAnimationInProgress) return;
+    clearHints();
     state.deadlockHintShown = false;
     const result = game.draw();
     if (!result) {

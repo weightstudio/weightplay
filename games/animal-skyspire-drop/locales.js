@@ -111,5 +111,17 @@
     newBest:"أفضل وقت جديد!",
     starSummary:"{n} من 3 نجوم"
   };
+  Object.assign(en,{rotateCue:"Rotation registered — line up the glowing gap."});
+  Object.assign(zhHant,{rotateCue:"已回應旋轉——把發光缺口對準。"});
+  Object.assign(zhHans,{rotateCue:"已响应旋转——把发光缺口对准。"});
+  Object.assign(ja,{rotateCue:"回転を確認しました。光る隙間を合わせましょう。"});
+  Object.assign(ko,{rotateCue:"회전을 확인했습니다. 빛나는 틈을 맞춰 보세요."});
+  Object.assign(es,{rotateCue:"Rotación registrada: alinea el hueco brillante."});
+  Object.assign(pt,{rotateCue:"Rotação registrada: alinhe a abertura brilhante."});
+  Object.assign(fr,{rotateCue:"Rotation enregistrée : alignez l'ouverture lumineuse."});
+  Object.assign(de,{rotateCue:"Drehung erkannt – richte die leuchtende Lücke aus."});
+  Object.assign(it,{rotateCue:"Rotazione registrata: allinea l'apertura luminosa."});
+  Object.assign(ru,{rotateCue:"Вращение принято — совместите светящийся проём."});
+  Object.assign(ar,{rotateCue:"تم تسجيل الدوران - حاذِ الفتحة المضيئة."});
   window.SKYDROP_LOCALES={en,"zh-Hant":zhHant,"zh-Hans":zhHans,ja,ko,es,"pt-BR":pt,fr,de,it,ru,ar};
 })();

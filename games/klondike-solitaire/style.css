@@ -280,7 +280,7 @@ button.mini-btn {
 
 .battle-screen {
   min-height: var(--wp-battle-viewport-height, 100vh);
-  background: linear-gradient(180deg, rgba(4, 14, 26, 0.34), rgba(4, 14, 26, 0.68)), url("../../assets/klondike-solitaire-background.webp") center / cover;
+  background: linear-gradient(180deg, #071728, #0a1f3a 46%, #071728);
 }
 
 .battle-canvas {

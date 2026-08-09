@@ -6550,6 +6550,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Gioca al klondike solitario classico gratuitamente su mobile e desktop senza download.": "العب كلونديك سوليتاريو الكلاسيكية مجانًا على الهاتف المحمول وسطح المكتب بدون تنزيل.",
   "Gioca ancora": "جيوكا أنكورا",
   "Gioca ora": "لعبة أورا",
+  "Gioca trascinando e selezionando le carte in modo chiaro. Usa Pesca 1/3, Suggerimento, Completamento automatico e Annulla.": "قم بمسح البطاقة وتحديدها بطريقة مختلفة. الصيد الأمريكي 1/3، الاقتراح، التلقائي الكامل والإلغاء.",
   "Giocabile": "جيوكابيل",
   "Gioco di carte": "لعبة حسب الطلب",
   "Gioco di carte classico": "لعبة كلاسيكية حسب الطلب",
@@ -7629,6 +7630,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Jogar novamente": "العب حديثًا",
   "Jogo de Cartas": "جوجو دي كارتاس",
   "Jogos": "جوجوس",
+  "Jogue arrastando e selecionando cartas com clareza. Use Comprar 1/3, Dica, Autocompletar e Desfazer.": "قم بضبط واختيار البطاقات من خلال تصفيتها. استخدم Comprar 1/3 وDica وAutocompletar وDesfazer.",
   "Jogue Spider Solitaire de 1, 2 ou 4 naipes no celular e no computador.": "العب لعبة سبايدر سوليتير من 1 أو 2 أو 4 أضلاع على الهاتف المحمول وعلى الكمبيوتر.",
   "Join both lanes before adding range.": "انضم إلى كلا المسارين قبل إضافة النطاق.",
   "Jouable": "قابل للتنفيذ",
@@ -7636,6 +7638,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Jouer maintenant": "صيانة جوير",
   "Judge the whole movement line, not only the destination. A safe endpoint can still require too much exposed travel.": "احكم على خط الحركة بأكمله، وليس الوجهة فقط. لا تزال نقطة النهاية الآمنة تتطلب الكثير من السفر المكشوف.",
   "Judgment": "الحكم",
+  "Juega arrastrando y seleccionando cartas con claridad. Usa Robar 1/3, Pista, Autocompletar y Deshacer.": "قم بتجميع البطاقات واختيارها بشكل واضح. الولايات المتحدة الأمريكية Robar 1/3 وPista وAutocompletar وDeshacer.",
   "Juego completado": "لعبة كاملة",
   "Juego de Cartas": "لعبة كارتاس",
   "Juego de navegador gratuito": "لعبة المتصفح المجانية",
@@ -10803,6 +10806,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Play the marked card or suffer damage.": "العب بالبطاقة المميزة أو تعرضت للضرر.",
   "Play time": "وقت اللعب",
   "Play time depends on exploration and combat, but the four-chapter, 57-mission route is designed for a longer RPG session. You can leave and continue from the locally saved checkpoint.": "يعتمد وقت اللعب على الاستكشاف والقتال، ولكن المسار المكون من أربعة فصول و57 مهمة مصمم لجلسة لعب الأدوار الأطول. يمكنك المغادرة والمتابعة من نقطة التفتيش المحفوظة محليًا.",
+  "Play with drag-and-drop and clear card selection. Draw 1/3, Hint, Auto Finish, and Undo keep the table readable.": "العب باستخدام السحب والإفلات واختيار البطاقة الواضحة. ارسم 1/3، وتلميح، وإنهاء تلقائي، وتراجع، مما يجعل الجدول قابلاً للقراءة.",
   "Play without ads": "العب بدون إعلانات",
   "Playable": "للعب",
   "Playable · Cost {cost} · Energy {energy}": "قابلة للتشغيل · التكلفة {cost} · الطاقة {energy}",
@@ -12377,6 +12381,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Rotating Tower Arcade": "رواق البرج الدوار",
   "Rotating Tower Drop Arcade": "ممر إسقاط البرج الدوار",
   "ROTATION": "التدوير",
+  "Rotation registered — line up the glowing gap.": "تم تسجيل الدوران - حاذِ الفتحة المضيئة.",
   "ROTAZIONE": "روتازيوني",
   "Roues libres": "رويس ليبرس",
   "Rouleaux automatiques": "رولو آلي",
@@ -13276,6 +13281,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Sinais e comboios": "سيناء والمجموعات",
   "Single-Stroke Logic Puzzle": "لغز منطقي بضربة واحدة",
   "Single/Multi-card drag, one-click auto-move, Draw 1/3, hint, and auto finish.": "سحب بطاقة واحدة/متعددة، نقل تلقائي بنقرة واحدة، رسم 1/3، تلميح، وإنهاء تلقائي.",
+  "Single/multi-card drag, tap-to-select, Draw 1/3, hint, and auto finish.": "سحب بطاقة واحدة/متعددة، النقر للتحديد، رسم 1/3، تلميح، وإنهاء تلقائي.",
   "Sinking Reeds": "غرق القصب",
   "Sino de abelha": "سينو دي أبلها",
   "Sirve tres bandejas en cola con grupos de cuatro y uno de seis.": "لدينا ثلاث فرق في الكولا مع مجموعات رباعية وواحدة من ستة.",
@@ -14347,6 +14353,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Tap a card and its destination, or drag it on desktop.": "اضغط على البطاقة ووجهتها، أو اسحبها إلى سطح المكتب.",
   "Tap a card and start now.": "اضغط على البطاقة وابدأ الآن.",
   "Tap a card to reveal it.": "اضغط على البطاقة للكشف عنها.",
+  "Tap a card to select it. Drag it, or tap a highlighted destination, to move it.": "اضغط على بطاقة لتحديدها. اسحبها أو اضغط على الوجهة المميزة لنقلها.",
   "Tap a card with only one legal destination for one-click auto-move, or drag to place on a target Tableau/Foundation.": "اضغط على بطاقة ذات وجهة قانونية واحدة فقط لتحريكها تلقائيًا بنقرة واحدة، أو اسحبها لوضعها على لوحة/مؤسسة مستهدفة.",
   "Tap a care item, or drag it to the animal.": "اضغط على عنصر الرعاية، أو اسحبه إلى الحيوان.",
   "Tap a cart only when every grid cell between it and the matching edge is clear. A blocked tap spends one of three safety checks. Undo restores the previous exit; Restart rebuilds the exact authored puzzle; Hint makes a currently safe cart glow.": "اضغط على عربة التسوق فقط عندما تكون كل خلية شبكية بينها وبين الحافة المطابقة واضحة. تنفق الصنبور المسدود واحدة من ثلاث عمليات فحص للسلامة. التراجع يعيد الخروج السابق. إعادة التشغيل تعيد بناء اللغز المؤلف بالضبط؛ التلميح يجعل عربة التسوق الآمنة تتوهج حاليًا.",
@@ -17080,11 +17087,3 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Zur Lobby": "زور لوبي",
   "Zwei Hinweise": "زوي هينويز"
 };
-
-for (const key of [
-  "Clear all three peaks.",
-  "Clear the pyramid.",
-  "Hint and Undo are always close.",
-  "Keep a long \u00b11 chain alive.",
-  "Tap two available cards.",
-]) delete window.WeightPlayGameRuntimeLocales["ar"][key];
