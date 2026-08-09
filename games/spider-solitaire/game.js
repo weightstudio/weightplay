@@ -48,6 +48,101 @@
     ar: { title: "سوليتير العنكبوت", loading: "جارٍ تجهيز الطاولة", back: "رجوع", settings: "الإعدادات", sound: "المؤثرات الصوتية", language: "اللغة", kicker: "لعبة ورق كلاسيكية", hero: "كوّن سلاسل من K إلى A من النوع نفسه في عشرة أعمدة. اختر الصعوبة وأكمل المجموعات الثماني.", start: "بدء اللعبة", restart: "إعادة بدء اللعبة الحالية", new_game: "لعبة جديدة", target_label: "الهدف", target: "أكمل ثماني سلاسل K → A من النوع نفسه.", controls_label: "التحكم", controls: "اسحب بطاقة أو سلسلة من النوع نفسه. اضغط عندما تكون الوجهة واحدة.", mobile_label: "الهاتف أولاً", mobile: "تبقى الأعمدة العشرة واضحة وتضغط الأكوام الطويلة تداخلها تلقائياً.", one_suit: "نوع واحد", two_suits: "نوعان", four_suits: "أربعة أنواع", easy: "سهل", medium: "متوسط", hard: "صعب", moves: "الحركات", time: "الوقت", score: "النتيجة", completed: "المجموعات المكتملة", foundations: "المجموعات المكتملة", stock: "الرزمة", tableau: "الطاولة", deal: "توزيع 10", deals_left: "تبقى {count} توزيعات", undo: "تراجع", hint: "تلميح", help: "طريقة اللعب", fill_empty: "املأ كل الأعمدة الفارغة قبل التوزيع.", no_moves: "لا توجد حركات. وزّع عندما يحتوي كل عمود على بطاقة.", multiple: "هناك وجهات متعددة. اسحب للاختيار.", invalid: "هذه الحركة غير مسموحة.", move_hint: "انقل السلسلة المضيئة إلى العمود المضيء.", deal_hint: "وزّع بطاقة واحدة على كل عمود.", sequence_complete: "اكتملت مجموعة!", card_face_down: "بطاقة مقلوبة", card_face: "{rank} من {suit}", learn_kicker: "بداية سريعة", learn_title: "العنكبوت في خمس خطوات", tip_1: "رتّب البطاقات تنازلياً من K إلى A.", tip_2: "تتحرك السلاسل من النوع نفسه معاً فقط.", tip_3: "تُزال سلسلة K → A المكتملة من النوع نفسه.", tip_4: "اضغط الرزمة لتوزيع بطاقة على كل عمود.", tip_5: "لا يمكن التوزيع عند وجود عمود فارغ.", skip: "تخطٍ", got_it: "فهمت", confirm_title: "بدء لعبة جديدة؟", confirm_copy: "بعد مغادرة هذه اللعبة لن تعود إلا باستخدام التراجع.", cancel: "إلغاء", confirm: "لعبة جديدة", victory: "اكتملت لعبة العنكبوت!", return: "رجوع", result_summary: "{sets} مجموعات · {moves} حركات · {time} · النتيجة {score}", stats_games: "الألعاب: {count}", stats_wins: "الانتصارات: {count}", stats_rate: "نسبة الفوز: {rate}%", stats_best_time: "أفضل وقت: {time}", stats_fewest: "أقل حركات: {moves}", sound_on: "الصوت مفعّل", sound_off: "الصوت متوقف", aria_sound_on: "إيقاف الصوت", aria_sound_off: "تشغيل الصوت", meta_title: "سوليتير العنكبوت مجاناً عبر الإنترنت", meta_description: "العب سوليتير العنكبوت بنوع واحد أو نوعين أو أربعة أنواع على الهاتف والكمبيوتر.", meta_keywords: "سوليتير العنكبوت,لعبة ورق" },
   };
 
+  const DIFFICULTY_STRATEGY_COPY = Object.freeze({
+    en: {
+      1: "One suit lets you build directly. In multi-suit games, mixed-suit runs are temporary steps; only same-suit K → A runs move together and clear.",
+      2: "In 2 Suits, mixed-suit runs are temporary steps. Build matching suits toward K → A so a complete run can move together and clear.",
+      4: "In 4 Suits, mixed-suit runs are temporary steps. Build matching suits toward K → A so a complete run can move together and clear.",
+    },
+    "zh-Hant": {
+      1: "單一花色可以直接組牌。多花色牌局中，混花色牌組只是暫時安排；只有同花色 K → A 牌組能整組移動並收走。",
+      2: "2 花色牌局中，混花色牌組只是暫時安排。請把同花色牌組往 K → A 建立，完成後才能整組移動並收走。",
+      4: "4 花色牌局中，混花色牌組只是暫時安排。請把同花色牌組往 K → A 建立，完成後才能整組移動並收走。",
+    },
+    "zh-Hans": {
+      1: "单一花色可以直接组牌。多花色牌局中，混花色牌组只是暂时安排；只有同花色 K → A 牌组能整组移动并收走。",
+      2: "2 花色牌局中，混花色牌组只是暂时安排。请把同花色牌组往 K → A 建立，完成后才能整组移动并收走。",
+      4: "4 花色牌局中，混花色牌组只是暂时安排。请把同花色牌组往 K → A 建立，完成后才能整组移动并收走。",
+    },
+    ja: {
+      1: "1スートなら直接つなげられます。複数スートでは異なるスートの並びは一時的な足場で、同じスートのK → Aだけがまとめて動き、完成します。",
+      2: "2スートでは異なるスートの並びは一時的な足場です。同じスートをK → Aへつなげ、完成した列をまとめて動かして回収します。",
+      4: "4スートでは異なるスートの並びは一時的な足場です。同じスートをK → Aへつなげ、完成した列をまとめて動かして回収します。",
+    },
+    ko: {
+      1: "한 무늬에서는 바로 묶을 수 있습니다. 여러 무늬에서는 다른 무늬 묶음이 임시 발판이며, 같은 무늬 K → A만 함께 움직여 완성할 수 있습니다.",
+      2: "2무늬에서는 다른 무늬 묶음이 임시 발판입니다. 같은 무늬를 K → A로 만들어 완성된 묶음을 함께 움직여 제거하세요.",
+      4: "4무늬에서는 다른 무늬 묶음이 임시 발판입니다. 같은 무늬를 K → A로 만들어 완성된 묶음을 함께 움직여 제거하세요.",
+    },
+    es: {
+      1: "Con un palo puedes construir directamente. En partidas con varios palos, las secuencias mezcladas son pasos temporales; solo las del mismo palo de K a A se mueven juntas y se retiran.",
+      2: "Con 2 palos, las secuencias mezcladas son pasos temporales. Forma palos iguales hacia K a A para mover y retirar una secuencia completa.",
+      4: "Con 4 palos, las secuencias mezcladas son pasos temporales. Forma palos iguales hacia K a A para mover y retirar una secuencia completa.",
+    },
+    "pt-BR": {
+      1: "Com um naipe, você pode montar diretamente. Em jogos com vários naipes, sequências misturadas são passos temporários; só as do mesmo naipe de K a A se movem juntas e são removidas.",
+      2: "Com 2 naipes, sequências misturadas são passos temporários. Monte o mesmo naipe de K a A para mover e remover uma sequência completa.",
+      4: "Com 4 naipes, sequências misturadas são passos temporários. Monte o mesmo naipe de K a A para mover e remover uma sequência completa.",
+    },
+    fr: {
+      1: "Avec une seule couleur, vous pouvez construire directement. Avec plusieurs couleurs, les suites mélangées sont temporaires ; seules les suites d'une même couleur de K à A se déplacent ensemble et sont retirées.",
+      2: "Avec 2 couleurs, les suites mélangées sont temporaires. Assemblez une même couleur de K à A pour déplacer et retirer une suite complète.",
+      4: "Avec 4 couleurs, les suites mélangées sont temporaires. Assemblez une même couleur de K à A pour déplacer et retirer une suite complète.",
+    },
+    de: {
+      1: "Bei einer Farbe kannst du direkt bauen. Bei mehreren Farben sind gemischte Folgen nur vorübergehend; nur Folgen derselben Farbe von K bis Ass bewegen sich zusammen und werden entfernt.",
+      2: "Bei 2 Farben sind gemischte Folgen nur vorübergehend. Baue dieselbe Farbe von K bis Ass auf, um eine vollständige Folge zusammen zu bewegen und zu entfernen.",
+      4: "Bei 4 Farben sind gemischte Folgen nur vorübergehend. Baue dieselbe Farbe von K bis Ass auf, um eine vollständige Folge zusammen zu bewegen und zu entfernen.",
+    },
+    it: {
+      1: "Con un seme puoi costruire direttamente. Con più semi, le sequenze miste sono passaggi temporanei; solo quelle dello stesso seme da K ad A si muovono insieme e vengono rimosse.",
+      2: "Con 2 semi, le sequenze miste sono passaggi temporanei. Costruisci lo stesso seme da K ad A per muovere e rimuovere una sequenza completa.",
+      4: "Con 4 semi, le sequenze miste sono passaggi temporanei. Costruisci lo stesso seme da K ad A per muovere e rimuovere una sequenza completa.",
+    },
+    ru: {
+      1: "В игре с одной мастью можно строить напрямую. При нескольких мастях смешанные последовательности — временный шаг; вместе перемещаются и убираются только последовательности одной масти от K до A.",
+      2: "В игре с 2 мастями смешанные последовательности — временный шаг. Собирайте одну масть от K до A, чтобы переместить и убрать готовую последовательность.",
+      4: "В игре с 4 мастями смешанные последовательности — временный шаг. Собирайте одну масть от K до A, чтобы переместить и убрать готовую последовательность.",
+    },
+    hi: {
+      1: "एक सूट में आप सीधे क्रम बना सकते हैं। कई सूट वाले खेल में मिश्रित सूट की कतारें अस्थायी चरण हैं; केवल एक ही सूट की K से A तक की कतार साथ चलकर हटती है।",
+      2: "2 सूट वाले खेल में मिश्रित सूट की कतारें अस्थायी चरण हैं। एक ही सूट को K से A तक बनाइए, फिर पूरी कतार साथ चलाकर हटाइए।",
+      4: "4 सूट वाले खेल में मिश्रित सूट की कतारें अस्थायी चरण हैं। एक ही सूट को K से A तक बनाइए, फिर पूरी कतार साथ चलाकर हटाइए।",
+    },
+    ar: {
+      1: "في لعبة النوع الواحد يمكنك البناء مباشرة. في الألعاب متعددة الأنواع، التسلسلات المختلطة مؤقتة؛ وحدها تسلسلات النوع نفسه من K إلى A تتحرك معًا وتُزال.",
+      2: "في لعبة النوعين، التسلسلات المختلطة مؤقتة. ابنِ النوع نفسه من K إلى A لتحريك التسلسل الكامل وإزالته.",
+      4: "في لعبة الأنواع الأربعة، التسلسلات المختلطة مؤقتة. ابنِ النوع نفسه من K إلى A لتحريك التسلسل الكامل وإزالته.",
+    },
+  });
+
+  function syncDifficultyCoach() {
+    if (!ui.difficultyCoach) return;
+    const copy = DIFFICULTY_STRATEGY_COPY[locale()] || DIFFICULTY_STRATEGY_COPY.en;
+    ui.difficultyCoach.textContent = copy[state.difficulty] || copy[1];
+  }
+
+  const MAIN_PROGRESS_COPY = Object.freeze({
+    en: "Clear 8 same-suit sets",
+    "zh-Hant": "收走 8 組同花色牌組",
+    "zh-Hans": "收走 8 组同花色牌组",
+    ja: "同じスートの8組を完成",
+    ko: "같은 무늬 8세트 완성",
+    es: "Completa 8 grupos del mismo palo",
+    "pt-BR": "Complete 8 grupos do mesmo naipe",
+    fr: "Complétez 8 groupes de même couleur",
+    de: "Schließe 8 gleichfarbige Sets ab",
+    it: "Completa 8 gruppi dello stesso seme",
+    ru: "Соберите 8 одномастных наборов",
+    hi: "एक ही सूट के 8 सेट पूरे करें",
+    ar: "أكمل 8 مجموعات من النوع نفسه",
+  });
+
+  function syncMainProgress() {
+    if (!ui.mainProgress) return;
+    ui.mainProgress.textContent = MAIN_PROGRESS_COPY[locale()] || MAIN_PROGRESS_COPY.en;
+  }
+
   const STAGE_COPY = Object.freeze({
     en: { kicker: "Choose a difficulty", copy: "Choose the suit count before entering the table." },
     "zh-Hant": { kicker: "選擇難度", copy: "進入牌桌前，先選擇花色數量。" },
@@ -89,7 +184,7 @@
 
   const ui = {};
   const get = (id) => document.getElementById(id);
-  ["loadingPanel", "loadingText", "loadingFill", "mainGroup", "mainScreen", "stageScreen", "stageBackBtn", "stageStartBtn", "battleScreen", "audioMenuBtn", "audioPopover", "soundBtn", "soundStateText", "localeSelect", "statistics", "startBtn", "restartBtn", "newGameBtn", "battleBackBtn", "moveCount", "timeValue", "scoreValue", "completedValue", "foundationRow", "stockPile", "dealLabel", "dealsLeft", "undoBtn", "hintBtn", "helpBtn", "boardShell", "tableauRow", "sequenceFx", "tutorialOverlay", "tutorialSkip", "tutorialDone", "confirmOverlay", "confirmNo", "confirmYes", "resultOverlay", "resultText", "resultNewGame", "resultRestart", "resultClose", "hintOverlay", "dragLayer"].forEach((id) => { ui[id] = get(id); });
+  ["loadingPanel", "loadingText", "loadingFill", "mainGroup", "mainScreen", "stageScreen", "stageBackBtn", "stageStartBtn", "battleScreen", "audioMenuBtn", "audioPopover", "soundBtn", "soundStateText", "localeSelect", "statistics", "startBtn", "mainProgress", "restartBtn", "newGameBtn", "battleBackBtn", "moveCount", "timeValue", "scoreValue", "completedValue", "foundationRow", "stockPile", "dealLabel", "dealsLeft", "undoBtn", "hintBtn", "helpBtn", "boardShell", "tableauRow", "sequenceFx", "tutorialOverlay", "difficultyCoach", "tutorialSkip", "tutorialDone", "confirmOverlay", "confirmNo", "confirmYes", "resultOverlay", "resultText", "resultNewGame", "resultRestart", "resultClose", "hintOverlay", "dragLayer"].forEach((id) => { ui[id] = get(id); });
 
   const safeGet = (key, fallback = null) => { try { return localStorage.getItem(key) ?? fallback; } catch (_error) { return fallback; } };
   const safeSet = (key, value) => { try { localStorage.setItem(key, value); } catch (_error) { } };
@@ -144,6 +239,8 @@
     renderHeader();
     updateDifficultyButtons();
     syncStageLocale();
+    syncDifficultyCoach();
+    syncMainProgress();
   }
 
   class SequenceValidator {
@@ -1097,6 +1194,7 @@
     showBattle();
     renderBoard();
     startClock();
+    syncDifficultyCoach();
     if (safeGet(STORAGE.tutorial, "0") !== "1") window.setTimeout(() => { ui.tutorialOverlay.hidden = false; }, 420);
   }
 
