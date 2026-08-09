@@ -111,6 +111,8 @@
 
   const els = Object.fromEntries([...document.querySelectorAll("[id]")].map(el => [el.id, el]));
   const SAVE_KEY = "weightplay_animal_triple_match_v1";
+  const GAME_VERSION = 6;
+  const INTERFACE_VERSION = 6;
   const CHAPTERS = ["openShelf","vineGallery","crystalRoom","mysteryLoft","shiftingHall","grandFinale"];
   const ITEM_NAMES = ["Acorn Lantern","Moon Cup","Shell Compass","Berry Brooch","Cloud Jar","Prism Flower","Star Telescope","Leaf Locket","Coral Music Box","Bee Bell","Mushroom Lamp","Crystal Feather"];
   const ITEM_NAMES_ZH_HANT = ["橡果提燈","月光杯","貝殼羅盤","莓果胸針","雲朵罐","稜鏡花","星光望遠鏡","葉片墜飾","珊瑚音樂盒","蜜蜂鈴","蘑菇燈","水晶羽毛"];
@@ -145,6 +147,7 @@
     pending.runRef.tray = pending.runRef.tray.filter(piece => !matchedIds.has(piece.id));
     pending.runRef.matches += groups.length;
     pending.runRef.paused = false;
+    track("trio_match", { stage: stageIndex + 1, count: groups.length, matches: pending.runRef.matches, outcome: "settled" });
     els.feedback.textContent = t("matched"); sound("match");
     if (pending.runRef.config.shiftEvery && pending.runRef.moves % pending.runRef.config.shiftEvery === 0) shiftRemaining();
     checkEnd(); renderRun();
@@ -535,6 +538,7 @@
     if (run) layoutPieces();
   }
   function setScreen(next) {
+    const previous = screen;
     screen = next;
     document.body.dataset.screen = next;
     els.mainGroup.hidden = next !== "main";
@@ -542,11 +546,17 @@
     els.battleScreen.hidden = next !== "battle";
     document.body.style.overflow = next === "main" ? "" : "hidden";
     fitCanvas();
-    if (next === "stage") { renderStages(); requestAnimationFrame(centerUnlocked); }
+    if (next === "stage") {
+      renderStages();
+      requestAnimationFrame(centerUnlocked);
+      track("stage_open", { stage: save.unlocked, unlocked_count: save.unlocked, cleared_count: Object.keys(save.stars).filter(k => save.stars[k] > 0).length, input_type: previous === "main" ? "start" : "return" });
+    }
+    if (next === "main" && previous !== "main") track("return_session", { from_screen: previous });
   }
   function renderMainProgress() {
     const cleared = Object.keys(save.stars).filter(k => save.stars[k] > 0).length;
-    els.mainProgress.textContent = `${cleared} / 30`;
+    els.mainProgress.textContent = `${t("cleared")} ${cleared} / 30`;
+    els.mainProgress.setAttribute("aria-label", `${t("cleared")} ${cleared} / 30; ${t("stage", { n: save.unlocked })}`);
   }
 
   function stageConfig(index) {
@@ -563,8 +573,10 @@
   }
   function renderStages() {
     if (!els.stageRail) return;
+    const cleared = Object.keys(save.stars).filter(k => save.stars[k] > 0).length;
     const totalStars = Object.values(save.stars).reduce((a, b) => a + (+b || 0), 0);
-    els.stageSummary.textContent = `${Math.min(30, save.unlocked)} / 30 · ${totalStars} ★`;
+    els.stageSummary.textContent = `${t("stage", { n: Math.min(30, save.unlocked) })} · ${t("cleared")} ${cleared}/30 · ${t("stars")} ${totalStars}`;
+    els.stageSummary.setAttribute("aria-label", `${t("stage", { n: Math.min(30, save.unlocked) })}; ${t("cleared")} ${cleared} / 30; ${t("stars")} ${totalStars}`);
     els.stageRail.innerHTML = Array.from({ length: 30 }, (_, i) => {
       const c = stageConfig(i), locked = i + 1 > save.unlocked, stars = save.stars[i] || 0;
       return `<button class="stage-card${locked ? " locked" : ""}" data-stage="${i}" type="button" aria-disabled="${locked}" aria-keyshortcuts="ArrowLeft ArrowRight Home End">
@@ -622,6 +634,7 @@
   els.stageRail.addEventListener("click", event => {
     const card = event.target.closest?.(".stage-card");
     if (!card || card.getAttribute("aria-disabled") === "true") return;
+    track("stage_select", { stage: +card.dataset.stage + 1, input_type: event.detail === 0 ? "keyboard" : "pointer" });
     startBattle(+card.dataset.stage);
   });
   els.stageRail.addEventListener("keydown", event => {
@@ -768,10 +781,11 @@
   }
   function snapshot() { return JSON.stringify({ pieces: run.pieces, tray: run.tray, matches: run.matches, moves: run.moves }); }
   function restore(raw) { const state = JSON.parse(raw); Object.assign(run, state); renderRun(); }
-  function choosePiece(id) {
+  function choosePiece(id, inputType = "pointer") {
     if (!run || run.paused || run.ended) return;
     const piece = run.pieces.find(p => p.id === id);
     if (!piece || isBlocked(piece)) return;
+    track("piece_tap", { stage: stageIndex + 1, piece_type: piece.type, input_type: inputType, outcome: piece.vine || piece.crystal || piece.mystery ? "obstacle" : "collect" });
     if (piece.vine) { piece.vine = false; els.feedback.textContent = t("tangled"); sound("crack"); renderRun(); return; }
     if (piece.crystal) { piece.crystal = false; els.feedback.textContent = t("cracked"); sound("crack"); renderRun(); return; }
     if (piece.mystery) { piece.mystery = false; els.feedback.textContent = t("revealed"); sound("reveal"); renderRun(); return; }
@@ -789,7 +803,10 @@
       return;
     }
     if (run.tray.length - pendingIds.size >= run.config.trayCap) { finish(false); return; }
-    els.feedback.textContent = run.tray.length === run.config.trayCap - 1 ? t("trayDanger") : "";
+    if (run.tray.length === run.config.trayCap - 1) {
+      els.feedback.textContent = t("trayDanger");
+      track("tray_warning", { stage: stageIndex + 1, remaining_slots: 1, outcome: "one_slot_left" });
+    } else els.feedback.textContent = "";
     renderRun();
   }
   function shiftRemaining() {
@@ -892,7 +909,23 @@
     persist();
     renderRun();
   });
-  function track(name, data = {}) { try { window.WeightPlayAnalytics?.track?.(name, { game_id: "animal-triple-match", ...data }); } catch {} }
+  function viewportBucket() {
+    if (innerHeight <= 500 && innerWidth > innerHeight) return "short-landscape";
+    if (innerWidth < 700) return "phone";
+    return "desktop";
+  }
+  function track(name, data = {}) {
+    try {
+      (window.WeightPlayAnalytics || window.WonderAnalytics)?.track?.(name, {
+        game_id: "animal-triple-match",
+        game_version: GAME_VERSION,
+        interface_version: INTERFACE_VERSION,
+        locale,
+        viewport_bucket: viewportBucket(),
+        ...data,
+      });
+    } catch {}
+  }
 
   els.board.addEventListener("pointerdown", event => {
     if (event.pointerType === "mouse" && event.button !== 0) return;
@@ -900,24 +933,24 @@
     if (!piece) return;
     event.preventDefault();
     if (!ownForegroundInteraction()) return;
-    choosePiece(+piece.dataset.piece);
+    choosePiece(+piece.dataset.piece, event.pointerType === "touch" ? "touch" : "pointer");
   });
   els.board.addEventListener("click", event => {
     if (event.detail !== 0) return;
     const piece = event.target.closest?.(".piece.free");
-    if (piece && ownForegroundInteraction()) choosePiece(+piece.dataset.piece);
+    if (piece && ownForegroundInteraction()) choosePiece(+piece.dataset.piece, "keyboard");
   });
   els.startBtn.addEventListener("click", () => setScreen("stage"));
   els.stageBack.addEventListener("click", () => setScreen("main"));
   els.battleBack.addEventListener("click", () => { if (!run || run.ended) return setScreen("stage"); run.paused = true; openModal(els.leaveModal, els.leaveContinue); });
   els.leaveContinue.addEventListener("click", () => closeModal(els.leaveModal, els.battleBack));
-  els.leaveStage.addEventListener("click", () => { cancelPendingMatch(); els.leaveModal.hidden = true; isolateBattle(false); run = null; setScreen("stage"); });
+  els.leaveStage.addEventListener("click", () => { track("return_stages", { stage: stageIndex + 1, outcome: "leave_battle" }); cancelPendingMatch(); els.leaveModal.hidden = true; isolateBattle(false); run = null; setScreen("stage"); });
   els.helpBtn.addEventListener("click", () => { if (!run) return; run.paused = true; openModal(els.tutorialModal, els.tutorialClose); });
   els.tutorialClose.addEventListener("click", () => { save.tutorial = true; persist(); closeModal(els.tutorialModal, els.helpBtn); });
   els.undoBtn.addEventListener("click", undo); els.magnetBtn.addEventListener("click", magnet); els.shuffleBtn.addEventListener("click", shuffleTool);
-  els.retryBtn.addEventListener("click", () => commitResultDecision(() => startBattle(stageIndex, true)));
-  els.nextBtn.addEventListener("click", () => commitResultDecision(() => startBattle(Math.min(29, stageIndex + 1), true)));
-  els.resultStages.addEventListener("click", () => commitResultDecision(() => { cancelPendingMatch(); els.resultModal.hidden = true; isolateBattle(false); run = null; setScreen("stage"); }));
+  els.retryBtn.addEventListener("click", () => commitResultDecision(() => { track("retry", { stage: stageIndex + 1, outcome: "result_retry" }); startBattle(stageIndex, true); }));
+  els.nextBtn.addEventListener("click", () => commitResultDecision(() => { track("next_stage", { stage: stageIndex + 2, from_stage: stageIndex + 1, outcome: "result_next" }); startBattle(Math.min(29, stageIndex + 1), true); }));
+  els.resultStages.addEventListener("click", () => commitResultDecision(() => { track("return_stages", { stage: stageIndex + 1, outcome: "result_stages" }); cancelPendingMatch(); els.resultModal.hidden = true; isolateBattle(false); run = null; setScreen("stage"); }));
   els.soundBtn.addEventListener("click", () => { save.sound = !save.sound; persist(); renderRun(); if (save.sound) sound("pick"); });
   els.tutorialModal.addEventListener("keydown", e => trap(e, () => closeModal(els.tutorialModal, els.helpBtn)));
   els.leaveModal.addEventListener("keydown", e => trap(e, () => closeModal(els.leaveModal, els.battleBack)));

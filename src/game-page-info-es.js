@@ -3285,8 +3285,24 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
   resource.games["animal-cratebound"] = {
     ...(resource.games["animal-cratebound"] || {}),
     title: "Cajas Enlazadas Animales",
-    intro: "Empuja y arrastra cajas enlazadas mediante rutas de lógica espacial."
+    difficulty: "De fácil a desafiante",
+    time: "2–8 minutos por almacén",
+    guideKicker: "Guía de juegos originales de WeightPlay",
+    guideTitleSuffix: "Guía del juego",
+    gameplay: "Puzle logístico de empuje y arrastre",
+    genre: ["Puzle", "Estrategia", "Animales"],
+    skills: ["Lógica", "Planificación", "Resolución de problemas"],
+    intro: "Camina, empuja y arrastra cargamento rúnico por treinta almacenes de un arca celeste diseñados a mano.",
+    story: ["Rux está restaurando un arca de carga, un almacén cada vez. Cada caja rúnica debe llegar a un muelle luminoso antes de que la ruta pueda reabrirse."],
+    systems: ["Avanza una casilla cada vez y empuja las cajas solo cuando la casilla siguiente esté libre. Tirón magnético hace retroceder a Rux y atrae una caja adyacente hacia el espacio que Rux dejó.", "Los capítulos posteriores añaden raíles de hielo deslizantes, puertas de señal, cargamento enlazado y cintas de tormenta de un solo sentido. Cada dispositivo sigue una regla fija y fácil de leer."],
+    how: ["Elige un almacén desbloqueado en el carril de etapas.", "Lee toda la ruta antes del primer empujón y conserva espacio suficiente para colocarte detrás de cada caja.", "Haz coincidir cada caja rúnica con un muelle luminoso para despejar el almacén."],
+    strategyTips: ["Trabaja hacia atrás desde los muelles e identifica la dirección del empujón final.", "Evita empujar cargamento contra una pared exterior, salvo que su muelle esté en esa pared.", "Reserva los tirones magnéticos para posiciones que no puedan recuperarse caminando y empujando normalmente."],
+    progression: ["Treinta almacenes se distribuyen en seis capítulos: Primera carga, Raíles polares, Cubierta de señales, Bahía magnética, Carga gemela y Arca de tormenta."],
+    designNote: "Cada almacén está diseñado y tiene solución. Deshacer y Reiniciar permiten probar una ruta sin perder el progreso de las etapas superadas.",
+    parent: "No se necesita una cuenta y el progreso permanece en este navegador. Las estrellas y los resúmenes de lectura son comentarios de juego, no una evaluación escolar, médica ni de capacidades.",
+    faq: [["¿Cuántos almacenes hay?", "Hay 30 almacenes diseñados en seis capítulos de reglas."], ["¿Se puede resolver cada etapa?", "Sí. Cada almacén tiene una solución verificada."], ["¿Qué hace Tirón?", "Tirón gasta una carga magnética, hace retroceder a Rux y atrae la caja adyacente hasta la casilla anterior de Rux."], ["¿Se guarda el progreso?", "Sí. Las etapas superadas, los desbloqueos y los mejores resultados se guardan localmente en este navegador."]]
   };
+  resource.gameplayProfiles["animal-cratebound"] = { gameplay: "Puzle logístico de empuje y arrastre", genre: ["Puzle", "Estrategia", "Animales"] };
   resource.games["animal-rootvault-pins"] = {
     ...(resource.games["animal-rootvault-pins"] || {}),
     title: "Pasadores de la Cámara Raíz Animal",

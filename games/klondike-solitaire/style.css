@@ -50,6 +50,13 @@ body[data-wp-game-id="klondike-solitaire"] .loading-card {
   max-width: calc(100% - 36px);
 }
 
+body[data-game-id="klondike-solitaire"].wp-shell-battle-active,
+body[data-wp-game-id="klondike-solitaire"].wp-shell-battle-active {
+  background-image: linear-gradient(180deg, #071728, #0a1f3a 46%, #071728);
+  background-position: center;
+  background-size: cover;
+}
+
 #loadingPanel {
   position: fixed;
   inset: 0;

@@ -1983,7 +1983,11 @@ const KL_I18N = {
     const startY = event.clientY - state.dragging.metrics.cardHeight * 0.16;
     const ghostRowOffset = state.dragging.metrics.ghostRowOffset;
     cards.forEach((card, idx) => {
-      const ghost = createCardElement(card, false);
+      // The drag preview must be a clone. Reusing the pooled source node moves
+      // the real card into dragLayer, so a simple tap would make it disappear.
+      const sourceNode = cardNodePool.get(card.id);
+      const ghost = sourceNode?.cloneNode(true);
+      if (!ghost) return;
       ghost.classList.add("ghost-card");
       ghost.style.left = `${startX}px`;
       ghost.style.top = `${startY + idx * ghostRowOffset}px`;
