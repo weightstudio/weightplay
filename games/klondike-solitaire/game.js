@@ -1218,6 +1218,15 @@ const KL_I18N = {
         if (this.hasWon()) this.completed = true;
         return true;
       }
+      if (move.type === "wasteToTableau") {
+        const card = this.waste.top();
+        const destination = this.tableau.columns[move.toColumn];
+        if (!card || !destination || !this.rules.canPlaceOnTableau(card, destination.at(-1))) return false;
+        this.waste.pop();
+        destination.push(card);
+        this.moveCount += 1;
+        return true;
+      }
       if (move.type === "tableauToFoundation") {
         const source = this.tableau.columns[move.fromColumn];
         if (!source || !Number.isInteger(move.startRow)) return false;
@@ -1713,7 +1722,6 @@ const KL_I18N = {
       node.dataset.index = index;
       node.dataset.hint = "true";
       node.type = "button";
-      node.onclick = onDestinationClick;
       node.setAttribute("aria-label", t("ui.aria.foundation", { suit: SUITS[index] }));
       if (!foundation.cards.length) {
         const note = document.createElement("span");
@@ -1751,7 +1759,6 @@ const KL_I18N = {
       node.dataset.type = "tableau";
       node.dataset.index = index;
       node.dataset.hint = "true";
-      node.onclick = onDestinationClick;
       positionCardsOnPile(node, columnCards, "tableau", index, 1);
       ui.tableauRow.append(node);
     });
@@ -1871,14 +1878,29 @@ const KL_I18N = {
   }
 
   function onDestinationClick(event) {
-    const pile = event.currentTarget;
+    const pile = event.target?.closest?.("[data-type='tableau'], [data-type='foundation']");
+    if (!pile) return;
     const target = {
       type: pile?.dataset.type,
       index: Number(pile?.dataset.index),
     };
     const move = selectedMoveForTarget(target);
-    if (event.target.closest?.(".card") && !move) return;
     if (!move) return;
+    const moved = tryPerformMove(move);
+    if (!moved) audio.reject();
+  }
+
+  function onDestinationPointerDown(event) {
+    if (event.button !== undefined && event.button !== 0) return;
+    const pile = event.target?.closest?.("[data-type='tableau'], [data-type='foundation']");
+    if (!pile) return;
+    const move = selectedMoveForTarget({
+      type: pile.dataset.type,
+      index: Number(pile.dataset.index),
+    });
+    if (!move) return;
+    event.preventDefault();
+    event.stopPropagation();
     const moved = tryPerformMove(move);
     if (!moved) audio.reject();
   }
@@ -1939,7 +1961,16 @@ const KL_I18N = {
       type: sourceType,
       index: Number(pileNode.dataset.index),
     });
-    if (target) return;
+    if (target) {
+      // A legal destination can itself be covered by a face-up card. On touch
+      // browsers that card receives pointerdown before the pile click; commit
+      // here so J♥ -> Q♠ is not mistaken for a new source selection.
+      event.preventDefault();
+      event.stopPropagation();
+      const moved = tryPerformMove(target);
+      if (!moved) audio.reject();
+      return;
+    }
     if (sourceType === "tableau") {
       const col = Number(pileNode.dataset.index);
       const row = cardNode.dataset.row !== undefined
@@ -2690,6 +2721,10 @@ const KL_I18N = {
     ui.autoFinishBtn?.addEventListener("click", () => {
       onAutoFinish();
     });
+    ui.foundationRow?.addEventListener("pointerdown", onDestinationPointerDown, true);
+    ui.tableauRow?.addEventListener("pointerdown", onDestinationPointerDown, true);
+    ui.foundationRow?.addEventListener("click", onDestinationClick);
+    ui.tableauRow?.addEventListener("click", onDestinationClick);
     ui.resultNewGame?.addEventListener("click", performResultNewGame);
     ui.resultRestart?.addEventListener("click", performResultRestart);
     ui.resultClose?.addEventListener("click", closeBattle);
@@ -2733,6 +2768,10 @@ const KL_I18N = {
 
   function isQaTableauFixtureEnabled() {
     return isQaFixtureEnabled("tableau");
+  }
+
+  function isQaWasteTableauFixtureEnabled() {
+    return isQaFixtureEnabled("waste-tableau");
   }
 
   function isQaDrawFixtureEnabled() {
@@ -2848,6 +2887,49 @@ const KL_I18N = {
         card.faceUp = false;
         game.stock.cards.push(card);
       });
+    game.moveCount = 0;
+    game.moveHistory = [];
+    game.completed = false;
+    state.dealSequence = null;
+    state.elapsed = 0;
+    state.boardAnimationInProgress = false;
+    state.autoFinishing = false;
+    state.resultShown = false;
+    state.lossRecordedForCurrentBoard = false;
+    renderBoard();
+  }
+
+  function applyQaWasteTableauFixture() {
+    if (!isQaWasteTableauFixtureEnabled() || game.completed) return;
+    if (!state.active) openBattle();
+    if (!state.active) return;
+    clearDealAnimationTimers();
+    const cards = [
+      ...game.tableau.columns.flat(),
+      ...game.stock.cards,
+      ...game.waste.cards,
+      ...game.foundations.flatMap((foundation) => foundation.cards),
+    ];
+    const sourceCard = cards.find((card) => card.suit === "hearts" && Number(card.rank) === 11);
+    const targetCard = cards.find((card) => card.suit === "spades" && Number(card.rank) === 12);
+    if (!sourceCard || !targetCard) return;
+    game.tableau.columns.forEach((column) => {
+      column.length = 0;
+    });
+    game.stock.clear();
+    game.waste.clear();
+    game.foundations.forEach((foundation) => foundation.clear());
+    targetCard.faceUp = true;
+    sourceCard.faceUp = true;
+    game.tableau.columns[0].push(targetCard);
+    game.waste.cards.push(sourceCard);
+    cards
+      .filter((card) => card !== sourceCard && card !== targetCard)
+      .forEach((card) => {
+        card.faceUp = false;
+        game.stock.cards.push(card);
+      });
+    game.drawModeIndex = 0;
     game.moveCount = 0;
     game.moveHistory = [];
     game.completed = false;
@@ -2997,6 +3079,10 @@ const KL_I18N = {
     if (isQaTableauFixtureEnabled()) {
       const totalCards = state.dealSequence?.size || 28;
       window.setTimeout(applyQaTableauFixture, DEAL_INITIAL_DELAY_MS + totalCards * DEAL_STEP_MS + 80);
+    }
+    if (isQaWasteTableauFixtureEnabled()) {
+      const totalCards = state.dealSequence?.size || 28;
+      window.setTimeout(applyQaWasteTableauFixture, DEAL_INITIAL_DELAY_MS + totalCards * DEAL_STEP_MS + 80);
     }
     if (isQaDrawFixtureEnabled()) {
       const totalCards = state.dealSequence?.size || 28;

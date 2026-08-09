@@ -510,9 +510,27 @@
     document.querySelectorAll("[data-difficulty]").forEach((button) => button.classList.toggle("is-selected", Number(button.dataset.difficulty) === state.difficulty));
   }
 
+  function syncTableauPileHeights(canvas) {
+    if (!canvas || !ui.tableauRow || !game) return;
+    const style = getComputedStyle(canvas);
+    const cardWidth = Number.parseFloat(style.getPropertyValue("--card-width"));
+    const step = Number.parseFloat(style.getPropertyValue("--spider-step"));
+    if (!Number.isFinite(cardWidth) || !Number.isFinite(step)) return;
+    const cardHeight = cardWidth * 1.397;
+    ui.tableauRow.querySelectorAll(":scope > .tableau-pile").forEach((pile) => {
+      const column = game.tableau.columns[Number(pile.dataset.index)] || [];
+      const rows = Math.max(1, column.length);
+      pile.style.height = `${Math.ceil(cardHeight + (rows - 1) * step + 10)}px`;
+    });
+  }
+
   function fitTableau(force = false) {
     const canvas = ui.battleScreen?.querySelector(".battle-canvas");
     if (!canvas || !ui.boardShell || ui.battleScreen.hidden) return false;
+    // The shared logical Battle scaler can be one animation frame behind the
+    // screen transition. Do not commit a viewport-sized card fit in that
+    // window; the next frame will measure the logical Canvas envelope.
+    if (window.WeightPlayBattleCanvas && !document.body.classList.contains("wp-logical-battle-active")) return false;
     const tableauStyle = ui.tableauRow ? getComputedStyle(ui.tableauRow) : null;
     const tableauGap = Number.parseFloat(tableauStyle?.columnGap || tableauStyle?.gap) || 0;
     const tableauWidth = ui.tableauRow?.clientWidth || 0;
@@ -523,7 +541,10 @@
     if (!tableauWidth || !canvasWidth || !canvasHeight || !boardWidth || !boardHeight) return false;
     const isCompactLandscape = window.matchMedia("(orientation: landscape) and (max-height: 560px)").matches;
     const fitKey = [canvasWidth, canvasHeight, boardWidth, boardHeight, tableauWidth, tableauGap, isCompactLandscape ? "landscape" : "portrait"].join("|");
-    if (!force && fitKey === state.layoutFitKey) return true;
+    if (!force && fitKey === state.layoutFitKey) {
+      syncTableauPileHeights(canvas);
+      return true;
+    }
     const columnWidth = (tableauWidth - tableauGap * 9) / 10;
     const currentMaxRows = Math.max(1, ...game.tableau.columns.map((column) => column.length));
     // The opening tableau determines the Battle envelope. A normal move may
@@ -544,6 +565,7 @@
     canvas.style.setProperty("--spider-step", `${step}px`);
     canvas.style.setProperty("--spider-pile-height", `${Math.ceil(cardHeight + (maxRows - 1) * step + 10)}px`);
     state.layoutFitKey = fitKey;
+    syncTableauPileHeights(canvas);
     return true;
   }
 
@@ -552,11 +574,10 @@
       state.layoutFitKey = "";
       state.layoutMaxRows = 0;
     }
-    if (fitTableau(force)) return;
     if (state.fitRaf || ui.battleScreen?.hidden) return;
     state.fitRaf = requestAnimationFrame(() => {
       state.fitRaf = 0;
-      scheduleTableauFit(false);
+      if (!fitTableau(false)) scheduleTableauFit(false);
     });
   }
 
@@ -735,9 +756,12 @@
     const dragging = state.dragging;
     if (!dragging || dragging.ghost) return;
     const origin = dragging.originNode.getBoundingClientRect();
+    const canvas = ui.battleScreen?.querySelector(".battle-canvas");
+    const step = Number.parseFloat(getComputedStyle(canvas || document.documentElement).getPropertyValue("--spider-step")) || 24;
     const stack = document.createElement("div");
     stack.className = "ghost-stack";
     stack.style.width = `${origin.width}px`;
+    stack.style.setProperty("--spider-step", `${step}px`);
     stack.style.left = `${event.clientX - dragging.offsetX}px`;
     stack.style.top = `${event.clientY - dragging.offsetY - dragging.touchLift}px`;
     dragging.cards.forEach((card, index) => {
@@ -745,7 +769,11 @@
       ghost.classList.add("ghost-card");
       ghost.style.position = "absolute";
       ghost.style.width = "100%";
-      ghost.style.top = `calc(${index} * var(--spider-step))`;
+      // The ghost lives in the fixed drag layer, outside the Battle Canvas,
+      // so it cannot inherit the Canvas custom-property scope. Use a concrete
+      // step here or every preview card falls back to top: 0 and the last card
+      // visually covers the card the player actually grabbed.
+      ghost.style.top = `${index * step}px`;
       ghost.style.pointerEvents = "none";
       stack.append(ghost);
     });
@@ -999,6 +1027,12 @@
     window.dispatchEvent(new Event("weightplay:shell-sync"));
     window.dispatchEvent(new Event("weightplay:battle-open"));
     window.dispatchEvent(new Event("resize"));
+    // The shared Battle scaler is loaded after this game runtime. Apply its
+    // already-installed sync point before the first deferred Tableau fit so
+    // the opening deal is measured in logical Canvas pixels, not viewport
+    // pixels. Without this checkpoint the first move is the first time the
+    // two coordinate systems agree and the whole table visibly jumps.
+    window.WeightPlayBattleCanvas?.sync?.();
   }
 
   function showStage({ focusStart = false } = {}) {

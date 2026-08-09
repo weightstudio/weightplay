@@ -664,7 +664,17 @@
       area.className = `tableau-area variant-${this.config.variant}`;
       if (this.config.variant === "pyramid") area.innerHTML = Array.from({ length: 7 }, (_v, row) => `<div class="pyramid-row">${this.game.cards.filter((entry) => entry.row === row).map((entry, index) => entry.removed ? `<div class="removed-card"></div>` : cardMarkup(entry.card, { zone: "pyramid", index: this.game.cards.indexOf(entry) }, this.game.available(this.game.cards.indexOf(entry)) ? "available" : "covered")).join("")}</div>`).join("");
       else if (this.config.variant === "tripeaks") area.innerHTML = Array.from({ length: 4 }, (_v, row) => `<div class="peak-row">${this.game.cards.filter((entry) => entry.row === row).map((entry) => { const index = this.game.cards.indexOf(entry); return entry.removed ? `<div class="removed-card"></div>` : cardMarkup(entry.card, { zone: "peak", index }, this.game.available(index) ? "available" : "covered"); }).join("")}</div>`).join("");
-      else area.innerHTML = this.game.tableau.map((pile, pileIndex) => `<div class="classic-pile ${pile.length ? "" : "empty-pile"}" data-dest='${JSON.stringify({ zone: "tableau", pile: pileIndex })}' aria-label="${this.t("tableau")} ${pileIndex + 1}">${pile.length ? pile.map((card, row) => cardMarkup(card, { zone: "tableau", pile: pileIndex, row }, `${row === pile.length - 1 ? "available" : "stacked"}${this.game.selected?.zone === "tableau" && this.game.selected.pile === pileIndex && this.game.selected.row === row ? " selected" : ""}`)).join("") : `<span>${this.t("empty")}</span>`}</div>`).join("");
+      else {
+        area.innerHTML = this.game.tableau.map((pile, pileIndex) => `<div class="classic-pile ${pile.length ? "" : "empty-pile"}" data-dest='${JSON.stringify({ zone: "tableau", pile: pileIndex })}' aria-label="${this.t("tableau")} ${pileIndex + 1}">${pile.length ? pile.map((card, row) => cardMarkup(card, { zone: "tableau", pile: pileIndex, row }, `${row === pile.length - 1 ? "available" : "stacked"}${this.game.selected?.zone === "tableau" && this.game.selected.pile === pileIndex && this.game.selected.row === row ? " selected" : ""}`)).join("") : `<span>${this.t("empty")}</span>`}</div>`).join("");
+        if (this.config.variant === "freecell") {
+          const step = Number.parseFloat(getComputedStyle(area).getPropertyValue("--classic-pile-step")) || 19;
+          area.querySelectorAll(".classic-pile").forEach((node, pileIndex) => {
+            const count = this.game.tableau[pileIndex]?.length || 0;
+            const cardHeight = node.getBoundingClientRect().height;
+            node.style.setProperty("--classic-pile-height", `${cardHeight + Math.max(0, count - 1) * step}px`);
+          });
+        }
+      }
       if (this.game.selected) area.querySelectorAll("[data-source]").forEach((node) => { try { if (JSON.stringify(JSON.parse(node.dataset.source)) === JSON.stringify(this.game.selected)) node.classList.add("selected"); } catch (_error) {} });
     }
   }

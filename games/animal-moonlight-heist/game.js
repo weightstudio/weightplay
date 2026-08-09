@@ -1,5 +1,22 @@
 (() => {
   const $ = (s) => document.querySelector(s);
+  const GAME_VERSION = 13, INTERFACE_VERSION = 6;
+  const viewportBucket = () => {
+    const width = window.innerWidth || 0, height = window.innerHeight || 0;
+    return height <= 430 ? "short-landscape" : width <= 430 ? "phone" : width >= 1000 ? "desktop" : "tablet";
+  };
+  const track = (event, data = {}) => {
+    try {
+      window.WonderAnalytics?.track?.(event, {
+        game_id: "animal-moonlight-heist",
+        game_version: GAME_VERSION,
+        interface_version: INTERFACE_VERSION,
+        locale,
+        viewport_bucket: viewportBucket(),
+        ...data,
+      });
+    } catch {}
+  };
   // General Stage and Battle/Result fill the complete safe physical width.
   // Apply the game-local request before the directly loaded shared owners run.
   $(".stage-canvas")?.setAttribute("data-wp-canvas-max-width", "920");
@@ -243,7 +260,7 @@
   [[guardianCatalog.spotlight,"提灯审查官"],[guardianCatalog.bell,"月钟守卫"],[guardianCatalog.mirror,"星镜看守"],[guardianCatalog.clock,"发条巡察长"],[guardianCatalog.seals,"宝库封印官"],[guardianCatalog.eclipse,"日蚀馆长"]].forEach(([guardian,name])=>{guardian.name[4]=name});
   function normalizeLocale(value){if(value==="zh-TW")return"zh-Hant";if(value==="zh-CN")return"zh-Hans";if(value?.startsWith("pt"))return"pt-BR";return value||"en"}
   const STAGE_CARD_POOL_SIZE=9;
-  let state=load(),locale=normalizeLocale(window.WonderI18n?.locale?.()||readOptionalStorage(localeKey)||readOptionalStorage(legacyLocaleKey)||"en"),selectedMission=0,centeredMission=Math.max(0,Math.min(campaign.length-1,(state.unlocked||1)-1)),gadget="dash",gadgetOffers=createOffers(),insuranceActive=state.insuranceReady===true,preservedTreasure=false,playing=false,paused=false,alert=0,objectFound=false,treasureFound=false,caught=false,patrols=[],lastTime=0,missionStartedAt=0,freezeUntil=0,smokeUntil=0,pickupCoverUntil=0,preview=null,arrivalTimer=0,animationFrame=0,routePointerId=null,lastPulseCycle=-1,lastMirrorCycle=-1,guardianPhase=1,resultActionClaimed=false;
+  let state=load(),locale=normalizeLocale(window.WonderI18n?.locale?.()||readOptionalStorage(localeKey)||readOptionalStorage(legacyLocaleKey)||"en"),selectedMission=0,centeredMission=Math.max(0,Math.min(campaign.length-1,(state.unlocked||1)-1)),gadget="dash",gadgetOffers=createOffers(),insuranceActive=state.insuranceReady===true,preservedTreasure=false,playing=false,paused=false,alert=0,objectFound=false,treasureFound=false,caught=false,firstMoveTracked=false,patrols=[],lastTime=0,missionStartedAt=0,freezeUntil=0,smokeUntil=0,pickupCoverUntil=0,preview=null,arrivalTimer=0,animationFrame=0,routePointerId=null,lastPulseCycle=-1,lastMirrorCycle=-1,guardianPhase=1,resultActionClaimed=false;
   let stageWindowStart=0,stageCardPool=[],stageBrowseLogical=centeredMission,stageSettleFrame=0,cancelStagePointer=()=>{};
   const gameLocales=new Set(["en","zh-Hant","zh-Hans","es","ru"]);
   const localeArrayIndex=()=>locale==="zh-Hant"?1:locale==="es"?2:locale==="ru"?3:locale==="zh-Hans"?4:0;
@@ -484,11 +501,12 @@
   function focusMain(){requestAnimationFrame(()=>requestAnimationFrame(()=>$("#startBtn")?.focus({preventScroll:true})))}
   function renderGadgets(focusId=null){const wrap=$("#gadgetChoices");wrap.innerHTML="";gadgetOffers.forEach(({id,level})=>{const g=gadgets[id],b=document.createElement("button"),levelLabel=levelText(level);b.className=`gadget-choice${id===gadget?" selected":""}`;b.dataset.gadgetId=id;b.innerHTML=`<img src="../../assets/animal-moonlight-heist-gadget-${g.art}.webp" alt=""><span class="gadget-level">${levelLabel}</span>`;b.type="button";b.title=`${t(id)} · ${levelLabel}`;b.setAttribute("aria-label",gadgetSummary(id,level));b.setAttribute("aria-pressed",id===gadget?"true":"false");b.addEventListener("click",()=>{gadget=id;renderGadgets(id);updateGadget();renderGadgetSummary()});wrap.append(b)});if(focusId)wrap.querySelector(`[data-gadget-id="${focusId}"]`)?.focus({preventScroll:true})}
   function updateGadget(){if(!$("#gadgetIcon"))return;const passive=gadget==="dash",name=t(gadget),effect=gadgetEffect(gadget,selectedOffer().level),button=$("#gadgetBtn");$("#gadgetIcon").src=`../../assets/animal-moonlight-heist-gadget-${gadgets[gadget].art}.webp`;$("#gadgetLabel").textContent=passive?`${name} · ${t("passive")}`:name;button.disabled=passive;button.setAttribute("aria-label",t(passive?"passiveGadgetLabel":"activeGadgetLabel",{name,effect}));button.title=button.getAttribute("aria-label");nodes.field.setAttribute("aria-label",t(passive?"playFieldPassiveLabel":"playFieldActiveLabel",{name,effect}))}
-  function startMission(index){
+  function startMission(index,inputType="stage-card"){
     stopBattleLoop();
     selectedMission=Math.max(0,Math.min(campaign.length-1,index));
-    objectFound=false;treasureFound=preservedTreasure;preservedTreasure=false;caught=false;alert=0;paused=false;freezeUntil=0;smokeUntil=0;pickupCoverUntil=0;lastPulseCycle=-1;lastMirrorCycle=-1;guardianPhase=1;
+    objectFound=false;treasureFound=preservedTreasure;preservedTreasure=false;caught=false;firstMoveTracked=false;alert=0;paused=false;freezeUntil=0;smokeUntil=0;pickupCoverUntil=0;lastPulseCycle=-1;lastMirrorCycle=-1;guardianPhase=1;
     const m=campaign[selectedMission];
+    track("mission_start",{mission:selectedMission+1,input_type:inputType,unlocked:state.unlocked});
     $("#missionLabel").textContent=`${t("mission",{n:selectedMission+1})}: ${campaignText(m.name)}`;
     $("#objectiveLabel").textContent=campaignText(m.rule);
     nodes.objective.src=`../../assets/animal-moonlight-heist-object-${missionObjects[selectedMission%missionObjects.length]}.webp`;
@@ -554,13 +572,13 @@
     }
     if(playing&&!paused)animationFrame=requestAnimationFrame(loop);
   }
-  function routeTo(clientX,clientY,commit=false){const r=nodes.field.getBoundingClientRect();const x=Math.max(6,Math.min(94,(clientX-r.left)/r.width*100));const y=Math.max(8,Math.min(92,(clientY-r.top)/r.height*100));const start=point(nodes.fia);const dx=(x-start[0])/100*r.width,dy=(y-start[1])/100*r.height;const len=Math.hypot(dx,dy);nodes.route.hidden=false;nodes.route.style.left=`${start[0]}%`;nodes.route.style.top=`${start[1]}%`;nodes.route.style.width=`${len}px`;nodes.route.style.transform=`rotate(${Math.atan2(dy,dx)}rad)`;const exposed=patrols.some(p=>distance([x,y],point(p.img))<22);nodes.route.classList.toggle("route-exposed",exposed);nodes.feedback.textContent=t(commit?"holdRoute":exposed?"routeExposed":"move");preview=[x,y];if(commit){const level=selectedOffer().level,dashTime=gadget==="dash"?Math.max(180,320-level*45):650;nodes.route.hidden=true;nodes.fia.style.transitionDuration=`${dashTime}ms`;place(nodes.fia,preview);scheduleArrival(dashTime+20)}}
+  function routeTo(clientX,clientY,commit=false){const r=nodes.field.getBoundingClientRect();const x=Math.max(6,Math.min(94,(clientX-r.left)/r.width*100));const y=Math.max(8,Math.min(92,(clientY-r.top)/r.height*100));const start=point(nodes.fia);const dx=(x-start[0])/100*r.width,dy=(y-start[1])/100*r.height;const len=Math.hypot(dx,dy);nodes.route.hidden=false;nodes.route.style.left=`${start[0]}%`;nodes.route.style.top=`${start[1]}%`;nodes.route.style.width=`${len}px`;nodes.route.style.transform=`rotate(${Math.atan2(dy,dx)}rad)`;const exposed=patrols.some(p=>distance([x,y],point(p.img))<22);nodes.route.classList.toggle("route-exposed",exposed);nodes.feedback.textContent=t(commit?"holdRoute":exposed?"routeExposed":"move");preview=[x,y];if(commit){track("input_action",{mission:selectedMission+1,action:"route_commit",input_type:"pointer",alert_level:Math.round(alert)});if(!firstMoveTracked){firstMoveTracked=true;track("first_move",{mission:selectedMission+1,input_type:"pointer"})}const level=selectedOffer().level,dashTime=gadget==="dash"?Math.max(180,320-level*45):650;nodes.route.hidden=true;nodes.fia.style.transitionDuration=`${dashTime}ms`;place(nodes.fia,preview);scheduleArrival(dashTime+20)}}
   function resolveArrival(){
     const p=point(nodes.fia),m=activeMission();
-    if(!treasureFound&&distance(p,point(nodes.treasure))<12){treasureFound=true;nodes.treasure.hidden=true;showFx("pickup");nodes.feedback.textContent=t("treasureFound");playSound("coin")}
+    if(!treasureFound&&distance(p,point(nodes.treasure))<12){treasureFound=true;nodes.treasure.hidden=true;track("treasure_collected",{mission:selectedMission+1});showFx("pickup");nodes.feedback.textContent=t("treasureFound");playSound("coin")}
     if(!objectFound&&distance(p,point(nodes.objective))<12){
       if(m.order==="treasure-first"&&!treasureFound){nodes.feedback.textContent=t("firstSeal");showFx("warning");return}
-      objectFound=true;nodes.objective.hidden=true;nodes.exit.style.opacity=1;if(m.phaseExit)place(nodes.exit,m.phaseExit);
+      objectFound=true;nodes.objective.hidden=true;nodes.exit.style.opacity=1;track("objective_pickup",{mission:selectedMission+1});if(m.phaseExit)place(nodes.exit,m.phaseExit);
       if(selectedMission<2){pickupCoverUntil=performance.now()+(selectedMission===0?1800:1000);alert=Math.max(0,alert-(selectedMission===0?18:10));updateAlertMeter()}
       if(m.guardian?.behavior==="eclipse"){guardianPhase=2;patrols.forEach(p=>p.direction*=-1);alert=Math.max(alert,28);updateAlertMeter()}
       $("#objectiveLabel").textContent=t("extraction");showFx("pickup");nodes.feedback.textContent=t(selectedMission<2?"pickupCover":"found");playSound("success");
@@ -569,8 +587,8 @@
   }
   function showFx(type){nodes.fx.src=`../../assets/animal-moonlight-heist-fx-${type}.webp`;place(nodes.fx,point(nodes.fia));nodes.fx.hidden=false;nodes.fx.classList.remove("fx-show");void nodes.fx.offsetWidth;nodes.fx.classList.add("fx-show");setTimeout(()=>nodes.fx.hidden=true,650)}
   function useGadget(){if(!playing||paused||gadget==="dash")return;const level=selectedOffer().level;if(gadget==="decoy"){freezeUntil=performance.now()+(2500+level*650);showFx("pickup")}else{alert=0;updateAlertMeter();smokeUntil=performance.now()+(800+level*500);showFx("shadow")}playSound("shoot")}
-  function fail(){if(caught||performance.now()<smokeUntil)return;caught=true;playing=false;stopBattleLoop();if(insuranceActive&&treasureFound)preservedTreasure=true;insuranceActive=false;state.insuranceReady=false;save();showFx("warning");nodes.fia.classList.add("caught");playSound("wrong");openResult(false)}
-  function win(){playing=false;stopBattleLoop();insuranceActive=false;state.insuranceReady=false;const m=activeMission(),medals=1+(!caught?1:0)+(treasureFound?1:0);const reward=20+selectedMission*4+(treasureFound?12:0)+(m.guardian?30:0);state.coins+=reward;state.cleared[selectedMission]=Math.max(state.cleared[selectedMission]||0,medals);state.unlocked=Math.max(state.unlocked,Math.min(campaign.length,selectedMission+2));state.safehouse=1+Math.floor(Object.keys(state.cleared).length/5);save();playSound("win");openResult(true,medals,reward)}
+  function fail(){if(caught||performance.now()<smokeUntil)return;caught=true;playing=false;stopBattleLoop();if(insuranceActive&&treasureFound)preservedTreasure=true;insuranceActive=false;state.insuranceReady=false;save();track("alert",{mission:selectedMission+1,outcome:"capture",alert_level:100});showFx("warning");nodes.fia.classList.add("caught");playSound("wrong");openResult(false)}
+  function win(){playing=false;stopBattleLoop();insuranceActive=false;state.insuranceReady=false;const m=activeMission(),medals=1+(!caught?1:0)+(treasureFound?1:0);const reward=20+selectedMission*4+(treasureFound?12:0)+(m.guardian?30:0);state.coins+=reward;state.cleared[selectedMission]=Math.max(state.cleared[selectedMission]||0,medals);state.unlocked=Math.max(state.unlocked,Math.min(campaign.length,selectedMission+2));state.safehouse=1+Math.floor(Object.keys(state.cleared).length/5);save();track("extraction",{mission:selectedMission+1,treasure_collected:treasureFound,medals,reward});playSound("win");openResult(true,medals,reward)}
   function openResult(ok,medals=0,reward=0){
     $("#resultTitle").textContent=t(ok?"victory":"captured");
     $("#resultText").textContent=ok
@@ -579,7 +597,7 @@
     $("#medalRow").textContent=ok?"★".repeat(medals)+"☆".repeat(3-medals):"";
     $("#medalRow").setAttribute("aria-label",ok?t("medalCount",{medals}):"");
     const retryBtn=$("#retryBtn"),stagesBtn=$("#stagesBtn"),nextBtn=$("#nextBtn");
-    resultActionClaimed=false;
+    resultActionClaimed=false;track("mission_result",{mission:selectedMission+1,outcome:ok?"success":"capture",medals,reward});
     const canContinue=ok&&selectedMission<campaign.length-1;
     retryBtn.disabled=false;
     stagesBtn.disabled=false;
@@ -624,8 +642,8 @@
     document.addEventListener("input",handleLocaleSelect,true);
     document.addEventListener("change",handleLocaleSelect,true);
   window.addEventListener("wonder:locale-change",async event=>{if(!event.detail?.locale)return;const requested=normalizeLocale(event.detail.locale);if(requested===locale)return;try{await ensureRuntimeCatalog(requested)}catch(error){console.error(error);return}locale=requested;writeOptionalStorage(localeKey,requested);localize()});
-    $("#startBtn").addEventListener("click",()=>{show("stage");renderStage();focusMission()});
-    $("#stageBackBtn").addEventListener("click",()=>{show("main");focusMain()});
+    $("#startBtn").addEventListener("click",()=>{track("stage_open",{source:"main"});show("stage");renderStage();focusMission()});
+    $("#stageBackBtn").addEventListener("click",()=>{track("map_return",{source:"stage_header"});show("main");focusMain()});
     $("#battleBackBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
     $("#battleBackBtn").addEventListener("click",openBattleLeave);
     $("#pauseBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
@@ -642,14 +660,14 @@
     nodes.field.addEventListener("lostpointercapture",e=>{if(e.pointerId===routePointerId)cancelRoutePreview()});
     nodes.modal.addEventListener("keydown",trapResultFocus);nodes.leaveModal.addEventListener("keydown",trapBattleLeaveFocus);$("#gadgetBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});$("#gadgetBtn").addEventListener("click",useGadget);
     $("#battleContinueBtn").addEventListener("click",()=>closeBattleLeave());
-    $("#battleLeaveBtn").addEventListener("click",()=>{closeBattleLeave(false);show("stage");renderStage();focusMission(selectedMission)});
-    $("#retryBtn").addEventListener("click",()=>{if(!claimResultAction())return;closeResult();startMission(selectedMission)});
-    $("#stagesBtn").addEventListener("click",()=>{if(!claimResultAction())return;closeResult();show("stage");renderStage();focusMission(selectedMission)});
-    $("#nextBtn").addEventListener("click",()=>{if(!claimResultAction())return;const nextMission=Math.min(campaign.length-1,selectedMission+1);closeResult();startMission(nextMission)});
+    $("#battleLeaveBtn").addEventListener("click",()=>{track("map_return",{source:"battle_leave",mission:selectedMission+1});closeBattleLeave(false);show("stage");renderStage();focusMission(selectedMission)});
+    $("#retryBtn").addEventListener("click",()=>{if(!claimResultAction())return;track("retry",{mission:selectedMission+1});closeResult();startMission(selectedMission,"retry")});
+    $("#stagesBtn").addEventListener("click",()=>{if(!claimResultAction())return;track("map_return",{source:"result",mission:selectedMission+1});closeResult();show("stage");renderStage();focusMission(selectedMission)});
+    $("#nextBtn").addEventListener("click",()=>{if(!claimResultAction())return;const nextMission=Math.min(campaign.length-1,selectedMission+1);track("next_mission",{from_mission:selectedMission+1,to_mission:nextMission+1});closeResult();startMission(nextMission,"next")});
   }
   function bindMissionRailDrag(){
     const rail=nodes.rail;
-    rail.addEventListener("click",event=>{const card=event.target.closest(".mission-card");if(!card)return;const index=Number(card.dataset.index);if(index>=0&&index<state.unlocked)startMission(index)});
+    rail.addEventListener("click",event=>{const card=event.target.closest(".mission-card");if(!card)return;const index=Number(card.dataset.index);if(index>=0&&index<state.unlocked){const inputType=event.detail===0?"keyboard":"pointer";track("stage_select",{mission:index+1,input_type:inputType,unlocked:state.unlocked});startMission(index,inputType)}});
     rail.addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" ")){event.preventDefault();return}const card=event.target.closest(".mission-card");if(!card||!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;const rtl=getComputedStyle(rail).direction==="rtl",index=Number(card.dataset.index);let next=index;if(event.key==="Home")next=0;else if(event.key==="End")next=campaign.length-1;else if(event.key==="ArrowLeft")next=Math.max(0,Math.min(campaign.length-1,index+(rtl?1:-1)));else next=Math.max(0,Math.min(campaign.length-1,index+(rtl?-1:1)));event.preventDefault();const baseSnap=rail.style.getPropertyValue("scroll-snap-type"),baseBehavior=rail.style.getPropertyValue("scroll-behavior");rail.style.setProperty("scroll-behavior","auto","important");rail.style.setProperty("scroll-snap-type","none","important");stageBrowseLogical=next;ensureStageWindow(next);const target=rail.querySelector(`[data-index="${next}"]`);markCenteredMission(next);target?.focus({preventScroll:true});positionStageRail(next);requestAnimationFrame(()=>{if(baseBehavior)rail.style.setProperty("scroll-behavior",baseBehavior);else rail.style.removeProperty("scroll-behavior");if(baseSnap)rail.style.setProperty("scroll-snap-type",baseSnap);else rail.style.removeProperty("scroll-snap-type")})});
     rail.addEventListener("wonder:stage-snap",event=>{
       if(rail.dataset.wpStageVirtualized==="bounded-recycle"){markGeometricMission();return}
@@ -674,7 +692,7 @@
     if(!direction)return;
     event.preventDefault();
     const current=point(nodes.fia),next=[Math.max(6,Math.min(94,current[0]+direction[0]*6)),Math.max(8,Math.min(92,current[1]+direction[1]*6))];
-    nodes.route.hidden=true;nodes.fia.style.transitionDuration="120ms";place(nodes.fia,next);resolveArrival();
+    track("input_action",{mission:selectedMission+1,action:"move",input_type:"keyboard",direction:event.key.toLowerCase(),alert_level:Math.round(alert)});if(!firstMoveTracked){firstMoveTracked=true;track("first_move",{mission:selectedMission+1,input_type:"keyboard"})}nodes.route.hidden=true;nodes.fia.style.transitionDuration="120ms";place(nodes.fia,next);resolveArrival();
   });
   [$("#rerollBtn"),$("#insuranceBtn")].forEach(button=>button.addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()}));
   $("#startBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault()});
@@ -725,7 +743,7 @@
     window.__ANIMAL_MOONLIGHT_HEIST_TEST__={
       campaign:()=>campaign.map((mission,index)=>({stage:index+1,name:[...mission.name],rule:[...mission.rule],patrols:mission.patrols.length,safeZones:mission.safeZones?.length||0,order:mission.order||"any",mirror:Boolean(mission.mirrorInterval),clock:Boolean(mission.clockCycle),bell:Boolean(mission.bellPulse||mission.guardian?.behavior==="bell"||mission.guardian?.behavior==="eclipse"),spotlight:Boolean(mission.spotlight||mission.guardian?.behavior==="spotlight"||mission.guardian?.behavior==="eclipse"),guardian:mission.guardian?{id:mission.guardian.id,name:[...mission.guardian.name],behavior:mission.guardian.behavior}:null})),
       unlockAll:()=>{state.unlocked=campaign.length;save();renderStage();return state.unlocked},
-      openMission:index=>{startMission(Math.max(0,Math.min(campaign.length-1,Number(index)||0)));return selectedMission+1},
+       openMission:index=>{startMission(Math.max(0,Math.min(campaign.length-1,Number(index)||0)),"test-hook");return selectedMission+1},
       placeFia:position=>{place(nodes.fia,position);resolveArrival();return{objectFound,treasureFound,exit:point(nodes.exit)}},
       tickRules:seconds=>{missionStartedAt=performance.now()-Number(seconds)*1000;const factor=updateMissionRules(performance.now());return{factor,alert,object:point(nodes.objective),treasure:point(nodes.treasure),warning:Boolean(guardianPatrol()?.img.classList.contains("is-warning"))}},
       translate:(code,key)=>{const previous=locale;locale=normalizeLocale(code);const value=t(key);locale=previous;return value},

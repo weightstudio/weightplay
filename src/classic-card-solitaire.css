@@ -66,10 +66,11 @@ button:focus-visible, select:focus-visible { outline: 3px solid rgba(255,209,102
 .classic-guide h3 { margin: 16px 0 4px; color: var(--classic-gold); font-size: 15px; }
 .classic-guide p { margin: 4px 0; }
 
-/* FreeCell is a no-Stage classic table. Keep the long editorial guide,
-   difficulty facts, and parent/kids copy out of the playable Main flow; the
-   question-mark tutorial remains the focused help entry point. */
-body[data-wp-game-id="freecell-solitaire"].wp-shell-main-active :is(.game-page-info, .classic-guide, .feature-list, .stats-panel) { display: none !important; }
+/* FreeCell is a no-Stage classic table. Keep difficulty facts and
+   parent/Kids copy out of Main, while showing the compact general guide and
+   leaving the question-mark tutorial available as a second help entry point. */
+body[data-wp-game-id="freecell-solitaire"].wp-shell-main-active :is(.game-page-info, .feature-list, .stats-panel) { display: none !important; }
+body[data-wp-game-id="freecell-solitaire"].wp-shell-main-active :is(.classic-guide, .freecell-main-guide) { display: block !important; }
 body[data-wp-game-id="pyramid-solitaire"] .stats-panel,
 body[data-wp-game-id="tripeaks-solitaire"] .stats-panel,
 body[data-wp-game-id="pyramid-solitaire"] .feature-list,
@@ -99,7 +100,7 @@ body[data-wp-game-id="tripeaks-solitaire"] .feature-list { display: none !import
 .stock-back, .back-mark { color: #bfe2ff; font-size: 24px; font-weight: 900; }
 .stock-pile b { position: absolute; right: 4px; bottom: 3px; min-width: 20px; padding: 2px 4px; border-radius: 6px; color: #122038; background: var(--classic-gold); font-size: 10px; text-align: center; }
 .board-status { min-height: 18px; color: var(--classic-gold); font-size: 12px; font-weight: 800; text-align: center; }
-.tableau-area { position: relative; display: flex; min-height: 0; flex: 1; gap: 6px; align-items: flex-start; justify-content: center; overflow: auto; padding: 4px 2px 36px; }
+.tableau-area { --classic-pile-step: 19px; position: relative; display: flex; min-height: 0; flex: 1; gap: 6px; align-items: flex-start; justify-content: center; overflow: auto; padding: 4px 2px 36px; }
 .tableau-area.variant-pyramid, .tableau-area.variant-tripeaks { --classic-card-width: clamp(42px, 11vw, 68px); --classic-card-height: calc(var(--classic-card-width) * 1.42); flex-direction: column; align-items: center; justify-content: center; overflow: auto; }
 .tableau-area.variant-pyramid > .pyramid-row, .tableau-area.variant-tripeaks > .peak-row { width: 100%; flex: 0 0 calc(var(--classic-card-height) * .62); height: calc(var(--classic-card-height) * .62); overflow: visible; }
 .tableau-area.variant-freecell, .tableau-area.variant-yukon { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); align-items: start; }
@@ -107,6 +108,7 @@ body[data-wp-game-id="tripeaks-solitaire"] .feature-list { display: none !import
 .tableau-area.variant-yukon { grid-template-columns: repeat(7, minmax(0, 1fr)); }
 .tableau-area.variant-golf { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); align-items: start; }
 .classic-pile { min-height: var(--classic-card-height); }
+.tableau-area.variant-freecell .classic-pile { min-height: var(--classic-pile-height, var(--classic-card-height)); }
 .classic-pile .classic-card { position: absolute; left: 50%; width: min(100%, var(--classic-card-width)); height: var(--classic-card-height); transform: translateX(-50%); }
 .classic-pile .classic-card.slot-card, .classic-slot .classic-card.slot-card { inset: 50% auto auto 50%; width: min(100%, var(--classic-card-width)); height: var(--classic-card-height); transform: translate(-50%, -50%); }
 .tableau-area .classic-card.available:hover, .tableau-area .classic-card.selected { transform: translate(-50%, -4px); }
@@ -147,7 +149,7 @@ body[data-wp-game-id="tripeaks-solitaire"] .feature-list { display: none !import
 .classic-card.selected { outline: 2px solid var(--classic-accent); }
 .classic-card.is-moving { z-index: 40; pointer-events: none; will-change: translate; }
 .classic-card-motion { z-index: 70; pointer-events: none; box-shadow: 0 10px 22px rgba(0,0,0,.35); }
-.classic-slot.valid-target, .classic-pile.valid-target { border-color: var(--classic-accent); box-shadow: 0 0 0 2px rgba(78,205,196,.42), 0 0 18px rgba(78,205,196,.24); }
+.classic-slot.valid-target, .classic-pile.valid-target { border-color: var(--classic-accent); background: rgba(78,205,196,.08); box-shadow: 0 0 0 2px rgba(78,205,196,.42), 0 0 18px rgba(78,205,196,.24); }
 .classic-card.slot-card { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: inherit; box-shadow: none; }
 .combo-pop { animation: classic-combo-pop 280ms cubic-bezier(.2,.8,.3,1); }
 @keyframes classic-combo-pop {
@@ -180,7 +182,7 @@ body[data-wp-game-id="tripeaks-solitaire"] .feature-list { display: none !import
   .tableau-area { gap: 3px; padding-inline: 0; }
   .tableau-area.variant-freecell, .tableau-area.variant-yukon { gap: 3px; }
   .tableau-area.variant-freecell { gap: 0; }
-  body[data-wp-game-id="freecell-solitaire"] .tableau-area.variant-freecell { --classic-card-width: clamp(42px, 10vw, 74px); --classic-card-height: calc(var(--classic-card-width) * 1.42); }
+  body[data-wp-game-id="freecell-solitaire"] .tableau-area.variant-freecell { --classic-card-width: clamp(44px, 10.8vw, 74px); --classic-card-height: calc(var(--classic-card-width) * 1.42); --classic-pile-step: 24px; }
   .battle-actions { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
   .battle-actions .mini-btn { min-width: 0; padding-inline: 4px; font-size: 12px; line-height: 1.1; white-space: nowrap; }
   .classic-pile .classic-card { top: calc(var(--row) * 15px); }
@@ -218,6 +220,8 @@ body[data-wp-game-id="pyramid-solitaire"] .pyramid-row .classic-card,
 body[data-wp-game-id="pyramid-solitaire"] .pyramid-row .removed-card,
 body[data-wp-game-id="tripeaks-solitaire"] .peak-row .classic-card,
 body[data-wp-game-id="tripeaks-solitaire"] .peak-row .removed-card { margin-inline: -4px; }
+body[data-wp-game-id="pyramid-solitaire"] .pyramid-row .classic-card,
+body[data-wp-game-id="pyramid-solitaire"] .pyramid-row .removed-card { margin-inline: 0; }
 body[data-wp-game-id="tripeaks-solitaire"] .peak-row .classic-card { margin-inline: -4px; }
 body[data-wp-game-id="tripeaks-solitaire"] .peak-row { gap: clamp(0px, .6vw, 5px); }
 body[data-wp-game-id="tripeaks-solitaire"] .peak-row:nth-child(1) { gap: clamp(18px, 5vw, 56px); }
@@ -226,6 +230,30 @@ body[data-wp-game-id="pyramid-solitaire"] .tableau-area .classic-card.available:
 body[data-wp-game-id="pyramid-solitaire"] .tableau-area .classic-card.selected,
 body[data-wp-game-id="tripeaks-solitaire"] .tableau-area .classic-card.available:hover,
 body[data-wp-game-id="tripeaks-solitaire"] .tableau-area .classic-card.selected { transform: none; }
+
+body[data-wp-game-id="pyramid-solitaire"] .stock-pile { width: 100%; }
+body[data-wp-game-id="pyramid-solitaire"] .stock-pile .stock-back {
+  display: grid;
+  width: min(100%, var(--pyramid-stock-card-width));
+  height: calc(var(--pyramid-stock-card-width) * 1.42);
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 9px;
+  background: linear-gradient(145deg, #245785, #0b2a4d);
+  box-shadow: 0 7px 13px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.35);
+  font-size: clamp(22px, 3vw, 30px);
+}
+body[data-wp-game-id="pyramid-solitaire"] .stock-pile { --pyramid-stock-card-width: clamp(48px, 12vw, 78px); }
+body[data-wp-game-id="pyramid-solitaire"] .stock-pile b {
+  min-width: 24px;
+  padding: 3px 6px;
+  font-size: clamp(12px, 1.8vw, 16px);
+}
+
+body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyramid-row {
+  flex-basis: var(--classic-card-height);
+  height: var(--classic-card-height);
+}
 
 @media (orientation: landscape) and (max-height: 560px) {
   :root { --classic-card-width: clamp(28px, 7.2vh, 42px); }
@@ -246,7 +274,7 @@ body[data-wp-game-id="tripeaks-solitaire"] .tableau-area .classic-card.selected 
   .classic-pile .classic-card { top: calc(var(--row) * 10px); }
   .tableau-area.variant-pyramid, .tableau-area.variant-tripeaks { --classic-card-width: clamp(27px, 6.8vh, 36px); --classic-card-height: calc(var(--classic-card-width) * 1.42); }
   .tableau-area.variant-pyramid, .tableau-area.variant-tripeaks { justify-content: flex-start; }
-  body[data-wp-game-id="freecell-solitaire"] .tableau-area.variant-freecell { --classic-card-width: clamp(44px, 11vh, 64px); --classic-card-height: calc(var(--classic-card-width) * 1.42); }
+  body[data-wp-game-id="freecell-solitaire"] .tableau-area.variant-freecell { --classic-card-width: clamp(46px, 11.5vh, 64px); --classic-card-height: calc(var(--classic-card-width) * 1.42); --classic-pile-step: 16px; }
   body[data-wp-game-id="freecell-solitaire"] .classic-pile .classic-card { top: calc(var(--row) * 16px); }
   body[data-wp-game-id="freecell-solitaire"] .classic-card .rank { font-size: 10px; }
   body[data-wp-game-id="freecell-solitaire"] .classic-card .suit { font-size: 18px; }

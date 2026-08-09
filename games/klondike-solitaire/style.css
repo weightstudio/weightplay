@@ -354,7 +354,9 @@ button.mini-btn {
 }
 
 .foundation-row {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(4, var(--card-width));
+  justify-content: center;
+  gap: clamp(0.5rem, 2.2vw, 0.75rem);
   margin-bottom: 0.8rem;
 }
 
@@ -408,6 +410,8 @@ button.mini-btn {
   min-height: calc(var(--card-height) + 10px);
   display: block;
   width: 100%;
+  max-width: none;
+  box-sizing: border-box;
 }
 
 .tableau-pile.hint-target,

@@ -94,3 +94,5 @@
 @media(max-height:500px) and (min-aspect-ratio:3/2){
   .main-header.wp-main-shell-header{grid-template-columns:54px minmax(0,1fr) 44px!important}
 }
+.objective-row.first-switch-cue{border-color:#ffe176;box-shadow:0 0 0 2px #ffe17655,0 0 18px #ffe17633;color:#fff3c4;animation:prism-first-switch-pulse 1.1s ease-in-out infinite}
+@keyframes prism-first-switch-pulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.25)}}

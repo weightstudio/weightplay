@@ -7344,6 +7344,7 @@
     const identity = guideIdentity(game, audience);
     const isGeneralGuardYard = id === "animal-guard-yard" && audience === "general";
     const isClassicCardGame = id === "pyramid-solitaire" || id === "tripeaks-solitaire";
+    const isFreeCell = id === "freecell-solitaire";
     const publicFaq = isGeneralGuardYard ? game.faq.slice(0, -1) : game.faq;
     syncLocalizedMetadata(game, identity);
     const gameSkills = game.skills || [];
@@ -7365,6 +7366,30 @@
     section.className = "game-page-info";
     if (activeLocale !== "en") section.dataset.runtimeLocalize = "off";
     section.setAttribute("aria-label", uiLabel("guideLabel", { title: game.title }));
+    if (isFreeCell) {
+      section.classList.add("freecell-main-guide");
+      section.innerHTML = `
+        <div class="game-info-hero">
+          <div class="game-info-title">
+            <span class="game-info-kicker">${escapeHtml(identity.kicker)}</span>
+            <h2>${escapeHtml(game.title)}</h2>
+            <p>${escapeHtml(game.intro)}</p>
+          </div>
+        </div>
+        <div class="game-info-sections">
+          <div class="game-info-section">
+            <h3>${escapeHtml(uiLabel("howToPlay"))}</h3>
+            <ol>${game.how.slice(0, 4).map((step) => `<li>${escapeHtml(step)}</li>`).join("")}</ol>
+          </div>
+          <div class="game-info-section game-info-strategy">
+            <h3>${escapeHtml(uiLabel("strategyTips"))}</h3>
+            <ul>${game.strategyTips.slice(0, 3).map((tip) => `<li>${escapeHtml(tip)}</li>`).join("")}</ul>
+          </div>
+        </div>
+      `;
+      main.insertAdjacentElement("afterend", section);
+      return;
+    }
     section.innerHTML = `
       <div class="game-info-hero">
         <div class="game-info-title">
