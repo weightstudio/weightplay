@@ -402,7 +402,6 @@
       this.bind(); this.refreshCopy(); this.renderMain();
       this.nodes.loadingPanel?.classList.add("hidden");
       if (this.nodes.loadingPanel) this.nodes.loadingPanel.hidden = true;
-      if (new URLSearchParams(location.search).get("trial") === "1") this.showBattle();
     }
     bind() {
       this.nodes.startBtn?.addEventListener("click", () => this.showBattle());
@@ -439,8 +438,8 @@
       this.setText("[data-label=free-cells]", this.t("freeCells")); this.setText("[data-label=foundations]", this.t("foundations")); this.setText("[data-label=stock]", this.t("stock")); this.setText("[data-label=waste]", this.t("waste")); this.setText("[data-label=tableau]", this.t("tableau"));
       this.refreshSound();
     }
-    showMain() { this.active = false; this.nodes.battleScreen.hidden = true; this.nodes.mainScreen.hidden = false; document.body.dataset.screen = "main"; this.renderMain(); }
-    showBattle() { this.active = true; this.nodes.mainScreen.hidden = true; this.nodes.battleScreen.hidden = false; document.body.dataset.screen = "battle"; this.render(); this.nodes.battleBackBtn?.focus({ preventScroll: true }); }
+    showMain() { this.active = false; this.nodes.battleScreen.hidden = true; this.nodes.mainScreen.hidden = false; document.body.dataset.screen = "main"; this.renderMain(); window.dispatchEvent(new Event("weightplay:shell-sync")); }
+    showBattle() { this.active = true; this.nodes.mainScreen.hidden = true; this.nodes.battleScreen.hidden = false; document.body.dataset.screen = "battle"; this.render(); window.dispatchEvent(new Event("weightplay:battle-open")); window.dispatchEvent(new Event("weightplay:battle-sync")); window.dispatchEvent(new Event("weightplay:shell-sync")); this.nodes.battleBackBtn?.focus({ preventScroll: true }); }
     renderMain() { this.setText("#statistics", `${this.variantCopy().target}`); }
     cardDestination(source) { if (source.zone === "tableau") return { zone: "tableau", pile: source.pile }; if (source.zone === "free") return { zone: "free", index: source.index }; return null; }
     handleClick(event) {

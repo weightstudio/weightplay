@@ -591,6 +591,10 @@ function registerWonderCombatUpgrades() {
 }
 
 let highestUnlocked = loadHighestUnlocked();
+const STAGE_CARD_POOL_SIZE = 9;
+let stageCardPool = [];
+let stageWindowStart = 0;
+let stageBrowseLogical = 0;
 let profile = loadProfile();
 let activeMenuTab = "battle";
 let draggedWeaponId = null;
@@ -845,6 +849,11 @@ startBtn.addEventListener("click", () => {
   restart();
 });
 levelGrid.addEventListener("click", (event) => {
+  if (levelGrid.dataset.wpSuppressClick === "true") {
+    levelGrid.dataset.wpSuppressClick = "false";
+    event.preventDefault();
+    return;
+  }
   const button = event.target.closest("button[data-level]");
   if (!button) return;
   startLevel(Number(button.dataset.level));
@@ -1333,6 +1342,7 @@ function loseLevel() {
   menuContent.classList.remove("hidden");
   profilePanel.classList.remove("hidden");
   profilePanel.innerHTML = renderDefeatActions();
+  focusSettlementPrimary();
   pausePanel.classList.add("hidden");
   menuTabs.classList.add("hidden");
   overlay.classList.remove("hidden");
@@ -1367,6 +1377,7 @@ function winLevel() {
   profilePanel.classList.remove("hidden");
   pausePanel.classList.add("hidden");
   profilePanel.innerHTML = renderSettlement(drops, wasChallenge, diamondReward);
+  focusSettlementPrimary();
   overlay.classList.remove("hidden");
   updateHud();
   window.WonderSound?.play("win");
@@ -1429,6 +1440,11 @@ function renderResultActions(won) {
       ${button("replay", t("btn_play_again"))}
     </div>
   `;
+}
+
+function focusSettlementPrimary() {
+  const primary = profilePanel.querySelector('[data-settlement-focus="true"]:not([disabled])');
+  primary?.focus({ preventScroll: true });
 }
 
 function renderSettlement(drops, wasChallenge, diamondReward = 0) {
@@ -2112,34 +2128,118 @@ function renderMenuContent() {
   window.dispatchEvent(new Event("weightplay:shell-sync"));
 }
 
-function renderLevelGrid() {
-  levelGrid.innerHTML = "";
-  levelGrid.append(renderCampaignSummary());
-  levelGrid.append(renderBeastGuide());
-  for (const level of LEVELS) {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.dataset.level = String(level.id - 1);
-    const summary = getLevelSummary(level);
-    const activeLocale = locale();
-    const stageTitle = activeLocale === "zh-Hant" ? level.titleZh : activeLocale === "es" ? level.titleEs : level.titleEn;
-    const stageRule = activeLocale === "zh-Hant" ? level.ruleZh : activeLocale === "es" ? level.ruleEs : level.ruleEn;
-    button.innerHTML = `
-      <strong>${level.id}</strong>
-      <div class="level-beast-row" aria-label="${t("beast_guide_title")}">
-        ${summary.enemyTypes.map((type) => `<img src="${enemyFiles[type.imageIndex]}" alt="${t("enemy_" + type.id)}" title="${t("enemy_" + type.id)}" />`).join("")}
-      </div>
-      <span title="${escapeHtml(stageTitle || "")}">${escapeHtml(stageTitle || t("stage_waves", { count: summary.waves }))}</span>
-      <small title="${escapeHtml(stageRule || "")}">${escapeHtml(stageRule || t("stage_reward", { coins: summary.coins }))}</small>
-      <small>${t("stage_waves", { count: summary.waves })} · ${t("stage_reward", { coins: summary.coins })}</small>
-      ${summary.hasBoss ? `<em>${t("stage_boss")}</em>` : ""}
-    `;
-    button.className = "";
-    if (level.id > highestUnlocked) button.classList.add("locked");
-    if (level.id < highestUnlocked) button.classList.add("completed");
-    if (level.id === highestUnlocked && level.id <= LEVELS.length) button.classList.add("challenge");
-    levelGrid.append(button);
+function stageWindowLimit() {
+  return Math.max(0, LEVELS.length - STAGE_CARD_POOL_SIZE);
+}
+
+function desiredStageWindow(index) {
+  return clamp(Math.floor(Number(index) || 0) - Math.floor(STAGE_CARD_POOL_SIZE / 2), 0, stageWindowLimit());
+}
+
+function bindStageCard(button, index) {
+  const level = LEVELS[index];
+  if (!level) return;
+  const summary = getLevelSummary(level);
+  const activeLocale = locale();
+  const stageTitle = activeLocale === "zh-Hant" ? level.titleZh : activeLocale === "es" ? level.titleEs : level.titleEn;
+  const stageRule = activeLocale === "zh-Hant" ? level.ruleZh : activeLocale === "es" ? level.ruleEs : level.ruleEn;
+  const locked = level.id > highestUnlocked;
+  button.type = "button";
+  button.className = locked ? "locked" : level.id < highestUnlocked ? "completed" : level.id === highestUnlocked ? "challenge" : "";
+  button.dataset.level = String(index);
+  button.dataset.index = String(index);
+  button.dataset.stageIndex = String(index);
+  button.dataset.wpStageRecommended = index === stageBrowseLogical ? "true" : "false";
+  button.setAttribute("aria-disabled", String(locked));
+  button.setAttribute("aria-keyshortcuts", "ArrowLeft ArrowRight Home End");
+  button.setAttribute("aria-posinset", String(index + 1));
+  button.setAttribute("aria-setsize", String(LEVELS.length));
+  button.tabIndex = index === stageBrowseLogical ? 0 : -1;
+  button.innerHTML = `
+    <strong>${level.id}</strong>
+    <div class="level-beast-row" aria-label="${t("beast_guide_title")}">
+      ${summary.enemyTypes.map((type) => `<img src="${enemyFiles[type.imageIndex]}" alt="${t("enemy_" + type.id)}" title="${t("enemy_" + type.id)}" />`).join("")}
+    </div>
+    <span title="${escapeHtml(stageTitle || "")}">${escapeHtml(stageTitle || t("stage_waves", { count: summary.waves }))}</span>
+    <small title="${escapeHtml(stageRule || "")}">${escapeHtml(stageRule || t("stage_reward", { coins: summary.coins }))}</small>
+    <small>${t("stage_waves", { count: summary.waves })} · ${t("stage_reward", { coins: summary.coins })}</small>
+    ${summary.hasBoss ? `<em>${t("stage_boss")}</em>` : ""}
+  `;
+}
+
+function createStageCard() {
+  const button = document.createElement("button");
+  button.className = "stage-card";
+  return button;
+}
+
+function moveStageWindow(targetStart) {
+  const target = clamp(targetStart, 0, stageWindowLimit());
+  let recycled = 0;
+  while (stageWindowStart < target) {
+    const card = levelGrid.firstElementChild;
+    const anchor = card?.nextElementSibling;
+    const before = anchor?.getBoundingClientRect().left;
+    stageWindowStart += 1;
+    levelGrid.append(card);
+    bindStageCard(card, stageWindowStart + stageCardPool.length - 1);
+    const after = anchor?.getBoundingClientRect().left;
+    if (Number.isFinite(before) && Number.isFinite(after)) levelGrid.scrollLeft += after - before;
+    recycled += 1;
   }
+  while (stageWindowStart > target) {
+    const card = levelGrid.lastElementChild;
+    const anchor = card?.previousElementSibling;
+    const before = anchor?.getBoundingClientRect().left;
+    stageWindowStart -= 1;
+    levelGrid.prepend(card);
+    bindStageCard(card, stageWindowStart);
+    const after = anchor?.getBoundingClientRect().left;
+    if (Number.isFinite(before) && Number.isFinite(after)) levelGrid.scrollLeft += after - before;
+    recycled += 1;
+  }
+  stageCardPool = [...levelGrid.children];
+  levelGrid.dataset.wpStageWindowStart = String(stageWindowStart);
+  levelGrid.dataset.wpStageWindowEnd = String(stageWindowStart + stageCardPool.length - 1);
+  if (recycled) levelGrid.dataset.wpStageRecycleCount = String(Number(levelGrid.dataset.wpStageRecycleCount || 0) + recycled);
+  return recycled;
+}
+
+function ensureStageWindow(index) {
+  if (!stageCardPool.length) {
+    stageWindowStart = desiredStageWindow(index);
+    stageCardPool = Array.from({ length: Math.min(STAGE_CARD_POOL_SIZE, LEVELS.length) }, () => createStageCard());
+    levelGrid.replaceChildren(...stageCardPool);
+  }
+  moveStageWindow(desiredStageWindow(index));
+}
+
+function setWonderStageBrowse(index) {
+  stageBrowseLogical = clamp(Number(index) || 0, 0, LEVELS.length - 1);
+  levelGrid.dataset.wpStagePreferredLevel = String(stageBrowseLogical);
+  ensureStageWindow(stageBrowseLogical);
+  return stageBrowseLogical;
+}
+
+window.WonderStage = { ensureWindow: ensureStageWindow, setBrowse: setWonderStageBrowse, total: LEVELS.length };
+
+function renderLevelGrid() {
+  stageBrowseLogical = clamp(highestUnlocked - 1, 0, LEVELS.length - 1);
+  stageWindowStart = desiredStageWindow(stageBrowseLogical);
+  stageCardPool = Array.from({ length: Math.min(STAGE_CARD_POOL_SIZE, LEVELS.length) }, () => createStageCard());
+  levelGrid.replaceChildren(...stageCardPool);
+  stageCardPool.forEach((card, offset) => bindStageCard(card, stageWindowStart + offset));
+  Object.assign(levelGrid.dataset, {
+    wpStageVirtualized: "bounded-recycle",
+    wpStagePoolSize: String(stageCardPool.length),
+    wpStageTotal: String(LEVELS.length),
+    wpStageWindowStart: String(stageWindowStart),
+    wpStageWindowEnd: String(stageWindowStart + stageCardPool.length - 1),
+    wpStagePreferredLevel: String(stageBrowseLogical),
+    wpStageRecycleCount: "0",
+    wpStageCenterObserver: "manual",
+    wpSuppressClick: "false",
+  });
 }
 
 function renderCampaignSummary() {

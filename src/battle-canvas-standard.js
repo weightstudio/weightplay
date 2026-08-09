@@ -306,7 +306,11 @@
   window.addEventListener("resize", queueUpdate, { passive: true });
   window.visualViewport?.addEventListener("resize", queueUpdate, { passive: true });
   document.addEventListener("click", () => window.setTimeout(queueUpdate, 0), true);
-  window.addEventListener("weightplay:battle-sync", update);
+  // Scene signals can arrive in the same task that flips hidden/inert state.
+  // Defer one frame so the shared scaler measures the settled Battle root;
+  // otherwise the first player click can become the first successful scale.
+  window.addEventListener("weightplay:battle-sync", queueUpdate);
+  window.addEventListener("weightplay:shell-sync", queueUpdate);
   window.addEventListener("weightplay:battle-open", queueUpdate);
   queueUpdate();
 })();

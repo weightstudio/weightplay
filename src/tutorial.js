@@ -357,6 +357,14 @@
     },
   };
 
+  const battleTutorialGames = new Set([
+    "freecell-solitaire",
+    "pyramid-solitaire",
+    "tripeaks-solitaire",
+    "golf-solitaire",
+    "yukon-solitaire",
+  ]);
+
   function gameIdFromPath() {
     const parts = window.location.pathname.split("/").filter(Boolean);
     const index = parts.indexOf("games");
@@ -490,7 +498,13 @@
     applyCommonLabels();
     window.addEventListener("wonder:locale-change", applyCommonLabels);
     const autoShowEnabled = document.body.dataset.tutorialAutoShow !== "false";
-    if (autoShowEnabled && !hasSeen(gameId) && !isAutomationRun()) scheduleFirstShow(gameId);
+    if (autoShowEnabled && !hasSeen(gameId) && !isAutomationRun()) {
+      if (battleTutorialGames.has(gameId)) {
+        window.addEventListener("weightplay:battle-open", () => scheduleFirstShow(gameId), { once: true });
+      } else {
+        scheduleFirstShow(gameId);
+      }
+    }
   }
 
   if (document.readyState === "loading") {

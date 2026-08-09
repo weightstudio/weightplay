@@ -1,6 +1,8 @@
 (() => {
   const MENU_LOGICAL_WIDTH = 390;
   const MENU_LOGICAL_HEIGHT = MENU_LOGICAL_WIDTH * 16 / 9;
+  const STAGE_LOGICAL_WIDTH = 390;
+  const STAGE_LOGICAL_HEIGHT = 788;
   const STAGE_LANDSCAPE_WIDTH = 920;
   const STAGE_LANDSCAPE_HEIGHT = 460;
   const BATTLE_LOGICAL_WIDTH = 390;
@@ -84,6 +86,7 @@
       const owned = button === target;
       button.tabIndex = owned ? 0 : -1;
       button.setAttribute("aria-keyshortcuts", "ArrowLeft ArrowRight Home End");
+      button.dataset.wpStageRecommended = owned ? "true" : "false";
       if (owned) button.setAttribute("aria-current", "true");
       else button.removeAttribute("aria-current");
     });
@@ -127,8 +130,8 @@
     document.documentElement.style.setProperty("--wonder-vh", `${viewportHeight}px`);
     const menuScale = Math.min(width / MENU_LOGICAL_WIDTH, viewportHeight / MENU_LOGICAL_HEIGHT);
     const useStageLandscape = availableWidth / height >= 1.5;
-    const stageMinimumWidth = useStageLandscape ? STAGE_LANDSCAPE_WIDTH : MENU_LOGICAL_WIDTH;
-    const stageMinimumHeight = useStageLandscape ? STAGE_LANDSCAPE_HEIGHT : MENU_LOGICAL_HEIGHT;
+    const stageMinimumWidth = useStageLandscape ? STAGE_LANDSCAPE_WIDTH : STAGE_LOGICAL_WIDTH;
+    const stageMinimumHeight = useStageLandscape ? STAGE_LANDSCAPE_HEIGHT : STAGE_LOGICAL_HEIGHT;
     const stageScale = Math.min(
       availableWidth / stageMinimumWidth,
       height / stageMinimumHeight
@@ -144,6 +147,7 @@
     const stageLogicalHeight = height / stageScale;
     const stageBackSize = Math.max(48, 44 / stageScale);
     const stageTabHeight = Math.max(44, 44 / stageScale);
+    const stageTabMinWidth = Math.max(48, 48 / stageScale);
     const battleLogicalWidth = availableWidth / battleScale;
     const battleLogicalHeight = height / battleScale;
     const battleControlSize = Math.max(48, 44 / battleScale);
@@ -161,6 +165,7 @@
     document.documentElement.style.setProperty("--wonder-stage-inverse-scale", String(selectingStage ? 1 / stageScale : 1));
     document.documentElement.style.setProperty("--wonder-stage-back-size", `${stageBackSize}px`);
     document.documentElement.style.setProperty("--wonder-stage-tab-height", `${stageTabHeight}px`);
+    document.documentElement.style.setProperty("--wonder-stage-tab-min-width", `${stageTabMinWidth}px`);
     const stageSettingsPopover = document.querySelector(".wp-shell-settings-popover");
     if (stageSettingsPopover) {
       stageSettingsPopover.style.setProperty("transform", `scale(${selectingStage ? 1 / stageScale : 1})`, "important");
@@ -225,6 +230,12 @@
     };
 
     stageRail.addEventListener("click", (event) => {
+      if (stageRail.dataset.wpVirtualSuppressClick === "true") {
+        stageRail.dataset.wpVirtualSuppressClick = "false";
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        return;
+      }
       const button = event.target.closest("button[data-level]:not(.campaign-continue)");
       if (button && document.body.classList.contains("wonder-stage-select")) {
         syncStageKeyboardSemantics(button, { focus: button.classList.contains("locked"), center: true });
@@ -251,19 +262,145 @@
       const button = event.target.closest("button[data-level]:not(.campaign-continue)");
       if (!button || event.altKey || event.ctrlKey || event.metaKey) return;
       const cards = stageCards();
-      const index = cards.indexOf(button);
-      if (index < 0 || !["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+      const index = Number(button.dataset.level);
+      if (!Number.isFinite(index) || !["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
       const rtl = getComputedStyle(stageRail).direction === "rtl" || document.documentElement.dir === "rtl";
       const step = event.key === "ArrowRight" ? (rtl ? -1 : 1) : event.key === "ArrowLeft" ? (rtl ? 1 : -1) : 0;
+      const total = Number(stageRail.dataset.wpStageTotal || window.WonderStage?.total || 30);
       const nextIndex = event.key === "Home"
         ? 0
         : event.key === "End"
-          ? cards.length - 1
-          : Math.max(0, Math.min(cards.length - 1, index + step));
+          ? total - 1
+          : Math.max(0, Math.min(total - 1, index + step));
       event.preventDefault();
       event.stopPropagation();
-      syncStageKeyboardSemantics(cards[nextIndex], { focus: true, center: true });
+      window.WonderStage?.setBrowse(nextIndex);
+      const target = stageRail.querySelector(`button[data-level="${nextIndex}"]`);
+      syncStageKeyboardSemantics(target, { focus: true, center: true });
     });
+
+    let virtualStagePointer = null;
+    let stageSettleTimer = 0;
+    let stageSettleFrame = 0;
+    const stageCardPitch = () => {
+      const cards = stageCards();
+      const first = cards[0]?.getBoundingClientRect();
+      const second = cards[1]?.getBoundingClientRect();
+      return first && second ? Math.max(1, Math.abs(second.left - first.left)) : 276;
+    };
+    const stageLogicalAtCenter = () => {
+      const cards = stageCards();
+      const railRect = stageRail.getBoundingClientRect();
+      const center = railRect.left + railRect.width / 2;
+      const nearest = cards.reduce((best, card) => {
+        const rect = card.getBoundingClientRect();
+        const distance = Math.abs(rect.left + rect.width / 2 - center);
+        return !best || distance < best.distance ? { card, distance } : best;
+      }, null)?.card;
+      if (!nearest) return 0;
+      const pitch = stageCardPitch();
+      const index = Number(nearest.dataset.level) || 0;
+      return index + (center - (nearest.getBoundingClientRect().left + nearest.getBoundingClientRect().width / 2)) / pitch;
+    };
+    const animateStageRailTo = (target, duration) => {
+      if (stageSettleFrame) cancelAnimationFrame(stageSettleFrame);
+      const start = stageRail.scrollLeft;
+      const started = performance.now();
+      const step = (now) => {
+        const progress = Math.max(0, Math.min(1, (now - started) / duration));
+        const eased = progress * progress * (3 - 2 * progress);
+        stageRail.scrollLeft = start + (target - start) * eased;
+        if (progress < 1) stageSettleFrame = requestAnimationFrame(step);
+        else stageSettleFrame = 0;
+      };
+      stageSettleFrame = requestAnimationFrame(step);
+    };
+    const positionStageLogical = (logical, { smooth = false } = {}) => {
+      const total = Number(stageRail.dataset.wpStageTotal || window.WonderStage?.total || 30);
+      const value = Math.max(0, Math.min(total - 1, logical));
+      const anchor = Math.floor(value);
+      window.WonderStage?.setBrowse(anchor);
+      const target = stageRail.querySelector(`button[data-level="${anchor}"]`);
+      if (!target) return value;
+      const railRect = stageRail.getBoundingClientRect();
+      const cardRect = target.getBoundingClientRect();
+      const pitch = stageCardPitch();
+      const fraction = value - anchor;
+      const adjustment = (cardRect.left + cardRect.width / 2 - (railRect.left + railRect.width / 2)) + fraction * pitch;
+      const nextScrollLeft = stageRail.scrollLeft + adjustment;
+      if (smooth) animateStageRailTo(nextScrollLeft, Math.max(240, Number(stageRail.dataset.wpStageSettleDuration || 360)));
+      else stageRail.scrollLeft = nextScrollLeft;
+      return value;
+    };
+    const finishVirtualStagePointer = (event) => {
+      if (!virtualStagePointer || event.pointerId !== virtualStagePointer.pointerId) return;
+      const active = virtualStagePointer;
+      virtualStagePointer = null;
+      const previousBehavior = stageRail.style.getPropertyValue("scroll-behavior");
+      const previousSnap = stageRail.style.getPropertyValue("scroll-snap-type");
+      const restoreStageRail = () => {
+        if (previousBehavior) stageRail.style.setProperty("scroll-behavior", previousBehavior);
+        else stageRail.style.removeProperty("scroll-behavior");
+        if (previousSnap) stageRail.style.setProperty("scroll-snap-type", previousSnap);
+        else stageRail.style.removeProperty("scroll-snap-type");
+      };
+      if (!active.moved || event.type === "pointercancel") {
+        restoreStageRail();
+        return;
+      }
+      if (event.cancelable) event.preventDefault();
+      stageRail.dataset.wpSuppressClick = "true";
+      stageRail.dataset.wpVirtualSuppressClick = "true";
+      window.setTimeout(() => {
+        if (stageRail.dataset.wpSuppressClick === "true") stageRail.dataset.wpSuppressClick = "false";
+        if (stageRail.dataset.wpVirtualSuppressClick === "true") stageRail.dataset.wpVirtualSuppressClick = "false";
+      }, 0);
+      const settled = Math.round(active.logical);
+      stageRail.style.setProperty("scroll-behavior", "auto", "important");
+      stageRail.style.setProperty("scroll-snap-type", "none", "important");
+      window.WonderStage?.setBrowse(settled);
+      positionStageLogical(settled, { smooth: true });
+      const target = stageRail.querySelector(`button[data-level="${settled}"]`);
+      syncStageKeyboardSemantics(target);
+      stageSettleTimer = window.setTimeout(() => {
+        stageSettleTimer = 0;
+        restoreStageRail();
+      }, Math.max(420, Number(stageRail.dataset.wpStageSettleDuration || 360) + 80));
+    };
+    stageRail.addEventListener("pointerdown", (event) => {
+      if (stageRail.dataset.wpStageVirtualDrag !== "true" || event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
+      if (stageSettleTimer) {
+        window.clearTimeout(stageSettleTimer);
+        stageSettleTimer = 0;
+      }
+      if (stageSettleFrame) {
+        cancelAnimationFrame(stageSettleFrame);
+        stageSettleFrame = 0;
+      }
+      virtualStagePointer = {
+        pointerId: event.pointerId,
+        lastX: event.clientX,
+        logical: stageLogicalAtCenter(),
+        moved: false,
+      };
+      stageRail.style.setProperty("scroll-behavior", "auto", "important");
+      stageRail.style.setProperty("scroll-snap-type", "none", "important");
+    }, true);
+    document.addEventListener("pointermove", (event) => {
+      if (!virtualStagePointer || event.pointerId !== virtualStagePointer.pointerId) return;
+      const delta = event.clientX - virtualStagePointer.lastX;
+      virtualStagePointer.lastX = event.clientX;
+      if (Math.abs(delta) > 0.5) virtualStagePointer.moved = true;
+      if (!virtualStagePointer.moved) return;
+      if (event.cancelable) event.preventDefault();
+      const rtl = getComputedStyle(stageRail).direction === "rtl" || document.documentElement.dir === "rtl";
+      const pitch = stageCardPitch();
+      virtualStagePointer.logical += rtl ? delta / pitch : -delta / pitch;
+      positionStageLogical(virtualStagePointer.logical);
+      event.stopPropagation();
+    }, true);
+    document.addEventListener("pointerup", finishVirtualStagePointer, true);
+    document.addEventListener("pointercancel", finishVirtualStagePointer, true);
 
     let lockedPointer = null;
     const lockedCardAtPoint = (x, y) => [...stageRail.querySelectorAll("button.locked[data-level]")]
@@ -307,7 +444,11 @@
 
     new MutationObserver(() => {
       syncLockedStageSemantics();
-      syncStageKeyboardSemantics();
+      const preferredLevel = stageRail.dataset.wpStagePreferredLevel;
+      const preferred = preferredLevel === undefined
+        ? null
+        : stageRail.querySelector(`button[data-level="${preferredLevel}"]`);
+      syncStageKeyboardSemantics(preferred);
     }).observe(stageRail, { childList: true });
     syncLockedStageSemantics();
     syncStageKeyboardSemantics();

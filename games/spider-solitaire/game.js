@@ -429,7 +429,7 @@
   }
 
   const stats = loadStats();
-  const state = { difficulty: Number(safeGet(STORAGE.difficulty, "1")) || 1, active: false, hasStarted: false, elapsed: 0, timer: null, hintTimer: null, pendingAction: null, dragging: null, renderGeneration: 0, winRecorded: false, lastFrameCards: new Map(), cardPool: new Map(), pendingDealDelays: null, completionFlyouts: new Set() };
+  const state = { difficulty: Number(safeGet(STORAGE.difficulty, "1")) || 1, active: false, hasStarted: false, elapsed: 0, timer: null, hintTimer: null, pendingAction: null, dragging: null, renderGeneration: 0, winRecorded: false, lastFrameCards: new Map(), layoutMaxRows: 0, cardPool: new Map(), pendingDealDelays: null, completionFlyouts: new Set() };
   state.difficulty = DIFFICULTIES[state.difficulty] ? state.difficulty : 1;
   let game = new SpiderBoard(state.difficulty);
   const audio = new SoundEngine(STORAGE.sound);
@@ -491,7 +491,16 @@
     const tableauGap = Number.parseFloat(tableauStyle?.columnGap || tableauStyle?.gap) || 0;
     const tableauWidth = ui.tableauRow?.clientWidth || 0;
     const columnWidth = (tableauWidth - tableauGap * 9) / 10;
-    const maxRows = Math.max(1, ...game.tableau.columns.map((column) => column.length));
+    const currentMaxRows = Math.max(1, ...game.tableau.columns.map((column) => column.length));
+    // Keep the first settled Tableau envelope as the floor for later renders.
+    // Removing a card from the tallest pile must not increase the overlap step
+    // and make the whole board appear to reflow after the player's first move.
+    // A newly taller pile may still reduce the step to keep every card inside
+    // the available Battle surface.
+    state.layoutMaxRows = state.lastFrameCards.size === 0
+      ? currentMaxRows
+      : Math.max(state.layoutMaxRows, currentMaxRows);
+    const maxRows = Math.max(1, state.layoutMaxRows);
     const isCompactLandscape = window.matchMedia("(orientation: landscape) and (max-height: 560px)").matches;
     const available = isCompactLandscape
       ? Math.max(140, ui.boardShell.clientHeight - 144)
@@ -902,6 +911,9 @@
     ui.battleScreen.hidden = false;
     document.body.dataset.screen = "battle";
     setBattleViewportLock(true);
+    window.dispatchEvent(new Event("weightplay:battle-sync"));
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
+    window.dispatchEvent(new Event("weightplay:battle-open"));
     window.dispatchEvent(new Event("resize"));
   }
 
@@ -918,6 +930,8 @@
     state.active = false;
     state.pendingAction = null;
     renderStatistics();
+    window.dispatchEvent(new Event("weightplay:battle-sync"));
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
     window.dispatchEvent(new Event("resize"));
   }
 
@@ -1198,6 +1212,43 @@
           [makeCard(8, "tap-target")],
           ...(ambiguous ? [[makeCard(8, "tap-target-b")]] : []),
           ...Array.from({ length: ambiguous ? 7 : 8 }, (_value, index) => [makeCard(13, `tap-blocker-${index}`)]),
+        ];
+        game.stock = new SpiderStock([]);
+        game.completed = new CompletedSequenceManager();
+        game.history = new UndoStack();
+        game.moveCount = 0;
+        game.score = 500;
+        game.dealCount = 0;
+        game.lastMove = null;
+        game.recentMoves = [];
+        game.visitedStates = new Set();
+        game.rememberState();
+        game.initialSnapshot = game.snapshot();
+        state.difficulty = 1;
+        state.active = true;
+        state.hasStarted = true;
+        state.elapsed = 0;
+        state.winRecorded = false;
+        state.lastFrameCards = new Map();
+        state.cardPool = new Map();
+        state.pendingDealDelays = null;
+        clearCompletionFlyouts();
+        ui.resultOverlay.hidden = true;
+        ui.tutorialOverlay.hidden = true;
+        ui.confirmOverlay.hidden = true;
+        showBattle();
+        renderBoard();
+        startClock();
+      },
+      loadFirstActionLayoutFixture() {
+        const Card = window.WPCardEngine.Card;
+        const makeCard = (rank, id) => new Card("spades", rank, id, true);
+        stopClock();
+        game = new SpiderBoard(1);
+        game.tableau.columns = [
+          [13, 12, 11, 10, 9, 7].map((rank, index) => makeCard(rank, `first-action-source-${index}`)),
+          [13, 12, 11, 8].map((rank, index) => makeCard(rank, `first-action-target-${index}`)),
+          ...Array.from({ length: 8 }, (_value, index) => [makeCard(13, `first-action-blocker-${index}`)]),
         ];
         game.stock = new SpiderStock([]);
         game.completed = new CompletedSequenceManager();

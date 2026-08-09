@@ -337,7 +337,7 @@ body.wonder-stage-select #menuTabs {
 
 body.wonder-stage-select #menuTabs button {
   width: auto !important;
-  min-width: 0 !important;
+  min-width: var(--wonder-stage-tab-min-width, 44px) !important;
   max-width: none !important;
   margin: 0 !important;
 }

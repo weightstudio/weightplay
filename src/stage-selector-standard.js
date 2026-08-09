@@ -20,7 +20,7 @@
   let appliedStageRootStyleSignature = "";
   const savedStageStyles = new WeakMap();
   const savedReserveStyles = new WeakMap();
-  const nativeStageScalers = new Set(["wonder-crash", "campus-dash", "color-lunchbox", "animal-rope-rescue", "animal-coloring-studio", "animal-bubble-safari", "animal-rift-salvage", "animal-rune-reels", "garden-tiles"]);
+  const nativeStageScalers = new Set(["campus-dash", "color-lunchbox", "animal-rope-rescue", "animal-coloring-studio", "animal-bubble-safari", "animal-rift-salvage", "animal-rune-reels", "garden-tiles"]);
   const stageRootByGame = {
     "animal-color-link": "#stage",
     "animal-guard-yard": "#menuPanel",
@@ -496,6 +496,7 @@
     let previousSnapType = "";
 
     rail.addEventListener("pointerdown", (event) => {
+      if (rail.dataset.wpStageVirtualDrag === "true") return;
       if (event.isPrimary === false) return;
       if (event.button !== undefined && event.button !== 0) return;
       cancelPendingSettle(rail);

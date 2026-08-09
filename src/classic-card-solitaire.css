@@ -91,7 +91,7 @@ button:focus-visible, select:focus-visible { outline: 3px solid rgba(255,209,102
 .stock-pile b { position: absolute; right: 4px; bottom: 3px; min-width: 20px; padding: 2px 4px; border-radius: 6px; color: #122038; background: var(--classic-gold); font-size: 10px; text-align: center; }
 .board-status { min-height: 18px; color: var(--classic-gold); font-size: 12px; font-weight: 800; text-align: center; }
 .tableau-area { position: relative; display: flex; min-height: 0; flex: 1; gap: 6px; align-items: flex-start; justify-content: center; overflow: auto; padding: 4px 2px 36px; }
-.tableau-area.variant-pyramid, .tableau-area.variant-tripeaks { --classic-card-width: clamp(38px, 9vw, 68px); --classic-card-height: calc(var(--classic-card-width) * 1.42); flex-direction: column; align-items: center; justify-content: flex-start; overflow: auto; }
+.tableau-area.variant-pyramid, .tableau-area.variant-tripeaks { --classic-card-width: clamp(42px, 11vw, 68px); --classic-card-height: calc(var(--classic-card-width) * 1.42); flex-direction: column; align-items: center; justify-content: center; overflow: auto; }
 .tableau-area.variant-pyramid > .pyramid-row, .tableau-area.variant-tripeaks > .peak-row { width: 100%; flex: 0 0 calc(var(--classic-card-height) * .62); height: calc(var(--classic-card-height) * .62); overflow: visible; }
 .tableau-area.variant-freecell, .tableau-area.variant-yukon { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); align-items: start; }
 .tableau-area.variant-yukon { grid-template-columns: repeat(7, minmax(0, 1fr)); }
@@ -166,9 +166,11 @@ button:focus-visible, select:focus-visible { outline: 3px solid rgba(255,209,102
   .board-top, .board-middle { gap: 5px; }
   .tableau-area { gap: 3px; padding-inline: 0; }
   .tableau-area.variant-freecell, .tableau-area.variant-yukon { gap: 3px; }
+  .battle-actions { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .battle-actions .mini-btn { min-width: 0; padding-inline: 4px; font-size: 12px; line-height: 1.1; white-space: nowrap; }
   .classic-pile .classic-card { top: calc(var(--row) * 15px); }
   .pyramid-row, .peak-row { min-height: calc(var(--classic-card-height) * .56); }
-  .pyramid-row .classic-card, .peak-row .classic-card { margin-inline: -6px; }
+  .pyramid-row .classic-card, .peak-row .classic-card { margin-inline: -4px; }
   .peak-row:nth-child(1) { gap: 17px; }
   .classic-card .rank { font-size: 9px; }
   .classic-card .suit { font-size: 15px; }
@@ -191,6 +193,7 @@ button:focus-visible, select:focus-visible { outline: 3px solid rgba(255,209,102
   .tableau-area { min-height: calc(var(--classic-card-height) + 6px); gap: 2px; overflow: auto; padding: 1px 0 2px; }
   .classic-pile .classic-card { top: calc(var(--row) * 10px); }
   .tableau-area.variant-pyramid, .tableau-area.variant-tripeaks { --classic-card-width: clamp(27px, 6.8vh, 36px); --classic-card-height: calc(var(--classic-card-width) * 1.42); }
+  .tableau-area.variant-pyramid, .tableau-area.variant-tripeaks { justify-content: flex-start; }
   .tableau-area.variant-pyramid > .pyramid-row, .tableau-area.variant-tripeaks > .peak-row { flex-basis: calc(var(--classic-card-height) * .4); height: calc(var(--classic-card-height) * .4); }
   .pyramid-row .classic-card, .peak-row .classic-card { margin-inline: -3px; }
   .battle-actions { height: 32px; min-height: 32px; align-self: end; align-items: center; gap: 4px; }
