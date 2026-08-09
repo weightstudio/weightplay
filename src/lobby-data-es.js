@@ -354,7 +354,7 @@
   }
 };
   data["animal-starlight-trails"] = {
-    title: "Starlink", statusText: "Jugar ahora", type: "Puzle lógico de un solo trazo",
+    title: "Senderos Estelares", statusText: "Jugar ahora", type: "Puzle lógico de un solo trazo",
     description: "Traza cada sendero exactamente una vez en 30 constelaciones originales con inicios, flechas, números, llaves y puertas.",
     meta: ["30 niveles", "Rutas de un solo trazo", "Seis familias de reglas"]
   };
