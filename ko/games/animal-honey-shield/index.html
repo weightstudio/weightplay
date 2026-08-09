@@ -30,7 +30,7 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-page-info.css" />
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260804-battle35" />
+  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="애니멀 허니 실드 | WeightPlay" />
@@ -76,7 +76,7 @@
   <section id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
       <img src="../../assets/weightplay-logo.png" alt="" />
-      <strong data-i18n="loading">Waking the clover meadow…</strong>
+      <strong data-i18n="loading">클로버 초원을 깨우는 중…</strong>
       <div class="loading-track"><i id="loadingFill"></i></div>
     </div>
   </section>
@@ -84,12 +84,12 @@
   <div id="mainGroup">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
-        <a class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="Back to WeightPlay">
+        <a class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="WeightPlay로 돌아가기">
           <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" />
         </a>
-        <strong data-i18n="title">애니멀 허니 실드</strong>
+        <strong data-runtime-localize="off">애니멀 허니 실드</strong>
         <label class="locale-control">
-          <span class="sr-only" data-i18n="language">Language</span>
+          <span class="sr-only" data-i18n="language">언어</span>
           <select id="localeSelect" data-i18n-aria="language">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option>
             <option value="zh-Hans">简体中文</option><option value="ja">日本語</option>
@@ -102,47 +102,52 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="posterAlt" alt="애니멀 허니 실드 게임 이미지" />
+        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="벌이 다가올 때 빛나는 선 뒤에 숨은 핍" alt="애니멀 허니 실드 게임 이미지" />
         <div class="main-copy">
-          <small data-i18n="eyebrow">Cloverlight Meadow rescue puzzles</small>
-          <h1 data-i18n="title">애니멀 허니 실드</h1>
-          <p data-i18n="pitch">Draw glowing nectar lines, repair weak spots during each wave, and keep Clover Pup Pip safe.</p>
+          <small data-i18n="eyebrow">클로버라이트 초원 구조 퍼즐</small>
+          <h1 data-runtime-localize="off">애니멀 허니 실드</h1>
+          <p data-i18n="pitch">꿀 벽을 그리고 지형에 고정해 벌이 밀어내지 못하게 핍을 지키세요.</p>
           <div id="mainProgress" class="main-progress"></div>
-          <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start" data-runtime-localize="off">Start Game</button>
+          <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start" data-runtime-localize="off">게임 시작</button>
         </div>
       </section>
     </main>
 
-    <section class="game-page-info game-page-info-static" aria-label="애니멀 허니 실드 게임 정보">
-    
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>애니멀 허니 실드</h2><p>실시간 벌 떼를 보며 꿀빛 선을 그리고 고쳐 30개 초원 스테이지에서 강아지 핍을 지키세요.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>실시간 그리기 방어</strong></div><div class="game-info-fact"><span>장르</span><strong>동물 게임 · 퍼즐 · 방어 · 가족</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>진행 상황이 저장되나요?</dt><dd>예, 이 브라우저에서만 가능합니다.</dd></div></dl></div>
-      
-    </div>
-  </section>
+    <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="게임 안내">
+      <div class="game-info-hero"><div class="game-info-title">
+        <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay 오리지널 게임 안내</span>
+        <h2 data-i18n="guideTitle">가장 짧고 튼튼한 선으로 핍을 지키세요</h2>
+        <p data-i18n="guideIntro">핍이 클로버라이트 초원의 벌집 가까이 왔습니다. 벌이 나는 동안 방어선을 그리고 강아지에게 닿기 전에 틈을 보강하세요.</p>
+      </div></div>
+      <div class="game-info-sections guide-grid">
+        <article class="game-info-section"><h3 data-i18n="howTitle">플레이 방법</h3><ol>
+          <li data-i18n="how1">초원을 드래그해 빛나는 꽃꿀 방어선을 그리세요.</li>
+          <li data-i18n="how2">벌은 그리기가 끝날 때까지 기다립니다. 첫 유효한 선에서 손을 떼면 웨이브가 시작되고 이후에도 보강할 수 있어요.</li>
+          <li data-i18n="how3">벌이 핍에게 닿지 않게 타이머가 0이 될 때까지 버티세요.</li>
+        </ol></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">규칙과 결과</h3><p data-i18n="rulesText">선은 끊어지지 않습니다. 길이 있으면 벌은 먼저 우회하고, 길이 없으면 느슨한 벽을 함께 밀고 비틀고 휩니다. 돌 하나를 감싼 원은 지지점일 뿐이라 벌떼가 돌 둘레로 벗겨 냅니다. 같은 선을 떨어진 두 지형에 걸어야 금색으로 고정됩니다.</p><p data-i18n="guideExtra">그리기 전에 초원을 살펴보고 첫 선을 놓을 위치를 정하세요. 핍이 안전한 때는 방어선이 벌이 쉽게 돌아갈 수 없는 짧은 길을 만들었을 때입니다. 긴 벽은 꽃꿀을 더 많이 쓰고 벌이 밀어낼 면도 넓어집니다. 강아지 주변에 약간의 공간을 남겨야 수리 선이 다음 선을 방해하지 않습니다. 방어선이 빨갛게 깜박이면 전체 모양을 다시 그리기보다 약한 부분부터 고치세요. 첫 번째 유효한 선이 파도를 시작하므로 초원이 조용할 때 벌집과 돌, 가능한 입구를 먼저 확인할 수 있습니다. 벌이 움직이기 시작하면 손으로 그리고 있는 선뿐 아니라 벌이 오는 방향도 보세요. 안전해 보이는 벽도 핍 뒤에 열린 모서리를 남길 수 있습니다. 돌 하나만 감싸면 벽은 그 돌을 중심으로 회전하거나 벌 떼에 벗겨질 수 있습니다. 서로 떨어진 두 돌이나 지형 모서리에 같은 선을 걸면 벽이 고정되고 금빛으로 빛납니다. 느슨한 벽이 밀릴 때 서둘러 계속 다시 그리지 말고, 벌이 열려고 하는 틈을 확인한 뒤 짧은 갈고리로 그 길을 닫으세요. 꽃꿀은 한정되어 있으므로 큰 원을 하나 더 그리는 것보다 작은 수리가 별을 얻는 데 유리합니다. 뒤쪽 챕터에는 벌집, 갈라진 접근로, 바람, 약한 틈, 혼합 파도가 추가됩니다. 챕터 힌트를 다시 읽고 그 길에 맞는 짧은 모양을 시험하세요. 클리어하면 다음 경로가 자동으로 열리고 최고 기록은 이 브라우저에만 저장됩니다.</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">초원 경로 30개</h3><p data-i18n="progressText">여섯 챕터에 추가 벌집, 양쪽 접근, 돌 고정점, 바람, 약한 틈, 종합 파도가 등장합니다. 클리어할 때마다 다음 길이 열립니다.</p></article>
+        <article class="game-info-section"><h3 data-i18n="tipsTitle">실전 팁</h3><p data-i18n="tipsText">두 돌 사이의 직선과 돌 하나를 감싼 원은 모두 움직입니다. 두 감김, 반대 방향 갈고리 또는 실제 지형 홈을 이용하세요.</p></article>
+        <article class="game-info-section"><h3 data-i18n="saveTitle">저장 및 개인정보</h3><p data-i18n="saveText">열린 스테이지와 최고 별은 이 브라우저에만 저장됩니다. 계정이나 개인정보가 필요하지 않습니다.</p></article>
+        <article class="game-info-section"><h3 data-i18n="faqTitle">자주 묻는 질문</h3><dl>
+          <div><dt data-i18n="faq1q">벌이 출발한 뒤에도 그릴 수 있나요?</dt><dd data-i18n="faq1a">네. 꿀이 남아 있으면 선을 추가하거나 느슨한 벽을 지형에 연결할 수 있어요.</dd></div>
+          <div><dt data-i18n="faq2q">벌이 다치나요?</dt><dd data-i18n="faq2a">아니요. 꽃꿀 방어선은 놀란 벌을 꽃 쪽으로 부드럽게 튕겨 냅니다.</dd></div>
+          <div><dt data-i18n="faq3q">다음에는 무엇을 플레이하나요?</dt><dd data-i18n="faq3a">정교한 선 긋기는 애니멀 원 라인, 더 큰 방어는 애니멀 가드 야드를 추천합니다.</dd></div>
+        </dl></article>
+      </div>
+    </section>
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-honey-shield-cover.webp')">
       <header class="stage-header">
-        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Back">←</button>
-        <div><strong data-i18n="title">Animal Honey Shield</strong><span id="stageSummary"></span></div>
+        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="메인으로">←</button>
+        <div><strong data-runtime-localize="off">Animal Honey Shield</strong><span id="stageSummary"></span></div>
         <span class="stage-header-spacer" aria-hidden="true"></span>
       </header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
-      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Meadow stage selection"></div>
-      <nav class="stage-tabs" aria-label="Stage tabs" data-i18n-aria="stages"><span></span><span aria-current="page" data-i18n="stages">Stages</span><span></span></nav>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="초원 스테이지 선택"></div>
+      <nav class="stage-tabs" aria-label="스테이지" data-i18n-aria="stages"><span></span><span aria-current="page" data-i18n="stages">스테이지</span><span></span></nav>
     </div>
   </section>
 
@@ -150,47 +155,47 @@
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
-          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Back">←</button>
+          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="스테이지로">←</button>
           <div class="battle-title"><small id="stageLabel"></small><strong id="objectiveText"></strong></div>
-          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="Pause">Ⅱ</button>
+          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="일시정지">Ⅱ</button>
         </header>
         <section class="battle-metrics" aria-label="Battle status">
-          <div class="battle-stat"><small data-i18n="time">Time</small><strong id="timeValue">10.0</strong></div>
+          <div class="battle-stat"><small data-i18n="time">시간</small><strong id="timeValue">10.0</strong></div>
           <section id="waveMeter" class="wave-meter" aria-hidden="true"><i id="waveFill"></i></section>
-          <div class="battle-stat"><small data-i18n="nectar">Nectar</small><strong id="nectarValue">100</strong></div>
+          <div class="battle-stat"><small data-i18n="nectar">꽃꿀</small><strong id="nectarValue">100</strong></div>
         </section>
         <section id="boardWrap" class="board-wrap">
-          <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="Draw a nectar barrier to protect Pip"></canvas>
-          <div id="drawHint" class="draw-hint" data-i18n="drawHint">Draw anywhere to build Pip's shield</div>
+          <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="꽃꿀 방어선을 그려 핍을 보호하세요"></canvas>
+          <div id="drawHint" class="draw-hint" data-i18n="drawHint">원하는 곳에 그려 핍의 방패를 만드세요</div>
         </section>
         <div class="battle-feedback"><strong id="feedbackText" aria-live="polite"></strong><span id="lineReadout"></span></div>
-        <div class="battle-actions"><button id="clearBtn" type="button" data-i18n="clear">Clear lines</button><button id="restartBtn" type="button" data-i18n="restart">Restart</button></div>
+        <div class="battle-actions"><button id="clearBtn" type="button" data-i18n="clear">선 지우기</button><button id="restartBtn" type="button" data-i18n="restart">다시 시작</button></div>
       </div>
 
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
-        <h2 id="leaveTitle" data-i18n="leaveTitle">Leave this meadow?</h2><p data-i18n="leaveText">Continue keeps this wave frozen. Returning to Stages ends only this attempt.</p>
-        <div class="modal-actions two"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Return to Stages</button></div>
+        <h2 id="leaveTitle" data-i18n="leaveTitle">초원을 떠날까요?</h2><p data-i18n="leaveText">계속하기는 현재 파도를 그대로 멈춰 둡니다. 스테이지로 돌아가면 이번 도전만 끝납니다.</p>
+        <div class="modal-actions two"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">계속하기</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">스테이지로</button></div>
       </div></section>
       <section id="pausePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden><div class="dialog-card">
-        <h2 id="pauseTitle" data-i18n="pauseTitle">Meadow paused</h2><p data-i18n="pauseText">The bee wave is frozen while you take a break.</p>
-        <div class="modal-actions two"><button id="resumeBtn" class="primary-action" type="button" data-i18n="resume">Resume</button><button id="pauseHelpBtn" type="button" data-i18n="howTitle">How to play</button></div>
+        <h2 id="pauseTitle" data-i18n="pauseTitle">초원 일시정지</h2><p data-i18n="pauseText">쉬는 동안 벌 떼는 완전히 멈춥니다.</p>
+        <div class="modal-actions two"><button id="resumeBtn" class="primary-action" type="button" data-i18n="resume">계속</button><button id="pauseHelpBtn" type="button" data-i18n="howTitle">플레이 방법</button></div>
       </div></section>
       <section id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card">
-        <div class="result-pup sprite sprite-pup" aria-hidden="true"></div><small data-i18n="resultKicker">Meadow report</small><h2 id="resultTitle"></h2>
+        <div class="result-pup sprite sprite-pup" aria-hidden="true"></div><small data-i18n="resultKicker">초원 보고서</small><h2 id="resultTitle"></h2>
         <div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p>
-        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next Stage</button><button id="retryBtn" type="button" data-i18n="retry">Replay</button></div>
+        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">스테이지</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">다음 스테이지</button><button id="retryBtn" type="button" data-i18n="retry">다시 하기</button></div>
       </div></section>
     </div>
     <div class="battle-ad-reserve" aria-hidden="true"></div>
   </section>
 
   <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card">
-    <button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close" aria-label="Close">×</button>
-    <div class="sprite sprite-pup" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">Draw, watch, and repair</h2><ol>
-      <li data-i18n="tutorial1">Drag one short barrier between Pip and the hive.</li>
-      <li data-i18n="tutorial2">Releasing starts the wave. Bees take gaps first and move walls only when no route exists.</li>
-      <li data-i18n="tutorial3">A straight bridge stays movable. Wrap a stone or hook a platform corner to lock the wall.</li>
-    </ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Protect Pip</button>
+    <button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close" aria-label="닫기">×</button>
+    <div class="sprite sprite-pup" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">그리고, 고정하고, 지키기</h2><ol>
+      <li data-i18n="tutorial1">핍과 벌집 사이에 짧은 방어선을 그리세요.</li>
+      <li data-i18n="tutorial2">길이 있으면 핍에게 우회합니다. 길이 없으면 벌떼가 가로막은 느슨한 벽을 가장 가까운 열린 가장자리 쪽으로 옮깁니다. 틈이 열리는 즉시 벽을 놓고 공격합니다.</li>
+      <li data-i18n="tutorial3">돌 하나로는 벽을 고정할 수 없습니다. 같은 선을 떨어진 두 지형에 감거나 걸어 두 점을 고정하세요.</li>
+    </ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">핍 보호하기</button>
   </div></section>
 
   <script src="../../src/site-config.js"></script>
@@ -205,6 +210,6 @@
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-main-pull-guard1"></script>
 </body>
 </html>

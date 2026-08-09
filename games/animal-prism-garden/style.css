@@ -97,7 +97,7 @@ body.modal-open .battle-content{pointer-events:none}
    .grid{--board:min(calc(100vw - 16px),calc(100svh - 314px),590px);align-self:end;border-radius:16px}
 }
 @media(max-width:699px) and (orientation:portrait){
-  .grid{--board:min(100vw,calc(100svh - 340px),590px);width:min(var(--board),calc(100% + 16px));margin-inline:-8px;align-self:center}
+  .grid{--board:min(100vw,calc(100svh - 347px),590px);width:min(var(--board),calc(100% + 16px));margin-inline:-8px;align-self:center}
 }
 @media(max-height:500px) and (orientation:landscape){
   .hero>img{width:min(100%,380px);height:auto;justify-self:center}

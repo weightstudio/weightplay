@@ -2010,6 +2010,138 @@ body.wp-stage-select-active[data-wp-game-id="beast-deck"] .beast-deck-app {
   background: rgb(8 20 36 / 88%);
 }
 
+/* Main composition: keep the campaign entry readable while Stage owns the
+   collection, shop, and mission-management surfaces. */
+body.wp-shell-main-active .beast-deck-app {
+  max-width: 920px;
+}
+
+body.wp-shell-main-active #menuPanel.wp-standard-main-screen {
+  width: 100%;
+  max-width: 920px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) !important;
+  align-items: center;
+  justify-items: center;
+  gap: 14px;
+  overflow: visible;
+}
+
+body.wp-shell-main-active #menuPanel.wp-standard-main-screen > .cover {
+  width: min(100%, 420px);
+  max-width: 420px;
+  aspect-ratio: 1;
+  height: auto;
+  object-fit: cover;
+}
+
+body.wp-shell-main-active #menuPanel.wp-standard-main-screen > .menu-copy {
+  width: min(100%, 520px);
+  max-width: 520px;
+  min-width: 0;
+  gap: 10px;
+}
+
+body.wp-shell-main-active #menuPanel .wp-standard-main-progress {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 42px;
+  padding: 7px 11px;
+  border: 1px solid rgba(245, 158, 11, 0.28);
+  border-radius: 10px;
+  background: rgba(245, 158, 11, 0.1);
+  text-align: left;
+}
+
+body.wp-shell-main-active #menuPanel .wp-standard-main-progress [data-ui="progressText"] {
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+body.wp-shell-main-active #menuPanel .wp-standard-main-progress .main-progress-value {
+  color: #fbbf24;
+  white-space: nowrap;
+}
+
+body.wp-shell-main-active #menuPanel .standard-main-start {
+  width: 100%;
+  height: 52px;
+  min-height: 52px;
+  max-height: 52px;
+  flex: 0 0 52px;
+}
+
+@media (min-width: 700px) and (min-height: 471px) {
+  body.wp-shell-main-active #menuPanel.wp-standard-main-screen {
+    grid-template: none !important;
+    grid-template-columns: 420px minmax(0, 1fr) !important;
+    align-items: start;
+    justify-content: center;
+    gap: 32px;
+    padding: 28px 32px !important;
+  }
+
+  body.wp-shell-main-active #menuPanel.wp-standard-main-screen > .cover {
+    width: 420px;
+    min-width: 420px;
+    max-width: 420px;
+    height: 420px;
+    min-height: 420px;
+    max-height: 420px;
+  }
+
+  body.wp-shell-main-active #menuPanel.wp-standard-main-screen > .menu-copy {
+    width: 100%;
+    max-width: 520px;
+    justify-self: stretch;
+  }
+}
+
+@media (max-height: 470px) and (orientation: landscape) {
+  body.wp-shell-main-active #menuPanel.wp-standard-main-screen {
+    height: calc(100dvh - 57px) !important;
+    min-height: 0;
+    grid-template: none !important;
+    grid-template-columns: 302px minmax(0, 1fr) !important;
+    align-items: start;
+    gap: 18px;
+    padding: 12px 22px !important;
+    overflow: hidden !important;
+  }
+
+  body.wp-shell-main-active #menuPanel.wp-standard-main-screen > .cover {
+    width: 302px;
+    min-width: 302px;
+    max-width: 302px;
+    height: 302px;
+    min-height: 302px;
+    max-height: 302px;
+  }
+
+  body.wp-shell-main-active #menuPanel.wp-standard-main-screen > .menu-copy {
+    width: 100%;
+    max-width: none;
+    height: 302px;
+    min-height: 302px;
+    max-height: 302px;
+    overflow: hidden;
+    gap: 8px;
+  }
+
+  body.wp-shell-main-active #menuPanel .menu-copy > strong {
+    font-size: 20px;
+    line-height: 1.15;
+  }
+
+  body.wp-shell-main-active #menuPanel .menu-copy > [data-ui="menuHint"] {
+    line-height: 1.3;
+  }
+}
+
 #stagePanel .stage-select-head {
   min-width: 0;
   padding: 5px 8px;

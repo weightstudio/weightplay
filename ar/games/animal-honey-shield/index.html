@@ -30,7 +30,7 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-page-info.css" />
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260804-battle35" />
+  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="درع العسل الحيواني | WeightPlay" />
@@ -76,7 +76,7 @@
   <section id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
       <img src="../../assets/weightplay-logo.png" alt="" />
-      <strong data-i18n="loading">Waking the clover meadow…</strong>
+      <strong data-i18n="loading">جارٍ إيقاظ مرج البرسيم…</strong>
       <div class="loading-track"><i id="loadingFill"></i></div>
     </div>
   </section>
@@ -84,12 +84,12 @@
   <div id="mainGroup">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
-        <a class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="Back to WeightPlay">
+        <a class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="العودة إلى WeightPlay">
           <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" />
         </a>
-        <strong data-i18n="title">درع العسل الحيواني</strong>
+        <strong data-runtime-localize="off">درع العسل الحيواني</strong>
         <label class="locale-control">
-          <span class="sr-only" data-i18n="language">Language</span>
+          <span class="sr-only" data-i18n="language">اللغة</span>
           <select id="localeSelect" data-i18n-aria="language">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option>
             <option value="zh-Hans">简体中文</option><option value="ja">日本語</option>
@@ -102,47 +102,52 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="posterAlt" alt="شعار WeightPlay" />
+        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="بيب محمي بخط مضيء مع اقتراب النحل" alt="شعار WeightPlay" />
         <div class="main-copy">
-          <small data-i18n="eyebrow">Cloverlight Meadow rescue puzzles</small>
-          <h1 data-i18n="title">درع العسل الحيواني</h1>
-          <p data-i18n="pitch">Draw glowing nectar lines, repair weak spots during each wave, and keep Clover Pup Pip safe.</p>
+          <small data-i18n="eyebrow">ألغاز إنقاذ مرج ضوء البرسيم</small>
+          <h1 data-runtime-localize="off">درع العسل الحيواني</h1>
+          <p data-i18n="pitch">ارسم جدران الرحيق وثبّتها بالتضاريس لحماية بيب بينما يحاول النحل دفعها بعيدًا.</p>
           <div id="mainProgress" class="main-progress"></div>
-          <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start" data-runtime-localize="off">Start Game</button>
+          <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start" data-runtime-localize="off">ابدأ اللعبة</button>
         </div>
       </section>
     </main>
 
-    <section class="game-page-info game-page-info-static" aria-label="درع العسل الحيواني معلومات اللعبة">
-    
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>درع العسل الحيواني</h2><p>ارسم خطوط الرحيق وأصلحها أثناء موجات النحل لحماية بيب عبر 30 مرحلة أصلية.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>دفاع بالرسم المباشر</strong></div><div class="game-info-fact"><span>النوع</span><strong>العاب الحيوانات · لغز · الدفاع · العائلة</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل يتم حفظ التقدم؟</dt><dd>نعم، فقط في هذا المتصفح.</dd></div></dl></div>
-      
-    </div>
-  </section>
+    <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="دليل اللعبة">
+      <div class="game-info-hero"><div class="game-info-title">
+        <span class="game-info-kicker" data-i18n="guideKicker">دليل لعبة WeightPlay الأصلية</span>
+        <h2 data-i18n="guideTitle">احمِ بيب بأقصر خط قوي</h2>
+        <p data-i18n="guideIntro">اقترب بيب من خلايا مرج ضوء البرسيم. ارسم الحواجز أثناء طيران النحل وعزّز الفتحات قبل وصوله إلى الجرو.</p>
+      </div></div>
+      <div class="game-info-sections guide-grid">
+        <article class="game-info-section"><h3 data-i18n="howTitle">طريقة اللعب</h3><ol>
+          <li data-i18n="how1">اسحب عبر المرج لرسم حاجز رحيق مضيء.</li>
+          <li data-i18n="how2">ينتظر النحل حتى تنتهي من الرسم. تبدأ الموجة عند إفلات أول خط صالح، ويمكنك تدعيمه بعد ذلك.</li>
+          <li data-i18n="how3">اصمد حتى يصل المؤقت إلى الصفر من دون أن تلمس نحلة بيب.</li>
+        </ol></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">القواعد والنتائج</h3><p data-i18n="rulesText">الخطوط لا تنكسر. إذا وُجد مسار تسلكه النحلات أولاً، وإذا انغلق الطريق تدفع الجدار الحر وتلفّه وتثنيه. الدائرة حول حجر واحد مجرد محور، فيشدها السرب حول الحجر. لا يصبح الجدار ذهبياً وثابتاً إلا إذا تعلّق الخط نفسه بنقطتين متباعدتين من التضاريس.</p><p data-i18n="guideExtra">Start by studying the meadow before you draw. Pip is safest when the barrier creates a short route that bees cannot simply walk around, but a long wall is expensive and gives the swarm more surface to push. Leave a little breathing room around the puppy so a repair does not trap your next stroke. When a barrier flashes red, repair that weak section first instead of replacing the whole shape. The first valid line starts the wave, so you have time to plan while the meadow is quiet. Once bees are moving, watch their approach rather than the line you are drawing: a safe-looking wall can still leave an open corner behind Pip. Two separated terrain anchors are stronger than one loop. A single stone lets a wall pivot or peel; wrapping the same stroke around two distinct stones, corners, or approved terrain points makes the wall hold and glow gold. If bees push a loose wall, do not chase the wall with frantic redraws. Wait for the gap they are trying to open, then add a short hook that closes that route. Nectar is limited, and efficient repairs usually earn more stars than a second large circle. Before each later chapter, reread the chapter hint: new hives, split approaches, gusts, fragile gaps, and mixed waves each change what the shortest safe line should look like. After a clear, the next route unlocks automatically and your best stars remain in this browser. A failed attempt costs no account data; simply return to the stage list, study the red opening, and try a different shape. You can also replay an earlier route to practice efficient shapes, compare the stars earned from short repairs, and learn which side of the meadow gives the bees the fewest choices. The stage summary records your progress, while the guide remains available whenever you need to refresh the basic rules.</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">ثلاثون مسارًا في المرج</h3><p data-i18n="progressText">تضيف ستة فصول خلايا واتجاهات مزدوجة ومراسي حجرية ورياحاً وفجوات هشة وموجات مختلطة.</p></article>
+        <article class="game-info-section"><h3 data-i18n="tipsTitle">نصائح عملية</h3><p data-i18n="tipsText">الجسر المستقيم والدائرة حول حجر واحد كلاهما متحرك. استخدم لفتين أو خطافين متعاكسين أو شقاً حقيقياً في التضاريس.</p></article>
+        <article class="game-info-section"><h3 data-i18n="saveTitle">الحفظ والخصوصية</h3><p data-i18n="saveText">تبقى المراحل المفتوحة وأفضل النجوم في هذا المتصفح فقط. لا يلزم حساب أو معلومات شخصية.</p></article>
+        <article class="game-info-section"><h3 data-i18n="faqTitle">الأسئلة الشائعة</h3><dl>
+          <div><dt data-i18n="faq1q">هل يمكنني الرسم بعد انطلاق النحل؟</dt><dd data-i18n="faq1a">نعم. أضف خطًا أو صِل جدارًا حرًا بالتضاريس ما دام الرحيق متاحًا.</dd></div>
+          <div><dt data-i18n="faq2q">هل يتأذى النحل؟</dt><dd data-i18n="faq2a">لا. تعيده حواجز الرحيق برفق نحو الأزهار.</dd></div>
+          <div><dt data-i18n="faq3q">ماذا ألعب بعد ذلك؟</dt><dd data-i18n="faq3a">جرّب One Line للرسم الدقيق أو Animal Guard Yard لدفاع أكبر.</dd></div>
+        </dl></article>
+      </div>
+    </section>
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-honey-shield-cover.webp')">
       <header class="stage-header">
-        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Back">←</button>
-        <div><strong data-i18n="title">Animal Honey Shield</strong><span id="stageSummary"></span></div>
+        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="العودة للرئيسية">←</button>
+        <div><strong data-runtime-localize="off">Animal Honey Shield</strong><span id="stageSummary"></span></div>
         <span class="stage-header-spacer" aria-hidden="true"></span>
       </header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
-      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Meadow stage selection"></div>
-      <nav class="stage-tabs" aria-label="Stage tabs" data-i18n-aria="stages"><span></span><span aria-current="page" data-i18n="stages">Stages</span><span></span></nav>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="اختيار مراحل المرج"></div>
+      <nav class="stage-tabs" aria-label="المراحل" data-i18n-aria="stages"><span></span><span aria-current="page" data-i18n="stages">المراحل</span><span></span></nav>
     </div>
   </section>
 
@@ -150,47 +155,47 @@
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
-          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Back">←</button>
+          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="العودة للمراحل">←</button>
           <div class="battle-title"><small id="stageLabel"></small><strong id="objectiveText"></strong></div>
-          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="Pause">Ⅱ</button>
+          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="إيقاف">Ⅱ</button>
         </header>
         <section class="battle-metrics" aria-label="Battle status">
-          <div class="battle-stat"><small data-i18n="time">Time</small><strong id="timeValue">10.0</strong></div>
+          <div class="battle-stat"><small data-i18n="time">الوقت</small><strong id="timeValue">10.0</strong></div>
           <section id="waveMeter" class="wave-meter" aria-hidden="true"><i id="waveFill"></i></section>
-          <div class="battle-stat"><small data-i18n="nectar">Nectar</small><strong id="nectarValue">100</strong></div>
+          <div class="battle-stat"><small data-i18n="nectar">الرحيق</small><strong id="nectarValue">100</strong></div>
         </section>
         <section id="boardWrap" class="board-wrap">
-          <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="Draw a nectar barrier to protect Pip"></canvas>
-          <div id="drawHint" class="draw-hint" data-i18n="drawHint">Draw anywhere to build Pip's shield</div>
+          <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="ارسم حاجز رحيق لحماية بيب"></canvas>
+          <div id="drawHint" class="draw-hint" data-i18n="drawHint">ارسم في أي مكان لبناء درع بيب</div>
         </section>
         <div class="battle-feedback"><strong id="feedbackText" aria-live="polite"></strong><span id="lineReadout"></span></div>
-        <div class="battle-actions"><button id="clearBtn" type="button" data-i18n="clear">Clear lines</button><button id="restartBtn" type="button" data-i18n="restart">Restart</button></div>
+        <div class="battle-actions"><button id="clearBtn" type="button" data-i18n="clear">امسح الخطوط</button><button id="restartBtn" type="button" data-i18n="restart">إعادة</button></div>
       </div>
 
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
-        <h2 id="leaveTitle" data-i18n="leaveTitle">Leave this meadow?</h2><p data-i18n="leaveText">Continue keeps this wave frozen. Returning to Stages ends only this attempt.</p>
-        <div class="modal-actions two"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Return to Stages</button></div>
+        <h2 id="leaveTitle" data-i18n="leaveTitle">مغادرة المرج؟</h2><p data-i18n="leaveText">المتابعة تحفظ هذه الموجة مجمّدة. العودة إلى المراحل تنهي هذه المحاولة فقط.</p>
+        <div class="modal-actions two"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">متابعة</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">العودة للمراحل</button></div>
       </div></section>
       <section id="pausePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden><div class="dialog-card">
-        <h2 id="pauseTitle" data-i18n="pauseTitle">Meadow paused</h2><p data-i18n="pauseText">The bee wave is frozen while you take a break.</p>
-        <div class="modal-actions two"><button id="resumeBtn" class="primary-action" type="button" data-i18n="resume">Resume</button><button id="pauseHelpBtn" type="button" data-i18n="howTitle">How to play</button></div>
+        <h2 id="pauseTitle" data-i18n="pauseTitle">المرج متوقف</h2><p data-i18n="pauseText">تبقى موجة النحل متوقفة تماماً أثناء الاستراحة.</p>
+        <div class="modal-actions two"><button id="resumeBtn" class="primary-action" type="button" data-i18n="resume">استئناف</button><button id="pauseHelpBtn" type="button" data-i18n="howTitle">طريقة اللعب</button></div>
       </div></section>
       <section id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card">
-        <div class="result-pup sprite sprite-pup" aria-hidden="true"></div><small data-i18n="resultKicker">Meadow report</small><h2 id="resultTitle"></h2>
+        <div class="result-pup sprite sprite-pup" aria-hidden="true"></div><small data-i18n="resultKicker">تقرير المرج</small><h2 id="resultTitle"></h2>
         <div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p>
-        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next Stage</button><button id="retryBtn" type="button" data-i18n="retry">Replay</button></div>
+        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">المراحل</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">المرحلة التالية</button><button id="retryBtn" type="button" data-i18n="retry">إعادة اللعب</button></div>
       </div></section>
     </div>
     <div class="battle-ad-reserve" aria-hidden="true"></div>
   </section>
 
   <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card">
-    <button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close" aria-label="Close">×</button>
-    <div class="sprite sprite-pup" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">Draw, watch, and repair</h2><ol>
-      <li data-i18n="tutorial1">Drag one short barrier between Pip and the hive.</li>
-      <li data-i18n="tutorial2">Releasing starts the wave. Bees take gaps first and move walls only when no route exists.</li>
-      <li data-i18n="tutorial3">A straight bridge stays movable. Wrap a stone or hook a platform corner to lock the wall.</li>
-    </ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Protect Pip</button>
+    <button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close" aria-label="إغلاق">×</button>
+    <div class="sprite sprite-pup" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">ارسم وثبّت واصمد</h2><ol>
+      <li data-i18n="tutorial1">ارسم حاجزاً قصيراً بين بيب والخلية.</li>
+      <li data-i18n="tutorial2">عند وجود مسار تلتف النحلات نحو بيب. وعند انعدامه تحرك الجدار الحر الممتد جانبياً نحو أقرب حافة مفتوحة. ما إن يظهر ممر حتى تتركه وتهاجم.</li>
+      <li data-i18n="tutorial3">حجر واحد لا يثبت الجدار. علّق الخط نفسه بنقطتين متباعدتين من التضاريس لتكوين قفل ذهبي.</li>
+    </ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">احمِ بيب</button>
   </div></section>
 
   <script src="../../src/site-config.js"></script>
@@ -205,6 +210,6 @@
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-main-pull-guard1"></script>
 </body>
 </html>

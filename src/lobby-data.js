@@ -753,7 +753,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["Four Formations", "Six Bosses", "30 Stages"], "zh-Hant": ["四種編隊", "六位王", "30 關"] },
       previewVideo: "assets/previews/wonder-crash-battle.webm",
-      art: { kind: "image", background: "assets/wonder-crash-cover.webp", hero: "assets/weightplay-character-boom-mane-lion-cutout.webp" },
+      art: { kind: "image", background: "assets/wonder-crash-cover.webp" },
     },
     {
       id: "color-lunchbox",
@@ -772,7 +772,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["Picture Match", "30 Levels", "Six Guardians"], "zh-Hant": ["圖片配對", "30 關", "六位守護員"] },
       previewVideo: "assets/previews/color-lunchbox-battle.webm",
-      art: { kind: "image", background: "assets/lunchbox-cover.webp", hero: "assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" },
+      art: { kind: "image", background: "assets/lunchbox-cover.webp" },
     },
     {
       id: "bubble-bakery",
@@ -791,7 +791,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Stages", "Recipe Rules", "Panko Checks"], "zh-Hant": ["30 關", "食譜規則", "Panko 檢核"] },
       previewVideo: "assets/previews/bubble-bakery-battle.webm",
-      art: { kind: "image", background: "assets/bubble-bakery-cover.webp", hero: "assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp" },
+      art: { kind: "image", background: "assets/bubble-bakery-cover.webp" },
     },
     {
       id: "animal-rope-rescue",
@@ -810,7 +810,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Stages", "Physics Routes", "Panko Checks"], "zh-Hant": ["30 關", "物理路線", "Panko 檢核"] },
       previewVideo: "assets/previews/animal-rope-rescue-battle.webm",
-      art: { kind: "image", background: "assets/animal-vine-rescue-cover.webp", hero: "assets/weightplay-character-spark-paw-fox-cutout.webp" },
+      art: { kind: "image", background: "assets/animal-vine-rescue-cover.webp" },
     },
     {
       id: "animal-zoo-idle",
@@ -829,7 +829,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Challenges", "Park Care", "Six Reviews"], "zh-Hant": ["30 個挑戰", "樂園照顧", "六次審查"] },
       previewVideo: "assets/previews/animal-zoo-idle-battle.webm",
-      art: { kind: "image", background: "assets/animal-zoo-idle-cover.webp", hero: "assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" },
+      art: { kind: "image", background: "assets/animal-zoo-idle-cover.webp" },
     },
     {
       id: "star-memory",
@@ -848,7 +848,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Stages", "Memory Rules", "Six Keeper Checks"], "zh-Hant": ["30 關", "記憶規則", "六次守護者檢查"] },
       previewVideo: "assets/previews/star-memory-battle.webm",
-      art: { kind: "image", background: "assets/memory-cover.webp", hero: "assets/weightplay-character-moon-cap-owl-cutout.webp" },
+      art: { kind: "image", background: "assets/memory-cover.webp" },
     },
     {
       id: "campus-dash",
@@ -867,7 +867,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["Safari", "Score Attack", "60 Sec"], "zh-Hant": ["草原跑酷", "分數挑戰", "60 秒"] },
       previewVideo: "assets/previews/campus-dash-battle.webm",
-      art: { kind: "image", background: "assets/campus-dash-cover.webp", hero: "assets/weightplay-character-spark-paw-fox-cutout.webp" },
+      art: { kind: "image", background: "assets/campus-dash-cover.webp" },
     },
     {
       id: "snack-blocks",
@@ -886,7 +886,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Stages", "Six Goal Families", "Six Checkpoints"], "zh-Hant": ["30 關", "六種目標", "六個檢查關"] },
       previewVideo: "assets/previews/snack-blocks-battle.webm",
-      art: { kind: "image", background: "assets/snack-blocks-cover.webp", hero: "assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp" },
+      art: { kind: "image", background: "assets/snack-blocks-cover.webp" },
     },
     {
       id: "fruit-merge",
@@ -905,7 +905,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Challenges", "Five Physics Rules", "Six Checkpoints"], "zh-Hant": ["30 個挑戰", "五種物理規則", "六個檢查關"] },
       previewVideo: "assets/previews/fruit-merge-battle.webm",
-      art: { kind: "image", background: "assets/fruit-merge-cover.webp", hero: "assets/weightplay-character-moss-shell-turtle-cutout.webp" },
+      art: { kind: "image", background: "assets/fruit-merge-cover.webp" },
     },
     {
       id: "animal-2048",
@@ -922,7 +922,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "滑動 4×4 森林棋盤、合併相同動物，挑戰石塊、分數與步數限制組成的 30 個進化任務。",
       },
       meta: { en: ["30 Missions", "Grid Strategy", "Forest Evolution"], "zh-Hant": ["30 個任務", "格子策略", "森林進化"] },
-      art: { kind: "image", background: "assets/animal-2048-cover.webp", hero: "assets/weightplay-character-moon-cap-owl-cutout.webp" },
+      art: { kind: "image", background: "assets/animal-2048-cover.webp" },
     },
     {
       id: "garden-tiles",
@@ -941,7 +941,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Challenges", "Four Memory Rules", "No Timer"], "zh-Hant": ["30 個挑戰", "4 種記憶規則", "無倒數"] },
       previewVideo: "assets/previews/garden-tiles-battle.webm",
-      art: { kind: "image", background: "assets/garden-tiles-cover.webp", hero: "assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" },
+      art: { kind: "image", background: "assets/garden-tiles-cover.webp" },
     },
     {
       id: "animal-rescue",
@@ -960,7 +960,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Trails", "Four Route Rules", "No Timer"], "zh-Hant": ["30 條路線", "4 種路線規則", "無倒數"] },
       previewVideo: "assets/previews/animal-rescue-battle.webm",
-      art: { kind: "image", background: "assets/animal-rescue-cover.webp", hero: "assets/weightplay-character-boom-mane-lion-cutout.webp" },
+      art: { kind: "image", background: "assets/animal-rescue-cover.webp" },
     },
     {
       id: "animal-hidden-safari",
@@ -979,7 +979,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Habitats", "Six Search Rules", "No Timer Failure"], "zh-Hant": ["30 個棲地", "6 種搜尋規則", "無倒數失敗"] },
       previewVideo: "assets/previews/animal-hidden-safari-battle.webm",
-      art: { kind: "image", background: "assets/animal-hidden-safari-cover.webp", hero: "assets/weightplay-character-moon-cap-owl-cutout.webp" },
+      art: { kind: "image", background: "assets/animal-hidden-safari-cover.webp" },
     },
     {
       id: "animal-guard-yard",
@@ -998,7 +998,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["Hero Defense", "Animal Upgrades", "Boss Battles"], "zh-Hant": ["英雄防守", "動物升級", "Boss 戰"] },
       previewVideo: "assets/previews/animal-guard-yard-battle.webm",
-      art: { kind: "image", background: "assets/animal-guard-yard-poster.webp", hero: "assets/weightplay-character-moss-shell-turtle-cutout.webp" },
+      art: { kind: "image", background: "assets/animal-guard-yard-poster.webp" },
     },
     {
       id: "animal-crystal-survivor",
@@ -1021,7 +1021,6 @@ window.WONDER_LOBBY = {
       art: {
         kind: "image",
         background: "assets/animal-crystal-survivor-cover.webp",
-        hero: "assets/weightplay-character-spark-paw-fox-cutout.webp",
       },
     },
     {
@@ -1041,7 +1040,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Stages", "6 Chapters", "Animal Facts"], "zh-Hant": ["30 關", "6 章節", "動物知識"] },
       previewVideo: "assets/previews/animal-quiz-battle.webm",
-      art: { kind: "image", background: "assets/quiz-cover.webp", hero: "assets/weightplay-character-moon-cap-owl-cutout.webp" },
+      art: { kind: "image", background: "assets/quiz-cover.webp" },
     },
     {
       id: "zoo-helper-day",
@@ -1060,7 +1059,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Shifts", "6 Keeper Checks", "Picture Care"], "zh-Hant": ["30 關", "6 次檢核", "圖片照顧"] },
       previewVideo: "assets/previews/zoo-helper-day-battle.webm",
-      art: { kind: "image", background: "assets/zoo-helper-day-cover.webp", hero: "assets/weightplay-character-gear-horn-rhino-cutout.webp" },
+      art: { kind: "image", background: "assets/zoo-helper-day-cover.webp" },
     },
     {
       id: "shape-train",
@@ -1079,7 +1078,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Routes", "6 Checks", "Shape Memory"], "zh-Hant": ["30 路線", "6 次檢查", "形狀記憶"] },
       previewVideo: "assets/previews/shape-train-battle.webm",
-      art: { kind: "image", background: "assets/shape-train-cover.webp", hero: "assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" },
+      art: { kind: "image", background: "assets/shape-train-cover.webp" },
     },
     {
       id: "tiny-weather-rescue",
@@ -1098,7 +1097,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Missions", "6 Helper Checks", "Scene Clues"], "zh-Hant": ["30 任務", "6 次幫手檢查", "情境線索"] },
       previewVideo: "assets/previews/tiny-weather-rescue-battle.webm",
-      art: { kind: "image", background: "assets/tiny-weather-rescue-cover.webp", hero: "assets/weightplay-character-gear-horn-rhino-cutout.webp" },
+      art: { kind: "image", background: "assets/tiny-weather-rescue-cover.webp" },
     },
     {
       id: "beast-deck",
@@ -1115,7 +1114,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "用動物能力牌挑戰 30 個任務、破解十種區域機制，並擊敗六隻會換階段的森林首領。"
       },
       meta: { en: ["30 Missions", "Card Combos", "Six Bosses"], "zh-Hant": ["30 個任務", "卡牌連動", "六隻首領"] },
-      art: { kind: "image", background: "assets/beast-deck-cover.webp", hero: "assets/weightplay-character-moon-cap-owl-cutout.webp" },
+      art: { kind: "image", background: "assets/beast-deck-cover.webp" },
     },
     {
       id: "animal-relic-hunters",
@@ -1132,7 +1131,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "完成 30 個三房遠征，掌握十種特殊威脅、收集遺物裝備，並擊敗六位會轉換階段的守護者。"
       },
       meta: { en: ["30 Expeditions", "Ten Threat Rules", "Six Guardians"], "zh-Hant": ["30 個遠征", "十種威脅規則", "六位守護者"] },
-      art: { kind: "image", background: "assets/animal-relic-hunters-cover.png", hero: "assets/weightplay-character-boom-mane-lion-cutout.webp" },
+      art: { kind: "image", background: "assets/animal-relic-hunters-cover.png" },
     },
     {
       id: "animal-rune-tactics",
@@ -1149,7 +1148,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "指揮三名動物英雄完成 30 個符文戰棋任務，破解七種地形、特殊敵人、永久成長與六位階段首領。"
       },
       meta: { en: ["30 Missions", "Seven Terrain Rules", "Six Bosses"], "zh-Hant": ["30 個任務", "七種地形規則", "六位首領"] },
-      art: { kind: "image", background: "assets/animal-rune-tactics-cover.webp", hero: "assets/weightplay-character-moon-cap-owl-cutout.webp" },
+      art: { kind: "image", background: "assets/animal-rune-tactics-cover.webp" },
     },
     {
       id: "animal-orb-fortress",
@@ -1166,7 +1165,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "\u7784\u6e96\u52d5\u7269\u661f\u73e0\u7a7f\u8d8a\u6c34\u6676\u8981\u585e\u623f\u9593\uff0c\u898f\u5283\u53cd\u5f48\u8def\u7dda\uff0c\u5347\u7d1a\u57fa\u5730\uff0c\u4e26\u6e96\u5099\u8fce\u6230 Boss \u6ce2\u6b21\u3002",
       },
       meta: { en: ["Orb Bounces", "Fortress Growth", "Boss Waves"], "zh-Hant": ["\u661f\u73e0\u53cd\u5f48", "\u8981\u585e\u6210\u9577", "Boss \u6ce2\u6b21"] },
-      art: { kind: "image", background: "assets/animal-orb-fortress-cover.webp", hero: "assets/weightplay-character-moss-shell-turtle-cutout.webp" },
+      art: { kind: "image", background: "assets/animal-orb-fortress-cover.webp" },
     },
     {
       id: "animal-auto-squad",
@@ -1183,7 +1182,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "訓練並配置十名動物英雄，穿越六個區域、30 個五波關卡與六場專屬 Boss 戰。"
       },
       meta: { en: ["Formation Strategy", "30 Stages", "Six Bosses"], "zh-Hant": ["編成策略", "30 關", "六名 Boss"] },
-      art: { kind: "image", background: "assets/animal-auto-squad-cover.webp", hero: "assets/weightplay-character-gear-horn-rhino-cutout.webp" },
+      art: { kind: "image", background: "assets/animal-auto-squad-cover.webp" },
     },
     {
       id: "beast-tactician",
@@ -1200,7 +1199,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "改造敵人路線，指揮動物士兵與 WeightPlay 英雄，挑戰六區 30 關與六場不同規則的 Boss 戰。"
       },
       meta: { en: ["Tower Defense", "30 Stages", "Six Bosses"], "zh-Hant": ["塔防", "30 關", "六名 Boss"] },
-      art: { kind: "image", background: "assets/beast-tactician-cover.webp", hero: "assets/weightplay-character-moss-shell-turtle-cutout.webp" },
+      art: { kind: "image", background: "assets/beast-tactician-cover.webp" },
     },
     {
       id: "shadow-wolf",
@@ -1217,7 +1216,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "挑戰 30 關平台動作戰役、反制特殊影獸、配置四種屬性，並擊敗六名不同區域首領。"
       },
       meta: { en: ["30 Stages", "Special Enemies", "Six Bosses"], "zh-Hant": ["30 關", "特殊敵人", "六名首領"] },
-      art: { kind: "image", background: "assets/shadow-wolf-cover.webp", hero: "assets/weightplay-character-spark-paw-fox-cutout.webp" },
+      art: { kind: "image", background: "assets/shadow-wolf-cover.webp" },
     },
     {
       id: "animal-block-grove",
@@ -1757,7 +1756,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["Route Planning", "Five Shifts", "Skyport Growth"], "zh-Hant": ["\u822a\u7dda\u898f\u5283", "\u4e94\u500b\u73ed\u6b21", "\u5929\u7a7a\u6e2f\u6210\u9577"] },
       previewVideo: "assets/previews/animal-skyport-dispatch-battle.webm",
-      art: { kind: "image", background: "assets/animal-skyport-dispatch-cover.webp", hero: "assets/animal-skyport-dispatch-orla.webp" },
+      art: { kind: "image", background: "assets/animal-skyport-dispatch-cover.webp" },
     },
     {
       id: "animal-starlight-trails",
@@ -1776,7 +1775,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "在 30 個原創星座謎題中，運用起點星印、彗星箭路、編號星星、鑰匙與星門，一筆走完每條星路。"
       },
       meta: { en: ["30 Stages", "One-Stroke Routes", "Six Rule Families"], "zh-Hant": ["30 關", "一筆星路", "六種規則"] },
-      art: { kind: "image", background: "assets/animal-starlight-trails-cover.webp", hero: "assets/weightplay-character-moon-cap-owl-cutout.webp" },
+      art: { kind: "image", background: "assets/animal-starlight-trails-cover.webp" },
     },
     {
       id: "animal-one-line",
@@ -1796,7 +1795,7 @@ window.WONDER_LOBBY = {
         "zh-Hans": "按住一笔通过 30 条原创路线，避开墙壁与移动影子，带领米米抵达脚印门。"
       },
       meta: { en: ["30 Trails", "One Continuous Hold", "Moving Shadows"], "zh-Hant": ["30 條路線", "全程按住", "移動影子"], "zh-Hans": ["30 条路线", "全程按住", "移动影子"] },
-      art: { kind: "image", background: "assets/animal-one-line-cover.webp", hero: "assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp" },
+      art: { kind: "image", background: "assets/animal-one-line-cover.webp" },
     },
     {
       id: "animal-abyss-diver",
@@ -2077,7 +2076,6 @@ window.WONDER_LOBBY.games.push({
   art: {
     kind: "image",
     background: "assets/animal-reef-fisher-cover.webp",
-    hero: "assets/weightplay-character-bubble-fin-otter-cutout.webp",
   },
 });
 

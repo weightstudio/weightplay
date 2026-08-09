@@ -40,7 +40,7 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css">
-  <link rel="stylesheet" href="style.css?v=20260802-stage-direct1">
+  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -78,12 +78,12 @@
     <main id="mainScreen" class="main-canvas">
       <header class="main-header">
         <a class="lobby-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
-        <strong data-i18n="title">Стрела побега</strong>
+        <strong data-runtime-localize="off">Стрела побега</strong>
         <div class="main-controls"><button id="soundToggle" class="icon-control" type="button" aria-pressed="true" data-sound-toggle data-i18n-aria="sound">🔊</button><label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"></select></label></div>
       </header>
       <section class="hero">
         <img class="poster" src="../../assets/arrow-escape/cover.webp" alt="Изображение игры «Стрела побега»">
-        <div class="hero-copy"><small data-i18n="genre">ORDER PUZZLE</small><h1 data-i18n="title">Стрела побега</h1><p data-i18n="pitch">Clear every arrow block in the only safe order.</p><strong id="mainProgress">1 / 30</strong><button id="startBtn" class="primary" type="button" data-i18n="start">Start Game</button></div>
+        <div class="hero-copy"><small data-i18n="genre">ORDER PUZZLE</small><h1 data-runtime-localize="off">Стрела побега</h1><p data-i18n="pitch">Clear every arrow block in the only safe order.</p><strong id="mainProgress">1 / 30</strong><button id="startBtn" class="primary" type="button" data-i18n="start">Start Game</button></div>
       </section>
     </main>
     <section class="game-page-info game-page-info-static" aria-label="Стрела побега информация об игре">
@@ -120,7 +120,7 @@
   </section>
   <section id="battleScreen" class="active-screen" hidden>
     <div class="battle-shell"><div id="battleCanvas" class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
-      <div id="battleLive" class="battle-live"><header class="battle-header"><button id="battleBack" class="return-button" type="button" data-wp-return="battle" aria-label="Back">←</button><div class="battle-title"><small id="stageLabel">STAGE 1</small><strong data-i18n="title">Arrow Escape</strong></div><div class="battle-stats"><span><b data-i18n="movesLabel">Moves</b><strong id="movesValue">0</strong></span><span><b data-i18n="leftLabel">Left</b><strong id="leftValue">0</strong></span></div><button id="battleHelp" class="icon-control" type="button" aria-label="How to play">?</button></header>
+      <div id="battleLive" class="battle-live"><header class="battle-header"><button id="battleBack" class="return-button" type="button" data-wp-return="battle" aria-label="Back">←</button><div class="battle-title"><small id="stageLabel">STAGE 1</small><strong data-runtime-localize="off">Arrow Escape</strong></div><div class="battle-stats"><span><b data-i18n="movesLabel">Moves</b><strong id="movesValue">0</strong></span><span><b data-i18n="leftLabel">Left</b><strong id="leftValue">0</strong></span></div><button id="battleHelp" class="icon-control" type="button" aria-label="How to play">?</button></header>
         <div class="objective-row"><strong id="mechanicLabel">BASICS</strong><span id="objectiveText" data-i18n="objective">Clear every arrow block.</span></div><div class="board-track"><div id="board" class="arrow-board" role="grid" aria-label="Arrow puzzle board"></div></div><div class="battle-controls"><button id="hintBtn" type="button" data-i18n="hint">Hint</button><button id="restartBtn" type="button" data-i18n="restart">Restart</button></div><p id="feedback" class="feedback" aria-live="polite"></p>
       </div>
       <section id="helpModal" class="modal" hidden><div class="dialog"><h2 data-i18n="howTitle">How to play</h2><p data-i18n="helpText">Only a completely clear arrow path can escape. Special tiles never choose a random outcome.</p><button id="helpClose" class="primary" type="button" data-i18n="continue">Continue</button></div></section>
@@ -137,7 +137,7 @@
   <script src="game.js?v=20260804-public-release-v12"></script>
   <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260804-arrow-release-v12"></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/game-shell-controls-standard.js?v=20260809-main-pull-guard1"></script>
   <script>(()=>{const close=()=>{const panel=document.querySelector("#loadingPanel");if(panel){panel.classList.add("hidden");panel.hidden=true;}};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",close,{once:true});else close();window.addEventListener("load",close,{once:true});window.setTimeout(close,1500);})();</script>
 </body>
 </html>

@@ -228,6 +228,18 @@
     const collectionPanel = $("collectionPanel");
     const diamondShop = $("diamondShop");
     const progressPanel = menuCopy.querySelector(".prototype-goals");
+    const mainProgress = progressPanel.cloneNode(true);
+    mainProgress.id = "mainProgress";
+    mainProgress.classList.remove("prototype-goals");
+    mainProgress.classList.add("wp-standard-main-progress");
+    mainProgress.dataset.wpMainProgress = "true";
+    mainProgress.setAttribute("aria-live", "polite");
+    mainProgress.querySelector('[data-ui="progressText"]')?.remove();
+    const mainProgressValue = document.createElement("b");
+    mainProgressValue.className = "main-progress-value";
+    mainProgressValue.dataset.wpMainProgressValue = "true";
+    mainProgress.appendChild(mainProgressValue);
+    menuCopy.insertBefore(mainProgress, $("mainStartBtn"));
     const profilePanel = $("profilePanel");
     const controlChips = menuCopy.querySelector(".control-chips");
     const mainStart = $("mainStartBtn");
@@ -239,7 +251,13 @@
     nodes.startBtn.remove();
     deckView.append(progressPanel, profilePanel, controlChips, collectionPanel);
     shopView.append(diamondShop);
-    Object.assign(nodes, { stagePanel, mainStartBtn: mainStart, stageBackBtn: stagePanel.querySelector("#stageBackBtn") });
+    Object.assign(nodes, {
+      stagePanel,
+      mainStartBtn: mainStart,
+      mainProgress,
+      mainProgressValue,
+      stageBackBtn: stagePanel.querySelector("#stageBackBtn"),
+    });
   }
 
   function syncScene(next) {
@@ -1800,6 +1818,11 @@
   function renderProgressUI() {
     if (!nodes.stageGrid) return;
     if (!Number.isInteger(browsedMission) || browsedMission < 1 || browsedMission > maxMission) browsedMission = profile.selectedMission;
+    if (nodes.mainProgressValue) {
+      const completed = Math.max(0, profile.unlockedMission - 1);
+      nodes.mainProgressValue.textContent = `${completed} / ${maxMission}`;
+      nodes.mainProgressValue.setAttribute("aria-label", `${t("progressTitle")}: ${completed} / ${maxMission}`);
+    }
     nodes.profileLevelText.textContent = String(profile.level);
     nodes.profileXpText.textContent = `${profile.xp}/${xpToNext(profile.level)}`;
     nodes.profileBestText.textContent = String(profile.bestMission);

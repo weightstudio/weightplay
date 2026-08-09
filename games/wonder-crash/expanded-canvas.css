@@ -198,6 +198,21 @@ body.wonder-stage-select .wp-generated-stage-header > .wp-shell-settings {
   transform: none !important;
 }
 
+/* The game-owned Stage scaler shrinks the header with the logical Canvas.
+   Keep its open Settings surface at physical readability/interaction size. */
+body.wonder-stage-select .wp-shell-settings > .wp-shell-settings-popover {
+  transform: scale(var(--wonder-stage-inverse-scale, 1)) !important;
+  transform-origin: top right !important;
+}
+
+@media (max-height: 430px) and (orientation: landscape) {
+  body.wonder-stage-select .wp-shell-settings[data-wp-popover-edge="left"] > .wp-shell-settings-popover {
+    right: auto !important;
+    left: 0 !important;
+    transform-origin: top left !important;
+  }
+}
+
 body.wonder-stage-select #menuContent {
   box-sizing: border-box;
   align-self: stretch;

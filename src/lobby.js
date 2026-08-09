@@ -229,8 +229,6 @@ function normalizeSearch(value) {
 }
 
 function primaryArt(game) {
-  const hero = game.art?.hero || "";
-  if (hero && !hero.includes("width='1'")) return hero;
   return game.art?.background || "assets/hero.png";
 }
 
@@ -964,11 +962,10 @@ function createGameCard(game) {
     background: game.cover || "assets/hero.png",
     hideHero: true,
   };
-  const showHero = cardArt.hero && !cardArt.hideHero && !cardArt.hero.includes("width='1'");
   const comingSoonBadge = isPlayable ? "" : `<span class="coming-soon-art-badge">${i18n.t("action.coming_soon")}</span>`;
   const art =
     cardArt.kind === "image"
-      ? `<div class="game-card-art image-art"><img class="game-card-fg" ${lobbyImageAttributes(cardArt.background)} alt="" width="480" height="480" />${showHero ? `<img class="game-card-hero" ${lobbyImageAttributes(cardArt.hero)} alt="" />` : ""}${isPlayable && game.previewVideo ? `<video class="game-card-preview" data-preview-src="${game.previewVideo}" muted loop playsinline preload="none" aria-hidden="true"></video>` : ""}${comingSoonBadge}</div>`
+      ? `<div class="game-card-art image-art"><img class="game-card-fg" ${lobbyImageAttributes(cardArt.background)} alt="" width="480" height="480" />${isPlayable && game.previewVideo ? `<video class="game-card-preview" data-preview-src="${game.previewVideo}" muted loop playsinline preload="none" aria-hidden="true"></video>` : ""}${comingSoonBadge}</div>`
       : `<div class="game-card-art ${cardArt.className || ""}">${showAgeLabels ? `<span>${ageLabel}</span>` : ""}${comingSoonBadge}</div>`;
   const favoriteAction = i18n.t(favorite ? "action.remove_favorite" : "action.add_favorite");
   const favoriteLabel = i18n.t(favorite ? "action.remove_favorite_title" : "action.add_favorite_title", { title });
@@ -1285,7 +1282,6 @@ function renderHeroGames() {
       // Popular cards are ranked after unavailable games are filtered out, so
       // their visible Top 5 positions must stay consecutive.
       const rankText = i18n.t("stats.rank_label", { rank: index + 1 });
-      const showHero = game.art?.hero && !game.art.hideHero && !game.art.hero.includes("width='1'");
       const card = document.createElement(isPlayable ? "a" : "button");
       card.className = `hero-game-card ${isPlayable ? "playable" : "planned"}`;
       card.type = isPlayable ? undefined : "button";
@@ -1296,8 +1292,7 @@ function renderHeroGames() {
       }
       card.innerHTML = `
         <div class="hero-game-art">
-          <img ${lobbyImageAttributes(game.art?.background || game.art?.hero || "assets/hero.png")} alt="" />
-          ${showHero ? `<img class="hero-game-character" ${lobbyImageAttributes(game.art.hero)} alt="" />` : ""}
+          <img ${lobbyImageAttributes(game.art?.background || "assets/hero.png")} alt="" />
           <span>${rankText}</span>
         </div>
         <div class="hero-game-copy">
@@ -1364,7 +1359,6 @@ function renderUpcomingGames() {
     const type = text(game.type);
     const ageLabel = text(game.ageLabel);
     const description = text(game.description);
-    const showHero = game.art?.hero && !game.art.hideHero && !game.art.hero.includes("width='1'");
     const reviewPass = verifiedGameplayReviewPasses[game.id] || null;
     const card = document.createElement("button");
     card.className = "upcoming-game-card";
@@ -1377,7 +1371,6 @@ function renderUpcomingGames() {
     card.innerHTML = `
       <div class="upcoming-game-art">
         <img ${lobbyImageAttributes(game.art?.background || primaryArt(game))} alt="" />
-        ${showHero ? `<img class="upcoming-game-hero" ${lobbyImageAttributes(game.art.hero)} alt="" />` : ""}
         ${reviewPass ? `<div class="review-pass-art-badge" aria-label="${stateCopy("reviewPassLabel")} ${reviewPass.gameVersion}" title="${reviewPass.gameVersion}">✓ ${stateCopy("reviewPassLabel")}</div>` : ""}
         <span>${i18n.t("action.coming_soon")}</span>
       </div>

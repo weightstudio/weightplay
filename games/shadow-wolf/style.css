@@ -1043,7 +1043,7 @@ body:has(#resultPanel.battle-result:not(.hidden)) .mobile-controls-row {
     grid-template-columns: 53px minmax(0, 1fr) minmax(112px, auto) 53px !important;
   }
   body.wp-stage-select-active[data-shadow-wolf-screen="stage"] [data-wp-logical-stage-canvas] .stage-header > .play-return[data-wp-return="stage"],
-  body[data-shadow-wolf-screen="stage"] .stage-header .wp-shell-settings-button {
+body[data-shadow-wolf-screen="stage"] .stage-header .wp-shell-settings-button {
     width: 53px !important;
     min-width: 53px !important;
     max-width: 53px !important;
@@ -1055,6 +1055,116 @@ body:has(#resultPanel.battle-result:not(.hidden)) .mobile-controls-row {
     min-height: 53px;
     font-size: 15px !important;
   }
+}
+
+/* General Issue 0212: restore the catalog Main composition contract. */
+body[data-shadow-wolf-screen="main"] .relic-app {
+  width: min(100%, 920px);
+  max-width: 920px;
+  margin: 16px auto 0;
+  padding: 0 12px;
+  min-height: 0;
+}
+
+body[data-shadow-wolf-screen="main"] .menu-panel.wp-standard-main-screen {
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+body[data-shadow-wolf-screen="main"] .menu-main {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  width: 100%;
+  padding: 12px;
+  text-align: center;
+}
+
+body[data-shadow-wolf-screen="main"] .wp-standard-main-copy {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  align-content: center;
+}
+
+body[data-shadow-wolf-screen="main"] .menu-cover-box {
+  width: min(100%, 420px);
+  height: auto;
+  max-height: none;
+  aspect-ratio: 1;
+  margin: 0;
+  justify-self: center;
+}
+
+body[data-shadow-wolf-screen="main"] .menu-cover-box .cover {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+body[data-shadow-wolf-screen="main"] .menu-title,
+body[data-shadow-wolf-screen="main"] .menu-hint,
+body[data-shadow-wolf-screen="main"] .campaign-summary,
+body[data-shadow-wolf-screen="main"] .desktop-controls {
+  margin: 0;
+}
+
+body[data-shadow-wolf-screen="main"] .campaign-summary.wp-standard-main-progress {
+  min-height: 0;
+  line-height: 1.25;
+}
+
+body[data-shadow-wolf-screen="main"] .start-btn {
+  width: 100%;
+  height: 52px;
+  min-height: 52px;
+  padding: 0 16px;
+}
+
+@media (min-width: 700px) {
+  body[data-shadow-wolf-screen="main"] .menu-main {
+    grid-template-columns: 420px minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    column-gap: 16px;
+    align-items: stretch;
+    padding: 16px;
+    text-align: left;
+  }
+
+  body[data-shadow-wolf-screen="main"] .menu-cover-box {
+    grid-column: 1;
+    grid-row: 1;
+    width: 420px;
+    height: 420px;
+  }
+
+  body[data-shadow-wolf-screen="main"] .wp-standard-main-copy {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+
+@media (min-width: 700px) and (max-height: 470px) {
+  body[data-shadow-wolf-screen="main"] .menu-main {
+    grid-template-columns: 302px minmax(0, 1fr);
+    column-gap: 16px;
+    padding: 12px;
+  }
+
+  body[data-shadow-wolf-screen="main"] .menu-cover-box {
+    width: 302px;
+    height: 302px;
+  }
+}
+
+/* Stage Settings is inverse-scaled with the logical Canvas; retain readable labels. */
+body[data-shadow-wolf-screen="stage"] .wp-shell-settings-popover .wp-shell-settings-row {
+  font-size: 14px !important;
+}
+body[data-shadow-wolf-screen="stage"] .wp-shell-settings-popover .wp-shell-settings-row > span:first-child {
+  font-size: 14px !important;
 }
 
 @media (max-width: 560px) and (min-height: 471px) {

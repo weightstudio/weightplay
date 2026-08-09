@@ -30,7 +30,7 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-page-info.css" />
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260804-battle35" />
+  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Animal Honey Shield | WeightPlay" />
@@ -86,7 +86,7 @@
         <a class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="Back to WeightPlay">
           <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" />
         </a>
-        <strong data-i18n="title">Animal Honey Shield</strong>
+        <strong data-runtime-localize="off">Animal Honey Shield</strong>
         <label class="locale-control">
           <span class="sr-only" data-i18n="language">Language</span>
           <select id="localeSelect" data-i18n-aria="language">
@@ -101,47 +101,52 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="posterAlt" alt="Animal Honey Shield game artwork" />
+        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="Pip sheltered by a glowing line as bees approach" alt="Animal Honey Shield game artwork" />
         <div class="main-copy">
           <small data-i18n="eyebrow">Cloverlight Meadow rescue puzzles</small>
-          <h1 data-i18n="title">Animal Honey Shield</h1>
-          <p data-i18n="pitch">Draw glowing nectar lines, repair weak spots during each wave, and keep Clover Pup Pip safe.</p>
+          <h1 data-runtime-localize="off">Animal Honey Shield</h1>
+          <p data-i18n="pitch">Draw nectar lines, brace them against terrain, and keep Pip safe while bees try to shove the walls aside.</p>
           <div id="mainProgress" class="main-progress"></div>
           <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start" data-runtime-localize="off">Start Game</button>
         </div>
       </section>
     </main>
 
-    <section class="game-page-info game-page-info-static" aria-label="Animal Honey Shield game information">
-    
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Animal Honey Shield</h2><p>Draw and repair nectar lines during live bee waves to protect Clover Pup Pip across 30 original meadow stages.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Live Drawing Defense</strong></div><div class="game-info-fact"><span>Genre</span><strong>Animal Games · Puzzle · Defense · Family</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-      
-    </div>
-  </section>
+    <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="Game guide">
+      <div class="game-info-hero"><div class="game-info-title">
+        <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay Original Game Guide</span>
+        <h2 data-i18n="guideTitle">Protect Pip with the shortest strong line</h2>
+        <p data-i18n="guideIntro">Pip has wandered beside Cloverlight Meadow&#39;s hives. Draw barriers while the startled bees fly, then reinforce openings before they reach the puppy.</p>
+      </div></div>
+      <div class="game-info-sections guide-grid">
+        <article class="game-info-section"><h3 data-i18n="howTitle">How to play</h3><ol>
+          <li data-i18n="how1">Drag across the meadow to draw a glowing nectar barrier.</li>
+          <li data-i18n="how2">The bees wait while you draw. Releasing your first valid line starts the wave; keep drawing repairs during it.</li>
+          <li data-i18n="how3">Survive until the timer reaches zero without letting a bee touch Pip.</li>
+        </ol></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">Rules and results</h3><p data-i18n="rulesText">Lines never break. Bees use any open route first. With no route they push, twist, and flex a loose wall. A loop on one stone is only a pivot: the swarm peels it tight around that stone. Only one stroke hooked around two separated terrain points turns gold and holds.</p><p data-i18n="guideExtra">Start by studying the meadow before you draw. Pip is safest when the barrier creates a short route that bees cannot simply walk around, but a long wall is expensive and gives the swarm more surface to push. Leave a little breathing room around the puppy so a repair does not trap your next stroke. When a barrier flashes red, repair that weak section first instead of replacing the whole shape. The first valid line starts the wave, so you have time to plan while the meadow is quiet. Once bees are moving, watch their approach rather than the line you are drawing: a safe-looking wall can still leave an open corner behind Pip. Two separated terrain anchors are stronger than one loop. A single stone lets a wall pivot or peel; wrapping the same stroke around two distinct stones, corners, or approved terrain points makes the wall hold and glow gold. If bees push a loose wall, do not chase the wall with frantic redraws. Wait for the gap they are trying to open, then add a short hook that closes that route. Nectar is limited, and efficient repairs usually earn more stars than a second large circle. Before each later chapter, reread the chapter hint: new hives, split approaches, gusts, fragile gaps, and mixed waves each change what the shortest safe line should look like. After a clear, the next route unlocks automatically and your best stars remain in this browser. A failed attempt costs no account data; simply return to the stage list, study the red opening, and try a different shape. You can also replay an earlier route to practice efficient shapes, compare the stars earned from short repairs, and learn which side of the meadow gives the bees the fewest choices. The stage summary records your progress, while the guide remains available whenever you need to refresh the basic rules.</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">Thirty meadow routes</h3><p data-i18n="progressText">Six chapters add extra hives, split approaches, stone anchors, moving gusts, fragile gaps, and mixed mastery waves. Every clear unlocks the next route.</p></article>
+        <article class="game-info-section"><h3 data-i18n="tipsTitle">Practical tips</h3><p data-i18n="tipsText">A straight bridge and a one-stone circle are both loose. Use two separated wraps, opposite hooks, or a real terrain slot.</p></article>
+        <article class="game-info-section"><h3 data-i18n="saveTitle">Save and privacy</h3><p data-i18n="saveText">Unlocked stages and best stars stay only in this browser. No account, upload, or personal information is required.</p></article>
+        <article class="game-info-section"><h3 data-i18n="faqTitle">FAQ</h3><dl>
+          <div><dt data-i18n="faq1q">Can I draw after the bees start?</dt><dd data-i18n="faq1a">Yes. Add another line or connect a loose wall to terrain while nectar remains.</dd></div>
+          <div><dt data-i18n="faq2q">Do bees get hurt?</dt><dd data-i18n="faq2a">No. Nectar barriers gently bounce the startled bees back toward the flowers.</dd></div>
+          <div><dt data-i18n="faq3q">What should I play next?</dt><dd data-i18n="faq3a">Try One Line for careful tracing or Animal Guard Yard for a larger defense challenge.</dd></div>
+        </dl></article>
+      </div>
+    </section>
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-honey-shield-cover.webp')">
       <header class="stage-header">
-        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Back">←</button>
-        <div><strong data-i18n="title">Animal Honey Shield</strong><span id="stageSummary"></span></div>
+        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Back to Main">←</button>
+        <div><strong data-runtime-localize="off">Animal Honey Shield</strong><span id="stageSummary"></span></div>
         <span class="stage-header-spacer" aria-hidden="true"></span>
       </header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Meadow stage selection"></div>
-      <nav class="stage-tabs" aria-label="Stage tabs" data-i18n-aria="stages"><span></span><span aria-current="page" data-i18n="stages">Stages</span><span></span></nav>
+      <nav class="stage-tabs" aria-label="Stages" data-i18n-aria="stages"><span></span><span aria-current="page" data-i18n="stages">Stages</span><span></span></nav>
     </div>
   </section>
 
@@ -149,7 +154,7 @@
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
-          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Back">←</button>
+          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Back to Stages">←</button>
           <div class="battle-title"><small id="stageLabel"></small><strong id="objectiveText"></strong></div>
           <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="Pause">Ⅱ</button>
         </header>
@@ -160,7 +165,7 @@
         </section>
         <section id="boardWrap" class="board-wrap">
           <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="Draw a nectar barrier to protect Pip"></canvas>
-          <div id="drawHint" class="draw-hint" data-i18n="drawHint">Draw anywhere to build Pip's shield</div>
+          <div id="drawHint" class="draw-hint" data-i18n="drawHint">Draw anywhere to build Pip&#39;s shield</div>
         </section>
         <div class="battle-feedback"><strong id="feedbackText" aria-live="polite"></strong><span id="lineReadout"></span></div>
         <div class="battle-actions"><button id="clearBtn" type="button" data-i18n="clear">Clear lines</button><button id="restartBtn" type="button" data-i18n="restart">Restart</button></div>
@@ -185,10 +190,10 @@
 
   <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card">
     <button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close" aria-label="Close">×</button>
-    <div class="sprite sprite-pup" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">Draw, watch, and repair</h2><ol>
+    <div class="sprite sprite-pup" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">Draw, brace, and hold</h2><ol>
       <li data-i18n="tutorial1">Drag one short barrier between Pip and the hive.</li>
-      <li data-i18n="tutorial2">Releasing starts the wave. Bees take gaps first and move walls only when no route exists.</li>
-      <li data-i18n="tutorial3">A straight bridge stays movable. Wrap a stone or hook a platform corner to lock the wall.</li>
+      <li data-i18n="tutorial2">Open route: bees detour to Pip. No route: they move a spanning wall sideways toward the nearest open edge. The instant a gap opens, they release it and attack.</li>
+      <li data-i18n="tutorial3">One stone cannot lock a wall. Wrap or hook the same stroke around two separated terrain points; only that two-point lock turns gold.</li>
     </ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Protect Pip</button>
   </div></section>
 
@@ -203,6 +208,6 @@
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-main-pull-guard1"></script>
 </body>
 </html>

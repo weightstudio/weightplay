@@ -158,8 +158,18 @@
     document.documentElement.style.setProperty("--wonder-stage-left", `${centeredLeft}px`);
     document.documentElement.style.setProperty("--wonder-stage-logical-width", `${stageLogicalWidth}px`);
     document.documentElement.style.setProperty("--wonder-stage-logical-height", `${stageLogicalHeight}px`);
+    document.documentElement.style.setProperty("--wonder-stage-inverse-scale", String(selectingStage ? 1 / stageScale : 1));
     document.documentElement.style.setProperty("--wonder-stage-back-size", `${stageBackSize}px`);
     document.documentElement.style.setProperty("--wonder-stage-tab-height", `${stageTabHeight}px`);
+    const stageSettingsPopover = document.querySelector(".wp-shell-settings-popover");
+    if (stageSettingsPopover) {
+      stageSettingsPopover.style.setProperty("transform", `scale(${selectingStage ? 1 / stageScale : 1})`, "important");
+      stageSettingsPopover.style.setProperty(
+        "transform-origin",
+        stageSettingsPopover.closest("[data-wp-popover-edge='left']") ? "top left" : "top right",
+        "important"
+      );
+    }
     if (selectingStage) shell?.setAttribute("data-wp-logical-stage-canvas", `${stageLogicalWidth.toFixed(3)}x${stageLogicalHeight.toFixed(3)}`);
     else shell?.removeAttribute("data-wp-logical-stage-canvas");
     if (playing) {

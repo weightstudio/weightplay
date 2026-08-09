@@ -30,7 +30,7 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-page-info.css" />
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260804-battle35" />
+  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="どうぶつハニーシールド | WeightPlay" />
@@ -76,7 +76,7 @@
   <section id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
       <img src="../../assets/weightplay-logo.png" alt="" />
-      <strong data-i18n="loading">Waking the clover meadow…</strong>
+      <strong data-i18n="loading">クローバー草原を起こしています…</strong>
       <div class="loading-track"><i id="loadingFill"></i></div>
     </div>
   </section>
@@ -84,12 +84,12 @@
   <div id="mainGroup">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
-        <a class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="Back to WeightPlay">
+        <a class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="WeightPlayへ戻る">
           <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" />
         </a>
-        <strong data-i18n="title">どうぶつハニーシールド</strong>
+        <strong data-runtime-localize="off">どうぶつハニーシールド</strong>
         <label class="locale-control">
-          <span class="sr-only" data-i18n="language">Language</span>
+          <span class="sr-only" data-i18n="language">言語</span>
           <select id="localeSelect" data-i18n-aria="language">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option>
             <option value="zh-Hans">简体中文</option><option value="ja">日本語</option>
@@ -102,47 +102,52 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="posterAlt" alt="どうぶつハニーシールドのゲーム画像" />
+        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="ハチが近づく中、光る線に守られるピップ" alt="どうぶつハニーシールドのゲーム画像" />
         <div class="main-copy">
-          <small data-i18n="eyebrow">Cloverlight Meadow rescue puzzles</small>
-          <h1 data-i18n="title">どうぶつハニーシールド</h1>
-          <p data-i18n="pitch">Draw glowing nectar lines, repair weak spots during each wave, and keep Clover Pup Pip safe.</p>
+          <small data-i18n="eyebrow">クローバーライト草原の救助パズル</small>
+          <h1 data-runtime-localize="off">どうぶつハニーシールド</h1>
+          <p data-i18n="pitch">蜜の壁を描いて地形に固定し、ハチに押し退けられないようピップを守りましょう。</p>
           <div id="mainProgress" class="main-progress"></div>
-          <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start" data-runtime-localize="off">Start Game</button>
+          <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start" data-runtime-localize="off">ゲーム開始</button>
         </div>
       </section>
     </main>
 
-    <section class="game-page-info game-page-info-static" aria-label="どうぶつハニーシールド のゲーム情報">
-    
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>どうぶつハニーシールド</h2><p>飛んでくるハチを見ながら蜜の線を描き直し、30の草原ステージで子犬ピップを守ります。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>リアルタイム描画防衛</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>動物ゲーム · パズル · 守備 · 家族</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>進行状況は保存されますか?</dt><dd>はい、このブラウザでのみ可能です。</dd></div></dl></div>
-      
-    </div>
-  </section>
+    <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="ゲームガイド">
+      <div class="game-info-hero"><div class="game-info-title">
+        <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay オリジナルゲームガイド</span>
+        <h2 data-i18n="guideTitle">短く強い線でピップを守ろう</h2>
+        <p data-i18n="guideIntro">ピップはクローバーライト草原の巣のそばに迷い込みました。ハチが飛んでいる間に壁を描き、子犬に届く前に隙間を補強します。</p>
+      </div></div>
+      <div class="game-info-sections guide-grid">
+        <article class="game-info-section"><h3 data-i18n="howTitle">遊び方</h3><ol>
+          <li data-i18n="how1">草原をドラッグして光る蜜のバリアを描きます。</li>
+          <li data-i18n="how2">ハチは描き終えるまで待ちます。最初の有効な線を離すとウェーブが始まり、その後も修復できます。</li>
+          <li data-i18n="how3">ハチをピップに触れさせず、タイマーがゼロになるまで守ります。</li>
+        </ol></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">ルールと結果</h3><p data-i18n="rulesText">線は切れません。道があればハチは先に回り道を使い、道がなければ緩い壁を皆で押し、ひねり、曲げます。石ひとつを囲むだけでは支点にすぎず、壁は石の周りへはがされます。同じ線を離れた二つの地形に掛けた時だけ金色に固定されます。</p><p data-i18n="guideExtra">描き始める前に草原を観察し、最初の線を置く場所を決めましょう。ピップが安全なのは、ハチが簡単には回り込めない短い道をバリアが作ったときです。長い壁は蜜を多く使い、ハチに押される面も広くなります。子犬の周りには少し余白を残すと、修理の線が次の一筆を邪魔しません。バリアが赤く点滅したら、形全体を描き直す前に弱い部分を直します。最初の有効な線でウェーブが始まるので、草原が静かなうちに巣や石、入口を見ておけます。ハチが動き始めたら、描いている線だけでなく進んでくる方向も確認しましょう。安全に見える壁でも、ピップの後ろに開口部が残ることがあります。一つの石を囲むだけでは壁は支点として回ったり、ハチの群れに剥がされたりします。離れた二つの石や地形の角に同じ線を掛けると、壁は固定されて金色に光ります。壁が押されても慌てて何度も描き直さず、ハチが開けようとしている隙間を見て短いフックで閉じましょう。蜜には限りがあるため、大きな円をもう一つ描くより小さな修理のほうが星を取りやすいです。後半の章では巣、分岐、風、壊れやすい隙間、混合ウェーブが増えます。章のヒントを読み直し、その道に合う短い形を試してください。クリアすると次のルートが自動で開き、最高記録はこのブラウザーだけに保存されます。</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">草原の30ルート</h3><p data-i18n="progressText">6章30ステージで、巣の追加、二方向、石のアンカー、風、弱い隙間、複合ウェーブが登場します。</p></article>
+        <article class="game-info-section"><h3 data-i18n="tipsTitle">実用ヒント</h3><p data-i18n="tipsText">石二つの間の直線も、石ひとつの円も動きます。二つの巻き付き、反対向きのフック、または地形の溝を使いましょう。</p></article>
+        <article class="game-info-section"><h3 data-i18n="saveTitle">保存とプライバシー</h3><p data-i18n="saveText">解放ステージと最高の星はこのブラウザーだけに保存されます。アカウントや個人情報は不要です。</p></article>
+        <article class="game-info-section"><h3 data-i18n="faqTitle">よくある質問</h3><dl>
+          <div><dt data-i18n="faq1q">ハチが飛び始めた後も描けますか？</dt><dd data-i18n="faq1a">はい。蜜が残っていれば、線を追加したり自由な壁を地形につないだりできます。</dd></div>
+          <div><dt data-i18n="faq2q">ハチは傷つきますか？</dt><dd data-i18n="faq2a">いいえ。蜜のバリアは驚いたハチを花の方向へ優しく跳ね返します。</dd></div>
+          <div><dt data-i18n="faq3q">次におすすめのゲームは？</dt><dd data-i18n="faq3a">丁寧ななぞりなら『どうぶつ一筆書き』、大きな防衛なら『アニマル・ガード・ヤード』がおすすめです。</dd></div>
+        </dl></article>
+      </div>
+    </section>
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-honey-shield-cover.webp')">
       <header class="stage-header">
-        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Back">←</button>
-        <div><strong data-i18n="title">Animal Honey Shield</strong><span id="stageSummary"></span></div>
+        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="メインへ戻る">←</button>
+        <div><strong data-runtime-localize="off">Animal Honey Shield</strong><span id="stageSummary"></span></div>
         <span class="stage-header-spacer" aria-hidden="true"></span>
       </header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
-      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Meadow stage selection"></div>
-      <nav class="stage-tabs" aria-label="Stage tabs" data-i18n-aria="stages"><span></span><span aria-current="page" data-i18n="stages">Stages</span><span></span></nav>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="草原ステージ選択"></div>
+      <nav class="stage-tabs" aria-label="ステージ" data-i18n-aria="stages"><span></span><span aria-current="page" data-i18n="stages">ステージ</span><span></span></nav>
     </div>
   </section>
 
@@ -150,47 +155,47 @@
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
-          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Back">←</button>
+          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="ステージへ戻る">←</button>
           <div class="battle-title"><small id="stageLabel"></small><strong id="objectiveText"></strong></div>
-          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="Pause">Ⅱ</button>
+          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="一時停止">Ⅱ</button>
         </header>
         <section class="battle-metrics" aria-label="Battle status">
-          <div class="battle-stat"><small data-i18n="time">Time</small><strong id="timeValue">10.0</strong></div>
+          <div class="battle-stat"><small data-i18n="time">時間</small><strong id="timeValue">10.0</strong></div>
           <section id="waveMeter" class="wave-meter" aria-hidden="true"><i id="waveFill"></i></section>
-          <div class="battle-stat"><small data-i18n="nectar">Nectar</small><strong id="nectarValue">100</strong></div>
+          <div class="battle-stat"><small data-i18n="nectar">蜜</small><strong id="nectarValue">100</strong></div>
         </section>
         <section id="boardWrap" class="board-wrap">
-          <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="Draw a nectar barrier to protect Pip"></canvas>
-          <div id="drawHint" class="draw-hint" data-i18n="drawHint">Draw anywhere to build Pip's shield</div>
+          <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="蜜の線を描いてピップを守る"></canvas>
+          <div id="drawHint" class="draw-hint" data-i18n="drawHint">好きな場所に描いてシールドを作ろう</div>
         </section>
         <div class="battle-feedback"><strong id="feedbackText" aria-live="polite"></strong><span id="lineReadout"></span></div>
-        <div class="battle-actions"><button id="clearBtn" type="button" data-i18n="clear">Clear lines</button><button id="restartBtn" type="button" data-i18n="restart">Restart</button></div>
+        <div class="battle-actions"><button id="clearBtn" type="button" data-i18n="clear">線を消す</button><button id="restartBtn" type="button" data-i18n="restart">やり直す</button></div>
       </div>
 
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
-        <h2 id="leaveTitle" data-i18n="leaveTitle">Leave this meadow?</h2><p data-i18n="leaveText">Continue keeps this wave frozen. Returning to Stages ends only this attempt.</p>
-        <div class="modal-actions two"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Return to Stages</button></div>
+        <h2 id="leaveTitle" data-i18n="leaveTitle">草原を離れますか？</h2><p data-i18n="leaveText">続けると波をそのまま凍結します。ステージへ戻ると今回の挑戦だけが終了します。</p>
+        <div class="modal-actions two"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">続ける</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">ステージへ戻る</button></div>
       </div></section>
       <section id="pausePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden><div class="dialog-card">
-        <h2 id="pauseTitle" data-i18n="pauseTitle">Meadow paused</h2><p data-i18n="pauseText">The bee wave is frozen while you take a break.</p>
-        <div class="modal-actions two"><button id="resumeBtn" class="primary-action" type="button" data-i18n="resume">Resume</button><button id="pauseHelpBtn" type="button" data-i18n="howTitle">How to play</button></div>
+        <h2 id="pauseTitle" data-i18n="pauseTitle">草原を一時停止</h2><p data-i18n="pauseText">休憩中はハチの波が完全に止まります。</p>
+        <div class="modal-actions two"><button id="resumeBtn" class="primary-action" type="button" data-i18n="resume">再開</button><button id="pauseHelpBtn" type="button" data-i18n="howTitle">遊び方</button></div>
       </div></section>
       <section id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card">
-        <div class="result-pup sprite sprite-pup" aria-hidden="true"></div><small data-i18n="resultKicker">Meadow report</small><h2 id="resultTitle"></h2>
+        <div class="result-pup sprite sprite-pup" aria-hidden="true"></div><small data-i18n="resultKicker">草原レポート</small><h2 id="resultTitle"></h2>
         <div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p>
-        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next Stage</button><button id="retryBtn" type="button" data-i18n="retry">Replay</button></div>
+        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">ステージ</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">次のステージ</button><button id="retryBtn" type="button" data-i18n="retry">もう一度</button></div>
       </div></section>
     </div>
     <div class="battle-ad-reserve" aria-hidden="true"></div>
   </section>
 
   <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card">
-    <button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close" aria-label="Close">×</button>
-    <div class="sprite sprite-pup" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">Draw, watch, and repair</h2><ol>
-      <li data-i18n="tutorial1">Drag one short barrier between Pip and the hive.</li>
-      <li data-i18n="tutorial2">Releasing starts the wave. Bees take gaps first and move walls only when no route exists.</li>
-      <li data-i18n="tutorial3">A straight bridge stays movable. Wrap a stone or hook a platform corner to lock the wall.</li>
-    </ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Protect Pip</button>
+    <button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close" aria-label="閉じる">×</button>
+    <div class="sprite sprite-pup" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">描いて、固定して、守る</h2><ol>
+      <li data-i18n="tutorial1">ピップと巣の間に短い壁を描きます。</li>
+      <li data-i18n="tutorial2">道があればピップへ迂回します。道がなければ、場を横切る緩い壁を最も近い開いた端へ横移動させます。隙間が開くとすぐ壁を離して攻撃します。</li>
+      <li data-i18n="tutorial3">石ひとつでは固定できません。同じ線を離れた二つの地形に巻くか掛けると、二点固定が金色になります。</li>
+    </ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">ピップを守る</button>
   </div></section>
 
   <script src="../../src/site-config.js"></script>
@@ -206,7 +211,7 @@
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-main-pull-guard1"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="どうぶつハニーシールド";document.title="どうぶつハニーシールド | WeightPlay";},{once:true});</script>
 </body>
 </html>

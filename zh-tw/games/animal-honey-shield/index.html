@@ -30,7 +30,7 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-page-info.css" />
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260804-battle35" />
+  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="動物花蜜防線 | WeightPlay" />
@@ -76,7 +76,7 @@
   <section id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
       <img src="../../assets/weightplay-logo.png" alt="" />
-      <strong data-i18n="loading">Waking the clover meadow…</strong>
+      <strong data-i18n="loading">正在喚醒苜蓿草原…</strong>
       <div class="loading-track"><i id="loadingFill"></i></div>
     </div>
   </section>
@@ -84,12 +84,12 @@
   <div id="mainGroup">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
-        <a class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="Back to WeightPlay">
+        <a class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="返回 WeightPlay">
           <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" />
         </a>
-        <strong data-i18n="title">動物花蜜防線</strong>
+        <strong data-runtime-localize="off">動物花蜜防線</strong>
         <label class="locale-control">
-          <span class="sr-only" data-i18n="language">Language</span>
+          <span class="sr-only" data-i18n="language">語言</span>
           <select id="localeSelect" data-i18n-aria="language">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option>
             <option value="zh-Hans">简体中文</option><option value="ja">日本語</option>
@@ -102,47 +102,52 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="posterAlt" alt="《動物花蜜防線》遊戲圖片" />
+        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="蜜蜂接近時，皮普躲在發光防線後方" alt="《動物花蜜防線》遊戲圖片" />
         <div class="main-copy">
-          <small data-i18n="eyebrow">Cloverlight Meadow rescue puzzles</small>
-          <h1 data-i18n="title">動物花蜜防線</h1>
-          <p data-i18n="pitch">Draw glowing nectar lines, repair weak spots during each wave, and keep Clover Pup Pip safe.</p>
+          <small data-i18n="eyebrow">苜蓿光原救援解謎</small>
+          <h1 data-runtime-localize="off">動物花蜜防線</h1>
+          <p data-i18n="pitch">畫出花蜜防線並用地形卡住，別讓蜜蜂把牆推開接近皮普。</p>
           <div id="mainProgress" class="main-progress"></div>
-          <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start" data-runtime-localize="off">Start Game</button>
+          <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start" data-runtime-localize="off">開始遊戲</button>
         </div>
       </section>
     </main>
 
-    <section class="game-page-info game-page-info-static" aria-label="動物花蜜防線 遊戲資訊">
-    
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>動物花蜜防線</h2><p>在即時蜂群波次中畫線並修補花蜜防線，於 30 個原創草原關卡保護苜蓿小犬皮普。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>即時畫線防守</strong></div><div class="game-info-fact"><span>類型</span><strong>動物遊戲 · 拼圖 · 防禦 · 家庭</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>進度保存了嗎？</dt><dd>是的，僅在該瀏覽器中。</dd></div></dl></div>
-      
-    </div>
-  </section>
+    <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="遊戲指南">
+      <div class="game-info-hero"><div class="game-info-title">
+        <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay 原創遊戲指南</span>
+        <h2 data-i18n="guideTitle">用最短又堅固的線保護皮普</h2>
+        <p data-i18n="guideIntro">皮普走到苜蓿光原的蜂巢旁。蜂群飛行時畫出屏障，並在牠們碰到小犬前修補缺口。</p>
+      </div></div>
+      <div class="game-info-sections guide-grid">
+        <article class="game-info-section"><h3 data-i18n="howTitle">遊玩方式</h3><ol>
+          <li data-i18n="how1">在草原上拖曳，畫出發光花蜜屏障。</li>
+          <li data-i18n="how2">蜜蜂會等你畫完。放開第一條有效防線才會開始波次；之後仍可繼續修補。</li>
+          <li data-i18n="how3">在倒數結束前，不讓任何蜜蜂碰到皮普。</li>
+        </ol></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">規則與結果</h3><p data-i18n="rulesText">線條不會斷裂。蜜蜂會優先走任何可達皮普的路；沒有路時，牠們會一起推動、扭轉並壓彎鬆動的牆。只繞一顆石頭只是支點，蜂群會沿石頭把牆剝開。必須讓同一條線勾住兩個分開的地形點，才會變成金色固定牆。</p><p data-i18n="guideExtra">開始前先觀察草原，再決定第一筆線要放在哪裡。皮普最安全的情況，是防線形成蜜蜂不能直接繞過的短路線；太長的牆會消耗更多花蜜，也會留下更大的受力面。請在小狗周圍留一點空間，這樣補線時才不會困住下一筆筆畫。防線閃紅時，先修補那一小段弱點，不要立刻把整個形狀重畫。第一條有效的線會開始波次，所以草原安靜時可以先看清楚蜂巢、石頭與可能的入口。蜜蜂開始移動後，要觀察牠們的來向，而不只是盯著手上的線；看似安全的牆，可能仍在皮普身後留下開口。兩個分開的地形錨點比單一圓圈可靠。只繞一顆石頭時，牆仍可能以它為支點旋轉或被蜂群剝開；同一筆線繞過兩個不同的石頭、平台角落或有效地形點，才會固定並發出金色光芒。若蜜蜂正在推動鬆動的牆，不要慌張地反覆重畫。先看牠們想打開哪個缺口，再用短鉤線封住那條路。花蜜有限，精準的小修補通常比第二個大圓圈更容易拿到高星。進入後面的章節前，重新閱讀章節提示：新增蜂巢、分岔來向、風勢、脆弱缺口與混合波次，都會改變最短安全防線的形狀。過關後下一條路線會自動解鎖，最佳星級只保存在這個瀏覽器。失敗不會上傳帳號資料，回到關卡列表、研究紅色缺口，再換一種形狀嘗試即可。</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">30 條草原路線</h3><p data-i18n="progressText">六個章節加入更多蜂巢、分岔來向、石頭錨點、移動風勢、脆弱缺口與綜合波次。過關就能解鎖下一關。</p></article>
+        <article class="game-info-section"><h3 data-i18n="tipsTitle">實用提示</h3><p data-i18n="tipsText">直線架在兩顆石頭之間、或只繞一顆石頭，都仍可移動。請使用兩個分開的繞點、相反勾角或真正的地形凹槽。</p></article>
+        <article class="game-info-section"><h3 data-i18n="saveTitle">儲存與隱私</h3><p data-i18n="saveText">解鎖關卡與最佳星級只保存在這個瀏覽器，不需帳號、上傳或個人資料。</p></article>
+        <article class="game-info-section"><h3 data-i18n="faqTitle">常見問題</h3><dl>
+          <div><dt data-i18n="faq1q">蜜蜂出發後還能畫線嗎？</dt><dd data-i18n="faq1a">可以。花蜜足夠時，可補畫另一條線，或把未固定的牆接到地形。</dd></div>
+          <div><dt data-i18n="faq2q">蜜蜂會受傷嗎？</dt><dd data-i18n="faq2a">不會。花蜜屏障只會溫柔地把受驚蜂群彈回花朵方向。</dd></div>
+          <div><dt data-i18n="faq3q">接著適合玩什麼？</dt><dd data-i18n="faq3a">想練細緻描線可玩《動物一筆畫》，想挑戰大型防守可玩《動物守護庭院》。</dd></div>
+        </dl></article>
+      </div>
+    </section>
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-honey-shield-cover.webp')">
       <header class="stage-header">
-        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Back">←</button>
-        <div><strong data-i18n="title">Animal Honey Shield</strong><span id="stageSummary"></span></div>
+        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="返回主畫面">←</button>
+        <div><strong data-runtime-localize="off">Animal Honey Shield</strong><span id="stageSummary"></span></div>
         <span class="stage-header-spacer" aria-hidden="true"></span>
       </header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
-      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Meadow stage selection"></div>
-      <nav class="stage-tabs" aria-label="Stage tabs" data-i18n-aria="stages"><span></span><span aria-current="page" data-i18n="stages">Stages</span><span></span></nav>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="草原關卡選擇"></div>
+      <nav class="stage-tabs" aria-label="關卡" data-i18n-aria="stages"><span></span><span aria-current="page" data-i18n="stages">關卡</span><span></span></nav>
     </div>
   </section>
 
@@ -150,47 +155,47 @@
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
-          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Back">←</button>
+          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="返回關卡">←</button>
           <div class="battle-title"><small id="stageLabel"></small><strong id="objectiveText"></strong></div>
-          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="Pause">Ⅱ</button>
+          <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="暫停">Ⅱ</button>
         </header>
         <section class="battle-metrics" aria-label="Battle status">
-          <div class="battle-stat"><small data-i18n="time">Time</small><strong id="timeValue">10.0</strong></div>
+          <div class="battle-stat"><small data-i18n="time">時間</small><strong id="timeValue">10.0</strong></div>
           <section id="waveMeter" class="wave-meter" aria-hidden="true"><i id="waveFill"></i></section>
-          <div class="battle-stat"><small data-i18n="nectar">Nectar</small><strong id="nectarValue">100</strong></div>
+          <div class="battle-stat"><small data-i18n="nectar">花蜜</small><strong id="nectarValue">100</strong></div>
         </section>
         <section id="boardWrap" class="board-wrap">
-          <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="Draw a nectar barrier to protect Pip"></canvas>
-          <div id="drawHint" class="draw-hint" data-i18n="drawHint">Draw anywhere to build Pip's shield</div>
+          <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="畫出花蜜屏障保護皮普"></canvas>
+          <div id="drawHint" class="draw-hint" data-i18n="drawHint">在任何位置畫線，建立皮普的防線</div>
         </section>
         <div class="battle-feedback"><strong id="feedbackText" aria-live="polite"></strong><span id="lineReadout"></span></div>
-        <div class="battle-actions"><button id="clearBtn" type="button" data-i18n="clear">Clear lines</button><button id="restartBtn" type="button" data-i18n="restart">Restart</button></div>
+        <div class="battle-actions"><button id="clearBtn" type="button" data-i18n="clear">清除線條</button><button id="restartBtn" type="button" data-i18n="restart">重新開始</button></div>
       </div>
 
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
-        <h2 id="leaveTitle" data-i18n="leaveTitle">Leave this meadow?</h2><p data-i18n="leaveText">Continue keeps this wave frozen. Returning to Stages ends only this attempt.</p>
-        <div class="modal-actions two"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Return to Stages</button></div>
+        <h2 id="leaveTitle" data-i18n="leaveTitle">離開這片草原？</h2><p data-i18n="leaveText">繼續會保留並凍結目前波次；返回關卡只會結束本次挑戰。</p>
+        <div class="modal-actions two"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">繼續遊戲</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">返回關卡</button></div>
       </div></section>
       <section id="pausePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden><div class="dialog-card">
-        <h2 id="pauseTitle" data-i18n="pauseTitle">Meadow paused</h2><p data-i18n="pauseText">The bee wave is frozen while you take a break.</p>
-        <div class="modal-actions two"><button id="resumeBtn" class="primary-action" type="button" data-i18n="resume">Resume</button><button id="pauseHelpBtn" type="button" data-i18n="howTitle">How to play</button></div>
+        <h2 id="pauseTitle" data-i18n="pauseTitle">草原已暫停</h2><p data-i18n="pauseText">休息期間蜂群波次會保持凍結。</p>
+        <div class="modal-actions two"><button id="resumeBtn" class="primary-action" type="button" data-i18n="resume">繼續</button><button id="pauseHelpBtn" type="button" data-i18n="howTitle">遊玩方式</button></div>
       </div></section>
       <section id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card">
-        <div class="result-pup sprite sprite-pup" aria-hidden="true"></div><small data-i18n="resultKicker">Meadow report</small><h2 id="resultTitle"></h2>
+        <div class="result-pup sprite sprite-pup" aria-hidden="true"></div><small data-i18n="resultKicker">草原報告</small><h2 id="resultTitle"></h2>
         <div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p>
-        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next Stage</button><button id="retryBtn" type="button" data-i18n="retry">Replay</button></div>
+        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">關卡</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">下一關</button><button id="retryBtn" type="button" data-i18n="retry">再玩一次</button></div>
       </div></section>
     </div>
     <div class="battle-ad-reserve" aria-hidden="true"></div>
   </section>
 
   <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card">
-    <button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close" aria-label="Close">×</button>
-    <div class="sprite sprite-pup" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">Draw, watch, and repair</h2><ol>
-      <li data-i18n="tutorial1">Drag one short barrier between Pip and the hive.</li>
-      <li data-i18n="tutorial2">Releasing starts the wave. Bees take gaps first and move walls only when no route exists.</li>
-      <li data-i18n="tutorial3">A straight bridge stays movable. Wrap a stone or hook a platform corner to lock the wall.</li>
-    </ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Protect Pip</button>
+    <button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close" aria-label="關閉">×</button>
+    <div class="sprite sprite-pup" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">畫線、卡住、守住</h2><ol>
+      <li data-i18n="tutorial1">在皮普與蜂巢之間畫一道短屏障。</li>
+      <li data-i18n="tutorial2">有路就繞向皮普；沒路時，橫跨場地的鬆牆會被蜂群往最近的開放側邊搬移。缺口一出現，蜜蜂立刻放手進攻。</li>
+      <li data-i18n="tutorial3">一顆石頭不能鎖死牆壁。用同一條線繞住或勾住兩個分開的地形點，雙點固定才會變金色。</li>
+    </ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">保護皮普</button>
   </div></section>
 
   <script src="../../src/site-config.js"></script>
@@ -205,6 +210,6 @@
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-main-pull-guard1"></script>
 </body>
 </html>

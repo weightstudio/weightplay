@@ -195,6 +195,46 @@
     }
   }
 
+  /* CSS overscroll containment is the first line of defence, but some mobile
+     browsers still hand a downward gesture at document scrollTop 0 to their
+     native pull-to-refresh UI. Keep Main's guide scrollable and cancel only
+     that impossible downward move at the top edge. Stage/Battle already own
+     the stronger full root lock above. */
+  let mainTouchStart = null;
+  function resetMainTouch() {
+    mainTouchStart = null;
+  }
+  function beginMainTouch(event) {
+    if (!document.body?.classList.contains("wp-shell-main-active") || event.touches.length !== 1) {
+      resetMainTouch();
+      return;
+    }
+    if (event.target?.closest?.("input,select,textarea,[contenteditable='true']")) {
+      resetMainTouch();
+      return;
+    }
+    const touch = event.touches[0];
+    mainTouchStart = { x: touch.clientX, y: touch.clientY };
+  }
+  function guardMainPullToRefresh(event) {
+    if (!mainTouchStart || !document.body?.classList.contains("wp-shell-main-active") || event.touches.length !== 1) return;
+    const touch = event.touches[0];
+    const deltaX = touch.clientX - mainTouchStart.x;
+    const deltaY = touch.clientY - mainTouchStart.y;
+    if (deltaY <= 4 || deltaY <= Math.abs(deltaX)) return;
+    const scrollTop = Math.max(
+      0,
+      window.scrollY || 0,
+      document.documentElement.scrollTop || 0,
+      document.body.scrollTop || 0,
+    );
+    if (scrollTop <= 1 && event.cancelable) event.preventDefault();
+  }
+  window.addEventListener("touchstart", beginMainTouch, { passive: false, capture: true });
+  window.addEventListener("touchmove", guardMainPullToRefresh, { passive: false, capture: true });
+  window.addEventListener("touchend", resetMainTouch, { passive: true, capture: true });
+  window.addEventListener("touchcancel", resetMainTouch, { passive: true, capture: true });
+
   function first(selectors, root = document) {
     for (const selector of selectors) {
       const match = root.querySelector(selector);

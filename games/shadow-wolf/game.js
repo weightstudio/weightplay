@@ -166,6 +166,21 @@
       nodes.startBtn?.before(summary);
       campaignSummary = $("campaignSummary");
     }
+    campaignSummary?.classList.add("wp-standard-main-progress");
+
+    const menuMain = nodes.menuPanel?.querySelector(".menu-main");
+    if (menuMain && !menuMain.querySelector(":scope > .wp-standard-main-copy")) {
+      const mainCopy = document.createElement("div");
+      mainCopy.className = "wp-standard-main-copy";
+      [
+        menuMain.querySelector(":scope > .menu-title"),
+        menuMain.querySelector(":scope > .menu-hint"),
+        campaignSummary,
+        nodes.startBtn,
+        menuMain.querySelector(":scope > .desktop-controls"),
+      ].filter(Boolean).forEach((node) => mainCopy.append(node));
+      menuMain.append(mainCopy);
+    }
 
     let workshopButton = $("stageWorkshopBtn");
     if (!workshopButton) {

@@ -30,7 +30,7 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-page-info.css" />
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260804-battle35" />
+  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Tierischer Honigschild | WeightPlay" />
@@ -76,7 +76,7 @@
   <section id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
       <img src="../../assets/weightplay-logo.png" alt="" />
-      <strong data-i18n="loading">Waking the clover meadow…</strong>
+      <strong data-i18n="loading">Die Kleewiese erwacht…</strong>
       <div class="loading-track"><i id="loadingFill"></i></div>
     </div>
   </section>
@@ -84,12 +84,12 @@
   <div id="mainGroup">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
-        <a class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="Back to WeightPlay">
+        <a class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="Zurück zu WeightPlay">
           <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" />
         </a>
-        <strong data-i18n="title">Tierischer Honigschild</strong>
+        <strong data-runtime-localize="off">Tierischer Honigschild</strong>
         <label class="locale-control">
-          <span class="sr-only" data-i18n="language">Language</span>
+          <span class="sr-only" data-i18n="language">Sprache</span>
           <select id="localeSelect" data-i18n-aria="language">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option>
             <option value="zh-Hans">简体中文</option><option value="ja">日本語</option>
@@ -102,47 +102,52 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="posterAlt" alt="Spielgrafik zu Tierischer Honigschild" />
+        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="Pip hinter einer leuchtenden Linie, während Bienen näherkommen" alt="Spielgrafik zu Tierischer Honigschild" />
         <div class="main-copy">
-          <small data-i18n="eyebrow">Cloverlight Meadow rescue puzzles</small>
-          <h1 data-i18n="title">Tierischer Honigschild</h1>
-          <p data-i18n="pitch">Draw glowing nectar lines, repair weak spots during each wave, and keep Clover Pup Pip safe.</p>
+          <small data-i18n="eyebrow">Rettungsrätsel auf der Kleelicht-Wiese</small>
+          <h1 data-runtime-localize="off">Tierischer Honigschild</h1>
+          <p data-i18n="pitch">Zeichne Nektarwände, verkeile sie am Gelände und schütze Pip, während die Bienen sie wegschieben wollen.</p>
           <div id="mainProgress" class="main-progress"></div>
-          <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start" data-runtime-localize="off">Start Game</button>
+          <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start" data-runtime-localize="off">Spiel starten</button>
         </div>
       </section>
     </main>
 
-    <section class="game-page-info game-page-info-static" aria-label="Spielanleitung für Tierischer Honigschild">
-    
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay-Leitfaden für Originalspiele</span><h2>Tierischer Honigschild</h2><p>Zeichne und repariere Nektarlinien während der Bienenwellen und beschütze Pip in 30 originalen Stufen.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Spielweise</span><strong>Live-Zeichenverteidigung</strong></div><div class="game-info-fact"><span>Genre</span><strong>Tierspiele · Rätsel · Verteidigung · Familie</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Wird der Fortschritt gespeichert?</dt><dd>Ja, nur in diesem Browser.</dd></div></dl></div>
-      
-    </div>
-  </section>
+    <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="Spielanleitung">
+      <div class="game-info-hero"><div class="game-info-title">
+        <span class="game-info-kicker" data-i18n="guideKicker">Originale WeightPlay-Spielanleitung</span>
+        <h2 data-i18n="guideTitle">Beschütze Pip mit der kürzesten starken Linie</h2>
+        <p data-i18n="guideIntro">Pip ist den Bienenstöcken der Kleelicht-Wiese zu nahe gekommen. Zeichne Barrieren, während die Bienen fliegen, und schließe Lücken rechtzeitig.</p>
+      </div></div>
+      <div class="game-info-sections guide-grid">
+        <article class="game-info-section"><h3 data-i18n="howTitle">So wird gespielt</h3><ol>
+          <li data-i18n="how1">Ziehe über die Wiese, um eine leuchtende Nektarbarriere zu zeichnen.</li>
+          <li data-i18n="how2">Die Bienen warten beim Zeichnen. Beim Loslassen der ersten gültigen Linie startet die Welle; danach kannst du nachbessern.</li>
+          <li data-i18n="how3">Halte bis zum Ablauf der Zeit durch, ohne dass eine Biene Pip berührt.</li>
+        </ol></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">Regeln und Ergebnis</h3><p data-i18n="rulesText">Linien brechen nicht. Gibt es einen Weg, nehmen ihn die Bienen zuerst; sonst schieben, drehen und biegen sie die Wand. Ein Kreis um nur einen Stein ist bloß ein Drehpunkt und wird vom Schwarm eng um den Stein geschält. Erst dieselbe Linie an zwei getrennten Geländepunkten wird golden und fest.</p><p data-i18n="guideExtra">Start by studying the meadow before you draw. Pip is safest when the barrier creates a short route that bees cannot simply walk around, but a long wall is expensive and gives the swarm more surface to push. Leave a little breathing room around the puppy so a repair does not trap your next stroke. When a barrier flashes red, repair that weak section first instead of replacing the whole shape. The first valid line starts the wave, so you have time to plan while the meadow is quiet. Once bees are moving, watch their approach rather than the line you are drawing: a safe-looking wall can still leave an open corner behind Pip. Two separated terrain anchors are stronger than one loop. A single stone lets a wall pivot or peel; wrapping the same stroke around two distinct stones, corners, or approved terrain points makes the wall hold and glow gold. If bees push a loose wall, do not chase the wall with frantic redraws. Wait for the gap they are trying to open, then add a short hook that closes that route. Nectar is limited, and efficient repairs usually earn more stars than a second large circle. Before each later chapter, reread the chapter hint: new hives, split approaches, gusts, fragile gaps, and mixed waves each change what the shortest safe line should look like. After a clear, the next route unlocks automatically and your best stars remain in this browser. A failed attempt costs no account data; simply return to the stage list, study the red opening, and try a different shape. You can also replay an earlier route to practice efficient shapes, compare the stars earned from short repairs, and learn which side of the meadow gives the bees the fewest choices. The stage summary records your progress, while the guide remains available whenever you need to refresh the basic rules.</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">Dreißig Wiesenrouten</h3><p data-i18n="progressText">Sechs Kapitel ergänzen weitere Stöcke, geteilte Anflüge, Steinanker, Böen, brüchige Lücken und gemischte Wellen.</p></article>
+        <article class="game-info-section"><h3 data-i18n="tipsTitle">Praktische Tipps</h3><p data-i18n="tipsText">Eine gerade Brücke und ein Kreis um einen Stein bleiben beweglich. Nutze zwei Schlingen, entgegengesetzte Haken oder eine echte Geländerinne.</p></article>
+        <article class="game-info-section"><h3 data-i18n="saveTitle">Speichern und Datenschutz</h3><p data-i18n="saveText">Stufen und Beststerne bleiben nur in diesem Browser. Konto und persönliche Daten sind nicht nötig.</p></article>
+        <article class="game-info-section"><h3 data-i18n="faqTitle">FAQ</h3><dl>
+          <div><dt data-i18n="faq1q">Kann ich nach dem Start der Bienen zeichnen?</dt><dd data-i18n="faq1a">Ja. Zeichne eine weitere Linie oder verbinde eine freie Wand mit dem Gelände, solange Nektar bleibt.</dd></div>
+          <div><dt data-i18n="faq2q">Werden die Bienen verletzt?</dt><dd data-i18n="faq2a">Nein. Die Barrieren lenken sie sanft zurück zu den Blumen.</dd></div>
+          <div><dt data-i18n="faq3q">Was kann ich danach spielen?</dt><dd data-i18n="faq3a">Probiere One Line für genaues Zeichnen oder Animal Guard Yard für größere Verteidigung.</dd></div>
+        </dl></article>
+      </div>
+    </section>
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-honey-shield-cover.webp')">
       <header class="stage-header">
-        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Back">←</button>
-        <div><strong data-i18n="title">Animal Honey Shield</strong><span id="stageSummary"></span></div>
+        <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Zurück zum Hauptmenü">←</button>
+        <div><strong data-runtime-localize="off">Animal Honey Shield</strong><span id="stageSummary"></span></div>
         <span class="stage-header-spacer" aria-hidden="true"></span>
       </header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
-      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Meadow stage selection"></div>
-      <nav class="stage-tabs" aria-label="Stage tabs" data-i18n-aria="stages"><span></span><span aria-current="page" data-i18n="stages">Stages</span><span></span></nav>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Wiesenstufen wählen"></div>
+      <nav class="stage-tabs" aria-label="Stufen" data-i18n-aria="stages"><span></span><span aria-current="page" data-i18n="stages">Stufen</span><span></span></nav>
     </div>
   </section>
 
@@ -150,47 +155,47 @@
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
-          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Back">←</button>
+          <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Zurück zu Stufen">←</button>
           <div class="battle-title"><small id="stageLabel"></small><strong id="objectiveText"></strong></div>
           <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="Pause">Ⅱ</button>
         </header>
         <section class="battle-metrics" aria-label="Battle status">
-          <div class="battle-stat"><small data-i18n="time">Time</small><strong id="timeValue">10.0</strong></div>
+          <div class="battle-stat"><small data-i18n="time">Zeit</small><strong id="timeValue">10.0</strong></div>
           <section id="waveMeter" class="wave-meter" aria-hidden="true"><i id="waveFill"></i></section>
-          <div class="battle-stat"><small data-i18n="nectar">Nectar</small><strong id="nectarValue">100</strong></div>
+          <div class="battle-stat"><small data-i18n="nectar">Nektar</small><strong id="nectarValue">100</strong></div>
         </section>
         <section id="boardWrap" class="board-wrap">
-          <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="Draw a nectar barrier to protect Pip"></canvas>
-          <div id="drawHint" class="draw-hint" data-i18n="drawHint">Draw anywhere to build Pip's shield</div>
+          <canvas id="gameCanvas" width="1000" height="620" tabindex="0" role="application" data-i18n-aria="boardLabel" aria-label="Zeichne eine Barriere zum Schutz von Pip"></canvas>
+          <div id="drawHint" class="draw-hint" data-i18n="drawHint">Zeichne Pips Schutzschild</div>
         </section>
         <div class="battle-feedback"><strong id="feedbackText" aria-live="polite"></strong><span id="lineReadout"></span></div>
-        <div class="battle-actions"><button id="clearBtn" type="button" data-i18n="clear">Clear lines</button><button id="restartBtn" type="button" data-i18n="restart">Restart</button></div>
+        <div class="battle-actions"><button id="clearBtn" type="button" data-i18n="clear">Linien löschen</button><button id="restartBtn" type="button" data-i18n="restart">Neustart</button></div>
       </div>
 
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
-        <h2 id="leaveTitle" data-i18n="leaveTitle">Leave this meadow?</h2><p data-i18n="leaveText">Continue keeps this wave frozen. Returning to Stages ends only this attempt.</p>
-        <div class="modal-actions two"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Return to Stages</button></div>
+        <h2 id="leaveTitle" data-i18n="leaveTitle">Diese Wiese verlassen?</h2><p data-i18n="leaveText">Fortsetzen hält diese Welle eingefroren. Die Rückkehr zu Stufen beendet nur diesen Versuch.</p>
+        <div class="modal-actions two"><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Weiterspielen</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Zu den Stufen</button></div>
       </div></section>
       <section id="pausePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" hidden><div class="dialog-card">
-        <h2 id="pauseTitle" data-i18n="pauseTitle">Meadow paused</h2><p data-i18n="pauseText">The bee wave is frozen while you take a break.</p>
-        <div class="modal-actions two"><button id="resumeBtn" class="primary-action" type="button" data-i18n="resume">Resume</button><button id="pauseHelpBtn" type="button" data-i18n="howTitle">How to play</button></div>
+        <h2 id="pauseTitle" data-i18n="pauseTitle">Wiese pausiert</h2><p data-i18n="pauseText">Die Bienenwelle bleibt während der Pause vollständig stehen.</p>
+        <div class="modal-actions two"><button id="resumeBtn" class="primary-action" type="button" data-i18n="resume">Fortsetzen</button><button id="pauseHelpBtn" type="button" data-i18n="howTitle">So wird gespielt</button></div>
       </div></section>
       <section id="resultPanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card">
-        <div class="result-pup sprite sprite-pup" aria-hidden="true"></div><small data-i18n="resultKicker">Meadow report</small><h2 id="resultTitle"></h2>
+        <div class="result-pup sprite sprite-pup" aria-hidden="true"></div><small data-i18n="resultKicker">Wiesenbericht</small><h2 id="resultTitle"></h2>
         <div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p>
-        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Next Stage</button><button id="retryBtn" type="button" data-i18n="retry">Replay</button></div>
+        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">Stufen</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">Nächste Stufe</button><button id="retryBtn" type="button" data-i18n="retry">Wiederholen</button></div>
       </div></section>
     </div>
     <div class="battle-ad-reserve" aria-hidden="true"></div>
   </section>
 
   <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card">
-    <button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close" aria-label="Close">×</button>
-    <div class="sprite sprite-pup" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">Draw, watch, and repair</h2><ol>
-      <li data-i18n="tutorial1">Drag one short barrier between Pip and the hive.</li>
-      <li data-i18n="tutorial2">Releasing starts the wave. Bees take gaps first and move walls only when no route exists.</li>
-      <li data-i18n="tutorial3">A straight bridge stays movable. Wrap a stone or hook a platform corner to lock the wall.</li>
-    </ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Protect Pip</button>
+    <button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close" aria-label="Schließen">×</button>
+    <div class="sprite sprite-pup" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">Zeichnen, verkeilen, halten</h2><ol>
+      <li data-i18n="tutorial1">Zeichne eine kurze Barriere zwischen Pip und dem Stock.</li>
+      <li data-i18n="tutorial2">Mit offenem Weg fliegen sie zu Pip. Ohne Weg schieben sie eine quer verlaufende lose Wand seitlich zum nächsten offenen Rand. Sobald eine Lücke entsteht, lassen sie los und greifen an.</li>
+      <li data-i18n="tutorial3">Ein Stein hält die Wand nicht fest. Hake dieselbe Linie an zwei getrennten Geländepunkten ein, damit sie golden wird.</li>
+    </ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Pip beschützen</button>
   </div></section>
 
   <script src="../../src/site-config.js"></script>
@@ -205,6 +210,6 @@
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-main-pull-guard1"></script>
 </body>
 </html>

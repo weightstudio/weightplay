@@ -8602,7 +8602,7 @@ window.WeightPlayGameRuntimeLocales["fr"] = {
   "Medals {n}/3": "Médailles {n}/3",
   "Medic Cub": "Petit médecin",
   "Medio": "Moyen",
-  "Medium": "Moyen",
+  "Medium": "Moyenne",
   "Medium to Challenging": "Moyen à difficile",
   "Medium to Hard": "Moyen à dur",
   "Medusa lunar": "Méduse lunaire",

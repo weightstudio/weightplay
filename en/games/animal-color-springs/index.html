@@ -66,24 +66,24 @@
   <link rel="stylesheet" href="../../src/loading-screen.css" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="style.css?v=20260729-interface-v4" />
+  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
 </head>
 <body data-screen="loading" data-game-id="animal-color-springs">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
-    <div class="loading-card"><strong data-i18n="title">動物彩泉分類</strong><span data-i18n="loading">正在喚醒森林彩泉…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
+    <div class="loading-card"><strong data-runtime-localize="off">動物彩泉分類</strong><span data-i18n="loading">正在喚醒森林彩泉…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
   </section>
 
   <div id="mainGroup" class="main-group" hidden>
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
         <a class="home-link" data-wp-return="main" href="/kids/" aria-label="回到 WeightPlay" data-i18n-aria="backWeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
-        <strong data-i18n="title">Animal Color Springs</strong>
+        <strong data-runtime-localize="off">Animal Color Springs</strong>
         <label class="locale-control"><span class="sr-only" data-i18n="language">語言</span><select id="localeSelect" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
       </header>
       <section class="main-hero">
         <img class="main-poster" src="assets/animal-color-springs-cover.webp" alt="森林裡的貓頭鷹與白兔正在整理發光彩泉" data-i18n-alt="Animal Color Springs game artwork" />
-        <div class="main-copy"><small data-i18n="eyebrow">森林彩泉謎題</small><h1 data-i18n="title">Animal Color Springs</h1><p data-i18n="pitch">把相同顏色的彩珠聚在同一座泉器，讓混亂的森林泉水恢復光彩。</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-i18n="start">開始遊戲</button></div>
+        <div class="main-copy"><small data-i18n="eyebrow">森林彩泉謎題</small><h1 data-runtime-localize="off">Animal Color Springs</h1><p data-i18n="pitch">把相同顏色的彩珠聚在同一座泉器，讓混亂的森林泉水恢復光彩。</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-i18n="start">開始遊戲</button></div>
       </section>
     </main>
     <section class="game-guide" aria-label="遊戲說明" data-i18n-aria="guideLabel">
@@ -137,6 +137,6 @@
   </section>
 <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-main-pull-guard1"></script>
 </body>
 </html>
