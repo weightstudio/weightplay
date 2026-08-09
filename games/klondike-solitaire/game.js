@@ -2422,7 +2422,7 @@ const KL_I18N = {
     }
   }
 
-  function maybeAnimateDeal({ showLoading = false } = {}) {
+  function maybeAnimateDeal({ showLoading = false, lockInput = true } = {}) {
     clearDealAnimationTimers();
     if (!state.dealSequence) {
       state.dealSequence = buildDealSequence();
@@ -2439,7 +2439,10 @@ const KL_I18N = {
       setLoadingProgress(0, t("ui.loading.dealing"));
     }
 
-    state.boardAnimationInProgress = true;
+    // The initial deal is prepared while Main is visible. It may still be
+    // animating when a player enters Battle, but it must not make the first
+    // legal tap disappear or get ignored.
+    state.boardAnimationInProgress = lockInput;
     state.dealProgressTimer = window.setInterval(() => {
       progressed += 1;
       if (showLoading && hasLoadingPanel) {
@@ -2839,7 +2842,7 @@ const KL_I18N = {
     // Main is available immediately; the seeded deal is prepared behind the
     // scenes instead of blocking the first screen with a full deal timer.
     if (ui.loadingPanel) ui.loadingPanel.hidden = true;
-    maybeAnimateDeal({ showLoading: false });
+    maybeAnimateDeal({ showLoading: false, lockInput: false });
     if (isQaWinFixtureEnabled()) {
       const totalCards = state.dealSequence?.size || 28;
       window.setTimeout(applyQaWinFixture, DEAL_INITIAL_DELAY_MS + totalCards * DEAL_STEP_MS + 80);

@@ -26,6 +26,24 @@
     script.dataset.wpBattleStandard = "true";
     document.head.appendChild(script);
   }
+  const classicPlayerInfoTitles = Object.freeze({
+    en: "Player, Device, and Save Information", "zh-Hant": "玩家、裝置與保存資訊", "zh-Hans": "玩家、设备与保存信息", ja: "プレイヤー・端末・保存情報", ko: "플레이어·기기·저장 정보", es: "Información de jugador, dispositivo y guardado", "pt-BR": "Informações de jogador, dispositivo e salvamento", fr: "Informations joueur, appareil et sauvegarde", de: "Spieler-, Geräte- und Speicherinformationen", it: "Informazioni su giocatore, dispositivo e salvataggio", ru: "Информация об игроке, устройстве и сохранении", hi: "खिलाड़ी, डिवाइस और सेव करने की जानकारी", ar: "معلومات اللاعب والجهاز والحفظ",
+  });
+  const classicPlayerInfo = Object.freeze({
+    en: "Touch, mouse, and keyboard use the same legal moves. Restart repeats the current deal, New Game creates a fresh deal, Undo restores the previous board, and no account or purchase is required.",
+    "zh-Hant": "觸控、滑鼠與鍵盤使用相同的合法走法。重新開始會重玩目前牌局，新遊戲會建立新牌局，還原可回到上一個盤面；不需要帳號或付費。",
+    "zh-Hans": "触控、鼠标与键盘使用相同的合法走法。重新开始会重玩当前牌局，新游戏会建立新牌局，撤销可回到上一个盘面；不需要账号或付费。",
+    ja: "タッチ、マウス、キーボードは同じ合法手を使います。リスタートは同じ配札をやり直し、新しいゲームは新しい配札を作り、元に戻すは直前の盤面を復元します。アカウントや購入は不要です。",
+    ko: "터치, 마우스, 키보드는 같은 합법 수를 사용합니다. 다시 시작은 현재 딜을 반복하고 새 게임은 새 딜을 만들며 실행 취소는 이전 보드를 복원합니다. 계정이나 구매는 필요하지 않습니다.",
+    es: "El tacto, el ratón y el teclado usan las mismas jugadas legales. Reiniciar repite el reparto actual, Nueva partida crea otro, Deshacer restaura el tablero anterior y no se necesita cuenta ni compra.",
+    "pt-BR": "Toque, mouse e teclado usam as mesmas jogadas válidas. Reiniciar repete a distribuição atual, Novo jogo cria outra, Desfazer restaura a mesa anterior e não é preciso conta nem compra.",
+    fr: "Le tactile, la souris et le clavier utilisent les mêmes coups légaux. Recommencer répète la donne actuelle, Nouvelle partie en crée une autre, Annuler restaure le plateau précédent et aucun compte ni achat n'est requis.",
+    de: "Touch, Maus und Tastatur verwenden dieselben gültigen Züge. Neustart wiederholt die aktuelle Ausgabe, Neues Spiel erstellt eine neue, Rückgängig stellt das vorherige Brett wieder her; Konto und Kauf sind nicht erforderlich.",
+    it: "Touch, mouse e tastiera usano le stesse mosse valide. Riavvia ripete la distribuzione attuale, Nuova partita ne crea una nuova, Annulla ripristina il tavolo precedente e non servono account o acquisti.",
+    ru: "Сенсорный экран, мышь и клавиатура используют одинаковые допустимые ходы. Перезапуск повторяет текущую раздачу, новая игра создаёт новую, отмена восстанавливает прежнее поле; аккаунт и покупки не нужны.",
+    hi: "टच, माउस और कीबोर्ड में वही वैध चालें रहती हैं। रीस्टार्ट मौजूदा डील दोहराता है, नया गेम नई डील बनाता है, पूर्ववत पिछला बोर्ड लौटाता है और खाते या खरीद की जरूरत नहीं है।",
+    ar: "تستخدم اللمسة والماوس ولوحة المفاتيح الحركات القانونية نفسها. يعيد البدء التوزيع الحالي، وتنشئ لعبة جديدة توزيعاً جديداً، ويستعيد التراجع اللوحة السابقة؛ لا يلزم حساب أو شراء.",
+  });
   const games = {
     "block-blast": {
       title: "Block Blast",
@@ -7325,6 +7343,7 @@
     const audience = document.querySelector('meta[name="weightplay-audience"]')?.content?.trim().toLowerCase() || "general";
     const identity = guideIdentity(game, audience);
     const isGeneralGuardYard = id === "animal-guard-yard" && audience === "general";
+    const isClassicCardGame = id === "pyramid-solitaire" || id === "tripeaks-solitaire";
     const publicFaq = isGeneralGuardYard ? game.faq.slice(0, -1) : game.faq;
     syncLocalizedMetadata(game, identity);
     const gameSkills = game.skills || [];
@@ -7353,14 +7372,14 @@
           <h2>${escapeHtml(game.title)} - ${escapeHtml(identity.suffix)}</h2>
           <p>${escapeHtml(game.intro)}</p>
         </div>
-        <div class="game-info-facts">
+        ${isClassicCardGame ? "" : `<div class="game-info-facts">
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("gameplay"))}</span><strong>${escapeHtml(game.gameplay || game.title)}</strong></div>
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("genre"))}</span><div class="game-info-tags">${(game.genre || []).map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div></div>
           ${showRecommendedAge ? `<div class="game-info-fact"><span>${escapeHtml(uiLabel("recommendedAge"))}</span><strong>${escapeHtml(localizeAge(game.age))}</strong></div>` : ""}
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("difficulty"))}</span><strong>${escapeHtml(localizeDifficulty(game.difficulty))}</strong></div>
           <div class="game-info-fact"><span>${escapeHtml(uiLabel("estimatedTime"))}</span><strong>${escapeHtml(localizePlayTime(game.time))}</strong></div>
           ${showSkills ? `<div class="game-info-fact"><span>${escapeHtml(uiLabel("skills"))}</span><div class="game-info-skills">${gameSkills.map((skill) => `<span>${escapeHtml(localizeSkill(skill))}</span>`).join("")}</div></div>` : ""}
-        </div>
+        </div>`}
       </div>
       <div class="game-info-sections">
         ${
@@ -7418,8 +7437,9 @@
             `
             : ""
         }
+        ${isClassicCardGame ? `<div class="game-info-section game-info-player"><h3>${escapeHtml(classicPlayerInfoTitles[activeLocale] || classicPlayerInfoTitles.en)}</h3><p>${escapeHtml(classicPlayerInfo[activeLocale] || classicPlayerInfo.en)}</p></div>` : ""}
         ${
-          isGeneralGuardYard
+          isGeneralGuardYard || isClassicCardGame
             ? ""
             : `
               <div class="game-info-section game-info-parent">
@@ -7429,7 +7449,7 @@
             `
         }
         ${
-          game.hideScoreBands
+          game.hideScoreBands || isClassicCardGame
             ? ""
             : `
               <div class="game-info-section game-info-progress">

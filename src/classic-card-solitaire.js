@@ -174,6 +174,18 @@
       return null;
     }
 
+    sourceKey(source) { return source ? `${source.zone}:${source.index ?? source.pile ?? "top"}:${source.row ?? ""}` : ""; }
+
+    hasLegalPair(source) {
+      const card = this.sourceCard(source);
+      if (!card) return false;
+      if (card.rank === 13) return true;
+      if (source.zone === "pyramid" && !this.available(source.index)) return false;
+      if (source.zone === "waste") return this.cards.some((entry, index) => this.available(index) && Number(entry.card.rank) + Number(card.rank) === 13);
+      return this.cards.some((entry, index) => index !== source.index && this.available(index) && Number(entry.card.rank) + Number(card.rank) === 13)
+        || (this.waste.at(-1) ? Number(this.waste.at(-1).rank) + Number(card.rank) === 13 : false);
+    }
+
     groupFrom(source) {
       if (!source) return [];
       if (source.zone === "free") return this.freeCells[source.index] ? [this.freeCells[source.index]] : [];
@@ -282,16 +294,16 @@
       if (!source) return false;
       const card = this.sourceCard(source);
       if (!card || (source.zone === "pyramid" && !this.available(source.index))) return false;
-      const key = `${source.zone}:${source.index ?? "top"}`;
-      if (card.rank === 13) {
+      const key = this.sourceKey(source);
+      if (Number(card.rank) === 13) {
         this.pushHistory();
         if (source.zone === "pyramid") this.cards[source.index].removed = true; else this.waste.pop();
         this.moves += 1; this.selected = null; this.checkWin(); return true;
       }
-      if (!this.selected) { this.selected = { ...source, key }; return true; }
-      if (this.selected.key === key) { this.selected = null; return true; }
+      if (!this.selected) { this.selected = { ...source }; return true; }
+      if (this.sourceKey(this.selected) === key) { this.selected = null; return true; }
       const other = this.sourceCard(this.selected);
-      if (!other || other.rank + card.rank !== 13) return false;
+      if (!other || Number(other.rank) + Number(card.rank) !== 13) return false;
       this.pushHistory();
       if (this.selected.zone === "pyramid") this.cards[this.selected.index].removed = true; else this.waste.pop();
       if (source.zone === "pyramid") this.cards[source.index].removed = true; else this.waste.pop();
@@ -362,7 +374,7 @@
       return moves;
     }
 
-    tryHint() { const move = this.legalMoves()[0] || null; this.selected = move?.source || null; return move; }
+    tryHint() { const move = this.legalMoves()[0] || null; this.selected = move?.source ? { ...move.source } : null; return move; }
   }
 
   function cardMarkup(card, source, extra = "") {
@@ -385,6 +397,7 @@
       this.hintMove = null;
       this.renderedCombo = 0;
       this.pendingMoveRects = null;
+      this.pendingRemovedMotions = [];
       this.nodes = {};
     }
 
@@ -441,10 +454,15 @@
     }
     showMain() { this.active = false; this.nodes.battleScreen.hidden = true; this.nodes.mainScreen.hidden = false; document.body.dataset.screen = "main"; this.renderMain(); window.dispatchEvent(new Event("weightplay:shell-sync")); }
     showBattle() { this.active = true; this.nodes.mainScreen.hidden = true; this.nodes.battleScreen.hidden = false; document.body.dataset.screen = "battle"; this.render(); window.dispatchEvent(new Event("weightplay:battle-open")); window.dispatchEvent(new Event("weightplay:battle-sync")); window.dispatchEvent(new Event("weightplay:shell-sync")); this.nodes.battleBackBtn?.focus({ preventScroll: true }); }
-    renderMain() { this.setText("#statistics", `${this.variantCopy().target}`); }
+    renderMain() { this.setText("#statistics", ""); }
     captureMoveRects() {
-      if (this.config.variant !== "freecell") return null;
       return new Map([...this.nodes.board.querySelectorAll("[data-card-id]")].map((node) => [node.dataset.cardId, node.getBoundingClientRect()]));
+    }
+    captureRemovedMotions(sources = []) {
+      const wanted = new Set(sources.filter(Boolean).map((source) => JSON.stringify(source)));
+      return [...this.nodes.board.querySelectorAll("[data-source]")]
+        .filter((node) => wanted.has(node.dataset.source))
+        .map((node) => ({ node: node.cloneNode(true), rect: node.getBoundingClientRect() }));
     }
     animateMovedCards() {
       const previous = this.pendingMoveRects;
@@ -463,6 +481,25 @@
           { duration: 260, easing: "cubic-bezier(.2,.8,.25,1)", fill: "none" },
         );
         animation.addEventListener("finish", () => node.classList.remove("is-moving"), { once: true });
+      });
+    }
+    animateRemovedCards() {
+      const motions = this.pendingRemovedMotions;
+      this.pendingRemovedMotions = [];
+      motions.forEach(({ node, rect }) => {
+        node.classList.add("classic-card-motion");
+        node.removeAttribute("data-source");
+        node.removeAttribute("data-card-id");
+        Object.assign(node.style, { position: "fixed", left: `${rect.left}px`, top: `${rect.top}px`, width: `${rect.width}px`, height: `${rect.height}px`, margin: "0" });
+        document.body.append(node);
+        const finish = () => node.remove();
+        if (typeof node.animate === "function") {
+          const animation = node.animate(
+            [{ opacity: 1, transform: "translateY(0) scale(1)" }, { opacity: 0, transform: "translateY(-14px) scale(.86)" }],
+            { duration: 260, easing: "cubic-bezier(.2,.8,.25,1)", fill: "forwards" },
+          );
+          animation.addEventListener("finish", finish, { once: true });
+        } else window.setTimeout(finish, 260);
       });
     }
     validTargets() {
@@ -512,8 +549,26 @@
         this.render();
         return;
       }
-      if (this.config.variant === "pyramid") { if (source) { if (this.game.pairPyramid(source)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); } else this.feedback(this.t("pairWrong")); } return; }
-      if (this.config.variant === "tripeaks" || this.config.variant === "golf") { if (source && this.game.sequencePlay(source)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); } else if (source) this.feedback(this.t("wrong")); return; }
+      if (this.config.variant === "pyramid") {
+        if (!source) return;
+        const previousSelected = this.game.selected;
+        const movesBefore = this.game.moves;
+        const sources = previousSelected ? [previousSelected, source] : [source];
+        this.pendingMoveRects = previousSelected || this.game.sourceCard(source)?.rank === 13 ? this.captureMoveRects() : null;
+        this.pendingRemovedMotions = previousSelected || this.game.sourceCard(source)?.rank === 13 ? this.captureRemovedMotions(sources) : [];
+        if (this.game.pairPyramid(source)) {
+          this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render();
+          if (this.game.moves === movesBefore && !this.game.hasLegalPair(source)) this.feedback(this.t("noMoves"));
+        } else {
+          this.pendingMoveRects = null; this.pendingRemovedMotions = []; this.feedback(this.t("pairWrong"));
+        }
+        return;
+      }
+      if (this.config.variant === "tripeaks" || this.config.variant === "golf") {
+        this.pendingMoveRects = source ? this.captureMoveRects() : null;
+        if (source && this.game.sequencePlay(source)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); } else { this.pendingMoveRects = null; if (source) this.feedback(this.t("wrong")); }
+        return;
+      }
       if (!source && !dest) return;
       if (this.game.selected && dest) {
         this.pendingMoveRects = this.captureMoveRects();
@@ -550,12 +605,25 @@
         if (this.game.moveClassic(source, dest)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); }
         else { this.pendingMoveRects = null; this.feedback(this.t("wrong")); }
       }
-      else if ((this.config.variant === "tripeaks" || this.config.variant === "golf") && this.game.sequencePlay(source)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); }
+      else if (this.config.variant === "pyramid") {
+        const movesBefore = this.game.moves;
+        this.pendingMoveRects = this.captureMoveRects();
+        this.pendingRemovedMotions = this.captureRemovedMotions([source, targetSource]);
+        this.game.pairPyramid(source);
+        if (targetSource && JSON.stringify(source) !== JSON.stringify(targetSource) && this.game.moves === movesBefore) this.game.pairPyramid(targetSource);
+        if (this.game.moves !== movesBefore) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); }
+        else { this.pendingMoveRects = null; this.pendingRemovedMotions = []; this.feedback(this.t("pairWrong")); }
+      }
+      else if (this.config.variant === "tripeaks") {
+        this.pendingMoveRects = this.captureMoveRects();
+        if (this.game.sequencePlay(source)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); }
+        else { this.pendingMoveRects = null; this.feedback(this.t("wrong")); }
+      }
       else this.feedback(this.t("wrong"));
     }
     hint() { const move = this.game.tryHint(); if (!move) { this.hintMove = null; this.feedback(this.game.won ? this.t("winText") : this.t("noMoves")); return; } this.clearFeedback(); this.hintMove = move; this.render(); clearTimeout(this.hintTimer); this.hintTimer = setTimeout(() => { this.game.selected = null; this.hintMove = null; this.render(); }, 2400); }
     clearFeedback() { if (!this.nodes.toast) return; this.nodes.toast.hidden = true; this.nodes.toast.textContent = ""; clearTimeout(this.toastTimer); }
-    feedback(message) { if (!this.nodes.toast) return; this.nodes.toast.textContent = message; this.nodes.toast.hidden = false; clearTimeout(this.toastTimer); this.toastTimer = setTimeout(() => { this.nodes.toast.hidden = true; }, 1800); }
+    feedback(message) { if (!this.nodes.toast) return; this.nodes.toast.setAttribute("role", "alert"); this.nodes.toast.setAttribute("aria-live", "assertive"); this.nodes.toast.textContent = message; this.nodes.toast.hidden = false; if (this.nodes.boardStatus && !this.game.won && !this.game.lost) this.nodes.boardStatus.textContent = message; clearTimeout(this.toastTimer); clearTimeout(this.statusTimer); this.toastTimer = setTimeout(() => { this.nodes.toast.hidden = true; }, 1800); this.statusTimer = setTimeout(() => { if (this.nodes.boardStatus && !this.game.won && !this.game.lost) this.nodes.boardStatus.textContent = ""; }, 1800); }
     hideResult() { if (this.nodes.resultOverlay) this.nodes.resultOverlay.hidden = true; }
     showResult() { if (!this.nodes.resultOverlay || (!this.game.won && !this.game.lost)) return; this.nodes.resultOverlay.hidden = false; this.nodes.resultTitle.textContent = this.game.won ? this.t("win") : this.t("lose"); this.nodes.resultText.textContent = this.game.won ? this.t("winText") : this.t("loseText"); }
     render() {
@@ -571,7 +639,7 @@
       } else if (!this.game.combo) this.nodes.comboValue.classList.remove("combo-pop");
       this.renderedCombo = this.game.combo;
       this.nodes.boardStatus.textContent = this.game.won ? this.t("win") : this.game.lost ? this.t("lose") : "";
-      this.renderSlots(); this.renderTableau(); this.markValidTargets(); this.showResult(); this.animateMovedCards();
+      this.renderSlots(); this.renderTableau(); this.markValidTargets(); this.showResult(); this.animateMovedCards(); this.animateRemovedCards();
     }
     renderSlots() {
       const selectedClass = (source) => this.game.selected && JSON.stringify(this.game.selected) === JSON.stringify(source) ? " selected" : "";

@@ -520,6 +520,22 @@ body {
   justify-content: space-between;
 }
 
+.first-response {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 7px 10px;
+  border: 1px solid rgba(94, 234, 212, .42);
+  border-radius: 7px;
+  background: rgba(12, 65, 70, .72);
+  color: #d9fff7;
+  font-size: .78rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.first-response.hidden,
+.first-response:empty { display: none; }
+
 .meta-badge {
   background: var(--bg-input);
   border: 1px solid rgba(255, 255, 255, 0.05);

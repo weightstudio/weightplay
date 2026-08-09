@@ -3363,6 +3363,7 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
 
 window.WeightPlayGameInfoLocales.es.games["spider-solitaire"] = {
   title: "Solitario Spider",
+  noteTitle: "Información del jugador y guardado",
   age: "9+",
   difficulty: "De fácil a difícil",
   time: "5-20 minutos",

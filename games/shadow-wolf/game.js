@@ -99,6 +99,7 @@
     expFill: $("expFill"),
     roomText: $("roomText"),
     keyText: $("keyText"),
+    firstResponse: $("firstResponse"),
     gameCanvas: $("gameCanvas"),
     btnLeft: $("btnLeft"),
     btnRight: $("btnRight"),
@@ -453,6 +454,87 @@
     }
   };
 
+  const firstResponseCopy = {
+    en: {
+      move: "Movement registered - watch for the first hazard.",
+      jump: "Jump registered - watch the first ledge.",
+      attack: "Attack registered - watch for the first enemy.",
+      dash: "Dash registered - save it for a hazard.",
+    },
+    "zh-Hant": {
+      move: "\u5df2\u56de\u61c9\u79fb\u52d5\u3002\u7559\u610f\u7b2c\u4e00\u500b\u5371\u96aa\u3002",
+      jump: "\u5df2\u56de\u61c9\u8df3\u8e8d\u3002\u7559\u610f\u7b2c\u4e00\u500b\u5e73\u53f0\u3002",
+      attack: "\u5df2\u56de\u61c9\u653b\u64ca\u3002\u7559\u610f\u7b2c\u4e00\u96bb\u6575\u4eba\u3002",
+      dash: "\u5df2\u56de\u61c9\u885d\u523a\u3002\u628a\u5b83\u7559\u7d66\u5371\u96aa\u3002",
+    },
+    "zh-Hans": {
+      move: "\u5df2\u56de\u5e94\u79fb\u52a8\u3002\u7559\u610f\u7b2c\u4e00\u4e2a\u5371\u9669\u3002",
+      jump: "\u5df2\u56de\u5e94\u8df3\u8dc3\u3002\u7559\u610f\u7b2c\u4e00\u4e2a\u5e73\u53f0\u3002",
+      attack: "\u5df2\u56de\u5e94\u653b\u51fb\u3002\u7559\u610f\u7b2c\u4e00\u4e2a\u654c\u4eba\u3002",
+      dash: "\u5df2\u56de\u5e94\u51b2\u523a\u3002\u628a\u5b83\u7559\u7ed9\u5371\u9669\u3002",
+    },
+    ja: {
+      move: "\u79fb\u52d5\u3092\u78ba\u8a8d\u3057\u307e\u3057\u305f\u3002\u6700\u521d\u306e\u5371\u967a\u306b\u6ce8\u76ee\u3057\u307e\u3057\u3087\u3046\u3002",
+      jump: "\u30b8\u30e3\u30f3\u30d7\u3092\u78ba\u8a8d\u3057\u307e\u3057\u305f\u3002\u6700\u521d\u306e\u8db3\u5834\u306b\u6ce8\u76ee\u3057\u307e\u3057\u3087\u3046\u3002",
+      attack: "\u653b\u6483\u3092\u78ba\u8a8d\u3057\u307e\u3057\u305f\u3002\u6700\u521d\u306e\u6575\u306b\u6ce8\u76ee\u3057\u307e\u3057\u3087\u3046\u3002",
+      dash: "\u30c0\u30c3\u30b7\u30e5\u3092\u78ba\u8a8d\u3057\u307e\u3057\u305f\u3002\u5371\u967a\u306b\u5099\u3048\u3066\u6e29\u5b58\u3057\u307e\u3057\u3087\u3046\u3002",
+    },
+    ko: {
+      move: "\uc774\ub3d9\uc744 \ud655\uc778\ud588\uc2b5\ub2c8\ub2e4. \uccab \ubc88\uc9f8 \uc704\ud5d8\uc744 \uc0b4\ud3b4\ubcf4\uc138\uc694.",
+      jump: "\uc810\ud504\ub97c \ud655\uc778\ud588\uc2b5\ub2c8\ub2e4. \uccab \ubc88\uc9f8 \ud50c\ub7ab\ud3fc\uc744 \uc0b4\ud3b4\ubcf4\uc138\uc694.",
+      attack: "\uacf5\uaca9\uc744 \ud655\uc778\ud588\uc2b5\ub2c8\ub2e4. \uccab \ubc88\uc9f8 \uc801\uc744 \uc0b4\ud3b4\ubcf4\uc138\uc694.",
+      dash: "\ub300\uc2dc\ub97c \ud655\uc778\ud588\uc2b5\ub2c8\ub2e4. \uc704\ud5d8\ud560 \ub54c \uc0ac\uc6a9\ud558\uc138\uc694.",
+    },
+    es: {
+      move: "Movimiento registrado: observa el primer peligro.",
+      jump: "Salto registrado: observa la primera plataforma.",
+      attack: "Ataque registrado: observa al primer enemigo.",
+      dash: "Carrera registrada: guárdala para un peligro.",
+    },
+    "pt-BR": {
+      move: "Movimento registrado: observe o primeiro perigo.",
+      jump: "Salto registrado: observe a primeira plataforma.",
+      attack: "Ataque registrado: observe o primeiro inimigo.",
+      dash: "Investida registrada: guarde-a para um perigo.",
+    },
+    fr: {
+      move: "Mouvement enregistré : observez le premier danger.",
+      jump: "Saut enregistré : observez la première plateforme.",
+      attack: "Attaque enregistrée : observez le premier ennemi.",
+      dash: "Ruée enregistrée : gardez-la pour un danger.",
+    },
+    de: {
+      move: "Bewegung erkannt - achte auf die erste Gefahr.",
+      jump: "Sprung erkannt - achte auf die erste Plattform.",
+      attack: "Angriff erkannt - achte auf den ersten Gegner.",
+      dash: "Sprint erkannt - spare ihn für eine Gefahr.",
+    },
+    it: {
+      move: "Movimento registrato: osserva il primo pericolo.",
+      jump: "Salto registrato: osserva la prima piattaforma.",
+      attack: "Attacco registrato: osserva il primo nemico.",
+      dash: "Scatto registrato: conservalo per un pericolo.",
+    },
+    ru: {
+      move: "Движение принято — следите за первой опасностью.",
+      jump: "Прыжок принят — следите за первой платформой.",
+      attack: "Атака принята — следите за первым врагом.",
+      dash: "Рывок принят — берегите его для опасного места.",
+    },
+    hi: {
+      move: "\u091a\u0932\u0928 \u0930\u091c\u093f\u0938\u094d\u091f\u0930 \u0939\u0941\u0906 - \u092a\u0939\u0932\u0947 \u0916\u0924\u0930\u0947 \u092a\u0930 \u0927\u094d\u092f\u093e\u0928 \u0926\u0947\u0902\u0964",
+      jump: "\u091c\u092e\u094d\u092a \u0930\u091c\u093f\u0938\u094d\u091f\u0930 \u0939\u0941\u0906 - \u092a\u0939\u0932\u0947 \u092a\u094d\u0932\u0947\u091f\u092b\u093c\u0930\u094d\u092e \u092a\u0930 \u0927\u094d\u092f\u093e\u0928 \u0926\u0947\u0902\u0964",
+      attack: "\u0939\u092e\u0932\u093e \u0930\u091c\u093f\u0938\u094d\u091f\u0930 \u0939\u0941\u0906 - \u092a\u0939\u0932\u0947 \u0926\u0941\u0936\u094d\u092e\u0928 \u092a\u0930 \u0927\u094d\u092f\u093e\u0928 \u0926\u0947\u0902\u0964",
+      dash: "\u0921\u0948\u0936 \u0930\u091c\u093f\u0938\u094d\u091f\u0930 \u0939\u0941\u0906 - \u0916\u0924\u0930\u0947 \u0915\u0947 \u0932\u093f\u090f \u0907\u0938\u0947 \u092c\u091a\u093e\u0915\u0930 \u0930\u0916\u0947\u0902\u0964",
+    },
+    ar: {
+      move: "\u062a\u0645 \u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u062d\u0631\u0643\u0629 - \u0631\u0627\u0642\u0628 \u0627\u0644\u062e\u0637\u0631 \u0627\u0644\u0623\u0648\u0644.",
+      jump: "\u062a\u0645 \u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u0642\u0641\u0632 - \u0631\u0627\u0642\u0628 \u0627\u0644\u0645\u0646\u0635\u0629 \u0627\u0644\u0623\u0648\u0644\u0649.",
+      attack: "\u062a\u0645 \u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u0647\u062c\u0648\u0645 - \u0631\u0627\u0642\u0628 \u0627\u0644\u0639\u062f\u0648 \u0627\u0644\u0623\u0648\u0644.",
+      dash: "\u062a\u0645 \u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u0627\u0646\u062f\u0641\u0627\u0639 - \u0627\u062d\u0641\u0638\u0647 \u0644\u0644\u062e\u0637\u0631.",
+    },
+  };
+
   Object.assign(text["zh-Hant"], {
     pauseBattle: "暫停戰鬥",
     pauseEyebrow: "遠征已暫停",
@@ -721,6 +803,8 @@
     hazardClock: 0,
     keys: 0,
     gameActive: false,
+    firstResponseShown: false,
+    firstResponseAction: "",
     gameLoopId: null,
 
     // Wolf Physics States
@@ -779,6 +863,7 @@
   let resultActionClaimed = false;
   let resultFocusToken = 0;
   let resultActivationQuarantine = false;
+  let firstResponseTimer = null;
   const heldActivationKeys = new Set();
   const SIMULATION_STEP_MS = 1000 / 60;
   const MAX_SIMULATION_STEPS = 6;
@@ -860,6 +945,30 @@
     return Object.entries(params).reduce((str, [k, v]) => str.replaceAll(`{${k}}`, String(v)), raw);
   }
 
+  function renderFirstResponse() {
+    if (!nodes.firstResponse) return;
+    const locale = window.WonderI18n?.actualLocale?.() || getLocale();
+    const copy = firstResponseCopy[locale] || firstResponseCopy.en;
+    const message = state.firstResponseShown && state.firstResponseAction
+      ? (copy[state.firstResponseAction] || copy.move)
+      : "";
+    nodes.firstResponse.textContent = message;
+    nodes.firstResponse.classList.toggle("hidden", !message);
+  }
+
+  function showFirstResponse(action) {
+    if (!state.gameActive || state.firstResponseShown) return;
+    state.firstResponseShown = true;
+    state.firstResponseAction = action;
+    renderFirstResponse();
+    window.clearTimeout(firstResponseTimer);
+    firstResponseTimer = window.setTimeout(() => {
+      state.firstResponseShown = false;
+      state.firstResponseAction = "";
+      renderFirstResponse();
+    }, 5200);
+  }
+
   function assetImg(src, alt = "") {
     return `<img src="${src}" alt="${alt}" loading="lazy" decoding="async" />`;
   }
@@ -896,6 +1005,7 @@
     updateDiamondShopUI();
     renderEquippedGear();
     renderAdventureRecord();
+    renderFirstResponse();
   }
 
   const stageCopy = {
@@ -1617,6 +1727,11 @@
     cancelPendingSettlement();
     closePause(false);
     clearActiveInputs();
+    window.clearTimeout(firstResponseTimer);
+    firstResponseTimer = null;
+    state.firstResponseShown = false;
+    state.firstResponseAction = "";
+    renderFirstResponse();
     setResultModalOpen(false, false);
     loadLocalState();
     const playableStage = Math.max(1, Math.min(state.unlockedStage, Number(startStage) || state.selectedStage || 1));
@@ -1680,23 +1795,28 @@
   // Double Jump, Dash, Attack Slash
   function makePlayerJump() {
     const stats = getStats();
+    let jumped = false;
     if (state.grounded) {
       state.vy = -stats.jump;
       state.grounded = false;
       state.doubleJumpAvailable = true;
+      jumped = true;
       window.WonderSound?.play("click");
     } else if (state.doubleJumpAvailable) {
       state.vy = -stats.jump * 0.95;
       state.doubleJumpAvailable = false;
+      jumped = true;
       window.WonderSound?.play("click");
       createJumpDust(state.x + state.width / 2, state.y + state.height);
     }
+    if (jumped) showFirstResponse("jump");
   }
 
   function makePlayerAttack() {
     if (state.attackTimer > 0) return;
     const stats = getStats();
     state.attackTimer = stats.attackFrames;
+    showFirstResponse("attack");
     window.WonderSound?.play("shoot");
 
     // Attack collision sweeps forward
@@ -1750,6 +1870,7 @@
     state.dashTimer = 15; // 15 frames dash duration
     state.dashCooldown = 60; // 1 second cooldown
     state.invincibilityTimer = 15;
+    showFirstResponse("dash");
     window.WonderSound?.play("click");
     createDashGhost(state.x, state.y);
   }
@@ -2263,6 +2384,7 @@
       moveDir = 1;
       state.facing = "right";
     }
+    if (moveDir !== 0) showFirstResponse("move");
 
     // Apply Dash speed boost
     let curSpeed = stats.speed;
