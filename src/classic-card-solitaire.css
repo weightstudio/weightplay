@@ -296,6 +296,8 @@ body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyram
   body[data-wp-game-id="tripeaks-solitaire"] .tableau-area.variant-tripeaks { --classic-card-width: clamp(30px, 7.6vh, 48px); }
   body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyramid-row,
   body[data-wp-game-id="tripeaks-solitaire"] .tableau-area.variant-tripeaks > .peak-row { flex-basis: calc(var(--classic-card-height) * .62); height: calc(var(--classic-card-height) * .62); }
+  body[data-wp-game-id="pyramid-solitaire"] .stock-pile { --pyramid-stock-card-width: clamp(38px, 9vh, 58px); }
+  body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyramid-row { flex-basis: var(--classic-card-height); height: var(--classic-card-height); }
 }
 
 @media (prefers-reduced-motion: reduce) {
