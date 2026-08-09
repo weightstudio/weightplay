@@ -1013,3 +1013,62 @@ a:focus-visible {
     transform: scale(0.86);
   }
 }
+
+/* Main composition contract: square media, fixed primary height, and a
+   deliberate short-landscape poster/action split. */
+.main-hero {
+  grid-template-columns: 420px minmax(0, 1fr);
+  min-height: 0;
+}
+.poster {
+  width: 420px;
+  height: 420px;
+  max-height: none;
+  aspect-ratio: 1;
+}
+.main-copy {
+  align-self: start;
+}
+.main-copy button {
+  min-height: 52px;
+}
+@media (max-width: 680px) {
+  .main-hero {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    min-height: 0;
+  }
+  .poster {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+  .main-copy button {
+    min-height: 52px;
+  }
+}
+@media (max-height: 500px) and (min-width: 681px) {
+  .main-screen {
+    height: auto;
+    min-height: 0;
+  }
+  .main-hero {
+    height: auto;
+    min-height: 0;
+    grid-template-columns: 300px minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+  }
+  .poster {
+    width: 300px;
+    height: 300px;
+    aspect-ratio: 1;
+    justify-self: start;
+  }
+  .main-copy {
+    align-self: start;
+  }
+  .main-copy button {
+    min-height: 52px;
+  }
+}
