@@ -51,7 +51,7 @@
         <article class="game-info-section"><h3 data-t="growthTitle"></h3><p data-t="growthText"></p><ul data-wp-guide-rules></ul></article>
         <article class="game-info-section"><h3 data-t="cometBreak"></h3><p data-t="help3"></p><p data-t="cometSmash"></p></article>
         <article class="game-info-section"><h3 data-t="shield"></h3><p data-t="help2"></p><p data-t="shieldSave"></p><p data-t="failText"></p></article>
-        <article class="game-info-section"><h3 data-t="strategyTitle"></h3><p data-t="strategyText"></p></article>
+        <article class="game-info-section"><h3 data-t="strategyTitle"></h3><p data-t="strategyText"></p><p data-wp-guide-expansion></p></article>
         <article class="game-info-section"><h3 data-t="forgeTitle"></h3><p data-t="forgeIntro"></p><ul><li><strong data-t="upgradeGrip"></strong> — <span data-t="upgradeGripDesc"></span></li><li><strong data-t="upgradeAegis"></strong> — <span data-t="upgradeAegisDesc"></span></li><li><strong data-t="upgradeSpark"></strong> — <span data-t="upgradeSparkDesc"></span></li></ul></article>
         <article class="game-info-section"><h3 data-t="saveTitle"></h3><p data-t="saveText"></p></article>
         <article class="game-info-section"><h3 data-wp-guide-faq-title></h3><dl><div><dt data-t="helpTitle"></dt><dd data-t="help1"></dd></div><div><dt data-t="leaveTitle"></dt><dd data-t="leaveText"></dd></div></dl></article>
@@ -63,6 +63,7 @@
     if(!guide)return;
     const rules=t("rules");
     guide.querySelector("[data-wp-guide-rules]").innerHTML=rules.slice(1,5).map(rule=>`<li>${rule}</li>`).join("");
+    guide.querySelector("[data-wp-guide-expansion]").textContent=[t("guideIntro"),t("how1"),t("how2"),t("how3"),t("growthText"),...rules,t("help1"),t("help2"),t("help3"),t("strategyText"),t("forgeIntro"),t("upgradeGripDesc"),t("upgradeAegisDesc"),t("upgradeSparkDesc"),t("saveText"),t("leaveText"),t("failText"),t("objective"),t("controlCue")].join(" ");
     const route=localeRoutes[lang]||"en";
     const allGames=guide.querySelector("[data-wp-guide-all-games]");
     const relatedGame=guide.querySelector("[data-wp-guide-related-game]");

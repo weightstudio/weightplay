@@ -18,6 +18,7 @@
     "animal-prism-garden": ["#battle", 390, 788, 760, 334],
     "animal-skybridge-rivals": [".battle-canvas", 390, 788, 760, 334],
     "animal-skyspire-drop": [".battle-canvas", 390, 788, 760, 334],
+    "animal-spectrum-pulse": [".battle-canvas", 390, 788, 760, 334],
     "animal-rift-salvage": [".battle-canvas", 390, 788, 760, 334],
     "animal-cafe-rush": ["#playPanel", 382, 780, 760, 360],
     "animal-crystal-survivor": ["#gamePanel", 382, 780, 760, 334],
