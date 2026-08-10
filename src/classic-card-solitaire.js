@@ -556,6 +556,7 @@
       this.audio = new SoundEngine("card_games_sound_v1");
       this.active = false;
       this.drag = null;
+      this.dragPreview = null;
       this.hintTimer = null;
       this.hintMove = null;
       this.renderedCombo = 0;
@@ -649,6 +650,7 @@
       this.nodes.board.addEventListener("pointerdown", (event) => this.handlePointerDown(event));
       this.nodes.board.addEventListener("pointermove", (event) => this.handlePointerMove(event));
       this.nodes.board.addEventListener("pointerup", (event) => this.handlePointerUp(event));
+      this.nodes.board.addEventListener("pointercancel", () => this.handlePointerCancel());
       this.nodes.stockPile?.addEventListener("click", () => { if (["pyramid", "tripeaks", "golf"].includes(this.config.variant)) { if (this.game.drawStock()) { const stockRemaining = this.game.stock.length; this.clearFeedback(); this.audio.draw(); this.render(); if (this.config.variant === "golf") this.showGolfStockCue(stockRemaining); } else this.feedback(this.t("stockEmpty")); } });
       root.addEventListener("wonder:locale-change", () => { this.locale = safeLocale(); this.refreshCopy(); this.render(); });
     }
@@ -877,38 +879,90 @@
     }
     handlePointerDown(event) {
       const card = event.target.closest("[data-source]"); if (!card) return;
+      this.clearDragPreview();
       this.drag = { source: JSON.parse(card.dataset.source), startX: event.clientX, startY: event.clientY, moved: false, card };
       card.setPointerCapture?.(event.pointerId);
     }
-    handlePointerMove(event) { if (!this.drag) return; const dx = event.clientX - this.drag.startX; const dy = event.clientY - this.drag.startY; if (!this.drag.moved && Math.hypot(dx, dy) > 8) this.drag.moved = true; }
+    createDragPreview(event) {
+      if (this.config.variant !== "freecell" || !this.drag?.card) return;
+      const rect = this.drag.card.getBoundingClientRect();
+      const preview = this.drag.card.cloneNode(true);
+      preview.classList.add("classic-card-drag-preview");
+      preview.removeAttribute("data-source");
+      preview.removeAttribute("data-card-id");
+      preview.setAttribute("aria-hidden", "true");
+      Object.assign(preview.style, {
+        position: "fixed",
+        left: `${rect.left}px`,
+        top: `${rect.top}px`,
+        width: `${rect.width}px`,
+        height: `${rect.height}px`,
+        margin: "0",
+        transform: "none",
+      });
+      document.body.append(preview);
+      this.dragPreview = { node: preview, offsetX: Math.max(0, Math.min(rect.width, event.clientX - rect.left)), width: rect.width, height: rect.height };
+      this.updateDragPreview(event);
+    }
+    updateDragPreview(event) {
+      if (!this.dragPreview) return;
+      const { node, offsetX, height } = this.dragPreview;
+      node.style.left = `${event.clientX - offsetX}px`;
+      node.style.top = `${event.clientY - height - 12}px`;
+    }
+    clearDragPreview() {
+      this.dragPreview?.node?.remove();
+      this.dragPreview = null;
+    }
+    handlePointerMove(event) {
+      if (!this.drag) return;
+      const dx = event.clientX - this.drag.startX;
+      const dy = event.clientY - this.drag.startY;
+      if (!this.drag.moved && Math.hypot(dx, dy) > 8) {
+        this.drag.moved = true;
+        this.createDragPreview(event);
+      }
+      if (this.drag.moved) this.updateDragPreview(event);
+    }
+    handlePointerCancel() {
+      this.drag = null;
+      this.clearDragPreview();
+    }
     handlePointerUp(event) {
-      if (!this.drag) return; const drag = this.drag; this.drag = null; if (!drag.moved) return;
-      const target = document.elementFromPoint(event.clientX, event.clientY)?.closest?.("[data-source], [data-dest]");
-      if (!target) { this.feedback(this.t("wrong")); return; }
-      const source = drag.source; const targetSource = target.dataset.source ? JSON.parse(target.dataset.source) : null; const dest = target.dataset.dest ? JSON.parse(target.dataset.dest) : this.cardDestination(targetSource);
-      if ((this.config.variant === "freecell" || this.config.variant === "yukon") && dest) {
-        this.pendingMoveRects = this.captureMoveRects();
-        const sequenceSize = this.sequenceCueSize(source, dest);
-        if (this.game.moveClassic(source, dest)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.retireYukonCoach(); this.render(); this.showSequenceCue(sequenceSize); }
-        else { this.pendingMoveRects = null; this.feedback(this.t("wrong")); }
+      if (!this.drag) return;
+      const drag = this.drag;
+      this.drag = null;
+      try {
+        if (!drag.moved) return;
+        const target = document.elementFromPoint(event.clientX, event.clientY)?.closest?.("[data-source], [data-dest]");
+        if (!target) { this.feedback(this.t("wrong")); return; }
+        const source = drag.source; const targetSource = target.dataset.source ? JSON.parse(target.dataset.source) : null; const dest = target.dataset.dest ? JSON.parse(target.dataset.dest) : this.cardDestination(targetSource);
+        if ((this.config.variant === "freecell" || this.config.variant === "yukon") && dest) {
+          this.pendingMoveRects = this.captureMoveRects();
+          const sequenceSize = this.sequenceCueSize(source, dest);
+          if (this.game.moveClassic(source, dest)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.retireYukonCoach(); this.render(); this.showSequenceCue(sequenceSize); }
+          else { this.pendingMoveRects = null; this.feedback(this.t("wrong")); }
+        }
+        else if (this.config.variant === "pyramid") {
+          const movesBefore = this.game.moves;
+          this.pendingMoveRects = this.captureMoveRects();
+          const pairCleared = Boolean(targetSource && JSON.stringify(source) !== JSON.stringify(targetSource) && Number(this.game.sourceCard(source)?.rank) !== 13);
+          this.pendingRemovedMotions = this.captureRemovedMotions([source, targetSource], pairCleared ? "pair" : "");
+          this.game.pairPyramid(source);
+          if (targetSource && JSON.stringify(source) !== JSON.stringify(targetSource) && this.game.moves === movesBefore) this.game.pairPyramid(targetSource);
+          if (this.game.moves !== movesBefore) { this.clearFeedback(); this.hintMove = null; this.audio.place(); if (pairCleared) this.retirePyramidCoach(); this.render(); if (pairCleared) this.showPairCue(); }
+          else { this.pendingMoveRects = null; this.pendingRemovedMotions = []; this.feedback(this.t("pairWrong")); }
+        }
+        else if (this.config.variant === "tripeaks") {
+          this.pendingMoveRects = this.captureMoveRects();
+          const clearedPeak = source?.zone === "peak" && this.game.cards[source.index]?.row === 0;
+          if (this.game.sequencePlay(source)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); this.showTriPeaksCue(clearedPeak); }
+          else { this.pendingMoveRects = null; this.feedback(this.t("wrong")); }
+        }
+        else this.feedback(this.t("wrong"));
+      } finally {
+        this.clearDragPreview();
       }
-      else if (this.config.variant === "pyramid") {
-        const movesBefore = this.game.moves;
-        this.pendingMoveRects = this.captureMoveRects();
-        const pairCleared = Boolean(targetSource && JSON.stringify(source) !== JSON.stringify(targetSource) && Number(this.game.sourceCard(source)?.rank) !== 13);
-        this.pendingRemovedMotions = this.captureRemovedMotions([source, targetSource], pairCleared ? "pair" : "");
-        this.game.pairPyramid(source);
-        if (targetSource && JSON.stringify(source) !== JSON.stringify(targetSource) && this.game.moves === movesBefore) this.game.pairPyramid(targetSource);
-        if (this.game.moves !== movesBefore) { this.clearFeedback(); this.hintMove = null; this.audio.place(); if (pairCleared) this.retirePyramidCoach(); this.render(); if (pairCleared) this.showPairCue(); }
-        else { this.pendingMoveRects = null; this.pendingRemovedMotions = []; this.feedback(this.t("pairWrong")); }
-      }
-      else if (this.config.variant === "tripeaks") {
-        this.pendingMoveRects = this.captureMoveRects();
-        const clearedPeak = source?.zone === "peak" && this.game.cards[source.index]?.row === 0;
-        if (this.game.sequencePlay(source)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); this.showTriPeaksCue(clearedPeak); }
-        else { this.pendingMoveRects = null; this.feedback(this.t("wrong")); }
-      }
-      else this.feedback(this.t("wrong"));
     }
     hint() { const move = this.game.tryHint(); if (!move) { this.hintMove = null; this.feedback(this.game.won ? this.t("winText") : this.t("noMoves")); return; } this.clearFeedback(); this.hintMove = move; this.render(); clearTimeout(this.hintTimer); this.hintTimer = setTimeout(() => { this.game.selected = null; this.hintMove = null; this.render(); }, 2400); }
     clearFeedback() { if (!this.nodes.toast) return; this.nodes.toast.hidden = true; this.nodes.toast.textContent = ""; clearTimeout(this.toastTimer); }
@@ -980,7 +1034,7 @@
           const step = Number.parseFloat(getComputedStyle(area).getPropertyValue("--classic-pile-step")) || 19;
           area.querySelectorAll(".classic-pile").forEach((node, pileIndex) => {
             const count = this.game.tableau[pileIndex]?.length || 0;
-            const cardHeight = node.getBoundingClientRect().height;
+            const cardHeight = node.querySelector(":scope > .classic-card")?.getBoundingClientRect().height || node.getBoundingClientRect().height;
             node.style.setProperty("--classic-pile-height", `${cardHeight + Math.max(0, count - 1) * step}px`);
           });
         }
