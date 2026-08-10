@@ -439,7 +439,7 @@ button.mini-btn {
   place-items: center;
   color: var(--kl-muted);
   font-size: 0.84rem;
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .card {
@@ -796,7 +796,7 @@ button.control-mini {
   min-height: 0;
   padding: 0.5rem 0.75rem;
   place-items: center;
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .hint-overlay p {
@@ -808,8 +808,8 @@ button.control-mini {
   background: rgba(8, 27, 53, 0.92);
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  cursor: default;
-  pointer-events: none;
+  cursor: pointer;
+  pointer-events: auto;
 }
 
 .hint-overlay .hint-reason {

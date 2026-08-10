@@ -1342,6 +1342,10 @@
         ? zones.slice(zoneIndex + 1).find((zone) => zone.rule !== run.zone.rule)
         : null;
       if (firstSeaRuleChange) {
+        const immediateNextMission = zones[zoneIndex + 1];
+        if (immediateNextMission) {
+          previewLines.unshift(`${t("nextMission")}: ${t("mission", { stage: immediateNextMission.stage })} · ${missionRuleLabel(immediateNextMission)}`);
+        }
         previewLines.push(t("nextMissionPreview", {
           mission: t("mission", { stage: firstSeaRuleChange.stage }),
           name: missionName(firstSeaRuleChange),
