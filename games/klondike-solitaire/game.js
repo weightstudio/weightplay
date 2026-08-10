@@ -1359,7 +1359,14 @@ const KL_I18N = {
   function getLayoutStep() {
     const canvas = ui.battleScreen?.querySelector(".battle-canvas");
     if (!canvas) return 24;
-    const step = Number.parseFloat(window.getComputedStyle(canvas).getPropertyValue("--card-step"));
+    const raw = window.getComputedStyle(canvas).getPropertyValue("--card-step").trim();
+    if (/^-?(?:\d+\.?\d*|\.\d+)px$/u.test(raw)) return Number.parseFloat(raw);
+    const probe = document.createElement("span");
+    probe.setAttribute("aria-hidden", "true");
+    probe.style.cssText = "position:absolute;visibility:hidden;pointer-events:none;width:var(--card-step);height:0;";
+    canvas.append(probe);
+    const step = probe.getBoundingClientRect().width;
+    probe.remove();
     return Number.isFinite(step) && step > 0 ? step : 24;
   }
 
