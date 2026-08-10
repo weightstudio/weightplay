@@ -364,6 +364,8 @@ button.mini-btn {
   grid-template-columns: 130px 130px auto;
   align-items: center;
   margin-bottom: 0.85rem;
+  padding-inline: 4px;
+  box-sizing: border-box;
 }
 
 .battle-tip {
@@ -832,7 +834,7 @@ button.control-mini {
 
   .battle-canvas {
     --card-width: clamp(44px, calc((100vw - 1.25rem - 6 * 0.42rem) / 7), 68px);
-    --card-step: clamp(var(--kl-card-step-mobile-mid), 4.2vw, 25px);
+    --card-step: clamp(19px, 4.8vw, 27px);
     --tableau-gap: 0.38rem;
     --kl-card-step-mobile: 12px;
     padding-bottom: 0.4rem;
@@ -874,7 +876,7 @@ button.control-mini {
 @media (max-width: 390px) {
   .battle-canvas {
     --card-width: clamp(48px, calc((100vw - 0.72rem - 6 * 0.34rem) / 7), 64px);
-    --card-step: clamp(10px, 4.3vw, 18px);
+    --card-step: clamp(21px, 5.6vw, 24px);
     --tableau-gap: 0.3rem;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
