@@ -94,7 +94,7 @@
         <button id="wonderMainStart" class="standard-main-start" data-wp-main-start type="button">Start Game</button>
       </section>
 
-      <!-- Active battle chrome: return, one primary value, one status row, settings. -->
+      <!-- Active battle chrome: one visible return action, one primary value, and one status row. -->
       <button id="backToMenuBtn" type="button" class="play-return hidden" data-wp-return="battle" aria-label="Back to game menu" data-i18n-aria="menu_title">
         <span aria-hidden="true">&larr;</span>
       </button>
@@ -104,7 +104,7 @@
         <div class="battle-status"><span data-i18n="hud_stage">Stage</span> <span id="levelText">1</span><span aria-hidden="true"> · </span><span data-i18n="hud_wave">Wave</span> <span id="waveText">1/1</span></div>
       </div>
 
-      <!-- Settings In-game Toggle Button -->
+      <!-- Internal pause safety trigger; the duplicate Battle Settings control is not exposed. -->
       <button id="settingsBtn" type="button" class="settings-btn hidden" aria-label="Settings" data-i18n-aria="menu_settings"><img src="assets/menu-settings.png" alt="" draggable="false" /></button>
 
       <!-- Main Game Overlays / Menus -->

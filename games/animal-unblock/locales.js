@@ -123,5 +123,75 @@
       directionDown: values[4],
     });
   });
+  const resultMasteryLocalization = {
+    en: {
+      resultFirstBest: "New local best: {best} moves. Try to beat it next time.",
+      resultImprovedBest: "New local best: {best} moves (previously {previous}).",
+      resultBest: "Local best: {best} moves. Try to beat it.",
+    },
+    "zh-Hant": {
+      resultFirstBest: "本機新紀錄：{best} 步。下次試著用更少步數通關。",
+      resultImprovedBest: "本機新紀錄：{best} 步（原本 {previous} 步）。",
+      resultBest: "本機最佳：{best} 步。試著打破它吧。",
+    },
+    "zh-Hans": {
+      resultFirstBest: "本地新纪录：{best} 步。下次试试更少步数。",
+      resultImprovedBest: "本地新纪录：{best} 步（原来是 {previous} 步）。",
+      resultBest: "本地最佳：{best} 步。试着打破它吧。",
+    },
+    ja: {
+      resultFirstBest: "自己ベスト更新：{best}手。次はこれより少ない手数に挑戦しましょう。",
+      resultImprovedBest: "自己ベスト更新：{best}手（以前は{previous}手）。",
+      resultBest: "自己ベストは{best}手です。記録更新に挑戦しましょう。",
+    },
+    ko: {
+      resultFirstBest: "로컬 최고 기록: {best}회. 다음에는 더 적은 수에 도전해 보세요.",
+      resultImprovedBest: "로컬 최고 기록 갱신: {best}회 (이전 {previous}회).",
+      resultBest: "로컬 최고 기록은 {best}회입니다. 기록을 깨 보세요.",
+    },
+    es: {
+      resultFirstBest: "Nuevo mejor registro local: {best} movimientos. Intenta superarlo la próxima vez.",
+      resultImprovedBest: "Nuevo mejor registro local: {best} movimientos (antes {previous}).",
+      resultBest: "Mejor registro local: {best} movimientos. Intenta superarlo.",
+    },
+    "pt-BR": {
+      resultFirstBest: "Novo recorde local: {best} movimentos. Tente superá-lo na próxima vez.",
+      resultImprovedBest: "Novo recorde local: {best} movimentos (antes {previous}).",
+      resultBest: "Recorde local: {best} movimentos. Tente superá-lo.",
+    },
+    fr: {
+      resultFirstBest: "Nouveau meilleur score local : {best} coups. Essayez de faire mieux la prochaine fois.",
+      resultImprovedBest: "Nouveau meilleur score local : {best} coups (contre {previous} avant).",
+      resultBest: "Meilleur score local : {best} coups. Essayez de le battre.",
+    },
+    de: {
+      resultFirstBest: "Neuer lokaler Bestwert: {best} Züge. Schaffst du beim nächsten Mal weniger?",
+      resultImprovedBest: "Neuer lokaler Bestwert: {best} Züge (zuvor {previous}).",
+      resultBest: "Lokaler Bestwert: {best} Züge. Versuch, ihn zu schlagen.",
+    },
+    it: {
+      resultFirstBest: "Nuovo record locale: {best} mosse. Prova a superarlo la prossima volta.",
+      resultImprovedBest: "Nuovo record locale: {best} mosse (prima {previous}).",
+      resultBest: "Record locale: {best} mosse. Prova a batterlo.",
+    },
+    ru: {
+      resultFirstBest: "Новый личный рекорд: {best} ходов. В следующий раз попробуйте сделать меньше.",
+      resultImprovedBest: "Новый личный рекорд: {best} ходов (раньше {previous}).",
+      resultBest: "Личный рекорд: {best} ходов. Попробуйте его улучшить.",
+    },
+    hi: {
+      resultFirstBest: "नया स्थानीय सर्वश्रेष्ठ: {best} चालें। अगली बार इसे हराने की कोशिश करें।",
+      resultImprovedBest: "स्थानीय सर्वश्रेष्ठ नया: {best} चालें (पहले {previous})।",
+      resultBest: "स्थानीय सर्वश्रेष्ठ: {best} चालें। इसे हराने की कोशिश करें।",
+    },
+    ar: {
+      resultFirstBest: "أفضل نتيجة محلية جديدة: {best} حركات. حاول تحطيمها في المرة القادمة.",
+      resultImprovedBest: "أفضل نتيجة محلية جديدة: {best} حركات (السابق {previous}).",
+      resultBest: "أفضل نتيجة محلية: {best} حركات. حاول تحطيمها.",
+    },
+  };
+  Object.entries(resultMasteryLocalization).forEach(([code, copy]) => {
+    Object.assign(locales[code], copy);
+  });
   window.UNBLOCK_LOCALES = locales;
 })();

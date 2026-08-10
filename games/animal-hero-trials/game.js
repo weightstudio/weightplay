@@ -4,6 +4,11 @@
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
   const ASSET_ROOT = "../../assets/";
+  const WORLD_WIDTH = 460;
+  const WORLD_HEIGHT = 560;
+  const LEGACY_WORLD_WIDTH = 390;
+  const WORLD_X_SCALE = WORLD_WIDTH / LEGACY_WORLD_WIDTH;
+  const worldX = (value) => value * WORLD_X_SCALE;
   const copy = {
     en: {
       title: "Animal Hero Trials",
@@ -362,7 +367,7 @@
     if (!dx && !dy && moveTarget && run) {
       dx = moveTarget.x - run.leo.x;
       dy = moveTarget.y - run.leo.y;
-      if (Math.hypot(dx, dy) < 7) {
+      if (Math.hypot(dx, dy) < 12) {
         moveTarget = null;
         return { x: 0, y: 0 };
       }
@@ -795,7 +800,7 @@
       room: 1,
       hp: maxHp,
       maxHp,
-      leo: { x: 195, y: 430 },
+      leo: { x: WORLD_WIDTH / 2, y: 430 },
       heroId: selectedHero,
       enemies: [],
       cool: 0,
@@ -808,6 +813,13 @@
       last: performance.now(),
       bless: { power: 0, speed: 0, heal: 0 },
       fx: [],
+      time: 0,
+      shake: 0,
+      heroFlash: 0,
+      heroKick: 0,
+      stepPhase: 0,
+      lastMoveX: 0,
+      lastMoveY: 0,
     };
     $("#skillBtn img").src = ASSET_ROOT + hero.asset;
     spawn();
@@ -822,7 +834,7 @@
     if (run.room === 3 && definition.checkpoint) {
       const boss=definition.boss;
       const hp = 190 + definition.region * 44;
-      run.enemies = [{ x:195,y:125,hp,max:hp,cd:0,boss:true,bossId:boss.id,bossRule:boss.rule,type:"boss",special:2.8,warning:0,phase:0,guard:boss.rule==="prism"||boss.rule==="crown"?3:0,summoned:false }];
+      run.enemies = [{ x:WORLD_WIDTH / 2,y:125,hp,max:hp,cd:0,boss:true,bossId:boss.id,bossRule:boss.rule,type:"boss",special:2.8,warning:0,phase:0,guard:boss.rule==="prism"||boss.rule==="crown"?3:0,summoned:false,hitFlash:0,hitOffsetX:0,hitOffsetY:0,animSeed:0 }];
       $("#roomText").textContent = roomLabel(run.room, true);
       $("#objective").textContent = interpolate("bossObjectiveNamed",{boss:localizedPair(boss.name)});
       updateHud();
@@ -838,7 +850,7 @@
       const point=points[index%points.length];
       const baseHp=(elite?84:28)+definition.region*9+run.room*6+definition.stage*.45;
       const hp=Math.round(baseHp*encounter.hpScale*(elite&&count>1?.7:1));
-      return { x:point[0], y:point[1], hp, max:hp, cd:0, type, elite, special:1.6+index*.3, warning:0, guard:(profile.guard||0)+(elite?1:0), phase:0 };
+      return { x:worldX(point[0]), y:point[1], hp, max:hp, cd:0, type, elite, special:1.6+index*.3, warning:0, guard:(profile.guard||0)+(elite?1:0), phase:0, hitFlash:0, hitOffsetX:0, hitOffsetY:0, animSeed:index * 1.7 + run.room };
     });
     $("#roomText").textContent = roomLabel(run.room,elite);
     const enemyNames=[...new Set(run.enemies.map((enemy)=>localizedPair(enemyProfiles[enemy.type].name)))].join(" + ");
@@ -892,6 +904,13 @@
     if(enemy.bossRule==="charge"&&!enemy.open) applied*=.35;
     if(enemy.bossRule==="crown"&&enemy.phase===1&&source!=="skill") applied*=.3;
     enemy.hp-=applied;
+    const direction = Math.atan2(enemy.y - run.leo.y, enemy.x - run.leo.x);
+    enemy.hitFlash = Math.max(enemy.hitFlash || 0, source === "skill" ? 0.24 : 0.16);
+    enemy.hitOffsetX = Math.cos(direction) * (source === "skill" ? 9 : 5);
+    enemy.hitOffsetY = Math.sin(direction) * (source === "skill" ? 9 : 5);
+    run.shake = Math.max(run.shake, source === "skill" ? 0.16 : 0.055);
+    run.heroKick = Math.max(run.heroKick, source === "skill" ? 0.12 : 0.06);
+    run.fx.push({ type: "damage", x: enemy.x, y: enemy.y - (enemy.boss ? 72 : 44), t: 0.62, vy: -30, value: Math.max(1, Math.round(applied)), source });
     return applied;
   }
 
@@ -906,6 +925,7 @@
         if (Math.hypot(enemy.x - run.leo.x, enemy.y - run.leo.y) < 145) {
           damageEnemy(enemy,24 + run.bless.power * 7,"skill");
           run.fx.push({ type: "hit", x: enemy.x, y: enemy.y, t: 0.3 });
+          run.fx.push({ type: "slash", x: enemy.x, y: enemy.y, fromX: run.leo.x, fromY: run.leo.y, t: 0.2 });
         }
       }
       return;
@@ -936,11 +956,13 @@
         if (distance < 105) {
           damageEnemy(enemy,30 + run.bless.power * 6,"skill");
           run.fx.push({ type: "hit", x: enemy.x, y: enemy.y, t: 0.25 });
+          run.fx.push({ type: "slash", x: enemy.x, y: enemy.y, fromX: from.x, fromY: from.y, t: 0.2 });
         }
       }
       if (dashTarget && dashDistance >= 105 && dashDistance < 190) {
         damageEnemy(dashTarget,22 + run.bless.power * 5,"skill");
         run.fx.push({ type: "hit", x: dashTarget.x, y: dashTarget.y, t: 0.25 });
+        run.fx.push({ type: "slash", x: dashTarget.x, y: dashTarget.y, fromX: from.x, fromY: from.y, t: 0.2 });
       }
       return;
     }
@@ -951,6 +973,7 @@
         damageEnemy(target,24 + run.bless.power * 5,"skill");
         target.marked = 3;
         run.fx.push({ type: "roar", x: target.x, y: target.y, t: 0.4 });
+        run.fx.push({ type: "slash", x: target.x, y: target.y, fromX: run.leo.x, fromY: run.leo.y, t: 0.24 });
       }
       return;
     }
@@ -962,6 +985,7 @@
       if (Math.hypot(enemy.x - run.leo.x, enemy.y - run.leo.y) < 220) {
         damageEnemy(enemy,20 + run.bless.power * 4,"skill");
         run.fx.push({ type: "hit", x: enemy.x, y: enemy.y, t: 0.3 });
+        run.fx.push({ type: "slash", x: enemy.x, y: enemy.y, fromX: run.leo.x, fromY: run.leo.y, t: 0.2 });
       }
     }
   }
@@ -969,7 +993,12 @@
   function hurt(amount) {
     if (run.invulnerable > 0) return;
     const roleReduction = run.heroId === "taro" ? 0.76 : 1;
-    run.hp -= run.guard > 0 ? Math.ceil(amount * 0.3) : Math.ceil(amount * roleReduction);
+    const applied = run.guard > 0 ? Math.ceil(amount * 0.3) : Math.ceil(amount * roleReduction);
+    run.hp -= applied;
+    run.heroFlash = Math.max(run.heroFlash, 0.24);
+    run.shake = Math.max(run.shake, 0.18);
+    run.fx.push({ type: "damage", x: run.leo.x, y: run.leo.y - 58, t: 0.7, vy: -34, value: applied, source: "hurt" });
+    run.fx.push({ type: "shadow", x: run.leo.x, y: run.leo.y, t: 0.34 });
   }
 
   function autoAttack() {
@@ -1001,6 +1030,7 @@
     if (run.heroId === "taro") target.slow = 1.1;
     run.attackCool = run.heroId === "fia" ? 0.34 : run.heroId === "orla" ? 0.78 : run.heroId === "taro" ? 0.9 : 0.6;
     run.fx.push({ type: "hit", x: target.x, y: target.y, t: 0.22 });
+    run.fx.push({ type: "slash", x: target.x, y: target.y, fromX: run.leo.x, fromY: run.leo.y, t: 0.18 });
   }
 
   function chooseBlessing() {
@@ -1202,15 +1232,29 @@
     if (!run?.active) return;
     const dt = Math.min(0.033, (now - run.last) / 1000);
     run.last = now;
+    run.time += dt;
     const { x: dx, y: dy } = movementIntent();
     const length = Math.hypot(dx, dy) || 1;
+    const moving = Boolean(dx || dy);
     const heroSpeed = heroes[run.heroId].speed;
-    run.leo.x = Math.max(35, Math.min(355, run.leo.x + (dx / length) * heroSpeed * dt));
+    run.leo.x = Math.max(worldX(35), Math.min(worldX(355), run.leo.x + (dx / length) * heroSpeed * dt));
     run.leo.y = Math.max(80, Math.min(520, run.leo.y + (dy / length) * heroSpeed * dt));
+    if (moving) {
+      run.stepPhase += dt * (heroSpeed / 18);
+      run.lastMoveX = dx / length;
+      run.lastMoveY = dy / length;
+    } else {
+      run.stepPhase += dt * 1.3;
+      run.lastMoveX *= 0.82;
+      run.lastMoveY *= 0.82;
+    }
     run.cool = Math.max(0, run.cool - dt);
     run.attackCool = Math.max(0, run.attackCool - dt);
     run.invulnerable = Math.max(0, run.invulnerable - dt);
     run.guard = Math.max(0, run.guard - dt);
+    run.heroFlash = Math.max(0, run.heroFlash - dt);
+    run.heroKick = Math.max(0, run.heroKick - dt);
+    run.shake = Math.max(0, run.shake - dt);
 
     const reinforcements=[];
     for (const enemy of run.enemies) {
@@ -1252,12 +1296,12 @@
           moveSpeed=18;
           if(enemy.special<=0){ if(distance<285) hurt(8); enemy.special=2.5; run.fx.push({type:"shadow",x:run.leo.x,y:run.leo.y,t:.45}); }
         } else if(rule==="summon"){
-          if(!enemy.summoned&&enemy.hp/enemy.max<.55){ enemy.summoned=true; for(let i=0;i<2;i+=1) reinforcements.push({x:90+i*210,y:120,hp:54,max:54,cd:0,type:i?"boar":"scout",special:1.4,warning:0,guard:0,phase:0}); }
+          if(!enemy.summoned&&enemy.hp/enemy.max<.55){ enemy.summoned=true; for(let i=0;i<2;i+=1) reinforcements.push({x:worldX(90+i*210),y:120,hp:54,max:54,cd:0,type:i?"boar":"scout",special:1.4,warning:0,guard:0,phase:0,hitFlash:0,hitOffsetX:0,hitOffsetY:0,animSeed:i * 2.1 + 4}); }
           if(enemy.special<=0){ if(distance<170) hurt(9); enemy.special=3.2; run.fx.push({type:"roar",x:enemy.x,y:enemy.y,t:.55}); }
         } else if(rule==="crown"){
           const ratio=enemy.hp/enemy.max;
           if(ratio<.66&&enemy.phase===0){ enemy.phase=1; enemy.guard=2; enemy.special=1.4; }
-          if(ratio<.33&&enemy.phase===1){ enemy.phase=2; enemy.guard=0; reinforcements.push({x:85,y:120,hp:62,max:62,cd:0,type:"raven",special:1,warning:0,guard:0,phase:0},{x:305,y:120,hp:62,max:62,cd:0,type:"armored",special:1,warning:0,guard:2,phase:0}); }
+          if(ratio<.33&&enemy.phase===1){ enemy.phase=2; enemy.guard=0; reinforcements.push({x:worldX(85),y:120,hp:62,max:62,cd:0,type:"raven",special:1,warning:0,guard:0,phase:0,hitFlash:0,hitOffsetX:0,hitOffsetY:0,animSeed:5},{x:worldX(305),y:120,hp:62,max:62,cd:0,type:"armored",special:1,warning:0,guard:2,phase:0,hitFlash:0,hitOffsetX:0,hitOffsetY:0,animSeed:7}); }
           if(enemy.special<=0){ if(distance<210) hurt(enemy.phase===2?12:9); enemy.special=enemy.phase===2?2.2:3; run.fx.push({type:"shadow",x:run.leo.x,y:run.leo.y,t:.5}); }
         } else {
           if(enemy.warning>0){ enemy.warning-=dt; if(enemy.warning<=0){ if(distance<155) hurt(11); run.fx.push({type:"shadow",x:run.leo.x,y:run.leo.y,t:.38}); } }
@@ -1266,15 +1310,24 @@
       }
 
       const slowedMoveSpeed = moveSpeed * (enemy.slow > 0 ? 0.55 : 1);
-      enemy.x=Math.max(32,Math.min(358,enemy.x+moveX*slowedMoveSpeed*dt));
+      enemy.x=Math.max(worldX(32),Math.min(worldX(358),enemy.x+moveX*slowedMoveSpeed*dt));
       enemy.y=Math.max(70,Math.min(525,enemy.y+moveY*slowedMoveSpeed*dt));
+      enemy.hitFlash = Math.max(0, (enemy.hitFlash || 0) - dt);
+      enemy.hitOffsetX *= Math.max(0, 1 - dt * 12);
+      enemy.hitOffsetY *= Math.max(0, 1 - dt * 12);
       const contactRange=enemy.boss?54:profile.range;
       if(enemy.type!=="hunter"&&distance<contactRange&&enemy.cd<=0){ hurt(enemy.boss?7:profile.damage); enemy.cd=1; run.fx.push({type:"shadow",x:run.leo.x,y:run.leo.y,t:.3}); }
     }
     if(reinforcements.length) run.enemies.push(...reinforcements);
     autoAttack();
     run.enemies = run.enemies.filter((enemy) => enemy.hp > 0);
-    run.fx.forEach((effect) => { effect.t -= dt; });
+    run.fx.forEach((effect) => {
+      effect.t -= dt;
+      if (effect.type === "damage") {
+        effect.y += (effect.vy || -30) * dt;
+        effect.vy = (effect.vy || -30) + 58 * dt;
+      }
+    });
     run.fx = run.fx.filter((effect) => effect.t > 0);
     if (run.hp <= 0) return finish(false);
     if (!run.enemies.length) return run.room >= 3 ? finish(true) : chooseBlessing();
@@ -1284,55 +1337,144 @@
   }
 
   function draw() {
-    ctx.clearRect(0, 0, 390, 560);
-    ctx.drawImage(images.bg, 0, 0, 390, 560);
+    ctx.save();
+    if (run.shake > 0) {
+      const shake = run.shake * 34;
+      ctx.translate((Math.random() - 0.5) * shake, (Math.random() - 0.5) * shake);
+    }
+    ctx.clearRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+    ctx.drawImage(images.bg, 0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+
+    if (moveTarget) {
+      const pulse = 1 + Math.sin(run.time * 8) * 0.12;
+      ctx.strokeStyle = "#ffe88a";
+      ctx.lineWidth = 3;
+      ctx.globalAlpha = 0.9;
+      ctx.beginPath();
+      ctx.arc(moveTarget.x, moveTarget.y, 16 * pulse, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.globalAlpha = 0.35;
+      ctx.beginPath();
+      ctx.arc(moveTarget.x, moveTarget.y, 5, 0, Math.PI * 2);
+      ctx.fillStyle = "#ffe88a";
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+
     for (const enemy of run.enemies) {
       const enemyImage = enemy.boss ? images[`boss-${enemy.bossId}`] : images[`enemy-${enemy.type}`] || images.enemy;
       const size = enemy.boss ? 126 : enemy.elite ? 82 : 68;
-      ctx.drawImage(enemyImage, enemy.x - size / 2, enemy.y - size / 2, size, size);
+      const bob = Math.sin(run.time * (enemy.boss ? 2.1 : 3.5) + (enemy.animSeed || 0)) * (enemy.boss ? 2 : 3);
+      const drawX = enemy.x + (enemy.hitOffsetX || 0);
+      const drawY = enemy.y + (enemy.hitOffsetY || 0) + bob;
+      ctx.save();
+      ctx.translate(drawX, drawY);
+      ctx.rotate(Math.sin(run.time * 3 + (enemy.animSeed || 0)) * 0.025);
+      ctx.drawImage(enemyImage, -size / 2, -size / 2, size, size);
+      ctx.restore();
+      if ((enemy.hitFlash || 0) > 0) {
+        ctx.globalAlpha = Math.min(0.62, enemy.hitFlash * 4);
+        ctx.fillStyle = "#fff7dc";
+        ctx.beginPath();
+        ctx.arc(drawX, drawY, size * 0.42, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
       ctx.fillStyle = "#17231f";
       const barWidth = enemy.boss ? 100 : 56;
-      const barY = enemy.y - size / 2 - 9;
-      ctx.fillRect(enemy.x - barWidth / 2, barY, barWidth, 6);
+      const barY = drawY - size / 2 - 9;
+      ctx.fillRect(drawX - barWidth / 2, barY, barWidth, 6);
       ctx.fillStyle = "#7be0b1";
-      ctx.fillRect(enemy.x - barWidth / 2, barY, (barWidth * enemy.hp) / enemy.max, 6);
-      if(enemy.guard>0){ ctx.strokeStyle="#78e9ff"; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(enemy.x,enemy.y,size*.48,0,Math.PI*2); ctx.stroke(); }
-      if(enemy.warning>0){ ctx.strokeStyle="#ffd45f"; ctx.lineWidth=4; ctx.beginPath(); ctx.arc(enemy.x,enemy.y,size*.58,0,Math.PI*2); ctx.stroke(); }
+      ctx.fillRect(drawX - barWidth / 2, barY, (barWidth * enemy.hp) / enemy.max, 6);
+      if(enemy.guard>0){ ctx.strokeStyle="#78e9ff"; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(drawX,drawY,size*.48,0,Math.PI*2); ctx.stroke(); }
+      if(enemy.warning>0){ ctx.strokeStyle="#ffd45f"; ctx.lineWidth=4; ctx.beginPath(); ctx.arc(drawX,drawY,size*.58,0,Math.PI*2); ctx.stroke(); }
       if (enemy.marked) {
         ctx.strokeStyle = "#7cecff";
         ctx.lineWidth = 3;
         ctx.beginPath();
-        ctx.arc(enemy.x, enemy.y - size / 2 - 18, 9, 0, Math.PI * 2);
+        ctx.arc(drawX, drawY - size / 2 - 18, 9, 0, Math.PI * 2);
         ctx.stroke();
       }
     }
     const hero = heroes[run.heroId];
     const heroWidth = run.heroId === "taro" ? 94 : run.heroId === "orla" ? 82 : 78;
     const heroHeight = run.heroId === "taro" ? 78 : 90;
+    const moving = Boolean(moveTarget || Object.values(keys).some(Boolean));
+    const heroBob = moving ? Math.sin(run.stepPhase) * 3 : Math.sin(run.time * 2.2) * 1.2;
+    const heroX = run.leo.x - (run.heroKick > 0 ? run.lastMoveX * 5 : 0);
+    const heroY = run.leo.y + heroBob - (run.heroKick > 0 ? run.lastMoveY * 3 : 0);
+    ctx.fillStyle = "#06171299";
+    ctx.beginPath();
+    ctx.ellipse(run.leo.x, run.leo.y + heroHeight * 0.42, heroWidth * (moving ? 0.46 : 0.4), 8, 0, 0, Math.PI * 2);
+    ctx.fill();
+    if (run.heroFlash > 0) {
+      ctx.globalAlpha = Math.min(0.55, run.heroFlash * 2.4);
+      ctx.fillStyle = "#ff5e66";
+      ctx.beginPath();
+      ctx.arc(heroX, heroY, 52, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
     ctx.globalAlpha = run.invulnerable > 0 ? 0.72 : 1;
-    ctx.drawImage(images[hero.image], run.leo.x - heroWidth / 2, run.leo.y - heroHeight / 2, heroWidth, heroHeight);
+    ctx.save();
+    ctx.translate(heroX, heroY);
+    ctx.rotate(Math.max(-0.08, Math.min(0.08, run.lastMoveX * 0.08)));
+    ctx.scale(1 + (moving ? Math.sin(run.stepPhase) * 0.025 : 0), 1 - (moving ? Math.sin(run.stepPhase) * 0.025 : 0));
+    ctx.drawImage(images[hero.image], -heroWidth / 2, -heroHeight / 2, heroWidth, heroHeight);
+    ctx.restore();
     ctx.globalAlpha = 1;
     if (run.guard > 0) {
       ctx.strokeStyle = "#55e0b1";
       ctx.lineWidth = 5;
       ctx.beginPath();
-      ctx.arc(run.leo.x, run.leo.y, 56, 0, Math.PI * 2);
+      ctx.arc(heroX, heroY, 56, 0, Math.PI * 2);
       ctx.stroke();
     }
     for (const effect of run.fx) {
+      if (effect.type === "damage") {
+        ctx.globalAlpha = Math.min(1, effect.t * 3);
+        ctx.fillStyle = effect.source === "hurt" ? "#ff8b8b" : effect.source === "skill" ? "#ffe88a" : "#fff7dc";
+        ctx.font = "900 20px system-ui, sans-serif";
+        ctx.textAlign = "center";
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = "#13211b";
+        ctx.strokeText(`-${effect.value}`, effect.x, effect.y);
+        ctx.fillText(`-${effect.value}`, effect.x, effect.y);
+        ctx.globalAlpha = 1;
+        continue;
+      }
+      if (effect.type === "slash") {
+        const alpha = Math.min(1, effect.t * 8);
+        const dx = effect.x - effect.fromX;
+        const dy = effect.y - effect.fromY;
+        const distance = Math.hypot(dx, dy) || 1;
+        const px = -dy / distance;
+        const py = dx / distance;
+        ctx.globalAlpha = alpha;
+        ctx.strokeStyle = "#fff2ad";
+        ctx.lineWidth = 7;
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.moveTo(effect.x - dx * 0.28 + px * 22, effect.y - dy * 0.28 + py * 22);
+        ctx.lineTo(effect.x + px * 22, effect.y + py * 22);
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+        continue;
+      }
       const image = effect.type === "roar" ? images.roar : effect.type === "hit" ? images.hit : images.shadow;
       const size = effect.type === "roar" ? 180 : 74;
       ctx.globalAlpha = Math.min(1, effect.t * 4);
       ctx.drawImage(image, effect.x - size / 2, effect.y - size / 2, size, size);
       ctx.globalAlpha = 1;
     }
+    ctx.restore();
   }
 
   function bindTapMove() {
     const setTarget = (event) => {
       const rect = canvas.getBoundingClientRect();
       moveTarget = {
-        x: Math.max(35, Math.min(355, ((event.clientX - rect.left) / rect.width) * canvas.width)),
+        x: Math.max(worldX(35), Math.min(worldX(355), ((event.clientX - rect.left) / rect.width) * canvas.width)),
         y: Math.max(80, Math.min(520, ((event.clientY - rect.top) / rect.height) * canvas.height)),
       };
     };
@@ -1538,7 +1680,7 @@
     forceRoomClear:()=>{ if(!run) return null; run.enemies=[]; if(run.room>=3) finish(true); else chooseBlessing(); return window.__heroTrialSmoke.snapshot(); },
     setCooldown:(value=0)=>{ if(!run) return null; run.cool=Math.max(0,Number(value)||0); updateHud(); return window.__heroTrialSmoke.snapshot(); },
     setHealth:(value)=>{ if(!run) return null; run.hp=Math.max(0,Math.min(run.maxHp,Number(value)||0)); updateHud(); return window.__heroTrialSmoke.snapshot(); },
-    snapshot: () => ({ pointer, moveTarget: moveTarget ? { ...moveTarget } : null, stick: { ...stick }, active: Boolean(run?.active), hp: run?.hp ?? null, cooldown: run?.cool ?? null, player: run ? { ...run.leo } : null, run:run?{stage:run.stage,room:run.room,checkpoint:run.definition.checkpoint,boss:run.definition.boss?.id||null}:null, unlocked,marks, enemies: run?.enemies.map((enemy) => ({ x: enemy.x, y: enemy.y, hp: enemy.hp,max:enemy.max,type:enemy.type,bossId:enemy.bossId||null,bossRule:enemy.bossRule||null,guard:enemy.guard||0,warning:enemy.warning||0,phase:enemy.phase||0 })) || [] })
+    snapshot: () => ({ pointer, moveTarget: moveTarget ? { ...moveTarget } : null, stick: { ...stick }, active: Boolean(run?.active), hp: run?.hp ?? null, cooldown: run?.cool ?? null, player: run ? { ...run.leo } : null, run:run?{stage:run.stage,room:run.room,checkpoint:run.definition.checkpoint,boss:run.definition.boss?.id||null}:null, visual:run?{shake:run.shake,heroFlash:run.heroFlash,heroKick:run.heroKick,effects:run.fx.map((effect)=>({type:effect.type,value:effect.value||0,t:effect.t}))}:null, unlocked,marks, enemies: run?.enemies.map((enemy) => ({ x: enemy.x, y: enemy.y, hp: enemy.hp,max:enemy.max,type:enemy.type,bossId:enemy.bossId||null,bossRule:enemy.bossRule||null,guard:enemy.guard||0,warning:enemy.warning||0,phase:enemy.phase||0,hitFlash:enemy.hitFlash||0,hitOffsetX:enemy.hitOffsetX||0,hitOffsetY:enemy.hitOffsetY||0 })) || [] })
   };
   localize();
 })();

@@ -98,11 +98,11 @@ button:focus-visible, select:focus-visible { outline: 2px solid rgba(78,205,196,
 .stage-title-group small { color: var(--sp-gold); font-size: .78rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
 .stage-title-group h1 { margin: .2rem 0 .35rem; font-size: clamp(1.35rem, 3vw, 2rem); }
 .stage-title-group p { margin: 0; color: var(--sp-muted); line-height: 1.45; }
-.stage-content { width: min(100%, 560px); margin: 0 auto; padding: clamp(1rem, 3vw, 2rem); border: 1px solid rgba(255,255,255,.16); border-radius: 20px; background: rgba(15,42,74,.76); box-shadow: 0 18px 38px rgba(0,0,0,.25); }
+.stage-content { width: min(100%, 560px); min-width: 0; box-sizing: border-box; margin: 0 auto; padding: clamp(1rem, 3vw, 2rem); border: 1px solid rgba(255,255,255,.16); border-radius: 20px; background: rgba(15,42,74,.76); box-shadow: 0 18px 38px rgba(0,0,0,.25); }
 .stage-content .stats-panel { margin-bottom: 1rem; }
 .stage-content .difficulty-picker { margin: 0 0 1rem; }
-.stage-actions { display: flex; flex-wrap: wrap; gap: .6rem; }
-.stage-actions button { flex: 1 1 160px; }
+.stage-actions { display: flex; min-width: 0; flex-wrap: wrap; gap: .6rem; }
+.stage-actions button { flex: 1 1 160px; min-width: 0; white-space: nowrap; }
 body[data-wp-game-id="spider-solitaire"] .wp-shell-settings-popover {
   box-sizing: border-box;
   width: min(280px, calc(100vw - 24px));
@@ -171,7 +171,7 @@ body[data-wp-game-id="spider-solitaire"] .game-page-info {
 .sequence-fx { position: absolute; inset: 0; z-index: 20; pointer-events: none; }
 .sequence-toast { position: absolute; top: 40%; left: 50%; padding: .7rem 1rem; border: 2px solid var(--sp-gold); border-radius: 14px; color: #182440; background: #fff1a8; font-weight: 900; transform: translate(-50%,-50%); animation: sp-sequence 720ms cubic-bezier(.2,.8,.2,1) both; }
 .dialog-overlay, .result-overlay { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; padding: 1rem; box-sizing: border-box; background: rgba(4,13,27,.72); backdrop-filter: blur(3px); }
-.dialog-card, .result-card { width: min(92vw, 460px); padding: 1.2rem; border: 1px solid rgba(255,255,255,.18); border-radius: 18px; background: linear-gradient(145deg,#123761,#0b203d); box-shadow: 0 20px 50px rgba(0,0,0,.4); }
+.dialog-card, .result-card { width: min(92vw, 460px); max-width: 100%; min-width: 0; box-sizing: border-box; padding: 1.2rem; border: 1px solid rgba(255,255,255,.18); border-radius: 18px; background: linear-gradient(145deg,#123761,#0b203d); box-shadow: 0 20px 50px rgba(0,0,0,.4); }
 .dialog-card h2, .result-card h2 { margin-top: 0; }
 .dialog-card li { margin: .55rem 0; color: var(--sp-muted); }
 .tutorial-card { max-height: min(88vh, 620px); overflow: auto; }
@@ -194,7 +194,13 @@ body[data-wp-game-id="spider-solitaire"] .game-page-info {
 .dialog-actions { justify-content: flex-end; margin-top: 1rem; }
 .result-card { text-align: center; animation: sp-card-pop 260ms ease both; }
 .result-overlay.eight-set-result .result-card { border-color: rgba(255,209,102,.88); box-shadow: 0 0 0 3px rgba(255,209,102,.18), 0 24px 60px rgba(0,0,0,.5), 0 0 34px rgba(255,209,102,.28); animation: sp-victory-card-pop 760ms cubic-bezier(.2,.8,.2,1) both; }
-.result-actions { justify-content: center; }
+.result-actions { width: 100%; min-width: 0; justify-content: center; }
+.result-actions button { min-width: 0; white-space: nowrap; }
+
+@media (max-width: 520px) {
+  .result-actions { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .result-actions button { width: 100%; }
+}
 
 @media (max-width: 768px) {
   .main-hero { grid-template-columns: 1fr; }

@@ -510,6 +510,20 @@
       "Top-row heat converts occupied cells into incoming damage.":"ऊपरी पंक्ति की गर्मी भरे हुए खानों को आने वाली क्षति में बदल देती है।",
     },
   };
+  Object.assign(copy.en,{nextRulePreview:"Next Stage rule: {rule}"});
+  Object.assign(copy["zh-Hant"],{nextRulePreview:"下一關規則：{rule}"});
+  Object.assign(copy["zh-Hans"],{nextRulePreview:"下一关规则：{rule}"});
+  Object.assign(copy.es,{nextRulePreview:"Regla de la siguiente etapa: {rule}"});
+  Object.assign(copy.ar,{nextRulePreview:"قاعدة المرحلة التالية: {rule}"});
+  Object.assign(runtimeCopySupplements.ja,{nextRulePreview:"次のステージのルール：{rule}"});
+  Object.assign(runtimeCopySupplements.ko,{nextRulePreview:"다음 스테이지 규칙: {rule}"});
+  Object.assign(runtimeCopySupplements["pt-BR"],{nextRulePreview:"Regra da próxima fase: {rule}"});
+  Object.assign(runtimeCopySupplements.fr,{nextRulePreview:"Règle de l’étape suivante : {rule}"});
+  Object.assign(runtimeCopySupplements.de,{nextRulePreview:"Regel der nächsten Stufe: {rule}"});
+  Object.assign(runtimeCopySupplements.it,{nextRulePreview:"Regola della fase successiva: {rule}"});
+  Object.assign(runtimeCopySupplements.ru,{nextRulePreview:"Правило следующего этапа: {rule}"});
+  Object.assign(runtimeCopySupplements.hi,{nextRulePreview:"अगले चरण का नियम: {rule}"});
+
   function translateForLocale(value,target=locale){
     const source=String(value??"");
     const supplement=runtimeSourceSupplements[target]?.[source];
@@ -754,7 +768,21 @@ function showScreen(name,focusTarget=false){if(name!=="stage"&&railSettleTimer){
   function roomVictory(){combatPaused=false;resolving=false;renderBattle();if(run.room===ROOMS_PER_STAGE-1){showResult(true);return;}showLoot(()=>{run.room+=1;prepareEnemyState(enemyAt(run.room,run.stage));resolving=false;saveRun();setFeedback(t("repack"));renderBattle();if(run.room===stages[run.stage].merchantAfter)showMerchant();});}
   function randomItems(count){return [...items].sort(()=>Math.random()-.5).slice(0,count);}
   function modalCoveredRegions(){const modal=$("#modal"),battleCanvas=$("#battleScreen .battle-canvas");return battleCanvas.contains(modal)?[...battleCanvas.children].filter((node)=>node!==modal):[battleCanvas];}
-  function showModal(title,text,art=""){const modal=$("#modal");if(resultSettled&&run)text=`${text} · ${resultBuildRecap().join(" · ")}`;if(modal.hidden)modalReturnFocus=document.activeElement;modal.classList.remove("is-result");$("#modalTitle").textContent=title;$("#modalText").textContent=text;$("#modalArt").src=art;$("#modalArt").hidden=!art;$("#modalChoices").replaceChildren();modalCoveredRegions().forEach((region)=>{region.inert=true;region.setAttribute("aria-hidden","true");});modal.hidden=false;return $("#modalChoices");}
+  function resultNextStagePreview(){if(!run||run.stage>=STAGE_COUNT-1)return "";return t("nextRulePreview",{rule:localized(stages[run.stage+1].rule)});}
+  function showModal(title,text,art=""){
+    const modal=$("#modal");
+    if(resultSettled&&run){const preview=resultNextStagePreview();if(preview)text=`${text} · ${preview}`;text=`${text} · ${resultBuildRecap().join(" · ")}`;}
+    if(modal.hidden)modalReturnFocus=document.activeElement;
+    modal.classList.remove("is-result");
+    $("#modalTitle").textContent=title;
+    $("#modalText").textContent=text;
+    $("#modalArt").src=art;
+    $("#modalArt").hidden=!art;
+    $("#modalChoices").replaceChildren();
+    modalCoveredRegions().forEach((region)=>{region.inert=true;region.setAttribute("aria-hidden","true");});
+    modal.hidden=false;
+    return $("#modalChoices");
+  }
   function focusModalChoice(preferred,keepTop=false){requestAnimationFrame(()=>{const modal=$("#modal");if(modal.hidden)return;const target=preferred?.isConnected&&!preferred.disabled?preferred:$("#modalChoices button:not(:disabled)");(target||modal).focus();const card=modal.querySelector(".modal-card");if(keepTop&&card.scrollHeight<=card.clientHeight+1)card.scrollTop=0;});}
   function trapModalFocus(event){const modal=$("#modal");if(event.key==="Escape"&&modalEscapeHandler){event.preventDefault();modalEscapeHandler();return;}if(event.repeat&&(event.key==="Enter"||event.key===" ")){event.preventDefault();return;}if(event.key!=="Tab"||modal.hidden)return;const choices=[...document.querySelectorAll("#modalChoices button:not(:disabled)")].filter((button)=>button.getClientRects().length);if(!choices.length){event.preventDefault();modal.focus();return;}const first=choices[0],last=choices.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}}
   function closeModal(){const modal=$("#modal");modal.hidden=true;modal.classList.remove("is-result");modalEscapeHandler=null;modalCoveredRegions().forEach((region)=>{region.inert=false;region.removeAttribute("aria-hidden");});const previous=modalReturnFocus;modalReturnFocus=null;const canRestore=previous?.isConnected&&previous.matches?.('button:not(:disabled),a[href],select:not(:disabled),[tabindex]:not([tabindex="-1"])')&&previous.getClientRects().length;if(canRestore){previous.focus({preventScroll:true});return;}const fallback=screens.battle.hidden?$(".region-card.is-selected:not(:disabled)"):$("#fightBtn:not(:disabled)");fallback?.focus({preventScroll:true});}

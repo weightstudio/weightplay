@@ -33,6 +33,7 @@
   let resultActionClaimed = false;
 
   const saveKey = "unblockProgress";
+  const bestMovesKey = "unblockBestMoves";
   const storageFallback = new Map();
 
   function readStorage(key) {
@@ -67,6 +68,20 @@
   }
 
   const progress = loadProgress();
+  function loadBestMoves() {
+    try {
+      const stored = JSON.parse(readStorage(bestMovesKey) || "[]");
+      if (!Array.isArray(stored)) return Array(30).fill(null);
+      return Array.from({ length: 30 }, (_, stageIndex) => {
+        const value = stored[stageIndex];
+        return Number.isInteger(value) && value > 0 ? value : null;
+      });
+    } catch {
+      return Array(30).fill(null);
+    }
+  }
+
+  const bestMoves = loadBestMoves();
   while (selected < 29 && progress[selected]) selected += 1;
   const t = (key, values = {}) =>
     String((dict[locale] || dict.en)[key] ?? dict.en[key] ?? key).replace(
@@ -347,16 +362,37 @@
         n: index + 1,
         moves,
       });
+      const previousBest = bestMoves[index];
+      const isNewBest = previousBest === null || moves < previousBest;
+      if (isNewBest) {
+        bestMoves[index] = moves;
+        writeStorage(bestMovesKey, JSON.stringify(bestMoves));
+      }
+      $("resultMastery").textContent = t(
+        previousBest === null
+          ? "resultFirstBest"
+          : isNewBest
+            ? "resultImprovedBest"
+            : "resultBest",
+        {
+          best: bestMoves[index],
+          previous: previousBest,
+        },
+      );
       resultActionClaimed = false;
       $("resultStages").disabled = false;
       $("retry").disabled = false;
       $("next").disabled = index >= levels.length - 1;
       $("result").showModal();
-      requestAnimationFrame(() =>
+      const focusResultAction = () => {
+        if (!$("result").open) return;
         $(index >= levels.length - 1 ? "resultStages" : "next").focus({
           preventScroll: true,
-        }),
-      );
+        });
+      };
+      requestAnimationFrame(focusResultAction);
+      window.setTimeout(focusResultAction, 20);
+      window.setTimeout(focusResultAction, 200);
     }
     render();
     if (restoreFocusIndex != null && !$("result").open) {

@@ -945,6 +945,13 @@ const KL_I18N = {
     dragLayer: el("dragLayer"),
   };
 
+  // The shared responsive shell may scale the logical battle canvas. Keep
+  // drag previews in viewport coordinates so they follow the pointer even
+  // when the canvas has a transform applied.
+  if (ui.dragLayer && ui.dragLayer.parentElement !== document.body) {
+    document.body.append(ui.dragLayer);
+  }
+
   ui.mainScreen?.setAttribute("data-screen", "main");
   ui.battleScreen?.setAttribute("data-screen", "battle");
   document.body?.removeAttribute("data-screen");
@@ -1445,11 +1452,21 @@ const KL_I18N = {
   }
 
   function getDragMetrics() {
-    const cardWidth = getCardVisualWidth();
+    const sourceNode = state.dragging?.sourceNode
+      || cardNodePool.get(state.dragging?.ids?.[0]);
+    const sourceRect = sourceNode?.getBoundingClientRect?.();
+    const cardWidth = sourceRect?.width > 0 ? sourceRect.width : getCardVisualWidth();
+    const cardHeight = sourceRect?.height > 0 ? sourceRect.height : cardWidth * 1.42;
+    const canvas = ui.battleScreen?.querySelector(".battle-canvas");
+    const canvasRect = canvas?.getBoundingClientRect?.();
+    const logicalWidth = Number.parseFloat(window.getComputedStyle(canvas || document.body).width);
+    const canvasScale = canvasRect?.width > 0 && logicalWidth > 0
+      ? canvasRect.width / logicalWidth
+      : 1;
     return {
       cardWidth,
-      cardHeight: cardWidth * 1.42,
-      ghostRowOffset: (state.dragging?.stackStep || getCardOffsetStep()) * 0.82,
+      cardHeight,
+      ghostRowOffset: (state.dragging?.stackStep || getCardOffsetStep()) * canvasScale * 0.82,
     };
   }
 
@@ -1931,7 +1948,7 @@ const KL_I18N = {
     const label = t(DRAW_MODE_LABEL_KEYS[game.drawModeIndex] || "ui.draw_mode.option_1");
     if (ui.drawModeBtn) {
       const resolved = t("ui.draw_mode.toggle", { label });
-      ui.drawModeBtn.textContent = resolved;
+      ui.drawModeBtn.textContent = label;
       ui.drawModeBtn.setAttribute("aria-label", resolved);
     }
     if (ui.drawModeValue) ui.drawModeValue.textContent = t("ui.draw_mode.value", { label });
@@ -1986,6 +2003,7 @@ const KL_I18N = {
         x: event.clientX,
         y: event.clientY,
         stackStep: getCardOffsetStep(),
+        sourceNode: cardNode,
       };
       state.dragging.legalMoves = game.legalMovesForTableau(col, row);
     } else if (sourceType === "waste") {
@@ -1997,12 +2015,16 @@ const KL_I18N = {
         x: event.clientX,
         y: event.clientY,
         stackStep: getCardOffsetStep(),
+        sourceNode: cardNode,
       };
       state.dragging.legalMoves = game.legalMovesForWaste();
     } else {
       return;
     }
     state.dragging.hoverTarget = null;
+    const sourceRect = cardNode.getBoundingClientRect();
+    state.dragging.pointerOffsetX = clamp(event.clientX - sourceRect.left, 0, sourceRect.width);
+    state.dragging.pointerOffsetY = clamp(event.clientY - sourceRect.top, 0, sourceRect.height);
     state.dragging.metrics = getDragMetrics();
     state.dragging.pendingAnimationFrame = 0;
     state.dragging.pendingPointer = null;
@@ -2010,8 +2032,8 @@ const KL_I18N = {
 
     const ghosts = [];
     const cards = state.dragging.ids.map((cardId) => findCardById(cardId)).filter(Boolean);
-    const startX = event.clientX - state.dragging.metrics.cardWidth * 0.5;
-    const startY = event.clientY - state.dragging.metrics.cardHeight * 0.16;
+    const startX = event.clientX - state.dragging.pointerOffsetX;
+    const startY = event.clientY - state.dragging.pointerOffsetY;
     const ghostRowOffset = state.dragging.metrics.ghostRowOffset;
     cards.forEach((card, idx) => {
       // The drag preview must be a clone. Reusing the pooled source node moves
@@ -2020,6 +2042,8 @@ const KL_I18N = {
       const ghost = sourceNode?.cloneNode(true);
       if (!ghost) return;
       ghost.classList.add("ghost-card");
+      ghost.style.width = `${state.dragging.metrics.cardWidth}px`;
+      ghost.style.height = `${state.dragging.metrics.cardHeight}px`;
       ghost.style.left = `${startX}px`;
       ghost.style.top = `${startY + idx * ghostRowOffset}px`;
       ghost.style.opacity = "0.95";
@@ -2066,8 +2090,8 @@ const KL_I18N = {
       const currentPointer = dragging.pendingPointer || pointerSnapshot;
       dragging.pendingAnimationFrame = 0;
       dragging.pendingPointer = null;
-      const startX = currentPointer.x - metrics.cardWidth * 0.5;
-      const startY = currentPointer.y - metrics.cardHeight * 0.16;
+      const startX = currentPointer.x - dragging.pointerOffsetX;
+      const startY = currentPointer.y - dragging.pointerOffsetY;
       dragging.ghosts.forEach((node, index) => {
         node.style.left = `${startX}px`;
         node.style.top = `${startY + index * metrics.ghostRowOffset}px`;

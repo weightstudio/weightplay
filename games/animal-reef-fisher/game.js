@@ -1331,16 +1331,35 @@
       const special = nextVariation.checkpoint && nextVariation.boss
         ? `${t("bossMission")}: ${missionName(nextVariation.boss)} · `
         : "";
-      nodes.resultMissionPreview.textContent = t("nextMissionPreview", {
+      const previewLines = [t("nextMissionPreview", {
         mission: t("mission", { stage: nextVariation.stage }),
         name: missionName(nextVariation),
         special,
         rule: missionRuleLabel(nextVariation),
         goal: nextVariation.goal,
+      })];
+      const firstSeaRuleChange = won && zoneIndex === 0
+        ? zones.slice(zoneIndex + 1).find((zone) => zone.rule !== run.zone.rule)
+        : null;
+      if (firstSeaRuleChange) {
+        previewLines.push(t("nextMissionPreview", {
+          mission: t("mission", { stage: firstSeaRuleChange.stage }),
+          name: missionName(firstSeaRuleChange),
+          special: "",
+          rule: missionRuleLabel(firstSeaRuleChange),
+          goal: firstSeaRuleChange.goal,
+        }));
+      }
+      nodes.resultMissionPreview.replaceChildren();
+      previewLines.forEach((line, index) => {
+        if (index) nodes.resultMissionPreview.append(document.createElement("br"));
+        const span = document.createElement("span");
+        span.textContent = line;
+        nodes.resultMissionPreview.append(span);
       });
       nodes.resultMissionPreview.classList.remove("is-hidden");
     } else {
-      nodes.resultMissionPreview.textContent = "";
+      nodes.resultMissionPreview.replaceChildren();
       nodes.resultMissionPreview.classList.add("is-hidden");
     }
     resultDecisionCommitted = false;

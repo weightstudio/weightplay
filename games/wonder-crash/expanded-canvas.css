@@ -442,6 +442,13 @@ body.wonder-playing .game-shell[data-battle-shell] {
   background: #4c5141 url("../../assets/battle-bg.webp") center / cover no-repeat;
 }
 
+/* Battle has one clear return action. The former gear button opened the same
+   Continue / Leave surface as Back, so it must not remain an exposed control. */
+body.wonder-playing #settingsBtn {
+  display: none !important;
+  pointer-events: none !important;
+}
+
 body.wonder-playing #game {
   position: absolute;
   top: auto;
@@ -508,6 +515,17 @@ body.wonder-stage-select .wp-stage-shell-header .wp-shell-settings-popover .wp-s
 
 body.wonder-stage-select .wp-stage-shell-header .wp-shell-settings-popover .wp-shell-combined-sound-toggle::after {
   top: 5px;
+}
+
+/* Locale selection belongs to Main. Stage keeps only the in-game sound
+   setting; changing locale while a Stage is open is intentionally unavailable. */
+body.wonder-stage-select .wp-stage-shell-header .wp-shell-language-row,
+body.wonder-playing #pausePanel .pause-language-picker {
+  display: none !important;
+}
+
+body.wonder-stage-select #menuContent[data-menu-tab="settings"] .setting-row {
+  display: none !important;
 }
 
 #levelGrid {

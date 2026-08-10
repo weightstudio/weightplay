@@ -512,7 +512,6 @@
     syncStageKeyboardSemantics();
   }
   const pausePanel = document.querySelector("#pausePanel");
-  const battleBackButton = document.querySelector("#backToMenuBtn");
   const settingsButton = document.querySelector("#settingsBtn");
   const resumeButton = document.querySelector("#resumeBtn");
   const leaveButton = document.querySelector("#leaveBtn");
@@ -539,16 +538,6 @@
     pausePanel.setAttribute("role", "dialog");
     pausePanel.setAttribute("aria-modal", "true");
     pausePanel.setAttribute("aria-labelledby", overlayTitle.id);
-
-    battleBackButton?.addEventListener("click", (event) => {
-      if (!document.body.classList.contains("wonder-playing")
-        || !pausePanel.classList.contains("hidden")
-        || resultOverlay?.classList.contains("settlement-screen")) return;
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      settingsButton.click();
-      overlayTitle.textContent = leaveButton.textContent.trim();
-    }, true);
 
     settingsButton.addEventListener("click", () => {
       if (pausePanel.classList.contains("hidden")) return;
