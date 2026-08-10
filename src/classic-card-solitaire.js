@@ -112,6 +112,25 @@
     }
   });
 
+  const FREECELL_RESULT_COPY = {
+    en: "Deal identity {seed}. Restart to replay this layout.",
+    "zh-Hant": "牌局識別碼 {seed}。按「重新開始」可重玩這個牌局。",
+    "zh-Hans": "牌局识别码 {seed}。点击“重新开始”可重玩这个牌局。",
+    ja: "ディールID {seed}。Restartでこのレイアウトを再挑戦できます。",
+    ko: "딜 ID {seed}. 다시 시작으로 이 레이아웃을 다시 플레이하세요.",
+    es: "Identidad del reparto: {seed}. Reinicia para volver a jugar este diseño.",
+    "pt-BR": "Identidade da distribuição: {seed}. Reinicie para jogar este layout novamente.",
+    fr: "Identifiant de la donne : {seed}. Redémarrez pour rejouer cette disposition.",
+    de: "Deal-ID {seed}. Mit Neustart kannst du dieses Layout erneut spielen.",
+    it: "Identità della distribuzione: {seed}. Riavvia per rigiocare questa disposizione.",
+    ru: "Идентификатор сдачи {seed}. Нажмите «Начать заново», чтобы повторить расклад.",
+    hi: "डील पहचान {seed}। इस लेआउट को फिर खेलने के लिए फिर से शुरू करें।",
+    ar: "معرّف التوزيع {seed}. أعد البدء للعب هذا الترتيب مرة أخرى.",
+  };
+  Object.entries(FREECELL_RESULT_COPY).forEach(([locale, message]) => {
+    if (COMMON[locale]) COMMON[locale].freecellResultRecap = message;
+  });
+
   const YUKON_COACH_COPY = {
     en: "Try this first move: select the {source}, then move it to the {destination}.",
     "zh-Hant": "先試試這一步：選取 {source}，再移到 {destination}。",
@@ -129,6 +148,25 @@
   };
   Object.entries(YUKON_COACH_COPY).forEach(([locale, message]) => {
     if (COMMON[locale]) COMMON[locale].yukonCoach = message;
+  });
+
+  const YUKON_DESTINATION_COPY = {
+    en: "Highlighted destinations can accept this group.",
+    "zh-Hant": "標示的目的欄位可以接收這組牌。",
+    "zh-Hans": "标示的目的栏位可以接收这组牌。",
+    ja: "ハイライトされた移動先にこの組を置けます。",
+    ko: "강조된 목적지에 이 그룹을 놓을 수 있습니다.",
+    es: "Los destinos resaltados pueden aceptar este grupo.",
+    "pt-BR": "Os destinos destacados aceitam este grupo.",
+    fr: "Les destinations mises en évidence peuvent accueillir ce groupe.",
+    de: "Hervorgehobene Ziele können diese Gruppe aufnehmen.",
+    it: "Le destinazioni evidenziate possono accettare questo gruppo.",
+    ru: "Выделенные места подходят для этой группы.",
+    hi: "हाइलाइट किए गए स्थान इस समूह को ले सकते हैं।",
+    ar: "يمكن للوجهات المميزة استقبال هذه المجموعة.",
+  };
+  Object.entries(YUKON_DESTINATION_COPY).forEach(([locale, message]) => {
+    if (COMMON[locale]) COMMON[locale].yukonDestinationHint = message;
   });
 
   const PYRAMID_COACH_COPY = {
@@ -562,6 +600,11 @@
         : fallback(move.destination?.zone, move.destination?.index);
       return text(YUKON_COACH_COPY[this.locale] || YUKON_COACH_COPY.en, { source, destination });
     }
+    yukonSelectionText() {
+      return this.config.variant === "yukon" && this.game.selected && this.validTargets().size
+        ? this.t("yukonDestinationHint")
+        : "";
+    }
     pyramidCoachText() { return this.pyramidCoachMoves?.length >= 2 ? this.t("pyramidCoach") : ""; }
     pyramidCoachClass(index) {
       if (this.config.variant !== "pyramid" || !this.pyramidCoachMoves?.length) return "";
@@ -674,7 +717,7 @@
       });
     }
     validTargets() {
-      if (this.config.variant !== "freecell" || !this.game.selected) return new Set();
+      if (!(this.config.variant === "freecell" || this.config.variant === "yukon") || !this.game.selected) return new Set();
       const selected = JSON.stringify(this.game.selected);
       return new Set(this.game.legalMoves()
         .filter((move) => JSON.stringify(move.source) === selected)
@@ -871,7 +914,7 @@
     clearFeedback() { if (!this.nodes.toast) return; this.nodes.toast.hidden = true; this.nodes.toast.textContent = ""; clearTimeout(this.toastTimer); }
     feedback(message) { if (!this.nodes.toast) return; this.nodes.toast.setAttribute("role", "alert"); this.nodes.toast.setAttribute("aria-live", "assertive"); this.nodes.toast.textContent = message; this.nodes.toast.hidden = false; if (this.nodes.boardStatus && !this.game.won && !this.game.lost) this.nodes.boardStatus.textContent = message; clearTimeout(this.toastTimer); clearTimeout(this.statusTimer); this.toastTimer = setTimeout(() => { this.nodes.toast.hidden = true; }, 1800); this.statusTimer = setTimeout(() => { if (this.nodes.boardStatus && !this.game.won && !this.game.lost) this.nodes.boardStatus.textContent = ""; }, 1800); }
     hideResult() { if (this.nodes.resultOverlay) this.nodes.resultOverlay.hidden = true; }
-    showResult() { if (!this.nodes.resultOverlay || (!this.game.won && !this.game.lost)) return; this.nodes.resultOverlay.hidden = false; this.nodes.resultTitle.textContent = this.game.won ? this.t("win") : this.t("lose"); const recap = this.config.variant === "golf" ? ` ${this.t("golfResultRecap", { best: this.game.bestCombo })}` : ""; this.nodes.resultText.textContent = `${this.game.won ? this.t("winText") : this.t("loseText")}${recap}`; }
+    showResult() { if (!this.nodes.resultOverlay || (!this.game.won && !this.game.lost)) return; this.nodes.resultOverlay.hidden = false; this.nodes.resultTitle.textContent = this.game.won ? this.t("win") : this.t("lose"); const recap = this.config.variant === "golf" ? ` ${this.t("golfResultRecap", { best: this.game.bestCombo })}` : this.config.variant === "freecell" ? ` ${this.t("freecellResultRecap", { seed: this.game.seed })}` : ""; this.nodes.resultText.textContent = `${this.game.won ? this.t("winText") : this.t("loseText")}${recap}`; }
     render() {
       this.hideResult();
       this.nodes.moveCount.textContent = String(this.game.moves);
@@ -887,8 +930,10 @@
       this.prepareYukonCoach();
       this.preparePyramidCoach();
       delete this.nodes.boardStatus.dataset.state;
-      this.nodes.boardStatus.textContent = this.game.won ? this.t("win") : this.game.lost ? this.t("lose") : this.pyramidCoachText() || this.yukonCoachText();
+      const yukonSelection = this.yukonSelectionText();
+      this.nodes.boardStatus.textContent = this.game.won ? this.t("win") : this.game.lost ? this.t("lose") : this.pyramidCoachText() || yukonSelection || this.yukonCoachText();
       if (!this.game.won && !this.game.lost && this.pyramidCoachMoves?.length >= 2) this.nodes.boardStatus.dataset.state = "pyramid-coach";
+      else if (!this.game.won && !this.game.lost && yukonSelection) this.nodes.boardStatus.dataset.state = "yukon-destinations";
       else if (!this.game.won && !this.game.lost && this.yukonCoachMove) this.nodes.boardStatus.dataset.state = "coach";
       this.renderSlots(); this.renderTableau(); this.markValidTargets(); this.showResult(); this.animateMovedCards(); this.animateRemovedCards();
     }
