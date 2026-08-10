@@ -11,9 +11,9 @@
   const LOCALES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
 
   const COMMON = {
-    en: { start: "Start Game", restart: "Restart", newGame: "New Game", undo: "Undo", hint: "Hint", how: "How to play", settings: "Settings", sound: "Sound", soundOn: "Sound: On", soundOff: "Sound: Off", moves: "Moves", score: "Score", stock: "Stock", waste: "Waste", freeCells: "Free Cells", foundations: "Foundations", tableau: "Tableau", combo: "Combo", draw: "Draw card", win: "Game Complete", lose: "No more moves", winText: "A clean table. Nice work!", loseText: "Try Undo or start a fresh deal.", close: "Close", back: "Back", empty: "Empty", selected: "Selected", noMoves: "No legal move found.", wrong: "That move is not legal.", pairWrong: "Choose two available cards that add to 13.", stockEmpty: "The stock is empty.", tutorialTitle: "Read the table, then make one clear move.", tutorialGoal: "Clear every card using the classic rules.", tutorialControl: "Tap a card and its destination, or drag it with a mouse or finger.", tutorialFinish: "Use Hint when you need a nudge; Undo is always safe.", ariaCard: "{rank} of {suit}", ariaBack: "Face-down card", ariaPile: "{name}, {count} cards" },
-    "zh-Hant": { start: "開始遊戲", restart: "重新開始", newGame: "新遊戲", undo: "還原", hint: "提示", how: "玩法說明", settings: "設定", sound: "音效", soundOn: "音效：開", soundOff: "音效：關", moves: "步數", score: "分數", stock: "牌庫", waste: "棄牌區", freeCells: "暫存格", foundations: "收牌區", tableau: "主牌欄", combo: "連鎖", draw: "翻牌", win: "遊戲完成", lose: "沒有可走的牌", winText: "桌面清空了，做得漂亮！", loseText: "試試還原，或開始一局新牌。", close: "關閉", back: "返回", empty: "空位", selected: "已選取", noMoves: "找不到合法走法。", wrong: "這個移動不符合規則。", pairWrong: "請選兩張可用且總和為 13 的牌。", stockEmpty: "牌庫已空。", tutorialTitle: "先看懂桌面，再做出清楚的一步。", tutorialGoal: "依經典規則清除所有牌。", tutorialControl: "點牌與目的地，或用手指／滑鼠拖曳。", tutorialFinish: "需要方向時使用提示；還原永遠安全。", ariaCard: "{suit} {rank}", ariaBack: "覆蓋牌", ariaPile: "{name}，{count} 張牌" },
-    "zh-Hans": { start: "开始游戏", restart: "重新开始", newGame: "新游戏", undo: "撤销", hint: "提示", how: "玩法说明", settings: "设置", sound: "音效", soundOn: "音效：开", soundOff: "音效：关", moves: "步数", score: "分数", stock: "牌库", waste: "弃牌区", freeCells: "暂存格", foundations: "收牌区", tableau: "主牌列", combo: "连锁", draw: "翻牌", win: "游戏完成", lose: "没有可走的牌", winText: "桌面清空了，做得漂亮！", loseText: "试试撤销，或开始一局新牌。", close: "关闭", back: "返回", empty: "空位", selected: "已选取", noMoves: "找不到合法走法。", wrong: "这个移动不符合规则。", pairWrong: "请选择两张可用且总和为 13 的牌。", stockEmpty: "牌库已空。", tutorialTitle: "先看懂桌面，再做出清楚的一步。", tutorialGoal: "按经典规则清除所有牌。", tutorialControl: "点击牌与目的地，或用手指／鼠标拖曳。", tutorialFinish: "需要方向时使用提示；撤销永远安全。", ariaCard: "{suit} {rank}", ariaBack: "盖牌", ariaPile: "{name}，{count} 张牌" },
+    en: { start: "Start Game", restart: "Restart", newGame: "New Game", undo: "Undo", hint: "Hint", how: "How to play", settings: "Settings", sound: "Sound", soundOn: "Sound: On", soundOff: "Sound: Off", moves: "Moves", score: "Score", stock: "Stock", waste: "Waste", freeCells: "Free Cells", foundations: "Foundations", tableau: "Tableau", combo: "Combo", draw: "Draw card", win: "Game Complete", lose: "No more moves", winText: "A clean table. Nice work!", loseText: "Try Undo or start a fresh deal.", close: "Close", back: "Back", empty: "Empty", selected: "Selected", noMoves: "No legal move found.", wrong: "That move is not legal.", pairWrong: "Choose two available cards that add to 13.", pairClear: "Pair cleared!", stockEmpty: "The stock is empty.", tutorialTitle: "Read the table, then make one clear move.", tutorialGoal: "Clear every card using the classic rules.", tutorialControl: "Tap a card and its destination, or drag it with a mouse or finger.", tutorialFinish: "Use Hint when you need a nudge; Undo is always safe.", ariaCard: "{rank} of {suit}", ariaBack: "Face-down card", ariaPile: "{name}, {count} cards" },
+    "zh-Hant": { start: "開始遊戲", restart: "重新開始", newGame: "新遊戲", undo: "還原", hint: "提示", how: "玩法說明", settings: "設定", sound: "音效", soundOn: "音效：開", soundOff: "音效：關", moves: "步數", score: "分數", stock: "牌庫", waste: "棄牌區", freeCells: "暫存格", foundations: "收牌區", tableau: "主牌欄", combo: "連鎖", draw: "翻牌", win: "遊戲完成", lose: "沒有可走的牌", winText: "桌面清空了，做得漂亮！", loseText: "試試還原，或開始一局新牌。", close: "關閉", back: "返回", empty: "空位", selected: "已選取", noMoves: "找不到合法走法。", wrong: "這個移動不符合規則。", pairWrong: "請選兩張可用且總和為 13 的牌。", pairClear: "牌對已清除！", stockEmpty: "牌庫已空。", tutorialTitle: "先看懂桌面，再做出清楚的一步。", tutorialGoal: "依經典規則清除所有牌。", tutorialControl: "點牌與目的地，或用手指／滑鼠拖曳。", tutorialFinish: "需要方向時使用提示；還原永遠安全。", ariaCard: "{suit} {rank}", ariaBack: "覆蓋牌", ariaPile: "{name}，{count} 張牌" },
+    "zh-Hans": { start: "开始游戏", restart: "重新开始", newGame: "新游戏", undo: "撤销", hint: "提示", how: "玩法说明", settings: "设置", sound: "音效", soundOn: "音效：开", soundOff: "音效：关", moves: "步数", score: "分数", stock: "牌库", waste: "弃牌区", freeCells: "暂存格", foundations: "收牌区", tableau: "主牌列", combo: "连锁", draw: "翻牌", win: "游戏完成", lose: "没有可走的牌", winText: "桌面清空了，做得漂亮！", loseText: "试试撤销，或开始一局新牌。", close: "关闭", back: "返回", empty: "空位", selected: "已选取", noMoves: "找不到合法走法。", wrong: "这个移动不符合规则。", pairWrong: "请选择两张可用且总和为 13 的牌。", pairClear: "牌对已清除！", stockEmpty: "牌库已空。", tutorialTitle: "先看懂桌面，再做出清楚的一步。", tutorialGoal: "按经典规则清除所有牌。", tutorialControl: "点击牌与目的地，或用手指／鼠标拖曳。", tutorialFinish: "需要方向时使用提示；撤销永远安全。", ariaCard: "{suit} {rank}", ariaBack: "盖牌", ariaPile: "{name}，{count} 张牌" },
     ja: { start: "ゲーム開始", restart: "リスタート", newGame: "新しいゲーム", undo: "元に戻す", hint: "ヒント", how: "遊び方", settings: "設定", sound: "サウンド", soundOn: "サウンド：オン", soundOff: "サウンド：オフ", moves: "手数", score: "スコア", stock: "山札", waste: "捨て札", freeCells: "フリーセル", foundations: "組札", tableau: "場札", combo: "コンボ", draw: "カードをめくる", win: "ゲームクリア", lose: "手がありません", winText: "すべてのカードを片付けました！", loseText: "元に戻すか、新しいゲームを始めましょう。", close: "閉じる", back: "戻る", empty: "空き", selected: "選択中", noMoves: "合法手がありません。", wrong: "その移動はルールに合いません。", pairWrong: "合計13になる使える2枚を選んでください。", stockEmpty: "山札がありません。", tutorialTitle: "場を読み、確かな一手を選びます。", tutorialGoal: "クラシックなルールで全カードを片付けます。", tutorialControl: "カードと行き先をタップするか、指やマウスでドラッグします。", tutorialFinish: "迷ったらヒント、いつでも元に戻せます。", ariaCard: "{suit}の{rank}", ariaBack: "裏向きのカード", ariaPile: "{name}、{count}枚" },
     ko: { start: "게임 시작", restart: "다시 시작", newGame: "새 게임", undo: "실행 취소", hint: "힌트", how: "게임 방법", settings: "설정", sound: "사운드", soundOn: "사운드: 켜짐", soundOff: "사운드: 꺼짐", moves: "이동", score: "점수", stock: "덱", waste: "버린 카드", freeCells: "프리 셀", foundations: "기초 더미", tableau: "테이블", combo: "콤보", draw: "카드 뒤집기", win: "게임 완료", lose: "더 이상 이동할 수 없음", winText: "모든 카드를 정리했습니다!", loseText: "실행 취소하거나 새 게임을 시작해 보세요.", close: "닫기", back: "뒤로", empty: "빈칸", selected: "선택됨", noMoves: "가능한 수가 없습니다.", wrong: "규칙에 맞지 않는 이동입니다.", pairWrong: "합이 13이 되는 사용 가능한 카드 두 장을 고르세요.", stockEmpty: "덱이 비었습니다.", tutorialTitle: "테이블을 읽고 확실한 한 수를 선택하세요.", tutorialGoal: "클래식 규칙으로 모든 카드를 치우세요.", tutorialControl: "카드와 목적지를 누르거나 손가락과 마우스로 드래그하세요.", tutorialFinish: "필요하면 힌트를 쓰고 언제든 실행 취소하세요.", ariaCard: "{suit} {rank}", ariaBack: "뒤집힌 카드", ariaPile: "{name}, 카드 {count}장" },
     es: { start: "Iniciar partida", restart: "Reiniciar", newGame: "Nueva partida", undo: "Deshacer", hint: "Pista", how: "Cómo jugar", settings: "Ajustes", sound: "Sonido", soundOn: "Sonido: activado", soundOff: "Sonido: desactivado", moves: "Movimientos", score: "Puntuación", stock: "Mazo", waste: "Descarte", freeCells: "Celdas libres", foundations: "Fundaciones", tableau: "Tapiz", combo: "Combo", draw: "Robar carta", win: "Partida completada", lose: "Sin movimientos", winText: "¡Has despejado la mesa!", loseText: "Deshaz un movimiento o empieza una nueva partida.", close: "Cerrar", back: "Atrás", empty: "Vacío", selected: "Seleccionada", noMoves: "No hay movimientos legales.", wrong: "Ese movimiento no es legal.", pairWrong: "Elige dos cartas disponibles que sumen 13.", stockEmpty: "El mazo está vacío.", tutorialTitle: "Lee la mesa y elige una jugada clara.", tutorialGoal: "Elimina todas las cartas con las reglas clásicas.", tutorialControl: "Toca la carta y su destino, o arrástrala con el dedo o el ratón.", tutorialFinish: "Usa Pista si dudas; Deshacer siempre es seguro.", ariaCard: "{rank} de {suit}", ariaBack: "Carta boca abajo", ariaPile: "{name}, {count} cartas" },
@@ -25,6 +25,25 @@
     hi: { start: "खेल शुरू करें", restart: "फिर शुरू करें", newGame: "नया खेल", undo: "पूर्ववत", hint: "संकेत", how: "कैसे खेलें", settings: "सेटिंग", sound: "ध्वनि", soundOn: "ध्वनि: चालू", soundOff: "ध्वनि: बंद", moves: "चालें", score: "स्कोर", stock: "डेक", waste: "फेंकी गई", freeCells: "खाली सेल", foundations: "फाउंडेशन", tableau: "टेबल", combo: "कॉम्बो", draw: "कार्ड पलटें", win: "खेल पूरा", lose: "कोई चाल नहीं", winText: "सभी कार्ड साफ़ हो गए!", loseText: "पूर्ववत करें या नया खेल शुरू करें।", close: "बंद करें", back: "वापस", empty: "खाली", selected: "चयनित", noMoves: "कोई मान्य चाल नहीं मिली।", wrong: "यह चाल मान्य नहीं है।", pairWrong: "13 का योग बनाने वाले दो उपलब्ध कार्ड चुनें।", stockEmpty: "डेक खाली है।", tutorialTitle: "टेबल पढ़ें और एक स्पष्ट चाल चुनें।", tutorialGoal: "क्लासिक नियमों से सभी कार्ड हटाएँ।", tutorialControl: "कार्ड और लक्ष्य पर टैप करें या उंगली/माउस से खींचें।", tutorialFinish: "ज़रूरत हो तो संकेत लें; पूर्ववत सुरक्षित है।", ariaCard: "{suit} का {rank}", ariaBack: "उलटा कार्ड", ariaPile: "{name}, {count} कार्ड" },
     ar: { start: "ابدأ اللعبة", restart: "إعادة البدء", newGame: "لعبة جديدة", undo: "تراجع", hint: "تلميح", how: "طريقة اللعب", settings: "الإعدادات", sound: "الصوت", soundOn: "الصوت: تشغيل", soundOff: "الصوت: إيقاف", moves: "الحركات", score: "النقاط", stock: "الرزمة", waste: "المهملات", freeCells: "الخلايا الحرة", foundations: "الأساسات", tableau: "الطاولة", combo: "تتابع", draw: "اقلب بطاقة", win: "اكتملت اللعبة", lose: "لا توجد حركات", winText: "أزلت كل البطاقات!", loseText: "تراجع عن حركة أو ابدأ لعبة جديدة.", close: "إغلاق", back: "رجوع", empty: "فارغ", selected: "محدد", noMoves: "لا توجد حركة قانونية.", wrong: "هذه الحركة غير قانونية.", pairWrong: "اختر بطاقتين متاحتين مجموعهما 13.", stockEmpty: "الرزمة فارغة.", tutorialTitle: "اقرأ الطاولة واختر حركة واضحة.", tutorialGoal: "أزل كل البطاقات بالقواعد الكلاسيكية.", tutorialControl: "اضغط البطاقة ووجهتها أو اسحبها بإصبعك أو الفأرة.", tutorialFinish: "استخدم التلميح عند الحاجة؛ التراجع آمن دائماً.", ariaCard: "{rank} من {suit}", ariaBack: "بطاقة مقلوبة", ariaPile: "{name}، {count} بطاقات" },
   };
+
+  const PAIR_CLEAR_COPY = {
+    en: "Pair cleared!",
+    "zh-Hant": "牌對已清除！",
+    "zh-Hans": "牌对已清除！",
+    ja: "ペアを消去しました！",
+    ko: "한 쌍을 지웠습니다!",
+    es: "¡Pareja eliminada!",
+    "pt-BR": "Par removido!",
+    fr: "Paire retirée !",
+    de: "Paar entfernt!",
+    it: "Coppia rimossa!",
+    ru: "Пара убрана!",
+    hi: "जोड़ी हटा दी गई!",
+    ar: "تمت إزالة الزوج!",
+  };
+  Object.entries(PAIR_CLEAR_COPY).forEach(([locale, message]) => {
+    if (COMMON[locale]) COMMON[locale].pairClear = message;
+  });
 
   const VARIANTS = {
     freecell: { titles: { en: "FreeCell Solitaire", "zh-Hant": "空當接龍", "zh-Hans": "空当接龙", ja: "フリーセルソリティア", ko: "프리셀 솔리테어", es: "Solitario FreeCell", "pt-BR": "Paciência FreeCell", fr: "Solitaire FreeCell", de: "FreeCell-Solitär", it: "Solitario FreeCell", ru: "Пасьянс «Свободная ячейка»", hi: "फ्रीसेल सॉलिटेयर", ar: "سوليتير الخلية الحرة" }, target: { en: "Build four suit foundations from Ace to King using eight open columns and four temporary cells.", "zh-Hant": "利用 8 個全攤主牌欄與 4 個暫存格，將四種花色從 A 收到 K。", "zh-Hans": "利用 8 个全摊主牌列和 4 个暂存格，将四种花色从 A 收到 K。", ja: "8列の場札と4つのフリーセルを使い、4つの組札をAからKまで作ります。", ko: "8개 공개 열과 4개의 프리 셀로 네 기초 더미를 A부터 K까지 만드세요.", es: "Construye cuatro fundaciones por palo, del As al Rey, usando ocho columnas y cuatro celdas libres.", "pt-BR": "Monte quatro fundações por naipe, do Ás ao Rei, usando oito colunas e quatro células livres.", fr: "Construisez quatre fondations par couleur, de l’As au Roi, avec huit colonnes et quatre cellules libres.", de: "Baue vier farbige Fundamente von Ass bis König mit acht offenen Spalten und vier freien Feldern.", it: "Costruisci quattro basi per seme dall'Asso al Re usando otto colonne e quattro celle libere.", ru: "Соберите четыре масти от туза до короля в восьми открытых колонках и четырёх свободных ячейках.", hi: "आठ खुली कॉलम और चार खाली सेल से चारों सूट की फाउंडेशन A से K तक बनाएँ।", ar: "ابنِ أربع أساسات حسب النوع من الآس إلى الملك باستخدام ثمانية أعمدة وأربع خلايا حرة." }, colorRule: "alternate" },
@@ -459,11 +478,11 @@
     captureMoveRects() {
       return new Map([...this.nodes.board.querySelectorAll("[data-card-id]")].map((node) => [node.dataset.cardId, node.getBoundingClientRect()]));
     }
-    captureRemovedMotions(sources = []) {
+    captureRemovedMotions(sources = [], cue = "") {
       const wanted = new Set(sources.filter(Boolean).map((source) => JSON.stringify(source)));
       return [...this.nodes.board.querySelectorAll("[data-source]")]
         .filter((node) => wanted.has(node.dataset.source))
-        .map((node) => ({ node: node.cloneNode(true), rect: node.getBoundingClientRect() }));
+        .map((node) => ({ node: node.cloneNode(true), rect: node.getBoundingClientRect(), cue }));
     }
     animateMovedCards() {
       const previous = this.pendingMoveRects;
@@ -487,17 +506,21 @@
     animateRemovedCards() {
       const motions = this.pendingRemovedMotions;
       this.pendingRemovedMotions = [];
-      motions.forEach(({ node, rect }) => {
+      motions.forEach(({ node, rect, cue }) => {
         node.classList.add("classic-card-motion");
+        if (cue) node.classList.add(`classic-${cue}-motion`);
         node.removeAttribute("data-source");
         node.removeAttribute("data-card-id");
         Object.assign(node.style, { position: "fixed", left: `${rect.left}px`, top: `${rect.top}px`, width: `${rect.width}px`, height: `${rect.height}px`, margin: "0" });
         document.body.append(node);
         const finish = () => node.remove();
         if (typeof node.animate === "function") {
+          const pairCue = cue === "pair";
           const animation = node.animate(
-            [{ opacity: 1, transform: "translateY(0) scale(1)" }, { opacity: 0, transform: "translateY(-14px) scale(.86)" }],
-            { duration: 260, easing: "cubic-bezier(.2,.8,.25,1)", fill: "forwards" },
+            pairCue
+              ? [{ opacity: 1, transform: "translateY(0) scale(1)" }, { opacity: 1, transform: "translateY(-8px) scale(1.08)" }, { opacity: 0, transform: "translateY(-20px) scale(.78)" }]
+              : [{ opacity: 1, transform: "translateY(0) scale(1)" }, { opacity: 0, transform: "translateY(-14px) scale(.86)" }],
+            { duration: pairCue ? 340 : 260, easing: "cubic-bezier(.2,.8,.25,1)", fill: "forwards" },
           );
           animation.addEventListener("finish", finish, { once: true });
         } else window.setTimeout(finish, 260);
@@ -543,6 +566,18 @@
         }
       }, 1400);
     }
+    showPairCue() {
+      if (!this.nodes.boardStatus || this.game.won || this.game.lost) return;
+      this.nodes.boardStatus.dataset.state = "pair";
+      this.nodes.boardStatus.textContent = this.t("pairClear");
+      clearTimeout(this.statusTimer);
+      this.statusTimer = setTimeout(() => {
+        if (this.nodes.boardStatus && !this.game.won && !this.game.lost) {
+          delete this.nodes.boardStatus.dataset.state;
+          this.nodes.boardStatus.textContent = "";
+        }
+      }, 1250);
+    }
     handleClick(event) {
       if (event.target.closest("[data-action=clear-toast]")) return;
       const card = event.target.closest("[data-source]");
@@ -574,9 +609,12 @@
         const movesBefore = this.game.moves;
         const sources = previousSelected ? [previousSelected, source] : [source];
         this.pendingMoveRects = previousSelected || this.game.sourceCard(source)?.rank === 13 ? this.captureMoveRects() : null;
-        this.pendingRemovedMotions = previousSelected || this.game.sourceCard(source)?.rank === 13 ? this.captureRemovedMotions(sources) : [];
+        const pairCleared = Boolean(previousSelected && JSON.stringify(previousSelected) !== JSON.stringify(source) && Number(this.game.sourceCard(source)?.rank) !== 13);
+        this.pendingRemovedMotions = previousSelected || this.game.sourceCard(source)?.rank === 13 ? this.captureRemovedMotions(sources, pairCleared ? "pair" : "") : [];
         if (this.game.pairPyramid(source)) {
+          const pairMoved = pairCleared && this.game.moves > movesBefore;
           this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render();
+          if (pairMoved) this.showPairCue();
           if (this.game.moves === movesBefore && !this.game.hasLegalPair(source)) this.feedback(this.t("noMoves"));
         } else {
           this.pendingMoveRects = null; this.pendingRemovedMotions = []; this.feedback(this.t("pairWrong"));
@@ -629,10 +667,11 @@
       else if (this.config.variant === "pyramid") {
         const movesBefore = this.game.moves;
         this.pendingMoveRects = this.captureMoveRects();
-        this.pendingRemovedMotions = this.captureRemovedMotions([source, targetSource]);
+        const pairCleared = Boolean(targetSource && JSON.stringify(source) !== JSON.stringify(targetSource) && Number(this.game.sourceCard(source)?.rank) !== 13);
+        this.pendingRemovedMotions = this.captureRemovedMotions([source, targetSource], pairCleared ? "pair" : "");
         this.game.pairPyramid(source);
         if (targetSource && JSON.stringify(source) !== JSON.stringify(targetSource) && this.game.moves === movesBefore) this.game.pairPyramid(targetSource);
-        if (this.game.moves !== movesBefore) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); }
+        if (this.game.moves !== movesBefore) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); if (pairCleared) this.showPairCue(); }
         else { this.pendingMoveRects = null; this.pendingRemovedMotions = []; this.feedback(this.t("pairWrong")); }
       }
       else if (this.config.variant === "tripeaks") {
