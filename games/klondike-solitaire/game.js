@@ -2479,7 +2479,7 @@ const KL_I18N = {
     const all = game.allLegalMoves();
     const hint = foundationMoves[0] || all[0];
     if (!hint) {
-      showHint(t(NO_MOVES_MESSAGE));
+      showNoMoveHint();
       return;
     }
     highlightMoveHint(hint);
