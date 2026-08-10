@@ -67,6 +67,51 @@
     }
   });
 
+  const GOLF_STOCK_COPY = {
+    en: { safe: "Stock: {count} cards left.", low: "Stock low: {count} left. Protect your next move.", final: "Final stock card—make it count." },
+    "zh-Hant": { safe: "牌庫還有 {count} 張。", low: "牌庫偏少：剩 {count} 張，保留下一步。", final: "最後一張牌庫牌，抓準這一步。" },
+    "zh-Hans": { safe: "牌库还有 {count} 张。", low: "牌库偏少：剩 {count} 张，保留下一步。", final: "最后一张牌库牌，抓准这一步。" },
+    ja: { safe: "山札はあと{count}枚。", low: "山札わずか：残り{count}枚。次の一手を守ろう。", final: "最後の山札。勝負の一手です。" },
+    ko: { safe: "덱에 {count}장이 남았습니다.", low: "덱이 얼마 남지 않았습니다: {count}장.", final: "마지막 덱 카드입니다. 신중하게!" },
+    es: { safe: "Quedan {count} cartas en el mazo.", low: "Quedan pocas: {count}. Protege tu próxima jugada.", final: "Última carta del mazo: aprovéchala." },
+    "pt-BR": { safe: "Restam {count} cartas no monte.", low: "Poucas cartas: restam {count}. Proteja a próxima jogada.", final: "Última carta do monte: faça valer." },
+    fr: { safe: "Il reste {count} cartes dans la pioche.", low: "Pioche presque vide : {count} restantes. Protégez votre prochain coup.", final: "Dernière carte de la pioche : à vous de jouer." },
+    de: { safe: "Noch {count} Karten im Stapel.", low: "Stapel fast leer: noch {count}. Schütze deinen nächsten Zug.", final: "Letzte Karte im Stapel – nutze sie gut." },
+    it: { safe: "Restano {count} carte nel tallone.", low: "Tallone quasi vuoto: ne restano {count}. Proteggi la prossima mossa.", final: "Ultima carta del tallone: sfruttala bene." },
+    ru: { safe: "В колоде осталось карт: {count}.", low: "Колода почти пуста: осталось {count}. Берегите следующий ход.", final: "Последняя карта колоды. Используйте её." },
+    hi: { safe: "डेक में {count} कार्ड बचे हैं।", low: "डेक कम है: {count} कार्ड। अगली चाल बचाएँ।", final: "डेक का आखिरी कार्ड—इसे सही खेलें।" },
+    ar: { safe: "تبقى {count} بطاقات في الرزمة.", low: "الرزمة قليلة: تبقى {count}. احمِ حركتك التالية.", final: "هذه آخر بطاقة في الرزمة، أحسن استخدامها." },
+  };
+  Object.entries(GOLF_STOCK_COPY).forEach(([locale, copy]) => {
+    if (COMMON[locale]) {
+      COMMON[locale].golfStockSafe = copy.safe;
+      COMMON[locale].golfStockLow = copy.low;
+      COMMON[locale].golfStockFinal = copy.final;
+    }
+  });
+
+  const GOLF_MASTERY_COPY = {
+    en: { combo: "Run of {count}! Best chain: {best}.", recap: "Best chain: {best} cards." },
+    "zh-Hant": { combo: "連出 {count} 張！最佳連鎖：{best} 張。", recap: "最佳連鎖：{best} 張。" },
+    "zh-Hans": { combo: "连出 {count} 张！最佳连锁：{best} 张。", recap: "最佳连锁：{best} 张。" },
+    ja: { combo: "連続{count}枚！自己ベストは{best}枚。", recap: "ベスト連鎖：{best}枚。" },
+    ko: { combo: "연속 {count}장! 최고 연속: {best}장.", recap: "최고 연속: {best}장." },
+    es: { combo: "¡Racha de {count}! Mejor cadena: {best}.", recap: "Mejor cadena: {best} cartas." },
+    "pt-BR": { combo: "Sequência de {count}! Melhor sequência: {best}.", recap: "Melhor sequência: {best} cartas." },
+    fr: { combo: "Série de {count} ! Meilleure série : {best}.", recap: "Meilleure série : {best} cartes." },
+    de: { combo: "Serie mit {count}! Beste Serie: {best}.", recap: "Beste Serie: {best} Karten." },
+    it: { combo: "Serie di {count}! Migliore: {best}.", recap: "Migliore serie: {best} carte." },
+    ru: { combo: "Серия из {count}! Лучшая серия: {best}.", recap: "Лучшая серия: {best} карт." },
+    hi: { combo: "लगातार {count} कार्ड! सर्वश्रेष्ठ श्रृंखला: {best}।", recap: "सर्वश्रेष्ठ श्रृंखला: {best} कार्ड।" },
+    ar: { combo: "سلسلة من {count}! أفضل سلسلة: {best}.", recap: "أفضل سلسلة: {best} بطاقة." },
+  };
+  Object.entries(GOLF_MASTERY_COPY).forEach(([locale, copy]) => {
+    if (COMMON[locale]) {
+      COMMON[locale].golfComboLong = copy.combo;
+      COMMON[locale].golfResultRecap = copy.recap;
+    }
+  });
+
   const YUKON_COACH_COPY = {
     en: "Try this first move: select the {source}, then move it to the {destination}.",
     "zh-Hant": "先試試這一步：選取 {source}，再移到 {destination}。",
@@ -523,7 +568,7 @@
       this.nodes.board.addEventListener("pointerdown", (event) => this.handlePointerDown(event));
       this.nodes.board.addEventListener("pointermove", (event) => this.handlePointerMove(event));
       this.nodes.board.addEventListener("pointerup", (event) => this.handlePointerUp(event));
-      this.nodes.stockPile?.addEventListener("click", () => { if (["pyramid", "tripeaks", "golf"].includes(this.config.variant)) { if (this.game.drawStock()) { this.clearFeedback(); this.audio.draw(); this.render(); } else this.feedback(this.t("stockEmpty")); } });
+      this.nodes.stockPile?.addEventListener("click", () => { if (["pyramid", "tripeaks", "golf"].includes(this.config.variant)) { if (this.game.drawStock()) { const stockRemaining = this.game.stock.length; this.clearFeedback(); this.audio.draw(); this.render(); if (this.config.variant === "golf") this.showGolfStockCue(stockRemaining); } else this.feedback(this.t("stockEmpty")); } });
       root.addEventListener("wonder:locale-change", () => { this.locale = safeLocale(); this.refreshCopy(); this.render(); });
     }
     refreshSound() { if (this.nodes.soundBtn) { this.nodes.soundBtn.setAttribute("aria-pressed", String(this.audio.enabled)); this.nodes.soundBtn.textContent = this.audio.enabled ? this.t("soundOn") : this.t("soundOff"); } }
@@ -634,6 +679,19 @@
       if (this.config.variant !== "tripeaks" || !this.nodes.boardStatus || this.game.won || this.game.lost) return;
       this.nodes.boardStatus.dataset.state = clearedPeak ? "peak" : "success";
       this.nodes.boardStatus.textContent = this.t(clearedPeak ? "peakClear" : "tripeaksChain", { count: this.game.combo });
+      clearTimeout(this.statusTimer);
+      this.statusTimer = setTimeout(() => {
+        if (this.nodes.boardStatus && !this.game.won && !this.game.lost) {
+          delete this.nodes.boardStatus.dataset.state;
+          this.nodes.boardStatus.textContent = "";
+        }
+      }, 1400);
+    }
+    showGolfStockCue(count) {
+      if (this.config.variant !== "golf" || !this.nodes.boardStatus || this.game.won || this.game.lost || count <= 0) return;
+      const key = count === 1 ? "golfStockFinal" : count <= 5 ? "golfStockLow" : "golfStockSafe";
+      this.nodes.boardStatus.dataset.state = count <= 5 ? "stock-low" : "stock";
+      this.nodes.boardStatus.textContent = this.t(key, { count });
       clearTimeout(this.statusTimer);
       this.statusTimer = setTimeout(() => {
         if (this.nodes.boardStatus && !this.game.won && !this.game.lost) {

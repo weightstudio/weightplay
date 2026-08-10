@@ -3032,7 +3032,21 @@ body.guard-yard-stage .stage-card:not(.is-centered) {
 
 body.guard-yard-stage .stage-card.is-prev,
 body.guard-yard-stage .stage-card.is-next {
-  opacity: 0.18;
+  opacity: 0.34;
+  filter: saturate(0.82) brightness(0.9);
+}
+
+body.guard-yard-stage .stage-grid {
+  overflow-anchor: none;
+  will-change: scroll-position;
+}
+
+body.guard-yard-stage .shop-panel:has(.shop-card:only-child) {
+  align-content: center;
+}
+
+body.guard-yard-stage .shop-panel:has(.shop-card:only-child) .shop-grid {
+  justify-items: center;
 }
 
 body.guard-yard-stage .menu-tabs {

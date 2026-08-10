@@ -1084,7 +1084,8 @@
         : "";
     const iconUnit = units[Math.min(index, units.length - 1)]?.id || "cat";
     button.dir = document.documentElement.dir || "ltr";
-    button.className = `stage-card${selected ? " selected" : ""}${active ? " is-centered" : ""}${locked ? " locked" : ""}${cleared ? " cleared" : ""}`;
+    const adjacent = index === stageBrowseIndex - 1 ? " is-prev" : index === stageBrowseIndex + 1 ? " is-next" : "";
+    button.className = `stage-card${selected ? " selected" : ""}${active ? " is-centered" : ""}${adjacent}${locked ? " locked" : ""}${cleared ? " cleared" : ""}`;
     button.dataset.stageIndex = String(index);
     button.dataset.stageLabel = t("stage", { n: stageNo });
     button.setAttribute("aria-label", `${t("stage", { n: stageNo })}. ${stageCopy(stage, "title")}${locked ? `. ${t("locked")}` : ""}`);
@@ -1186,9 +1187,29 @@
     const anchorIndex = Math.round(logical);
     moveStageWindow(desiredStageWindow(anchorIndex));
     const card = nodes.stageGrid.querySelector(`[data-stage-index="${anchorIndex}"]`);
-    card?.scrollIntoView({ behavior: "auto", block: "nearest", inline: "center" });
-    const fraction = logical - anchorIndex;
-    if (card && Math.abs(fraction) > 0.0001) nodes.stageGrid.scrollLeft += fraction * stageRailGeometry().orientation * stageRailGeometry().pitch;
+    if (card) {
+      // scrollIntoView() on every pointermove causes a layout/scroll feedback
+      // loop on the transformed Stage Canvas. Calculate the logical target
+      // directly so drag updates stay within one frame and never jump.
+      const rail = nodes.stageGrid;
+      const railBox = rail.getBoundingClientRect();
+      const cardBox = card.getBoundingClientRect();
+      const coordinateScale = railBox.width > 0 ? rail.clientWidth / railBox.width : 1;
+      const anchorScroll = rail.scrollLeft
+        + ((cardBox.left + cardBox.width / 2) - (railBox.left + railBox.width / 2)) * coordinateScale;
+      const fraction = logical - anchorIndex;
+      const target = anchorScroll + fraction * stageRailGeometry().orientation * stageRailGeometry().pitch;
+      const maximum = Math.max(0, rail.scrollWidth - rail.clientWidth);
+      const immediateScroll = rail.dataset.wpStageDragDown !== "1" && rail.dataset.wpStageSettling !== "true";
+      const previousBehavior = rail.style.getPropertyValue("scroll-behavior");
+      const previousPriority = rail.style.getPropertyPriority("scroll-behavior");
+      if (immediateScroll) rail.style.setProperty("scroll-behavior", "auto", "important");
+      rail.scrollLeft = Math.max(0, Math.min(maximum, target));
+      if (immediateScroll) {
+        if (previousBehavior) rail.style.setProperty("scroll-behavior", previousBehavior, previousPriority);
+        else rail.style.removeProperty("scroll-behavior");
+      }
+    }
     nodes.stageGrid.dataset.wpStageDragLogical = logical.toFixed(4);
     return logical;
   }
@@ -1303,14 +1324,25 @@
     let logical = 0;
     let moved = false;
     let suppressClick = false;
+    let dragFrame = 0;
+    let pendingDragLogical = 0;
+    let previousScrollBehavior = "";
+    let previousScrollBehaviorPriority = "";
     nodes.stageGrid.dataset.wpStageVirtualDrag = "true";
     nodes.stageGrid.addEventListener("pointerdown", (event) => {
       if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
       cancelStageSettlement();
+      if (dragFrame) cancelAnimationFrame(dragFrame);
+      dragFrame = 0;
       pointerId = event.pointerId;
       startX = lastX = event.clientX;
       logical = currentStageLogicalPosition();
+      pendingDragLogical = logical;
       moved = false;
+      nodes.stageGrid.dataset.wpStageDragDown = "1";
+      previousScrollBehavior = nodes.stageGrid.style.getPropertyValue("scroll-behavior");
+      previousScrollBehaviorPriority = nodes.stageGrid.style.getPropertyPriority("scroll-behavior");
+      nodes.stageGrid.style.setProperty("scroll-behavior", "auto", "important");
       nodes.stageGrid.style.setProperty("scroll-snap-type", "none", "important");
       event.stopImmediatePropagation();
     }, true);
@@ -1321,7 +1353,14 @@
       if (!moved && Math.abs(event.clientX - startX) > 4) moved = true;
       if (moved) {
         if (event.cancelable) event.preventDefault();
-        logical = positionStageRail(logical - delta / stageRailGeometry().pitch);
+        logical = clamp(logical - delta / stageRailGeometry().pitch, 0, stages.length - 1);
+        pendingDragLogical = logical;
+        if (!dragFrame) {
+          dragFrame = requestAnimationFrame(() => {
+            dragFrame = 0;
+            if (pointerId !== null) positionStageRail(pendingDragLogical);
+          });
+        }
       }
       event.stopImmediatePropagation();
     }, true);
@@ -1330,10 +1369,19 @@
       pointerId = null;
       if (moved) {
         if (event.cancelable) event.preventDefault();
+        if (dragFrame) cancelAnimationFrame(dragFrame);
+        dragFrame = 0;
+        positionStageRail(pendingDragLogical);
+        logical = pendingDragLogical;
         settleStageRail(logical, Math.round(logical));
         suppressClick = true;
         setTimeout(() => { suppressClick = false; }, 0);
-      } else nodes.stageGrid.style.removeProperty("scroll-snap-type");
+      } else {
+        nodes.stageGrid.style.removeProperty("scroll-snap-type");
+        if (previousScrollBehavior) nodes.stageGrid.style.setProperty("scroll-behavior", previousScrollBehavior, previousScrollBehaviorPriority);
+        else nodes.stageGrid.style.removeProperty("scroll-behavior");
+      }
+      nodes.stageGrid.dataset.wpStageDragDown = "0";
       moved = false;
       event.stopImmediatePropagation();
     };
@@ -1488,7 +1536,9 @@
   function renderShop() {
     if (!nodes.shopGrid) return;
     nodes.shopGrid.innerHTML = "";
-    units.filter((unit) => unit.unlockCost > 0).forEach((unit) => {
+    const shopUnits = units.filter((unit) => unit.unlockCost > 0);
+    nodes.shopGrid.classList.toggle("is-single", shopUnits.length === 1);
+    shopUnits.forEach((unit) => {
       const owned = isOwned(unit.id);
       const trained = trainedUnit(unit);
       const card = document.createElement("div");

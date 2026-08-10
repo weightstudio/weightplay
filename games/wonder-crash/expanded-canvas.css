@@ -667,3 +667,19 @@ body.wonder-stage-select #levelGrid {
     line-height: 1.15 !important;
   }
 }
+
+/* Keep the playable Stage rail in the middle of its available content band;
+   the previous start alignment left the selected level pinned directly below
+   the header with an unnecessarily large empty area underneath. */
+body.wonder-stage-select #menuContent[data-menu-tab="battle"] {
+  align-content: center !important;
+}
+
+/* Battle owns one responsive Canvas. Match its CSS box to the shell so the
+   shell's cover image cannot appear as a second, lighter field at the sides. */
+body.wonder-playing #game {
+  width: var(--wonder-battle-logical-width, 390px) !important;
+  height: var(--wonder-battle-logical-height, 788px) !important;
+  aspect-ratio: auto !important;
+  box-shadow: none;
+}

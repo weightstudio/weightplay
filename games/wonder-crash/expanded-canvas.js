@@ -58,7 +58,17 @@
     return focused || current || challenge || lastUnlocked || cards[0] || null;
   }
 
-  function centerStageCard(button) {
+  const stageCenterAnimations = new WeakMap();
+
+  function cancelStageCenterAnimation(rail, restore = true) {
+    const animation = stageCenterAnimations.get(rail);
+    if (!animation) return;
+    cancelAnimationFrame(animation.frame);
+    stageCenterAnimations.delete(rail);
+    if (restore) animation.restore();
+  }
+
+  function centerStageCard(button, { smooth = false } = {}) {
     const rail = button?.closest("#levelGrid");
     if (!rail || !rail.getClientRects().length) return;
     const railRect = rail.getBoundingClientRect();
@@ -70,6 +80,47 @@
     const bounded = getComputedStyle(rail).direction === "rtl"
       ? Math.max(-maximum, Math.min(0, target))
       : Math.max(0, Math.min(maximum, target));
+    const running = stageCenterAnimations.get(rail);
+    if (smooth && running && Math.abs(running.target - bounded) <= 1) return;
+    cancelStageCenterAnimation(rail);
+    if (smooth && Math.abs(bounded - rail.scrollLeft) > 1) {
+      const previousBehavior = rail.style.getPropertyValue("scroll-behavior");
+      const previousBehaviorPriority = rail.style.getPropertyPriority("scroll-behavior");
+      const previousSnap = rail.style.getPropertyValue("scroll-snap-type");
+      const previousSnapPriority = rail.style.getPropertyPriority("scroll-snap-type");
+      const restore = () => {
+        if (previousBehavior) rail.style.setProperty("scroll-behavior", previousBehavior, previousBehaviorPriority);
+        else rail.style.removeProperty("scroll-behavior");
+        if (previousSnap) rail.style.setProperty("scroll-snap-type", previousSnap, previousSnapPriority);
+        else rail.style.removeProperty("scroll-snap-type");
+      };
+      const animation = {
+        frame: 0,
+        target: bounded,
+        restore,
+      };
+      stageCenterAnimations.set(rail, animation);
+      rail.style.setProperty("scroll-behavior", "auto", "important");
+      rail.style.setProperty("scroll-snap-type", "none", "important");
+      const start = rail.scrollLeft;
+      const started = performance.now();
+      const duration = Math.min(520, Math.max(260, Math.abs(bounded - start) * 1.35));
+      const step = (now) => {
+        if (stageCenterAnimations.get(rail) !== animation) return;
+        const progress = Math.max(0, Math.min(1, (now - started) / duration));
+        const eased = progress * progress * (3 - 2 * progress);
+        rail.scrollLeft = start + (bounded - start) * eased;
+        if (progress < 1) {
+          animation.frame = requestAnimationFrame(step);
+          return;
+        }
+        rail.scrollLeft = bounded;
+        stageCenterAnimations.delete(rail);
+        restore();
+      };
+      animation.frame = requestAnimationFrame(step);
+      return;
+    }
     const previousBehavior = rail.style.getPropertyValue("scroll-behavior");
     const previousPriority = rail.style.getPropertyPriority("scroll-behavior");
     rail.style.setProperty("scroll-behavior", "auto", "important");
@@ -92,8 +143,8 @@
     });
     if (focus) target?.focus({ preventScroll: true });
     if (center) {
-      centerStageCard(target);
-      requestAnimationFrame(() => centerStageCard(target));
+      centerStageCard(target, { smooth: true });
+      requestAnimationFrame(() => centerStageCard(target, { smooth: true }));
     }
     return target;
   }
@@ -194,8 +245,10 @@
     requestAnimationFrame(() => requestAnimationFrame(() => {
       updateViewport();
       syncCanonicalBrowserTitle();
-      if (document.body.classList.contains("wonder-stage-select")
-        && !document.body.classList.contains("wonder-playing")) {
+      const stageIsVisible = document.body.classList.contains("wonder-stage-select")
+        && !document.body.classList.contains("wonder-playing");
+      if (!stageIsVisible) cancelStageCenterAnimation(document.querySelector("#levelGrid"));
+      if (stageIsVisible) {
         syncStageKeyboardSemantics(null, { center: true });
       }
       if (document.body.classList.contains("wonder-playing")
@@ -247,6 +300,7 @@
             document.querySelector("#game")?.focus({ preventScroll: true });
           }
         };
+        focusBattle();
         requestAnimationFrame(() => requestAnimationFrame(focusBattle));
         setTimeout(focusBattle, 50);
       }
@@ -372,6 +426,7 @@
     };
     stageRail.addEventListener("pointerdown", (event) => {
       if (stageRail.dataset.wpStageVirtualDrag !== "true" || event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
+      cancelStageCenterAnimation(stageRail);
       if (stageSettleTimer) {
         window.clearTimeout(stageSettleTimer);
         stageSettleTimer = 0;
