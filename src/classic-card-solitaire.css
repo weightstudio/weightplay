@@ -99,6 +99,7 @@ body[data-wp-game-id="tripeaks-solitaire"] .feature-list { display: none !import
 .stock-pile, .waste-pile { cursor: pointer; }
 .stock-back, .back-mark { color: #bfe2ff; font-size: 24px; font-weight: 900; }
 .stock-pile b { position: absolute; right: 4px; bottom: 3px; min-width: 20px; padding: 2px 4px; border-radius: 6px; color: #122038; background: var(--classic-gold); font-size: 10px; text-align: center; }
+body[data-wp-game-id="pyramid-solitaire"] .stock-pile.hint-source { border-style: solid; border-color: var(--classic-accent); background: rgba(78,205,196,.1); box-shadow: 0 0 0 3px rgba(78,205,196,.42), 0 0 18px rgba(78,205,196,.24); }
 .board-status { min-height: 18px; color: var(--classic-gold); font-size: 12px; font-weight: 800; text-align: center; }
 .board-status[data-state="success"] { animation: classic-sequence-cue 420ms cubic-bezier(.2,.8,.3,1); }
 .board-status[data-state="pair"] { animation: classic-pair-cue 520ms cubic-bezier(.2,.8,.3,1); }

@@ -670,7 +670,7 @@
       this.nodes.board.addEventListener("pointermove", (event) => this.handlePointerMove(event));
       this.nodes.board.addEventListener("pointerup", (event) => this.handlePointerUp(event));
       this.nodes.board.addEventListener("pointercancel", () => this.handlePointerCancel());
-      this.nodes.stockPile?.addEventListener("click", () => { if (["pyramid", "tripeaks", "golf"].includes(this.config.variant)) { if (this.game.drawStock()) { const stockRemaining = this.game.stock.length; this.clearFeedback(); this.audio.draw(); this.render(); if (this.config.variant === "golf") this.showGolfStockCue(stockRemaining); } else this.feedback(this.t("stockEmpty")); } });
+      this.nodes.stockPile?.addEventListener("click", () => { if (["pyramid", "tripeaks", "golf"].includes(this.config.variant)) { if (this.game.drawStock()) { const stockRemaining = this.game.stock.length; if (this.config.variant === "pyramid") { this.hintMove = null; clearTimeout(this.hintTimer); } this.clearFeedback(); this.audio.draw(); this.render(); if (this.config.variant === "golf") this.showGolfStockCue(stockRemaining); } else this.feedback(this.t("stockEmpty")); } });
       root.addEventListener("wonder:locale-change", () => { this.locale = safeLocale(); this.refreshCopy(); this.render(); });
     }
     refreshSound() { if (this.nodes.soundBtn) { this.nodes.soundBtn.setAttribute("aria-pressed", String(this.audio.enabled)); this.nodes.soundBtn.textContent = this.audio.enabled ? this.t("soundOn") : this.t("soundOff"); } }
@@ -984,7 +984,20 @@
         this.clearDragPreview();
       }
     }
-    hint() { const move = this.game.tryHint(); if (!move) { this.hintMove = null; this.feedback(this.game.won ? this.t("winText") : this.t("noMoves")); return; } this.clearFeedback(); this.hintMove = move; this.render(); clearTimeout(this.hintTimer); this.hintTimer = setTimeout(() => { this.game.selected = null; this.hintMove = null; this.render(); }, 2400); }
+    hint() {
+      const move = this.game.tryHint();
+      if (!move && this.config.variant === "pyramid" && this.game.stock.length) {
+        this.hintMove = { source: { zone: "stock" }, kind: "draw" };
+        this.clearFeedback();
+        this.render();
+        this.feedback(`${this.t("draw")} · ${this.t("stock")}`);
+        clearTimeout(this.hintTimer);
+        this.hintTimer = setTimeout(() => { this.hintMove = null; this.render(); }, 2400);
+        return;
+      }
+      if (!move) { this.hintMove = null; this.feedback(this.game.won ? this.t("winText") : this.t("noMoves")); return; }
+      this.clearFeedback(); this.hintMove = move; this.render(); clearTimeout(this.hintTimer); this.hintTimer = setTimeout(() => { this.game.selected = null; this.hintMove = null; this.render(); }, 2400);
+    }
     clearFeedback() { if (!this.nodes.toast) return; this.nodes.toast.hidden = true; this.nodes.toast.textContent = ""; clearTimeout(this.toastTimer); }
     feedback(message) { if (!this.nodes.toast) return; this.nodes.toast.setAttribute("role", "alert"); this.nodes.toast.setAttribute("aria-live", "assertive"); this.nodes.toast.textContent = message; this.nodes.toast.hidden = false; if (this.nodes.boardStatus && !this.game.won && !this.game.lost) this.nodes.boardStatus.textContent = message; clearTimeout(this.toastTimer); clearTimeout(this.statusTimer); this.toastTimer = setTimeout(() => { this.nodes.toast.hidden = true; }, 1800); this.statusTimer = setTimeout(() => { if (this.nodes.boardStatus && !this.game.won && !this.game.lost) this.nodes.boardStatus.textContent = ""; }, 1800); }
     hideResult() { if (this.nodes.resultOverlay) this.nodes.resultOverlay.hidden = true; }
@@ -1021,7 +1034,14 @@
       if (this.nodes.freeCells) this.nodes.freeCells.innerHTML = usesFreeCells ? this.game.freeCells.map((card, index) => `<div class="classic-slot free-slot" data-dest='${JSON.stringify({ zone: "free", index })}' aria-label="${this.t("freeCells")} ${index + 1}">${card ? cardMarkup(card, { zone: "free", index }, `slot-card${selectedClass({ zone: "free", index })}`) : `<span>${this.t("empty")}</span>`}</div>`).join("") : "";
       if (this.nodes.foundationArea) this.nodes.foundationArea.innerHTML = usesFoundations ? this.game.foundations.map((pile, index) => { const card = pile.top(); return `<div class="classic-slot foundation-slot" data-dest='${JSON.stringify({ zone: "foundation", index })}' aria-label="${this.t("foundations")} ${index + 1}">${card ? cardMarkup(card, { zone: "foundation", index }, "slot-card") : `<span>${SYMBOLS[SUITS[index]]}</span>`}</div>`; }).join("") : "";
       const stockCount = this.game.stock.length;
-      if (this.nodes.stockPile) this.nodes.stockPile.innerHTML = stockCount ? `<span class="stock-back">✦</span><b>${stockCount}</b>` : `<span>${this.t("empty")}</span>`;
+      const stockHint = this.config.variant === "pyramid" && this.hintMove?.kind === "draw" && stockCount > 0;
+      if (this.nodes.stockPile) {
+        this.nodes.stockPile.innerHTML = stockCount ? `<span class="stock-back">✦</span><b>${stockCount}</b>` : `<span>${this.t("empty")}</span>`;
+        this.nodes.stockPile.classList.toggle("hint-source", stockHint);
+        this.nodes.stockPile.setAttribute("aria-label", this.t("ariaPile", { name: this.t("stock"), count: stockCount }) + (stockHint ? ` · ${this.t("draw")}` : ""));
+        if (stockHint) this.nodes.stockPile.setAttribute("aria-current", "step");
+        else this.nodes.stockPile.removeAttribute("aria-current");
+      }
       if (this.nodes.wastePile) { const card = this.game.waste.at(-1); this.nodes.wastePile.innerHTML = card ? cardMarkup(card, { zone: "waste" }, `slot-card${selectedClass({ zone: "waste" })}`) : `<span>${this.t("empty")}</span>`; }
       setGroup(this.nodes.freeCells, usesFreeCells);
       setGroup(this.nodes.foundationArea, usesFoundations);
