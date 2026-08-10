@@ -700,6 +700,18 @@
         }
       }, 1400);
     }
+    showGolfComboCue() {
+      if (this.config.variant !== "golf" || !this.nodes.boardStatus || this.game.won || this.game.lost || this.game.combo < 2) return;
+      this.nodes.boardStatus.dataset.state = "golf-combo";
+      this.nodes.boardStatus.textContent = this.t("golfComboLong", { count: this.game.combo, best: this.game.bestCombo });
+      clearTimeout(this.statusTimer);
+      this.statusTimer = setTimeout(() => {
+        if (this.nodes.boardStatus && !this.game.won && !this.game.lost) {
+          delete this.nodes.boardStatus.dataset.state;
+          this.nodes.boardStatus.textContent = "";
+        }
+      }, 1500);
+    }
     showPairCue() {
       if (!this.nodes.boardStatus || this.game.won || this.game.lost) return;
       this.nodes.boardStatus.dataset.state = "pair";
@@ -758,7 +770,7 @@
       if (this.config.variant === "tripeaks" || this.config.variant === "golf") {
         this.pendingMoveRects = source ? this.captureMoveRects() : null;
         const clearedPeak = this.config.variant === "tripeaks" && source?.zone === "peak" && this.game.cards[source.index]?.row === 0;
-        if (source && this.game.sequencePlay(source)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); if (this.config.variant === "tripeaks") this.showTriPeaksCue(clearedPeak); } else { this.pendingMoveRects = null; if (source) this.feedback(this.t("wrong")); }
+        if (source && this.game.sequencePlay(source)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); if (this.config.variant === "tripeaks") this.showTriPeaksCue(clearedPeak); if (this.config.variant === "golf") this.showGolfComboCue(); } else { this.pendingMoveRects = null; if (source) this.feedback(this.t("wrong")); }
         return;
       }
       if (!source && !dest) return;
@@ -821,7 +833,7 @@
     clearFeedback() { if (!this.nodes.toast) return; this.nodes.toast.hidden = true; this.nodes.toast.textContent = ""; clearTimeout(this.toastTimer); }
     feedback(message) { if (!this.nodes.toast) return; this.nodes.toast.setAttribute("role", "alert"); this.nodes.toast.setAttribute("aria-live", "assertive"); this.nodes.toast.textContent = message; this.nodes.toast.hidden = false; if (this.nodes.boardStatus && !this.game.won && !this.game.lost) this.nodes.boardStatus.textContent = message; clearTimeout(this.toastTimer); clearTimeout(this.statusTimer); this.toastTimer = setTimeout(() => { this.nodes.toast.hidden = true; }, 1800); this.statusTimer = setTimeout(() => { if (this.nodes.boardStatus && !this.game.won && !this.game.lost) this.nodes.boardStatus.textContent = ""; }, 1800); }
     hideResult() { if (this.nodes.resultOverlay) this.nodes.resultOverlay.hidden = true; }
-    showResult() { if (!this.nodes.resultOverlay || (!this.game.won && !this.game.lost)) return; this.nodes.resultOverlay.hidden = false; this.nodes.resultTitle.textContent = this.game.won ? this.t("win") : this.t("lose"); this.nodes.resultText.textContent = this.game.won ? this.t("winText") : this.t("loseText"); }
+    showResult() { if (!this.nodes.resultOverlay || (!this.game.won && !this.game.lost)) return; this.nodes.resultOverlay.hidden = false; this.nodes.resultTitle.textContent = this.game.won ? this.t("win") : this.t("lose"); const recap = this.config.variant === "golf" ? ` ${this.t("golfResultRecap", { best: this.game.bestCombo })}` : ""; this.nodes.resultText.textContent = `${this.game.won ? this.t("winText") : this.t("loseText")}${recap}`; }
     render() {
       this.hideResult();
       this.nodes.moveCount.textContent = String(this.game.moves);
