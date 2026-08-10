@@ -1540,16 +1540,26 @@ const KL_I18N = {
     return game.stock.cards.length > 0 || game.waste.cards.length > 0;
   }
 
+  function focusHintSource(node) {
+    if (!node || typeof node.focus !== "function") return;
+    window.requestAnimationFrame(() => {
+      if (!state.active || !node.isConnected || node.closest("[hidden]")) return;
+      node.focus({ preventScroll: true });
+    });
+  }
+
   function showNoMoveHint() {
     if (hasAnyLegalMoves()) return;
     if (game.stock.cards.length > 0) {
       ui.stockPile?.classList.add("hint-source");
       showHint(t("ui.hint.draw_stock"));
+      focusHintSource(ui.stockPile);
       return;
     }
     if (game.waste.cards.length > 0) {
       ui.wastePile?.classList.add("hint-source");
       showHint(t("ui.hint.recycle_waste"));
+      focusHintSource(ui.wastePile);
       return;
     }
     showHint(t(NO_MOVES_MESSAGE));

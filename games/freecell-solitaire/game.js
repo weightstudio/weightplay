@@ -15,5 +15,13 @@
     hi: "क्रम खुला: {count} कार्ड साथ ले जाए गए।",
     ar: "تم فتح التسلسل: نُقلت {count} بطاقات معًا.",
   };
-  window.WPClassicSolitaire?.mount({ variant: "freecell", id: "freecell-solitaire", sequenceCue: SEQUENCE_CUE });
+  const view = window.WPClassicSolitaire?.mount({ variant: "freecell", id: "freecell-solitaire", sequenceCue: SEQUENCE_CUE });
+  const focusHintSource = () => {
+    window.requestAnimationFrame(() => {
+      if (!view?.active || view.nodes.battleScreen?.hidden) return;
+      const source = view.nodes.board?.querySelector("button.classic-card.selected");
+      if (source && source.isConnected && !source.closest("[hidden]")) source.focus({ preventScroll: true });
+    });
+  };
+  view?.nodes.hintBtn?.addEventListener("click", focusHintSource);
 })();
