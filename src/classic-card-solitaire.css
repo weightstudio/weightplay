@@ -102,6 +102,7 @@ body[data-wp-game-id="tripeaks-solitaire"] .feature-list { display: none !import
 .board-status { min-height: 18px; color: var(--classic-gold); font-size: 12px; font-weight: 800; text-align: center; }
 .board-status[data-state="success"] { animation: classic-sequence-cue 420ms cubic-bezier(.2,.8,.3,1); }
 .board-status[data-state="pair"] { animation: classic-pair-cue 520ms cubic-bezier(.2,.8,.3,1); }
+.board-status[data-state="peak"] { color: var(--classic-gold); animation: classic-peak-cue 620ms cubic-bezier(.2,.8,.3,1); }
 .board-status[data-state="coach"] { color: var(--classic-text); animation: classic-coach-cue 520ms cubic-bezier(.2,.8,.3,1); }
 .tableau-area { --classic-pile-step: 19px; position: relative; display: flex; min-height: 0; flex: 1; gap: 6px; align-items: flex-start; justify-content: center; overflow: auto; padding: 4px 2px 36px; }
 .tableau-area.variant-pyramid, .tableau-area.variant-tripeaks { --classic-card-width: clamp(42px, 11vw, 68px); --classic-card-height: calc(var(--classic-card-width) * 1.42); flex-direction: column; align-items: center; justify-content: center; overflow: auto; }
@@ -170,6 +171,11 @@ body[data-wp-game-id="tripeaks-solitaire"] .feature-list { display: none !import
 @keyframes classic-pair-cue {
   0% { opacity: .42; transform: scale(.88); filter: drop-shadow(0 0 0 transparent); }
   48% { opacity: 1; transform: scale(1.1); filter: drop-shadow(0 0 8px rgba(255,209,102,.75)); }
+  100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 0 transparent); }
+}
+@keyframes classic-peak-cue {
+  0% { opacity: .4; transform: scale(.84); filter: drop-shadow(0 0 0 transparent); }
+  48% { opacity: 1; transform: scale(1.1); filter: drop-shadow(0 0 10px rgba(255,209,102,.85)); }
   100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 0 transparent); }
 }
 @keyframes classic-coach-cue {

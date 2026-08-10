@@ -45,6 +45,28 @@
     if (COMMON[locale]) COMMON[locale].pairClear = message;
   });
 
+  const TRIPEAKS_CHAIN_COPY = {
+    en: { chain: "Chain continues: {count} cards in a row.", peak: "Peak cleared! Combo ×{count}." },
+    "zh-Hant": { chain: "連鎖延續：連續打出 {count} 張牌。", peak: "峰頂清除了！連鎖 ×{count}。" },
+    "zh-Hans": { chain: "连锁延续：连续打出 {count} 张牌。", peak: "峰顶清除了！连锁 ×{count}。" },
+    ja: { chain: "チェイン継続：{count}枚連続。", peak: "ピークをクリア！コンボ ×{count}。" },
+    ko: { chain: "콤보 지속: {count}장 연속입니다.", peak: "피크 클리어! 콤보 ×{count}." },
+    es: { chain: "La cadena continúa: {count} cartas seguidas.", peak: "¡Cima despejada! Combo ×{count}." },
+    "pt-BR": { chain: "A sequência continua: {count} cartas seguidas.", peak: "Pico limpo! Combo ×{count}." },
+    fr: { chain: "La chaîne continue : {count} cartes d’affilée.", peak: "Pic dégagé ! Combo ×{count}." },
+    de: { chain: "Die Kette geht weiter: {count} Karten in Folge.", peak: "Gipfel geräumt! Combo ×{count}." },
+    it: { chain: "La catena continua: {count} carte di fila.", peak: "Cima liberata! Combo ×{count}." },
+    ru: { chain: "Цепочка продолжается: {count} карт подряд.", peak: "Вершина очищена! Комбо ×{count}." },
+    hi: { chain: "चेन जारी है: लगातार {count} कार्ड।", peak: "चोटी साफ़! कॉम्बो ×{count}।" },
+    ar: { chain: "تستمر السلسلة: {count} بطاقات متتالية.", peak: "تم تنظيف القمة! السلسلة ×{count}." },
+  };
+  Object.entries(TRIPEAKS_CHAIN_COPY).forEach(([locale, copy]) => {
+    if (COMMON[locale]) {
+      COMMON[locale].tripeaksChain = copy.chain;
+      COMMON[locale].peakClear = copy.peak;
+    }
+  });
+
   const YUKON_COACH_COPY = {
     en: "Try this first move: select the {source}, then move it to the {destination}.",
     "zh-Hant": "先試試這一步：選取 {source}，再移到 {destination}。",
@@ -608,6 +630,18 @@
         }
       }, 1400);
     }
+    showTriPeaksCue(clearedPeak) {
+      if (this.config.variant !== "tripeaks" || !this.nodes.boardStatus || this.game.won || this.game.lost) return;
+      this.nodes.boardStatus.dataset.state = clearedPeak ? "peak" : "success";
+      this.nodes.boardStatus.textContent = this.t(clearedPeak ? "peakClear" : "tripeaksChain", { count: this.game.combo });
+      clearTimeout(this.statusTimer);
+      this.statusTimer = setTimeout(() => {
+        if (this.nodes.boardStatus && !this.game.won && !this.game.lost) {
+          delete this.nodes.boardStatus.dataset.state;
+          this.nodes.boardStatus.textContent = "";
+        }
+      }, 1400);
+    }
     showPairCue() {
       if (!this.nodes.boardStatus || this.game.won || this.game.lost) return;
       this.nodes.boardStatus.dataset.state = "pair";
@@ -665,7 +699,8 @@
       }
       if (this.config.variant === "tripeaks" || this.config.variant === "golf") {
         this.pendingMoveRects = source ? this.captureMoveRects() : null;
-        if (source && this.game.sequencePlay(source)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); } else { this.pendingMoveRects = null; if (source) this.feedback(this.t("wrong")); }
+        const clearedPeak = this.config.variant === "tripeaks" && source?.zone === "peak" && this.game.cards[source.index]?.row === 0;
+        if (source && this.game.sequencePlay(source)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); if (this.config.variant === "tripeaks") this.showTriPeaksCue(clearedPeak); } else { this.pendingMoveRects = null; if (source) this.feedback(this.t("wrong")); }
         return;
       }
       if (!source && !dest) return;
@@ -718,7 +753,8 @@
       }
       else if (this.config.variant === "tripeaks") {
         this.pendingMoveRects = this.captureMoveRects();
-        if (this.game.sequencePlay(source)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); }
+        const clearedPeak = source?.zone === "peak" && this.game.cards[source.index]?.row === 0;
+        if (this.game.sequencePlay(source)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); this.showTriPeaksCue(clearedPeak); }
         else { this.pendingMoveRects = null; this.feedback(this.t("wrong")); }
       }
       else this.feedback(this.t("wrong"));
