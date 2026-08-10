@@ -67,6 +67,25 @@
     }
   });
 
+  const TRIPEAKS_BRIDGE_COPY = {
+    en: "Keep the chain alive: {count} continuation remains.",
+    "zh-Hant": "保住連鎖：還有 {count} 個延續走法。",
+    "zh-Hans": "保持连锁：还剩 {count} 个延续走法。",
+    ja: "チェインを維持：続けられる手が{count}つ残っています。",
+    ko: "콤보를 이어가세요: 이어갈 수 있는 수가 {count}개 남았습니다.",
+    es: "Mantén la cadena: queda {count} continuación.",
+    "pt-BR": "Mantenha a sequência: resta {count} continuação.",
+    fr: "Gardez la chaîne : il reste {count} continuation.",
+    de: "Halte die Kette am Leben: {count} Fortsetzung bleibt.",
+    it: "Mantieni la catena: resta {count} continuazione.",
+    ru: "Сохрани цепочку: остаётся продолжение — {count}.",
+    hi: "चेन जारी रखें: {count} चाल बाकी है।",
+    ar: "حافظ على السلسلة: تبقى متابعة واحدة ({count}).",
+  };
+  Object.entries(TRIPEAKS_BRIDGE_COPY).forEach(([locale, message]) => {
+    if (COMMON[locale]) COMMON[locale].tripeaksBridge = message;
+  });
+
   const GOLF_STOCK_COPY = {
     en: { safe: "Stock: {count} cards left.", low: "Stock low: {count} left. Protect your next move.", final: "Final stock card—make it count." },
     "zh-Hant": { safe: "牌庫還有 {count} 張。", low: "牌庫偏少：剩 {count} 張，保留下一步。", final: "最後一張牌庫牌，抓準這一步。" },
@@ -758,10 +777,11 @@
         }
       }, 1400);
     }
-    showTriPeaksCue(clearedPeak) {
+    showTriPeaksCue(clearedPeak, continuationCount = 0) {
       if (this.config.variant !== "tripeaks" || !this.nodes.boardStatus || this.game.won || this.game.lost) return;
-      this.nodes.boardStatus.dataset.state = clearedPeak ? "peak" : "success";
-      this.nodes.boardStatus.textContent = this.t(clearedPeak ? "peakClear" : "tripeaksChain", { count: this.game.combo });
+      const bridgeCue = !clearedPeak && continuationCount === 1;
+      this.nodes.boardStatus.dataset.state = bridgeCue ? "tripeaks-bridge" : clearedPeak ? "peak" : "success";
+      this.nodes.boardStatus.textContent = this.t(bridgeCue ? "tripeaksBridge" : clearedPeak ? "peakClear" : "tripeaksChain", { count: bridgeCue ? continuationCount : this.game.combo });
       clearTimeout(this.statusTimer);
       this.statusTimer = setTimeout(() => {
         if (this.nodes.boardStatus && !this.game.won && !this.game.lost) {
@@ -853,7 +873,7 @@
       if (this.config.variant === "tripeaks" || this.config.variant === "golf") {
         this.pendingMoveRects = source ? this.captureMoveRects() : null;
         const clearedPeak = this.config.variant === "tripeaks" && source?.zone === "peak" && this.game.cards[source.index]?.row === 0;
-        if (source && this.game.sequencePlay(source)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); if (this.config.variant === "tripeaks") this.showTriPeaksCue(clearedPeak); if (this.config.variant === "golf") this.showGolfComboCue(); } else { this.pendingMoveRects = null; if (source) this.feedback(this.t("wrong")); }
+          if (source && this.game.sequencePlay(source)) { const continuationCount = this.config.variant === "tripeaks" ? this.game.legalMoves().length : 0; this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); if (this.config.variant === "tripeaks") this.showTriPeaksCue(clearedPeak, continuationCount); if (this.config.variant === "golf") this.showGolfComboCue(); } else { this.pendingMoveRects = null; if (source) this.feedback(this.t("wrong")); }
         return;
       }
       if (!source && !dest) return;
@@ -956,7 +976,7 @@
         else if (this.config.variant === "tripeaks") {
           this.pendingMoveRects = this.captureMoveRects();
           const clearedPeak = source?.zone === "peak" && this.game.cards[source.index]?.row === 0;
-          if (this.game.sequencePlay(source)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); this.showTriPeaksCue(clearedPeak); }
+          if (this.game.sequencePlay(source)) { const continuationCount = this.game.legalMoves().length; this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); this.showTriPeaksCue(clearedPeak, continuationCount); }
           else { this.pendingMoveRects = null; this.feedback(this.t("wrong")); }
         }
         else this.feedback(this.t("wrong"));

@@ -109,6 +109,7 @@ body[data-wp-game-id="tripeaks-solitaire"] .feature-list { display: none !import
 .board-status[data-state="coach"] { color: var(--classic-text); animation: classic-coach-cue 520ms cubic-bezier(.2,.8,.3,1); }
 .board-status[data-state="pyramid-coach"] { color: var(--classic-text); animation: classic-coach-cue 520ms cubic-bezier(.2,.8,.3,1); }
 .board-status[data-state="yukon-destinations"] { color: var(--classic-accent); animation: classic-coach-cue 360ms cubic-bezier(.2,.8,.3,1); }
+.board-status[data-state="tripeaks-bridge"] { color: var(--classic-accent); animation: classic-coach-cue 520ms cubic-bezier(.2,.8,.3,1); }
 .tableau-area { --classic-pile-step: 19px; position: relative; display: flex; min-height: 0; flex: 1; gap: 6px; align-items: flex-start; justify-content: center; overflow: auto; padding: 4px 2px 36px; }
 .tableau-area.variant-pyramid, .tableau-area.variant-tripeaks { --classic-card-width: clamp(42px, 11vw, 68px); --classic-card-height: calc(var(--classic-card-width) * 1.42); flex-direction: column; align-items: center; justify-content: center; overflow: auto; }
 .tableau-area.variant-pyramid > .pyramid-row, .tableau-area.variant-tripeaks > .peak-row { width: 100%; flex: 0 0 calc(var(--classic-card-height) * .62); height: calc(var(--classic-card-height) * .62); overflow: visible; }
