@@ -131,6 +131,25 @@
     if (COMMON[locale]) COMMON[locale].yukonCoach = message;
   });
 
+  const PYRAMID_COACH_COPY = {
+    en: "Two legal pairs are open. Pick the pair that reveals more cards.",
+    "zh-Hant": "目前有兩組合法牌對。優先選能翻出更多牌的那一組。",
+    "zh-Hans": "现在有两组合法牌对。优先选择能翻开更多牌的那一组。",
+    ja: "今は合法なペアが2組あります。より多くのカードをめくれる組を選びましょう。",
+    ko: "지금은 합법적인 카드 쌍이 두 개 열려 있습니다. 더 많은 카드를 드러내는 쌍을 골라 보세요.",
+    es: "Hay dos parejas legales. Elige la que revele más cartas.",
+    "pt-BR": "Há dois pares legais. Escolha o par que revele mais cartas.",
+    fr: "Deux paires légales sont ouvertes. Choisissez celle qui révèle le plus de cartes.",
+    de: "Zwei legale Paare sind offen. Wähle das Paar, das mehr Karten aufdeckt.",
+    it: "Ci sono due coppie legali. Scegli quella che scopre più carte.",
+    ru: "Доступны две пары. Выберите ту, которая откроет больше карт.",
+    hi: "दो वैध जोड़ियाँ खुली हैं। वह जोड़ी चुनें जो ज़्यादा कार्ड खोले।",
+    ar: "هناك زوجان قانونيان متاحان. اختر الزوج الذي يكشف بطاقات أكثر.",
+  };
+  Object.entries(PYRAMID_COACH_COPY).forEach(([locale, message]) => {
+    if (COMMON[locale]) COMMON[locale].pyramidCoach = message;
+  });
+
   const VARIANTS = {
     freecell: { titles: { en: "FreeCell Solitaire", "zh-Hant": "空當接龍", "zh-Hans": "空当接龙", ja: "フリーセルソリティア", ko: "프리셀 솔리테어", es: "Solitario FreeCell", "pt-BR": "Paciência FreeCell", fr: "Solitaire FreeCell", de: "FreeCell-Solitär", it: "Solitario FreeCell", ru: "Пасьянс «Свободная ячейка»", hi: "फ्रीसेल सॉलिटेयर", ar: "سوليتير الخلية الحرة" }, target: { en: "Build four suit foundations from Ace to King using eight open columns and four temporary cells.", "zh-Hant": "利用 8 個全攤主牌欄與 4 個暫存格，將四種花色從 A 收到 K。", "zh-Hans": "利用 8 个全摊主牌列和 4 个暂存格，将四种花色从 A 收到 K。", ja: "8列の場札と4つのフリーセルを使い、4つの組札をAからKまで作ります。", ko: "8개 공개 열과 4개의 프리 셀로 네 기초 더미를 A부터 K까지 만드세요.", es: "Construye cuatro fundaciones por palo, del As al Rey, usando ocho columnas y cuatro celdas libres.", "pt-BR": "Monte quatro fundações por naipe, do Ás ao Rei, usando oito colunas e quatro células livres.", fr: "Construisez quatre fondations par couleur, de l’As au Roi, avec huit colonnes et quatre cellules libres.", de: "Baue vier farbige Fundamente von Ass bis König mit acht offenen Spalten und vier freien Feldern.", it: "Costruisci quattro basi per seme dall'Asso al Re usando otto colonne e quattro celle libere.", ru: "Соберите четыре масти от туза до короля в восьми открытых колонках и четырёх свободных ячейках.", hi: "आठ खुली कॉलम और चार खाली सेल से चारों सूट की फाउंडेशन A से K तक बनाएँ।", ar: "ابنِ أربع أساسات حسب النوع من الآس إلى الملك باستخدام ثمانية أعمدة وأربع خلايا حرة." }, colorRule: "alternate" },
     pyramid: { titles: { en: "Pyramid Solitaire", "zh-Hant": "金字塔接龍", "zh-Hans": "金字塔接龙", ja: "ピラミッドソリティア", ko: "피라미드 솔리테어", es: "Solitario Pyramid", "pt-BR": "Paciência Pyramid", fr: "Solitaire Pyramid", de: "Pyramiden-Solitär", it: "Solitario Pyramid", ru: "Пасьянс «Пирамида»", hi: "पिरामिड सॉलिटेयर", ar: "سوليتير الهرم" }, target: { en: "Remove exposed pairs that add to 13. Kings clear alone; uncovered cards are the only cards you may use.", "zh-Hant": "消除總和為 13 的可用牌對；K 可單獨消除，只有未被覆蓋的牌才能使用。", "zh-Hans": "消除总和为 13 的可用牌对；K 可单独消除，只有未被覆盖的牌才能使用。", ja: "合計13になる表向きのペアを消します。Kは1枚で消せます。", ko: "합이 13인 공개 카드 쌍을 제거하세요. K는 혼자 제거할 수 있습니다.", es: "Elimina parejas expuestas que sumen 13. Los Reyes se eliminan solos.", "pt-BR": "Remova pares expostos que somem 13. Reis são removidos sozinhos.", fr: "Retirez les paires visibles dont la somme vaut 13. Les Rois partent seuls.", de: "Entferne sichtbare Paare mit Summe 13. Könige werden allein entfernt.", it: "Rimuovi le coppie scoperte che sommano 13. I Re si eliminano da soli.", ru: "Убирайте открытые пары с суммой 13. Короли убираются по одному.", hi: "खुले कार्डों के ऐसे जोड़े हटाएँ जिनका योग 13 हो। K अकेला हटता है।", ar: "أزل الأزواج المكشوفة التي مجموعها 13. يُزال الملك منفرداً." }, colorRule: "pair" },
@@ -506,6 +525,8 @@
       this.pendingRemovedMotions = [];
       this.yukonCoachRetired = false;
       this.yukonCoachMove = null;
+      this.pyramidCoachRetired = false;
+      this.pyramidCoachMoves = null;
       this.nodes = {};
     }
 
@@ -513,9 +534,18 @@
     variantCopy() { const copy = VARIANTS[this.config.variant] || VARIANTS.freecell; return { title: copy.titles[this.locale] || copy.titles.en, target: copy.target[this.locale] || copy.target.en }; }
     resetYukonCoach() { this.yukonCoachRetired = false; this.yukonCoachMove = null; }
     retireYukonCoach() { if (this.config.variant === "yukon") { this.yukonCoachRetired = true; this.yukonCoachMove = null; } }
+    resetPyramidCoach() { this.pyramidCoachRetired = false; this.pyramidCoachMoves = null; }
+    retirePyramidCoach() { if (this.config.variant === "pyramid") { this.pyramidCoachRetired = true; this.pyramidCoachMoves = null; } }
     prepareYukonCoach() {
       if (this.config.variant !== "yukon" || this.yukonCoachRetired || this.game.moves > 0 || this.game.won || this.game.lost) { this.yukonCoachMove = null; return; }
       if (!this.yukonCoachMove) this.yukonCoachMove = this.game.legalMoves().find((move) => move.kind === "tableau" && move.source?.zone === "tableau" && move.destination?.zone === "tableau") || null;
+    }
+    preparePyramidCoach() {
+      if (this.config.variant !== "pyramid" || this.pyramidCoachRetired || this.game.moves > 0 || this.game.won || this.game.lost) { this.pyramidCoachMoves = null; return; }
+      if (!this.pyramidCoachMoves) {
+        const choices = this.game.legalMoves().filter((move) => move.kind === "pair" && move.source?.zone === "pyramid" && move.destination?.zone === "pyramid");
+        this.pyramidCoachMoves = choices.length >= 2 ? choices.slice(0, 2) : null;
+      }
     }
     yukonCoachText() {
       const move = this.yukonCoachMove;
@@ -531,6 +561,14 @@
         ? cardLabel(this.game.top(move.destination.pile), fallback(move.destination.zone, move.destination.pile))
         : fallback(move.destination?.zone, move.destination?.index);
       return text(YUKON_COACH_COPY[this.locale] || YUKON_COACH_COPY.en, { source, destination });
+    }
+    pyramidCoachText() { return this.pyramidCoachMoves?.length >= 2 ? this.t("pyramidCoach") : ""; }
+    pyramidCoachClass(index) {
+      if (this.config.variant !== "pyramid" || !this.pyramidCoachMoves?.length) return "";
+      const pairIndexes = this.pyramidCoachMoves
+        .map((move, pairIndex) => [move.source?.index, move.destination?.index].includes(index) ? pairIndex : -1)
+        .filter((pairIndex) => pairIndex >= 0);
+      return pairIndexes.length ? ` pyramid-coach-choice ${pairIndexes.map((pairIndex) => `pyramid-coach-pair-${pairIndex}`).join(" ")}` : "";
     }
     setText(selector, value) { const node = document.querySelector(selector); if (node) node.textContent = value; }
     setupNodes() {
@@ -548,15 +586,15 @@
     }
     bind() {
       this.nodes.startBtn?.addEventListener("click", () => this.showBattle());
-      this.nodes.restartBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.game.newGame(this.game.seed); this.showBattle(); });
-      this.nodes.newGameBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.game.newGame(Date.now()); this.showBattle(); });
+      this.nodes.restartBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetPyramidCoach(); this.game.newGame(this.game.seed); this.showBattle(); });
+      this.nodes.newGameBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetPyramidCoach(); this.game.newGame(Date.now()); this.showBattle(); });
       this.nodes.battleBackBtn?.addEventListener("click", () => this.showMain());
-      this.nodes.battleNewBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.game.newGame(Date.now()); this.render(); });
-      this.nodes.battleRestartBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.game.newGame(this.game.seed); this.render(); });
+      this.nodes.battleNewBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetPyramidCoach(); this.game.newGame(Date.now()); this.render(); });
+      this.nodes.battleRestartBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetPyramidCoach(); this.game.newGame(this.game.seed); this.render(); });
       this.nodes.undoBtn?.addEventListener("click", () => { if (this.game.undo()) { this.feedback(this.t("undo")); this.render(); } else this.feedback(this.t("noMoves")); });
       this.nodes.hintBtn?.addEventListener("click", () => this.hint());
-      this.nodes.resultNewGame?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.game.newGame(Date.now()); this.hideResult(); this.render(); });
-      this.nodes.resultRestart?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.game.newGame(this.game.seed); this.hideResult(); this.render(); });
+      this.nodes.resultNewGame?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetPyramidCoach(); this.game.newGame(Date.now()); this.hideResult(); this.render(); });
+      this.nodes.resultRestart?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetPyramidCoach(); this.game.newGame(this.game.seed); this.hideResult(); this.render(); });
       this.nodes.resultClose?.addEventListener("click", () => this.showMain());
       this.nodes.localeSelect?.addEventListener("change", (event) => { this.locale = event.target.value; try { localStorage.setItem("weightPlayLocale", this.locale); } catch (_error) {} this.refreshCopy(); this.render(); });
       this.nodes.soundBtn?.addEventListener("click", () => { this.audio.setEnabled(!this.audio.enabled); this.refreshSound(); });
@@ -759,7 +797,7 @@
         this.pendingRemovedMotions = previousSelected || this.game.sourceCard(source)?.rank === 13 ? this.captureRemovedMotions(sources, pairCleared ? "pair" : "") : [];
         if (this.game.pairPyramid(source)) {
           const pairMoved = pairCleared && this.game.moves > movesBefore;
-          this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render();
+          this.clearFeedback(); this.hintMove = null; this.audio.place(); if (pairMoved) this.retirePyramidCoach(); this.render();
           if (pairMoved) this.showPairCue();
           if (this.game.moves === movesBefore && !this.game.hasLegalPair(source)) this.feedback(this.t("noMoves"));
         } else {
@@ -818,7 +856,7 @@
         this.pendingRemovedMotions = this.captureRemovedMotions([source, targetSource], pairCleared ? "pair" : "");
         this.game.pairPyramid(source);
         if (targetSource && JSON.stringify(source) !== JSON.stringify(targetSource) && this.game.moves === movesBefore) this.game.pairPyramid(targetSource);
-        if (this.game.moves !== movesBefore) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); if (pairCleared) this.showPairCue(); }
+        if (this.game.moves !== movesBefore) { this.clearFeedback(); this.hintMove = null; this.audio.place(); if (pairCleared) this.retirePyramidCoach(); this.render(); if (pairCleared) this.showPairCue(); }
         else { this.pendingMoveRects = null; this.pendingRemovedMotions = []; this.feedback(this.t("pairWrong")); }
       }
       else if (this.config.variant === "tripeaks") {
@@ -847,9 +885,11 @@
       } else if (!this.game.combo) this.nodes.comboValue.classList.remove("combo-pop");
       this.renderedCombo = this.game.combo;
       this.prepareYukonCoach();
+      this.preparePyramidCoach();
       delete this.nodes.boardStatus.dataset.state;
-      this.nodes.boardStatus.textContent = this.game.won ? this.t("win") : this.game.lost ? this.t("lose") : this.yukonCoachText();
-      if (!this.game.won && !this.game.lost && this.yukonCoachMove) this.nodes.boardStatus.dataset.state = "coach";
+      this.nodes.boardStatus.textContent = this.game.won ? this.t("win") : this.game.lost ? this.t("lose") : this.pyramidCoachText() || this.yukonCoachText();
+      if (!this.game.won && !this.game.lost && this.pyramidCoachMoves?.length >= 2) this.nodes.boardStatus.dataset.state = "pyramid-coach";
+      else if (!this.game.won && !this.game.lost && this.yukonCoachMove) this.nodes.boardStatus.dataset.state = "coach";
       this.renderSlots(); this.renderTableau(); this.markValidTargets(); this.showResult(); this.animateMovedCards(); this.animateRemovedCards();
     }
     renderSlots() {
@@ -873,7 +913,7 @@
     renderTableau() {
       const area = this.nodes.tableauArea; if (!area) return;
       area.className = `tableau-area variant-${this.config.variant}`;
-      if (this.config.variant === "pyramid") area.innerHTML = Array.from({ length: 7 }, (_v, row) => `<div class="pyramid-row">${this.game.cards.filter((entry) => entry.row === row).map((entry, index) => entry.removed ? `<div class="removed-card"></div>` : cardMarkup(entry.card, { zone: "pyramid", index: this.game.cards.indexOf(entry) }, this.game.available(this.game.cards.indexOf(entry)) ? "available" : "covered")).join("")}</div>`).join("");
+      if (this.config.variant === "pyramid") area.innerHTML = Array.from({ length: 7 }, (_v, row) => `<div class="pyramid-row">${this.game.cards.filter((entry) => entry.row === row).map((entry) => { const cardIndex = this.game.cards.indexOf(entry); const availableClass = this.game.available(cardIndex) ? "available" : "covered"; return entry.removed ? `<div class="removed-card"></div>` : cardMarkup(entry.card, { zone: "pyramid", index: cardIndex }, `${availableClass}${this.pyramidCoachClass(cardIndex)}`); }).join("")}</div>`).join("");
       else if (this.config.variant === "tripeaks") area.innerHTML = Array.from({ length: 4 }, (_v, row) => `<div class="peak-row">${this.game.cards.filter((entry) => entry.row === row).map((entry) => { const index = this.game.cards.indexOf(entry); return entry.removed ? `<div class="removed-card"></div>` : cardMarkup(entry.card, { zone: "peak", index }, this.game.available(index) ? "available" : "covered"); }).join("")}</div>`).join("");
       else {
         const coachSource = this.yukonCoachMove?.source;

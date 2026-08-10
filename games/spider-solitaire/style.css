@@ -124,6 +124,7 @@ body[data-wp-game-id="spider-solitaire"] .game-page-info {
 .header-stat small { color: var(--sp-muted); font-size: .64rem; }
 .header-stat strong { font-size: .83rem; }
 .board-shell { position: relative; width: 100%; height: calc(100% - 54px); min-height: 0; padding: .45rem .2rem .35rem; box-sizing: border-box; overflow: hidden; border: 1px solid rgba(255,255,255,.16); border-radius: 18px; background: radial-gradient(120% 120% at 50% -10%,rgba(255,255,255,.04),transparent 34%), rgba(10,31,58,.84); box-shadow: 0 16px 24px rgba(0,0,0,.28); }
+.board-shell.completion-burst { animation: sp-completion-burst 820ms cubic-bezier(.2,.8,.2,1) both; }
 .foundation-row, .stock-row, .tableau-row { display: grid; align-items: start; gap: .28rem; }
 .foundation-row { grid-template-columns: repeat(8,minmax(0,1fr)); margin-bottom: .4rem; }
 .stock-row { display: flex; min-height: calc(var(--card-height) * .74); align-items: center; gap: .45rem; margin-bottom: .4rem; }
@@ -192,6 +193,7 @@ body[data-wp-game-id="spider-solitaire"] .game-page-info {
 .dialog-kicker { color: var(--sp-gold); font-size: .78rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
 .dialog-actions { justify-content: flex-end; margin-top: 1rem; }
 .result-card { text-align: center; animation: sp-card-pop 260ms ease both; }
+.result-overlay.eight-set-result .result-card { border-color: rgba(255,209,102,.88); box-shadow: 0 0 0 3px rgba(255,209,102,.18), 0 24px 60px rgba(0,0,0,.5), 0 0 34px rgba(255,209,102,.28); animation: sp-victory-card-pop 760ms cubic-bezier(.2,.8,.2,1) both; }
 .result-actions { justify-content: center; }
 
 @media (max-width: 768px) {
@@ -292,8 +294,10 @@ body[data-wp-game-id="spider-solitaire"] .game-page-info {
 @keyframes sp-flip { from { transform: rotateY(90deg); opacity: .7; } to { transform: rotateY(0); opacity: 1; } }
 @keyframes sp-hint-pulse { from { transform: translateY(0); } to { transform: translateY(-2px); } }
 @keyframes sp-complete-slot { from { transform: scale(.8); opacity: .35; } 60% { transform: scale(1.08); opacity: 1; } to { transform: scale(1); } }
+@keyframes sp-completion-burst { 0% { border-color: rgba(255,255,255,.16); box-shadow: 0 16px 24px rgba(0,0,0,.28); } 45% { border-color: rgba(255,209,102,.8); box-shadow: 0 0 0 3px rgba(255,209,102,.2), 0 18px 34px rgba(0,0,0,.36), 0 0 28px rgba(255,209,102,.24); } 100% { border-color: rgba(255,255,255,.16); box-shadow: 0 16px 24px rgba(0,0,0,.28); } }
 @keyframes sp-sequence { from { opacity: 0; transform: translate(-50%,-20%) scale(.84); } 28% { opacity: 1; transform: translate(-50%,-50%) scale(1.05); } to { opacity: 0; transform: translate(-50%,-78%) scale(1); } }
 @keyframes sp-sequence-fly { from { opacity: 1; transform: translate(0,0) scale(1); } 58% { opacity: 1; transform: translate(calc(var(--sequence-x) * .74),calc(var(--sequence-y) * .74)) scale(.78); } to { opacity: .05; transform: translate(var(--sequence-x),var(--sequence-y)) scale(.42); } }
 @keyframes sp-invalid-return { 0% { transform: translateX(0); } 30% { transform: translateX(-5px); } 60% { transform: translateX(4px); } 100% { transform: translateX(0); } }
 @keyframes sp-ghost-return { from { opacity: 1; transform: translate(0,0); } to { opacity: .2; transform: translate(var(--return-x),var(--return-y)); } }
 @keyframes sp-card-pop { from { opacity: 0; transform: translateY(8px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes sp-victory-card-pop { 0% { opacity: 0; transform: translateY(12px) scale(.9); } 50% { opacity: 1; transform: translateY(0) scale(1.035); } 100% { opacity: 1; transform: translateY(0) scale(1); } }

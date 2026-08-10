@@ -107,6 +107,7 @@ body[data-wp-game-id="tripeaks-solitaire"] .feature-list { display: none !import
 .board-status[data-state="stock-low"] { color: var(--classic-accent); animation: classic-stock-low-cue 520ms cubic-bezier(.2,.8,.3,1); }
 .board-status[data-state="golf-combo"] { color: var(--classic-gold); animation: classic-golf-combo-cue 620ms cubic-bezier(.2,.8,.3,1); }
 .board-status[data-state="coach"] { color: var(--classic-text); animation: classic-coach-cue 520ms cubic-bezier(.2,.8,.3,1); }
+.board-status[data-state="pyramid-coach"] { color: var(--classic-text); animation: classic-coach-cue 520ms cubic-bezier(.2,.8,.3,1); }
 .tableau-area { --classic-pile-step: 19px; position: relative; display: flex; min-height: 0; flex: 1; gap: 6px; align-items: flex-start; justify-content: center; overflow: auto; padding: 4px 2px 36px; }
 .tableau-area.variant-pyramid, .tableau-area.variant-tripeaks { --classic-card-width: clamp(42px, 11vw, 68px); --classic-card-height: calc(var(--classic-card-width) * 1.42); flex-direction: column; align-items: center; justify-content: center; overflow: auto; }
 .tableau-area.variant-pyramid > .pyramid-row, .tableau-area.variant-tripeaks > .peak-row { width: 100%; flex: 0 0 calc(var(--classic-card-height) * .62); height: calc(var(--classic-card-height) * .62); overflow: visible; }
@@ -156,6 +157,8 @@ body[data-wp-game-id="tripeaks-solitaire"] .feature-list { display: none !import
 .classic-card.selected { outline: 2px solid var(--classic-accent); }
 .tableau-area.variant-yukon .classic-card.yukon-coach-source { outline: 3px solid rgba(255,209,102,.95); box-shadow: 0 0 0 5px rgba(255,209,102,.18), 0 11px 20px rgba(0,0,0,.35); }
 .tableau-area.variant-yukon .classic-pile.yukon-coach-destination { border-color: var(--classic-accent); background: rgba(78,205,196,.1); box-shadow: 0 0 0 3px rgba(78,205,196,.42), 0 0 20px rgba(78,205,196,.25); }
+.tableau-area.variant-pyramid .classic-card.pyramid-coach-choice { z-index: 4; box-shadow: 0 0 0 3px rgba(255,209,102,.86), 0 0 16px rgba(255,209,102,.3); }
+.tableau-area.variant-pyramid .classic-card.pyramid-coach-pair-1 { box-shadow: 0 0 0 3px rgba(78,205,196,.9), 0 0 16px rgba(78,205,196,.3); }
 .classic-card.is-moving { z-index: 40; pointer-events: none; will-change: translate; }
 .classic-card-motion { z-index: 70; pointer-events: none; box-shadow: 0 10px 22px rgba(0,0,0,.35); }
 .classic-slot.valid-target, .classic-pile.valid-target { border-color: var(--classic-accent); background: rgba(78,205,196,.08); box-shadow: 0 0 0 2px rgba(78,205,196,.42), 0 0 18px rgba(78,205,196,.24); }

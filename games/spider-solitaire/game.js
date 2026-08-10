@@ -692,6 +692,8 @@
   function clearCompletionFlyouts() {
     state.completionFlyouts.forEach((node) => node.remove());
     state.completionFlyouts.clear();
+    ui.boardShell?.classList.remove("completion-burst");
+    ui.resultOverlay?.classList.remove("eight-set-result");
   }
 
   function showHint(message) {
@@ -1033,6 +1035,10 @@
 
   function showSequenceFeedback(count) {
     if (!ui.sequenceFx) return;
+    ui.boardShell?.classList.remove("completion-burst");
+    void ui.boardShell?.offsetWidth;
+    ui.boardShell?.classList.add("completion-burst");
+    window.setTimeout(() => ui.boardShell?.classList.remove("completion-burst"), 820);
     const toast = document.createElement("div");
     toast.className = "sequence-toast";
     toast.textContent = `${t("sequence_complete")} ×${count}`;
@@ -1240,6 +1246,7 @@
       saveStats();
     }
     audio.win();
+    ui.resultOverlay.classList.add("eight-set-result");
     ui.resultText.textContent = t("result_summary", { sets: game.completed.total, moves: game.moveCount, time: formatTime(state.elapsed), score: game.score });
     ui.resultOverlay.hidden = false;
   }
@@ -1581,6 +1588,8 @@
           stats: { ...stats[1] },
           completionToastVisible: Boolean(document.querySelector(".sequence-toast")),
           completionFlyoutCount: document.querySelectorAll(".sequence-fly-card").length,
+          completionBurst: Boolean(ui.boardShell?.classList.contains("completion-burst")),
+          resultCelebration: Boolean(ui.resultOverlay?.classList.contains("eight-set-result")),
         };
       },
       soundState() {
