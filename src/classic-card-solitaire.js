@@ -45,6 +45,25 @@
     if (COMMON[locale]) COMMON[locale].pairClear = message;
   });
 
+  const YUKON_COACH_COPY = {
+    en: "Try this first move: select the {source}, then move it to the {destination}.",
+    "zh-Hant": "先試試這一步：選取 {source}，再移到 {destination}。",
+    "zh-Hans": "先试试这一步：选取 {source}，再移到 {destination}。",
+    ja: "最初の一手を試しましょう：{source}を選び、{destination}へ移します。",
+    ko: "첫 수를 시도해 보세요. {source}을(를) 선택한 뒤 {destination}(으)로 옮기세요.",
+    es: "Prueba esta primera jugada: selecciona {source} y muévela a {destination}.",
+    "pt-BR": "Tente esta primeira jogada: selecione {source} e mova para {destination}.",
+    fr: "Essayez ce premier coup : sélectionnez {source}, puis déplacez-la vers {destination}.",
+    de: "Probiere diesen ersten Zug: Wähle {source} und verschiebe sie auf {destination}.",
+    it: "Prova questa prima mossa: seleziona {source} e spostala su {destination}.",
+    ru: "Попробуйте первый ход: выберите {source} и переместите на {destination}.",
+    hi: "यह पहली चाल आज़माएँ: {source} चुनें और {destination} पर ले जाएँ।",
+    ar: "جرّب هذه الحركة الأولى: اختر {source} ثم انقلها إلى {destination}.",
+  };
+  Object.entries(YUKON_COACH_COPY).forEach(([locale, message]) => {
+    if (COMMON[locale]) COMMON[locale].yukonCoach = message;
+  });
+
   const VARIANTS = {
     freecell: { titles: { en: "FreeCell Solitaire", "zh-Hant": "空當接龍", "zh-Hans": "空当接龙", ja: "フリーセルソリティア", ko: "프리셀 솔리테어", es: "Solitario FreeCell", "pt-BR": "Paciência FreeCell", fr: "Solitaire FreeCell", de: "FreeCell-Solitär", it: "Solitario FreeCell", ru: "Пасьянс «Свободная ячейка»", hi: "फ्रीसेल सॉलिटेयर", ar: "سوليتير الخلية الحرة" }, target: { en: "Build four suit foundations from Ace to King using eight open columns and four temporary cells.", "zh-Hant": "利用 8 個全攤主牌欄與 4 個暫存格，將四種花色從 A 收到 K。", "zh-Hans": "利用 8 个全摊主牌列和 4 个暂存格，将四种花色从 A 收到 K。", ja: "8列の場札と4つのフリーセルを使い、4つの組札をAからKまで作ります。", ko: "8개 공개 열과 4개의 프리 셀로 네 기초 더미를 A부터 K까지 만드세요.", es: "Construye cuatro fundaciones por palo, del As al Rey, usando ocho columnas y cuatro celdas libres.", "pt-BR": "Monte quatro fundações por naipe, do Ás ao Rei, usando oito colunas e quatro células livres.", fr: "Construisez quatre fondations par couleur, de l’As au Roi, avec huit colonnes et quatre cellules libres.", de: "Baue vier farbige Fundamente von Ass bis König mit acht offenen Spalten und vier freien Feldern.", it: "Costruisci quattro basi per seme dall'Asso al Re usando otto colonne e quattro celle libere.", ru: "Соберите четыре масти от туза до короля в восьми открытых колонках и четырёх свободных ячейках.", hi: "आठ खुली कॉलम और चार खाली सेल से चारों सूट की फाउंडेशन A से K तक बनाएँ।", ar: "ابنِ أربع أساسات حسب النوع من الآس إلى الملك باستخدام ثمانية أعمدة وأربع خلايا حرة." }, colorRule: "alternate" },
     pyramid: { titles: { en: "Pyramid Solitaire", "zh-Hant": "金字塔接龍", "zh-Hans": "金字塔接龙", ja: "ピラミッドソリティア", ko: "피라미드 솔리테어", es: "Solitario Pyramid", "pt-BR": "Paciência Pyramid", fr: "Solitaire Pyramid", de: "Pyramiden-Solitär", it: "Solitario Pyramid", ru: "Пасьянс «Пирамида»", hi: "पिरामिड सॉलिटेयर", ar: "سوليتير الهرم" }, target: { en: "Remove exposed pairs that add to 13. Kings clear alone; uncovered cards are the only cards you may use.", "zh-Hant": "消除總和為 13 的可用牌對；K 可單獨消除，只有未被覆蓋的牌才能使用。", "zh-Hans": "消除总和为 13 的可用牌对；K 可单独消除，只有未被覆盖的牌才能使用。", ja: "合計13になる表向きのペアを消します。Kは1枚で消せます。", ko: "합이 13인 공개 카드 쌍을 제거하세요. K는 혼자 제거할 수 있습니다.", es: "Elimina parejas expuestas que sumen 13. Los Reyes se eliminan solos.", "pt-BR": "Remova pares expostos que somem 13. Reis são removidos sozinhos.", fr: "Retirez les paires visibles dont la somme vaut 13. Les Rois partent seuls.", de: "Entferne sichtbare Paare mit Summe 13. Könige werden allein entfernt.", it: "Rimuovi le coppie scoperte che sommano 13. I Re si eliminano da soli.", ru: "Убирайте открытые пары с суммой 13. Короли убираются по одному.", hi: "खुले कार्डों के ऐसे जोड़े हटाएँ जिनका योग 13 हो। K अकेला हटता है।", ar: "أزل الأزواج المكشوفة التي مجموعها 13. يُزال الملك منفرداً." }, colorRule: "pair" },
@@ -418,11 +437,34 @@
       this.renderedCombo = 0;
       this.pendingMoveRects = null;
       this.pendingRemovedMotions = [];
+      this.yukonCoachRetired = false;
+      this.yukonCoachMove = null;
       this.nodes = {};
     }
 
     t(key, params) { const copy = COMMON[this.locale] || COMMON.en; return text(copy[key] || COMMON.en[key] || key, params); }
     variantCopy() { const copy = VARIANTS[this.config.variant] || VARIANTS.freecell; return { title: copy.titles[this.locale] || copy.titles.en, target: copy.target[this.locale] || copy.target.en }; }
+    resetYukonCoach() { this.yukonCoachRetired = false; this.yukonCoachMove = null; }
+    retireYukonCoach() { if (this.config.variant === "yukon") { this.yukonCoachRetired = true; this.yukonCoachMove = null; } }
+    prepareYukonCoach() {
+      if (this.config.variant !== "yukon" || this.yukonCoachRetired || this.game.moves > 0 || this.game.won || this.game.lost) { this.yukonCoachMove = null; return; }
+      if (!this.yukonCoachMove) this.yukonCoachMove = this.game.legalMoves().find((move) => move.kind === "tableau" && move.source?.zone === "tableau" && move.destination?.zone === "tableau") || null;
+    }
+    yukonCoachText() {
+      const move = this.yukonCoachMove;
+      if (!move) return "";
+      const fallback = (zone, index) => zone === "tableau" ? `${this.t("tableau")} ${Number(index) + 1}` : this.t("empty");
+      const cardLabel = (card, fallbackLabel) => {
+        if (!card) return fallbackLabel;
+        const template = (COMMON[this.locale] || COMMON.en).ariaCard || COMMON.en.ariaCard;
+        return text(template, { rank: rankName(card.rank), suit: card.suit }) || fallbackLabel;
+      };
+      const source = cardLabel(this.game.sourceCard(move.source), fallback(move.source?.zone, move.source?.pile));
+      const destination = move.destination?.zone === "tableau"
+        ? cardLabel(this.game.top(move.destination.pile), fallback(move.destination.zone, move.destination.pile))
+        : fallback(move.destination?.zone, move.destination?.index);
+      return text(YUKON_COACH_COPY[this.locale] || YUKON_COACH_COPY.en, { source, destination });
+    }
     setText(selector, value) { const node = document.querySelector(selector); if (node) node.textContent = value; }
     setupNodes() {
       const ids = ["loadingPanel", "mainScreen", "battleScreen", "startBtn", "restartBtn", "newGameBtn", "battleBackBtn", "battleNewBtn", "battleRestartBtn", "undoBtn", "hintBtn", "tutorialBtn", "audioMenuBtn", "audioPopover", "localeSelect", "soundBtn", "soundStateText", "moveCount", "scoreValue", "comboValue", "boardStatus", "freeCells", "foundationArea", "stockPile", "wastePile", "tableauArea", "resultOverlay", "resultTitle", "resultText", "resultNewGame", "resultRestart", "resultClose", "toast"];
@@ -439,15 +481,15 @@
     }
     bind() {
       this.nodes.startBtn?.addEventListener("click", () => this.showBattle());
-      this.nodes.restartBtn?.addEventListener("click", () => { this.clearFeedback(); this.game.newGame(this.game.seed); this.showBattle(); });
-      this.nodes.newGameBtn?.addEventListener("click", () => { this.clearFeedback(); this.game.newGame(Date.now()); this.showBattle(); });
+      this.nodes.restartBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.game.newGame(this.game.seed); this.showBattle(); });
+      this.nodes.newGameBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.game.newGame(Date.now()); this.showBattle(); });
       this.nodes.battleBackBtn?.addEventListener("click", () => this.showMain());
-      this.nodes.battleNewBtn?.addEventListener("click", () => { this.clearFeedback(); this.game.newGame(Date.now()); this.render(); });
-      this.nodes.battleRestartBtn?.addEventListener("click", () => { this.clearFeedback(); this.game.newGame(this.game.seed); this.render(); });
+      this.nodes.battleNewBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.game.newGame(Date.now()); this.render(); });
+      this.nodes.battleRestartBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.game.newGame(this.game.seed); this.render(); });
       this.nodes.undoBtn?.addEventListener("click", () => { if (this.game.undo()) { this.feedback(this.t("undo")); this.render(); } else this.feedback(this.t("noMoves")); });
       this.nodes.hintBtn?.addEventListener("click", () => this.hint());
-      this.nodes.resultNewGame?.addEventListener("click", () => { this.clearFeedback(); this.game.newGame(Date.now()); this.hideResult(); this.render(); });
-      this.nodes.resultRestart?.addEventListener("click", () => { this.clearFeedback(); this.game.newGame(this.game.seed); this.hideResult(); this.render(); });
+      this.nodes.resultNewGame?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.game.newGame(Date.now()); this.hideResult(); this.render(); });
+      this.nodes.resultRestart?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.game.newGame(this.game.seed); this.hideResult(); this.render(); });
       this.nodes.resultClose?.addEventListener("click", () => this.showMain());
       this.nodes.localeSelect?.addEventListener("change", (event) => { this.locale = event.target.value; try { localStorage.setItem("weightPlayLocale", this.locale); } catch (_error) {} this.refreshCopy(); this.render(); });
       this.nodes.soundBtn?.addEventListener("click", () => { this.audio.setEnabled(!this.audio.enabled); this.refreshSound(); });
@@ -630,7 +672,7 @@
       if (this.game.selected && dest) {
         this.pendingMoveRects = this.captureMoveRects();
         const sequenceSize = this.sequenceCueSize(this.game.selected, dest);
-        if (this.game.moveClassic(this.game.selected, dest)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.game.selected = null; this.render(); this.showSequenceCue(sequenceSize); }
+        if (this.game.moveClassic(this.game.selected, dest)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.retireYukonCoach(); this.game.selected = null; this.render(); this.showSequenceCue(sequenceSize); }
         else { this.pendingMoveRects = null; this.feedback(this.t("wrong")); }
         return;
       }
@@ -661,7 +703,7 @@
       if ((this.config.variant === "freecell" || this.config.variant === "yukon") && dest) {
         this.pendingMoveRects = this.captureMoveRects();
         const sequenceSize = this.sequenceCueSize(source, dest);
-        if (this.game.moveClassic(source, dest)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.render(); this.showSequenceCue(sequenceSize); }
+        if (this.game.moveClassic(source, dest)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.retireYukonCoach(); this.render(); this.showSequenceCue(sequenceSize); }
         else { this.pendingMoveRects = null; this.feedback(this.t("wrong")); }
       }
       else if (this.config.variant === "pyramid") {
@@ -698,8 +740,10 @@
         this.nodes.comboValue.classList.add("combo-pop");
       } else if (!this.game.combo) this.nodes.comboValue.classList.remove("combo-pop");
       this.renderedCombo = this.game.combo;
-       delete this.nodes.boardStatus.dataset.state;
-       this.nodes.boardStatus.textContent = this.game.won ? this.t("win") : this.game.lost ? this.t("lose") : "";
+      this.prepareYukonCoach();
+      delete this.nodes.boardStatus.dataset.state;
+      this.nodes.boardStatus.textContent = this.game.won ? this.t("win") : this.game.lost ? this.t("lose") : this.yukonCoachText();
+      if (!this.game.won && !this.game.lost && this.yukonCoachMove) this.nodes.boardStatus.dataset.state = "coach";
       this.renderSlots(); this.renderTableau(); this.markValidTargets(); this.showResult(); this.animateMovedCards(); this.animateRemovedCards();
     }
     renderSlots() {
@@ -726,7 +770,21 @@
       if (this.config.variant === "pyramid") area.innerHTML = Array.from({ length: 7 }, (_v, row) => `<div class="pyramid-row">${this.game.cards.filter((entry) => entry.row === row).map((entry, index) => entry.removed ? `<div class="removed-card"></div>` : cardMarkup(entry.card, { zone: "pyramid", index: this.game.cards.indexOf(entry) }, this.game.available(this.game.cards.indexOf(entry)) ? "available" : "covered")).join("")}</div>`).join("");
       else if (this.config.variant === "tripeaks") area.innerHTML = Array.from({ length: 4 }, (_v, row) => `<div class="peak-row">${this.game.cards.filter((entry) => entry.row === row).map((entry) => { const index = this.game.cards.indexOf(entry); return entry.removed ? `<div class="removed-card"></div>` : cardMarkup(entry.card, { zone: "peak", index }, this.game.available(index) ? "available" : "covered"); }).join("")}</div>`).join("");
       else {
-        area.innerHTML = this.game.tableau.map((pile, pileIndex) => `<div class="classic-pile ${pile.length ? "" : "empty-pile"}" data-dest='${JSON.stringify({ zone: "tableau", pile: pileIndex })}' aria-label="${this.t("tableau")} ${pileIndex + 1}">${pile.length ? pile.map((card, row) => cardMarkup(card, { zone: "tableau", pile: pileIndex, row }, `${row === pile.length - 1 ? "available" : "stacked"}${this.game.selected?.zone === "tableau" && this.game.selected.pile === pileIndex && this.game.selected.row === row ? " selected" : ""}`, row)).join("") : `<span>${this.t("empty")}</span>`}</div>`).join("");
+        const coachSource = this.yukonCoachMove?.source;
+        const coachDestination = this.yukonCoachMove?.destination;
+        const isCoachSource = (source) => this.config.variant === "yukon" && coachSource && JSON.stringify(source) === JSON.stringify(coachSource);
+        const isCoachDestination = (destination) => this.config.variant === "yukon" && coachDestination && JSON.stringify(destination) === JSON.stringify(coachDestination);
+        area.innerHTML = this.game.tableau.map((pile, pileIndex) => {
+          const destination = { zone: "tableau", pile: pileIndex };
+          const destinationClass = isCoachDestination(destination) ? " yukon-coach-destination" : "";
+          const cards = pile.length ? pile.map((card, row) => {
+            const source = { zone: "tableau", pile: pileIndex, row };
+            const selectedClass = this.game.selected?.zone === "tableau" && this.game.selected.pile === pileIndex && this.game.selected.row === row ? " selected" : "";
+            const coachClass = isCoachSource(source) ? " yukon-coach-source" : "";
+            return cardMarkup(card, source, `${row === pile.length - 1 ? "available" : "stacked"}${selectedClass}${coachClass}`, row);
+          }).join("") : `<span>${this.t("empty")}</span>`;
+          return `<div class="classic-pile ${pile.length ? "" : "empty-pile"}${destinationClass}" data-dest='${JSON.stringify(destination)}' aria-label="${this.t("tableau")} ${pileIndex + 1}">${cards}</div>`;
+        }).join("");
         if (this.config.variant === "freecell") {
           const step = Number.parseFloat(getComputedStyle(area).getPropertyValue("--classic-pile-step")) || 19;
           area.querySelectorAll(".classic-pile").forEach((node, pileIndex) => {
