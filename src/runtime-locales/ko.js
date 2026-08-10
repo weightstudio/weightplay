@@ -14450,6 +14450,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Tap or drag the right tool to help the little animal.": "작은 동물을 돕기 위해 올바른 도구를 탭하거나 드래그하세요.",
   "Tap or drag the shape friend": "모양 친구를 탭하거나 드래그하세요.",
   "Tap or drag to move": "이동하려면 탭하거나 드래그하세요.",
+  "Tap or drag to move · Use {skill} or Space when ready": "탭하거나 드래그하여 이동 · 준비되면 {skill} 또는 스페이스바 사용",
   "Tap or drag to move:": "이동하려면 탭하거나 드래그하세요.",
   "Tap or drag to play": "탭하거나 드래그하여 재생하세요.",
   "Tap or hold-drag anywhere in the arena to guide Fia.": "Fia를 안내하려면 경기장의 아무 곳이나 탭하거나 길게 드래그하세요.",

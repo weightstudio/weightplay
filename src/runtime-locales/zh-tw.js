@@ -14450,6 +14450,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "Tap or drag the right tool to help the little animal.": "點擊或拖曳正確的工具來幫助小動物。",
   "Tap or drag the shape friend": "點擊或拖曳形狀朋友",
   "Tap or drag to move": "點擊或拖曳即可移動",
+  "Tap or drag to move · Use {skill} or Space when ready": "點擊或拖曳移動 · 技能就緒時使用 {skill} 或空白鍵",
   "Tap or drag to move:": "點擊或拖曳進行移動：",
   "Tap or drag to play": "點擊或拖曳即可播放",
   "Tap or hold-drag anywhere in the arena to guide Fia.": "點擊或按住拖曳競技場中的任意位置來引導 Fia。",

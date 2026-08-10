@@ -14450,6 +14450,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Tap or drag the right tool to help the little animal.": "छोटे जानवर की मदद के लिए सही टूल को टैप करें या खींचें।",
   "Tap or drag the shape friend": "आकृति मित्र को टैप करें या खींचें",
   "Tap or drag to move": "स्थानांतरित करने के लिए टैप करें या खींचें",
+  "Tap or drag to move · Use {skill} or Space when ready": "चलने के लिए टैप या ड्रैग करें · तैयार होने पर {skill} या स्पेस दबाएँ",
   "Tap or drag to move:": "स्थानांतरित करने के लिए टैप करें या खींचें:",
   "Tap or drag to play": "चलाने के लिए टैप करें या खींचें",
   "Tap or hold-drag anywhere in the arena to guide Fia.": "फिया का मार्गदर्शन करने के लिए क्षेत्र में कहीं भी टैप करें या दबाकर रखें।",

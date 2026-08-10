@@ -377,12 +377,13 @@
     tryHint() { const move = this.legalMoves()[0] || null; this.selected = move?.source ? { ...move.source } : null; return move; }
   }
 
-  function cardMarkup(card, source, extra = "") {
+  function cardMarkup(card, source, extra = "", row = null) {
     if (!card) return "";
     const rank = rankName(card.rank);
     const symbol = SYMBOLS[card.suit] || "";
     const label = card.faceUp ? text((COMMON[safeLocale()] || COMMON.en).ariaCard, { rank, suit: card.suit }) : (COMMON[safeLocale()] || COMMON.en).ariaBack;
-    return `<button type="button" class="classic-card ${card.faceUp ? `front ${isRed(card) ? "red" : "black"}` : "back"} ${extra}" data-card-id="${String(card.id).replaceAll('"', "&quot;")}" data-source='${JSON.stringify(source)}' aria-label="${label.replaceAll('"', "&quot;")}">${card.faceUp ? `<span class="rank top">${rank}</span><span class="suit">${symbol}</span><span class="rank bottom">${rank}</span>` : "<span class=\"back-mark\">✦</span>"}</button>`;
+    const rowStyle = Number.isInteger(row) ? ` style="--row:${row}"` : "";
+    return `<button type="button" class="classic-card ${card.faceUp ? `front ${isRed(card) ? "red" : "black"}` : "back"} ${extra}"${rowStyle} data-card-id="${String(card.id).replaceAll('"', "&quot;")}" data-source='${JSON.stringify(source)}' aria-label="${label.replaceAll('"', "&quot;")}">${card.faceUp ? `<span class="rank top">${rank}</span><span class="suit">${symbol}</span><span class="rank bottom">${rank}</span>` : "<span class=\"back-mark\">✦</span>"}</button>`;
   }
 
   class ClassicView {
@@ -686,7 +687,7 @@
       if (this.config.variant === "pyramid") area.innerHTML = Array.from({ length: 7 }, (_v, row) => `<div class="pyramid-row">${this.game.cards.filter((entry) => entry.row === row).map((entry, index) => entry.removed ? `<div class="removed-card"></div>` : cardMarkup(entry.card, { zone: "pyramid", index: this.game.cards.indexOf(entry) }, this.game.available(this.game.cards.indexOf(entry)) ? "available" : "covered")).join("")}</div>`).join("");
       else if (this.config.variant === "tripeaks") area.innerHTML = Array.from({ length: 4 }, (_v, row) => `<div class="peak-row">${this.game.cards.filter((entry) => entry.row === row).map((entry) => { const index = this.game.cards.indexOf(entry); return entry.removed ? `<div class="removed-card"></div>` : cardMarkup(entry.card, { zone: "peak", index }, this.game.available(index) ? "available" : "covered"); }).join("")}</div>`).join("");
       else {
-        area.innerHTML = this.game.tableau.map((pile, pileIndex) => `<div class="classic-pile ${pile.length ? "" : "empty-pile"}" data-dest='${JSON.stringify({ zone: "tableau", pile: pileIndex })}' aria-label="${this.t("tableau")} ${pileIndex + 1}">${pile.length ? pile.map((card, row) => cardMarkup(card, { zone: "tableau", pile: pileIndex, row }, `${row === pile.length - 1 ? "available" : "stacked"}${this.game.selected?.zone === "tableau" && this.game.selected.pile === pileIndex && this.game.selected.row === row ? " selected" : ""}`)).join("") : `<span>${this.t("empty")}</span>`}</div>`).join("");
+        area.innerHTML = this.game.tableau.map((pile, pileIndex) => `<div class="classic-pile ${pile.length ? "" : "empty-pile"}" data-dest='${JSON.stringify({ zone: "tableau", pile: pileIndex })}' aria-label="${this.t("tableau")} ${pileIndex + 1}">${pile.length ? pile.map((card, row) => cardMarkup(card, { zone: "tableau", pile: pileIndex, row }, `${row === pile.length - 1 ? "available" : "stacked"}${this.game.selected?.zone === "tableau" && this.game.selected.pile === pileIndex && this.game.selected.row === row ? " selected" : ""}`, row)).join("") : `<span>${this.t("empty")}</span>`}</div>`).join("");
         if (this.config.variant === "freecell") {
           const step = Number.parseFloat(getComputedStyle(area).getPropertyValue("--classic-pile-step")) || 19;
           area.querySelectorAll(".classic-pile").forEach((node, pileIndex) => {

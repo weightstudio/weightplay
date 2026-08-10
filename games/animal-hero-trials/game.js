@@ -61,6 +61,7 @@
   Object.assign(copy.en, {
     pitch: "Choose one of four heroes and clear a 30-trial shadow campaign.",
     arenaLabel: "Hero Trials arena. Move with Arrow keys or WASD. Press Space to use the hero skill.",
+    controlHint: "Tap or drag to move · Use {skill} or Space when ready",
     earnedMarks: "+{gain} Trial Marks · Total {total}.",
     trialUnlocked: "Trial {next} unlocked.",
     trialAvailable: "Trial {next} remains available.",
@@ -76,6 +77,7 @@
     masteryUpgradeNeed: "All heroes Max HP +{current} → +{next} · Need {cost} / Have {marks} marks",
   });
   Object.assign(copy["zh-Hant"], {
+    controlHint: "\u9ede\u6309\u6216\u62d6\u66f3\u79fb\u52d5 \u00b7 {skill} \u53ef\u7528\u6642\u6309\u4e0b\u6216\u6309\u7a7a\u767d\u9375",
     title: "動物英雄試煉",
     pitch: "選擇四位英雄之一，完成 30 個暗影試煉。",
     arenaLabel: "英雄試煉戰場。使用方向鍵或 WASD 移動，按空白鍵使用英雄技能。",
@@ -118,6 +120,7 @@
     taroSkillEffect: "防護 3.5 秒、最多恢復 {heal} 點生命，並對大範圍敵人造成 {damage} 點傷害。",
   });
   copy.es = {
+    controlHint: "Toca o arrastra para moverte · Usa {skill} o Espacio cuando esté disponible",
     title: "Pruebas de Héroes Animales",
     pitch: "Elige uno de cuatro héroes y supera una campaña de 30 pruebas sombrías.",
     marks: "Marcas de prueba",
@@ -768,6 +771,12 @@
     sceneFrame("main", () => $("#startBtn").focus({ preventScroll: true }));
   }
 
+  function dismissControlHint() {
+    if (!run || run.controlHintDismissed) return;
+    run.controlHintDismissed = true;
+    $("#controlHint").hidden = true;
+  }
+
   function save() {
     writeStorage("aht-unlocked", unlocked);
     writeStorage("aht-marks", marks);
@@ -795,6 +804,7 @@
       guard: 0,
       rerollUsed: false,
       rerollPending: false,
+      controlHintDismissed: false,
       last: performance.now(),
       bless: { power: 0, speed: 0, heal: 0 },
       fx: [],
@@ -860,6 +870,10 @@
       : locale === "es"
         ? heroes[run.heroId].skill.es
         : runtimeTranslate(heroes[run.heroId].skill.en);
+    const controlHint = $("#controlHint");
+    const showControlHint = run.room === 1 && !run.controlHintDismissed;
+    controlHint.hidden = !showControlHint;
+    if (showControlHint) controlHint.textContent = interpolate("controlHint", { skill: skillName });
     $("#cooldownText").textContent = run.cool > 0 ? run.cool.toFixed(1) : skillName;
     $("#skillBtn").setAttribute("aria-label", interpolate(run.cool > 0 ? "skillCooldownLabel" : "skillReadyLabel", {
       skill: skillName,
@@ -883,6 +897,7 @@
 
   function skill() {
     if (!run?.active || run.cool > 0) return;
+    dismissControlHint();
     playSound("shoot");
     if (run.heroId === "leo") {
       run.cool = Math.max(2.5, 5 - run.bless.speed * 0.5);
@@ -1326,6 +1341,7 @@
       if (pointer !== null && pointer !== event.pointerId) return;
       if (event.button !== undefined && event.button !== 0) return;
       event.preventDefault();
+      dismissControlHint();
       pointer = event.pointerId;
       canvas.setPointerCapture?.(pointer);
       setTarget(event);
@@ -1482,6 +1498,7 @@
     if (!battleOwnsInput || nativeControl || !battleControlCodes.has(event.code)) return;
     event.preventDefault();
     keys[event.code] = true;
+    dismissControlHint();
     if (event.code === "Space") skill();
   });
   addEventListener("keyup", (event) => { keys[event.code] = false; });

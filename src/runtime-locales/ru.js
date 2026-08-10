@@ -14450,6 +14450,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "Tap or drag the right tool to help the little animal.": "Коснитесь или перетащите нужный инструмент, чтобы помочь зверьку.",
   "Tap or drag the shape friend": "Коснитесь или перетащите фигуру друга",
   "Tap or drag to move": "Нажмите или перетащите, чтобы переместить",
+  "Tap or drag to move · Use {skill} or Space when ready": "Нажимайте или перетаскивайте для движения · Используйте {skill} или пробел, когда готово",
   "Tap or drag to move:": "Нажмите или перетащите, чтобы переместить:",
   "Tap or drag to play": "Нажмите или перетащите, чтобы играть",
   "Tap or hold-drag anywhere in the arena to guide Fia.": "Коснитесь или удерживайте и перетащите в любое место арены, чтобы вести Фию.",

@@ -14449,6 +14449,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Tap or drag the right tool to help the little animal.": "適切なツールをタップまたはドラッグして、小さな動物を助けます。",
   "Tap or drag the shape friend": "シェイプフレンドをタップまたはドラッグします",
   "Tap or drag to move": "タップまたはドラッグして移動します",
+  "Tap or drag to move · Use {skill} or Space when ready": "タップまたはドラッグで移動 · 準備ができたら {skill} またはスペースキーを使う",
   "Tap or drag to move:": "タップまたはドラッグして移動します。",
   "Tap or drag to play": "タップまたはドラッグして再生します",
   "Tap or hold-drag anywhere in the arena to guide Fia.": "アリーナ内の任意の場所をタップまたは押したままドラッグして、フィアをガイドします。",

@@ -14450,6 +14450,7 @@ window.WeightPlayGameRuntimeLocales["pt-BR"] = {
   "Tap or drag the right tool to help the little animal.": "Toque ou arraste a ferramenta certa para ajudar o animalzinho.",
   "Tap or drag the shape friend": "Toque ou arraste a forma amigo",
   "Tap or drag to move": "Toque ou arraste para mover",
+  "Tap or drag to move · Use {skill} or Space when ready": "Toque ou arraste para mover · Use {skill} ou Espaço quando estiver pronto",
   "Tap or drag to move:": "Toque ou arraste para mover:",
   "Tap or drag to play": "Toque ou arraste para jogar",
   "Tap or hold-drag anywhere in the arena to guide Fia.": "Toque ou segure e arraste em qualquer lugar da arena para guiar Fia.",

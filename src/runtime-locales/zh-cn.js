@@ -14450,6 +14450,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
   "Tap or drag the right tool to help the little animal.": "点击或拖动正确的工具来帮助小动物。",
   "Tap or drag the shape friend": "点击或拖动形状朋友",
   "Tap or drag to move": "点击或拖动即可移动",
+  "Tap or drag to move · Use {skill} or Space when ready": "点击或拖动移动 · 技能就绪时使用 {skill} 或空格键",
   "Tap or drag to move:": "点击或拖动进行移动：",
   "Tap or drag to play": "点击或拖动即可播放",
   "Tap or hold-drag anywhere in the arena to guide Fia.": "点击或按住拖动竞技场中的任意位置来引导 Fia。",
