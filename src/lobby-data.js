@@ -360,7 +360,7 @@ window.WONDER_LOBBY = {
       statusText: { en: "Coming Soon", "zh-Hant": "\u656c\u8acb\u671f\u5f85", "zh-Hans": "\u656c\u8bf7\u671f\u5f85", ja: "\u8fd1\u65e5\u516c\u958b", ko: "\ucd9c\uc2dc \uc608\uc815", es: "Pr\u00f3ximamente", "pt-BR": "Em breve", fr: "Bient\u00f4t disponible", de: "Demn\u00e4chst", it: "Prossimamente", ru: "\u0421\u043a\u043e\u0440\u043e", hi: "\u091c\u0932\u094d\u0926 \u0906 \u0930\u0939\u093e \u0939\u0948", ar: "\u0642\u0631\u064a\u0628\u064b\u0627" },
       type: { en: "Card Puzzle", "zh-Hant": "紙牌益智遊戲", "zh-Hans": "纸牌益智游戏", ja: "カードパズル", ko: "카드 퍼즐", es: "Puzle de cartas", "pt-BR": "Quebra-cabeça de cartas", fr: "Puzzle de cartes", de: "Kartenspiel-Puzzle", it: "Puzzle di carte", ru: "Карточная головоломка", hi: "कार्ड पहेली", ar: "لغز بطاقات" },
       categories: ["Puzzle", "Card", "Family"], skills: ["Pattern Recognition", "Planning", "Focus"], ages: ["9", "family"],
-      href: "games/pyramid-solitaire/", internalTrial: "index.html?trial=1",
+      href: "games/pyramid-solitaire/", previewVideo: "assets/previews/pyramid-solitaire-battle.webm",
       description: { en: "Pair exposed cards to make 13 and clear the classic pyramid, with Stock, Hint, Undo, and Restart.", "zh-Hant": "配對總和為 13 的可用牌，清空經典金字塔，提供牌堆、提示、還原與重新開始。", "zh-Hans": "配对总和为 13 的可用牌，清空经典金字塔，提供牌堆、提示、撤销与重新开始。", ja: "公開カードを合計13になるように組み合わせ、ピラミッドを消します。山札、ヒント、元に戻す、リスタートに対応。", ko: "공개된 카드의 합을 13으로 맞춰 피라미드를 지웁니다. 덱, 힌트, 실행 취소, 재시작을 지원합니다.", es: "Combina cartas expuestas que sumen 13 y despeja la pirámide clásica con pista, deshacer y reinicio.", "pt-BR": "Combine cartas expostas que somem 13 e limpe a pirâmide clássica com dica, desfazer e reinício.", fr: "Associez des cartes visibles totalisant 13 et videz la pyramide classique avec indice, annulation et redémarrage.", de: "Paaren Sie offene Karten zur Summe 13 und räumen Sie die klassische Pyramide mit Tipp, Rückgängig und Neustart.", it: "Abbina carte scoperte che sommano 13 e libera la piramide classica con suggerimento, annulla e riavvio.", ru: "Соединяйте открытые карты в сумму 13 и очищайте классическую пирамиду с подсказкой, отменой и перезапуском.", hi: "खुली हुई पत्तियों को 13 का योग बनाने वाली जोड़ियों में हटाएँ और क्लासिक पिरामिड साफ करें।", ar: "طابق البطاقات المكشوفة ليكون مجموعها 13 ونظّف الهرم الكلاسيكي مع التلميح والتراجع وإعادة البدء." },
       meta: { en: ["Pairs to 13", "28 Pyramid Cards", "Stock + Undo"], "zh-Hant": ["配對至 13", "28 張金字塔牌", "牌堆＋還原"], "zh-Hans": ["配对至 13", "28 张金字塔牌", "牌堆＋撤销"], ja: ["13のペア", "28枚のピラミッド", "山札＋元に戻す"], ko: ["13 만들기", "28장 피라미드", "덱 + 실행 취소"], es: ["Parejas a 13", "28 cartas", "Mazo + Deshacer"], "pt-BR": ["Pares até 13", "28 cartas", "Baralho + Desfazer"], fr: ["Paires à 13", "28 cartes", "Pioche + Annuler"], de: ["Paare bis 13", "28 Karten", "Stapel + Rückgängig"], it: ["Coppie a 13", "28 carte", "Mazzo + Annulla"], ru: ["Пары до 13", "28 карт", "Колода + отмена"], hi: ["13 की जोड़ियाँ", "28 पत्ते", "डेक + अनडू"], ar: ["أزواج إلى 13", "28 بطاقة", "رزمة + تراجع"] },
       art: { kind: "image", background: "assets/pyramid-solitaire-cover-v2.webp", hideHero: true },
@@ -2648,6 +2648,14 @@ const snackBlocks = window.WONDER_LOBBY.games.find((game) => game.id === "snack-
 if (snackBlocks) {
   snackBlocks.description.en = "Plan 30 saved stages with score, collection, pair, cascade, big-match, and dual checkpoint goals.";
   snackBlocks.meta.en = ["30 Stages", "Six Goal Families", "Six Checkpoints"];
+}
+
+const pyramidSolitairePublic = window.WONDER_LOBBY.games.find((game) => game.id === "pyramid-solitaire");
+if (pyramidSolitairePublic) {
+  pyramidSolitairePublic.status = "playable";
+  pyramidSolitairePublic.statusText = { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب" };
+  pyramidSolitairePublic.previewVideo = "assets/previews/pyramid-solitaire-battle.webm";
+  delete pyramidSolitairePublic.internalTrial;
 }
 
 const moonlightHeist = window.WONDER_LOBBY.games.find((game) => game.id === "animal-moonlight-heist");

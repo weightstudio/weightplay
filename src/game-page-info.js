@@ -1729,6 +1729,13 @@
   };
 
   const coverImages = {
+    "freecell-solitaire": "freecell-solitaire-cover.svg",
+    "golf-solitaire": "golf-solitaire-cover.svg",
+    "klondike-solitaire": "klondike-solitaire-cover.webp",
+    "pyramid-solitaire": "pyramid-solitaire-cover-v2.webp",
+    "spider-solitaire": "spider-solitaire-cover.png",
+    "tripeaks-solitaire": "tripeaks-solitaire-cover.svg",
+    "yukon-solitaire": "yukon-solitaire-cover.svg",
     "wonder-crash": "wonder-crash-cover.webp",
     "color-lunchbox": "lunchbox-cover.webp",
     "bubble-bakery": "bubble-bakery-cover.webp",

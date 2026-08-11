@@ -264,7 +264,7 @@ body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid {
   padding-bottom: 4px;
 }
 body[data-wp-game-id="tripeaks-solitaire"] .tableau-area.variant-tripeaks {
-  --classic-card-width: clamp(42px, 9vw, 68px);
+  --classic-card-width: clamp(40px, 9vw, 68px);
   --classic-card-height: calc(var(--classic-card-width) * 1.42);
 }
 body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyramid-row,
@@ -282,6 +282,15 @@ body[data-wp-game-id="tripeaks-solitaire"] .peak-row .classic-card { margin-inli
 body[data-wp-game-id="tripeaks-solitaire"] .peak-row { gap: clamp(0px, .6vw, 5px); }
 body[data-wp-game-id="tripeaks-solitaire"] .peak-row:nth-child(1) { gap: clamp(18px, 5vw, 56px); }
 body[data-wp-game-id="tripeaks-solitaire"] .peak-row:nth-child(4) { gap: clamp(0px, .35vw, 3px); }
+body[data-wp-game-id="tripeaks-solitaire"] .tableau-area.variant-tripeaks > .peak-row {
+  flex-basis: calc(var(--classic-card-height) * .96);
+  height: calc(var(--classic-card-height) * .96);
+}
+body[data-wp-game-id="tripeaks-solitaire"] .peak-row { gap: clamp(0px, .4vw, 3px); }
+body[data-wp-game-id="tripeaks-solitaire"] .peak-row:nth-child(1) { gap: clamp(18px, 4.6vw, 52px); }
+body[data-wp-game-id="tripeaks-solitaire"] .peak-row:nth-child(4) { gap: 0; }
+body[data-wp-game-id="tripeaks-solitaire"] .peak-row .classic-card,
+body[data-wp-game-id="tripeaks-solitaire"] .peak-row .removed-card { margin-inline: -3px; }
 body[data-wp-game-id="pyramid-solitaire"] .tableau-area .classic-card.available:hover,
 body[data-wp-game-id="pyramid-solitaire"] .tableau-area .classic-card.selected,
 body[data-wp-game-id="tripeaks-solitaire"] .tableau-area .classic-card.available:hover,
@@ -304,6 +313,32 @@ body[data-wp-game-id="pyramid-solitaire"] .stock-pile b {
   min-width: 24px;
   padding: 3px 6px;
   font-size: clamp(12px, 1.8vw, 16px);
+}
+
+body[data-wp-game-id="tripeaks-solitaire"] .stock-pile {
+  --tripeaks-stock-width: clamp(52px, min(10vw, 8vh), 76px);
+  --tripeaks-stock-height: calc(var(--tripeaks-stock-width) * 1.42);
+  width: var(--tripeaks-stock-width);
+  height: var(--tripeaks-stock-height);
+  min-height: var(--tripeaks-stock-height);
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+}
+body[data-wp-game-id="tripeaks-solitaire"] .stock-pile .stock-back {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 9px;
+  background: linear-gradient(145deg, #245785, #0b2a4d);
+  box-shadow: 0 7px 13px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.35);
+  font-size: clamp(24px, 3vw, 32px);
 }
 
 body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyramid-row {
@@ -351,16 +386,19 @@ body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyram
 
 @media (max-width: 699px) {
   body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid { --classic-card-width: clamp(44px, min(10vw, 5.5vh), 70px); }
-  body[data-wp-game-id="tripeaks-solitaire"] .tableau-area.variant-tripeaks { --classic-card-width: clamp(42px, 9vw, 68px); }
+  body[data-wp-game-id="tripeaks-solitaire"] .tableau-area.variant-tripeaks { --classic-card-width: clamp(40px, 9vw, 68px); }
   body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyramid-row,
-  body[data-wp-game-id="tripeaks-solitaire"] .tableau-area.variant-tripeaks > .peak-row { flex-basis: calc(var(--classic-card-height) * .9); height: calc(var(--classic-card-height) * .9); }
+  body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyramid-row { flex-basis: calc(var(--classic-card-height) * .9); height: calc(var(--classic-card-height) * .9); }
+  body[data-wp-game-id="tripeaks-solitaire"] .tableau-area.variant-tripeaks > .peak-row { flex-basis: calc(var(--classic-card-height) * .96); height: calc(var(--classic-card-height) * .96); }
 }
 
 @media (orientation: landscape) and (max-height: 560px) {
   body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid { --classic-card-width: clamp(38px, 9vh, 58px); }
-  body[data-wp-game-id="tripeaks-solitaire"] .tableau-area.variant-tripeaks { --classic-card-width: clamp(30px, 7.6vh, 48px); }
+  body[data-wp-game-id="tripeaks-solitaire"] .tableau-area.variant-tripeaks { --classic-card-width: clamp(34px, 8.6vh, 48px); }
+  body[data-wp-game-id="tripeaks-solitaire"] .stock-pile { --tripeaks-stock-width: clamp(40px, min(8vw, 9vh), 56px); }
   body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyramid-row,
-  body[data-wp-game-id="tripeaks-solitaire"] .tableau-area.variant-tripeaks > .peak-row { flex-basis: calc(var(--classic-card-height) * .62); height: calc(var(--classic-card-height) * .62); }
+  body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyramid-row { flex-basis: calc(var(--classic-card-height) * .62); height: calc(var(--classic-card-height) * .62); }
+  body[data-wp-game-id="tripeaks-solitaire"] .tableau-area.variant-tripeaks > .peak-row { flex-basis: calc(var(--classic-card-height) * .9); height: calc(var(--classic-card-height) * .9); }
   body[data-wp-game-id="pyramid-solitaire"] .stock-pile { --pyramid-stock-card-width: clamp(38px, 9vh, 58px); }
   body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyramid-row { flex-basis: var(--classic-card-height); height: var(--classic-card-height); }
 }
