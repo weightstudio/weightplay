@@ -1,0 +1,1 @@
+window.WPPopularArcade?.mount("pong");

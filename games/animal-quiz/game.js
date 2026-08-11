@@ -927,9 +927,11 @@ function showMain() {
   setQuizVisible(false);
   stageSelectPanel.classList.add("hidden");
   resetQuizFrame();
+  restoreMainShellFrame();
   window.dispatchEvent(new Event("weightplay:battle-sync"));
   window.dispatchEvent(new Event("weightplay:stage-sync"));
   window.dispatchEvent(new Event("weightplay:shell-sync"));
+  window.WeightPlayBattleCanvas?.sync?.();
 }
 
 function resetQuizFrame() {
@@ -952,6 +954,16 @@ function resetQuizFrame() {
   }
   document.body.classList.remove("weightplay-active-viewport", "wp-mobile-game-mode");
   window.WeightPlayGame?.exitMobileGameMode?.();
+}
+
+function restoreMainShellFrame() {
+  const frame = document.querySelector(".animal-game");
+  if (!frame) return;
+  [
+    "position", "inset", "left", "right", "top", "bottom",
+    "width", "min-width", "max-width", "height", "min-height",
+    "max-height", "margin", "overflow", "transform", "transform-origin",
+  ].forEach((property) => frame.style.removeProperty(property));
 }
 
 function updateQuizFrame() {

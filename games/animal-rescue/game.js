@@ -811,10 +811,12 @@ function showMain({ focusStart = false } = {}) {
   mainPanel.classList.remove("hidden");
   document.body.classList.remove("rescue-playing", "rescue-stage-select", "rescue-result");
   resetRescueFrame();
+  restoreMainShellFrame();
   exitSharedPlayViewport();
   window.dispatchEvent(new Event("weightplay:battle-sync"));
   window.dispatchEvent(new Event("weightplay:stage-sync"));
   window.dispatchEvent(new Event("weightplay:shell-sync"));
+  window.WeightPlayBattleCanvas?.sync?.();
   renderStaticText();
   if (focusStart) requestAnimationFrame(() => {
     requestAnimationFrame(() => showStageBtn.focus({ preventScroll: true }));
@@ -1197,6 +1199,16 @@ function updateBattleScale() {
 function resetRescueFrame() {
   for (const name of ["--rescue-battle-scale", "--rescue-battle-width", "--rescue-battle-height", "--rescue-battle-content-height", "--rescue-battle-left", "--rescue-battle-top"]) document.documentElement.style.removeProperty(name);
   document.body.classList.remove("rescue-expanded-canvas");
+}
+
+function restoreMainShellFrame() {
+  const frame = document.querySelector(".rescue-game");
+  if (!frame) return;
+  [
+    "position", "inset", "left", "right", "top", "bottom",
+    "width", "min-width", "max-width", "height", "min-height",
+    "max-height", "margin", "overflow", "transform", "transform-origin",
+  ].forEach((property) => frame.style.removeProperty(property));
 }
 
 function exitSharedPlayViewport() {

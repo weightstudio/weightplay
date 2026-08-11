@@ -166,8 +166,20 @@
     });
     savedStyles.delete(node);
   };
+  const clearMainRootGeometry = (node) => {
+    const isKnownMainRoot = gameId === "animal-quiz" || gameId === "animal-rescue";
+    const isReturnedStandardMain = document.body.classList.contains("wp-shell-main-active")
+      && node?.classList.contains("wp-standard-main-flow-owner");
+    if (!node || (!isKnownMainRoot && !isReturnedStandardMain)) return;
+    [
+      "position", "inset", "left", "right", "top", "bottom",
+      "width", "min-width", "max-width", "height", "min-height",
+      "max-height", "margin", "overflow", "transform", "transform-origin",
+    ].forEach((property) => node.style.removeProperty(property));
+  };
   const restoreRoot = (node) => {
     restore(node);
+    clearMainRootGeometry(node);
     node?.removeAttribute("data-wp-logical-battle-canvas");
   };
   const restoreReserve = (node) => {
@@ -194,6 +206,7 @@
     document.body.classList.toggle("wp-logical-battle-active", active);
     if (!active) {
       restoreRoot(activeRoot);
+      clearMainRootGeometry(root);
       restoreReserve(activeReserve);
       clearCanvasVariables();
       activeRoot = null;
