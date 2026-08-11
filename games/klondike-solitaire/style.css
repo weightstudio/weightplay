@@ -358,6 +358,8 @@ button.mini-btn {
   justify-content: center;
   gap: clamp(0.5rem, 2.2vw, 0.75rem);
   margin-bottom: 0.8rem;
+  padding-inline: 4px;
+  box-sizing: border-box;
 }
 
 .stock-row {
@@ -392,10 +394,24 @@ button.mini-btn {
   position: relative;
   overflow: hidden;
   min-width: var(--card-width);
-  max-width: calc(var(--card-width) * 1.02);
   touch-action: none;
   box-shadow: var(--kl-card-shadow-inset), var(--kl-card-shadow-soft);
   transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.tableau-pile {
+  max-width: calc(var(--card-width) * 1.02);
+}
+
+.pile.stock,
+.pile.waste {
+  width: 100%;
+  max-width: none;
+}
+
+.pile.waste {
+  --kl-waste-step: max(14px, calc(var(--card-step) * 0.62));
+  min-width: calc(var(--card-width) + var(--kl-waste-step) + var(--kl-waste-step));
 }
 
 .pile.stock {
@@ -420,6 +436,7 @@ button.mini-btn {
 .foundation-slot.hint-target,
 .stock-row .pile.hint-target {
   box-shadow: 0 0 0 3px var(--kl-accent);
+  z-index: 3;
 }
 
 .tableau-pile.drag-hover,
@@ -432,6 +449,8 @@ button.mini-btn {
 .tableau-pile.hint-source,
 .foundation-slot.hint-source {
   outline: 2px solid #fff1a8;
+  outline-offset: 3px;
+  z-index: 3;
 }
 
 .card-stack-note {
@@ -921,6 +940,8 @@ button.control-mini {
 .tableau-row {
   flex: 0 0 auto;
   min-height: 0;
+  padding-inline: 4px;
+  box-sizing: border-box;
 }
 
 .tableau-pile {

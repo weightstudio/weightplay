@@ -34,6 +34,8 @@ const LOCALE_DEFAULT = "en";
   const CARD_DEAL_MAX_DELAY = 22;
   const VICTORY_STEP_MS = 90;
   const CLICK_MOVED_THRESHOLD = 8;
+  const TABLEAU_SELECTION_GUTTER = 8;
+  const MIN_TABLEAU_REVEAL_STEP = 14;
   const NO_MOVES_MESSAGE = "ui.hint.no_moves";
   const DEFAULT_META_KEYWORDS = "Solitaire,Klondike,Classic Solitaire,Free Solitaire,Play Solitaire Online,Card Game,Patience";
 const SUPPORTED_LOCALES = [
@@ -1377,6 +1379,94 @@ const KL_I18N = {
     return Number.isFinite(width) && width > 0 ? width : 56;
   }
 
+  function getCanvasScale() {
+    const canvas = ui.battleScreen?.querySelector(".battle-canvas");
+    if (!canvas) return 1;
+    const logicalWidth = Number.parseFloat(window.getComputedStyle(canvas).width);
+    const physicalWidth = canvas.getBoundingClientRect().width;
+    if (!Number.isFinite(logicalWidth) || logicalWidth <= 0 || !Number.isFinite(physicalWidth) || physicalWidth <= 0) return 1;
+    return physicalWidth / logicalWidth;
+  }
+
+  function getBaseLayoutStep() {
+    const canvas = ui.battleScreen?.querySelector(".battle-canvas");
+    if (!canvas) return getLayoutStep();
+    const override = canvas.style.getPropertyValue("--card-step");
+    canvas.style.removeProperty("--card-step");
+    const baseStep = getLayoutStep();
+    if (override) canvas.style.setProperty("--card-step", override);
+    return baseStep;
+  }
+
+  function getCardLayoutHeight(cardNode) {
+    const computedHeight = Number.parseFloat(window.getComputedStyle(cardNode).height);
+    if (Number.isFinite(computedHeight) && computedHeight > 0) return computedHeight;
+    const scale = getCanvasScale();
+    const physicalHeight = cardNode.getBoundingClientRect().height;
+    return physicalHeight > 0 ? physicalHeight / Math.max(scale, 0.01) : getCardVisualWidth() * 1.42;
+  }
+
+  function setTableauPileHeight(pileNode, cardCount, stackStep) {
+    if (!cardCount) {
+      pileNode.style.height = "";
+      pileNode.style.minHeight = "";
+      return;
+    }
+    const firstCard = pileNode.querySelector(".card");
+    if (!firstCard) return;
+    const cardHeight = getCardLayoutHeight(firstCard);
+    const height = cardHeight + Math.max(0, cardCount - 1) * stackStep + TABLEAU_SELECTION_GUTTER;
+    pileNode.style.height = `${height}px`;
+    pileNode.style.minHeight = `${height}px`;
+  }
+
+  function updateTableauCardPositions(stackStep) {
+    ui.tableauRow?.querySelectorAll(".tableau-pile").forEach((pileNode) => {
+      const cards = [...pileNode.querySelectorAll(".card")];
+      cards.forEach((cardNode, row) => {
+        cardNode.style.top = `${row * stackStep}px`;
+      });
+      setTableauPileHeight(pileNode, cards.length, stackStep);
+    });
+  }
+
+  function fitTableauStack() {
+    const canvas = ui.battleScreen?.querySelector(".battle-canvas");
+    const boardShell = ui.boardShell;
+    const tableauRow = ui.tableauRow;
+    const piles = tableauRow ? [...tableauRow.querySelectorAll(".tableau-pile")] : [];
+    if (!canvas || !boardShell || !tableauRow || !piles.length) return;
+
+    const maxCardCount = Math.max(...piles.map((pile) => pile.querySelectorAll(".card").length));
+    const firstCard = tableauRow.querySelector(".tableau-pile .card");
+    const firstPile = piles.find((pile) => pile.querySelector(".card")) || piles[0];
+    if (!firstCard || !firstPile || maxCardCount <= 1) {
+      canvas.style.removeProperty("--card-step");
+      updateTableauCardPositions(getLayoutStep());
+      return;
+    }
+
+    const scale = getCanvasScale();
+    const cardHeight = firstCard.getBoundingClientRect().height;
+    const availableHeight = boardShell.getBoundingClientRect().bottom
+      - firstPile.getBoundingClientRect().top
+      - TABLEAU_SELECTION_GUTTER * scale;
+    const baseStep = getBaseLayoutStep();
+    const basePhysicalStep = baseStep * scale;
+    const maxPhysicalStep = (availableHeight - cardHeight - TABLEAU_SELECTION_GUTTER * scale)
+      / Math.max(1, maxCardCount - 1);
+    const minimumPhysicalStep = MIN_TABLEAU_REVEAL_STEP;
+    const targetPhysicalStep = Math.min(basePhysicalStep, maxPhysicalStep);
+
+    if (targetPhysicalStep >= basePhysicalStep - 0.5) {
+      canvas.style.removeProperty("--card-step");
+    } else {
+      const fittedPhysicalStep = Math.max(minimumPhysicalStep, targetPhysicalStep);
+      canvas.style.setProperty("--card-step", `${fittedPhysicalStep / Math.max(scale, 0.01)}px`);
+    }
+    updateTableauCardPositions(getLayoutStep());
+  }
+
   function getCardOffsetStep() {
     return getLayoutStep();
   }
@@ -1669,7 +1759,7 @@ const KL_I18N = {
       }
       if (pileType === "waste") {
         node.style.top = "0px";
-        node.style.left = `${Math.min(row, maxVisible - 1) * Math.max(8, Math.round(stackStep * 0.48))}px`;
+        node.style.left = "0px";
       }
       node.classList.remove("selected", "drag-hover");
       return node;
@@ -1713,14 +1803,17 @@ const KL_I18N = {
         }
         pileNode.append(node);
       }
+      setTableauPileHeight(pileNode, nodes.length, getCardOffsetStep());
       return;
     }
 
     if (pileType === "waste") {
       const visible = nodes.slice(-Math.min(maxVisible, nodes.length));
+      const wasteStep = Math.max(14, Math.round(getCardOffsetStep() * 0.62));
       for (let row = 0; row < visible.length; row += 1) {
         const node = visible[row];
         const card = cards[cards.length - visible.length + row];
+        node.style.left = `${row * wasteStep}px`;
         if (row === visible.length - 1) {
           node.onpointerdown = beginDrag;
           node.onkeydown = onCardKeydown;
@@ -1796,6 +1889,8 @@ const KL_I18N = {
       positionCardsOnPile(node, columnCards, "tableau", index, 1);
       ui.tableauRow.append(node);
     });
+
+    fitTableauStack();
 
     renderHeader();
     if (!state.lastFrameCards) state.lastFrameCards = new Map();
