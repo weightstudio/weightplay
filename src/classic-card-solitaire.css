@@ -346,12 +346,20 @@ body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyram
   height: var(--classic-card-height);
 }
 
-@media (orientation: landscape) and (min-width: 700px) {
+@media (orientation: landscape) and (min-width: 1000px) {
   body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid {
-    --classic-card-width: clamp(48px, min(10vw, 7vh), 70px);
+    --classic-card-width: clamp(46px, min(10vw, 6.6vh), 70px);
+    overflow: hidden;
+    padding-bottom: 0;
   }
   body[data-wp-game-id="pyramid-solitaire"] .stock-pile {
-    --pyramid-stock-card-width: clamp(48px, min(10vw, 7vh), 70px);
+    --pyramid-stock-card-width: clamp(46px, min(10vw, 6.6vh), 70px);
+  }
+  body[data-wp-game-id="pyramid-solitaire"] .board-middle {
+    min-height: calc(clamp(46px, min(10vw, 6.6vh), 70px) * 1.42 + 12px);
+  }
+  body[data-wp-game-id="pyramid-solitaire"] .board-middle .classic-slot {
+    min-height: calc(clamp(46px, min(10vw, 6.6vh), 70px) * 1.42 + 4px);
   }
 }
 
@@ -406,6 +414,51 @@ body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyram
 body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyramid-row {
   flex-basis: var(--classic-card-height);
   height: var(--classic-card-height);
+}
+
+/* Golf is a seven-column reading problem. Give each exposed card a little
+   more physical presence, while keeping a deliberate four-pixel reveal of
+   the dashed pile boundary on every side. */
+body[data-wp-game-id="golf-solitaire"] {
+  --golf-card-width: clamp(40px, 10.5vw, 72px);
+}
+
+body[data-wp-game-id="golf-solitaire"] .tableau-area.variant-golf {
+  --classic-card-width: var(--golf-card-width);
+  --classic-card-height: calc(var(--classic-card-width) * 1.42);
+  --classic-pile-step: clamp(15px, 3.8vw, 22px);
+  gap: clamp(3px, .9vw, 8px);
+}
+
+body[data-wp-game-id="golf-solitaire"] .tableau-area.variant-golf .classic-pile {
+  min-height: calc(var(--classic-card-height) + var(--classic-pile-step) + var(--classic-pile-step) + var(--classic-pile-step) + var(--classic-pile-step) + 6px);
+}
+
+body[data-wp-game-id="golf-solitaire"] .tableau-area.variant-golf .classic-pile .classic-card {
+  top: calc(var(--row) * var(--classic-pile-step));
+  width: min(calc(100% - 8px), var(--classic-card-width));
+}
+
+body[data-wp-game-id="golf-solitaire"] .board-middle .classic-slot {
+  --classic-card-width: var(--golf-card-width);
+  --classic-card-height: calc(var(--classic-card-width) * 1.42);
+  min-height: calc(var(--classic-card-height) + 8px);
+}
+
+body[data-wp-game-id="golf-solitaire"] .board-middle .stock-pile {
+  width: min(100%, var(--classic-card-width));
+  justify-self: center;
+}
+
+body[data-wp-game-id="golf-solitaire"] .board-middle .waste-pile .classic-card.slot-card {
+  width: min(calc(100% - 8px), var(--classic-card-width));
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  body[data-wp-game-id="golf-solitaire"] .tableau-area.variant-golf {
+    --golf-card-width: clamp(34px, 8.6vh, 50px);
+    --classic-pile-step: clamp(12px, 3vh, 16px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

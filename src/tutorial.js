@@ -71,6 +71,39 @@
     hi: ["चार खाली सेल का उपयोग करें", "खाली सेल में एक कार्ड रखें, या उसे वैध लाल-काले कॉलम या उसके फाउंडेशन में ले जाएँ।"],
     ar: ["استخدم الخلايا الحرة الأربع", "ضع بطاقة واحدة في خلية حرة فارغة، أو انقلها إلى عمود قانوني متناوب الألوان أو إلى أساسها."],
   };
+  const golfTutorialCopy = {
+    en: { title: "Golf — learn in pictures", steps: [["Read Waste", "Play one rank up or down."], ["Keep the chain", "Tap the exposed card."], ["No fit? Draw", "Use Stock when the chain stops."]] },
+    "zh-Hant": { title: "高爾夫接龍・看圖就會", steps: [["看棄牌", "接大一階或小一階。"], ["接著走", "點每欄最下面的牌。"], ["接不到？翻牌", "牌路斷了就翻牌庫。"]] },
+    "zh-Hans": { title: "高尔夫接龙・看图就会", steps: [["看弃牌", "接大一阶或小一阶。"], ["接着走", "点每列最下面的牌。"], ["接不到？翻牌", "牌路断了就翻牌库。"]] },
+    ja: { title: "ゴルフ・絵でわかる", steps: [["捨て札を見る", "1つ上か下を出します。"], ["続けて出す", "各列の一番下をタップ。"], ["出せない？めくる", "山札から1枚めくります。"]] },
+    ko: { title: "골프 솔리테어・그림으로", steps: [["버린 카드 보기", "한 단계 위나 아래를 냅니다."], ["계속 잇기", "각 열의 맨 아래 카드를 누릅니다."], ["없으면 뒤집기", "막히면 덱에서 한 장 뽑습니다."]] },
+    es: { title: "Golf · aprende con imágenes", steps: [["Mira el descarte", "Juega una carta arriba o abajo."], ["Sigue la cadena", "Toca la carta expuesta."], ["¿No encaja? Roba", "Usa el mazo cuando se corte."]] },
+    "pt-BR": { title: "Golf · aprenda por imagens", steps: [["Veja o descarte", "Jogue uma carta acima ou abaixo."], ["Mantenha a sequência", "Toque na carta exposta."], ["Sem encaixe? Compre", "Use o monte quando a sequência parar."]] },
+    fr: { title: "Golf · apprenez en images", steps: [["Lisez la défausse", "Jouez une carte au-dessus ou dessous."], ["Gardez la suite", "Touchez la carte exposée."], ["Bloqué ? Piochez", "Utilisez la pioche quand la suite s'arrête."]] },
+    de: { title: "Golf · mit Bildern lernen", steps: [["Ablage lesen", "Lege eine Karte höher oder tiefer."], ["Kette halten", "Tippe die offene Karte an."], ["Kein Zug? Ziehen", "Nutze den Stapel, wenn die Kette endet."]] },
+    it: { title: "Golf · impara con le immagini", steps: [["Guarda gli scarti", "Gioca una carta sopra o sotto."], ["Continua la serie", "Tocca la carta esposta."], ["Niente mosse? Pesca", "Usa il tallone quando la serie si ferma."]] },
+    ru: { title: "Гольф · учимся по картинкам", steps: [["Смотрите сброс", "Кладите карту на один ранг выше или ниже."], ["Продолжайте цепь", "Нажмите открытую карту."], ["Нет хода? Берите", "Используйте колоду, когда цепь прервалась."]] },
+    hi: { title: "गोल्फ़ · तस्वीरों से सीखें", steps: [["खुली गड्डी देखें", "एक अंक ऊपर या नीचे का पत्ता रखें।"], ["श्रृंखला जारी रखें", "खुले पत्ते पर टैप करें।"], ["नहीं मिलता? पलटें", "श्रृंखला रुकने पर डेक से पत्ता लें।"]] },
+    ar: { title: "غولف · تعلّم بالصور", steps: [["اقرأ الرزمة المكشوفة", "ضع ورقة أعلى أو أسفل برتبة واحدة."], ["واصل السلسلة", "اضغط الورقة المكشوفة."], ["لا تطابق؟ اسحب", "استخدم الرزمة عندما تتوقف السلسلة."]] },
+  };
+
+  const golfVisual = (kind) => {
+    const card = (x, y, rank, suit, color = "#19263d") => `<g transform="translate(${x} ${y})"><rect width="30" height="42" rx="5" fill="#fffdf5" stroke="#d9e1ea"/><text x="5" y="12" fill="${color}" font-size="9" font-weight="900">${rank}</text><text x="15" y="29" fill="${color}" font-size="13" text-anchor="middle">${suit}</text></g>`;
+    const arrow = `<path d="M68 39h22" stroke="#f0b92f" stroke-width="3" stroke-linecap="round"/><path d="m84 33 8 6-8 6" fill="none" stroke="#f0b92f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
+    if (kind === "sequence") return `<svg class="wp-tutorial-visual" viewBox="0 0 160 78" aria-hidden="true"><rect x="4" y="7" width="50" height="62" rx="9" fill="#dff7f1" stroke="#63cdbb" stroke-dasharray="4 3"/><text x="29" y="19" fill="#376a66" font-size="7" font-weight="800" text-anchor="middle">WASTE</text>${card(14,25,"7","♥","#c94855")}${arrow}${card(112,18,"6","♠")}${card(125,31,"8","♦","#c94855")}</svg>`;
+    if (kind === "expose") return `<svg class="wp-tutorial-visual" viewBox="0 0 160 78" aria-hidden="true"><rect x="8" y="8" width="48" height="62" rx="9" fill="none" stroke="#b7c9e4" stroke-dasharray="4 3"/><rect x="16" y="18" width="30" height="42" rx="5" fill="#245785" stroke="#8fc5ed"/><text x="31" y="44" fill="#d8f2ff" font-size="14" text-anchor="middle">✦</text>${arrow}${card(112,18,"Q","♣")}</svg>`;
+    return `<svg class="wp-tutorial-visual" viewBox="0 0 160 78" aria-hidden="true"><rect x="8" y="8" width="48" height="62" rx="9" fill="none" stroke="#b7c9e4" stroke-dasharray="4 3"/><rect x="16" y="18" width="30" height="42" rx="5" fill="#245785" stroke="#8fc5ed"/><path d="M23 30h16M23 39h16M23 48h16" stroke="#bfe2ff" stroke-width="2" stroke-linecap="round"/>${arrow}<rect x="112" y="18" width="30" height="42" rx="5" fill="#fffdf5" stroke="#d9e1ea"/><text x="127" y="42" fill="#c94855" font-size="18" font-weight="900" text-anchor="middle">7</text></svg>`;
+  };
+
+  const golfTutorial = () => ({
+    title: Object.fromEntries(classicLocales.map((locale) => [locale, golfTutorialCopy[locale].title])),
+    steps: [
+      { visual: "sequence", ...Object.fromEntries(classicLocales.map((locale) => [locale, golfTutorialCopy[locale].steps[0]])) },
+      { visual: "expose", ...Object.fromEntries(classicLocales.map((locale) => [locale, golfTutorialCopy[locale].steps[1]])) },
+      { visual: "stock", ...Object.fromEntries(classicLocales.map((locale) => [locale, golfTutorialCopy[locale].steps[2]])) },
+    ],
+  });
+
   const classicTutorial = (variant) => ({
     title: Object.fromEntries(classicLocales.map((locale) => [locale, `${classicNames[variant][locale]} — ${classicTutorialCopy[locale].suffix}`])),
     steps: [
@@ -85,7 +118,7 @@
     "freecell-solitaire": classicTutorial("freecell"),
     "pyramid-solitaire": classicTutorial("pyramid"),
     "tripeaks-solitaire": classicTutorial("tripeaks"),
-    "golf-solitaire": classicTutorial("golf"),
+    "golf-solitaire": golfTutorial(),
     "yukon-solitaire": classicTutorial("yukon"),
     "block-blast": {
       title: {
@@ -419,7 +452,7 @@
     const lang = locale();
     const labels = common[lang] || common.en;
     backdrop.innerHTML = `
-      <section class="wp-tutorial-card">
+      <section class="wp-tutorial-card${gameId === "golf-solitaire" ? " golf-tutorial" : ""}">
         <div class="wp-tutorial-head">
           <strong>${tutorial.title[lang] || tutorial.title.en}</strong>
           <button class="wp-tutorial-close" type="button" aria-label="${labels.closeAria}">×</button>
@@ -430,7 +463,7 @@
               const [title, body] = textFor(step);
               return `
               <div class="wp-tutorial-step">
-                <div class="wp-tutorial-icon">${step.icon}</div>
+                ${step.visual ? golfVisual(step.visual) : `<div class="wp-tutorial-icon">${step.icon}</div>`}
                 <div class="wp-tutorial-copy">
                   <b>${title}</b>
                   <span>${body}</span>

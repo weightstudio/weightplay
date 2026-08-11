@@ -7,6 +7,7 @@
   const { Card, Deck, Foundation, SoundEngine } = engine;
   const SUITS = ["spades", "hearts", "clubs", "diamonds"];
   const PYRAMID_FIRST_DEAL_SEED = 152;
+  const GOLF_FIRST_DEAL_SEED = 24;
   const SYMBOLS = { spades: "♠", hearts: "♥", clubs: "♣", diamonds: "♦" };
   const RANKS = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
   const LOCALES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
@@ -233,7 +234,7 @@
       this.variant = variant;
       this.history = [];
       this.seed = 0;
-      this.newGame(variant === "pyramid" ? PYRAMID_FIRST_DEAL_SEED : Date.now());
+      this.newGame(variant === "pyramid" ? PYRAMID_FIRST_DEAL_SEED : variant === "golf" ? GOLF_FIRST_DEAL_SEED : Date.now());
     }
 
     newGame(seed = Date.now()) {
@@ -556,7 +557,33 @@
       return moves;
     }
 
-    tryHint() { const move = this.legalMoves()[0] || null; this.selected = move?.source ? { ...move.source } : null; return move; }
+    golfHintMove(moves = this.legalMoves()) {
+      if (this.variant !== "golf" || moves.length < 2) return moves[0] || null;
+      const scored = moves.map((move) => {
+        const source = this.sourceCard(move.source);
+        const nextTops = this.tableau.map((pile, pileIndex) => pileIndex === move.source.pile ? pile.at(-2) || null : pile.at(-1) || null);
+        const continuations = nextTops.filter((card) => card && source && Math.abs(card.rank - source.rank) === 1).length;
+        const revealed = nextTops[move.source.pile];
+        const immediateReveal = revealed && source && Math.abs(revealed.rank - source.rank) === 1 ? 1 : 0;
+        const secondContinuations = nextTops.reduce((total, card, pileIndex) => {
+          if (!card || !source || Math.abs(card.rank - source.rank) !== 1) return total;
+          const afterCard = this.tableau[pileIndex]?.at(-2 - (pileIndex === move.source.pile ? 1 : 0)) || null;
+          return total + (afterCard && Math.abs(afterCard.rank - card.rank) === 1 ? 1 : 0);
+        }, 0);
+        return {
+          move,
+          score: continuations * 5000 + secondContinuations * 350 + immediateReveal * 250 + (revealed ? 20 : 0) + (source?.rank || 0),
+        };
+      }).sort((left, right) => right.score - left.score);
+      return scored[0]?.move || moves[0] || null;
+    }
+
+    tryHint() {
+      const moves = this.legalMoves();
+      const move = this.variant === "golf" ? this.golfHintMove(moves) : (moves[0] || null);
+      this.selected = move?.source ? { ...move.source } : null;
+      return move;
+    }
   }
 
   function cardMarkup(card, source, extra = "", row = null) {
