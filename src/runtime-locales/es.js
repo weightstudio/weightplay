@@ -16045,7 +16045,7 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Veilwood Forest": "Bosque Veilwood",
   "Veja o descarte": "veja o descarte",
   "Velo del Segnale": "Velo del Señale",
-  "Velocidad": "velocidad",
+  "Velocidad": "Velocidad",
   "Velocidad {from} → {to}": "Velocidad {from} → {to}",
   "Velocidad {val}": "Velocidad {val}",
   "Velocidad de ataque": "velocidad de ataque",

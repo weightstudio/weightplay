@@ -7,6 +7,8 @@
     "block-blast": [".battle-canvas", 390, 788, 760, 334],
     "hexa-sort": [".battle-canvas", 390, 788, 760, 334],
     "animal-block-grove": [".block-grove-battle-canvas", 390, 844],
+    "animal-color-springs": [".battle-canvas", 390, 788, 760, 334],
+    "animal-tangram": [".battle", 390, 788, 760, 334],
     "animal-bamboo-pipes": ["#battle", 390, 788, 760, 334],
     "animal-abyss-diver": [".battle-canvas", 390, 788],
     "animal-auto-squad": ["#gamePanel", 382, 780],
@@ -85,6 +87,11 @@
     "crazy-eights": [".battle-canvas", 390, 788, 760, 334],
     "hearts": [".battle-canvas", 390, 788, 760, 334],
     "spades": [".battle-canvas", 390, 788, 760, 334],
+    "cribbage": [".battle-canvas", 390, 788, 760, 334],
+    "go-fish": [".battle-canvas", 390, 788, 760, 334],
+    "war": [".battle-canvas", 390, 788, 760, 334],
+    "speed": [".battle-canvas", 390, 788, 760, 334],
+    "old-maid": [".battle-canvas", 390, 788, 760, 334],
   };
   const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1] || "";
   const defaultConfig = [
@@ -124,7 +131,7 @@
     // play surface. After Main -> Battle -> Main, its natural height is zero
     // until this scaler reapplies the 56px slot, so visibility cannot be the
     // lookup gate for these five owner-preview shells.
-    if (nearby && (gameId === "gin-rummy" || gameId === "casino" || gameId === "crazy-eights" || gameId === "hearts" || gameId === "spades" || visible(nearby))) return nearby;
+    if (nearby && (gameId === "gin-rummy" || gameId === "casino" || gameId === "crazy-eights" || gameId === "hearts" || gameId === "spades" || gameId === "cribbage" || gameId === "go-fish" || gameId === "war" || gameId === "speed" || gameId === "old-maid" || visible(nearby))) return nearby;
     return [...document.querySelectorAll(reserveSelector)]
       .find((node) => visible(node) && !node.closest("[data-wp-logical-battle-canvas]")) || null;
   };
@@ -200,7 +207,7 @@
     const width = Math.max(1, document.documentElement.clientWidth || 0, innerWidth || 0, viewport?.width || 0);
     const height = Math.max(1, document.documentElement.clientHeight || 0, innerHeight || 0, viewport?.height || 0);
     const reserve = findReserve(root);
-    if ((gameId === "gin-rummy" || gameId === "casino" || gameId === "crazy-eights" || gameId === "hearts" || gameId === "spades")
+    if ((gameId === "gin-rummy" || gameId === "casino" || gameId === "crazy-eights" || gameId === "hearts" || gameId === "spades" || gameId === "cribbage" || gameId === "go-fish" || gameId === "war" || gameId === "speed" || gameId === "old-maid")
       && reserve?.parentElement === root
       && root.parentElement) {
       // The card-game preview markup historically nested the physical reserve

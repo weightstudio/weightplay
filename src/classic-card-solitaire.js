@@ -246,6 +246,7 @@
       this.won = false;
       this.lost = false;
       this.selected = null;
+      this.lastYukonMove = null;
       this.deck = Deck.buildShuffled(this.seed);
       this.foundations = SUITS.map((suit) => new Foundation(suit));
       this.freeCells = [null, null, null, null];
@@ -328,6 +329,7 @@
         freeCells: this.freeCells.map(cardJSON), stock: this.stock.map(cardJSON), waste: this.waste.map(cardJSON),
         tableau: this.tableau.map((pile) => pile.map(cardJSON)),
         cards: this.cards.map((entry) => ({ card: cardJSON(entry.card), removed: entry.removed, row: entry.row, column: entry.column, coveredBy: entry.coveredBy })),
+        lastYukonMove: this.lastYukonMove ? { ...this.lastYukonMove } : null,
       };
     }
 
@@ -338,6 +340,7 @@
       this.freeCells = (raw.freeCells || []).map(fromJSON); this.stock = deepCards(raw.stock); this.waste = deepCards(raw.waste);
       this.tableau = (raw.tableau || []).map(deepCards);
       this.cards = (raw.cards || []).map((entry) => ({ card: fromJSON(entry.card), removed: Boolean(entry.removed), row: entry.row, column: entry.column, coveredBy: entry.coveredBy || [] }));
+      this.lastYukonMove = raw.lastYukonMove ? { ...raw.lastYukonMove } : null;
       this.selected = null;
     }
 
@@ -466,7 +469,9 @@
       const moving = this.removeSource(source, group.length);
       if (destination.zone === "foundation") this.foundationFor(moving[0]).cards.push(moving[0]);
       else this.tableau[destination.pile].push(...moving);
-      this.revealColumn(source.pile); this.moves += 1; this.checkWin(); return true;
+      this.revealColumn(source.pile); this.moves += 1; this.checkWin();
+      this.lastYukonMove = { cardId: card.id, sourcePile: source.pile, destinationZone: destination.zone, destinationPile: destination.zone === "tableau" ? destination.pile : null };
+      return true;
     }
 
     moveClassic(source, destination) {
@@ -578,9 +583,43 @@
       return scored[0]?.move || moves[0] || null;
     }
 
+    yukonHintMove(moves = this.legalMoves()) {
+      if (this.variant !== "yukon" || moves.length < 2) return moves[0] || null;
+      const scored = moves.map((move) => {
+        const source = this.sourceCard(move.source);
+        const pile = move.source?.zone === "tableau" ? this.tableau[move.source.pile] || [] : [];
+        const revealsHidden = move.source?.zone === "tableau"
+          && move.source.row === pile.length - 1
+          && pile[move.source.row - 1]
+          && !pile[move.source.row - 1].faceUp;
+        const reversesLastMove = Boolean(
+          this.lastYukonMove
+          && move.source?.zone === "tableau"
+          && move.destination?.zone === "tableau"
+          && source?.id === this.lastYukonMove.cardId
+          && move.source.pile === this.lastYukonMove.destinationPile
+          && move.destination.pile === this.lastYukonMove.sourcePile,
+        );
+        return {
+          move,
+          score: (move.kind === "foundation" ? 100000 : 0)
+            + (revealsHidden ? 30000 : 0)
+            + (reversesLastMove ? -50000 : 0)
+            + (move.kind === "tableau" && source?.rank === 13 ? 1200 : 0)
+            + (move.kind === "tableau" && move.source?.row === pile.length - 1 ? 300 : 0)
+            - (source ? this.groupFrom(move.source).length : 0),
+        };
+      }).sort((left, right) => right.score - left.score);
+      return scored[0]?.move || moves[0] || null;
+    }
+
     tryHint() {
       const moves = this.legalMoves();
-      const move = this.variant === "golf" ? this.golfHintMove(moves) : (moves[0] || null);
+      const move = this.variant === "golf"
+        ? this.golfHintMove(moves)
+        : this.variant === "yukon"
+          ? this.yukonHintMove(moves)
+          : (moves[0] || null);
       this.selected = move?.source ? { ...move.source } : null;
       return move;
     }
