@@ -1308,6 +1308,7 @@ const KL_I18N = {
     lastFrameCards: new Map(),
     lossRecordedForCurrentBoard: false,
     resultShown: false,
+    tableauFitTimer: null,
   };
 
   const cardNodePool = new Map();
@@ -1908,6 +1909,11 @@ const KL_I18N = {
     });
 
     fitTableauStack();
+    if (state.tableauFitTimer) window.clearTimeout(state.tableauFitTimer);
+    state.tableauFitTimer = window.setTimeout(() => {
+      state.tableauFitTimer = null;
+      fitTableauStack();
+    }, 220);
 
     renderHeader();
     if (!state.lastFrameCards) state.lastFrameCards = new Map();

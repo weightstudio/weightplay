@@ -356,13 +356,14 @@
   function enhancedRenderBattle(reels=true){
     if(!battle)return;
     enhancedRenderEnemies();renderParty();
+    const selectedRune=battle.currentPhase==='tactics'&&Number.isInteger(battle.selectedReel)?battle.reels[battle.selectedReel]:null;
     const sum=totals(),shownDefense=battle.defenseDisplay??sum.def,speed=currentBattleSpeed(),speedBtn=$("#speedBtn"),autoBtn=$("#autoBtn"),autoState=t(battle.auto?'autoOn':'autoOff'),tactical=battle.currentPhase==='tactics',leaderTacticBtn=$("#leaderTacticBtn"),leaderTacticLabel=`${t('leaderTactic')} → ${t(RUNES[leaderRune()].name)}`;
     $("#battleStage").textContent=battle.mission.type==='main'?`${t('stage')} ${battle.mission.stage}`:battle.mission.name;$("#waveText").textContent=`${t('wave')} ${battle.wave} / ${battle.totalWaves}`;
     syncPlayerHealth();$("#shieldText").textContent=battle.shield;$("#defenseTotal").textContent=shownDefense;$("#defenseMetric").classList.toggle('defense-buffed',!!battle.defenseBuff);$("#healTotal").textContent=sum.heal;$("#battleCoins").textContent=battle.coins;
     $("#spinBtn").disabled=battle.busy||battle.ended;autoBtn.disabled=!autoAvailable()||battle.ended;autoBtn.classList.toggle('on',battle.auto);autoBtn.querySelector("small").textContent=autoAvailable()?autoState:t('locked');autoBtn.setAttribute("aria-pressed",String(battle.auto));autoBtn.setAttribute("aria-label",autoAvailable()?`${t("auto")}: ${autoState}`:t('autoLocked'));autoBtn.title=autoAvailable()?`${t("auto")}: ${autoState}`:t('autoLocked');
     speedBtn.textContent=`x${speed}`;speedBtn.classList.toggle('speed-2x',speed===2);speedBtn.setAttribute('aria-pressed',String(speed===2));speedBtn.setAttribute('aria-label',`${t('battleSpeed')}: x${speed}`);speedBtn.title=`${t('battleSpeed')}: x${speed}`;
     leaderTacticBtn.textContent=leaderTacticLabel;leaderTacticBtn.setAttribute('aria-label',leaderTacticLabel);leaderTacticBtn.title=leaderTacticLabel;
-    $("#tacticsPanel").hidden=!tactical;$(".battle-actions").hidden=tactical;$("#rerollReelBtn").disabled=!tactical||battle.correctionUsed;$("#holdReelBtn").disabled=!tactical||battle.correctionUsed;leaderTacticBtn.disabled=!tactical||battle.correctionUsed;$("#acceptRunesBtn").disabled=!tactical||battle.resolving;
+    $("#tacticsPanel").hidden=!tactical;$(".battle-actions").hidden=tactical;$("#tacticsRuneHelp").textContent=selectedRune?`${t(RUNES[selectedRune].name)} · ${t(RUNES[selectedRune].desc)}`:'';$("#rerollReelBtn").disabled=!tactical||battle.correctionUsed;$("#holdReelBtn").disabled=!tactical||battle.correctionUsed;leaderTacticBtn.disabled=!tactical||battle.correctionUsed;$("#acceptRunesBtn").disabled=!tactical||battle.resolving;
     if(reels)enhancedRenderReels()
   }
   function focusTacticalReel(){if(!battle||battle.currentPhase!=='tactics'||!Number.isInteger(battle.selectedReel))return;const index=battle.selectedReel,focus=()=>{if(battle?.currentPhase==='tactics')$(`.reel[data-reel="${index}"]`)?.focus({preventScroll:true})};focus();requestAnimationFrame(focus)}
