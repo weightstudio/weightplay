@@ -43,6 +43,8 @@
     const record=recordFor(engine),choices=deductions(engine),signature=engine.cells.flat().join("");if(signature!==record.signature){record.signature=signature;record.index=0}record.hints++;
     if(!choices.length){feedback.textContent=t.none;return}
     const choice=choices[record.index++%choices.length];engine.cursor=choice.axis==="row"?{x:choice.cell,y:choice.number}:{x:choice.number,y:choice.cell};
+    keyboardActive=true;
+    syncKeyboardCursor(engine);
     feedback.textContent=format(t.forced,{line:t[choice.axis],number:String(choice.number+1),clue:choice.clue.join(" "),cell:String(choice.cell+1),state:choice.state?t.filled:t.empty});
   }
   function resultImage(engine){

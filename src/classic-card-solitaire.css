@@ -119,11 +119,11 @@ body[data-wp-game-id="pyramid-solitaire"] .stock-pile.hint-source { border-style
 .tableau-area.variant-yukon { grid-template-columns: repeat(7, minmax(0, 1fr)); }
 .tableau-area.variant-golf { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); align-items: start; }
 .classic-pile { min-height: var(--classic-card-height); }
-.tableau-area.variant-freecell .classic-pile { min-height: var(--classic-pile-height, var(--classic-card-height)); height: var(--classic-pile-height, var(--classic-card-height)); }
+.tableau-area.variant-freecell .classic-pile { min-height: var(--classic-pile-height, var(--classic-card-height)); height: var(--classic-pile-height, var(--classic-card-height)); border-color: transparent; background: transparent; }
 .classic-pile .classic-card { position: absolute; left: 50%; width: min(100%, var(--classic-card-width)); height: var(--classic-card-height); transform: translateX(-50%); }
 .tableau-area.variant-freecell .classic-pile .classic-card { width: min(calc(100% + 1px), var(--classic-card-width)); height: auto; aspect-ratio: 1 / 1.42; }
-.tableau-area.variant-freecell .classic-pile::after { content: ""; position: absolute; inset: 0; z-index: 6; pointer-events: none; border: 1px dashed rgba(255,255,255,.22); border-radius: 10px; }
-.tableau-area.variant-freecell .classic-pile.valid-target::after { border-style: solid; border-color: var(--classic-accent); box-shadow: 0 0 18px rgba(78,205,196,.24); }
+.tableau-area.variant-freecell .classic-pile::after { content: ""; position: absolute; inset: -5px; z-index: 6; pointer-events: none; border: 1px dashed rgba(255,255,255,.22); border-radius: 14px; }
+.tableau-area.variant-freecell .classic-pile.valid-target::after { inset: -6px; border-width: 2px; border-style: solid; border-color: var(--classic-accent); box-shadow: 0 0 18px rgba(78,205,196,.24); }
 .classic-pile .classic-card.slot-card, .classic-slot .classic-card.slot-card { inset: 50% auto auto 50%; width: min(100%, var(--classic-card-width)); height: var(--classic-card-height); transform: translate(-50%, -50%); }
 .tableau-area .classic-card.available:hover, .tableau-area .classic-card.selected { transform: translate(-50%, -4px); }
 .tableau-area.variant-yukon .classic-pile { min-height: calc(var(--classic-card-height) + 100px); }
