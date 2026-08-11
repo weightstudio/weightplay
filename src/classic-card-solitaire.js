@@ -1106,6 +1106,16 @@
             node.style.setProperty("--classic-pile-height", `${cardHeight + Math.max(0, count - 1) * step}px`);
           });
         }
+        if (this.config.variant === "yukon") {
+          const step = Number.parseFloat(getComputedStyle(area).getPropertyValue("--classic-pile-step")) || 19;
+          const fallbackHeight = Number.parseFloat(getComputedStyle(area).getPropertyValue("--classic-card-height")) || 0;
+          area.querySelectorAll(".classic-pile").forEach((node, pileIndex) => {
+            const count = this.game.tableau[pileIndex]?.length || 0;
+            const card = node.querySelector(":scope > .classic-card");
+            const cardHeight = Number.parseFloat(card ? getComputedStyle(card).height : "") || fallbackHeight;
+            node.style.setProperty("--yukon-pile-height", `${cardHeight + Math.max(0, count - 1) * step + 2}px`);
+          });
+        }
       }
       if (this.game.selected) area.querySelectorAll("[data-source]").forEach((node) => { try { if (JSON.stringify(JSON.parse(node.dataset.source)) === JSON.stringify(this.game.selected)) node.classList.add("selected"); } catch (_error) {} });
     }
