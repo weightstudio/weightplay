@@ -343,6 +343,13 @@ html[data-reef-state="game"] .game-page-info {
   font-size: 0.78rem;
 }
 
+.gear-card .gear-effect {
+  display: block;
+  color: var(--muted);
+  font-size: 0.68rem;
+  line-height: 1.2;
+}
+
 .shop-row,
 .result-actions {
   display: grid;
@@ -1863,11 +1870,11 @@ body.reef-fisher-stage :is(.topbar, .game-page-info, .wp-tutorial-button, .wp-tu
 
 .stage-upgrades .gear-card {
   grid-template-columns: 48px minmax(0, 1fr) 96px;
-  grid-template-rows: 50px;
+  grid-template-rows: 64px;
   align-items: center;
-  height: 64px;
-  min-height: 64px;
-  max-height: 64px;
+  height: 80px;
+  min-height: 80px;
+  max-height: 80px;
   padding: 7px 8px;
   overflow: hidden;
   background: rgb(255 255 255 / 94%);
@@ -1909,6 +1916,18 @@ body.reef-fisher-stage :is(.topbar, .game-page-info, .wp-tutorial-button, .wp-tu
   line-height: 18px;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.stage-upgrades .gear-card > div .gear-effect {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #4d6970;
+  font-size: 11px;
+  line-height: 14px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  max-height: 28px;
+  white-space: normal;
 }
 
 .stage-ad-reserve {

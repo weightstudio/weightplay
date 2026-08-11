@@ -385,6 +385,21 @@
   Object.assign(text.es, {
     mission:"Misión {stage}",bossMission:"Captura del Guardián",ruleOpen:"Mar abierto · zona segura estable",ruleDrift:"Deriva de algas · la zona se mueve suavemente",ruleSnag:"Enganches de coral · la zona se estrecha",ruleTide:"Marea lunar · la zona cambia de lado",ruleStorm:"Ráfaga de tormenta · tirones cada tres segundos",ruleAbyss:"Prueba abisal · deriva, presión y ráfagas",bossHooked:"GUARDIÁN · {fish}: {rule}",bossShieldOpen:"ABIERTO: permanece en SEGURA para dañar al Guardián.",bossShieldClosed:"PROTEGIDO: permanece en SEGURA hasta que se abra."
   });
+  Object.assign(text, {
+    en: { ...text.en, gearEffectRod: "More landing progress while the fish stays in SAFE.", gearEffectReel: "The line marker responds faster to your tension control.", gearEffectLine: "Widens the SAFE tension window and gives more room before a break.", gearEffectBait: "Raises landing progress and Reef Notes earned from each catch.", gearEffectBoat: "Adds 5 seconds to each expedition per level above Level 1.", gearEffectScan: "Expands the early fish pool by one species per level." },
+    "zh-Hant": { ...text["zh-Hant"], gearEffectRod: "魚留在安全區時，上岸進度提高。", gearEffectReel: "魚線標記會更快回應你的張力操作。", gearEffectLine: "擴大安全區張力範圍，魚線更不容易斷。", gearEffectBait: "提高上岸進度，並增加每次漁獲獲得的礁石筆記。", gearEffectBoat: "每高於 1 級，為每次遠征增加 5 秒。", gearEffectScan: "每升 1 級，提早的漁獲池增加 1 種魚。" },
+    "zh-Hans": { ...text["zh-Hans"], gearEffectRod: "鱼停留在安全区时，上岸进度提高。", gearEffectReel: "鱼线标记会更快响应你的张力操作。", gearEffectLine: "扩大安全区张力范围，鱼线更不容易断。", gearEffectBait: "提高上岸进度，并增加每次渔获获得的礁石笔记。", gearEffectBoat: "每高于 1 级，为每次远征增加 5 秒。", gearEffectScan: "每升 1 级，前期鱼池增加 1 种鱼。" },
+    ja: { ...text.ja, gearEffectRod: "魚がSAFEにいる間の上陸進行が上がります。", gearEffectReel: "張力操作に対するラインマーカーの反応が速くなります。", gearEffectLine: "SAFEの張力範囲が広がり、ラインが切れるまでの余裕が増えます。", gearEffectBait: "上陸進行と、釣果ごとのリーフノート獲得量が増えます。", gearEffectBoat: "レベル2以降、遠征時間が1レベルごとに5秒増えます。", gearEffectScan: "レベルごとに、序盤の魚プールが1種広がります。" },
+    ko: { ...text.ko, gearEffectRod: "물고기가 SAFE에 있을 때 착지 진행도가 올라갑니다.", gearEffectReel: "장력 조작에 대한 줄 마커 반응이 빨라집니다.", gearEffectLine: "SAFE 장력 범위가 넓어져 줄이 끊기기 전 여유가 늘어납니다.", gearEffectBait: "착지 진행도와 잡을 때 얻는 Reef Notes가 늘어납니다.", gearEffectBoat: "레벨 2부터 레벨당 원정 시간이 5초 늘어납니다.", gearEffectScan: "레벨당 초반 물고기 풀이 한 종씩 넓어집니다." },
+    es: { ...text.es, gearEffectRod: "Más progreso de captura mientras el pez permanece en SEGURA.", gearEffectReel: "El indicador de línea responde más rápido a tu control de tensión.", gearEffectLine: "Amplía la zona SEGURA y da más margen antes de romper la línea.", gearEffectBait: "Aumenta el progreso de captura y las Notas obtenidas por captura.", gearEffectBoat: "Añade 5 segundos a cada expedición por nivel sobre el nivel 1.", gearEffectScan: "Amplía el grupo temprano de peces en una especie por nivel." },
+    fr: { ...text.fr, gearEffectRod: "Progressez davantage vers la capture lorsque le poisson reste en zone sûre.", gearEffectReel: "Le marqueur de ligne réagit plus vite à votre contrôle de tension.", gearEffectLine: "Élargit la zone sûre et donne plus de marge avant la rupture.", gearEffectBait: "Augmente la progression de capture et les Notes gagnées par prise.", gearEffectBoat: "Ajoute 5 secondes à chaque expédition par niveau au-dessus du niveau 1.", gearEffectScan: "Élargit le groupe de poissons précoces d'une espèce par niveau." },
+    de: { ...text.de, gearEffectRod: "Mehr Fangfortschritt, solange der Fisch im sicheren Bereich bleibt.", gearEffectReel: "Der Linienmarker reagiert schneller auf deine Spannungskontrolle.", gearEffectLine: "Vergrößert den sicheren Bereich und gibt mehr Spielraum vor einem Riss.", gearEffectBait: "Erhöht Fangfortschritt und Reef-Notizen pro Fang.", gearEffectBoat: "Fügt pro Stufe über Stufe 1 fünf Sekunden zu jeder Expedition hinzu.", gearEffectScan: "Erweitert den frühen Fischpool um eine Art pro Stufe." },
+    it: { ...text.it, gearEffectRod: "Più avanzamento verso la cattura quando il pesce resta in SICURA.", gearEffectReel: "Il marker della lenza reagisce più rapidamente al controllo della tensione.", gearEffectLine: "Allarga la zona SICURA e dà più margine prima che la lenza si spezzi.", gearEffectBait: "Aumenta l'avanzamento e le Note della Barriera ottenute per ogni cattura.", gearEffectBoat: "Aggiunge 5 secondi a ogni spedizione per livello oltre il livello 1.", gearEffectScan: "Amplia il gruppo iniziale di pesci di una specie per livello." },
+    "pt-BR": { ...text["pt-BR"], gearEffectRod: "Mais progresso de captura enquanto o peixe permanece em SEGURA.", gearEffectReel: "O marcador da linha responde mais rápido ao seu controle de tensão.", gearEffectLine: "Amplia a área SEGURA e dá mais margem antes de a linha arrebentar.", gearEffectBait: "Aumenta o progresso de captura e as Notas do Recife por captura.", gearEffectBoat: "Adiciona 5 segundos a cada expedição por nível acima do nível 1.", gearEffectScan: "Amplia o grupo inicial de peixes em uma espécie por nível." },
+    ru: { ...text.ru, gearEffectRod: "Больше прогресса поимки, пока рыба остаётся в БЕЗОПАСНОЙ зоне.", gearEffectReel: "Маркер лески быстрее реагирует на управление натяжением.", gearEffectLine: "Расширяет БЕЗОПАСНУЮ зону и даёт больше запаса до обрыва лески.", gearEffectBait: "Повышает прогресс поимки и число Рифовых заметок за улов.", gearEffectBoat: "Добавляет 5 секунд к каждой экспедиции за каждый уровень выше 1.", gearEffectScan: "Расширяет ранний список рыб на один вид за уровень." },
+    hi: { ...text.hi, gearEffectRod: "मछली के SAFE में रहने पर पकड़ने की प्रगति बढ़ती है।", gearEffectReel: "तनाव नियंत्रण पर लाइन मार्कर तेज़ी से प्रतिक्रिया देता है।", gearEffectLine: "SAFE तनाव क्षेत्र चौड़ा होता है और लाइन टूटने से पहले अधिक गुंजाइश मिलती है।", gearEffectBait: "पकड़ने की प्रगति और हर कैच से मिलने वाले Reef Notes बढ़ते हैं।", gearEffectBoat: "लेवल 1 से ऊपर हर लेवल पर हर अभियान में 5 सेकंड जुड़ते हैं।", gearEffectScan: "हर लेवल पर शुरुआती मछली पूल में एक प्रजाति जुड़ती है।" },
+    ar: { ...text.ar, gearEffectRod: "تزداد وتيرة الصيد ما دامت السمكة داخل المنطقة الآمنة.", gearEffectReel: "يستجيب مؤشر الخيط أسرع لتحكمك في الشد.", gearEffectLine: "توسّع نطاق الأمان وتمنح هامشًا أكبر قبل انقطاع الخيط.", gearEffectBait: "تزيد تقدم الصيد وملاحظات الشعاب المكتسبة من كل صيد.", gearEffectBoat: "تضيف 5 ثوانٍ إلى كل رحلة لكل مستوى فوق المستوى 1.", gearEffectScan: "توسّع مجموعة الأسماك المبكرة بنوع واحد لكل مستوى." },
+  });
 
   const assetPaths = {
     bg: "../../assets/animal-reef-fisher-reef-bg.webp",
@@ -471,12 +486,12 @@
   }));
 
   const gear = [
-    { id: "rod", name: { en: "Rod Strength", "zh-Hant": "釣竿強度" }, img: "../../assets/animal-reef-fisher-gear-rod-strength.webp", cost: 18 },
-    { id: "reel", name: { en: "Reel Control", "zh-Hant": "捲線控制" }, img: "../../assets/animal-reef-fisher-gear-reel-control.webp", cost: 18 },
-    { id: "line", name: { en: "Line Durability", "zh-Hant": "魚線耐久" }, img: "../../assets/animal-reef-fisher-gear-line-durability.webp", cost: 20 },
-    { id: "bait", name: { en: "Bait Quality", "zh-Hant": "魚餌品質" }, img: "../../assets/animal-reef-fisher-gear-bait-quality.webp", cost: 16 },
-    { id: "boat", name: { en: "Boat Range", "zh-Hant": "小船航程" }, img: "../../assets/animal-reef-fisher-gear-boat-range.webp", cost: 22 },
-    { id: "scan", name: { en: "Reef Scanner", "zh-Hant": "礁區掃描" }, img: "../../assets/animal-reef-fisher-gear-reef-scanner.webp", cost: 20 },
+    { id: "rod", effectKey: "gearEffectRod", name: { en: "Rod Strength", "zh-Hant": "釣竿強度" }, img: "../../assets/animal-reef-fisher-gear-rod-strength.webp", cost: 18 },
+    { id: "reel", effectKey: "gearEffectReel", name: { en: "Reel Control", "zh-Hant": "捲線控制" }, img: "../../assets/animal-reef-fisher-gear-reel-control.webp", cost: 18 },
+    { id: "line", effectKey: "gearEffectLine", name: { en: "Line Durability", "zh-Hant": "魚線耐久" }, img: "../../assets/animal-reef-fisher-gear-line-durability.webp", cost: 20 },
+    { id: "bait", effectKey: "gearEffectBait", name: { en: "Bait Quality", "zh-Hant": "魚餌品質" }, img: "../../assets/animal-reef-fisher-gear-bait-quality.webp", cost: 16 },
+    { id: "boat", effectKey: "gearEffectBoat", name: { en: "Boat Range", "zh-Hant": "小船航程" }, img: "../../assets/animal-reef-fisher-gear-boat-range.webp", cost: 22 },
+    { id: "scan", effectKey: "gearEffectScan", name: { en: "Reef Scanner", "zh-Hant": "礁區掃描" }, img: "../../assets/animal-reef-fisher-gear-reef-scanner.webp", cost: 20 },
   ];
   ["Fuerza de caña","Control del carrete","Resistencia de línea","Calidad del cebo","Alcance del barco","Escáner de arrecife"].forEach((name,index)=>{gear[index].name.es=name;});
 
@@ -802,7 +817,7 @@
       return `
         <div class="gear-card">
           <img src="${item.img}" alt="" />
-          <div><strong>${item.name[locale]}</strong><span>${formatLevel(level)}</span></div>
+          <div><strong>${item.name[locale]}</strong><span>${formatLevel(level)}</span><small class="gear-effect">${t(item.effectKey)}</small></div>
           <button class="secondary-btn" data-gear="${item.id}" type="button">${maxed ? t("max") : `${t("upgrade")} ${cost}`}</button>
         </div>
       `;

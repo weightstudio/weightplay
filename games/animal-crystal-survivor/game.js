@@ -338,6 +338,21 @@
   text.en.mainStart = "Start Game";
   text["zh-Hant"].mainStart = "\u958b\u59cb\u904a\u6232";
   text.es.mainStart = "Comenzar juego";
+  Object.assign(text, {
+    en: { ...text.en, hintFirstKey: "Move toward the glowing golden key to start your patrol route." },
+    "zh-Hant": { ...text["zh-Hant"], hintFirstKey: "朝發光的金鑰移動，開始你的巡邏路線。" },
+    "zh-Hans": { ...text["zh-Hans"], hintFirstKey: "朝发光的金钥匙移动，开始你的巡逻路线。" },
+    ja: { ...text.ja, hintFirstKey: "光る金の鍵へ移動して、巡回ルートを始めましょう。" },
+    ko: { ...text.ko, hintFirstKey: "빛나는 황금 열쇠를 향해 움직여 첫 순찰 경로를 시작하세요." },
+    es: { ...text.es, hintFirstKey: "Muévete hacia la llave dorada brillante para iniciar tu ruta de patrulla." },
+    "pt-BR": { ...text["pt-BR"], hintFirstKey: "Mova-se em direção à chave dourada brilhante para iniciar sua rota de patrulha." },
+    fr: { ...text.fr, hintFirstKey: "Avancez vers la clé dorée lumineuse pour commencer votre route de patrouille." },
+    de: { ...text.de, hintFirstKey: "Bewege dich zum leuchtenden goldenen Schlüssel, um deine Patrouillenroute zu beginnen." },
+    it: { ...text.it, hintFirstKey: "Muoviti verso la chiave dorata luminosa per iniziare il tuo percorso di pattuglia." },
+    ru: { ...text.ru, hintFirstKey: "Двигайтесь к сияющему золотому ключу, чтобы начать маршрут патруля." },
+    hi: { ...text.hi, hintFirstKey: "गश्ती मार्ग शुरू करने के लिए चमकती सुनहरी चाबी की ओर बढ़ें।" },
+    ar: { ...text.ar, hintFirstKey: "تحرك نحو المفتاح الذهبي المتوهج لبدء مسار دوريتك." },
+  });
   text.es.resultPlanTitle = "Plan para la siguiente partida";
   text.es.resultPlanStrong = "Ruta: sigue rodeando la arboleda, recoge cada llave y sal antes de que se cierren las zonas de aviso.";
   text.es.resultPlanUpgrade = "Siguiente partida: recoge cristales pronto para conseguir mejoras antes de que aumente la presión.";
@@ -1796,6 +1811,7 @@
         stage: state.stage,
         stageName: stageName(state.stageConfig),
         stageModifier: state.stageConfig.modifier,
+        firstKeyCue: firstKeyCueVisible(),
         keys: state.keys,
         key: { ...state.key },
         player: { ...state.player },
@@ -1979,7 +1995,9 @@
     const keyDistance = Math.hypot(state.key.x - p.x, state.key.y - p.y);
     const hasCloseEnemy = state.enemies.some((enemy) => Math.hypot(enemy.x - p.x, enemy.y - p.y) <= p.range);
     const nextHint =
-      state.xpNeed - state.xp <= 1 && state.xpDrops.length > 0
+      state.stage === 1 && state.keys === 0 && state.survived < 12
+        ? "hintFirstKey"
+        : state.xpNeed - state.xp <= 1 && state.xpDrops.length > 0
         ? "hintUpgradeSoon"
         : keyDistance <= 220
           ? "hintKeyClose"
@@ -1995,6 +2013,47 @@
       nodes.hintText.textContent = value;
       renderMetrics.hudWrites += 1;
     }
+  }
+
+  function firstKeyCueVisible() {
+    return state.mode === "running" && state.stage === 1 && state.keys === 0 && state.survived < 12;
+  }
+
+  function drawFirstKeyRouteCue(frameNow) {
+    if (!firstKeyCueVisible()) return;
+    const dx = state.key.x - state.player.x;
+    const dy = state.key.y - state.player.y;
+    const distance = Math.hypot(dx, dy);
+    if (distance < 78) return;
+    const angle = Math.atan2(dy, dx);
+    const ux = dx / distance;
+    const uy = dy / distance;
+    const endDistance = Math.min(distance - 26, 250);
+    const pulse = 0.58 + Math.sin(frameNow / 170) * 0.16;
+    ctx.save();
+    ctx.globalAlpha = pulse;
+    ctx.strokeStyle = "#ffe76c";
+    ctx.fillStyle = "#fff6ae";
+    ctx.lineWidth = 8;
+    ctx.setLineDash([22, 16]);
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(state.player.x + ux * 62, state.player.y + uy * 62);
+    ctx.lineTo(state.player.x + ux * endDistance, state.player.y + uy * endDistance);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    const tipX = state.player.x + ux * endDistance;
+    const tipY = state.player.y + uy * endDistance;
+    ctx.translate(tipX, tipY);
+    ctx.rotate(angle);
+    ctx.beginPath();
+    ctx.moveTo(22, 0);
+    ctx.lineTo(-14, -18);
+    ctx.lineTo(-8, 0);
+    ctx.lineTo(-14, 18);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
   }
 
   function formatTime(value) {
@@ -2056,6 +2115,7 @@
     }
     drawStageHazards(frameNow);
     drawKey(frameNow);
+    drawFirstKeyRouteCue(frameNow);
     state.xpDrops.forEach((drop) => drawImageCentered(images.xp, drop.x, drop.y, 34));
     state.enemies.forEach((enemy) => drawEnemy(enemy, frameNow));
     state.shots.forEach((shot) => {
