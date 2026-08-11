@@ -106,8 +106,8 @@ button:focus-visible, select:focus-visible { outline: 3px solid var(--logic-warn
 .logic-sudoku-board .given { background: rgba(126, 205, 255, .2); color: #fff; cursor: default; }
 .logic-sudoku-board .wrong { color: var(--logic-danger); animation: logic-shake .22s ease-in-out; }
 @keyframes logic-shake { 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
-.logic-keypad { width: min(100%, 560px); display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; }
-.logic-keypad button { min-height: 40px; }
+.logic-keypad { width: min(100%, 560px); display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; }
+.logic-keypad button { min-width: 0; min-height: 40px; }
 .logic-lights-board { display: grid; grid-template-columns: repeat(5, minmax(44px, 74px)); gap: 7px; }
 .logic-lights-board .logic-cell { aspect-ratio: 1; border-radius: 14px; background: #0a1b35; }
 .logic-lights-board .on { background: var(--logic-warn); color: #3a2800; box-shadow: 0 0 28px rgba(255,209,102,.6); }
@@ -176,6 +176,9 @@ button:focus-visible, select:focus-visible { outline: 3px solid var(--logic-warn
   .logic-battle-header .logic-battle-back, .logic-battle-header .logic-status-chip { min-height: 38px; }
   .logic-tutorial { padding: 5px 9px; font-size: 12px; }
   .logic-board-panel { padding-block: 4px; }
+}
+@media (min-width: 700px) and (max-height: 760px) {
+  .logic-sudoku-board { width: min(100%, 460px); }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .001ms !important; transition-duration: .001ms !important; }

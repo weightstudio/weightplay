@@ -394,6 +394,35 @@
     };
   }
 
+  function makeCribbageFixed(controller) {
+    const s = { hand: [], ai: [], crib: [], stock: [], starter: null, playerPeg: [], aiPeg: [], count: 0, turn: 0, phase: "discard", score: [0, 0], selected: new Set(), passed: [false, false], pegPoints: [0, 0], round: 1 };
+    const combinations = (cards, target) => { let points = 0; const total = 1 << cards.length; for (let mask = 1; mask < total; mask += 1) { const chosen = cards.filter((_, index) => mask & (1 << index)); if (sum(chosen) === target) points += 2; } return points; };
+    const scoreCards = (cards, isCrib = false) => {
+      let points = combinations(cards, 15);
+      const counts = new Map();
+      cards.forEach((item) => counts.set(item.rank, (counts.get(item.rank) || 0) + 1));
+      counts.forEach((count) => { if (count >= 2) points += (count * (count - 1)); });
+      const unique = [...counts.keys()].sort((a, b) => a - b);
+      for (let length = unique.length; length >= 3; length -= 1) { let found = false; for (let start = 0; start <= unique.length - length; start += 1) { const run = unique.slice(start, start + length); if (run.every((rank, index) => !index || rank === run[index - 1] + 1)) { points += length; found = true; break; } } if (found) break; }
+      const firstFour = cards.slice(0, -1); if (firstFour.length >= 4 && firstFour.every((item) => item.suit === firstFour[0].suit)) points += 4; if (cards.at(-1)?.rank === 11 && cards.at(-1)?.suit === cards.find((item) => item.rank === 11)?.suit) points += 1;
+      return points + (isCrib ? 0 : 0);
+    };
+    const legalPeg = (player) => (player === 0 ? s.hand : s.ai).filter((item) => s.count + value(item) <= 31);
+    const finish = () => { if (s.score[0] >= 121 || s.score[1] >= 121) { controller.result(s.score[0] >= s.score[1], `${t("score")}: ${s.score[0]} / ${s.score[1]}`); return true; } return false; };
+    const scorePegCard = (player, item) => { const sequence = player === 0 ? s.playerPeg : s.aiPeg; sequence.push(item); const last = sequence.at(-1); let points = 0; if (s.count + value(item) === 15 || s.count + value(item) === 31) points += 2; if (sequence.length >= 2 && sequence.at(-1).rank === sequence.at(-2).rank) points += 2; if (sequence.length >= 3) { const ranks = sequence.slice(-3).map((cardItem) => cardItem.rank).sort((a, b) => a - b); if (ranks[2] === ranks[1] + 1 && ranks[1] === ranks[0] + 1) points += 3; } if (last) s.pegPoints[player] += points; };
+    const nextPegTurn = () => { if (s.passed[0] && s.passed[1]) { const playerCards = [...s.hand, ...s.playerPeg]; const aiCards = [...s.ai, ...s.aiPeg]; s.score[0] += scoreCards([...s.roundPlayerHand, s.starter]) + s.pegPoints[0]; s.score[1] += scoreCards([...s.roundAiHand, s.starter]) + scoreCards([...s.crib, s.starter], true) + s.pegPoints[1]; if (finish()) return; startRound(); return; } s.turn = (s.turn + 1) % 2; if (s.turn === 1) setTimeout(aiPeg, 240); };
+    const passPeg = (player) => { s.passed[player] = true; nextPegTurn(); };
+    const playPeg = (player, item) => { if (!item || s.count + value(item) > 31) { passPeg(player); return; } const hand = player === 0 ? s.hand : s.ai; const index = hand.indexOf(item); if (index < 0) return; hand.splice(index, 1); scorePegCard(player, item); s.count += value(item); s.passed[player] = false; if (!s.hand.length && !s.ai.length) { s.passed = [true, true]; nextPegTurn(); } else { nextPegTurn(); } };
+    const aiPeg = () => { if (s.phase !== "pegging" || s.turn !== 1) return; const item = legalPeg(1).sort((a, b) => b.rank - a.rank)[0]; if (item) playPeg(1, item); else passPeg(1); };
+    function startRound() { const cards = deck(); Object.assign(s, { hand: [], ai: [], crib: [], stock: cards, starter: null, playerPeg: [], aiPeg: [], count: 0, turn: 0, phase: "discard", selected: new Set(), passed: [false, false], pegPoints: [0, 0], round: s.round + 1 }); for (let i = 0; i < 6; i += 1) { s.hand.push(s.stock.pop()); s.ai.push(s.stock.pop()); } }
+    return {
+      reset() { Object.assign(s, { score: [0, 0], round: 0 }); startRound(); },
+      card(index) { if (s.phase === "discard" && s.turn === 0) { if (s.selected.has(index)) s.selected.delete(index); else if (s.selected.size < 2) s.selected.add(index); } else if (s.phase === "pegging" && s.turn === 0) playPeg(0, s.hand[index]); },
+      action(action) { if (action === "send-crib" && s.phase === "discard" && s.selected.size === 2) { [...s.selected].sort((a, b) => b - a).forEach((index) => s.crib.push(s.hand.splice(index, 1)[0])); s.crib.push(...s.ai.splice(0, 2)); s.roundPlayerHand = [...s.hand]; s.roundAiHand = [...s.ai]; s.starter = s.stock.pop(); s.phase = "pegging"; s.turn = 0; s.playerPeg = []; s.aiPeg = []; s.count = 0; s.passed = [false, false]; s.pegPoints = [0, 0]; } if (action === "go" && s.phase === "pegging" && s.turn === 0) passPeg(0); },
+      view() { const playable = legalPeg(0); return { phase: s.phase === "discard" ? t("selectCards") : `${t("score")}: ${s.count}/31`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "discard" ? `${t("selectCards")}: ${s.selected.size}/2 to the crib.` : `${playable.length ? "Play a card" : "Go"}. Pair, run, 15, and 31 points count during pegging.`, score: s.score[0], opponents: opponentMarkup("AI", s.ai.length, `${t("score")}: ${s.score[1]}`), center: `<div class="card-table-label">${t("cribbage")} · Round ${s.round} · ${s.starter ? cardText(s.starter) : ""}</div>${makePegBoard(s.score[0], s.score[1])}<div class="table-row">${cardsMarkup(s.playerPeg)}${cardsMarkup(s.aiPeg)}</div>`, hand: cardsMarkup(s.hand, { selected: s.selected }), actions: s.phase === "discard" ? `<button class="primary-btn" data-action="send-crib" ${s.selected.size !== 2 ? "disabled" : ""}>${t("submit")}</button>` : `<button class="secondary-btn" data-action="go" ${playable.length ? "disabled" : ""}>Go</button>` }; }
+    };
+  }
+
   function makeGoFishFixed(controller) {
     const s = { players: [[], [], [], []], stock: [], turn: 0, selectedOpponent: 1, selectedRank: null, books: [0, 0, 0, 0], playerCount: 4 };
     const names = ["You", "Otter", "Fox", "Panda"];
@@ -448,6 +477,6 @@
     };
   }
 
-  const GAME_BUILDERS = { hearts: makeHearts, spades: makeSpades, "gin-rummy": makeGinRummyFixed, "crazy-eights": makeCrazyEightsFixed, cribbage: makeCribbage, "go-fish": makeGoFishFixed, war: makeWar, speed: makeSpeedFixed, "old-maid": makeOldMaidFixed, casino: makeCasino };
+  const GAME_BUILDERS = { hearts: makeHearts, spades: makeSpades, "gin-rummy": makeGinRummyFixed, "crazy-eights": makeCrazyEightsFixed, cribbage: makeCribbageFixed, "go-fish": makeGoFishFixed, war: makeWar, speed: makeSpeedFixed, "old-maid": makeOldMaidFixed, casino: makeCasino };
   root.WPCardGamesNext = Object.freeze({ mount: mountCardGame, titles: TITLES });
 })(window);
