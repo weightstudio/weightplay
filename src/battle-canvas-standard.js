@@ -80,6 +80,9 @@
     // Bind the scaler to that permanent play surface so the scene wrapper is
     // never scaled a second time. The short-landscape envelope keeps the
     // table readable while still covering the complete safe width.
+    "gin-rummy": [".battle-canvas", 390, 788, 760, 334],
+    "casino": [".battle-canvas", 390, 788, 760, 334],
+    "crazy-eights": [".battle-canvas", 390, 788, 760, 334],
     "hearts": [".battle-canvas", 390, 788, 760, 334],
     "spades": [".battle-canvas", 390, 788, 760, 334],
   };
@@ -120,8 +123,8 @@
     // Card-game previews keep one physical reserve beside the permanent
     // play surface. After Main -> Battle -> Main, its natural height is zero
     // until this scaler reapplies the 56px slot, so visibility cannot be the
-    // lookup gate for these two owner-preview shells.
-    if (nearby && (gameId === "hearts" || gameId === "spades" || visible(nearby))) return nearby;
+    // lookup gate for these five owner-preview shells.
+    if (nearby && (gameId === "gin-rummy" || gameId === "casino" || gameId === "crazy-eights" || gameId === "hearts" || gameId === "spades" || visible(nearby))) return nearby;
     return [...document.querySelectorAll(reserveSelector)]
       .find((node) => visible(node) && !node.closest("[data-wp-logical-battle-canvas]")) || null;
   };
@@ -197,7 +200,7 @@
     const width = Math.max(1, document.documentElement.clientWidth || 0, innerWidth || 0, viewport?.width || 0);
     const height = Math.max(1, document.documentElement.clientHeight || 0, innerHeight || 0, viewport?.height || 0);
     const reserve = findReserve(root);
-    if ((gameId === "hearts" || gameId === "spades")
+    if ((gameId === "gin-rummy" || gameId === "casino" || gameId === "crazy-eights" || gameId === "hearts" || gameId === "spades")
       && reserve?.parentElement === root
       && root.parentElement) {
       // The card-game preview markup historically nested the physical reserve

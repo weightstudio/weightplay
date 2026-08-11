@@ -139,8 +139,9 @@
     app.startGame = startGame;
     return app;
 
-    function startGame() { window.scrollTo(0, 0); app.main.hidden = true; app.battle.hidden = false; document.body.classList.add("logic-playing"); app.tutorial.textContent = text(cfg.blurb); app.result.hidden = true; activeGame = cfg.build(app); activeGame.reset(); if (app.status.textContent === t("ready")) announce(t("turn")); window.WonderAnalytics?.track?.("classic_logic_trial_start", { game_id: id, locale }); }
-    function showMain() { activeGame?.stop?.(); activeGame = null; app.result.hidden = true; app.battle.hidden = true; app.main.hidden = false; document.body.classList.remove("logic-playing"); window.scrollTo(0, 0); }
+    function resetScroll() { window.scrollTo(0, 0); document.documentElement.scrollTop = 0; document.body.scrollTop = 0; }
+    function startGame() { resetScroll(); app.main.hidden = true; app.battle.hidden = false; document.body.classList.add("logic-playing"); app.tutorial.textContent = text(cfg.blurb); app.result.hidden = true; activeGame = cfg.build(app); activeGame.reset(); if (app.status.textContent === t("ready")) announce(t("turn")); resetScroll(); window.WonderAnalytics?.track?.("classic_logic_trial_start", { game_id: id, locale }); }
+    function showMain() { activeGame?.stop?.(); activeGame = null; app.result.hidden = true; app.battle.hidden = true; app.main.hidden = false; document.body.classList.remove("logic-playing"); resetScroll(); }
   }
 
   function finish(won, detail = "") { if (!app) return; beep(won ? "success" : "wrong"); app.resultTitle.textContent = won ? t("win") : t("lose"); app.resultText.textContent = detail || (won ? t("solved") : t("failed")); app.result.hidden = false; app.battleChip.textContent = won ? t("solved") : t("lose"); }

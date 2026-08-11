@@ -162,6 +162,7 @@
     const render = () => {
       if (!game) return;
       const view = game.view() || {};
+      if (id === "casino" && !view.hand && view.opponents?.includes("0 cards")) controller.result(true, `${t("score")}: ${view.score}`);
       opponents.innerHTML = view.opponents || "";
       center.innerHTML = view.center || "";
       hand.innerHTML = view.hand || "";
@@ -307,6 +308,43 @@
     return { reset() { const cards = deck(); Object.assign(s, { player: cards.slice(0, 26), ai: cards.slice(26), pot: [], phase: "ready", last: null, war: false, playerCard: null, aiCard: null }); }, card() {}, action(action) { if (action === "flip" && s.phase === "ready") drawBattle(); else if (action === "flip" && s.phase === "war") addWar(); }, view() { return { phase: s.war ? t("war") : t("flip"), status: t("yourTurn"), help: s.war ? "Place three cards down, then reveal the next card." : "Flip together and watch the collision.", score: s.player.length, opponents: opponentMarkup("AI", s.ai.length), center: `<div class="card-table-label">${t("war")}</div><div class="table-row ${s.war ? "card-war-flash" : ""}">${s.playerCard ? cardMarkup(s.playerCard, 0) : ""}${s.aiCard ? cardMarkup(s.aiCard, 0) : ""}</div><div>${t("cards")}: ${s.pot.length}</div>`, hand: `<div class="card-help">${s.player.length} ${t("cards")}</div>`, actions: `<button class="primary-btn" data-action="flip">${s.war ? t("war") : t("flip")}</button>` }; } };
   }
 
+  function makeWarFixed(controller) {
+    const s = { player: [], ai: [], pot: [], phase: "ready", playerCard: null, aiCard: null };
+    const finish = (playerWins) => controller.result(playerWins, `${t("cards")}: ${s.player.length} / ${s.ai.length}`);
+    const settle = () => {
+      const playerWins = s.playerCard.rank > s.aiCard.rank;
+      (playerWins ? s.player : s.ai).push(...s.pot.sort(() => Math.random() - 0.5));
+      s.pot = [];
+      s.phase = "ready";
+      if (!s.player.length || !s.ai.length) finish(playerWins);
+    };
+    const reveal = () => {
+      if (!s.player.length || !s.ai.length) { finish(Boolean(s.player.length)); return; }
+      s.playerCard = s.player.shift();
+      s.aiCard = s.ai.shift();
+      s.pot.push(s.playerCard, s.aiCard);
+      if (s.playerCard.rank === s.aiCard.rank) s.phase = "war";
+      else settle();
+    };
+    const continueWar = () => {
+      if (s.player.length < 4 || s.ai.length < 4) {
+        const playerWins = s.player.length >= 4;
+        (playerWins ? s.player : s.ai).push(...s.pot);
+        s.pot = [];
+        finish(playerWins);
+        return;
+      }
+      s.pot.push(...s.player.splice(0, 3), ...s.ai.splice(0, 3));
+      reveal();
+    };
+    return {
+      reset() { const cards = deck(); Object.assign(s, { player: cards.slice(0, 26), ai: cards.slice(26), pot: [], phase: "ready", playerCard: null, aiCard: null }); },
+      card() {},
+      action(action) { if (action === "flip" && s.phase === "ready") reveal(); else if (action === "flip" && s.phase === "war") continueWar(); },
+      view() { return { phase: s.phase === "war" ? t("war") : t("flip"), status: t("yourTurn"), help: s.phase === "war" ? "Place three cards down, then reveal the next card." : "Flip together and watch the collision.", score: s.player.length, opponents: opponentMarkup("AI", s.ai.length), center: `<div class="card-table-label">${t("war")}</div><div class="table-row ${s.phase === "war" ? "card-war-flash" : ""}">${s.playerCard ? cardMarkup(s.playerCard, 0) : ""}${s.aiCard ? cardMarkup(s.aiCard, 0) : ""}</div><div>${t("cards")}: ${s.pot.length}</div>`, hand: `<div class="card-help">${s.player.length} ${t("cards")}</div>`, actions: `<button class="primary-btn" data-action="flip">${s.phase === "war" ? t("war") : t("flip")}</button>` }; }
+    };
+  }
+
   function makeSpeed(controller) {
     const s = { hand: [], stock: [], aiHand: [], aiStock: [], centers: [], turn: true, timer: null, over: false };
     const canPlay = (item, centerCard) => item && centerCard && (item.rank === centerCard.rank + 1 || item.rank === centerCard.rank - 1 || (item.rank === 1 && centerCard.rank === 13) || (item.rank === 13 && centerCard.rank === 1));
@@ -332,8 +370,9 @@
     const tableValue = (entry) => entry.buildValue || value(entry.card);
     const combinations = (items, target) => { const output = []; const walk = (start, chosen, total) => { if (total === target && chosen.length) output.push(chosen.slice()); if (total >= target) return; for (let i = start; i < items.length; i += 1) walk(i + 1, [...chosen, i], total + tableValue(items[i])); }; walk(0, [], 0); return output; };
     const capture = (indices, cardIndex) => { const item = s.player.splice(cardIndex, 1)[0]; const picked = indices.map((index) => s.table[index]); s.table = s.table.filter((_, index) => !indices.includes(index)); s.captured[0].push(item, ...picked.map((entry) => entry.card)); s.selectedCard = null; s.selectedTable.clear(); aiTurn(); };
-    const aiTurn = () => { if (!s.ai.length) { if (s.stock.length) { for (let i = 0; i < 4 && s.stock.length; i += 1) { s.player.push(s.stock.pop()); s.ai.push(s.stock.pop()); } } else { const p = scoreCasino(s.captured[0]); const a = scoreCasino(s.captured[1]); controller.result(p >= a, `${t("score")}: ${p} / ${a}`); return; } } const aiCard = s.ai.pop(); const same = s.table.map((entry, index) => ({ entry, index })).filter(({ entry }) => tableValue(entry) === value(aiCard)); const combo = combinations(s.table, value(aiCard))[0]; if (same.length || combo) { const indices = same.length ? same.map((entry) => entry.index) : combo; s.captured[1].push(aiCard, ...indices.map((index) => s.table[index].card)); s.table = s.table.filter((_, index) => !indices.includes(index)); } else s.table.push({ card: aiCard }); };
     const scoreCasino = (cards) => cards.reduce((score, item) => score + (item.suit === "spades" ? 1 : 0) + (item.suit === "diamonds" && item.rank === 10 ? 2 : 0) + (item.suit === "spades" && item.rank === 2 ? 2 : 0), score) + (cards.length >= 27 ? 3 : 0);
+    const finish = () => { const playerScore = scoreCasino(s.captured[0]); const aiScore = scoreCasino(s.captured[1]); controller.result(playerScore >= aiScore, `${t("score")}: ${playerScore} / ${aiScore}`); };
+    const aiTurn = () => { if (!s.ai.length) { if (s.stock.length) { for (let i = 0; i < 4 && s.stock.length; i += 1) { s.player.push(s.stock.pop()); if (s.stock.length) s.ai.push(s.stock.pop()); } } else { finish(); return; } } const aiCard = s.ai.pop(); const same = s.table.map((entry, index) => ({ entry, index })).filter(({ entry }) => tableValue(entry) === value(aiCard)); const combo = combinations(s.table, value(aiCard))[0]; if (same.length || combo) { const indices = same.length ? same.map((entry) => entry.index) : combo; s.captured[1].push(aiCard, ...indices.map((index) => s.table[index].card)); s.table = s.table.filter((_, index) => !indices.includes(index)); } else s.table.push({ card: aiCard }); if (!s.stock.length && (!s.ai.length || !s.player.length)) finish(); };
     return { reset() { Object.assign(s, { player: [], ai: [], stock: deck(), table: [], captured: [[], []], selectedCard: null, selectedTable: new Set(), phase: "play", score: [0, 0] }); for (let i = 0; i < 4; i += 1) { s.player.push(s.stock.pop()); s.ai.push(s.stock.pop()); s.table.push({ card: s.stock.pop() }); } }, card(index) { if (s.selectedCard === null) { s.selectedCard = index; return; } const tableIndex = index; if (tableIndex < s.table.length) { if (s.selectedTable.has(tableIndex)) s.selectedTable.delete(tableIndex); else s.selectedTable.add(tableIndex); } }, action(action) { if (action === "clear-selection") { s.selectedCard = null; s.selectedTable.clear(); } if (action === "capture" && s.selectedCard !== null) { const indices = [...s.selectedTable]; const item = s.player[s.selectedCard]; const valid = indices.length && (indices.some((index) => tableValue(s.table[index]) === value(item)) || combinations(s.table, value(item)).some((combo) => combo.length === indices.length && combo.every((index) => indices.includes(index)))); if (valid) capture(indices, s.selectedCard); } if (action === "build" && s.selectedCard !== null && s.selectedTable.size) { const item = s.player.splice(s.selectedCard, 1)[0]; const indices = [...s.selectedTable]; const built = { card: item, buildValue: value(item) + indices.reduce((total, index) => total + tableValue(s.table[index]), 0), buildCards: [item, ...indices.map((index) => s.table[index].card)] }; s.table = s.table.filter((_, index) => !indices.includes(index)); s.table.push(built); s.selectedCard = null; s.selectedTable.clear(); aiTurn(); } }, view() { const selectedItem = s.selectedCard === null ? null : s.player[s.selectedCard]; return { phase: t("capture"), status: t("yourTurn"), help: selectedItem ? `${t("selectCards")}: ${cardText(selectedItem)} · ${s.selectedTable.size}` : "Select a hand card, then table cards with the same value or a matching sum.", score: s.captured[0].length, opponents: opponentMarkup("AI", s.ai.length, `${t("cards")}: ${s.captured[1].length}`), center: `<div class="card-table-label">${t("table")}</div><div class="table-row">${s.table.map((entry, index) => entry.buildValue ? `<span class="card-build">${entry.buildCards.map((item) => cardMarkup(item, 0)).join("")}<small>=${entry.buildValue}</small></span>` : cardMarkup(entry.card, index, { selected: s.selectedTable.has(index) })).join("")}</div>`, hand: cardsMarkup(s.player, { selected: new Set(s.selectedCard === null ? [] : [s.selectedCard]) }), actions: `<button class="primary-btn" data-action="capture" ${s.selectedCard === null || !s.selectedTable.size ? "disabled" : ""}>${t("capture")}</button><button class="secondary-btn" data-action="build" ${s.selectedCard === null || !s.selectedTable.size ? "disabled" : ""}>${t("build")}</button><button class="secondary-btn" data-action="clear-selection">${t("close")}</button>` }; } };
   }
 
@@ -435,11 +474,11 @@
     const s = { players: [[], [], [], []], stock: [], turn: 0, selectedOpponent: 1, selectedRank: null, books: [0, 0, 0, 0], playerCount: 4 };
     const names = ["You", "Otter", "Fox", "Panda"];
     const removeBooks = (player) => { for (let rank = 1; rank <= 13; rank += 1) { if (s.players[player].filter((item) => item.rank === rank).length === 4) { s.players[player] = s.players[player].filter((item) => item.rank !== rank); s.books[player] += 1; } } };
-    const finish = () => { const winner = s.books.slice(0, s.playerCount).indexOf(Math.max(...s.books.slice(0, s.playerCount))); controller.result(winner === 0, `${t("booksMade")}: ${s.books.slice(0, s.playerCount).join(" / ")}`); };
+    const finish = () => { for (let player = 0; player < s.playerCount; player += 1) removeBooks(player); const winner = s.books.slice(0, s.playerCount).indexOf(Math.max(...s.books.slice(0, s.playerCount))); controller.result(winner === 0, `${t("booksMade")}: ${s.books.slice(0, s.playerCount).join(" / ")}`); };
     const deal = () => { s.players = [[], [], [], []]; s.stock = deck(); s.turn = 0; s.selectedOpponent = s.playerCount === 2 ? 1 : Math.min(s.selectedOpponent, s.playerCount - 1); s.selectedRank = null; s.books = [0, 0, 0, 0]; const handSize = s.playerCount === 2 ? 7 : 5; for (let i = 0; i < handSize; i += 1) for (let player = 0; player < s.playerCount; player += 1) s.players[player].push(s.stock.pop()); for (let player = 0; player < s.playerCount; player += 1) removeBooks(player); };
     const next = () => { s.turn = (s.turn + 1) % s.playerCount; if (s.turn !== 0) setTimeout(aiTurn, 300); };
-    const ask = (target, rank) => { const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[target] = s.players[target].filter((item) => item.rank !== rank); s.players[0].push(...matching); removeBooks(0); s.selectedRank = null; } else { if (s.stock.length) s.players[0].push(s.stock.pop()); next(); } if (!s.stock.length && s.players.slice(0, s.playerCount).every((cards) => !cards.length)) finish(); };
-    const aiTurn = () => { if (s.turn === 0) return; const ranks = [...new Set(s.players[s.turn].map((item) => item.rank))]; if (!ranks.length) { next(); return; } const targets = Array.from({ length: s.playerCount }, (_, index) => index).filter((index) => index !== s.turn); const target = targets[Math.floor(Math.random() * targets.length)]; const rank = ranks[Math.floor(Math.random() * ranks.length)]; const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[s.turn].push(...matching); s.players[target] = s.players[target].filter((item) => item.rank !== rank); removeBooks(s.turn); } else if (s.stock.length) s.players[s.turn].push(s.stock.pop()); removeBooks(s.turn); next(); };
+    const ask = (target, rank) => { const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[target] = s.players[target].filter((item) => item.rank !== rank); s.players[0].push(...matching); removeBooks(0); s.selectedRank = null; } else { if (s.stock.length) s.players[0].push(s.stock.pop()); next(); } if (!s.stock.length) { for (let player = 0; player < s.playerCount; player += 1) removeBooks(player); if (s.players.slice(0, s.playerCount).every((cards) => !cards.length)) finish(); } };
+    const aiTurn = () => { if (s.turn === 0) return; const ranks = [...new Set(s.players[s.turn].map((item) => item.rank))]; if (!ranks.length) { if (!s.stock.length && s.players.slice(0, s.playerCount).every((cards) => !cards.length)) finish(); else next(); return; } const targets = Array.from({ length: s.playerCount }, (_, index) => index).filter((index) => index !== s.turn); const target = targets[Math.floor(Math.random() * targets.length)]; const rank = ranks[Math.floor(Math.random() * ranks.length)]; const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[s.turn].push(...matching); s.players[target] = s.players[target].filter((item) => item.rank !== rank); removeBooks(s.turn); } else if (s.stock.length) s.players[s.turn].push(s.stock.pop()); removeBooks(s.turn); if (!s.stock.length && s.players.slice(0, s.playerCount).every((cards) => !cards.length)) finish(); else next(); };
     return {
       reset() { deal(); },
       card() {},
@@ -485,6 +524,6 @@
     };
   }
 
-  const GAME_BUILDERS = { hearts: makeHearts, spades: makeSpades, "gin-rummy": makeGinRummyFixed, "crazy-eights": makeCrazyEightsFixed, cribbage: makeCribbageFixed, "go-fish": makeGoFishFixed, war: makeWar, speed: makeSpeedFixed, "old-maid": makeOldMaidFixed, casino: makeCasino };
+  const GAME_BUILDERS = { hearts: makeHearts, spades: makeSpades, "gin-rummy": makeGinRummyFixed, "crazy-eights": makeCrazyEightsFixed, cribbage: makeCribbageFixed, "go-fish": makeGoFishFixed, war: makeWarFixed, speed: makeSpeedFixed, "old-maid": makeOldMaidFixed, casino: makeCasino };
   root.WPCardGamesNext = Object.freeze({ mount: mountCardGame, titles: TITLES });
 })(window);

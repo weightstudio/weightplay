@@ -29,6 +29,8 @@ button:focus-visible, select:focus-visible { outline: 3px solid var(--logic-warn
 [hidden] { display: none !important; }
 
 .logic-lab { min-height: 100svh; }
+body.logic-playing .game-page-info,
+body.logic-playing .game-page-info-static { display: none !important; }
 .logic-main { min-height: 100svh; padding: max(14px, env(safe-area-inset-top)) 16px 36px; }
 .logic-header, .logic-battle-header {
   width: min(920px, 100%);
@@ -170,6 +172,22 @@ button:focus-visible, select:focus-visible { outline: 3px solid var(--logic-warn
   .logic-naval-layout { grid-template-columns: 1fr; }
   .logic-result-actions { grid-template-columns: 1fr; }
 }
+@media (min-width: 661px) and (max-height: 760px) and (orientation: landscape) {
+  .logic-battle-screen { height: calc(100svh - 56px); min-height: 0; max-height: calc(100svh - 56px); overflow: hidden; padding-top: 4px; }
+  .logic-battle-wrap { height: calc(100% - 60px); min-height: 0; gap: 6px; }
+  .logic-tutorial { max-height: 32px; overflow: hidden; padding: 6px 10px; font-size: 12px; white-space: nowrap; }
+  .logic-status-line { min-height: 18px; font-size: 13px; }
+  .logic-board-panel { min-height: 0; padding: 6px; overflow: hidden; }
+  .logic-board-area { height: auto; max-height: 100%; align-self: stretch; justify-self: stretch; overflow: hidden; gap: 6px; }
+  .logic-board-area > div { height: auto; min-width: 0; min-height: 0; max-width: 100%; max-height: 100%; }
+  .logic-minesweeper-board { width: min(100%, 430px); }
+  .logic-board-area > div:has(.logic-sudoku-board) { width: 100%; height: auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(170px, 240px); grid-template-rows: auto minmax(0, 1fr); align-items: center; gap: 6px; }
+  .logic-board-area > div:has(.logic-sudoku-board) .logic-board-toolbar { grid-column: 1 / -1; grid-row: 1; }
+  .logic-board-area > div:has(.logic-sudoku-board) .logic-sudoku-board { grid-column: 1; grid-row: 2; width: min(100%, 420px); height: auto; align-self: center; justify-self: center; }
+  .logic-board-area > div:has(.logic-sudoku-board) .logic-keypad { grid-column: 2; grid-row: 2; width: 100%; gap: 4px; align-self: center; }
+  .logic-board-area > div:has(.logic-sudoku-board) .logic-keypad button { min-height: 44px; }
+  .logic-action-row { padding-bottom: 4px; }
+}
 @media (max-height: 560px) and (orientation: landscape) {
   .logic-battle-screen { height: calc(100svh - 56px); min-height: 0; max-height: calc(100svh - 56px); overflow: hidden; padding-top: 4px; }
   .logic-battle-header { min-height: 42px; }
@@ -206,6 +224,7 @@ button:focus-visible, select:focus-visible { outline: 3px solid var(--logic-warn
 }
 @media (min-width: 700px) and (max-height: 560px) and (orientation: landscape) {
   .logic-board-area > div:has(.logic-sudoku-board) .logic-sudoku-board { width: min(100%, calc(100svh - 226px)); }
+  .logic-board-area > div:has(.logic-sudoku-board) .logic-sudoku-board .logic-cell { padding: 0; font-size: 16px; line-height: 1; }
   .logic-board-area > div:has(.logic-sudoku-board) .logic-keypad button { min-height: 44px; }
 }
 @media (prefers-reduced-motion: reduce) {
