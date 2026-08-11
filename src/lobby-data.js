@@ -2334,6 +2334,15 @@ if (spiderSolitairePlanned) {
   };
 }
 
+const spiderSolitairePublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "spider-solitaire");
+if (spiderSolitairePublic) {
+  spiderSolitairePublic.status = "playable";
+  spiderSolitairePublic.previewVideo = "assets/previews/spider-solitaire-battle.webm";
+  spiderSolitairePublic.art.background = "assets/lobby-thumbs/w480/assets__spider-solitaire-cover.webp";
+  delete spiderSolitairePublic.statusText;
+  delete spiderSolitairePublic.internalTrial;
+}
+
 const klondikeSolitairePlanned = window.WONDER_LOBBY.games.find((entry) => entry.id === "klondike-solitaire");
 if (klondikeSolitairePlanned) {
   klondikeSolitairePlanned.status = "planned";
