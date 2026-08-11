@@ -1415,7 +1415,12 @@ const KL_I18N = {
     const firstCard = pileNode.querySelector(".card");
     if (!firstCard) return;
     const cardHeight = getCardLayoutHeight(firstCard);
-    const height = cardHeight + Math.max(0, cardCount - 1) * stackStep + TABLEAU_SELECTION_GUTTER;
+    const lastCard = pileNode.querySelector(".card:last-of-type");
+    const lastCardTop = Number.parseFloat(lastCard?.style.top || "");
+    const stackOffset = Number.isFinite(lastCardTop)
+      ? lastCardTop
+      : Math.max(0, cardCount - 1) * stackStep;
+    const height = cardHeight + stackOffset + TABLEAU_SELECTION_GUTTER;
     pileNode.style.height = `${height}px`;
     pileNode.style.minHeight = `${height}px`;
   }
@@ -1442,27 +1447,39 @@ const KL_I18N = {
     const firstPile = piles.find((pile) => pile.querySelector(".card")) || piles[0];
     if (!firstCard || !firstPile || maxCardCount <= 1) {
       canvas.style.removeProperty("--card-step");
-      updateTableauCardPositions(getLayoutStep());
+      updateTableauCardPositions(getBaseLayoutStep());
       return;
     }
 
-    const scale = getCanvasScale();
-    const cardHeight = firstCard.getBoundingClientRect().height;
-    const availableHeight = boardShell.getBoundingClientRect().bottom
-      - firstPile.getBoundingClientRect().top
-      - TABLEAU_SELECTION_GUTTER * scale;
     const baseStep = getBaseLayoutStep();
-    const basePhysicalStep = baseStep * scale;
-    const maxPhysicalStep = (availableHeight - cardHeight - TABLEAU_SELECTION_GUTTER * scale)
-      / Math.max(1, maxCardCount - 1);
-    const minimumPhysicalStep = MIN_TABLEAU_REVEAL_STEP;
-    const targetPhysicalStep = Math.min(basePhysicalStep, maxPhysicalStep);
+    canvas.style.removeProperty("--card-step");
+    updateTableauCardPositions(baseStep);
 
-    if (targetPhysicalStep >= basePhysicalStep - 0.5) {
+    const stack = [...firstPile.querySelectorAll(".card")];
+    const firstRect = stack[0]?.getBoundingClientRect();
+    const secondRect = stack[1]?.getBoundingClientRect();
+    const currentPhysicalStep = secondRect && firstRect ? secondRect.top - firstRect.top : 0;
+    const currentLogicalStep = secondRect && firstRect
+      ? Number.parseFloat(stack[1].style.top) - Number.parseFloat(stack[0].style.top)
+      : baseStep;
+    const scale = getCanvasScale();
+    const cardHeight = Math.max(
+      firstRect?.height || 0,
+      getCardLayoutHeight(firstCard) * scale,
+    );
+    const bottomLimit = Math.min(
+      boardShell.getBoundingClientRect().bottom,
+      canvas.getBoundingClientRect().bottom,
+    ) - TABLEAU_SELECTION_GUTTER * scale;
+    const maxPhysicalStep = (bottomLimit - (firstRect?.top || 0) - cardHeight)
+      / Math.max(1, maxCardCount - 1);
+
+    if (!currentPhysicalStep || maxPhysicalStep >= currentPhysicalStep - 0.5) {
       canvas.style.removeProperty("--card-step");
     } else {
-      const fittedPhysicalStep = Math.max(minimumPhysicalStep, targetPhysicalStep);
-      canvas.style.setProperty("--card-step", `${fittedPhysicalStep / Math.max(scale, 0.01)}px`);
+      const fittedPhysicalStep = Math.max(MIN_TABLEAU_REVEAL_STEP, maxPhysicalStep);
+      const fittedLogicalStep = currentLogicalStep * fittedPhysicalStep / currentPhysicalStep;
+      canvas.style.setProperty("--card-step", `${fittedLogicalStep}px`);
     }
     updateTableauCardPositions(getLayoutStep());
   }
