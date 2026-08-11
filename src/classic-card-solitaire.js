@@ -6,6 +6,7 @@
 
   const { Card, Deck, Foundation, SoundEngine } = engine;
   const SUITS = ["spades", "hearts", "clubs", "diamonds"];
+  const PYRAMID_FIRST_DEAL_SEED = 152;
   const SYMBOLS = { spades: "♠", hearts: "♥", clubs: "♣", diamonds: "♦" };
   const RANKS = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
   const LOCALES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
@@ -232,7 +233,7 @@
       this.variant = variant;
       this.history = [];
       this.seed = 0;
-      this.newGame(Date.now());
+      this.newGame(variant === "pyramid" ? PYRAMID_FIRST_DEAL_SEED : Date.now());
     }
 
     newGame(seed = Date.now()) {

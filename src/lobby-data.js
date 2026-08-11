@@ -262,7 +262,7 @@ window.WONDER_LOBBY = {
       title: { en: "Unblock Trail", "zh-Hant": "解鎖滑塊", "zh-Hans": "解锁滑块", ja: "アンブロック・トレイル", ko: "언블록 트레일", es: "Ruta de Desbloqueo", "pt-BR": "Trilha Desbloqueio", fr: "Piste Unblock", de: "Unblock-Pfad", it: "Sentiero Unblock", ru: "Тропа Unblock", hi: "अनब्लॉक ट्रेल", ar: "مسار فك الحجب" },
       status: "playable", statusText: { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب" },
       type: { en: "Sliding Block Puzzle", "zh-Hant": "滑塊益智", "zh-Hans": "滑块益智", ja: "スライドパズル", ko: "슬라이딩 퍼즐", es: "Puzle de bloques", "pt-BR": "Puzzle de blocos", fr: "Puzzle de blocs", de: "Schiebepuzzle", it: "Puzzle a scorrimento", ru: "Пятнашки", hi: "स्लाइडिंग पहेली", ar: "لغز الكتل المنزلقة" },
-      categories: ["Animal Games", "Puzzle", "Strategy"], skills: ["Planning", "Spatial Reasoning"], ages: ["9", "family"], href: "games/animal-unblock/",
+      categories: ["Animal Games", "Puzzle", "Strategy", "Block"], skills: ["Planning", "Spatial Reasoning"], ages: ["9", "family"], href: "games/animal-unblock/",
       previewVideo: "assets/previews/animal-unblock-battle.webm",
       art: { kind: "image", background: "assets/animal-unblock-cover-v2.webp", hideHero: true },
       description: { en: "Slide the blocks and guide Panko out through the gate across 30 trails, with thousands of deterministic layouts.", "zh-Hant": "滑動木塊讓 Panko 從出口離開，挑戰 30 個關卡與數千種布局。", "zh-Hans": "滑动木块让 Panko 从出口离开，挑战 30 个关卡与数千种布局。", ja: "ブロックを動かしてPankoを出口へ。30ステージと数千の配置。", ko: "블록을 움직여 Panko를 출구로 보내세요. 30개 스테이지와 수천 가지 배치.", es: "Mueve los bloques y guía a Panko a la salida en 30 rutas.", "pt-BR": "Mova os blocos e leve Panko à saída em 30 trilhas.", fr: "Faites glisser les blocs et guidez Panko vers la sortie.", de: "Schiebe Blöcke und führe Panko zum Ausgang.", it: "Sposta i blocchi e guida Panko all'uscita.", ru: "Двигай блоки и выведи Панко к выходу.", hi: "ब्लॉक खिसकाकर पांको को निकास तक पहुंचाएं।", ar: "حرّك الكتل وأوصل بانكو إلى المخرج." },
@@ -295,7 +295,7 @@ window.WONDER_LOBBY = {
       title: { en: "Block Blast", "zh-Hant": "方塊爆破", "zh-Hans": "方块爆破", ja: "ブロックブラスト", ko: "블록 블라스트", es: "Explosión de bloques", "pt-BR": "Explosão de blocos", fr: "Explosion de blocs", de: "Block-Explosion", it: "Esplosione di blocchi", ru: "Взрыв блоков", hi: "ब्लॉक ब्लास्ट", ar: "انفجار المكعبات" },
       status: "playable",
       type: { en: "Block Puzzle", "zh-Hant": "方塊益智", "zh-Hans": "方块益智" },
-      categories: ["Puzzle", "Strategy", "Family"], skills: ["Planning", "Spatial Reasoning"], ages: ["9", "family"], href: "games/block-blast/", previewVideo: "assets/previews/block-blast-battle.webm",
+      categories: ["Puzzle", "Strategy", "Family", "Block"], skills: ["Planning", "Spatial Reasoning"], ages: ["9", "family"], href: "games/block-blast/", previewVideo: "assets/previews/block-blast-battle.webm",
       description: { en: "Place three shapes on an 8x8 board and blast complete lines.", "zh-Hant": "在 8×8 棋盤放入三個形狀，爆破完整橫排與直列。", "zh-Hans": "在 8×8 棋盘放入三个形状，爆破完整横排与直列。" },
       meta: { en: ["8x8 Board", "Three Shapes", "Line Clears"], "zh-Hant": ["8×8 棋盤", "三個方塊", "行列消除"] },
       art: { kind: "image", background: "assets/block-blast/cover.webp", hideHero: true },
@@ -363,7 +363,7 @@ window.WONDER_LOBBY = {
       href: "games/pyramid-solitaire/", internalTrial: "index.html?trial=1",
       description: { en: "Pair exposed cards to make 13 and clear the classic pyramid, with Stock, Hint, Undo, and Restart.", "zh-Hant": "配對總和為 13 的可用牌，清空經典金字塔，提供牌堆、提示、還原與重新開始。", "zh-Hans": "配对总和为 13 的可用牌，清空经典金字塔，提供牌堆、提示、撤销与重新开始。", ja: "公開カードを合計13になるように組み合わせ、ピラミッドを消します。山札、ヒント、元に戻す、リスタートに対応。", ko: "공개된 카드의 합을 13으로 맞춰 피라미드를 지웁니다. 덱, 힌트, 실행 취소, 재시작을 지원합니다.", es: "Combina cartas expuestas que sumen 13 y despeja la pirámide clásica con pista, deshacer y reinicio.", "pt-BR": "Combine cartas expostas que somem 13 e limpe a pirâmide clássica com dica, desfazer e reinício.", fr: "Associez des cartes visibles totalisant 13 et videz la pyramide classique avec indice, annulation et redémarrage.", de: "Paaren Sie offene Karten zur Summe 13 und räumen Sie die klassische Pyramide mit Tipp, Rückgängig und Neustart.", it: "Abbina carte scoperte che sommano 13 e libera la piramide classica con suggerimento, annulla e riavvio.", ru: "Соединяйте открытые карты в сумму 13 и очищайте классическую пирамиду с подсказкой, отменой и перезапуском.", hi: "खुली हुई पत्तियों को 13 का योग बनाने वाली जोड़ियों में हटाएँ और क्लासिक पिरामिड साफ करें।", ar: "طابق البطاقات المكشوفة ليكون مجموعها 13 ونظّف الهرم الكلاسيكي مع التلميح والتراجع وإعادة البدء." },
       meta: { en: ["Pairs to 13", "28 Pyramid Cards", "Stock + Undo"], "zh-Hant": ["配對至 13", "28 張金字塔牌", "牌堆＋還原"], "zh-Hans": ["配对至 13", "28 张金字塔牌", "牌堆＋撤销"], ja: ["13のペア", "28枚のピラミッド", "山札＋元に戻す"], ko: ["13 만들기", "28장 피라미드", "덱 + 실행 취소"], es: ["Parejas a 13", "28 cartas", "Mazo + Deshacer"], "pt-BR": ["Pares até 13", "28 cartas", "Baralho + Desfazer"], fr: ["Paires à 13", "28 cartes", "Pioche + Annuler"], de: ["Paare bis 13", "28 Karten", "Stapel + Rückgängig"], it: ["Coppie a 13", "28 carte", "Mazzo + Annulla"], ru: ["Пары до 13", "28 карт", "Колода + отмена"], hi: ["13 की जोड़ियाँ", "28 पत्ते", "डेक + अनडू"], ar: ["أزواج إلى 13", "28 بطاقة", "رزمة + تراجع"] },
-      art: { kind: "image", background: "assets/pyramid-solitaire-cover.svg", hideHero: true },
+      art: { kind: "image", background: "assets/pyramid-solitaire-cover-v2.webp", hideHero: true },
     },
     {
       id: "tripeaks-solitaire",
@@ -876,7 +876,7 @@ window.WONDER_LOBBY = {
       statusText: { en: "Playable", "zh-Hant": "可遊玩" },
       href: "games/snack-blocks/",
       type: { en: "Match Puzzle", "zh-Hant": "消除益智" },
-      categories: ["Featured", "Animal Games", "Puzzle", "Family"],
+      categories: ["Featured", "Animal Games", "Puzzle", "Block", "Family"],
       skills: ["Logic", "Problem Solving", "Focus"],
       ages: ["9", "family"],
       ageLabel: "9+",
@@ -2338,7 +2338,7 @@ const spiderSolitairePublic = window.WONDER_LOBBY.games.find((entry) => entry.id
 if (spiderSolitairePublic) {
   spiderSolitairePublic.status = "playable";
   spiderSolitairePublic.previewVideo = "assets/previews/spider-solitaire-battle.webm";
-  spiderSolitairePublic.art.background = "assets/lobby-thumbs/w480/assets__spider-solitaire-cover.webp";
+  spiderSolitairePublic.art.background = "assets/spider-solitaire-cover.png";
   delete spiderSolitairePublic.statusText;
   delete spiderSolitairePublic.internalTrial;
 }

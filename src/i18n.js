@@ -1813,6 +1813,31 @@ const essentialLobbyCopy = {
     };
   });
 
+  const extendedTopicCopy = {
+    en: ["Card Games", "Block Puzzles"],
+    "zh-Hant": ["棋牌", "方塊"],
+    "zh-Hans": ["棋牌", "方块"],
+    ja: ["カードゲーム", "ブロックパズル"],
+    ko: ["카드 게임", "블록 퍼즐"],
+    es: ["Juegos de cartas", "Puzles de bloques"],
+    "pt-BR": ["Jogos de cartas", "Quebra-cabeças de blocos"],
+    fr: ["Jeux de cartes", "Puzzles de blocs"],
+    de: ["Kartenspiele", "Blockpuzzles"],
+    it: ["Giochi di carte", "Puzzle a blocchi"],
+    ru: ["Карточные игры", "Головоломки с блоками"],
+    hi: ["कार्ड गेम", "ब्लॉक पहेलियाँ"],
+    ar: ["ألعاب البطاقات", "ألغاز الكتل"],
+  };
+  Object.entries(extendedTopicCopy).forEach(([locale, [card, block]]) => {
+    dictionaries[locale] = {
+      ...(dictionaries[locale] || {}),
+      "topic.card": card,
+      "topic.block": block,
+      "category.Card": card,
+      "category.Block": block,
+    };
+  });
+
   dictionaries["zh-Hant"] = {
     ...(dictionaries["zh-Hant"] || {}),
     "upcoming.title": "\u5373\u5c07\u63a8\u51fa",
