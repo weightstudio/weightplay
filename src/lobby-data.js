@@ -773,7 +773,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["Picture Match", "30 Levels", "Six Guardians"], "zh-Hant": ["圖片配對", "30 關", "六位守護員"] },
       previewVideo: "assets/previews/color-lunchbox-battle.webm",
-      art: { kind: "image", background: "assets/lunchbox-cover.webp" },
+      art: { kind: "image", background: "assets/lunchbox-cover.webp", hideHero: true },
     },
     {
       id: "bubble-bakery",
@@ -792,7 +792,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Stages", "Recipe Rules", "Panko Checks"], "zh-Hant": ["30 關", "食譜規則", "Panko 檢核"] },
       previewVideo: "assets/previews/bubble-bakery-battle.webm",
-      art: { kind: "image", background: "assets/bubble-bakery-cover.webp" },
+      art: { kind: "image", background: "assets/bubble-bakery-cover.webp", hideHero: true },
     },
     {
       id: "animal-rope-rescue",
@@ -811,7 +811,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Stages", "Physics Routes", "Panko Checks"], "zh-Hant": ["30 關", "物理路線", "Panko 檢核"] },
       previewVideo: "assets/previews/animal-rope-rescue-battle.webm",
-      art: { kind: "image", background: "assets/animal-vine-rescue-cover.webp" },
+      art: { kind: "image", background: "assets/animal-vine-rescue-cover.webp", hideHero: true },
     },
     {
       id: "animal-zoo-idle",
@@ -830,7 +830,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Challenges", "Park Care", "Six Reviews"], "zh-Hant": ["30 個挑戰", "樂園照顧", "六次審查"] },
       previewVideo: "assets/previews/animal-zoo-idle-battle.webm",
-      art: { kind: "image", background: "assets/animal-zoo-idle-cover.webp" },
+      art: { kind: "image", background: "assets/animal-zoo-idle-cover.webp", hideHero: true },
     },
     {
       id: "star-memory",
@@ -849,7 +849,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Stages", "Memory Rules", "Six Keeper Checks"], "zh-Hant": ["30 關", "記憶規則", "六次守護者檢查"] },
       previewVideo: "assets/previews/star-memory-battle.webm",
-      art: { kind: "image", background: "assets/memory-cover.webp" },
+      art: { kind: "image", background: "assets/memory-cover.webp", hideHero: true },
     },
     {
       id: "campus-dash",
@@ -868,7 +868,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["Safari", "Score Attack", "60 Sec"], "zh-Hant": ["草原跑酷", "分數挑戰", "60 秒"] },
       previewVideo: "assets/previews/campus-dash-battle.webm",
-      art: { kind: "image", background: "assets/campus-dash-cover.webp" },
+      art: { kind: "image", background: "assets/campus-dash-cover.webp", hideHero: true },
     },
     {
       id: "snack-blocks",
@@ -887,7 +887,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Stages", "Six Goal Families", "Six Checkpoints"], "zh-Hant": ["30 關", "六種目標", "六個檢查關"] },
       previewVideo: "assets/previews/snack-blocks-battle.webm",
-      art: { kind: "image", background: "assets/snack-blocks-cover.webp" },
+      art: { kind: "image", background: "assets/snack-blocks-cover.webp", hideHero: true },
     },
     {
       id: "fruit-merge",
@@ -906,7 +906,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Challenges", "Five Physics Rules", "Six Checkpoints"], "zh-Hant": ["30 個挑戰", "五種物理規則", "六個檢查關"] },
       previewVideo: "assets/previews/fruit-merge-battle.webm",
-      art: { kind: "image", background: "assets/fruit-merge-cover.webp" },
+      art: { kind: "image", background: "assets/fruit-merge-cover.webp", hideHero: true },
     },
     {
       id: "animal-2048",
@@ -942,7 +942,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Challenges", "Four Memory Rules", "No Timer"], "zh-Hant": ["30 個挑戰", "4 種記憶規則", "無倒數"] },
       previewVideo: "assets/previews/garden-tiles-battle.webm",
-      art: { kind: "image", background: "assets/garden-tiles-cover.webp" },
+      art: { kind: "image", background: "assets/garden-tiles-cover.webp", hideHero: true },
     },
     {
       id: "animal-rescue",
@@ -961,7 +961,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Trails", "Four Route Rules", "No Timer"], "zh-Hant": ["30 條路線", "4 種路線規則", "無倒數"] },
       previewVideo: "assets/previews/animal-rescue-battle.webm",
-      art: { kind: "image", background: "assets/animal-rescue-cover.webp" },
+      art: { kind: "image", background: "assets/animal-rescue-cover.webp", hideHero: true },
     },
     {
       id: "animal-hidden-safari",
@@ -980,7 +980,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Habitats", "Six Search Rules", "No Timer Failure"], "zh-Hant": ["30 個棲地", "6 種搜尋規則", "無倒數失敗"] },
       previewVideo: "assets/previews/animal-hidden-safari-battle.webm",
-      art: { kind: "image", background: "assets/animal-hidden-safari-cover.webp" },
+      art: { kind: "image", background: "assets/animal-hidden-safari-cover.webp", hideHero: true },
     },
     {
       id: "animal-guard-yard",
@@ -1041,7 +1041,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Stages", "6 Chapters", "Animal Facts"], "zh-Hant": ["30 關", "6 章節", "動物知識"] },
       previewVideo: "assets/previews/animal-quiz-battle.webm",
-      art: { kind: "image", background: "assets/quiz-cover.webp" },
+      art: { kind: "image", background: "assets/quiz-cover.webp", hideHero: true },
     },
     {
       id: "zoo-helper-day",
@@ -1060,7 +1060,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Shifts", "6 Keeper Checks", "Picture Care"], "zh-Hant": ["30 關", "6 次檢核", "圖片照顧"] },
       previewVideo: "assets/previews/zoo-helper-day-battle.webm",
-      art: { kind: "image", background: "assets/zoo-helper-day-cover.webp" },
+      art: { kind: "image", background: "assets/zoo-helper-day-cover.webp", hideHero: true },
     },
     {
       id: "shape-train",
@@ -1079,7 +1079,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Routes", "6 Checks", "Shape Memory"], "zh-Hant": ["30 路線", "6 次檢查", "形狀記憶"] },
       previewVideo: "assets/previews/shape-train-battle.webm",
-      art: { kind: "image", background: "assets/shape-train-cover.webp" },
+      art: { kind: "image", background: "assets/shape-train-cover.webp", hideHero: true },
     },
     {
       id: "tiny-weather-rescue",
@@ -1098,7 +1098,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["30 Missions", "6 Helper Checks", "Scene Clues"], "zh-Hant": ["30 任務", "6 次幫手檢查", "情境線索"] },
       previewVideo: "assets/previews/tiny-weather-rescue-battle.webm",
-      art: { kind: "image", background: "assets/tiny-weather-rescue-cover.webp" },
+      art: { kind: "image", background: "assets/tiny-weather-rescue-cover.webp", hideHero: true },
     },
     {
       id: "beast-deck",
