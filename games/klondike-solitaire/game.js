@@ -1432,8 +1432,8 @@ const KL_I18N = {
 
   function fitTableauStack() {
     const canvas = ui.battleScreen?.querySelector(".battle-canvas");
-    const boardShell = ui.boardShell;
     const tableauRow = ui.tableauRow;
+    const boardShell = ui.battleScreen?.querySelector(".board-shell");
     const piles = tableauRow ? [...tableauRow.querySelectorAll(".tableau-pile")] : [];
     if (!canvas || !boardShell || !tableauRow || !piles.length) return;
 
