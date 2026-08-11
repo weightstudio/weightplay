@@ -116,7 +116,7 @@ body[data-wp-game-id="pyramid-solitaire"] .stock-pile.hint-source { border-style
 .tableau-area.variant-pyramid, .tableau-area.variant-tripeaks { --classic-card-width: clamp(42px, 11vw, 68px); --classic-card-height: calc(var(--classic-card-width) * 1.42); flex-direction: column; align-items: center; justify-content: center; overflow: auto; }
 .tableau-area.variant-pyramid > .pyramid-row, .tableau-area.variant-tripeaks > .peak-row { width: 100%; flex: 0 0 calc(var(--classic-card-height) * .62); height: calc(var(--classic-card-height) * .62); overflow: visible; }
 .tableau-area.variant-freecell, .tableau-area.variant-yukon { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); align-items: start; }
-.tableau-area.variant-freecell { --classic-card-width: clamp(38px, 8.8vw, 74px); --classic-card-height: calc(var(--classic-card-width) * 1.42); gap: 0; }
+.tableau-area.variant-freecell { --classic-card-width: clamp(38px, 8.8vw, 74px); --classic-card-height: calc(var(--classic-card-width) * 1.42); gap: 0; padding-inline: 6px; }
 .tableau-area.variant-yukon {
   --classic-card-width: clamp(40px, 8.8vw, 74px);
   --classic-card-height: calc(var(--classic-card-width) * 1.42);

@@ -131,6 +131,10 @@
     if (!main || !battle || !table || !hand || !actions) return;
     rootElement.dataset.wpCardGame = id;
     const title = TITLES[id]?.[currentLocale()] || TITLES[id]?.en || id;
+    document.querySelectorAll("img.cover").forEach((image) => {
+      image.src = `../../assets/card-games-${id}-cover.webp`;
+      image.alt = title;
+    });
     document.querySelectorAll("[data-card-title]").forEach((node) => { node.textContent = title; node.setAttribute("data-runtime-localize", "off"); });
     document.querySelectorAll("[data-card-summary]").forEach((node) => { node.textContent = gameSummary(id); });
     if (localeSelect) localeSelect.value = currentLocale();
@@ -209,6 +213,10 @@
     game = GAME_BUILDERS[id]?.(controller) || makeFallback(controller, id);
     game.reset();
     render();
+    const battleRenderTimer = window.setInterval(() => {
+      if (!battle.hidden) render();
+    }, 180);
+    window.addEventListener("beforeunload", () => window.clearInterval(battleRenderTimer), { once: true });
     let mainControlAttempts = 0;
     const mainControlTimer = window.setInterval(() => { ensureMainControls(); mainControlAttempts += 1; if (document.querySelector("[data-card-main-controls]") || mainControlAttempts > 40) window.clearInterval(mainControlTimer); }, 50);
   }
@@ -389,7 +397,7 @@
     return {
       reset() { Object.assign(s, { player: [], ai: [], stock: deck(), discard: [], turn: 0, drawn: false, selected: new Set(), score: [0, 0], over: false }); for (let i = 0; i < 10; i += 1) { s.player.push(s.stock.pop()); s.ai.push(s.stock.pop()); } s.discard.push(s.stock.pop()); },
       card(index) { if (s.turn === 0 && s.drawn && !s.over) { s.selected = s.selected.has(index) ? new Set() : new Set([index]); } },
-      action(action) { if (s.turn !== 0 || s.over) return; if (action === "draw-stock" && !s.drawn) drawCard(false); if (action === "draw-discard" && !s.drawn) drawCard(true); if (action === "discard" && s.drawn && s.selected.size === 1) { const index = [...s.selected][0]; const discarded = s.player.splice(index, 1)[0]; if (discarded) s.discard.push(discarded); s.selected.clear(); const stats = meldStats(s.player); if (stats.deadwood === 0) finish(0, t("gin")); else { s.turn = 1; s.drawn = false; setTimeout(aiTurn, 320); } } if (action === "knock" && s.drawn) { const stats = meldStats(s.player); if (stats.deadwood <= 10) { const aiStats = meldStats(s.ai); finish(stats.deadwood <= aiStats.deadwood ? 0 : 1, `${t("knock")} ${stats.deadwood} / ${aiStats.deadwood}`); } } },
+      action(action) { if (s.turn !== 0 || s.over) return; if (action === "draw-stock" && !s.drawn) drawCard(false); if (action === "draw-discard" && !s.drawn) drawCard(true); if (action === "discard" && s.drawn && s.selected.size === 1) { const index = [...s.selected][0]; const discarded = s.player.splice(index, 1)[0]; if (discarded) s.discard.push(discarded); s.selected.clear(); const stats = meldStats(s.player); if (stats.deadwood === 0) finish(0, t("gin")); else if (!s.stock.length) { const aiStats = meldStats(s.ai); finish(stats.deadwood <= aiStats.deadwood ? 0 : 1, `${t("score")} ${stats.deadwood} / ${aiStats.deadwood}`); } else { s.turn = 1; s.drawn = false; setTimeout(aiTurn, 320); } } if (action === "knock" && s.drawn) { const stats = meldStats(s.player); if (stats.deadwood <= 10) { const aiStats = meldStats(s.ai); finish(stats.deadwood <= aiStats.deadwood ? 0 : 1, `${t("knock")} ${stats.deadwood} / ${aiStats.deadwood}`); } } },
       view() { const stats = meldStats(s.player); return { phase: s.turn === 0 ? (s.drawn ? t("discard") : t("draw")) : t("aiTurn"), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: `Meld cards ${stats.meldCards} · Deadwood ${stats.deadwood}`, score: s.score[0], opponents: opponentMarkup("AI", s.ai.length, `${t("score")}: ${s.score[1]}`), center: `<div class="card-table-label">${t("stock")} · ${s.stock.length} · ${t("discard")}</div><div class="table-row"><button class="playing-card is-face-down" data-action="draw-stock" aria-label="${t("stock")}"></button>${cardMarkup(s.discard.at(-1), 0)}</div>`, hand: cardsMarkup(s.player, { selected: s.selected }), actions: `<button class="secondary-btn" data-action="draw-stock" ${s.drawn ? "disabled" : ""}>${t("draw")} ${t("stock")}</button><button class="secondary-btn" data-action="draw-discard" ${s.drawn ? "disabled" : ""}>${t("draw")} ${t("discard")}</button><button class="primary-btn" data-action="discard" ${!s.drawn || s.selected.size !== 1 ? "disabled" : ""}>${t("discard")}</button><button class="secondary-btn" data-action="knock" ${!s.drawn || stats.deadwood > 10 ? "disabled" : ""}>${t("knock")}</button>` }; }
     };
   }

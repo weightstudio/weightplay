@@ -76,6 +76,12 @@
     "golf-solitaire": [".battle-canvas", 390, 788, 760, 334],
     "yukon-solitaire": [".battle-canvas", 390, 788, 760, 334],
     "zoo-helper-day": [".zoo-game", 374, 776, 760, 350],
+    // Card-game owner previews use an inner .battle-canvas inside #battleScreen.
+    // Bind the scaler to that permanent play surface so the scene wrapper is
+    // never scaled a second time. The short-landscape envelope keeps the
+    // table readable while still covering the complete safe width.
+    "hearts": [".battle-canvas", 390, 788, 760, 334],
+    "spades": [".battle-canvas", 390, 788, 760, 334],
   };
   const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1] || "";
   const defaultConfig = [
@@ -111,7 +117,11 @@
   const findBattleOverlay = (root) => root && [...root.querySelectorAll('[role="dialog"],.result-panel,.result-overlay,.result-canvas,#resultPanel,#resultScreen,#resultModal,#result')].find(visible);
   const findReserve = (root) => {
     const nearby = root?.parentElement?.querySelector(reserveSelector);
-    if (visible(nearby)) return nearby;
+    // Card-game previews keep one physical reserve beside the permanent
+    // play surface. After Main -> Battle -> Main, its natural height is zero
+    // until this scaler reapplies the 56px slot, so visibility cannot be the
+    // lookup gate for these two owner-preview shells.
+    if (nearby && (gameId === "hearts" || gameId === "spades" || visible(nearby))) return nearby;
     return [...document.querySelectorAll(reserveSelector)]
       .find((node) => visible(node) && !node.closest("[data-wp-logical-battle-canvas]")) || null;
   };
@@ -187,6 +197,14 @@
     const width = Math.max(1, document.documentElement.clientWidth || 0, innerWidth || 0, viewport?.width || 0);
     const height = Math.max(1, document.documentElement.clientHeight || 0, innerHeight || 0, viewport?.height || 0);
     const reserve = findReserve(root);
+    if ((gameId === "hearts" || gameId === "spades")
+      && reserve?.parentElement === root
+      && root.parentElement) {
+      // The card-game preview markup historically nested the physical reserve
+      // inside the transformed play surface. Keep the permanent reserve as a
+      // sibling so its 56px boundary is never scaled with the Canvas.
+      root.parentElement.append(reserve);
+    }
     const stateSignature = [
       document.body.className,
       root.className,

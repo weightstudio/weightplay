@@ -9,6 +9,7 @@
 }
 
 body[data-wp-card-game] { margin: 0; background: #0a1f3a; }
+.settings-popover.is-hidden { display: none !important; }
 .card-game-battle { background: radial-gradient(circle at 50% 8%, #1e806e 0, var(--card-table) 38%, var(--card-table-deep) 100%); }
 .card-game-battle .battle-canvas { color: #f8fafc; }
 .card-table-ui { width: min(100%, 920px); height: 100%; margin: 0 auto; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 10px; padding: 12px; box-sizing: border-box; }

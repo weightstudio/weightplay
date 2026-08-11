@@ -66,7 +66,7 @@
   ];
   const HEADER_SELECTORS = [
     ".main-header", ".topbar", ".stage-header", ".stage-panel-head", ".stage-shell-head",
-    ".stage-screen-head", ".guardian-topbar", "header",
+    ".stage-screen-head", ".guardian-topbar", ".card-game-topbar", "header",
   ];
   const RETURN_SELECTORS = [
     "[data-wp-return]", ".lobby-return", ".return", ".back", "[data-back]",
