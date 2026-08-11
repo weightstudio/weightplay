@@ -128,6 +128,17 @@
     const resultText = document.querySelector("#resultText");
     const audioButton = document.querySelector("#soundBtn");
     const localeSelect = document.querySelector("#localeSelect");
+    const guideSource = CARD_GAME_GUIDES[id] || "Follow the on-screen prompt, complete the round, and use Restart to try again.";
+    const guideHeading = root.WeightPlayGameRuntimeLocalizer?.translate?.("How to play") || "How to play";
+    const guideParagraph = root.WeightPlayGameRuntimeLocalizer?.translate?.(guideSource) || guideSource;
+    const quickGuide = document.createElement("p");
+    quickGuide.className = "card-game-quick-guide";
+    quickGuide.setAttribute("role", "note");
+    quickGuide.dataset.cardQuickGuide = "true";
+    const quickGuideLabel = document.createElement("strong");
+    quickGuideLabel.textContent = guideHeading;
+    quickGuide.append(quickGuideLabel);
+    if (guideParagraph) quickGuide.append(document.createTextNode(`: ${guideParagraph}`));
     if (!main || !battle || !table || !hand || !actions) return;
     rootElement.dataset.wpCardGame = id;
     const title = TITLES[id]?.[currentLocale()] || TITLES[id]?.en || id;
@@ -167,6 +178,7 @@
       center.innerHTML = view.center || "";
       hand.innerHTML = view.hand || "";
       actions.innerHTML = view.actions || "";
+      if (guideParagraph) actions.prepend(quickGuide);
       status.textContent = view.status || "";
       statusText.textContent = view.help || "";
       document.querySelector("#cardGameScore").textContent = view.score || "0";
@@ -237,6 +249,22 @@
     };
     return summaries[id] || summaries.hearts;
   }
+
+  // Keep the first-turn rule visible inside Battle. These source strings are
+  // already owned by every runtime locale catalog, so the shared localizer
+  // can present the same coach without duplicating ten x thirteen translations.
+  const CARD_GAME_GUIDES = {
+    hearts: "Choose three cards to pass, then play a legal card from your hand. The first trick starts with the Two of Clubs; the winner leads the next trick.",
+    spades: "Bid the number of tricks your team expects, follow suit when possible, and use spades at the right moment to win the contract.",
+    "gin-rummy": "Draw from the stock or discard, then discard one card. Knock with a low Deadwood hand or reach Gin.",
+    "crazy-eights": "When no card is legal, draw. The first player to empty their hand wins.",
+    cribbage: "Pairs, runs, and fifteens score points. The first player to reach 121 wins.",
+    "go-fish": "Complete four-of-a-kind books. Choose two, three, or four players in the preview build.",
+    war: "Press Flip to reveal, then watch the pile move. The player who collects every card wins.",
+    speed: "Tap quickly and keep your hand replenished. There is no waiting for the opponent's turn.",
+    "old-maid": "Pairs vanish immediately. The last player holding the special Old Maid card loses.",
+    casino: "Build combinations for later capture, collect Spades, and watch for the Ten of Diamonds and Two of Spades bonuses.",
+  };
 
   function makeFallback(controller, id) {
     return { reset() {}, view() { return { phase: TITLES[id]?.en || id, help: gameSummary(id), hand: "", opponents: "", center: "", actions: "" }; }, action() {}, card() {} };
