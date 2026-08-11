@@ -139,7 +139,7 @@
     app.startGame = startGame;
     return app;
 
-    function startGame() { app.main.hidden = true; app.battle.hidden = false; document.body.classList.add("logic-playing"); app.tutorial.textContent = text(cfg.blurb); app.result.hidden = true; activeGame = cfg.build(app); activeGame.reset(); window.WonderAnalytics?.track?.("classic_logic_trial_start", { game_id: id, locale }); }
+    function startGame() { app.main.hidden = true; app.battle.hidden = false; document.body.classList.add("logic-playing"); app.tutorial.textContent = text(cfg.blurb); app.result.hidden = true; activeGame = cfg.build(app); activeGame.reset(); if (app.status.textContent === t("ready")) announce(t("turn")); window.WonderAnalytics?.track?.("classic_logic_trial_start", { game_id: id, locale }); }
     function showMain() { activeGame?.stop?.(); activeGame = null; app.result.hidden = true; app.battle.hidden = true; app.main.hidden = false; document.body.classList.remove("logic-playing"); }
   }
 

@@ -2914,6 +2914,10 @@ const KL_I18N = {
     return isQaFixtureEnabled("draw");
   }
 
+  function isQaDenseTableauFixtureEnabled() {
+    return isQaFixtureEnabled("dense-tableau");
+  }
+
   function applyQaWinFixture() {
     if (!isQaWinFixtureEnabled() || game.completed) return;
     if (!state.active) openBattle();
@@ -3122,6 +3126,43 @@ const KL_I18N = {
     renderBoard();
   }
 
+  function applyQaDenseTableauFixture() {
+    if (!isQaDenseTableauFixtureEnabled() || game.completed) return;
+    if (!state.active) openBattle();
+    if (!state.active) return;
+    clearDealAnimationTimers();
+    const cards = [
+      ...game.tableau.columns.flat(),
+      ...game.stock.cards,
+      ...game.waste.cards,
+      ...game.foundations.flatMap((foundation) => foundation.cards),
+    ];
+    game.tableau.columns.forEach((column) => {
+      column.length = 0;
+    });
+    game.stock.clear();
+    game.waste.clear();
+    game.foundations.forEach((foundation) => foundation.clear());
+    cards.slice(0, 13).forEach((card, index) => {
+      card.faceUp = index >= 4;
+      game.tableau.columns[0].push(card);
+    });
+    cards.slice(13).forEach((card) => {
+      card.faceUp = false;
+      game.stock.cards.push(card);
+    });
+    game.moveCount = 0;
+    game.moveHistory = [];
+    game.completed = false;
+    state.dealSequence = null;
+    state.elapsed = 0;
+    state.boardAnimationInProgress = false;
+    state.autoFinishing = false;
+    state.resultShown = false;
+    state.lossRecordedForCurrentBoard = false;
+    renderBoard();
+  }
+
   function applyQaAutoFinishFixture() {
     if (!isQaAutoFinishFixtureEnabled() || game.completed) return;
     if (!state.active) openBattle();
@@ -3223,6 +3264,10 @@ const KL_I18N = {
     if (isQaDrawFixtureEnabled()) {
       const totalCards = state.dealSequence?.size || 28;
       window.setTimeout(applyQaDrawFixture, DEAL_INITIAL_DELAY_MS + totalCards * DEAL_STEP_MS + 80);
+    }
+    if (isQaDenseTableauFixtureEnabled()) {
+      const totalCards = state.dealSequence?.size || 28;
+      window.setTimeout(applyQaDenseTableauFixture, DEAL_INITIAL_DELAY_MS + totalCards * DEAL_STEP_MS + 80);
     }
     window.setTimeout(() => {
       window.dispatchEvent(new CustomEvent("weightplay:shell-sync"));
