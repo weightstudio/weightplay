@@ -1184,7 +1184,9 @@
   function beginNewGame() {
     clearCompletionFlyouts();
     game = new SpiderBoard(state.difficulty);
-    game.newGame(seedNow());
+    const requestedSeed = !state.hasStarted ? new URLSearchParams(window.location.search).get("seed") : null;
+    const replaySeed = requestedSeed != null && /^\d+$/u.test(requestedSeed) ? Number(requestedSeed) >>> 0 : null;
+    game.newGame(replaySeed == null ? seedNow() : replaySeed);
     state.hasStarted = true;
     stats[state.difficulty].gamesPlayed += 1;
     saveStats();

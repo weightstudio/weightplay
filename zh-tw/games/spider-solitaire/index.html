@@ -60,12 +60,12 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
   <link rel="stylesheet" href="style.css?v=20260810-spider-v10-stage-result-responsive" />
-  <meta name="description" content="Spider Solitaire uses two decks in ten tableau columns. Build descending sequences, separate mixed suits when you can, and complete eight same-suit..." />
+  <meta name="description" content="蜘蛛接龍使用兩副牌分布在十個牌桌欄位。將牌依序向下排列，適時分開混合花色，完成八組同花色 K 到 A 的牌組即可清空牌桌。" />
     <meta property="og:title" content="蜘蛛接龍 | WeightPlay" />
-    <meta property="og:description" content="Spider Solitaire uses two decks in ten tableau columns. Build descending sequences, separate mixed suits when you can, and complete eight same-suit..." />
+    <meta property="og:description" content="蜘蛛接龍使用兩副牌分布在十個牌桌欄位。將牌依序向下排列，適時分開混合花色，完成八組同花色 K 到 A 的牌組即可清空牌桌。" />
     <meta property="og:url" content="https://weightplay.com/zh-tw/games/spider-solitaire/" />
     <meta name="twitter:title" content="蜘蛛接龍 | WeightPlay" />
-    <meta name="twitter:description" content="Spider Solitaire uses two decks in ten tableau columns. Build descending sequences, separate mixed suits when you can, and complete eight same-suit..." />
+    <meta name="twitter:description" content="蜘蛛接龍使用兩副牌分布在十個牌桌欄位。將牌依序向下排列，適時分開混合花色，完成八組同花色 K 到 A 的牌組即可清空牌桌。" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -74,7 +74,7 @@
   "alternateName": "Spider Solitaire",
   "url": "https://weightplay.com/zh-tw/games/spider-solitaire/",
   "image": "https://weightplay.com/assets/lobby-thumbs/w480/assets__spider-solitaire-cover.webp",
-  "description": "Spider Solitaire uses two decks in ten tableau columns. Build descending sequences, separate mixed suits when you can, and complete eight same-suit...",
+  "description": "蜘蛛接龍使用兩副牌分布在十個牌桌欄位。將牌依序向下排列，適時分開混合花色，完成八組同花色 K 到 A 的牌組即可清空牌桌。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -84,10 +84,10 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Puzzle",
-    "Card",
-    "Strategy",
-    "Family"
+    "益智",
+    "紙牌",
+    "策略",
+    "家庭"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -189,29 +189,29 @@
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine1"></script>
-  <script src="game.js?v=20260810-spider-v26-stage-result-responsive"></script>
+  <script src="game.js?v=20260811-spider-v27-replay-seed"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260809-battle-first-action1" data-wp-battle-standard></script>
   <section class="game-page-info game-page-info-static" aria-label="蜘蛛接龍 遊戲資訊">
     
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>蜘蛛接龍</h2><p>Spider Solitaire uses two decks in ten tableau columns. Build descending sequences, separate mixed suits when you can, and complete eight same-suit King-to-Ace runs to clear the table.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>難度</span><strong>Easy to Hard</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>5-20 minutes</strong></div><div class="game-info-fact"><span>練習能力</span><strong>規劃 · 模式識別 · 專注</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>蜘蛛接龍</h2><p>蜘蛛接龍使用兩副牌分布在十個牌桌欄位。將牌依序向下排列，適時分開混合花色，完成八組同花色 K 到 A 的牌組即可清空牌桌。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>卡牌策略遊戲</strong></div><div class="game-info-fact"><span>類型</span><strong>益智 · 紙牌 · 策略 · 家庭</strong></div><div class="game-info-fact"><span>難度</span><strong>簡單到困難</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>5～20 分鐘</strong></div><div class="game-info-fact"><span>練習能力</span><strong>規劃 · 圖形辨識 · 專注</strong></div></div>
     </div>
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界與任務</h3><p>Spider keeps the familiar card-engine feel of Klondike while changing the decision space: every column matters, a new stock row touches all ten columns, and empty space is powerful but temporarily blocks dealing.</p>
-<p>One Suit teaches the rhythm, Two Suits adds suit separation, and Four Suits asks for careful long-term planning without changing the core controls.</p></div>
-      <div class="game-info-section"><h3>遊戲系統</h3><p>Cards build downward by rank. A single face-up card can move onto the next rank, while a group moves together only when it is face-up, descending, and the same suit.</p>
-<p>Complete a same-suit K-to-A sequence and it is collected with a readable completion animation. Eight collected sequences win the game.</p>
-<p>The Stock deals one face-up card to each of ten non-empty columns. Undo restores tableau, face-up state, stock, deals, score, and completed sequences.</p>
-<p>Hint highlights one useful legal move, favoring hidden-card reveals, same-suit extensions, completed runs, and new empty columns.</p></div>
-      <div class="game-info-section"><h3>玩法說明</h3><ol><li>Choose 1 Suit, 2 Suits, or 4 Suits on Main.</li><li>Drag a face-up card or a valid same-suit run onto the next higher rank.</li><li>Use empty columns to reorganize any card or valid run.</li><li>Reveal face-down cards, then deal a new row only when every column contains a card.</li><li>Complete all eight same-suit K-to-A runs to win.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>Reveal a face-down card before making a move that only changes the surface.</li><li>Keep same-suit runs together; mixed-suit runs are useful scaffolding but cannot move as a group.</li><li>Treat an empty column as a reserve: use it to separate suits or expose a hidden card.</li><li>Do not deal automatically when a useful reveal or same-suit merge is available.</li><li>In Four Suits, protect the cleanest run and use Undo to compare competing destinations.</li></ul></div>
-      <div class="game-info-section"><h3>關卡與難度成長</h3><p>1 Suit is the teaching mode, 2 Suits adds planning around suit conflicts, and 4 Suits is the classic high-challenge mode.</p>
-<p>Each difficulty stores its own games played, wins, win rate, best time, and fewest moves.</p>
-<p>The same seed can be restarted without changing the deal; New Game creates a fresh shuffle.</p></div>
-      <div class="game-info-section"><h3>開發設計理念</h3><p>Spider shares WeightPlay&#39;s Card Engine, responsive battle canvas, drag layer, touch input, animation rhythm, sound preference, undo snapshots, and card visual language with Klondike.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>Spider Solitaire is a general-audience card strategy game. No account is required; difficulty statistics and preferences stay in this browser.</p></div>
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>How many cards are used?</dt><dd>Spider Solitaire uses two standard decks: 104 cards, with 54 in the initial tableau and 50 in Stock.</dd></div><div><dt>How many columns are there?</dt><dd>There are ten tableau columns; the first four begin with six cards and the other six with five.</dd></div><div><dt>Can different suits be stacked?</dt><dd>Yes. Ranks can descend across suits, but only a same-suit descending run can move as a group or be collected.</dd></div><div><dt>Why is Stock blocked?</dt><dd>Classic Spider requires all ten columns to contain at least one card before a new row can be dealt.</dd></div><div><dt>How many sequences are needed to win?</dt><dd>Eight same-suit King-to-Ace sequences must be collected.</dd></div><div><dt>What changes between difficulties?</dt><dd>1 Suit, 2 Suits, and 4 Suits change the suit mix while keeping the same ten-column rules.</dd></div><div><dt>Can I restart the same deal?</dt><dd>Yes. Restart Current Game uses the same seed, while New Game shuffles a fresh deal.</dd></div><div><dt>Does Undo restore a completed sequence?</dt><dd>Yes. Undo restores the complete prior tableau and collected-set count.</dd></div></dl></div>
+      <div class="game-info-section"><h3>世界與任務</h3><p>蜘蛛接龍保留經典接龍的牌組操作，但每一欄都會影響下一步；牌庫每次會碰到十欄，而空欄雖然強大，發牌前卻必須重新填滿。</p>
+<p>1 花色適合學習節奏，2 花色加入花色分離，4 花色則要求更長期的規劃，核心操作維持不變。</p></div>
+      <div class="game-info-section"><h3>遊戲系統</h3><p>牌面依點數遞減排列。單張正面牌可以放到下一個較高點數上；只有正面、連續且同花色的牌組才能整組移動。</p>
+<p>完成同花色 K 到 A 後，牌組會以清楚的完成動畫收走；收走八組即可獲勝。</p>
+<p>牌庫會向十個非空欄位各發一張正面牌。回退會還原牌桌、翻牌狀態、牌庫、發牌次數、分數與完成牌組。</p>
+<p>提示會優先標示可揭開暗牌、延伸同花色、完成牌組與建立空欄的實用合法步。</p></div>
+      <div class="game-info-section"><h3>玩法說明</h3><ol><li>在 Main 選擇 1、2 或 4 花色。</li><li>將正面牌或合法的同花色牌組拖到下一個較高點數。</li><li>使用空欄重新整理單牌或合法牌組。</li><li>先揭開暗牌；只有每欄都有牌時才能發下一列。</li><li>完成八組同花色 K 到 A 牌組即可獲勝。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>優先揭開暗牌，不要只做表面變化。</li><li>保留同花色牌組；混合花色只能暫時墊牌，不能整組移動。</li><li>把空欄當作暫存空間，用來分離花色或揭開暗牌。</li><li>還有可揭牌或同花色合併時，不要急著發牌。</li><li>4 花色時保護最乾淨的牌組，並用回退比較不同目的地。</li></ul></div>
+      <div class="game-info-section"><h3>關卡與難度成長</h3><p>1 花色教你熟悉節奏，2 花色加入花色衝突，4 花色是經典高難度模式。</p>
+<p>每種難度分開記錄遊戲場次、勝利、勝率、最佳時間與最少步數。</p>
+<p>重新開始會使用同一副牌；新遊戲會建立新的洗牌結果。</p></div>
+      <div class="game-info-section"><h3>開發設計理念</h3><p>Spider 使用 WeightPlay 的 Card Engine、響應式 Battle 畫布、拖曳層、觸控輸入、動畫節奏、音效偏好、回退快照與紙牌視覺語言。</p></div>
+      <div class="game-info-section game-info-parent"><h3>玩家與儲存資訊</h3><p>蜘蛛接龍適合一般玩家與家庭遊玩，建議 9 歲以上。不需要帳號；難度統計與偏好只會儲存在這個瀏覽器。</p></div>
+      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>使用幾張牌？</dt><dd>使用兩副標準牌，共 104 張；初始牌桌有 54 張，牌庫有 50 張。</dd></div><div><dt>有幾個欄位？</dt><dd>共有十欄；前四欄從六張開始，其餘六欄從五張開始。</dd></div><div><dt>不同花色可以疊放嗎？</dt><dd>可以依點數跨花色向下疊放，但只有同花色連續牌組能整組移動或收走。</dd></div><div><dt>為什麼牌庫不能發牌？</dt><dd>經典蜘蛛接龍要求十欄都有牌後，才能發出下一列。</dd></div><div><dt>要完成幾組才能獲勝？</dt><dd>必須收走八組同花色 K 到 A。</dd></div><div><dt>難度差在哪裡？</dt><dd>1、2、4 花色改變花色組成，但保留相同的十欄規則。</dd></div><div><dt>可以重新玩同一副牌嗎？</dt><dd>可以，重新開始會使用同一副牌；新遊戲會重新洗牌。</dd></div><div><dt>回退會還原完成牌組嗎？</dt><dd>會，回退會完整還原上一個牌桌與完成牌組數。</dd></div></dl></div>
       <div class="game-info-section"><h3>相關遊戲</h3><p>因為這款遊戲會練習 規劃，也可以試試這些遊戲：</p><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/klondike-solitaire/"><img src="/assets/klondike-solitaire-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>克朗代克紙牌</strong><span>Klondike Solitaire 是一款經典的 52 張紙牌遊戲，您可以在其中建立從 A 到 K 的四種基礎，同時控制畫面、庫存和浪費。</span></span></a></div></div>
     </div>
   </section>
