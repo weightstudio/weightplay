@@ -1072,3 +1072,22 @@ button.control-mini {
     font-size: 0.8rem;
   }
 }
+
+/* Keep Foundation hint frames inside the board shell without moving the
+   Tableau down: the row's top inset is balanced by its bottom margin. */
+.foundation-row {
+  padding-top: 4px;
+  margin-bottom: calc(0.8rem - 4px);
+}
+
+@media (max-width: 740px) {
+  .foundation-row {
+    margin-bottom: calc(0.55rem - 4px);
+  }
+}
+
+@media (orientation: landscape) and (max-width: 900px) {
+  .foundation-row {
+    margin-bottom: calc(0.3rem - 4px);
+  }
+}

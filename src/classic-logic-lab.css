@@ -83,7 +83,7 @@ button:focus-visible, select:focus-visible { outline: 3px solid var(--logic-warn
 .logic-tutorial { padding: 10px 14px; border: 1px solid var(--logic-line); border-radius: 14px; color: var(--logic-muted); font-size: 13px; line-height: 1.35; background: rgba(12, 34, 65, .8); }
 .logic-status-line { min-height: 24px; color: var(--logic-good); text-align: center; font-size: 14px; font-weight: 700; }
 .logic-board-panel { min-height: 0; display: grid; place-items: center; padding: clamp(7px, 2vw, 18px); border: 1px solid var(--logic-line); border-radius: 22px; background: linear-gradient(160deg, rgba(17, 50, 92, .94), rgba(8, 23, 46, .96)); box-shadow: var(--logic-shadow); overflow: auto; }
-.logic-board-area { width: min(100%, 700px); display: grid; gap: 12px; place-items: center; }
+.logic-board-area { width: min(100%, 700px); min-width: 0; display: grid; gap: 12px; place-items: center; }
 .logic-board-toolbar, .logic-action-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; }
 .logic-action-row { padding: 4px 0 max(8px, env(safe-area-inset-bottom)); }
 .logic-action-row button { min-height: 42px; }
@@ -101,12 +101,12 @@ button:focus-visible, select:focus-visible { outline: 3px solid var(--logic-warn
 .logic-minesweeper-board .is-mine { background: rgba(255,113,135,.28); }
 .logic-minesweeper-board .is-flag { color: var(--logic-warn); }
 .logic-minesweeper-board .n1 { color: #7fd3ff; } .logic-minesweeper-board .n2 { color: #6eeba8; } .logic-minesweeper-board .n3 { color: #ffb870; } .logic-minesweeper-board .n4 { color: #ccadff; }
-.logic-sudoku-board { width: min(100%, 560px); display: grid; grid-template-columns: repeat(9, 1fr); border: 2px solid var(--logic-accent); }
-.logic-sudoku-board .logic-cell { aspect-ratio: 1; border-radius: 0; font-weight: 850; font-size: clamp(15px, 4vw, 27px); }
+.logic-sudoku-board { width: min(100%, 560px); min-width: 0; display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); border: 2px solid var(--logic-accent); }
+.logic-sudoku-board .logic-cell { min-width: 0; aspect-ratio: 1; border-radius: 0; font-weight: 850; font-size: clamp(15px, 4vw, 27px); }
 .logic-sudoku-board .given { background: rgba(126, 205, 255, .2); color: #fff; cursor: default; }
 .logic-sudoku-board .wrong { color: var(--logic-danger); animation: logic-shake .22s ease-in-out; }
 @keyframes logic-shake { 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
-.logic-keypad { width: min(100%, 560px); display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; }
+.logic-keypad { width: min(100%, 560px); min-width: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; }
 .logic-keypad button { min-width: 0; min-height: 40px; }
 .logic-lights-board { display: grid; grid-template-columns: repeat(5, minmax(44px, 74px)); gap: 7px; }
 .logic-lights-board .logic-cell { aspect-ratio: 1; border-radius: 14px; background: #0a1b35; }
