@@ -111,6 +111,7 @@
   function mount(gameId) {
     const game = CATALOG[gameId];
     if (!game) throw new Error(`Unknown popular game: ${gameId}`);
+    document.body.dataset.gameId = gameId;
     const root = document.querySelector("#popularArcade");
     if (!root) throw new Error("Popular game root is missing.");
     let locale = randomLocale();

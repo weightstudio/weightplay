@@ -139,6 +139,9 @@ body.logic-playing .game-page-info-static { display: none !important; }
 .logic-reversi-board .legal { box-shadow: inset 0 0 0 3px rgba(255,255,255,.28); }
 .logic-reversi-board .disc { width: 76%; height: 76%; border-radius: 50%; box-shadow: inset -4px -5px 0 rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.25); }
 .logic-reversi-board .black .disc { background: #19263c; } .logic-reversi-board .white .disc { background: #f3f6ff; }
+.logic-reversi-policy, .logic-reversi-reply { width: min(100%, 560px); margin: 0; line-height: 1.35; }
+.logic-reversi-policy { color: var(--logic-text); }
+.logic-reversi-reply { color: var(--logic-good); font-weight: 750; }
 .logic-connect-board { display: grid; grid-template-columns: repeat(7, minmax(37px, 75px)); gap: 6px; padding: 9px; border-radius: 20px; background: #2459a0; }
 .logic-connect-board .logic-cell { background: #081d44; border: 2px solid rgba(255,255,255,.1); }
 .logic-connect-board .disc { width: 76%; height: 76%; border-radius: 50%; box-shadow: inset -4px -5px 0 rgba(0,0,0,.2), 0 3px 8px rgba(0,0,0,.2); }
@@ -186,6 +189,11 @@ body.logic-playing .game-page-info-static { display: none !important; }
   .logic-board-area > div:has(.logic-sudoku-board) .logic-sudoku-board { grid-column: 1; grid-row: 2; width: min(100%, 420px); height: auto; align-self: center; justify-self: center; }
   .logic-board-area > div:has(.logic-sudoku-board) .logic-keypad { grid-column: 2; grid-row: 2; width: 100%; gap: 4px; align-self: center; }
   .logic-board-area > div:has(.logic-sudoku-board) .logic-keypad button { min-height: 44px; }
+  .logic-board-area > div:has(.logic-reversi-board) { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) minmax(210px, 280px); grid-template-rows: auto auto 1fr; align-items: center; gap: 6px 12px; }
+  .logic-board-area > div:has(.logic-reversi-board) .logic-reversi-board { grid-column: 1; grid-row: 1 / 4; width: min(100%, calc(100svh - 195px), 440px); justify-self: center; }
+  .logic-board-area > div:has(.logic-reversi-board) .logic-board-toolbar,
+  .logic-board-area > div:has(.logic-reversi-board) .logic-reversi-policy,
+  .logic-board-area > div:has(.logic-reversi-board) .logic-reversi-reply { grid-column: 2; width: 100%; }
   .logic-action-row { padding-bottom: 4px; }
 }
 @media (max-height: 560px) and (orientation: landscape) {

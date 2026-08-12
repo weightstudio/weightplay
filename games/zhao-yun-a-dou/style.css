@@ -1291,17 +1291,23 @@ body[data-wp-game-id="zhao-yun-a-dou"] .stage-card[data-wp-stage-selected="true"
   }
 
   .battle-field {
-    grid-template-rows: 24px minmax(78px, 1fr) 6px minmax(78px, 1fr) 24px;
-    height: 214px;
-    min-height: 214px;
-    max-height: 214px;
+    grid-template-rows: 24px minmax(0, 1fr) 6px minmax(0, 1fr) 24px;
+    height: 260px;
+    min-height: 260px;
+    max-height: 260px;
     align-self: start;
   }
 
   .enemy-lanes,
   .player-lanes {
+    grid-template-rows: repeat(3, minmax(0, 1fr));
     gap: 3px;
+    min-height: 0;
     padding: 3px 8px;
+  }
+
+  .lane-row {
+    min-height: 0;
   }
 
   .formation-grid {
