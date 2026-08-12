@@ -77,7 +77,7 @@
     "tripeaks-solitaire": [".battle-canvas", 390, 788, 760, 334],
     "golf-solitaire": [".battle-canvas", 390, 788, 760, 334],
     "yukon-solitaire": [".battle-canvas", 390, 788, 760, 334],
-    "zhao-yun-a-dou": ["#battle", 390, 788, 760, 420],
+    "zhao-yun-a-dou": ["#battle", 390, 788, 760, 760],
     "zoo-helper-day": [".zoo-game", 374, 776, 760, 350],
     // Card-game owner previews use an inner .battle-canvas inside #battleScreen.
     // Bind the scaler to that permanent play surface so the scene wrapper is

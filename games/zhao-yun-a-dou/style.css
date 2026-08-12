@@ -1292,7 +1292,10 @@ body[data-wp-game-id="zhao-yun-a-dou"] .stage-card[data-wp-stage-selected="true"
 
   .battle-field {
     grid-template-rows: 24px minmax(78px, 1fr) 6px minmax(78px, 1fr) 24px;
+    height: 214px;
     min-height: 214px;
+    max-height: 214px;
+    align-self: start;
   }
 
   .enemy-lanes,

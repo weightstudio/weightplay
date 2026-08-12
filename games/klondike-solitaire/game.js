@@ -705,6 +705,25 @@ const KL_I18N = {
     Object.assign(KL_I18N[locale], copy);
   });
 
+  const KL_DEAL_REPLAY_COPY = {
+    en: "Current deal: {id}",
+    "zh-Hant": "目前牌局：{id}",
+    "zh-Hans": "当前牌局：{id}",
+    ja: "現在のディール：{id}",
+    ko: "현재 딜: {id}",
+    es: "Reparto actual: {id}",
+    "pt-BR": "Distribuição atual: {id}",
+    fr: "Donne actuelle : {id}",
+    de: "Aktuelle Ausgabe: {id}",
+    it: "Distribuzione attuale: {id}",
+    ru: "Текущая раздача: {id}",
+    hi: "मौजूदा डील: {id}",
+    ar: "التوزيع الحالي: {id}",
+  };
+  Object.entries(KL_DEAL_REPLAY_COPY).forEach(([locale, value]) => {
+    KL_I18N[locale]["ui.stats.current_deal"] = value;
+  });
+
   const KL_QUICK_RULE_COPY = Object.freeze({
     en: "Tap a legal card to move it automatically. Drag a card when you want to choose the destination.",
     "zh-Hant": "點選合法牌會自動移動；需要選擇目的地時，請拖曳牌。",
@@ -911,6 +930,22 @@ const KL_I18N = {
 
   const el = (id) => document.getElementById(id);
   const now = () => performance.now();
+  const requestedDealSeed = () => {
+    const raw = new URLSearchParams(window.location.search).get("deal") || "";
+    return /^[0-9a-f]{1,8}$/iu.test(raw) ? Number.parseInt(raw, 16) >>> 0 : null;
+  };
+  const createDealSeed = () => {
+    const values = new Uint32Array(1);
+    if (window.crypto?.getRandomValues) window.crypto.getRandomValues(values);
+    else values[0] = (Date.now() ^ Math.floor(performance.now() * 1000)) >>> 0;
+    return values[0] >>> 0;
+  };
+  const syncDealAddress = (seed) => {
+    if (!/^https?:$/u.test(window.location.protocol) || !window.history?.replaceState) return;
+    const url = new URL(window.location.href);
+    url.searchParams.set("deal", (Number(seed) >>> 0).toString(16).toUpperCase().padStart(8, "0"));
+    window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+  };
 
   const ui = {
     loadingPanel: el("loadingPanel"),
@@ -1508,8 +1543,12 @@ const KL_I18N = {
       t("ui.stats.win_rate", { ratio }),
       t("ui.stats.fastest_time", { time: stats.bestTime === null ? "--" : formatTime(Math.round(stats.bestTime / 1000)) }),
       t("ui.stats.least_moves", { moves: stats.bestMoves === null ? "--" : stats.bestMoves }),
+      t("ui.stats.current_deal", { id: formatDealId(game.dealId) }),
     ];
-    if (ui.statistics) ui.statistics.innerHTML = `<div>${rows.join("</div><div>")}</div>`;
+    if (ui.statistics) {
+      ui.statistics.dataset.dealId = formatDealId(game.dealId);
+      ui.statistics.innerHTML = `<div>${rows.join("</div><div>")}</div>`;
+    }
   }
 
   function renderHeader() {
@@ -2770,8 +2809,10 @@ const KL_I18N = {
     state.hintVisitedBoards.clear();
     clearDealAnimationTimers();
     resetRenderCaches();
-    game.newGame(now());
+    game.newGame(createDealSeed());
+    syncDealAddress(game.dealId);
     state.dealSequence = buildDealSequence();
+    renderStatistics();
     renderBoard();
   }
 
@@ -3282,7 +3323,8 @@ const KL_I18N = {
     bindAudioUnlock();
     refreshLocalization();
     setLoadingProgress(15, t("ui.loading.preparing"));
-    game.newGame(Math.floor(now()));
+    game.newGame(requestedDealSeed() ?? createDealSeed());
+    syncDealAddress(game.dealId);
     state.hintVisitedBoards.clear();
     state.lastFrameCards = new Map();
     cardRevealCache.clear();

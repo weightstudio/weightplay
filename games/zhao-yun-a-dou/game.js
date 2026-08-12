@@ -171,6 +171,7 @@
     selectedSlot = null;
     showScreen("stage");
     renderStages();
+    window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));
   }
 
   function renderStages() {
@@ -204,6 +205,7 @@
     selectedSlot = null;
     showScreen("battle");
     renderBattle();
+    window.WeightPlayBattleCanvas?.sync?.();
     if (!progress.tutorialSeen && !options?.skipTutorial) {
       progress.tutorialSeen = true;
       saveProgress();
@@ -652,8 +654,6 @@
   function unitName(unit) {
     if (unit.general) return generalName(unit);
     return unitLabel(unit) + " 繚 " + t("level") + " " + unit.level;
-    const definition = data.unitTypes[unit.type];
-    return (locale === "en" ? definition.english : definition.name) + " · " + t("level") + " " + unit.level;
   }
 
   function generalName(unit) {
