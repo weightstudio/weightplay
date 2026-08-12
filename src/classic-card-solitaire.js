@@ -406,7 +406,7 @@
     }
 
     freeCellCapacity(destinationColumn = null) {
-      const free = this.freeCells.filter(Boolean).length;
+      const free = this.freeCells.filter((cell) => !cell).length;
       const empty = this.tableau.filter((pile) => pile.length === 0).length - (destinationColumn !== null && this.tableau[destinationColumn]?.length === 0 ? 1 : 0);
       return Math.max(1, free + 1) * Math.pow(2, Math.max(0, empty));
     }

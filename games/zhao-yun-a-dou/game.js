@@ -493,7 +493,7 @@
       enemyRow.setAttribute("data-lane", t("lane") + " " + (lane + 1));
       battle.enemies.filter(function (enemy) { return enemy.lane === lane; }).forEach(function (enemy) {
         const token = document.createElement("span");
-        token.className = "enemy-token" + (enemy.boss ? " boss" : "");
+        token.className = "enemy-token enemy-kind-" + (enemy.id % 3) + (enemy.boss ? " boss" : "");
         token.textContent = enemy.boss ? "將" : "卒";
         token.style.left = (enemy.position * 100) + "%";
         token.title = enemy.hp + " / " + enemy.maxHp;

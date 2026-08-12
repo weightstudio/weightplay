@@ -21,6 +21,7 @@
     const chapter = Math.floor(index / 5);
     const within = index % 5;
     const pattern = lanePatterns[(chapter + within) % lanePatterns.length];
+    const isOpening = index === 0;
     return {
       id: index + 1,
       chapter: chapter + 1,
@@ -31,13 +32,13 @@
       objective: within === 4 ? "守住阿斗，擊破敵將" : "合成部隊，守住三路",
       objectiveEnglish: within === 4 ? "Protect A Dou and defeat the commander" : "Merge your force and hold all three lanes",
       waveCount: 3 + chapter + (within === 4 ? 1 : 0),
-      enemyCount: 7 + chapter * 2 + within,
+      enemyCount: (isOpening ? 9 : 7) + chapter * 2 + within,
       enemyHp: 5 + chapter * 3 + within,
-      enemySpeed: 0.006 + chapter * 0.001 + within * 0.00035,
-      enemyDamage: 1 + Math.floor(chapter / 2),
-      commandHp: 14 + chapter * 4 + within * 2,
-      adouHp: 12 - Math.floor(chapter / 3),
-      spawnGap: Math.max(24, 54 - chapter * 4 - within * 2),
+      enemySpeed: (isOpening ? 0.012 : 0.006) + chapter * 0.001 + within * 0.00035,
+      enemyDamage: (isOpening ? 2 : 1) + Math.floor(chapter / 2),
+      commandHp: (isOpening ? 8 : 14) + chapter * 4 + within * 2,
+      adouHp: (isOpening ? 6 : 12) - Math.floor(chapter / 3),
+      spawnGap: Math.max(12, (isOpening ? 18 : 54) - chapter * 4 - within * 2),
       startingBuns: 7 + Math.floor(within / 2),
       startingUnits: [
         { type: "spear", level: 1, slot: 0 },
