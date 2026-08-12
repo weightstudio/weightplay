@@ -191,6 +191,13 @@
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   const formatTime = (seconds) => `${String(Math.floor(Math.max(0, seconds) / 60)).padStart(2, "0")}:${String(Math.max(0, seconds) % 60).padStart(2, "0")}`;
   const seedNow = () => ((Date.now() ^ Math.floor(Math.random() * 0xffffffff)) >>> 0);
+  const syncReplaySeedUrl = (seed) => {
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.set("seed", String(seed >>> 0));
+      window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+    } catch (_error) { }
+  };
 
   function locale() {
     const raw = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || "en";
@@ -1193,6 +1200,7 @@
     const requestedSeed = !state.hasStarted ? new URLSearchParams(window.location.search).get("seed") : null;
     const replaySeed = requestedSeed != null && /^\d+$/u.test(requestedSeed) ? Number(requestedSeed) >>> 0 : null;
     game.newGame(replaySeed == null ? seedNow() : replaySeed);
+    syncReplaySeedUrl(game.seed);
     state.hasStarted = true;
     stats[state.difficulty].gamesPlayed += 1;
     saveStats();
@@ -1616,11 +1624,12 @@
       },
       snapshot() {
         return {
+          seed: game.seed,
           completed: game.completed.total,
           moveCount: game.moveCount,
           score: game.score,
           stock: game.stock.cards.length,
-          tableau: game.tableau.columns.map((column) => column.map((card) => ({ id: card.id, rank: card.rank, faceUp: card.faceUp }))),
+          tableau: game.tableau.columns.map((column) => column.map((card) => ({ id: card.id, rank: card.rank, suit: card.suit, faceUp: card.faceUp }))),
           resultVisible: !ui.resultOverlay.hidden,
           winRecorded: state.winRecorded,
           stats: { ...stats[1] },

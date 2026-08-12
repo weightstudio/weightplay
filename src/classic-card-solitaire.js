@@ -254,6 +254,7 @@
       this.selected = null;
       this.lastFreeCellMove = null;
       this.lastYukonMove = null;
+      this.yukonHintHistory = [];
       this.deck = Deck.buildShuffled(this.seed);
       this.foundations = SUITS.map((suit) => new Foundation(suit));
       this.freeCells = [null, null, null, null];
@@ -338,6 +339,7 @@
         cards: this.cards.map((entry) => ({ card: cardJSON(entry.card), removed: entry.removed, row: entry.row, column: entry.column, coveredBy: entry.coveredBy })),
         lastFreeCellMove: this.lastFreeCellMove ? { ...this.lastFreeCellMove, source: { ...this.lastFreeCellMove.source }, destination: { ...this.lastFreeCellMove.destination } } : null,
         lastYukonMove: this.lastYukonMove ? { ...this.lastYukonMove } : null,
+        yukonHintHistory: [...this.yukonHintHistory],
       };
     }
 
@@ -350,6 +352,7 @@
       this.cards = (raw.cards || []).map((entry) => ({ card: fromJSON(entry.card), removed: Boolean(entry.removed), row: entry.row, column: entry.column, coveredBy: entry.coveredBy || [] }));
       this.lastFreeCellMove = raw.lastFreeCellMove ? { ...raw.lastFreeCellMove, source: { ...raw.lastFreeCellMove.source }, destination: { ...raw.lastFreeCellMove.destination } } : null;
       this.lastYukonMove = raw.lastYukonMove ? { ...raw.lastYukonMove } : null;
+      this.yukonHintHistory = Array.isArray(raw.yukonHintHistory) ? raw.yukonHintHistory.slice(-12) : [];
       this.selected = null;
     }
 
@@ -481,6 +484,8 @@
       else this.tableau[destination.pile].push(...moving);
       this.revealColumn(source.pile); this.moves += 1; this.checkWin();
       this.lastYukonMove = { cardId: card.id, sourcePile: source.pile, destinationZone: destination.zone, destinationPile: destination.zone === "tableau" ? destination.pile : null };
+      const destinationKey = destination.zone === "tableau" ? destination.pile : destination.index;
+      this.yukonHintHistory = [...this.yukonHintHistory, `${card.id}|${source.pile}->${destination.zone}:${destinationKey}`].slice(-12);
       return true;
     }
 
@@ -638,11 +643,15 @@
           && move.source.pile === this.lastYukonMove.destinationPile
           && move.destination.pile === this.lastYukonMove.sourcePile,
         );
+        const destinationKey = move.destination?.zone === "tableau" ? move.destination.pile : move.destination?.index;
+        const moveKey = `${source?.id || ""}|${move.source?.pile}->${move.destination?.zone}:${destinationKey}`;
+        const recentMoveIndex = this.yukonHintHistory.lastIndexOf(moveKey);
         return {
           move,
           score: (move.kind === "foundation" ? 100000 : 0)
             + (revealsHidden ? 30000 : 0)
             + (reversesLastMove ? -50000 : 0)
+            - (recentMoveIndex >= 0 ? 12000 + (this.yukonHintHistory.length - recentMoveIndex) * 500 : 0)
             + (move.kind === "tableau" && source?.rank === 13 ? 1200 : 0)
             + (move.kind === "tableau" && move.source?.row === pile.length - 1 ? 300 : 0)
             - (source ? this.groupFrom(move.source).length : 0),
