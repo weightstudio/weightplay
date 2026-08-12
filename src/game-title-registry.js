@@ -79,6 +79,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "ट्रेल को अनब्लॉक करें",
     "ar": "فتح درب"
   },
+  "zhao-yun-a-dou": {
+    "__localizedExact": true,
+    "en": "Zhao Yun & A Dou: Inkline Defense",
+    "zh-Hant": "趙雲與阿斗：墨線守衛",
+    "zh-Hans": "赵云与阿斗：墨线守卫",
+    "ja": "Zhao Yun & A Dou: Inkline Defense",
+    "ko": "Zhao Yun & A Dou: Inkline Defense",
+    "es": "Zhao Yun & A Dou: Inkline Defense",
+    "pt-BR": "Zhao Yun & A Dou: Inkline Defense",
+    "fr": "Zhao Yun & A Dou: Inkline Defense",
+    "de": "Zhao Yun & A Dou: Inkline Defense",
+    "it": "Zhao Yun & A Dou: Inkline Defense",
+    "ru": "Zhao Yun & A Dou: Inkline Defense",
+    "hi": "Zhao Yun & A Dou: Inkline Defense",
+    "ar": "Zhao Yun & A Dou: Inkline Defense"
+  },
   "animal-bus-jam": {
     "__localizedExact": true,
     "en": "Panko's Bus Jam",

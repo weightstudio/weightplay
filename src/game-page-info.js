@@ -9026,6 +9026,52 @@
   localizedGameplayProfiles["zh-Hans"] ||= {};
   localizedGameplayProfiles["zh-Hans"]["block-blast"] = { gameplay: "8×8 方块配置益智", genre: ["益智", "策略", "空间推理"] };
 
+  registerExpandedGuide("zhao-yun-a-dou", {
+    title: "Zhao Yun & A Dou: Inkline Defense",
+    gameplay: "Merge Strategy Defense",
+    difficulty: "Easy to Challenging",
+    time: "3-5 minutes per mission",
+    genre: ["Strategy", "Defense", "Merge"],
+    skills: ["Planning", "Timing", "Adaptation"],
+    intro: "Recruit Chinese-character soldiers, place them across three lanes, merge matching units, and keep the advancing enemy away from A Dou.",
+    story: [
+      "The inkline around A Dou is breaking under repeated enemy waves. Zhao Yun has one short battle window to rebuild a reliable formation before the command post is overwhelmed.",
+      "Every unit is represented by a clear Chinese character. The character is a readable game symbol, while the real decision is where to place it, when to merge it, and when to spend a general skill."
+    ],
+    systems: [
+      "Recruit spends three buns and places the next unit in the first open formation slot. Buns return gradually during battle.",
+      "Tap one occupied slot and then another slot. Matching characters at the same level merge. Two level-three units promote into a named general.",
+      "Each formation slot belongs to one of three lanes. Units attack automatically, but the player must keep coverage and choose merge timing under live pressure.",
+      "Generals have different active skills: cleave, stun roar, charge, and multi-target arrow. Skills have a visible cooldown and never trigger without player input.",
+      "The Battle Result is an overlay. Stages returns to the map, Next Stage enters the next unlocked mission, and Replay restarts the settled mission."
+    ],
+    how: [
+      "Enter an unlocked mission and read the three-lane objective.",
+      "Recruit when there is a safe open slot, then select two matching characters to merge.",
+      "Move a unit to an empty slot when a lane needs cover. Keep at least one reserve unit before a risky merge.",
+      "Tap a ready general skill when a boss or fast enemy reaches a dangerous lane.",
+      "Win by defeating every wave and the enemy command post. If A Dou's health reaches zero, retry with a different formation plan."
+    ],
+    strategyTips: [
+      "A high-level unit is powerful, but an empty lane can still lose the battle.",
+      "Use the enemy lane pattern to decide whether the next recruit should fill coverage or create a merge.",
+      "Save a general skill for the visible pressure peak instead of spending it immediately on the first enemy.",
+      "Later chapters add faster movement, armor-like health, split pressure, and boss waves rather than hidden rules."
+    ],
+    progression: [
+      "Thirty authored missions are arranged in six five-mission chapters. New chapters increase wave pressure, enemy durability, and boss frequency.",
+      "The best local star result records survival and speed without creating a ranking, account, or child profile."
+    ],
+    designNote: "This is an original WeightPlay prototype inspired by the broad merge-defense genre. It uses its own stage data, battle geometry, controls, copy, and procedural prototype presentation rather than copying any source game's artwork, code, UI, or exact rules.",
+    parent: "The game has no account, purchase, chat, leaderboard, or advertising flow in this prototype. Progress is stored locally in the current browser and does not collect child personal data.",
+    faq: [
+      ["What do the characters mean?", "刀, 槍, 騎, and 弓 are four unit types with different damage and attack rhythms. They are readable symbols for the formation, not a hidden vocabulary test."],
+      ["How does a general appear?", "Merge two matching level-three units. The result becomes the general associated with that unit type."],
+      ["Can I lose after making a strong merge?", "Yes. A merge improves damage but can leave a lane empty. Keep coverage in mind before combining."],
+      ["Does progress save?", "Yes. Cleared missions and best stars use local browser storage only."]
+    ]
+  }, "趙雲與阿斗：墨線守衛", "赵云与阿斗：墨线守卫");
+
   const completeGuideStandard = (id) => {
     const game = games[id];
     if (!game) return;
@@ -9057,6 +9103,7 @@
     "hexa-sort",
     "animal-bamboo-pipes",
     "animal-bus-jam",
+    "zhao-yun-a-dou",
     "animal-cratebound",
     "animal-mosaic-clues",
     "animal-number-match",

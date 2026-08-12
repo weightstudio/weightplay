@@ -8,6 +8,8 @@
   document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-crystal-survivor";
+  const GAME_VERSION = "v15";
+  const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_animal_crystal_survivor_v1";
   const localeKey = "weightPlayLocale";
   const W = 1024;
@@ -526,6 +528,7 @@
   let runToken = 0;
   let battleSuspended = false;
   let resultActionClaimed = false;
+  let resultStageCleared = false;
   const STAGE_CARD_POOL_SIZE = 9;
   let stageCardPool = [];
   let stageWindowStart = 0;
@@ -535,6 +538,31 @@
   const soundGate = {};
   const keys = new Set();
   const movementKeys = new Set(["arrowleft", "arrowright", "arrowup", "arrowdown", "a", "d", "w", "s"]);
+
+  function viewportBucket() {
+    const width = Math.max(1, window.innerWidth || document.documentElement.clientWidth || 1);
+    const height = Math.max(1, window.innerHeight || document.documentElement.clientHeight || 1);
+    if (height <= 430) return "short-landscape";
+    if (width <= 480) return "phone";
+    if (width <= 900) return height > width ? "tablet-portrait" : "tablet-landscape";
+    return height > width ? "desktop-portrait" : "desktop-landscape";
+  }
+
+  function track(eventName, details = {}) {
+    try {
+      window.WonderAnalytics?.track?.(eventName, {
+        game_id: GAME_ID,
+        game_version: GAME_VERSION,
+        interface_version: INTERFACE_VERSION,
+        locale: window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale,
+        viewport_bucket: viewportBucket(),
+        stage: Math.max(1, Number(state?.stage || save?.selectedStage) || 1),
+        ...details,
+      });
+    } catch {
+      // Anonymous funnel measurement must never interrupt play.
+    }
+  }
 
   function readStorage(key) {
     try {
@@ -745,7 +773,7 @@
       nodes.loadingFill.style.width = "100%";
       nodes.loadingPanel.classList.add("hidden");
       draw();
-      window.WonderAnalytics?.track("game_ready", { game_id: GAME_ID, prototype: true });
+      track("game_ready", { prototype: true });
       maybeAutostartSmokeRun();
     };
     entries.forEach(([key, src]) => {
@@ -899,7 +927,7 @@
     updateDiamondShop(t("charmBought", { balance: diamondBalance() }));
     if (transferFocus) nodes.equipmentTabBtn?.focus({ preventScroll: true });
     playSound("success", 0.2);
-    window.WonderAnalytics?.track("diamond_spend", { game_id: GAME_ID, item: "crystal_charm", cost: crystalCharmCost, balance: diamondBalance() });
+    track("diamond_spend", { item: "crystal_charm", cost: crystalCharmCost, balance: diamondBalance() });
   }
 
   function show(panel) {
@@ -1199,7 +1227,7 @@
     rail.addEventListener("click", (event) => { if (!suppressClick) return; suppressClick = false; event.preventDefault(); event.stopImmediatePropagation(); }, true);
   }
 
-  function startRun() {
+  function startRun(entry = "stage_select") {
     clearCharmConfirmation();
     setUpgradeModalOpen(false, false);
     runToken += 1;
@@ -1232,7 +1260,8 @@
     });
     lastFrame = performance.now();
     playSound("start", 0.2);
-    window.WonderAnalytics?.track("game_start", { game_id: GAME_ID, locale, prototype: true });
+    track("stage_start", { entry, target_keys: state.stageConfig.targetKeys, boss_stage: Boolean(state.stageConfig.bossImage) });
+    track("game_start", { entry, prototype: true });
     scheduleLoop();
   }
 
@@ -1634,7 +1663,8 @@
       addSpark(p.x, p.y - 52, "#ffe76c");
       addFloater("+1", p.x, p.y - 90, "#ffe76c");
       playSound("success", 0.12);
-      window.WonderAnalytics?.track("game_key_collect", { game_id: GAME_ID, keys: state.keys, prototype: true });
+      if (state.keys === 1) track("first_key_collect", { elapsed_seconds: Math.round(state.survived) });
+      track("game_key_collect", { keys: state.keys, prototype: true });
     }
   }
 
@@ -1646,7 +1676,7 @@
     renderUpgradeCards();
     setUpgradeModalOpen(true);
     playSound("upgrade", 0.2);
-    window.WonderAnalytics?.track("game_level_up", { game_id: GAME_ID, level: state.level, prototype: true });
+    track("game_level_up", { level: state.level, prototype: true });
   }
 
   function renderUpgradeCards() {
@@ -1713,7 +1743,7 @@
     state.mode = "running";
     setUpgradeModalOpen(false);
     playSound("click", 0.1);
-    window.WonderAnalytics?.track("game_upgrade_choice", { game_id: GAME_ID, upgrade: id, level: state.level, prototype: true });
+    track("game_upgrade_choice", { upgrade: id, level: state.level, prototype: true });
     lastFrame = performance.now();
     scheduleLoop();
   }
@@ -1743,6 +1773,7 @@
     const stageCleared = reason === "time"
       && state.keys >= state.stageConfig.targetKeys
       && (!state.stageConfig.bossImage || state.bossDefeated);
+    resultStageCleared = stageCleared;
     save.bestKeys = Math.max(save.bestKeys || 0, state.keys);
     save.bestLevel = Math.max(save.bestLevel || 1, state.level);
     save.totalKeys = Math.max(0, Number(save.totalKeys) || 0) + Math.max(0, state.keys);
@@ -1768,7 +1799,14 @@
     });
     primaryAction.focus({ preventScroll: true });
     playSound(stageCleared ? "win" : "wrong", 0.4);
-    window.WonderAnalytics?.track("game_complete", { game_id: GAME_ID, reason, keys: state.keys, level: state.level, prototype: true });
+    track(stageCleared ? "stage_complete" : "stage_fail", {
+      reason,
+      keys: state.keys,
+      target_keys: state.stageConfig.targetKeys,
+      level: state.level,
+      survived_seconds: Math.round(state.survived),
+    });
+    track("game_complete", { reason, keys: state.keys, level: state.level, stage_cleared: stageCleared, prototype: true });
   }
 
   function claimResultAction() {
@@ -2371,6 +2409,7 @@
   nodes.stageTabBtn?.addEventListener("click", () => setStagePage("stages"));
   nodes.equipmentTabBtn?.addEventListener("click", () => setStagePage("equipment"));
   nodes.stageBackBtn.addEventListener("click", () => {
+    track("return_session", { from_screen: "stage" });
     state.mode = "menu";
     renderMainProgress();
     show(nodes.menuPanel);
@@ -2403,10 +2442,12 @@
   });
   nodes.retryBtn.addEventListener("click", () => {
     if (!claimResultAction()) return;
-    startRun();
+    track("result_action", { action: "retry", outcome: resultStageCleared ? "complete" : "fail" });
+    startRun("retry");
   });
   nodes.nextStageBtn.addEventListener("click", () => {
     if (!claimResultAction()) return;
+    track("result_action", { action: "next", outcome: "complete", to_stage: Math.min(save.unlockedStage, state.stage + 1) });
     save.selectedStage = Math.min(save.unlockedStage, state.stage + 1);
     persist();
     showStageSelection(true);
@@ -2435,6 +2476,7 @@
   });
   nodes.resultMenuBtn.addEventListener("click", () => {
     if (!claimResultAction()) return;
+    track("result_action", { action: "return", outcome: resultStageCleared ? "complete" : "fail" });
     runToken += 1;
     clearInput();
     state.mode = "stage";
