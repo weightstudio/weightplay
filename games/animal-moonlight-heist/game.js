@@ -1,6 +1,6 @@
 (() => {
   const $ = (s) => document.querySelector(s);
-  const GAME_VERSION = 13, INTERFACE_VERSION = 6;
+  const GAME_VERSION = 15, INTERFACE_VERSION = 6;
   const viewportBucket = () => {
     const width = window.innerWidth || 0, height = window.innerHeight || 0;
     return height <= 430 ? "short-landscape" : width <= 430 ? "phone" : width >= 1000 ? "desktop" : "tablet";
@@ -119,6 +119,22 @@
     seals:{id:"vault-sealkeeper",name:["Vault Sealkeeper","寶庫封印官"],behavior:"seals",path:[26,34,74,34]},
     eclipse:{id:"eclipse-curator",name:["Eclipse Curator","日蝕館長"],behavior:"eclipse",path:[18,26,82,70]}
   };
+  const gadgetUseCases = {
+    en: {dashUse:"Best for crossing long patrol sightlines.",decoyUse:"Best when patrol routes converge.",smokeUse:"Best for recovering from high Alert."},
+    "zh-Hant": {dashUse:"適合快速穿越長距離巡邏視線。",decoyUse:"適合兩條巡邏路線交會時。",smokeUse:"適合警報偏高時脫離危險。"},
+    "zh-Hans": {dashUse:"适合快速穿越较长的巡逻视线。",decoyUse:"适合两条巡逻路线交会时。",smokeUse:"适合警报较高时脱离危险。"},
+    ja: {dashUse:"長い巡回視線を素早く横切る時に最適。",decoyUse:"複数の巡回ルートが交差する時に最適。",smokeUse:"警戒度が高い時の立て直しに最適。"},
+    ko: {dashUse:"긴 순찰 시야를 빠르게 통과할 때 적합합니다.",decoyUse:"순찰 경로가 겹칠 때 적합합니다.",smokeUse:"경계 수치가 높을 때 회복하기 좋습니다."},
+    es: {dashUse:"Ideal para cruzar líneas de visión largas.",decoyUse:"Ideal cuando convergen rutas de patrulla.",smokeUse:"Ideal para recuperarte con la alerta alta."},
+    "pt-BR": {dashUse:"Ideal para cruzar longas linhas de visão.",decoyUse:"Ideal quando rotas de patrulha convergem.",smokeUse:"Ideal para se recuperar com o Alerta alto."},
+    fr: {dashUse:"Idéal pour traverser de longues lignes de vue.",decoyUse:"Idéal quand les rondes convergent.",smokeUse:"Idéal pour récupérer avec une alerte élevée."},
+    de: {dashUse:"Ideal zum Überqueren langer Sichtlinien.",decoyUse:"Ideal, wenn sich Patrouillenwege kreuzen.",smokeUse:"Ideal, um sich bei hohem Alarm zu erholen."},
+    it: {dashUse:"Ideale per attraversare lunghe linee di vista.",decoyUse:"Ideale quando i percorsi delle pattuglie convergono.",smokeUse:"Ideale per recuperare con Allerta alta."},
+    ru: {dashUse:"Лучше всего для быстрого пересечения длинной линии обзора.",decoyUse:"Лучше всего, когда маршруты патрулей сходятся.",smokeUse:"Лучше всего для спасения при высокой тревоге."},
+    hi: {dashUse:"लंबी गश्ती दृष्टि-रेखा को जल्दी पार करने के लिए श्रेष्ठ।",decoyUse:"गश्ती मार्गों के मिलने पर श्रेष्ठ।",smokeUse:"चेतावनी अधिक होने पर संभलने के लिए श्रेष्ठ।"},
+    ar: {dashUse:"الأفضل لعبور خطوط رؤية الدوريات الطويلة بسرعة.",decoyUse:"الأفضل عند تقاطع مسارات الدوريات.",smokeUse:"الأفضل للتعافي عندما يكون مستوى الإنذار مرتفعًا."},
+  };
+  Object.entries(gadgetUseCases).forEach(([code, values]) => Object.assign(copy[code] ||= {}, values));
   const campaignMission=(en,zh,ruleEn,ruleZh,data)=>({name:[en,zh],rule:[ruleEn,ruleZh],...data});
   const campaign=[
     campaignMission("Quiet Threshold","靜謐門廊","Read one patrol, recover the seal, then extract.","觀察單一路線，取得封印後撤離。",{object:[50,42],treasure:[82,36],exit:[50,10],patrols:[[24,32,76,32]],speed:.88}),
@@ -260,7 +276,7 @@
   [[guardianCatalog.spotlight,"提灯审查官"],[guardianCatalog.bell,"月钟守卫"],[guardianCatalog.mirror,"星镜看守"],[guardianCatalog.clock,"发条巡察长"],[guardianCatalog.seals,"宝库封印官"],[guardianCatalog.eclipse,"日蚀馆长"]].forEach(([guardian,name])=>{guardian.name[4]=name});
   function normalizeLocale(value){if(value==="zh-TW")return"zh-Hant";if(value==="zh-CN")return"zh-Hans";if(value?.startsWith("pt"))return"pt-BR";return value||"en"}
   const STAGE_CARD_POOL_SIZE=9;
-  let state=load(),locale=normalizeLocale(window.WonderI18n?.locale?.()||readOptionalStorage(localeKey)||readOptionalStorage(legacyLocaleKey)||"en"),selectedMission=0,centeredMission=Math.max(0,Math.min(campaign.length-1,(state.unlocked||1)-1)),gadget="dash",gadgetOffers=createOffers(),insuranceActive=state.insuranceReady===true,preservedTreasure=false,playing=false,paused=false,alert=0,objectFound=false,treasureFound=false,caught=false,firstMoveTracked=false,patrols=[],lastTime=0,missionStartedAt=0,freezeUntil=0,smokeUntil=0,pickupCoverUntil=0,preview=null,arrivalTimer=0,animationFrame=0,routePointerId=null,lastPulseCycle=-1,lastMirrorCycle=-1,guardianPhase=1,resultActionClaimed=false;
+  let state=load(),locale=normalizeLocale(document.documentElement.lang||window.WonderI18n?.locale?.()||readOptionalStorage(localeKey)||readOptionalStorage(legacyLocaleKey)||"en"),selectedMission=0,centeredMission=Math.max(0,Math.min(campaign.length-1,(state.unlocked||1)-1)),gadget="dash",gadgetOffers=createOffers(),insuranceActive=state.insuranceReady===true,preservedTreasure=false,playing=false,paused=false,alert=0,objectFound=false,treasureFound=false,caught=false,firstMoveTracked=false,patrols=[],lastTime=0,missionStartedAt=0,freezeUntil=0,smokeUntil=0,pickupCoverUntil=0,preview=null,arrivalTimer=0,animationFrame=0,routePointerId=null,lastPulseCycle=-1,lastMirrorCycle=-1,guardianPhase=1,resultActionClaimed=false;
   let stageWindowStart=0,stageCardPool=[],stageBrowseLogical=centeredMission,stageSettleFrame=0,cancelStagePointer=()=>{};
   const gameLocales=new Set(["en","zh-Hant","zh-Hans","es","ru"]);
   const localeArrayIndex=()=>locale==="zh-Hant"?1:locale==="es"?2:locale==="ru"?3:locale==="zh-Hans"?4:0;
@@ -361,7 +377,7 @@
     if(id==="decoy")return t("decoyEffect",{seconds:(2.5+level*.65).toFixed(2).replace(/0$/,"")});
     return t("smokeEffect",{seconds:(.8+level*.5).toFixed(1)});
   }
-  function gadgetSummary(id=gadget,level=selectedOffer().level){return `${t(id)} · ${levelText(level)} · ${gadgetEffect(id,level)}`}
+  function gadgetSummary(id=gadget,level=selectedOffer().level){return `${t(id)} · ${levelText(level)} · ${gadgetEffect(id,level)} · ${t(`${id}Use`)}`}
   function clearPendingEconomy({render=true}={}){clearTimeout(pendingEconomyTimer);pendingEconomyTimer=0;pendingEconomyDeadline=0;pendingEconomyRemaining=0;pendingEconomy="";if(render)renderEconomy()}
   function schedulePendingEconomyExpiry(delay){
     clearTimeout(pendingEconomyTimer);pendingEconomyRemaining=Math.max(0,delay);pendingEconomyDeadline=performance.now()+pendingEconomyRemaining;

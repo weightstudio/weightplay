@@ -501,7 +501,7 @@
       if (Number(card.rank) === 13) {
         this.pushHistory();
         if (source.zone === "pyramid") this.cards[source.index].removed = true; else this.waste.pop();
-        this.moves += 1; this.selected = null; this.checkWin(); return true;
+        this.moves += 1; this.combo += 1; this.bestCombo = Math.max(this.bestCombo, this.combo); this.selected = null; this.checkWin(); return true;
       }
       if (!this.selected) { this.selected = { ...source }; return true; }
       if (this.sourceKey(this.selected) === key) { this.selected = null; return true; }
@@ -510,7 +510,7 @@
       this.pushHistory();
       if (this.selected.zone === "pyramid") this.cards[this.selected.index].removed = true; else this.waste.pop();
       if (source.zone === "pyramid") this.cards[source.index].removed = true; else this.waste.pop();
-      this.moves += 1; this.selected = null; this.checkWin(); return true;
+      this.moves += 1; this.combo += 1; this.bestCombo = Math.max(this.bestCombo, this.combo); this.selected = null; this.checkWin(); return true;
     }
 
     sequencePlay(source) {
@@ -934,7 +934,7 @@
     showPairCue() {
       if (!this.nodes.boardStatus || this.game.won || this.game.lost) return;
       this.nodes.boardStatus.dataset.state = "pair";
-      this.nodes.boardStatus.textContent = this.t("pairClear");
+      this.nodes.boardStatus.textContent = `${this.t("pairClear")} · ${this.t("score")} +2 · ${this.t("combo")} ×${this.game.combo}`;
       clearTimeout(this.statusTimer);
       this.statusTimer = setTimeout(() => {
         if (this.nodes.boardStatus && !this.game.won && !this.game.lost) {
@@ -1121,10 +1121,16 @@
     render() {
       this.hideResult();
       this.nodes.moveCount.textContent = String(this.game.moves);
-      this.nodes.scoreValue.textContent = this.config.variant === "tripeaks" || this.config.variant === "golf" ? String(this.game.bestCombo) : String(this.game.foundations.reduce((sum, pile) => sum + pile.cards.length, 0));
+      const score = this.config.variant === "pyramid"
+        ? 28 - this.game.remainingCards()
+        : this.config.variant === "tripeaks" || this.config.variant === "golf"
+          ? this.game.bestCombo
+          : this.game.foundations.reduce((sum, pile) => sum + pile.cards.length, 0);
+      this.nodes.scoreValue.textContent = String(score);
+      this.nodes.scoreValue.setAttribute("aria-live", "polite");
       this.nodes.comboValue.textContent = this.game.combo ? `×${this.game.combo}` : "—";
       this.nodes.comboValue.setAttribute("aria-live", "polite");
-      if ((this.config.variant === "tripeaks" || this.config.variant === "golf") && this.game.combo > 0 && this.game.combo !== this.renderedCombo) {
+      if ((this.config.variant === "pyramid" || this.config.variant === "tripeaks" || this.config.variant === "golf") && this.game.combo > 0 && this.game.combo !== this.renderedCombo) {
         this.nodes.comboValue.classList.remove("combo-pop");
         void this.nodes.comboValue.offsetWidth;
         this.nodes.comboValue.classList.add("combo-pop");
