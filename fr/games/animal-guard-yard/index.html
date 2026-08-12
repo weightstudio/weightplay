@@ -222,7 +222,28 @@
     <script src="../../src/version.js?v=20260701-version2"></script>
     <script src="../../src/analytics.js?v=20260701-analytics2"></script>
     <script>
-      window.WonderAnalytics?.track("game_view", { game_id: "animal-guard-yard" });
+      (() => {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        const viewportBucket = width <= 480
+          ? "phone"
+          : height < 520 && width > height
+            ? "short-landscape"
+            : width <= 900 && height >= width
+              ? "tablet-portrait"
+              : "desktop-landscape";
+        try {
+          window.WonderAnalytics?.track("game_view", {
+            game_id: "animal-guard-yard",
+            game_version: "v14",
+            interface_version: 6,
+            locale: document.documentElement.lang || "en",
+            viewport_bucket: viewportBucket,
+          });
+        } catch {
+          // Page entry remains usable when analytics is unavailable.
+        }
+      })();
     </script>
     <script src="../../src/wallet.js?v=20260630-senior1"></script>
     <script src="../../src/sound.js?v=20260720-locale11"></script>
@@ -230,7 +251,7 @@
     <script src="/src/i18n.js?v=20260731-owner-preview5"></script><script src="/src/runtime-locales/fr.js?v=20260808-locale-static1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
-    <script src="game.js?v=20260810-guard-stage-v12-2"></script>
+    <script src="game.js?v=20260813-guard-funnel-v14"></script>
     <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
     <script src="../../src/battle-canvas-standard.js?v=20260729-guard-general2" data-wp-battle-standard></script>
     <script>

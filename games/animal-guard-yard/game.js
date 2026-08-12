@@ -1,5 +1,7 @@
 ﻿(() => {
   const GAME_ID = "animal-guard-yard";
+  const GAME_VERSION = "v14";
+  const INTERFACE_VERSION = 6;
   const localeKey = "weightplayLocale";
   const unlockKey = "weightplay_animal_guard_unlocked";
   const bestKey = "weightplay_animal_guard_best";
@@ -676,6 +678,10 @@
   let cells = [];
   let raf = 0;
   let resultActionClaimed = false;
+  let guardPlacements = 0;
+  let waveCheckpoints = new Set();
+  let lastResultOutcome = "";
+  let sessionHadBattle = false;
   let boardRect = { width: 1, height: 1 };
   let coinsEarned = 0;
   let lastDangerAt = 0;
@@ -997,8 +1003,29 @@
     window.WonderSound?.play?.(name);
   }
 
+  function viewportBucket() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    if (width <= 480) return "phone";
+    if (height < 520 && width > height) return "short-landscape";
+    if (width <= 900 && height >= width) return "tablet-portrait";
+    return "desktop-landscape";
+  }
+
   function track(event, payload = {}) {
-    window.WonderAnalytics?.track(event, { game_id: GAME_ID, ...payload });
+    try {
+      window.WonderAnalytics?.track(event, {
+        game_id: GAME_ID,
+        game_version: GAME_VERSION,
+        interface_version: INTERFACE_VERSION,
+        locale: locale || document.documentElement.lang || "en",
+        viewport_bucket: viewportBucket(),
+        stage: currentStage + 1,
+        ...payload,
+      });
+    } catch {
+      // Analytics must never block a player action or alter battle state.
+    }
   }
 
   function localizeStatic() {
@@ -1658,6 +1685,10 @@
     projectiles = [];
     cells = [];
     coinsEarned = 0;
+    guardPlacements = 0;
+    waveCheckpoints = new Set();
+    lastResultOutcome = "";
+    sessionHadBattle = true;
     lastDangerAt = 0;
     selectedUnit = units.find((unit) => isOwned(unit.id))?.id || units[0].id;
     activateScene("battle");
@@ -1671,6 +1702,7 @@
     buildBoard(stage);
     renderUnits();
     updateHud();
+    track("stage_start", { outcome: "started" });
     track("game_start", { level: index + 1 });
     playSound("start");
     window.WeightPlayGame?.exitMobileGameMode?.();
@@ -1789,6 +1821,7 @@
       button.addEventListener("click", () => {
         const restoreFocus = document.activeElement === button;
         selectedUnit = unit.id;
+        track("guard_selected");
         playSound("click");
         renderUnits();
         if (restoreFocus) {
@@ -1856,6 +1889,9 @@
     nodes.yardBoard.appendChild(guard.hpEl);
     cell.unit = guard;
     entities.push(guard);
+    guardPlacements += 1;
+    track("guard_placed", { placement_number: guardPlacements });
+    if (guardPlacements === 1) track("first_guard_placed");
     updateEntityElement(guard);
     pulseClass(guard.el, "is-placed", 420);
     spawnImpact(cellCenterX(col), laneProjectileY(row), "place");
@@ -1868,6 +1904,12 @@
     const stage = stages[currentStage];
     if (spawned >= stage.total) return;
     spawned += 1;
+    const waveProgress = Math.round((spawned / stage.total) * 100);
+    [25, 50, 75, 100].forEach((checkpoint) => {
+      if (waveProgress < checkpoint || waveCheckpoints.has(checkpoint)) return;
+      waveCheckpoints.add(checkpoint);
+      track("wave_checkpoint", { checkpoint_percent: checkpoint, outcome: "in_progress" });
+    });
     const plan = nextSpawnPlan || makeSpawnPlan(spawned);
     const data = plan?.data || stage.zombies[0];
     const row = Number.isInteger(plan?.row) ? plan.row : Math.floor(Math.random() * stage.rows);
@@ -2169,6 +2211,7 @@
       if (zombie.x < -0.04) {
         zombie.dead = true;
         baseHp -= 1;
+        track("home_heart_lost", { remaining_hearts: Math.max(0, baseHp), outcome: "damage" });
         pulseDanger();
         playSound("error");
       }
@@ -2463,6 +2506,12 @@
       resultMessage = `${resultMessage} ${t("masteryMilestone", { coins: progress.masteryCoins })}`;
     }
     renderResultReport(resultMessage, progress, won);
+    lastResultOutcome = won ? "win" : "loss";
+    track("stage_result", {
+      outcome: lastResultOutcome,
+      remaining_hearts: Math.max(0, baseHp),
+      score: finalScore,
+    });
     track(won ? "game_complete" : "game_over", {
       level: currentStage + 1,
       hp: baseHp,
@@ -2502,6 +2551,21 @@
     if (nodes.resultPanel.classList.contains("hidden") || resultActionClaimed) return false;
     resultActionClaimed = true;
     return true;
+  }
+
+  function trackResultAction(action) {
+    track("result_action", { action, outcome: lastResultOutcome || "unknown" });
+    if (action === "retry") track("retry", { outcome: lastResultOutcome || "unknown" });
+    if (action === "next") track("next_stage", { outcome: "continued" });
+    if (action === "return") track("stage_return", { outcome: lastResultOutcome || "unknown" });
+  }
+
+  function returnToMain() {
+    if (sessionHadBattle) {
+      track("return_session", { outcome: "returned" });
+      sessionHadBattle = false;
+    }
+    showMain();
   }
 
   function restoreKennelActionFocus(unitId, ownerGrid) {
@@ -2620,14 +2684,17 @@
   nodes.kennelGrid?.addEventListener("keydown", rejectRepeatedScreenActivation, true);
   nodes.shopGrid?.addEventListener("keydown", rejectRepeatedScreenActivation, true);
   nodes.startGameBtn?.addEventListener("click", () => showMenu());
-  nodes.stageBackMainBtn?.addEventListener("click", showMain);
+  nodes.stageBackMainBtn?.addEventListener("click", returnToMain);
   nodes.backToStagesBtn.addEventListener("click", showPause);
   nodes.pauseBtn.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });
   nodes.pauseBtn.addEventListener("click", showPause);
   nodes.resumeBtn.addEventListener("click", resumeBattle);
-  nodes.leaveBattleBtn.addEventListener("click", showMenu);
+  nodes.leaveBattleBtn.addEventListener("click", () => {
+    track("stage_return", { outcome: "abandoned" });
+    showMenu();
+  });
   nodes.pausePanel.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) {
       event.preventDefault();
@@ -2656,20 +2723,27 @@
   });
   nodes.resultStagesBtn.addEventListener("click", () => {
     if (!claimResultAction()) return;
+    trackResultAction("return");
     showMenu();
   });
   nodes.retryBtn.addEventListener("click", () => {
     if (!claimResultAction()) return;
+    trackResultAction("retry");
     startStage(currentStage);
   });
   nodes.nextStageBtn.addEventListener("click", () => {
     if (!claimResultAction()) return;
+    trackResultAction("next");
     startStage(Math.min(currentStage + 1, stages.length - 1));
   });
   if (new URLSearchParams(location.search).has("test")) {
     window.__AnimalGuardYardTest = {
       finish,
       startStage,
+      spawnForTest: (count = 1) => {
+        for (let index = 0; index < count; index += 1) spawnZombie();
+        updateHud();
+      },
       storageSnapshot: () => ({
         unlocked: Number(readStorage(unlockKey)) || 1,
         progress: JSON.parse(readStorage(progressKey) || "{}"),

@@ -165,6 +165,25 @@
   };
   Object.entries(difficultyLabels).forEach(([key, value]) => { I18N[key].difficulty_label = value; });
 
+  const replayLinkCopy = Object.freeze({
+    en: ["Copy replay link", "Replay link copied", "Could not copy the replay link"],
+    "zh-Hant": ["複製本局連結", "已複製本局連結", "無法複製本局連結"],
+    "zh-Hans": ["复制本局链接", "已复制本局链接", "无法复制本局链接"],
+    ja: ["このゲームのリンクをコピー", "リンクをコピーしました", "リンクをコピーできませんでした"],
+    ko: ["이 게임 링크 복사", "게임 링크를 복사했습니다", "게임 링크를 복사할 수 없습니다"],
+    es: ["Copiar enlace de la partida", "Enlace de la partida copiado", "No se pudo copiar el enlace"],
+    "pt-BR": ["Copiar link da partida", "Link da partida copiado", "Não foi possível copiar o link"],
+    fr: ["Copier le lien de la partie", "Lien de la partie copié", "Impossible de copier le lien"],
+    de: ["Link zu diesem Spiel kopieren", "Spiellink kopiert", "Spiellink konnte nicht kopiert werden"],
+    it: ["Copia link della partita", "Link della partita copiato", "Impossibile copiare il link"],
+    ru: ["Копировать ссылку на расклад", "Ссылка на расклад скопирована", "Не удалось скопировать ссылку"],
+    hi: ["इस खेल का लिंक कॉपी करें", "खेल का लिंक कॉपी हो गया", "खेल का लिंक कॉपी नहीं हो सका"],
+    ar: ["نسخ رابط هذه اللعبة", "تم نسخ رابط اللعبة", "تعذر نسخ رابط اللعبة"],
+  });
+  Object.entries(replayLinkCopy).forEach(([key, value]) => {
+    [I18N[key].copy_replay_link, I18N[key].replay_link_copied, I18N[key].replay_link_copy_failed] = value;
+  });
+
   const SUIT_LABELS = Object.freeze({
     en: { spades: "Spades", hearts: "Hearts", clubs: "Clubs", diamonds: "Diamonds" },
     "zh-Hant": { spades: "黑桃", hearts: "紅心", clubs: "梅花", diamonds: "方塊" },
@@ -184,19 +203,28 @@
 
   const ui = {};
   const get = (id) => document.getElementById(id);
-  ["loadingPanel", "loadingText", "loadingFill", "mainGroup", "mainScreen", "stageScreen", "stageBackBtn", "stageStartBtn", "battleScreen", "audioMenuBtn", "audioPopover", "soundBtn", "soundStateText", "localeSelect", "statistics", "startBtn", "mainProgress", "restartBtn", "newGameBtn", "battleBackBtn", "moveCount", "timeValue", "scoreValue", "completedValue", "foundationRow", "stockPile", "dealLabel", "dealsLeft", "undoBtn", "hintBtn", "helpBtn", "boardShell", "tableauRow", "sequenceFx", "tutorialOverlay", "difficultyCoach", "tutorialSkip", "tutorialDone", "confirmOverlay", "confirmNo", "confirmYes", "resultOverlay", "resultText", "resultNewGame", "resultRestart", "resultClose", "hintOverlay", "dragLayer"].forEach((id) => { ui[id] = get(id); });
+  ["loadingPanel", "loadingText", "loadingFill", "mainGroup", "mainScreen", "stageScreen", "stageBackBtn", "stageStartBtn", "battleScreen", "audioMenuBtn", "audioPopover", "soundBtn", "soundStateText", "localeSelect", "statistics", "startBtn", "mainProgress", "restartBtn", "newGameBtn", "battleBackBtn", "moveCount", "timeValue", "scoreValue", "completedValue", "foundationRow", "stockPile", "dealLabel", "dealsLeft", "undoBtn", "hintBtn", "copyReplayLinkBtn", "helpBtn", "boardShell", "tableauRow", "sequenceFx", "tutorialOverlay", "difficultyCoach", "tutorialSkip", "tutorialDone", "confirmOverlay", "confirmNo", "confirmYes", "resultOverlay", "resultText", "resultNewGame", "resultRestart", "resultClose", "hintOverlay", "dragLayer"].forEach((id) => { ui[id] = get(id); });
 
   const safeGet = (key, fallback = null) => { try { return localStorage.getItem(key) ?? fallback; } catch (_error) { return fallback; } };
   const safeSet = (key, value) => { try { localStorage.setItem(key, value); } catch (_error) { } };
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   const formatTime = (seconds) => `${String(Math.floor(Math.max(0, seconds) / 60)).padStart(2, "0")}:${String(Math.max(0, seconds) % 60).padStart(2, "0")}`;
   const seedNow = () => ((Date.now() ^ Math.floor(Math.random() * 0xffffffff)) >>> 0);
-  const syncReplaySeedUrl = (seed) => {
+  const syncReplaySeedUrl = (seed, difficulty) => {
     try {
       const url = new URL(window.location.href);
       url.searchParams.set("seed", String(seed >>> 0));
+      url.searchParams.set("suits", String(difficulty));
       window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
     } catch (_error) { }
+  };
+  const buildReplayLink = () => {
+    const url = new URL(window.location.href);
+    url.search = "";
+    url.hash = "";
+    url.searchParams.set("seed", String(game.seed >>> 0));
+    url.searchParams.set("suits", String(state.difficulty));
+    return url.href;
   };
 
   function locale() {
@@ -559,7 +587,9 @@
   }
 
   const stats = loadStats();
-  const state = { difficulty: Number(safeGet(STORAGE.difficulty, "1")) || 1, active: false, hasStarted: false, elapsed: 0, timer: null, hintTimer: null, pendingAction: null, dragging: null, renderGeneration: 0, winRecorded: false, lastFrameCards: new Map(), layoutMaxRows: 0, layoutFitKey: "", fitRaf: 0, cardPool: new Map(), pendingDealDelays: null, completionFlyouts: new Set() };
+  const requestedDifficulty = Number(new URLSearchParams(window.location.search).get("suits"));
+  const storedDifficulty = Number(safeGet(STORAGE.difficulty, "1")) || 1;
+  const state = { difficulty: DIFFICULTIES[requestedDifficulty] ? requestedDifficulty : storedDifficulty, active: false, hasStarted: false, elapsed: 0, timer: null, hintTimer: null, pendingAction: null, dragging: null, renderGeneration: 0, winRecorded: false, lastFrameCards: new Map(), layoutMaxRows: 0, layoutFitKey: "", fitRaf: 0, cardPool: new Map(), pendingDealDelays: null, completionFlyouts: new Set() };
   state.difficulty = DIFFICULTIES[state.difficulty] ? state.difficulty : 1;
   let game = new SpiderBoard(state.difficulty);
   const audio = new SoundEngine(STORAGE.sound);
@@ -719,6 +749,34 @@
       ui.hintOverlay.textContent = "";
       state.hintTimer = null;
     }, HINT_MS);
+  }
+
+  async function copyReplayLink() {
+    const link = buildReplayLink();
+    try {
+      let copied = false;
+      if (navigator.clipboard?.writeText) {
+        try {
+          await navigator.clipboard.writeText(link);
+          copied = true;
+        } catch (_clipboardError) { }
+      }
+      if (!copied) {
+        const field = document.createElement("textarea");
+        field.value = link;
+        field.setAttribute("readonly", "");
+        field.style.position = "fixed";
+        field.style.opacity = "0";
+        document.body.append(field);
+        field.select();
+        copied = document.execCommand("copy");
+        field.remove();
+        if (!copied) throw new Error("copy command rejected");
+      }
+      showHint(t("replay_link_copied"));
+    } catch (_error) {
+      showHint(t("replay_link_copy_failed"));
+    }
   }
 
   function highlightMove(move) {
@@ -1200,7 +1258,7 @@
     const requestedSeed = !state.hasStarted ? new URLSearchParams(window.location.search).get("seed") : null;
     const replaySeed = requestedSeed != null && /^\d+$/u.test(requestedSeed) ? Number(requestedSeed) >>> 0 : null;
     game.newGame(replaySeed == null ? seedNow() : replaySeed);
-    syncReplaySeedUrl(game.seed);
+    syncReplaySeedUrl(game.seed, state.difficulty);
     state.hasStarted = true;
     stats[state.difficulty].gamesPlayed += 1;
     saveStats();
@@ -1625,6 +1683,7 @@
       snapshot() {
         return {
           seed: game.seed,
+          difficulty: state.difficulty,
           completed: game.completed.total,
           moveCount: game.moveCount,
           score: game.score,
@@ -1677,6 +1736,7 @@
     ui.stockPile.addEventListener("click", clickStock);
     ui.undoBtn.addEventListener("click", requestUndo);
     ui.hintBtn.addEventListener("click", requestHint);
+    ui.copyReplayLinkBtn.addEventListener("click", copyReplayLink);
     ui.helpBtn.addEventListener("click", () => { ui.tutorialOverlay.hidden = false; });
     ui.audioMenuBtn.addEventListener("click", () => { ui.audioPopover.classList.toggle("is-hidden"); ui.audioMenuBtn.setAttribute("aria-expanded", String(!ui.audioPopover.classList.contains("is-hidden"))); });
     ui.soundBtn.addEventListener("click", () => { setCardSoundEnabled(!audio.enabled); setSoundButton(); });
