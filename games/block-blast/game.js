@@ -149,5 +149,7 @@ window.__BLOCK_BLAST__={stages:STAGES,shapes:SHAPES,terrain:TERRAIN,dirtBlock:DI
 const blockBlastGetState=window.__BLOCK_BLAST__.getState;
 window.__BLOCK_BLAST__.getState=()=>({...blockBlastGetState(),endlessBest});
 window.__BLOCK_BLAST__.getEndlessBest=()=>endlessBest;
+$("stageRail")?.removeAttribute("data-wp-stage-v6-auto");
+document.addEventListener("DOMContentLoaded",()=>{renderStages();$("stageRail")?.setAttribute("data-wp-stage-v6-auto","true");},{once:true});
 applyLocale();syncSound();setScreen("main");setTimeout(()=>{mountEndlessEntry();document.documentElement.dataset.gameReady="true";},0);
 })();
