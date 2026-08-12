@@ -11,6 +11,12 @@
   const SYMBOLS = { spades: "♠", hearts: "♥", clubs: "♣", diamonds: "♦" };
   const RANKS = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
   const LOCALES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const sameMoveLocation = (left, right) => {
+    if (!left || !right || left.zone !== right.zone) return false;
+    if (left.zone === "tableau") return left.pile === right.pile;
+    if (left.zone === "free" || left.zone === "foundation") return left.index === right.index;
+    return true;
+  };
 
   const COMMON = {
     en: { start: "Start Game", restart: "Restart", newGame: "New Game", undo: "Undo", hint: "Hint", how: "How to play", settings: "Settings", sound: "Sound", soundOn: "Sound: On", soundOff: "Sound: Off", moves: "Moves", score: "Score", stock: "Stock", waste: "Waste", freeCells: "Free Cells", foundations: "Foundations", tableau: "Tableau", combo: "Combo", draw: "Draw card", win: "Game Complete", lose: "No more moves", winText: "A clean table. Nice work!", loseText: "Try Undo or start a fresh deal.", close: "Close", back: "Back", empty: "Empty", selected: "Selected", noMoves: "No legal move found.", wrong: "That move is not legal.", pairWrong: "Choose two available cards that add to 13.", pairClear: "Pair cleared!", stockEmpty: "The stock is empty.", tutorialTitle: "Read the table, then make one clear move.", tutorialGoal: "Clear every card using the classic rules.", tutorialControl: "Tap a card and its destination, or drag it with a mouse or finger.", tutorialFinish: "Use Hint when you need a nudge; Undo is always safe.", ariaCard: "{rank} of {suit}", ariaBack: "Face-down card", ariaPile: "{name}, {count} cards" },
@@ -246,6 +252,7 @@
       this.won = false;
       this.lost = false;
       this.selected = null;
+      this.lastFreeCellMove = null;
       this.lastYukonMove = null;
       this.deck = Deck.buildShuffled(this.seed);
       this.foundations = SUITS.map((suit) => new Foundation(suit));
@@ -329,6 +336,7 @@
         freeCells: this.freeCells.map(cardJSON), stock: this.stock.map(cardJSON), waste: this.waste.map(cardJSON),
         tableau: this.tableau.map((pile) => pile.map(cardJSON)),
         cards: this.cards.map((entry) => ({ card: cardJSON(entry.card), removed: entry.removed, row: entry.row, column: entry.column, coveredBy: entry.coveredBy })),
+        lastFreeCellMove: this.lastFreeCellMove ? { ...this.lastFreeCellMove, source: { ...this.lastFreeCellMove.source }, destination: { ...this.lastFreeCellMove.destination } } : null,
         lastYukonMove: this.lastYukonMove ? { ...this.lastYukonMove } : null,
       };
     }
@@ -340,6 +348,7 @@
       this.freeCells = (raw.freeCells || []).map(fromJSON); this.stock = deepCards(raw.stock); this.waste = deepCards(raw.waste);
       this.tableau = (raw.tableau || []).map(deepCards);
       this.cards = (raw.cards || []).map((entry) => ({ card: fromJSON(entry.card), removed: Boolean(entry.removed), row: entry.row, column: entry.column, coveredBy: entry.coveredBy || [] }));
+      this.lastFreeCellMove = raw.lastFreeCellMove ? { ...raw.lastFreeCellMove, source: { ...raw.lastFreeCellMove.source }, destination: { ...raw.lastFreeCellMove.destination } } : null;
       this.lastYukonMove = raw.lastYukonMove ? { ...raw.lastYukonMove } : null;
       this.selected = null;
     }
@@ -455,6 +464,7 @@
       if (source.zone === "tableau") this.revealColumn(source.pile);
       this.moves += 1;
       this.checkWin();
+      this.lastFreeCellMove = { cardId: moving[0]?.id || null, source: { ...source }, destination: { ...destination } };
       return true;
     }
 
@@ -583,6 +593,34 @@
       return scored[0]?.move || moves[0] || null;
     }
 
+    freecellHintMove(moves = this.legalMoves()) {
+      if (this.variant !== "freecell" || moves.length < 2) return moves[0] || null;
+      const hasNonFreeMove = moves.some((candidate) => candidate.kind !== "free");
+      const scored = moves.map((move) => {
+        const source = this.sourceCard(move.source);
+        const group = source ? this.groupFrom(move.source) : [];
+        const targetTop = move.destination?.zone === "tableau" ? this.top(move.destination.pile) : null;
+        const reversesLastMove = Boolean(
+          this.lastFreeCellMove
+          && source?.id === this.lastFreeCellMove.cardId
+          && sameMoveLocation(move.source, this.lastFreeCellMove.destination)
+          && sameMoveLocation(move.destination, this.lastFreeCellMove.source),
+        );
+        return {
+          move,
+          score: (move.kind === "foundation" ? 100000 : 0)
+            + (move.kind === "tableau" && move.source?.zone === "tableau" && group.length > 1 ? 30000 : 0)
+            + (move.kind === "tableau" && move.source?.zone === "free" ? 18000 : 0)
+            + (move.kind === "tableau" && !targetTop ? 8000 : 0)
+            + (move.kind === "tableau" ? 5000 : 0)
+            - (move.kind === "free" ? (hasNonFreeMove ? 100000 : 12000) : 0)
+            - (reversesLastMove ? 100000 : 0)
+            - (move.kind === "tableau" && move.source?.zone === "tableau" ? group.length : 0),
+        };
+      }).sort((left, right) => right.score - left.score);
+      return scored[0]?.move || moves[0] || null;
+    }
+
     yukonHintMove(moves = this.legalMoves()) {
       if (this.variant !== "yukon" || moves.length < 2) return moves[0] || null;
       const scored = moves.map((move) => {
@@ -619,6 +657,8 @@
         ? this.golfHintMove(moves)
         : this.variant === "yukon"
           ? this.yukonHintMove(moves)
+          : this.variant === "freecell"
+            ? this.freecellHintMove(moves)
           : (moves[0] || null);
       this.selected = move?.source ? { ...move.source } : null;
       return move;

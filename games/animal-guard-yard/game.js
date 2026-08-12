@@ -887,7 +887,7 @@
     };
   }
 
-  function renderResultReport(message, progress) {
+  function renderResultReport(message, progress, won = false) {
     nodes.resultText.replaceChildren();
 
     const summary = document.createElement("p");
@@ -907,6 +907,20 @@
       stats.appendChild(item);
     });
     nodes.resultText.appendChild(stats);
+
+    if (won && currentStage < stages.length - 1) {
+      const nextStage = stages[currentStage + 1];
+      const preview = document.createElement("section");
+      preview.className = "next-stage-preview";
+      preview.setAttribute("aria-label", t("nextStage"));
+      const previewTitle = document.createElement("strong");
+      previewTitle.textContent = `${t("nextStage")}: ${t("stage", { n: currentStage + 2 })}`;
+      const previewThreats = document.createElement("span");
+      const threatTypes = [...new Set([...(nextStage.boss ? [nextStage.boss.type] : []), ...nextStage.zombies.map((item) => item.type)])];
+      previewThreats.textContent = `${t("threatPreview")}: ${threatTypes.slice(0, 4).map((type) => stageThreatLabel(type)).join(", ")}`;
+      preview.append(previewTitle, previewThreats);
+      nodes.resultText.appendChild(preview);
+    }
 
     const mastery = document.createElement("section");
     mastery.className = "mastery-result";
@@ -2448,7 +2462,7 @@
       coinsEarned += progress.masteryCoins;
       resultMessage = `${resultMessage} ${t("masteryMilestone", { coins: progress.masteryCoins })}`;
     }
-    renderResultReport(resultMessage, progress);
+    renderResultReport(resultMessage, progress, won);
     track(won ? "game_complete" : "game_over", {
       level: currentStage + 1,
       hp: baseHp,

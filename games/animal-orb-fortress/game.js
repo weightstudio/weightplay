@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "animal-orb-fortress";
-  const GAME_VERSION = "v16";
+  const GAME_VERSION = "v17";
   const saveKey = "weightplay_animal_orb_fortress_v1";
   const localeKey = "weightPlayLocale";
   let W = 960;
@@ -2343,9 +2343,19 @@
       best: Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1)),
     })}`;
     const hasNextStage = win && state.raidTier < MAX_RAID_TIER;
+    const shieldLevel = save.rooms.shield || 0;
+    const shieldCost = roomCost("shield");
+    const recoveryPreview = !win && shieldLevel < 5 && save.starStones >= shieldCost
+      ? ` ${t("upgradeRoomLabel", {
+        name: t("roomShield"),
+        level: shieldLevel + 1,
+        cost: shieldCost,
+        effect: t("roomShieldDesc"),
+      })}`
+      : "";
     nodes.raidPlanText.textContent = win
       ? `${t("raidPlanWin")}${hasNextStage ? ` ${nextRaidPreviewText(state.raidTier + 1)}` : ""}`
-      : t("raidPlanLose");
+      : `${t("raidPlanLose")}${recoveryPreview}`;
     nodes.nextStageBtn.classList.toggle("is-unavailable", !hasNextStage);
     nodes.nextStageBtn.disabled = !hasNextStage;
     nodes.nextStageBtn.classList.toggle("primary-btn", hasNextStage);
