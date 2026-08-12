@@ -260,6 +260,7 @@
       general: Boolean(isGeneral),
       cooldown: 0,
       attackCooldown: 0,
+      attackFlash: 0,
     };
   }
 
@@ -288,6 +289,9 @@
       return Object.assign({}, effect, { ttl: effect.ttl - 1 });
     }).filter(function (effect) { return effect.ttl > 0; });
     battle.enemies = battle.enemies.filter(function (enemy) { return enemy.hp > 0 || enemy.defeatedTicks > 0; });
+    battle.units.forEach(function (unit) {
+      if (unit && unit.attackFlash > 0) unit.attackFlash -= 1;
+    });
     if (battle.ticks % 10 === 0 && battle.buns < 15) battle.buns += 1;
     const level = battle.level;
     if (battle.spawned < level.enemyCount && battle.ticks % level.spawnGap === 0) {
@@ -322,8 +326,26 @@
        const target = battle.enemies.filter(function (enemy) { return enemy.lane === lane && enemy.hp > 0 && !enemy.defeatedTicks; }).sort(function (a, b) { return b.position - a.position; })[0];
        const damage = unitDamage(unit);
        if (target) {
+         unit.attackFlash = 4;
+         battle.effects.push({
+           id: battle.nextEffectId++,
+           kind: "attack",
+           lane: lane,
+           position: Math.min(.82, Math.max(.18, target.position)),
+           text: t("attackCue") + ": " + unitLabel(unit) + " → " + (target.boss ? t("boss") : t("enemySoldier")),
+           ttl: 5,
+         });
          damageEnemy(target, damage);
        } else if (battle.spawned >= level.enemyCount && !battle.enemies.some(function (enemy) { return enemy.hp > 0 && !enemy.defeatedTicks; }) && battle.commandHp > 0) {
+        unit.attackFlash = 4;
+        battle.effects.push({
+          id: battle.nextEffectId++,
+          kind: "attack",
+          lane: lane,
+          position: .82,
+          text: t("attackCue") + ": " + unitLabel(unit) + " → " + t("commandPost"),
+          ttl: 5,
+        });
         battle.commandHp = Math.max(0, battle.commandHp - damage);
       }
     });
@@ -554,11 +576,13 @@
       battle.units.forEach(function (unit, slot) {
         if (!unit || slot % 3 !== lane) return;
         const token = document.createElement("span");
-        token.className = "lane-unit" + (unit.general ? " general-unit" : "");
-        token.textContent = unit.general ? data.generals[unit.type].glyph : data.unitTypes[unit.type].glyph;
-         token.style.color = unit.general ? data.generals[unit.type].color : data.unitTypes[unit.type].color;
-         token.title = unitName(unit);
-         token.setAttribute("aria-label", unitName(unit) + ", " + t("lane") + " " + (lane + 1));
+        token.className = "lane-unit" + (unit.general ? " general-unit" : "") + (unit.attackFlash > 0 ? " is-attacking" : "");
+        const unitLabelText = unitLabel(unit);
+        const glyph = unit.general ? data.generals[unit.type].glyph : data.unitTypes[unit.type].glyph;
+        token.innerHTML = "<span class=\"lane-unit-glyph\" aria-hidden=\"true\">" + glyph + "</span><span class=\"lane-unit-name\">" + escapeHtml(unitLabelText) + "</span><span class=\"lane-unit-arrow\" aria-hidden=\"true\">" + (unit.attackFlash > 0 ? "→" : "") + "</span>";
+        token.style.color = unit.general ? data.generals[unit.type].color : data.unitTypes[unit.type].color;
+        token.title = unitName(unit);
+        token.setAttribute("aria-label", unitName(unit) + ", " + t("lane") + " " + (lane + 1) + (unit.attackFlash > 0 ? ", " + t("attackCue") : ""));
         playerRow.appendChild(token);
       });
       el.playerLanes.appendChild(playerRow);

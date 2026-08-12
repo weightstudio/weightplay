@@ -82,6 +82,7 @@
     tipText: "A high-level unit is powerful, but an empty lane can still lose the battle.",
     battleGuideTitle: "Battle plan",
     battleGuideBody: "Your units attack automatically. Recruit and merge to cover all three lanes; enemies move toward A Dou.",
+    attackCue: "Attack",
     enemySoldier: "Enemy soldier",
     boss: "Enemy commander",
     defeated: "Defeated",
@@ -129,6 +130,15 @@
   };
   Object.keys(localeExtras).forEach(function (code) {
     Object.assign(dictionaries[code], localeExtras[code]);
+  });
+
+  const attackCueLabels = {
+    en: "Attack", "zh-Hant": "攻擊", "zh-Hans": "攻击", ja: "攻撃", ko: "공격",
+    es: "Ataque", "pt-BR": "Ataque", fr: "Attaque", de: "Angriff", it: "Attacco",
+    ru: "Атака", hi: "हमला", ar: "هجوم",
+  };
+  Object.keys(attackCueLabels).forEach(function (code) {
+    dictionaries[code].attackCue = attackCueLabels[code];
   });
 
   window.ZHAO_YUN_ADOU_LOCALES = dictionaries;
