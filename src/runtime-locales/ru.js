@@ -4004,6 +4004,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "Connect every matching prism without crossing paths. Prism gates accept only their own color, and every open tile must be filled.": "Соедините все совпадающие призмы, не пересекая пути. Ворота-призмы принимают только свой цвет, и каждая открытая плитка должна быть заполнена.",
   "Connect every matching seed without crossing paths. Fill the whole garden to bloom.": "Соедините каждое совпадающее семя, не пересекая пути. Заполните весь сад, чтобы он расцвел.",
   "Connect every numbered node in order.": "Подключите каждый пронумерованный узел по порядку.",
+  "Connect every numbered node in order · avoid every red line": "Соедините все пронумерованные узлы по порядку · избегайте всех красных линий",
   "Connect every pair and fill every cell to complete the garden.": "Соедините каждую пару и заполните каждую ячейку, чтобы завершить сад.",
   "Connect every pair and illuminate every open tile to finish.": "Соедините каждую пару и осветите каждую открытую плитку, чтобы закончить.",
   "Connect every pair and illuminate the complete board.": "Подключите каждую пару и осветите всю плату.",

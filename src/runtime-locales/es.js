@@ -4004,6 +4004,7 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Connect every matching prism without crossing paths. Prism gates accept only their own color, and every open tile must be filled.": "Conecta cada prisma coincidente sin cruzarse. Las puertas de prisma solo aceptan su propio color y se deben llenar todas las losetas abiertas.",
   "Connect every matching seed without crossing paths. Fill the whole garden to bloom.": "Conecta cada semilla coincidente sin cruzarse. Llena todo el jardín para que florezca.",
   "Connect every numbered node in order.": "Conecte cada nodo numerado en orden.",
+  "Connect every numbered node in order · avoid every red line": "Conecta cada nodo numerado en orden · evita todas las líneas rojas",
   "Connect every pair and fill every cell to complete the garden.": "Conecta cada par y llena cada celda para completar el jardín.",
   "Connect every pair and illuminate every open tile to finish.": "Conecte cada par e ilumine cada mosaico abierto para terminar.",
   "Connect every pair and illuminate the complete board.": "Conecta cada par e ilumina el tablero completo.",

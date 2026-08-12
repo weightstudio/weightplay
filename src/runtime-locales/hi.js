@@ -4004,6 +4004,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Connect every matching prism without crossing paths. Prism gates accept only their own color, and every open tile must be filled.": "पथों को पार किए बिना प्रत्येक मिलान वाले प्रिज्म को कनेक्ट करें। प्रिज्म गेट केवल अपना रंग स्वीकार करते हैं, और प्रत्येक खुली टाइल को भरा जाना चाहिए।",
   "Connect every matching seed without crossing paths. Fill the whole garden to bloom.": "पथों को पार किए बिना प्रत्येक मिलान बीज को कनेक्ट करें। पूरे बगीचे को खिलने से भर दें।",
   "Connect every numbered node in order.": "प्रत्येक क्रमांकित नोड को क्रम से कनेक्ट करें।",
+  "Connect every numbered node in order · avoid every red line": "प्रत्येक क्रमांकित नोड को क्रम से जोड़ें · हर लाल रेखा से बचें",
   "Connect every pair and fill every cell to complete the garden.": "बगीचे को पूरा करने के लिए प्रत्येक जोड़े को जोड़ें और प्रत्येक कोशिका को भरें।",
   "Connect every pair and illuminate every open tile to finish.": "प्रत्येक जोड़ी को कनेक्ट करें और समाप्त करने के लिए प्रत्येक खुली टाइल को रोशन करें।",
   "Connect every pair and illuminate the complete board.": "प्रत्येक जोड़ी को कनेक्ट करें और पूरे बोर्ड को रोशन करें।",

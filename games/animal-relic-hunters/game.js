@@ -2132,6 +2132,13 @@
     clearMovementInput();
     loadLocalState();
     syncStateFromProfile();
+
+    // Reset run-only relic buffs before deriving the next expedition's base stats.
+    state.relicMagnetCount = 0;
+    state.relicRateCount = 0;
+    state.relicHpCount = 0;
+    state.relicDamageCount = 0;
+
     const stats = getStats();
     state.playerMaxHp = stats.maxHp;
     state.playerHp = state.playerMaxHp;
@@ -2142,12 +2149,6 @@
     state.keys = 0;
     state.runKeys = 0;
     state.runGold = 0;
-
-    // Reset run-only relic buffs. Level and equipment are permanent profile data.
-    state.relicMagnetCount = 0;
-    state.relicRateCount = 0;
-    state.relicHpCount = 0;
-    state.relicDamageCount = 0;
 
     state.enemies = [];
     state.bullets = [];
@@ -2497,6 +2498,11 @@
   function chooseDraftRelic(relicId) {
     clearDraftRerollConfirmation(false);
     applyRelic(relicId);
+    if (state.exp >= state.expNeed) {
+      handleLevelUp();
+      updateHUDText();
+      return;
+    }
     nodes.draftPanel.classList.add("hidden");
     state.gameActive = true;
     renderStatsPanel();
@@ -3139,7 +3145,7 @@
         window.WonderSound?.play("coin");
         updateHUDText();
 
-        if (state.exp >= state.expNeed) {
+        if (state.gameActive && state.exp >= state.expNeed) {
           handleLevelUp();
         }
       }
@@ -3947,6 +3953,30 @@
           return {
             choices: currentDraftChoices.slice(),
             active: state.gameActive,
+          };
+        },
+        forceQueuedDrafts(count = 2) {
+          const total = Math.max(2, Math.min(4, Math.floor(Number(count) || 2)));
+          let required = 0;
+          let nextNeed = state.expNeed;
+          for (let index = 0; index < total; index++) {
+            required += nextNeed;
+            nextNeed = Math.floor(nextNeed * 1.3);
+          }
+          state.exp = required;
+          profile.exp = state.exp;
+          profile.expNeed = state.expNeed;
+          profile.level = state.level;
+          saveProfile();
+          state.gameActive = true;
+          handleLevelUp();
+          updateHUDText();
+          return {
+            choices: currentDraftChoices.slice(),
+            requested: total,
+            level: state.level,
+            exp: state.exp,
+            expNeed: state.expNeed,
           };
         },
         replaceRoomForTest(room = 1) {

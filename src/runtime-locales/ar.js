@@ -4004,6 +4004,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Connect every matching prism without crossing paths. Prism gates accept only their own color, and every open tile must be filled.": "قم بتوصيل كل المنشور المطابق دون عبور المسارات. تقبل البوابات المنشورية لونها الخاص فقط، ويجب ملء كل بلاطة مفتوحة.",
   "Connect every matching seed without crossing paths. Fill the whole garden to bloom.": "قم بتوصيل كل البذور المطابقة دون عبور المسارات. املأ الحديقة بأكملها لتزدهر.",
   "Connect every numbered node in order.": "قم بتوصيل كل عقدة مرقمة بالترتيب.",
+  "Connect every numbered node in order · avoid every red line": "صِل كل عقدة مرقمة بالترتيب · تجنّب كل خط أحمر",
   "Connect every pair and fill every cell to complete the garden.": "قم بتوصيل كل زوج واملأ كل خلية لإكمال الحديقة.",
   "Connect every pair and illuminate every open tile to finish.": "قم بتوصيل كل زوج وقم بإضاءة كل بلاطة مفتوحة حتى النهاية.",
   "Connect every pair and illuminate the complete board.": "قم بتوصيل كل زوج وأضيء اللوحة بأكملها.",

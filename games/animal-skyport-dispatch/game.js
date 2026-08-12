@@ -80,7 +80,8 @@
     routeStorm: 'The route touched a red blocked airway.',
     routeSelf: 'The route crossed its own line.',
     routeBeacon: 'Connect every numbered node in order.',
-    routeRule: 'Connect (1)(2)(3)... in order · avoid every red line',
+    routeRule: 'Connect every numbered node in order.',
+    routeRuleBlocked: 'Connect every numbered node in order · avoid every red line',
     nodeProgress: 'Nodes {done}/{goal}',
   });
   Object.assign(strings['zh-Hant'], {
@@ -118,7 +119,8 @@
     routeStorm: '\u822a\u7dda\u78b0\u5230\u7d05\u8272\u7981\u884c\u822a\u7dda\u3002',
     routeSelf: '\u822a\u7dda\u4e0d\u80fd\u8207\u81ea\u5df1\u7684\u7dda\u4ea4\u53c9\u3002',
     routeBeacon: '\u5fc5\u9808\u6309\u9806\u5e8f\u9023\u63a5\u6240\u6709\u7de8\u865f\u7bc0\u9ede\u3002',
-    routeRule: '\u4f9d\u5e8f\u9023\u63a5 (1)(2)(3)\u2026 \u00b7 \u907f\u958b\u6240\u6709\u7d05\u7dda',
+    routeRule: '\u4f9d\u5e8f\u9023\u63a5\u6bcf\u500b\u7de8\u865f\u7bc0\u9ede\u3002',
+    routeRuleBlocked: '\u4f9d\u5e8f\u9023\u63a5\u6bcf\u500b\u7de8\u865f\u7bc0\u9ede \u00b7 \u907f\u958b\u6240\u6709\u7d05\u7dda',
     nodeProgress: '\u7bc0\u9ede {done}/{goal}',
   });
   const flights = [['cargo','cargo'], ['passenger','passenger'], ['repair','repair'], ['festival','passenger'], ['heavy','cargo']];
@@ -505,7 +507,8 @@
     document.querySelector('.task-destination').textContent = locale === 'zh-Hant'
       ? `目標：${flightName} → ${dockName}`
       : `Target: ${flightName} -> ${dockName}`;
-    document.querySelector('.task-steps').textContent = t('routeRule');
+    const routeInstruction = t(state.barriers?.length ? 'routeRuleBlocked' : 'routeRule');
+    document.querySelector('.task-steps').textContent = routeInstruction;
     $('flight').setAttribute('aria-label', flightName);
     $('flight').dataset.destination = `\u2192 ${dockName.at(-1)}`;
     document.querySelectorAll('.dock').forEach((dock) => {
@@ -513,7 +516,7 @@
       const isTarget = dock.dataset.dock === state.dock;
       const keyboardLabel = !isTarget
         ? t('keyboardDockWrong', {dock:label, flight:flightName, target:dockName})
-        : `${label}. ${t('routeRule')}`;
+        : `${label}. ${routeInstruction}`;
       dock.querySelector('.dock-label').textContent = label;
       dock.setAttribute('aria-label', state.selected ? keyboardLabel : label);
       dock.classList.toggle('is-target', isTarget);
@@ -615,7 +618,7 @@
     $('routeLine').classList.remove('is-guidance');
     routePoints=[];
     $('routeTracePath').setAttribute('points','');
-    $('flightHint').textContent=t('routeRule');
+    $('flightHint').textContent=t(state.barriers?.length ? 'routeRuleBlocked' : 'routeRule');
   }
   function result(win) {
     cancelRouteGesture({restoreGuidance:false});

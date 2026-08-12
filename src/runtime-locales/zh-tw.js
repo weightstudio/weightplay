@@ -4004,6 +4004,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "Connect every matching prism without crossing paths. Prism gates accept only their own color, and every open tile must be filled.": "連接每個匹配的棱鏡而不交叉路徑。棱鏡門只接​​受它們自己的顏色，並且每個打開的瓷磚都必須填充。",
   "Connect every matching seed without crossing paths. Fill the whole garden to bloom.": "連接每個匹配的種子而不交叉路徑。充滿整個花園的花朵。",
   "Connect every numbered node in order.": "依序連接每個編號的節點。",
+  "Connect every numbered node in order · avoid every red line": "依序連接每個編號節點 · 避開所有紅線",
   "Connect every pair and fill every cell to complete the garden.": "連接每一對並填充每個單元格以完成花園。",
   "Connect every pair and illuminate every open tile to finish.": "連接每一對並照亮每一個打開的瓷磚以完成。",
   "Connect every pair and illuminate the complete board.": "連接每一對並照亮整個板。",
