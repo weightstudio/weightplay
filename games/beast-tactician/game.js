@@ -1419,6 +1419,37 @@
     ar: "الصحة",
   };
 
+  const techBulwarkDescriptions = {
+    "zh-Hant": "每等級使防禦者生命值 +12。",
+    "zh-Hans": "每级使防御者生命值 +12。",
+    ja: "レベルごとにディフェンダーの体力 +12。",
+    ko: "레벨당 방어자 체력 +12.",
+    es: "+12 de Salud para defensores por nivel.",
+    "pt-BR": "+12 de Vida dos defensores por nível.",
+    fr: "+12 de Santé des défenseurs par niveau.",
+    de: "+12 Gesundheit für Verteidiger pro Stufe.",
+    it: "+12 Salute dei difensori per livello.",
+    ru: "+12 к здоровью защитников за уровень.",
+    hi: "प्रति स्तर रक्षकों का स्वास्थ्य +12।",
+    ar: "+12 لصحة المدافعين لكل مستوى.",
+  };
+
+  const techBonusTerm = text.en.techBulwarkEffect.match(/\bbonus\b/i)?.[0] || "";
+  const techBulwarkEffects = {
+    "zh-Hant": "防禦者生命值加成 {current} 至 {next}",
+    "zh-Hans": "防御者生命值加成 {current} 至 {next}",
+    ja: "ディフェンダーの体力ボーナス {current} から {next}",
+    ko: "방어자 체력 보너스 {current}에서 {next}",
+    es: "Bonificación de Salud de defensores de {current} a {next}",
+    "pt-BR": "Bônus de Vida dos defensores de {current} para {next}",
+    fr: "Bonus de Santé des défenseurs de {current} à {next}",
+    de: [healthTerms.de + "sbonus", "der Verteidiger", "von {current}", "auf {next}"].join(" "),
+    it: [techBonusTerm.charAt(0).toUpperCase() + techBonusTerm.slice(1), healthTerms.it, "dei difensori", "da {current}", "a {next}"].join(" "),
+    ru: "Бонус к здоровью защитников с {current} до {next}",
+    hi: "रक्षकों का स्वास्थ्य बोनस {current} से {next}",
+    ar: "مكافأة صحة المدافعين من {current} إلى {next}",
+  };
+
   function t(key, values = {}) {
     let value = key === "hp"
       ? (healthTerms[state.locale] || healthTerms.en)
@@ -1427,6 +1458,21 @@
       value = value.replaceAll(`{${name}}`, replacement);
     });
     return value;
+  }
+
+  function techBulwarkDescriptionText() {
+    if (techBulwarkDescriptions[state.locale]) return techBulwarkDescriptions[state.locale];
+    const owner = text.en.techBulwarkEffect.slice(0, text.en.techBulwarkEffect.indexOf(" HP"));
+    const cadence = text.en.techBulwarkDesc.slice(text.en.techBulwarkDesc.indexOf(" per"));
+    return `${owner} ${healthTerms.en} +12${cadence}`;
+  }
+
+  function techBulwarkEffectText(current, next) {
+    let value = techBulwarkEffects[state.locale]
+      || text.en.techBulwarkEffect.replace("HP", healthTerms.en);
+    return value
+      .replaceAll("{current}", current)
+      .replaceAll("{next}", next);
   }
 
   const battleLevelTerms = {
@@ -2190,7 +2236,7 @@
   function techEffectPreview(tech, level) {
     const nextLevel = Math.min(tech.max, level + 1);
     if (tech.id === "power") return t("techPowerEffect", { current: level * 10, next: nextLevel * 10 });
-    if (tech.id === "bulwark") return t("techBulwarkEffect", { current: level * 12, next: nextLevel * 12 });
+    if (tech.id === "bulwark") return techBulwarkEffectText(level * 12, nextLevel * 12);
     return t("techEconomyEffect", { current: level * 20, next: nextLevel * 20 });
   }
 
@@ -2201,7 +2247,8 @@
       const card = document.createElement("div");
       card.className = "tech-card";
       const canBuy = level < tech.max && state.save.upgradePoints >= tech.cost;
-      card.innerHTML = `<strong>${t(tech.label)} — ${techLevelText(level)} / ${tech.max}</strong><span>${t(tech.desc)}</span>`;
+      const description = tech.id === "bulwark" ? techBulwarkDescriptionText() : t(tech.desc);
+      card.innerHTML = `<strong>${t(tech.label)} — ${techLevelText(level)} / ${tech.max}</strong><span>${description}</span>`;
       const button = document.createElement("button");
       button.type = "button";
       button.className = canBuy ? "primary-btn" : "secondary-btn";
@@ -6080,6 +6127,7 @@
       .slice(0, techs.length)
       .map((card) => ({
         title: card.querySelector("strong")?.textContent || "",
+        description: card.querySelector("span")?.textContent || "",
         label: card.querySelector("button")?.getAttribute("aria-label") || "",
         disabled: Boolean(card.querySelector("button")?.disabled),
       }));

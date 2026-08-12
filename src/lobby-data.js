@@ -278,11 +278,11 @@ window.WONDER_LOBBY = {
         de: "Zhao Yun und A Dou: Tuschewache", it: "Zhao Yun e A Dou: Difesa d'inchiostro",
         ru: "Чжао Юнь и А-Доу: Чернильная оборона", hi: "झाओ युन और आ-दो: स्याही रक्षा", ar: "تشاو يون وآ دو: دفاع الحبر",
       },
-      status: "planned",
+      status: "playable",
       statusText: {
-        en: "Coming Soon", "zh-Hant": "即將推出", "zh-Hans": "即将推出", ja: "近日公開", ko: "출시 예정",
-        es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente",
-        ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريباً",
+        en: "Play Now", "zh-Hant": "立即遊玩", "zh-Hans": "立即游玩", ja: "今すぐ遊ぶ", ko: "지금 플레이",
+        es: "Jugar ahora", "pt-BR": "Jogar agora", fr: "Jouer maintenant", de: "Jetzt spielen", it: "Gioca ora",
+        ru: "Играть сейчас", hi: "अभी खेलें", ar: "العب الآن",
       },
       type: {
         en: "Merge Strategy Defense", "zh-Hant": "合成策略防守", "zh-Hans": "合成策略防守", ja: "合成ストラテジー防衛",
@@ -294,7 +294,7 @@ window.WONDER_LOBBY = {
       skills: ["Planning", "Timing", "Adaptation"],
       ages: ["9", "family"],
       href: "games/zhao-yun-a-dou/",
-      internalTrial: "index.html?trial=1",
+      previewVideo: "assets/previews/zhao-yun-a-dou-battle.webm",
       description: {
         en: "Recruit Chinese-character soldiers, merge matching units, and protect A Dou across 30 short ink-wash defense missions.",
         "zh-Hant": "徵召漢字小兵、合成相同部隊，在 30 個短局水墨防守關卡中保護阿斗。",

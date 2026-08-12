@@ -621,6 +621,11 @@ button.mini-btn {
   box-shadow: 0 0 0 2px #fff1a8, 0 0 12px rgba(255, 241, 168, 0.45);
 }
 
+.hint-source-card {
+  box-shadow: 0 0 0 3px #fff1a8, 0 0 16px rgba(255, 241, 168, 0.58);
+  z-index: 4;
+}
+
 .hint-target {
   box-shadow: 0 0 0 3px var(--kl-accent), 0 0 14px rgba(78, 205, 196, 0.35);
   transform: translateY(-1px);
@@ -777,6 +782,11 @@ button.control-mini {
 .selected-group .front {
   box-shadow: 0 0 0 3px #ffd166;
   transform: translateY(-2px);
+}
+
+.card.selected {
+  box-shadow: 0 0 0 4px #ffd166, 0 0 18px rgba(255, 209, 102, 0.62);
+  z-index: 5;
 }
 
 .result-overlay,

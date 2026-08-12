@@ -1309,6 +1309,7 @@ const KL_I18N = {
     lossRecordedForCurrentBoard: false,
     resultShown: false,
     tableauFitTimer: null,
+    hintVisitedBoards: new Map(),
   };
 
   const cardNodePool = new Map();
@@ -1532,8 +1533,12 @@ const KL_I18N = {
     }
     ui.foundationRow?.querySelectorAll("[data-hint]").forEach((node) => node.classList.remove("hint-source", "hint-target"));
     ui.tableauRow?.querySelectorAll("[data-hint]").forEach((node) => node.classList.remove("hint-source", "hint-target"));
+    ui.tableauRow?.querySelectorAll(".hint-source-card, .selected").forEach((node) => node.classList.remove("hint-source-card", "selected"));
+    ui.tableauRow?.querySelectorAll(".selected-group").forEach((node) => node.classList.remove("selected-group"));
     ui.stockPile?.classList.remove("hint-source");
     ui.wastePile?.classList.remove("hint-source");
+    ui.wastePile?.classList.remove("selected-group");
+    ui.wastePile?.querySelectorAll(".hint-source-card, .selected").forEach((node) => node.classList.remove("hint-source-card", "selected"));
     clearDragHover();
   }
 
@@ -1601,27 +1606,67 @@ const KL_I18N = {
     if (!move) return;
     if (move.type === "wasteToFoundation") {
       ui.wastePile?.classList.add("hint-source");
+      ui.wastePile?.querySelector(".card.front:last-of-type")?.classList.add("hint-source-card");
       ui.foundationRow?.querySelector(`[data-index='${move.foundationIndex}']`)?.classList.add("hint-target");
       return;
     }
     if (move.type === "wasteToTableau") {
       ui.wastePile?.classList.add("hint-source");
+      ui.wastePile?.querySelector(".card.front:last-of-type")?.classList.add("hint-source-card");
       ui.tableauRow?.querySelector(`[data-index='${move.toColumn}']`)?.classList.add("hint-target");
       return;
     }
     if (move.type === "tableauToFoundation") {
-      ui.tableauRow?.querySelector(`[data-index='${move.fromColumn}']`)?.classList.add("hint-source");
+      const sourcePile = ui.tableauRow?.querySelector(`[data-index='${move.fromColumn}']`);
+      sourcePile?.classList.add("hint-source");
+      sourcePile?.querySelector(`.card.front[data-row='${move.startRow}']`)?.classList.add("hint-source-card");
       ui.foundationRow?.querySelector(`[data-index='${move.foundationIndex}']`)?.classList.add("hint-target");
       return;
     }
     if (move.type === "tableauToTableau") {
-      ui.tableauRow?.querySelector(`[data-index='${move.fromColumn}']`)?.classList.add("hint-source");
+      const sourcePile = ui.tableauRow?.querySelector(`[data-index='${move.fromColumn}']`);
+      sourcePile?.classList.add("hint-source");
+      sourcePile?.querySelector(`.card.front[data-row='${move.startRow}']`)?.classList.add("hint-source-card");
       ui.tableauRow?.querySelector(`[data-index='${move.toColumn}']`)?.classList.add("hint-target");
     }
   }
 
   function hasAnyDrawAction() {
     return game.stock.cards.length > 0 || game.waste.cards.length > 0;
+  }
+
+  function boardHintSignature() {
+    const cardToken = (card) => `${card.id}:${card.faceUp ? 1 : 0}`;
+    return [
+      ...game.tableau.columns.map((column) => column.map(cardToken).join(",")),
+      game.foundations.map((foundation) => foundation.cards.map(cardToken).join(",")).join("|"),
+      game.stock.cards.map(cardToken).join(","),
+      game.waste.cards.map(cardToken).join(","),
+    ].join("/");
+  }
+
+  function previewHintOutcome(move) {
+    const snapshot = game.snapshot();
+    const moved = game.applyMove(move);
+    const signature = moved ? boardHintSignature() : "";
+    game.restore(snapshot);
+    return signature;
+  }
+
+  function showDrawContinuationHint() {
+    if (game.stock.cards.length > 0) {
+      ui.stockPile?.classList.add("hint-source");
+      showHint(t("ui.hint.draw_stock"));
+      focusHintSource(ui.stockPile);
+      return true;
+    }
+    if (game.waste.cards.length > 0) {
+      ui.wastePile?.classList.add("hint-source");
+      showHint(t("ui.hint.recycle_waste"));
+      focusHintSource(ui.wastePile);
+      return true;
+    }
+    return false;
   }
 
   function focusHintSource(node) {
@@ -1634,18 +1679,7 @@ const KL_I18N = {
 
   function showNoMoveHint() {
     if (hasAnyLegalMoves()) return;
-    if (game.stock.cards.length > 0) {
-      ui.stockPile?.classList.add("hint-source");
-      showHint(t("ui.hint.draw_stock"));
-      focusHintSource(ui.stockPile);
-      return;
-    }
-    if (game.waste.cards.length > 0) {
-      ui.wastePile?.classList.add("hint-source");
-      showHint(t("ui.hint.recycle_waste"));
-      focusHintSource(ui.wastePile);
-      return;
-    }
+    if (showDrawContinuationHint()) return;
     showHint(t(NO_MOVES_MESSAGE));
   }
 
@@ -1969,6 +2003,14 @@ const KL_I18N = {
     clearHints();
     state.selectedSource = { ...source, legalMoves };
     legalMoves.forEach((move) => highlightMoveHint(move));
+    const sourcePile = source.from === "tableau"
+      ? ui.tableauRow?.querySelector(`[data-index='${source.fromColumn}']`)
+      : source.from === "waste" ? ui.wastePile : null;
+    const sourceCard = source.from === "tableau"
+      ? sourcePile?.querySelector(`.card.front[data-row='${source.startRow}']`)
+      : sourcePile?.querySelector(".card.front:last-of-type");
+    sourcePile?.classList.add("selected-group");
+    sourceCard?.classList.add("selected");
     showHint(KL_SELECTION_RULE_COPY[getKlLocale()] || KL_SELECTION_RULE_COPY.en);
   }
 
@@ -2579,9 +2621,20 @@ const KL_I18N = {
   function onHint() {
     if (state.boardAnimationInProgress) return;
     clearHints();
+    const currentSignature = boardHintSignature();
+    state.hintVisitedBoards.set(currentSignature, (state.hintVisitedBoards.get(currentSignature) || 0) + 1);
     const foundationMoves = game.foundationMoveableMoves();
     const all = game.allLegalMoves();
-    const hint = foundationMoves[0] || all[0];
+    const candidates = foundationMoves.length > 0 ? foundationMoves : all;
+    const candidateOutcomes = candidates.map((move) => ({ move, signature: previewHintOutcome(move) }));
+    const freshCandidate = candidateOutcomes.find(({ signature }) => signature && !state.hintVisitedBoards.has(signature));
+    if (!foundationMoves.length && !freshCandidate && hasAnyDrawAction()) {
+      showDrawContinuationHint();
+      return;
+    }
+    const hint = (freshCandidate || candidateOutcomes
+      .filter(({ signature }) => signature)
+      .sort((left, right) => (state.hintVisitedBoards.get(left.signature) || 0) - (state.hintVisitedBoards.get(right.signature) || 0))[0])?.move;
     if (!hint) {
       showNoMoveHint();
       return;
@@ -2692,6 +2745,7 @@ const KL_I18N = {
     state.deadlockHintShown = false;
     state.lossRecordedForCurrentBoard = false;
     state.resultShown = false;
+    state.hintVisitedBoards.clear();
     const drawMode = game.drawModeIndex;
     game.restore(game.initialSnapshot);
     game.drawModeIndex = drawMode;
@@ -2713,6 +2767,7 @@ const KL_I18N = {
     state.deadlockHintShown = false;
     state.lossRecordedForCurrentBoard = false;
     state.resultShown = false;
+    state.hintVisitedBoards.clear();
     clearDealAnimationTimers();
     resetRenderCaches();
     game.newGame(now());
@@ -3228,6 +3283,7 @@ const KL_I18N = {
     refreshLocalization();
     setLoadingProgress(15, t("ui.loading.preparing"));
     game.newGame(Math.floor(now()));
+    state.hintVisitedBoards.clear();
     state.lastFrameCards = new Map();
     cardRevealCache.clear();
     state.dealSequence = buildDealSequence();

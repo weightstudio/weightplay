@@ -179,11 +179,13 @@
     el.stageGrid.innerHTML = "";
     data.levels.forEach(function (level, index) {
       const unlocked = index < progress.unlocked;
-      const card = document.createElement("button");
+       const card = document.createElement("button");
       const stars = progress.stars[index] ? "★".repeat(progress.stars[index]) + "☆".repeat(3 - progress.stars[index]) : "☆☆☆";
       card.type = "button";
-      card.className = "stage-card" + (index === stageIndex ? " is-selected" : "");
-      card.setAttribute("data-wp-stage-card", String(index + 1));
+       card.className = "stage-card" + (index === stageIndex ? " is-selected" : "");
+       card.setAttribute("data-wp-stage-card", String(index + 1));
+       card.setAttribute("aria-current", index === stageIndex ? "true" : "false");
+       card.setAttribute("data-wp-stage-selected", index === stageIndex ? "true" : "false");
       card.disabled = !unlocked;
       card.setAttribute("aria-label", (locale === "en" ? level.nameEnglish : level.name) + (unlocked ? ", " + t("ready") : ", " + t("locked")));
       card.innerHTML = "<strong>" + (index + 1) + "</strong><small>" + escapeHtml(locale === "en" ? level.chapterEnglish : level.chapterName) + "</small><span>" + escapeHtml(locale === "en" ? level.objectiveEnglish : level.objective) + "</span><i class=\"stage-stars\" aria-label=\"" + t("stars") + ": " + stars + "\">" + stars + "</i>";
@@ -240,9 +242,11 @@
       maxCommandHp: fixture === "loss" ? 999 : level.commandHp,
       adouHp: fixture === "loss" ? 1 : level.adouHp,
       maxAdouHp: fixture === "loss" ? 1 : level.adouHp,
-      result: null,
-      status: "",
-      recruitIndex: 0,
+       result: null,
+       status: "",
+       effects: [],
+       nextEffectId: 1,
+       recruitIndex: 0,
       lastAttack: 0,
       skillsUsed: {},
       fixture: fixture,
@@ -280,12 +284,21 @@
 
   function tickBattle() {
     battle.ticks += 1;
+    battle.effects = battle.effects.map(function (effect) {
+      return Object.assign({}, effect, { ttl: effect.ttl - 1 });
+    }).filter(function (effect) { return effect.ttl > 0; });
+    battle.enemies = battle.enemies.filter(function (enemy) { return enemy.hp > 0 || enemy.defeatedTicks > 0; });
     if (battle.ticks % 10 === 0 && battle.buns < 15) battle.buns += 1;
     const level = battle.level;
     if (battle.spawned < level.enemyCount && battle.ticks % level.spawnGap === 0) {
       spawnEnemy();
     }
     battle.enemies.slice().forEach(function (enemy) {
+      if (enemy.hitFlash > 0) enemy.hitFlash -= 1;
+      if (enemy.defeatedTicks > 0) {
+        enemy.defeatedTicks -= 1;
+        return;
+      }
       if (enemy.stun > 0) {
         enemy.stun -= 1;
         return;
@@ -306,14 +319,11 @@
       }
       unit.attackCooldown = unit.general ? 5 : Math.max(4, Math.round(8 / (data.unitTypes[unit.type].speed || 1)));
       const lane = slot % 3;
-      const target = battle.enemies.filter(function (enemy) { return enemy.lane === lane; }).sort(function (a, b) { return b.position - a.position; })[0];
-      const damage = unitDamage(unit);
-      if (target) {
-        target.hp -= damage;
-        if (target.hp <= 0) {
-          battle.enemies = battle.enemies.filter(function (enemy) { return enemy.id !== target.id; });
-        }
-      } else if (battle.spawned >= level.enemyCount && battle.enemies.length === 0 && battle.commandHp > 0) {
+       const target = battle.enemies.filter(function (enemy) { return enemy.lane === lane && enemy.hp > 0 && !enemy.defeatedTicks; }).sort(function (a, b) { return b.position - a.position; })[0];
+       const damage = unitDamage(unit);
+       if (target) {
+         damageEnemy(target, damage);
+       } else if (battle.spawned >= level.enemyCount && !battle.enemies.some(function (enemy) { return enemy.hp > 0 && !enemy.defeatedTicks; }) && battle.commandHp > 0) {
         battle.commandHp = Math.max(0, battle.commandHp - damage);
       }
     });
@@ -336,10 +346,12 @@
       hp: maxHp,
       maxHp: maxHp,
       speed: level.enemySpeed * (boss ? .75 : 1),
-      damage: level.enemyDamage + (boss ? 1 : 0),
-      boss: boss,
-      stun: 0,
-    });
+       damage: level.enemyDamage + (boss ? 1 : 0),
+       boss: boss,
+       stun: 0,
+       hitFlash: 0,
+       defeatedTicks: 0,
+     });
     battle.spawned += 1;
     if (boss) setStatus(t("statusBoss"));
   }
@@ -347,6 +359,31 @@
   function unitDamage(unit) {
     if (unit.general) return data.generals[unit.type].damage + unit.level;
     return data.unitTypes[unit.type].damage * unit.level;
+  }
+
+  function damageEnemy(enemy, amount) {
+    if (!enemy || enemy.hp <= 0) return;
+    enemy.hp = Math.max(0, enemy.hp - amount);
+    enemy.hitFlash = 3;
+    battle.effects.push({
+      id: battle.nextEffectId++,
+      kind: "hit",
+      lane: enemy.lane,
+      position: enemy.position,
+      text: "-" + amount,
+      ttl: 5,
+    });
+    if (enemy.hp <= 0) {
+      enemy.defeatedTicks = 5;
+      battle.effects.push({
+        id: battle.nextEffectId++,
+        kind: "defeat",
+        lane: enemy.lane,
+        position: enemy.position,
+        text: t("defeated"),
+        ttl: 9,
+      });
+    }
   }
 
   function recruit() {
@@ -428,16 +465,15 @@
     }
     const victims = battle.enemies.slice().sort(function (a, b) { return b.position - a.position; });
     if (type === "blade") {
-      victims.slice(0, 3).forEach(function (enemy) { enemy.hp -= 9; });
+       victims.slice(0, 3).forEach(function (enemy) { damageEnemy(enemy, 9); });
     } else if (type === "spear") {
-      victims.forEach(function (enemy) { enemy.stun = 35; enemy.hp -= 5; });
+       victims.forEach(function (enemy) { enemy.stun = 35; damageEnemy(enemy, 5); });
     } else if (type === "horse") {
-      const target = victims[0];
-      if (target) { target.hp -= 18; target.position = Math.max(0, target.position - .25); }
+       const target = victims[0];
+       if (target) { damageEnemy(target, 18); target.position = Math.max(0, target.position - .25); }
     } else {
-      victims.forEach(function (enemy) { enemy.hp -= 8; });
+       victims.forEach(function (enemy) { damageEnemy(enemy, 8); });
     }
-    battle.enemies = battle.enemies.filter(function (enemy) { return enemy.hp > 0; });
     battle.skillsUsed[type] = 80;
     setStatus(t("statusSkill"));
     renderBattle();
@@ -482,6 +518,8 @@
     renderLanes();
     renderFormation();
     renderSkills();
+    el.battle.scrollTop = 0;
+    window.setTimeout(function () { if (el.battle) el.battle.scrollTop = 0; }, 0);
   }
 
   function renderLanes() {
@@ -493,12 +531,22 @@
       enemyRow.setAttribute("data-lane", t("lane") + " " + (lane + 1));
       battle.enemies.filter(function (enemy) { return enemy.lane === lane; }).forEach(function (enemy) {
         const token = document.createElement("span");
-        token.className = "enemy-token enemy-kind-" + (enemy.id % 3) + (enemy.boss ? " boss" : "");
-        token.textContent = enemy.boss ? "將" : "卒";
-        token.style.left = (enemy.position * 100) + "%";
-        token.title = enemy.hp + " / " + enemy.maxHp;
-        enemyRow.appendChild(token);
-      });
+         token.className = "enemy-token enemy-kind-" + (enemy.id % 3) + (enemy.boss ? " boss" : "") + (enemy.hitFlash > 0 ? " is-hit" : "") + (enemy.defeatedTicks > 0 ? " is-defeated" : "");
+         token.style.left = (enemy.position * 100) + "%";
+         const enemyLabel = enemy.boss ? t("boss") : t("enemySoldier");
+         const hpPercent = Math.max(0, Math.round((enemy.hp / enemy.maxHp) * 100));
+         token.setAttribute("aria-label", enemyLabel + ", " + t("hp") + " " + enemy.hp + "/" + enemy.maxHp);
+         token.title = enemyLabel + " · " + enemy.hp + " / " + enemy.maxHp;
+         token.innerHTML = "<span class=\"enemy-glyph\">" + (enemy.boss ? "將" : "卒") + "</span><span class=\"enemy-name\">" + escapeHtml(enemyLabel) + "</span><span class=\"enemy-health\"><span style=\"width:" + hpPercent + "%\"></span></span>";
+         enemyRow.appendChild(token);
+       });
+       battle.effects.filter(function (effect) { return effect.lane === lane; }).forEach(function (effect) {
+         const effectNode = document.createElement("span");
+         effectNode.className = "combat-effect " + effect.kind;
+         effectNode.style.left = (effect.position * 100) + "%";
+         effectNode.textContent = effect.text;
+         enemyRow.appendChild(effectNode);
+       });
       el.enemyLanes.appendChild(enemyRow);
       const playerRow = document.createElement("div");
       playerRow.className = "lane-row";
@@ -508,8 +556,9 @@
         const token = document.createElement("span");
         token.className = "lane-unit" + (unit.general ? " general-unit" : "");
         token.textContent = unit.general ? data.generals[unit.type].glyph : data.unitTypes[unit.type].glyph;
-        token.style.color = unit.general ? data.generals[unit.type].color : data.unitTypes[unit.type].color;
-        token.title = unitName(unit);
+         token.style.color = unit.general ? data.generals[unit.type].color : data.unitTypes[unit.type].color;
+         token.title = unitName(unit);
+         token.setAttribute("aria-label", unitName(unit) + ", " + t("lane") + " " + (lane + 1));
         playerRow.appendChild(token);
       });
       el.playerLanes.appendChild(playerRow);
@@ -523,7 +572,8 @@
       button.type = "button";
       button.className = "unit-slot" + (unit ? " unit-type-" + unit.type : "") + (unit ? "" : " empty") + (selectedSlot === slot ? " selected" : "") + (unit && unit.general ? " general-unit" : "");
       button.setAttribute("role", "gridcell");
-      button.setAttribute("data-slot", String(slot));
+       button.setAttribute("data-slot", String(slot));
+       button.setAttribute("aria-pressed", selectedSlot === slot ? "true" : "false");
       button.setAttribute("aria-label", unit ? unitName(unit) + ", " + t("lane") + " " + ((slot % 3) + 1) : t("empty") + ", " + t("lane") + " " + ((slot % 3) + 1));
       const laneLabel = "L" + ((slot % 3) + 1);
       const levelLabel = unit && unit.general ? "★" : t("level") + " " + (unit ? unit.level : "");
@@ -646,6 +696,9 @@
     el.result.close();
     startBattle(stageIndex + 1, { skipTutorial: true });
   });
+  el.battle.addEventListener("scroll", function () {
+    if (el.battle.scrollTop) el.battle.scrollTop = 0;
+  }, { passive: true });
   document.addEventListener("keydown", function (event) {
     if (document.activeElement && ["INPUT", "SELECT", "TEXTAREA"].indexOf(document.activeElement.tagName) >= 0) return;
     if (event.key.toLowerCase() === "r" && battle && !battle.result) recruit();

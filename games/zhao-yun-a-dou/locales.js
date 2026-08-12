@@ -80,6 +80,11 @@
     language: "Language",
     tip: "Tip",
     tipText: "A high-level unit is powerful, but an empty lane can still lose the battle.",
+    battleGuideTitle: "Battle plan",
+    battleGuideBody: "Your units attack automatically. Recruit and merge to cover all three lanes; enemies move toward A Dou.",
+    enemySoldier: "Enemy soldier",
+    boss: "Enemy commander",
+    defeated: "Defeated",
     prototype: "Internal prototype",
   };
 
@@ -109,7 +114,7 @@
   };
 
   const localeExtras = {
-    "zh-Hant": { guideRule1: "用饅頭徵召部隊。", guideRule2: "在戰線被壓垮前合成相同文字。", guideRule3: "壓力升高時點擊武將技能。", posterAlt: "趙雲與阿斗所在的水墨戰場" },
+    "zh-Hant": { guideRule1: "用饅頭徵召部隊。", guideRule2: "在戰線被壓垮前合成相同文字。", guideRule3: "壓力升高時點擊武將技能。", posterAlt: "趙雲與阿斗所在的水墨戰場", battleGuideTitle: "戰鬥重點", battleGuideBody: "部隊會自動攻擊。請徵召、合成並守住三條戰線；敵人會向阿斗前進。", enemySoldier: "敵方小兵", boss: "敵方武將", defeated: "已擊破" },
     "zh-Hans": { guideRule1: "用馒头征召部队。", guideRule2: "在战线被压垮前合成相同文字。", guideRule3: "压力升高时点击武将技能。", posterAlt: "赵云与阿斗所在的水墨战场" },
     ja: { guideRule1: "饅頭で兵を招集します。", guideRule2: "レーンが押される前に同じ文字を合成します。", guideRule3: "危険な時は武将技を使います。", posterAlt: "趙雲と阿斗の墨絵の戦場" },
     ko: { guideRule1: "만두로 병사를 모집하세요.", guideRule2: "전선이 무너지기 전에 같은 문자를 합치세요.", guideRule3: "압력이 높아지면 장수 기술을 사용하세요.", posterAlt: "조운과 아두가 있는 먹선 전장" },
