@@ -651,9 +651,13 @@
       return true;
     }
     const columnWidth = (tableauWidth - tableauGap * 9) / 10;
-    const available = isCompactLandscape
-      ? Math.max(96, ui.boardShell.clientHeight - 170)
-      : Math.max(170, ui.boardShell.clientHeight - 132);
+    const boardStyle = getComputedStyle(ui.boardShell);
+    const tableauTop = ui.tableauRow.offsetTop || 0;
+    const boardBottomPadding = Number.parseFloat(boardStyle.paddingBottom) || 0;
+    // Foundations and Stock occupy variable card-sized rows above Tableau.
+    // Measure their real occupied space instead of subtracting a fixed guess;
+    // the latter lets a long pile cross the board's clipped lower edge.
+    const available = Math.max(96, ui.boardShell.clientHeight - tableauTop - boardBottomPadding - 2);
     const compactStep = isCompactLandscape ? 8 : 11;
     const heightLimitedWidth = (available - compactStep * Math.max(1, maxRows - 1) - 12) / 1.397;
     const measuredWidth = columnWidth >= 24 ? columnWidth : 36;
