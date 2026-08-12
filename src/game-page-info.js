@@ -1591,6 +1591,92 @@
     },
   };
 
+  // The next card batch owns authored play instructions in each game's static
+  // preview. Keep the same copy in the shared guide data so localized routes
+  // and the runtime guide do not fall back to a title, summary, and FAQ only.
+  Object.assign(games, {
+    hearts: {
+      title: "Hearts", age: "9+", difficulty: "Easy to Challenging", time: "5-15 minutes",
+      gameplay: "Classic Evasion Trick-Taking", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"],
+      intro: "Four players follow suit through thirteen tricks. Hearts are penalty cards, the Queen of Spades is worth 13 points, and taking every penalty card enables Shooting the Moon.",
+      how: ["Choose three cards to pass, then play a legal card from your hand. The first trick starts with the Two of Clubs; the winner leads the next trick."],
+      noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog.",
+      faq: [["Is progress saved?", "Yes, only in this browser."]],
+    },
+    spades: {
+      title: "Spades", age: "9+", difficulty: "Easy to Challenging", time: "5-15 minutes",
+      gameplay: "Classic Trump Trick-Taking", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"],
+      intro: "Two teams bid before a trick-taking hand. Spades are always trump, and bags record overtricks.",
+      how: ["Bid the number of tricks your team expects, follow suit when possible, and use spades at the right moment to win the contract."],
+      noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog.",
+      faq: [["Is progress saved?", "Yes, only in this browser."]],
+    },
+    "gin-rummy": {
+      title: "Gin Rummy", age: "9+", difficulty: "Easy to Challenging", time: "5-15 minutes",
+      gameplay: "Classic Meld Card Game", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"],
+      intro: "Build sets of the same rank and suited runs while reducing unmatched Deadwood.",
+      how: ["Draw from the stock or discard, then discard one card. Knock with a low Deadwood hand or reach Gin."],
+      noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog.",
+      faq: [["Is progress saved?", "Yes, only in this browser."]],
+    },
+    "crazy-eights": {
+      title: "Crazy Eights", age: "9+", difficulty: "Easy to Challenging", time: "3-10 minutes",
+      gameplay: "Classic Shedding Card Game", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"],
+      intro: "Play a card matching the active suit or rank. Eights are wild and let you choose the next suit.",
+      how: ["When no card is legal, draw. The first player to empty their hand wins."],
+      noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog.",
+      faq: [["Is progress saved?", "Yes, only in this browser."]],
+    },
+    cribbage: {
+      title: "Cribbage", age: "9+", difficulty: "Easy to Challenging", time: "5-15 minutes",
+      gameplay: "Classic Pegging Card Game", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"],
+      intro: "Discard two cards to the crib, peg without passing 31, then score hands using classic combinations.",
+      how: ["Pairs, runs, and fifteens score points. The first player to reach 121 wins."],
+      noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog.",
+      faq: [["Is progress saved?", "Yes, only in this browser."]],
+    },
+    "go-fish": {
+      title: "Go Fish", age: "9+", difficulty: "Easy to Challenging", time: "3-10 minutes",
+      gameplay: "Classic Set-Collection Card Game", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"],
+      intro: "Ask another player for a rank you hold. If they have it, they must give you every card of that rank; otherwise, Go Fish.",
+      how: ["Complete four-of-a-kind books. Choose two, three, or four players in the preview build."],
+      noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog.",
+      faq: [["Is progress saved?", "Yes, only in this browser."]],
+    },
+    war: {
+      title: "War", age: "9+", difficulty: "Easy", time: "3-8 minutes",
+      gameplay: "Classic Reveal Card Game", genre: ["Card", "Family", "Strategy"], skills: ["Focus", "Pattern Recognition"],
+      intro: "Both players reveal one card. The higher rank wins the pot; tied ranks trigger a War with additional cards.",
+      how: ["Press Flip to reveal, then watch the pile move. The player who collects every card wins."],
+      noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog.",
+      faq: [["Is progress saved?", "Yes, only in this browser."]],
+    },
+    speed: {
+      title: "Speed", age: "9+", difficulty: "Easy to Challenging", time: "2-6 minutes",
+      gameplay: "Real-Time Card Race", genre: ["Card", "Family", "Strategy"], skills: ["Focus", "Pattern Recognition", "Reaction"],
+      intro: "Both players act at once. Play a card one rank above or below either center card, with Ace and King wrapping.",
+      how: ["Tap quickly and keep your hand replenished. There is no waiting for the opponent's turn."],
+      noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog.",
+      faq: [["Is progress saved?", "Yes, only in this browser."]],
+    },
+    "old-maid": {
+      title: "Old Maid", age: "9+", difficulty: "Easy", time: "3-8 minutes",
+      gameplay: "Classic Pairing Card Game", genre: ["Card", "Family", "Strategy"], skills: ["Focus", "Pattern Recognition"],
+      intro: "Discard matching rank pairs, then take one random card from the next player's hand.",
+      how: ["Pairs vanish immediately. The last player holding the special Old Maid card loses."],
+      noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog.",
+      faq: [["Is progress saved?", "Yes, only in this browser."]],
+    },
+    casino: {
+      title: "Casino", age: "9+", difficulty: "Medium", time: "5-15 minutes",
+      gameplay: "Fishing and Capture Card Game", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"],
+      intro: "Play a card to capture a table card of the same value or several table cards whose values add to it.",
+      how: ["Build combinations for later capture, collect Spades, and watch for the Ten of Diamonds and Two of Spades bonuses."],
+      noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog.",
+      faq: [["Is progress saved?", "Yes, only in this browser."]],
+    },
+  });
+
   const labels = {
     en: {
       kicker: "WeightPlay Kids Game Guide",

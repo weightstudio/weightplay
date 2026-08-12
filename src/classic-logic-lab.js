@@ -20,6 +20,21 @@
   };
 
   const L = (en, zhH, zhS, ja, ko, es, pt, fr, de, it, ru, hi, ar) => ({ en, "zh-Hant": zhH, "zh-Hans": zhS, ja, ko, es, "pt-BR": pt, fr, de, it, ru, hi, ar });
+  const quickStart = L(
+    "Choose a level, read the rule above, then use Hint for one safe next idea, Undo to reverse a choice, or New Puzzle to reset the board.",
+    "選擇難度、閱讀上方規則，再用提示查看一個安全方向、用還原撤回選擇，或用新謎題重設盤面。",
+    "选择难度、阅读上方规则，再用提示查看一个安全方向、用撤销撤回选择，或用新谜题重置盘面。",
+    "難易度を選び、上のルールを読んでから、ヒントで安全な次の手を確認し、元に戻すで選択を戻すか、新しいパズルで盤面をリセットします。",
+    "난이도를 고르고 위 규칙을 읽은 뒤 힌트로 안전한 다음 수를 확인하거나 되돌리기로 선택을 취소하고 새 퍼즐로 보드를 초기화하세요.",
+    "Elige una dificultad, lee la regla y usa Pista para ver una idea segura, Deshacer para revertir una elección o Nuevo puzzle para reiniciar el tablero.",
+    "Escolha uma dificuldade, leia a regra e use Dica para ver uma ideia segura, Desfazer para voltar uma escolha ou Novo quebra-cabeça para reiniciar o tabuleiro.",
+    "Choisissez une difficulté, lisez la règle, puis utilisez Indice pour voir une idée sûre, Annuler pour revenir en arrière ou Nouveau puzzle pour réinitialiser le plateau.",
+    "Wähle eine Schwierigkeit, lies die Regel und nutze Tipp für eine sichere Idee, Rückgängig zum Zurücknehmen oder Neues Rätsel zum Zurücksetzen.",
+    "Scegli una difficoltà, leggi la regola e usa Suggerimento per vedere un'idea sicura, Annulla per tornare indietro o Nuovo puzzle per azzerare la tavola.",
+    "Выберите сложность, прочитайте правило и используйте подсказку для безопасной идеи, отмену для возврата хода или новую задачу для сброса поля.",
+    "कठिनाई चुनें, नियम पढ़ें और सुरक्षित विचार के लिए संकेत, चुनाव पलटने के लिए पहले जैसा, या बोर्ड रीसेट करने के लिए नई पहेली इस्तेमाल करें।",
+    "اختر مستوى الصعوبة واقرأ القاعدة، ثم استخدم التلميح لمعرفة فكرة آمنة، أو التراجع لعكس اختيار، أو لغز جديد لإعادة ضبط اللوحة."
+  );
   const titles = {
     "minefield-logic": L("Minefield Logic", "地雷邏輯", "地雷逻辑", "マインフィールド・ロジック", "마인필드 로직", "Lógica del campo minado", "Lógica do Campo Minado", "Logique du champ miné", "Minenfeld-Logik", "Logica del campo minato", "Логика минного поля", "माइनफील्ड लॉजिक", "منطق حقل الألغام"),
     sudoku: L("Sudoku", "數獨", "数独", "数独", "스도쿠", "Sudoku", "Sudoku", "Sudoku", "Sudoku", "Sudoku", "Судоку", "सुडोकू", "سودوكو"),
@@ -116,7 +131,7 @@
         <main class="logic-main" id="logicMain">
           <header class="logic-header"><a class="logic-return" href="/" aria-label="${esc(t("back"))}"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><h1>${esc(title)}</h1><div class="logic-header-tools"><button id="settingsButton" class="logic-icon-button" type="button" aria-label="${esc(t("settings"))}" aria-expanded="false">⚙</button><div id="settingsPanel" class="logic-settings" hidden><h2>${esc(t("settings"))}</h2><div class="logic-setting-row"><span>${esc(t("sound"))}</span><button id="soundButton" type="button"></button></div><label class="logic-setting-row"><span>${esc(t("language"))}</span><select id="localePicker" aria-label="${esc(t("language"))}"></select></label></div></div></header>
           <section class="logic-hero"><div class="logic-poster"><img src="../../assets/classic-logic-lab-cover.webp" alt=""></div><div class="logic-copy"><p class="logic-kicker">${esc(t("preview"))}</p><h2>${esc(title)}</h2><p>${esc(text(cfg.blurb))}</p><div class="logic-facts"><span>${esc(text(cfg.type))}</span><span>${esc(t("moves"))} + ${esc(t("hint"))}</span><span>Mouse + Touch</span></div><button id="startButton" class="logic-primary" type="button">${esc(t("start"))}</button></div></section>
-          <section class="logic-guide"><h2>${esc(t("how"))}</h2><p>${esc(text(cfg.blurb))}</p><h3>${esc(t("goal"))}</h3><p>${esc(text(cfg.blurb))}</p></section>
+          <section class="logic-guide"><h2>${esc(t("how"))}</h2><p>${esc(text(cfg.blurb))}</p><h3>${esc(t("ready"))}</h3><p>${esc(text(quickStart))}</p></section>
         </main>
         <section class="logic-battle-screen" id="logicBattle" hidden><header class="logic-battle-header"><button id="battleBack" class="logic-battle-back" type="button" aria-label="${esc(t("menu"))}">←</button><h1>${esc(title)}</h1><span id="battleChip" class="logic-status-chip">${esc(t("turn"))}</span></header><div class="logic-battle-wrap"><div id="logicTutorial" class="logic-tutorial"></div><div id="logicStatus" class="logic-status-line" role="status" aria-live="polite">${esc(t("ready"))}</div><div class="logic-board-panel"><div id="logicBoard" class="logic-board-area"></div></div><div class="logic-action-row"><button id="logicHint" class="logic-secondary" type="button">${esc(t("hint"))}</button><button id="logicUndo" class="logic-secondary" type="button">${esc(t("undo"))}</button><button id="logicReset" class="logic-secondary" type="button">${esc(t("reset"))}</button></div></div><div class="logic-result" id="logicResult" hidden role="dialog" aria-modal="true" aria-labelledby="logicResultTitle"><div class="logic-result-card"><h2 id="logicResultTitle"></h2><p id="logicResultText"></p><div class="logic-result-actions"><button id="resultReplay" class="logic-primary" type="button">${esc(t("replay"))}</button><button id="resultMenu" class="logic-secondary" type="button">${esc(t("menu"))}</button><button id="resultClose" class="logic-secondary" type="button">${esc(t("close"))}</button></div></div></div></section>
       </div>`;

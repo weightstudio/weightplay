@@ -637,17 +637,19 @@
     const boardHeight = ui.boardShell.clientHeight || 0;
     if (!tableauWidth || !canvasWidth || !canvasHeight || !boardWidth || !boardHeight) return false;
     const isCompactLandscape = window.matchMedia("(orientation: landscape) and (max-height: 560px)").matches;
-    const fitKey = [canvasWidth, canvasHeight, boardWidth, boardHeight, tableauWidth, tableauGap, isCompactLandscape ? "landscape" : "portrait"].join("|");
+    const fitKey = [canvasWidth, canvasHeight, boardWidth, boardHeight, tableauWidth, tableauGap, state.layoutMaxRows, isCompactLandscape ? "landscape" : "portrait"].join("|");
     if (!force && fitKey === state.layoutFitKey) {
       syncTableauPileHeights(canvas);
       return true;
     }
     const columnWidth = (tableauWidth - tableauGap * 9) / 10;
     const currentMaxRows = Math.max(1, ...game.tableau.columns.map((column) => column.length));
-    // The opening tableau determines the Battle envelope. A normal move may
-    // change card counts, but it must never change the card scale or overlap
-    // step; only a real viewport/geometry change may request a new fit.
-    state.layoutMaxRows = Math.max(1, state.layoutMaxRows || currentMaxRows);
+    // Keep the opening card scale stable, but let a genuinely longer pile
+    // request a new overlap fit. Without this, the step remains based on the
+    // opening six-card pile and later cards can fall below the clipped board.
+    // Keep the largest observed pile for the current Battle so a shorter move
+    // does not unexpectedly expand every surviving pile again.
+    state.layoutMaxRows = Math.max(1, state.layoutMaxRows || 0, currentMaxRows);
     const maxRows = Math.max(1, state.layoutMaxRows);
     const available = isCompactLandscape
       ? Math.max(96, ui.boardShell.clientHeight - 170)

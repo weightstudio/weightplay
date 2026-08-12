@@ -477,6 +477,79 @@ body.wp-kids-audience.wp-shell-main-active .wp-standard-main-flow-owner .wp-stan
   padding: clamp(12px, 2.5vw, 22px) !important;
 }
 
+/* General Main content must stay readable even when a game's native theme
+   only supplies a dark map or table background. Keep this surface outside the
+   Kids branch: Kids has its own age-fit Main treatment. */
+body:not(.wp-kids-audience) .wp-main-shell-header,
+body:not(.wp-kids-audience) .wp-standard-main-composition {
+  color: #f8fafc;
+}
+
+body:not(.wp-kids-audience) .wp-main-shell-header > :is(.wp-generated-main-title, .wp-shell-main-title, h1, h2, strong) {
+  color: #f8fafc !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .28);
+}
+
+body:not(.wp-kids-audience) .wp-standard-main-composition {
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(7, 20, 38, .98), rgba(13, 49, 65, .96));
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 24px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, .28);
+}
+
+body:not(.wp-kids-audience) .wp-standard-main-poster {
+  background: #0b1d35;
+  border: 1px solid rgba(255, 255, 255, .16);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .22);
+}
+
+body:not(.wp-kids-audience) .wp-standard-main-copy {
+  color: #f8fafc;
+}
+
+body:not(.wp-kids-audience) .wp-standard-main-summary {
+  color: #e7f0fa;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .28);
+}
+
+body:not(.wp-kids-audience) .wp-standard-main-start,
+body:not(.wp-kids-audience) .wp-standard-main-copy > [data-wp-main-start] {
+  appearance: none;
+  border: 0 !important;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #ffeaa0, #ffbf42) !important;
+  color: #241a08 !important;
+  font: 900 16px/1.2 system-ui, sans-serif !important;
+  box-shadow: 0 10px 22px rgba(255, 191, 66, .22);
+  cursor: pointer;
+}
+
+body:not(.wp-kids-audience) .wp-standard-main-start:hover,
+body:not(.wp-kids-audience) .wp-standard-main-start:focus-visible,
+body:not(.wp-kids-audience) .wp-standard-main-copy > [data-wp-main-start]:hover,
+body:not(.wp-kids-audience) .wp-standard-main-copy > [data-wp-main-start]:focus-visible {
+  filter: brightness(1.04);
+  outline: 3px solid rgba(255, 234, 160, .42);
+  outline-offset: 2px;
+}
+
+body:not(.wp-kids-audience) .wp-standard-main-copy .card-main-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+body:not(.wp-kids-audience) .wp-standard-main-copy .card-main-controls button {
+  min-height: 44px;
+  border: 1px solid rgba(255, 255, 255, .28);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .12);
+  color: #f8fafc;
+  font: 800 14px/1.2 system-ui, sans-serif;
+}
+
 .wp-standard-main-poster {
   width: 420px;
   height: 420px;
