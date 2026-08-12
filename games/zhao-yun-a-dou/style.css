@@ -653,6 +653,19 @@ button.primary:focus-visible {
 .unit-slot.general-unit {
   border-color: #d3a456;
   background: linear-gradient(145deg, rgba(211, 164, 86, .3), rgba(111, 75, 43, .35));
+  background-image: linear-gradient(145deg, rgba(20, 27, 24, .52), rgba(111, 75, 43, .48)), url("../../assets/zhao-yun-a-dou-generals.png");
+  background-repeat: no-repeat;
+  background-size: auto, 200% 200%;
+}
+
+.unit-slot.general-unit.unit-type-blade { background-position: 0 0; }
+.unit-slot.general-unit.unit-type-spear { background-position: 100% 0; }
+.unit-slot.general-unit.unit-type-horse { background-position: 0 100%; }
+.unit-slot.general-unit.unit-type-bow { background-position: 100% 100%; }
+
+.unit-slot.general-unit .unit-glyph {
+  color: #fff3d2 !important;
+  text-shadow: 0 1px 2px #101b1b;
 }
 
 .unit-glyph {
@@ -715,6 +728,28 @@ button.primary:focus-visible {
   color: var(--paper);
   background: rgba(255, 255, 255, .08);
 }
+
+.skill-button {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background-image: linear-gradient(135deg, rgba(13, 25, 24, .88), rgba(13, 25, 24, .52)), url("../../assets/zhao-yun-a-dou-generals.png");
+  background-repeat: no-repeat;
+  background-size: auto, 200% 200%;
+}
+
+.skill-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, transparent 35%, rgba(9, 17, 18, .88));
+}
+
+.skill-blade { background-position: 0 0; }
+.skill-spear { background-position: 100% 0; }
+.skill-horse { background-position: 0 100%; }
+.skill-bow { background-position: 100% 100%; }
 
 .skill-button.ready {
   border-color: #e0b95e;

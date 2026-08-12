@@ -521,7 +521,7 @@
     battle.units.forEach(function (unit, slot) {
       const button = document.createElement("button");
       button.type = "button";
-      button.className = "unit-slot" + (unit ? "" : " empty") + (selectedSlot === slot ? " selected" : "") + (unit && unit.general ? " general-unit" : "");
+      button.className = "unit-slot" + (unit ? " unit-type-" + unit.type : "") + (unit ? "" : " empty") + (selectedSlot === slot ? " selected" : "") + (unit && unit.general ? " general-unit" : "");
       button.setAttribute("role", "gridcell");
       button.setAttribute("data-slot", String(slot));
       button.setAttribute("aria-label", unit ? unitName(unit) + ", " + t("lane") + " " + ((slot % 3) + 1) : t("empty") + ", " + t("lane") + " " + ((slot % 3) + 1));
@@ -557,7 +557,7 @@
       const button = document.createElement("button");
       const cooldown = battle.skillsUsed[unit.type] || 0;
       button.type = "button";
-      button.className = "skill-button" + (!cooldown ? " ready" : "");
+      button.className = "skill-button skill-" + unit.type + (!cooldown ? " ready" : "");
       button.setAttribute("data-skill", unit.type);
       button.disabled = Boolean(cooldown) || Boolean(battle.result);
       button.setAttribute("aria-label", generalName(unit) + " " + (locale === "en" ? general.skillEnglish : general.skill));
