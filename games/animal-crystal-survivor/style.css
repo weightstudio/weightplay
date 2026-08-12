@@ -423,6 +423,8 @@ body:not(.crystal-playing) .language-picker select {
 .stage-panel-head span { color:#b7f4d7; font-size:.72rem; font-weight:900; }
 .stage-back-btn { display:grid; place-items:center; width:48px; height:48px; padding:0; border:0; border-radius:11px; color:#176db3; background:#f8fafc; font-size:1.7rem; font-weight:1000; }
 .stage-setup-text { margin:0; padding:9px 11px; border-radius:11px; color:#e9fbdc; background:rgba(4,22,20,.84); font-size:.75rem; font-weight:800; line-height:1.35; }
+.stage-intro { display:grid; gap:5px; min-width:0; }
+.stage-checkpoint-text { margin:0; padding:6px 11px; overflow:hidden; border:1px solid rgba(255,231,108,.34); border-radius:10px; color:#fff6a6; background:rgba(63,46,7,.76); font-size:.7rem; font-weight:1000; line-height:1.25; text-overflow:ellipsis; white-space:nowrap; }
 .stage-rail { display:grid; grid-auto-flow:column; grid-auto-columns:264px; align-items:center; gap:14px; min-height:0; overflow-x:auto; overflow-y:hidden; padding:0 max(20px,calc((100% - 264px)/2)); scroll-snap-type:x mandatory; scrollbar-width:none; touch-action:pan-x; overscroll-behavior-inline:contain; }
 .stage-rail::-webkit-scrollbar { display:none; }
 .stage-card { position:relative; width:264px; height:190px; display:grid; align-content:end; gap:3px; padding:13px 16px; overflow:hidden; contain:layout paint style; content-visibility:auto; contain-intrinsic-size:264px 190px; scroll-snap-align:center; scroll-snap-stop:always; border:2px solid rgba(255,255,255,.24); border-radius:17px; color:#fff; background:linear-gradient(0deg,rgba(2,13,12,.97),var(--stage-overlay,rgba(11,67,48,.25))),url("../../assets/animal-crystal-survivor-forest-arena.webp") center/cover; text-align:left; box-shadow:0 12px 28px rgba(0,0,0,.42); }
@@ -1629,7 +1631,7 @@ body:not(.crystal-playing):not(.crystal-stage-select) .menu-copy {
 
 .stage-page {
   display: grid;
-  grid-template-rows: 62px minmax(0, 1fr) 38px;
+  grid-template-rows: auto minmax(0, 1fr) 38px;
   gap: 8px;
   height: 100%;
 }

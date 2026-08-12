@@ -8,7 +8,7 @@
   document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-crystal-survivor";
-  const GAME_VERSION = "v15";
+  const GAME_VERSION = "v16";
   const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_animal_crystal_survivor_v1";
   const localeKey = "weightPlayLocale";
@@ -64,6 +64,7 @@
     stageSelectTitle: $("stageSelectTitle"),
     stageProgressText: $("stageProgressText"),
     stageSetupText: $("stageSetupText"),
+    stageCheckpointText: $("stageCheckpointText"),
     stageRail: $("stageRail"),
     stageText: $("stageText"),
     menuBtn: $("menuBtn"),
@@ -377,6 +378,25 @@
   }).forEach(([code, labels]) => {
     text[code] ||= {};
     [text[code].mainProgress, text[code].stageTab, text[code].equipmentTab] = labels;
+  });
+
+  Object.entries({
+    en: ["Region {region} / 6 · Next Boss: Stage {boss} · {remaining} to go", "Region {region} / 6 · Boss checkpoint now · Stage {boss}"],
+    "zh-Hant": ["區域 {region} / 6 · 下一個首領：第 {boss} 關 · 還有 {remaining} 關", "區域 {region} / 6 · 現在就是首領關 · 第 {boss} 關"],
+    "zh-Hans": ["区域 {region} / 6 · 下一个首领：第 {boss} 关 · 还有 {remaining} 关", "区域 {region} / 6 · 现在就是首领关 · 第 {boss} 关"],
+    ja: ["地域 {region} / 6・次のボス：ステージ {boss}・あと {remaining}", "地域 {region} / 6・今がボスチェックポイント・ステージ {boss}"],
+    ko: ["지역 {region} / 6 · 다음 보스: 스테이지 {boss} · {remaining} 남음", "지역 {region} / 6 · 지금 보스 체크포인트 · 스테이지 {boss}"],
+    es: ["Región {region} / 6 · Próximo jefe: nivel {boss} · faltan {remaining}", "Región {region} / 6 · Punto de jefe actual · nivel {boss}"],
+    pt: ["Região {region} / 6 · Próximo chefe: fase {boss} · faltam {remaining}", "Região {region} / 6 · Chefe agora · fase {boss}"],
+    fr: ["Région {region} / 6 · Prochain Boss : niveau {boss} · reste {remaining}", "Région {region} / 6 · Boss maintenant · niveau {boss}"],
+    de: ["Region {region} / 6 · Nächster Boss: Stufe {boss} · noch {remaining}", "Region {region} / 6 · Boss-Checkpoint jetzt · Stufe {boss}"],
+    it: ["Regione {region} / 6 · Prossimo Boss: livello {boss} · ne mancano {remaining}", "Regione {region} / 6 · Boss adesso · livello {boss}"],
+    ru: ["Регион {region} / 6 · Следующий босс: этап {boss} · осталось {remaining}", "Регион {region} / 6 · Босс прямо сейчас · этап {boss}"],
+    hi: ["क्षेत्र {region} / 6 · अगला बॉस: स्टेज {boss} · {remaining} बाकी", "क्षेत्र {region} / 6 · बॉस चेकपॉइंट अभी · स्टेज {boss}"],
+    ar: ["المنطقة {region} / 6 · الزعيم التالي: المرحلة {boss} · متبقٍ {remaining}", "المنطقة {region} / 6 · مواجهة الزعيم الآن · المرحلة {boss}"],
+  }).forEach(([code, labels]) => {
+    text[code] ||= {};
+    [text[code].checkpointNext, text[code].checkpointNow] = labels;
   });
 
   const assetPaths = {
@@ -1073,6 +1093,17 @@
   const clampStageIndex = (index) => Math.max(0, Math.min(STAGE_COUNT - 1, index));
   const desiredStageWindow = (stageNumber) => Math.max(0, Math.min(STAGE_COUNT - STAGE_CARD_POOL_SIZE, clampStageIndex(stageNumber - 1) - Math.floor(STAGE_CARD_POOL_SIZE / 2)));
 
+  function updateStageCheckpoint() {
+    if (!nodes.stageCheckpointText) return;
+    const boss = Math.ceil(stageBrowseStage / 5) * 5;
+    const remaining = boss - stageBrowseStage;
+    nodes.stageCheckpointText.textContent = t(remaining === 0 ? "checkpointNow" : "checkpointNext", {
+      region: Math.floor((stageBrowseStage - 1) / 5) + 1,
+      boss,
+      remaining,
+    });
+  }
+
   function bindStageCard(card, index) {
     const config = stages[index];
     if (!config) { card.hidden = true; return; }
@@ -1146,7 +1177,10 @@
     return recycled;
   }
 
-  function syncStageCards() { stageCardPool.forEach((card) => bindStageCard(card, Number(card.dataset.stage) - 1)); }
+  function syncStageCards() {
+    stageCardPool.forEach((card) => bindStageCard(card, Number(card.dataset.stage) - 1));
+    updateStageCheckpoint();
+  }
 
   function stageRailGeometry() {
     const cards = [...nodes.stageRail.children], rail = nodes.stageRail.getBoundingClientRect(), first = cards[0]?.getBoundingClientRect(), second = cards[1]?.getBoundingClientRect();
@@ -1203,6 +1237,7 @@
     nodes.stageSelectTitle.textContent = locale === "zh-Hant" ? "\u9078\u64c7\u6c34\u6676\u8def\u7dda" : locale === "es" ? "Elige una ruta de cristal" : "Choose a Crystal Route";
     nodes.stageProgressText.textContent = t("stageProgress", { unlocked: save.unlockedStage });
     nodes.stageSetupText.textContent = t("stageSetup");
+    updateStageCheckpoint();
     $("stageSwipeText").textContent = t("stageSwipe");
     $("stageDeployText").textContent = t("stageDeploy");
     if (stageCardPool.length !== STAGE_CARD_POOL_SIZE || stageCardPool.some((card) => card.parentElement !== nodes.stageRail)) buildStageCardPool();
