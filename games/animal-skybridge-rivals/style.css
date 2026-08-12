@@ -604,6 +604,17 @@ button {
   border-radius: 12px;
   padding: 9px;
 }
+.result-purpose {
+  margin: 10px 0 0;
+  padding: 9px 11px;
+  border: 1px solid #78e8ba70;
+  border-radius: 11px;
+  color: #d8ffef;
+  background: #0b3b4f;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.35;
+}
 .modal-actions {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -769,13 +780,21 @@ button {
     padding: 9px;
   }
   .result-racer {
-    grid-row: 1/5;
-    width: 125px;
-    height: 125px;
+    grid-row: 1/6;
+    width: 96px;
+    height: 96px;
+    justify-self: center;
   }
+  .result-card h2 { margin: 1px; font-size: 24px; }
+  .result-card #resultText { margin: 2px 0; font-size: 13px; }
+  .result-card .result-stats span { padding: 5px; }
+  .result-card .result-purpose { margin-top: 3px; padding: 5px 8px; font-size: 12px; }
   .result-card .modal-actions {
     grid-column: 1/-1;
     margin-top: 5px;
+  }
+  .result-card .result-purpose {
+    grid-column: 2;
   }
   .workshop-intro {
     grid-template-columns: 70px 1fr;
