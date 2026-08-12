@@ -9032,7 +9032,7 @@
     title: "Zhao Yun & A Dou: Inkline Defense",
     gameplay: "Merge Strategy Defense",
     difficulty: "Easy to Challenging",
-    time: "3-5 minutes per mission",
+    time: "About 1–3 minutes per mission",
     genre: ["Strategy", "Defense", "Merge"],
     skills: ["Planning", "Timing", "Adaptation"],
     intro: "Recruit Chinese-character soldiers, place them across three lanes, merge matching units, and keep the advancing enemy away from A Dou.",

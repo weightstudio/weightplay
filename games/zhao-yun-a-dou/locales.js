@@ -132,6 +132,23 @@
     Object.assign(dictionaries[code], localeExtras[code]);
   });
 
+  const publicMainCopy = {
+    "zh-Hans": { kicker: "短局合成防守战", summary: "征召汉字小兵、合成相同部队，守住三条战线，让赵云保护阿斗。" },
+    ja: { kicker: "短時間の合成防衛キャンペーン", summary: "漢字の兵を招集し、同じ部隊を合成して三つのレーンを守り、趙雲とともに阿斗を守ろう。" },
+    ko: { kicker: "짧게 즐기는 합성 방어 캠페인", summary: "한자 병사를 모집하고 같은 부대를 합쳐 세 전선을 지키며 조운과 함께 아두를 보호하세요." },
+    es: { kicker: "Campaña breve de defensa y fusión", summary: "Recluta soldados de caracteres, fusiona unidades iguales y protege tres líneas junto a Zhao Yun para mantener a salvo a A Dou." },
+    "pt-BR": { kicker: "Campanha curta de defesa e fusão", summary: "Recrute soldados de caracteres, funda unidades iguais e defenda três linhas com Zhao Yun para proteger A Dou." },
+    fr: { kicker: "Courte campagne de défense et de fusion", summary: "Recrutez des soldats-caractères, fusionnez les unités identiques et défendez trois voies avec Zhao Yun pour protéger A Dou." },
+    de: { kicker: "Kurze Verschmelzungs-Verteidigungskampagne", summary: "Rekrutiere Zeichen-Soldaten, verschmelze gleiche Einheiten und halte mit Zhao Yun drei Linien, um A Dou zu schützen." },
+    it: { kicker: "Breve campagna di difesa e fusione", summary: "Recluta soldati-carattere, fondi le unità uguali e difendi tre linee con Zhao Yun per proteggere A Dou." },
+    ru: { kicker: "Короткая кампания слияния и обороны", summary: "Призывайте бойцов-знаки, объединяйте одинаковые отряды и вместе с Чжао Юнем удерживайте три линии, защищая А-Доу." },
+    hi: { kicker: "छोटा विलय-रक्षा अभियान", summary: "अक्षर सैनिकों की भर्ती करें, समान इकाइयों को मिलाएँ और झाओ युन के साथ तीन पंक्तियों पर आ-दो की रक्षा करें।" },
+    ar: { kicker: "حملة دفاع ودمج قصيرة", summary: "جنّد جنود الحروف وادمج الوحدات المتطابقة ودافع مع تشاو يون عن ثلاثة مسارات لحماية آ دو." },
+  };
+  Object.keys(publicMainCopy).forEach(function (code) {
+    Object.assign(dictionaries[code], publicMainCopy[code]);
+  });
+
   const attackCueLabels = {
     en: "Attack", "zh-Hant": "攻擊", "zh-Hans": "攻击", ja: "攻撃", ko: "공격",
     es: "Ataque", "pt-BR": "Ataque", fr: "Attaque", de: "Angriff", it: "Attacco",
