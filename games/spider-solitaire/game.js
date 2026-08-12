@@ -637,12 +637,6 @@
     const boardHeight = ui.boardShell.clientHeight || 0;
     if (!tableauWidth || !canvasWidth || !canvasHeight || !boardWidth || !boardHeight) return false;
     const isCompactLandscape = window.matchMedia("(orientation: landscape) and (max-height: 560px)").matches;
-    const fitKey = [canvasWidth, canvasHeight, boardWidth, boardHeight, tableauWidth, tableauGap, state.layoutMaxRows, isCompactLandscape ? "landscape" : "portrait"].join("|");
-    if (!force && fitKey === state.layoutFitKey) {
-      syncTableauPileHeights(canvas);
-      return true;
-    }
-    const columnWidth = (tableauWidth - tableauGap * 9) / 10;
     const currentMaxRows = Math.max(1, ...game.tableau.columns.map((column) => column.length));
     // Keep the opening card scale stable, but let a genuinely longer pile
     // request a new overlap fit. Without this, the step remains based on the
@@ -651,6 +645,12 @@
     // does not unexpectedly expand every surviving pile again.
     state.layoutMaxRows = Math.max(1, state.layoutMaxRows || 0, currentMaxRows);
     const maxRows = Math.max(1, state.layoutMaxRows);
+    const fitKey = [canvasWidth, canvasHeight, boardWidth, boardHeight, tableauWidth, tableauGap, maxRows, isCompactLandscape ? "landscape" : "portrait"].join("|");
+    if (!force && fitKey === state.layoutFitKey) {
+      syncTableauPileHeights(canvas);
+      return true;
+    }
+    const columnWidth = (tableauWidth - tableauGap * 9) / 10;
     const available = isCompactLandscape
       ? Math.max(96, ui.boardShell.clientHeight - 170)
       : Math.max(170, ui.boardShell.clientHeight - 132);
@@ -1579,6 +1579,36 @@
         showBattle();
         renderBoard();
         startClock();
+      },
+      loadGrowingStackFixture() {
+        const Card = window.WPCardEngine.Card;
+        const makeCard = (index) => new Card("spades", 13 - (index % 13), `growing-stack-${index}`, true);
+        // Keep Battle active so this deliberately grows beyond the opening
+        // layout. The regression verifies that the player-facing bottom card
+        // remains inside the clipped board after the pile grows.
+        game.tableau.columns = [
+          Array.from({ length: 30 }, (_value, index) => makeCard(index)),
+          ...Array.from({ length: 9 }, (_value, columnIndex) => [new Card("hearts", 13, `growing-blocker-${columnIndex}`, true)]),
+        ];
+        game.stock = new SpiderStock([]);
+        game.completed = new CompletedSequenceManager();
+        game.history = new UndoStack();
+        game.moveCount = 0;
+        game.score = 500;
+        game.dealCount = 0;
+        game.lastMove = null;
+        game.recentMoves = [];
+        game.visitedStates = new Set();
+        game.rememberState();
+        game.initialSnapshot = game.snapshot();
+        state.lastFrameCards = new Map();
+        state.cardPool = new Map();
+        state.pendingDealDelays = null;
+        clearCompletionFlyouts();
+        ui.resultOverlay.hidden = true;
+        ui.tutorialOverlay.hidden = true;
+        ui.confirmOverlay.hidden = true;
+        renderBoard();
       },
       snapshot() {
         return {
