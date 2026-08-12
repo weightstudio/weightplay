@@ -643,8 +643,15 @@
     });
   }
 
+  function unitLabel(unit) {
+    if (unit.general) return generalName(unit);
+    const definition = data.unitTypes[unit.type];
+    return locale === "en" ? definition.english : definition.name;
+  }
+
   function unitName(unit) {
     if (unit.general) return generalName(unit);
+    return unitLabel(unit) + " 繚 " + t("level") + " " + unit.level;
     const definition = data.unitTypes[unit.type];
     return (locale === "en" ? definition.english : definition.name) + " · " + t("level") + " " + unit.level;
   }
