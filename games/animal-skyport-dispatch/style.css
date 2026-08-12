@@ -75,3 +75,7 @@
 /* Keep the shared Settings panel inside the viewport when RTL mirrors the
    header utility slot to the physical left edge. */
 [dir="rtl"] .wp-shell-settings-popover{right:auto;left:0}
+
+/* The shared return target is 48px tall; reserve the same first row in short
+   landscape so its centered hit area cannot be clipped above the Canvas. */
+@media(max-height:500px){.battle-canvas{grid-template-rows:48px 58px minmax(0,1fr) 48px}}

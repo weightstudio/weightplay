@@ -613,6 +613,7 @@
     const previous = history.pop();
     if (previous) {
       blocks = previous;
+      moves = history.length;
       render();
     }
   }
