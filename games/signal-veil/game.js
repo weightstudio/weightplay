@@ -4,6 +4,9 @@
   const $ = (selector) => document.querySelector(selector);
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+  const GAME_ID = "signal-veil";
+  const GAME_VERSION = "v7";
+  const INTERFACE_VERSION = 6;
   const SAVE_KEY = "weightplay-signal-veil-v1";
   const LOCALE_PATHS = {en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const PATH_LOCALES = Object.fromEntries(Object.entries(LOCALE_PATHS).map(([key,value]) => [value,key]));
@@ -162,6 +165,31 @@
   const effects = [];
   const touchMove = {x:0,y:0};
   const INTERACT_PROMPT = {x:BASE_VIEW.width/2-96,y:BASE_VIEW.height-62,w:192,h:44};
+  let firstDialogueTracked = false, firstCombatActionTracked = false, firstCombatHitTracked = false;
+  let lastTrackedQuestCount = 0;
+
+  function viewportBucket() {
+    const width=Math.max(1,window.innerWidth||document.documentElement.clientWidth||1);
+    const height=Math.max(1,window.innerHeight||document.documentElement.clientHeight||1);
+    if(height<=430)return "short-landscape";
+    if(width<=480)return "phone";
+    if(width<=900)return height>width?"tablet-portrait":"tablet-landscape";
+    return height>width?"desktop-portrait":"desktop-landscape";
+  }
+  function track(name,details={}) {
+    try{
+      const active=activeQuest();
+      window.WonderAnalytics?.track?.(name,{
+        game_id:GAME_ID,
+        game_version:GAME_VERSION,
+        interface_version:INTERFACE_VERSION,
+        locale,
+        viewport_bucket:viewportBucket(),
+        quest_number:active?active.index+1:QUESTS.length,
+        ...details,
+      });
+    }catch{}
+  }
 
   const npcs = [
     {x:430,y:490,index:0,reveal:false},{x:345,y:300,index:1,reveal:true},{x:680,y:300,index:2,reveal:true},
@@ -208,6 +236,7 @@
     {id:"weapon",x:1430,y:270,item:"weapon",hidden:true},{id:"accessory",x:1840,y:810,item:"accessory",hidden:true},
     {id:"armor",x:2360,y:250,item:"armor",hidden:false}
   ];
+  lastTrackedQuestCount=completedQuestCount();
 
   function saveGame() {
     stateStore.save(SAVE_KEY,state,trueVision);
@@ -366,6 +395,13 @@
     return `${active.index+1}/${QUESTS.length} · ${questTitle(active.quest)} — ${questObjective(active.quest)}`;
   }
   function updateObjective() {
+    const completed=completedQuestCount();
+    if(completed>lastTrackedQuestCount){
+      for(let number=lastTrackedQuestCount+1;number<=completed;number++){
+        track("quest_complete",{completed_quest_number:number,quest_id:QUESTS[number-1]?.id||"unknown"});
+      }
+      lastTrackedQuestCount=completed;
+    }
     const text=currentQuestText();
     nodes.objective.textContent=text;
     nodes.pauseObjective.textContent=text;
@@ -447,7 +483,7 @@
     if(!wallet?.spendDiamonds?.(5)){nodes.anchorStatus.textContent=template(t("anchorNeed"),{n:wallet?.read?.().diamonds || 0});return}
     state.signalAnchor=true;state.maxHp+=12;state.hp=Math.min(state.maxHp,state.hp+12);
     saveGame();renderInventory();updateHud();showToast(t("anchorInstalled"),2200);
-    window.WonderAnalytics?.track?.("diamond_spend",{game_id:"signal-veil",item:"signal_anchor",cost:5,balance:wallet.read().diamonds});
+    track("diamond_spend",{item:"signal_anchor",cost:5,balance:wallet.read().diamonds});
   }
   function effectiveAttack(){return state.attack+(state.equipped.weapon?5:0)+(state.equipped.accessory?2:0)}
   function effectiveDefense(){return state.defense+(state.equipped.armor?4:0)+(state.equipped.accessory?1:0)}
@@ -512,8 +548,13 @@
     nodes.dialogue.hidden=false; nodes.dialogueNext.focus();
     if (wasNew) { saveGame(); updateObjective(); updateHud(); }
   }
-  function closeDialogue() {
+  function closeDialogue(completed=true) {
+    const dialogue=currentDialogue;
     nodes.dialogue.hidden=true;nodes.dialogueChoices.hidden=true;nodes.dialogueNext.hidden=false;currentDialogue=null;paused=false;canvas.focus({preventScroll:true});
+    if(completed&&dialogue!==null&&!firstDialogueTracked){
+      firstDialogueTracked=true;
+      track("first_dialogue_complete",{dialogue_type:typeof dialogue==="number"?"witness":"story"});
+    }
   }
 
   function resizeCanvas() {
@@ -890,16 +931,28 @@
     if(chest.item==="armor")state.hp=Math.min(state.maxHp,state.hp+12);
     showToast(t("chest",{item:t(`${chest.item}Name`)}),2400);renderInventory();saveGame();
   }
-  function attack() {
+  function recordFirstCombatAction(action,inputType) {
+    if(firstCombatActionTracked)return;
+    firstCombatActionTracked=true;
+    track("first_combat_action",{action,input_type:inputType||"unknown"});
+  }
+  function recordFirstCombatHit(target) {
+    if(firstCombatHitTracked)return;
+    firstCombatHitTracked=true;
+    track("first_combat_hit",{target});
+  }
+  function attack(inputType="unknown") {
     if(paused||attackCooldown>0)return;
+    recordFirstCombatAction("attack",inputType);
     canvas.dataset.lastAction="attack";
     canvas.dataset.slashDirection=state.facing;
     attackCooldown=.32;swingTimer=.18;playTone(150,.07);const v=facingVector(),point={x:state.x+v.x*62,y:state.y+v.y*62};
     enemies.forEach(enemy=>{if(enemy.mapId===state.mapId&&!enemy.dead&&(!enemy.hidden||trueVision)&&distance(point,enemy)<78)damageEnemy(enemy,effectiveAttack())});
     if(state.mapId===MAP_SIGNAL_TOWN&&!boss.dead&&firstMapDefeated()>=15&&distance(point,boss)<105)damageBoss(effectiveAttack());
   }
-  function useSkill() {
+  function useSkill(inputType="unknown") {
     if(paused||skillCooldown>0)return;
+    recordFirstCombatAction("skill",inputType);
     canvas.dataset.lastAction="skill";
     skillCooldown=2.4;const v=facingVector();projectiles.push({x:state.x+v.x*40,y:state.y+v.y*40,vx:v.x*470,vy:v.y*470,life:1.3,damage:effectiveAttack()*.78});playTone(520,.1);
   }
@@ -910,6 +963,7 @@
     canvas.dataset.lastAction=trueVision?"vision-on":"vision-off";
   }
   function damageEnemy(enemy,amount) {
+    recordFirstCombatHit("enemy");
     enemy.hp-=amount;state.enemyHp[enemy.id]=Math.max(0,enemy.hp);effects.push({x:enemy.x,y:enemy.y,index:10,size:52,life:.35});
     if(enemy.hp<=0){
       enemy.dead=true;state.defeated.add(enemy.id);gainXp(12+(enemy.id>7?6:0));playTone(240,.12);
@@ -917,6 +971,7 @@
     }else saveGame();
   }
   function damageBoss(amount) {
+    recordFirstCombatHit("boss");
     if(boss.stun>0)amount*=1.45;boss.hp-=amount;state.bossHp=Math.max(0,boss.hp);effects.push({x:boss.x,y:boss.y,index:10,size:72,life:.35});
     if(boss.hp<=0)finishBoss();else saveGame();
   }
@@ -937,6 +992,7 @@
     if(invulnerability>0||paused)return;
     state.hp-=Math.max(1,amount-effectiveDefense());invulnerability=.75;playTone(90,.12);
     if(state.hp<=0){
+      track("player_defeat",{map_id:state.mapId,quests_completed:completedQuestCount()});
       state.hp=state.maxHp;state.mapId=state.checkpoint.mapId||MAP_SIGNAL_TOWN;state.x=state.checkpoint.x;state.y=state.checkpoint.y;
       enemyProjectiles.length=0;showToast(t("defeated"),2500);saveGame();
     }
@@ -993,6 +1049,7 @@
   function finishBoss() {
     boss.dead=true;state.bossDefeated=true;state.visionUnlocked=true;trueVision=true;state.trueVision=true;
     state.bossHp=0;gainXp(80);saveGame();updateObjective();updateHud();resultClaimed=false;
+    track("boss_result",{boss_id:"veil_commander",map_id:state.mapId,quests_completed:completedQuestCount()});
     clearTimeout(resultRevealTimer);
     resultRevealTimer=setTimeout(()=>{
       resultRevealTimer=0;
@@ -1026,20 +1083,24 @@
     if(window.WonderSound?.isMuted?.())return;
     try{const audio=playTone.audio||(playTone.audio=new (window.AudioContext||window.webkitAudioContext)()),osc=audio.createOscillator(),gain=audio.createGain();osc.frequency.value=frequency;osc.type="square";gain.gain.setValueAtTime(.035,audio.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);osc.connect(gain).connect(audio.destination);osc.start();osc.stop(audio.currentTime+duration)}catch{}
   }
-  function showBattle() {
+  function showBattle(entry="main") {
     nodes.main.hidden=true;nodes.battle.hidden=false;setScreenOwner("battle");playing=true;paused=false;lastTime=performance.now();resizeCanvas();updateHud();updateObjective();renderInventory();canvas.focus({preventScroll:true});
+    track("game_start",{entry,quests_completed:completedQuestCount()});
   }
   function showMain() {
+    const wasPlaying=playing;
     clearTimeout(resultRevealTimer);resultRevealTimer=0;
-    saveGame();playing=false;paused=false;nodes.battle.hidden=true;nodes.main.hidden=false;setScreenOwner("main");setPanel(null);closeDialogue();scrollTo({top:0,behavior:"instant"});updateMainProgress();
+    saveGame();playing=false;paused=false;nodes.battle.hidden=true;nodes.main.hidden=false;setScreenOwner("main");setPanel(null);closeDialogue(false);scrollTo({top:0,behavior:"instant"});updateMainProgress();
+    if(wasPlaying)track("return_session",{from_screen:"battle",quests_completed:completedQuestCount()});
     requestAnimationFrame(()=>requestAnimationFrame(()=>$("#startGame").focus({preventScroll:true})));
   }
   function restartGame() {
     const keepAnchor=Boolean(state.signalAnchor);clearSave();
     state={...fresh,maxHp:fresh.maxHp+(keepAnchor?12:0),hp:fresh.hp+(keepAnchor?12:0),signalAnchor:keepAnchor,talked:new Set(),defeated:new Set(),chests:new Set(),relays:new Set(),ashfallFindings:new Set(),lunarFindings:new Set(),equipment:{...fresh.equipment},equipped:{...fresh.equipped},enemyHp:{},discoveries:{...fresh.discoveries},checkpoint:{...fresh.checkpoint}};
     trueVision=false;enemies=makeEnemies();
+    firstDialogueTracked=false;firstCombatActionTracked=false;firstCombatHitTracked=false;lastTrackedQuestCount=0;
     boss={x:2890,y:520,hp:260,maxHp:260,attackTimer:1.2,pattern:0,dead:false,sprite:12,stun:0,charge:0};bossIntroduced=false;
-    projectiles.length=0;enemyProjectiles.length=0;setPanel(null);showBattle();saveGame();
+    projectiles.length=0;enemyProjectiles.length=0;setPanel(null);showBattle("new_investigation");saveGame();
   }
 
   addEventListener("keydown",event=>{
@@ -1053,12 +1114,12 @@
       const nudge={arrowup:[0,-10],w:[0,-10],arrowdown:[0,10],s:[0,10],arrowleft:[-10,0],a:[-10,0],arrowright:[10,0],d:[10,0]}[key];
       setFacing({x:nudge[0],y:nudge[1]});updateHud();
     }
-    if(key===" "||key==="j")attack();
-    if(key==="k")useSkill();
+    if(key===" "||key==="j")attack("keyboard");
+    if(key==="k")useSkill("keyboard");
     if(key==="v")toggleVision();
-    if(key==="e"||key==="enter"){if(currentDialogue!==null)closeDialogue();else interact()}
+    if(key==="e"||key==="enter"){if(currentDialogue!==null)closeDialogue(true);else interact()}
     if(key==="escape"){
-      if(currentDialogue!==null)closeDialogue();
+      if(currentDialogue!==null)closeDialogue(false);
       else if(!nodes.overlay.hidden)setPanel(null);
       else if(playing)setPanel(nodes.pause);
     }
@@ -1066,7 +1127,7 @@
   addEventListener("keyup",event=>keys.delete(event.key.toLowerCase()));
   addEventListener("blur",()=>{keys.clear();playerMoving=false;if(playing&&!paused)setPanel(nodes.pause)});
   document.addEventListener("visibilitychange",()=>{if(document.hidden&&playing&&!paused)setPanel(nodes.pause)});
-  $("#startGame").addEventListener("click",showBattle);
+  $("#startGame").addEventListener("click",()=>showBattle(completedQuestCount()>0?"resume":"new_investigation"));
   $("#questButton").addEventListener("click",event=>{
     showCurrentQuest();
     if(event.detail>0)event.currentTarget.blur();
@@ -1086,10 +1147,10 @@
   $("#dialogueNext").addEventListener("click",closeDialogue);
   nodes.broadcastChoice.addEventListener("click",()=>currentDialogue==="lunar-choice"?chooseLunar("answer"):chooseAshfall("broadcast"));
   nodes.protectChoice.addEventListener("click",()=>currentDialogue==="lunar-choice"?chooseLunar("shield"):chooseAshfall("protect"));
-  $("#continueExplore").addEventListener("click",()=>{if(resultClaimed)return;resultClaimed=true;setPanel(null)});
-  $("#newGameButton").addEventListener("click",()=>{if(resultClaimed)return;resultClaimed=true;restartGame()});
-  nodes.attack.addEventListener("pointerdown",event=>{event.preventDefault();attack()});
-  nodes.skill.addEventListener("pointerdown",event=>{event.preventDefault();useSkill()});
+  $("#continueExplore").addEventListener("click",()=>{if(resultClaimed)return;resultClaimed=true;track("result_action",{action:"continue_exploring"});setPanel(null)});
+  $("#newGameButton").addEventListener("click",()=>{if(resultClaimed)return;resultClaimed=true;track("result_action",{action:"new_investigation"});restartGame()});
+  nodes.attack.addEventListener("pointerdown",event=>{event.preventDefault();attack(event.pointerType==="mouse"?"mouse":"touch")});
+  nodes.skill.addEventListener("pointerdown",event=>{event.preventDefault();useSkill(event.pointerType==="mouse"?"mouse":"touch")});
   nodes.vision.addEventListener("pointerdown",event=>{event.preventDefault();toggleVision()});
   function canvasPoint(event) {
     const rect=canvas.getBoundingClientRect(),tr=viewTransform();
@@ -1104,7 +1165,7 @@
   }
   canvas.addEventListener("pointerdown",event=>{
     if(hitsInteractPrompt(event)){event.preventDefault();interact();return}
-    if(event.pointerType==="mouse"&&event.button===0)attack();
+    if(event.pointerType==="mouse"&&event.button===0)attack("mouse");
   });
   canvas.addEventListener("pointermove",event=>{if(event.pointerType==="mouse")canvas.style.cursor=hitsInteractPrompt(event)?"pointer":""});
   canvas.addEventListener("pointerleave",()=>{canvas.style.cursor=""});
@@ -1151,6 +1212,8 @@
       completeAshfallCombat(){ashfallEnemySeeds.forEach((_,offset)=>{const id=enemySeeds.length+moonfallEnemySeeds.length+offset;state.defeated.add(id);const enemy=enemies.find(candidate=>candidate.id===id);if(enemy)enemy.dead=true});saveGame();updateObjective();updateHud()},
       beginChapter4(){state.chapter3Complete=true;state.chapter4Started=true;state.discoveries.lunar=false;saveGame();updateObjective();updateHud()},
       completeLunarCombat(){lunarEnemySeeds.forEach((_,offset)=>{const id=enemySeeds.length+moonfallEnemySeeds.length+ashfallEnemySeeds.length+offset;state.defeated.add(id);const enemy=enemies.find(candidate=>candidate.id===id);if(enemy)enemy.dead=true});saveGame();updateObjective();updateHud()},
+      defeatPlayer(){state.hp=1;invulnerability=0;hurt(999)},
+      finishBoss(){finishBoss()},
     };
   }
   setScreenOwner("main");applyLocale();updateMainProgress();renderInventory();requestAnimationFrame(frame);

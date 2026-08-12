@@ -67,6 +67,8 @@
     pitch: "Choose one of four heroes and clear a 30-trial shadow campaign.",
     arenaLabel: "Hero Trials arena. Move with Arrow keys or WASD. Press Space to use the hero skill.",
     controlHint: "Tap or drag to move · Use {skill} or Space when ready",
+    rangeHint: "Move toward the highlighted enemy · Attacks fire automatically in range",
+    rangeHitHint: "In range · Automatic attack landed",
     earnedMarks: "+{gain} Trial Marks · Total {total}.",
     trialUnlocked: "Trial {next} unlocked.",
     trialAvailable: "Trial {next} remains available.",
@@ -83,6 +85,8 @@
   });
   Object.assign(copy["zh-Hant"], {
     controlHint: "\u9ede\u6309\u6216\u62d6\u66f3\u79fb\u52d5 \u00b7 {skill} \u53ef\u7528\u6642\u6309\u4e0b\u6216\u6309\u7a7a\u767d\u9375",
+    rangeHint: "\u9760\u8fd1\u4eae\u8d77\u7684\u6575\u4eba \u00b7 \u9032\u5165\u7bc4\u570d\u5f8c\u6703\u81ea\u52d5\u653b\u64ca",
+    rangeHitHint: "\u5df2\u9032\u5165\u7bc4\u570d \u00b7 \u81ea\u52d5\u653b\u64ca\u547d\u4e2d",
     title: "動物英雄試煉",
     pitch: "選擇四位英雄之一，完成 30 個暗影試煉。",
     arenaLabel: "英雄試煉戰場。使用方向鍵或 WASD 移動，按空白鍵使用英雄技能。",
@@ -126,6 +130,8 @@
   });
   copy.es = {
     controlHint: "Toca o arrastra para moverte · Usa {skill} o Espacio cuando esté disponible",
+    rangeHint: "Acércate al enemigo resaltado · Los ataques se activan automáticamente al entrar en alcance",
+    rangeHitHint: "En alcance · El ataque automático acertó",
     title: "Pruebas de Héroes Animales",
     pitch: "Elige uno de cuatro héroes y supera una campaña de 30 pruebas sombrías.",
     marks: "Marcas de prueba",
@@ -776,10 +782,14 @@
     sceneFrame("main", () => $("#startBtn").focus({ preventScroll: true }));
   }
 
-  function dismissControlHint() {
+  function beginRangeGuidance() {
     if (!run || run.controlHintDismissed) return;
     run.controlHintDismissed = true;
-    $("#controlHint").hidden = true;
+    if (run.room === 1 && !run.firstAutoAttack) {
+      run.guidancePhase = "range";
+      run.guidanceTimer = 7;
+    }
+    updateGuidanceHint();
   }
 
   function save() {
@@ -810,6 +820,9 @@
       rerollUsed: false,
       rerollPending: false,
       controlHintDismissed: false,
+      guidancePhase: "controls",
+      guidanceTimer: 0,
+      firstAutoAttack: false,
       last: performance.now(),
       bless: { power: 0, speed: 0, heal: 0 },
       fx: [],
@@ -868,6 +881,31 @@
     return interpolate("taroSkillEffect", { heal: 8 + run.bless.heal * 2, damage: 20 + run.bless.power * 4 });
   }
 
+  function updateGuidanceHint() {
+    if (!run) return;
+    const hint = $("#controlHint");
+    const inFirstRoom = run.room === 1;
+    const showControls = inFirstRoom && !run.controlHintDismissed;
+    const showRange = inFirstRoom && run.guidancePhase === "range" && run.guidanceTimer > 0;
+    const showHit = inFirstRoom && run.guidancePhase === "hit" && run.guidanceTimer > 0;
+    hint.hidden = !(showControls || showRange || showHit);
+    if (showControls) {
+      const skillName = locale === "zh-Hant"
+        ? heroes[run.heroId].skill.zh
+        : locale === "es"
+          ? heroes[run.heroId].skill.es
+          : runtimeTranslate(heroes[run.heroId].skill.en);
+      hint.textContent = interpolate("controlHint", { skill: skillName });
+    } else if (showRange) {
+      hint.textContent = t("rangeHint");
+    } else if (showHit) {
+      hint.textContent = t("rangeHitHint");
+    }
+    canvas.dataset.guidancePhase = showControls ? "controls" : showRange ? "range" : showHit ? "hit" : "done";
+    canvas.dataset.attackRange = String(heroes[run.heroId].range);
+    if (!(showRange || showHit)) delete canvas.dataset.guidanceTarget;
+  }
+
   function updateHud() {
     $("#hpFill").style.width = `${Math.max(0, (run.hp / run.maxHp) * 100)}%`;
     const healthBar = $(".health");
@@ -882,10 +920,7 @@
       : locale === "es"
         ? heroes[run.heroId].skill.es
         : runtimeTranslate(heroes[run.heroId].skill.en);
-    const controlHint = $("#controlHint");
-    const showControlHint = run.room === 1 && !run.controlHintDismissed;
-    controlHint.hidden = !showControlHint;
-    if (showControlHint) controlHint.textContent = interpolate("controlHint", { skill: skillName });
+    updateGuidanceHint();
     $("#cooldownText").textContent = run.cool > 0 ? run.cool.toFixed(1) : skillName;
     $("#skillBtn").setAttribute("aria-label", interpolate(run.cool > 0 ? "skillCooldownLabel" : "skillReadyLabel", {
       skill: skillName,
@@ -916,7 +951,7 @@
 
   function skill() {
     if (!run?.active || run.cool > 0) return;
-    dismissControlHint();
+    beginRangeGuidance();
     playSound("shoot");
     if (run.heroId === "leo") {
       run.cool = Math.max(2.5, 5 - run.bless.speed * 0.5);
@@ -1020,6 +1055,12 @@
       target.marked -= 1;
     }
     damageEnemy(target,damage,"auto");
+    if (run.room === 1 && !run.firstAutoAttack) {
+      run.firstAutoAttack = true;
+      run.guidancePhase = "hit";
+      run.guidanceTimer = 1.5;
+      updateGuidanceHint();
+    }
     if (run.heroId === "leo") {
       for (const enemy of run.enemies) {
         if (enemy !== target && Math.hypot(enemy.x - target.x, enemy.y - target.y) < 82) {
@@ -1255,6 +1296,13 @@
     run.heroFlash = Math.max(0, run.heroFlash - dt);
     run.heroKick = Math.max(0, run.heroKick - dt);
     run.shake = Math.max(0, run.shake - dt);
+    if (run.guidanceTimer > 0) {
+      run.guidanceTimer = Math.max(0, run.guidanceTimer - dt);
+      if (run.guidanceTimer === 0) {
+        run.guidancePhase = "done";
+        updateGuidanceHint();
+      }
+    }
 
     const reinforcements=[];
     for (const enemy of run.enemies) {
@@ -1359,6 +1407,41 @@
       ctx.fillStyle = "#ffe88a";
       ctx.fill();
       ctx.globalAlpha = 1;
+    }
+
+    if (run.room === 1 && run.guidanceTimer > 0 && (run.guidancePhase === "range" || run.guidancePhase === "hit")) {
+      let target = null;
+      let distance = Infinity;
+      for (const enemy of run.enemies) {
+        const current = Math.hypot(enemy.x - run.leo.x, enemy.y - run.leo.y);
+        if (!target || (enemy.marked && !target.marked) || (Boolean(enemy.marked) === Boolean(target.marked) && current < distance)) {
+          target = enemy;
+          distance = current;
+        }
+      }
+      if (target) {
+        canvas.dataset.guidanceTarget = String(run.enemies.indexOf(target));
+        const pulse = 1 + Math.sin(run.time * 7) * 0.08;
+        const guideColor = run.guidancePhase === "hit" ? "#7be0b1" : "#7cecff";
+        ctx.save();
+        ctx.globalAlpha = run.guidancePhase === "hit" ? 0.85 : 0.72;
+        ctx.strokeStyle = guideColor;
+        ctx.lineWidth = 3;
+        ctx.setLineDash([9, 7]);
+        ctx.beginPath();
+        ctx.arc(run.leo.x, run.leo.y, heroes[run.heroId].range, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        ctx.arc(target.x, target.y, 45 * pulse, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.globalAlpha = 0.32;
+        ctx.beginPath();
+        ctx.moveTo(run.leo.x, run.leo.y);
+        ctx.lineTo(target.x, target.y);
+        ctx.stroke();
+        ctx.restore();
+      }
     }
 
     for (const enemy of run.enemies) {
@@ -1483,7 +1566,7 @@
       if (pointer !== null && pointer !== event.pointerId) return;
       if (event.button !== undefined && event.button !== 0) return;
       event.preventDefault();
-      dismissControlHint();
+      beginRangeGuidance();
       pointer = event.pointerId;
       canvas.setPointerCapture?.(pointer);
       setTarget(event);
@@ -1640,7 +1723,7 @@
     if (!battleOwnsInput || nativeControl || !battleControlCodes.has(event.code)) return;
     event.preventDefault();
     keys[event.code] = true;
-    dismissControlHint();
+    beginRangeGuidance();
     if (event.code === "Space") skill();
   });
   addEventListener("keyup", (event) => { keys[event.code] = false; });
@@ -1680,7 +1763,7 @@
     forceRoomClear:()=>{ if(!run) return null; run.enemies=[]; if(run.room>=3) finish(true); else chooseBlessing(); return window.__heroTrialSmoke.snapshot(); },
     setCooldown:(value=0)=>{ if(!run) return null; run.cool=Math.max(0,Number(value)||0); updateHud(); return window.__heroTrialSmoke.snapshot(); },
     setHealth:(value)=>{ if(!run) return null; run.hp=Math.max(0,Math.min(run.maxHp,Number(value)||0)); updateHud(); return window.__heroTrialSmoke.snapshot(); },
-    snapshot: () => ({ pointer, moveTarget: moveTarget ? { ...moveTarget } : null, stick: { ...stick }, active: Boolean(run?.active), hp: run?.hp ?? null, cooldown: run?.cool ?? null, player: run ? { ...run.leo } : null, run:run?{stage:run.stage,room:run.room,checkpoint:run.definition.checkpoint,boss:run.definition.boss?.id||null}:null, visual:run?{shake:run.shake,heroFlash:run.heroFlash,heroKick:run.heroKick,effects:run.fx.map((effect)=>({type:effect.type,value:effect.value||0,t:effect.t}))}:null, unlocked,marks, enemies: run?.enemies.map((enemy) => ({ x: enemy.x, y: enemy.y, hp: enemy.hp,max:enemy.max,type:enemy.type,bossId:enemy.bossId||null,bossRule:enemy.bossRule||null,guard:enemy.guard||0,warning:enemy.warning||0,phase:enemy.phase||0,hitFlash:enemy.hitFlash||0,hitOffsetX:enemy.hitOffsetX||0,hitOffsetY:enemy.hitOffsetY||0 })) || [] })
+    snapshot: () => ({ pointer, moveTarget: moveTarget ? { ...moveTarget } : null, stick: { ...stick }, active: Boolean(run?.active), hp: run?.hp ?? null, cooldown: run?.cool ?? null, player: run ? { ...run.leo } : null, run:run?{stage:run.stage,room:run.room,checkpoint:run.definition.checkpoint,boss:run.definition.boss?.id||null,guidancePhase:run.guidancePhase,guidanceTimer:run.guidanceTimer,firstAutoAttack:run.firstAutoAttack,attackRange:heroes[run.heroId].range}:null, visual:run?{shake:run.shake,heroFlash:run.heroFlash,heroKick:run.heroKick,effects:run.fx.map((effect)=>({type:effect.type,value:effect.value||0,t:effect.t}))}:null, unlocked,marks, enemies: run?.enemies.map((enemy) => ({ x: enemy.x, y: enemy.y, hp: enemy.hp,max:enemy.max,type:enemy.type,bossId:enemy.bossId||null,bossRule:enemy.bossRule||null,guard:enemy.guard||0,warning:enemy.warning||0,phase:enemy.phase||0,hitFlash:enemy.hitFlash||0,hitOffsetX:enemy.hitOffsetX||0,hitOffsetY:enemy.hitOffsetY||0 })) || [] })
   };
   localize();
 })();
