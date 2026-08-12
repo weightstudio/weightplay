@@ -7451,7 +7451,9 @@
 
     document.documentElement.classList.add("has-game-page-info");
     document.body.classList.add("has-game-page-info");
-    const related = Array.isArray(game.relatedIds) && game.relatedIds.length
+    const related = game.hideRelatedGames
+      ? []
+      : Array.isArray(game.relatedIds) && game.relatedIds.length
       ? game.relatedIds.filter((relatedId) => relatedId !== id && games[relatedId]).slice(0, 3)
       : relatedGames(id, baseGame);
     const scoreBands = scoreBandsFor(baseGame);
@@ -7594,11 +7596,11 @@
           <h3>${escapeHtml(uiLabel("faq"))}</h3>
           <dl>${publicFaq.map(([q, a]) => `<div><dt>${escapeHtml(q)}</dt><dd>${escapeHtml(a)}</dd></div>`).join("")}</dl>
         </div>
-        <div class="game-info-section">
+        ${related.length ? `<div class="game-info-section">
           <h3>${escapeHtml(uiLabel("relatedGames"))}</h3>
           ${game.showRelatedSkill === false ? "" : `<p>${escapeHtml(uiLabel("relatedIntro", { skill: localizeSkill(gameSkills[0] || "Focus") }))}</p>`}
           <div class="game-info-related">${related.map(relatedCard).join("")}</div>
-        </div>
+        </div>` : ""}
       </div>
     `;
     main.insertAdjacentElement("afterend", section);
@@ -9097,6 +9099,14 @@
       };
     }
   };
+  const reviewedGeneralGuides = window.WeightPlayGeneralReviewedGuides || {};
+  for (const [code, localeData] of Object.entries(reviewedGeneralGuides)) {
+    if (!localizedGames[code]) localizedGames[code] = {};
+    for (const [id, copy] of Object.entries(localeData.games || {})) {
+      localizedGames[code][id] = { ...(localizedGames[code][id] || {}), ...copy };
+    }
+  }
+
   [
     "block-blast",
     "arrow-escape",

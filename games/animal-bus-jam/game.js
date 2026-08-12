@@ -654,6 +654,12 @@
     }
     if (queueIndex < 0) queueIndex = state.queues.findIndex((queue) => queue.length);
     const button = root.querySelector(`.passenger.front[data-queue="${queueIndex}"]`);
+    if (button) {
+      $("status").textContent = t("hintMove", {
+        queue: queueIndex + 1,
+        color: t("colors")[Number(button.dataset.color)],
+      });
+    }
     button?.focus();
     button?.classList.add("hint");
     window.setTimeout(() => button?.classList.remove("hint"), 700);

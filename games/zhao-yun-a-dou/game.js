@@ -525,8 +525,10 @@
       button.setAttribute("role", "gridcell");
       button.setAttribute("data-slot", String(slot));
       button.setAttribute("aria-label", unit ? unitName(unit) + ", " + t("lane") + " " + ((slot % 3) + 1) : t("empty") + ", " + t("lane") + " " + ((slot % 3) + 1));
+      const laneLabel = "L" + ((slot % 3) + 1);
+      const levelLabel = unit && unit.general ? "★" : t("level") + " " + (unit ? unit.level : "");
       button.innerHTML = unit
-        ? "<span class=\"unit-lane\">" + t("lane") + " " + ((slot % 3) + 1) + "</span><span class=\"unit-glyph\" style=\"--unit-color:" + (unit.general ? data.generals[unit.type].color : data.unitTypes[unit.type].color) + "\">" + (unit.general ? data.generals[unit.type].glyph : data.unitTypes[unit.type].glyph) + "</span><span class=\"unit-level\">" + t("level") + " " + (unit.general ? "★" : unit.level) + "</span>"
+        ? "<span class=\"unit-lane\" aria-hidden=\"true\">" + laneLabel + "</span><span class=\"unit-glyph\" style=\"--unit-color:" + (unit.general ? data.generals[unit.type].color : data.unitTypes[unit.type].color) + "\">" + (unit.general ? data.generals[unit.type].glyph : data.unitTypes[unit.type].glyph) + "</span><span class=\"unit-level\" aria-hidden=\"true\">" + levelLabel + "</span>"
         : "<span aria-hidden=\"true\">＋</span>";
       button.addEventListener("click", function () { handleSlot(slot); });
       button.addEventListener("dragstart", function (event) {
