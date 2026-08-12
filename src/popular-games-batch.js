@@ -39,6 +39,38 @@
     ar: { eyebrow: "مجموعة الألعاب الشائعة", tagline: "أركيد تجريبي يضم عشر ألعاب كلاسيكية بقواعد مختلفة.", objective: "الهدف", start: "ابدأ اللعبة", hint: "تلميح", restart: "إعادة البدء", retry: "العب مجدداً", home: "العودة للرئيسية", language: "اللغة", ready: "ابدأ عندما تكون مستعداً.", round: "الجولة", score: "النقاط", moves: "الحركات", best: "الأفضل", success: "اكتمل التحدي!", failure: "انتهت الجولة", successCopy: "وصلت دورة اللعب الكاملة إلى النتيجة بشكل طبيعي.", failureCopy: "انتهى التحدي. راجع التلميح وحاول مجدداً.", left: "يسار", right: "يمين", up: "أعلى", down: "أسفل", rotate: "تدوير", drop: "إسقاط", submit: "إرسال", serve: "إرسال الكرة", select: "اختيار", clearLines: "ضع القطع وامسح 4 صفوف.", eatFood: "وجّه الثعبان إلى 6 أطعمة.", tic: "كوّن ثلاثة رموز متتالية قبل الخصم.", chess: "أكمل تحدي كش مات في ثلاث نقلات.", checkers: "نفّذ خمس نقلات قطرية قانونية ورقِّ قطعة.", mahjong: "طابق كل أزواج البلاطات المفتوحة.", wordle: "اعثر على الكلمة ذات الخمسة أحرف خلال ست محاولات.", hangman: "اكشف الكلمة قبل ستة أخطاء.", breakout: "حطّم كل الطوب بتسديدات متحكم بها.", pong: "اربح خمس تبادلات بالمضرب.", correct: "صحيح!", matched: "تم العثور على زوج.", remaining: "المتبقي", next: "التالي", choose: "اختر تحكماً", used: "مستخدم", misses: "الأخطاء" },
   };
 
+  const TIC_CELL_COPY = {
+    en: { row: "Row", column: "column", empty: "empty" },
+    "zh-Hant": { row: "列", column: "欄", empty: "空白" },
+    "zh-Hans": { row: "行", column: "列", empty: "空白" },
+    ja: { row: "行", column: "列", empty: "空き" },
+    ko: { row: "행", column: "열", empty: "비어 있음" },
+    es: { row: "Fila", column: "columna", empty: "vacía" },
+    "pt-BR": { row: "Linha", column: "coluna", empty: "vazia" },
+    fr: { row: "Ligne", column: "colonne", empty: "vide" },
+    de: { row: "Reihe", column: "Spalte", empty: "leer" },
+    it: { row: "Riga", column: "colonna", empty: "vuota" },
+    ru: { row: "Строка", column: "столбец", empty: "пусто" },
+    hi: { row: "पंक्ति", column: "स्तंभ", empty: "खाली" },
+    ar: { row: "الصف", column: "العمود", empty: "فارغة" },
+  };
+
+  const MAHJONG_TILE_COPY = {
+    en: { tile: "Tile", position: "position", open: "open", selected: "selected" },
+    "zh-Hant": { tile: "麻將牌", position: "位置", open: "可選", selected: "已選取" },
+    "zh-Hans": { tile: "麻将牌", position: "位置", open: "可选", selected: "已选择" },
+    ja: { tile: "牌", position: "位置", open: "選択可能", selected: "選択済み" },
+    ko: { tile: "타일", position: "위치", open: "선택 가능", selected: "선택됨" },
+    es: { tile: "Ficha", position: "posición", open: "libre", selected: "seleccionada" },
+    "pt-BR": { tile: "Peça", position: "posição", open: "livre", selected: "selecionada" },
+    fr: { tile: "Tuile", position: "position", open: "libre", selected: "sélectionnée" },
+    de: { tile: "Stein", position: "Position", open: "frei", selected: "ausgewählt" },
+    it: { tile: "Tessera", position: "posizione", open: "libera", selected: "selezionata" },
+    ru: { tile: "Плитка", position: "позиция", open: "свободна", selected: "выбрана" },
+    hi: { tile: "टाइल", position: "स्थान", open: "खुली", selected: "चुनी गई" },
+    ar: { tile: "بلاطة", position: "الموضع", open: "مفتوحة", selected: "محددة" },
+  };
+
   const CATALOG = {
     tetris: { icon: "▦", type: "tetris", objective: "clearLines" }, snake: { icon: "◉", type: "snake", objective: "eatFood" }, "tic-tac-toe": { icon: "✕◯", type: "tic", objective: "tic" },
     chess: { icon: "♞", type: "chess", objective: "chess" }, checkers: { icon: "●", type: "checkers", objective: "checkers" }, "mahjong-solitaire": { icon: "🀄", type: "mahjong", objective: "mahjong" },
@@ -51,6 +83,16 @@
   const key = (gameId) => `weightplay_popular_${gameId}_best`;
   const copy = (locale, k) => (COPY[locale] || COPY.en)[k];
   const title = (locale, gameId) => (TITLES[locale] || TITLES.en)[gameId];
+  const ticCellLabel = (locale, index, cell) => {
+    const labels = TIC_CELL_COPY[locale] || TIC_CELL_COPY.en;
+    const row = Math.floor(index / 3) + 1;
+    const column = (index % 3) + 1;
+    return `${labels.row} ${row}, ${labels.column} ${column}, ${cell || labels.empty}`;
+  };
+  const mahjongTileLabel = (locale, index, tile, selected) => {
+    const labels = MAHJONG_TILE_COPY[locale] || MAHJONG_TILE_COPY.en;
+    return `${labels.tile} ${tile}, ${labels.position} ${index + 1}, ${selected ? labels.selected : labels.open}`;
+  };
   const makeState = (type) => {
     const state = { type, score: 0, moves: 0, done: false, success: false, message: "", tone: "" };
     if (type === "tetris") Object.assign(state, { pieces: 0, lines: 0, active: 3, blocks: [] });
@@ -58,7 +100,7 @@
     if (type === "tic") Object.assign(state, { cells: Array(9).fill(""), playerMoves: 0, aiMoves: 0 });
     if (type === "chess") Object.assign(state, { step: 0 });
     if (type === "checkers") Object.assign(state, { step: 0 });
-    if (type === "mahjong") Object.assign(state, { tiles: ["A", "A", "B", "B", "C", "C", "D", "D", "E", "E", "F", "F"], selected: -1, matched: 0 });
+    if (type === "mahjong") Object.assign(state, { tiles: ["A", "A", "B", "B", "C", "C", "D", "D", "E", "E", "F", "F"], selected: -1, matched: 0, focusTile: -1 });
     if (type === "wordle") Object.assign(state, { guesses: [], target: "BRAVE" });
     if (type === "hangman") Object.assign(state, { target: "PUZZLE", letters: [], misses: 0 });
     if (type === "breakout") Object.assign(state, { bricks: Array(12).fill(true), shots: 0, paddle: 2 });
@@ -99,6 +141,7 @@
     const finish = (success) => { if (state.done) return; state.done = true; state.success = success; state.score = success ? Math.max(state.score, state.moves * 10 + 100) : state.score; const best = Number(localStorage.getItem(key(gameId)) || 0); if (success && state.score > best) { try { localStorage.setItem(key(gameId), String(state.score)); } catch {} } els.resultTitle.textContent = success ? copy(locale, "success") : copy(locale, "failure"); els.resultCopy.textContent = success ? copy(locale, "successCopy") : copy(locale, "failureCopy"); els.resultStats.innerHTML = `<span class="stat">${copy(locale, "score")}<strong>${state.score}</strong></span><span class="stat">${copy(locale, "moves")}<strong>${state.moves}</strong></span><span class="stat">${copy(locale, "best")}<strong>${Math.max(best, state.score)}</strong></span>`; show("result"); };
     const action = (name, value) => {
       if (state.done) return;
+      if (game.type === "tic" && (name !== "cell" || !Number.isInteger(value) || value < 0 || value >= state.cells.length || state.cells[value] !== "")) return;
       state.moves += 1;
       if (game.type === "tetris") {
         if (name === "left") state.active = Math.max(0, state.active - 1); if (name === "right") state.active = Math.min(7, state.active + 1); if (name === "rotate") state.score += 5; if (name === "drop") { state.pieces += 1; state.lines = Math.min(4, Math.floor(state.pieces / 2)); state.blocks.push({ x: state.active, y: 7 - (state.pieces % 7) }); if (state.lines >= 4) finish(true); }
@@ -106,7 +149,7 @@
       } else if (game.type === "tic") { if (name === "cell" && state.cells[value] === "") { state.cells[value] = "X"; state.playerMoves += 1; state.score += 20; const empty = state.cells.findIndex((cell) => !cell); if (empty >= 0 && state.playerMoves < 3) { state.cells[empty] = "O"; state.aiMoves += 1; } if (state.playerMoves >= 3 || state.cells.every(Boolean)) finish(state.playerMoves >= 3); }
       } else if (game.type === "chess") { if (name === "move") { state.step += 1; state.score += 30; if (state.step >= 3) finish(true); }
       } else if (game.type === "checkers") { if (name === "move") { state.step += 1; state.score += 20; if (state.step >= 5) finish(true); }
-      } else if (game.type === "mahjong") { if (name === "tile" && state.tiles[value]) { if (state.selected < 0) state.selected = value; else if (state.selected !== value && state.tiles[state.selected] === state.tiles[value]) { state.tiles[state.selected] = ""; state.tiles[value] = ""; state.matched += 1; state.score += 30; state.selected = -1; announce(copy(locale, "matched"), "good"); if (state.matched >= 6) finish(true); } else { state.selected = value; announce(copy(locale, "choose"), "warn"); } }
+      } else if (game.type === "mahjong") { if (name === "tile" && state.tiles[value]) { if (state.selected < 0) { state.selected = value; state.focusTile = value; announce(mahjongTileLabel(locale, value, state.tiles[value], true)); } else if (state.selected !== value && state.tiles[state.selected] === state.tiles[value]) { state.tiles[state.selected] = ""; state.tiles[value] = ""; state.matched += 1; state.score += 30; state.selected = -1; state.focusTile = state.tiles.findIndex(Boolean); announce(copy(locale, "matched"), "good"); if (state.matched >= 6) { state.focusTile = -1; finish(true); } } else { state.selected = value; state.focusTile = value; announce(mahjongTileLabel(locale, value, state.tiles[value], true), "warn"); } }
       } else if (game.type === "wordle") { if (name === "submit") { const input = String(document.querySelector("#wordInput")?.value || "").trim().toUpperCase(); if (input.length !== 5) { state.moves -= 1; announce("Enter 5 letters.", "warn"); return; } state.guesses.push(input); state.score += input === state.target ? 100 : 10; if (input === state.target) finish(true); else if (state.guesses.length >= 6) finish(false); else announce(copy(locale, "next"), ""); }
       } else if (game.type === "hangman") { if (name === "letter" && !state.letters.includes(value)) { state.letters.push(value); if (!state.target.includes(value)) state.misses += 1; else state.score += 15; if ([...state.target].every((letter) => state.letters.includes(letter))) finish(true); else if (state.misses >= 6) finish(false); }
       } else if (game.type === "breakout") { if (name === "left") state.paddle = Math.max(0, state.paddle - 1); if (name === "right") state.paddle = Math.min(5, state.paddle + 1); if (name === "fire") { state.shots += 1; const index = state.bricks.findIndex(Boolean); if (index >= 0) state.bricks[index] = false; state.score += 20; if (state.bricks.every((brick) => !brick)) finish(true); }
@@ -120,16 +163,16 @@
     const renderBoard = () => {
       if (game.type === "tetris") { const cells = Array.from({ length: 64 }, (_, i) => { const block = state.blocks.some((b) => b.x + b.y * 8 === i); const active = i === state.active; return `<span class="grid-cell ${block ? "filled" : ""} ${active ? "active" : ""}"></span>`; }).join(""); els.board.innerHTML = `<div class="grid-board tetris-grid">${cells}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "rotate"), "rotate")}${button(copy(locale, "right"), "right")}${button(copy(locale, "drop"), "drop", "primary")}</div>`;
       } else if (game.type === "snake") { const cells = Array.from({ length: 64 }, (_, i) => `<span class="grid-cell ${state.trail.includes(i) ? "filled" : ""} ${i === ((45 - state.steps * 2) % 64 + 64) % 64 ? "food" : ""}"></span>`).join(""); els.board.innerHTML = `<div class="grid-board snake-grid">${cells}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "up"), "up")}</div><div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "down"), "down")}${button(copy(locale, "right"), "right")}</div>`;
-      } else if (game.type === "tic") { els.board.innerHTML = `<div class="tic-board">${state.cells.map((cell, i) => `<button class="tic-cell" data-action="cell" data-value="${i}">${cell}</button>`).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "hint"), "hint")}</div>`;
+      } else if (game.type === "tic") { els.board.innerHTML = `<div class="tic-board">${state.cells.map((cell, i) => `<button class="tic-cell" data-action="cell" data-value="${i}" aria-label="${ticCellLabel(locale, i, cell)}"${cell ? " disabled" : ""}>${cell}</button>`).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "hint"), "hint")}</div>`;
       } else if (game.type === "chess") { els.board.innerHTML = `<div class="chess-board">${["♜", "♟", "", "♚", "", "♙", "", "", "", "", "♙", "", "", "", "", "♔"].map((piece, i) => `<button class="chess-cell ${i === 6 + state.step ? "target" : ""}" data-action="move">${piece}</button>`).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(`${copy(locale, "select")} ${state.step + 1}`, "move", "primary")}</div>`;
       } else if (game.type === "checkers") { els.board.innerHTML = `<div class="checkers-board">${Array.from({ length: 36 }, (_, i) => `<div class="checker-cell">${i === 30 - state.step * 5 ? "<span class=\"checker-piece\"></span>" : i === 5 ? "<span class=\"checker-piece enemy\"></span>" : ""}</div>`).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(`${copy(locale, "select")} ${state.step + 1}`, "move", "primary")}</div>`;
-      } else if (game.type === "mahjong") { els.board.innerHTML = `<div class="tile-board">${state.tiles.map((tile, i) => tile ? `<button class="tile ${state.selected === i ? "selected" : ""}" data-action="tile" data-value="${i}">${tile}</button>` : "").join("")}</div>`; els.controls.innerHTML = `<div class="control-row"><span class="round-label">${copy(locale, "remaining")}: ${6 - state.matched}</span></div>`;
+      } else if (game.type === "mahjong") { els.board.innerHTML = `<div class="tile-board">${state.tiles.map((tile, i) => tile ? `<button class="tile ${state.selected === i ? "selected" : ""}" data-action="tile" data-value="${i}" aria-label="${mahjongTileLabel(locale, i, tile, state.selected === i)}" aria-pressed="${state.selected === i}">${tile}</button>` : "").join("")}</div>`; els.controls.innerHTML = `<div class="control-row"><span class="round-label" role="status" aria-live="polite" aria-atomic="true">${copy(locale, "remaining")}: ${6 - state.matched}</span></div>`;
       } else if (game.type === "wordle") { els.board.innerHTML = `<div class="wordle-board">${Array.from({ length: 6 }, (_, row) => `<div class="wordle-row">${Array.from({ length: 5 }, (_, col) => { const guess = state.guesses[row] || ""; const letter = guess[col] || ""; const tone = letter && letter === state.target[col] ? "hit" : letter && state.target.includes(letter) ? "near" : letter ? "miss" : ""; return `<span class="word-cell ${tone}">${letter}</span>`; }).join("")}</div>`).join("")}</div>`; els.controls.innerHTML = `<div class="word-entry"><input id="wordInput" maxlength="5" aria-label="${copy(locale, "wordle")}" autocomplete="off" /><button class="primary" data-action="submit">${copy(locale, "submit")}</button></div>`;
       } else if (game.type === "hangman") { const word = [...state.target].map((letter) => state.letters.includes(letter) ? letter : "_ ").join(""); els.board.innerHTML = `<div class="hangman-word" style="font-size:clamp(2rem,8vw,4rem);letter-spacing:.2em;text-align:center">${word}</div><p class="round-label">${copy(locale, "misses")}: ${state.misses}/6</p>`; els.controls.innerHTML = `<div class="letters">${"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map((letter) => `<button class="letter ${state.letters.includes(letter) ? "used" : ""}" data-action="letter" data-value="${letter}">${letter}</button>`).join("")}</div>`;
       } else if (game.type === "breakout") { els.board.innerHTML = `<div class="brick-board">${state.bricks.map((brick) => `<span class="brick ${brick ? "" : "cleared"}"></span>`).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "right"), "right")}${button(copy(locale, "serve"), "fire", "primary")}</div>`;
       } else if (game.type === "pong") { els.board.innerHTML = `<div class="pong-board"><span class="pong-ball"></span><span class="pong-paddle" style="left:${state.paddle * 13 + 17}%"></span></div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "serve"), "serve", "primary")}${button(copy(locale, "right"), "right")}</div>`; }
     };
-    const render = () => { els.round.textContent = `${copy(locale, "round")} · ${copy(locale, "score")}: ${state.score} · ${copy(locale, "moves")}: ${state.moves}`; renderBoard(); els.message.textContent = state.message || copy(locale, "ready"); els.message.dataset.tone = state.tone; [els.controls, els.board].forEach((container) => { container.querySelectorAll("[data-action=hint]").forEach((node) => node.addEventListener("click", hint)); container.querySelectorAll("[data-action]").forEach((node) => { if (node.dataset.action !== "hint") node.addEventListener("click", () => action(node.dataset.action, node.dataset.action === "letter" ? node.dataset.value : Number(node.dataset.value))); }); }); };
+    const render = () => { els.round.textContent = `${copy(locale, "round")} · ${copy(locale, "score")}: ${state.score} · ${copy(locale, "moves")}: ${state.moves}`; renderBoard(); els.message.textContent = state.message || copy(locale, "ready"); els.message.dataset.tone = state.tone; [els.controls, els.board].forEach((container) => { container.querySelectorAll("[data-action=hint]").forEach((node) => node.addEventListener("click", hint)); container.querySelectorAll("[data-action]").forEach((node) => { if (node.dataset.action !== "hint") node.addEventListener("click", () => action(node.dataset.action, node.dataset.action === "letter" ? node.dataset.value : Number(node.dataset.value))); }); }); if (game.type === "mahjong" && document.body.dataset.screen === "battle" && state.focusTile >= 0) { const focusTarget = els.board.querySelector(`[data-action="tile"][data-value="${state.focusTile}"]`); if (focusTarget) focusTarget.focus(); state.focusTile = -1; } };
     const renderShell = () => { shell(); els.start.textContent = copy(locale, "start"); els.hint.textContent = copy(locale, "hint"); els.restart.textContent = copy(locale, "restart"); els.retry.textContent = copy(locale, "retry"); els.home.textContent = copy(locale, "home"); };
     els.start.addEventListener("click", start); els.retry.addEventListener("click", start); els.home.addEventListener("click", () => { show("main"); state = makeState(game.type); render(); }); els.hint.addEventListener("click", hint); els.restart.addEventListener("click", start);
     document.addEventListener("keydown", (event) => { if (document.body.dataset.screen !== "battle") return; const map = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down", " ": "drop" }; if (map[event.key] && ["tetris", "snake", "breakout", "pong"].includes(game.type)) { event.preventDefault(); action(map[event.key]); } });

@@ -654,8 +654,15 @@
     return stageT(`rule${zone.rule[0].toUpperCase()}${zone.rule.slice(1)}`);
   }
 
+  function localizedValue(values) {
+    const owned = values?.[locale];
+    if (owned) return owned;
+    const source = values?.en || "";
+    return window.WeightPlayGameRuntimeLocalizer?.translate?.(source) || source;
+  }
+
   function missionName(zone) {
-    return zone.name[locale] || zone.name.en;
+    return localizedValue(zone.name);
   }
 
   const levelTerms = {
@@ -817,7 +824,7 @@
       return `
         <div class="gear-card">
           <img src="${item.img}" alt="" />
-          <div><strong>${item.name[locale]}</strong><span>${formatLevel(level)}</span><small class="gear-effect">${t(item.effectKey)}</small></div>
+          <div><strong>${localizedValue(item.name)}</strong><span>${formatLevel(level)}</span><small class="gear-effect">${t(item.effectKey)}</small></div>
           <button class="secondary-btn" data-gear="${item.id}" type="button">${maxed ? t("max") : `${t("upgrade")} ${cost}`}</button>
         </div>
       `;
@@ -828,10 +835,10 @@
       const balance = Math.floor(save.notes);
       const cost = item.cost * level;
       const label = level >= 5
-        ? t("gearMaxLabel", { gear: item.name[locale], level })
+        ? t("gearMaxLabel", { gear: localizedValue(item.name), level })
         : balance >= cost
-          ? t("gearUpgradeLabel", { gear: item.name[locale], beforeLevel: level, afterLevel: level + 1, cost, before: balance, after: balance - cost })
-          : t("gearUpgradeNeedLabel", { gear: item.name[locale], beforeLevel: level, afterLevel: level + 1, cost, balance, need: cost - balance });
+          ? t("gearUpgradeLabel", { gear: localizedValue(item.name), beforeLevel: level, afterLevel: level + 1, cost, before: balance, after: balance - cost })
+          : t("gearUpgradeNeedLabel", { gear: localizedValue(item.name), beforeLevel: level, afterLevel: level + 1, cost, balance, need: cost - balance });
       button.setAttribute("aria-label", label);
     });
     const lureUnavailable = !save.lureReady && diamondPurchasePending !== "lure" && diamondBalance < lureCost;
@@ -876,11 +883,11 @@
     button.setAttribute("aria-setsize", String(zones.length));
     button.setAttribute("aria-disabled", String(locked));
     button.setAttribute("aria-keyshortcuts", "ArrowLeft ArrowRight Home End");
-    button.setAttribute("aria-label", `${missionLabel} · ${zone.name[locale]} · ${zone.checkpoint ? t("bossMission") : ruleLabel} · ${locked ? t("locked") : `${t("goal")} ${zone.goal}`}`);
+    button.setAttribute("aria-label", `${missionLabel} · ${missionName(zone)} · ${zone.checkpoint ? t("bossMission") : ruleLabel} · ${locked ? t("locked") : `${t("goal")} ${zone.goal}`}`);
     button.className = `zone-card stage-card region-${zone.region}${zone.checkpoint ? " is-checkpoint" : ""}${locked ? " is-locked" : ""}`;
     const image = button.querySelector("img");
     image.src = zone.img;
-    button.querySelector("strong").textContent = `${missionLabel} · ${zone.name[locale]}`;
+    button.querySelector("strong").textContent = `${missionLabel} · ${missionName(zone)}`;
     button.querySelector(":scope > span:last-child").textContent = locked ? t("locked") : `${zone.checkpoint ? t("bossMission") : ruleLabel} · ${t("goal")} ${zone.goal}`;
   }
 
@@ -1273,7 +1280,7 @@
     save.selectedZone = selectedZone;
     saveProgress();
     nodes.zoneText.textContent = t("mission", { stage:zone.stage });
-    nodes.zoneText.setAttribute("title", zone.name[locale]);
+    nodes.zoneText.setAttribute("title", missionName(zone));
     nodes.goalText.textContent = `${run.catches}/${zone.goal}`;
     nodes.hintText.textContent = t("castHint");
     nodes.catchToast.classList.add("is-hidden");
@@ -1474,7 +1481,7 @@
     showCatchToast(caught, points, notes, isNew);
     updateCatchHud();
     nodes.goalText.textContent = `${run.catches}/${run.zone.goal}`;
-    nodes.hintText.textContent = `${t("landed")} ${caught.name[locale]} +${points}`;
+    nodes.hintText.textContent = `${t("landed")} ${localizedValue(caught.name)} +${points}`;
     updateTensionGuide();
     updateSonarButton();
     if (run.catches >= run.zone.goal) finishRun(true);
@@ -1639,7 +1646,7 @@
 
   function showCatchToast(item, points, notes, isNew) {
     nodes.catchToast.innerHTML = `
-      <strong>${t("catchToast", { fish: item.name[locale] })}</strong>
+      <strong>${t("catchToast", { fish: localizedValue(item.name) })}</strong>
       <span>${t("catchToastMeta", { points, notes, newTag: isNew ? t("newTag") : "" })}</span>
     `;
     nodes.catchToast.classList.remove("is-hidden");
@@ -1657,7 +1664,7 @@
     const item = fishById(run.lastCatch.id);
     const rarity = item.rare ? t("rareFish") : t("commonFish");
     nodes.lastCatchText.innerHTML = `
-      <span class="last-catch-name">${item.name[locale]}</span>
+      <span class="last-catch-name">${localizedValue(item.name)}</span>
       <small>${t("catchHudMeta", {
         rarity,
         points: run.lastCatch.points,
@@ -1683,7 +1690,7 @@
         <div class="catch-item">
           <div class="catch-thumb" style="${fishFrameStyle(item)}" aria-hidden="true"></div>
           <div>
-            <strong>${item.name[locale]}</strong>
+            <strong>${localizedValue(item.name)}</strong>
             <span>${rarity}${entry.isNew ? t("newTag") : ""}</span>
           </div>
           <div class="catch-points">+${entry.points}</div>
@@ -1792,7 +1799,7 @@
   }
 
   function hookedHint(item) {
-    if (item?.boss) return t("bossHooked", { fish:item.name[locale], rule:item.bossRule?.[locale] || "" });
+    if (item?.boss) return t("bossHooked", { fish:localizedValue(item.name), rule:localizedValue(item.bossRule) });
     const behavior = fishBehavior(item);
     return t("hookedBehavior", {
       behavior: t(behavior.label),
@@ -1803,7 +1810,7 @@
   function sonarScanMessage(item) {
     const behavior = fishBehavior(item);
     return t("sonarScan", {
-      fish: item.name[locale],
+      fish: localizedValue(item.name),
       rarity: item.rare ? t("rareFish") : t("commonFish"),
       behavior: t(behavior.label),
     });
@@ -1835,7 +1842,7 @@
     nodes.tensionLane.setAttribute("aria-valuenow", String(tensionValue));
     nodes.tensionLane.setAttribute("aria-valuetext", `${tensionValue}% - ${tensionState}`);
     const hasSonarLock = Boolean(run && run.phase === "aim" && run.hookFish && !run.sonarReady);
-    if (hasSonarLock) nodes.tensionStatus.textContent = t("sonarStatus", { fish: run.hookFish.name[locale] });
+    if (hasSonarLock) nodes.tensionStatus.textContent = t("sonarStatus", { fish: localizedValue(run.hookFish.name) });
     else if (!run || run.phase === "aim") nodes.tensionStatus.textContent = t("tensionStatusAim");
     else if (run.phase === "charging" || run.phase === "cast") nodes.tensionStatus.textContent = t("tensionStatusCharging");
     else if (run.phase === "reel") {
@@ -2072,7 +2079,7 @@
             ctx.font = "900 22px Arial, sans-serif";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
-            ctx.fillText(f.name[locale], 529, 128, 326);
+            ctx.fillText(localizedValue(f.name), 529, 128, 326);
             ctx.restore();
           }
         }
@@ -2712,7 +2719,7 @@
                 rule: run.zone.rule,
                 checkpoint: run.zone.checkpoint,
                 hookFish: run.hookFish ? run.hookFish.id : "",
-                hookFishName: run.hookFish ? run.hookFish.name[locale] : "",
+                hookFishName: run.hookFish ? localizedValue(run.hookFish.name) : "",
                 bossProfile: run.hookFish?.bossProfile || "",
                 bossShieldOpen: run.bossShieldOpen,
                 reelElapsed: run.reelElapsed,
