@@ -225,8 +225,8 @@
     const controller = {
       id,
       isBattleActive() { return !battle.hidden && rootElement.dataset.screen === "battle"; },
-      openBattle() { resultRecorded = false; main.hidden = true; battle.hidden = false; rootElement.dataset.screen = "battle"; render(); },
-      openMain() { battle.hidden = true; main.hidden = false; rootElement.dataset.screen = "main"; result.hidden = true; },
+      openBattle() { resultRecorded = false; main.hidden = true; battle.hidden = false; rootElement.dataset.screen = "battle"; render(); window.dispatchEvent(new Event("weightplay:battle-open")); window.dispatchEvent(new Event("weightplay:battle-sync")); window.dispatchEvent(new Event("weightplay:shell-sync")); },
+      openMain() { battle.hidden = true; main.hidden = false; rootElement.dataset.screen = "main"; result.hidden = true; window.scrollTo({ top: 0, left: 0, behavior: "auto" }); window.dispatchEvent(new Event("weightplay:shell-sync")); },
       result(won, message = "") { if (!resultRecorded) { resultRecorded = true; updateStatsView(writeStats(won)); } resultTitle.textContent = won ? t("winner") : t("loser"); resultText.textContent = message || (won ? t("roundOver") : t("roundOver")); result.hidden = false; sound?.[won ? "win" : "reject"]?.(); },
       beep(name = "place") { sound?.[name]?.(); },
     };
@@ -638,7 +638,7 @@
     const aiTurn = () => { if (!controller.isBattleActive() || s.turn === 0) return; refillEmptyHand(s.turn); const ranks = [...new Set(s.players[s.turn].map((item) => item.rank))]; if (!ranks.length) { if (!s.stock.length && s.players.slice(0, s.playerCount).every((cards) => !cards.length)) finish(); else next(); return; } const targets = Array.from({ length: s.playerCount }, (_, index) => index).filter((index) => index !== s.turn); const target = targets[Math.floor(Math.random() * targets.length)]; const rank = ranks[Math.floor(Math.random() * ranks.length)]; const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[s.turn].push(...matching); s.players[target] = s.players[target].filter((item) => item.rank !== rank); removeBooks(s.turn); refillEmptyHand(s.turn); } else if (s.stock.length) s.players[s.turn].push(s.stock.pop()); removeBooks(s.turn); if (!s.stock.length && s.players.slice(0, s.playerCount).every((cards) => !cards.length)) finish(); else next(); };
     return {
       reset() { deal(); },
-      card() {},
+      card(index) { if (s.turn === 0 && s.players[0][index]) s.selectedRank = s.players[0][index].rank; },
       action(action, valueArg) { if (action === "players") { const count = Number(valueArg); if (count >= 2 && count <= 4) { s.playerCount = count; deal(); } return; } if (s.turn !== 0) return; if (action === "opponent") s.selectedOpponent = Math.min(Number(valueArg), s.playerCount - 1); if (action === "rank") { const rank = Number(valueArg); if (s.players[0].some((item) => item.rank === rank)) s.selectedRank = rank; } if (action === "ask" && s.selectedRank && s.players[0].some((item) => item.rank === s.selectedRank)) ask(s.selectedOpponent, s.selectedRank); },
       view() { const rankCounts = s.players[0].reduce((counts, item) => counts.set(item.rank, (counts.get(item.rank) || 0) + 1), new Map()); if (s.selectedRank && !rankCounts.has(s.selectedRank)) s.selectedRank = null; const target = [...rankCounts.entries()].sort((a, b) => b[1] - a[1] || a[0] - b[0])[0] || [null, 0]; const heldRanks = new Set(rankCounts.keys()); const rankControls = RANKS.map((rank, index) => { const value = index + 1; const held = heldRanks.has(value); return `<button class="secondary-btn ${s.selectedRank === value ? "is-selected" : ""}" data-action="rank" data-value="${value}" aria-pressed="${s.selectedRank === value}" ${held ? "" : "disabled"}>${rank}</button>`; }).join(""); const playerControls = [2, 3, 4].map((count) => `<button class="secondary-btn ${s.playerCount === count ? "is-selected" : ""}" data-action="players" data-value="${count}" aria-label="${count} players">${count}</button>`).join(""); const completed = s.bookRanks[0].length ? s.bookRanks[0].map(rankText).join(" · ") : "—"; const targetText = target[0] ? `${rankText(target[0])} ${target[1]}/4` : "—"; return { phase: `${t("ask")} ${s.playerCount}P`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: `${t("ask")}: ${names[s.selectedOpponent]} — ${t("chooseRank")}`, score: s.books[0], opponents: names.slice(1, s.playerCount).map((name, index) => `<button class="opponent-card" data-action="opponent" data-value="${index + 1}"><strong>${name}</strong><span>${s.players[index + 1].length} ${t("cards")} — ${s.books[index + 1]} ${t("books")}</span></button>`).join(""), center: `<div class="card-table-label">${t("stock")}: ${s.stock.length}</div><div class="table-row"><button class="playing-card is-face-down" data-action="draw" aria-label="${t("stock")}"></button><div class="card-book-progress" aria-live="polite"><strong>${t("books")}: ${s.books[0]}/13</strong><span>${completed}</span><span>${t("target")}: ${targetText}</span></div></div><div class="card-choice-panel">${rankControls}</div>`, hand: cardsMarkup(s.players[0]), actions: `<div class="card-choice-panel">${playerControls}</div><button class="primary-btn" data-action="ask" ${!s.selectedRank || s.selectedOpponent >= s.playerCount || !heldRanks.has(s.selectedRank) ? "disabled" : ""}>${t("ask")}</button>` }; }
     };
@@ -656,16 +656,22 @@
       if (candidates.length) {
         const playerIsActive = Date.now() - s.lastPlayerAt < 1500;
         const playerCanPlay = s.hand.some((item) => s.centers.some((centerCard) => canPlay(item, centerCard)));
-        const playerRemaining = s.hand.length + s.stock.length;
-        const aiRemaining = s.aiHand.length + s.aiStock.length;
-        const aiIsNotAhead = aiRemaining >= playerRemaining;
-        const aiMayFinish = aiRemaining > 1 || playerRemaining <= 1;
-        if (!aiMayFinish && !playerCanPlay && s.waste.length >= 2) {
-          for (let index = s.waste.length - 1; index; index -= 1) { const swap = Math.floor(Math.random() * (index + 1)); [s.waste[index], s.waste[swap]] = [s.waste[swap], s.waste[index]]; }
-          const nextCenters = [s.waste.pop(), s.waste.pop()];
-          s.waste.push(...s.centers);
-          s.centers = nextCenters;
-        } else if (aiMayFinish && (!playerIsActive || !playerCanPlay) && (aiIsNotAhead || !playerCanPlay) && Math.random() < 0.7) { const pick = candidates[Math.floor(Math.random() * candidates.length)]; s.aiHand.splice(pick.index, 1); replaceCenter(pick.centerIndex, pick.item); refill(s.aiHand, s.aiStock); }
+        if (playerIsActive) {
+          if (!playerCanPlay && s.stock.length && s.aiStock.length) {
+            replaceCenter(0, s.stock.pop());
+            replaceCenter(1, s.aiStock.pop());
+          } else if (!playerCanPlay && s.waste.length >= 2) {
+            for (let index = s.waste.length - 1; index; index -= 1) { const swap = Math.floor(Math.random() * (index + 1)); [s.waste[index], s.waste[swap]] = [s.waste[swap], s.waste[index]]; }
+            const nextCenters = [s.waste.pop(), s.waste.pop()];
+            s.waste.push(...s.centers);
+            s.centers = nextCenters;
+          }
+        } else {
+          const pick = candidates[Math.floor(Math.random() * candidates.length)];
+          s.aiHand.splice(pick.index, 1);
+          replaceCenter(pick.centerIndex, pick.item);
+          refill(s.aiHand, s.aiStock);
+        }
       } else {
         refill(s.aiHand, s.aiStock);
         const playerCanPlay = s.hand.some((item) => s.centers.some((centerCard) => canPlay(item, centerCard)));
