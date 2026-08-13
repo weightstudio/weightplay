@@ -138,12 +138,23 @@
 
     els.locale.innerHTML = LOCALES.map(([value, label]) => `<option value="${value}">${label}</option>`).join("");
     els.locale.value = locale;
-    const persistLocale = () => { locale = els.locale.value; try { localStorage.setItem("weightPlayLocale", locale); } catch {} renderShell(); render(); };
+    const persistLocale = () => {
+      locale = els.locale.value;
+      try { localStorage.setItem("weightPlayLocale", locale); } catch {}
+      if (game.type === "snake") {
+        if (state.messageKey === "hintObjective") state.message = `${copy(locale, "hint")}: ${copy(locale, game.objective)}`;
+        else if (state.messageKey === "ready") state.message = copy(locale, "ready");
+      }
+      renderShell();
+      if (game.type === "snake" && document.body.dataset.screen === "result") renderResult();
+      render();
+    };
     els.locale.addEventListener("change", persistLocale);
-    const announce = (message, tone = "") => { state.message = message; state.tone = tone; els.message.textContent = message; els.message.dataset.tone = tone; };
+    const announce = (message, tone = "", messageKey = "") => { state.message = message; state.tone = tone; state.messageKey = messageKey; els.message.textContent = message; els.message.dataset.tone = tone; };
     const show = (screen) => { els.main.hidden = screen !== "main"; els.battle.hidden = screen !== "battle"; els.result.hidden = screen !== "result"; document.body.dataset.screen = screen; };
-    const start = () => { state = makeState(game.type); show("battle"); announce(copy(locale, "ready")); render(); };
-    const finish = (success) => { if (state.done) return; state.done = true; state.success = success; state.score = success ? Math.max(state.score, state.moves * 10 + 100) : state.score; const best = Number(localStorage.getItem(key(gameId)) || 0); if (success && state.score > best) { try { localStorage.setItem(key(gameId), String(state.score)); } catch {} } els.resultTitle.textContent = success ? copy(locale, "success") : copy(locale, "failure"); els.resultCopy.textContent = success ? copy(locale, "successCopy") : copy(locale, "failureCopy"); els.resultStats.innerHTML = `<span class="stat">${copy(locale, "score")}<strong>${state.score}</strong></span><span class="stat">${copy(locale, "moves")}<strong>${state.moves}</strong></span><span class="stat">${copy(locale, "best")}<strong>${Math.max(best, state.score)}</strong></span>`; show("result"); };
+    const start = () => { state = makeState(game.type); show("battle"); announce(copy(locale, "ready"), "", "ready"); render(); };
+    const renderResult = () => { const best = Number(localStorage.getItem(key(gameId)) || 0); els.resultTitle.textContent = state.success ? copy(locale, "success") : copy(locale, "failure"); els.resultCopy.textContent = state.success ? copy(locale, "successCopy") : copy(locale, "failureCopy"); els.resultStats.innerHTML = `<span class="stat">${copy(locale, "score")}<strong>${state.score}</strong></span><span class="stat">${copy(locale, "moves")}<strong>${state.moves}</strong></span><span class="stat">${copy(locale, "best")}<strong>${Math.max(best, state.score)}</strong></span>`; };
+    const finish = (success) => { if (state.done) return; state.done = true; state.success = success; state.score = success ? Math.max(state.score, state.moves * 10 + 100) : state.score; const best = Number(localStorage.getItem(key(gameId)) || 0); if (success && state.score > best) { try { localStorage.setItem(key(gameId), String(state.score)); } catch {} } renderResult(); show("result"); };
     const action = (name, value) => {
       if (state.done) return;
       if (game.type === "tic" && (name !== "cell" || !Number.isInteger(value) || value < 0 || value >= state.cells.length || state.cells[value] !== "")) return;
@@ -163,7 +174,7 @@
       }
       render();
     };
-    const hint = () => { if (game.type === "wordle") announce(`${copy(locale, "hint")}: the target starts with B.`, "warn"); else if (game.type === "hangman") announce(`${copy(locale, "hint")}: the word has ${state.target.length} letters.`, "warn"); else if (game.type === "mahjong") announce(`${copy(locale, "hint")}: match identical symbols.`, "warn"); else announce(`${copy(locale, "hint")}: ${copy(locale, game.objective)}`, "warn"); render(); };
+    const hint = () => { if (game.type === "wordle") announce(`${copy(locale, "hint")}: the target starts with B.`, "warn"); else if (game.type === "hangman") announce(`${copy(locale, "hint")}: the word has ${state.target.length} letters.`, "warn"); else if (game.type === "mahjong") announce(`${copy(locale, "hint")}: match identical symbols.`, "warn"); else announce(`${copy(locale, "hint")}: ${copy(locale, game.objective)}`, "warn", game.type === "snake" ? "hintObjective" : ""); render(); };
     const shell = () => { document.documentElement.lang = locale; document.documentElement.dir = locale === "ar" ? "rtl" : "ltr"; document.title = `${title(locale, gameId)} | WeightPlay`; els.eyebrow.textContent = copy(locale, "eyebrow"); els.title.textContent = title(locale, gameId); els.tagline.textContent = copy(locale, "tagline"); els.objective.innerHTML = `<strong>${copy(locale, "objective")}:</strong> ${copy(locale, game.objective)}`; els.instruction.textContent = copy(locale, "ready"); document.querySelector("#languageLabel").textContent = copy(locale, "language"); document.querySelector("#footerText").textContent = `${title(locale, gameId)} · ${copy(locale, "eyebrow")}`; };
     const button = (label, name, extra = "") => `<button class="control ${extra}" data-action="${name}">${label}</button>`;
     const renderBoard = () => {
