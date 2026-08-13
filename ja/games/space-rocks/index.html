@@ -28,6 +28,12 @@
     /* Result owns its own Main recovery action; the generated Battle return
        overlay must not cover the Result title on narrow screens. */
     body.is-game-playing #battleScreen:has(#resultScreen:not([hidden])) .wp-generated-battle-header { display: none !important; }
+    @media (min-width: 650px) and (max-height: 500px) {
+      body.is-game-playing #battleScreen:not(:has(#resultScreen:not([hidden]))) .wp-generated-battle-header {
+        transform: scale(calc(1 / var(--wp-battle-canvas-scale, 1))) !important;
+        transform-origin: top left !important;
+      }
+    }
   </style>
   <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
