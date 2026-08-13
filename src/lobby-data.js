@@ -47,6 +47,7 @@ window.WONDER_LOBBY = {
       "arrow-escape", "block-blast", "hexa-sort", "klondike-solitaire", "spider-solitaire",
       "freecell-solitaire", "pyramid-solitaire", "tripeaks-solitaire", "golf-solitaire", "yukon-solitaire",
       "animal-bus-jam", "zhao-yun-a-dou",
+      "road-crosser", "alien-defender",
       "animal-unblock",
       "animal-guard-yard",
       "hearts", "spades", "gin-rummy", "crazy-eights", "cribbage", "go-fish", "war", "speed", "old-maid", "casino",

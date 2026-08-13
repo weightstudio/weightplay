@@ -82,6 +82,7 @@
     resultScore: $("resultScore"),
     resultText: $("resultText"),
     resultPlanText: $("resultPlanText"),
+    resultNextStageText: $("resultNextStageText"),
     loadingPanel: $("loadingPanel"),
     loadingText: $("loadingText"),
     loadingFill: $("loadingFill"),
@@ -397,6 +398,25 @@
   }).forEach(([code, labels]) => {
     text[code] ||= {};
     [text[code].checkpointNext, text[code].checkpointNow] = labels;
+  });
+
+  Object.entries({
+    en: ["Next Stage {stage}: {stageName} — {rule}", "Checkpoint watch: Stage {boss} is {remaining} stages away."],
+    "zh-Hant": ["下一關 {stage}：{stageName}－{rule}", "首領檢查點提示：距離第 {boss} 關還有 {remaining} 關。"],
+    "zh-Hans": ["下一关 {stage}：{stageName}－{rule}", "首领检查点提示：距离第 {boss} 关还有 {remaining} 关。"],
+    ja: ["次のステージ {stage}：{stageName} — {rule}", "ボスチェックポイント：ステージ {boss} まであと {remaining} ステージ。"],
+    ko: ["다음 스테이지 {stage}: {stageName} — {rule}", "보스 체크포인트: 스테이지 {boss}까지 {remaining}개 남음."],
+    es: ["Siguiente nivel {stage}: {stageName} — {rule}", "Punto de jefe: faltan {remaining} niveles para el nivel {boss}."],
+    pt: ["Próxima fase {stage}: {stageName} — {rule}", "Ponto de chefe: faltam {remaining} fases para a fase {boss}."],
+    fr: ["Niveau suivant {stage} : {stageName} — {rule}", "Point Boss : encore {remaining} niveaux avant le niveau {boss}."],
+    de: ["Nächste Stufe {stage}: {stageName} — {rule}", "Boss-Checkpoint: Noch {remaining} Stufen bis Stufe {boss}."],
+    it: ["Livello successivo {stage}: {stageName} — {rule}", "Punto Boss: mancano {remaining} livelli al livello {boss}."],
+    ru: ["Следующий этап {stage}: {stageName} — {rule}", "До босса на этапе {boss} осталось этапов: {remaining}."],
+    hi: ["अगला चरण {stage}: {stageName} — {rule}", "बॉस चेकपॉइंट: चरण {boss} तक {remaining} चरण बाकी।"],
+    ar: ["المرحلة التالية {stage}: {stageName} — {rule}", "نقطة الزعيم: تبقى {remaining} مراحل حتى المرحلة {boss}."],
+  }).forEach(([code, labels]) => {
+    text[code] ||= {};
+    [text[code].resultNextStage, text[code].resultNextBoss] = labels;
   });
 
   const assetPaths = {
@@ -1868,12 +1888,24 @@
         ? t("patrolRankNext", { current: rank.total, target: rank.next.threshold, rank: t(rank.next.name) })
         : t("patrolRankComplete", { current: rank.total });
     nodes.resultPlanText.textContent = resultPlan(reason);
+    nodes.resultNextStageText.textContent = stageCleared && state.stage < STAGE_COUNT ? nextStageCheckpointPlan() : "";
   }
 
   function resultPlan(reason) {
     if (reason === "time" || state.keys >= state.stageConfig.targetKeys) return t("resultPlanStrong");
     if (state.level >= 3 || state.keys >= 1) return t("resultPlanUpgrade");
     return t("resultPlanRecover");
+  }
+
+  function nextStageCheckpointPlan() {
+    const nextStage = stages[state.stage];
+    if (!nextStage) return "";
+    const boss = Math.ceil(nextStage.number / 5) * 5;
+    return `${t("resultNextStage", {
+      stage: nextStage.number,
+      stageName: stageName(nextStage),
+      rule: stageRule(nextStage),
+    })} ${t("resultNextBoss", { boss, remaining: boss - nextStage.number })}`;
   }
 
   function installSmokeHooks() {
@@ -1918,6 +1950,7 @@
         resultScore: nodes.resultScore.textContent,
         resultText: nodes.resultText.textContent,
         resultPlanText: nodes.resultPlanText.textContent,
+        resultNextStageText: nodes.resultNextStageText?.textContent || "",
         upgradeVisible: !nodes.upgradePanel.classList.contains("hidden"),
         crystalCharm: Boolean(save.crystalCharm),
         diamondBalance: diamondBalance(),

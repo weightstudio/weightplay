@@ -15,6 +15,8 @@
 
 html, body { min-height: 100%; margin: 0; }
 
+html.wp-classic-battle-active { overflow: hidden; overscroll-behavior: none; }
+
 body {
   min-height: 100svh;
   color: var(--ink);
@@ -126,20 +128,133 @@ canvas { display: block; width: 100%; height: 100%; image-rendering: auto; }
 .confirm-back[hidden] { display: none; }
 .confirm-back p { color: var(--muted); font-size: 0.86rem; }
 .confirm-back .control-row { margin-top: 9px; }
-.general-reserve { height: 56px; }
+.general-reserve { width: calc(100% - 28px); height: 56px; margin: 0 14px; }
 .battle-screen { position: relative; }
 .battle-screen.has-result .battle-panel { padding-bottom: 22px; }
 .battle-screen.has-result #resultScreen { display: block; margin-top: 12px; }
 .arcade-footer { padding: 16px 2px 0; color: var(--muted); font-size: 0.78rem; text-align: center; }
+
+/* Active Battle owns the visible viewport. Main keeps normal document flow so
+   the public guide remains readable before play starts. */
+body.is-game-playing {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: var(--wp-mobile-vh, 100dvh);
+  min-height: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body.is-game-playing .classic-arcade {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) 56px;
+  overflow: hidden;
+}
+
+body.is-game-playing .arcade-header,
+body.is-game-playing .arcade-footer { display: none; }
+body.is-game-playing .battle-screen { min-height: 0; height: 100%; overflow: hidden; }
+body.is-game-playing .battle-panel {
+  width: min(100%, 920px);
+  height: 100%;
+  min-height: 0;
+  margin: 0 auto;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 0;
+}
+body.is-game-playing .battle-top,
+body.is-game-playing .hud,
+body.is-game-playing .game-message,
+body.is-game-playing .touch-controls,
+body.is-game-playing .control-hint { flex: 0 0 auto; }
+body.is-game-playing .canvas-wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 100%;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+}
+body.is-game-playing .canvas-wrap canvas {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 0;
+  min-height: 0;
+  object-fit: contain;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 18px;
+}
+body.is-game-playing .general-reserve {
+  grid-row: 2;
+  width: min(100%, 920px);
+  margin: 0 auto;
+}
+body.is-game-playing .battle-screen.has-result .battle-panel { padding-bottom: 12px; }
+body.is-game-playing .battle-panel { position: relative; }
+body.is-game-playing .battle-screen.has-result .battle-topline,
+body.is-game-playing .battle-screen.has-result .hud,
+body.is-game-playing .battle-screen.has-result .canvas-wrap,
+body.is-game-playing .battle-screen.has-result .game-message,
+body.is-game-playing .battle-screen.has-result .touch-controls,
+body.is-game-playing .battle-screen.has-result .control-hint { visibility: hidden; pointer-events: none; }
+body.is-game-playing .battle-screen.has-result #resultScreen {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  min-height: 0;
+  margin: 0;
+  padding: 12px;
+  display: grid;
+  place-items: center;
+  overflow: auto;
+  background: #071333;
+}
+body.is-game-playing .battle-screen.has-result .result-panel { width: min(100%, 560px); max-height: 100%; overflow: auto; }
+body.is-game-playing .confirm-back {
+  position: absolute;
+  z-index: 5;
+  left: 12px;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0;
+}
 
 @media (min-width: 650px) {
   .classic-arcade { padding: 28px 24px 34px; }
   .main-panel { grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr); align-items: stretch; padding: 24px; }
   .preview-art, .preview-art img { min-height: 360px; }
   .battle-panel { padding: 18px; }
+  .general-reserve { width: calc(100% - 40px); margin: 0 20px; }
   .battle-top { grid-template-columns: 1fr auto; align-items: center; }
   .hud { grid-column: 1 / -1; }
   .result-panel { padding: 38px 42px; }
+  .touch-controls.maze-controls { grid-template-columns: repeat(4, minmax(52px, 70px)); grid-template-rows: 48px; }
+  .maze-controls .control-button:nth-child(n) { grid-column: auto; grid-row: auto; }
+}
+
+@media (min-width: 650px) and (max-height: 500px) {
+  body.is-game-playing .battle-panel { padding: 6px 12px; }
+  body.is-game-playing .battle-topline { min-height: 38px; gap: 6px; }
+  body.is-game-playing .battle-topline .secondary { min-height: 38px; padding: 6px 10px; }
+  body.is-game-playing .battle-topline .icon-button { min-height: 38px; height: 38px; }
+  body.is-game-playing .hud { padding: 4px 2px; }
+  body.is-game-playing .game-message { min-height: 18px; padding: 2px; font-size: 0.75rem; }
+  body.is-game-playing .touch-controls { padding: 5px 0 0; }
+  body.is-game-playing .control-hint { white-space: nowrap; font-size: 0.7rem; line-height: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
