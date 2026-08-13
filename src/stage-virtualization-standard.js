@@ -292,6 +292,9 @@
           settlingFrame = 0;
           logical = target;
           position(target);
+          rail.dispatchEvent(new CustomEvent("wonder:stage-snap", {
+            detail: { index: target, card: sources[target] || null },
+          }));
           options.onSettle?.(target, sources[target]);
         }
       };

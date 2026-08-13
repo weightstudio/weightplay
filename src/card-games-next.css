@@ -51,6 +51,11 @@ body[data-wp-card-game] { margin: 0; background: #0a1f3a; }
 .card-book-progress { min-width: 132px; padding: 7px 10px; border: 1px solid rgba(255,255,255,.2); border-radius: 12px; background: rgba(7,28,43,.5); text-align: left; }
 .card-book-progress strong, .card-book-progress span { display: block; }
 .card-book-progress span { margin-top: 3px; color: #d7f9e7; font-size: 12px; }
+.card-old-maid-risk { max-width: 38ch; padding: 7px 10px; border: 1px solid rgba(255,255,255,.2); border-radius: 12px; color: #d7f9e7; background: rgba(7,28,43,.5); font-size: 12px; line-height: 1.35; text-align: center; }
+.card-old-maid-risk.is-held { border-color: rgba(245,200,76,.72); color: #ffefa7; background: rgba(95,62,15,.48); }
+.card-gin-path { max-width: 46ch; padding: 7px 10px; border: 1px solid rgba(255,255,255,.2); border-radius: 12px; color: #d7f9e7; background: rgba(7,28,43,.5); font-size: 12px; line-height: 1.35; text-align: center; }
+.card-gin-path.is-ready, .card-gin-path.is-gin { border-color: rgba(245,200,76,.72); color: #ffefa7; background: rgba(95,62,15,.48); }
+.card-crib-transition { max-width: 52ch; padding: 7px 10px; border: 1px solid rgba(245,200,76,.55); border-radius: 12px; color: #ffefa7; background: rgba(95,62,15,.38); font-size: 12px; line-height: 1.35; text-align: center; }
 .card-capture-target { border: 2px solid rgba(245,200,76,.7); border-radius: 12px; padding: 8px; display: flex; gap: 7px; flex-wrap: wrap; justify-content: center; }
 .card-peg-board { width: min(100%, 560px); border: 2px solid #c7913f; background: linear-gradient(145deg, #7f532c, #c28a4c); border-radius: 14px; padding: 10px; box-shadow: inset 0 0 0 3px rgba(255,230,154,.24); }
 .card-peg-row { display: grid; grid-template-columns: repeat(13, 1fr); gap: 4px; }

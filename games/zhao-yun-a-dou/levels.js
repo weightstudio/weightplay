@@ -33,7 +33,7 @@
       objectiveEnglish: within === 4 ? "Protect A Dou and defeat the commander" : "Merge your force and hold all three lanes",
       waveCount: 3 + chapter + (within === 4 ? 1 : 0),
       enemyCount: (isOpening ? 9 : 7) + chapter * 2 + within,
-      enemyHp: 5 + chapter * 3 + within,
+      enemyHp: isOpening ? 11 : 5 + chapter * 3 + within,
       enemySpeed: (isOpening ? 0.012 : 0.006) + chapter * 0.001 + within * 0.00035,
       enemyDamage: (isOpening ? 2 : 1) + Math.floor(chapter / 2),
       commandHp: (isOpening ? 8 : 14) + chapter * 4 + within * 2,
@@ -43,7 +43,7 @@
       startingUnits: [
         { type: "spear", level: 1, slot: 0 },
         { type: within % 2 ? "blade" : "bow", level: 1, slot: 1 },
-        { type: "horse", level: 1, slot: 6 },
+        { type: "horse", level: 1, slot: 2 },
       ],
       lanePattern: pattern,
       boss: within === 4 || chapter === 5,

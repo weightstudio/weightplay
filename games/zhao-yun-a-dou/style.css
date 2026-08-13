@@ -1064,10 +1064,12 @@ body[data-wp-game-id="zhao-yun-a-dou"] .wp-standard-main-poster .poster-art {
 body[data-wp-game-id="zhao-yun-a-dou"] .stage-card.is-selected,
 body[data-wp-game-id="zhao-yun-a-dou"] .stage-card[data-wp-stage-selected="true"] {
   z-index: 2;
-  border: 3px solid #ffe39a !important;
+  border: 2px solid #ffe39a !important;
+  outline: 2px solid rgba(228, 189, 110, .78);
+  outline-offset: 3px;
   background: rgba(65, 87, 69, .96) !important;
-  box-shadow: 0 0 0 4px rgba(17, 34, 28, .96), 0 0 0 8px rgba(228, 189, 110, .92), 0 14px 28px rgba(0, 0, 0, .26) !important;
-  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, .22) !important;
+  transform: none;
 }
 
 .battle-guide {

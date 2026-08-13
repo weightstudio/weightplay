@@ -38,6 +38,62 @@
     ar: { back: "رجوع", settings: "الإعدادات", sound: "الصوت", language: "اللغة", start: "بدء اللعبة", restart: "إعادة البدء", newGame: "لعبة جديدة", yourTurn: "دورك", aiTurn: "الذكاء الاصطناعي يفكر", hand: "يدك", table: "الطاولة", stock: "الرزمة", discard: "المهملات", points: "النقاط", score: "النتيجة", select: "اختر", play: "العب", draw: "اسحب", pass: "مرر", choose: "اختر", chooseSuit: "اختر النوع", chooseRank: "اختر الرتبة", capture: "التقاط", build: "بناء", knock: "طرق", gin: "جين", bid: "مزايدة", submit: "تأكيد", flip: "اقلب", war: "حرب!", ask: "اسأل", goFish: "اذهب للصيد", noLegal: "لا توجد بطاقة — اسحب", winner: "لقد فزت!", loser: "فاز الذكاء الاصطناعي", roundOver: "انتهت الجولة", continue: "متابعة", close: "إغلاق", cards: "بطاقات", pairs: "أزواج", books: "مجموعات", booksMade: "المجموعات", live: "قيد اللعب", waiting: "انتظار", oldMaid: "العانس", chooseOpponent: "اختر خصماً", selectCards: "اختر البطاقات", pending: "معلّق", made: "مكتمل", target: "الهدف", total: "الإجمالي" },
   };
 
+  const OLD_MAID_RISK = {
+    en: { held: "Old Maid in hand — clear pairs and pass it on.", hidden: "The Old Maid is still hidden." },
+    "zh-Hant": { held: "鬼牌在你手上——消除配對並設法傳出去。", hidden: "鬼牌仍藏在某位玩家手中。" },
+    "zh-Hans": { held: "鬼牌在你手上——消除配对并设法传出去。", hidden: "鬼牌仍藏在某位玩家手中。" },
+    ja: { held: "ババが手札にあります。ペアを消して相手に渡しましょう。", hidden: "ババはまだ誰かの手札に隠れています。" },
+    ko: { held: "조커가 내 손에 있습니다. 짝을 없애고 넘겨보세요.", hidden: "조커는 아직 누군가의 손에 숨어 있습니다." },
+    es: { held: "Tienes la Solterona: forma parejas e intenta pasarla.", hidden: "La Solterona sigue oculta." },
+    "pt-BR": { held: "O Mico está na sua mão: forme pares e tente passá-lo.", hidden: "O Mico continua escondido." },
+    fr: { held: "Le Pouilleux est dans votre main : formez des paires et passez-le.", hidden: "Le Pouilleux est encore caché." },
+    de: { held: "Der Schwarze Peter ist auf deiner Hand: bilde Paare und gib ihn weiter.", hidden: "Der Schwarze Peter ist noch verborgen." },
+    it: { held: "L'Asino è nella tua mano: crea coppie e prova a passarlo.", hidden: "L'Asino è ancora nascosto." },
+    ru: { held: "Старая дева у вас: собирайте пары и постарайтесь передать её.", hidden: "Старая дева всё ещё скрыта." },
+    hi: { held: "ओल्ड मेड आपके हाथ में है—जोड़े हटाएँ और इसे आगे दें।", hidden: "ओल्ड मेड अभी भी छिपी हुई है।" },
+    ar: { held: "العانس في يدك—كوّن الأزواج وحاول تمريرها.", hidden: "بطاقة العانس ما زالت مخفية." },
+  };
+
+  const GIN_PATH = {
+    en: { reduce: "Reduce deadwood by {count} to unlock Knock · Gin at 0", ready: "Knock ready at {deadwood} deadwood · Gin at 0", gin: "Gin ready · 0 deadwood" },
+    "zh-Hant": { reduce: "死牌再減少 {count} 點即可 Knock · 0 點達成 Gin", ready: "死牌 {deadwood} 點，可 Knock · 0 點達成 Gin", gin: "Gin 已就緒 · 死牌 0 點" },
+    "zh-Hans": { reduce: "死牌再减少 {count} 点即可 Knock · 0 点达成 Gin", ready: "死牌 {deadwood} 点，可 Knock · 0 点达成 Gin", gin: "Gin 已就绪 · 死牌 0 点" },
+    ja: { reduce: "デッドウッドをあと {count} 点減らすとノック · 0 点でジン", ready: "デッドウッド {deadwood} 点、ノック可能 · 0 点でジン", gin: "ジン可能 · デッドウッド 0 点" },
+    ko: { reduce: "데드우드를 {count}점 더 줄이면 노크 · 0점이면 진", ready: "데드우드 {deadwood}점, 노크 가능 · 0점이면 진", gin: "진 가능 · 데드우드 0점" },
+    es: { reduce: "Reduce la madera muerta en {count} para cerrar · Gin con 0", ready: "Puedes cerrar con {deadwood} de madera muerta · Gin con 0", gin: "Gin listo · 0 de madera muerta" },
+    "pt-BR": { reduce: "Reduza a madeira morta em {count} para bater · Gin com 0", ready: "Pode bater com {deadwood} de madeira morta · Gin com 0", gin: "Gin pronto · 0 de madeira morta" },
+    fr: { reduce: "Réduisez le bois mort de {count} pour frapper · Gin à 0", ready: "Frappe possible avec {deadwood} de bois mort · Gin à 0", gin: "Gin prêt · 0 bois mort" },
+    de: { reduce: "Totholz um {count} senken zum Klopfen · Gin bei 0", ready: "Klopfen bereit bei {deadwood} Totholz · Gin bei 0", gin: "Gin bereit · 0 Totholz" },
+    it: { reduce: "Riduci le carte morte di {count} per battere · Gin a 0", ready: "Puoi battere con {deadwood} carte morte · Gin a 0", gin: "Gin pronto · 0 carte morte" },
+    ru: { reduce: "Уменьшите дедвуд ещё на {count}, чтобы стучать · Джин при 0", ready: "Можно стучать: дедвуд {deadwood} · Джин при 0", gin: "Джин готов · дедвуд 0" },
+    hi: { reduce: "नॉक खोलने के लिए डेडवुड {count} और घटाएँ · 0 पर जिन", ready: "{deadwood} डेडवुड पर नॉक तैयार · 0 पर जिन", gin: "जिन तैयार · 0 डेडवुड" },
+    ar: { reduce: "خفّض الخشب الميت {count} إضافية لفتح الطرق · جين عند 0", ready: "الطرق متاح عند {deadwood} خشب ميت · جين عند 0", gin: "جين جاهز · 0 خشب ميت" },
+  };
+
+  const ginPathText = (deadwood) => {
+    const dictionary = GIN_PATH[currentLocale()] || GIN_PATH.en;
+    const template = deadwood === 0 ? dictionary.gin : deadwood <= 10 ? dictionary.ready : dictionary.reduce;
+    return template.replaceAll("{deadwood}", String(deadwood)).replaceAll("{count}", String(Math.max(0, deadwood - 10)));
+  };
+
+  const CRIB_TRANSITION = {
+    en: "Your 2 cards joined the crib · Starter {starter} · Peg toward 31",
+    "zh-Hant": "你的 2 張牌已放入 crib · starter {starter} · 出牌朝 31 點前進",
+    "zh-Hans": "你的 2 张牌已放入 crib · starter {starter} · 出牌朝 31 点前进",
+    ja: "選んだ2枚はクリブへ · スターター {starter} · 31を目指してプレイ",
+    ko: "선택한 2장은 크립으로 · 스타터 {starter} · 합계 31을 향해 내세요",
+    es: "Tus 2 cartas fueron a la cuna · Inicial {starter} · Juega hacia 31",
+    "pt-BR": "Suas 2 cartas foram para o crib · Inicial {starter} · Jogue até 31",
+    fr: "Vos 2 cartes rejoignent le crib · Carte de départ {starter} · Visez 31",
+    de: "Deine 2 Karten liegen im Crib · Starter {starter} · Spiele Richtung 31",
+    it: "Le tue 2 carte sono nel crib · Starter {starter} · Gioca verso 31",
+    ru: "Ваши 2 карты ушли в криб · Стартовая {starter} · Играйте к 31",
+    hi: "आपके 2 पत्ते क्रिब में गए · स्टार्टर {starter} · 31 की ओर पत्ता चलें",
+    ar: "انتقلت بطاقتاك إلى الكريب · بطاقة البداية {starter} · العب نحو 31",
+  };
+
+  const cribTransitionText = (starter) => (CRIB_TRANSITION[currentLocale()] || CRIB_TRANSITION.en).replaceAll("{starter}", cardText(starter));
+
   const t = (key, values = {}) => {
     const dictionary = TEXT[currentLocale()] || TEXT.en;
     let value = key === "cribbage" ? (TITLES.cribbage[currentLocale()] || TITLES.cribbage.en) : (dictionary[key] || TEXT.en[key] || key);
@@ -460,12 +516,12 @@
     const finish = (winner, reason) => { s.over = true; s.score[winner] += 1; controller.result(winner === 0, `${reason} — ${t("score")}: ${s.score[0]} / ${s.score[1]}`); };
     const drawCard = (fromDiscard) => { const item = fromDiscard ? s.discard.pop() : s.stock.pop(); if (item) { s.player.push(item); s.drawn = true; } };
     const chooseAiDiscard = () => { let bestIndex = 0; let bestDeadwood = -1; s.ai.forEach((_, index) => { const candidate = s.ai.filter((__, itemIndex) => itemIndex !== index); const deadwood = meldStats(candidate).deadwood; if (deadwood > bestDeadwood) { bestDeadwood = deadwood; bestIndex = index; } }); return bestIndex; };
-    const aiTurn = () => { if (s.turn !== 1 || s.over) return; if (s.discard.length && Math.random() > .45) s.ai.push(s.discard.pop()); else if (s.stock.length) s.ai.push(s.stock.pop()); const discardIndex = chooseAiDiscard(); const discarded = s.ai.splice(discardIndex, 1)[0]; if (discarded) s.discard.push(discarded); const stats = meldStats(s.ai); if (stats.deadwood === 0) finish(1, t("gin")); else if (stats.deadwood <= 10) finish(1, `${t("knock")} ${stats.deadwood}`); else { s.turn = 0; s.drawn = false; } };
+    const aiTurn = () => { if (s.turn !== 1 || s.over) return; if (s.discard.length && Math.random() > .45) s.ai.push(s.discard.pop()); else if (s.stock.length) s.ai.push(s.stock.pop()); const discardIndex = chooseAiDiscard(); const discarded = s.ai.splice(discardIndex, 1)[0]; if (discarded) s.discard.push(discarded); const stats = meldStats(s.ai); if (stats.deadwood === 0) finish(1, t("gin")); else if (stats.deadwood <= 10) finish(1, `${t("knock")} ${stats.deadwood}`); else if (!s.stock.length) { const playerStats = meldStats(s.player); finish(playerStats.deadwood <= stats.deadwood ? 0 : 1, `${t("score")} ${playerStats.deadwood} / ${stats.deadwood}`); } else { s.turn = 0; s.drawn = false; } };
     return {
       reset() { Object.assign(s, { player: [], ai: [], stock: deck(), discard: [], turn: 0, drawn: false, selected: new Set(), score: [0, 0], over: false }); for (let i = 0; i < 10; i += 1) { s.player.push(s.stock.pop()); s.ai.push(s.stock.pop()); } s.discard.push(s.stock.pop()); },
       card(index) { if (s.turn === 0 && s.drawn && !s.over) { s.selected = s.selected.has(index) ? new Set() : new Set([index]); } },
       action(action) { if (s.turn !== 0 || s.over) return; if (action === "draw-stock" && !s.drawn) drawCard(false); if (action === "draw-discard" && !s.drawn) drawCard(true); if (action === "discard" && s.drawn && s.selected.size === 1) { const index = [...s.selected][0]; const discarded = s.player.splice(index, 1)[0]; if (discarded) s.discard.push(discarded); s.selected.clear(); const stats = meldStats(s.player); if (stats.deadwood === 0) finish(0, t("gin")); else if (!s.stock.length) { const aiStats = meldStats(s.ai); finish(stats.deadwood <= aiStats.deadwood ? 0 : 1, `${t("score")} ${stats.deadwood} / ${aiStats.deadwood}`); } else { s.turn = 1; s.drawn = false; setTimeout(aiTurn, 320); } } if (action === "knock" && s.drawn) { const stats = meldStats(s.player); if (stats.deadwood <= 10) { const aiStats = meldStats(s.ai); finish(stats.deadwood <= aiStats.deadwood ? 0 : 1, `${t("knock")} ${stats.deadwood} / ${aiStats.deadwood}`); } } },
-      view() { const stats = meldStats(s.player); return { phase: s.turn === 0 ? (s.drawn ? t("discard") : t("draw")) : t("aiTurn"), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: `Meld cards ${stats.meldCards} · Deadwood ${stats.deadwood}`, score: s.score[0], opponents: opponentMarkup("AI", s.ai.length, `${t("score")}: ${s.score[1]}`), center: `<div class="card-table-label">${t("stock")} · ${s.stock.length} · ${t("discard")}</div><div class="table-row"><button class="playing-card is-face-down" data-action="draw-stock" aria-label="${t("stock")}"></button>${cardMarkup(s.discard.at(-1), 0)}</div>`, hand: cardsMarkup(s.player, { selected: s.selected }), actions: `<button class="secondary-btn" data-action="draw-stock" ${s.drawn ? "disabled" : ""}>${t("draw")} ${t("stock")}</button><button class="secondary-btn" data-action="draw-discard" ${s.drawn ? "disabled" : ""}>${t("draw")} ${t("discard")}</button><button class="primary-btn" data-action="discard" ${!s.drawn || s.selected.size !== 1 ? "disabled" : ""}>${t("discard")}</button><button class="secondary-btn" data-action="knock" ${!s.drawn || stats.deadwood > 10 ? "disabled" : ""}>${t("knock")}</button>` }; }
+      view() { const stats = meldStats(s.player); const pathState = stats.deadwood === 0 ? "is-gin" : stats.deadwood <= 10 ? "is-ready" : ""; return { phase: s.turn === 0 ? (s.drawn ? t("discard") : t("draw")) : t("aiTurn"), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: `Meld cards ${stats.meldCards} · Deadwood ${stats.deadwood}`, score: s.score[0], opponents: opponentMarkup("AI", s.ai.length, `${t("score")}: ${s.score[1]}`), center: `<div class="card-table-label">${t("stock")} · ${s.stock.length} · ${t("discard")}</div><div class="card-gin-path ${pathState}" role="status" aria-live="polite">${ginPathText(stats.deadwood)}</div><div class="table-row"><button class="playing-card is-face-down" data-action="draw-stock" aria-label="${t("stock")}" ${!s.stock.length ? "disabled" : ""}></button>${cardMarkup(s.discard.at(-1), 0)}</div>`, hand: cardsMarkup(s.player, { selected: s.selected }), actions: `<button class="secondary-btn" data-action="draw-stock" ${s.drawn || !s.stock.length ? "disabled" : ""}>${t("draw")} ${t("stock")}</button><button class="secondary-btn" data-action="draw-discard" ${s.drawn ? "disabled" : ""}>${t("draw")} ${t("discard")}</button><button class="primary-btn" data-action="discard" ${!s.drawn || s.selected.size !== 1 ? "disabled" : ""}>${t("discard")}</button><button class="secondary-btn" data-action="knock" ${!s.drawn || stats.deadwood > 10 ? "disabled" : ""}>${t("knock")}</button>` }; }
     };
   }
 
@@ -494,7 +550,7 @@
       reset() { Object.assign(s, { score: [0, 0], round: 0 }); startRound(); },
       card(index) { if (s.phase === "discard" && s.turn === 0) { if (s.selected.has(index)) s.selected.delete(index); else if (s.selected.size < 2) s.selected.add(index); } else if (s.phase === "pegging" && s.turn === 0) playPeg(0, s.hand[index]); },
       action(action) { if (action === "send-crib" && s.phase === "discard" && s.selected.size === 2) { [...s.selected].sort((a, b) => b - a).forEach((index) => s.crib.push(s.hand.splice(index, 1)[0])); s.crib.push(...s.ai.splice(0, 2)); s.roundPlayerHand = [...s.hand]; s.roundAiHand = [...s.ai]; s.starter = s.stock.pop(); s.phase = "pegging"; s.turn = 0; s.playerPeg = []; s.aiPeg = []; s.count = 0; s.passed = [false, false]; s.pegPoints = [0, 0]; } if (action === "go" && s.phase === "pegging" && s.turn === 0) passPeg(0); },
-      view() { const playable = legalPeg(0); return { phase: s.phase === "discard" ? t("selectCards") : `${t("score")}: ${s.count}/31`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "discard" ? `${t("selectCards")}: ${s.selected.size}/2 to the crib.` : `${playable.length ? "Play a card" : "Go"}. Pair, run, 15, and 31 points count during pegging.`, score: s.score[0], opponents: opponentMarkup("AI", s.ai.length, `${t("score")}: ${s.score[1]}`), center: `<div class="card-table-label">${t("cribbage")} · Round ${s.round} · ${s.starter ? cardText(s.starter) : ""}</div>${makePegBoard(s.score[0], s.score[1])}<div class="table-row">${cardsMarkup(s.playerPeg)}${cardsMarkup(s.aiPeg)}</div>`, hand: cardsMarkup(s.hand, { selected: s.selected }), actions: s.phase === "discard" ? `<button class="primary-btn" data-action="send-crib" ${s.selected.size !== 2 ? "disabled" : ""}>${t("submit")}</button>` : `<button class="secondary-btn" data-action="go" ${playable.length ? "disabled" : ""}>Go</button>` }; }
+      view() { const playable = legalPeg(0); return { phase: s.phase === "discard" ? t("selectCards") : `${t("score")}: ${s.count}/31`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "discard" ? `${t("selectCards")}: ${s.selected.size}/2 to the crib.` : `${playable.length ? "Play a card" : "Go"}. Pair, run, 15, and 31 points count during pegging.`, score: s.score[0], opponents: opponentMarkup("AI", s.ai.length, `${t("score")}: ${s.score[1]}`), center: `<div class="card-table-label">${t("cribbage")} · Round ${s.round} · ${s.starter ? cardText(s.starter) : ""}</div>${s.phase === "pegging" ? `<div class="card-crib-transition" role="status" aria-live="polite">${cribTransitionText(s.starter)}</div>` : ""}${makePegBoard(s.score[0], s.score[1])}<div class="table-row">${cardsMarkup(s.playerPeg)}${cardsMarkup(s.aiPeg)}</div>`, hand: cardsMarkup(s.hand, { selected: s.selected }), actions: s.phase === "discard" ? `<button class="primary-btn" data-action="send-crib" ${s.selected.size !== 2 ? "disabled" : ""}>${t("submit")}</button>` : `<button class="secondary-btn" data-action="go" ${playable.length ? "disabled" : ""}>Go</button>` }; }
     };
   }
 
@@ -550,7 +606,7 @@
       reset() { const cards = deck(); const removed = cards.findIndex((item) => item.suit === "spades" && item.rank === 12); cards.splice(removed, 1); const odd = cards.find((item) => item.rank === 12); if (odd) odd.oldMaid = true; Object.assign(s, { players: [[], [], [], []], turn: 0, books: [0, 0, 0, 0], over: false }); cards.forEach((item, index) => s.players[index % 4].push(item)); s.players.forEach((_, index) => pair(index)); },
       card(index) { if (s.turn === 0 && !s.over) drawFrom(0, index); },
       action() {},
-      view() { const targetIndex = targetFor(0); const target = targetIndex < 0 ? [] : s.players[targetIndex]; const turnTarget = targetFor(s.turn); return { phase: t("oldMaid"), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: `Draw one hidden card from ${names[turnTarget < 0 ? 0 : turnTarget]}. Pairs disappear automatically.`, score: s.books[0], opponents: names.slice(1).map((name, index) => opponentMarkup(name, s.players[index + 1].length, `${s.books[index + 1]} ${t("pairs")}`)).join(""), center: `<div class="card-table-label">${t("oldMaid")}</div><div class="table-row">${target.map((_, index) => cardMarkup({ faceDown: true }, index)).join("")}</div>`, hand: cardsMarkup(s.players[0]), actions: "" }; }
+      view() { const targetIndex = targetFor(0); const target = targetIndex < 0 ? [] : s.players[targetIndex]; const turnTarget = targetFor(s.turn); const playerHasOldMaid = s.players[0].some((item) => item.oldMaid); const riskCopy = (OLD_MAID_RISK[currentLocale()] || OLD_MAID_RISK.en)[playerHasOldMaid ? "held" : "hidden"]; return { phase: t("oldMaid"), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: `Draw one hidden card from ${names[turnTarget < 0 ? 0 : turnTarget]}. Pairs disappear automatically.`, score: s.books[0], opponents: names.slice(1).map((name, index) => opponentMarkup(name, s.players[index + 1].length, `${s.books[index + 1]} ${t("pairs")}`)).join(""), center: `<div class="card-table-label">${t("oldMaid")}</div><div class="card-old-maid-risk ${playerHasOldMaid ? "is-held" : ""}" role="status">${riskCopy}</div><div class="table-row">${target.map((_, index) => cardMarkup({ faceDown: true }, index)).join("")}</div>`, hand: cardsMarkup(s.players[0]), actions: "" }; }
     };
   }
 
