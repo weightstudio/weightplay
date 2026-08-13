@@ -212,13 +212,13 @@
       if (enemy.x === player.x && enemy.y === player.y) {
         if (player.grace > 0 && maze.power <= 0) return;
         if (maze.power > 0) { state.score += 200 + maze.combo * 100; maze.combo += 1; enemy.x = enemy.homeX; enemy.y = enemy.homeY; tone(180 + maze.combo * 80, 0.11, "square", 0.04); }
-        else { state.level = Math.max(1, state.level); state.maze.player = { x: player.x, y: player.y, dir: player.dir, next: player.next, grace: 30000 }; state.maze.enemies.forEach((item) => { item.x = item.homeX; item.y = item.homeY; }); state.maze.power = 0; state.maze.moveClock = 0; state.maze.enemyClock = -2200; state.maze.lives = (state.maze.lives || 5) - 1; setMessage(tr("hit"), "danger"); tone(120, 0.2, "sawtooth", 0.05); if (state.maze.lives <= 0) finish(false, { stage: state.level, lives: 0 }); }
+        else { state.level = Math.max(1, state.level); state.maze.player = { x: player.x, y: player.y, dir: player.dir, next: player.next, grace: 120000 }; state.maze.enemies.forEach((item) => { item.x = item.homeX; item.y = item.homeY; }); state.maze.power = 0; state.maze.moveClock = 0; state.maze.enemyClock = -2200; state.maze.lives = (state.maze.lives || 5) - 1; setMessage(tr("hit"), "danger"); tone(120, 0.2, "sawtooth", 0.05); if (state.maze.lives <= 0) finish(false, { stage: state.level, lives: 0 }); }
       }
     });
   }
   function updateMaze(dt) {
     const maze = state.maze; maze.power = Math.max(0, maze.power - dt * 1000); maze.player.grace = Math.max(0, (maze.player.grace || 0) - dt * 1000); maze.moveClock += dt * 1000; maze.enemyClock += dt * 1000;
-    const playerRate = Math.max(72, 126 - state.level * 10); const enemyRate = Math.max(180, 420 - state.level * 50);
+    const playerRate = Math.max(72, 126 - state.level * 10); const enemyRate = Math.max(260, 720 - state.level * 70);
     while (maze.moveClock >= playerRate) { maze.moveClock -= playerRate; mazeStepPlayer(); if (!state.running) return; }
     while (maze.enemyClock >= enemyRate) { maze.enemyClock -= enemyRate; mazeEnemyStep(); if (!state.running) return; }
     updateHud(); drawMaze();
