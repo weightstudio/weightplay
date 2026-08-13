@@ -58,7 +58,7 @@
   draw=drawResponsive;
   // v8 Growth instrumentation: expose only aggregate, privacy-safe funnel
   // fields; gameplay state, controls, pacing, and authored waves stay intact.
-  const ANALYTICS_GAME_VERSION="18",ANALYTICS_INTERFACE_VERSION="6";
+  const ANALYTICS_GAME_VERSION="21",ANALYTICS_INTERFACE_VERSION="6";
   let sessionHadBattle=false,inputType="unknown";
   function viewportBucket(){const width=window.innerWidth,height=window.innerHeight;if(width<=430&&height>=700)return"phone-portrait";if(width<=700&&height>=700)return"tablet-portrait";if(width>=700&&height<=500)return"short-landscape";return"desktop"}
   function track(eventName,details={}){window.WonderAnalytics?.track?.(eventName,{game_id:"alien-defender",game_version:`v${ANALYTICS_GAME_VERSION}`,interface_version:ANALYTICS_INTERFACE_VERSION,locale,viewport_bucket:viewportBucket(),input_type:details.input_type||inputType,wave:details.wave??wave,result_reason:details.result_reason||"not_applicable"})}
@@ -109,4 +109,15 @@
     if(world&&beforeLives!==null&&world.lives<beforeLives)world.invuln=.9;
     if(world)world.invuln=Math.max(0,(world.invuln||0)-dt);
   };
+  // v19 Director repair: the teaching Wave 2 keeps two extra lives so the
+  // final few enemies remain a readable firing challenge rather than a
+  // repeated projectile lottery. Wave 3 still resets to its authored three
+  // lives and retains the complete final pressure.
+  const v18MakeWorld=makeWorld;
+  makeWorld=function(){const next=v18MakeWorld();if(wave===2)next.lives=6;return next};
+  // v21 Director repair: keep Wave 3's complete formation and pressure, but
+  // make the existing Rapid Fire payoff converge reliably across viewports.
+  // The five-shot spread remains a visible player-controlled firing choice.
+  const v20Shoot=shoot;
+  shoot=function(){const before=world?.bullets?.length||0;v20Shoot();if(wave===3&&world?.rapidFire&&world.bullets.length>before){const bullet=world.bullets[world.bullets.length-1];world.bullets.push({x:bullet.x-40,y:bullet.y,s:bullet.s},{x:bullet.x+40,y:bullet.y,s:bullet.s});world.fireTimer=Math.min(world.fireTimer,.1)}};
 })();

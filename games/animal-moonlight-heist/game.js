@@ -1,6 +1,6 @@
 (() => {
   const $ = (s) => document.querySelector(s);
-  const GAME_VERSION = 16, INTERFACE_VERSION = 6;
+  const GAME_VERSION = 17, INTERFACE_VERSION = 6;
   const viewportBucket = () => {
     const width = window.innerWidth || 0, height = window.innerHeight || 0;
     return height <= 430 ? "short-landscape" : width <= 430 ? "phone" : width >= 1000 ? "desktop" : "tablet";
@@ -135,6 +135,12 @@
     ar: {dashUse:"الأفضل لعبور خطوط رؤية الدوريات الطويلة بسرعة.",decoyUse:"الأفضل عند تقاطع مسارات الدوريات.",smokeUse:"الأفضل للتعافي عندما يكون مستوى الإنذار مرتفعًا."},
   };
   Object.entries(gadgetUseCases).forEach(([code, values]) => Object.assign(copy[code] ||= {}, values));
+  const nextMissionPreviewCopy={
+    en:"Next mission: {rule}","zh-Hant":"下一關：{rule}","zh-Hans":"下一任务：{rule}",ja:"次の任務：{rule}",ko:"다음 임무: {rule}",
+    es:"Próxima misión: {rule}","pt-BR":"Próxima missão: {rule}",fr:"Prochaine mission : {rule}",de:"Nächste Mission: {rule}",
+    it:"Prossima missione: {rule}",ru:"Следующее задание: {rule}",hi:"अगला मिशन: {rule}",ar:"المهمة التالية: {rule}"
+  };
+  Object.entries(nextMissionPreviewCopy).forEach(([code,value]) => Object.assign(copy[code] ||= {}, {nextMissionPreview:value}));
   const campaignMission=(en,zh,ruleEn,ruleZh,data)=>({name:[en,zh],rule:[ruleEn,ruleZh],...data});
   const campaign=[
     campaignMission("Quiet Threshold","靜謐門廊","Read one patrol, recover the seal, then extract.","觀察單一路線，取得封印後撤離。",{object:[50,42],treasure:[82,36],exit:[50,10],patrols:[[24,32,76,32]],speed:.88}),
@@ -614,11 +620,14 @@
     $("#resultText").textContent=ok
       ? `+${reward} ${t("coins")} · ${t("resultMedals",{medals})}${medals<3?` · ${t("bonusMedal")}`:` · ${t("treasure")}`}`
       : t("capturedText");
+    const canContinue=ok&&selectedMission<campaign.length-1;
+    const nextPreview=$("#nextMissionPreview")||(()=>{const node=document.createElement("p");node.id="nextMissionPreview";node.className="result-next-preview";node.setAttribute("role","status");node.setAttribute("aria-live","polite");node.setAttribute("aria-atomic","true");$("#medalRow").before(node);return node})();
+    nextPreview.hidden=!canContinue;
+    nextPreview.textContent=canContinue?t("nextMissionPreview",{rule:campaignText(campaign[selectedMission+1].rule)}):"";
     $("#medalRow").textContent=ok?"★".repeat(medals)+"☆".repeat(3-medals):"";
     $("#medalRow").setAttribute("aria-label",ok?t("medalCount",{medals}):"");
     const retryBtn=$("#retryBtn"),stagesBtn=$("#stagesBtn"),nextBtn=$("#nextBtn");
     resultActionClaimed=false;track("mission_result",{mission:selectedMission+1,outcome:ok?"success":"capture",medals,reward});
-    const canContinue=ok&&selectedMission<campaign.length-1;
     retryBtn.disabled=false;
     stagesBtn.disabled=false;
     nextBtn.hidden=false;
@@ -772,6 +781,7 @@
       placeFia:position=>{place(nodes.fia,position);resolveArrival();return{objectFound,treasureFound,exit:point(nodes.exit)}},
       tickRules:seconds=>{missionStartedAt=performance.now()-Number(seconds)*1000;const factor=updateMissionRules(performance.now());return{factor,alert,object:point(nodes.objective),treasure:point(nodes.treasure),warning:Boolean(guardianPatrol()?.img.classList.contains("is-warning"))}},
       translate:(code,key)=>{const previous=locale;locale=normalizeLocale(code);const value=t(key);locale=previous;return value},
+      showResult:(ok,medals=0,reward=0)=>{openResult(Boolean(ok),Number(medals)||0,Number(reward)||0);return{preview:document.querySelector("#nextMissionPreview")?.textContent||"",hidden:document.querySelector("#nextMissionPreview")?.hidden===true}},
       snapshot:()=>({stage:selectedMission+1,unlocked:state.unlocked,screen:document.body.dataset.screen,objectFound,treasureFound,guardianPhase,patrols:patrols.length,guardian:guardianPatrol()?.guardian?.id||null,safeZones:document.querySelectorAll(".safe-zone").length,resultOpen:!nodes.modal.hidden,freezeRemaining:Math.max(0,freezeUntil-performance.now())})
     };
   }
