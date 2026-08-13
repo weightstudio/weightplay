@@ -2920,7 +2920,6 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Carrera al Anochecer": "Carrera al Anochecer",
   "CARRERA COMETA": "CARRERA COMETA",
   "Carrera de apilar y construir": "Carrera de apilar y construir",
-  "Carrera de cartas en tiempo real": "Carrera de cartas en tiempo real.",
   "Carrera de Madriguera": "carrera de madriguera",
   "Carrera de roca roja": "Carrera de roca roja",
   "Carrera del Guepardo": "Carrera del Guepardo",

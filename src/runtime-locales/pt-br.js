@@ -6809,7 +6809,6 @@ window.WeightPlayGameRuntimeLocales["pt-BR"] = {
   "Guardias Abisales": "Guardias Abisales",
   "Guardie: armatura fragile.": "Guardie: armadura frágil.",
   "Guarida del Lobo": "Guarida del Lobo",
-  "Guerra": "guerra",
   "Guess the hidden four-color code using exact-position and color-only clues.": "Adivinhe o código oculto de quatro cores usando pistas de posição exata e apenas coloridas.",
   "Guia do jogo": "Guia do jogo",
   "Guida di gioco": "Guia do jogo",

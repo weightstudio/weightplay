@@ -22,6 +22,7 @@
   function copyCard(source, target, index, total, poolNode) {
     const keep = new Set(["data-wp-stage-pool-node", "data-wp-stage-virtual-index"]);
     const sourceClass = source.dataset.wpStageSourceClass || source.className;
+    const recommended = source.dataset.wpStageRecommended === "true";
     [...target.attributes].forEach((attribute) => {
       if (!keep.has(attribute.name)) target.removeAttribute(attribute.name);
     });
@@ -35,6 +36,8 @@
     target.setAttribute("aria-posinset", String(index + 1));
     target.setAttribute("aria-setsize", String(total));
     target.setAttribute("aria-keyshortcuts", "ArrowLeft ArrowRight Home End");
+    if (recommended) target.dataset.wpStageRecommended = "true";
+    else delete target.dataset.wpStageRecommended;
     const locked = source.disabled || source.getAttribute("aria-disabled") === "true"
       || /(?:^|\s)(?:locked|is-locked)(?:\s|$)/.test(sourceClass);
     target.disabled = false;
@@ -55,6 +58,9 @@
     let pointerId = null;
     let pointerStart = 0;
     let lastPointer = 0;
+    let pointerMoveObserved = false;
+    let touchIdentifier = null;
+    let touchFallbackUsed = false;
     let moved = false;
     let settlingFrame = 0;
     let anchorTimer = 0;
@@ -215,7 +221,8 @@
         source.removeAttribute("aria-keyshortcuts");
         source.removeAttribute("aria-posinset");
         source.removeAttribute("aria-setsize");
-        source.removeAttribute("data-wp-stage-recommended");
+        if (source === recommendedSource) source.dataset.wpStageRecommended = "true";
+        else source.removeAttribute("data-wp-stage-recommended");
         source.classList.add("wp-stage-source-card");
       });
       pool = Array.from({ length: Math.min(poolSize, total) }, (_, index) => {
@@ -266,6 +273,9 @@
     function finishPointer(event) {
       if (pointerId === null || (event.pointerId !== undefined && event.pointerId !== pointerId)) return;
       pointerId = null;
+      touchIdentifier = null;
+      pointerMoveObserved = false;
+      touchFallbackUsed = false;
       if (!moved) return;
       moved = false;
       suppressClick = true;
@@ -296,23 +306,62 @@
       settlingFrame = 0;
       pointerId = event.pointerId;
       pointerStart = lastPointer = event.clientX;
+      pointerMoveObserved = false;
+      touchFallbackUsed = false;
       moved = false;
       rail.classList.add("wp-stage-drag-ready");
       event.stopImmediatePropagation();
     }, true);
-    document.addEventListener("pointermove", (event) => {
-      if (event.pointerId !== pointerId) return;
-      const delta = event.clientX - lastPointer;
-      lastPointer = event.clientX;
-      if (!moved && Math.abs(event.clientX - pointerStart) > 4) {
+    const applyDragDelta = (clientX, event) => {
+      const delta = clientX - lastPointer;
+      lastPointer = clientX;
+      if (!moved && Math.abs(clientX - pointerStart) > 4) {
         moved = true;
         rail.classList.add("wp-stage-dragging");
       }
       if (!moved) return;
       if (event.cancelable) event.preventDefault();
       position(logical - delta / cardPitch());
-      event.stopImmediatePropagation();
+      event.stopImmediatePropagation?.();
+    };
+    document.addEventListener("pointermove", (event) => {
+      if (event.pointerId !== pointerId) return;
+      if (touchFallbackUsed) return;
+      pointerMoveObserved = true;
+      applyDragDelta(event.clientX, event);
     }, true);
+    rail.addEventListener("touchstart", (event) => {
+      if (event.touches.length !== 1) return;
+      const touch = event.touches[0];
+      touchIdentifier = touch.identifier;
+      if (pointerId !== null) return;
+      cancelAnimationFrame(settlingFrame);
+      settlingFrame = 0;
+      clearTimeout(anchorTimer);
+      anchorTimer = 0;
+      pointerId = `touch:${touch.identifier}`;
+      pointerStart = lastPointer = touch.clientX;
+      pointerMoveObserved = false;
+      touchFallbackUsed = false;
+      moved = false;
+      rail.classList.add("wp-stage-drag-ready");
+      event.stopImmediatePropagation();
+    }, { capture: true, passive: false });
+    document.addEventListener("touchmove", (event) => {
+      if (touchIdentifier === null || event.touches.length !== 1 || pointerMoveObserved) return;
+      const touch = [...event.touches].find((candidate) => candidate.identifier === touchIdentifier);
+      if (!touch) return;
+      touchFallbackUsed = true;
+      applyDragDelta(touch.clientX, event);
+    }, { capture: true, passive: false });
+    const finishTouch = (event) => {
+      if (touchIdentifier === null) return;
+      const ownsTouch = [...(event.changedTouches || [])].some((touch) => touch.identifier === touchIdentifier);
+      if (!ownsTouch) return;
+      finishPointer(event);
+    };
+    document.addEventListener("touchend", finishTouch, { capture: true, passive: false });
+    document.addEventListener("touchcancel", finishTouch, { capture: true, passive: false });
     document.addEventListener("pointerup", finishPointer, true);
     document.addEventListener("pointercancel", finishPointer, true);
     rail.addEventListener("click", (event) => {
