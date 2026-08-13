@@ -8794,6 +8794,55 @@
     ],
   };
 
+  localizedGames.fr ||= {};
+  localizedGames.fr["animal-number-match"] = {
+    ...games["animal-number-match"],
+    title: "Le bosquet des nombres de Panko",
+    difficulty: "Facile à relever",
+    time: "Environ 2 à 8 minutes par niveau",
+    gameplay: "Puzzle de paires de nombres et de lignes de vue",
+    genre: ["Puzzle", "Stratégie", "Animaux"],
+    skills: ["Logique", "Planification", "Résolution de problèmes"],
+    relatedIds: ["animal-habitat-mahjong", "garden-tiles", "animal-rope-rescue"],
+    guideKicker: "Guide du jeu original WeightPlay",
+    guideTitleSuffix: "Guide du jeu",
+    intro: "Choisissez deux nombres qui totalisent dix. Ils doivent se toucher ou se voir sur une même ligne ou colonne à travers des cases déjà vidées.",
+    story: [
+      "Trente bosquets numériques sont encombrés de tuiles en paires. Panko les nettoie en trouvant des sommes de dix selon une règle de visibilité constante.",
+      "Le plateau ne demande jamais de deviner une valeur cachée : chaque nombre et chaque case vide nécessaires à la prochaine déduction restent visibles."
+    ],
+    systems: [
+      "Une paire légale contient deux valeurs dont la somme vaut dix. Deux valeurs égales ne sont légales que si elles sont toutes deux égales à cinq.",
+      "Les deux tuiles doivent être voisines sur la même ligne ou colonne, ou partager une ligne droite composée uniquement de cases déjà vidées.",
+      "Supprimer une paire crée de nouvelles cases vides et peut révéler une paire plus éloignée qui était auparavant bloquée.",
+      "Annuler restaure une paire. Réordonner mélange seulement les valeurs restantes, tandis que Recommencer restaure le plateau d'origine."
+    ],
+    how: [
+      "Choisissez un bosquet débloqué.",
+      "Touchez un nombre, puis son partenaire légal.",
+      "Utilisez les nouvelles cases vides pour trouver des lignes de vue horizontales ou verticales plus longues.",
+      "Supprimez toutes les paires pour terminer le bosquet."
+    ],
+    strategyTips: [
+      "Privilégiez les paires qui ouvrent le centre ou relient deux zones vides séparées.",
+      "Avant d'utiliser un nombre polyvalent, vérifiez si son complément offre une autre ligne de vue utile.",
+      "Relisez les lignes et les colonnes après chaque suppression, car la visibilité change immédiatement.",
+      "Utilisez l'Indice pour comprendre la règle de légalité actuelle, pas pour remplacer l'observation du plateau."
+    ],
+    progression: [
+      "Six chapitres agrandissent les plateaux et ajoutent des bloqueurs plus denses, des lignes de vue plus longues, des choix de paires concurrents et des ouvertures qui demandent un ordre précis.",
+      "La difficulté vient des conséquences spatiales ; l'arithmétique reste limitée aux sommes de dix."
+    ],
+    designNote: "Les nombres restent visibles sous forme de texte et l'état sélectionné ne dépend pas seulement de la couleur : le même plateau reste lisible au clavier, au toucher et à la souris.",
+    parent: "Aucun compte, compte à rebours, achat ou score public n'est nécessaire. Les bosquets terminés et les meilleurs nombres de coups restent dans ce navigateur.",
+    faq: [
+      ["Pourquoi deux valeurs égales ne peuvent-elles pas être supprimées ?", "Une paire égale n'est valide que pour deux 5 ; toute paire légale doit totaliser dix et partager une ligne ou colonne dégagée."],
+      ["Les paires en diagonale comptent-elles ?", "Non. Les paires doivent être voisines ou se voir sur une ligne horizontale ou verticale dégagée."],
+      ["Que fait Réordonner ?", "Cette action réorganise les valeurs restantes sans modifier la règle de somme égale à dix."],
+      ["Les niveaux sont-ils chronométrés ?", "Non. Vous pouvez observer le plateau à votre rythme."]
+    ]
+  };
+
   localizedGames.ja ||= {};
   reviewedJapaneseGuideOverrides["animal-number-match"]
     = localizedGames.ja["animal-number-match"] = {

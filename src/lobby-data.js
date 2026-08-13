@@ -2468,7 +2468,7 @@ window.WONDER_LOBBY.games.push(
 );
 
 // New classic-inspired originals have cleared the candidate gates and are
-// wired for public release after the paired platform Preflight.
+// wired as public playable entries after the paired platform Preflight.
 window.WONDER_LOBBY.games.push(
   {
     id: "maze-chase",

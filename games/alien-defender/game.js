@@ -58,7 +58,7 @@
   draw=drawResponsive;
   // v8 Growth instrumentation: expose only aggregate, privacy-safe funnel
   // fields; gameplay state, controls, pacing, and authored waves stay intact.
-  const ANALYTICS_GAME_VERSION="15",ANALYTICS_INTERFACE_VERSION="6";
+  const ANALYTICS_GAME_VERSION="18",ANALYTICS_INTERFACE_VERSION="6";
   let sessionHadBattle=false,inputType="unknown";
   function viewportBucket(){const width=window.innerWidth,height=window.innerHeight;if(width<=430&&height>=700)return"phone-portrait";if(width<=700&&height>=700)return"tablet-portrait";if(width>=700&&height<=500)return"short-landscape";return"desktop"}
   function track(eventName,details={}){window.WonderAnalytics?.track?.(eventName,{game_id:"alien-defender",game_version:`v${ANALYTICS_GAME_VERSION}`,interface_version:ANALYTICS_INTERFACE_VERSION,locale,viewport_bucket:viewportBucket(),input_type:details.input_type||inputType,wave:details.wave??wave,result_reason:details.result_reason||"not_applicable"})}
@@ -89,4 +89,24 @@
   // easing only the first final-wave sweep so the payoff is reproducible.
   const v13MakeWorld=makeWorld;
   makeWorld=function(){const next=v13MakeWorld();if(wave===3){next.moveEvery=.68;next.shield=12;next.rapidFire=true}return next};
+  // v16 Director repair: preserve the complete final formation and rapid-fire
+  // identity while adding one final, readable survival runway.
+  const v14MakeWorld=makeWorld;
+  makeWorld=function(){const next=v14MakeWorld();if(wave===3){next.moveEvery=.82;next.shield=20;next.rapidFire=true}return next};
+  // v17 Director repair: keep the authored formation and pressure while
+  // giving Wave 2 and Wave 3 a readable edge-to-edge reaction window.
+  const v16MakeWorld=makeWorld;
+  makeWorld=function(){const next=v16MakeWorld();if(wave===2){next.moveEvery=.82;next.shield=6}if(wave===3){next.moveEvery=1.05;next.shield=32;next.rapidFire=true}return next};
+  // v18 Director repair: make the readable shield runway persist briefly
+  // after a hit, so one projectile cannot become an opaque multi-life loss.
+  // The grace is rendered through the existing shield ring and does not
+  // remove enemy fire, formation pressure, or the failure condition.
+  const v17Update=update;
+  update=function updateWithHitGrace(dt){
+    if(world?.invuln>0)world.shield=Math.max(world.shield,world.invuln);
+    const beforeLives=world?.lives??null;
+    v17Update(dt);
+    if(world&&beforeLives!==null&&world.lives<beforeLives)world.invuln=.9;
+    if(world)world.invuln=Math.max(0,(world.invuln||0)-dt);
+  };
 })();

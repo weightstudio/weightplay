@@ -119,11 +119,16 @@ body[data-wp-card-game] > .result-overlay .result-actions button { min-height: 4
     display: none;
   }
   body[data-wp-card-game="old-maid"] .card-game-board {
-    grid-template-columns: 108px 328px minmax(350px, 1fr);
+    grid-template-columns: 96px 254px minmax(450px, 1fr);
+  }
+  body[data-wp-card-game="old-maid"] .card-table-center,
+  body[data-wp-card-game="old-maid"] .card-game-player {
+    min-width: 0;
   }
   body[data-wp-card-game="old-maid"] .card-hand .playing-card {
     width: 43px;
     height: 61px;
+    flex: 0 0 43px;
   }
   body[data-wp-card-game="old-maid"] .card-table-center .table-row {
     gap: 2px;

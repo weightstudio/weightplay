@@ -1,6 +1,6 @@
 (()=>{
   "use strict";
-  const GAME_ID="animal-number-match",GAME_VERSION=10,INTERFACE_VERSION=6;
+  const GAME_ID="animal-number-match",GAME_VERSION=11,INTERFACE_VERSION=6;
   const codes=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
   const $=selector=>document.querySelector(selector),screens=[...document.querySelectorAll(".screen")],levels=window.NUMBER_MATCH_LEVELS.levels;
   const storageKey="wp-animal-number-match-v1";
