@@ -568,7 +568,7 @@ button.primary:focus-visible {
   font-size: 13px;
   font-weight: 700;
   transform: translate(-50%, -50%);
-  transition: left .12s linear;
+  transition: none;
   will-change: left;
 }
 

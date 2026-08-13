@@ -77,22 +77,25 @@
   };
 
   const CRIB_TRANSITION = {
-    en: "Your 2 cards joined the crib · Starter {starter} · Peg toward 31",
-    "zh-Hant": "你的 2 張牌已放入 crib · starter {starter} · 出牌朝 31 點前進",
-    "zh-Hans": "你的 2 张牌已放入 crib · starter {starter} · 出牌朝 31 点前进",
-    ja: "選んだ2枚はクリブへ · スターター {starter} · 31を目指してプレイ",
-    ko: "선택한 2장은 크립으로 · 스타터 {starter} · 합계 31을 향해 내세요",
-    es: "Tus 2 cartas fueron a la cuna · Inicial {starter} · Juega hacia 31",
-    "pt-BR": "Suas 2 cartas foram para o crib · Inicial {starter} · Jogue até 31",
-    fr: "Vos 2 cartes rejoignent le crib · Carte de départ {starter} · Visez 31",
-    de: "Deine 2 Karten liegen im Crib · Starter {starter} · Spiele Richtung 31",
-    it: "Le tue 2 carte sono nel crib · Starter {starter} · Gioca verso 31",
-    ru: "Ваши 2 карты ушли в криб · Стартовая {starter} · Играйте к 31",
-    hi: "आपके 2 पत्ते क्रिब में गए · स्टार्टर {starter} · 31 की ओर पत्ता चलें",
-    ar: "انتقلت بطاقتاك إلى الكريب · بطاقة البداية {starter} · العب نحو 31",
+    en: { player: "Your crib holds the 4 contributed cards", ai: "AI's crib holds the 4 contributed cards", next: "Starter {starter} · Peg toward 31" },
+    "zh-Hant": { player: "本輪 4 張貢獻牌屬於你的 crib", ai: "本輪 4 張貢獻牌屬於 AI 的 crib", next: "starter {starter} · 出牌朝 31 點前進" },
+    "zh-Hans": { player: "本轮 4 张贡献牌属于你的 crib", ai: "本轮 4 张贡献牌属于 AI 的 crib", next: "starter {starter} · 出牌朝 31 点前进" },
+    ja: { player: "4枚のクリブはあなたのもの", ai: "4枚のクリブはAIのもの", next: "スターター {starter} · 31を目指してプレイ" },
+    ko: { player: "기여한 4장의 크립은 내 것", ai: "기여한 4장의 크립은 AI 것", next: "스타터 {starter} · 합계 31을 향해 내세요" },
+    es: { player: "Las 4 cartas aportadas forman tu cuna", ai: "Las 4 cartas aportadas forman la cuna de la IA", next: "Inicial {starter} · Juega hacia 31" },
+    "pt-BR": { player: "As 4 cartas contribuídas formam seu crib", ai: "As 4 cartas contribuídas formam o crib da IA", next: "Inicial {starter} · Jogue até 31" },
+    fr: { player: "Les 4 cartes données forment votre crib", ai: "Les 4 cartes données forment le crib de l'IA", next: "Carte de départ {starter} · Visez 31" },
+    de: { player: "Die 4 beigesteuerten Karten bilden deinen Crib", ai: "Die 4 beigesteuerten Karten bilden den KI-Crib", next: "Starter {starter} · Spiele Richtung 31" },
+    it: { player: "Le 4 carte contribuite formano il tuo crib", ai: "Le 4 carte contribuite formano il crib dell'IA", next: "Starter {starter} · Gioca verso 31" },
+    ru: { player: "4 отданные карты образуют ваш криб", ai: "4 отданные карты образуют криб ИИ", next: "Стартовая {starter} · Играйте к 31" },
+    hi: { player: "दिए गए 4 पत्ते आपका क्रिब बनाते हैं", ai: "दिए गए 4 पत्ते AI का क्रिब बनाते हैं", next: "स्टार्टर {starter} · 31 की ओर पत्ता चलें" },
+    ar: { player: "البطاقات الأربع المقدمة تكوّن الكريب الخاص بك", ai: "البطاقات الأربع المقدمة تكوّن كريب الذكاء الاصطناعي", next: "بطاقة البداية {starter} · العب نحو 31" },
   };
 
-  const cribTransitionText = (starter) => (CRIB_TRANSITION[currentLocale()] || CRIB_TRANSITION.en).replaceAll("{starter}", cardText(starter));
+  const cribTransitionText = (starter, dealer) => {
+    const copy = CRIB_TRANSITION[currentLocale()] || CRIB_TRANSITION.en;
+    return `${dealer === 0 ? copy.player : copy.ai} · ${copy.next.replaceAll("{starter}", cardText(starter))}`;
+  };
 
   const t = (key, values = {}) => {
     const dictionary = TEXT[currentLocale()] || TEXT.en;
@@ -526,31 +529,99 @@
   }
 
   function makeCribbageFixed(controller) {
-    const s = { hand: [], ai: [], crib: [], stock: [], starter: null, playerPeg: [], aiPeg: [], count: 0, turn: 0, phase: "discard", score: [0, 0], selected: new Set(), passed: [false, false], pegPoints: [0, 0], round: 1 };
+    const s = { hand: [], ai: [], crib: [], stock: [], starter: null, playerPeg: [], aiPeg: [], pegSequence: [], count: 0, turn: 0, phase: "discard", score: [0, 0], selected: new Set(), passed: [false, false], lastPegPlayer: null, round: 1, dealer: 1 };
     const combinations = (cards, target) => { let points = 0; const total = 1 << cards.length; for (let mask = 1; mask < total; mask += 1) { const chosen = cards.filter((_, index) => mask & (1 << index)); if (sum(chosen) === target) points += 2; } return points; };
     const scoreCards = (cards, isCrib = false) => {
       let points = combinations(cards, 15);
       const counts = new Map();
       cards.forEach((item) => counts.set(item.rank, (counts.get(item.rank) || 0) + 1));
       counts.forEach((count) => { if (count >= 2) points += (count * (count - 1)); });
-      const unique = [...counts.keys()].sort((a, b) => a - b);
-      for (let length = unique.length; length >= 3; length -= 1) { let found = false; for (let start = 0; start <= unique.length - length; start += 1) { const run = unique.slice(start, start + length); if (run.every((rank, index) => !index || rank === run[index - 1] + 1)) { points += length; found = true; break; } } if (found) break; }
-      const firstFour = cards.slice(0, -1); if (firstFour.length >= 4 && firstFour.every((item) => item.suit === firstFour[0].suit)) points += 4; if (cards.at(-1)?.rank === 11 && cards.at(-1)?.suit === cards.find((item) => item.rank === 11)?.suit) points += 1;
-      return points + (isCrib ? 0 : 0);
+      let longestRun = 0;
+      let runPoints = 0;
+      for (let mask = 1; mask < 1 << cards.length; mask += 1) {
+        const ranks = cards.filter((_, index) => mask & (1 << index)).map((item) => item.rank).sort((a, b) => a - b);
+        if (ranks.length < 3 || new Set(ranks).size !== ranks.length || ranks.some((rank, index) => index && rank !== ranks[index - 1] + 1)) continue;
+        if (ranks.length > longestRun) { longestRun = ranks.length; runPoints = ranks.length; }
+        else if (ranks.length === longestRun) runPoints += ranks.length;
+      }
+      points += runPoints;
+      const firstFour = cards.slice(0, -1);
+      const starter = cards.at(-1);
+      if (firstFour.length >= 4 && firstFour.every((item) => item.suit === firstFour[0].suit)) {
+        if (isCrib) points += starter?.suit === firstFour[0].suit ? 5 : 0;
+        else points += 4 + (starter?.suit === firstFour[0].suit ? 1 : 0);
+      }
+      if (starter && firstFour.some((item) => item.rank === 11 && item.suit === starter.suit)) points += 1;
+      return points;
     };
     const legalPeg = (player) => (player === 0 ? s.hand : s.ai).filter((item) => s.count + value(item) <= 31);
     const finish = () => { if (s.score[0] >= 121 || s.score[1] >= 121) { controller.result(s.score[0] >= s.score[1], `${t("score")}: ${s.score[0]} / ${s.score[1]}`); return true; } return false; };
-    const scorePegCard = (player, item) => { const sequence = player === 0 ? s.playerPeg : s.aiPeg; sequence.push(item); const last = sequence.at(-1); let points = 0; if (s.count + value(item) === 15 || s.count + value(item) === 31) points += 2; if (sequence.length >= 2 && sequence.at(-1).rank === sequence.at(-2).rank) points += 2; if (sequence.length >= 3) { const ranks = sequence.slice(-3).map((cardItem) => cardItem.rank).sort((a, b) => a - b); if (ranks[2] === ranks[1] + 1 && ranks[1] === ranks[0] + 1) points += 3; } if (last) s.pegPoints[player] += points; };
-    const nextPegTurn = () => { if (s.passed[0] && s.passed[1]) { const playerCards = [...s.hand, ...s.playerPeg]; const aiCards = [...s.ai, ...s.aiPeg]; s.score[0] += scoreCards([...s.roundPlayerHand, s.starter]) + s.pegPoints[0]; s.score[1] += scoreCards([...s.roundAiHand, s.starter]) + scoreCards([...s.crib, s.starter], true) + s.pegPoints[1]; if (finish()) return; startRound(); return; } s.turn = (s.turn + 1) % 2; if (s.turn === 1) setTimeout(aiPeg, 240); };
-    const passPeg = (player) => { s.passed[player] = true; nextPegTurn(); };
-    const playPeg = (player, item) => { if (!item || s.count + value(item) > 31) { passPeg(player); return; } const hand = player === 0 ? s.hand : s.ai; const index = hand.indexOf(item); if (index < 0) return; hand.splice(index, 1); scorePegCard(player, item); s.count += value(item); s.passed[player] = false; if (!s.hand.length && !s.ai.length) { s.passed = [true, true]; nextPegTurn(); } else { nextPegTurn(); } };
+    const scorePegCard = (player, item) => {
+      (player === 0 ? s.playerPeg : s.aiPeg).push(item);
+      s.pegSequence.push(item);
+      let points = 0;
+      const nextCount = s.count + value(item);
+      if (nextCount === 15 || nextCount === 31) points += 2;
+      let sameRank = 1;
+      for (let index = s.pegSequence.length - 2; index >= 0 && s.pegSequence[index].rank === item.rank; index -= 1) sameRank += 1;
+      if (sameRank === 2) points += 2;
+      if (sameRank === 3) points += 6;
+      if (sameRank >= 4) points += 12;
+      for (let length = Math.min(7, s.pegSequence.length); length >= 3; length -= 1) {
+        const ranks = s.pegSequence.slice(-length).map((cardItem) => cardItem.rank);
+        if (new Set(ranks).size === length && Math.max(...ranks) - Math.min(...ranks) === length - 1) { points += length; break; }
+      }
+      s.score[player] += points;
+    };
+    const settleRound = () => {
+      const nonDealer = 1 - s.dealer;
+      const hands = [s.roundPlayerHand, s.roundAiHand];
+      s.score[nonDealer] += scoreCards([...hands[nonDealer], s.starter]);
+      if (finish()) return;
+      s.score[s.dealer] += scoreCards([...hands[s.dealer], s.starter]);
+      if (finish()) return;
+      s.score[s.dealer] += scoreCards([...s.crib, s.starter], true);
+      if (!finish()) startRound();
+    };
+    const scheduleTurn = (player) => { s.turn = player; if (player === 1) setTimeout(aiPeg, 240); };
+    const resetPegCount = (leader) => {
+      s.count = 0;
+      s.pegSequence = [];
+      s.passed = [false, false];
+      if (!s.hand.length && !s.ai.length) { settleRound(); return; }
+      const availableLeader = (leader === 0 ? s.hand : s.ai).length ? leader : 1 - leader;
+      scheduleTurn(availableLeader);
+    };
+    const passPeg = (player) => {
+      if (legalPeg(player).length) return;
+      s.passed[player] = true;
+      const other = 1 - player;
+      if (legalPeg(other).length) { scheduleTurn(other); return; }
+      if (s.lastPegPlayer !== null && s.count < 31) { s.score[s.lastPegPlayer] += 1; if (finish()) return; }
+      resetPegCount(s.lastPegPlayer === null ? other : 1 - s.lastPegPlayer);
+    };
+    const playPeg = (player, item) => {
+      if (!item || s.count + value(item) > 31) { passPeg(player); return; }
+      const hand = player === 0 ? s.hand : s.ai;
+      const index = hand.indexOf(item);
+      if (index < 0) return;
+      hand.splice(index, 1);
+      scorePegCard(player, item);
+      s.count += value(item);
+      s.lastPegPlayer = player;
+      s.passed[player] = false;
+      if (finish()) return;
+      if (s.count === 31) { resetPegCount(1 - player); return; }
+      if (!s.hand.length && !s.ai.length) { s.score[player] += 1; if (!finish()) settleRound(); return; }
+      scheduleTurn(1 - player);
+    };
     const aiPeg = () => { if (s.phase !== "pegging" || s.turn !== 1) return; const item = legalPeg(1).sort((a, b) => b.rank - a.rank)[0]; if (item) playPeg(1, item); else passPeg(1); };
-    function startRound() { const cards = deck(); Object.assign(s, { hand: [], ai: [], crib: [], stock: cards, starter: null, playerPeg: [], aiPeg: [], count: 0, turn: 0, phase: "discard", selected: new Set(), passed: [false, false], pegPoints: [0, 0], round: s.round + 1 }); for (let i = 0; i < 6; i += 1) { s.hand.push(s.stock.pop()); s.ai.push(s.stock.pop()); } }
+    function startRound() { const cards = deck(); const round = s.round + 1; Object.assign(s, { hand: [], ai: [], crib: [], stock: cards, starter: null, playerPeg: [], aiPeg: [], pegSequence: [], count: 0, turn: 0, phase: "discard", selected: new Set(), passed: [false, false], lastPegPlayer: null, round, dealer: round % 2 === 1 ? 1 : 0 }); for (let i = 0; i < 6; i += 1) { s.hand.push(s.stock.pop()); s.ai.push(s.stock.pop()); } }
     return {
-      reset() { Object.assign(s, { score: [0, 0], round: 0 }); startRound(); },
+      reset() { Object.assign(s, { score: [0, 0], round: 0, dealer: 0 }); startRound(); },
       card(index) { if (s.phase === "discard" && s.turn === 0) { if (s.selected.has(index)) s.selected.delete(index); else if (s.selected.size < 2) s.selected.add(index); } else if (s.phase === "pegging" && s.turn === 0) playPeg(0, s.hand[index]); },
-      action(action) { if (action === "send-crib" && s.phase === "discard" && s.selected.size === 2) { [...s.selected].sort((a, b) => b - a).forEach((index) => s.crib.push(s.hand.splice(index, 1)[0])); s.crib.push(...s.ai.splice(0, 2)); s.roundPlayerHand = [...s.hand]; s.roundAiHand = [...s.ai]; s.starter = s.stock.pop(); s.phase = "pegging"; s.turn = 0; s.playerPeg = []; s.aiPeg = []; s.count = 0; s.passed = [false, false]; s.pegPoints = [0, 0]; } if (action === "go" && s.phase === "pegging" && s.turn === 0) passPeg(0); },
-      view() { const playable = legalPeg(0); return { phase: s.phase === "discard" ? t("selectCards") : `${t("score")}: ${s.count}/31`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "discard" ? `${t("selectCards")}: ${s.selected.size}/2 to the crib.` : `${playable.length ? "Play a card" : "Go"}. Pair, run, 15, and 31 points count during pegging.`, score: s.score[0], opponents: opponentMarkup("AI", s.ai.length, `${t("score")}: ${s.score[1]}`), center: `<div class="card-table-label">${t("cribbage")} · Round ${s.round} · ${s.starter ? cardText(s.starter) : ""}</div>${s.phase === "pegging" ? `<div class="card-crib-transition" role="status" aria-live="polite">${cribTransitionText(s.starter)}</div>` : ""}${makePegBoard(s.score[0], s.score[1])}<div class="table-row">${cardsMarkup(s.playerPeg)}${cardsMarkup(s.aiPeg)}</div>`, hand: cardsMarkup(s.hand, { selected: s.selected }), actions: s.phase === "discard" ? `<button class="primary-btn" data-action="send-crib" ${s.selected.size !== 2 ? "disabled" : ""}>${t("submit")}</button>` : `<button class="secondary-btn" data-action="go" ${playable.length ? "disabled" : ""}>Go</button>` }; }
+      action(action) { if (action === "send-crib" && s.phase === "discard" && s.selected.size === 2) { [...s.selected].sort((a, b) => b - a).forEach((index) => s.crib.push(s.hand.splice(index, 1)[0])); s.crib.push(...s.ai.splice(0, 2)); s.roundPlayerHand = [...s.hand]; s.roundAiHand = [...s.ai]; s.starter = s.stock.pop(); s.phase = "pegging"; s.playerPeg = []; s.aiPeg = []; s.pegSequence = []; s.count = 0; s.passed = [false, false]; s.lastPegPlayer = null; if (s.starter.rank === 11) { s.score[s.dealer] += 2; if (finish()) return; } scheduleTurn(1 - s.dealer); } if (action === "go" && s.phase === "pegging" && s.turn === 0) passPeg(0); },
+      view() { const playable = legalPeg(0); return { phase: s.phase === "discard" ? t("selectCards") : `${t("score")}: ${s.count}/31`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "discard" ? `${t("selectCards")}: ${s.selected.size}/2 to the crib.` : s.turn === 0 ? `${playable.length ? "Play a card" : "Go"}. Pair, run, 15, and 31 points count during pegging.` : t("aiTurn"), score: s.score[0], opponents: opponentMarkup("AI", s.ai.length, `${t("score")}: ${s.score[1]}`), center: `<div class="card-table-label">${t("cribbage")} · Round ${s.round} · ${s.starter ? cardText(s.starter) : ""}</div>${s.phase === "pegging" ? `<div class="card-crib-transition" role="status" aria-live="polite">${cribTransitionText(s.starter, s.dealer)}</div>` : ""}${makePegBoard(s.score[0], s.score[1])}<div class="table-row">${cardsMarkup(s.playerPeg)}${cardsMarkup(s.aiPeg)}</div>`, hand: cardsMarkup(s.hand, { selected: s.selected }), actions: s.phase === "discard" ? `<button class="primary-btn" data-action="send-crib" ${s.selected.size !== 2 ? "disabled" : ""}>${t("submit")}</button>` : `<button class="secondary-btn" data-action="go" ${s.turn !== 0 || playable.length ? "disabled" : ""}>Go</button>` }; }
     };
   }
 

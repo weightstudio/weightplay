@@ -1,6 +1,6 @@
 ﻿(() => {
   const GAME_ID = "animal-guard-yard";
-  const GAME_VERSION = "v14";
+  const GAME_VERSION = "v15";
   const INTERFACE_VERSION = 6;
   const localeKey = "weightplayLocale";
   const unlockKey = "weightplay_animal_guard_unlocked";
@@ -305,6 +305,22 @@
       stagePlan7: "盾獸很多，靠貓頭鷹緩速與狐狸爆發。",
       stagePlan8: "最終 Boss，保留陽光補中路與防線。",
     },
+  };
+
+  const foregroundPlacementCopy = {
+    en: "Bring this game to the foreground, then tap the grass tile again.",
+    "zh-Hant": "請先回到此遊戲畫面，再點一次草地格子。",
+    "zh-Hans": "请先回到此游戏画面，再点一次草地格子。",
+    ja: "このゲームを前面に戻して、草地マスをもう一度タップしてください。",
+    ko: "이 게임을 화면 앞으로 가져온 뒤 잔디 칸을 다시 누르세요.",
+    es: "Vuelve a esta ventana del juego y toca otra vez la casilla de césped.",
+    "pt-BR": "Volte para esta janela do jogo e toque novamente no espaço de grama.",
+    fr: "Revenez sur cette fenêtre de jeu, puis touchez à nouveau la case d’herbe.",
+    de: "Bringe dieses Spiel nach vorn und tippe erneut auf das Grasfeld.",
+    it: "Torna a questa finestra di gioco, poi tocca di nuovo la casella d’erba.",
+    ru: "Вернитесь в окно игры и снова нажмите клетку с травой.",
+    hi: "इस गेम को सामने लाएँ, फिर घास वाले खाने पर दोबारा टैप करें।",
+    ar: "أعِد نافذة اللعبة إلى الواجهة، ثم اضغط مربع العشب مرة أخرى.",
   };
   text.ko = Object.assign(Object.create(text.en), {
     locked: "잠긴 스테이지",
@@ -667,6 +683,7 @@
   let lifecycleSuspended = false;
   let windowFocused = document.hasFocus();
   let pageActive = true;
+  let foregroundPlacementBlocked = false;
   let energy = 0;
   let baseHp = 3;
   let spawned = 0;
@@ -806,6 +823,10 @@
     if (typeof value !== "string") value = key;
     value = Object.entries(data || {}).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, item), value);
     return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(value) || value : value;
+  }
+
+  function foregroundPlacementMessage() {
+    return foregroundPlacementCopy[locale] || foregroundPlacementCopy.en;
   }
 
   function stageCopy(stage, field) {
@@ -1668,6 +1689,7 @@
   function startStage(index) {
     clearFloatingText();
     lifecycleSuspended = false;
+    foregroundPlacementBlocked = false;
     updateGuardYardViewport();
     currentStage = index;
     const stage = stages[currentStage];
@@ -1725,10 +1747,33 @@
     raf = requestAnimationFrame(tick);
   }
 
+  function isPlacementAction(event) {
+    return Boolean(event?.target?.closest?.(".cell"));
+  }
+
+  function rejectVisiblePlayerAction(event) {
+    if (!document.hidden && isPlacementAction(event)) {
+      nodes.hintText.textContent = foregroundPlacementMessage();
+      if (!foregroundPlacementBlocked) track("placement_blocked_foreground");
+      foregroundPlacementBlocked = true;
+    }
+    return false;
+  }
+
+  function markVisibleActionReclaimed(event) {
+    if (!foregroundPlacementBlocked || !isPlacementAction(event)) return;
+    foregroundPlacementBlocked = false;
+    nodes.hintText.textContent = t("select");
+    track("visible_action_reclaimed");
+  }
+
   function reclaimVisiblePlayerAction(event) {
     if (document.hidden) return false;
-    if (windowFocused && pageActive && !lifecycleSuspended) return true;
-    if (!event?.isTrusted) return false;
+    if (windowFocused && pageActive && !lifecycleSuspended) {
+      markVisibleActionReclaimed(event);
+      return true;
+    }
+    if (!event?.isTrusted) return rejectVisiblePlayerAction(event);
     // Some embedded browsers can leave a stale pagehide flag behind while the
     // same document is visibly interactive. A trusted action on that visible
     // document is stronger evidence than the stale lifecycle flag, so reclaim
@@ -1736,7 +1781,9 @@
     pageActive = true;
     windowFocused = true;
     resumeBattleLifecycle();
-    return !lifecycleSuspended;
+    if (lifecycleSuspended) return rejectVisiblePlayerAction(event);
+    markVisibleActionReclaimed(event);
+    return true;
   }
 
   function showPause() {

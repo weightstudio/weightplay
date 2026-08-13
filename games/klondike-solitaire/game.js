@@ -1598,9 +1598,14 @@ const KL_I18N = {
     const canvasScale = canvasRect?.width > 0 && logicalWidth > 0
       ? canvasRect.width / logicalWidth
       : 1;
+    const rankFontSize = Number.parseFloat(window.getComputedStyle(sourceNode?.querySelector(".rank-top") || document.body).fontSize) * canvasScale;
+    const suitFontSize = Number.parseFloat(window.getComputedStyle(sourceNode?.querySelector(".suit") || document.body).fontSize) * canvasScale;
     return {
       cardWidth,
       cardHeight,
+      canvasScale,
+      rankFontSize,
+      suitFontSize,
       ghostRowOffset: (state.dragging?.stackStep || getCardOffsetStep()) * canvasScale * 0.82,
     };
   }
@@ -2233,9 +2238,12 @@ const KL_I18N = {
       const sourceNode = cardNodePool.get(card.id);
       const ghost = sourceNode?.cloneNode(true);
       if (!ghost) return;
+      ghost.classList.remove("card-deal", "card-flip", "selected", "drag-hover");
       ghost.classList.add("ghost-card");
       ghost.style.width = `${state.dragging.metrics.cardWidth}px`;
       ghost.style.height = `${state.dragging.metrics.cardHeight}px`;
+      ghost.style.setProperty("--kl-ghost-rank-size", `${state.dragging.metrics.rankFontSize}px`);
+      ghost.style.setProperty("--kl-ghost-suit-size", `${state.dragging.metrics.suitFontSize}px`);
       ghost.style.left = `${startX}px`;
       ghost.style.top = `${startY + idx * ghostRowOffset}px`;
       ghost.style.opacity = "0.95";

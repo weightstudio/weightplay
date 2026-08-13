@@ -52,3 +52,19 @@ const runeReelsProgressTerms={
   ar:{level:"المستوى",upgradeAction:"ترقية"}
 };
 for(const [code,terms] of Object.entries(runeReelsProgressTerms))Object.assign(window.RUNE_REELS_LOCALES[code],terms);
+const foregroundSpinTerms={
+  en:{foregroundSpinBlocked:"Bring this game to the foreground, then press Spin again."},
+  "zh-Hant":{foregroundSpinBlocked:"請先回到此遊戲畫面，再按一次「轉動」。"},
+  "zh-Hans":{foregroundSpinBlocked:"请先回到此游戏画面，再按一次“转动”。"},
+  ja:{foregroundSpinBlocked:"このゲームを前面に戻して、もう一度「スピン」を押してください。"},
+  ko:{foregroundSpinBlocked:"이 게임을 화면 앞으로 가져온 뒤 스핀을 다시 누르세요."},
+  es:{foregroundSpinBlocked:"Vuelve a esta ventana del juego y pulsa Girar otra vez."},
+  "pt-BR":{foregroundSpinBlocked:"Volte para esta janela do jogo e pressione Girar novamente."},
+  fr:{foregroundSpinBlocked:"Revenez sur cette fenêtre de jeu, puis appuyez à nouveau sur Tourner."},
+  de:{foregroundSpinBlocked:"Bringe dieses Spiel nach vorn und drücke erneut auf Drehen."},
+  it:{foregroundSpinBlocked:"Torna a questa finestra di gioco, poi premi di nuovo Gira."},
+  ru:{foregroundSpinBlocked:"Вернитесь в окно игры и нажмите «Крутить» ещё раз."},
+  hi:{foregroundSpinBlocked:"इस गेम को सामने लाएँ, फिर स्पिन को दोबारा दबाएँ।"},
+  ar:{foregroundSpinBlocked:"أعِد نافذة اللعبة إلى الواجهة، ثم اضغط تدوير مرة أخرى."}
+};
+for(const [code,terms] of Object.entries(foregroundSpinTerms))Object.assign(window.RUNE_REELS_LOCALES[code],terms);

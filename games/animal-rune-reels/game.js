@@ -3,7 +3,7 @@
   document.body.dataset.wpCombinedSound = "true";
   const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
   const ASSET = "../../assets/", trial = new URLSearchParams(location.search).get("trial") === "1";
-  const GAME_ID = "animal-rune-reels", GAME_VERSION = "v37";
+  const GAME_ID = "animal-rune-reels", GAME_VERSION = "v38";
   const storageKey = "weightplay.animalRuneReels.v4", legacyStorageKey = "weightplay.animalRuneReels.v3", memory = new Map();
   const LOCALES = window.RUNE_REELS_LOCALES, localeKeys = Object.keys(LOCALES);
   const localeRouteSegments={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
@@ -50,7 +50,7 @@
   ];
   const chapterKeys=["chapter1","chapter2","chapter3","chapter4","chapter5","chapter6"];
   const materialIds=Object.keys(MATERIALS), missionTypes=["main","daily","event"];
-  let locale, profile=load(), selectedStage=1, missionType="main", selectedMissionId="main-1", battle=null, currentHero="lion", selectedTeamSlot=null, characterReturnFocus=null, summonReturnFocus=null, windowFocused=document.hasFocus(), battleLifecycleSuspended=false, pausedBattleAnimations=[], leaveConfirmOpen=false, resultActionClaimed=false, gameViewTracked=false;
+  let locale, profile=load(), selectedStage=1, missionType="main", selectedMissionId="main-1", battle=null, currentHero="lion", selectedTeamSlot=null, characterReturnFocus=null, summonReturnFocus=null, windowFocused=document.hasFocus(), battleLifecycleSuspended=false, pausedBattleAnimations=[], leaveConfirmOpen=false, resultActionClaimed=false, gameViewTracked=false, foregroundActionBlocked=false;
   const STAGE_CARD_POOL_SIZE=9;
   let stageCardPool=[],stageWindowStart=0,stagePoolType="",stageDrag=null,stageSettleFrame=0,suppressStageClick=false;
   let activeSceneId="mainPage",sceneGeneration=0;
@@ -58,21 +58,35 @@
   const battleWaiters=new Set(),battleAnimations=new Set(),battleCancellation=Object.freeze({cancelled:true}),isForeground=()=>windowFocused&&!document.hidden,currentBattleSpeed=()=>battle?.speed===2?2:1;
   function viewportBucket(){const width=window.innerWidth||0,height=window.innerHeight||0;if(height<=520&&width>height)return"short-landscape";if(width<=480)return"phone-portrait";if(width<=760)return"tablet";return"desktop"}
   function track(name,data={}){if(typeof window.WonderAnalytics?.track!=="function")return;const mission=battle?.mission;window.WonderAnalytics.track(name,{game:GAME_ID,game_id:GAME_ID,game_version:GAME_VERSION,locale:locale||document.documentElement.lang||"en",viewport_bucket:viewportBucket(),...(mission?.stage?{rift:mission.stage}:{ } ),...(battle?.wave?{wave:battle.wave}:{ }),...data})}
+  function rejectForegroundAction(){
+    if(!document.hidden){const banner=$("#comboBanner"),message=t("foregroundSpinBlocked");if(banner){banner.textContent=message;banner.title=message;banner.setAttribute("aria-label",message);banner.dataset.foregroundBlocked="true"}}
+    if(!foregroundActionBlocked)track("action_blocked_foreground");
+    foregroundActionBlocked=true;
+    return false;
+  }
   function reclaimVisiblePlayerAction(event){
-    if(document.hidden)return false;
-    if(windowFocused&&!battleLifecycleSuspended)return true;
-    if(!event?.isTrusted)return false;
+    if(document.hidden)return rejectForegroundAction();
+    if(windowFocused&&!battleLifecycleSuspended){
+      if(foregroundActionBlocked)track("visible_action_reclaimed");
+      foregroundActionBlocked=false;
+      return true;
+    }
+    if(!event?.isTrusted)return rejectForegroundAction();
     windowFocused=true;
     resumeBattleLifecycle();
     resumeStageToast();
-    return !battleLifecycleSuspended;
+    const reclaimed=!battleLifecycleSuspended;
+    if(reclaimed)track("visible_action_reclaimed");
+    else rejectForegroundAction();
+    foregroundActionBlocked=!reclaimed;
+    return reclaimed;
   }
   function syncBattleAnimationSpeed(){const speed=currentBattleSpeed();($('#battlePage')?.getAnimations({subtree:true})||[]).forEach(animation=>{if(animation.playbackRate!==speed)animation.playbackRate=speed})}
   function startBattleWait(waiter){if(waiter.timer||battleLifecycleSuspended||!isForeground())return;waiter.startedAt=performance.now();waiter.timer=setTimeout(()=>{waiter.timer=0;battleWaiters.delete(waiter);waiter.resolve()},waiter.remaining);requestAnimationFrame(syncBattleAnimationSpeed)}
   function setBattleSpeed(next){if(!battle||battle.ended)return;next=next===2?2:1;const prior=currentBattleSpeed();if(next===prior)return;const now=performance.now();for(const waiter of battleWaiters){if(waiter.timer){clearTimeout(waiter.timer);waiter.timer=0;waiter.remaining=Math.max(0,waiter.remaining-(now-waiter.startedAt))}waiter.remaining*=prior/next}battle.speed=next;profile.battleSpeed=next;save();battleWaiters.forEach(startBattleWait);syncBattleAnimationSpeed();renderBattle(false)}
   function suspendBattleLifecycle(){if(!battle||battle.ended||battleLifecycleSuspended)return;battleLifecycleSuspended=true;for(const waiter of battleWaiters){if(!waiter.timer)continue;clearTimeout(waiter.timer);waiter.timer=0;waiter.remaining=Math.max(0,waiter.remaining-(performance.now()-waiter.startedAt))}pausedBattleAnimations=($('#battlePage')?.getAnimations({subtree:true})||[]).filter(animation=>animation.playState==='running');pausedBattleAnimations.forEach(animation=>animation.pause())}
   function resumeBattleLifecycle(){if(!battleLifecycleSuspended||!isForeground()||leaveConfirmOpen)return;battleLifecycleSuspended=false;const animations=pausedBattleAnimations;pausedBattleAnimations=[];animations.forEach(animation=>{if(animation.playState==='paused')animation.play()});battleWaiters.forEach(startBattleWait)}
-  function resetBattleLifecycle(){battleLifecycleSuspended=false;pausedBattleAnimations=[];for(const waiter of battleWaiters){if(waiter.timer)clearTimeout(waiter.timer);waiter.reject(battleCancellation)}battleWaiters.clear();for(const animation of battleAnimations)animation.cancel();battleAnimations.clear()}
+  function resetBattleLifecycle(){battleLifecycleSuspended=false;foregroundActionBlocked=false;pausedBattleAnimations=[];for(const waiter of battleWaiters){if(waiter.timer)clearTimeout(waiter.timer);waiter.reject(battleCancellation)}battleWaiters.clear();for(const animation of battleAnimations)animation.cancel();battleAnimations.clear()}
   const soundLog=[];
 
   function read(k){try{return localStorage.getItem(k)}catch{return memory.get(k)||null}}
@@ -308,7 +322,7 @@
   function enemyDurability(){return battle?.enemies?.reduce((total,enemy)=>total+Math.max(0,enemy.hp)+Math.max(0,enemy.shield||0),0)||0}
   function resolutionStart(){return{enemyDurability:enemyDurability(),hp:battle.hp,shield:battle.shield}}
   function recordResolutionSummary(before){battle.resolutionSummary={turn:battle.turn,damage:Math.max(0,before.enemyDurability-enemyDurability()),shield:Math.max(0,battle.shield-before.shield),healing:Math.max(0,battle.hp-before.hp)}}
-  function clearResolutionSummary(){const banner=$("#comboBanner");if(!banner)return;if(battle)battle.resolutionSummary=null;banner.textContent="";banner.title="";banner.removeAttribute("aria-label");delete banner.dataset.resolutionSummary}
+  function clearResolutionSummary(){const banner=$("#comboBanner");if(!banner)return;if(battle)battle.resolutionSummary=null;banner.textContent="";banner.title="";banner.removeAttribute("aria-label");delete banner.dataset.resolutionSummary;delete banner.dataset.foregroundBlocked}
   function showResolutionSummary(){const summary=battle?.resolutionSummary,banner=$("#comboBanner");if(!summary||!banner)return;const outcomes=[tf('resultDamage',{value:summary.damage})];if(summary.shield)outcomes.push(tf('resultShield',{value:summary.shield}));if(summary.healing)outcomes.push(tf('resultHealing',{value:summary.healing}));const text=`${tf('turnResult',{turn:summary.turn})} · ${outcomes.join(' · ')}`;banner.textContent=text;banner.title=text;banner.setAttribute('aria-label',text);banner.dataset.resolutionSummary='true'}
   function nextRiftPreview(win){if(!win||!battle||battle.mission.type!=='main'||battle.mission.stage>=30)return"";const next=missions('main').find(m=>m.stage===battle.mission.stage+1);return next?tf('nextRiftPreview',{name:next.name,waves:next.waves,tactic:missionIntentPreview(next)}):""}
   function resultRecap(win){const mission=battle.mission,missionName=mission.type==='main'?`${t('stage')} ${mission.stage}`:mission.name,wave=`${t('wave')} ${battle.wave} / ${battle.totalWaves}`,health=`${t('hp')} ${Math.max(0,battle.hp)} / ${battle.maxHp}`,preview=$("#nextRiftPreview"),previewText=nextRiftPreview(win);if(preview){preview.hidden=!previewText;preview.textContent=previewText}if(!win)return`${missionName} · ${wave} · ${health}`;const stars=battle.hp/battle.maxHp>.7?3:battle.hp/battle.maxHp>.35?2:1;return`${missionName} · ${wave} · ${health} · ${"★".repeat(stars)}${"☆".repeat(3-stars)}`}

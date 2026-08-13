@@ -14,6 +14,7 @@
   let selectedSlot = null;
   let battle = null;
   let loopTimer = null;
+  let motionFrame = null;
   let statusTimer = null;
   let dragSlot = null;
   let formationRenderKey = null;
@@ -277,11 +278,32 @@
       if (!battle || battle.result || (el.tutorial && el.tutorial.open) || (el.leaveBattle && el.leaveBattle.open)) return;
       advanceBattle(1);
     }, 100);
+    motionFrame = window.requestAnimationFrame(renderEnemyMotion);
   }
 
   function stopLoop() {
     if (loopTimer) window.clearInterval(loopTimer);
     loopTimer = null;
+    if (motionFrame !== null) window.cancelAnimationFrame(motionFrame);
+    motionFrame = null;
+  }
+
+  function renderEnemyMotion(timestamp) {
+    motionFrame = null;
+    if (!battle || battle.result) return;
+    battle.enemies.forEach(function (enemy) {
+      const token = el.enemyLanes.querySelector(".enemy-token[data-enemy-id=\"" + enemy.id + "\"]");
+      if (!token) return;
+      token.style.left = (getEnemyVisualPosition(enemy, timestamp) * 100) + "%";
+    });
+    motionFrame = window.requestAnimationFrame(renderEnemyMotion);
+  }
+
+  function getEnemyVisualPosition(enemy, timestamp) {
+    const from = Number.isFinite(enemy.motionStartPosition) ? enemy.motionStartPosition : enemy.position;
+    const motionTimestamp = Number.isFinite(battle.motionTimestamp) ? battle.motionTimestamp : timestamp;
+    const progress = Math.max(0, Math.min(1, (timestamp - motionTimestamp) / 100));
+    return from + (enemy.position - from) * progress;
   }
 
   function advanceBattle(steps) {
@@ -292,6 +314,9 @@
 
   function tickBattle() {
     battle.ticks += 1;
+    battle.enemies.forEach(function (enemy) {
+      enemy.motionStartPosition = enemy.position;
+    });
     battle.effects = battle.effects.map(function (effect) {
       return Object.assign({}, effect, { ttl: effect.ttl - 1 });
     }).filter(function (effect) { return effect.ttl > 0; });
@@ -359,6 +384,7 @@
     Object.keys(battle.skillsUsed).forEach(function (key) {
       if (battle.skillsUsed[key] > 0) battle.skillsUsed[key] -= 1;
     });
+    battle.motionTimestamp = window.performance?.now?.() || Date.now();
     if (battle.adouHp <= 0) finishBattle("loss");
     if (battle.commandHp <= 0) finishBattle("win");
   }
@@ -376,8 +402,9 @@
       maxHp: maxHp,
       speed: level.enemySpeed * (boss ? .75 : 1),
        damage: level.enemyDamage + (boss ? 1 : 0),
-       boss: boss,
-       stun: 0,
+      boss: boss,
+      motionStartPosition: 0.04,
+      stun: 0,
        hitFlash: 0,
        defeatedTicks: 0,
      });
@@ -499,7 +526,12 @@
        victims.forEach(function (enemy) { enemy.stun = 35; damageEnemy(enemy, 5); });
     } else if (type === "horse") {
        const target = victims[0];
-       if (target) { damageEnemy(target, 18); target.position = Math.max(0, target.position - .25); }
+       if (target) {
+         damageEnemy(target, 18);
+         target.motionStartPosition = target.position;
+         target.position = Math.max(0, target.position - .25);
+         battle.motionTimestamp = window.performance?.now?.() || Date.now();
+       }
     } else {
        victims.forEach(function (enemy) { damageEnemy(enemy, 8); });
     }
@@ -614,9 +646,9 @@
   function updateEnemyToken(token, enemy) {
     const enemyLabel = enemy.boss ? t("boss") : t("enemySoldier");
     const hpPercent = Math.max(0, Math.round((enemy.hp / enemy.maxHp) * 100));
-    token.className = "enemy-token enemy-kind-" + (enemy.id % 3) + (enemy.boss ? " boss" : "") + (enemy.hitFlash > 0 ? " is-hit" : "") + (enemy.defeatedTicks > 0 ? " is-defeated" : "");
-    token.setAttribute("data-enemy-id", String(enemy.id));
-    token.style.left = (enemy.position * 100) + "%";
+      token.className = "enemy-token enemy-kind-" + (enemy.id % 3) + (enemy.boss ? " boss" : "") + (enemy.hitFlash > 0 ? " is-hit" : "") + (enemy.defeatedTicks > 0 ? " is-defeated" : "");
+      token.setAttribute("data-enemy-id", String(enemy.id));
+    token.style.left = (getEnemyVisualPosition(enemy, window.performance?.now?.() || Date.now()) * 100) + "%";
     token.setAttribute("aria-label", enemyLabel + ", " + t("hp") + " " + enemy.hp + "/" + enemy.maxHp);
     token.title = enemyLabel + " / " + enemy.hp + " / " + enemy.maxHp;
     token.innerHTML = "<span class=\"enemy-glyph\">" + (enemy.boss ? "將" : "卒") + "</span><span class=\"enemy-name\">" + escapeHtml(enemyLabel) + "</span><span class=\"enemy-health\"><span style=\"width:" + hpPercent + "%\"></span></span>";

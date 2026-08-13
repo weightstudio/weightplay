@@ -475,6 +475,7 @@ button.mini-btn {
   align-content: space-between;
   padding: 0.2rem;
   box-sizing: border-box;
+  text-align: left;
   overflow: hidden;
   user-select: none;
   touch-action: none;
@@ -537,17 +538,21 @@ button.mini-btn {
 }
 
 .card .rank-top {
+  justify-self: start;
   align-self: start;
+  text-align: left;
 }
 
 .card .rank-bottom {
   justify-self: end;
   align-self: end;
+  text-align: right;
 }
 
 .card .suit {
   justify-self: center;
   align-self: center;
+  text-align: center;
   font-size: var(--kl-suit-size);
 }
 
@@ -776,7 +781,11 @@ button.control-mini {
 
 .ghost-card .rank-top,
 .ghost-card .rank-bottom {
-  font-size: 0.7rem;
+  font-size: var(--kl-ghost-rank-size, 0.7rem);
+}
+
+.ghost-card .suit {
+  font-size: var(--kl-ghost-suit-size, var(--kl-suit-size));
 }
 
 .selected-group .front {
