@@ -136,7 +136,7 @@
     ui.best.textContent = String(state.best);
     ui.level.textContent = String(state.level);
     if (gameId === "maze") ui.power.textContent = state.maze && state.maze.power > 0 ? `${Math.ceil(state.maze.power / 1000)}s` : tr("powerEmpty");
-    else ui.power.textContent = state.space ? `${tr("shield")} ${Math.max(0, 3 - state.space.hits)} · ${state.space.rapid > 0 ? "RF" : "—"}` : "—";
+    else ui.power.textContent = state.space ? `${tr("shield")} ${Math.max(0, 5 - state.space.hits)} · ${state.space.rapid > 0 ? "RF" : "—"}` : "—";
     ui.round.textContent = gameId === "maze" ? `${tr("stage")} ${state.level}` : `${tr("wave")} ${state.level}`;
   }
 
@@ -176,7 +176,7 @@
   function mazeResetStage() {
     const pellets = new Set(); const beacons = new Set();
     MAZE_MAP.forEach((row, y) => [...row].forEach((cell, x) => { if (cell !== "#" && !(x === 1 && y === 1)) pellets.add(`${x},${y}`); if (cell === "o") beacons.add(`${x},${y}`); }));
-    state.maze = { player: { x: 1, y: 1, dir: "down", next: "down" }, pellets, beacons, power: 0, moveClock: 0, enemyClock: -900, combo: 0, lives: 3, enemies: [
+    state.maze = { player: { x: 1, y: 1, dir: "down", next: "down" }, pellets, beacons, power: 0, moveClock: 0, enemyClock: -2200, combo: 0, lives: 4, enemies: [
       { x: 13, y: 1, homeX: 13, homeY: 1, type: "direct", color: "#ff7d9f" }, { x: 1, y: 13, homeX: 1, homeY: 13, type: "predict", color: "#68e1ff" }, { x: 13, y: 13, homeX: 13, homeY: 13, type: "ambush", color: "#c48cff" }, { x: 7, y: 5, homeX: 7, homeY: 5, type: "wander", color: "#ffd66d" }
     ] };
     state.input = {};
@@ -189,7 +189,7 @@
     if (mazeCanMove(player.x + current.x, player.y + current.y)) { player.x += current.x; player.y += current.y; }
     const key = `${player.x},${player.y}`;
     if (maze.pellets.delete(key)) { state.score += maze.power > 0 ? 20 : 10; tone(620, 0.04, "sine", 0.025); }
-    if (maze.beacons.has(key)) { maze.beacons.delete(key); maze.power = 6200; maze.combo = 0; state.score += 50; tone(880, 0.16, "square", 0.035); setMessage(tr("powerReady"), "success"); }
+    if (maze.beacons.has(key)) { maze.beacons.delete(key); maze.power = 9000; maze.combo = 0; state.score += 50; tone(880, 0.16, "square", 0.035); setMessage(tr("powerReady"), "success"); }
     if (!maze.pellets.size) {
       if (state.level >= 3) finish(true, { stage: state.level });
       else { state.level += 1; mazeResetStage(); setMessage(tr("clear"), "success"); tone(980, 0.2, "triangle", 0.035); }
@@ -209,13 +209,13 @@
       const choice = choices[0]; if (choice) { enemy.x += choice[1].x; enemy.y += choice[1].y; }
       if (enemy.x === player.x && enemy.y === player.y) {
         if (maze.power > 0) { state.score += 200 + maze.combo * 100; maze.combo += 1; enemy.x = enemy.homeX; enemy.y = enemy.homeY; tone(180 + maze.combo * 80, 0.11, "square", 0.04); }
-        else { state.level = Math.max(1, state.level); state.maze.player = { x: 1, y: 1, dir: "down", next: "down" }; state.maze.enemies.forEach((item) => { item.x = item.homeX; item.y = item.homeY; }); state.maze.power = 0; state.maze.moveClock = 0; state.maze.enemyClock = -900; state.maze.lives = (state.maze.lives || 3) - 1; setMessage(tr("hit"), "danger"); tone(120, 0.2, "sawtooth", 0.05); if (state.maze.lives <= 0) finish(false, { stage: state.level, lives: 0 }); }
+        else { state.level = Math.max(1, state.level); state.maze.player = { x: 1, y: 1, dir: "down", next: "down" }; state.maze.enemies.forEach((item) => { item.x = item.homeX; item.y = item.homeY; }); state.maze.power = 0; state.maze.moveClock = 0; state.maze.enemyClock = -2200; state.maze.lives = (state.maze.lives || 4) - 1; setMessage(tr("hit"), "danger"); tone(120, 0.2, "sawtooth", 0.05); if (state.maze.lives <= 0) finish(false, { stage: state.level, lives: 0 }); }
       }
     });
   }
   function updateMaze(dt) {
     const maze = state.maze; maze.power = Math.max(0, maze.power - dt * 1000); maze.moveClock += dt * 1000; maze.enemyClock += dt * 1000;
-    const playerRate = Math.max(72, 126 - state.level * 10); const enemyRate = Math.max(104, 210 - state.level * 24);
+    const playerRate = Math.max(72, 126 - state.level * 10); const enemyRate = Math.max(150, 240 - state.level * 20);
     while (maze.moveClock >= playerRate) { maze.moveClock -= playerRate; mazeStepPlayer(); if (!state.running) return; }
     while (maze.enemyClock >= enemyRate) { maze.enemyClock -= enemyRate; mazeEnemyStep(); if (!state.running) return; }
     updateHud(); drawMaze();
@@ -246,7 +246,7 @@
   function updateSpace(dt) {
     const space = state.space, ship = space.ship, input = state.input; space.fireClock = Math.max(0, space.fireClock - dt); space.rapid = Math.max(0, space.rapid - dt); space.comboClock = Math.max(0, space.comboClock - dt); if (!space.comboClock) space.combo = 0;
     if (input.left) ship.angle -= 3.8 * dt; if (input.right) ship.angle += 3.8 * dt; if (input.thrust) { ship.vx += Math.cos(ship.angle) * 185 * dt; ship.vy += Math.sin(ship.angle) * 185 * dt; if (Math.random() < 0.35) space.particles.push({ x: ship.x - Math.cos(ship.angle) * 13, y: ship.y - Math.sin(ship.angle) * 13, life: 0.25, color: "#ffb15d" }); }
-    if (input.fire) spaceShoot(); if (input.shield && space.hits < 3) { space.shielding = true; } else space.shielding = false; input.shield = false;
+    if (input.fire) spaceShoot(); if (input.shield && space.hits < 5) { space.shielding = true; } else space.shielding = false; input.shield = false;
     ship.vx *= Math.pow(0.992, dt * 60); ship.vy *= Math.pow(0.992, dt * 60); ship.x = wrap(ship.x + ship.vx * dt, 960); ship.y = wrap(ship.y + ship.vy * dt, 540);
     space.bullets.forEach((bullet) => { bullet.x = wrap(bullet.x + bullet.vx * dt, 960); bullet.y = wrap(bullet.y + bullet.vy * dt, 540); bullet.life -= dt; }); space.bullets = space.bullets.filter((bullet) => bullet.life > 0);
     space.rocks.forEach((rock) => { rock.x = wrap(rock.x + rock.vx * dt, 960); rock.y = wrap(rock.y + rock.vy * dt, 540); rock.spin += dt * 0.8; });
@@ -259,7 +259,7 @@
     updateHud(); drawSpace();
   }
   function hitRock(index) { const space = state.space, rock = space.rocks[index]; space.rocks.splice(index, 1); state.score += rock.boss ? 1200 : rock.size === 2 ? 90 : rock.size === 1 ? 55 : 30; space.combo += 1; space.comboClock = 2.2; space.fragments += 1; if (!rock.boss && rock.size > 0) { for (let i = 0; i < 2; i++) spawnRock(rock.size - 1, rock.x, rock.y, randomAngle(i + rock.x + state.score), 48 + (2 - rock.size) * 18 + state.level * 4); } if (Math.random() < 0.14) { space.rapid = 5; setMessage("Rapid Fire", "success"); } tone(rock.boss ? 190 : 420 + rock.size * 80, 0.08, "sawtooth", 0.035); }
-  function spaceHit() { const space = state.space; if (space.invincible > 0) return; if (space.shielding && space.hits < 3) { space.hits += 1; space.invincible = 1.3; setMessage(`${tr("shield")} ${3 - space.hits}`, "success"); tone(300, 0.1, "triangle", 0.04); return; } space.hits += 1; space.invincible = 1.2; space.ship.x = 480; space.ship.y = 270; space.ship.vx = 0; space.ship.vy = 0; setMessage(tr("hit"), "danger"); tone(100, 0.2, "sawtooth", 0.05); if (space.hits >= 3) finish(false, { wave: state.level, shots: space.shots, fragments: space.fragments }); }
+  function spaceHit() { const space = state.space; if (space.invincible > 0) return; if (space.shielding && space.hits < 5) { space.hits += 1; space.invincible = 1.3; setMessage(`${tr("shield")} ${5 - space.hits}`, "success"); tone(300, 0.1, "triangle", 0.04); return; } space.hits += 1; space.invincible = 1.2; space.ship.x = 480; space.ship.y = 270; space.ship.vx = 0; space.ship.vy = 0; setMessage(tr("hit"), "danger"); tone(100, 0.2, "sawtooth", 0.05); if (space.hits >= 5) finish(false, { wave: state.level, shots: space.shots, fragments: space.fragments }); }
   function drawSpace() {
     const w = 960, h = 540; resizeCanvas(w, h); ctx.fillStyle = "#030817"; ctx.fillRect(0, 0, w, h); ctx.save(); for (let i = 0; i < 90; i++) { const x = (i * 137) % w, y = (i * 71) % h; ctx.fillStyle = i % 7 === 0 ? "#9ae9ff" : "rgba(255,255,255,.5)"; ctx.fillRect(x, y, i % 5 === 0 ? 2 : 1, i % 5 === 0 ? 2 : 1); } ctx.restore();
     if (!state.space) return; const space = state.space;

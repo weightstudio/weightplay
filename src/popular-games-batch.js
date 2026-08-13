@@ -200,7 +200,7 @@
         else if (state.messageKey === "hangmanUsed") state.message = `${state.lastLetter}: ${hangmanAlreadyUsed(locale)}`;
       }
       renderShell();
-      if (game.type === "snake" && document.body.dataset.screen === "result") renderResult();
+      if (document.body.dataset.screen === "result") renderResult();
       render();
     };
     els.locale.addEventListener("change", persistLocale);
