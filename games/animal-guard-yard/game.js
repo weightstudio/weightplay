@@ -1,6 +1,6 @@
 ﻿(() => {
   const GAME_ID = "animal-guard-yard";
-  const GAME_VERSION = "v15";
+  const GAME_VERSION = "v16";
   const INTERFACE_VERSION = 6;
   const localeKey = "weightplayLocale";
   const unlockKey = "weightplay_animal_guard_unlocked";
@@ -321,6 +321,21 @@
     ru: "Вернитесь в окно игры и снова нажмите клетку с травой.",
     hi: "इस गेम को सामने लाएँ, फिर घास वाले खाने पर दोबारा टैप करें।",
     ar: "أعِد نافذة اللعبة إلى الواجهة، ثم اضغط مربع العشب مرة أخرى.",
+  };
+  const lanePressureCopy = {
+    en: "Lane {lane} is next—cover it before the beast arrives.",
+    "zh-Hant": "第 {lane} 路線即將受壓，先補上防守。",
+    "zh-Hans": "第 {lane} 路线即将受压，先补上防守。",
+    ja: "次は{lane}レーンが危険です。獣が来る前に守りましょう。",
+    ko: "다음은 {lane}번 라인입니다. 야수가 오기 전에 지키세요.",
+    es: "El carril {lane} es el siguiente: protégelo antes de que llegue la bestia.",
+    "pt-BR": "A faixa {lane} vem a seguir — proteja-a antes que a fera chegue.",
+    fr: "La voie {lane} est la prochaine : protégez-la avant l’arrivée de la bête.",
+    de: "Bahn {lane} ist als Nächstes unter Druck – sichere sie vor dem Biest.",
+    it: "La corsia {lane} è la prossima: proteggila prima che arrivi la bestia.",
+    ru: "Следом под угрозой линия {lane} — защитите её до прихода зверя.",
+    hi: "अगली दबाव वाली लेन {lane} है—जानवर आने से पहले उसे बचाएँ।",
+    ar: "الممر {lane} هو التالي تحت الضغط — احمه قبل وصول الوحش.",
   };
   text.ko = Object.assign(Object.create(text.en), {
     locked: "잠긴 스테이지",
@@ -829,6 +844,13 @@
     return foregroundPlacementCopy[locale] || foregroundPlacementCopy.en;
   }
 
+  function lanePressureMessage(row = nextSpawnPlan?.row) {
+    const lane = clamp(Number(row) + 1 || 1, 1, stages[currentStage]?.rows || 5);
+    const value = lanePressureCopy[locale] || lanePressureCopy.en;
+    const message = value.replaceAll("{lane}", String(lane));
+    return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(message) || message : message;
+  }
+
   function stageCopy(stage, field) {
     const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
     const value = stage?.[field]?.[sourceLocale] || stage?.[field]?.en || "";
@@ -1086,10 +1108,10 @@
     document.querySelectorAll(".floating").forEach((bubble) => bubble.remove());
   }
 
-  function showFloatingText(message) {
+  function showFloatingText(message, variant = "") {
     clearFloatingText();
     const bubble = document.createElement("div");
-    bubble.className = "floating";
+    bubble.className = `floating ${variant}`.trim();
     bubble.setAttribute("role", "status");
     bubble.setAttribute("aria-live", "polite");
     bubble.textContent = message;
@@ -1938,7 +1960,10 @@
     entities.push(guard);
     guardPlacements += 1;
     track("guard_placed", { placement_number: guardPlacements });
-    if (guardPlacements === 1) track("first_guard_placed");
+    if (guardPlacements === 1) {
+      track("first_guard_placed");
+      showFloatingText(lanePressureMessage(), "lane-pressure");
+    }
     updateEntityElement(guard);
     pulseClass(guard.el, "is-placed", 420);
     spawnImpact(cellCenterX(col), laneProjectileY(row), "place");

@@ -1890,6 +1890,13 @@ body.guard-yard-stage .stage-grid { padding-inline: calc((100% - 264px) / 2); to
   pointer-events: none;
 }
 
+.floating.lane-pressure {
+  max-width: min(86vw, 460px);
+  padding-inline: 14px;
+  text-align: center;
+  white-space: normal;
+}
+
 .board-pop {
   position: absolute;
   z-index: 12;
