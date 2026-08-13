@@ -19,7 +19,7 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/maze-chase/" />
     <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="robots" content="noindex,nofollow" />
+  <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <title>तारों की भूलभुलैया | WeightPlay</title>
   <link rel="stylesheet" href="../../src/classic-chase-rocks.css">
@@ -63,9 +63,9 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "क्लासिक",
-    "आर्केड",
-    "कार्रवाई"
+    "Classic",
+    "Arcade",
+    "Action"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -106,17 +106,23 @@
     
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>तारों की भूलभुलैया</h2><p>ओरला को चाँदनी अभिलेखागार में ले जाएँ, हर तारा-कण लें और बीकन से चार पीछा-पैटर्न पलटें।</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>गेमप्ले</span><strong>भूलभुलैया पीछा आर्केड</strong></div><div class="game-info-fact"><span>शैली</span><strong>क्लासिक · आर्केड · कार्रवाई</strong></div></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>गेमप्ले</span><strong>भूलभुलैया पीछा आर्केड</strong></div><div class="game-info-fact"><span>कठिनाई</span><strong>चुनौती देना आसान</strong></div><div class="game-info-fact"><span>खेलने का अनुमानित समय</span><strong>3-8 मिनट</strong></div><div class="game-info-fact"><span>कौशल प्रशिक्षित</span><strong>मार्ग योजना · प्रतिक्रिया · Risk Reading</strong></div></div>
     </div>
     <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>अक्सर पूछे जाने वाले प्रश्न</h3><dl><div><dt>क्या प्रगति सहेजी गई है?</dt><dd>हाँ, केवल इस ब्राउज़र में.</dd></div></dl></div>
+      <div class="game-info-section"><h3>विश्व और मिशन</h3><p>The moonlit archive is built from one readable maze rather than a random field. Each stage keeps the corridor language familiar while moving Wisp homes and increasing pressure, so route knowledge becomes a useful advantage without turning the run into memorization alone.</p>
+<p>Four Wisps behave differently: one closes distance directly, one predicts the current heading, one aims beyond the next turn, and one wanders through open choices. Their role markers make the threat readable before the player commits to a corridor.</p></div>
+      <div class="game-info-section"><h3>सिस्टम कैसे काम करते हैं</h3><p>Move Orla one corridor step at a time with Arrow keys or WASD. On touch, use the visible direction pad or swipe the maze; the same route state is used by keyboard and touch input.</p>
+<p>Every star mote must be collected to clear a stage. A Beacon is a larger power item: collecting it gives a limited window in which Wisps can be chased and scored instead of avoided.</p>
+<p>A collision costs a life and resets the current position while preserving the stage route. The run ends only after the available lives are spent, so a mistake is feedback rather than an instant restart.</p>
+<p>Score, Best, Stage, lives, sound, Restart, a leave confirmation, and success or failure Result recovery are part of the same run flow. Best is stored locally in this browser.</p></div>
+      <div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>Start from Main and watch the first corridor opening before choosing a direction.</li><li>Collect the small star motes while keeping one turn available as an escape route.</li><li>Read the Wisp markers and avoid walking into a corridor that removes every safe option.</li><li>Take a Beacon when the chase is close enough to reward a reversal, then use the power window to score a Wisp.</li><li>Clear all three stages to finish the route, or use Restart to practice the current opening again.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>रणनीति युक्तियाँ</h3><ul><li>Do not commit to the deepest corridor first; leave a turn that lets you change heading when a Wisp approaches.</li><li>Use the direct Wisp to learn when to rotate early, then watch the predicted and ambush paths before taking a Beacon.</li><li>A safe detour that collects two nearby motes is often better than a short line toward one isolated mote.</li><li>Save a Beacon for a crowded junction when several Wisps are visible, because one reversal can create both score and space.</li><li>When a collision resets the player, use the grace period to re-read the next corridor instead of repeating the same turn.</li></ul></div>
+      <div class="game-info-section"><h3>अभियान और कठिनाई वृद्धि</h3><p>Stage 1 teaches collection and corridor reading with slower Wisp movement.</p>
+<p>Stage 2 rotates the Wisp starting homes and raises pursuit speed so route choices must be made earlier.</p>
+<p>Stage 3 combines the fastest pressure with the same fixed maze, rewarding Beacon timing, short detours, and calm recovery.</p></div>
+      <div class="game-info-section"><h3>डेवलपर डिज़ाइन नोट</h3><p>Maze Chase uses an original Canvas maze, original characters and sound tones, four visibly differentiated chase logics, one responsive logical canvas, low-latency keyboard input, touch controls, localized controls, and a complete Main-Battle-Result flow.</p></div>
+      <div class="game-info-section game-info-parent"><h3>अभिभावक नोट</h3><p>Maze Chase is a general-audience browser arcade game recommended for ages 9+ and family play. No account or purchase is required; Best score and sound preference stay in this browser.</p></div>
+      <div class="game-info-section"><h3>अक्सर पूछे जाने वाले प्रश्न</h3><dl><div><dt>How do I clear a stage?</dt><dd>Collect every star mote in the fixed maze. The Beacon is optional for clearing but useful for score and safe counterattacks.</dd></div><div><dt>Do the Wisps use the same chase logic?</dt><dd>No. Direct, predictive, ambush, and wandering Wisps choose routes differently and show distinct role markers.</dd></div><div><dt>What does a Beacon do?</dt><dd>A Beacon starts a short power window in which nearby Wisps can be chased for bonus points.</dd></div><div><dt>What happens after a collision?</dt><dd>You lose one life and return to the current route with a brief grace period. The stage remains active until lives run out.</dd></div><div><dt>Can I play on a phone?</dt><dd>Yes. Swipe the maze or use the on-screen direction pad; keyboard arrows and WASD are also supported on desktop.</dd></div><div><dt>क्या प्रगति सहेजी गई है?</dt><dd>The Best score and sound preference are stored locally in this browser. No account is required.</dd></div></dl></div>
 
     </div>
   </section>

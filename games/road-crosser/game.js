@@ -64,4 +64,9 @@
   const v8Move=move;
   move=function(dir){const before=stage;v8Move(dir);if(screen==="battle"&&stage>before)$("battleMessage").textContent=`${t("roadGoal")} - ${t("stage")} ${stage} / 3`};
   if(window.__roadCrosserSmoke)window.__roadCrosserSmoke.move=move;
+  // v14 Director repair: preserve Stage 3 traffic, rocks, and moving-water
+  // judgment while widening the authored floating support and reducing only
+  // the opening pressure spike that made the final crossing inconsistent.
+  const v13MakeWorld=makeWorld;
+  makeWorld=function(){const next=v13MakeWorld();if(stage===3){next.logs.forEach(log=>{log.w=280;log.s*=.6});next.traffic.forEach(car=>{car.s*=.78})}return next};
 })();

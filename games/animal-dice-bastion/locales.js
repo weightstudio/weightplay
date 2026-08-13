@@ -36,10 +36,10 @@
     rule1:"Learn the summon and merge rhythm.",rule2:"Break armor before fast packs overlap.",
     rule3:"Splash through swarms and stop healers.",rule4:"Recover from locked slots and hasted threats.",
     rule5:"Hold orders for champion escorts.",rule6:"Master every rule before the Rift Stag arrives.",
-    threatBasic:"Steady shadow walkers",threatArmor:"Armored beetles",threatSwarm:"Dense wisp swarm",
+    threatBasic:"Steady shadow walkers",threatBasicLesson:"Steady walkers return for a first-chapter practice run.",threatArmor:"Armored beetles",threatSwarm:"Dense wisp swarm",
     threatHeal:"Healing wisps",threatHaste:"Hasted runners",threatLock:"Slot-lock pulses",
     threatChampion:"Champion escorts",threatBoss:"Boss wave",
-    planPairs:"Keep one matching pair ready.",planForge:"Forge guardians strip armor fastest.",
+    planPairs:"Keep one matching pair ready.",planPairsLesson:"Tutorial continuation: hold one matching pair before the next summon.",planForge:"Forge guardians strip armor fastest.",
     planTide:"Tide guardians control crowded waves.",planBurst:"Save Rune Burst for the strongest overlap.",
     rewardDust:"+{dust} rune dust",stageSummary:"{unlocked}/30 unlocked · {stars} stars",
     core:"Core",wave:"Wave",charge:"Charge",summon:"Summon",rally:"Battle Rally",burst:"Rune Burst",reroll:"Rune Reforge",
@@ -158,6 +158,23 @@
     pause:"暫停",pauseTitle:"防線已暫停",pauseText:"暫停期間，波次與所有守護者都會停止。",resume:"繼續遊戲",tutorialTitle:"召喚、合併、守住堡壘",tutorial1:"召喚會在一個空符文格放入隨機守護者。",tutorial2:"合併屬性與等級相同的守護者；升階後會重新決定屬性。",tutorial3:"把{rally}與{burst}留給密集波次或首領。",tutorialStart:"開始守城",leaveTitle:"要離開這場防守嗎？",leaveText:"選擇繼續會保留並恢復目前戰鬥；返回關卡會結束本次挑戰。",continue:"繼續",returnStages:"返回關卡",
     resultKicker:"堡壘戰報",victory:"成功守住堡壘！",defeat:"闇影突破了水晶防線",victoryText:"你的守護者陣容成功撐過所有波次。",defeatText:"預留一組可合併守護者，並嘗試調整指令時機。",next:"下一關",retry:"再玩一次",coreLeft:"剩餘核心",merges:"合併次數",dustEarned:"符文之塵",noNext:"已完成最終關卡",stage:"第 {stage} 關",starsWord:"星"
   });
+  const stageContinuationCopy = {
+    en:{threatBasicLesson:"Steady walkers return for a first-chapter practice run.",planPairsLesson:"Tutorial continuation: hold one matching pair before the next summon."},
+    "zh-Hant":{threatBasicLesson:"第一章教學延伸：再次練習穩住行進中的闇影。",planPairsLesson:"教學延伸：下一次召喚前，先保留一組可合併的守護者。"},
+    "zh-Hans":{threatBasicLesson:"第一章教学延伸：再次练习稳住前进的暗影。",planPairsLesson:"教学延伸：下一次召唤前，先保留一组可合并的守护者。"},
+    ja:{threatBasicLesson:"第1章のチュートリアル続き：歩く影への対処をもう一度練習。",planPairsLesson:"チュートリアル続き：次の召喚前に、合成できるペアを1組残そう。"},
+    ko:{threatBasicLesson:"1장 튜토리얼 계속: 다가오는 그림자에 대응하는 연습입니다.",planPairsLesson:"튜토리얼 계속: 다음 소환 전에 합칠 수 있는 한 쌍을 남겨 두세요."},
+    es:{threatBasicLesson:"Continuación del tutorial del capítulo 1: practica otra vez con caminantes estables.",planPairsLesson:"Continuación del tutorial: conserva una pareja que puedas fusionar antes de invocar de nuevo."},
+    "pt-BR":{threatBasicLesson:"Continuação do tutorial do capítulo 1: pratique de novo contra sombras constantes.",planPairsLesson:"Continuação do tutorial: mantenha um par que possa fundir antes da próxima invocação."},
+    fr:{threatBasicLesson:"Suite du tutoriel du chapitre 1 : entraînez-vous encore contre les ombres régulières.",planPairsLesson:"Suite du tutoriel : gardez une paire fusionnable avant la prochaine invocation."},
+    de:{threatBasicLesson:"Fortsetzung des Kapitel-1-Tutorials: Übe erneut gegen gleichmäßige Schattenläufer.",planPairsLesson:"Tutorial-Fortsetzung: Halte vor der nächsten Beschwörung ein passendes Paar bereit."},
+    it:{threatBasicLesson:"Continuazione del tutorial del capitolo 1: esercitati ancora contro le ombre regolari.",planPairsLesson:"Continuazione del tutorial: conserva una coppia da fondere prima della prossima evocazione."},
+    ru:{threatBasicLesson:"Продолжение обучения главы 1: снова потренируйтесь против ровных теней.",planPairsLesson:"Продолжение обучения: оставьте готовую пару для слияния перед следующим призывом."},
+    hi:{threatBasicLesson:"अध्याय 1 का ट्यूटोरियल जारी: चलती परछाइयों के विरुद्ध फिर अभ्यास करें।",planPairsLesson:"ट्यूटोरियल जारी: अगली बुलाहट से पहले मिलाने योग्य एक जोड़ी बचाकर रखें।"},
+    ar:{threatBasicLesson:"متابعة تدريب الفصل الأول: تدرّب مجددًا على الظلال المتقدمة بثبات.",planPairsLesson:"متابعة التدريب: احتفظ بزوج قابل للدمج قبل الاستدعاء التالي."}
+  };
+  Object.assign(en,stageContinuationCopy.en);
+  Object.entries(stageContinuationCopy).forEach(([code,values])=>{if(code!=="en")Object.assign(core[code],values);});
   const dictionaries = { en };
   Object.entries(core).forEach(([code, values]) => {
     const generated = window.AnimalDiceBastionLocaleData?.[code] || {};

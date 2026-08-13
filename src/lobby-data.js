@@ -327,7 +327,7 @@ window.WONDER_LOBBY = {
         hi: ["30 मिशन", "तीन पंक्तियाँ", "सेनापति कौशल"],
         ar: ["30 مهمة", "ثلاثة مسارات", "مهارات القادة"],
       },
-      art: { kind: "image", background: "assets/zhao-yun-a-dou-cover.png", hideHero: true },
+      art: { kind: "image", background: "assets/zhao-yun-a-dou-cover.webp", hideHero: true },
     },
     {
       id: "animal-bus-jam",
@@ -400,7 +400,7 @@ window.WONDER_LOBBY = {
       internalTrial: "index.html?trial=1",
       description: { en: "Classic Spider Solitaire with 1 Suit, 2 Suits, 4 Suits, smooth drag-and-drop, Hint, and unlimited Undo.", "zh-Hant": "經典蜘蛛接龍，提供 1、2、4 花色、順暢拖曳、提示與不限次數回退。", "zh-Hans": "经典蜘蛛接龙，提供 1、2、4 花色，流畅拖拽、提示与不限次数撤销。", ja: "1・2・4スート、スムーズなドラッグ、ヒント、無制限Undoに対応したクラシック・スパイダーソリティア。", ko: "1·2·4무늬, 부드러운 드래그, 힌트와 무제한 실행 취소를 지원하는 클래식 스파이더 솔리테어.", es: "Solitario Spider clásico con 1, 2 y 4 palos, arrastre fluido, pistas y deshacer ilimitado.", "pt-BR": "Spider Solitaire clássico com 1, 2 e 4 naipes, arraste fluido, dicas e desfazer ilimitado.", fr: "Solitaire Spider classique avec 1, 2 et 4 couleurs, glisser-déposer fluide, indices et annulation illimitée.", de: "Klassisches Spider-Solitär mit 1, 2 und 4 Farben, flüssigem Drag-and-Drop, Hinweisen und unbegrenztem Rückgängigmachen.", it: "Spider Solitaire classico con 1, 2 e 4 semi, trascinamento fluido, suggerimenti e annullamenti illimitati.", ru: "Классический Пасьянс Паук на 1, 2 или 4 масти с плавным перетаскиванием, подсказками и отменой ходов.", hi: "1, 2 और 4 सूट, सहज ड्रैग, संकेत और असीमित वापस लेने के साथ क्लासिक स्पाइडर सॉलिटेयर।", ar: "سوليتير العنكبوت الكلاسيكي بنوع واحد أو نوعين أو أربعة أنواع مع سحب سلس وتلميحات وتراجع غير محدود." },
       meta: { en: ["1 / 2 / 4 Suits", "8 Completed Sets", "Undo + Hint"], "zh-Hant": ["1 / 2 / 4 花色", "8 組完成", "回退 + 提示"] },
-      art: { kind: "image", background: "assets/spider-solitaire-cover.png", hideHero: true },
+      art: { kind: "image", background: "assets/spider-solitaire-cover.webp", hideHero: true },
     },
     {
       id: "freecell-solitaire",
@@ -412,7 +412,7 @@ window.WONDER_LOBBY = {
       href: "games/freecell-solitaire/", internalTrial: "index.html?trial=1",
       description: { en: "Classic FreeCell with eight open columns, four temporary cells, four foundations, Hint, Undo, and touch-friendly play.", "zh-Hant": "經典 FreeCell 接龍：八個公開牌列、四個暫存格、四個牌基，支援提示、還原與觸控操作。", "zh-Hans": "经典 FreeCell 接龙：八个公开牌列、四个暂存格、四个牌基，支持提示、撤销与触控操作。", ja: "8列、4つのフリーセル、4つの組札で遊ぶクラシックなフリーセル。ヒント、元に戻す、タッチ操作に対応。", ko: "8개 열, 4개의 프리셀, 4개의 홈셀로 즐기는 클래식 프리셀입니다. 힌트와 실행 취소, 터치 조작을 지원합니다.", es: "FreeCell clásico con ocho columnas abiertas, cuatro celdas libres, cuatro fundaciones, pistas y deshacer.", "pt-BR": "FreeCell clássico com oito colunas abertas, quatro células livres, quatro fundações, dica e desfazer.", fr: "FreeCell classique avec huit colonnes ouvertes, quatre cellules libres, quatre fondations, indice et annulation.", de: "Klassisches FreeCell mit acht offenen Spalten, vier freien Zellen, vier Fundamenten, Tipp und Rückgängig.", it: "FreeCell classico con otto colonne aperte, quattro celle libere, quattro fondazioni, suggerimenti e annulla.", ru: "Классический FreeCell с восемью открытыми колонками, четырьмя ячейками, четырьмя основаниями, подсказкой и отменой.", hi: "आठ खुली कॉलम, चार फ्री सेल, चार फाउंडेशन, संकेत और अनडू वाला क्लासिक फ्रीसेल।", ar: "فري سيل كلاسيكية بثمانية أعمدة مكشوفة وأربع خلايا مؤقتة وأربع أساسات مع التلميح والتراجع." },
       meta: { en: ["8 Columns", "4 Free Cells", "Undo + Hint"], "zh-Hant": ["8 個牌列", "4 個暫存格", "還原＋提示"], "zh-Hans": ["8 个牌列", "4 个暂存格", "撤销＋提示"], ja: ["8列", "4フリーセル", "元に戻す＋ヒント"], ko: ["8개 열", "4 프리셀", "실행 취소 + 힌트"], es: ["8 columnas", "4 celdas libres", "Deshacer + Pista"], "pt-BR": ["8 colunas", "4 células livres", "Desfazer + Dica"], fr: ["8 colonnes", "4 cellules libres", "Annuler + Indice"], de: ["8 Spalten", "4 freie Zellen", "Rückgängig + Tipp"], it: ["8 colonne", "4 celle libere", "Annulla + Suggerimento"], ru: ["8 колонок", "4 ячейки", "Отмена + подсказка"], hi: ["8 कॉलम", "4 फ्री सेल", "अनडू + संकेत"], ar: ["8 أعمدة", "4 خلايا", "تراجع + تلميح"] },
-      art: { kind: "image", background: "assets/freecell-solitaire-cover.svg", hideHero: true },
+      art: { kind: "image", background: "assets/freecell-solitaire-cover.webp", hideHero: true },
     },
     {
       id: "pyramid-solitaire",
@@ -436,7 +436,7 @@ window.WONDER_LOBBY = {
       href: "games/tripeaks-solitaire/", internalTrial: "index.html?trial=1",
       description: { en: "Clear three peaks by chaining exposed cards one rank above or below the waste card, with Stock, Hint, and Undo.", "zh-Hant": "以高一或低一的順序連續移牌，清除三座牌峰，支援牌堆、提示與還原。", "zh-Hans": "以高一或低一的顺序连续移牌，清除三座牌峰，支持牌堆、提示与撤销。", ja: "捨て札の1つ上または下のランクをつなぎ、3つの山を消します。山札、ヒント、元に戻すに対応。", ko: "버린 카드보다 한 단계 높거나 낮은 카드를 이어 세 개의 봉우리를 지웁니다. 덱, 힌트, 실행 취소를 지원합니다.", es: "Despeja tres picos encadenando cartas expuestas un rango arriba o abajo del descarte.", "pt-BR": "Limpe três picos encadeando cartas expostas um valor acima ou abaixo do descarte.", fr: "Videz trois pics en enchaînant les cartes visibles d'un rang au-dessus ou au-dessous de la défausse.", de: "Räumen Sie drei Gipfel ab, indem Sie offene Karten eine Rangstufe über oder unter dem Ablagestapel spielen.", it: "Libera tre picchi concatenando carte scoperte di un valore sopra o sotto lo scarto.", ru: "Очищайте три вершины, выкладывая открытые карты на ранг выше или ниже сброса.", hi: "खुले कार्ड को डिस्कार्ड से एक रैंक ऊपर या नीचे जोड़कर तीनों शिखर साफ करें।", ar: "نظّف القمم الثلاث بربط بطاقات مكشوفة أعلى أو أسفل بطاقة الرمي برتبة واحدة." },
       meta: { en: ["3 Peaks", "28 Tableau Cards", "Combo Chains"], "zh-Hant": ["3 座牌峰", "28 張桌面牌", "連鎖 Combo"], "zh-Hans": ["3 座牌峰", "28 张桌面牌", "连锁 Combo"], ja: ["3つの山", "28枚", "コンボ連鎖"], ko: ["3개 봉우리", "28장", "콤보 체인"], es: ["3 picos", "28 cartas", "Cadenas combo"], "pt-BR": ["3 picos", "28 cartas", "Combos"], fr: ["3 pics", "28 cartes", "Chaînes combo"], de: ["3 Gipfel", "28 Karten", "Combo-Ketten"], it: ["3 picchi", "28 carte", "Catene combo"], ru: ["3 вершины", "28 карт", "Цепочки комбо"], hi: ["3 शिखर", "28 पत्ते", "कॉम्बो चेन"], ar: ["3 قمم", "28 بطاقة", "سلاسل كومبو"] },
-      art: { kind: "image", background: "assets/tripeaks-solitaire-cover.svg", hideHero: true },
+      art: { kind: "image", background: "assets/tripeaks-solitaire-cover.webp", hideHero: true },
     },
     {
       id: "golf-solitaire",
@@ -448,7 +448,7 @@ window.WONDER_LOBBY = {
       href: "games/golf-solitaire/", internalTrial: "index.html?trial=1",
       description: { en: "Clear seven Golf columns by building a one-rank-up or one-rank-down waste chain, with Stock, Hint, and Undo.", "zh-Hant": "以高一或低一的牌連成棄牌堆，清除七列高爾夫牌面，支援牌堆、提示與還原。", "zh-Hans": "以高一或低一的牌连成弃牌堆，清除七列高尔夫牌面，支持牌堆、提示与撤销。", ja: "捨て札の1つ上または下をつなぎ、7列のゴルフを消します。山札、ヒント、元に戻すに対応。", ko: "버린 카드보다 한 단계 높거나 낮은 카드를 이어 7개 골프 열을 지웁니다. 덱, 힌트, 실행 취소를 지원합니다.", es: "Despeja siete columnas Golf construyendo una cadena de descarte un rango arriba o abajo.", "pt-BR": "Limpe sete colunas Golf formando uma sequência de descarte um valor acima ou abaixo.", fr: "Videz sept colonnes Golf en construisant une chaîne de défausse d'un rang au-dessus ou au-dessous.", de: "Räumen Sie sieben Golf-Spalten mit einer Ablagekette eine Rangstufe höher oder tiefer ab.", it: "Libera sette colonne Golf creando una catena di scarti di un valore sopra o sotto.", ru: "Очищайте семь колонок Гольфа, выкладывая карты на ранг выше или ниже сброса.", hi: "डिस्कार्ड से एक रैंक ऊपर या नीचे चलकर सात गोल्फ कॉलम साफ करें।", ar: "نظّف أعمدة الغولف السبعة ببناء سلسلة رمي أعلى أو أسفل بطاقة الرمي برتبة واحدة." },
       meta: { en: ["7 Columns", "35 Tableau Cards", "Long Runs"], "zh-Hant": ["7 個牌列", "35 張桌面牌", "長連鎖"], "zh-Hans": ["7 个牌列", "35 张桌面牌", "长连锁"], ja: ["7列", "35枚", "ロングラン"], ko: ["7개 열", "35장", "긴 연쇄"], es: ["7 columnas", "35 cartas", "Rachas largas"], "pt-BR": ["7 colunas", "35 cartas", "Sequências longas"], fr: ["7 colonnes", "35 cartes", "Longues séries"], de: ["7 Spalten", "35 Karten", "Lange Läufe"], it: ["7 colonne", "35 carte", "Serie lunghe"], ru: ["7 колонок", "35 карт", "Длинные серии"], hi: ["7 कॉलम", "35 पत्ते", "लंबी चेन"], ar: ["7 أعمدة", "35 بطاقة", "سلاسل طويلة"] },
-      art: { kind: "image", background: "assets/golf-solitaire-cover.svg", hideHero: true },
+      art: { kind: "image", background: "assets/golf-solitaire-cover.webp", hideHero: true },
     },
     {
       id: "yukon-solitaire",
@@ -460,7 +460,7 @@ window.WONDER_LOBBY = {
       href: "games/yukon-solitaire/", internalTrial: "index.html?trial=1",
       description: { en: "Classic Yukon with a full tableau, red-black descending moves, flexible exposed groups, four foundations, and no Stock.", "zh-Hant": "經典育空接龍：完整桌面、紅黑交錯下行、可自由移動的公開牌組、四個牌基，沒有牌堆。", "zh-Hans": "经典育空接龙：完整桌面、红黑交错下行、可自由移动的公开牌组、四个牌基，没有牌堆。", ja: "全カードを場に並べ、赤黒の降順と自由な表向きグループ移動で4つの組札を完成させます。山札はありません。", ko: "전체 tableau에서 빨강-검정 내림차순으로 움직이고 공개 그룹을 유연하게 옮겨 4개 홈셀을 완성합니다. 덱은 없습니다.", es: "Yukon clásico con tablero completo, movimientos descendentes rojo-negro, grupos expuestos flexibles y sin mazo.", "pt-BR": "Yukon clássico com tableau completo, movimentos decrescentes vermelho-preto, grupos expostos flexíveis e sem estoque.", fr: "Yukon classique avec tableau complet, descentes rouge-noir, groupes visibles flexibles et sans pioche.", de: "Klassisches Yukon mit vollständigem Tableau, rot-schwarzen Abfolgen, flexiblen offenen Gruppen und ohne Stapel.", it: "Yukon classico con tableau completo, mosse discendenti rosso-nero, gruppi scoperti flessibili e senza mazzo.", ru: "Классический Юкон с полным столом, чередованием красного и чёрного, свободными открытыми группами и без колоды.", hi: "पूरे tableau, लाल-काली घटती चालों, खुले समूहों की लचीली चाल और बिना डेक वाला क्लासिक युकोन।", ar: "يوكون كلاسيكية بطاولة كاملة وحركات تنازلية حمراء وسوداء ومجموعات مكشوفة مرنة ومن دون رزمة." },
       meta: { en: ["Full Tableau", "Flexible Groups", "No Stock"], "zh-Hant": ["完整桌面", "自由牌組", "沒有牌堆"], "zh-Hans": ["完整桌面", "自由牌组", "没有牌堆"], ja: ["全カード場", "自由なグループ", "山札なし"], ko: ["전체 tableau", "유연한 그룹", "덱 없음"], es: ["Tablero completo", "Grupos flexibles", "Sin mazo"], "pt-BR": ["Tableau completo", "Grupos flexíveis", "Sem estoque"], fr: ["Tableau complet", "Groupes flexibles", "Sans pioche"], de: ["Vollständiges Tableau", "Flexible Gruppen", "Ohne Stapel"], it: ["Tableau completo", "Gruppi flessibili", "Senza mazzo"], ru: ["Полный стол", "Свободные группы", "Без колоды"], hi: ["पूरा tableau", "लचीले समूह", "डेक नहीं"], ar: ["طاولة كاملة", "مجموعات مرنة", "من دون رزمة"] },
-      art: { kind: "image", background: "assets/yukon-solitaire-cover.svg", hideHero: true },
+      art: { kind: "image", background: "assets/yukon-solitaire-cover.webp", hideHero: true },
     },
     {
       id: "animal-sunbeam-garden",
@@ -814,7 +814,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["Four Formations", "Six Bosses", "30 Stages"], "zh-Hant": ["四種編隊", "六位王", "30 關"] },
       previewVideo: "assets/previews/wonder-crash-battle.webm",
-      art: { kind: "image", background: "assets/wonder-crash-cover.webp" },
+      art: { kind: "image", background: "assets/wonder-crash-cover.webp", hideHero: true },
     },
     {
       id: "color-lunchbox",
@@ -983,7 +983,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "滑動 4×4 森林棋盤、合併相同動物，挑戰石塊、分數與步數限制組成的 30 個進化任務。",
       },
       meta: { en: ["30 Missions", "Grid Strategy", "Forest Evolution"], "zh-Hant": ["30 個任務", "格子策略", "森林進化"] },
-      art: { kind: "image", background: "assets/animal-2048-cover.webp" },
+      art: { kind: "image", background: "assets/animal-2048-cover.webp", hideHero: true },
     },
     {
       id: "garden-tiles",
@@ -1059,7 +1059,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["Hero Defense", "Animal Upgrades", "Boss Battles"], "zh-Hant": ["英雄防守", "動物升級", "Boss 戰"] },
       previewVideo: "assets/previews/animal-guard-yard-battle.webm",
-      art: { kind: "image", background: "assets/animal-guard-yard-poster.webp" },
+      art: { kind: "image", background: "assets/animal-guard-yard-poster.webp", hideHero: true },
     },
     {
       id: "animal-crystal-survivor",
@@ -1082,6 +1082,7 @@ window.WONDER_LOBBY = {
       art: {
         kind: "image",
         background: "assets/animal-crystal-survivor-cover.webp",
+        hideHero: true,
       },
     },
     {
@@ -1175,7 +1176,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "用動物能力牌挑戰 30 個任務、破解十種區域機制，並擊敗六隻會換階段的森林首領。"
       },
       meta: { en: ["30 Missions", "Card Combos", "Six Bosses"], "zh-Hant": ["30 個任務", "卡牌連動", "六隻首領"] },
-      art: { kind: "image", background: "assets/beast-deck-cover.webp" },
+      art: { kind: "image", background: "assets/beast-deck-cover.webp", hideHero: true },
     },
     {
       id: "animal-relic-hunters",
@@ -1192,7 +1193,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "完成 30 個三房遠征，掌握十種特殊威脅、收集遺物裝備，並擊敗六位會轉換階段的守護者。"
       },
       meta: { en: ["30 Expeditions", "Ten Threat Rules", "Six Guardians"], "zh-Hant": ["30 個遠征", "十種威脅規則", "六位守護者"] },
-      art: { kind: "image", background: "assets/animal-relic-hunters-cover.png" },
+      art: { kind: "image", background: "assets/animal-relic-hunters-cover.png", hideHero: true },
     },
     {
       id: "animal-rune-tactics",
@@ -1209,7 +1210,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "指揮三名動物英雄完成 30 個符文戰棋任務，破解七種地形、特殊敵人、永久成長與六位階段首領。"
       },
       meta: { en: ["30 Missions", "Seven Terrain Rules", "Six Bosses"], "zh-Hant": ["30 個任務", "七種地形規則", "六位首領"] },
-      art: { kind: "image", background: "assets/animal-rune-tactics-cover.webp" },
+      art: { kind: "image", background: "assets/animal-rune-tactics-cover.webp", hideHero: true },
     },
     {
       id: "animal-orb-fortress",
@@ -1226,7 +1227,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "\u7784\u6e96\u52d5\u7269\u661f\u73e0\u7a7f\u8d8a\u6c34\u6676\u8981\u585e\u623f\u9593\uff0c\u898f\u5283\u53cd\u5f48\u8def\u7dda\uff0c\u5347\u7d1a\u57fa\u5730\uff0c\u4e26\u6e96\u5099\u8fce\u6230 Boss \u6ce2\u6b21\u3002",
       },
       meta: { en: ["Orb Bounces", "Fortress Growth", "Boss Waves"], "zh-Hant": ["\u661f\u73e0\u53cd\u5f48", "\u8981\u585e\u6210\u9577", "Boss \u6ce2\u6b21"] },
-      art: { kind: "image", background: "assets/animal-orb-fortress-cover.webp" },
+      art: { kind: "image", background: "assets/animal-orb-fortress-cover.webp", hideHero: true },
     },
     {
       id: "animal-auto-squad",
@@ -1243,7 +1244,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "訓練並配置十名動物英雄，穿越六個區域、30 個五波關卡與六場專屬 Boss 戰。"
       },
       meta: { en: ["Formation Strategy", "30 Stages", "Six Bosses"], "zh-Hant": ["編成策略", "30 關", "六名 Boss"] },
-      art: { kind: "image", background: "assets/animal-auto-squad-cover.webp" },
+      art: { kind: "image", background: "assets/animal-auto-squad-cover.webp", hideHero: true },
     },
     {
       id: "beast-tactician",
@@ -1260,7 +1261,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "改造敵人路線，指揮動物士兵與 WeightPlay 英雄，挑戰六區 30 關與六場不同規則的 Boss 戰。"
       },
       meta: { en: ["Tower Defense", "30 Stages", "Six Bosses"], "zh-Hant": ["塔防", "30 關", "六名 Boss"] },
-      art: { kind: "image", background: "assets/beast-tactician-cover.webp" },
+      art: { kind: "image", background: "assets/beast-tactician-cover.webp", hideHero: true },
     },
     {
       id: "shadow-wolf",
@@ -1277,7 +1278,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "挑戰 30 關平台動作戰役、反制特殊影獸、配置四種屬性，並擊敗六名不同區域首領。"
       },
       meta: { en: ["30 Stages", "Special Enemies", "Six Bosses"], "zh-Hant": ["30 關", "特殊敵人", "六名首領"] },
-      art: { kind: "image", background: "assets/shadow-wolf-cover.webp" },
+      art: { kind: "image", background: "assets/shadow-wolf-cover.webp", hideHero: true },
     },
     {
       id: "animal-block-grove",
@@ -1817,7 +1818,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["Route Planning", "Five Shifts", "Skyport Growth"], "zh-Hant": ["\u822a\u7dda\u898f\u5283", "\u4e94\u500b\u73ed\u6b21", "\u5929\u7a7a\u6e2f\u6210\u9577"] },
       previewVideo: "assets/previews/animal-skyport-dispatch-battle.webm",
-      art: { kind: "image", background: "assets/animal-skyport-dispatch-cover.webp" },
+      art: { kind: "image", background: "assets/animal-skyport-dispatch-cover.webp", hideHero: true },
     },
     {
       id: "animal-starlight-trails",
@@ -1836,7 +1837,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "在 30 個原創星座謎題中，運用起點星印、彗星箭路、編號星星、鑰匙與星門，一筆走完每條星路。"
       },
       meta: { en: ["30 Stages", "One-Stroke Routes", "Six Rule Families"], "zh-Hant": ["30 關", "一筆星路", "六種規則"] },
-      art: { kind: "image", background: "assets/animal-starlight-trails-cover.webp" },
+      art: { kind: "image", background: "assets/animal-starlight-trails-cover.webp", hideHero: true },
     },
     {
       id: "animal-one-line",
@@ -1856,7 +1857,7 @@ window.WONDER_LOBBY = {
         "zh-Hans": "按住一笔通过 30 条原创路线，避开墙壁与移动影子，带领米米抵达脚印门。"
       },
       meta: { en: ["30 Trails", "One Continuous Hold", "Moving Shadows"], "zh-Hant": ["30 條路線", "全程按住", "移動影子"], "zh-Hans": ["30 条路线", "全程按住", "移动影子"] },
-      art: { kind: "image", background: "assets/animal-one-line-cover.webp" },
+      art: { kind: "image", background: "assets/animal-one-line-cover.webp", hideHero: true },
     },
     {
       id: "animal-abyss-diver",
@@ -2137,6 +2138,7 @@ window.WONDER_LOBBY.games.push({
   art: {
     kind: "image",
     background: "assets/animal-reef-fisher-cover.webp",
+    hideHero: true,
   },
 });
 
@@ -2465,17 +2467,17 @@ window.WONDER_LOBBY.games.push(
   },
 );
 
-// New classic-inspired originals. They remain planned until the independent
-// Tester, Gameplay Reviewer, Director, and release gates have evidence.
+// New classic-inspired originals have cleared the candidate gates and are
+// wired for public release after the paired platform Preflight.
 window.WONDER_LOBBY.games.push(
   {
     id: "maze-chase",
     title: { en: "Maze Chase", "zh-Hant": "星徑迷宮", "zh-Hans": "星径迷宫", ja: "スター・メイズ", ko: "스타 미로", es: "Laberinto Estelar", "pt-BR": "Labirinto Estelar", fr: "Labyrinthe Stellaire", de: "Sternenlabyrinth", it: "Labirinto Stellare", ru: "Звёздный лабиринт", hi: "तारों की भूलभुलैया", ar: "متاهة النجوم" },
-    status: "planned",
-    statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
+    status: "playable",
+    statusText: { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب" },
     type: { en: "Maze Chase Arcade", "zh-Hant": "迷宮追逐街機", "zh-Hans": "迷宫追逐街机", ja: "迷路チェイスアーケード", ko: "미로 추격 아케이드", es: "Arcade de persecución", "pt-BR": "Arcade de perseguição", fr: "Arcade de poursuite", de: "Labyrinth-Jagd-Arcade", it: "Arcade di inseguimento", ru: "Аркада с погоней в лабиринте", hi: "भूलभुलैया पीछा आर्केड", ar: "أركيد مطاردة في المتاهة" },
     categories: ["Classic", "Arcade", "Action"], skills: ["Route Planning", "Reaction", "Risk Reading"], ages: ["general"], ageLabel: { en: "General", "zh-Hant": "一般", "zh-Hans": "一般", ja: "一般", ko: "일반", es: "General", "pt-BR": "Geral", fr: "Tout public", de: "Allgemein", it: "Generale", ru: "Общая", hi: "सामान्य", ar: "عام" },
-    href: "games/maze-chase/", internalTrial: "index.html?trial=1",
+    href: "games/maze-chase/", previewVideo: "assets/previews/maze-chase-battle.webm",
     description: { en: "Guide Orla through a moonlit archive, gather every star mote, and reverse four Wisp chase patterns with a Beacon.", "zh-Hant": "引導奧拉穿過月光檔案館，收集所有星塵，並用信標反轉四種光靈追逐模式。", "zh-Hans": "引导奥拉穿过月光档案馆，收集所有星尘，并用信标反转四种光灵追逐模式。", ja: "オーラを月夜のアーカイブへ導き、星を集め、ビーコンで4種の追跡を逆転させます。", ko: "오라와 달빛 기록 보관소를 누비며 별가루를 모으고 비컨으로 네 가지 위습 추격을 뒤집으세요.", es: "Guía a Orla por un archivo lunar, reúne cada mota y revierte cuatro patrones de persecución con una baliza.", "pt-BR": "Guie Orla pelo arquivo lunar, colete cada partícula e vire quatro padrões de perseguição com uma baliza.", fr: "Guidez Orla dans une archive lunaire, prenez chaque poussière et inversez quatre poursuites avec une balise.", de: "Führe Orla durch das Mondarchiv, sammle jeden Funken und drehe vier Jagdmuster mit einem Leuchtfeuer um.", it: "Guida Orla nell’archivio lunare, raccogli ogni scintilla e ribalta quattro schemi d’inseguimento con un faro.", ru: "Проведите Орлу по лунному архиву, соберите все искры и измените четыре схемы погони маяком.", hi: "ओरला को चाँदनी अभिलेखागार में ले जाएँ, हर तारा-कण लें और बीकन से चार पीछा-पैटर्न पलटें।", ar: "قد أورلا في الأرشيف القمري، اجمع كل الذرات واقلب أربعة أنماط مطاردة بالمنارة." },
     meta: { en: ["3 Faster Stages", "4 Wisp Minds", "Beacon Counterattack"], "zh-Hant": ["3 個加速關卡", "4 種光靈 AI", "信標反擊"], "zh-Hans": ["3 个加速关卡", "4 种光灵 AI", "信标反击"], ja: ["3ステージ", "4種のAI", "ビーコン反撃"], ko: ["3개 스테이지", "4종 AI", "비컨 반격"], es: ["3 etapas", "4 mentes", "Contraataque"], "pt-BR": ["3 fases", "4 IAs", "Contra-ataque"], fr: ["3 étapes", "4 esprits", "Contre-attaque"], de: ["3 Stufen", "4 KI-Muster", "Gegenangriff"], it: ["3 livelli", "4 menti", "Contrattacco"], ru: ["3 этапа", "4 типа ИИ", "Контратака"], hi: ["3 चरण", "4 AI", "पलटवार"], ar: ["3 مراحل", "4 أنماط", "هجوم معاكس"] },
     art: { kind: "image", background: "assets/maze-chase-cover.webp", hideHero: true }
@@ -2483,11 +2485,11 @@ window.WONDER_LOBBY.games.push(
   {
     id: "space-rocks",
     title: { en: "Space Rocks", "zh-Hant": "星礦漂流", "zh-Hans": "星矿漂流", ja: "スペース・ロックス", ko: "스페이스 록스", es: "Rocas Espaciales", "pt-BR": "Rochas Espaciais", fr: "Roches Spatiales", de: "Weltraumfelsen", it: "Rocce Spaziali", ru: "Космические глыбы", hi: "अंतरिक्ष शिलाखंड", ar: "صخور الفضاء" },
-    status: "planned",
-    statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
+    status: "playable",
+    statusText: { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب" },
     type: { en: "Inertia Space Shooter", "zh-Hant": "慣性太空射擊", "zh-Hans": "惯性太空射击", ja: "慣性スペースシューター", ko: "관성 우주 슈터", es: "Shooter espacial de inercia", "pt-BR": "Shooter espacial com inércia", fr: "Shooter spatial à inertie", de: "Weltraum-Shooter mit Trägheit", it: "Shooter spaziale a inerzia", ru: "Космический шутер с инерцией", hi: "जड़त्व अंतरिक्ष शूटर", ar: "مطلق نار فضائي بالقصور الذاتي" },
     categories: ["Classic", "Arcade", "Action"], skills: ["Inertia Control", "Aim", "Risk Timing"], ages: ["general"], ageLabel: { en: "General", "zh-Hant": "一般", "zh-Hans": "一般", ja: "一般", ko: "일반", es: "General", "pt-BR": "Geral", fr: "Tout public", de: "Allgemein", it: "Generale", ru: "Общая", hi: "सामान्य", ar: "عام" },
-    href: "games/space-rocks/", internalTrial: "index.html?trial=1",
+    href: "games/space-rocks/", previewVideo: "assets/previews/space-rocks-battle.webm",
     description: { en: "Pilot Rux through three drifting waves, split crystal rocks from large to small, and save your Shield for the guardian core.", "zh-Hant": "駕駛魯克穿越三波漂移礦群，讓晶礦由大分裂到小，並把護盾留給守護核心。", "zh-Hans": "驾驶鲁克穿越三波漂移矿群，让晶矿由大分裂到小，并把护盾留给守护核心。", ja: "ルクを操り、3ウェーブの結晶岩を大から小へ分裂させ、守護コアにシールドを温存します。", ko: "룩스를 조종해 세 번의 표류 광석 웨이브를 깨고 수호 코어를 위해 실드를 아끼세요.", es: "Pilota a Rux en tres oleadas, divide rocas cristalinas de grandes a pequeñas y guarda el escudo para el núcleo guardián.", "pt-BR": "Pilote Rux por três ondas, divida rochas cristalinas de grandes a pequenas e guarde o escudo para o núcleo guardião.", fr: "Pilotez Rux à travers trois vagues, divisez les roches cristallines et gardez le bouclier pour le noyau gardien.", de: "Steuere Rux durch drei Driftwellen, teile Kristallfelsen von groß zu klein und spare den Schild für den Wächterkern.", it: "Pilota Rux in tre ondate, dividi le rocce cristalline da grandi a piccole e conserva lo scudo per il nucleo guardiano.", ru: "Проведите Рукса через три волны, раскалывайте кристаллические глыбы и берегите щит для ядра-стража.", hi: "रक्स को तीन बहती लहरों में चलाएँ, बड़े क्रिस्टल पत्थरों को छोटे टुकड़ों में बाँटें और रक्षक कोर के लिए शील्ड बचाएँ।", ar: "قد روكس عبر ثلاث موجات، شطر الصخور البلورية من الكبيرة إلى الصغيرة واحتفظ بالدرع للنواة الحارسة." },
     meta: { en: ["3 Waves", "Split Rocks", "Shield + Rapid Fire"], "zh-Hant": ["3 波挑戰", "分裂礦石", "護盾＋連射"], "zh-Hans": ["3 波挑战", "分裂矿石", "护盾＋连射"], ja: ["3ウェーブ", "分裂する岩", "シールド＋連射"], ko: ["3개 웨이브", "분열 바위", "실드 + 연사"], es: ["3 oleadas", "Rocas divisibles", "Escudo + fuego rápido"], "pt-BR": ["3 ondas", "Rochas divisíveis", "Escudo + fogo rápido"], fr: ["3 vagues", "Roches divisibles", "Bouclier + tir rapide"], de: ["3 Wellen", "Geteilte Felsen", "Schild + Schnellfeuer"], it: ["3 ondate", "Rocce divisibili", "Scudo + fuoco rapido"], ru: ["3 волны", "Раскол глыб", "Щит + скорострельность"], hi: ["3 लहरें", "टूटते पत्थर", "शील्ड + रैपिड फायर"], ar: ["3 موجات", "صخور متشظية", "درع + إطلاق سريع"] },
     art: { kind: "image", background: "assets/space-rocks-cover.webp", hideHero: true }
@@ -2543,7 +2545,7 @@ const spiderSolitairePublic = window.WONDER_LOBBY.games.find((entry) => entry.id
 if (spiderSolitairePublic) {
   spiderSolitairePublic.status = "playable";
   spiderSolitairePublic.previewVideo = "assets/previews/spider-solitaire-battle.webm";
-  spiderSolitairePublic.art.background = "assets/spider-solitaire-cover.png";
+  spiderSolitairePublic.art.background = "assets/spider-solitaire-cover.webp";
   delete spiderSolitairePublic.statusText;
   delete spiderSolitairePublic.internalTrial;
 }

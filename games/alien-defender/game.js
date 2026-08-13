@@ -58,7 +58,7 @@
   draw=drawResponsive;
   // v8 Growth instrumentation: expose only aggregate, privacy-safe funnel
   // fields; gameplay state, controls, pacing, and authored waves stay intact.
-  const ANALYTICS_GAME_VERSION="13",ANALYTICS_INTERFACE_VERSION="6";
+  const ANALYTICS_GAME_VERSION="15",ANALYTICS_INTERFACE_VERSION="6";
   let sessionHadBattle=false,inputType="unknown";
   function viewportBucket(){const width=window.innerWidth,height=window.innerHeight;if(width<=430&&height>=700)return"phone-portrait";if(width<=700&&height>=700)return"tablet-portrait";if(width>=700&&height<=500)return"short-landscape";return"desktop"}
   function track(eventName,details={}){window.WonderAnalytics?.track?.(eventName,{game_id:"alien-defender",game_version:`v${ANALYTICS_GAME_VERSION}`,interface_version:ANALYTICS_INTERFACE_VERSION,locale,viewport_bucket:viewportBucket(),input_type:details.input_type||inputType,wave:details.wave??wave,result_reason:details.result_reason||"not_applicable"})}
@@ -83,5 +83,10 @@
   const v12MakeWorld=makeWorld;
   makeWorld=function(){const next=v12MakeWorld();if(wave===3){next.moveEvery=.62;next.shield=8;next.rapidFire=true}return next};
   const v12Shoot=shoot;
-  shoot=function(){v12Shoot();if(wave===3&&world?.rapidFire)world.fireTimer=Math.min(world.fireTimer,.14)};
+  shoot=function(){const before=world?.bullets?.length||0;v12Shoot();if(wave===3&&world?.rapidFire&&world.bullets.length>before){const bullet=world.bullets[world.bullets.length-1];world.bullets.push({x:bullet.x-20,y:bullet.y,s:bullet.s},{x:bullet.x+20,y:bullet.y,s:bullet.s});world.fireTimer=Math.min(world.fireTimer,.14)}};
+  // v14 Director repair: keep the full Wave 3 formation and its faster
+  // projectiles, while extending the visibly rendered shield runway and
+  // easing only the first final-wave sweep so the payoff is reproducible.
+  const v13MakeWorld=makeWorld;
+  makeWorld=function(){const next=v13MakeWorld();if(wave===3){next.moveEvery=.68;next.shield=12;next.rapidFire=true}return next};
 })();

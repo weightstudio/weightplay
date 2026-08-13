@@ -52,9 +52,9 @@
   const stages = Array.from({length:30}, (_, index) => {
     const n = index + 1, chapter = Math.floor(index / 5), step = index % 5, boss = step === 4;
     const waves = 5 + chapter + Math.floor(step / 2);
-    const threat = boss ? "threatBoss" : chapter === 0 ? "threatBasic" : chapter === 1 ? (step % 2 ? "threatHaste" : "threatArmor") :
+    const threat = boss ? "threatBoss" : chapter === 0 ? (n === 2 ? "threatBasicLesson" : "threatBasic") : chapter === 1 ? (step % 2 ? "threatHaste" : "threatArmor") :
       chapter === 2 ? (step % 2 ? "threatHeal" : "threatSwarm") : chapter === 3 ? (step % 2 ? "threatLock" : "threatHaste") : "threatChampion";
-    const plan = threat === "threatArmor" ? "planForge" : threat === "threatSwarm" || threat === "threatHeal" ? "planTide" : boss || chapter >= 4 ? "planBurst" : "planPairs";
+    const plan = n === 2 ? "planPairsLesson" : threat === "threatArmor" ? "planForge" : threat === "threatSwarm" || threat === "threatHeal" ? "planTide" : boss || chapter >= 4 ? "planBurst" : "planPairs";
     return {n, chapter, step, boss, waves, route:(n-1)%6, threat, plan, reward:5 + chapter * 2 + step, enemyHp:16 + n * 2.6, speed:.033 + chapter * .0024 + step * .0008};
   });
 
