@@ -52,6 +52,38 @@
     "कठिनाई चुनें, नियम पढ़ें और सुरक्षित विचार के लिए संकेत, चुनाव पलटने के लिए पहले जैसा, या बोर्ड रीसेट करने के लिए नई पहेली इस्तेमाल करें।",
     "اختر مستوى الصعوبة واقرأ القاعدة، ثم استخدم التلميح لمعرفة فكرة آمنة، أو التراجع لعكس اختيار، أو لغز جديد لإعادة ضبط اللوحة."
   );
+  const lightsCopy = {
+    bestLabel: L(
+      "Best: {moves} moves",
+      "最佳：{moves} 步",
+      "最佳：{moves} 步",
+      "ベスト：{moves}手",
+      "최고 기록: {moves}수",
+      "Mejor marca: {moves} movimientos",
+      "Melhor: {moves} movimentos",
+      "Meilleur : {moves} coups",
+      "Bestwert: {moves} Züge",
+      "Migliore: {moves} mosse",
+      "Лучший результат: {moves} ходов",
+      "सर्वश्रेष्ठ: {moves} चालें",
+      "الأفضل: {moves} حركة"
+    ),
+    hintExplanation: L(
+      "Hint marks one solver step; you still choose the tile.",
+      "提示會標出一步解法；仍由你選擇要按哪一格。",
+      "提示会标出一步解法；仍由你选择要按哪一格。",
+      "ヒントは解法の一手を示します。押すマスは自分で選びます。",
+      "힌트는 해법의 한 수를 표시합니다. 누를 칸은 직접 고르세요.",
+      "La pista marca un paso de la solución; tú eliges la casilla.",
+      "A dica marca um passo da solução; você ainda escolhe a casa.",
+      "L’indice marque une étape de la solution ; vous choisissez toujours la case.",
+      "Der Tipp markiert einen Lösungsschritt; das Feld wählst du selbst.",
+      "Il suggerimento indica un passo della soluzione; scegli tu la casella.",
+      "Подсказка отмечает один шаг решения; клетку выбираете вы.",
+      "संकेत हल का एक कदम दिखाता है; खाना आपको खुद चुनना है।",
+      "يحدد التلميح خطوة من الحل؛ وما زلت تختار الخلية."
+    )
+  };
   const titles = {
     "minefield-logic": L("Minefield Logic", "地雷邏輯", "地雷逻辑", "マインフィールド・ロジック", "마인필드 로직", "Lógica del campo minado", "Lógica do Campo Minado", "Logique du champ miné", "Minenfeld-Logik", "Logica del campo minato", "Логика минного поля", "माइनफील्ड लॉजिक", "منطق حقل الألغام"),
     sudoku: L("Sudoku", "數獨", "数独", "数独", "스도쿠", "Sudoku", "Sudoku", "Sudoku", "Sudoku", "Sudoku", "Судоку", "सुडोकू", "سودوكو"),
@@ -214,10 +246,11 @@
   function sudokuComplete(values) { if (values.length < 81 || values.slice(0, 81).some((value) => value < 1 || value > 9)) return false; for (let i = 0; i < 9; i += 1) { if (new Set(values.slice(i * 9, i * 9 + 9)).size !== 9) return false; if (new Set(Array.from({ length: 9 }, (_, r) => values[r * 9 + i])).size !== 9) return false; } for (let br = 0; br < 9; br += 3) for (let bc = 0; bc < 9; bc += 3) { const box = []; for (let r = br; r < br + 3; r += 1) for (let c = bc; c < bc + 3; c += 1) box.push(values[r * 9 + c]); if (new Set(box).size !== 9) return false; } return true; }
   function buildLights() {
     let boardState = []; let moves = 0; let hintIndex = -1; let history = []; const initialMoves = [0, 2, 5, 7, 12, 14, 16, 18, 20, 22, 24]; const panel = document.createElement("div"); const board = document.createElement("div"); board.className = "logic-lights-board"; panel.append(board); const info = document.createElement("div"); info.className = "logic-live"; panel.append(info); app.board.replaceChildren(panel);
-    function toggle(i) { history.push({ boardState: boardState.slice(), moves }); const next = new Set([i, ...neighbours(i, 5, 5)]); next.forEach((n) => { boardState[n] = !boardState[n]; }); moves += 1; hintIndex = -1; render(); if (boardState.every((v) => !v)) finish(true, `${t("solved")} ${t("moves")}: ${moves}`); else announce(t("turn")); }
+    function copy(key, replacements = {}) { return Object.entries(replacements).reduce((value, [token, replacement]) => value.replace(`{${token}}`, String(replacement)), text(lightsCopy[key])); }
+    function toggle(i) { history.push({ boardState: boardState.slice(), moves }); const next = new Set([i, ...neighbours(i, 5, 5)]); next.forEach((n) => { boardState[n] = !boardState[n]; }); moves += 1; hintIndex = -1; render(); if (boardState.every((v) => !v)) { const best = saveBest("lights-out", moves); finish(true, `${t("solved")} ${t("moves")}: ${moves} · ${copy("bestLabel", { moves: best })}`); } else announce(t("turn")); }
     function render() { board.replaceChildren(); boardState.forEach((on, i) => { const b = cell(on ? "●" : "", on ? "on" : "", `Row ${Math.floor(i / 5) + 1}, Column ${(i % 5) + 1}`, () => toggle(i)); if (i === hintIndex) b.classList.add("is-hint"); board.append(b); }); info.textContent = `${t("moves")}: ${moves}`; }
     function reset() { boardState = Array(25).fill(false); initialMoves.forEach((i) => { const set = [i, ...neighbours(i, 5, 5)]; set.forEach((n) => { boardState[n] = !boardState[n]; }); }); moves = 0; hintIndex = -1; history = []; app.result.hidden = true; setChip(t("turn")); render(); announce(t("ready")); }
-    function hint() { const solution = solveLights(boardState); hintIndex = solution[0] ?? -1; render(); announce(t("hint")); }
+    function hint() { const solution = solveLights(boardState); hintIndex = solution[0] ?? -1; render(); announce(text(lightsCopy.hintExplanation)); }
     function solveLights(start) { for (let mask = 0; mask < 32; mask += 1) { const state = start.slice(); const movesFound = []; for (let c = 0; c < 5; c += 1) if (mask & (1 << c)) { movesFound.push(c); apply(c); } for (let r = 1; r < 5; r += 1) for (let c = 0; c < 5; c += 1) if (state[(r - 1) * 5 + c]) { const index = r * 5 + c; movesFound.push(index); apply(index); } if (state.every((v) => !v)) return movesFound; function apply(i) { [i, ...neighbours(i, 5, 5)].forEach((n) => { state[n] = !state[n]; }); } } return []; }
     function undo() { const previous = history.pop(); if (!previous) { announce(t("ready")); return; } boardState = previous.boardState.slice(); moves = previous.moves; hintIndex = -1; app.result.hidden = true; setChip(t("turn")); render(); announce(`${t("undo")} · ${t("moves")}: ${moves}`); }
     return { reset, hint, undo };

@@ -50,6 +50,7 @@ window.WONDER_LOBBY = {
       "animal-unblock",
       "animal-guard-yard",
       "hearts", "spades", "gin-rummy", "crazy-eights", "cribbage", "go-fish", "war", "speed", "old-maid", "casino",
+      "maze-chase", "space-rocks",
     ],
   },
   games: [
@@ -2432,6 +2433,65 @@ for (const game of window.WONDER_LOBBY.games) {
   game.meta["zh-Hant"] = clean.meta;
   delete game.internalTrial;
 }
+
+// Owner-requested classic prototypes. They are intentionally kept in the
+// planned catalog until the exact-version Tester, Gameplay Reviewer, Director,
+// and release gates have their own evidence.
+window.WONDER_LOBBY.games.push(
+  {
+    id: "road-crosser",
+    title: { en: "Road Crosser", "zh-Hant": "星軌過路", "zh-Hans": "星轨过路", ja: "スター・クロッサー", ko: "스타 크로서", es: "Cruce Estelar", "pt-BR": "Travessia Estelar", fr: "Passage Stellaire", de: "Sternenquerung", it: "Attraversamento Stellare", ru: "Звёздный переход", hi: "सितारा पारपथ", ar: "عبور النجمة" },
+    status: "planned",
+    statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريباً" },
+    type: { en: "Timing Crossing Arcade", "zh-Hant": "時機穿越街機", "zh-Hans": "时机穿越街机", ja: "タイミング横断アーケード", ko: "타이밍 횡단 아케이드", es: "Arcade de cruces y tiempo", "pt-BR": "Arcade de travessia e ritmo", fr: "Arcade de traversée rythmée", de: "Timing-Querungs-Arcade", it: "Arcade di attraversamento", ru: "Аркада перехода по времени", hi: "समय-आधारित पारपथ आर्केड", ar: "أركيد عبور بالتوقيت" },
+    categories: ["Classic", "Arcade", "Action"], skills: ["Timing", "Focus", "Adaptation"], ages: ["general"], ageLabel: { en: "General", "zh-Hant": "一般玩家", "zh-Hans": "一般玩家", ja: "一般", ko: "일반", es: "General", "pt-BR": "Geral", fr: "Tout public", de: "Allgemein", it: "Generale", ru: "Для всех", hi: "सामान्य", ar: "عام" },
+    href: "games/road-crosser/", internalTrial: "index.html?trial=1",
+    description: { en: "Read traffic and river timing, then guide the Star Runner through three original crossings.", "zh-Hant": "讀懂車流與河流時機，帶領星行者完成三段原創穿越。", "zh-Hans": "读懂车流与河流时机，带领星行者完成三段原创穿越。", ja: "車と川のタイミングを読み、スターランナーを3つのオリジナル横断へ導きます。", ko: "차량과 강물의 타이밍을 읽고 별 주자를 세 번의 오리지널 횡단으로 이끄세요.", es: "Lee el tráfico y el río para guiar al Corredor Estelar por tres cruces originales.", "pt-BR": "Leia o trânsito e o rio para guiar o Corredor Estelar por três travessias originais.", fr: "Lis le trafic et la rivière pour guider le Coureur Stellaire à travers trois traversées originales.", de: "Lies Verkehr und Flussrhythmus und führe den Sternläufer durch drei originale Querungen.", it: "Leggi traffico e corrente e guida il Corridore Stellare in tre attraversamenti originali.", ru: "Читай ритм машин и реки и проведи Звёздного бегуна через три оригинальных перехода.", hi: "यातायात और नदी की लय समझकर स्टार रनर को तीन मौलिक पारपथों से ले जाएँ।", ar: "اقرأ توقيت السيارات والنهر وقد الشخصية النجمية عبر ثلاث مراحل أصلية." },
+    meta: { en: ["Three Crossings", "Traffic + River", "Timing Play"], "zh-Hant": ["三段穿越", "車流與河流", "時機玩法"], "zh-Hans": ["三段穿越", "车流与河流", "时机玩法"], ja: ["3つの横断", "車と川", "タイミング"], ko: ["세 번의 횡단", "차량과 강물", "타이밍"], es: ["Tres cruces", "Tráfico y río", "Ritmo"], "pt-BR": ["Três travessias", "Trânsito e rio", "Ritmo"], fr: ["Trois traversées", "Trafic et rivière", "Timing"], de: ["Drei Querungen", "Verkehr + Fluss", "Timing"], it: ["Tre attraversamenti", "Traffico e fiume", "Tempismo"], ru: ["Три перехода", "Машины и река", "Ритм"], hi: ["तीन पारपथ", "यातायात और नदी", "समय"], ar: ["ثلاث مراحل", "سيارات ونهر", "توقيت"] },
+    art: { kind: "image", background: "assets/road-crosser-cover.webp", hideHero: true },
+  },
+  {
+    id: "alien-defender",
+    title: { en: "Alien Defender", "zh-Hant": "星際守衛", "zh-Hans": "星际守卫", ja: "エイリアン・ディフェンダー", ko: "에일리언 디펜더", es: "Defensor Alienígena", "pt-BR": "Defensor Alienígena", fr: "Défenseur Alien", de: "Alien-Verteidiger", it: "Difensore Alieno", ru: "Защитник от пришельцев", hi: "एलियन रक्षक", ar: "مدافع الفضائيين" },
+    status: "planned",
+    statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريباً" },
+    type: { en: "Wave Survival Shooter", "zh-Hant": "波次生存射擊", "zh-Hans": "波次生存射击", ja: "ウェーブ生存シューティング", ko: "웨이브 생존 슈팅", es: "Disparos de supervivencia por oleadas", "pt-BR": "Tiro de sobrevivência por ondas", fr: "Tir de survie par vagues", de: "Wellen-Survival-Shooter", it: "Shooter di sopravvivenza a ondate", ru: "Шутер на выживание по волнам", hi: "लहर सर्वाइवल शूटर", ar: "لعبة إطلاق نار للبقاء" },
+    categories: ["Classic", "Arcade", "Action"], skills: ["Aim", "Movement", "Reaction"], ages: ["general"], ageLabel: { en: "General", "zh-Hant": "一般玩家", "zh-Hans": "一般玩家", ja: "一般", ko: "일반", es: "General", "pt-BR": "Geral", fr: "Tout public", de: "Allgemein", it: "Generale", ru: "Для всех", hi: "सामान्य", ar: "عام" },
+    href: "games/alien-defender/", internalTrial: "index.html?trial=1",
+    description: { en: "Move, fire, and read three original alien formations while protecting the signal station.", "zh-Hant": "移動、射擊並讀懂三種原創外星編隊，守護訊號站。", "zh-Hans": "移动、射击并读懂三种原创外星编队，守护信号站。", ja: "動いて撃ち、3つのオリジナル編隊から信号ステーションを守ります。", ko: "움직이고 발사하며 세 가지 오리지널 외계인 대형에서 신호 기지를 지키세요.", es: "Muévete, dispara y lee tres formaciones alienígenas originales para proteger la estación.", "pt-BR": "Mova, atire e leia três formações alienígenas originais para proteger a estação.", fr: "Bouge, tire et lis trois formations aliens originales pour protéger la station.", de: "Bewege dich, schieße und lies drei originale Alien-Formationen zum Schutz der Station.", it: "Muoviti, spara e leggi tre formazioni aliene originali per difendere la stazione.", ru: "Двигайся, стреляй и читай три оригинальных строя, защищая сигнальную станцию.", hi: "चलें, गोली चलाएँ और तीन मौलिक एलियन गठन से सिग्नल स्टेशन बचाएँ।", ar: "تحرك وأطلق النار واقرأ ثلاثة تشكيلات أصلية لحماية محطة الإشارة." },
+    meta: { en: ["Three Waves", "Move + Fire", "Shield Windows"], "zh-Hant": ["三波敵潮", "移動與射擊", "護盾窗口"], "zh-Hans": ["三波敌潮", "移动与射击", "护盾窗口"], ja: ["3ウェーブ", "移動と射撃", "シールド時間"], ko: ["세 웨이브", "이동 + 발사", "실드 시간"], es: ["Tres oleadas", "Mover y disparar", "Escudos"], "pt-BR": ["Três ondas", "Mover e atirar", "Escudos"], fr: ["Trois vagues", "Bouger et tirer", "Boucliers"], de: ["Drei Wellen", "Bewegen + Schießen", "Schildfenster"], it: ["Tre ondate", "Muovi e spara", "Scudi"], ru: ["Три волны", "Двигайся и стреляй", "Щиты"], hi: ["तीन लहरें", "चलें और गोली चलाएँ", "ढाल समय"], ar: ["ثلاث موجات", "تحرك وأطلق", "نوافذ الدرع"] },
+    art: { kind: "image", background: "assets/alien-defender-cover.webp", hideHero: true },
+  },
+);
+
+// New classic-inspired originals. They remain planned until the independent
+// Tester, Gameplay Reviewer, Director, and release gates have evidence.
+window.WONDER_LOBBY.games.push(
+  {
+    id: "maze-chase",
+    title: { en: "Maze Chase", "zh-Hant": "星徑迷宮", "zh-Hans": "星径迷宫", ja: "スター・メイズ", ko: "스타 미로", es: "Laberinto Estelar", "pt-BR": "Labirinto Estelar", fr: "Labyrinthe Stellaire", de: "Sternenlabyrinth", it: "Labirinto Stellare", ru: "Звёздный лабиринт", hi: "तारों की भूलभुलैया", ar: "متاهة النجوم" },
+    status: "planned",
+    statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
+    type: { en: "Maze Chase Arcade", "zh-Hant": "迷宮追逐街機", "zh-Hans": "迷宫追逐街机", ja: "迷路チェイスアーケード", ko: "미로 추격 아케이드", es: "Arcade de persecución", "pt-BR": "Arcade de perseguição", fr: "Arcade de poursuite", de: "Labyrinth-Jagd-Arcade", it: "Arcade di inseguimento", ru: "Аркада с погоней в лабиринте", hi: "भूलभुलैया पीछा आर्केड", ar: "أركيد مطاردة في المتاهة" },
+    categories: ["Classic", "Arcade", "Action"], skills: ["Route Planning", "Reaction", "Risk Reading"], ages: ["general"], ageLabel: { en: "General", "zh-Hant": "一般", "zh-Hans": "一般", ja: "一般", ko: "일반", es: "General", "pt-BR": "Geral", fr: "Tout public", de: "Allgemein", it: "Generale", ru: "Общая", hi: "सामान्य", ar: "عام" },
+    href: "games/maze-chase/", internalTrial: "index.html?trial=1",
+    description: { en: "Guide Orla through a moonlit archive, gather every star mote, and reverse four Wisp chase patterns with a Beacon.", "zh-Hant": "引導奧拉穿過月光檔案館，收集所有星塵，並用信標反轉四種光靈追逐模式。", "zh-Hans": "引导奥拉穿过月光档案馆，收集所有星尘，并用信标反转四种光灵追逐模式。", ja: "オーラを月夜のアーカイブへ導き、星を集め、ビーコンで4種の追跡を逆転させます。", ko: "오라와 달빛 기록 보관소를 누비며 별가루를 모으고 비컨으로 네 가지 위습 추격을 뒤집으세요.", es: "Guía a Orla por un archivo lunar, reúne cada mota y revierte cuatro patrones de persecución con una baliza.", "pt-BR": "Guie Orla pelo arquivo lunar, colete cada partícula e vire quatro padrões de perseguição com uma baliza.", fr: "Guidez Orla dans une archive lunaire, prenez chaque poussière et inversez quatre poursuites avec une balise.", de: "Führe Orla durch das Mondarchiv, sammle jeden Funken und drehe vier Jagdmuster mit einem Leuchtfeuer um.", it: "Guida Orla nell’archivio lunare, raccogli ogni scintilla e ribalta quattro schemi d’inseguimento con un faro.", ru: "Проведите Орлу по лунному архиву, соберите все искры и измените четыре схемы погони маяком.", hi: "ओरला को चाँदनी अभिलेखागार में ले जाएँ, हर तारा-कण लें और बीकन से चार पीछा-पैटर्न पलटें।", ar: "قد أورلا في الأرشيف القمري، اجمع كل الذرات واقلب أربعة أنماط مطاردة بالمنارة." },
+    meta: { en: ["3 Faster Stages", "4 Wisp Minds", "Beacon Counterattack"], "zh-Hant": ["3 個加速關卡", "4 種光靈 AI", "信標反擊"], "zh-Hans": ["3 个加速关卡", "4 种光灵 AI", "信标反击"], ja: ["3ステージ", "4種のAI", "ビーコン反撃"], ko: ["3개 스테이지", "4종 AI", "비컨 반격"], es: ["3 etapas", "4 mentes", "Contraataque"], "pt-BR": ["3 fases", "4 IAs", "Contra-ataque"], fr: ["3 étapes", "4 esprits", "Contre-attaque"], de: ["3 Stufen", "4 KI-Muster", "Gegenangriff"], it: ["3 livelli", "4 menti", "Contrattacco"], ru: ["3 этапа", "4 типа ИИ", "Контратака"], hi: ["3 चरण", "4 AI", "पलटवार"], ar: ["3 مراحل", "4 أنماط", "هجوم معاكس"] },
+    art: { kind: "image", background: "assets/maze-chase-cover.png", hideHero: true }
+  },
+  {
+    id: "space-rocks",
+    title: { en: "Space Rocks", "zh-Hant": "星礦漂流", "zh-Hans": "星矿漂流", ja: "スペース・ロックス", ko: "스페이스 록스", es: "Rocas Espaciales", "pt-BR": "Rochas Espaciais", fr: "Roches Spatiales", de: "Weltraumfelsen", it: "Rocce Spaziali", ru: "Космические глыбы", hi: "अंतरिक्ष शिलाखंड", ar: "صخور الفضاء" },
+    status: "planned",
+    statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
+    type: { en: "Inertia Space Shooter", "zh-Hant": "慣性太空射擊", "zh-Hans": "惯性太空射击", ja: "慣性スペースシューター", ko: "관성 우주 슈터", es: "Shooter espacial de inercia", "pt-BR": "Shooter espacial com inércia", fr: "Shooter spatial à inertie", de: "Weltraum-Shooter mit Trägheit", it: "Shooter spaziale a inerzia", ru: "Космический шутер с инерцией", hi: "जड़त्व अंतरिक्ष शूटर", ar: "مطلق نار فضائي بالقصور الذاتي" },
+    categories: ["Classic", "Arcade", "Action"], skills: ["Inertia Control", "Aim", "Risk Timing"], ages: ["general"], ageLabel: { en: "General", "zh-Hant": "一般", "zh-Hans": "一般", ja: "一般", ko: "일반", es: "General", "pt-BR": "Geral", fr: "Tout public", de: "Allgemein", it: "Generale", ru: "Общая", hi: "सामान्य", ar: "عام" },
+    href: "games/space-rocks/", internalTrial: "index.html?trial=1",
+    description: { en: "Pilot Rux through three drifting waves, split crystal rocks from large to small, and save your Shield for the guardian core.", "zh-Hant": "駕駛魯克穿越三波漂移礦群，讓晶礦由大分裂到小，並把護盾留給守護核心。", "zh-Hans": "驾驶鲁克穿越三波漂移矿群，让晶矿由大分裂到小，并把护盾留给守护核心。", ja: "ルクを操り、3ウェーブの結晶岩を大から小へ分裂させ、守護コアにシールドを温存します。", ko: "룩스를 조종해 세 번의 표류 광석 웨이브를 깨고 수호 코어를 위해 실드를 아끼세요.", es: "Pilota a Rux en tres oleadas, divide rocas cristalinas de grandes a pequeñas y guarda el escudo para el núcleo guardián.", "pt-BR": "Pilote Rux por três ondas, divida rochas cristalinas de grandes a pequenas e guarde o escudo para o núcleo guardião.", fr: "Pilotez Rux à travers trois vagues, divisez les roches cristallines et gardez le bouclier pour le noyau gardien.", de: "Steuere Rux durch drei Driftwellen, teile Kristallfelsen von groß zu klein und spare den Schild für den Wächterkern.", it: "Pilota Rux in tre ondate, dividi le rocce cristalline da grandi a piccole e conserva lo scudo per il nucleo guardiano.", ru: "Проведите Рукса через три волны, раскалывайте кристаллические глыбы и берегите щит для ядра-стража.", hi: "रक्स को तीन बहती लहरों में चलाएँ, बड़े क्रिस्टल पत्थरों को छोटे टुकड़ों में बाँटें और रक्षक कोर के लिए शील्ड बचाएँ।", ar: "قد روكس عبر ثلاث موجات، شطر الصخور البلورية من الكبيرة إلى الصغيرة واحتفظ بالدرع للنواة الحارسة." },
+    meta: { en: ["3 Waves", "Split Rocks", "Shield + Rapid Fire"], "zh-Hant": ["3 波挑戰", "分裂礦石", "護盾＋連射"], "zh-Hans": ["3 波挑战", "分裂矿石", "护盾＋连射"], ja: ["3ウェーブ", "分裂する岩", "シールド＋連射"], ko: ["3개 웨이브", "분열 바위", "실드 + 연사"], es: ["3 oleadas", "Rocas divisibles", "Escudo + fuego rápido"], "pt-BR": ["3 ondas", "Rochas divisíveis", "Escudo + fogo rápido"], fr: ["3 vagues", "Roches divisibles", "Bouclier + tir rapide"], de: ["3 Wellen", "Geteilte Felsen", "Schild + Schnellfeuer"], it: ["3 ondate", "Rocce divisibili", "Scudo + fuoco rapido"], ru: ["3 волны", "Раскол глыб", "Щит + скорострельность"], hi: ["3 लहरें", "टूटते पत्थर", "शील्ड + रैपिड फायर"], ar: ["3 موجات", "صخور متشظية", "درع + إطلاق سريع"] },
+    art: { kind: "image", background: "assets/space-rocks-cover.png", hideHero: true }
+  }
+);
 
 const newPuzzlePlannedCopy = {
   "arrow-escape": {

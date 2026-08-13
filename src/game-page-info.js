@@ -9099,6 +9099,86 @@
       };
     }
   };
+  games["road-crosser"] = {
+    title: "Road Crosser", gameplay: "Timing Crossing Arcade", difficulty: "Easy to Challenging", time: "1-4 minutes per run",
+    genre: ["Classic", "Arcade", "Action"], skills: ["Timing", "Focus", "Adaptation"],
+    intro: "Road Crosser is an original WeightPlay timing arcade game. Guide the Star Runner through traffic lanes, a moving river, and three crossings that tighten the safe windows without copying another game's art, code, or exact presentation.",
+    story: ["The Star Runner is carrying a small signal light across a night route. Cars move in readable pulses, river logs follow their own currents, and every safe step reveals the next timing decision."],
+    systems: ["The runner moves one lane per input. Cars are hazards, logs carry the runner, water removes an unsupported runner, and rocks block later routes. A complete crossing advances to the next authored stage."],
+    how: ["Use arrow keys or WASD on desktop, or swipe and tap the direction pad on mobile.", "Watch one traffic lane at a time and move only when the next space is safe.", "In the river, land on a moving log and stay centered as it carries you.", "Reach the Star Gate across all three stages; collision, water, or an off-screen current ends the run."],
+    strategyTips: ["Observe one full vehicle cycle before committing to a long crossing.", "Use short steps to pause between traffic lanes.", "On logs, plan for the current instead of fighting it with repeated taps.", "Later stages reward patience because faster does not always mean safer."],
+    progression: ["Stage 1 teaches the road and river rhythm. Stage 2 adds denser traffic and rocks. Stage 3 combines faster water, more vehicles, and tighter safe windows."],
+    designNote: "Road Crosser borrows the broad timing-and-crossing idea of classic arcade games while using WeightPlay's own Star Runner, night-route palette, authored hazards, copy, controls, and geometry.",
+    parent: "This owner-preview game has no account, purchase, chat, leaderboard, or advertising flow. Score and Best stay in the current browser.",
+    faq: [["What ends a run?", "A vehicle collision, falling into the river, or being carried off the playfield ends the run."], ["Does the river move randomly?", "No. Its logs follow visible, repeatable speed patterns."], ["Which controls work?", "Arrow keys, WASD, touch swipe, and the visible mobile direction pad."], ["Is progress saved?", "Only the local Best score is saved in this browser."]]
+  };
+  games["alien-defender"] = {
+    title: "Alien Defender", gameplay: "Wave Survival Shooter", difficulty: "Easy to Challenging", time: "1-5 minutes per run",
+    genre: ["Classic", "Arcade", "Action"], skills: ["Aim", "Movement", "Reaction"],
+    intro: "Alien Defender is an original WeightPlay fixed-screen wave shooter. Move below the formation, fire through three authored waves, and protect a signal station with readable enemy pressure.",
+    story: ["A small signal station is broadcasting a route home while three alien formations descend. The defender's ship has one clear job: keep moving, keep firing, and read the next attack window."],
+    systems: ["The ship moves left and right and fires upward. Invaders shift as a formation, release downward shots, and approach the defense line. Later waves add shielded captains, faster volleys, combo scoring, lives, and a brief shield window."],
+    how: ["Use Left/Right or A/D on desktop and Space to fire.", "On mobile, hold the left or right controls and tap Fire.", "Aim under the densest part of the formation and keep moving when enemy shots descend.", "Clear all three waves before the formation reaches the defense line; a clean wave grants a short shield window."],
+    strategyTips: ["Do not stay under one column while enemy fire is active.", "Use the formation's horizontal rhythm to line up shots rather than chasing every target.", "Protect a high combo by moving early, then return to a useful firing lane.", "Wave 3's captains take priority because they are worth more and add pressure."],
+    progression: ["Wave 1 establishes movement and fire rhythm. Wave 2 increases volley speed. Wave 3 adds shielded captains, tighter formations, and a shield pickup after a clear."],
+    designNote: "Alien Defender learns from the broad fixed-screen wave-shooter tradition while using WeightPlay's own signal-station fiction, Star Runner ship, enemy shapes, wave pacing, copy, and interface.",
+    parent: "This owner-preview game has no account, purchase, chat, leaderboard, or advertising flow. Score and Best stay in the current browser.",
+    faq: [["How do I move?", "Use Left/Right or A/D, then use Space or the mobile Fire button to shoot."], ["What is the shield window?", "A short protective window appears after a clean wave and absorbs incoming shots."], ["What causes Game Over?", "Losing all lives or letting the formation reach the defense line."], ["Is progress saved?", "Only the local Best score is saved in this browser."]]
+  };
+  const arcadeGuideLocales = {
+    "zh-Hant": {
+      "road-crosser": { title: "星軌過路", intro: "星軌過路是 WeightPlay 原創的時機街機遊戲。帶領星行者穿過車流、移動河流與三段逐步收緊的路線。", how: ["桌面使用方向鍵或 WASD；手機使用滑動與方向按鈕。", "一次觀察一條車道，只在下一格安全時移動。", "在河流中踏上移動木頭，順著水流調整位置。", "通過三段路線抵達星門；撞車、落水或被沖出場外會結束本局。"] },
+      "alien-defender": { title: "星際守衛", intro: "星際守衛是 WeightPlay 原創的固定畫面波次射擊遊戲。移動、射擊並讀懂三波外星編隊，守住訊號站。", how: ["桌面用左右鍵或 A/D 移動，Space 射擊。", "手機按住左右控制並點擊射擊。", "觀察敵方隊形，在下墜攻擊出現時提早走位。", "清除三波敵人；完整清波會給予短暫護盾窗口。"] }
+    },
+    "zh-Hans": {
+      "road-crosser": { title: "星轨过路", intro: "星轨过路是 WeightPlay 原创的时机街机游戏。带领星行者穿过车流、移动河流与三段逐步收紧的路线。", how: ["桌面使用方向键或 WASD；手机使用滑动与方向按钮。", "一次观察一条车道，只在下一格安全时移动。", "在河流中踏上移动木头，顺着水流调整位置。", "通过三段路线抵达星门；撞车、落水或被冲出场外会结束本局。"] },
+      "alien-defender": { title: "星际守卫", intro: "星际守卫是 WeightPlay 原创的固定画面波次射击游戏。移动、射击并读懂三波外星编队，守住信号站。", how: ["桌面用左右键或 A/D 移动，Space 射击。", "手机按住左右控制并点击射击。", "观察敌方队形，在下坠攻击出现时提早走位。", "清除三波敌人；完整清波会给予短暂护盾窗口。"] }
+    },
+    ja: {
+      "road-crosser": { title: "スター・クロッサー", intro: "スター・クロッサーはWeightPlayオリジナルのタイミングアーケードです。車道、川、3つの横断を読みましょう。", how: ["デスクトップは矢印キーまたはWASD、モバイルはスワイプと方向ボタンです。", "次のマスが安全なときだけ一歩進みます。", "川では動く丸太に乗り、流れに合わせます。", "3つのステージを渡り、スターゲートへ着けば成功です。"] },
+      "alien-defender": { title: "エイリアン・ディフェンダー", intro: "エイリアン・ディフェンダーはWeightPlayオリジナルの固定画面ウェーブシューティングです。3つの編隊から基地を守ります。", how: ["左右キーまたはA/Dで動き、Spaceで撃ちます。", "モバイルでは左右を押してFireをタップします。", "編隊と落下弾を読み、早めに移動します。", "3ウェーブを全て倒すと成功し、クリア後に短いシールド時間があります。"] }
+    },
+    ko: {
+      "road-crosser": { title: "스타 크로서", intro: "스타 크로서는 WeightPlay 오리지널 타이밍 아케이드입니다. 차량과 강물, 세 번의 횡단 리듬을 읽으세요.", how: ["데스크톱은 방향키나 WASD, 모바일은 스와이프와 방향 버튼을 사용합니다.", "다음 칸이 안전할 때 한 칸씩 이동합니다.", "강에서는 움직이는 통나무에 올라 물살을 따라갑니다.", "세 단계를 건너 별 게이트에 닿으면 성공입니다."] },
+      "alien-defender": { title: "에일리언 디펜더", intro: "에일리언 디펜더는 WeightPlay 오리지널 고정 화면 웨이브 슈터입니다. 세 외계인 대형에서 기지를 지키세요.", how: ["방향키나 A/D로 이동하고 Space로 발사합니다.", "모바일에서는 좌우를 누른 뒤 Fire를 탭합니다.", "대형과 낙하 탄환을 읽고 일찍 움직입니다.", "세 웨이브를 모두 처치하면 성공하며 클리어 뒤 실드 시간이 생깁니다."] }
+    },
+    es: {
+      "road-crosser": { title: "Cruce Estelar", intro: "Cruce Estelar es un arcade de tiempo original de WeightPlay. Lee el tráfico, el río y tres cruces cada vez más exigentes.", how: ["Usa flechas o WASD; en móvil, desliza o toca dirección.", "Avanza una casilla cuando el siguiente espacio sea seguro.", "En el río, sube a un tronco móvil y acompaña la corriente.", "Cruza las tres fases y llega a la Puerta Estelar."] },
+      "alien-defender": { title: "Defensor Alienígena", intro: "Defensor Alienígena es un shooter de oleadas original de WeightPlay. Muévete y dispara para proteger la estación.", how: ["Usa izquierda/derecha o A/D y Espacio para disparar.", "En móvil, mantén izquierda o derecha y toca Disparar.", "Lee la formación y muévete antes de los disparos descendentes.", "Despeja tres oleadas; una limpieza completa activa un escudo breve."] }
+    },
+    "pt-BR": {
+      "road-crosser": { title: "Travessia Estelar", intro: "Travessia Estelar é um arcade de ritmo original do WeightPlay. Leia o trânsito, o rio e três travessias cada vez mais apertadas.", how: ["Use setas ou WASD; no celular, deslize ou toque na direção.", "Avance uma casa quando o próximo espaço estiver seguro.", "No rio, suba em um tronco móvel e acompanhe a corrente.", "Cruze as três fases e alcance o Portão Estelar."] },
+      "alien-defender": { title: "Defensor Alienígena", intro: "Defensor Alienígena é um shooter de ondas original do WeightPlay. Mova-se e atire para proteger a estação.", how: ["Use esquerda/direita ou A/D e Espaço para atirar.", "No celular, segure esquerda ou direita e toque em Atirar.", "Leia a formação e mova-se antes dos disparos.", "Elimine três ondas; uma limpeza completa ativa um escudo breve."] }
+    },
+    fr: {
+      "road-crosser": { title: "Passage Stellaire", intro: "Passage Stellaire est un arcade de timing original de WeightPlay. Lis le trafic, la rivière et trois traversées de plus en plus serrées.", how: ["Utilise les flèches ou WASD ; sur mobile, glisse ou touche une direction.", "Avance d'une case quand l'espace suivant est sûr.", "Dans la rivière, monte sur un tronc mobile et suis le courant.", "Réussis les trois étapes et atteins la Porte Stellaire."] },
+      "alien-defender": { title: "Défenseur Alien", intro: "Défenseur Alien est un shooter de vagues original de WeightPlay. Bouge et tire pour protéger la station.", how: ["Utilise gauche/droite ou A/D et Espace pour tirer.", "Sur mobile, maintiens gauche ou droite puis touche Tirer.", "Lis la formation et bouge avant les tirs descendants.", "Élimine trois vagues ; un nettoyage complet active un bref bouclier."] }
+    },
+    de: {
+      "road-crosser": { title: "Sternenquerung", intro: "Sternenquerung ist eine originale Timing-Arcade von WeightPlay. Lies Verkehr, Fluss und drei immer engere Querungen.", how: ["Nutze Pfeile oder WASD; mobil wischst du oder tippst eine Richtung.", "Gehe ein Feld, wenn das nächste sicher ist.", "Springe im Fluss auf einen bewegten Stamm und folge der Strömung.", "Schaffe alle drei Stufen und erreiche das Sternentor."] },
+      "alien-defender": { title: "Alien-Verteidiger", intro: "Alien-Verteidiger ist ein originaler Wellen-Shooter von WeightPlay. Bewege dich und schieße zum Schutz der Station.", how: ["Nutze links/rechts oder A/D und die Leertaste zum Schießen.", "Mobil hältst du links oder rechts und tippst Feuer.", "Lies die Formation und bewege dich vor fallenden Schüssen.", "Räume drei Wellen; eine saubere Welle aktiviert kurz das Schild."] }
+    },
+    it: {
+      "road-crosser": { title: "Attraversamento Stellare", intro: "Attraversamento Stellare è un'arcade di tempismo originale WeightPlay. Leggi traffico, fiume e tre attraversamenti sempre più stretti.", how: ["Usa frecce o WASD; su mobile scorri o tocca una direzione.", "Avanza di una casella quando la prossima è sicura.", "Nel fiume salta su un tronco mobile e segui la corrente.", "Supera tre livelli e raggiungi il Portale Stellare."] },
+      "alien-defender": { title: "Difensore Alieno", intro: "Difensore Alieno è uno shooter a ondate originale WeightPlay. Muoviti e spara per proteggere la stazione.", how: ["Usa sinistra/destra o A/D e Spazio per sparare.", "Su mobile tieni sinistra o destra e tocca Fuoco.", "Leggi la formazione e muoviti prima dei colpi discendenti.", "Elimina tre ondate; una pulizia completa attiva uno scudo breve."] }
+    },
+    ru: {
+      "road-crosser": { title: "Звёздный переход", intro: "«Звёздный переход» — оригинальная аркада WeightPlay на время. Читай машины, реку и три всё более узких перехода.", how: ["Используй стрелки или WASD; на телефоне делай свайп или нажимай направление.", "Делай шаг, только когда следующая клетка безопасна.", "В реке запрыгивай на движущееся бревно и следуй течению.", "Пройди три этапа и доберись до Звёздных ворот."] },
+      "alien-defender": { title: "Защитник от пришельцев", intro: "«Защитник от пришельцев» — оригинальный шутер WeightPlay по волнам. Двигайся и стреляй, защищая станцию.", how: ["Используй влево/вправо или A/D и пробел для стрельбы.", "На телефоне удерживай влево или вправо и нажимай огонь.", "Читай строй и двигайся до появления падающих снарядов.", "Уничтожь три волны; чистая волна ненадолго активирует щит."] }
+    },
+    hi: {
+      "road-crosser": { title: "सितारा पारपथ", intro: "सितारा पारपथ WeightPlay का मौलिक समय आर्केड है। यातायात, नदी और तीन बढ़ती चुनौती वाले पारपथ पढ़ें।", how: ["तीर या WASD इस्तेमाल करें; मोबाइल पर स्वाइप या दिशा बटन दबाएँ।", "अगला खाना सुरक्षित हो तभी एक कदम चलें।", "नदी में चलते लट्ठे पर चढ़कर धारा के साथ चलें।", "तीनों चरण पार करके सितारा द्वार तक पहुँचें।"] },
+      "alien-defender": { title: "एलियन रक्षक", intro: "एलियन रक्षक WeightPlay का मौलिक लहर शूटर है। चलें और गोली चलाकर सिग्नल स्टेशन बचाएँ।", how: ["बाएँ/दाएँ या A/D से चलें और Space से गोली चलाएँ।", "मोबाइल पर बाएँ या दाएँ दबाकर Fire दबाएँ।", "गठन पढ़ें और गिरती गोलियों से पहले चलें।", "तीन लहरें साफ़ करें; साफ़ लहर के बाद थोड़ी देर ढाल मिलती है।"] }
+    },
+    ar: {
+      "road-crosser": { title: "عبور النجمة", intro: "عبور النجمة لعبة توقيت أصلية من WeightPlay. اقرأ السيارات والنهر وثلاث مراحل تضيق نوافذ الأمان فيها تدريجياً.", how: ["استخدم الأسهم أو WASD؛ على الهاتف اسحب أو اضغط اتجاهًا.", "تحرك خانة واحدة عندما تكون الخانة التالية آمنة.", "في النهر اصعد على جذع متحرك واتبع التيار.", "اعبر المراحل الثلاث واصل إلى بوابة النجمة."] },
+      "alien-defender": { title: "مدافع الفضائيين", intro: "مدافع الفضائيين لعبة إطلاق نار أصلية من WeightPlay على موجات. تحرك وأطلق النار لحماية المحطة.", how: ["استخدم اليسار/اليمين أو A/D والمسافة للإطلاق.", "على الهاتف اضغط يساراً أو يميناً ثم إطلاق.", "اقرأ التشكيل وتحرك قبل المقذوفات الهابطة.", "اقضِ على ثلاث موجات؛ يمنحك العبور النظيف درعاً قصيراً."] }
+    }
+  };
+  for (const [code, entries] of Object.entries(arcadeGuideLocales)) {
+    localizedGames[code] ||= {};
+    for (const [id, entry] of Object.entries(entries)) localizedGames[code][id] = { ...games[id], ...entry, difficulty: games[id].difficulty, time: games[id].time, genre: games[id].genre, skills: games[id].skills, faq: games[id].faq };
+  }
   const reviewedGeneralGuides = window.WeightPlayGeneralReviewedGuides || {};
   for (const [code, localeData] of Object.entries(reviewedGeneralGuides)) {
     if (!localizedGames[code]) localizedGames[code] = {};
@@ -9130,6 +9210,8 @@
     "animal-sunbeam-garden",
     "animal-triple-match",
     "animal-unblock",
+    "road-crosser",
+    "alien-defender",
   ].forEach(completeGuideStandard);
   render();
 })();

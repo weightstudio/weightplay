@@ -139,6 +139,25 @@
     }
   });
 
+  const GOLF_CHAIN_BRIDGE_COPY = {
+    en: "Keep the chain or draw Stock when it stops.",
+    "zh-Hant": "繼續連鎖，卡住時再抽牌堆。",
+    "zh-Hans": "继续连锁，卡住时再抽牌堆。",
+    ja: "チェインを続け、止まったら山札を引きます。",
+    ko: "연속을 이어가고, 막히면 스톡에서 뽑으세요.",
+    es: "Mantén la cadena y roba del mazo cuando se corte.",
+    "pt-BR": "Mantenha a sequência e compre do monte quando ela parar.",
+    fr: "Continuez la chaîne et piochez quand elle s'arrête.",
+    de: "Halte die Serie am Leben und ziehe bei einem Stopp vom Stapel.",
+    it: "Mantieni la serie e pesca dal tallone quando si ferma.",
+    ru: "Продолжайте цепочку, а когда ходов нет — берите карту из колоды.",
+    hi: "चेन जारी रखें और रुकने पर स्टॉक से कार्ड लें।",
+    ar: "واصل السلسلة واسحب من الرزمة عندما تتوقف.",
+  };
+  Object.entries(GOLF_CHAIN_BRIDGE_COPY).forEach(([locale, message]) => {
+    if (COMMON[locale]) COMMON[locale].golfChainBridge = message;
+  });
+
   const FREECELL_RESULT_COPY = {
     en: "Deal identity {seed}. Restart to replay this layout.",
     "zh-Hant": "牌局識別碼 {seed}。按「重新開始」可重玩這個牌局。",
@@ -921,8 +940,10 @@
     }
     showGolfComboCue() {
       if (this.config.variant !== "golf" || !this.nodes.boardStatus || this.game.won || this.game.lost || this.game.combo < 2) return;
-      this.nodes.boardStatus.dataset.state = "golf-combo";
-      this.nodes.boardStatus.textContent = this.t("golfComboLong", { count: this.game.combo, best: this.game.bestCombo });
+      const bridge = this.game.combo === 2;
+      this.nodes.boardStatus.dataset.state = bridge ? "golf-bridge" : "golf-combo";
+      const combo = this.t("golfComboLong", { count: this.game.combo, best: this.game.bestCombo });
+      this.nodes.boardStatus.textContent = bridge ? `${combo} ${this.t("golfChainBridge")}` : combo;
       clearTimeout(this.statusTimer);
       this.statusTimer = setTimeout(() => {
         if (this.nodes.boardStatus && !this.game.won && !this.game.lost) {

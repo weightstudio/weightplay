@@ -41,6 +41,53 @@
   const WORDLE_LENGTH_ERROR = { en: "Enter 5 letters.", "zh-Hant": "請輸入 5 個字母。", "zh-Hans": "请输入 5 个字母。", ja: "5文字入力してください。", ko: "글자 5개를 입력하세요.", es: "Introduce 5 letras.", "pt-BR": "Digite 5 letras.", fr: "Saisissez 5 lettres.", de: "Gib 5 Buchstaben ein.", it: "Inserisci 5 lettere.", ru: "Введите 5 букв.", hi: "5 अक्षर दर्ज करें।", ar: "أدخل 5 أحرف." };
   const HANGMAN_ALREADY_USED = { en: "Already used", "zh-Hant": "已經使用", "zh-Hans": "已经使用", ja: "使用済み", ko: "이미 사용함", es: "Ya usada", "pt-BR": "Já usada", fr: "Déjà utilisée", de: "Bereits verwendet", it: "Già usata", ru: "Уже использована", hi: "पहले ही उपयोग किया गया", ar: "مستخدم بالفعل" };
 
+  const HANGMAN_HINT_COPY = {
+    en: (length) => `Hint: The word has ${length} letters.`,
+    "zh-Hant": (length) => `提示：這個單字有 ${length} 個字母。`,
+    "zh-Hans": (length) => `提示：这个单词有 ${length} 个字母。`,
+    ja: (length) => `ヒント：単語は${length}文字です。`,
+    ko: (length) => `힌트: 단어는 ${length}글자입니다.`,
+    es: (length) => `Pista: la palabra tiene ${length} letras.`,
+    "pt-BR": (length) => `Dica: a palavra tem ${length} letras.`,
+    fr: (length) => `Indice : le mot compte ${length} lettres.`,
+    de: (length) => `Tipp: Das Wort hat ${length} Buchstaben.`,
+    it: (length) => `Suggerimento: la parola ha ${length} lettere.`,
+    ru: (length) => `Подсказка: в слове ${length} букв.`,
+    hi: (length) => `संकेत: शब्द में ${length} अक्षर हैं।`,
+    ar: (length) => `تلميح: الكلمة تتكون من ${length} أحرف.`,
+  };
+  const HANGMAN_MISS_COPY = {
+    en: (letter, misses) => `${letter}: Miss ${misses}/6. Try another unused letter.`,
+    "zh-Hant": (letter, misses) => `${letter}：答錯 ${misses}/6 次，請換一個未使用的字母。`,
+    "zh-Hans": (letter, misses) => `${letter}：答错 ${misses}/6 次，请换一个未使用的字母。`,
+    ja: (letter, misses) => `${letter}：不正解 ${misses}/6 回。未使用の文字を選びます。`,
+    ko: (letter, misses) => `${letter}: 오답 ${misses}/6회입니다. 사용하지 않은 글자를 선택하세요.`,
+    es: (letter, misses) => `${letter}: fallo ${misses}/6. Elige otra letra sin usar.`,
+    "pt-BR": (letter, misses) => `${letter}: erro ${misses}/6. Escolha outra letra não usada.`,
+    fr: (letter, misses) => `${letter} : erreur ${misses}/6. Choisissez une lettre non utilisée.`,
+    de: (letter, misses) => `${letter}: Fehler ${misses}/6. Wähle einen unbenutzten Buchstaben.`,
+    it: (letter, misses) => `${letter}: errore ${misses}/6. Scegli un'altra lettera non usata.`,
+    ru: (letter, misses) => `${letter}: ошибка ${misses}/6. Выберите другую неиспользованную букву.`,
+    hi: (letter, misses) => `${letter}: ${misses}/6 गलतियाँ। कोई नया अक्षर चुनें।`,
+    ar: (letter, misses) => `${letter}: الخطأ ${misses}/6. اختر حرفاً آخر غير مستخدم.`,
+  };
+
+  const BREAKOUT_PROMISE = {
+    en: "Short owner preview: move the paddle, Serve 12 bricks, then chase your Best score and Play again.",
+    "zh-Hant": "短篇擁有者試玩預覽：移動球拍，發球清除 12 塊磚，再挑戰最佳分數並再玩一次。",
+    "zh-Hans": "短篇拥有者试玩预览：移动球拍，发球清除 12 块砖，再挑战最佳分数并再玩一次。",
+    ja: "短いオーナープレビュー：パドルを動かし、12個のブロックにサーブして、ベストスコアを狙い、すぐにもう一度遊べます。",
+    ko: "짧은 오너 프리뷰: 패들을 움직여 12개 벽돌에 서브하고, 최고 점수에 도전한 뒤 바로 다시 플레이하세요.",
+    es: "Vista previa breve para el propietario: mueve la pala, sirve para romper 12 ladrillos, busca tu mejor puntuación y juega otra vez.",
+    "pt-BR": "Prévia curta para o proprietário: mova a raquete, saque para limpar 12 blocos, busque sua melhor pontuação e jogue novamente.",
+    fr: "Aperçu court pour le propriétaire : déplacez la raquette, servez pour casser 12 briques, visez votre meilleur score et rejouez.",
+    de: "Kurze Vorschau für den Besitzer: Bewege das Paddle, räume 12 Steine per Aufschlag ab, jage deinen Bestwert und spiele erneut.",
+    it: "Anteprima breve per il proprietario: muovi la racchetta, servi per rompere 12 mattoni, insegui il tuo record e rigioca.",
+    ru: "Короткое превью для владельца: двигайте ракетку, подавайте по 12 блокам, улучшайте рекорд и играйте снова.",
+    hi: "मालिक के लिए छोटा प्रीव्यू: पैडल चलाएँ, सर्व से 12 ईंटें तोड़ें, अपना सर्वश्रेष्ठ स्कोर चुनौती दें और फिर खेलें।",
+    ar: "معاينة قصيرة للمالك: حرّك المضرب، أرسل الكرة لتحطيم 12 لبنة، طارد أفضل نتيجة والعب مجدداً.",
+  };
+
   const TIC_CELL_COPY = {
     en: { row: "Row", column: "column", empty: "empty" },
     "zh-Hant": { row: "列", column: "欄", empty: "空白" },
@@ -83,9 +130,11 @@
     try { return localStorage.getItem("weightPlayLocale") || "en"; } catch { return "en"; }
   };
   const key = (gameId) => `weightplay_popular_${gameId}_best`;
-  const copy = (locale, k) => (COPY[locale] || COPY.en)[k];
+  const copy = (locale, k) => { const localized = COPY[locale] || COPY.en; if (k === "ready" && document.body?.dataset.gameId === "breakout") return BREAKOUT_PROMISE[locale] || BREAKOUT_PROMISE.en; return localized[k]; };
   const wordleLengthError = (locale) => WORDLE_LENGTH_ERROR[locale] || WORDLE_LENGTH_ERROR.en;
   const hangmanAlreadyUsed = (locale) => HANGMAN_ALREADY_USED[locale] || HANGMAN_ALREADY_USED.en;
+  const hangmanHint = (locale, length) => (HANGMAN_HINT_COPY[locale] || HANGMAN_HINT_COPY.en)(length);
+  const hangmanMiss = (locale, letter, misses) => (HANGMAN_MISS_COPY[locale] || HANGMAN_MISS_COPY.en)(letter, misses);
   const title = (locale, gameId) => (TITLES[locale] || TITLES.en)[gameId];
   const ticCellLabel = (locale, index, cell) => {
     const labels = TIC_CELL_COPY[locale] || TIC_CELL_COPY.en;
@@ -145,6 +194,11 @@
         if (state.messageKey === "hintObjective") state.message = `${copy(locale, "hint")}: ${copy(locale, game.objective)}`;
         else if (state.messageKey === "ready") state.message = copy(locale, "ready");
       }
+      if (game.type === "hangman") {
+        if (state.messageKey === "hangmanHint") state.message = hangmanHint(locale, state.target.length);
+        else if (state.messageKey === "hangmanMiss") state.message = hangmanMiss(locale, state.lastLetter, state.misses);
+        else if (state.messageKey === "hangmanUsed") state.message = `${state.lastLetter}: ${hangmanAlreadyUsed(locale)}`;
+      }
       renderShell();
       if (game.type === "snake" && document.body.dataset.screen === "result") renderResult();
       render();
@@ -158,7 +212,7 @@
     const action = (name, value) => {
       if (state.done) return;
       if (game.type === "tic" && (name !== "cell" || !Number.isInteger(value) || value < 0 || value >= state.cells.length || state.cells[value] !== "")) return;
-      if (game.type === "hangman" && name === "letter" && state.letters.includes(value)) { state.focusLetter = value; announce(`${value}: ${hangmanAlreadyUsed(locale)}`, "warn"); render(); return; }
+      if (game.type === "hangman" && name === "letter" && state.letters.includes(value)) { state.focusLetter = value; state.lastLetter = value; announce(`${value}: ${hangmanAlreadyUsed(locale)}`, "warn", "hangmanUsed"); render(); return; }
       state.moves += 1;
       if (game.type === "tetris") {
         if (name === "left") state.active = Math.max(0, state.active - 1); if (name === "right") state.active = Math.min(7, state.active + 1); if (name === "rotate") state.score += 5; if (name === "drop") { state.pieces += 1; state.lines = Math.min(4, Math.floor(state.pieces / 2)); state.blocks.push({ x: state.active, y: 7 - (state.pieces % 7) }); if (state.lines >= 4) finish(true); }
@@ -168,13 +222,13 @@
       } else if (game.type === "checkers") { if (name === "move") { state.step += 1; state.score += 20; if (state.step >= 5) finish(true); }
       } else if (game.type === "mahjong") { if (name === "tile" && state.tiles[value]) { if (state.selected < 0) { state.selected = value; state.focusTile = value; announce(mahjongTileLabel(locale, value, state.tiles[value], true)); } else if (state.selected !== value && state.tiles[state.selected] === state.tiles[value]) { state.tiles[state.selected] = ""; state.tiles[value] = ""; state.matched += 1; state.score += 30; state.selected = -1; state.focusTile = state.tiles.findIndex(Boolean); announce(copy(locale, "matched"), "good"); if (state.matched >= 6) { state.focusTile = -1; finish(true); } } else { state.selected = value; state.focusTile = value; announce(mahjongTileLabel(locale, value, state.tiles[value], true), "warn"); } }
       } else if (game.type === "wordle") { if (name === "submit") { const inputNode = document.querySelector("#wordInput"); const input = String(inputNode?.value || "").trim().toUpperCase(); if (input.length !== 5) { state.moves -= 1; announce(wordleLengthError(locale), "warn"); inputNode?.focus(); return; } state.guesses.push(input); state.score += input === state.target ? 100 : 10; if (input === state.target) finish(true); else if (state.guesses.length >= 6) finish(false); else announce(copy(locale, "next"), ""); }
-      } else if (game.type === "hangman") { if (name === "letter") { state.letters.push(value); state.focusLetter = value; if (!state.target.includes(value)) state.misses += 1; else state.score += 15; if ([...state.target].every((letter) => state.letters.includes(letter))) finish(true); else if (state.misses >= 6) finish(false); }
+      } else if (game.type === "hangman") { if (name === "letter") { state.letters.push(value); state.focusLetter = value; state.lastLetter = value; if (!state.target.includes(value)) { state.misses += 1; if (state.misses < 6) announce(hangmanMiss(locale, value, state.misses), "warn", "hangmanMiss"); } else state.score += 15; if ([...state.target].every((letter) => state.letters.includes(letter))) finish(true); else if (state.misses >= 6) finish(false); }
       } else if (game.type === "breakout") { if (name === "left") state.paddle = Math.max(0, state.paddle - 1); if (name === "right") state.paddle = Math.min(5, state.paddle + 1); if (name === "fire") { state.shots += 1; const index = state.bricks.findIndex(Boolean); if (index >= 0) state.bricks[index] = false; state.score += 20; if (state.bricks.every((brick) => !brick)) finish(true); }
       } else if (game.type === "pong") { if (name === "left") state.paddle = Math.max(0, state.paddle - 1); if (name === "right") state.paddle = Math.min(5, state.paddle + 1); if (name === "serve") { state.rallies += 1; state.score += 25; if (state.rallies >= 5) finish(true); }
       }
       render();
     };
-    const hint = () => { if (game.type === "wordle") announce(`${copy(locale, "hint")}: the target starts with B.`, "warn"); else if (game.type === "hangman") announce(`${copy(locale, "hint")}: the word has ${state.target.length} letters.`, "warn"); else if (game.type === "mahjong") announce(`${copy(locale, "hint")}: match identical symbols.`, "warn"); else announce(`${copy(locale, "hint")}: ${copy(locale, game.objective)}`, "warn", game.type === "snake" ? "hintObjective" : ""); render(); };
+    const hint = () => { if (game.type === "wordle") announce(`${copy(locale, "hint")}: the target starts with B.`, "warn"); else if (game.type === "hangman") announce(hangmanHint(locale, state.target.length), "warn", "hangmanHint"); else if (game.type === "mahjong") announce(`${copy(locale, "hint")}: match identical symbols.`, "warn"); else announce(`${copy(locale, "hint")}: ${copy(locale, game.objective)}`, "warn", game.type === "snake" ? "hintObjective" : ""); render(); };
     const shell = () => { document.documentElement.lang = locale; document.documentElement.dir = locale === "ar" ? "rtl" : "ltr"; document.title = `${title(locale, gameId)} | WeightPlay`; els.eyebrow.textContent = copy(locale, "eyebrow"); els.title.textContent = title(locale, gameId); els.tagline.textContent = copy(locale, "tagline"); els.objective.innerHTML = `<strong>${copy(locale, "objective")}:</strong> ${copy(locale, game.objective)}`; els.instruction.textContent = copy(locale, "ready"); document.querySelector("#languageLabel").textContent = copy(locale, "language"); document.querySelector("#footerText").textContent = `${title(locale, gameId)} · ${copy(locale, "eyebrow")}`; };
     const button = (label, name, extra = "") => `<button class="control ${extra}" data-action="${name}">${label}</button>`;
     const renderBoard = () => {
