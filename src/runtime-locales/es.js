@@ -9881,7 +9881,6 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Ocean Order Queue": "Cola de pedidos marítimos",
   "Ocean shallows": "aguas poco profundas del océano",
   "Ocean timing expert": "Experto en sincronización oceánica",
-  "Ochos locos": "ocho locos",
   "OFF": "APAGADO",
   "Offene Regale": "Ofene Regale",
   "Offene Sternpfade": "Ofene Sternpfade",

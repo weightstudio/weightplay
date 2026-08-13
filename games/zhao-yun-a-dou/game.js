@@ -16,6 +16,7 @@
   let loopTimer = null;
   let statusTimer = null;
   let dragSlot = null;
+  let formationRenderKey = null;
 
   const el = {
     main: document.getElementById("main"),
@@ -133,6 +134,7 @@
     }
     document.title = (dictionaries[locale] || dictionaries.en).title + " | WeightPlay";
     if (battle) {
+      formationRenderKey = null;
       renderBattle();
     } else if (document.body.getAttribute("data-screen") === "stage") {
       renderStages();
@@ -161,6 +163,7 @@
     closeDialogs();
     battle = null;
     selectedSlot = null;
+    formationRenderKey = null;
     showScreen("main");
   }
 
@@ -169,6 +172,7 @@
     closeDialogs();
     battle = null;
     selectedSlot = null;
+    formationRenderKey = null;
     showScreen("stage");
     renderStages();
     window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));
@@ -203,6 +207,7 @@
     const level = data.levels[stageIndex];
     battle = createBattle(level, options || {});
     selectedSlot = null;
+    formationRenderKey = null;
     showScreen("battle");
     renderBattle();
     window.WeightPlayBattleCanvas?.sync?.();
@@ -547,34 +552,36 @@
   }
 
   function renderLanes() {
-    el.enemyLanes.innerHTML = "";
-    el.playerLanes.innerHTML = "";
+    const enemyRows = ensureLaneRows(el.enemyLanes);
+    const playerRows = ensureLaneRows(el.playerLanes);
     for (let lane = 0; lane < 3; lane += 1) {
-      const enemyRow = document.createElement("div");
-      enemyRow.className = "lane-row";
+      const enemyRow = enemyRows[lane];
       enemyRow.setAttribute("data-lane", t("lane") + " " + (lane + 1));
+      const tokenById = new Map(Array.from(enemyRow.children).filter(function (node) {
+        return node.classList.contains("enemy-token");
+      }).map(function (node) { return [node.getAttribute("data-enemy-id"), node]; }));
+      const activeEnemyIds = new Set();
       battle.enemies.filter(function (enemy) { return enemy.lane === lane; }).forEach(function (enemy) {
-        const token = document.createElement("span");
-         token.className = "enemy-token enemy-kind-" + (enemy.id % 3) + (enemy.boss ? " boss" : "") + (enemy.hitFlash > 0 ? " is-hit" : "") + (enemy.defeatedTicks > 0 ? " is-defeated" : "");
-         token.style.left = (enemy.position * 100) + "%";
-         const enemyLabel = enemy.boss ? t("boss") : t("enemySoldier");
-         const hpPercent = Math.max(0, Math.round((enemy.hp / enemy.maxHp) * 100));
-         token.setAttribute("aria-label", enemyLabel + ", " + t("hp") + " " + enemy.hp + "/" + enemy.maxHp);
-         token.title = enemyLabel + " · " + enemy.hp + " / " + enemy.maxHp;
-         token.innerHTML = "<span class=\"enemy-glyph\">" + (enemy.boss ? "將" : "卒") + "</span><span class=\"enemy-name\">" + escapeHtml(enemyLabel) + "</span><span class=\"enemy-health\"><span style=\"width:" + hpPercent + "%\"></span></span>";
-         enemyRow.appendChild(token);
-       });
-       battle.effects.filter(function (effect) { return effect.lane === lane; }).forEach(function (effect) {
+        const enemyId = String(enemy.id);
+        const token = tokenById.get(enemyId) || document.createElement("span");
+        updateEnemyToken(token, enemy);
+        activeEnemyIds.add(enemyId);
+        enemyRow.appendChild(token);
+      });
+      tokenById.forEach(function (token, enemyId) {
+        if (!activeEnemyIds.has(enemyId)) token.remove();
+      });
+      enemyRow.querySelectorAll(".combat-effect").forEach(function (node) { node.remove(); });
+      battle.effects.filter(function (effect) { return effect.lane === lane; }).forEach(function (effect) {
          const effectNode = document.createElement("span");
          effectNode.className = "combat-effect " + effect.kind;
          effectNode.style.left = (effect.position * 100) + "%";
          effectNode.textContent = effect.text;
          enemyRow.appendChild(effectNode);
        });
-      el.enemyLanes.appendChild(enemyRow);
-      const playerRow = document.createElement("div");
-      playerRow.className = "lane-row";
+      const playerRow = playerRows[lane];
       playerRow.setAttribute("data-lane", t("lane") + " " + (lane + 1));
+      playerRow.innerHTML = "";
       battle.units.forEach(function (unit, slot) {
         if (!unit || slot % 3 !== lane) return;
         const token = document.createElement("span");
@@ -587,12 +594,42 @@
         token.setAttribute("aria-label", unitName(unit) + ", " + t("lane") + " " + (lane + 1) + (unit.attackFlash > 0 ? ", " + t("attackCue") : ""));
         playerRow.appendChild(token);
       });
-      el.playerLanes.appendChild(playerRow);
     }
   }
 
+  function ensureLaneRows(container) {
+    const rows = Array.from(container.children);
+    if (rows.length !== 3 || rows.some(function (row) { return !row.classList.contains("lane-row"); })) {
+      container.innerHTML = "";
+      for (let lane = 0; lane < 3; lane += 1) {
+        const row = document.createElement("div");
+        row.className = "lane-row";
+        container.appendChild(row);
+      }
+      return Array.from(container.children);
+    }
+    return rows;
+  }
+
+  function updateEnemyToken(token, enemy) {
+    const enemyLabel = enemy.boss ? t("boss") : t("enemySoldier");
+    const hpPercent = Math.max(0, Math.round((enemy.hp / enemy.maxHp) * 100));
+    token.className = "enemy-token enemy-kind-" + (enemy.id % 3) + (enemy.boss ? " boss" : "") + (enemy.hitFlash > 0 ? " is-hit" : "") + (enemy.defeatedTicks > 0 ? " is-defeated" : "");
+    token.setAttribute("data-enemy-id", String(enemy.id));
+    token.style.left = (enemy.position * 100) + "%";
+    token.setAttribute("aria-label", enemyLabel + ", " + t("hp") + " " + enemy.hp + "/" + enemy.maxHp);
+    token.title = enemyLabel + " / " + enemy.hp + " / " + enemy.maxHp;
+    token.innerHTML = "<span class=\"enemy-glyph\">" + (enemy.boss ? "將" : "卒") + "</span><span class=\"enemy-name\">" + escapeHtml(enemyLabel) + "</span><span class=\"enemy-health\"><span style=\"width:" + hpPercent + "%\"></span></span>";
+  }
+
   function renderFormation() {
+    const renderKey = locale + "|" + selectedSlot + "|" + battle.units.map(function (unit) {
+      return unit ? [unit.type, unit.level, unit.general ? "g" : "u"].join(":") : "-";
+    }).join(",");
+    if (renderKey === formationRenderKey && el.formation.children.length === battle.units.length) return;
+    formationRenderKey = renderKey;
     el.formation.innerHTML = "";
+    el.formationHint.textContent = selectedSlot === null ? t("mergeHint") : t("selected") + ": " + unitName(battle.units[selectedSlot]) + ". " + t("mergeHint");
     battle.units.forEach(function (unit, slot) {
       const button = document.createElement("button");
       button.type = "button";
@@ -606,7 +643,6 @@
       button.innerHTML = unit
         ? "<span class=\"unit-lane\" aria-hidden=\"true\">" + laneLabel + "</span><span class=\"unit-glyph\" style=\"--unit-color:" + (unit.general ? data.generals[unit.type].color : data.unitTypes[unit.type].color) + "\">" + (unit.general ? data.generals[unit.type].glyph : data.unitTypes[unit.type].glyph) + "</span><span class=\"unit-level\" aria-hidden=\"true\">" + levelLabel + "</span>"
         : "<span aria-hidden=\"true\">＋</span>";
-      button.addEventListener("click", function () { handleSlot(slot); });
       button.addEventListener("dragstart", function (event) {
         if (!unit) { event.preventDefault(); return; }
         dragSlot = slot;
@@ -714,6 +750,12 @@
     updateStaticLocale();
   });
   el.recruit.addEventListener("click", recruit);
+  el.formation.addEventListener("click", function (event) {
+    const target = event.target;
+    const button = target && typeof target.closest === "function" ? target.closest(".unit-slot") : null;
+    if (!button || !el.formation.contains(button)) return;
+    handleSlot(Number(button.getAttribute("data-slot")));
+  });
   el.hint.addEventListener("click", showHint);
   el.battleBack.addEventListener("click", showLeaveDialog);
   document.querySelector("#stage [data-back]").addEventListener("click", showMain);
