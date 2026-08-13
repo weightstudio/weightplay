@@ -224,6 +224,7 @@
     let game;
     const controller = {
       id,
+      isBattleActive() { return !battle.hidden && rootElement.dataset.screen === "battle"; },
       openBattle() { resultRecorded = false; main.hidden = true; battle.hidden = false; rootElement.dataset.screen = "battle"; render(); },
       openMain() { battle.hidden = true; main.hidden = false; rootElement.dataset.screen = "main"; result.hidden = true; },
       result(won, message = "") { if (!resultRecorded) { resultRecorded = true; updateStatsView(writeStats(won)); } resultTitle.textContent = won ? t("winner") : t("loser"); resultText.textContent = message || (won ? t("roundOver") : t("roundOver")); result.hidden = false; sound?.[won ? "win" : "reject"]?.(); },
@@ -634,7 +635,7 @@
     const deal = () => { s.players = [[], [], [], []]; s.stock = deck(); s.turn = 0; s.selectedOpponent = s.playerCount === 2 ? 1 : Math.min(s.selectedOpponent, s.playerCount - 1); s.selectedRank = null; s.books = [0, 0, 0, 0]; s.bookRanks = [[], [], [], []]; const handSize = s.playerCount === 2 ? 7 : 5; for (let i = 0; i < handSize; i += 1) for (let player = 0; player < s.playerCount; player += 1) s.players[player].push(s.stock.pop()); for (let player = 0; player < s.playerCount; player += 1) { removeBooks(player); refillEmptyHand(player); } };
     const next = () => { s.turn = (s.turn + 1) % s.playerCount; refillEmptyHand(s.turn); if (s.turn !== 0) setTimeout(aiTurn, 300); };
     const ask = (target, rank) => { const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[target] = s.players[target].filter((item) => item.rank !== rank); s.players[0].push(...matching); removeBooks(0); refillEmptyHand(0); s.selectedRank = null; } else { if (s.stock.length) s.players[0].push(s.stock.pop()); next(); } if (!s.stock.length) { for (let player = 0; player < s.playerCount; player += 1) removeBooks(player); if (s.players.slice(0, s.playerCount).every((cards) => !cards.length)) finish(); } };
-    const aiTurn = () => { if (s.turn === 0) return; refillEmptyHand(s.turn); const ranks = [...new Set(s.players[s.turn].map((item) => item.rank))]; if (!ranks.length) { if (!s.stock.length && s.players.slice(0, s.playerCount).every((cards) => !cards.length)) finish(); else next(); return; } const targets = Array.from({ length: s.playerCount }, (_, index) => index).filter((index) => index !== s.turn); const target = targets[Math.floor(Math.random() * targets.length)]; const rank = ranks[Math.floor(Math.random() * ranks.length)]; const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[s.turn].push(...matching); s.players[target] = s.players[target].filter((item) => item.rank !== rank); removeBooks(s.turn); refillEmptyHand(s.turn); } else if (s.stock.length) s.players[s.turn].push(s.stock.pop()); removeBooks(s.turn); if (!s.stock.length && s.players.slice(0, s.playerCount).every((cards) => !cards.length)) finish(); else next(); };
+    const aiTurn = () => { if (!controller.isBattleActive() || s.turn === 0) return; refillEmptyHand(s.turn); const ranks = [...new Set(s.players[s.turn].map((item) => item.rank))]; if (!ranks.length) { if (!s.stock.length && s.players.slice(0, s.playerCount).every((cards) => !cards.length)) finish(); else next(); return; } const targets = Array.from({ length: s.playerCount }, (_, index) => index).filter((index) => index !== s.turn); const target = targets[Math.floor(Math.random() * targets.length)]; const rank = ranks[Math.floor(Math.random() * ranks.length)]; const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[s.turn].push(...matching); s.players[target] = s.players[target].filter((item) => item.rank !== rank); removeBooks(s.turn); refillEmptyHand(s.turn); } else if (s.stock.length) s.players[s.turn].push(s.stock.pop()); removeBooks(s.turn); if (!s.stock.length && s.players.slice(0, s.playerCount).every((cards) => !cards.length)) finish(); else next(); };
     return {
       reset() { deal(); },
       card() {},
@@ -644,21 +645,48 @@
   }
 
   function makeSpeedFixed(controller) {
-    const s = { hand: [], stock: [], aiHand: [], aiStock: [], centers: [], timer: null, over: false };
+    const s = { hand: [], stock: [], aiHand: [], aiStock: [], centers: [], waste: [], timer: null, over: false, lastPlayerAt: 0 };
     const canPlay = (item, centerCard) => item && centerCard && (item.rank === centerCard.rank + 1 || item.rank === centerCard.rank - 1 || (item.rank === 1 && centerCard.rank === 13) || (item.rank === 13 && centerCard.rank === 1));
     const refill = (hand, stock) => { while (hand.length < 5 && stock.length) hand.push(stock.pop()); };
+    const replaceCenter = (index, item) => { if (s.centers[index]) s.waste.push(s.centers[index]); s.centers[index] = item; };
     const finishIfDone = () => { const playerEmpty = !s.hand.length && !s.stock.length; const aiEmpty = !s.aiHand.length && !s.aiStock.length; if (playerEmpty || aiEmpty) { s.over = true; clearTimeout(s.timer); controller.result(playerEmpty, `${t("cards")}: ${s.hand.length + s.stock.length} / ${s.aiHand.length + s.aiStock.length}`); } };
     const aiLoop = () => {
-      if (s.over) return;
+      if (s.over || !controller.isBattleActive()) return;
       const candidates = s.aiHand.flatMap((item, index) => s.centers.map((centerCard, centerIndex) => canPlay(item, centerCard) ? { index, centerIndex, item } : []));
-      if (candidates.length) { const pick = candidates[Math.floor(Math.random() * candidates.length)]; s.aiHand.splice(pick.index, 1); s.centers[pick.centerIndex] = pick.item; refill(s.aiHand, s.aiStock); }
-      else refill(s.aiHand, s.aiStock);
+      if (candidates.length) {
+        const playerIsActive = Date.now() - s.lastPlayerAt < 1500;
+        const playerCanPlay = s.hand.some((item) => s.centers.some((centerCard) => canPlay(item, centerCard)));
+        const playerRemaining = s.hand.length + s.stock.length;
+        const aiRemaining = s.aiHand.length + s.aiStock.length;
+        const aiIsNotAhead = aiRemaining >= playerRemaining;
+        const aiMayFinish = aiRemaining > 1 || playerRemaining <= 1;
+        if (!aiMayFinish && !playerCanPlay && s.waste.length >= 2) {
+          for (let index = s.waste.length - 1; index; index -= 1) { const swap = Math.floor(Math.random() * (index + 1)); [s.waste[index], s.waste[swap]] = [s.waste[swap], s.waste[index]]; }
+          const nextCenters = [s.waste.pop(), s.waste.pop()];
+          s.waste.push(...s.centers);
+          s.centers = nextCenters;
+        } else if (aiMayFinish && (!playerIsActive || !playerCanPlay) && (aiIsNotAhead || !playerCanPlay) && Math.random() < 0.7) { const pick = candidates[Math.floor(Math.random() * candidates.length)]; s.aiHand.splice(pick.index, 1); replaceCenter(pick.centerIndex, pick.item); refill(s.aiHand, s.aiStock); }
+      } else {
+        refill(s.aiHand, s.aiStock);
+        const playerCanPlay = s.hand.some((item) => s.centers.some((centerCard) => canPlay(item, centerCard)));
+        if (!playerCanPlay) {
+          if (s.stock.length && s.aiStock.length) {
+            replaceCenter(0, s.stock.pop());
+            replaceCenter(1, s.aiStock.pop());
+          } else if (s.waste.length >= 2) {
+            for (let index = s.waste.length - 1; index; index -= 1) { const swap = Math.floor(Math.random() * (index + 1)); [s.waste[index], s.waste[swap]] = [s.waste[swap], s.waste[index]]; }
+            const nextCenters = [s.waste.pop(), s.waste.pop()];
+            s.waste.push(...s.centers);
+            s.centers = nextCenters;
+          }
+        }
+      }
       finishIfDone();
-      if (!s.over) s.timer = setTimeout(aiLoop, 420);
+      if (!s.over) s.timer = setTimeout(aiLoop, 850);
     };
     return {
-      reset() { const cards = deck(); Object.assign(s, { hand: cards.splice(0, 20), stock: cards.splice(0, 6), aiHand: cards.splice(0, 20), aiStock: cards.splice(0, 6), centers: [deck()[0], deck()[1]], over: false }); clearTimeout(s.timer); s.timer = setTimeout(aiLoop, 420); },
-      card(index) { if (s.over) return; const item = s.hand[index]; const centerIndex = s.centers.findIndex((centerCard) => canPlay(item, centerCard)); if (centerIndex < 0) return; s.hand.splice(index, 1); s.centers[centerIndex] = item; refill(s.hand, s.stock); finishIfDone(); },
+      reset() { const cards = deck(); Object.assign(s, { hand: cards.splice(0, 5), stock: cards.splice(0, 20), aiHand: cards.splice(0, 5), aiStock: cards.splice(0, 20), centers: cards.splice(0, 2), waste: [], over: false, lastPlayerAt: Date.now() }); clearTimeout(s.timer); s.timer = setTimeout(aiLoop, 850); },
+      card(index) { if (s.over) return; const item = s.hand[index]; const centerIndex = s.centers.findIndex((centerCard) => canPlay(item, centerCard)); if (centerIndex < 0) return; s.hand.splice(index, 1); replaceCenter(centerIndex, item); s.lastPlayerAt = Date.now(); refill(s.hand, s.stock); finishIfDone(); },
       action() {},
       view() { return { phase: "Speed", status: t("yourTurn"), help: "Play immediately: one rank above or below either center card.", score: s.hand.length + s.stock.length, opponents: opponentMarkup("AI", s.aiHand.length + s.aiStock.length), center: `<div class="card-speed-lane"><div class="card-speed-pile">${cardMarkup(s.centers[0], 0)}</div><div class="card-speed-pile">${cardMarkup(s.centers[1], 0)}</div></div>`, hand: cardsMarkup(s.hand), actions: `<span class="card-help">${s.stock.length} ${t("stock")} · ${s.aiStock.length} ${t("cards")} ${t("waiting")}</span>` }; }
     };
