@@ -177,8 +177,14 @@
   function mazeResetStage() {
     const pellets = new Set(); const beacons = new Set();
     MAZE_MAP.forEach((row, y) => [...row].forEach((cell, x) => { if (cell !== "#" && !(x === 1 && y === 1)) pellets.add(`${x},${y}`); if (cell === "o") beacons.add(`${x},${y}`); }));
+    const homeSets = [
+      [[13, 1], [1, 13], [13, 13], [7, 5]],
+      [[1, 13], [13, 1], [7, 5], [13, 13]],
+      [[13, 13], [7, 5], [1, 13], [13, 1]],
+    ];
+    const homes = homeSets[(state.level - 1) % homeSets.length];
     state.maze = { player: { x: 1, y: 1, dir: "down", next: "down", grace: 6000 }, pellets, beacons, power: 0, moveClock: 0, enemyClock: -4500, combo: 0, lives: 5, enemies: [
-      { x: 13, y: 1, homeX: 13, homeY: 1, type: "direct", color: "#ff7d9f" }, { x: 1, y: 13, homeX: 1, homeY: 13, type: "predict", color: "#68e1ff" }, { x: 13, y: 13, homeX: 13, homeY: 13, type: "ambush", color: "#c48cff" }, { x: 7, y: 5, homeX: 7, homeY: 5, type: "wander", color: "#ffd66d" }
+      { x: homes[0][0], y: homes[0][1], homeX: homes[0][0], homeY: homes[0][1], type: "direct", color: "#ff7d9f" }, { x: homes[1][0], y: homes[1][1], homeX: homes[1][0], homeY: homes[1][1], type: "predict", color: "#68e1ff" }, { x: homes[2][0], y: homes[2][1], homeX: homes[2][0], homeY: homes[2][1], type: "ambush", color: "#c48cff" }, { x: homes[3][0], y: homes[3][1], homeX: homes[3][0], homeY: homes[3][1], type: "wander", color: "#ffd66d" }
     ] };
     state.input = {};
     setMessage(tr("ready")); updateHud(); drawMaze();
@@ -232,7 +238,7 @@
     state.maze.pellets.forEach((key) => { const [x, y] = key.split(",").map(Number); ctx.fillStyle = "#ffe59a"; ctx.beginPath(); ctx.arc(x * tile + tile / 2, y * tile + tile / 2, 4, 0, Math.PI * 2); ctx.fill(); });
     state.maze.beacons.forEach((key) => { const [x, y] = key.split(",").map(Number); const pulse = 7 + Math.sin(performance.now() / 180) * 2; ctx.fillStyle = "#ffc962"; ctx.shadowColor = "#ffd66d"; ctx.shadowBlur = 14; ctx.beginPath(); ctx.arc(x * tile + tile / 2, y * tile + tile / 2, pulse, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0; });
     const p = state.maze.player; ctx.save(); ctx.translate(p.x * tile + tile / 2, p.y * tile + tile / 2); ctx.fillStyle = "#d9f6ff"; ctx.beginPath(); ctx.arc(0, 2, 15, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#29306f"; ctx.beginPath(); ctx.arc(-7, -11, 11, Math.PI, 0); ctx.fill(); ctx.fillStyle = "#ffd66d"; ctx.beginPath(); ctx.arc(7, -14, 6, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#17234e"; ctx.beginPath(); ctx.arc(-5, 0, 2, 0, Math.PI * 2); ctx.arc(5, 0, 2, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-    state.maze.enemies.forEach((enemy) => { ctx.save(); ctx.translate(enemy.x * tile + tile / 2, enemy.y * tile + tile / 2); ctx.globalAlpha = state.maze.power > 0 ? 0.62 : 1; ctx.fillStyle = state.maze.power > 0 ? "#8bb7ff" : enemy.color; ctx.beginPath(); ctx.arc(0, 2, 14, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(-5, -2, 4, 0, Math.PI * 2); ctx.arc(5, -2, 4, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#1a234d"; ctx.beginPath(); ctx.arc(-5, -2, 2, 0, Math.PI * 2); ctx.arc(5, -2, 2, 0, Math.PI * 2); ctx.fill(); ctx.restore(); });
+    state.maze.enemies.forEach((enemy) => { ctx.save(); ctx.translate(enemy.x * tile + tile / 2, enemy.y * tile + tile / 2); ctx.globalAlpha = state.maze.power > 0 ? 0.62 : 1; ctx.fillStyle = state.maze.power > 0 ? "#8bb7ff" : enemy.color; ctx.beginPath(); ctx.arc(0, 2, 14, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(-5, -2, 4, 0, Math.PI * 2); ctx.arc(5, -2, 4, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#1a234d"; ctx.beginPath(); ctx.arc(-5, -2, 2, 0, Math.PI * 2); ctx.arc(5, -2, 2, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = state.maze.power > 0 ? "#d9f6ff" : enemy.color; ctx.lineWidth = 2; if (enemy.type === "direct") { ctx.fillRect(-4, -16, 8, 4); } else if (enemy.type === "predict") { ctx.beginPath(); ctx.moveTo(0, -18); ctx.lineTo(6, -10); ctx.lineTo(-6, -10); ctx.closePath(); ctx.fill(); } else if (enemy.type === "ambush") { ctx.beginPath(); ctx.moveTo(0, -19); ctx.lineTo(6, -13); ctx.lineTo(0, -7); ctx.lineTo(-6, -13); ctx.closePath(); ctx.fill(); } else { ctx.beginPath(); ctx.arc(0, -13, 5, 0, Math.PI * 2); ctx.stroke(); } ctx.restore(); });
   }
 
   function randomAngle(seed) { return (seed * 1.61803398875) % (Math.PI * 2); }

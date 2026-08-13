@@ -6,6 +6,8 @@
   document.querySelector(".battle-shell")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-reef-fisher";
+  const GAME_VERSION = 16;
+  const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_animal_reef_fisher_v1";
   const localeKey = "weightPlayLocale";
   const sessionStorageFallback = new Map();
@@ -610,6 +612,7 @@
   let state = "loading";
   let run = null;
   let resultDecisionCommitted = false;
+  let returnedToMain = false;
   let diamondPurchasePending = "";
   let diamondConfirmTimer = 0;
   let diamondConfirmDueAt = 0;
@@ -739,9 +742,39 @@
     return persistSave(save);
   }
 
+  function viewportBucket() {
+    const viewport = window.visualViewport;
+    const width = Math.round(viewport?.width || window.innerWidth || 0);
+    const height = Math.round(viewport?.height || window.innerHeight || 0);
+    if (width > height && height <= 500) return "short-landscape";
+    if (width >= 1000) return "desktop";
+    if (width >= 600) return "wide-phone";
+    return "phone";
+  }
+
+  function inputType(value) {
+    return ["pointer", "touch", "keyboard"].includes(value) ? value : "unknown";
+  }
+
+  function eventInputType(event) {
+    if (event?.pointerType === "touch") return "touch";
+    if (event?.pointerType) return "pointer";
+    if (event?.type?.startsWith("key") || event?.detail === 0) return "keyboard";
+    return "pointer";
+  }
+
   function track(name, data = {}) {
+    const payload = {
+      ...data,
+      game: GAME_ID,
+      game_version: GAME_VERSION,
+      interface_version: INTERFACE_VERSION,
+      locale: locale || "en",
+      viewport: viewportBucket(),
+      input_type: inputType(data.input_type || run?.lastInputType),
+    };
     if (window.WonderAnalytics && typeof window.WonderAnalytics.track === "function") {
-      window.WonderAnalytics.track(name, { game: GAME_ID, ...data });
+      window.WonderAnalytics.track(name, payload);
     }
   }
 
@@ -1233,7 +1266,7 @@
     window.setTimeout(align, 80);
   }
 
-  async function startRun() {
+  async function startRun(startInputType = "unknown", entryAction = "stage_card") {
     cancelFishingInput();
     clearDiamondPurchaseConfirmation();
     configureArena();
@@ -1270,6 +1303,7 @@
       bossShieldOpen: true,
       hazardFlash: 0,
       lastCatch: null,
+      lastInputType: inputType(startInputType),
       finished: false,
       lureUsed: save.lureReady,
       lureCharges: save.lureReady ? 1 : 0,
@@ -1300,7 +1334,11 @@
       nodes.retryBtn.disabled = false;
       focusPanel(nodes.gamePanel);
     }
-    track("game_start", { zone: zone.id });
+    if (returnedToMain) {
+      track("return_session", { source: "main_start", entry_action: entryAction, input_type: run.lastInputType });
+      returnedToMain = false;
+    }
+    track("game_start", { zone: zone.id, stage: zone.stage, entry_action: entryAction, input_type: run.lastInputType });
     playSound("start");
     canvas.focus({ preventScroll: true });
     restartFishingLoop();
@@ -1398,7 +1436,8 @@
     primaryResultAction.focus({ preventScroll: true });
     window.requestAnimationFrame(() => primaryResultAction.focus({ preventScroll: true }));
     playSound(won ? "win" : "wrong");
-    track("game_complete", { zone: run.zone.id, won, catches: run.catches, newFish: run.newFish, notes: run.notes, score: run.finalScore });
+    track("result", { zone: run.zone.id, stage: run.zone.stage, outcome: won ? "win" : "loss", catches: run.catches, newFish: run.newFish, notes: run.notes, input_type: run.lastInputType });
+    track("game_complete", { zone: run.zone.id, stage: run.zone.stage, outcome: won ? "win" : "loss", won, catches: run.catches, newFish: run.newFish, notes: run.notes, score: run.finalScore, input_type: run.lastInputType });
   }
 
   function pickHookFish() {
@@ -1453,7 +1492,7 @@
     nodes.hintText.textContent = hookedHint(run.hookFish);
     updateTensionGuide();
     updateSonarButton();
-    track("fish_hooked", { fish: run.hookFish.id, zone: run.zone.id });
+    track("fish_hooked", { fish: run.hookFish.id, zone: run.zone.id, stage: run.zone.stage, input_type: run.lastInputType });
     playSound("hit");
   }
 
@@ -1464,7 +1503,7 @@
     if (isNew) {
       save.album.push(id);
       run.newFish += 1;
-      track("album_unlock", { fish: id });
+      track("album_unlock", { fish: id, zone: run.zone.id, stage: run.zone.stage, input_type: run.lastInputType });
     }
     const points = caught.points + Math.round(run.zone.speed * 10) + (isNew ? 25 : 0);
     const notes = caught.notes + Math.floor(save.gear.bait / 2);
@@ -1707,7 +1746,7 @@
     updateTensionGuide();
     updateSonarButton();
     playSound("wrong");
-    track("line_break", { zone: run.zone.id });
+    track("line_break", { zone: run.zone.id, stage: run.zone.stage, input_type: run.lastInputType });
   }
 
   function missionTensionWindow(zone, elapsed = 0, gearValues = save.gear) {
@@ -2123,6 +2162,7 @@
     reclaimVisiblePlayerInteraction(evt);
     if (evt.isPrimary === false || (evt.button !== undefined && evt.button !== 0)) return;
     if (state !== "game" || !run) return;
+    run.lastInputType = eventInputType(evt);
     if (run.phase === "charging" && pointer.down) {
       evt.preventDefault();
       if (pointer.source === "keyboard") releaseCast();
@@ -2163,7 +2203,7 @@
       run.fishTimer = Math.max(0.45, 1.45 - run.castPower / 100);
       updateTensionGuide();
       updateSonarButton();
-      track("cast", { power: Math.round(run.castPower), zone: run.zone.id, fish: run.hookFish.id });
+      track("cast", { power: Math.round(run.castPower), zone: run.zone.id, stage: run.zone.stage, fish: run.hookFish.id, input_type: run.lastInputType });
       playSound("shoot");
     }
   }
@@ -2186,6 +2226,7 @@
 
   function startKeyboardCharge() {
     if (state !== "game" || !run || run.phase !== "aim") return;
+    run.lastInputType = "keyboard";
     pointer.down = true;
     pointer.id = null;
     pointer.source = "keyboard";
@@ -2200,6 +2241,7 @@
 
   function adjustKeyboardTension(delta) {
     if (state !== "game" || !run || run.phase !== "reel") return;
+    run.lastInputType = "keyboard";
     pointer.down = true;
     pointer.id = null;
     pointer.source = "keyboard";
@@ -2257,6 +2299,7 @@
     const canvasRect = canvas.getBoundingClientRect();
     const pct = Math.max(0, Math.min(1, (point.clientX - laneRect.left) / laneRect.width));
     pointer.source = "lane";
+    if (run) run.lastInputType = eventInputType(evt);
     pointer.tensionPct = pct * 100;
     pointer.x = pct * canvasRect.width;
     pointer.y = canvasRect.height * 0.86;
@@ -2301,7 +2344,7 @@
     armDiamondPurchaseConfirmation(diamondConfirmRemaining);
   }
 
-  function buyDiamondItem(type) {
+  function buyDiamondItem(type, actionInputType = "unknown") {
     const cost = type === "lure" ? lureCost : sonarCost;
     if ((type === "lure" && save.lureReady) || (type === "sonar" && save.sonarReady)) { clearDiamondPurchaseConfirmation(); return; }
     const balance = wallet().diamonds;
@@ -2330,10 +2373,10 @@
     saveProgress();
     renderMenu();
     playSound("coin");
-    track(type === "lure" ? "rare_lure_purchase" : "sonar_purchase", { cost });
+    track(type === "lure" ? "rare_lure_purchase" : "sonar_purchase", { cost, item: type, input_type: actionInputType });
   }
 
-  function upgradeGear(id, restoreFocus = false) {
+  function upgradeGear(id, restoreFocus = false, actionInputType = "unknown") {
     clearDiamondPurchaseConfirmation();
     const item = gear.find((g) => g.id === id);
     const level = Number(save.gear[id]) || 1;
@@ -2349,7 +2392,7 @@
     renderMenu();
     if (restoreFocus) restoreGearFocus(id);
     playSound("upgrade");
-    track("gear_upgrade", { gear: id, level: level + 1 });
+    track("gear_upgrade", { gear: id, level: level + 1, input_type: actionInputType });
   }
 
   function restoreGearFocus(id) {
@@ -2367,14 +2410,14 @@
     clearDiamondPurchaseConfirmation();
     selectedZone = zone.id;
     renderMenu();
-    startRun();
+    startRun(eventInputType(evt), "stage_card");
   });
   nodes.gearGrid.addEventListener("click", (evt) => {
     const btn = evt.target.closest("[data-gear]");
     if (!btn) return;
     const gearId = btn.dataset.gear;
     const restoreKeyboardFocus = evt.detail === 0;
-    upgradeGear(gearId, restoreKeyboardFocus);
+    upgradeGear(gearId, restoreKeyboardFocus, eventInputType(evt));
   });
   nodes.gearGrid.addEventListener("keydown", (event) => {
     const btn = event.target.closest("[data-gear]");
@@ -2384,7 +2427,7 @@
       event.stopPropagation();
       if (event.repeat) return;
       const gearId = btn.dataset.gear;
-      upgradeGear(gearId, true);
+      upgradeGear(gearId, true, "keyboard");
       return;
     }
     if (event.repeat && event.key === " ") event.preventDefault();
@@ -2398,7 +2441,9 @@
     focusPanel(nodes.stagePanel);
     focusSelectedZone();
   });
-  nodes.stageBackBtn.addEventListener("click", () => {
+  nodes.stageBackBtn.addEventListener("click", (event) => {
+    track("main_return", { from: state, input_type: eventInputType(event) });
+    returnedToMain = true;
     clearDiamondPurchaseConfirmation();
     playSound("click");
     state = "main";
@@ -2443,20 +2488,23 @@
       first.focus();
     }
   });
-  nodes.retryBtn.addEventListener("click", () => commitResultDecision(async () => {
-    await startRun();
+  nodes.retryBtn.addEventListener("click", (event) => commitResultDecision(async () => {
+    track("retry", { from: "result", zone: run?.zone?.id, stage: run?.zone?.stage, input_type: eventInputType(event) });
+    await startRun(eventInputType(event), "retry");
   }));
-  nodes.nextZoneBtn.addEventListener("click", () => commitResultDecision(async () => {
+  nodes.nextZoneBtn.addEventListener("click", (event) => commitResultDecision(async () => {
     const zoneIndex = run ? zones.indexOf(run.zone) : -1;
     const nextZone = zones[zoneIndex + 1];
     if (!nextZone || nextZone.stage > save.unlockedZone) return;
+    track("next_mission", { from: "result", from_zone: run?.zone?.id, to_zone: nextZone.id, from_stage: run?.zone?.stage, to_stage: nextZone.stage, input_type: eventInputType(event) });
     selectedZone = nextZone.id;
     save.selectedZone = selectedZone;
     saveProgress();
     renderMenu();
-    await startRun();
+    await startRun(eventInputType(event), "next_mission");
   }));
-  nodes.resultMenuBtn.addEventListener("click", () => commitResultDecision(() => {
+  nodes.resultMenuBtn.addEventListener("click", (event) => commitResultDecision(() => {
+    track("stages", { from: "result", zone: run?.zone?.id, stage: run?.zone?.stage, input_type: eventInputType(event) });
     playSound("click");
     state = "stage";
     showPanel("stage");
@@ -2497,9 +2545,9 @@
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
     });
   }
-  nodes.lureBtn.addEventListener("click", () => buyDiamondItem("lure"));
-  nodes.sonarPrepBtn.addEventListener("click", () => buyDiamondItem("sonar"));
-  nodes.sonarBtn.addEventListener("click", () => {
+  nodes.lureBtn.addEventListener("click", (event) => buyDiamondItem("lure", eventInputType(event)));
+  nodes.sonarPrepBtn.addEventListener("click", (event) => buyDiamondItem("sonar", eventInputType(event)));
+  nodes.sonarBtn.addEventListener("click", (event) => {
     if (!run || run.phase !== "aim" || !run.sonarReady) return;
     if (!run.hookFish) run.hookFish = pickHookFish();
     run.sonarReady = false;
@@ -2514,6 +2562,7 @@
       fish: run.hookFish.id,
       rarity: run.hookFish.rare ? "rare" : "common",
       behavior: run.hookFish.behavior,
+      input_type: eventInputType(event),
     });
   });
   nodes.localeSelect.addEventListener("change", () => {

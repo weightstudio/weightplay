@@ -58,7 +58,7 @@
   draw=drawResponsive;
   // v8 Growth instrumentation: expose only aggregate, privacy-safe funnel
   // fields; gameplay state, controls, pacing, and authored waves stay intact.
-  const ANALYTICS_GAME_VERSION="8",ANALYTICS_INTERFACE_VERSION="6";
+  const ANALYTICS_GAME_VERSION="10",ANALYTICS_INTERFACE_VERSION="6";
   let sessionHadBattle=false,inputType="unknown";
   function viewportBucket(){const width=window.innerWidth,height=window.innerHeight;if(width<=430&&height>=700)return"phone-portrait";if(width<=700&&height>=700)return"tablet-portrait";if(width>=700&&height<=500)return"short-landscape";return"desktop"}
   function track(eventName,details={}){window.WonderAnalytics?.track?.(eventName,{game_id:"alien-defender",game_version:`v${ANALYTICS_GAME_VERSION}`,interface_version:ANALYTICS_INTERFACE_VERSION,locale,viewport_bucket:viewportBucket(),input_type:details.input_type||inputType,wave:details.wave??wave,result_reason:details.result_reason||"not_applicable"})}
@@ -70,4 +70,10 @@
   document.addEventListener("keydown",()=>{inputType="keyboard"},{capture:true});
   document.addEventListener("click",event=>{const target=event.target instanceof Element?event.target.closest("#startBtn,#retryBtn,#restartBtn,#homeBtn,#battleBackBtn"):null;if(!target)return;if(target.id==="startBtn"||target.id==="retryBtn"||target.id==="restartBtn"){if(target.id==="retryBtn")track("retry",{result_reason:"result_retry"});if(target.id==="restartBtn")track("restart",{result_reason:"battle_restart"});if(target.id!=="restartBtn"){sessionHadBattle=true;track("game_start",{result_reason:target.id==="retryBtn"?"retry":"start"})}return}if(screen!=="battle"&&screen!=="result")return;const reason=target.id==="battleBackBtn"?"battle_back":"result_home";track("main_return",{result_reason:reason});if(sessionHadBattle){track("return_session",{result_reason:reason});sessionHadBattle=false}},{capture:true});
   if(window.__alienDefenderSmoke)window.__alienDefenderSmoke.finish=finish;
+  // v10 Director repair: make the Wave 2 -> 3 commitment readable without
+  // removing Wave 3 pressure; the second formation has less repeated friction.
+  const v8MakeWorld=makeWorld;
+  makeWorld=function(){const next=v8MakeWorld();if(wave===2){next.moveEvery=.62;next.enemies=next.enemies.filter((enemy,index)=>index%4!==3)}if(wave===3)next.moveEvery=.48;return next};
+  const v8TrackedUpdate=update;
+  update=function updateWithWaveTransitionCue(dt){const before=wave;v8TrackedUpdate(dt);if(screen==="battle"&&wave>before){world.shield=Math.max(world.shield,3);$("battleMessage").textContent=`${t("shield")} · ${t("wave")} ${wave}`}};
 })();

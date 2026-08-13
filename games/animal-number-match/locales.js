@@ -319,7 +319,7 @@ window.NUMBER_MATCH_LOCALES={
     "summary": "Effacez les paires de nombres dont la somme vaut dix et rangez le bosquet.",
     "start": "Jouer",
     "guideTitle": "Comment jouer",
-    "guideBody": "Choisissez deux nombres dont la somme vaut exactement 10. Ils doivent se toucher ou se voir à travers des cases vides.",
+    "guideBody": "Choisissez deux nombres qui totalisent dix. Ils doivent se toucher ou se voir à travers des cases vides, en ouvrant de nouvelles lignes de vue sur le plateau.",
     "choose": "CHOISISSEZ UN BOSQUET",
     "stageList": "Liste des niveaux",
     "open": "Ouvrir le bosquet",
