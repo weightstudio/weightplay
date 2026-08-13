@@ -557,6 +557,24 @@ button {
   padding: 4px;
   color: #8affe2;
   font-size: 13px;
+  transition: color 140ms ease, border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+}
+.feedback[data-cue="pickup-first"] {
+  color: #f1ffff;
+  border-color: #5ff4ff;
+  background: #07405ae8;
+  box-shadow: 0 0 18px #35e8ff88;
+}
+.feedback[data-cue="bridge-first"] {
+  color: #fff4bb;
+  border-color: #ffe176;
+  background: #513b12e8;
+  box-shadow: 0 0 18px #ffd45c88;
+}
+@media (prefers-reduced-motion: reduce) {
+  .feedback {
+    transition: none;
+  }
 }
 .modal-layer {
   position: absolute;

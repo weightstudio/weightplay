@@ -106,3 +106,8 @@ body.wp-logical-battle-active.is-game-playing #battleScreen .battle-canvas[data-
   .battle-actions button:not(.primary) span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .battle-actions img{width:52px!important;height:52px!important}
 }
+/* General Director P1: keep the authored objective and expose the current pack response beside it. */
+.objective-row span{min-width:0}
+.objective-row #objectiveText,.objective-row #objectivePlan{flex:1 1 38%}
+.objective-row #objectivePlan{color:#ffd978}
+.objective-row #currencyText{flex:0 0 auto}
