@@ -971,6 +971,24 @@ body.fruit-main .menu-poster {
   aspect-ratio: auto;
 }
 
+@media (max-width: 699px) {
+  /* Keep the main entry controls in the live viewport on narrow phones. */
+  body.fruit-main .menu-panel {
+    overflow-y: auto;
+  }
+
+  body.fruit-main .menu-panel > div {
+    height: auto;
+    grid-template-rows: auto auto auto auto;
+  }
+
+  body.fruit-main .menu-poster {
+    height: min(36vh, 280px);
+    min-height: 180px;
+    aspect-ratio: 1;
+  }
+}
+
 @media (min-width: 700px) {
   body.fruit-main .menu-panel {
     padding: 10px 0 2px;

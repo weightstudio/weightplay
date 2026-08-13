@@ -80,7 +80,9 @@
     upgradeCards: $("upgradeCards"),
     resultTitle: $("resultTitle"),
     resultScore: $("resultScore"),
+    resultScoreLabel: document.querySelector("[data-ui='resultScoreLabel']"),
     resultText: $("resultText"),
+    resultProgressText: $("resultProgressText"),
     resultPlanText: $("resultPlanText"),
     resultNextStageText: $("resultNextStageText"),
     loadingPanel: $("loadingPanel"),
@@ -417,6 +419,25 @@
   }).forEach(([code, labels]) => {
     text[code] ||= {};
     [text[code].resultNextStage, text[code].resultNextBoss] = labels;
+  });
+
+  Object.entries({
+    en: ["This run · Golden Keys Collected", "Lifetime Patrol Rank", "Campaign unlock"],
+    "zh-Hant": ["本次巡邏 · 收集到的金鑰", "累積巡守階級", "戰役解鎖進度"],
+    "zh-Hans": ["本次巡逻 · 收集到的金钥匙", "累计巡逻等级", "战役解锁进度"],
+    ja: ["今回のパトロール · 集めた金の鍵", "累計パトロールランク", "キャンペーン解放進行度"],
+    ko: ["이번 순찰 · 수집한 황금 열쇠", "누적 순찰 등급", "캠페인 해금 진행도"],
+    es: ["Esta partida · llaves doradas recogidas", "Rango de patrulla acumulado", "Desbloqueo de campaña"],
+    pt: ["Esta partida · chaves douradas coletadas", "Patrulha acumulada", "Desbloqueio da campanha"],
+    fr: ["Cette partie · clés dorées collectées", "Rang de patrouille cumulé", "Progression de campagne"],
+    de: ["Dieser Lauf · gesammelte Goldschlüssel", "Kumulativer Patrouillenrang", "Kampagnenfortschritt"],
+    it: ["Questa partita · chiavi dorate raccolte", "Grado pattuglia cumulato", "Sblocco della campagna"],
+    ru: ["Этот забег · собранные золотые ключи", "Накопленный ранг патруля", "Прогресс кампании"],
+    hi: ["इस गश्त में · एकत्रित सुनहरी चाबियाँ", "कुल गश्ती रैंक", "अभियान अनलॉक प्रगति"],
+    ar: ["هذه الجولة · المفاتيح الذهبية المجموعة", "رتبة الدورية التراكمية", "تقدم فتح الحملة"],
+  }).forEach(([code, labels]) => {
+    text[code] ||= {};
+    [text[code].resultRunObjective, text[code].resultLifetimeRank, text[code].resultCampaignUnlock] = labels;
   });
 
   const assetPaths = {
@@ -1875,6 +1896,7 @@
     const best = Math.max(previousBestKeys || 0, state.keys);
     nodes.resultTitle.textContent = stageCleared ? t("stageClear") : reason === "time" ? t("objectiveMissed") : t("runFailed");
     nodes.resultScore.textContent = String(state.keys);
+    nodes.resultScoreLabel.textContent = t("resultRunObjective");
     const objectiveLine = !stageCleared && reason === "time"
       ? t("objectiveMissedLine", { keys: state.stageConfig.targetKeys, boss: state.stageConfig.bossImage ? t("bossStillActive") : "" })
       : improved ? t("improved") : t("keepGoing");
@@ -1882,11 +1904,13 @@
     nodes.nextStageBtn.classList.remove("hidden");
     nodes.nextStageBtn.disabled = !stageCleared || state.stage >= STAGE_COUNT;
     const rank = patrolRankFor(save.totalKeys);
-    nodes.resultRankText.textContent = rank.index > previousRankIndex
+    const rankText = rank.index > previousRankIndex
       ? t("patrolRankUp", { rank: t(rank.current.name) })
       : rank.next
         ? t("patrolRankNext", { current: rank.total, target: rank.next.threshold, rank: t(rank.next.name) })
         : t("patrolRankComplete", { current: rank.total });
+    nodes.resultRankText.textContent = `${t("resultLifetimeRank")}: ${rankText}`;
+    nodes.resultProgressText.textContent = `${t("resultCampaignUnlock")}: ${t("mainProgress", { cleared: save.completedStages.length })}`;
     nodes.resultPlanText.textContent = resultPlan(reason);
     nodes.resultNextStageText.textContent = stageCleared && state.stage < STAGE_COUNT ? nextStageCheckpointPlan() : "";
   }

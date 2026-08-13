@@ -1108,10 +1108,10 @@
     document.querySelectorAll(".floating").forEach((bubble) => bubble.remove());
   }
 
-  function showFloatingText(message, variant = "") {
+  function showFloatingText(message) {
     clearFloatingText();
     const bubble = document.createElement("div");
-    bubble.className = `floating ${variant}`.trim();
+    bubble.className = "floating";
     bubble.setAttribute("role", "status");
     bubble.setAttribute("aria-live", "polite");
     bubble.textContent = message;
@@ -1848,6 +1848,12 @@
     nodes.spawnWarning.className = "spawn-warning hidden";
     nodes.spawnWarning.setAttribute("aria-hidden", "true");
     nodes.yardBoard.appendChild(nodes.spawnWarning);
+    nodes.lanePressureAlert = document.createElement("div");
+    nodes.lanePressureAlert.className = "lane-pressure-alert hidden";
+    nodes.lanePressureAlert.setAttribute("role", "status");
+    nodes.lanePressureAlert.setAttribute("aria-live", "polite");
+    nodes.lanePressureAlert.setAttribute("aria-atomic", "true");
+    nodes.yardBoard.appendChild(nodes.lanePressureAlert);
     for (let row = 0; row < stage.rows; row += 1) {
       for (let col = 0; col < stage.cols; col += 1) {
         const cell = document.createElement("button");
@@ -1962,7 +1968,12 @@
     track("guard_placed", { placement_number: guardPlacements });
     if (guardPlacements === 1) {
       track("first_guard_placed");
-      showFloatingText(lanePressureMessage(), "lane-pressure");
+      if (nodes.lanePressureAlert) {
+        nodes.lanePressureAlert.textContent = lanePressureMessage();
+        const pressureRow = Number(nextSpawnPlan?.row) || 0;
+        nodes.lanePressureAlert.classList.toggle("is-low-lane", pressureRow < stages[currentStage].rows / 2);
+        nodes.lanePressureAlert.classList.remove("hidden");
+      }
     }
     updateEntityElement(guard);
     pulseClass(guard.el, "is-placed", 420);

@@ -201,13 +201,14 @@
         <p id="hintText" class="hint-text" data-ui="playHint">Goal: collect golden keys before 3:00. Grab crystals to level up, then choose upgrades when the cards appear.</p>
         </div>
         <div id="resultHost" class="result-host">
-        <section id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText resultPlanText resultNextStageText">
+          <section id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText resultRankText resultProgressText resultPlanText resultNextStageText">
           <div class="result-card">
             <strong id="resultTitle" data-result-title>Run Complete</strong>
             <div id="resultScore" class="result-score" data-result-stat>0</div>
-            <small class="result-score-label" data-ui="resultScoreLabel">Golden Keys Collected</small>
+            <small class="result-score-label" data-ui="resultScoreLabel">This run · Golden Keys Collected</small>
             <p id="resultText" data-result-description></p>
             <p id="resultRankText" class="result-rank-text"></p>
+            <p id="resultProgressText" class="result-progress-text"></p>
             <div class="result-plan">
               <strong data-ui="resultPlanTitle">Next run plan</strong>
               <p id="resultPlanText"></p>
@@ -274,7 +275,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="game.js?v=20260813-crystal-v17-result-checkpoint"></script>
+    <script src="game.js?v=20260814-crystal-v18-progress-ownership"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260808-play-lock1" data-wp-battle-standard></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>

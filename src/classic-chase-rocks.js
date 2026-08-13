@@ -185,12 +185,13 @@
   }
   function mazeSetDirection(direction) { if (gameId !== "maze" || !state.running) return; state.maze.player.next = direction; tone(280, 0.025, "triangle", 0.018); }
   function mazeStepPlayer() {
-    const maze = state.maze; const player = maze.player; const next = DIRS[player.next]; const current = DIRS[player.dir];
+    const maze = state.maze; const player = maze.player; const next = DIRS[player.next];
     if (mazeCanMove(player.x + next.x, player.y + next.y)) player.dir = player.next;
+    const current = DIRS[player.dir];
     if (mazeCanMove(player.x + current.x, player.y + current.y)) { player.x += current.x; player.y += current.y; }
     const key = `${player.x},${player.y}`;
     if (maze.pellets.delete(key)) { state.score += maze.power > 0 ? 20 : 10; tone(620, 0.04, "sine", 0.025); }
-    if (maze.beacons.has(key)) { maze.beacons.delete(key); maze.power = 9000; maze.combo = 0; state.score += 50; tone(880, 0.16, "square", 0.035); setMessage(tr("powerReady"), "success"); }
+    if (maze.beacons.has(key)) { maze.beacons.delete(key); maze.power = 45000; maze.combo = 0; state.score += 50; tone(880, 0.16, "square", 0.035); setMessage(tr("powerReady"), "success"); }
     if (!maze.pellets.size) {
       if (state.level >= 3) finish(true, { stage: state.level });
       else { state.level += 1; mazeResetStage(); setMessage(tr("clear"), "success"); tone(980, 0.2, "triangle", 0.035); }
@@ -218,7 +219,7 @@
   }
   function updateMaze(dt) {
     const maze = state.maze; maze.power = Math.max(0, maze.power - dt * 1000); maze.player.grace = Math.max(0, (maze.player.grace || 0) - dt * 1000); maze.moveClock += dt * 1000; maze.enemyClock += dt * 1000;
-    const playerRate = Math.max(72, 126 - state.level * 10); const enemyRate = Math.max(260, 1600 - state.level * 300);
+    const playerRate = Math.max(72, 126 - state.level * 10); const enemyRate = Math.max(2200, 9000 - state.level * 1800);
     while (maze.moveClock >= playerRate) { maze.moveClock -= playerRate; mazeStepPlayer(); if (!state.running) return; }
     while (maze.enemyClock >= enemyRate) { maze.enemyClock -= enemyRate; mazeEnemyStep(); if (!state.running) return; }
     updateHud(); drawMaze();

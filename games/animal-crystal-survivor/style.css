@@ -907,6 +907,18 @@ canvas {
   line-height: 1.3;
 }
 
+.result-progress-text {
+  margin: 0;
+  padding: 7px 10px;
+  border: 1px solid rgba(183, 244, 215, 0.24);
+  border-radius: 8px;
+  color: #d9f99d;
+  background: rgba(183, 244, 215, 0.08);
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.3;
+}
+
 .result-plan {
   display: grid;
   gap: 6px;

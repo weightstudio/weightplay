@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "animal-orb-fortress";
-  const GAME_VERSION = "v17";
+  const GAME_VERSION = "v18";
   const saveKey = "weightplay_animal_orb_fortress_v1";
   const localeKey = "weightPlayLocale";
   let W = 960;
@@ -2346,12 +2346,12 @@
     const shieldLevel = save.rooms.shield || 0;
     const shieldCost = roomCost("shield");
     const recoveryPreview = !win && shieldLevel < 5 && save.starStones >= shieldCost
-      ? ` ${t("upgradeRoomLabel", {
-        name: t("roomShield"),
-        level: shieldLevel + 1,
-        cost: shieldCost,
-        effect: t("roomShieldDesc"),
-      })}`
+      ? ` ${t("fortressWorkshop")}: ${t("upgradeRoomLabel", {
+          name: t("roomShield"),
+          level: shieldLevel + 1,
+          cost: shieldCost,
+          effect: t("roomShieldDesc"),
+        })}`
       : "";
     nodes.raidPlanText.textContent = win
       ? `${t("raidPlanWin")}${hasNextStage ? ` ${nextRaidPreviewText(state.raidTier + 1)}` : ""}`

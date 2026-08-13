@@ -67,6 +67,8 @@
     let suppressClick = false;
     let rebuilding = false;
     let rebuildQueued = false;
+    let previousScrollBehavior = "";
+    let previousSnapType = "";
     const sourceStore = document.createElement("div");
     sourceStore.hidden = true;
     sourceStore.setAttribute("aria-hidden", "true");
@@ -96,6 +98,15 @@
         wpStageWindowEnd: String(windowStart + pool.length - 1),
         wpStageDragLogical: logical.toFixed(4),
       });
+    }
+
+    function restoreRailStyles() {
+      if (previousScrollBehavior) rail.style.setProperty("scroll-behavior", previousScrollBehavior);
+      else rail.style.removeProperty("scroll-behavior");
+      if (previousSnapType) rail.style.setProperty("scroll-snap-type", previousSnapType);
+      else rail.style.removeProperty("scroll-snap-type");
+      rail.classList.remove("wp-stage-drag-ready", "wp-stage-dragging");
+      delete rail.dataset.wpDragDown;
     }
 
     function syncCurrent() {
@@ -132,16 +143,36 @@
       while (windowStart < target) {
         const card = rail.firstElementChild;
         if (!card || !pool.includes(card)) break;
+        const anchor = card.nextElementSibling;
+        const before = anchor?.getBoundingClientRect().left;
         windowStart += 1;
         rail.append(card);
         pool.push(pool.shift());
+        const after = anchor?.getBoundingClientRect().left;
+        const railRect = rail.getBoundingClientRect();
+        const coordinateScale = rail.clientWidth > 0 && railRect.width > 0
+          ? railRect.width / rail.clientWidth
+          : 1;
+        if (Number.isFinite(before) && Number.isFinite(after)) {
+          rail.scrollLeft += (after - before) / coordinateScale;
+        }
       }
       while (windowStart > target) {
         const card = rail.lastElementChild;
         if (!card || !pool.includes(card)) break;
+        const anchor = card.previousElementSibling;
+        const before = anchor?.getBoundingClientRect().left;
         windowStart -= 1;
         rail.prepend(card);
         pool.unshift(pool.pop());
+        const after = anchor?.getBoundingClientRect().left;
+        const railRect = rail.getBoundingClientRect();
+        const coordinateScale = rail.clientWidth > 0 && railRect.width > 0
+          ? railRect.width / rail.clientWidth
+          : 1;
+        if (Number.isFinite(before) && Number.isFinite(after)) {
+          rail.scrollLeft += (after - before) / coordinateScale;
+        }
       }
       rebuilding = false;
       bindPool();
@@ -150,16 +181,31 @@
 
     function position(value, center = true) {
       logical = clamp(Number(value) || 0, 0, Math.max(0, total - 1));
-      const targetStart = clamp(Math.round(logical) - Math.floor(pool.length / 2), 0, stageWindowLimit());
+      const targetIndex = Math.round(logical);
+      const targetStart = clamp(targetIndex - Math.floor(pool.length / 2), 0, stageWindowLimit());
       moveWindow(targetStart);
-      const target = pool.find((card) => Number(card.dataset.wpStageVirtualIndex) === Math.round(logical));
+      const target = pool.find((card) => Number(card.dataset.wpStageVirtualIndex) === targetIndex);
       if (center && target) {
         const railRect = rail.getBoundingClientRect();
         const cardRect = target.getBoundingClientRect();
         const coordinateScale = rail.clientWidth > 0 && railRect.width > 0
           ? railRect.width / rail.clientWidth
           : 1;
-        rail.scrollLeft += (cardRect.left + cardRect.width / 2 - (railRect.left + railRect.width / 2)) / coordinateScale;
+        const fraction = logical - targetIndex;
+        const neighbor = pool.find((card) => Number(card.dataset.wpStageVirtualIndex) === targetIndex + (fraction < 0 ? -1 : 1));
+        const neighborRect = neighbor?.getBoundingClientRect();
+        const step = neighborRect
+          ? Math.abs((neighborRect.left + neighborRect.width / 2) - (cardRect.left + cardRect.width / 2))
+          : cardRect.width;
+        // Keep the live fractional position under the pointer. Solve for the
+        // target card's desired offset instead of adding the full fraction on
+        // every move; repeated absolute additions make the rail accelerate.
+        const currentOffset = cardRect.left + cardRect.width / 2 - (railRect.left + railRect.width / 2);
+        const desiredOffset = -fraction * step;
+        rail.scrollLeft += (currentOffset - desiredOffset) / coordinateScale;
+        if (!Number.isFinite(rail.scrollLeft)) {
+          rail.scrollLeft = 0;
+        }
       }
       rail.dataset.wpStageDragLogical = logical.toFixed(4);
       syncCurrent();
@@ -276,7 +322,10 @@
       touchIdentifier = null;
       pointerMoveObserved = false;
       touchFallbackUsed = false;
-      if (!moved) return;
+      if (!moved) {
+        restoreRailStyles();
+        return;
+      }
       moved = false;
       suppressClick = true;
       setTimeout(() => { suppressClick = false; }, 0);
@@ -296,6 +345,7 @@
             detail: { index: target, card: sources[target] || null },
           }));
           options.onSettle?.(target, sources[target]);
+          restoreRailStyles();
         }
       };
       cancelAnimationFrame(settlingFrame);
@@ -312,6 +362,11 @@
       pointerMoveObserved = false;
       touchFallbackUsed = false;
       moved = false;
+      previousScrollBehavior = rail.style.getPropertyValue("scroll-behavior");
+      previousSnapType = rail.style.getPropertyValue("scroll-snap-type");
+      rail.style.setProperty("scroll-behavior", "auto", "important");
+      rail.style.setProperty("scroll-snap-type", "none", "important");
+      rail.dataset.wpDragDown = "1";
       rail.classList.add("wp-stage-drag-ready");
       event.stopImmediatePropagation();
     }, true);
@@ -321,6 +376,11 @@
       if (!moved && Math.abs(clientX - pointerStart) > 4) {
         moved = true;
         rail.classList.add("wp-stage-dragging");
+        try {
+          rail.setPointerCapture?.(event.pointerId);
+        } catch {
+          // A cancelled or synthetic pointer may not own capture.
+        }
       }
       if (!moved) return;
       if (event.cancelable) event.preventDefault();
@@ -347,6 +407,11 @@
       pointerMoveObserved = false;
       touchFallbackUsed = false;
       moved = false;
+      previousScrollBehavior = rail.style.getPropertyValue("scroll-behavior");
+      previousSnapType = rail.style.getPropertyValue("scroll-snap-type");
+      rail.style.setProperty("scroll-behavior", "auto", "important");
+      rail.style.setProperty("scroll-snap-type", "none", "important");
+      rail.dataset.wpDragDown = "1";
       rail.classList.add("wp-stage-drag-ready");
       event.stopImmediatePropagation();
     }, { capture: true, passive: false });
