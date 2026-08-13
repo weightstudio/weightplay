@@ -56,4 +56,18 @@
     const p=world.player;ctx.save();ctx.translate(mapX(p.x),mapY(625));ctx.fillStyle=world.flash>0?"#fff":"#74e6ee";ctx.beginPath();ctx.moveTo(0,-32);ctx.lineTo(30,25);ctx.lineTo(0,16);ctx.lineTo(-30,25);ctx.closePath();ctx.fill();ctx.fillStyle="#ffd47c";ctx.beginPath();ctx.arc(0,-3,8,0,Math.PI*2);ctx.fill();if(world.shield>0){ctx.strokeStyle="#74e6eeaa";ctx.lineWidth=4;ctx.beginPath();ctx.arc(0,0,45,0,Math.PI*2);ctx.stroke()}ctx.restore();ctx.restore()
   }
   draw=drawResponsive;
+  // v8 Growth instrumentation: expose only aggregate, privacy-safe funnel
+  // fields; gameplay state, controls, pacing, and authored waves stay intact.
+  const ANALYTICS_GAME_VERSION="8",ANALYTICS_INTERFACE_VERSION="6";
+  let sessionHadBattle=false,inputType="unknown";
+  function viewportBucket(){const width=window.innerWidth,height=window.innerHeight;if(width<=430&&height>=700)return"phone-portrait";if(width<=700&&height>=700)return"tablet-portrait";if(width>=700&&height<=500)return"short-landscape";return"desktop"}
+  function track(eventName,details={}){window.WonderAnalytics?.track?.(eventName,{game_id:"alien-defender",game_version:`v${ANALYTICS_GAME_VERSION}`,interface_version:ANALYTICS_INTERFACE_VERSION,locale,viewport_bucket:viewportBucket(),input_type:details.input_type||inputType,wave:details.wave??wave,result_reason:details.result_reason||"not_applicable"})}
+  const originalFinish=finish;
+  finish=function finishWithGrowthTracking(win){if(win)track("wave_clear",{wave:3,result_reason:"formation_cleared"});track("result",{wave,result_reason:win?"waves_cleared":"defense_line_or_lives"});originalFinish(win)};
+  const originalUpdate=update;
+  update=function updateWithGrowthTracking(dt){const beforeWave=wave,beforeLives=world?.lives??null,beforeEnemies=world?.enemies?.filter((enemy)=>enemy.alive).length??null;originalUpdate(dt);const afterLives=world?.lives??null,afterEnemies=world?.enemies?.filter((enemy)=>enemy.alive).length??null;if(beforeEnemies!==null&&afterEnemies!==null&&afterEnemies<beforeEnemies)for(let i=0;i<beforeEnemies-afterEnemies;i++)track("hit_result",{wave:beforeWave,result_reason:"hit"});if(beforeLives!==null&&afterLives!==null&&afterLives<beforeLives)for(let i=0;i<beforeLives-afterLives;i++)track("life_lost",{wave:beforeWave,result_reason:"enemy_projectile"});if(wave>beforeWave)track("wave_clear",{wave:beforeWave,result_reason:"formation_cleared"})};
+  document.addEventListener("pointerdown",()=>{inputType="pointer"},{capture:true});
+  document.addEventListener("keydown",()=>{inputType="keyboard"},{capture:true});
+  document.addEventListener("click",event=>{const target=event.target instanceof Element?event.target.closest("#startBtn,#retryBtn,#restartBtn,#homeBtn,#battleBackBtn"):null;if(!target)return;if(target.id==="startBtn"||target.id==="retryBtn"||target.id==="restartBtn"){if(target.id==="retryBtn")track("retry",{result_reason:"result_retry"});if(target.id==="restartBtn")track("restart",{result_reason:"battle_restart"});if(target.id!=="restartBtn"){sessionHadBattle=true;track("game_start",{result_reason:target.id==="retryBtn"?"retry":"start"})}return}if(screen!=="battle"&&screen!=="result")return;const reason=target.id==="battleBackBtn"?"battle_back":"result_home";track("main_return",{result_reason:reason});if(sessionHadBattle){track("return_session",{result_reason:reason});sessionHadBattle=false}},{capture:true});
+  if(window.__alienDefenderSmoke)window.__alienDefenderSmoke.finish=finish;
 })();
