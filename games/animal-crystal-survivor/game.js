@@ -345,19 +345,19 @@
   text["zh-Hant"].mainStart = "\u958b\u59cb\u904a\u6232";
   text.es.mainStart = "Comenzar juego";
   Object.assign(text, {
-    en: { ...text.en, hintFirstKey: "Move toward the glowing golden key to start your patrol route." },
-    "zh-Hant": { ...text["zh-Hant"], hintFirstKey: "朝發光的金鑰移動，開始你的巡邏路線。" },
-    "zh-Hans": { ...text["zh-Hans"], hintFirstKey: "朝发光的金钥匙移动，开始你的巡逻路线。" },
-    ja: { ...text.ja, hintFirstKey: "光る金の鍵へ移動して、巡回ルートを始めましょう。" },
-    ko: { ...text.ko, hintFirstKey: "빛나는 황금 열쇠를 향해 움직여 첫 순찰 경로를 시작하세요." },
-    es: { ...text.es, hintFirstKey: "Muévete hacia la llave dorada brillante para iniciar tu ruta de patrulla." },
-    "pt-BR": { ...text["pt-BR"], hintFirstKey: "Mova-se em direção à chave dourada brilhante para iniciar sua rota de patrulha." },
-    fr: { ...text.fr, hintFirstKey: "Avancez vers la clé dorée lumineuse pour commencer votre route de patrouille." },
-    de: { ...text.de, hintFirstKey: "Bewege dich zum leuchtenden goldenen Schlüssel, um deine Patrouillenroute zu beginnen." },
-    it: { ...text.it, hintFirstKey: "Muoviti verso la chiave dorata luminosa per iniziare il tuo percorso di pattuglia." },
-    ru: { ...text.ru, hintFirstKey: "Двигайтесь к сияющему золотому ключу, чтобы начать маршрут патруля." },
-    hi: { ...text.hi, hintFirstKey: "गश्ती मार्ग शुरू करने के लिए चमकती सुनहरी चाबी की ओर बढ़ें।" },
-    ar: { ...text.ar, hintFirstKey: "تحرك نحو المفتاح الذهبي المتوهج لبدء مسار دوريتك." },
+    en: { ...text.en, hintFirstKey: "Tap or drag inside the playfield toward the glowing golden key; rotate to portrait for a larger touch field." },
+    "zh-Hant": { ...text["zh-Hant"], hintFirstKey: "點按或拖曳遊戲區，朝發光的金鑰移動；轉為直向可獲得更大的觸控範圍。" },
+    "zh-Hans": { ...text["zh-Hans"], hintFirstKey: "点按或拖曳游戏区，朝发光的金钥匙移动；转为竖向可获得更大的触控范围。" },
+    ja: { ...text.ja, hintFirstKey: "プレイフィールドをタップまたはドラッグして光る金の鍵へ移動。縦向きにするとタッチ範囲が広がります。" },
+    ko: { ...text.ko, hintFirstKey: "플레이 영역을 탭하거나 드래그해 빛나는 황금 열쇠로 이동하세요. 세로 화면이면 터치 영역이 더 넓어집니다." },
+    es: { ...text.es, hintFirstKey: "Toca o arrastra dentro del campo hacia la llave dorada brillante; gira a vertical para tener más espacio táctil." },
+    "pt-BR": { ...text["pt-BR"], hintFirstKey: "Toque ou arraste dentro do campo até a chave dourada brilhante; vire para retrato para ter mais área de toque." },
+    fr: { ...text.fr, hintFirstKey: "Touchez ou faites glisser dans l’aire de jeu vers la clé dorée lumineuse ; passez en portrait pour agrandir la zone tactile." },
+    de: { ...text.de, hintFirstKey: "Tippe oder ziehe im Spielfeld zum leuchtenden Goldschlüssel; im Hochformat ist die Touchfläche größer." },
+    it: { ...text.it, hintFirstKey: "Tocca o trascina nell’area di gioco verso la chiave dorata luminosa; passa al ritratto per una zona touch più ampia." },
+    ru: { ...text.ru, hintFirstKey: "Коснитесь или перетащите внутри игрового поля к сияющему золотому ключу; портретная ориентация расширит зону касания." },
+    hi: { ...text.hi, hintFirstKey: "प्लेफ़ील्ड के अंदर टैप या ड्रैग करके चमकती सुनहरी चाबी की ओर जाएँ; बड़े टच क्षेत्र के लिए पोर्ट्रेट मोड करें।" },
+    ar: { ...text.ar, hintFirstKey: "المس أو اسحب داخل ساحة اللعب نحو المفتاح الذهبي المتوهج؛ حوّل الشاشة للوضع الطولي لتكبير مساحة اللمس." },
   });
   text.es.resultPlanTitle = "Plan para la siguiente partida";
   text.es.resultPlanStrong = "Ruta: sigue rodeando la arboleda, recoge cada llave y sal antes de que se cierren las zonas de aviso.";
@@ -782,6 +782,7 @@
   function makeState() {
     const stageNumber = Math.max(1, Math.min(STAGE_COUNT, Number(save?.selectedStage) || 1));
     const player = makePlayer();
+    const randomKey = randomPoint(120);
     return {
       mode: "menu",
       stage: stageNumber,
@@ -797,7 +798,7 @@
       survived: 0,
       spawnTimer: 0.95,
       spawnCount: 0,
-      key: randomPoint(120),
+      key: stageNumber === 1 ? firstKeyPoint(player, randomKey) : randomKey,
       enemies: [],
       xpDrops: [],
       shots: [],
@@ -814,6 +815,15 @@
 
   function randomPoint(pad = 70) {
     return { x: pad + Math.random() * (W - pad * 2), y: pad + Math.random() * (H - pad * 2) };
+  }
+
+  function firstKeyPoint(player, candidate) {
+    const camera = cameraTargetFor(player);
+    const padding = 90;
+    return {
+      x: Math.min(camera.x + CAMERA_VIEW_WIDTH - padding, Math.max(camera.x + padding, candidate.x)),
+      y: Math.min(camera.y + CAMERA_VIEW_HEIGHT - padding, Math.max(camera.y + padding, candidate.y)),
+    };
   }
 
   function image(src) {
