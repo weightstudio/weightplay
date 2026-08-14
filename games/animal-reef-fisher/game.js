@@ -6,7 +6,7 @@
   document.querySelector(".battle-shell")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-reef-fisher";
-  const GAME_VERSION = 16;
+  const GAME_VERSION = 17;
   const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_animal_reef_fisher_v1";
   const localeKey = "weightPlayLocale";
@@ -116,6 +116,7 @@
     runValueText: $("runValueText"),
     lastCatchText: $("lastCatchText"),
     resultAdviceText: $("resultAdviceText"),
+    resultBuildCue: $("resultBuildCue"),
     resultMissionPreview: $("resultMissionPreview"),
   };
 
@@ -401,6 +402,74 @@
     ru: { ...text.ru, gearEffectRod: "Больше прогресса поимки, пока рыба остаётся в БЕЗОПАСНОЙ зоне.", gearEffectReel: "Маркер лески быстрее реагирует на управление натяжением.", gearEffectLine: "Расширяет БЕЗОПАСНУЮ зону и даёт больше запаса до обрыва лески.", gearEffectBait: "Повышает прогресс поимки и число Рифовых заметок за улов.", gearEffectBoat: "Добавляет 5 секунд к каждой экспедиции за каждый уровень выше 1.", gearEffectScan: "Расширяет ранний список рыб на один вид за уровень." },
     hi: { ...text.hi, gearEffectRod: "मछली के SAFE में रहने पर पकड़ने की प्रगति बढ़ती है।", gearEffectReel: "तनाव नियंत्रण पर लाइन मार्कर तेज़ी से प्रतिक्रिया देता है।", gearEffectLine: "SAFE तनाव क्षेत्र चौड़ा होता है और लाइन टूटने से पहले अधिक गुंजाइश मिलती है।", gearEffectBait: "पकड़ने की प्रगति और हर कैच से मिलने वाले Reef Notes बढ़ते हैं।", gearEffectBoat: "लेवल 1 से ऊपर हर लेवल पर हर अभियान में 5 सेकंड जुड़ते हैं।", gearEffectScan: "हर लेवल पर शुरुआती मछली पूल में एक प्रजाति जुड़ती है।" },
     ar: { ...text.ar, gearEffectRod: "تزداد وتيرة الصيد ما دامت السمكة داخل المنطقة الآمنة.", gearEffectReel: "يستجيب مؤشر الخيط أسرع لتحكمك في الشد.", gearEffectLine: "توسّع نطاق الأمان وتمنح هامشًا أكبر قبل انقطاع الخيط.", gearEffectBait: "تزيد تقدم الصيد وملاحظات الشعاب المكتسبة من كل صيد.", gearEffectBoat: "تضيف 5 ثوانٍ إلى كل رحلة لكل مستوى فوق المستوى 1.", gearEffectScan: "توسّع مجموعة الأسماك المبكرة بنوع واحد لكل مستوى." },
+  });
+
+  Object.assign(text, {
+    en: { ...text.en,
+      resultBuildCueDanger: "You earned {notes} Reef Notes. About {percent}% of line-control time was outside SAFE; invest in Reel Control or Line Durability next.",
+      resultBuildCueSafe: "You earned {notes} Reef Notes. Tension stayed mostly SAFE; invest in Rod Strength or Bait Quality when the clock is tight.",
+      resultBuildCueNoCatch: "You earned {notes} Reef Notes. No fish reached the reel this time; try a fuller cast, then consider Rod Strength or Bait Quality if the clock stays tight.",
+    },
+    "zh-Hant": { ...text["zh-Hant"],
+      resultBuildCueDanger: "本次獲得 {notes} 份礁石筆記；約有 {percent}% 的收線時間在安全區外。下一步可投資捲線控制或魚線耐久。",
+      resultBuildCueSafe: "本次獲得 {notes} 份礁石筆記；張力大多維持在安全區。時間吃緊時，可投資釣竿強度或魚餌品質。",
+      resultBuildCueNoCatch: "本次獲得 {notes} 份礁石筆記；這次沒有魚進入收線階段。先提高拋竿蓄力，若時間仍吃緊，可考慮釣竿強度或魚餌品質。",
+    },
+    "zh-Hans": { ...text["zh-Hans"],
+      resultBuildCueDanger: "本次获得 {notes} 份礁石笔记；约有 {percent}% 的收线时间在安全区外。下一步可投资卷线控制或鱼线耐久。",
+      resultBuildCueSafe: "本次获得 {notes} 份礁石笔记；张力大多保持在安全区。时间紧张时，可投资钓竿强度或鱼饵品质。",
+      resultBuildCueNoCatch: "本次获得 {notes} 份礁石笔记；这次没有鱼进入收线阶段。先提高抛竿蓄力，若时间仍紧张，可考虑钓竿强度或鱼饵品质。",
+    },
+    ja: { ...text.ja,
+      resultBuildCueDanger: "今回 {notes} 枚のリーフノートを獲得しました。ライン操作時間の約 {percent}% がSAFE外でした。次はリール操作かライン耐久に投資しましょう。",
+      resultBuildCueSafe: "今回 {notes} 枚のリーフノートを獲得しました。張力はほぼSAFEでした。時間が厳しいときはロッド強度かベイト品質に投資しましょう。",
+      resultBuildCueNoCatch: "今回 {notes} 枚のリーフノートを獲得しました。今回はリール段階まで魚が進みませんでした。まず強めにキャストし、時間が厳しければロッド強度かベイト品質を検討しましょう。",
+    },
+    ko: { ...text.ko,
+      resultBuildCueDanger: "이번에 Reef Notes {notes}개를 얻었습니다. 줄 조작 시간의 약 {percent}%가 SAFE 밖이었습니다. 다음에는 릴 조절이나 줄 내구도에 투자하세요.",
+      resultBuildCueSafe: "이번에 Reef Notes {notes}개를 얻었습니다. 장력은 대부분 SAFE에 있었습니다. 시간이 빠듯할 때는 낚싯대 강도나 미끼 품질에 투자하세요.",
+      resultBuildCueNoCatch: "이번에 Reef Notes {notes}개를 얻었습니다. 이번에는 물고기가 릴 단계까지 오지 않았습니다. 먼저 더 강하게 캐스팅하고, 시간이 빠듯하면 낚싯대 강도나 미끼 품질을 고려하세요.",
+    },
+    es: { ...text.es,
+      resultBuildCueDanger: "Ganaste {notes} Notas del Arrecife. Cerca del {percent}% del tiempo de control estuvo fuera de SEGURA; mejora el control del carrete o la resistencia de línea.",
+      resultBuildCueSafe: "Ganaste {notes} Notas del Arrecife. La tensión estuvo casi siempre en SEGURA; mejora la fuerza de caña o la calidad del cebo si el reloj aprieta.",
+      resultBuildCueNoCatch: "Ganaste {notes} Notas del Arrecife. Esta vez ningún pez llegó al carrete; prueba un lanzamiento más fuerte y considera mejorar la caña o el cebo si falta tiempo.",
+    },
+    fr: { ...text.fr,
+      resultBuildCueDanger: "Vous avez gagné {notes} Notes du récif. Environ {percent} % du temps de contrôle était hors de la zone sûre ; améliorez le contrôle du moulinet ou la résistance de la ligne.",
+      resultBuildCueSafe: "Vous avez gagné {notes} Notes du récif. La tension est restée presque toujours dans la zone sûre ; améliorez la canne ou l’appât si le temps manque.",
+      resultBuildCueNoCatch: "Vous avez gagné {notes} Notes du récif. Aucun poisson n’a atteint le moulinet cette fois ; lancez plus fort, puis pensez à la canne ou à l’appât si le temps manque.",
+    },
+    de: { ...text.de,
+      resultBuildCueDanger: "Du hast {notes} Riff-Notizen verdient. Etwa {percent}% der Leinenkontrolle lag außerhalb des sicheren Bereichs; verbessere als Nächstes Rollensteuerung oder Leinenhaltbarkeit.",
+      resultBuildCueSafe: "Du hast {notes} Riff-Notizen verdient. Die Spannung blieb meist im sicheren Bereich; verbessere bei Zeitdruck Rutenstärke oder Köderqualität.",
+      resultBuildCueNoCatch: "Du hast {notes} Riff-Notizen verdient. Diesmal erreichte kein Fisch die Einholphase; wirf stärker aus und erwäge bei Zeitdruck Rutenstärke oder Köderqualität.",
+    },
+    it: { ...text.it,
+      resultBuildCueDanger: "Hai ottenuto {notes} Note della barriera. Circa il {percent}% del tempo di controllo è stato fuori da SICURA; investi nel controllo del mulinello o nella resistenza della lenza.",
+      resultBuildCueSafe: "Hai ottenuto {notes} Note della barriera. La tensione è rimasta quasi sempre in SICURA; se il tempo stringe, investi nella forza della canna o nella qualità dell'esca.",
+      resultBuildCueNoCatch: "Hai ottenuto {notes} Note della barriera. Questa volta nessun pesce è arrivato alla fase di recupero; lancia più forte e valuta canna o esca se il tempo stringe.",
+    },
+    "pt-BR": { ...text["pt-BR"],
+      resultBuildCueDanger: "Você ganhou {notes} Notas do Recife. Cerca de {percent}% do tempo de controle da linha ficou fora de SEGURA; invista no controle da carretilha ou na durabilidade da linha.",
+      resultBuildCueSafe: "Você ganhou {notes} Notas do Recife. A tensão ficou quase sempre em SEGURA; invista na força da vara ou na qualidade da isca quando o tempo apertar.",
+      resultBuildCueNoCatch: "Você ganhou {notes} Notas do Recife. Desta vez nenhum peixe chegou à etapa de recolher; lance com mais força e considere a vara ou a isca se o tempo apertar.",
+    },
+    ru: { ...text.ru,
+      resultBuildCueDanger: "Вы получили {notes} рифовых заметок. Около {percent}% времени натяжение было вне БЕЗОПАСНОЙ зоны; улучшите управление катушкой или прочность лески.",
+      resultBuildCueSafe: "Вы получили {notes} рифовых заметок. Натяжение почти всё время было в БЕЗОПАСНОЙ зоне; при нехватке времени улучшите удилище или наживку.",
+      resultBuildCueNoCatch: "Вы получили {notes} рифовых заметок. В этот раз рыба не дошла до вываживания; забросьте сильнее и при нехватке времени улучшите удилище или наживку.",
+    },
+    hi: { ...text.hi,
+      resultBuildCueDanger: "आपने {notes} Reef Notes कमाए। लाइन नियंत्रण का लगभग {percent}% समय SAFE के बाहर रहा; अगली बार Reel Control या Line Durability में निवेश करें।",
+      resultBuildCueSafe: "आपने {notes} Reef Notes कमाए। तनाव ज्यादातर SAFE में रहा; समय कम हो तो Rod Strength या Bait Quality में निवेश करें।",
+      resultBuildCueNoCatch: "आपने {notes} Reef Notes कमाए। इस बार कोई मछली रील चरण तक नहीं पहुँची; ज़ोर से कास्ट करें और समय कम हो तो Rod Strength या Bait Quality पर विचार करें।",
+    },
+    ar: { ...text.ar,
+      resultBuildCueDanger: "حصلت على {notes} من ملاحظات الشعاب. كان نحو {percent}% من وقت التحكم بالخيط خارج المنطقة الآمنة؛ حسّن تحكم البكرة أو متانة الخيط.",
+      resultBuildCueSafe: "حصلت على {notes} من ملاحظات الشعاب. بقي الشد غالبًا داخل المنطقة الآمنة؛ حسّن قوة الصنارة أو جودة الطُعم عندما يضيق الوقت.",
+      resultBuildCueNoCatch: "حصلت على {notes} من ملاحظات الشعاب. لم تصل أي سمكة إلى مرحلة السحب هذه المرة؛ ألقِ بقوة أكبر وفكّر في قوة الصنارة أو جودة الطُعم إذا ضاق الوقت.",
+    },
   });
 
   const assetPaths = {
@@ -1383,6 +1452,15 @@
     const totalReelTime = run.safeReelTime + run.dangerReelTime;
     const mostlySafe = totalReelTime >= 0.75 && run.safeReelTime / totalReelTime >= 0.7;
     nodes.resultAdviceText.textContent = won ? t("nextCastWin") : t(mostlySafe ? "nextCastFailSafe" : "nextCastFail");
+    const dangerPercent = totalReelTime > 0
+      ? Math.round((run.dangerReelTime / totalReelTime) * 100)
+      : 0;
+    const buildCueKey = totalReelTime < 0.75
+      ? "resultBuildCueNoCatch"
+      : dangerPercent >= 30
+        ? "resultBuildCueDanger"
+        : "resultBuildCueSafe";
+    nodes.resultBuildCue.textContent = t(buildCueKey, { notes: run.notes, percent: dangerPercent });
     const zoneIndex = zones.indexOf(run.zone);
     const nextVariation = won
       ? zones.slice(zoneIndex + 1).find((zone) => zone.checkpoint || zone.rule !== run.zone.rule)

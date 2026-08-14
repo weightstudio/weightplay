@@ -29,4 +29,11 @@ body.wp-stage-select-active #stageBackBtn{width:54px!important;min-width:54px!im
   .battle-header{padding:0 4px}
   .battle-metrics{padding:1px 8px}
   .battle-feedback{padding:2px 8px;white-space:nowrap;overflow:hidden}
+  .anchor-coach{top:6px;left:8px;width:220px;max-width:calc(100% - 16px);transform:none;padding:4px 6px}
+  .anchor-coach>strong{font-size:10px}
+  .anchor-coach>p{margin:2px 0 3px;font-size:9px;line-height:1.15}
+  .anchor-coach-examples{gap:4px}
+  .anchor-example{padding:2px 3px}
+  .anchor-example svg{height:20px}
+  .anchor-example span{font-size:8px}
 }

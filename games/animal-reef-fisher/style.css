@@ -222,6 +222,14 @@ html[data-reef-state="game"] .game-page-info {
   background: rgba(15, 111, 126, 0.08);
 }
 
+.result-build-cue {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-left: 3px solid #0f6f7e;
+  border-radius: 0 12px 12px 0;
+  background: rgba(255, 210, 97, 0.2);
+}
+
 .profile-grid,
 .hud-row {
   display: grid;

@@ -45,6 +45,13 @@ window.WPPopularArcade?.mount("mahjong-solitaire");
         window.requestAnimationFrame(showOpenRule);
       });
     }
+    const board = document.querySelector("#board");
+    if (board && !board.dataset.mahjongOpenRuleActionBound) {
+      board.dataset.mahjongOpenRuleActionBound = "true";
+      board.addEventListener("click", (event) => {
+        if (event.target.closest("[data-action=tile]")) clearOpenRule();
+      });
+    }
     ["#startBtn", "#retryBtn", "#restartBtn", "#homeBtn"].forEach((selector) => {
       const button = document.querySelector(selector);
       if (button && !button.dataset.mahjongOpenRuleResetBound) {

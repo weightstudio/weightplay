@@ -178,7 +178,7 @@
           </div>
           <div id="hintText" class="hint" data-ui="castHint">Hold in the reef to charge, release to cast.</div>
         </div>
-        <section id="resultPanel" class="panel result-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText resultMissionPreview">
+        <section id="resultPanel" class="panel result-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText resultBuildCue resultMissionPreview">
           <img class="result-otter" src="../../assets/animal-reef-fisher-cover.webp" alt="" />
           <div class="result-content">
             <h2 id="resultTitle">Expedition Complete</h2>
@@ -193,6 +193,7 @@
               <div id="catchList" class="catch-list"></div>
             </div>
             <p id="resultAdviceText" class="result-advice"></p>
+            <p id="resultBuildCue" class="result-build-cue" aria-live="polite"></p>
             <p id="resultMissionPreview" class="result-preview is-hidden" aria-live="polite"></p>
             <div class="result-actions">
               <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="stages">Stages</button>
@@ -244,7 +245,7 @@
     <script src="../../src/sound.js?v=20260720-locale11"></script>
     <script src="../../src/tutorial.js?v=20260708-reef-tension-clarity1"></script>
     <script src="../../src/wallet.js?v=20260706-diamond1"></script>
-  <script src="game.js?v=20260814-reef-funnel-v16"></script>
+  <script src="game.js?v=20260814-reef-build-cue-v17"></script>
     <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
