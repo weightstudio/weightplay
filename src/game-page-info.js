@@ -7196,7 +7196,10 @@
     labels.es = resource.labels || {};
     skillLabels.es = resource.skillLabels || {};
     localizedGameplayProfiles.es = resource.gameplayProfiles || {};
-    localizedGames.es = resource.games || {};
+    // Keep locally authored game-specific guide records when the deferred
+    // Spanish catalog arrives. Snake owns a complete continuous-loop guide;
+    // replacing the table here used to drop it back to the English base copy.
+    localizedGames.es = { ...(resource.games || {}), ...(localizedGames.es || {}) };
     return true;
   }
 
@@ -7230,6 +7233,7 @@
     localizedGameplayProfiles.ja = resource.gameplayProfiles || {};
     localizedGames.ja = {
       ...(resource.games || {}),
+      ...(localizedGames.ja || {}),
       ...reviewedJapaneseGuideOverrides,
     };
     return true;

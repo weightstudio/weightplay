@@ -333,6 +333,12 @@
     $("anchorCoach").hidden=!visible;
     $("drawHint").hidden=visible;
   }
+  function updateAnchorContactCue(){
+    if(!state.drawing||state.started||state.result)return;
+    const spec=level(stageIndex),contacts=strokeShapeLockContacts(state.drawing,spec);
+    const cue=contacts.length>=2&&strokeHasShapeLock(state.drawing,spec)?"anchorReady":contacts.length?"anchorFirst":"";
+    if(cue&&state.drawing.anchorCue!==cue){state.drawing.anchorCue=cue;announce(cue)}
+  }
   function strokeLength(points){
     return points.slice(1).reduce((sum,point,index)=>sum+Math.hypot(point.x-points[index].x,point.y-points[index].y),0);
   }
@@ -374,6 +380,7 @@
       const ratio=allowed/distance,next={x:last.x+(point.x-last.x)*ratio,y:last.y+(point.y-last.y)*ratio};
       state.drawing.points.push(next);state.nectar=Math.max(0,state.nectar-allowed/LINE_PIXELS_PER_NECTAR);state.keyboard={...next};
     }
+    updateAnchorContactCue();
     updateHud();draw();event.preventDefault();
   });
   function trimClosedLoopTail(points,dog){

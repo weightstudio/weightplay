@@ -252,6 +252,10 @@
     document.body.dataset.gameId = gameId;
     const root = document.querySelector("#popularArcade");
     if (!root) throw new Error("Popular game root is missing.");
+    // Snake owns a complete 13-locale shell and guide. Keep the generic
+    // runtime translator from re-translating freshly rendered copy using the
+    // previous locale during an in-place language switch.
+    if (game.type === "snake") root.dataset.runtimeLocalize = "off";
     let locale = randomLocale();
     if (!COPY[locale]) locale = "en";
     let state = makeState(game.type);
@@ -275,6 +279,11 @@
     const persistLocale = () => {
       locale = els.locale.value;
       window.WonderI18n?.setLocale?.(locale, { navigate: false, dispatch: game.type === "snake" });
+      if (game.type === "snake") {
+        document.documentElement.lang = locale;
+        document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+        window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
+      }
       try { localStorage.setItem("weightPlayLocale", locale); } catch {}
       if (game.type === "snake") {
         if (state.messageKey === "hintObjective") state.message = `${copy(locale, "hint")}: ${copy(locale, game.objective)}`;
