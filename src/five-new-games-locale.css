@@ -5,8 +5,10 @@ body[data-wp-five-game]>#app{width:100%;min-width:0}.locale-picker{display:flex;
 body[data-wp-five-game]{display:block;padding:0;min-height:100svh;overflow-x:hidden}
 body[data-wp-five-game] > #app{min-height:100svh}
 body[data-wp-five-game] .main-screen{width:min(920px,100%);min-height:100svh;margin:0 auto;border-radius:0;border-inline:0;box-shadow:none}
-body[data-wp-five-game] .main-header{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;width:100%;min-height:64px;padding:8px 12px;border:1px solid rgba(140,220,255,.34);border-radius:14px;background:rgba(7,25,43,.78)}
-body[data-wp-five-game] .main-header .brand{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+body[data-wp-five-game] .main-header{display:grid;grid-template-columns:52px minmax(0,1fr) auto;align-items:center;gap:12px;width:100%;min-height:64px;padding:8px 12px;border:1px solid rgba(140,220,255,.34);border-radius:14px;background:rgba(7,25,43,.78)}
+body[data-wp-five-game] .main-header .main-return{width:48px;height:48px;min-width:48px;display:grid;grid-template-columns:1fr 19px;place-items:center;border-radius:12px;background:#fff;color:#167ca5;text-decoration:none;font-size:24px;font-weight:900}
+body[data-wp-five-game] .main-header .main-return img{width:19px;height:auto}
+body[data-wp-five-game] .main-header .main-title{margin:0;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center;font-size:20px;line-height:22px}
 body[data-wp-five-game] .main-header .locale-picker{margin:0}
 body[data-wp-five-game] .stage-screen,body[data-wp-five-game] .battle-screen{width:100%;min-height:0;border:0;border-radius:0;box-shadow:none}
 body[data-wp-five-game] .stage-screen{position:fixed;inset:0;overflow:hidden;background:var(--bg,#071e31)}
