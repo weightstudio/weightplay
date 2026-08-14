@@ -111,3 +111,21 @@ body.wp-logical-battle-active.is-game-playing #battleScreen .battle-canvas[data-
 .objective-row #objectiveText,.objective-row #objectivePlan{flex:1 1 38%}
 .objective-row #objectivePlan{color:#ffd978}
 .objective-row #currencyText{flex:0 0 auto}
+
+/* General Director P1: give the 11 x 7 pack a readable short-landscape lane
+   while keeping the shared Battle Canvas on one uniform scale. */
+@media(max-height:460px) and (orientation:landscape){
+  .pack-panel{grid-template-columns:minmax(0,1fr);grid-template-rows:22px minmax(0,1fr) 44px;gap:4px}
+  .pack-heading{grid-column:1;grid-row:1;font-size:18px;line-height:1}
+  .pack-grid{grid-column:1;grid-row:2;width:250px;height:162px;grid-template-columns:repeat(11,20px)!important;grid-template-rows:repeat(7,20px)!important}
+  .pack-cell.is-valid{outline:3px solid #7ff5dd;box-shadow:inset 0 0 0 2px #ffffff66;background:#15534e}
+  .item-tray{grid-column:1;grid-row:3;min-width:0;min-height:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:44px;overflow:hidden;gap:4px}
+  .tray-item{width:auto;height:44px;grid-template-rows:26px 16px;font-size:14px}
+  .tray-item img{width:26px;height:26px}
+  .tray-item span{line-height:16px}
+  .pack-heading,.objective-row,.feedback-row,body[data-screen="battle"] .feedback-row.is-item-details span{font-size:18px;line-height:1}
+  body[data-screen="battle"] .feedback-row.is-item-details{height:104px}
+  body[data-screen="battle"] #battleScreen .battle-canvas>.battle-actions{grid-template-columns:84px 84px minmax(0,1fr)!important}
+  .battle-actions button{min-height:44px;font-size:14px}
+  .battle-actions img{width:22px!important;height:22px!important}
+}
