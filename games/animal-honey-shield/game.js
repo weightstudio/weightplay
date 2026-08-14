@@ -4,7 +4,7 @@
   const LOCALES=window.ANIMAL_HONEY_SHIELD_LOCALES;
   const STORAGE_KEY="weightplay_animal_honey_shield_v1";
   const TUTORIAL_KEY="weightplay_tutorial_seen_animal_honey_shield_v1";
-  const GAME_VERSION="v40";
+  const GAME_VERSION="v42";
   const ROUTE_LOCALES={"zh-tw":"zh-Hant","zh-cn":"zh-Hans","pt-br":"pt-BR",en:"en",ja:"ja",ko:"ko",es:"es",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const routeSegment=location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
   const platformLocale=window.WonderI18n?.actualLocale?.();
@@ -1135,6 +1135,28 @@
       ctx.restore();
     }
   }
+  function drawAnchorTargetGuide(spec){
+    const visible=screen==="battle"&&stageIndex===0&&!state.started&&!state.result&&!state.strokes.length;
+    if(!visible||!spec.anchors.length)return;
+    const contacts=state.drawing?strokeShapeLockContacts(state.drawing,spec):[];
+    const now=performance.now()/360;
+    ctx.save();
+    for(const [index,anchor] of spec.anchors.entries()){
+      const contacted=contacts.some(solid=>solid.kind==="anchor"&&solid.x===anchor.x&&solid.y===anchor.y);
+      const pulse=contacted?0:Math.sin(now+index*.8)*2;
+      ctx.strokeStyle=contacted?"#8bffbf":"#ffe27a";
+      ctx.fillStyle=contacted?"#8bffbf":"#ffe27a";
+      ctx.shadowColor=contacted?"#4dffae":"#ffc83b";
+      ctx.shadowBlur=contacted?18:12;
+      ctx.lineWidth=contacted?7:5;
+      ctx.setLineDash(contacted?[]:[12,8]);
+      ctx.beginPath();ctx.arc(anchor.x,anchor.y,anchor.r+18+pulse,0,Math.PI*2);ctx.stroke();
+      ctx.setLineDash([]);ctx.beginPath();ctx.arc(anchor.x,anchor.y,9,0,Math.PI*2);ctx.fill();
+      ctx.shadowBlur=0;ctx.fillStyle="#123b31";ctx.font="900 13px Inter, system-ui, sans-serif";ctx.textAlign="center";ctx.textBaseline="middle";
+      ctx.fillText(String(index+1),anchor.x,anchor.y);
+    }
+    ctx.restore();
+  }
   function draw(){
     const spec=level(stageIndex);ctx.clearRect(0,0,1000,620);
     const sceneBackground=themeBackgrounds[spec.chapter];
@@ -1161,6 +1183,7 @@
       }
     }
     for(const anchor of spec.anchors){if(spec.theme.terrain==="bramble"){ctx.save();ctx.fillStyle="#552245";ctx.strokeStyle="#ff9ed4";ctx.lineWidth=6;ctx.beginPath();ctx.arc(anchor.x,anchor.y,anchor.r,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore()}else drawSprite(3,anchor.x-48,anchor.y-48,96,96)}
+    drawAnchorTargetGuide(spec);
     for(const gate of spec.gates){if(spec.theme.terrain==="ruins"){ctx.save();ctx.strokeStyle="#ffe09a";ctx.lineWidth=14;ctx.beginPath();ctx.arc(gate.x,gate.y,gate.r,Math.PI,0);ctx.stroke();ctx.restore()}else drawSprite(4,gate.x-52,gate.y-58,104,116)}
     for(const hive of spec.hives)drawSprite(2,hive.x-75,hive.y-65,150,150);
     drawSprite(0,spec.dog.x-82,spec.dog.y-62,164,124);

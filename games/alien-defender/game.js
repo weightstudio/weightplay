@@ -58,7 +58,7 @@
   draw=drawResponsive;
   // v8 Growth instrumentation: expose only aggregate, privacy-safe funnel
   // fields; gameplay state, controls, pacing, and authored waves stay intact.
-  const ANALYTICS_GAME_VERSION="24",ANALYTICS_INTERFACE_VERSION="6";
+  const ANALYTICS_GAME_VERSION="26",ANALYTICS_INTERFACE_VERSION="6";
   let sessionHadBattle=false,inputType="unknown";
   function viewportBucket(){const width=window.innerWidth,height=window.innerHeight;if(width<=430&&height>=700)return"phone-portrait";if(width<=700&&height>=700)return"tablet-portrait";if(width>=700&&height<=500)return"short-landscape";return"desktop"}
   function track(eventName,details={}){window.WonderAnalytics?.track?.(eventName,{game_id:"alien-defender",game_version:`v${ANALYTICS_GAME_VERSION}`,interface_version:ANALYTICS_INTERFACE_VERSION,locale,viewport_bucket:viewportBucket(),input_type:details.input_type||inputType,wave:details.wave??wave,result_reason:details.result_reason||"not_applicable"})}
@@ -142,4 +142,9 @@
   // rounds. The player still has to clear every captain and scout.
   const v22MakeWorld=makeWorld;
   makeWorld=function(){const next=v22MakeWorld();if(wave===3){next.lives=5;next.shield=40}return next};
+  // v26 Director repair: Wave 2 also gets a visible seven-shot firing window
+  // so alternating sweep play cannot stall on the last few scouts. Wave 3
+  // keeps its existing five-shot payoff and complete captain formation.
+  const v24Shoot=shoot;
+  shoot=function(){const before=world?.bullets?.length||0;v24Shoot();if(wave===2&&world?.bullets?.length>before){const bullet=world.bullets[world.bullets.length-1];world.bullets.push({x:bullet.x-20,y:bullet.y,s:bullet.s},{x:bullet.x+20,y:bullet.y,s:bullet.s},{x:bullet.x-40,y:bullet.y,s:bullet.s},{x:bullet.x+40,y:bullet.y,s:bullet.s},{x:bullet.x-60,y:bullet.y,s:bullet.s},{x:bullet.x+60,y:bullet.y,s:bullet.s});world.fireTimer=Math.min(world.fireTimer,.08)}};
 })();
