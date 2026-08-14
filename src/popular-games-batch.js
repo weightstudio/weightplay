@@ -159,19 +159,34 @@
   const SNAKE_DELTAS = { left: [-1, 0], right: [1, 0], up: [0, -1], down: [0, 1] };
   const SNAKE_OPPOSITE = { left: "right", right: "left", up: "down", down: "up" };
   const SNAKE_INSTRUCTION = {
-    en: "The snake moves automatically. Steer to food and avoid walls and your tail.",
-    "zh-Hant": "蛇會自動前進，請轉向吃食物並避開牆壁與自己的身體。",
-    "zh-Hans": "蛇会自动前进，请转向吃食物并避开墙壁与自己的身体。",
-    ja: "ヘビは自動で進みます。食べ物へ曲がり、壁と自分の体を避けましょう。",
-    ko: "뱀은 자동으로 이동합니다. 먹이를 향해 방향을 바꾸고 벽과 몸을 피하세요.",
-    es: "La serpiente avanza sola. Gira hacia la comida y evita las paredes y tu cola.",
-    "pt-BR": "A cobra se move sozinha. Vire até a comida e evite as paredes e seu corpo.",
-    fr: "Le serpent avance automatiquement. Tournez vers la nourriture et évitez les murs et votre corps.",
-    de: "Die Schlange bewegt sich automatisch. Lenke zum Futter und meide Wände und deinen Körper.",
-    it: "Il serpente avanza automaticamente. Dirigilo verso il cibo evitando pareti e coda.",
-    ru: "Змейка движется автоматически. Направляйте её к еде и избегайте стен и хвоста.",
-    hi: "साँप अपने आप चलता है। भोजन की ओर मोड़ें और दीवारों व अपनी पूँछ से बचें।",
-    ar: "يتحرك الثعبان تلقائياً. وجّهه نحو الطعام وتجنب الجدران وذيله.",
+    en: "Tap the board or choose a direction to start. Then steer to food and avoid walls and your tail.",
+    "zh-Hant": "點擊棋盤或選擇方向開始，再轉向吃食物並避開牆壁與自己的身體。",
+    "zh-Hans": "点击棋盘或选择方向开始，再转向吃食物并避开墙壁与自己的身体。",
+    ja: "盤面をタップするか方向を選んで開始し、食べ物へ曲がって壁と自分の体を避けましょう。",
+    ko: "보드를 탭하거나 방향을 선택해 시작한 뒤 먹이를 향해 틀고 벽과 몸을 피하세요.",
+    es: "Toca el tablero o elige una dirección para empezar; luego ve hacia la comida y evita paredes y cola.",
+    "pt-BR": "Toque no tabuleiro ou escolha uma direção para começar; depois vá à comida e evite paredes e cauda.",
+    fr: "Touchez le plateau ou choisissez une direction pour commencer, puis visez la nourriture en évitant murs et queue.",
+    de: "Tippe auf das Spielfeld oder wähle eine Richtung zum Start; lenke dann zum Futter und meide Wände und Schwanz.",
+    it: "Tocca la griglia o scegli una direzione per iniziare; poi guida il serpente al cibo evitando pareti e coda.",
+    ru: "Нажмите на поле или выберите направление, чтобы начать; затем ведите змейку к еде, избегая стен и хвоста.",
+    hi: "शुरू करने के लिए बोर्ड पर टैप करें या दिशा चुनें; फिर भोजन की ओर मुड़ें और दीवार व पूँछ से बचें।",
+    ar: "اضغط على اللوحة أو اختر اتجاهاً للبدء، ثم وجّه الثعبان إلى الطعام وتجنب الجدران وذيله.",
+  };
+  const SNAKE_READY = {
+    en: "Tap the board or choose a direction to start.",
+    "zh-Hant": "點擊棋盤或選擇方向開始。",
+    "zh-Hans": "点击棋盘或选择方向开始。",
+    ja: "盤面をタップするか方向を選んで開始します。",
+    ko: "보드를 탭하거나 방향을 선택해 시작하세요.",
+    es: "Toca el tablero o elige una dirección para empezar.",
+    "pt-BR": "Toque no tabuleiro ou escolha uma direção para começar.",
+    fr: "Touchez le plateau ou choisissez une direction pour commencer.",
+    de: "Tippe auf das Spielfeld oder wähle eine Richtung zum Start.",
+    it: "Tocca la griglia o scegli una direzione per iniziare.",
+    ru: "Нажмите на поле или выберите направление, чтобы начать.",
+    hi: "शुरू करने के लिए बोर्ड पर टैप करें या दिशा चुनें।",
+    ar: "اضغط على اللوحة أو اختر اتجاهاً للبدء.",
   };
   const SNAKE_OBJECTIVE = {
     en: "Guide the snake to food and keep moving.",
@@ -219,7 +234,7 @@
   const makeState = (type) => {
     const state = { type, score: 0, moves: 0, done: false, success: false, message: "", tone: "", messageKey: "", mismatchTile: "" };
     if (type === "tetris") Object.assign(state, { pieces: 0, lines: 0, active: 3, blocks: [] });
-    if (type === "snake") Object.assign(state, { food: 0, foodCell: 45, direction: "right", trail: [27, 26, 25] });
+    if (type === "snake") Object.assign(state, { started: false, food: 0, foodCell: 45, direction: "up", trail: [35, 43, 51] });
     if (type === "tic") Object.assign(state, { cells: Array(9).fill(""), playerMoves: 0, aiMoves: 0 });
     if (type === "chess") Object.assign(state, { step: 0 });
     if (type === "checkers") Object.assign(state, { step: 0 });
@@ -263,7 +278,8 @@
       try { localStorage.setItem("weightPlayLocale", locale); } catch {}
       if (game.type === "snake") {
         if (state.messageKey === "hintObjective") state.message = `${copy(locale, "hint")}: ${copy(locale, game.objective)}`;
-        else if (state.messageKey === "ready") state.message = snakeInstruction(locale);
+        else if (state.messageKey === "snakeReady") state.message = SNAKE_READY[locale] || SNAKE_READY.en;
+        else if (state.messageKey === "snakeRunning") state.message = snakeInstruction(locale);
       }
       if (game.type === "hangman") {
         if (state.messageKey === "hangmanHint") state.message = hangmanHint(locale, state.target.length);
@@ -285,11 +301,11 @@
     const show = (screen) => { els.main.hidden = screen !== "main"; els.battle.hidden = screen !== "battle"; els.result.hidden = screen !== "result"; document.body.dataset.screen = screen; if (game.type === "tetris" && screen !== "main") window.scrollTo({ top: 0, left: 0, behavior: "auto" }); };
     let snakeTimer = null;
     const stopSnakeTimer = () => { if (snakeTimer) { window.clearInterval(snakeTimer); snakeTimer = null; } };
-    const start = () => { stopSnakeTimer(); state = makeState(game.type); show("battle"); announce(game.type === "snake" ? snakeInstruction(locale) : copy(locale, "ready"), "", "ready"); render(); if (game.type === "snake") snakeTimer = window.setInterval(moveSnake, SNAKE_TICK_MS); };
+    const start = () => { stopSnakeTimer(); state = makeState(game.type); show("battle"); announce(game.type === "snake" ? (SNAKE_READY[locale] || SNAKE_READY.en) : copy(locale, "ready"), "", game.type === "snake" ? "snakeReady" : "ready"); render(); };
     const renderResult = () => { const best = Number(localStorage.getItem(key(gameId)) || 0); els.resultTitle.textContent = state.success ? copy(locale, "success") : copy(locale, "failure"); els.resultCopy.textContent = state.success ? (game.type === "checkers" ? checkersPromotionCopy(locale, "result") : copy(locale, "successCopy")) : copy(locale, "failureCopy"); els.resultStats.innerHTML = `<span class="stat">${copy(locale, "score")}<strong>${state.score}</strong></span><span class="stat">${copy(locale, "moves")}<strong>${state.moves}</strong></span><span class="stat">${copy(locale, "best")}<strong>${Math.max(best, state.score)}</strong></span>`; };
     const finish = (success) => { if (state.done) return; stopSnakeTimer(); state.done = true; state.success = success; state.score = success ? Math.max(state.score, state.moves * 10 + 100) : state.score; const best = Number(localStorage.getItem(key(gameId)) || 0); if (success && state.score > best) { try { localStorage.setItem(key(gameId), String(state.score)); } catch {} } renderResult(); show("result"); };
     const moveSnake = () => {
-      if (game.type !== "snake" || state.done) return;
+      if (game.type !== "snake" || state.done || !state.started) return;
       const [dx, dy] = SNAKE_DELTAS[state.direction];
       const head = state.trail[0];
       const headX = head % 8;
@@ -307,12 +323,21 @@
       else state.trail.pop();
       render();
     };
+    const beginSnake = (direction = state.direction) => {
+      if (game.type !== "snake" || state.done || state.started) return;
+      state.direction = direction;
+      state.started = true;
+      announce(snakeInstruction(locale), "", "snakeRunning");
+      render();
+      snakeTimer = window.setInterval(moveSnake, SNAKE_TICK_MS);
+    };
     const action = (name, value) => {
       if (state.done) return;
       if (game.type === "tic" && (name !== "cell" || !Number.isInteger(value) || value < 0 || value >= state.cells.length || state.cells[value] !== "")) return;
       if (game.type === "hangman" && name === "letter" && state.letters.includes(value)) { state.focusLetter = value; state.lastLetter = value; announce(`${value}: ${hangmanAlreadyUsed(locale)}`, "warn", "hangmanUsed"); render(); return; }
       if (game.type === "snake") {
         if (!["left", "right", "up", "down"].includes(name)) return;
+        if (!state.started) { beginSnake(name); return; }
         if (SNAKE_OPPOSITE[state.direction] === name) { announce(`${copy(locale, "hint")}: ${copy(locale, "choose")} ${copy(locale, name)}`, "warn", "hintObjective"); render(); return; }
         state.direction = name;
         state.message = "";
@@ -350,10 +375,14 @@
       } else if (game.type === "breakout") { els.board.innerHTML = `<div class="brick-board">${state.bricks.map((brick) => `<span class="brick ${brick ? "" : "cleared"}"></span>`).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "right"), "right")}${button(copy(locale, "serve"), "fire", "primary")}</div>`;
       } else if (game.type === "pong") { els.board.innerHTML = `<div class="pong-board"><span class="pong-ball"></span><span class="pong-paddle" style="left:${state.paddle * 13 + 17}%"></span></div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "serve"), "serve", "primary")}${button(copy(locale, "right"), "right")}</div>`; }
     };
-    const render = () => { els.round.textContent = `${copy(locale, "round")} · ${copy(locale, "score")}: ${state.score} · ${copy(locale, "moves")}: ${state.moves}`; renderBoard(); els.message.textContent = state.message || (game.type === "snake" ? snakeInstruction(locale) : copy(locale, "ready")); els.message.dataset.tone = state.tone; if (game.type === "mahjong") { if (state.messageKey === "mahjongMismatch") els.message.dataset.mahjongMismatch = "true"; else delete els.message.dataset.mahjongMismatch; } [els.controls, els.board].forEach((container) => { container.querySelectorAll("[data-action=hint]").forEach((node) => node.addEventListener("click", hint)); container.querySelectorAll("[data-action]").forEach((node) => { if (node.dataset.action !== "hint") node.addEventListener("click", () => action(node.dataset.action, node.dataset.action === "letter" ? node.dataset.value : Number(node.dataset.value))); }); }); if (game.type === "mahjong" && document.body.dataset.screen === "battle" && state.focusTile >= 0) { const focusTarget = els.board.querySelector(`[data-action="tile"][data-value="${state.focusTile}"]`); if (focusTarget) focusTarget.focus(); state.focusTile = -1; } if (game.type === "hangman" && document.body.dataset.screen === "battle" && state.focusLetter) { const focusTarget = els.controls.querySelector(`[data-action="letter"][data-value="${state.focusLetter}"]`); if (focusTarget) focusTarget.focus(); state.focusLetter = ""; } };
+    const render = () => { els.round.textContent = `${copy(locale, "round")} · ${copy(locale, "score")}: ${state.score} · ${copy(locale, "moves")}: ${state.moves}`; renderBoard(); els.message.textContent = state.message || (game.type === "snake" ? (state.started ? snakeInstruction(locale) : (SNAKE_READY[locale] || SNAKE_READY.en)) : copy(locale, "ready")); els.message.dataset.tone = state.tone; if (game.type === "mahjong") { if (state.messageKey === "mahjongMismatch") els.message.dataset.mahjongMismatch = "true"; else delete els.message.dataset.mahjongMismatch; } [els.controls, els.board].forEach((container) => { container.querySelectorAll("[data-action=hint]").forEach((node) => node.addEventListener("click", hint)); container.querySelectorAll("[data-action]").forEach((node) => { if (node.dataset.action !== "hint") node.addEventListener("click", () => action(node.dataset.action, node.dataset.action === "letter" ? node.dataset.value : Number(node.dataset.value))); }); }); if (game.type === "mahjong" && document.body.dataset.screen === "battle" && state.focusTile >= 0) { const focusTarget = els.board.querySelector(`[data-action="tile"][data-value="${state.focusTile}"]`); if (focusTarget) focusTarget.focus(); state.focusTile = -1; } if (game.type === "hangman" && document.body.dataset.screen === "battle" && state.focusLetter) { const focusTarget = els.controls.querySelector(`[data-action="letter"][data-value="${state.focusLetter}"]`); if (focusTarget) focusTarget.focus(); state.focusLetter = ""; } };
+    let snakePointerStart = null;
+    els.board.addEventListener("pointerdown", (event) => { if (game.type === "snake" && document.body.dataset.screen === "battle") snakePointerStart = { x: event.clientX, y: event.clientY }; });
+    els.board.addEventListener("pointerup", (event) => { if (game.type !== "snake" || document.body.dataset.screen !== "battle") return; const startPoint = snakePointerStart; snakePointerStart = null; if (!startPoint) return; const deltaX = event.clientX - startPoint.x; const deltaY = event.clientY - startPoint.y; if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 18) { beginSnake(); return; } action(Math.abs(deltaX) > Math.abs(deltaY) ? (deltaX > 0 ? "right" : "left") : (deltaY > 0 ? "down" : "up")); });
+    els.board.addEventListener("pointercancel", () => { snakePointerStart = null; });
     const renderShell = () => { shell(); els.start.textContent = copy(locale, "start"); els.hint.textContent = copy(locale, "hint"); els.restart.textContent = copy(locale, "restart"); els.retry.textContent = copy(locale, "retry"); els.home.textContent = copy(locale, "home"); };
     els.start.addEventListener("click", start); els.retry.addEventListener("click", start); els.home.addEventListener("click", () => { stopSnakeTimer(); show("main"); state = makeState(game.type); render(); }); els.hint.addEventListener("click", hint); els.restart.addEventListener("click", start);
-    document.addEventListener("keydown", (event) => { if (document.body.dataset.screen !== "battle") return; const map = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down", a: "left", A: "left", d: "right", D: "right", w: "up", W: "up", s: "down", S: "down", " ": "drop" }; if (map[event.key] && ["tetris", "snake", "breakout", "pong"].includes(game.type)) { event.preventDefault(); action(map[event.key]); } });
+    document.addEventListener("keydown", (event) => { if (document.body.dataset.screen !== "battle") return; if (game.type === "snake" && !state.started && [" ", "Enter"].includes(event.key)) { event.preventDefault(); beginSnake(); return; } const map = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down", a: "left", A: "left", d: "right", D: "right", w: "up", W: "up", s: "down", S: "down", " ": "drop" }; if (map[event.key] && ["tetris", "snake", "breakout", "pong"].includes(game.type)) { event.preventDefault(); action(map[event.key]); } });
     const battleBack = document.querySelector('[data-wp-return="battle"]');
     battleBack?.addEventListener("click", () => { stopSnakeTimer(); show("main"); state = makeState(game.type); render(); });
     renderShell(); show("main"); render();

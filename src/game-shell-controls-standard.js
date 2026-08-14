@@ -64,6 +64,10 @@
     ".dash-playing .dash-game",
     "[data-screen='battle']", ".battle-screen", ".battle-shell", ".battle-page",
   ];
+  const RESULT_SELECTORS = [
+    "#resultScreen", "#resultPanel", "[data-wp-result-screen]",
+    "[data-screen='result']", ".result-screen",
+  ];
   const HEADER_SELECTORS = [
     ".main-header", ".topbar", ".stage-header", ".stage-panel-head", ".stage-shell-head",
     ".stage-screen-head", ".guardian-topbar", ".card-game-topbar", "header",
@@ -540,10 +544,34 @@
     }
     const battles = BATTLE_SELECTORS.map((selector) => document.querySelector(selector)).filter(Boolean);
     const battle = battles.find(visible);
+    const result = RESULT_SELECTORS
+      .map((selector) => document.querySelector(selector))
+      .find(visible);
     const battleStateHint = document.body.matches(
       ".playing,.is-playing,.is-game-playing,.game-playing,[class*='-playing']",
     );
     if (battle && (!main || battleStateHint)) return { type: "battle", screen: battle };
+    if (result) {
+      // Result is a Battle-owned substate, even when a legacy route mounts it
+      // beside (rather than inside) its hidden Battle root. Keep the shared
+      // shell in the Battle envelope instead of falling back to Main.
+      const battleRootSelector =
+        "#battle,#battleScreen,#battleView,#battleShell,#battlePage,[data-screen='battle'],.battle-screen,.battle-shell,.battle-page";
+      const closestOwner = result.closest(battleRootSelector);
+      const owner = closestOwner
+        && closestOwner !== document.body
+        && closestOwner !== document.documentElement
+        ? closestOwner
+        : null;
+      const fallbackOwner = [...document.querySelectorAll(battleRootSelector)].find(
+        (candidate) => candidate !== result
+          && candidate !== document.body
+          && candidate !== document.documentElement,
+      );
+      const battleOwner = owner || fallbackOwner
+        || result;
+      return { type: "battle", screen: battleOwner };
+    }
     if (main) return { type: "main", screen: main };
     if (battle) return { type: "battle", screen: battle };
     return { type: "main", screen: mains[0] || document.body };
