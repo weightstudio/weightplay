@@ -8,6 +8,7 @@
     start:"Start Game",guideLabel:"Game guide",guideKicker:"WeightPlay Original Game Guide",
     guideTitle:"Build a stronger board from every surprise",
     guideIntro:"Moss Shell Taro guards the crystal bastion with living rune dice. Every summon changes the board, but careful merges and timely orders keep luck under your control.",
+    guideDetail:"Every defense is a compact planning loop. At the beginning of a Battle, choose an opening guardian affinity, then spend charge to place rank-one guardians in empty rune slots. Guardians attack automatically, so your active decisions are when to summon, which matching pair to merge, and which order to save. A merge requires the same affinity and rank; it creates a stronger guardian and rerolls that guardian's affinity, which can open a new pair or leave you planning around a different role. Keep the board readable instead of filling every slot. An empty slot gives the next summon somewhere to land, while a low-rank pair can become your safest answer to the next wave. Battle Rally raises guardian attack speed for six seconds. Rune Burst strikes and slows the five threats at the front of the road. Rune Reforge keeps a guardian's rank while changing its affinity, but using it removes the chance at the third star for that defense. The five roles are deliberate: Grove gives steady hits, Spark builds charge quickly, Moon slows the lead enemy, Forge breaks armor, and Tide damages groups. Six chapters introduce armor, swarms, healers, haste, slot locks, champion escorts, and a distinct Boss defense, for thirty authored stages with a readable learning curve. A creature reaching the crystal reduces core integrity; clear every wave and Boss to win. Finish with at least half the core and no Reforge to earn three stars. Unlocked stages, stars, rune dust, and Workshop upgrades stay in this browser only. There is no account, upload, betting, paid random draw, cash prize, or real-money mechanic. The game is about making a plan from a fair surprise, learning how each role changes the board, and replaying a defense to improve the next decision.",
     howTitle:"How to play",how1:"Choose an opening guardian, then spend charge to summon rank-one guardians into empty rune slots.",
     how2:"Drag two guardians of the same affinity and rank together to create one stronger guardian.",
     how3:"Use {rally}, {reroll}, and {burst} while guardians automatically stop each wave.",
@@ -182,6 +183,9 @@
       ? {...en, ...generated, ...values}
       : {...en, ...values, ...generated};
   });
+  if (dictionaries["zh-Hans"]?.guideDetail) {
+    dictionaries["zh-Hans"].guideDetail = dictionaries["zh-Hans"].guideDetail.replaceAll("取得", "获得");
+  }
   window.AnimalDiceBastionLocales = {
     codes:["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"],
     segments:{en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"},
