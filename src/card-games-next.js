@@ -231,6 +231,12 @@
     document.querySelectorAll("[data-card-title]").forEach((node) => { node.textContent = title; node.setAttribute("data-runtime-localize", "off"); });
     document.querySelectorAll("[data-card-summary]").forEach((node) => { node.textContent = gameSummary(id); });
     if (localeSelect) localeSelect.value = currentLocale();
+    const resultCloseButton = document.querySelector("#resultClose");
+    if (id === "old-maid" && resultCloseButton) {
+      resultCloseButton.textContent = t("back");
+      resultCloseButton.setAttribute("aria-label", t("back"));
+      resultCloseButton.dataset.cardResultReturn = "main";
+    }
     if (loading) { loading.hidden = true; loading.remove(); }
     let sound = root.WPCardEngine?.SoundEngine ? new root.WPCardEngine.SoundEngine("card_games_next_sound_v1") : null;
     let resultRecorded = false;
@@ -279,7 +285,7 @@
     document.querySelector("#battleBackBtn")?.addEventListener("click", () => controller.openMain());
     document.querySelector("#resultNewGame")?.addEventListener("click", () => { result.hidden = true; game.reset(); controller.openBattle(); });
     document.querySelector("#resultRestart")?.addEventListener("click", () => { resultRecorded = false; result.hidden = true; game.reset(); render(); });
-    document.querySelector("#resultClose")?.addEventListener("click", () => { result.hidden = true; render(); });
+    document.querySelector("#resultClose")?.addEventListener("click", () => { if (id === "old-maid") controller.openMain(); else { result.hidden = true; render(); } });
     document.querySelector("#startBtn")?.addEventListener("click", () => { game.reset(); controller.openBattle(); });
     document.querySelector("#restartBtn")?.addEventListener("click", () => { game.reset(); controller.openBattle(); });
     document.querySelector("#newGameBtn")?.addEventListener("click", () => { game.reset(); controller.openBattle(); });
