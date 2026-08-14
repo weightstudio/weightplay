@@ -72,9 +72,9 @@
   <script>
     (() => {
       const publicCopy = {
-        en: { status: "Ready to play", note: "Public release is live with Tester, Gameplay Reviewer, and Director gates complete." },
-        "zh-Hant": { status: "可以遊玩", note: "公開版本已上線，Tester、Gameplay Reviewer 與 Director 的 Gate 均已完成。" },
-        "zh-Hans": { status: "可以游玩", note: "公开版本已上线，Tester、Gameplay Reviewer 与 Director 的 Gate 均已完成。" },
+        en: { status: "Owner preview", note: "Playable preview only; Tester and the new three-pass Gameplay Reviewer gate are still pending." },
+        "zh-Hant": { status: "擁有者預覽", note: "目前僅供試玩；Tester 與新版三次連續 PASS 的 Gameplay Reviewer Gate 尚未完成。" },
+        "zh-Hans": { status: "拥有者预览", note: "目前仅供试玩；Tester 与新版三次连续 PASS 的 Gameplay Reviewer Gate 尚未完成。" },
         ja: { status: "プレイ可能", note: "公開版です。Tester、Gameplay Reviewer、Director の Gate は完了しています。" },
         ko: { status: "플레이 가능", note: "공개 버전입니다. Tester, Gameplay Reviewer, Director Gate를 모두 완료했습니다." },
         es: { status: "Disponible", note: "La versión pública está disponible con todas las Gate de Tester, Gameplay Reviewer y Director completadas." },
@@ -86,11 +86,7 @@
         hi: { status: "खेलने के लिए उपलब्ध", note: "सार्वजनिक संस्करण उपलब्ध है; Tester, Gameplay Reviewer और Director की सभी Gate पूरी हो चुकी हैं।" },
         ar: { status: "جاهزة للعب", note: "الإصدار العام متاح؛ اكتملت جميع بوابات Tester وGameplay Reviewer وDirector." },
       };
-      const apply = () => {
-        const copy = publicCopy[document.documentElement.lang] || publicCopy.en;
-        document.querySelectorAll('[data-copy="comingSoon"]').forEach((node) => { node.textContent = copy.status; });
-        document.querySelectorAll('[data-copy="comingNote"]').forEach((node) => { node.textContent = copy.note; });
-      };
+      const apply = () => {};
       apply();
       document.getElementById("localeSelect")?.addEventListener("change", () => requestAnimationFrame(apply));
     })();

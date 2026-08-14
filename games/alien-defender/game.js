@@ -58,7 +58,7 @@
   draw=drawResponsive;
   // v8 Growth instrumentation: expose only aggregate, privacy-safe funnel
   // fields; gameplay state, controls, pacing, and authored waves stay intact.
-  const ANALYTICS_GAME_VERSION="26",ANALYTICS_INTERFACE_VERSION="6";
+  const ANALYTICS_GAME_VERSION="27",ANALYTICS_INTERFACE_VERSION="7";
   let sessionHadBattle=false,inputType="unknown";
   function viewportBucket(){const width=window.innerWidth,height=window.innerHeight;if(width<=430&&height>=700)return"phone-portrait";if(width<=700&&height>=700)return"tablet-portrait";if(width>=700&&height<=500)return"short-landscape";return"desktop"}
   function track(eventName,details={}){window.WonderAnalytics?.track?.(eventName,{game_id:"alien-defender",game_version:`v${ANALYTICS_GAME_VERSION}`,interface_version:ANALYTICS_INTERFACE_VERSION,locale,viewport_bucket:viewportBucket(),input_type:details.input_type||inputType,wave:details.wave??wave,result_reason:details.result_reason||"not_applicable"})}
@@ -147,4 +147,17 @@
   // keeps its existing five-shot payoff and complete captain formation.
   const v24Shoot=shoot;
   shoot=function(){const before=world?.bullets?.length||0;v24Shoot();if(wave===2&&world?.bullets?.length>before){const bullet=world.bullets[world.bullets.length-1];world.bullets.push({x:bullet.x-20,y:bullet.y,s:bullet.s},{x:bullet.x+20,y:bullet.y,s:bullet.s},{x:bullet.x-40,y:bullet.y,s:bullet.s},{x:bullet.x+40,y:bullet.y,s:bullet.s},{x:bullet.x-60,y:bullet.y,s:bullet.s},{x:bullet.x+60,y:bullet.y,s:bullet.s});world.fireTimer=Math.min(world.fireTimer,.08)}};
+  // v27 Director repair: spread the authored formation across readable firing
+  // lanes and add non-blocking lane guides so mobile play does not present a
+  // small cluster in a large empty field. Enemy count, movement, fire rate,
+  // scoring, and the three-wave contract remain unchanged.
+  const v26MakeWorld=makeWorld;
+  makeWorld=function(){const next=v26MakeWorld(),cols=wave===1?7:wave===2?8:9,gap=wave===1?106:wave===2?96:90,start=(920-(cols-1)*gap)/2;next.enemies.forEach((enemy,index)=>{const row=Math.floor(index/cols),col=index%cols;enemy.x=start+col*gap;enemy.y=128+row*58});return next};
+  const v26Draw=draw;
+  draw=function drawWithFormationLanes(){
+    v26Draw();
+    if(!world||screen!=="battle")return;
+    const cssW=Math.max(1,canvas.clientWidth),cssH=Math.max(1,canvas.clientHeight),dpr=Math.min(2,window.devicePixelRatio||1),scale=Math.min(cssW/920,cssH/720)||1,logicalW=cssW/scale,logicalH=cssH/scale,mapX=x=>x/920*logicalW,mapY=y=>y/720*logicalH;
+    ctx.save();ctx.setTransform(dpr*scale,0,0,dpr*scale,0,0);ctx.strokeStyle="#74e6ee2b";ctx.lineWidth=2;ctx.setLineDash([7,11]);const lanes=[...new Set(world.enemies.filter(enemy=>enemy.alive).map(enemy=>Math.round(enemy.x)))];for(const lane of lanes){const x=mapX(lane);ctx.beginPath();ctx.moveTo(x,mapY(90));ctx.lineTo(x,mapY(585));ctx.stroke()}ctx.setLineDash([]);const p=world.player,x=mapX(p.x),y=mapY(625);ctx.strokeStyle="#74e6ee88";ctx.lineWidth=3;ctx.beginPath();ctx.arc(x,y,42,0,Math.PI*2);ctx.stroke();ctx.restore();
+  };
 })();

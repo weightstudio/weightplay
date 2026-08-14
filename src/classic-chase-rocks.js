@@ -339,4 +339,48 @@
   window.addEventListener("resize", () => { if (state.running || state.result) syncPlayViewport(); });
   window.visualViewport?.addEventListener("resize", () => { if (state.running || state.result) syncPlayViewport(); });
   populateLocales(); buildControls(); setLocale(locale); resizeCanvas(gameId === "maze" ? 630 : 960, gameId === "maze" ? 630 : 540); if (gameId === "maze") mazeResetStage(); else resetSpace(); showMain();
+
+  // v9 Director repair: the first Space Rocks wave must teach the target field
+  // from the first frame. The old edge-spawn placed every large rock on the
+  // wrap boundary, leaving a nearly empty centre on phone-sized Canvases.
+  // Keep movement, splitting, scoring, and wave rules unchanged; only the
+  // initial authored positions are redistributed into readable lanes.
+  if (gameId === "space") {
+    const v8SpawnSpaceWave = spawnSpaceWave;
+    spawnSpaceWave = function spawnReadableSpaceWave() {
+      v8SpawnSpaceWave();
+      const anchors = state.level === 1
+        ? [[220, 150], [740, 150], [330, 370], [630, 370], [480, 110]]
+        : state.level === 2
+          ? [[170, 125], [750, 125], [250, 365], [710, 365], [480, 200]]
+          : [[180, 140], [780, 140], [245, 380], [715, 380], [480, 105]];
+      let index = 0;
+      for (const rock of state.space.rocks) {
+        if (rock.boss) { rock.x = 480; rock.y = 105; continue; }
+        const [x, y] = anchors[index % anchors.length];
+        rock.x = x; rock.y = y; index += 1;
+      }
+    };
+    // The initial reset ran before the repair wrapper was installed. Refresh
+    // the hidden Main-state preview so the first Battle uses the same layout.
+    resetSpace();
+    const v8DrawSpace = drawSpace;
+    drawSpace = function drawReadableSpaceField() {
+      v8DrawSpace();
+      if (!state.space) return;
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      ctx.save();
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.strokeStyle = "rgba(116, 230, 238, .16)";
+      ctx.lineWidth = 2;
+      ctx.setLineDash([10, 14]);
+      for (const x of [240, 480, 720]) { ctx.beginPath(); ctx.moveTo(x, 28); ctx.lineTo(x, 512); ctx.stroke(); }
+      for (const y of [135, 270, 405]) { ctx.beginPath(); ctx.moveTo(28, y); ctx.lineTo(932, y); ctx.stroke(); }
+      ctx.setLineDash([]);
+      ctx.strokeStyle = "rgba(255, 220, 138, .35)";
+      ctx.strokeRect(20, 20, 920, 500);
+      ctx.restore();
+    };
+    drawSpace();
+  }
 })();

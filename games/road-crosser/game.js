@@ -69,4 +69,15 @@
   // the opening pressure spike that made the final crossing inconsistent.
   const v13MakeWorld=makeWorld;
   makeWorld=function(){const next=v13MakeWorld();if(stage===3){next.logs.forEach(log=>{log.w=280;log.s*=.6});next.traffic.forEach(car=>{car.s*=.78})}return next};
+  // v15 Director repair: make the next decision legible on the full Canvas.
+  // The cue is an overlay only; lane physics, timing, scoring, and collision
+  // rules remain unchanged.
+  const v14Draw=draw;
+  draw=function drawWithNextLaneCue(){
+    v14Draw();
+    if(!world||screen!=="battle")return;
+    const cssW=Math.max(1,canvas.clientWidth),cssH=Math.max(1,canvas.clientHeight),dpr=Math.min(2,window.devicePixelRatio||1),scale=Math.min(cssW/920,cssH/720)||1,logicalW=cssW/scale,logicalH=cssH/scale,laneTop=56,laneH=Math.max(1,(logicalH-laneTop)/8),mapX=x=>x/920*logicalW;
+    const p=world.player,nextLane=Math.max(0,p.y-1),y=laneTop+nextLane*laneH+laneH/2,x=mapX(p.x);
+    ctx.save();ctx.setTransform(dpr*scale,0,0,dpr*scale,0,0);ctx.strokeStyle="#ffd77daa";ctx.lineWidth=3;ctx.setLineDash([8,10]);ctx.strokeRect(8,laneTop+nextLane*laneH+8,logicalW-16,Math.max(1,laneH-16));ctx.setLineDash([]);ctx.beginPath();ctx.moveTo(x,y-18);ctx.lineTo(x,y+18);ctx.stroke();ctx.beginPath();ctx.moveTo(x-10,y-7);ctx.lineTo(x,y-18);ctx.lineTo(x+10,y-7);ctx.stroke();ctx.restore();
+  };
 })();

@@ -146,8 +146,24 @@
       enemyHealed: "استعاد العدو {value} صحة."
     }
   };
+  const readySpin = {
+    en: "Choose Ready to unlock the first Spin.",
+    "zh-Hant": "按下「準備好了」即可解鎖第一次轉動。",
+    "zh-Hans": "选择“准备好了”即可解锁第一次转动。",
+    ja: "「準備完了」を選ぶと最初のスピンが解放されます。",
+    ko: "준비 완료를 선택하면 첫 스핀이 열립니다.",
+    es: "Elige Listo para desbloquear el primer giro.",
+    "pt-BR": "Escolha Pronto para liberar o primeiro giro.",
+    fr: "Choisissez Prêt pour débloquer le premier tour.",
+    de: "Wähle Bereit, um die erste Drehung freizuschalten.",
+    it: "Scegli Pronto per sbloccare il primo giro.",
+    ru: "Нажмите «Готово», чтобы открыть первое вращение.",
+    hi: "पहली स्पिन खोलने के लिए तैयार चुनें।",
+    ar: "اختر جاهزًا لفتح اللفّة الأولى."
+  };
   Object.keys(L).forEach(code => {
     Object.assign(L[code], patches[code] || patches.en);
+    L[code].readySpin = readySpin[code] || readySpin.en;
     L[code].tipTactics = `${L[code].tacticsHint} ${L[code].rerollReel} / ${L[code].holdReel} / ${L[code].leaderTactic}.`;
   });
 })();
