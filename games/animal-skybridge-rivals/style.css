@@ -244,7 +244,21 @@ button {
   padding: 6px;
 }
 .stage-header {
-  grid-template-columns: 54px minmax(0, 1fr) 54px;
+  grid-template-columns: 54px minmax(0, 1fr) 52px 54px !important;
+}
+.stage-header > .fia-portrait {
+  grid-column: 3 !important;
+  grid-row: 1 !important;
+  justify-self: end;
+}
+.stage-header > strong {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  min-width: 0;
+}
+.stage-header > .wp-shell-settings {
+  grid-column: 4 !important;
+  grid-row: 1 !important;
 }
 .stage-header button,
 .battle-header > button {
@@ -718,6 +732,11 @@ button {
     width: 64px;
     height: 64px;
   }
+  /* Preserve room for the title beside the mascot at narrow widths. */
+  .stage-header {
+    grid-template-columns: 48px minmax(0, 1fr) 52px 48px !important;
+  }
+  .stage-header > strong { font-size: 18px; }
   .battle-live {
     grid-template-rows: 66px 36px minmax(0, 1fr) 25px;
     padding: 5px;

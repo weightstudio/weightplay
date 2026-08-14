@@ -38,6 +38,38 @@
     ar: { back: "رجوع", settings: "الإعدادات", sound: "الصوت", language: "اللغة", start: "بدء اللعبة", restart: "إعادة البدء", newGame: "لعبة جديدة", yourTurn: "دورك", aiTurn: "الذكاء الاصطناعي يفكر", hand: "يدك", table: "الطاولة", stock: "الرزمة", discard: "المهملات", points: "النقاط", score: "النتيجة", select: "اختر", play: "العب", draw: "اسحب", pass: "مرر", choose: "اختر", chooseSuit: "اختر النوع", chooseRank: "اختر الرتبة", capture: "التقاط", build: "بناء", knock: "طرق", gin: "جين", bid: "مزايدة", submit: "تأكيد", flip: "اقلب", war: "حرب!", ask: "اسأل", goFish: "اذهب للصيد", noLegal: "لا توجد بطاقة — اسحب", winner: "لقد فزت!", loser: "فاز الذكاء الاصطناعي", roundOver: "انتهت الجولة", continue: "متابعة", close: "إغلاق", cards: "بطاقات", pairs: "أزواج", books: "مجموعات", booksMade: "المجموعات", live: "قيد اللعب", waiting: "انتظار", oldMaid: "العانس", chooseOpponent: "اختر خصماً", selectCards: "اختر البطاقات", pending: "معلّق", made: "مكتمل", target: "الهدف", total: "الإجمالي" },
   };
 
+  const HEARTS_COPY = {
+    en: { help: "Follow suit. Hearts and Q♠ are penalty cards." },
+    "zh-Hant": { help: "請跟同花色出牌。紅心與黑桃皇后是扣分牌。" },
+    "zh-Hans": { help: "请跟同花色出牌。红心和黑桃皇后是扣分牌。" },
+    ja: { help: "リードされたスートに従いましょう。ハートとスペードのQはペナルティカードです。" },
+    ko: { help: "가능하면 같은 무늬를 따라 내세요. 하트와 스페이드 Q는 벌점 카드입니다." },
+    es: { help: "Sigue el palo. Los corazones y la Q de picas son cartas de penalización." },
+    "pt-BR": { help: "Siga o naipe. Copas e a Q de espadas são cartas de penalidade." },
+    fr: { help: "Suivez la couleur. Les cœurs et la Q de pique sont des cartes pénalisantes." },
+    de: { help: "Bediene die Farbe. Herzen und die Pik-Dame bringen Strafpunkte." },
+    it: { help: "Segui il seme. I cuori e la Q di picche sono carte penalizzanti." },
+    ru: { help: "Следуйте масти. Червы и дама пик — штрафные карты." },
+    hi: { help: "यदि संभव हो तो वही सूट चलें। हार्ट और स्पेड की Q दंड कार्ड हैं।" },
+    ar: { help: "اتبع اللون. القلوب وملكة البستوني بطاقات جزاء." },
+  };
+
+  const SPADES_COPY = {
+    en: { bid: "Bid the tricks your team expects to take. ♠ is always trump.", play: "Follow suit when possible; a spade wins the trick." },
+    "zh-Hant": { bid: "叫出你和隊友預計能贏的墩數。♠ 永遠是王牌。", play: "能跟同花色就跟牌；黑桃可以贏得這一墩。" },
+    "zh-Hans": { bid: "叫出你和队友预计能赢的墩数。♠ 永远是王牌。", play: "能跟同花色就跟牌；黑桃可以赢得这一墩。" },
+    ja: { bid: "チームで取れると思うトリック数をビッドします。♠は常に切り札です。", play: "できるだけ同じスートを出し、♠でトリックを取ります。" },
+    ko: { bid: "팀이 가져갈 트릭 수를 선언하세요. ♠는 항상 으뜸패입니다.", play: "가능하면 같은 무늬를 내세요. ♠가 트릭을 이깁니다." },
+    es: { bid: "Apuesta las bazas que tu equipo espera ganar. ♠ siempre es triunfo.", play: "Sigue el palo cuando puedas; una pica gana la baza." },
+    "pt-BR": { bid: "Declare as vazas que sua equipe espera vencer. ♠ sempre é trunfo.", play: "Siga o naipe quando puder; uma espada vence a vaza." },
+    fr: { bid: "Annoncez les plis que votre équipe pense remporter. ♠ est toujours l'atout.", play: "Suivez la couleur si possible ; un ♠ remporte le pli." },
+    de: { bid: "Biete die Stiche, die dein Team voraussichtlich gewinnt. ♠ ist immer Trumpf.", play: "Bediene die Farbe, wenn möglich; Pik gewinnt den Stich." },
+    it: { bid: "Dichiara le prese che la tua squadra pensa di vincere. ♠ è sempre briscola.", play: "Segui il seme quando puoi; una ♠ vince la presa." },
+    ru: { bid: "Закажите число взяток, которое ваша команда рассчитывает взять. ♠ всегда козырь.", play: "По возможности следуйте масти; ♠ выигрывает взятку." },
+    hi: { bid: "आपकी टीम जितनी बाज़ियाँ लेने की उम्मीद करती है, उतनी बोली लगाएँ। ♠ हमेशा तुरुप है।", play: "संभव हो तो उसी सूट का पत्ता चलें; ♠ बाज़ी जीतता है।" },
+    ar: { bid: "راهن على عدد اللمّات التي يتوقع فريقك الفوز بها. ♠ هي الحكم دائماً.", play: "اتبع النوع إن أمكن؛ ♠ تفوز باللّمة." },
+  };
+
   const OLD_MAID_RISK = {
     en: { held: "Old Maid in hand — clear pairs and pass it on.", hidden: "The Old Maid is still hidden." },
     "zh-Hant": { held: "鬼牌在你手上——消除配對並設法傳出去。", hidden: "鬼牌仍藏在某位玩家手中。" },
@@ -126,6 +158,8 @@
     Object.entries(values).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); });
     return value;
   };
+  const heartsText = () => (HEARTS_COPY[currentLocale()] || HEARTS_COPY.en).help;
+  const spadesText = (phase) => (SPADES_COPY[currentLocale()] || SPADES_COPY.en)[phase] || SPADES_COPY.en.play;
 
   function card(suit, rank, extra = {}) { return { suit, rank, id: `${suit}-${rank}-${Math.random().toString(36).slice(2)}`, ...extra }; }
   function deck() {
@@ -371,7 +405,7 @@
       reset() { Object.assign(s, { hands: [[], [], [], []], scores: [0, 0, 0, 0], turn: 0, lead: 0, trick: [], heartsBroken: false, phase: "pass", selected: new Set(), passReceived: false }); deck().forEach((item, index) => s.hands[index % 4].push(item)); s.hands.forEach((cards) => cards.sort((a, b) => a.suit.localeCompare(b.suit) || a.rank - b.rank)); },
       card(index) { if (s.phase === "pass" && s.turn === 0) { if (s.selected.has(index)) s.selected.delete(index); else if (s.selected.size < 3) s.selected.add(index); } else if (s.phase === "play" && s.turn === 0) play(0, s.hands[0][index]); },
       action(action) { if (action === "pass" && s.phase === "pass" && s.selected.size === 3) { const selected = [...s.selected].sort((a, b) => b - a).map((index) => s.hands[0].splice(index, 1)[0]); selected.forEach((item) => s.hands[1].push(item)); const aiPass = s.hands[1].slice(0, 3); aiPass.forEach((item) => s.hands[1].splice(s.hands[1].indexOf(item), 1)); s.hands[0].push(...aiPass); s.hands.forEach((cards) => cards.sort((a, b) => a.suit.localeCompare(b.suit) || a.rank - b.rank)); s.phase = "play"; s.turn = s.hands.findIndex((cards) => cards.some((item) => item.suit === "clubs" && item.rank === 2)); if (s.turn !== 0) setTimeout(() => aiTurn(), 220); } },
-      view() { const trickHtml = s.trick.map((entry) => `<div>${aiNames[entry.player]} ${cardMarkup(entry.card, 0)}</div>`).join(""); const action = s.phase === "pass" ? `<button class="primary-btn" data-action="pass" ${s.selected.size !== 3 ? "disabled" : ""}>${t("pass")} 3</button>` : `<p class="card-help">${s.heartsBroken ? "♥ " : ""}${t("yourTurn")}</p>`; return { phase: s.phase === "pass" ? t("pass") : (s.heartsBroken ? "♥" : "♥ · " + t("waiting")), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "pass" ? `${t("selectCards")}: ${s.selected.size}/3` : "Follow suit. Hearts and Q♠ are penalty cards.", score: s.scores[0], opponents: s.hands.slice(1).map((cards, index) => opponentMarkup(aiNames[index + 1], cards.length, `${t("points")}: ${s.scores[index + 1]}`)).join(""), center: `<div class="card-table-label">${t("table")}</div><div class="table-row">${trickHtml || "<span>2♣ leads the first trick</span>"}</div>`, hand: cardsMarkup(s.hands[0], { selected: s.selected, hidden: false }), actions: action }; },
+      view() { const trickHtml = s.trick.map((entry) => `<div>${aiNames[entry.player]} ${cardMarkup(entry.card, 0)}</div>`).join(""); const action = s.phase === "pass" ? `<button class="primary-btn" data-action="pass" ${s.selected.size !== 3 ? "disabled" : ""}>${t("pass")} 3</button>` : `<p class="card-help">${s.heartsBroken ? "♥ " : ""}${t("yourTurn")}</p>`; return { phase: s.phase === "pass" ? t("pass") : (s.heartsBroken ? "♥" : "♥ · " + t("waiting")), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "pass" ? `${t("selectCards")}: ${s.selected.size}/3` : heartsText(), score: s.scores[0], opponents: s.hands.slice(1).map((cards, index) => opponentMarkup(aiNames[index + 1], cards.length, `${t("points")}: ${s.scores[index + 1]}`)).join(""), center: `<div class="card-table-label">${t("table")}</div><div class="table-row">${trickHtml || "<span>2♣ leads the first trick</span>"}</div>`, hand: cardsMarkup(s.hands[0], { selected: s.selected, hidden: false }), actions: action }; },
     };
   }
 
@@ -382,7 +416,7 @@
     const finish = () => { const own = s.tricks[0] >= s.bids[0] + s.bids[2]; const enemy = s.tricks[1] >= s.bids[1] + s.bids[3]; s.scores[0] += own ? 10 * (s.bids[0] + s.bids[2]) + Math.max(0, s.tricks[0] - s.bids[0] - s.bids[2]) : -10 * (s.bids[0] + s.bids[2]); s.scores[1] += enemy ? 10 * (s.bids[1] + s.bids[3]) + Math.max(0, s.tricks[1] - s.bids[1] - s.bids[3]) : -10 * (s.bids[1] + s.bids[3]); controller.result(s.scores[0] >= s.scores[1], `${t("score")}: ${s.scores[0]} — ${s.scores[1]}`); };
     const play = (player, item) => { const cards = s.hands[player]; if (!legal(cards).includes(item)) return; cards.splice(cards.indexOf(item), 1); s.trick.push({ player, card: item }); s.turn = (player + 1) % 4; if (s.trick.length === 4) { const winner = trickWinner(s.trick, "spades"); s.tricks[winner % 2 === 0 ? 0 : 1] += 1; s.trick = []; s.turn = winner; if (!s.hands[0].length) { finish(); return; } } if (s.turn !== 0) setTimeout(aiTurn, 180); };
     const aiTurn = () => { if (s.phase !== "play" || s.turn === 0) return; play(s.turn, chooseAiCard(s.hands[s.turn], legal(s.hands[s.turn]), s.turn % 2 ? "low" : "high")); };
-    return { reset() { Object.assign(s, { hands: [[], [], [], []], bids: [null, null, null, null], tricks: [0, 0], turn: 0, trick: [], phase: "bid", scores: [0, 0] }); deck().forEach((item, index) => s.hands[index % 4].push(item)); }, card(index) { if (s.phase === "play" && s.turn === 0) play(0, s.hands[0][index]); }, action(action, selected) { if (s.phase === "bid" && action === "bid") { s.bids[0] = Number(selected); s.bids[1] = 2 + Math.floor(Math.random() * 3); s.bids[2] = 2 + Math.floor(Math.random() * 4); s.bids[3] = 2 + Math.floor(Math.random() * 3); s.phase = "play"; s.turn = 0; } }, view() { const bidControls = Array.from({ length: 14 }, (_, i) => `<button class="secondary-btn" data-action="bid" data-value="${i}" ${s.bids[0] !== null ? "disabled" : ""}>${i}</button>`).join(""); return { phase: s.phase === "bid" ? t("bid") : `${t("score")}: ${s.scores[0]} / ${s.scores[1]}`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "bid" ? "Bid the tricks your team expects to take. ♠ is always trump." : "Follow suit when possible; a spade wins the trick.", score: s.scores[0], opponents: names.slice(1).map((name, index) => opponentMarkup(name, s.hands[index + 1].length, `${t("bid")}: ${s.bids[index + 1] ?? "—"}`)).join(""), center: `<div class="card-table-label">${t("table")} · ${s.tricks[0]} / ${s.tricks[1]}</div><div class="table-row">${s.trick.map((entry) => cardMarkup(entry.card, 0)).join("") || `♠ ${t("waiting")}`}</div>`, hand: cardsMarkup(s.hands[0]), actions: s.phase === "bid" ? `<div class="card-choice-panel">${bidControls}</div>` : "" }; } };
+    return { reset() { Object.assign(s, { hands: [[], [], [], []], bids: [null, null, null, null], tricks: [0, 0], turn: 0, trick: [], phase: "bid", scores: [0, 0] }); deck().forEach((item, index) => s.hands[index % 4].push(item)); }, card(index) { if (s.phase === "play" && s.turn === 0) play(0, s.hands[0][index]); }, action(action, selected) { if (s.phase === "bid" && action === "bid") { s.bids[0] = Number(selected); s.bids[1] = 2 + Math.floor(Math.random() * 3); s.bids[2] = 2 + Math.floor(Math.random() * 4); s.bids[3] = 2 + Math.floor(Math.random() * 3); s.phase = "play"; s.turn = 0; } }, view() { const bidControls = Array.from({ length: 14 }, (_, i) => `<button class="secondary-btn" data-action="bid" data-value="${i}" ${s.bids[0] !== null ? "disabled" : ""}>${i}</button>`).join(""); return { phase: s.phase === "bid" ? t("bid") : `${t("score")}: ${s.scores[0]} / ${s.scores[1]}`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: spadesText(s.phase === "bid" ? "bid" : "play"), score: s.scores[0], opponents: names.slice(1).map((name, index) => opponentMarkup(name, s.hands[index + 1].length, `${t("bid")}: ${s.bids[index + 1] ?? "—"}`)).join(""), center: `<div class="card-table-label">${t("table")} · ${s.tricks[0]} / ${s.tricks[1]}</div><div class="table-row">${s.trick.map((entry) => cardMarkup(entry.card, 0)).join("") || `♠ ${t("waiting")}`}</div>`, hand: cardsMarkup(s.hands[0]), actions: s.phase === "bid" ? `<div class="card-choice-panel">${bidControls}</div>` : "" }; } };
   }
 
   function makeCrazyEights(controller) {

@@ -354,6 +354,8 @@
     const renderShell = () => { shell(); els.start.textContent = copy(locale, "start"); els.hint.textContent = copy(locale, "hint"); els.restart.textContent = copy(locale, "restart"); els.retry.textContent = copy(locale, "retry"); els.home.textContent = copy(locale, "home"); };
     els.start.addEventListener("click", start); els.retry.addEventListener("click", start); els.home.addEventListener("click", () => { stopSnakeTimer(); show("main"); state = makeState(game.type); render(); }); els.hint.addEventListener("click", hint); els.restart.addEventListener("click", start);
     document.addEventListener("keydown", (event) => { if (document.body.dataset.screen !== "battle") return; const map = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down", a: "left", A: "left", d: "right", D: "right", w: "up", W: "up", s: "down", S: "down", " ": "drop" }; if (map[event.key] && ["tetris", "snake", "breakout", "pong"].includes(game.type)) { event.preventDefault(); action(map[event.key]); } });
+    const battleBack = document.querySelector('[data-wp-return="battle"]');
+    battleBack?.addEventListener("click", () => { stopSnakeTimer(); show("main"); state = makeState(game.type); render(); });
     renderShell(); show("main"); render();
   }
 

@@ -27,6 +27,7 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/road-crosser/" />
     <title>스타 크로서 | WeightPlay</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260814-new-games-shell2" data-wp-shell-standard />
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="스타 크로서 | WeightPlay" />
@@ -66,16 +67,17 @@
 }
     </script>
   </head>
-<body data-game-id="road-crosser" data-screen="main">
+<body data-game-id="road-crosser" data-wp-game-id="road-crosser" data-wp-battle-layout="native" data-wp-combined-sound="true" data-screen="main">
   <main class="classic-game" id="roadCrosserApp">
-    <header class="site-header">
-      <a class="brand" href="/" aria-label="Back to WeightPlay"><span class="brand-mark" aria-hidden="true">✦</span><span>WeightPlay</span></a>
-      <div class="header-copy"><p class="eyebrow" data-copy="eyebrow">WeightPlay Original Arcade</p><h1 data-copy="title">스타 크로서</h1><p class="tagline" data-copy="tagline">Read the rhythm. Cross the danger.</p></div>
-      <label class="locale-picker"><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
+    <h1 class="wp-route-heading" data-copy="title">스타 크로서</h1>
+    <header class="main-header site-header">
+      <a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+      <strong data-copy="title">Road Crosser</strong>
+      <label class="locale-control locale-picker"><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
     </header>
 
     <section id="mainScreen" class="screen main-screen">
-      <div class="hero-card"><div class="hero-art" aria-hidden="true"><span class="art-star">✦</span><span class="art-rider">◢</span><span class="art-road"></span><span class="art-river"></span></div><div class="main-copy"><p class="status-pill" data-copy="comingSoon">Coming Soon</p><p class="lead" data-copy="guideIntro">Guide the little Star Runner across traffic, river currents, and moving sky-roads. Three crossings build from a readable rhythm into a tight timing test.</p><button id="startBtn" class="primary-action" type="button" data-copy="start">Start Crossing</button></div></div>
+      <div class="hero-card"><img class="main-poster" src="../../assets/road-crosser-cover.webp" alt="스타 크로서 게임 이미지" /><div class="main-copy"><p class="status-pill" data-copy="comingSoon">Coming Soon</p><p class="lead main-summary" data-copy="guideIntro">Guide the little Star Runner across traffic, river currents, and moving sky-roads. Three crossings build from a readable rhythm into a tight timing test.</p><button id="startBtn" class="primary-action" type="button" data-wp-main-start data-copy="start">Start Crossing</button></div></div>
       <section class="public-guide" aria-labelledby="guideHeading"><p class="guide-kicker" data-copy="guideLabel">How to play</p><h2 id="guideHeading" data-copy="guideTitle">Make one safe step at a time.</h2><div class="guide-grid"><article><h3 data-copy="controlsTitle">Controls</h3><ol><li data-copy="how1">Use arrow keys or WASD to move one lane.</li><li data-copy="how2">Swipe or tap the direction pads on mobile.</li><li data-copy="how3">Watch car lanes and float on a moving log in the river.</li></ol></article><article><h3 data-copy="growthTitle">Crossing rhythm</h3><p data-copy="growth">Stage 1 teaches the route. Stages 2 and 3 add denser traffic, faster water, rocks, and tighter safe windows.</p><p class="guide-note" data-copy="comingNote">This owner-preview build stays Coming Soon until the full Tester, Gameplay Reviewer, and Director gates are complete.</p></article></div></section>
     </section>
 
@@ -116,6 +118,8 @@
       document.getElementById("localeSelect")?.addEventListener("change", () => requestAnimationFrame(apply));
     })();
   </script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 <section class="game-page-info game-page-info-static" aria-label="스타 크로서 게임 정보">
     
     <div class="game-info-hero">

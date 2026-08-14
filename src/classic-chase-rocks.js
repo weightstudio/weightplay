@@ -340,6 +340,16 @@
   window.visualViewport?.addEventListener("resize", () => { if (state.running || state.result) syncPlayViewport(); });
   populateLocales(); buildControls(); setLocale(locale); resizeCanvas(gameId === "maze" ? 630 : 960, gameId === "maze" ? 630 : 540); if (gameId === "maze") mazeResetStage(); else resetSpace(); showMain();
 
+  if (!ui.main.querySelector('[data-wp-return="main"]')) {
+    const mainReturn = document.createElement("a");
+    mainReturn.className = "main-return";
+    mainReturn.href = "/";
+    mainReturn.dataset.wpReturn = "main";
+    mainReturn.setAttribute("aria-label", "Return to WeightPlay");
+    mainReturn.innerHTML = '<span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="">';
+    ui.main.prepend(mainReturn);
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
+  }
   // v9 Director repair: the first Space Rocks wave must teach the target field
   // from the first frame. The old edge-spawn placed every large rock on the
   // wrap boundary, leaving a nearly empty centre on phone-sized Canvases.

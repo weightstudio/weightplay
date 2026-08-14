@@ -13,14 +13,14 @@
     script.dataset.wpStageStandard = "true";
     document.head.appendChild(script);
   }
-  if (!document.querySelector('link[href*="battle-canvas-standard.css"]')) {
+  if (document.body?.dataset.wpBattleLayout !== "native" && !document.querySelector('link[href*="battle-canvas-standard.css"]')) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
     link.href = new URL("battle-canvas-standard.css", sharedAssetBase).href;
     link.dataset.wpBattleStandard = "true";
     document.head.appendChild(link);
   }
-  if (!document.querySelector('script[src*="battle-canvas-standard.js"]')) {
+  if (document.body?.dataset.wpBattleLayout !== "native" && !document.querySelector('script[src*="battle-canvas-standard.js"]')) {
     const script = document.createElement("script");
     script.src = new URL("battle-canvas-standard.js?v=20260812-zhao-battle-v2", sharedAssetBase).href;
     script.dataset.wpBattleStandard = "true";

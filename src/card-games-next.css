@@ -89,6 +89,35 @@ body[data-wp-card-game] > .result-overlay .result-actions button { min-height: 4
   .card-opponents { display: flex; flex-direction: column; overflow: auto; }
   .card-table-center { min-height: 0; }
   .card-game-player { min-height: 0; overflow: auto; }
+  body[data-wp-card-game="hearts"] .card-game-player {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  body[data-wp-card-game="hearts"] .card-game-player-header {
+    flex: 0 0 auto;
+    min-width: 0;
+  }
+  body[data-wp-card-game="hearts"] .card-game-player-header small {
+    min-width: 0;
+    flex: 1 1 auto;
+    font-size: 10px;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+  body[data-wp-card-game="hearts"] .card-hand {
+    flex: 1 1 auto;
+    min-height: 66px;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  body[data-wp-card-game="hearts"] .card-hand .playing-card {
+    flex: 0 0 43px;
+  }
   body[data-wp-card-game="go-fish"] .card-game-board,
   body[data-wp-card-game="speed"] .card-game-board,
   body[data-wp-card-game="old-maid"] .card-game-board {

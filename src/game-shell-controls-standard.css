@@ -22,6 +22,18 @@
   padding: 4px 6px !important;
 }
 
+.wp-route-heading {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
 .wp-main-shell-header > :not(.wp-shell-return):not(.wp-shell-settings):not(.wp-shell-legacy-control) {
   grid-column: 2;
   grid-row: 1;
@@ -728,8 +740,21 @@ body.has-game-page-info.wp-shell-battle-active {
   width: 100% !important;
   height: 100% !important;
   min-height: 0 !important;
+  position: fixed !important;
+  inset: 0 !important;
   overflow: hidden !important;
   overscroll-behavior: none !important;
+  touch-action: none !important;
+}
+
+/* The shared Battle canvas owns the full viewport minus one fixed ad-safe
+   reserve. Prevent a flex parent from shrinking that reserve by a fractional
+   pixel when a game-specific Battle surface also has a border. */
+body.wp-shell-battle-active .play-reserve {
+  flex: 0 0 56px !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  max-height: 56px !important;
 }
 
 body:is(.wp-shell-stage-active, .wp-shell-battle-active)

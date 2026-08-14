@@ -147,6 +147,7 @@
   }
 
   function ensureBattleCanvasRuntime() {
+    if (document.body?.dataset.wpBattleLayout === "native") return;
     if (!document.querySelector('link[href*="battle-canvas-standard.css"]')) {
       const link = document.createElement("link");
       link.rel = "stylesheet";
@@ -156,7 +157,7 @@
     }
     if (!document.querySelector('script[src*="battle-canvas-standard.js"]')) {
       const script = document.createElement("script");
-      script.src = `${new URL("battle-canvas-standard.js", sharedAssetBase).href}?v=20260812-zhao-battle-v2`;
+      script.src = `${new URL("battle-canvas-standard.js", sharedAssetBase).href}?v=20260814-battle-reserve-v3`;
       script.dataset.wpBattleStandard = "true";
       document.body.append(script);
     }
@@ -171,7 +172,7 @@
     }
     if (!document.querySelector('script[src*="game-page-info.js"]')) {
       const script = document.createElement("script");
-      script.src = new URL("game-page-info.js", sharedAssetBase).href;
+      script.src = `${new URL("game-page-info.js", sharedAssetBase).href}?v=20260814-native-battle-v1`;
       document.body.append(script);
     }
   }
@@ -206,6 +207,13 @@
     const active = document.body?.matches(".wp-shell-stage-active,.wp-shell-battle-active") || false;
     document.documentElement.classList.toggle("wp-shell-main-flow", main && !active);
     document.documentElement.classList.toggle("wp-shell-active-play", active);
+    if (active) {
+      document.documentElement.style.setProperty("touch-action", "none", "important");
+      document.body?.style.setProperty("touch-action", "none", "important");
+    } else {
+      document.documentElement.style.removeProperty("touch-action");
+      document.body?.style.removeProperty("touch-action");
+    }
     if (active && !activePlayRootLocked) {
       activePlayRootLocked = true;
       document.documentElement.scrollTop = 0;
@@ -496,7 +504,10 @@
       }
       inferredMain = inferredMain?.closest(".wp-standard-main-screen") || inferredMain;
     }
-    let main = mains.find(visible) || inferredMain;
+    // A hidden Main screen can still contain visible descendants such as the
+    // poster and start button. Never let that stale inferred owner win over a
+    // visible Battle/Stage screen during a scene transition.
+    let main = mains.find(visible) || (inferredMain && visible(inferredMain) ? inferredMain : null);
     if (immutableSceneControls && visibleStart && visiblePoster) {
       const mainReturn = firstVisible(['[data-wp-return="main"]'], document);
       const sceneOwner = mainReturn?.closest(
