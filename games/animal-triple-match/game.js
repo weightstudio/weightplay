@@ -101,17 +101,33 @@
 
   const generatedGuidePatchCopy = {
     "pt-BR": {
+      kicker: "Guia original do WeightPlay",
+      guideTitle: "Jogo Triplo Animal — Guia do jogo",
+      guideIntro: "Mova tesouros descobertos de uma pilha em camadas para uma bandeja de sete vagas e forme trios antes que objetos isolados ocupem todos os espaços.",
+      facts: ["Princípio de jogo", "Puzzle de trios em camadas", "Gênero", "Quebra-cabeça", "Tema", "Animais", "Dificuldade", "Fácil no início, exigente depois", "Tempo estimado", "2–8 minutos por fase", "Habilidades", "Lógica", "Planejamento", "Resolução de problemas"],
+      storyTitle: "Mundo e missão",
+      story: ["Trinta pilhas de tesouros na estufa escondem objetos mágicos sob camadas sobrepostas. Um tesouro só pode ser movido quando nenhum objeto ativo cobre sua área de seleção.", "A bandeja é espaço de trabalho e medidor de perigo: cada jogada revela mais da pilha, mas pode consumir o espaço necessário para um trio posterior."],
+      systemsTitle: "Como os sistemas funcionam",
+      systems: ["Toque um tesouro descoberto para colocá-lo na próxima vaga da bandeja.", "Três tesouros iguais desaparecem automaticamente; os restantes se aproximam e liberam espaço.", "Tesouros cobertos continuam visíveis, mas só podem ser escolhidos depois que os objetos acima forem removidos.", "Os capítulos seguintes adicionam cipós, cascas de cristal, embalagens misteriosas, prateleiras móveis, bandejas menores e pilhas finais combinadas."],
+      howTitle: "Como jogar",
+      how: ["Escolha uma fase desbloqueada.", "Observe a camada superior e procure um par ou trio acessível.", "Mova os tesouros para a bandeja, mantendo pelo menos uma vaga de recuperação quando possível.", "Esvazie toda a pilha antes que as vagas disponíveis fiquem ocupadas por tesouros sem trio."],
+      strategyTitle: "Dicas de estratégia",
+      strategy: ["Prefira um tesouro cuja remoção revele vários objetos cobertos.", "Acompanhe os pares já na bandeja antes de adicionar um novo tipo isolado.", "Adie tesouros misteriosos quando um trio conhecido já estiver acessível.", "Use Encontrar par para localizar uma jogada válida e depois confirme se a bandeja comporta essa escolha."],
+      campaignTitle: "Campanha e crescimento de dificuldade",
+      campaign: ["Seis capítulos de cinco fases apresentam uma família de regras por vez antes de o capítulo final combiná-las.", "A dificuldade cresce com as dependências entre camadas e a pressão da bandeja, não com um cronômetro oculto."],
       design: "Objetos grandes, sombras de sobreposição estáveis, ordem visível na bandeja e animação automática dos trios tornam cada consequência fácil de entender sem piscar o tabuleiro inteiro. A interface usa um único layout lógico centralizado, com largura máxima de 920 pixels. Celular, paisagem e desktop dimensionam juntos controles, áreas de toque, arte e coordenadas. Toque, mouse e teclado atuam sobre o mesmo estado válido. O pôster e o botão Começar ficam separados da gestão de fases; seleção, Batalha, diálogos e Resultado mantêm seus próprios limites e caminhos de retorno.",
       parent: "Não é preciso criar conta, comprar itens, enfrentar contagem regressiva ou participar de ranking público. Fases concluídas, estrelas e o melhor espaço livre na bandeja ficam neste navegador. O progresso usa o armazenamento local do perfil atual; limpar os dados, usar navegação privada, trocar de navegador ou dispositivo pode criar outro progresso ou apagar o atual. Idioma, som e preferência de movimento reduzido seguem os controles do WeightPlay quando o navegador permite. O guia e o Relatório de habilidade não são avaliações médicas, escolares ou profissionais.",
       strategyFrom: ["Use o Hint", "um novo tipo de singleton"],
-      strategyTo: ["Use a dica", "um novo tipo isolado"],
+      faqTitle: "Perguntas frequentes",
+      faq: ["Por que não consigo escolher um tesouro?", "Outro objeto ativo ainda cobre sua área de seleção.", "Quando um trio desaparece?", "Assim que o terceiro tesouro igual entra na bandeja.", "Sobram espaços vazios depois de um trio?", "Não. Os tesouros restantes se aproximam automaticamente.", "As fases são aleatórias?", "Não. Cada pilha e combinação de regras é criada manualmente.", "Quais entradas e tamanhos de tela são compatíveis?", "Toque, mouse e teclado seguem as mesmas regras. A interface escala como um único layout para telefones, paisagem e desktop.", "Meu progresso passa automaticamente para outro dispositivo?", "Não. O jogo salva apenas no navegador local; outro perfil ou dispositivo começa com seu próprio progresso."],
+      strategyTo: ["Use Encontrar par", "um novo tipo isolado"],
       relatedIntro: "Como este jogo pratica lógica, experimente também:",
     },
   };
 
   const els = Object.fromEntries([...document.querySelectorAll("[id]")].map(el => [el.id, el]));
   const SAVE_KEY = "weightplay_animal_triple_match_v1";
-  const GAME_VERSION = 6;
+  const GAME_VERSION = 7;
   const INTERFACE_VERSION = 6;
   const CHAPTERS = ["openShelf","vineGallery","crystalRoom","mysteryLoft","shiftingHall","grandFinale"];
   const ITEM_NAMES = ["Acorn Lantern","Moon Cup","Shell Compass","Berry Brooch","Cloud Jar","Prism Flower","Star Telescope","Leaf Locket","Coral Music Box","Bee Bell","Mushroom Lamp","Crystal Feather"];
@@ -233,14 +249,53 @@
     if (guide.getAttribute("aria-label") !== guideLabel) guide.setAttribute("aria-label", guideLabel);
     if (code === "pt-BR") {
       const copy = generatedGuidePatchCopy[code];
+      const sections = [...guide.querySelectorAll(".game-info-section")];
+      const setText = (root, selector, value) => {
+        const node = root?.querySelector(selector);
+        if (node) node.textContent = value;
+      };
+      const setItems = (root, selector, values) => {
+        const nodes = root?.querySelectorAll(selector) || [];
+        values.forEach((value, index) => { if (nodes[index]) nodes[index].textContent = value; });
+      };
+      const hero = guide.querySelector(".game-info-hero");
+      setText(hero, ".game-info-kicker", copy.kicker);
+      setText(hero, "h2", copy.guideTitle);
+      setText(hero, "h2 + p", copy.guideIntro);
+      setItems(hero, ".game-info-facts span, .game-info-facts strong", copy.facts);
+      const story = guide.querySelector(".game-info-story");
+      setText(story, "h3", copy.storyTitle);
+      setItems(story, "p", copy.story);
+      const systems = guide.querySelector(".game-info-systems");
+      setText(systems, "h3", copy.systemsTitle);
+      setItems(systems, "li", copy.systems);
+      const how = sections[2];
+      setText(how, "h3", copy.howTitle);
+      setItems(how, "li", copy.how);
+      const strategy = guide.querySelector(".game-info-strategy");
+      setText(strategy, "h3", copy.strategyTitle);
+      setItems(strategy, "li", copy.strategy);
+      const campaign = guide.querySelector(".game-info-campaign");
+      setText(campaign, "h3", copy.campaignTitle);
+      setItems(campaign, "p", copy.campaign);
+      setText(guide.querySelector(".game-info-design"), "h3", "Nota de design do desenvolvedor");
+      setText(guide.querySelector(".game-info-parent"), "h3", "Nota dos pais");
       const design = guide.querySelector(".game-info-design p");
       const parent = guide.querySelector(".game-info-parent p");
-      const strategy = guide.querySelector(".game-info-strategy");
-      const related = [...guide.querySelectorAll(".game-info-section")].find((section) => section.querySelector(".game-info-related"));
       if (design) design.textContent = copy.design;
       if (parent) parent.textContent = copy.parent;
-      strategy?.querySelectorAll("li").forEach((item) => {
-        item.textContent = item.textContent.replace(copy.strategyFrom[0], copy.strategyTo[0]).replace(copy.strategyFrom[1], copy.strategyTo[1]);
+      const faq = sections[7];
+      setText(faq, "h3", copy.faqTitle);
+      setItems(faq, "dt, dd", copy.faq);
+      const related = [...guide.querySelectorAll(".game-info-section")].find((section) => section.querySelector(".game-info-related"));
+      [
+        ["Bosque dos Números de Panko", "Remova pares que somam dez quando se tocam ou conseguem se enxergar através dos espaços livres, abrindo novas linhas de visão no tabuleiro."],
+        ["Caixa de animais", "Caminhe, empurre e puxe cargas rúnicas por trinta armazéns Sky-Ark de autoria."],
+        ["Desbloquear trilha", "Deslize blocos horizontais e verticais em seus próprios eixos até o explorador vermelho alcançar uma rota livre pela saída."],
+      ].forEach(([title, description], index) => {
+        const card = related?.querySelectorAll("a")[index];
+        setText(card, "strong", title);
+        setText(card, ".game-info-related-copy > span", description);
       });
       const relatedIntro = related?.querySelector(":scope > p");
       if (relatedIntro) relatedIntro.textContent = copy.relatedIntro;
@@ -686,7 +741,14 @@
     const config = stageConfig(stageIndex);
     run = { config, pieces: buildPieces(stageIndex), tray: [], history: [], matches: 0, moves: 0, lastTrayId: null, tools: { undo: 2, magnet: 2, shuffle: 2 }, ended: false, paused: false };
     [els.tutorialModal, els.leaveModal, els.resultModal].forEach(modal => modal.hidden = true);
-    isolateBattle(false); setScreen("battle"); renderRun(); sound("start");
+    els.feedback.textContent = "";
+    isolateBattle(false); setScreen("battle"); renderRun();
+    const battleRun = run;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (run !== battleRun || screen !== "battle") return;
+      fitCanvas();
+    }));
+    sound("start");
     if (!save.tutorial && !skipTutorial) { run.paused = true; openModal(els.tutorialModal, els.tutorialClose); }
     track("game_start", { stage: stageIndex + 1 });
   }

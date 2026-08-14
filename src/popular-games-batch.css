@@ -96,6 +96,12 @@ body[data-screen="result"] .game-page-info-static { display: none !important; }
 .snake-grid .grid-cell { border: 1px solid rgba(184, 211, 244, .1); }
 .snake-grid .grid-cell.snake-head { background: var(--arcade-accent-2); box-shadow: inset 0 0 0 3px rgba(255,255,255,.35), 0 0 12px rgba(255,212,125,.35); }
 .snake-grid .grid-cell.food { box-shadow: inset 0 0 0 3px rgba(255,255,255,.3), 0 0 14px rgba(255,140,155,.45); }
+.snake-grid .grid-cell.obstacle { background: linear-gradient(135deg, rgba(126,231,201,.2), rgba(255,212,125,.5)); border-color: rgba(255,212,125,.8); box-shadow: inset 0 0 0 2px rgba(255,255,255,.18), 0 0 12px rgba(255,212,125,.28); }
+.snake-grid.milestone-pulse { border: 2px solid rgba(126,231,201,.8); box-shadow: 0 0 0 5px rgba(126,231,201,.08), 0 0 26px rgba(126,231,201,.22); }
+.snake-grid .grid-cell.food-hit { animation: snake-food-hit .52s ease-out; background: var(--arcade-accent); box-shadow: 0 0 0 4px rgba(126,231,201,.35), 0 0 22px rgba(126,231,201,.72); }
+body[data-game-id="snake"] .round-label { max-width: 100%; color: var(--arcade-text); font-weight: 700; line-height: 1.45; }
+body[data-game-id="snake"] .game-message[data-tone="good"] { font-weight: 800; }
+@keyframes snake-food-hit { 0% { transform: scale(.72); opacity: .45; } 55% { transform: scale(1.08); opacity: 1; } 100% { transform: scale(1); opacity: .92; } }
 .tic-board, .checkers-board, .chess-board { display: grid; width: min(100%, 360px); aspect-ratio: 1; gap: 4px; }
 .tic-board { grid-template-columns: repeat(3, 1fr); }
 .tic-cell { border: 1px solid var(--arcade-line); border-radius: 12px; background: rgba(255,255,255,.08); font-size: clamp(2rem, 9vw, 4.2rem); font-weight: 900; color: var(--arcade-accent-2); }

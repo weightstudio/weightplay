@@ -4,7 +4,7 @@
   const LOCALES=window.ANIMAL_HONEY_SHIELD_LOCALES;
   const STORAGE_KEY="weightplay_animal_honey_shield_v1";
   const TUTORIAL_KEY="weightplay_tutorial_seen_animal_honey_shield_v1";
-  const GAME_VERSION="v43";
+  const GAME_VERSION="v44";
   const ROUTE_LOCALES={"zh-tw":"zh-Hant","zh-cn":"zh-Hans","pt-br":"pt-BR",en:"en",ja:"ja",ko:"ko",es:"es",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const routeSegment=location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
   const platformLocale=window.WonderI18n?.actualLocale?.();
@@ -1258,7 +1258,7 @@
   }
   window.__animalHoneyShieldSmoke={
     startStage,resetStage,finish,snapshot:()=>({
-      screen,stage:stageIndex+1,mode:state.mode,elapsed:state.elapsed,nectar:state.nectar,
+      gameVersion:GAME_VERSION,screen,stage:stageIndex+1,mode:state.mode,elapsed:state.elapsed,nectar:state.nectar,
       strokes:state.strokes.length,
       strokeLengths:state.strokes.map(stroke=>stroke.points.slice(1).reduce((sum,point,index)=>sum+Math.hypot(point.x-stroke.points[index].x,point.y-stroke.points[index].y),0)),
       strokeBounds:state.strokes.map(stroke=>({left:Math.min(...stroke.points.map(point=>point.x)),top:Math.min(...stroke.points.map(point=>point.y)),right:Math.max(...stroke.points.map(point=>point.x)),bottom:Math.max(...stroke.points.map(point=>point.y))})),
