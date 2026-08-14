@@ -84,3 +84,19 @@ const teamPayoffTerms={
   ar:{teamPayoff:"الفريق {count}/5 · دفاع المعركة {def} · الشفاء {healing}"}
 };
 for(const [code,terms] of Object.entries(teamPayoffTerms))Object.assign(window.RUNE_REELS_LOCALES[code],terms);
+const teamPlanTerms={
+  en:{teamPlan:"Plan: {payoff} → {intent}"},
+  "zh-Hant":{teamPlan:"策略：{payoff} → {intent}"},
+  "zh-Hans":{teamPlan:"策略：{payoff} → {intent}"},
+  ja:{teamPlan:"作戦: {payoff} → {intent}"},
+  ko:{teamPlan:"계획: {payoff} → {intent}"},
+  es:{teamPlan:"Plan: {payoff} → {intent}"},
+  "pt-BR":{teamPlan:"Plano: {payoff} → {intent}"},
+  fr:{teamPlan:"Plan : {payoff} → {intent}"},
+  de:{teamPlan:"Plan: {payoff} → {intent}"},
+  it:{teamPlan:"Piano: {payoff} → {intent}"},
+  ru:{teamPlan:"План: {payoff} → {intent}"},
+  hi:{teamPlan:"योजना: {payoff} → {intent}"},
+  ar:{teamPlan:"الخطة: {payoff} → {intent}"}
+};
+for(const [code,terms] of Object.entries(teamPlanTerms))Object.assign(window.RUNE_REELS_LOCALES[code],terms);
