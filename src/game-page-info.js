@@ -22,7 +22,7 @@
   }
   if (document.body?.dataset.wpBattleLayout !== "native" && !document.querySelector('script[src*="battle-canvas-standard.js"]')) {
     const script = document.createElement("script");
-    script.src = new URL("battle-canvas-standard.js?v=20260812-zhao-battle-v2", sharedAssetBase).href;
+    script.src = new URL("battle-canvas-standard.js?v=20260815-abyss-landscape-v1", sharedAssetBase).href;
     script.dataset.wpBattleStandard = "true";
     document.head.appendChild(script);
   }

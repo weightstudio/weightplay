@@ -55,6 +55,7 @@
   };
   const WORDLE_LENGTH_ERROR = { en: "Enter 5 letters.", "zh-Hant": "請輸入 5 個字母。", "zh-Hans": "请输入 5 个字母。", ja: "5文字入力してください。", ko: "글자 5개를 입력하세요.", es: "Introduce 5 letras.", "pt-BR": "Digite 5 letras.", fr: "Saisissez 5 lettres.", de: "Gib 5 Buchstaben ein.", it: "Inserisci 5 lettere.", ru: "Введите 5 букв.", hi: "5 अक्षर दर्ज करें।", ar: "أدخل 5 أحرف." };
   const HANGMAN_ALREADY_USED = { en: "Already used", "zh-Hant": "已經使用", "zh-Hans": "已经使用", ja: "使用済み", ko: "이미 사용함", es: "Ya usada", "pt-BR": "Já usada", fr: "Déjà utilisée", de: "Bereits verwendet", it: "Già usata", ru: "Уже использована", hi: "पहले ही उपयोग किया गया", ar: "مستخدم بالفعل" };
+  const TETRIS_LINE_CLEAR_COPY = { en: "Line cleared! Keep going.", "zh-Hant": "消除一行！繼續挑戰。", "zh-Hans": "消除一行！继续挑战。", ja: "1行消去！そのまま続けましょう。", ko: "한 줄을 지웠습니다! 계속 도전하세요.", es: "¡Línea despejada! Sigue adelante.", "pt-BR": "Linha limpa! Continue.", fr: "Ligne effacée ! Continuez.", de: "Reihe gelöscht! Weiter geht's.", it: "Riga cancellata! Continua.", ru: "Линия очищена! Продолжайте.", hi: "एक पंक्ति साफ हुई! आगे बढ़ें।", ar: "تم مسح صف! واصل اللعب." };
 
   const HANGMAN_HINT_COPY = {
     en: (length) => `Hint: The word has ${length} letters.`,
@@ -343,6 +344,9 @@
       if (game.type === "mahjong" && state.messageKey === "mahjongMismatch") {
         state.message = (MAHJONG_MISMATCH_COPY[locale] || MAHJONG_MISMATCH_COPY.en)(state.mismatchTile);
       }
+      if (game.type === "tetris" && state.messageKey === "tetrisLineClear") {
+        state.message = TETRIS_LINE_CLEAR_COPY[locale] || TETRIS_LINE_CLEAR_COPY.en;
+      }
       if (game.type === "checkers" && state.messageKey === "checkersPromotion") {
         state.message = checkersPromotionCopy(locale, "next");
       }
@@ -426,7 +430,7 @@
       }
       state.moves += 1;
       if (game.type === "tetris") {
-        if (name === "left") state.active = Math.max(0, state.active - 1); if (name === "right") state.active = Math.min(7, state.active + 1); if (name === "rotate") state.score += 5; if (name === "drop") { state.pieces += 1; state.lines = Math.min(4, Math.floor(state.pieces / 2)); state.blocks.push({ x: state.active, y: 7 - (state.pieces % 7) }); if (state.lines >= 4) finish(true); }
+        if (name === "left") state.active = Math.max(0, state.active - 1); if (name === "right") state.active = Math.min(7, state.active + 1); if (name === "rotate") state.score += 5; if (name === "drop") { const previousLines = state.lines; state.pieces += 1; state.lines = Math.min(4, Math.floor(state.pieces / 2)); state.blocks.push({ x: state.active, y: 7 - (state.pieces % 7) }); if (state.lines > previousLines && state.lines < 4) announce(TETRIS_LINE_CLEAR_COPY[locale] || TETRIS_LINE_CLEAR_COPY.en, "good", "tetrisLineClear"); if (state.lines >= 4) finish(true); }
       } else if (game.type === "tic") { if (name === "cell" && state.cells[value] === "") { state.cells[value] = "X"; state.playerMoves += 1; state.score += 20; const empty = state.cells.findIndex((cell) => !cell); if (empty >= 0 && state.playerMoves < 3) { state.cells[empty] = "O"; state.aiMoves += 1; } if (state.playerMoves >= 3 || state.cells.every(Boolean)) finish(state.playerMoves >= 3); }
       } else if (game.type === "chess") { if (name === "move") { state.step += 1; state.score += 30; if (state.step >= 3) finish(true); }
       } else if (game.type === "checkers") { if (name === "move") { state.step += 1; state.score += 20; if (state.step >= 5) finish(true); else if (state.step === 4) announce(checkersPromotionCopy(locale, "next"), "good", "checkersPromotion"); }

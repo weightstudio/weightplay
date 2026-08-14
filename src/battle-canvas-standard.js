@@ -10,7 +10,7 @@
     "animal-color-springs": [".battle-canvas", 390, 788, 760, 334],
     "animal-tangram": [".battle", 390, 788, 760, 334],
     "animal-bamboo-pipes": ["#battle", 390, 788, 760, 334],
-    "animal-abyss-diver": [".battle-canvas", 390, 788],
+    "animal-abyss-diver": [".battle-canvas", 390, 788, 760, 334],
     "animal-auto-squad": ["#gamePanel", 382, 780],
     "animal-bubble-safari": ["#battleScreen", 390, 788],
     "animal-2048": [".battle-canvas", 390, 788, 760, 334],

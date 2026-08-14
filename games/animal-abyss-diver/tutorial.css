@@ -427,7 +427,7 @@
 
 /* Direct target selection and slower turn-based fish combat. */
 .lane-controls{display:none}
-.controls{grid-template-rows:42px}
+.controls{grid-template-rows:54px}
 .lane-gate{grid-template-rows:auto minmax(0,1fr) auto;cursor:pointer}
 .lane-gate strong{grid-row:1}
 .lane-gate img{grid-row:2;width:92%;min-height:72px}
@@ -451,7 +451,7 @@
 .fish-timer i>b,.fish-guard i>b{background:#63dfad}
 .fish-guard i>b{background:#ff7770}
 .fish-actions{grid-column:1/-1;grid-row:5;grid-template-columns:1fr 1fr}
-.fish-actions button{min-height:48px;font-size:.86rem}
+.fish-actions button{min-height:54px;font-size:.86rem}
 .fish-encounter.is-countering .combat-diver{animation:fish-hit .24s ease 2 alternate}
 .fish-encounter.is-escaping{animation:fish-dodged .7s ease forwards}
 .upgrade-panel{position:absolute;z-index:8;inset:8%;display:grid;align-content:center;gap:12px;padding:18px;border:2px solid #ffe083;border-radius:18px;background:#06283ef5;text-align:center;box-shadow:0 18px 40px #00131fdd}
@@ -460,6 +460,16 @@
 /* The 30 authored missions keep their name, relic, and rule readable inside
    the fixed Stage card without changing the shared card geometry. */
 .route-card strong{overflow:hidden;font-size:1.05rem;line-height:1.2;text-overflow:ellipsis;white-space:nowrap}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .battle-canvas { grid-template-rows: 44px 36px minmax(0, 1fr) 48px !important; }
+  .controls { grid-template-rows: 48px !important; gap: 2px !important; padding: 0 10px !important; }
+  .controls button { height: 48px !important; min-height: 48px !important; }
+  .fish-encounter { inset: 4% 5% auto !important; grid-template-rows: auto 64px auto auto auto !important; gap: 4px 8px !important; padding: 8px !important; }
+  .combat-diver img { height: 64px; }
+  .fish-sprite { width: 132px; height: 54px; }
+  .fish-actions button { min-height: 48px; }
+}
 .route-card span{font-size:.78rem;color:#d8f4ff}
 .route-card small{display:block;line-height:1.25}
 .route-card small b{display:-webkit-box;margin-top:4px;overflow:hidden;color:#f4dc88;font-weight:700;-webkit-box-orient:vertical;-webkit-line-clamp:2}
