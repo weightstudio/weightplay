@@ -13,8 +13,10 @@ body[data-wp-five-game] .main-header .locale-picker{margin:0}
 body[data-wp-five-game] .stage-screen,body[data-wp-five-game] .battle-screen{width:100%;min-height:0;border:0;border-radius:0;box-shadow:none}
 body[data-wp-five-game] .stage-screen{position:fixed;inset:0;overflow:hidden;background:var(--bg,#071e31)}
 body[data-wp-five-game] .stage-header,body[data-wp-five-game] .battle-header{display:grid;align-items:center;gap:10px;min-height:64px;padding:8px 12px;border:1px solid rgba(140,220,255,.34);border-radius:14px;background:rgba(7,25,43,.86);color:var(--ink,#f4fcff)}
-body[data-wp-five-game] .stage-header{grid-template-columns:52px minmax(0,1fr)}
-body[data-wp-five-game] .battle-header{grid-template-columns:52px minmax(0,1fr) auto}
+body[data-wp-five-game] .stage-header{grid-template-columns:52px minmax(0,1fr) 52px}
+body[data-wp-five-game] .battle-header{grid-template-columns:52px minmax(0,1fr) auto 52px}
+body[data-wp-five-game] .stage-header .wp-shell-settings,body[data-wp-five-game] .battle-header .wp-shell-settings{grid-column:3;grid-row:1}
+body[data-wp-five-game] .battle-header .wp-shell-settings{justify-self:end}
 body[data-wp-five-game] .stage-header h2,body[data-wp-five-game] .battle-header strong{margin:0;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center;font-size:20px;line-height:22px}
 body[data-wp-five-game] .battle-header span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--gold,#ffd36b);font-size:.86rem}
 body[data-wp-five-game] .stage-header .back,body[data-wp-five-game] .battle-header .back{width:48px;height:48px;min-width:48px;padding:0;display:grid;place-items:center;border-radius:12px;font-size:24px}
