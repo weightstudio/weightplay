@@ -400,3 +400,14 @@ body.wp-stage-select-active .v3-stage .stage-workspace>#stagesPanel[hidden],
 body.wp-stage-select-active .v3-stage .stage-workspace>#stagesPanel[hidden] #enterBattle{
   display:none!important;
 }
+
+.v3-stage .stage-card p .team-payoff{
+  display:block;
+  margin-top:3px;
+  color:#ffe06b;
+  font-size:.62rem;
+  line-height:1.15;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}

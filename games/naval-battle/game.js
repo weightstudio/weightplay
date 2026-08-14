@@ -1,7 +1,16 @@
-const GAME_VERSION = "v2";
+const GAME_VERSION = "v3";
 
 window.WPClassicLogic?.mount("naval-battle");
 document.body.dataset.gameVersion = GAME_VERSION;
+
+const syncFreshRoundChip = () => {
+  const status = document.querySelector("#logicStatus");
+  const chip = document.querySelector("#battleChip");
+  if (status && chip) chip.textContent = status.textContent;
+};
+
+document.querySelector("#resultReplay")?.addEventListener("click", syncFreshRoundChip);
+document.querySelector("#logicReset")?.addEventListener("click", syncFreshRoundChip);
 
 (() => {
   "use strict";

@@ -68,3 +68,19 @@ const foregroundSpinTerms={
   ar:{foregroundSpinBlocked:"أعِد نافذة اللعبة إلى الواجهة، ثم اضغط تدوير مرة أخرى."}
 };
 for(const [code,terms] of Object.entries(foregroundSpinTerms))Object.assign(window.RUNE_REELS_LOCALES[code],terms);
+const teamPayoffTerms={
+  en:{teamPayoff:"Team {count}/5 · Battle DEF {def} · HEAL {healing}"},
+  "zh-Hant":{teamPayoff:"隊伍 {count}/5 · 戰鬥防禦 {def} · 治療 {healing}"},
+  "zh-Hans":{teamPayoff:"队伍 {count}/5 · 战斗防御 {def} · 治疗 {healing}"},
+  ja:{teamPayoff:"チーム {count}/5 · バトル防御 {def} · 回復 {healing}"},
+  ko:{teamPayoff:"팀 {count}/5 · 전투 방어 {def} · 치유 {healing}"},
+  es:{teamPayoff:"Equipo {count}/5 · DEF de batalla {def} · Curación {healing}"},
+  "pt-BR":{teamPayoff:"Equipe {count}/5 · DEF na batalha {def} · Cura {healing}"},
+  fr:{teamPayoff:"Équipe {count}/5 · DÉF. en combat {def} · Soin {healing}"},
+  de:{teamPayoff:"Team {count}/5 · Kampf-VTD {def} · Heilung {healing}"},
+  it:{teamPayoff:"Squadra {count}/5 · DIF in battaglia {def} · Cura {healing}"},
+  ru:{teamPayoff:"Команда {count}/5 · ЗАЩ в бою {def} · Лечение {healing}"},
+  hi:{teamPayoff:"टीम {count}/5 · युद्ध रक्षा {def} · उपचार {healing}"},
+  ar:{teamPayoff:"الفريق {count}/5 · دفاع المعركة {def} · الشفاء {healing}"}
+};
+for(const [code,terms] of Object.entries(teamPayoffTerms))Object.assign(window.RUNE_REELS_LOCALES[code],terms);
