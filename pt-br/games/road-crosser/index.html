@@ -87,6 +87,32 @@
     <footer class="site-footer" data-copy="footer">A WeightPlay owner preview • original timing arcade</footer>
   </main>
   <script src="game.js"></script>
+  <script>
+    (() => {
+      const publicCopy = {
+        en: { status: "Ready to play", note: "Public release is live with Tester, Gameplay Reviewer, and Director gates complete." },
+        "zh-Hant": { status: "可以遊玩", note: "公開版本已上線，Tester、Gameplay Reviewer 與 Director 的 Gate 均已完成。" },
+        "zh-Hans": { status: "可以游玩", note: "公开版本已上线，Tester、Gameplay Reviewer 与 Director 的 Gate 均已完成。" },
+        ja: { status: "プレイ可能", note: "公開版です。Tester、Gameplay Reviewer、Director の Gate は完了しています。" },
+        ko: { status: "플레이 가능", note: "공개 버전입니다. Tester, Gameplay Reviewer, Director Gate를 모두 완료했습니다." },
+        es: { status: "Disponible", note: "La versión pública está disponible con todas las Gate de Tester, Gameplay Reviewer y Director completadas." },
+        "pt-BR": { status: "Disponível", note: "A versão pública está disponível com todas as Gate de Tester, Gameplay Reviewer e Director concluídas." },
+        fr: { status: "Jouable", note: "La version publique est disponible : toutes les Gate Tester, Gameplay Reviewer et Director sont terminées." },
+        de: { status: "Spielbar", note: "Die öffentliche Version ist verfügbar; alle Gates von Tester, Gameplay Reviewer und Director sind abgeschlossen." },
+        it: { status: "Giocabile", note: "La versione pubblica è disponibile: tutte le Gate di Tester, Gameplay Reviewer e Director sono completate." },
+        ru: { status: "Можно играть", note: "Публичная версия доступна: все Gate Tester, Gameplay Reviewer и Director завершены." },
+        hi: { status: "खेलने के लिए उपलब्ध", note: "सार्वजनिक संस्करण उपलब्ध है; Tester, Gameplay Reviewer और Director की सभी Gate पूरी हो चुकी हैं।" },
+        ar: { status: "جاهزة للعب", note: "الإصدار العام متاح؛ اكتملت جميع بوابات Tester وGameplay Reviewer وDirector." },
+      };
+      const apply = () => {
+        const copy = publicCopy[document.documentElement.lang] || publicCopy.en;
+        document.querySelectorAll('[data-copy="comingSoon"]').forEach((node) => { node.textContent = copy.status; });
+        document.querySelectorAll('[data-copy="comingNote"]').forEach((node) => { node.textContent = copy.note; });
+      };
+      apply();
+      document.getElementById("localeSelect")?.addEventListener("change", () => requestAnimationFrame(apply));
+    })();
+  </script>
 <section class="game-page-info game-page-info-static" aria-label="Travessia Estelar informações do jogo">
     
     <div class="game-info-hero">
@@ -100,7 +126,7 @@
       <div class="game-info-section game-info-strategy"><h3>Dicas de estratégia</h3><ul><li>Observe one full vehicle cycle before committing to a long crossing.</li><li>Use short steps to pause between traffic lanes.</li><li>On logs, plan for the current instead of fighting it with repeated taps.</li><li>Later stages reward patience because faster does not always mean safer.</li></ul></div>
       <div class="game-info-section"><h3>Campanha e crescimento de dificuldade</h3><p>Stage 1 teaches the road and river rhythm. Stage 2 adds denser traffic and rocks. Stage 3 combines faster water, more vehicles, and tighter safe windows.</p></div>
       <div class="game-info-section"><h3>Nota de design do desenvolvedor</h3><p>Road Crosser borrows the broad timing-and-crossing idea of classic arcade games while using WeightPlay&#39;s own Star Runner, night-route palette, authored hazards, copy, controls, and geometry.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Nota dos pais</h3><p>This owner-preview game has no account, purchase, chat, leaderboard, or advertising flow. Score and Best stay in the current browser.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota dos pais</h3><p>This public game has no account, purchase, chat, leaderboard, or advertising flow. Score and Best stay in the current browser.</p></div>
       <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>What ends a run?</dt><dd>A vehicle collision, falling into the river, or being carried off the playfield ends the run.</dd></div><div><dt>Does the river move randomly?</dt><dd>No. Its logs follow visible, repeatable speed patterns.</dd></div><div><dt>Which controls work?</dt><dd>Arrow keys, WASD, touch swipe, and the visible mobile direction pad.</dd></div><div><dt>O progresso é salvo?</dt><dd>Only the local Best score is saved in this browser.</dd></div></dl></div>
 
     </div>

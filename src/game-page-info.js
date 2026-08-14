@@ -9358,7 +9358,7 @@
     strategyTips: ["Observe one full vehicle cycle before committing to a long crossing.", "Use short steps to pause between traffic lanes.", "On logs, plan for the current instead of fighting it with repeated taps.", "Later stages reward patience because faster does not always mean safer."],
     progression: ["Stage 1 teaches the road and river rhythm. Stage 2 adds denser traffic and rocks. Stage 3 combines faster water, more vehicles, and tighter safe windows."],
     designNote: "Road Crosser borrows the broad timing-and-crossing idea of classic arcade games while using WeightPlay's own Star Runner, night-route palette, authored hazards, copy, controls, and geometry.",
-    parent: "This owner-preview game has no account, purchase, chat, leaderboard, or advertising flow. Score and Best stay in the current browser.",
+    parent: "This public game has no account, purchase, chat, leaderboard, or advertising flow. Score and Best stay in the current browser.",
     faq: [["What ends a run?", "A vehicle collision, falling into the river, or being carried off the playfield ends the run."], ["Does the river move randomly?", "No. Its logs follow visible, repeatable speed patterns."], ["Which controls work?", "Arrow keys, WASD, touch swipe, and the visible mobile direction pad."], ["Is progress saved?", "Only the local Best score is saved in this browser."]]
   };
   games["alien-defender"] = {
@@ -9371,7 +9371,7 @@
     strategyTips: ["Do not stay under one column while enemy fire is active.", "Use the formation's horizontal rhythm to line up shots rather than chasing every target.", "Protect a high combo by moving early, then return to a useful firing lane.", "Wave 3's captains take priority because they are worth more and add pressure."],
     progression: ["Wave 1 establishes movement and fire rhythm. Wave 2 increases volley speed. Wave 3 adds shielded captains, tighter formations, and a shield pickup after a clear."],
     designNote: "Alien Defender learns from the broad fixed-screen wave-shooter tradition while using WeightPlay's own signal-station fiction, Star Runner ship, enemy shapes, wave pacing, copy, and interface.",
-    parent: "This owner-preview game has no account, purchase, chat, leaderboard, or advertising flow. Score and Best stay in the current browser.",
+    parent: "This public game has no account, purchase, chat, leaderboard, or advertising flow. Score and Best stay in the current browser.",
     faq: [["How do I move?", "Use Left/Right or A/D, then use Space or the mobile Fire button to shoot."], ["What is the shield window?", "A short protective window appears after a clean wave and absorbs incoming shots."], ["What causes Game Over?", "Losing all lives or letting the formation reach the defense line."], ["Is progress saved?", "Only the local Best score is saved in this browser."]]
   };
   games["snake"] = {

@@ -70,6 +70,32 @@
     <section id="resultScreen" class="screen result-screen" hidden><div class="result-card"><p class="result-kicker" data-copy="resultKicker">Defense report</p><h2 id="resultTitle">Station secure</h2><p id="resultCopy"></p><div class="result-stats"><span><b data-copy="score">Score</b><strong id="resultScore">0</strong></span><span><b data-copy="best">Best</b><strong id="resultBest">0</strong></span></div><div class="result-actions"><button id="retryBtn" class="primary-action" type="button" data-copy="retry">Try again</button><button id="homeBtn" class="secondary-action" type="button" data-copy="home">Back to main</button></div></div></section>
     <footer class="site-footer" data-copy="footer">A WeightPlay owner preview • original wave arcade</footer>
   </main><script src="../../src/site-config.js"></script><script src="../../src/analytics.js"></script><script src="game.js"></script>
+  <script>
+    (() => {
+      const publicCopy = {
+        en: { status: "Ready to play", note: "Public release is live with Tester, Gameplay Reviewer, and Director gates complete." },
+        "zh-Hant": { status: "可以遊玩", note: "公開版本已上線，Tester、Gameplay Reviewer 與 Director 的 Gate 均已完成。" },
+        "zh-Hans": { status: "可以游玩", note: "公开版本已上线，Tester、Gameplay Reviewer 与 Director 的 Gate 均已完成。" },
+        ja: { status: "プレイ可能", note: "公開版です。Tester、Gameplay Reviewer、Director の Gate は完了しています。" },
+        ko: { status: "플레이 가능", note: "공개 버전입니다. Tester, Gameplay Reviewer, Director Gate를 모두 완료했습니다." },
+        es: { status: "Disponible", note: "La versión pública está disponible con todas las Gate de Tester, Gameplay Reviewer y Director completadas." },
+        "pt-BR": { status: "Disponível", note: "A versão pública está disponível com todas as Gate de Tester, Gameplay Reviewer e Director concluídas." },
+        fr: { status: "Jouable", note: "La version publique est disponible : toutes les Gate Tester, Gameplay Reviewer et Director sont terminées." },
+        de: { status: "Spielbar", note: "Die öffentliche Version ist verfügbar; alle Gates von Tester, Gameplay Reviewer und Director sind abgeschlossen." },
+        it: { status: "Giocabile", note: "La versione pubblica è disponibile: tutte le Gate di Tester, Gameplay Reviewer e Director sono completate." },
+        ru: { status: "Можно играть", note: "Публичная версия доступна: все Gate Tester, Gameplay Reviewer и Director завершены." },
+        hi: { status: "खेलने के लिए उपलब्ध", note: "सार्वजनिक संस्करण उपलब्ध है; Tester, Gameplay Reviewer और Director की सभी Gate पूरी हो चुकी हैं।" },
+        ar: { status: "جاهزة للعب", note: "الإصدار العام متاح؛ اكتملت جميع بوابات Tester وGameplay Reviewer وDirector." },
+      };
+      const apply = () => {
+        const copy = publicCopy[document.documentElement.lang] || publicCopy.en;
+        document.querySelectorAll('[data-copy="comingSoon"]').forEach((node) => { node.textContent = copy.status; });
+        document.querySelectorAll('[data-copy="comingNote"]').forEach((node) => { node.textContent = copy.note; });
+      };
+      apply();
+      document.getElementById("localeSelect")?.addEventListener("change", () => requestAnimationFrame(apply));
+    })();
+  </script>
 <section class="game-page-info game-page-info-static" aria-label="Difensore Alieno informazioni sul gioco">
     
     <div class="game-info-hero">
@@ -83,7 +109,7 @@
       <div class="game-info-section game-info-strategy"><h3>Suggerimenti strategici</h3><ul><li>Do not stay under one column while enemy fire is active.</li><li>Use the formation&#39;s horizontal rhythm to line up shots rather than chasing every target.</li><li>Protect a high combo by moving early, then return to a useful firing lane.</li><li>Wave 3&#39;s captains take priority because they are worth more and add pressure.</li></ul></div>
       <div class="game-info-section"><h3>Campagna e crescita della difficoltà</h3><p>Wave 1 establishes movement and fire rhythm. Wave 2 increases volley speed. Wave 3 adds shielded captains, tighter formations, and a shield pickup after a clear.</p></div>
       <div class="game-info-section"><h3>Nota di progettazione dello sviluppatore</h3><p>Alien Defender learns from the broad fixed-screen wave-shooter tradition while using WeightPlay&#39;s own signal-station fiction, Star Runner ship, enemy shapes, wave pacing, copy, and interface.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Nota del genitore</h3><p>This owner-preview game has no account, purchase, chat, leaderboard, or advertising flow. Score and Best stay in the current browser.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota del genitore</h3><p>This public game has no account, purchase, chat, leaderboard, or advertising flow. Score and Best stay in the current browser.</p></div>
       <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>How do I move?</dt><dd>Use Left/Right or A/D, then use Space or the mobile Fire button to shoot.</dd></div><div><dt>What is the shield window?</dt><dd>A short protective window appears after a clean wave and absorbs incoming shots.</dd></div><div><dt>What causes Game Over?</dt><dd>Losing all lives or letting the formation reach the defense line.</dd></div><div><dt>I progressi vengono salvati?</dt><dd>Only the local Best score is saved in this browser.</dd></div></dl></div>
 
     </div>
