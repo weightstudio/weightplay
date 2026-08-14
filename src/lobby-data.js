@@ -47,7 +47,7 @@ window.WONDER_LOBBY = {
       "arrow-escape", "block-blast", "hexa-sort", "klondike-solitaire", "spider-solitaire",
       "freecell-solitaire", "pyramid-solitaire", "tripeaks-solitaire", "golf-solitaire", "yukon-solitaire",
       "animal-bus-jam", "zhao-yun-a-dou",
-      "road-crosser", "alien-defender",
+      "road-crosser", "alien-defender", "snake",
       "animal-unblock",
       "animal-guard-yard",
       "hearts", "spades", "gin-rummy", "crazy-eights", "cribbage", "go-fish", "war", "speed", "old-maid", "casino",
@@ -2437,18 +2437,17 @@ for (const game of window.WONDER_LOBBY.games) {
   delete game.internalTrial;
 }
 
-// Owner-requested classic prototypes. They are intentionally kept in the
-// planned catalog until the exact-version Tester, Gameplay Reviewer, Director,
-// and release gates have their own evidence.
+// Owner-requested classic originals. They enter the public catalog only after
+// exact-version gates and the paired public delivery gates have evidence.
 window.WONDER_LOBBY.games.push(
   {
     id: "road-crosser",
     title: { en: "Road Crosser", "zh-Hant": "星軌過路", "zh-Hans": "星轨过路", ja: "スター・クロッサー", ko: "스타 크로서", es: "Cruce Estelar", "pt-BR": "Travessia Estelar", fr: "Passage Stellaire", de: "Sternenquerung", it: "Attraversamento Stellare", ru: "Звёздный переход", hi: "सितारा पारपथ", ar: "عبور النجمة" },
-    status: "planned",
-    statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريباً" },
+    status: "playable",
+    statusText: { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب" },
     type: { en: "Timing Crossing Arcade", "zh-Hant": "時機穿越街機", "zh-Hans": "时机穿越街机", ja: "タイミング横断アーケード", ko: "타이밍 횡단 아케이드", es: "Arcade de cruces y tiempo", "pt-BR": "Arcade de travessia e ritmo", fr: "Arcade de traversée rythmée", de: "Timing-Querungs-Arcade", it: "Arcade di attraversamento", ru: "Аркада перехода по времени", hi: "समय-आधारित पारपथ आर्केड", ar: "أركيد عبور بالتوقيت" },
     categories: ["Classic", "Arcade", "Action"], skills: ["Timing", "Focus", "Adaptation"], ages: ["general"], ageLabel: { en: "General", "zh-Hant": "一般玩家", "zh-Hans": "一般玩家", ja: "一般", ko: "일반", es: "General", "pt-BR": "Geral", fr: "Tout public", de: "Allgemein", it: "Generale", ru: "Для всех", hi: "सामान्य", ar: "عام" },
-    href: "games/road-crosser/", internalTrial: "index.html?trial=1",
+    href: "games/road-crosser/", previewVideo: "assets/previews/road-crosser-battle.webm",
     description: { en: "Read traffic and river timing, then guide the Star Runner through three original crossings.", "zh-Hant": "讀懂車流與河流時機，帶領星行者完成三段原創穿越。", "zh-Hans": "读懂车流与河流时机，带领星行者完成三段原创穿越。", ja: "車と川のタイミングを読み、スターランナーを3つのオリジナル横断へ導きます。", ko: "차량과 강물의 타이밍을 읽고 별 주자를 세 번의 오리지널 횡단으로 이끄세요.", es: "Lee el tráfico y el río para guiar al Corredor Estelar por tres cruces originales.", "pt-BR": "Leia o trânsito e o rio para guiar o Corredor Estelar por três travessias originais.", fr: "Lis le trafic et la rivière pour guider le Coureur Stellaire à travers trois traversées originales.", de: "Lies Verkehr und Flussrhythmus und führe den Sternläufer durch drei originale Querungen.", it: "Leggi traffico e corrente e guida il Corridore Stellare in tre attraversamenti originali.", ru: "Читай ритм машин и реки и проведи Звёздного бегуна через три оригинальных перехода.", hi: "यातायात और नदी की लय समझकर स्टार रनर को तीन मौलिक पारपथों से ले जाएँ।", ar: "اقرأ توقيت السيارات والنهر وقد الشخصية النجمية عبر ثلاث مراحل أصلية." },
     meta: { en: ["Three Crossings", "Traffic + River", "Timing Play"], "zh-Hant": ["三段穿越", "車流與河流", "時機玩法"], "zh-Hans": ["三段穿越", "车流与河流", "时机玩法"], ja: ["3つの横断", "車と川", "タイミング"], ko: ["세 번의 횡단", "차량과 강물", "타이밍"], es: ["Tres cruces", "Tráfico y río", "Ritmo"], "pt-BR": ["Três travessias", "Trânsito e rio", "Ritmo"], fr: ["Trois traversées", "Trafic et rivière", "Timing"], de: ["Drei Querungen", "Verkehr + Fluss", "Timing"], it: ["Tre attraversamenti", "Traffico e fiume", "Tempismo"], ru: ["Три перехода", "Машины и река", "Ритм"], hi: ["तीन पारपथ", "यातायात और नदी", "समय"], ar: ["ثلاث مراحل", "سيارات ونهر", "توقيت"] },
     art: { kind: "image", background: "assets/road-crosser-cover.webp", hideHero: true },
@@ -2456,14 +2455,29 @@ window.WONDER_LOBBY.games.push(
   {
     id: "alien-defender",
     title: { en: "Alien Defender", "zh-Hant": "星際守衛", "zh-Hans": "星际守卫", ja: "エイリアン・ディフェンダー", ko: "에일리언 디펜더", es: "Defensor Alienígena", "pt-BR": "Defensor Alienígena", fr: "Défenseur Alien", de: "Alien-Verteidiger", it: "Difensore Alieno", ru: "Защитник от пришельцев", hi: "एलियन रक्षक", ar: "مدافع الفضائيين" },
-    status: "planned",
-    statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريباً" },
+    status: "playable",
+    statusText: { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب" },
     type: { en: "Wave Survival Shooter", "zh-Hant": "波次生存射擊", "zh-Hans": "波次生存射击", ja: "ウェーブ生存シューティング", ko: "웨이브 생존 슈팅", es: "Disparos de supervivencia por oleadas", "pt-BR": "Tiro de sobrevivência por ondas", fr: "Tir de survie par vagues", de: "Wellen-Survival-Shooter", it: "Shooter di sopravvivenza a ondate", ru: "Шутер на выживание по волнам", hi: "लहर सर्वाइवल शूटर", ar: "لعبة إطلاق نار للبقاء" },
     categories: ["Classic", "Arcade", "Action"], skills: ["Aim", "Movement", "Reaction"], ages: ["general"], ageLabel: { en: "General", "zh-Hant": "一般玩家", "zh-Hans": "一般玩家", ja: "一般", ko: "일반", es: "General", "pt-BR": "Geral", fr: "Tout public", de: "Allgemein", it: "Generale", ru: "Для всех", hi: "सामान्य", ar: "عام" },
-    href: "games/alien-defender/", internalTrial: "index.html?trial=1",
+    href: "games/alien-defender/", previewVideo: "assets/previews/alien-defender-battle.webm",
     description: { en: "Move, fire, and read three original alien formations while protecting the signal station.", "zh-Hant": "移動、射擊並讀懂三種原創外星編隊，守護訊號站。", "zh-Hans": "移动、射击并读懂三种原创外星编队，守护信号站。", ja: "動いて撃ち、3つのオリジナル編隊から信号ステーションを守ります。", ko: "움직이고 발사하며 세 가지 오리지널 외계인 대형에서 신호 기지를 지키세요.", es: "Muévete, dispara y lee tres formaciones alienígenas originales para proteger la estación.", "pt-BR": "Mova, atire e leia três formações alienígenas originais para proteger a estação.", fr: "Bouge, tire et lis trois formations aliens originales pour protéger la station.", de: "Bewege dich, schieße und lies drei originale Alien-Formationen zum Schutz der Station.", it: "Muoviti, spara e leggi tre formazioni aliene originali per difendere la stazione.", ru: "Двигайся, стреляй и читай три оригинальных строя, защищая сигнальную станцию.", hi: "चलें, गोली चलाएँ और तीन मौलिक एलियन गठन से सिग्नल स्टेशन बचाएँ।", ar: "تحرك وأطلق النار واقرأ ثلاثة تشكيلات أصلية لحماية محطة الإشارة." },
     meta: { en: ["Three Waves", "Move + Fire", "Shield Windows"], "zh-Hant": ["三波敵潮", "移動與射擊", "護盾窗口"], "zh-Hans": ["三波敌潮", "移动与射击", "护盾窗口"], ja: ["3ウェーブ", "移動と射撃", "シールド時間"], ko: ["세 웨이브", "이동 + 발사", "실드 시간"], es: ["Tres oleadas", "Mover y disparar", "Escudos"], "pt-BR": ["Três ondas", "Mover e atirar", "Escudos"], fr: ["Trois vagues", "Bouger et tirer", "Boucliers"], de: ["Drei Wellen", "Bewegen + Schießen", "Schildfenster"], it: ["Tre ondate", "Muovi e spara", "Scudi"], ru: ["Три волны", "Двигайся и стреляй", "Щиты"], hi: ["तीन लहरें", "चलें और गोली चलाएँ", "ढाल समय"], ar: ["ثلاث موجات", "تحرك وأطلق", "نوافذ الدرع"] },
     art: { kind: "image", background: "assets/alien-defender-cover.webp", hideHero: true },
+  },
+);
+
+window.WONDER_LOBBY.games.push(
+  {
+    id: "snake",
+    title: { en: "Snake", "zh-Hant": "貪食蛇", "zh-Hans": "贪吃蛇", ja: "スネーク", ko: "스네이크", es: "Serpiente", "pt-BR": "Snake", fr: "Serpent", de: "Snake", it: "Snake", ru: "Змейка", hi: "साँप", ar: "الثعبان" },
+    status: "playable",
+    statusText: { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب" },
+    type: { en: "Grid Survival Arcade", "zh-Hant": "格線生存街機", "zh-Hans": "格线生存街机", ja: "グリッド生存アーケード", ko: "그리드 생존 아케이드", es: "Arcade de supervivencia en cuadrícula", "pt-BR": "Arcade de sobrevivência em grade", fr: "Arcade de survie sur grille", de: "Raster-Survival-Arcade", it: "Arcade di sopravvivenza su griglia", ru: "Аркада на выживание в сетке", hi: "ग्रिड सर्वाइवल आर्केड", ar: "أركيد بقاء على شبكة" },
+    categories: ["Classic", "Arcade", "Action"], skills: ["Planning", "Reaction", "Space Reading"], ages: ["general"], ageLabel: { en: "General", "zh-Hant": "一般玩家", "zh-Hans": "一般玩家", ja: "一般", ko: "일반", es: "General", "pt-BR": "Geral", fr: "Tout public", de: "Allgemein", it: "Generale", ru: "Для всех", hi: "सामान्य", ar: "عام" },
+    href: "games/snake/", previewVideo: "assets/previews/snake-battle.webm",
+    description: { en: "Guide a growing star-serpent through a bounded grid, collect six food sparks, and protect your Best score.", "zh-Hant": "帶領成長中的星蛇穿過有限格線，收集六枚食物火花並守住最佳分數。", "zh-Hans": "带领成长中的星蛇穿过有限格线，收集六枚食物火花并守住最佳分数。", ja: "成長する星のヘビをグリッドで導き、6つのフードスパークを集めてベストスコアを守ります。", ko: "성장하는 별뱀을 격자에서 조종해 먹이 불꽃 6개를 모으고 최고 점수를 지키세요.", es: "Guía una serpiente estelar que crece por una cuadrícula, recoge seis chispas y protege tu mejor puntuación.", "pt-BR": "Guie uma serpente estelar crescente pela grade, colete seis faíscas de comida e proteja seu melhor placar.", fr: "Guide un serpent-étoile qui grandit sur une grille, collecte six étincelles et protège ton meilleur score.", de: "Führe eine wachsende Sternenschlange durch ein Raster, sammle sechs Futterfunken und schütze deinen Bestwert.", it: "Guida un serpente stellare in crescita su una griglia, raccogli sei scintille e proteggi il tuo record.", ru: "Проведите растущую звёздную змейку по сетке, соберите шесть искр еды и защитите лучший результат.", hi: "बढ़ते सितारा-साँप को ग्रिड में चलाएँ, छह भोजन-चिंगारियाँ लें और अपना सर्वश्रेष्ठ स्कोर बचाएँ।", ar: "قد ثعباناً نجمياً ينمو عبر شبكة، واجمع ست شرارات طعام واحمِ أفضل نتيجة لك." },
+    meta: { en: ["Six Food Sparks", "Grid Steering", "Best Score"], "zh-Hant": ["六枚食物火花", "格線操控", "最佳分數"], "zh-Hans": ["六枚食物火花", "格线操控", "最佳分数"], ja: ["6つのフード", "グリッド操作", "ベストスコア"], ko: ["먹이 불꽃 6개", "격자 조종", "최고 점수"], es: ["Seis chispas", "Control en cuadrícula", "Mejor puntuación"], "pt-BR": ["Seis faíscas", "Controle em grade", "Melhor placar"], fr: ["Six étincelles", "Pilotage sur grille", "Meilleur score"], de: ["Sechs Funken", "Rastersteuerung", "Bestwert"], it: ["Sei scintille", "Guida su griglia", "Record"], ru: ["Шесть искр", "Управление в сетке", "Лучший результат"], hi: ["छह चिंगारियाँ", "ग्रिड नियंत्रण", "सर्वश्रेष्ठ स्कोर"], ar: ["ست شرارات", "تحكم شبكي", "أفضل نتيجة"] },
+    art: { kind: "image", background: "assets/snake-cover.webp", hideHero: true },
   },
 );
 

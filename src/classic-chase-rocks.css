@@ -44,6 +44,11 @@ button:focus-visible, select:focus-visible, canvas:focus-visible { outline: 3px 
   padding: 8px 2px 18px;
 }
 
+/* The shared shell owns the visible Main title, language, and settings row.
+   Keep this legacy wrapper in the DOM so its locale control can be adopted,
+   but do not render a second title above the Main card. */
+.arcade-header { display: none; }
+
 .eyebrow { color: var(--accent-2); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
 h1, h2, p { margin: 0; }
 h1 { margin-top: 4px; font-size: clamp(1.7rem, 7vw, 3.25rem); line-height: 1; letter-spacing: -0.04em; }
@@ -84,6 +89,7 @@ h2 { font-size: clamp(1.45rem, 5vw, 2.3rem); }
 .primary:hover, .secondary:hover, .control-button:hover { filter: brightness(1.1); transform: translateY(-1px); }
 .primary:active, .secondary:active, .control-button:active { transform: translateY(1px) scale(0.98); }
 .primary { width: 100%; }
+.main-copy > .primary { min-height: 52px; }
 
 .battle-screen { min-height: calc(100svh - 56px); }
 .battle-panel { padding: 12px; }
@@ -169,6 +175,7 @@ body.is-game-playing .battle-panel {
   padding: 8px 12px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   overflow: hidden;
   border-radius: 0;
 }
@@ -196,6 +203,48 @@ body.is-game-playing .canvas-wrap canvas {
   object-fit: contain;
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: 18px;
+}
+/* The playfield is intentionally landscape. Let its wrapper collapse to the
+   native ratio so the flex column does not center a small Canvas inside a
+   tall empty slot on phone portrait screens. */
+body.is-game-playing .canvas-wrap.space {
+  flex: 0 0 auto;
+  aspect-ratio: 960 / 540;
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto;
+}
+body.is-game-playing .canvas-wrap.space canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  max-height: none;
+}
+@media (max-width: 560px) and (min-height: 561px) {
+  body.is-game-playing .space-controls {
+    flex-wrap: nowrap;
+    gap: 4px;
+  }
+  body.is-game-playing .space-controls .control-button {
+    min-width: 0;
+    flex: 1 1 0;
+    padding: 8px 4px;
+  }
+}
+@media (min-width: 650px) and (max-height: 500px) {
+  body.is-game-playing .canvas-wrap.space {
+    flex: 1 1 auto;
+    width: 100%;
+    height: auto;
+    aspect-ratio: auto;
+  }
+  body.is-game-playing .canvas-wrap.space canvas {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+  }
 }
 body.is-game-playing .general-reserve {
   grid-row: 2;
@@ -246,6 +295,11 @@ body.is-game-playing .confirm-back {
   .maze-controls .control-button:nth-child(n) { grid-column: auto; grid-row: auto; }
 }
 
+@media (min-width: 1000px) {
+  .main-panel { grid-template-columns: minmax(0, 1fr) 420px; }
+  .preview-art, .preview-art img { min-height: 420px; }
+}
+
 @media (min-width: 650px) and (max-height: 500px) {
   body.is-game-playing .battle-panel { padding: 6px 12px; }
   body.is-game-playing .battle-topline { min-height: 38px; gap: 6px; }
@@ -254,7 +308,7 @@ body.is-game-playing .confirm-back {
   body.is-game-playing .hud { padding: 4px 2px; }
   body.is-game-playing .game-message { min-height: 18px; padding: 2px; font-size: 0.75rem; }
   body.is-game-playing .touch-controls { padding: 5px 0 0; }
-  body.is-game-playing .control-hint { white-space: nowrap; font-size: 0.7rem; line-height: 1; }
+  body.is-game-playing .control-hint { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

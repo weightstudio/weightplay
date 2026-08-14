@@ -94,10 +94,12 @@
     },
     "space-rocks": {
       title: "Space Rocks",
-      age: "9+",
+      age: "",
       difficulty: "Easy to Challenging",
       time: "3-10 minutes",
       skills: ["Inertia Control", "Aim", "Risk Timing"],
+      noteTitle: "Player and Save Information",
+      hideScoreBands: true,
       intro: "Space Rocks is an original inertia space shooter. Pilot Rux through three drifting waves, rotate and thrust with momentum, fire in every direction, split large crystal rocks into smaller fragments, and save Shield for the Wave 3 guardian core.",
       story: [
         "The playfield is a wraparound field rather than a set of lanes. A short thrust changes the future path of the ship, so aiming and movement are connected: every shot is also a decision about where the ship will drift next.",
@@ -129,7 +131,7 @@
         "Wave 3 adds the guardian core and denser fragments, rewarding Shield timing, controlled orbits, and confident burst fire.",
       ],
       designNote: "Space Rocks uses an original Canvas field, original ship, crystal-rock, UFO, guardian, particle, and tone language, one uniform responsive logical canvas, low-latency keyboard and touch input, localized cues, score and Best storage, and complete success, failure, Replay, Restart, and Main recovery.",
-      parent: "Space Rocks is a general-audience browser arcade game recommended for ages 9+ and family play. No account or purchase is required; Best score and sound preference stay in this browser.",
+      parent: "Best score and sound preference stay in this browser. No account or purchase is required; clearing browser data may remove this local record.",
       faq: [
         ["How does inertia work?", "Thrust adds velocity and the ship keeps drifting, so rotate and use short thrusts to shape the next orbit instead of expecting an immediate stop."],
         ["What happens when a large rock is hit?", "It splits into medium rocks, which split again into small fragments. Clearing the full chain earns score and fragment credit."],
@@ -1996,6 +1998,58 @@
 
   const localizedGames = {
     "zh-Hant": {
+      "space-rocks": {
+        title: "星礦漂流",
+        age: "",
+        difficulty: "容易到具挑戰性",
+        time: "3–10 分鐘",
+        gameplay: "慣性太空射擊",
+        genre: ["街機", "太空射擊", "動作"],
+        skills: ["慣性控制", "瞄準", "風險時機"],
+        guideKicker: "WeightPlay 原創遊戲指南",
+        noteTitle: "玩家與存檔資訊",
+        hideScoreBands: true,
+        intro: "《星礦漂流》是一款以慣性操控為核心的原創太空射擊遊戲。駕駛魯克穿越三波漂移礦群，旋轉、推進並向各個方向射擊，將大型晶礦分裂成更小的碎片，最後以護盾迎戰第三波的守護核心。",
+        story: [
+          "戰場是一片會繞回另一側的開放星域，不是固定的路線。每一次短暫推進都會改變飛船接下來的漂移方向，因此瞄準與移動必須一起思考。",
+          "大型晶礦會分裂成中型碎片，再分裂成小型碎片。後續波次加入移動 UFO、連射機會與更密集的壓力，第三波則以守護核心提供清楚的目標與收尾。",
+        ],
+        systems: [
+          "用左右方向鍵旋轉、上方向鍵或 W 推進、空白鍵射擊，並用 Shift 或觸控護盾抵擋有限次數的近距離撞擊。手機觸控按鈕與鍵盤使用相同規則。",
+          "子彈會穿越並繞回星域。大型晶礦會分裂成兩個中型晶礦，中型晶礦再分裂成小碎片；每次清除都會增加分數、連擊與碎片紀錄。",
+          "連射會暫時縮短射擊間隔。護盾可以吸收近距離撞擊，但容量有限，不能把它留在每一次小碰撞上，否則第三波會缺少防護。",
+          "第三波加入橘色守護核心；撞擊會讓飛船重置位置並消耗一次承受次數，累積五次撞擊就會結束本局。清除三波即可進入成功結果。",
+        ],
+        how: [
+          "先從 Main 開始，輕按一次推進觀察漂移方向，再決定下一段軌道。",
+          "朝最近的大型晶礦旋轉並分段射擊，利用慣性繞過礦群。",
+          "每次命中後都要留意分裂碎片；大型晶礦必須一路清到小碎片才算完成。",
+          "看到連射就斟酌取得，但把護盾留給近距離通過或守護核心的密集階段。",
+          "清除三波，或按重新開始重置資源，重新練習第一段軌道。",
+        ],
+        strategyTips: [
+          "不要長按上方向鍵；用短促推進配合旋轉，讓下一段弧線更容易控制。",
+          "在晶礦進入飛船路徑前先射擊，接著轉向避開分裂後的碎片，不要停在原地。",
+          "連續連擊需要依序清除大型、中型與小型晶礦，但生存比冒險靠近射擊更重要。",
+          "把護盾當成穿越危險區的時機工具，不要把它當成永久裝甲。",
+          "第三波繞著守護核心移動，優先觀察橘色核心提示再開火。",
+        ],
+        progression: [
+          "第一波教你旋轉、推進、慣性漂移，以及大型到小型的分裂鏈。",
+          "第二波加入更多晶礦、移動 UFO 與連射壓力，要求同時處理瞄準與移動。",
+          "第三波加入守護核心與更密集的碎片，考驗護盾時機、受控繞行與連續射擊。",
+        ],
+        designNote: "星礦漂流使用原創 Canvas 星域、飛船、晶礦、UFO、守護核心、粒子與音效語言，並提供一致的響應式邏輯畫布、鍵盤與觸控操作、在地化提示、分數與最佳紀錄，以及完整的成功、失敗、重玩、重新開始與回到 Main 流程。",
+        parent: "最佳分數與音效偏好會保存在目前瀏覽器。不需要帳號或付費；清除瀏覽器資料可能會刪除本機紀錄。",
+        faq: [
+          ["慣性要怎麼控制？", "推進會增加速度，飛船之後仍會持續漂移；請搭配旋轉與短促推進來安排下一段軌道，不要期待立刻停下。"],
+          ["大型晶礦被擊中後會怎樣？", "它會分裂成中型晶礦，再分裂成小碎片；必須清除完整分裂鏈才算真正清掉。"],
+          ["連射有什麼作用？", "連射會暫時縮短射擊間隔，讓密集的碎片區更容易清除。"],
+          ["護盾應該什麼時候使用？", "在穿越危險區或守護核心附近時使用。護盾容量有限，不適合每次經過都開啟。"],
+          ["第三波有什麼不同？", "第三波加入橘色守護核心與更密集的壓力，核心提示與護盾時機會變得重要。"],
+          ["進度會保存嗎？", "最佳分數與音效偏好會保存在目前瀏覽器，不需要帳號。"],
+        ],
+      },
       "animal-color-link": {
         title: "彩色連線花園", age: "9+", difficulty: "簡單到具挑戰性", time: "每座花園約 2～8 分鐘", skills: ["邏輯", "空間推理", "專注"],
         intro: "《彩色連線花園》是由小熊貓園丁領路的 30 關全盤路線益智遊戲。把相同顏色的花朵種子連起來，路線不能交叉，並填滿每一格讓花園盛開。",
@@ -7580,6 +7634,7 @@
     if (!game) return;
     const audience = document.querySelector('meta[name="weightplay-audience"]')?.content?.trim().toLowerCase() || "general";
     const identity = guideIdentity(game, audience);
+    const isSpaceRocks = id === "space-rocks";
     const isGeneralGuardYard = id === "animal-guard-yard" && audience === "general";
     const isClassicCardGame = id === "pyramid-solitaire" || id === "tripeaks-solitaire";
     const isFreeCell = id === "freecell-solitaire";
@@ -7707,7 +7762,7 @@
           isGeneralGuardYard || isClassicCardGame
             ? ""
             : `
-              <div class="game-info-section game-info-parent">
+              <div class="game-info-section ${isSpaceRocks ? "game-info-save" : "game-info-parent"}">
                 <h3>${escapeHtml(game.noteTitle || uiLabel("parentNote"))}</h3>
                 <p>${escapeHtml(game.parent)}</p>
               </div>
@@ -9319,10 +9374,24 @@
     parent: "This owner-preview game has no account, purchase, chat, leaderboard, or advertising flow. Score and Best stay in the current browser.",
     faq: [["How do I move?", "Use Left/Right or A/D, then use Space or the mobile Fire button to shoot."], ["What is the shield window?", "A short protective window appears after a clean wave and absorbs incoming shots."], ["What causes Game Over?", "Losing all lives or letting the formation reach the defense line."], ["Is progress saved?", "Only the local Best score is saved in this browser."]]
   };
+  games["snake"] = {
+    title: "Snake", gameplay: "Grid Survival Arcade", difficulty: "Easy to Challenging", time: "1-4 minutes per run",
+    genre: ["Classic", "Arcade", "Action"], skills: ["Planning", "Reaction", "Space Reading"],
+    intro: "Snake is an original WeightPlay grid survival arcade game. Guide a growing star-serpent through a bounded board, collect six food sparks, and keep a clean route open.",
+    story: ["A small star-serpent wakes inside a night grid. Each food spark adds another segment, turning every safe turn into the next spatial decision."],
+    systems: ["The serpent moves continuously on a grid. Food increases its length and score, the pace rises during a run, and walls or the serpent's own body end the round."],
+    how: ["Use Arrow keys or WASD on desktop, visible direction controls on touch screens, or swipe across the board on mobile.", "Turn before the next grid cell closes; opposite-direction turns are ignored to protect the current route.", "Collect six food sparks to complete the short authored round and reach Result.", "Hitting a wall or your own trail ends the run; Retry starts a fresh board while Best stays in local storage."],
+    strategyTips: ["Plan two turns ahead instead of chasing the nearest spark.", "Use the outer edge early, then leave a turning lane before the serpent grows.", "Choose a longer route when it keeps the next corner open.", "The rising pace rewards short, deliberate direction changes."],
+    progression: ["The first spark teaches grid steering. Later sparks lengthen the trail and increase speed, making the final collection a compact survival challenge."],
+    designNote: "Snake learns from the broad grid-survival tradition while using WeightPlay's own star-serpent, night-grid palette, food sparks, short-round pacing, copy, and interface.",
+    parent: "This public game has no account, purchase, chat, leaderboard, or advertising flow. Score and Best stay in the current browser.",
+    faq: [["What ends a run?", "A wall or the serpent's own trail ends the run."], ["Does the serpent move continuously?", "Yes. It advances on a timed grid and the pace increases during a round."], ["Which controls work?", "Arrow keys, WASD, visible touch controls, and horizontal or vertical swipe."], ["Is progress saved?", "Only the local Best score is saved in this browser."]]
+  };
   const arcadeGuideLocales = {
     "zh-Hant": {
       "road-crosser": { title: "星軌過路", intro: "星軌過路是 WeightPlay 原創的時機街機遊戲。帶領星行者穿過車流、移動河流與三段逐步收緊的路線。", how: ["桌面使用方向鍵或 WASD；手機使用滑動與方向按鈕。", "一次觀察一條車道，只在下一格安全時移動。", "在河流中踏上移動木頭，順著水流調整位置。", "通過三段路線抵達星門；撞車、落水或被沖出場外會結束本局。"] },
-      "alien-defender": { title: "星際守衛", intro: "星際守衛是 WeightPlay 原創的固定畫面波次射擊遊戲。移動、射擊並讀懂三波外星編隊，守住訊號站。", how: ["桌面用左右鍵或 A/D 移動，Space 射擊。", "手機按住左右控制並點擊射擊。", "觀察敵方隊形，在下墜攻擊出現時提早走位。", "清除三波敵人；完整清波會給予短暫護盾窗口。"] }
+      "alien-defender": { title: "星際守衛", intro: "星際守衛是 WeightPlay 原創的固定畫面波次射擊遊戲。移動、射擊並讀懂三波外星編隊，守住訊號站。", how: ["桌面用左右鍵或 A/D 移動，Space 射擊。", "手機按住左右控制並點擊射擊。", "觀察敵方隊形，在下墜攻擊出現時提早走位。", "清除三波敵人；完整清波會給予短暫護盾窗口。"] },
+      "snake": { title: "貪食蛇", intro: "貪食蛇是 WeightPlay 原創的格線生存街機遊戲。帶領成長中的星蛇穿過有限棋盤，收集六枚食物火花。", how: ["桌面使用方向鍵或 WASD；手機使用方向按鈕或滑動。", "在下一格封閉前先規劃轉向，反向輸入不會打斷目前路線。", "收集六枚食物火花即可完成短回合並抵達結果。", "撞到牆壁或自己的軌跡會結束本局；重試會保留本機最佳分數。"] }
     },
     "zh-Hans": {
       "road-crosser": { title: "星轨过路", intro: "星轨过路是 WeightPlay 原创的时机街机游戏。带领星行者穿过车流、移动河流与三段逐步收紧的路线。", how: ["桌面使用方向键或 WASD；手机使用滑动与方向按钮。", "一次观察一条车道，只在下一格安全时移动。", "在河流中踏上移动木头，顺着水流调整位置。", "通过三段路线抵达星门；撞车、落水或被冲出场外会结束本局。"] },
@@ -9369,6 +9438,24 @@
       "alien-defender": { title: "مدافع الفضائيين", intro: "مدافع الفضائيين لعبة إطلاق نار أصلية من WeightPlay على موجات. تحرك وأطلق النار لحماية المحطة.", how: ["استخدم اليسار/اليمين أو A/D والمسافة للإطلاق.", "على الهاتف اضغط يساراً أو يميناً ثم إطلاق.", "اقرأ التشكيل وتحرك قبل المقذوفات الهابطة.", "اقضِ على ثلاث موجات؛ يمنحك العبور النظيف درعاً قصيراً."] }
     }
   };
+  const snakeGuideLocales = {
+    "zh-Hant": { title: "貪食蛇", intro: "貪食蛇是 WeightPlay 原創的格線生存街機遊戲。帶領成長中的星蛇穿過有限棋盤，收集六枚食物火花。", how: ["桌面使用方向鍵或 WASD；手機使用方向按鈕或滑動。", "在下一格封閉前先規劃轉向，反向輸入不會打斷目前路線。", "收集六枚食物火花即可完成短回合並抵達結果。", "撞到牆壁或自己的軌跡會結束本局；重試會保留本機最佳分數。"] },
+    "zh-Hans": { title: "贪吃蛇", intro: "贪吃蛇是 WeightPlay 原创的格线生存街机游戏。带领成长中的星蛇穿过有限棋盘，收集六枚食物火花。", how: ["桌面使用方向键或 WASD；手机使用方向按钮或滑动。", "在下一格封闭前先规划转向，反向输入不会打断当前路线。", "收集六枚食物火花即可完成短回合并抵达结果。", "撞到墙壁或自己的轨迹会结束本局；重试会保留本机最佳分数。"] },
+    ja: { title: "スネーク", intro: "スネークはWeightPlayオリジナルのグリッド生存アーケードです。成長する星のヘビを導き、6つのフードスパークを集めます。", how: ["デスクトップは矢印キーまたはWASD、モバイルは方向ボタンかスワイプです。", "次のマスが閉じる前に曲がり、反対方向の入力で進路を壊さないようにします。", "6つのフードスパークを集めると短いラウンドをクリアしてResultへ進みます。", "壁や自分の軌跡に当たると終了し、リトライしてもローカルのベストは残ります。"] },
+    ko: { title: "스네이크", intro: "스네이크는 WeightPlay 오리지널 격자 생존 아케이드입니다. 성장하는 별뱀을 조종해 먹이 불꽃 6개를 모으세요.", how: ["데스크톱은 방향키나 WASD, 모바일은 방향 버튼이나 스와이프를 사용합니다.", "다음 칸이 막히기 전에 회전하고 반대 방향 입력으로 경로를 끊지 않습니다.", "먹이 불꽃 6개를 모으면 짧은 라운드를 완료하고 Result로 이동합니다.", "벽이나 자신의 궤적에 닿으면 종료되며 재시작해도 로컬 최고 점수는 남습니다."] },
+    es: { title: "Serpiente", intro: "Serpiente es un arcade original de supervivencia en cuadrícula de WeightPlay. Guía una serpiente estelar, recoge seis chispas y mantén abierta la ruta.", how: ["Usa flechas o WASD; en móvil, usa botones de dirección o desliza.", "Gira antes de que se cierre la siguiente casilla y no inviertas la dirección actual.", "Recoge seis chispas para completar la ronda y llegar al resultado.", "Chocar con una pared o con tu rastro termina la partida; el mejor resultado local se conserva al reintentar."] },
+    "pt-BR": { title: "Snake", intro: "Snake é um arcade original de sobrevivência em grade do WeightPlay. Guie uma serpente estelar, colete seis faíscas e mantenha a rota aberta.", how: ["Use setas ou WASD; no celular use botões de direção ou deslize.", "Vire antes que a próxima casa feche e não inverta a direção atual.", "Colete seis faíscas para completar a rodada e chegar ao resultado.", "Bater na parede ou no próprio rastro encerra a partida; o melhor placar local fica salvo ao tentar novamente."] },
+    fr: { title: "Serpent", intro: "Serpent est un arcade original de survie sur grille de WeightPlay. Guide un serpent-étoile, collecte six étincelles et garde une voie ouverte.", how: ["Utilise les flèches ou WASD ; sur mobile, touche une direction ou glisse.", "Tourne avant que la prochaine case ne se ferme et ne renverse pas la direction actuelle.", "Collecte six étincelles pour terminer la manche et atteindre le résultat.", "Un mur ou ta propre trace termine la partie ; le meilleur score local reste après une nouvelle tentative."] },
+    de: { title: "Snake", intro: "Snake ist ein originales Raster-Survival-Arcade-Spiel von WeightPlay. Führe eine wachsende Sternenschlange, sammle sechs Funken und halte eine sichere Spur offen.", how: ["Nutze Pfeile oder WASD; mobil verwendest du Richtungsbuttons oder wischst.", "Drehe vor der nächsten geschlossenen Rasterzelle und kehre nicht die aktuelle Richtung um.", "Sammle sechs Funken, um die Runde abzuschließen und das Result zu erreichen.", "Eine Wand oder die eigene Spur beendet den Lauf; beim erneuten Versuch bleibt der lokale Bestwert erhalten."] },
+    it: { title: "Snake", intro: "Snake è un arcade originale di sopravvivenza su griglia WeightPlay. Guida un serpente stellare, raccogli sei scintille e lascia aperta la rotta.", how: ["Usa le frecce o WASD; su mobile usa i pulsanti direzionali o scorri.", "Svolta prima che la prossima casella si chiuda e non invertire la direzione attuale.", "Raccogli sei scintille per completare il round e arrivare al risultato.", "Un muro o la tua scia termina la partita; il record locale resta dopo un nuovo tentativo."] },
+    ru: { title: "Змейка", intro: "«Змейка» — оригинальная аркада WeightPlay на выживание в сетке. Проведи растущую звёздную змейку, собери шесть искр и сохрани свободный путь.", how: ["Используй стрелки или WASD; на телефоне нажимай направление или делай свайп.", "Поворачивай до закрытия следующей клетки и не разворачивай текущий ход.", "Собери шесть искр, чтобы завершить раунд и попасть на экран результата.", "Стена или собственный след завершает забег; лучший локальный результат сохраняется после повтора."] },
+    hi: { title: "साँप", intro: "साँप WeightPlay का मौलिक ग्रिड सर्वाइवल आर्केड है। बढ़ते सितारा-साँप को चलाएँ, छह भोजन-चिंगारियाँ लें और रास्ता खुला रखें।", how: ["डेस्कटॉप पर तीर या WASD, मोबाइल पर दिशा बटन या स्वाइप इस्तेमाल करें।", "अगला खाना बंद होने से पहले मोड़ें और मौजूदा दिशा को उलटें नहीं।", "छह चिंगारियाँ लेकर छोटा राउंड पूरा करें और परिणाम तक पहुँचें।", "दीवार या अपनी पूँछ से टकराने पर रन समाप्त होता है; दोबारा खेलने पर स्थानीय सर्वश्रेष्ठ स्कोर रहता है।"] },
+    ar: { title: "الثعبان", intro: "الثعبان لعبة بقاء أصلية من WeightPlay على شبكة. قد ثعباناً نجمياً ينمو، واجمع ست شرارات طعام وأبقِ الطريق مفتوحاً.", how: ["استخدم الأسهم أو WASD؛ على الهاتف اضغط الاتجاه أو اسحب.", "انعطف قبل إغلاق الخلية التالية ولا تعكس الاتجاه الحالي.", "اجمع ست شرارات لإكمال الجولة القصيرة والوصول إلى النتيجة.", "ينتهي اللعب عند الاصطدام بالجدار أو بالمسار الخاص؛ يبقى أفضل سجل محلياً عند الإعادة."] },
+  };
+  for (const [code, entry] of Object.entries(snakeGuideLocales)) {
+    arcadeGuideLocales[code] ||= {};
+    arcadeGuideLocales[code].snake = entry;
+  }
   for (const [code, entries] of Object.entries(arcadeGuideLocales)) {
     localizedGames[code] ||= {};
     for (const [id, entry] of Object.entries(entries)) localizedGames[code][id] = { ...games[id], ...entry, difficulty: games[id].difficulty, time: games[id].time, genre: games[id].genre, skills: games[id].skills, faq: games[id].faq };
@@ -9406,6 +9493,7 @@
     "animal-unblock",
     "road-crosser",
     "alien-defender",
+    "snake",
   ].forEach(completeGuideStandard);
   render();
 })();

@@ -81,6 +81,7 @@
       <label class="locale-picker"><span id="languageLabel"></span><select id="localeSelect"></select></label>
     </header>
     <section id="mainScreen" class="screen">
+      <a id="mainReturn" class="main-return" data-wp-return="main" href="../../" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
       <div class="arcade-panel main-panel">
         <div class="main-copy"><p id="objective" class="objective"></p><p id="guideCopy" class="guide-copy"></p><button id="startBtn" class="primary"></button></div>
         <div class="preview-art"><img id="coverArt" alt=""></div>
@@ -89,7 +90,7 @@
     <section id="battleScreen" class="screen battle-screen" data-wp-logical-battle-canvas hidden>
       <div class="arcade-panel battle-panel">
         <div class="battle-topline"><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="backBtn" class="secondary icon-button" data-wp-return="battle"></button><button id="soundBtn" class="secondary icon-button"></button><button id="restartBtn" class="secondary"></button></div></div>
-        <div class="hud"><div class="hud-item"><span id="scoreLabel" class="hud-label"></span><strong id="scoreValue" class="hud-value">0</strong></div><div class="hud-item"><span id="bestLabel" class="hud-label"></span><strong id="bestValue" class="hud-value">0</strong></div><div class="hud-item"><span id="levelLabel" class="hud-label"></span><strong id="levelValue" class="hud-value">1</strong></div><div class="hud-item"><span id="powerLabel" class="hud-label"></span><strong id="powerValue" class="hud-value">—</strong></div></div>
+        <div class="hud"><div class="hud-item"><span id="scoreLabel" class="hud-label"></span><strong id="scoreValue" class="hud-value">0</strong></div><div class="hud-item"><span id="bestLabel" class="hud-label"></span><strong id="bestValue" class="hud-value">0</strong></div><div class="hud-item"><span id="levelLabel" class="hud-label"></span><strong id="levelValue" class="hud-value">1</strong></div><div class="hud-item"><span id="powerLabel" class="hud-label"></span><strong id="powerValue" class="hud-value">—</strong></div><div id="livesHud" class="hud-item"><span id="livesLabel" class="hud-label"></span><strong id="livesValue" class="hud-value">5</strong></div></div>
         <div id="backConfirm" class="confirm-back" hidden><p id="backConfirmCopy"></p><div class="control-row"><button id="backStayBtn" class="secondary"></button><button id="backLeaveBtn" class="primary"></button></div></div>
         <div class="canvas-wrap maze"><canvas id="gameCanvas" tabindex="0"></canvas></div><p id="gameMessage" class="game-message" aria-live="polite"></p>
         <div id="touchControls" class="touch-controls maze-controls" aria-label=""></div><p id="controlHint" class="control-hint"></p>

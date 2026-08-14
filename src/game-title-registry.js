@@ -1615,6 +1615,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "एलियन रक्षक",
     "ar": "مدافع الفضائيين"
   },
+  "snake": {
+    "__localizedExact": true,
+    "en": "Snake",
+    "zh-Hant": "貪食蛇",
+    "zh-Hans": "贪吃蛇",
+    "ja": "ヘビ",
+    "ko": "스네이크",
+    "es": "serpiente",
+    "pt-BR": "Cobra",
+    "fr": "Serpent",
+    "de": "Schlange",
+    "it": "Serpente",
+    "ru": "Змейка",
+    "hi": "साँप",
+    "ar": "الثعبان"
+  },
   "maze-chase": {
     "__localizedExact": true,
     "en": "Maze Chase",
