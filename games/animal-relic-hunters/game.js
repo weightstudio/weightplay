@@ -67,6 +67,7 @@
     roomText: $("roomText"),
     keyText: $("keyText"),
     goldText: $("goldText"),
+    roomObjective: $("roomObjective"),
     gameCanvas: $("gameCanvas"),
     eqWeaponName: $("eqWeaponName"),
     eqWeaponEffect: $("eqWeaponEffect"),
@@ -154,6 +155,9 @@
       hudHp: "Player HP",
       roomLabel: "Room",
       keysLabel: "Keys",
+      roomObjectiveKey: "Find the golden key, then unlock the relic chest.",
+      roomObjectiveChest: "Use the key on the relic chest; then enter the cyan portal.",
+      roomObjectivePortal: "Relic claimed. Enter the cyan portal to the next room.",
       chooseCard: "Choose a Relic Upgrade",
       chooseCardDesc: "Select one of these ancient relics to empower your explorer.",
       draftShortcutHint: "Keyboard: press 1, 2, or 3 to choose. Press R to reroll.",
@@ -269,6 +273,9 @@
       hudHp: "角色生命",
       roomLabel: "房間",
       keysLabel: "鑰匙",
+      roomObjectiveKey: "找到金色鑰匙，再用它開啟遺跡寶箱。",
+      roomObjectiveChest: "用鑰匙開啟遺跡寶箱，再進入青色傳送門。",
+      roomObjectivePortal: "已取得遺物。進入青色傳送門前往下一個房間。",
       chooseCard: "選擇遺跡能力",
       chooseCardDesc: "選擇古代遺跡之力以強化你的探險家能力。",
       draftShortcutHint: "鍵盤：按 1、2、3 選擇，按 R 重抽。",
@@ -381,6 +388,9 @@
     hudHp: "生命值",
     roomLabel: "房間",
     keysLabel: "鑰匙",
+    roomObjectiveKey: "找到金色鑰匙，再用它開啟遺跡寶箱。",
+    roomObjectiveChest: "用鑰匙開啟遺跡寶箱，再進入青色傳送門。",
+    roomObjectivePortal: "已取得遺物。進入青色傳送門前往下一個房間。",
     chooseCard: "選擇遺跡能力",
     chooseCardDesc: "選擇一個古代遺跡能力，強化你的探險家。",
     draftShortcutHint: "鍵盤：按 1、2、3 選擇，按 R 重抽。",
@@ -490,6 +500,9 @@
     hudHp: "PV del jugador",
     roomLabel: "Sala",
     keysLabel: "Llaves",
+    roomObjectiveKey: "Encuentra la llave dorada y abre el cofre de reliquias.",
+    roomObjectiveChest: "Usa la llave en el cofre; después entra en el portal cian.",
+    roomObjectivePortal: "Reliquia conseguida. Entra en el portal cian hacia la siguiente sala.",
     chooseCard: "Elige una mejora reliquia",
     chooseCardDesc: "Elige una reliquia antigua para potenciar a tu explorador.",
     draftShortcutHint: "Teclado: pulsa 1, 2 o 3 para elegir. Pulsa R para cambiar opciones.",
@@ -1118,6 +1131,16 @@
     const locale = getLocale();
     const raw = text[locale]?.[key] || text.en[key] || key;
     return Object.entries(params).reduce((str, [k, v]) => str.replaceAll(`{${k}}`, String(v)), raw);
+  }
+
+  function objectiveText(key) {
+    const locale = getLocale();
+    const localized = text[locale]?.[key];
+    const source = text.en[key] || key;
+    const translated = !localized && locale !== "en"
+      ? window.WeightPlayGameRuntimeLocalizer?.translate?.(source)
+      : "";
+    return translated || localized || source;
   }
 
   const ariaText = {
@@ -2406,6 +2429,21 @@
     nodes.levelVal.textContent = state.level;
     nodes.expText.textContent = `${state.exp}/${state.expNeed}`;
     nodes.expFill.style.width = `${(state.exp / state.expNeed) * 100}%`;
+    updateRoomObjective();
+  }
+
+  function updateRoomObjective() {
+    if (!nodes.roomObjective) return;
+    const activeTypes = new Set(state.pickups.map((pickup) => pickup.type));
+    const key = activeTypes.has("key")
+      ? "roomObjectiveKey"
+      : activeTypes.has("chest")
+        ? "roomObjectiveChest"
+        : activeTypes.has("portal")
+          ? "roomObjectivePortal"
+          : "";
+    nodes.roomObjective.hidden = !key;
+    nodes.roomObjective.textContent = key ? objectiveText(key) : "";
   }
 
   // Firing function
@@ -3168,6 +3206,7 @@
           // Spawn Chest and Portal
           state.pickups.push({ x: 300, y: ARENA_HEIGHT / 2, type: "chest" });
           state.pickups.push({ x: 500, y: ARENA_HEIGHT / 2, type: "portal" });
+          updateRoomObjective();
         } else if (pickup.type === "gold") {
           state.pickups.splice(pIndex, 1);
           gainGold(pickup.value || 1);
@@ -4001,11 +4040,16 @@
           });
           return this.snapshot();
         },
-        previewObjectivePickups() {
-          state.pickups = [
-            { x: 300, y: ARENA_HEIGHT / 2, type: "chest" },
-            { x: 500, y: ARENA_HEIGHT / 2, type: "portal" },
-          ];
+        previewObjectivePickups(phase = "chest") {
+          state.pickups = phase === "key"
+            ? [{ x: 300, y: ARENA_HEIGHT / 2, type: "key" }]
+            : phase === "portal"
+              ? [{ x: 500, y: ARENA_HEIGHT / 2, type: "portal" }]
+              : [
+                { x: 300, y: ARENA_HEIGHT / 2, type: "chest" },
+                { x: 500, y: ARENA_HEIGHT / 2, type: "portal" },
+              ];
+          updateRoomObjective();
           drawCanvasFrame();
           return state.pickups.map((pickup) => pickup.type);
         },

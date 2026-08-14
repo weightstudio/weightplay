@@ -274,7 +274,7 @@
     els.locale.value = locale;
     const persistLocale = () => {
       locale = els.locale.value;
-      window.WonderI18n?.setLocale?.(locale, { navigate: false, dispatch: false });
+      window.WonderI18n?.setLocale?.(locale, { navigate: false, dispatch: game.type === "snake" });
       try { localStorage.setItem("weightPlayLocale", locale); } catch {}
       if (game.type === "snake") {
         if (state.messageKey === "hintObjective") state.message = `${copy(locale, "hint")}: ${copy(locale, game.objective)}`;

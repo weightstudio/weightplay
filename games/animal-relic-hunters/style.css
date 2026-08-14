@@ -1022,6 +1022,27 @@ body > .battle-ad-reserve { display: none; height: 56px; min-height: 56px; borde
 .hud-meta-row {
   display: flex;
   gap: 15px;
+  position: relative;
+}
+
+.room-objective {
+  position: absolute;
+  z-index: 3;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 5px 9px;
+  border: 1px solid rgba(253, 230, 138, 0.58);
+  border-radius: 8px;
+  background: rgba(10, 20, 18, 0.92);
+  color: #fef3c7;
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  pointer-events: none;
+  text-wrap: balance;
 }
 
 .meta-badge {
@@ -2147,7 +2168,7 @@ body.relic-playing .arena-hud {
   gap:4px;
   min-width:0;
   margin:0;
-  overflow:hidden;
+  overflow:visible;
 }
 body.relic-playing .hud-item { min-width:0; gap:2px; }
 body.relic-playing .health-meta,
@@ -2175,6 +2196,13 @@ body.relic-playing .meta-badge {
 body.relic-playing .meta-badge .ui-icon--small { width:16px; height:16px; flex:0 0 16px; }
 body.relic-playing .meta-badge > span[data-ui] { min-width:0; overflow:hidden; text-overflow:ellipsis; }
 body.relic-playing .meta-badge > strong { flex:0 0 auto; }
+body.relic-playing .room-objective {
+  left: 2px;
+  right: 2px;
+  padding: 4px 6px;
+  font-size: 11px;
+  line-height: 13px;
+}
 body.relic-playing .canvas-container { width:346px; max-width:100%; min-width:min(320px,100%); height:auto; max-height:none; aspect-ratio:4/5; align-self:end; justify-self:center; }
 body.relic-playing .canvas-container canvas { width:100%; height:100%; aspect-ratio:4/5; }
 body.relic-playing .inventory-sidebar { display:grid; grid-template-rows:auto 96px minmax(0,1fr); gap:6px; padding:8px; }
@@ -2537,6 +2565,7 @@ body.relic-stage-select .stage-config-mount .start-btn {
   body.relic-playing .arena-hud { grid-template-rows:24px 24px; }
   body.relic-playing .hud-meta-row { grid-column:1 / -1; }
   body.relic-playing .meta-badge { min-height:24px; padding-block:1px; }
+  body.relic-playing .room-objective { top:calc(100% + 4px); font-size:11px; line-height:12px; }
   body.relic-playing .canvas-container { width:min(100%,calc((100cqh - 64px) * 8 / 5)); }
   body.relic-playing .inventory-sidebar { grid-column:2; grid-template-rows:auto 98px minmax(0,1fr); }
   body.relic-playing .canvas-container { align-self:center; }

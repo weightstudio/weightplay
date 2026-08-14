@@ -28,6 +28,57 @@
     hi: { language: "भाषा", start: "खेल शुरू करें", main: "मुख्य", stages: "स्तर", chapters: "अध्याय", arenas: "अखाड़े", retry: "फिर कोशिश", next: "अगला", howTo: "कैसे खेलें", back: "वापस" },
     ar: { language: "اللغة", start: "ابدأ اللعبة", main: "الرئيسية", stages: "المراحل", chapters: "الفصول", arenas: "الساحات", retry: "إعادة المحاولة", next: "التالي", howTo: "طريقة اللعب", back: "رجوع" },
   };
+  const dynamicLabels = {
+    en: { bestScore: "Best score", bestStreak: "Best streak", bestWins: "Best wins", bestRooms: "Best rooms", bestRoom: "Best room", deaths: "Deaths", berries: "Berries", chapter: "Chapter", room: "Room", wave: "Wave", arena: "Arena", surface: "Surface", platform: "Platform", you: "You", rival: "Rival", score: "Score", chain: "Chain", streak: "Streak" },
+    "zh-Hant": { bestScore: "最佳成績", bestStreak: "最佳連勝", bestWins: "最佳勝場", bestRooms: "最佳房間", bestRoom: "最佳房間", deaths: "死亡次數", berries: "莓果", chapter: "第", room: "房間", wave: "波次", arena: "鬥場", surface: "表面", platform: "平台", you: "你", rival: "對手", score: "分數", chain: "連擊", streak: "連勝" },
+    "zh-Hans": { bestScore: "最佳成绩", bestStreak: "最佳连胜", bestWins: "最佳胜场", bestRooms: "最佳房间", bestRoom: "最佳房间", deaths: "死亡次数", berries: "莓果", chapter: "第", room: "房间", wave: "波次", arena: "斗场", surface: "表面", platform: "平台", you: "你", rival: "对手", score: "分数", chain: "连击", streak: "连胜" },
+    ja: { bestScore: "ベストスコア", bestStreak: "ベスト連勝", bestWins: "ベスト勝利数", bestRooms: "ベスト部屋数", bestRoom: "ベスト部屋", deaths: "死亡数", berries: "ベリー", chapter: "チャプター", room: "ルーム", wave: "ウェーブ", arena: "アリーナ", surface: "足場", platform: "プラットフォーム", you: "自分", rival: "相手", score: "スコア", chain: "チェーン", streak: "連勝" },
+    ko: { bestScore: "최고 점수", bestStreak: "최고 연속", bestWins: "최고 승리", bestRooms: "최고 방 수", bestRoom: "최고 방", deaths: "사망", berries: "베리", chapter: "챕터", room: "방", wave: "웨이브", arena: "경기장", surface: "발판", platform: "플랫폼", you: "나", rival: "상대", score: "점수", chain: "연쇄", streak: "연속" },
+    es: { bestScore: "Mejor puntuación", bestStreak: "Mejor racha", bestWins: "Mejores victorias", bestRooms: "Mejores salas", bestRoom: "Mejor sala", deaths: "Muertes", berries: "Bayas", chapter: "Capítulo", room: "Sala", wave: "Oleada", arena: "Arena", surface: "Superficie", platform: "Plataforma", you: "Tú", rival: "Rival", score: "Puntuación", chain: "Cadena", streak: "Racha" },
+    "pt-BR": { bestScore: "Melhor pontuação", bestStreak: "Melhor sequência", bestWins: "Melhores vitórias", bestRooms: "Melhores salas", bestRoom: "Melhor sala", deaths: "Mortes", berries: "Frutas", chapter: "Capítulo", room: "Sala", wave: "Onda", arena: "Arena", surface: "Superfície", platform: "Plataforma", you: "Você", rival: "Rival", score: "Pontuação", chain: "Cadeia", streak: "Sequência" },
+    fr: { bestScore: "Meilleur score", bestStreak: "Meilleure série", bestWins: "Meilleures victoires", bestRooms: "Meilleures salles", bestRoom: "Meilleure salle", deaths: "Morts", berries: "Baies", chapter: "Chapitre", room: "Salle", wave: "Vague", arena: "Arène", surface: "Surface", platform: "Plateforme", you: "Toi", rival: "Rival", score: "Score", chain: "Chaîne", streak: "Série" },
+    de: { bestScore: "Bester Score", bestStreak: "Beste Serie", bestWins: "Beste Siege", bestRooms: "Beste Räume", bestRoom: "Bester Raum", deaths: "Tode", berries: "Beeren", chapter: "Kapitel", room: "Raum", wave: "Welle", arena: "Arena", surface: "Fläche", platform: "Plattform", you: "Du", rival: "Gegner", score: "Punkte", chain: "Kette", streak: "Serie" },
+    it: { bestScore: "Miglior punteggio", bestStreak: "Migliore serie", bestWins: "Migliori vittorie", bestRooms: "Migliori stanze", bestRoom: "Miglior stanza", deaths: "Morti", berries: "Bacche", chapter: "Capitolo", room: "Stanza", wave: "Ondata", arena: "Arena", surface: "Superficie", platform: "Piattaforma", you: "Tu", rival: "Rivale", score: "Punteggio", chain: "Catena", streak: "Serie" },
+    ru: { bestScore: "Лучший счёт", bestStreak: "Лучшая серия", bestWins: "Лучшие победы", bestRooms: "Лучшие комнаты", bestRoom: "Лучшая комната", deaths: "Падения", berries: "Ягоды", chapter: "Глава", room: "Комната", wave: "Волна", arena: "Арена", surface: "Поверхность", platform: "Платформа", you: "Вы", rival: "Соперник", score: "Счёт", chain: "Цепь", streak: "Серия" },
+    hi: { bestScore: "सर्वश्रेष्ठ स्कोर", bestStreak: "सर्वश्रेष्ठ सिलसिला", bestWins: "सर्वश्रेष्ठ जीत", bestRooms: "सर्वश्रेष्ठ कमरे", bestRoom: "सर्वश्रेष्ठ कमरा", deaths: "मृत्यु", berries: "बेरियाँ", chapter: "अध्याय", room: "कमरा", wave: "लहर", arena: "अखाड़ा", surface: "सतह", platform: "प्लेटफ़ॉर्म", you: "आप", rival: "प्रतिद्वंद्वी", score: "स्कोर", chain: "श्रृंखला", streak: "सिलसिला" },
+    ar: { bestScore: "أفضل نتيجة", bestStreak: "أفضل سلسلة", bestWins: "أفضل انتصارات", bestRooms: "أفضل غرف", bestRoom: "أفضل غرفة", deaths: "الوفيات", berries: "التوت", chapter: "الفصل", room: "الغرفة", wave: "الموجة", arena: "الساحة", surface: "السطح", platform: "المنصة", you: "أنت", rival: "الخصم", score: "النتيجة", chain: "السلسلة", streak: "التتابع" },
+  };
+  const fixedText = {
+    en: {
+      "Pulse": "Pulse", "BUILD ICE": "BUILD ICE", "BUMP": "BUMP", "Foam tools": "Foam tools", "Ready…": "Ready…",
+      "Perfect landing — next platform ready.": "Perfect landing — next platform ready.", "Replay Canopy": "Replay Canopy", "Replay Foundry": "Replay Foundry",
+      "Arrows move. SPACE breaks ice; F builds a short wall.": "Arrows move. SPACE breaks ice; F builds a short wall.",
+      "Arrow keys move · Space jumps.": "Arrow keys move · Space jumps.",
+      "Arrow keys move · Space jumps · E reveals a brief clue.": "Arrow keys move · Space jumps · E reveals a brief clue.",
+      "Find the lantern. Traps reset only the current room.": "Find the lantern. Traps reset only the current room.",
+      "Trap Chapters": "Trap Chapters", "Harvest Chapters": "Harvest Chapters", "Foam Arenas": "Foam Arenas", "Ice Chapters": "Ice Chapters", "Foundry Chapters": "Foundry Chapters",
+      "← Main": "← Main", "← Chapters": "← Chapters", "← Stages": "← Stages", "← Arenas": "← Arenas", "Touch controls": "Touch controls",
+      "JUMP": "JUMP", "BOUNCE": "BOUNCE", "SPRING": "SPRING", "PAD": "PAD", "BREAK ICE": "BREAK ICE",
+      "Swipe safe fruit.": "Swipe safe fruit.", "Move with arrows. Press SPACE to bounce-strike.": "Move with arrows. Press SPACE to bounce-strike.",
+      "Arrows move. Press SPACE to break the ice ahead.": "Arrows move. Press SPACE to break the ice ahead.", "Swipe upward from the canister.": "Swipe upward from the canister.",
+      "Drag across targets. A dark seed pod ends the chain.": "Drag across targets. A dark seed pod ends the chain.",
+      "Keep moving, strike when close, and use the arena walls to create space.": "Keep moving, strike when close, and use the arena walls to create space.",
+      "The blue blocks are breakable. Collect all berries before the drifter reaches you.": "The blue blocks are breakable. Collect all berries before the drifter reaches you.",
+      "Swipe up. Shorter swipes stay low; longer swipes climb farther.": "Swipe up. Shorter swipes stay low; longer swipes climb farther.",
+      "Moonlit Trap Trail play area": "Moonlit Trap Trail play area", "Canopy Cut play area": "Canopy Cut play area", "Bounce Brawl play area": "Bounce Brawl play area", "Frostline Rescue play area": "Frostline Rescue play area", "Flip Foundry play area": "Flip Foundry play area",
+      "Trail clear": "Trail clear", "Chapter clear": "Chapter clear", "Room clear": "Room clear", "Wave complete": "Wave complete", "Wave clear": "Wave clear", "Wave ended": "Wave ended", "Arena clear": "Arena clear", "Bounced out": "Bounced out", "Route blocked": "Route blocked", "Landing failed": "Landing failed", "Foundry route clear": "Foundry route clear",
+      "Retry Room": "Retry Room", "Next Chapter": "Next Chapter", "Next Room": "Next Room", "Replay Chapter": "Replay Chapter", "Retry Arena": "Retry Arena", "Next Arena": "Next Arena", "Replay Arena": "Replay Arena", "Next Wave": "Next Wave", "Replay Canopy": "Replay Canopy", "Retry Platform": "Retry Platform", "Next Surface": "Next Surface", "Retry": "Retry",
+      "learn the tells": "learn the tells", "watch the delay": "watch the delay", "read the reversal": "read the reversal", "mixed rule finale": "mixed rule finale", "5 waves · learn the path": "5 waves · learn the path", "faster arcs": "faster arcs", "warm-up": "warm-up", "spring lanes": "spring lanes", "moving pads": "moving pads", "tight corners": "tight corners", "fast rival": "fast rival", "final rhythm": "final rhythm", "first thaw": "first thaw", "split routes": "split routes", "drifter pressure": "drifter pressure", "final melt": "final melt", "4 platforms · wide starts": "4 platforms · wide starts", "precision finish": "precision finish", "new spacing": "new spacing",
+      "READ THE PATH": "READ THE PATH", "FOAM ZONE": "FOAM ZONE", "A toy physics test arena": "A toy physics test arena", "BREAK THE ICE": "BREAK THE ICE"
+    },
+    "zh-Hant": { "Pulse": "脈衝", "BUILD ICE": "建造冰牆", "BUMP": "撞擊", "Foam tools": "泡棉工具", "Ready…": "準備好了……", "Perfect landing — next platform ready.": "完美落地——下一個平台已準備好。", "Replay Canopy": "重玩樹冠快採", "Replay Foundry": "重玩翻轉工坊", "Arrows move. SPACE breaks ice; F builds a short wall.": "方向鍵移動。SPACE 破壞冰塊；F 建造短冰牆。" },
+    "zh-Hans": { "Pulse": "脉冲", "BUILD ICE": "建造冰墙", "BUMP": "撞击", "Foam tools": "泡棉工具", "Ready…": "准备好了……", "Perfect landing — next platform ready.": "完美落地——下一个平台已准备好。", "Replay Canopy": "重玩树冠快切", "Replay Foundry": "重玩翻转工坊", "Arrows move. SPACE breaks ice; F builds a short wall.": "方向键移动。SPACE 破坏冰块；F 建造短冰墙。" },
+    ja: { "Pulse": "パルス", "BUILD ICE": "氷壁を作る", "BUMP": "バンプ", "Foam tools": "フォームツール", "Ready…": "準備中…", "Perfect landing — next platform ready.": "完璧に着地しました。次の足場の準備完了です。", "Replay Canopy": "キャノピーカットを再プレイ", "Replay Foundry": "フリップ工房を再プレイ", "Arrows move. SPACE breaks ice; F builds a short wall.": "矢印キーで移動、SPACEで氷を壊し、Fで短い氷壁を作ります。" },
+    ko: { "Pulse": "펄스", "BUILD ICE": "얼음벽 만들기", "BUMP": "범프", "Foam tools": "폼 도구", "Ready…": "준비…", "Perfect landing — next platform ready.": "완벽하게 착지했습니다. 다음 발판이 준비되었습니다.", "Replay Canopy": "캐노피 컷 다시 하기", "Replay Foundry": "플립 공방 다시 하기", "Arrows move. SPACE breaks ice; F builds a short wall.": "화살표로 이동하고 SPACE로 얼음을 부수며 F로 짧은 얼음벽을 만듭니다." },
+    es: { "Pulse": "PULSO", "BUILD ICE": "CONSTRUIR HIELO", "BUMP": "EMPUJÓN", "Foam tools": "Herramientas de espuma", "Ready…": "Listo…", "Perfect landing — next platform ready.": "Aterrizaje perfecto: la siguiente plataforma está lista.", "Replay Canopy": "Repetir Corte del dosel", "Replay Foundry": "Repetir Taller de giros", "Arrows move. SPACE breaks ice; F builds a short wall.": "Muévete con las flechas; SPACE rompe el hielo y F construye un muro corto." },
+    "pt-BR": { "Pulse": "PULSO", "BUILD ICE": "CONSTRUIR GELO", "BUMP": "IMPACTO", "Foam tools": "Ferramentas de espuma", "Ready…": "Pronto…", "Perfect landing — next platform ready.": "Pouso perfeito — a próxima plataforma está pronta.", "Replay Canopy": "Repetir Corte na Copa", "Replay Foundry": "Repetir Oficina do Giro", "Arrows move. SPACE breaks ice; F builds a short wall.": "Mova-se com as setas; SPACE quebra o gelo e F constrói uma parede curta." },
+    fr: { "Pulse": "IMPULSION", "BUILD ICE": "CONSTRUIRE LA GLACE", "BUMP": "BOUSCULADE", "Foam tools": "Outils en mousse", "Ready…": "Prêt…", "Perfect landing — next platform ready.": "Atterrissage parfait : la prochaine plateforme est prête.", "Replay Canopy": "Rejouer Coupe de la canopée", "Replay Foundry": "Rejouer Atelier du flip", "Arrows move. SPACE breaks ice; F builds a short wall.": "Déplace-toi avec les flèches ; ESPACE brise la glace et F construit un petit mur." },
+    de: { "Pulse": "IMPULS", "BUILD ICE": "EIS BAUEN", "BUMP": "STOSS", "Foam tools": "Schaumstoffwerkzeuge", "Ready…": "Bereit…", "Perfect landing — next platform ready.": "Perfekte Landung — die nächste Plattform ist bereit.", "Replay Canopy": "Kronen-Schnitt erneut spielen", "Replay Foundry": "Flip-Werkstatt erneut spielen", "Arrows move. SPACE breaks ice; F builds a short wall.": "Bewege dich mit den Pfeilen; LEERTASTE bricht Eis und F baut eine kurze Wand." },
+    it: { "Pulse": "IMPULSO", "BUILD ICE": "COSTRUISCI GHIACCIO", "BUMP": "URTO", "Foam tools": "Strumenti di gommapiuma", "Ready…": "Pronto…", "Perfect landing — next platform ready.": "Atterraggio perfetto: la piattaforma successiva è pronta.", "Replay Canopy": "Rigioca Taglio nella chioma", "Replay Foundry": "Rigioca Officina del flip", "Arrows move. SPACE breaks ice; F builds a short wall.": "Muoviti con le frecce; SPAZIO rompe il ghiaccio e F costruisce un breve muro." },
+    ru: { "Pulse": "ИМПУЛЬС", "BUILD ICE": "ПОСТРОИТЬ ЛЁД", "BUMP": "УДАР", "Foam tools": "Пенные инструменты", "Ready…": "Готово…", "Perfect landing — next platform ready.": "Идеальная посадка — следующая платформа готова.", "Replay Canopy": "Повторить срез в кронах", "Replay Foundry": "Повторить мастерскую переворотов", "Arrows move. SPACE breaks ice; F builds a short wall.": "Двигайтесь стрелками; ПРОБЕЛ ломает лёд, а F строит короткую ледяную стену." },
+    hi: { "Pulse": "पल्स", "BUILD ICE": "बर्फ बनाएँ", "BUMP": "टक्कर", "Foam tools": "फोम उपकरण", "Ready…": "तैयार…", "Perfect landing — next platform ready.": "सटीक लैंडिंग — अगला प्लेटफ़ॉर्म तैयार है।", "Replay Canopy": "पेड़ की छत कट फिर खेलें", "Replay Foundry": "फ्लिप कार्यशाला फिर खेलें", "Arrows move. SPACE breaks ice; F builds a short wall.": "तीर कुंजियों से चलें; SPACE से बर्फ तोड़ें और F से छोटी दीवार बनाएँ।" },
+    ar: { "Pulse": "نبضة", "BUILD ICE": "بناء جليد", "BUMP": "دفع", "Foam tools": "أدوات إسفنجية", "Ready…": "جاهز…", "Perfect landing — next platform ready.": "هبوط مثالي — المنصة التالية جاهزة.", "Replay Canopy": "إعادة قطع مظلة الأشجار", "Replay Foundry": "إعادة ورشة القلب", "Arrows move. SPACE breaks ice; F builds a short wall.": "تحرك بالأسهم؛ تكسر SPACE الجليد ويبني F جداراً قصيراً." },
+  };
   const gameCopy = {
     "animal-trap-trail": {
       en: ["Moonlit Trap Trail", "Read the quiet path, test the next step, and reach the lantern without trusting every floor tile.", "A short trap-learning platform trail."],
@@ -128,15 +179,44 @@
     sourceToTranslation.set("Chapters", values.chapters); sourceToTranslation.set("Arenas", values.arenas);
     sourceToTranslation.set("Retry", values.retry); sourceToTranslation.set("Next", values.next);
     sourceToTranslation.set("How to Play", values.howTo); sourceToTranslation.set("Back", values.back);
+    Object.entries(fixedText[locale] || fixedText.en).forEach(([source, translated]) => sourceToTranslation.set(source, translated));
     const [title, lede, guide] = currentCopy(); sourceToTranslation.set("WEIGHTPLAY · INTERNAL PROTOTYPE", locale === "en" ? "WEIGHTPLAY · INTERNAL PROTOTYPE" : "WEIGHTPLAY · " + (locale === "zh-Hant" ? "內部原型" : locale === "zh-Hans" ? "内部原型" : "INTERNAL PROTOTYPE"));
     sourceToTranslation.set(gameCopy[gameId]?.en?.[0] || title, title);
     sourceToTranslation.set(gameCopy[gameId]?.en?.[1] || lede, lede);
     sourceToTranslation.set(gameCopy[gameId]?.en?.[2] || guide, guide);
   }
+  function dynamicTranslate(value) {
+    const d = dynamicLabels[locale] || dynamicLabels.en;
+    const s = value.trim(); let m;
+    const progress = (label, number) => `${label}: ${number}`;
+    if ((m = s.match(/^(?:Best|最佳|最好的?)\s*(?:score|成績|成绩|puntuación|pontuação|score|Score|результат|स्कोर|نتيجة)\s*[:：]\s*(\d+)$/i))) return progress(d.bestScore, m[1]);
+    if ((m = s.match(/^(?:Best|最佳)\s*(?:streak|連勝|连胜|racha|sequência|série|serie|серия|सिलसिला|سلسلة)\s*[:：]\s*(\d+)$/i))) return progress(d.bestStreak, m[1]);
+    if ((m = s.match(/^(?:Best|最佳)\s*(?:wins|勝場|胜场|victorias|vitórias|victoires|Siege|vittorie|победы|जीत|انتصارات)\s*[:：]\s*(\d+)$/i))) return progress(d.bestWins, m[1]);
+    if ((m = s.match(/^(?:Best|最佳)\s*(?:rooms|房間|房间|salas|salles|Räume|stanze|комнаты|कमरे|غرف)\s*[:：]\s*(\d+)$/i))) return progress(d.bestRooms, m[1]);
+    if ((m = s.match(/^(?:Best|最佳)\s*(?:room|房間|房间|sala|salle|Raum|stanza|комната|कमरा|غرفة)\s*[:：]\s*(\d+)\s*[·•]\s*(?:Deaths|死亡次數|死亡次数|Muertes|Mortes|Morts|Tode|Morti|Падения|मृत्यु|الوفيات)\s*[:：]\s*(\d+)$/i))) return `${d.bestRoom}: ${m[1]} · ${d.deaths}: ${m[2]}`;
+    if ((m = s.match(/^(?:Deaths|死亡次數|死亡次数|Muertes|Mortes|Morts|Tode|Morti|Падения|मृत्यु|الوفيات)\s+(\d+)$/i))) return `${d.deaths} ${m[1]}`;
+    if ((m = s.match(/^(?:Berries|莓果|เบอร์รี่|ベリー|베리|Bayas|Frutas|Baies|Beeren|Bacche|Ягоды|बेरियाँ|التوت)\s+(\d+)$/i))) return `${d.berries} ${m[1]}`;
+    if ((m = s.match(/^(?:Chapter|第)\s*(\d+)\s*[·•]\s*(?:Room|房間|房间|ルーム|방|Sala|Salle|Raum|Stanza|Комната|कमरा|الغرفة)\s*(\d+)\s*\/\s*4$/i))) return `${d.chapter} ${m[1]} · ${d.room} ${m[2]} / 4`;
+    if ((m = s.match(/^(?:Chapter|第)\s*(\d+)\s*[·•]\s*(?:Wave|波次|ウェーブ|웨이브|Oleada|Onda|Vague|Welle|Ondata|Волна|लहर|الموجة)\s*(\d+)\s*\/\s*5$/i))) return `${d.chapter} ${m[1]} · ${d.wave} ${m[2]} / 5`;
+    if ((m = s.match(/^(?:Arena|鬥場|斗场|アリーナ|경기장|Arena|Arène|арена|अखाड़ा|الساحة)\s*(\d+)\s*\/\s*6$/i))) return `${d.arena} ${m[1]} / 6`;
+    if ((m = s.match(/^(?:Surface|表面|足場|발판|Superficie|Surface|Fläche|Поверхность|सतह|السطح)\s*(\d+)\s*\/\s*5$/i))) return `${d.surface} ${m[1]} / 5`;
+    if ((m = s.match(/^(?:Chapter|第)\s*(\d+)\s*[·•]\s*(?:Platform|平台|プラットフォーム|플랫폼|Plataforma|Plateforme|Plattform|Piattaforma|Платформа|प्लेटफ़ॉर्म|المنصة)\s*(\d+)\s*\/\s*4$/i))) return `${d.chapter} ${m[1]} · ${d.platform} ${m[2]} / 4`;
+    if ((m = s.match(/^(?:Chapter|第)\s*(\d+)\s*[·•]\s*(?:Platform|平台|プラットフォーム|플랫폼|Plataforma|Plateforme|Plattform|Piattaforma|Платформа|प्लेटफ़ॉर्म|المنصة)\s*(\d+)\s*[·•]\s*(?:Streak|連勝|连胜|연속|Racha|Sequência|Série|Serie|Серия|सिलसिला|التتابع)\s*(\d+)\s*[·•]\s*(?:Best|最佳|Mejor|Melhor|Meilleur|Bester|Migliore|Лучшее|सर्वश्रेष्ठ|الأفضل)\s*(\d+)$/i))) return `${d.chapter} ${m[1]} · ${d.platform} ${m[2]} · ${d.streak} ${m[3]} · ${d.bestStreak} ${m[4]}`;
+    if ((m = s.match(/^(?:You|你|你|自分|나|Tú|Você|Toi|Du|Tu|Вы|आप|أنت)\s+(\d+)\s*[·•]\s*(?:Rival|對手|对手|相手|상대|Rival|Gegner|Rivale|Соперник|प्रतिद्वंद्वी|الخصم)\s+(\d+)$/i))) return `${d.you} ${m[1]} · ${d.rival} ${m[2]}`;
+    if ((m = s.match(/^(?:CHAIN|連擊|连击|チェーン|연쇄|CADENA|CADEIA|CHAÎNE|KETTE|CATENA|ЦЕПЬ|श्रृंखला|السلسلة)\s+(\d+)$/i))) return `${d.chain} ${m[1]}`;
+    if ((m = s.match(/^(?:SCORE|分數|分数|スコア|점수|PUNTUACIÓN|PONTUAÇÃO|SCORE|PUNKTE|PUNTEGGIO|СЧЁТ|स्कोर|النتيجة)\s+(\d+)$/i))) return `${d.score} ${m[1]}`;
+    if ((m = s.match(/^(?:STREAK|連勝|连胜|連続|연속|RACHA|SÉRIE|SERIE|СЕРИЯ|सिलसिला|التتابع)\s+(\d+)$/i))) return `${d.streak} ${m[1]}`;
+    if ((m = s.match(/^(?:BEST|最佳|MEJOR|MELHOR|MEILLEUR|BESTER|MIGLIORE|ЛУЧШИЙ|सर्वश्रेष्ठ|الأفضل)\s+(\d+)$/i))) return `${d.bestScore} ${m[1]}`;
+    if ((m = s.match(/^Chain x(\d+)!$/i))) return `${d.chain} x${m[1]}!`;
+    return value;
+  }
   function translate(value) {
     if (typeof value !== "string") return value;
-    const exact = sourceToTranslation.get(value.trim());
-    return exact === undefined ? value : value.replace(value.trim(), exact);
+    const trimmed = value.trim();
+    const exact = sourceToTranslation.get(trimmed);
+    if (exact !== undefined) return value.replace(trimmed, exact);
+    const dynamic = dynamicTranslate(value);
+    return dynamic === value ? value : value.replace(trimmed, dynamic);
   }
   function apply(root = document) {
     rebuildMap();
@@ -151,7 +231,20 @@
       const map = { title: copy[0], lede: copy[1], guideBody: copy[2], start: values.start, howTo: values.howTo, language: values.language };
       if (map[key] !== undefined) element.textContent = map[key];
     });
-    root.querySelectorAll?.("[data-five-aria]").forEach((element) => { const values = common[locale] || common.en; if (element.dataset.fiveAria === "language") element.setAttribute("aria-label", values.language); });
+    root.querySelectorAll?.("[data-five-aria]").forEach((element) => {
+      const values = common[locale] || common.en;
+      if (element.dataset.fiveAria === "language") element.setAttribute("aria-label", values.language);
+      else {
+        const source = element.getAttribute("aria-label") || "";
+        const translated = translate(source);
+        if (translated !== source) element.setAttribute("aria-label", translated);
+      }
+    });
+    root.querySelectorAll?.("[aria-label]:not([data-five-aria])").forEach((element) => {
+      const source = element.getAttribute("aria-label") || "";
+      const translated = translate(source);
+      if (translated !== source) element.setAttribute("aria-label", translated);
+    });
     root.querySelectorAll?.("#localeSelect").forEach((select) => { select.value = locale; });
     if (root.querySelectorAll) {
       const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);

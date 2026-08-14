@@ -176,7 +176,7 @@
     }
     if (!document.querySelector('script[src*="game-page-info.js"]')) {
       const script = document.createElement("script");
-      script.src = `${new URL("game-page-info.js", sharedAssetBase).href}?v=20260814-native-battle-v1`;
+      script.src = `${new URL("game-page-info.js", sharedAssetBase).href}?v=20260815-snake-guide-v2`;
       document.body.append(script);
     }
   }
