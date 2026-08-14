@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "animal-orb-fortress";
-  const GAME_VERSION = "v18";
+  const GAME_VERSION = "v19";
   const saveKey = "weightplay_animal_orb_fortress_v1";
   const localeKey = "weightPlayLocale";
   let W = 960;
@@ -546,6 +546,25 @@
   Object.entries(firstShotMissCopy).forEach(([key, value]) => {
     if (shotFeedbackCopy[key]) shotFeedbackCopy[key].miss = value;
   });
+  const firstWavePriorityCopy = {
+    en: "Wave 1 priority: protect the core first, then read the bounce angle.",
+    "zh-Hant": "第一波重點：先守住核心，再讀反彈角度。",
+    "zh-Hans": "第一波重点：先守住核心，再读反弹角度。",
+    es: "Prioridad de la oleada 1: protege el núcleo y luego lee el ángulo de rebote.",
+    fr: "Priorité de la vague 1 : protégez le noyau, puis lisez l'angle du ricochet.",
+    de: "Priorität in Welle 1: Schütze zuerst den Kern und lies dann den Abprallwinkel.",
+    it: "Priorità della prima ondata: proteggi il nucleo, poi leggi l'angolo di rimbalzo.",
+    ja: "第1ウェーブの優先事項：まずコアを守り、次に反射角度を読みましょう。",
+    ko: "1웨이브 우선순위: 먼저 코어를 지키고 튕김 각도를 읽으세요.",
+    "pt-BR": "Prioridade da Onda 1: proteja o núcleo primeiro e depois leia o ângulo do ricochete.",
+    ru: "Приоритет первой волны: сначала защитите ядро, затем читайте угол рикошета.",
+    hi: "पहली लहर की प्राथमिकता: पहले कोर को बचाएँ, फिर रिकोशे का कोण पढ़ें।",
+    ar: "أولوية الموجة الأولى: احمِ النواة أولاً، ثم اقرأ زاوية الارتداد.",
+  };
+  function firstWavePriorityText() {
+    const actualLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale;
+    return firstWavePriorityCopy[actualLocale] || firstWavePriorityCopy.en;
+  }
   const nextRaidPreviewCopy = {
     en: "Next Raid: Route {tier}, {name} · New rule: {rule}.",
     "zh-Hant": "下一場突襲：路線 {tier}「{name}」· 新規則：{rule}。",
@@ -1186,6 +1205,9 @@
     renderMenu();
     renderHud();
     renderUpgradeCards();
+    if (state.mode === "running" && state.wave === 1 && state.shotCount === 0 && state.preview.length === 0) {
+      nodes.hintText.textContent = firstWavePriorityText();
+    }
     scheduleGameLocalLocalization();
   }
 
@@ -1484,7 +1506,7 @@
     spawnWave();
     show(nodes.gamePanel);
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    nodes.hintText.textContent = t("orbReady");
+    nodes.hintText.textContent = firstWavePriorityText();
     renderHud();
     window.requestAnimationFrame(() => {
       canvas.focus({ preventScroll: true });
@@ -1692,7 +1714,9 @@
     pointer.id = null;
     state.preview = [];
     if (pointerId !== null && canvas.hasPointerCapture?.(pointerId)) canvas.releasePointerCapture(pointerId);
-    if (state.mode === "running") nodes.hintText.textContent = t("aimHint");
+    if (state.mode === "running") {
+      nodes.hintText.textContent = state.wave === 1 && state.shotCount === 0 ? firstWavePriorityText() : t("aimHint");
+    }
   }
 
   function aimVector(x, y) {
@@ -1740,7 +1764,8 @@
     const target = keyboardAimPoint();
     const angle = Math.round(keyboardAimDeg + 90);
     state.preview = previewPath(target.x, target.y);
-    nodes.hintText.textContent = t("keyboardAim", { angle });
+    const priority = state.mode === "running" && state.wave === 1 && state.shotCount === 0 ? ` ${firstWavePriorityText()}` : "";
+    nodes.hintText.textContent = `${t("keyboardAim", { angle })}${priority}`;
     updateArenaControlLabel(true);
   }
 
@@ -1929,7 +1954,8 @@
       if (state.wave >= WAVES_PER_RAID) finishRaid(true);
       else showUpgrade();
     } else if (canFireOrb() && state.preview.length === 0 && performance.now() >= state.firstShotCueUntil) {
-      nodes.hintText.textContent = activeEncounterCue() || t("orbReady");
+      const firstWavePriority = state.wave === 1 && state.shotCount === 0 ? firstWavePriorityText() : "";
+      nodes.hintText.textContent = activeEncounterCue() || firstWavePriority || t("orbReady");
     }
   }
 

@@ -1908,9 +1908,11 @@ const essentialLobbyCopy = {
     return value[currentLocale] || value[fallbackLocale] || Object.values(value)[0] || "";
   }
 
-  function setLocale(locale) {
+  function setLocale(locale, options = {}) {
     if (!supportedLocales.includes(locale)) return;
     if (locale === currentLocale) return;
+    const navigate = options.navigate !== false;
+    const dispatch = options.dispatch !== false;
     try {
       localStorage.setItem(localeKey, locale);
     } catch {
@@ -1920,13 +1922,13 @@ const essentialLobbyCopy = {
     const currentPath = `${window.location.pathname}${window.location.search}${window.location.hash}`;
     window.WonderAnalytics?.track("locale_change", { locale, route: nextPath });
     const canUseLocaleRoute = /^https?:$/i.test(window.location.protocol);
-    if (config.useLocaleRoutes !== false && canUseLocaleRoute && nextPath !== currentPath && typeof window.location.assign === "function") {
+    if (navigate && config.useLocaleRoutes !== false && canUseLocaleRoute && nextPath !== currentPath && typeof window.location.assign === "function") {
       window.location.assign(nextPath);
       return;
     }
     currentLocale = locale;
     document.documentElement.lang = locale;
-    window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale, legacyLocale: legacyLocale(locale) } }));
+    if (dispatch) window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale, legacyLocale: legacyLocale(locale) } }));
   }
 
   function locale() {
