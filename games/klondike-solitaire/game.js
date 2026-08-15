@@ -1412,7 +1412,14 @@ const KL_I18N = {
   function getCardVisualWidth() {
     const canvas = ui.battleScreen?.querySelector(".battle-canvas");
     if (!canvas) return 56;
-    const width = Number.parseFloat(window.getComputedStyle(canvas).getPropertyValue("--card-width"));
+    const raw = window.getComputedStyle(canvas).getPropertyValue("--card-width").trim();
+    if (/^-?(?:\d+\.?\d*|\.\d+)px$/u.test(raw)) return Number.parseFloat(raw);
+    const probe = document.createElement("span");
+    probe.setAttribute("aria-hidden", "true");
+    probe.style.cssText = "position:absolute;visibility:hidden;pointer-events:none;width:var(--card-width);height:0;";
+    canvas.append(probe);
+    const width = probe.getBoundingClientRect().width;
+    probe.remove();
     return Number.isFinite(width) && width > 0 ? width : 56;
   }
 
@@ -1586,11 +1593,11 @@ const KL_I18N = {
     ui.tableauRow?.querySelectorAll(".drag-hover").forEach((node) => node.classList.remove("drag-hover"));
   }
 
-  function getDragMetrics() {
+  function getDragMetrics(sourceRectOverride = null) {
     const sourceNode = state.dragging?.sourceNode
       || cardNodePool.get(state.dragging?.ids?.[0]);
-    const sourceRect = sourceNode?.getBoundingClientRect?.();
-    const cardWidth = sourceRect?.width > 0 ? sourceRect.width : getCardVisualWidth();
+    const sourceRect = sourceRectOverride || sourceNode?.getBoundingClientRect?.();
+    const cardWidth = Math.max(sourceRect?.width > 0 ? sourceRect.width : 0, getCardVisualWidth());
     const cardHeight = sourceRect?.height > 0 ? sourceRect.height : cardWidth * 1.42;
     const canvas = ui.battleScreen?.querySelector(".battle-canvas");
     const canvasRect = canvas?.getBoundingClientRect?.();
@@ -2222,7 +2229,7 @@ const KL_I18N = {
     const sourceRect = cardNode.getBoundingClientRect();
     state.dragging.pointerOffsetX = clamp(event.clientX - sourceRect.left, 0, sourceRect.width);
     state.dragging.pointerOffsetY = clamp(event.clientY - sourceRect.top, 0, sourceRect.height);
-    state.dragging.metrics = getDragMetrics();
+    state.dragging.metrics = getDragMetrics(sourceRect);
     state.dragging.pendingAnimationFrame = 0;
     state.dragging.pendingPointer = null;
     clearDragHover();
