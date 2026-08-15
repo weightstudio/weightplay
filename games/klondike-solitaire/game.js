@@ -1345,7 +1345,34 @@ const KL_I18N = {
     resultShown: false,
     tableauFitTimer: null,
     hintVisitedBoards: new Map(),
+    interactionInputType: "unknown",
   };
+
+  const inputTypeFromEvent = (event) => {
+    if (event?.type === "keydown") return "keyboard";
+    if (event?.pointerType === "touch") return "touch";
+    if (event?.pointerType === "pen") return "pen";
+    return "mouse";
+  };
+  const emitAnalytics = (event, detail = {}) => {
+    try {
+      window.dispatchEvent(new CustomEvent("wp-klondike-analytics", { detail: { event, ...detail } }));
+    } catch {
+      // Measurement must never affect a player action.
+    }
+  };
+  const foundationCompletedCount = () => game.foundations.filter((foundation) => foundation.cards.length >= 13).length;
+  const analyticsBoardDetails = (extra = {}) => ({
+    drawMode: game.drawModeIndex === 1 ? "draw3" : "draw1",
+    moveCount: clamp(game.moveCount, 0, 200),
+    cardCount: 0,
+    foundationCards: clamp(game.foundations.reduce((total, foundation) => total + foundation.cards.length, 0), 0, 52),
+    foundationCompleteCount: clamp(foundationCompletedCount(), 0, 4),
+    tableauCards: clamp(game.tableau.columns.reduce((total, column) => total + column.length, 0), 0, 52),
+    stockCards: clamp(game.stock.cards.length, 0, 52),
+    wasteCards: clamp(game.waste.cards.length, 0, 52),
+    ...extra,
+  });
 
   const cardNodePool = new Map();
   const cardRevealCache = new Map();
@@ -2099,6 +2126,7 @@ const KL_I18N = {
   }
 
   function onDestinationClick(event) {
+    state.interactionInputType = inputTypeFromEvent(event);
     const pile = event.target?.closest?.("[data-type='tableau'], [data-type='foundation']");
     if (!pile) return;
     const target = {
@@ -2113,6 +2141,7 @@ const KL_I18N = {
 
   function onDestinationPointerDown(event) {
     if (event.button !== undefined && event.button !== 0) return;
+    state.interactionInputType = inputTypeFromEvent(event);
     const pile = event.target?.closest?.("[data-type='tableau'], [data-type='foundation']");
     if (!pile) return;
     const move = selectedMoveForTarget({
@@ -2128,6 +2157,7 @@ const KL_I18N = {
 
   function onCardKeydown(event) {
     if (event.key !== "Enter" && event.key !== " ") return;
+    state.interactionInputType = inputTypeFromEvent(event);
     event.preventDefault();
     event.stopPropagation();
     const cardNode = event.currentTarget;
@@ -2174,6 +2204,7 @@ const KL_I18N = {
 
   function beginDrag(event) {
     if (state.boardAnimationInProgress) return;
+    state.interactionInputType = inputTypeFromEvent(event);
     const cardNode = event.currentTarget;
     const sourceType = cardNode.closest("[data-type]")?.dataset.type;
     const pileNode = cardNode.closest("[data-type]");
@@ -2502,6 +2533,8 @@ const KL_I18N = {
     if (!move) return false;
     if (move.type === "wasteToFoundation" || move.type === "tableauToFoundation" || move.type === "tableauToTableau" || move.type === "wasteToTableau") {
       const cardIds = moveCardIds(move);
+      const inputType = state.autoFinishing ? "auto" : state.interactionInputType;
+      const beforeFoundationCompleted = foundationCompletedCount();
       const beforeRects = captureMoveRects(cardIds);
       game.pushHistory();
       const result = game.applyMove(move);
@@ -2510,6 +2543,22 @@ const KL_I18N = {
         return false;
       }
       if (result) {
+        emitAnalytics("card_move", analyticsBoardDetails({
+          from: "battle",
+          outcome: "moved",
+          inputType,
+          moveType: move.type,
+          cardCount: cardIds.length,
+        }));
+        const afterFoundationCompleted = foundationCompletedCount();
+        for (let index = beforeFoundationCompleted; index < afterFoundationCompleted; index += 1) {
+          emitAnalytics("foundation_complete", analyticsBoardDetails({
+            from: "battle",
+            outcome: "complete",
+            inputType,
+            cardCount: 13,
+          }));
+        }
         state.deadlockHintShown = false;
         audio.place();
         state.boardAnimationInProgress = true;
@@ -2629,6 +2678,11 @@ const KL_I18N = {
       ui.resultOverlay.classList.add("result-enter");
       ui.resultOverlay.hidden = false;
     }
+    emitAnalytics("result", analyticsBoardDetails({
+      from: "battle",
+      outcome: "complete",
+      inputType: state.interactionInputType,
+    }));
   }
 
   function maybeShowNoMoves() {
@@ -2650,6 +2704,7 @@ const KL_I18N = {
 
   function onTableauCardClick(event) {
     event.preventDefault();
+    state.interactionInputType = inputTypeFromEvent(event);
     const cardNode = event.currentTarget;
     const sourceColumn = Number(cardNode.closest("[data-type='tableau']")?.dataset.index);
     const row = cardNode.dataset.row !== undefined
@@ -2668,6 +2723,7 @@ const KL_I18N = {
 
   function onWasteClick(event) {
     event.preventDefault();
+    state.interactionInputType = inputTypeFromEvent(event);
     const moved = handleWasteTap();
     if (!moved) audio.reject();
   }
@@ -2709,6 +2765,7 @@ const KL_I18N = {
   }
 
   async function onAutoFinish() {
+    state.interactionInputType = "auto";
     if (state.boardAnimationInProgress) return;
     if (state.autoFinishing || !state.active) return;
     if (game.completed) return;
@@ -2788,13 +2845,14 @@ const KL_I18N = {
   }
 
   function performResultNewGame() {
+    const inputType = state.interactionInputType;
     markLossIfAbandoned();
-    createNewGame();
-    openBattle();
+    createNewGame(inputType, "result");
+    openBattle(inputType, "result");
     if (ui.resultOverlay) ui.resultOverlay.hidden = true;
   }
 
-  function performResultRestart() {
+  function performResultRestart(inputType = state.interactionInputType, from = "result") {
     markLossIfAbandoned();
     state.deadlockHintShown = false;
     state.lossRecordedForCurrentBoard = false;
@@ -2814,9 +2872,10 @@ const KL_I18N = {
     pauseClock();
     if (state.active) restartClock();
     if (ui.resultOverlay) ui.resultOverlay.hidden = true;
+    emitAnalytics("restart", analyticsBoardDetails({ from, outcome: "restart", inputType }));
   }
 
-  function createNewGame() {
+  function createNewGame(inputType = state.interactionInputType, from = "main") {
     markLossIfAbandoned();
     state.deadlockHintShown = false;
     state.lossRecordedForCurrentBoard = false;
@@ -2829,6 +2888,7 @@ const KL_I18N = {
     state.dealSequence = buildDealSequence();
     renderStatistics();
     renderBoard();
+    emitAnalytics("new_game", analyticsBoardDetails({ from, outcome: "new_game", inputType }));
   }
 
   function setDrawModeFromStorage() {
@@ -2903,7 +2963,7 @@ const KL_I18N = {
     }, DEAL_INITIAL_DELAY_MS + totalCards * DEAL_STEP_MS);
   }
 
-  function openBattle() {
+  function openBattle(inputType = "unknown", from = "main") {
     if (state.active) return;
     state.active = true;
     state.deadlockHintShown = false;
@@ -2911,7 +2971,7 @@ const KL_I18N = {
     ui.battleScreen.hidden = false;
     document.body.dataset.screen = "battle";
     if (game.completed) {
-      createNewGame();
+      createNewGame(inputType, "battle");
     }
     forceCloseResultOverlay();
     clearVictoryClasses();
@@ -2919,11 +2979,13 @@ const KL_I18N = {
     renderBoard();
     syncDrawLabel();
     renderHeader();
+    emitAnalytics("game_start", analyticsBoardDetails({ from, outcome: "started", inputType }));
     window.dispatchEvent(new CustomEvent("weightplay:battle-open"));
     window.dispatchEvent(new CustomEvent("weightplay:battle-sync"));
   }
 
-  function closeBattle() {
+  function closeBattle(inputType = state.interactionInputType, from = "battle") {
+    emitAnalytics("main_return", analyticsBoardDetails({ from, outcome: "returned", inputType }));
     markLossIfAbandoned();
     state.active = false;
     state.deadlockHintShown = false;
@@ -2943,21 +3005,23 @@ const KL_I18N = {
   }
 
   function bindEvents() {
-    ui.enterBtn?.addEventListener("click", () => {
-      openBattle();
+    ui.enterBtn?.addEventListener("click", (event) => {
+      openBattle(inputTypeFromEvent(event), "main");
     });
-    ui.startBtn?.addEventListener("click", () => {
-      openBattle();
+    ui.startBtn?.addEventListener("click", (event) => {
+      openBattle(inputTypeFromEvent(event), "main");
     });
-    ui.newGameBtn?.addEventListener("click", () => {
-      createNewGame();
-      openBattle();
+    ui.newGameBtn?.addEventListener("click", (event) => {
+      const inputType = inputTypeFromEvent(event);
+      createNewGame(inputType, "main");
+      openBattle(inputType, "main");
     });
-    ui.restartBtn?.addEventListener("click", () => {
-      performResultRestart();
-      openBattle();
+    ui.restartBtn?.addEventListener("click", (event) => {
+      const inputType = inputTypeFromEvent(event);
+      performResultRestart(inputType, "battle");
+      openBattle(inputType, "battle");
     });
-    ui.battleBackBtn?.addEventListener("click", closeBattle);
+    ui.battleBackBtn?.addEventListener("click", (event) => closeBattle(inputTypeFromEvent(event), "battle"));
     ui.soundToggle?.addEventListener("click", toggleSound);
     ui.soundToggleBattle?.addEventListener("click", toggleSound);
     ui.stockPile?.addEventListener("click", onDraw);
@@ -2971,9 +3035,12 @@ const KL_I18N = {
     ui.tableauRow?.addEventListener("pointerdown", onDestinationPointerDown, true);
     ui.foundationRow?.addEventListener("click", onDestinationClick);
     ui.tableauRow?.addEventListener("click", onDestinationClick);
-    ui.resultNewGame?.addEventListener("click", performResultNewGame);
-    ui.resultRestart?.addEventListener("click", performResultRestart);
-    ui.resultClose?.addEventListener("click", closeBattle);
+    ui.resultNewGame?.addEventListener("click", (event) => {
+      state.interactionInputType = inputTypeFromEvent(event);
+      performResultNewGame();
+    });
+    ui.resultRestart?.addEventListener("click", (event) => performResultRestart(inputTypeFromEvent(event), "result"));
+    ui.resultClose?.addEventListener("click", (event) => closeBattle(inputTypeFromEvent(event), "result"));
     ui.hintOverlay?.addEventListener("click", () => {
       ui.hintOverlay.hidden = true;
       clearHints();
