@@ -3,6 +3,14 @@
   const GUTTER = 0;
   const DESKTOP_CANVAS_MAX_WIDTH = 920;
   const games = {
+    // The five new General prototypes own native Battle shells. In compact
+    // landscape, use their wide logical envelope instead of shrinking the
+    // portrait shell until touch controls become non-interactive.
+    "animal-trap-trail": ["#battle-screen", 390, 788, 760, 334],
+    "animal-canopy-cut": ["#battle-screen", 390, 788, 760, 334],
+    "animal-bounce-brawl": ["#battle-screen", 390, 788, 760, 334],
+    "animal-frost-maze": ["#battle-screen", 390, 788, 760, 334],
+    "animal-flip-foundry": ["#battle-screen", 390, 788, 760, 334],
     "arrow-escape": [".battle-canvas", 390, 788, 760, 334],
     "block-blast": [".battle-canvas", 390, 788, 760, 334],
     "hexa-sort": [".battle-canvas", 390, 788, 760, 334],

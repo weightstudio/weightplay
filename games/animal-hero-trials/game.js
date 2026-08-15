@@ -787,7 +787,7 @@
     run.controlHintDismissed = true;
     if (run.room === 1 && !run.firstAutoAttack) {
       run.guidancePhase = "range";
-      run.guidanceTimer = 7;
+      run.guidanceTimer = 12;
     }
     updateGuidanceHint();
   }

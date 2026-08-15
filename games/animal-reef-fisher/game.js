@@ -6,7 +6,7 @@
   document.querySelector(".battle-shell")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-reef-fisher";
-  const GAME_VERSION = 17;
+  const GAME_VERSION = 18;
   const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_animal_reef_fisher_v1";
   const localeKey = "weightPlayLocale";
@@ -706,6 +706,29 @@
     return value;
   }
 
+  // Keep this recovery instruction owned by the game so all required locales
+  // share the same truthful loss/clock/recast contract.
+  const lineBreakRecoveryCopy = {
+    en: "Line broke. That fish is gone, but mission time keeps running. Cast again now.",
+    "zh-Hant": "魚線斷了，這條魚跑掉了，但任務時間仍在倒數。現在重新拋竿。",
+    "zh-Hans": "鱼线断了，这条鱼跑掉了，但任务时间仍在倒计时。现在重新抛竿。",
+    ja: "ラインが切れました。この魚は逃げましたが、ミッション時間は進みます。今すぐ再キャストしましょう。",
+    ko: "줄이 끊겼습니다. 이 물고기는 놓쳤지만 미션 시간은 계속 흐릅니다. 지금 다시 캐스팅하세요.",
+    es: "La línea se rompió. Este pez se escapó, pero el tiempo de la misión sigue corriendo. Lanza otra vez ahora.",
+    "pt-BR": "A linha arrebentou. Este peixe escapou, mas o tempo da missão continua correndo. Lance novamente agora.",
+    fr: "La ligne s’est rompue. Ce poisson est parti, mais le temps de la mission continue. Relancez maintenant.",
+    de: "Die Leine ist gerissen. Dieser Fisch ist weg, aber die Missionszeit läuft weiter. Wirf jetzt erneut aus.",
+    it: "La lenza si è spezzata. Questo pesce è scappato, ma il tempo della missione continua. Lancia di nuovo ora.",
+    ru: "Леска оборвалась. Эта рыба ушла, но время миссии продолжает идти. Забросьте снова сейчас.",
+    hi: "लाइन टूट गई। यह मछली छूट गई, लेकिन मिशन का समय चलता रहेगा। अभी फिर से कास्ट करें।",
+    ar: "انقطع الخيط. هربت هذه السمكة، لكن وقت المهمة مستمر. ألقِ الطُعم من جديد الآن.",
+  };
+
+  function lineBreakRecoveryText() {
+    const activeLocale = window.WonderI18n?.actualLocale?.() || activeI18nLocale() || locale;
+    return lineBreakRecoveryCopy[activeLocale] || lineBreakRecoveryCopy.en;
+  }
+
   const stageLocaleOverrides = {
     it: {
       ruleOpen: "Acque aperte · zona sicura stabile",
@@ -879,6 +902,7 @@
     renderMenu();
     updateTensionGuide();
     updateCatchHud();
+    if (run?.lineBreakRecoveryVisible) nodes.hintText.textContent = lineBreakRecoveryText();
   }
 
   function loadImages() {
@@ -1377,6 +1401,7 @@
       lureUsed: save.lureReady,
       lureCharges: save.lureReady ? 1 : 0,
       sonarReady: save.sonarReady,
+      lineBreakRecoveryVisible: false,
     };
     save.lureReady = false;
     save.sonarReady = false;
@@ -1820,7 +1845,8 @@
     run.phase = "aim";
     run.hookFish = null;
     run.splashTimer = 1;
-    nodes.hintText.textContent = t("broke");
+    run.lineBreakRecoveryVisible = true;
+    nodes.hintText.textContent = lineBreakRecoveryText();
     updateTensionGuide();
     updateSonarButton();
     playSound("wrong");
@@ -2240,6 +2266,7 @@
     reclaimVisiblePlayerInteraction(evt);
     if (evt.isPrimary === false || (evt.button !== undefined && evt.button !== 0)) return;
     if (state !== "game" || !run) return;
+    run.lineBreakRecoveryVisible = false;
     run.lastInputType = eventInputType(evt);
     if (run.phase === "charging" && pointer.down) {
       evt.preventDefault();
@@ -2304,6 +2331,7 @@
 
   function startKeyboardCharge() {
     if (state !== "game" || !run || run.phase !== "aim") return;
+    run.lineBreakRecoveryVisible = false;
     run.lastInputType = "keyboard";
     pointer.down = true;
     pointer.id = null;
