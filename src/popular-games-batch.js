@@ -177,6 +177,11 @@
   };
   const SNAKE_DELTAS = { left: [-1, 0], right: [1, 0], up: [0, -1], down: [0, 1] };
   const SNAKE_OPPOSITE = { left: "right", right: "left", up: "down", down: "up" };
+  const snakeTrailForDirection = (direction) => {
+    const [dx, dy] = SNAKE_DELTAS[direction] || SNAKE_DELTAS.up;
+    const head = 35;
+    return [0, 1, 2].map((step) => head - (dx * step) - (dy * 8 * step));
+  };
   const SNAKE_INSTRUCTION = {
     en: "Tap the board or choose a direction to start. Then steer to food and avoid walls and your tail.",
     "zh-Hant": "點擊棋盤或選擇方向開始，再轉向吃食物並避開牆壁與自己的身體。",
@@ -356,7 +361,7 @@
     };
     els.locale.addEventListener("change", persistLocale);
     const announce = (message, tone = "", messageKey = "") => { state.message = message; state.tone = tone; state.messageKey = messageKey; els.message.textContent = message; els.message.dataset.tone = tone; };
-    const show = (screen) => { els.main.hidden = screen !== "main"; els.battle.hidden = screen !== "battle"; els.result.hidden = screen !== "result"; document.body.dataset.screen = screen; if (game.type === "tetris" && screen !== "main") window.scrollTo({ top: 0, left: 0, behavior: "auto" }); };
+    const show = (screen) => { els.main.hidden = screen !== "main"; els.battle.hidden = screen !== "battle"; els.result.hidden = screen !== "result"; document.body.dataset.screen = screen; window.dispatchEvent(new Event("weightplay:shell-sync")); if (game.type === "tetris" && screen !== "main") window.scrollTo({ top: 0, left: 0, behavior: "auto" }); };
     let snakeTimer = null;
     let snakeFlashTimer = null;
     const stopSnakeTimer = () => { if (snakeTimer) { window.clearTimeout(snakeTimer); snakeTimer = null; } if (snakeFlashTimer) { window.clearTimeout(snakeFlashTimer); snakeFlashTimer = null; } };
@@ -408,6 +413,12 @@
     const beginSnake = (direction = state.direction) => {
       if (game.type !== "snake" || state.done || state.started) return;
       state.direction = direction;
+      // The ready screen lets the player choose any of the four directions.
+      // Rotate the short starting trail to match that first choice so a
+      // valid-looking Down tap cannot immediately drive into the body that
+      // was rendered for the default Up direction.
+      state.trail = snakeTrailForDirection(direction);
+      if (state.trail.includes(state.foodCell)) state.foodCell = chooseSnakeFood(state.trail, state.obstacles);
       state.started = true;
       announce(snakeInstruction(locale), "", "snakeRunning");
       render();
