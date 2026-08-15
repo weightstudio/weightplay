@@ -8,7 +8,7 @@
   document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-crystal-survivor";
-  const GAME_VERSION = "v16";
+  const GAME_VERSION = "v20";
   const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_animal_crystal_survivor_v1";
   const localeKey = "weightPlayLocale";
@@ -590,6 +590,7 @@
   let battleSuspended = false;
   let resultActionClaimed = false;
   let resultStageCleared = false;
+  let lastInputType = "unknown";
   const STAGE_CARD_POOL_SIZE = 9;
   let stageCardPool = [];
   let stageWindowStart = 0;
@@ -617,6 +618,7 @@
         interface_version: INTERFACE_VERSION,
         locale: window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale,
         viewport_bucket: viewportBucket(),
+        input_type: lastInputType,
         stage: Math.max(1, Number(state?.stage || save?.selectedStage) || 1),
         ...details,
       });
@@ -624,6 +626,19 @@
       // Anonymous funnel measurement must never interrupt play.
     }
   }
+
+  function noteInput(event) {
+    lastInputType = event?.detail === 0
+      ? "keyboard"
+      : event?.pointerType === "touch"
+        ? "touch"
+        : event?.pointerType === "mouse"
+          ? "mouse"
+          : "pointer";
+  }
+
+  document.addEventListener("pointerdown", noteInput, { capture: true });
+  document.addEventListener("keydown", noteInput, { capture: true });
 
   function readStorage(key) {
     try {
@@ -1762,6 +1777,7 @@
     renderUpgradeCards();
     setUpgradeModalOpen(true);
     playSound("upgrade", 0.2);
+    track("upgrade_open", { level: state.level, option_count: 3 });
     track("game_level_up", { level: state.level, prototype: true });
   }
 
@@ -1829,6 +1845,7 @@
     state.mode = "running";
     setUpgradeModalOpen(false);
     playSound("click", 0.1);
+    track("upgrade_select", { upgrade: id, level: state.level });
     track("game_upgrade_choice", { upgrade: id, level: state.level, prototype: true });
     lastFrame = performance.now();
     scheduleLoop();

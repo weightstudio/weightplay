@@ -238,7 +238,7 @@ body[data-game-id="snake"] .game-message[data-tone="good"] { font-weight: 800; }
     min-height: 0;
   }
   body[data-game-id="snake"][data-screen="battle"] .snake-grid {
-    width: min(100%, 420px);
+    width: min(100%, 360px);
     max-height: 100%;
   }
   body[data-game-id="snake"][data-screen="battle"] .battle-top {

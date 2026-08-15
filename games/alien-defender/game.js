@@ -16,19 +16,19 @@
     ar:{title:"مدافع الفضائيين",tagline:"احمِ الخط. اقرأ الموجة.",eyebrow:"أركيد أصلي من WeightPlay",language:"اللغة",comingSoon:"قريباً",guideLabel:"طريقة اللعب",guideTitle:"تحرك وأطلق النار واصمد أمام الموجة التالية.",guideIntro:"دافع عن محطة الإشارة أمام ثلاث موجات فضائية. تحرك وأطلق النار واقرأ التشكيل واستخدم الدرع قبل وصول الخط إليك.",controlsTitle:"التحكم",how1:"تحرك بالأسهم أو A/D وأطلق النار بمفتاح المسافة.",how2:"على الهاتف اضغط يساراً أو يميناً ثم اضغط إطلاق.",how3:"اقضِ على كل تشكيل قبل وصول الغزاة إلى خط الدفاع.",growthTitle:"ضغط الموجات",growth:"تضيف الموجة الثانية طلقات أسرع، وتضيف الثالثة قادة محميين ونافذة قصيرة لاستعادة الدرع.",comingNote:"ستبقى هذه المعاينة «قريباً» حتى تكتمل كل بوابات Tester وGameplay Reviewer وDirector.",start:"ابدأ الدفاع",score:"النتيجة",best:"الأفضل",wave:"الموجة",combo:"تتابع",lives:"الحياة",soundOn:"الصوت يعمل",soundOff:"الصوت متوقف",restart:"إعادة البدء",back:"العودة للرئيسية",left:"يسار",right:"يمين",fire:"إطلاق",reserve:"مساحة لعب احتياطية",ready:"اقرأ الموجة.",waveHint:"راقب التشكيل.",hit:"إصابة! واصل الحركة.",shield:"الدرع نشط.",resultKicker:"تقرير الدفاع",winTitle:"المحطة آمنة",winCopy:"تم القضاء على الموجات الفضائية الثلاث.",loseTitle:"فُقدت الإشارة",loseCopy:"وصل التشكيل إلى خط الدفاع. تحرك مبكراً وحافظ على إيقاع إطلاق النار.",retry:"حاول مجدداً",home:"العودة للرئيسية",canvasLabel:"ساحة لعب مدافع الفضائيين",footer:"معاينة WeightPlay・أركيد موجات أصلي"}
   };
   const CAMPAIGN_COPY={
-    en:{guideIntro:"Defend the signal station against four alien waves. Move, fire, read the formation, and spend your shield window before the line reaches you.",growth:"Wave 2 adds faster volleys. Wave 3 adds shielded captains. Wave 4 introduces a staggered relay formation with alternating captain anchors and a tighter firing rhythm.",winCopy:"Four alien waves cleared. The signal station stays bright."},
-    "zh-Hant":{guideIntro:"守護訊號站，迎戰四波外星編隊。移動、射擊、觀察隊形，並在防線逼近前把握護盾窗口。",growth:"第 2 波加入更快彈幕；第 3 波加入護甲隊長；第 4 波以交錯接力隊形與交替隊長錨點，帶來更緊湊的射擊節奏。",winCopy:"四波外星編隊都已清除，訊號站持續閃耀。"},
-    "zh-Hans":{guideIntro:"守护信号站，迎战四波外星编队。移动、射击、观察队形，并在防线逼近前把握护盾窗口。",growth:"第 2 波加入更快弹幕；第 3 波加入护甲队长；第 4 波以交错接力队形和交替队长锚点，带来更紧凑的射击节奏。",winCopy:"四波外星编队都已清除，信号站持续闪耀。"},
-    ja:{guideIntro:"信号ステーションを4つのエイリアンウェーブから守ります。編隊を読み、撃ち続け、防衛線に届く前にシールドの時間を使いましょう。",growth:"2ウェーブでは弾幕が速くなり、3ウェーブではシールド隊長が加わります。4ウェーブは交互に現れる隊長を含むリレー編隊で射撃のリズムを締めます。",winCopy:"4つのエイリアンウェーブを撃退しました。信号ステーションは輝き続けます。"},
-    ko:{guideIntro:"신호 기지를 네 번의 외계인 웨이브에서 지키세요. 대형을 읽고 발사하며 방어선에 닿기 전에 실드 시간을 사용하세요.",growth:"2웨이브는 더 빠른 탄막을, 3웨이브는 실드 대장을 추가합니다. 4웨이브는 교차 릴레이 대형과 번갈아 배치된 대장으로 더 촘촘한 발사 리듬을 만듭니다.",winCopy:"네 번의 외계인 웨이브를 모두 막았습니다. 신호 기지가 계속 빛납니다."},
-    es:{guideIntro:"Defiende la estación de señales de cuatro oleadas alienígenas. Muévete, dispara, lee la formación y usa tu escudo antes de que alcance la línea.",growth:"La oleada 2 acelera las ráfagas. La 3 añade capitanes con escudo. La 4 introduce una formación de relevo escalonada con capitanes alternos y un ritmo de disparo más intenso.",winCopy:"Las cuatro oleadas alienígenas fueron despejadas. La estación sigue a salvo."},
-    "pt-BR":{guideIntro:"Defenda a estação de sinais contra quatro ondas alienígenas. Mova-se, atire, leia a formação e use o escudo antes que a linha se aproxime.",growth:"A onda 2 traz rajadas mais rápidas. A 3 adiciona capitães protegidos. A 4 introduz uma formação de revezamento escalonada, com capitães alternados e ritmo de tiro mais intenso.",winCopy:"As quatro ondas alienígenas foram eliminadas. A estação continua segura."},
-    fr:{guideIntro:"Défends la station de signal contre quatre vagues aliens. Déplace-toi, tire, lis la formation et utilise ton bouclier avant la ligne.",growth:"La vague 2 accélère les salves. La 3 ajoute des capitaines protégés. La 4 introduit une formation relais décalée, des capitaines alternés et un rythme de tir plus serré.",winCopy:"Les quatre vagues aliens sont éliminées. La station reste en sécurité."},
-    de:{guideIntro:"Verteidige die Signalstation gegen vier Alien-Wellen. Bewege dich, schieße, lies die Formation und nutze dein Schild rechtzeitig.",growth:"Welle 2 bringt schnellere Salven. Welle 3 ergänzt geschützte Kapitäne. Welle 4 führt eine versetzte Relaisformation mit wechselnden Kapitänen und dichterem Feuerrhythmus ein.",winCopy:"Alle vier Alien-Wellen sind besiegt. Die Station bleibt sicher."},
-    it:{guideIntro:"Difendi la stazione del segnale da quattro ondate aliene. Muoviti, spara, leggi la formazione e usa lo scudo prima che raggiunga la linea.",growth:"L'ondata 2 accelera le raffiche. La 3 aggiunge capitani protetti. La 4 introduce una formazione a staffetta sfalsata, capitani alternati e un ritmo di fuoco più serrato.",winCopy:"Tutte e quattro le ondate aliene sono state eliminate. La stazione è al sicuro."},
-    ru:{guideIntro:"Защищай сигнальную станцию от четырёх волн пришельцев. Двигайся, стреляй, читай строй и используй щит до приближения линии.",growth:"Во второй волне залпы становятся быстрее. В третьей появляются капитаны со щитом. Четвёртая вводит шахматный строй с чередующимися капитанами и более плотным ритмом стрельбы.",winCopy:"Все четыре волны пришельцев уничтожены. Станция в безопасности."},
-    hi:{guideIntro:"सिग्नल स्टेशन को चार एलियन लहरों से बचाएँ। चलें, निशाना लगाएँ, गठन पढ़ें और रेखा आने से पहले ढाल का समय उपयोग करें।",growth:"दूसरी लहर तेज़ गोलियाँ लाती है। तीसरी में ढाल वाले कप्तान आते हैं। चौथी लहर में बारी-बारी कप्तानों वाला तिरछा रिले गठन और कड़ी फायरिंग लय है।",winCopy:"चारों एलियन लहरें साफ़ हो गईं। सिग्नल स्टेशन सुरक्षित है।"},
-    ar:{guideIntro:"دافع عن محطة الإشارة أمام أربع موجات فضائية. تحرك وأطلق النار واقرأ التشكيل واستخدم الدرع قبل وصول الخط إليك.",growth:"تضيف الموجة الثانية طلقات أسرع، والثالثة قادة محميين. تقدم الرابعة تشكيلاً متعاقباً متدرجاً بقادة متناوبين وإيقاع إطلاق أكثر كثافة.",winCopy:"تم القضاء على الموجات الفضائية الأربع. بقيت المحطة آمنة."}
+    en:{guideIntro:"Defend the signal station against six alien waves. Move, fire, read the formation, and spend your shield window before the line reaches you.",growth:"Wave 2 adds faster volleys. Wave 3 adds shielded captains. Wave 4 introduces a staggered relay formation. Wave 5 adds crossfire lanes, and Wave 6 brings the signal core guardian and a final firing rhythm.",winCopy:"Six alien waves cleared. The signal station stays bright."},
+    "zh-Hant":{guideIntro:"守護訊號站，迎戰六波外星編隊。移動、射擊、觀察隊形，並在防線逼近前把握護盾窗口。",growth:"第 2 波加入更快彈幕；第 3 波加入護甲隊長；第 4 波加入交錯接力隊形；第 5 波加入交叉火網，第 6 波由訊號核心守衛帶來最後的射擊節奏。",winCopy:"六波外星編隊都已清除，訊號站持續閃耀。"},
+    "zh-Hans":{guideIntro:"守护信号站，迎战六波外星编队。移动、射击、观察队形，并在防线逼近前把握护盾窗口。",growth:"第 2 波加入更快弹幕；第 3 波加入护甲队长；第 4 波加入交错接力队形；第 5 波加入交叉火网，第 6 波由信号核心守卫带来最后的射击节奏。",winCopy:"六波外星编队都已清除，信号站持续闪耀。"},
+    ja:{guideIntro:"信号ステーションを6つのエイリアンウェーブから守ります。編隊を読み、撃ち続け、防衛線に届く前にシールドの時間を使いましょう。",growth:"2ウェーブでは弾幕が速くなり、3ウェーブではシールド隊長が加わります。4ウェーブはリレー編隊、5ウェーブは交差する火線、6ウェーブは信号コアの守護者で最後の射撃リズムを試します。",winCopy:"6つのエイリアンウェーブを撃退しました。信号ステーションは輝き続けます。"},
+    ko:{guideIntro:"신호 기지를 여섯 번의 외계인 웨이브에서 지키세요. 대형을 읽고 발사하며 방어선에 닿기 전에 실드 시간을 사용하세요.",growth:"2웨이브는 더 빠른 탄막을, 3웨이브는 실드 대장을 추가합니다. 4웨이브는 릴레이 대형, 5웨이브는 교차 사격선을, 6웨이브는 신호 코어 수호자와 마지막 발사 리듬을 선보입니다.",winCopy:"여섯 번의 외계인 웨이브를 모두 막았습니다. 신호 기지가 계속 빛납니다."},
+    es:{guideIntro:"Defiende la estación de señales de seis oleadas alienígenas. Muévete, dispara, lee la formación y usa tu escudo antes de que alcance la línea.",growth:"La oleada 2 acelera las ráfagas. La 3 añade capitanes con escudo. La 4 introduce un relevo escalonado, la 5 añade fuego cruzado y la 6 pone a prueba el ritmo final con el guardián del núcleo de señal.",winCopy:"Las seis oleadas alienígenas fueron despejadas. La estación sigue a salvo."},
+    "pt-BR":{guideIntro:"Defenda a estação de sinais contra seis ondas alienígenas. Mova-se, atire, leia a formação e use o escudo antes que a linha se aproxime.",growth:"A onda 2 traz rajadas mais rápidas. A 3 adiciona capitães protegidos. A 4 traz um revezamento escalonado, a 5 adiciona fogo cruzado e a 6 testa o ritmo final com o guardião do núcleo de sinal.",winCopy:"As seis ondas alienígenas foram eliminadas. A estação continua segura."},
+    fr:{guideIntro:"Défends la station de signal contre six vagues aliens. Déplace-toi, tire, lis la formation et utilise ton bouclier avant la ligne.",growth:"La vague 2 accélère les salves. La 3 ajoute des capitaines protégés. La 4 introduit un relais décalé, la 5 ajoute des tirs croisés et la 6 met à l'épreuve le rythme final avec le gardien du noyau.",winCopy:"Les six vagues aliens sont éliminées. La station reste en sécurité."},
+    de:{guideIntro:"Verteidige die Signalstation gegen sechs Alien-Wellen. Bewege dich, schieße, lies die Formation und nutze dein Schild rechtzeitig.",growth:"Welle 2 bringt schnellere Salven. Welle 3 ergänzt geschützte Kapitäne. Welle 4 führt eine versetzte Relaisformation ein, Welle 5 Kreuzfeuer und Welle 6 den Wächter des Signalkerns für den finalen Feuerrhythmus.",winCopy:"Alle sechs Alien-Wellen sind besiegt. Die Station bleibt sicher."},
+    it:{guideIntro:"Difendi la stazione del segnale da sei ondate aliene. Muoviti, spara, leggi la formazione e usa lo scudo prima che raggiunga la linea.",growth:"L'ondata 2 accelera le raffiche. La 3 aggiunge capitani protetti. La 4 introduce una staffetta sfalsata, la 5 aggiunge fuoco incrociato e la 6 mette alla prova il ritmo finale con il guardiano del nucleo.",winCopy:"Tutte e sei le ondate aliene sono state eliminate. La stazione è al sicuro."},
+    ru:{guideIntro:"Защищай сигнальную станцию от шести волн пришельцев. Двигайся, стреляй, читай строй и используй щит до приближения линии.",growth:"Во второй волне залпы становятся быстрее. В третьей появляются капитаны со щитом. Четвёртая вводит релейный строй, пятая — перекрёстный огонь, а шестая проверяет финальный ритм с защитником сигнального ядра.",winCopy:"Все шесть волн пришельцев уничтожены. Станция в безопасности."},
+    hi:{guideIntro:"सिग्नल स्टेशन को छह एलियन लहरों से बचाएँ। चलें, निशाना लगाएँ, गठन पढ़ें और रेखा आने से पहले ढाल का समय उपयोग करें।",growth:"दूसरी लहर तेज़ गोलियाँ लाती है। तीसरी में ढाल वाले कप्तान आते हैं। चौथी रिले गठन, पाँचवीं क्रॉसफायर गलियाँ और छठी सिग्नल कोर रक्षक के साथ अंतिम फायरिंग लय लाती है।",winCopy:"छहों एलियन लहरें साफ़ हो गईं। सिग्नल स्टेशन सुरक्षित है।"},
+    ar:{guideIntro:"دافع عن محطة الإشارة أمام ست موجات فضائية. تحرك وأطلق النار واقرأ التشكيل واستخدم الدرع قبل وصول الخط إليك.",growth:"تضيف الموجة الثانية طلقات أسرع، والثالثة قادة محميين. تقدم الرابعة تشكيلاً مرحلياً، والخامسة نيراناً متقاطعة، والسادسة تختبر إيقاع الإطلاق الأخير مع حارس نواة الإشارة.",winCopy:"تم القضاء على الموجات الفضائية الست. بقيت المحطة آمنة."}
   };
   Object.entries(CAMPAIGN_COPY).forEach(([key,patch])=>Object.assign(COPY[key],patch));
   const canvas=document.getElementById("gameCanvas"),ctx=canvas.getContext("2d"),$=id=>document.getElementById(id);let locale=document.documentElement.lang||"en";if(!COPY[locale])locale="en";let copy=COPY[locale],screen="main",wave=1,score=0,best=Number(localStorage.getItem("wp-alien-defender-best")||0),raf=0,last=0,world=null,audio=null,sound=true,keys={left:false,right:false,fire:false},gesture=null;
@@ -74,7 +74,7 @@
   draw=drawResponsive;
   // v8 Growth instrumentation: expose only aggregate, privacy-safe funnel
   // fields; gameplay state, controls, pacing, and authored waves stay intact.
-  const ANALYTICS_GAME_VERSION="28",ANALYTICS_INTERFACE_VERSION="7";
+  const ANALYTICS_GAME_VERSION="29",ANALYTICS_INTERFACE_VERSION="7";
   let sessionHadBattle=false,inputType="unknown";
   function viewportBucket(){const width=window.innerWidth,height=window.innerHeight;if(width<=430&&height>=700)return"phone-portrait";if(width<=700&&height>=700)return"tablet-portrait";if(width>=700&&height<=500)return"short-landscape";return"desktop"}
   function track(eventName,details={}){window.WonderAnalytics?.track?.(eventName,{game_id:"alien-defender",game_version:`v${ANALYTICS_GAME_VERSION}`,interface_version:ANALYTICS_INTERFACE_VERSION,locale,viewport_bucket:viewportBucket(),input_type:details.input_type||inputType,wave:details.wave??wave,result_reason:details.result_reason||"not_applicable"})}
@@ -181,7 +181,7 @@
   // and visual language, but changes the readable pattern: staggered rows,
   // alternating captain anchors, and a light relay volley add a new decision
   // instead of only increasing enemy count.
-  const ALIEN_TOTAL_WAVES=4;
+  const ALIEN_TOTAL_WAVES=6;
   const v27UpdateHud=updateHud;
   updateHud=function updateFourWaveHud(){v27UpdateHud();$("waveValue").textContent=`${wave} / ${ALIEN_TOTAL_WAVES}`};
   const v27CampaignMakeWorld=makeWorld;
@@ -225,6 +225,63 @@
       track("wave_clear",{wave:4,result_reason:"formation_cleared"});track("result",{wave:4,result_reason:"waves_cleared"});originalFinish(true);return;
     }
     v27CampaignFinish(win);
+  };
+  if(window.__alienDefenderSmoke)window.__alienDefenderSmoke.finish=finish;
+  // v29 Content Expansion: add two authored endgame waves after Relay Break.
+  // Wave 5 uses crossing captain anchors and a readable crossfire cadence;
+  // Wave 6 is a compact core-guardian finale with a longer survival runway.
+  const v28CampaignMakeWorld=makeWorld;
+  makeWorld=function makeSixWaveWorld(){
+    const next=v28CampaignMakeWorld();
+    if(wave===5){
+      const cols=8,gap=100,start=110;
+      next.enemies=Array.from({length:40},(_,index)=>{const row=Math.floor(index/cols),col=index%cols;const captain=(row===1&&col%2===0)||(row===3&&col%2===1);return{x:start+col*gap,y:110+row*52+(row%2?16:0),waveType:captain?"captain":"scout",alive:true}});
+      next.moveEvery=.58;next.lives=5;next.shield=24;next.crossfireTimer=0;
+    }
+    if(wave===6){
+      const cols=9,gap=90,start=100;
+      next.enemies=Array.from({length:36},(_,index)=>{const row=Math.floor(index/cols),col=index%cols;const captain=(row===0&&(col===0||col===8))||(row===1&&col===4)||(row===3&&col%3===1);return{x:start+col*gap,y:104+row*56+(row%2?10:0),waveType:captain?"captain":"scout",alive:true}});
+      next.moveEvery=.64;next.lives=6;next.shield=36;next.coreTimer=0;
+    }
+    return next;
+  };
+  const v28CampaignShoot=shoot;
+  shoot=function shootEndgameLaneAssist(){
+    const before=world?.bullets?.length||0;
+    v28CampaignShoot();
+    if(!world||world.bullets.length<=before||(wave!==5&&wave!==6))return;
+    const bullet=world.bullets[world.bullets.length-1],offsets=wave===5?[-90,90]:[-120,-60,60,120];
+    for(const offset of offsets)world.bullets.push({x:bullet.x+offset,y:bullet.y,s:bullet.s});
+  };
+  const v28CampaignUpdate=update;
+  update=function updateEndgameFirePatterns(dt){
+    const before=wave;
+    v28CampaignUpdate(dt);
+    if(screen!=="battle"||before!==wave||!world)return;
+    if(wave===5){
+      world.crossfireTimer=(world.crossfireTimer||0)+dt;
+      if(world.crossfireTimer>=1.05){
+        world.crossfireTimer=0;
+        const active=world.enemies.filter(enemy=>enemy.alive);
+        const left=active.find(enemy=>enemy.x<460),right=[...active].reverse().find(enemy=>enemy.x>460);
+        for(const anchor of [left,right])if(anchor)world.enemyBullets.push({x:anchor.x,y:anchor.y+20,s:270});
+      }
+    }
+    if(wave===6){
+      world.coreTimer=(world.coreTimer||0)+dt;
+      if(world.coreTimer>=1.2){
+        world.coreTimer=0;
+        const active=world.enemies.filter(enemy=>enemy.alive),anchor=active.find(enemy=>enemy.waveType==="captain")||active[0];
+        if(anchor)world.enemyBullets.push({x:anchor.x,y:anchor.y+20,s:290});
+      }
+    }
+  };
+  const v28CampaignFinish=finish;
+  finish=function finishSixWaveCampaign(win){
+    if(win&&wave===4){wave=5;score+=200;world=makeWorld();world.shield=Math.max(world.shield,5);updateHud();$("battleMessage").textContent=`${t("shield")} · ${t("wave")} ${wave}`;beep(1080,.12);return}
+    if(win&&wave===5){wave=6;score+=250;world=makeWorld();world.shield=Math.max(world.shield,6);updateHud();$("battleMessage").textContent=`${t("shield")} · ${t("wave")} ${wave}`;beep(1120,.12);return}
+    if(win&&wave===6){track("wave_clear",{wave:6,result_reason:"formation_cleared"});track("result",{wave:6,result_reason:"waves_cleared"});originalFinish(true);return}
+    v28CampaignFinish(win);
   };
   if(window.__alienDefenderSmoke)window.__alienDefenderSmoke.finish=finish;
 })();
