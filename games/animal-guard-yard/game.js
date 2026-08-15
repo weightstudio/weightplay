@@ -1,6 +1,6 @@
 ﻿(() => {
   const GAME_ID = "animal-guard-yard";
-  const GAME_VERSION = "v16";
+  const GAME_VERSION = "v17";
   const INTERFACE_VERSION = 6;
   const localeKey = "weightplayLocale";
   const unlockKey = "weightplay_animal_guard_unlocked";
@@ -2595,6 +2595,10 @@
       remaining_hearts: Math.max(0, baseHp),
       score: finalScore,
     });
+    track("coin_reward", {
+      outcome: lastResultOutcome,
+      amount: Math.max(0, Math.round(coinsEarned)),
+    });
     track(won ? "game_complete" : "game_over", {
       level: currentStage + 1,
       hp: baseHp,
@@ -2687,6 +2691,10 @@
       profile.coins -= cost;
       profile.levels[unitId] = unitLevel(unitId) + 1;
       saveProfile();
+      track("upgrade_purchase", {
+        unit_id: unit.id,
+        level: unitLevel(unitId),
+      });
       showFloatingText(`${t(unit.nameKey)} ${t("level", { n: unitLevel(unitId) })}`);
       playSound("coin");
     }
@@ -2755,6 +2763,10 @@
     const button = event.target.closest("button[data-menu-tab]");
     if (!button) return;
     showMenuTab(button.dataset.menuTab);
+    if (button.dataset.menuTab === "animals") {
+      track("animals_open", { action: "open" });
+      track("upgrade_view", { unit_count: units.length });
+    }
     playSound("click");
   });
   nodes.playPanel.addEventListener("click", (event) => {
