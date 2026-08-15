@@ -7196,10 +7196,10 @@
     labels.es = resource.labels || {};
     skillLabels.es = resource.skillLabels || {};
     localizedGameplayProfiles.es = resource.gameplayProfiles || {};
-    // Keep locally authored game-specific guide records when the deferred
-    // Spanish catalog arrives. Snake owns a complete continuous-loop guide;
-    // replacing the table here used to drop it back to the English base copy.
-    localizedGames.es = { ...(resource.games || {}), ...(localizedGames.es || {}) };
+    // The authored Spanish resource is the source of truth for complete guide
+    // records. Merge the runtime catalog first so its generic fragments cannot
+    // overwrite a localized intro, story, or system field.
+    localizedGames.es = { ...(localizedGames.es || {}), ...(resource.games || {}) };
     return true;
   }
 
