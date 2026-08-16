@@ -1772,6 +1772,71 @@
       noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog.",
       faq: [["Is progress saved?", "Yes, only in this browser."]],
     },
+    "animal-trap-trail": {
+      title: "Moonlit Trap Trail", age: "9+", difficulty: "Easy to Challenging", time: "2-6 minutes per chapter",
+      gameplay: "Trap-Reading Platform Adventure", genre: ["Action", "Platform", "Animal"], skills: ["Reaction", "Route Reading", "Timing"],
+      intro: "Read a deceptive moonlit trail, learn the trap cues, and reach the lantern without trusting every floor tile.",
+      story: ["A quiet trail winds through four short chapters. Each room teaches one readable warning before combining the cues into a tighter route."],
+      systems: ["Arrow keys or the visible touch controls move the runner; Space jumps and Pulse briefly highlights the next trap cue.", "A gap or hidden hazard resets only the current room, while the lantern marks a clear finish. Rooms keep the rule visible through timing and feedback rather than surprise damage."],
+      how: ["Start a chapter and read the short room hint.", "Move right while watching the floor, gap, and trap cue; jump only when the route requires it.", "Use Pulse when you need to confirm the next warning, then reach the lantern.", "After a clear, choose the next room or retry the current room to improve your route."],
+      strategyTips: ["Treat the first pass as a lesson: note which floor tiles move and which gaps open.", "Hold a steady direction and make short, deliberate jumps instead of panic tapping.", "Use Pulse before a blind-looking section, not after the trap has already triggered."],
+      progression: ["The four chapters move from clear tells to delayed hazards, reversed timing, and a mixed-rule finale. A failed room teaches the cue without resetting the whole chapter."],
+      designNote: "Moonlit Trap Trail uses original WeightPlay trail art, trap timing, touch controls, and room-sized retries so the player can learn from a mistake and immediately act on the next attempt.",
+      parent: "This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Chapter clears and best room stay in this browser.",
+      faq: [["What happens when I hit a trap?", "Only the current room resets, and the result text identifies the kind of route mistake."], ["Can I play without a keyboard?", "Yes. The visible left, right, jump, and pulse controls are available on touch screens."], ["Is Pulse required?", "No. It is an optional short clue that helps explain the next trap."], ["Is progress saved?", "Only the best room is saved in this browser."]],
+    },
+    "animal-canopy-cut": {
+      title: "Canopy Cut", age: "9+", difficulty: "Easy to Challenging", time: "1-3 minutes per wave",
+      gameplay: "Swipe Fruit Reaction", genre: ["Action", "Arcade", "Animal"], skills: ["Reaction", "Focus", "Hand-Eye Coordination"],
+      intro: "Swipe safe fruit, build a chain, and avoid dark seed pods in a fast canopy challenge.",
+      story: ["Fruit arcs through a bright treetop arena in short waves. The goal is to read motion quickly, make a clean swipe, and recover when the pattern changes."],
+      systems: ["Drag across fruit in the live arena to collect it; every successful hit raises the score and can extend the chain.", "Dark seed pods are hazards. Three misses end the wave, while a clear wave records its result and opens the next replay choice."],
+      how: ["Enter a chapter and wait for the ready cue to finish.", "Drag across visible safe fruit with one continuous swipe.", "Follow the next arc instead of chasing a target that has already left the arena.", "Avoid dark seed pods and use Retry or Next after the wave settles."],
+      strategyTips: ["Start with the closest fruit, then extend the same stroke only when the next target is clearly safe.", "Leave space around dark pods; a shorter clean swipe is better than a risky chain.", "Watch the score and chain feedback to confirm that your gesture changed the board."],
+      progression: ["Six chapters move from readable arcs to faster fruit, moving pads, tight corners, a fast rival pattern, and a final rhythm. Each wave remains short enough to replay immediately."],
+      designNote: "Canopy Cut is an original swipe-first arcade game with its own canopy art, target pacing, hazard language, and direct gesture feedback; the visible fruit response is the core player reward.",
+      parent: "This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Score, best wave, and local replay progress stay in this browser.",
+      faq: [["How do I score?", "Swipe across safe fruit while it is visible; successful hits add score and may build a chain."], ["What ends a wave?", "Three misses end the wave. A clear wave ends when its short timer completes."], ["Can I use a mouse?", "Yes. Mouse dragging and touch dragging use the same arena gesture."], ["Is progress saved?", "Only the local best result is saved in this browser."]],
+    },
+    "animal-bounce-brawl": {
+      title: "Bounce Brawl", age: "9+", difficulty: "Easy to Challenging", time: "2-5 minutes per arena",
+      gameplay: "Soft Physics Knockback Arena", genre: ["Action", "Arcade", "Animal"], skills: ["Timing", "Reaction", "Spatial Awareness"],
+      intro: "Time your bounces, choose foam tools, and knock the rival off balance in a playful physics arena.",
+      story: ["A friendly foam challenger meets a rival in six toy arenas. Each arena changes the spacing, platforms, or rival rhythm while keeping the goal readable: create contact on your terms."],
+      systems: ["Arrow keys or visible controls move your character. Space performs the bounce-strike, and the tool buttons change the active foam tool.", "Hits create visible knockback and a brief impact effect. Win by reducing the rival's energy; lose by exhausting your own energy or letting the arena timer run out."],
+      how: ["Choose an arena and watch the rival's approach.", "Move to create space, then press Space or BOUNCE when the timing is favorable.", "Switch foam tools when the current spacing or platform layout calls for a different approach.", "After the result, retry the arena or continue to the next one."],
+      strategyTips: ["Do not hold contact forever; step out, read the rebound, and strike during the next opening.", "Use platforms and arena edges to control where the rival can recover.", "Save a tool change for a clear spacing problem rather than switching after every bounce."],
+      progression: ["The six arenas progress from a warm-up to spring lanes, moving pads, tight corners, a faster rival, and a final rhythm that tests deliberate spacing."],
+      designNote: "Bounce Brawl uses original soft-body art, readable knockback, three distinct foam tools, and a compact arena loop so every strike has a visible consequence without harsh presentation.",
+      parent: "This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Arena wins and best progress stay in this browser.",
+      faq: [["How do I hit the rival?", "Move close enough for contact and press Space or the visible BOUNCE control during the opening."], ["What do the tools do?", "They change the active foam response, giving you a different timing or spacing option."], ["How do I lose?", "Your energy can run out, or the arena can reach its time limit before the rival is defeated."], ["Is progress saved?", "Only your best arena is saved in this browser."]],
+    },
+    "animal-frost-maze": {
+      title: "Frostline Rescue", age: "9+", difficulty: "Easy to Challenging", time: "1-4 minutes per room",
+      gameplay: "Changeable Ice Maze", genre: ["Puzzle", "Action", "Animal"], skills: ["Route Planning", "Timing", "Problem Solving"],
+      intro: "Open the frozen route, collect every berry, and stay one step ahead of the snow drifter.",
+      story: ["A small rescue route is sealed by blue ice walls. Collect every berry, change only the barriers that matter, and keep moving before the snow drifter closes the gap."],
+      systems: ["Arrow keys, WASD, or the visible direction controls move one grid cell at a time. Space breaks the ice ahead and F builds a short wall.", "The enemy advances after repeated movement. A room clears when all berries are collected; contact blocks the route and sends you to a focused retry."],
+      how: ["Choose a chapter and read the berry count and route hint.", "Move one cell at a time and use Break Ice when a blue wall closes the next useful lane.", "Use Build Ice to create a short barrier when the enemy needs to be delayed.", "Collect every berry, then choose Next Room, Retry, or return to Chapters after the result."],
+      strategyTips: ["Plan the next two cells before breaking a wall so the opening creates a real route.", "Keep the enemy on the far side of a barrier while collecting the exposed berry first.", "If the route closes, retry quickly and change the order of your breaks instead of repeating the same path."],
+      progression: ["Four chapters move from a first thaw to split routes, drifter pressure, and a final melt. The route changes through breakable and buildable ice rather than hidden rule changes."],
+      designNote: "Frostline Rescue is an original grid rescue puzzle with direct wall edits, deterministic short rooms, visible enemy pressure, and responsive controls on both touch and desktop.",
+      parent: "This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Cleared rooms and best progress stay in this browser.",
+      faq: [["What do I collect?", "Collect every berry shown in the room to clear it."], ["When should I break ice?", "Break the blue wall that blocks the next useful route, then reassess the enemy position."], ["What does Build Ice do?", "It adds a short wall that can delay the snow drifter and give you a safer route."], ["Is progress saved?", "Only the best room is saved in this browser."]],
+    },
+    "animal-flip-foundry": {
+      title: "Flip Foundry", age: "9+", difficulty: "Easy to Challenging", time: "1-3 minutes per chapter",
+      gameplay: "Precision Flip Challenge", genre: ["Arcade", "Physics", "Animal"], skills: ["Timing", "Precision", "Hand-Eye Coordination"],
+      intro: "Swipe a crystal canister, rotate it in the air, and land upright on the next workshop surface.",
+      story: ["The foundry turns one careful launch into a route of four surfaces. Shorter swipes stay low, longer swipes travel farther, and every upright landing earns the next decision."],
+      systems: ["Drag upward from the canister on the live arena. Swipe force controls the launch distance while the canister rotates during flight.", "A good landing continues the streak and advances the surface. A miss opens a focused result with Retry so the same platform can be learned immediately."],
+      how: ["Choose a chapter and wait for the ready cue.", "Press on the canister and drag upward in one clean gesture.", "Adjust the swipe length to the distance of the next surface and watch the rotation.", "Land upright across four surfaces to clear the chapter, then replay or continue."],
+      strategyTips: ["Use a short swipe for a nearby platform and add length only when the next surface is farther away.", "Keep the gesture mostly vertical; a large sideways pull makes a precise landing harder.", "Read the result feedback after a miss and change one variable at a time."],
+      progression: ["Six chapters begin with wide starts, add new spacing, and finish with a precision route. Each chapter keeps four surfaces so the challenge grows through distance and timing, not repetition alone."],
+      designNote: "Flip Foundry uses original crystal-canister art, production physics, gesture input, and immediate landing feedback to make force and precision visible on mobile and desktop.",
+      parent: "This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Landing streaks and best progress stay in this browser.",
+      faq: [["How do I launch the canister?", "Drag upward from the canister on the arena; the gesture must be long enough to launch."], ["What makes a landing good?", "The canister must reach the next surface upright within the landing window."], ["Can I use a mouse?", "Yes. Mouse dragging and touch swiping use the same launch gesture."], ["Is progress saved?", "Only the local best streak is saved in this browser."]],
+    },
   });
 
   const labels = {
@@ -9390,12 +9455,12 @@
   games["alien-defender"] = {
     title: "Alien Defender", gameplay: "Wave Survival Shooter", difficulty: "Easy to Challenging", time: "1-5 minutes per run",
     genre: ["Classic", "Arcade", "Action"], skills: ["Aim", "Movement", "Reaction"],
-    intro: "Alien Defender is an original WeightPlay fixed-screen wave shooter. Move below the formation, fire through four authored waves, and protect a signal station with readable enemy pressure.",
-    story: ["A small signal station is broadcasting a route home while four alien formations descend. The defender's ship has one clear job: keep moving, keep firing, and read the next attack window."],
-    systems: ["The ship moves left and right and fires upward. Invaders shift as a formation, release downward shots, and approach the defense line. Later waves add shielded captains, faster volleys, combo scoring, lives, and a brief shield window."],
-    how: ["Use Left/Right or A/D on desktop and Space to fire.", "On mobile, hold the left or right controls and tap Fire.", "Aim under the densest part of the formation and keep moving when enemy shots descend.", "Clear all four waves before the formation reaches the defense line; a clean wave grants a short shield window."],
-    strategyTips: ["Do not stay under one column while enemy fire is active.", "Use the formation's horizontal rhythm to line up shots rather than chasing every target.", "Protect a high combo by moving early, then return to a useful firing lane.", "Wave 3's captains take priority, then read Wave 4's alternating captain anchors before committing to a firing lane."],
-    progression: ["Wave 1 establishes movement and fire rhythm. Wave 2 increases volley speed. Wave 3 adds shielded captains and tighter formations. Wave 4 adds a staggered relay formation with alternating captain anchors and a tighter firing rhythm."],
+    intro: "Alien Defender is an original WeightPlay fixed-screen wave shooter. Move below the formation, fire through six authored waves, and protect a signal station with readable enemy pressure.",
+    story: ["A small signal station is broadcasting a route home while six alien formations descend. The defender's ship has one clear job: keep moving, keep firing, and read the next attack window."],
+    systems: ["The ship moves left and right and fires upward. Invaders shift as a formation, release downward shots, and approach the defense line. Later waves add shielded captains, faster volleys, combo scoring, lives, a brief shield window, crossfire lanes, and a signal-core guardian."],
+    how: ["Use Left/Right or A/D on desktop and Space to fire.", "On mobile, hold the left or right controls and tap Fire.", "Aim under the densest part of the formation and keep moving when enemy shots descend.", "Clear all six waves before the formation reaches the defense line; Waves 5 and 6 add crossfire lanes and the signal-core guardian finale."],
+    strategyTips: ["Do not stay under one column while enemy fire is active.", "Use the formation's horizontal rhythm to line up shots rather than chasing every target.", "Protect a high combo by moving early, then return to a useful firing lane.", "Read Wave 4's alternating captain anchors, Wave 5's crossfire lanes, and Wave 6's signal-core guardian before committing to a firing lane."],
+    progression: ["Wave 1 establishes movement and fire rhythm. Wave 2 increases volley speed. Wave 3 adds shielded captains. Wave 4 adds a staggered relay formation, Wave 5 adds crossfire lanes, and Wave 6 brings the signal-core guardian finale."],
     designNote: "Alien Defender learns from the broad fixed-screen wave-shooter tradition while using WeightPlay's own signal-station fiction, Star Runner ship, enemy shapes, wave pacing, copy, and interface.",
     parent: "This public game has no account, purchase, chat, leaderboard, or advertising flow. Score and Best stay in the current browser.",
     faq: [["How do I move?", "Use Left/Right or A/D, then use Space or the mobile Fire button to shoot."], ["What is the shield window?", "A short protective window appears after a clean wave and absorbs incoming shots."], ["What causes Game Over?", "Losing all lives or letting the formation reach the defense line."], ["Is progress saved?", "Only the local Best score is saved in this browser."]]
@@ -9501,6 +9566,26 @@
     ar: { title: "مدافع الفضائيين", intro: "مدافع الفضائيين لعبة إطلاق نار أصلية من WeightPlay على أربع موجات. تحرك وأطلق النار لحماية المحطة.", how: ["استخدم اليسار/اليمين أو A/D والمسافة للإطلاق.", "على الهاتف اضغط يساراً أو يميناً ثم إطلاق.", "اقرأ التشكيل وتحرك قبل المقذوفات الهابطة.", "اقضِ على أربع موجات؛ تقدم الرابعة تشكيلاً متعاقباً متدرجاً بقادة متناوبين."] }
   };
   Object.entries(alienExpansionGuideLocales).forEach(([localeKey, guide]) => { arcadeGuideLocales[localeKey] ??= {}; arcadeGuideLocales[localeKey]["alien-defender"] = guide; });
+  const alienV29GuideLocales = {
+    es: {
+      title: "Defensor Alienígena",
+      gameplay: "Shooter de supervivencia por oleadas",
+      difficulty: "De fácil a desafiante",
+      time: "1-5 minutos por partida",
+      genre: ["Clásico", "Salón recreativo", "Acción"],
+      skills: ["Puntería", "Movimiento", "Reacción"],
+      intro: "Defensor Alienígena es un shooter de oleadas original de WeightPlay. Muévete y dispara para proteger la estación durante seis oleadas.",
+      story: ["Una pequeña estación de señales transmite una ruta de regreso mientras descienden seis formaciones alienígenas. La nave defensora debe seguir moviéndose, disparando y leyendo la próxima ventana de ataque."],
+      systems: ["La nave se mueve a izquierda y derecha y dispara hacia arriba. Los invasores avanzan en formación, lanzan proyectiles descendentes y se acercan a la línea de defensa. Las oleadas posteriores añaden capitanes protegidos, ráfagas rápidas, combos, vidas, un breve escudo, fuego cruzado y un guardián del núcleo de señal."],
+      how: ["Usa izquierda/derecha o A/D y Espacio para disparar.", "En móvil, mantén izquierda o derecha y toca Disparar.", "Apunta bajo la parte más densa de la formación y sigue moviéndote cuando caigan disparos.", "Despeja las seis oleadas antes de que la formación alcance la línea; las oleadas 5 y 6 añaden fuego cruzado y al guardián del núcleo."],
+      strategyTips: ["No permanezcas bajo una sola columna cuando haya fuego enemigo.", "Usa el ritmo horizontal de la formación para alinear disparos en vez de perseguir cada objetivo.", "Protege un combo alto moviéndote temprano y vuelve después a un carril útil.", "Lee los anclajes alternos de la oleada 4, el fuego cruzado de la 5 y el guardián del núcleo de la 6 antes de comprometerte con un carril."],
+      progression: ["La oleada 1 enseña el movimiento y el ritmo de disparo. La 2 acelera las ráfagas. La 3 añade capitanes protegidos. La 4 introduce una formación de relevo; la 5 añade fuego cruzado y la 6 presenta al guardián del núcleo de señal."],
+      designNote: "Alien Defender toma la estructura amplia de los shooters de oleadas de pantalla fija, pero usa la ficción de estación de señales, la nave Star Runner, las formas enemigas, el ritmo de oleadas, el texto y la interfaz propios de WeightPlay.",
+      parent: "Este juego público no tiene cuenta, compras, chat, clasificación ni publicidad. La puntuación y la mejor marca se guardan solo en este navegador.",
+      faq: [["¿Cómo me muevo?", "Usa izquierda/derecha o A/D y después Espacio o el botón móvil Disparar."], ["¿Qué es la ventana de escudo?", "Es una breve protección que aparece tras despejar una oleada y absorbe disparos entrantes."], ["¿Qué provoca el fin de la partida?", "Perder todas las vidas o dejar que la formación alcance la línea de defensa."], ["¿Se guarda el progreso?", "Solo la mejor puntuación local se guarda en este navegador."]]
+    }
+  };
+  Object.entries(alienV29GuideLocales).forEach(([localeKey, guide]) => { arcadeGuideLocales[localeKey] ??= {}; arcadeGuideLocales[localeKey]["alien-defender"] = { ...arcadeGuideLocales[localeKey]["alien-defender"], ...guide }; });
   const snakeGuideLocales = {
     "zh-Hant": { title: "貪食蛇", intro: "貪食蛇是 WeightPlay 原創的格線生存街機遊戲。帶領成長中的星蛇穿過有限棋盤，收集六枚食物火花。", how: ["桌面使用方向鍵或 WASD；手機使用方向按鈕或滑動。", "在下一格封閉前先規劃轉向，反向輸入不會打斷目前路線。", "收集六枚食物火花即可完成短回合並抵達結果。", "撞到牆壁或自己的軌跡會結束本局；重試會保留本機最佳分數。"] },
     "zh-Hans": { title: "贪吃蛇", intro: "贪吃蛇是 WeightPlay 原创的格线生存街机游戏。带领成长中的星蛇穿过有限棋盘，收集六枚食物火花。", how: ["桌面使用方向键或 WASD；手机使用方向按钮或滑动。", "在下一格封闭前先规划转向，反向输入不会打断当前路线。", "收集六枚食物火花即可完成短回合并抵达结果。", "撞到墙壁或自己的轨迹会结束本局；重试会保留本机最佳分数。"] },

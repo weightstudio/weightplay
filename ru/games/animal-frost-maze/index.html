@@ -19,12 +19,12 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-frost-maze/" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="robots" content="noindex,nofollow" />
+    <meta name="robots" content="index,follow" />
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-game-id" content="animal-frost-maze" />
     <meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="description" content="Откройте замёрзший путь, соберите все ягоды и опередите снежного странника." />
-    <title>Спасение на ледяной линии | WeightPlay</title>
+    <meta name="description" content="Откройте замерзший маршрут, соберите каждую ягодку и будьте на шаг впереди сугроба." />
+    <title>Frostline Rescue | WeightPlay</title>
     <link rel="stylesheet" href="style.css" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(6,27,44,.20),rgba(6,27,44,.70)),url("assets/animal-frost-maze-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
@@ -37,23 +37,22 @@
     <script defer src="game.js"></script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Спасение на ледяной линии | WeightPlay" />
-    <meta property="og:description" content="Откройте замёрзший путь, соберите все ягоды и опередите снежного странника." />
+    <meta property="og:title" content="Frostline Rescue | WeightPlay" />
+    <meta property="og:description" content="Откройте замерзший маршрут, соберите каждую ягодку и будьте на шаг впереди сугроба." />
     <meta property="og:url" content="https://weightplay.com/ru/games/animal-frost-maze/" />
-    <meta property="og:image" content="https://weightplay.com/games/animal-frost-maze/assets/animal-frost-maze-cover.png" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-frost-maze-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Спасение на ледяной линии | WeightPlay" />
-    <meta name="twitter:description" content="Откройте замёрзший путь, соберите все ягоды и опередите снежного странника." />
-    <meta name="twitter:image" content="https://weightplay.com/games/animal-frost-maze/assets/animal-frost-maze-cover.png" />
+    <meta name="twitter:title" content="Frostline Rescue | WeightPlay" />
+    <meta name="twitter:description" content="Откройте замерзший маршрут, соберите каждую ягодку и будьте на шаг впереди сугроба." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/animal-frost-maze-cover.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "Спасение на ледяной линии",
-  "alternateName": "Frostline Rescue",
+  "name": "Frostline Rescue",
   "url": "https://weightplay.com/ru/games/animal-frost-maze/",
-  "image": "https://weightplay.com/games/animal-frost-maze/assets/animal-frost-maze-cover.png",
-  "description": "Откройте замёрзший путь, соберите все ягоды и опередите снежного странника.",
+  "image": "https://weightplay.com/assets/animal-frost-maze-cover.webp",
+  "description": "Откройте замерзший маршрут, соберите каждую ягодку и будьте на шаг впереди сугроба.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -76,33 +75,15 @@
     </script>
   </head>
   <body data-wp-five-game="animal-frost-maze" data-wp-game-id="animal-frost-maze" data-runtime-localize="off" data-screen="main">
-    <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Спасение на ледяной линии</strong><span>Preparing the ice route…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
+    <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Frostline Rescue</strong><span>Preparing the ice route…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
     <main id="app" data-game="animal-frost-maze" data-audience="general">
       <section id="main-screen" class="screen main-screen active" data-screen="main">
-        <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title">Спасение на ледяной линии</h1>
+        <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title">Frostline Rescue</h1>
         <label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header>
         <img class="five-game-cover" src="assets/animal-frost-maze-cover.png" alt="" aria-hidden="true" />
         <p class="lede" data-five-copy="lede">Open the frozen route, collect every berry, and keep one step ahead of the snow drifter.</p>
         <p id="main-progress" class="progress">Best rooms: 0</p>
         <button id="start-game" class="primary" data-five-copy="start">Start Game</button>
-        <section class="game-page-info game-page-info-static" aria-label="Спасение на ледяной линии информация об игре">
-    
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2>Спасение на ледяной линии</h2><p>Откройте замёрзший путь, соберите все ягоды и опередите снежного странника.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Геймплей</span><strong>Меняющийся ледяной лабиринт</strong></div><div class="game-info-fact"><span>Жанр</span><strong>Головоломка · Действие · Животное</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>Часто задаваемые вопросы</h3><dl><div><dt>Прогресс сохраняется?</dt><dd>Да, только в этом браузере.</dd></div></dl></div>
-
-    </div>
-  </section>
       </section>
       <section id="stage-screen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen hidden>
         <header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><h2>Ice Chapters</h2></header>
@@ -122,6 +103,27 @@
       </section>
       <div class="battle-ad-reserve" aria-hidden="true"></div>
     </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Frostline Rescue информация об игре">
+    
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2>Frostline Rescue</h2><p>Откройте замерзший маршрут, соберите каждую ягодку и будьте на шаг впереди сугроба.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Геймплей</span><strong>Сменный ледяной лабиринт</strong></div><div class="game-info-fact"><span>Жанр</span><strong>Головоломка · Действие · Животное</strong></div><div class="game-info-fact"><span>Сложность</span><strong>Легко и сложно</strong></div><div class="game-info-fact"><span>Расчетное время игры</span><strong>1–4 минуты на комнату</strong></div><div class="game-info-fact"><span>Обученные навыки</span><strong>Планирование маршрута · Тайминг · Решение проблем</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Мир и миссия</h3><p>Небольшой путь спасения перекрыт голубыми ледяными стенами. Соберите каждую ягодку, меняйте только важные преграды и продолжайте движение, пока сугроб не замкнул пропасть.</p></div>
+      <div class="game-info-section"><h3>Как работают системы</h3><p>Клавиши со стрелками, WASD или элементы управления видимым направлением перемещают одну ячейку сетки за раз. Пространство ломает лед впереди, и F строит короткую стену.</p>
+<p>Противник наступает после неоднократного движения. Комната очищается, когда собраны все ягоды; contact блокирует маршрут и отправляет вас на целенаправленную повторную попытку.</p></div>
+      <div class="game-info-section"><h3>Как играть</h3><ol><li>Выберите главу и прочитайте количество ягод и подсказку по маршруту.</li><li>Передвигайте по одной клетке за раз и используйте «Разломать лед», когда синяя стена закроет следующую полезную полосу.</li><li>Используйте Build Ice, чтобы создать короткий барьер, когда врага нужно задержать.</li><li>Соберите все ягоды, затем выберите «Следующая комната», «Повторить» или вернитесь к главам после получения результата.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Советы по стратегии</h3><ul><li>Прежде чем ломать стену, спланируйте следующие две клетки, чтобы проем создал настоящий маршрут.</li><li>Держите врага на дальней стороне барьера, сначала собрав обнаженную ягоду.</li><li>Если маршрут закрывается, повторите попытку быстро и измените порядок перерывов вместо повторения того же пути.</li></ul></div>
+      <div class="game-info-section"><h3>Кампания и рост сложности</h3><p>Четыре главы переходят от первой оттепели к разделению маршрутов, давлению дрифтеров и окончательному таянию. Маршрут меняется через хрупкий и сборный лед, а не через скрытые изменения правил.</p></div>
+      <div class="game-info-section"><h3>Примечание разработчика к проекту</h3><p>Frostline Rescue — это оригинальная головоломка со спасательной сеткой с прямым редактированием стен, детерминированными короткими комнатами, видимым давлением противника и отзывчивым управлением как на сенсорном экране, так и на рабочем столе.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Примечание для родителей</h3><p>В этой обычной браузерной игре нет учетной записи, покупок, чата, таблицы лидеров или рекламного потока. Очищенные комнаты и лучший прогресс остаются в этом браузере.</p></div>
+      <div class="game-info-section"><h3>Часто задаваемые вопросы</h3><dl><div><dt>Что я собираю?</dt><dd>Соберите все ягоды, показанные в комнате, чтобы очистить ее.</dd></div><div><dt>Когда мне следует сломать лед?</dt><dd>Разбейте синюю стену, блокирующую следующий полезный маршрут, а затем оцените позицию противника.</dd></div><div><dt>Что делает Build Ice?</dt><dd>Он добавляет короткую стену, которая может задержать снегоход и обеспечить более безопасный маршрут.</dd></div><div><dt>Прогресс сохраняется?</dt><dd>В этом браузере сохраняется только лучший номер.</dd></div></dl></div>
+
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
     <script src="../../src/site-config.js"></script>
     <script src="../../src/analytics.js?v=20260816-frost-v2-role-scan"></script>
     <script src="analytics-ownership.js?v=20260816-frost-v2-role-scan"></script>

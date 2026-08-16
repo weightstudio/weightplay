@@ -19,12 +19,12 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-frost-maze/" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="robots" content="noindex,nofollow" />
+    <meta name="robots" content="index,follow" />
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-game-id" content="animal-frost-maze" />
     <meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="description" content="打开冰封路线，收集所有莓果，始终领先雪地漂行者一步。" />
-    <title>冰线救援 | WeightPlay</title>
+    <meta name="description" content="打开冰冻路线，收集每一个浆果，领先雪漂流者一步。" />
+    <title>Frostline Rescue | WeightPlay</title>
     <link rel="stylesheet" href="style.css" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(6,27,44,.20),rgba(6,27,44,.70)),url("assets/animal-frost-maze-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
@@ -37,23 +37,22 @@
     <script defer src="game.js"></script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="冰线救援 | WeightPlay" />
-    <meta property="og:description" content="打开冰封路线，收集所有莓果，始终领先雪地漂行者一步。" />
+    <meta property="og:title" content="Frostline Rescue | WeightPlay" />
+    <meta property="og:description" content="打开冰冻路线，收集每一个浆果，领先雪漂流者一步。" />
     <meta property="og:url" content="https://weightplay.com/zh-cn/games/animal-frost-maze/" />
-    <meta property="og:image" content="https://weightplay.com/games/animal-frost-maze/assets/animal-frost-maze-cover.png" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-frost-maze-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="冰线救援 | WeightPlay" />
-    <meta name="twitter:description" content="打开冰封路线，收集所有莓果，始终领先雪地漂行者一步。" />
-    <meta name="twitter:image" content="https://weightplay.com/games/animal-frost-maze/assets/animal-frost-maze-cover.png" />
+    <meta name="twitter:title" content="Frostline Rescue | WeightPlay" />
+    <meta name="twitter:description" content="打开冰冻路线，收集每一个浆果，领先雪漂流者一步。" />
+    <meta name="twitter:image" content="https://weightplay.com/assets/animal-frost-maze-cover.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "冰线救援",
-  "alternateName": "Frostline Rescue",
+  "name": "Frostline Rescue",
   "url": "https://weightplay.com/zh-cn/games/animal-frost-maze/",
-  "image": "https://weightplay.com/games/animal-frost-maze/assets/animal-frost-maze-cover.png",
-  "description": "打开冰封路线，收集所有莓果，始终领先雪地漂行者一步。",
+  "image": "https://weightplay.com/assets/animal-frost-maze-cover.webp",
+  "description": "打开冰冻路线，收集每一个浆果，领先雪漂流者一步。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -76,33 +75,15 @@
     </script>
   </head>
   <body data-wp-five-game="animal-frost-maze" data-wp-game-id="animal-frost-maze" data-runtime-localize="off" data-screen="main">
-    <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>冰线救援</strong><span>Preparing the ice route…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
+    <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Frostline Rescue</strong><span>Preparing the ice route…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
     <main id="app" data-game="animal-frost-maze" data-audience="general">
       <section id="main-screen" class="screen main-screen active" data-screen="main">
-        <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title">冰线救援</h1>
+        <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title">Frostline Rescue</h1>
         <label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header>
         <img class="five-game-cover" src="assets/animal-frost-maze-cover.png" alt="" aria-hidden="true" />
         <p class="lede" data-five-copy="lede">Open the frozen route, collect every berry, and keep one step ahead of the snow drifter.</p>
         <p id="main-progress" class="progress">Best rooms: 0</p>
         <button id="start-game" class="primary" data-five-copy="start">Start Game</button>
-        <section class="game-page-info game-page-info-static" aria-label="冰线救援 游戏资讯">
-    
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>冰线救援</h2><p>打开冰封路线，收集所有莓果，始终领先雪地漂行者一步。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>可变冰墙迷宫</strong></div><div class="game-info-fact"><span>类型</span><strong>拼图 · 行动 · 动物</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>进度保存了吗？</dt><dd>是的，仅在该浏览器中。</dd></div></dl></div>
-
-    </div>
-  </section>
       </section>
       <section id="stage-screen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen hidden>
         <header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><h2>Ice Chapters</h2></header>
@@ -122,6 +103,27 @@
       </section>
       <div class="battle-ad-reserve" aria-hidden="true"></div>
     </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Frostline Rescue 游戏资讯">
+    
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>Frostline Rescue</h2><p>打开冰冻路线，收集每一个浆果，领先雪漂流者一步。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>多变的冰迷宫</strong></div><div class="game-info-fact"><span>类型</span><strong>拼图 · 行动 · 动物</strong></div><div class="game-info-fact"><span>难度</span><strong>容易挑战</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>每个房间 1-4 分钟</strong></div><div class="game-info-fact"><span>练习能力</span><strong>路线规划 · 定时 · 解决问题</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界与任务</h3><p>一条小型救援路线被蓝色冰墙封闭。收集每一个浆果，只改变重要的障碍，并在雪漂流者缩小差距之前继续前进。</p></div>
+      <div class="game-info-section"><h3>游戏系统</h3><p>箭头键、WASD 或可见方向控件一次移动一个网格单元。空间打破了前方的坚冰，F 筑起了一堵短墙。</p>
+<p>敌军反复移动后前进。收集完所有浆果后，房间就会清理干净； contact 会阻止路由并让您进行重点重试。</p></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>选择一章并阅读浆果数量和路线提示。</li><li>一次移动一个单元格，并在蓝色墙壁关闭下一个有用通道时使用破冰。</li><li>当敌人需要拖延时，使用筑冰来制造一个短的屏障。</li><li>收集每个浆果，然后选择下一个房间，重试，或在结果后返回章节。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>在打破墙壁之前规划接下来的两个单元，以便开口形成一条真实的路线。</li><li>将敌人留在障碍物的远端，同时首先收集暴露的浆果。</li><li>如果路线关闭，请快速重试并更改休息顺序，而不是重复相同的路径。</li></ul></div>
+      <div class="game-info-section"><h3>关卡与难度成长</h3><p>四个章节从第一次解冻到分裂路线、漂流压力和最终融化。路线的改变是通过可破坏和可建造的冰块来改变的，而不是隐藏规则的改变。</p></div>
+      <div class="game-info-section"><h3>开发设计理念</h3><p>Frostline Rescue 是一款原创的网格救援益智游戏，具有直接的墙壁编辑、确定性的短房间、可见的敌人压力以及触摸和桌面上的响应式控制。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>这款通用浏览器游戏没有帐户、购买、聊天、排行榜或广告流程。已清理的房间和最佳进度保留在该浏览器中。</p></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>我收集什么？</dt><dd>收集房间中显示的所有浆果以将其清除。</dd></div><div><dt>我什么时候应该破冰？</dt><dd>打破阻挡下一条有用路线的蓝色墙壁，然后重新评估敌人的位置。</dd></div><div><dt>建冰是做什么的？</dt><dd>它增加了一个短墙，可以延迟雪漂流者并给你一个更安全的路线。</dd></div><div><dt>进度保存了吗？</dt><dd>此浏览器中仅保存最好的房间。</dd></div></dl></div>
+
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
     <script src="../../src/site-config.js"></script>
     <script src="../../src/analytics.js?v=20260816-frost-v2-role-scan"></script>
     <script src="analytics-ownership.js?v=20260816-frost-v2-role-scan"></script>

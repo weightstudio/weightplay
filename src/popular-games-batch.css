@@ -84,6 +84,7 @@ body[data-screen="result"] .game-page-info-static { display: none !important; }
 .game-message[data-tone="warn"] { color: var(--arcade-accent-2); }
 .control-row { justify-content: center; }
 .control { min-width: 72px; min-height: 48px; }
+body[data-game-id="snake"] #controls .control { touch-action: manipulation; }
 .arcade-footer { padding: 12px 16px; color: var(--arcade-muted); font-size: .82rem; text-align: center; }
 
 .grid-board { display: grid; gap: 5px; width: min(100%, 360px); aspect-ratio: 1; }

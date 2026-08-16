@@ -19,12 +19,12 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-frost-maze/" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="robots" content="noindex,nofollow" />
+    <meta name="robots" content="index,follow" />
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-game-id" content="animal-frost-maze" />
     <meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="description" content="Abre la ruta helada, recoge todas las bayas y adelántate al errante de nieve." />
-    <title>Rescate en la línea helada | WeightPlay</title>
+    <meta name="description" content="Abre la ruta helada, recoge todas las bayas y mantente un paso por delante del vagabundo de nieve." />
+    <title>Frostline Rescue | WeightPlay</title>
     <link rel="stylesheet" href="style.css" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(6,27,44,.20),rgba(6,27,44,.70)),url("assets/animal-frost-maze-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
@@ -37,23 +37,22 @@
     <script defer src="game.js"></script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Rescate en la línea helada | WeightPlay" />
-    <meta property="og:description" content="Abre la ruta helada, recoge todas las bayas y adelántate al errante de nieve." />
+    <meta property="og:title" content="Frostline Rescue | WeightPlay" />
+    <meta property="og:description" content="Abre la ruta helada, recoge todas las bayas y mantente un paso por delante del vagabundo de nieve." />
     <meta property="og:url" content="https://weightplay.com/es/games/animal-frost-maze/" />
-    <meta property="og:image" content="https://weightplay.com/games/animal-frost-maze/assets/animal-frost-maze-cover.png" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-frost-maze-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Rescate en la línea helada | WeightPlay" />
-    <meta name="twitter:description" content="Abre la ruta helada, recoge todas las bayas y adelántate al errante de nieve." />
-    <meta name="twitter:image" content="https://weightplay.com/games/animal-frost-maze/assets/animal-frost-maze-cover.png" />
+    <meta name="twitter:title" content="Frostline Rescue | WeightPlay" />
+    <meta name="twitter:description" content="Abre la ruta helada, recoge todas las bayas y mantente un paso por delante del vagabundo de nieve." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/animal-frost-maze-cover.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "Rescate en la línea helada",
-  "alternateName": "Frostline Rescue",
+  "name": "Frostline Rescue",
   "url": "https://weightplay.com/es/games/animal-frost-maze/",
-  "image": "https://weightplay.com/games/animal-frost-maze/assets/animal-frost-maze-cover.png",
-  "description": "Abre la ruta helada, recoge todas las bayas y adelántate al errante de nieve.",
+  "image": "https://weightplay.com/assets/animal-frost-maze-cover.webp",
+  "description": "Abre la ruta helada, recoge todas las bayas y mantente un paso por delante del vagabundo de nieve.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -76,33 +75,15 @@
     </script>
   </head>
   <body data-wp-five-game="animal-frost-maze" data-wp-game-id="animal-frost-maze" data-runtime-localize="off" data-screen="main">
-    <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Rescate en la línea helada</strong><span>Preparing the ice route…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
+    <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Frostline Rescue</strong><span>Preparing the ice route…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
     <main id="app" data-game="animal-frost-maze" data-audience="general">
       <section id="main-screen" class="screen main-screen active" data-screen="main">
-        <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title">Rescate en la línea helada</h1>
+        <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title">Frostline Rescue</h1>
         <label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header>
         <img class="five-game-cover" src="assets/animal-frost-maze-cover.png" alt="" aria-hidden="true" />
         <p class="lede" data-five-copy="lede">Open the frozen route, collect every berry, and keep one step ahead of the snow drifter.</p>
         <p id="main-progress" class="progress">Best rooms: 0</p>
         <button id="start-game" class="primary" data-five-copy="start">Start Game</button>
-        <section class="game-page-info game-page-info-static" aria-label="Guía de Rescate en la línea helada">
-    
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2>Rescate en la línea helada</h2><p>Abre la ruta helada, recoge todas las bayas y adelántate al errante de nieve.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Cómo se juega</span><strong>Laberinto de hielo cambiante</strong></div><div class="game-info-fact"><span>Género</span><strong>rompecabezas · acción · animales</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Se guarda el progreso?</dt><dd>Sí, sólo en este navegador.</dd></div></dl></div>
-
-    </div>
-  </section>
       </section>
       <section id="stage-screen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen hidden>
         <header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><h2>Ice Chapters</h2></header>
@@ -122,6 +103,27 @@
       </section>
       <div class="battle-ad-reserve" aria-hidden="true"></div>
     </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Guía de Frostline Rescue">
+    
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2>Frostline Rescue</h2><p>Abre la ruta helada, recoge todas las bayas y mantente un paso por delante del vagabundo de nieve.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Cómo se juega</span><strong>Laberinto de hielo cambiable</strong></div><div class="game-info-fact"><span>Género</span><strong>rompecabezas · acción · animales</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Fácil de desafiar</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>1-4 minutos por sala</strong></div><div class="game-info-fact"><span>Habilidades</span><strong>Planificación de ruta · Momento · Resolución de problemas</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Historia y misión</h3><p>Una pequeña ruta de rescate está sellada por paredes de hielo azul. Recoge cada baya, cambia solo las barreras que importan y sigue moviéndote antes de que el ventisquero cierre la brecha.</p></div>
+      <div class="game-info-section"><h3>Reglas del juego</h3><p>Las teclas de flecha, WASD o los controles de dirección visibles mueven una celda de la cuadrícula a la vez. El espacio rompe el hielo que hay delante y F construye un muro corto.</p>
+<p>El enemigo avanza después de repetidos movimientos. Una habitación se despeja cuando se recogen todas las bayas; El contacto bloquea la ruta y lo envía a un reintento enfocado.</p></div>
+      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Elija un capítulo y lea el recuento de bayas y la sugerencia de ruta.</li><li>Mueve una celda a la vez y usa Break Ice cuando una pared azul cierre el siguiente carril útil.</li><li>Usa Build Ice para crear una barrera corta cuando sea necesario retrasar al enemigo.</li><li>Recoge todas las bayas, luego elige Siguiente habitación, Reintentar o regresa a los Capítulos después del resultado.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consejos</h3><ul><li>Planifica las siguientes dos celdas antes de romper una pared para que la abertura cree una ruta real.</li><li>Mantén al enemigo al otro lado de una barrera mientras recolectas primero la baya expuesta.</li><li>Si la ruta se cierra, vuelve a intentarlo rápidamente y cambia el orden de tus descansos en lugar de repetir el mismo camino.</li></ul></div>
+      <div class="game-info-section"><h3>Progresión y dificultad</h3><p>Cuatro capítulos pasan desde un primer deshielo hasta rutas divididas, presión de deriva y un derretimiento final. La ruta cambia a través de hielo rompible y construible en lugar de cambios ocultos en las reglas.</p></div>
+      <div class="game-info-section"><h3>Nota de diseño</h3><p>Frostline Rescue es un original rompecabezas de rescate en cuadrícula con ediciones directas de las paredes, salas cortas deterministas, presión enemiga visible y controles sensibles tanto en el tacto como en el escritorio.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota para familias</h3><p>Este juego de navegador general no tiene cuenta, compra, chat, tabla de clasificación ni flujo publicitario. Las salas despejadas y el mejor progreso permanecen en este navegador.</p></div>
+      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Qué colecciono?</dt><dd>Recoge todas las bayas que se muestran en la habitación para limpiarlas.</dd></div><div><dt>¿Cuándo debo romper el hielo?</dt><dd>Rompe la pared azul que bloquea la siguiente ruta útil y luego vuelve a evaluar la posición enemiga.</dd></div><div><dt>¿Qué hace Build Ice?</dt><dd>Agrega una pared corta que puede retrasar al quitanieves y brindarle una ruta más segura.</dd></div><div><dt>¿Se guarda el progreso?</dt><dd>En este navegador solo se guarda la mejor habitación.</dd></div></dl></div>
+
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
     <script src="../../src/site-config.js"></script>
     <script src="../../src/analytics.js?v=20260816-frost-v2-role-scan"></script>
     <script src="analytics-ownership.js?v=20260816-frost-v2-role-scan"></script>

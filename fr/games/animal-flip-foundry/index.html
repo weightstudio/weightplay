@@ -19,9 +19,9 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-flip-foundry/" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-flip-foundry" /><meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="description" content="Fais glisser le réservoir de cristal, fais-le tourner et pose-le debout sur la prochaine surface." />
-    <title>Atelier du flip | WeightPlay</title>
+    <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-flip-foundry" /><meta name="weightplay-scene-controls" content="immutable" />
+    <meta name="description" content="Swipe a crystal canister, rotate it in the air, and land upright on the next workshop surface." />
+    <title>Flip Foundry | WeightPlay</title>
     <link rel="stylesheet" href="style.css" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(27,38,58,.20),rgba(27,38,58,.68)),url("assets/animal-flip-foundry-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
@@ -29,23 +29,22 @@
     <script defer src="game.js?v=20260815-flip-copy-v2"></script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Atelier du flip | WeightPlay" />
-    <meta property="og:description" content="Fais glisser le réservoir de cristal, fais-le tourner et pose-le debout sur la prochaine surface." />
+    <meta property="og:title" content="Flip Foundry | WeightPlay" />
+    <meta property="og:description" content="Swipe a crystal canister, rotate it in the air, and land upright on the next workshop surface." />
     <meta property="og:url" content="https://weightplay.com/fr/games/animal-flip-foundry/" />
-    <meta property="og:image" content="https://weightplay.com/games/animal-flip-foundry/assets/animal-flip-foundry-cover.png" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-flip-foundry-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Atelier du flip | WeightPlay" />
-    <meta name="twitter:description" content="Fais glisser le réservoir de cristal, fais-le tourner et pose-le debout sur la prochaine surface." />
-    <meta name="twitter:image" content="https://weightplay.com/games/animal-flip-foundry/assets/animal-flip-foundry-cover.png" />
+    <meta name="twitter:title" content="Flip Foundry | WeightPlay" />
+    <meta name="twitter:description" content="Swipe a crystal canister, rotate it in the air, and land upright on the next workshop surface." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/animal-flip-foundry-cover.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "Atelier du flip",
-  "alternateName": "Flip Foundry",
+  "name": "Flip Foundry",
   "url": "https://weightplay.com/fr/games/animal-flip-foundry/",
-  "image": "https://weightplay.com/games/animal-flip-foundry/assets/animal-flip-foundry-cover.png",
-  "description": "Fais glisser le réservoir de cristal, fais-le tourner et pose-le debout sur la prochaine surface.",
+  "image": "https://weightplay.com/assets/animal-flip-foundry-cover.webp",
+  "description": "Swipe a crystal canister, rotate it in the air, and land upright on the next workshop surface.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -68,33 +67,37 @@
     </script>
   </head>
   <body data-wp-five-game="animal-flip-foundry" data-wp-game-id="animal-flip-foundry" data-runtime-localize="off" data-screen="main">
-    <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Atelier du flip</strong><span>Preparing the foundry…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
+    <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Flip Foundry</strong><span>Preparing the foundry…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
     <main id="app" data-game="animal-flip-foundry" data-audience="general">
       <section id="main-screen" class="screen main-screen active" data-screen="main">
-        <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title">Atelier du flip</h1><label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header><img class="five-game-cover" src="assets/animal-flip-foundry-cover.png" alt="" aria-hidden="true" />
+        <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title">Flip Foundry</h1><label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header><img class="five-game-cover" src="assets/animal-flip-foundry-cover.png" alt="" aria-hidden="true" />
         <p class="lede" data-five-copy="lede">Swipe a crystal canister, rotate it in the air, and land upright on the next workshop surface.</p>
-        <p id="main-progress" class="progress">Best streak: 0</p><button id="start-game" class="primary" data-five-copy="start">Start Game</button><section class="game-page-info game-page-info-static" aria-label="Informations sur le jeu Atelier du flip">
-    
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2>Atelier du flip</h2><p>Fais glisser le réservoir de cristal, fais-le tourner et pose-le debout sur la prochaine surface.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Type de jeu</span><strong>Défi de flips précis</strong></div><div class="game-info-fact"><span>Genre</span><strong>Arcades · Physique · Animal</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>La progression est-elle enregistrée ?</dt><dd>Oui, uniquement dans ce navigateur.</dd></div></dl></div>
-
-    </div>
-  </section>
+        <p id="main-progress" class="progress">Best streak: 0</p><button id="start-game" class="primary" data-five-copy="start">Start Game</button>
       </section>
       <section id="stage-screen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen hidden><header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><h2>Foundry Chapters</h2></header><div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Stage sections"><button type="button" aria-current="page">Stages</button></nav></section>
       <section id="battle-screen" class="screen battle battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden><header class="battle-header"><button class="back" data-back="stage" data-wp-return="battle" aria-label="Back to Stages">←</button><strong id="surface-label">Surface 1 / 5</strong><span id="streak-label">0</span></header><p id="battle-status" class="battle-status">Swipe upward from the canister.</p><canvas id="arena" width="960" height="560" aria-label="Flip Foundry play area"></canvas><div class="touch-hint">Swipe up. Shorter swipes stay low; longer swipes climb farther.</div><section id="result-screen" class="screen result" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="result-title" hidden><h2 id="result-title">Landing failed</h2><p id="result-copy"></p><div class="result-actions"><button id="to-stages">Stages</button><button id="next">Next Surface</button><button id="retry" class="primary">Retry</button></div></section></section><div class="battle-ad-reserve" aria-hidden="true"></div>
     </main>
+    <!-- adsense-static-guide:start -->
+    <section class="game-page-info game-page-info-static" aria-label="Informations sur le jeu Flip Foundry">
+    
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2>Flip Foundry</h2><p>Swipe a crystal canister, rotate it in the air, and land upright on the next workshop surface.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Type de jeu</span><strong>Défi de retournement de précision</strong></div><div class="game-info-fact"><span>Genre</span><strong>Arcades · Physique · Animal</strong></div><div class="game-info-fact"><span>Difficulté</span><strong>Facile à difficile</strong></div><div class="game-info-fact"><span>Durée estimée</span><strong>1 à 3 minutes par chapitre</strong></div><div class="game-info-fact"><span>Compétences travaillées</span><strong>Timing · Précision · Coordination œil-main</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Univers et mission</h3><p>La fonderie transforme un lancement prudent en un parcours de quatre surfaces. Les balayages plus courts restent bas, les balayages plus longs voyagent plus loin et chaque atterrissage vertical donne lieu à la décision suivante.</p></div>
+      <div class="game-info-section"><h3>Fonctionnement du jeu</h3><p>Faites glisser vers le haut depuis la cartouche sur l&#39;arène en direct. La force de balayage contrôle la distance de lancement pendant que la cartouche tourne pendant le vol.</p>
+<p>Un bon atterrissage continue la séquence et fait avancer la surface. Un échec ouvre un résultat ciblé avec Retry afin que la même plate-forme puisse être apprise immédiatement.</p></div>
+      <div class="game-info-section"><h3>Comment jouer</h3><ol><li>Choisissez un chapitre et attendez le signal prêt.</li><li>Appuyez sur la cartouche et faites-la glisser vers le haut d&#39;un seul geste propre.</li><li>Ajustez la longueur du balayage à la distance de la surface suivante et observez la rotation.</li><li>Atterrissez debout sur quatre surfaces pour terminer le chapitre, puis rejouez ou continuez.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Conseils</h3><ul><li>Utilisez un balayage court pour une plate-forme à proximité et ajoutez de la longueur uniquement lorsque la surface suivante est plus éloignée.</li><li>Gardez le geste principalement vertical ; une forte traction latérale rend un atterrissage précis plus difficile.</li><li>Lisez le retour de résultat après un échec et modifiez une variable à la fois.</li></ul></div>
+      <div class="game-info-section"><h3>Progression et difficulté</h3><p>Six chapitres commencent par des départs larges, ajoutent un nouvel espacement et se terminent par un itinéraire précis. Chaque chapitre conserve quatre surfaces afin que le défi augmente en fonction de la distance et du timing, et non de la seule répétition.</p></div>
+      <div class="game-info-section"><h3>Note de conception</h3><p>Flip Foundry utilise l&#39;art original des cartouches de cristal, la physique de production, la saisie gestuelle et le retour immédiat à l&#39;atterrissage pour rendre la force et la précision visibles sur mobile et sur ordinateur.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Pour les parents</h3><p>Ce jeu par navigateur général n&#39;a pas de compte, d&#39;achat, de chat, de classement ou de flux publicitaire. Les séquences d&#39;atterrissage et les meilleurs progrès restent dans ce navigateur.</p></div>
+      <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Comment lancer la cartouche ?</dt><dd>Faites glisser vers le haut depuis la cartouche vers l&#39;arène ; le geste doit être suffisamment long pour se lancer.</dd></div><div><dt>Qu’est-ce qui fait qu’un atterrissage est bon ?</dt><dd>The canister must reach the next surface upright within the landing window.</dd></div><div><dt>Puis-je utiliser une souris ?</dt><dd>Oui. Le glissement de la souris et le glissement tactile utilisent le même geste de lancement.</dd></div><div><dt>La progression est-elle enregistrée ?</dt><dd>Seule la meilleure séquence locale est enregistrée dans ce navigateur.</dd></div></dl></div>
+
+    </div>
+  </section>
+    <!-- adsense-static-guide:end -->
     <script src="../../src/site-config.js"></script>
     <script src="/src/i18n.js?v=20260731-owner-preview5"></script>
     <script src="/src/runtime-locales/fr.js?v=20260808-locale-static1"></script>
