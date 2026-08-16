@@ -15,6 +15,13 @@
     { floors:[430,330], platforms:[[{x:200,y:360,w:115,h:16},{x:395,y:285,w:115,h:16},{x:590,y:210,w:115,h:16},{x:785,y:335,w:90,h:16}],[{x:230,y:245,w:110,h:16},{x:420,y:155,w:125,h:16},{x:625,y:245,w:110,h:16},{x:785,y:135,w:90,h:16}]], shards:[{lane:0,x:250,y:325},{lane:1,x:465,y:120},{lane:0,x:650,y:165}], switches:[{lane:0,x:645,y:175},{lane:1,x:820,y:90}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[ {x:330,y:405,w:62,h:25},{x:705,y:405,w:60,h:25}], [{x:350,y:305,w:62,h:25},{x:570,y:305,w:60,h:25}]] },
   ];
   let locale = "en"; let soundEnabled = true; let current = 0; let state = null; let axis = 0; let hidden = false; let last = 0; let raf = 0;
+  if (!window.WonderSound) {
+    let muted = false;
+    window.WonderSound = {
+      isMuted: () => muted,
+      setMuted: (next) => { muted = Boolean(next); soundEnabled = !muted; window.dispatchEvent(new CustomEvent("wonder:audio-volume-change")); },
+    };
+  }
   const text = (key) => (COPY[locale] && COPY[locale][key]) || COPY.en[key] || key;
   const storage = (key, fallback="") => { try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; } };
   const save = (key, value) => { try { localStorage.setItem(key, String(value)); } catch {} };
