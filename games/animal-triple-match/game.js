@@ -14,7 +14,7 @@
     "undo","magnet","shuffle","tutorialTitle","tutorial1","tutorial2","tutorial3","continue","leaveTitle","leaveText","returnStages",
     "nextPlan","retry","next","stages","stage","locked","cleared","best","pieces","openShelf","vineGallery","crystalRoom","mysteryLoft",
     "shiftingHall","grandFinale","tangled","cracked","revealed","matched","trayDanger","noUndo","noPair","shuffled","winKicker","winTitle",
-    "winText","failKicker","failTitle","failText","planWin","planRetry","complete","soundOn","soundOff"
+    "winText","failKicker","failTitle","failText","planWin","planRetry","complete","soundOn","soundOff","chapterPreview","finaleRule"
   ];
   const L = {
     en: [
@@ -81,19 +81,19 @@
   for (const [code, values] of Object.entries(dynamicTail)) values.forEach((value, index) => { L[code][49 + index] = value; });
 
   const resultPlanCopy = {
-    en: { nextPlan:"Next shelf", planWin:"Keep one emergency slot open and convert exposed pairs before adding a new singleton.", planRetry:"Build exposed pairs earlier and avoid adding a third singleton type when the tray is tight." },
-    "zh-Hant": { nextPlan:"下一局策略", planWin:"保留一格緊急空間，先把露出的成對物件完成三連，再加入新的單張。", planRetry:"更早建立露出的成對物件；托盤吃緊時，先別加入第三種單張。" },
-    "zh-Hans": { nextPlan:"下一局策略", planWin:"保留一个紧急空位，先把露出的成对物件完成三连，再加入新的单张。", planRetry:"更早建立露出的成对物件；托盘吃紧时，先别加入第三种单张。" },
-    ja: { nextPlan:"次の棚の作戦", planWin:"緊急用の空きを1つ残し、新しい単品を入れる前に見えているペアを3個組にしましょう。", planRetry:"見えているペアを早めに作り、トレイが詰まったら3種類目の単品を増やさないようにしましょう。" },
-    ko: { nextPlan:"다음 선반 전략", planWin:"비상용 한 칸을 남기고 새 단품을 넣기 전에 드러난 짝을 세 개로 완성하세요.", planRetry:"드러난 짝을 더 일찍 만들고 트레이가 빠듯할 때 세 번째 단품 종류를 추가하지 마세요." },
-    es: { nextPlan:"Plan para el próximo estante", planWin:"Conserva una casilla de emergencia y completa las parejas visibles antes de añadir otro objeto suelto.", planRetry:"Forma antes las parejas visibles y evita añadir un tercer tipo suelto cuando la bandeja esté ajustada." },
-    "pt-BR": { nextPlan:"Plano para a próxima prateleira", planWin:"Guarde uma vaga de emergência e complete os pares visíveis antes de adicionar outro item isolado.", planRetry:"Forme os pares visíveis mais cedo e evite um terceiro tipo isolado quando a bandeja estiver apertada." },
-    fr: { nextPlan:"Plan pour la prochaine étagère", planWin:"Gardez une case de secours et complétez les paires visibles avant d'ajouter un nouvel objet isolé.", planRetry:"Formez plus tôt les paires visibles et évitez un troisième type isolé quand le plateau est serré." },
-    de: { nextPlan:"Plan fürs nächste Regal", planWin:"Halte einen Notplatz frei und vervollständige offene Paare, bevor du ein neues Einzelstück aufnimmst.", planRetry:"Bilde offene Paare früher und nimm bei knapper Ablage keine dritte Einzelart hinzu." },
-    it: { nextPlan:"Piano per il prossimo scaffale", planWin:"Tieni libero uno spazio di emergenza e completa le coppie visibili prima di aggiungere un nuovo oggetto singolo.", planRetry:"Crea prima le coppie visibili ed evita un terzo tipo singolo quando il vassoio è quasi pieno." },
-    ru: { nextPlan:"План для следующей полки", planWin:"Оставляйте одну аварийную ячейку и завершайте открытые пары, прежде чем брать новый одиночный предмет.", planRetry:"Создавайте открытые пары раньше и не добавляйте третий одиночный тип при тесном лотке." },
-    hi: { nextPlan:"अगली शेल्फ़ की योजना", planWin:"एक आपात खाना खाली रखें और नई अकेली वस्तु लेने से पहले खुले जोड़ों को तिकड़ी बनाएँ।", planRetry:"खुले जोड़े पहले बनाएँ और ट्रे तंग होने पर तीसरी अकेली किस्म न जोड़ें।" },
-    ar: { nextPlan:"خطة الرف التالي", planWin:"اترك خانة للطوارئ وأكمل الأزواج المكشوفة قبل إضافة عنصر منفرد جديد.", planRetry:"كوّن الأزواج المكشوفة مبكراً وتجنب إضافة نوع منفرد ثالث عندما تضيق الصينية." },
+    en: { nextPlan:"Next shelf", planWin:"Keep one emergency slot open and convert exposed pairs before adding a new singleton.", planRetry:"Build exposed pairs earlier and avoid adding a third singleton type when the tray is tight.", chapterPreview:"Next chapter: {chapter} — {rule}", finaleRule:"All rule families combine in the finale." },
+    "zh-Hant": { nextPlan:"下一局策略", planWin:"保留一格緊急空間，先把露出的成對物件完成三連，再加入新的單張。", planRetry:"更早建立露出的成對物件；托盤吃緊時，先別加入第三種單張。", chapterPreview:"下一章：{chapter}——{rule}", finaleRule:"終章會合併所有規則。" },
+    "zh-Hans": { nextPlan:"下一局策略", planWin:"保留一个紧急空位，先把露出的成对物件完成三连，再加入新的单张。", planRetry:"更早建立露出的成对物件；托盘吃紧时，先别加入第三种单张。", chapterPreview:"下一章：{chapter}——{rule}", finaleRule:"终章会合并所有规则。" },
+    ja: { nextPlan:"次の棚の作戦", planWin:"緊急用の空きを1つ残し、新しい単品を入れる前に見えているペアを3個組にしましょう。", planRetry:"見えているペアを早めに作り、トレイが詰まったら3種類目の単品を増やさないようにしましょう。", chapterPreview:"次の章：{chapter} — {rule}", finaleRule:"最終章ではすべてのルールが合流します。" },
+    ko: { nextPlan:"다음 선반 전략", planWin:"비상용 한 칸을 남기고 새 단품을 넣기 전에 드러난 짝을 세 개로 완성하세요.", planRetry:"드러난 짝을 더 일찍 만들고 트레이가 빠듯할 때 세 번째 단품 종류를 추가하지 마세요.", chapterPreview:"다음 챕터: {chapter} — {rule}", finaleRule:"마지막 챕터에서는 모든 규칙이 합쳐집니다." },
+    es: { nextPlan:"Plan para el próximo estante", planWin:"Conserva una casilla de emergencia y completa las parejas visibles antes de añadir otro objeto suelto.", planRetry:"Forma antes las parejas visibles y evita añadir un tercer tipo suelto cuando la bandeja esté ajustada.", chapterPreview:"Próximo capítulo: {chapter} — {rule}", finaleRule:"El gran final combina todas las reglas." },
+    "pt-BR": { nextPlan:"Plano para a próxima prateleira", planWin:"Guarde uma vaga de emergência e complete os pares visíveis antes de adicionar outro item isolado.", planRetry:"Forme os pares visíveis mais cedo e evite um terceiro tipo isolado quando a bandeja estiver apertada.", chapterPreview:"Próximo capítulo: {chapter} — {rule}", finaleRule:"O grande final combina todas as regras." },
+    fr: { nextPlan:"Plan pour la prochaine étagère", planWin:"Gardez une case de secours et complétez les paires visibles avant d'ajouter un nouvel objet isolé.", planRetry:"Formez plus tôt les paires visibles et évitez un troisième type isolé quand le plateau est serré.", chapterPreview:"Chapitre suivant : {chapter} — {rule}", finaleRule:"La grande finale combine toutes les règles." },
+    de: { nextPlan:"Plan fürs nächste Regal", planWin:"Halte einen Notplatz frei und vervollständige offene Paare, bevor du ein neues Einzelstück aufnimmst.", planRetry:"Bilde offene Paare früher und nimm bei knapper Ablage keine dritte Einzelart hinzu.", chapterPreview:"Nächstes Kapitel: {chapter} – {rule}", finaleRule:"Im großen Finale treffen alle Regeln zusammen." },
+    it: { nextPlan:"Piano per il prossimo scaffale", planWin:"Tieni libero uno spazio di emergenza e completa le coppie visibili prima di aggiungere un nuovo oggetto singolo.", planRetry:"Crea prima le coppie visibili ed evita un terzo tipo singolo quando il vassoio è quasi pieno.", chapterPreview:"Prossimo capitolo: {chapter} — {rule}", finaleRule:"Il gran finale combina tutte le regole." },
+    ru: { nextPlan:"План для следующей полки", planWin:"Оставляйте одну аварийную ячейку и завершайте открытые пары, прежде чем брать новый одиночный предмет.", planRetry:"Создавайте открытые пары раньше и не добавляйте третий одиночный тип при тесном лотке.", chapterPreview:"Следующая глава: {chapter} — {rule}", finaleRule:"В финале объединятся все правила." },
+    hi: { nextPlan:"अगली शेल्फ़ की योजना", planWin:"एक आपात खाना खाली रखें और नई अकेली वस्तु लेने से पहले खुले जोड़ों को तिकड़ी बनाएँ।", planRetry:"खुले जोड़े पहले बनाएँ और ट्रे तंग होने पर तीसरी अकेली किस्म न जोड़ें।", chapterPreview:"अगला अध्याय: {chapter} — {rule}", finaleRule:"महान समापन में सभी नियम मिलेंगे।" },
+    ar: { nextPlan:"خطة الرف التالي", planWin:"اترك خانة للطوارئ وأكمل الأزواج المكشوفة قبل إضافة عنصر منفرد جديد.", planRetry:"كوّن الأزواج المكشوفة مبكراً وتجنب إضافة نوع منفرد ثالث عندما تضيق الصينية.", chapterPreview:"الفصل التالي: {chapter} — {rule}", finaleRule:"يجمع الختام الكبير كل القواعد." },
   };
   for (const [code, copy] of Object.entries(resultPlanCopy)) {
     for (const [key, value] of Object.entries(copy)) L[code][K.indexOf(key)] = value;
@@ -557,6 +557,7 @@
     document.querySelectorAll("[data-t-alt]").forEach(el => el.alt = t(el.dataset.tAlt));
     document.title = `${t("title")} | WeightPlay`;
     renderMainProgress(); renderStages(); if (run) renderRun();
+    if (run?.ended && !els.resultModal.hidden) renderResultChapterPreview(run.resultWin);
     syncGameOwnedMainOwners();
   }
   function setLocale(value) {
@@ -823,6 +824,19 @@
     });
     renderTray(); layoutPieces(); renderTools();
   }
+  function renderResultChapterPreview(win) {
+    if (!els.chapterPreview) return;
+    if (!win || !run?.ended) {
+      els.chapterPreview.hidden = true;
+      els.chapterPreview.textContent = "";
+      return;
+    }
+    const currentChapter = Math.floor(stageIndex / 5);
+    const previewChapter = Math.min(CHAPTERS.length - 1, currentChapter + 1);
+    const ruleKey = ["", "tangled", "cracked", "revealed", "shuffled", "finaleRule"][previewChapter];
+    els.chapterPreview.textContent = t("chapterPreview", { chapter: t(CHAPTERS[previewChapter]), rule: t(ruleKey) });
+    els.chapterPreview.hidden = false;
+  }
   function renderTray() {
     const cap = run.config.trayCap;
     const pendingIds = pendingPieceIds();
@@ -887,7 +901,7 @@
   function finish(win) {
     if (run.ended) return;
     cancelPendingMatch();
-    run.ended = true; run.paused = true;
+    run.ended = true; run.paused = true; run.resultWin = win;
     const free = run.config.trayCap - run.tray.length, stars = win ? (free >= 5 ? 3 : free >= 3 ? 2 : 1) : 0;
     if (win) {
       save.stars[stageIndex] = Math.max(save.stars[stageIndex] || 0, stars);
@@ -899,6 +913,7 @@
     els.resultStars.textContent = win ? "★".repeat(stars) : "◇◇◇";
     els.resultText.textContent = win ? t("winText", { n: stageIndex + 1, stars }) : t("failText");
     els.planText.textContent = t(win ? "planWin" : "planRetry");
+    renderResultChapterPreview(win);
     const canAdvance = win && stageIndex < 29;
     els.nextBtn.hidden = false;
     resultDecisionCommitted = false;

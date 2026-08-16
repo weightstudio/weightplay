@@ -6,6 +6,9 @@
   const canvas = $("#gameCanvas");
   const ctx = canvas.getContext("2d");
   const W = canvas.width; const H = canvas.height;
+  const battleBackground = new Image();
+  battleBackground.decoding = "async";
+  battleBackground.src = "battle-bg-v2.webp";
   const stages = [
     { floors:[430,330], platforms:[[{x:245,y:360,w:145,h:16},{x:540,y:315,w:150,h:16}],[{x:200,y:260,w:135,h:16},{x:470,y:220,w:155,h:16}]], shards:[{lane:0,x:305,y:325},{lane:1,x:265,y:225},{lane:0,x:615,y:280}], switches:[], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[],[]] },
     { floors:[430,330], platforms:[[{x:230,y:350,w:120,h:16},{x:455,y:300,w:135,h:16},{x:700,y:360,w:120,h:16}],[{x:260,y:255,w:110,h:16},{x:540,y:195,w:140,h:16}]], shards:[{lane:0,x:270,y:315},{lane:1,x:315,y:220},{lane:0,x:520,y:265}], switches:[{lane:1,x:620,y:160}], gates:[{x:870,y:400},{x:870,y:300}], hazards:[[{x:620,y:404,w:64,h:26}],[]] },
@@ -59,7 +62,13 @@
   };
   const finish=(success)=>{if(!state||state.done)return;state.done=true;state.success=success;const best=Number(storage(bestKey(current),0))||0;if(success&&(!best||state.moves<best))save(bestKey(current),state.moves);if(success&&current+1<stages.length)save(unlockKey,Math.max(unlocked(),current+2));beep(success?960:150,.16);renderResult();setScreen("result");};
   const draw = () => {
-    const data=stageData();const bg=ctx.createLinearGradient(0,0,0,H);bg.addColorStop(0,"#274459");bg.addColorStop(1,"#071522");ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+    const data=stageData();
+    if (battleBackground.complete && battleBackground.naturalWidth > 0) {
+      ctx.drawImage(battleBackground, 0, 0, W, H);
+      ctx.fillStyle="#07152240";ctx.fillRect(0,0,W,H);
+    } else {
+      const bg=ctx.createLinearGradient(0,0,0,H);bg.addColorStop(0,"#274459");bg.addColorStop(1,"#071522");ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+    }
     ctx.fillStyle="#ffd27712";ctx.fillRect(0,0,W,74);ctx.fillStyle="#78e2dc18";ctx.fillRect(0,74,W,6);
     for(let lane=0;lane<2;lane+=1){const floor=data.floors[lane];ctx.fillStyle=lane===0?"#19445b":"#3d3f4e";ctx.fillRect(0,floor,W,H-floor);ctx.strokeStyle=lane===0?"#78e2dc":"#ffd277";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(0,floor);ctx.lineTo(W,floor);ctx.stroke();data.platforms[lane].forEach((platform)=>{ctx.fillStyle=lane===0?"#4d8991":"#a07962";ctx.fillRect(platform.x,platform.y,platform.w,platform.h);ctx.fillStyle="#ffffff33";ctx.fillRect(platform.x,platform.y,platform.w,3);});(data.hazards[lane]||[]).forEach((hazard)=>{ctx.fillStyle="#ff7c91";ctx.beginPath();for(let x=hazard.x;x<=hazard.x+hazard.w;x+=13){ctx.lineTo(x,hazard.y+hazard.h);ctx.lineTo(x+6,hazard.y);}ctx.lineTo(hazard.x+hazard.w,hazard.y+hazard.h);ctx.closePath();ctx.fill();});}
     data.shards.forEach((shard,index)=>{if(state?.shards.has(index))return;ctx.fillStyle=shard.lane===0?"#ffd277":"#78e2dc";ctx.save();ctx.translate(shard.x,shard.y);ctx.rotate(Math.PI/4);ctx.fillRect(-9,-9,18,18);ctx.restore();});
@@ -67,7 +76,7 @@
     data.gates.forEach((gate,index)=>{const open=gatesOpen();ctx.strokeStyle=open?"#78e2dc":"#a36d78";ctx.lineWidth=7;ctx.beginPath();ctx.arc(gate.x,gate.y,27,Math.PI,0);ctx.lineTo(gate.x+27,gate.y+34);ctx.moveTo(gate.x-27,gate.y);ctx.lineTo(gate.x-27,gate.y+34);ctx.stroke();});
     if(state)state.bodies.forEach((body,index)=>{ctx.save();ctx.translate(body.x,body.y-body.h/2);ctx.fillStyle=body.color;ctx.beginPath();ctx.ellipse(0,0,body.w/2,body.h/2,0,0,Math.PI*2);ctx.fill();ctx.fillStyle=index===0?"#ffd39b":"#65778c";ctx.beginPath();ctx.arc(index===0?9:7,-8,9,0,Math.PI*2);ctx.fill();ctx.fillStyle="#071627";ctx.beginPath();ctx.arc(index===0?12:10,-10,2.5,0,Math.PI*2);ctx.fill();ctx.restore();});
   };
-  const updateHud=()=>{if(!state)return;$("#scoreLabel").textContent=`${text("score")}: ${state.score}`;$("#shardLabel").textContent=`${text("shards")}: ${state.shards.size}/${stageData().shards.length}`;$("#controlHint").textContent=text("controlHint");canvas.dataset.moves=String(state.moves);canvas.dataset.shards=String(state.shards.size);canvas.dataset.time=String(state.time);};
+  const updateHud=()=>{if(!state)return;$("#scoreLabel").textContent=`${text("score")}: ${state.score}`;$("#shardLabel").textContent=`${text("shards")}: ${state.shards.size}/${stageData().shards.length}`;$("#controlHint").textContent=text("controlHint");canvas.dataset.moves=String(state.moves);canvas.dataset.shards=String(state.shards.size);canvas.dataset.time=String(state.time);canvas.dataset.player0x=String(state.bodies[0].x);canvas.dataset.player0y=String(state.bodies[0].y-state.bodies[0].h/2);canvas.dataset.player1x=String(state.bodies[1].x);canvas.dataset.player1y=String(state.bodies[1].y-state.bodies[1].h/2);};
   const renderResult=()=>{const best=Number(storage(bestKey(current),0))||0;$("#resultEyebrow").textContent=`${text("stage")} ${current+1}`;$("#resultTitle").textContent=text(state.success?"success":"failure");$("#resultCopy").textContent=text(state.success?(current===stages.length-1?"final":"successCopy"):"failureCopy");$("#resultScore").innerHTML=`<span>${text("scoreStat")}</span><strong>${state.score}</strong>`;$("#resultMoves").innerHTML=`<span>${text("movesStat")}</span><strong>${state.moves}</strong>`;$("#resultBest").innerHTML=`<span>${text("bestStat")}</span><strong>${best||"—"}</strong>`;$("#nextBtn").textContent=text("next");$("#nextBtn").disabled=!state.success||current>=stages.length-1;$("#retryBtn").textContent=text("retry");$("#resultStagesBtn").textContent=text("stageMap");};
   const stageTitle=(index)=>`${text("stage")} ${index+1}`;
   const renderStages=()=>{const count=unlocked();$("#stageGrid").innerHTML=stages.map((_,index)=>{const open=index<count;const best=Number(storage(bestKey(index),0))||0;return `<button class="stage-card${open?"":" locked"}" type="button" data-stage="${index}" ${open?"":"disabled"}><strong>${stageTitle(index)}</strong><small>${open?(best?`${text("bestStat")}: ${best}`:text("objective")):text("stageHelp")}</small><span aria-hidden="true">${open?"✦":"◌"}</span></button>`;}).join("");$("#stageGrid").querySelectorAll("[data-stage]").forEach((button)=>button.addEventListener("click",()=>startStage(Number(button.dataset.stage))));$("#stageTitle").textContent=text("stages");$("#stageEyebrow").textContent=text("eyebrow");$("#stageHelp").textContent=text("stageHelp");};

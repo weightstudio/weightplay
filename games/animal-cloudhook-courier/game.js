@@ -40,6 +40,9 @@
   const ctx = canvas.getContext("2d");
   const W = canvas.width;
   const H = canvas.height;
+  const battleBackground = new Image();
+  battleBackground.decoding = "async";
+  battleBackground.src = "battle-bg-v2.webp";
   const stageConfigs = [
     { wind: 0, anchors: [{x:210,y:300},{x:370,y:230},{x:530,y:330},{x:690,y:210}], parcels: [{x:330,y:170},{x:600,y:150}], spikes: [] },
     { wind: 8, anchors: [{x:205,y:290},{x:360,y:190},{x:500,y:315},{x:665,y:180},{x:790,y:300}], parcels: [{x:300,y:150},{x:575,y:190},{x:735,y:130}], spikes: [{x:430,y:430,w:65,h:22}] },
@@ -164,7 +167,13 @@
     if (state.y > H + 35 || state.x < -45 || state.x > W + 45) finish(false);
   };
   const drawBackground = () => {
-    const gradient = ctx.createLinearGradient(0, 0, 0, H); gradient.addColorStop(0, "#123f5b"); gradient.addColorStop(1, "#061322"); ctx.fillStyle = gradient; ctx.fillRect(0, 0, W, H);
+    if (battleBackground.complete && battleBackground.naturalWidth > 0) {
+      ctx.drawImage(battleBackground, 0, 0, W, H);
+      ctx.fillStyle = "#06132230";
+      ctx.fillRect(0, 0, W, H);
+    } else {
+      const gradient = ctx.createLinearGradient(0, 0, 0, H); gradient.addColorStop(0, "#123f5b"); gradient.addColorStop(1, "#061322"); ctx.fillStyle = gradient; ctx.fillRect(0, 0, W, H);
+    }
     ctx.fillStyle = "#ffffff12"; for (let i = 0; i < 34; i += 1) { const x = (i * 173) % W; const y = 26 + ((i * 71) % 255); ctx.fillRect(x, y, 2, 2); }
     ctx.fillStyle = "#9edce51a"; for (let i = 0; i < 5; i += 1) { ctx.beginPath(); ctx.ellipse(90 + i * 215, 485 - (i % 2) * 22, 150, 27, 0, 0, Math.PI * 2); ctx.fill(); }
   };
@@ -179,7 +188,7 @@
     if (state?.flash > 0) { ctx.fillStyle = `rgba(255,235,157,${Math.min(0.35, state.flash)})`; ctx.fillRect(0, 0, W, H); }
   };
   const tick = (now) => { const dt = Math.min(0.032, Math.max(0, (now - lastTime) / 1000 || 0)); lastTime = now; if (!hidden) { if (isBattleActive()) update(dt); draw(); updateHud(); } frame = window.requestAnimationFrame(tick); };
-  const updateHud = () => { if (!state) return; $("#scoreLabel").textContent = `${text("score")}: ${state.score}`; $("#timeLabel").textContent = `${text("time")}: ${formatTime(state.time)}`; $("#controlHint").textContent = text("hint"); canvas.dataset.attached = String(state.attached); canvas.dataset.time = String(state.time); canvas.dataset.x = String(state.x); updateTetherLabel(); };
+  const updateHud = () => { if (!state) return; $("#scoreLabel").textContent = `${text("score")}: ${state.score}`; $("#timeLabel").textContent = `${text("time")}: ${formatTime(state.time)}`; $("#controlHint").textContent = text("hint"); canvas.dataset.attached = String(state.attached); canvas.dataset.time = String(state.time); canvas.dataset.x = String(state.x); canvas.dataset.y = String(state.y); updateTetherLabel(); };
   const renderResult = () => { const best = Number(safeGet(bestKey(currentStage), 0)) || 0; $("#resultEyebrow").textContent = `${text("stage")} ${currentStage + 1}`; $("#resultTitle").textContent = text(state.success ? "success" : "failure"); $("#resultCopy").textContent = text(state.success ? (currentStage === stageConfigs.length - 1 ? "final" : "successCopy") : "failureCopy"); $("#resultScore").innerHTML = `<span>${text("scoreStat")}</span><strong>${state.score}</strong>`; $("#resultTime").innerHTML = `<span>${text("timeStat")}</span><strong>${formatTime(state.time)}</strong>`; $("#resultBest").innerHTML = `<span>${text("bestStat")}</span><strong>${best ? formatTime(best) : "—"}</strong>`; $("#nextBtn").textContent = text("next"); $("#nextBtn").disabled = !state.success || currentStage >= stageConfigs.length - 1; $("#retryBtn").textContent = text("retry"); $("#resultStagesBtn").textContent = text("stageMap"); };
   const liveBattleNodes = () => [...battleScreen.children].filter((node) => node !== resultScreen && node !== leaveOverlay);
   const syncBattleOverlayState = () => { liveBattleNodes().forEach((node) => { const inert = resultOpen || leaveOpen; node.inert = inert; if (inert) node.setAttribute("aria-hidden", "true"); else node.removeAttribute("aria-hidden"); }); };
