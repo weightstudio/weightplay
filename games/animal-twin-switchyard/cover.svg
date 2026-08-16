@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Twin Switchyard</title>
+  <desc id="desc">Two original animal jumpers cross split glowing lanes together.</desc>
+  <defs>
+    <linearGradient id="yard" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#14283a"/><stop offset="1" stop-color="#241337"/></linearGradient>
+    <linearGradient id="rail" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#6dffbd"/><stop offset="1" stop-color="#69c9ff"/></linearGradient>
+  </defs>
+  <rect width="960" height="540" rx="34" fill="url(#yard)"/>
+  <path d="M84 392 H878 M84 466 H878 M470 122 V466" stroke="#284c5d" stroke-width="20"/>
+  <path d="M84 392 H878 M84 466 H878 M470 122 V466" stroke="url(#rail)" stroke-width="5" stroke-dasharray="12 12"/>
+  <g transform="translate(264 292)">
+    <ellipse cx="0" cy="50" rx="72" ry="16" fill="#050d1b" opacity=".45"/>
+    <path d="M-52 34 Q-44 -16 5 -18 Q51 -8 56 32 Q22 59 -52 34Z" fill="#a5e7d0" stroke="#101e35" stroke-width="9"/>
+    <circle cx="38" cy="-3" r="28" fill="#d6fff0" stroke="#101e35" stroke-width="8"/>
+    <circle cx="45" cy="-8" r="4" fill="#101e35"/>
+    <path d="M52 -23 l21 -13 -3 25" fill="#d6fff0" stroke="#101e35" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M-28 30 l-10 30 M20 30 l12 30" stroke="#a5e7d0" stroke-width="12" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(628 366)">
+    <ellipse cx="0" cy="50" rx="74" ry="16" fill="#050d1b" opacity=".45"/>
+    <path d="M-56 32 Q-44 -18 8 -16 Q54 -5 59 31 Q20 60 -56 32Z" fill="#f3b768" stroke="#101e35" stroke-width="9"/>
+    <circle cx="39" cy="-4" r="28" fill="#ffe0a0" stroke="#101e35" stroke-width="8"/>
+    <circle cx="46" cy="-9" r="4" fill="#101e35"/>
+    <path d="M19 -24 l-14 -24 24 12 M53 -24 l19 -14 -3 25" fill="#ffe0a0" stroke="#101e35" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M-29 30 l-12 30 M20 30 l13 30" stroke="#f3b768" stroke-width="12" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(470 118)"><circle r="33" fill="#ffd86e" stroke="#172338" stroke-width="8"/><path d="M-18 0 H18 M0 -18 V18" stroke="#172338" stroke-width="6" stroke-linecap="round"/></g>
+  <text x="58" y="84" fill="#ffffff" font-family="system-ui,sans-serif" font-size="42" font-weight="800">TWIN SWITCHYARD</text>
+  <text x="62" y="122" fill="#bfffe4" font-family="system-ui,sans-serif" font-size="20" letter-spacing="4">SYNC • SWITCH • JUMP</text>
+</svg>

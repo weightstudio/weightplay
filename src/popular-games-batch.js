@@ -13,10 +13,10 @@
     "zh-Hans": { tetris: "俄罗斯方块", snake: "贪吃蛇", "tic-tac-toe": "井字棋", chess: "国际象棋", checkers: "西洋跳棋", "mahjong-solitaire": "麻将接龙", wordle: "Wordle 猜词", hangman: "猜词吊人", breakout: "打砖块", pong: "乒乓球" },
     ja: { tetris: "テトリス", snake: "スネーク", "tic-tac-toe": "三目並べ", chess: "チェス", checkers: "チェッカー", "mahjong-solitaire": "麻雀ソリティア", wordle: "Wordle", hangman: "ハングマン", breakout: "ブロック崩し", pong: "卓球" },
     ko: { tetris: "테트리스", snake: "스네이크", "tic-tac-toe": "틱택토", chess: "체스", checkers: "체커", "mahjong-solitaire": "마작 솔리테어", wordle: "Wordle", hangman: "행맨", breakout: "벽돌깨기", pong: "퐁" },
-    es: { tetris: "Tetris", snake: "Snake", "tic-tac-toe": "Tres en raya", chess: "Ajedrez", checkers: "Damas", "mahjong-solitaire": "Mahjong solitario", wordle: "Wordle", hangman: "Ahorcado", breakout: "Rompe ladrillos", pong: "Pong" },
+    es: { tetris: "Tetris", snake: "Serpiente", "tic-tac-toe": "Tres en raya", chess: "Ajedrez", checkers: "Damas", "mahjong-solitaire": "Mahjong solitario", wordle: "Wordle", hangman: "Ahorcado", breakout: "Rompe ladrillos", pong: "Pong" },
     "pt-BR": { tetris: "Tetris", snake: "Snake", "tic-tac-toe": "Jogo da velha", chess: "Xadrez", checkers: "Damas", "mahjong-solitaire": "Paciência Mahjong", wordle: "Wordle", hangman: "Forca", breakout: "Quebra-blocos", pong: "Pong" },
     fr: { tetris: "Tetris", snake: "Snake", "tic-tac-toe": "Morpion", chess: "Échecs", checkers: "Dames", "mahjong-solitaire": "Mahjong solitaire", wordle: "Wordle", hangman: "Pendu", breakout: "Casse-briques", pong: "Pong" },
-    de: { tetris: "Tetris", snake: "Snake", "tic-tac-toe": "Drei gewinnt", chess: "Schach", checkers: "Dame", "mahjong-solitaire": "Mahjong-Solitär", wordle: "Wordle", hangman: "Galgenmännchen", breakout: "Brick Breaker", pong: "Pong" },
+    de: { tetris: "Tetris", snake: "Schlange", "tic-tac-toe": "Drei gewinnt", chess: "Schach", checkers: "Dame", "mahjong-solitaire": "Mahjong-Solitär", wordle: "Wordle", hangman: "Galgenmännchen", breakout: "Brick Breaker", pong: "Pong" },
     it: { tetris: "Tetris", snake: "Snake", "tic-tac-toe": "Tris", chess: "Scacchi", checkers: "Dama", "mahjong-solitaire": "Mahjong solitario", wordle: "Wordle", hangman: "Impiccato", breakout: "Arkanoid", pong: "Pong" },
     ru: { tetris: "Тетрис", snake: "Змейка", "tic-tac-toe": "Крестики-нолики", chess: "Шахматы", checkers: "Шашки", "mahjong-solitaire": "Маджонг-солitaire", wordle: "Wordle", hangman: "Виселица", breakout: "Арканоид", pong: "Понг" },
     hi: { tetris: "टेट्रिस", snake: "स्नेक", "tic-tac-toe": "टिक-टैक-टो", chess: "शतरंज", checkers: "चेकर्स", "mahjong-solitaire": "माहजोंग सॉलिटेयर", wordle: "Wordle", hangman: "हैंगमैन", breakout: "ब्रेकआउट", pong: "पोंग" },
@@ -184,19 +184,19 @@
     return [0, 1, 2].map((step) => head - (dx * step) - (dy * SNAKE_GRID_SIZE * step));
   };
   const SNAKE_INSTRUCTION = {
-    en: "Tap the board or choose a direction to start. Then steer to food and avoid walls and your tail.",
-    "zh-Hant": "點擊棋盤或選擇方向開始，再轉向吃食物並避開牆壁與自己的身體。",
-    "zh-Hans": "点击棋盘或选择方向开始，再转向吃食物并避开墙壁与自己的身体。",
-    ja: "盤面をタップするか方向を選んで開始し、食べ物へ曲がって壁と自分の体を避けましょう。",
-    ko: "보드를 탭하거나 방향을 선택해 시작한 뒤 먹이를 향해 틀고 벽과 몸을 피하세요.",
-    es: "Toca el tablero o elige una dirección para empezar; luego ve hacia la comida y evita paredes y cola.",
-    "pt-BR": "Toque no tabuleiro ou escolha uma direção para começar; depois vá à comida e evite paredes e cauda.",
-    fr: "Touchez le plateau ou choisissez une direction pour commencer, puis visez la nourriture en évitant murs et queue.",
-    de: "Tippe auf das Spielfeld oder wähle eine Richtung zum Start; lenke dann zum Futter und meide Wände und Schwanz.",
-    it: "Tocca la griglia o scegli una direzione per iniziare; poi guida il serpente al cibo evitando pareti e coda.",
-    ru: "Нажмите на поле или выберите направление, чтобы начать; затем ведите змейку к еде, избегая стен и хвоста.",
-    hi: "शुरू करने के लिए बोर्ड पर टैप करें या दिशा चुनें; फिर भोजन की ओर मुड़ें और दीवार व पूँछ से बचें।",
-    ar: "اضغط على اللوحة أو اختر اتجاهاً للبدء، ثم وجّه الثعبان إلى الطعام وتجنب الجدران وذيله.",
+    en: "Tap the board or choose a direction to start. Then steer to food, wrap across the edges, and avoid your tail and obstacle cells.",
+    "zh-Hant": "點擊棋盤或選擇方向開始，再轉向吃食物，從邊界穿到對面並避開自己的身體與障礙格。",
+    "zh-Hans": "点击棋盘或选择方向开始，再转向吃食物，从边界穿到对面并避开自己的身体与障碍格。",
+    ja: "盤面をタップするか方向を選んで開始し、食べ物へ曲がり、端から反対側へ回って体と障害物を避けましょう。",
+    ko: "보드를 탭하거나 방향을 선택해 시작한 뒤 먹이를 향해 틀고, 가장자리에서 반대편으로 넘어가며 몸과 장애물 칸을 피하세요.",
+    es: "Toca el tablero o elige una dirección para empezar; luego ve hacia la comida, cruza los bordes y evita tu cola y las casillas de obstáculo.",
+    "pt-BR": "Toque no tabuleiro ou escolha uma direção para começar; depois vá à comida, atravesse as bordas e evite sua cauda e as casas de obstáculo.",
+    fr: "Touchez le plateau ou choisissez une direction pour commencer, puis visez la nourriture, traversez les bords et évitez votre queue et les cases obstacles.",
+    de: "Tippe auf das Spielfeld oder wähle eine Richtung zum Start; lenke dann zum Futter, wechsle über den Rand auf die andere Seite und meide Schwanz und Hinderniszellen.",
+    it: "Tocca la griglia o scegli una direzione per iniziare; poi guida il serpente al cibo, attraversa i bordi ed evita coda e celle ostacolo.",
+    ru: "Нажмите на поле или выберите направление, чтобы начать; затем ведите змейку к еде, переходите через край на противоположную сторону и избегайте хвоста и препятствий.",
+    hi: "शुरू करने के लिए बोर्ड पर टैप करें या दिशा चुनें; फिर भोजन की ओर मुड़ें, किनारे से दूसरी ओर निकलें और पूँछ व बाधा वाले खाने से बचें।",
+    ar: "اضغط على اللوحة أو اختر اتجاهاً للبدء، ثم وجّه الثعبان إلى الطعام واعبر الحواف لتظهر في الجهة المقابلة وتجنب ذيله وخلايا العوائق.",
   };
   const SNAKE_READY = {
     en: "Tap the board or choose a direction to start.",
@@ -270,7 +270,8 @@
   const hangmanHint = (locale, length) => (HANGMAN_HINT_COPY[locale] || HANGMAN_HINT_COPY.en)(length);
   const hangmanMiss = (locale, letter, misses) => (HANGMAN_MISS_COPY[locale] || HANGMAN_MISS_COPY.en)(letter, misses);
   const checkersPromotionCopy = (locale, kind) => (CHECKERS_PROMOTION_COPY[locale] || CHECKERS_PROMOTION_COPY.en)[kind];
-  const title = (locale, gameId) => (TITLES[locale] || TITLES.en)[gameId];
+  const title = (locale, gameId) => window.WEIGHTPLAY_GAME_TITLES?.[gameId]?.[locale]
+    || (TITLES[locale] || TITLES.en)[gameId];
   const ticCellLabel = (locale, index, cell) => {
     const labels = TIC_CELL_COPY[locale] || TIC_CELL_COPY.en;
     const row = Math.floor(index / 3) + 1;
@@ -305,8 +306,12 @@
     // Snake owns a complete 13-locale shell and guide. Keep the generic
     // runtime translator from re-translating freshly rendered copy using the
     // previous locale during an in-place language switch.
-    if (game.type === "snake") root.dataset.runtimeLocalize = "off";
-    let locale = randomLocale();
+    if (game.type === "snake") {
+      root.dataset.runtimeLocalize = "off";
+      document.body.dataset.runtimeLocalize = "off";
+    }
+    const routeLocale = document.documentElement.lang;
+    let locale = game.type === "snake" && COPY[routeLocale] ? routeLocale : randomLocale();
     if (!COPY[locale]) locale = "en";
     let state = makeState(game.type);
     const CHECKERS_GAME_VERSION = "v4";
@@ -425,15 +430,14 @@
       const head = state.trail[0];
       const headX = head % SNAKE_GRID_SIZE;
       const headY = Math.floor(head / SNAKE_GRID_SIZE);
-      const nextX = headX + dx;
-      const nextY = headY + dy;
+      const nextX = (headX + dx + SNAKE_GRID_SIZE) % SNAKE_GRID_SIZE;
+      const nextY = (headY + dy + SNAKE_GRID_SIZE) % SNAKE_GRID_SIZE;
       const next = nextY * SNAKE_GRID_SIZE + nextX;
       state.moves += 1;
-      const hitsWall = nextX < 0 || nextX >= SNAKE_GRID_SIZE || nextY < 0 || nextY >= SNAKE_GRID_SIZE;
       const eats = next === state.foodCell;
       const hitsBody = state.trail.includes(next) && !(next === state.trail[state.trail.length - 1] && !eats);
       const hitsObstacle = state.obstacles.includes(next);
-      if (hitsWall || hitsBody || hitsObstacle) { state.trail = [next, ...state.trail]; finish(false); return; }
+      if (hitsBody || hitsObstacle) { state.trail = [next, ...state.trail]; finish(false); return; }
       state.trail = [next, ...state.trail];
       if (eats) {
         state.food += 1;

@@ -11,7 +11,13 @@ const isKidsLobby = audienceMode === "kids";
 const allLobbyGames = [...lobby.games];
 // GENERATED GAMEPLAY REVIEW PASSES START
 // Derived from review/database/GAMEPLAY_REVIEW_STATUS.md. Do not edit by hand.
-const verifiedGameplayReviewPasses = Object.freeze({});
+const verifiedGameplayReviewPasses = Object.freeze({
+  "animal-frost-maze": {
+    "gameVersion": "v1",
+    "interfaceVersion": 6,
+    "overall": 9.1
+  }
+});
 // GENERATED GAMEPLAY REVIEW PASSES END
 const catalogGames = allLobbyGames.filter((game) =>
   (game.status === "playable"

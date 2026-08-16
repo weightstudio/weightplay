@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Cloudhook Courier</title>
+  <desc id="desc">A small original courier animal swings between glowing cloud rings.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#101c43"/><stop offset="1" stop-color="#24104a"/></linearGradient>
+    <linearGradient id="cloud" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#62d9ff"/><stop offset="1" stop-color="#d8b9ff"/></linearGradient>
+  </defs>
+  <rect width="960" height="540" rx="34" fill="url(#sky)"/>
+  <circle cx="760" cy="120" r="92" fill="#70e7ff" opacity=".12"/>
+  <circle cx="760" cy="120" r="64" fill="none" stroke="#73e4ff" stroke-width="8" opacity=".75"/>
+  <circle cx="760" cy="120" r="39" fill="none" stroke="#d9c2ff" stroke-width="5" opacity=".75"/>
+  <path d="M116 424 C260 324 378 472 502 376 S742 362 864 430" fill="none" stroke="#293878" stroke-width="22" stroke-linecap="round"/>
+  <path d="M116 424 C260 324 378 472 502 376 S742 362 864 430" fill="none" stroke="#75e7ff" stroke-width="4" stroke-linecap="round" opacity=".7"/>
+  <path d="M490 356 Q573 240 760 120" fill="none" stroke="#d6d9ff" stroke-width="5" stroke-dasharray="10 12" opacity=".85"/>
+  <g transform="translate(455 318) rotate(-18)">
+    <path d="M0 47 Q52 8 100 45 Q86 86 34 82 Q5 76 0 47Z" fill="#f4a85f" stroke="#291b4f" stroke-width="8"/>
+    <circle cx="78" cy="35" r="28" fill="#ffd58b" stroke="#291b4f" stroke-width="8"/>
+    <path d="M91 14 l14 -20 8 26" fill="#ffd58b" stroke="#291b4f" stroke-width="7" stroke-linejoin="round"/>
+    <circle cx="86" cy="31" r="4" fill="#291b4f"/>
+    <path d="M10 54 Q-12 35 -23 45" fill="none" stroke="#f4a85f" stroke-width="12" stroke-linecap="round"/>
+    <path d="M42 78 l-8 24 M74 74 l11 25" stroke="#ffd58b" stroke-width="10" stroke-linecap="round"/>
+    <rect x="28" y="42" width="32" height="26" rx="5" fill="#66e2ff" stroke="#291b4f" stroke-width="5"/>
+  </g>
+  <text x="58" y="84" fill="#ffffff" font-family="system-ui,sans-serif" font-size="42" font-weight="800">CLOUDHOOK COURIER</text>
+  <text x="62" y="122" fill="#b9caff" font-family="system-ui,sans-serif" font-size="20" letter-spacing="4">SWING • RELEASE • DELIVER</text>
+</svg>
