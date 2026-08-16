@@ -5563,6 +5563,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "Find the {animal} pair next.": "接下來找到 {animal} 對。",
   "Find the animal words": "找出動物的單字",
   "Find the golden key star before crossing this gate.": "在穿過這扇門之前找到金鑰匙星。",
+  "Find the golden key to open this room's relic chest.": "找到金色鑰匙，打開這個房間的遺物寶箱。",
   "Find the golden key, then unlock the relic chest.": "找到金色鑰匙，再打開遺物寶箱。",
   "Find the trail key before crossing this gate.": "在穿過這扇門之前找到線索鑰匙。",
   "Find These": "找到這些",

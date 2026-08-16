@@ -12,6 +12,8 @@
   const ROOMS_PER_EXPEDITION = 3;
   const EXPEDITIONS_PER_REGION = 5;
   const GAME_ID = "animal-relic-hunters";
+  const GAME_VERSION = 9;
+  const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_relic_hunters_v1";
   const profileKey = "weightplay:animal-relic-hunters:profile:v1";
   const localeKey = "weightPlayLocale";
@@ -155,6 +157,7 @@
       hudHp: "Player HP",
       roomLabel: "Room",
       keysLabel: "Keys",
+      roomObjectiveStart: "Find the golden key to open this room's relic chest.",
       roomObjectiveKey: "Find the golden key, then unlock the relic chest.",
       roomObjectiveChest: "Use the key on the relic chest; then enter the cyan portal.",
       roomObjectivePortal: "Relic claimed. Enter the cyan portal to the next room.",
@@ -273,6 +276,7 @@
       hudHp: "角色生命",
       roomLabel: "房間",
       keysLabel: "鑰匙",
+      roomObjectiveStart: "先找到金色鑰匙，開啟這個房間的遺跡寶箱。",
       roomObjectiveKey: "找到金色鑰匙，再用它開啟遺跡寶箱。",
       roomObjectiveChest: "用鑰匙開啟遺跡寶箱，再進入青色傳送門。",
       roomObjectivePortal: "已取得遺物。進入青色傳送門前往下一個房間。",
@@ -388,6 +392,7 @@
     hudHp: "生命值",
     roomLabel: "房間",
     keysLabel: "鑰匙",
+    roomObjectiveStart: "先找到金色鑰匙，開啟這個房間的遺跡寶箱。",
     roomObjectiveKey: "找到金色鑰匙，再用它開啟遺跡寶箱。",
     roomObjectiveChest: "用鑰匙開啟遺跡寶箱，再進入青色傳送門。",
     roomObjectivePortal: "已取得遺物。進入青色傳送門前往下一個房間。",
@@ -500,6 +505,7 @@
     hudHp: "PV del jugador",
     roomLabel: "Sala",
     keysLabel: "Llaves",
+    roomObjectiveStart: "Encuentra la llave dorada para abrir el cofre de reliquias de esta sala.",
     roomObjectiveKey: "Encuentra la llave dorada y abre el cofre de reliquias.",
     roomObjectiveChest: "Usa la llave en el cofre; después entra en el portal cian.",
     roomObjectivePortal: "Reliquia conseguida. Entra en el portal cian hacia la siguiente sala.",
@@ -923,6 +929,7 @@
   let suppressExpeditionClick = false;
   let resultNextExpedition = 0;
   let resultMapIsPrimary = false;
+  let lastTrackedObjectiveKey = "";
   let eliteSpawnTimer = 0;
   let eliteSpawnDueAt = 0;
   let eliteSpawnCallback = null;
@@ -1125,6 +1132,37 @@
   function getLocale() {
     const stored = readStorage(localeKey);
     return window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || stored || "en";
+  }
+
+  function viewportBucket() {
+    const width = Math.max(0, Number(window.innerWidth) || 0);
+    return width < 600 ? "compact" : width < 900 ? "medium" : "wide";
+  }
+
+  function inferredInputType(fallback = "unknown") {
+    if (movePointerId !== null || moveTarget) return "pointer";
+    if (Object.values(keysPressed).some(Boolean)) return "keyboard";
+    return fallback;
+  }
+
+  function trackGrowthEvent(name, details = {}) {
+    const track = window.WonderAnalytics?.track;
+    if (typeof track !== "function") return;
+    try {
+      track.call(window.WonderAnalytics, name, {
+        game_id: GAME_ID,
+        game_version: GAME_VERSION,
+        interface_version: INTERFACE_VERSION,
+        locale: getLocale(),
+        viewport_bucket: viewportBucket(),
+        input_type: details.input_type || inferredInputType(),
+        expedition: state.expedition || selectedExpedition || 1,
+        room: state.room || 1,
+        ...details,
+      });
+    } catch {
+      // Analytics must never affect gameplay or block the local game loop.
+    }
   }
 
   function t(key, params = {}) {
@@ -1631,7 +1669,7 @@
       card.type = "button";
       card.dataset.wpPoolIdentity = `relic-pool-${offset}`;
       bindExpeditionCard(card, expeditionWindowStart + offset);
-      card.addEventListener("click", () => {
+      card.addEventListener("click", (event) => {
         if (suppressExpeditionClick) return;
         const id = Number(card.dataset.expedition);
         browsedExpedition = id;
@@ -1640,7 +1678,7 @@
         if (card.getAttribute("aria-disabled") === "true") return;
         selectedExpedition = id;
         window.WonderSound?.play("click");
-        startRun();
+        startRun(event.detail === 0 ? "keyboard" : "pointer");
       });
       nodes.expeditionRail.append(card);
       return card;
@@ -2146,7 +2184,7 @@
   }
 
   // Combat loop updates
-  function startRun() {
+  function startRun(inputType = "programmatic") {
     cancelExpeditionStageMotion();
     clearEliteSpawnTimer();
     state.gameActive = false;
@@ -2201,9 +2239,12 @@
 
     renderStatsPanel();
     renderEquippedGear();
-    updateHUDText();
 
     state.gameActive = true;
+    lastTrackedObjectiveKey = "";
+    trackGrowthEvent("game_start", { input_type: inputType });
+    trackGrowthEvent("room_start", { input_type: inputType });
+    updateHUDText();
     window.WonderSound?.play("start");
     
     cancelAnimationFrame(state.gameLoopId);
@@ -2439,11 +2480,17 @@
       ? "roomObjectiveKey"
       : activeTypes.has("chest")
         ? "roomObjectiveChest"
-        : activeTypes.has("portal")
-          ? "roomObjectivePortal"
-          : "";
+          : activeTypes.has("portal")
+            ? "roomObjectivePortal"
+          : state.gameActive ? "roomObjectiveStart" : "";
     nodes.roomObjective.hidden = !key;
     nodes.roomObjective.textContent = key ? objectiveText(key) : "";
+    if (!key) {
+      lastTrackedObjectiveKey = "";
+    } else if (key !== lastTrackedObjectiveKey) {
+      lastTrackedObjectiveKey = key;
+      trackGrowthEvent("objective_cue_visible", { cue: key });
+    }
   }
 
   // Firing function
@@ -2531,10 +2578,12 @@
     nodes.draftPanel.classList.remove("hidden");
     updateDraftRerollUI();
     setDraftModalActive(true);
+    trackGrowthEvent("draft_open", { level: state.level });
   }
 
   function chooseDraftRelic(relicId) {
     clearDraftRerollConfirmation(false);
+    trackGrowthEvent("draft_select", { level: state.level, relic: relicId });
     applyRelic(relicId);
     if (state.exp >= state.expNeed) {
       handleLevelUp();
@@ -2745,6 +2794,10 @@
   }
 
   function finishLootDecision(shouldEquip) {
+    trackGrowthEvent("loot_choice", {
+      choice: shouldEquip ? "equip" : "keep",
+      gear: currentLootItem,
+    });
     if (shouldEquip) equipGearItem(currentLootItem);
     nodes.lootPanel.classList.add("hidden");
     state.gameActive = true;
@@ -2815,6 +2868,9 @@
 
   // Complete Game Run
   function endGame(won) {
+    trackGrowthEvent(won ? "game_complete" : "game_fail", {
+      cleared_rooms: won ? ROOMS_PER_EXPEDITION : Math.max(0, state.room - 1),
+    });
     clearEliteSpawnTimer();
     state.gameActive = false;
     setPauseModalActive(false, false);
@@ -2856,6 +2912,7 @@
 
   // Portal Next Stage portal trigger
   function enterNextRoom() {
+    trackGrowthEvent("portal_enter", { from_room: state.room });
     state.room++;
     state.keys = 0;
     state.playerX = 100;
@@ -2866,6 +2923,8 @@
     state.playerHp = Math.min(stats.maxHp, state.playerHp + 10);
 
     spawnRoomEntities();
+    lastTrackedObjectiveKey = "";
+    trackGrowthEvent("room_start");
     renderStatsPanel();
     updateHUDText();
     window.WonderSound?.play("start");
@@ -3200,6 +3259,7 @@
           state.pickups.splice(pIndex, 1);
           state.keys++;
           state.runKeys++;
+          trackGrowthEvent("key_pickup", { keys: state.keys, run_keys: state.runKeys });
           window.WonderSound?.play("success");
           updateHUDText();
 
@@ -3215,6 +3275,7 @@
           if (state.keys > 0) {
             state.keys--;
             state.pickups.splice(pIndex, 1);
+            trackGrowthEvent("chest_open", { keys_remaining: state.keys });
             updateHUDText();
             triggerChestLoot();
           }
@@ -3765,14 +3826,16 @@
 
     nodes.retryBtn.addEventListener("click", () => {
       window.WonderSound?.play("click");
-      startRun();
+      trackGrowthEvent("retry", { input_type: "result" });
+      startRun("retry");
     });
 
     nodes.resultNextBtn.addEventListener("click", () => {
       if (!resultNextExpedition) return;
       window.WonderSound?.play("click");
       selectedExpedition = resultNextExpedition;
-      startRun();
+      trackGrowthEvent("next", { input_type: "result", next_expedition: selectedExpedition });
+      startRun("next");
     });
 
     nodes.backToStageBtn.addEventListener("click", () => {

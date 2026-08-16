@@ -5562,6 +5562,7 @@ window.WeightPlayGameRuntimeLocales["de"] = {
   "Find the {animal} pair next.": "Suchen Sie als nächstes das {animal}-Paar.",
   "Find the animal words": "Finden Sie die Tierwörter",
   "Find the golden key star before crossing this gate.": "Finden Sie den goldenen Schlüsselstern, bevor Sie dieses Tor überqueren.",
+  "Find the golden key to open this room's relic chest.": "Finde den goldenen Schlüssel, um die Relikttruhe dieses Raums zu öffnen.",
   "Find the golden key, then unlock the relic chest.": "Finde den goldenen Schlüssel und öffne dann die Reliquienkiste.",
   "Find the trail key before crossing this gate.": "Finden Sie den Wegschlüssel, bevor Sie dieses Tor überqueren.",
   "Find These": "Finden Sie diese",
