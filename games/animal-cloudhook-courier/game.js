@@ -43,6 +43,12 @@
   const battleBackground = new Image();
   battleBackground.decoding = "async";
   battleBackground.src = "battle-bg-v2.webp";
+  const courierSprites = new Image();
+  courierSprites.decoding = "async";
+  courierSprites.src = "courier-sprites-v2.webp";
+  const cloudhookProps = new Image();
+  cloudhookProps.decoding = "async";
+  cloudhookProps.src = "cloudhook-props-v2.webp";
   const stageConfigs = [
     { wind: 0, anchors: [{x:210,y:300},{x:370,y:230},{x:530,y:330},{x:690,y:210}], parcels: [{x:330,y:170},{x:600,y:150}], spikes: [] },
     { wind: 8, anchors: [{x:205,y:290},{x:360,y:190},{x:500,y:315},{x:665,y:180},{x:790,y:300}], parcels: [{x:300,y:150},{x:575,y:190},{x:735,y:130}], spikes: [{x:430,y:430,w:65,h:22}] },
@@ -177,14 +183,19 @@
     ctx.fillStyle = "#ffffff12"; for (let i = 0; i < 34; i += 1) { const x = (i * 173) % W; const y = 26 + ((i * 71) % 255); ctx.fillRect(x, y, 2, 2); }
     ctx.fillStyle = "#9edce51a"; for (let i = 0; i < 5; i += 1) { ctx.beginPath(); ctx.ellipse(90 + i * 215, 485 - (i % 2) * 22, 150, 27, 0, 0, Math.PI * 2); ctx.fill(); }
   };
+  const drawSheetProp = (image, sx, sy, sw, sh, dx, dy, dw, dh) => {
+    if (!(image.complete && image.naturalWidth > 0)) return false;
+    ctx.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
+    return true;
+  };
   const draw = () => {
     drawBackground(); const cfg = config();
-    cfg.spikes.forEach((spike) => { ctx.fillStyle = "#ff788e"; ctx.beginPath(); for (let x = spike.x; x <= spike.x + spike.w; x += 14) { ctx.lineTo(x, spike.y + spike.h); ctx.lineTo(x + 7, spike.y); } ctx.lineTo(spike.x + spike.w, spike.y + spike.h); ctx.closePath(); ctx.fill(); });
-    cfg.anchors.forEach((anchor, index) => { const p = anchorPosition(anchor, state?.time || 0); ctx.strokeStyle = index === state?.anchor ? "#fff0a6" : "#78e2dc"; ctx.lineWidth = 7; ctx.beginPath(); ctx.arc(p.x, p.y, 19, 0, Math.PI * 2); ctx.stroke(); ctx.strokeStyle = "#ffffff55"; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(p.x, p.y, 29, 0, Math.PI * 2); ctx.stroke(); });
-    cfg.parcels.forEach((parcel, index) => { if (state?.collected.includes(index)) return; ctx.fillStyle = "#ffd277"; ctx.beginPath(); ctx.arc(parcel.x, parcel.y, 9, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#fff3b6"; ctx.fillRect(parcel.x - 2, parcel.y - 16, 4, 32); ctx.fillRect(parcel.x - 16, parcel.y - 2, 32, 4); });
-    ctx.fillStyle = "#ffd277"; ctx.shadowColor = "#ffd277"; ctx.shadowBlur = 22; ctx.beginPath(); ctx.arc(875, 255, 25, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0; ctx.fillStyle = "#143650"; ctx.beginPath(); ctx.arc(875, 255, 12, 0, Math.PI * 2); ctx.fill();
+    cfg.spikes.forEach((spike) => { if (!drawSheetProp(cloudhookProps, 512, 512, 512, 512, spike.x - 8, spike.y - 24, spike.w + 16, 64)) { ctx.fillStyle = "#ff788e"; ctx.beginPath(); for (let x = spike.x; x <= spike.x + spike.w; x += 14) { ctx.lineTo(x, spike.y + spike.h); ctx.lineTo(x + 7, spike.y); } ctx.lineTo(spike.x + spike.w, spike.y + spike.h); ctx.closePath(); ctx.fill(); } });
+    cfg.anchors.forEach((anchor, index) => { const p = anchorPosition(anchor, state?.time || 0); if (!drawSheetProp(cloudhookProps, 0, 0, 512, 512, p.x - 31, p.y - 31, 62, 62)) { ctx.strokeStyle = index === state?.anchor ? "#fff0a6" : "#78e2dc"; ctx.lineWidth = 7; ctx.beginPath(); ctx.arc(p.x, p.y, 19, 0, Math.PI * 2); ctx.stroke(); ctx.strokeStyle = "#ffffff55"; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(p.x, p.y, 29, 0, Math.PI * 2); ctx.stroke(); } });
+    cfg.parcels.forEach((parcel, index) => { if (state?.collected.includes(index)) return; if (!drawSheetProp(cloudhookProps, 512, 0, 512, 512, parcel.x - 24, parcel.y - 24, 48, 48)) { ctx.fillStyle = "#ffd277"; ctx.beginPath(); ctx.arc(parcel.x, parcel.y, 9, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#fff3b6"; ctx.fillRect(parcel.x - 2, parcel.y - 16, 4, 32); ctx.fillRect(parcel.x - 16, parcel.y - 2, 32, 4); } });
+    if (!drawSheetProp(cloudhookProps, 1024, 0, 512, 512, 835, 215, 80, 80)) { ctx.fillStyle = "#ffd277"; ctx.shadowColor = "#ffd277"; ctx.shadowBlur = 22; ctx.beginPath(); ctx.arc(875, 255, 25, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0; ctx.fillStyle = "#143650"; ctx.beginPath(); ctx.arc(875, 255, 12, 0, Math.PI * 2); ctx.fill(); }
     if (state?.attached && state.anchor >= 0) { const anchor = anchorPosition(cfg.anchors[state.anchor], state.time); ctx.strokeStyle = "#ffd277"; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(anchor.x, anchor.y); ctx.lineTo(state.x, state.y); ctx.stroke(); }
-    if (state) { ctx.save(); ctx.translate(state.x, state.y); ctx.rotate(Math.atan2(state.vy, Math.max(1, state.vx))); ctx.fillStyle = "#d87872"; ctx.beginPath(); ctx.ellipse(0, 0, 21, 17, 0, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#f8b66d"; ctx.beginPath(); ctx.arc(13, -8, 11, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#071627"; ctx.beginPath(); ctx.arc(17, -10, 2.6, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#ffd277"; ctx.beginPath(); ctx.moveTo(-16, -8); ctx.lineTo(-31, -19); ctx.lineTo(-22, 2); ctx.closePath(); ctx.fill(); ctx.restore(); }
+    if (state) { ctx.save(); ctx.translate(state.x, state.y); ctx.rotate(Math.atan2(state.vy, Math.max(1, state.vx))); const pose = state.done && state.success ? 2 : state.attached ? 1 : 0; if (!drawSheetProp(courierSprites, pose * 512, 0, 512, 1024, -34, -55, 68, 110)) { ctx.fillStyle = "#d87872"; ctx.beginPath(); ctx.ellipse(0, 0, 21, 17, 0, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#f8b66d"; ctx.beginPath(); ctx.arc(13, -8, 11, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#071627"; ctx.beginPath(); ctx.arc(17, -10, 2.6, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#ffd277"; ctx.beginPath(); ctx.moveTo(-16, -8); ctx.lineTo(-31, -19); ctx.lineTo(-22, 2); ctx.closePath(); ctx.fill(); } ctx.restore(); }
     if (state?.flash > 0) { ctx.fillStyle = `rgba(255,235,157,${Math.min(0.35, state.flash)})`; ctx.fillRect(0, 0, W, H); }
   };
   const tick = (now) => { const dt = Math.min(0.032, Math.max(0, (now - lastTime) / 1000 || 0)); lastTime = now; if (!hidden) { if (isBattleActive()) update(dt); draw(); updateHud(); } frame = window.requestAnimationFrame(tick); };

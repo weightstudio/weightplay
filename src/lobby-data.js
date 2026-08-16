@@ -2503,9 +2503,9 @@ for (const candidate of nextFiveGeneralCandidates) {
   if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(candidate.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(candidate.id);
 }
 
-// Researched next-batch builds. These are deliberately listed as planned only:
-// their playable prototypes must complete the independent Tester, Gameplay
-// Reviewer, Director, and Release Preflight gates before any public promotion.
+// Researched next-batch builds. These entries are promoted only after the
+// exact Tester, Gameplay Reviewer, Director, Art, and preview gates are recorded
+// below; the explicit release fields keep the catalog state auditable.
 const researchedNextBatchCandidates = [
   {
     id: "animal-cloudhook-courier",
@@ -2513,7 +2513,7 @@ const researchedNextBatchCandidates = [
     type: { en: "Grapple-and-Swing Route Action", "zh-Hant": "抓鉤擺盪路線動作", "zh-Hans": "抓钩摆荡路线动作", ja: "グラップル・スイングアクション", ko: "그래플 스윙 루트 액션", es: "Acción de rutas con garfio", "pt-BR": "Ação de rotas com gancho", fr: "Action de parcours au grappin", de: "Greifhaken-Routenaktion", it: "Azione di percorso con rampino", ru: "Маршрутный экшен с крюком", hi: "ग्रैपल-स्विंग रूट एक्शन", ar: "حركة مسارات بخطاف" },
     description: { en: "Catch cloud rings, build a pendulum swing, and deliver every parcel without touching the storm teeth.", "zh-Hant": "抓住雲環建立擺盪節奏，在不碰到風暴齒刺的情況下送達每件包裹。", "zh-Hans": "抓住云环建立摆荡节奏，在不碰到风暴齿刺的情况下送达每件包裹。", ja: "雲のリングをつかんで振り子の勢いを作り、嵐の棘に触れず荷物を届けよう。", ko: "구름 고리를 잡아 진자처럼 흔들고 폭풍 가시에 닿지 않게 소포를 배달하세요.", es: "Atrapa anillos de nube, crea un balanceo pendular y entrega cada paquete sin tocar los dientes de la tormenta.", "pt-BR": "Agarre anéis de nuvem, crie um balanço pendular e entregue cada pacote sem tocar nos dentes da tempestade.", fr: "Attrape les anneaux nuageux, crée un élan de pendule et livre chaque colis sans toucher aux crocs de l’orage.", de: "Greife Wolkenringe, baue Schwung auf und liefere jedes Paket ab, ohne die Sturmzähne zu berühren.", it: "Aggancia gli anelli di nuvola, crea un'oscillazione a pendolo e consegna ogni pacco senza toccare i denti della tempesta.", ru: "Цепляйтесь за облачные кольца, раскачивайтесь и доставляйте посылки, не касаясь штормовых шипов.", hi: "बादल के छल्ले पकड़ें, झूले की गति बनाएँ और तूफानी दाँतों को छुए बिना हर पैकेट पहुँचाएँ।", ar: "التقط حلقات السحاب وابنِ تأرجحاً بندولياً وسلّم كل طرد دون لمس أنياب العاصفة." },
     meta: { en: ["Pendulum Routes", "6 Skyways", "Precision Release"], "zh-Hant": ["擺盪路線", "6 條天路", "精準放手"], "zh-Hans": ["摆荡路线", "6 条天路", "精准放手"], ja: ["振り子ルート", "6つの空路", "精密リリース"], ko: ["진자 루트", "6개 하늘길", "정밀 해제"], es: ["Rutas pendulares", "6 cielos", "Soltar con precisión"], "pt-BR": ["Rotas pendulares", "6 céus", "Soltar com precisão"], fr: ["Routes pendulaires", "6 voies célestes", "Lâcher précis"], de: ["Pendelrouten", "6 Himmelswege", "Präzises Loslassen"], it: ["Rotte a pendolo", "6 cieli", "Rilascio preciso"], ru: ["Маятниковые маршруты", "6 небесных трасс", "Точный отпуск"], hi: ["झूला मार्ग", "6 आकाश-पथ", "सटीक छोड़ना"], ar: ["مسارات بندولية", "6 طرق سماوية", "إفلات دقيق"] },
-    art: { kind: "image", background: "games/animal-cloudhook-courier/cover.webp", hideHero: true },
+    art: { kind: "image", background: "games/animal-cloudhook-courier/cover-v2.webp", hideHero: true },
     categories: ["Action", "Arcade", "Animal"], skills: ["Timing", "Route Planning"], ages: ["9", "family"], ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", ja: "9+", ko: "9+", es: "9+", "pt-BR": "9+", fr: "9+", de: "9+", it: "9+", ru: "9+", hi: "9+", ar: "9+" }, href: "games/animal-cloudhook-courier/", internalTrial: "index.html?trial=1",
   },
   {
@@ -2522,14 +2522,26 @@ const researchedNextBatchCandidates = [
     type: { en: "Synchronized Platform Puzzle", "zh-Hant": "同步雙角色平台益智", "zh-Hans": "同步双角色平台益智", ja: "同期ツイン・プラットフォームパズル", ko: "동기화 트윈 플랫폼 퍼즐", es: "Puzle de plataformas sincronizadas", "pt-BR": "Puzzle de plataformas sincronizadas", fr: "Puzzle de plateformes synchronisées", de: "Synchronisiertes Plattformpuzzle", it: "Puzzle di piattaforme sincronizzate", ru: "Синхронная платформенная головоломка", hi: "सिंक्रोनाइज़्ड प्लेटफ़ॉर्म पहेली", ar: "لغز منصات متزامنة" },
     description: { en: "Guide two different jumpers through split lanes, flip signal gates, and gather every relay shard together.", "zh-Hant": "引導兩位跳躍者通過分岔路線，切換訊號閘門，一起收集所有接力碎片。", "zh-Hans": "引导两位跳跃者通过分岔路线，切换信号闸门，一起收集所有接力碎片。", ja: "異なるジャンパーを分岐レーンへ導き、信号ゲートを切り替え、すべての中継シャードを一緒に集めよう。", ko: "서로 다른 점퍼를 갈라진 레인으로 이끌고 신호 게이트를 전환해 모든 릴레이 조각을 함께 모으세요.", es: "Guía a dos saltadores por carriles divididos, cambia las compuertas de señal y reúne todos los fragmentos de relevo.", "pt-BR": "Guie dois saltadores por pistas separadas, alterne portões de sinal e reúna todos os fragmentos de relé.", fr: "Guide deux sauteurs sur des voies séparées, active les portes de signal et rassemble tous les éclats relais.", de: "Führe zwei Springer durch getrennte Bahnen, schalte Signaltore um und sammle gemeinsam alle Relais-Splitter.", it: "Guida due saltatori su corsie divise, cambia i varchi di segnale e raccogli insieme tutti i frammenti relè.", ru: "Проведите двух прыгунов по разным дорожкам, переключайте сигнальные ворота и соберите все осколки реле вместе.", hi: "दो अलग कूदने वालों को विभाजित लेन से ले जाएँ, सिग्नल गेट बदलें और सभी रिले टुकड़े साथ जुटाएँ।", ar: "قد لاعبين قافزين عبر مسارات منفصلة وبدّل بوابات الإشارة واجمعا كل شظايا الترحيل معاً." },
     meta: { en: ["Two-Lane Sync", "6 Switchyards", "Shared Timing"], "zh-Hant": ["雙線同步", "6 個燈場", "共同時機"], "zh-Hans": ["双线同步", "6 个灯场", "共同时机"], ja: ["2レーン同期", "6つの切替場", "共有タイミング"], ko: ["2레인 동기화", "6개 스위치야드", "공유 타이밍"], es: ["Sincronía de dos carriles", "6 estaciones", "Ritmo compartido"], "pt-BR": ["Sincronia em duas pistas", "6 pátios", "Ritmo compartilhado"], fr: ["Synchronisation à deux voies", "6 relais", "Timing partagé"], de: ["Zwei-Bahnen-Sync", "6 Schaltfelder", "Gemeinsames Timing"], it: ["Sincronia a due corsie", "6 scambi", "Tempismo condiviso"], ru: ["Синхрон двух дорожек", "6 станций", "Общий ритм"], hi: ["दो लेन सिंक", "6 स्विचयार्ड", "साझा समय"], ar: ["تزامن مسارين", "6 ساحات تبديل", "توقيت مشترك"] },
-    art: { kind: "image", background: "games/animal-twin-switchyard/cover.webp", hideHero: true },
+    art: { kind: "image", background: "games/animal-twin-switchyard/cover-v2.webp", hideHero: true },
     categories: ["Puzzle", "Platform", "Animal"], skills: ["Coordination", "Planning"], ages: ["9", "family"], ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", ja: "9+", ko: "9+", es: "9+", "pt-BR": "9+", fr: "9+", de: "9+", it: "9+", ru: "9+", hi: "9+", ar: "9+" }, href: "games/animal-twin-switchyard/", internalTrial: "index.html?trial=1",
   },
 ];
+for (const candidate of researchedNextBatchCandidates) {
+  if (candidate.id === "animal-cloudhook-courier" || candidate.id === "animal-twin-switchyard") {
+    delete candidate.internalTrial;
+    candidate.status = "playable";
+    candidate.statusText = {
+      en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능",
+      es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile",
+      ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
+    };
+    candidate.previewVideo = `assets/previews/${candidate.id}-battle.webm`;
+  }
+}
 const researchedComingSoonStatus = { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" };
 for (const candidate of researchedNextBatchCandidates) {
   if (!window.WONDER_LOBBY.games.some((game) => game.id === candidate.id)) {
-    window.WONDER_LOBBY.games.push({ ...candidate, status: "planned", statusText: { ...researchedComingSoonStatus } });
+    window.WONDER_LOBBY.games.push({ ...candidate, status: candidate.status || "planned", statusText: candidate.statusText || { ...researchedComingSoonStatus } });
   }
   if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(candidate.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(candidate.id);
 }

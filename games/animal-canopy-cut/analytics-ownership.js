@@ -1,10 +1,10 @@
 (() => {
   const GAME_ID = "animal-canopy-cut";
-  const GAME_VERSION = "v4";
+  const GAME_VERSION = "v5";
   const INTERFACE_VERSION = "6";
   const EVENT_NAME = "wp-canopy-analytics";
   const LOCALES = new Set(["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"]);
-  const EVENTS = new Set(["chapter_open", "wave_start", "pointer_stroke", "safe_hit", "hazard_hit", "wave_result", "retry", "next_wave", "stage_return"]);
+  const EVENTS = new Set(["chapter_open", "wave_start", "pointer_stroke", "safe_hit", "hazard_hit", "wave_result", "chapter_final_wave", "retry", "next_wave", "stage_return"]);
   const INPUT_TYPES = new Set(["mouse", "touch", "pen", "keyboard", "unknown"]);
   const FROM_VALUES = new Set(["stage", "battle", "result", "unknown"]);
   const OUTCOMES = new Set(["opened", "started", "completed", "cancelled", "safe", "hazard", "success", "no_moves", "retry", "next_wave", "replay", "returned", "unknown"]);
@@ -31,7 +31,7 @@
   const track = (event, detail = {}) => {
     if (!EVENTS.has(event)) return;
     try {
-      window.WonderAnalytics?.track(event, {
+      const payload = {
         game_id: GAME_ID,
         game_version: GAME_VERSION,
         interface_version: INTERFACE_VERSION,
@@ -40,7 +40,12 @@
         input_type: bounded(detail.inputType, INPUT_TYPES),
         from: bounded(detail.from, FROM_VALUES),
         outcome: bounded(detail.outcome, OUTCOMES),
-      });
+      };
+      if (event === "chapter_final_wave") {
+        const chapter = Number(detail.chapter);
+        payload.chapter = Number.isInteger(chapter) && chapter >= 1 && chapter <= 6 ? chapter : 0;
+      }
+      window.WonderAnalytics?.track(event, payload);
     } catch {
       // Analytics must never block a player action or alter the game state.
     }
