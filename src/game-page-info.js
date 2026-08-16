@@ -98,6 +98,7 @@
       difficulty: "Easy to Challenging",
       time: "3-10 minutes",
       skills: ["Inertia Control", "Aim", "Risk Timing"],
+      relatedIds: ["alien-defender", "road-crosser", "animal-abyss-diver"],
       noteTitle: "Player and Save Information",
       hideScoreBands: true,
       intro: "Space Rocks is an original inertia space shooter. Pilot Rux through three drifting waves, rotate and thrust with momentum, fire in every direction, split large crystal rocks into smaller fragments, and save Shield for the Wave 3 guardian core.",
@@ -9116,7 +9117,7 @@
   };
 
   registerExpandedGuide("animal-spectrum-pulse", {
-    title: "Animal Spectrum Pulse", gameplay: "One-Touch Timing Arcade",
+    title: "Animal Spectrum Pulse", gameplay: "One-Touch Precision Arcade",
     intro: "Guide Panko's spectrum spirit upward by pulsing only when the nearest scan marker matches the required color and emblem.",
     story: ["Thirty signal towers have lost synchronization. Every gate broadcasts a visible combination, and Panko restores the tower one accurately timed pulse at a time.", "The spirit's standing point, next marker, and success window remain visible so a failed attempt can be understood rather than guessed."],
     systems: ["Press, tap, or use Space for one pulse, then release fully before the next input.", "The relevant marker is the nearest upcoming scan point, not a distant decoration higher on the tower.", "A pulse succeeds only when both the color and emblem align inside the visible timing window.", "Pulse Control, Foresight, and Echo Guard improve recovery or preview clarity but never remove the matching rule."],
@@ -9127,6 +9128,27 @@
     parent: "No account or purchase is required. Tower clears, upgrades, and local best results remain in this browser.",
     faq: [["Why did a jump fail?", "The nearest marker did not match both required properties inside the window."], ["Can I hold the button?", "No, release between pulses for reliable input."], ["Do upgrades change the rule?", "No, they only improve preview or recovery."], ["Is every tower beatable without upgrades?", "Yes, upgrades are optional support."]]
   }, "動物光譜脈衝", "动物光谱脉冲");
+  const spectrumGuideStories={
+    en:["Thirty signal towers have lost synchronization. Every gate broadcasts a visible combination, and Panko restores the tower one accurately timed pulse at a time.","The spirit's standing point, next marker, and success window remain visible so a failed attempt can be understood rather than guessed."],
+    "zh-Hant":["三十座訊號塔失去同步。每一道星門都會顯示可見組合，Panko 每次以精準時機脈衝修復一座塔。","精靈的站位、下一個標記與成功窗口都清楚可見，讓失敗能被理解，而不是只能猜測。"],
+    "zh-Hans":["三十座信号塔失去同步。每一道星门都会显示可见组合，Panko 每次用精准时机的脉冲修复一座塔。","精灵的站位、下一个标记与成功窗口都清楚可见，让失败能够被理解，而不是只能猜测。"],
+    ja:["30の信号塔が同期を失いました。すべてのゲートが見える組み合わせを示し、パンクは正確なタイミングのパルスで塔を一つずつ修復します。","精霊の立ち位置、次のマーカー、成功判定の窓が見えるため、失敗しても推測ではなく理由を理解できます。"],
+    ko:["30개의 신호 타워가 동기화를 잃었습니다. 모든 게이트는 보이는 조합을 보여 주며, 판코는 정확한 타이밍의 펄스로 타워를 하나씩 복구합니다.","정령의 위치, 다음 마커, 성공 판정 구간이 계속 보이므로 실패해도 추측하지 않고 이유를 이해할 수 있습니다."],
+    es:["Treinta torres de señales han perdido la sincronización. Cada puerta muestra una combinación visible y Panko restaura las torres con pulsos de precisión, una por una.","La posición del espíritu, el siguiente marcador y la ventana de éxito permanecen visibles para entender cada fallo en vez de adivinar."],
+    "pt-BR":["Trinta torres de sinal perderam a sincronização. Cada portal mostra uma combinação visível, e Panko restaura as torres com pulsos precisos, uma por vez.","A posição do espírito, o próximo marcador e a janela de sucesso ficam visíveis para que cada falha possa ser entendida, não adivinhada."],
+    fr:["Trente tours de signalisation ont perdu leur synchronisation. Chaque porte affiche une combinaison visible et Panko restaure les tours avec des impulsions précises, une à une.","La position de l'esprit, le prochain marqueur et la fenêtre de réussite restent visibles afin de comprendre chaque échec plutôt que de le deviner."],
+    de:["Dreißig Signaltürme haben ihre Synchronisierung verloren. Jedes Tor zeigt eine sichtbare Kombination, und Panko restauriert die Türme mit präzisen Impulsen, einen nach dem anderen.","Die Position des Geistes, die nächste Markierung und das Erfolgsfenster bleiben sichtbar, damit ein Fehlschlag verstanden statt erraten werden kann."],
+    it:["Trenta torri di segnalazione hanno perso la sincronizzazione. Ogni portale mostra una combinazione visibile e Panko ripristina le torri con impulsi precisi, una alla volta.","La posizione dello spirito, il prossimo indicatore e la finestra di successo restano visibili, così ogni errore può essere capito invece che indovinato."],
+    ru:["Тридцать сигнальных башен потеряли синхронизацию. Каждые врата показывают видимую комбинацию, а Панко восстанавливает башни точными импульсами одну за другой.","Положение духа, следующий маркер и окно успеха остаются видимыми, поэтому причину ошибки можно понять, а не угадывать."],
+    hi:["तीस सिग्नल टावरों का तालमेल बिगड़ गया है। हर द्वार एक दिखाई देने वाला संयोजन दिखाता है, और पांको सटीक समय वाले पल्स से एक-एक करके टावर बहाल करता है।","स्पिरिट की स्थिति, अगला मार्कर और सफलता की विंडो दिखाई देती रहती है, इसलिए असफलता का कारण समझा जा सकता है, केवल अनुमान नहीं लगाना पड़ता।"],
+    ar:["فقدت ثلاثون برجًا للإشارة تزامنها. تعرض كل بوابة تركيبة واضحة، ويعيد بانكو ترميم الأبراج بنبضات دقيقة التوقيت واحدًا تلو الآخر.","يبقى موضع الروح والعلامة التالية ونافذة النجاح ظاهرة، لذلك يمكن فهم سبب الفشل بدلًا من التخمين."]
+  };
+  for(const [code,story] of Object.entries(spectrumGuideStories)){
+    localizedGames[code]=localizedGames[code]||{};
+    localizedGames[code]["animal-spectrum-pulse"]={...(localizedGames[code]["animal-spectrum-pulse"]||{}),story};
+  }
+  localizedGames.es=localizedGames.es||{};
+  localizedGames.es["animal-spectrum-pulse"]={...(localizedGames.es["animal-spectrum-pulse"]||{}),difficulty:"Fácil de desafiar",time:"2–8 minutos por torre",gameplay:"Arcade de precisión con un toque",genre:["Puzle","Estrategia","Animales"],systems:["Pulsa, toca o usa Espacio una vez para un pulso y suelta por completo antes de la siguiente entrada.","El marcador relevante es el próximo punto de escaneo, no una decoración lejana más arriba de la torre.","El pulso solo tiene éxito cuando el color y el emblema se alinean dentro de la ventana de tiempo visible.","Control de Pulso, Previsión y Guardia de Eco mejoran la recuperación o la claridad de la vista previa, pero nunca eliminan la regla de coincidencia."],faq:[["¿Por qué falló un salto?","El marcador más cercano no coincidió con las dos propiedades requeridas dentro de la ventana."],["¿Puedo mantener pulsado el botón?","No, suelta entre pulsos para una entrada fiable."],["¿Las mejoras cambian la regla?","No, solo mejoran la vista previa o la recuperación."],["¿Se pueden superar todas las torres sin mejoras?","Sí, las mejoras son ayudas opcionales."]]};
 
   registerExpandedGuide("animal-prism-battalion", {
     title: "Animal Prism Battalion", gameplay: "Three-Lane Automatic Core Defense",

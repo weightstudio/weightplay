@@ -1,6 +1,6 @@
 ﻿(() => {
   const GAME_ID = "animal-guard-yard";
-  const GAME_VERSION = "v17";
+  const GAME_VERSION = "v18";
   const INTERFACE_VERSION = 6;
   const localeKey = "weightplayLocale";
   const unlockKey = "weightplay_animal_guard_unlocked";
@@ -337,6 +337,60 @@
     hi: "अगली दबाव वाली लेन {lane} है—जानवर आने से पहले उसे बचाएँ।",
     ar: "الممر {lane} هو التالي تحت الضغط — احمه قبل وصول الوحش.",
   };
+  const trainingBridgeCopy = {
+    en: {
+      result: "Next goal: open Animals to see how saved coins can train your guards.",
+      menu: "Coins are for Animal Training. Open Animals to see your next training goal.",
+    },
+    "zh-Hant": {
+      result: "下一個目標：打開「動物」，查看如何用累積的金幣訓練守衛。",
+      menu: "金幣可以用於動物訓練。打開「動物」查看下一個訓練目標。",
+    },
+    "zh-Hans": {
+      result: "下一个目标：打开“动物”，查看如何用累积的金币训练守卫。",
+      menu: "金币可以用于动物训练。打开“动物”查看下一个训练目标。",
+    },
+    ja: {
+      result: "次の目標：動物を開いて、貯めたコインで守衛を訓練する方法を確認しましょう。",
+      menu: "コインは動物の訓練に使えます。動物を開いて次の訓練目標を確認しましょう。",
+    },
+    ko: {
+      result: "다음 목표: 동물을 열어 모은 코인으로 수호대를 훈련하는 방법을 확인하세요.",
+      menu: "코인은 동물 훈련에 사용합니다. 동물에서 다음 훈련 목표를 확인하세요.",
+    },
+    es: {
+      result: "Siguiente objetivo: abre Animales para ver cómo entrenar a tus guardianes con las monedas guardadas.",
+      menu: "Las monedas sirven para entrenar animales. Abre Animales para ver tu próximo objetivo.",
+    },
+    "pt-BR": {
+      result: "Próxima meta: abra Animais para ver como treinar seus guardiões com as moedas guardadas.",
+      menu: "As moedas servem para treinar animais. Abra Animais para ver sua próxima meta.",
+    },
+    fr: {
+      result: "Prochain objectif : ouvrez Animaux pour voir comment entraîner vos gardiens avec les pièces épargnées.",
+      menu: "Les pièces servent à entraîner les animaux. Ouvrez Animaux pour voir votre prochain objectif.",
+    },
+    de: {
+      result: "Nächstes Ziel: Öffne Tiere, um zu sehen, wie du deine Wächter mit gesparten Münzen trainierst.",
+      menu: "Münzen sind für das Tiertraining. Öffne Tiere, um dein nächstes Ziel zu sehen.",
+    },
+    it: {
+      result: "Prossimo obiettivo: apri Animali per vedere come allenare le guardie con le monete risparmiate.",
+      menu: "Le monete servono per allenare gli animali. Apri Animali per vedere il prossimo obiettivo.",
+    },
+    ru: {
+      result: "Следующая цель: откройте «Животные», чтобы узнать, как тренировать защитников за накопленные монеты.",
+      menu: "Монеты нужны для тренировки животных. Откройте «Животные», чтобы увидеть следующую цель.",
+    },
+    hi: {
+      result: "अगला लक्ष्य: जमा सिक्कों से गार्ड को प्रशिक्षित करने का तरीका देखने के लिए जानवर खोलें।",
+      menu: "सिक्कों से जानवरों का प्रशिक्षण होता है। अगला लक्ष्य देखने के लिए जानवर खोलें।",
+    },
+    ar: {
+      result: "الهدف التالي: افتح الحيوانات لمعرفة كيفية تدريب الحراس بالعملات المحفوظة.",
+      menu: "العملات مخصصة لتدريب الحيوانات. افتح الحيوانات لرؤية الهدف التالي.",
+    },
+  };
   text.ko = Object.assign(Object.create(text.en), {
     locked: "잠긴 스테이지",
     resultWin: "스테이지 {n} 완료! 집 하트가 {hp}개 남았어요.",
@@ -636,6 +690,8 @@
     stageBackMainBtn: $("stageBackMainBtn"),
     menuPanel: $("menuPanel"),
     stageGrid: $("stageGrid"),
+    stageTrainingCue: $("stageTrainingCue"),
+    animalTrainingCue: $("animalTrainingCue"),
     playPanel: $("playPanel"),
     gameShell: document.querySelector("#playPanel .fixed-game-shell"),
     backToStagesBtn: $("backToStagesBtn"),
@@ -840,6 +896,12 @@
     return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(value) || value : value;
   }
 
+  function trainingBridge(kind, coins = 0) {
+    const copy = trainingBridgeCopy[locale] || trainingBridgeCopy.en;
+    const value = copy[kind] || trainingBridgeCopy.en[kind];
+    return value.replaceAll("{coins}", String(Math.max(0, Math.round(coins))));
+  }
+
   function foregroundPlacementMessage() {
     return foregroundPlacementCopy[locale] || foregroundPlacementCopy.en;
   }
@@ -943,6 +1005,12 @@
     summary.className = "result-summary";
     summary.textContent = message;
     nodes.resultText.appendChild(summary);
+
+    const trainingCue = document.createElement("p");
+    trainingCue.id = "resultTrainingCue";
+    trainingCue.className = "training-bridge-cue";
+    trainingCue.textContent = trainingBridge("result", coinsEarned);
+    nodes.resultText.appendChild(trainingCue);
 
     const stats = document.createElement("div");
     stats.className = "result-stats";
@@ -1101,6 +1169,7 @@
     });
     nodes.localeSelect.value = locale;
     renderWallet();
+    renderTrainingBridge();
     renderMasterySummary();
   }
 
@@ -1523,6 +1592,11 @@
     if (nodes.diamondText) nodes.diamondText.textContent = readDiamonds();
   }
 
+  function renderTrainingBridge() {
+    if (nodes.stageTrainingCue) nodes.stageTrainingCue.textContent = trainingBridge("menu");
+    if (nodes.animalTrainingCue) nodes.animalTrainingCue.textContent = trainingBridge("menu");
+  }
+
   function renderMasterySummary() {
     if (!nodes.masterySummary) return;
     const progress = loadProgress();
@@ -1651,6 +1725,7 @@
       button.classList.toggle("active", button.dataset.menuTab === activeMenuTab);
     });
     renderWallet();
+    renderTrainingBridge();
     renderMasterySummary();
     renderBeastGuide();
     renderStageGrid();
