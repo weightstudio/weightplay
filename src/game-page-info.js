@@ -7259,6 +7259,7 @@
   function installSpanishResource() {
     const resource = window.WeightPlayGameInfoLocales?.es;
     if (!resource) return false;
+    const authoredRootvault = localizedGames.es?.["animal-rootvault-pins"];
     labels.es = resource.labels || {};
     skillLabels.es = resource.skillLabels || {};
     localizedGameplayProfiles.es = resource.gameplayProfiles || {};
@@ -7266,6 +7267,14 @@
     // records. Merge the runtime catalog first so its generic fragments cannot
     // overwrite a localized intro, story, or system field.
     localizedGames.es = { ...(localizedGames.es || {}), ...(resource.games || {}) };
+    if (authoredRootvault && resource.games?.["animal-rootvault-pins"]) {
+      localizedGames.es["animal-rootvault-pins"] = {
+        ...authoredRootvault,
+        ...resource.games["animal-rootvault-pins"],
+        designNote: authoredRootvault.designNote,
+        faq: authoredRootvault.faq,
+      };
+    }
     return true;
   }
 
@@ -7474,9 +7483,16 @@
     return localized.split(sentenceSplit)[0] || game.gameplay || game.title;
   }
 
+  // The shared Guide can render once before the later locale-specific card
+  // catalog is assembled. Keep the owner initialized during that early pass;
+  // the complete catalog is assigned below before the final render.
+  let localizedRelatedCardCopy = {};
+
   function relatedCard(gameId) {
     const game = localizedGame(gameId);
     if (!game) return "";
+    const cardCopy = localizedRelatedCardCopy?.[locale()]?.[gameId] || {};
+    const cardGame = cardCopy.intro ? { ...game, intro: cardCopy.intro } : game;
     const imageName = coverImages[gameId] || "weightplay-logo.png";
     const fallbackName = imageName.endsWith(".webp") ? imageName.replace(/\.webp$/u, ".png") : "";
     const fallbackAttrs = ` data-final-src="${escapeHtml(assetHref("weightplay-logo.png"))}"${
@@ -7486,8 +7502,8 @@
       <a class="game-info-related-card" href="${escapeHtml(gameHref(gameId))}">
         <img src="${escapeHtml(assetHref(imageName))}"${fallbackAttrs} alt="" width="320" height="320" loading="eager" decoding="async" />
         <span class="game-info-related-copy">
-          <strong>${escapeHtml(game.title)}</strong>
-          <span>${escapeHtml(shortDescription(game))}</span>
+          <strong>${escapeHtml(cardCopy.title || game.title)}</strong>
+          <span>${escapeHtml(shortDescription(cardGame))}</span>
         </span>
       </a>
     `;
@@ -8173,6 +8189,58 @@
     parent: "खाता बनाना आवश्यक नहीं है। प्रगति और वर्कशॉप अपग्रेड इसी ब्राउज़र में रहते हैं; साइट डेटा मिटाने, निजी ब्राउज़िंग, ब्राउज़र या डिवाइस बदलने से अलग सेव बन सकती है या मौजूदा सेव हट सकती है। यह गाइड चिकित्सा, स्कूल या पेशेवर मूल्यांकन नहीं है।",
     faq: [["कितने कक्ष शामिल हैं?", "छह सामग्री-नियम अध्यायों में 30 लिखित कक्ष हैं।"], ["क्या पिन को आधा खींच सकते हैं?", "नहीं। हर क्रिया एक पूरी सुनहरी पिन को स्थानांतरित करती है।"], ["मूनवाटर क्या करता है?", "मूनवाटर एम्बरलाइट को ठंडा करके सुरक्षित भाप में बदल देता है।"], ["कौन से नियंत्रण और स्क्रीन आकार समर्थित हैं?", "टच, माउस और कीबोर्ड एक ही नियमों का पालन करते हैं; इंटरफ़ेस फोन, लैंडस्केप और डेस्कटॉप पर एक लेआउट की तरह स्केल होता है।"], ["क्या प्रगति अपने आप किसी दूसरे डिवाइस पर चली जाती है?", "नहीं। यह गेम केवल स्थानीय ब्राउज़र स्टोरेज में सहेजा जाता है, इसलिए हर ब्राउज़र या डिवाइस की प्रगति अलग होती है।"], ["क्या प्रगति सहेजी जाती है?", "हाँ, केवल इसी ब्राउज़र में स्थानीय रूप से।"]]
   };
+  const rootvaultLocaleGuideAdditions = {
+    "zh-Hant": {
+      designNote: "每個機關室都有確定解法，第一次拉針前就能讀懂狀態。觸控、滑鼠與鍵盤共用一次一動作的輸入；Main、Stage、Battle 與 Result 畫面使用置中的 920 像素邏輯版面，底部另保留 56 像素區域。",
+      faq: [["支援哪些操作與螢幕尺寸？", "觸控、滑鼠與鍵盤都遵循相同規則；介面會在手機、短橫向與桌面視窗中以同一套邏輯版面縮放。"], ["進度會自動移到其他裝置嗎？", "不會。本遊戲只儲存在目前瀏覽器的本機儲存空間，因此其他瀏覽器或裝置會有獨立進度。"]]
+    },
+    "zh-Hans": {
+      faq: [["进度会自动移到其他设备吗？", "不会。本游戏只保存在当前浏览器的本地存储中，因此其他浏览器或设备会有独立进度。"]]
+    },
+    ja: {
+      designNote: "各チャンバーは決定論的で、最初のピンを引く前に状態を読み取れます。タッチ、マウス、キーボードは同じ一動作入力を使い、Main、Stage、Battle、Result は中央揃えの最大 920px の論理レイアウトと独立した 56px の下部余白を保ちます。",
+      faq: [["対応している操作方法と画面サイズは？", "タッチ、マウス、キーボードは同じルールに従い、インターフェースはスマートフォン、横長画面、デスクトップで一つの論理レイアウトとして拡大縮小します。"], ["進行状況は別の端末へ自動的に移行しますか？", "いいえ。このゲームは現在のブラウザのローカルストレージにだけ保存されるため、別のブラウザや端末では別の進行状況になります。"]]
+    },
+    ko: {
+      designNote: "각 챔버는 결정론적으로 설계되어 첫 번째 핀을 당기기 전에 상태를 읽을 수 있습니다. 터치, 마우스, 키보드는 같은 한 번에 한 동작 입력을 사용하며 Main, Stage, Battle, Result 화면은 최대 920px의 중앙 논리 레이아웃과 별도의 56px 하단 여유 공간을 유지합니다.",
+      faq: [["어떤 조작과 화면 크기를 지원하나요?", "터치, 마우스, 키보드는 같은 규칙을 따르며 인터페이스는 휴대폰, 가로 화면, 데스크톱에서 하나의 논리 레이아웃으로 크기가 조정됩니다."], ["진행 상황이 다른 기기로 자동 이동하나요?", "아니요. 이 게임은 현재 브라우저의 로컬 저장소에만 저장되므로 다른 브라우저나 기기에서는 별도의 진행 상황이 생깁니다."]]
+    },
+    es: {
+      designNote: "Cada cámara es determinista y se puede leer antes de tirar el primer pasador. El tacto, el ratón y el teclado usan la misma acción única; las pantallas Main, Stage, Battle y Result conservan un diseño lógico centrado de 920 píxeles como máximo y una reserva inferior independiente de 56 píxeles.",
+      faq: [["¿Qué controles y tamaños de pantalla se admiten?", "El tacto, el ratón y el teclado siguen las mismas reglas; la interfaz escala como un solo diseño lógico en móvil, apaisado y escritorio."], ["¿El progreso puede pasar automáticamente a otro dispositivo?", "No. El juego solo se guarda en el almacenamiento local del navegador actual, así que otro navegador o dispositivo tiene un progreso separado."]]
+    },
+    "pt-BR": {
+      designNote: "Cada câmara é determinística e pode ser lida antes de puxar o primeiro pino. Toque, mouse e teclado usam a mesma ação única; as telas Main, Stage, Battle e Result mantêm um layout lógico centralizado de no máximo 920 pixels e uma reserva inferior separada de 56 pixels.",
+      faq: [["Quais controles e tamanhos de tela são compatíveis?", "Toque, mouse e teclado seguem as mesmas regras; a interface escala como um único layout lógico em celulares, telas horizontais e desktops."], ["O progresso pode passar automaticamente para outro dispositivo?", "Não. O jogo é salvo apenas no armazenamento local do navegador atual, então outro navegador ou dispositivo terá um progresso separado."]]
+    },
+    fr: {
+      designNote: "Chaque chambre est déterministe et peut être lue avant de tirer la première goupille. Le tactile, la souris et le clavier utilisent la même action unique ; les écrans Main, Stage, Battle et Result conservent une mise en page logique centrée de 920 pixels maximum et une réserve inférieure indépendante de 56 pixels.",
+      faq: [["Quels contrôles et tailles d’écran sont pris en charge ?", "Le tactile, la souris et le clavier suivent les mêmes règles ; l’interface se redimensionne comme une seule mise en page logique sur téléphone, écran paysage et ordinateur."], ["La progression peut-elle être transférée automatiquement vers un autre appareil ?", "Non. Le jeu est enregistré uniquement dans le stockage local du navigateur actuel ; un autre navigateur ou appareil possède donc une progression séparée."]]
+    },
+    de: {
+      designNote: "Jede Kammer ist deterministisch und vor dem ersten Ziehen lesbar. Touch, Maus und Tastatur verwenden dieselbe Einzelaktion; Main-, Stage-, Battle- und Result-Bildschirme behalten ein zentriertes logisches Layout mit maximal 920 Pixeln und einen separaten unteren Bereich von 56 Pixeln.",
+      faq: [["Welche Steuerungen und Bildschirmgrößen werden unterstützt?", "Touch, Maus und Tastatur folgen denselben Regeln; die Oberfläche skaliert auf Smartphone, Querformat und Desktop als ein einheitliches logisches Layout."], ["Kann der Fortschritt automatisch auf ein anderes Gerät übertragen werden?", "Nein. Das Spiel wird nur im lokalen Speicher des aktuellen Browsers gespeichert, daher hat ein anderer Browser oder ein anderes Gerät einen eigenen Fortschritt."]]
+    },
+    it: {
+      designNote: "Ogni camera è deterministica e leggibile prima di tirare il primo perno. Touch, mouse e tastiera usano la stessa azione singola; le schermate Main, Stage, Battle e Result mantengono un layout logico centrato di massimo 920 pixel e un’area separata di 56 pixel in basso.",
+      faq: [["Quali controlli e dimensioni dello schermo sono supportati?", "Touch, mouse e tastiera seguono le stesse regole; l’interfaccia si ridimensiona come un unico layout logico su telefono, schermo orizzontale e desktop."], ["I progressi possono passare automaticamente a un altro dispositivo?", "No. Il gioco viene salvato solo nella memoria locale del browser attuale, quindi un altro browser o dispositivo avrà progressi separati."]]
+    },
+    ru: {
+      designNote: "Каждая камера детерминирована, и её состояние можно прочитать до первого вытягивания штифта. Сенсорное управление, мышь и клавиатура используют одно действие за раз; экраны Main, Stage, Battle и Result сохраняют единую центрированную логическую разметку шириной до 920 пикселей и отдельную нижнюю область высотой 56 пикселей.",
+      faq: [["Какие способы управления и размеры экрана поддерживаются?", "Сенсорное управление, мышь и клавиатура используют одни и те же правила; интерфейс масштабируется как единая логическая разметка на телефоне, в альбомной ориентации и на компьютере."], ["Может ли прогресс автоматически перейти на другое устройство?", "Нет. Игра сохраняется только в локальном хранилище текущего браузера, поэтому в другом браузере или на другом устройстве будет отдельный прогресс."]]
+    }
+  };
+  for (const [code, additions] of Object.entries(rootvaultLocaleGuideAdditions)) {
+    localizedGames[code] ||= {};
+    const current = localizedGames[code]["animal-rootvault-pins"] || {};
+    const faq = Array.isArray(current.faq) && current.faq.length ? [...current.faq] : [...games["animal-rootvault-pins"].faq];
+    for (const entry of additions.faq) if (!faq.some(([question]) => question === entry[0])) faq.push(entry);
+    localizedGames[code]["animal-rootvault-pins"] = {
+      ...current,
+      designNote: additions.designNote || current.designNote,
+      faq,
+    };
+  }
 
   Object.assign(games, { "animal-sanctuary-loop": {
     title: "Animal Sanctuary Loop", difficulty: "Moderate to Challenging", time: "2-6 minutes per mission", gameplay: "Real-Time Territory Loop Arcade", genre: ["Arcade", "Strategy", "Animal"], skills: ["Planning", "Reaction", "Risk Management"],
@@ -9460,6 +9528,48 @@
     faq: [["What does a matching line do?", "It doubles that rune ability after all three reels stop."], ["Do heroes share one attack?", "No. Heroes attack separately; team defense and healing are combined for the summoner."], ["What happens if I leave Battle?", "Permanent inventory remains, but the current battle attempt is lost."], ["Are event rewards always available?", "No. Event missions follow the schedule displayed in Stage."]]
   }, "動物符文轉輪", "动物符文转轮");
 
+  localizedGames["zh-Hant"]["animal-rune-reels"] = {
+    title: "動物符文轉輪", gameplay: "隊伍轉輪角色扮演戰鬥", genre: ["策略", "角色扮演", "動物"], hideSkillsFact: true, showRelatedSkill: false,
+    difficulty: "容易至具挑戰性", time: "每站 2–8 分鐘", guideKicker: "WeightPlay 原創遊戲指南",
+    intro: "組建最多五名召喚動物英雄的隊伍，旋轉三列向下移動的符文轉輪，組合停下的圖樣，並在三十個守護者任務的每一波攻勢中存活。",
+    story: ["召喚師穿越六個裂隙區域，身邊的動物名冊也逐步擴張。每名英雄都有攻擊、防禦、治療與獨特終極技，因此隊伍組成會改變同一轉輪結果的結算方式。", "主線戰役包含三十個多波次任務。每日與排程活動任務會提供可選材料，但不會取代戰役進度。"],
+    systems: ["按下旋轉，讓三列向下的轉輪逐列停止。每個可見符文都會產生效果，三個相同符文排成完整列時會加倍該能力。", "爪符文讓每名現役英雄攻擊；盾牌與心符文會把隊伍的總防禦或治療合併給召喚師。萬用符文能完成另一列，但單獨沒有效果；金幣、終極、專注、回響、幸運與沉睡符文都有畫面標示的專門效果。", "符文結果結算後敵人才會行動。戰鬥期間會持續顯示召喚師生命、護盾、總防禦、總治療、波次與敵人意圖。", "召喚可以解鎖英雄，重複卡片可支援等級提升。符文塵、日光碎片、月之水晶與守護者核心能提升符文等級。永久卡片、材料、金幣與鑽石在放棄戰鬥時仍會保留，但目前波次會重置。"],
+    how: ["開啟關卡，選擇主線、每日或活動，再選擇可用任務。", "使用隊伍頁，把至少一名、最多五名已擁有的英雄放入目前編隊。", "需要升級時查看背包、召喚與符文，再進入戰鬥。", "旋轉並閱讀完成的符文列，持續戰鬥直到所有波次與守護者都被擊敗。"],
+    strategyTips: ["用足夠的總防禦或治療平衡傷害，撐過下一個可見的敵人意圖。", "萬用符文只有完成有用的符文列時才有價值，不要把它當成獨立效果。", "用終極符文搭配能解決當前波次的英雄，不要只選等級最高的隊伍。", "自動模式會重複合法旋轉，但不會替你選更好的隊伍或符文升級。"],
+    progression: ["六個五關戰役章節會增加波次長度與守護者組合。每日任務偏重金幣或材料，活動則依畫面顯示的排程輪換。", "英雄名冊與符文成長會擴大策略選擇，但不會改變清楚可讀的三轉輪結算順序。"],
+    designNote: "轉輪固定依可見順序停止，完整符文列會在結算前發光，英雄行動也會與召喚師合併的防禦和治療總量分開呈現。完整介面使用最大寬度 920 像素的置中單一邏輯版面；手機、橫向與桌面會一起縮放相同的控制項、點擊區、美術與遊戲座標。",
+    parent: "不需要帳號。英雄名冊、戰役進度、貨幣、材料、符文等級與獎勵領取紀錄都儲存在此瀏覽器。清除網站資料或更換瀏覽器可能會建立獨立存檔。",
+    faq: [["相同符文列會做什麼？", "三列轉輪全部停止後，相同列會讓該符文能力加倍。"], ["所有英雄共用一次攻擊嗎？", "不會。英雄會分別攻擊；隊伍防禦與治療則會合併給召喚師。"], ["離開戰鬥會怎樣？", "永久背包內容會保留，但目前的戰鬥嘗試會失去。"], ["活動獎勵總是可以取得嗎？", "不一定。活動任務依關卡頁顯示的排程開放。"], ["支援哪些控制方式與螢幕尺寸？", "遊戲支援觸控、滑鼠與鍵盤；介面會在手機、橫向與桌面視窗中以單一邏輯版面縮放。"], ["進度會自動移到其他裝置嗎？", "不會。進度目前只儲存在本機瀏覽器，其他設定檔或裝置會有獨立進度。"]]
+  };
+  localizedGames["zh-Hans"] ||= {};
+  localizedGames["zh-Hans"]["animal-rune-reels"] = {
+    title: "动物符文转轮", gameplay: "队伍转轮角色扮演战斗", genre: ["策略", "角色扮演", "动物"], hideSkillsFact: true, showRelatedSkill: false,
+    difficulty: "容易至具挑战性", time: "每站 2–8 分钟", guideKicker: "WeightPlay 原创游戏指南",
+    intro: "组建最多五名召唤动物英雄的队伍，旋转三列向下移动的符文转轮，组合停下的图样，并在三十个守护者任务的每一波攻势中存活。",
+    story: ["召唤师穿越六个裂隙区域，身边的动物名册也逐步扩张。每名英雄都有攻击、防御、治疗与独特终极技，因此队伍组成会改变同一转轮结果的结算方式。", "主线战役包含三十个多波次任务。每日与排程活动任务会提供可选材料，但不会取代战役进度。"],
+    systems: ["按下旋转，让三列向下的转轮逐列停止。每个可见符文都会产生效果，三个相同符文排成完整列时会加倍该能力。", "爪符文让每名现役英雄攻击；盾牌与心符文会把队伍的总防御或治疗合并给召唤师。万能符文能完成另一列，但单独没有效果；金币、终极、专注、回响、幸运与沉睡符文都有画面标示的专门效果。", "符文结果结算后敌人才会行动。战斗期间会持续显示召唤师生命、护盾、总防御、总治疗、波次与敌人意图。", "召唤可以解锁英雄，重复卡片可支持等级提升。符文尘、日光碎片、月之水晶与守护者核心能提升符文等级。永久卡片、材料、金币与钻石在放弃战斗时仍会保留，但当前波次会重置。"],
+    how: ["打开关卡，选择主线、每日或活动，再选择可用任务。", "使用队伍页，把至少一名、最多五名已拥有的英雄放入当前编队。", "需要升级时查看背包、召唤与符文，再进入战斗。", "旋转并阅读完成的符文列，持续战斗直到所有波次与守护者都被击败。"],
+    strategyTips: ["用足够的总防御或治疗平衡伤害，撑过下一个可见的敌人意图。", "万能符文只有完成有用的符文列时才有价值，不要把它当成独立效果。", "用终极符文搭配能解决当前波次的英雄，不要只选等级最高的队伍。", "自动模式会重复合法旋转，但不会替你选择更好的队伍或符文升级。"],
+    progression: ["六个五关战役章节会增加波次长度与守护者组合。每日任务偏重金币或材料，活动则依画面显示的排程轮换。", "英雄名册与符文成长会扩大策略选择，但不会改变清楚可读的三转轮结算顺序。"],
+    designNote: "转轮固定依可见顺序停止，完整符文列会在结算前发光，英雄行动也会与召唤师合并的防御和治疗总量分开呈现。完整界面使用最大宽度 920 像素的居中单一逻辑版面；手机、横向与桌面会一起缩放相同的控制项、点击区、美术与游戏坐标。",
+    parent: "不需要账号。英雄名册、战役进度、货币、材料、符文等级与奖励领取记录都保存在此浏览器。清除网站数据或更换浏览器可能会建立独立存档。",
+    faq: [["相同符文列会做什么？", "三列转轮全部停止后，相同列会让该符文能力加倍。"], ["所有英雄共用一次攻击吗？", "不会。英雄会分别攻击；队伍防御与治疗则会合并给召唤师。"], ["离开战斗会怎样？", "永久背包内容会保留，但当前的战斗尝试会丢失。"], ["活动奖励总是可以取得吗？", "不一定。活动任务依关卡页显示的排程开放。"], ["支持哪些控制方式与屏幕尺寸？", "游戏支持触控、鼠标与键盘；界面会在手机、横向与桌面窗口中以单一逻辑版面缩放。"], ["进度会自动移到其他设备吗？", "不会。进度目前只保存在本地浏览器，其他配置文件或设备会有独立进度。"]]
+  };
+  localizedGames["ja"] ||= {};
+  localizedGames["ja"]["animal-rune-reels"] = {
+    title: "アニマルルーンリール", gameplay: "チームリールRPGバトル", genre: ["戦略", "ロールプレイング", "動物"], hideSkillsFact: true, showRelatedSkill: false,
+    difficulty: "遊びやすく、挑戦的", time: "1ステージ 2～8分", guideKicker: "WeightPlay オリジナルゲームガイド",
+    intro: "召喚した動物ヒーローを最大5体編成し、下へ回る3列のルーンリールを止め、揃ったシンボルを組み合わせて、30の守護者ミッションを生き残ります。",
+    story: ["召喚士は6つのリフト地域を進み、動物の仲間を増やします。各ヒーローは攻撃、防御、回復、固有の必殺技を持つため、同じリール結果でもチーム編成によって解決方法が変わります。", "メインキャンペーンには30の複数ウェーブミッションがあります。デイリーと期間イベントは追加素材を提供しますが、キャンペーンの進行を置き換えません。"],
+    systems: ["Spinを押して3列のリールを1列ずつ止めます。見えているルーンはすべて効果を持ち、同じルーンの完成列はその能力を2倍にします。", "爪ルーンは出撃中の各ヒーローを攻撃させます。盾とハートのルーンはチームの防御または回復を召喚士用に合算します。ワイルドは別の列を完成させますが単独の効果はありません。コイン、必殺、集中、反響、幸運、休眠ルーンには表示された固有効果があります。", "敵はルーン結果の解決後に行動します。バトル中は召喚士の体力、シールド、防御合計、回復合計、ウェーブ数、敵の意図が見え続けます。", "召喚でヒーローを解放し、重複カードでレベルを上げます。ルーンダスト、サンシャード、ムーンクリスタル、ガーディアンコアでルーンを強化できます。恒久カードや素材、コイン、ダイヤはバトルを中断しても残りますが、現在のウェーブはリセットされます。"],
+    how: ["Stageを開き、Main、Daily、Eventから利用できるミッションを選びます。", "Teamで所持ヒーローを1～5体、現在の編成に配置します。", "強化が必要ならBackpack、Summon、Runesを確認してからBattleへ進みます。", "リールを回し、完成した列を読み、すべてのウェーブと守護者を倒すまで続けます。"],
+    strategyTips: ["次に見える敵の意図に耐えられるよう、ダメージと防御または回復を釣り合わせます。", "ワイルドは役立つ列を完成させるときだけ有効で、単独の効果として数えません。", "最高レベルのチームではなく、現在のウェーブを解決する必殺効果を持つヒーローに必殺ルーンを合わせます。", "オートは有効な回転を繰り返しますが、より良いチームやルーン強化は選びません。"],
+    progression: ["5ステージずつの6章でウェーブの長さと守護者の組み合わせが増えます。デイリーはコインや素材を重視し、イベントは表示された予定で入れ替わります。", "ヒーローとルーンの成長は戦略の選択肢を広げますが、3列リールの分かりやすい解決順は変わりません。"],
+    designNote: "リールは固定された見た目の順で止まり、完成した列は解決前に光ります。ヒーローの行動は、召喚士に合算される防御と回復の合計とは分けて表示されます。インターフェースは最大幅920ピクセルの中央揃え論理レイアウトで、スマートフォン、横画面、デスクトップの操作部と座標を一緒に拡大縮小します。",
+    parent: "アカウントは必要ありません。ヒーロー、キャンペーン進行、通貨、素材、ルーンレベル、報酬の受け取りはこのブラウザに保存されます。サイトデータを消去したりブラウザを変えたりすると別のセーブになる場合があります。",
+    faq: [["同じルーンの列は何をしますか？", "3列のリールがすべて止まると、そのルーンの能力が2倍になります。"], ["ヒーローは1回だけ攻撃しますか？", "いいえ。ヒーローは個別に攻撃し、防御と回復は召喚士用に合算されます。"], ["バトルを離れるとどうなりますか？", "恒久的な所持品は残りますが、現在のバトル挑戦は失われます。"], ["イベント報酬はいつでも受け取れますか？", "いいえ。イベントミッションはStageに表示された予定に従います。"], ["対応する操作と画面サイズは？", "タッチ、マウス、キーボードに対応し、スマートフォン、横画面、デスクトップで同じ論理レイアウトを使います。"], ["進行状況は別の端末へ移りますか？", "いいえ。現在はブラウザ内だけに保存され、別のプロフィールや端末には別の進行状況ができます。"]]
+  };
+
   registerExpandedGuide("animal-sketchwheel-rally", {
     title: "Animal Sketchwheel Rally", gameplay: "Draw-and-Test Wheel Racing",
     genre: ["Arcade", "Drawing", "Strategy", "Animal"],
@@ -9490,6 +9600,399 @@
     faq: [["What is required to submit tiles?", "Carry at least one matching tile and enter a dock's visible submission area."], ["Must I use docks in number order?", "No. Choose any reachable dock."], ["Why did a tile not enter my stack?", "It did not match your color or your current capacity was full."], ["How do I win?", "Reach the displayed bridge goal before the rival crews."]]
   }, "動物天橋爭霸", "动物天桥争霸");
 
+  localizedGames["zh-Hant"]["animal-skybridge-rivals"] = {
+    title: "動物天橋爭霸", gameplay: "收集建橋競速", genre: ["街機", "競速", "策略", "動物"], skills: ["路線規劃", "風險管理", "反應"],
+    difficulty: "容易至具挑戰性", time: "每站 2–8 分鐘", guideKicker: "WeightPlay 原創遊戲指南",
+    intro: "收集自己顏色的極光方塊，帶到三座天橋碼頭之一，在附近自動提交方塊，並在對手隊伍之前完成指定的天橋距離。",
+    story: ["三十場天空天橋競賽讓動物建造者穿越浮空競技場。每位競賽者收集彩色方塊、回到碼頭，再把攜帶的方塊堆轉成天橋進度。", "路線規劃會改變收集路徑、碼頭入口、危險、風向、加固區、移動加速與冠軍對手，不是只把同一座競技場的數字變大。"],
+    systems: ["使用指標、觸控目標、方向鍵或 WASD 移動；動物會面向並前往選定的目標。", "碰到相符的極光方塊，就會把它加入攜帶堆，直到目前容量已滿。進入任一天橋碼頭的標示區域時，系統會自動提交一個或多個方塊，不需要對準隱藏像素或額外力量條件。", "第一個抵達本關天橋目標的競賽者獲勝。炸彈、怪物、風、對手碰撞與加固橋段，會依畫面顯示的章節規則減慢或扣除進度。", "衝刺能量可提供短暫加速；護盾、磁鐵與衝刺道具帶來短期戰術效果，工坊的容量、速度與抓地升級則提供永久的本機支援。"],
+    how: ["選擇已解鎖的競賽，閱讀天橋目標、計時器、路線與危險規則。", "收集幾個自己顏色的方塊，但不要超過能安全返回的距離。", "靠近任一編號天橋碼頭；只要留在可見區域內，提交就會自動開始。", "重複收集與存入的循環，直到天橋在對手之前達到目標。"],
+    strategyTips: ["長路線被危險阻擋時，先提交小堆方塊，不要冒險損失整堆容量。", "選擇最近且安全的碼頭；碼頭編號不代表隱藏的提交順序。", "在密集方塊區使用磁鐵，把衝刺留給返回路線或最後一場競賽。", "抓地力可降低風的偏移；容量只有在你能安全返回、不被打斷時才真正有用。"],
+    progression: ["六個五賽章節會加入分岔路線、風道、加固區、移動加速環、突襲配置與冠軍對手。", "三十場手工設計競賽會一起改變目標、競技場配置、道具、危險與對手行為。"],
+    designNote: "碼頭範圍、攜帶堆、天橋進度、對手進度與提交回饋都保持可見。有效的近距離提交不會依賴看不見的角度或升級條件。完整介面使用最大寬度 920 像素的置中單一邏輯版面；手機、橫向與桌面會一起縮放相同的控制項、點擊區、美術與遊戲座標，不會個別拉伸。因此觸控、滑鼠與鍵盤都操作同一套合法狀態。主畫面海報與開始遊戲動作獨立於關卡管理，關卡選擇、戰鬥、對話框與結果則各自保有清楚的內容與返回路徑。",
+    parent: "不需要帳號或購買。解鎖、星星、碎片、工坊升級與本機最佳結果都保存在此瀏覽器。清除網站資料或更換瀏覽器可能會建立獨立存檔。",
+    faq: [["提交方塊需要什麼條件？", "至少攜帶一個相符方塊，並進入碼頭可見的提交區域。"], ["一定要依碼頭編號順序嗎？", "不需要。選擇任何能抵達的碼頭即可。"], ["為什麼方塊沒有進入攜帶堆？", "它的顏色不相符，或目前攜帶容量已滿。"], ["要怎麼獲勝？", "在對手隊伍之前抵達畫面顯示的天橋目標。"], ["支援哪些控制方式與螢幕尺寸？", "遊戲規則支援觸控、滑鼠與鍵盤；介面會在手機、橫向與桌面視窗中以單一邏輯版面縮放。"], ["進度會自動移到其他裝置嗎？", "不會。進度目前只儲存在本機瀏覽器，其他瀏覽器設定檔或裝置會有獨立進度。"]]
+  };
+  localizedGames["zh-Hans"] ||= {};
+  localizedGames["zh-Hans"]["animal-skybridge-rivals"] = {
+    title: "动物天桥争霸", gameplay: "收集建桥竞速", genre: ["街机", "竞速", "策略", "动物"], skills: ["路线规划", "风险管理", "反应"],
+    difficulty: "容易至具挑战性", time: "每站 2–8 分钟", guideKicker: "WeightPlay 原创游戏指南",
+    intro: "收集自己颜色的极光方块，带到三座天桥码头之一，在附近自动提交方块，并在对手队伍之前完成指定的天桥距离。",
+    story: ["三十场天空天桥竞赛让动物建造者穿越浮空竞技场。每位竞赛者收集彩色方块、回到码头，再把携带的方块堆转成天桥进度。", "路线规划会改变收集路径、码头入口、危险、风向、加固区、移动加速与冠军对手，而不是只把同一座竞技场的数字变大。"],
+    systems: ["使用指针、触控目标、方向键或 WASD 移动；动物会面向并前往选定的目标。", "碰到相符的极光方块，就会把它加入携带堆，直到当前容量已满。进入任一天桥码头的标示区域时，系统会自动提交一个或多个方块，不需要对准隐藏像素或额外力量条件。", "第一个抵达本关天桥目标的竞赛者获胜。炸弹、怪物、风、对手碰撞与加固桥段，会依画面显示的章节规则减慢或扣除进度。", "冲刺能量可提供短暂加速；护盾、磁铁与冲刺道具带来短期战术效果，工坊的容量、速度与抓地升级则提供永久的本机支援。"],
+    how: ["选择已解锁的竞赛，阅读天桥目标、计时器、路线与危险规则。", "收集几个自己颜色的方块，但不要超过能安全返回的距离。", "靠近任一编号天桥码头；只要留在可见区域内，提交就会自动开始。", "重复收集与存入的循环，直到天桥在对手之前达到目标。"],
+    strategyTips: ["长路线被危险阻挡时，先提交小堆方块，不要冒险损失整堆容量。", "选择最近且安全的码头；码头编号不代表隐藏的提交顺序。", "在密集方块区使用磁铁，把冲刺留给返回路线或最后一场竞赛。", "抓地力可降低风的偏移；容量只有在你能安全返回、不被打断时才真正有用。"],
+    progression: ["六个五赛章节会加入分岔路线、风道、加固区、移动加速环、突袭配置与冠军对手。", "三十场手工设计竞赛会一起改变目标、竞技场配置、道具、危险与对手行为。"],
+    designNote: "码头范围、携带堆、天桥进度、对手进度与提交反馈都保持可见。有效的近距离提交不会依赖看不见的角度或升级条件。完整界面使用最大宽度 920 像素的居中单一逻辑版面；手机、横向与桌面会一起缩放相同的控制项、点击区、美术与游戏坐标，不会分别拉伸。因此触控、鼠标与键盘都操作同一套合法状态。主画面海报与开始游戏动作独立于关卡管理，关卡选择、战斗、对话框与结果则各自保有清楚的内容与返回路径。",
+    parent: "不需要账号或购买。解锁、星星、碎片、工坊升级与本机最佳结果都保存在此浏览器。清除网站数据或更换浏览器可能会建立独立存档。",
+    faq: [["提交方块需要什么条件？", "至少携带一个相符方块，并进入码头可见的提交区域。"], ["一定要按码头编号顺序吗？", "不需要。选择任何能抵达的码头即可。"], ["为什么方块没有进入携带堆？", "它的颜色不相符，或者当前携带容量已满。"], ["要怎么获胜？", "在对手队伍之前抵达画面显示的天桥目标。"], ["支持哪些控制方式与屏幕尺寸？", "游戏规则支持触控、鼠标与键盘；界面会在手机、横向与桌面窗口中以单一逻辑版面缩放。"], ["进度会自动移到其他设备吗？", "不会。进度目前只保存在本地浏览器，其他浏览器配置文件或设备会有独立进度。"]]
+  };
+  localizedGames["ja"] ||= {};
+  localizedGames["ja"]["animal-skybridge-rivals"] = {
+    title: "アニマルスカイブリッジのライバル", gameplay: "集めて架けるレース", genre: ["アーケード", "レース", "戦略", "動物"], skills: ["ルート計画", "リスク管理", "反応"],
+    difficulty: "遊びやすく、挑戦的", time: "1ステージ 2～8分", guideKicker: "WeightPlay オリジナルゲームガイド",
+    intro: "自分の色のオーロラタイルを集め、3つの橋ドックのどれかへ運び、近づくだけでスタックを提出して、ライバル隊より先に必要な橋の距離を完成させます。",
+    story: ["30のスカイブリッジレースで、動物の建設チームが浮遊アリーナを駆け抜けます。各レーサーは色付きタイルを集め、ドックへ戻り、運んだスタックを橋の進行に変えます。", "コースごとに回収ルート、ドックへの道、危険、風、補強区間、移動ブースト、チャンピオンの動きが変わるため、同じアリーナの数字だけが増えるゲームではありません。"],
+    systems: ["ポインター、タッチ目標、方向キー、WASDで移動します。動物は選んだ目標へ向きを変えて進みます。", "同じ色のオーロラタイルに触れると、現在の容量までスタックへ加わります。橋ドックの表示エリアに入ると、ピクセル単位の位置合わせや追加の強さ条件なしで、1個以上のタイルが自動提出されます。", "ステージの橋目標へ最初に到達したレーサーが勝者です。爆弾、モンスター、風、ライバルとの接触、補強された橋区間は、章の表示ルールに応じて進行を遅らせたり減らしたりします。", "ダッシュエネルギーは短い加速に使えます。シールド、マグネット、ダッシュのピックアップは一時的な効果を持ち、工房の容量・速度・グリップ強化は恒久的な支援になります。"],
+    how: ["解放済みのレースを選び、橋の目標、タイマー、ルート、危険ルールを読みます。", "安全に戻れる距離を超えないよう、自分の色のタイルをいくつか集めます。", "番号付きの橋ドックへ近づき、表示エリア内にいると自動提出を始めます。", "回収と提出を繰り返し、ライバルより先に橋を目標まで伸ばします。"],
+    strategyTips: ["危険で長いルートが塞がれたら、満杯のスタックを失う前に少量を提出します。", "最も近く安全なドックを選びます。番号に隠れた提出順はありません。", "タイルが密集した場所ではマグネットを使い、帰り道や最後のレースのためにダッシュを残します。", "グリップは風によるずれを抑えます。容量強化は安全に戻れるときにこそ役立ちます。"],
+    progression: ["6つの5レース章で、分岐ルート、風のレーン、補強区間、移動ブーストリング、襲撃レイアウト、チャンピオンが加わります。", "30のレースでは、目標、アリーナ、ピックアップ、危険、ライバルの動きが一緒に変化します。"],
+    designNote: "ドックの範囲、運搬スタック、橋の進行、ライバルの進行、提出フィードバックは常に見える状態です。近くでの有効な提出は、見えない角度や強化条件に依存しません。完全なインターフェースは最大幅920ピクセルの中央揃えの論理レイアウトを使い、スマートフォン、横画面、デスクトップで操作部、当たり判定、アート、ゲーム座標を一緒に拡大縮小します。",
+    parent: "アカウントや購入は必要ありません。解放、星、シャード、工房強化、ローカルのベスト結果はこのブラウザに保存されます。サイトデータを消去したりブラウザを変えたりすると、別のセーブになる場合があります。",
+    faq: [["タイルを提出する条件は？", "同じ色のタイルを1個以上運び、ドックの見える提出エリアに入ります。"], ["ドックは番号順に使う必要がありますか？", "いいえ。到達できるドックを選べます。"], ["なぜタイルがスタックに入らないのですか？", "色が合わないか、現在の容量が満杯です。"], ["どうすれば勝てますか？", "ライバル隊より先に表示された橋の目標へ到達します。"], ["対応する操作と画面サイズは？", "タッチ、マウス、キーボードの同じルールを、スマートフォン、横画面、デスクトップの論理レイアウトで使えます。"], ["進行状況は別の端末へ移りますか？", "いいえ。現在はブラウザ内だけに保存され、別のプロフィールや端末には別の進行状況ができます。"]]
+  };
+  localizedGames["ko"] ||= {};
+  localizedGames["ko"]["animal-skybridge-rivals"] = {
+    title: "애니멀 스카이브리지 라이벌", gameplay: "수집·건설 레이스", genre: ["아케이드", "레이싱", "전략", "동물"], skills: ["경로 계획", "위험 관리", "반응"],
+    difficulty: "쉽게 시작해 도전적으로", time: "스테이지당 2~8분", guideKicker: "WeightPlay 오리지널 게임 가이드",
+    intro: "내 색상의 오로라 타일을 모아 세 다리 중 하나로 운반하고, 가까이 가면 스택을 자동 제출하여 라이벌 팀보다 먼저 필요한 다리 길이를 완성하세요.",
+    story: ["30개의 스카이브리지 레이스에서 동물 건설자들이 공중 경기장을 달립니다. 모든 레이서는 색 타일을 모아 도크로 돌아와 운반한 스택을 다리 진행도로 바꿉니다.", "코스 계획은 수집 경로, 도크 접근, 위험, 바람, 보강 구역, 이동 부스트와 챔피언 행동을 바꾸므로 같은 경기장의 숫자만 커지지 않습니다."],
+    systems: ["포인터, 터치 목표, 방향키 또는 WASD로 이동합니다. 동물은 선택한 목표를 향해 방향을 바꾸고 이동합니다.", "맞는 색의 오로라 타일에 닿으면 현재 용량까지 운반 스택에 들어갑니다. 다리 도크의 표시 영역에 들어가면 숨은 픽셀 정렬이나 추가 힘 조건 없이 하나 이상의 타일이 자동 제출됩니다.", "스테이지의 다리 목표에 먼저 도착한 레이서가 승리합니다. 폭탄, 몬스터, 바람, 라이벌 충돌과 보강된 다리 구간은 표시된 챕터 규칙에 따라 진행을 늦추거나 줄일 수 있습니다.", "대시 에너지는 잠깐의 속도 상승에 쓰입니다. 실드, 자석, 대시 픽업은 단기 전술 효과를 주며, 작업장의 용량·속도·그립 업그레이드는 영구 지원이 됩니다."],
+    how: ["잠금 해제된 레이스를 선택하고 다리 목표, 타이머, 경로와 위험 규칙을 읽습니다.", "안전하게 돌아올 수 있는 거리를 넘지 않도록 내 색상의 타일을 몇 개 모읍니다.", "번호가 있는 다리 도크로 다가가 표시 영역 안에 머물면 자동 제출을 시작합니다.", "수집과 제출을 반복해 라이벌보다 먼저 다리를 목표까지 완성합니다."],
+    strategyTips: ["위험 때문에 긴 경로가 막히면 가득 찬 스택을 잃지 말고 작은 묶음을 제출하세요.", "가장 가깝고 안전한 도크를 고르세요. 도크 번호는 숨은 제출 순서를 뜻하지 않습니다.", "타일이 밀집한 곳에서 자석을 쓰고, 복귀 경로나 마지막 레이스를 위해 대시를 남기세요.", "그립은 바람에 밀리는 정도를 낮춥니다. 용량은 방해받지 않고 돌아올 수 있을 때만 큰 도움이 됩니다."],
+    progression: ["6개의 5레이스 챕터에서 갈림길, 바람 레인, 보강 구간, 이동 부스트 링, 습격 배치와 챔피언 라이벌이 추가됩니다.", "30개의 제작 레이스에서 목표, 경기장 배치, 픽업, 위험과 라이벌 행동이 함께 바뀝니다."],
+    designNote: "도크 범위, 운반 스택, 다리 진행도, 라이벌 진행도와 제출 피드백은 계속 보입니다. 유효한 근거리 제출은 보이지 않는 각도나 업그레이드 조건에 의존하지 않습니다. 전체 인터페이스는 최대 920픽셀의 중앙 정렬 단일 논리 레이아웃을 사용하며, 휴대폰·가로 화면·데스크톱에서 컨트롤, 적중 영역, 아트와 게임 좌표를 함께 확대합니다.",
+    parent: "계정이나 구매는 필요하지 않습니다. 잠금 해제, 별, 조각, 작업장 업그레이드와 로컬 최고 기록은 이 브라우저에 저장됩니다. 사이트 데이터를 지우거나 브라우저를 바꾸면 별도 저장이 생길 수 있습니다.",
+    faq: [["타일을 제출하려면 무엇이 필요한가요?", "맞는 색의 타일을 하나 이상 들고 도크의 보이는 제출 영역에 들어가세요."], ["도크를 번호 순서대로 써야 하나요?", "아니요. 도달할 수 있는 도크를 선택하면 됩니다."], ["타일이 스택에 들어가지 않은 이유는 무엇인가요?", "색이 맞지 않거나 현재 운반 용량이 가득 찼기 때문입니다."], ["어떻게 이기나요?", "라이벌 팀보다 먼저 표시된 다리 목표에 도달하세요."], ["어떤 조작과 화면 크기를 지원하나요?", "터치·마우스·키보드가 같은 규칙으로 작동하며 휴대폰, 가로 화면, 데스크톱의 단일 논리 레이아웃에서 확대됩니다."], ["진행도가 다른 기기로 자동 이동하나요?", "아니요. 현재는 브라우저에만 저장되므로 다른 프로필이나 기기에는 별도 진행도가 생깁니다."]]
+  };
+  localizedGames["es"] ||= {};
+  localizedGames["es"]["animal-skybridge-rivals"] = {
+    title: "Rivales del Puente Aéreo Animal", gameplay: "Carrera de recoger y construir", genre: ["Arcade", "Carreras", "Estrategia", "Animales"], skills: ["Planificación de rutas", "Gestión del riesgo", "Reacción"],
+    difficulty: "Fácil de empezar, desafiante de dominar", time: "2–8 minutos por etapa", guideKicker: "Guía de juego original de WeightPlay",
+    intro: "Recoge fichas de aurora de tu color, llévalas a uno de tres muelles del puente, deposita la pila automáticamente al acercarte y completa la distancia del puente antes que los rivales.",
+    story: ["Treinta carreras de puentes celestes llevan a constructores animales por arenas flotantes. Cada corredor reúne fichas de colores, vuelve a un muelle y convierte la pila transportada en progreso del puente.", "Los planes de cada circuito cambian las rutas de recogida, el acceso a los muelles, los peligros, el viento, los refuerzos, los impulsos móviles y el comportamiento del campeón, en vez de repetir una arena con números mayores."],
+    systems: ["Muévete con el puntero, un objetivo táctil, las teclas de dirección o WASD. Tu animal gira y avanza hacia el objetivo elegido.", "Al tocar una ficha de aurora del mismo color, se añade a la pila hasta la capacidad actual. Al entrar en el área marcada de cualquier muelle, una o más fichas se depositan automáticamente; no hace falta alinear píxeles ni tener una fuerza extra.", "Gana el primer corredor que alcance la meta del puente de la etapa. Bombas, monstruos, viento, contacto rival y tramos reforzados pueden frenar o quitar progreso según la regla del capítulo mostrado.", "La energía de impulso permite una aceleración breve. Los objetos de escudo, imán e impulso dan efectos tácticos temporales, mientras que las mejoras de capacidad, velocidad y agarre del taller son apoyo permanente local."],
+    how: ["Elige una carrera desbloqueada y lee su meta, temporizador, ruta y regla de peligro.", "Recoge varias fichas de tu color sin superar una distancia segura de regreso.", "Acércate a cualquier muelle numerado; el depósito comienza automáticamente mientras estés dentro de su zona visible.", "Repite el ciclo de recoger y depositar hasta alcanzar la meta antes que los rivales."],
+    strategyTips: ["Deposita una pila pequeña cuando un peligro bloquee la ruta larga, en vez de perder toda la carga.", "Elige el muelle seguro más cercano; el número del muelle no impone un orden oculto.", "Usa el imán en una zona con muchas fichas y guarda el impulso para volver o para la carrera final.", "El agarre reduce el desvío del viento, mientras que la capacidad solo ayuda si puedes regresar sin interrupciones."],
+    progression: ["Seis capítulos de cinco carreras añaden rutas divididas, carriles de viento, secciones reforzadas, anillos de impulso móviles, diseños de asalto y rivales campeones.", "Las treinta carreras diseñadas cambian a la vez sus metas, arenas, recogibles, peligros y comportamiento rival."],
+    designNote: "El alcance del muelle, la pila transportada, el progreso del puente, el progreso rival y la confirmación del depósito permanecen visibles. Un depósito cercano válido nunca depende de un ángulo invisible ni de una mejora. La interfaz usa un único diseño lógico centrado de 920 píxeles como máximo y escala juntos controles, zonas de toque, arte y coordenadas en móvil, horizontal y escritorio.",
+    parent: "No se necesita cuenta ni compra. Los desbloqueos, estrellas, fragmentos, mejoras del taller y mejores resultados locales se guardan en este navegador. Borrar los datos del sitio o cambiar de navegador puede crear un guardado separado.",
+    faq: [["¿Qué hace falta para depositar fichas?", "Lleva al menos una ficha del mismo color y entra en el área visible de depósito de un muelle."], ["¿Debo usar los muelles en orden numérico?", "No. Puedes elegir cualquier muelle alcanzable."], ["¿Por qué no entró una ficha en mi pila?", "No coincidía con tu color o la capacidad actual estaba llena."], ["¿Cómo se gana?", "Alcanza la meta del puente mostrada antes que los equipos rivales."], ["¿Qué controles y tamaños de pantalla se admiten?", "Las reglas funcionan con toque, ratón y teclado, y la interfaz escala como un solo diseño lógico en móvil, horizontal y escritorio."], ["¿El progreso pasa automáticamente a otro dispositivo?", "No. Ahora solo se guarda en el navegador; otro perfil o dispositivo tendrá un progreso independiente."]]
+  };
+
+  localizedGames["pt-BR"] ||= {};
+  localizedGames["pt-BR"]["animal-skybridge-rivals"] = {
+    title: "Rivais Animais do Skybridge", gameplay: "Corrida de coletar e construir", genre: ["Arcade", "Corrida", "Estratégia", "Animais"], skills: ["Planejamento de rotas", "Gestão de risco", "Reação"],
+    difficulty: "Fácil de começar, desafiador de dominar", time: "2–8 minutos por fase", guideKicker: "Guia de jogo original da WeightPlay",
+    intro: "Colete peças de aurora da sua cor, leve-as a um dos três píeres da ponte, entregue a pilha automaticamente ao se aproximar e complete a distância exigida antes das equipes rivais.",
+    story: ["Trinta corridas de pontes celestes levam construtores animais por arenas flutuantes. Cada corredor reúne peças coloridas, volta a um píer e transforma a pilha carregada em progresso da ponte.", "Os planos de cada pista mudam rotas de coleta, acesso aos píeres, perigos, vento, reforços, impulsos móveis e comportamento do campeão, em vez de repetir uma arena com números maiores."],
+    systems: ["Mova-se com o ponteiro, um alvo de toque, as setas ou WASD. O animal vira e caminha em direção ao alvo escolhido.", "Ao tocar uma peça de aurora da mesma cor, ela entra na pilha até a capacidade atual. Ao entrar na área marcada de qualquer píer, uma ou mais peças são entregues automaticamente; não é preciso alinhar pixels nem ter uma condição extra de força.", "O primeiro corredor a alcançar a meta da ponte da fase vence. Bombas, monstros, vento, contato rival e trechos reforçados podem atrasar ou retirar progresso conforme a regra do capítulo exibida.", "A energia de disparo cria uma aceleração curta. Escudo, ímã e disparo oferecem efeitos táticos temporários, enquanto melhorias de capacidade, velocidade e aderência da oficina dão suporte permanente local."],
+    how: ["Escolha uma corrida desbloqueada e leia sua meta de ponte, cronômetro, rota e regra de perigo.", "Colete algumas peças da sua cor sem ultrapassar uma distância segura de retorno.", "Aproxime-se de qualquer píer numerado; a entrega começa automaticamente enquanto você permanece em sua área visível.", "Repita o ciclo de coletar e entregar até sua ponte atingir a meta antes dos rivais."],
+    strategyTips: ["Entregue uma pilha pequena quando um perigo bloquear a rota longa, em vez de perder toda a carga.", "Escolha o píer seguro mais próximo; o número do píer não impõe uma ordem oculta de entrega.", "Use o ímã em uma área cheia de peças e guarde o disparo para a volta ou para a corrida final.", "A aderência reduz o desvio causado pelo vento, enquanto a capacidade só ajuda se você conseguir voltar sem ser interrompido."],
+    progression: ["Seis capítulos de cinco corridas acrescentam rotas divididas, faixas de vento, trechos reforçados, anéis de impulso móveis, layouts de ataque e rivais campeões.", "As trinta corridas criadas mudam juntas as metas, arenas, itens, perigos e comportamentos rivais."],
+    designNote: "O alcance do píer, a pilha carregada, o progresso da ponte, o progresso rival e o retorno da entrega permanecem visíveis. Uma entrega válida próxima nunca depende de um ângulo invisível ou de uma melhoria. A interface usa um único layout lógico centralizado de no máximo 920 pixels e escala juntos controles, áreas de toque, arte e coordenadas no celular, na horizontal e no desktop.",
+    parent: "Não é preciso criar conta nem comprar nada. Desbloqueios, estrelas, fragmentos, melhorias da oficina e melhores resultados locais ficam salvos neste navegador. Limpar os dados do site ou trocar de navegador pode criar um salvamento separado.",
+    faq: [["O que é necessário para entregar peças?", "Carregue pelo menos uma peça da mesma cor e entre na área visível de entrega de um píer."], ["Preciso usar os píeres em ordem numérica?", "Não. Escolha qualquer píer que possa alcançar."], ["Por que uma peça não entrou na minha pilha?", "Ela não combinava com sua cor ou a capacidade atual estava cheia."], ["Como vencer?", "Alcance a meta da ponte mostrada antes das equipes rivais."], ["Quais controles e tamanhos de tela são aceitos?", "Toque, mouse e teclado usam as mesmas regras; a interface escala como um único layout lógico no celular, na horizontal e no desktop."], ["O progresso vai automaticamente para outro dispositivo?", "Não. Ele fica apenas no navegador; outro perfil ou dispositivo terá um progresso separado."]]
+  };
+  localizedGames["fr"] ||= {};
+  localizedGames["fr"]["animal-skybridge-rivals"] = {
+    title: "Rivaux du pont aérien animalier", gameplay: "Course de collecte et de construction", genre: ["Arcade", "Course", "Stratégie", "Animaux"], skills: ["Planification des itinéraires", "Gestion du risque", "Réactivité"],
+    difficulty: "Facile à commencer, difficile à maîtriser", time: "2 à 8 minutes par étape", guideKicker: "Guide de jeu original WeightPlay",
+    intro: "Ramassez les tuiles d’aurore de votre couleur, transportez-les vers l’un des trois quais du pont, déposez la pile automatiquement à proximité et terminez la distance demandée avant les équipes rivales.",
+    story: ["Trente courses de ponts célestes font traverser des arènes flottantes à des bâtisseurs animaux. Chaque coureur rassemble des tuiles colorées, revient à un quai et transforme sa pile en progression du pont.", "Les plans de circuit modifient les itinéraires de collecte, l’accès aux quais, les dangers, le vent, les renforts, les accélérateurs mobiles et le comportement du champion, au lieu de répéter une arène avec des nombres plus grands."],
+    systems: ["Déplacez-vous avec le pointeur, une cible tactile, les touches directionnelles ou WASD. Votre animal se tourne et avance vers la cible choisie.", "Toucher une tuile d’aurore de la bonne couleur l’ajoute à la pile jusqu’à la capacité actuelle. Entrer dans la zone marquée d’un quai dépose automatiquement une ou plusieurs tuiles ; aucun alignement précis ni niveau de force supplémentaire n’est requis.", "Le premier coureur à atteindre l’objectif du pont gagne. Bombes, monstres, vent, contact avec un rival et sections renforcées peuvent ralentir ou réduire la progression selon la règle du chapitre affichée.", "L’énergie de ruée donne une courte accélération. Le bouclier, l’aimant et la ruée offrent des effets tactiques temporaires, tandis que les améliorations d’atelier de capacité, de vitesse et d’adhérence apportent un soutien local permanent."],
+    how: ["Choisissez une course déverrouillée et lisez son objectif de pont, son chronomètre, son itinéraire et sa règle de danger.", "Ramassez plusieurs tuiles de votre couleur sans dépasser une distance de retour sûre.", "Approchez-vous d’un quai numéroté ; le dépôt commence automatiquement tant que vous restez dans sa zone visible.", "Répétez la collecte et le dépôt jusqu’à atteindre l’objectif avant les rivaux."],
+    strategyTips: ["Déposez une petite pile lorsqu’un danger bloque le long itinéraire plutôt que de perdre toute la charge.", "Choisissez le quai sûr le plus proche ; son numéro n’impose aucun ordre caché de dépôt.", "Utilisez l’aimant dans une zone dense et gardez la ruée pour le retour ou la course finale.", "L’adhérence réduit la dérive due au vent ; la capacité n’aide vraiment que si vous pouvez revenir sans être interrompu."],
+    progression: ["Six chapitres de cinq courses ajoutent des itinéraires séparés, des couloirs de vent, des sections renforcées, des anneaux d’accélération mobiles, des configurations d’assaut et des rivaux champions.", "Les trente courses conçues font évoluer ensemble les objectifs, les arènes, les objets, les dangers et le comportement des rivaux."],
+    designNote: "La portée du quai, la pile transportée, la progression du pont, celle du rival et le retour du dépôt restent visibles. Un dépôt proche valide ne dépend jamais d’un angle invisible ni d’une amélioration. L’interface utilise une seule mise en page logique centrée, limitée à 920 pixels, qui agrandit ensemble contrôles, zones tactiles, illustrations et coordonnées sur mobile, en paysage et sur ordinateur.",
+    parent: "Aucun compte ni achat n’est nécessaire. Déblocages, étoiles, fragments, améliorations d’atelier et meilleurs résultats locaux restent dans ce navigateur. Effacer les données du site ou changer de navigateur peut créer une sauvegarde séparée.",
+    faq: [["Que faut-il pour déposer des tuiles ?", "Portez au moins une tuile de la bonne couleur et entrez dans la zone de dépôt visible d’un quai."], ["Faut-il utiliser les quais dans l’ordre des numéros ?", "Non. Choisissez n’importe quel quai accessible."], ["Pourquoi une tuile n’est-elle pas entrée dans ma pile ?", "Sa couleur ne correspondait pas ou la capacité actuelle était pleine."], ["Comment gagner ?", "Atteignez l’objectif du pont affiché avant les équipes rivales."], ["Quels contrôles et écrans sont pris en charge ?", "Le tactile, la souris et le clavier suivent les mêmes règles ; l’interface se redimensionne comme une seule mise en page logique sur mobile, en paysage et sur ordinateur."], ["La progression passe-t-elle automatiquement sur un autre appareil ?", "Non. Elle est conservée uniquement dans le navigateur ; un autre profil ou appareil aura sa propre progression."]]
+  };
+  localizedGames["de"] ||= {};
+  localizedGames["de"]["animal-skybridge-rivals"] = {
+    title: "Tierische Skybridge-Rivalen", gameplay: "Sammeln-und-Bauen-Rennen", genre: ["Arcade", "Rennen", "Strategie", "Tiere"], skills: ["Routenplanung", "Risikomanagement", "Reaktion"],
+    difficulty: "Leicht zu beginnen, anspruchsvoll zu meistern", time: "2–8 Minuten pro Abschnitt", guideKicker: "Original-Spielanleitung von WeightPlay",
+    intro: "Sammle Aurora-Kacheln in deiner Farbe, bringe sie zu einer von drei Brückenstationen, gib den Stapel in der Nähe automatisch ab und vollende die nötige Brückenstrecke vor den Rivalen.",
+    story: ["Dreißig Himmelsbrücken-Rennen führen tierische Baumeister durch schwebende Arenen. Jeder Rennende sammelt farbige Kacheln, kehrt zu einer Station zurück und verwandelt den getragenen Stapel in Brückenfortschritt.", "Die Streckenpläne ändern Sammelwege, Stationszugänge, Gefahren, Wind, Verstärkungen, bewegliche Schubringe und das Verhalten des Champions, statt nur die Zahlen derselben Arena zu erhöhen."],
+    systems: ["Bewege dich mit Zeiger, Touch-Ziel, Richtungstasten oder WASD. Dein Tier dreht sich zur gewählten Position und läuft dorthin.", "Eine passende Aurora-Kachel wird bis zur aktuellen Kapazität in den getragenen Stapel aufgenommen. Sobald du den markierten Bereich einer Brückenstation betrittst, werden eine oder mehrere Kacheln automatisch abgegeben; eine unsichtbare Pixel-Ausrichtung oder zusätzliche Stärke ist nicht nötig.", "Wer zuerst das Brückenziel des Abschnitts erreicht, gewinnt. Bomben, Monster, Wind, Rivalenkontakt und verstärkte Brückenbereiche können den Fortschritt je nach angezeigter Kapitelregel bremsen oder verringern.", "Schubenergie erzeugt einen kurzen Geschwindigkeitsschub. Schild, Magnet und Schub liefern zeitweise taktische Effekte, während Werkstatt-Upgrades für Kapazität, Tempo und Haftung dauerhaft lokal helfen."],
+    how: ["Wähle ein freigeschaltetes Rennen und lies Brückenziel, Zeitlimit, Route und Gefahrenregel.", "Sammle mehrere Kacheln deiner Farbe, ohne eine sichere Rückkehrdistanz zu überschreiten.", "Nähern dich einer nummerierten Brückenstation; die Abgabe beginnt automatisch in ihrem sichtbaren Bereich.", "Wiederhole Sammeln und Abgeben, bis deine Brücke vor den Rivalen das Ziel erreicht."],
+    strategyTips: ["Gib einen kleinen Stapel ab, wenn eine Gefahr den langen Weg versperrt, statt die volle Ladung zu verlieren.", "Wähle die nächste sichere Station; ihre Nummer legt keine versteckte Abgabereihenfolge fest.", "Nutze den Magneten in einem dichten Sammelfeld und spare den Schub für die Rückkehr oder das letzte Rennen.", "Haftung verringert die Winddrift. Kapazität hilft nur, wenn du ungestört zurückkehren kannst."],
+    progression: ["Sechs Kapitel mit je fünf Rennen ergänzen geteilte Routen, Windspuren, verstärkte Abschnitte, bewegliche Schubringe, Angriffsaufbauten und Champion-Rivalen.", "In den dreißig entworfenen Rennen verändern sich Ziele, Arenen, Sammelobjekte, Gefahren und Rivalenverhalten gemeinsam."],
+    designNote: "Stationsreichweite, getragener Stapel, Brückenfortschritt, Rivalenfortschritt und Abgabemeldung bleiben sichtbar. Eine gültige Abgabe in der Nähe hängt nie von einem unsichtbaren Winkel oder Upgrade ab. Die Oberfläche nutzt ein zentriertes logisches Layout mit höchstens 920 Pixeln und skaliert Steuerung, Trefferbereiche, Grafik und Spielkoordinaten auf Handy, Querformat und Desktop gemeinsam.",
+    parent: "Es sind kein Konto und kein Kauf nötig. Freischaltungen, Sterne, Splitter, Werkstatt-Upgrades und lokale Bestwerte bleiben in diesem Browser. Das Löschen von Websitedaten oder ein Browserwechsel kann einen eigenen Spielstand erzeugen.",
+    faq: [["Was ist zum Abgeben von Kacheln nötig?", "Trage mindestens eine passende Kachel und betrete den sichtbaren Abgabebereich einer Station."], ["Muss ich die Stationen nach Nummer verwenden?", "Nein. Wähle jede erreichbare Station."], ["Warum kam eine Kachel nicht in meinen Stapel?", "Die Farbe passte nicht oder die aktuelle Kapazität war voll."], ["Wie gewinne ich?", "Erreiche das angezeigte Brückenziel vor den Rivalenteams."], ["Welche Steuerungen und Bildschirmgrößen werden unterstützt?", "Touch, Maus und Tastatur folgen denselben Regeln; das Layout skaliert auf Handy, Querformat und Desktop als eine logische Fläche."], ["Wird der Fortschritt automatisch auf ein anderes Gerät übertragen?", "Nein. Er wird nur im Browser gespeichert; ein anderes Profil oder Gerät hat einen eigenen Fortschritt."]]
+  };
+  localizedGames["it"] ||= {};
+  localizedGames["it"]["animal-skybridge-rivals"] = {
+    title: "Rivali animali dello Skybridge", gameplay: "Corsa raccogli e costruisci", genre: ["Arcade", "Corsa", "Strategia", "Animali"], skills: ["Pianificazione del percorso", "Gestione del rischio", "Reazione"],
+    difficulty: "Facile da iniziare, impegnativo da padroneggiare", time: "2–8 minuti per fase", guideKicker: "Guida di gioco originale WeightPlay",
+    intro: "Raccogli le tessere aurora del tuo colore, portale a uno dei tre moli del ponte, deposita automaticamente la pila quando sei vicino e completa la distanza richiesta prima delle squadre rivali.",
+    story: ["Trenta corse sui ponti celesti portano i costruttori animali attraverso arene sospese. Ogni corridore raccoglie tessere colorate, torna a un molo e trasforma la pila trasportata in avanzamento del ponte.", "I percorsi cambiano raccolta, accesso ai moli, pericoli, vento, rinforzi, acceleratori mobili e comportamento del campione, invece di ripetere un’arena con numeri più grandi."],
+    systems: ["Muoviti con il puntatore, un bersaglio touch, i tasti direzionali o WASD. L’animale si gira e procede verso il bersaglio scelto.", "Toccando una tessera aurora del colore giusto, la aggiungi alla pila fino alla capacità corrente. Entrando nell’area segnata di un molo, una o più tessere vengono depositate automaticamente; non servono allineamento preciso o forza aggiuntiva.", "Vince il primo corridore che raggiunge l’obiettivo del ponte. Bombe, mostri, vento, contatto con i rivali e sezioni rinforzate possono rallentare o ridurre l’avanzamento secondo la regola del capitolo mostrata.", "L’energia scatto offre una breve accelerazione. Scudo, magnete e scatto hanno effetti tattici temporanei, mentre i potenziamenti di capacità, velocità e aderenza dell’officina danno supporto locale permanente."],
+    how: ["Scegli una corsa sbloccata e leggi obiettivo del ponte, timer, percorso e regola del pericolo.", "Raccogli diverse tessere del tuo colore senza superare una distanza sicura di ritorno.", "Avvicinati a un molo numerato: il deposito parte automaticamente mentre resti nella sua area visibile.", "Ripeti raccolta e deposito finché il ponte raggiunge l’obiettivo prima dei rivali."],
+    strategyTips: ["Deposita una pila piccola quando un pericolo blocca il percorso lungo, invece di perdere tutto il carico.", "Scegli il molo sicuro più vicino: il suo numero non impone un ordine nascosto.", "Usa il magnete in un’area densa e conserva lo scatto per il ritorno o la gara finale.", "L’aderenza riduce lo spostamento causato dal vento; la capacità aiuta davvero solo se puoi tornare senza interruzioni."],
+    progression: ["Sei capitoli da cinque gare aggiungono percorsi divisi, corridoi di vento, sezioni rinforzate, anelli scatto mobili, configurazioni d’assalto e rivali campioni.", "Nelle trenta gare progettate cambiano insieme obiettivi, arene, raccolte, pericoli e comportamento dei rivali."],
+    designNote: "Portata del molo, pila trasportata, avanzamento del ponte, avanzamento rivale e conferma del deposito restano visibili. Un deposito valido vicino non dipende da un angolo invisibile o da un potenziamento. L’interfaccia usa un unico layout logico centrato, largo al massimo 920 pixel, e scala insieme controlli, aree attive, grafica e coordinate su telefono, orizzontale e desktop.",
+    parent: "Non servono account né acquisti. Sblocchi, stelle, frammenti, potenziamenti dell’officina e migliori risultati locali restano in questo browser. Cancellare i dati del sito o cambiare browser può creare un salvataggio separato.",
+    faq: [["Cosa serve per depositare le tessere?", "Trasporta almeno una tessera del colore giusto ed entra nell’area visibile di deposito di un molo."], ["Devo usare i moli in ordine numerico?", "No. Scegli qualsiasi molo raggiungibile."], ["Perché una tessera non è entrata nella pila?", "Il colore non corrispondeva oppure la capacità era piena."], ["Come si vince?", "Raggiungi l’obiettivo del ponte mostrato prima delle squadre rivali."], ["Quali controlli e dimensioni sono supportati?", "Touch, mouse e tastiera usano le stesse regole; il layout logico si adatta a telefono, orizzontale e desktop."], ["I progressi passano automaticamente a un altro dispositivo?", "No. Ora vengono salvati solo nel browser; un altro profilo o dispositivo avrà progressi separati."]]
+  };
+  localizedGames["ru"] ||= {};
+  localizedGames["ru"]["animal-skybridge-rivals"] = {
+    title: "Животные: соперники по Скайбриджу", gameplay: "Сбор и строительство: гонка", genre: ["Аркада", "Гонки", "Стратегия", "Животные"], skills: ["Планирование маршрута", "Управление риском", "Реакция"],
+    difficulty: "Легко начать, трудно освоить", time: "2–8 минут на этап", guideKicker: "Оригинальное игровое руководство WeightPlay",
+    intro: "Собирайте плитки авроры своего цвета, несите их к одному из трёх причалов моста, сдавайте стопку рядом с ним автоматически и завершите нужную длину моста раньше соперников.",
+    story: ["Тридцать гонок по небесным мостам проводят животных-строителей через парящие арены. Каждый участник собирает цветные плитки, возвращается к причалу и превращает переносимую стопку в прогресс моста.", "Планы трасс меняют маршруты сбора, доступ к причалам, опасности, ветер, укрепления, движущиеся ускорители и поведение чемпиона, а не просто увеличивают числа на одной арене."],
+    systems: ["Двигайтесь указателем, сенсорной целью, стрелками или WASD. Животное поворачивается и идёт к выбранной цели.", "Плитка авроры подходящего цвета добавляется в переносимую стопку до текущего лимита. Войдя в отмеченную область любого причала, вы автоматически сдаёте одну или несколько плиток; точное совмещение пикселей и дополнительная сила не нужны.", "Побеждает тот, кто первым достигнет цели моста этапа. Бомбы, монстры, ветер, столкновения и укреплённые участки могут замедлить или уменьшить прогресс по правилу показанной главы.", "Энергия рывка даёт короткое ускорение. Щит, магнит и рывок дают временные тактические эффекты, а улучшения вместимости, скорости и сцепления в мастерской помогают постоянно в этом браузере."],
+    how: ["Выберите открытую гонку и прочитайте цель моста, таймер, маршрут и правило опасности.", "Соберите несколько плиток своего цвета, не уходя дальше безопасного расстояния возврата.", "Подойдите к любому пронумерованному причалу; сдача начнётся автоматически, пока вы находитесь в его видимой зоне.", "Повторяйте сбор и сдачу, пока мост не достигнет цели раньше соперников."],
+    strategyTips: ["Сдайте небольшую стопку, если опасность перекрывает длинный путь, вместо потери всего груза.", "Выбирайте ближайший безопасный причал: его номер не задаёт скрытый порядок сдачи.", "Используйте магнит в плотном поле плиток, а рывок сохраните для возвращения или финальной гонки.", "Сцепление уменьшает снос ветром, а вместимость полезна только при безопасном возвращении без помех."],
+    progression: ["Шесть глав по пять гонок добавляют разветвления маршрутов, ветровые полосы, укреплённые участки, движущиеся кольца ускорения, штурмовые схемы и соперников-чемпионов.", "В тридцати авторских гонках одновременно меняются цели, арены, предметы, опасности и поведение соперников."],
+    designNote: "Радиус причала, переносимая стопка, прогресс моста, прогресс соперника и подтверждение сдачи остаются видимыми. Успешная сдача рядом не зависит от невидимого угла или улучшения. Интерфейс использует единую центрированную логическую раскладку шириной до 920 пикселей и вместе масштабирует управление, зоны нажатия, графику и игровые координаты на телефоне, в альбомном режиме и на компьютере.",
+    parent: "Аккаунт и покупки не нужны. Открытия, звёзды, осколки, улучшения мастерской и местные лучшие результаты хранятся в этом браузере. Очистка данных сайта или смена браузера может создать отдельное сохранение.",
+    faq: [["Что нужно для сдачи плиток?", "Несите хотя бы одну плитку подходящего цвета и войдите в видимую зону сдачи причала."], ["Нужно ли использовать причалы по номерам?", "Нет. Выбирайте любой доступный причал."], ["Почему плитка не попала в стопку?", "Цвет не совпал или текущая вместимость была заполнена."], ["Как победить?", "Достигните показанной цели моста раньше соперников."], ["Какие способы управления и размеры экрана поддерживаются?", "Сенсорное управление, мышь и клавиатура используют одни правила; логическая раскладка масштабируется на телефоне, в альбомном режиме и на компьютере."], ["Переносится ли прогресс на другое устройство автоматически?", "Нет. Сейчас он хранится только в браузере, поэтому другой профиль или устройство получит отдельный прогресс."]]
+  };
+  localizedGames["hi"] ||= {};
+  localizedGames["hi"]["animal-skybridge-rivals"] = {
+    title: "पशु स्काईब्रिज प्रतिद्वंद्वी", gameplay: "इकट्ठा करो और पुल बनाओ रेस", genre: ["आर्केड", "दौड़", "रणनीति", "पशु"], skills: ["मार्ग योजना", "जोखिम प्रबंधन", "प्रतिक्रिया"],
+    difficulty: "शुरू करना आसान, निपुण होना चुनौतीपूर्ण", time: "प्रति चरण 2–8 मिनट", guideKicker: "WeightPlay मौलिक गेम गाइड",
+    intro: "अपने रंग की ऑरोरा टाइलें इकट्ठी करें, उन्हें तीन पुल-डॉक में से किसी एक तक ले जाएँ, पास पहुँचते ही ढेर जमा करें और प्रतिद्वंद्वी दलों से पहले पुल की आवश्यक दूरी पूरी करें।",
+    story: ["तीस स्काईब्रिज दौड़ पशु निर्माणकर्ताओं को तैरते हुए एरेना से ले जाती हैं। हर रेसर रंगीन टाइलें जुटाता है, डॉक पर लौटता है और उठाए हुए ढेर को पुल की प्रगति में बदलता है।", "पाठ्यक्रम की योजना संग्रह मार्ग, डॉक तक पहुँच, खतरे, हवा, मजबूत हिस्से, चलती गति-वृद्धि और चैंपियन के व्यवहार बदलती है; केवल उसी एरेना की संख्याएँ बड़ी नहीं होतीं।"],
+    systems: ["पॉइंटर, टच लक्ष्य, दिशा-कुंजी या WASD से चलें। आपका पशु चुने हुए लक्ष्य की ओर मुड़कर जाता है।", "समान रंग की ऑरोरा टाइल छूने पर वह वर्तमान क्षमता तक उठाए हुए ढेर में जुड़ती है। किसी पुल-डॉक के चिह्नित क्षेत्र में प्रवेश करते ही एक या अधिक टाइल अपने आप जमा हो जाती हैं; छिपे पिक्सेल-संरेखण या अतिरिक्त शक्ति की जरूरत नहीं है।", "चरण के पुल लक्ष्य तक सबसे पहले पहुँचने वाला रेसर जीतता है। बम, राक्षस, हवा, प्रतिद्वंद्वी से टकराव और मजबूत पुल-खंड दिखाए गए अध्याय नियम के अनुसार प्रगति धीमी या कम कर सकते हैं।", "डैश ऊर्जा थोड़ी देर की गति बढ़ाती है। शील्ड, चुंबक और डैश पिकअप अस्थायी रणनीतिक प्रभाव देते हैं, जबकि कार्यशाला की क्षमता, गति और पकड़ वाले अपग्रेड स्थायी स्थानीय सहायता देते हैं।"],
+    how: ["एक खुले हुए रेस को चुनें और उसका पुल लक्ष्य, टाइमर, मार्ग व खतरे का नियम पढ़ें।", "सुरक्षित लौटने की दूरी से आगे गए बिना अपने रंग की कई टाइलें इकट्ठी करें।", "किसी भी नंबर वाले पुल-डॉक के पास जाएँ; उसके दिखाई देने वाले क्षेत्र में रहने पर जमा करना अपने आप शुरू होगा।", "संग्रह और जमा करने का चक्र दोहराएँ, जब तक आपका पुल प्रतिद्वंद्वियों से पहले लक्ष्य तक न पहुँच जाए।"],
+    strategyTips: ["जब खतरा लंबा रास्ता रोक दे, पूरी क्षमता का ढेर खोने के बजाय छोटा ढेर जमा करें।", "सबसे नजदीकी सुरक्षित डॉक चुनें; डॉक नंबर कोई छिपा हुआ जमा क्रम नहीं बनाता।", "घनी टाइलों वाले क्षेत्र में चुंबक इस्तेमाल करें और डैश को वापसी या अंतिम दौड़ के लिए बचाएँ।", "पकड़ हवा से होने वाले बहाव को घटाती है; क्षमता तभी मदद करती है जब आप बिना रुकावट लौट सकें।"],
+    progression: ["पाँच-पाँच दौड़ वाले छह अध्याय मार्ग-विभाजन, हवा की गलियाँ, मजबूत हिस्से, चलती गति-रिंग, हमला लेआउट और चैंपियन प्रतिद्वंद्वी जोड़ते हैं।", "तीसों बनाई गई दौड़ों में लक्ष्य, एरेना, पिकअप, खतरे और प्रतिद्वंद्वी का व्यवहार साथ-साथ बदलता है।"],
+    designNote: "डॉक की सीमा, उठाया हुआ ढेर, पुल की प्रगति, प्रतिद्वंद्वी की प्रगति और जमा करने का संकेत दिखाई देते रहते हैं। पास का सही जमा किसी छिपे कोण या अपग्रेड पर निर्भर नहीं है। पूरा इंटरफ़ेस अधिकतम 920 पिक्सेल वाले एक केंद्रित तार्किक लेआउट का उपयोग करता है और फ़ोन, लैंडस्केप व डेस्कटॉप पर नियंत्रण, हिट क्षेत्र, चित्र व गेम निर्देशांक साथ में स्केल करता है।",
+    parent: "खाते या खरीद की जरूरत नहीं है। अनलॉक, सितारे, टुकड़े, कार्यशाला अपग्रेड और स्थानीय सर्वश्रेष्ठ परिणाम इसी ब्राउज़र में रहते हैं। साइट डेटा मिटाने या ब्राउज़र बदलने पर अलग सेव बन सकती है।",
+    faq: [["टाइल जमा करने के लिए क्या चाहिए?", "कम से कम एक समान रंग की टाइल लेकर डॉक के दिखाई देने वाले जमा क्षेत्र में जाएँ।"], ["क्या डॉक को नंबर क्रम में इस्तेमाल करना होगा?", "नहीं। किसी भी पहुँच योग्य डॉक को चुनें।"], ["टाइल मेरे ढेर में क्यों नहीं आई?", "उसका रंग मेल नहीं खाता था या वर्तमान क्षमता भर चुकी थी।"], ["जीतने का तरीका क्या है?", "प्रतिद्वंद्वी दलों से पहले दिखाए गए पुल लक्ष्य तक पहुँचें।"], ["कौन से नियंत्रण और स्क्रीन आकार समर्थित हैं?", "टच, माउस और कीबोर्ड एक ही नियमों पर चलते हैं; इंटरफ़ेस फ़ोन, लैंडस्केप और डेस्कटॉप पर एक तार्किक लेआउट की तरह स्केल होता है।"], ["क्या प्रगति अपने आप दूसरे उपकरण पर जाती है?", "नहीं। अभी यह केवल ब्राउज़र में सहेजी जाती है; दूसरे प्रोफ़ाइल या उपकरण की प्रगति अलग होगी।"]]
+  };
+  localizedGames["ar"] ||= {};
+  localizedGames["ar"]["animal-skybridge-rivals"] = {
+    title: "منافسو جسر السماء من الحيوانات", gameplay: "سباق جمع وبناء", genre: ["أركيد", "سباق", "استراتيجية", "حيوانات"], skills: ["تخطيط المسار", "إدارة المخاطر", "رد الفعل"],
+    difficulty: "سهل البدء، صعب الإتقان", time: "2–8 دقائق لكل مرحلة", guideKicker: "دليل لعبة WeightPlay الأصلية",
+    intro: "اجمع بلاطات الشفق من لونك، وانقلها إلى أحد أرصفة الجسر الثلاثة، وسلّم الكومة تلقائيًا عند الاقتراب، وأكمل مسافة الجسر المطلوبة قبل الفرق المنافسة.",
+    story: ["ترسل ثلاثون سباقًا على الجسور السماوية البنّائين من الحيوانات عبر ساحات عائمة. يجمع كل متسابق البلاطات الملونة، ويعود إلى رصيف، ويحوّل الكومة المحمولة إلى تقدم في الجسر.", "تغيّر خطط المسار طرق الجمع والوصول إلى الأرصفة والمخاطر والرياح والتدعيمات ومعززات الحركة وسلوك البطل، بدل تكرار ساحة واحدة بأرقام أكبر فقط."],
+    systems: ["تحرك بالمؤشر أو هدف اللمس أو مفاتيح الاتجاه أو WASD. يلتفت الحيوان ويتحرك نحو الهدف المختار.", "عند لمس بلاطة شفق مطابقة، تنضم إلى الكومة المحمولة حتى السعة الحالية. عند دخول المنطقة المحددة حول أي رصيف جسر، تُسلّم بلاطة أو أكثر تلقائيًا؛ لا تحتاج إلى محاذاة بكسلات دقيقة أو قوة إضافية.", "يفوز أول متسابق يصل إلى هدف الجسر في المرحلة. يمكن للقنابل والوحوش والرياح واصطدام المنافسين ومقاطع الجسر المدعمة أن تبطئ التقدم أو تقلله وفق قاعدة الفصل المعروضة.", "تمنح طاقة الاندفاع سرعة مؤقتة. توفر الدرع والمغناطيس والاندفاع تأثيرات تكتيكية قصيرة، بينما تمنح ترقيات السعة والسرعة والتماسك في الورشة دعمًا محليًا دائمًا."],
+    how: ["اختر سباقًا مفتوحًا واقرأ هدف الجسر والمؤقت والمسار وقاعدة الخطر.", "اجمع عدة بلاطات من لونك من دون تجاوز مسافة عودة آمنة.", "اقترب من أي رصيف جسر مرقم؛ يبدأ التسليم تلقائيًا ما دمت داخل منطقته المرئية.", "كرر دورة الجمع والتسليم حتى يصل جسرك إلى الهدف قبل المنافسين."],
+    strategyTips: ["سلّم كومة صغيرة عندما يمنع خطر الطريق الطويل بدل خسارة الحمولة كلها.", "اختر أقرب رصيف آمن؛ لا يفرض رقم الرصيف ترتيب تسليم مخفيًا.", "استخدم المغناطيس في منطقة كثيفة بالبلاطات واحتفظ بالاندفاع للعودة أو للسباق الأخير.", "يقلل التماسك الانحراف بسبب الرياح، أما السعة فلا تفيد إلا إذا استطعت العودة من دون مقاطعة."],
+    progression: ["تضيف ستة فصول من خمسة سباقات مسارات متفرعة وممرات رياح ومقاطع مدعمة وحلقات اندفاع متحركة وتخطيطات هجوم ومنافسين أبطالًا.", "تغيّر السباقات الثلاثون المصممة أهداف الساحة والالتقاطات والمخاطر وسلوك المنافسين معًا."],
+    designNote: "يبقى نطاق الرصيف والكومة المحمولة وتقدم الجسر وتقدم المنافس وتأكيد التسليم مرئيًا. لا يعتمد التسليم الصحيح القريب على زاوية غير مرئية أو ترقية. تستخدم الواجهة تخطيطًا منطقيًا واحدًا في المنتصف بعرض أقصى 920 بكسل، وتكبر عناصر التحكم ومناطق اللمس والرسومات وإحداثيات اللعبة معًا على الهاتف والوضع الأفقي وسطح المكتب.",
+    parent: "لا يلزم حساب أو شراء. تبقى عمليات الفتح والنجوم والشظايا وترقيات الورشة وأفضل النتائج المحلية في هذا المتصفح. قد يؤدي مسح بيانات الموقع أو تغيير المتصفح إلى إنشاء حفظ منفصل.",
+    faq: [["ما المطلوب لتسليم البلاطات؟", "احمل بلاطة واحدة على الأقل من اللون المطابق وادخل منطقة التسليم المرئية للرصيف."], ["هل يجب استخدام الأرصفة بترتيب الأرقام؟", "لا. اختر أي رصيف يمكن الوصول إليه."], ["لماذا لم تدخل البلاطة في كومتي؟", "لم يطابق لونها لونك أو كانت السعة الحالية ممتلئة."], ["كيف أفوز؟", "صل إلى هدف الجسر الظاهر قبل الفرق المنافسة."], ["ما طرق التحكم وأحجام الشاشة المدعومة؟", "تعمل اللمسة والماوس ولوحة المفاتيح بالقواعد نفسها، وتتكيف الواجهة كتخطيط منطقي واحد على الهاتف والوضع الأفقي وسطح المكتب."], ["هل ينتقل التقدم تلقائيًا إلى جهاز آخر؟", "لا. يُحفظ حاليًا في المتصفح فقط، لذلك يملك الملف أو الجهاز الآخر تقدمًا منفصلًا."]]
+  };
+  localizedGames["ko"] ||= {};
+  localizedGames["ko"]["animal-rune-reels"] = {
+    title: "애니멀 룬 릴", gameplay: "팀 릴 역할수행 전투", genre: ["전략", "롤플레잉", "동물"], hideSkillsFact: true, showRelatedSkill: false,
+    difficulty: "쉽게 시작해 도전적으로", time: "스테이지당 2~8분", guideKicker: "WeightPlay 오리지널 게임 가이드",
+    intro: "소환한 동물 영웅을 최대 5명까지 팀으로 꾸리고, 아래로 내려오는 세 룬 릴을 돌려 멈춘 기호를 조합하며 30개 수호자 임무의 모든 웨이브에서 살아남으세요.",
+    story: ["소환사는 여섯 균열 지역을 지나며 동물 영웅을 늘립니다. 영웅마다 공격, 방어, 회복과 고유 궁극기가 있어 같은 릴 결과도 팀 구성에 따라 다르게 해결됩니다.", "메인 캠페인은 30개의 다중 웨이브 임무로 구성됩니다. 일일 및 일정 이벤트 임무는 선택 재료를 주지만 캠페인 진행을 대신하지 않습니다."],
+    systems: ["Spin을 눌러 세 릴을 하나씩 멈춥니다. 보이는 룬은 모두 효과를 내며 같은 룬의 완성 줄은 그 능력을 두 배로 만듭니다.", "발톱 룬은 출전한 각 영웅을 공격하게 합니다. 방패와 하트 룬은 팀의 방어 또는 회복을 소환사에게 합산합니다. 와일드는 다른 줄을 완성하지만 혼자서는 효과가 없고, 코인·궁극·집중·메아리·행운·휴면 룬은 표시된 고유 효과를 가집니다.", "적은 룬 결과가 처리된 뒤 행동합니다. 전투 중 소환사의 체력, 실드, 총 방어, 총 회복, 웨이브와 적 의도가 계속 보입니다.", "소환으로 영웅을 해금하고 중복 카드는 레벨을 올리는 데 씁니다. 룬 가루, 태양 조각, 달 수정과 수호자 코어로 룬을 강화할 수 있습니다. 전투를 포기해도 영구 카드와 재료는 남지만 현재 웨이브는 초기화됩니다."],
+    how: ["Stage를 열고 Main, Daily 또는 Event에서 가능한 임무를 선택합니다.", "Team에서 보유 영웅을 1~5명 현재 편성에 배치합니다.", "강화가 필요하면 Backpack, Summon, Runes를 확인한 뒤 Battle로 들어갑니다.", "릴을 돌리고 완성된 줄을 읽으며 모든 웨이브와 수호자를 쓰러뜨릴 때까지 진행합니다."],
+    strategyTips: ["다음에 보이는 적 의도를 견딜 수 있도록 피해와 방어 또는 회복을 균형 있게 구성하세요.", "와일드는 유용한 줄을 완성할 때만 가치가 있으므로 독립 효과로 세지 마세요.", "궁극 룬은 레벨이 가장 높은 팀보다 현재 웨이브를 해결할 특수 효과의 영웅과 함께 쓰세요.", "자동 모드는 가능한 회전을 반복하지만 더 좋은 팀이나 룬 강화는 선택하지 않습니다."],
+    progression: ["5스테이지씩 구성된 6개 챕터에서 웨이브 길이와 수호자 조합이 늘어납니다. 일일 임무는 코인이나 재료를 강조하고 이벤트는 표시된 일정에 따라 바뀝니다.", "영웅과 룬의 성장은 전략 선택을 넓히지만 읽기 쉬운 세 릴 처리 순서는 바꾸지 않습니다."],
+    designNote: "릴은 고정된 시각 순서로 멈추고, 완성된 줄은 처리 전에 빛납니다. 영웅 행동은 소환사에게 합산되는 방어 및 회복 총량과 분리되어 표시됩니다. 인터페이스는 최대 920픽셀의 중앙 정렬 논리 레이아웃을 사용하며 휴대폰, 가로 화면, 데스크톱에서 컨트롤과 게임 좌표를 함께 확대합니다.",
+    parent: "계정은 필요하지 않습니다. 영웅, 캠페인 진행, 재화, 재료, 룬 레벨과 보상 기록은 이 브라우저에 저장됩니다. 사이트 데이터를 지우거나 브라우저를 바꾸면 별도 저장이 생길 수 있습니다.",
+    faq: [["같은 룬 줄은 무엇을 하나요?", "세 릴이 모두 멈춘 뒤 해당 룬 능력을 두 배로 만듭니다."], ["영웅이 한 번에 함께 공격하나요?", "아니요. 영웅은 각각 공격하고 방어와 회복은 소환사에게 합산됩니다."], ["전투를 나가면 어떻게 되나요?", "영구 보관물은 남지만 현재 전투 시도는 사라집니다."], ["이벤트 보상은 언제나 받을 수 있나요?", "아니요. 이벤트 임무는 Stage에 표시된 일정에 따릅니다."], ["어떤 조작과 화면 크기를 지원하나요?", "터치·마우스·키보드를 지원하며 휴대폰, 가로 화면과 데스크톱에서 같은 논리 레이아웃을 사용합니다."], ["진행도가 다른 기기로 자동 이동하나요?", "아니요. 현재는 브라우저에만 저장되므로 다른 프로필이나 기기에는 별도 진행도가 생깁니다."]]
+  };
+  localizedGames["es"] ||= {};
+  localizedGames["es"]["animal-rune-reels"] = {
+    title: "Ruletas de Runas Animal", gameplay: "Batalla de rol con equipo y ruletas", genre: ["Estrategia", "Rol", "Animales"], hideSkillsFact: true, showRelatedSkill: false,
+    difficulty: "Fácil de empezar, desafiante de dominar", time: "2–8 minutos por etapa", guideKicker: "Guía de juego original de WeightPlay",
+    intro: "Forma un equipo de hasta cinco héroes animales invocados, gira tres ruletas de runas descendentes, combina los símbolos detenidos y sobrevive cada oleada de treinta misiones de guardianes.",
+    story: ["Un invocador cruza seis regiones de grietas con un elenco animal cada vez mayor. Cada héroe tiene ataque, defensa, curación y un último poder distinto, así que la composición cambia cómo se resuelve el mismo resultado.", "La campaña principal contiene treinta misiones de varias oleadas. Las misiones diarias y de evento ofrecen materiales opcionales sin sustituir el progreso de campaña."],
+    systems: ["Pulsa Spin para detener una a una las tres ruletas descendentes. Cada runa visible aporta su efecto y una línea completa de runas iguales duplica esa habilidad.", "Las runas de garra hacen atacar a cada héroe activo. Escudo y Corazón combinan la defensa o curación total del equipo para el invocador. Wild completa otra línea pero no tiene efecto por sí sola; Coin, Ultimate, Focus, Echo, Luck y Dormant tienen sus efectos indicados.", "Los enemigos actúan después de resolver el resultado. La vida, escudo, defensa total, curación total, oleada e intención enemiga del invocador permanecen visibles durante la batalla.", "Invocar desbloquea héroes y las cartas repetidas permiten subir niveles. Polvo de runa, fragmentos solares, cristales lunares y núcleos de guardián mejoran las runas. Las cartas y materiales permanentes se conservan al abandonar, pero la oleada actual se reinicia."],
+    how: ["Abre Stage, elige Main, Daily o Event y selecciona una misión disponible.", "Usa Team para colocar de uno a cinco héroes que poseas en la formación activa.", "Revisa Backpack, Summon y Runes cuando necesites una mejora y entra en Battle.", "Gira, lee las líneas completas y continúa hasta derrotar todas las oleadas y guardianes."],
+    strategyTips: ["Equilibra el daño con suficiente defensa o curación para resistir la siguiente intención enemiga visible.", "Wild solo vale cuando completa una línea útil; no lo cuentes como efecto independiente.", "Usa Ultimate con héroes cuyos efectos resuelvan la oleada actual, no solo con el equipo de mayor nivel.", "El modo automático repite giros válidos, pero no elige un equipo o mejora de runa mejor."],
+    progression: ["Los seis capítulos de cinco etapas aumentan la longitud de las oleadas y las combinaciones de guardianes. Las misiones diarias destacan monedas o materiales y los eventos rotan según el horario mostrado.", "El crecimiento del elenco y las runas amplía las opciones estratégicas sin cambiar el orden legible de las tres ruletas."],
+    designNote: "Las ruletas se detienen en un orden visual fijo, las líneas completas brillan antes de resolverse y las acciones de los héroes se mantienen separadas de los totales combinados de defensa y curación del invocador. La interfaz usa un diseño lógico centrado de 920 píxeles como máximo y escala juntos controles y coordenadas en móvil, horizontal y escritorio.",
+    parent: "No se necesita cuenta. El elenco, la campaña, las monedas, los materiales, los niveles de runa y las recompensas se guardan localmente en este navegador. Borrar los datos del sitio o cambiar de navegador puede crear otro guardado.",
+    faq: [["¿Qué hace una línea de runas iguales?", "Duplica esa habilidad cuando se detienen las tres ruletas."], ["¿Los héroes comparten un ataque?", "No. Atacan por separado; la defensa y curación del equipo se combinan para el invocador."], ["¿Qué pasa si salgo de Battle?", "El inventario permanente permanece, pero se pierde el intento de batalla actual."], ["¿Las recompensas de evento están siempre disponibles?", "No. Las misiones de evento siguen el horario mostrado en Stage."], ["¿Qué controles y tamaños de pantalla se admiten?", "Toque, ratón y teclado usan las mismas reglas y el diseño lógico se adapta a móvil, horizontal y escritorio."], ["¿El progreso pasa automáticamente a otro dispositivo?", "No. Solo se guarda en el navegador; otro perfil o dispositivo tiene progreso independiente."]]
+  };
+  localizedGames["pt-BR"] ||= {};
+  localizedGames["pt-BR"]["animal-rune-reels"] = {
+    title: "Roletas de Runas Animal", gameplay: "Batalha de RPG com equipe e roletas", genre: ["Estratégia", "RPG", "Animais"], hideSkillsFact: true, showRelatedSkill: false,
+    difficulty: "Fácil de começar, desafiador de dominar", time: "2–8 minutos por fase", guideKicker: "Guia de jogo original da WeightPlay",
+    intro: "Monte uma equipe de até cinco heróis animais invocados, gire três roletas de runas descendentes, combine os símbolos parados e sobreviva a cada onda das trinta missões de guardiões.",
+    story: ["Um invocador atravessa seis regiões de fendas com um elenco animal em expansão. Cada herói tem ataque, defesa, cura e um último poder distinto, então a equipe muda como o mesmo resultado é resolvido.", "A campanha principal tem trinta missões com várias ondas. Missões diárias e de eventos oferecem materiais opcionais sem substituir o progresso da campanha."],
+    systems: ["Pressione Spin para parar as três roletas descendentes uma por vez. Cada runa visível tem um efeito e uma linha completa de runas iguais dobra essa habilidade.", "Runas de garra fazem cada herói ativo atacar. Escudo e Coração combinam a defesa ou cura total da equipe para o invocador. Wild completa outra linha, mas não tem efeito sozinho; Coin, Ultimate, Focus, Echo, Luck e Dormant têm os efeitos indicados.", "Os inimigos agem depois que o resultado da runa é resolvido. Vida, escudo, defesa total, cura total, onda e intenção inimiga continuam visíveis na batalha.", "Invocar desbloqueia heróis e cartas repetidas ajudam a subir níveis. Pó de runa, fragmentos solares, cristais lunares e núcleos de guardião melhoram as runas. Cartas e materiais permanentes ficam seguros ao abandonar, mas a onda atual reinicia."],
+    how: ["Abra Stage, escolha Main, Daily ou Event e selecione uma missão disponível.", "Use Team para colocar de um a cinco heróis que você possui na formação ativa.", "Consulte Backpack, Summon e Runes quando precisar de melhoria e entre em Battle.", "Gire, leia as linhas completas e continue até derrotar todas as ondas e guardiões."],
+    strategyTips: ["Equilibre dano com defesa ou cura suficiente para sobreviver à próxima intenção inimiga visível.", "Wild só vale quando completa uma linha útil; não conte com ele como efeito independente.", "Use Ultimate com heróis cujos efeitos resolvam a onda atual, e não apenas com a equipe de nível mais alto.", "O modo automático repete giros válidos, mas não escolhe uma equipe ou melhoria de runa melhor."],
+    progression: ["Os seis capítulos de cinco fases aumentam o tamanho das ondas e as combinações de guardiões. Missões diárias destacam moedas ou materiais e eventos alternam conforme o horário exibido.", "O crescimento do elenco e das runas amplia as opções estratégicas sem mudar a ordem clara das três roletas."],
+    designNote: "As roletas param em uma ordem visual fixa, linhas completas brilham antes de resolver e as ações dos heróis ficam separadas dos totais combinados de defesa e cura do invocador. A interface usa um layout lógico centralizado de no máximo 920 pixels e escala controles e coordenadas juntos no celular, na horizontal e no desktop.",
+    parent: "Não é preciso criar conta. Elenco, campanha, moedas, materiais, níveis de runa e recompensas ficam salvos localmente neste navegador. Limpar os dados do site ou trocar de navegador pode criar outro salvamento.",
+    faq: [["O que uma linha de runas iguais faz?", "Ela dobra a habilidade quando as três roletas param."], ["Os heróis compartilham um ataque?", "Não. Eles atacam separadamente; defesa e cura da equipe são combinadas para o invocador."], ["O que acontece se eu sair da Battle?", "O inventário permanente fica, mas a tentativa de batalha atual é perdida."], ["As recompensas de evento estão sempre disponíveis?", "Não. As missões de evento seguem o horário exibido em Stage."], ["Quais controles e tamanhos de tela são aceitos?", "Toque, mouse e teclado usam as mesmas regras e o layout lógico se adapta ao celular, horizontal e desktop."], ["O progresso vai automaticamente para outro dispositivo?", "Não. Ele fica apenas no navegador; outro perfil ou dispositivo terá progresso separado."]]
+  };
+  localizedGames["fr"] ||= {};
+  localizedGames["fr"]["animal-rune-reels"] = {
+    title: "Roues de runes animales", gameplay: "Combat RPG d’équipe et de roues", genre: ["Stratégie", "RPG", "Animaux"], hideSkillsFact: true, showRelatedSkill: false,
+    difficulty: "Facile à commencer, difficile à maîtriser", time: "2 à 8 minutes par étape", guideKicker: "Guide de jeu original WeightPlay",
+    intro: "Formez une équipe de cinq héros animaux invoqués au maximum, faites tourner trois roues de runes descendantes, combinez les symboles arrêtés et survivez à chaque vague des trente missions de gardiens.",
+    story: ["Un invocateur traverse six régions de failles avec un groupe animal qui s’agrandit. Chaque héros possède attaque, défense, soin et ultime distincts : la composition change donc la résolution d’un même résultat.", "La campagne principale compte trente missions à plusieurs vagues. Les missions quotidiennes et d’événement proposent des matériaux optionnels sans remplacer la progression de campagne."],
+    systems: ["Appuyez sur Spin pour arrêter les trois roues descendantes l’une après l’autre. Chaque rune visible produit son effet et une ligne complète de runes identiques double cette capacité.", "Les runes Griffe font attaquer chaque héros actif. Bouclier et Cœur additionnent la défense ou les soins de l’équipe pour l’invocateur. Wild complète une autre ligne mais n’a pas d’effet seul ; Coin, Ultimate, Focus, Echo, Luck et Dormant ont les effets indiqués.", "Les ennemis agissent après la résolution du résultat. Vie, bouclier, défense totale, soins totaux, vague et intention ennemie restent visibles pendant le combat.", "L’invocation débloque des héros et les doublons permettent d’améliorer leur niveau. Poussière de rune, fragments solaires, cristaux lunaires et noyaux de gardien renforcent les runes. L’inventaire permanent reste en sécurité en quittant le combat, mais la vague actuelle recommence."],
+    how: ["Ouvrez Stage, choisissez Main, Daily ou Event, puis une mission disponible.", "Dans Team, placez un à cinq héros possédés dans la formation active.", "Consultez Backpack, Summon et Runes si une amélioration est nécessaire, puis entrez en Battle.", "Faites tourner les roues, lisez les lignes formées et continuez jusqu’à vaincre toutes les vagues et tous les gardiens."],
+    strategyTips: ["Équilibrez les dégâts avec assez de défense ou de soins pour résister à la prochaine intention ennemie visible.", "Wild n’est utile que s’il complète une ligne intéressante ; ne le comptez pas comme un effet indépendant.", "Associez Ultimate aux héros dont l’effet résout la vague actuelle, pas seulement à l’équipe de plus haut niveau.", "Le mode automatique répète les rotations valides, mais ne choisit pas une meilleure équipe ni une amélioration de rune."],
+    progression: ["Les six chapitres de cinq étapes augmentent la longueur des vagues et les combinaisons de gardiens. Les missions quotidiennes privilégient pièces ou matériaux et les événements suivent le calendrier affiché.", "La progression des héros et des runes élargit les choix sans changer l’ordre lisible de résolution des trois roues."],
+    designNote: "Les roues s’arrêtent dans un ordre visuel fixe, les lignes complètes brillent avant leur résolution et les actions des héros restent distinctes des totaux combinés de défense et de soins de l’invocateur. L’interface utilise une mise en page logique centrée de 920 pixels maximum et agrandit ensemble contrôles et coordonnées sur mobile, en paysage et sur ordinateur.",
+    parent: "Aucun compte n’est nécessaire. Héros, campagne, monnaies, matériaux, niveaux de runes et récompenses restent enregistrés dans ce navigateur. Effacer les données du site ou changer de navigateur peut créer une sauvegarde distincte.",
+    faq: [["Que fait une ligne de runes identiques ?", "Elle double cette capacité quand les trois roues sont arrêtées."], ["Les héros partagent-ils une attaque ?", "Non. Ils attaquent séparément ; défense et soins de l’équipe sont additionnés pour l’invocateur."], ["Que se passe-t-il si je quitte Battle ?", "L’inventaire permanent reste, mais la tentative actuelle est perdue."], ["Les récompenses d’événement sont-elles toujours disponibles ?", "Non. Les missions d’événement suivent le calendrier affiché dans Stage."], ["Quels contrôles et écrans sont pris en charge ?", "Tactile, souris et clavier suivent les mêmes règles ; la mise en page logique s’adapte au mobile, au paysage et à l’ordinateur."], ["La progression passe-t-elle automatiquement sur un autre appareil ?", "Non. Elle reste dans le navigateur ; un autre profil ou appareil aura sa propre progression."]]
+  };
+  localizedGames["de"] ||= {};
+  localizedGames["de"]["animal-rune-reels"] = {
+    title: "Tierische Runenräder", gameplay: "Team-RPG-Kampf mit Runenrädern", genre: ["Strategie", "Rollenspiel", "Tiere"], hideSkillsFact: true, showRelatedSkill: false,
+    difficulty: "Leicht zu beginnen, anspruchsvoll zu meistern", time: "2–8 Minuten pro Abschnitt", guideKicker: "Original-Spielanleitung von WeightPlay",
+    intro: "Stelle ein Team aus bis zu fünf beschworenen Tierhelden zusammen, drehe drei nach unten laufende Runenräder, kombiniere die angehaltenen Symbole und überlebe jede Welle der dreißig Wächtermissionen.",
+    story: ["Ein Beschwörer durchquert sechs Rissregionen mit einer wachsenden Tiersammlung. Jeder Held besitzt Angriff, Verteidigung, Heilung und eine eigene ultimative Fähigkeit, daher verändert die Teamwahl die Auflösung desselben Radresultats.", "Die Hauptkampagne umfasst dreißig Missionen mit mehreren Wellen. Tages- und Eventmissionen liefern optionale Materialien, ersetzen aber nicht den Kampagnenfortschritt."],
+    systems: ["Drücke Spin, um die drei Räder nacheinander anzuhalten. Jede sichtbare Rune wirkt, und eine vollständige Reihe gleicher Runen verdoppelt diese Fähigkeit.", "Klauenrunen greifen mit jedem aktiven Helden an. Schild- und Herzrunen addieren die Teamverteidigung oder Heilung für den Beschwörer. Wild vervollständigt eine andere Reihe, wirkt allein aber nicht; Coin, Ultimate, Focus, Echo, Luck und Dormant haben die angezeigten Spezialeffekte.", "Die Gegner handeln erst nach der Auflösung. Gesundheit, Schild, Gesamtverteidigung, Gesamtheilung, Welle und Gegnerabsicht bleiben im Kampf sichtbar.", "Beschwörungen schalten Helden frei, doppelte Karten unterstützen Stufenaufstiege. Runenstaub, Sonnenfragmente, Mondkristalle und Wächterkerne verbessern Runen. Permanente Karten und Materialien bleiben beim Verlassen erhalten, die aktuelle Welle beginnt jedoch neu."],
+    how: ["Öffne Stage, wähle Main, Daily oder Event und dann eine verfügbare Mission.", "Setze in Team ein bis fünf eigene Helden in die aktive Formation.", "Prüfe bei Bedarf Backpack, Summon und Runes und gehe danach in Battle.", "Drehe die Räder, lies die vollständigen Reihen und kämpfe weiter, bis alle Wellen und Wächter besiegt sind."],
+    strategyTips: ["Gleiche Schaden mit genügend Verteidigung oder Heilung aus, um die nächste sichtbare Gegnerabsicht zu überstehen.", "Wild ist nur wertvoll, wenn es eine nützliche Reihe vervollständigt; zähle es nicht als eigenen Effekt.", "Nutze Ultimate mit Helden, deren Spezialeffekte die aktuelle Welle lösen, nicht nur mit dem Team der höchsten Stufe.", "Der Automatikmodus wiederholt gültige Drehungen, wählt aber kein besseres Team und kein besseres Runen-Upgrade."],
+    progression: ["Sechs Kapitel mit je fünf Abschnitten erhöhen Wellenlänge und Wächterkombinationen. Tagesmissionen betonen Münzen oder Materialien, Events wechseln nach dem angezeigten Zeitplan.", "Helden- und Runenwachstum erweitert die Strategie, ohne die gut lesbare Auflösungsreihenfolge der drei Räder zu ändern."],
+    designNote: "Die Räder halten in einer festen visuellen Reihenfolge an, vollständige Reihen leuchten vor der Auflösung und Heldenaktionen bleiben von den addierten Verteidigungs- und Heilwerten des Beschwörers getrennt. Die Oberfläche nutzt ein zentriertes logisches Layout mit höchstens 920 Pixeln und skaliert Steuerung und Koordinaten auf Handy, Querformat und Desktop gemeinsam.",
+    parent: "Ein Konto ist nicht erforderlich. Helden, Kampagne, Währungen, Materialien, Runenstufen und Belohnungen werden in diesem Browser gespeichert. Das Löschen von Websitedaten oder ein Browserwechsel kann einen separaten Spielstand erzeugen.",
+    faq: [["Was bewirkt eine gleiche Runenreihe?", "Sie verdoppelt diese Fähigkeit, sobald alle drei Räder angehalten sind."], ["Teilen sich die Helden einen Angriff?", "Nein. Helden greifen einzeln an; Teamverteidigung und Heilung werden für den Beschwörer addiert."], ["Was passiert beim Verlassen von Battle?", "Das permanente Inventar bleibt, aber der aktuelle Kampfversuch geht verloren."], ["Sind Eventbelohnungen immer verfügbar?", "Nein. Eventmissionen folgen dem in Stage angezeigten Zeitplan."], ["Welche Steuerungen und Bildschirmgrößen werden unterstützt?", "Touch, Maus und Tastatur folgen denselben Regeln; das logische Layout passt sich Handy, Querformat und Desktop an."], ["Wird der Fortschritt automatisch auf ein anderes Gerät übertragen?", "Nein. Er bleibt im Browser; ein anderes Profil oder Gerät erhält eigenen Fortschritt."]]
+  };
+  localizedGames["it"] ||= {};
+  localizedGames["it"]["animal-rune-reels"] = {
+    title: "Rulli di rune animali", gameplay: "Battaglia RPG con squadra e rulli", genre: ["Strategia", "GDR", "Animali"], hideSkillsFact: true, showRelatedSkill: false,
+    difficulty: "Facile da iniziare, impegnativo da padroneggiare", time: "2–8 minuti per fase", guideKicker: "Guida di gioco originale WeightPlay",
+    intro: "Crea una squadra con un massimo di cinque eroi animali evocati, gira tre rulli di rune discendenti, combina i simboli fermati e sopravvivi a ogni ondata delle trenta missioni dei guardiani.",
+    story: ["Un evocatore attraversa sei regioni di fratture con un gruppo animale in crescita. Ogni eroe ha attacco, difesa, cura e un’abilità suprema distinta, quindi la squadra cambia la risoluzione dello stesso risultato.", "La campagna principale contiene trenta missioni a più ondate. Le missioni giornaliere e degli eventi offrono materiali opzionali senza sostituire i progressi della campagna."],
+    systems: ["Premi Spin per fermare uno alla volta i tre rulli discendenti. Ogni runa visibile produce il suo effetto e una linea completa di rune uguali raddoppia quella capacità.", "Le rune Artiglio fanno attaccare ogni eroe attivo. Scudo e Cuore sommano la difesa o la cura della squadra per l’evocatore. Wild completa un’altra linea ma non ha effetto da solo; Coin, Ultimate, Focus, Echo, Luck e Dormant hanno gli effetti mostrati.", "I nemici agiscono dopo la risoluzione del risultato. Vita, scudo, difesa totale, cura totale, ondata e intenzione nemica restano visibili in battaglia.", "Le evocazioni sbloccano eroi e le carte doppie aiutano a salire di livello. Polvere di rune, frammenti solari, cristalli lunari e nuclei dei guardiani migliorano le rune. Carte e materiali permanenti restano al sicuro abbandonando la battaglia, ma l’ondata corrente ricomincia."],
+    how: ["Apri Stage, scegli Main, Daily o Event e seleziona una missione disponibile.", "In Team inserisci da uno a cinque eroi posseduti nella formazione attiva.", "Controlla Backpack, Summon e Runes quando serve un potenziamento, poi entra in Battle.", "Gira, leggi le linee complete e continua fino a sconfiggere tutte le ondate e i guardiani."],
+    strategyTips: ["Bilancia i danni con difesa o cura sufficienti a superare la prossima intenzione nemica visibile.", "Wild vale solo quando completa una linea utile: non considerarlo un effetto indipendente.", "Usa Ultimate con gli eroi i cui effetti risolvono l’ondata corrente, non solo con la squadra di livello più alto.", "La modalità automatica ripete i giri validi, ma non sceglie una squadra o un potenziamento migliori."],
+    progression: ["Sei capitoli da cinque fasi aumentano la durata delle ondate e le combinazioni di guardiani. Le missioni giornaliere privilegiano monete o materiali, gli eventi seguono il calendario mostrato.", "La crescita di eroi e rune amplia le scelte senza cambiare l’ordine leggibile di risoluzione dei tre rulli."],
+    designNote: "I rulli si fermano in un ordine visivo fisso, le linee complete brillano prima della risoluzione e le azioni degli eroi restano separate dai totali combinati di difesa e cura dell’evocatore. L’interfaccia usa un layout logico centrato di massimo 920 pixel e scala insieme controlli e coordinate su telefono, orizzontale e desktop.",
+    parent: "Non serve un account. Eroi, campagna, valute, materiali, livelli delle rune e ricompense restano salvati in questo browser. Cancellare i dati del sito o cambiare browser può creare un salvataggio separato.",
+    faq: [["Cosa fa una linea di rune uguali?", "Raddoppia quella capacità quando tutti e tre i rulli si fermano."], ["Gli eroi condividono un attacco?", "No. Attaccano separatamente; difesa e cura della squadra vengono sommate per l’evocatore."], ["Cosa succede se esco da Battle?", "L’inventario permanente resta, ma il tentativo di battaglia corrente viene perso."], ["Le ricompense degli eventi sono sempre disponibili?", "No. Le missioni evento seguono il calendario mostrato in Stage."], ["Quali controlli e dimensioni sono supportati?", "Touch, mouse e tastiera usano le stesse regole; il layout logico si adatta a telefono, orizzontale e desktop."], ["I progressi passano automaticamente a un altro dispositivo?", "No. Ora vengono salvati solo nel browser; un altro profilo o dispositivo avrà progressi separati."]]
+  };
+  localizedGames["ru"] ||= {};
+  localizedGames["ru"]["animal-rune-reels"] = {
+    title: "Животные: рунические барабаны", gameplay: "Ролевая битва команды и барабанов", genre: ["Стратегия", "Ролевая игра", "Животные"], hideSkillsFact: true, showRelatedSkill: false,
+    difficulty: "Легко начать, трудно освоить", time: "2–8 минут на этап", guideKicker: "Оригинальное игровое руководство WeightPlay",
+    intro: "Соберите команду до пяти призванных героев-животных, вращайте три рунических барабана вниз, объединяйте остановившиеся символы и переживайте каждую волну тридцати миссий хранителей.",
+    story: ["Призыватель проходит шесть регионов разломов, расширяя отряд животных. У каждого героя есть атака, защита, лечение и особая ульта, поэтому состав команды меняет разрешение одного и того же результата барабанов.", "Главная кампания содержит тридцать миссий с несколькими волнами. Ежедневные и событийные миссии дают дополнительные материалы, но не заменяют кампанию."],
+    systems: ["Нажмите Spin, чтобы по очереди остановить три барабана. Каждая видимая руна даёт эффект, а полная линия одинаковых рун удваивает эту способность.", "Руны Коготь атакуют каждым активным героем. Щит и Сердце объединяют защиту или лечение команды для призывателя. Wild завершает другую линию, но сам по себе не действует; Coin, Ultimate, Focus, Echo, Luck и Dormant имеют показанные особые эффекты.", "Враги действуют после разрешения результата. Здоровье, щит, общая защита, общее лечение, номер волны и намерение врага остаются видимыми в бою.", "Призывы открывают героев, а повторные карты помогают повышать уровень. Пыль рун, солнечные осколки, лунные кристаллы и ядра хранителей улучшают руны. Постоянные карты и материалы сохраняются при выходе, но текущая волна начинается заново."],
+    how: ["Откройте Stage, выберите Main, Daily или Event и доступную миссию.", "В Team разместите от одного до пяти собственных героев в активной формации.", "При необходимости проверьте Backpack, Summon и Runes, затем войдите в Battle.", "Вращайте барабаны, читайте полные линии и продолжайте, пока все волны и хранители не будут побеждены."],
+    strategyTips: ["Сочетайте урон с достаточной защитой или лечением, чтобы пережить следующее видимое намерение врага.", "Wild ценен только при завершении полезной линии; не считайте его самостоятельным эффектом.", "Используйте Ultimate с героями, чьи эффекты решают текущую волну, а не только с командой высокого уровня.", "Автоматический режим повторяет допустимые вращения, но не выбирает лучшую команду или улучшение рун."],
+    progression: ["Шесть глав по пять этапов увеличивают длину волн и сочетания хранителей. Ежедневные миссии выделяют монеты или материалы, а события меняются по показанному расписанию.", "Рост героев и рун расширяет стратегию, не меняя понятный порядок разрешения трёх барабанов."],
+    designNote: "Барабаны останавливаются в фиксированном визуальном порядке, полные линии светятся до разрешения, а действия героев отделены от объединённых показателей защиты и лечения призывателя. Интерфейс использует единую центрированную логическую раскладку шириной до 920 пикселей и вместе масштабирует управление и координаты на телефоне, в альбомном режиме и на компьютере.",
+    parent: "Аккаунт не нужен. Герои, кампания, валюты, материалы, уровни рун и награды хранятся в этом браузере. Очистка данных сайта или смена браузера может создать отдельное сохранение.",
+    faq: [["Что делает линия одинаковых рун?", "После остановки всех трёх барабанов она удваивает способность этой руны."], ["Герои делят одну атаку?", "Нет. Герои атакуют отдельно, а защита и лечение команды суммируются для призывателя."], ["Что произойдёт, если выйти из Battle?", "Постоянный инвентарь сохранится, но текущая попытка боя будет потеряна."], ["Событийные награды доступны всегда?", "Нет. Событийные миссии следуют расписанию, показанному на Stage."], ["Какие способы управления и размеры экрана поддерживаются?", "Сенсорное управление, мышь и клавиатура используют одни правила; раскладка масштабируется на телефоне, в альбомном режиме и на компьютере."], ["Переносится ли прогресс на другое устройство автоматически?", "Нет. Сейчас он хранится только в браузере, поэтому другой профиль или устройство получит отдельный прогресс."]]
+  };
+  localizedGames["hi"] ||= {};
+  localizedGames["hi"]["animal-rune-reels"] = {
+    title: "पशु रूण रील", gameplay: "टीम रील भूमिका-युद्ध", genre: ["रणनीति", "भूमिका खेल", "पशु"], hideSkillsFact: true, showRelatedSkill: false,
+    difficulty: "शुरू करना आसान, निपुण होना चुनौतीपूर्ण", time: "प्रति चरण 2–8 मिनट", guideKicker: "WeightPlay मौलिक गेम गाइड",
+    intro: "अधिकतम पाँच बुलाए गए पशु नायकों की टीम बनाएँ, नीचे आती तीन रूण रील घुमाएँ, रुके हुए प्रतीकों को मिलाएँ और तीस संरक्षक मिशनों की हर लहर में जीवित रहें।",
+    story: ["एक बुलाने वाला छह दरार क्षेत्रों से गुजरता है और पशु दल बढ़ाता है। हर नायक के पास हमला, रक्षा, उपचार और अलग अंतिम शक्ति है, इसलिए टीम बनावट उसी रील परिणाम को हल करने का तरीका बदलती है।", "मुख्य अभियान में कई लहरों वाले तीस मिशन हैं। दैनिक और कार्यक्रम मिशन अतिरिक्त सामग्री देते हैं, लेकिन अभियान की प्रगति नहीं बदलते।"],
+    systems: ["Spin दबाकर नीचे आती तीन रीलों को एक-एक करके रोकें। हर दिखाई देने वाला रूण प्रभाव देता है और समान रूणों की पूरी पंक्ति उस क्षमता को दोगुना करती है।", "पंजा रूण हर सक्रिय नायक से हमला करवाता है। शील्ड और हृदय रूण टीम की कुल रक्षा या उपचार को बुलाने वाले के लिए जोड़ते हैं। Wild दूसरी पंक्ति पूरी करता है लेकिन अकेले असर नहीं देता; Coin, Ultimate, Focus, Echo, Luck और Dormant के दिखाए गए विशेष प्रभाव हैं।", "रूण परिणाम हल होने के बाद दुश्मन काम करते हैं। युद्ध में बुलाने वाले का स्वास्थ्य, शील्ड, कुल रक्षा, कुल उपचार, लहर और दुश्मन का इरादा दिखाई देता रहता है।", "Summon से नायक खुलते हैं और डुप्लिकेट कार्ड स्तर बढ़ाने में मदद करते हैं। रूण धूल, सूर्य टुकड़े, चंद्र क्रिस्टल और संरक्षक कोर रूण सुधारते हैं। स्थायी कार्ड और सामग्री बची रहती हैं, लेकिन वर्तमान लहर फिर से शुरू होती है।"],
+    how: ["Stage खोलें, Main, Daily या Event चुनें और उपलब्ध मिशन चुनें।", "Team में अपने एक से पाँच नायकों को सक्रिय गठन में रखें।", "अपग्रेड चाहिए तो Backpack, Summon और Runes देखें, फिर Battle में जाएँ।", "रील घुमाएँ, पूरी हुई पंक्तियाँ पढ़ें और सभी लहरों व संरक्षकों को हराने तक जारी रखें।"],
+    strategyTips: ["अगले दिखने वाले दुश्मन इरादे से बचने के लिए नुकसान को पर्याप्त रक्षा या उपचार के साथ संतुलित करें।", "Wild तभी उपयोगी है जब वह काम की पंक्ति पूरी करे; उसे अकेला प्रभाव न गिनें।", "Ultimate को उन नायकों के साथ इस्तेमाल करें जिनकी विशेष शक्ति वर्तमान लहर हल करती है, केवल उच्च स्तर वाली टीम के साथ नहीं।", "स्वचालित मोड वैध घुमाव दोहराता है, लेकिन बेहतर टीम या रूण अपग्रेड नहीं चुनता।"],
+    progression: ["पाँच-पाँच चरण वाले छह अध्याय लहर की लंबाई और संरक्षक संयोजन बढ़ाते हैं। दैनिक मिशन सिक्कों या सामग्री पर जोर देते हैं और कार्यक्रम दिखाए गए समय पर बदलते हैं।", "नायक और रूण की वृद्धि रणनीतिक विकल्प बढ़ाती है, लेकिन तीन रील के स्पष्ट समाधान क्रम को नहीं बदलती।"],
+    designNote: "रील एक निश्चित दृश्य क्रम में रुकती हैं, पूरी हुई पंक्तियाँ हल होने से पहले चमकती हैं और नायक की क्रियाएँ बुलाने वाले की संयुक्त रक्षा व उपचार से अलग रहती हैं। इंटरफ़ेस अधिकतम 920 पिक्सेल वाले केंद्रित तार्किक लेआउट में फ़ोन, लैंडस्केप और डेस्कटॉप पर नियंत्रण व निर्देशांक साथ स्केल करता है।",
+    parent: "खाते की आवश्यकता नहीं है। नायक, अभियान, मुद्रा, सामग्री, रूण स्तर और इनाम इसी ब्राउज़र में सहेजे जाते हैं। साइट डेटा मिटाने या ब्राउज़र बदलने पर अलग सेव बन सकती है।",
+    faq: [["समान रूण पंक्ति क्या करती है?", "तीनों रील रुकने के बाद वह उस रूण की क्षमता दोगुनी करती है।"], ["क्या नायक एक ही हमला साझा करते हैं?", "नहीं। नायक अलग-अलग हमला करते हैं; टीम रक्षा और उपचार बुलाने वाले के लिए जुड़ते हैं।"], ["Battle से निकलने पर क्या होगा?", "स्थायी सामान बचा रहता है, लेकिन वर्तमान युद्ध प्रयास खो जाता है।"], ["क्या कार्यक्रम इनाम हमेशा उपलब्ध हैं?", "नहीं। कार्यक्रम मिशन Stage में दिखाए समय का पालन करते हैं।"], ["कौन से नियंत्रण और स्क्रीन आकार समर्थित हैं?", "टच, माउस और कीबोर्ड एक ही नियमों पर चलते हैं; लेआउट फ़ोन, लैंडस्केप और डेस्कटॉप पर स्केल होता है।"], ["क्या प्रगति दूसरे उपकरण पर अपने आप जाती है?", "नहीं। यह केवल ब्राउज़र में रहती है; दूसरे प्रोफ़ाइल या उपकरण की प्रगति अलग होगी।"]]
+  };
+  localizedGames["ar"] ||= {};
+  localizedGames["ar"]["animal-rune-reels"] = {
+    title: "بكرات الرون للحيوانات", gameplay: "معركة تقمص أدوار بالفريق والبكرات", genre: ["استراتيجية", "تقمص أدوار", "حيوانات"], hideSkillsFact: true, showRelatedSkill: false,
+    difficulty: "سهل البدء، صعب الإتقان", time: "2–8 دقائق لكل مرحلة", guideKicker: "دليل لعبة WeightPlay الأصلية",
+    intro: "كوّن فريقًا من خمسة أبطال حيوانات مستدعاة كحد أقصى، وأدر ثلاث بكرات رون هابطة، واجمع الرموز المتوقفة، واصمد أمام كل موجة من ثلاثين مهمة للحراس.",
+    story: ["يعبر المستدعي ست مناطق من الصدوع مع توسع مجموعة الحيوانات. لكل بطل هجوم ودفاع وعلاج وقدرة نهائية مختلفة، لذلك يغيّر تكوين الفريق طريقة حل النتيجة نفسها.", "تضم الحملة الرئيسية ثلاثين مهمة متعددة الموجات. تقدم مهام اليوم والفعاليات مواد اختيارية من دون استبدال تقدم الحملة."],
+    systems: ["اضغط Spin لإيقاف البكرات الثلاث الهابطة واحدة تلو الأخرى. لكل رون ظاهر تأثير، ويضاعف الصف المكتمل من الرونات المتطابقة تلك القدرة.", "تجعل رونات المخلب كل بطل نشط يهاجم. تجمع رونات الدرع والقلب دفاع الفريق أو علاجه للمستدعي. يكمل Wild صفًا آخر لكنه لا يملك تأثيرًا منفردًا؛ ولرونات Coin وUltimate وFocus وEcho وLuck وDormant تأثيراتها المعروضة.", "يتحرك الأعداء بعد حل نتيجة الرون. يظل عُمر المستدعي ودرعه وإجمالي الدفاع والعلاج ورقم الموجة ونية العدو مرئيًا أثناء المعركة.", "تفتح الاستدعاءات الأبطال وتساعد البطاقات المكررة على رفع المستوى. تحسن غبار الرون وشظايا الشمس وبلورات القمر ونوى الحراس مستويات الرون. تبقى البطاقات والمواد الدائمة عند مغادرة المعركة، لكن الموجة الحالية تعاد."],
+    how: ["افتح Stage، واختر Main أو Daily أو Event، ثم اختر مهمة متاحة.", "استخدم Team لوضع بطل واحد إلى خمسة أبطال تملكهم في التشكيلة النشطة.", "راجع Backpack وSummon وRunes عند الحاجة إلى ترقية، ثم ادخل Battle.", "أدر البكرات واقرأ الصفوف المكتملة واستمر حتى تهزم كل الموجات والحراس."],
+    strategyTips: ["وازن الضرر مع دفاع أو علاج كافٍ للصمود أمام نية العدو المرئية التالية.", "تكون Wild مفيدة فقط عند إكمال صف نافع؛ لا تحسبها تأثيرًا مستقلًا.", "استخدم Ultimate مع أبطال تحل تأثيراتهم الموجة الحالية، لا مع الفريق الأعلى مستوى فقط.", "يكرر الوضع التلقائي الدوران الصحيح لكنه لا يختار فريقًا أفضل أو ترقية رون أفضل."],
+    progression: ["تزيد ستة فصول من خمس مراحل طول الموجات وتركيبات الحراس. تركز المهام اليومية على العملات أو المواد، وتتبدل الفعاليات حسب الجدول الظاهر.", "يوسع نمو الأبطال والرونات الخيارات الاستراتيجية من دون تغيير ترتيب حل البكرات الثلاث الواضح."],
+    designNote: "تتوقف البكرات بترتيب بصري ثابت، وتضيء الصفوف المكتملة قبل حلها، وتبقى أفعال الأبطال منفصلة عن إجمالي دفاع المستدعي وعلاجه. تستخدم الواجهة تخطيطًا منطقيًا واحدًا في المنتصف بعرض أقصى 920 بكسل، وتكبر عناصر التحكم والإحداثيات معًا على الهاتف والوضع الأفقي وسطح المكتب.",
+    parent: "لا يلزم حساب. تُحفظ الأبطال والحملة والعملات والمواد ومستويات الرون والمكافآت في هذا المتصفح. قد يؤدي مسح بيانات الموقع أو تغيير المتصفح إلى إنشاء حفظ منفصل.",
+    faq: [["ماذا يفعل صف الرونات المتطابقة؟", "يضاعف قدرة الرون بعد توقف البكرات الثلاث."], ["هل يشترك الأبطال في هجوم واحد؟", "لا. يهاجم كل بطل منفردًا، ويُجمع دفاع الفريق وعلاجه للمستدعي."], ["ماذا يحدث إذا غادرت Battle؟", "تبقى محتويات المخزون الدائمة، لكن محاولة المعركة الحالية تضيع."], ["هل مكافآت الفعاليات متاحة دائمًا؟", "لا. تتبع مهام الفعاليات الجدول المعروض في Stage."], ["ما طرق التحكم وأحجام الشاشة المدعومة؟", "تستخدم اللمسة والماوس ولوحة المفاتيح القواعد نفسها، ويتكيف التخطيط المنطقي مع الهاتف والوضع الأفقي وسطح المكتب."], ["هل ينتقل التقدم تلقائيًا إلى جهاز آخر؟", "لا. يُحفظ حاليًا في المتصفح فقط، لذلك يملك الملف أو الجهاز الآخر تقدمًا منفصلًا."]]
+  };
+  const runeRelatedCardLocaleCopy = {
+    "ko": {
+      "animal-twin-switchyard": { title: "트윈 스위치야드", intro: "수달과 산양을 나뉜 차선으로 안내하고 신호 게이트를 바꾸며 모든 릴레이 조각을 함께 모으는 동기화 플랫폼 퍼즐입니다." },
+      "zhao-yun-a-dou": { title: "조운과 아두: 먹선 방어", intro: "한자를 쓰는 병사를 모집해 세 줄에 배치하고 같은 유닛을 합쳐 전진하는 적이 아두에게 닿지 않게 막습니다." },
+      "golf-solitaire": { title: "골프 솔리테어", intro: "빠른 한 장 폐기 더미 연쇄 카드 퍼즐로, 폐기 더미보다 한 단계 위나 아래인 카드를 이어서 일곱 줄을 비웁니다." }
+    },
+    "pt-BR": {
+      "animal-prism-battalion": { title: "Batalhão de Prismas Animal", intro: "Alterne uma bateria prismática automática entre três faixas, destrua cada formação, colete núcleos raros e proteja o núcleo de cristal." },
+      "animal-number-match": { title: "Bosque dos Números de Panko", intro: "Remova pares que somam dez quando se tocam ou enxergam um ao outro por espaços livres, abrindo novas linhas de visão no tabuleiro." }
+    },
+    "it": {
+      "animal-triple-match": { title: "Abbinamento triplo animale", intro: "Sposta gli oggetti scoperti da una pila a strati in un vassoio da sette posti e raccogli tre oggetti uguali prima che i singoli riempiano ogni spazio." },
+      "animal-prism-battalion": { title: "Battaglione Prismi Animali", intro: "Sposta una batteria prismatica automatica tra tre corsie, distruggi ogni formazione, raccogli i nuclei rari e proteggi il nucleo di cristallo." }
+    },
+    "ru": {
+      "animal-twin-switchyard": { title: "Твин: сортировочная станция", intro: "Проведите выдру и горного козла по разделённым полосам, переключайте сигнальные ворота и вместе соберите все релейные осколки." },
+      "zhao-yun-a-dou": { title: "Чжао Юнь и А Доу: защита тушью", intro: "Нанимайте воинов-символов, расставляйте их на трёх линиях, объединяйте одинаковые отряды и не подпускайте врага к А Доу." },
+      "animal-bus-jam": { title: "Автобусный джем Панко", intro: "Следите за фиксированным порядком отправления, открывайте нужных пассажиров и не допускайте блокировки ограниченной очереди ожидания." },
+      "animal-bamboo-pipes": { title: "Бамбуковый водный путь Панко", intro: "Поворачивайте участки бамбуковой сети, чтобы вода прошла от резного источника к цветущему бассейну без разрывов и ложных ответвлений." },
+      "animal-prism-battalion": { title: "Батальон Животных Призм", intro: "Переключайте автоматическую призматическую батарею между тремя линиями, уничтожайте формации, собирайте редкие ядра и защищайте кристальное ядро." }
+    },
+    "hi": {
+      "animal-twin-switchyard": { title: "ट्विन स्विचयार्ड", intro: "ऊदबिलाव और पहाड़ी बकरी को अलग गलियों से ले जाएँ, सिग्नल गेट बदलें और सभी रिले शार्ड साथ में इकट्ठा करें।" },
+      "zhao-yun-a-dou": { title: "झाओ युन और आ दू: स्याही रक्षा", intro: "चरित्र-सैनिकों की भर्ती करें, उन्हें तीन गलियों में रखें, समान इकाइयों को मिलाएँ और आगे बढ़ते शत्रु को आ दू से दूर रखें।" },
+      "animal-one-line": { title: "एक पंक्ति", intro: "परतदार बोर्ड के खुले खानों से एक सतत मार्ग बनाएँ और किसी भी खाने पर दोबारा गए बिना पूरा ग्रिड रंग दें।" }
+    },
+    "ar": {
+      "animal-twin-switchyard": { title: "ساحة مفاتيح التوأم", intro: "وجّه قضاعة وماعزًا جبليًا عبر مسارين منفصلين، وبدّل بوابات الإشارة، واجمع كل شظايا التتابع معًا." },
+      "zhao-yun-a-dou": { title: "تشاو يون وآ دو: دفاع الحبر", intro: "جنّد جنود الرموز، وضعهم في ثلاثة مسارات، وادمج الوحدات المتطابقة، وأبعد العدو المتقدم عن آ دو." },
+      "animal-skyport-dispatch": { title: "إرسال سكايبورت الحيوان", intro: "أدر مسارات المناطيد الحيوانية في خمسة مناوبات، وارسم اقترابًا آمنًا إلى الرصيف المناسب، ووزّع موارد الخدمة قبل الازدحام." },
+      "animal-rift-salvage": { title: "إنقاذ الحيوان المتصدع", intro: "وجّه جامعًا قمريًا صغيرًا داخل صدع دائري، واجمع الخردة المناسبة، وابنِ سلسلة نقاط، وأكمل حصة الإنقاذ قبل انتهاء الوقت." }
+    }
+  };
+  for (const [localeCode, relatedCards] of Object.entries(runeRelatedCardLocaleCopy)) {
+    localizedGames[localeCode] ||= {};
+    for (const [gameId, copy] of Object.entries(relatedCards)) {
+      localizedGames[localeCode][gameId] = { ...(localizedGames[localeCode][gameId] || {}), ...copy };
+    }
+  }
+  localizedRelatedCardCopy = {
+    "zh-Hant": {
+      "maze-chase": { title: "星徑迷宮", intro: "在固定迷宮中引導奧拉收集星塵，讀懂四種光靈追逐模式，並用信標把危險走廊變成短暫的反擊窗口。" },
+      "animal-bamboo-pipes": { title: "胖達竹水道", intro: "旋轉完整竹管網路，讓水從雕刻泉眼流向開花水池，不留斷點、錯誤分支或對不準的管線中心。" },
+      "animal-triple-match": { title: "動物三消收納", intro: "把覆蓋層中已露出的物件移入七格托盤，在未配對單件填滿每格前收集三個相同物件。" }
+    },
+    "zh-Hans": {
+      "maze-chase": { title: "星径迷宫", intro: "在固定迷宫中引导奥拉收集星尘，读懂四种光灵追逐模式，并用信标把危险走廊变成短暂的反击窗口。" },
+      "animal-triple-match": { title: "动物三消收纳", intro: "把分层堆中露出的物件移入七格托盘，在未配对的单件填满所有格子前收集三个相同物件。" },
+      "animal-spectrum-pulse": { title: "动物光谱脉冲", intro: "只有当最近的扫描标记符合所需颜色和徽记时，才向上脉冲引导潘可的光谱精灵。" },
+      "animal-sunbeam-garden": { title: "动物阳光花园", intro: "旋转六乘六花园棋盘上的镜子，让每道可见阳光从来源沿合法路线抵达沉睡莲花。" }
+    },
+    "ja": {
+      "maze-chase": { title: "メイズチェイス", intro: "固定迷路でオルラを導いて星のかけらを集め、4種類のウィスプの追跡パターンを読み、ビーコンで危険な通路を短い反撃の機会に変えます。" },
+      "animal-spectrum-pulse": { title: "アニマルスペクトラムパルス", intro: "最も近いスキャンマーカーが必要な色と紋章に一致した瞬間だけ脈動し、パルスの精霊を上へ導きます。" },
+      "animal-triple-match": { title: "アニマルトリプルマッチ", intro: "重なった山から見えているオブジェクトを7枠のトレイへ移し、未一致の単品が枠を埋める前に同じ物を3つ集めます。" }
+    },
+    "ko": {
+      "maze-chase": { title: "미로 추격", intro: "고정 미로에서 오를 이끌어 별 조각을 모으고 네 가지 위습 추격 패턴을 읽으며 비콘으로 위험한 통로를 짧은 반격 기회로 바꾸세요." },
+      "animal-spectrum-pulse": { title: "동물 스펙트럼 펄스", intro: "가장 가까운 스캔 표식이 필요한 색과 문양에 맞을 때만 펄스를 보내 판코의 스펙트럼 정령을 위로 이끕니다." }
+    },
+    "es": {
+      "maze-chase": { title: "Persecución en el laberinto", intro: "Guía a Orla por un laberinto fijo para reunir motas de estrella, leer cuatro patrones de persecución de los Wisps y convertir un corredor peligroso en una breve oportunidad de contraataque con los Faros." },
+      "animal-prism-battalion": { title: "Batallón de Prismas Animales", intro: "Cambia una batería prismática automática entre tres carriles, destruye cada formación, reúne núcleos de ataque raros y mantén a los monstruos lejos del núcleo de cristal." },
+      "animal-bamboo-pipes": { title: "Canal de bambú de Panko", intro: "Gira una red completa de bambú para llevar el agua desde el manantial tallado hasta la cuenca florida sin cortes ni ramales falsos." },
+      "animal-unblock": { title: "Desbloquear sendero", intro: "Desliza los bloques horizontales y verticales por sus propios ejes hasta abrir una ruta clara para el explorador rojo." }
+    },
+    "pt-BR": {
+      "maze-chase": { title: "Perseguição no Labirinto", intro: "Guie Orla por um labirinto fixo para reunir partículas de estrela, ler quatro padrões de perseguição dos Wisps e transformar um corredor perigoso em uma breve chance de contra-ataque com os Faróis." },
+      "animal-unblock": { title: "Desbloquear trilha", intro: "Deslize os blocos horizontais e verticais em seus próprios eixos até abrir uma rota livre para o explorador vermelho." }
+    },
+    "fr": {
+      "maze-chase": { title: "Course dans le labyrinthe", intro: "Guidez Orla dans un labyrinthe fixe pour récupérer les poussières d’étoile, lire quatre profils de poursuite des Wisps et transformer un couloir dangereux en courte occasion de contre-attaque avec les Balises." },
+      "animal-unblock": { title: "Débloquer le sentier", intro: "Faites glisser les blocs horizontaux et verticaux sur leur axe pour ouvrir une route nette à l’explorateur rouge." },
+      "animal-spectrum-pulse": { title: "Impulsion du spectre animal", intro: "Guidez l’esprit spectral de Panko vers le haut en pulsant seulement quand le marqueur proche correspond à la couleur et à l’emblème requis." }
+    },
+    "de": {
+      "maze-chase": { title: "Labyrinthjagd", intro: "Führe Orla durch ein festes Labyrinth, sammle Sternpartikel, lies vier Verfolgungsmuster der Wisps und verwandle mit Leuchtfeuern einen gefährlichen Korridor in eine kurze Gegenangriffschance." },
+      "animal-unblock": { title: "Entsperren Sie den Trail", intro: "Schiebe waagerechte und senkrechte Blöcke auf ihrer Achse, bis der rote Entdecker einen freien Weg zum Ausgang hat." },
+      "animal-bamboo-pipes": { title: "Pankos Bambuswasserstraße", intro: "Drehe ein vollständiges Bambusnetz, damit Wasser ohne Lücken, falsche Abzweige oder versetzte Rohrmitten von der Quelle zum Blütenbecken fließt." },
+      "animal-number-match": { title: "Pankos Zahlenhain", intro: "Entferne Paare mit der Summe zehn, wenn sie sich berühren oder durch freie Felder sehen können, und öffne neue Sichtlinien." }
+    },
+    "it": {
+      "maze-chase": { title: "Inseguimento nel labirinto", intro: "Guida Orla in un labirinto fisso per raccogliere le particelle stellari, leggere quattro schemi di inseguimento dei Wisp e trasformare un corridoio pericoloso in una breve occasione di contrattacco con i Fari." },
+      "animal-sunbeam-garden": { title: "Giardino del raggio di sole", intro: "Ruota gli specchi su una griglia da sei per sei finché ogni raggio visibile segue un percorso valido dalla fonte al loto addormentato." }
+    },
+    "ru": {
+      "maze-chase": { title: "Лабиринтная погоня", intro: "Проведите Орлу по фиксированному лабиринту, соберите звёздные частицы, изучите четыре схемы преследования виспов и превратите опасный коридор в короткую возможность для контратаки с помощью маяков." }
+    },
+    "hi": {
+      "maze-chase": { title: "भूलभुलैया पीछा", intro: "एक स्थिर भूलभुलैया में ओर्ला को ले जाकर तारों के कण जुटाएँ, विस्प के चार पीछा पैटर्न पढ़ें और बीकन से खतरनाक गलियारे को थोड़े समय के पलटवार के अवसर में बदलें।" },
+      "animal-unblock": { title: "ट्रेल को अनब्लॉक करें", intro: "क्षैतिज और ऊर्ध्वाधर ब्लॉकों को अपनी धुरी पर सरकाएँ, जब तक लाल खोजकर्ता के लिए निकास तक साफ रास्ता न बन जाए।" },
+      "animal-number-match": { title: "पंको का नंबर ग्रोव", intro: "ऐसे जोड़े हटाएँ जिनका योग दस हो और जो छूते हों या खाली खानों के पार एक-दूसरे को देख सकें, ताकि नई दृष्टि रेखाएँ खुलें।" }
+    },
+    "ar": {
+      "maze-chase": { title: "مطاردة المتاهة", intro: "قد أورلا داخل متاهة ثابتة لجمع ذرات النجوم، واقرأ أربعة أنماط لمطاردة الومضات، وحوّل الممر الخطير إلى فرصة قصيرة للهجوم المضاد باستخدام المنارات." },
+      "animal-number-match": { title: "بستان رقم بانكو", intro: "أزل الأزواج التي يساوي مجموعها عشرة عندما تتلامس أو ترى بعضها عبر الخانات الفارغة، وافتح خطوط رؤية جديدة." },
+      "animal-sunbeam-garden": { title: "حديقة شعاع الشمس", intro: "أدر المرايا على لوحة حديقة من ستة في ستة حتى يسلك كل شعاع ظاهر مسارًا صحيحًا من مصدره إلى الزنبق النائم." }
+    }
+  };
   localizedGames["zh-Hant"]["arrow-escape"] = {
     ...games["arrow-escape"],
     title: "箭頭大逃亡",

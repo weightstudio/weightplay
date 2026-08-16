@@ -4,7 +4,7 @@ const en={
   localeName:"English",loading:"Lighting the Starbell Carnival…",title:"Animal Carnival Claw",backLobby:"Back to WeightPlay",language:"Language",posterAlt:"Nori and Rux operating a teal carnival claw machine",eyebrow:"Starbell skill arcade",pitch:"Choose a charm, time the swaying claw, then steady the lift before three drops run out.",start:"Start Game",
   guideLabel:"Game guide",guideKicker:"WeightPlay Original Game Guide",guideTitle:"Turn every drop into a deliberate rescue",guideIntro:"Rux built thirty fair skill machines for Starbell Carnival. Nori needs your timing to retrieve the requested memory charms.",howTitle:"How to play",how1:"Drag the aiming reticle over a visible target charm.",how2:"Release or press Drop when the swaying claw lines up.",how3:"Drag against the load swing while it rises to protect the grip.",rulesTitle:"Rules and results",rulesText:"Each mission gives three free drops and shows every target, weight and grip need. Retrieve the complete target set to clear. No payment, random rarity or real prize is involved.",progressTitle:"Thirty carnival missions",progressText:"Six machines add bumpers, shelves, magnetic drift, fragile stacks and mixed championship layouts. Every clear unlocks the next authored mission.",tipsTitle:"Practical tips",tipsText:"Start with exposed light charms, watch the sway cone, and make small opposite corrections during the lift. A centered heavy charm needs more steadying than a light one.",saveTitle:"Save and privacy",saveText:"Unlocked missions, medals and cabinet charms stay only in this browser. No account, upload or personal information is required.",faqTitle:"FAQ",faq1q:"Is a grab random?",faq1a:"No. Position, timing, visible weight and your stabilization determine the result.",faq2q:"Can I lose collected charms?",faq2a:"No. Cabinet progress is permanent on this device.",faq3q:"What should I play next?",faq3a:"Try Animal Reef Fisher for another timing challenge or Animal Parking Patrol for careful planning.",
   backMain:"Back to Main",stageRailLabel:"Carnival mission selection",enter:"Enter Machine",cabinet:"Cabinet",workshop:"Workshop",workshopIntro:"Spend earned starbolts on permanent, transparent machine tuning.",stages:"Missions",stageTabs:"Stage tabs",backStages:"Back to Missions",drops:"Drops",grip:"Grip",targets:"Targets",boardLabel:"Aim and operate the carnival claw",stability:"Stability",drop:"Drop Claw",restart:"Restart",pause:"Pause",tutorialTitle:"Aim, drop, stabilize",tutorial1:"Drag the reticle over one requested charm.",tutorial2:"Drop when the swaying claw overlaps the target.",tutorial3:"During the lift, drag opposite the swing to keep grip above the line.",tutorialStart:"Start the machine",leaveTitle:"Leave this machine?",leaveText:"Continue keeps this exact drop frozen. Returning to Missions ends only this attempt.",continue:"Continue",returnStages:"Return to Missions",pauseTitle:"Machine paused",pauseText:"The rail, claw and prize bin are frozen.",resume:"Resume",resultKicker:"Carnival report",next:"Next Mission",retry:"Replay",
-  progress:"{cleared} / 30 missions · {charms} / 8 charms",stageSummary:"{cleared} cleared · {bolts} starbolts",mission:"Mission {n}",locked:"Locked",ready:"Ready",cleared:"Cleared · {medal}",objective:"Collect {count} target charms",phaseAim:"Aim at a target, then release or press Drop.",phaseDrop:"Claw descending…",phaseLift:"Drag opposite the swing to stabilize the lift.",phaseReturn:"Returning to the rail…",caught:"Charm delivered!",miss:"The grip slipped. Choose a new angle.",wrong:"That charm was not requested, but it joined your cabinet.",winTitle:"Machine cleared!",failTitle:"Targets still in the bin",winText:"All requested charms reached the chute with {drops} drops left.",failText:"Study the visible weights and try a steadier lift.",newBest:"New best medal!",best:"Best: {medal}",none:"None yet",collected:"Collected",unknown:"Undiscovered",starbolts:"{n} starbolts",upgrade:"Upgrade",max:"MAX",needBolts:"Need more starbolts.",upgradeDone:"Machine tuning upgraded.",tuningGrip:"Grip lining",tuningGripText:"Widens the fair centered-grab window.",tuningStability:"Sway damper",tuningStabilityText:"Makes counter-steering more responsive.",tuningRail:"Rail guide",tuningRailText:"Slows aim drift before release.",
+  progress:"{cleared} / 30 missions · {charms} / 8 charms",stageSummary:"{cleared} cleared · {bolts} starbolts",mission:"Mission {n}",locked:"Locked",ready:"Ready",cleared:"Cleared · {medal}",objective:"Collect {count} target charms",phaseAim:"Aim at a target, then release or press Drop.",phaseDrop:"Claw descending…",phaseLift:"Drag opposite the swing to stabilize the lift.",phaseReturn:"Returning to the rail…",caught:"Charm delivered!",miss:"The grip slipped. Choose a new angle.",wrong:"That charm was not requested, but it joined your cabinet.",winTitle:"Machine cleared!",failTitle:"Targets still in the bin",winText:"All requested charms reached the chute with {drops} drops left.",failText:"Study the visible weights and try a steadier lift.",newBest:"New best medal!",best:"Best: {medal}",none:"No medal on this attempt",collected:"Collected",unknown:"Undiscovered",starbolts:"{n} starbolts",upgrade:"Upgrade",max:"MAX",needBolts:"Need more starbolts.",upgradeDone:"Machine tuning upgraded.",tuningGrip:"Grip lining",tuningGripText:"Widens the fair centered-grab window.",tuningStability:"Sway damper",tuningStabilityText:"Makes counter-steering more responsive.",tuningRail:"Rail guide",tuningRailText:"Slows aim drift before release.",
   chapter1:"Lantern Lane",chapter2:"Bubble Bumpers",chapter3:"Clockwork Shelves",chapter4:"Moon Magnet",chapter5:"Glass Garden",chapter6:"Star Crown",rule1:"Open bins teach position, sway timing and lift control.",rule2:"Rounded bumpers reward a clean approach angle.",rule3:"Moving shelves open short timing windows.",rule4:"Gentle magnetic drift demands counter-steering.",rule5:"Fragile stacks punish careless side contact.",rule6:"Championship layouts combine every fair machine rule.",
   prize1:"Leo charm",prize2:"Nori charm",prize3:"Fia charm",prize4:"Taro charm",prize5:"Orla charm",prize6:"Panko charm",prize7:"Rux charm",prize8:"Mimi charm"
 };
@@ -37,7 +37,7 @@ Object.assign(en,{
   steadyGood:"Correct move! Keep holding until the claw reaches the top.",
   steadyWrong:"Wrong way — follow the player action shown above."
 });
-const zht={...en,localeName:"繁體中文",loading:"正在點亮星鈴嘉年華……",title:"動物嘉年華抓寶機",backLobby:"返回 WeightPlay",language:"語言",posterAlt:"諾里與魯克斯操作藍綠色嘉年華抓寶機",eyebrow:"星鈴技巧遊樂場",pitch:"選定收藏物、抓準擺動時機，再在三次機會用完前穩住上升中的爪子。",start:"開始遊戲",guideLabel:"遊戲指南",guideKicker:"WeightPlay 原創遊戲指南",guideTitle:"讓每一次抓取都有明確判斷",guideIntro:"魯克斯為星鈴嘉年華打造了三十台公平的技巧機台。諾里需要你的時機感取回指定回憶收藏物。",howTitle:"遊玩方式",how1:"拖曳瞄準標記到看得見的目標收藏物上。",how2:"擺動爪子對準時放開，或按下「放下爪子」。",how3:"上升時往載物擺動的反方向拖曳，維持抓力。",rulesTitle:"規則與結果",rulesText:"每關有三次免費抓取，所有目標、重量與抓力需求都會顯示。取回完整目標組即可過關，沒有付費、隨機稀有度或真實獎品。",progressTitle:"三十個嘉年華任務",progressText:"六台機器逐步加入彈墊、移動層架、磁力漂移、易碎堆疊與混合冠軍布局。每次過關都會解鎖下一個原創任務。",tipsTitle:"實用技巧",tipsText:"先抓外露的輕型收藏物，觀察擺動範圍，上升時做小幅反向修正。置中的重型收藏物需要更多穩定操作。",saveTitle:"儲存與隱私",saveText:"解鎖任務、獎章與收藏櫃只保存在這個瀏覽器，不需要帳號、上傳或個人資料。",faqTitle:"常見問題",faq1q:"抓取結果是隨機的嗎？",faq1a:"不是。位置、時機、可見重量與你的穩定操作共同決定結果。",faq2q:"已收藏的物品會消失嗎？",faq2a:"不會。這台裝置上的收藏櫃進度會永久保留。",faq3q:"接下來可以玩什麼？",faq3a:"想挑戰時機可玩《動物珊瑚礁釣手》，想仔細規劃可玩《森林停車疏導隊》。",backMain:"返回主畫面",stageRailLabel:"嘉年華任務選擇",enter:"進入機台",cabinet:"收藏櫃",workshop:"工坊",workshopIntro:"使用獲得的星栓，進行公開透明的永久機台調校。",stages:"任務",stageTabs:"關卡分頁",backStages:"返回任務",drops:"次數",grip:"抓力",targets:"目標",boardLabel:"瞄準並操作嘉年華爪子",stability:"穩定度",drop:"放下爪子",restart:"重新開始",pause:"暫停",tutorialTitle:"瞄準、放下、穩定",tutorial1:"把瞄準標記拖到一個指定收藏物上。",tutorial2:"擺動爪子與目標重疊時放下。",tutorial3:"上升時往擺動反方向拖曳，讓抓力維持在線上。",tutorialStart:"啟動機台",leaveTitle:"離開這台機器？",leaveText:"繼續會保留目前抓取狀態；返回任務只會結束這次挑戰。",continue:"繼續",returnStages:"返回任務",pauseTitle:"機台已暫停",pauseText:"軌道、爪子與獎品槽都已凍結。",resume:"繼續遊戲",resultKicker:"嘉年華報告",next:"下一任務",retry:"再玩一次",progress:"{cleared} / 30 任務 · {charms} / 8 收藏",stageSummary:"已完成 {cleared} · {bolts} 星栓",mission:"任務 {n}",locked:"未解鎖",ready:"可挑戰",cleared:"已完成 · {medal}",objective:"收集 {count} 個目標收藏",phaseAim:"瞄準目標，然後放開或按下「放下爪子」。",phaseDrop:"爪子下降中……",phaseLift:"往擺動反方向拖曳以穩定上升。",phaseReturn:"正在返回軌道……",caught:"收藏物已送達！",miss:"抓力滑落了，換個角度再試。",wrong:"這不是指定目標，但已加入收藏櫃。",winTitle:"機台完成！",failTitle:"目標仍留在槽中",winText:"所有指定收藏物都已送達，剩餘 {drops} 次抓取。",failText:"觀察可見重量，再嘗試更穩定的上升。",newBest:"新的最佳獎章！",best:"最佳：{medal}",none:"尚無",collected:"已收藏",unknown:"尚未發現",starbolts:"{n} 星栓",upgrade:"升級",max:"最高",needBolts:"星栓不足。",upgradeDone:"機台調校已升級。",tuningGrip:"爪墊",tuningGripText:"擴大公平的置中抓取範圍。",tuningStability:"擺動阻尼",tuningStabilityText:"讓反向穩定操作更靈敏。",tuningRail:"軌道導引",tuningRailText:"放下前減緩瞄準漂移。",chapter1:"燈籠街",chapter2:"泡泡彈墊",chapter3:"發條層架",chapter4:"月光磁環",chapter5:"玻璃花園",chapter6:"星冠機台",rule1:"開放槽教你位置、擺動時機與上升控制。",rule2:"圓形彈墊鼓勵乾淨的接近角度。",rule3:"移動層架會開啟短暫時機。",rule4:"溫和磁力漂移需要反向控制。",rule5:"易碎堆疊會懲罰粗心的側面碰撞。",rule6:"冠軍布局組合所有公平機台規則。",prize1:"里歐收藏",prize2:"諾里收藏",prize3:"菲亞收藏",prize4:"塔羅收藏",prize5:"奧拉收藏",prize6:"潘可收藏",prize7:"魯克斯收藏",prize8:"咪咪收藏"};
+const zht={...en,localeName:"繁體中文",loading:"正在點亮星鈴嘉年華……",title:"動物嘉年華抓寶機",backLobby:"返回 WeightPlay",language:"語言",posterAlt:"諾里與魯克斯操作藍綠色嘉年華抓寶機",eyebrow:"星鈴技巧遊樂場",pitch:"選定收藏物、抓準擺動時機，再在三次機會用完前穩住上升中的爪子。",start:"開始遊戲",guideLabel:"遊戲指南",guideKicker:"WeightPlay 原創遊戲指南",guideTitle:"讓每一次抓取都有明確判斷",guideIntro:"魯克斯為星鈴嘉年華打造了三十台公平的技巧機台。諾里需要你的時機感取回指定回憶收藏物。",howTitle:"遊玩方式",how1:"拖曳瞄準標記到看得見的目標收藏物上。",how2:"擺動爪子對準時放開，或按下「放下爪子」。",how3:"上升時往載物擺動的反方向拖曳，維持抓力。",rulesTitle:"規則與結果",rulesText:"每關有三次免費抓取，所有目標、重量與抓力需求都會顯示。取回完整目標組即可過關，沒有付費、隨機稀有度或真實獎品。",progressTitle:"三十個嘉年華任務",progressText:"六台機器逐步加入彈墊、移動層架、磁力漂移、易碎堆疊與混合冠軍布局。每次過關都會解鎖下一個原創任務。",tipsTitle:"實用技巧",tipsText:"先抓外露的輕型收藏物，觀察擺動範圍，上升時做小幅反向修正。置中的重型收藏物需要更多穩定操作。",saveTitle:"儲存與隱私",saveText:"解鎖任務、獎章與收藏櫃只保存在這個瀏覽器，不需要帳號、上傳或個人資料。",faqTitle:"常見問題",faq1q:"抓取結果是隨機的嗎？",faq1a:"不是。位置、時機、可見重量與你的穩定操作共同決定結果。",faq2q:"已收藏的物品會消失嗎？",faq2a:"不會。這台裝置上的收藏櫃進度會永久保留。",faq3q:"接下來可以玩什麼？",faq3a:"想挑戰時機可玩《動物珊瑚礁釣手》，想仔細規劃可玩《森林停車疏導隊》。",backMain:"返回主畫面",stageRailLabel:"嘉年華任務選擇",enter:"進入機台",cabinet:"收藏櫃",workshop:"工坊",workshopIntro:"使用獲得的星栓，進行公開透明的永久機台調校。",stages:"任務",stageTabs:"關卡分頁",backStages:"返回任務",drops:"次數",grip:"抓力",targets:"目標",boardLabel:"瞄準並操作嘉年華爪子",stability:"穩定度",drop:"放下爪子",restart:"重新開始",pause:"暫停",tutorialTitle:"瞄準、放下、穩定",tutorial1:"把瞄準標記拖到一個指定收藏物上。",tutorial2:"擺動爪子與目標重疊時放下。",tutorial3:"上升時往擺動反方向拖曳，讓抓力維持在線上。",tutorialStart:"啟動機台",leaveTitle:"離開這台機器？",leaveText:"繼續會保留目前抓取狀態；返回任務只會結束這次挑戰。",continue:"繼續",returnStages:"返回任務",pauseTitle:"機台已暫停",pauseText:"軌道、爪子與獎品槽都已凍結。",resume:"繼續遊戲",resultKicker:"嘉年華報告",next:"下一任務",retry:"再玩一次",progress:"{cleared} / 30 任務 · {charms} / 8 收藏",stageSummary:"已完成 {cleared} · {bolts} 星栓",mission:"任務 {n}",locked:"未解鎖",ready:"可挑戰",cleared:"已完成 · {medal}",objective:"收集 {count} 個目標收藏",phaseAim:"瞄準目標，然後放開或按下「放下爪子」。",phaseDrop:"爪子下降中……",phaseLift:"往擺動反方向拖曳以穩定上升。",phaseReturn:"正在返回軌道……",caught:"收藏物已送達！",miss:"抓力滑落了，換個角度再試。",wrong:"這不是指定目標，但已加入收藏櫃。",winTitle:"機台完成！",failTitle:"目標仍留在槽中",winText:"所有指定收藏物都已送達，剩餘 {drops} 次抓取。",failText:"觀察可見重量，再嘗試更穩定的上升。",newBest:"新的最佳獎章！",best:"最佳：{medal}",none:"這次沒有獲得獎章",collected:"已收藏",unknown:"尚未發現",starbolts:"{n} 星栓",upgrade:"升級",max:"最高",needBolts:"星栓不足。",upgradeDone:"機台調校已升級。",tuningGrip:"爪墊",tuningGripText:"擴大公平的置中抓取範圍。",tuningStability:"擺動阻尼",tuningStabilityText:"讓反向穩定操作更靈敏。",tuningRail:"軌道導引",tuningRailText:"放下前減緩瞄準漂移。",chapter1:"燈籠街",chapter2:"泡泡彈墊",chapter3:"發條層架",chapter4:"月光磁環",chapter5:"玻璃花園",chapter6:"星冠機台",rule1:"開放槽教你位置、擺動時機與上升控制。",rule2:"圓形彈墊鼓勵乾淨的接近角度。",rule3:"移動層架會開啟短暫時機。",rule4:"溫和磁力漂移需要反向控制。",rule5:"易碎堆疊會懲罰粗心的側面碰撞。",rule6:"冠軍布局組合所有公平機台規則。",prize1:"里歐收藏",prize2:"諾里收藏",prize3:"菲亞收藏",prize4:"塔羅收藏",prize5:"奧拉收藏",prize6:"潘可收藏",prize7:"魯克斯收藏",prize8:"咪咪收藏"};
 Object.assign(zht,{
   targetMark:"目標",
   how3:"抓到後，按住「穩住」直到爪子升到頂端。",
@@ -57,7 +57,7 @@ Object.assign(zht,{
   steadyGood:"操作正確！繼續按住到爪子升到頂端。",
   steadyWrong:"拖反了；請改照上方「你的操作」方向。"
 });
-const zhs={...zht,localeName:"简体中文",loading:"正在点亮星铃嘉年华……",title:"动物嘉年华抓宝机",backLobby:"返回 WeightPlay",language:"语言",pitch:"选定收藏物、抓准摆动时机，再在三次机会用完前稳住上升中的爪子。",start:"开始游戏",guideLabel:"游戏指南",guideTitle:"让每一次抓取都有明确判断",howTitle:"游玩方式",rulesTitle:"规则与结果",progressTitle:"三十个嘉年华任务",tipsTitle:"实用技巧",saveTitle:"保存与隐私",faqTitle:"常见问题",backMain:"返回主画面",stageRailLabel:"嘉年华任务选择",enter:"进入机器",cabinet:"收藏柜",workshop:"工坊",stages:"任务",stageTabs:"关卡分页",backStages:"返回任务",drops:"次数",grip:"抓力",targets:"目标",stability:"稳定度",drop:"放下爪子",restart:"重新开始",pause:"暂停",tutorialTitle:"瞄准、放下、稳定",tutorialStart:"启动机器",leaveTitle:"离开这台机器？",continue:"继续",returnStages:"返回任务",pauseTitle:"机器已暂停",resume:"继续游戏",resultKicker:"嘉年华报告",next:"下一任务",retry:"再玩一次",mission:"任务 {n}",locked:"未解锁",ready:"可挑战",objective:"收集 {count} 个目标收藏",phaseAim:"瞄准目标，然后放开或按下“放下爪子”。",phaseDrop:"爪子下降中……",phaseLift:"往摆动反方向拖动以稳定上升。",phaseReturn:"正在返回轨道……",caught:"收藏物已送达！",miss:"抓力滑落了，换个角度再试。",winTitle:"机器完成！",failTitle:"目标仍留在槽中",newBest:"新的最佳奖章！",none:"尚无",collected:"已收藏",unknown:"尚未发现",upgrade:"升级",max:"最高",needBolts:"星栓不足。",upgradeDone:"机器调校已升级。",tuningGrip:"爪垫",tuningGripText:"扩大公平的置中抓取范围。",tuningStability:"摆动阻尼",tuningStabilityText:"让反向稳定操作更灵敏。",tuningRail:"轨道导引",tuningRailText:"放下前减缓瞄准漂移。",chapter1:"灯笼街",chapter2:"泡泡弹垫",chapter3:"发条层架",chapter4:"月光磁环",chapter5:"玻璃花园",chapter6:"星冠机器"};
+const zhs={...zht,localeName:"简体中文",loading:"正在点亮星铃嘉年华……",title:"动物嘉年华抓宝机",backLobby:"返回 WeightPlay",language:"语言",pitch:"选定收藏物、抓准摆动时机，再在三次机会用完前稳住上升中的爪子。",start:"开始游戏",guideLabel:"游戏指南",guideTitle:"让每一次抓取都有明确判断",howTitle:"游玩方式",rulesTitle:"规则与结果",progressTitle:"三十个嘉年华任务",tipsTitle:"实用技巧",saveTitle:"保存与隐私",faqTitle:"常见问题",backMain:"返回主画面",stageRailLabel:"嘉年华任务选择",enter:"进入机器",cabinet:"收藏柜",workshop:"工坊",stages:"任务",stageTabs:"关卡分页",backStages:"返回任务",drops:"次数",grip:"抓力",targets:"目标",stability:"稳定度",drop:"放下爪子",restart:"重新开始",pause:"暂停",tutorialTitle:"瞄准、放下、稳定",tutorialStart:"启动机器",leaveTitle:"离开这台机器？",continue:"继续",returnStages:"返回任务",pauseTitle:"机器已暂停",resume:"继续游戏",resultKicker:"嘉年华报告",next:"下一任务",retry:"再玩一次",mission:"任务 {n}",locked:"未解锁",ready:"可挑战",objective:"收集 {count} 个目标收藏",phaseAim:"瞄准目标，然后放开或按下“放下爪子”。",phaseDrop:"爪子下降中……",phaseLift:"往摆动反方向拖动以稳定上升。",phaseReturn:"正在返回轨道……",caught:"收藏物已送达！",miss:"抓力滑落了，换个角度再试。",winTitle:"机器完成！",failTitle:"目标仍留在槽中",newBest:"新的最佳奖章！",none:"本次未获得奖章",collected:"已收藏",unknown:"尚未发现",upgrade:"升级",max:"最高",needBolts:"星栓不足。",upgradeDone:"机器调校已升级。",tuningGrip:"爪垫",tuningGripText:"扩大公平的置中抓取范围。",tuningStability:"摆动阻尼",tuningStabilityText:"让反向稳定操作更灵敏。",tuningRail:"轨道导引",tuningRailText:"放下前减缓瞄准漂移。",chapter1:"灯笼街",chapter2:"泡泡弹垫",chapter3:"发条层架",chapter4:"月光磁环",chapter5:"玻璃花园",chapter6:"星冠机器"};
 const compact={
   ja:{localeName:"日本語",title:"アニマル・カーニバルクロー",loading:"スターべル・カーニバルを点灯中…",backLobby:"WeightPlayへ戻る",language:"言語",pitch:"チャームを選び、揺れるクローのタイミングを合わせ、3回以内に持ち上げを安定させよう。",start:"ゲーム開始",howTitle:"遊び方",rulesTitle:"ルールと結果",progressTitle:"30のカーニバルミッション",tipsTitle:"実用ヒント",saveTitle:"保存とプライバシー",faqTitle:"よくある質問",backMain:"メインへ戻る",enter:"マシンに入る",cabinet:"キャビネット",workshop:"工房",stages:"ミッション",backStages:"ミッションへ戻る",drops:"回数",grip:"グリップ",targets:"目標",stability:"安定度",drop:"クローを下ろす",restart:"リスタート",pause:"一時停止",tutorialTitle:"狙う・下ろす・安定",tutorialStart:"マシン開始",leaveTitle:"このマシンを離れますか？",continue:"続ける",returnStages:"ミッションへ",pauseTitle:"一時停止中",resume:"再開",resultKicker:"カーニバル報告",next:"次のミッション",retry:"リプレイ",mission:"ミッション {n}",locked:"ロック中",ready:"準備完了",objective:"目標チャームを {count} 個集める",phaseAim:"目標を狙い、離すかドロップを押します。",phaseDrop:"クロー下降中…",phaseLift:"揺れと反対へ動かして安定させよう。",phaseReturn:"レールへ戻っています…",caught:"チャーム獲得！",miss:"グリップが外れました。別の角度で試そう。",winTitle:"マシンクリア！",failTitle:"目標が残っています",newBest:"ベストメダル更新！",collected:"収集済み",unknown:"未発見",upgrade:"強化",max:"MAX",needBolts:"スターボルトが足りません。",upgradeDone:"マシンを強化しました。",chapter1:"ランタンレーン",chapter2:"バブルバンパー",chapter3:"クロックワーク棚",chapter4:"ムーンマグネット",chapter5:"ガラスガーデン",chapter6:"スタークラウン"},
   ko:{localeName:"한국어",title:"애니멀 카니발 클로",loading:"스타벨 카니발에 불을 켜는 중…",backLobby:"WeightPlay로 돌아가기",language:"언어",pitch:"장식을 고르고 흔들리는 집게의 때를 맞춘 뒤 세 번 안에 들어 올림을 안정시키세요.",start:"게임 시작",howTitle:"플레이 방법",rulesTitle:"규칙과 결과",progressTitle:"카니발 미션 30개",tipsTitle:"실전 팁",saveTitle:"저장과 개인정보",faqTitle:"자주 묻는 질문",backMain:"메인으로",enter:"기계 입장",cabinet:"진열장",workshop:"작업장",stages:"미션",backStages:"미션으로",drops:"횟수",grip:"그립",targets:"목표",stability:"안정도",drop:"집게 내리기",restart:"다시 시작",pause:"일시 정지",tutorialTitle:"조준, 내리기, 안정",tutorialStart:"기계 시작",leaveTitle:"이 기계를 나갈까요?",continue:"계속",returnStages:"미션으로",pauseTitle:"기계 일시 정지",resume:"계속하기",resultKicker:"카니발 보고서",next:"다음 미션",retry:"다시 플레이",mission:"미션 {n}",locked:"잠김",ready:"준비",objective:"목표 장식 {count}개 수집",phaseAim:"목표를 조준한 뒤 놓거나 내리기를 누르세요.",phaseDrop:"집게가 내려갑니다…",phaseLift:"흔들림 반대쪽으로 움직여 안정시키세요.",phaseReturn:"레일로 돌아가는 중…",caught:"장식 도착!",miss:"그립이 미끄러졌습니다. 다른 각도를 선택하세요.",winTitle:"기계 완료!",failTitle:"목표가 통에 남았습니다",newBest:"새 최고 메달!",collected:"수집함",unknown:"미발견",upgrade:"업그레이드",max:"최대",needBolts:"스타볼트가 부족합니다.",upgradeDone:"기계 조정을 강화했습니다.",chapter1:"랜턴 레인",chapter2:"버블 범퍼",chapter3:"태엽 선반",chapter4:"문 마그넷",chapter5:"유리 정원",chapter6:"스타 크라운"},
@@ -178,7 +178,7 @@ const localeOwnership={
     "winText": "リクエストされたすべてのチャームがシュートに到達し、残り {drops} ドロップが残りました。",
     "failText": "目に見える重量を調べて、より安定した持ち上げを試してください。",
     "best": "ベスト: {medal}",
-    "none": "まだありません",
+    "none": "今回はメダルなし",
     "starbolts": "{n} スターボルト",
     "max": "マックス",
     "tuningGrip": "グリップライニング",
@@ -250,7 +250,7 @@ const localeOwnership={
     "winText": "요청한 모든 부적은 {drops} 방울이 남은 상태로 낙하산에 도달했습니다.",
     "failText": "눈에 보이는 무게를 연구하고 좀 더 안정적인 리프팅을 시도해보세요.",
     "best": "최고: {medal}",
-    "none": "아직 없음",
+    "none": "이번 시도에서는 메달 없음",
     "starbolts": "{n} 스타볼트",
     "tuningGrip": "그립 라이닝",
     "tuningRail": "레일 가이드",
@@ -321,7 +321,7 @@ const localeOwnership={
     "winText": "Todos los amuletos solicitados llegaron al paracaídas con {drops} gotas restantes.",
     "failText": "Estudie los pesos visibles y pruebe con un levantamiento más estable.",
     "best": "Mejor: {medal}",
-    "none": "Ninguno todavía",
+    "none": "Sin medalla en este intento",
     "starbolts": "{n} rayos estelares",
     "tuningGrip": "Forro de agarre",
     "tuningRail": "guía de carril",
@@ -392,7 +392,7 @@ const localeOwnership={
     "winText": "Todos os amuletos solicitados chegaram à rampa com {drops} gotas restantes.",
     "failText": "Estude os pesos visíveis e tente um levantamento mais constante.",
     "best": "Melhor: {medal}",
-    "none": "Nenhum ainda",
+    "none": "Sem medalha nesta tentativa",
     "starbolts": "{n} raios estelares",
     "tuningGrip": "Forro de aderência",
     "tuningRail": "Guia ferroviário",
@@ -463,7 +463,7 @@ const localeOwnership={
     "winText": "Tous les charmes demandés ont atteint la chute avec {drops} gouttes restantes.",
     "failText": "Étudiez les poids visibles et essayez un levage plus stable.",
     "best": "Meilleur : {medal}",
-    "none": "Aucun pour l'instant",
+    "none": "Pas de médaille cette fois",
     "starbolts": "{n} starbolt",
     "max": "MAXIMUM",
     "tuningGrip": "Doublure antidérapante",
@@ -535,7 +535,7 @@ const localeOwnership={
     "winText": "Alle angeforderten Amulette erreichten die Rutsche mit noch {drops} Tropfen.",
     "failText": "Studieren Sie die sichtbaren Gewichte und versuchen Sie es mit einem gleichmäßigeren Hebevorgang.",
     "best": "Am besten: {medal}",
-    "none": "Noch keine",
+    "none": "Keine Medaille bei diesem Versuch",
     "starbolts": "{n} Sternbolzen",
     "tuningGrip": "Grifffutter",
     "tuningRail": "Schienenführung",
@@ -606,7 +606,7 @@ const localeOwnership={
     "winText": "Tutti gli incantesimi richiesti hanno raggiunto lo scivolo con {drops} gocce rimaste.",
     "failText": "Studia i pesi visibili e prova un sollevamento più stabile.",
     "best": "Il migliore: {medal}",
-    "none": "Nessuno ancora",
+    "none": "Nessuna medaglia in questo tentativo",
     "starbolts": "{n} viti a stella",
     "max": "MASSIMO",
     "tuningGrip": "Fodera dell'impugnatura",
@@ -678,7 +678,7 @@ const localeOwnership={
     "winText": "Все запрошенные амулеты достигли желоба, оставив {drops} капель.",
     "failText": "Изучите видимые веса и попробуйте более устойчивый подъем.",
     "best": "Лучшее: {medal}",
-    "none": "Пока нет",
+    "none": "В этой попытке медали нет",
     "starbolts": "{n} звездные болты",
     "tuningGrip": "Подкладка ручки",
     "tuningRail": "Железнодорожный гид",
@@ -749,7 +749,7 @@ const localeOwnership={
     "winText": "सभी अनुरोधित आकर्षण {drops} बूंदों के साथ ढलान पर पहुंच गए।",
     "failText": "दृश्यमान वज़न का अध्ययन करें और एक स्थिर लिफ्ट का प्रयास करें।",
     "best": "सर्वोत्तम: {medal}",
-    "none": "अभी तक कोई नहीं",
+    "none": "इस प्रयास में कोई पदक नहीं",
     "starbolts": "{n} स्टारबोल्ट",
     "tuningGrip": "पकड़ अस्तर",
     "tuningRail": "रेल मार्गदर्शक",
@@ -820,7 +820,7 @@ const localeOwnership={
     "winText": "وصلت جميع التعويذات المطلوبة إلى المزلق مع ترك {drops} قطرات.",
     "failText": "ادرس الأوزان المرئية وحاول رفعها بشكل أكثر ثباتًا.",
     "best": "الأفضل: {medal}",
-    "none": "لا شيء حتى الآن",
+    "none": "لا توجد ميدالية في هذه المحاولة",
     "starbolts": "{n} مسامير نجمية",
     "tuningGrip": "بطانة قبضة",
     "tuningRail": "دليل السكك الحديدية",

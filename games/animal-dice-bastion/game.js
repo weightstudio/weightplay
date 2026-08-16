@@ -17,6 +17,41 @@
     set(key, value) { memory[key] = String(value); try { localStorage.setItem(key, String(value)); } catch {} }
   };
   let locale = canonicalLocale(routeLocale || window.WonderI18n?.actualLocale?.() || storage.get("weightPlayLocale") || storage.get("wonderLocale") || navigator.language);
+  const DICE_GAME_VERSION = "v25";
+  const DICE_INTERFACE_VERSION = "V6";
+  const DICE_EVENT_FIELDS = ["stage", "chapter", "wave", "outcome", "return_to", "source", "input_class", "unlocked"];
+  function diceViewportBucket() {
+    const width = Math.max(1, Number(window.innerWidth) || 1), height = Math.max(1, Number(window.innerHeight) || 1);
+    if (width <= 450 && height >= width) return "phone-portrait";
+    if (width <= 700 && height >= width) return "wide-phone-portrait";
+    if (width > height && width <= 900) return "short-landscape";
+    return width >= 1100 ? "desktop" : "tablet-landscape";
+  }
+  function diceInputClass(value = "system") {
+    if (typeof value === "string") return ["pointer", "keyboard", "system"].includes(value) ? value : "system";
+    if (value?.type === "keydown" || value?.type === "keyup") return "keyboard";
+    if (value?.type === "click") return value.detail === 0 ? "keyboard" : "pointer";
+    if (value?.type?.startsWith("pointer")) return "pointer";
+    return "system";
+  }
+  function trackDiceFunnel(name, details = {}) {
+    if (!window.WonderAnalytics?.track) return;
+    const payload = {
+      game_id: "animal-dice-bastion",
+      game_version: DICE_GAME_VERSION,
+      interface_version: DICE_INTERFACE_VERSION,
+      locale,
+      viewport_bucket: diceViewportBucket(),
+      input_class: diceInputClass(details.input_class),
+    };
+    for (const field of DICE_EVENT_FIELDS) {
+      if (field === "input_class" || details[field] === undefined) continue;
+      if (field === "stage" || field === "chapter" || field === "wave") payload[field] = Math.max(0, Math.min(30, Math.trunc(Number(details[field]))));
+      else if (field === "unlocked") payload[field] = Boolean(details[field]);
+      else if (typeof details[field] === "string" && details[field].length <= 32) payload[field] = details[field];
+    }
+    window.WonderAnalytics.track(name, payload);
+  }
   const t = (key, vars = {}) => String(pack.dictionaries[locale]?.[key] ?? pack.dictionaries.en[key] ?? key)
     .replace(/\{(\w+)\}/g, (_, name) => vars[name] ?? `{${name}}`);
 
@@ -147,6 +182,7 @@
     $("mainProgress").textContent = t("stageSummary", {unlocked:save.unlocked, stars:total});
   }
   function showScreen(name) {
+    const previousScreen = screen;
     if (name !== "stage") cancelStageMotion();
     if (screen === "main" && name !== "main") {
       mainFlowMinHeight = $("mainScreen").style.getPropertyValue("--wp-main-flow-min-height")
@@ -168,6 +204,7 @@
     if (name === "main") {
       $("mainScreen").classList.add("wp-standard-main-flow-owner");
       if (mainFlowMinHeight) $("mainScreen").style.setProperty("--wp-main-flow-min-height", mainFlowMinHeight);
+      trackDiceFunnel("main_open", {source: previousScreen === "loading" ? "bootstrap" : previousScreen});
     }
     if (name !== "battle") stopLoop();
     if (name === "main") requestAnimationFrame(() => $("startBtn").focus({preventScroll:true}));
@@ -197,10 +234,11 @@
     const button = document.createElement("button");
     button.type = "button";
     button.dataset.poolId = String(poolIndex);
-    button.addEventListener("click", () => {
+    button.addEventListener("click", (event) => {
       const index = Number(button.dataset.index), locked = stages[index].n > save.unlocked;
+      trackDiceFunnel("stage_card_intent", {stage: stages[index].n, chapter: stages[index].chapter + 1, unlocked: !locked, source: "stage", input_class: diceInputClass(event)});
       if (locked) announce(t("locked"));
-      else startBattleFromPlayer(index);
+      else startBattleFromPlayer(index, diceInputClass(event));
     });
     return button;
   }
@@ -482,6 +520,7 @@
       stage, stageIndex, random, board:Array(15).fill(null), selected:-1, cursor:0, charge:42 + save.upgrades.charge * 8,
       summonCost:10, drought:0, core:maxCore, maxCore, wave:0, plan:createWavePlan(stage), enemies:[], spawnQueue:[],
       spawnClock:0, between:1.3, attackClock:0, burst:0, rally:0, rallyCooldown:0, rerolls:0, merges:0,
+      firstSummonTracked:false, firstMergeTracked:false,
       projectiles:[], impacts:[], shotsFired:0, hits:0, burstFx:0, rerollFx:0, rerollIndex:-1,
       damage:0, openingGuardian:save.openingGuardian, openingUsed:false, finished:false, paused:false, time:0
     };
@@ -492,10 +531,13 @@
     lifecyclePaused = document.hidden; run.paused = lifecyclePaused;
     lastTime = performance.now(); stopLoop(); if (!run.paused) raf = requestAnimationFrame(frame);
     window.WonderSound?.play?.("start");
-    if (!save.tutorialSeen) requestAnimationFrame(() => openModal($("tutorialPanel"), $("tutorialStartBtn")));
+    if (!save.tutorialSeen) {
+      trackDiceFunnel("tutorial_start", {stage: stage.n, chapter: stage.chapter + 1, source: "battle"});
+      requestAnimationFrame(() => openModal($("tutorialPanel"), $("tutorialStartBtn")));
+    }
     else $("board").focus({preventScroll:true});
   }
-  function startBattleFromPlayer(index) {
+  function startBattleFromPlayer(index, inputClass = "system", source = "stage") {
     // A visible Stage/Result activation is authoritative evidence that the
     // player has returned to the game, even when an embedded browser reports
     // a stale false value from document.hasFocus(). Real blur/visibility
@@ -504,6 +546,8 @@
       windowFocused = true;
       lifecyclePaused = false;
     }
+    const stage = stages[Math.max(0, Math.min(29, Math.trunc(index)))];
+    trackDiceFunnel("battle_start", {stage: stage.n, chapter: stage.chapter + 1, source, input_class: inputClass});
     startBattle(index);
   }
   function reclaimVisiblePlayerAction() {
@@ -536,7 +580,7 @@
     const choices=guardianTypes.filter((type)=>type.id!==excluded);
     return choices[Math.floor(run.random()*choices.length)].id;
   }
-  function summon() {
+  function summon(inputClass = "system") {
     if (!run || run.finished || activeModal()) return;
     const slot = run.board.findIndex((unit) => !unit);
     if (slot < 0) { announce(t("boardFull")); return; }
@@ -547,10 +591,14 @@
     run.openingUsed=true;
     run.board[slot] = {type, rank:1, cooldown:run.random()*.4}; run.drought = hasMergePair() ? 0 : run.drought + 1;
     run.cursor = slot; renderBoard(); updateBattleHud(true);
+    if (!run.firstSummonTracked) {
+      run.firstSummonTracked = true;
+      trackDiceFunnel("first_summon", {stage: run.stage.n, chapter: run.stage.chapter + 1, wave: run.wave, source: "battle", input_class: inputClass});
+    }
     announce(forceMatch ? t("droughtGift",{guardian:t(type)}) : t("summoned",{guardian:t(type)}));
     window.WonderSound?.play?.("collect");
   }
-  function selectOrMerge(index) {
+  function selectOrMerge(index, inputClass = "system") {
     if (!run || !run.board[index]) { run.selected = -1; renderBoard(); return; }
     if (run.selected < 0) {
       const unit=run.board[index];
@@ -565,6 +613,10 @@
     if (to.rank >= 6) { announce(t("maxRank")); return; }
     const rank = to.rank + 1, type = randomType(false);
     run.board[run.selected] = null; run.board[index] = {type, rank, cooldown:.1}; run.selected = -1; run.cursor = index; run.merges += 1; run.drought = 0;
+    if (!run.firstMergeTracked) {
+      run.firstMergeTracked = true;
+      trackDiceFunnel("first_merge", {stage: run.stage.n, chapter: run.stage.chapter + 1, wave: run.wave, source: "battle", input_class: inputClass});
+    }
     renderBoard(); announce(t("merged",{rank,guardian:t(type)})); window.WonderSound?.play?.("correct");
   }
   function reroll() {
@@ -576,12 +628,14 @@
     run.selected = -1;run.rerollFx=.65;run.rerollIndex=index;renderBoard();updateOrderEffects();updateBattleHud(true);
     announce(t("rerolled",{guardian:t(run.board[index].type),rank}));
   }
-  function rally() {
+  function rally(inputClass = "system") {
     if (!run || activeModal()) return;
     if (run.rallyCooldown > 0) { announce(t("rallyNotReady")); return; }
-    run.rally = 6; run.rallyCooldown = 18;updateOrderEffects();announce(t("rallyUsed"));window.WonderSound?.play?.("power");
+    run.rally = 6; run.rallyCooldown = 18;updateOrderEffects();
+    trackDiceFunnel("rally", {stage: run.stage.n, chapter: run.stage.chapter + 1, wave: run.wave, source: "battle", input_class: inputClass});
+    announce(t("rallyUsed"));window.WonderSound?.play?.("power");
   }
-  function burst() {
+  function burst(inputClass = "system") {
     if (!run || activeModal()) return;
     if (run.burst < 100) { announce(t("burstNotReady")); return; }
     const targets = run.enemies.filter((enemy) => !enemy.hit&&enemy.x>=0).sort((a,b) => b.x-a.x).slice(0,5);
@@ -592,6 +646,7 @@
       run.impacts.push({progress:enemy.x,type:"burst",age:0,duration:.7});
     });
     updateOrderEffects();
+    trackDiceFunnel("burst", {stage: run.stage.n, chapter: run.stage.chapter + 1, wave: run.wave, source: "battle", input_class: inputClass});
     announce(t("burstUsed")); window.WonderSound?.play?.("power");
   }
   function renderBoard() {
@@ -606,7 +661,7 @@
         const roleIcon={grove:"◆",spark:"⚡",moon:"❄",forge:"◇",tide:"◉"}[unit.type];
         slot.innerHTML = `<span class="guardian ${unit.type}"><img src="${type.image}" alt=""><i aria-hidden="true">${roleIcon}</i><b><span>${unit.rank}</span><small>/6</small></b></span>`;
       }
-      slot.addEventListener("click", () => { run.cursor = index; selectOrMerge(index); $("board").focus({preventScroll:true}); });
+      slot.addEventListener("click", (event) => { run.cursor = index; selectOrMerge(index, diceInputClass(event)); $("board").focus({preventScroll:true}); });
       return slot;
     }));
   }
@@ -819,6 +874,7 @@
     run.finished=true;run.paused=true;stopLoop();
     const stars = won ? 1 + (run.core >= Math.ceil(run.maxCore/2) ? 1 : 0) + (run.rerolls===0 ? 1 : 0) : 0;
     const earned = won ? run.stage.reward + stars : 0;
+    trackDiceFunnel("result", {stage: run.stage.n, chapter: run.stage.chapter + 1, wave: run.wave, outcome: won ? "success" : "failure", source: "battle"});
     if (won) {
       save.stars[run.stage.n] = Math.max(save.stars[run.stage.n]||0,stars);
       save.unlocked = Math.max(save.unlocked,Math.min(30,run.stage.n+1));
@@ -851,32 +907,32 @@
   function announce(message) { $("battleFeedback").textContent=message; }
   function openLeave() { if(run&&!run.finished&&!activeModal())openModal($("leavePanel"),$("leaveContinueBtn")); }
 
-  $("startBtn").addEventListener("click",()=>showScreen("stage"));
-  $("stageBackBtn").addEventListener("click",()=>showScreen("main"));
+  $("startBtn").addEventListener("click",(event)=>{trackDiceFunnel("main_start", {source: "main", input_class: diceInputClass(event)});showScreen("stage")});
+  $("stageBackBtn").addEventListener("click",(event)=>{trackDiceFunnel("return", {source: "stage", return_to: "main", input_class: diceInputClass(event)});showScreen("main")});
   $("localeSelect").addEventListener("change",(event)=>{locale=canonicalLocale(event.target.value);storage.set("weightPlayLocale",locale);window.WonderI18n?.setLocale?.(locale);applyLocale()});
-  $("summonBtn").addEventListener("click",()=>{reclaimVisiblePlayerAction();summon()});
+  $("summonBtn").addEventListener("click",(event)=>{reclaimVisiblePlayerAction();summon(diceInputClass(event))});
   $("rerollBtn").addEventListener("click",()=>{reclaimVisiblePlayerAction();reroll()});
-  $("rallyBtn").addEventListener("click",()=>{reclaimVisiblePlayerAction();rally()});
-  $("burstBtn").addEventListener("click",()=>{reclaimVisiblePlayerAction();burst()});
+  $("rallyBtn").addEventListener("click",(event)=>{reclaimVisiblePlayerAction();rally(diceInputClass(event))});
+  $("burstBtn").addEventListener("click",(event)=>{reclaimVisiblePlayerAction();burst(diceInputClass(event))});
   $("battleBackBtn").addEventListener("click",openLeave);$("pauseBtn").addEventListener("click",()=>openModal($("pausePanel"),$("resumeBtn")));
   $("leaveContinueBtn").addEventListener("click",()=>closeModal($("leavePanel")));$("resumeBtn").addEventListener("click",()=>closeModal($("pausePanel")));
   $("pauseHelpBtn").addEventListener("click",()=>{$("pausePanel").hidden=true;openModal($("tutorialPanel"),$("tutorialStartBtn"))});
   $("tutorialStartBtn").addEventListener("click",()=>{save.tutorialSeen=true;persist();closeModal($("tutorialPanel"))});
-  $("leaveStagesBtn").addEventListener("click",()=>{$("leavePanel").hidden=true;$("battleLive").inert=false;run=null;showScreen("stage")});
-  $("resultStagesBtn").addEventListener("click",()=>commitResult(()=>{run=null;$("resultPanel").hidden=true;$("battleLive").inert=false;showScreen("stage")}));
-  $("retryBtn").addEventListener("click",()=>commitResult(()=>startBattleFromPlayer(currentStageIndex)));
-  $("nextBtn").addEventListener("click",()=>commitResult(()=>startBattleFromPlayer(Math.min(29,currentStageIndex+1))));
+  $("leaveStagesBtn").addEventListener("click",(event)=>{trackDiceFunnel("return", {stage: run?.stage.n, chapter: run?.stage.chapter + 1, source: "battle_leave", return_to: "stage", input_class: diceInputClass(event)});$("leavePanel").hidden=true;$("battleLive").inert=false;run=null;showScreen("stage")});
+  $("resultStagesBtn").addEventListener("click",(event)=>{trackDiceFunnel("return", {stage: currentStageIndex + 1, chapter: stages[currentStageIndex]?.chapter + 1, source: "result", return_to: "stage", input_class: diceInputClass(event)});commitResult(()=>{run=null;$("resultPanel").hidden=true;$("battleLive").inert=false;showScreen("stage")})});
+  $("retryBtn").addEventListener("click",(event)=>{trackDiceFunnel("result_replay", {stage: currentStageIndex + 1, chapter: stages[currentStageIndex]?.chapter + 1, source: "result", input_class: diceInputClass(event)});commitResult(()=>startBattleFromPlayer(currentStageIndex, diceInputClass(event), "result"))});
+  $("nextBtn").addEventListener("click",(event)=>{trackDiceFunnel("result_next", {stage: Math.min(30, currentStageIndex + 2), chapter: stages[Math.min(29, currentStageIndex + 1)]?.chapter + 1, source: "result", input_class: diceInputClass(event)});commitResult(()=>startBattleFromPlayer(Math.min(29,currentStageIndex+1), diceInputClass(event), "result"))});
 
   $("board").addEventListener("keydown",(event)=>{
     if(!run||activeModal())return;let next=run.cursor;
     reclaimVisiblePlayerAction();
     if(event.key==="ArrowLeft")next=Math.max(0,next-1);else if(event.key==="ArrowRight")next=Math.min(14,next+1);
     else if(event.key==="ArrowUp")next=Math.max(0,next-5);else if(event.key==="ArrowDown")next=Math.min(14,next+5);
-    else if(event.key==="Enter"||event.key===" "){event.preventDefault();selectOrMerge(run.cursor);return}
-    else if(event.key.toLowerCase()==="s"){event.preventDefault();summon();return}
+    else if(event.key==="Enter"||event.key===" "){event.preventDefault();selectOrMerge(run.cursor,"keyboard");return}
+    else if(event.key.toLowerCase()==="s"){event.preventDefault();summon("keyboard");return}
     else if(event.key.toLowerCase()==="r"){event.preventDefault();reroll();return}
-    else if(event.key==="1"){event.preventDefault();rally();return}
-    else if(event.key==="2"){event.preventDefault();burst();return}
+    else if(event.key==="1"){event.preventDefault();rally("keyboard");return}
+    else if(event.key==="2"){event.preventDefault();burst("keyboard");return}
     else if(event.key==="Escape"){event.preventDefault();openLeave();return}else return;
     event.preventDefault();run.cursor=next;const slots=[...$("board").children];slots[next]?.scrollIntoView({block:"nearest",inline:"nearest"});slots.forEach((slot,index)=>slot.classList.toggle("cursor",index===next));
   });

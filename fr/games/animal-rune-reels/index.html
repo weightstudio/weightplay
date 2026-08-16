@@ -6,14 +6,14 @@
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "Bobines de runes animales",
-  "description": "Build a team of up to five summoned animal heroes, spin three downward rune reels, combine the stopped symbols, and survive every wave of thirty guardian...",
+  "name": "Roues de runes animales",
+  "description": "Formez une équipe de cinq héros animaux invoqués au maximum, faites tourner trois roues de runes descendantes, combinez les symboles arrêtés et survivez à...",
   "url": "https://weightplay.com/fr/games/animal-rune-reels/",
   "image": "https://weightplay.com/assets/animal-rune-reels/cover.webp",
   "genre": [
     "Stratégie",
-    "Role-Playing",
-    "Animal",
+    "RPG",
+    "Animaux",
     "Browser Game"
   ],
   "playMode": "SinglePlayer",
@@ -55,19 +55,19 @@
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-scene-controls" content="immutable">
   <meta name="theme-color" content="#080d28">
-  <title>Bobines de runes animales | WeightPlay</title>
-  <meta name="description" content="Build a team of up to five summoned animal heroes, spin three downward rune reels, combine the stopped symbols, and survive every wave of thirty guardian..." />
+  <title>Roues de runes animales | WeightPlay</title>
+  <meta name="description" content="Formez une équipe de cinq héros animaux invoqués au maximum, faites tourner trois roues de runes descendantes, combinez les symboles arrêtés et survivez à..." />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Bobines de runes animales | WeightPlay" />
-  <meta property="og:description" content="Build a team of up to five summoned animal heroes, spin three downward rune reels, combine the stopped symbols, and survive every wave of thirty guardian..." />
+  <meta property="og:title" content="Roues de runes animales | WeightPlay" />
+  <meta property="og:description" content="Formez une équipe de cinq héros animaux invoqués au maximum, faites tourner trois roues de runes descendantes, combinez les symboles arrêtés et survivez à..." />
   <meta property="og:url" content="https://weightplay.com/fr/games/animal-rune-reels/" />
   <meta property="og:image" content="https://weightplay.com/assets/animal-rune-reels/cover.webp" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Bobines de runes animales | WeightPlay" />
-  <meta name="twitter:description" content="Build a team of up to five summoned animal heroes, spin three downward rune reels, combine the stopped symbols, and survive every wave of thirty guardian..." />
+  <meta name="twitter:title" content="Roues de runes animales | WeightPlay" />
+  <meta name="twitter:description" content="Formez une équipe de cinq héros animaux invoqués au maximum, faites tourner trois roues de runes descendantes, combinez les symboles arrêtés et survivez à..." />
   <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
-  <link rel="stylesheet" href="battle-v3.css?v=20260816-rune-tactics-v44">
+  <link rel="stylesheet" href="battle-v3.css?v=20260817-rune-stage-plan-v46">
   <style>[hidden]{display:none!important}</style>
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <style>body.wp-shell-main-active .main-canvas.wp-standard-main-flow-node{display:block!important;height:auto!important;max-height:none!important;overflow:visible!important}body.wp-shell-main-active .main-canvas>.wp-standard-main-composition{height:auto;min-height:0}</style>
@@ -78,7 +78,7 @@
   <main id="app" hidden>
     <section id="mainPage" class="page main-page" data-screen="main">
       <div class="canvas main-canvas">
-        <header class="topbar"><a class="back-logo" href="/" data-i18n-aria="lobby" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a><h1 data-runtime-localize="off">Bobines de runes animales</h1><div class="main-utilities"><button id="soundToggle" class="main-sound-toggle" type="button" data-sound-toggle="true" aria-label="Disable sound" aria-pressed="false">🔊</button><select id="localeSelect" data-i18n-aria="language"></select></div></header>
+        <header class="topbar"><a class="back-logo" href="/" data-i18n-aria="lobby" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a><h1 data-runtime-localize="off">Roues de runes animales</h1><div class="main-utilities"><button id="soundToggle" class="main-sound-toggle" type="button" data-sound-toggle="true" aria-label="Disable sound" aria-pressed="false">🔊</button><select id="localeSelect" data-i18n-aria="language"></select></div></header>
         <div class="poster"><img src="../../assets/animal-rune-reels/cover.webp" alt=""><div class="poster-shade"><span data-i18n="badge">SUMMONER REEL BATTLE</span></div></div>
         <div class="main-copy">
           <p class="lead" data-i18n="leadV3">Build a team of summoned animal heroes, align runes, and defeat every guardian.</p>
@@ -86,26 +86,26 @@
           <button id="runeStartBtn" class="primary" data-i18n="start" data-wp-main-start>Start Game</button>
         </div>
       </div>
-      <section class="game-page-info game-page-info-static" aria-label="Informations sur le jeu Bobines de runes animales">
+      <section class="game-page-info game-page-info-static" aria-label="Informations sur le jeu Roues de runes animales">
     
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2>Bobines de runes animales</h2><p>Build a team of up to five summoned animal heroes, spin three downward rune reels, combine the stopped symbols, and survive every wave of thirty guardian missions.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Type de jeu</span><strong>Team Reel Role-Playing Battle</strong></div><div class="game-info-fact"><span>Genre</span><strong>Stratégie · Role-Playing · Animal</strong></div><div class="game-info-fact"><span>Difficulté</span><strong>Facile à difficile</strong></div><div class="game-info-fact"><span>Durée estimée</span><strong>2 à 8 minutes par étape</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2>Roues de runes animales</h2><p>Formez une équipe de cinq héros animaux invoqués au maximum, faites tourner trois roues de runes descendantes, combinez les symboles arrêtés et survivez à chaque vague des trente missions de gardiens.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Type de jeu</span><strong>Combat RPG d’équipe et de roues</strong></div><div class="game-info-fact"><span>Genre</span><strong>Stratégie · RPG · Animaux</strong></div><div class="game-info-fact"><span>Difficulté</span><strong>Facile à commencer, difficile à maîtriser</strong></div><div class="game-info-fact"><span>Durée estimée</span><strong>2 à 8 minutes par étape</strong></div></div>
     </div>
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>Univers et mission</h3><p>A summoner crosses six rift regions with an expanding animal roster. Each hero has attack, defense, healing, and a distinct ultimate, so team composition changes how the same reel result resolves.</p>
-<p>The main campaign contains thirty multi-wave missions. Separate daily and scheduled event missions provide optional materials without replacing campaign progress.</p></div>
-      <div class="game-info-section"><h3>Fonctionnement du jeu</h3><p>Press Spin to stop three downward reels one by one. Every visible rune contributes its effect, and a completed line of matching runes doubles that ability.</p>
-<p>Claw runes make each active hero attack. Shield and Heart runes combine the team&#39;s total defense or healing for the summoner. Wild completes another line but has no effect alone; Coin, Ultimate, Focus, Echo, Luck, and Dormant runes have their stated specialized effects.</p>
-<p>Enemies act after the rune result resolves. The summoner&#39;s health, shield, total defense, total healing, wave count, and enemy intent remain visible throughout Battle.</p>
-<p>Summoning unlocks heroes; duplicate cards support level upgrades. Rune Dust, Sun Shards, Moon Crystals, and Guardian Cores improve rune levels. Permanent cards, materials, coins, and diamonds remain safe if a battle is abandoned, but the current wave resets.</p></div>
-      <div class="game-info-section"><h3>Comment jouer</h3><ol><li>Open Stage, choose Main, Daily, or Event, and select an available mission.</li><li>Use Team to place at least one and up to five owned heroes in the active formation.</li><li>Review Backpack, Summon, and Runes when an upgrade is needed, then enter Battle.</li><li>Spin, read the completed lines, and continue until every wave and guardian is defeated.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Conseils</h3><ul><li>Balance damage with enough combined defense or healing to survive the next visible enemy intent.</li><li>A Wild rune is valuable only when it completes a useful line; do not count it as a standalone effect.</li><li>Use Ultimate runes with heroes whose special effects solve the current wave, not merely the team with the highest level.</li><li>Auto mode repeats valid spins but does not choose a better team or rune upgrade for you.</li></ul></div>
-      <div class="game-info-section"><h3>Progression et difficulté</h3><p>The six five-stage campaign chapters increase wave length and guardian combinations. Daily missions emphasize coins or materials, while events rotate on their shown schedule.</p>
-<p>Roster and rune growth expand strategic options without changing the readable three-reel resolution order.</p></div>
-      <div class="game-info-section"><h3>Note de conception</h3><p>Reels stop in a fixed visual order, completed lines glow before resolving, and hero actions remain separate from the combined summoner defense and healing totals. L&#39;interface complète utilise une seule mise en page logique centrée, avec une largeur maximale de 920 pixels. Les vues mobile, paysage et bureau redimensionnent ensemble les mêmes commandes, zones de contact, illustrations et coordonnées du jeu au lieu d&#39;étirer des éléments individuels. Le tactile, la souris et le clavier agissent donc sur le même état légal. L&#39;affiche de Main et l&#39;action de démarrer le jeu restent séparées de la gestion de Stage, tandis que la sélection de Stage, Battle, les dialogues et Result conservent leur contenu délimité et leur chemin de retour.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Pour les parents</h3><p>No account is required. Roster, campaign progress, currencies, materials, rune levels, and reward claims are stored locally in this browser. Vous pouvez jouer sans créer de compte. La progression est enregistrée dans le stockage local du profil actuel du navigateur, et non dans un compte en ligne ou une base de données entre appareils. Effacer les données du site, utiliser la navigation privée, changer de navigateur ou passer à un autre appareil peut créer une sauvegarde distincte ou supprimer l&#39;existante. Lorsque le navigateur autorise le stockage, les préférences de langue, de son et de réduction des mouvements suivent les contrôles partagés de WeightPlay. Aucun résultat du guide ne constitue une évaluation médicale, scolaire ou professionnelle.</p></div>
-      <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>What does a matching line do?</dt><dd>It doubles that rune ability after all three reels stop.</dd></div><div><dt>Do heroes share one attack?</dt><dd>No. Heroes attack separately; team defense and healing are combined for the summoner.</dd></div><div><dt>What happens if I leave Battle?</dt><dd>Permanent inventory remains, but the current battle attempt is lost.</dd></div><div><dt>Are event rewards always available?</dt><dd>No. Event missions follow the schedule displayed in Stage.</dd></div><div><dt>Which controls and screen sizes are supported?</dt><dd>The same rules support touch, mouse, and keyboard where the game uses those inputs. The interface scales as one logical layout across the required phone, landscape, and desktop viewports.</dd></div><div><dt>Can progress move automatically to another device?</dt><dd>No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Univers et mission</h3><p>Un invocateur traverse six régions de failles avec un groupe animal qui s’agrandit. Chaque héros possède attaque, défense, soin et ultime distincts : la composition change donc la résolution d’un même résultat.</p>
+<p>La campagne principale compte trente missions à plusieurs vagues. Les missions quotidiennes et d’événement proposent des matériaux optionnels sans remplacer la progression de campagne.</p></div>
+      <div class="game-info-section"><h3>Fonctionnement du jeu</h3><p>Appuyez sur Spin pour arrêter les trois roues descendantes l’une après l’autre. Chaque rune visible produit son effet et une ligne complète de runes identiques double cette capacité.</p>
+<p>Les runes Griffe font attaquer chaque héros actif. Bouclier et Cœur additionnent la défense ou les soins de l’équipe pour l’invocateur. Wild complète une autre ligne mais n’a pas d’effet seul ; Coin, Ultimate, Focus, Echo, Luck et Dormant ont les effets indiqués.</p>
+<p>Les ennemis agissent après la résolution du résultat. Vie, bouclier, défense totale, soins totaux, vague et intention ennemie restent visibles pendant le combat.</p>
+<p>L’invocation débloque des héros et les doublons permettent d’améliorer leur niveau. Poussière de rune, fragments solaires, cristaux lunaires et noyaux de gardien renforcent les runes. L’inventaire permanent reste en sécurité en quittant le combat, mais la vague actuelle recommence.</p></div>
+      <div class="game-info-section"><h3>Comment jouer</h3><ol><li>Ouvrez Stage, choisissez Main, Daily ou Event, puis une mission disponible.</li><li>Dans Team, placez un à cinq héros possédés dans la formation active.</li><li>Consultez Backpack, Summon et Runes si une amélioration est nécessaire, puis entrez en Battle.</li><li>Faites tourner les roues, lisez les lignes formées et continuez jusqu’à vaincre toutes les vagues et tous les gardiens.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Conseils</h3><ul><li>Équilibrez les dégâts avec assez de défense ou de soins pour résister à la prochaine intention ennemie visible.</li><li>Wild n’est utile que s’il complète une ligne intéressante ; ne le comptez pas comme un effet indépendant.</li><li>Associez Ultimate aux héros dont l’effet résout la vague actuelle, pas seulement à l’équipe de plus haut niveau.</li><li>Le mode automatique répète les rotations valides, mais ne choisit pas une meilleure équipe ni une amélioration de rune.</li></ul></div>
+      <div class="game-info-section"><h3>Progression et difficulté</h3><p>Les six chapitres de cinq étapes augmentent la longueur des vagues et les combinaisons de gardiens. Les missions quotidiennes privilégient pièces ou matériaux et les événements suivent le calendrier affiché.</p>
+<p>La progression des héros et des runes élargit les choix sans changer l’ordre lisible de résolution des trois roues.</p></div>
+      <div class="game-info-section"><h3>Note de conception</h3><p>Les roues s’arrêtent dans un ordre visuel fixe, les lignes complètes brillent avant leur résolution et les actions des héros restent distinctes des totaux combinés de défense et de soins de l’invocateur. L’interface utilise une mise en page logique centrée de 920 pixels maximum et agrandit ensemble contrôles et coordonnées sur mobile, en paysage et sur ordinateur.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Pour les parents</h3><p>Aucun compte n’est nécessaire. Héros, campagne, monnaies, matériaux, niveaux de runes et récompenses restent enregistrés dans ce navigateur. Effacer les données du site ou changer de navigateur peut créer une sauvegarde distincte.</p></div>
+      <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Que fait une ligne de runes identiques ?</dt><dd>Elle double cette capacité quand les trois roues sont arrêtées.</dd></div><div><dt>Les héros partagent-ils une attaque ?</dt><dd>Non. Ils attaquent séparément ; défense et soins de l’équipe sont additionnés pour l’invocateur.</dd></div><div><dt>Que se passe-t-il si je quitte Battle ?</dt><dd>L’inventaire permanent reste, mais la tentative actuelle est perdue.</dd></div><div><dt>Les récompenses d’événement sont-elles toujours disponibles ?</dt><dd>Non. Les missions d’événement suivent le calendrier affiché dans Stage.</dd></div><div><dt>Quels contrôles et écrans sont pris en charge ?</dt><dd>Tactile, souris et clavier suivent les mêmes règles ; la mise en page logique s’adapte au mobile, au paysage et à l’ordinateur.</dd></div><div><dt>La progression passe-t-elle automatiquement sur un autre appareil ?</dt><dd>Non. Elle reste dans le navigateur ; un autre profil ou appareil aura sa propre progression.</dd></div></dl></div>
 
     </div>
   </section>
@@ -154,7 +154,7 @@
     <div id="summonResult" class="global-modal" hidden><div class="character-card"><span data-i18n="summonResult">Summon result</span><img id="summonArt" alt=""><h2 id="summonName"></h2><p id="summonCopy"></p><button id="summonClose" class="primary" data-i18n="continue">Continue</button></div></div>
   </main>
     <script src="../../src/site-config.js"></script><script src="../../src/analytics.js?v=20260810-rune-funnel-v33"></script><script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script><script src="/src/i18n.js?v=20260731-owner-preview5"></script><script src="/src/runtime-locales/fr.js?v=20260808-locale-static1"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="locales.js?v=20260816-rune-tactics-v44"></script><script src="locales-v3.js?v=20260804-rune-copy-v27"></script><script src="locales-v4.js"></script><script src="locales-v5.js"></script><script src="locales-v6.js"></script><script src="locales-v7.js"></script><script src="locales-v8.js"></script><script src="locales-v9.js?v=20260813-resolution-v37"></script><script src="game.js?v=20260816-rune-tactics-v44"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="locales.js?v=20260817-rune-stage-plan-v46"></script><script src="locales-v3.js?v=20260804-rune-copy-v27"></script><script src="locales-v4.js"></script><script src="locales-v5.js"></script><script src="locales-v6.js"></script><script src="locales-v7.js"></script><script src="locales-v8.js"></script><script src="locales-v9.js?v=20260813-resolution-v37"></script><script src="game.js?v=20260817-rune-stage-plan-v46"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>

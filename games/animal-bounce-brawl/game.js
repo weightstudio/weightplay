@@ -45,6 +45,13 @@
   function actor(o,art,body,ink,crop){ctx.save();ctx.translate(o.x,o.y-38);ctx.rotate(o.vx*.03);if(art.complete&&art.naturalWidth){ctx.drawImage(art,crop[0],crop[1],crop[2],crop[3],-48,-48,96,96);}else{ctx.fillStyle=body;ctx.beginPath();ctx.arc(0,-28,23,0,Math.PI*2);ctx.fill();ctx.fillRect(-18,-8,36,38);ctx.fillStyle=ink;ctx.fillRect(-11,-34,7,7);ctx.fillRect(4,-34,7,7);ctx.fillRect(-27,24,18,8);ctx.fillRect(9,24,18,8);}ctx.restore();}
   function frame(now){if(state.screen!=="battle")return;const dt=Math.min((now-state.last)/16.67,2);state.last=now;update(dt);if(state.screen==="battle"){draw();state.raf=requestAnimationFrame(frame)}}
   window.addEventListener("keydown",(e)=>{const k=e.code==="Space"?"Space":e.code;const digit=k[0]==="D"&&k.length===6;if(["ArrowLeft","ArrowRight","KeyA","KeyD","Space"].includes(k)||digit){e.preventDefault();if(k==="Space")strike();else if(digit)selectTool(Number(k.slice(-1))-1);else state.keys.add(k)}}); window.addEventListener("keyup",(e)=>state.keys.delete(e.code==="Space"?"Space":e.code));
-  document.querySelectorAll("[data-key]").forEach((b)=>{const k=b.dataset.key;b.addEventListener("pointerdown",(e)=>{e.preventDefault();if(k==="Space")strike();else state.keys.add(k)});["pointerup","pointercancel","pointerleave"].forEach((ev)=>b.addEventListener(ev,()=>state.keys.delete(k)))}); document.querySelectorAll("[data-tool]").forEach((b)=>b.addEventListener("click",()=>selectTool(b.dataset.tool)));
+  function bindHeldControl(button,k){
+    const release=(e)=>{if(e?.pointerId!=null&&button.hasPointerCapture?.(e.pointerId))button.releasePointerCapture(e.pointerId);state.keys.delete(k)};
+    button.addEventListener("pointerdown",(e)=>{e.preventDefault();if(e.pointerId!=null)button.setPointerCapture?.(e.pointerId);if(k==="Space")strike();else state.keys.add(k)});
+    ["pointerup","pointercancel","lostpointercapture"].forEach((ev)=>button.addEventListener(ev,release));
+    ["pointerup","pointercancel"].forEach((ev)=>window.addEventListener(ev,release,true));
+    window.addEventListener("blur",release);
+  }
+  document.querySelectorAll("[data-key]").forEach((b)=>bindHeldControl(b,b.dataset.key)); document.querySelectorAll("[data-tool]").forEach((b)=>b.addEventListener("click",()=>selectTool(b.dataset.tool)));
   $("start-game").addEventListener("click",()=>{show("stage");stageCards()});document.querySelectorAll("[data-back]").forEach((b)=>b.addEventListener("click",()=>show(b.dataset.back)));$("retry").addEventListener("click",()=>startArena(state.arena));$("next").addEventListener("click",()=>startArena(state.arena>=6?1:state.arena+1));$("to-stages").addEventListener("click",()=>{show("stage");stageCards()});$("main-progress").textContent=`Best wins: ${state.best}`;localizeBattleControls();stageCards();draw();
 })();

@@ -6,13 +6,13 @@
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "동물 룬 릴",
-  "description": "Build a team of up to five summoned animal heroes, spin three downward rune reels, combine the stopped symbols, and survive every wave of thirty guardian...",
+  "name": "애니멀 룬 릴",
+  "description": "소환한 동물 영웅을 최대 5명까지 팀으로 꾸리고, 아래로 내려오는 세 룬 릴을 돌려 멈춘 기호를 조합하며 30개 수호자 임무의 모든 웨이브에서 살아남으세요.",
   "url": "https://weightplay.com/ko/games/animal-rune-reels/",
   "image": "https://weightplay.com/assets/animal-rune-reels/cover.webp",
   "genre": [
     "전략",
-    "Role-Playing",
+    "롤플레잉",
     "동물",
     "Browser Game"
   ],
@@ -55,19 +55,19 @@
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-scene-controls" content="immutable">
   <meta name="theme-color" content="#080d28">
-  <title>동물 룬 릴 | WeightPlay</title>
-  <meta name="description" content="Build a team of up to five summoned animal heroes, spin three downward rune reels, combine the stopped symbols, and survive every wave of thirty guardian..." />
+  <title>애니멀 룬 릴 | WeightPlay</title>
+  <meta name="description" content="소환한 동물 영웅을 최대 5명까지 팀으로 꾸리고, 아래로 내려오는 세 룬 릴을 돌려 멈춘 기호를 조합하며 30개 수호자 임무의 모든 웨이브에서 살아남으세요." />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="동물 룬 릴 | WeightPlay" />
-  <meta property="og:description" content="Build a team of up to five summoned animal heroes, spin three downward rune reels, combine the stopped symbols, and survive every wave of thirty guardian..." />
+  <meta property="og:title" content="애니멀 룬 릴 | WeightPlay" />
+  <meta property="og:description" content="소환한 동물 영웅을 최대 5명까지 팀으로 꾸리고, 아래로 내려오는 세 룬 릴을 돌려 멈춘 기호를 조합하며 30개 수호자 임무의 모든 웨이브에서 살아남으세요." />
   <meta property="og:url" content="https://weightplay.com/ko/games/animal-rune-reels/" />
   <meta property="og:image" content="https://weightplay.com/assets/animal-rune-reels/cover.webp" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="동물 룬 릴 | WeightPlay" />
-  <meta name="twitter:description" content="Build a team of up to five summoned animal heroes, spin three downward rune reels, combine the stopped symbols, and survive every wave of thirty guardian..." />
+  <meta name="twitter:title" content="애니멀 룬 릴 | WeightPlay" />
+  <meta name="twitter:description" content="소환한 동물 영웅을 최대 5명까지 팀으로 꾸리고, 아래로 내려오는 세 룬 릴을 돌려 멈춘 기호를 조합하며 30개 수호자 임무의 모든 웨이브에서 살아남으세요." />
   <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
-  <link rel="stylesheet" href="battle-v3.css?v=20260816-rune-tactics-v44">
+  <link rel="stylesheet" href="battle-v3.css?v=20260817-rune-stage-plan-v46">
   <style>[hidden]{display:none!important}</style>
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <style>body.wp-shell-main-active .main-canvas.wp-standard-main-flow-node{display:block!important;height:auto!important;max-height:none!important;overflow:visible!important}body.wp-shell-main-active .main-canvas>.wp-standard-main-composition{height:auto;min-height:0}</style>
@@ -78,7 +78,7 @@
   <main id="app" hidden>
     <section id="mainPage" class="page main-page" data-screen="main">
       <div class="canvas main-canvas">
-        <header class="topbar"><a class="back-logo" href="/" data-i18n-aria="lobby" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a><h1 data-runtime-localize="off">동물 룬 릴</h1><div class="main-utilities"><button id="soundToggle" class="main-sound-toggle" type="button" data-sound-toggle="true" aria-label="Disable sound" aria-pressed="false">🔊</button><select id="localeSelect" data-i18n-aria="language"></select></div></header>
+        <header class="topbar"><a class="back-logo" href="/" data-i18n-aria="lobby" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a><h1 data-runtime-localize="off">애니멀 룬 릴</h1><div class="main-utilities"><button id="soundToggle" class="main-sound-toggle" type="button" data-sound-toggle="true" aria-label="Disable sound" aria-pressed="false">🔊</button><select id="localeSelect" data-i18n-aria="language"></select></div></header>
         <div class="poster"><img src="../../assets/animal-rune-reels/cover.webp" alt=""><div class="poster-shade"><span data-i18n="badge">SUMMONER REEL BATTLE</span></div></div>
         <div class="main-copy">
           <p class="lead" data-i18n="leadV3">Build a team of summoned animal heroes, align runes, and defeat every guardian.</p>
@@ -86,26 +86,26 @@
           <button id="runeStartBtn" class="primary" data-i18n="start" data-wp-main-start>Start Game</button>
         </div>
       </div>
-      <section class="game-page-info game-page-info-static" aria-label="동물 룬 릴 게임 정보">
+      <section class="game-page-info game-page-info-static" aria-label="애니멀 룬 릴 게임 정보">
     
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>동물 룬 릴</h2><p>Build a team of up to five summoned animal heroes, spin three downward rune reels, combine the stopped symbols, and survive every wave of thirty guardian missions.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>Team Reel Role-Playing Battle</strong></div><div class="game-info-fact"><span>장르</span><strong>전략 · Role-Playing · 동물</strong></div><div class="game-info-fact"><span>난이도</span><strong>도전하기 쉬움</strong></div><div class="game-info-fact"><span>예상 플레이 시간</span><strong>스테이지당 2~8분</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>애니멀 룬 릴</h2><p>소환한 동물 영웅을 최대 5명까지 팀으로 꾸리고, 아래로 내려오는 세 룬 릴을 돌려 멈춘 기호를 조합하며 30개 수호자 임무의 모든 웨이브에서 살아남으세요.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>팀 릴 역할수행 전투</strong></div><div class="game-info-fact"><span>장르</span><strong>전략 · 롤플레잉 · 동물</strong></div><div class="game-info-fact"><span>난이도</span><strong>쉽게 시작해 도전적으로</strong></div><div class="game-info-fact"><span>예상 플레이 시간</span><strong>스테이지당 2~8분</strong></div></div>
     </div>
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>세계와 사명</h3><p>A summoner crosses six rift regions with an expanding animal roster. Each hero has attack, defense, healing, and a distinct ultimate, so team composition changes how the same reel result resolves.</p>
-<p>The main campaign contains thirty multi-wave missions. Separate daily and scheduled event missions provide optional materials without replacing campaign progress.</p></div>
-      <div class="game-info-section"><h3>시스템 작동 방식</h3><p>Press Spin to stop three downward reels one by one. Every visible rune contributes its effect, and a completed line of matching runes doubles that ability.</p>
-<p>Claw runes make each active hero attack. Shield and Heart runes combine the team&#39;s total defense or healing for the summoner. Wild completes another line but has no effect alone; Coin, Ultimate, Focus, Echo, Luck, and Dormant runes have their stated specialized effects.</p>
-<p>Enemies act after the rune result resolves. The summoner&#39;s health, shield, total defense, total healing, wave count, and enemy intent remain visible throughout Battle.</p>
-<p>Summoning unlocks heroes; duplicate cards support level upgrades. Rune Dust, Sun Shards, Moon Crystals, and Guardian Cores improve rune levels. Permanent cards, materials, coins, and diamonds remain safe if a battle is abandoned, but the current wave resets.</p></div>
-      <div class="game-info-section"><h3>플레이 방법</h3><ol><li>Open Stage, choose Main, Daily, or Event, and select an available mission.</li><li>Use Team to place at least one and up to five owned heroes in the active formation.</li><li>Review Backpack, Summon, and Runes when an upgrade is needed, then enter Battle.</li><li>Spin, read the completed lines, and continue until every wave and guardian is defeated.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>Balance damage with enough combined defense or healing to survive the next visible enemy intent.</li><li>A Wild rune is valuable only when it completes a useful line; do not count it as a standalone effect.</li><li>Use Ultimate runes with heroes whose special effects solve the current wave, not merely the team with the highest level.</li><li>Auto mode repeats valid spins but does not choose a better team or rune upgrade for you.</li></ul></div>
-      <div class="game-info-section"><h3>캠페인 및 난이도 성장</h3><p>The six five-stage campaign chapters increase wave length and guardian combinations. Daily missions emphasize coins or materials, while events rotate on their shown schedule.</p>
-<p>Roster and rune growth expand strategic options without changing the readable three-reel resolution order.</p></div>
-      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>Reels stop in a fixed visual order, completed lines glow before resolving, and hero actions remain separate from the combined summoner defense and healing totals. 전체 인터페이스는 최대 920픽셀의 중앙 정렬 단일 논리 레이아웃을 사용합니다. 휴대폰, 가로 화면, 데스크톱에서는 개별 요소를 늘이지 않고 동일한 컨트롤, 적중 영역, 아트와 게임 좌표를 함께 확대·축소합니다. 따라서 터치, 마우스, 키보드는 같은 합법 상태를 조작합니다. Main 포스터와 게임 시작 동작은 Stage 관리와 분리되며, Stage 선택, Battle, 대화상자, Result는 각각 제한된 콘텐츠와 돌아갈 경로를 유지합니다.</p></div>
-      <div class="game-info-section game-info-parent"><h3>학부모 메모</h3><p>No account is required. Roster, campaign progress, currencies, materials, rune levels, and reward claims are stored locally in this browser. 계정을 만들지 않고 플레이할 수 있습니다. 진행 상황은 온라인 계정이나 기기 간 데이터베이스가 아니라 현재 브라우저 프로필의 로컬 저장소에 저장됩니다. 사이트 데이터를 지우거나, 시크릿 브라우징을 사용하거나, 브라우저를 바꾸거나, 다른 기기로 옮기면 별도의 저장이 만들어지거나 기존 저장이 사라질 수 있습니다. 브라우저가 저장을 허용하면 언어, 사운드, 동작 줄이기 설정은 WeightPlay 공용 컨트롤을 따릅니다. 가이드의 어떤 결과도 의료, 학교 또는 전문 평가가 아닙니다.</p></div>
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>What does a matching line do?</dt><dd>It doubles that rune ability after all three reels stop.</dd></div><div><dt>Do heroes share one attack?</dt><dd>No. Heroes attack separately; team defense and healing are combined for the summoner.</dd></div><div><dt>What happens if I leave Battle?</dt><dd>Permanent inventory remains, but the current battle attempt is lost.</dd></div><div><dt>Are event rewards always available?</dt><dd>No. Event missions follow the schedule displayed in Stage.</dd></div><div><dt>Which controls and screen sizes are supported?</dt><dd>The same rules support touch, mouse, and keyboard where the game uses those inputs. The interface scales as one logical layout across the required phone, landscape, and desktop viewports.</dd></div><div><dt>Can progress move automatically to another device?</dt><dd>No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.</dd></div></dl></div>
+      <div class="game-info-section"><h3>세계와 사명</h3><p>소환사는 여섯 균열 지역을 지나며 동물 영웅을 늘립니다. 영웅마다 공격, 방어, 회복과 고유 궁극기가 있어 같은 릴 결과도 팀 구성에 따라 다르게 해결됩니다.</p>
+<p>메인 캠페인은 30개의 다중 웨이브 임무로 구성됩니다. 일일 및 일정 이벤트 임무는 선택 재료를 주지만 캠페인 진행을 대신하지 않습니다.</p></div>
+      <div class="game-info-section"><h3>시스템 작동 방식</h3><p>Spin을 눌러 세 릴을 하나씩 멈춥니다. 보이는 룬은 모두 효과를 내며 같은 룬의 완성 줄은 그 능력을 두 배로 만듭니다.</p>
+<p>발톱 룬은 출전한 각 영웅을 공격하게 합니다. 방패와 하트 룬은 팀의 방어 또는 회복을 소환사에게 합산합니다. 와일드는 다른 줄을 완성하지만 혼자서는 효과가 없고, 코인·궁극·집중·메아리·행운·휴면 룬은 표시된 고유 효과를 가집니다.</p>
+<p>적은 룬 결과가 처리된 뒤 행동합니다. 전투 중 소환사의 체력, 실드, 총 방어, 총 회복, 웨이브와 적 의도가 계속 보입니다.</p>
+<p>소환으로 영웅을 해금하고 중복 카드는 레벨을 올리는 데 씁니다. 룬 가루, 태양 조각, 달 수정과 수호자 코어로 룬을 강화할 수 있습니다. 전투를 포기해도 영구 카드와 재료는 남지만 현재 웨이브는 초기화됩니다.</p></div>
+      <div class="game-info-section"><h3>플레이 방법</h3><ol><li>Stage를 열고 Main, Daily 또는 Event에서 가능한 임무를 선택합니다.</li><li>Team에서 보유 영웅을 1~5명 현재 편성에 배치합니다.</li><li>강화가 필요하면 Backpack, Summon, Runes를 확인한 뒤 Battle로 들어갑니다.</li><li>릴을 돌리고 완성된 줄을 읽으며 모든 웨이브와 수호자를 쓰러뜨릴 때까지 진행합니다.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>다음에 보이는 적 의도를 견딜 수 있도록 피해와 방어 또는 회복을 균형 있게 구성하세요.</li><li>와일드는 유용한 줄을 완성할 때만 가치가 있으므로 독립 효과로 세지 마세요.</li><li>궁극 룬은 레벨이 가장 높은 팀보다 현재 웨이브를 해결할 특수 효과의 영웅과 함께 쓰세요.</li><li>자동 모드는 가능한 회전을 반복하지만 더 좋은 팀이나 룬 강화는 선택하지 않습니다.</li></ul></div>
+      <div class="game-info-section"><h3>캠페인 및 난이도 성장</h3><p>5스테이지씩 구성된 6개 챕터에서 웨이브 길이와 수호자 조합이 늘어납니다. 일일 임무는 코인이나 재료를 강조하고 이벤트는 표시된 일정에 따라 바뀝니다.</p>
+<p>영웅과 룬의 성장은 전략 선택을 넓히지만 읽기 쉬운 세 릴 처리 순서는 바꾸지 않습니다.</p></div>
+      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>릴은 고정된 시각 순서로 멈추고, 완성된 줄은 처리 전에 빛납니다. 영웅 행동은 소환사에게 합산되는 방어 및 회복 총량과 분리되어 표시됩니다. 인터페이스는 최대 920픽셀의 중앙 정렬 논리 레이아웃을 사용하며 휴대폰, 가로 화면, 데스크톱에서 컨트롤과 게임 좌표를 함께 확대합니다.</p></div>
+      <div class="game-info-section game-info-parent"><h3>학부모 메모</h3><p>계정은 필요하지 않습니다. 영웅, 캠페인 진행, 재화, 재료, 룬 레벨과 보상 기록은 이 브라우저에 저장됩니다. 사이트 데이터를 지우거나 브라우저를 바꾸면 별도 저장이 생길 수 있습니다.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>같은 룬 줄은 무엇을 하나요?</dt><dd>세 릴이 모두 멈춘 뒤 해당 룬 능력을 두 배로 만듭니다.</dd></div><div><dt>영웅이 한 번에 함께 공격하나요?</dt><dd>아니요. 영웅은 각각 공격하고 방어와 회복은 소환사에게 합산됩니다.</dd></div><div><dt>전투를 나가면 어떻게 되나요?</dt><dd>영구 보관물은 남지만 현재 전투 시도는 사라집니다.</dd></div><div><dt>이벤트 보상은 언제나 받을 수 있나요?</dt><dd>아니요. 이벤트 임무는 Stage에 표시된 일정에 따릅니다.</dd></div><div><dt>어떤 조작과 화면 크기를 지원하나요?</dt><dd>터치·마우스·키보드를 지원하며 휴대폰, 가로 화면과 데스크톱에서 같은 논리 레이아웃을 사용합니다.</dd></div><div><dt>진행도가 다른 기기로 자동 이동하나요?</dt><dd>아니요. 현재는 브라우저에만 저장되므로 다른 프로필이나 기기에는 별도 진행도가 생깁니다.</dd></div></dl></div>
 
     </div>
   </section>
@@ -154,7 +154,7 @@
     <div id="summonResult" class="global-modal" hidden><div class="character-card"><span data-i18n="summonResult">Summon result</span><img id="summonArt" alt=""><h2 id="summonName"></h2><p id="summonCopy"></p><button id="summonClose" class="primary" data-i18n="continue">Continue</button></div></div>
   </main>
     <script src="../../src/site-config.js"></script><script src="../../src/analytics.js?v=20260810-rune-funnel-v33"></script><script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script><script src="/src/i18n.js?v=20260731-owner-preview5"></script><script src="/src/runtime-locales/ko.js?v=20260808-locale-static1"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="locales.js?v=20260816-rune-tactics-v44"></script><script src="locales-v3.js?v=20260804-rune-copy-v27"></script><script src="locales-v4.js"></script><script src="locales-v5.js"></script><script src="locales-v6.js"></script><script src="locales-v7.js"></script><script src="locales-v8.js"></script><script src="locales-v9.js?v=20260813-resolution-v37"></script><script src="game.js?v=20260816-rune-tactics-v44"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="locales.js?v=20260817-rune-stage-plan-v46"></script><script src="locales-v3.js?v=20260804-rune-copy-v27"></script><script src="locales-v4.js"></script><script src="locales-v5.js"></script><script src="locales-v6.js"></script><script src="locales-v7.js"></script><script src="locales-v8.js"></script><script src="locales-v9.js?v=20260813-resolution-v37"></script><script src="game.js?v=20260817-rune-stage-plan-v46"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>

@@ -1,16 +1,20 @@
-const GAME_VERSION = "v3";
+const GAME_VERSION = "v4";
 
 window.WPClassicLogic?.mount("naval-battle");
 document.body.dataset.gameVersion = GAME_VERSION;
 
-const syncFreshRoundChip = () => {
+const syncBattleChip = () => {
   const status = document.querySelector("#logicStatus");
   const chip = document.querySelector("#battleChip");
-  if (status && chip) chip.textContent = status.textContent;
+  const result = document.querySelector("#logicResult");
+  if (status && chip && (!result || result.hidden)) chip.textContent = status.textContent;
 };
 
-document.querySelector("#resultReplay")?.addEventListener("click", syncFreshRoundChip);
-document.querySelector("#logicReset")?.addEventListener("click", syncFreshRoundChip);
+document.querySelector("#resultReplay")?.addEventListener("click", syncBattleChip);
+document.querySelector("#logicReset")?.addEventListener("click", syncBattleChip);
+const statusObserver = new MutationObserver(syncBattleChip);
+statusObserver.observe(document.querySelector("#logicStatus") || document.body, { childList: true, characterData: true, subtree: true });
+syncBattleChip();
 
 (() => {
   "use strict";

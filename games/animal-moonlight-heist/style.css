@@ -70,6 +70,18 @@ html body[data-wp-game-id="animal-moonlight-heist"] > .wp-stage-physical-reserve
 }
 .modal-actions.leave-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
 
+.gadget-choice{display:grid;grid-template-rows:22px minmax(0,1fr) auto;align-items:center;justify-items:center;overflow:hidden;text-align:center}
+.gadget-choice img{grid-row:1;width:24px;height:24px}
+.gadget-name{display:block;max-width:100%;font-size:8px;font-weight:800;line-height:9px;overflow:hidden;text-overflow:ellipsis;white-space:normal;word-break:break-word}
+.gadget-level{position:static;max-width:100%;padding:1px 3px;border-radius:8px;background:#07101fee;color:#ffd765;font-size:8px;font-weight:900;line-height:10px;white-space:nowrap}
+
+@media (orientation: landscape) and (max-height: 430px) {
+  body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] .gadget-choice{grid-template-rows:17px minmax(0,1fr) auto}
+  body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] .gadget-choice img{width:18px;height:18px}
+  body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] .gadget-name{font-size:6px;line-height:7px}
+  body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] .gadget-level{padding:0 2px;font-size:7px;line-height:8px}
+}
+
 @media (orientation: landscape) and (max-height: 430px) {
   body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] .stage-canvas[data-wp-logical-stage-canvas] {
     grid-template-columns: 900px minmax(0, 1fr) !important;

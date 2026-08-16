@@ -3,6 +3,9 @@
 
   const COPY = window.WPCloudhookLocales.locales;
   const LOCALE_ORDER = window.WPCloudhookLocales.order;
+  const GAME_ID = "animal-cloudhook-courier";
+  const GAME_VERSION = "v6";
+  const INTERFACE_VERSION = 6;
   const LEAVE_COPY = {
     en: { title: "Keep this flight?", body: "Continue keeps the current flight. Returning to Stages ends this attempt.", continue: "Continue flight", leave: "Stages" },
     "zh-Hant": { title: "要保留這次飛行嗎？", body: "繼續會保留目前飛行；返回關卡會結束這次嘗試。", continue: "繼續飛行", leave: "返回關卡" },
@@ -74,6 +77,7 @@
   let hidden = false;
   let resultOpen = false;
   let leaveOpen = false;
+  let lastInputType = "system";
 
   const text = (key) => (COPY[locale] && COPY[locale][key]) || COPY.en[key] || key;
   const stageKey = (index) => `weightplay_cloudhook_stage_${index}`;
@@ -81,6 +85,43 @@
   const safeGet = (key, fallback = "") => { try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; } };
   const safeSet = (key, value) => { try { localStorage.setItem(key, String(value)); } catch {} };
   const unlocked = () => Math.min(stageConfigs.length, Math.max(1, Number(safeGet(stageKey("unlocked"), 1)) || 1));
+  const viewportBucket = () => {
+    const width = Math.max(1, Number(window.innerWidth) || 1);
+    const height = Math.max(1, Number(window.innerHeight) || 1);
+    if (height <= 430) return "short-landscape";
+    if (width <= 480) return "phone-portrait";
+    if (width <= 900) return height > width ? "tablet-portrait" : "tablet-landscape";
+    return "desktop";
+  };
+  const noteInput = (event) => {
+    if (event?.detail === 0 || event?.type === "keydown" || event?.type === "keyup") lastInputType = "keyboard";
+    else if (event?.pointerType === "touch") lastInputType = "touch";
+    else if (event?.pointerType === "mouse") lastInputType = "mouse";
+    else if (event?.pointerType) lastInputType = "pointer";
+  };
+  const track = (eventName, details = {}) => {
+    try {
+      if (!window.WonderAnalytics?.track) return;
+      const stage = Math.max(1, Math.min(stageConfigs.length, Math.trunc(Number(details.stage) || currentStage + 1)));
+      const payload = { game_id: GAME_ID, game_version: GAME_VERSION, interface_version: INTERFACE_VERSION, locale, viewport_bucket: viewportBucket(), input_class: lastInputType, stage };
+      const bounded = (value, allowed) => allowed.includes(value) ? value : undefined;
+      const source = bounded(details.source, ["main_start", "stage_card", "retry", "next", "result"]);
+      const outcome = bounded(details.outcome, ["success", "failure"]);
+      const holdBucket = bounded(details.hold_bucket, ["under_1s", "1_to_3s", "over_3s"]);
+      const direction = bounded(details.direction, ["left", "right"]);
+      const action = bounded(details.action, ["retry", "next", "stages"]);
+      if (source) payload.source = source;
+      if (outcome) payload.outcome = outcome;
+      if (holdBucket) payload.hold_bucket = holdBucket;
+      if (direction) payload.direction = direction;
+      if (action) payload.action = action;
+      if (details.parcels !== undefined) payload.parcels = Math.max(0, Math.min(8, Math.trunc(Number(details.parcels) || 0)));
+      window.WonderAnalytics.track(eventName, payload);
+    } catch {
+      // Anonymous funnel measurement must never interrupt play.
+    }
+  };
+  const holdBucket = (seconds) => seconds < 1 ? "under_1s" : seconds < 3 ? "1_to_3s" : "over_3s";
   const setScreen = (screen) => {
     ["main", "stage", "battle"].forEach((name) => { $(`#${name}Screen`).hidden = screen !== name; });
     if (screen !== "battle") {
@@ -116,7 +157,7 @@
   const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
   const config = () => stageConfigs[currentStage];
   const resetState = () => {
-    state = { x:105, y:410, vx:180, vy:-20, attached:false, anchor:-1, rope:0, time:0, score:0, parcels:0, collected:[], messageKey:"ready", done:false, success:false, flash:0 };
+    state = { x:105, y:410, vx:180, vy:-20, attached:false, anchor:-1, rope:0, time:0, score:0, parcels:0, collected:[], messageKey:"ready", done:false, success:false, flash:0, firstAttach:false, attachedAt:0 };
     inputAxis = 0;
   };
   const nearestAnchor = () => {
@@ -135,19 +176,27 @@
     const index = nearestAnchor();
     if (index < 0) { announce("noAnchor"); beep(180); return; }
     const anchor = anchorPosition(config().anchors[index], state.time);
-    state.attached = true; state.anchor = index; state.rope = Math.max(72, Math.min(190, distance(state, anchor)));
+    state.attached = true; state.anchor = index; state.rope = Math.max(72, Math.min(190, distance(state, anchor))); state.attachedAt = state.time;
+    if (!state.firstAttach) { state.firstAttach = true; track("attach"); }
     announce("attached"); beep(620, 0.08); updateTetherLabel();
   };
   const release = () => {
     if (!state || state.done || !state.attached) return;
+    const heldFor = Math.max(0, state.time - state.attachedAt);
     state.attached = false; state.anchor = -1; state.vx += inputAxis * 42; state.vy -= 16;
+    state.attachedAt = 0; track("release", { hold_bucket: holdBucket(heldFor) });
     announce("released"); beep(840, 0.08); updateTetherLabel();
   };
   const setTether = (pressed) => { if (pressed) attach(); else release(); };
+  const setInputAxis = (next) => {
+    if (next !== 0 && next !== inputAxis && isBattleActive()) track("nudge", { direction: next < 0 ? "left" : "right" });
+    inputAxis = next;
+  };
   const rectHit = (x, y, rect) => x > rect.x - 16 && x < rect.x + rect.w + 16 && y > rect.y - 16 && y < rect.y + rect.h + 16;
   const finish = (success) => {
     if (!state || state.done || !isBattleActive()) return;
     state.done = true; state.success = success; state.attached = false; updateTetherLabel();
+    track(success ? "stage_success" : "flight_failure", { outcome: success ? "success" : "failure", parcels: state.parcels });
     const best = Number(safeGet(bestKey(currentStage), 0)) || 0;
     if (success && (!best || state.time < best)) safeSet(bestKey(currentStage), state.time.toFixed(2));
     if (success && currentStage + 1 < stageConfigs.length) safeSet(stageKey("unlocked"), Math.max(unlocked(), currentStage + 2));
@@ -166,7 +215,7 @@
       let dx = state.x - anchor.x; let dy = state.y - anchor.y; const d = Math.max(1, Math.hypot(dx, dy));
       if (d > state.rope) { const nx = dx / d; const ny = dy / d; state.x = anchor.x + nx * state.rope; state.y = anchor.y + ny * state.rope; const tangentX = -ny; const tangentY = nx; const tangentSpeed = state.vx * tangentX + state.vy * tangentY; state.vx = tangentX * tangentSpeed; state.vy = tangentY * tangentSpeed; }
     }
-    config().parcels.forEach((parcel, index) => { if (!state.collected.includes(index) && distance(state, parcel) < 30) { state.collected.push(index); state.parcels += 1; state.score += 100; state.flash = 0.25; announce("parcel"); beep(720); } });
+    config().parcels.forEach((parcel, index) => { if (!state.collected.includes(index) && distance(state, parcel) < 30) { state.collected.push(index); state.parcels += 1; state.score += 100; state.flash = 0.25; track("parcel_collect", { parcels: state.parcels }); announce("parcel"); beep(720); } });
     if (config().spikes.some((spike) => rectHit(state.x, state.y, spike))) { finish(false); return; }
     const target = { x:875, y:255 };
     if (state.x > target.x - 30 && state.y > 170 && state.y < 370) { state.score += Math.max(0, 600 - Math.floor(state.time * 22)); finish(true); return; }
@@ -206,12 +255,12 @@
   const applyLeaveCopy = () => { const copy = LEAVE_COPY[locale] || LEAVE_COPY.en; $("#leaveEyebrow").textContent = text("battle"); $("#leaveTitle").textContent = copy.title; $("#leaveCopy").textContent = copy.body; $("#continueBattle").textContent = copy.continue; $("#leaveBattle").textContent = copy.leave; };
   const setResultOpen = (open) => { resultOpen = Boolean(open); if (resultOpen) { leaveOpen = false; leaveOverlay.hidden = true; } resultScreen.hidden = !resultOpen; battleScreen.classList.toggle("result-open", resultOpen); battleScreen.classList.remove("leave-open"); syncBattleOverlayState(); if (resultOpen) { resultScreen.scrollTop = 0; const focusTarget = $("#nextBtn").disabled ? $("#retryBtn") : $("#nextBtn"); focusTarget?.focus(); } };
   const setLeaveOpen = (open, restoreFocus = true) => { if (open && resultOpen) return; leaveOpen = Boolean(open); leaveOverlay.hidden = !leaveOpen; battleScreen.classList.toggle("leave-open", leaveOpen); syncBattleOverlayState(); if (leaveOpen) $("#continueBattle").focus(); else if (restoreFocus && !battleScreen.hidden) $("#battleBack")?.focus(); };
-  const renderStages = () => { const count = unlocked(); $("#stageGrid").innerHTML = stageConfigs.map((_, index) => { const open = index < count; const best = Number(safeGet(bestKey(index), 0)); return `<button type="button" class="stage-card${open ? "" : " locked"}" data-stage="${index}" ${open ? "" : "disabled"}><strong>${formatStage(index)}</strong><small>${open ? (best ? `${text("stageDone")}: ${formatTime(best)}` : text("choose")) : text("stageLocked")}</small><span aria-hidden="true">${open ? "✦" : "◌"}</span></button>`; }).join(""); $("#stageTitle").textContent = text("stages"); $("#stageEyebrow").textContent = text("eyebrow"); $("#stageHelp").textContent = text("stageHelp"); $("#stageGrid").querySelectorAll("[data-stage]").forEach((button) => button.addEventListener("click", () => startStage(Number(button.dataset.stage)))); };
-  const startStage = (index) => { setResultOpen(false); setLeaveOpen(false, false); currentStage = Math.max(0, Math.min(stageConfigs.length - 1, index)); resetState(); $("#battleEyebrow").textContent = text("battle"); $("#battleTitle").textContent = formatStage(currentStage); $("#battleStatus").textContent = text("ready"); canvas.setAttribute("aria-label", text("ariaCanvas")); $("#nudgeLeft").setAttribute("aria-label", text("ariaLeft")); $("#nudgeRight").setAttribute("aria-label", text("ariaRight")); setScreen("battle"); beep(440); };
+  const renderStages = () => { const count = unlocked(); $("#stageGrid").innerHTML = stageConfigs.map((_, index) => { const open = index < count; const best = Number(safeGet(bestKey(index), 0)); return `<button type="button" class="stage-card${open ? "" : " locked"}" data-stage="${index}" ${open ? "" : "disabled"}><strong>${formatStage(index)}</strong><small>${open ? (best ? `${text("stageDone")}: ${formatTime(best)}` : text("choose")) : text("stageLocked")}</small><span aria-hidden="true">${open ? "✦" : "◌"}</span></button>`; }).join(""); $("#stageTitle").textContent = text("stages"); $("#stageEyebrow").textContent = text("eyebrow"); $("#stageHelp").textContent = text("stageHelp"); $("#stageGrid").querySelectorAll("[data-stage]").forEach((button) => button.addEventListener("click", (event) => { noteInput(event); startStage(Number(button.dataset.stage), "stage_card"); })); };
+  const startStage = (index, source = "stage_card") => { setResultOpen(false); setLeaveOpen(false, false); currentStage = Math.max(0, Math.min(stageConfigs.length - 1, index)); resetState(); track("stage_start", { source, stage: currentStage + 1 }); $("#battleEyebrow").textContent = text("battle"); $("#battleTitle").textContent = formatStage(currentStage); $("#battleStatus").textContent = text("ready"); canvas.setAttribute("aria-label", text("ariaCanvas")); $("#nudgeLeft").setAttribute("aria-label", text("ariaLeft")); $("#nudgeRight").setAttribute("aria-label", text("ariaRight")); setScreen("battle"); beep(440); };
   const refreshShell = () => { document.documentElement.lang = locale; document.documentElement.dir = locale === "ar" ? "rtl" : "ltr"; document.title = `Cloudhook Courier | WeightPlay`; $("#eyebrow").textContent = text("eyebrow"); $("#coming").textContent = text("coming"); $("#languageLabel").textContent = text("language"); $("#tagline").textContent = text("objective"); $("#objective").textContent = text("objective"); $("#guideTitle").textContent = text("guideTitle"); $("#guideBody").textContent = text("guideBody"); $("#guideControls").textContent = text("guideControls"); $("#startBtn").textContent = text("start"); $("#soundBtn").textContent = soundEnabled ? text("soundOn") : text("soundOff"); $("#soundBtn").setAttribute("aria-pressed", String(soundEnabled)); $("#stageSoundBtn").textContent = soundEnabled ? text("soundOn") : text("soundOff"); $("#stageSoundBtn").setAttribute("aria-pressed", String(soundEnabled)); $("#stageBack").setAttribute("aria-label", text("backMain")); $("#battleBack").setAttribute("aria-label", text("backStages")); $("#battleBack").setAttribute("data-wp-return", "battle"); $("#restartBtn").textContent = text("restart"); $("#stageTitle").textContent = text("stages"); $("#stageEyebrow").textContent = text("eyebrow"); $("#stageHelp").textContent = text("stageHelp"); applyLeaveCopy(); renderStages(); if (state && document.body.dataset.screen === "battle") { $("#battleEyebrow").textContent = text("battle"); $("#battleTitle").textContent = formatStage(currentStage); $("#battleStatus").textContent = text(state.messageKey || "ready"); updateHud(); } if (state && resultOpen) renderResult(); updateTetherLabel(); };
   const toggleSound = () => { soundEnabled = !soundEnabled; safeSet("weightplay_sound", soundEnabled ? "on" : "off"); refreshShell(); if (soundEnabled) beep(660); };
-  const goStage = () => { setResultOpen(false); setLeaveOpen(false, false); renderStages(); setScreen("stage"); };
-  $("#startBtn").addEventListener("click", goStage); $("#stageBack").addEventListener("click", () => setScreen("main")); $("#soundBtn").addEventListener("click", toggleSound); $("#stageSoundBtn").addEventListener("click", toggleSound); $("#restartBtn").addEventListener("click", () => startStage(currentStage)); $("#retryBtn").addEventListener("click", () => startStage(currentStage)); $("#nextBtn").addEventListener("click", () => { if (!$("#nextBtn").disabled) startStage(currentStage + 1); }); $("#resultStagesBtn").addEventListener("click", goStage);
+  const goStage = () => { if (document.body.dataset.screen === "main") track("game_start", { stage: 1, source: "main_start" }); setResultOpen(false); setLeaveOpen(false, false); renderStages(); setScreen("stage"); };
+  $("#startBtn").addEventListener("click", (event) => { noteInput(event); goStage(); }); $("#stageBack").addEventListener("click", () => setScreen("main")); $("#soundBtn").addEventListener("click", toggleSound); $("#stageSoundBtn").addEventListener("click", toggleSound); $("#restartBtn").addEventListener("click", (event) => { noteInput(event); startStage(currentStage, "stage_card"); }); $("#retryBtn").addEventListener("click", (event) => { noteInput(event); track("result_retry", { action: "retry", source: "result" }); startStage(currentStage, "retry"); }); $("#nextBtn").addEventListener("click", (event) => { if (!$("#nextBtn").disabled) { noteInput(event); track("result_next", { action: "next", source: "result" }); startStage(currentStage + 1, "next"); } }); $("#resultStagesBtn").addEventListener("click", (event) => { noteInput(event); track("result_stages", { action: "stages", source: "result" }); goStage(); });
   document.addEventListener("click", (event) => { const control = event.target?.closest?.('#battleScreen [data-wp-return="battle"]'); if (!control || battleScreen.hidden || resultOpen) return; event.preventDefault(); event.stopImmediatePropagation(); setLeaveOpen(true); }, true);
   $("#continueBattle").addEventListener("click", () => setLeaveOpen(false));
   $("#leaveBattle").addEventListener("click", () => goStage());
@@ -224,10 +273,10 @@
     if (event.shiftKey && index <= 0) { event.preventDefault(); actions[actions.length - 1].focus(); }
     else if (!event.shiftKey && index === actions.length - 1) { event.preventDefault(); actions[0].focus(); }
   });
-  const pressButton = (button, down, up) => { button.addEventListener("pointerdown", (event) => { event.preventDefault(); button.setPointerCapture?.(event.pointerId); down(); }); ["pointerup", "pointercancel", "lostpointercapture"].forEach((eventName) => button.addEventListener(eventName, (event) => { event.preventDefault(); up(); })); };
-  pressButton($("#tetherBtn"), () => setTether(true), () => setTether(false)); pressButton(canvas, () => setTether(true), () => setTether(false)); pressButton($("#nudgeLeft"), () => { inputAxis = -1; }, () => { if (inputAxis < 0) inputAxis = 0; }); pressButton($("#nudgeRight"), () => { inputAxis = 1; }, () => { if (inputAxis > 0) inputAxis = 0; });
-  document.addEventListener("keydown", (event) => { if (document.body.dataset.screen !== "battle") return; if (["ArrowLeft","ArrowRight"," ","Spacebar","r","R"].includes(event.key)) event.preventDefault(); if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") inputAxis = -1; if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") inputAxis = 1; if (event.key === " " || event.key === "Spacebar") setTether(true); if (event.key.toLowerCase() === "r") startStage(currentStage); });
-  document.addEventListener("keyup", (event) => { if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") { if (inputAxis < 0) inputAxis = 0; } if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") { if (inputAxis > 0) inputAxis = 0; } if (event.key === " " || event.key === "Spacebar") setTether(false); });
+  const pressButton = (button, down, up) => { button.addEventListener("pointerdown", (event) => { event.preventDefault(); noteInput(event); button.setPointerCapture?.(event.pointerId); down(); }); ["pointerup", "pointercancel", "lostpointercapture"].forEach((eventName) => button.addEventListener(eventName, (event) => { event.preventDefault(); noteInput(event); up(); })); };
+  pressButton($("#tetherBtn"), () => setTether(true), () => setTether(false)); pressButton(canvas, () => setTether(true), () => setTether(false)); pressButton($("#nudgeLeft"), () => setInputAxis(-1), () => { if (inputAxis < 0) setInputAxis(0); }); pressButton($("#nudgeRight"), () => setInputAxis(1), () => { if (inputAxis > 0) setInputAxis(0); });
+  document.addEventListener("keydown", (event) => { if (document.body.dataset.screen !== "battle") return; noteInput(event); if (["ArrowLeft","ArrowRight"," ","Spacebar","r","R"].includes(event.key)) event.preventDefault(); if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") setInputAxis(-1); if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") setInputAxis(1); if (event.key === " " || event.key === "Spacebar") setTether(true); if (event.key.toLowerCase() === "r") startStage(currentStage, "stage_card"); });
+  document.addEventListener("keyup", (event) => { noteInput(event); if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") { if (inputAxis < 0) setInputAxis(0); } if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") { if (inputAxis > 0) setInputAxis(0); } if (event.key === " " || event.key === "Spacebar") setTether(false); });
   document.addEventListener("visibilitychange", () => { hidden = document.hidden; lastTime = performance.now(); if (hidden && state?.attached) release(); });
   const initialLocale = (() => { const routeLocale = document.documentElement.lang; const saved = safeGet("weightPlayLocale", "en"); return COPY[routeLocale] ? routeLocale : COPY[saved] ? saved : "en"; })(); locale = initialLocale; $("#localeSelect").innerHTML = LOCALE_ORDER.map((code) => `<option value="${code}">${code}</option>`).join(""); $("#localeSelect").value = locale; $("#localeSelect").addEventListener("change", (event) => { locale = event.target.value; safeSet("weightPlayLocale", locale); refreshShell(); }); soundEnabled = safeGet("weightplay_sound", "on") !== "off"; resetState(); refreshShell(); setScreen("main"); lastTime = performance.now(); frame = window.requestAnimationFrame(tick);
   $("#stageBack").setAttribute("data-wp-return", "stage");

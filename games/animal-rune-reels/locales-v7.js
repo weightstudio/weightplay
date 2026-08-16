@@ -164,6 +164,6 @@
   Object.keys(L).forEach(code => {
     Object.assign(L[code], patches[code] || patches.en);
     L[code].readySpin = readySpin[code] || readySpin.en;
-    L[code].tipTactics = `${L[code].tacticsHint} ${L[code].rerollReel} / ${L[code].holdReel} / ${L[code].leaderTactic}.`;
+    L[code].tipTactics = `${L[code].tacticsHint} ${L[code].rerollReel} / ${L[code].holdReel} / ${L[code].leaderTactic}. ${L[code].heldNext}`;
   });
 })();

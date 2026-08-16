@@ -436,3 +436,26 @@ body.wp-stage-select-active .v3-stage .stage-workspace>#stagesPanel[hidden] #ent
   line-height:18px;
   max-width:100%;
 }
+
+/* V7.3: cards without a schedule must not reserve an empty grid row between
+   the plan cue and the status footer. The plan owns two bounded lines so the
+   next enemy intent remains readable instead of ending at a single-line
+   ellipsis. Scheduled cards keep their optional row and get the same space. */
+.v3-stage .stage-card:not(.has-schedule){
+  height:228px;
+  grid-template-rows:18px 27px 70px 54px 30px!important;
+}
+.v3-stage .stage-card.has-schedule{
+  height:246px;
+  grid-template-rows:18px 27px 70px 54px 18px 30px!important;
+}
+.v3-stage .stage-card p{
+  height:54px;
+}
+.v3-stage .stage-card p .team-payoff{
+  height:36px;
+  margin-top:0;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  text-overflow:clip;
+}

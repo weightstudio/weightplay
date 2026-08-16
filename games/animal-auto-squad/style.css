@@ -232,7 +232,7 @@ body:not(.squad-active) .battle-ad-reserve { display: none; }
 .combat-summary strong { color: var(--mint); font-size: .73rem; }
 .combat-summary span { color: #dff8ec; font-size: .66rem; font-weight: 800; }
 
-.prep-phase-area { min-height: 0; display: grid; grid-template-rows: 48px 270px minmax(0,1fr); gap: 8px; overflow: hidden; }
+.prep-phase-area { min-height: 0; display: grid; grid-template-rows: minmax(48px,auto) 270px minmax(0,1fr); gap: 8px; overflow: hidden; }
 .food-guide { display: grid; grid-template-columns:auto minmax(0,1fr); align-items: center; gap: 6px; padding: 5px 8px; border: 1px solid rgba(255,214,102,.22); border-radius: 11px; background: rgba(255,214,102,.07); }
 .food-guide strong, .food-guide span { min-width:0; padding: 3px 7px; border-radius: 9px; font-size: .6rem; font-weight: 900; line-height:1.15; }
 .food-guide strong { color: #231503; background: var(--gold); }
