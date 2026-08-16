@@ -168,6 +168,7 @@
   }
 
   function ensureGameInfoRuntime() {
+    if (document.body?.hasAttribute("data-wp-game-owned-guide")) return;
     if (!document.querySelector('link[href*="game-page-info.css"]')) {
       const link = document.createElement("link");
       link.rel = "stylesheet";
@@ -331,6 +332,7 @@
   }
 
   function applyOfficialGameTitle() {
+    if (document.body?.dataset.wpFiveGame && window.WeightPlayFiveGameLocale) return;
     const localizedTitle = officialGameTitle();
     if (!localizedTitle) return;
     document.querySelectorAll(OFFICIAL_TITLE_SELECTORS).forEach((node) => {

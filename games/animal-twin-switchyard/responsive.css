@@ -10,6 +10,49 @@
   .battle-screen > #restartBtn { position: absolute; top: 10px; right: 10px; min-height: 36px; }
   .battle-head { padding-right: 150px; }
 }
+
+.twin-landscape-controls {
+  display: none;
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  .battle-screen .touch-controls {
+    display: none !important;
+  }
+
+  .twin-landscape-controls {
+    position: fixed;
+    z-index: 60;
+    left: 50%;
+    bottom: 62px;
+    width: min(92vw, 560px);
+    display: grid;
+    grid-template-columns: 80px minmax(160px, 1fr) 80px;
+    gap: 10px;
+    margin: 0;
+    transform: translateX(-50%);
+  }
+
+  .twin-landscape-controls[hidden] {
+    display: none !important;
+  }
+
+  .twin-landscape-controls button {
+    min-height: 52px;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 13px;
+    color: var(--text);
+    background: #ffffff0b;
+    font-weight: 800;
+  }
+
+  .twin-landscape-controls button[data-twin-control="jump"] {
+    background: linear-gradient(135deg, #78e2dc, #38a9bc);
+    color: #06202b;
+    border-color: #a4fff3;
+  }
+}
 @media (max-height: 520px) and (orientation: landscape) {
   .shell { padding: 4px; }
   .battle-screen { padding: 6px; }

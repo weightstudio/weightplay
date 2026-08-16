@@ -15968,6 +15968,10 @@ window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
   "Zuglimit erreicht.": "楚格限制权利。",
   "Zur Lobby": "祖尔大厅",
   "Zwei Hinweise": "茨威·欣威斯",
+  "The four routes use both color and letter codes. The fixed convoy, FIFO holding lane, deterministic queues, and verified solution path define one readable strategy puzzle on phone and desktop.": "四条路线同时使用颜色和字母代码。固定的车队、FIFO 等候车道、确定的队列和经过验证的解法路径，共同构成一个在手机和桌面上都清晰易懂的策略谜题。",
+  "The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.": "完整界面使用居中的单一逻辑布局，最大宽度为 920 像素。手机、横屏和桌面画面会一起缩放相同的控件、点击区域、图像和游戏坐标，而不会拉伸单个元素。因此触控、鼠标和键盘都会操作同一个合法状态。Main 海报和开始游戏操作与 Stage 管理分开；Stage 选择、Battle、对话框和 Result 各自保留有界内容与返回路径。",
+  "You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.": "你可以不创建账号直接游玩。进度会保存在当前浏览器配置文件的本地存储中，而不是在线账号或跨设备数据库。清除网站数据、使用无痕浏览、更换浏览器或换到另一台设备，都可能创建独立存档或移除现有存档。只要浏览器允许存储，语言、音效和减少动态效果偏好就会沿用 WeightPlay 的共享控件。任何指南结果都不是医疗、学校或专业评估。",
+  "Panko's Bus Jam - Game Guide": "胖达巴士疏导 - 游戏指南",
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "只有颜色和徽章在可见时机窗口内对齐，脉冲才会成功。",
   "The nearest marker did not match both required properties inside the window.": "最近的标记在窗口内没有同时符合两个必要属性。"
 };

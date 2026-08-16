@@ -4,6 +4,9 @@
   const codes = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const palette = ["#ef6b62", "#4da8e8", "#f0bb4d", "#9a7ae9"];
   const routeCodes = ["A", "B", "C", "D"];
+  const GAME_ID = "animal-bus-jam";
+  const GAME_VERSION = 12;
+  const INTERFACE_VERSION = 6;
   const busArt = ["coral", "sky", "sun", "violet"].map((color) => `/assets/animal-bus-jam-bus-${color}.webp`);
   const passengerArt = ["coral", "sky", "sun", "violet"].map((color) => `/assets/animal-bus-jam-passenger-${color}.webp`);
   const root = document;
@@ -52,6 +55,7 @@
   let pageVisible = !document.hidden;
   let pageCached = false;
   let resultActionClaimed = false;
+  let inputType = "pointer";
   const STAGE_POOL_SIZE = 9;
   let stageWindowStart = 0;
   let stageCardPool = [];
@@ -67,6 +71,51 @@
     try { window.WonderI18n?.setLocale?.(locale); } catch {}
   }
   while (selected < 29 && progress[selected]) selected += 1;
+
+  function viewportBucket() {
+    const width = window.innerWidth || 0;
+    const height = window.innerHeight || 0;
+    if (width <= 480) return "phone";
+    if (height < 520 && width > height) return "short-landscape";
+    if (width <= 900 && height >= width) return "tablet-portrait";
+    return "desktop-landscape";
+  }
+
+  function stopBucket(stop) {
+    if (!Number.isInteger(stop) || stop < 1) return "unknown";
+    if (stop <= 5) return "1-5";
+    if (stop <= 15) return "6-15";
+    return "16-30";
+  }
+
+  function track(event, payload = {}) {
+    try {
+      (window.WonderAnalytics || window.WeightPlayAnalytics)?.track?.(event, {
+        game_id: GAME_ID,
+        game_version: GAME_VERSION,
+        interface_version: INTERFACE_VERSION,
+        locale: locale || document.documentElement.lang || "en",
+        viewport_bucket: viewportBucket(),
+        input_type: inputType,
+        ...payload,
+      });
+    } catch {
+      // Analytics must never block a player action or alter puzzle state.
+    }
+  }
+
+  function trackFunnel(event, payload = {}) {
+    const stop = Number.isInteger(levelIndex) && state ? levelIndex + 1 : null;
+    track(event, { stop, stop_bucket: stopBucket(stop), ...payload });
+  }
+
+  document.addEventListener("pointerdown", (event) => {
+    if (event.isPrimary === false) return;
+    inputType = event.pointerType === "touch" ? "touch" : "pointer";
+  }, true);
+  document.addEventListener("keydown", (event) => {
+    if (!event.isComposing) inputType = "keyboard";
+  }, true);
 
   function t(key, vars = {}) {
     const active = dict[locale] || dict.en;
@@ -572,6 +621,7 @@
     show("battle");
     render();
     $("status").textContent = t("status");
+    trackFunnel("stop_start", { source: "stage_card" });
   }
 
   function dispatch(queueIndex, restoreKeyboardFocus = false) {
@@ -591,6 +641,13 @@
     if (!nextState) return;
     state = nextState;
     moves += 1;
+    trackFunnel("dispatch", {
+      queue: queueIndex + 1,
+      route: color,
+      dispatch_type: color === activeColor ? "direct" : "holding",
+      holding_count: state.waiting.length,
+      move_count: moves,
+    });
     if (state.busIndex > previousBusIndex) {
       departingBusIndexes = Array.from(
         { length: state.busIndex - previousBusIndex },
@@ -609,7 +666,10 @@
       if (departingBusIndexes.length === 0) finishLevel();
       return;
     }
-    if (engine.isDeadlocked(level, state)) $("deadlock").showModal();
+    if (engine.isDeadlocked(level, state)) {
+      trackFunnel("deadlock", { move_count: moves, holding_count: state.waiting.length });
+      $("deadlock").showModal();
+    }
   }
 
   function finishLevel() {
@@ -621,6 +681,7 @@
     $("resultStages").disabled = false;
     $("retry").disabled = false;
     $("next").disabled = levelIndex >= levels.length - 1;
+    trackFunnel("game_complete", { move_count: moves });
     $("result").showModal();
   }
 
@@ -642,6 +703,7 @@
     restore(saved);
     render();
     $("status").textContent = t("undone");
+    trackFunnel("undo", { move_count: moves });
   }
 
   function hint() {
@@ -660,12 +722,17 @@
         color: t("colors")[Number(button.dataset.color)],
       });
     }
+    trackFunnel("hint", { recommended_queue: queueIndex >= 0 ? queueIndex + 1 : null });
     button?.focus();
     button?.classList.add("hint");
     window.setTimeout(() => button?.classList.remove("hint"), 700);
   }
 
-  $("start").onclick = () => { show("stage"); renderStage(); };
+  $("start").onclick = () => {
+    track("game_start", { source: "main" });
+    show("stage");
+    renderStage();
+  };
   const stageBack = $("stage").querySelector("[data-back]");
   const battleBack = $("battle").querySelector("[data-back]");
   stageBack.onclick = () => show("main");
@@ -707,8 +774,12 @@
   $("undo").onclick = undo;
   $("hint").onclick = hint;
   $("restart").onclick = () => startLevel(levelIndex);
-  $("retry").onclick = () => claimResultAction(() => startLevel(levelIndex));
+  $("retry").onclick = () => claimResultAction(() => {
+    trackFunnel("result_retry", { source: "result" });
+    startLevel(levelIndex);
+  });
   $("resultStages").onclick = () => claimResultAction(() => {
+    trackFunnel("result_stage", { source: "result" });
     $("result").close();
     selected = Math.min(29, levelIndex + 1);
     show("stage");
@@ -716,12 +787,16 @@
   });
   $("next").onclick = () => claimResultAction(() => {
     if (levelIndex >= levels.length - 1) return;
+    trackFunnel("result_next", { source: "result", next_stop: Math.min(30, levelIndex + 2) });
     $("result").close();
     selected = Math.min(29, levelIndex + 1);
     startLevel(selected);
   });
   $("deadlockUndo").onclick = () => { $("deadlock").close(); undo(); };
-  $("deadlockRetry").onclick = () => startLevel(levelIndex);
+  $("deadlockRetry").onclick = () => {
+    trackFunnel("deadlock_retry");
+    startLevel(levelIndex);
+  };
   $("locale").innerHTML = codes.map((code) => `<option value="${code}">${dict[code]?.label || code}</option>`).join("");
   root.addEventListener("change", (event) => {
     if (event.target.id !== "locale") return;

@@ -331,7 +331,7 @@ window.WONDER_LOBBY = {
     },
     {
       id: "animal-bus-jam",
-      title: { en: "Panko's Bus Jam", "zh-Hant": "Panko 公車大塞車", "zh-Hans": "Panko 公交大塞车", ja: "Pankoのバスジャム", ko: "Panko 버스 잼", es: "Atasco de buses de Panko", "pt-BR": "Engarrafamento de ônibus do Panko", fr: "Bus Jam de Panko", de: "Pankos Bus-Chaos", it: "Bus Jam di Panko", ru: "Автобусная пробка Панко", hi: "पांको बस जाम", ar: "ازدحام حافلات بانكو" },
+      title: { en: "Panko's Bus Jam", "zh-Hant": "Panko 公車大塞車", "zh-Hans": "Panko 公交大塞车", ja: "Pankoのバスジャム", ko: "판코의 버스 정리", es: "Atasco de buses de Panko", "pt-BR": "Engarrafamento de ônibus do Panko", fr: "Bus Jam de Panko", de: "Pankos Bus-Chaos", it: "Bus Jam di Panko", ru: "Автобусная пробка Панко", hi: "पांको बस जाम", ar: "ازدحام حافلات بانكو" },
       status: "playable",
       type: { en: "Queue Strategy", "zh-Hant": "排隊策略", "zh-Hans": "排队策略", ja: "行列ストラテジー", ko: "대기열 전략", es: "Estrategia de colas", "pt-BR": "Estratégia de filas", fr: "Stratégie de files", de: "Warteschlangen-Strategie", it: "Strategia delle file", ru: "Стратегия очередей", hi: "कतार रणनीति", ar: "استراتيجية الطوابير" },
       categories: ["Animal Games", "Puzzle", "Strategy"], skills: ["Planning", "Logic"], ages: ["9", "family"],

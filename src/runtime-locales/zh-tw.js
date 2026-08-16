@@ -15968,6 +15968,10 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "Zuglimit erreicht.": "楚格限制權利。",
   "Zur Lobby": "祖爾大廳",
   "Zwei Hinweise": "茨威‧欣威斯",
+  "The four routes use both color and letter codes. The fixed convoy, FIFO holding lane, deterministic queues, and verified solution path define one readable strategy puzzle on phone and desktop.": "四條路線同時使用顏色與字母代碼。固定的車隊、FIFO 等候車道、確定的隊列，以及經驗證的解法路徑，共同構成一個在手機與桌面上都易於理解的策略謎題。",
+  "The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.": "完整介面使用置中的單一邏輯版面，最大寬度為 920 像素。手機、橫向與桌面畫面會一起縮放相同的控制項、點擊區、圖像與遊戲座標，而不會拉伸個別元素。因此觸控、滑鼠與鍵盤都會操作同一個合法狀態。Main 海報與開始遊戲操作和 Stage 管理分開；Stage 選擇、Battle、對話框與 Result 各自保留有界內容與返回路徑。",
+  "You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.": "你可以不建立帳號直接遊玩。進度會儲存在目前瀏覽器設定檔的本機儲存空間，而不是線上帳號或跨裝置資料庫。清除網站資料、使用私密瀏覽、改用其他瀏覽器或換到另一台裝置，都可能建立獨立存檔或移除現有存檔。只要瀏覽器允許儲存，語言、音效與減少動態偏好就會沿用 WeightPlay 共用控制。任何指南結果都不是醫療、學校或專業評量。",
+  "Panko's Bus Jam - Game Guide": "潘可的巴士疏運 - 遊戲指南",
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "只要顏色與徽章在可見的時機窗口內對齊，脈衝就會成功。",
   "The nearest marker did not match both required properties inside the window.": "最近的標記在窗口內沒有同時符合兩項必要屬性。"
 };

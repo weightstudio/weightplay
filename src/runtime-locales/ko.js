@@ -9652,8 +9652,8 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Panko's Bamboo Waterway": "판코의 대나무수로",
   "Panko's Bamboo Waterway | WeightPlay": "판코의 대나무수로 | WeightPlay",
   "Panko's Big-Batch Check": "Panko의 대규모 일괄 확인",
-  "Panko's Bus Jam": "판코의 버스잼",
-  "Panko's Bus Jam | WeightPlay": "판코의 버스잼 | WeightPlay",
+  "Panko's Bus Jam": "판코의 버스 정리",
+  "Panko's Bus Jam | WeightPlay": "판코의 버스 정리 | WeightPlay",
   "PANKO'S BUS STOP": "판코의 버스 정류장",
   "Panko's Festival Check": "판코의 축제 체크",
   "Panko's First Check": "Panko의 첫 번째 확인",
@@ -15968,6 +15968,10 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Zuglimit erreicht.": "Zuglimit erreicht.",
   "Zur Lobby": "주르 로비",
   "Zwei Hinweise": "츠바이 힌바이제",
+  "The four routes use both color and letter codes. The fixed convoy, FIFO holding lane, deterministic queues, and verified solution path define one readable strategy puzzle on phone and desktop.": "네 노선은 색상과 문자 코드를 함께 사용합니다. 고정된 차량 행렬, FIFO 대기 통로, 결정적인 대기열, 검증된 해결 경로가 휴대폰과 데스크톱에서 모두 읽기 쉬운 전략 퍼즐을 만듭니다.",
+  "The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.": "전체 인터페이스는 최대 920픽셀의 중앙 정렬 단일 논리 레이아웃을 사용합니다. 휴대폰, 가로 화면, 데스크톱에서는 개별 요소를 늘이지 않고 동일한 컨트롤, 적중 영역, 아트와 게임 좌표를 함께 확대·축소합니다. 따라서 터치, 마우스, 키보드는 같은 합법 상태를 조작합니다. Main 포스터와 게임 시작 동작은 Stage 관리와 분리되며, Stage 선택, Battle, 대화상자, Result는 각각 제한된 콘텐츠와 돌아갈 경로를 유지합니다.",
+  "You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.": "계정을 만들지 않고 플레이할 수 있습니다. 진행 상황은 온라인 계정이나 기기 간 데이터베이스가 아니라 현재 브라우저 프로필의 로컬 저장소에 저장됩니다. 사이트 데이터를 지우거나, 시크릿 브라우징을 사용하거나, 브라우저를 바꾸거나, 다른 기기로 옮기면 별도의 저장이 만들어지거나 기존 저장이 사라질 수 있습니다. 브라우저가 저장을 허용하면 언어, 사운드, 동작 줄이기 설정은 WeightPlay 공용 컨트롤을 따릅니다. 가이드의 어떤 결과도 의료, 학교 또는 전문 평가가 아닙니다.",
+  "Panko's Bus Jam - Game Guide": "판코의 버스 정리 - 게임 가이드",
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "보이는 타이밍 창 안에서 색상과 엠블럼이 모두 맞아야 펄스가 성공합니다.",
   "The nearest marker did not match both required properties inside the window.": "가장 가까운 마커는 창 안에서 필요한 두 속성을 모두 충족하지 못했습니다."
 };

@@ -1757,10 +1757,22 @@
     updateExpeditionSetup();
     const card = nodes.expeditionRail.querySelector(`[data-expedition="${browsedExpedition}"]`);
     const rtl = document.documentElement.dir === "rtl" ? -1 : 1;
-    nodes.expeditionRail.scrollTo({ left: card.offsetLeft - nodes.expeditionRail.offsetLeft - (nodes.expeditionRail.clientWidth - card.offsetWidth) / 2, behavior: "auto" });
-    nodes.expeditionRail.scrollLeft += (logical - anchor) * expeditionPitch() * rtl;
-    nodes.expeditionRail.dataset.wpStageDragLogical = logical.toFixed(4);
-    if (focus) card.focus({ preventScroll: true });
+    // The shared Stage stylesheet keeps native rails smooth for ordinary
+    // selectors. This V6 rail is game-owned and positions a recycled card on
+    // every key/drag frame; leaving smooth scrolling enabled lets an older
+    // animation overwrite the newer logical target (for example 1 -> 10).
+    const previousBehavior = nodes.expeditionRail.style.getPropertyValue("scroll-behavior");
+    const previousPriority = nodes.expeditionRail.style.getPropertyPriority("scroll-behavior");
+    nodes.expeditionRail.style.setProperty("scroll-behavior", "auto", "important");
+    try {
+      nodes.expeditionRail.scrollTo({ left: card.offsetLeft - nodes.expeditionRail.offsetLeft - (nodes.expeditionRail.clientWidth - card.offsetWidth) / 2, behavior: "auto" });
+      nodes.expeditionRail.scrollLeft += (logical - anchor) * expeditionPitch() * rtl;
+      nodes.expeditionRail.dataset.wpStageDragLogical = logical.toFixed(4);
+      if (focus) card.focus({ preventScroll: true });
+    } finally {
+      if (previousBehavior) nodes.expeditionRail.style.setProperty("scroll-behavior", previousBehavior, previousPriority);
+      else nodes.expeditionRail.style.removeProperty("scroll-behavior");
+    }
     return logical;
   }
   function cancelExpeditionStageMotion() {
@@ -1943,11 +1955,18 @@
   }
 
   function restoreTrainingFocus(key) {
-    window.requestAnimationFrame(() => {
+    const focusPreferredTraining = () => {
       const preferred = nodes.trainingList.querySelector(`[data-training-key="${key}"]:not(:disabled)`);
       const fallback = nodes.trainingList.querySelector("button:not(:disabled)");
       (preferred || fallback)?.focus();
-    });
+      return preferred || fallback || null;
+    };
+    // Re-rendering replaces the activated button. Restore focus immediately
+    // so pointer and keyboard activation share the same synchronous boundary;
+    // retain one frame of fallback for browsers that defer focus on rebuilt
+    // controls.
+    const focused = focusPreferredTraining();
+    if (focused && document.activeElement !== focused) window.requestAnimationFrame(focusPreferredTraining);
   }
 
   function spendTrainingPoint(key, restoreFocus = false) {
