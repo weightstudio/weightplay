@@ -411,3 +411,28 @@ body.wp-stage-select-active .v3-stage .stage-workspace>#stagesPanel[hidden] #ent
   text-overflow:ellipsis;
   white-space:nowrap;
 }
+
+/* V7.2: keep the new plan cue inside the card's fixed content row. The
+   summary and plan are deliberately two single-line owners so long locale
+   strings cannot push the plan below the parent clip. */
+.v3-stage .stage-card p{
+  display:block;
+  height:38px;
+  line-height:18px;
+  overflow:hidden;
+  overflow-wrap:normal;
+  white-space:normal;
+}
+.v3-stage .stage-card p .stage-summary{
+  display:block;
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.v3-stage .stage-card p .team-payoff{
+  height:18px;
+  margin-top:1px;
+  line-height:18px;
+  max-width:100%;
+}
