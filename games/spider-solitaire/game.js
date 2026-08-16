@@ -739,6 +739,10 @@
     ui.resultOverlay?.classList.remove("eight-set-result");
   }
 
+  function emitAnalyticsEvent(name, details = {}) {
+    window.dispatchEvent(new CustomEvent("spider:analytics-event", { detail: { name, details } }));
+  }
+
   function showHint(message) {
     if (!ui.hintOverlay) return;
     ui.hintOverlay.textContent = message;
@@ -1004,6 +1008,7 @@
         window.setTimeout(() => dragging.originNode.classList.remove("invalid-return"), 230);
       }
       audio.reject();
+      emitAnalyticsEvent("illegal_move_feedback", { action: "drag" });
       showHint(t("invalid"));
       return;
     }
@@ -1022,6 +1027,7 @@
       showHint(t("multiple"));
       return;
     }
+    emitAnalyticsEvent("illegal_move_feedback", { action: "tap" });
     showHint(t("invalid"));
   }
 
@@ -1031,6 +1037,7 @@
     const action = move.type === "deal" ? game.dealStock() : game.applyMove(move);
     if (!action) {
       audio.reject();
+      emitAnalyticsEvent("illegal_move_feedback", { action: move.type === "deal" ? "stock" : "move" });
       showHint(t("invalid"));
       return false;
     }
@@ -1122,6 +1129,7 @@
     const status = game.canDeal();
     if (!status.ok) {
       audio.reject();
+      emitAnalyticsEvent("illegal_move_feedback", { action: "stock", reason: status.reason || "blocked" });
       if (status.reason === "empty-column") {
         ui.tableauRow.querySelectorAll(".empty").forEach((node) => node.classList.add("hint-target"));
         showHint(t("fill_empty"));

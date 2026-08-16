@@ -2,7 +2,7 @@
   "use strict";
 
   const GAME_ID = "spider-solitaire";
-  const GAME_VERSION = "v32";
+  const GAME_VERSION = "v33";
   const INTERFACE_VERSION = "6";
   const LOCALE_BY_ROUTE = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   let inputType = "unknown";
@@ -11,6 +11,7 @@
   let lastCompletedReported = 0;
   let snapshotQueued = false;
   let replayLinkOpened = false;
+  const SESSION_STARTED_KEY = "spider_solitaire_funnel_started_v33";
 
   const viewportBucket = () => {
     const width = window.innerWidth || 0;
@@ -57,6 +58,22 @@
     else if (event?.pointerType) inputType = "pointer";
     else inputType = "keyboard";
   };
+  const markStartedSession = () => {
+    try {
+      const returning = sessionStorage.getItem(SESSION_STARTED_KEY) === "1";
+      sessionStorage.setItem(SESSION_STARTED_KEY, "1");
+      return returning;
+    } catch {
+      return false;
+    }
+  };
+  const hasStartedSession = () => {
+    try {
+      return sessionStorage.getItem(SESSION_STARTED_KEY) === "1";
+    } catch {
+      return false;
+    }
+  };
 
   const consumeSnapshot = () => {
     snapshotQueued = false;
@@ -86,8 +103,31 @@
     const target = event.target.closest?.("button, .card, .main-return");
     if (!target || target.disabled || target.hidden) return;
     rememberInput(event);
+    if (target.matches("[data-difficulty]")) {
+      track("difficulty_select", { from: "stage", selected_difficulty: `suits_${target.dataset.difficulty || difficulty()}` });
+      return;
+    }
+    if (target.matches("#startBtn")) {
+      if (hasStartedSession()) track("return_session", { from: "main" });
+      return;
+    }
     if (target.matches("#stageStartBtn")) {
+      const returning = markStartedSession();
       track("game_start", { from: "stage" });
+      track("battle_start", { from: "stage" });
+      if (returning) track("return_session", { from: "stage" });
+      return;
+    }
+    if (target.matches("#hintBtn")) {
+      track("hint", { from: "battle" });
+      return;
+    }
+    if (target.matches("#helpBtn")) {
+      track("guide_view", { from: "battle" });
+      return;
+    }
+    if (target.matches("#tutorialSkip, #tutorialDone")) {
+      track("tutorial_dismiss", { from: "tutorial" });
       return;
     }
     if (target.matches("#copyReplayLinkBtn")) {
@@ -111,6 +151,11 @@
     }
   }, true);
 
+  window.addEventListener("spider:analytics-event", (event) => {
+    const name = event.detail?.name;
+    if (name === "illegal_move_feedback") track(name, event.detail?.details || {});
+  });
+
   const result = document.querySelector("#resultOverlay");
   if (result) new MutationObserver(() => {
     if (!result.hidden && !resultVisible) {
@@ -120,6 +165,17 @@
       resultVisible = false;
     }
   }).observe(result, { attributes: true, attributeFilter: ["hidden"] });
+
+  const tutorial = document.querySelector("#tutorialOverlay");
+  let guideVisible = false;
+  if (tutorial) new MutationObserver(() => {
+    if (!tutorial.hidden && !guideVisible) {
+      guideVisible = true;
+      track("guide_view", { from: "tutorial" });
+    } else if (tutorial.hidden) {
+      guideVisible = false;
+    }
+  }).observe(tutorial, { attributes: true, attributeFilter: ["hidden"] });
 
   const observed = ["#moveCount", "#stockPile .stock-count", "#completedValue"].map((selector) => document.querySelector(selector)).filter(Boolean);
   if (observed.length) {
