@@ -329,7 +329,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "es": "Jardín de Conexiones de Color",
     "pt-BR": "Jardim de links coloridos",
     "fr": "Jardin de liens de couleur",
-    "de": "Color Link Garden",
+    "de": "Farblink-Garten",
     "it": "Giardino di collegamento a colori",
     "ru": "Колор Линк Гарден",
     "hi": "कलर लिंक गार्डन",

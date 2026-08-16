@@ -1185,6 +1185,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
   "Animal Auto Squad is a formation strategy game built around decisions made before combat. You unlock and train ten animal heroes, place up to six of them in a two-row squad, choose one expedition relic, and then watch the lineup resolve each clash automatically. The campaign contains 30 stages across Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel, and Void Crown. Every stage has five authored waves, while stages 5, 10, 15, 20, 25, and 30 end with a different regional Boss.": "Animal Auto Squad 是一款围绕战斗前做出的决策构建的编队策略游戏。您解锁并训练十名动物英雄，将最多六名动物英雄放入两排小队中，选择一件远征圣物，然后观看阵容自动解决每次冲突。该战役包含 30 个阶段，横跨荆棘森林、水晶洞穴、沉没废墟、灰烬峰、月光堡垒和虚空王冠。每个阶段都有五个创作波，而阶段 5、10、15、20、25 和 30 则以不同的区域 Boss 结束。",
   "Animal Auto Squad is a free formation auto-battler. Train ten animal heroes, build a two-row squad, and clear 30 stages with six unique bosses.": "Animal Auto Squad 是一款自由编队的自动战斗游戏。训练 10 名动物英雄，组建两排小队，并通过 6 个独特的 Boss 通关 30 个关卡。",
   "Animal Block Grove": "动物街区",
+  "Animal Block Grove is a thirty-mission placement puzzle starring Moss Shell Taro and Rainbow Hop Mimi.": "动物街区是一款以 Moss Shell Taro 和 Rainbow Hop Mimi 为主角的三十个任务方块放置谜题。",
   "Animal Block Grove | WeightPlay": "动物街区| WeightPlay",
   "Animal Block Grove guide": "动物格罗夫指南",
   "Animal Bubble Bakery": "动物泡泡面包店",

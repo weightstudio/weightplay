@@ -1185,6 +1185,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Animal Auto Squad is a formation strategy game built around decisions made before combat. You unlock and train ten animal heroes, place up to six of them in a two-row squad, choose one expedition relic, and then watch the lineup resolve each clash automatically. The campaign contains 30 stages across Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel, and Void Crown. Every stage has five authored waves, while stages 5, 10, 15, 20, 25, and 30 end with a different regional Boss.": "Animal Auto Squad는 전투 전 결정을 중심으로 구축된 대형 전략 게임입니다. 10명의 동물 영웅을 잠금 해제하고 훈련하고, 최대 6명까지 2열 분대에 배치하고, 탐험 유물 1개를 선택한 다음, 라인업이 각 충돌을 자동으로 해결하는 것을 지켜보세요. 캠페인에는 Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel 및 Void Crown에 걸쳐 30개의 스테이지가 포함되어 있습니다. 모든 단계에는 5개의 제작된 웨이브가 있으며, 단계 5, 10, 15, 20, 25, 30은 서로 다른 지역 보스로 끝납니다.",
   "Animal Auto Squad is a free formation auto-battler. Train ten animal heroes, build a two-row squad, and clear 30 stages with six unique bosses.": "Animal Auto Squad는 자유 대형 자동 전투 게임입니다. 10명의 동물 영웅을 훈련시키고, 2열의 분대를 구성하고, 6명의 독특한 보스와 함께 30개의 스테이지를 클리어하세요.",
   "Animal Block Grove": "동물 블록 숲",
+  "Animal Block Grove is a thirty-mission placement puzzle starring Moss Shell Taro and Rainbow Hop Mimi.": "동물 블록 숲은 모스 셸 타로와 레인보우 홉 미미가 주인공인 30개 미션 배치 퍼즐입니다.",
   "Animal Block Grove | WeightPlay": "동물 블록 숲 | WeightPlay",
   "Animal Block Grove guide": "동물 블록 숲 가이드",
   "Animal Bubble Bakery": "동물 버블 베이커리",
