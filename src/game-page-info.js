@@ -9529,6 +9529,28 @@
     localizedGames[code] ||= {};
     for (const [id, entry] of Object.entries(entries)) localizedGames[code][id] = { ...games[id], ...entry, difficulty: entry.difficulty || games[id].difficulty, time: entry.time || games[id].time, genre: entry.genre || games[id].genre, skills: entry.skills || games[id].skills, faq: entry.faq || games[id].faq };
   }
+  games["animal-cloudhook-courier"] = {
+    title: "Cloudhook Courier",
+    age: "9+",
+    difficulty: "Easy to Challenging",
+    time: "3-8 minutes per stage",
+    gameplay: "Grapple and Swing Platform Action",
+    genre: ["Action", "Platform", "Animal"],
+    skills: ["Timing", "Reaction", "Planning"],
+    hideSkillsFact: true,
+    guideKicker: "WeightPlay Original Game Guide",
+    guideTitleSuffix: "Game Guide",
+    intro: "Cloudhook Courier is an original momentum platform game. Guide a cloud-marten through aurora rings, attach to moving anchors, and deliver every parcel to the lantern goal.",
+    story: ["A cloud-marten courier crosses six wind routes where every parcel depends on a clean swing, a deliberate release, and a safe landing. Each route turns a short delivery into a readable timing problem."],
+    systems: ["Hold Tether or Space to attach to the nearest visible anchor, then release to carry momentum into the next arc. Left and Right or the nudge controls adjust the flight while attached and in open air.", "Collect every parcel and reach the lantern goal to clear the stage. A spike collision or fall produces a failure Result; clear times and stage unlocks stay in this browser."],
+    how: ["Choose an unlocked stage from Stage and read the anchor path, parcels, and hazard layout before entering Battle.", "Use Left and Right or the touch nudge controls to shape the approach, then hold Tether or Space when an anchor is in range.", "Release at the top or forward side of the swing to carry momentum toward the next ring; reattach only when the next route is readable.", "Collect every parcel and touch the lantern goal. A clean delivery opens Result, while a collision or fall opens a failure Result with Retry."],
+    strategyTips: ["Attach early enough to build a stable arc, but release before the rope pulls you below the next platform line.", "Use short directional taps during a swing; a long hold can overshoot the next anchor or push the courier into a spike.", "Moving anchors reveal their rhythm. Watch one full cycle before committing when a route feels narrow.", "When a run fails, change one release decision at a time so the new flight teaches you which part of the route was unsafe."],
+    progression: ["Six authored stages begin with fixed anchors and two parcels. Later routes add wind, moving anchors, longer chains, more parcels, and spike fields that demand tighter release timing."],
+    designNote: "Cloudhook Courier keeps one logical play space across phone, landscape, and desktop. Touch, mouse, and keyboard share the same tether, release, and nudge state, while Main, Stage, Battle, and Result remain separate screens with direct returns.",
+    parent: "This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Stage clears, best times, language, sound, and preferences stay in the current browser profile and may reset when site data is cleared.",
+    faq: [["Can I steer while attached?", "Yes. Left and Right or the nudge controls adjust the courier's horizontal movement while the tether carries the swing."], ["When should I release?", "Release near the top or forward side of the arc when the next anchor, parcel, or lantern line is clear."], ["What causes a failed stage?", "Touching a spike or falling outside the route ends the attempt and opens a failure Result."], ["Does progress save?", "Cleared stages, unlocks, and best times are saved locally in this browser."]]
+  };
+  gameplayProfiles["animal-cloudhook-courier"] = { gameplay: "Grapple and Swing Platform Action", genre: ["Action", "Platform", "Animal"] };
   games["animal-twin-switchyard"] = {
     title: "Twin Switchyard",
     age: "9+",
@@ -9586,6 +9608,7 @@
     "alien-defender",
     "snake",
     "animal-twin-switchyard",
+    "animal-cloudhook-courier",
   ].forEach(completeGuideStandard);
   render();
 })();

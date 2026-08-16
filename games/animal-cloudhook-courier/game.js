@@ -18,6 +18,13 @@
   ];
   let locale = "en";
   let soundEnabled = true;
+  if (!window.WonderSound) {
+    let muted = false;
+    window.WonderSound = {
+      isMuted: () => muted,
+      setMuted: (next) => { muted = Boolean(next); soundEnabled = !muted; refreshShell(); window.dispatchEvent(new CustomEvent("wonder:audio-volume-change")); },
+    };
+  }
   let currentStage = 0;
   let state = null;
   let frame = 0;
@@ -35,6 +42,7 @@
     ["main", "stage", "battle", "result"].forEach((name) => { $(`#${name}Screen`).hidden = screen !== name; });
     document.body.dataset.screen = screen;
   };
+  const isBattleActive = () => document.body.dataset.screen === "battle";
   const formatTime = (value) => `${Math.max(0, value).toFixed(1)}s`;
   const formatStage = (index) => `${text("stage")} ${index + 1}`;
   const beep = (frequency = 440, duration = 0.06) => {
@@ -88,7 +96,7 @@
   const setTether = (pressed) => { if (pressed) attach(); else release(); };
   const rectHit = (x, y, rect) => x > rect.x - 16 && x < rect.x + rect.w + 16 && y > rect.y - 16 && y < rect.y + rect.h + 16;
   const finish = (success) => {
-    if (!state || state.done) return;
+    if (!state || state.done || !isBattleActive()) return;
     state.done = true; state.success = success; state.attached = false; updateTetherLabel();
     const best = Number(safeGet(bestKey(currentStage), 0)) || 0;
     if (success && (!best || state.time < best)) safeSet(bestKey(currentStage), state.time.toFixed(2));
@@ -96,7 +104,7 @@
     beep(success ? 980 : 140, 0.16); renderResult(); setScreen("result");
   };
   const update = (dt) => {
-    if (!state || state.done || hidden || document.body.dataset.screen !== "battle") return;
+    if (!state || state.done || hidden || !isBattleActive()) return;
     state.time += dt;
     const cfg = config();
     const wind = cfg.wind * (state.attached ? 0.45 : 1);
@@ -129,7 +137,7 @@
     if (state) { ctx.save(); ctx.translate(state.x, state.y); ctx.rotate(Math.atan2(state.vy, Math.max(1, state.vx))); ctx.fillStyle = "#d87872"; ctx.beginPath(); ctx.ellipse(0, 0, 21, 17, 0, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#f8b66d"; ctx.beginPath(); ctx.arc(13, -8, 11, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#071627"; ctx.beginPath(); ctx.arc(17, -10, 2.6, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#ffd277"; ctx.beginPath(); ctx.moveTo(-16, -8); ctx.lineTo(-31, -19); ctx.lineTo(-22, 2); ctx.closePath(); ctx.fill(); ctx.restore(); }
     if (state?.flash > 0) { ctx.fillStyle = `rgba(255,235,157,${Math.min(0.35, state.flash)})`; ctx.fillRect(0, 0, W, H); }
   };
-  const tick = (now) => { const dt = Math.min(0.032, Math.max(0, (now - lastTime) / 1000 || 0)); lastTime = now; if (!hidden) { update(dt); draw(); updateHud(); } frame = window.requestAnimationFrame(tick); };
+  const tick = (now) => { const dt = Math.min(0.032, Math.max(0, (now - lastTime) / 1000 || 0)); lastTime = now; if (!hidden) { if (isBattleActive()) update(dt); draw(); updateHud(); } frame = window.requestAnimationFrame(tick); };
   const updateHud = () => { if (!state) return; $("#scoreLabel").textContent = `${text("score")}: ${state.score}`; $("#timeLabel").textContent = `${text("time")}: ${formatTime(state.time)}`; $("#controlHint").textContent = text("hint"); canvas.dataset.attached = String(state.attached); canvas.dataset.time = String(state.time); canvas.dataset.x = String(state.x); updateTetherLabel(); };
   const renderResult = () => { const best = Number(safeGet(bestKey(currentStage), 0)) || 0; $("#resultEyebrow").textContent = `${text("stage")} ${currentStage + 1}`; $("#resultTitle").textContent = text(state.success ? "success" : "failure"); $("#resultCopy").textContent = text(state.success ? (currentStage === stageConfigs.length - 1 ? "final" : "successCopy") : "failureCopy"); $("#resultScore").innerHTML = `<span>${text("scoreStat")}</span><strong>${state.score}</strong>`; $("#resultTime").innerHTML = `<span>${text("timeStat")}</span><strong>${formatTime(state.time)}</strong>`; $("#resultBest").innerHTML = `<span>${text("bestStat")}</span><strong>${best ? formatTime(best) : "—"}</strong>`; $("#nextBtn").textContent = text("next"); $("#nextBtn").disabled = !state.success || currentStage >= stageConfigs.length - 1; $("#retryBtn").textContent = text("retry"); $("#resultStagesBtn").textContent = text("stageMap"); };
   const renderStages = () => { const count = unlocked(); $("#stageGrid").innerHTML = stageConfigs.map((_, index) => { const open = index < count; const best = Number(safeGet(bestKey(index), 0)); return `<button type="button" class="stage-card${open ? "" : " locked"}" data-stage="${index}" ${open ? "" : "disabled"}><strong>${formatStage(index)}</strong><small>${open ? (best ? `${text("stageDone")}: ${formatTime(best)}` : text("choose")) : text("stageLocked")}</small><span aria-hidden="true">${open ? "✦" : "◌"}</span></button>`; }).join(""); $("#stageTitle").textContent = text("stages"); $("#stageEyebrow").textContent = text("eyebrow"); $("#stageHelp").textContent = text("stageHelp"); $("#stageGrid").querySelectorAll("[data-stage]").forEach((button) => button.addEventListener("click", () => startStage(Number(button.dataset.stage)))); };
@@ -144,4 +152,13 @@
   document.addEventListener("keyup", (event) => { if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") { if (inputAxis < 0) inputAxis = 0; } if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") { if (inputAxis > 0) inputAxis = 0; } if (event.key === " " || event.key === "Spacebar") setTether(false); });
   document.addEventListener("visibilitychange", () => { hidden = document.hidden; lastTime = performance.now(); if (hidden && state?.attached) release(); });
   const initialLocale = (() => { const routeLocale = document.documentElement.lang; const saved = safeGet("weightPlayLocale", "en"); return COPY[routeLocale] ? routeLocale : COPY[saved] ? saved : "en"; })(); locale = initialLocale; $("#localeSelect").innerHTML = LOCALE_ORDER.map((code) => `<option value="${code}">${code}</option>`).join(""); $("#localeSelect").value = locale; $("#localeSelect").addEventListener("change", (event) => { locale = event.target.value; safeSet("weightPlayLocale", locale); refreshShell(); }); soundEnabled = safeGet("weightplay_sound", "on") !== "off"; resetState(); refreshShell(); setScreen("main"); lastTime = performance.now(); frame = window.requestAnimationFrame(tick);
+  $("#stageBack").setAttribute("data-wp-return", "stage");
+  $("#stageScreen").setAttribute("data-wp-standard-stage-screen", "");
+  $("#stageGrid").setAttribute("data-wp-stage-rail", "");
+  $("#battleScreen").setAttribute("data-wp-logical-battle-canvas", "");
+  $("#stageScreen .section-head")?.classList.add("stage-header");
+  $("#battleScreen .section-head")?.classList.add("battle-header");
+  const inlineGuide = document.querySelector("#mainScreen .guide");
+  inlineGuide?.classList.remove("guide");
+  inlineGuide?.classList.add("main-howto");
 })();

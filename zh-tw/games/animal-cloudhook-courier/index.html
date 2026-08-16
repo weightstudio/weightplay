@@ -21,21 +21,22 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
     <meta name="robots" content="noindex,nofollow" />
     <meta name="weightplay-audience" content="general" />
+    <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="weightplay-release-state" content="coming-soon" />
     <meta name="weightplay-game-id" content="animal-cloudhook-courier" />
     <title>雲鉤快遞 | WeightPlay</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%2378e2dc'/%3E%3Cpath d='M18 36c12-22 22-22 28-8' fill='none' stroke='%23071627' stroke-width='6'/%3E%3C/svg%3E" />
-    <link rel="stylesheet" href="style.css" /><link rel="stylesheet" href="responsive.css" />
-    <meta name="description" content="抓住雲環建立擺盪節奏，在不碰到風暴齒刺的情況下送達每件包裹。" />
+    <link rel="stylesheet" href="../../src/game-page-info.css" /><link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260802-title-parity3" /><link rel="stylesheet" href="style.css" /><link rel="stylesheet" href="responsive.css" />
+    <meta name="description" content="Cloudhook Courier 是一款原創動量平台遊戲。引導雲貂穿過極光環，固定在移動的錨上，並將每個包裹運送到燈籠目標。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="雲鉤快遞 | WeightPlay" />
-    <meta property="og:description" content="抓住雲環建立擺盪節奏，在不碰到風暴齒刺的情況下送達每件包裹。" />
+    <meta property="og:description" content="Cloudhook Courier 是一款原創動量平台遊戲。引導雲貂穿過極光環，固定在移動的錨上，並將每個包裹運送到燈籠目標。" />
     <meta property="og:url" content="https://weightplay.com/zh-tw/games/animal-cloudhook-courier/" />
     <meta property="og:image" content="https://weightplay.com/games/animal-cloudhook-courier/cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="雲鉤快遞 | WeightPlay" />
-    <meta name="twitter:description" content="抓住雲環建立擺盪節奏，在不碰到風暴齒刺的情況下送達每件包裹。" />
+    <meta name="twitter:description" content="Cloudhook Courier 是一款原創動量平台遊戲。引導雲貂穿過極光環，固定在移動的錨上，並將每個包裹運送到燈籠目標。" />
     <meta name="twitter:image" content="https://weightplay.com/games/animal-cloudhook-courier/cover.webp" />
     <script type="application/ld+json">
 {
@@ -45,7 +46,7 @@
   "alternateName": "Cloudhook Courier",
   "url": "https://weightplay.com/zh-tw/games/animal-cloudhook-courier/",
   "image": "https://weightplay.com/games/animal-cloudhook-courier/cover.webp",
-  "description": "抓住雲環建立擺盪節奏，在不碰到風暴齒刺的情況下送達每件包裹。",
+  "description": "Cloudhook Courier 是一款原創動量平台遊戲。引導雲貂穿過極光環，固定在移動的錨上，並將每個包裹運送到燈籠目標。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -56,7 +57,7 @@
   "operatingSystem": "Any modern web browser",
   "genre": [
     "行動",
-    "街機",
+    "平台",
     "動物"
   ],
   "audience": {
@@ -67,38 +68,39 @@
 }
     </script>
   </head>
-  <body data-game-id="animal-cloudhook-courier" data-screen="main">
+  <body data-game-id="animal-cloudhook-courier" data-wp-game-id="animal-cloudhook-courier" data-screen="main" data-wp-combined-sound="true" data-runtime-localize="off">
     <main class="shell" id="app">
-      <section id="mainScreen" class="screen main-screen">
-        <header class="topbar"><a class="brand-back" href="/" aria-label="Back to WeightPlay">← <span>W</span></a><div><p class="eyebrow" id="eyebrow"></p><h1 id="title">雲鉤快遞</h1></div><label class="locale"><span id="languageLabel">Language</span><select id="localeSelect" aria-label="Language"></select></label></header>
-        <div class="main-grid"><div><p class="coming" id="coming"></p><p class="lede" id="tagline"></p><div class="poster cloudhook-poster" aria-hidden="true"><span class="poster-ring ring-a"></span><span class="poster-ring ring-b"></span><span class="poster-courier">✦</span><span class="poster-lantern">⌂</span></div></div><div class="main-copy"><p class="objective" id="objective"></p><button id="startBtn" class="primary" type="button"></button><button id="soundBtn" class="secondary" type="button" aria-pressed="true"></button><div class="guide"><h2 id="guideTitle"></h2><p id="guideBody"></p><p id="guideControls"></p></div></div></div>
+      <section id="mainScreen" class="screen main-screen" data-screen="main">
+        <header class="topbar"><a class="brand-back" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><div><p class="eyebrow" id="eyebrow"></p><h1 id="title">雲鉤快遞</h1></div><label class="locale"><span id="languageLabel">Language</span><select id="localeSelect" aria-label="Language"></select></label></header>
+        <div class="main-grid"><div><p class="coming" id="coming"></p><p class="lede" id="tagline"></p><div class="poster cloudhook-poster wonder-main-cover" role="img" aria-label="Cloudhook Courier cover"><span class="poster-ring ring-a"></span><span class="poster-ring ring-b"></span><span class="poster-courier">✦</span><span class="poster-lantern">⌂</span></div></div><div class="main-copy"><p class="objective" id="objective"></p><button id="startBtn" class="primary" type="button"></button><button id="soundBtn" class="secondary" type="button" aria-pressed="true"></button><div class="guide"><h2 id="guideTitle"></h2><p id="guideBody"></p><p id="guideControls"></p></div></div></div>
       </section>
-      <section id="stageScreen" class="screen stage-screen" hidden><header class="section-head"><button class="icon-btn" id="stageBack" type="button" aria-label="Back to Main">←</button><div><p class="eyebrow" id="stageEyebrow"></p><h2 id="stageTitle"></h2></div><button class="secondary compact" id="stageSoundBtn" type="button"></button></header><p class="stage-help" id="stageHelp"></p><div class="stage-grid" id="stageGrid"></div></section>
-      <section id="battleScreen" class="screen battle-screen" hidden><header class="section-head battle-head"><button class="icon-btn" id="battleBack" type="button" aria-label="Back to Stages">←</button><div><p class="eyebrow" id="battleEyebrow"></p><h2 id="battleTitle"></h2></div><div class="hud"><span id="scoreLabel"></span><span id="timeLabel"></span></div></header><p class="battle-status" id="battleStatus" aria-live="polite"></p><div class="canvas-wrap"><canvas id="gameCanvas" width="960" height="540" aria-label="Cloudhook Courier play area"></canvas></div><div class="touch-controls" aria-label="Game controls"><button class="control" id="nudgeLeft" type="button">◀</button><button class="control tether" id="tetherBtn" type="button"></button><button class="control" id="nudgeRight" type="button">▶</button></div><p class="control-hint" id="controlHint"></p><button class="restart" id="restartBtn" type="button"></button></section>
-      <section id="resultScreen" class="screen result-screen" hidden><div class="result-card"><p class="eyebrow" id="resultEyebrow"></p><h2 id="resultTitle"></h2><p class="result-copy" id="resultCopy"></p><div class="stats"><span id="resultScore"></span><span id="resultTime"></span><span id="resultBest"></span></div><div class="result-actions"><button id="nextBtn" class="primary" type="button"></button><button id="retryBtn" class="secondary" type="button"></button><button id="resultStagesBtn" class="secondary" type="button"></button></div></div></section>
+      <section id="stageScreen" class="screen stage-screen" data-screen="stage" hidden><header class="section-head"><button class="icon-btn" id="stageBack" data-wp-return="main" type="button" aria-label="Back to Main">←</button><div><p class="eyebrow" id="stageEyebrow"></p><h2 id="stageTitle"></h2></div><button class="secondary compact" id="stageSoundBtn" type="button"></button></header><p class="stage-help" id="stageHelp"></p><div class="stage-grid" id="stageGrid" data-wp-stage-rail data-wp-stage-total="6"></div></section>
+      <section id="battleScreen" class="screen battle-screen" data-screen="battle" hidden><header class="section-head battle-head"><button class="icon-btn" id="battleBack" data-wp-return="stage" type="button" aria-label="Back to Stages">←</button><div><p class="eyebrow" id="battleEyebrow"></p><h2 id="battleTitle"></h2></div><div class="hud"><span id="scoreLabel"></span><span id="timeLabel"></span></div></header><p class="battle-status" id="battleStatus" aria-live="polite"></p><div class="canvas-wrap"><canvas id="gameCanvas" width="960" height="540" aria-label="Cloudhook Courier play area"></canvas></div><div class="touch-controls" aria-label="Game controls"><button class="control" id="nudgeLeft" type="button">◀</button><button class="control tether" id="tetherBtn" type="button"></button><button class="control" id="nudgeRight" type="button">▶</button></div><p class="control-hint" id="controlHint"></p><button class="restart" id="restartBtn" type="button"></button></section>
+      <section id="resultScreen" class="screen result-screen" data-screen="result" hidden><div class="result-card"><p class="eyebrow" id="resultEyebrow"></p><h2 id="resultTitle"></h2><p class="result-copy" id="resultCopy"></p><div class="stats"><span id="resultScore"></span><span id="resultTime"></span><span id="resultBest"></span></div><div class="result-actions"><button id="nextBtn" class="primary" type="button"></button><button id="retryBtn" class="secondary" type="button"></button><button id="resultStagesBtn" class="secondary" type="button"></button></div></div></section>
     </main>
     <script src="/src/site-config.js?v=20260721-locale13-1"></script>
     <script src="/src/i18n.js?v=20260731-owner-preview5"></script>
     <script src="/src/runtime-locales/zh-tw.js?v=20260808-locale-static1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-    <script src="locales.js"></script><script src="game.js"></script>
-  <section class="game-page-info game-page-info-static" aria-label="雲鉤快遞 遊戲資訊">
+    <script src="locales.js"></script><script src="game.js"></script><section class="game-page-info game-page-info-static" aria-label="雲鉤快遞 遊戲資訊">
     
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>雲鉤快遞</h2><p>抓住雲環建立擺盪節奏，在不碰到風暴齒刺的情況下送達每件包裹。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>抓鉤擺盪路線動作</strong></div><div class="game-info-fact"><span>類型</span><strong>行動 · 街機 · 動物</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>雲鉤快遞</h2><p>Cloudhook Courier 是一款原創動量平台遊戲。引導雲貂穿過極光環，固定在移動的錨上，並將每個包裹運送到燈籠目標。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>抓斗與迴轉平台動作</strong></div><div class="game-info-fact"><span>類型</span><strong>行動 · 平台 · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>容易挑戰</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>每階段3-8分鐘</strong></div></div>
     </div>
     <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>進度保存了嗎？</dt><dd>是的，僅在該瀏覽器中。</dd></div></dl></div>
+      <div class="game-info-section"><h3>世界與任務</h3><p>雲貂信使穿越六條風之路，每件包裹都仰賴乾淨的擺盪、刻意的釋放與安全落地。每條路線都把短程配送變成清楚可讀的時機問題。</p></div>
+      <div class="game-info-section"><h3>遊戲系統</h3><p>按住繫繩或空格鍵以連接到最近的可見錨點，然後放開以將動量帶入下一個弧線。左、右或輕推控制可在連接和露天時調整飛行。</p>
+<p>收集所有包裹並達到燈籠目標以清理舞台。尖峰碰撞或跌落產生失敗結果；清晰的時間和階段解鎖保留在這個瀏覽器中。</p></div>
+      <div class="game-info-section"><h3>玩法說明</h3><ol><li>從 Stage 選擇已解鎖的關卡，進入 Battle 前先閱讀錨點路徑、包裹與危險配置。</li><li>使用「向左」和「向右」或觸碰微移控制來調整接近方式，然後在錨點位於範圍內時按住 Tether 或 Space。</li><li>在揮桿的頂部或前側釋放，將動量帶向下一個環；僅當下一條路線可讀時才重新連接。</li><li>收集所有包裹並觸摸燈籠目標。乾淨的交付會打開結果，而碰撞或跌倒會打開重試失敗的結果。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>提早附著以建立穩定弧線，但要在繩索把你拉到下一條平台線下方前釋放。</li><li>揮桿時使用短距離定向輕擊；長時間按住可能會超出下一個錨點或將信使推入尖刺中。</li><li>移動的錨揭示了它們的節奏。當感覺路線狹窄時，在投入之前觀看一個完整的週期。</li><li>當運行失敗時，一次更改一個發布決策，以便新航班告訴您路線的哪一部分不安全。</li></ul></div>
+      <div class="game-info-section"><h3>關卡與難度成長</h3><p>六個創作階段以固定錨點和兩個地塊開始。後來的路線增加了風、移動錨、更長的鏈條、更多的包裹和尖峰場，需要更嚴格的釋放時間。</p></div>
+      <div class="game-info-section"><h3>開發設計理念</h3><p>Cloudhook Courier 在手機、橫向和桌面上保持一個邏輯的遊戲空間。觸控、滑鼠和鍵盤共享相同的繫繩、釋放和微移狀態，而主螢幕、舞台、戰鬥和結果仍然是單獨的螢幕，可直接返回。 The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.</p></div>
+      <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>這款通用瀏覽器遊戲沒有帳戶、購買、聊天、排行榜或廣告流程。舞台清除、最佳時間、語言、聲音和首選項保留在目前瀏覽器設定檔中，並可能在清除網站資料時重設。 You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.</p></div>
+      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>附著時可以操控方向嗎？</dt><dd>是的。當繫繩帶動擺動時，左、右或輕推控制可調整信差的水平移動。</dd></div><div><dt>我該什麼時候釋放？</dt><dd>當下一個錨點、地塊或燈籠線暢通無阻時，在弧的頂部或前側附近釋放。</dd></div><div><dt>是什麼原因導致階段失敗？</dt><dd>觸摸尖峰或掉落到路線之外會結束嘗試並開啟失敗結果。</dd></div><div><dt>進度可以保存嗎？</dt><dd>已通過的關卡、解鎖內容與最佳時間會保存在此瀏覽器。</dd></div><div><dt>Which controls and screen sizes are supported?</dt><dd>The same rules support touch, mouse, and keyboard where the game uses those inputs. The interface scales as one logical layout across the required phone, landscape, and desktop viewports.</dd></div><div><dt>Can progress move automatically to another device?</dt><dd>No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.</dd></div></dl></div>
 
     </div>
   </section>
-</body>
+<script src="../../src/game-page-info.js?v=20260816-cloudhook-guide1"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
+  </body>
 </html>

@@ -21,21 +21,22 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
     <meta name="robots" content="noindex,nofollow" />
     <meta name="weightplay-audience" content="general" />
+    <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="weightplay-release-state" content="coming-soon" />
     <meta name="weightplay-game-id" content="animal-cloudhook-courier" />
     <title>Облачный курьер | WeightPlay</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%2378e2dc'/%3E%3Cpath d='M18 36c12-22 22-22 28-8' fill='none' stroke='%23071627' stroke-width='6'/%3E%3C/svg%3E" />
-    <link rel="stylesheet" href="style.css" /><link rel="stylesheet" href="responsive.css" />
-    <meta name="description" content="Цепляйтесь за облачные кольца, раскачивайтесь и доставляйте посылки, не касаясь штормовых шипов." />
+    <link rel="stylesheet" href="../../src/game-page-info.css" /><link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260802-title-parity3" /><link rel="stylesheet" href="style.css" /><link rel="stylesheet" href="responsive.css" />
+    <meta name="description" content="Cloudhook Courier — это оригинальный платформер. Проведите облачную куницу через кольца северного сияния, прикрепите к движущимся якорям и доставьте..." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Облачный курьер | WeightPlay" />
-    <meta property="og:description" content="Цепляйтесь за облачные кольца, раскачивайтесь и доставляйте посылки, не касаясь штормовых шипов." />
+    <meta property="og:description" content="Cloudhook Courier — это оригинальный платформер. Проведите облачную куницу через кольца северного сияния, прикрепите к движущимся якорям и доставьте..." />
     <meta property="og:url" content="https://weightplay.com/ru/games/animal-cloudhook-courier/" />
     <meta property="og:image" content="https://weightplay.com/games/animal-cloudhook-courier/cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Облачный курьер | WeightPlay" />
-    <meta name="twitter:description" content="Цепляйтесь за облачные кольца, раскачивайтесь и доставляйте посылки, не касаясь штормовых шипов." />
+    <meta name="twitter:description" content="Cloudhook Courier — это оригинальный платформер. Проведите облачную куницу через кольца северного сияния, прикрепите к движущимся якорям и доставьте..." />
     <meta name="twitter:image" content="https://weightplay.com/games/animal-cloudhook-courier/cover.webp" />
     <script type="application/ld+json">
 {
@@ -45,7 +46,7 @@
   "alternateName": "Cloudhook Courier",
   "url": "https://weightplay.com/ru/games/animal-cloudhook-courier/",
   "image": "https://weightplay.com/games/animal-cloudhook-courier/cover.webp",
-  "description": "Цепляйтесь за облачные кольца, раскачивайтесь и доставляйте посылки, не касаясь штормовых шипов.",
+  "description": "Cloudhook Courier — это оригинальный платформер. Проведите облачную куницу через кольца северного сияния, прикрепите к движущимся якорям и доставьте...",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -56,7 +57,7 @@
   "operatingSystem": "Any modern web browser",
   "genre": [
     "Действие",
-    "Аркады",
+    "Платформа",
     "Животное"
   ],
   "audience": {
@@ -67,38 +68,39 @@
 }
     </script>
   </head>
-  <body data-game-id="animal-cloudhook-courier" data-screen="main">
+  <body data-game-id="animal-cloudhook-courier" data-wp-game-id="animal-cloudhook-courier" data-screen="main" data-wp-combined-sound="true" data-runtime-localize="off">
     <main class="shell" id="app">
-      <section id="mainScreen" class="screen main-screen">
-        <header class="topbar"><a class="brand-back" href="/" aria-label="Back to WeightPlay">← <span>W</span></a><div><p class="eyebrow" id="eyebrow"></p><h1 id="title">Облачный курьер</h1></div><label class="locale"><span id="languageLabel">Language</span><select id="localeSelect" aria-label="Language"></select></label></header>
-        <div class="main-grid"><div><p class="coming" id="coming"></p><p class="lede" id="tagline"></p><div class="poster cloudhook-poster" aria-hidden="true"><span class="poster-ring ring-a"></span><span class="poster-ring ring-b"></span><span class="poster-courier">✦</span><span class="poster-lantern">⌂</span></div></div><div class="main-copy"><p class="objective" id="objective"></p><button id="startBtn" class="primary" type="button"></button><button id="soundBtn" class="secondary" type="button" aria-pressed="true"></button><div class="guide"><h2 id="guideTitle"></h2><p id="guideBody"></p><p id="guideControls"></p></div></div></div>
+      <section id="mainScreen" class="screen main-screen" data-screen="main">
+        <header class="topbar"><a class="brand-back" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><div><p class="eyebrow" id="eyebrow"></p><h1 id="title">Облачный курьер</h1></div><label class="locale"><span id="languageLabel">Language</span><select id="localeSelect" aria-label="Language"></select></label></header>
+        <div class="main-grid"><div><p class="coming" id="coming"></p><p class="lede" id="tagline"></p><div class="poster cloudhook-poster wonder-main-cover" role="img" aria-label="Cloudhook Courier cover"><span class="poster-ring ring-a"></span><span class="poster-ring ring-b"></span><span class="poster-courier">✦</span><span class="poster-lantern">⌂</span></div></div><div class="main-copy"><p class="objective" id="objective"></p><button id="startBtn" class="primary" type="button"></button><button id="soundBtn" class="secondary" type="button" aria-pressed="true"></button><div class="guide"><h2 id="guideTitle"></h2><p id="guideBody"></p><p id="guideControls"></p></div></div></div>
       </section>
-      <section id="stageScreen" class="screen stage-screen" hidden><header class="section-head"><button class="icon-btn" id="stageBack" type="button" aria-label="Back to Main">←</button><div><p class="eyebrow" id="stageEyebrow"></p><h2 id="stageTitle"></h2></div><button class="secondary compact" id="stageSoundBtn" type="button"></button></header><p class="stage-help" id="stageHelp"></p><div class="stage-grid" id="stageGrid"></div></section>
-      <section id="battleScreen" class="screen battle-screen" hidden><header class="section-head battle-head"><button class="icon-btn" id="battleBack" type="button" aria-label="Back to Stages">←</button><div><p class="eyebrow" id="battleEyebrow"></p><h2 id="battleTitle"></h2></div><div class="hud"><span id="scoreLabel"></span><span id="timeLabel"></span></div></header><p class="battle-status" id="battleStatus" aria-live="polite"></p><div class="canvas-wrap"><canvas id="gameCanvas" width="960" height="540" aria-label="Cloudhook Courier play area"></canvas></div><div class="touch-controls" aria-label="Game controls"><button class="control" id="nudgeLeft" type="button">◀</button><button class="control tether" id="tetherBtn" type="button"></button><button class="control" id="nudgeRight" type="button">▶</button></div><p class="control-hint" id="controlHint"></p><button class="restart" id="restartBtn" type="button"></button></section>
-      <section id="resultScreen" class="screen result-screen" hidden><div class="result-card"><p class="eyebrow" id="resultEyebrow"></p><h2 id="resultTitle"></h2><p class="result-copy" id="resultCopy"></p><div class="stats"><span id="resultScore"></span><span id="resultTime"></span><span id="resultBest"></span></div><div class="result-actions"><button id="nextBtn" class="primary" type="button"></button><button id="retryBtn" class="secondary" type="button"></button><button id="resultStagesBtn" class="secondary" type="button"></button></div></div></section>
+      <section id="stageScreen" class="screen stage-screen" data-screen="stage" hidden><header class="section-head"><button class="icon-btn" id="stageBack" data-wp-return="main" type="button" aria-label="Back to Main">←</button><div><p class="eyebrow" id="stageEyebrow"></p><h2 id="stageTitle"></h2></div><button class="secondary compact" id="stageSoundBtn" type="button"></button></header><p class="stage-help" id="stageHelp"></p><div class="stage-grid" id="stageGrid" data-wp-stage-rail data-wp-stage-total="6"></div></section>
+      <section id="battleScreen" class="screen battle-screen" data-screen="battle" hidden><header class="section-head battle-head"><button class="icon-btn" id="battleBack" data-wp-return="stage" type="button" aria-label="Back to Stages">←</button><div><p class="eyebrow" id="battleEyebrow"></p><h2 id="battleTitle"></h2></div><div class="hud"><span id="scoreLabel"></span><span id="timeLabel"></span></div></header><p class="battle-status" id="battleStatus" aria-live="polite"></p><div class="canvas-wrap"><canvas id="gameCanvas" width="960" height="540" aria-label="Cloudhook Courier play area"></canvas></div><div class="touch-controls" aria-label="Game controls"><button class="control" id="nudgeLeft" type="button">◀</button><button class="control tether" id="tetherBtn" type="button"></button><button class="control" id="nudgeRight" type="button">▶</button></div><p class="control-hint" id="controlHint"></p><button class="restart" id="restartBtn" type="button"></button></section>
+      <section id="resultScreen" class="screen result-screen" data-screen="result" hidden><div class="result-card"><p class="eyebrow" id="resultEyebrow"></p><h2 id="resultTitle"></h2><p class="result-copy" id="resultCopy"></p><div class="stats"><span id="resultScore"></span><span id="resultTime"></span><span id="resultBest"></span></div><div class="result-actions"><button id="nextBtn" class="primary" type="button"></button><button id="retryBtn" class="secondary" type="button"></button><button id="resultStagesBtn" class="secondary" type="button"></button></div></div></section>
     </main>
     <script src="/src/site-config.js?v=20260721-locale13-1"></script>
     <script src="/src/i18n.js?v=20260731-owner-preview5"></script>
     <script src="/src/runtime-locales/ru.js?v=20260808-locale-static1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-    <script src="locales.js"></script><script src="game.js"></script>
-  <section class="game-page-info game-page-info-static" aria-label="Облачный курьер информация об игре">
+    <script src="locales.js"></script><script src="game.js"></script><section class="game-page-info game-page-info-static" aria-label="Облачный курьер информация об игре">
     
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2>Облачный курьер</h2><p>Цепляйтесь за облачные кольца, раскачивайтесь и доставляйте посылки, не касаясь штормовых шипов.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Геймплей</span><strong>Маршрутный экшен с крюком</strong></div><div class="game-info-fact"><span>Жанр</span><strong>Действие · Аркады · Животное</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2>Облачный курьер</h2><p>Cloudhook Courier — это оригинальный платформер. Проведите облачную куницу через кольца северного сияния, прикрепите к движущимся якорям и доставьте каждую посылку к цели фонаря.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Геймплей</span><strong>Захват и поворот платформы</strong></div><div class="game-info-fact"><span>Жанр</span><strong>Действие · Платформа · Животное</strong></div><div class="game-info-fact"><span>Сложность</span><strong>Легко и сложно</strong></div><div class="game-info-fact"><span>Расчетное время игры</span><strong>3-8 минут на этап</strong></div></div>
     </div>
     <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>Часто задаваемые вопросы</h3><dl><div><dt>Прогресс сохраняется?</dt><dd>Да, только в этом браузере.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Мир и миссия</h3><p>Курьер-куница облаков пересекает шесть ветреных маршрутов, где каждая посылка требует чистого раскачивания, намеренного отпускания и безопасного приземления. Каждый маршрут превращает короткую доставку в понятную задачу на тайминг.</p></div>
+      <div class="game-info-section"><h3>Как работают системы</h3><p>Удерживайте Tether или пробел, чтобы прикрепиться к ближайшему видимому якорю, затем отпустите, чтобы передать импульс следующей дуге. Влево и вправо или элементы управления подталкиванием регулируют полет, когда он прикреплен и находится на открытом воздухе.</p>
+<p>Соберите все посылки и доберитесь до цели фонаря, чтобы очистить сцену. Столкновение или падение шипа приводит к отказу. ясное время и разблокировка этапов остаются в этом браузере.</p></div>
+      <div class="game-info-section"><h3>Как играть</h3><ol><li>Выберите открытую сцену в Stage и перед Battle изучите путь якорей, посылки и расположение опасностей.</li><li>Используйте элементы управления «Влево» и «Вправо» или сенсорные элементы управления, чтобы сформировать подход, затем удерживайте привязь или пробел, когда якорь окажется в пределах досягаемости.</li><li>Отпустите верхнюю или переднюю часть замаха, чтобы передать импульс к следующему кольцу; повторно подключайтесь только тогда, когда следующий маршрут станет доступен для чтения.</li><li>Соберите все посылки и коснитесь цели фонаря. Чистая доставка открывает Результат, а столкновение или падение открывает Результат неудачи с Повторной попыткой.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Советы по стратегии</h3><ul><li>Цепляйтесь достаточно рано, чтобы создать устойчивую дугу, но отпускайте трос до того, как он потянет вас ниже следующей линии платформ.</li><li>Используйте короткие направленные постукивания во время замаха; длительное удержание может пролететь мимо следующего якоря или столкнуть курьера с шипом.</li><li>Движущиеся якоря раскрывают свой ритм. Посмотрите один полный цикл, прежде чем совершать, если маршрут кажется узким.</li><li>Если запуск не удался, меняйте одно решение о выпуске за раз, чтобы новый полет показал вам, какая часть маршрута была небезопасной.</li></ul></div>
+      <div class="game-info-section"><h3>Кампания и рост сложности</h3><p>Шесть авторских этапов начинаются с фиксированных якорей и двух посылок. На более поздних маршрутах добавляется ветер, движущиеся якоря, более длинные цепи, больше посылок и поля с шипами, которые требуют более точного времени освобождения.</p></div>
+      <div class="game-info-section"><h3>Примечание разработчика к проекту</h3><p>Cloudhook Courier сохраняет единое логическое игровое пространство на телефоне, в альбомной ориентации и на рабочем столе. Сенсорное управление, мышь и клавиатура используют одно и то же состояние привязки, отпускания и подталкивания, в то время как «Основной», «Сцена», «Битва» и «Результат» остаются отдельными экранами с прямым возвратом. The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Примечание для родителей</h3><p>В этой обычной браузерной игре нет учетной записи, покупок, чата, таблицы лидеров или рекламного потока. Сцена очищается, лучшее время, язык, звук и настройки остаются в текущем профиле браузера и могут быть сброшены при удалении данных сайта. You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.</p></div>
+      <div class="game-info-section"><h3>Часто задаваемые вопросы</h3><dl><div><dt>Можно ли управлять движением, пока я зацеплен?</dt><dd>Да. Элементы управления «влево» и «вправо» или подталкивание регулируют горизонтальное движение курьера, в то время как трос осуществляет раскачивание.</dd></div><div><dt>Когда мне следует выпустить?</dt><dd>Отпустите кнопку рядом с верхней или передней стороной дуги, когда следующая линия привязки, участка или фонаря будет свободна.</dd></div><div><dt>Что является причиной неудачного этапа?</dt><dd>Касание шипа или падение за пределы маршрута завершает попытку и открывает результат неудачи.</dd></div><div><dt>Прогресс сохраняется?</dt><dd>Пройденные сцены, открытия и лучшие времена сохраняются локально в этом браузере.</dd></div><div><dt>Which controls and screen sizes are supported?</dt><dd>The same rules support touch, mouse, and keyboard where the game uses those inputs. The interface scales as one logical layout across the required phone, landscape, and desktop viewports.</dd></div><div><dt>Can progress move automatically to another device?</dt><dd>No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.</dd></div></dl></div>
 
     </div>
   </section>
-</body>
+<script src="../../src/game-page-info.js?v=20260816-cloudhook-guide1"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
+  </body>
 </html>

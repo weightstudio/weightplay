@@ -21,31 +21,32 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
     <meta name="robots" content="noindex,nofollow" />
     <meta name="weightplay-audience" content="general" />
+    <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="weightplay-release-state" content="coming-soon" />
     <meta name="weightplay-game-id" content="animal-cloudhook-courier" />
-    <title>Le Courrier des Nuages | WeightPlay</title>
+    <title>Courrier Cloudhook | WeightPlay</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%2378e2dc'/%3E%3Cpath d='M18 36c12-22 22-22 28-8' fill='none' stroke='%23071627' stroke-width='6'/%3E%3C/svg%3E" />
-    <link rel="stylesheet" href="style.css" /><link rel="stylesheet" href="responsive.css" />
-    <meta name="description" content="Attrape les anneaux nuageux, crée un élan de pendule et livre chaque colis sans toucher aux crocs de l’orage." />
+    <link rel="stylesheet" href="../../src/game-page-info.css" /><link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260802-title-parity3" /><link rel="stylesheet" href="style.css" /><link rel="stylesheet" href="responsive.css" />
+    <meta name="description" content="Cloudhook Courier est un jeu de plateforme dynamique original. Guidez une martre des nuages ​​à travers les anneaux d&#39;aurores, attachez-la aux ancres..." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Le Courrier des Nuages | WeightPlay" />
-    <meta property="og:description" content="Attrape les anneaux nuageux, crée un élan de pendule et livre chaque colis sans toucher aux crocs de l’orage." />
+    <meta property="og:title" content="Courrier Cloudhook | WeightPlay" />
+    <meta property="og:description" content="Cloudhook Courier est un jeu de plateforme dynamique original. Guidez une martre des nuages ​​à travers les anneaux d&#39;aurores, attachez-la aux ancres..." />
     <meta property="og:url" content="https://weightplay.com/fr/games/animal-cloudhook-courier/" />
     <meta property="og:image" content="https://weightplay.com/games/animal-cloudhook-courier/cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Le Courrier des Nuages | WeightPlay" />
-    <meta name="twitter:description" content="Attrape les anneaux nuageux, crée un élan de pendule et livre chaque colis sans toucher aux crocs de l’orage." />
+    <meta name="twitter:title" content="Courrier Cloudhook | WeightPlay" />
+    <meta name="twitter:description" content="Cloudhook Courier est un jeu de plateforme dynamique original. Guidez une martre des nuages ​​à travers les anneaux d&#39;aurores, attachez-la aux ancres..." />
     <meta name="twitter:image" content="https://weightplay.com/games/animal-cloudhook-courier/cover.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "Le Courrier des Nuages",
+  "name": "Courrier Cloudhook",
   "alternateName": "Cloudhook Courier",
   "url": "https://weightplay.com/fr/games/animal-cloudhook-courier/",
   "image": "https://weightplay.com/games/animal-cloudhook-courier/cover.webp",
-  "description": "Attrape les anneaux nuageux, crée un élan de pendule et livre chaque colis sans toucher aux crocs de l’orage.",
+  "description": "Cloudhook Courier est un jeu de plateforme dynamique original. Guidez une martre des nuages ​​à travers les anneaux d'aurores, attachez-la aux ancres...",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -56,7 +57,7 @@
   "operatingSystem": "Any modern web browser",
   "genre": [
     "Action",
-    "Arcades",
+    "Plate-forme",
     "Animal"
   ],
   "audience": {
@@ -67,38 +68,39 @@
 }
     </script>
   </head>
-  <body data-game-id="animal-cloudhook-courier" data-screen="main">
+  <body data-game-id="animal-cloudhook-courier" data-wp-game-id="animal-cloudhook-courier" data-screen="main" data-wp-combined-sound="true" data-runtime-localize="off">
     <main class="shell" id="app">
-      <section id="mainScreen" class="screen main-screen">
-        <header class="topbar"><a class="brand-back" href="/" aria-label="Back to WeightPlay">← <span>W</span></a><div><p class="eyebrow" id="eyebrow"></p><h1 id="title">Le Courrier des Nuages</h1></div><label class="locale"><span id="languageLabel">Language</span><select id="localeSelect" aria-label="Language"></select></label></header>
-        <div class="main-grid"><div><p class="coming" id="coming"></p><p class="lede" id="tagline"></p><div class="poster cloudhook-poster" aria-hidden="true"><span class="poster-ring ring-a"></span><span class="poster-ring ring-b"></span><span class="poster-courier">✦</span><span class="poster-lantern">⌂</span></div></div><div class="main-copy"><p class="objective" id="objective"></p><button id="startBtn" class="primary" type="button"></button><button id="soundBtn" class="secondary" type="button" aria-pressed="true"></button><div class="guide"><h2 id="guideTitle"></h2><p id="guideBody"></p><p id="guideControls"></p></div></div></div>
+      <section id="mainScreen" class="screen main-screen" data-screen="main">
+        <header class="topbar"><a class="brand-back" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><div><p class="eyebrow" id="eyebrow"></p><h1 id="title">Courrier Cloudhook</h1></div><label class="locale"><span id="languageLabel">Language</span><select id="localeSelect" aria-label="Language"></select></label></header>
+        <div class="main-grid"><div><p class="coming" id="coming"></p><p class="lede" id="tagline"></p><div class="poster cloudhook-poster wonder-main-cover" role="img" aria-label="Cloudhook Courier cover"><span class="poster-ring ring-a"></span><span class="poster-ring ring-b"></span><span class="poster-courier">✦</span><span class="poster-lantern">⌂</span></div></div><div class="main-copy"><p class="objective" id="objective"></p><button id="startBtn" class="primary" type="button"></button><button id="soundBtn" class="secondary" type="button" aria-pressed="true"></button><div class="guide"><h2 id="guideTitle"></h2><p id="guideBody"></p><p id="guideControls"></p></div></div></div>
       </section>
-      <section id="stageScreen" class="screen stage-screen" hidden><header class="section-head"><button class="icon-btn" id="stageBack" type="button" aria-label="Back to Main">←</button><div><p class="eyebrow" id="stageEyebrow"></p><h2 id="stageTitle"></h2></div><button class="secondary compact" id="stageSoundBtn" type="button"></button></header><p class="stage-help" id="stageHelp"></p><div class="stage-grid" id="stageGrid"></div></section>
-      <section id="battleScreen" class="screen battle-screen" hidden><header class="section-head battle-head"><button class="icon-btn" id="battleBack" type="button" aria-label="Back to Stages">←</button><div><p class="eyebrow" id="battleEyebrow"></p><h2 id="battleTitle"></h2></div><div class="hud"><span id="scoreLabel"></span><span id="timeLabel"></span></div></header><p class="battle-status" id="battleStatus" aria-live="polite"></p><div class="canvas-wrap"><canvas id="gameCanvas" width="960" height="540" aria-label="Cloudhook Courier play area"></canvas></div><div class="touch-controls" aria-label="Game controls"><button class="control" id="nudgeLeft" type="button">◀</button><button class="control tether" id="tetherBtn" type="button"></button><button class="control" id="nudgeRight" type="button">▶</button></div><p class="control-hint" id="controlHint"></p><button class="restart" id="restartBtn" type="button"></button></section>
-      <section id="resultScreen" class="screen result-screen" hidden><div class="result-card"><p class="eyebrow" id="resultEyebrow"></p><h2 id="resultTitle"></h2><p class="result-copy" id="resultCopy"></p><div class="stats"><span id="resultScore"></span><span id="resultTime"></span><span id="resultBest"></span></div><div class="result-actions"><button id="nextBtn" class="primary" type="button"></button><button id="retryBtn" class="secondary" type="button"></button><button id="resultStagesBtn" class="secondary" type="button"></button></div></div></section>
+      <section id="stageScreen" class="screen stage-screen" data-screen="stage" hidden><header class="section-head"><button class="icon-btn" id="stageBack" data-wp-return="main" type="button" aria-label="Back to Main">←</button><div><p class="eyebrow" id="stageEyebrow"></p><h2 id="stageTitle"></h2></div><button class="secondary compact" id="stageSoundBtn" type="button"></button></header><p class="stage-help" id="stageHelp"></p><div class="stage-grid" id="stageGrid" data-wp-stage-rail data-wp-stage-total="6"></div></section>
+      <section id="battleScreen" class="screen battle-screen" data-screen="battle" hidden><header class="section-head battle-head"><button class="icon-btn" id="battleBack" data-wp-return="stage" type="button" aria-label="Back to Stages">←</button><div><p class="eyebrow" id="battleEyebrow"></p><h2 id="battleTitle"></h2></div><div class="hud"><span id="scoreLabel"></span><span id="timeLabel"></span></div></header><p class="battle-status" id="battleStatus" aria-live="polite"></p><div class="canvas-wrap"><canvas id="gameCanvas" width="960" height="540" aria-label="Cloudhook Courier play area"></canvas></div><div class="touch-controls" aria-label="Game controls"><button class="control" id="nudgeLeft" type="button">◀</button><button class="control tether" id="tetherBtn" type="button"></button><button class="control" id="nudgeRight" type="button">▶</button></div><p class="control-hint" id="controlHint"></p><button class="restart" id="restartBtn" type="button"></button></section>
+      <section id="resultScreen" class="screen result-screen" data-screen="result" hidden><div class="result-card"><p class="eyebrow" id="resultEyebrow"></p><h2 id="resultTitle"></h2><p class="result-copy" id="resultCopy"></p><div class="stats"><span id="resultScore"></span><span id="resultTime"></span><span id="resultBest"></span></div><div class="result-actions"><button id="nextBtn" class="primary" type="button"></button><button id="retryBtn" class="secondary" type="button"></button><button id="resultStagesBtn" class="secondary" type="button"></button></div></div></section>
     </main>
     <script src="/src/site-config.js?v=20260721-locale13-1"></script>
     <script src="/src/i18n.js?v=20260731-owner-preview5"></script>
     <script src="/src/runtime-locales/fr.js?v=20260808-locale-static1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-    <script src="locales.js"></script><script src="game.js"></script>
-  <section class="game-page-info game-page-info-static" aria-label="Informations sur le jeu Le Courrier des Nuages">
+    <script src="locales.js"></script><script src="game.js"></script><section class="game-page-info game-page-info-static" aria-label="Informations sur le jeu Courrier Cloudhook">
     
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2>Le Courrier des Nuages</h2><p>Attrape les anneaux nuageux, crée un élan de pendule et livre chaque colis sans toucher aux crocs de l’orage.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Type de jeu</span><strong>Action de parcours au grappin</strong></div><div class="game-info-fact"><span>Genre</span><strong>Action · Arcades · Animal</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2>Courrier Cloudhook</h2><p>Cloudhook Courier est un jeu de plateforme dynamique original. Guidez une martre des nuages ​​à travers les anneaux d&#39;aurores, attachez-la aux ancres mobiles et livrez chaque colis au but de la lanterne.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Type de jeu</span><strong>Action de grappin et de plateforme pivotante</strong></div><div class="game-info-fact"><span>Genre</span><strong>Action · Plate-forme · Animal</strong></div><div class="game-info-fact"><span>Difficulté</span><strong>Facile à difficile</strong></div><div class="game-info-fact"><span>Durée estimée</span><strong>3 à 8 minutes par étape</strong></div></div>
     </div>
     <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>La progression est-elle enregistrée ?</dt><dd>Oui, uniquement dans ce navigateur.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Univers et mission</h3><p>Un coursier martre des nuages traverse six routes de vent où chaque colis dépend d&#39;un balancement net, d&#39;un lâcher volontaire et d&#39;un atterrissage sûr. Chaque route transforme une courte livraison en problème de timing lisible.</p></div>
+      <div class="game-info-section"><h3>Fonctionnement du jeu</h3><p>Maintenez Tether ou Space pour vous attacher à l’ancre visible la plus proche, puis relâchez pour transporter l’élan vers l’arc suivant. Les commandes gauche et droite ou les commandes de déplacement ajustent le vol lorsqu&#39;il est attaché et en plein air.</p>
+<p>Récupérez chaque colis et atteignez l&#39;objectif de la lanterne pour vider la scène. Une collision ou une chute de pointe produit un résultat d&#39;échec ; les temps clairs et les déverrouillages d’étape restent dans ce navigateur.</p></div>
+      <div class="game-info-section"><h3>Comment jouer</h3><ol><li>Choisissez un niveau déverrouillé dans Stage et lisez le parcours des ancres, les colis et la disposition des dangers avant d&#39;entrer dans Battle.</li><li>Utilisez Gauche et Droite ou les commandes de déplacement tactile pour façonner l&#39;approche, puis maintenez Tether ou Espace lorsqu&#39;une ancre est à portée.</li><li>Relâchez en haut ou sur le côté avant du swing pour poursuivre l&#39;élan vers l&#39;anneau suivant ; rattachez-le uniquement lorsque l&#39;itinéraire suivant est lisible.</li><li>Récupérez chaque colis et touchez le but de la lanterne. Une livraison propre ouvre le résultat, tandis qu&#39;une collision ou une chute ouvre un résultat d&#39;échec avec Réessayer.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Conseils</h3><ul><li>Accrochez-vous assez tôt pour former un arc stable, mais lâchez-vous avant que la corde ne vous tire sous la prochaine ligne de plateformes.</li><li>Utilisez des tapotements directionnels courts pendant un swing ; une longue attente peut dépasser l&#39;ancre suivante ou pousser le coursier dans une pointe.</li><li>Les ancres en mouvement révèlent leur rythme. Regardez un cycle complet avant de vous engager lorsqu&#39;un itinéraire semble étroit.</li><li>Lorsqu&#39;un vol échoue, modifiez une décision de libération à la fois afin que le nouveau vol vous indique quelle partie de l&#39;itinéraire était dangereuse.</li></ul></div>
+      <div class="game-info-section"><h3>Progression et difficulté</h3><p>Six étapes écrites commencent par des ancres fixes et deux parcelles. Les itinéraires ultérieurs ajoutent du vent, des ancres mobiles, des chaînes plus longues, plus de parcelles et des champs de pointes qui exigent un calendrier de libération plus serré.</p></div>
+      <div class="game-info-section"><h3>Note de conception</h3><p>Cloudhook Courier conserve un espace de jeu logique sur le téléphone, le paysage et le bureau. Le toucher, la souris et le clavier partagent le même état d&#39;attache, de relâchement et de poussée, tandis que Main, Stage, Battle et Result restent des écrans séparés avec des retours directs. The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Pour les parents</h3><p>Ce jeu par navigateur général n&#39;a pas de compte, d&#39;achat, de chat, de classement ou de flux publicitaire. Les étapes effacées, les meilleurs temps, la langue, le son et les préférences restent dans le profil de navigateur actuel et peuvent être réinitialisés lorsque les données du site sont effacées. You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.</p></div>
+      <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Puis-je diriger pendant que je suis accroché ?</dt><dd>Oui. Gauche et Droite ou les commandes de déplacement ajustent le mouvement horizontal du coursier pendant que l&#39;attache porte la balançoire.</dd></div><div><dt>Quand dois-je libérer ?</dt><dd>Relâchez près du haut ou du côté avant de l&#39;arc lorsque la prochaine ligne d&#39;ancrage, de parcelle ou de lanterne est dégagée.</dd></div><div><dt>Quelles sont les causes d’un échec d’étape ?</dt><dd>Toucher un pic ou tomber en dehors de la route met fin à la tentative et ouvre un résultat d&#39;échec.</dd></div><div><dt>Le progrès sauve-t-il ?</dt><dd>Les niveaux terminés, les déblocages et les meilleurs temps sont enregistrés localement dans ce navigateur.</dd></div><div><dt>Which controls and screen sizes are supported?</dt><dd>The same rules support touch, mouse, and keyboard where the game uses those inputs. The interface scales as one logical layout across the required phone, landscape, and desktop viewports.</dd></div><div><dt>Can progress move automatically to another device?</dt><dd>No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.</dd></div></dl></div>
 
     </div>
   </section>
-</body>
+<script src="../../src/game-page-info.js?v=20260816-cloudhook-guide1"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
+  </body>
 </html>

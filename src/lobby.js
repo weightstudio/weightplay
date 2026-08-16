@@ -12,8 +12,23 @@ const allLobbyGames = [...lobby.games];
 // GENERATED GAMEPLAY REVIEW PASSES START
 // Derived from review/database/GAMEPLAY_REVIEW_STATUS.md. Do not edit by hand.
 const verifiedGameplayReviewPasses = Object.freeze({
-  "animal-frost-maze": {
-    "gameVersion": "v1",
+  "animal-trap-trail": {
+    "gameVersion": "v2",
+    "interfaceVersion": 6,
+    "overall": 9.1
+  },
+  "animal-canopy-cut": {
+    "gameVersion": "v4",
+    "interfaceVersion": 6,
+    "overall": 9.1
+  },
+  "animal-bounce-brawl": {
+    "gameVersion": "v3",
+    "interfaceVersion": 6,
+    "overall": 9.1
+  },
+  "animal-flip-foundry": {
+    "gameVersion": "v2",
     "interfaceVersion": 6,
     "overall": 9.1
   }

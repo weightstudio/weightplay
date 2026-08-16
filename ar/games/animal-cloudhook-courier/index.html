@@ -21,31 +21,32 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
     <meta name="robots" content="noindex,nofollow" />
     <meta name="weightplay-audience" content="general" />
+    <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="weightplay-release-state" content="coming-soon" />
     <meta name="weightplay-game-id" content="animal-cloudhook-courier" />
-    <title>ساعي خطافات السحاب | WeightPlay</title>
+    <title>كلاودهوك ساعي | WeightPlay</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%2378e2dc'/%3E%3Cpath d='M18 36c12-22 22-22 28-8' fill='none' stroke='%23071627' stroke-width='6'/%3E%3C/svg%3E" />
-    <link rel="stylesheet" href="style.css" /><link rel="stylesheet" href="responsive.css" />
-    <meta name="description" content="التقط حلقات السحاب وابنِ تأرجحاً بندولياً وسلّم كل طرد دون لمس أنياب العاصفة." />
+    <link rel="stylesheet" href="../../src/game-page-info.css" /><link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260802-title-parity3" /><link rel="stylesheet" href="style.css" /><link rel="stylesheet" href="responsive.css" />
+    <meta name="description" content="Cloudhook Courier هي لعبة منصة زخم أصلية. قم بتوجيه حيوان الدلق عبر حلقات الشفق القطبي، ثم اربطه بالمراسي المتحركة، وقم بتوصيل كل طرد إلى هدف الفانوس." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="ساعي خطافات السحاب | WeightPlay" />
-    <meta property="og:description" content="التقط حلقات السحاب وابنِ تأرجحاً بندولياً وسلّم كل طرد دون لمس أنياب العاصفة." />
+    <meta property="og:title" content="كلاودهوك ساعي | WeightPlay" />
+    <meta property="og:description" content="Cloudhook Courier هي لعبة منصة زخم أصلية. قم بتوجيه حيوان الدلق عبر حلقات الشفق القطبي، ثم اربطه بالمراسي المتحركة، وقم بتوصيل كل طرد إلى هدف الفانوس." />
     <meta property="og:url" content="https://weightplay.com/ar/games/animal-cloudhook-courier/" />
     <meta property="og:image" content="https://weightplay.com/games/animal-cloudhook-courier/cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="ساعي خطافات السحاب | WeightPlay" />
-    <meta name="twitter:description" content="التقط حلقات السحاب وابنِ تأرجحاً بندولياً وسلّم كل طرد دون لمس أنياب العاصفة." />
+    <meta name="twitter:title" content="كلاودهوك ساعي | WeightPlay" />
+    <meta name="twitter:description" content="Cloudhook Courier هي لعبة منصة زخم أصلية. قم بتوجيه حيوان الدلق عبر حلقات الشفق القطبي، ثم اربطه بالمراسي المتحركة، وقم بتوصيل كل طرد إلى هدف الفانوس." />
     <meta name="twitter:image" content="https://weightplay.com/games/animal-cloudhook-courier/cover.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "ساعي خطافات السحاب",
+  "name": "كلاودهوك ساعي",
   "alternateName": "Cloudhook Courier",
   "url": "https://weightplay.com/ar/games/animal-cloudhook-courier/",
   "image": "https://weightplay.com/games/animal-cloudhook-courier/cover.webp",
-  "description": "التقط حلقات السحاب وابنِ تأرجحاً بندولياً وسلّم كل طرد دون لمس أنياب العاصفة.",
+  "description": "Cloudhook Courier هي لعبة منصة زخم أصلية. قم بتوجيه حيوان الدلق عبر حلقات الشفق القطبي، ثم اربطه بالمراسي المتحركة، وقم بتوصيل كل طرد إلى هدف الفانوس.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -56,7 +57,7 @@
   "operatingSystem": "Any modern web browser",
   "genre": [
     "العمل",
-    "أركيد",
+    "منصة",
     "حيوان"
   ],
   "audience": {
@@ -67,38 +68,39 @@
 }
     </script>
   </head>
-  <body data-game-id="animal-cloudhook-courier" data-screen="main">
+  <body data-game-id="animal-cloudhook-courier" data-wp-game-id="animal-cloudhook-courier" data-screen="main" data-wp-combined-sound="true" data-runtime-localize="off">
     <main class="shell" id="app">
-      <section id="mainScreen" class="screen main-screen">
-        <header class="topbar"><a class="brand-back" href="/" aria-label="Back to WeightPlay">← <span>W</span></a><div><p class="eyebrow" id="eyebrow"></p><h1 id="title">ساعي خطافات السحاب</h1></div><label class="locale"><span id="languageLabel">Language</span><select id="localeSelect" aria-label="Language"></select></label></header>
-        <div class="main-grid"><div><p class="coming" id="coming"></p><p class="lede" id="tagline"></p><div class="poster cloudhook-poster" aria-hidden="true"><span class="poster-ring ring-a"></span><span class="poster-ring ring-b"></span><span class="poster-courier">✦</span><span class="poster-lantern">⌂</span></div></div><div class="main-copy"><p class="objective" id="objective"></p><button id="startBtn" class="primary" type="button"></button><button id="soundBtn" class="secondary" type="button" aria-pressed="true"></button><div class="guide"><h2 id="guideTitle"></h2><p id="guideBody"></p><p id="guideControls"></p></div></div></div>
+      <section id="mainScreen" class="screen main-screen" data-screen="main">
+        <header class="topbar"><a class="brand-back" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><div><p class="eyebrow" id="eyebrow"></p><h1 id="title">كلاودهوك ساعي</h1></div><label class="locale"><span id="languageLabel">Language</span><select id="localeSelect" aria-label="Language"></select></label></header>
+        <div class="main-grid"><div><p class="coming" id="coming"></p><p class="lede" id="tagline"></p><div class="poster cloudhook-poster wonder-main-cover" role="img" aria-label="Cloudhook Courier cover"><span class="poster-ring ring-a"></span><span class="poster-ring ring-b"></span><span class="poster-courier">✦</span><span class="poster-lantern">⌂</span></div></div><div class="main-copy"><p class="objective" id="objective"></p><button id="startBtn" class="primary" type="button"></button><button id="soundBtn" class="secondary" type="button" aria-pressed="true"></button><div class="guide"><h2 id="guideTitle"></h2><p id="guideBody"></p><p id="guideControls"></p></div></div></div>
       </section>
-      <section id="stageScreen" class="screen stage-screen" hidden><header class="section-head"><button class="icon-btn" id="stageBack" type="button" aria-label="Back to Main">←</button><div><p class="eyebrow" id="stageEyebrow"></p><h2 id="stageTitle"></h2></div><button class="secondary compact" id="stageSoundBtn" type="button"></button></header><p class="stage-help" id="stageHelp"></p><div class="stage-grid" id="stageGrid"></div></section>
-      <section id="battleScreen" class="screen battle-screen" hidden><header class="section-head battle-head"><button class="icon-btn" id="battleBack" type="button" aria-label="Back to Stages">←</button><div><p class="eyebrow" id="battleEyebrow"></p><h2 id="battleTitle"></h2></div><div class="hud"><span id="scoreLabel"></span><span id="timeLabel"></span></div></header><p class="battle-status" id="battleStatus" aria-live="polite"></p><div class="canvas-wrap"><canvas id="gameCanvas" width="960" height="540" aria-label="Cloudhook Courier play area"></canvas></div><div class="touch-controls" aria-label="Game controls"><button class="control" id="nudgeLeft" type="button">◀</button><button class="control tether" id="tetherBtn" type="button"></button><button class="control" id="nudgeRight" type="button">▶</button></div><p class="control-hint" id="controlHint"></p><button class="restart" id="restartBtn" type="button"></button></section>
-      <section id="resultScreen" class="screen result-screen" hidden><div class="result-card"><p class="eyebrow" id="resultEyebrow"></p><h2 id="resultTitle"></h2><p class="result-copy" id="resultCopy"></p><div class="stats"><span id="resultScore"></span><span id="resultTime"></span><span id="resultBest"></span></div><div class="result-actions"><button id="nextBtn" class="primary" type="button"></button><button id="retryBtn" class="secondary" type="button"></button><button id="resultStagesBtn" class="secondary" type="button"></button></div></div></section>
+      <section id="stageScreen" class="screen stage-screen" data-screen="stage" hidden><header class="section-head"><button class="icon-btn" id="stageBack" data-wp-return="main" type="button" aria-label="Back to Main">←</button><div><p class="eyebrow" id="stageEyebrow"></p><h2 id="stageTitle"></h2></div><button class="secondary compact" id="stageSoundBtn" type="button"></button></header><p class="stage-help" id="stageHelp"></p><div class="stage-grid" id="stageGrid" data-wp-stage-rail data-wp-stage-total="6"></div></section>
+      <section id="battleScreen" class="screen battle-screen" data-screen="battle" hidden><header class="section-head battle-head"><button class="icon-btn" id="battleBack" data-wp-return="stage" type="button" aria-label="Back to Stages">←</button><div><p class="eyebrow" id="battleEyebrow"></p><h2 id="battleTitle"></h2></div><div class="hud"><span id="scoreLabel"></span><span id="timeLabel"></span></div></header><p class="battle-status" id="battleStatus" aria-live="polite"></p><div class="canvas-wrap"><canvas id="gameCanvas" width="960" height="540" aria-label="Cloudhook Courier play area"></canvas></div><div class="touch-controls" aria-label="Game controls"><button class="control" id="nudgeLeft" type="button">◀</button><button class="control tether" id="tetherBtn" type="button"></button><button class="control" id="nudgeRight" type="button">▶</button></div><p class="control-hint" id="controlHint"></p><button class="restart" id="restartBtn" type="button"></button></section>
+      <section id="resultScreen" class="screen result-screen" data-screen="result" hidden><div class="result-card"><p class="eyebrow" id="resultEyebrow"></p><h2 id="resultTitle"></h2><p class="result-copy" id="resultCopy"></p><div class="stats"><span id="resultScore"></span><span id="resultTime"></span><span id="resultBest"></span></div><div class="result-actions"><button id="nextBtn" class="primary" type="button"></button><button id="retryBtn" class="secondary" type="button"></button><button id="resultStagesBtn" class="secondary" type="button"></button></div></div></section>
     </main>
     <script src="/src/site-config.js?v=20260721-locale13-1"></script>
     <script src="/src/i18n.js?v=20260731-owner-preview5"></script>
     <script src="/src/runtime-locales/ar.js?v=20260808-locale-static1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-    <script src="locales.js"></script><script src="game.js"></script>
-  <section class="game-page-info game-page-info-static" aria-label="ساعي خطافات السحاب معلومات اللعبة">
+    <script src="locales.js"></script><script src="game.js"></script><section class="game-page-info game-page-info-static" aria-label="كلاودهوك ساعي معلومات اللعبة">
     
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>ساعي خطافات السحاب</h2><p>التقط حلقات السحاب وابنِ تأرجحاً بندولياً وسلّم كل طرد دون لمس أنياب العاصفة.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>حركة مسارات بخطاف</strong></div><div class="game-info-fact"><span>النوع</span><strong>العمل · أركيد · حيوان</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>كلاودهوك ساعي</h2><p>Cloudhook Courier هي لعبة منصة زخم أصلية. قم بتوجيه حيوان الدلق عبر حلقات الشفق القطبي، ثم اربطه بالمراسي المتحركة، وقم بتوصيل كل طرد إلى هدف الفانوس.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>منصة عمل الكلاّب والتأرجح</strong></div><div class="game-info-fact"><span>النوع</span><strong>العمل · منصة · حيوان</strong></div><div class="game-info-fact"><span>صعوبة</span><strong>من السهل التحدي</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>3-8 دقائق لكل مرحلة</strong></div></div>
     </div>
     <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل يتم حفظ التقدم؟</dt><dd>نعم، فقط في هذا المتصفح.</dd></div></dl></div>
+      <div class="game-info-section"><h3>العالم والرسالة</h3><p>يعبر ساعي سمور السحاب ستة مسارات للرياح، حيث تعتمد كل طرد على تأرجح نظيف وإفلات مقصود وهبوط آمن. يحول كل مسار عملية التسليم القصيرة إلى مسألة توقيت واضحة.</p></div>
+      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>أمسك الحبل أو المسافة لربطها بأقرب مرساة مرئية، ثم حرّرها لتحمل الزخم إلى القوس التالي. تعمل أدوات التحكم في اليسار واليمين أو أدوات التحكم في الدفع على ضبط الرحلة أثناء تثبيتها وفي الهواء الطلق.</p>
+<p>جمع كل الطرود والوصول إلى هدف الفانوس لمسح المسرح. يؤدي الاصطدام أو السقوط إلى فشل النتيجة؛ تبقى الأوقات الواضحة وعمليات إلغاء قفل المراحل في هذا المتصفح.</p></div>
+      <div class="game-info-section"><h3>كيفية اللعب</h3><ol><li>اختر مرحلة مفتوحة من Stage واقرأ مسار المراسي والطرود وتوزيع المخاطر قبل الدخول إلى Battle.</li><li>استخدم اليسار واليمين أو عناصر التحكم في الدفع باللمس لتشكيل النهج، ثم اضغط مع الاستمرار على Tether أو Space عندما يكون المرساة في النطاق.</li><li>حرر من الجانب العلوي أو الأمامي من الأرجوحة لحمل الزخم نحو الحلقة التالية؛ أعد التوصيل فقط عندما يكون المسار التالي قابلاً للقراءة.</li><li>جمع كل الطرود والمس هدف الفانوس. يؤدي التسليم النظيف إلى فتح النتيجة، بينما يؤدي الاصطدام أو السقوط إلى فتح نتيجة فاشلة مع إعادة المحاولة.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>نصائح الاستراتيجية</h3><ul><li>تعلّق مبكراً بما يكفي لبناء قوس ثابت، لكن أفلت قبل أن يسحبك الحبل إلى أسفل خط المنصة التالية.</li><li>استخدم الصنابير الاتجاهية القصيرة أثناء التأرجح؛ يمكن أن يؤدي الضغط لفترة طويلة إلى تجاوز المرساة التالية أو دفع حامل البريد إلى ارتفاع.</li><li>تكشف المراسي المتحركة عن إيقاعها. شاهد دورة كاملة قبل الالتزام عندما يبدو الطريق ضيقًا.</li><li>عند فشل التشغيل، قم بتغيير قرار الإصدار واحدًا في كل مرة حتى تعلمك الرحلة الجديدة أي جزء من المسار كان غير آمن.</li></ul></div>
+      <div class="game-info-section"><h3>الحملة وصعوبة النمو</h3><p>ست مراحل مؤلفة تبدأ بمراسي ثابتة وطردين. تضيف الطرق اللاحقة الرياح والمراسي المتحركة والسلاسل الأطول والمزيد من الطرود والحقول المتصاعدة التي تتطلب توقيتًا أكثر صرامة للإطلاق.</p></div>
+      <div class="game-info-section"><h3>مذكرة تصميم المطور</h3><p>يحتفظ Cloudhook Courier بمساحة تشغيل منطقية واحدة عبر الهاتف والمناظر الطبيعية وسطح المكتب. يتشارك اللمس والماوس ولوحة المفاتيح في نفس حالة الربط والتحرير والدفع، بينما تظل الشاشة الرئيسية والمسرح والمعركة والنتيجة شاشات منفصلة مع عوائد مباشرة. The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.</p></div>
+      <div class="game-info-section game-info-parent"><h3>ملاحظة الوالدين</h3><p>لا تحتوي لعبة المتصفح العامة هذه على حساب أو شراء أو دردشة أو لوحة صدارة أو تدفق إعلاني. يتم مسح المرحلة، وتظل أفضل الأوقات واللغة والصوت والتفضيلات في ملف تعريف المتصفح الحالي ويمكن إعادة تعيينها عند مسح بيانات الموقع. You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.</p></div>
+      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل يمكنني التوجيه أثناء التعلق؟</dt><dd>نعم. تعمل عناصر التحكم على اليسار واليمين أو عناصر التحكم في الدفع على ضبط الحركة الأفقية للساعي بينما يحمل الحبل التأرجح.</dd></div><div><dt>متى يجب أن أفرج؟</dt><dd>حرر بالقرب من الجانب العلوي أو الأمامي من القوس عندما يكون خط المرساة أو الطرد أو الفانوس التالي واضحًا.</dd></div><div><dt>ما الذي يسبب مرحلة فاشلة؟</dt><dd>يؤدي لمس ارتفاع أو السقوط خارج المسار إلى إنهاء المحاولة وفتح نتيجة الفشل.</dd></div><div><dt>هل التقدم ينقذ؟</dt><dd>تُحفظ المراحل المكتملة وعمليات الفتح وأفضل الأوقات محلياً في هذا المتصفح.</dd></div><div><dt>Which controls and screen sizes are supported?</dt><dd>The same rules support touch, mouse, and keyboard where the game uses those inputs. The interface scales as one logical layout across the required phone, landscape, and desktop viewports.</dd></div><div><dt>Can progress move automatically to another device?</dt><dd>No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.</dd></div></dl></div>
 
     </div>
   </section>
-</body>
+<script src="../../src/game-page-info.js?v=20260816-cloudhook-guide1"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
+  </body>
 </html>
