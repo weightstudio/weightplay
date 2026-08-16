@@ -177,7 +177,7 @@
     }
     if (!document.querySelector('script[src*="game-page-info.js"]')) {
       const script = document.createElement("script");
-      script.src = `${new URL("game-page-info.js", sharedAssetBase).href}?v=20260815-snake-guide-v3`;
+      script.src = `${new URL("game-page-info.js", sharedAssetBase).href}?v=20260817-bus-jam-guide-v12`;
       document.body.append(script);
     }
   }

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="A hands-on design note about how Space Rocks teaches inertia without stopping the game or hiding the player behind a manual." />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:title" content="How to Teach Inertia Without Pausing the Game - WeightPlay Blog" />
+    <meta property="og:description" content="Space Rocks uses a short drift cue, a visible velocity guide, and a forgiving opening to teach a rule players need to feel." />
+    <meta property="og:url" content="https://weightplay.com/blog/space-rocks-inertia-tutorial/" />
+    <meta property="og:image" content="https://weightplay.com/assets/space-rocks-cover.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://weightplay.com/blog/space-rocks-inertia-tutorial/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/blog/space-rocks-inertia-tutorial/" />
+    <title>How to Teach Inertia Without Pausing the Game - WeightPlay Blog</title>
+    <link rel="stylesheet" href="../blog.css?v=20260731-blog2" />
+  </head>
+  <body>
+    <main class="blog-shell">
+      <nav class="blog-nav" aria-label="Blog navigation">
+        <a class="brand" href="/">WeightPlay</a>
+        <div class="blog-nav-links"><a href="/">Game Lobby</a><a href="/contact.html">Contact</a></div>
+      </nav>
+      <p class="article-back"><a href="../">&larr; All articles</a></p>
+      <header class="blog-hero">
+        <p class="eyebrow">WeightPlay Blog - Design notes</p>
+        <h1>How to Teach Inertia Without Pausing the Game</h1>
+        <p class="dek">Space Rocks uses a short drift cue, a visible velocity guide, and a forgiving opening to teach a rule players need to feel.</p>
+        <div class="article-meta"><span>By WeightStudio</span><span>August 16, 2026</span><span>4 min read</span></div>
+        <img src="../../assets/space-rocks-cover.webp" alt="Rux flying through crystal rocks in Space Rocks" style="width:100%;border-radius:18px;margin-top:28px;display:block;" />
+        <p><a class="primary" href="/en/games/space-rocks/">Play Space Rocks &rarr;</a></p>
+      </header>
+      <article class="blog-article">
+        <p class="lead">The first instruction in Space Rocks is not “destroy the rocks.” It is: “Tap thrust once, then watch the drift.” I tapped, released, and watched Rux keep moving. That was the lesson. The ship does not stop just because my finger does.</p>
+        <figure style="margin:28px 0;">
+          <img src="../../assets/space-rocks-battle.jpg" alt="Space Rocks Wave 1 battle field with Rux drifting among crystal fragments and a recovery message" loading="lazy" style="width:100%;max-width:720px;display:block;border-radius:18px;" />
+          <figcaption>The useful moment is not a completed tutorial box. It is noticing where the ship will be after the next input.</figcaption>
+        </figure>
+        <p>That is a small design problem, but it comes up in many browser games. How do you teach a physical rule when a paragraph can describe it but cannot make the player understand it?</p>
+        <h2>Teach the rule before the pressure</h2>
+        <p>In a normal shooter, a movement button often feels like a location command: press left, move left. Space Rocks asks for a different mental model. Thrust adds velocity, and the ship keeps drifting through the wraparound field. Turning changes the next arc; it does not erase the motion already in progress.</p>
+        <p>We tried to make that rule visible without stopping play. The opening gives the player a short safety window, a localized drift sentence, and a simple arrow in the Canvas showing the current velocity direction. The cue expires after a few seconds. It is there long enough to notice, but not long enough to become a permanent label.</p>
+        <p>That choice matters. A modal tutorial would be clearer in the narrow sense, but it would teach inertia while the player is not actually moving. The non-blocking cue lets the player learn from the same input that starts the run.</p>
+        <h2>A successful hit is better than a correct explanation</h2>
+        <p>In my local hands-on session on the English Space Rocks route, I tapped thrust, rotated in short steps, and fired in bursts. I cleared several large-to-small rock fragments and saw Rapid Fire appear. The run reached a score of 900 in Wave 1.</p>
+        <p>The important part was not the number. It was the sequence: fire, drift past the original line, turn, and make the next shot from a new position. Once the ship is moving, aiming and movement stop being separate jobs. Every shot also chooses where the ship will be a moment later.</p>
+        <h2>The recovery is part of the teaching</h2>
+        <p>I also made the mistake the opening is designed to reveal. A careless pass brought a rock into the ship's path. The ship reset, the Shield count dropped from five to three and later two, and the game showed “Careful — reset and keep going.” The round stayed alive.</p>
+        <p>That recovery is more useful than a clean explanation of collision rules. It shows the cost of ignoring momentum, then gives the player another attempt with the same rule still in view. The game does not remove the consequence; it keeps the consequence from ending the lesson too early.</p>
+        <h2>Three practical rules for teaching physics</h2>
+        <p>Space Rocks left us with a compact pattern that applies beyond space shooters:</p>
+        <ul>
+          <li><strong>Give the first input a low-cost runway.</strong> A player needs a moment to connect an action with its result before the field becomes crowded.</li>
+          <li><strong>Draw the invisible rule.</strong> The velocity arrow says “this is where the ship is going” more quickly than a definition of inertia.</li>
+          <li><strong>Let recovery preserve the lesson.</strong> A collision should change the next decision, not erase the player's chance to understand why it happened.</li>
+        </ul>
+        <p>There is a limit, of course. A cue cannot fix a control scheme that feels vague, and a forgiving opening cannot carry a player through every later wave. The player still has to rotate, fire, split the rocks, collect Rapid Fire, and save Shield for the guardian core.</p>
+        <p>If you want to feel the difference, <a href="/en/games/space-rocks/">try Space Rocks</a> and start with one thrust. Do not immediately hold it down. Watch where Rux goes after the input ends. That next position is the real control.</p>
+        <hr />
+        <p><em>This article was outlined with AI assistance and then checked and edited against the actual WeightPlay project and a hands-on play session by the WeightStudio team.</em></p>
+      </article>
+      <footer class="blog-footer"><a href="../">Back to Blog</a><a href="/">Back to WeightPlay</a><span>Copyright 2026 WeightStudio</span><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></footer>
+    </main>
+  </body>
+</html>

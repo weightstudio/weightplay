@@ -60,6 +60,7 @@ WeightPlay covers these game and content clusters:
 ## Current Playable Games
 
 - Arrow Escape: https://weightplay.com/en/games/arrow-escape/
+- Block Blast: https://weightplay.com/en/games/block-blast/
 - Hexa Sort: https://weightplay.com/en/games/hexa-sort/
 - Spider Solitaire: https://weightplay.com/en/games/spider-solitaire/
 - Maze Chase: https://weightplay.com/en/games/maze-chase/

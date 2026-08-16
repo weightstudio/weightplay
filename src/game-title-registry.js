@@ -877,7 +877,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Perni della Cripta Animale",
     "ru": "Звери: Штифты корневого хранилища",
     "hi": "पशु रूटवॉल्ट पिन",
-    "ar": "دبابيس Rootvault الحيوانية"
+    "ar": "دبابيس روتفولت الحيوانية"
   },
   "animal-sketchwheel-rally": {
     "__localizedExact": true,

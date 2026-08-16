@@ -1185,7 +1185,6 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Animal Auto Squad is a formation strategy game built around decisions made before combat. You unlock and train ten animal heroes, place up to six of them in a two-row squad, choose one expedition relic, and then watch the lineup resolve each clash automatically. The campaign contains 30 stages across Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel, and Void Crown. Every stage has five authored waves, while stages 5, 10, 15, 20, 25, and 30 end with a different regional Boss.": "Animal Auto Squad は、戦闘前に行われる決定を中心に構築されたフォーメーション戦略ゲームです。 10 人の動物ヒーローのロックを解除して訓練し、最大 6 人を 2 列の分隊に配置し、遠征遺物を 1 つ選択して、ラインナップが各衝突を自動的に解決するのを観察します。キャンペーンには、ソーンウッド、クリスタル洞窟、沈没遺跡、エンバーピーク、月明かりの城塞、ヴォイドクラウンにわたる 30 のステージが含まれています。各ステージには 5 つの作成されたウェーブがあり、ステージ 5、10、15、20、25、および 30 は異なる地域ボスで終了します。",
   "Animal Auto Squad is a free formation auto-battler. Train ten animal heroes, build a two-row squad, and clear 30 stages with six unique bosses.": "アニマルオート部隊は自由編成のオートバトラーです。 10 人の動物ヒーローを訓練し、2 列の分隊を編成し、6 つのユニークなボスがいる 30 のステージをクリアしてください。",
   "Animal Block Grove": "アニマルブロックグローブ",
-  "Animal Block Grove is a thirty-mission placement puzzle starring Moss Shell Taro and Rainbow Hop Mimi.": "アニマルブロックグローブは、モスシェル・タロとレインボーホップ・ミミが主役の30ミッションのブロック配置パズルです。",
   "Animal Block Grove | WeightPlay": "アニマルブロックグローブ | WeightPlay",
   "Animal Block Grove guide": "アニマルブロックグローブガイド",
   "Animal Bubble Bakery": "アニマルバブルベーカリー",

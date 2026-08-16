@@ -2437,8 +2437,14 @@ for (const game of window.WONDER_LOBBY.games) {
   delete game.internalTrial;
 }
 
-// Next-five Mode 2 candidates are promoted only after the exact Tester,
-// Gameplay Reviewer, Director, guide, preview, and release gates are complete.
+// Next-five Mode 2 candidates remain owner-preview only until the exact Tester,
+// Gameplay Reviewer, Director, guide, preview, and release gates are complete
+// and the owner confirms the complete player flow is usable.
+const ownerPreviewStatusText = {
+  en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정",
+  es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente",
+  ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا",
+};
 const nextFiveGeneralCandidates = [
   {
     id: "animal-trap-trail",
@@ -2488,24 +2494,20 @@ const nextFiveGeneralCandidates = [
 ];
 for (const candidate of nextFiveGeneralCandidates) {
   if (!window.WONDER_LOBBY.games.some((game) => game.id === candidate.id)) {
-    const { internalTrial, ...publicCandidate } = candidate;
+    const { internalTrial, ...previewCandidate } = candidate;
     window.WONDER_LOBBY.games.push({
-      ...publicCandidate,
-      status: "playable",
-      statusText: {
-        en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능",
-        es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile",
-        ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
-      },
-      previewVideo: `assets/previews/${candidate.id}-battle.webm`,
+      ...previewCandidate,
+      status: "planned",
+      statusText: { ...ownerPreviewStatusText },
+      internalTrial,
     });
   }
   if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(candidate.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(candidate.id);
 }
 
-// Researched next-batch builds. These entries are promoted only after the
-// exact Tester, Gameplay Reviewer, Director, Art, and preview gates are recorded
-// below; the explicit release fields keep the catalog state auditable.
+// Researched next-batch builds. Cloudhook Courier remains owner-preview only
+// after the owner usability report; the explicit release fields keep the
+// catalog state auditable.
 const researchedNextBatchCandidates = [
   {
     id: "animal-cloudhook-courier",
@@ -2527,7 +2529,12 @@ const researchedNextBatchCandidates = [
   },
 ];
 for (const candidate of researchedNextBatchCandidates) {
-  if (candidate.id === "animal-cloudhook-courier" || candidate.id === "animal-twin-switchyard") {
+  if (candidate.id === "animal-cloudhook-courier") {
+    candidate.status = "planned";
+    candidate.statusText = { ...ownerPreviewStatusText };
+    delete candidate.previewVideo;
+  }
+  if (candidate.id === "animal-twin-switchyard") {
     delete candidate.internalTrial;
     candidate.status = "playable";
     candidate.statusText = {
@@ -2538,7 +2545,7 @@ for (const candidate of researchedNextBatchCandidates) {
     candidate.previewVideo = `assets/previews/${candidate.id}-battle.webm`;
   }
 }
-const researchedComingSoonStatus = { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" };
+const researchedComingSoonStatus = ownerPreviewStatusText;
 for (const candidate of researchedNextBatchCandidates) {
   if (!window.WONDER_LOBBY.games.some((game) => game.id === candidate.id)) {
     window.WONDER_LOBBY.games.push({ ...candidate, status: candidate.status || "planned", statusText: candidate.statusText || { ...researchedComingSoonStatus } });
