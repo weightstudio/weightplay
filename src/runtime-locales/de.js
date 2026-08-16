@@ -1187,6 +1187,7 @@ window.WeightPlayGameRuntimeLocales["de"] = {
   "Animal Block Grove": "Tierblockhain",
   "Animal Block Grove | WeightPlay": "Tierblockhain | WeightPlay",
   "Animal Block Grove guide": "Animal Block Grove-Führer",
+  "Animal Block Grove is a thirty-mission placement puzzle starring Moss Shell Taro and Rainbow Hop Mimi.": "Tierblockhain ist ein Platzierungsrätsel mit 30 Missionen mit Moosschalen-Taro und Rainbow Hop Mimi.",
   "Animal Bubble Bakery": "Tierblasenbäckerei",
   "Animal Bubble Bakery - Complete Game Guide": "Animal Bubble Bakery – Komplette Spielanleitung",
   "Animal Bubble Bakery - WeightPlay": "Animal Bubble Bakery – WeightPlay",
