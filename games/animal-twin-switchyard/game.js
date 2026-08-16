@@ -72,4 +72,18 @@
   document.addEventListener("keydown",(event)=>{if(document.body.dataset.screen!=="battle")return;const left=event.key==="ArrowLeft"||event.key.toLowerCase()==="a";const right=event.key==="ArrowRight"||event.key.toLowerCase()==="d";if(left||right||event.key===" "||event.key==="ArrowUp"||event.key.toLowerCase()==="r")event.preventDefault();if(left){axis=-1;if(!event.repeat&&state)state.moves+=1;}if(right){axis=1;if(!event.repeat&&state)state.moves+=1;}if((event.key===" "||event.key==="ArrowUp")&&!event.repeat&&state&&!state.done){state.jumpQueued=true;state.moves+=1;}if(event.key.toLowerCase()==="r")startStage(current);});document.addEventListener("keyup",(event)=>{if((event.key==="ArrowLeft"||event.key.toLowerCase()==="a")&&axis<0)axis=0;if((event.key==="ArrowRight"||event.key.toLowerCase()==="d")&&axis>0)axis=0;});document.addEventListener("visibilitychange",()=>{hidden=document.hidden;last=performance.now();});
   const tick=(now)=>{const dt=Math.min(.032,Math.max(0,(now-last)/1000||0));last=now;if(!hidden){if(state&&!state.done){state.bodies.forEach((body)=>{if(state.jumpQueued&&body.ground){body.vy=-410;body.ground=false;beep(500,.04);} });state.jumpQueued=false;update(dt);}draw();updateHud();}raf=requestAnimationFrame(tick);};
    const routeLocale=document.documentElement.lang;locale=COPY[routeLocale]?routeLocale:storage("weightPlayLocale","en");if(!COPY[locale])locale="en";$("#localeSelect").innerHTML=ORDER.map((code)=>`<option value="${code}">${code}</option>`).join("");$("#localeSelect").value=locale;$("#localeSelect").addEventListener("change",(event)=>{locale=event.target.value;save("weightPlayLocale",locale);refresh();});soundEnabled=storage("weightplay_sound","on")!=="off";reset();refresh();setScreen("main");last=performance.now();raf=requestAnimationFrame(tick);
+  $("#stageBack").setAttribute("data-wp-return", "stage");
+  $("#stageScreen").setAttribute("data-wp-standard-stage-screen", "");
+  $("#stageGrid").setAttribute("data-wp-stage-rail", "");
+  $("#battleScreen").setAttribute("data-wp-logical-battle-canvas", "");
+  $("#stageScreen .section-head")?.classList.add("stage-header");
+  $("#battleScreen .section-head")?.classList.add("battle-header");
+  const inlineGuide = document.querySelector("#mainScreen .guide");
+  inlineGuide?.classList.remove("guide");
+  inlineGuide?.classList.add("main-howto");
+  const cleanGeneralGuide = () => document.querySelectorAll(".game-page-info .game-info-fact").forEach((fact) => {
+    if (/skills trained/i.test(fact.textContent || "")) fact.remove();
+  });
+  cleanGeneralGuide();
+  window.addEventListener("load", cleanGeneralGuide, { once: true });
 })();

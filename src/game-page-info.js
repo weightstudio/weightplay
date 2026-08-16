@@ -9529,6 +9529,28 @@
     localizedGames[code] ||= {};
     for (const [id, entry] of Object.entries(entries)) localizedGames[code][id] = { ...games[id], ...entry, difficulty: entry.difficulty || games[id].difficulty, time: entry.time || games[id].time, genre: entry.genre || games[id].genre, skills: entry.skills || games[id].skills, faq: entry.faq || games[id].faq };
   }
+  games["animal-twin-switchyard"] = {
+    title: "Twin Switchyard",
+    age: "9+",
+    difficulty: "Easy to Challenging",
+    time: "3-8 minutes per stage",
+    gameplay: "Synchronized Platform Puzzle",
+    genre: ["Puzzle", "Platform", "Animal"],
+    skills: ["Coordination", "Planning", "Timing"],
+    hideSkillsFact: true,
+    guideKicker: "WeightPlay Original Game Guide",
+    guideTitleSuffix: "Game Guide",
+    intro: "Twin Switchyard is an original synchronized platform puzzle. Guide an otter and a mountain goat through split lanes, flip signal gates, and gather every relay shard together.",
+    story: ["Two route keepers share one signal line: the otter handles the low lane while the mountain goat takes the high lane. Each switchyard asks both travelers to move through the same moment without leaving one behind."],
+    systems: ["The two characters advance from one shared input. Left and Right move both travelers across their separate lanes, while Jump gives both a timed hop. A gate can open one lane and close the other, so the useful route is always a coordination problem rather than a solo run.", "Relay shards are collected only when the correct traveler reaches them. A hazard collision resets the current stage attempt, while a clean route through every shard and the exit advances to Result. Stage progress and local best move counts stay in this browser."],
+    how: ["Choose an unlocked stage from Stage; read the lane rule and hazard preview before entering Battle.", "Use Left and Right or the on-screen controls to line up both travelers, then use Jump to clear a marked hazard.", "Watch the gate color and keep both travelers moving toward their own relay shards; one character can be safe while the other is still exposed.", "Collect every shard and reach the paired exit. A collision restarts the attempt, while a clear opens Result and the next stage."],
+    strategyTips: ["Plan the next two positions for both lanes before pressing Jump; a safe landing for one traveler can create a hazard for the other.", "Use short direction taps near gates instead of holding a lane change through the whole switchyard.", "Read the upper and lower lane markers together. The most obvious shard is not always the next safe pickup.", "When a stage fails, identify which traveler reached the danger first and adjust the shared timing rather than changing every move."],
+    progression: ["Six authored stages begin with one clear split and a forgiving jump. Later stages add alternating gates, moving hazards, staggered shards, narrower landing windows, and combinations that require both travelers to arrive at the exit together."],
+    designNote: "Twin Switchyard keeps one logical play space across phone, landscape, and desktop. Its shared movement, lane-specific hazards, touch buttons, mouse activation, and keyboard controls resolve to the same state, while Main, Stage, Battle, and Result remain separate screens with direct returns.",
+    parent: "This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Stage clears, best move counts, language, sound, and preferences stay in the current browser profile and may reset when site data is cleared.",
+    faq: [["Can the two travelers move independently?", "No. Each input moves the pair together, so the puzzle is about shared timing and lane planning."], ["What does a gate change?", "The visible gate rule changes which lane is open or safe at that moment; read it before committing to a jump."], ["What causes a failed stage?", "A traveler touching a marked hazard or leaving the playable route resets the current attempt."], ["Does progress save?", "Cleared stages and local best move counts are saved in this browser."]]
+  };
+  gameplayProfiles["animal-twin-switchyard"] = { gameplay: "Synchronized Platform Puzzle", genre: ["Puzzle", "Platform", "Animal"] };
   const reviewedGeneralGuides = window.WeightPlayGeneralReviewedGuides || {};
   for (const [code, localeData] of Object.entries(reviewedGeneralGuides)) {
     if (!localizedGames[code]) localizedGames[code] = {};
@@ -9563,6 +9585,7 @@
     "road-crosser",
     "alien-defender",
     "snake",
+    "animal-twin-switchyard",
   ].forEach(completeGuideStandard);
   render();
 })();
