@@ -97,6 +97,51 @@
       "Подсказка отмечает один шаг решения; клетку выбираете вы.",
       "संकेत हल का एक कदम दिखाता है; खाना आपको खुद चुनना है।",
       "يحدد التلميح خطوة من الحل؛ وما زلت تختار الخلية."
+    ),
+    cellOn: L(
+      "Light on",
+      "亮燈",
+      "亮灯",
+      "点灯",
+      "켜짐",
+      "encendida",
+      "acesa",
+      "allumée",
+      "an",
+      "accesa",
+      "включена",
+      "चालू",
+      "مضاءة"
+    ),
+    cellOff: L(
+      "Light off",
+      "熄燈",
+      "熄灯",
+      "消灯",
+      "꺼짐",
+      "apagada",
+      "apagada",
+      "éteinte",
+      "aus",
+      "spenta",
+      "выключена",
+      "बंद",
+      "مطفأة"
+    ),
+    cellLabel: L(
+      "Row {row}, Column {col}: {state}",
+      "第 {row} 列，第 {col} 欄：{state}",
+      "第 {row} 行，第 {col} 列：{state}",
+      "{row}行 {col}列：{state}",
+      "{row}행 {col}열: {state}",
+      "Fila {row}, columna {col}: {state}",
+      "Linha {row}, coluna {col}: {state}",
+      "Ligne {row}, colonne {col} : {state}",
+      "Zeile {row}, Spalte {col}: {state}",
+      "Riga {row}, colonna {col}: {state}",
+      "Строка {row}, столбец {col}: {state}",
+      "पंक्ति {row}, स्तंभ {col}: {state}",
+      "الصف {row}، العمود {col}: {state}"
     )
   };
   const titles = {
@@ -263,7 +308,7 @@
     let boardState = []; let moves = 0; let hintIndex = -1; let history = []; const initialMoves = [0, 2, 5, 7, 12, 14, 16, 18, 20, 22, 24]; const panel = document.createElement("div"); const board = document.createElement("div"); board.className = "logic-lights-board"; panel.append(board); const info = document.createElement("div"); info.className = "logic-live"; panel.append(info); app.board.replaceChildren(panel);
     function copy(key, replacements = {}) { return Object.entries(replacements).reduce((value, [token, replacement]) => value.replace(`{${token}}`, String(replacement)), text(lightsCopy[key])); }
     function toggle(i) { history.push({ boardState: boardState.slice(), moves }); const next = new Set([i, ...neighbours(i, 5, 5)]); next.forEach((n) => { boardState[n] = !boardState[n]; }); moves += 1; hintIndex = -1; render(); if (boardState.every((v) => !v)) { const best = saveBest("lights-out", moves); finish(true, `${t("solved")} ${t("moves")}: ${moves} · ${copy("bestLabel", { moves: best })}`); } else announce(t("turn")); }
-    function render() { board.replaceChildren(); boardState.forEach((on, i) => { const b = cell(on ? "●" : "", on ? "on" : "", `Row ${Math.floor(i / 5) + 1}, Column ${(i % 5) + 1}`, () => toggle(i)); if (i === hintIndex) b.classList.add("is-hint"); board.append(b); }); info.textContent = `${t("moves")}: ${moves}`; }
+    function render() { board.replaceChildren(); boardState.forEach((on, i) => { const row = Math.floor(i / 5) + 1; const col = (i % 5) + 1; const label = copy("cellLabel", { row, col, state: copy(on ? "cellOn" : "cellOff") }); const b = cell(on ? "●" : "", on ? "on" : "", label, () => toggle(i)); if (i === hintIndex) b.classList.add("is-hint"); board.append(b); }); info.textContent = `${t("moves")}: ${moves}`; }
     function reset() { boardState = Array(25).fill(false); initialMoves.forEach((i) => { const set = [i, ...neighbours(i, 5, 5)]; set.forEach((n) => { boardState[n] = !boardState[n]; }); }); moves = 0; hintIndex = -1; history = []; app.result.hidden = true; setChip(t("turn")); render(); announce(t("ready")); }
     function hint() { const solution = solveLights(boardState); hintIndex = solution[0] ?? -1; render(); announce(text(lightsCopy.hintExplanation)); }
     function solveLights(start) { for (let mask = 0; mask < 32; mask += 1) { const state = start.slice(); const movesFound = []; for (let c = 0; c < 5; c += 1) if (mask & (1 << c)) { movesFound.push(c); apply(c); } for (let r = 1; r < 5; r += 1) for (let c = 0; c < 5; c += 1) if (state[(r - 1) * 5 + c]) { const index = r * 5 + c; movesFound.push(index); apply(index); } if (state.every((v) => !v)) return movesFound; function apply(i) { [i, ...neighbours(i, 5, 5)].forEach((n) => { state[n] = !state[n]; }); } } return []; }

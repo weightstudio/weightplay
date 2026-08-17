@@ -26,7 +26,7 @@
     <style>.battle{background-image:linear-gradient(180deg,rgba(26,18,42,.22),rgba(26,18,42,.70)),url("assets/animal-bounce-brawl-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-shell-controls-standard.css" data-wp-shell-standard />
-    <script defer src="game.js?v=20260817-localized-hint-v5"></script>
+    <script defer src="game.js?v=20260817-stage-locale-v6"></script>
   </head>
   <body data-wp-five-game="animal-bounce-brawl" data-wp-game-id="animal-bounce-brawl" data-runtime-localize="off" data-screen="main">
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Bounce Brawl</strong><span>Preparing the foam arena…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
@@ -40,11 +40,11 @@
         <button id="start-game" class="primary" data-five-copy="start">Start Game</button>
       </section>
       <section id="stage-screen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen hidden>
-        <header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><h2>Foam Arenas</h2></header>
-        <div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Stage sections"><button type="button" aria-current="page">Stages</button></nav>
+        <header class="stage-header"><button id="stage-back" class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><h2 id="stage-title">Foam Arenas</h2></header><p id="stage-status" class="stage-status">Choose one of six foam arenas.</p>
+        <div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Stage sections"><button id="stage-tab" type="button" aria-current="page">Stages</button></nav>
       </section>
       <section id="battle-screen" class="screen battle battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden>
-        <header class="battle-header"><button class="back" data-back="stage" data-wp-return="battle" aria-label="Back to Arenas">←</button><strong id="arena-label">Arena 1 / 6</strong><span id="health-label">You 100 · Rival 100</span></header>
+        <header class="battle-header"><button id="battle-back" class="back" data-back="stage" data-wp-return="battle" aria-label="Back to Arenas">←</button><strong id="arena-label">Arena 1 / 6</strong><span id="health-label">You 100 · Rival 100</span></header>
         <p id="battle-status" class="battle-status">Move with arrows. Press SPACE to bounce-strike.</p>
         <canvas id="arena" width="960" height="540" aria-label="Bounce Brawl play area"></canvas>
         <div class="touch-controls"><button data-key="ArrowLeft">◀</button><button data-key="ArrowRight">▶</button><button data-key="Space" class="jump">BOUNCE</button></div>
