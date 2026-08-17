@@ -65,6 +65,8 @@ try {
   assert(battle.cells.length === 9 && battle.cells.every((box) => inside(box, battle.viewport.width, battle.viewport.height)), "Tic-Tac-Toe cells are not reachable in the first frame", battle);
   assert(inside(battle.firstEmpty, battle.viewport.width, battle.viewport.height) && inside(battle.hint, battle.viewport.width, battle.viewport.height) && inside(battle.locale, battle.viewport.width, battle.viewport.height), "Tic-Tac-Toe first action or compact controls are not reachable", battle);
   for (const value of [4, 8]) await page.locator(`[data-action="cell"][data-value="${value}"]`).click();
+  const winningCells = await page.locator('.tic-cell[data-winning-cell="true"]').count();
+  assert(winningCells === 3 && await page.locator(".tic-board").getAttribute("data-winning-count") === "3", "Winning-line emphasis was not exposed before Result", { winningCells });
   await page.locator("#resultScreen:not([hidden])").waitFor({ state: "visible" });
   const result = await page.evaluate(() => {
     const rect = (node) => {

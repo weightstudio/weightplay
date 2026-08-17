@@ -1,6 +1,6 @@
 (() => {
   const $ = (s) => document.querySelector(s);
-  const GAME_VERSION = 21, INTERFACE_VERSION = 6;
+  const GAME_VERSION = 22, INTERFACE_VERSION = 6;
   const viewportBucket = () => {
     const width = window.innerWidth || 0, height = window.innerHeight || 0;
     return height <= 430 ? "short-landscape" : width <= 430 ? "phone" : width >= 1000 ? "desktop" : "tablet";
@@ -148,6 +148,38 @@
     it:"Varco aperto: traccia il percorso verso questa uscita.",ru:"Выход открыт — проложите маршрут к нему.",hi:"निकासी द्वार खुला है — इस निकास तक रास्ता चुनें।",ar:"البوابة مفتوحة — خطط مسارك إلى هذا المخرج."
   };
   Object.entries(extractionCueCopy).forEach(([code,value]) => Object.assign(copy[code] ||= {}, {extractionCue:value}));
+  const treasureTradeoffCopy={
+    en:"Optional treasure: +1 medal and Moon Coins; the detour adds patrol risk.",
+    "zh-Hant":"額外寶藏可選：多 1 枚獎章與月光金幣，但繞路會增加巡邏風險。",
+    "zh-Hans":"额外宝藏可选：多 1 枚奖章和月光金币，但绕路会增加巡逻风险。",
+    ja:"追加の宝物は任意：メダル1枚とムーンコインを得られますが、寄り道は巡回の危険を増やします。",
+    ko:"추가 보물은 선택 사항입니다. 메달 1개와 달빛 코인을 얻지만 우회하면 순찰 위험이 커집니다.",
+    es:"Tesoro opcional: +1 medalla y monedas lunares; el desvío aumenta el riesgo de patrulla.",
+    "pt-BR":"Tesouro opcional: +1 medalha e Moedas Lunares; o desvio aumenta o risco das patrulhas.",
+    fr:"Trésor facultatif : +1 médaille et pièces lunaires ; le détour augmente le risque des patrouilles.",
+    de:"Optionaler Schatz: +1 Medaille und Mondmünzen; der Umweg erhöht das Patrouillenrisiko.",
+    it:"Tesoro opzionale: +1 medaglia e Monete Lunari; la deviazione aumenta il rischio delle pattuglie.",
+    ru:"Дополнительное сокровище: +1 медаль и лунные монеты, но обход повышает риск патрулей.",
+    hi:"वैकल्पिक खजाना: +1 पदक और मून कॉइन, लेकिन घुमावदार रास्ता गश्ती का जोखिम बढ़ाता है।",
+    ar:"الكنز الإضافي اختياري: +1 ميدالية وعملات قمرية، لكن الطريق الجانبي يزيد خطر الدوريات."
+  };
+  const treasureSealPlanCopy={
+    en:"Treasure seal first: it unlocks the relic and can earn the final medal.",
+    "zh-Hant":"先取得寶藏封印：它會解鎖文物，也能取得最後一枚獎章。",
+    "zh-Hans":"先取得宝藏封印：它会解锁文物，也能取得最后一枚奖章。",
+    ja:"宝物の封印が先：遺物を解放し、最後のメダルも獲得できます。",
+    ko:"보물 봉인이 먼저입니다. 유물을 열고 마지막 메달도 얻을 수 있습니다.",
+    es:"Primero el sello del tesoro: desbloquea la reliquia y puede darte la medalla final.",
+    "pt-BR":"Primeiro o selo do tesouro: ele libera a relíquia e pode render a medalha final.",
+    fr:"Le sceau du trésor d'abord : il déverrouille la relique et peut donner la médaille finale.",
+    de:"Zuerst das Schatzsiegel: Es öffnet das Relikt und kann die letzte Medaille geben.",
+    it:"Prima il sigillo del tesoro: sblocca la reliquia e può dare la medaglia finale.",
+    ru:"Сначала печать сокровища: она откроет реликвию и может принести последнюю медаль.",
+    hi:"पहले खजाने की मुहर: यह अवशेष खोलेगी और अंतिम पदक दिला सकती है।",
+    ar:"ختم الكنز أولاً: يفتح الأثر وقد يمنحك الميدالية الأخيرة."
+  };
+  Object.entries(treasureTradeoffCopy).forEach(([code,value]) => Object.assign(copy[code] ||= {}, {treasureTradeoff:value}));
+  Object.entries(treasureSealPlanCopy).forEach(([code,value]) => Object.assign(copy[code] ||= {}, {treasureSealPlan:value}));
   const campaignMission=(en,zh,ruleEn,ruleZh,data)=>({name:[en,zh],rule:[ruleEn,ruleZh],...data});
   const campaign=[
     campaignMission("Quiet Threshold","靜謐門廊","Read one patrol, recover the seal, then extract.","觀察單一路線，取得封印後撤離。",{object:[50,42],treasure:[82,36],exit:[50,10],patrols:[[24,32,76,32]],speed:.88}),
@@ -464,14 +496,14 @@
   function bindMissionCard(card,index){
     const mission=campaign[index];if(!mission)return;
     const missionName=`${t("mission",{n:index+1})}: ${campaignText(mission.name)}`;
-    const locked=index+1>state.unlocked,progress=medalProgress(index),guardian=mission.guardian;
+    const locked=index+1>state.unlocked,progress=medalProgress(index),guardian=mission.guardian,tradeoff=t(mission.order==="treasure-first"?"treasureSealPlan":"treasureTradeoff");
     const art=guardian?`../../assets/animal-moonlight-heist-guardian-${guardian.id}.webp`:"../../assets/animal-moonlight-heist-archive-background.png";
     const checkpoint=guardian?`<span class="checkpoint-tag">${t("checkpoint")} · ${campaignText(guardian.name)}</span>`:"";
     card.className=`mission-card${locked?" locked":""}${guardian?" checkpoint":""}`;
     card.dataset.index=String(index);card.dataset.stage=String(index+1);card.dataset.stageIndex=String(index);
     card.setAttribute("aria-disabled",String(locked));card.setAttribute("aria-posinset",String(index+1));card.setAttribute("aria-setsize",String(campaign.length));card.setAttribute("aria-keyshortcuts","ArrowLeft ArrowRight Home End Enter Space");
-    card.innerHTML=`<img src="${art}" alt=""><div><strong>${missionName}</strong>${checkpoint}<span class="mission-rule">${campaignText(mission.rule)}</span><span>${locked?t("locked"):progress.visible}</span></div>`;
-    card.setAttribute("aria-label",`${missionName}. ${campaignText(mission.rule)}. ${locked?t("locked"):progress.accessible}`);
+    card.innerHTML=`<img src="${art}" alt=""><div><strong>${missionName}</strong>${checkpoint}<span class="mission-rule">${campaignText(mission.rule)}</span><span class="mission-tradeoff">${tradeoff}</span><span>${locked?t("locked"):progress.visible}</span></div>`;
+    card.setAttribute("aria-label",`${missionName}. ${campaignText(mission.rule)}. ${tradeoff}. ${locked?t("locked"):progress.accessible}`);
   }
   function buildStagePool(){
     stageWindowStart=desiredStageWindow(centeredMission);stageCardPool=Array.from({length:Math.min(STAGE_CARD_POOL_SIZE,campaign.length)},(_,index)=>createMissionCard(index));

@@ -218,6 +218,9 @@ img{-webkit-user-drag:none}
     clip-path:inset(0);
   }
 }
+.v3-battle .correction-recap{max-width:650px;margin:2px auto 0;min-height:18px;overflow:hidden;text-align:center;text-overflow:ellipsis;white-space:nowrap;color:#bff6ff;font-size:.62rem;font-weight:850;line-height:18px}.v3-battle .correction-recap[hidden]{display:none}
+@media(max-width:560px){.v3-battle .correction-recap{font-size:.54rem}}
+@media(max-height:520px) and (orientation:landscape){.v3-battle .correction-recap{margin:0;min-height:16px;font-size:.5rem;line-height:16px}}
 @media(max-height:520px) and (orientation:landscape){.tactics-panel{width:100%;max-width:none;justify-self:stretch;grid-template-rows:44px;margin:0}.tactics-copy{display:none}.tactics-actions{width:100%;height:44px;gap:3px}.tactics-actions button{min-width:44px;min-height:44px;padding:2px;font-size:.54rem}.enemy-intent{top:-17px;max-width:92px;font-size:.45rem}.v3-battle .reel.selected{box-shadow:0 0 0 1px #8d67ff,0 0 12px #ffe66caa}}
 @media(prefers-reduced-motion:reduce){
   .party-hero.attack-launch,.enemy-unit.enemy-attacking,.summoner-hp.player-hit{animation-duration:.01ms!important}

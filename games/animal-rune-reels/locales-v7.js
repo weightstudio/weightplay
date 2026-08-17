@@ -166,4 +166,20 @@
     L[code].readySpin = readySpin[code] || readySpin.en;
     L[code].tipTactics = `${L[code].tacticsHint} ${L[code].rerollReel} / ${L[code].holdReel} / ${L[code].leaderTactic}. ${L[code].heldNext}`;
   });
+  const correctionCopy = {
+    en: { correctionNone: "No correction", correctionOutcome: "{choice} → {effect}", correctionQueued: "{choice} → next Spin" },
+    "zh-Hant": { correctionNone: "未修正", correctionOutcome: "{choice} → {effect}", correctionQueued: "{choice} → 下一次轉動" },
+    "zh-Hans": { correctionNone: "未修正", correctionOutcome: "{choice} → {effect}", correctionQueued: "{choice} → 下一次转动" },
+    ja: { correctionNone: "修正なし", correctionOutcome: "{choice} → {effect}", correctionQueued: "{choice} → 次のスピン" },
+    ko: { correctionNone: "수정 없음", correctionOutcome: "{choice} → {effect}", correctionQueued: "{choice} → 다음 스핀" },
+    es: { correctionNone: "Sin corrección", correctionOutcome: "{choice} → {effect}", correctionQueued: "{choice} → próximo giro" },
+    "pt-BR": { correctionNone: "Sem correção", correctionOutcome: "{choice} → {effect}", correctionQueued: "{choice} → próximo giro" },
+    fr: { correctionNone: "Sans correction", correctionOutcome: "{choice} → {effect}", correctionQueued: "{choice} → prochain tour" },
+    de: { correctionNone: "Keine Korrektur", correctionOutcome: "{choice} → {effect}", correctionQueued: "{choice} → nächster Dreh" },
+    it: { correctionNone: "Nessuna correzione", correctionOutcome: "{choice} → {effect}", correctionQueued: "{choice} → prossimo giro" },
+    ru: { correctionNone: "Без исправления", correctionOutcome: "{choice} → {effect}", correctionQueued: "{choice} → следующее вращение" },
+    hi: { correctionNone: "कोई सुधार नहीं", correctionOutcome: "{choice} → {effect}", correctionQueued: "{choice} → अगली स्पिन" },
+    ar: { correctionNone: "بلا تعديل", correctionOutcome: "{choice} → {effect}", correctionQueued: "{choice} → اللفّة التالية" }
+  };
+  Object.entries(correctionCopy).forEach(([code, copy]) => Object.assign(L[code], copy));
 })();
