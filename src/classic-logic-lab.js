@@ -29,6 +29,9 @@
     mine: L("mine", "地雷", "地雷", "地雷", "지뢰", "mina", "mina", "mine", "Mine", "mina", "мина", "माइन", "لغم"),
     safe: L("safe, no adjacent mines", "安全，周圍沒有地雷", "安全，周围没有地雷", "安全、隣接地雷なし", "안전, 인접 지뢰 없음", "segura, sin minas adyacentes", "segura, sem minas adjacentes", "sûre, aucune mine adjacente", "sicher, keine Minen daneben", "sicura, nessuna mina adiacente", "безопасно, рядом нет мин", "सुरक्षित, पास में कोई माइन नहीं", "آمنة، لا ألغام مجاورة"),
     adjacent: L("{count} adjacent mines", "附近有 {count} 顆地雷", "附近有 {count} 颗地雷", "隣接地雷 {count} 個", "인접 지뢰 {count}개", "{count} minas adyacentes", "{count} minas adjacentes", "{count} mines adjacentes", "{count} angrenzende Minen", "{count} mine adiacenti", "мин рядом: {count}", "पास की माइन {count}개", "{count} ألغام مجاورة"),
+    hintGuide: L("The highlighted cell is safe. Read nearby numbers: each number counts adjacent mines, and flags help you test the next reveal.", "高亮格是安全的。先讀附近數字：每個數字代表相鄰地雷數，旗標能幫你驗證下一次翻開。", "高亮格是安全的。先读附近数字：每个数字代表相邻地雷数，标记能帮你验证下一次翻开。", "ハイライトされたマスは安全です。周囲の数字は隣接する地雷の数なので、旗と照らして次のマスを自分で開きましょう。", "강조된 칸은 안전합니다. 주변 숫자는 인접한 지뢰 수이므로 깃발과 비교해 다음 칸을 직접 여세요.", "La casilla resaltada es segura. Cada número cuenta las minas adyacentes; compara las banderas y elige tú la próxima casilla.", "A casa destacada é segura. Cada número conta as minas vizinhas; compare as bandeiras e escolha você a próxima casa.", "La case surlignée est sûre. Chaque nombre compte les mines adjacentes ; comparez les drapeaux avant de choisir vous-même la prochaine case.", "Das markierte Feld ist sicher. Jede Zahl zählt die angrenzenden Minen; vergleiche sie mit den Markierungen und öffne das nächste Feld selbst.", "La casella evidenziata è sicura. Ogni numero conta le mine adiacenti: confronta le bandiere e scegli tu la prossima casella.", "Выделенная клетка безопасна. Каждое число показывает соседние мины: сравните его с флажками и сами выберите следующую клетку.", "हाइलाइट किया गया खाना सुरक्षित है। हर संख्या पास की खानों की गिनती बताती है; झंडों से मिलाकर अगला खाना खुद खोलें।", "الخانة المميزة آمنة. كل رقم يحسب الألغام المجاورة؛ قارنها بالأعلام واختر الخانة التالية بنفسك."),
+    hintContext: L("A nearby {count} touches {flags} flagged cells and {hidden} covered cells. Use that count to check the highlighted reveal yourself.", "附近的 {count} 旁有 {flags} 個旗標和 {hidden} 個未翻開格。用這個數字驗證高亮格，再自行翻開。", "附近的 {count} 旁有 {flags} 个标记和 {hidden} 个未翻开格。用这个数字验证高亮格，再自行翻开。", "近くの {count} は旗 {flags} 個と未開封マス {hidden} 個に接しています。その数字でハイライトを確かめ、自分で開きましょう。", "근처의 {count}은(는) 깃발 {flags}개와 닫힌 칸 {hidden}개에 닿아 있습니다. 그 숫자로 강조된 칸을 확인한 뒤 직접 여세요.", "Un {count} cercano toca {flags} banderas y {hidden} casillas ocultas. Usa ese número para comprobar la casilla resaltada y ábrela tú.", "Um {count} próximo toca {flags} bandeiras e {hidden} casas cobertas. Use esse número para conferir a casa destacada e abra-a você.", "Un {count} voisin touche {flags} drapeaux et {hidden} cases cachées. Utilisez ce nombre pour vérifier la case surlignée, puis ouvrez-la vous-même.", "Eine nahe {count} berührt {flags} markierte und {hidden} verdeckte Felder. Nutze diese Zahl, prüfe das markierte Feld und öffne es selbst.", "Un {count} vicino tocca {flags} bandiere e {hidden} caselle coperte. Usa quel numero per verificare la casella evidenziata e aprila tu.", "Рядом с числом {count} находятся {flags} флажков и {hidden} закрытых клеток. Проверьте выделенную клетку по этому числу и откройте её сами.", "पास का {count} {flags} झंडे और {hidden} छिपे खानों को छूता है। इस संख्या से हाइलाइट किए खाने को जाँचें और उसे खुद खोलें।", "الرقم {count} المجاور يلامس {flags} أعلام و{hidden} خانات مغطاة. استخدم هذا الرقم للتحقق من الخانة المميزة ثم افتحها بنفسك."),
+    hintProof: L("A nearby {count} already has {flags} flagged cells and only the highlighted covered cell left, so that cell is safe. Reveal it yourself.", "附近的 {count} 已有 {flags} 個旗標，且只剩高亮的未翻開格，因此它是安全的。請自行翻開。", "附近的 {count} 已有 {flags} 个标记，且只剩高亮的未翻开格，因此它是安全的。请自行翻开。", "近くの {count} にはすでに旗が {flags} 個あり、残る未開封マスはハイライトだけです。安全なので自分で開きましょう。", "근처의 {count}에는 이미 깃발이 {flags}개 있고 닫힌 칸은 강조된 칸만 남았습니다. 안전하므로 직접 여세요.", "Un {count} cercano ya tiene {flags} banderas y solo queda la casilla resaltada sin abrir, así que es segura. Ábrela tú.", "Um {count} próximo já tem {flags} bandeiras e só resta a casa destacada coberta, então ela é segura. Abra-a você.", "Un {count} voisin a déjà {flags} drapeaux et il ne reste que la case surlignée cachée : elle est donc sûre. Ouvrez-la vous-même.", "Eine nahe {count} hat bereits {flags} Markierungen, und nur das markierte verdeckte Feld bleibt übrig — es ist sicher. Öffne es selbst.", "Un {count} vicino ha già {flags} bandiere e resta solo la casella coperta evidenziata: è sicura. Aprila tu.", "Рядом с числом {count} уже стоят {flags} флажков, и закрытой остаётся только выделенная клетка — она безопасна. Откройте её сами.", "पास के {count} पर पहले से {flags} झंडे हैं और केवल हाइलाइट किया खाना छिपा है, इसलिए वह सुरक्षित है। उसे खुद खोलें।", "الرقم {count} المجاور لديه بالفعل {flags} أعلام ولم تبقَ إلا الخانة المميزة المغطاة، لذا فهي آمنة. افتحها بنفسك."),
   };
   function fillTemplate(template, values) { return Object.entries(values).reduce((value, [key, replacement]) => value.replace(`{${key}}`, String(replacement)), template); }
   function mineCellLabel(row, col, state) { return fillTemplate(text(mineCopy.cell), { row, col, state }); }
@@ -285,7 +288,38 @@
     function toggleFlag(i) { if (revealed.has(i) || (!flags.has(i) && flags.size >= mineCount)) return; history.push(snapshot()); if (flags.has(i)) flags.delete(i); else flags.add(i); hintIndex = -1; render(); announce(t("turn")); }
     function clickCell(i) { if (flagMode) toggleFlag(i); else reveal(i); }
     function reset() { clearInterval(timerId); configure(); mines = new Set(); revealed = new Set(); flags = new Set(); first = true; flagMode = false; timer = 0; hintIndex = -1; history = []; app.result.hidden = true; setChip(t("turn")); generate(); mode.textContent = t("revealMode"); flag.textContent = t("flagMode"); announce(t("ready")); render(); }
-    function hint() { hintIndex = [...Array(rows * cols).keys()].find((i) => !mines.has(i) && !revealed.has(i)); render(); announce(t("hint")); }
+    function hintEvidence(index) {
+      return neighbours(index, rows, cols).map((clue) => {
+        if (!revealed.has(clue) || mines.has(clue)) return null;
+        const count = neighbours(clue, rows, cols).filter((n) => mines.has(n)).length;
+        const adjacentFlags = neighbours(clue, rows, cols).filter((n) => flags.has(n)).length;
+        const covered = neighbours(clue, rows, cols).filter((n) => !revealed.has(n));
+        const unflaggedCovered = covered.filter((n) => !flags.has(n));
+        return unflaggedCovered.length === 1 && unflaggedCovered[0] === index && count === adjacentFlags ? { count, flags: adjacentFlags } : null;
+      }).find(Boolean);
+    }
+    function hintContext(index) {
+      return neighbours(index, rows, cols).map((clue) => {
+        if (!revealed.has(clue) || mines.has(clue)) return null;
+        const around = neighbours(clue, rows, cols);
+        return {
+          count: around.filter((n) => mines.has(n)).length,
+          flags: around.filter((n) => flags.has(n)).length,
+          hidden: around.filter((n) => !revealed.has(n)).length,
+        };
+      }).find(Boolean);
+    }
+    function hint() {
+      const available = [...Array(rows * cols).keys()].filter((i) => !mines.has(i) && !revealed.has(i) && !flags.has(i));
+      const proof = available.map((index) => ({ index, evidence: hintEvidence(index) })).find((entry) => entry.evidence);
+      const contextual = proof || available.map((index) => ({ index, context: hintContext(index) })).find((entry) => entry.context);
+      const target = contextual?.index ?? available[0];
+      hintIndex = target ?? -1;
+      render();
+      if (proof) announce(fillTemplate(text(mineCopy.hintProof), proof.evidence));
+      else if (contextual?.context) announce(fillTemplate(text(mineCopy.hintContext), contextual.context));
+      else announce(text(mineCopy.hintGuide));
+    }
     select.addEventListener("change", reset); mode.addEventListener("click", () => { flagMode = false; mode.classList.add("is-selected"); flag.classList.remove("is-selected"); }); flag.addEventListener("click", () => { flagMode = true; flag.classList.add("is-selected"); mode.classList.remove("is-selected"); });
     function undo() { const previous = history.pop(); if (!previous) { announce(t("ready")); return; } clearInterval(timerId); mines = new Set(previous.mines); revealed = new Set(previous.revealed); flags = new Set(previous.flags); first = previous.first; flagMode = previous.flagMode; timer = previous.timer; hintIndex = -1; app.result.hidden = true; setChip(t("turn")); mode.classList.toggle("is-selected", !flagMode); flag.classList.toggle("is-selected", flagMode); if (!first) startTimer(); render(); announce(`${t("undo")} · ${t("turn")}`); }
     return { reset, hint, undo, stop() { clearInterval(timerId); } };

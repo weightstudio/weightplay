@@ -86,6 +86,22 @@
     ar: { held: "العانس في يدك—كوّن الأزواج وحاول تمريرها.", hidden: "بطاقة العانس ما زالت مخفية." },
   };
 
+  const OLD_MAID_RESULT = {
+    en: { lost: "You kept the Old Maid. Final holder: {holder}.", cleared: "You cleared the risk. Final holder: {holder}." },
+    "zh-Hant": { lost: "你在最後留下鬼牌。最後持有者：{holder}。", cleared: "你在最後成功清掉風險。最後持有者：{holder}。" },
+    "zh-Hans": { lost: "你在最后留下鬼牌。最后持有者：{holder}。", cleared: "你在最后成功清掉风险。最后持有者：{holder}。" },
+    ja: { lost: "最後までババを持っていました。最後の持ち主：{holder}。", cleared: "ババの危険を切り抜けました。最後の持ち主：{holder}。" },
+    ko: { lost: "마지막에 조커를 들고 있었습니다. 최종 보유자: {holder}.", cleared: "조커 위험을 넘겼습니다. 최종 보유자: {holder}." },
+    es: { lost: "Conservaste la Solterona al final. Último dueño: {holder}.", cleared: "Superaste el riesgo. Último dueño: {holder}." },
+    "pt-BR": { lost: "Você ficou com o Mico no fim. Último dono: {holder}.", cleared: "Você se livrou do risco. Último dono: {holder}." },
+    fr: { lost: "Vous avez gardé le Pouilleux à la fin. Dernier détenteur : {holder}.", cleared: "Vous avez écarté le risque. Dernier détenteur : {holder}." },
+    de: { lost: "Du hattest am Ende den Schwarzen Peter. Letzter Besitzer: {holder}.", cleared: "Du bist dem Risiko entkommen. Letzter Besitzer: {holder}." },
+    it: { lost: "Alla fine avevi l'Asino. Ultimo possessore: {holder}.", cleared: "Hai superato il rischio. Ultimo possessore: {holder}." },
+    ru: { lost: "В конце Старая дева осталась у вас. Последний держатель: {holder}.", cleared: "Вы избежали риска. Последний держатель: {holder}." },
+    hi: { lost: "अंत में ओल्ड मेड आपके पास थी। अंतिम धारक: {holder}।", cleared: "आपने जोखिम पार कर लिया। अंतिम धारक: {holder}।" },
+    ar: { lost: "احتفظت بالعانس حتى النهاية. الحامل الأخير: {holder}.", cleared: "تجاوزت خطر العانس. الحامل الأخير: {holder}." },
+  };
+
   const GIN_PATH = {
     en: { reduce: "Reduce deadwood by {count} to unlock Knock · Gin at 0", ready: "Knock ready at {deadwood} deadwood · Gin at 0", gin: "Gin ready · 0 deadwood" },
     "zh-Hant": { reduce: "死牌再減少 {count} 點即可 Knock · 0 點達成 Gin", ready: "死牌 {deadwood} 點，可 Knock · 0 點達成 Gin", gin: "Gin 已就緒 · 死牌 0 點" },
@@ -797,7 +813,7 @@
     const s = { players: [[], [], [], []], turn: 0, books: [0, 0, 0, 0], over: false };
     const names = ["You", "Fox", "Panda", "Otter"];
     const pair = (player) => { const byRank = new Map(); s.players[player].forEach((item) => { const list = byRank.get(item.rank) || []; list.push(item); byRank.set(item.rank, list); }); byRank.forEach((items) => { const normal = items.filter((item) => !item.oldMaid); for (let pairIndex = 0; pairIndex + 1 < normal.length; pairIndex += 2) { [normal[pairIndex], normal[pairIndex + 1]].forEach((item) => { const index = s.players[player].indexOf(item); if (index >= 0) s.players[player].splice(index, 1); }); s.books[player] += 1; } }); };
-    const finishIfDone = () => { const active = s.players.filter((cards) => cards.length); if (active.length <= 1) { const loser = s.players.findIndex((cards) => cards.length); s.over = true; controller.result(loser !== 0, loser === 0 ? t("oldMaid") : `${names[loser]} ${t("oldMaid")}`); } };
+    const finishIfDone = () => { const active = s.players.filter((cards) => cards.length); if (active.length <= 1) { const loser = s.players.findIndex((cards) => cards.length); const copy = OLD_MAID_RESULT[currentLocale()] || OLD_MAID_RESULT.en; const lesson = (copy[loser === 0 ? "lost" : "cleared"] || copy.cleared).replace("{holder}", names[loser]); const holderLine = loser === 0 ? t("oldMaid") : `${names[loser]} ${t("oldMaid")}`; s.over = true; controller.result(loser !== 0, `${holderLine} · ${lesson}`); } };
     const targetFor = (player) => { for (let offset = 1; offset < s.players.length; offset += 1) { const target = (player + offset) % s.players.length; if (s.players[target].length) return target; } return -1; };
     const next = () => { s.turn = (s.turn + 1) % 4; while (!s.players[s.turn].length && s.players.some((cards) => cards.length)) s.turn = (s.turn + 1) % 4; if (s.turn !== 0) setTimeout(aiTurn, 320); };
     const drawFrom = (player, index) => { const target = targetFor(player); if (target < 0) { finishIfDone(); return; } const source = s.players[target]; const item = source.splice(Math.min(index, source.length - 1), 1)[0]; s.players[player].push(item); pair(player); finishIfDone(); if (!s.over) next(); };
