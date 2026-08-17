@@ -2,7 +2,7 @@
   "use strict";
 
   const GAME_ID = "pyramid-solitaire";
-  const GAME_VERSION = "v16";
+  const GAME_VERSION = "v17";
   const INTERFACE_VERSION = "6";
   let inputType = "unknown";
   let resultVisible = false;

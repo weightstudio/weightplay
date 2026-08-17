@@ -442,11 +442,11 @@ body.wp-stage-select-active .v3-stage .stage-workspace>#stagesPanel[hidden] #ent
    next enemy intent remains readable instead of ending at a single-line
    ellipsis. Scheduled cards keep their optional row and get the same space. */
 .v3-stage .stage-card:not(.has-schedule){
-  height:228px;
+  height:228px!important;
   grid-template-rows:18px 27px 70px 54px 30px!important;
 }
 .v3-stage .stage-card.has-schedule{
-  height:246px;
+  height:246px!important;
   grid-template-rows:18px 27px 70px 54px 18px 30px!important;
 }
 .v3-stage .stage-card p{
@@ -458,4 +458,32 @@ body.wp-stage-select-active .v3-stage .stage-workspace>#stagesPanel[hidden] #ent
   white-space:normal;
   overflow-wrap:anywhere;
   text-overflow:clip;
+}
+
+/* V7.4: the shared Stage baseline caps every card at 190px. Rune Reels owns
+   a taller portrait envelope so the two-line decision plan is fully visible;
+   compact landscape keeps the established 190px rail contract. */
+body[data-wp-game-id="animal-rune-reels"] .v3-stage .stage-rail > .stage-card:not(.has-schedule){
+  height:228px!important;
+  min-height:228px!important;
+  max-height:228px!important;
+}
+body[data-wp-game-id="animal-rune-reels"] .v3-stage .stage-rail > .stage-card.has-schedule{
+  height:246px!important;
+  min-height:246px!important;
+  max-height:246px!important;
+}
+@media(max-height:520px) and (orientation:landscape){
+  body[data-wp-game-id="animal-rune-reels"] .v3-stage .stage-rail > .stage-card:not(.has-schedule){
+    height:190px!important;
+    min-height:190px!important;
+    max-height:190px!important;
+    grid-template-rows:18px 27px 60px 36px 30px!important;
+  }
+  body[data-wp-game-id="animal-rune-reels"] .v3-stage .stage-rail > .stage-card.has-schedule{
+    height:190px!important;
+    min-height:190px!important;
+    max-height:190px!important;
+    grid-template-rows:18px 27px 55px 36px 18px 18px!important;
+  }
 }
