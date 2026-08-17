@@ -16,8 +16,9 @@
       localStorage.setItem("wp-locale", locale);
     } catch {}
   }
-  let save = { unlocked: 1, done: {} };
+  let save = { unlocked: 1, done: {}, best: {} };
   try { save = { ...save, ...JSON.parse(localStorage.getItem("wp:bamboo") || "{}") }; } catch {}
+  if (!save.best || typeof save.best !== "object" || Array.isArray(save.best)) save.best = {};
   selected = Math.max(0, Math.min(29, Number(save.unlocked || 1) - 1));
   const text = (key, data = {}) => String((window.BAMBOO_LOCALES[locale] || BASE)[key] || BASE[key] || key).replace(/\{(\w+)\}/g, (_, name) => data[name] ?? "");
   const screens = { main: $("main"), stage: $("stage"), battle: $("battle") };
@@ -249,10 +250,15 @@
     if(run.completed)return;
     run.completed = true;
     save.done[selected] = true;
+    const previousBest = Number(save.best[selected]);
+    save.best[selected] = Number.isFinite(previousBest) && previousBest >= 0
+      ? Math.min(previousBest, run.moves)
+      : run.moves;
     save.unlocked = Math.max(save.unlocked, Math.min(30, selected + 2)); persist();
     window.WonderAnalytics?.track?.("game_complete", { game_id: "animal-bamboo-pipes", stage: selected + 1, turns: run.moves });
     updateMainProgress();
     $("resultText").textContent = text("resultText", { moves: run.moves, n: selected + 1 });
+    $("resultMastery").textContent = text("replayGoal", { moves: save.best[selected] });
     $("resultPreview").textContent = selected < LEVELS.length - 1
       ? text("nextPreview", { n: selected + 2, chapter: text("chapter", { n: Math.floor((selected + 1) / 5) + 1 }) })
       : "";
@@ -346,6 +352,9 @@
     updateMainProgress();
     if (run) {
       $("resultText").textContent = text("resultText", { moves: run.moves, n: selected + 1 });
+      $("resultMastery").textContent = run.completed
+        ? text("replayGoal", { moves: save.best?.[selected] ?? run.moves })
+        : "";
       $("resultPreview").textContent = run?.completed && selected < LEVELS.length - 1
         ? text("nextPreview", { n: selected + 2, chapter: text("chapter", { n: Math.floor((selected + 1) / 5) + 1 }) })
         : "";

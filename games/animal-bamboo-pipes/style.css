@@ -105,7 +105,8 @@
 #result:not([hidden]){display:grid;top:0!important;right:0!important;bottom:auto!important;left:0!important;transform:none!important}
 #result img{height:110px}
 #result .eyebrow{color:#245f4b}
-#resultPreview{width:min(100%,560px);margin:8px auto 0;padding:10px 14px;border:1px solid #75bd9c;border-radius:12px;background:#ffffffaa;color:#145246;font-weight:800;line-height:1.35}
+#resultMastery,#resultPreview{width:min(100%,560px);margin:8px auto 0;padding:10px 14px;border:1px solid #75bd9c;border-radius:12px;background:#ffffffaa;color:#145246;font-weight:800;line-height:1.35}
+#resultMastery{margin-top:4px}
 #result>div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:min(100%,560px);margin:12px auto 0}
 #result button{min-height:48px;min-width:0}
 

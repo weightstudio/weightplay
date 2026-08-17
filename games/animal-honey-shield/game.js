@@ -4,7 +4,7 @@
   const LOCALES=window.ANIMAL_HONEY_SHIELD_LOCALES;
   const STORAGE_KEY="weightplay_animal_honey_shield_v1";
   const TUTORIAL_KEY="weightplay_tutorial_seen_animal_honey_shield_v1";
-  const GAME_VERSION="v44";
+  const GAME_VERSION="v45";
   const ROUTE_LOCALES={"zh-tw":"zh-Hant","zh-cn":"zh-Hans","pt-br":"pt-BR",en:"en",ja:"ja",ko:"ko",es:"es",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const routeSegment=location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
   const platformLocale=window.WonderI18n?.actualLocale?.();
@@ -23,7 +23,7 @@
     "../../assets/animal-honey-shield-background-simple-bramble.webp",
     "../../assets/animal-honey-shield-background-simple-ruins.webp",
   ];
-  const state={mode:"idle",paused:false,modal:false,started:false,planElapsed:0,elapsed:0,duration:8,nectar:100,strokes:[],drawing:null,bees:[],spawnClock:0,spawned:0,frame:0,last:0,flash:0,wallMoves:0,wallApproachStartedAt:null,wallFirstMovedAt:null,maxGroupAttached:0,pathOpenedAt:null,navClock:0,nav:null,wallNavClock:0,wallNav:null,mover:null,wallImpactContacts:0,wallMoveSolves:0,wallSupportContributions:0,frameWallMoveSolves:0,maxFrameWallMoveSolves:0,carrierChanges:0,beeWallCorrections:0,wallNavBuilds:0,directWallTargets:0,supporterCarryDistance:0,keyboard:{x:500,y:310},result:null};
+  const state={mode:"idle",paused:false,modal:false,started:false,planElapsed:0,elapsed:0,duration:8,nectar:100,strokes:[],drawing:null,bees:[],spawnClock:0,spawned:0,frame:0,last:0,flash:0,wallMoves:0,wallApproachStartedAt:null,wallFirstMovedAt:null,maxGroupAttached:0,pathOpenedAt:null,navClock:0,nav:null,wallNavClock:0,wallNav:null,mover:null,wallImpactContacts:0,wallMoveSolves:0,wallSupportContributions:0,frameWallMoveSolves:0,maxFrameWallMoveSolves:0,carrierChanges:0,beeWallCorrections:0,wallNavBuilds:0,directWallTargets:0,supporterCarryDistance:0,repairCueKey:"",repairCueUntil:0,keyboard:{x:500,y:310},result:null};
   let raf=0;
   const LINE_PIXELS_PER_NECTAR=14;
   function viewportBucket(){
@@ -165,6 +165,13 @@
     return String(value).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??`{${name}}`);
   }
   function announce(key,vars){$("feedbackText").textContent=fmt(key,vars)}
+  function clearRepairCue(){
+    if(state.repairCueKey&&$("feedbackText").textContent===fmt(state.repairCueKey))$("feedbackText").textContent="";
+    state.repairCueKey="";state.repairCueUntil=0;
+  }
+  function announceRepair(key){
+    announce(key);state.repairCueKey=key;state.repairCueUntil=state.elapsed+1.8;
+  }
   function applyLocale(){
     document.documentElement.lang=locale==="zh-Hant"?"zh-TW":locale==="zh-Hans"?"zh-CN":locale;
     document.documentElement.dir=locale==="ar"?"rtl":"ltr";
@@ -173,6 +180,7 @@
     document.querySelectorAll("[data-i18n-aria]").forEach(node=>node.setAttribute("aria-label",fmt(node.dataset.i18nAria)));
     document.querySelectorAll("[data-i18n-alt]").forEach(node=>node.setAttribute("alt",fmt(node.dataset.i18nAlt)));
     updateMainProgress();renderStages();updateStageChapter();updateHud();updateAnchorCoach();
+    if(state.repairCueKey&&state.repairCueUntil>state.elapsed)announce(state.repairCueKey);
     window.dispatchEvent(new CustomEvent("wonder:locale-change",{detail:{locale}}));
     document.title=`${fmt("title")} | WeightPlay`;
   }
@@ -310,7 +318,7 @@
   }
   function resetStage(){
     const spec=level(stageIndex);
-    Object.assign(state,{mode:"idle",paused:false,modal:false,started:false,planElapsed:0,elapsed:0,duration:spec.duration,nectar:100,strokes:[],drawing:null,bees:[],spawnClock:spec.interval,spawned:0,frame:0,flash:0,wallMoves:0,wallApproachStartedAt:null,wallFirstMovedAt:null,maxGroupAttached:0,pathOpenedAt:null,navClock:0,nav:null,wallNavClock:0,wallNav:null,mover:null,wallImpactContacts:0,wallMoveSolves:0,wallSupportContributions:0,frameWallMoveSolves:0,maxFrameWallMoveSolves:0,carrierChanges:0,beeWallCorrections:0,wallNavBuilds:0,directWallTargets:0,supporterCarryDistance:0,result:null});
+    Object.assign(state,{mode:"idle",paused:false,modal:false,started:false,planElapsed:0,elapsed:0,duration:spec.duration,nectar:100,strokes:[],drawing:null,bees:[],spawnClock:spec.interval,spawned:0,frame:0,flash:0,wallMoves:0,wallApproachStartedAt:null,wallFirstMovedAt:null,maxGroupAttached:0,pathOpenedAt:null,navClock:0,nav:null,wallNavClock:0,wallNav:null,mover:null,wallImpactContacts:0,wallMoveSolves:0,wallSupportContributions:0,frameWallMoveSolves:0,maxFrameWallMoveSolves:0,carrierChanges:0,beeWallCorrections:0,wallNavBuilds:0,directWallTargets:0,supporterCarryDistance:0,repairCueKey:"",repairCueUntil:0,result:null});
     $("resultPanel").hidden=true;$("leavePanel").hidden=true;$("pausePanel").hidden=true;$("battleLive").inert=false;$("battleLive").hidden=false;
     $("clearBtn").disabled=false;
     $("stageLabel").textContent=fmt("stage",{n:stageIndex+1});$("objectiveText").textContent=fmt("objective",{n:spec.duration});
@@ -367,7 +375,7 @@
   }
   canvas.addEventListener("pointerdown",event=>{
     if(!canDraw())return;canvas.focus({preventScroll:true});canvas.setPointerCapture(event.pointerId);const point=pointerPoint(event);
-    trackEvent("stroke_start",{input:"pointer",first_stroke:state.strokes.length===0});
+    clearRepairCue();trackEvent("stroke_start",{input:"pointer",first_stroke:state.strokes.length===0});
     state.drawing={points:[point],flash:0,blockedFlash:0,moves:0};state.keyboard={...point};$("drawHint").hidden=true;$("anchorCoach").hidden=true;event.preventDefault();
   });
   canvas.addEventListener("pointermove",event=>{
@@ -411,6 +419,7 @@
   canvas.addEventListener("pointerup",finishStroke);canvas.addEventListener("pointercancel",finishStroke);
   canvas.addEventListener("keydown",event=>{
     if(!canDraw())return;
+    clearRepairCue();
     const step=event.shiftKey?40:18;
     if(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(event.key)){
       if(event.key==="ArrowLeft")state.keyboard.x-=step;if(event.key==="ArrowRight")state.keyboard.x+=step;if(event.key==="ArrowUp")state.keyboard.y-=step;if(event.key==="ArrowDown")state.keyboard.y+=step;
@@ -962,7 +971,8 @@
           if(state.wallApproachStartedAt===null)state.wallApproachStartedAt=state.elapsed;
           state.maxGroupAttached=Math.max(state.maxGroupAttached,supporters.length||1);
           bee.cooldown=0;stroke.flash=.2;state.flash=.035;
-          announce("barrierMoved");
+          if(!stroke.repairCueShown){stroke.repairCueShown=true;announceRepair("repairLoose")}
+          else if(!state.repairCueKey)announce("barrierMoved");
         }else{
           if(dot<0){bee.vx-=1.9*dot*nx;bee.vy-=1.9*dot*ny}
           bee.vx+=nx*42;bee.vy+=ny*42;bee.cooldown=.14;stroke.blockedFlash=.16;
@@ -1009,6 +1019,7 @@
     if(state.paused||state.modal||state.result||!state.started)return;
     if(state.mode!=="wave")return;
     const spec=level(stageIndex);state.frame++;state.frameWallMoveSolves=0;state.elapsed+=dt;state.spawnClock+=dt;state.nectar=Math.min(100,state.nectar+dt*1.35);
+    if(state.repairCueUntil&&state.elapsed>=state.repairCueUntil)clearRepairCue();
     if(state.spawnClock>=spec.interval&&state.spawned<spec.maxBees){state.spawnClock=0;spawnBee()}
     if(state.mover&&(!state.bees.includes(state.mover.bee)||state.mover.stroke.anchored))state.mover=null;
     state.navClock-=dt;state.wallNavClock-=dt;
