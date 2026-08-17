@@ -217,10 +217,11 @@
         <div class="meter xp" data-t-aria="hudExperience" aria-label="EXP"><i id="xpFill"></i><span><small data-t="hudExperience">EXP</small><b id="xpText">0 / 30</b></span></div>
         <div id="visionState" class="vision-state" data-t="normalVision">Normal</div>
       </div>
-      <div id="gameViewport" class="game-viewport">
-        <canvas id="gameCanvas" width="960" height="540" aria-label="Signal Veil connected action RPG world" tabindex="0"></canvas>
-        <div id="objective" class="objective"></div>
-        <div id="toast" class="toast" role="status" aria-live="polite"></div>
+        <div id="gameViewport" class="game-viewport">
+          <canvas id="gameCanvas" width="960" height="540" aria-label="Signal Veil connected action RPG world" tabindex="0"></canvas>
+          <div id="objective" class="objective"></div>
+          <div id="routeCue" class="route-cue" role="status" aria-live="polite" hidden></div>
+          <div id="toast" class="toast" role="status" aria-live="polite"></div>
         <div id="dialogue" class="dialogue" role="dialog" aria-modal="true" hidden>
           <strong id="speaker"></strong>
           <p id="dialogueText"></p>
@@ -302,7 +303,7 @@
   <script src="guide-locales.js"></script>
   <script src="state-store.js"></script>
   <script src="quest-data.js"></script>
-  <script src="game.js?v=20260817-combat-feedback-v8"></script>
+  <script src="game.js?v=20260818-route-cue-v9"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>

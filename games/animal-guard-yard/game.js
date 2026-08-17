@@ -1,6 +1,6 @@
 ﻿(() => {
   const GAME_ID = "animal-guard-yard";
-  const GAME_VERSION = "v18";
+  const GAME_VERSION = "v20";
   const INTERFACE_VERSION = 6;
   const localeKey = "weightplayLocale";
   const unlockKey = "weightplay_animal_guard_unlocked";
@@ -337,6 +337,36 @@
     hi: "अगली दबाव वाली लेन {lane} है—जानवर आने से पहले उसे बचाएँ।",
     ar: "الممر {lane} هو التالي تحت الضغط — احمه قبل وصول الوحش.",
   };
+  const defeatRecapCopy = {
+    en: "Last breach: Lane {lane} — {threat} (beast {encounter}/{total}); {sun} sun remained after {guards} guards. On Retry, cover this lane earlier and collect sun drops.",
+    "zh-Hant": "最後突破：第 {lane} 路線 — {threat}（第 {encounter}/{total} 隻野獸）；放置 {guards} 隻守衛後還剩 {sun} 點陽光。再試一次時，提早守住這條路線並收集陽光。",
+    "zh-Hans": "最后突破：第 {lane} 路线 — {threat}（第 {encounter}/{total} 只野兽）；放置 {guards} 只守卫后还剩 {sun} 点阳光。再试一次时，提早守住这条路线并收集阳光。",
+    ja: "最後の突破：{lane}レーンの{threat}（{encounter}/{total}体目）。守衛{guards}体を置いた時点で、太陽が{sun}残っていました。再挑戦では、このレーンを早めに守り、太陽を集めましょう。",
+    ko: "마지막 돌파: {lane}번 라인의 {threat} (전체 {total}마리 중 {encounter}번째)입니다. 수호대 {guards}마리를 배치한 뒤 태양 {sun}이 남아 있었습니다. 다시 도전할 때 이 라인을 먼저 지키고 태양을 모아 보세요.",
+    es: "Última brecha: {threat} en el carril {lane} (bestia {encounter}/{total}); quedaban {sun} de sol tras colocar {guards} guardianes. En el siguiente intento, protege antes ese carril y recoge el sol.",
+    "pt-BR": "Última brecha: {threat} na faixa {lane} (fera {encounter}/{total}); restavam {sun} de sol após posicionar {guards} guardiões. Na próxima tentativa, proteja essa faixa antes e recolha o sol.",
+    fr: "Dernière brèche : {threat} sur la voie {lane} ({encounter}/{total}); il restait {sun} de soleil après la pose de {guards} gardiens. À la prochaine tentative, protégez cette voie plus tôt et récupérez le soleil.",
+    de: "Letzter Durchbruch: {threat} auf Bahn {lane} (Bestie {encounter}/{total}); nach {guards} platzierten Wächtern blieben {sun} Sonnen übrig. Schütze diese Bahn beim nächsten Versuch früher und sammle die Sonne.",
+    it: "Ultima breccia: {threat} sulla corsia {lane} (bestia {encounter}/{total}); dopo {guards} guardie piazzate restavano {sun} unità di sole. Al prossimo tentativo, proteggi prima questa corsia e raccogli il sole.",
+    ru: "Последний прорыв: {threat} на линии {lane} (зверь {encounter}/{total}); после размещения {guards} защитников оставалось солнца: {sun}. В следующей попытке защитите эту линию раньше и собирайте солнце.",
+    hi: "आखिरी घुसपैठ: लेन {lane} में {threat} ({encounter}/{total}वाँ जानवर); {guards} गार्ड लगाने के बाद {sun} सूरज बचा था। अगली कोशिश में इस लेन को पहले बचाएँ और सूरज इकट्ठा करें।",
+    ar: "آخر اختراق: {threat} في الممر {lane} (الوحش {encounter} من {total})؛ بقيت {sun} من طاقة الشمس بعد وضع {guards} من الحراس. في المحاولة التالية، احمِ هذا الممر مبكرًا واجمع الشمس.",
+  };
+  const defeatRecapThreatLabels = {
+    en: { normal: "Normal", fast: "Fast", shield: "Shield", healer: "Healer", burrow: "Burrower", thief: "Sun thief", boss: "Boss" },
+    "zh-Hant": { normal: "一般野獸", fast: "快速野獸", shield: "盾牌野獸", healer: "療癒野獸", burrow: "鑽地獸", thief: "偷陽光野獸", boss: "Boss" },
+    "zh-Hans": { normal: "一般野兽", fast: "快速野兽", shield: "盾牌野兽", healer: "治疗野兽", burrow: "钻地兽", thief: "偷阳光野兽", boss: "Boss" },
+    ja: { normal: "通常の獣", fast: "素早い獣", shield: "盾獣", healer: "回復獣", burrow: "穴掘り獣", thief: "太陽泥棒", boss: "ボス" },
+    ko: { normal: "일반 야수", fast: "빠른 야수", shield: "방패 야수", healer: "치유 야수", burrow: "굴착 야수", thief: "태양 도둑", boss: "보스" },
+    es: { normal: "bestia normal", fast: "bestia veloz", shield: "bestia con escudo", healer: "bestia sanadora", burrow: "excavador", thief: "ladrón de sol", boss: "jefe" },
+    "pt-BR": { normal: "fera comum", fast: "fera veloz", shield: "fera com escudo", healer: "fera curadora", burrow: "escavadora", thief: "ladra-sol", boss: "chefe" },
+    fr: { normal: "bête normale", fast: "bête rapide", shield: "bête à bouclier", healer: "bête soigneuse", burrow: "bête fouisseuse", thief: "voleur de soleil", boss: "boss" },
+    de: { normal: "normales Biest", fast: "schnelles Biest", shield: "Schild-Biest", healer: "Heiler-Biest", burrow: "Gräber-Biest", thief: "Sonnen-Dieb", boss: "Boss" },
+    it: { normal: "bestia normale", fast: "bestia veloce", shield: "bestia con scudo", healer: "bestia guaritrice", burrow: "bestia scavatrice", thief: "ladro di sole", boss: "boss" },
+    ru: { normal: "обычный зверь", fast: "быстрый зверь", shield: "зверь со щитом", healer: "зверь-целитель", burrow: "зверь-землерой", thief: "вор солнца", boss: "босс" },
+    hi: { normal: "साधारण जानवर", fast: "तेज़ जानवर", shield: "ढाल वाला जानवर", healer: "चिकित्सक जानवर", burrow: "बिल खोदने वाला जानवर", thief: "सूरज चोर", boss: "बॉस" },
+    ar: { normal: "وحش عادي", fast: "وحش سريع", shield: "وحش بدرع", healer: "وحش معالج", burrow: "وحش حفّار", thief: "سارق الشمس", boss: "الزعيم" },
+  };
   const trainingBridgeCopy = {
     en: {
       result: "Next goal: open Animals to see how saved coins can train your guards.",
@@ -539,6 +569,27 @@
     stagePlan7: "Muchos escudos. Usa la ralentización del Búho y el daño explosivo del Zorro.",
     stagePlan8: "Gran jefe. Reserva sol para los carriles centrales y más bloqueadores."
   };
+
+  // Keep the Battle unit label locale-owned even when the shared page
+  // localizer has no full game dictionary for a route locale.
+  const abilityCatLocaleCopy = {
+    en: "Every 4th seed pierces",
+    "zh-Hant": "\u6bcf 4 \u767c\u7a2e\u5b50\u7a7f\u900f",
+    "zh-Hans": "\u6bcf 4 \u9897\u79cd\u5b50\u7a7f\u900f",
+    ja: "4\u767a\u3054\u3068\u306b\u7a2e\u304c\u8cab\u901a\u3057\u307e\u3059",
+    ko: "4\ubc88\uc9f8 \uc528\uc557\ub9c8\ub2e4 \uad00\ud1b5\ud569\ub2c8\ub2e4",
+    es: "Cada 4.\u00aa semilla atraviesa",
+    "pt-BR": "A cada 4\u00aa semente, o disparo atravessa",
+    fr: "Toutes les 4 graines, le tir transperce",
+    de: "Jeder vierte Samen durchdringt",
+    it: "Ogni quarto seme perfora",
+    ru: "\u041a\u0430\u0436\u0434\u043e\u0435 4-\u0435 \u0441\u0435\u043c\u044f \u043f\u0440\u043e\u0431\u0438\u0432\u0430\u0435\u0442",
+    hi: "\u0939\u0930 \u091a\u094c\u0925\u093e \u092c\u0940\u091c \u092a\u093e\u0930 \u0915\u0930 \u091c\u093e\u0924\u093e \u0939\u0948",
+    ar: "\u0643\u0644 \u0628\u0630\u0631\u0629 \u0631\u0627\u0628\u0639\u0629 \u062a\u062e\u062a\u0631\u0642",
+  };
+  Object.entries(abilityCatLocaleCopy).forEach(([code, value]) => {
+    text[code] = Object.assign(text[code] || Object.create(text.en), { abilityCat: value });
+  });
 
   const units = [
     { id: "cat", nameKey: "unitCat", roleKey: "roleRanged", abilityKey: "abilityCat", attackStyle: "ranged", cost: 45, hp: 92, damage: 18, cooldown: 930, range: 9, pierceEvery: 4, unlockCost: 0 },
@@ -775,6 +826,7 @@
   let lastDangerAt = 0;
   let currentSpawnDelay = 1;
   let nextSpawnPlan = null;
+  let lastBreachSnapshot = null;
   let viewportWidth = 0;
   let viewportHeight = 0;
   let viewportMode = "";
@@ -913,6 +965,21 @@
     return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(message) || message : message;
   }
 
+  function defeatRecapMessage(snapshot) {
+    if (!snapshot) return "";
+    const copy = defeatRecapCopy[locale] || defeatRecapCopy.en;
+    const labels = defeatRecapThreatLabels[locale] || defeatRecapThreatLabels.en;
+    const threatKey = String(snapshot.type || "normal").startsWith("boss") ? "boss" : String(snapshot.type || "normal");
+    const message = copy
+      .replaceAll("{lane}", String(clamp(Number(snapshot.row) + 1 || 1, 1, stages[currentStage]?.rows || 5)))
+      .replaceAll("{threat}", labels[threatKey] || labels.normal)
+      .replaceAll("{encounter}", String(Math.max(1, Number(snapshot.encounter) || 1)))
+      .replaceAll("{total}", String(Math.max(1, Number(snapshot.total) || stages[currentStage]?.total || 1)))
+      .replaceAll("{sun}", String(Math.max(0, Math.floor(Number(snapshot.energy) || 0))))
+      .replaceAll("{guards}", String(Math.max(0, Number(snapshot.guards) || 0)));
+    return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(message) || message : message;
+  }
+
   function stageCopy(stage, field) {
     const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
     const value = stage?.[field]?.[sourceLocale] || stage?.[field]?.en || "";
@@ -998,13 +1065,21 @@
     };
   }
 
-  function renderResultReport(message, progress, won = false) {
+  function renderResultReport(message, progress, won = false, defeatRecap = "") {
     nodes.resultText.replaceChildren();
 
     const summary = document.createElement("p");
     summary.className = "result-summary";
     summary.textContent = message;
     nodes.resultText.appendChild(summary);
+
+    if (!won && defeatRecap) {
+      const recap = document.createElement("p");
+      recap.className = "progress-message defeat-recap";
+      recap.setAttribute("role", "status");
+      recap.textContent = defeatRecap;
+      nodes.resultText.appendChild(recap);
+    }
 
     const trainingCue = document.createElement("p");
     trainingCue.id = "resultTrainingCue";
@@ -1807,6 +1882,7 @@
     guardPlacements = 0;
     waveCheckpoints = new Set();
     lastResultOutcome = "";
+    lastBreachSnapshot = null;
     sessionHadBattle = true;
     lastDangerAt = 0;
     selectedUnit = units.find((unit) => isOwned(unit.id))?.id || units[0].id;
@@ -2073,6 +2149,7 @@
     const row = Number.isInteger(plan?.row) ? plan.row : Math.floor(Math.random() * stage.rows);
     const zombie = {
       kind: "zombie",
+      spawnNumber: spawned,
       type: data.type,
       isBoss: Boolean(data.isBoss),
       mechanic: data.mechanic || data.ability || "",
@@ -2368,6 +2445,14 @@
       }
       if (zombie.x < -0.04) {
         zombie.dead = true;
+        lastBreachSnapshot = {
+          row: zombie.row,
+          type: zombie.type,
+          encounter: zombie.spawnNumber,
+          total: stages[currentStage].total,
+          energy,
+          guards: guardPlacements,
+        };
         baseHp -= 1;
         track("home_heart_lost", { remaining_hearts: Math.max(0, baseHp), outcome: "damage" });
         pulseDanger();
@@ -2663,7 +2748,7 @@
       coinsEarned += progress.masteryCoins;
       resultMessage = `${resultMessage} ${t("masteryMilestone", { coins: progress.masteryCoins })}`;
     }
-    renderResultReport(resultMessage, progress, won);
+    renderResultReport(resultMessage, progress, won, defeatRecapMessage(lastBreachSnapshot));
     lastResultOutcome = won ? "win" : "loss";
     track("stage_result", {
       outcome: lastResultOutcome,
@@ -2910,6 +2995,16 @@
     window.__AnimalGuardYardTest = {
       finish,
       startStage,
+      setLastBreachForTest: (snapshot = {}) => {
+        lastBreachSnapshot = {
+          row: snapshot.row ?? 0,
+          type: snapshot.type || "normal",
+          encounter: snapshot.encounter ?? 1,
+          total: snapshot.total ?? stages[currentStage].total,
+          energy: snapshot.energy ?? energy,
+          guards: snapshot.guards ?? guardPlacements,
+        };
+      },
       spawnForTest: (count = 1) => {
         for (let index = 0; index < count; index += 1) spawnZombie();
         updateHud();

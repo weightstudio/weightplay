@@ -5,7 +5,7 @@
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
   const GAME_ID = "signal-veil";
-  const GAME_VERSION = "v8";
+  const GAME_VERSION = "v9";
   const INTERFACE_VERSION = 6;
   const SAVE_KEY = "weightplay-signal-veil-v1";
   const LOCALE_PATHS = {en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
@@ -130,7 +130,7 @@
     main:$("#main"), battle:$("#battleShell"), reserve:$(".ad-reserve"), loading:$("#loadingPanel"), locale:$("#localeSelect"),
     progress:$("#mainProgress"), level:$("#levelValue"), hpFill:$("#hpFill"), hpText:$("#hpText"),
     xpFill:$("#xpFill"), xpText:$("#xpText"), visionState:$("#visionState"), zone:$("#zoneLabel"),
-    objective:$("#objective"), toast:$("#toast"), dialogue:$("#dialogue"), speaker:$("#speaker"),
+    objective:$("#objective"), routeCue:$("#routeCue"), toast:$("#toast"), dialogue:$("#dialogue"), speaker:$("#speaker"),
     dialogueText:$("#dialogueText"), dialogueNext:$("#dialogueNext"), dialogueChoices:$("#dialogueChoices"),
     broadcastChoice:$("#broadcastChoice"),protectChoice:$("#protectChoice"),overlay:$("#overlay"),
     pause:$("#pausePanel"), inventory:$("#inventoryPanel"), leave:$("#leavePanel"), result:$("#resultPanel"),
@@ -167,6 +167,7 @@
   const INTERACT_PROMPT = {x:BASE_VIEW.width/2-96,y:BASE_VIEW.height-62,w:192,h:44};
   let firstDialogueTracked = false, firstCombatActionTracked = false, firstCombatHitTracked = false;
   let lastTrackedQuestCount = 0;
+  let lastRouteCue = "";
 
   function viewportBucket() {
     const width=Math.max(1,window.innerWidth||document.documentElement.clientWidth||1);
@@ -394,6 +395,42 @@
     if(!active)return t("questsComingSoon");
     return `${active.index+1}/${QUESTS.length} · ${questTitle(active.quest)} — ${questObjective(active.quest)}`;
   }
+  function routeTargetForQuest(){
+    const active=activeQuest();
+    if(!active)return null;
+    const quest=active.quest;
+    if(quest.type==="talk"&&state.mapId===MAP_SIGNAL_TOWN){
+      const npc=npcs[quest.target];
+      return npc?{...npc,mapId:MAP_SIGNAL_TOWN}:null;
+    }
+    if(quest.type==="witnessReport"&&state.mapId===MAP_SIGNAL_TOWN)return {...npcs[0],mapId:MAP_SIGNAL_TOWN};
+    if(quest.type!=="visit")return null;
+    const targets={
+      forest:{mapId:MAP_SIGNAL_TOWN,x:1024,y:520},
+      lab:{mapId:MAP_SIGNAL_TOWN,x:2048,y:520},
+      moonfall:{mapId:MAP_SIGNAL_TOWN,x:2700,y:520},
+      ashfall:{mapId:MAP_MOONFALL,x:2700,y:520},
+      lunar:{mapId:MAP_ASHFALL,x:2700,y:520},
+    };
+    const target=targets[quest.target];
+    return target?.mapId===state.mapId?target:null;
+  }
+  function routeCueState(){
+    const target=routeTargetForQuest();
+    if(!target)return null;
+    const dx=target.x-state.x,dy=target.y-state.y;
+    const direction=Math.abs(dx)>=Math.abs(dy)?(dx>=0?"→":"←"):(dy>=0?"↓":"↑");
+    return {target,direction,distance:Math.max(0,Math.round(Math.hypot(dx,dy)/50)*50)};
+  }
+  function updateRouteCue(){
+    if(!nodes.routeCue)return;
+    const route=routeCueState();
+    const message=route?t("routeCue",{direction:route.direction,distance:route.distance}):"";
+    if(message===lastRouteCue)return;
+    lastRouteCue=message;
+    nodes.routeCue.hidden=!message;
+    nodes.routeCue.textContent=message;
+  }
   function updateObjective() {
     const completed=completedQuestCount();
     if(completed>lastTrackedQuestCount){
@@ -405,6 +442,7 @@
     const text=currentQuestText();
     nodes.objective.textContent=text;
     nodes.pauseObjective.textContent=text;
+    updateRouteCue();
   }
   function updateHud() {
     nodes.level.textContent=state.level;
@@ -446,8 +484,12 @@
     canvas.dataset.lunarChoice=state.lunarChoice||"";
     canvas.dataset.questsCompleted=String(completedQuestCount());
     canvas.dataset.totalQuests=String(QUESTS.length);
+    const route=routeCueState();
+    canvas.dataset.routeDirection=route?.direction||"";
+    canvas.dataset.routeDistance=route?String(route.distance):"";
     canvas.dataset.walking=playerMoving?"true":"false";
     canvas.dataset.walkCycle=walkCycle.toFixed(2);
+    updateRouteCue();
   }
   function renderInventory() {
     const slots={
@@ -729,6 +771,7 @@
       drawAtlasRotated(atlas.items,8,4,4,state.x-cam.x+vector.x*48,state.y-cam.y+vector.y*48,76,76,rotation);
     }
     drawEnemyGuide(cam);
+    drawRouteGuide(cam);
     const target=nearestInteractable();
     canvas.dataset.interactAvailable=target&&!paused?target.kind:"";
     if(target&&!paused){
@@ -789,6 +832,25 @@
       ctx.rotate(offscreen?-Math.atan2(screen.y-marker.y,screen.x-marker.x):0);
       ctx.fillStyle="#06151ddd";ctx.beginPath();ctx.arc(0,0,12,0,Math.PI*2);ctx.fill();
       ctx.fillStyle=color;ctx.font="900 15px sans-serif";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("◉",0,1);
+    }
+    ctx.restore();
+  }
+  function drawRouteGuide(cam) {
+    const route=routeCueState();
+    if(!route||paused)return;
+    const screen={x:route.target.x-cam.x,y:route.target.y-cam.y};
+    const margin=42,top=82,bottom=BASE_VIEW.height-42;
+    const marker={x:clamp(screen.x,margin,BASE_VIEW.width-margin),y:clamp(screen.y,top,bottom)};
+    const offscreen=screen.x<margin||screen.x>BASE_VIEW.width-margin||screen.y<top||screen.y>bottom;
+    ctx.save();
+    ctx.translate(marker.x,marker.y);
+    ctx.fillStyle="#70e5e8";
+    if(offscreen){
+      const angle=Math.atan2(screen.y-marker.y,screen.x-marker.x);
+      ctx.rotate(angle);ctx.beginPath();ctx.moveTo(18,0);ctx.lineTo(-10,-11);ctx.lineTo(-10,11);ctx.closePath();ctx.fill();
+    }else{
+      ctx.strokeStyle="#70e5e8";ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,28+Math.sin(performance.now()/180)*4,0,Math.PI*2);ctx.stroke();
+      ctx.font="900 18px sans-serif";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("✦",0,1);
     }
     ctx.restore();
   }
@@ -1204,6 +1266,7 @@
       questState(){const active=activeQuest();return{completed:completedQuestCount(),activeId:active?.quest.id||null,activeNumber:active?active.index+1:null}},
       progressState(){return{level:state.level,xp:state.xp,need:xpNeeded(),text:nodes.xpText.textContent}},
       objectiveText(){return currentQuestText()},
+      routeCueState(){const route=routeCueState();return route?{direction:route.direction,distance:route.distance,mapId:route.target.mapId}:null},
       inspectBossSprite(index){state.mapId=MAP_SIGNAL_TOWN;state.x=2140;state.y=520;boss.x=2200;boss.dead=false;boss.sprite=index;boss.attackTimer=999;boss.charge=0;boss.stun=0;updateHud()},
       setPlayer(x,y,mapId=state.mapId){state.mapId=mapId;state.x=x;state.y=y;updateHud();},
       unlockMoonfall(){state.bossDefeated=true;boss.dead=true;state.chapter2Started=true;saveGame();updateObjective();updateHud()},

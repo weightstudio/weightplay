@@ -116,6 +116,22 @@
     it:"Colpo confermato · la salute del bersaglio scende.",ru:"Попадание подтверждено · здоровье цели снижено.",hi:"प्रहार सफल · लक्ष्य का स्वास्थ्य घटा।",ar:"تم تأكيد الإصابة · انخفضت صحة الهدف."
   };
   for(const [code,value] of Object.entries(combatHitCopy)) localeRegistry[code].combatHit=value;
+  const routeCueCopy={
+    en:"Route cue: {direction} · {distance}m",
+    "zh-Hant":"路線提示：{direction} · {distance} 公尺",
+    "zh-Hans":"路线提示：{direction} · {distance} 米",
+    ja:"ルート案内：{direction} · {distance}m",
+    ko:"경로 안내: {direction} · {distance}m",
+    es:"Guía de ruta: {direction} · {distance} m",
+    "pt-BR":"Guia de rota: {direction} · {distance} m",
+    fr:"Indication de route : {direction} · {distance} m",
+    de:"Routenhinweis: {direction} · {distance} m",
+    it:"Indicazione percorso: {direction} · {distance} m",
+    ru:"Подсказка маршрута: {direction} · {distance} м",
+    hi:"मार्ग संकेत: {direction} · {distance} मी",
+    ar:"توجيه المسار: {direction} · {distance} م",
+  };
+  for(const [code,value] of Object.entries(routeCueCopy)) localeRegistry[code].routeCue=value;
   for(const [code,value] of Object.entries(visionSkillCopy)){
     localeRegistry[code].visionSkill=value;
   }
