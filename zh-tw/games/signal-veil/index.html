@@ -204,7 +204,7 @@
   <section id="battleShell" class="screen battle-shell" data-screen="battle" data-wp-logical-battle-canvas hidden>
     <div id="battleCanvas" class="battle-canvas">
       <header class="battle-header">
-        <button id="battleBack" class="back-button wp-shell-return" data-wp-return="battle" type="button" aria-label="Leave investigation">←</button>
+        <button id="battleBack" class="back-button wp-shell-return" data-wp-return="battle" type="button" data-t-aria="battleBackLabel" aria-label="離開調查">←</button>
         <div class="battle-title"><strong data-t="title">訊號帷幕</strong><span id="zoneLabel">Town</span></div>
         <div class="battle-actions">
           <button id="questButton" class="quest-button" type="button" data-t="questButton">任務</button>
@@ -218,7 +218,7 @@
         <div id="visionState" class="vision-state" data-t="normalVision">普通</div>
       </div>
         <div id="gameViewport" class="game-viewport">
-          <canvas id="gameCanvas" width="960" height="540" aria-label="Signal Veil connected action RPG world" tabindex="0"></canvas>
+          <canvas id="gameCanvas" width="960" height="540" data-t-aria="gameCanvasLabel" aria-label="訊號帷幕連續動作角色扮演世界" tabindex="0"></canvas>
           <div id="objective" class="objective"></div>
           <div id="routeCue" class="route-cue" role="status" aria-live="polite" hidden></div>
           <div id="toast" class="toast" role="status" aria-live="polite"></div>
@@ -232,7 +232,7 @@
           <button id="dialogueNext" type="button" data-t="continue">繼續</button>
         </div>
       </div>
-      <div class="mobile-controls" aria-label="Touch controls">
+      <div class="mobile-controls" data-t-aria="touchControlsLabel" aria-label="觸控操作">
         <div id="joystick" class="joystick"><i id="stick"></i></div>
         <div class="action-buttons">
           <button id="visionButton" class="vision-button" type="button" data-t="visionSkill" data-t-aria="visionSkill" aria-label="真視">真視</button>
@@ -303,7 +303,7 @@
   <script src="guide-locales.js"></script>
   <script src="state-store.js"></script>
   <script src="quest-data.js"></script>
-  <script src="game.js?v=20260818-route-cue-v9"></script>
+  <script src="game.js?v=20260818-accessibility-v10"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>

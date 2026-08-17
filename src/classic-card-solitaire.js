@@ -215,6 +215,25 @@
     if (COMMON[locale]) COMMON[locale].yukonDestinationHint = message;
   });
 
+  const YUKON_REVEAL_COPY = {
+    en: "New card revealed — keep planning.",
+    "zh-Hant": "翻出新牌了——繼續規劃下一步。",
+    "zh-Hans": "翻开新牌了——继续规划下一步。",
+    ja: "新しいカードがめくれました。次の一手を考えましょう。",
+    ko: "새 카드가 공개되었습니다. 다음 수를 계획해 보세요.",
+    es: "¡Nueva carta revelada! Sigue planificando.",
+    "pt-BR": "Nova carta revelada! Continue planejando.",
+    fr: "Nouvelle carte révélée ! Continuez à planifier.",
+    de: "Neue Karte aufgedeckt! Plane weiter.",
+    it: "Nuova carta scoperta! Continua a pianificare.",
+    ru: "Открыта новая карта! Продолжайте планировать.",
+    hi: "नया कार्ड खुल गया! अगली चाल की योजना बनाएँ।",
+    ar: "انكشفت بطاقة جديدة! واصل التخطيط.",
+  };
+  Object.entries(YUKON_REVEAL_COPY).forEach(([locale, message]) => {
+    if (COMMON[locale]) COMMON[locale].yukonRevealCue = message;
+  });
+
   const PYRAMID_COACH_COPY = {
     en: "Two legal pairs are open. Pick the pair that reveals more cards.",
     "zh-Hant": "目前有兩組合法牌對。優先選能翻出更多牌的那一組。",
@@ -898,6 +917,24 @@
       if (this.config.variant !== "freecell" || source?.zone !== "tableau" || destination?.zone !== "tableau") return 0;
       return this.game.groupFrom(source).length;
     }
+    yukonRevealWillOccur(source) {
+      if (this.config.variant !== "yukon" || source?.zone !== "tableau") return false;
+      const row = Number(source.row);
+      const pile = this.game.tableau[source.pile] || [];
+      return Number.isInteger(row) && row > 0 && Boolean(pile[row - 1] && !pile[row - 1].faceUp);
+    }
+    showYukonRevealCue(revealed) {
+      if (!revealed || this.config.variant !== "yukon" || !this.nodes.boardStatus || this.game.won || this.game.lost) return;
+      this.nodes.boardStatus.dataset.state = "yukon-reveal";
+      this.nodes.boardStatus.textContent = this.t("yukonRevealCue");
+      clearTimeout(this.statusTimer);
+      this.statusTimer = setTimeout(() => {
+        if (this.nodes.boardStatus && !this.game.won && !this.game.lost) {
+          delete this.nodes.boardStatus.dataset.state;
+          this.nodes.boardStatus.textContent = "";
+        }
+      }, 1600);
+    }
     showSequenceCue(size) {
       if (size < 2 || !this.nodes.boardStatus) return;
       const message = this.config.sequenceCue?.[this.locale];
@@ -1017,7 +1054,8 @@
       if (this.game.selected && dest) {
         this.pendingMoveRects = this.captureMoveRects();
         const sequenceSize = this.sequenceCueSize(this.game.selected, dest);
-        if (this.game.moveClassic(this.game.selected, dest)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.retireYukonCoach(); this.game.selected = null; this.render(); this.showSequenceCue(sequenceSize); }
+        const yukonReveal = this.yukonRevealWillOccur(this.game.selected);
+        if (this.game.moveClassic(this.game.selected, dest)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.retireYukonCoach(); this.game.selected = null; this.render(); this.showSequenceCue(sequenceSize); this.showYukonRevealCue(yukonReveal); }
         else { this.pendingMoveRects = null; this.feedback(this.t("wrong")); }
         return;
       }
@@ -1097,7 +1135,8 @@
         if ((this.config.variant === "freecell" || this.config.variant === "yukon") && dest) {
           this.pendingMoveRects = this.captureMoveRects();
           const sequenceSize = this.sequenceCueSize(source, dest);
-          if (this.game.moveClassic(source, dest)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.retireYukonCoach(); this.render(); this.showSequenceCue(sequenceSize); }
+          const yukonReveal = this.yukonRevealWillOccur(source);
+          if (this.game.moveClassic(source, dest)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.retireYukonCoach(); this.render(); this.showSequenceCue(sequenceSize); this.showYukonRevealCue(yukonReveal); }
           else { this.pendingMoveRects = null; this.feedback(this.t("wrong")); }
         }
         else if (this.config.variant === "pyramid") {

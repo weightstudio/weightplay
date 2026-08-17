@@ -70,6 +70,22 @@
     ar: { bid: "راهن على عدد اللمّات التي يتوقع فريقك الفوز بها. ♠ هي الحكم دائماً.", play: "اتبع النوع إن أمكن؛ ♠ تفوز باللّمة." },
   };
 
+  const SPADES_PROGRESS_COPY = {
+    en: { label: "Contract", behind: "{tricks}/{bid} tricks · Need {remaining} more", on: "{tricks}/{bid} tricks · On contract", ahead: "{tricks}/{bid} tricks · Overtricks: {bags}" },
+    "zh-Hant": { label: "合約", behind: "{tricks}/{bid} 墩 · 還需 {remaining} 墩", on: "{tricks}/{bid} 墩 · 已達合約", ahead: "{tricks}/{bid} 墩 · 超墩：{bags}" },
+    "zh-Hans": { label: "合约", behind: "{tricks}/{bid} 墩 · 还需 {remaining} 墩", on: "{tricks}/{bid} 墩 · 已达合约", ahead: "{tricks}/{bid} 墩 · 超墩：{bags}" },
+    ja: { label: "契約", behind: "{tricks}/{bid}トリック · あと{remaining}トリック", on: "{tricks}/{bid}トリック · 契約達成", ahead: "{tricks}/{bid}トリック · 超過トリック：{bags}" },
+    ko: { label: "계약", behind: "{tricks}/{bid} 트릭 · {remaining}개 더 필요", on: "{tricks}/{bid} 트릭 · 계약 달성", ahead: "{tricks}/{bid} 트릭 · 초과 트릭: {bags}" },
+    es: { label: "Contrato", behind: "{tricks}/{bid} bazas · Faltan {remaining}", on: "{tricks}/{bid} bazas · Contrato cumplido", ahead: "{tricks}/{bid} bazas · Bazas extra: {bags}" },
+    "pt-BR": { label: "Contrato", behind: "{tricks}/{bid} vazas · Faltam {remaining}", on: "{tricks}/{bid} vazas · Contrato cumprido", ahead: "{tricks}/{bid} vazas · Vazas extras: {bags}" },
+    fr: { label: "Contrat", behind: "{tricks}/{bid} plis · Encore {remaining}", on: "{tricks}/{bid} plis · Contrat atteint", ahead: "{tricks}/{bid} plis · Plis en plus : {bags}" },
+    de: { label: "Vertrag", behind: "{tricks}/{bid} Stiche · Noch {remaining}", on: "{tricks}/{bid} Stiche · Vertrag erfüllt", ahead: "{tricks}/{bid} Stiche · Überstiche: {bags}" },
+    it: { label: "Contratto", behind: "{tricks}/{bid} prese · Ne mancano {remaining}", on: "{tricks}/{bid} prese · Contratto raggiunto", ahead: "{tricks}/{bid} prese · Prese extra: {bags}" },
+    ru: { label: "Контракт", behind: "{tricks}/{bid} взяток · Осталось {remaining}", on: "{tricks}/{bid} взяток · Контракт выполнен", ahead: "{tricks}/{bid} взяток · Сверх контракта: {bags}" },
+    hi: { label: "अनुबंध", behind: "{tricks}/{bid} बाज़ियाँ · {remaining} और चाहिए", on: "{tricks}/{bid} बाज़ियाँ · अनुबंध पूरा", ahead: "{tricks}/{bid} बाज़ियाँ · अतिरिक्त बाज़ियाँ: {bags}" },
+    ar: { label: "العقد", behind: "{tricks}/{bid} لَمّات · تحتاج إلى {remaining} أخرى", on: "{tricks}/{bid} لَمّات · اكتمل العقد", ahead: "{tricks}/{bid} لَمّات · لَمّات إضافية: {bags}" },
+  };
+
   const OLD_MAID_RISK = {
     en: { held: "Old Maid in hand — clear pairs and pass it on.", hidden: "The Old Maid is still hidden." },
     "zh-Hant": { held: "鬼牌在你手上——消除配對並設法傳出去。", hidden: "鬼牌仍藏在某位玩家手中。" },
@@ -197,6 +213,14 @@
   };
   const heartsText = () => (HEARTS_COPY[currentLocale()] || HEARTS_COPY.en).help;
   const spadesText = (phase) => (SPADES_COPY[currentLocale()] || SPADES_COPY.en)[phase] || SPADES_COPY.en.play;
+  const spadesProgressText = (tricks, bid) => {
+    const dictionary = SPADES_PROGRESS_COPY[currentLocale()] || SPADES_PROGRESS_COPY.en;
+    const state = tricks < bid ? "behind" : tricks === bid ? "on" : "ahead";
+    const values = { tricks, bid, remaining: Math.max(0, bid - tricks), bags: Math.max(0, tricks - bid) };
+    let text = dictionary[state] || SPADES_PROGRESS_COPY.en[state];
+    Object.entries(values).forEach(([name, replacement]) => { text = text.replaceAll(`{${name}}`, String(replacement)); });
+    return { state, text: `${dictionary.label || SPADES_PROGRESS_COPY.en.label}: ${text}` };
+  };
 
   const CRAZY_EIGHTS_COPY = {
     en: { summary: "Non-wild cards by suit: {counts}. A suit with more cards can keep more options open.", suits: ["Clubs", "Diamonds", "Hearts", "Spades"] },
@@ -475,7 +499,25 @@
     const finish = () => { const own = s.tricks[0] >= s.bids[0] + s.bids[2]; const enemy = s.tricks[1] >= s.bids[1] + s.bids[3]; s.scores[0] += own ? 10 * (s.bids[0] + s.bids[2]) + Math.max(0, s.tricks[0] - s.bids[0] - s.bids[2]) : -10 * (s.bids[0] + s.bids[2]); s.scores[1] += enemy ? 10 * (s.bids[1] + s.bids[3]) + Math.max(0, s.tricks[1] - s.bids[1] - s.bids[3]) : -10 * (s.bids[1] + s.bids[3]); controller.result(s.scores[0] >= s.scores[1], `${t("score")}: ${s.scores[0]} — ${s.scores[1]}`); };
     const play = (player, item) => { const cards = s.hands[player]; if (!legal(cards).includes(item)) return; cards.splice(cards.indexOf(item), 1); s.trick.push({ player, card: item }); s.turn = (player + 1) % 4; if (s.trick.length === 4) { const winner = trickWinner(s.trick, "spades"); s.tricks[winner % 2 === 0 ? 0 : 1] += 1; s.trick = []; s.turn = winner; if (!s.hands[0].length) { finish(); return; } } if (s.turn !== 0) setTimeout(aiTurn, 180); };
     const aiTurn = () => { if (s.phase !== "play" || s.turn === 0) return; play(s.turn, chooseAiCard(s.hands[s.turn], legal(s.hands[s.turn]), s.turn % 2 ? "low" : "high")); };
-    return { reset() { Object.assign(s, { hands: [[], [], [], []], bids: [null, null, null, null], tricks: [0, 0], turn: 0, trick: [], phase: "bid", scores: [0, 0] }); deck().forEach((item, index) => s.hands[index % 4].push(item)); }, card(index) { if (s.phase === "play" && s.turn === 0) play(0, s.hands[0][index]); }, action(action, selected) { if (s.phase === "bid" && action === "bid") { s.bids[0] = Number(selected); s.bids[1] = 2 + Math.floor(Math.random() * 3); s.bids[2] = 2 + Math.floor(Math.random() * 4); s.bids[3] = 2 + Math.floor(Math.random() * 3); s.phase = "play"; s.turn = 0; } }, view() { const bidControls = Array.from({ length: 14 }, (_, i) => `<button class="secondary-btn" data-action="bid" data-value="${i}" ${s.bids[0] !== null ? "disabled" : ""}>${i}</button>`).join(""); return { phase: s.phase === "bid" ? t("bid") : `${t("score")}: ${s.scores[0]} / ${s.scores[1]}`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: spadesText(s.phase === "bid" ? "bid" : "play"), score: s.scores[0], opponents: names.slice(1).map((name, index) => opponentMarkup(name, s.hands[index + 1].length, `${t("bid")}: ${s.bids[index + 1] ?? "—"}`)).join(""), center: `<div class="card-table-label">${t("table")} · ${s.tricks[0]} / ${s.tricks[1]}</div><div class="table-row">${s.trick.map((entry) => cardMarkup(entry.card, 0)).join("") || `♠ ${t("waiting")}`}</div>`, hand: cardsMarkup(s.hands[0]), actions: s.phase === "bid" ? `<div class="card-choice-panel">${bidControls}</div>` : "" }; } };
+    return {
+      reset() { Object.assign(s, { hands: [[], [], [], []], bids: [null, null, null, null], tricks: [0, 0], turn: 0, trick: [], phase: "bid", scores: [0, 0] }); deck().forEach((item, index) => s.hands[index % 4].push(item)); },
+      card(index) { if (s.phase === "play" && s.turn === 0) play(0, s.hands[0][index]); },
+      action(action, selected) { if (s.phase === "bid" && action === "bid") { s.bids[0] = Number(selected); s.bids[1] = 2 + Math.floor(Math.random() * 3); s.bids[2] = 2 + Math.floor(Math.random() * 4); s.bids[3] = 2 + Math.floor(Math.random() * 3); s.phase = "play"; s.turn = 0; } },
+      view() {
+        const bidControls = Array.from({ length: 14 }, (_, i) => `<button class="secondary-btn" data-action="bid" data-value="${i}" ${s.bids[0] !== null ? "disabled" : ""}>${i}</button>`).join("");
+        const progress = s.phase === "play" ? spadesProgressText(s.tricks[0], s.bids[0] + s.bids[2]) : null;
+        return {
+          phase: s.phase === "bid" ? t("bid") : `${t("score")}: ${s.scores[0]} / ${s.scores[1]}`,
+          status: s.turn === 0 ? t("yourTurn") : t("aiTurn"),
+          help: spadesText(s.phase === "bid" ? "bid" : "play"),
+          score: s.scores[0],
+          opponents: names.slice(1).map((name, index) => opponentMarkup(name, s.hands[index + 1].length, `${t("bid")}: ${s.bids[index + 1] ?? "—"}`)).join(""),
+          center: `<div class="card-table-label">${t("table")} · ${s.tricks[0]} / ${s.tricks[1]}</div>${progress ? `<div class="card-spades-progress" data-progress-state="${progress.state}" role="status" aria-live="polite">${progress.text}</div>` : ""}<div class="table-row">${s.trick.map((entry) => cardMarkup(entry.card, 0)).join("") || `♠ ${t("waiting")}`}</div>`,
+          hand: cardsMarkup(s.hands[0]),
+          actions: s.phase === "bid" ? `<div class="card-choice-panel">${bidControls}</div>` : "",
+        };
+      },
+    };
   }
 
   function makeCrazyEights(controller) {
