@@ -4,7 +4,7 @@
   const COPY = window.WPCloudhookLocales.locales;
   const LOCALE_ORDER = window.WPCloudhookLocales.order;
   const GAME_ID = "animal-cloudhook-courier";
-const GAME_VERSION = "v7";
+const GAME_VERSION = "v8";
   const INTERFACE_VERSION = 6;
   const LEAVE_COPY = {
     en: { title: "Keep this flight?", body: "Continue keeps the current flight. Returning to Stages ends this attempt.", continue: "Continue flight", leave: "Stages" },

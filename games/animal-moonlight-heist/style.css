@@ -12,14 +12,14 @@
 .planner-heading,.gadget-row{display:flex;align-items:center;gap:6px}
 .planner-heading{justify-content:space-between;font-size:12px}
 .gadget-choices{margin-top:0;gap:5px}
-.gadget-choice{position:relative;width:46px;height:46px}
+.gadget-choice{position:relative;width:54px;height:54px}
 .gadget-level{position:absolute;right:1px;bottom:1px;padding:1px 4px;border-radius:8px;background:#07101fee;color:#ffd765;font-size:9px;font-weight:900}
 .economy-btn{min-height:42px;padding:4px 7px;border:1px solid #56728f;border-radius:9px;background:#17314e;color:#fff;font-size:10px;font-weight:800}
 .economy-btn.active{border-color:#ffd765;color:#ffd765}
 .economy-btn.is-confirming{border-color:#ffd765;background:#ffd765;color:#241707;box-shadow:0 0 0 2px #ffd76544}
 .economy-feedback{min-height:14px;max-height:24px;overflow:hidden;color:#ffd765;font-size:10px;line-height:12px}
 .patrol-sight{position:absolute;width:var(--sight-size,36%);height:var(--sight-size,36%);z-index:2;transform:translate(-50%,-50%);pointer-events:none;border:1px solid rgba(255,215,101,.46);border-radius:50%;background:radial-gradient(ellipse,rgba(255,191,88,.12),rgba(255,191,88,.025) 64%,transparent 70%);transition:left .9s linear,top .9s linear,width .25s,height .25s}
-@media(max-height:430px){.stage-canvas{grid-template-columns:280px minmax(0,1fr)}.planner{grid-template-columns:48px minmax(0,1fr)}.planner>img{width:48px;height:48px}.planner-body{grid-template-rows:auto 43px auto}.gadget-row,.planner-heading{gap:3px}.gadget-choices{gap:2px}.gadget-choice{width:38px;height:38px;padding:2px}.economy-btn{min-height:36px;padding:3px 5px;font-size:9px}}
+@media(max-height:430px){.stage-canvas{grid-template-columns:280px minmax(0,1fr)}.planner{grid-template-columns:48px minmax(0,1fr)}.planner>img{width:48px;height:48px}.planner-body{grid-template-rows:auto 43px auto}.gadget-row,.planner-heading{gap:3px}.gadget-choices{gap:2px}.gadget-choice{width:48px;height:48px;padding:4px}.economy-btn{min-height:44px;padding:4px 7px;font-size:9px}}
 
 body[data-screen="battle"] :is(.sound-toggle, .weightplay-version-badge) {
   display: none !important;
@@ -76,10 +76,10 @@ html body[data-wp-game-id="animal-moonlight-heist"] > .wp-stage-physical-reserve
 .gadget-level{position:static;max-width:100%;padding:1px 3px;border-radius:8px;background:#07101fee;color:#ffd765;font-size:8px;font-weight:900;line-height:10px;white-space:nowrap}
 
 @media (orientation: landscape) and (max-height: 430px) {
-  body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] .gadget-choice{grid-template-rows:17px minmax(0,1fr) auto}
-  body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] .gadget-choice img{width:18px;height:18px}
-  body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] .gadget-name{font-size:6px;line-height:7px}
-  body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] .gadget-level{padding:0 2px;font-size:7px;line-height:8px}
+  body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] .gadget-choice{grid-template-rows:22px minmax(0,1fr) auto}
+  body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] .gadget-choice img{width:24px;height:24px}
+  body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] .gadget-name{font-size:8px;line-height:9px}
+  body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] .gadget-level{padding:1px 3px;font-size:8px;line-height:10px}
 }
 
 @media (orientation: landscape) and (max-height: 430px) {
@@ -342,6 +342,16 @@ body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-scree
 body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] .economy-btn{min-width:0!important;line-height:1.12!important;overflow-wrap:normal!important;word-break:normal!important;hyphens:none!important}
 body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] .mission-rail{touch-action:none!important}
 
+body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] [data-wp-logical-stage-canvas] .gadget-choice {
+  width: 54px !important;
+  height: 54px !important;
+  padding: 4px !important;
+}
+body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] [data-wp-logical-stage-canvas] .economy-btn {
+  min-height: 54px !important;
+  padding: 4px 7px !important;
+}
+
 /* The shared gameplay coach and Help action belong to Battle, never Main or Stage. */
 body[data-wp-game-id="animal-moonlight-heist"]:not([data-screen="battle"]) :is(.wp-tutorial-button,.wp-tutorial-backdrop){
   display:none!important;
@@ -397,9 +407,9 @@ body[data-wp-game-id="animal-moonlight-heist"][data-screen="battle"] .wp-tutoria
     font-size: 12px !important;
   }
   body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] .gadget-choice {
-    width: 38px !important;
-    height: 38px !important;
-    padding: 2px !important;
+    width: 48px !important;
+    height: 48px !important;
+    padding: 4px !important;
     border-radius: 8px !important;
   }
   body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] .gadget-level {
@@ -407,8 +417,8 @@ body[data-wp-game-id="animal-moonlight-heist"][data-screen="battle"] .wp-tutoria
     font-size: 9px !important;
   }
   body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] .economy-btn {
-    min-height: 36px !important;
-    padding: 3px 5px !important;
+    min-height: 44px !important;
+    padding: 4px 7px !important;
     border-radius: 8px !important;
     font-size: 9px !important;
   }

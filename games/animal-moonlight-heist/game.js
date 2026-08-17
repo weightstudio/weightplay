@@ -1,6 +1,6 @@
 (() => {
   const $ = (s) => document.querySelector(s);
-  const GAME_VERSION = 17, INTERFACE_VERSION = 6;
+  const GAME_VERSION = 20, INTERFACE_VERSION = 6;
   const viewportBucket = () => {
     const width = window.innerWidth || 0, height = window.innerHeight || 0;
     return height <= 430 ? "short-landscape" : width <= 430 ? "phone" : width >= 1000 ? "desktop" : "tablet";
@@ -19,9 +19,10 @@
   };
   // General Stage and Battle/Result fill the complete safe physical width.
   // Apply the game-local request before the directly loaded shared owners run.
-  $(".stage-canvas")?.setAttribute("data-wp-canvas-max-width", "920");
-  $(".stage-canvas")?.setAttribute("data-wp-stage-landscape-width", "760");
-  $(".stage-canvas")?.setAttribute("data-wp-stage-landscape-height", "334");
+  const stageCanvas = $("#stageScreen") || $(".stage-canvas");
+  stageCanvas?.setAttribute("data-wp-canvas-max-width", "920");
+  stageCanvas?.setAttribute("data-wp-stage-landscape-width", "760");
+  stageCanvas?.setAttribute("data-wp-stage-landscape-height", "334");
   $(".battle-canvas")?.setAttribute("data-wp-canvas-max-width", "920");
   const KEY = "weightplay_moonlight_heist_v1";
   const localeKey = "weightPlayLocale", legacyLocaleKey = "weightplayLocale";
@@ -293,7 +294,7 @@
     if(runtimeCatalogLoads.has(code))return runtimeCatalogLoads.get(code);
     const segment=runtimeLocaleSegments[code];
     if(!segment)return Promise.resolve();
-    const pending=new Promise((resolve,reject)=>{const script=document.createElement("script");script.src=`/src/runtime-locales/${segment}.js?v=20260817-moonlight-smoke-ko-a11y-v19`;script.onload=resolve;script.onerror=()=>reject(new Error(`Moonlight Heist locale catalog failed: ${code}`));document.head.append(script)});
+    const pending=new Promise((resolve,reject)=>{const script=document.createElement("script");script.src=`/src/runtime-locales/${segment}.js?v=20260817-moonlight-smoke-ko-a11y-v20`;script.onload=resolve;script.onerror=()=>reject(new Error(`Moonlight Heist locale catalog failed: ${code}`));document.head.append(script)});
     runtimeCatalogLoads.set(code,pending);
     return pending;
   }

@@ -161,7 +161,7 @@
     }
     if (!document.querySelector('script[src*="battle-canvas-standard.js"]')) {
       const script = document.createElement("script");
-      script.src = `${new URL("battle-canvas-standard.js", sharedAssetBase).href}?v=20260815-abyss-landscape-v1`;
+      script.src = `${new URL("battle-canvas-standard.js", sharedAssetBase).href}?v=20260817-wide-envelope-cache-v2`;
       script.dataset.wpBattleStandard = "true";
       document.body.append(script);
     }
