@@ -87,6 +87,57 @@ body[data-screen="result"] .game-page-info-static { display: none !important; }
 body[data-game-id="snake"] #controls .control { touch-action: manipulation; }
 .arcade-footer { padding: 12px 16px; color: var(--arcade-muted); font-size: .82rem; text-align: center; }
 
+/* Checkers Battle is a complete active-play surface. Keep the document root
+   out of the gesture chain, then let the shared V6 panel use the full safe
+   viewport so its board, cue, and Select action stay one reachable unit. */
+html.popular-checkers-active,
+html.popular-checkers-active body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+html.popular-checkers-active body {
+  height: 100dvh;
+  min-height: 0;
+  touch-action: none;
+}
+html.popular-checkers-active .popular-arcade {
+  height: 100dvh;
+  min-height: 0;
+  padding: 12px 14px 16px;
+  gap: 0;
+}
+html.popular-checkers-active .arcade-header,
+html.popular-checkers-active .arcade-footer { display: none; }
+html.popular-checkers-active #battleScreen,
+html.popular-checkers-active #resultScreen {
+  min-height: 0;
+  height: 100%;
+}
+html.popular-checkers-active #battleScreen .battle-panel {
+  height: 100%;
+  min-height: 0;
+  padding: 18px;
+  align-content: stretch;
+  grid-template-rows: auto minmax(260px, 1fr) auto auto;
+}
+html.popular-checkers-active #battleScreen .board-wrap {
+  min-height: 0;
+  overflow: hidden;
+}
+html.popular-checkers-active #battleScreen .board {
+  height: 100%;
+  min-height: 0;
+}
+html.popular-checkers-active #battleScreen .checkers-board {
+  width: min(100%, 360px);
+  max-height: 100%;
+}
+html.popular-checkers-active #resultScreen .arcade-panel {
+  height: 100%;
+  min-height: 0;
+  padding: 18px;
+}
+
 .grid-board { display: grid; gap: 5px; width: min(100%, 360px); aspect-ratio: 1; }
 .grid-board.tetris-grid { grid-template-columns: repeat(8, 1fr); }
 .grid-board.snake-grid { grid-template-columns: repeat(10, 1fr); touch-action: none; user-select: none; }
@@ -286,6 +337,41 @@ body[data-game-id="snake"] .game-message[data-tone="good"] { font-weight: 800; }
     height: 100%;
     padding: 16px;
     gap: 10px;
+  }
+
+  html.popular-checkers-active body[data-screen="battle"] .popular-arcade {
+    padding: 6px;
+  }
+  html.popular-checkers-active body[data-screen="battle"] #battleScreen .battle-panel {
+    padding: 7px;
+    gap: 6px 12px;
+    grid-template-columns: minmax(270px, 1fr) minmax(250px, .85fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+  html.popular-checkers-active body[data-screen="battle"] #battleScreen .board-wrap {
+    grid-column: 1;
+    grid-row: 1 / 4;
+    padding: 5px;
+  }
+  html.popular-checkers-active body[data-screen="battle"] #battleScreen .board {
+    height: 100%;
+    min-height: 0;
+  }
+  html.popular-checkers-active body[data-screen="battle"] #battleScreen .battle-top {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  html.popular-checkers-active body[data-screen="battle"] #battleScreen .game-message {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: start;
+  }
+  html.popular-checkers-active body[data-screen="battle"] #battleScreen #controls {
+    grid-column: 2;
+    grid-row: 3;
+  }
+  html.popular-checkers-active body[data-screen="battle"] #battleScreen #controls .control-row {
+    flex-wrap: nowrap;
   }
 }
 @media (prefers-reduced-motion: reduce) {

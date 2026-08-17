@@ -1286,7 +1286,7 @@ function renderHeroGames() {
       }
       card.innerHTML = `
         <div class="hero-game-art">
-          <img ${lobbyImageAttributes(game.art?.background || "assets/hero.png")} alt="" />
+          <img class="hero-game-image" ${lobbyImageAttributes(game.art?.background || "assets/hero.png")} alt="" />
           <span>${rankText}</span>
         </div>
         <div class="hero-game-copy">

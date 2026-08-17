@@ -4,7 +4,7 @@
   const LOCALES=window.ANIMAL_HONEY_SHIELD_LOCALES;
   const STORAGE_KEY="weightplay_animal_honey_shield_v1";
   const TUTORIAL_KEY="weightplay_tutorial_seen_animal_honey_shield_v1";
-  const GAME_VERSION="v45";
+  const GAME_VERSION="v47";
   const ROUTE_LOCALES={"zh-tw":"zh-Hant","zh-cn":"zh-Hans","pt-br":"pt-BR",en:"en",ja:"ja",ko:"ko",es:"es",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const routeSegment=location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
   const platformLocale=window.WonderI18n?.actualLocale?.();
@@ -164,7 +164,10 @@
     if(Array.isArray(value))return value;
     return String(value).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??`{${name}}`);
   }
-  function announce(key,vars){$("feedbackText").textContent=fmt(key,vars)}
+  function announce(key,vars){
+    $("feedbackText").textContent=fmt(key,vars);
+    if(key!=="repairLoose"){state.repairCueKey="";state.repairCueUntil=0}
+  }
   function clearRepairCue(){
     if(state.repairCueKey&&$("feedbackText").textContent===fmt(state.repairCueKey))$("feedbackText").textContent="";
     state.repairCueKey="";state.repairCueUntil=0;
@@ -972,7 +975,6 @@
           state.maxGroupAttached=Math.max(state.maxGroupAttached,supporters.length||1);
           bee.cooldown=0;stroke.flash=.2;state.flash=.035;
           if(!stroke.repairCueShown){stroke.repairCueShown=true;announceRepair("repairLoose")}
-          else if(!state.repairCueKey)announce("barrierMoved");
         }else{
           if(dot<0){bee.vx-=1.9*dot*nx;bee.vy-=1.9*dot*ny}
           bee.vx+=nx*42;bee.vy+=ny*42;bee.cooldown=.14;stroke.blockedFlash=.16;
