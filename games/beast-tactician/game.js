@@ -836,7 +836,7 @@
       traitHealing: "治療 {points}",
       traitBuff: "強化友軍 {percent}%",
       traitBounce: "彈跳 {count} 個目標",
-      traitBoss: "Boss 傷害 +{percent}%",
+      traitBoss: "首領傷害 +{percent}%",
       upgradeAction: "升級（{coins}）",
       sellAction: "出售（+{coins}）",
       selectedActionInfo: "升級：{upgrade} 金幣 | 出售：+{sell} 金幣",
@@ -930,7 +930,7 @@
       leo: ["爆鬃里歐", "頂級前線英雄。"],
       taro: ["苔甲太郎", "最強路線阻擋者。"],
       orla: ["月帽歐菈", "長距離魔法輸出。"],
-      fia: ["火花菲雅", "專精擊破 Boss。"],
+      fia: ["火花菲雅", "專精擊破首領。"],
       rux: ["齒角魯克斯", "強化附近士兵。"],
       panko: ["鼓腹潘可", "治療阻擋者。"],
       deer: ["自然鹿靈", "自然控制與治療。"],
@@ -1451,9 +1451,15 @@
   };
 
   function t(key, values = {}) {
+    const hasGameOwnedValue = key === "hp"
+      ? Boolean(healthTerms[state.locale])
+      : Boolean(text[state.locale]?.[key]);
     let value = key === "hp"
       ? (healthTerms[state.locale] || healthTerms.en)
       : (text[state.locale]?.[key] || text.en[key] || key);
+    if (!hasGameOwnedValue && state.locale !== "en") {
+      value = window.WeightPlayGameRuntimeLocalizer?.translate?.(value) || value;
+    }
     Object.entries(values).forEach(([name, replacement]) => {
       value = value.replaceAll(`{${name}}`, replacement);
     });
@@ -2200,19 +2206,147 @@
     return localizedValue(unit.note) || t("unitSupport");
   }
 
+  const unitRuntimeTerms = {
+    en: {
+      everySeconds: "Every {seconds}s",
+      traitSplash: "Splash {tiles} tiles",
+      traitSlow: "Slow {percent}%",
+      traitHealing: "Heal {points}",
+      traitBuff: "Buff allies {percent}%",
+      traitBounce: "Chains {count} targets",
+      traitBoss: "Boss damage +{percent}%",
+    },
+    "zh-Hant": {
+      everySeconds: "每 {seconds} 秒",
+      traitSplash: "濺射 {tiles} 格",
+      traitSlow: "緩速 {percent}%",
+      traitHealing: "治療 {points}",
+      traitBuff: "強化友軍 {percent}%",
+      traitBounce: "彈跳 {count} 個目標",
+      traitBoss: "首領傷害 +{percent}%",
+    },
+    "zh-Hans": {
+      everySeconds: "每 {seconds} 秒",
+      traitSplash: "溅射 {tiles} 格",
+      traitSlow: "减速 {percent}%",
+      traitHealing: "治疗 {points}",
+      traitBuff: "强化友军 {percent}%",
+      traitBounce: "弹跳 {count} 个目标",
+      traitBoss: "首领伤害 +{percent}%",
+    },
+    ja: {
+      everySeconds: "{seconds} 秒ごと",
+      traitSplash: "スプラッシュ {tiles} タイル",
+      traitSlow: "減速 {percent}%",
+      traitHealing: "{points} 回復",
+      traitBuff: "味方を強化 {percent}%",
+      traitBounce: "{count}体に連鎖",
+      traitBoss: "ボスダメージ +{percent}%",
+    },
+    ko: {
+      everySeconds: "{seconds}초마다",
+      traitSplash: "스플래시 {tiles}칸",
+      traitSlow: "감속 {percent}%",
+      traitHealing: "치유 {points}",
+      traitBuff: "아군 강화 {percent}%",
+      traitBounce: "{count}개 대상 연쇄",
+      traitBoss: "보스 피해 +{percent}%",
+    },
+    es: {
+      everySeconds: "Cada {seconds} s",
+      traitSplash: "Área de {tiles} casillas",
+      traitSlow: "Ralentiza {percent}%",
+      traitHealing: "Cura {points}",
+      traitBuff: "Potencia aliados {percent}%",
+      traitBounce: "Salta a {count} objetivos",
+      traitBoss: "Daño a jefe +{percent}%",
+    },
+    "pt-BR": {
+      everySeconds: "A cada {seconds}s",
+      traitSplash: "Área de {tiles} casas",
+      traitSlow: "Retarda {percent}%",
+      traitHealing: "Cura {points}",
+      traitBuff: "Fortalece aliados {percent}%",
+      traitBounce: "Encadeia {count} alvos",
+      traitBoss: "Dano ao chefe +{percent}%",
+    },
+    fr: {
+      everySeconds: "Toutes les {seconds}s",
+      traitSplash: "Zone de {tiles} cases",
+      traitSlow: "Ralentit de {percent}%",
+      traitHealing: "Soigne {points}",
+      traitBuff: "Renforce les alliés de {percent}%",
+      traitBounce: "Enchaîne {count} cibles",
+      traitBoss: "Dégâts de boss +{percent}%",
+    },
+    de: {
+      everySeconds: "Alle {seconds}s",
+      traitSplash: "Flächenschaden {tiles} Felder",
+      traitSlow: "Verlangsamt um {percent}%",
+      traitHealing: "Heilt {points}",
+      traitBuff: "Verbessert Verbündete um {percent}%",
+      traitBounce: "Verkettet {count} Ziele",
+      traitBoss: "Boss-Schaden +{percent}%",
+    },
+    it: {
+      everySeconds: "Ogni {seconds}s",
+      traitSplash: "Area {tiles} caselle",
+      traitSlow: "Rallenta del {percent}%",
+      traitHealing: "Cura {points}",
+      traitBuff: "Potenzia alleati {percent}%",
+      traitBounce: "Colpisce {count} bersagli a catena",
+      traitBoss: "Danno ai boss +{percent}%",
+    },
+    ru: {
+      everySeconds: "Каждые {seconds} с",
+      traitSplash: "Урон по области: {tiles} кл.",
+      traitSlow: "Замедление {percent}%",
+      traitHealing: "Лечение {points}",
+      traitBuff: "Усиление союзников {percent}%",
+      traitBounce: "Цепь: {count} цели",
+      traitBoss: "Урон боссу +{percent}%",
+    },
+    hi: {
+      everySeconds: "हर {seconds} सेकंड",
+      traitSplash: "स्प्लैश {tiles} टाइल",
+      traitSlow: "धीमा {percent}%",
+      traitHealing: "उपचार {points}",
+      traitBuff: "साथियों को {percent}% बढ़ावा",
+      traitBounce: "{count} लक्ष्यों की चेन",
+      traitBoss: "बॉस क्षति +{percent}%",
+    },
+    ar: {
+      everySeconds: "كل {seconds} ثانية",
+      traitSplash: "ضرر منتشر لمسافة {tiles} مربعات",
+      traitSlow: "إبطاء {percent}%",
+      traitHealing: "علاج {points}",
+      traitBuff: "تعزيز الحلفاء {percent}%",
+      traitBounce: "سلسلة إلى {count} هدف",
+      traitBoss: "ضرر الزعيم +{percent}%",
+    },
+  };
+
+  function unitRuntimeText(key, values = {}) {
+    let value = unitRuntimeTerms[state.locale]?.[key] || unitRuntimeTerms.en[key];
+    Object.entries(values).forEach(([name, replacement]) => {
+      value = value.replaceAll(`{${name}}`, replacement);
+    });
+    return value;
+  }
+
   function formatUnitTempo(unit) {
-    return t("everySeconds", { seconds: Number(unit?.cooldown || 0).toFixed(2) });
+    return unitRuntimeText("everySeconds", { seconds: Number(unit?.cooldown || 0).toFixed(2) });
   }
 
   function unitTraitText(unit) {
     if (!unit) return "";
     const traits = [];
-    if (unit.splash) traits.push(t("traitSplash", { tiles: Number(unit.splash).toFixed(1) }));
-    if (unit.slow) traits.push(t("traitSlow", { percent: Math.round(unit.slow * 100) }));
-    if (unit.heal) traits.push(t("traitHealing", { points: unit.heal }));
-    if (unit.buff) traits.push(t("traitBuff", { percent: Math.round(unit.buff * 100) }));
-    if (unit.bounce) traits.push(t("traitBounce", { count: unit.bounce }));
-    if (unit.bossDamage) traits.push(t("traitBoss", { percent: Math.round(unit.bossDamage * 100) }));
+    if (unit.splash) traits.push(unitRuntimeText("traitSplash", { tiles: Number(unit.splash).toFixed(1) }));
+    if (unit.slow) traits.push(unitRuntimeText("traitSlow", { percent: Math.round(unit.slow * 100) }));
+    if (unit.heal) traits.push(unitRuntimeText("traitHealing", { points: unit.heal }));
+    if (unit.buff) traits.push(unitRuntimeText("traitBuff", { percent: Math.round(unit.buff * 100) }));
+    if (unit.bounce) traits.push(unitRuntimeText("traitBounce", { count: unit.bounce }));
+    if (unit.bossDamage) traits.push(unitRuntimeText("traitBoss", { percent: Math.round(unit.bossDamage * 100) }));
     return traits.join(" | ");
   }
 
