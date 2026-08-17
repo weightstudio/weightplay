@@ -11,6 +11,12 @@
     "animal-bounce-brawl": ["#battle-screen", 390, 788, 760, 334],
     "animal-frost-maze": ["#battle-screen", 390, 788, 760, 334],
     "animal-flip-foundry": ["#battle-screen", 390, 788, 760, 334],
+    // Cloudhook owns a native 960x540 playfield; in compact landscape it
+    // uses the same wide envelope so its tether controls remain operable.
+    "animal-cloudhook-courier": ["#battleScreen", 390, 788, 760, 334],
+    // Twin Switchyard keeps its game-local physical fallback controls, while
+    // the native 960x540 playfield also needs the complete wide envelope.
+    "animal-twin-switchyard": ["#battleScreen", 390, 788, 760, 334],
     "arrow-escape": [".battle-canvas", 390, 788, 760, 334],
     "block-blast": [".battle-canvas", 390, 788, 760, 334],
     "hexa-sort": [".battle-canvas", 390, 788, 760, 334],
