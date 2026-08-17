@@ -185,6 +185,7 @@ body[data-game-id="snake"] .game-message[data-tone="good"] { font-weight: 800; }
 .letter.used { opacity: .42; }
 .brick-board { display: grid; grid-template-columns: repeat(6, 1fr); gap: 7px; width: min(100%, 500px); }
 .brick { min-height: 34px; border-radius: 7px; background: var(--arcade-accent-2); }
+.brick.target { outline: 3px solid var(--arcade-accent); outline-offset: 3px; box-shadow: 0 0 0 5px rgba(126, 231, 201, .14), 0 0 18px rgba(126, 231, 201, .42); }
 .brick.cleared { visibility: hidden; }
 .pong-board { width: min(100%, 560px); height: 250px; border: 1px solid var(--arcade-line); border-radius: 16px; background: linear-gradient(90deg, transparent 49.7%, rgba(255,255,255,.22) 50%, transparent 50.3%), rgba(0,0,0,.18); position: relative; overflow: hidden; }
 .pong-paddle { position: absolute; bottom: 16px; left: 45%; width: 84px; height: 15px; border-radius: 9px; background: var(--arcade-accent); }
