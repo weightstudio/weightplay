@@ -26,7 +26,7 @@
     <style>.battle{background-image:linear-gradient(180deg,rgba(26,18,42,.22),rgba(26,18,42,.70)),url("assets/animal-bounce-brawl-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-shell-controls-standard.css" data-wp-shell-standard />
-    <script defer src="game.js?v=20260817-stage-locale-v6"></script>
+    <script defer src="game.js?v=20260817-touch-hint-v7"></script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Bounce Brawl | WeightPlay" />
@@ -87,7 +87,7 @@
         <canvas id="arena" width="960" height="540" aria-label="Bounce Brawl play area"></canvas>
         <div class="touch-controls"><button data-key="ArrowLeft">◀</button><button data-key="ArrowRight">▶</button><button data-key="Space" class="jump">BOUNCE</button></div>
         <div class="tool-controls" aria-label="Foam tools"><button data-tool="0" class="selected">BUMP</button><button data-tool="1">SPRING</button><button data-tool="2">PAD</button></div>
-        <div class="touch-hint">Keep moving, strike when close, and use the arena walls to create space.</div>
+        <div class="touch-hint">Hold ◀/▶ to move closer, then BOUNCE.</div>
         <section id="result-screen" class="screen result" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="result-title" hidden>
           <h2 id="result-title">Arena clear</h2><p id="result-copy"></p>
           <div class="result-actions"><button id="to-stages">Arenas</button><button id="next">Next Arena</button><button id="retry" class="primary">Retry Arena</button></div>

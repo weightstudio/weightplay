@@ -615,6 +615,8 @@ const KL_I18N = {
       "ui.hint.reason.tableau_foundation": "Why this move: it advances a face-up card toward the Foundation.",
       "ui.hint.reason.tableau_stack": "Why this move: it exposes a hidden card or opens a new sequence.",
       "ui.result.deal_identity": "Deal {id} · Replay this deal to beat your best.",
+      "ui.draw_mode.strategy_1": "Draw 1: one Stock card is exposed at a time.",
+      "ui.draw_mode.strategy_3": "Draw 3: only the top Waste card is playable.",
     },
     "zh-Hant": {
       "ui.hint.reason.waste_foundation": "為什麼是這步：把同一花色往收牌區推進。",
@@ -622,6 +624,8 @@ const KL_I18N = {
       "ui.hint.reason.tableau_foundation": "為什麼是這步：把明牌往收牌區推進。",
       "ui.hint.reason.tableau_stack": "為什麼是這步：翻出暗牌，或開啟新的牌列。",
       "ui.result.deal_identity": "牌局 {id}・重玩這局，挑戰你的最佳紀錄。",
+      "ui.draw_mode.strategy_1": "抽 1 張：每次只翻開一張牌。",
+      "ui.draw_mode.strategy_3": "抽 3 張：只有最上方的棄牌可打出。",
     },
     "zh-Hans": {
       "ui.hint.reason.waste_foundation": "为什么是这步：将同一花色推进到收牌区。",
@@ -629,6 +633,8 @@ const KL_I18N = {
       "ui.hint.reason.tableau_foundation": "为什么是这步：将明牌推进到收牌区。",
       "ui.hint.reason.tableau_stack": "为什么是这步：翻出暗牌，或开启新的牌列。",
       "ui.result.deal_identity": "牌局 {id}・重玩这局，挑战你的最佳纪录。",
+      "ui.draw_mode.strategy_1": "抽 1 张：每次只翻开一张牌。",
+      "ui.draw_mode.strategy_3": "抽 3 张：只有最上方的弃牌可打出。",
     },
     ja: {
       "ui.hint.reason.waste_foundation": "この手を選んだ理由：同じスートを組み札へ進めます。",
@@ -636,6 +642,8 @@ const KL_I18N = {
       "ui.hint.reason.tableau_foundation": "この手を選んだ理由：表向きのカードを組み札へ進めます。",
       "ui.hint.reason.tableau_stack": "この手を選んだ理由：裏向きのカードをめくるか、新しい列を開きます。",
       "ui.result.deal_identity": "ディール {id}・このディールを再挑戦してベスト記録を更新しましょう。",
+      "ui.draw_mode.strategy_1": "1枚ドロー：山札から1枚ずつめくります。",
+      "ui.draw_mode.strategy_3": "3枚ドロー：捨て札の一番上だけが使えます。",
     },
     ko: {
       "ui.hint.reason.waste_foundation": "이 수를 고른 이유: 같은 무늬를 파운데이션으로 전진시킵니다.",
@@ -643,6 +651,8 @@ const KL_I18N = {
       "ui.hint.reason.tableau_foundation": "이 수를 고른 이유: 앞면 카드를 파운데이션으로 전진시킵니다.",
       "ui.hint.reason.tableau_stack": "이 수를 고른 이유: 뒷면 카드를 열거나 새 열을 만듭니다.",
       "ui.result.deal_identity": "딜 {id} · 이 딜을 다시 플레이해 최고 기록에 도전하세요.",
+      "ui.draw_mode.strategy_1": "1장 뽑기: 한 번에 덱에서 한 장만 공개합니다.",
+      "ui.draw_mode.strategy_3": "3장 뽑기: 버린 카드 맨 위 카드만 사용할 수 있습니다.",
     },
     es: {
       "ui.hint.reason.waste_foundation": "Por qué esta jugada: avanza un palo hacia la Fundación.",
@@ -650,6 +660,8 @@ const KL_I18N = {
       "ui.hint.reason.tableau_foundation": "Por qué esta jugada: avanza una carta descubierta hacia la Fundación.",
       "ui.hint.reason.tableau_stack": "Por qué esta jugada: descubre una carta oculta o abre una nueva secuencia.",
       "ui.result.deal_identity": "Reparto {id} · Repite este reparto para superar tu mejor marca.",
+      "ui.draw_mode.strategy_1": "Robar 1: se descubre una carta del mazo cada vez.",
+      "ui.draw_mode.strategy_3": "Robar 3: solo se puede jugar la carta superior del Descarte.",
     },
     "pt-BR": {
       "ui.hint.reason.waste_foundation": "Por que esta jogada: avança um naipe para a Fundação.",
@@ -657,6 +669,8 @@ const KL_I18N = {
       "ui.hint.reason.tableau_foundation": "Por que esta jogada: avança uma carta virada para cima até a Fundação.",
       "ui.hint.reason.tableau_stack": "Por que esta jogada: revela uma carta virada para baixo ou abre uma nova sequência.",
       "ui.result.deal_identity": "Distribuição {id} · Jogue esta distribuição de novo para superar seu melhor resultado.",
+      "ui.draw_mode.strategy_1": "Puxar 1: uma carta do monte é revelada por vez.",
+      "ui.draw_mode.strategy_3": "Puxar 3: só a carta do topo do descarte pode ser jogada.",
     },
     fr: {
       "ui.hint.reason.waste_foundation": "Pourquoi ce coup : il avance une couleur vers la Fondation.",
@@ -664,6 +678,8 @@ const KL_I18N = {
       "ui.hint.reason.tableau_foundation": "Pourquoi ce coup : il avance une carte visible vers la Fondation.",
       "ui.hint.reason.tableau_stack": "Pourquoi ce coup : il révèle une carte cachée ou ouvre une nouvelle suite.",
       "ui.result.deal_identity": "Donne {id} · Rejouez cette donne pour battre votre meilleur score.",
+      "ui.draw_mode.strategy_1": "Tirer 1 : une carte de la pioche est révélée à la fois.",
+      "ui.draw_mode.strategy_3": "Tirer 3 : seule la carte supérieure de la défausse est jouable.",
     },
     de: {
       "ui.hint.reason.waste_foundation": "Warum dieser Zug: Er bringt eine Farbe zum Fundament voran.",
@@ -671,6 +687,8 @@ const KL_I18N = {
       "ui.hint.reason.tableau_foundation": "Warum dieser Zug: Er bringt eine offene Karte zum Fundament voran.",
       "ui.hint.reason.tableau_stack": "Warum dieser Zug: Er deckt eine verdeckte Karte auf oder öffnet eine neue Reihe.",
       "ui.result.deal_identity": "Ausgabe {id} · Spiele diese Ausgabe erneut und übertriff deinen Bestwert.",
+      "ui.draw_mode.strategy_1": "1 ziehen: Pro Zug wird eine Karte vom Stapel aufgedeckt.",
+      "ui.draw_mode.strategy_3": "3 ziehen: Nur die oberste Ablagekarte ist spielbar.",
     },
     it: {
       "ui.hint.reason.waste_foundation": "Perché questa mossa: porta un seme verso la Fondazione.",
@@ -678,6 +696,8 @@ const KL_I18N = {
       "ui.hint.reason.tableau_foundation": "Perché questa mossa: porta una carta scoperta verso la Fondazione.",
       "ui.hint.reason.tableau_stack": "Perché questa mossa: scopre una carta coperta o apre una nuova sequenza.",
       "ui.result.deal_identity": "Distribuzione {id} · Ripeti questa distribuzione per battere il tuo record.",
+      "ui.draw_mode.strategy_1": "Pesca 1: viene scoperta una carta dal tallone alla volta.",
+      "ui.draw_mode.strategy_3": "Pesca 3: solo la carta in cima agli scarti è giocabile.",
     },
     ru: {
       "ui.hint.reason.waste_foundation": "Почему этот ход: он продвигает масть в основание.",
@@ -685,6 +705,8 @@ const KL_I18N = {
       "ui.hint.reason.tableau_foundation": "Почему этот ход: он продвигает открытую карту в основание.",
       "ui.hint.reason.tableau_stack": "Почему этот ход: он открывает скрытую карту или новую последовательность.",
       "ui.result.deal_identity": "Раздача {id} · Повторите её, чтобы побить свой лучший результат.",
+      "ui.draw_mode.strategy_1": "Взять 1: за раз открывается одна карта из колоды.",
+      "ui.draw_mode.strategy_3": "Взять 3: можно сыграть только верхнюю карту сброса.",
     },
     hi: {
       "ui.hint.reason.waste_foundation": "यह चाल क्यों: यह एक सूट को फाउंडेशन की ओर आगे बढ़ाती है।",
@@ -692,6 +714,8 @@ const KL_I18N = {
       "ui.hint.reason.tableau_foundation": "यह चाल क्यों: यह खुले कार्ड को फाउंडेशन की ओर आगे बढ़ाती है।",
       "ui.hint.reason.tableau_stack": "यह चाल क्यों: यह छिपा कार्ड खोलती है या नया क्रम शुरू करती है।",
       "ui.result.deal_identity": "डील {id} · अपने सर्वश्रेष्ठ रिकॉर्ड को बेहतर करने के लिए यह डील फिर खेलें।",
+      "ui.draw_mode.strategy_1": "1 कार्ड लें: हर बार डेक से एक कार्ड खुलता है।",
+      "ui.draw_mode.strategy_3": "3 कार्ड लें: केवल फेंकी गई गड्डी का सबसे ऊपर वाला कार्ड खेला जा सकता है।",
     },
     ar: {
       "ui.hint.reason.waste_foundation": "سبب هذه الحركة: إنها تقدّم نوعًا نحو الأساس.",
@@ -699,6 +723,8 @@ const KL_I18N = {
       "ui.hint.reason.tableau_foundation": "سبب هذه الحركة: إنها تقدّم بطاقة مكشوفة نحو الأساس.",
       "ui.hint.reason.tableau_stack": "سبب هذه الحركة: إنها تكشف بطاقة مخفية أو تفتح تسلسلًا جديدًا.",
       "ui.result.deal_identity": "التوزيع {id} · أعد هذا التوزيع لتحطّم أفضل نتيجة لك.",
+      "ui.draw_mode.strategy_1": "سحب 1: تُكشف بطاقة واحدة من الرزمة في كل مرة.",
+      "ui.draw_mode.strategy_3": "سحب 3: لا يمكن لعب سوى البطاقة العليا من المهملات.",
     },
   };
   Object.entries(KL_REVIEW_EXPERIENCE_COPY).forEach(([locale, copy]) => {
@@ -864,7 +890,13 @@ const KL_I18N = {
 
   function syncQuickRule() {
     const locale = getKlLocale();
-    if (ui.battleTip) ui.battleTip.textContent = KL_SELECTION_RULE_COPY[locale] || KL_SELECTION_RULE_COPY.en;
+    const baseRule = KL_SELECTION_RULE_COPY[locale] || KL_SELECTION_RULE_COPY.en;
+    const drawThreeCue = game?.drawModeIndex === 1 ? t("ui.draw_mode.strategy_3") : "";
+    if (ui.battleTip) ui.battleTip.textContent = drawThreeCue ? `${baseRule} ${drawThreeCue}` : baseRule;
+    if (ui.drawModeBtn) {
+      if (drawThreeCue) ui.drawModeBtn.setAttribute("aria-describedby", "battleTip");
+      else ui.drawModeBtn.removeAttribute("aria-describedby");
+    }
   }
 
   function syncLocalizedMeta() {
@@ -2198,6 +2230,7 @@ const KL_I18N = {
     clearHints();
     game.drawModeIndex = (game.drawModeIndex + 1) % DRAW_MODES.length;
     syncDrawLabel();
+    syncQuickRule();
     localStorage.setItem(STORAGE_LAYOUT, String(game.drawModeIndex));
     renderBoard();
   }
@@ -3456,5 +3489,4 @@ const KL_I18N = {
 
   bootstrap();
 })();
-
 

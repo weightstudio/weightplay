@@ -15,6 +15,36 @@
     hi: "क्रम खुला: {count} कार्ड साथ ले जाए गए।",
     ar: "تم فتح التسلسل: نُقلت {count} بطاقات معًا.",
   };
+  const FREECELL_HINT_CUE = {
+    en: "Hint: the highlighted card is selected; tap a numbered destination.",
+    "zh-Hant": "提示：反白牌已選取；請點編號目的地。",
+    "zh-Hans": "提示：高亮牌已选取；请点击编号目的地。",
+    ja: "ヒント：ハイライトされたカードが選択されています。番号付きの移動先をタップします。",
+    ko: "힌트: 강조된 카드가 선택되었습니다. 번호가 표시된 목적지를 누르세요.",
+    es: "Pista: la carta resaltada ya está seleccionada; toca un destino numerado.",
+    "pt-BR": "Dica: a carta destacada já está selecionada; toque em um destino numerado.",
+    fr: "Indice : la carte en surbrillance est sélectionnée ; touchez une destination numérotée.",
+    de: "Tipp: Die hervorgehobene Karte ist ausgewählt; wähle ein nummeriertes Ziel.",
+    it: "Suggerimento: la carta evidenziata è selezionata; tocca una destinazione numerata.",
+    ru: "Подсказка: выделенная карта уже выбрана; нажмите пронумерованную цель.",
+    hi: "संकेत: हाइलाइट किया गया कार्ड चुना गया है; क्रमांकित लक्ष्य पर टैप करें।",
+    ar: "تلميح: البطاقة المميزة محددة؛ اضغط وجهة مرقمة.",
+  };
+  const FREECELL_HINT_DESTINATION = {
+    en: "Hint destination {index}",
+    "zh-Hant": "提示目的地 {index}",
+    "zh-Hans": "提示目的地 {index}",
+    ja: "ヒントの移動先 {index}",
+    ko: "힌트 목적지 {index}",
+    es: "Destino de la pista {index}",
+    "pt-BR": "Destino da dica {index}",
+    fr: "Destination de l’indice {index}",
+    de: "Tippziel {index}",
+    it: "Destinazione del suggerimento {index}",
+    ru: "Цель подсказки {index}",
+    hi: "संकेत लक्ष्य {index}",
+    ar: "وجهة التلميح {index}",
+  };
   const view = window.WPClassicSolitaire?.mount({ variant: "freecell", id: "freecell-solitaire", sequenceCue: SEQUENCE_CUE });
   const ANALYTICS_EVENT = "wp-freecell-analytics";
   const INPUT_TYPES = new Set(["mouse", "touch", "pen", "keyboard", "unknown"]);
@@ -152,5 +182,91 @@
       if (source && source.isConnected && !source.closest("[hidden]")) source.focus({ preventScroll: true });
     });
   };
-  view?.nodes.hintBtn?.addEventListener("click", focusHintSource);
+  const hintCueState = { active: false, moves: 0, timer: 0 };
+  const ensureHintCueStyles = () => {
+    if (document.getElementById("freecell-hint-cue-style")) return;
+    const style = document.createElement("style");
+    style.id = "freecell-hint-cue-style";
+    style.textContent = `
+      body[data-wp-game-id="freecell-solitaire"] .freecell-hint-target { position: relative; }
+      body[data-wp-game-id="freecell-solitaire"] .freecell-hint-badge {
+        position: absolute; top: 4px; right: 4px; z-index: 20; display: grid;
+        width: 22px; height: 22px; place-items: center; border: 2px solid #071a2d;
+        border-radius: 50%; color: #071a2d; background: #ffd166; box-shadow: 0 2px 8px rgba(0,0,0,.35);
+        font: 900 12px/1 "Poppins", "Manrope", "Inter", sans-serif; pointer-events: none;
+      }
+    `;
+    document.head.append(style);
+  };
+  const clearHintCue = () => {
+    hintCueState.active = false;
+    window.clearTimeout(hintCueState.timer);
+    const board = view?.nodes?.board;
+    board?.querySelectorAll(".freecell-hint-target").forEach((node) => {
+      node.classList.remove("freecell-hint-target");
+      node.querySelectorAll(".freecell-hint-badge").forEach((badge) => badge.remove());
+      if (node.dataset.freecellHintAria !== undefined) {
+        node.setAttribute("aria-label", node.dataset.freecellHintAria);
+        delete node.dataset.freecellHintAria;
+      }
+    });
+    const status = view?.nodes?.boardStatus;
+    if (status?.dataset.freecellHint === "true") {
+      delete status.dataset.freecellHint;
+      delete status.dataset.state;
+      if (!view.game.won && !view.game.lost) status.textContent = "";
+    }
+  };
+  const renderHintCue = () => {
+    if (!hintCueState.active || !view?.active || view.nodes.battleScreen?.hidden) return;
+    const board = view.nodes.board;
+    const source = view.game?.selected;
+    const destinations = [...(board?.querySelectorAll("[data-dest].valid-target") || [])];
+    if (!source || !destinations.length) return clearHintCue();
+    ensureHintCueStyles();
+    destinations.forEach((node, index) => {
+      node.classList.add("freecell-hint-target");
+      node.querySelectorAll(".freecell-hint-badge").forEach((badge) => badge.remove());
+      const badge = document.createElement("span");
+      badge.className = "freecell-hint-badge";
+      badge.textContent = String(index + 1);
+      badge.setAttribute("aria-hidden", "true");
+      node.append(badge);
+      if (node.dataset.freecellHintAria === undefined) node.dataset.freecellHintAria = node.getAttribute("aria-label") || "";
+      const destinationLabel = (FREECELL_HINT_DESTINATION[view.locale] || FREECELL_HINT_DESTINATION.en).replace("{index}", String(index + 1));
+      node.setAttribute("aria-label", `${node.dataset.freecellHintAria} · ${destinationLabel}`);
+    });
+    const status = view.nodes.boardStatus;
+    if (status) {
+      status.dataset.freecellHint = "true";
+      status.dataset.state = "freecell-hint";
+      status.textContent = FREECELL_HINT_CUE[view.locale] || FREECELL_HINT_CUE.en;
+    }
+    window.clearTimeout(hintCueState.timer);
+    hintCueState.timer = window.setTimeout(clearHintCue, 2400);
+  };
+  const refreshHintCueAfterAction = () => {
+    window.requestAnimationFrame(() => {
+      if (!hintCueState.active) return;
+      if (view.game.moves !== hintCueState.moves || !view.game.selected) return clearHintCue();
+      renderHintCue();
+    });
+  };
+  view?.nodes.hintBtn?.addEventListener("click", () => {
+    focusHintSource();
+    window.requestAnimationFrame(() => {
+      if (!view?.game?.selected || !view.game.legalMoves().some((move) => JSON.stringify(move.source) === JSON.stringify(view.game.selected))) return clearHintCue();
+      hintCueState.active = true;
+      hintCueState.moves = view.game.moves;
+      renderHintCue();
+    });
+  });
+  view?.nodes.board?.addEventListener("click", refreshHintCueAfterAction);
+  view?.nodes.board?.addEventListener("pointerup", refreshHintCueAfterAction);
+  ["battleRestartBtn", "battleNewBtn", "resultRestart", "resultNewGame", "resultClose", "battleBackBtn"].forEach((id) => {
+    view?.nodes?.[id]?.addEventListener("click", clearHintCue);
+  });
+  view?.nodes.localeSelect?.addEventListener("change", () => {
+    window.requestAnimationFrame(() => { if (hintCueState.active) renderHintCue(); });
+  });
 })();
