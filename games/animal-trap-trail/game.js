@@ -119,7 +119,15 @@
     const p = state.player; const t = trapData(); const reversed = t.reverse;
     const right = reversed ? (state.keys.has("ArrowLeft") || state.keys.has("KeyA")) : (state.keys.has("ArrowRight") || state.keys.has("KeyD"));
     const left = reversed ? (state.keys.has("ArrowRight") || state.keys.has("KeyD")) : (state.keys.has("ArrowLeft") || state.keys.has("KeyA"));
-    if (state.tap) { const tapRight = state.tap === "ArrowRight" || state.tap === "KeyD"; if (reversed ? !tapRight : tapRight) p.x += 24; else p.x -= 24; state.tap = null; }
+    if (state.tap) {
+      if (state.tap === "Space" || state.tap === "ArrowUp" || state.tap === "KeyW") {
+        if (p.grounded) { p.vy = -10.5; p.grounded = false; }
+      } else {
+        const tapRight = state.tap === "ArrowRight" || state.tap === "KeyD";
+        if (reversed ? !tapRight : tapRight) p.x += 24; else p.x -= 24;
+      }
+      state.tap = null;
+    }
     if (right) p.x += 3.2 * dt; if (left) p.x -= 3.2 * dt;
     if ((state.keys.has("Space") || state.keys.has("ArrowUp") || state.keys.has("KeyW")) && p.grounded) { p.vy = -10.5; p.grounded = false; }
     p.vy += .46 * dt; p.y += p.vy * dt; p.x = Math.max(30, Math.min(920, p.x));

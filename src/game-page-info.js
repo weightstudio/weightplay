@@ -9270,6 +9270,444 @@
     ]
   };
 
+  const createNumberMatchGuide = (copy) => ({
+    ...games["animal-number-match"],
+    relatedIds: ["animal-habitat-mahjong", "garden-tiles", "animal-rope-rescue"],
+    ...copy,
+  });
+
+  localizedGames["zh-Hans"] ||= {};
+  localizedGames["zh-Hans"]["animal-number-match"] = createNumberMatchGuide({
+    title: "胖达数字花园",
+    difficulty: "简单至具挑战性",
+    time: "每座花园约 2 至 8 分钟",
+    gameplay: "直线视野数字配对益智",
+    genre: ["益智", "策略", "动物"],
+    skills: ["逻辑", "规划", "问题解决"],
+    guideKicker: "WeightPlay 原创游戏指南",
+    guideTitleSuffix: "游戏指南",
+    noteTitle: "玩家与存档信息",
+    intro: "选出相加等于 10 的两个数字；它们必须彼此相邻，或能沿着只有空格的同一横行或竖列互相看见。消除配对会打开新的视线，目标是清空整座花园。",
+    story: [
+      "30 座数字花园挤满了成对的符文数字牌。胖达要按照同一套视线规则，找出相加等于 10 的配对，逐步让每座花园恢复通畅。",
+      "棋盘不会要求玩家猜测隐藏数值。下一步判断所需的每个数字与空格都清楚显示在画面上。",
+    ],
+    systems: [
+      "合法配对的两个数字相加必须等于 10。只有 5 与 5 能以相同数字配对；6 与 6 等其他相同数字都不合法。",
+      "两张数字牌必须在同一横行或竖列中相邻，或两者之间只剩空格而能沿直线互相看见。斜线不算有效视线。",
+      "消除一组配对会留下新空格，也可能打开原本被其他数字牌挡住的较长视线。",
+      "撤销会还原上一组配对；重新排列只重排尚未消除的数字；重新开始则恢复本关原始棋盘。",
+    ],
+    how: [
+      "从横向关卡轨道选择一座已解锁的花园。",
+      "先选择一张数字牌，再选择一张能与它相加等于 10 的合法配对。",
+      "每次消除后重新查看横行与竖列，寻找刚打开的新视线。",
+      "消除全部配对即可清空花园并开启下一关。",
+    ],
+    strategyTips: [
+      "优先消除能打开棋盘中央，或能连通两片空白区域的配对。",
+      "使用选择较多的数字前，先确认它的互补数字是否还有另一条重要视线。",
+      "每次消除后都重新扫描横行与竖列，因为合法视线会立即改变。",
+      "把提示当作理解当前合法配对的辅助，而不是取代观察棋盘。",
+    ],
+    progression: [
+      "六个章节会逐步扩大棋盘，加入更密集的阻挡、较长的直线视野、互相竞争的配对选择，以及必须按正确顺序打开的版面。",
+      "难度来自消除后的空间变化；算术规则始终维持两数相加等于 10。",
+    ],
+    designNote: "数字始终以文字清楚显示，选取状态也不只依赖颜色，因此键盘、触控与鼠标玩家都能读懂同一个棋盘。每次消除都会改变后续视线，让简单的凑十规则产生真正的空间规划。",
+    parent: "基本游玩不需要账号、倒计时、付费或公开排名。已清空的花园与最佳步数会保存在当前浏览器；清除网站数据可能会移除这些本机进度。",
+    faq: [
+      ["为什么两个相同数字不能消除？", "只有 5 与 5 能以相同数字配对。每组合法配对都必须相加等于 10，并位于同一条畅通的横行或竖列视线上。"],
+      ["斜对角的数字可以配对吗？", "不可以。两张数字牌必须相邻，或能沿着同一横行或竖列的空格互相看见。"],
+      ["重新排列有什么作用？", "它只会重新排列尚未消除的数字，不会改变相加等于 10 的规则。"],
+      ["每个关卡有时间限制吗？", "没有。你可以按照自己的步调观察棋盘。"],
+    ],
+  });
+
+  localizedGames.ko ||= {};
+  localizedGames.ko["animal-number-match"] = createNumberMatchGuide({
+    title: "판코즈 넘버 그로브",
+    difficulty: "쉬움부터 도전적",
+    time: "숲 하나당 약 2~8분",
+    gameplay: "직선 시야 숫자 짝 맞추기 퍼즐",
+    genre: ["퍼즐", "전략", "동물"],
+    skills: ["논리", "계획", "문제 해결"],
+    guideKicker: "WeightPlay 오리지널 게임 가이드",
+    guideTitleSuffix: "게임 가이드",
+    noteTitle: "플레이어와 저장 정보",
+    intro: "합이 10이 되는 숫자 두 개를 고르세요. 두 숫자가 붙어 있거나, 비워진 칸만 사이에 둔 같은 행 또는 열의 직선으로 서로 보여야 합니다. 짝을 없애 새 시야를 열고 숲을 모두 정리하세요.",
+    story: [
+      "30개의 숫자 숲이 짝을 이룬 룬 타일로 빽빽해졌습니다. 판코는 하나의 일관된 시야 규칙으로 합이 10인 짝을 찾아 숲을 조금씩 엽니다.",
+      "보드에서 숨겨진 값을 추측할 필요는 없습니다. 다음 판단에 필요한 모든 숫자와 빈칸이 화면에 보입니다.",
+    ],
+    systems: [
+      "합법적인 짝은 두 값의 합이 10인 두 타일입니다. 같은 숫자는 두 타일이 모두 5일 때만 짝이 됩니다.",
+      "두 타일은 같은 행이나 열에서 서로 붙어 있거나, 사이가 모두 비어 있어 직선으로 보여야 합니다. 대각선은 허용되지 않습니다.",
+      "짝을 없애면 새 빈칸이 생기고, 전에 막혀 있던 더 긴 연결선이 드러날 수 있습니다.",
+      "실행 취소는 마지막 짝 하나를 되돌립니다. 재배열은 남은 숫자만 섞고, 다시 시작은 처음 보드로 돌아갑니다.",
+    ],
+    how: [
+      "가로로 넘기는 스테이지 목록에서 잠금 해제된 숲을 고르세요.",
+      "숫자 하나를 고른 다음 합이 10이 되는 합법적인 짝을 고르세요.",
+      "짝을 없앨 때마다 행과 열을 다시 살펴 새로 열린 시야를 찾으세요.",
+      "모든 짝을 없애 숲을 완료하고 다음 단계로 가세요.",
+    ],
+    strategyTips: [
+      "중앙을 열거나 떨어진 빈 영역을 이어 주는 짝을 먼저 고르세요.",
+      "활용도가 높은 숫자를 쓰기 전에 그 보수 숫자에 다른 유용한 시야가 있는지 확인하세요.",
+      "매번 제거한 뒤 시야가 즉시 바뀌므로 행과 열을 처음부터 다시 훑으세요.",
+      "힌트는 현재 가능한 짝의 규칙을 배우는 데 쓰고 보드 관찰을 대신하게 하지는 마세요.",
+    ],
+    progression: [
+      "여섯 장에 걸쳐 보드가 커지고, 더 촘촘한 장애물과 긴 시야, 경쟁하는 짝 선택, 정확한 시작 순서가 필요한 배치가 추가됩니다.",
+      "어려움은 공간을 여는 결과에서 생기며, 산수 규칙은 언제나 합이 10으로 유지됩니다.",
+    ],
+    designNote: "숫자는 텍스트로 항상 보이고 선택 상태도 색상 하나에 의존하지 않으므로 키보드, 터치, 마우스에서 같은 보드를 읽을 수 있습니다. 매번 제거할 때마다 다음 시야가 달라져 간단한 합이 진짜 공간 계획이 됩니다.",
+    parent: "계정, 카운트다운, 결제 또는 공개 순위가 필요하지 않습니다. 완료한 숲과 최고 이동 수는 이 브라우저에만 저장되며 사이트 데이터를 지우면 사라질 수 있습니다.",
+    faq: [
+      ["왜 같은 숫자 두 개를 없앨 수 없나요?", "같은 숫자는 5와 5일 때만 짝이 됩니다. 모든 합법적인 짝은 합이 10이고 같은 행이나 열의 열린 시야에 있어야 합니다."],
+      ["대각선 숫자도 짝이 되나요?", "아니요. 붙어 있거나 빈칸만 사이에 둔 가로 또는 세로 직선의 짝만 유효합니다."],
+      ["재배열은 무엇을 하나요?", "남은 숫자만 다시 배치하며 합이 10이라는 규칙은 바꾸지 않습니다."],
+      ["스테이지에 시간 제한이 있나요?", "없습니다. 자신의 속도로 보드를 살펴볼 수 있습니다."],
+    ],
+  });
+
+  localizedGames.es ||= {};
+  localizedGames.es["animal-number-match"] = createNumberMatchGuide({
+    title: "La arboleda de números de Panko",
+    difficulty: "Fácil y desafiante",
+    time: "Unos 2-8 minutos por bosque",
+    gameplay: "Puzzle de parejas numéricas con líneas de visión",
+    genre: ["Puzle", "Estrategia", "Animales"],
+    skills: ["Lógica", "Planificación", "Resolución de problemas"],
+    guideKicker: "Guía del juego original de WeightPlay",
+    guideTitleSuffix: "Guía del juego",
+    noteTitle: "Información del jugador y del guardado",
+    intro: "Elige dos números que sumen diez. Deben tocarse o verse en la misma fila o columna a través de casillas ya vacías. Elimina las parejas y abre nuevas líneas de visión hasta limpiar todo el bosque.",
+    story: [
+      "Treinta bosques numéricos están llenos de fichas rúnicas emparejadas. Panko los despeja encontrando sumas de diez con una regla de visibilidad constante.",
+      "El tablero nunca pide adivinar un valor oculto. Todos los números y espacios vacíos necesarios para la siguiente deducción permanecen visibles.",
+    ],
+    systems: [
+      "Una pareja válida contiene dos valores cuya suma es diez. Los valores iguales solo son válidos cuando ambos son cinco.",
+      "Las fichas deben estar juntas en la misma fila o columna, o compartir una línea recta formada solo por casillas vacías. Las diagonales no cuentan.",
+      "Eliminar una pareja crea nuevos espacios vacíos y puede revelar una línea más larga que antes estaba bloqueada.",
+      "Deshacer restaura una pareja. Reordenar mezcla solo los valores restantes y Reiniciar recupera el tablero original.",
+    ],
+    how: [
+      "Elige un bosque desbloqueado en la lista horizontal de niveles.",
+      "Toca un número y después su pareja válida.",
+      "Usa los nuevos espacios vacíos para buscar líneas de visión horizontales o verticales más largas.",
+      "Elimina todas las parejas para completar el bosque y abrir el siguiente nivel.",
+    ],
+    strategyTips: [
+      "Prefiere las parejas que abren el centro o conectan dos zonas vacías separadas.",
+      "Antes de gastar un número flexible, comprueba si su complemento tiene otra línea de visión útil.",
+      "Vuelve a revisar filas y columnas después de cada eliminación porque la visibilidad cambia al instante.",
+      "Usa Pista para entender la regla de la pareja actual, no para sustituir la lectura del tablero.",
+    ],
+    progression: [
+      "Seis capítulos amplían los tableros y añaden bloqueadores más densos, líneas de visión más largas, parejas competidoras y diseños que requieren un orden de apertura cuidadoso.",
+      "La dificultad nace de las consecuencias espaciales, mientras que la aritmética se limita a sumas de diez.",
+    ],
+    designNote: "Los números siempre aparecen como texto y el estado seleccionado no depende solo del color, así que el mismo tablero se entiende con teclado, toque o ratón. Cada eliminación cambia la visibilidad siguiente y convierte una suma sencilla en planificación espacial.",
+    parent: "No se necesita cuenta, cuenta atrás, compra ni puntuación pública. Los bosques completados y el mejor número de movimientos se guardan en este navegador; borrar los datos del sitio puede eliminarlos.",
+    faq: [
+      ["¿Por qué no se pueden eliminar dos valores iguales?", "Solo 5 y 5 forman una pareja igual. Toda pareja válida debe sumar diez y compartir una línea abierta en la misma fila o columna."],
+      ["¿Cuentan las parejas diagonales?", "No. Las parejas deben tocarse o verse en una línea horizontal o vertical despejada."],
+      ["¿Qué hace Reordenar?", "Reorganiza los valores restantes sin cambiar la regla de suma diez."],
+      ["¿Los niveles tienen tiempo límite?", "No. Puedes observar el tablero a tu ritmo."],
+    ],
+  });
+
+  localizedGames["pt-BR"] ||= {};
+  localizedGames["pt-BR"]["animal-number-match"] = createNumberMatchGuide({
+    title: "Bosque dos Números de Panko",
+    difficulty: "Fácil a desafiador",
+    time: "Cerca de 2 a 8 minutos por bosque",
+    gameplay: "Quebra-cabeça de pares numéricos com linhas de visão",
+    genre: ["Quebra-cabeça", "Estratégia", "Animais"],
+    skills: ["Lógica", "Planejamento", "Resolução de problemas"],
+    guideKicker: "Guia do jogo original WeightPlay",
+    guideTitleSuffix: "Guia do jogo",
+    noteTitle: "Informações do jogador e do salvamento",
+    intro: "Escolha dois números cuja soma seja dez. Eles precisam se tocar ou se enxergar na mesma linha ou coluna através de casas já vazias. Remova os pares e abra novas linhas de visão até limpar todo o bosque.",
+    story: [
+      "Trinta bosques numéricos ficaram cheios de peças rúnicas em pares. Panko os limpa encontrando somas de dez sob uma regra de visibilidade constante.",
+      "O tabuleiro nunca pede que você adivinhe um valor escondido. Todos os números e espaços vazios necessários para a próxima dedução continuam visíveis.",
+    ],
+    systems: [
+      "Um par válido contém dois valores cuja soma é dez. Valores iguais só são válidos quando os dois são cinco.",
+      "As duas peças precisam estar lado a lado na mesma linha ou coluna, ou compartilhar uma linha reta formada apenas por casas vazias. Diagonais não valem.",
+      "Remover um par cria novos espaços vazios e pode revelar uma linha mais longa que estava bloqueada.",
+      "Desfazer restaura um par. Reorganizar mexe apenas nos valores restantes e Reiniciar restaura o tabuleiro original.",
+    ],
+    how: [
+      "Escolha um bosque desbloqueado na lista horizontal de fases.",
+      "Toque em um número e depois em seu par válido.",
+      "Use os novos espaços vazios para encontrar linhas de visão horizontais ou verticais mais longas.",
+      "Remova todos os pares para concluir o bosque e abrir a próxima fase.",
+    ],
+    strategyTips: [
+      "Prefira pares que abram o centro ou conectem duas áreas vazias separadas.",
+      "Antes de usar um número flexível, veja se o seu complemento tem outra linha de visão útil.",
+      "Revise linhas e colunas após cada remoção, porque a visibilidade muda imediatamente.",
+      "Use Dica para aprender a regra do par atual, não para substituir a leitura do tabuleiro.",
+    ],
+    progression: [
+      "Seis capítulos aumentam os tabuleiros e introduzem bloqueios mais densos, linhas de visão mais longas, escolhas de pares concorrentes e formações que exigem uma ordem cuidadosa.",
+      "A dificuldade vem das consequências espaciais, enquanto a aritmética continua limitada a somas de dez.",
+    ],
+    designNote: "Os números permanecem visíveis como texto e o estado selecionado não depende apenas da cor, mantendo o tabuleiro legível com teclado, toque e mouse. Cada remoção muda a próxima linha de visão e transforma uma soma simples em planejamento espacial.",
+    parent: "Não é preciso conta, contagem regressiva, compra ou placar público. Bosques concluídos e melhor número de movimentos ficam neste navegador; limpar os dados do site pode removê-los.",
+    faq: [
+      ["Por que dois valores iguais não podem ser removidos?", "Somente 5 e 5 formam um par igual. Todo par válido deve somar dez e compartilhar uma linha ou coluna livre."],
+      ["Pares diagonais contam?", "Não. Os pares devem estar juntos ou se enxergar em uma linha horizontal ou vertical livre."],
+      ["O que Reorganizar faz?", "Ele reorganiza os valores restantes sem mudar a regra da soma dez."],
+      ["As fases têm limite de tempo?", "Não. Você pode observar o tabuleiro no seu ritmo."],
+    ],
+  });
+
+  localizedGames.de ||= {};
+  localizedGames.de["animal-number-match"] = createNumberMatchGuide({
+    title: "Pankos Zahlenhain",
+    difficulty: "Leicht bis herausfordernd",
+    time: "Etwa 2–8 Minuten pro Hain",
+    gameplay: "Zahlenpaare mit geraden Sichtlinien",
+    genre: ["Puzzle", "Strategie", "Tiere"],
+    skills: ["Logik", "Planung", "Problemlösung"],
+    guideKicker: "WeightPlay-Leitfaden für Originalspiele",
+    guideTitleSuffix: "Spielanleitung",
+    noteTitle: "Spieler- und Speicherinformationen",
+    intro: "Wähle zwei Zahlen mit der Summe zehn. Sie müssen sich berühren oder sich in derselben Reihe oder Spalte durch bereits geleerte Felder sehen können. Entferne Paare und öffne neue Sichtlinien, bis der ganze Hain leer ist.",
+    story: [
+      "Dreißig Zahlenhaine sind mit gepaarten Runenplättchen überfüllt. Panko räumt sie mit einer einheitlichen Sichtregel auf, indem er Summen von zehn bildet.",
+      "Das Brett verlangt nie, einen verborgenen Wert zu erraten. Jede Zahl und jedes leere Feld für die nächste Schlussfolgerung bleibt sichtbar.",
+    ],
+    systems: [
+      "Ein gültiges Paar besteht aus zwei Werten mit der Summe zehn. Gleiche Werte sind nur dann gültig, wenn beide Fünf sind.",
+      "Die Plättchen müssen in derselben Reihe oder Spalte nebeneinanderliegen oder durch eine gerade Linie aus leeren Feldern verbunden sein. Diagonalen zählen nicht.",
+      "Das Entfernen eines Paares erzeugt neue leere Felder und kann eine längere, zuvor blockierte Sichtlinie freilegen.",
+      "Rückgängig stellt ein Paar wieder her. Neu anordnen mischt nur übrige Werte, während Neustart das ursprüngliche Brett zurücksetzt.",
+    ],
+    how: [
+      "Wähle einen freigeschalteten Hain aus der waagerechten Stufenliste.",
+      "Wähle eine Zahl und danach ihren gültigen Partner.",
+      "Nutze die neuen leeren Felder, um längere waagerechte oder senkrechte Sichtlinien zu finden.",
+      "Entferne alle Paare, um den Hain abzuschließen und die nächste Stufe zu öffnen.",
+    ],
+    strategyTips: [
+      "Bevorzuge Paare, die die Mitte öffnen oder zwei getrennte leere Bereiche verbinden.",
+      "Prüfe vor einer vielseitigen Zahl, ob ihr Ergänzungswert noch eine andere nützliche Sichtlinie hat.",
+      "Scanne Reihen und Spalten nach jedem Entfernen erneut, weil sich die Sicht sofort verändert.",
+      "Nutze den Hinweis, um die aktuelle gültige Paarregel zu verstehen, nicht als Ersatz für das Lesen des Bretts.",
+    ],
+    progression: [
+      "Sechs Kapitel vergrößern die Bretter und führen dichtere Blockaden, längere Sichtlinien, konkurrierende Paarentscheidungen und Anordnungen mit sorgfältiger Eröffnungsreihenfolge ein.",
+      "Die Schwierigkeit entsteht durch räumliche Folgen, während die Arithmetik auf Summen von zehn begrenzt bleibt.",
+    ],
+    designNote: "Zahlen bleiben als Text sichtbar und der Auswahlzustand hängt nicht nur von Farbe ab. So bleibt dasselbe Brett mit Tastatur, Touch und Maus lesbar; jede Entfernung verändert die nächste Sichtlinie und macht aus einer einfachen Summe räumliche Planung.",
+    parent: "Konto, Countdown, Kauf und öffentliche Rangliste sind nicht nötig. Abgeschlossene Haine und die beste Zugzahl bleiben in diesem Browser; das Löschen der Websitedaten kann sie entfernen.",
+    faq: [
+      ["Warum lassen sich zwei gleiche Werte nicht entfernen?", "Nur 5 und 5 bilden ein gleiches Paar. Jedes gültige Paar muss zehn ergeben und eine freie Sichtlinie in derselben Reihe oder Spalte teilen."],
+      ["Zählen diagonale Paare?", "Nein. Paare müssen nebeneinanderliegen oder sich auf einer freien waagerechten oder senkrechten Sichtlinie sehen."],
+      ["Was macht Neu anordnen?", "Es ordnet die übrigen Werte neu an, ohne die Summenregel zehn zu verändern."],
+      ["Gibt es ein Zeitlimit?", "Nein. Du kannst das Brett in deinem eigenen Tempo betrachten."],
+    ],
+  });
+
+  localizedGames.it ||= {};
+  localizedGames.it["animal-number-match"] = createNumberMatchGuide({
+    title: "Il boschetto dei numeri di Panko",
+    difficulty: "Da facile a impegnativo",
+    time: "Circa 2–8 minuti per boschetto",
+    gameplay: "Puzzle di coppie numeriche con linee di vista",
+    genre: ["Puzzle", "Strategia", "Animali"],
+    skills: ["Logica", "Pianificazione", "Risoluzione dei problemi"],
+    guideKicker: "Guida ai giochi originali WeightPlay",
+    guideTitleSuffix: "Guida al gioco",
+    noteTitle: "Informazioni sul giocatore e sul salvataggio",
+    intro: "Scegli due numeri la cui somma sia dieci. Devono toccarsi o vedersi sulla stessa riga o colonna attraverso caselle già vuote. Elimina le coppie e apri nuove linee di vista fino a liberare tutto il boschetto.",
+    story: [
+      "Trenta boschetti numerici sono pieni di tessere runiche accoppiate. Panko li libera trovando somme di dieci con una regola di visibilità costante.",
+      "La tavola non chiede mai di indovinare un valore nascosto. Ogni numero e ogni spazio vuoto necessari alla deduzione successiva restano visibili.",
+    ],
+    systems: [
+      "Una coppia valida contiene due valori la cui somma è dieci. I valori uguali sono validi solo se sono entrambi cinque.",
+      "Le tessere devono essere adiacenti sulla stessa riga o colonna, oppure condividere una linea retta composta solo da caselle vuote. Le diagonali non valgono.",
+      "Eliminare una coppia crea nuovi spazi vuoti e può rivelare una linea più lunga che prima era bloccata.",
+      "Annulla ripristina una coppia. Riordina cambia solo i valori rimasti, mentre Ricomincia ripristina la tavola originale.",
+    ],
+    how: [
+      "Scegli un boschetto sbloccato dall'elenco orizzontale dei livelli.",
+      "Seleziona un numero e poi il suo compagno valido.",
+      "Usa i nuovi spazi vuoti per cercare linee di vista orizzontali o verticali più lunghe.",
+      "Elimina tutte le coppie per completare il boschetto e aprire il livello successivo.",
+    ],
+    strategyTips: [
+      "Preferisci le coppie che aprono il centro o collegano due aree vuote separate.",
+      "Prima di usare un numero flessibile, controlla se il suo complemento offre un'altra linea di vista utile.",
+      "Riscansiona righe e colonne dopo ogni eliminazione: la visibilità cambia subito.",
+      "Usa Suggerimento per capire la regola della coppia attuale, non per sostituire la lettura della tavola.",
+    ],
+    progression: [
+      "Sei capitoli ampliano le tavole e introducono blocchi più densi, linee di vista più lunghe, scelte di coppie concorrenti e disposizioni che richiedono un ordine di apertura attento.",
+      "La difficoltà nasce dalle conseguenze spaziali, mentre l'aritmetica resta limitata alle somme di dieci.",
+    ],
+    designNote: "I numeri restano visibili come testo e lo stato selezionato non dipende solo dal colore, quindi la stessa tavola è leggibile con tastiera, tocco e mouse. Ogni eliminazione cambia la linea di vista successiva e trasforma una somma semplice in pianificazione spaziale.",
+    parent: "Non servono account, conto alla rovescia, acquisti o classifiche pubbliche. I boschetti completati e il miglior numero di mosse restano in questo browser; cancellare i dati del sito può rimuoverli.",
+    faq: [
+      ["Perché due valori uguali non possono essere eliminati?", "Solo 5 e 5 formano una coppia uguale. Ogni coppia valida deve sommare dieci e condividere una linea libera sulla stessa riga o colonna."],
+      ["Le coppie diagonali contano?", "No. Le coppie devono essere adiacenti o vedersi su una linea orizzontale o verticale libera."],
+      ["Che cosa fa Riordina?", "Riorganizza i valori rimasti senza cambiare la regola della somma dieci."],
+      ["I livelli hanno un limite di tempo?", "No. Puoi osservare la tavola al tuo ritmo."],
+    ],
+  });
+
+  localizedGames.ru ||= {};
+  localizedGames.ru["animal-number-match"] = createNumberMatchGuide({
+    title: "Номерная роща Панко",
+    difficulty: "От простой до сложной",
+    time: "Около 2–8 минут на рощу",
+    gameplay: "Головоломка с числовыми парами и прямой видимостью",
+    genre: ["Головоломка", "Стратегия", "Животные"],
+    skills: ["Логика", "Планирование", "Решение задач"],
+    guideKicker: "Оригинальное руководство WeightPlay",
+    guideTitleSuffix: "Руководство по игре",
+    noteTitle: "Информация об игроке и сохранении",
+    intro: "Выберите два числа с суммой десять. Они должны касаться друг друга или видеть друг друга в одной строке или колонке через уже пустые клетки. Убирайте пары и открывайте новые линии видимости, пока вся роща не очистится.",
+    story: [
+      "Тридцать числовых рощ заполнили парные рунические плитки. Панко очищает их, находя суммы десяти по одному понятному правилу видимости.",
+      "Поле не просит угадывать скрытое значение. Все числа и пустые клетки, нужные для следующего вывода, остаются на виду.",
+    ],
+    systems: [
+      "Допустимая пара состоит из двух значений с суммой десять. Одинаковые значения допустимы только для двух пятёрок.",
+      "Плитки должны стоять рядом в одной строке или колонке либо видеть друг друга по прямой, где между ними только пустые клетки. Диагонали не считаются.",
+      "Удаление пары создаёт новые пустые клетки и может открыть более длинную линию, которая раньше была заблокирована.",
+      "Отмена возвращает одну пару. Перестановка меняет только оставшиеся значения, а перезапуск восстанавливает исходное поле.",
+    ],
+    how: [
+      "Выберите открытую рощу в горизонтальном списке уровней.",
+      "Нажмите одно число, затем его допустимого партнёра.",
+      "Используйте новые пустые клетки, чтобы искать более длинные горизонтальные или вертикальные линии видимости.",
+      "Уберите все пары, чтобы завершить рощу и открыть следующий уровень.",
+    ],
+    strategyTips: [
+      "Сначала выбирайте пары, которые открывают центр или соединяют две раздельные пустые области.",
+      "Перед использованием гибкого числа проверьте, есть ли у его дополнения другая полезная линия видимости.",
+      "После каждого удаления снова просматривайте строки и колонки: видимость меняется сразу.",
+      "Используйте подсказку, чтобы понять текущее правило пары, а не вместо чтения поля.",
+    ],
+    progression: [
+      "Шесть глав постепенно увеличивают поля, добавляют более плотные блоки, длинные линии видимости, конкурирующие варианты пар и раскладки, где важен порядок открытия.",
+      "Сложность создают пространственные последствия, а арифметика всегда ограничена суммами десяти.",
+    ],
+    designNote: "Числа всегда видны как текст, а выбор не зависит только от цвета, поэтому одно и то же поле читается с клавиатуры, касания и мыши. Каждое удаление меняет следующую линию видимости и превращает простую сумму в пространственное планирование.",
+    parent: "Учётная запись, таймер, покупки и публичный рейтинг не нужны. Очищенные рощи и лучший результат по ходам сохраняются в этом браузере; удаление данных сайта может их стереть.",
+    faq: [
+      ["Почему нельзя убрать два одинаковых значения?", "Одинаковой парой могут быть только две пятёрки. Любая допустимая пара должна давать десять и иметь свободную линию в одной строке или колонке."],
+      ["Диагональные пары считаются?", "Нет. Пары должны касаться друг друга или видеть друг друга по свободной горизонтальной или вертикальной линии."],
+      ["Что делает перестановка?", "Она меняет порядок оставшихся значений, не меняя правило суммы десяти."],
+      ["Есть ли ограничение времени?", "Нет. Поле можно рассматривать в собственном темпе."],
+    ],
+  });
+
+  localizedGames.hi ||= {};
+  localizedGames.hi["animal-number-match"] = createNumberMatchGuide({
+    title: "पंको का नंबर ग्रोव",
+    difficulty: "आसान से चुनौतीपूर्ण",
+    time: "हर ग्रोव के लिए लगभग 2–8 मिनट",
+    gameplay: "सीधी दृश्य-रेखा वाला संख्या-जोड़ी पहेली खेल",
+    genre: ["पहेली", "रणनीति", "पशु"],
+    skills: ["तर्क", "योजना", "समस्या समाधान"],
+    guideKicker: "WeightPlay का मौलिक गेम गाइड",
+    guideTitleSuffix: "गेम गाइड",
+    noteTitle: "खिलाड़ी और सेव जानकारी",
+    intro: "ऐसे दो अंक चुनें जिनका योग दस हो। वे एक-दूसरे से सटे हों या खाली खानों के पार एक ही पंक्ति या स्तंभ में दिखाई दें। जोड़ियाँ हटाकर नई दृष्टि-रेखाएँ खोलें और पूरे ग्रोव को साफ करें।",
+    story: [
+      "तीस नंबर ग्रोव जोड़ीदार रूण टाइलों से भर गए हैं। पंको एक ही दृश्य नियम के तहत दस का योग बनाने वाली जोड़ियाँ खोजकर उन्हें साफ करता है।",
+      "बोर्ड खिलाड़ी से छिपी हुई संख्या का अनुमान लगाने को नहीं कहता। अगले निष्कर्ष के लिए जरूरी हर अंक और खाली खाना दिखाई देता रहता है।",
+    ],
+    systems: [
+      "मान्य जोड़ी में दो मानों का योग दस होता है। समान मान तभी मान्य हैं जब दोनों पाँच हों।",
+      "दो टाइलें एक ही पंक्ति या स्तंभ में साथ-साथ हों, या उनके बीच केवल खाली खाने हों और वे सीधी रेखा में दिखें। तिरछी जोड़ियाँ मान्य नहीं हैं।",
+      "जोड़ी हटाने से नए खाली खाने बनते हैं और पहले रुकी हुई लंबी दृश्य-रेखा खुल सकती है।",
+      "पूर्ववत एक जोड़ी लौटाता है। फिर से व्यवस्थित करना केवल बचे हुए अंकों को बदलता है और फिर शुरू करना मूल बोर्ड लौटाता है।",
+    ],
+    how: [
+      "क्षैतिज चरण सूची से कोई खुला हुआ ग्रोव चुनें।",
+      "एक अंक चुनें और फिर उसका मान्य साथी चुनें।",
+      "नए खाली खानों से लंबी क्षैतिज या ऊर्ध्वाधर दृष्टि-रेखाएँ खोजें।",
+      "सभी जोड़ियाँ हटाकर ग्रोव पूरा करें और अगला चरण खोलें।",
+    ],
+    strategyTips: [
+      "उन जोड़ियों को प्राथमिकता दें जो बीच का भाग खोलें या दो अलग खाली क्षेत्रों को जोड़ें।",
+      "किसी लचीले अंक को हटाने से पहले देखें कि उसका पूरक किसी दूसरी उपयोगी दृष्टि-रेखा में तो नहीं है।",
+      "हर हटाने के बाद पंक्तियों और स्तंभों को फिर से देखें, क्योंकि दृश्यता तुरंत बदलती है।",
+      "संकेत का उपयोग वर्तमान मान्य जोड़ी का नियम समझने के लिए करें, बोर्ड पढ़ने के बदले नहीं।",
+    ],
+    progression: [
+      "छह अध्यायों में बोर्ड बड़े होते हैं और घने अवरोध, लंबी दृष्टि-रेखाएँ, प्रतिस्पर्धी जोड़ी विकल्प तथा सही शुरुआती क्रम वाले लेआउट आते हैं।",
+      "कठिनाई स्थान बदलने के परिणामों से आती है, जबकि गणित हमेशा दस के योग तक सीमित रहता है।",
+    ],
+    designNote: "अंक हमेशा पाठ के रूप में दिखते हैं और चयन केवल रंग पर निर्भर नहीं करता, इसलिए कीबोर्ड, टच और माउस पर वही बोर्ड पढ़ा जा सकता है। हर हटाई गई जोड़ी अगली दृष्टि बदलती है और सरल योग को स्थानिक योजना में बदल देती है।",
+    parent: "खाते, उलटी गिनती, खरीद या सार्वजनिक रैंकिंग की जरूरत नहीं है। पूरे किए गए ग्रोव और सबसे कम चालें इसी ब्राउज़र में रहती हैं; साइट डेटा मिटाने पर वे हट सकती हैं।",
+    faq: [
+      ["दो समान मान क्यों नहीं हटाए जा सकते?", "समान जोड़ी केवल 5 और 5 हो सकती है। हर मान्य जोड़ी का योग दस होना चाहिए और उसी पंक्ति या स्तंभ में खुली दृष्टि-रेखा साझा करनी चाहिए।"],
+      ["क्या तिरछी जोड़ियाँ मान्य हैं?", "नहीं। जोड़ियाँ साथ-साथ हों या खाली खानों वाली क्षैतिज या ऊर्ध्वाधर रेखा में दिखें।"],
+      ["फिर से व्यवस्थित करना क्या करता है?", "यह बचे हुए अंकों को फिर सजाता है और दस के योग वाला नियम नहीं बदलता।"],
+      ["क्या चरणों में समय सीमा है?", "नहीं। आप बोर्ड को अपनी गति से देख सकते हैं।"],
+    ],
+  });
+
+  localizedGames.ar ||= {};
+  localizedGames.ar["animal-number-match"] = createNumberMatchGuide({
+    title: "بستان رقم بانكو",
+    difficulty: "من السهل إلى المتحدي",
+    time: "نحو 2–8 دقائق لكل بستان",
+    gameplay: "لغز أزواج الأرقام بخطوط رؤية مستقيمة",
+    genre: ["ألغاز", "استراتيجية", "حيوانات"],
+    skills: ["المنطق", "التخطيط", "حل المشكلات"],
+    guideKicker: "دليل لعبة أصلية من WeightPlay",
+    guideTitleSuffix: "دليل اللعبة",
+    noteTitle: "معلومات اللاعب والحفظ",
+    intro: "اختر رقمين يساوي مجموعهما عشرة. يجب أن يتلامسا أو يرى أحدهما الآخر في الصف أو العمود نفسه عبر خانات أُفرغت من قبل. أزل الأزواج وافتح خطوط رؤية جديدة حتى تنظف البستان كله.",
+    story: [
+      "امتلأت ثلاثون بستاناً رقمياً ببلاطات رونية متزاوجة. ينظف بانكو البساتين بالعثور على مجموعات تساوي عشرة وفق قاعدة رؤية ثابتة.",
+      "لا تطلب اللوحة تخمين قيمة مخفية. تبقى كل الأرقام والخانات الفارغة اللازمة للاستنتاج التالي ظاهرة أمامك.",
+    ],
+    systems: [
+      "يتكون الزوج القانوني من قيمتين يساوي مجموعهما عشرة. لا تكون القيم المتساوية قانونية إلا إذا كان الرقم في البلاطتين هو خمسة.",
+      "يجب أن تكون البلاطتان متجاورتين في الصف أو العمود نفسه، أو أن تتشاركا خطاً مستقيماً لا يحتوي بينهما إلا على خانات فارغة. الأزواج القطرية غير صالحة.",
+      "يؤدي إزالة زوج إلى إنشاء خانات فارغة جديدة وقد يكشف خط رؤية أطول كان محجوباً.",
+      "يعيد التراجع زوجاً واحداً. يعيد الترتيب تنظيم القيم المتبقية فقط، بينما يعيد البدء اللوحة الأصلية.",
+    ],
+    how: [
+      "اختر بستاناً مفتوحاً من قائمة المراحل الأفقية.",
+      "اضغط رقماً واحداً ثم شريكه القانوني.",
+      "استخدم الخانات الفارغة الجديدة للبحث عن خطوط رؤية أفقية أو عمودية أطول.",
+      "أزل كل الأزواج لإكمال البستان وفتح المرحلة التالية.",
+    ],
+    strategyTips: [
+      "فضّل الأزواج التي تفتح الوسط أو تصل بين منطقتين فارغتين منفصلتين.",
+      "قبل إزالة رقم مرن، تحقق من أن مكمله لا يملك خط رؤية آخر مفيداً.",
+      "أعد فحص الصفوف والأعمدة بعد كل إزالة، لأن الرؤية تتغير فوراً.",
+      "استخدم التلميح لفهم قاعدة الزوج المتاح، لا بديلاً عن قراءة اللوحة.",
+    ],
+    progression: [
+      "توسع ستة فصول حجم اللوحة وتضيف حواجز أكثر كثافة وخطوط رؤية أطول وخيارات أزواج متنافسة وتخطيطات تتطلب ترتيب فتح دقيقاً.",
+      "ينشأ التحدي من النتائج المكانية، بينما تظل العملية الحسابية محصورة في مجموعات العشرة.",
+    ],
+    designNote: "تبقى الأرقام ظاهرة كنص، ولا تعتمد حالة التحديد على اللون وحده، لذلك يمكن قراءة اللوحة نفسها باللمس أو الماوس أو لوحة المفاتيح. كل إزالة تغيّر خط الرؤية التالي وتحول الجمع البسيط إلى تخطيط مكاني.",
+    parent: "لا يلزم حساب أو عد تنازلي أو شراء أو ترتيب عام. تبقى البساتين المكتملة وأفضل عدد للحركات في هذا المتصفح؛ وقد يؤدي حذف بيانات الموقع إلى إزالتها.",
+    faq: [
+      ["لماذا لا يمكن إزالة قيمتين متساويتين؟", "لا يشكل القيمتان المتساويتان زوجاً إلا إذا كانتا خمسين. يجب أن يساوي كل زوج قانوني عشرة وأن يشترك في خط رؤية مفتوح في الصف أو العمود نفسه."],
+      ["هل تُحتسب الأزواج القطرية؟", "لا. يجب أن تتجاور الأزواج أو ترى بعضها عبر خط أفقي أو عمودي فارغ."],
+      ["ماذا يفعل إعادة الترتيب؟", "يعيد ترتيب القيم المتبقية من دون تغيير قاعدة مجموع العشرة."],
+      ["هل توجد مهلة زمنية للمراحل؟", "لا. يمكنك فحص اللوحة بالسرعة التي تناسبك."],
+    ],
+  });
+
   localizedGames.ja ||= {};
   reviewedJapaneseGuideOverrides["animal-number-match"]
     = localizedGames.ja["animal-number-match"] = {

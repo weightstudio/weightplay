@@ -1,12 +1,12 @@
 (()=>{
   "use strict";
-  const GAME_ID="animal-number-match",GAME_VERSION=11,INTERFACE_VERSION=6;
+  const GAME_ID="animal-number-match",GAME_VERSION=12,INTERFACE_VERSION=6;
   const codes=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
   const $=selector=>document.querySelector(selector),screens=[...document.querySelectorAll(".screen")],levels=window.NUMBER_MATCH_LEVELS.levels;
   const storageKey="wp-animal-number-match-v1";
   let locale=window.WonderI18n?.actualLocale?.()||window.__WONDER_FORCED_LOCALE||read("weightPlayLocale")||read("wp-locale")||window.WonderI18n?.locale?.()||"en";if(!codes.includes(locale))locale="en";
   const STAGE_CARD_POOL_SIZE=9,clamp=(value,minimum,maximum)=>Math.max(minimum,Math.min(maximum,value));
-  let unlocked=Number(read(storageKey))||1,selected=Math.min(unlocked,30)-1,level=null,values=[],picked=null,history=[],moves=0,resultActionClaimed=false,inputLocked=false,tileFocusIndex=0,activeScene="main",sceneGeneration=0,lastInputType="unknown",returnedToMain=false;
+  let unlocked=Number(read(storageKey))||1,selected=Math.min(unlocked,30)-1,level=null,values=[],picked=null,hintPair=[],history=[],moves=0,resultActionClaimed=false,inputLocked=false,tileFocusIndex=0,activeScene="main",sceneGeneration=0,lastInputType="unknown",returnedToMain=false;
   let stageCardPool=[],stageWindowStart=0,stageSettleRaf=0,restoreStageRailBehavior=()=>{};
   function read(key){try{return localStorage.getItem(key)}catch{return null}}
   function write(key,value){try{localStorage.setItem(key,value)}catch{}}
@@ -66,7 +66,7 @@
   }
   function renderStages(){$("#progress").textContent=t("progress",{done:Math.min(unlocked-1,30)});if(!stageCardPool.length)buildStageCardPool();ensureStageWindow(selected);installVirtualStageDrag();requestAnimationFrame(()=>selectStage(selected,true))}
   function startLevel(index,startInputType="unknown",entryAction="stage_card"){
-    selected=index;lastInputType=normalizeInputType(startInputType);level=levels[index];values=level.cells.slice();picked=null;history=[];moves=0;inputLocked=false;tileFocusIndex=values.findIndex(value=>value!==null);
+    selected=index;lastInputType=normalizeInputType(startInputType);level=levels[index];values=level.cells.slice();picked=null;hintPair=[];history=[];moves=0;inputLocked=false;tileFocusIndex=values.findIndex(value=>value!==null);
     $("#board").style.setProperty("--cols",level.cols);$("#chapter").textContent=t("chapter",{n:Math.floor(index/5)+1});$("#stageName").textContent=t("grove",{n:index+1});$("#status").textContent=t("selectFirst");show("battle");renderBoard();
     if(returnedToMain){track("return_session",{source:"main",grove:index+1,entry_action:entryAction});returnedToMain=false}
     track("game_start",{grove:index+1,entry_action:entryAction,unlocked_groves:Math.min(unlocked,30),input_type:lastInputType});
@@ -85,6 +85,7 @@
   }
   function choose(index,actionInputType="unknown"){
     if(inputLocked||values[index]===null)return;
+    hintPair=[];
     lastInputType=normalizeInputType(actionInputType);
     tileFocusIndex=index;
     if(picked===null){picked=index;$("#status").textContent=t("selectFirst");renderBoard();return}
@@ -109,9 +110,9 @@
     if(!activeIndices.includes(tileFocusIndex))tileFocusIndex=activeIndices.reduce((nearest,index)=>Math.abs(index-tileFocusIndex)<Math.abs(nearest-tileFocusIndex)?index:nearest,activeIndices[0]??-1);
     board.innerHTML="";
     values.forEach((value,index)=>{
-      const button=document.createElement("button");button.className=`tile${value===null?" empty":""}${picked===index?" selected":""}`;button.dataset.index=index;button.setAttribute("role","gridcell");
+      const button=document.createElement("button"),hinted=hintPair.includes(index);button.className=`tile${value===null?" empty":""}${picked===index?" selected":""}${hinted?" hint":""}`;button.dataset.index=index;button.setAttribute("role","gridcell");
       if(value===null){button.disabled=true;button.tabIndex=-1;button.setAttribute("aria-hidden","true")}
-      else{button.tabIndex=index===tileFocusIndex?0:-1;button.textContent=value;button.setAttribute("aria-selected",picked===index?"true":"false");button.setAttribute("aria-label",t("tileLabel",{value,row:Math.floor(index/level.cols)+1,col:index%level.cols+1}));button.onclick=event=>choose(index,eventInputType(event))}
+      else{button.tabIndex=index===tileFocusIndex?0:-1;button.textContent=value;button.setAttribute("aria-selected",picked===index?"true":"false");button.setAttribute("aria-label",`${t("tileLabel",{value,row:Math.floor(index/level.cols)+1,col:index%level.cols+1})}${hinted?` — ${t("hintedTile")}`:""}`);button.onclick=event=>choose(index,eventInputType(event))}
       board.append(button);
     });
     if(restoreFocus&&tileFocusIndex>=0)board.querySelector(`[data-index="${tileFocusIndex}"]`)?.focus();
@@ -150,7 +151,7 @@
     lastInputType=normalizeInputType(actionInputType);
     const pair=availablePair();
     if(!pair){track("hint",{grove:selected+1,outcome:"reorder"});reorder(actionInputType);return}
-    track("hint",{grove:selected+1,outcome:"pair",orientation:pairOrientation(pair[0],pair[1])});pair.forEach(index=>flash(index,"hint"));$("#status").textContent=t("selectFirst")
+    track("hint",{grove:selected+1,outcome:"pair",orientation:pairOrientation(pair[0],pair[1])});hintPair=pair;$("#status").textContent=t("hintStatus");renderBoard()
   }
   function pairValues(list,memo=new Map()){
     if(!list.length)return[];const key=list.slice().sort((a,b)=>a-b).join(",");if(memo.has(key))return null;memo.set(key,true);
@@ -162,7 +163,7 @@
     lastInputType=normalizeInputType(actionInputType);
     const remaining=values.filter(value=>value!==null),pairs=pairValues(remaining);
     if(!pairs){track("reorder",{grove:selected+1,outcome:"unavailable"});return}
-    values=Array(values.length).fill(null);pairs.flat().forEach((value,index)=>values[index]=value);picked=null;moves++;$("#status").textContent=t("shuffled");renderBoard();
+    values=Array(values.length).fill(null);pairs.flat().forEach((value,index)=>values[index]=value);picked=null;hintPair=[];moves++;$("#status").textContent=t("shuffled");renderBoard();
     track("reorder",{grove:selected+1,outcome:"reordered",move:moves,pairs_left:values.filter(value=>value!==null).length/2});
   }
   function complete(){
@@ -203,7 +204,7 @@
     const tile=event.target.closest(".tile:not(.empty)");if(!tile)return;
     event.preventDefault();moveTileFocus(event.key,Number(tile.dataset.index));
   });
-  $("#undo").onclick=event=>{lastInputType=eventInputType(event);const last=history.pop();if(!last){track("undo",{grove:selected+1,outcome:"unavailable"});return}values[last.a]=last.va;values[last.b]=last.vb;picked=null;moves=Math.max(0,moves-1);track("undo",{grove:selected+1,outcome:"applied",move:moves});$("#status").textContent=t("undone");renderBoard()};
+  $("#undo").onclick=event=>{lastInputType=eventInputType(event);const last=history.pop();if(!last){track("undo",{grove:selected+1,outcome:"unavailable"});return}values[last.a]=last.va;values[last.b]=last.vb;picked=null;hintPair=[];moves=Math.max(0,moves-1);track("undo",{grove:selected+1,outcome:"applied",move:moves});$("#status").textContent=t("undone");renderBoard()};
   $("#hint").onclick=event=>hint(eventInputType(event));$("#shuffle").onclick=event=>reorder(eventInputType(event));$("#restart").onclick=event=>{lastInputType=eventInputType(event);track("restart",{from:"battle",grove:selected+1,input_type:lastInputType});startLevel(selected,lastInputType,"restart")};
   $("#resultStages").onclick=event=>claimResultAction("stages",eventInputType(event),()=>{selected=Math.min(29,unlocked-1);show("stage")});$("#next").onclick=event=>claimResultAction("next_grove",eventInputType(event),()=>startLevel(selected+1,eventInputType(event),"next_grove"));$("#retry").onclick=event=>claimResultAction("replay",eventInputType(event),()=>startLevel(selected,eventInputType(event),"replay"));
   applyLocale();show("main");$("#loadingPanel").classList.add("hidden");window.__NUMBER_MATCH_TEST__={matches,visiblePair,availablePair,currentSolution:()=>level?.solution?.map(pair=>pair.slice())||[]};

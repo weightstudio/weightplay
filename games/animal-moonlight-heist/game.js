@@ -293,7 +293,7 @@
     if(runtimeCatalogLoads.has(code))return runtimeCatalogLoads.get(code);
     const segment=runtimeLocaleSegments[code];
     if(!segment)return Promise.resolve();
-    const pending=new Promise((resolve,reject)=>{const script=document.createElement("script");script.src=`/src/runtime-locales/${segment}.js?v=20260802-moonlight-semantic-v7-1`;script.onload=resolve;script.onerror=()=>reject(new Error(`Moonlight Heist locale catalog failed: ${code}`));document.head.append(script)});
+    const pending=new Promise((resolve,reject)=>{const script=document.createElement("script");script.src=`/src/runtime-locales/${segment}.js?v=20260817-moonlight-smoke-ko-a11y-v18`;script.onload=resolve;script.onerror=()=>reject(new Error(`Moonlight Heist locale catalog failed: ${code}`));document.head.append(script)});
     runtimeCatalogLoads.set(code,pending);
     return pending;
   }

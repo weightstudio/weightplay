@@ -1031,7 +1031,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Alcateia Espelho": "알카테이아 에스펠료",
   "Alcoba de terciopelo": "알코바 데 테르시오펠로",
   "Alert": "경고",
-  "Alert reset + {seconds}s cover": "알림 재설정 + {seconds}님 표지",
+  "Alert reset + {seconds}s cover": "경보 재설정 + {seconds}초 엄폐",
   "Alerta": "알리타",
   "Alerta reiniciada + {seconds} s de cobertura": "Alerta reiniciada + {seconds} s de cobertura",
   "Alfa del Bosque Espinoso": "알파 델 보스케 에스피노소",
@@ -15972,6 +15972,10 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.": "전체 인터페이스는 최대 920픽셀의 중앙 정렬 단일 논리 레이아웃을 사용합니다. 휴대폰, 가로 화면, 데스크톱에서는 개별 요소를 늘이지 않고 동일한 컨트롤, 적중 영역, 아트와 게임 좌표를 함께 확대·축소합니다. 따라서 터치, 마우스, 키보드는 같은 합법 상태를 조작합니다. Main 포스터와 게임 시작 동작은 Stage 관리와 분리되며, Stage 선택, Battle, 대화상자, Result는 각각 제한된 콘텐츠와 돌아갈 경로를 유지합니다.",
   "You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.": "계정을 만들지 않고 플레이할 수 있습니다. 진행 상황은 온라인 계정이나 기기 간 데이터베이스가 아니라 현재 브라우저 프로필의 로컬 저장소에 저장됩니다. 사이트 데이터를 지우거나, 시크릿 브라우징을 사용하거나, 브라우저를 바꾸거나, 다른 기기로 옮기면 별도의 저장이 만들어지거나 기존 저장이 사라질 수 있습니다. 브라우저가 저장을 허용하면 언어, 사운드, 동작 줄이기 설정은 WeightPlay 공용 컨트롤을 따릅니다. 가이드의 어떤 결과도 의료, 학교 또는 전문 평가가 아닙니다.",
   "Panko's Bus Jam - Game Guide": "판코의 버스 정리 - 게임 가이드",
+  "Which controls and screen sizes are supported?": "어떤 조작 방식과 화면 크기를 지원하나요?",
+  "The same rules support touch, mouse, and keyboard where the game uses those inputs. The interface scales as one logical layout across the required phone, landscape, and desktop viewports.": "게임이 지원하는 범위에서 터치, 마우스, 키보드는 같은 규칙으로 작동합니다. 인터페이스는 필요한 휴대폰, 가로 화면, 데스크톱 크기에서 하나의 논리 레이아웃으로 함께 조정됩니다.",
+  "Can progress move automatically to another device?": "진행 상황이 다른 기기로 자동 이동하나요?",
+  "No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.": "아니요. 현재 이 게임의 진행 상황은 브라우저 로컬 저장소에만 저장되므로 다른 브라우저 프로필이나 기기에서는 각각 별도의 로컬 진행 상황을 사용합니다. 향후 계정 시스템이 추가되지 않는 한 공유되지 않습니다.",
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "보이는 타이밍 창 안에서 색상과 엠블럼이 모두 맞아야 펄스가 성공합니다.",
   "The nearest marker did not match both required properties inside the window.": "가장 가까운 마커는 창 안에서 필요한 두 속성을 모두 충족하지 못했습니다."
 };
