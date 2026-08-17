@@ -109,6 +109,13 @@
     ru:"Зрение",hi:"दृष्टि",ar:"الرؤية",
   };
   const localeRegistry={en,"zh-Hant":zhHant,"zh-Hans":zhHans,ja,ko,es,"pt-BR":pt,fr,de,it,ru,hi,ar};
+  const combatHitCopy={
+    en:"Hit confirmed · target health reduced.","zh-Hant":"命中確認 · 目標生命值下降。","zh-Hans":"命中确认 · 目标生命值下降。",
+    ja:"命中確認 · 敵の体力が減少。",ko:"명중 확인 · 적 체력이 감소했습니다.",es:"Impacto confirmado · la salud del objetivo bajó.",
+    "pt-BR":"Acerto confirmado · a vida do alvo caiu.",fr:"Impact confirmé · la santé de la cible baisse.",de:"Treffer bestätigt · die Gegnergesundheit sinkt.",
+    it:"Colpo confermato · la salute del bersaglio scende.",ru:"Попадание подтверждено · здоровье цели снижено.",hi:"प्रहार सफल · लक्ष्य का स्वास्थ्य घटा।",ar:"تم تأكيد الإصابة · انخفضت صحة الهدف."
+  };
+  for(const [code,value] of Object.entries(combatHitCopy)) localeRegistry[code].combatHit=value;
   for(const [code,value] of Object.entries(visionSkillCopy)){
     localeRegistry[code].visionSkill=value;
   }

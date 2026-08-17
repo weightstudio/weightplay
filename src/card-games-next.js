@@ -161,6 +161,29 @@
   const heartsText = () => (HEARTS_COPY[currentLocale()] || HEARTS_COPY.en).help;
   const spadesText = (phase) => (SPADES_COPY[currentLocale()] || SPADES_COPY.en)[phase] || SPADES_COPY.en.play;
 
+  const CRAZY_EIGHTS_COPY = {
+    en: { summary: "Non-wild cards by suit: {counts}. A suit with more cards can keep more options open.", suits: ["Clubs", "Diamonds", "Hearts", "Spades"] },
+    "zh-Hant": { summary: "各花色的非萬用牌：{counts}。手上牌較多的花色，通常能保留更多選擇。", suits: ["梅花", "方塊", "紅心", "黑桃"] },
+    "zh-Hans": { summary: "各花色的非万能牌：{counts}。手中牌较多的花色，通常能保留更多选择。", suits: ["梅花", "方块", "红心", "黑桃"] },
+    ja: { summary: "ワイルドではないカードのスート別枚数：{counts}。枚数の多いスートを選ぶと、次の選択肢を残しやすくなります。", suits: ["クラブ", "ダイヤ", "ハート", "スペード"] },
+    ko: { summary: "와일드가 아닌 카드의 무늬별 수: {counts}. 카드가 많은 무늬를 고르면 다음 선택지를 더 남길 수 있습니다.", suits: ["클럽", "다이아몬드", "하트", "스페이드"] },
+    es: { summary: "Cartas no comodín por palo: {counts}. Elegir un palo con más cartas puede mantener más opciones abiertas.", suits: ["tréboles", "diamantes", "corazones", "picas"] },
+    "pt-BR": { summary: "Cartas não coringa por naipe: {counts}. Escolher um naipe com mais cartas pode manter mais opções abertas.", suits: ["paus", "ouros", "copas", "espadas"] },
+    fr: { summary: "Cartes non jokers par couleur : {counts}. Choisir une couleur plus présente peut garder davantage d'options.", suits: ["trèfles", "carreaux", "cœurs", "piques"] },
+    de: { summary: "Nicht-Wildkarten nach Farbe: {counts}. Eine Farbe mit mehr Karten kann mehr Möglichkeiten offenhalten.", suits: ["Kreuz", "Karo", "Herz", "Pik"] },
+    it: { summary: "Carte non jolly per seme: {counts}. Scegliere un seme più numeroso può lasciare più opzioni aperte.", suits: ["fiori", "quadri", "cuori", "picche"] },
+    ru: { summary: "Обычные карты по мастям: {counts}. Масть с большим числом карт может сохранить больше вариантов.", suits: ["крести", "бубны", "черви", "пики"] },
+    hi: { summary: "गैर-वाइल्ड पत्ते सूट के अनुसार: {counts}। जिस सूट के पत्ते अधिक हों, उसे चुनने से अधिक विकल्प खुले रह सकते हैं।", suits: ["क्लब", "डायमंड", "हार्ट", "स्पेड"] },
+    ar: { summary: "البطاقات غير الجوكر حسب النوع: {counts}. اختيار النوع الذي تملك منه بطاقات أكثر قد يبقي خيارات أكثر متاحة.", suits: ["النوادي", "الماس", "القلوب", "البستوني"] },
+  };
+
+  const crazyEightsText = (key, values = {}) => {
+    const dictionary = CRAZY_EIGHTS_COPY[currentLocale()] || CRAZY_EIGHTS_COPY.en;
+    let value = dictionary[key] || CRAZY_EIGHTS_COPY.en[key] || key;
+    Object.entries(values).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); });
+    return value;
+  };
+
   function card(suit, rank, extra = {}) { return { suit, rank, id: `${suit}-${rank}-${Math.random().toString(36).slice(2)}`, ...extra }; }
   function deck() {
     const cards = [];
@@ -546,6 +569,11 @@
     const legal = (item) => item && (item.rank === 8 || item.suit === s.activeSuit || item.rank === s.discard.at(-1)?.rank);
     const draw = (player) => { if (s.stock.length) s.hands[player].push(s.stock.pop()); };
     const finish = (player) => controller.result(player === 0, `${names[player]} — ${s.hands[player].length} ${t("cards")}`);
+    const suitPreview = () => {
+      const copy = CRAZY_EIGHTS_COPY[currentLocale()] || CRAZY_EIGHTS_COPY.en;
+      const counts = SUITS.map((suit, index) => `${copy.suits[index]} ${s.hands[0].filter((item) => item.suit === suit && item.rank !== 8).length}`).join(" · ");
+      return crazyEightsText("summary", { counts });
+    };
     const next = () => { s.turn = (s.turn + 1) % 4; if (s.turn !== 0) setTimeout(aiTurn, 260); };
     const play = (player, item) => {
       if (!legal(item)) return;
@@ -569,7 +597,7 @@
       reset() { Object.assign(s, { hands: [[], [], [], []], stock: deck(), discard: [], activeSuit: null, pendingSuit: false, turn: 0 }); for (let i = 0; i < 5; i += 1) s.hands.forEach((cards) => cards.push(s.stock.pop())); s.discard.push(s.stock.pop()); s.activeSuit = s.discard[0].suit; },
       card(index) { if (s.turn === 0 && !s.pendingSuit) play(0, s.hands[0][index]); },
       action(action, selected) { if (action === "draw" && s.turn === 0 && !s.pendingSuit) { draw(0); const drawn = s.hands[0].at(-1); if (legal(drawn)) play(0, drawn); } if (action === "suit" && s.turn === 0 && s.pendingSuit) { s.activeSuit = selected; s.pendingSuit = false; next(); } },
-      view() { return { phase: `${t("play")} ${SYMBOLS[s.activeSuit] || "8"}`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.pendingSuit ? t("chooseSuit") : `${t("play")}: ${rankText(s.discard.at(-1).rank)}${SYMBOLS[s.activeSuit]}`, score: s.hands[0].length, opponents: names.slice(1).map((name, index) => opponentMarkup(name, s.hands[index + 1].length)).join(""), center: `<div class="card-table-label">${t("discard")}</div><div class="table-row">${cardMarkup(s.discard.at(-1), 0)}${s.stock.length ? `<button class="playing-card is-face-down" data-action="draw" aria-label="${t("draw")}"></button>` : ""}</div>${s.pendingSuit ? `<div class="card-choice-panel">${SUITS.map((suit) => `<button class="secondary-btn" data-action="suit" data-value="${suit}">${SYMBOLS[suit]}</button>`).join("")}</div>` : ""}`, hand: cardsMarkup(s.hands[0]), actions: `<button class="secondary-btn" data-action="draw" ${s.pendingSuit ? "disabled" : ""}>${t("draw")}</button>` }; }
+      view() { return { phase: `${t("play")} ${SYMBOLS[s.activeSuit] || "8"}`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.pendingSuit ? t("chooseSuit") : `${t("play")}: ${rankText(s.discard.at(-1).rank)}${SYMBOLS[s.activeSuit]}`, score: s.hands[0].length, opponents: names.slice(1).map((name, index) => opponentMarkup(name, s.hands[index + 1].length)).join(""), center: `<div class="card-table-label">${t("discard")}</div><div class="table-row">${cardMarkup(s.discard.at(-1), 0)}${s.stock.length ? `<button class="playing-card is-face-down" data-action="draw" aria-label="${t("draw")}"></button>` : ""}</div>${s.pendingSuit ? `<p class="card-choice-summary" role="status" aria-live="polite">${suitPreview()}</p><div class="card-choice-panel">${SUITS.map((suit) => `<button class="secondary-btn" data-action="suit" data-value="${suit}">${SYMBOLS[suit]}</button>`).join("")}</div>` : ""}`, hand: cardsMarkup(s.hands[0]), actions: `<button class="secondary-btn" data-action="draw" ${s.pendingSuit ? "disabled" : ""}>${t("draw")}</button>` }; }
     };
   }
 

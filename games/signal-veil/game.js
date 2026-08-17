@@ -5,7 +5,7 @@
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
   const GAME_ID = "signal-veil";
-  const GAME_VERSION = "v7";
+  const GAME_VERSION = "v8";
   const INTERFACE_VERSION = 6;
   const SAVE_KEY = "weightplay-signal-veil-v1";
   const LOCALE_PATHS = {en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
@@ -940,6 +940,7 @@
     if(firstCombatHitTracked)return;
     firstCombatHitTracked=true;
     track("first_combat_hit",{target});
+    showToast(t("combatHit"),1250);
   }
   function attack(inputType="unknown") {
     if(paused||attackCooldown>0)return;
