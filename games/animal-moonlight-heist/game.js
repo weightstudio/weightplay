@@ -1,6 +1,6 @@
 (() => {
   const $ = (s) => document.querySelector(s);
-  const GAME_VERSION = 20, INTERFACE_VERSION = 6;
+  const GAME_VERSION = 21, INTERFACE_VERSION = 6;
   const viewportBucket = () => {
     const width = window.innerWidth || 0, height = window.innerHeight || 0;
     return height <= 430 ? "short-landscape" : width <= 430 ? "phone" : width >= 1000 ? "desktop" : "tablet";
@@ -142,6 +142,12 @@
     it:"Prossima missione: {rule}",ru:"Следующее задание: {rule}",hi:"अगला मिशन: {rule}",ar:"المهمة التالية: {rule}"
   };
   Object.entries(nextMissionPreviewCopy).forEach(([code,value]) => Object.assign(copy[code] ||= {}, {nextMissionPreview:value}));
+  const extractionCueCopy={
+    en:"Gate open — route to this exit.","zh-Hant":"撤離門已開啟——朝這個出口規劃路線。","zh-Hans":"撤离门已开启——向这个出口规划路线。",ja:"脱出ゲート開放—この出口へルートを決めよう。",ko:"탈출 게이트가 열렸습니다 — 이 출구로 경로를 정하세요.",
+    es:"Puerta abierta: traza la ruta hacia esta salida.","pt-BR":"Portão aberto — trace a rota até esta saída.",fr:"Porte ouverte — tracez votre route vers cette sortie.",de:"Tor offen – plane deine Route zu diesem Ausgang.",
+    it:"Varco aperto: traccia il percorso verso questa uscita.",ru:"Выход открыт — проложите маршрут к нему.",hi:"निकासी द्वार खुला है — इस निकास तक रास्ता चुनें।",ar:"البوابة مفتوحة — خطط مسارك إلى هذا المخرج."
+  };
+  Object.entries(extractionCueCopy).forEach(([code,value]) => Object.assign(copy[code] ||= {}, {extractionCue:value}));
   const campaignMission=(en,zh,ruleEn,ruleZh,data)=>({name:[en,zh],rule:[ruleEn,ruleZh],...data});
   const campaign=[
     campaignMission("Quiet Threshold","靜謐門廊","Read one patrol, recover the seal, then extract.","觀察單一路線，取得封印後撤離。",{object:[50,42],treasure:[82,36],exit:[50,10],patrols:[[24,32,76,32]],speed:.88}),
@@ -294,7 +300,7 @@
     if(runtimeCatalogLoads.has(code))return runtimeCatalogLoads.get(code);
     const segment=runtimeLocaleSegments[code];
     if(!segment)return Promise.resolve();
-    const pending=new Promise((resolve,reject)=>{const script=document.createElement("script");script.src=`/src/runtime-locales/${segment}.js?v=20260817-moonlight-smoke-ko-a11y-v20`;script.onload=resolve;script.onerror=()=>reject(new Error(`Moonlight Heist locale catalog failed: ${code}`));document.head.append(script)});
+    const pending=new Promise((resolve,reject)=>{const script=document.createElement("script");script.src=`/src/runtime-locales/${segment}.js?v=20260818-extraction-cue-v21`;script.onload=resolve;script.onerror=()=>reject(new Error(`Moonlight Heist locale catalog failed: ${code}`));document.head.append(script)});
     runtimeCatalogLoads.set(code,pending);
     return pending;
   }
@@ -320,7 +326,8 @@
     ar:"\u0627\u0644\u0645\u0633\u062a\u0648\u0649 {n}",
   };
   function levelText(level){return(levelTemplates[locale]||levelTemplates.en).replace("{n}",level)}
-  const nodes={main:$("#mainScreen"),stage:$("#stageScreen"),battle:$("#battleScreen"),rail:$("#missionRail"),field:$("#playField"),fia:$("#fiaActor"),objective:$("#objectiveActor"),treasure:$("#treasureActor"),exit:$("#exitActor"),patrolLayer:$("#patrolLayer"),route:$("#routeLine"),feedback:$("#feedbackText"),fx:$("#feedbackFx"),alertTrack:$(".alert-track"),alert:$("#alertFill"),modal:$("#resultModal")};
+  const nodes={main:$("#mainScreen"),stage:$("#stageScreen"),battle:$("#battleScreen"),rail:$("#missionRail"),field:$("#playField"),fia:$("#fiaActor"),objective:$("#objectiveActor"),treasure:$("#treasureActor"),exit:$("#exitActor"),extractionCue:null,patrolLayer:$("#patrolLayer"),route:$("#routeLine"),feedback:$("#feedbackText"),fx:$("#feedbackFx"),alertTrack:$(".alert-track"),alert:$("#alertFill"),modal:$("#resultModal")};
+  nodes.extractionCue=document.createElement("span");nodes.extractionCue.id="extractionCue";nodes.extractionCue.className="extraction-cue";nodes.extractionCue.setAttribute("role","status");nodes.extractionCue.setAttribute("aria-live","polite");nodes.extractionCue.setAttribute("aria-atomic","true");nodes.extractionCue.hidden=true;nodes.field.append(nodes.extractionCue);
   function updateAlertMeter(){
     const value=Math.round(Math.max(0,Math.min(100,alert)));
     nodes.alertTrack.setAttribute("role","progressbar");
@@ -428,7 +435,7 @@
   }
   function t(key,vars={}){const owned=copy[locale]?.[key];let value=owned||copy.en[key]||key;value=owned?String(value):sharedText(value);Object.entries(vars).forEach(([k,v])=>value=value.replace(`{${k}}`,v));return value}
   function applyOwnedLocaleSurface(){const internal=document.querySelector('meta[name="robots"]')?.content.includes("noindex");document.title=`${t("title")} - ${internal?"Internal Trial":"WeightPlay"}`;document.querySelectorAll("[data-i18n],[data-game-i18n]").forEach(n=>{const key=n.dataset.gameI18n||n.dataset.i18n;n.dataset.gameI18n=key;n.dataset.runtimeLocalize="off";delete n.dataset.i18n;n.textContent=t(key)});const ownedNodes=[$("#localeSelect"),$(".main-poster"),$(".planner > img"),nodes.rail,nodes.fia,$("#stageBackBtn"),$("#battleBackBtn")].filter(Boolean);ownedNodes.forEach(node=>node.dataset.runtimeLocalize="off");$("#localeSelect").setAttribute("aria-label",t("languageLabel"));$(".main-poster").alt=t("posterAlt");$(".planner > img").alt=t("orlaAlt");nodes.rail.setAttribute("aria-label",t("missionRailLabel"));nodes.fia.alt=t("fiaAlt");$("#stageBackBtn").setAttribute("aria-label",t("stageBackLabel"));$("#battleBackBtn").setAttribute("aria-label",t("battleBackLabel"))}
-  function localize(){if(window.WonderI18n?.locale?.()!==locale)window.WonderI18n?.setLocale?.(locale);document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";applyOwnedLocaleSurface();renderSummary();renderStage();renderGadgets();renderEconomy();updateGadget();renderGadgetSummary();updatePauseControl();updateAlertMeter();syncSoundToggle();setTimeout(applyOwnedLocaleSurface,0);requestAnimationFrame(()=>requestAnimationFrame(applyOwnedLocaleSurface))}
+  function localize(){if(window.WonderI18n?.locale?.()!==locale)window.WonderI18n?.setLocale?.(locale);document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";applyOwnedLocaleSurface();renderSummary();renderStage();renderGadgets();renderEconomy();updateGadget();renderGadgetSummary();updatePauseControl();updateAlertMeter();updateExtractionCue();syncSoundToggle();setTimeout(applyOwnedLocaleSurface,0);requestAnimationFrame(()=>requestAnimationFrame(applyOwnedLocaleSurface))}
   function stopBattleLoop(){if(animationFrame){cancelAnimationFrame(animationFrame);animationFrame=0}}
   function startBattleLoop(){if(!playing||paused||animationFrame)return;lastTime=performance.now();animationFrame=requestAnimationFrame(loop)}
   function show(name){
@@ -537,7 +544,7 @@
     $("#missionLabel").textContent=`${t("mission",{n:selectedMission+1})}: ${campaignText(m.name)}`;
     $("#objectiveLabel").textContent=campaignText(m.rule);
     nodes.objective.src=`../../assets/animal-moonlight-heist-object-${missionObjects[selectedMission%missionObjects.length]}.webp`;
-    place(nodes.objective,m.object);place(nodes.treasure,m.treasure);place(nodes.exit,m.exit);
+    place(nodes.objective,m.object);place(nodes.treasure,m.treasure);place(nodes.exit,m.exit);updateExtractionCue();
     nodes.objective.hidden=false;nodes.treasure.hidden=treasureFound;nodes.exit.style.opacity=.5;place(nodes.fia,[50,88]);nodes.patrolLayer.innerHTML="";
     (m.safeZones||[]).forEach(([x,y,size])=>{const zone=document.createElement("span");zone.className="safe-zone";zone.style.left=`${x}%`;zone.style.top=`${y}%`;zone.style.setProperty("--zone-size",`${size*2}%`);zone.setAttribute("aria-hidden","true");nodes.patrolLayer.append(zone)});
     patrols=m.patrols.map((path,i)=>createPatrol(path,`../../assets/animal-moonlight-heist-patrol-${patrolArt[i%3]}.webp`,i*.23));
@@ -551,6 +558,7 @@
     const patrol={img,sight,path,progress,direction:1,guardian};updatePatrol(patrol);return patrol;
   }
   function place(el,pos){el.style.left=`${pos[0]}%`;el.style.top=`${pos[1]}%`}
+  function updateExtractionCue(){if(!nodes.extractionCue)return;nodes.extractionCue.hidden=!objectFound;if(objectFound){place(nodes.extractionCue,point(nodes.exit));nodes.extractionCue.textContent=t("extractionCue");nodes.extractionCue.setAttribute("aria-label",t("extractionCue"))}}
   function point(el){return[parseFloat(el.style.left)||0,parseFloat(el.style.top)||0]}
   function updatePauseControl(){const button=$("#pauseBtn");if(!button)return;button.textContent=paused?"\u25b6":"\u275a\u275a";button.setAttribute("aria-pressed",paused?"true":"false");button.setAttribute("aria-label",t(paused?"resumeAction":"pauseAction"));button.title=t(paused?"resumeAction":"pauseAction");nodes.field.tabIndex=0;updateGadget()}
   function freezeFia(){if(!nodes.field||nodes.field.hidden)return;const field=nodes.field.getBoundingClientRect(),fia=nodes.fia.getBoundingClientRect();if(!field.width||!field.height)return;const position=[(fia.left+fia.width/2-field.left)/field.width*100,(fia.top+fia.height/2-field.top)/field.height*100];nodes.fia.style.transitionDuration="0ms";place(nodes.fia,position)}
@@ -608,7 +616,7 @@
       objectFound=true;nodes.objective.hidden=true;nodes.exit.style.opacity=1;track("objective_pickup",{mission:selectedMission+1});if(m.phaseExit)place(nodes.exit,m.phaseExit);
       if(selectedMission<2){pickupCoverUntil=performance.now()+(selectedMission===0?1800:1000);alert=Math.max(0,alert-(selectedMission===0?18:10));updateAlertMeter()}
       if(m.guardian?.behavior==="eclipse"){guardianPhase=2;patrols.forEach(p=>p.direction*=-1);alert=Math.max(alert,28);updateAlertMeter()}
-      $("#objectiveLabel").textContent=t("extraction");showFx("pickup");nodes.feedback.textContent=t(selectedMission<2?"pickupCover":"found");playSound("success");
+      $("#objectiveLabel").textContent=t("extraction");updateExtractionCue();showFx("pickup");nodes.feedback.textContent=t(selectedMission<2?"pickupCover":"found");playSound("success");
     }
     if(objectFound&&distance(p,point(nodes.exit))<13)win();
   }

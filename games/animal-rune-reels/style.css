@@ -3,6 +3,7 @@
 html body .page[hidden]{display:none!important}
 .result-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:9px}
 .modal-card .result-actions button{min-width:0;min-height:48px;margin-top:0;padding:8px;font-size:.86rem;white-space:nowrap}
+.result-recap{margin:6px 0;color:#dce2ff;font-size:.82rem;line-height:1.35}.best-run-recap{color:#ffe077;font-weight:900}
 
 /* The shared guide enhancer moves the Guide beside #app. The app owner's
    fallback minimum must not add space below the measured Main canvas. */
