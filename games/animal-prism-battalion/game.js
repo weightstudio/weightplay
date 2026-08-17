@@ -5,7 +5,7 @@
   const pack=window.AnimalPrismBattalionLocales;
   const localeCodes=pack.codes;
   const routeSegments={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
-  const GAME_VERSION=15, INTERFACE_VERSION=6;
+  const GAME_VERSION=16, INTERFACE_VERSION=6;
   const routeLocales=Object.fromEntries(Object.entries(routeSegments).map(([key,value])=>[value,key]));
   const memoryStorage=new Map();
   const storage={

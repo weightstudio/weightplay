@@ -17,7 +17,7 @@
     set(key, value) { memory[key] = String(value); try { localStorage.setItem(key, String(value)); } catch {} }
   };
   let locale = canonicalLocale(routeLocale || window.WonderI18n?.actualLocale?.() || storage.get("weightPlayLocale") || storage.get("wonderLocale") || navigator.language);
-  const DICE_GAME_VERSION = "v25";
+  const DICE_GAME_VERSION = "v26";
   const DICE_INTERFACE_VERSION = "V6";
   const DICE_EVENT_FIELDS = ["stage", "chapter", "wave", "outcome", "return_to", "source", "input_class", "unlocked"];
   function diceViewportBucket() {
@@ -170,6 +170,8 @@
     const tacticNames = {rally:t("rally"), burst:t("burst"), reroll:t("reroll")};
     document.querySelectorAll("[data-i18n]").forEach((node) => { node.textContent = t(node.dataset.i18n, tacticNames); });
     document.querySelectorAll("[data-i18n-aria]").forEach((node) => node.setAttribute("aria-label", t(node.dataset.i18nAria)));
+    const stageTabs = document.querySelector(".stage-tabs");
+    if (stageTabs) stageTabs.setAttribute("aria-label", [...stageTabs.querySelectorAll("button")].map((node) => node.textContent.trim()).join(" / "));
     document.querySelectorAll("[data-i18n-alt]").forEach((node) => node.setAttribute("alt", t(node.dataset.i18nAlt)));
     document.querySelectorAll("[data-i18n-title]").forEach((node) => node.setAttribute("title", t(node.dataset.i18nTitle)));
     document.title = `${t("title")} | WeightPlay`;
