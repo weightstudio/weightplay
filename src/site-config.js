@@ -1,5 +1,5 @@
 window.WONDER_SITE = {
-  version: "v0.27.52",
+  version: "v0.27.53",
   localization: {
     defaultLocale: "en",
     fallbackLocale: "en",

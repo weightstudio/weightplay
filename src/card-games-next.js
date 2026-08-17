@@ -512,7 +512,7 @@
           help: spadesText(s.phase === "bid" ? "bid" : "play"),
           score: s.scores[0],
           opponents: names.slice(1).map((name, index) => opponentMarkup(name, s.hands[index + 1].length, `${t("bid")}: ${s.bids[index + 1] ?? "—"}`)).join(""),
-          center: `<div class="card-table-label">${t("table")} · ${s.tricks[0]} / ${s.tricks[1]}</div>${progress ? `<div class="card-spades-progress" data-progress-state="${progress.state}" role="status" aria-live="polite">${progress.text}</div>` : ""}<div class="table-row">${s.trick.map((entry) => cardMarkup(entry.card, 0)).join("") || `♠ ${t("waiting")}`}</div>`,
+          center: `<div class="card-table-label">${t("table")} · ${s.tricks[0]} / ${s.tricks[1]}</div>${progress ? `<div class="card-spades-progress" data-progress-state="${progress.state}" data-runtime-localize="off" role="status" aria-live="polite">${progress.text}</div>` : ""}<div class="table-row">${s.trick.map((entry) => cardMarkup(entry.card, 0)).join("") || `♠ ${t("waiting")}`}</div>`,
           hand: cardsMarkup(s.hands[0]),
           actions: s.phase === "bid" ? `<div class="card-choice-panel">${bidControls}</div>` : "",
         };

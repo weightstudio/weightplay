@@ -1,4 +1,4 @@
-const GAME_VERSION = "v2";
+const GAME_VERSION = "v4";
 window.WPPopularArcade?.mount("pong");
 document.body.dataset.gameVersion = GAME_VERSION;
 (() => {
@@ -18,17 +18,66 @@ document.body.dataset.gameVersion = GAME_VERSION;
     hi: "सर्व से पहले पैडल को बाएँ या दाएँ मिलाएँ; हर सर्व एक रैली तय करता है।",
     ar: "حرّك المضرب يمينًا أو يسارًا لمحاذاته قبل الإرسال؛ كل إرسال يحسم تبادلًا واحدًا."
   };
+  const PONG_RALLY_COPY = {
+    en: (rally, score) => `Rally ${rally} won. Score: ${score}.`,
+    "zh-Hant": (rally, score) => `第 ${rally} 回合獲勝。分數：${score}。`,
+    "zh-Hans": (rally, score) => `第 ${rally} 回合获胜。分数：${score}。`,
+    ja: (rally, score) => `ラリー${rally}勝利。スコア：${score}。`,
+    ko: (rally, score) => `랠리 ${rally} 승리. 점수: ${score}.`,
+    es: (rally, score) => `Rally ${rally} ganado. Puntuación: ${score}.`,
+    "pt-BR": (rally, score) => `Rali ${rally} vencido. Pontuação: ${score}.`,
+    fr: (rally, score) => `Échange ${rally} gagné. Score : ${score}.`,
+    de: (rally, score) => `Ballwechsel ${rally} gewonnen. Punktestand: ${score}.`,
+    it: (rally, score) => `Scambio ${rally} vinto. Punteggio: ${score}.`,
+    ru: (rally, score) => `Розыгрыш ${rally} выигран. Счёт: ${score}.`,
+    hi: (rally, score) => `रैली ${rally} जीती। स्कोर: ${score}।`,
+    ar: (rally, score) => `فزت بالتبادل ${rally}. النتيجة: ${score}.`,
+  };
   let hintVisible = false;
+  let lastScore = 0;
+  let lastRally = 0;
   const locale = () => document.querySelector("#localeSelect")?.value || document.documentElement.lang || "en";
+  const readScore = () => {
+    const values = (document.querySelector("#roundLabel")?.textContent || "").match(/\d+/g) || [];
+    return Number(values[0] || 0);
+  };
+  const applyRallyCue = () => {
+    const message = document.querySelector("#gameMessage");
+    if (!message || document.body.dataset.screen !== "battle") return;
+    const score = readScore();
+    if (score < lastScore) {
+      lastScore = score;
+      lastRally = 0;
+    }
+    if (score > lastScore && score > 0 && score % 25 === 0) {
+      lastScore = score;
+      lastRally = score / 25;
+      hintVisible = false;
+    }
+    if (hintVisible || lastRally <= 0) return;
+    const text = (PONG_RALLY_COPY[locale()] || PONG_RALLY_COPY.en)(lastRally, score);
+    if (message.textContent !== text) message.textContent = text;
+    message.dataset.tone = "good";
+    message.dataset.messageKey = "pongRally";
+  };
   const applyHint = () => {
     if (!hintVisible) return;
     const message = document.querySelector("#gameMessage");
     const text = HINTS[locale()] || HINTS.en;
-    if (message && message.textContent !== text) message.textContent = text;
+    if (message) {
+      if (message.textContent !== text) message.textContent = text;
+      message.dataset.tone = "warn";
+      message.dataset.messageKey = "hint";
+    }
   };
-  const observer = new MutationObserver(applyHint);
+  const syncMessage = () => {
+    applyHint();
+    applyRallyCue();
+  };
+  const observer = new MutationObserver(syncMessage);
   observer.observe(document.body, { childList: true, subtree: true });
   document.querySelector("#hintBtn")?.addEventListener("click", () => { hintVisible = true; queueMicrotask(applyHint); });
+  document.querySelector("#localeSelect")?.addEventListener("change", () => queueMicrotask(syncMessage));
   document.addEventListener("click", (event) => {
     const action = event.target.closest?.("[data-action]");
     if (action && action.dataset.action !== "hint") hintVisible = false;
