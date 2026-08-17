@@ -1775,8 +1775,9 @@ body.is-rune-playing .battle-status-row .battle-log {
   padding: 0;
   overflow: hidden;
   color: #f8d66a;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  text-overflow: clip;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 body.is-rune-playing .battle-secondary {

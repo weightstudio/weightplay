@@ -6056,7 +6056,7 @@ body.general-lobby-page {
   }
 
   .general-lobby-page .hero-game-art > img:not(.hero-game-character) {
-    object-fit: contain;
+    object-fit: cover;
   }
 
   .general-lobby-page .lobby-grid {
