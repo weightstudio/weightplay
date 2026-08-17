@@ -130,6 +130,7 @@ body.logic-playing .game-page-info-static { display: none !important; }
 .logic-guess-row { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 8px; border: 1px solid var(--logic-line); border-radius: 14px; }
 .logic-feedback { color: var(--logic-warn); font-weight: 800; letter-spacing: .1em; }
 .logic-hanoi-board { width: min(100%, 680px); display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; align-items: end; }
+.logic-hanoi-target { flex: 0 1 auto; max-width: 100%; margin: 0; color: var(--logic-text); font-weight: 750; }
 .logic-tower { min-height: 215px; display: flex; flex-direction: column-reverse; align-items: center; justify-content: flex-start; gap: 4px; padding: 10px 4px 12px; border: 1px solid var(--logic-line); border-radius: 18px; background: linear-gradient(#173e70, #0b2344); cursor: pointer; }
 .logic-tower::after { content: ""; position: absolute; }
 .logic-disk { height: 26px; border-radius: 999px; background: linear-gradient(90deg, #ff9b72, #ffd166); color: #3c200d; display: grid; place-items: center; font-weight: 900; font-size: 12px; }
