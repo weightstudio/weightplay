@@ -185,8 +185,9 @@ body.logic-playing .game-page-info-static { display: none !important; }
   .logic-board-area { height: auto; max-height: 100%; align-self: stretch; justify-self: stretch; overflow: hidden; gap: 6px; }
   .logic-board-area > div { height: auto; min-width: 0; min-height: 0; max-width: 100%; max-height: 100%; }
   .logic-board-area:has(.logic-connect-board) { width: 100%; height: 100%; }
-  .logic-board-area > div:has(.logic-connect-board) { width: 100%; height: 100%; display: grid; place-items: center; min-height: 0; }
-  .logic-board-area > div:has(.logic-connect-board) .logic-connect-board { width: auto; height: 100%; max-width: 100%; max-height: 100%; aspect-ratio: 7 / 6; grid-template-columns: repeat(7, minmax(0, 1fr)); grid-template-rows: repeat(6, minmax(0, 1fr)); }
+  .logic-board-area > div:has(.logic-connect-board) { width: 100%; height: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: minmax(0, 1fr); align-items: center; gap: 6px; min-height: 0; }
+  .logic-board-area > div:has(.logic-connect-board) .logic-board-toolbar { grid-column: 2; grid-row: 1; }
+  .logic-board-area > div:has(.logic-connect-board) .logic-connect-board { grid-column: 1; grid-row: 1; width: auto; height: 100%; max-width: 100%; max-height: 100%; aspect-ratio: 7 / 6; grid-template-columns: repeat(7, minmax(0, 1fr)); grid-template-rows: repeat(6, minmax(0, 1fr)); justify-self: center; }
   .logic-minesweeper-board { width: min(100%, 430px); }
   .logic-board-area > div:has(.logic-sudoku-board) { width: 100%; height: auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(170px, 240px); grid-template-rows: auto minmax(0, 1fr); align-items: center; gap: 6px; }
   .logic-board-area > div:has(.logic-sudoku-board) .logic-board-toolbar { grid-column: 1 / -1; grid-row: 1; }

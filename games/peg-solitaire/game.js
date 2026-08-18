@@ -57,8 +57,54 @@
       failure: "تبقى {pegs} أحجار؛ الهدف حجر واحد. أعد اللعب واترك حفرة هبوط مفتوحة قبل القفزة التالية.",
     },
   };
+  const invalidTargetCopy = {
+    en: "That landing hole is not a legal jump. Keep the source selected and choose an empty hole two spaces away over one peg.",
+    "zh-Hant": "這個落點不是合法跳法。保留目前棋子，再選擇隔著一顆棋子的兩格外空洞。",
+    "zh-Hans": "这个落点不是合法跳法。保留当前棋子，再选择隔着一颗棋子的两格外空洞。",
+    ja: "その着地点は合法なジャンプではありません。駒を選んだまま、1個の駒を越えた2マス先の空き穴を選びましょう。",
+    ko: "그 착지 칸은 올바른 점프가 아니에요. 말을 선택한 채로 말 하나를 넘어 두 칸 떨어진 빈칸을 고르세요.",
+    es: "Ese hueco no permite un salto legal. Mantén seleccionada la ficha y elige un hueco vacío a dos casillas, pasando sobre una ficha.",
+    "pt-BR": "Essa casa de chegada não permite um salto válido. Mantenha a peça selecionada e escolha uma casa vazia duas casas adiante, passando sobre uma peça.",
+    fr: "Cette case d’arrivée ne permet pas un saut légal. Gardez le pion sélectionné et choisissez un trou vide deux cases plus loin, par-dessus un pion.",
+    de: "Dieses Zielfeld erlaubt keinen gültigen Sprung. Lass den Stein ausgewählt und wähle ein leeres Loch zwei Felder weiter über einen Stein.",
+    it: "Questa casella d’arrivo non consente un salto valido. Lascia selezionata la pedina e scegli un foro vuoto a due caselle di distanza, oltre una pedina.",
+    ru: "Эта клетка не подходит для правильного прыжка. Оставьте фишку выбранной и выберите свободную лунку через одну фишку, через две клетки.",
+    hi: "यह उतरने का खाना सही छलांग नहीं बनाता। गोटी चुनी रहने दें और एक गोटी के ऊपर से दो खाने दूर खाली खाना चुनें।",
+    ar: "حفرة الهبوط هذه لا تسمح بقفزة قانونية. أبقِ الحجر محددًا واختر حفرة فارغة على بُعد خانتين فوق حجر واحد.",
+  };
   const locale = document.documentElement.lang || "en";
   const copy = lessonCopy[locale] || lessonCopy.en;
+  const invalidTargetMessage = invalidTargetCopy[locale] || invalidTargetCopy.en;
+  const status = document.querySelector("#logicStatus");
+  const clearInvalidTargetCue = () => {
+    if (!status) return;
+    status.removeAttribute("data-peg-invalid-target");
+    status.classList.remove("is-peg-invalid");
+  };
+  const showInvalidTargetCue = () => {
+    if (!status) return;
+    status.textContent = invalidTargetMessage;
+    status.dataset.pegInvalidTarget = "true";
+    status.classList.add("is-peg-invalid");
+  };
+  document.addEventListener("click", (event) => {
+    const target = event.target?.closest?.(".logic-peg-board .logic-cell");
+    if (!target || target.classList.contains("void")) return;
+    const hadSelectedSource = Boolean(document.querySelector(".logic-peg-board .logic-cell.is-selected"));
+    const wasEmptyTarget = target.classList.contains("empty");
+    const beforePegs = document.querySelectorAll(".logic-peg-board .logic-cell.peg").length;
+    clearInvalidTargetCue();
+    if (!hadSelectedSource || !wasEmptyTarget) return;
+    requestAnimationFrame(() => {
+      const afterPegs = document.querySelectorAll(".logic-peg-board .logic-cell.peg").length;
+      const sourceStillSelected = Boolean(document.querySelector(".logic-peg-board .logic-cell.is-selected"));
+      const resultVisible = document.querySelector("#logicResult:not([hidden])");
+      if (!resultVisible && sourceStillSelected && afterPegs === beforePegs) showInvalidTargetCue();
+    });
+  }, true);
+  document.addEventListener("click", (event) => {
+    if (event.target?.closest?.("#logicHint, #logicUndo, #logicReset, #battleBack, #resultReplay, #resultMenu, #resultClose")) clearInvalidTargetCue();
+  }, true);
   const result = document.querySelector("#logicResult");
   const resultText = document.querySelector("#logicResultText");
   if (!result || !resultText) return;

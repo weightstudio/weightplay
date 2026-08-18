@@ -39,6 +39,8 @@ body[data-wp-card-game] { margin: 0; background: #0a1f3a; }
 .playing-card.is-red { color: var(--card-red); }
 .playing-card.is-face-down { color: transparent; background: repeating-linear-gradient(135deg, #2d638d 0 5px, #1b4569 5px 10px); border-color: #b8d6e7; }
 .playing-card.is-face-down::after { content: "✦"; color: rgba(255,255,255,.72); font-size: 22px; }
+body[data-wp-card-game="casino"] .playing-card.is-capture-candidate { border-color: #63e6be; box-shadow: 0 0 0 3px rgba(99,230,190,.34), 0 5px 10px rgba(0,0,0,.22); }
+body[data-wp-card-game="casino"] .card-build.is-capture-candidate { border-color: #63e6be; box-shadow: 0 0 0 3px rgba(99,230,190,.24); }
 .card-action-row { display: flex; justify-content: center; align-items: center; gap: 8px; flex-wrap: wrap; }
 .card-action-row button { min-height: 44px; }
 .card-game-quick-guide { flex: 1 1 100%; width: 100%; box-sizing: border-box; margin: 0; padding: 7px 10px; border: 1px solid rgba(215,249,231,.28); border-radius: 10px; color: #e7fff1; background: rgba(7, 28, 43, .38); font-size: 12px; line-height: 1.35; text-align: center; }
