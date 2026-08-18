@@ -135,6 +135,7 @@ body.logic-playing .game-page-info-static { display: none !important; }
 .logic-tower::after { content: ""; position: absolute; }
 .logic-disk { height: 26px; border-radius: 999px; background: linear-gradient(90deg, #ff9b72, #ffd166); color: #3c200d; display: grid; place-items: center; font-weight: 900; font-size: 12px; }
 .logic-tower.is-selected { border-color: var(--logic-warn); box-shadow: 0 0 24px rgba(255,209,102,.28); }
+.logic-tower.is-legal-destination { border-color: var(--logic-good); outline: 2px solid rgba(86,230,177,.52); outline-offset: 2px; box-shadow: 0 0 18px rgba(86,230,177,.2); }
 .logic-reversi-board { display: grid; grid-template-columns: repeat(8, minmax(31px, 64px)); gap: 4px; padding: 7px; border-radius: 16px; background: #17634e; }
 .logic-reversi-board .logic-cell, .logic-connect-board .logic-cell { aspect-ratio: 1; border: 0; border-radius: 50%; background: rgba(255,255,255,.1); }
 .logic-reversi-board .legal { box-shadow: inset 0 0 0 3px rgba(255,255,255,.28); }

@@ -2,7 +2,7 @@
   "use strict";
 
   const GAME_ID = "tower-of-hanoi";
-  const GAME_VERSION = "v4";
+  const GAME_VERSION = "v5";
   const INTERFACE_VERSION = "6";
   const LOCALE_MAP = {
     en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko",

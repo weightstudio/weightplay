@@ -493,12 +493,15 @@
       return;
     }
     if (canMerge(source, unit)) {
-      battle.units[slot] = source.level >= 3
+      const mergedUnit = source.level >= 3
         ? makeUnit(source.type, 4, true)
         : makeUnit(source.type, source.level + 1);
+      battle.units[slot] = mergedUnit;
       battle.units[selectedSlot] = null;
       selectedSlot = null;
-      setStatus(source.level >= 3 ? t("general") + ": " + generalName(battle.units[slot]) : t("statusMerge"));
+      setStatus(mergedUnit.general
+        ? t("statusGeneralPayoff")
+        : t("statusMergePayoff", { level: mergedUnit.level }));
       renderBattle();
       return;
     }

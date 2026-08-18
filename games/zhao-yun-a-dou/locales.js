@@ -66,6 +66,8 @@
     cannotMerge: "Only matching characters at the same level can merge.",
     statusRecruit: "A new unit joined the formation.",
     statusMerge: "The formation grew stronger.",
+    statusMergePayoff: "Merge complete: Level {level} is ready to hit harder.",
+    statusGeneralPayoff: "Promotion complete: a General skill is ready.",
     statusMove: "The unit moved to a new lane.",
     statusSkill: "Skill activated.",
     statusBoss: "The enemy commander has entered the line.",
@@ -103,7 +105,7 @@
       battleTitle: "墨線守衛", enemyCamp: "敵軍陣地", allyCamp: "阿斗營地", commandPost: "敵軍指揮所", adou: "阿斗", hp: "生命", wave: "波次", buns: "饅頭", recruit: "徵召", recruitHint: "消耗 3 個饅頭召集新部隊。", mergeHint: "先選取部隊，再點擊空位即可切換戰線；點擊相同部隊則可合成。", selected: "已選取", empty: "空戰線", lane: "戰線", pause: "暫停", hint: "提示",
       leave: "離開戰鬥", continueBattle: "繼續戰鬥", leaveConfirmTitle: "要離開戰鬥嗎？", leaveConfirmBody: "返回關卡地圖會失去目前的戰鬥進度。", cancel: "取消", leaveNow: "離開",
       tutorialTitle: "第一次指揮", tutorialRecruit: "點擊「徵召」放入新的文字部隊。", tutorialMerge: "先後選取兩個相同文字，第二次點擊會完成合成。", tutorialDefend: "守住三條戰線，壓力升高時使用武將技能。", gotIt: "知道了",
-      win: "勝利", lose: "戰線失守", winBody: "阿斗平安，敵軍指揮所已被擊破。", loseBody: "敵軍突破並接近阿斗，調整合成順序後再試一次。", stars: "星數", stages: "關卡", nextStage: "下一關", replay: "再玩一次", time: "時間", skill: "技能", readySkill: "就緒", cooldown: "冷卻中", noSpace: "所有編制位置都已滿。", notEnough: "還需要 3 個饅頭。", cannotMerge: "只有相同文字、相同等級的部隊可以合成。", statusRecruit: "新部隊加入編制。", statusMerge: "編制變得更強了。", statusMove: "部隊移動到新的戰線。", statusSkill: "技能已發動。", statusBoss: "敵方武將進入戰線。", general: "武將", level: "等級", tutorialAria: "戰鬥教學", close: "關閉", settings: "設定", sound: "音效", on: "開", off: "關", language: "語言", tip: "提示", tipText: "高等級部隊很強，但空掉的戰線仍然會輸掉戰鬥。", prototype: "內部原型",
+      win: "勝利", lose: "戰線失守", winBody: "阿斗平安，敵軍指揮所已被擊破。", loseBody: "敵軍突破並接近阿斗，調整合成順序後再試一次。", stars: "星數", stages: "關卡", nextStage: "下一關", replay: "再玩一次", time: "時間", skill: "技能", readySkill: "就緒", cooldown: "冷卻中", noSpace: "所有編制位置都已滿。", notEnough: "還需要 3 個饅頭。", cannotMerge: "只有相同文字、相同等級的部隊可以合成。", statusRecruit: "新部隊加入編制。", statusMerge: "編制變得更強了。", statusMergePayoff: "合成完成：等級 {level} 的部隊準備以更強攻勢出擊。", statusGeneralPayoff: "升格完成：武將技能已就緒。", statusMove: "部隊移動到新的戰線。", statusSkill: "技能已發動。", statusBoss: "敵方武將進入戰線。", general: "武將", level: "等級", tutorialAria: "戰鬥教學", close: "關閉", settings: "設定", sound: "音效", on: "開", off: "關", language: "語言", tip: "提示", tipText: "高等級部隊很強，但空掉的戰線仍然會輸掉戰鬥。", prototype: "內部原型",
     },
     "zh-Hans": { ...common, title: "赵云与阿斗：墨线守卫", shortTitle: "墨线守卫", start: "开始战役", stageTitle: "选择关卡", stageProgress: "战役进度", chapter: "章节", mission: "关卡", locked: "尚未解锁", cleared: "已通关", ready: "可挑战", startMission: "进入战场", returnMain: "返回游戏", enemyCamp: "敌军阵地", allyCamp: "阿斗营地", commandPost: "敌军指挥所", adou: "阿斗", hp: "生命", wave: "波次", buns: "馒头", recruit: "征召", recruitHint: "消耗 3 个馒头召集新部队。", mergeHint: "先选择部队，再点击空位即可切换战线；点击相同部队即可合成。", selected: "已选择", empty: "空战线", lane: "战线", hint: "提示", continueBattle: "继续战斗", leaveConfirmTitle: "要离开战斗吗？", leaveConfirmBody: "返回关卡地图会失去当前的战斗进度。", cancel: "取消", leaveNow: "离开", tutorialTitle: "第一次指挥", tutorialRecruit: "点击“征召”放入新的文字部队。", tutorialMerge: "依次选择两个相同文字，第二次点击会完成合成。", tutorialDefend: "守住三条战线，压力升高时使用武将技能。", gotIt: "知道了", win: "胜利", lose: "战线失守", winBody: "阿斗平安，敌军指挥所已经击破。", loseBody: "敌军突破并接近阿斗，调整合成顺序后再试一次。", stars: "星数", stages: "关卡", nextStage: "下一关", replay: "再玩一次", time: "时间", readySkill: "就绪", cooldown: "冷却中", noSpace: "所有编制位置都已满。", notEnough: "还需要 3 个馒头。", cannotMerge: "只有相同文字、相同等级的部队可以合成。", statusRecruit: "新部队加入编制。", statusMerge: "编制变得更强了。", statusMove: "部队移动到新的战线。", statusSkill: "技能已经发动。", statusBoss: "敌方武将进入战线。", general: "武将", level: "等级", settings: "设置", sound: "音效", on: "开", off: "关", language: "语言", tip: "提示", tipText: "高等级部队很强，但空掉的战线仍然会输掉战斗。", prototype: "内部原型" },
     ja: { ...common, title: "趙雲と阿斗：墨線ディフェンス", shortTitle: "墨線ディフェンス", start: "キャンペーン開始", stageTitle: "任務を選ぶ", stageProgress: "進行状況", chapter: "章", mission: "任務", locked: "ロック中", cleared: "クリア", ready: "挑戦可能", startMission: "戦場へ", returnMain: "ゲームに戻る", enemyCamp: "敵陣", allyCamp: "阿斗の陣", commandPost: "敵司令所", adou: "阿斗", hp: "体力", wave: "ウェーブ", buns: "饅頭", recruit: "招集", mergeHint: "部隊を選び、空きスロットをタップするとレーンを変更できます。同じ部隊を選ぶと合成します。", selected: "選択中", empty: "空きレーン", lane: "レーン", hint: "ヒント", continueBattle: "続ける", leaveConfirmTitle: "戦闘を離れますか？", leaveConfirmBody: "任務マップに戻ると現在の戦闘を失います。", cancel: "キャンセル", leaveNow: "離れる", tutorialTitle: "最初の指揮", tutorialRecruit: "招集を押して新しい兵を配置します。", tutorialMerge: "同じ文字を2つ選び、2回目のタップで合成します。", tutorialDefend: "3レーンを守り、危険な時は武将技を使います。", gotIt: "了解", win: "勝利", lose: "防衛失敗", winBody: "阿斗を守り、敵司令所を破壊しました。", loseBody: "敵が阿斗に到達しました。合成を変えて再挑戦しましょう。", stars: "星", stages: "任務", nextStage: "次の任務", replay: "もう一度", time: "時間", skill: "技", readySkill: "使用可能", cooldown: "準備中", noSpace: "編成スロットが一杯です。", notEnough: "饅頭が3個必要です。", cannotMerge: "同じ文字とレベルだけ合成できます。", statusRecruit: "新しい兵が加わりました。", statusMerge: "部隊が強くなりました。", statusMove: "兵を別のレーンへ移動しました。", statusSkill: "技を発動しました。", statusBoss: "敵将が戦線に入りました。", general: "武将", level: "レベル", settings: "設定", sound: "サウンド", on: "オン", off: "オフ", language: "言語", tip: "ヒント", tipText: "強い部隊だけでなく、3レーンを空けないことが大切です。", prototype: "内部プロトタイプ" },
@@ -152,6 +154,23 @@
   };
   Object.keys(pressureCopy).forEach(function (code) {
     Object.assign(dictionaries[code], pressureCopy[code]);
+  });
+
+  const payoffCopy = {
+    "zh-Hans": { statusMergePayoff: "合成完成：{level} 级部队准备以更强攻势出击。", statusGeneralPayoff: "晋升完成：武将技能已就绪。" },
+    ja: { statusMergePayoff: "合成完了：レベル{level}の部隊が、より強く攻撃できます。", statusGeneralPayoff: "昇格完了：武将技が使用可能です。" },
+    ko: { statusMergePayoff: "합성 완료: 레벨 {level} 부대가 더 강하게 공격합니다.", statusGeneralPayoff: "승급 완료: 장수 기술을 사용할 수 있습니다." },
+    es: { statusMergePayoff: "Fusión completa: la unidad de nivel {level} golpeará con más fuerza.", statusGeneralPayoff: "Ascenso completo: la habilidad del general está lista." },
+    "pt-BR": { statusMergePayoff: "Fusão concluída: a unidade de nível {level} atacará com mais força.", statusGeneralPayoff: "Promoção concluída: a habilidade do general está pronta." },
+    fr: { statusMergePayoff: "Fusion réussie : l'unité de niveau {level} frappera plus fort.", statusGeneralPayoff: "Promotion réussie : la compétence du général est prête." },
+    de: { statusMergePayoff: "Fusion abgeschlossen: Die Einheit auf Stufe {level} greift stärker an.", statusGeneralPayoff: "Beförderung abgeschlossen: Die Generalfähigkeit ist bereit." },
+    it: { statusMergePayoff: "Fusione completata: l'unità di livello {level} attacca più forte.", statusGeneralPayoff: "Promozione completata: l'abilità del generale è pronta." },
+    ru: { statusMergePayoff: "Слияние завершено: отряд {level}-го уровня атакует сильнее.", statusGeneralPayoff: "Повышение завершено: навык генерала готов." },
+    hi: { statusMergePayoff: "विलय पूरा: स्तर {level} की इकाई अब अधिक ताकत से हमला करेगी।", statusGeneralPayoff: "पदोन्नति पूरी: सेनापति की क्षमता तैयार है।" },
+    ar: { statusMergePayoff: "اكتمل الدمج: ستهاجم وحدة المستوى {level} بقوة أكبر.", statusGeneralPayoff: "اكتملت الترقية: مهارة القائد جاهزة." },
+  };
+  Object.keys(payoffCopy).forEach(function (code) {
+    Object.assign(dictionaries[code], payoffCopy[code]);
   });
 
   const publicMainCopy = {
