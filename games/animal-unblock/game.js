@@ -379,6 +379,9 @@
           previous: previousBest,
         },
       );
+      $("resultTarget").textContent = t("resultTarget", {
+        target: Math.min(bestMoves[index], levels[index].par),
+      });
       resultActionClaimed = false;
       $("resultStages").disabled = false;
       $("retry").disabled = false;

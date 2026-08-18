@@ -54,6 +54,22 @@
     ar: { help: "اتبع اللون. القلوب وملكة البستوني بطاقات جزاء." },
   };
 
+  const HEARTS_RESULT_COPY = {
+    en: { lesson: "{hearts} Hearts + Q♠ {queen} = {raw} penalty points. Next pass: shed a high-risk card when it protects your hand.", moon: "Shooting the Moon changed the final totals." },
+    "zh-Hant": { lesson: "紅心 {hearts} 張 + 黑桃 Q {queen} 分 = {raw} 扣分。下次傳牌：能保護手牌時，試著送走高風險牌。", moon: "「全收懲罰牌」改變了最終總分。" },
+    "zh-Hans": { lesson: "红心 {hearts} 张 + 黑桃 Q {queen} 分 = {raw} 扣分。下次传牌：能保护手牌时，试着送走高风险牌。", moon: "「全收惩罚牌」改变了最终总分。" },
+    ja: { lesson: "ハート {hearts} 枚 + スペードQ {queen} 点 = ペナルティ {raw} 点。次のパスでは手札を守れる高リスク札を手放しましょう。", moon: "シューティング・ザ・ムーンで最終合計が変わりました。" },
+    ko: { lesson: "하트 {hearts}장 + 스페이드 Q {queen}점 = 벌점 {raw}점입니다. 다음 패스에서는 손패를 지켜 줄 고위험 카드를 넘겨 보세요.", moon: "문샷으로 최종 합계가 바뀌었습니다." },
+    es: { lesson: "{hearts} corazones + Q♠ {queen} = {raw} puntos de penalización. En el próximo pase, entrega una carta de riesgo si protege tu mano.", moon: "Disparar a la Luna cambió los totales finales." },
+    "pt-BR": { lesson: "{hearts} copas + Q♠ {queen} = {raw} pontos de penalidade. Na próxima passagem, passe uma carta de risco se isso proteger sua mão.", moon: "Atirar na Lua alterou os totais finais." },
+    fr: { lesson: "{hearts} cœurs + Q♠ {queen} = {raw} points de pénalité. Au prochain passage, donnez une carte risquée si cela protège votre main.", moon: "La Lune a modifié les totaux finaux." },
+    de: { lesson: "{hearts} Herzen + Pik-Dame {queen} = {raw} Strafpunkte. Gib beim nächsten Pass eine riskante Karte ab, wenn es deine Hand schützt.", moon: "Durch Shooting the Moon wurden die Endsumme angepasst." },
+    it: { lesson: "{hearts} cuori + Q♠ {queen} = {raw} punti di penalità. Al prossimo passaggio, cedi una carta rischiosa se protegge la tua mano.", moon: "Shooting the Moon ha modificato i totali finali." },
+    ru: { lesson: "{hearts} червей + Q♠ {queen} = {raw} штрафных очков. В следующей передаче отдайте рискованную карту, если это защитит вашу руку.", moon: "«Застрелить Луну» изменило итоговые суммы." },
+    hi: { lesson: "{hearts} हार्ट + स्पेड Q {queen} = {raw} दंड अंक। अगले पास में हाथ बचाने के लिए जोखिम वाला पत्ता देने की कोशिश करें।", moon: "शूटिंग द मून से अंतिम कुल बदल गया।" },
+    ar: { lesson: "{hearts} قلوب + Q♠ {queen} = {raw} نقطة جزاء. في التمرير التالي، مرّر بطاقة عالية المخاطر إذا حمت يدك.", moon: "تسبّب جمع كل بطاقات الجزاء في تغيير الإجماليات النهائية." },
+  };
+
   const SPADES_COPY = {
     en: { bid: "Bid the tricks your team expects to take. ♠ is always trump.", play: "Follow suit when possible; a spade wins the trick." },
     "zh-Hant": { bid: "叫出你和隊友預計能贏的墩數。♠ 永遠是王牌。", play: "能跟同花色就跟牌；黑桃可以贏得這一墩。" },
@@ -212,6 +228,12 @@
     return value;
   };
   const heartsText = () => (HEARTS_COPY[currentLocale()] || HEARTS_COPY.en).help;
+  const heartsResultText = (hearts, queen, moon) => {
+    const copy = HEARTS_RESULT_COPY[currentLocale()] || HEARTS_RESULT_COPY.en;
+    let text = copy.lesson.replaceAll("{hearts}", String(hearts)).replaceAll("{queen}", String(queen)).replaceAll("{raw}", String(hearts + queen));
+    if (moon) text += ` ${copy.moon}`;
+    return text;
+  };
   const spadesText = (phase) => (SPADES_COPY[currentLocale()] || SPADES_COPY.en)[phase] || SPADES_COPY.en.play;
   const spadesProgressText = (tricks, bid) => {
     const dictionary = SPADES_PROGRESS_COPY[currentLocale()] || SPADES_PROGRESS_COPY.en;
@@ -340,6 +362,7 @@
     quickGuide.append(quickGuideLabel);
     if (guideParagraph) quickGuide.append(document.createTextNode(`: ${guideParagraph}`));
     if (!main || !battle || !table || !hand || !actions) return;
+    if (id === "hearts") resultText?.setAttribute("data-runtime-localize", "off");
     rootElement.dataset.wpCardGame = id;
     const title = TITLES[id]?.[currentLocale()] || TITLES[id]?.en || id;
     document.querySelectorAll("img.cover").forEach((image) => {
@@ -477,15 +500,15 @@
   }
 
   function makeHearts(controller) {
-    const s = { hands: [], scores: [0, 0, 0, 0], turn: 0, lead: 0, trick: [], heartsBroken: false, phase: "pass", selected: new Set(), passReceived: false, winner: null };
+    const s = { hands: [], scores: [0, 0, 0, 0], penaltyHearts: [0, 0, 0, 0], penaltyQueens: [0, 0, 0, 0], turn: 0, lead: 0, trick: [], heartsBroken: false, phase: "pass", selected: new Set(), passReceived: false, winner: null };
     const aiNames = ["You", "Orchid", "Mango", "Nova"];
     const legal = (handCards, trick) => { const leadSuit = trick[0]?.card.suit; const following = leadSuit ? handCards.filter((item) => item.suit === leadSuit) : []; return following.length ? following : handCards.filter((item) => s.heartsBroken || (item.suit !== "hearts" && !(item.suit === "spades" && item.rank === 12)) || handCards.every((candidate) => candidate.suit === "hearts" || (candidate.suit === "spades" && candidate.rank === 12))); };
-    const scoreTrick = () => { const points = s.trick.reduce((total, entry) => total + (entry.card.suit === "hearts" ? 1 : entry.card.suit === "spades" && entry.card.rank === 12 ? 13 : 0), 0); const winner = trickWinner(s.trick); s.scores[winner] += points; if (s.trick.some((entry) => entry.card.suit === "hearts")) s.heartsBroken = true; s.trick = []; s.turn = winner; s.lead = winner; return { points, winner }; };
-    const finish = () => { const moon = s.scores.findIndex((score) => score === 26); if (moon >= 0) { s.scores = s.scores.map((score, index) => index === moon ? score - 26 : score + 26); } const playerWon = s.scores[0] === Math.min(...s.scores); controller.result(playerWon, `${t("score")}: ${s.scores[0]} · ${t("points")}: ${s.scores.join(" / ")}`); };
+    const scoreTrick = () => { const hearts = s.trick.filter((entry) => entry.card.suit === "hearts").length; const queen = s.trick.some((entry) => entry.card.suit === "spades" && entry.card.rank === 12) ? 13 : 0; const points = hearts + queen; const winner = trickWinner(s.trick); s.scores[winner] += points; s.penaltyHearts[winner] += hearts; s.penaltyQueens[winner] += queen; if (hearts) s.heartsBroken = true; s.trick = []; s.turn = winner; s.lead = winner; return { points, winner }; };
+    const finish = () => { const moon = s.scores.findIndex((score) => score === 26); if (moon >= 0) { s.scores = s.scores.map((score, index) => index === moon ? score - 26 : score + 26); } const playerWon = s.scores[0] === Math.min(...s.scores); const lesson = heartsResultText(s.penaltyHearts[0], s.penaltyQueens[0], moon >= 0); controller.result(playerWon, `${t("score")}: ${s.scores[0]} · ${t("points")}: ${s.scores.join(" / ")} · ${lesson}`); };
     const play = (player, item) => { const handCards = s.hands[player]; const index = handCards.indexOf(item); if (index < 0) return; const legalCards = legal(handCards, s.trick); if (!legalCards.includes(item)) return; if (!s.trick.length && player === 0 && s.hands[0].length === 13 && !(item.suit === "clubs" && item.rank === 2)) return; handCards.splice(index, 1); s.trick.push({ player, card: item }); if (item.suit === "hearts") s.heartsBroken = true; s.turn = (player + 1) % 4; if (s.trick.length === 4) { scoreTrick(); if (!s.hands.some((cards) => cards.length)) { finish(); return; } } if (s.turn !== 0) setTimeout(() => aiTurn(), 220); };
     const aiTurn = () => { if (s.phase !== "play" || s.turn === 0) return; const item = chooseAiCard(s.hands[s.turn], legal(s.hands[s.turn], s.trick), "low"); if (item) play(s.turn, item); };
     return {
-      reset() { Object.assign(s, { hands: [[], [], [], []], scores: [0, 0, 0, 0], turn: 0, lead: 0, trick: [], heartsBroken: false, phase: "pass", selected: new Set(), passReceived: false }); deck().forEach((item, index) => s.hands[index % 4].push(item)); s.hands.forEach((cards) => cards.sort((a, b) => a.suit.localeCompare(b.suit) || a.rank - b.rank)); },
+      reset() { Object.assign(s, { hands: [[], [], [], []], scores: [0, 0, 0, 0], penaltyHearts: [0, 0, 0, 0], penaltyQueens: [0, 0, 0, 0], turn: 0, lead: 0, trick: [], heartsBroken: false, phase: "pass", selected: new Set(), passReceived: false }); deck().forEach((item, index) => s.hands[index % 4].push(item)); s.hands.forEach((cards) => cards.sort((a, b) => a.suit.localeCompare(b.suit) || a.rank - b.rank)); },
       card(index) { if (s.phase === "pass" && s.turn === 0) { if (s.selected.has(index)) s.selected.delete(index); else if (s.selected.size < 3) s.selected.add(index); } else if (s.phase === "play" && s.turn === 0) play(0, s.hands[0][index]); },
       action(action) { if (action === "pass" && s.phase === "pass" && s.selected.size === 3) { const selected = [...s.selected].sort((a, b) => b - a).map((index) => s.hands[0].splice(index, 1)[0]); selected.forEach((item) => s.hands[1].push(item)); const aiPass = s.hands[1].slice(0, 3); aiPass.forEach((item) => s.hands[1].splice(s.hands[1].indexOf(item), 1)); s.hands[0].push(...aiPass); s.hands.forEach((cards) => cards.sort((a, b) => a.suit.localeCompare(b.suit) || a.rank - b.rank)); s.phase = "play"; s.turn = s.hands.findIndex((cards) => cards.some((item) => item.suit === "clubs" && item.rank === 2)); if (s.turn !== 0) setTimeout(() => aiTurn(), 220); } },
       view() { const trickHtml = s.trick.map((entry) => `<div>${aiNames[entry.player]} ${cardMarkup(entry.card, 0)}</div>`).join(""); const action = s.phase === "pass" ? `<button class="primary-btn" data-action="pass" ${s.selected.size !== 3 ? "disabled" : ""}>${t("pass")} 3</button>` : `<p class="card-help">${s.heartsBroken ? "♥ " : ""}${t("yourTurn")}</p>`; return { phase: s.phase === "pass" ? t("pass") : (s.heartsBroken ? "♥" : "♥ · " + t("waiting")), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "pass" ? `${t("selectCards")}: ${s.selected.size}/3` : heartsText(), score: s.scores[0], opponents: s.hands.slice(1).map((cards, index) => opponentMarkup(aiNames[index + 1], cards.length, `${t("points")}: ${s.scores[index + 1]}`)).join(""), center: `<div class="card-table-label">${t("table")}</div><div class="table-row">${trickHtml || "<span>2♣ leads the first trick</span>"}</div>`, hand: cardsMarkup(s.hands[0], { selected: s.selected, hidden: false }), actions: action }; },
