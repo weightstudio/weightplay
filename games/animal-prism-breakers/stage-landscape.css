@@ -53,6 +53,46 @@
   min-height: 54px;
 }
 
+.directional-rehearsal {
+  grid-column: 1 / -1;
+  margin-top: 8px;
+  padding: 8px 10px;
+  border: 1px solid #4c8ba0;
+  border-radius: 14px;
+  background: #07172ded;
+  color: #e6faff;
+  text-align: left;
+}
+.rehearsal-lead { margin: 0; color: var(--accent2); font-size: 13px; line-height: 1.35; }
+.rehearsal-details { margin-top: 5px; }
+.rehearsal-summary { min-height: 42px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: #103b5f; color: #fff; cursor: pointer; font-weight: 900; }
+.rehearsal-summary:focus-visible { outline: 2px solid var(--accent2); outline-offset: 2px; }
+.rehearsal-track { position: relative; height: 58px; margin-top: 7px; overflow: hidden; border-radius: 10px; background: #061226; }
+.rehearsal-path { position: absolute; left: 13%; right: 13%; top: 17px; border-top: 2px dashed #6aa8bd; opacity: .75; }
+.rehearsal-zone { position: absolute; left: 36%; bottom: 8px; width: 28%; height: 26px; border: 2px solid var(--accent2); border-radius: 9px; background: #ffe36e2b; box-shadow: 0 0 15px #ffe36e66; }
+.rehearsal-paddle { position: absolute; left: 39%; bottom: 13px; width: 22%; height: 7px; border-radius: 99px; background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+.rehearsal-orb { position: absolute; top: 10px; left: calc(50% - 6px); width: 12px; height: 12px; border-radius: 50%; background: #fff; box-shadow: 0 0 6px 3px #73f1ff; }
+.directional-rehearsal[data-side="left"] .rehearsal-orb { animation: wp-prism-rehearsal-left 1600ms ease-in-out infinite alternate; }
+.directional-rehearsal[data-side="right"] .rehearsal-orb { animation: wp-prism-rehearsal-right 1600ms ease-in-out infinite alternate; }
+@keyframes wp-prism-rehearsal-left { 0%, 24% { left: 15%; } 76%, 100% { left: calc(50% - 6px); } }
+@keyframes wp-prism-rehearsal-right { 0%, 24% { left: calc(85% - 12px); } 76%, 100% { left: calc(50% - 6px); } }
+.rehearsal-note { margin: 6px 2px 0; color: #c8e6f1; font-size: 12px; line-height: 1.35; }
+@media (prefers-reduced-motion: reduce) {
+  .directional-rehearsal .rehearsal-orb { animation: none !important; left: calc(50% - 6px) !important; }
+}
+
+@media (max-height: 500px) and (min-aspect-ratio: 3 / 2) {
+  .directional-rehearsal { margin-top: 4px; padding: 5px 8px; }
+  .rehearsal-lead { font-size: 12px; }
+  .rehearsal-summary { min-height: 38px; padding: 6px 8px; font-size: 12px; }
+  .rehearsal-track { height: 42px; margin-top: 5px; }
+  .rehearsal-path { top: 12px; }
+  .rehearsal-zone { bottom: 5px; height: 19px; }
+  .rehearsal-paddle { bottom: 9px; height: 5px; }
+  .rehearsal-orb { top: 7px; width: 10px; height: 10px; }
+  .rehearsal-note { margin-top: 4px; font-size: 11px; }
+}
+
 .key-discovery {
   display: flex;
   align-items: center;

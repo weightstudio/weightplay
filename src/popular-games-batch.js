@@ -69,6 +69,7 @@
     hi: "मालिक का प्रीव्यू: नियंत्रित शॉट से 12 ईंटें तोड़ें। गेम अभी सार्वजनिक रूप से जारी नहीं हुआ है।",
     ar: "معاينة للمالك: حطّم 12 لبنة بتسديدات متحكم بها. لم تُنشر اللعبة للعامة بعد.",
   };
+  const BREAKOUT_GAME_VERSION = "v5";
   const breakoutMetaDescription = (locale) => BREAKOUT_META_DESCRIPTION[locale] || "";
   const CHECKERS_PROMOTION_COPY = {
     en: { next: "One more move reaches the far row and promotes your piece to a king.", result: "Your final move reached the far row and crowned your piece as a king." },
@@ -166,6 +167,22 @@
     hi: (column) => `स्तंभ ${column} पर निशाना लगाएँ: सर्व हाइलाइट की गई ईंट पर लगेगा।`,
     ar: (column) => `صوّب نحو العمود ${column}: ستصيب الإرسالية اللبنة المميزة.`,
   };
+  const BREAKOUT_RESULT_GOAL_COPY = {
+    en: (moves) => moves > 12 ? `Rematch goal: clear all 12 bricks in ${moves - 1} controls or fewer.` : "Rematch goal: match this clean 12-control clear.",
+    "zh-Hant": (moves) => moves > 12 ? `再玩目標：用不超過 ${moves - 1} 次操作清除 12 塊磚。` : "再玩目標：再次完成這次乾淨的 12 次操作通關。",
+    "zh-Hans": (moves) => moves > 12 ? `重玩目标：用不超过 ${moves - 1} 次操作清除 12 块砖。` : "重玩目标：再次完成这次干净的 12 次操作通关。",
+    ja: (moves) => moves > 12 ? `リプレイ目標：${moves - 1}回以内の操作で12個すべてを消しましょう。` : "リプレイ目標：このクリーンな12回操作クリアを再現しましょう。",
+    ko: (moves) => moves > 12 ? `다시 플레이 목표: ${moves - 1}번 이하의 조작으로 벽돌 12개를 모두 깨세요.` : "다시 플레이 목표: 이 깔끔한 12회 조작 클리어를 재현하세요.",
+    es: (moves) => moves > 12 ? `Meta de revancha: rompe los 12 ladrillos en ${moves - 1} controles o menos.` : "Meta de revancha: repite esta limpieza perfecta en 12 controles.",
+    "pt-BR": (moves) => moves > 12 ? `Meta da revanche: quebre os 12 blocos com ${moves - 1} ações ou menos.` : "Meta da revanche: repita esta limpeza em 12 ações.",
+    fr: (moves) => moves > 12 ? `Objectif de revanche : cassez les 12 briques en ${moves - 1} actions ou moins.` : "Objectif de revanche : reproduisez ce nettoyage en 12 actions.",
+    de: (moves) => moves > 12 ? `Rematch-Ziel: Zerstöre alle 12 Steine mit höchstens ${moves - 1} Aktionen.` : "Rematch-Ziel: Wiederhole diesen sauberen Durchlauf mit 12 Aktionen.",
+    it: (moves) => moves > 12 ? `Obiettivo rivincita: rompi i 12 mattoni in ${moves - 1} mosse o meno.` : "Obiettivo rivincita: ripeti questa pulizia in 12 mosse.",
+    ru: (moves) => moves > 12 ? `Цель реванша: разбейте все 12 блоков за ${moves - 1} действий или меньше.` : "Цель реванша: повторите этот чистый результат за 12 действий.",
+    hi: (moves) => moves > 12 ? `दोबारा खेलने का लक्ष्य: 12 ईंटें ${moves - 1} या उससे कम कार्रवाइयों में तोड़ें।` : "दोबारा खेलने का लक्ष्य: 12 कार्रवाइयों में यह साफ़ जीत दोहराएँ।",
+    ar: (moves) => moves > 12 ? `هدف الإعادة: حطّم اللبنات الـ12 في ${moves - 1} إجراء أو أقل.` : "هدف الإعادة: كرّر هذا الفوز النظيف في 12 إجراءً.",
+  };
+  const breakoutResultGoalCopy = (locale, moves) => (BREAKOUT_RESULT_GOAL_COPY[locale] || BREAKOUT_RESULT_GOAL_COPY.en)(Math.max(12, Number(moves) || 12));
 
   const TIC_CELL_COPY = {
     en: { row: "Row", column: "column", empty: "empty", winning: "winning line" },
@@ -408,6 +425,7 @@
     const game = CATALOG[gameId];
     if (!game) throw new Error(`Unknown popular game: ${gameId}`);
     document.body.dataset.gameId = gameId;
+    if (game.type === "breakout") document.body.dataset.gameVersion = BREAKOUT_GAME_VERSION;
     const root = document.querySelector("#popularArcade");
     if (!root) throw new Error("Popular game root is missing.");
     // Snake owns a complete 13-locale shell and guide. Keep the generic
@@ -466,7 +484,7 @@
     const els = {
       title: document.querySelector("#gameTitle"), tagline: document.querySelector("#gameTagline"), eyebrow: document.querySelector("#eyebrow"), locale: document.querySelector("#localeSelect"),
       main: document.querySelector("#mainScreen"), battle: document.querySelector("#battleScreen"), result: document.querySelector("#resultScreen"), board: document.querySelector("#board"), controls: document.querySelector("#controls"),
-      message: document.querySelector("#gameMessage"), objective: document.querySelector("#objective"), instruction: document.querySelector("#mainInstruction"), resultTitle: document.querySelector("#resultTitle"), resultCopy: document.querySelector("#resultCopy"), resultStats: document.querySelector("#resultStats"),
+      message: document.querySelector("#gameMessage"), objective: document.querySelector("#objective"), instruction: document.querySelector("#mainInstruction"), resultTitle: document.querySelector("#resultTitle"), resultCopy: document.querySelector("#resultCopy"), resultStats: document.querySelector("#resultStats"), resultGoal: document.querySelector("#resultGoal"),
       round: document.querySelector("#roundLabel"), start: document.querySelector("#startBtn"), retry: document.querySelector("#retryBtn"), home: document.querySelector("#homeBtn"), hint: document.querySelector("#hintBtn"), restart: document.querySelector("#restartBtn"),
     };
     let tetrisFocusedControl = null;
@@ -547,7 +565,7 @@
     const snakeTickMs = () => Math.max(180, SNAKE_TICK_MS - state.food * 20);
     const snakeGoalLabel = () => state.milestoneReached ? snakeCopy(locale, "nextGoal", state.goalFood + 2) : snakeCopy(locale, "goal", state.goalFood);
     const start = (entry = "start") => { stopSnakeTimer(); stopTicResultTimer(); stopTicReplyTimer(); state = makeState(game.type); checkersSeenTargets.clear(); checkersPromotionCueTracked = false; if (game.type === "snake") { state.runNumber = nextSnakeRunNumber(); state.goalFood = snakeGoalForRun(state.runNumber); state.modeKey = snakeModeForRun(state.runNumber); state.obstacles = snakeObstaclesForMode(state.modeKey); state.foodCell = chooseSnakeFood(state.trail, state.obstacles); } show("battle"); trackCheckers("game_start", { entry }); const snakeReadyCue = game.type === "snake" && ["gates", "orbit"].includes(state.modeKey); const breakoutReadyCue = game.type === "breakout" ? breakoutAimCopy(locale, breakoutTargetIndex(state) % 6 + 1) : ""; announce(game.type === "snake" ? (snakeReadyCue ? (SNAKE_OBSTACLE_CUE[locale] || SNAKE_OBSTACLE_CUE.en) : (SNAKE_READY[locale] || SNAKE_READY.en)) : game.type === "checkers" ? "" : game.type === "breakout" ? breakoutReadyCue : copy(locale, "ready"), "", game.type === "snake" ? (snakeReadyCue ? "snakeObstacleCue" : "snakeReady") : game.type === "checkers" ? "" : game.type === "breakout" ? "breakoutAim" : "ready"); render(); };
-    const renderResult = () => { const best = Number(localStorage.getItem(key(gameId)) || 0); els.resultTitle.textContent = state.success ? copy(locale, "success") : copy(locale, "failure"); els.resultCopy.textContent = state.success ? (game.type === "checkers" ? checkersPromotionCopy(locale, "result") : copy(locale, "successCopy")) : copy(locale, "failureCopy"); els.resultStats.innerHTML = `<span class="stat">${copy(locale, "score")}<strong>${state.score}</strong></span><span class="stat">${copy(locale, "moves")}<strong>${state.moves}</strong></span><span class="stat">${copy(locale, "best")}<strong>${Math.max(best, state.score)}</strong></span>`; };
+    const renderResult = () => { const best = Number(localStorage.getItem(key(gameId)) || 0); els.resultTitle.textContent = state.success ? copy(locale, "success") : copy(locale, "failure"); els.resultCopy.textContent = state.success ? (game.type === "checkers" ? checkersPromotionCopy(locale, "result") : copy(locale, "successCopy")) : copy(locale, "failureCopy"); els.resultStats.innerHTML = `<span class="stat">${copy(locale, "score")}<strong>${state.score}</strong></span><span class="stat">${copy(locale, "moves")}<strong>${state.moves}</strong></span><span class="stat">${copy(locale, "best")}<strong>${Math.max(best, state.score)}</strong></span>`; if (els.resultGoal) { els.resultGoal.hidden = game.type !== "breakout"; if (game.type === "breakout") els.resultGoal.textContent = breakoutResultGoalCopy(locale, state.moves); } };
     const finish = (success) => { if (state.done) return; stopSnakeTimer(); stopTicResultTimer(); stopTicReplyTimer(); state.done = true; state.success = success; state.score = success ? Math.max(state.score, state.moves * 10 + 100) : state.score; const best = Number(localStorage.getItem(key(gameId)) || 0); if ((game.type === "snake" || success) && state.score > best) { try { localStorage.setItem(key(gameId), String(state.score)); } catch {} } if (game.type === "checkers" && success) trackCheckers("promotion_result", { score: state.score }); if (game.type === "tic" && success && state.winningCells?.length === 3) { show("battle"); ticResultTimer = window.setTimeout(() => { ticResultTimer = null; if (!state.done || !state.success) return; renderResult(); show("result"); }, 520); return; } renderResult(); show("result"); };
     const moveSnake = () => {
       if (game.type !== "snake" || state.done || !state.started) return;
