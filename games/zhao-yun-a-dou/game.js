@@ -44,6 +44,7 @@
     skills: document.getElementById("skills"),
     hint: document.getElementById("hint"),
     status: document.getElementById("status"),
+    pressureCue: document.getElementById("pressureCue"),
     tutorial: document.getElementById("tutorial"),
     tutorialClose: document.getElementById("tutorialClose"),
     leaveBattle: document.getElementById("leaveBattle"),
@@ -576,11 +577,51 @@
     el.baseHp.textContent = battle.adouHp + " / " + battle.maxAdouHp;
     el.recruit.disabled = Boolean(battle.result);
     el.status.textContent = battle.status || t("mergeHint");
+    renderPressureCue();
     renderLanes();
     renderFormation();
     renderSkills();
     el.battle.scrollTop = 0;
     window.setTimeout(function () { if (el.battle) el.battle.scrollTop = 0; }, 0);
+  }
+
+  function renderPressureCue() {
+    if (!el.pressureCue || !battle) return;
+    const laneStates = [0, 1, 2].map(function (lane) {
+      const hasDefender = battle.units.some(function (unit, slot) {
+        return Boolean(unit) && slot % 3 === lane;
+      });
+      const enemies = battle.enemies.filter(function (enemy) {
+        return enemy.lane === lane && enemy.hp > 0 && !enemy.defeatedTicks;
+      });
+      const furthest = enemies.reduce(function (max, enemy) {
+        return Math.max(max, enemy.position || 0);
+      }, 0);
+      const bossBonus = enemies.some(function (enemy) { return enemy.boss; }) ? .18 : 0;
+      return {
+        lane: lane,
+        hasDefender: hasDefender,
+        enemies: enemies,
+        pressure: (hasDefender ? 0 : .6) + (enemies.length ? .2 : 0) + furthest + bossBonus,
+      };
+    });
+    const attention = laneStates.filter(function (state) {
+      return !state.hasDefender || state.enemies.length > 0;
+    });
+    let message;
+    if (!attention.length) {
+      message = t("pressureClear");
+    } else {
+      attention.sort(function (first, second) {
+        return second.pressure - first.pressure || first.lane - second.lane;
+      });
+      const focus = attention[0];
+      const key = !focus.hasDefender && focus.enemies.length
+        ? "pressureOpenEnemy"
+        : !focus.hasDefender ? "pressureOpen" : "pressureEnemy";
+      message = t(key, { lane: focus.lane + 1 });
+    }
+    if (el.pressureCue.textContent !== message) el.pressureCue.textContent = message;
   }
 
   function renderLanes() {

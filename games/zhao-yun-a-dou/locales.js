@@ -82,6 +82,10 @@
     tipText: "A high-level unit is powerful, but an empty lane can still lose the battle.",
     battleGuideTitle: "Battle plan",
     battleGuideBody: "Your units attack automatically. Recruit and merge to cover all three lanes; enemies move toward A Dou.",
+    pressureClear: "Pressure watch: all three lanes are covered.",
+    pressureOpen: "Pressure watch: Lane {lane} has no defender.",
+    pressureEnemy: "Pressure watch: Lane {lane} has an enemy approaching.",
+    pressureOpenEnemy: "Pressure watch: Lane {lane} is open with an enemy approaching.",
     attackCue: "Attack",
     enemySoldier: "Enemy soldier",
     boss: "Enemy commander",
@@ -130,6 +134,24 @@
   };
   Object.keys(localeExtras).forEach(function (code) {
     Object.assign(dictionaries[code], localeExtras[code]);
+  });
+
+  const pressureCopy = {
+    "zh-Hant": { pressureClear: "壓力提示：三條戰線都有部隊。", pressureOpen: "壓力提示：第 {lane} 路沒有防守部隊。", pressureEnemy: "壓力提示：第 {lane} 路有敵人逼近。", pressureOpenEnemy: "壓力提示：第 {lane} 路沒有部隊，且有敵人逼近。" },
+    "zh-Hans": { pressureClear: "压力提示：三条战线都有部队。", pressureOpen: "压力提示：第 {lane} 路没有防守部队。", pressureEnemy: "压力提示：第 {lane} 路有敌人逼近。", pressureOpenEnemy: "压力提示：第 {lane} 路没有部队，且有敌人逼近。" },
+    ja: { pressureClear: "圧力確認：3レーンすべてを守っています。", pressureOpen: "圧力確認：レーン {lane} に守備兵がいません。", pressureEnemy: "圧力確認：レーン {lane} に敵が接近中です。", pressureOpenEnemy: "圧力確認：レーン {lane} は空いており、敵が接近中です。" },
+    ko: { pressureClear: "압박 확인: 세 전선을 모두 지키고 있습니다.", pressureOpen: "압박 확인: 전선 {lane}에 수비 병사가 없습니다.", pressureEnemy: "압박 확인: 전선 {lane}에 적이 접근 중입니다.", pressureOpenEnemy: "압박 확인: 전선 {lane}이 비어 있고 적이 접근 중입니다." },
+    es: { pressureClear: "Vigila la presión: las tres líneas están cubiertas.", pressureOpen: "Vigila la presión: la línea {lane} no tiene defensor.", pressureEnemy: "Vigila la presión: un enemigo se acerca por la línea {lane}.", pressureOpenEnemy: "Vigila la presión: la línea {lane} está vacía y se acerca un enemigo." },
+    "pt-BR": { pressureClear: "Vigie a pressão: as três linhas estão cobertas.", pressureOpen: "Vigie a pressão: a linha {lane} não tem defensor.", pressureEnemy: "Vigie a pressão: há um inimigo se aproximando pela linha {lane}.", pressureOpenEnemy: "Vigie a pressão: a linha {lane} está vazia e há um inimigo se aproximando." },
+    fr: { pressureClear: "Surveillez la pression : les trois lignes sont couvertes.", pressureOpen: "Surveillez la pression : la ligne {lane} n'a aucun défenseur.", pressureEnemy: "Surveillez la pression : un ennemi approche sur la ligne {lane}.", pressureOpenEnemy: "Surveillez la pression : la ligne {lane} est vide et un ennemi approche." },
+    de: { pressureClear: "Druckanzeige: Alle drei Linien sind gedeckt.", pressureOpen: "Druckanzeige: Linie {lane} hat keinen Verteidiger.", pressureEnemy: "Druckanzeige: Ein Feind nähert sich auf Linie {lane}.", pressureOpenEnemy: "Druckanzeige: Linie {lane} ist offen, und ein Feind nähert sich." },
+    it: { pressureClear: "Controllo pressione: tutte e tre le linee sono coperte.", pressureOpen: "Controllo pressione: la linea {lane} non ha difensori.", pressureEnemy: "Controllo pressione: un nemico si avvicina sulla linea {lane}.", pressureOpenEnemy: "Controllo pressione: la linea {lane} è scoperta e un nemico si avvicina." },
+    ru: { pressureClear: "Контроль угрозы: все три линии защищены.", pressureOpen: "Контроль угрозы: на линии {lane} нет защитника.", pressureEnemy: "Контроль угрозы: к линии {lane} приближается враг.", pressureOpenEnemy: "Контроль угрозы: линия {lane} пуста, и приближается враг." },
+    hi: { pressureClear: "दबाव संकेत: तीनों पंक्तियाँ सुरक्षित हैं।", pressureOpen: "दबाव संकेत: पंक्ति {lane} पर कोई रक्षक नहीं है।", pressureEnemy: "दबाव संकेत: पंक्ति {lane} पर दुश्मन आ रहा है।", pressureOpenEnemy: "दबाव संकेत: पंक्ति {lane} खाली है और दुश्मन आ रहा है।" },
+    ar: { pressureClear: "مراقبة الضغط: المسارات الثلاثة محمية.", pressureOpen: "مراقبة الضغط: لا يوجد مدافع في المسار {lane}.", pressureEnemy: "مراقبة الضغط: يقترب عدو من المسار {lane}.", pressureOpenEnemy: "مراقبة الضغط: المسار {lane} فارغ ويقترب عدو." },
+  };
+  Object.keys(pressureCopy).forEach(function (code) {
+    Object.assign(dictionaries[code], pressureCopy[code]);
   });
 
   const publicMainCopy = {

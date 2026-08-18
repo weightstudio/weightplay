@@ -1094,6 +1094,22 @@ body[data-wp-game-id="zhao-yun-a-dou"] .stage-card[data-wp-stage-selected="true"
   white-space: nowrap;
 }
 
+.pressure-cue {
+  display: flex;
+  align-items: center;
+  min-height: 28px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 5px 10px;
+  border-left: 3px solid #d3a85e;
+  border-radius: 8px;
+  color: #f5d37f;
+  background: rgba(22, 42, 35, .62);
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  line-height: 1.25;
+}
+
 .enemy-token {
   grid-template-rows: 16px 10px 4px;
   gap: 1px;

@@ -288,6 +288,21 @@
     const dictionary = WAR_SWING_COPY[currentLocale()] || WAR_SWING_COPY.en;
     return (dictionary[winner] || WAR_SWING_COPY.en[winner]).replaceAll("{count}", String(count));
   };
+  const SPEED_LEGAL_COPY = {
+    en: "{card} — legal play",
+    "zh-Hant": "{card} — 可出牌",
+    "zh-Hans": "{card} — 可出牌",
+    ja: "{card} — 出せます",
+    ko: "{card} — 낼 수 있음",
+    es: "{card} — jugada legal",
+    "pt-BR": "{card} — jogada válida",
+    fr: "{card} — coup légal",
+    de: "{card} — gültiger Zug",
+    it: "{card} — giocata valida",
+    ru: "{card} — допустимый ход",
+    hi: "{card} — मान्य चाल",
+    ar: "{card} — لعب قانوني",
+  };
   const GO_FISH_COPY = {
     en: { pending: "Choose a rank to ask {opponent}", ready: "Ask {opponent} for {rank}" },
     "zh-Hant": { pending: "選擇要向 {opponent} 詢問的點數", ready: "向 {opponent} 詢問 {rank}" },
@@ -363,12 +378,15 @@
   const sum = (cards) => cards.reduce((total, item) => total + value(item), 0);
   const sameCard = (a, b) => a && b && a.suit === b.suit && a.rank === b.rank;
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const speedLegalLabel = (item) => (SPEED_LEGAL_COPY[currentLocale()] || SPEED_LEGAL_COPY.en).replace("{card}", cardText(item));
 
   function cardMarkup(item, index, options = {}) {
     const hidden = options.hidden || item?.faceDown;
     const classes = ["playing-card", isRed(item) ? "is-red" : "", hidden ? "is-face-down" : "", options.selected ? "is-selected" : "", options.className || ""].filter(Boolean).join(" ");
     const label = hidden ? t("cards") : cardText(item);
-    return `<button type="button" class="${classes}" data-card-index="${index}" aria-label="${hidden ? t("cards") : label}" ${options.disabled ? "disabled" : ""}>${hidden ? "" : label}</button>`;
+    const ariaLabel = options.ariaLabel || (hidden ? t("cards") : label);
+    const runtimeLocalizeOff = options.runtimeLocalizeOff ? ' data-runtime-localize="off"' : "";
+    return `<button type="button" class="${classes}" data-card-index="${index}" aria-label="${ariaLabel}"${runtimeLocalizeOff} ${options.disabled ? "disabled" : ""}>${hidden ? "" : label}</button>`;
   }
   function cardsMarkup(cards, options = {}) { return (cards || []).map((item, index) => cardMarkup(item, index, { ...options, selected: options.selected?.has(index) })).join(""); }
   function opponentMarkup(name, count, extra = "") { return `<div class="opponent-card"><strong>${name}</strong><span>${count} ${t("cards")}${extra ? ` · ${extra}` : ""}</span></div>`; }
@@ -987,7 +1005,7 @@
       reset() { const cards = deck(); Object.assign(s, { hand: cards.splice(0, 5), stock: cards.splice(0, 20), aiHand: cards.splice(0, 5), aiStock: cards.splice(0, 20), centers: cards.splice(0, 2), waste: [], over: false, lastPlayerAt: Date.now() }); clearTimeout(s.timer); s.timer = setTimeout(aiLoop, 850); },
       card(index) { if (s.over) return; const item = s.hand[index]; const centerIndex = s.centers.findIndex((centerCard) => canPlay(item, centerCard)); if (centerIndex < 0) return; s.hand.splice(index, 1); replaceCenter(centerIndex, item); s.lastPlayerAt = Date.now(); refill(s.hand, s.stock); finishIfDone(); },
       action() {},
-      view() { return { phase: "Speed", status: t("yourTurn"), help: "Play immediately: one rank above or below either center card.", score: s.hand.length + s.stock.length, opponents: opponentMarkup("AI", s.aiHand.length + s.aiStock.length), center: `<div class="card-speed-lane"><div class="card-speed-pile">${cardMarkup(s.centers[0], 0)}</div><div class="card-speed-pile">${cardMarkup(s.centers[1], 0)}</div></div>`, hand: cardsMarkup(s.hand), actions: `<span class="card-help">${s.stock.length} ${t("stock")} · ${s.aiStock.length} ${t("cards")} ${t("waiting")}</span>` }; }
+      view() { const handMarkup = s.hand.map((item, index) => { const legal = s.centers.some((centerCard) => canPlay(item, centerCard)); return cardMarkup(item, index, { className: legal ? "card-speed-legal" : "", ariaLabel: legal ? speedLegalLabel(item) : undefined, runtimeLocalizeOff: legal }); }).join(""); return { phase: "Speed", status: t("yourTurn"), help: "Play immediately: one rank above or below either center card.", score: s.hand.length + s.stock.length, opponents: opponentMarkup("AI", s.aiHand.length + s.aiStock.length), center: `<div class="card-speed-lane"><div class="card-speed-pile">${cardMarkup(s.centers[0], 0)}</div><div class="card-speed-pile">${cardMarkup(s.centers[1], 0)}</div></div>`, hand: handMarkup, actions: `<span class="card-help">${s.stock.length} ${t("stock")} · ${s.aiStock.length} ${t("cards")} ${t("waiting")}</span>` }; }
     };
   }
 
