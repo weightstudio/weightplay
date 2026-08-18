@@ -8013,6 +8013,8 @@ select,
 
 .general-lobby-page #upcomingGamesSection .section-heading span {
   width: fit-content;
+  max-width: 100%;
+  overflow-wrap: anywhere;
   padding: 4px 9px;
   border: 1px solid rgba(255, 207, 101, 0.44);
   border-radius: 999px;

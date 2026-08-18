@@ -514,7 +514,7 @@
     };
     els.locale.addEventListener("change", persistLocale);
     const announce = (message, tone = "", messageKey = "") => { state.message = message; state.tone = tone; state.messageKey = messageKey; els.message.textContent = message; els.message.dataset.tone = tone; };
-    const show = (screen) => { els.main.hidden = screen !== "main"; els.battle.hidden = screen !== "battle"; els.result.hidden = screen !== "result"; document.body.dataset.screen = screen; document.documentElement.classList.toggle("popular-checkers-active", game.type === "checkers" && screen !== "main"); window.dispatchEvent(new Event("weightplay:shell-sync")); if (game.type === "tetris" && screen !== "main") window.scrollTo({ top: 0, left: 0, behavior: "auto" }); };
+    const show = (screen) => { els.main.hidden = screen !== "main"; els.battle.hidden = screen !== "battle"; els.result.hidden = screen !== "result"; document.body.dataset.screen = screen; document.documentElement.classList.toggle("popular-checkers-active", game.type === "checkers" && screen !== "main"); document.documentElement.classList.toggle("popular-tic-tac-toe-active", game.type === "tic" && screen !== "main"); window.dispatchEvent(new Event("weightplay:shell-sync")); if (game.type === "tetris" && screen !== "main") window.scrollTo({ top: 0, left: 0, behavior: "auto" }); };
     let snakeTimer = null;
     let ticResultTimer = null;
     let ticReplyTimer = null;

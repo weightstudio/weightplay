@@ -767,6 +767,21 @@
       "stats.lobby_visits_total_short": "\u0625\u062c\u0645\u0627\u0644\u064a \u0632\u064a\u0627\u0631\u0627\u062a \u0627\u0644\u0631\u062f\u0647\u0629",
     },
   };
+  const upcomingReasonCountCopy = {
+    en: "In production · {count} games",
+    "zh-Hant": "製作中 · {count} 款遊戲",
+    "zh-Hans": "制作中 · {count} 款游戏",
+    ja: "制作中 · {count}本のゲーム",
+    ko: "제작 중 · 게임 {count}개",
+    es: "En producción · {count} juegos",
+    "pt-BR": "Em produção · {count} jogos",
+    fr: "En production · {count} jeux",
+    de: "In Produktion · {count} Spiele",
+    it: "In produzione · {count} giochi",
+    ru: "В производстве · {count} игр",
+    hi: "निर्माणाधीन · {count} गेम",
+    ar: "قيد الإنتاج · العدد {count}",
+  };
   function getSavedLocale() {
     const routedLocale = localeFromPath();
     if (routedLocale && supportedLocales.includes(routedLocale)) return routedLocale;
@@ -1849,6 +1864,12 @@ const essentialLobbyCopy = {
 
   Object.entries(lifetimeStatsCopy).forEach(([locale, copy]) => {
     dictionaries[locale] = { ...(dictionaries[locale] || {}), ...copy };
+  });
+  Object.entries(upcomingReasonCountCopy).forEach(([locale, value]) => {
+    dictionaries[locale] = {
+      ...(dictionaries[locale] || {}),
+      "upcoming.reason_count": value,
+    };
   });
   Object.entries(lobbyAriaCopy).forEach(([locale, copy]) => {
     const [gameFilters, libraryTabs, topicFilters, availabilityFilters, playerStatus, gameList] = copy;

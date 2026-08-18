@@ -1379,7 +1379,9 @@ function renderUpcomingGames() {
   });
 
   upcomingGamesTitle.textContent = i18n.t("upcoming.title");
-  upcomingGamesReason.textContent = i18n.t("upcoming.reason");
+  const upcomingReason = i18n.t("upcoming.reason_count", { count: cards.length });
+  upcomingGamesReason.textContent = upcomingReason;
+  upcomingGamesSection.setAttribute("aria-label", upcomingReason);
   upcomingGamesSection.hidden = cards.length === 0;
   upcomingGamesSection.classList.toggle("hidden", cards.length === 0);
   upcomingGames.replaceChildren(...cards);

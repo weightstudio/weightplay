@@ -88,6 +88,7 @@ body.wp-logical-battle-active.is-game-playing #battleScreen .battle-canvas[data-
 .modal-choices .item-decision span{min-width:0;display:grid;gap:3px}
 .modal-choices .item-decision strong,.modal-choices .item-decision small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .modal-choices .item-decision small{color:var(--muted);font-size:12px;font-weight:700}
+.modal-choices .item-decision small.item-comparison{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.2;color:#c8eee0;font-size:11px;font-weight:700}
 
 /* Short landscape keeps packing decisions physically operable and readable. */
 @media(max-height:460px) and (orientation:landscape){
