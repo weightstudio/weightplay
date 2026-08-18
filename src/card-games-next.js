@@ -269,6 +269,25 @@
     Object.entries(values).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); });
     return value;
   };
+  const WAR_SWING_COPY = {
+    en: { player: "You take the pot: {count} cards.", ai: "AI takes the pot: {count} cards." },
+    "zh-Hant": { player: "你收下這墩：{count} 張牌。", ai: "AI 收下這墩：{count} 張牌。" },
+    "zh-Hans": { player: "你收下这墩：{count} 张牌。", ai: "AI 收下这墩：{count} 张牌。" },
+    ja: { player: "あなたが場の札を獲得：{count}枚。", ai: "AIが場の札を獲得：{count}枚。" },
+    ko: { player: "당신이 더미를 가져갑니다: {count}장.", ai: "AI가 더미를 가져갑니다: {count}장." },
+    es: { player: "Te llevas el bote: {count} cartas.", ai: "La IA se lleva el bote: {count} cartas." },
+    "pt-BR": { player: "Você leva o monte: {count} cartas.", ai: "A IA leva o monte: {count} cartas." },
+    fr: { player: "Vous remportez le pot : {count} cartes.", ai: "L’IA remporte le pot : {count} cartes." },
+    de: { player: "Du gewinnst den Stapel: {count} Karten.", ai: "Die KI gewinnt den Stapel: {count} Karten." },
+    it: { player: "Prendi il piatto: {count} carte.", ai: "L'IA prende il piatto: {count} carte." },
+    ru: { player: "Вы забираете стопку: {count} карт.", ai: "ИИ забирает стопку: {count} карт." },
+    hi: { player: "आपने ढेर जीता: {count} पत्ते।", ai: "AI ने ढेर जीता: {count} पत्ते।" },
+    ar: { player: "لقد فزت بالكومة: {count} بطاقة.", ai: "فاز الذكاء الاصطناعي بالكومة: {count} بطاقة." },
+  };
+  const warSwingText = (winner, count) => {
+    const dictionary = WAR_SWING_COPY[currentLocale()] || WAR_SWING_COPY.en;
+    return (dictionary[winner] || WAR_SWING_COPY.en[winner]).replaceAll("{count}", String(count));
+  };
   const GO_FISH_COPY = {
     en: { pending: "Choose a rank to ask {opponent}", ready: "Ask {opponent} for {rank}" },
     "zh-Hant": { pending: "選擇要向 {opponent} 詢問的點數", ready: "向 {opponent} 詢問 {rank}" },
@@ -648,16 +667,18 @@
   }
 
   function makeWarFixed(controller) {
-    const s = { player: [], ai: [], pot: [], phase: "ready", playerCard: null, aiCard: null };
+    const s = { player: [], ai: [], pot: [], phase: "ready", playerCard: null, aiCard: null, swingCue: "" };
     const finish = (playerWins) => controller.result(playerWins, `${t("cards")}: ${s.player.length} / ${s.ai.length}`);
     const settle = () => {
       const playerWins = s.playerCard.rank > s.aiCard.rank;
+      s.swingCue = warSwingText(playerWins ? "player" : "ai", s.pot.length);
       (playerWins ? s.player : s.ai).push(...s.pot.sort(() => Math.random() - 0.5));
       s.pot = [];
       s.phase = "ready";
       if (!s.player.length || !s.ai.length) finish(playerWins);
     };
     const reveal = () => {
+      s.swingCue = "";
       if (!s.player.length || !s.ai.length) { finish(Boolean(s.player.length)); return; }
       s.playerCard = s.player.shift();
       s.aiCard = s.ai.shift();
@@ -677,10 +698,10 @@
       reveal();
     };
     return {
-      reset() { const cards = deck(); Object.assign(s, { player: cards.slice(0, 26), ai: cards.slice(26), pot: [], phase: "ready", playerCard: null, aiCard: null }); },
+      reset() { const cards = deck(); Object.assign(s, { player: cards.slice(0, 26), ai: cards.slice(26), pot: [], phase: "ready", playerCard: null, aiCard: null, swingCue: "" }); },
       card() {},
       action(action) { if (action === "flip" && s.phase === "ready") reveal(); else if (action === "flip" && s.phase === "war") continueWar(); },
-      view() { return { phase: s.phase === "war" ? t("war") : t("flip"), status: t("yourTurn"), help: s.phase === "war" ? "Place three cards down, then reveal the next card." : "Flip together and watch the collision.", score: s.player.length, opponents: opponentMarkup("AI", s.ai.length), center: `<div class="card-table-label">${t("war")}</div><div class="table-row ${s.phase === "war" ? "card-war-flash" : ""}">${s.playerCard ? cardMarkup(s.playerCard, 0) : ""}${s.aiCard ? cardMarkup(s.aiCard, 0) : ""}</div><div>${t("cards")}: ${s.pot.length}</div>`, hand: `<div class="card-help">${s.player.length} ${t("cards")}</div>`, actions: `<button class="primary-btn" data-action="flip">${s.phase === "war" ? t("war") : t("flip")}</button>` }; }
+      view() { const swingCue = s.swingCue ? `<p class="card-choice-summary card-war-swing" role="status" aria-live="polite">${s.swingCue}</p>` : ""; return { phase: s.phase === "war" ? t("war") : t("flip"), status: t("yourTurn"), help: s.phase === "war" ? "Place three cards down, then reveal the next card." : "Flip together and watch the collision.", score: s.player.length, opponents: opponentMarkup("AI", s.ai.length), center: `<div class="card-table-label">${t("war")}</div>${swingCue}<div class="table-row ${s.phase === "war" ? "card-war-flash" : ""}">${s.playerCard ? cardMarkup(s.playerCard, 0) : ""}${s.aiCard ? cardMarkup(s.aiCard, 0) : ""}</div><div>${t("cards")}: ${s.pot.length}</div>`, hand: `<div class="card-help">${s.player.length} ${t("cards")}</div>`, actions: `<button class="primary-btn" data-action="flip">${s.phase === "war" ? t("war") : t("flip")}</button>` }; }
     };
   }
 
