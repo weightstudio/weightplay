@@ -93,6 +93,124 @@
   .rehearsal-note { margin-top: 4px; font-size: 11px; }
 }
 
+@media (max-height: 500px) and (min-aspect-ratio: 3 / 2) {
+  #resultModal .dialog.result-layout {
+    grid-template-columns: 78px minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
+    align-content: center;
+    gap: 4px 8px;
+    padding: 8px;
+    overflow: hidden;
+  }
+
+  #resultModal .result-art {
+    grid-column: 1;
+    grid-row: 1;
+    width: 72px;
+    height: 72px;
+  }
+
+  #resultModal .result-layout > div:not(.directional-rehearsal):not(.modal-actions) {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+    align-self: center;
+  }
+
+  #resultModal .result-layout h2 {
+    margin: 0 0 2px;
+    font-size: 22px;
+  }
+
+  #resultModal .result-layout #resultText {
+    margin: 2px 0;
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  #resultModal .result-stats {
+    gap: 4px;
+  }
+
+  #resultModal .result-stats span {
+    padding: 4px 3px;
+  }
+
+  #resultModal .result-stats b {
+    font-size: 9px;
+  }
+
+  #resultModal .directional-rehearsal {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    grid-template-columns: minmax(130px, .48fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 4px 8px;
+    margin-top: 0;
+    padding: 4px 6px;
+  }
+
+  #resultModal .rehearsal-lead {
+    grid-column: 1;
+    grid-row: 1;
+    font-size: 11px;
+    line-height: 1.2;
+  }
+
+  #resultModal .rehearsal-details {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+    margin-top: 0;
+  }
+
+  #resultModal .rehearsal-summary {
+    min-height: 30px;
+    padding: 4px 5px;
+    font-size: 11px;
+    line-height: 1.2;
+  }
+
+  #resultModal .rehearsal-track {
+    height: 28px;
+    margin-top: 3px;
+  }
+
+  #resultModal .rehearsal-path {
+    top: 9px;
+  }
+
+  #resultModal .rehearsal-zone {
+    bottom: 4px;
+    height: 14px;
+  }
+
+  #resultModal .rehearsal-paddle {
+    bottom: 7px;
+    height: 4px;
+  }
+
+  #resultModal .rehearsal-orb {
+    top: 5px;
+    width: 8px;
+    height: 8px;
+  }
+
+  #resultModal .rehearsal-note {
+    margin: 3px 1px 0;
+    font-size: 10px;
+    line-height: 1.2;
+  }
+
+  #resultModal .modal-actions {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    gap: 5px;
+    margin-top: 3px;
+  }
+}
+
 .key-discovery {
   display: flex;
   align-items: center;

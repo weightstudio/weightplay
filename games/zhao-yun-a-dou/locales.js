@@ -190,6 +190,116 @@
     Object.assign(dictionaries[code], publicMainCopy[code]);
   });
 
+  const localizationRepairCopy = {
+    en: {
+      guideTitle: "How to play", guideBody: "Recruit a unit, place it in an open lane, then select two matching characters to merge. Keep a reserve unit before merging so a lane never goes empty.",
+      battleTitle: "Inkline Defense", recruitHint: "Spend 3 buns to call a new soldier.", pause: "Pause", leave: "Leave battle", skill: "Skill", tutorialAria: "Battle tutorial", close: "Close",
+      battleGuideTitle: "Battle plan", battleGuideBody: "Your units attack automatically. Recruit and merge to cover all three lanes; enemies move toward A Dou.", enemySoldier: "Enemy soldier", boss: "Enemy commander", defeated: "Defeated",
+      back: "Back", returnToWeightPlay: "Return to WeightPlay", gameGuide: "Game guide", stageList: "Stage list", stageNavigation: "Stage navigation", battleField: "Three-lane battle", enemyLanes: "Enemy lanes", playerLanes: "Player lanes", formationSlots: "Formation slots", generalSkills: "General skills", formation: "Formation", gameInfo: "Game information",
+      stageLabel: "Stage", stageName: "Mission {id}", stageChapterNames: ["Ink Gate", "Changban Pursuit", "Han River", "Hulao Formation", "Red Cliff", "Shu Dawn"], stageObjectiveLanes: "Merge your force and hold all three lanes", stageObjectiveCommander: "Protect A Dou and defeat the commander",
+      unitAtLevel: "{unit}, level {level}", unitLabels: { blade: "Blade", spear: "Spear", horse: "Rider", bow: "Archer" }, generalLabels: { blade: "Guan Yu", spear: "Zhang Fei", horse: "Zhao Yun", bow: "Huang Zhong" }, skillLabels: { blade: "Azure Cleave", spear: "Roar", horse: "Dragon Charge", bow: "Sky Arrow" },
+    },
+    "zh-Hant": {
+      guideTitle: "玩法", guideBody: "先徵召部隊，放到空出的戰線，再選取兩個相同文字合成。合成前保留一名備兵，避免某一路失守。",
+      battleTitle: "墨線守衛", recruitHint: "消耗 3 個饅頭召集新部隊。", pause: "暫停", leave: "離開戰鬥", skill: "技能", tutorialAria: "戰鬥教學", close: "關閉",
+      battleGuideTitle: "戰鬥重點", battleGuideBody: "部隊會自動攻擊。請徵召、合成並守住三條戰線；敵人會向阿斗前進。", enemySoldier: "敵方小兵", boss: "敵方武將", defeated: "已擊破",
+      back: "返回", returnToWeightPlay: "返回 WeightPlay", gameGuide: "遊戲指南", stageList: "關卡清單", stageNavigation: "關卡導覽", battleField: "三路戰場", enemyLanes: "敵方戰線", playerLanes: "我方戰線", formationSlots: "編制位置", generalSkills: "武將技能", formation: "編制", gameInfo: "遊戲資訊",
+      stageLabel: "關卡", stageName: "第 {id} 關", stageChapterNames: ["墨門初陣", "長坂追兵", "漢水鏖戰", "虎牢奇陣", "赤壁火線", "蜀漢曙光"], stageObjectiveLanes: "合成部隊，守住三路", stageObjectiveCommander: "守住阿斗，擊破敵將",
+      unitAtLevel: "{unit}・等級 {level}", unitLabels: { blade: "刀兵", spear: "槍兵", horse: "騎兵", bow: "弓兵" }, generalLabels: { blade: "關羽", spear: "張飛", horse: "趙雲", bow: "黃忠" }, skillLabels: { blade: "青龍斬", spear: "怒吼", horse: "龍騎突襲", bow: "穿雲箭" },
+    },
+    "zh-Hans": {
+      guideTitle: "玩法", guideBody: "先征召部队，放入空战线，再选择两个相同文字进行合成。合成前保留一名备用部队，避免战线空缺。",
+      battleTitle: "墨线守卫", recruitHint: "消耗 3 个馒头召集一名新士兵。", pause: "暂停", leave: "离开战斗", skill: "技能", tutorialAria: "战斗教学", close: "关闭",
+      battleGuideTitle: "战斗计划", battleGuideBody: "部队会自动攻击。征召并合成来守住三条战线；敌人会向阿斗前进。", enemySoldier: "敌方小兵", boss: "敌方武将", defeated: "已击破",
+      back: "返回", returnToWeightPlay: "返回 WeightPlay", gameGuide: "游戏指南", stageList: "关卡列表", stageNavigation: "关卡导航", battleField: "三路战场", enemyLanes: "敌方战线", playerLanes: "我方战线", formationSlots: "编制位置", generalSkills: "武将技能", formation: "编制", gameInfo: "游戏信息",
+      stageLabel: "关卡", stageName: "第 {id} 关", stageChapterNames: ["墨门初阵", "长坂追兵", "汉水鏖战", "虎牢奇阵", "赤壁火线", "蜀汉曙光"], stageObjectiveLanes: "合成部队，守住三路", stageObjectiveCommander: "守住阿斗，击破敌将",
+      unitAtLevel: "{unit}·等级 {level}", unitLabels: { blade: "刀兵", spear: "枪兵", horse: "骑兵", bow: "弓兵" }, generalLabels: { blade: "关羽", spear: "张飞", horse: "赵云", bow: "黄忠" }, skillLabels: { blade: "青龙斩", spear: "怒吼", horse: "龙骑突袭", bow: "穿云箭" },
+    },
+    ja: {
+      guideTitle: "遊び方", guideBody: "兵を招集して空いているレーンに配置し、同じ文字の部隊を2つ選んで合成します。合成前に予備の兵を残し、レーンを空けないようにしましょう。",
+      battleTitle: "墨線ディフェンス", recruitHint: "饅頭を3個使って新しい兵を招集します。", pause: "一時停止", leave: "戦闘を離れる", skill: "技", tutorialAria: "バトルチュートリアル", close: "閉じる",
+      battleGuideTitle: "戦闘プラン", battleGuideBody: "部隊は自動で攻撃します。招集と合成で3レーンを守り、敵を阿斗へ近づけないようにします。", enemySoldier: "敵兵", boss: "敵将", defeated: "撃破",
+      back: "戻る", returnToWeightPlay: "WeightPlayに戻る", gameGuide: "ゲームガイド", stageList: "任務一覧", stageNavigation: "任務ナビゲーション", battleField: "3レーンの戦場", enemyLanes: "敵のレーン", playerLanes: "味方のレーン", formationSlots: "編成スロット", generalSkills: "武将技", formation: "編成", gameInfo: "ゲーム情報",
+      stageLabel: "ステージ", stageName: "任務 {id}", stageChapterNames: ["墨門の初陣", "長坂の追撃", "漢水の激戦", "虎牢の奇陣", "赤壁の火線", "蜀漢の曙光"], stageObjectiveLanes: "部隊を合成し、3レーンを守る", stageObjectiveCommander: "阿斗を守り、敵将を倒す",
+      unitAtLevel: "{unit}・レベル{level}", unitLabels: { blade: "刀兵", spear: "槍兵", horse: "騎兵", bow: "弓兵" }, generalLabels: { blade: "関羽", spear: "張飛", horse: "趙雲", bow: "黄忠" }, skillLabels: { blade: "青龍斬", spear: "咆哮", horse: "龍騎突襲", bow: "貫雲矢" },
+    },
+    ko: {
+      guideTitle: "플레이 방법", guideBody: "병사를 모집해 빈 전선에 배치한 뒤 같은 문자의 부대 두 개를 선택해 합치세요. 합치기 전에 예비 병사를 남겨 전선을 비우지 마세요.",
+      battleTitle: "먹선 방어전", recruitHint: "만두 3개를 사용해 새 병사를 모집합니다.", pause: "일시정지", leave: "전투 나가기", skill: "기술", tutorialAria: "전투 튜토리얼", close: "닫기",
+      battleGuideTitle: "전투 계획", battleGuideBody: "부대는 자동으로 공격합니다. 모집과 합성으로 세 전선을 지키고 적이 아두에게 다가오지 못하게 하세요.", enemySoldier: "적 병사", boss: "적 장수", defeated: "처치됨",
+      back: "뒤로", returnToWeightPlay: "WeightPlay로 돌아가기", gameGuide: "게임 가이드", stageList: "임무 목록", stageNavigation: "임무 탐색", battleField: "세 전선 전장", enemyLanes: "적 전선", playerLanes: "아군 전선", formationSlots: "편성 칸", generalSkills: "장수 기술", formation: "편성", gameInfo: "게임 정보",
+      stageLabel: "스테이지", stageName: "임무 {id}", stageChapterNames: ["묵문의 첫 전투", "장판 추격", "한수의 격전", "호뢰의 기진", "적벽의 화선", "촉한의 여명"], stageObjectiveLanes: "부대를 합쳐 세 전선을 지키세요", stageObjectiveCommander: "아두를 지키고 적 장수를 처치하세요",
+      unitAtLevel: "{unit} · 레벨 {level}", unitLabels: { blade: "검병", spear: "창병", horse: "기병", bow: "궁병" }, generalLabels: { blade: "관우", spear: "장비", horse: "조운", bow: "황충" }, skillLabels: { blade: "청룡참", spear: "포효", horse: "용기습", bow: "관통 화살" },
+    },
+    es: {
+      guideTitle: "Cómo jugar", guideBody: "Recluta una unidad, colócala en una línea vacía y selecciona dos caracteres iguales para fusionarlos. Conserva una unidad de reserva para no dejar una línea vacía.",
+      battleTitle: "Defensa de tinta", recruitHint: "Gasta 3 bollos para reclutar un nuevo soldado.", pause: "Pausa", leave: "Salir de la batalla", skill: "Habilidad", tutorialAria: "Tutorial de batalla", close: "Cerrar",
+      battleGuideTitle: "Plan de batalla", battleGuideBody: "Tus unidades atacan automáticamente. Recluta y fusiona para cubrir las tres líneas; los enemigos avanzan hacia A Dou.", enemySoldier: "Soldado enemigo", boss: "Comandante enemigo", defeated: "Derrotado",
+      back: "Volver", returnToWeightPlay: "Volver a WeightPlay", gameGuide: "Guía del juego", stageList: "Lista de misiones", stageNavigation: "Navegación de misiones", battleField: "Batalla de tres líneas", enemyLanes: "Líneas enemigas", playerLanes: "Líneas aliadas", formationSlots: "Espacios de formación", generalSkills: "Habilidades de generales", formation: "Formación", gameInfo: "Información del juego",
+      stageLabel: "Nivel", stageName: "Misión {id}", stageChapterNames: ["Primera batalla de la Puerta de Tinta", "Persecución de Changban", "Batalla del río Han", "Formación de Hulao", "Línea de fuego de Chibi", "Amanecer de Shu"], stageObjectiveLanes: "Fusiona tu fuerza y protege las tres líneas", stageObjectiveCommander: "Protege a A Dou y derrota al comandante",
+      unitAtLevel: "{unit}, nivel {level}", unitLabels: { blade: "Espadachín", spear: "Lancero", horse: "Jinete", bow: "Arquero" }, generalLabels: { blade: "Guan Yu", spear: "Zhang Fei", horse: "Zhao Yun", bow: "Huang Zhong" }, skillLabels: { blade: "Corte azur", spear: "Rugido", horse: "Carga del dragón", bow: "Flecha celeste" },
+    },
+    "pt-BR": {
+      guideTitle: "Como jogar", guideBody: "Recrute uma unidade, coloque-a em uma linha vazia e selecione dois caracteres iguais para fundi-los. Guarde uma unidade de reserva para não deixar uma linha vazia.",
+      battleTitle: "Defesa de Tinta", recruitHint: "Gaste 3 pães para recrutar um novo soldado.", pause: "Pausar", leave: "Sair da batalha", skill: "Habilidade", tutorialAria: "Tutorial de batalha", close: "Fechar",
+      battleGuideTitle: "Plano de batalha", battleGuideBody: "Suas unidades atacam automaticamente. Recrute e funda para cobrir as três linhas; os inimigos avançam em direção a A Dou.", enemySoldier: "Soldado inimigo", boss: "Comandante inimigo", defeated: "Derrotado",
+      back: "Voltar", returnToWeightPlay: "Voltar ao WeightPlay", gameGuide: "Guia do jogo", stageList: "Lista de missões", stageNavigation: "Navegação de missões", battleField: "Batalha de três linhas", enemyLanes: "Linhas inimigas", playerLanes: "Linhas aliadas", formationSlots: "Espaços da formação", generalSkills: "Habilidades dos generais", formation: "Formação", gameInfo: "Informações do jogo",
+      stageLabel: "Fase", stageName: "Missão {id}", stageChapterNames: ["Primeira batalha do Portão de Tinta", "Perseguição em Changban", "Batalha do Rio Han", "Formação de Hulao", "Linha de fogo de Chibi", "Alvorada de Shu"], stageObjectiveLanes: "Faça fusões e mantenha as três linhas", stageObjectiveCommander: "Proteja A Dou e derrote o comandante",
+      unitAtLevel: "{unit}, nível {level}", unitLabels: { blade: "Espadachim", spear: "Lanceiro", horse: "Cavaleiro", bow: "Arqueiro" }, generalLabels: { blade: "Guan Yu", spear: "Zhang Fei", horse: "Zhao Yun", bow: "Huang Zhong" }, skillLabels: { blade: "Corte do Dragão Azul", spear: "Rugido", horse: "Investida do Dragão", bow: "Flecha Celeste" },
+    },
+    fr: {
+      guideTitle: "Comment jouer", guideBody: "Recrutez une unité, placez-la sur une ligne vide, puis sélectionnez deux caractères identiques pour les fusionner. Gardez une unité de réserve pour ne laisser aucune ligne vide.",
+      battleTitle: "Défense d'encre", recruitHint: "Dépensez 3 pains pour recruter un nouveau soldat.", pause: "Pause", leave: "Quitter la bataille", skill: "Compétence", tutorialAria: "Tutoriel de bataille", close: "Fermer",
+      battleGuideTitle: "Plan de bataille", battleGuideBody: "Vos unités attaquent automatiquement. Recrutez et fusionnez pour couvrir les trois lignes ; les ennemis avancent vers A Dou.", enemySoldier: "Soldat ennemi", boss: "Commandant ennemi", defeated: "Vaincu",
+      back: "Retour", returnToWeightPlay: "Retour à WeightPlay", gameGuide: "Guide du jeu", stageList: "Liste des missions", stageNavigation: "Navigation des missions", battleField: "Bataille à trois lignes", enemyLanes: "Lignes ennemies", playerLanes: "Lignes alliées", formationSlots: "Emplacements de formation", generalSkills: "Compétences des généraux", formation: "Formation", gameInfo: "Informations du jeu",
+      stageLabel: "Niveau", stageName: "Mission {id}", stageChapterNames: ["Premier combat de la Porte d'Encre", "Poursuite de Changban", "Bataille de la rivière Han", "Formation de Hulao", "Ligne de feu de Chibi", "Aube de Shu"], stageObjectiveLanes: "Fusionnez vos unités et tenez les trois lignes", stageObjectiveCommander: "Protégez A Dou et battez le commandant",
+      unitAtLevel: "{unit}, niveau {level}", unitLabels: { blade: "Fantassin", spear: "Lancier", horse: "Cavalier", bow: "Archer" }, generalLabels: { blade: "Guan Yu", spear: "Zhang Fei", horse: "Zhao Yun", bow: "Huang Zhong" }, skillLabels: { blade: "Frappe du dragon azur", spear: "Rugissement", horse: "Charge du dragon", bow: "Flèche céleste" },
+    },
+    de: {
+      guideTitle: "Spielanleitung", guideBody: "Rekrutiere eine Einheit, setze sie auf eine freie Linie und wähle dann zwei gleiche Zeichen zum Verschmelzen. Behalte eine Reserveeinheit, damit keine Linie leer bleibt.",
+      battleTitle: "Verteidigung mit Tusche", recruitHint: "Gib 3 Fladen aus, um einen neuen Soldaten zu rekrutieren.", pause: "Pause", leave: "Kampf verlassen", skill: "Fähigkeit", tutorialAria: "Kampf-Tutorial", close: "Schließen",
+      battleGuideTitle: "Kampfplan", battleGuideBody: "Deine Einheiten greifen automatisch an. Rekrutiere und verschmilz Einheiten, um alle drei Linien zu decken; Feinde rücken auf A Dou zu.", enemySoldier: "Feindsoldat", boss: "Feindkommandant", defeated: "Besiegt",
+      back: "Zurück", returnToWeightPlay: "Zurück zu WeightPlay", gameGuide: "Spielanleitung", stageList: "Missionsliste", stageNavigation: "Missionsnavigation", battleField: "Drei-Linien-Schlacht", enemyLanes: "Feindlinien", playerLanes: "Verbündete Linien", formationSlots: "Formationsplätze", generalSkills: "General-Fähigkeiten", formation: "Formation", gameInfo: "Spielinformationen",
+      stageLabel: "Level", stageName: "Mission {id}", stageChapterNames: ["Erste Schlacht am Tintentor", "Verfolgung von Changban", "Schlacht am Han-Fluss", "Hulao-Formation", "Feuerlinie von Chibi", "Morgendämmerung von Shu"], stageObjectiveLanes: "Verschmilz deine Truppen und halte alle drei Linien", stageObjectiveCommander: "Schütze A Dou und besiege den Kommandanten",
+      unitAtLevel: "{unit}, Stufe {level}", unitLabels: { blade: "Klingenkrieger", spear: "Speerträger", horse: "Reiter", bow: "Bogenschütze" }, generalLabels: { blade: "Guan Yu", spear: "Zhang Fei", horse: "Zhao Yun", bow: "Huang Zhong" }, skillLabels: { blade: "Azurhieb", spear: "Brüllen", horse: "Drachensturm", bow: "Himmelpfeil" },
+    },
+    it: {
+      guideTitle: "Come si gioca", guideBody: "Recluta un'unità, mettila in una linea vuota, poi seleziona due caratteri uguali per fonderli. Conserva un'unità di riserva per non lasciare linee vuote.",
+      battleTitle: "Difesa d'inchiostro", recruitHint: "Spendi 3 panini per reclutare un nuovo soldato.", pause: "Pausa", leave: "Lascia la battaglia", skill: "Abilità", tutorialAria: "Tutorial di battaglia", close: "Chiudi",
+      battleGuideTitle: "Piano di battaglia", battleGuideBody: "Le tue unità attaccano automaticamente. Recluta e fondi le unità per coprire tutte e tre le linee; i nemici avanzano verso A Dou.", enemySoldier: "Soldato nemico", boss: "Comandante nemico", defeated: "Sconfitto",
+      back: "Indietro", returnToWeightPlay: "Torna a WeightPlay", gameGuide: "Guida del gioco", stageList: "Elenco missioni", stageNavigation: "Navigazione missioni", battleField: "Battaglia su tre linee", enemyLanes: "Linee nemiche", playerLanes: "Linee alleate", formationSlots: "Spazi della formazione", generalSkills: "Abilità dei generali", formation: "Formazione", gameInfo: "Informazioni sul gioco",
+      stageLabel: "Livello", stageName: "Missione {id}", stageChapterNames: ["Prima battaglia della Porta d'Inchiostro", "Inseguimento di Changban", "Battaglia del fiume Han", "Formazione di Hulao", "Linea di fuoco di Chibi", "Alba di Shu"], stageObjectiveLanes: "Fondi le unità e difendi tutte e tre le linee", stageObjectiveCommander: "Proteggi A Dou e sconfiggi il comandante",
+      unitAtLevel: "{unit}, livello {level}", unitLabels: { blade: "Spadaccino", spear: "Lanciere", horse: "Cavaliere", bow: "Arciere" }, generalLabels: { blade: "Guan Yu", spear: "Zhang Fei", horse: "Zhao Yun", bow: "Huang Zhong" }, skillLabels: { blade: "Fendente azzurro", spear: "Ruggito", horse: "Carica del drago", bow: "Freccia celeste" },
+    },
+    ru: {
+      guideTitle: "Как играть", guideBody: "Призовите отряд, поставьте его на пустую линию, затем выберите два одинаковых знака для объединения. Оставляйте резервный отряд, чтобы линия не пустовала.",
+      battleTitle: "Чернильная оборона", recruitHint: "Потратьте 3 булочки, чтобы призвать нового бойца.", pause: "Пауза", leave: "Покинуть бой", skill: "Умение", tutorialAria: "Обучение бою", close: "Закрыть",
+      battleGuideTitle: "План боя", battleGuideBody: "Ваши отряды атакуют автоматически. Призывайте и объединяйте их, чтобы прикрыть все три линии; враги движутся к А-Доу.", enemySoldier: "Вражеский боец", boss: "Вражеский командир", defeated: "Побеждён",
+      back: "Назад", returnToWeightPlay: "Вернуться в WeightPlay", gameGuide: "Руководство игры", stageList: "Список миссий", stageNavigation: "Навигация по миссиям", battleField: "Битва на трёх линиях", enemyLanes: "Вражеские линии", playerLanes: "Союзные линии", formationSlots: "Ячейки построения", generalSkills: "Умения генералов", formation: "Построение", gameInfo: "Информация об игре",
+      stageLabel: "Уровень", stageName: "Миссия {id}", stageChapterNames: ["Первая битва у Чернильных ворот", "Погоня у Чанбана", "Битва на реке Хань", "Формация Хулао", "Огненная линия Чиби", "Рассвет Шу"], stageObjectiveLanes: "Объединяйте отряды и удерживайте все три линии", stageObjectiveCommander: "Защитите А-Доу и победите командира",
+      unitAtLevel: "{unit}, уровень {level}", unitLabels: { blade: "Мечник", spear: "Копейщик", horse: "Всадник", bow: "Лучник" }, generalLabels: { blade: "Гуань Юй", spear: "Чжан Фэй", horse: "Чжао Юнь", bow: "Хуан Чжун" }, skillLabels: { blade: "Лазурный удар", spear: "Рёв", horse: "Натиск дракона", bow: "Небесная стрела" },
+    },
+    hi: {
+      guideTitle: "कैसे खेलें", guideBody: "एक सैनिक की भर्ती करें, उसे खाली पंक्ति में रखें, फिर दो समान अक्षरों को चुनकर मिलाएँ। एक आरक्षित सैनिक बचाकर रखें ताकि कोई पंक्ति खाली न हो।",
+      battleTitle: "स्याही रक्षा", recruitHint: "नए सैनिक की भर्ती के लिए 3 बन्स खर्च करें।", pause: "रोकें", leave: "युद्ध छोड़ें", skill: "कौशल", tutorialAria: "युद्ध ट्यूटोरियल", close: "बंद करें",
+      battleGuideTitle: "युद्ध योजना", battleGuideBody: "आपकी इकाइयाँ अपने आप हमला करती हैं। तीनों पंक्तियों को ढकने के लिए भर्ती और विलय करें; दुश्मन आ-दो की ओर बढ़ते हैं।", enemySoldier: "दुश्मन सैनिक", boss: "दुश्मन सेनापति", defeated: "पराजित",
+      back: "वापस", returnToWeightPlay: "WeightPlay पर लौटें", gameGuide: "गेम गाइड", stageList: "मिशन सूची", stageNavigation: "मिशन नेविगेशन", battleField: "तीन-पंक्ति युद्ध", enemyLanes: "दुश्मन की पंक्तियाँ", playerLanes: "सहयोगी पंक्तियाँ", formationSlots: "गठन स्थान", generalSkills: "सेनापति कौशल", formation: "गठन", gameInfo: "गेम जानकारी",
+      stageLabel: "स्तर", stageName: "मिशन {id}", stageChapterNames: ["स्याही द्वार की पहली लड़ाई", "चांगबान पीछा", "हान नदी का युद्ध", "हुलाओ गठन", "चीबी की अग्नि-पंक्ति", "शू का प्रभात"], stageObjectiveLanes: "इकाइयों को मिलाएँ और तीनों पंक्तियाँ सँभालें", stageObjectiveCommander: "आ-दो की रक्षा करें और सेनापति को हराएँ",
+      unitAtLevel: "{unit}, स्तर {level}", unitLabels: { blade: "तलवारबाज़", spear: "भाला-धारी", horse: "घुड़सवार", bow: "धनुर्धर" }, generalLabels: { blade: "गुआन यू", spear: "झांग फेई", horse: "झाओ युन", bow: "हुआंग झोंग" }, skillLabels: { blade: "नीला प्रहार", spear: "दहाड़", horse: "ड्रैगन धावा", bow: "आकाश-बाण" },
+    },
+    ar: {
+      guideTitle: "طريقة اللعب", guideBody: "جنّد وحدة وضعها في مسار فارغ، ثم اختر حرفين متطابقين لدمجهما. اترك وحدة احتياطية قبل الدمج حتى لا يبقى أي مسار فارغاً.",
+      battleTitle: "دفاع الحبر", recruitHint: "أنفق 3 قطع خبز لتجنيد جندي جديد.", pause: "إيقاف مؤقت", leave: "مغادرة المعركة", skill: "مهارة", tutorialAria: "دليل المعركة", close: "إغلاق",
+      battleGuideTitle: "خطة المعركة", battleGuideBody: "تهاجم وحداتك تلقائياً. جنّد وادمج الوحدات لحماية المسارات الثلاثة؛ يتقدم الأعداء نحو آ دو.", enemySoldier: "جندي عدو", boss: "قائد عدو", defeated: "هُزم",
+      back: "رجوع", returnToWeightPlay: "العودة إلى WeightPlay", gameGuide: "دليل اللعبة", stageList: "قائمة المهام", stageNavigation: "التنقل بين المهام", battleField: "معركة بثلاثة مسارات", enemyLanes: "مسارات العدو", playerLanes: "مسارات الحلفاء", formationSlots: "خانات التشكيل", generalSkills: "مهارات القادة", formation: "التشكيل", gameInfo: "معلومات اللعبة",
+      stageLabel: "المرحلة", stageName: "المهمة {id}", stageChapterNames: ["المعركة الأولى عند بوابة الحبر", "مطاردة تشانغبان", "معركة نهر هان", "تشكيل هولاو", "خط نار تشيبي", "فجر شو"], stageObjectiveLanes: "ادمج قواتك واحمِ المسارات الثلاثة", stageObjectiveCommander: "احمِ آ دو واقضِ على القائد",
+      unitAtLevel: "{unit}، المستوى {level}", unitLabels: { blade: "مقاتل السيف", spear: "حامل الرمح", horse: "فارس", bow: "رامٍ" }, generalLabels: { blade: "غوان يو", spear: "تشانغ فاي", horse: "تشاو يون", bow: "هوانغ تشونغ" }, skillLabels: { blade: "الضربة اللازوردية", spear: "زئير", horse: "اندفاعة التنين", bow: "سهم السماء" },
+    },
+  };
+  Object.keys(localizationRepairCopy).forEach(function (code) {
+    Object.assign(dictionaries[code], localizationRepairCopy[code]);
+  });
+
   const attackCueLabels = {
     en: "Attack", "zh-Hant": "攻擊", "zh-Hans": "攻击", ja: "攻撃", ko: "공격",
     es: "Ataque", "pt-BR": "Ataque", fr: "Attaque", de: "Angriff", it: "Attacco",

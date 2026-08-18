@@ -68,8 +68,10 @@
     });
     const saved = safeGet("weightPlayLocale") || safeGet("weightplayLocale") || safeGet("wp-locale");
     const documentLocale = document.documentElement.lang;
+    const sharedLocale = window.WonderI18n?.actualLocale?.();
     return routeToLocale[pathLocale]
       || (localeCodes.indexOf(documentLocale) >= 0 ? documentLocale : null)
+      || (localeCodes.indexOf(sharedLocale) >= 0 ? sharedLocale : null)
       || (localeCodes.indexOf(saved) >= 0 ? saved : "en");
   }
 
@@ -117,12 +119,27 @@
     });
     const ariaMap = {
       posterAlt: t("posterAlt"),
-      stageList: t("stageTitle"),
-      stageTabs: t("stages"),
+      stageList: t("stageList"),
+      stageTabs: t("stageNavigation"),
     };
     document.querySelectorAll("[data-t-aria]").forEach(function (node) {
       const key = node.getAttribute("data-t-aria");
       if (ariaMap[key]) node.setAttribute("aria-label", ariaMap[key]);
+    });
+    [
+      [".return", "returnToWeightPlay"],
+      ["#stage [data-back]", "back"],
+      ["#battleBack", "back"],
+      [".public-guide", "gameGuide"],
+      [".battle-field", "battleField"],
+      ["#enemyLanes", "enemyLanes"],
+      ["#playerLanes", "playerLanes"],
+      ["#formation", "formationSlots"],
+      ["#skills", "generalSkills"],
+      [".game-page-info", "gameInfo"],
+    ].forEach(function (entry) {
+      const node = document.querySelector(entry[0]);
+      if (node) node.setAttribute("aria-label", t(entry[1]));
     });
     if (el.locale) {
       el.locale.innerHTML = "";
@@ -134,6 +151,9 @@
         el.locale.appendChild(option);
       });
     }
+    const mainProgress = document.querySelector(".wp-standard-main-progress");
+    const progressMatch = mainProgress && mainProgress.textContent.match(/(\d+)\s*\/\s*(\d+)/);
+    if (progressMatch) mainProgress.textContent = t("stageLabel") + " " + progressMatch[1] + " / " + progressMatch[2];
     document.title = (dictionaries[locale] || dictionaries.en).title + " | WeightPlay";
     if (battle) {
       formationRenderKey = null;
@@ -180,6 +200,19 @@
     window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));
   }
 
+  function stageName(level) {
+    return t("stageName", { id: level.id });
+  }
+
+  function stageChapterName(level) {
+    const chapters = (dictionaries[locale] || dictionaries.en).stageChapterNames || [];
+    return chapters[level.chapter - 1] || (locale === "en" ? level.chapterEnglish : level.chapterName);
+  }
+
+  function stageObjective(level) {
+    return t(level.objectiveKey === "commander" ? "stageObjectiveCommander" : "stageObjectiveLanes");
+  }
+
   function renderStages() {
     const cleared = progress.stars.filter(Boolean).length;
     el.progress.textContent = t("stageProgress") + ": " + cleared + " / " + data.levels.length;
@@ -189,13 +222,16 @@
        const card = document.createElement("button");
       const stars = progress.stars[index] ? "★".repeat(progress.stars[index]) + "☆".repeat(3 - progress.stars[index]) : "☆☆☆";
       card.type = "button";
-       card.className = "stage-card" + (index === stageIndex ? " is-selected" : "");
-       card.setAttribute("data-wp-stage-card", String(index + 1));
-       card.setAttribute("aria-current", index === stageIndex ? "true" : "false");
-       card.setAttribute("data-wp-stage-selected", index === stageIndex ? "true" : "false");
+      card.className = "stage-card" + (index === stageIndex ? " is-selected" : "");
+      card.setAttribute("data-wp-stage-card", String(index + 1));
+      card.setAttribute("aria-current", index === stageIndex ? "true" : "false");
+      card.setAttribute("data-wp-stage-selected", index === stageIndex ? "true" : "false");
       card.disabled = !unlocked;
-      card.setAttribute("aria-label", (locale === "en" ? level.nameEnglish : level.name) + (unlocked ? ", " + t("ready") : ", " + t("locked")));
-      card.innerHTML = "<strong>" + (index + 1) + "</strong><small>" + escapeHtml(locale === "en" ? level.chapterEnglish : level.chapterName) + "</small><span>" + escapeHtml(locale === "en" ? level.objectiveEnglish : level.objective) + "</span><i class=\"stage-stars\" aria-label=\"" + t("stars") + ": " + stars + "\">" + stars + "</i>";
+      const localizedName = stageName(level);
+      const localizedChapter = stageChapterName(level);
+      const localizedObjective = stageObjective(level);
+      card.setAttribute("aria-label", localizedName + ", " + localizedChapter + ", " + localizedObjective + ", " + (unlocked ? t("ready") : t("locked")));
+      card.innerHTML = "<strong>" + (index + 1) + "</strong><small>" + escapeHtml(localizedChapter) + "</small><span>" + escapeHtml(localizedObjective) + "</span><i class=\"stage-stars\" aria-label=\"" + t("stars") + ": " + stars + "\">" + stars + "</i>";
       card.addEventListener("click", function () {
         stageIndex = index;
         startBattle(index);
@@ -570,8 +606,8 @@
   function renderBattle() {
     if (!battle) return;
     const level = battle.level;
-    el.chapter.textContent = (locale === "en" ? level.chapterEnglish : level.chapterName) + " · " + t("mission") + " " + level.id;
-    el.stageName.textContent = locale === "en" ? level.nameEnglish : level.name;
+    el.chapter.textContent = stageChapterName(level) + " · " + stageName(level);
+    el.stageName.textContent = stageName(level);
     el.remaining.textContent = t("wave") + " " + Math.min(level.waveCount, battle.spawned + 1) + " / " + level.waveCount;
     el.enemyHp.textContent = battle.commandHp + " / " + battle.maxCommandHp;
     el.commandPostHp.textContent = battle.commandHp + " / " + battle.maxCommandHp;
@@ -750,7 +786,7 @@
       button.className = "skill-button skill-" + unit.type + (!cooldown ? " ready" : "");
       button.setAttribute("data-skill", unit.type);
       button.disabled = Boolean(cooldown) || Boolean(battle.result);
-      button.setAttribute("aria-label", generalName(unit) + " " + (locale === "en" ? general.skillEnglish : general.skill));
+      button.setAttribute("aria-label", generalName(unit) + " " + skillName(unit));
       button.innerHTML = "<span class=\"skill-glyph\">" + general.glyph + "</span><span class=\"skill-cooldown\">" + (cooldown ? Math.ceil(cooldown / 10) + "s" : t("readySkill")) + "</span>";
       button.addEventListener("click", function () { useSkill(unit.type); });
       el.skills.appendChild(button);
@@ -760,17 +796,31 @@
   function unitLabel(unit) {
     if (unit.general) return generalName(unit);
     const definition = data.unitTypes[unit.type];
-    return locale === "en" ? definition.english : definition.name;
+    const localized = (dictionaries[locale] || dictionaries.en).unitLabels?.[unit.type];
+    return localized || (locale === "en" ? definition.english : definition.name);
   }
 
   function unitName(unit) {
-    if (unit.general) return generalName(unit);
-    return unitLabel(unit) + " 繚 " + t("level") + " " + unit.level;
+    return t("unitAtLevel", { unit: unitLabel(unit), level: unit.level });
   }
 
   function generalName(unit) {
     const definition = data.generals[unit.type];
-    return locale === "en" ? definition.english : definition.name;
+    const localized = (dictionaries[locale] || dictionaries.en).generalLabels?.[unit.type];
+    return localized || (locale === "en" ? definition.english : definition.name);
+  }
+
+  function skillName(unit) {
+    const definition = data.generals[unit.type];
+    const localized = (dictionaries[locale] || dictionaries.en).skillLabels?.[unit.type];
+    return localized || (locale === "en" ? definition.skillEnglish : definition.skill);
+  }
+
+  function applyLocale(nextLocale) {
+    if (localeCodes.indexOf(nextLocale) < 0) return;
+    locale = nextLocale;
+    safeSet("weightPlayLocale", locale);
+    updateStaticLocale();
   }
 
   function setStatus(message) {
@@ -821,9 +871,16 @@
 
   el.start.addEventListener("click", showStage);
   el.locale.addEventListener("change", function () {
-    locale = el.locale.value;
-    safeSet("weightPlayLocale", locale);
-    updateStaticLocale();
+    const nextLocale = el.locale.value;
+    if (window.WonderI18n?.actualLocale?.() !== nextLocale) {
+      window.WonderI18n?.setLocale?.(nextLocale, { navigate: false });
+    } else {
+      applyLocale(nextLocale);
+    }
+  });
+  window.addEventListener("wonder:locale-change", function (event) {
+    const nextLocale = event.detail?.locale || window.WonderI18n?.actualLocale?.();
+    if (nextLocale && nextLocale !== locale) applyLocale(nextLocale);
   });
   el.recruit.addEventListener("click", recruit);
   el.formation.addEventListener("click", function (event) {

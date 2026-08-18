@@ -47,6 +47,7 @@
       ],
       lanePattern: pattern,
       boss: within === 4 || chapter === 5,
+      objectiveKey: within === 4 ? "commander" : "lanes",
       starTime: 62 - chapter * 4 - within * 2,
       hint: chapter === 0
         ? "先徵召，再把相同文字合成；不要讓任何一路空著。"

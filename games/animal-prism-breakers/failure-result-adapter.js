@@ -88,7 +88,7 @@
 
 (()=>{
   "use strict";
-  const GAME_VERSION="v12";
+  const GAME_VERSION="v13";
   const result=document.getElementById("resultModal"),dialog=result?.querySelector(".dialog"),actions=result?.querySelector(".modal-actions");
   if(!result||!dialog||!actions)return;
   const locale=window.WonderI18n?.actualLocale?.()||document.documentElement.lang||"en";
