@@ -219,6 +219,27 @@
     return copy[reason] || copy.go;
   };
 
+  const CRIB_PEGGING_COACH = {
+    en: { play: "Play a card. Pairs, runs, 15, and 31 points count during pegging.", go: "Say Go. Pairs, runs, 15, and 31 points count during pegging." },
+    "zh-Hant": { play: "出一張牌。出牌計數中，對子、順子、15 和 31 都能得分。", go: "喊 Go。出牌計數中，對子、順子、15 和 31 都能得分。" },
+    "zh-Hans": { play: "出一张牌。出牌计数中，对子、顺子、15 和 31 都能得分。", go: "喊 Go。出牌计数中，对子、顺子、15 和 31 都能得分。" },
+    ja: { play: "カードを1枚出そう。ペギングではペア、ラン、15、31で得点できます。", go: "Goを宣言しよう。ペギングではペア、ラン、15、31で得点できます。" },
+    ko: { play: "카드를 한 장 내세요. 페깅에서는 페어·런·15·31이 점수를 줍니다.", go: "Go를 선언하세요. 페깅에서는 페어·런·15·31이 점수를 줍니다." },
+    es: { play: "Juega una carta. Durante el pegging, las parejas, las escaleras, 15 y 31 dan puntos.", go: "Di Go. Durante el pegging, las parejas, las escaleras, 15 y 31 dan puntos." },
+    "pt-BR": { play: "Jogue uma carta. No pegging, pares, sequências, 15 e 31 valem pontos.", go: "Diga Go. No pegging, pares, sequências, 15 e 31 valem pontos." },
+    fr: { play: "Jouez une carte. Au pegging, les paires, suites, 15 et 31 rapportent des points.", go: "Dites Go. Au pegging, les paires, suites, 15 et 31 rapportent des points." },
+    de: { play: "Spiele eine Karte. Beim Pegging bringen Paare, Folgen, 15 und 31 Punkte.", go: "Sage Go. Beim Pegging bringen Paare, Folgen, 15 und 31 Punkte." },
+    it: { play: "Gioca una carta. Nel pegging, coppie, scale, 15 e 31 fanno guadagnare punti.", go: "Dichiara Go. Nel pegging, coppie, scale, 15 e 31 fanno guadagnare punti." },
+    ru: { play: "Сыграйте карту. В пеггинге пары, серии, 15 и 31 приносят очки.", go: "Скажите Go. В пеггинге пары, серии, 15 и 31 приносят очки." },
+    hi: { play: "एक पत्ता खेलें। पेगिंग में जोड़ी, रन, 15 और 31 अंक देते हैं।", go: "गो कहें। पेगिंग में जोड़ी, रन, 15 और 31 अंक देते हैं।" },
+    ar: { play: "العب بطاقة. في العدّ، تمنح الأزواج والتتابعات و15 و31 نقاطًا.", go: "قل «جو». في العدّ، تمنح الأزواج والتتابعات و15 و31 نقاطًا." },
+  };
+
+  const cribPeggingCoachText = (hasPlayableCard) => {
+    const copy = CRIB_PEGGING_COACH[currentLocale()] || CRIB_PEGGING_COACH.en;
+    return copy[hasPlayableCard ? "play" : "go"];
+  };
+
   const CASINO_COPY = {
     en: { selectPrompt: "Select a hand card, then table cards with the same value or a matching sum.", trailPrompt: "Choose table cards to Capture or Build, or Trail this card when no capture is available.", trail: "Trail", captureFeedback: "Captured {count} cards; immediate card bonus +{bonus}. The card majority is scored at round end.", resultBreakdown: "Captured {cards} cards · special bonuses +{immediate} · majority bonus: {majority} · final score: {score}." },
     "zh-Hant": { selectPrompt: "先選一張手牌，再選相同點數或合計相符的桌面牌。", trailPrompt: "選擇桌面牌來捕獲或建立牌組；沒有可捕獲的牌時，可將這張牌出到桌面。", trail: "出牌", captureFeedback: "捕獲 {count} 張牌；即時牌面獎勵 +{bonus}。最多牌獎勵在本局結算。", resultBreakdown: "捕獲 {cards} 張牌 · 特殊獎勵 +{immediate} · 最多牌獎勵：{majority} · 最終得分：{score}。" },
@@ -864,7 +885,7 @@
       reset() { Object.assign(s, { score: [0, 0], round: 0, dealer: 0 }); startRound(); },
       card(index) { if (s.phase === "discard" && s.turn === 0) { if (s.selected.has(index)) s.selected.delete(index); else if (s.selected.size < 2) s.selected.add(index); } else if (s.phase === "pegging" && s.turn === 0) playPeg(0, s.hand[index]); },
       action(action) { if (action === "send-crib" && s.phase === "discard" && s.selected.size === 2) { const selectedCards = [...s.selected].sort((a, b) => a - b).map((index) => s.hand[index]).filter(Boolean); s.playerCrib = selectedCards; [...s.selected].sort((a, b) => b - a).forEach((index) => s.crib.push(s.hand.splice(index, 1)[0])); s.selected.clear(); s.crib.push(...s.ai.splice(0, 2)); s.roundPlayerHand = [...s.hand]; s.roundAiHand = [...s.ai]; s.starter = s.stock.pop(); s.phase = "pegging"; s.playerPeg = []; s.aiPeg = []; s.pegSequence = []; s.count = 0; s.passed = [false, false]; s.lastPegPlayer = null; s.resetCue = ""; if (s.starter.rank === 11) { s.score[s.dealer] += 2; if (finish()) return; } scheduleTurn(1 - s.dealer); } if (action === "go" && s.phase === "pegging" && s.turn === 0) passPeg(0); },
-      view() { const playable = legalPeg(0); const resetCue = s.resetCue ? `<div class="card-crib-transition card-crib-reset" role="status" aria-live="polite">${s.resetCue}</div>` : ""; const choiceCue = s.playerCrib.length === 2 && s.starter ? `<span class="card-crib-choice-plan">${cribChoicePayoffText(s.playerCrib, s.starter)}</span>` : ""; return { phase: s.phase === "discard" ? t("selectCards") : `${t("score")}: ${s.count}/31`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "discard" ? `${t("selectCards")}: ${s.selected.size}/2 to the crib.` : s.turn === 0 ? `${playable.length ? "Play a card" : "Go"}. Pair, run, 15, and 31 points count during pegging.` : t("aiTurn"), score: s.score[0], opponents: opponentMarkup("AI", s.ai.length, `${t("score")}: ${s.score[1]}`), center: `<div class="card-table-label">${t("cribbage")} · Round ${s.round} · ${s.starter ? cardText(s.starter) : ""}</div>${s.phase === "pegging" ? `<div class="card-crib-transition" role="status" aria-live="polite">${cribTransitionText(s.starter, s.dealer)} ${choiceCue}</div>${resetCue}` : ""}${makePegBoard(s.score[0], s.score[1])}<div class="table-row">${cardsMarkup(s.playerPeg)}${cardsMarkup(s.aiPeg)}</div>`, hand: cardsMarkup(s.hand, { selected: s.selected }), actions: s.phase === "discard" ? `<button class="primary-btn" data-action="send-crib" ${s.selected.size !== 2 ? "disabled" : ""}>${t("submit")}</button>` : `<button class="secondary-btn" data-action="go" ${s.turn !== 0 || playable.length ? "disabled" : ""}>Go</button>` }; }
+      view() { const playable = legalPeg(0); const resetCue = s.resetCue ? `<div class="card-crib-transition card-crib-reset" role="status" aria-live="polite">${s.resetCue}</div>` : ""; const choiceCue = s.playerCrib.length === 2 && s.starter ? `<span class="card-crib-choice-plan">${cribChoicePayoffText(s.playerCrib, s.starter)}</span>` : ""; return { phase: s.phase === "discard" ? t("selectCards") : `${t("score")}: ${s.count}/31`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "discard" ? `${t("selectCards")}: ${s.selected.size}/2 to the crib.` : s.turn === 0 ? cribPeggingCoachText(playable.length > 0) : t("aiTurn"), score: s.score[0], opponents: opponentMarkup("AI", s.ai.length, `${t("score")}: ${s.score[1]}`), center: `<div class="card-table-label">${t("cribbage")} · Round ${s.round} · ${s.starter ? cardText(s.starter) : ""}</div>${s.phase === "pegging" ? `<div class="card-crib-transition" role="status" aria-live="polite">${cribTransitionText(s.starter, s.dealer)} ${choiceCue}</div>${resetCue}` : ""}${makePegBoard(s.score[0], s.score[1])}<div class="table-row">${cardsMarkup(s.playerPeg)}${cardsMarkup(s.aiPeg)}</div>`, hand: cardsMarkup(s.hand, { selected: s.selected }), actions: s.phase === "discard" ? `<button class="primary-btn" data-action="send-crib" ${s.selected.size !== 2 ? "disabled" : ""}>${t("submit")}</button>` : `<button class="secondary-btn" data-action="go" ${s.turn !== 0 || playable.length ? "disabled" : ""}>Go</button>` }; }
     };
   }
 

@@ -1,6 +1,6 @@
 ﻿(() => {
   const GAME_ID = "animal-guard-yard";
-  const GAME_VERSION = "v20";
+  const GAME_VERSION = "v21";
   const INTERFACE_VERSION = 6;
   const localeKey = "weightplayLocale";
   const unlockKey = "weightplay_animal_guard_unlocked";
@@ -371,54 +371,80 @@
     en: {
       result: "Next goal: open Animals to see how saved coins can train your guards.",
       menu: "Coins are for Animal Training. Open Animals to see your next training goal.",
+      target: "Next training: {unit} → Level {level} for {cost} coins.",
+      save: "Next training: save {needed} more coins for {unit} at Level {level}.",
     },
     "zh-Hant": {
       result: "下一個目標：打開「動物」，查看如何用累積的金幣訓練守衛。",
       menu: "金幣可以用於動物訓練。打開「動物」查看下一個訓練目標。",
+      target: "下一項訓練：{unit} → {cost} 枚金幣升至第 {level} 級。",
+      save: "下一項訓練：再存 {needed} 枚金幣，就能讓 {unit} 升至第 {level} 級。",
     },
     "zh-Hans": {
       result: "下一个目标：打开“动物”，查看如何用累积的金币训练守卫。",
       menu: "金币可以用于动物训练。打开“动物”查看下一个训练目标。",
+      target: "下一项训练：{unit} → {cost} 枚金币升至第 {level} 级。",
+      save: "下一项训练：再存 {needed} 枚金币，就能让 {unit} 升至第 {level} 级。",
     },
     ja: {
       result: "次の目標：動物を開いて、貯めたコインで守衛を訓練する方法を確認しましょう。",
       menu: "コインは動物の訓練に使えます。動物を開いて次の訓練目標を確認しましょう。",
+      target: "次の訓練：{unit} → {cost}コインでレベル{level}。",
+      save: "次の訓練：{unit}をレベル{level}にするには、あと{needed}コイン貯めましょう。",
     },
     ko: {
       result: "다음 목표: 동물을 열어 모은 코인으로 수호대를 훈련하는 방법을 확인하세요.",
       menu: "코인은 동물 훈련에 사용합니다. 동물에서 다음 훈련 목표를 확인하세요.",
+      target: "다음 훈련 목표: {unit} · 레벨 {level}, 코인 {cost}개.",
+      save: "다음 훈련 목표: {unit} · 레벨 {level}까지 코인 {needed}개를 더 모으세요.",
     },
     es: {
       result: "Siguiente objetivo: abre Animales para ver cómo entrenar a tus guardianes con las monedas guardadas.",
       menu: "Las monedas sirven para entrenar animales. Abre Animales para ver tu próximo objetivo.",
+      target: "Próximo entrenamiento: {unit} → nivel {level} por {cost} monedas.",
+      save: "Próximo entrenamiento: ahorra {needed} monedas más para subir {unit} al nivel {level}.",
     },
     "pt-BR": {
       result: "Próxima meta: abra Animais para ver como treinar seus guardiões com as moedas guardadas.",
       menu: "As moedas servem para treinar animais. Abra Animais para ver sua próxima meta.",
+      target: "Próximo treino: {unit} → nível {level} por {cost} moedas.",
+      save: "Próximo treino: guarde mais {needed} moedas para levar {unit} ao nível {level}.",
     },
     fr: {
       result: "Prochain objectif : ouvrez Animaux pour voir comment entraîner vos gardiens avec les pièces épargnées.",
       menu: "Les pièces servent à entraîner les animaux. Ouvrez Animaux pour voir votre prochain objectif.",
+      target: "Prochain entraînement : {unit} → niveau {level} pour {cost} pièces.",
+      save: "Prochain entraînement : économisez encore {needed} pièces pour passer {unit} au niveau {level}.",
     },
     de: {
       result: "Nächstes Ziel: Öffne Tiere, um zu sehen, wie du deine Wächter mit gesparten Münzen trainierst.",
       menu: "Münzen sind für das Tiertraining. Öffne Tiere, um dein nächstes Ziel zu sehen.",
+      target: "Nächstes Ziel: {unit} → Stufe {level} für {cost} Münzen.",
+      save: "Nächstes Ziel: Spare noch {needed} Münzen, um {unit} auf Stufe {level} zu bringen.",
     },
     it: {
       result: "Prossimo obiettivo: apri Animali per vedere come allenare le guardie con le monete risparmiate.",
       menu: "Le monete servono per allenare gli animali. Apri Animali per vedere il prossimo obiettivo.",
+      target: "Prossimo allenamento: {unit} → livello {level} per {cost} monete.",
+      save: "Prossimo allenamento: raccogli ancora {needed} monete per portare {unit} al livello {level}.",
     },
     ru: {
       result: "Следующая цель: откройте «Животные», чтобы узнать, как тренировать защитников за накопленные монеты.",
       menu: "Монеты нужны для тренировки животных. Откройте «Животные», чтобы увидеть следующую цель.",
+      target: "Следующая тренировка: {unit} → уровень {level} за {cost} монет.",
+      save: "Следующая тренировка: накопите ещё {needed} монет, чтобы поднять {unit} до уровня {level}.",
     },
     hi: {
       result: "अगला लक्ष्य: जमा सिक्कों से गार्ड को प्रशिक्षित करने का तरीका देखने के लिए जानवर खोलें।",
       menu: "सिक्कों से जानवरों का प्रशिक्षण होता है। अगला लक्ष्य देखने के लिए जानवर खोलें।",
+      target: "अगला प्रशिक्षण: {unit} → स्तर {level} पर जाने के लिए {cost} सिक्के।",
+      save: "अगला प्रशिक्षण: {unit} · स्तर {level} तक पहुँचने के लिए {needed} सिक्के और बचाएँ।",
     },
     ar: {
       result: "الهدف التالي: افتح الحيوانات لمعرفة كيفية تدريب الحراس بالعملات المحفوظة.",
       menu: "العملات مخصصة لتدريب الحيوانات. افتح الحيوانات لرؤية الهدف التالي.",
+      target: "التدريب التالي: {unit} ← المستوى {level} مقابل {cost} من العملات.",
+      save: "التدريب التالي: ادّخر {needed} عملة إضافية لترقية {unit} إلى المستوى {level}.",
     },
   };
   text.ko = Object.assign(Object.create(text.en), {
@@ -952,6 +978,25 @@
     const copy = trainingBridgeCopy[locale] || trainingBridgeCopy.en;
     const value = copy[kind] || trainingBridgeCopy.en[kind];
     return value.replaceAll("{coins}", String(Math.max(0, Math.round(coins))));
+  }
+
+  function trainingTargetLine() {
+    const ownedUnits = units
+      .filter((unit) => isOwned(unit.id))
+      .sort((a, b) => upgradeCost(a.id) - upgradeCost(b.id) || units.indexOf(a) - units.indexOf(b));
+    const target = ownedUnits[0];
+    if (!target) return trainingBridge("menu");
+    const cost = upgradeCost(target.id);
+    const level = unitLevel(target.id) + 1;
+    const coins = Math.max(0, Math.round(Number(profile.coins) || 0));
+    const kind = coins >= cost ? "target" : "save";
+    const copy = trainingBridgeCopy[locale] || trainingBridgeCopy.en;
+    const value = copy[kind] || trainingBridgeCopy.en[kind];
+    return value
+      .replaceAll("{unit}", t(target.nameKey))
+      .replaceAll("{level}", String(level))
+      .replaceAll("{cost}", String(cost))
+      .replaceAll("{needed}", String(Math.max(0, cost - coins)));
   }
 
   function foregroundPlacementMessage() {
@@ -1669,7 +1714,7 @@
 
   function renderTrainingBridge() {
     if (nodes.stageTrainingCue) nodes.stageTrainingCue.textContent = trainingBridge("menu");
-    if (nodes.animalTrainingCue) nodes.animalTrainingCue.textContent = trainingBridge("menu");
+    if (nodes.animalTrainingCue) nodes.animalTrainingCue.textContent = `${trainingBridge("menu")} ${trainingTargetLine()}`;
   }
 
   function renderMasterySummary() {
@@ -2859,6 +2904,7 @@
       playSound("coin");
     }
     renderWallet();
+    renderTrainingBridge();
     renderKennel();
     renderShop();
     renderUnits();
