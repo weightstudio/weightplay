@@ -105,6 +105,53 @@
       "الخصم يفكر. استخدم التلميح بعد عودة دورك."
     ),
   };
+  const connectResult = {
+    win: L(
+      "Replay goal: Match this {moves}-drop clear, then try {nextLevel}.",
+      "再玩目標：用 {moves} 次落子完成，再挑戰{nextLevel}。",
+      "重玩目标：用 {moves} 次落子完成，再挑战{nextLevel}。",
+      "リプレイ目標：{moves}手でクリアしてから、{nextLevel}に挑戦しましょう。",
+      "다시 하기 목표: {moves}번 놓기로 클리어한 뒤 {nextLevel}에 도전하세요.",
+      "Meta de repetición: completa en {moves} jugadas y luego prueba {nextLevel}.",
+      "Meta da revanche: vença em {moves} jogadas e depois tente {nextLevel}.",
+      "Objectif de revanche : gagnez en {moves} coups, puis essayez {nextLevel}.",
+      "Replay-Ziel: Schaffe den Sieg in {moves} Zügen und probiere dann {nextLevel}.",
+      "Obiettivo replay: vinci in {moves} mosse, poi prova {nextLevel}.",
+      "Цель повтора: победите за {moves} ходов, затем попробуйте {nextLevel}.",
+      "फिर खेलने का लक्ष्य: {moves} चालों में जीतें, फिर {nextLevel} आज़माएँ।",
+      "هدف الإعادة: حقق الفوز خلال {moves} حركات، ثم جرّب {nextLevel}."
+    ),
+    hard: L(
+      "Replay goal: Beat this clear with {target} player drops or fewer.",
+      "再玩目標：用 {target} 次落子或更少擊敗本局。",
+      "重玩目标：用 {target} 次落子或更少赢下本局。",
+      "リプレイ目標：{target}手以下でこの盤面に勝ちましょう。",
+      "다시 하기 목표: {target}번 이하로 이 판을 이겨 보세요.",
+      "Meta de repetición: gana esta partida en {target} jugadas o menos.",
+      "Meta da revanche: vença esta partida em {target} jogadas ou menos.",
+      "Objectif de revanche : gagnez cette partie en {target} coups ou moins.",
+      "Replay-Ziel: Gewinne diese Partie in höchstens {target} Zügen.",
+      "Obiettivo replay: vinci questa partita in {target} mosse o meno.",
+      "Цель повтора: победите в этой партии за {target} ходов или меньше.",
+      "फिर खेलने का लक्ष्य: इस गेम को {target} चालों या कम में जीतें।",
+      "هدف الإعادة: اربح هذه الجولة خلال {target} حركات أو أقل."
+    ),
+    loss: L(
+      "Replay goal: Clear this {level} board in {moves} player drops or fewer.",
+      "再玩目標：在 {level} 棋盤用 {moves} 次落子或更少完成。",
+      "重玩目标：在{level}棋盘用 {moves} 次落子或更少完成。",
+      "リプレイ目標：{level}の盤面を{moves}手以下でクリアしましょう。",
+      "다시 하기 목표: {level} 보드를 {moves}번 이하로 클리어하세요.",
+      "Meta de repetición: completa este tablero {level} en {moves} jugadas o menos.",
+      "Meta da revanche: complete este tabuleiro {level} em {moves} jogadas ou menos.",
+      "Objectif de revanche : terminez ce plateau {level} en {moves} coups ou moins.",
+      "Replay-Ziel: Schaffe dieses {level}-Brett in höchstens {moves} Zügen.",
+      "Obiettivo replay: completa questa tavola {level} in {moves} mosse o meno.",
+      "Цель повтора: пройдите поле {level} за {moves} ходов или меньше.",
+      "फिर खेलने का लक्ष्य: इस {level} बोर्ड को {moves} चालों या कम में पूरा करें।",
+      "هدف الإعادة: أكمل لوحة {level} خلال {moves} حركات أو أقل."
+    ),
+  };
   const codeRemaining = L(
     "Slots remaining", "剩餘欄位", "剩余栏位", "残りのスロット", "남은 칸", "Espacios restantes", "Espaços restantes", "Emplacements restants", "Verbleibende Felder", "Spazi rimanenti", "Осталось ячеек", "बाकी स्थान", "الخانات المتبقية"
   );
@@ -477,13 +524,14 @@
   }
 
   function buildConnect() {
-    let grid = [], difficulty = "easy", locked = false, hintColumn = -1; const panel = document.createElement("div"); const toolbar = document.createElement("div"); toolbar.className = "logic-board-toolbar"; const select = selectDifficulty(); toolbar.append(select); const board = document.createElement("div"); board.className = "logic-connect-board"; panel.append(toolbar, board); app.board.replaceChildren(panel);
+    let grid = [], difficulty = "easy", locked = false, hintColumn = -1, playerMoves = 0; const panel = document.createElement("div"); const toolbar = document.createElement("div"); toolbar.className = "logic-board-toolbar"; const select = selectDifficulty(); toolbar.append(select); const board = document.createElement("div"); board.className = "logic-connect-board"; panel.append(toolbar, board); app.board.replaceChildren(panel);
     function render() { board.replaceChildren(); const hintRow = hintColumn >= 0 ? [...Array(6).keys()].reverse().find((r) => !grid[r * 7 + hintColumn]) : -1; for (let r = 0; r < 6; r += 1) for (let c = 0; c < 7; c += 1) { const value = grid[r * 7 + c]; const hintClass = hintRow === r && hintColumn === c && !value ? "is-hint" : ""; const b = cell("", `${value === 1 ? "red" : value === 2 ? "yellow" : ""} ${hintClass}`, `Column ${c + 1}, Row ${r + 1}`, () => drop(c)); if (value) { const disc = document.createElement("span"); disc.className = "disc"; b.append(disc); } board.append(b); } setChip(`${t("player")}: ${grid.filter((v) => v === 1).length} · ${t("opponent")}: ${grid.filter((v) => v === 2).length}`); }
-    function drop(column) { if (locked) return; const row = [...Array(6).keys()].reverse().find((r) => !grid[r * 7 + column]); if (row === undefined) return; hintColumn = -1; grid[row * 7 + column] = 1; render(); if (hasFour(1)) return finish(true, t("win")); if (grid.every(Boolean)) return finish(false, t("lose")); locked = true; announce(text(connectOpponentThinking)); setTimeout(ai, 250); }
+    function resultGoal(won) { const level = t(difficulty); const nextLevel = difficulty === "easy" ? t("medium") : t("hard"); const target = Math.max(1, playerMoves - 1); const copy = won ? (difficulty === "hard" ? connectResult.hard : connectResult.win) : connectResult.loss; return fillTemplate(text(copy), { level, moves: playerMoves, nextLevel, target }); }
+    function drop(column) { if (locked) return; const row = [...Array(6).keys()].reverse().find((r) => !grid[r * 7 + column]); if (row === undefined) return; hintColumn = -1; grid[row * 7 + column] = 1; playerMoves += 1; render(); if (hasFour(1)) return finish(true, resultGoal(true)); if (grid.every(Boolean)) return finish(false, resultGoal(false)); locked = true; announce(text(connectOpponentThinking)); setTimeout(ai, 250); }
     function hasFour(color) { for (let r = 0; r < 6; r += 1) for (let c = 0; c < 7; c += 1) for (const [dr, dc] of [[0,1],[1,0],[1,1],[1,-1]]) { let n = 0; for (let k = 0; k < 4; k += 1) { const rr = r + dr * k, cc = c + dc * k; if (rr >= 0 && rr < 6 && cc >= 0 && cc < 7 && grid[rr * 7 + cc] === color) n += 1; } if (n === 4) return true; } return false; }
-    function ai() { const available = [...new Set([...Array(7).keys()].filter((c) => grid[c] === 0))]; let column = available[Math.floor(Math.random() * available.length)]; const winning = available.find((c) => simulateWin(c, 2)); const block = available.find((c) => simulateWin(c, 1)); if (difficulty !== "easy") column = winning ?? block ?? (difficulty === "hard" ? available.sort((a, b) => Math.abs(3 - a) - Math.abs(3 - b))[0] : column); const row = [...Array(6).keys()].reverse().find((r) => !grid[r * 7 + column]); grid[row * 7 + column] = 2; locked = false; render(); if (hasFour(2) || grid.every(Boolean)) finish(false, t("lose")); else announce(t("turn")); }
+    function ai() { const available = [...new Set([...Array(7).keys()].filter((c) => grid[c] === 0))]; let column = available[Math.floor(Math.random() * available.length)]; const winning = available.find((c) => simulateWin(c, 2)); const block = available.find((c) => simulateWin(c, 1)); if (difficulty !== "easy") column = winning ?? block ?? (difficulty === "hard" ? available.sort((a, b) => Math.abs(3 - a) - Math.abs(3 - b))[0] : column); const row = [...Array(6).keys()].reverse().find((r) => !grid[r * 7 + column]); grid[row * 7 + column] = 2; locked = false; render(); if (hasFour(2) || grid.every(Boolean)) finish(false, resultGoal(false)); else announce(t("turn")); }
     function simulateWin(column, color) { const row = [...Array(6).keys()].reverse().find((r) => !grid[r * 7 + column]); if (row === undefined) return false; grid[row * 7 + column] = color; const result = hasFour(color); grid[row * 7 + column] = 0; return result; }
-    function reset() { difficulty = select.value; grid = Array(42).fill(0); locked = false; hintColumn = -1; render(); announce(t("turn")); }
+    function reset() { difficulty = select.value; grid = Array(42).fill(0); locked = false; hintColumn = -1; playerMoves = 0; render(); announce(t("turn")); }
     function hint() { if (locked) return announce(text(connectHint.wait)); const available = [...Array(7).keys()].filter((c) => grid[c] === 0); if (!available.length) return announce(t("failed")); const winning = available.find((c) => simulateWin(c, 1)); const block = winning === undefined ? available.find((c) => simulateWin(c, 2)) : undefined; const column = winning ?? block ?? available.slice().sort((a, b) => Math.abs(3 - a) - Math.abs(3 - b) || a - b)[0]; const message = winning !== undefined ? connectHint.win : block !== undefined ? connectHint.block : connectHint.center; hintColumn = column; render(); announce(fillTemplate(text(message), { column: column + 1 })); }
     select.addEventListener("change", reset); return { reset, hint, undo() { hintColumn = -1; render(); announce(t("undo")); } };
   }

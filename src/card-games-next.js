@@ -118,6 +118,22 @@
     ar: { label: "العقد", behind: "{tricks}/{bid} لَمّات · تحتاج إلى {remaining} أخرى", on: "{tricks}/{bid} لَمّات · اكتمل العقد", ahead: "{tricks}/{bid} لَمّات · لَمّات إضافية: {bags}" },
   };
 
+  const SPADES_TRICK_COPY = {
+    en: { live: "Led suit: {suit}. Current winner: {card}.", trump: "Led suit: {suit}. Spades is taking the trick with {card}.", settled: "Trick settled: {card} wins." },
+    "zh-Hant": { live: "首引花色：{suit}。目前領先：{card}。", trump: "首引花色：{suit}。黑桃以 {card} 贏得這一墩。", settled: "這一墩結算：{card} 獲勝。" },
+    "zh-Hans": { live: "首引花色：{suit}。目前领先：{card}。", trump: "首引花色：{suit}。黑桃以 {card} 赢得这一墩。", settled: "这一墩结算：{card} 获胜。" },
+    ja: { live: "リードされたスート：{suit}。現在の勝ち札：{card}。", trump: "リードされたスート：{suit}。スペードの {card} がこのトリックを取っています。", settled: "このトリックの勝ち札：{card}。" },
+    ko: { live: "리드된 무늬: {suit}. 현재 승리 카드: {card}.", trump: "리드된 무늬: {suit}. 스페이드 {card}가 트릭을 가져가고 있습니다.", settled: "트릭 결과: {card} 승리." },
+    es: { live: "Palo de salida: {suit}. Carta ganadora actual: {card}.", trump: "Palo de salida: {suit}. La pica {card} está ganando la baza.", settled: "Baza resuelta: gana {card}." },
+    "pt-BR": { live: "Naipe de saída: {suit}. Carta vencedora atual: {card}.", trump: "Naipe de saída: {suit}. A espada {card} está vencendo a vaza.", settled: "Vaza resolvida: {card} venceu." },
+    fr: { live: "Couleur demandée : {suit}. Carte gagnante actuelle : {card}.", trump: "Couleur demandée : {suit}. Le {card} de pique remporte le pli.", settled: "Pli résolu : {card} gagne." },
+    de: { live: "Angespielte Farbe: {suit}. Aktuelle Gewinnerkarte: {card}.", trump: "Angespielte Farbe: {suit}. Pik {card} gewinnt den Stich.", settled: "Stich entschieden: {card} gewinnt." },
+    it: { live: "Seme di uscita: {suit}. Carta vincente attuale: {card}.", trump: "Seme di uscita: {suit}. La picche {card} sta vincendo la presa.", settled: "Presa risolta: vince {card}." },
+    ru: { live: "Ведущая масть: {suit}. Текущая карта-победитель: {card}.", trump: "Ведущая масть: {suit}. Пики {card} выигрывают взятку.", settled: "Взятка завершена: победила карта {card}." },
+    hi: { live: "लीड सूट: {suit}। अभी जीत रहा पत्ता: {card}।", trump: "लीड सूट: {suit}। स्पेड का {card} बाज़ी जीत रहा है।", settled: "बाज़ी पूरी: {card} जीता।" },
+    ar: { live: "النوع المقاد: {suit}. البطاقة الفائزة حالياً: {card}.", trump: "النوع المقاد: {suit}. البستوني {card} يفوز باللّمة.", settled: "حُسمت اللّمة: فازت {card}." },
+  };
+
   const OLD_MAID_RISK = {
     en: { held: "Old Maid in hand — clear pairs and pass it on.", hidden: "The Old Maid is still hidden." },
     "zh-Hant": { held: "鬼牌在你手上——消除配對並設法傳出去。", hidden: "鬼牌仍藏在某位玩家手中。" },
@@ -375,6 +391,13 @@
     Object.entries(values).forEach(([name, replacement]) => { text = text.replaceAll(`{${name}}`, String(replacement)); });
     return { state, text: `${dictionary.label || SPADES_PROGRESS_COPY.en.label}: ${text}` };
   };
+  const spadesTrickText = (leadSuit, winnerCard, settled = false) => {
+    const dictionary = SPADES_TRICK_COPY[currentLocale()] || SPADES_TRICK_COPY.en;
+    const key = settled ? "settled" : winnerCard?.suit === "spades" && leadSuit !== "spades" ? "trump" : "live";
+    let text = dictionary[key] || SPADES_TRICK_COPY.en[key];
+    text = text.replaceAll("{suit}", SYMBOLS[leadSuit] || "—");
+    return text.replaceAll("{card}", cardText(winnerCard));
+  };
 
   const CRAZY_EIGHTS_COPY = {
     en: { summary: "Non-wild cards by suit: {counts}. A suit with more cards can keep more options open.", suits: ["Clubs", "Diamonds", "Hearts", "Spades"] },
@@ -392,9 +415,84 @@
     ar: { summary: "البطاقات غير الجوكر حسب النوع: {counts}. اختيار النوع الذي تملك منه بطاقات أكثر قد يبقي خيارات أكثر متاحة.", suits: ["النوادي", "الماس", "القلوب", "البستوني"] },
   };
 
+  const CRAZY_EIGHTS_RESULT_COPY = {
+    en: {
+      summary: "Cards left in your hand: {cards} · Draws taken: {draws}.",
+      wild: "After your last Eight, you chose {suit}; {kept} non-wild card(s) in that suit remained.",
+      noWild: "No Eight suit choice was made this round.",
+    },
+    "zh-Hant": {
+      summary: "手上剩餘：{cards} 張 · 抽牌：{draws} 次。",
+      wild: "上一次出八後選了 {suit}；該花色還剩 {kept} 張非萬用牌。",
+      noWild: "本局沒有選擇八的花色。",
+    },
+    "zh-Hans": {
+      summary: "手中剩余：{cards} 张 · 抽牌：{draws} 次。",
+      wild: "上一次出八后选择了 {suit}；该花色还剩 {kept} 张非万能牌。",
+      noWild: "本局没有选择八的花色。",
+    },
+    ja: {
+      summary: "手札の残り：{cards}枚 · 引いた回数：{draws}回。",
+      wild: "最後の8の後に {suit} を選択。残ったワイルド以外の同スートは {kept}枚。",
+      noWild: "このラウンドでは8のスートを選びませんでした。",
+    },
+    ko: {
+      summary: "남은 손패: {cards}장 · 뽑은 횟수: {draws}회.",
+      wild: "마지막 8 뒤에 {suit}을(를) 선택했고, 그 무늬의 와일드가 아닌 카드 {kept}장이 남았습니다.",
+      noWild: "이번 라운드에는 8의 무늬를 선택하지 않았습니다.",
+    },
+    es: {
+      summary: "Cartas restantes: {cards} · Robos: {draws}.",
+      wild: "Tras tu último 8 elegiste {suit}; quedaron {kept} cartas no comodín de ese palo.",
+      noWild: "No elegiste un palo para un 8 en esta ronda.",
+    },
+    "pt-BR": {
+      summary: "Cartas restantes na mão: {cards} · Compras: {draws}.",
+      wild: "Após seu último 8, você escolheu {suit}; restaram {kept} cartas não coringa desse naipe.",
+      noWild: "Você não escolheu um naipe para um 8 nesta rodada.",
+    },
+    fr: {
+      summary: "Cartes restantes en main : {cards} · Pioches : {draws}.",
+      wild: "Après votre dernier 8, vous avez choisi {suit} ; il restait {kept} carte(s) non joker de cette couleur.",
+      noWild: "Aucune couleur n'a été choisie pour un 8 dans cette manche.",
+    },
+    de: {
+      summary: "Karten auf der Hand: {cards} · Ziehvorgänge: {draws}.",
+      wild: "Nach deiner letzten Acht hast du {suit} gewählt; dort blieben {kept} Nicht-Wildkarten.",
+      noWild: "In dieser Runde wurde keine Farbe für eine Acht gewählt.",
+    },
+    it: {
+      summary: "Carte rimaste in mano: {cards} · Pescate: {draws}.",
+      wild: "Dopo l'ultimo 8 hai scelto {suit}; sono rimaste {kept} carte non jolly di quel seme.",
+      noWild: "In questa mano non hai scelto un seme per un 8.",
+    },
+    ru: {
+      summary: "Карт в руке: {cards} · Доборов: {draws}.",
+      wild: "После последней восьмёрки вы выбрали масть {suit}; в ней осталось обычных карт: {kept}.",
+      noWild: "В этом раунде масть для восьмёрки не выбиралась.",
+    },
+    hi: {
+      summary: "हाथ में बचे पत्ते: {cards} · पत्ता लेने की बारियाँ: {draws}।",
+      wild: "अपने आखिरी आठ के बाद आपने {suit} चुना; उस सूट के {kept} गैर-वाइल्ड पत्ते बचे।",
+      noWild: "इस राउंड में आठ का सूट नहीं चुना गया।",
+    },
+    ar: {
+      summary: "البطاقات المتبقية في يدك: {cards} · مرات السحب: {draws}.",
+      wild: "بعد آخر ثمانية اخترت {suit}؛ بقيت {kept} بطاقة غير جوكر من هذا النوع.",
+      noWild: "لم يتم اختيار نوع لبطاقة ثمانية في هذه الجولة.",
+    },
+  };
+
   const crazyEightsText = (key, values = {}) => {
     const dictionary = CRAZY_EIGHTS_COPY[currentLocale()] || CRAZY_EIGHTS_COPY.en;
     let value = dictionary[key] || CRAZY_EIGHTS_COPY.en[key] || key;
+    Object.entries(values).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); });
+    return value;
+  };
+
+  const crazyEightsResultText = (key, values = {}) => {
+    const dictionary = CRAZY_EIGHTS_RESULT_COPY[currentLocale()] || CRAZY_EIGHTS_RESULT_COPY.en;
+    let value = dictionary[key] || CRAZY_EIGHTS_RESULT_COPY.en[key] || key;
     Object.entries(values).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); });
     return value;
   };
@@ -652,26 +750,34 @@
   }
 
   function makeSpades(controller) {
-    const s = { hands: [[], [], [], []], bids: [null, null, null, null], tricks: [0, 0], turn: 0, trick: [], phase: "bid", scores: [0, 0] };
+    const s = { hands: [[], [], [], []], bids: [null, null, null, null], tricks: [0, 0], turn: 0, trick: [], lastTrick: null, phase: "bid", scores: [0, 0] };
     const names = ["You", "AI North", "AI East", "AI West"];
     const legal = (cards) => { const lead = s.trick[0]?.card.suit; const suited = lead ? cards.filter((item) => item.suit === lead) : []; return suited.length ? suited : cards; };
     const finish = () => { const own = s.tricks[0] >= s.bids[0] + s.bids[2]; const enemy = s.tricks[1] >= s.bids[1] + s.bids[3]; s.scores[0] += own ? 10 * (s.bids[0] + s.bids[2]) + Math.max(0, s.tricks[0] - s.bids[0] - s.bids[2]) : -10 * (s.bids[0] + s.bids[2]); s.scores[1] += enemy ? 10 * (s.bids[1] + s.bids[3]) + Math.max(0, s.tricks[1] - s.bids[1] - s.bids[3]) : -10 * (s.bids[1] + s.bids[3]); controller.result(s.scores[0] >= s.scores[1], `${t("score")}: ${s.scores[0]} — ${s.scores[1]}`); };
-    const play = (player, item) => { const cards = s.hands[player]; if (!legal(cards).includes(item)) return; cards.splice(cards.indexOf(item), 1); s.trick.push({ player, card: item }); s.turn = (player + 1) % 4; if (s.trick.length === 4) { const winner = trickWinner(s.trick, "spades"); s.tricks[winner % 2 === 0 ? 0 : 1] += 1; s.trick = []; s.turn = winner; if (!s.hands[0].length) { finish(); return; } } if (s.turn !== 0) setTimeout(aiTurn, 180); };
+    const currentWinnerEntry = () => { const winner = trickWinner(s.trick, "spades"); return s.trick.find((entry) => entry.player === winner) || null; };
+    const play = (player, item) => { const cards = s.hands[player]; if (!legal(cards).includes(item)) return; if (!s.trick.length) s.lastTrick = null; cards.splice(cards.indexOf(item), 1); s.trick.push({ player, card: item }); s.turn = (player + 1) % 4; if (s.trick.length === 4) { const winningEntry = currentWinnerEntry(); const winner = winningEntry?.player; s.lastTrick = winningEntry ? { card: winningEntry.card, leadSuit: s.trick[0]?.card.suit } : null; s.tricks[winner % 2 === 0 ? 0 : 1] += 1; s.trick = []; s.turn = winner; if (!s.hands[0].length) { finish(); return; } } if (s.turn !== 0) setTimeout(aiTurn, 180); };
     const aiTurn = () => { if (s.phase !== "play" || s.turn === 0) return; play(s.turn, chooseAiCard(s.hands[s.turn], legal(s.hands[s.turn]), s.turn % 2 ? "low" : "high")); };
     return {
-      reset() { Object.assign(s, { hands: [[], [], [], []], bids: [null, null, null, null], tricks: [0, 0], turn: 0, trick: [], phase: "bid", scores: [0, 0] }); deck().forEach((item, index) => s.hands[index % 4].push(item)); },
+      reset() { Object.assign(s, { hands: [[], [], [], []], bids: [null, null, null, null], tricks: [0, 0], turn: 0, trick: [], lastTrick: null, phase: "bid", scores: [0, 0] }); deck().forEach((item, index) => s.hands[index % 4].push(item)); },
       card(index) { if (s.phase === "play" && s.turn === 0) play(0, s.hands[0][index]); },
       action(action, selected) { if (s.phase === "bid" && action === "bid") { s.bids[0] = Number(selected); s.bids[1] = 2 + Math.floor(Math.random() * 3); s.bids[2] = 2 + Math.floor(Math.random() * 4); s.bids[3] = 2 + Math.floor(Math.random() * 3); s.phase = "play"; s.turn = 0; } },
       view() {
         const bidControls = Array.from({ length: 14 }, (_, i) => `<button class="secondary-btn" data-action="bid" data-value="${i}" ${s.bids[0] !== null ? "disabled" : ""}>${i}</button>`).join("");
         const progress = s.phase === "play" ? spadesProgressText(s.tricks[0], s.bids[0] + s.bids[2]) : null;
+        const liveWinner = s.trick.length ? currentWinnerEntry() : null;
+        const winnerEntry = liveWinner || s.lastTrick;
+        const leadSuit = s.trick[0]?.card.suit || s.lastTrick?.leadSuit;
+        const settled = !s.trick.length && Boolean(s.lastTrick);
+        const winnerCard = winnerEntry?.card;
+        const trickCue = winnerCard ? `<div class="card-spades-trick-cue" data-spades-trick-cue data-trick-phase="${settled ? "settled" : "live"}" data-trick-led-suit="${SYMBOLS[leadSuit] || ""}" data-trick-winner-card="${cardText(winnerCard)}" data-runtime-localize="off" role="status" aria-live="polite">${spadesTrickText(leadSuit, winnerCard, settled)}</div>` : "";
+        const trickHtml = s.trick.length ? s.trick.map((entry) => { const isLed = entry.card.suit === leadSuit; const isWinner = entry === liveWinner; const classes = ["card-spades-trick-card", isLed ? "is-led" : "", isWinner ? "is-winner" : ""].filter(Boolean).join(" "); return `<span class="${classes}" data-trick-led="${isLed}" data-trick-winner="${isWinner}">${cardMarkup(entry.card, 0, { className: isWinner ? "card-spades-winner-card" : "", disabled: true })}</span>`; }).join("") : s.lastTrick ? `<span class="card-spades-trick-card is-settled-winner" data-trick-led="${s.lastTrick.card.suit === leadSuit}" data-trick-winner="true" data-trick-settled="true">${cardMarkup(s.lastTrick.card, 0, { className: "card-spades-winner-card", disabled: true })}</span>` : "";
         return {
           phase: s.phase === "bid" ? t("bid") : `${t("score")}: ${s.scores[0]} / ${s.scores[1]}`,
           status: s.turn === 0 ? t("yourTurn") : t("aiTurn"),
           help: spadesText(s.phase === "bid" ? "bid" : "play"),
           score: s.scores[0],
           opponents: names.slice(1).map((name, index) => spadesOpponentMarkup(name, s.hands[index + 1].length, s.bids[index + 1] ?? "—")).join(""),
-          center: `<div class="card-table-label">${t("table")} · ${s.tricks[0]} / ${s.tricks[1]}</div>${progress ? `<div class="card-spades-progress" data-progress-state="${progress.state}" data-runtime-localize="off" role="status" aria-live="polite">${progress.text}</div>` : ""}<div class="table-row">${s.trick.map((entry) => cardMarkup(entry.card, 0)).join("") || `♠ ${t("waiting")}`}</div>`,
+          center: `<div class="card-table-label">${t("table")} · ${s.tricks[0]} / ${s.tricks[1]}</div>${progress ? `<div class="card-spades-progress" data-progress-state="${progress.state}" data-runtime-localize="off" role="status" aria-live="polite">${progress.text}</div>` : ""}${trickCue}<div class="table-row">${trickHtml || `♠ ${t("waiting")}`}</div>`,
           hand: cardsMarkup(s.hands[0]),
           actions: s.phase === "bid" ? `<div class="card-choice-panel">${bidControls}</div>` : "",
         };
