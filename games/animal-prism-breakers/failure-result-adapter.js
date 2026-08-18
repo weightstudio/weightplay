@@ -9,9 +9,28 @@
   const actions=result.querySelector(".modal-actions");
   const feedback=document.getElementById("feedback");
   const resultText=document.getElementById("resultText");
-  let lastMissSide=null;
+  let lastMissSide=null,lastRecapKey=null;
 
   const missCue=()=>lastMissSide&&window.PrismBreakersLocale?.miss?.(lastMissSide);
+
+  const remainingBlocks=engine=>Array.isArray(engine?.blocks)?engine.blocks.filter(block=>Number(block?.hp)>0).length:0;
+
+  const settleLearningRecap=()=>{
+    if(result.hidden||!resultText)return;
+    const state=window.__blockTrilogyTest?.getState?.();
+    const engine=state?.engine;
+    if(state?.kind!=="breaker"||!engine)return;
+    const blocks=remainingBlocks(engine),success=blocks===0;
+    if(!success&&Number(engine.lives)!==0)return;
+    const key=[state.selected,engine.score,engine.bestCombo,engine.lives,blocks,success,lastMissSide||""].join(":");
+    if(lastRecapKey===key)return;
+    const recap=window.PrismBreakersLocale?.resultRecap?.({success,score:engine.score,combo:engine.bestCombo,orbs:engine.lives,blocks,side:success?null:(state.selected===1?lastMissSide:null)});
+    if(!recap)return;
+    const base=resultText.dataset.prismBaseText??resultText.textContent.trim();
+    resultText.dataset.prismBaseText=base;
+    resultText.textContent=`${base} ${recap}`;
+    lastRecapKey=key;
+  };
 
   window.addEventListener("weightplay:breaker-orb-miss",event=>{
     const detail=event.detail;
@@ -56,7 +75,13 @@
   };
 
   new MutationObserver(()=>{
+    if(result.hidden){
+      lastRecapKey=null;
+      resultText?.removeAttribute("data-prism-base-text");
+      return;
+    }
     settleTerminalFailure();
+    settleLearningRecap();
     settleVersion4Actions();
   }).observe(result,{attributes:true,attributeFilter:["hidden"]});
 })();

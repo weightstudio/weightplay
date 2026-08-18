@@ -177,6 +177,27 @@
     return `${dealer === 0 ? copy.player : copy.ai} · ${copy.next.replaceAll("{starter}", cardText(starter))}`;
   };
 
+  const CRIB_PEGGING_RESET_COPY = {
+    en: { go: "Go ends this count — reset to 0. Watch for a pair, run, 15, or 31 in the next sequence.", thirtyOne: "31 ends this count — reset to 0. Watch for a pair, run, 15, or another 31." },
+    "zh-Hant": { go: "Go 結束這次計數，重設為 0。下一段留意對子、順子、15 或 31。", thirtyOne: "31 結束這次計數，重設為 0。下一段留意對子、順子、15 或下一個 31。" },
+    "zh-Hans": { go: "Go 结束这次计数，重设为 0。下一段留意对子、顺子、15 或 31。", thirtyOne: "31 结束这次计数，重设为 0。下一段留意对子、顺子、15 或下一个 31。" },
+    ja: { go: "Goでこのカウントは終了し、0に戻ります。次の並びでペア、ラン、15、31を狙おう。", thirtyOne: "31でこのカウントは終了し、0に戻ります。次の並びでペア、ラン、15、次の31を狙おう。" },
+    ko: { go: "Go로 이 카운트가 끝나 0으로 돌아갑니다. 다음 순서에서 페어·런·15·31을 노리세요.", thirtyOne: "31로 이 카운트가 끝나 0으로 돌아갑니다. 다음 순서에서 페어·런·15·다음 31을 노리세요." },
+    es: { go: "Go termina este conteo y vuelve a 0. Busca pareja, escalera, 15 o 31 en la siguiente secuencia.", thirtyOne: "31 termina este conteo y vuelve a 0. Busca pareja, escalera, 15 o otro 31." },
+    "pt-BR": { go: "Go encerra esta contagem e ela volta a 0. Busque par, sequência, 15 ou 31 na próxima sequência.", thirtyOne: "31 encerra esta contagem e ela volta a 0. Busque par, sequência, 15 ou outro 31." },
+    fr: { go: "Go termine ce compte et revient à 0. Cherchez une paire, une suite, 15 ou 31 dans la prochaine séquence.", thirtyOne: "31 termine ce compte et revient à 0. Cherchez une paire, une suite, 15 ou un autre 31." },
+    de: { go: "Go beendet diese Zählung und setzt sie auf 0 zurück. Suche in der nächsten Folge nach Paar, Lauf, 15 oder 31.", thirtyOne: "31 beendet diese Zählung und setzt sie auf 0 zurück. Suche in der nächsten Folge nach Paar, Lauf, 15 oder einem weiteren 31." },
+    it: { go: "Go chiude questo conteggio e si torna a 0. Cerca una coppia, una scala, 15 o 31 nella prossima sequenza.", thirtyOne: "31 chiude questo conteggio e si torna a 0. Cerca una coppia, una scala, 15 o un altro 31." },
+    ru: { go: "Go завершает этот счёт, и он сбрасывается на 0. В следующей серии ищите пару, ряд, 15 или 31.", thirtyOne: "31 завершает этот счёт, и он сбрасывается на 0. В следующей серии ищите пару, ряд, 15 или новый 31." },
+    hi: { go: "Go से यह गिनती खत्म होकर 0 पर लौटती है। अगली श्रृंखला में जोड़ी, रन, 15 या 31 देखें।", thirtyOne: "31 से यह गिनती खत्म होकर 0 पर लौटती है। अगली श्रृंखला में जोड़ी, रन, 15 या अगला 31 देखें।" },
+    ar: { go: "تنهي Go هذا العد ويعود إلى 0. ابحث عن زوج أو تسلسل أو 15 أو 31 في السلسلة التالية.", thirtyOne: "ينهي 31 هذا العد ويعود إلى 0. ابحث عن زوج أو تسلسل أو 15 أو 31 آخر في السلسلة التالية." },
+  };
+
+  const cribPeggingResetText = (reason) => {
+    const copy = CRIB_PEGGING_RESET_COPY[currentLocale()] || CRIB_PEGGING_RESET_COPY.en;
+    return copy[reason] || copy.go;
+  };
+
   const CASINO_COPY = {
     en: { selectPrompt: "Select a hand card, then table cards with the same value or a matching sum.", trailPrompt: "Choose table cards to Capture or Build, or Trail this card when no capture is available.", trail: "Trail", captureFeedback: "Captured {count} cards; immediate card bonus +{bonus}. The card majority is scored at round end.", resultBreakdown: "Captured {cards} cards · special bonuses +{immediate} · majority bonus: {majority} · final score: {score}." },
     "zh-Hant": { selectPrompt: "先選一張手牌，再選相同點數或合計相符的桌面牌。", trailPrompt: "選擇桌面牌來捕獲或建立牌組；沒有可捕獲的牌時，可將這張牌出到桌面。", trail: "出牌", captureFeedback: "捕獲 {count} 張牌；即時牌面獎勵 +{bonus}。最多牌獎勵在本局結算。", resultBreakdown: "捕獲 {cards} 張牌 · 特殊獎勵 +{immediate} · 最多牌獎勵：{majority} · 最終得分：{score}。" },
@@ -727,7 +748,7 @@
   }
 
   function makeCribbageFixed(controller) {
-    const s = { hand: [], ai: [], crib: [], stock: [], starter: null, playerPeg: [], aiPeg: [], pegSequence: [], count: 0, turn: 0, phase: "discard", score: [0, 0], selected: new Set(), passed: [false, false], lastPegPlayer: null, round: 1, dealer: 1 };
+    const s = { hand: [], ai: [], crib: [], stock: [], starter: null, playerPeg: [], aiPeg: [], pegSequence: [], count: 0, turn: 0, phase: "discard", score: [0, 0], selected: new Set(), passed: [false, false], lastPegPlayer: null, resetCue: "", round: 1, dealer: 1 };
     const combinations = (cards, target) => { let points = 0; const total = 1 << cards.length; for (let mask = 1; mask < total; mask += 1) { const chosen = cards.filter((_, index) => mask & (1 << index)); if (sum(chosen) === target) points += 2; } return points; };
     const scoreCards = (cards, isCrib = false) => {
       let points = combinations(cards, 15);
@@ -782,23 +803,26 @@
       if (!finish()) startRound();
     };
     const scheduleTurn = (player) => { s.turn = player; if (player === 1) setTimeout(aiPeg, 240); };
-    const resetPegCount = (leader) => {
+    const resetPegCount = (leader, reason = "go") => {
       s.count = 0;
       s.pegSequence = [];
       s.passed = [false, false];
       if (!s.hand.length && !s.ai.length) { settleRound(); return; }
+      s.resetCue = cribPeggingResetText(reason);
       const availableLeader = (leader === 0 ? s.hand : s.ai).length ? leader : 1 - leader;
       scheduleTurn(availableLeader);
     };
     const passPeg = (player) => {
+      if (player === 0) s.resetCue = "";
       if (legalPeg(player).length) return;
       s.passed[player] = true;
       const other = 1 - player;
       if (legalPeg(other).length) { scheduleTurn(other); return; }
       if (s.lastPegPlayer !== null && s.count < 31) { s.score[s.lastPegPlayer] += 1; if (finish()) return; }
-      resetPegCount(s.lastPegPlayer === null ? other : 1 - s.lastPegPlayer);
+      resetPegCount(s.lastPegPlayer === null ? other : 1 - s.lastPegPlayer, "go");
     };
     const playPeg = (player, item) => {
+      if (player === 0) s.resetCue = "";
       if (!item || s.count + value(item) > 31) { passPeg(player); return; }
       const hand = player === 0 ? s.hand : s.ai;
       const index = hand.indexOf(item);
@@ -809,17 +833,17 @@
       s.lastPegPlayer = player;
       s.passed[player] = false;
       if (finish()) return;
-      if (s.count === 31) { resetPegCount(1 - player); return; }
+      if (s.count === 31) { resetPegCount(1 - player, "thirtyOne"); return; }
       if (!s.hand.length && !s.ai.length) { s.score[player] += 1; if (!finish()) settleRound(); return; }
       scheduleTurn(1 - player);
     };
     const aiPeg = () => { if (s.phase !== "pegging" || s.turn !== 1) return; const item = legalPeg(1).sort((a, b) => b.rank - a.rank)[0]; if (item) playPeg(1, item); else passPeg(1); };
-    function startRound() { const cards = deck(); const round = s.round + 1; Object.assign(s, { hand: [], ai: [], crib: [], stock: cards, starter: null, playerPeg: [], aiPeg: [], pegSequence: [], count: 0, turn: 0, phase: "discard", selected: new Set(), passed: [false, false], lastPegPlayer: null, round, dealer: round % 2 === 1 ? 1 : 0 }); for (let i = 0; i < 6; i += 1) { s.hand.push(s.stock.pop()); s.ai.push(s.stock.pop()); } }
+    function startRound() { const cards = deck(); const round = s.round + 1; Object.assign(s, { hand: [], ai: [], crib: [], stock: cards, starter: null, playerPeg: [], aiPeg: [], pegSequence: [], count: 0, turn: 0, phase: "discard", selected: new Set(), passed: [false, false], lastPegPlayer: null, resetCue: "", round, dealer: round % 2 === 1 ? 1 : 0 }); for (let i = 0; i < 6; i += 1) { s.hand.push(s.stock.pop()); s.ai.push(s.stock.pop()); } }
     return {
       reset() { Object.assign(s, { score: [0, 0], round: 0, dealer: 0 }); startRound(); },
       card(index) { if (s.phase === "discard" && s.turn === 0) { if (s.selected.has(index)) s.selected.delete(index); else if (s.selected.size < 2) s.selected.add(index); } else if (s.phase === "pegging" && s.turn === 0) playPeg(0, s.hand[index]); },
-      action(action) { if (action === "send-crib" && s.phase === "discard" && s.selected.size === 2) { [...s.selected].sort((a, b) => b - a).forEach((index) => s.crib.push(s.hand.splice(index, 1)[0])); s.crib.push(...s.ai.splice(0, 2)); s.roundPlayerHand = [...s.hand]; s.roundAiHand = [...s.ai]; s.starter = s.stock.pop(); s.phase = "pegging"; s.playerPeg = []; s.aiPeg = []; s.pegSequence = []; s.count = 0; s.passed = [false, false]; s.lastPegPlayer = null; if (s.starter.rank === 11) { s.score[s.dealer] += 2; if (finish()) return; } scheduleTurn(1 - s.dealer); } if (action === "go" && s.phase === "pegging" && s.turn === 0) passPeg(0); },
-      view() { const playable = legalPeg(0); return { phase: s.phase === "discard" ? t("selectCards") : `${t("score")}: ${s.count}/31`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "discard" ? `${t("selectCards")}: ${s.selected.size}/2 to the crib.` : s.turn === 0 ? `${playable.length ? "Play a card" : "Go"}. Pair, run, 15, and 31 points count during pegging.` : t("aiTurn"), score: s.score[0], opponents: opponentMarkup("AI", s.ai.length, `${t("score")}: ${s.score[1]}`), center: `<div class="card-table-label">${t("cribbage")} · Round ${s.round} · ${s.starter ? cardText(s.starter) : ""}</div>${s.phase === "pegging" ? `<div class="card-crib-transition" role="status" aria-live="polite">${cribTransitionText(s.starter, s.dealer)}</div>` : ""}${makePegBoard(s.score[0], s.score[1])}<div class="table-row">${cardsMarkup(s.playerPeg)}${cardsMarkup(s.aiPeg)}</div>`, hand: cardsMarkup(s.hand, { selected: s.selected }), actions: s.phase === "discard" ? `<button class="primary-btn" data-action="send-crib" ${s.selected.size !== 2 ? "disabled" : ""}>${t("submit")}</button>` : `<button class="secondary-btn" data-action="go" ${s.turn !== 0 || playable.length ? "disabled" : ""}>Go</button>` }; }
+      action(action) { if (action === "send-crib" && s.phase === "discard" && s.selected.size === 2) { [...s.selected].sort((a, b) => b - a).forEach((index) => s.crib.push(s.hand.splice(index, 1)[0])); s.crib.push(...s.ai.splice(0, 2)); s.roundPlayerHand = [...s.hand]; s.roundAiHand = [...s.ai]; s.starter = s.stock.pop(); s.phase = "pegging"; s.playerPeg = []; s.aiPeg = []; s.pegSequence = []; s.count = 0; s.passed = [false, false]; s.lastPegPlayer = null; s.resetCue = ""; if (s.starter.rank === 11) { s.score[s.dealer] += 2; if (finish()) return; } scheduleTurn(1 - s.dealer); } if (action === "go" && s.phase === "pegging" && s.turn === 0) passPeg(0); },
+      view() { const playable = legalPeg(0); const resetCue = s.resetCue ? `<div class="card-crib-transition card-crib-reset" role="status" aria-live="polite">${s.resetCue}</div>` : ""; return { phase: s.phase === "discard" ? t("selectCards") : `${t("score")}: ${s.count}/31`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "discard" ? `${t("selectCards")}: ${s.selected.size}/2 to the crib.` : s.turn === 0 ? `${playable.length ? "Play a card" : "Go"}. Pair, run, 15, and 31 points count during pegging.` : t("aiTurn"), score: s.score[0], opponents: opponentMarkup("AI", s.ai.length, `${t("score")}: ${s.score[1]}`), center: `<div class="card-table-label">${t("cribbage")} · Round ${s.round} · ${s.starter ? cardText(s.starter) : ""}</div>${s.phase === "pegging" ? `<div class="card-crib-transition" role="status" aria-live="polite">${cribTransitionText(s.starter, s.dealer)}</div>${resetCue}` : ""}${makePegBoard(s.score[0], s.score[1])}<div class="table-row">${cardsMarkup(s.playerPeg)}${cardsMarkup(s.aiPeg)}</div>`, hand: cardsMarkup(s.hand, { selected: s.selected }), actions: s.phase === "discard" ? `<button class="primary-btn" data-action="send-crib" ${s.selected.size !== 2 ? "disabled" : ""}>${t("submit")}</button>` : `<button class="secondary-btn" data-action="go" ${s.turn !== 0 || playable.length ? "disabled" : ""}>Go</button>` }; }
     };
   }
 

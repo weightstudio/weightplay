@@ -190,8 +190,8 @@
       progression: ["Stages 1-10 use ten distinct opening silhouettes and teach placement, top runs, and ten-chip clears.", "Middle stages add frozen cells, stones, gems, rainbow chips, bombs, color objectives, and tighter move limits.", "Stages 26-30 combine several systems under five-color pressure. Endless mode increases pressure continuously and stores the best score in this browser."],
       designNote: "Chip transfers use persistent visible layers and sequential readable motion. The board resolves one deterministic transaction at a time, while the Stage selector recycles nine stable cards so long campaigns remain smooth without building one permanent item per stage.",
       parent: "Hexa Sort is a general-audience browser puzzle recommended for ages 9+ and family play. No account or purchase is required. Campaign unlocks, Endless best score, language, and sound preferences are stored only in this browser.",
-      related: [],
-      relatedIds: ["hexa-sort"],
+      related: ["block-blast", "arrow-escape"],
+      relatedIds: ["block-blast", "arrow-escape"],
       faq: [["How many stages are included?", "There are 30 handcrafted campaign stages plus Endless mode."], ["Can I move a stack after placing it?", "No. Choose carefully; the placement is final and matching top runs resolve automatically."], ["Which chips are allowed to move?", "Only one contiguous run of the same color at the top of a stack can move to an adjacent stack."], ["When does a color clear?", "A connected resolved stack clears when it reaches ten matching chips."], ["Is Endless random?", "Offers vary, but the rules and every merge decision are deterministic from the current state."], ["Is progress saved?", "Campaign unlocks, Endless best score, and preferences are stored locally in this browser."]],
     },
     "spider-solitaire": {
@@ -10608,6 +10608,50 @@
   };
   localizedGameplayProfiles["zh-Hans"] ||= {};
   localizedGameplayProfiles["zh-Hans"]["block-blast"] = { gameplay: "8×8 方块配置益智", genre: ["益智", "策略", "空间推理"] };
+
+  localizedGames["zh-Hant"]["hexa-sort"] = {
+    ...games["hexa-sort"],
+    title: "六角排序",
+    gameplay: "六角堆疊策略益智",
+    difficulty: "簡單至具挑戰性",
+    time: "每關約 2–10 分鐘",
+    genre: ["益智", "策略", "空間推理"],
+    skills: ["規劃", "配色", "空間推理"],
+    intro: "《六角排序》是一款確定性的六角堆疊益智遊戲，包含 30 個手工設計關卡與無盡得分模式。把托盤提供的整疊放到開放六角格，再觀察相鄰的同色頂層合併，直到棋盤穩定。",
+    story: ["每個關卡都有編寫好的盤面、目標、步數上限與供牌順序；前期先練習色彩規劃，之後再加入冰凍格、寶石、封鎖格、彩虹晶片、炸彈與混合目標。", "無盡模式不設戰役目標，顏色與特殊晶片壓力會持續上升，直到沒有可用的開放六角格。"],
+    systems: ["只有堆疊頂部連續且同色的晶片可以移動；下層顏色會在上方圖層移走或清除後才露出。", "自動合併是確定性的：解析器優先處理清除與當前目標，轉移只會前往相鄰位置，也不會反覆回到同一個棋盤狀態。", "連續的同色晶片湊滿十個後會一起清除，並露出下一種顏色。冰凍堆疊可由相鄰放置解凍，寶石會從相鄰活動中收集，特殊晶片在同一個鎖定回合內解析。", "托盤每次提供三疊。放置後不能移回，因此選擇六角格前，要同時檢查可見的頂層顏色與下方圖層。"],
+    how: ["選擇 30 個關卡之一，或從主畫面開始無盡模式。", "從托盤提供的三疊中選擇一疊。", "點擊開放六角格，放下整疊晶片。", "等待所有相鄰合併與清除完成，再規劃下一次放置。", "在步數上限內完成顯示的目標；無盡模式則持續得分，直到棋盤沒有空位。"],
+    strategyTips: ["優先選擇能集中頂層顏色、又不會封死所有開放六角格的位置。", "放置前先估算一條合併鏈可能露出多少個同色晶片。", "為難處理的托盤堆保留不只一個可用落點。", "把冰凍格、寶石與目標視為同一套規劃，不要只追逐眼前最大的堆疊。", "兩個合併方向看似相同時，優先考慮哪一個會先露出更有用的下層顏色。"],
+    progression: ["第 1–10 關使用十種不同的開局輪廓，教導放置、頂部連續晶片與十晶片清除。", "中段關卡加入冰凍格、石頭、寶石、彩虹晶片、炸彈、顏色目標與更嚴格的步數限制。", "第 26–30 關在五色壓力下組合多項系統；無盡模式會持續增加壓力，並把最佳分數保存在這個瀏覽器中。"],
+    designNote: "晶片搬移使用持續存在的可見圖層，一次處理一筆確定性交易；階段選擇器回收九張穩定卡，讓 30 關長流程維持順暢，不必為每一關建立永久項目。",
+    parent: "《六角排序》是適合一般玩家與家庭遊玩的瀏覽器益智遊戲，建議 9 歲以上。不需要帳號或購買；戰役解鎖、無盡最佳分數、語言與音效偏好只儲存在這個瀏覽器。",
+    related: ["方塊爆破", "箭頭大逃亡"],
+    relatedIds: ["block-blast", "arrow-escape"],
+    faq: [["共有幾個關卡？", "共有 30 個手工設計的戰役關卡，另有無盡模式。"], ["放置後可以移動堆疊嗎？", "不可以。放置是最終決定，請在落下前確認合併方向與後續空間。"], ["哪些晶片可以移動？", "只有堆疊頂部連續且同色的一段晶片，才能移到相鄰堆疊。"], ["什麼時候會清除顏色？", "連續解析後的同色堆疊達到十個晶片時，就會一起清除。"], ["無盡模式是隨機的嗎？", "供牌會隨盤面變化，但規則與每次合併決策都由目前狀態確定。"], ["進度會保存嗎？", "戰役解鎖、無盡最佳分數與偏好會儲存在目前瀏覽器。"], ["支援哪些操作方式與螢幕尺寸？", "遊戲支援觸控、滑鼠與鍵盤；介面會在手機、橫向與桌面視窗中以同一套邏輯版面縮放。"], ["進度會自動轉移到其他裝置嗎？", "不會。目前只儲存在本機瀏覽器，其他瀏覽器設定檔或裝置會有獨立進度。"]],
+  };
+  localizedGameplayProfiles["zh-Hant"]["hexa-sort"] = { gameplay: "六角堆疊策略益智", genre: ["益智", "策略", "空間推理"] };
+
+  localizedGames["zh-Hans"]["hexa-sort"] = {
+    ...games["hexa-sort"],
+    title: "六角排序",
+    gameplay: "六角堆叠策略益智",
+    difficulty: "简单至具挑战性",
+    time: "每关约 2–10 分钟",
+    genre: ["益智", "策略", "空间推理"],
+    skills: ["规划", "配色", "空间推理"],
+    intro: "《六角排序》是一款确定性的六角堆叠益智游戏，包含 30 个手工设计关卡与无尽得分模式。把托盘提供的整叠放到开放六角格，再观察相邻的同色顶层合并，直到棋盘稳定。",
+    story: ["每个关卡都有编写好的盘面、目标、步数上限与供牌顺序；前期先练习色彩规划，之后再加入冰冻格、宝石、封锁格、彩虹晶片、炸弹与混合目标。", "无尽模式不设战役目标，颜色与特殊晶片压力会持续上升，直到没有可用的开放六角格。"],
+    systems: ["只有堆叠顶部连续且同色的晶片可以移动；下层颜色会在上方图层移走或清除后才露出。", "自动合并是确定性的：解析器优先处理清除与当前目标，转移只会前往相邻位置，也不会反复回到同一个棋盘状态。", "连续的同色晶片凑满十个后会一起清除，并露出下一种颜色。冰冻堆叠可由相邻放置解冻，宝石会从相邻活动中收集，特殊晶片在同一个锁定回合内解析。", "托盘每次提供三叠。放置后不能移回，因此选择六角格前，要同时检查可见的顶层颜色与下方图层。"],
+    how: ["选择 30 个关卡之一，或从主画面开始无尽模式。", "从托盘提供的三叠中选择一叠。", "点击开放六角格，放下整叠晶片。", "等待所有相邻合并与清除完成，再规划下一次放置。", "在步数上限内完成显示的目标；无尽模式则持续得分，直到棋盘没有空位。"],
+    strategyTips: ["优先选择能集中顶层颜色、又不会封死所有开放六角格的位置。", "放置前先估算一条合并链可能露出多少个同色晶片。", "为难处理的托盘堆保留不止一个可用落点。", "把冰冻格、宝石与目标视为同一套规划，不要只追逐眼前最大的堆叠。", "两个合并方向看似相同时，优先考虑哪一个会先露出更有用的下层颜色。"],
+    progression: ["第 1–10 关使用十种不同的开局轮廓，教导放置、顶部连续晶片与十晶片清除。", "中段关卡加入冰冻格、石头、宝石、彩虹晶片、炸弹、颜色目标与更严格的步数限制。", "第 26–30 关在五色压力下组合多项系统；无尽模式会持续增加压力，并把最佳分数保存在这个浏览器中。"],
+    designNote: "晶片搬移使用持续存在的可见图层，一次处理一笔确定性交易；阶段选择器回收九张稳定卡，让 30 关长流程保持顺畅，不必为每一关建立永久项目。",
+    parent: "《六角排序》是适合一般玩家与家庭游玩的浏览器益智游戏，建议 9 岁以上。不需要账号或购买；战役解锁、无尽最佳分数、语言与音效偏好只储存在这个浏览器。",
+    related: ["方块爆破", "箭头大逃亡"],
+    relatedIds: ["block-blast", "arrow-escape"],
+    faq: [["共有几个关卡？", "共有 30 个手工设计的战役关卡，另有无尽模式。"], ["放置后可以移动堆叠吗？", "不可以。放置是最终决定，请在落下前确认合并方向与后续空间。"], ["哪些晶片可以移动？", "只有堆叠顶部连续且同色的一段晶片，才能移到相邻堆叠。"], ["什么时候会清除颜色？", "连续解析后的同色堆叠达到十个晶片时，就会一起清除。"], ["无尽模式是随机的吗？", "供牌会随盘面变化，但规则与每次合并决策都由当前状态确定。"], ["进度会保存吗？", "战役解锁、无尽最佳分数与偏好会保存在当前浏览器。"], ["支持哪些操作方式和屏幕尺寸？", "游戏支持触控、鼠标和键盘；界面会在手机、横向与桌面窗口中以同一套逻辑版面缩放。"], ["进度会自动转移到其他设备吗？", "不会。目前只保存在本地浏览器，其他浏览器配置文件或设备会有独立进度。"]],
+  };
+  localizedGameplayProfiles["zh-Hans"]["hexa-sort"] = { gameplay: "六角堆叠策略益智", genre: ["益智", "策略", "空间推理"] };
 
   registerExpandedGuide("zhao-yun-a-dou", {
     title: "Zhao Yun & A Dou: Inkline Defense",
