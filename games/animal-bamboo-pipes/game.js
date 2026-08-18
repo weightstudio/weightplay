@@ -53,6 +53,28 @@
   function basePorts(tile) {
     return tile.shape === "x" ? [0,1,2,3] : tile.shape === "s" ? [0,2] : tile.shape === "e" ? [0,1] : tile.shape === "t" ? [0,1,3] : tile.shape === "source" ? [2] : [0];
   }
+  function solvedPorts(tile) {
+    return tile.target ? [0,1,2,3] : ports({ ...tile, rot: tile.solved });
+  }
+  function hintRouteNeighbor(index) {
+    if (!run || index < 0 || !run.tiles[index]) return -1;
+    const row = Math.floor(index / 5), col = index % 5, routePorts = solvedPorts(run.tiles[index]), candidates = [];
+    DIRS.forEach(([dr, dc, direction, reverse]) => {
+      const nextRow = row + dr, nextCol = col + dc;
+      if (nextRow < 0 || nextRow > 4 || nextCol < 0 || nextCol > 4) return;
+      const nextIndex = nextRow * 5 + nextCol, next = run.tiles[nextIndex];
+      if ((!next.required && !next.target) || !routePorts.includes(direction) || !solvedPorts(next).includes(reverse)) return;
+      candidates.push(nextIndex);
+    });
+    return candidates.find(nextIndex => run.tiles[nextIndex].target) ?? candidates[0] ?? -1;
+  }
+  function hintLabel(index) {
+    return index >= 0 && run.tiles[index]?.target
+      ? text("basinLabel")
+      : index >= 0
+        ? text("hintPipeLabel", { n: index + 1 })
+        : text("basinLabel");
+  }
   function flowSvg(tile, index, wet) {
     if (!wet || tile.target) return null;
     const paths = basePorts(tile).map(port => {
@@ -213,11 +235,12 @@
   }, true);
   function renderBoard(focusIndex = -1) {
     const wet = water(), board = $("board"); board.innerHTML = "";
+    const hintNeighborIndex = hintRouteNeighbor(hintedPipeIndex);
     const enabledIndexes = run.tiles.map((tile, index) => tile.target || run.completed ? -1 : index).filter(index => index >= 0);
     if (!enabledIndexes.includes(boardFocusIndex)) boardFocusIndex = enabledIndexes[0] ?? 0;
     run.tiles.forEach((tile, index) => {
       const pipe = document.createElement("button");
-      pipe.className = `pipe${wet.has(index) ? " wet" : ""}${index === hintedPipeIndex ? " hint-target" : ""}`;
+      pipe.className = `pipe${wet.has(index) ? " wet" : ""}${index === hintedPipeIndex ? " hint-target" : ""}${index === hintNeighborIndex ? " hint-neighbor" : ""}`;
       if (tile.target) pipe.classList.add("target");
       pipe.dataset.shape = tile.shape;
       pipe.style.setProperty("--pipe-rotation", `${tile.rot * 90}deg`);
@@ -231,7 +254,9 @@
       board.append(pipe);
     });
     $("moves").textContent = text("moves", { n: run.moves });
-    $("cue").textContent = hintedPipeIndex >= 0 ? text("hintTarget", { pipe: text("pipeLabel", { n: hintedPipeIndex + 1 }) }) : text("cue");
+    $("cue").textContent = hintedPipeIndex >= 0
+      ? text("hintRoute", { pipe: hintLabel(hintedPipeIndex), next: hintLabel(hintNeighborIndex) })
+      : text("cue");
     if (focusIndex >= 0 && !board.children[focusIndex]?.disabled) board.children[focusIndex].focus();
   }
   function startStage() {

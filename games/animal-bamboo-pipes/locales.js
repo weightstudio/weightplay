@@ -53,6 +53,7 @@ Object.assign(window.BAMBOO_LOCALES.ru,{waterways:"Каналы",replay:"Сыг�
 Object.assign(window.BAMBOO_LOCALES.hi,{waterways:"जलमार्ग",replay:"फिर से खेलें"});
 Object.assign(window.BAMBOO_LOCALES.ar,{waterways:"المجاري",replay:"إعادة اللعب"});
 Object.assign(window.BAMBOO_LOCALES.en,{hintTarget:"Try {pipe}. It needs a different turn."});
+Object.assign(window.BAMBOO_LOCALES.en,{hintPipeLabel:"Pipe {n}",basinLabel:"flowering basin",hintRoute:"{pipe} → {next}: join the route."});
 Object.assign(window.BAMBOO_LOCALES.en,{nextPreview:"Next: Waterway {n} · {chapter} · Connect spring to basin."});
 Object.assign(window.BAMBOO_LOCALES["zh-Hant"],{nextPreview:"下一條水道：{n} · {chapter} · 將泉水接到花盆。"});
 Object.assign(window.BAMBOO_LOCALES["zh-Hans"],{nextPreview:"下一条水道：{n} · {chapter} · 将泉水接到花盆。"});
@@ -91,3 +92,15 @@ Object.assign(window.BAMBOO_LOCALES.it,{hintTarget:"Prova {pipe}. Deve essere ru
 Object.assign(window.BAMBOO_LOCALES.ru,{hintTarget:"Попробуйте {pipe}. Её нужно повернуть иначе."});
 Object.assign(window.BAMBOO_LOCALES.hi,{hintTarget:"{pipe} को आज़माएँ। इसे दूसरी दिशा में घुमाना होगा।"});
 Object.assign(window.BAMBOO_LOCALES.ar,{hintTarget:"جرّب {pipe}. يحتاج إلى تدوير مختلف."});
+Object.assign(window.BAMBOO_LOCALES["zh-Hant"],{hintPipeLabel:"管{n}",basinLabel:"花池",hintRoute:"{pipe} → {next}：接上水路。"});
+Object.assign(window.BAMBOO_LOCALES["zh-Hans"],{hintPipeLabel:"管{n}",basinLabel:"花池",hintRoute:"{pipe} → {next}：接上水路。"});
+Object.assign(window.BAMBOO_LOCALES.ja,{hintPipeLabel:"竹管{n}",basinLabel:"花鉢",hintRoute:"{pipe} → {next}：水路をつなごう。"});
+Object.assign(window.BAMBOO_LOCALES.ko,{hintPipeLabel:"관 {n}",basinLabel:"꽃 연못",hintRoute:"{pipe} → {next}: 물길을 이으세요."});
+Object.assign(window.BAMBOO_LOCALES.es,{hintPipeLabel:"Tubo {n}",basinLabel:"estanque",hintRoute:"{pipe} → {next}: une el canal."});
+Object.assign(window.BAMBOO_LOCALES["pt-BR"],{hintPipeLabel:"Tubo {n}",basinLabel:"lago",hintRoute:"{pipe} → {next}: ligue o canal."});
+Object.assign(window.BAMBOO_LOCALES.fr,{hintPipeLabel:"Tuyau {n}",basinLabel:"bassin",hintRoute:"{pipe} → {next} : reliez le canal."});
+Object.assign(window.BAMBOO_LOCALES.de,{hintPipeLabel:"Rohr {n}",basinLabel:"Becken",hintRoute:"{pipe} → {next}: Verbinde den Wasserweg."});
+Object.assign(window.BAMBOO_LOCALES.it,{hintPipeLabel:"Tubo {n}",basinLabel:"vasca",hintRoute:"{pipe} → {next}: collega il canale."});
+Object.assign(window.BAMBOO_LOCALES.ru,{hintPipeLabel:"Труба {n}",basinLabel:"бассейн",hintRoute:"{pipe} → {next}: соедините путь."});
+Object.assign(window.BAMBOO_LOCALES.hi,{hintPipeLabel:"नली {n}",basinLabel:"तालाब",hintRoute:"{pipe} → {next}: जलमार्ग जोड़ें।"});
+Object.assign(window.BAMBOO_LOCALES.ar,{hintPipeLabel:"أنبوب {n}",basinLabel:"الحوض",hintRoute:"{pipe} ← {next}: صِل المسار."});

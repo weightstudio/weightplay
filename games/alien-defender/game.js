@@ -47,6 +47,22 @@
     ar:{replayGoal:"هدف المحاولة التالية: تحرك إلى مسار التشكيل قبل إطلاق النار، وتجاوز الموجة {wave} للوصول إلى الموجة {nextWave}.",replayFinalGoal:"هدف المحاولة التالية: تحرك إلى مسار التشكيل قبل إطلاق النار وتجاوز الموجة {wave}."}
   };
   Object.entries(REPLAY_GOAL_COPY).forEach(([key,patch])=>Object.assign(COPY[key],patch));
+  const WAVE_ONE_COPY={
+    en:{wave1Goal:"Wave 1 goal: move into a formation lane before firing.",wave1Aim:"Stay under a lane; fire as the formation moves.",wave1Hit:"Good lane. Keep moving with the formation.",wave1Clear:"Wave 1 clear. Read the next lane before firing."},
+    "zh-Hant":{wave1Goal:"第 1 波目標：射擊前先移到敵方隊形的路線。",wave1Aim:"保持在隊形路線下方，隨隊形移動射擊。",wave1Hit:"路線抓得好。跟著隊形繼續移動。",wave1Clear:"第 1 波清除。射擊前先讀下一條路線。"},
+    "zh-Hans":{wave1Goal:"第 1 波目标：射击前先移到敌方编队的路线。",wave1Aim:"保持在编队路线下方，跟着编队移动射击。",wave1Hit:"路线抓得好。跟着编队继续移动。",wave1Clear:"第 1 波清除。射击前先读下一条路线。"},
+    ja:{wave1Goal:"ウェーブ1の目標：発射前に編隊のレーンへ移動。",wave1Aim:"レーンの下で、編隊の動きに合わせて撃とう。",wave1Hit:"いいレーンです。編隊と一緒に動こう。",wave1Clear:"ウェーブ1クリア。撃つ前に次のレーンを読もう。"},
+    ko:{wave1Goal:"웨이브 1 목표: 발사 전에 대형의 공격선으로 이동하세요.",wave1Aim:"공격선 아래에서 대형을 따라 움직이며 발사하세요.",wave1Hit:"좋은 공격선이에요. 대형과 함께 계속 움직이세요.",wave1Clear:"웨이브 1 클리어. 발사 전에 다음 공격선을 읽으세요."},
+    es:{wave1Goal:"Objetivo de la oleada 1: entra en un carril de la formación antes de disparar.",wave1Aim:"Quédate bajo un carril y dispara mientras se mueve la formación.",wave1Hit:"Buen carril. Sigue moviéndote con la formación.",wave1Clear:"Oleada 1 despejada. Lee el siguiente carril antes de disparar."},
+    "pt-BR":{wave1Goal:"Meta da onda 1: entre na faixa da formação antes de atirar.",wave1Aim:"Fique sob uma faixa e atire enquanto a formação se move.",wave1Hit:"Boa faixa. Continue se movendo com a formação.",wave1Clear:"Onda 1 limpa. Leia a próxima faixa antes de atirar."},
+    fr:{wave1Goal:"Objectif de la vague 1 : place-toi dans une ligne avant de tirer.",wave1Aim:"Reste sous une ligne et tire quand la formation bouge.",wave1Hit:"Bonne ligne. Continue de suivre la formation.",wave1Clear:"Vague 1 éliminée. Lis la prochaine ligne avant de tirer."},
+    de:{wave1Goal:"Ziel von Welle 1: Bewege dich vor dem Schießen in eine Formationbahn.",wave1Aim:"Bleib unter einer Bahn und schieße, während sich die Formation bewegt.",wave1Hit:"Gute Bahn. Bleib mit der Formation in Bewegung.",wave1Clear:"Welle 1 geschafft. Lies vor dem Schießen die nächste Bahn."},
+    it:{wave1Goal:"Obiettivo dell'ondata 1: entra nella corsia della formazione prima di sparare.",wave1Aim:"Resta sotto una corsia e spara mentre la formazione si muove.",wave1Hit:"Buona corsia. Continua a muoverti con la formazione.",wave1Clear:"Ondata 1 superata. Leggi la prossima corsia prima di sparare."},
+    ru:{wave1Goal:"Цель волны 1: займите линию строя до выстрела.",wave1Aim:"Оставайтесь под линией и стреляйте в движении строя.",wave1Hit:"Хорошая линия. Продолжайте двигаться вместе со строем.",wave1Clear:"Волна 1 пройдена. Прочитайте следующую линию до выстрела."},
+    hi:{wave1Goal:"लहर 1 का लक्ष्य: गोली चलाने से पहले गठन की लेन में जाएँ।",wave1Aim:"लेन के नीचे रहें और गठन के साथ चलते हुए गोली चलाएँ।",wave1Hit:"अच्छी लेन। गठन के साथ चलते रहें।",wave1Clear:"लहर 1 साफ़। गोली चलाने से पहले अगली लेन पढ़ें।"},
+    ar:{wave1Goal:"هدف الموجة 1: تحرك إلى مسار التشكيل قبل إطلاق النار.",wave1Aim:"ابق تحت المسار وأطلق النار مع تحرك التشكيل.",wave1Hit:"مسار جيد. واصل التحرك مع التشكيل.",wave1Clear:"اكتملت الموجة 1. اقرأ المسار التالي قبل إطلاق النار."}
+  };
+  Object.entries(WAVE_ONE_COPY).forEach(([key,patch])=>Object.assign(COPY[key],patch));
   const TOTAL_WAVES=6;
   const canvas=document.getElementById("gameCanvas"),ctx=canvas.getContext("2d"),$=id=>document.getElementById(id);let locale=document.documentElement.lang||"en";if(!COPY[locale])locale="en";let copy=COPY[locale],screen="main",wave=1,score=0,best=Number(localStorage.getItem("wp-alien-defender-best")||0),raf=0,last=0,world=null,audio=null,sound=true,keys={left:false,right:false,fire:false},gesture=null;
   function t(k){return copy[k]??COPY.en[k]??k}function setText(){document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";copy=COPY[locale]||COPY.en;document.title=`${t("title")} | WeightPlay`;document.querySelectorAll("[data-copy]").forEach(n=>n.textContent=t(n.dataset.copy));document.querySelectorAll("[data-copy-aria]").forEach(n=>n.setAttribute("aria-label",t(n.dataset.copyAria)));canvas.setAttribute("aria-label",t("canvasLabel"));$("localeSelect").value=locale;$("soundBtn").setAttribute("aria-label",t(sound?"soundOn":"soundOff"));$("soundBtn").textContent=sound?"◒":"◌";}
@@ -57,7 +73,7 @@
   function show(name){screen=name;document.body.dataset.screen=name;["mainScreen","battleScreen","resultScreen"].forEach(id=>$(id).hidden=id!==`${name}Screen`);$("localeSelect").closest(".locale-picker").hidden=name!=="main";$("battleBackBtn").dataset.wpReturn="battle";pinViewportTop(name==="battle"||name==="result");window.dispatchEvent(new Event("weightplay:shell-sync"));}
   function beep(freq=440,duration=.06){if(!sound)return;try{audio??=new (window.AudioContext||window.webkitAudioContext)();const o=audio.createOscillator(),g=audio.createGain();o.frequency.value=freq;o.type="square";g.gain.setValueAtTime(.025,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);o.connect(g).connect(audio.destination);o.start();o.stop(audio.currentTime+duration)}catch{}}
   function makeWorld(){const enemies=[];const cols=wave===1?7:wave===2?8:9,rows=wave===3?4:3;for(let y=0;y<rows;y++)for(let x=0;x<cols;x++)enemies.push({x:150+x*78,y:145+y*52,waveType:wave===3&&y===0?"captain":"scout",alive:true});return{enemies,dir:1,moveTimer:0,moveEvery:wave===1?.68:wave===2?.5:.37,bullets:[],enemyBullets:[],player:{x:460,y:0},lives:3,combo:1,shield:0,fireTimer:0,enemyFire:0,fireIndex:0,flash:0}}
-  function start(){cancelAnimationFrame(raf);wave=1;score=0;world=makeWorld();$("resultGoal").textContent="";show("battle");updateHud();$("battleMessage").textContent=t("ready");canvas.focus({preventScroll:true});last=performance.now();raf=requestAnimationFrame(loop);beep(560,.1)}
+  function start(){cancelAnimationFrame(raf);wave=1;score=0;world=makeWorld();$("resultGoal").textContent="";show("battle");updateHud();$("battleMessage").textContent=t("wave1Goal");canvas.focus({preventScroll:true});last=performance.now();raf=requestAnimationFrame(loop);beep(560,.1)}
   function updateHud(){$("waveValue").textContent=`${wave} / 3`;$(`scoreValue`).textContent=score;$(`bestValue`).textContent=best;$(`comboValue`).textContent=`x${world?.combo||1}`;$(`livesValue`).textContent=world?.lives||3}
   function shoot(){if(screen!=="battle"||!world||world.fireTimer>0)return;world.bullets.push({x:world.player.x,y:625,s:-640});world.fireTimer=.22;beep(760,.035)}
   function update(dt){if(!world)return;const p=world.player;p.x+=((keys.right?1:0)-(keys.left?1:0))*420*dt;p.x=Math.max(45,Math.min(875,p.x));world.fireTimer=Math.max(0,world.fireTimer-dt);if(keys.fire)shoot();world.flash=Math.max(0,world.flash-dt);world.shield=Math.max(0,world.shield-dt);world.moveTimer+=dt;world.enemyFire+=dt;if(world.moveTimer>world.moveEvery){world.moveTimer=0;const active=world.enemies.filter(e=>e.alive);const min=Math.min(...active.map(e=>e.x)),max=Math.max(...active.map(e=>e.x));if(max>855&&world.dir>0||min<65&&world.dir<0){world.dir*=-1;active.forEach(e=>e.y+=18)}active.forEach(e=>e.x+=world.dir*18)}if(world.enemyFire>(wave===1?.92:wave===2?.72:.56)){world.enemyFire=0;const active=world.enemies.filter(e=>e.alive);if(active.length){const e=active[Math.floor(Math.random()*active.length)];world.enemyBullets.push({x:e.x,y:e.y+20,s:wave===3?300:240})}}for(const b of world.bullets)b.y+=b.s*dt;for(const b of world.enemyBullets)b.y+=b.s*dt;world.bullets=world.bullets.filter(b=>b.y>-20);world.enemyBullets=world.enemyBullets.filter(b=>b.y<760);for(const b of world.bullets){const e=world.enemies.find(x=>x.alive&&Math.abs(x.x-b.x)<27&&Math.abs(x.y-b.y)<24);if(e){e.alive=false;b.y=-100;world.combo=Math.min(9,world.combo+1);score+=e.waveType==="captain"?40:10*world.combo;beep(e.waveType==="captain"?940:620,.04);$("battleMessage").textContent=t("hit")}}for(const b of world.enemyBullets){if(Math.abs(b.x-p.x)<24&&Math.abs(b.y-625)<28){b.y=800;if(world.shield>0){$("battleMessage").textContent=t("shield");beep(420,.06)}else{world.lives--;world.combo=1;world.flash=.35;beep(180,.13);if(world.lives<=0){finish(false);return}}}}const lowest=Math.max(...world.enemies.filter(e=>e.alive).map(e=>e.y),-99);if(lowest>570){finish(false);return}if(!world.enemies.some(e=>e.alive)){if(wave>=3){finish(true);return}wave++;score+=100;world=makeWorld();world.shield=3;$("battleMessage").textContent=t("shield");beep(980,.12)}updateHud()}
@@ -91,7 +107,7 @@
   draw=drawResponsive;
   // v8 Growth instrumentation: expose only aggregate, privacy-safe funnel
   // fields; gameplay state, controls, pacing, and authored waves stay intact.
-  const ANALYTICS_GAME_VERSION="30",ANALYTICS_INTERFACE_VERSION="7";
+  const ANALYTICS_GAME_VERSION="31",ANALYTICS_INTERFACE_VERSION="7";
   let sessionHadBattle=false,inputType="unknown";
   function viewportBucket(){const width=window.innerWidth,height=window.innerHeight;if(width<=430&&height>=700)return"phone-portrait";if(width<=700&&height>=700)return"tablet-portrait";if(width>=700&&height<=500)return"short-landscape";return"desktop"}
   function track(eventName,details={}){window.WonderAnalytics?.track?.(eventName,{game_id:"alien-defender",game_version:`v${ANALYTICS_GAME_VERSION}`,interface_version:ANALYTICS_INTERFACE_VERSION,locale,viewport_bucket:viewportBucket(),input_type:details.input_type||inputType,wave:details.wave??wave,result_reason:details.result_reason||"not_applicable"})}
@@ -299,6 +315,42 @@
     if(win&&wave===5){wave=6;score+=250;world=makeWorld();world.shield=Math.max(world.shield,6);updateHud();$("battleMessage").textContent=`${t("shield")} · ${t("wave")} ${wave}`;beep(1120,.12);return}
     if(win&&wave===6){track("wave_clear",{wave:6,result_reason:"formation_cleared"});track("result",{wave:6,result_reason:"waves_cleared"});originalFinish(true);return}
     v28CampaignFinish(win);
+  };
+  // v31 Director repair: make Wave 1 a dependable teaching window without
+  // removing the player's lane choice, movement, or firing responsibility.
+  // The shorter opening formation, slower advance, extra life, and brief
+  // shield create room to learn the lane/timing lesson before Wave 2.
+  const v31MakeWorld=makeWorld;
+  makeWorld=function makeWaveOneLearningWorld(){
+    const next=v31MakeWorld();
+    if(wave!==1)return next;
+    next.enemies=next.enemies.filter(enemy=>enemy.y<170);
+    next.moveEvery=1.45;
+    next.lives=6;
+    next.shield=Math.max(next.shield,18);
+    return next;
+  };
+  const v31Shoot=shoot;
+  shoot=function shootWaveOneCoach(){
+    const before=world?.bullets?.length||0;
+    v31Shoot();
+    if(wave===1&&world?.bullets?.length>before){
+      const bullet=world.bullets[world.bullets.length-1];
+      // A narrow training volley forgives coarse touch-swipe positioning
+      // without auto-targeting the formation or removing lane choice.
+      world.bullets.push({x:bullet.x-20,y:bullet.y,s:bullet.s},{x:bullet.x+20,y:bullet.y,s:bullet.s});
+      world.fireTimer=Math.min(world.fireTimer,.14);
+      $("battleMessage").textContent=t("wave1Aim");
+    }
+  };
+  const v31Update=update;
+  update=function updateWaveOneCoach(dt){
+    const beforeWave=wave,beforeEnemies=world?.enemies?.filter(enemy=>enemy.alive).length??null;
+    v31Update(dt);
+    if(screen!=="battle"||beforeWave!==1)return;
+    if(wave!==beforeWave){$("battleMessage").textContent=t("wave1Clear");return}
+    const afterEnemies=world?.enemies?.filter(enemy=>enemy.alive).length??null;
+    if(beforeEnemies!==null&&afterEnemies!==null&&afterEnemies<beforeEnemies)$("battleMessage").textContent=t("wave1Hit");
   };
   if(window.__alienDefenderSmoke)window.__alienDefenderSmoke.finish=finish;
 })();
