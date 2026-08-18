@@ -16,10 +16,27 @@
     hi: "खेल सारांश: स्कोर {score} · सबसे बड़ा कॉम्बो ×{combo} · डेक से ली गई पत्तियाँ {stock} · पिरामिड में शेष {remaining}",
     ar: "ملخص اللعب: النقاط {score} · أعلى سلسلة ×{combo} · بطاقات السحب {stock} · بطاقات الهرم المتبقية {remaining}",
   };
+  const STOCK_COMBO_COPY = {
+    en: "Stock draw ends Combo ×{combo}. Find the next pair.",
+    "zh-Hant": "翻開牌庫會結束連鎖 ×{combo}；找找下一組可配對的牌。",
+    "zh-Hans": "翻开牌库会结束连锁 ×{combo}；找找下一组可配对的牌。",
+    ja: "山札を引くとコンボ ×{combo} が途切れます。次のペアを探しましょう。",
+    ko: "덱을 뽑으면 콤보 ×{combo}가 끊깁니다. 다음 짝을 찾아 보세요.",
+    es: "Robar del mazo rompe el combo ×{combo}. Busca la próxima pareja.",
+    "pt-BR": "Comprar do monte quebra o combo ×{combo}. Procure o próximo par.",
+    fr: "Piocher casse le combo ×{combo}. Cherchez la prochaine paire.",
+    de: "Ein Zug vom Stapel beendet die Kombo ×{combo}. Suche das nächste Paar.",
+    it: "Pescare dal mazzo interrompe la combo ×{combo}. Cerca la prossima coppia.",
+    ru: "Добор из колоды прерывает комбо ×{combo}. Ищите следующую пару.",
+    hi: "डेक से पत्ता लेने पर कॉम्बो ×{combo} टूटता है। अगली जोड़ी खोजें।",
+    ar: "سحب بطاقة من الرزمة يقطع السلسلة ×{combo}. ابحث عن الزوج التالي.",
+  };
 
   const formatSummary = (template, values) => template.replace(/\{(score|combo|stock|remaining)\}/gu, (_, key) => String(values[key]));
   const view = window.WPClassicSolitaire?.mount({ variant: "pyramid", id: "pyramid-solitaire" });
   if (!view) return;
+  let pendingStockDraw = null;
+  let stockCueTimer = null;
 
   const updateResultSummary = () => {
     if (!view.game?.won && !view.game?.lost) return;
@@ -37,9 +54,39 @@
     resultText.textContent = `${outcome} ${formatSummary(copy, values)}`;
   };
 
+  const showStockComboCue = (combo) => {
+    const status = view.nodes?.boardStatus;
+    if (!status || view.game.won || view.game.lost || combo < 1) return;
+    const copy = STOCK_COMBO_COPY[view.locale] || STOCK_COMBO_COPY.en;
+    status.setAttribute("data-runtime-localize", "off");
+    status.dataset.state = "stock";
+    status.textContent = formatSummary(copy, { combo });
+    clearTimeout(stockCueTimer);
+    stockCueTimer = window.setTimeout(() => {
+      if (status && status.dataset.state === "stock" && !view.game.won && !view.game.lost) {
+        delete status.dataset.state;
+        status.textContent = "";
+      }
+      status?.removeAttribute("data-runtime-localize");
+    }, 1500);
+  };
+
+  view.nodes?.stockPile?.addEventListener("click", () => {
+    const marker = {};
+    pendingStockDraw = { marker, stockBefore: view.game.stock.length, comboBefore: view.game.combo };
+    window.setTimeout(() => {
+      if (pendingStockDraw?.marker === marker) pendingStockDraw = null;
+    }, 0);
+  }, true);
+
   const render = view.render.bind(view);
   view.render = (...args) => {
     render(...args);
     updateResultSummary();
+    const pending = pendingStockDraw;
+    if (pending && view.game.stock.length < pending.stockBefore) {
+      pendingStockDraw = null;
+      if (pending.comboBefore > 0 && view.game.combo === 0) showStockComboCue(pending.comboBefore);
+    }
   };
 })();
