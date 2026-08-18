@@ -424,6 +424,37 @@ body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyram
   body[data-wp-game-id="tripeaks-solitaire"] .tableau-area.variant-tripeaks > .peak-row { flex-basis: calc(var(--classic-card-height) * .9); height: calc(var(--classic-card-height) * .9); }
   body[data-wp-game-id="pyramid-solitaire"] .stock-pile { --pyramid-stock-card-width: clamp(38px, 9vh, 58px); }
   body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyramid-row { flex-basis: var(--classic-card-height); height: var(--classic-card-height); }
+
+  /* TriPeaks needs a landscape rail: keep Stock/Waste readable on the left,
+     then give the four overlapping peak rows the full vertical track. This
+     removes the nested tableau scrollbar without independently scaling cards. */
+  body[data-wp-game-id="tripeaks-solitaire"] #classicBoard {
+    grid-template-columns: 128px minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+  body[data-wp-game-id="tripeaks-solitaire"] #classicBoard .board-middle {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    align-self: start;
+  }
+  body[data-wp-game-id="tripeaks-solitaire"] #classicBoard .board-status {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  body[data-wp-game-id="tripeaks-solitaire"] #classicBoard .tableau-area.variant-tripeaks {
+    grid-column: 2;
+    grid-row: 2;
+    justify-content: flex-start;
+    overflow: visible;
+  }
+  body[data-wp-game-id="tripeaks-solitaire"] #classicBoard .tableau-area.variant-tripeaks > .peak-row {
+    flex-basis: calc(var(--classic-card-height) * .84);
+    height: calc(var(--classic-card-height) * .84);
+  }
+  body[data-wp-game-id="tripeaks-solitaire"] #classicBoard .battle-actions {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
 }
 
 body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyramid-row {
