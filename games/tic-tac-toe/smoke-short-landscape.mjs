@@ -43,6 +43,21 @@ try {
   await page.goto(`http://127.0.0.1:${server.address().port}/games/tic-tac-toe/?preview=1`, { waitUntil: "networkidle" });
   await page.locator("#startBtn").click();
   await page.locator('[data-action="cell"][data-value="0"]').click();
+  const rivalReply = await page.evaluate(() => ({
+    message: document.querySelector("#gameMessage")?.textContent || "",
+    messageKey: document.querySelector("#gameMessage")?.dataset.messageKey || "",
+    cells: [...document.querySelectorAll('[data-rival-reply="true"]')].map((node) => ({
+      value: node.getAttribute("data-value"),
+      text: node.textContent,
+    })),
+  }));
+  assert(rivalReply.messageKey === "ticRivalReply" && rivalReply.cells.length === 1 && rivalReply.cells[0].value === "1" && /O/iu.test(rivalReply.message), "Rival response cue did not identify the actual O cell", rivalReply);
+  await page.waitForTimeout(820);
+  const settledReply = await page.evaluate(() => ({
+    messageKey: document.querySelector("#gameMessage")?.dataset.messageKey || "",
+    cells: document.querySelectorAll('[data-rival-reply="true"]').length,
+  }));
+  assert(settledReply.messageKey !== "ticRivalReply" && settledReply.cells === 0, "Rival response cue did not settle before the next choice", settledReply);
   const battle = await page.evaluate(() => {
     const rect = (node) => {
       const value = node?.getBoundingClientRect();
@@ -88,7 +103,7 @@ try {
   assert(result.screen === "result" && /cleared|挑戰|desafío|クリア|클리어|conclu/iu.test(result.title || ""), "Natural Tic-Tac-Toe success Result is missing", result);
   assert(result.scrollY <= 1 && result.scrollHeight <= result.viewport.height + 1 && inside(result.actions, result.viewport.width, result.viewport.height) && inside(result.retry, result.viewport.width, result.viewport.height) && inside(result.home, result.viewport.width, result.viewport.height) && inside(result.locale, result.viewport.width, result.viewport.height), "Result recovery actions are not reachable in the first frame", result);
   assert(errors.length === 0, "Tic-Tac-Toe short-landscape smoke emitted browser errors", errors);
-  console.log(JSON.stringify({ generatedAt: new Date().toISOString(), viewport: "844x390", route: "Main > Battle > first legal cell > natural success Result", battle, result, errors }, null, 2));
+  console.log(JSON.stringify({ generatedAt: new Date().toISOString(), viewport: "844x390", route: "Main > Battle > first legal cell > rival response cue > natural success Result", rivalReply, settledReply, battle, result, errors }, null, 2));
   await context.close();
 } finally {
   await browser.close();

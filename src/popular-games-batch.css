@@ -158,9 +158,11 @@ body[data-game-id="snake"] .game-message[data-tone="good"] { font-weight: 800; }
 .tic-board { grid-template-columns: repeat(3, 1fr); }
 .tic-cell { border: 1px solid var(--arcade-line); border-radius: 12px; background: rgba(255,255,255,.08); font-size: clamp(2rem, 9vw, 4.2rem); font-weight: 900; color: var(--arcade-accent-2); }
 .tic-cell:disabled { opacity: 1; cursor: default; }
+.tic-cell.rival-reply { outline: 3px solid var(--arcade-accent-2); outline-offset: -3px; box-shadow: 0 0 0 5px rgba(255, 184, 107, .14), 0 0 18px rgba(255, 184, 107, .44); animation: tic-rival-reply 760ms ease-out both; }
 .tic-cell.winning { outline: 3px solid var(--arcade-accent); outline-offset: -3px; box-shadow: 0 0 0 5px rgba(126, 231, 201, .14), 0 0 18px rgba(126, 231, 201, .42); animation: tic-winning-pulse 520ms ease-out both; }
+@keyframes tic-rival-reply { 0% { filter: brightness(1); } 45% { filter: brightness(1.42); } 100% { filter: brightness(1.08); } }
 @keyframes tic-winning-pulse { 0% { transform: scale(.94); filter: brightness(1); } 55% { transform: scale(1.04); filter: brightness(1.45); } 100% { transform: scale(1); filter: brightness(1.1); } }
-@media (prefers-reduced-motion: reduce) { .tic-cell.winning { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .tic-cell.rival-reply, .tic-cell.winning { animation: none; } }
 .checkers-board { grid-template-columns: repeat(6, 1fr); gap: 0; }
 .checker-cell { display: grid; place-items: center; background: #193652; border: 0; border-radius: 0; }
 .checker-cell:nth-child(odd) { background: #496074; }

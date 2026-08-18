@@ -9204,6 +9204,7 @@ window.WeightPlayGameRuntimeLocales["fr"] = {
   "Nouveau plateau ouvert : {stage}": "Nouveau plateau ouvert : {stage}",
   "Nouveau record !": "Nouveau disque !",
   "Nouvelle": "Nouveau",
+  "Nouvelle carte révélée ! Continuez à planifier.": "Nouvelle carte révélée ! Continuez à planifier.",
   "Nouvelle partie": "Nouvelle fête",
   "Nouvelle pile = destination · sommets voisins identiques → entrent": "Nouvelle pile = destination · sommets voisins identiques → entrée",
   "Novo jogo": "Nouveau jeu",
