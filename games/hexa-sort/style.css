@@ -151,6 +151,7 @@
   filter: brightness(1.35);
 }
 .hex-cell.drop-target {
+  z-index: 60;
   --cell-rim: #d7fbff;
   --cell-face: #28566a;
 }

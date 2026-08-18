@@ -324,6 +324,21 @@
     hi: "बाधा वाले खाने मार्ग की सीमा बताते हैं। चमकते खानों में प्रवेश न करें।",
     ar: "تحدد خلايا العوائق حدود المسار. لا تدخل الخلايا المضيئة.",
   };
+  const SNAKE_ROUTE_CUE = {
+    en: { status: "New food appeared — plan your first turn.", cell: "New food target — plan your first turn." },
+    "zh-Hant": { status: "新食物已出現：先規劃第一個轉向。", cell: "新食物目標：先規劃第一個轉向。" },
+    "zh-Hans": { status: "新食物已出现：先规划第一个转向。", cell: "新食物目标：先规划第一个转向。" },
+    ja: { status: "新しい食べ物が出ました。最初の曲がり方を考えましょう。", cell: "新しい食べ物です。最初の曲がり方を考えましょう。" },
+    ko: { status: "새 먹이가 나타났습니다. 첫 번째 방향 전환을 계획하세요.", cell: "새 먹이 목표입니다. 첫 번째 방향 전환을 계획하세요." },
+    es: { status: "Apareció comida nueva: planifica tu primer giro.", cell: "Nuevo objetivo de comida: planifica tu primer giro." },
+    "pt-BR": { status: "Uma nova comida apareceu: planeje sua primeira curva.", cell: "Novo alvo de comida: planeje sua primeira curva." },
+    fr: { status: "Une nouvelle nourriture apparaît : prévoyez votre premier virage.", cell: "Nouvelle cible : prévoyez votre premier virage." },
+    de: { status: "Neues Futter ist da – plane deinen ersten Richtungswechsel.", cell: "Neues Futterziel – plane deinen ersten Richtungswechsel." },
+    it: { status: "È comparso un nuovo cibo: pianifica la prima curva.", cell: "Nuovo obiettivo: pianifica la prima curva." },
+    ru: { status: "Появилась новая еда — спланируйте первый поворот.", cell: "Новая цель — спланируйте первый поворот." },
+    hi: { status: "नया भोजन दिखाई दिया है—पहली दिशा बदलने की योजना बनाएँ।", cell: "नया भोजन लक्ष्य—पहली दिशा बदलने की योजना बनाएँ।" },
+    ar: { status: "ظهر طعام جديد — خطط لمنعطفك الأول.", cell: "هدف طعام جديد — خطط لمنعطفك الأول." },
+  };
   const SNAKE_SHELL_COPY = {
     en: { battleBack: "Back to main", mainBack: "Back to WeightPlay" },
     "zh-Hant": { battleBack: "返回主頁", mainBack: "返回 WeightPlay" },
@@ -409,7 +424,7 @@
   const makeState = (type) => {
     const state = { type, score: 0, moves: 0, done: false, success: false, message: "", tone: "", messageKey: "", mismatchTile: "" };
     if (type === "tetris") Object.assign(state, { pieces: 0, lines: 0, active: 3, blocks: [] });
-    if (type === "snake") Object.assign(state, { started: false, food: 0, foodCell: 45, direction: "up", trail: snakeTrailForDirection("up"), runNumber: 1, goalFood: 3, modeKey: "open", obstacles: [], milestoneReached: false, foodFlashCell: -1 });
+    if (type === "snake") Object.assign(state, { started: false, food: 0, foodCell: 45, direction: "up", trail: snakeTrailForDirection("up"), runNumber: 1, goalFood: 3, modeKey: "open", obstacles: [], milestoneReached: false, foodFlashCell: -1, foodCueCell: -1 });
     if (type === "tic") Object.assign(state, { cells: Array(9).fill(""), playerMoves: 0, aiMoves: 0, winningCells: [], rivalCell: -1 });
     if (type === "chess") Object.assign(state, { step: 0 });
     if (type === "checkers") Object.assign(state, { step: 0 });
@@ -520,6 +535,7 @@
         if (state.messageKey === "hintObjective") state.message = `${copy(locale, "hint")}: ${copy(locale, game.objective)}`;
         else if (state.messageKey === "snakeReady") state.message = SNAKE_READY[locale] || SNAKE_READY.en;
         else if (state.messageKey === "snakeObstacleCue") state.message = SNAKE_OBSTACLE_CUE[locale] || SNAKE_OBSTACLE_CUE.en;
+        else if (state.messageKey === "snakeFoodRoute") state.message = (SNAKE_ROUTE_CUE[locale] || SNAKE_ROUTE_CUE.en).status;
         else if (state.messageKey === "snakeRunning") state.message = snakeInstruction(locale);
         else if (state.messageKey === "snakeFood") state.message = snakeCopy(locale, "collected", state.food);
         else if (state.messageKey === "snakeMilestone") state.message = snakeCopy(locale, "milestone", state.food);
@@ -555,7 +571,8 @@
     const stopTicResultTimer = () => { if (ticResultTimer) { window.clearTimeout(ticResultTimer); ticResultTimer = null; } };
     const stopTicReplyTimer = () => { if (ticReplyTimer) { window.clearTimeout(ticReplyTimer); ticReplyTimer = null; } };
     let snakeFlashTimer = null;
-    const stopSnakeTimer = () => { if (snakeTimer) { window.clearTimeout(snakeTimer); snakeTimer = null; } if (snakeFlashTimer) { window.clearTimeout(snakeFlashTimer); snakeFlashTimer = null; } };
+    let snakeRouteCueTimer = null;
+    const stopSnakeTimer = () => { if (snakeTimer) { window.clearTimeout(snakeTimer); snakeTimer = null; } if (snakeFlashTimer) { window.clearTimeout(snakeFlashTimer); snakeFlashTimer = null; } if (snakeRouteCueTimer) { window.clearTimeout(snakeRouteCueTimer); snakeRouteCueTimer = null; } };
     const nextSnakeRunNumber = () => {
       const runKey = `${key(gameId)}_runs`;
       let runNumber = 0;
@@ -593,8 +610,23 @@
         }
         state.score = state.food * 10 + (state.milestoneReached ? 20 : 0);
         state.foodCell = chooseSnakeFood(state.trail, state.obstacles);
+        state.foodCueCell = state.foodCell;
+        if (state.messageKey !== "snakeMilestone") {
+          announce((SNAKE_ROUTE_CUE[locale] || SNAKE_ROUTE_CUE.en).status, "", "snakeFoodRoute");
+        }
         if (snakeFlashTimer) window.clearTimeout(snakeFlashTimer);
         snakeFlashTimer = window.setTimeout(() => { state.foodFlashCell = -1; if (!state.done) render(); }, 520);
+        if (snakeRouteCueTimer) window.clearTimeout(snakeRouteCueTimer);
+        snakeRouteCueTimer = window.setTimeout(() => {
+          snakeRouteCueTimer = null;
+          state.foodCueCell = -1;
+          if (state.messageKey === "snakeFoodRoute") {
+            state.message = snakeInstruction(locale);
+            state.messageKey = "snakeRunning";
+            state.tone = "";
+          }
+          if (!state.done) render();
+        }, 1100);
       }
       else state.trail.pop();
       render();
@@ -622,6 +654,8 @@
         if (!["left", "right", "up", "down"].includes(name)) return;
         if (!state.started) { beginSnake(name); return; }
         if (SNAKE_OPPOSITE[state.direction] === name) { announce(`${copy(locale, "hint")}: ${copy(locale, "choose")} ${copy(locale, name)}`, "warn", "hintObjective"); render(); return; }
+        state.foodCueCell = -1;
+        if (snakeRouteCueTimer) { window.clearTimeout(snakeRouteCueTimer); snakeRouteCueTimer = null; }
         state.direction = name;
         state.message = "";
         state.messageKey = "";
@@ -647,7 +681,7 @@
     const shell = () => { document.documentElement.lang = locale; document.documentElement.dir = locale === "ar" ? "rtl" : "ltr"; document.title = `${title(locale, gameId)} | WeightPlay`; if (game.type === "checkers") document.querySelector('meta[name="description"]')?.setAttribute("content", checkersMetaDescription(locale)); if (game.type === "breakout") document.querySelector('meta[name="description"]')?.setAttribute("content", breakoutMetaDescription(locale)); els.eyebrow.textContent = copy(locale, "eyebrow"); els.title.textContent = title(locale, gameId); els.tagline.textContent = copy(locale, "tagline"); els.objective.innerHTML = `<strong>${copy(locale, "objective")}:</strong> ${copy(locale, game.objective)}`; els.instruction.textContent = game.type === "snake" ? snakeInstruction(locale) : copy(locale, "ready"); document.querySelector("#languageLabel").textContent = copy(locale, "language"); document.querySelector("#footerText").textContent = `${title(locale, gameId)} · ${copy(locale, "eyebrow")}`; if (game.type === "snake") { const shellCopy = SNAKE_SHELL_COPY[locale] || SNAKE_SHELL_COPY.en; document.querySelector('[data-wp-return="battle"]')?.setAttribute("aria-label", shellCopy.battleBack); document.querySelector('[data-wp-return="main"]')?.setAttribute("aria-label", shellCopy.mainBack); } };
     const button = (label, name, extra = "") => `<button type="button" class="control ${extra}" data-action="${name}">${label}</button>`;
     const renderBoard = () => {
-      if (game.type === "snake") { const foodCell = state.foodCell; const cells = Array.from({ length: SNAKE_GRID_SIZE * SNAKE_GRID_SIZE }, (_, i) => `<span class="grid-cell ${state.trail.includes(i) ? "filled" : ""} ${i === state.trail[0] ? "snake-head" : ""} ${i === foodCell ? "food" : ""} ${state.obstacles.includes(i) ? "obstacle" : ""} ${i === state.foodFlashCell ? "food-hit" : ""}" data-cell="${i}"${state.obstacles.includes(i) ? ` aria-label="${snakeModeLabel(locale, state.modeKey)}"` : ""}></span>`).join(""); els.board.innerHTML = `<div class="grid-board snake-grid ${state.milestoneReached ? "milestone-pulse" : ""}" role="grid" aria-label="${copy(locale, game.objective)}" data-grid-size="${SNAKE_GRID_SIZE}" data-tick-ms="${snakeTickMs()}" data-head-cell="${state.trail[0]}" data-food-cell="${foodCell}" data-food-count="${state.food}" data-score="${state.score}" data-run="${state.runNumber}" data-mode="${state.modeKey}" data-mode-label="${snakeModeLabel(locale, state.modeKey)}" data-obstacles="${state.obstacles.join(",")}" data-goal-food="${state.goalFood}" data-milestone-reached="${state.milestoneReached}" data-direction="${state.direction}" data-moves="${state.moves}" data-trail="${state.trail.join(",")}">${cells}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "up"), "up")}</div><div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "down"), "down")}${button(copy(locale, "right"), "right")}</div>`; return; }
+      if (game.type === "snake") { const foodCell = state.foodCell; const routeCueCell = state.foodCueCell; const routeCueLabel = (SNAKE_ROUTE_CUE[locale] || SNAKE_ROUTE_CUE.en).cell; const cells = Array.from({ length: SNAKE_GRID_SIZE * SNAKE_GRID_SIZE }, (_, i) => `<span class="grid-cell ${state.trail.includes(i) ? "filled" : ""} ${i === state.trail[0] ? "snake-head" : ""} ${i === foodCell ? "food" : ""} ${i === routeCueCell ? "food-route-cue" : ""} ${state.obstacles.includes(i) ? "obstacle" : ""} ${i === state.foodFlashCell ? "food-hit" : ""}" data-cell="${i}"${state.obstacles.includes(i) ? ` aria-label="${snakeModeLabel(locale, state.modeKey)}"` : ""}${i === routeCueCell ? ` aria-label="${routeCueLabel}" data-food-route-cue="true"` : ""}></span>`).join(""); els.board.innerHTML = `<div class="grid-board snake-grid ${state.milestoneReached ? "milestone-pulse" : ""}" role="grid" aria-label="${copy(locale, game.objective)}" data-grid-size="${SNAKE_GRID_SIZE}" data-tick-ms="${snakeTickMs()}" data-head-cell="${state.trail[0]}" data-food-cell="${foodCell}" data-food-route-cue-cell="${routeCueCell}" data-food-count="${state.food}" data-score="${state.score}" data-run="${state.runNumber}" data-mode="${state.modeKey}" data-mode-label="${snakeModeLabel(locale, state.modeKey)}" data-obstacles="${state.obstacles.join(",")}" data-goal-food="${state.goalFood}" data-milestone-reached="${state.milestoneReached}" data-direction="${state.direction}" data-moves="${state.moves}" data-trail="${state.trail.join(",")}">${cells}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "up"), "up")}</div><div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "down"), "down")}${button(copy(locale, "right"), "right")}</div>`; return; }
       if (game.type === "tetris") { const cells = Array.from({ length: 64 }, (_, i) => { const block = state.blocks.some((b) => b.x + b.y * 8 === i); const active = i === state.active; return `<span class="grid-cell ${block ? "filled" : ""} ${active ? "active" : ""}"></span>`; }).join(""); els.board.innerHTML = `<div class="grid-board tetris-grid">${cells}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "rotate"), "rotate")}${button(copy(locale, "right"), "right")}${button(copy(locale, "drop"), "drop", "primary")}</div>`;
       } else if (game.type === "tic") { els.board.innerHTML = `<div class="tic-board" data-winning-count="${state.winningCells?.length || 0}">${state.cells.map((cell, i) => { const winning = state.winningCells?.includes(i); const rivalReply = state.rivalCell === i; return `<button class="tic-cell${winning ? " winning" : ""}${rivalReply ? " rival-reply" : ""}" data-action="cell" data-value="${i}"${winning ? " data-winning-cell=\"true\"" : ""}${rivalReply ? " data-rival-reply=\"true\"" : ""} aria-label="${ticCellLabel(locale, i, cell, winning)}"${cell || state.done ? " disabled" : ""}>${cell}</button>`; }).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "hint"), "hint")}</div>`;
       } else if (game.type === "chess") { els.board.innerHTML = `<div class="chess-board">${["♜", "♟", "", "♚", "", "♙", "", "", "", "", "♙", "", "", "", "", "♔"].map((piece, i) => `<button class="chess-cell ${i === 6 + state.step ? "target" : ""}" data-action="move">${piece}</button>`).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(`${copy(locale, "select")} ${state.step + 1}`, "move", "primary")}</div>`;
