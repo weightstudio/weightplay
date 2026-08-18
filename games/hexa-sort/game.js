@@ -93,7 +93,23 @@ const ENDLESS_COPY={
   hi:{mode:"अनंत मोड",best:"सर्वश्रेष्ठ {score}",rule:"चाल सीमा नहीं · सर्वश्रेष्ठ {best}",result:"{score} अंक · सर्वश्रेष्ठ {best} · {moves} चाल",newBest:"नया रिकॉर्ड!",exit:"मुख्य"},
   ar:{mode:"وضع لا نهائي",best:"الأفضل {score}",rule:"بلا حد للحركات · الأفضل {best}",result:"{score} نقطة · الأفضل {best} · {moves} حركة",newBest:"رقم قياسي جديد!",exit:"الرئيسية"}
 };
+const CHAIN_PAYOFF_COPY={
+  en:{live:"Chain ×{chain} · {cleared} chips cleared · Best ×{best}",result:"Best chain ×{chain}"},
+  "zh-Hant":{live:"連鎖 ×{chain} · 消除 {cleared} 片 · 最高連鎖 ×{best}",result:"最高連鎖 ×{chain}"},
+  "zh-Hans":{live:"连锁 ×{chain} · 消除 {cleared} 片 · 最高连锁 ×{best}",result:"最高连锁 ×{chain}"},
+  ja:{live:"連鎖 ×{chain} · {cleared}枚消去 · 最高連鎖 ×{best}",result:"最高連鎖 ×{chain}"},
+  ko:{live:"연쇄 ×{chain} · {cleared}개 제거 · 최고 연쇄 ×{best}",result:"최고 연쇄 ×{chain}"},
+  es:{live:"Cadena ×{chain} · {cleared} fichas eliminadas · Mejor ×{best}",result:"Mejor cadena ×{chain}"},
+  "pt-BR":{live:"Corrente ×{chain} · {cleared} fichas removidas · Melhor ×{best}",result:"Melhor corrente ×{chain}"},
+  fr:{live:"Chaîne ×{chain} · {cleared} jetons effacés · Meilleure ×{best}",result:"Meilleure chaîne ×{chain}"},
+  de:{live:"Kette ×{chain} · {cleared} Chips gelöscht · Beste Kette ×{best}",result:"Beste Kette ×{chain}"},
+  it:{live:"Catena ×{chain} · {cleared} gettoni eliminati · Record ×{best}",result:"Miglior catena ×{chain}"},
+  ru:{live:"Цепочка ×{chain} · убрано: {cleared} · лучшая: ×{best}",result:"Лучшая цепочка ×{chain}"},
+  hi:{live:"श्रृंखला ×{chain} · {cleared} चिप हटे · सर्वश्रेष्ठ ×{best}",result:"सर्वश्रेष्ठ श्रृंखला ×{chain}"},
+  ar:{live:"سلسلة ×{chain} · حُذفت {cleared} قطعة · أفضل سلسلة ×{best}",result:"أفضل سلسلة ×{chain}"}
+};
 const ENDLESS_SAVE_KEY="hexaSortEndlessBest",readBest=()=>{try{return Math.max(0,Math.floor(Number(localStorage.getItem(ENDLESS_SAVE_KEY))||0));}catch{return 0;}},writeBest=value=>{try{localStorage.setItem(ENDLESS_SAVE_KEY,String(value));}catch{}},endlessText=(key,vars={})=>String((ENDLESS_COPY[locale]||ENDLESS_COPY.en)[key]).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??"");
+const chainText=(key,vars={})=>String((CHAIN_PAYOFF_COPY[locale]||CHAIN_PAYOFF_COPY.en)[key]).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??"");
 const emptyCell=()=>({stack:[],blocked:false,stone:false,frozen:false,chained:false,gem:false}),cloneCells=cells=>cells.map(cell=>({...cell,stack:[...cell.stack]}));
 // Explicit stage goals keep every mission reviewable and prevent generic completion shortcuts.
 const STAGES=[
@@ -271,7 +287,7 @@ resolveModel=(input,placedIndex,objectiveColor=null,threshold=10)=>{
 };
 function validateMergeContracts(){const blank=()=>COORDS.map(emptyCell),center=indexByCoord.get("0,0"),ns=neighbors(center);let cells=blank();cells[center].stack=["blue","red","red"];cells[ns[0]].stack=["red"];let result=resolveModel(cells,ns[0],"red",10);if(result.cells[center].stack.join(",")!=="blue,red,red,red"||result.cells[ns[0]].stack.length)throw new Error("Hexa Sort placed-stack evacuation priority failed");cells=blank();cells[center].stack=Array(4).fill("red");cells[ns[0]].stack=["blue",...Array(6).fill("red")];result=resolveModel(cells,center,"red",10);if(result.stats.clears!==1||result.cells[ns[0]].stack.join(",")!=="blue")throw new Error("Hexa Sort clear priority failed");cells=blank();cells[center].stack=["blue","red","red"];cells[ns[0]].stack=["red","blue","blue"];cells[ns[1]].stack=["green","red","red"];result=resolveModel(cells,center,"red",10);if(result.cells[center].stack.length||result.cells[ns[0]].stack.join(",")!=="red,blue,blue,blue"||result.cells[ns[1]].stack.join(",")!=="green,red,red,red,red")throw new Error("Hexa Sort full-chain distribution priority failed");cells=blank();cells[center].stack=["red","red"];cells[ns[0]].stack=Array(5).fill("red");result=resolveModel(cells,center,"red",10);const firstQuantityMerge=result.trace.find(step=>step.type==="merge");if(firstQuantityMerge?.sources[0]!==center||firstQuantityMerge.target!==ns[0]||firstQuantityMerge.count!==2)throw new Error("Hexa Sort smaller-run transfer priority failed");cells=blank();cells[center].stack=["red"];cells[ns[0]].stack=["red","red","red"];const bridged=neighbors(ns[0]).find(index=>index!==center&&!neighbors(center).includes(index));cells[bridged].stack=["red","red"];result=resolveModel(cells,center,"red",10);if(result.trace.some(step=>step.type==="merge"&&step.sources.some(source=>!neighbors(step.target).includes(source))))throw new Error("Hexa Sort direct-neighbor priority failed");cells=blank();cells[center].stack=["rainbow"];cells[ns[0]].stack=["green","green","green"];result=resolveModel(cells,center,"red",10);if(!result.cells.some(cell=>cell.stack.length===4&&cell.stack.at(-1)==="green"))throw new Error("Hexa Sort rainbow resolution failed");cells=blank();cells[center].stack=["bomb"];cells[ns[0]].stack=["red","red"];cells[ns[1]].stack=["blue","blue","blue"];result=resolveModel(cells,center,"red",10);if(result.stats.cleared!==5||result.cells[ns[0]].stack.length||result.cells[ns[1]].stack.length)throw new Error("Hexa Sort bomb resolution failed");return true;}
 const MERGE_CONTRACTS_VALID=validateMergeContracts();
-let locale=window.WonderI18n?.actualLocale?.()||document.documentElement.lang||localStorage.wpLang||"en",sound=localStorage.wpSound!=="off",unlocked=Math.max(1,Math.min(30,Number(localStorage.hexaSortUnlocked)||1)),selectedStage=unlocked,currentStage=1,endless=false,endlessBest=readBest(),cells=[],tray=[],selected=-1,moves=0,cleared=0,clears=0,gems=0,thawed=0,score=0,generation=0,busy=false,lastFocus=null,chipObjectSerial=0,clearedByColor=Object.fromEntries(COLORS.map(c=>[c,0])),animTarget=-1,animSources=[];
+let locale=window.WonderI18n?.actualLocale?.()||document.documentElement.lang||localStorage.wpLang||"en",sound=localStorage.wpSound!=="off",unlocked=Math.max(1,Math.min(30,Number(localStorage.hexaSortUnlocked)||1)),selectedStage=unlocked,currentStage=1,endless=false,endlessBest=readBest(),cells=[],tray=[],selected=-1,moves=0,cleared=0,clears=0,gems=0,thawed=0,score=0,chainBest=0,generation=0,busy=false,lastFocus=null,chipObjectSerial=0,clearedByColor=Object.fromEntries(COLORS.map(c=>[c,0])),animTarget=-1,animSources=[];
 const STAGE_CARD_POOL_SIZE=9,clampStage=(value,min=0,max=STAGES.length-1)=>Math.max(min,Math.min(max,value));
 let stageCardPool=[],stageWindowStart=0,stageSettleRaf=0;
 const t=(k,v={})=>String((I[locale]||I.en)[k]||k).replace(/\{(\w+)\}/g,(_,n)=>v[n]??"");
@@ -336,6 +352,8 @@ function stageObjectiveValue(def){const o=def.objective;return o.target??`≤${o
 function progress(def){const o=def.objective;if(o.kind==="endless")return`${score} · ${endlessText("best",{score:Math.max(endlessBest,score)})}`;if(o.kind==="color")return`${clearedByColor[o.color]||0} / ${o.target}`;if(o.kind==="score")return`${score} / ${o.target}`;if(o.kind==="clears")return`${clears} / ${o.target}`;if(o.kind==="frozen")return`${thawed} / ${o.target}`;if(o.kind==="gems")return`${gems} / ${o.target}`;return`${clears}/${o.clearsTarget} · ${gems}/${o.gemsTarget} · ${thawed}/${o.thawTarget} · ${moves}/${o.movesLimit}`;}
 function objectiveMet(def,stats){const o=def.objective;if(o.kind==="endless")return false;if(o.kind==="color")return(stats.clearedByColor[o.color]||0)>=o.target;if(o.kind==="score")return stats.score>=o.target;if(o.kind==="clears")return stats.clears>=o.target;if(o.kind==="frozen")return stats.thawed>=o.target;if(o.kind==="gems")return stats.gems>=o.target;return stats.clears>=o.clearsTarget&&stats.gems>=o.gemsTarget&&stats.thawed>=o.thawTarget;}
 function won(def){return objectiveMet(def,{clearedByColor,score,clears,gems,thawed});}
+const setFeedback=(message,payoff=false)=>{const feedback=$("feedback");feedback.textContent=message;feedback.classList.toggle("chain-payoff",payoff);};
+const resultSummary=(base)=>chainBest>0?`${base} · ${chainText("result",{chain:chainBest})}`:base;
 function setScreen(s){document.body.dataset.screen=s;$("mainGroup").hidden=s!=="main";$("stageScreen").hidden=s!=="stage";$("battleScreen").hidden=s!=="battle";document.body.classList.toggle("is-game-playing",s==="battle");if(s==="stage")$("stageScreen").querySelector(".wp-stage-physical-reserve")?.setAttribute("data-wp-stage-reserve-active","");window.dispatchEvent(new Event("weightplay:stage-sync"));window.dispatchEvent(new Event("weightplay:shell-sync"));}
 function syncModeLabels(){$("endlessBtn").textContent=`${endlessText("mode")} · ${endlessText("best",{score:endlessBest})}`;$("leaveStage").textContent=endless?endlessText("exit"):t("stageMap");$("resultStageBtn").textContent=endless?endlessText("exit"):t("stageMap");}
 function applyLocale(){document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";document.querySelectorAll("[data-i18n]").forEach(n=>n.textContent=t(n.dataset.i18n));$("localeSelect").value=locale;$("localeSelect").setAttribute("aria-label",t("language"));$("stageBack").setAttribute("aria-label",t("chooseStage"));$("battleBack").setAttribute("aria-label",t("stageMap"));$("battleHelp").setAttribute("aria-label",t("howTitle"));$("stageRail").setAttribute("aria-label",t("chooseStage"));$("hexBoard").setAttribute("aria-label",t("title"));$("stackTray").setAttribute("aria-label",t("guideTitle"));document.querySelector(".guide")?.setAttribute("aria-label",t("howTitle"));document.querySelectorAll(".poster,.result-layout img").forEach(n=>n.setAttribute("alt",t("title")));$("mainProgress").textContent=`${unlocked} / 30`;syncModeLabels();renderStages();if(cells.length)render();window.dispatchEvent(new Event("wonder:locale-change"));}function syncSound(){for(const id of["soundToggle","stageSound"]){$(id).textContent=sound?"🔊":"🔇";$(id).setAttribute("aria-pressed",String(sound));}}
@@ -361,9 +379,9 @@ function mergePreviewCount(index,stack,def){if(!stack?.length)return 0;let color
 const coachMarkup=(step,key)=>`<b>${step}</b><span><strong>${t(key)}</strong><small>${t("flowRule")}</small></span>`;
 function render(){const def=activeDef(),tutorial=!endless&&currentStage===1&&moves===0,chosen=tray[selected],center=indexByCoord.get("0,0"),coachKey=moves?"how3":selected<0?"how1":"how2",coachStep=moves?3:selected<0?1:2;$("hexaCoach").className=`hexa-coach step-${coachStep}`;$("hexaCoach").innerHTML=coachMarkup(coachStep,coachKey);$("hexBoard").innerHTML=cells.map((cell,i)=>{const legal=!cell.stack.length&&!cell.blocked&&!cell.stone,mergeCount=selected>=0&&legal?mergePreviewCount(i,chosen,def):0,coachTarget=tutorial&&selected===0&&i===center,depth=Math.round((COORDS[i].r+COORDS[i].q*.5+3)*10),mechanicLabel=`${cell.frozen?`, ${t("frozenGoal")}`:""}${cell.gem?`, ${t("gemGoal")}`:""}`;return`<button type="button" class="hex-cell ${legal?"selectable":""} ${selected>=0&&legal?"drop-target":""} ${mergeCount?"merge-ready":""} ${coachTarget?"coach-target":""} ${cell.blocked?"blocked":""} ${cell.stone?"stone":""} ${cell.frozen?"frozen":""} ${cell.chained?"chained":""} ${cell.gem?"gem":""} ${animTarget===i?"merge-target":""} ${animSources.includes(i)?"merge-source":""}" data-hex="${i}" data-merge="${mergeCount}" style="--q:${COORDS[i].q};--r:${COORDS[i].r};--depth:${depth}" aria-label="hex ${i+1}${cell.stack.length?`, ×${cell.stack.length}`:""}${mechanicLabel}${mergeCount?`, ${t("how2")} +${mergeCount}`:""}" ${cell.blocked||cell.stone?"disabled":""}>${cell.stone?"◆":cell.blocked?"×":cell.stack.length?chipMarkup(cell.stack):""}</button>`;}).join("");$("stackTray").innerHTML=tray.map((stack,i)=>`<button type="button" class="tray-stack ${i===selected?"selected":""} ${tutorial&&selected<0&&i===0?"coach-choice":""}" data-stack="${i}" aria-label="${t("how1")} ${i+1}, ×${stack.length}">${chipMarkup(stack)}</button>`).join("");$("movesValue").textContent=moves;$("clearedValue").textContent=cleared;$("stageLabel").textContent=endless?endlessText("mode"):`STAGE ${currentStage}`;$("objectiveKind").textContent=endless?endlessText("mode"):t(objectiveKey(def));$("objectiveKind").classList.toggle("has-goal-color",!!def.objective.color);$("objectiveKind").style.setProperty("--goal-color",HEX[def.objective.color]||"transparent");$("objectiveText").textContent=progress(def);$("objectiveRule").textContent=objectiveRule(def);syncModeLabels();}
 function renderSettled(){const def=activeDef();$("hexBoard").querySelectorAll("[data-hex]").forEach((node,index)=>{const cell=cells[index],legal=!cell.stack.length&&!cell.blocked&&!cell.stone;node.classList.toggle("selectable",legal);node.classList.toggle("blocked",cell.blocked);node.classList.toggle("stone",cell.stone);node.classList.toggle("frozen",cell.frozen);node.classList.toggle("chained",cell.chained);node.classList.toggle("gem",cell.gem);node.classList.remove("drop-target","merge-ready","coach-target","merge-target","merge-source","active-flight-source");node.querySelector(".merge-role")?.remove();node.dataset.merge="0";node.disabled=cell.blocked||cell.stone;node.setAttribute("aria-label",`hex ${index+1}${cell.stack.length?`, ×${cell.stack.length}`:""}`);if(!cell.stack.length&&!cell.stone&&!cell.blocked)node.querySelector(".chip-stack")?.remove();if(!cell.stack.length&&!cell.stone&&!cell.blocked&&node.textContent.trim()==="×")node.textContent="";});$("hexaCoach").className="hexa-coach step-3";$("hexaCoach").innerHTML=coachMarkup(3,"how3");$("stackTray").innerHTML=tray.map((stack,i)=>`<button type="button" class="tray-stack" data-stack="${i}" aria-label="${t("how1")} ${i+1}, ×${stack.length}">${chipMarkup(stack)}</button>`).join("");$("movesValue").textContent=moves;$("clearedValue").textContent=cleared;$("stageLabel").textContent=endless?endlessText("mode"):`STAGE ${currentStage}`;$("objectiveKind").textContent=endless?endlessText("mode"):t(objectiveKey(def));$("objectiveKind").classList.toggle("has-goal-color",!!def.objective.color);$("objectiveKind").style.setProperty("--goal-color",HEX[def.objective.color]||"transparent");$("objectiveText").textContent=progress(def);$("objectiveRule").textContent=objectiveRule(def);syncModeLabels();}
-function startStage(n,isEndless=false){currentStage=selectedStage=n;endless=isEndless;moves=cleared=clears=gems=thawed=score=generation=0;clearedByColor=Object.fromEntries(COLORS.map(c=>[c,0]));busy=false;setupBoard(isEndless?STAGES[0]:STAGES[n-1]);makeTray();setScreen("battle");$("feedback").textContent="";hide("resultModal");syncModeLabels();render();}
+function startStage(n,isEndless=false){currentStage=selectedStage=n;endless=isEndless;moves=cleared=clears=gems=thawed=score=chainBest=generation=0;clearedByColor=Object.fromEntries(COLORS.map(c=>[c,0]));busy=false;setupBoard(isEndless?STAGES[0]:STAGES[n-1]);makeTray();setScreen("battle");setFeedback("");hide("resultModal");syncModeLabels();render();}
 function updateEndlessBest(){if(!endless||score<=endlessBest)return false;endlessBest=score;writeBest(endlessBest);syncModeLabels();return true;}
-function finishEndless(){const isNew=updateEndlessBest();$("resultTitle").textContent=isNew?endlessText("newBest"):t("gameOver");$("resultStage").textContent=endlessText("mode");$("resultText").textContent=endlessText("result",{score,best:endlessBest,moves});$("nextBtn").disabled=true;syncModeLabels();show("resultModal","retryBtn");}
+function finishEndless(){const isNew=updateEndlessBest();$("resultTitle").textContent=isNew?endlessText("newBest"):t("gameOver");$("resultStage").textContent=endlessText("mode");$("resultText").textContent=resultSummary(endlessText("result",{score,best:endlessBest,moves}));$("nextBtn").disabled=true;syncModeLabels();show("resultModal","retryBtn");}
 function mountEndlessEntry(attempt=0){const copy=document.querySelector(".wp-standard-main-copy"),button=$("endlessBtn");if(copy&&button){button.classList.add("wp-standard-main-secondary");copy.append(button);syncModeLabels();return;}if(attempt<8)setTimeout(()=>mountEndlessEntry(attempt+1),50);}
 function show(id,focus){lastFocus=document.activeElement;$(id).hidden=false;$(focus).focus();}function hide(id){$(id).hidden=true;lastFocus?.focus?.();}
 async function animateTrace(trace){
@@ -519,13 +537,76 @@ async function animateTrace(trace){
   animSources=[];
   flightLayer.remove();
 }
-async function place(index){if(busy)return;if(selected<0){$("feedback").textContent=t("selectStack");return;}const cell=cells[index];if(cell.blocked||cell.stone){$("feedback").textContent=t("blocked");return;}if(cell.stack.length){$("feedback").textContent=t("invalid");return;}busy=true;cell.stack=[...tray[selected]];tray.splice(selected,1);selected=-1;moves++;render();const def=activeDef(),result=resolveModel(cells,index,def.objective.color),board=$("hexBoard");if(result.trace.length){const placementBeat=matchMedia("(prefers-reduced-motion: reduce)").matches?120:260;board.dataset.placementBeatStart=String(performance.now());await new Promise(resolve=>setTimeout(resolve,placementBeat));board.dataset.placementBeatEnd=String(performance.now());}await animateTrace(result.trace);cells=result.cells;cleared+=result.stats.cleared;clears+=result.stats.clears;gems+=result.stats.gems;thawed+=result.stats.thawed;score+=result.stats.score+20;updateEndlessBest();for(const step of result.trace)if(step.type==="clear"&&COLORS.includes(step.color))clearedByColor[step.color]=(clearedByColor[step.color]||0)+step.count;$("feedback").textContent=result.stats.cleared?t("clearedMsg",{n:result.stats.cleared}):result.trace.some(s=>s.type==="merge")?t("merged"):"";if(!tray.length)makeTray();result.trace.some(step=>step.type==="bomb")?render():renderSettled();busy=false;if(!endless&&won(def)){unlocked=Math.max(unlocked,Math.min(30,currentStage+1));localStorage.hexaSortUnlocked=unlocked;$("resultTitle").textContent=t("clear");$("resultStage").textContent=`STAGE ${currentStage}`;$("resultText").textContent=t("result",{score,cleared,moves});$("nextBtn").disabled=currentStage===30;show("resultModal",currentStage===30?"retryBtn":"nextBtn");return;}if(!endless&&def.objective.movesLimit&&moves>=def.objective.movesLimit){$("resultTitle").textContent=t("limitFail");$("resultText").textContent=t("result",{score,cleared,moves});$("nextBtn").disabled=true;show("resultModal","retryBtn");return;}if(!cells.some(cell=>!cell.stack.length&&!cell.blocked&&!cell.stone)){if(endless)finishEndless();else{$("resultTitle").textContent=t("gameOver");$("resultText").textContent=t("result",{score,cleared,moves});$("nextBtn").disabled=true;show("resultModal","retryBtn");}}}
+async function place(index){
+  if(busy)return;
+  if(selected<0){setFeedback(t("selectStack"));return;}
+  const cell=cells[index];
+  if(cell.blocked||cell.stone){setFeedback(t("blocked"));return;}
+  if(cell.stack.length){setFeedback(t("invalid"));return;}
+  busy=true;
+  cell.stack=[...tray[selected]];
+  tray.splice(selected,1);
+  selected=-1;
+  moves++;
+  render();
+  const def=activeDef(),result=resolveModel(cells,index,def.objective.color),board=$("hexBoard");
+  if(result.trace.length){
+    const placementBeat=matchMedia("(prefers-reduced-motion: reduce)").matches?120:260;
+    board.dataset.placementBeatStart=String(performance.now());
+    await new Promise(resolve=>setTimeout(resolve,placementBeat));
+    board.dataset.placementBeatEnd=String(performance.now());
+  }
+  await animateTrace(result.trace);
+  cells=result.cells;
+  cleared+=result.stats.cleared;
+  clears+=result.stats.clears;
+  gems+=result.stats.gems;
+  thawed+=result.stats.thawed;
+  score+=result.stats.score+20;
+  updateEndlessBest();
+  for(const step of result.trace)if(step.type==="clear"&&COLORS.includes(step.color))clearedByColor[step.color]=(clearedByColor[step.color]||0)+step.count;
+  const chain=result.trace.filter(step=>step.type==="clear").length;
+  if(chain>0){
+    chainBest=Math.max(chainBest,chain);
+    setFeedback(chainText("live",{chain,cleared:result.stats.cleared,best:chainBest}),true);
+  }else if(result.trace.some(step=>step.type==="merge"))setFeedback(t("merged"));
+  else setFeedback("");
+  if(!tray.length)makeTray();
+  result.trace.some(step=>step.type==="bomb")?render():renderSettled();
+  busy=false;
+  if(!endless&&won(def)){
+    unlocked=Math.max(unlocked,Math.min(30,currentStage+1));
+    localStorage.hexaSortUnlocked=unlocked;
+    $("resultTitle").textContent=t("clear");
+    $("resultStage").textContent=`STAGE ${currentStage}`;
+    $("resultText").textContent=resultSummary(t("result",{score,cleared,moves}));
+    $("nextBtn").disabled=currentStage===30;
+    show("resultModal",currentStage===30?"retryBtn":"nextBtn");
+    return;
+  }
+  if(!endless&&def.objective.movesLimit&&moves>=def.objective.movesLimit){
+    $("resultTitle").textContent=t("limitFail");
+    $("resultText").textContent=resultSummary(t("result",{score,cleared,moves}));
+    $("nextBtn").disabled=true;
+    show("resultModal","retryBtn");
+    return;
+  }
+  if(!cells.some(cell=>!cell.stack.length&&!cell.blocked&&!cell.stone)){
+    if(endless)finishEndless();
+    else{
+      $("resultTitle").textContent=t("gameOver");
+      $("resultText").textContent=resultSummary(t("result",{score,cleared,moves}));
+      $("nextBtn").disabled=true;
+      show("resultModal","retryBtn");
+    }
+  }
+}
 $("localeSelect").innerHTML=Object.entries(N).map(([v,n])=>`<option value="${v}">${n}</option>`).join("");$("localeSelect").onchange=e=>{locale=e.target.value;localStorage.wpLang=locale;applyLocale();};for(const id of["soundToggle","stageSound"])$(id).onclick=()=>{sound=!sound;localStorage.wpSound=sound?"on":"off";syncSound();};$("startBtn").onclick=()=>{setScreen("stage");renderStages();positionStageRail(selectedStage-1);};$("stageBack").onclick=()=>setScreen("main");$("stageRail").onclick=e=>{const card=e.target.closest(".stage-card:not(:disabled)");if(card){selectStage(Number(card.dataset.stageIndex),true);e.stopImmediatePropagation();}};$("stageRail").addEventListener("keydown",event=>{if(!["ArrowLeft","ArrowRight","Home","End","Enter"," "].includes(event.key))return;event.preventDefault();event.stopImmediatePropagation();if(event.key==="Enter"||event.key===" "){if(selectedStage<=unlocked)startStage(selectedStage);return;}const rtl=document.documentElement.dir==="rtl",delta=event.key==="ArrowLeft"?(rtl?1:-1):(rtl?-1:1),next=event.key==="Home"?0:event.key==="End"?STAGES.length-1:selectedStage-1+delta;selectStage(next,true);$("stageRail").querySelector(`[data-stage-index="${selectedStage-1}"]`)?.focus();});$("enterStage").onclick=()=>{if(selectedStage<=unlocked)startStage(selectedStage);};$("stackTray").onclick=e=>{if(busy)return;const stack=e.target.closest("[data-stack]");if(stack){selected=+stack.dataset.stack;render();}};$("hexBoard").onclick=e=>{const hex=e.target.closest("[data-hex]");if(hex)place(+hex.dataset.hex);};$("battleBack").onclick=()=>show("leaveModal","leaveContinue");$("leaveContinue").onclick=()=>hide("leaveModal");$("leaveStage").onclick=()=>{hide("leaveModal");setScreen("stage");renderStages();positionStageRail(selectedStage-1);};$("battleHelp").onclick=()=>show("helpModal","helpClose");$("helpClose").onclick=()=>hide("helpModal");$("resultStageBtn").onclick=()=>{hide("resultModal");setScreen("stage");renderStages();positionStageRail(selectedStage-1);};$("retryBtn").onclick=()=>startStage(currentStage);$("nextBtn").onclick=()=>startStage(Math.min(30,currentStage+1));installVirtualStageDrag();
 $("endlessBtn").onclick=()=>startStage(1,true);
 $("leaveStage").onclick=()=>{hide("leaveModal");if(endless)setScreen("main");else{setScreen("stage");renderStages();positionStageRail(selectedStage-1);}};
 $("resultStageBtn").onclick=()=>{hide("resultModal");if(endless)setScreen("main");else{setScreen("stage");renderStages();positionStageRail(selectedStage-1);}};
 $("retryBtn").onclick=()=>startStage(currentStage,endless);
 $("nextBtn").onclick=()=>startStage(Math.min(30,currentStage+1),false);
-window.__HEXA_SORT__={coords:COORDS,neighbors,stages:STAGES,resolveModel,topRun,objectiveMet,startStage,startEndless:()=>startStage(1,true),animateTrace,mergeContractsValid:MERGE_CONTRACTS_VALID,selectStage:(index,center=false)=>{selectStage(index,center);return stageWindow();},stageWindow:()=>stageWindow(),getState:()=>({currentStage,endless,endlessBest,cells:cloneCells(cells),tray:tray.map(s=>[...s]),moves,cleared,clears,gems,thawed,score,clearedByColor:{...clearedByColor},unlocked,busy}),loadFixture:(fixture,placed=0)=>{cells=cloneCells(fixture);tray=[];selected=-1;moves=cleared=clears=gems=thawed=score=0;render();return resolveModel(cells,placed,activeDef().objective.color);}};
+window.__HEXA_SORT__={coords:COORDS,neighbors,stages:STAGES,resolveModel,topRun,objectiveMet,startStage,startEndless:()=>startStage(1,true),animateTrace,mergeContractsValid:MERGE_CONTRACTS_VALID,selectStage:(index,center=false)=>{selectStage(index,center);return stageWindow();},stageWindow:()=>stageWindow(),getState:()=>({currentStage,endless,endlessBest,cells:cloneCells(cells),tray:tray.map(s=>[...s]),moves,cleared,clears,gems,thawed,score,chainBest,clearedByColor:{...clearedByColor},unlocked,busy}),loadFixture:(fixture,placed=0)=>{cells=cloneCells(fixture);tray=[];selected=-1;moves=cleared=clears=gems=thawed=score=chainBest=0;render();return resolveModel(cells,placed,activeDef().objective.color);}};
 function stageWindow(){const rail=$("stageRail");return{selected:selectedStage-1,start:Number(rail.dataset.wpStageWindowStart),end:Number(rail.dataset.wpStageWindowEnd),pool:Number(rail.dataset.wpStagePoolSize),total:Number(rail.dataset.wpStageTotal),indexes:[...rail.children].map(card=>Number(card.dataset.stageIndex))};}
 applyLocale();syncSound();setScreen("main");setTimeout(()=>{mountEndlessEntry();document.documentElement.dataset.gameReady="true";},0);})();

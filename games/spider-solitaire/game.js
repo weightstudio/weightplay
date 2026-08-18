@@ -200,6 +200,21 @@
     ar: { spades: "بستوني", hearts: "قلوب", clubs: "سباتي", diamonds: "ديناري" },
   });
   const suitLabel = (suit) => SUIT_LABELS[locale()]?.[suit] || SUIT_LABELS.en[suit] || suit;
+  const RUN_PREVIEW_COPY = Object.freeze({
+    en: "Selected {count}-card {suit} run. Drag to choose where it goes.",
+    "zh-Hant": "已選取 {count} 張{suit}同花色牌組。拖曳以選擇移動位置。",
+    "zh-Hans": "已选中 {count} 张{suit}同花色牌组。拖拽以选择移动位置。",
+    ja: "{suit}の{count}枚の連続組を選択中。ドラッグして移動先を選びます。",
+    ko: "{suit} {count}장 연속 묶음을 선택했어요. 드래그해서 이동할 곳을 고르세요.",
+    es: "Secuencia de {count} cartas de {suit} seleccionada. Arrástrala para elegir el destino.",
+    "pt-BR": "Sequência de {count} cartas de {suit} selecionada. Arraste para escolher o destino.",
+    fr: "Suite de {count} cartes de {suit} sélectionnée. Faites-la glisser pour choisir la destination.",
+    de: "{count}-Karten-Folge {suit} ausgewählt. Ziehe sie zum gewünschten Ziel.",
+    it: "Sequenza di {count} carte di {suit} selezionata. Trascinala per scegliere la destinazione.",
+    ru: "Выбран ряд из {count} карт масти {suit}. Перетащите его, чтобы выбрать цель.",
+    hi: "{suit} की {count} कार्डों वाली श्रृंखला चुनी गई है। जगह चुनने के लिए इसे खींचें।",
+    ar: "تم تحديد سلسلة من {count} بطاقات من {suit}. اسحبها لاختيار الوجهة.",
+  });
 
   const ui = {};
   const get = (id) => document.getElementById(id);
@@ -730,7 +745,7 @@
   }
 
   function clearHints() {
-    ui.tableauRow?.querySelectorAll(".hint-source,.hint-target,.drag-hover").forEach((node) => node.classList.remove("hint-source", "hint-target", "drag-hover"));
+    ui.tableauRow?.querySelectorAll(".hint-source,.hint-target,.drag-hover,.is-run-preview").forEach((node) => node.classList.remove("hint-source", "hint-target", "drag-hover", "is-run-preview"));
     ui.stockPile?.classList.remove("hint-source");
     if (state.hintTimer) window.clearTimeout(state.hintTimer);
     state.hintTimer = null;
@@ -761,6 +776,16 @@
       ui.hintOverlay.textContent = "";
       state.hintTimer = null;
     }, HINT_MS);
+  }
+
+  function showRunPreview(cards) {
+    const ids = new Set(cards.map((card) => card.id));
+    ui.tableauRow?.querySelectorAll(".card[data-card-id]").forEach((node) => {
+      if (ids.has(node.dataset.cardId)) node.classList.add("is-run-preview");
+    });
+    const template = RUN_PREVIEW_COPY[locale()] || RUN_PREVIEW_COPY.en;
+    const message = template.replace(/\{(count|suit)\}/g, (_match, key) => key === "count" ? String(cards.length) : suitLabel(cards[0]?.suit));
+    showHint(message);
   }
 
   async function copyReplayLink() {
@@ -984,6 +1009,7 @@
     const rect = node.getBoundingClientRect();
     const touchLift = event.pointerType === "touch" ? Math.min(72, Math.max(36, rect.height * 0.9)) : 0;
     state.dragging = { pointerId: event.pointerId, fromColumn, row, cards: take.cards, legalMoves: game.legalMovesForTableau(fromColumn, row), originNode: node, startX: event.clientX, startY: event.clientY, offsetX: event.clientX - rect.left, offsetY: event.clientY - rect.top, touchLift, moved: false, hoverTarget: null, ghost: null };
+    showRunPreview(take.cards);
   }
 
   function finishDrag(event) {
@@ -991,6 +1017,7 @@
     if (!dragging || dragging.pointerId !== event.pointerId) return;
     const wasMoved = dragging.moved;
     const hoverTarget = dragging.hoverTarget;
+    clearHints();
     dragging.originNode.classList.remove("is-selected");
     ui.tableauRow.querySelectorAll(".drag-hover").forEach((node) => node.classList.remove("drag-hover"));
     state.dragging = null;

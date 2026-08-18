@@ -157,6 +157,8 @@ body[data-wp-game-id="spider-solitaire"] .game-page-info {
 .card.card-flip { animation: sp-flip 210ms ease both; }
 .card.card-deal { animation: sp-deal 220ms ease both; }
 .card.is-selected { box-shadow: 0 0 0 3px rgba(255,241,168,.95), 0 0 14px rgba(255,241,168,.45); transform: translateY(-2px); }
+.card.is-run-preview { box-shadow: 0 0 0 2px rgba(78,205,196,.95), 0 0 13px rgba(78,205,196,.4); filter: brightness(1.05); }
+.card.is-run-preview.is-selected { box-shadow: 0 0 0 3px rgba(255,241,168,.95), 0 0 16px rgba(78,205,196,.6); }
 .card.returning-origin { opacity: .2; }
 .card.invalid-return { animation: sp-invalid-return 220ms ease both; }
 .ghost-stack { position: fixed; z-index: 100; pointer-events: none; filter: drop-shadow(0 12px 14px rgba(0,0,0,.35)); }

@@ -1,6 +1,8 @@
 (function () {
   "use strict";
 
+  document.body.setAttribute("data-runtime-localize", "off");
+
   const gameId = "zhao-yun-a-dou";
   const data = window.ZHAO_YUN_ADOU_LEVELS;
   const dictionaries = window.ZHAO_YUN_ADOU_LOCALES;
