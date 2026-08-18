@@ -206,5 +206,114 @@
   Object.entries(resultMasteryLocalization).forEach(([code, copy]) => {
     Object.assign(locales[code], copy);
   });
+  const challengePreviewLocalization = {
+    en: {
+      previewLong: "Long blocker",
+      previewNarrow: "Narrow exit lane",
+      previewMultiStep: "Multi-step clearance",
+      previewCompact: "Compact blocker layout",
+      previewLayered: "Layered clearance",
+      nextPreview: "Next trail shape: {preview}. The board stays unknown until you enter it.",
+    },
+    "zh-Hant": {
+      previewLong: "長形阻擋塊",
+      previewNarrow: "狹窄出口路線",
+      previewMultiStep: "多步清障",
+      previewCompact: "緊湊阻擋配置",
+      previewLayered: "分層清障",
+      nextPreview: "下一條小徑特徵：{preview}。進入前不會揭示棋盤。",
+    },
+    "zh-Hans": {
+      previewLong: "长形阻挡块",
+      previewNarrow: "狭窄出口路线",
+      previewMultiStep: "多步清障",
+      previewCompact: "紧凑阻挡配置",
+      previewLayered: "分层清障",
+      nextPreview: "下一条小径特征：{preview}。进入前不会揭示棋盘。",
+    },
+    ja: {
+      previewLong: "長いブロック",
+      previewNarrow: "狭い出口レーン",
+      previewMultiStep: "複数段階の排除",
+      previewCompact: "コンパクトなブロック配置",
+      previewLayered: "段階的な排除",
+      nextPreview: "次の小径の特徴：{preview}。入るまで盤面は表示しません。",
+    },
+    ko: {
+      previewLong: "긴 블록",
+      previewNarrow: "좁은 탈출 레인",
+      previewMultiStep: "여러 단계의 정리",
+      previewCompact: "간결한 블록 배치",
+      previewLayered: "단계적인 정리",
+      nextPreview: "다음 트레일의 형태: {preview}. 들어가기 전에는 보드를 공개하지 않습니다.",
+    },
+    es: {
+      previewLong: "Bloque largo",
+      previewNarrow: "Carril de salida estrecho",
+      previewMultiStep: "Despeje en varios pasos",
+      previewCompact: "Distribución compacta de bloques",
+      previewLayered: "Despeje por capas",
+      nextPreview: "Forma del próximo sendero: {preview}. El tablero permanece oculto hasta entrar.",
+    },
+    "pt-BR": {
+      previewLong: "Bloco longo",
+      previewNarrow: "Faixa de saída estreita",
+      previewMultiStep: "Desobstrução em várias etapas",
+      previewCompact: "Formação compacta de blocos",
+      previewLayered: "Desobstrução em camadas",
+      nextPreview: "Formato da próxima trilha: {preview}. O tabuleiro continua oculto até você entrar.",
+    },
+    fr: {
+      previewLong: "Bloc long",
+      previewNarrow: "Voie de sortie étroite",
+      previewMultiStep: "Dégagement en plusieurs étapes",
+      previewCompact: "Disposition compacte des blocs",
+      previewLayered: "Dégagement par couches",
+      nextPreview: "Forme du prochain sentier : {preview}. Le plateau reste caché jusqu'à l'entrée.",
+    },
+    de: {
+      previewLong: "Langer Block",
+      previewNarrow: "Enge Ausfahrt",
+      previewMultiStep: "Mehrstufiges Freiräumen",
+      previewCompact: "Kompakte Blockanordnung",
+      previewLayered: "Gestaffeltes Freiräumen",
+      nextPreview: "Form des nächsten Pfads: {preview}. Das Brett bleibt verborgen, bis du ihn öffnest.",
+    },
+    it: {
+      previewLong: "Blocco lungo",
+      previewNarrow: "Corsia d'uscita stretta",
+      previewMultiStep: "Sblocco in più passaggi",
+      previewCompact: "Disposizione compatta dei blocchi",
+      previewLayered: "Sblocco a strati",
+      nextPreview: "Forma del prossimo percorso: {preview}. La tavola resta nascosta finché non entri.",
+    },
+    ru: {
+      previewLong: "Длинный блок",
+      previewNarrow: "Узкий путь к выходу",
+      previewMultiStep: "Многоэтапное освобождение",
+      previewCompact: "Компактная расстановка блоков",
+      previewLayered: "Многоуровневое освобождение",
+      nextPreview: "Форма следующей тропы: {preview}. Поле скрыто, пока вы не войдёте.",
+    },
+    hi: {
+      previewLong: "लंबा ब्लॉक",
+      previewNarrow: "संकीर्ण निकास मार्ग",
+      previewMultiStep: "कई चरणों में रास्ता साफ़ करना",
+      previewCompact: "सघन ब्लॉक व्यवस्था",
+      previewLayered: "परतों में रास्ता साफ़ करना",
+      nextPreview: "अगली पगडंडी का आकार: {preview}। प्रवेश करने तक बोर्ड छिपा रहेगा।",
+    },
+    ar: {
+      previewLong: "كتلة طويلة",
+      previewNarrow: "ممر خروج ضيق",
+      previewMultiStep: "إخلاء متعدد الخطوات",
+      previewCompact: "ترتيب كتل متراص",
+      previewLayered: "إخلاء على مراحل",
+      nextPreview: "شكل المسار التالي: {preview}. ستبقى اللوحة مخفية حتى تدخل إليه.",
+    },
+  };
+  Object.entries(challengePreviewLocalization).forEach(([code, copy]) => {
+    Object.assign(locales[code], copy);
+  });
   window.UNBLOCK_LOCALES = locales;
 })();

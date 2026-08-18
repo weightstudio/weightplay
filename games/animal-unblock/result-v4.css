@@ -20,6 +20,13 @@
   font-weight: 750;
 }
 
+.result-next-preview {
+  margin: 6px 0 14px;
+  font-size: 0.92rem;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
 @media (max-height: 500px) and (min-width: 681px) {
   #result[open] {
     inset: 8px 0 auto;
@@ -43,6 +50,10 @@
   }
 
   #result .result-target {
+    margin: 4px 0 8px;
+  }
+
+  #result .result-next-preview {
     margin: 4px 0 8px;
   }
 }

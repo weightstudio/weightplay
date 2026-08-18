@@ -4,6 +4,7 @@
   const $ = (id) => document.getElementById(id);
   const levels = UNBLOCK_LEVELS.levels;
   const dict = UNBLOCK_LOCALES;
+  const GAME_VERSION = "v13";
   const codes = Object.keys(dict);
   const localeRoutes = {
     en: "en",
@@ -89,6 +90,34 @@
       (_, name) => values[name] ?? "",
     );
 
+  function challengePreviewKey(levelIndex) {
+    const blocks = levels[levelIndex]?.blocks || [];
+    const blockers = blocks.filter((block) => !block.hero);
+    const longBlocker = blockers.some((block) => Math.max(block.w, block.h) >= 3);
+    const exitLaneBlockers = blockers.filter(
+      (block) => block.y <= 2 && block.y + block.h > 2,
+    ).length;
+    if (longBlocker && exitLaneBlockers >= 2) return "previewLayered";
+    if (longBlocker) return "previewLong";
+    if (exitLaneBlockers >= 2) return "previewNarrow";
+    if (blockers.length >= 8) return "previewMultiStep";
+    return "previewCompact";
+  }
+
+  function challengePreview(levelIndex) {
+    return t(challengePreviewKey(levelIndex));
+  }
+
+  function renderResultPreview() {
+    const node = $("resultNextPreview");
+    if (!node) return;
+    const hasNext = index < levels.length - 1;
+    node.hidden = !hasNext;
+    node.textContent = hasNext
+      ? t("nextPreview", { preview: challengePreview(index + 1) })
+      : "";
+  }
+
   function rememberedLocale() {
     try {
       return (
@@ -122,6 +151,7 @@
       `/${localeRoutes[locale] || "en"}/`;
     $("locale").value = locale;
     renderStage();
+    renderResultPreview();
   }
 
   function chooseLocale(nextLocale, synchronize = true) {
@@ -240,7 +270,7 @@
             progress[levelIndex]
               ? `✓ ${t("complete")}`
               : t("chapter", { n: Math.floor(levelIndex / 10) + 1 })
-          }</small></button>`,
+          }</small><em class="stage-preview" data-runtime-localize="off" data-challenge-preview="${challengePreviewKey(levelIndex)}">${challengePreview(levelIndex)}</em></button>`,
       )
       .join("");
     document
@@ -382,6 +412,7 @@
       $("resultTarget").textContent = t("resultTarget", {
         target: Math.min(bestMoves[index], levels[index].par),
       });
+      renderResultPreview();
       resultActionClaimed = false;
       $("resultStages").disabled = false;
       $("retry").disabled = false;

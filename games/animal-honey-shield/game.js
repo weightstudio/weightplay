@@ -4,7 +4,7 @@
   const LOCALES=window.ANIMAL_HONEY_SHIELD_LOCALES;
   const STORAGE_KEY="weightplay_animal_honey_shield_v1";
   const TUTORIAL_KEY="weightplay_tutorial_seen_animal_honey_shield_v1";
-  const GAME_VERSION="v47";
+  const GAME_VERSION="v48";
   const ROUTE_LOCALES={"zh-tw":"zh-Hant","zh-cn":"zh-Hans","pt-br":"pt-BR",en:"en",ja:"ja",ko:"ko",es:"es",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const routeSegment=location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
   const platformLocale=window.WonderI18n?.actualLocale?.();
@@ -182,7 +182,7 @@
     document.querySelectorAll("[data-i18n]").forEach(node=>node.textContent=fmt(node.dataset.i18n));
     document.querySelectorAll("[data-i18n-aria]").forEach(node=>node.setAttribute("aria-label",fmt(node.dataset.i18nAria)));
     document.querySelectorAll("[data-i18n-alt]").forEach(node=>node.setAttribute("alt",fmt(node.dataset.i18nAlt)));
-    updateMainProgress();renderStages();updateStageChapter();updateHud();updateAnchorCoach();
+    updateMainProgress();renderStages();updateStageChapter();updateHud();updateAnchorCoach();if(state.result)renderResultInsight();
     if(state.repairCueKey&&state.repairCueUntil>state.elapsed)announce(state.repairCueKey);
     window.dispatchEvent(new CustomEvent("wonder:locale-change",{detail:{locale}}));
     document.title=`${fmt("title")} | WeightPlay`;
@@ -1073,6 +1073,13 @@
     const used=100-state.nectar;
     if(used<=45)return 3;if(used<=72)return 2;return 1;
   }
+  function renderResultInsight(){
+    if(!state.result)return;
+    const used=Math.min(100,Math.max(0,Math.ceil(100-state.nectar-1e-8))),left=Math.min(100,Math.max(0,Math.floor(state.nectar+1e-8))),won=state.result.won,stars=state.result.stars;
+    $("resultRule").textContent=won?fmt("resultRule",{used,nectar:left}):fmt("resultFailRule",{used,nectar:left});
+    $("resultNext").hidden=!won;
+    if(won)$("resultNext").textContent=stars>=3?fmt("resultTop"):fmt("resultNext",{threshold:stars===2?45:72,need:Math.max(1,used-(stars===2?45:72))});
+  }
   function finish(won,reason=won?"timer_complete":"pip_contact"){
     if(state.result)return;state.result={won,stars:won?scoreStars():0};state.mode="result";state.mover=null;for(const bee of state.bees){bee.intent="attack";bee.attachedStroke=null}
     const outcome=won?"complete":"fail";
@@ -1087,6 +1094,7 @@
     $("resultTitle").textContent=fmt(won?"winTitle":"failTitle");
     $("resultStars").textContent=won?"★".repeat(state.result.stars)+"☆".repeat(3-state.result.stars):"☆☆☆";
     $("resultText").textContent=fmt(won?"winText":"failText",{stage:stageIndex+1,nectar:Math.round(state.nectar)});
+    renderResultInsight();
     $("bestText").textContent=won?(isBest?fmt("newBest"):fmt("best",{stars:Math.max(previous,state.result.stars)})):"";
     $("nextBtn").disabled=!won||stageIndex>=29;$("nextBtn").setAttribute("aria-disabled",String($("nextBtn").disabled));
     announce(won?"protected":"touched");requestAnimationFrame(()=>$("resultStagesBtn").focus());
