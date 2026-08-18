@@ -54,6 +54,22 @@
     ar: { help: "اتبع اللون. القلوب وملكة البستوني بطاقات جزاء." },
   };
 
+  const HEARTS_PASS_COPY = {
+    en: { safe: "Pass preview: no Hearts or Q♠ selected.", risk: "Pass preview: {penalties} selected · {points} potential penalty points.", void: "Passing these cards leaves you void in {suit}." },
+    "zh-Hant": { safe: "傳牌預覽：未選紅心或黑桃 Q。", risk: "傳牌預覽：已選 {penalties} · 可能送出 {points} 分。", void: "傳出這些牌後，你的 {suit} 將缺門。" },
+    "zh-Hans": { safe: "传牌预览：未选红心或黑桃 Q。", risk: "传牌预览：已选 {penalties} · 可能送出 {points} 分。", void: "传出这些牌后，你的 {suit} 将缺门。" },
+    ja: { safe: "パスのプレビュー：ハートとスペードQは未選択です。", risk: "パスのプレビュー：{penalties}を選択 · ペナルティ候補 {points} 点。", void: "これらを渡すと{suit}が空になります。" },
+    ko: { safe: "패스 미리보기: 하트와 스페이드 Q를 선택하지 않았습니다.", risk: "패스 미리보기: {penalties} 선택 · 잠재 벌점 {points}점.", void: "이 카드를 넘기면 {suit} 무늬가 비게 됩니다." },
+    es: { safe: "Vista previa del pase: no has elegido corazones ni Q♠.", risk: "Vista previa del pase: {penalties} elegidas · {points} puntos de penalización posibles.", void: "Al pasar estas cartas te quedas sin {suit}." },
+    "pt-BR": { safe: "Prévia da passagem: nenhum coração ou Q♠ selecionado.", risk: "Prévia da passagem: {penalties} selecionadas · {points} pontos de penalidade possíveis.", void: "Ao passar estas cartas, você fica sem {suit}." },
+    fr: { safe: "Aperçu du passage : aucun cœur ni Q♠ sélectionné.", risk: "Aperçu du passage : {penalties} sélectionnés · {points} points de pénalité possibles.", void: "En passant ces cartes, vous n’aurez plus de {suit}." },
+    de: { safe: "Passvorschau: Kein Herz und keine Pik-Dame ausgewählt.", risk: "Passvorschau: {penalties} ausgewählt · {points} mögliche Strafpunkte.", void: "Wenn du diese Karten abgibst, hast du keine {suit} mehr." },
+    it: { safe: "Anteprima del passaggio: nessun cuore o Q♠ selezionato.", risk: "Anteprima del passaggio: {penalties} selezionati · {points} possibili punti di penalità.", void: "Passando queste carte resterai senza {suit}." },
+    ru: { safe: "Предпросмотр передачи: червей и дамы пик нет.", risk: "Предпросмотр передачи: выбраны {penalties} · возможный штраф {points} очков.", void: "После передачи этих карт масть {suit} закончится." },
+    hi: { safe: "पास का पूर्वावलोकन: कोई हार्ट या स्पेड Q नहीं चुना गया।", risk: "पास का पूर्वावलोकन: {penalties} चुने गए · संभावित दंड {points} अंक।", void: "ये पत्ते देने पर आपके पास {suit} नहीं रहेगा।" },
+    ar: { safe: "معاينة التمرير: لم يتم اختيار قلوب أو Q♠.", risk: "معاينة التمرير: تم اختيار {penalties} · نقاط الجزاء المحتملة {points}.", void: "بتمرير هذه البطاقات ستصبح بلا {suit}." },
+  };
+
   const HEARTS_RESULT_COPY = {
     en: { lesson: "{hearts} Hearts + Q♠ {queen} = {raw} penalty points. Next pass: shed a high-risk card when it protects your hand.", moon: "Shooting the Moon changed the final totals." },
     "zh-Hant": { lesson: "紅心 {hearts} 張 + 黑桃 Q {queen} 分 = {raw} 扣分。下次傳牌：能保護手牌時，試著送走高風險牌。", moon: "「全收懲罰牌」改變了最終總分。" },
@@ -325,6 +341,25 @@
     return value;
   };
   const heartsText = () => (HEARTS_COPY[currentLocale()] || HEARTS_COPY.en).help;
+  const heartsPassText = (handCards, selected) => {
+    const copy = HEARTS_PASS_COPY[currentLocale()] || HEARTS_PASS_COPY.en;
+    const selectedCards = [...selected].map((index) => handCards[index]).filter(Boolean);
+    if (selectedCards.length !== 3) return `${t("selectCards")}: ${selectedCards.length}/3`;
+    const hearts = selectedCards.filter((item) => item.suit === "hearts").length;
+    const queen = selectedCards.some((item) => item.suit === "spades" && item.rank === 12);
+    const penalties = [hearts ? `♥ × ${hearts}` : "", queen ? "Q♠" : ""].filter(Boolean).join(" + ");
+    const points = hearts + (queen ? 13 : 0);
+    let text = (hearts || queen ? copy.risk : copy.safe)
+      .replaceAll("{penalties}", penalties)
+      .replaceAll("{points}", String(points));
+    const voidSuits = SUITS.filter((suit) => {
+      const inHand = handCards.filter((item) => item.suit === suit).length;
+      const selectedInSuit = selectedCards.filter((item) => item.suit === suit).length;
+      return selectedInSuit > 0 && inHand === selectedInSuit;
+    }).map((suit) => SYMBOLS[suit]);
+    if (voidSuits.length) text += ` ${copy.void.replaceAll("{suit}", voidSuits.join(" / "))}`;
+    return text;
+  };
   const heartsResultText = (hearts, queen, moon) => {
     const copy = HEARTS_RESULT_COPY[currentLocale()] || HEARTS_RESULT_COPY.en;
     let text = copy.lesson.replaceAll("{hearts}", String(hearts)).replaceAll("{queen}", String(queen)).replaceAll("{raw}", String(hearts + queen));
@@ -612,7 +647,7 @@
       reset() { Object.assign(s, { hands: [[], [], [], []], scores: [0, 0, 0, 0], penaltyHearts: [0, 0, 0, 0], penaltyQueens: [0, 0, 0, 0], turn: 0, lead: 0, trick: [], heartsBroken: false, phase: "pass", selected: new Set(), passReceived: false }); deck().forEach((item, index) => s.hands[index % 4].push(item)); s.hands.forEach((cards) => cards.sort((a, b) => a.suit.localeCompare(b.suit) || a.rank - b.rank)); },
       card(index) { if (s.phase === "pass" && s.turn === 0) { if (s.selected.has(index)) s.selected.delete(index); else if (s.selected.size < 3) s.selected.add(index); } else if (s.phase === "play" && s.turn === 0) play(0, s.hands[0][index]); },
       action(action) { if (action === "pass" && s.phase === "pass" && s.selected.size === 3) { const selected = [...s.selected].sort((a, b) => b - a).map((index) => s.hands[0].splice(index, 1)[0]); selected.forEach((item) => s.hands[1].push(item)); const aiPass = s.hands[1].slice(0, 3); aiPass.forEach((item) => s.hands[1].splice(s.hands[1].indexOf(item), 1)); s.hands[0].push(...aiPass); s.hands.forEach((cards) => cards.sort((a, b) => a.suit.localeCompare(b.suit) || a.rank - b.rank)); s.phase = "play"; s.turn = s.hands.findIndex((cards) => cards.some((item) => item.suit === "clubs" && item.rank === 2)); if (s.turn !== 0) setTimeout(() => aiTurn(), 220); } },
-      view() { const trickHtml = s.trick.map((entry) => `<div>${aiNames[entry.player]} ${cardMarkup(entry.card, 0)}</div>`).join(""); const action = s.phase === "pass" ? `<button class="primary-btn" data-action="pass" ${s.selected.size !== 3 ? "disabled" : ""}>${t("pass")} 3</button>` : `<p class="card-help">${s.heartsBroken ? "♥ " : ""}${t("yourTurn")}</p>`; return { phase: s.phase === "pass" ? t("pass") : (s.heartsBroken ? "♥" : "♥ · " + t("waiting")), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "pass" ? `${t("selectCards")}: ${s.selected.size}/3` : heartsText(), score: s.scores[0], opponents: s.hands.slice(1).map((cards, index) => opponentMarkup(aiNames[index + 1], cards.length, `${t("points")}: ${s.scores[index + 1]}`)).join(""), center: `<div class="card-table-label">${t("table")}</div><div class="table-row">${trickHtml || "<span>2♣ leads the first trick</span>"}</div>`, hand: cardsMarkup(s.hands[0], { selected: s.selected, hidden: false }), actions: action }; },
+      view() { const trickHtml = s.trick.map((entry) => `<div>${aiNames[entry.player]} ${cardMarkup(entry.card, 0)}</div>`).join(""); const action = s.phase === "pass" ? `<button class="primary-btn" data-action="pass" ${s.selected.size !== 3 ? "disabled" : ""}>${t("pass")} 3</button>` : `<p class="card-help">${s.heartsBroken ? "♥ " : ""}${t("yourTurn")}</p>`; return { phase: s.phase === "pass" ? t("pass") : (s.heartsBroken ? "♥" : "♥ · " + t("waiting")), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "pass" ? heartsPassText(s.hands[0], s.selected) : heartsText(), score: s.scores[0], opponents: s.hands.slice(1).map((cards, index) => opponentMarkup(aiNames[index + 1], cards.length, `${t("points")}: ${s.scores[index + 1]}`)).join(""), center: `<div class="card-table-label">${t("table")}</div><div class="table-row">${trickHtml || "<span>2♣ leads the first trick</span>"}</div>`, hand: cardsMarkup(s.hands[0], { selected: s.selected, hidden: false }), actions: action }; },
     };
   }
 

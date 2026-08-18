@@ -21,20 +21,41 @@
   const PATH_LOCALES={en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   function routeLocale(){const match=location.pathname.match(/^\/([^/]+)\/games\/arrow-escape\//);return PATH_LOCALES[match?.[1]?.toLowerCase()]||localStorage.getItem("wpLang")||"en";}
   const I18N=Object.fromEntries(Object.entries(PACKS).map(([locale,values])=>[locale,Object.fromEntries(KEYS.map((key,index)=>[key,values[index]]))]));
+  const resultPlural=(locale,n)=>{try{return new Intl.PluralRules(locale).select(n);}catch{return n===1?"one":"other";}};
+  const resultForm=(locale,n,forms)=>forms[resultPlural(locale,n)]||forms.other||forms.one;
+  const resultRussianMoves=n=>resultForm("ru",n,{one:`${n} ход`,few:`${n} хода`,many:`${n} ходов`,other:`${n} хода`});
+  const resultRussianBlocked=n=>resultForm("ru",n,{one:`${n} заблокированное нажатие`,few:`${n} заблокированных нажатия`,many:`${n} заблокированных нажатий`,other:`${n} заблокированных нажатия`});
+  const resultArabicMoves=n=>resultForm("ar",n,{zero:"لا حركات",one:"حركة واحدة",two:"حركتان",few:`${n} حركات`,many:`${n} حركة`,other:`${n} حركة`});
+  const resultArabicBlocked=n=>resultForm("ar",n,{zero:"من دون ضغطات معطلة",one:"ضغطة معطلة واحدة",two:"ضغطتان معطلتان",few:`${n} ضغطات معطلة`,many:`${n} ضغطة معطلة`,other:`${n} ضغطة معطلة`});
+  const RESULT_SUMMARY_COPY={
+    en:n=>`Cleared in ${n} ${resultForm("en",n,{one:"move",other:"moves"})}.`,
+    "zh-Hant":n=>`${n} 步完成。`,
+    "zh-Hans":n=>`${n} 步完成。`,
+    ja:n=>`${n}手でクリア。`,
+    ko:n=>`${n}번 만에 완료.`,
+    es:n=>`Completado en ${n} ${resultForm("es",n,{one:"movimiento",other:"movimientos"})}.`,
+    "pt-BR":n=>`Concluído em ${n} ${resultForm("pt-BR",n,{one:"jogada",other:"jogadas"})}.`,
+    fr:n=>`Terminé en ${n} ${resultForm("fr",n,{one:"mouvement",other:"mouvements"})}.`,
+    de:n=>`In ${n} ${resultForm("de",n,{one:"Zug",other:"Zügen"})} geschafft.`,
+    it:n=>`Completato in ${n} ${resultForm("it",n,{one:"mossa",other:"mosse"})}.`,
+    ru:n=>`Пройдено за ${resultRussianMoves(n)}.`,
+    hi:n=>`${n} ${resultForm("hi",n,{one:"चाल",other:"चालों"})} में पूरा।`,
+    ar:n=>`اكتملت المرحلة في ${resultArabicMoves(n)}.`
+  };
   const RESULT_CLEAN_COPY={
-    en:{clean:"Clean order: {n} moves with no blocked taps.",messy:"{n} moves, {blocked} blocked taps. Replay for a cleaner order."},
-    "zh-Hant":{clean:"俐落順序：{n} 步完成，沒有受阻點擊。",messy:"{n} 步完成，受阻點擊 {blocked} 次。再玩一次，挑戰更俐落的順序。"},
-    "zh-Hans":{clean:"利落顺序：{n} 步完成，没有受阻点击。",messy:"{n} 步完成，受阻点击 {blocked} 次。再玩一次，挑战更利落的顺序。"},
-    ja:{clean:"きれいな順序：{n}手、ブロックされたタップなし。",messy:"{n}手、ブロックされたタップ {blocked} 回。もう一度、よりきれいな順序を試そう。"},
-    ko:{clean:"깔끔한 순서: 막힌 탭 없이 {n}번 만에 완료.",messy:"{n}번 만에 완료, 막힌 탭 {blocked}회. 다시 플레이해 더 깔끔한 순서를 찾아보세요."},
-    es:{clean:"Orden limpio: {n} movimientos sin toques bloqueados.",messy:"{n} movimientos y {blocked} toques bloqueados. Repite para encontrar un orden más limpio."},
-    "pt-BR":{clean:"Ordem limpa: {n} jogadas sem toques bloqueados.",messy:"{n} jogadas e {blocked} toques bloqueados. Jogue novamente para buscar uma ordem mais limpa."},
-    fr:{clean:"Ordre net : {n} coups sans touche bloquée.",messy:"{n} coups et {blocked} touches bloquées. Rejouez pour trouver un ordre plus net."},
-    de:{clean:"Saubere Reihenfolge: {n} Züge ohne blockierte Tipps.",messy:"{n} Züge, {blocked} blockierte Tipps. Spiele erneut für eine sauberere Reihenfolge."},
-    it:{clean:"Ordine pulito: {n} mosse senza tocchi bloccati.",messy:"{n} mosse e {blocked} tocchi bloccati. Rigioca per trovare un ordine più pulito."},
-    ru:{clean:"Чистый порядок: {n} ходов без заблокированных нажатий.",messy:"{n} ходов, заблокированных нажатий: {blocked}. Сыграйте ещё раз ради более чистого порядка."},
-    hi:{clean:"साफ़ क्रम: बिना रुके टैप के {n} चालों में पूरा।",messy:"{n} चालें, रुके हुए टैप: {blocked}। फिर खेलकर और साफ़ क्रम आज़माएँ।"},
-    ar:{clean:"ترتيب نظيف: {n} حركات من دون ضغطات معطلة.",messy:"{n} حركات مع {blocked} ضغطات معطلة. أعد اللعب لتجربة ترتيب أنظف."}
+    en:{clean:n=>`Clean order: ${n} ${resultForm("en",n,{one:"move",other:"moves"})} with no blocked taps.`,messy:(n,b)=>`${n} ${resultForm("en",n,{one:"move",other:"moves"})}, ${b} ${resultForm("en",b,{one:"blocked tap",other:"blocked taps"})}. Replay for a cleaner order.`},
+    "zh-Hant":{clean:n=>`俐落順序：${n} 步完成，沒有受阻點擊。`,messy:(n,b)=>`${n} 步完成，受阻點擊 ${b} 次。再玩一次，挑戰更俐落的順序。`},
+    "zh-Hans":{clean:n=>`利落顺序：${n} 步完成，没有受阻点击。`,messy:(n,b)=>`${n} 步完成，受阻点击 ${b} 次。再玩一次，挑战更利落的顺序。`},
+    ja:{clean:n=>`きれいな順序：${n}手、ブロックされたタップなし。`,messy:(n,b)=>`${n}手、ブロックされたタップ ${b} 回。もう一度、よりきれいな順序を試そう。`},
+    ko:{clean:n=>`깔끔한 순서: 막힌 탭 없이 ${n}번 만에 완료.`,messy:(n,b)=>`${n}번 만에 완료, 막힌 탭 ${b}회. 다시 플레이해 더 깔끔한 순서를 찾아보세요.`},
+    es:{clean:n=>`Orden limpio: ${n} ${resultForm("es",n,{one:"movimiento",other:"movimientos"})} sin toques bloqueados.`,messy:(n,b)=>`${n} ${resultForm("es",n,{one:"movimiento",other:"movimientos"})} y ${b} ${resultForm("es",b,{one:"toque bloqueado",other:"toques bloqueados"})}. Repite para encontrar un orden más limpio.`},
+    "pt-BR":{clean:n=>`Ordem limpa: ${n} ${resultForm("pt-BR",n,{one:"jogada",other:"jogadas"})} sem toques bloqueados.`,messy:(n,b)=>`${n} ${resultForm("pt-BR",n,{one:"jogada",other:"jogadas"})} e ${b} ${resultForm("pt-BR",b,{one:"toque bloqueado",other:"toques bloqueados"})}. Jogue novamente para buscar uma ordem mais limpa.`},
+    fr:{clean:n=>`Ordre nette : ${n} ${resultForm("fr",n,{one:"mouvement",other:"mouvements"})} sans touche bloquée.`,messy:(n,b)=>`${n} ${resultForm("fr",n,{one:"mouvement",other:"mouvements"})} et ${b} ${resultForm("fr",b,{one:"touche bloquée",other:"touches bloquées"})}. Rejouez pour trouver un ordre plus net.`},
+    de:{clean:n=>`Saubere Reihenfolge: ${n} ${resultForm("de",n,{one:"Zug",other:"Züge"})} ohne blockierte Versuche.`,messy:(n,b)=>`${n} ${resultForm("de",n,{one:"Zug",other:"Züge"})}, ${b} ${resultForm("de",b,{one:"blockierter Versuch",other:"blockierte Versuche"})}. Spiele erneut für eine sauberere Reihenfolge.`},
+    it:{clean:n=>`Ordine pulito: ${n} ${resultForm("it",n,{one:"mossa",other:"mosse"})} senza tocchi bloccati.`,messy:(n,b)=>`${n} ${resultForm("it",n,{one:"mossa",other:"mosse"})} e ${b} ${resultForm("it",b,{one:"tocco bloccato",other:"tocchi bloccati"})}. Rigioca per trovare un ordine più pulito.`},
+    ru:{clean:n=>`Чистый порядок: ${resultRussianMoves(n)} без заблокированных нажатий.`,messy:(n,b)=>`${resultRussianMoves(n)}, ${resultRussianBlocked(b)}. Сыграйте ещё раз ради более чистого порядка.`},
+    hi:{clean:n=>`साफ़ क्रम: ${n} ${resultForm("hi",n,{one:"चाल",other:"चालों"})} में पूरा, बिना बाधित टैप के.`,messy:(n,b)=>`${n} ${resultForm("hi",n,{one:"चाल",other:"चालें"})}, ${b} बाधित टैप। फिर खेलकर और साफ़ क्रम आज़माएँ।`},
+    ar:{clean:n=>`ترتيب نظيف: اكتملت بـ${resultArabicMoves(n)}، من دون ضغطات معطلة.`,messy:(n,b)=>`اكتملت بـ${resultArabicMoves(n)}، مع ${resultArabicBlocked(b)}. أعد اللعب لتجربة ترتيب أنظف.`}
   };
   const PREVIEW_PACKS={
     en:["New mechanic preview","Got it","Basics: a block escapes only when its full arrow path is clear. Plan the order before you move.","Interlock: one arrow can hide behind another. Follow the full ray and remove the first blocker.","Walls: fixed cells stop a ray even when no arrow is there. Read beyond the nearest block.","Rotation: this arrow turns once clockwise when tapped. Check its new direction before the next move.","Locks + ice: keys open matching locks; removing a neighbor thaws frozen blocks.","Mixed: portals continue a ray and one-way gates allow only their shown direction. Read both before moving."],
@@ -2350,7 +2371,6 @@
   const seenPreviewBands=new Set((localStorage.getItem(PREVIEW_STORAGE_KEY)||"").split(",").filter(Boolean));
   const DIRECT_STAGE_HINT={en:"Swipe or scroll. Tap an unlocked stage to play.","zh-Hant":"滑動選擇，點擊已解鎖關卡即可開始。","zh-Hans":"滑动选择，点击已解锁关卡即可开始。",ja:"スワイプして、解放済みのステージをタップすると開始します。",ko:"밀어서 선택한 뒤, 잠금 해제된 스테이지를 탭해 시작하세요.",es:"Desliza y toca un nivel desbloqueado para jugar.","pt-BR":"Deslize e toque em uma fase liberada para jogar.",fr:"Faites défiler puis touchez un niveau débloqué pour jouer.",de:"Wische und tippe auf eine offene Stufe, um zu spielen.",it:"Scorri e tocca un livello sbloccato per giocare.",ru:"Листайте и нажмите открытый этап, чтобы начать.",hi:"स्वाइप करें और खेलने के लिए अनलॉक चरण पर टैप करें।",ar:"اسحب ثم اضغط مرحلة مفتوحة لبدء اللعب."};
   const t=(key,vars={})=>String(key==="stageHint"?(DIRECT_STAGE_HINT[locale]||DIRECT_STAGE_HINT.en):((I18N[locale]||I18N.en)[key]||key)).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??"");
-  const tResult=(template,vars={})=>String(template).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??"");
   const blockerTargetLabel=hit=>{const labels=BLOCKER_TARGETS[locale]||BLOCKER_TARGETS.en;if(hit.type==="block")return `${labels.block} ${GLYPH[hit.d]||""}`.trim();if(hit.type==="gate")return `${labels.gate} ${GLYPH[hit.d]||""}`.trim();return labels.wall;};
   function setScreen(screen){if(screen!=="stage")cancelStageMotion();document.body.dataset.screen=screen;$("mainGroup").hidden=screen!=="main";$("stageScreen").hidden=screen!=="stage";$("battleScreen").hidden=screen!=="battle";document.body.classList.toggle("is-game-playing",screen==="battle");if(screen==="stage")$("stageScreen").querySelector(".wp-stage-physical-reserve")?.setAttribute("data-wp-stage-reserve-active","");window.dispatchEvent(new Event("weightplay:stage-sync"));window.dispatchEvent(new Event("weightplay:shell-sync"));}
   function applyHelpCopy(){const copy=PREVIEW_PACKS[locale]||PREVIEW_PACKS.en;if(activePreviewBand){$("helpTitle").textContent=copy[0];$("helpText").textContent=copy[activePreviewBand+1]||copy[2];$("helpClose").textContent=copy[1];}else{$("helpTitle").textContent=t("howTitle");$("helpText").textContent=t("helpText");$("helpClose").textContent=t("continue");}}
@@ -2377,7 +2397,7 @@
   function startStage(number){battleGeneration++;currentStage=number;selectedStage=number;state=cloneStage(STAGES[number-1]);moves=0;blockedAttempts=0;busy=false;pendingFeedback="";activeEscapes.clear();$("feedback").textContent="";hideModal("resultModal");hideModal("leaveModal");setScreen("battle");renderBattle();requestAnimationFrame(()=>{$("battleBack").focus();showMechanicPreview(state.band);});}
   function showModal(id,focusId){lastFocus=document.activeElement;$(id).hidden=false;$(focusId).focus();}
   function hideModal(id){$(id).hidden=true;lastFocus?.focus?.();}
-  function finish(){unlocked=Math.max(unlocked,Math.min(30,currentStage+1));localStorage.setItem("arrowEscapeUnlocked",String(unlocked));const copy=RESULT_CLEAN_COPY[locale]||RESULT_CLEAN_COPY.en;$("resultStage").textContent=`STAGE ${currentStage}`;$("resultText").textContent=t("result",{n:moves});$("resultPayoff").textContent=tResult(blockedAttempts?copy.messy:copy.clean,{n:moves,blocked:blockedAttempts});$("nextBtn").disabled=currentStage===30;showModal("resultModal","nextBtn");}
+  function finish(){unlocked=Math.max(unlocked,Math.min(30,currentStage+1));localStorage.setItem("arrowEscapeUnlocked",String(unlocked));const summary=RESULT_SUMMARY_COPY[locale]||RESULT_SUMMARY_COPY.en,copy=RESULT_CLEAN_COPY[locale]||RESULT_CLEAN_COPY.en;$("resultStage").textContent=`STAGE ${currentStage}`;$("resultText").textContent=summary(moves);$("resultPayoff").textContent=blockedAttempts?copy.messy(moves,blockedAttempts):copy.clean(moves);$("nextBtn").disabled=currentStage===30;showModal("resultModal","nextBtn");}
   function markBlocker(hit){const hitBlock=state.blocks.find(item=>item.r===hit.r&&item.c===hit.c),target=hitBlock?$("board").querySelector(`[data-block="${CSS.escape(hitBlock.id)}"]`):$("board").querySelector(`[data-cell="${CSS.escape(keyOf(hit.r,hit.c))}"]`);target?.classList.add("blocked-hit");}
   function settleEscapes(generation,id){if(generation!==battleGeneration)return;activeEscapes.delete(id);busy=activeEscapes.size>0;if(busy)return;renderBattle();$("feedback").textContent=pendingFeedback;pendingFeedback="";if(!state.blocks.length)finish();else if(!actions(state).length)$("feedback").textContent=t("deadlock");}
   function activateBlock(id){if(!state)return;const block=state.blocks.find(item=>item.id===id);if(!block)return;const element=$("board").querySelector(`[data-block="${CSS.escape(id)}"]`);if(block.rotator){block.d=TURN[block.d];delete block.rotator;moves++;$("feedback").textContent=t("rotated");if(activeEscapes.size){element?.classList.remove("rotator");element?.setAttribute("aria-label",GLYPH[block.d]);const glyph=element?.querySelector(".arrow-glyph");if(glyph)glyph.textContent=GLYPH[block.d];$("movesValue").textContent=moves;}else renderBattle();return;}if(block.lock){blockedAttempts++;$("feedback").textContent=t("locked");element?.classList.add("shake");return;}if(block.frozen){blockedAttempts++;$("feedback").textContent=t("frozen");element?.classList.add("shake");return;}const hit=blocker(state,block);if(hit){blockedAttempts++;$("feedback").textContent=t("blocked",{target:blockerTargetLabel(hit)});markBlocker(hit);element?.classList.add("shake");return;}moves++;const beforeFrozen=new Set(state.blocks.filter(item=>item.frozen).map(item=>item.id)),beforeLocked=new Set(state.blocks.filter(item=>item.lock).map(item=>item.id)),generation=battleGeneration,direction=block.d;element?.classList.add(`escape-${{U:"up",R:"right",D:"down",L:"left"}[direction]}`);if(element)element.style.pointerEvents="none";state=applyAction(state,{type:"remove",id});activeEscapes.add(id);busy=true;$("movesValue").textContent=moves;$("leftValue").textContent=state.blocks.length;if(block.key&&[...beforeLocked].some(lockId=>!state.blocks.find(item=>item.id===lockId)?.lock))pendingFeedback=t("keyFound");else if([...beforeFrozen].some(frozenId=>!state.blocks.find(item=>item.id===frozenId)?.frozen))pendingFeedback=t("thawed");setTimeout(()=>settleEscapes(generation,id),330);}
