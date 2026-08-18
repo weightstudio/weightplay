@@ -596,7 +596,7 @@
     quickGuide.append(quickGuideLabel);
     if (guideParagraph) quickGuide.append(document.createTextNode(`: ${guideParagraph}`));
     if (!main || !battle || !table || !hand || !actions) return;
-    if (id === "hearts") resultText?.setAttribute("data-runtime-localize", "off");
+    if (id === "hearts" || id === "crazy-eights") resultText?.setAttribute("data-runtime-localize", "off");
     rootElement.dataset.wpCardGame = id;
     const title = TITLES[id]?.[currentLocale()] || TITLES[id]?.en || id;
     document.querySelectorAll("img.cover").forEach((image) => {
@@ -918,11 +918,23 @@
   }
 
   function makeCrazyEightsFixed(controller) {
-    const s = { hands: [[], [], [], []], stock: [], discard: [], activeSuit: null, pendingSuit: false, turn: 0 };
+    const s = { hands: [[], [], [], []], stock: [], discard: [], activeSuit: null, pendingSuit: false, turn: 0, playerDraws: 0, playerWildSuit: null, playerWildSuitCards: 0 };
     const names = ["You", "AI North", "AI East", "AI West"];
     const legal = (item) => item && (item.rank === 8 || item.suit === s.activeSuit || item.rank === s.discard.at(-1)?.rank);
-    const draw = (player) => { if (s.stock.length) s.hands[player].push(s.stock.pop()); };
-    const finish = (player) => controller.result(player === 0, `${names[player]} — ${s.hands[player].length} ${t("cards")}`);
+    const draw = (player) => { if (s.stock.length) { s.hands[player].push(s.stock.pop()); if (player === 0) s.playerDraws += 1; } };
+    const wildSuitName = (suit) => {
+      const copy = CRAZY_EIGHTS_COPY[currentLocale()] || CRAZY_EIGHTS_COPY.en;
+      const index = SUITS.indexOf(suit);
+      return `${copy.suits[index] || suit} ${SYMBOLS[suit] || ""}`.trim();
+    };
+    const resultBreakdown = () => {
+      const summary = crazyEightsResultText("summary", { cards: s.hands[0].length, draws: s.playerDraws });
+      const wild = s.playerWildSuit
+        ? crazyEightsResultText("wild", { suit: wildSuitName(s.playerWildSuit), kept: s.playerWildSuitCards })
+        : crazyEightsResultText("noWild");
+      return `${summary} · ${wild}`;
+    };
+    const finish = (player) => controller.result(player === 0, `${names[player]} — ${s.hands[player].length} ${t("cards")} · ${resultBreakdown()}`);
     const suitPreview = () => {
       const copy = CRAZY_EIGHTS_COPY[currentLocale()] || CRAZY_EIGHTS_COPY.en;
       const counts = SUITS.map((suit, index) => `${copy.suits[index]} ${s.hands[0].filter((item) => item.suit === suit && item.rank !== 8).length}`).join(" · ");
@@ -948,9 +960,9 @@
       else { draw(s.turn); const drawn = s.hands[s.turn].at(-1); if (legal(drawn)) play(s.turn, drawn); else next(); }
     };
     return {
-      reset() { Object.assign(s, { hands: [[], [], [], []], stock: deck(), discard: [], activeSuit: null, pendingSuit: false, turn: 0 }); for (let i = 0; i < 5; i += 1) s.hands.forEach((cards) => cards.push(s.stock.pop())); s.discard.push(s.stock.pop()); s.activeSuit = s.discard[0].suit; },
+      reset() { Object.assign(s, { hands: [[], [], [], []], stock: deck(), discard: [], activeSuit: null, pendingSuit: false, turn: 0, playerDraws: 0, playerWildSuit: null, playerWildSuitCards: 0 }); for (let i = 0; i < 5; i += 1) s.hands.forEach((cards) => cards.push(s.stock.pop())); s.discard.push(s.stock.pop()); s.activeSuit = s.discard[0].suit; },
       card(index) { if (s.turn === 0 && !s.pendingSuit) play(0, s.hands[0][index]); },
-      action(action, selected) { if (action === "draw" && s.turn === 0 && !s.pendingSuit) { draw(0); const drawn = s.hands[0].at(-1); if (legal(drawn)) play(0, drawn); } if (action === "suit" && s.turn === 0 && s.pendingSuit) { s.activeSuit = selected; s.pendingSuit = false; next(); } },
+      action(action, selected) { if (action === "draw" && s.turn === 0 && !s.pendingSuit) { draw(0); const drawn = s.hands[0].at(-1); if (legal(drawn)) play(0, drawn); } if (action === "suit" && s.turn === 0 && s.pendingSuit) { s.activeSuit = selected; s.playerWildSuit = selected; s.playerWildSuitCards = s.hands[0].filter((item) => item.suit === selected && item.rank !== 8).length; s.pendingSuit = false; next(); } },
       view() { return { phase: `${t("play")} ${SYMBOLS[s.activeSuit] || "8"}`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.pendingSuit ? t("chooseSuit") : `${t("play")}: ${rankText(s.discard.at(-1).rank)}${SYMBOLS[s.activeSuit]}`, score: s.hands[0].length, opponents: names.slice(1).map((name, index) => opponentMarkup(name, s.hands[index + 1].length)).join(""), center: `<div class="card-table-label">${t("discard")}</div><div class="table-row">${cardMarkup(s.discard.at(-1), 0)}${s.stock.length ? `<button class="playing-card is-face-down" data-action="draw" aria-label="${t("draw")}"></button>` : ""}</div>${s.pendingSuit ? `<p class="card-choice-summary" role="status" aria-live="polite">${suitPreview()}</p><div class="card-choice-panel">${SUITS.map((suit) => `<button class="secondary-btn" data-action="suit" data-value="${suit}">${SYMBOLS[suit]}</button>`).join("")}</div>` : ""}`, hand: cardsMarkup(s.hands[0]), actions: `<button class="secondary-btn" data-action="draw" ${s.pendingSuit ? "disabled" : ""}>${t("draw")}</button>` }; }
     };
   }
