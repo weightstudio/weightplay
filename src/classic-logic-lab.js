@@ -41,6 +41,68 @@
   const connectOpponentThinking = L(
     "Opponent thinking…", "對手思考中…", "对手思考中…", "相手が考えています…", "상대가 생각 중…", "El rival está pensando…", "O oponente está pensando…", "L’adversaire réfléchit…", "Der Gegner denkt nach…", "L’avversario sta pensando…", "Соперник думает…", "प्रतिद्वंद्वी सोच रहा है…", "الخصم يفكر…"
   );
+  const connectHint = {
+    win: L(
+      "Column {column} completes four now. You still choose whether to play it.",
+      "第 {column} 欄現在能連成四子。要不要落子，仍由你決定。",
+      "第 {column} 列现在能连成四子。要不要落子，仍由你决定。",
+      "第 {column} 列なら今すぐ4つつながります。置くかどうかはあなたが決めます。",
+      "{column}열에 놓으면 지금 네 개가 이어집니다. 둘지는 직접 결정하세요.",
+      "La columna {column} completa cuatro ahora. Tú decides si jugarla.",
+      "A coluna {column} completa quatro agora. Você ainda decide se vai jogar.",
+      "La colonne {column} aligne quatre pions maintenant. C’est vous qui décidez de la jouer.",
+      "Spalte {column} bildet jetzt vier in einer Reihe. Du entscheidest selbst, ob du sie spielst.",
+      "La colonna {column} completa quattro ora. Sei tu a decidere se giocarla.",
+      "Столбец {column} прямо сейчас замыкает ряд из четырёх. Решать, играть ли его, вам.",
+      "कॉलम {column} अभी चार की लाइन पूरी करता है। चाल चलनी है या नहीं, यह आप तय करते हैं।",
+      "العمود {column} يكمل أربعة الآن. ما زلت أنت من يقرر اللعب."
+    ),
+    block: L(
+      "Column {column} blocks the opponent’s four-in-a-row threat. You still choose the move.",
+      "第 {column} 欄能擋住對手的四子威脅。要不要落子，仍由你決定。",
+      "第 {column} 列可以挡住对手的四子威胁。要不要落子，仍由你决定。",
+      "第 {column} 列なら相手の4つ並びを防げます。置くかどうかはあなたが決めます。",
+      "{column}열은 상대의 네 개 연결 위협을 막습니다. 둘지는 직접 결정하세요.",
+      "La columna {column} bloquea la amenaza de cuatro del rival. Tú decides si jugarla.",
+      "A coluna {column} bloqueia a ameaça de quatro do oponente. Você decide se vai jogar.",
+      "La colonne {column} bloque la menace de quatre de l’adversaire. C’est vous qui décidez.",
+      "Spalte {column} blockiert die Vierer-Drohung des Gegners. Du entscheidest selbst.",
+      "La colonna {column} blocca la minaccia di quattro dell’avversario. Decidi tu se giocarla.",
+      "Столбец {column} блокирует угрозу соперника собрать ряд из четырёх. Решать вам.",
+      "कॉलम {column} प्रतिद्वंद्वी की चार की लाइन वाली धमकी रोकता है। चाल आप चुनते हैं।",
+      "العمود {column} يصد تهديد الخصم بإكمال أربعة. وما زلت أنت من يختار الحركة."
+    ),
+    center: L(
+      "Column {column} keeps the centre open for more lines. You still choose the move.",
+      "第 {column} 欄能保留更多中央連線。要不要落子，仍由你決定。",
+      "第 {column} 列可以保留更多中央连线。要不要落子，仍由你决定。",
+      "第 {column} 列なら中央の連結を広げやすくなります。置くかどうかはあなたが決めます。",
+      "{column}열은 중앙 연결을 열어 둡니다. 둘지는 직접 결정하세요.",
+      "La columna {column} mantiene abierto el centro para más líneas. Tú decides si jugarla.",
+      "A coluna {column} mantém o centro aberto para criar mais linhas. Você decide se vai jogar.",
+      "La colonne {column} garde le centre ouvert pour créer d’autres lignes. C’est vous qui décidez.",
+      "Spalte {column} hält die Mitte für weitere Reihen offen. Du entscheidest selbst.",
+      "La colonna {column} lascia aperto il centro per altre linee. Decidi tu se giocarla.",
+      "Столбец {column} оставляет центр открытым для новых линий. Решать вам.",
+      "कॉलम {column} बीच की राह खुली रखता है ताकि और लाइनें बन सकें। चाल आप चुनते हैं।",
+      "العمود {column} يبقي الوسط مفتوحًا لمزيد من الخطوط. وما زلت أنت من يختار."
+    ),
+    wait: L(
+      "The opponent is thinking. Ask for a Hint after your turn returns.",
+      "對手正在思考，等你的回合回來再使用提示。",
+      "对手正在思考，等你的回合回来再使用提示。",
+      "相手が考えています。自分の番に戻ってからヒントを使いましょう。",
+      "상대가 생각 중입니다. 내 차례가 돌아오면 힌트를 사용하세요.",
+      "El rival está pensando. Usa la pista cuando vuelva tu turno.",
+      "O oponente está pensando. Use a dica quando sua vez voltar.",
+      "L’adversaire réfléchit. Utilisez l’indice quand votre tour reviendra.",
+      "Der Gegner denkt nach. Nutze den Tipp, sobald du wieder dran bist.",
+      "L’avversario sta pensando. Usa il suggerimento quando torna il tuo turno.",
+      "Соперник думает. Используйте подсказку, когда снова наступит ваш ход.",
+      "प्रतिद्वंद्वी सोच रहा है। आपकी बारी लौटने पर संकेत लें।",
+      "الخصم يفكر. استخدم التلميح بعد عودة دورك."
+    ),
+  };
   const codeRemaining = L(
     "Slots remaining", "剩餘欄位", "剩余栏位", "残りのスロット", "남은 칸", "Espacios restantes", "Espaços restantes", "Emplacements restants", "Verbleibende Felder", "Spazi rimanenti", "Осталось ячеек", "बाकी स्थान", "الخانات المتبقية"
   );
@@ -411,15 +473,15 @@
   }
 
   function buildConnect() {
-    let grid = [], difficulty = "easy", locked = false; const panel = document.createElement("div"); const toolbar = document.createElement("div"); toolbar.className = "logic-board-toolbar"; const select = selectDifficulty(); toolbar.append(select); const board = document.createElement("div"); board.className = "logic-connect-board"; panel.append(toolbar, board); app.board.replaceChildren(panel);
-    function render() { board.replaceChildren(); for (let r = 0; r < 6; r += 1) for (let c = 0; c < 7; c += 1) { const value = grid[r * 7 + c]; const b = cell("", `${value === 1 ? "red" : value === 2 ? "yellow" : ""}`, `Column ${c + 1}, Row ${r + 1}`, () => drop(c)); if (value) { const disc = document.createElement("span"); disc.className = "disc"; b.append(disc); } board.append(b); } setChip(`${t("player")}: ${grid.filter((v) => v === 1).length} · ${t("opponent")}: ${grid.filter((v) => v === 2).length}`); }
-    function drop(column) { if (locked) return; const row = [...Array(6).keys()].reverse().find((r) => !grid[r * 7 + column]); if (row === undefined) return; grid[row * 7 + column] = 1; render(); if (hasFour(1)) return finish(true, t("win")); if (grid.every(Boolean)) return finish(false, t("lose")); locked = true; announce(text(connectOpponentThinking)); setTimeout(ai, 250); }
+    let grid = [], difficulty = "easy", locked = false, hintColumn = -1; const panel = document.createElement("div"); const toolbar = document.createElement("div"); toolbar.className = "logic-board-toolbar"; const select = selectDifficulty(); toolbar.append(select); const board = document.createElement("div"); board.className = "logic-connect-board"; panel.append(toolbar, board); app.board.replaceChildren(panel);
+    function render() { board.replaceChildren(); const hintRow = hintColumn >= 0 ? [...Array(6).keys()].reverse().find((r) => !grid[r * 7 + hintColumn]) : -1; for (let r = 0; r < 6; r += 1) for (let c = 0; c < 7; c += 1) { const value = grid[r * 7 + c]; const hintClass = hintRow === r && hintColumn === c && !value ? "is-hint" : ""; const b = cell("", `${value === 1 ? "red" : value === 2 ? "yellow" : ""} ${hintClass}`, `Column ${c + 1}, Row ${r + 1}`, () => drop(c)); if (value) { const disc = document.createElement("span"); disc.className = "disc"; b.append(disc); } board.append(b); } setChip(`${t("player")}: ${grid.filter((v) => v === 1).length} · ${t("opponent")}: ${grid.filter((v) => v === 2).length}`); }
+    function drop(column) { if (locked) return; const row = [...Array(6).keys()].reverse().find((r) => !grid[r * 7 + column]); if (row === undefined) return; hintColumn = -1; grid[row * 7 + column] = 1; render(); if (hasFour(1)) return finish(true, t("win")); if (grid.every(Boolean)) return finish(false, t("lose")); locked = true; announce(text(connectOpponentThinking)); setTimeout(ai, 250); }
     function hasFour(color) { for (let r = 0; r < 6; r += 1) for (let c = 0; c < 7; c += 1) for (const [dr, dc] of [[0,1],[1,0],[1,1],[1,-1]]) { let n = 0; for (let k = 0; k < 4; k += 1) { const rr = r + dr * k, cc = c + dc * k; if (rr >= 0 && rr < 6 && cc >= 0 && cc < 7 && grid[rr * 7 + cc] === color) n += 1; } if (n === 4) return true; } return false; }
     function ai() { const available = [...new Set([...Array(7).keys()].filter((c) => grid[c] === 0))]; let column = available[Math.floor(Math.random() * available.length)]; const winning = available.find((c) => simulateWin(c, 2)); const block = available.find((c) => simulateWin(c, 1)); if (difficulty !== "easy") column = winning ?? block ?? (difficulty === "hard" ? available.sort((a, b) => Math.abs(3 - a) - Math.abs(3 - b))[0] : column); const row = [...Array(6).keys()].reverse().find((r) => !grid[r * 7 + column]); grid[row * 7 + column] = 2; locked = false; render(); if (hasFour(2) || grid.every(Boolean)) finish(false, t("lose")); else announce(t("turn")); }
     function simulateWin(column, color) { const row = [...Array(6).keys()].reverse().find((r) => !grid[r * 7 + column]); if (row === undefined) return false; grid[row * 7 + column] = color; const result = hasFour(color); grid[row * 7 + column] = 0; return result; }
-    function reset() { difficulty = select.value; grid = Array(42).fill(0); locked = false; render(); announce(t("turn")); }
-    function hint() { announce(t("hint")); }
-    select.addEventListener("change", reset); return { reset, hint, undo() { announce(t("undo")); } };
+    function reset() { difficulty = select.value; grid = Array(42).fill(0); locked = false; hintColumn = -1; render(); announce(t("turn")); }
+    function hint() { if (locked) return announce(text(connectHint.wait)); const available = [...Array(7).keys()].filter((c) => grid[c] === 0); if (!available.length) return announce(t("failed")); const winning = available.find((c) => simulateWin(c, 1)); const block = winning === undefined ? available.find((c) => simulateWin(c, 2)) : undefined; const column = winning ?? block ?? available.slice().sort((a, b) => Math.abs(3 - a) - Math.abs(3 - b) || a - b)[0]; const message = winning !== undefined ? connectHint.win : block !== undefined ? connectHint.block : connectHint.center; hintColumn = column; render(); announce(fillTemplate(text(message), { column: column + 1 })); }
+    select.addEventListener("change", reset); return { reset, hint, undo() { hintColumn = -1; render(); announce(t("undo")); } };
   }
 
   function buildNaval() {

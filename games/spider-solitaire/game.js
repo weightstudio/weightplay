@@ -203,7 +203,7 @@
 
   const ui = {};
   const get = (id) => document.getElementById(id);
-  ["loadingPanel", "loadingText", "loadingFill", "mainGroup", "mainScreen", "stageScreen", "stageBackBtn", "stageStartBtn", "battleScreen", "audioMenuBtn", "audioPopover", "soundBtn", "soundStateText", "localeSelect", "statistics", "startBtn", "mainProgress", "restartBtn", "newGameBtn", "battleBackBtn", "moveCount", "timeValue", "scoreValue", "completedValue", "foundationRow", "stockPile", "dealLabel", "dealsLeft", "undoBtn", "hintBtn", "copyReplayLinkBtn", "helpBtn", "boardShell", "tableauRow", "sequenceFx", "tutorialOverlay", "difficultyCoach", "tutorialSkip", "tutorialDone", "confirmOverlay", "confirmNo", "confirmYes", "resultOverlay", "resultText", "resultNewGame", "resultRestart", "resultClose", "hintOverlay", "dragLayer"].forEach((id) => { ui[id] = get(id); });
+  ["loadingPanel", "loadingText", "loadingFill", "mainGroup", "mainScreen", "stageScreen", "stageBackBtn", "stageStartBtn", "battleScreen", "audioMenuBtn", "audioPopover", "soundBtn", "soundStateText", "localeSelect", "statistics", "startBtn", "mainProgress", "restartBtn", "newGameBtn", "battleBackBtn", "moveCount", "timeValue", "scoreValue", "completedValue", "foundationRow", "stockPile", "dealLabel", "dealsLeft", "stockPressureCue", "undoBtn", "hintBtn", "copyReplayLinkBtn", "helpBtn", "boardShell", "tableauRow", "sequenceFx", "tutorialOverlay", "difficultyCoach", "tutorialSkip", "tutorialDone", "confirmOverlay", "confirmNo", "confirmYes", "resultOverlay", "resultText", "resultNewGame", "resultRestart", "resultClose", "hintOverlay", "dragLayer"].forEach((id) => { ui[id] = get(id); });
 
   const safeGet = (key, fallback = null) => { try { return localStorage.getItem(key) ?? fallback; } catch (_error) { return fallback; } };
   const safeSet = (key, value) => { try { localStorage.setItem(key, value); } catch (_error) { } };
@@ -638,6 +638,14 @@
     if (ui.completedValue) ui.completedValue.textContent = `${game.completed.total} / 8`;
     if (ui.dealsLeft) ui.dealsLeft.textContent = t("deals_left", { count: Math.floor(game.stock.cards.length / 10) });
     if (ui.stockPile) ui.stockPile.setAttribute("aria-label", `${t("stock")} · ${game.stock.cards.length}`);
+    if (ui.stockPressureCue) {
+      const dealStatus = game.canDeal();
+      const blockedByEmptyColumn = game.stock.cards.length >= 10 && dealStatus.reason === "empty-column";
+      ui.stockPressureCue.classList.toggle("is-blocked", blockedByEmptyColumn);
+      ui.stockPressureCue.textContent = blockedByEmptyColumn
+        ? t("fill_empty")
+        : `${t("stock")} · ${t("deals_left", { count: Math.floor(game.stock.cards.length / 10) })} · ${t("completed")}: ${game.completed.total} / 8`;
+    }
   }
 
   function updateDifficultyButtons() {

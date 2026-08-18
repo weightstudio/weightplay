@@ -353,6 +353,7 @@
   }
   function cardsMarkup(cards, options = {}) { return (cards || []).map((item, index) => cardMarkup(item, index, { ...options, selected: options.selected?.has(index) })).join(""); }
   function opponentMarkup(name, count, extra = "") { return `<div class="opponent-card"><strong>${name}</strong><span>${count} ${t("cards")}${extra ? ` · ${extra}` : ""}</span></div>`; }
+  function spadesOpponentMarkup(name, count, bid) { return `<div class="opponent-card"><strong>${name}</strong><span>${count} ${t("cards")} · <span class="spades-bid-label" data-runtime-localize="off">${t("bid")}: ${bid}</span></span></div>`; }
   function makePegBoard(player, ai) {
     const cells = Array.from({ length: 61 }, (_, index) => `<span class="card-peg ${index === Math.min(player, 60) ? "is-current is-player" : index < player ? "is-player" : ""} ${index === Math.min(ai, 60) ? "is-current is-ai" : index < ai ? "is-ai" : ""}"></span>`).join("");
     return `<div class="card-peg-board" aria-label="${t("score")}"><div class="card-peg-row">${cells}</div><div class="card-game-topbar"><small>${t("score")}: ${player}</small><small>${t("target")}: 121</small><small>${t("score")}: ${ai}</small></div></div>`;
@@ -597,7 +598,7 @@
           status: s.turn === 0 ? t("yourTurn") : t("aiTurn"),
           help: spadesText(s.phase === "bid" ? "bid" : "play"),
           score: s.scores[0],
-          opponents: names.slice(1).map((name, index) => opponentMarkup(name, s.hands[index + 1].length, `${t("bid")}: ${s.bids[index + 1] ?? "—"}`)).join(""),
+          opponents: names.slice(1).map((name, index) => spadesOpponentMarkup(name, s.hands[index + 1].length, s.bids[index + 1] ?? "—")).join(""),
           center: `<div class="card-table-label">${t("table")} · ${s.tricks[0]} / ${s.tricks[1]}</div>${progress ? `<div class="card-spades-progress" data-progress-state="${progress.state}" data-runtime-localize="off" role="status" aria-live="polite">${progress.text}</div>` : ""}<div class="table-row">${s.trick.map((entry) => cardMarkup(entry.card, 0)).join("") || `♠ ${t("waiting")}`}</div>`,
           hand: cardsMarkup(s.hands[0]),
           actions: s.phase === "bid" ? `<div class="card-choice-panel">${bidControls}</div>` : "",

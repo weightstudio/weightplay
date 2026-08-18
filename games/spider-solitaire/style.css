@@ -132,6 +132,8 @@ body[data-wp-game-id="spider-solitaire"] .game-page-info {
 .stock-copy strong { font-size: .72rem; }
 .stock-copy small { color: var(--sp-muted); font-size: .64rem; }
 .stock-row .control-row { margin-left: auto; justify-content: flex-end; gap: .28rem; }
+.stock-pressure-cue { box-sizing: border-box; min-height: 1.15rem; margin: -.08rem .35rem .34rem; padding: .24rem .45rem; border-inline-start: 2px solid var(--sp-accent); border-radius: 0 .35rem .35rem 0; color: var(--sp-muted); background: rgba(78,205,196,.07); font-size: .62rem; line-height: 1.3; }
+.stock-pressure-cue.is-blocked { border-inline-start-color: var(--sp-gold); color: var(--sp-text); background: rgba(255,209,102,.1); }
 .mini-btn { min-height: 38px !important; padding: .42rem .52rem !important; font-size: .72rem; }
 .tableau-row { grid-template-columns: repeat(10,minmax(0,1fr)); gap: .22rem; min-height: 0; align-items: start; }
 .pile { position: relative; min-width: 0; min-height: calc(var(--card-height) + 5px); border: 1px dashed rgba(255,255,255,.22); border-radius: 9px; background: linear-gradient(160deg,rgba(13,39,70,.34),rgba(9,27,53,.36)); box-shadow: inset 0 0 0 1px rgba(255,255,255,.07), 0 8px 14px rgba(0,0,0,.18); }

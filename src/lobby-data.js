@@ -2535,14 +2535,9 @@ for (const candidate of researchedNextBatchCandidates) {
     delete candidate.previewVideo;
   }
   if (candidate.id === "animal-twin-switchyard") {
-    delete candidate.internalTrial;
-    candidate.status = "playable";
-    candidate.statusText = {
-      en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능",
-      es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile",
-      ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
-    };
-    candidate.previewVideo = `assets/previews/${candidate.id}-battle.webm`;
+    candidate.status = "planned";
+    candidate.statusText = { ...ownerPreviewStatusText };
+    delete candidate.previewVideo;
   }
 }
 const researchedComingSoonStatus = ownerPreviewStatusText;
