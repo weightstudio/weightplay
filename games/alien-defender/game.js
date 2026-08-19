@@ -63,6 +63,54 @@
     ar:{wave1Goal:"هدف الموجة 1: تحرك إلى مسار التشكيل قبل إطلاق النار.",wave1Aim:"ابق تحت المسار وأطلق النار مع تحرك التشكيل.",wave1Hit:"مسار جيد. واصل التحرك مع التشكيل.",wave1Clear:"اكتملت الموجة 1. اقرأ المسار التالي قبل إطلاق النار."}
   };
   Object.entries(WAVE_ONE_COPY).forEach(([key,patch])=>Object.assign(COPY[key],patch));
+  const V32_COPY_PATCH={
+    en:{guideIntro:"Defend the signal station against six alien waves. Move, fire, read the formation, and spend your shield window before the line reaches you.",growth:"Wave 2 adds faster volleys. Wave 3 adds shielded captains. Wave 4 introduces staggered relay formations. Wave 5 adds crossfire lanes. Wave 6 brings the signal-core guardian finale.",winCopy:"Six alien waves cleared. The signal station stays bright.",defenseWarning:"The line is close. Move early and follow the next lane."},
+    "zh-Hant":{guideIntro:"守護訊號站，迎戰六波外星編隊。移動、射擊、觀察隊形，並在防線逼近前把握護盾窗口。",growth:"第 2 波加入更快彈幕；第 3 波加入護甲隊長；第 4 波加入交錯接力隊形；第 5 波加入交叉火力；第 6 波迎來訊號核心守護者。",winCopy:"六波外星編隊都已清除，訊號站持續閃耀。",defenseWarning:"防線快到了。提早移動，跟著下一條路線走。"},
+    "zh-Hans":{guideIntro:"守护信号站，迎战六波外星编队。移动、射击、观察队形，并在防线逼近前把握护盾窗口。",growth:"第 2 波加入更快弹幕；第 3 波加入护甲队长；第 4 波加入交错接力队形；第 5 波加入交叉火力；第 6 波迎来信号核心守护者。",winCopy:"六波外星编队都已清除，信号站持续闪耀。",defenseWarning:"防线快到了。提前移动，跟着下一条路线走。"},
+    ja:{guideIntro:"信号ステーションを6つのエイリアンウェーブから守ります。編隊を読み、動いて撃ち、防衛線が近づく前にシールドを使いましょう。",growth:"2ウェーブでは弾幕が速くなり、3ウェーブではシールド隊長、4ウェーブでは交差するリレー編隊、5ウェーブではクロスファイア、6ウェーブでは信号コアの守護者が登場します。",winCopy:"6つのエイリアンウェーブを撃退し、信号ステーションを守りました。",defenseWarning:"防衛線が近いです。早めに動いて次のレーンを追いましょう。"},
+    ko:{guideIntro:"신호 기지를 여섯 번의 외계인 웨이브에서 지키세요. 대형을 읽고 움직이며 발사하고, 방어선이 가까워지기 전에 실드 시간을 사용하세요.",growth:"2웨이브는 더 빠른 탄막을, 3웨이브는 실드 대장을, 4웨이브는 교차 릴레이 대형을, 5웨이브는 크로스파이어를, 6웨이브는 신호 코어 수호자를 추가합니다.",winCopy:"여섯 번의 외계인 웨이브를 모두 막아 신호 기지를 지켰습니다.",defenseWarning:"방어선이 가까워요. 일찍 움직여 다음 공격선을 따라가세요."},
+    es:{guideIntro:"Defiende la estación de señales de seis oleadas alienígenas. Muévete, dispara, lee la formación y usa tu escudo antes de que la línea se acerque.",growth:"La oleada 2 acelera las ráfagas. La 3 añade capitanes con escudo. La 4 introduce formaciones de relevo escalonadas. La 5 añade fuego cruzado y la 6 culmina con el guardián del núcleo de señales.",winCopy:"Has despejado seis oleadas alienígenas. La estación de señales sigue a salvo.",defenseWarning:"La línea está cerca. Muévete pronto y sigue el siguiente carril."},
+    "pt-BR":{guideIntro:"Defenda a estação de sinais contra seis ondas alienígenas. Mova-se, atire, leia a formação e use o escudo antes que a linha se aproxime.",growth:"A onda 2 traz rajadas mais rápidas. A 3 adiciona capitães protegidos. A 4 introduz formações de revezamento escalonadas. A 5 traz fogo cruzado e a 6 culmina com o guardião do núcleo de sinais.",winCopy:"As seis ondas alienígenas foram eliminadas. A estação de sinais continua segura.",defenseWarning:"A linha está perto. Mova-se cedo e acompanhe a próxima faixa."},
+    fr:{guideIntro:"Défends la station de signal contre six vagues aliens. Bouge, tire, lis la formation et utilise ton bouclier avant que la ligne approche.",growth:"La vague 2 accélère les salves. La 3 ajoute des capitaines protégés. La 4 introduit des relais décalés. La 5 ajoute des tirs croisés et la 6 finit avec le gardien du noyau de signal.",winCopy:"Les six vagues aliens sont éliminées. La station de signal reste protégée.",defenseWarning:"La ligne approche. Bouge tôt et suis la prochaine ligne."},
+    de:{guideIntro:"Verteidige die Signalstation gegen sechs Alien-Wellen. Bewege dich, schieße, lies die Formation und nutze dein Schild, bevor die Linie näher kommt.",growth:"Welle 2 bringt schnellere Salven. Welle 3 ergänzt geschützte Kapitäne. Welle 4 führt versetzte Relaisformationen ein. Welle 5 bringt Kreuzfeuer und Welle 6 den Wächter des Signalkerns.",winCopy:"Alle sechs Alien-Wellen sind besiegt. Die Signalstation bleibt sicher.",defenseWarning:"Die Linie ist nah. Bewege dich früh und folge der nächsten Bahn."},
+    it:{guideIntro:"Difendi la stazione del segnale da sei ondate aliene. Muoviti, spara, leggi la formazione e usa lo scudo prima che la linea si avvicini.",growth:"L'ondata 2 accelera le raffiche. La 3 aggiunge capitani protetti. La 4 introduce formazioni relay sfalsate. La 5 aggiunge il fuoco incrociato e la 6 il guardiano del nucleo del segnale.",winCopy:"Tutte e sei le ondate aliene sono state eliminate. La stazione del segnale è al sicuro.",defenseWarning:"La linea è vicina. Muoviti presto e segui la prossima corsia."},
+    ru:{guideIntro:"Защищай сигнальную станцию от шести волн пришельцев. Двигайся, стреляй, читай строй и используй щит до приближения линии обороны.",growth:"Во второй волне залпы становятся быстрее. В третьей появляются капитаны со щитом. В четвёртой — ступенчатые релейные строи, в пятой — перекрёстный огонь, а в шестой — страж сигнального ядра.",winCopy:"Все шесть волн пришельцев уничтожены. Сигнальная станция в безопасности.",defenseWarning:"Линия близко. Двигайтесь заранее и следите за следующей линией."},
+    hi:{guideIntro:"सिग्नल स्टेशन को छह एलियन लहरों से बचाएँ। चलें, गोली चलाएँ, गठन पढ़ें और रेखा पास आने से पहले ढाल का उपयोग करें।",growth:"लहर 2 तेज़ गोलियाँ जोड़ती है। लहर 3 में ढाल वाले कप्तान, लहर 4 में सीक्वेंस रिले गठन, लहर 5 में क्रॉसफायर और लहर 6 में सिग्नल-कोर संरक्षक आता है।",winCopy:"सभी छह एलियन लहरें साफ़ हो गईं। सिग्नल स्टेशन सुरक्षित है।",defenseWarning:"रेखा पास है। जल्दी चलें और अगली लेन के साथ रहें।"},
+    ar:{guideIntro:"دافع عن محطة الإشارة أمام ست موجات فضائية. تحرك وأطلق النار واقرأ التشكيل واستخدم الدرع قبل اقتراب الخط.",growth:"تضيف الموجة الثانية طلقات أسرع، والثالثة قادة محميين، والرابعة تشكيلات ترحيل متدرجة، والخامسة نيراناً متقاطعة، والسادسة حارس نواة الإشارة.",winCopy:"تم القضاء على الموجات الفضائية الست، وبقيت محطة الإشارة آمنة.",defenseWarning:"الخط قريب. تحرك مبكراً واتبع المسار التالي."}
+  };
+  Object.entries(V32_COPY_PATCH).forEach(([key,patch])=>Object.assign(COPY[key],patch));
+  const LEAVE_COPY={
+    en:{leaveKicker:"Pause defense",leaveTitle:"Leave this defense?",leaveCopy:"Your current wave, score, and temporary shield will be lost if you return to the main page.",continue:"Continue playing",leave:"Return to main"},
+    "zh-Hant":{leaveKicker:"暫停防守",leaveTitle:"要離開這場防守嗎？",leaveCopy:"回到主頁會失去目前波次、分數與暫時護盾。",continue:"繼續防守",leave:"回到主頁"},
+    "zh-Hans":{leaveKicker:"暂停防守",leaveTitle:"要离开这场防守吗？",leaveCopy:"回到主页会失去当前波次、分数和临时护盾。",continue:"继续防守",leave:"回到主页"},
+    ja:{leaveKicker:"防衛を一時停止",leaveTitle:"この防衛を離れますか？",leaveCopy:"メインへ戻ると、現在のウェーブ、スコア、一時的なシールドを失います。",continue:"防衛を続ける",leave:"メインへ戻る"},
+    ko:{leaveKicker:"방어 일시정지",leaveTitle:"이 방어를 나갈까요?",leaveCopy:"메인으로 돌아가면 현재 웨이브, 점수, 임시 실드를 잃습니다.",continue:"계속 플레이",leave:"메인으로"},
+    es:{leaveKicker:"Defensa en pausa",leaveTitle:"¿Salir de esta defensa?",leaveCopy:"Si vuelves al inicio perderás la oleada, la puntuación y el escudo temporal actuales.",continue:"Seguir jugando",leave:"Volver al inicio"},
+    "pt-BR":{leaveKicker:"Defesa pausada",leaveTitle:"Sair desta defesa?",leaveCopy:"Se voltar ao início, você perderá a onda, a pontuação e o escudo temporário atuais.",continue:"Continuar jogando",leave:"Voltar ao início"},
+    fr:{leaveKicker:"Défense en pause",leaveTitle:"Quitter cette défense ?",leaveCopy:"En retournant à l'accueil, tu perdras la vague, le score et le bouclier temporaire actuels.",continue:"Continuer",leave:"Retour à l'accueil"},
+    de:{leaveKicker:"Verteidigung pausiert",leaveTitle:"Diese Verteidigung verlassen?",leaveCopy:"Wenn du zur Startseite zurückkehrst, verlierst du die aktuelle Welle, Punktzahl und den temporären Schild.",continue:"Weiterspielen",leave:"Zur Startseite"},
+    it:{leaveKicker:"Difesa in pausa",leaveTitle:"Vuoi uscire da questa difesa?",leaveCopy:"Tornando all'inizio perderai l'ondata, il punteggio e lo scudo temporaneo attuali.",continue:"Continua a giocare",leave:"Torna all'inizio"},
+    ru:{leaveKicker:"Оборона на паузе",leaveTitle:"Выйти из этой обороны?",leaveCopy:"При возврате на главную текущая волна, счёт и временный щит будут потеряны.",continue:"Продолжить игру",leave:"На главную"},
+    hi:{leaveKicker:"रक्षा रुकी है",leaveTitle:"इस रक्षा से बाहर जाएँ?",leaveCopy:"मुख्य पृष्ठ पर लौटने से वर्तमान लहर, स्कोर और अस्थायी ढाल खो जाएगी।",continue:"खेल जारी रखें",leave:"मुख्य पृष्ठ पर जाएँ"},
+    ar:{leaveKicker:"الدفاع متوقف مؤقتاً",leaveTitle:"هل تريد مغادرة هذا الدفاع؟",leaveCopy:"ستفقد الموجة الحالية والنتيجة والدرع المؤقت إذا عدت إلى الرئيسية.",continue:"متابعة اللعب",leave:"العودة للرئيسية"}
+  };
+  Object.entries(LEAVE_COPY).forEach(([key,patch])=>Object.assign(COPY[key],patch));
+  const V33_COPY_PATCH={
+    en:{incomingFire:"Incoming fire — shift lanes.",waveReached:"Wave reached",replayWinGoal:"Next-run target: beat this score and reach Wave {wave} again."},
+    "zh-Hant":{incomingFire:"敵方來襲，換一條路線。",waveReached:"抵達波次",replayWinGoal:"下一局目標：打破本局分數，再次抵達第 {wave} 波。"},
+    "zh-Hans":{incomingFire:"敌方来袭，换一条路线。",waveReached:"到达波次",replayWinGoal:"下一局目标：打破本局分数，再次到达第 {wave} 波。"},
+    ja:{incomingFire:"敵弾です。レーンを移動しましょう。",waveReached:"到達ウェーブ",replayWinGoal:"次の目標：このスコアを更新し、もう一度{wave}ウェーブへ進みましょう。"},
+    ko:{incomingFire:"적의 공격이에요. 공격선을 바꾸세요.",waveReached:"도달 웨이브",replayWinGoal:"다음 목표: 이 점수를 넘고 웨이브 {wave}에 다시 도달하세요."},
+    es:{incomingFire:"Fuego enemigo: cambia de carril.",waveReached:"Oleada alcanzada",replayWinGoal:"Objetivo siguiente: supera esta puntuación y vuelve a llegar a la oleada {wave}."},
+    "pt-BR":{incomingFire:"Fogo inimigo — mude de faixa.",waveReached:"Onda alcançada",replayWinGoal:"Próxima meta: supere esta pontuação e chegue à onda {wave} novamente."},
+    fr:{incomingFire:"Tirs ennemis : change de ligne.",waveReached:"Vague atteinte",replayWinGoal:"Prochain objectif : bats ce score et atteins à nouveau la vague {wave}."},
+    de:{incomingFire:"Feuer im Anflug – wechsle die Bahn.",waveReached:"Erreichte Welle",replayWinGoal:"Nächstes Ziel: Übertriff diese Punktzahl und erreiche wieder Welle {wave}."},
+    it:{incomingFire:"Fuoco nemico: cambia corsia.",waveReached:"Ondata raggiunta",replayWinGoal:"Prossimo obiettivo: supera questo punteggio e raggiungi di nuovo l'ondata {wave}."},
+    ru:{incomingFire:"Вражеский огонь — смените линию.",waveReached:"Достигнутая волна",replayWinGoal:"Следующая цель: побейте этот счёт и снова дойдите до волны {wave}."},
+    hi:{incomingFire:"दुश्मन की आग — लेन बदलें।",waveReached:"पहुंची लहर",replayWinGoal:"अगला लक्ष्य: इस स्कोर को पार करें और फिर लहर {wave} तक पहुँचें।"},
+    ar:{incomingFire:"نيران قادمة — غيّر المسار.",waveReached:"الموجة التي تم بلوغها",replayWinGoal:"الهدف التالي: تجاوز هذه النتيجة والوصول إلى الموجة {wave} مجدداً."}
+  };
+  Object.entries(V33_COPY_PATCH).forEach(([key,patch])=>Object.assign(COPY[key],patch));
   const TOTAL_WAVES=6;
   const canvas=document.getElementById("gameCanvas"),ctx=canvas.getContext("2d"),$=id=>document.getElementById(id);let locale=document.documentElement.lang||"en";if(!COPY[locale])locale="en";let copy=COPY[locale],screen="main",wave=1,score=0,best=Number(localStorage.getItem("wp-alien-defender-best")||0),raf=0,last=0,world=null,audio=null,sound=true,keys={left:false,right:false,fire:false},gesture=null;
   function t(k){return copy[k]??COPY.en[k]??k}function setText(){document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";copy=COPY[locale]||COPY.en;document.title=`${t("title")} | WeightPlay`;document.querySelectorAll("[data-copy]").forEach(n=>n.textContent=t(n.dataset.copy));document.querySelectorAll("[data-copy-aria]").forEach(n=>n.setAttribute("aria-label",t(n.dataset.copyAria)));canvas.setAttribute("aria-label",t("canvasLabel"));$("localeSelect").value=locale;$("soundBtn").setAttribute("aria-label",t(sound?"soundOn":"soundOff"));$("soundBtn").textContent=sound?"◒":"◌";}
@@ -74,10 +122,10 @@
   function beep(freq=440,duration=.06){if(!sound)return;try{audio??=new (window.AudioContext||window.webkitAudioContext)();const o=audio.createOscillator(),g=audio.createGain();o.frequency.value=freq;o.type="square";g.gain.setValueAtTime(.025,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);o.connect(g).connect(audio.destination);o.start();o.stop(audio.currentTime+duration)}catch{}}
   function makeWorld(){const enemies=[];const cols=wave===1?7:wave===2?8:9,rows=wave===3?4:3;for(let y=0;y<rows;y++)for(let x=0;x<cols;x++)enemies.push({x:150+x*78,y:145+y*52,waveType:wave===3&&y===0?"captain":"scout",alive:true});return{enemies,dir:1,moveTimer:0,moveEvery:wave===1?.68:wave===2?.5:.37,bullets:[],enemyBullets:[],player:{x:460,y:0},lives:3,combo:1,shield:0,fireTimer:0,enemyFire:0,fireIndex:0,flash:0}}
   function start(){cancelAnimationFrame(raf);wave=1;score=0;world=makeWorld();$("resultGoal").textContent="";show("battle");updateHud();$("battleMessage").textContent=t("wave1Goal");canvas.focus({preventScroll:true});last=performance.now();raf=requestAnimationFrame(loop);beep(560,.1)}
-  function updateHud(){$("waveValue").textContent=`${wave} / 3`;$(`scoreValue`).textContent=score;$(`bestValue`).textContent=best;$(`comboValue`).textContent=`x${world?.combo||1}`;$(`livesValue`).textContent=world?.lives||3}
+  function updateHud(){$("waveValue").textContent=`${wave} / ${TOTAL_WAVES}`;$(`scoreValue`).textContent=score;$(`bestValue`).textContent=best;$(`comboValue`).textContent=`x${world?.combo||1}`;$(`livesValue`).textContent=world?.lives||3}
   function shoot(){if(screen!=="battle"||!world||world.fireTimer>0)return;world.bullets.push({x:world.player.x,y:625,s:-640});world.fireTimer=.22;beep(760,.035)}
   function update(dt){if(!world)return;const p=world.player;p.x+=((keys.right?1:0)-(keys.left?1:0))*420*dt;p.x=Math.max(45,Math.min(875,p.x));world.fireTimer=Math.max(0,world.fireTimer-dt);if(keys.fire)shoot();world.flash=Math.max(0,world.flash-dt);world.shield=Math.max(0,world.shield-dt);world.moveTimer+=dt;world.enemyFire+=dt;if(world.moveTimer>world.moveEvery){world.moveTimer=0;const active=world.enemies.filter(e=>e.alive);const min=Math.min(...active.map(e=>e.x)),max=Math.max(...active.map(e=>e.x));if(max>855&&world.dir>0||min<65&&world.dir<0){world.dir*=-1;active.forEach(e=>e.y+=18)}active.forEach(e=>e.x+=world.dir*18)}if(world.enemyFire>(wave===1?.92:wave===2?.72:.56)){world.enemyFire=0;const active=world.enemies.filter(e=>e.alive);if(active.length){const e=active[Math.floor(Math.random()*active.length)];world.enemyBullets.push({x:e.x,y:e.y+20,s:wave===3?300:240})}}for(const b of world.bullets)b.y+=b.s*dt;for(const b of world.enemyBullets)b.y+=b.s*dt;world.bullets=world.bullets.filter(b=>b.y>-20);world.enemyBullets=world.enemyBullets.filter(b=>b.y<760);for(const b of world.bullets){const e=world.enemies.find(x=>x.alive&&Math.abs(x.x-b.x)<27&&Math.abs(x.y-b.y)<24);if(e){e.alive=false;b.y=-100;world.combo=Math.min(9,world.combo+1);score+=e.waveType==="captain"?40:10*world.combo;beep(e.waveType==="captain"?940:620,.04);$("battleMessage").textContent=t("hit")}}for(const b of world.enemyBullets){if(Math.abs(b.x-p.x)<24&&Math.abs(b.y-625)<28){b.y=800;if(world.shield>0){$("battleMessage").textContent=t("shield");beep(420,.06)}else{world.lives--;world.combo=1;world.flash=.35;beep(180,.13);if(world.lives<=0){finish(false);return}}}}const lowest=Math.max(...world.enemies.filter(e=>e.alive).map(e=>e.y),-99);if(lowest>570){finish(false);return}if(!world.enemies.some(e=>e.alive)){if(wave>=3){finish(true);return}wave++;score+=100;world=makeWorld();world.shield=3;$("battleMessage").textContent=t("shield");beep(980,.12)}updateHud()}
-  function finish(win){cancelAnimationFrame(raf);if(score>best){best=score;localStorage.setItem("wp-alien-defender-best",best)}show("result");$("resultTitle").textContent=t(win?"winTitle":"loseTitle");$("resultCopy").textContent=t(win?"winCopy":"loseCopy");const goal=$("resultGoal");if(goal)goal.textContent=win?"":t(wave>=TOTAL_WAVES?"replayFinalGoal":"replayGoal").replace(/\{wave\}/g,String(wave)).replace(/\{nextWave\}/g,String(Math.min(wave+1,TOTAL_WAVES)));$("resultScore").textContent=score;$("resultBest").textContent=best;beep(win?1000:130,.16)}
+  function finish(win){cancelAnimationFrame(raf);if(score>best){best=score;localStorage.setItem("wp-alien-defender-best",best)}show("result");$("resultTitle").textContent=t(win?"winTitle":"loseTitle");$("resultCopy").textContent=t(win?"winCopy":"loseCopy");const goal=$("resultGoal");if(goal)goal.textContent=t(win?"replayWinGoal":wave>=TOTAL_WAVES?"replayFinalGoal":"replayGoal").replace(/\{wave\}/g,String(wave)).replace(/\{nextWave\}/g,String(Math.min(wave+1,TOTAL_WAVES)));$("resultScore").textContent=score;$("resultBest").textContent=best;const resultWave=$("resultWave");if(resultWave)resultWave.textContent=`${wave} / ${TOTAL_WAVES}`;beep(win?1000:130,.16)}
   function draw(){const W=920,H=720;ctx.clearRect(0,0,canvas.width,canvas.height);const scale=Math.min(canvas.clientWidth/W,canvas.clientHeight/H)||1,lw=canvas.clientWidth/scale,lh=canvas.clientHeight/scale;ctx.save();ctx.setTransform(scale,0,0,scale,0,0);ctx.translate((lw-W)/2,Math.max(0,(lh-H)/2));ctx.fillStyle="#080b20";ctx.fillRect(0,0,W,H);for(let i=0;i<55;i++){const x=(i*137)%W,y=(i*71)%H;ctx.fillStyle=i%5===0?"#ffd47caa":"#b99cff55";ctx.fillRect(x,y,i%5===0?2:1,i%5===0?2:1)}ctx.strokeStyle="#74e6ee44";ctx.setLineDash([10,12]);ctx.beginPath();ctx.moveTo(0,594);ctx.lineTo(W,594);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle="#ff879f66";ctx.fillRect(0,610,W,4);for(const e of world.enemies)if(e.alive){ctx.save();ctx.translate(e.x,e.y);ctx.fillStyle=e.waveType==="captain"?"#ffd47c":"#b99cff";ctx.beginPath();ctx.moveTo(-27,-18);ctx.lineTo(27,-18);ctx.lineTo(20,13);ctx.lineTo(0,24);ctx.lineTo(-20,13);ctx.closePath();ctx.fill();ctx.fillStyle="#080b20";ctx.fillRect(-12,-4,7,7);ctx.fillRect(5,-4,7,7);ctx.strokeStyle=e.waveType==="captain"?"#74e6ee":"#ffffff55";ctx.stroke();ctx.restore()}for(const b of world.bullets){ctx.fillStyle="#74e6ee";ctx.fillRect(b.x-3,b.y-13,6,18)}for(const b of world.enemyBullets){ctx.fillStyle="#ff879f";ctx.beginPath();ctx.arc(b.x,b.y,6,0,Math.PI*2);ctx.fill()}const p=world.player;ctx.save();ctx.translate(p.x,625);ctx.fillStyle=world.flash>0?"#fff":"#74e6ee";ctx.beginPath();ctx.moveTo(0,-32);ctx.lineTo(30,25);ctx.lineTo(0,16);ctx.lineTo(-30,25);ctx.closePath();ctx.fill();ctx.fillStyle="#ffd47c";ctx.beginPath();ctx.arc(0,-3,8,0,Math.PI*2);ctx.fill();if(world.shield>0){ctx.strokeStyle="#74e6eeaa";ctx.lineWidth=4;ctx.beginPath();ctx.arc(0,0,45,0,Math.PI*2);ctx.stroke()}ctx.restore();ctx.restore()}
   function loop(now){const dt=Math.min(.04,(now-last)/1000);last=now;if(screen!=="battle")return;update(dt);draw();if(screen==="battle")raf=requestAnimationFrame(loop)}function resize(){if(screen!=="battle")return;const r=canvas.getBoundingClientRect(),dpr=Math.min(2,window.devicePixelRatio||1);canvas.width=Math.max(1,Math.round(r.width*dpr));canvas.height=Math.max(1,Math.round(r.height*dpr));draw()}
   function setKey(key,value){if(key==="left")keys.left=value;if(key==="right")keys.right=value;if(key==="fire")keys.fire=value}
@@ -107,12 +155,12 @@
   draw=drawResponsive;
   // v8 Growth instrumentation: expose only aggregate, privacy-safe funnel
   // fields; gameplay state, controls, pacing, and authored waves stay intact.
-  const ANALYTICS_GAME_VERSION="31",ANALYTICS_INTERFACE_VERSION="7";
+  const ANALYTICS_GAME_VERSION="34",ANALYTICS_INTERFACE_VERSION="7";
   let sessionHadBattle=false,inputType="unknown";
   function viewportBucket(){const width=window.innerWidth,height=window.innerHeight;if(width<=430&&height>=700)return"phone-portrait";if(width<=700&&height>=700)return"tablet-portrait";if(width>=700&&height<=500)return"short-landscape";return"desktop"}
   function track(eventName,details={}){window.WonderAnalytics?.track?.(eventName,{game_id:"alien-defender",game_version:`v${ANALYTICS_GAME_VERSION}`,interface_version:ANALYTICS_INTERFACE_VERSION,locale,viewport_bucket:viewportBucket(),input_type:details.input_type||inputType,wave:details.wave??wave,result_reason:details.result_reason||"not_applicable"})}
   const originalFinish=finish;
-  finish=function finishWithGrowthTracking(win){if(win)track("wave_clear",{wave:3,result_reason:"formation_cleared"});track("result",{wave,result_reason:win?"waves_cleared":"defense_line_or_lives"});originalFinish(win)};
+  finish=function finishWithGrowthTracking(win){if(win)track("wave_clear",{wave,result_reason:"formation_cleared"});track("result",{wave,result_reason:win?"waves_cleared":"defense_line_or_lives"});originalFinish(win)};
   const originalUpdate=update;
   update=function updateWithGrowthTracking(dt){const beforeWave=wave,beforeLives=world?.lives??null,beforeEnemies=world?.enemies?.filter((enemy)=>enemy.alive).length??null;originalUpdate(dt);const afterLives=world?.lives??null,afterEnemies=world?.enemies?.filter((enemy)=>enemy.alive).length??null;if(beforeEnemies!==null&&afterEnemies!==null&&afterEnemies<beforeEnemies)for(let i=0;i<beforeEnemies-afterEnemies;i++)track("hit_result",{wave:beforeWave,result_reason:"hit"});if(beforeLives!==null&&afterLives!==null&&afterLives<beforeLives)for(let i=0;i<beforeLives-afterLives;i++)track("life_lost",{wave:beforeWave,result_reason:"enemy_projectile"});if(wave>beforeWave)track("wave_clear",{wave:beforeWave,result_reason:"formation_cleared"})};
   document.addEventListener("pointerdown",()=>{inputType="pointer"},{capture:true});
@@ -353,4 +401,180 @@
     if(beforeEnemies!==null&&afterEnemies!==null&&afterEnemies<beforeEnemies)$("battleMessage").textContent=t("wave1Hit");
   };
   if(window.__alienDefenderSmoke)window.__alienDefenderSmoke.finish=finish;
+  function ensureBattleHudCompatibility(){
+    const hud=document.querySelector(".battle-hud");
+    if(hud&&!hud.querySelector(".hud-stats")){
+      const stats=[...hud.children].filter(node=>node.matches("div")).slice(0,5);
+      const statGroup=document.createElement("div");
+      statGroup.className="hud-stats";
+      stats.forEach(node=>{node.classList.add("hud-stat");statGroup.append(node)});
+      const actionGroup=document.createElement("div");
+      actionGroup.className="hud-actions";
+      [$("soundBtn"),$("restartBtn")].filter(Boolean).forEach(node=>actionGroup.append(node));
+      hud.append(statGroup,actionGroup);
+    }
+  }
+  function ensureResultWaveStat(){
+    const stats=document.querySelector(".result-stats");
+    if(stats&&!$("resultWave")){
+      const item=document.createElement("span");
+      item.innerHTML='<b data-copy="waveReached"></b><strong id="resultWave">1 / 6</strong>';
+      stats.append(item);
+      setText();
+    }
+  }
+  function ensureLeaveDialog(){
+    let dialog=$("leaveDialog"),stage=document.querySelector(".battle-stage");
+    if(!dialog&&stage){
+      dialog=document.createElement("div");
+      dialog.id="leaveDialog";
+      dialog.className="leave-dialog";
+      dialog.hidden=true;
+      dialog.setAttribute("role","dialog");
+      dialog.setAttribute("aria-modal","true");
+      dialog.setAttribute("aria-labelledby","leaveDialogTitle");
+      dialog.innerHTML='<p class="leave-kicker" data-copy="leaveKicker"></p><h2 id="leaveDialogTitle" data-copy="leaveTitle"></h2><p data-copy="leaveCopy"></p><div class="leave-actions"><button id="continueBtn" class="primary-action" type="button" data-copy="continue"></button><button id="leaveBtn" class="secondary-action" type="button" data-copy="leave"></button></div>';
+      stage.append(dialog);
+      setText();
+    }
+    return dialog;
+  }
+  ensureBattleHudCompatibility();
+  ensureResultWaveStat();
+  const leaveDialog=ensureLeaveDialog(),continueBtn=$("continueBtn"),leaveBtn=$("leaveBtn"),touchControls=document.querySelector(".touch-controls"),battleHeader=()=>document.querySelector(".wp-generated-battle-header");
+  function closeLeaveDialog(resume=true){
+    if(!leaveDialog)return;
+    leaveDialog.hidden=true;
+    canvas.inert=false;
+    if(touchControls)touchControls.inert=false;
+    const header=battleHeader();
+    if(header)header.inert=false;
+    if(resume&&screen==="battle"){last=performance.now();raf=requestAnimationFrame(loop);canvas.focus({preventScroll:true})}
+  }
+  function openLeaveDialog(){
+    if(screen!=="battle"||!leaveDialog)return;
+    cancelAnimationFrame(raf);
+    keys.left=false;keys.right=false;keys.fire=false;
+    leaveDialog.hidden=false;
+    canvas.inert=true;
+    if(touchControls)touchControls.inert=true;
+    const header=battleHeader();
+    if(header)header.inert=true;
+    continueBtn?.focus({preventScroll:true});
+  }
+  function leaveToMain(){closeLeaveDialog(false);cancelAnimationFrame(raf);show("main")}
+  continueBtn?.addEventListener("click",()=>closeLeaveDialog(true));
+  leaveBtn?.addEventListener("click",leaveToMain);
+  $("battleBackBtn")?.addEventListener("click",event=>{if(screen!=="battle")return;event.preventDefault();event.stopImmediatePropagation();openLeaveDialog()},{capture:true});
+  ["startBtn","retryBtn","restartBtn"].forEach(id=>$(id)?.addEventListener("click",()=>{if(leaveDialog)leaveDialog.hidden=true;keys.left=false;keys.right=false;keys.fire=false},{capture:true}));
+  document.addEventListener("keydown",event=>{
+    if(!leaveDialog||leaveDialog.hidden)return;
+    if(event.key==="Escape"){event.preventDefault();closeLeaveDialog(true);return}
+    if(event.key!=="Tab")return;
+    event.preventDefault();
+    (event.shiftKey?continueBtn:leaveBtn)?.focus({preventScroll:true});
+  },{capture:true});
+  // v32 player-value repair: warn before the defense line becomes an
+  // invisible surprise, and add one readable aim lane below the formation.
+  const v32Update=update;
+  update=function updateWithDefenseLineWarning(dt){
+    const beforeWave=wave;
+    const beforeEnemyBullets=world?.enemyBullets?.length??0;
+    v32Update(dt);
+    if(screen!=="battle"||!world)return;
+    world.incomingCueCooldown=Math.max(0,(world.incomingCueCooldown||0)-dt);
+    if(world.enemyBullets.length>beforeEnemyBullets&&world.incomingCueCooldown<=0){
+      world.incomingCueCooldown=1.1;
+      $("battleMessage").textContent=t("incomingFire");
+    }
+    if(wave!==beforeWave){world.pressureWarningShown=false;return}
+    const active=world.enemies.filter(enemy=>enemy.alive);
+    const lowest=active.length?Math.max(...active.map(enemy=>enemy.y)):-99;
+    if(lowest>500&&!world.pressureWarningShown){
+      world.pressureWarningShown=true;
+      $("battleMessage").textContent=t("defenseWarning");
+    }
+  };
+  const v32Draw=draw;
+  draw=function drawWithAimLane(dt){
+    v32Draw(dt);
+    if(screen!=="battle"||!world)return;
+    const cssW=Math.max(1,canvas.clientWidth),cssH=Math.max(1,canvas.clientHeight),dpr=Math.min(2,window.devicePixelRatio||1),scale=Math.min(cssW/920,cssH/720)||1,logicalW=cssW/scale,logicalH=cssH/scale,mapX=x=>x/920*logicalW,mapY=y=>y/720*logicalH;
+    const active=world.enemies.filter(enemy=>enemy.alive),lowest=active.length?Math.max(...active.map(enemy=>enemy.y)):90;
+    ctx.save();
+    ctx.setTransform(dpr*scale,0,0,dpr*scale,0,0);
+    ctx.strokeStyle="#74e6ee52";
+    ctx.lineWidth=2;
+    ctx.setLineDash([5,9]);
+    ctx.beginPath();
+    ctx.moveTo(mapX(world.player.x),mapY(Math.min(550,lowest+42)));
+    ctx.lineTo(mapX(world.player.x),mapY(590));
+    ctx.stroke();
+    ctx.setLineDash([]);
+    const threats=world.enemyBullets.filter(b=>b.y>180&&b.y<620&&Math.abs(b.x-world.player.x)<190).sort((a,b)=>b.y-a.y);
+    const threat=threats[0];
+    if(threat){
+      const urgency=Math.min(1,Math.max(0,(threat.y-180)/440));
+      ctx.strokeStyle=`rgba(255,135,159,${.22+urgency*.34})`;
+      ctx.lineWidth=2;
+      ctx.setLineDash([4,8]);
+      ctx.beginPath();
+      ctx.moveTo(mapX(threat.x),mapY(threat.y+10));
+      ctx.lineTo(mapX(threat.x),mapY(620));
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle="#ff879f";
+      ctx.beginPath();
+      ctx.arc(mapX(threat.x),mapY(threat.y),8+urgency*4,0,Math.PI*2);
+      ctx.fill();
+    }
+    ctx.restore();
+  };
+  // v34 player-value repair: make confirmed hits feel earned without changing
+  // score, timing, formation, or input rules.
+  function spawnImpactBurst(x,y,color){
+    world.particles??=[];
+    for(let i=0;i<9;i++){
+      const angle=(Math.PI*2*i)/9, speed=38+(i%3)*18;
+      world.particles.push({x,y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:.42+(i%3)*.06,max:.6,size:2+(i%2),color});
+    }
+  }
+  const v34Update=update;
+  update=function updateWithImpactFeedback(dt){
+    const beforeAlive=new Set(world?.enemies?.filter(enemy=>enemy.alive)||[]);
+    v34Update(dt);
+    if(screen!=="battle"||!world)return;
+    world.particles??=[];
+    for(const enemy of world.enemies){
+      if(!enemy.alive&&beforeAlive.has(enemy)&&!enemy.impactBurst){
+        enemy.impactBurst=true;
+        spawnImpactBurst(enemy.x,enemy.y,enemy.waveType==="captain"?"#ffd47c":"#b99cff");
+      }
+    }
+    for(const particle of world.particles){
+      particle.x+=particle.vx*dt;
+      particle.y+=particle.vy*dt;
+      particle.vy+=65*dt;
+      particle.life-=dt;
+    }
+    world.particles=world.particles.filter(particle=>particle.life>0);
+  };
+  const v34Draw=draw;
+  draw=function drawWithImpactFeedback(dt){
+    v34Draw(dt);
+    if(screen!=="battle"||!world?.particles?.length)return;
+    const cssW=Math.max(1,canvas.clientWidth),cssH=Math.max(1,canvas.clientHeight),dpr=Math.min(2,window.devicePixelRatio||1),scale=Math.min(cssW/920,cssH/720)||1,logicalW=cssW/scale,logicalH=cssH/scale,mapX=x=>x/920*logicalW,mapY=y=>y/720*logicalH;
+    ctx.save();
+    ctx.setTransform(dpr*scale,0,0,dpr*scale,0,0);
+    for(const particle of world.particles){
+      ctx.globalAlpha=Math.max(0,particle.life/particle.max);
+      ctx.fillStyle=particle.color;
+      ctx.beginPath();
+      ctx.arc(mapX(particle.x),mapY(particle.y),particle.size,0,Math.PI*2);
+      ctx.fill();
+    }
+    ctx.restore();
+  };
+  window.addEventListener("blur",()=>{keys.left=false;keys.right=false;keys.fire=false});
+  document.addEventListener("visibilitychange",()=>{if(document.hidden){keys.left=false;keys.right=false;keys.fire=false}});
 })();
