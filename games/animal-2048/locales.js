@@ -143,5 +143,18 @@
   Object.assign(ru,{missionPlanFoundation:"Сначала подготовьте чистое объединение по всему полю, не тратя ход зря.",missionPlanChain:"Сохраняйте свободные клетки для цепочки из двух объединений.",missionPlanMerge:"Считайте объединения и оставьте один безопасный проход.",missionPlanTarget:"Создайте нужный уровень, не расходуя все свободные клетки.",missionPlanScore:"Набирайте целевые очки, сохраняя место для следующего объединения."});
   Object.assign(hi,{missionPlanFoundation:"चाल खर्च करने से पहले पूरे बोर्ड पर एक साफ़ विलय की तैयारी करें।",missionPlanChain:"दो चरणों वाली विलय श्रृंखला के लिए खाली जगह बचाएँ।",missionPlanMerge:"विलयों की गिनती करें और एक सुरक्षित रास्ता खुला रखें।",missionPlanTarget:"सभी खाली जगह खर्च किए बिना लक्ष्य स्तर बनाएँ।",missionPlanScore:"अगले विलय की जगह बचाते हुए अंक लक्ष्य हासिल करें।"});
   Object.assign(ar,{missionPlanFoundation:"رتّب عملية دمج واضحة على اللوحة كلها قبل إنفاق حركة.",missionPlanChain:"حافظ على الخانات الفارغة لسلسلة دمج من خطوتين.",missionPlanMerge:"احسب عمليات الدمج واترك ممراً آمناً مفتوحاً.",missionPlanTarget:"ابنِ المستوى المستهدف من دون استهلاك كل الخانات الفارغة.",missionPlanScore:"طارد هدف النقاط مع الحفاظ على مساحة للدمج التالي."});
+  Object.assign(en,{mergeSingle:"Evolution: {outcome} · +{score}",mergeMany:"{count} merges · +{score}"});
+  Object.assign(zhHant,{mergeSingle:"進化：{outcome} · +{score}",mergeMany:"{count} 次合併 · +{score}"});
+  Object.assign(zhHans,{mergeSingle:"进化：{outcome} · +{score}",mergeMany:"{count} 次合并 · +{score}"});
+  Object.assign(es,{mergeSingle:"Evolución: {outcome} · +{score}",mergeMany:"{count} combinaciones · +{score}"});
+  Object.assign(ja,{mergeSingle:"進化：{outcome} · +{score}",mergeMany:"{count}回合体 · +{score}"});
+  Object.assign(ko,{mergeSingle:"진화: {outcome} · +{score}",mergeMany:"합치기 {count}회 · +{score}"});
+  Object.assign(ptBR,{mergeSingle:"Evolução: {outcome} · +{score}",mergeMany:"{count} combinações · +{score}"});
+  Object.assign(de,{mergeSingle:"Evolution: {outcome} · +{score}",mergeMany:"{count} Verschmelzungen · +{score}"});
+  Object.assign(fr,{mergeSingle:"Évolution : {outcome} · +{score}",mergeMany:"{count} fusions · +{score}"});
+  Object.assign(it,{mergeSingle:"Evoluzione: {outcome} · +{score}",mergeMany:"{count} fusioni · +{score}"});
+  Object.assign(ru,{mergeSingle:"Эволюция: {outcome} · +{score}",mergeMany:"Объединений: {count} · +{score}"});
+  Object.assign(hi,{mergeSingle:"विकास: {outcome} · +{score}",mergeMany:"{count} विलय · +{score}"});
+  Object.assign(ar,{mergeSingle:"تطور: {outcome} · +{score}",mergeMany:"عمليات الدمج: {count} · +{score}"});
   window.Animal2048Locales = { en, "zh-Hant": zhHant, "zh-Hans": zhHans, es, ja, ko, "pt-BR": ptBR, de, fr, it, ru, hi, ar };
 })();

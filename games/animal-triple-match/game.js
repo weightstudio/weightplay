@@ -127,12 +127,27 @@
 
   const els = Object.fromEntries([...document.querySelectorAll("[id]")].map(el => [el.id, el]));
   const SAVE_KEY = "weightplay_animal_triple_match_v1";
-  const GAME_VERSION = 9;
+  const GAME_VERSION = 10;
   const INTERFACE_VERSION = 6;
   const CHAPTERS = ["openShelf","vineGallery","crystalRoom","mysteryLoft","shiftingHall","grandFinale"];
   const ITEM_NAMES = ["Acorn Lantern","Moon Cup","Shell Compass","Berry Brooch","Cloud Jar","Prism Flower","Star Telescope","Leaf Locket","Coral Music Box","Bee Bell","Mushroom Lamp","Crystal Feather"];
   const ITEM_NAMES_ZH_HANT = ["橡果提燈","月光杯","貝殼羅盤","莓果胸針","雲朵罐","稜鏡花","星光望遠鏡","葉片墜飾","珊瑚音樂盒","蜜蜂鈴","蘑菇燈","水晶羽毛"];
   const ITEM_NAMES_PT_BR = ["Lanterna de bolota","Taça da Lua","Bússola de concha","Broche de frutas vermelhas","Pote de nuvem","Flor prismática","Telescópio estelar","Medalhão de folha","Caixa de música de coral","Sino de abelha","Luminária de cogumelo","Pena de cristal"];
+  const PIECE_A11Y_LABELS = {
+    en: { piece: "Piece {n}: {name}", covered: "Piece {n}: {name}, covered", tray: "Tray slot {slot}: {name}, piece {n}", mystery: "Mystery treasure" },
+    "zh-Hant": { piece: "第 {n} 個寶物：{name}", covered: "第 {n} 個寶物：{name}，目前被遮住", tray: "托盤第 {slot} 格：{name}，第 {n} 個寶物", mystery: "神秘寶物" },
+    "zh-Hans": { piece: "第 {n} 个宝物：{name}", covered: "第 {n} 个宝物：{name}，当前被遮住", tray: "托盘第 {slot} 格：{name}，第 {n} 个宝物", mystery: "神秘宝物" },
+    ja: { piece: "宝物 {n}：{name}", covered: "宝物 {n}：{name}、現在は覆われています", tray: "トレイ {slot} 番目：{name}、宝物 {n}", mystery: "謎の宝物" },
+    ko: { piece: "보물 {n}: {name}", covered: "보물 {n}: {name}, 현재 가려짐", tray: "트레이 {slot}칸: {name}, 보물 {n}", mystery: "수수께끼 보물" },
+    es: { piece: "Tesoro {n}: {name}", covered: "Tesoro {n}: {name}, cubierto", tray: "Casilla {slot} de la bandeja: {name}, tesoro {n}", mystery: "Tesoro misterioso" },
+    "pt-BR": { piece: "Tesouro {n}: {name}", covered: "Tesouro {n}: {name}, coberto", tray: "Espaço {slot} da bandeja: {name}, tesouro {n}", mystery: "Tesouro misterioso" },
+    fr: { piece: "Trésor {n} : {name}", covered: "Trésor {n} : {name}, couvert", tray: "Case {slot} du plateau : {name}, trésor {n}", mystery: "Trésor mystérieux" },
+    de: { piece: "Schatz {n}: {name}", covered: "Schatz {n}: {name}, verdeckt", tray: "Ablageplatz {slot}: {name}, Schatz {n}", mystery: "Rätselschatz" },
+    it: { piece: "Tesoro {n}: {name}", covered: "Tesoro {n}: {name}, coperto", tray: "Spazio {slot} del vassoio: {name}, tesoro {n}", mystery: "Tesoro misterioso" },
+    ru: { piece: "Сокровище {n}: {name}", covered: "Сокровище {n}: {name}, закрыто", tray: "Ячейка лотка {slot}: {name}, сокровище {n}", mystery: "Таинственное сокровище" },
+    hi: { piece: "ख़ज़ाना {n}: {name}", covered: "ख़ज़ाना {n}: {name}, ढका हुआ", tray: "ट्रे की जगह {slot}: {name}, ख़ज़ाना {n}", mystery: "रहस्यमय ख़ज़ाना" },
+    ar: { piece: "الكنز {n}: {name}", covered: "الكنز {n}: {name}، مغطى", tray: "الخانة {slot} في الصينية: {name}، الكنز {n}", mystery: "كنز غامض" },
+  };
   const RUNTIME_LOCALE_SEGMENTS = { "zh-Hant":"zh-tw", "zh-Hans":"zh-cn", ja:"ja", ko:"ko", es:"es", "pt-BR":"pt-br", fr:"fr", de:"de", it:"it", ru:"ru", hi:"hi", ar:"ar" };
   const SHARED_SRC_BASE = new URL("../../src/", document.currentScript?.src || location.href);
   const runtimeCatalogLoads = new Map();
@@ -763,7 +778,21 @@
     return runtimeCatalog(locale)?.[ITEM_NAMES[type]] || ITEM_NAMES[type];
   }
   function mysteryItemName() {
-    return locale === "zh-Hant" ? "神秘寶物" : "Mystery treasure";
+    return (PIECE_A11Y_LABELS[locale] || PIECE_A11Y_LABELS.en).mystery;
+  }
+  function pieceName(piece) {
+    return piece.mystery ? mysteryItemName() : itemName(piece.type);
+  }
+  function formatPieceA11y(kind, vars = {}) {
+    const labels = PIECE_A11Y_LABELS[locale] || PIECE_A11Y_LABELS.en;
+    const text = labels[kind] || PIECE_A11Y_LABELS.en[kind];
+    return String(text).replace(/\{(\w+)\}/g, (_, name) => Object.prototype.hasOwnProperty.call(vars, name) ? vars[name] : "");
+  }
+  function pieceAriaLabel(piece, blocked) {
+    return formatPieceA11y(blocked ? "covered" : "piece", { n: piece.id + 1, name: pieceName(piece) });
+  }
+  function trayAriaLabel(piece, slot) {
+    return formatPieceA11y("tray", { n: piece.id + 1, name: pieceName(piece), slot });
   }
   function pendingPieceIds() {
     return pendingMatch?.runRef === run ? new Set((pendingMatch.groups || []).flat()) : new Set();
@@ -820,7 +849,8 @@
       }
       const blocked = isBlocked(piece), state = piece.vine ? " vine" : piece.crystal ? " crystal" : piece.mystery ? " mystery" : "";
       node.className = `piece ${blocked ? "blocked" : "free"}${state}`;
-      node.setAttribute("aria-label", piece.mystery ? mysteryItemName() : itemName(piece.type));
+      node.setAttribute("aria-label", pieceAriaLabel(piece, blocked));
+      node.setAttribute("aria-disabled", String(blocked));
     });
     renderTray(); layoutPieces(); renderTools();
   }
@@ -843,7 +873,7 @@
     const slots = Array.from({ length: 7 }, (_, i) => {
       if (i >= cap) return `<div class="tray-slot" aria-hidden="true" style="background:#341929;border-color:#a54867">×</div>`;
       const piece = run.tray[i];
-      return piece ? `<div class="tray-piece${pendingIds.has(piece.id) ? " matching" : ""}${run.lastTrayId === piece.id ? " tray-new" : ""}" data-tray="${piece.id}" style="${spriteStyle(piece.type)}" aria-label="${itemName(piece.type)}"></div>` : `<div class="tray-slot"></div>`;
+      return piece ? `<div class="tray-piece${pendingIds.has(piece.id) ? " matching" : ""}${run.lastTrayId === piece.id ? " tray-new" : ""}" data-tray="${piece.id}" style="${spriteStyle(piece.type)}" aria-label="${trayAriaLabel(piece, i + 1)}"></div>` : `<div class="tray-slot"></div>`;
     });
     els.tray.innerHTML = slots.join("");
     run.lastTrayId = null;
