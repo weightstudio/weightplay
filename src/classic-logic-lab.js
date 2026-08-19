@@ -215,6 +215,21 @@
       "संकेत हल का एक कदम दिखाता है; खाना आपको खुद चुनना है।",
       "يحدد التلميح خطوة من الحل؛ وما زلت تختار الخلية."
     ),
+    hintedCell: L(
+      "Hint: Row {row}, Column {col}: {state}",
+      "提示：第 {row} 列，第 {col} 欄：{state}",
+      "提示：第 {row} 行，第 {col} 列：{state}",
+      "ヒント：{row}行 {col}列：{state}",
+      "힌트: {row}행 {col}열: {state}",
+      "Pista: fila {row}, columna {col}: {state}",
+      "Dica: linha {row}, coluna {col}: {state}",
+      "Indice : ligne {row}, colonne {col} : {state}",
+      "Tipp: Zeile {row}, Spalte {col}: {state}",
+      "Suggerimento: riga {row}, colonna {col}: {state}",
+      "Подсказка: строка {row}, столбец {col}: {state}",
+      "संकेत: पंक्ति {row}, स्तंभ {col}: {state}",
+      "تلميح: الصف {row}، العمود {col}: {state}"
+    ),
     cellOn: L(
       "Light on",
       "亮燈",
@@ -457,9 +472,9 @@
     let boardState = []; let moves = 0; let hintIndex = -1; let history = []; const initialMoves = [0, 2, 5, 7, 12, 14, 16, 18, 20, 22, 24]; const panel = document.createElement("div"); const board = document.createElement("div"); board.className = "logic-lights-board"; panel.append(board); const info = document.createElement("div"); info.className = "logic-live"; panel.append(info); app.board.replaceChildren(panel);
     function copy(key, replacements = {}) { return Object.entries(replacements).reduce((value, [token, replacement]) => value.replace(`{${token}}`, String(replacement)), text(lightsCopy[key])); }
     function toggle(i) { history.push({ boardState: boardState.slice(), moves }); const next = new Set([i, ...neighbours(i, 5, 5)]); next.forEach((n) => { boardState[n] = !boardState[n]; }); moves += 1; hintIndex = -1; render(); if (boardState.every((v) => !v)) { const best = saveBest("lights-out", moves); finish(true, `${t("solved")} ${t("moves")}: ${moves} · ${copy("bestLabel", { moves: best })}`); } else announce(t("turn")); }
-    function render() { board.replaceChildren(); boardState.forEach((on, i) => { const row = Math.floor(i / 5) + 1; const col = (i % 5) + 1; const label = copy("cellLabel", { row, col, state: copy(on ? "cellOn" : "cellOff") }); const b = cell(on ? "●" : "", on ? "on" : "", label, () => toggle(i)); if (i === hintIndex) b.classList.add("is-hint"); board.append(b); }); info.textContent = `${t("moves")}: ${moves}`; }
+    function render() { board.replaceChildren(); boardState.forEach((on, i) => { const row = Math.floor(i / 5) + 1; const col = (i % 5) + 1; const state = copy(on ? "cellOn" : "cellOff"); const label = i === hintIndex ? copy("hintedCell", { row, col, state }) : copy("cellLabel", { row, col, state }); const b = cell(on ? "●" : "", on ? "on" : "", label, () => toggle(i)); if (i === hintIndex) b.classList.add("is-hint"); board.append(b); }); info.textContent = `${t("moves")}: ${moves}`; }
     function reset() { boardState = Array(25).fill(false); initialMoves.forEach((i) => { const set = [i, ...neighbours(i, 5, 5)]; set.forEach((n) => { boardState[n] = !boardState[n]; }); }); moves = 0; hintIndex = -1; history = []; app.result.hidden = true; setChip(t("turn")); render(); announce(t("ready")); }
-    function hint() { const solution = solveLights(boardState); hintIndex = solution[0] ?? -1; render(); announce(text(lightsCopy.hintExplanation)); }
+    function hint() { const solution = solveLights(boardState); hintIndex = solution[0] ?? -1; render(); const hinted = hintIndex >= 0 ? copy("hintedCell", { row: Math.floor(hintIndex / 5) + 1, col: (hintIndex % 5) + 1, state: copy(boardState[hintIndex] ? "cellOn" : "cellOff") }) : ""; announce(hinted ? `${text(lightsCopy.hintExplanation)} ${hinted}` : text(lightsCopy.hintExplanation)); }
     function solveLights(start) { for (let mask = 0; mask < 32; mask += 1) { const state = start.slice(); const movesFound = []; for (let c = 0; c < 5; c += 1) if (mask & (1 << c)) { movesFound.push(c); apply(c); } for (let r = 1; r < 5; r += 1) for (let c = 0; c < 5; c += 1) if (state[(r - 1) * 5 + c]) { const index = r * 5 + c; movesFound.push(index); apply(index); } if (state.every((v) => !v)) return movesFound; function apply(i) { [i, ...neighbours(i, 5, 5)].forEach((n) => { state[n] = !state[n]; }); } } return []; }
     function undo() { const previous = history.pop(); if (!previous) { announce(t("ready")); return; } boardState = previous.boardState.slice(); moves = previous.moves; hintIndex = -1; app.result.hidden = true; setChip(t("turn")); render(); announce(`${t("undo")} · ${t("moves")}: ${moves}`); }
     return { reset, hint, undo };
