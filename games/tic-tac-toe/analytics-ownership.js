@@ -2,7 +2,7 @@
   "use strict";
 
   const GAME_ID = "tic-tac-toe";
-  const GAME_VERSION = "v7";
+  const GAME_VERSION = "v8";
   const INTERFACE_VERSION = "6";
   const LOCALE_MAP = {
     en: "en",
@@ -40,7 +40,7 @@
   };
 
   const bounded = (value, max = 99) => Math.max(0, Math.min(max, Number(value) || 0));
-  const legalMoveNumber = () => Math.min(3, Math.floor(document.querySelectorAll(".tic-cell:disabled").length / 2) + 1);
+  const legalMoveNumber = () => Math.min(5, document.querySelectorAll('.tic-cell:not(:disabled)').length ? Math.ceil((9 - document.querySelectorAll('.tic-cell:not(:disabled)').length + 1) / 2) : 5);
   const eventInput = (event) => event?.detail === 0 ? "keyboard" : inputType;
 
   const track = (name, details = {}) => {
@@ -98,7 +98,7 @@
       return;
     }
     if (target.matches(".tic-cell") && !target.disabled) {
-      track("legal_move", { move_number: bounded(legalMoveNumber(), 3), from: "battle", input_type });
+      track("legal_move", { move_number: bounded(legalMoveNumber(), 5), from: "battle", input_type });
     }
   }, true);
 
@@ -106,7 +106,8 @@
   if (result) new MutationObserver(() => {
     if (!result.hidden && !resultVisible) {
       resultVisible = true;
-      track("result_success", { outcome: "success", from: "battle" });
+      const outcome = result.dataset.outcome || "loss";
+      track(outcome === "win" ? "result_success" : outcome === "draw" ? "result_draw" : "result_failure", { outcome, from: "battle" });
     } else if (result.hidden) {
       resultVisible = false;
     }

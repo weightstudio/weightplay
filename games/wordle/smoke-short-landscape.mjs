@@ -5,12 +5,12 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 
 const root = path.resolve(".");
-const runtime = path.join(process.env.USERPROFILE || "", ".cache", "codex-runtimes", "codex-primary-runtime", "dependencies", "node");
-process.env.NODE_PATH = [process.env.NODE_PATH, path.join(runtime, "node_modules", ".pnpm", "node_modules")].filter(Boolean).join(path.delimiter);
+const runtime = path.join(process.env.USERPROFILE || process.env.HOME || "", ".cache", "codex-runtimes", "codex-primary-runtime", "dependencies", "node");
+process.env.NODE_PATH = [process.env.NODE_PATH, path.join(runtime, "node_modules"), path.join(runtime, "node_modules", ".pnpm", "node_modules")].filter(Boolean).join(path.delimiter);
 Module._initPaths();
 const playwrightEntry = path.join(runtime, "node_modules", "playwright", "index.js");
 const executablePath = ["C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", "C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe"].find(fs.existsSync);
-if (!fs.existsSync(playwrightEntry) || !executablePath) throw new Error("Canonical standalone Playwright/Edge runtime is unavailable.");
+if (!fs.existsSync(playwrightEntry)) throw new Error("Canonical standalone Playwright runtime is unavailable.");
 const { default: playwright } = await import(pathToFileURL(playwrightEntry).href);
 
 const mime = { ".css": "text/css", ".html": "text/html", ".js": "text/javascript", ".mjs": "text/javascript" };
@@ -25,7 +25,7 @@ const server = http.createServer((request, response) => {
 });
 await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
 
-const browser = await playwright.chromium.launch({ executablePath, headless: true });
+const browser = await playwright.chromium.launch(executablePath ? { executablePath, headless: true } : { headless: true });
 const errors = [];
 const rect = (node) => {
   const value = node?.getBoundingClientRect();
@@ -42,6 +42,7 @@ try {
   page.on("response", (response) => { if (response.status() >= 400 && !/favicon/iu.test(response.url())) errors.push(`http ${response.status()}: ${response.url()}`); });
   await page.goto(`http://127.0.0.1:${server.address().port}/games/wordle/?preview=1`, { waitUntil: "networkidle" });
   await page.locator("#startBtn").click();
+  assert(await page.locator("body").getAttribute("data-game-version") === "v6", "Wordle runtime identity is not v6");
   await page.locator("#wordInput").fill("CRANE");
   await page.locator('[data-action="submit"]').click();
   const battle = await page.evaluate(() => {
@@ -72,9 +73,10 @@ try {
   });
   assert(battle.screen === "battle" && battle.overflow === "hidden" && battle.scrollY <= 1 && battle.scrollHeight <= battle.viewport.height + 1, "Battle escaped the short-landscape envelope", battle);
   assert(battle.cells.length === 30 && battle.cells.every((box) => inside(box, battle.viewport.width, battle.viewport.height)), "Wordle board cells are not reachable in the first frame", battle);
-  assert(battle.boardSemantics.role === "table" && battle.boardSemantics.label && battle.boardSemantics.rows.length === 6 && battle.boardSemantics.rows.every((role) => role === "row") && battle.boardSemantics.cells.length === 30 && battle.boardSemantics.cells.every((cell) => cell.role === "cell" && cell.label && cell.state === "empty" && cell.row && cell.column), "Wordle empty cells are missing localized table semantics", battle.boardSemantics);
+  const firstGuessStates = battle.boardSemantics.cells.slice(0, 5).map((cell) => cell.state).join(",");
+  assert(battle.boardSemantics.role === "table" && battle.boardSemantics.label && battle.boardSemantics.rows.length === 6 && battle.boardSemantics.rows.every((role) => role === "row") && battle.boardSemantics.cells.length === 30 && battle.boardSemantics.cells.every((cell) => cell.role === "cell" && cell.label && cell.row && cell.column) && firstGuessStates === "miss,hit,hit,miss,hit" && battle.boardSemantics.cells.slice(5).every((cell) => cell.state === "empty"), "Wordle guessed and empty cells are missing localized table semantics", battle.boardSemantics);
   assert(inside(battle.input, battle.viewport.width, battle.viewport.height) && inside(battle.submit, battle.viewport.width, battle.viewport.height), "Wordle input and Submit are not reachable in the first frame", battle);
-  if (process.env.WORDLE_SMOKE_SCREENSHOTS === "1") await page.screenshot({ path: path.join(process.env.TEMP || process.env.TMP || ".", "wordle-v5-844x390-battle.png"), fullPage: false });
+  if (process.env.WORDLE_SMOKE_SCREENSHOTS === "1") await page.screenshot({ path: path.join(process.env.TEMP || process.env.TMP || ".", "wordle-v6-844x390-battle.png"), fullPage: false });
   await page.locator("#wordInput").fill("BRAVE");
   await page.locator('[data-action="submit"]').click();
   const feedbackSemantics = await page.evaluate(() => ({
@@ -102,7 +104,7 @@ try {
   });
   assert(result.screen === "result" && /cleared|挑戰|desafío|クリア|클리어|conclu/iu.test(result.title || ""), "Natural Wordle success Result is missing", result);
   assert(result.scrollY <= 1 && result.scrollHeight <= result.viewport.height + 1 && inside(result.actions, result.viewport.width, result.viewport.height) && inside(result.retry, result.viewport.width, result.viewport.height) && inside(result.home, result.viewport.width, result.viewport.height), "Result recovery actions are not reachable in the first frame", result);
-  if (process.env.WORDLE_SMOKE_SCREENSHOTS === "1") await page.screenshot({ path: path.join(process.env.TEMP || process.env.TMP || ".", "wordle-v5-844x390-result.png"), fullPage: false });
+  if (process.env.WORDLE_SMOKE_SCREENSHOTS === "1") await page.screenshot({ path: path.join(process.env.TEMP || process.env.TMP || ".", "wordle-v6-844x390-result.png"), fullPage: false });
   assert(errors.length === 0, "Wordle short-landscape smoke emitted browser errors", errors);
   console.log(JSON.stringify({ generatedAt: new Date().toISOString(), viewport: "844x390", route: "Main > Battle > valid guess > natural success Result", battle, feedbackSemantics, result, errors }, null, 2));
   await context.close();

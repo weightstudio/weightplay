@@ -1,6 +1,6 @@
 ﻿(() => {
   const GAME_ID = "animal-guard-yard";
-  const GAME_VERSION = "v21";
+  const GAME_VERSION = "v22";
   const INTERFACE_VERSION = 6;
   const localeKey = "weightplayLocale";
   const unlockKey = "weightplay_animal_guard_unlocked";
@@ -687,6 +687,44 @@
     ["Moon Crown Garden", "\u6708\u51a0\u82b1\u5712", "The elk delays every guard and restores itself with a moon pulse; use every guard role.", "\u6708\u51a0\u9e7f\u7684\u6708\u5149\u8108\u885d\u6703\u5ef6\u5f8c\u5168\u9ad4\u5b88\u885b\u4e26\u56de\u5fa9\u81ea\u5df1\uff0c\u56db\u7a2e\u5b88\u885b\u90fd\u6709\u7528\u9014\u3002", ["healer", "burrow", "thief", "shield"]],
   ];
 
+  // The shared runtime catalog translates these English stage fields after
+  // the card is built. Keep the two authored training plans below game-owned
+  // as well: this prevents a composite aria-label from being translated a
+  // fragment at a time and closes the one missing source-key fallback in all
+  // 13 required locales.
+  const stageCopyOverrides = {
+    "Layer Cat shots behind a Dog while the healer is exposed.": {
+      en: "Layer Cat shots behind a Dog while the healer is exposed.",
+      "zh-Hant": "\u6cbb\u7642\u7378\u66b4\u9732\u6642\uff0c\u8b93\u8c93\u54aa\u5728\u72d7\u72d7\u5f8c\u65b9\u96c6\u4e2d\u5c04\u64ca\u3002",
+      "zh-Hans": "\u6cbb\u7597\u517d\u66b4\u9732\u65f6\uff0c\u8ba9\u732b\u54aa\u5728\u72d7\u72d7\u540e\u65b9\u96c6\u4e2d\u5c04\u51fb\u3002",
+      ja: "\u30d2\u30fc\u30e9\u30fc\u304c\u7121\u9632\u5099\u306a\u9593\u3001\u72ac\u306e\u5f8c\u308d\u304b\u3089\u30cd\u30b3\u3067\u653b\u6483\u3057\u307e\u3057\u3087\u3046\u3002",
+      ko: "\uce58\uc720\uc218\uac00 \ub178\ucd9c\ub41c \ub3d9\uc548 \uac1c \ub4a4\uc5d0\uc11c \uace0\uc591\uc774\ub85c \uacf5\uaca9\ud558\uc138\uc694.",
+      es: "Acumula disparos de Gato tras un Perro mientras el sanador est\u00e9 expuesto.",
+      "pt-BR": "Posicione os disparos do Gato atr\u00e1s de um C\u00e3o enquanto o curandeiro est\u00e1 exposto.",
+      fr: "Superposez les tirs du Chat derri\u00e8re un Chien pendant que le gu\u00e9risseur est expos\u00e9.",
+      de: "Platzieren Sie Katzensch\u00fcsse hinter einem Hund, w\u00e4hrend der Heiler ungesch\u00fctzt ist.",
+      it: "Posiziona i colpi del Gatto dietro un Cane mentre il guaritore \u00e8 esposto.",
+      ru: "Размещайте выстрелы Кота за Собакой, пока целитель открыт.",
+      hi: "\u091a\u093f\u0915\u093f\u0924\u094d\u0938\u0915 \u0915\u0947 \u0916\u0941\u0932\u0947 \u0930\u0939\u0928\u0947 \u092a\u0930 \u0915\u0941\u0924\u094d\u0924\u0947 \u0915\u0947 \u092a\u0940\u091b\u0947 \u092c\u093f\u0932\u094d\u0932\u0940 \u0938\u0947 \u0928\u093f\u0936\u093e\u0928\u093e \u0932\u0917\u093e\u090f\u0901\u0964",
+      ar: "\u0636\u0639 \u0647\u062c\u0645\u0627\u062a \u0627\u0644\u0642\u0637 \u062e\u0644\u0641 \u0627\u0644\u0643\u0644\u0628 \u0628\u064a\u0646\u0645\u0627 \u064a\u0643\u0648\u0646 \u0627\u0644\u0645\u0639\u0627\u0644\u062c \u0645\u0643\u0634\u0648\u0641\u064b\u0627.",
+    },
+    "The tortoise closes its shell; save burst damage for the open window.": {
+      en: "The tortoise closes its shell; save burst damage for the open window.",
+      "zh-Hant": "\u70cf\u9f9c\u6703\u9589\u4e0a\u9f9c\u6bbc\uff1b\u4fdd\u7559\u7206\u767c\u50b7\u5bb3\uff0c\u7b49\u5b83\u6253\u958b\u6642\u518d\u51fa\u624b\u3002",
+      "zh-Hans": "\u4e4c\u9f9f\u4f1a\u5408\u4e0a\u9f9f\u58f3\uff1b\u4fdd\u7559\u7206\u53d1\u4f24\u5bb3\uff0c\u7b49\u5b83\u6253\u5f00\u65f6\u518d\u51fa\u624b\u3002",
+      ja: "\u30ab\u30e1\u306f\u7532\u7f85\u3092\u9589\u3058\u307e\u3059\u3002\u7532\u7f85\u304c\u958b\u304f\u307e\u3067\u5f37\u529b\u306a\u30c0\u30e1\u30fc\u30b8\u3092\u6e29\u5b58\u3057\u307e\u3057\u3087\u3046\u3002",
+      ko: "\uac70\ubd81\uc774\uac00 \ub4f1\uafc5\uc9c8\uc744 \ub2eb\uc73c\uba74, \ub2e4\uc2dc \uc5f4\ub9b4 \ub54c\uae4c\uc9c0 \uac15\ud55c \ud53c\ud574\ub97c \uc544\ucf1c \ub450\uc138\uc694.",
+      es: "La tortuga cierra su caparaz\u00f3n; reserva el da\u00f1o explosivo para cuando lo abra.",
+      "pt-BR": "A tartaruga fecha o casco; guarde o dano explosivo para quando ele abrir.",
+      fr: "La tortue ferme sa carapace ; gardez les d\u00e9g\u00e2ts puissants pour le moment o\u00f9 elle s\u2019ouvre.",
+      de: "Die Schildkr\u00f6te schlie\u00dft ihren Panzer; spare starken Schaden f\u00fcr das Zeitfenster, in dem er sich \u00f6ffnet.",
+      it: "La tartaruga chiude il guscio: conserva i danni esplosivi per quando lo apre.",
+      ru: "Черепаха закрывает панцирь; берегите мощный урон до момента, когда он откроется.",
+      hi: "\u0915\u091b\u0941\u0906 \u0905\u092a\u0928\u093e \u0915\u0935\u091a \u092c\u0902\u0926 \u0915\u0930 \u0932\u0947\u0924\u093e \u0939\u0948; \u091c\u092c \u0935\u0939 \u0916\u0941\u0932\u0947 \u0924\u092c \u0915\u0947 \u0932\u093f\u090f \u0924\u0947\u091c\u093c \u0928\u0941\u0915\u0938\u093e\u0928 \u092c\u091a\u093e\u0915\u0930 \u0930\u0916\u0947\u0902\u0964",
+      ar: "\u062a\u063a\u0644\u0642 \u0627\u0644\u0633\u0644\u062d\u0641\u0627\u0629 \u0635\u062f\u0641\u062a\u0647\u0627\u061b \u0627\u062d\u062a\u0641\u0638 \u0628\u0627\u0644\u0636\u0631\u0631 \u0627\u0644\u0642\u0648\u064a \u062d\u062a\u0649 \u062a\u0641\u062a\u062d\u0647\u0627.",
+    },
+  };
+
   const spanishStageCopy = [
     ["Primer Sol", "Aprende el alcance del Gato antes de que llegue la primera bestia veloz."],
     ["Huellas en Dos Carriles", "Protege los dos carriles marcados en vez de llenar una sola fila."],
@@ -1028,7 +1066,12 @@
   function stageCopy(stage, field) {
     const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
     const value = stage?.[field]?.[sourceLocale] || stage?.[field]?.en || "";
-    return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(value) || value : value;
+    const override = stageCopyOverrides[value]?.[locale];
+    if (override) return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(override) || override : override;
+    const translated = !["en", "es", "zh-Hant", "zh-Hans"].includes(locale)
+      ? window.WeightPlayGameRuntimeLocalizer?.translate?.(value) || value
+      : value;
+    return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(translated) || translated : translated;
   }
 
   function clamp(value, min, max) {
