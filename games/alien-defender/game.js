@@ -155,7 +155,7 @@
   draw=drawResponsive;
   // v8 Growth instrumentation: expose only aggregate, privacy-safe funnel
   // fields; gameplay state, controls, pacing, and authored waves stay intact.
-  const ANALYTICS_GAME_VERSION="34",ANALYTICS_INTERFACE_VERSION="7";
+  const ANALYTICS_GAME_VERSION="36",ANALYTICS_INTERFACE_VERSION="7";
   let sessionHadBattle=false,inputType="unknown";
   function viewportBucket(){const width=window.innerWidth,height=window.innerHeight;if(width<=430&&height>=700)return"phone-portrait";if(width<=700&&height>=700)return"tablet-portrait";if(width>=700&&height<=500)return"short-landscape";return"desktop"}
   function track(eventName,details={}){window.WonderAnalytics?.track?.(eventName,{game_id:"alien-defender",game_version:`v${ANALYTICS_GAME_VERSION}`,interface_version:ANALYTICS_INTERFACE_VERSION,locale,viewport_bucket:viewportBucket(),input_type:details.input_type||inputType,wave:details.wave??wave,result_reason:details.result_reason||"not_applicable"})}
@@ -574,6 +574,57 @@
       ctx.fill();
     }
     ctx.restore();
+  };
+  // v35 player-value repair: acknowledge a successful Fire action immediately
+  // while preserving the existing projectile, cooldown, and scoring rules.
+  const v35Shoot=shoot;
+  shoot=function shootWithLaunchFeedback(){
+    const before=world?.bullets?.length||0;
+    v35Shoot();
+    if(world?.bullets?.length>before)world.muzzleFlash=.14;
+  };
+  const v35Update=update;
+  update=function updateWithLaunchFeedback(dt){
+    v35Update(dt);
+    if(screen!=="battle"||!world)return;
+    world.muzzleFlash=Math.max(0,(world.muzzleFlash||0)-dt);
+  };
+  const v35Draw=draw;
+  draw=function drawWithLaunchFeedback(dt){
+    v35Draw(dt);
+    if(screen!=="battle"||!world?.muzzleFlash)return;
+    const cssW=Math.max(1,canvas.clientWidth),cssH=Math.max(1,canvas.clientHeight),dpr=Math.min(2,window.devicePixelRatio||1),scale=Math.min(cssW/920,cssH/720)||1,logicalW=cssW/scale,logicalH=cssH/scale,mapX=x=>x/920*logicalW,mapY=y=>y/720*logicalH,energy=Math.min(1,world.muzzleFlash/.14);
+    ctx.save();
+    ctx.setTransform(dpr*scale,0,0,dpr*scale,0,0);
+    ctx.globalAlpha=energy*.8;
+    ctx.strokeStyle="#74e6ee";
+    ctx.lineWidth=3;
+    ctx.beginPath();
+    ctx.arc(mapX(world.player.x),mapY(625),28+(1-energy)*18,0,Math.PI*2);
+    ctx.stroke();
+    ctx.globalAlpha=energy;
+    ctx.strokeStyle="#ffd47c";
+    ctx.lineWidth=4;
+    ctx.lineCap="round";
+    const cx=mapX(world.player.x),cy=mapY(598),rayStart=10,rayEnd=24+(1-energy)*14;
+    for(const angle of [-Math.PI/2-.42,-Math.PI/2,-Math.PI/2+.42]){
+      ctx.beginPath();
+      ctx.moveTo(cx+Math.cos(angle)*rayStart,cy+Math.sin(angle)*rayStart);
+      ctx.lineTo(cx+Math.cos(angle)*rayEnd,cy+Math.sin(angle)*rayEnd);
+      ctx.stroke();
+    }
+    ctx.restore();
+  };
+  // v36 player-value repair: carry the final-hit celebration across a wave
+  // transition so clearing a formation never loses its closing feedback.
+  const v36Update=update;
+  update=function updateWithWaveClearPayoff(dt){
+    const previousWorld=world,previousWave=wave,previousAlive=new Set(previousWorld?.enemies?.filter(enemy=>enemy.alive)||[]);
+    v36Update(dt);
+    if(screen!=="battle"||!world||world===previousWorld||wave<=previousWave)return;
+    for(const enemy of previousWorld.enemies){
+      if(!enemy.alive&&previousAlive.has(enemy))spawnImpactBurst(enemy.x,enemy.y,enemy.waveType==="captain"?"#ffd47c":"#b99cff");
+    }
   };
   window.addEventListener("blur",()=>{keys.left=false;keys.right=false;keys.fire=false});
   document.addEventListener("visibilitychange",()=>{if(document.hidden){keys.left=false;keys.right=false;keys.fire=false}});

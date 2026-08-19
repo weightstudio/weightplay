@@ -3,7 +3,7 @@
   document.body.dataset.wpCombinedSound = "true";
   const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
   const ASSET = "../../assets/", trial = new URLSearchParams(location.search).get("trial") === "1";
-  const GAME_ID = "animal-rune-reels", GAME_VERSION = "v51";
+  const GAME_ID = "animal-rune-reels", GAME_VERSION = "v52";
   const storageKey = "weightplay.animalRuneReels.v4", legacyStorageKey = "weightplay.animalRuneReels.v3", memory = new Map();
   const LOCALES = window.RUNE_REELS_LOCALES, localeKeys = Object.keys(LOCALES);
   const localeRouteSegments={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
