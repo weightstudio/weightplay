@@ -12,7 +12,7 @@
   const ROOMS_PER_EXPEDITION = 3;
   const EXPEDITIONS_PER_REGION = 5;
   const GAME_ID = "animal-relic-hunters";
-  const GAME_VERSION = 9;
+  const GAME_VERSION = 10;
   const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_relic_hunters_v1";
   const profileKey = "weightplay:animal-relic-hunters:profile:v1";
