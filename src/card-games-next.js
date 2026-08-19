@@ -166,6 +166,22 @@
     ar: { help: "اسحب بطاقة مقلوبة من {name}. تختفي الأزواج تلقائياً.", pair: "اختفى زوج واحد. استعد للسحب الأعمى التالي.", risk: "ما زالت بطاقة العانس في يدك. حاول تمريرها.", none: "لم يختفِ أي زوج. انتبه إلى السحب الأعمى التالي." },
   };
 
+  const OLD_MAID_NAMES = {
+    en: ["You", "Fox", "Panda", "Otter"],
+    "zh-Hant": ["你", "狐狸", "熊貓", "水獺"],
+    "zh-Hans": ["你", "狐狸", "熊猫", "水獭"],
+    ja: ["あなた", "キツネ", "パンダ", "カワウソ"],
+    ko: ["나", "여우", "판다", "수달"],
+    es: ["Tú", "Zorro", "Panda", "Nutria"],
+    "pt-BR": ["Você", "Raposa", "Panda", "Lontra"],
+    fr: ["Vous", "Renard", "Panda", "Loutre"],
+    de: ["Du", "Fuchs", "Panda", "Fischotter"],
+    it: ["Tu", "Volpe", "Panda", "Lontra"],
+    ru: ["Вы", "Лиса", "Панда", "Выдра"],
+    hi: ["आप", "लोमड़ी", "पांडा", "ऊदबिलाव"],
+    ar: ["أنت", "الثعلب", "الباندا", "قضاعة"],
+  };
+
   const oldMaidText = (key, values = {}) => {
     const dictionary = OLD_MAID_COPY[currentLocale()] || OLD_MAID_COPY.en;
     return (dictionary[key] || OLD_MAID_COPY.en[key] || key).replace(/\{(\w+)\}/g, (_, name) => String(values[name] ?? ""));
@@ -209,6 +225,39 @@
     return template.replaceAll("{deadwood}", String(deadwood)).replaceAll("{count}", String(Math.max(0, deadwood - 10)));
   };
 
+  const GIN_PLAN_COPY = {
+    en: { set: "Plan: protect a same-rank pair while trimming unrelated deadwood.", run: "Plan: protect a suited sequence while trimming unrelated deadwood.", both: "Plan: protect a pair or suited sequence while trimming unrelated deadwood.", trim: "Plan: lower deadwood while looking for a set or suited sequence.", ready: "Plan: Knock is ready; protect your strongest meld shape when discarding.", gin: "Plan: Gin is ready; keep your complete meld shape when discarding." },
+    "zh-Hant": { set: "規劃：保留同點數對子，同時減少無關死牌。", run: "規劃：保留同花色順子，同時減少無關死牌。", both: "規劃：保留對子或同花色順子，同時減少無關死牌。", trim: "規劃：降低死牌，並尋找可組成刻子或順子的方向。", ready: "規劃：Knock 已就緒；棄牌時保留最強的組牌形狀。", gin: "規劃：Gin 已就緒；棄牌時維持完整組牌。" },
+    "zh-Hans": { set: "规划：保留同点数对子，同时减少无关死牌。", run: "规划：保留同花色顺子，同时减少无关死牌。", both: "规划：保留对子或同花色顺子，同时减少无关死牌。", trim: "规划：降低死牌，并寻找可组成刻子或顺子的方向。", ready: "规划：Knock 已就绪；弃牌时保留最强的组合形状。", gin: "规划：Gin 已就绪；弃牌时维持完整组合。" },
+    ja: { set: "方針：同じランクのペアを守り、関係ないデッドウッドを減らします。", run: "方針：同じスートの連続を守り、関係ないデッドウッドを減らします。", both: "方針：ペアか同じスートの連続を守り、関係ないデッドウッドを減らします。", trim: "方針：デッドウッドを減らし、セットか同じスートの連続を目指します。", ready: "方針：ノック可能。捨て札では最も強いメルドの形を守りましょう。", gin: "方針：ジン可能。捨て札では完成したメルドを保ちましょう。" },
+    ko: { set: "계획: 같은 숫자 한 쌍을 지키면서 관계없는 데드우드를 줄이세요.", run: "계획: 같은 무늬 연속을 지키면서 관계없는 데드우드를 줄이세요.", both: "계획: 한 쌍이나 같은 무늬 연속을 지키면서 데드우드를 줄이세요.", trim: "계획: 데드우드를 줄이며 세트나 같은 무늬 연속을 찾으세요.", ready: "계획: 노크 가능. 버릴 때 가장 강한 멜드 형태를 지키세요.", gin: "계획: 진 가능. 버릴 때 완성된 멜드를 지키세요." },
+    es: { set: "Plan: protege una pareja del mismo rango y reduce la madera muerta que sobra.", run: "Plan: protege una secuencia del mismo palo y reduce la madera muerta que sobra.", both: "Plan: protege una pareja o secuencia del mismo palo mientras reduces la madera muerta.", trim: "Plan: reduce la madera muerta mientras buscas un trío o una secuencia del mismo palo.", ready: "Plan: puedes cerrar; al descartar, protege tu mejor combinación.", gin: "Plan: Gin listo; al descartar, conserva tus combinaciones completas." },
+    "pt-BR": { set: "Plano: proteja um par do mesmo valor e reduza a madeira morta restante.", run: "Plano: proteja uma sequência do mesmo naipe e reduza a madeira morta restante.", both: "Plano: proteja um par ou uma sequência do mesmo naipe enquanto reduz a madeira morta.", trim: "Plano: reduza a madeira morta enquanto busca uma trinca ou sequência.", ready: "Plano: pode bater; ao descartar, preserve sua melhor combinação.", gin: "Plano: Gin disponível; ao descartar, mantenha sua combinação completa." },
+    fr: { set: "Plan : protégez une paire de même valeur et réduisez le bois mort inutile.", run: "Plan : protégez une suite de même couleur et réduisez le bois mort inutile.", both: "Plan : protégez une paire ou une suite de même couleur en réduisant le bois mort.", trim: "Plan : réduisez le bois mort en cherchant un brelan ou une suite.", ready: "Plan : frappe possible ; gardez votre meilleure combinaison en défaussant.", gin: "Plan : Gin possible ; gardez votre combinaison complète en défaussant." },
+    de: { set: "Plan: Schütze ein gleichrangiges Paar und senke unnötiges Totholz.", run: "Plan: Schütze eine gleichfarbige Folge und senke unnötiges Totholz.", both: "Plan: Schütze ein Paar oder eine gleichfarbige Folge und senke Totholz.", trim: "Plan: Senke Totholz und suche eine Gruppe oder gleichfarbige Folge.", ready: "Plan: Klopfen möglich; bewahre beim Abwerfen deine stärkste Meldung.", gin: "Plan: Gin möglich; bewahre beim Abwerfen deine vollständigen Meldungen." },
+    it: { set: "Piano: proteggi una coppia dello stesso valore e riduci le carte morte inutili.", run: "Piano: proteggi una sequenza dello stesso seme e riduci le carte morte inutili.", both: "Piano: proteggi una coppia o una sequenza dello stesso seme riducendo le carte morte.", trim: "Piano: riduci le carte morte cercando un tris o una sequenza.", ready: "Piano: puoi battere; nello scarto proteggi la combinazione migliore.", gin: "Piano: Gin possibile; nello scarto mantieni le combinazioni complete." },
+    ru: { set: "План: берегите пару одного достоинства и сокращайте лишний дедвуд.", run: "План: берегите последовательность одной масти и сокращайте лишний дедвуд.", both: "План: берегите пару или последовательность одной масти, сокращая дедвуд.", trim: "План: сокращайте дедвуд и ищите группу или последовательность одной масти.", ready: "План: можно стучать; при сбросе сохраняйте лучшую комбинацию.", gin: "План: Джин готов; при сбросе сохраняйте полные комбинации." },
+    hi: { set: "योजना: एक ही रैंक की जोड़ी बचाएँ और अनावश्यक डेडवुड घटाएँ।", run: "योजना: एक ही सूट का क्रम बचाएँ और अनावश्यक डेडवुड घटाएँ।", both: "योजना: जोड़ी या एक ही सूट का क्रम बचाते हुए डेडवुड घटाएँ।", trim: "योजना: डेडवुड घटाएँ और सेट या एक ही सूट का क्रम खोजें।", ready: "योजना: नॉक तैयार है; पत्ता छोड़ते समय अपनी मजबूत मेल्ड बचाएँ।", gin: "योजना: जिन तैयार है; पत्ता छोड़ते समय पूरी मेल्ड बनाए रखें।" },
+    ar: { set: "الخطة: حافظ على زوج من الرتبة نفسها وخفّض الخشب الميت الزائد.", run: "الخطة: حافظ على تسلسل من النوع نفسه وخفّض الخشب الميت الزائد.", both: "الخطة: حافظ على زوج أو تسلسل من النوع نفسه مع خفض الخشب الميت.", trim: "الخطة: خفّض الخشب الميت وابحث عن مجموعة أو تسلسل من النوع نفسه.", ready: "الخطة: الطرق جاهز؛ حافظ على أقوى مجموعة عند الرمي.", gin: "الخطة: جين جاهز؛ حافظ على مجموعاتك المكتملة عند الرمي." },
+  };
+
+  const ginPlanText = (hand, deadwood) => {
+    const dictionary = GIN_PLAN_COPY[currentLocale()] || GIN_PLAN_COPY.en;
+    const rankCounts = new Map();
+    hand.forEach((item) => rankCounts.set(item.rank, (rankCounts.get(item.rank) || 0) + 1));
+    const hasPair = [...rankCounts.values()].some((count) => count === 2);
+    const hasRun = SUITS.some((suit) => {
+      const ranks = [...new Set(hand.filter((item) => item.suit === suit).map((item) => item.rank))].sort((a, b) => a - b);
+      let length = 1;
+      for (let index = 1; index <= ranks.length; index += 1) {
+        if (index < ranks.length && ranks[index] === ranks[index - 1] + 1) length += 1;
+        else { if (length === 2) return true; length = 1; }
+      }
+      return false;
+    });
+    const key = deadwood === 0 ? "gin" : deadwood <= 10 ? "ready" : hasPair && hasRun ? "both" : hasPair ? "set" : hasRun ? "run" : "trim";
+    return dictionary[key] || GIN_PLAN_COPY.en[key];
+  };
   const GIN_RESULT_COPY = {
     en: { breakdown: "{reason} · Meld cards {meldCards} · Your deadwood {deadwood} · AI deadwood {aiDeadwood} · Score {playerScore} / {aiScore}", gin: "Gin", knock: "Knock at {deadwood}", stock: "Stock settled" },
     "zh-Hant": { breakdown: "{reason} · 組牌 {meldCards} 張 · 你的死牌 {deadwood} 點 · AI 死牌 {aiDeadwood} 點 · 分數 {playerScore} / {aiScore}", gin: "Gin", knock: "Knock：{deadwood} 點死牌", stock: "牌庫結算" },
@@ -362,6 +411,25 @@
   const warSwingText = (winner, count) => {
     const dictionary = WAR_SWING_COPY[currentLocale()] || WAR_SWING_COPY.en;
     return (dictionary[winner] || WAR_SWING_COPY.en[winner]).replaceAll("{count}", String(count));
+  };
+  const WAR_GUIDANCE_COPY = {
+    en: { flip: "Flip together and watch the collision.", war: "Place three cards down, then reveal the next card." },
+    "zh-Hant": { flip: "一起翻牌，看看牌面如何碰撞。", war: "各放下三張牌，再翻開下一張牌。" },
+    "zh-Hans": { flip: "一起翻牌，看看牌面如何碰撞。", war: "各放下三张牌，再翻开下一张牌。" },
+    ja: { flip: "一緒にめくって、カードのぶつかり合いを見届けよう。", war: "お互いに3枚を伏せて置き、次の1枚をめくります。" },
+    ko: { flip: "함께 뒤집고 카드가 맞붙는 순간을 지켜보세요.", war: "각자 카드 세 장을 내려놓고 다음 카드를 뒤집으세요." },
+    es: { flip: "Voltea a la vez y observa el choque.", war: "Coloca tres cartas y luego revela la siguiente." },
+    "pt-BR": { flip: "Vire ao mesmo tempo e veja o confronto.", war: "Coloque três cartas e depois revele a próxima." },
+    fr: { flip: "Retournez en même temps et observez le duel.", war: "Posez trois cartes, puis retournez la suivante." },
+    de: { flip: "Decke gleichzeitig auf und beobachte den Kartenkampf.", war: "Lege drei Karten ab und decke dann die nächste auf." },
+    it: { flip: "Gira insieme e guarda lo scontro.", war: "Metti tre carte, poi gira la successiva." },
+    ru: { flip: "Открывайте одновременно и смотрите, какая карта победит.", war: "Положите по три карты, затем откройте следующую." },
+    hi: { flip: "साथ में पलटें और टकराव देखें।", war: "तीन पत्ते रखें, फिर अगला पत्ता पलटें।" },
+    ar: { flip: "اقلبا البطاقتين معًا وشاهد المواجهة.", war: "ضع ثلاث بطاقات، ثم اقلب البطاقة التالية." },
+  };
+  const warGuidanceText = (phase) => {
+    const dictionary = WAR_GUIDANCE_COPY[currentLocale()] || WAR_GUIDANCE_COPY.en;
+    return dictionary[phase] || WAR_GUIDANCE_COPY.en[phase];
   };
   const SPEED_LEGAL_COPY = {
     en: "{card} — legal play",
@@ -640,6 +708,8 @@
     if (guideParagraph) quickGuide.append(document.createTextNode(`: ${guideParagraph}`));
     if (!main || !battle || !table || !hand || !actions) return;
     if (id === "hearts" || id === "crazy-eights" || id === "gin-rummy") resultText?.setAttribute("data-runtime-localize", "off");
+    if (id === "war") statusText?.setAttribute("data-runtime-localize", "off");
+    if (id === "old-maid") statusText?.setAttribute("data-runtime-localize", "off");
     rootElement.dataset.wpCardGame = id;
     const title = TITLES[id]?.[currentLocale()] || TITLES[id]?.en || id;
     document.querySelectorAll("img.cover").forEach((image) => {
@@ -865,7 +935,7 @@
     const drawBattle = () => { if (!s.player.length || !s.ai.length) { controller.result(Boolean(s.player.length), `${t("cards")}: ${s.player.length} / ${s.ai.length}`); return; } s.playerCard = s.player.shift(); s.aiCard = s.ai.shift(); s.pot.push(s.playerCard, s.aiCard); s.phase = "reveal"; if (s.playerCard.rank === s.aiCard.rank) { s.war = true; s.phase = "war"; } else { settle(); } };
     const settle = () => { const playerWins = s.playerCard.rank > s.aiCard.rank; const winner = playerWins ? s.player : s.ai; winner.push(...s.pot.sort(() => Math.random() - .5)); s.pot = []; s.phase = "ready"; s.war = false; if (!s.player.length || !s.ai.length) controller.result(playerWins, `${t("cards")}: ${s.player.length} / ${s.ai.length}`); };
     const addWar = () => { if (s.player.length < 4 || s.ai.length < 4) { s.player.push(...s.pot); s.pot = []; controller.result(Boolean(s.player.length), t("war")); return; } s.pot.push(...s.player.splice(0, 3), ...s.ai.splice(0, 3)); s.playerCard = s.player.shift(); s.aiCard = s.ai.shift(); s.pot.push(s.playerCard, s.aiCard); if (s.playerCard.rank !== s.aiCard.rank) settle(); else s.phase = "war"; };
-    return { reset() { const cards = deck(); Object.assign(s, { player: cards.slice(0, 26), ai: cards.slice(26), pot: [], phase: "ready", last: null, war: false, playerCard: null, aiCard: null }); }, card() {}, action(action) { if (action === "flip" && s.phase === "ready") drawBattle(); else if (action === "flip" && s.phase === "war") addWar(); }, view() { return { phase: s.war ? t("war") : t("flip"), status: t("yourTurn"), help: s.war ? "Place three cards down, then reveal the next card." : "Flip together and watch the collision.", score: s.player.length, opponents: opponentMarkup("AI", s.ai.length), center: `<div class="card-table-label">${t("war")}</div><div class="table-row ${s.war ? "card-war-flash" : ""}">${s.playerCard ? cardMarkup(s.playerCard, 0) : ""}${s.aiCard ? cardMarkup(s.aiCard, 0) : ""}</div><div>${t("cards")}: ${s.pot.length}</div>`, hand: `<div class="card-help">${s.player.length} ${t("cards")}</div>`, actions: `<button class="primary-btn" data-action="flip">${s.war ? t("war") : t("flip")}</button>` }; } };
+    return { reset() { const cards = deck(); Object.assign(s, { player: cards.slice(0, 26), ai: cards.slice(26), pot: [], phase: "ready", last: null, war: false, playerCard: null, aiCard: null }); }, card() {}, action(action) { if (action === "flip" && s.phase === "ready") drawBattle(); else if (action === "flip" && s.phase === "war") addWar(); }, view() { return { phase: s.war ? t("war") : t("flip"), status: t("yourTurn"), help: warGuidanceText(s.war ? "war" : "flip"), score: s.player.length, opponents: opponentMarkup("AI", s.ai.length), center: `<div class="card-table-label">${t("war")}</div><div class="table-row ${s.war ? "card-war-flash" : ""}">${s.playerCard ? cardMarkup(s.playerCard, 0) : ""}${s.aiCard ? cardMarkup(s.aiCard, 0) : ""}</div><div>${t("cards")}: ${s.pot.length}</div>`, hand: `<div class="card-help">${s.player.length} ${t("cards")}</div>`, actions: `<button class="primary-btn" data-action="flip">${s.war ? t("war") : t("flip")}</button>` }; } };
   }
 
   function makeWarFixed(controller) {
@@ -903,7 +973,7 @@
       reset() { const cards = deck(); Object.assign(s, { player: cards.slice(0, 26), ai: cards.slice(26), pot: [], phase: "ready", playerCard: null, aiCard: null, swingCue: "" }); },
       card() {},
       action(action) { if (action === "flip" && s.phase === "ready") reveal(); else if (action === "flip" && s.phase === "war") continueWar(); },
-      view() { const swingCue = s.swingCue ? `<p class="card-choice-summary card-war-swing" role="status" aria-live="polite">${s.swingCue}</p>` : ""; return { phase: s.phase === "war" ? t("war") : t("flip"), status: t("yourTurn"), help: s.phase === "war" ? "Place three cards down, then reveal the next card." : "Flip together and watch the collision.", score: s.player.length, opponents: opponentMarkup("AI", s.ai.length), center: `<div class="card-table-label">${t("war")}</div>${swingCue}<div class="table-row ${s.phase === "war" ? "card-war-flash" : ""}">${s.playerCard ? cardMarkup(s.playerCard, 0) : ""}${s.aiCard ? cardMarkup(s.aiCard, 0) : ""}</div><div>${t("cards")}: ${s.pot.length}</div>`, hand: `<div class="card-help">${s.player.length} ${t("cards")}</div>`, actions: `<button class="primary-btn" data-action="flip">${s.phase === "war" ? t("war") : t("flip")}</button>` }; }
+      view() { const swingCue = s.swingCue ? `<p class="card-choice-summary card-war-swing" role="status" aria-live="polite">${s.swingCue}</p>` : ""; return { phase: s.phase === "war" ? t("war") : t("flip"), status: t("yourTurn"), help: warGuidanceText(s.phase === "war" ? "war" : "flip"), score: s.player.length, opponents: opponentMarkup("AI", s.ai.length), center: `<div class="card-table-label">${t("war")}</div>${swingCue}<div class="table-row ${s.phase === "war" ? "card-war-flash" : ""}">${s.playerCard ? cardMarkup(s.playerCard, 0) : ""}${s.aiCard ? cardMarkup(s.aiCard, 0) : ""}</div><div>${t("cards")}: ${s.pot.length}</div>`, hand: `<div class="card-help">${s.player.length} ${t("cards")}</div>`, actions: `<button class="primary-btn" data-action="flip">${s.phase === "war" ? t("war") : t("flip")}</button>` }; }
     };
   }
 
@@ -1041,7 +1111,7 @@
       reset() { Object.assign(s, { player: [], ai: [], stock: deck(), discard: [], turn: 0, drawn: false, selected: new Set(), score: [0, 0], over: false }); for (let i = 0; i < 10; i += 1) { s.player.push(s.stock.pop()); s.ai.push(s.stock.pop()); } s.discard.push(s.stock.pop()); },
       card(index) { if (s.turn === 0 && s.drawn && !s.over) { s.selected = s.selected.has(index) ? new Set() : new Set([index]); } },
       action(action) { if (s.turn !== 0 || s.over) return; if (action === "draw-stock" && !s.drawn) drawCard(false); if (action === "draw-discard" && !s.drawn) drawCard(true); if (action === "discard" && s.drawn && s.selected.size === 1) { const index = [...s.selected][0]; const discarded = s.player.splice(index, 1)[0]; if (discarded) s.discard.push(discarded); s.selected.clear(); const stats = meldStats(s.player); if (stats.deadwood === 0) finish(0, "gin"); else if (!s.stock.length) { const aiStats = meldStats(s.ai); finish(stats.deadwood <= aiStats.deadwood ? 0 : 1, "stock"); } else { s.turn = 1; s.drawn = false; setTimeout(aiTurn, 320); } } if (action === "knock" && s.drawn) { const stats = meldStats(s.player); if (stats.deadwood <= 10) { const aiStats = meldStats(s.ai); finish(stats.deadwood <= aiStats.deadwood ? 0 : 1, stats.deadwood === 0 ? "gin" : "knock"); } } },
-      view() { const stats = meldStats(s.player); const pathState = stats.deadwood === 0 ? "is-gin" : stats.deadwood <= 10 ? "is-ready" : ""; return { phase: s.turn === 0 ? (s.drawn ? t("discard") : t("draw")) : t("aiTurn"), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: `Meld cards ${stats.meldCards} · Deadwood ${stats.deadwood}`, score: s.score[0], opponents: opponentMarkup("AI", s.ai.length, `${t("score")}: ${s.score[1]}`), center: `<div class="card-table-label">${t("stock")} · ${s.stock.length} · ${t("discard")}</div><div class="card-gin-path ${pathState}" role="status" aria-live="polite">${ginPathText(stats.deadwood)}</div><div class="table-row"><button class="playing-card is-face-down" data-action="draw-stock" aria-label="${t("stock")}" ${!s.stock.length ? "disabled" : ""}></button>${cardMarkup(s.discard.at(-1), 0)}</div>`, hand: cardsMarkup(s.player, { selected: s.selected }), actions: `<button class="secondary-btn" data-action="draw-stock" ${s.drawn || !s.stock.length ? "disabled" : ""}>${t("draw")} ${t("stock")}</button><button class="secondary-btn" data-action="draw-discard" ${s.drawn ? "disabled" : ""}>${t("draw")} ${t("discard")}</button><button class="primary-btn" data-action="discard" ${!s.drawn || s.selected.size !== 1 ? "disabled" : ""}>${t("discard")}</button><button class="secondary-btn" data-action="knock" ${!s.drawn || stats.deadwood > 10 ? "disabled" : ""}>${t("knock")}</button>` }; }
+      view() { const stats = meldStats(s.player); const pathState = stats.deadwood === 0 ? "is-gin" : stats.deadwood <= 10 ? "is-ready" : ""; const plan = s.drawn ? "<div class=\"card-gin-plan\" data-gin-plan data-runtime-localize=\"off\" role=\"status\" aria-live=\"polite\">" + ginPlanText(s.player, stats.deadwood) + "</div>" : ""; return { phase: s.turn === 0 ? (s.drawn ? t("discard") : t("draw")) : t("aiTurn"), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: "Meld cards " + stats.meldCards + " · Deadwood " + stats.deadwood, score: s.score[0], opponents: opponentMarkup("AI", s.ai.length, t("score") + ": " + s.score[1]), center: "<div class=\"card-table-label\">" + t("stock") + " · " + s.stock.length + " · " + t("discard") + "</div><div class=\"card-gin-path " + pathState + "\" role=\"status\" aria-live=\"polite\">" + ginPathText(stats.deadwood) + "</div>" + plan + "<div class=\"table-row\"><button class=\"playing-card is-face-down\" data-action=\"draw-stock\" aria-label=\"" + t("stock") + "\"" + (!s.stock.length ? " disabled" : "") + "></button>" + cardMarkup(s.discard.at(-1), 0) + "</div>", hand: cardsMarkup(s.player, { selected: s.selected }), actions: "<button class=\"secondary-btn\" data-action=\"draw-stock\"" + (s.drawn || !s.stock.length ? " disabled" : "") + ">" + t("draw") + " " + t("stock") + "</button><button class=\"secondary-btn\" data-action=\"draw-discard\"" + (s.drawn ? " disabled" : "") + ">" + t("draw") + " " + t("discard") + "</button><button class=\"primary-btn\" data-action=\"discard\"" + (!s.drawn || s.selected.size !== 1 ? " disabled" : "") + ">" + t("discard") + "</button><button class=\"secondary-btn\" data-action=\"knock\"" + (!s.drawn || stats.deadwood > 10 ? " disabled" : "") + ">" + t("knock") + "</button>" }; }
     };
   }
 
@@ -1219,7 +1289,8 @@
 
   function makeOldMaidFixed(controller) {
     const s = { players: [[], [], [], []], turn: 0, books: [0, 0, 0, 0], over: false, drawCue: "" };
-    const names = ["You", "Fox", "Panda", "Otter"];
+    const names = OLD_MAID_NAMES[currentLocale()] || OLD_MAID_NAMES.en;
+    const oldMaidOpponentMarkup = (name, count, extra = "") => `<div class="opponent-card"><strong data-runtime-localize="off">${name}</strong><span>${count} ${t("cards")}${extra ? ` · ${extra}` : ""}</span></div>`;
     const pair = (player) => { const byRank = new Map(); s.players[player].forEach((item) => { const list = byRank.get(item.rank) || []; list.push(item); byRank.set(item.rank, list); }); byRank.forEach((items) => { const normal = items.filter((item) => !item.oldMaid); for (let pairIndex = 0; pairIndex + 1 < normal.length; pairIndex += 2) { [normal[pairIndex], normal[pairIndex + 1]].forEach((item) => { const index = s.players[player].indexOf(item); if (index >= 0) s.players[player].splice(index, 1); }); s.books[player] += 1; } }); };
     const finishIfDone = () => { const active = s.players.filter((cards) => cards.length); if (active.length <= 1) { const loser = s.players.findIndex((cards) => cards.length); const copy = OLD_MAID_RESULT[currentLocale()] || OLD_MAID_RESULT.en; const lesson = (copy[loser === 0 ? "lost" : "cleared"] || copy.cleared).replace("{holder}", names[loser]); const holderLine = loser === 0 ? t("oldMaid") : `${names[loser]} ${t("oldMaid")}`; s.over = true; controller.result(loser !== 0, `${holderLine} · ${lesson}`); } };
     const targetFor = (player) => { for (let offset = 1; offset < s.players.length; offset += 1) { const target = (player + offset) % s.players.length; if (s.players[target].length) return target; } return -1; };
@@ -1230,7 +1301,7 @@
       reset() { const cards = deck(); const removed = cards.findIndex((item) => item.suit === "spades" && item.rank === 12); cards.splice(removed, 1); const odd = cards.find((item) => item.rank === 12); if (odd) odd.oldMaid = true; Object.assign(s, { players: [[], [], [], []], turn: 0, books: [0, 0, 0, 0], over: false, drawCue: "" }); cards.forEach((item, index) => s.players[index % 4].push(item)); s.players.forEach((_, index) => pair(index)); },
       card(index) { if (s.turn === 0 && !s.over) drawFrom(0, index); },
       action() {},
-      view() { const targetIndex = targetFor(0); const target = targetIndex < 0 ? [] : s.players[targetIndex]; const turnTarget = targetFor(s.turn); const playerHasOldMaid = s.players[0].some((item) => item.oldMaid); const riskCopy = (OLD_MAID_RISK[currentLocale()] || OLD_MAID_RISK.en)[playerHasOldMaid ? "held" : "hidden"]; const drawCue = s.drawCue ? `<p class="card-choice-summary card-old-maid-draw-cue" data-old-maid-draw-cue data-runtime-localize="off" role="status" aria-live="polite">${s.drawCue}</p>` : ""; return { phase: t("oldMaid"), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: oldMaidText("help", { name: names[turnTarget < 0 ? 0 : turnTarget] }), score: s.books[0], opponents: names.slice(1).map((name, index) => opponentMarkup(name, s.players[index + 1].length, `${s.books[index + 1]} ${t("pairs")}`)).join(""), center: `<div class="card-table-label">${t("oldMaid")}</div><div class="card-old-maid-risk ${playerHasOldMaid ? "is-held" : ""}" role="status">${riskCopy}</div>${drawCue}<div class="table-row">${target.map((_, index) => cardMarkup({ faceDown: true }, index)).join("")}</div>`, hand: cardsMarkup(s.players[0]), actions: "" }; }
+      view() { const targetIndex = targetFor(0); const target = targetIndex < 0 ? [] : s.players[targetIndex]; const turnTarget = targetFor(s.turn); const playerHasOldMaid = s.players[0].some((item) => item.oldMaid); const riskCopy = (OLD_MAID_RISK[currentLocale()] || OLD_MAID_RISK.en)[playerHasOldMaid ? "held" : "hidden"]; const drawCue = s.drawCue ? `<p class="card-choice-summary card-old-maid-draw-cue" data-old-maid-draw-cue data-runtime-localize="off" role="status" aria-live="polite">${s.drawCue}</p>` : ""; return { phase: t("oldMaid"), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: oldMaidText("help", { name: names[turnTarget < 0 ? 0 : turnTarget] }), score: s.books[0], opponents: names.slice(1).map((name, index) => oldMaidOpponentMarkup(name, s.players[index + 1].length, `${s.books[index + 1]} ${t("pairs")}`)).join(""), center: `<div class="card-table-label">${t("oldMaid")}</div><div class="card-old-maid-risk ${playerHasOldMaid ? "is-held" : ""}" role="status">${riskCopy}</div>${drawCue}<div class="table-row">${target.map((_, index) => cardMarkup({ faceDown: true }, index)).join("")}</div>`, hand: cardsMarkup(s.players[0]), actions: "" }; }
     };
   }
 

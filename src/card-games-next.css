@@ -63,6 +63,7 @@ body[data-wp-card-game="casino"] .card-build.is-capture-candidate { border-color
 .card-old-maid-draw-cue { border-color: rgba(245,200,76,.66); color: #ffefa7; }
 .card-gin-path { max-width: 46ch; padding: 7px 10px; border: 1px solid rgba(255,255,255,.2); border-radius: 12px; color: #d7f9e7; background: rgba(7,28,43,.5); font-size: 12px; line-height: 1.35; text-align: center; }
 .card-gin-path.is-ready, .card-gin-path.is-gin { border-color: rgba(245,200,76,.72); color: #ffefa7; background: rgba(95,62,15,.48); }
+.card-gin-plan { max-width: 48ch; padding: 6px 9px; border: 1px solid rgba(215,249,231,.28); border-radius: 10px; color: #e7fff1; background: rgba(7,28,43,.38); font-size: 12px; line-height: 1.3; text-align: center; overflow-wrap: anywhere; }
 .card-crib-transition { max-width: 52ch; padding: 7px 10px; border: 1px solid rgba(245,200,76,.55); border-radius: 12px; color: #ffefa7; background: rgba(95,62,15,.38); font-size: 12px; line-height: 1.35; text-align: center; }
 .card-crib-choice-plan { display: block; margin-top: 4px; color: #e7fff1; }
 @media (max-height: 560px) and (orientation: landscape) {
