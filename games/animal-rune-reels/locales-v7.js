@@ -3,7 +3,7 @@
   const L = window.RUNE_REELS_LOCALES;
   const patches = {
     en: {
-      tacticsTitle: "Tactical decision", tacticsHint: "Select a reel, use at most one correction, then resolve.",
+      tacticsTitle: "Tactical decision", tacticsHint: "Select a reel, use at most one correction, then resolve.", reelLabel: "Reel {index}",
       acceptRunes: "Resolve", rerollReel: "Reroll", holdReel: "Hold", leaderTactic: "Leader",
       selectReel: "Select a reel first.", correctionUsed: "One correction has already been used this turn.",
       heldNext: "This rune will be held for the next Spin.", autoLocked: "AUTO unlocks after this rift is cleared.",
@@ -14,7 +14,7 @@
       enemyHealed: "Enemy restored {value} health."
     },
     "zh-Hant": {
-      tacticsTitle: "戰術決策", tacticsHint: "選擇一個轉輪，本回合最多修正一次，再確認結算。",
+      tacticsTitle: "戰術決策", tacticsHint: "選擇一個轉輪，本回合最多修正一次，再確認結算。", reelLabel: "第 {index} 軸",
       acceptRunes: "確認結算", rerollReel: "重新轉動", holdReel: "保留", leaderTactic: "隊長技能",
       selectReel: "請先選擇一個轉輪。", correctionUsed: "本回合已使用一次修正。",
       heldNext: "這個符文會保留到下一次轉動。", autoLocked: "通過這個裂隙後才會開放自動戰鬥。",
@@ -25,7 +25,7 @@
       enemyHealed: "敵人恢復 {value} 點生命。"
     },
     "zh-Hans": {
-      tacticsTitle: "战术决策", tacticsHint: "选择一个转轮，本回合最多修正一次，再确认结算。",
+      tacticsTitle: "战术决策", tacticsHint: "选择一个转轮，本回合最多修正一次，再确认结算。", reelLabel: "第 {index} 轴",
       acceptRunes: "确认结算", rerollReel: "重新转动", holdReel: "保留", leaderTactic: "队长技能",
       selectReel: "请先选择一个转轮。", correctionUsed: "本回合已使用一次修正。",
       heldNext: "这个符文会保留到下一次转动。", autoLocked: "通过这个裂隙后才会开放自动战斗。",
@@ -36,7 +36,7 @@
       enemyHealed: "敌人恢复 {value} 点生命。"
     },
     ja: {
-      tacticsTitle: "戦術判断", tacticsHint: "リールを選び、修正は1回だけ。最後に解決します。",
+      tacticsTitle: "戦術判断", tacticsHint: "リールを選び、修正は1回だけ。最後に解決します。", reelLabel: "リール {index}",
       acceptRunes: "解決", rerollReel: "再回転", holdReel: "保持", leaderTactic: "リーダー",
       selectReel: "先にリールを選んでください。", correctionUsed: "このターンの修正は使用済みです。",
       heldNext: "次のスピンまでこのルーンを保持します。", autoLocked: "このリフトのクリア後にAUTOが解放されます。",
@@ -47,7 +47,7 @@
       enemyHealed: "敵がHPを{value}回復。"
     },
     ko: {
-      tacticsTitle: "전술 결정", tacticsHint: "릴을 고르고 한 번만 수정한 뒤 해결하세요.",
+      tacticsTitle: "전술 결정", tacticsHint: "릴을 고르고 한 번만 수정한 뒤 해결하세요.", reelLabel: "{index}번 릴",
       acceptRunes: "해결", rerollReel: "다시 돌리기", holdReel: "보관", leaderTactic: "리더",
       selectReel: "먼저 릴을 선택하세요.", correctionUsed: "이번 턴의 수정은 이미 사용했습니다.",
       heldNext: "이 룬은 다음 스핀까지 유지됩니다.", autoLocked: "이 균열을 클리어하면 AUTO가 열립니다.",
@@ -58,7 +58,7 @@
       enemyHealed: "적이 체력 {value}을 회복했습니다."
     },
     es: {
-      tacticsTitle: "Decisión táctica", tacticsHint: "Elige un carrete, corrige una vez y resuelve.",
+      tacticsTitle: "Decisión táctica", tacticsHint: "Elige un carrete, corrige una vez y resuelve.", reelLabel: "Carrete {index}",
       acceptRunes: "Resolver", rerollReel: "Repetir", holdReel: "Guardar", leaderTactic: "Líder",
       selectReel: "Elige primero un carrete.", correctionUsed: "Ya usaste una corrección este turno.",
       heldNext: "Esta runa se guardará para el próximo giro.", autoLocked: "AUTO se desbloquea al superar esta grieta.",
@@ -69,7 +69,7 @@
       enemyHealed: "El enemigo recuperó {value} de vida."
     },
     "pt-BR": {
-      tacticsTitle: "Decisão tática", tacticsHint: "Escolha um rolo, corrija uma vez e resolva.",
+      tacticsTitle: "Decisão tática", tacticsHint: "Escolha um rolo, corrija uma vez e resolva.", reelLabel: "Rolo {index}",
       acceptRunes: "Resolver", rerollReel: "Girar de novo", holdReel: "Guardar", leaderTactic: "Líder",
       selectReel: "Escolha primeiro um rolo.", correctionUsed: "Uma correção já foi usada neste turno.",
       heldNext: "Esta runa ficará guardada para o próximo giro.", autoLocked: "AUTO libera após concluir esta fenda.",
@@ -80,7 +80,7 @@
       enemyHealed: "O inimigo recuperou {value} de vida."
     },
     fr: {
-      tacticsTitle: "Décision tactique", tacticsHint: "Choisissez un rouleau, corrigez une fois, puis résolvez.",
+      tacticsTitle: "Décision tactique", tacticsHint: "Choisissez un rouleau, corrigez une fois, puis résolvez.", reelLabel: "Rouleau {index}",
       acceptRunes: "Résoudre", rerollReel: "Relancer", holdReel: "Garder", leaderTactic: "Chef",
       selectReel: "Choisissez d'abord un rouleau.", correctionUsed: "Une correction a déjà été utilisée ce tour.",
       heldNext: "Cette rune sera gardée pour le prochain tour.", autoLocked: "AUTO se débloque après cette faille.",
@@ -91,7 +91,7 @@
       enemyHealed: "L'ennemi récupère {value} PV."
     },
     de: {
-      tacticsTitle: "Taktische Entscheidung", tacticsHint: "Wähle eine Walze, korrigiere einmal und werte aus.",
+      tacticsTitle: "Taktische Entscheidung", tacticsHint: "Wähle eine Walze, korrigiere einmal und werte aus.", reelLabel: "Walze {index}",
       acceptRunes: "Auswerten", rerollReel: "Neu drehen", holdReel: "Halten", leaderTactic: "Anführer",
       selectReel: "Wähle zuerst eine Walze.", correctionUsed: "Eine Korrektur wurde in diesem Zug bereits benutzt.",
       heldNext: "Diese Rune bleibt für den nächsten Dreh erhalten.", autoLocked: "AUTO wird nach Abschluss dieses Risses freigeschaltet.",
@@ -102,7 +102,7 @@
       enemyHealed: "Der Gegner heilt {value} Leben."
     },
     it: {
-      tacticsTitle: "Decisione tattica", tacticsHint: "Scegli un rullo, correggi una volta e risolvi.",
+      tacticsTitle: "Decisione tattica", tacticsHint: "Scegli un rullo, correggi una volta e risolvi.", reelLabel: "Rullo {index}",
       acceptRunes: "Risolvi", rerollReel: "Ritira", holdReel: "Conserva", leaderTactic: "Leader",
       selectReel: "Scegli prima un rullo.", correctionUsed: "Hai già usato una correzione in questo turno.",
       heldNext: "Questa runa resta per il prossimo giro.", autoLocked: "AUTO si sblocca dopo aver superato questa frattura.",
@@ -113,7 +113,7 @@
       enemyHealed: "Il nemico recupera {value} salute."
     },
     ru: {
-      tacticsTitle: "Тактическое решение", tacticsHint: "Выберите барабан, исправьте один раз и завершите ход.",
+      tacticsTitle: "Тактическое решение", tacticsHint: "Выберите барабан, исправьте один раз и завершите ход.", reelLabel: "Барабан {index}",
       acceptRunes: "Завершить", rerollReel: "Переброс", holdReel: "Сохранить", leaderTactic: "Лидер",
       selectReel: "Сначала выберите барабан.", correctionUsed: "В этом ходу исправление уже использовано.",
       heldNext: "Руна сохранится для следующего вращения.", autoLocked: "AUTO откроется после прохождения этого разлома.",
@@ -124,7 +124,7 @@
       enemyHealed: "Враг восстановил {value} здоровья."
     },
     hi: {
-      tacticsTitle: "रणनीतिक निर्णय", tacticsHint: "एक रील चुनें, एक बार सुधारें, फिर परिणाम लागू करें।",
+      tacticsTitle: "रणनीतिक निर्णय", tacticsHint: "एक रील चुनें, एक बार सुधारें, फिर परिणाम लागू करें।", reelLabel: "रील {index}",
       acceptRunes: "लागू करें", rerollReel: "फिर घुमाएँ", holdReel: "सहेजें", leaderTactic: "नेता",
       selectReel: "पहले एक रील चुनें।", correctionUsed: "इस चाल में एक सुधार पहले ही हो चुका है।",
       heldNext: "यह रून अगली स्पिन के लिए सुरक्षित रहेगा।", autoLocked: "इस रिफ्ट को पूरा करने के बाद AUTO खुलेगा।",
@@ -135,7 +135,7 @@
       enemyHealed: "शत्रु ने {value} स्वास्थ्य पाया।"
     },
     ar: {
-      tacticsTitle: "قرار تكتيكي", tacticsHint: "اختر بكرة، وعدّل مرة واحدة، ثم نفّذ النتيجة.",
+      tacticsTitle: "قرار تكتيكي", tacticsHint: "اختر بكرة، وعدّل مرة واحدة، ثم نفّذ النتيجة.", reelLabel: "البكرة {index}",
       acceptRunes: "تنفيذ", rerollReel: "إعادة اللف", holdReel: "احتفاظ", leaderTactic: "القائد",
       selectReel: "اختر بكرة أولاً.", correctionUsed: "استُخدم تعديل واحد بالفعل في هذا الدور.",
       heldNext: "سيُحتفظ بهذه الرونة للدورة التالية.", autoLocked: "يفتح AUTO بعد اجتياز هذا الصدع.",

@@ -3,7 +3,7 @@
   document.body.dataset.wpCombinedSound = "true";
   const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
   const ASSET = "../../assets/", trial = new URLSearchParams(location.search).get("trial") === "1";
-  const GAME_ID = "animal-rune-reels", GAME_VERSION = "v52";
+  const GAME_ID = "animal-rune-reels", GAME_VERSION = "v53";
   const storageKey = "weightplay.animalRuneReels.v4", legacyStorageKey = "weightplay.animalRuneReels.v3", memory = new Map();
   const LOCALES = window.RUNE_REELS_LOCALES, localeKeys = Object.keys(LOCALES);
   const localeRouteSegments={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
@@ -375,7 +375,7 @@
   function enhancedRenderReels(){
     const box=$("#reels");
     const tactical=battle.currentPhase==='tactics';
-    box.innerHTML=battle.reels.map((id,index)=>`<button type="button" class="reel${tactical&&battle.selectedReel===index?' selected':''}${battle.heldReel?.index===index?' held':''}" data-reel="${index}" data-symbol="${id}" tabindex="${tactical&&battle.selectedReel===index?0:-1}" aria-pressed="${tactical&&battle.selectedReel===index}" aria-keyshortcuts="ArrowLeft ArrowRight Home End" aria-label="${t(RUNES[id].name)}"><div class="reel-strip">${cell(id)}</div></button>`).join('')
+    box.innerHTML=battle.reels.map((id,index)=>`<button type="button" class="reel${tactical&&battle.selectedReel===index?' selected':''}${battle.heldReel?.index===index?' held':''}" data-reel="${index}" data-symbol="${id}" tabindex="${tactical&&battle.selectedReel===index?0:-1}" aria-pressed="${tactical&&battle.selectedReel===index}" aria-keyshortcuts="ArrowLeft ArrowRight Home End" aria-label="${tf('reelLabel',{index:index+1})}: ${t(RUNES[id].name)}"><div class="reel-strip">${cell(id)}</div></button>`).join('')
   }
   function enhancedTargets(){
     if(trial&&battle.forced)return battle.forced.slice();
