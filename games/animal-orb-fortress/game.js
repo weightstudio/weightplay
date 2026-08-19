@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "animal-orb-fortress";
-  const GAME_VERSION = "v19";
+  const GAME_VERSION = "v20";
   const saveKey = "weightplay_animal_orb_fortress_v1";
   const localeKey = "weightPlayLocale";
   let W = 960;
@@ -293,7 +293,7 @@
       ruleSplitter: "水晶分裂",
       ruleCharge: "衝鋒路線",
       ruleMastery: "綜合精通",
-      ruleBoss: "Boss 反制",
+      ruleBoss: "首領反制",
       bossCueRootbound: "盤根防護升起：先擊破，再攻擊外露的胸口水晶。",
       bossCueBramble: "荊棘甲片與錨點正在保護巨獸。",
       bossCueLunar: "月靈女王進入相位：等待月環打開再射擊。",
@@ -389,11 +389,23 @@
   };
 
   Object.assign(text["zh-Hans"], {
+    ruleBoss: "首领反制",
     arenaLabel: "动物星珠要塞竞技场",
+    aimHint: "从发射器拖曳瞄准，预览反弹路线后放开。",
+    keyboardAim: "瞄准偏移 {angle}°。左右方向键调整，按空格键或 Enter 发射。",
+    orbFlying: "星珠正在飞行。观察反弹路线，准备下一次瞄准。",
+    fortressHit: "影兽撞到核心了。更早瞄准，或改用更宽的反弹角度。",
+    waveClear: "波次完成。选择一个祝福后进入下一波。",
     arenaControlLabel: "动物星珠要塞竞技场。瞄准偏移 {angle} 度。使用左右方向键调整，按空格键或 Enter 发射。",
     arenaControlReadyLabel: "动物星珠要塞竞技场。瞄准偏移 {angle} 度。星珠已准备好；按空格键或 Enter 立即发射。",
     arenaControlCooldownLabel: "动物星珠要塞竞技场。瞄准偏移 {angle} 度。星珠还需约 {seconds} 秒冷却；暂时无法发射。",
     arenaControlLimitLabel: "动物星珠要塞竞技场。瞄准偏移 {angle} 度。目前有 {active}/{limit} 颗星珠飞行中，已达上限；暂时无法发射。",
+    bossCueRootbound: "盘根防护升起：先击破，再攻击露出的胸口水晶。",
+    bossCueBramble: "荆棘甲片与锚点正在保护巨兽。",
+    bossCueLunar: "月灵女王进入相位：等待月环打开再射击。",
+    bossCuePrism: "棱晶护盾旋转中：金色盾片朝前时攻击。",
+    bossCueTempest: "冲锋路线已标记：守卫冲刺后会短暂露出。",
+    bossCueVoid: "虚空核心转换阶段：先清护卫，再追踪发光核心。",
   });
   text.ko = {
     arenaLabel: "애니멀 오브 포트리스 전장",
@@ -611,9 +623,9 @@
     },
     "zh-Hant": {
       title: "動物星珠要塞 - 免費動物反彈 Roguelite",
-      description: "瞄準星珠挑戰 30 關反彈防守路線，反制特殊敵人與移動鏡面柱，擊敗六名獨特 Boss，並累積本機要塞成長。",
-      ogDescription: "規劃牆面與鏡柱反彈，穿越六區 30 關，對抗護甲、相位、分裂與衝鋒敵人，再擊敗六名規則不同的 Boss。",
-      twitterDescription: "守住水晶核心，完成 30 條特製反彈路線、六個區域、特殊敵人與六場不同 Boss 戰。",
+      description: "瞄準星珠挑戰 30 關反彈防守路線，反制特殊敵人與移動鏡面柱，擊敗六名獨特首領，並累積本機要塞成長。",
+      ogDescription: "規劃牆面與鏡柱反彈，穿越六區 30 關，對抗護甲、相位、分裂與衝鋒敵人，再擊敗六名規則不同的首領。",
+      twitterDescription: "守住水晶核心，完成 30 條特製反彈路線、六個區域、特殊敵人與六場不同首領戰。",
     },
     es: {
       title: "Fortaleza de Orbes Animal - Juego de rebotes",
@@ -648,12 +660,12 @@
     route(2, 1, "Moss Arcade", "苔痕長廊", "Use the first wall bank around a blocked center lane.", "利用第一次牆面反彈繞過中央阻線。", "ruleBank"),
     route(3, 1, "Echo Courtyard", "回音庭院", "Choose a left or right bank for separated enemy lanes.", "在分離的敵方路線間選擇左側或右側反彈。", "ruleBank"),
     route(4, 1, "Split Passage", "分岔通道", "Break the thorn blocker before mobile enemies pass it.", "先打掉荊棘阻擋者，避免移動敵人趁機通過。", "rulePriority"),
-    route(5, 1, "Rootbound Crown", "盤根王冠", "Break the first Boss guard and bank into its weak point.", "擊破第一名 Boss 的防護，再反彈命中弱點。", "ruleBoss"),
+    route(5, 1, "Rootbound Crown", "盤根王冠", "Break the first Boss guard and bank into its weak point.", "擊破第一名首領的防護，再反彈命中弱點。", "ruleBoss"),
     route(6, 2, "Thorn Bridge", "荊棘橋", "Remove one-hit armor before the backline wisp escapes.", "先解除一擊護甲，再處理即將通過的後排幽光。", "ruleArmor"),
     route(7, 2, "Venom Garden", "毒霧花園", "Destroy a thorn anchor that protects adjacent beasts.", "摧毀會保護鄰近影獸的荊棘錨點。", "ruleAnchor"),
     route(8, 2, "Root Labyrinth", "盤根迷宮", "Pick a bank lane between two armored columns.", "在兩列裝甲敵人之間選擇反彈路線。", "ruleArmor"),
     route(9, 2, "Bramble Wall", "荊棘壁壘", "Counter an anchor and armored charger together.", "同時反制錨點與裝甲衝鋒獸。", "ruleAnchor"),
-    route(10, 2, "Thornworks Throne", "荊棘工坊王座", "Break two Boss armor plates while clearing anchors.", "清除錨點並擊破 Boss 的兩層荊棘甲片。", "ruleBoss"),
+    route(10, 2, "Thornworks Throne", "荊棘工坊王座", "Break two Boss armor plates while clearing anchors.", "清除錨點並擊破首領的兩層荊棘甲片。", "ruleBoss"),
     route(11, 3, "Moon Stair", "月光階梯", "Read the first visible phase and reappearance cue.", "讀懂第一次相位消失與重新出現提示。", "rulePhase"),
     route(12, 3, "Wisp Gallery", "幽光迴廊", "Track two wisps phasing on alternating rhythms.", "追蹤兩隻交錯進入相位的幽光獸。", "rulePhase"),
     route(13, 3, "Mirror Ruins", "鏡面遺跡", "Aim through a moving moon gate that changes the bank corridor.", "穿過會移動的月門，因應反彈通道改變。", "rulePylon"),
@@ -663,18 +675,28 @@
     route(17, 4, "Black Crystal Hall", "黑晶大廳", "Defeat a splitter before its two shards spread.", "在分裂獸化成兩枚碎片前集中擊倒。", "ruleSplitter"),
     route(18, 4, "Prism Foundry", "稜晶鑄造場", "Choose between two pylon corridors and an armored escort.", "在兩條鏡柱通道與裝甲護衛間做選擇。", "rulePylon"),
     route(19, 4, "Shard Circuit", "碎晶迴路", "React when moving pylons invalidate the old shot angle.", "鏡柱移動使舊角度失效時重新規劃。", "ruleSplitter"),
-    route(20, 4, "Mirror Vault Regent", "鏡庫攝政王", "Bank into the lit segment of a rotating Boss shield.", "反彈命中 Boss 旋轉護盾上發光的盾片。", "ruleBoss"),
+    route(20, 4, "Mirror Vault Regent", "鏡庫攝政王", "Bank into the lit segment of a rotating Boss shield.", "反彈命中首領旋轉護盾上發光的盾片。", "ruleBoss"),
     route(21, 5, "Storm Causeway", "風暴堤道", "Read the first marked lane before a charger rushes.", "在衝鋒獸突進前讀取第一次路線標記。", "ruleCharge"),
     route(22, 5, "Thunder Gallery", "雷鳴長廊", "Track two chargers alternating lane marks.", "追蹤兩隻交錯標記路線的衝鋒獸。", "ruleCharge"),
     route(23, 5, "Gale Foundry", "疾風鑄造場", "Adapt when storm pulses change orb speed.", "風暴脈衝改變星珠速度時調整射擊。", "ruleCharge"),
     route(24, 5, "Last Bastion", "最終壁壘", "Combine lane shifts, charges, and storm timing.", "結合路線位移、衝鋒與風暴時機。", "ruleMastery"),
-    route(25, 5, "Tempest Crown", "暴風王冠", "Attack after the horned Boss completes its marked rush.", "在角獸 Boss 完成標記衝刺後攻擊。", "ruleBoss"),
+    route(25, 5, "Tempest Crown", "暴風王冠", "Attack after the horned Boss completes its marked rush.", "在角獸首領完成標記衝刺後攻擊。", "ruleBoss"),
     route(26, 6, "Golem Approach", "魔像前線", "Prioritize armored and phased enemies in one formation.", "在同一陣形中判斷裝甲與相位敵人的優先順序。", "ruleMastery"),
     route(27, 6, "Core Foundry", "核心鑄造場", "Reach splitters hiding behind thorn anchors.", "穿過荊棘錨點，處理躲在後方的分裂獸。", "ruleMastery"),
     route(28, 6, "Void Gallery", "虛空迴廊", "Aim through moving pylons while chargers mark lanes.", "衝鋒獸標記路線時，穿過移動鏡柱瞄準。", "ruleMastery"),
     route(29, 6, "Eclipse Heart", "蝕影核心", "Survive three formations using the full enemy vocabulary.", "運用所有已學規則通過三組完整敵陣。", "ruleMastery"),
-    route(30, 6, "Heart of the Fortress", "要塞之心", "Break three final Boss phases, escorts, and changing pylons.", "擊破最終 Boss 三階段、護衛與變動鏡柱。", "ruleBoss"),
+    route(30, 6, "Heart of the Fortress", "要塞之心", "Break three final Boss phases, escorts, and changing pylons.", "擊破最終首領三階段、護衛與變動鏡柱。", "ruleBoss"),
   ];
+  [
+    "击破第一个首领的防护，再反弹命中弱点。",
+    "清除锚点并击破首领的两层荆棘甲片。",
+    "在月灵女王冲刺后的恢复时间攻击。",
+    "反弹命中首领旋转护盾上发光的盾片。",
+    "在角兽首领完成标记冲刺后攻击。",
+    "击破最终首领三阶段、护卫与变动镜柱。",
+  ].forEach((description, index) => {
+    raidDefs[[5, 10, 15, 20, 25, 30][index] - 1].desc["zh-Hans"] = description;
+  });
   const spanishRaidDefs = [
     ["Puerta de Cristal","Calcula disparos directos contra un carril lento."],["Galería de Musgo","Usa el primer rebote para rodear el centro bloqueado."],["Patio del Eco","Elige un rebote izquierdo o derecho para carriles separados."],["Pasaje Dividido","Rompe el bloqueador antes de que pasen los enemigos móviles."],["Corona Enraizada","Rompe la defensa del primer jefe y rebota hacia su punto débil."],
     ["Puente de Espinas","Quita la armadura de un golpe antes de que escape la retaguardia."],["Jardín Venenoso","Destruye un ancla que protege bestias cercanas."],["Laberinto de Raíces","Elige un rebote entre dos columnas acorazadas."],["Muro de Zarzas","Contrarresta a la vez un ancla y un cargador acorazado."],["Trono del Taller de Espinas","Rompe dos placas del jefe mientras eliminas anclas."],
@@ -728,6 +750,9 @@
     { tier: 25, id: "tempest", imageKey: "bossTempestHorn", name: { en: "Tempest Horn Guardian", "zh-Hant": "暴風角守衛" }, cue: "bossCueTempest" },
     { tier: 30, id: "voidcore", imageKey: "bossVoidcore", name: { en: "Voidcore Emperor", "zh-Hant": "虛空核心皇" }, cue: "bossCueVoid" },
   ];
+  ["盘根魔像", "荆背巨兽", "月灵女王", "棱晶甲摄政王", "暴风角守卫", "虚空核心皇"].forEach((name, index) => {
+    bossDefs[index].name["zh-Hans"] = name;
+  });
   ["Gólem Enraizado","Coloso Lomo de Zarzas","Matriarca Espíritu Lunar","Regente de Caparazón Prisma","Guardián Cuerno de Tempestad","Emperador del Núcleo Vacío"].forEach((name,index)=>{bossDefs[index].name.es=name;});
   ["Golem des Racines","Colosse des Ronces","Matriarche des Feux Follets Lunaires","Régent de la Carapace Prismatique","Gardien Corne de Tempête","Empereur du Noyau du Vide"].forEach((name,index)=>{bossDefs[index].name.fr=name;});
   ["Wurzelgolem","Rankenrücken-Koloss","Mondirrlicht-Matriarchin","Prismenpanzer-Regent","Sturmhorn-Wächter","Leerenkern-Kaiser"].forEach((name,index)=>{bossDefs[index].name.de=name;});
@@ -1181,10 +1206,12 @@
       if (["es", "it", "ja"].includes(requested)) node?.setAttribute("data-runtime-localize", "off");
       else node?.removeAttribute("data-runtime-localize");
     });
-    [nodes.hintText, nodes.pausePanel].forEach((node) => {
-      if (requested === "hi") node?.setAttribute("data-runtime-localize", "off");
-      else node?.removeAttribute("data-runtime-localize");
-    });
+    // Battle guidance is fully authored by this game in every required locale.
+    // Keep the shared fragment translator from changing physical-key tokens
+    // such as Enter into a misleading partial translation (for example `恩ter`).
+    nodes.hintText?.setAttribute("data-runtime-localize", "off");
+    if (requested === "hi") nodes.pausePanel?.setAttribute("data-runtime-localize", "off");
+    else nodes.pausePanel?.removeAttribute("data-runtime-localize");
     writeStorage(localeKey, requested);
     document.documentElement.lang = requested;
     document.querySelectorAll("[data-ui]").forEach((node) => {

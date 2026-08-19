@@ -45,7 +45,62 @@
     hi: "संकेत लक्ष्य {index}",
     ar: "وجهة التلميح {index}",
   };
+  const FREECELL_CAPACITY_COPY = {
+    en: {
+      closed: "Move capacity: {capacity} cards · {cells} Free Cells open. Open a column to multiply it.",
+      open: "Move capacity: {built} to an occupied column · {empty} to an empty column ({cells} cells / {columns} columns open).",
+    },
+    "zh-Hant": {
+      closed: "搬牌容量：{capacity} 張・可用暫存格 {cells} 個。打通空欄可倍增容量。",
+      open: "搬牌容量：一般目的地 {built} 張・空欄目的地 {empty} 張（暫存格 {cells}／空欄 {columns}）。",
+    },
+    "zh-Hans": {
+      closed: "移牌容量：{capacity} 张・可用暂存格 {cells} 个。打通空列可倍增容量。",
+      open: "移牌容量：一般目标 {built} 张・空列目标 {empty} 张（暂存格 {cells}／空列 {columns}）。",
+    },
+    ja: {
+      closed: "移動容量：{capacity}枚・空きフリーセル {cells}。空列を作ると容量が倍増します。",
+      open: "移動容量：通常列へ {built}枚・空列へ {empty}枚（空きセル {cells}／空列 {columns}）。",
+    },
+    ko: {
+      closed: "이동 용량: {capacity}장 · 빈 프리 셀 {cells}개. 빈 열을 만들면 용량이 늘어납니다.",
+      open: "이동 용량: 일반 열 {built}장 · 빈 열 {empty}장 (빈 셀 {cells} / 빈 열 {columns}).",
+    },
+    es: {
+      closed: "Capacidad: {capacity} cartas · {cells} celdas libres. Abre una columna para multiplicarla.",
+      open: "Capacidad: {built} a una columna ocupada · {empty} a una vacía ({cells} celdas / {columns} columnas libres).",
+    },
+    "pt-BR": {
+      closed: "Capacidade: {capacity} cartas · {cells} células livres. Abra uma coluna para multiplicá-la.",
+      open: "Capacidade: {built} para coluna ocupada · {empty} para vazia ({cells} células / {columns} colunas livres).",
+    },
+    fr: {
+      closed: "Capacité : {capacity} cartes · {cells} cellules libres. Libérez une colonne pour la multiplier.",
+      open: "Capacité : {built} vers une colonne occupée · {empty} vers une vide ({cells} cellules / {columns} colonnes libres).",
+    },
+    de: {
+      closed: "Zugkapazität: {capacity} Karten · {cells} freie Felder. Eine leere Spalte vervielfacht sie.",
+      open: "Zugkapazität: {built} auf belegte · {empty} auf leere Spalte ({cells} Felder / {columns} Spalten frei).",
+    },
+    it: {
+      closed: "Capacità: {capacity} carte · {cells} celle libere. Libera una colonna per moltiplicarla.",
+      open: "Capacità: {built} su colonna occupata · {empty} su vuota ({cells} celle / {columns} colonne libere).",
+    },
+    ru: {
+      closed: "Вместимость хода: {capacity} карт · свободных ячеек: {cells}. Пустой столбец увеличит её.",
+      open: "Вместимость: {built} в занятый · {empty} в пустой столбец (ячеек {cells} / столбцов {columns}).",
+    },
+    hi: {
+      closed: "चाल क्षमता: {capacity} कार्ड · {cells} खाली सेल। खाली कॉलम इसे बढ़ाता है।",
+      open: "चाल क्षमता: भरे कॉलम पर {built} · खाली कॉलम पर {empty} ({cells} सेल / {columns} कॉलम खाली)।",
+    },
+    ar: {
+      closed: "سعة النقل: {capacity} بطاقات · {cells} خلايا حرة. افتح عمودًا لمضاعفتها.",
+      open: "سعة النقل: {built} إلى عمود مشغول · {empty} إلى عمود فارغ ({cells} خلايا / {columns} أعمدة حرة).",
+    },
+  };
   const view = window.WPClassicSolitaire?.mount({ variant: "freecell", id: "freecell-solitaire", sequenceCue: SEQUENCE_CUE });
+  const hintCueState = { active: false, moves: 0, timer: 0 };
   const ANALYTICS_EVENT = "wp-freecell-analytics";
   const INPUT_TYPES = new Set(["mouse", "touch", "pen", "keyboard", "unknown"]);
   const inputTypeFromEvent = (event) => {
@@ -86,6 +141,42 @@
       freeCellCards,
       remainingCards: bounded(tableauCards + freeCellCards, 52),
     };
+  };
+  const capacitySnapshot = () => {
+    const game = view?.game;
+    if (!game) return null;
+    const cells = game.freeCells.filter((cell) => !cell).length;
+    const columns = game.tableau.filter((pile) => pile.length === 0).length;
+    return {
+      cells,
+      columns,
+      built: Math.max(1, cells + 1) * (2 ** Math.max(0, columns)),
+      empty: Math.max(1, cells + 1) * (2 ** Math.max(0, columns - 1)),
+    };
+  };
+  const capacityText = (capacity) => {
+    const copy = FREECELL_CAPACITY_COPY[view?.locale] || FREECELL_CAPACITY_COPY.en;
+    const template = capacity.columns > 0 ? copy.open : copy.closed;
+    return Object.entries({ capacity: capacity.built, ...capacity })
+      .reduce((output, [key, value]) => output.replaceAll(`{${key}}`, String(value)), template);
+  };
+  const renderCapacityStatus = (force = false) => {
+    const status = view?.nodes?.boardStatus;
+    const capacity = capacitySnapshot();
+    if (!status || !capacity || !view.active || view.game.won || view.game.lost || hintCueState.active) return;
+    const copy = capacityText(capacity);
+    const stateName = status.dataset.state || "";
+    if (stateName && stateName !== "freecell-capacity") return;
+    if (status.textContent.trim() && stateName !== "freecell-capacity") return;
+    if (!force && status.textContent.trim() && status.textContent !== copy) return;
+    if (status.dataset.state === "freecell-capacity" && status.textContent === copy) return;
+    status.dataset.state = "freecell-capacity";
+    status.dataset.freecellCapacity = "true";
+    status.dataset.capacityBuilt = String(capacity.built);
+    status.dataset.capacityEmpty = String(capacity.empty);
+    status.dataset.openCells = String(capacity.cells);
+    status.dataset.emptyColumns = String(capacity.columns);
+    status.textContent = copy;
   };
   const analyticsDetails = (state, extra = {}) => ({
     from: "unknown",
@@ -151,6 +242,7 @@
         }));
       }
       previousState = after;
+      renderCapacityStatus();
       return result;
     };
   }
@@ -182,7 +274,6 @@
       if (source && source.isConnected && !source.closest("[hidden]")) source.focus({ preventScroll: true });
     });
   };
-  const hintCueState = { active: false, moves: 0, timer: 0 };
   const ensureHintCueStyles = () => {
     if (document.getElementById("freecell-hint-cue-style")) return;
     const style = document.createElement("style");
@@ -194,6 +285,9 @@
         width: 22px; height: 22px; place-items: center; border: 2px solid #071a2d;
         border-radius: 50%; color: #071a2d; background: #ffd166; box-shadow: 0 2px 8px rgba(0,0,0,.35);
         font: 900 12px/1 "Poppins", "Manrope", "Inter", sans-serif; pointer-events: none;
+      }
+      body[data-wp-game-id="freecell-solitaire"] .board-status[data-state="freecell-capacity"] {
+        color: var(--classic-muted); font-weight: 700;
       }
     `;
     document.head.append(style);
@@ -215,6 +309,7 @@
       delete status.dataset.freecellHint;
       delete status.dataset.state;
       if (!view.game.won && !view.game.lost) status.textContent = "";
+      window.requestAnimationFrame(() => renderCapacityStatus());
     }
   };
   const renderHintCue = () => {
@@ -267,6 +362,26 @@
     view?.nodes?.[id]?.addEventListener("click", clearHintCue);
   });
   view?.nodes.localeSelect?.addEventListener("change", () => {
-    window.requestAnimationFrame(() => { if (hintCueState.active) renderHintCue(); });
+    window.requestAnimationFrame(() => {
+      if (hintCueState.active) renderHintCue();
+      else renderCapacityStatus(true);
+    });
   });
+  if (view?.nodes?.boardStatus) {
+    let capacityRefreshQueued = false;
+    new MutationObserver(() => {
+      if (capacityRefreshQueued) return;
+      capacityRefreshQueued = true;
+      window.requestAnimationFrame(() => {
+        capacityRefreshQueued = false;
+        renderCapacityStatus();
+      });
+    }).observe(view.nodes.boardStatus, {
+      attributes: true,
+      attributeFilter: ["data-state"],
+      childList: true,
+      characterData: true,
+      subtree: true,
+    });
+  }
 })();

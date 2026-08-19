@@ -36,6 +36,9 @@ const LOCALE_DEFAULT = "en";
   const CLICK_MOVED_THRESHOLD = 8;
   const TABLEAU_SELECTION_GUTTER = 8;
   const MIN_TABLEAU_REVEAL_STEP = 18;
+  const DEAL_TRAIL_REVEAL_TARGET = 3;
+  const DEAL_TRAIL_FOUNDATION_TARGET = 4;
+  const DEAL_TRAIL_INITIAL_HIDDEN = 21;
   const NO_MOVES_MESSAGE = "ui.hint.no_moves";
   const DEFAULT_META_KEYWORDS = "Solitaire,Klondike,Classic Solitaire,Free Solitaire,Play Solitaire Online,Card Game,Patience";
 const SUPPORTED_LOCALES = [
@@ -660,6 +663,11 @@ const KL_I18N = {
       "ui.result.deal_identity": "Deal {id} · Replay this deal to beat your best.",
       "ui.draw_mode.strategy_1": "Draw 1: one Stock card is exposed at a time.",
       "ui.draw_mode.strategy_3": "Draw 3: only the top Waste card is playable.",
+      "ui.trail.reveal": "Deal Trail {done}/3 · Reveal hidden cards {current}/{target}",
+      "ui.trail.foundation": "Deal Trail {done}/3 · Build Foundations {current}/{target}",
+      "ui.trail.column": "Deal Trail {done}/3 · Open a Tableau column",
+      "ui.trail.complete": "Deal Trail 3/3 · Milestones cleared—finish the Foundations.",
+      "ui.result.trail": "Deal Trail: {done}/3 milestones cleared.",
     },
     "zh-Hant": {
       "ui.hint.reason.waste_foundation": "為什麼是這步：把同一花色往收牌區推進。",
@@ -669,6 +677,11 @@ const KL_I18N = {
       "ui.result.deal_identity": "牌局 {id}・重玩這局，挑戰你的最佳紀錄。",
       "ui.draw_mode.strategy_1": "抽 1 張：每次只翻開一張牌。",
       "ui.draw_mode.strategy_3": "抽 3 張：只有最上方的棄牌可打出。",
+      "ui.trail.reveal": "牌局旅程 {done}/3・翻開暗牌 {current}/{target}",
+      "ui.trail.foundation": "牌局旅程 {done}/3・推進基底 {current}/{target}",
+      "ui.trail.column": "牌局旅程 {done}/3・打通一個空牌列",
+      "ui.trail.complete": "牌局旅程 3/3・里程碑完成，繼續把四個基底收齊。",
+      "ui.result.trail": "牌局旅程：已完成 {done}/3 個里程碑。",
     },
     "zh-Hans": {
       "ui.hint.reason.waste_foundation": "为什么是这步：将同一花色推进到收牌区。",
@@ -678,6 +691,11 @@ const KL_I18N = {
       "ui.result.deal_identity": "牌局 {id}・重玩这局，挑战你的最佳纪录。",
       "ui.draw_mode.strategy_1": "抽 1 张：每次只翻开一张牌。",
       "ui.draw_mode.strategy_3": "抽 3 张：只有最上方的弃牌可打出。",
+      "ui.trail.reveal": "牌局旅程 {done}/3・翻开暗牌 {current}/{target}",
+      "ui.trail.foundation": "牌局旅程 {done}/3・推进基础区 {current}/{target}",
+      "ui.trail.column": "牌局旅程 {done}/3・打通一个空牌列",
+      "ui.trail.complete": "牌局旅程 3/3・里程碑完成，继续收齐四个基础区。",
+      "ui.result.trail": "牌局旅程：已完成 {done}/3 个里程碑。",
     },
     ja: {
       "ui.hint.reason.waste_foundation": "この手を選んだ理由：同じスートを組み札へ進めます。",
@@ -687,6 +705,11 @@ const KL_I18N = {
       "ui.result.deal_identity": "ディール {id}・このディールを再挑戦してベスト記録を更新しましょう。",
       "ui.draw_mode.strategy_1": "1枚ドロー：山札から1枚ずつめくります。",
       "ui.draw_mode.strategy_3": "3枚ドロー：捨て札の一番上だけが使えます。",
+      "ui.trail.reveal": "ディール進行 {done}/3・裏向きカードを公開 {current}/{target}",
+      "ui.trail.foundation": "ディール進行 {done}/3・組み札を進める {current}/{target}",
+      "ui.trail.column": "ディール進行 {done}/3・場札を1列空ける",
+      "ui.trail.complete": "ディール進行 3/3・目標達成。組み札を完成させましょう。",
+      "ui.result.trail": "ディール進行：{done}/3 目標達成。",
     },
     ko: {
       "ui.hint.reason.waste_foundation": "이 수를 고른 이유: 같은 무늬를 파운데이션으로 전진시킵니다.",
@@ -696,6 +719,11 @@ const KL_I18N = {
       "ui.result.deal_identity": "딜 {id} · 이 딜을 다시 플레이해 최고 기록에 도전하세요.",
       "ui.draw_mode.strategy_1": "1장 뽑기: 한 번에 덱에서 한 장만 공개합니다.",
       "ui.draw_mode.strategy_3": "3장 뽑기: 버린 카드 맨 위 카드만 사용할 수 있습니다.",
+      "ui.trail.reveal": "딜 여정 {done}/3 · 뒷면 카드 공개 {current}/{target}",
+      "ui.trail.foundation": "딜 여정 {done}/3 · 파운데이션 진행 {current}/{target}",
+      "ui.trail.column": "딜 여정 {done}/3 · 테이블 열 하나 비우기",
+      "ui.trail.complete": "딜 여정 3/3 · 목표 완료—파운데이션을 마무리하세요.",
+      "ui.result.trail": "딜 여정: 목표 {done}/3 완료.",
     },
     es: {
       "ui.hint.reason.waste_foundation": "Por qué esta jugada: avanza un palo hacia la Fundación.",
@@ -705,6 +733,11 @@ const KL_I18N = {
       "ui.result.deal_identity": "Reparto {id} · Repite este reparto para superar tu mejor marca.",
       "ui.draw_mode.strategy_1": "Robar 1: se descubre una carta del mazo cada vez.",
       "ui.draw_mode.strategy_3": "Robar 3: solo se puede jugar la carta superior del Descarte.",
+      "ui.trail.reveal": "Ruta del reparto {done}/3 · Descubre cartas {current}/{target}",
+      "ui.trail.foundation": "Ruta del reparto {done}/3 · Avanza Fundaciones {current}/{target}",
+      "ui.trail.column": "Ruta del reparto {done}/3 · Abre una columna del Tableau",
+      "ui.trail.complete": "Ruta del reparto 3/3 · Hitos superados; completa las Fundaciones.",
+      "ui.result.trail": "Ruta del reparto: {done}/3 hitos superados.",
     },
     "pt-BR": {
       "ui.hint.reason.waste_foundation": "Por que esta jogada: avança um naipe para a Fundação.",
@@ -714,6 +747,11 @@ const KL_I18N = {
       "ui.result.deal_identity": "Distribuição {id} · Jogue esta distribuição de novo para superar seu melhor resultado.",
       "ui.draw_mode.strategy_1": "Puxar 1: uma carta do monte é revelada por vez.",
       "ui.draw_mode.strategy_3": "Puxar 3: só a carta do topo do descarte pode ser jogada.",
+      "ui.trail.reveal": "Trilha da rodada {done}/3 · Revele cartas {current}/{target}",
+      "ui.trail.foundation": "Trilha da rodada {done}/3 · Avance Fundações {current}/{target}",
+      "ui.trail.column": "Trilha da rodada {done}/3 · Abra uma coluna do Tableau",
+      "ui.trail.complete": "Trilha da rodada 3/3 · Marcos concluídos; termine as Fundações.",
+      "ui.result.trail": "Trilha da rodada: {done}/3 marcos concluídos.",
     },
     fr: {
       "ui.hint.reason.waste_foundation": "Pourquoi ce coup : il avance une couleur vers la Fondation.",
@@ -723,6 +761,11 @@ const KL_I18N = {
       "ui.result.deal_identity": "Donne {id} · Rejouez cette donne pour battre votre meilleur score.",
       "ui.draw_mode.strategy_1": "Tirer 1 : une carte de la pioche est révélée à la fois.",
       "ui.draw_mode.strategy_3": "Tirer 3 : seule la carte supérieure de la défausse est jouable.",
+      "ui.trail.reveal": "Parcours de donne {done}/3 · Révélez des cartes {current}/{target}",
+      "ui.trail.foundation": "Parcours de donne {done}/3 · Avancez les Fondations {current}/{target}",
+      "ui.trail.column": "Parcours de donne {done}/3 · Libérez une colonne du Tableau",
+      "ui.trail.complete": "Parcours de donne 3/3 · Étapes franchies ; terminez les Fondations.",
+      "ui.result.trail": "Parcours de donne : {done}/3 étapes franchies.",
     },
     de: {
       "ui.hint.reason.waste_foundation": "Warum dieser Zug: Er bringt eine Farbe zum Fundament voran.",
@@ -732,6 +775,11 @@ const KL_I18N = {
       "ui.result.deal_identity": "Ausgabe {id} · Spiele diese Ausgabe erneut und übertriff deinen Bestwert.",
       "ui.draw_mode.strategy_1": "1 ziehen: Pro Zug wird eine Karte vom Stapel aufgedeckt.",
       "ui.draw_mode.strategy_3": "3 ziehen: Nur die oberste Ablagekarte ist spielbar.",
+      "ui.trail.reveal": "Rundenpfad {done}/3 · Verdeckte Karten öffnen {current}/{target}",
+      "ui.trail.foundation": "Rundenpfad {done}/3 · Fundamente ausbauen {current}/{target}",
+      "ui.trail.column": "Rundenpfad {done}/3 · Eine Tableau-Spalte leeren",
+      "ui.trail.complete": "Rundenpfad 3/3 · Meilensteine geschafft; Fundamente vollenden.",
+      "ui.result.trail": "Rundenpfad: {done}/3 Meilensteine geschafft.",
     },
     it: {
       "ui.hint.reason.waste_foundation": "Perché questa mossa: porta un seme verso la Fondazione.",
@@ -741,6 +789,11 @@ const KL_I18N = {
       "ui.result.deal_identity": "Distribuzione {id} · Ripeti questa distribuzione per battere il tuo record.",
       "ui.draw_mode.strategy_1": "Pesca 1: viene scoperta una carta dal tallone alla volta.",
       "ui.draw_mode.strategy_3": "Pesca 3: solo la carta in cima agli scarti è giocabile.",
+      "ui.trail.reveal": "Percorso mano {done}/3 · Scopri carte coperte {current}/{target}",
+      "ui.trail.foundation": "Percorso mano {done}/3 · Avanza le Fondazioni {current}/{target}",
+      "ui.trail.column": "Percorso mano {done}/3 · Libera una colonna del Tableau",
+      "ui.trail.complete": "Percorso mano 3/3 · Traguardi raggiunti; completa le Fondazioni.",
+      "ui.result.trail": "Percorso mano: {done}/3 traguardi raggiunti.",
     },
     ru: {
       "ui.hint.reason.waste_foundation": "Почему этот ход: он продвигает масть в основание.",
@@ -750,6 +803,11 @@ const KL_I18N = {
       "ui.result.deal_identity": "Раздача {id} · Повторите её, чтобы побить свой лучший результат.",
       "ui.draw_mode.strategy_1": "Взять 1: за раз открывается одна карта из колоды.",
       "ui.draw_mode.strategy_3": "Взять 3: можно сыграть только верхнюю карту сброса.",
+      "ui.trail.reveal": "Путь раздачи {done}/3 · Откройте карты {current}/{target}",
+      "ui.trail.foundation": "Путь раздачи {done}/3 · Продвиньте основания {current}/{target}",
+      "ui.trail.column": "Путь раздачи {done}/3 · Освободите столбец расклада",
+      "ui.trail.complete": "Путь раздачи 3/3 · Этапы пройдены; завершите основания.",
+      "ui.result.trail": "Путь раздачи: пройдено {done}/3 этапов.",
     },
     hi: {
       "ui.hint.reason.waste_foundation": "यह चाल क्यों: यह एक सूट को फाउंडेशन की ओर आगे बढ़ाती है।",
@@ -759,6 +817,11 @@ const KL_I18N = {
       "ui.result.deal_identity": "डील {id} · अपने सर्वश्रेष्ठ रिकॉर्ड को बेहतर करने के लिए यह डील फिर खेलें।",
       "ui.draw_mode.strategy_1": "1 कार्ड लें: हर बार डेक से एक कार्ड खुलता है।",
       "ui.draw_mode.strategy_3": "3 कार्ड लें: केवल फेंकी गई गड्डी का सबसे ऊपर वाला कार्ड खेला जा सकता है।",
+      "ui.trail.reveal": "डील यात्रा {done}/3 · छिपे कार्ड खोलें {current}/{target}",
+      "ui.trail.foundation": "डील यात्रा {done}/3 · फाउंडेशन बढ़ाएँ {current}/{target}",
+      "ui.trail.column": "डील यात्रा {done}/3 · एक टैब्लो कॉलम खाली करें",
+      "ui.trail.complete": "डील यात्रा 3/3 · पड़ाव पूरे—फाउंडेशन पूरा करें।",
+      "ui.result.trail": "डील यात्रा: {done}/3 पड़ाव पूरे।",
     },
     ar: {
       "ui.hint.reason.waste_foundation": "سبب هذه الحركة: إنها تقدّم نوعًا نحو الأساس.",
@@ -768,6 +831,11 @@ const KL_I18N = {
       "ui.result.deal_identity": "التوزيع {id} · أعد هذا التوزيع لتحطّم أفضل نتيجة لك.",
       "ui.draw_mode.strategy_1": "سحب 1: تُكشف بطاقة واحدة من الرزمة في كل مرة.",
       "ui.draw_mode.strategy_3": "سحب 3: لا يمكن لعب سوى البطاقة العليا من المهملات.",
+      "ui.trail.reveal": "مسار التوزيع {done}/3 · اكشف البطاقات {current}/{target}",
+      "ui.trail.foundation": "مسار التوزيع {done}/3 · طوّر الأساسات {current}/{target}",
+      "ui.trail.column": "مسار التوزيع {done}/3 · أفرغ عمودًا من اللوحة",
+      "ui.trail.complete": "مسار التوزيع 3/3 · اكتملت المحطات؛ أتمم الأساسات.",
+      "ui.result.trail": "مسار التوزيع: اكتملت {done}/3 محطات.",
     },
   };
   Object.entries(KL_REVIEW_EXPERIENCE_COPY).forEach(([locale, copy]) => {
@@ -935,7 +1003,16 @@ const KL_I18N = {
     const locale = getKlLocale();
     const baseRule = KL_SELECTION_RULE_COPY[locale] || KL_SELECTION_RULE_COPY.en;
     const drawThreeCue = game?.drawModeIndex === 1 ? t("ui.draw_mode.strategy_3") : "";
-    if (ui.battleTip) ui.battleTip.textContent = drawThreeCue ? `${baseRule} ${drawThreeCue}` : baseRule;
+    const trail = dealTrailSummary();
+    const primaryCopy = game?.moveCount > 0 ? trail.text : baseRule;
+    if (ui.battleTip) {
+      ui.battleTip.textContent = drawThreeCue ? `${primaryCopy} ${drawThreeCue}` : primaryCopy;
+      ui.battleTip.dataset.trailStage = trail.stage;
+      ui.battleTip.dataset.trailComplete = String(trail.done);
+      ui.battleTip.dataset.trailReveal = String(trail.revealed);
+      ui.battleTip.dataset.trailFoundation = String(trail.foundation);
+      ui.battleTip.dataset.trailColumn = trail.openedColumn ? "1" : "0";
+    }
     if (ui.drawModeBtn) {
       if (drawThreeCue) ui.drawModeBtn.setAttribute("aria-describedby", "battleTip");
       else ui.drawModeBtn.removeAttribute("aria-describedby");
@@ -1421,7 +1498,89 @@ const KL_I18N = {
     tableauFitTimer: null,
     hintVisitedBoards: new Map(),
     interactionInputType: "unknown",
+    dealTrail: {
+      maxRevealed: 0,
+      maxFoundation: 0,
+      openedColumn: false,
+    },
   };
+
+  function resetDealTrail() {
+    state.dealTrail.maxRevealed = 0;
+    state.dealTrail.maxFoundation = 0;
+    state.dealTrail.openedColumn = false;
+  }
+
+  function updateDealTrail() {
+    const hiddenNow = game.tableau.columns.reduce((total, column) => (
+      total + column.filter((card) => !card.faceUp).length
+    ), 0);
+    const revealedNow = clamp(DEAL_TRAIL_INITIAL_HIDDEN - hiddenNow, 0, DEAL_TRAIL_INITIAL_HIDDEN);
+    const foundationNow = clamp(game.foundations.reduce((total, foundation) => (
+      total + foundation.cards.length
+    ), 0), 0, 52);
+    state.dealTrail.maxRevealed = Math.max(state.dealTrail.maxRevealed, revealedNow);
+    state.dealTrail.maxFoundation = Math.max(state.dealTrail.maxFoundation, foundationNow);
+    if (game.moveCount > 0 && game.tableau.columns.some((column) => column.length === 0)) {
+      state.dealTrail.openedColumn = true;
+    }
+  }
+
+  function dealTrailSummary() {
+    updateDealTrail();
+    const revealed = state.dealTrail.maxRevealed;
+    const foundation = state.dealTrail.maxFoundation;
+    const openedColumn = state.dealTrail.openedColumn;
+    const revealDone = revealed >= DEAL_TRAIL_REVEAL_TARGET;
+    const foundationDone = foundation >= DEAL_TRAIL_FOUNDATION_TARGET;
+    const done = Number(revealDone) + Number(foundationDone) + Number(openedColumn);
+    if (!revealDone) {
+      return {
+        stage: "reveal",
+        done,
+        revealed,
+        foundation,
+        openedColumn,
+        text: t("ui.trail.reveal", {
+          done,
+          current: Math.min(revealed, DEAL_TRAIL_REVEAL_TARGET),
+          target: DEAL_TRAIL_REVEAL_TARGET,
+        }),
+      };
+    }
+    if (!foundationDone) {
+      return {
+        stage: "foundation",
+        done,
+        revealed,
+        foundation,
+        openedColumn,
+        text: t("ui.trail.foundation", {
+          done,
+          current: Math.min(foundation, DEAL_TRAIL_FOUNDATION_TARGET),
+          target: DEAL_TRAIL_FOUNDATION_TARGET,
+        }),
+      };
+    }
+    if (!openedColumn) {
+      return {
+        stage: "column",
+        done,
+        revealed,
+        foundation,
+        openedColumn,
+        text: t("ui.trail.column", { done }),
+      };
+    }
+    return {
+      stage: "complete",
+      done,
+      revealed,
+      foundation,
+      openedColumn,
+      text: t("ui.trail.complete"),
+    };
+  }
 
   const inputTypeFromEvent = (event) => {
     if (event?.type === "keydown") return "keyboard";
@@ -2088,6 +2247,7 @@ const KL_I18N = {
         state.lastFrameCards.set(card.id, { id: card.id, face: card.faceUp });
       }
     }
+    syncQuickRule();
   }
 
   function startClock() {
@@ -2740,6 +2900,7 @@ const KL_I18N = {
       if (moveRecord) recordLines.push(t("ui.result.record_moves"));
       const recordText = recordLines.length > 0 ? ` ${recordLines.join(" ")}` : "";
       const dealId = formatDealId(game.dealId);
+      const trail = dealTrailSummary();
       ui.resultText.dataset.dealId = dealId;
       ui.resultText.innerHTML = `${t("ui.result.victory_prefix", {
         time: formatTime(state.elapsed),
@@ -2747,7 +2908,7 @@ const KL_I18N = {
       })}${recordText}<br>${t("ui.result.victory_body", {
         fastest,
         least,
-      })}<br>${records}<br><span class="result-deal-id">${t("ui.result.deal_identity", { id: dealId })}</span>`;
+      })}<br>${records}<br>${t("ui.result.trail", { done: trail.done })}<br><span class="result-deal-id">${t("ui.result.deal_identity", { id: dealId })}</span>`;
     }
     if (ui.resultOverlay) {
       ui.resultOverlay.classList.remove("result-enter");
@@ -2898,6 +3059,8 @@ const KL_I18N = {
       state.lossRecordedForCurrentBoard = false;
       renderBoard();
       renderHeader();
+      syncDrawLabel();
+      localStorage.setItem(STORAGE_LAYOUT, String(game.drawModeIndex));
       clearHints();
       showHint(t("ui.feedback.undo_applied"));
     } else {
@@ -2940,6 +3103,7 @@ const KL_I18N = {
     game.moveCount = 0;
     game.completed = false;
     game.moveHistory = [];
+    resetDealTrail();
     resetRenderCaches();
     state.elapsed = 0;
     syncDrawLabel();
@@ -2960,6 +3124,7 @@ const KL_I18N = {
     clearDealAnimationTimers();
     resetRenderCaches();
     game.newGame(createDealSeed());
+    resetDealTrail();
     syncDealAddress(game.dealId);
     state.dealSequence = buildDealSequence();
     renderStatistics();
@@ -3482,6 +3647,7 @@ const KL_I18N = {
     refreshLocalization();
     setLoadingProgress(15, t("ui.loading.preparing"));
     game.newGame(requestedDealSeed() ?? createDealSeed());
+    resetDealTrail();
     syncDealAddress(game.dealId);
     state.hintVisitedBoards.clear();
     state.lastFrameCards = new Map();

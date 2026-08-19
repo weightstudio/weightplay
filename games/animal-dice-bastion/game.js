@@ -17,7 +17,7 @@
     set(key, value) { memory[key] = String(value); try { localStorage.setItem(key, String(value)); } catch {} }
   };
   let locale = canonicalLocale(routeLocale || window.WonderI18n?.actualLocale?.() || storage.get("weightPlayLocale") || storage.get("wonderLocale") || navigator.language);
-  const DICE_GAME_VERSION = "v26";
+  const DICE_GAME_VERSION = "v27";
   const DICE_INTERFACE_VERSION = "V6";
   const DICE_EVENT_FIELDS = ["stage", "chapter", "wave", "outcome", "return_to", "source", "input_class", "unlocked"];
   function diceViewportBucket() {
@@ -160,6 +160,7 @@
   let cancelStagePointer = () => {};
   let windowFocused = document.hasFocus(), lifecyclePaused = false, resultCommitted = false, modalReturnFocus = null;
   let stagePanel = "stages";
+  let boardDrag = null, suppressBoardClick = false;
   let mainFlowMinHeight = "";
 
   function applyLocale() {
@@ -621,6 +622,12 @@
     }
     renderBoard(); announce(t("merged",{rank,guardian:t(type)})); window.WonderSound?.play?.("correct");
   }
+  function mergeByPointer(sourceIndex, targetIndex, inputClass = "pointer") {
+    if (!run || activeModal() || sourceIndex === targetIndex || !run.board[sourceIndex] || !run.board[targetIndex]) return;
+    run.selected = -1;
+    selectOrMerge(sourceIndex, inputClass);
+    if (run && !run.finished) selectOrMerge(targetIndex, inputClass);
+  }
   function reroll() {
     if (!run || activeModal()) return;
     const cost = 12, index = run.selected >= 0 ? run.selected : run.cursor;
@@ -663,7 +670,32 @@
         const roleIcon={grove:"◆",spark:"⚡",moon:"❄",forge:"◇",tide:"◉"}[unit.type];
         slot.innerHTML = `<span class="guardian ${unit.type}"><img src="${type.image}" alt=""><i aria-hidden="true">${roleIcon}</i><b><span>${unit.rank}</span><small>/6</small></b></span>`;
       }
-      slot.addEventListener("click", (event) => { run.cursor = index; selectOrMerge(index, diceInputClass(event)); $("board").focus({preventScroll:true}); });
+      slot.addEventListener("pointerdown", (event) => {
+        if (!unit || !event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) return;
+        boardDrag = {index, pointerId:event.pointerId, startX:event.clientX, startY:event.clientY, moved:false};
+        slot.setPointerCapture?.(event.pointerId);
+      });
+      slot.addEventListener("pointermove", (event) => {
+        if (!boardDrag || boardDrag.pointerId !== event.pointerId) return;
+        boardDrag.moved = boardDrag.moved || Math.hypot(event.clientX - boardDrag.startX, event.clientY - boardDrag.startY) >= 8;
+      });
+      slot.addEventListener("pointerup", (event) => {
+        if (!boardDrag || boardDrag.pointerId !== event.pointerId) return;
+        const drag = boardDrag; boardDrag = null;
+        if (!drag.moved) return;
+        event.preventDefault(); suppressBoardClick = true;
+        window.setTimeout(() => { suppressBoardClick = false; }, 250);
+        const target = document.elementFromPoint(event.clientX, event.clientY)?.closest?.(".rune-slot");
+        const targetIndex = target?.parentElement === $("board") ? Number(target.dataset.index) : -1;
+        if (Number.isInteger(targetIndex) && targetIndex !== drag.index && run?.board[targetIndex]) {
+          run.cursor = targetIndex; mergeByPointer(drag.index, targetIndex, diceInputClass(event)); $("board").focus({preventScroll:true});
+        } else if (run) announce(t("mergeNeedMatch"));
+      });
+      slot.addEventListener("pointercancel", () => { boardDrag = null; });
+      slot.addEventListener("click", (event) => {
+        if (suppressBoardClick) { suppressBoardClick = false; event.preventDefault(); return; }
+        run.cursor = index; selectOrMerge(index, diceInputClass(event)); $("board").focus({preventScroll:true});
+      });
       return slot;
     }));
   }
