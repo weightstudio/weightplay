@@ -47,9 +47,15 @@ body.wp-stage-select-active .stage-screen{padding-bottom:0!important;min-height:
 .stage-screen .stage-header>.wp-shell-settings{grid-column:4!important;grid-row:1!important}
 .stage-credits{color:var(--muted);font-size:.75rem;white-space:nowrap}
 .stage-credits strong{color:var(--gold)}
-.upgrade-panel{position:absolute;z-index:6;inset:10px;display:grid;align-content:start;gap:12px;padding:clamp(16px,4vw,28px);overflow:auto;border:1px solid var(--cyan);border-radius:20px;background:linear-gradient(145deg,#171938f5,#090b20f8);box-shadow:0 20px 60px #000b}
+.upgrade-panel{position:absolute;z-index:6;inset:10px;display:grid;align-content:start;gap:12px;padding:clamp(16px,4vw,28px);overflow:auto;overscroll-behavior:contain;border:1px solid var(--cyan);border-radius:20px;background:linear-gradient(145deg,#171938 0%,#090b20 72%);box-shadow:0 20px 60px #000b}
 .upgrade-panel[hidden]{display:none!important}
+body.wp-upgrades-open .stage-shell{visibility:hidden}
 .upgrade-header{display:flex;justify-content:space-between;align-items:start;gap:12px}
+.upgrade-header.wp-stage-shell-header{display:grid!important;grid-template-columns:minmax(0,1fr) auto 48px!important;grid-template-rows:48px!important;align-items:center!important;gap:10px!important}
+.upgrade-header.wp-stage-shell-header>.wp-shell-legacy-control{display:none!important}
+.upgrade-header.wp-stage-shell-header>h2{grid-column:1!important;grid-row:1!important;justify-self:start!important;width:auto!important;max-width:100%!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.upgrade-header.wp-stage-shell-header>strong{grid-column:2!important;grid-row:1!important;justify-self:end!important;width:auto!important}
+.upgrade-header.wp-stage-shell-header>.wp-shell-settings{grid-column:3!important;grid-row:1!important}
 .upgrade-header h2{margin:4px 0 0;font-size:clamp(1.35rem,4vw,2rem)}
 .upgrade-header>strong{color:var(--gold);white-space:nowrap}
 .upgrade-copy{margin:0;color:var(--muted);line-height:1.5}

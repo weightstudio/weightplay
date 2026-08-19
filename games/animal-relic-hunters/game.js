@@ -12,7 +12,7 @@
   const ROOMS_PER_EXPEDITION = 3;
   const EXPEDITIONS_PER_REGION = 5;
   const GAME_ID = "animal-relic-hunters";
-  const GAME_VERSION = 10;
+  const GAME_VERSION = 11;
   const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_relic_hunters_v1";
   const profileKey = "weightplay:animal-relic-hunters:profile:v1";
@@ -1455,6 +1455,8 @@
     if (active) {
       nodes.lootPanel.setAttribute("role", "dialog");
       nodes.lootPanel.setAttribute("aria-modal", "true");
+      nodes.lootPanel.setAttribute("aria-labelledby", "lootTitle");
+      nodes.lootPanel.setAttribute("aria-describedby", "lootName lootType lootEffect lootComparison");
       const primary = nodes.equipLootBtn.disabled ? nodes.keepLootBtn : nodes.equipLootBtn;
       primary.focus({ preventScroll: true });
     } else if (restoreBattleFocus) {

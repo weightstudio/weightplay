@@ -608,6 +608,49 @@ const KL_I18N = {
     });
   });
 
+  const KL_SUIT_LABELS = Object.freeze({
+    en: { spades: "Spades", hearts: "Hearts", clubs: "Clubs", diamonds: "Diamonds" },
+    "zh-Hant": { spades: "黑桃", hearts: "紅心", clubs: "梅花", diamonds: "方塊" },
+    "zh-Hans": { spades: "黑桃", hearts: "红心", clubs: "梅花", diamonds: "方块" },
+    ja: { spades: "スペード", hearts: "ハート", clubs: "クラブ", diamonds: "ダイヤ" },
+    ko: { spades: "스페이드", hearts: "하트", clubs: "클럽", diamonds: "다이아몬드" },
+    es: { spades: "picas", hearts: "corazones", clubs: "tréboles", diamonds: "diamantes" },
+    "pt-BR": { spades: "espadas", hearts: "copas", clubs: "paus", diamonds: "ouros" },
+    fr: { spades: "piques", hearts: "cœurs", clubs: "trèfles", diamonds: "carreaux" },
+    de: { spades: "Pik", hearts: "Herz", clubs: "Kreuz", diamonds: "Karo" },
+    it: { spades: "picche", hearts: "cuori", clubs: "fiori", diamonds: "quadri" },
+    ru: { spades: "пики", hearts: "червы", clubs: "трефы", diamonds: "бубны" },
+    hi: { spades: "हुकुम", hearts: "पान", clubs: "चिड़ी", diamonds: "ईंट" },
+    ar: { spades: "البستوني", hearts: "القلوب", clubs: "النوادي", diamonds: "الماس" },
+  });
+  const KL_CARD_ARIA_TEMPLATES = Object.freeze({
+    en: "{rank} of {suit}",
+    "zh-Hant": "{suit}{rank}",
+    "zh-Hans": "{suit}{rank}",
+    ja: "{suit}{rank}",
+    ko: "{suit} {rank}",
+    es: "{rank} de {suit}",
+    "pt-BR": "{rank} de {suit}",
+    fr: "{rank} de {suit}",
+    de: "{rank} {suit}",
+    it: "{rank} di {suit}",
+    ru: "{suit}, {rank}",
+    hi: "{suit} का {rank}",
+    ar: "{rank} من {suit}",
+  });
+
+  function localizedSuitLabel(suit) {
+    const locale = getKlLocale();
+    return KL_SUIT_LABELS[locale]?.[suit] || KL_SUIT_LABELS.en[suit] || suit;
+  }
+
+  function localizedCardAriaLabel(card) {
+    if (!card.faceUp) return t("ui.card.face_down");
+    const locale = getKlLocale();
+    const template = KL_CARD_ARIA_TEMPLATES[locale] || KL_CARD_ARIA_TEMPLATES.en;
+    return resolveI18nValue(template, { rank: card.rankLabel, suit: localizedSuitLabel(card.suit) });
+  }
+
   const KL_REVIEW_EXPERIENCE_COPY = {
     en: {
       "ui.hint.reason.waste_foundation": "Why this move: it advances a suit toward the Foundation.",
@@ -1843,7 +1886,7 @@ const KL_I18N = {
     node.dataset.row = String(row);
     node.dataset.cardRank = card.rank;
     node.dataset.cardSuit = card.suit;
-    node.setAttribute("aria-label", card.faceUp ? `${card.rankLabel} of ${card.suit}` : t("ui.card.face_down"));
+    node.setAttribute("aria-label", localizedCardAriaLabel(card));
     node.setAttribute("role", "img");
 
     if (card.faceUp) {
@@ -1987,7 +2030,7 @@ const KL_I18N = {
       node.dataset.index = index;
       node.dataset.hint = "true";
       node.type = "button";
-      node.setAttribute("aria-label", t("ui.aria.foundation", { suit: SUITS[index] }));
+      node.setAttribute("aria-label", t("ui.aria.foundation", { suit: localizedSuitLabel(SUITS[index]) }));
       if (!foundation.cards.length) {
         const note = document.createElement("span");
         note.className = "card-stack-note";
@@ -3489,4 +3532,3 @@ const KL_I18N = {
 
   bootstrap();
 })();
-
