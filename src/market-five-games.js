@@ -2,6 +2,13 @@
 (() => {
   const $ = (id) => document.getElementById(id);
   const gameId = document.body.dataset.wpMarketGame;
+  if (gameId === "animal-chameleon-blend") {
+    $("battle-status")?.setAttribute("role", "status");
+    $("battle-status")?.setAttribute("aria-live", "polite");
+    $("battle-status")?.setAttribute("aria-atomic", "true");
+    $("result-screen")?.setAttribute("aria-labelledby", "result-title");
+    $("result-screen")?.setAttribute("aria-describedby", "result-copy");
+  }
   const slug = gameId.replace(/^animal-/, "");
   const canvas = $("arena");
   const ctx = canvas.getContext("2d");

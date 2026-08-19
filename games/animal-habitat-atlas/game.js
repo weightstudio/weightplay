@@ -1,1 +1,1 @@
-(() => { const script=document.createElement("script");script.src="../../src/market-five-games.js?v=20260820-atlas-v2";document.currentScript.after(script); })();
+(() => { const script=document.createElement("script");script.src="../../src/market-five-games.js?v=20260820-atlas-v3";document.currentScript.after(script); })();

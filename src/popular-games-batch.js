@@ -140,6 +140,38 @@
     hi: (length) => `संकेत: शब्द में ${length} अक्षर हैं।`,
     ar: (length) => `تلميح: الكلمة تتكون من ${length} أحرف.`,
   };
+  const HANGMAN_WORDS = [
+    { target: "PUZZLE", theme: "puzzle" },
+    { target: "JUNGLE", theme: "habitat" },
+    { target: "PLANET", theme: "space" },
+    { target: "CASTLE", theme: "place" },
+    { target: "ORANGE", theme: "food" },
+    { target: "ROCKET", theme: "vehicle" },
+  ];
+  const HANGMAN_THEME_COPY = {
+    en: { puzzle: "Theme: games and riddles.", habitat: "Theme: a wild habitat.", space: "Theme: outer space.", place: "Theme: a historic place.", food: "Theme: food.", vehicle: "Theme: a vehicle." },
+    "zh-Hant": { puzzle: "主題：遊戲與謎題。", habitat: "主題：野生棲地。", space: "主題：外太空。", place: "主題：歷史場所。", food: "主題：食物。", vehicle: "主題：交通工具。" },
+    "zh-Hans": { puzzle: "主题：游戏与谜题。", habitat: "主题：野生栖息地。", space: "主题：外太空。", place: "主题：历史场所。", food: "主题：食物。", vehicle: "主题：交通工具。" },
+    ja: { puzzle: "テーマ：ゲームと謎。", habitat: "テーマ：野生の生息地。", space: "テーマ：宇宙。", place: "テーマ：歴史的な場所。", food: "テーマ：食べ物。", vehicle: "テーマ：乗り物。" },
+    ko: { puzzle: "주제: 게임과 수수께끼.", habitat: "주제: 야생 서식지.", space: "주제: 우주.", place: "주제: 역사적인 장소.", food: "주제: 음식.", vehicle: "주제: 탈것." },
+    es: { puzzle: "Tema: juegos y acertijos.", habitat: "Tema: un hábitat salvaje.", space: "Tema: el espacio exterior.", place: "Tema: un lugar histórico.", food: "Tema: comida.", vehicle: "Tema: un vehículo." },
+    "pt-BR": { puzzle: "Tema: jogos e enigmas.", habitat: "Tema: um habitat selvagem.", space: "Tema: o espaço sideral.", place: "Tema: um lugar histórico.", food: "Tema: comida.", vehicle: "Tema: um veículo." },
+    fr: { puzzle: "Thème : jeux et énigmes.", habitat: "Thème : un habitat sauvage.", space: "Thème : l’espace.", place: "Thème : un lieu historique.", food: "Thème : nourriture.", vehicle: "Thème : un véhicule." },
+    de: { puzzle: "Thema: Spiele und Rätsel.", habitat: "Thema: ein wilder Lebensraum.", space: "Thema: Weltraum.", place: "Thema: ein historischer Ort.", food: "Thema: Essen.", vehicle: "Thema: ein Fahrzeug." },
+    it: { puzzle: "Tema: giochi ed enigmi.", habitat: "Tema: un habitat selvatico.", space: "Tema: lo spazio.", place: "Tema: un luogo storico.", food: "Tema: cibo.", vehicle: "Tema: un veicolo." },
+    ru: { puzzle: "Тема: игры и загадки.", habitat: "Тема: дикая среда обитания.", space: "Тема: космос.", place: "Тема: историческое место.", food: "Тема: еда.", vehicle: "Тема: транспорт." },
+    hi: { puzzle: "विषय: खेल और पहेलियाँ।", habitat: "विषय: वन्य आवास।", space: "विषय: अंतरिक्ष।", place: "विषय: ऐतिहासिक स्थान।", food: "विषय: भोजन।", vehicle: "विषय: वाहन।" },
+    ar: { puzzle: "الموضوع: الألعاب والألغاز.", habitat: "الموضوع: موطن بري.", space: "الموضوع: الفضاء الخارجي.", place: "الموضوع: مكان تاريخي.", food: "الموضوع: الطعام.", vehicle: "الموضوع: مركبة." },
+  };
+  const HANGMAN_RESULT_COPY = {
+    en: (word) => `Word: ${word}. Play again gives you a new word.`,
+    "zh-Hant": (word) => `答案：${word}。再玩一次會換一個新單字。`, "zh-Hans": (word) => `答案：${word}。再玩一次会换一个新单词。`,
+    ja: (word) => `答え：${word}。もう一度遊ぶと新しい単語になります。`, ko: (word) => `정답: ${word}. 다시 플레이하면 새 단어가 나옵니다.`,
+    es: (word) => `Palabra: ${word}. Juega otra vez para recibir una palabra nueva.`, "pt-BR": (word) => `Palavra: ${word}. Jogue novamente para receber uma palavra nova.`,
+    fr: (word) => `Mot : ${word}. Rejouez pour obtenir un nouveau mot.`, de: (word) => `Wort: ${word}. Spiele erneut für ein neues Wort.`,
+    it: (word) => `Parola: ${word}. Rigioca per ricevere una nuova parola.`, ru: (word) => `Слово: ${word}. Сыграйте снова, чтобы получить новое слово.`,
+    hi: (word) => `शब्द: ${word}। नया शब्द पाने के लिए फिर खेलें।`, ar: (word) => `الكلمة: ${word}. العب مجدداً لتحصل على كلمة جديدة.`,
+  };
   const HANGMAN_MISS_COPY = {
     en: (letter, misses) => `${letter}: Miss ${misses}/6. Try another unused letter.`,
     "zh-Hant": (letter, misses) => `${letter}：答錯 ${misses}/6 次，請換一個未使用的字母。`,
@@ -437,7 +469,7 @@
   };
   const wordleLengthError = (locale) => WORDLE_LENGTH_ERROR[locale] || WORDLE_LENGTH_ERROR.en;
   const hangmanAlreadyUsed = (locale) => HANGMAN_ALREADY_USED[locale] || HANGMAN_ALREADY_USED.en;
-  const hangmanHint = (locale, length) => (HANGMAN_HINT_COPY[locale] || HANGMAN_HINT_COPY.en)(length);
+  const hangmanHint = (locale, length, theme = "puzzle") => `${(HANGMAN_HINT_COPY[locale] || HANGMAN_HINT_COPY.en)(length)} ${(HANGMAN_THEME_COPY[locale] || HANGMAN_THEME_COPY.en)[theme]}`;
   const hangmanMiss = (locale, letter, misses) => (HANGMAN_MISS_COPY[locale] || HANGMAN_MISS_COPY.en)(letter, misses);
   const checkersPromotionCopy = (locale, kind) => (CHECKERS_PROMOTION_COPY[locale] || CHECKERS_PROMOTION_COPY.en)[kind];
   const checkersMoveCoachCopy = (locale) => CHECKERS_MOVE_COACH_COPY[locale] || CHECKERS_MOVE_COACH_COPY.en;
@@ -476,7 +508,7 @@
     if (type === "checkers") Object.assign(state, { step: 0 });
     if (type === "mahjong") Object.assign(state, { tiles: ["A", "A", "B", "B", "C", "C", "D", "D", "E", "E", "F", "F"], selected: -1, matched: 0, focusTile: -1 });
     if (type === "wordle") Object.assign(state, { guesses: [], target: "BRAVE" });
-    if (type === "hangman") Object.assign(state, { target: "PUZZLE", letters: [], misses: 0 });
+    if (type === "hangman") Object.assign(state, { target: "PUZZLE", theme: "puzzle", letters: [], misses: 0 });
     if (type === "breakout") Object.assign(state, { bricks: Array(12).fill(true), shots: 0, paddle: 2 });
     if (type === "pong") Object.assign(state, { rallies: 0, paddle: 2 });
     return state;
@@ -487,6 +519,7 @@
     if (!game) throw new Error(`Unknown popular game: ${gameId}`);
     document.body.dataset.gameId = gameId;
     if (game.type === "breakout") document.body.dataset.gameVersion = BREAKOUT_GAME_VERSION;
+    if (game.type === "hangman") document.body.dataset.gameVersion = "v6";
     const root = document.querySelector("#popularArcade");
     if (!root) throw new Error("Popular game root is missing.");
     // Snake owns a complete 13-locale shell and guide. Keep the generic
@@ -500,6 +533,7 @@
     let locale = game.type === "snake" && COPY[routeLocale] ? routeLocale : randomLocale();
     if (!COPY[locale]) locale = "en";
     let state = makeState(game.type);
+    let hangmanRoundIndex = 0;
     const CHECKERS_GAME_VERSION = "v7";
     const CHECKERS_INTERFACE_VERSION = "6";
     const checkersSeenTargets = new Set();
@@ -587,7 +621,7 @@
         else if (state.messageKey === "snakeMilestone") state.message = snakeCopy(locale, "milestone", state.food);
       }
       if (game.type === "hangman") {
-        if (state.messageKey === "hangmanHint") state.message = hangmanHint(locale, state.target.length);
+        if (state.messageKey === "hangmanHint") state.message = hangmanHint(locale, state.target.length, state.theme);
         else if (state.messageKey === "hangmanMiss") state.message = hangmanMiss(locale, state.lastLetter, state.misses);
         else if (state.messageKey === "hangmanUsed") state.message = `${state.lastLetter}: ${hangmanAlreadyUsed(locale)}`;
       }
@@ -627,8 +661,8 @@
     };
     const snakeTickMs = () => Math.max(180, SNAKE_TICK_MS - state.food * 20);
     const snakeGoalLabel = () => state.milestoneReached ? snakeCopy(locale, "nextGoal", state.goalFood + 2) : snakeCopy(locale, "goal", state.goalFood);
-    const start = (entry = "start") => { stopSnakeTimer(); stopTicResultTimer(); stopTicReplyTimer(); state = makeState(game.type); checkersSeenTargets.clear(); checkersPromotionCueTracked = false; if (game.type === "snake") { state.runNumber = nextSnakeRunNumber(); state.goalFood = snakeGoalForRun(state.runNumber); state.modeKey = snakeModeForRun(state.runNumber); state.obstacles = snakeObstaclesForMode(state.modeKey); state.foodCell = chooseSnakeFood(state.trail, state.obstacles); } show("battle"); trackCheckers("game_start", { entry }); const snakeReadyCue = game.type === "snake" && ["gates", "orbit"].includes(state.modeKey); const breakoutReadyCue = game.type === "breakout" ? breakoutAimCopy(locale, breakoutTargetIndex(state) % 6 + 1) : ""; announce(game.type === "snake" ? (snakeReadyCue ? (SNAKE_OBSTACLE_CUE[locale] || SNAKE_OBSTACLE_CUE.en) : (SNAKE_READY[locale] || SNAKE_READY.en)) : game.type === "checkers" ? "" : game.type === "breakout" ? breakoutReadyCue : copy(locale, "ready"), "", game.type === "snake" ? (snakeReadyCue ? "snakeObstacleCue" : "snakeReady") : game.type === "checkers" ? "" : game.type === "breakout" ? "breakoutAim" : "ready"); render(); };
-    const renderResult = () => { const best = Number(localStorage.getItem(key(gameId)) || 0); els.resultTitle.textContent = state.success ? copy(locale, "success") : copy(locale, "failure"); els.resultCopy.textContent = state.success ? (game.type === "checkers" ? checkersPromotionCopy(locale, "result") : copy(locale, "successCopy")) : copy(locale, "failureCopy"); els.resultStats.innerHTML = `<span class="stat">${copy(locale, "score")}<strong>${state.score}</strong></span><span class="stat">${copy(locale, "moves")}<strong>${state.moves}</strong></span><span class="stat">${copy(locale, "best")}<strong>${Math.max(best, state.score)}</strong></span>`; if (els.resultGoal) { els.resultGoal.hidden = game.type !== "breakout"; if (game.type === "breakout") els.resultGoal.textContent = breakoutResultGoalCopy(locale, state.moves); } };
+    const start = (entry = "start") => { stopSnakeTimer(); stopTicResultTimer(); stopTicReplyTimer(); const previousHangman = game.type === "hangman" ? { target: state.target, theme: state.theme } : null; state = makeState(game.type); if (game.type === "hangman") { const round = entry === "restart" && previousHangman ? previousHangman : HANGMAN_WORDS[hangmanRoundIndex++ % HANGMAN_WORDS.length]; Object.assign(state, round); } checkersSeenTargets.clear(); checkersPromotionCueTracked = false; if (game.type === "snake") { state.runNumber = nextSnakeRunNumber(); state.goalFood = snakeGoalForRun(state.runNumber); state.modeKey = snakeModeForRun(state.runNumber); state.obstacles = snakeObstaclesForMode(state.modeKey); state.foodCell = chooseSnakeFood(state.trail, state.obstacles); } show("battle"); trackCheckers("game_start", { entry }); const snakeReadyCue = game.type === "snake" && ["gates", "orbit"].includes(state.modeKey); const breakoutReadyCue = game.type === "breakout" ? breakoutAimCopy(locale, breakoutTargetIndex(state) % 6 + 1) : ""; announce(game.type === "snake" ? (snakeReadyCue ? (SNAKE_OBSTACLE_CUE[locale] || SNAKE_OBSTACLE_CUE.en) : (SNAKE_READY[locale] || SNAKE_READY.en)) : game.type === "checkers" ? "" : game.type === "breakout" ? breakoutReadyCue : copy(locale, "ready"), "", game.type === "snake" ? (snakeReadyCue ? "snakeObstacleCue" : "snakeReady") : game.type === "checkers" ? "" : game.type === "breakout" ? "breakoutAim" : "ready"); render(); };
+    const renderResult = () => { const best = Number(localStorage.getItem(key(gameId)) || 0); els.resultTitle.textContent = state.success ? copy(locale, "success") : copy(locale, "failure"); const baseCopy = state.success ? (game.type === "checkers" ? checkersPromotionCopy(locale, "result") : copy(locale, "successCopy")) : copy(locale, "failureCopy"); els.resultCopy.textContent = game.type === "hangman" ? `${baseCopy} ${(HANGMAN_RESULT_COPY[locale] || HANGMAN_RESULT_COPY.en)(state.target)}` : baseCopy; els.resultStats.innerHTML = `<span class="stat">${copy(locale, "score")}<strong>${state.score}</strong></span><span class="stat">${copy(locale, "moves")}<strong>${state.moves}</strong></span><span class="stat">${copy(locale, "best")}<strong>${Math.max(best, state.score)}</strong></span>`; if (els.resultGoal) { els.resultGoal.hidden = game.type !== "breakout"; if (game.type === "breakout") els.resultGoal.textContent = breakoutResultGoalCopy(locale, state.moves); } };
     const finish = (success) => { if (state.done) return; stopSnakeTimer(); stopTicResultTimer(); stopTicReplyTimer(); state.done = true; state.success = success; state.score = success ? Math.max(state.score, state.moves * 10 + 100) : state.score; const best = Number(localStorage.getItem(key(gameId)) || 0); if ((game.type === "snake" || success) && state.score > best) { try { localStorage.setItem(key(gameId), String(state.score)); } catch {} } if (game.type === "checkers" && success) trackCheckers("promotion_result", { score: state.score }); if (game.type === "tic" && success && state.winningCells?.length === 3) { show("battle"); ticResultTimer = window.setTimeout(() => { ticResultTimer = null; if (!state.done || !state.success) return; renderResult(); show("result"); }, 520); return; } renderResult(); show("result"); };
     const moveSnake = () => {
       if (game.type !== "snake" || state.done || !state.started) return;
@@ -723,7 +757,7 @@
       }
       render();
     };
-    const hint = () => { if (game.type === "wordle") announce(`${copy(locale, "hint")}: the target starts with B.`, "warn"); else if (game.type === "hangman") announce(hangmanHint(locale, state.target.length), "warn", "hangmanHint"); else if (game.type === "mahjong") announce(`${copy(locale, "hint")}: match identical symbols.`, "warn"); else announce(`${copy(locale, "hint")}: ${copy(locale, game.objective)}`, "warn", game.type === "snake" ? "hintObjective" : ""); render(); };
+    const hint = () => { if (game.type === "wordle") announce(`${copy(locale, "hint")}: the target starts with B.`, "warn"); else if (game.type === "hangman") announce(hangmanHint(locale, state.target.length, state.theme), "warn", "hangmanHint"); else if (game.type === "mahjong") announce(`${copy(locale, "hint")}: match identical symbols.`, "warn"); else announce(`${copy(locale, "hint")}: ${copy(locale, game.objective)}`, "warn", game.type === "snake" ? "hintObjective" : ""); render(); };
     const shell = () => { document.documentElement.lang = locale; document.documentElement.dir = locale === "ar" ? "rtl" : "ltr"; document.title = `${title(locale, gameId)} | WeightPlay`; if (game.type === "checkers") document.querySelector('meta[name="description"]')?.setAttribute("content", checkersMetaDescription(locale)); if (game.type === "breakout") document.querySelector('meta[name="description"]')?.setAttribute("content", breakoutMetaDescription(locale)); els.eyebrow.textContent = copy(locale, "eyebrow"); els.title.textContent = title(locale, gameId); els.tagline.textContent = copy(locale, "tagline"); els.objective.innerHTML = `<strong>${copy(locale, "objective")}:</strong> ${copy(locale, game.objective)}`; els.instruction.textContent = game.type === "snake" ? snakeInstruction(locale) : copy(locale, "ready"); document.querySelector("#languageLabel").textContent = copy(locale, "language"); document.querySelector("#footerText").textContent = `${title(locale, gameId)} · ${copy(locale, "eyebrow")}`; if (game.type === "snake") { const shellCopy = SNAKE_SHELL_COPY[locale] || SNAKE_SHELL_COPY.en; document.querySelector('[data-wp-return="battle"]')?.setAttribute("aria-label", shellCopy.battleBack); document.querySelector('[data-wp-return="main"]')?.setAttribute("aria-label", shellCopy.mainBack); } };
     const button = (label, name, extra = "") => `<button type="button" class="control ${extra}" data-action="${name}">${label}</button>`;
     const renderBoard = () => {
@@ -734,7 +768,7 @@
       } else if (game.type === "checkers") { const nextTarget = state.step < 5 ? 30 - (state.step + 1) * 5 : -1; els.board.innerHTML = `<div class="checkers-board">${Array.from({ length: 36 }, (_, i) => `<div class="checker-cell${i === nextTarget ? " target" : ""}" data-cell="${i}"${i === nextTarget ? ` aria-label="${checkersMoveCoachCopy(locale)}" data-target="true"` : ""}>${i === 30 - state.step * 5 ? "<span class=\"checker-piece\"></span>" : i === 5 ? "<span class=\"checker-piece enemy\"></span>" : ""}</div>`).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(`${copy(locale, "select")} ${state.step + 1}`, "move", "primary")}</div>`;
       } else if (game.type === "mahjong") { els.board.innerHTML = `<div class="tile-board">${state.tiles.map((tile, i) => tile ? `<button class="tile ${state.selected === i ? "selected" : ""}" data-action="tile" data-value="${i}" aria-label="${mahjongTileLabel(locale, i, tile, state.selected === i)}" aria-pressed="${state.selected === i}">${tile}</button>` : "").join("")}</div>`; els.controls.innerHTML = `<div class="control-row"><span class="round-label" role="status" aria-live="polite" aria-atomic="true">${copy(locale, "remaining")}: ${6 - state.matched}</span></div>`;
       } else if (game.type === "wordle") { const labels = WORDLE_CELL_COPY[locale] || WORDLE_CELL_COPY.en; els.board.innerHTML = `<div class="wordle-board" role="table" aria-label="${wordleEscape(labels.board)}">${Array.from({ length: 6 }, (_, row) => `<div class="wordle-row" role="row" aria-rowindex="${row + 1}">${Array.from({ length: 5 }, (_, col) => { const guess = state.guesses[row] || ""; const letter = guess[col] || ""; const tone = letter && letter === state.target[col] ? "hit" : letter && state.target.includes(letter) ? "near" : letter ? "miss" : ""; const safeLetter = wordleEscape(letter); const ariaLabel = wordleEscape(wordleCellLabel(locale, row + 1, col + 1, letter, tone)); return `<span class="word-cell ${tone}" role="cell" aria-colindex="${col + 1}" aria-label="${ariaLabel}" data-word-state="${tone || "empty"}">${safeLetter}</span>`; }).join("")}</div>`).join("")}</div>`; els.controls.innerHTML = `<div class="word-entry"><input id="wordInput" maxlength="5" aria-label="${copy(locale, "wordle")}" autocomplete="off" /><button class="primary" data-action="submit">${copy(locale, "submit")}</button></div>`;
-      } else if (game.type === "hangman") { const word = [...state.target].map((letter) => state.letters.includes(letter) ? letter : "_ ").join(""); els.board.innerHTML = `<div class="hangman-word" style="font-size:clamp(2rem,8vw,4rem);letter-spacing:.2em;text-align:center">${word}</div><p class="round-label">${copy(locale, "misses")}: ${state.misses}/6</p>`; els.controls.innerHTML = `<div class="letters">${"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map((letter) => { const used = state.letters.includes(letter); return `<button class="letter ${used ? "used" : ""}" data-action="letter" data-value="${letter}" aria-pressed="${used}" aria-label="${used ? `${letter}, ${hangmanAlreadyUsed(locale)}` : letter}">${letter}</button>`; }).join("")}</div>`;
+      } else if (game.type === "hangman") { const word = [...state.target].map((letter) => state.letters.includes(letter) ? letter : "_ ").join(""); els.board.innerHTML = `<div class="hangman-word" data-word-key="${state.theme}" style="font-size:clamp(2rem,8vw,4rem);letter-spacing:.2em;text-align:center">${word}</div><p class="round-label">${copy(locale, "misses")}: ${state.misses}/6</p>`; els.controls.innerHTML = `<div class="letters">${"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map((letter) => { const used = state.letters.includes(letter); return `<button class="letter ${used ? "used" : ""}" data-action="letter" data-value="${letter}" aria-pressed="${used}" aria-label="${used ? `${letter}, ${hangmanAlreadyUsed(locale)}` : letter}">${letter}</button>`; }).join("")}</div>`;
       } else if (game.type === "breakout") { const targetIndex = breakoutTargetIndex(state); const targetColumn = targetIndex >= 0 ? targetIndex % 6 : state.paddle; const aimCopy = breakoutAimCopy(locale, targetColumn + 1); els.board.innerHTML = `<div class="brick-board" data-shot-column="${targetColumn + 1}">${state.bricks.map((brick, index) => `<span class="brick ${brick ? "" : "cleared"} ${index === targetIndex ? "target" : ""}" data-index="${index}"${index === targetIndex ? ` data-shot-target="true" aria-label="${aimCopy}"` : ""}></span>`).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "right"), "right")}${button(copy(locale, "serve"), "fire", "primary")}</div>`;
       } else if (game.type === "pong") { els.board.innerHTML = `<div class="pong-board"><span class="pong-ball"></span><span class="pong-paddle" style="left:${state.paddle * 13 + 17}%"></span></div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "serve"), "serve", "primary")}${button(copy(locale, "right"), "right")}</div>`; }
     };

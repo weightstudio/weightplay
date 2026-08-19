@@ -851,6 +851,9 @@
     adoptControls();
     normalizeBattleReturns();
     const { type, screen } = activeScreen();
+    const visibleResult = RESULT_SELECTORS
+      .map((selector) => document.querySelector(selector))
+      .find(visible);
     if (type !== "battle") {
       document.querySelectorAll(".wp-generated-battle-header").forEach((battleHeader) => {
         battleHeader.hidden = true;
@@ -950,6 +953,13 @@
         header = ownedBattleHeader;
       }
     }
+    if (!header && type === "battle" && visibleResult) {
+      // Result owns its own decisions and deliberately hides Battle settings.
+      // Avoid accumulating empty temporary headers while the authored Battle
+      // header is hidden; the next Battle can resume that permanent owner.
+      host.hidden = true;
+      return;
+    }
     if (!header) {
       header = document.createElement("header");
       header.className = type === "stage"
@@ -970,7 +980,12 @@
         ) || screen;
         const externalBattleReturn = [...battleRoot.querySelectorAll('[data-wp-return="battle"]')]
           .find((control) => !control.classList.contains("lobby-return") && control.id !== "lobbyReturn");
-        if (!immutableSceneControls && externalBattleReturn && !header.contains(externalBattleReturn)) {
+        // A beside-Battle Result can keep the Battle root hidden while the
+        // shell still classifies Result as a Battle substate. Result can also
+        // hide only the permanent header inside a still-visible Battle root.
+        // In either form, do not steal the permanent return control into a
+        // temporary header; it must remain owned by the real next-round header.
+        if (!immutableSceneControls && !visibleResult && visible(screen) && externalBattleReturn && !header.contains(externalBattleReturn)) {
           externalBattleReturn.hidden = false;
           externalBattleReturn.classList.remove("is-hidden", "hidden", "wp-shell-legacy-control");
           header.prepend(externalBattleReturn);

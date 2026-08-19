@@ -4,7 +4,7 @@
   const LOCALES=window.ANIMAL_HONEY_SHIELD_LOCALES;
   const STORAGE_KEY="weightplay_animal_honey_shield_v1";
   const TUTORIAL_KEY="weightplay_tutorial_seen_animal_honey_shield_v1";
-  const GAME_VERSION="v48";
+  const GAME_VERSION="v49";
   const ROUTE_LOCALES={"zh-tw":"zh-Hant","zh-cn":"zh-Hans","pt-br":"pt-BR",en:"en",ja:"ja",ko:"ko",es:"es",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const routeSegment=location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
   const platformLocale=window.WonderI18n?.actualLocale?.();
@@ -334,10 +334,11 @@
   }
   function updateHud(){
     if(!$("timeValue"))return;
+    const nectar=nectarSummary();
     $("timeValue").textContent=Math.max(0,state.duration-state.elapsed).toFixed(1);
-    $("nectarValue").textContent=Math.round(state.nectar);
+    $("nectarValue").textContent=nectar.left;
     $("waveFill").style.width=`${Math.min(100,state.elapsed/state.duration*100)}%`;
-    const used=Math.round(100-state.nectar);$("lineReadout").textContent=fmt("lineStatus",{used,left:Math.round(state.nectar)});
+    $("lineReadout").textContent=fmt("lineStatus",nectar);
   }
   function updateAnchorCoach(){
     const visible=screen==="battle"&&stageIndex===0&&!state.started&&!state.result&&state.strokes.length===0;
@@ -1073,17 +1074,21 @@
     const used=100-state.nectar;
     if(used<=45)return 3;if(used<=72)return 2;return 1;
   }
+  function nectarSummary(value=state.nectar){
+    const used=Math.min(100,Math.max(0,Math.ceil(100-value-1e-8)));
+    return{used,left:100-used};
+  }
   function renderResultInsight(){
     if(!state.result)return;
-    const used=Math.min(100,Math.max(0,Math.ceil(100-state.nectar-1e-8))),left=Math.min(100,Math.max(0,Math.floor(state.nectar+1e-8))),won=state.result.won,stars=state.result.stars;
+    const {used,left}=nectarSummary(),won=state.result.won,stars=state.result.stars;
     $("resultRule").textContent=won?fmt("resultRule",{used,nectar:left}):fmt("resultFailRule",{used,nectar:left});
     $("resultNext").hidden=!won;
     if(won)$("resultNext").textContent=stars>=3?fmt("resultTop"):fmt("resultNext",{threshold:stars===2?45:72,need:Math.max(1,used-(stars===2?45:72))});
   }
   function finish(won,reason=won?"timer_complete":"pip_contact"){
     if(state.result)return;state.result={won,stars:won?scoreStars():0};state.mode="result";state.mover=null;for(const bee of state.bees){bee.intent="attack";bee.attachedStroke=null}
-    const outcome=won?"complete":"fail";
-    trackEvent(won?"stage_complete":"stage_fail",{outcome,failure_reason:won?"":reason,stroke_count:state.strokes.length,wall_moves:Math.round(state.wallMoves),nectar_remaining:Math.round(state.nectar)});
+    const outcome=won?"complete":"fail",nectar=nectarSummary();
+    trackEvent(won?"stage_complete":"stage_fail",{outcome,failure_reason:won?"":reason,stroke_count:state.strokes.length,wall_moves:Math.round(state.wallMoves),nectar_remaining:nectar.left});
     if(!won)trackEvent("failure_reason",{reason,stroke_count:state.strokes.length,wall_moves:Math.round(state.wallMoves)});
     const previous=save.stars[stageIndex]||0;let isBest=false;
     if(won){
@@ -1093,7 +1098,7 @@
     $("battleLive").inert=true;$("battleLive").hidden=true;$("resultPanel").hidden=false;
     $("resultTitle").textContent=fmt(won?"winTitle":"failTitle");
     $("resultStars").textContent=won?"★".repeat(state.result.stars)+"☆".repeat(3-state.result.stars):"☆☆☆";
-    $("resultText").textContent=fmt(won?"winText":"failText",{stage:stageIndex+1,nectar:Math.round(state.nectar)});
+    $("resultText").textContent=fmt(won?"winText":"failText",{stage:stageIndex+1,nectar:nectar.left});
     renderResultInsight();
     $("bestText").textContent=won?(isBest?fmt("newBest"):fmt("best",{stars:Math.max(previous,state.result.stars)})):"";
     $("nextBtn").disabled=!won||stageIndex>=29;$("nextBtn").setAttribute("aria-disabled",String($("nextBtn").disabled));
@@ -1278,7 +1283,7 @@
     for(const [image,src] of sources){image.onload=done;image.onerror=done;image.src=src}
   }
   window.__animalHoneyShieldSmoke={
-    startStage,resetStage,finish,snapshot:()=>({
+    startStage,resetStage,finish,nectarSummary,snapshot:()=>({
       gameVersion:GAME_VERSION,screen,stage:stageIndex+1,mode:state.mode,elapsed:state.elapsed,nectar:state.nectar,
       strokes:state.strokes.length,
       strokeLengths:state.strokes.map(stroke=>stroke.points.slice(1).reduce((sum,point,index)=>sum+Math.hypot(point.x-stroke.points[index].x,point.y-stroke.points[index].y),0)),
