@@ -421,7 +421,7 @@
   }
 
   function locale() {
-    const value = window.WonderI18n?.locale?.() || readStorage("weightPlayLocale") || readStorage("weightplayLocale") || "en";
+    const value = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || document.documentElement.lang || readStorage("weightPlayLocale") || readStorage("weightplayLocale") || "en";
     return ["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"].includes(value) ? value : "en";
   }
 
