@@ -2,7 +2,7 @@
   "use strict";
 
   const GAME_ID = "animal-starlight-trails";
-  const GAME_VERSION = "v15";
+  const GAME_VERSION = "v17";
   const SAVE_KEY = "weightplay_animal_starlight_trails_v1";
   const LOCALE_KEY = "weightPlayLocale";
   const GRAPH_NODE_KEYBOARD_SHORTCUTS = "ArrowUp ArrowDown ArrowLeft ArrowRight Home End Enter Space";
@@ -90,6 +90,35 @@
       ? template
       : window.WeightPlayGameRuntimeLocalizer?.translate?.(template) || template;
     return format(localizedTemplate, vars);
+  };
+
+  const STAGE_SCOPE_TEMPLATES = {
+    en: "{stars} stars · {trails} trails",
+    "zh-Hant": "{stars} 顆星 · {trails} 條星路",
+    "zh-Hans": "{stars} 颗星 · {trails} 条星路",
+    ja: "星 {stars} 個 · 道 {trails} 本",
+    ko: "별 {stars}개 · 별길 {trails}개",
+    es: "{stars} estrellas · {trails} senderos",
+    "pt-BR": "{stars} estrelas · {trails} trilhas",
+    fr: "{stars} étoiles · {trails} sentiers",
+    de: "{stars} Sterne · {trails} Pfade",
+    it: "{stars} stelle · {trails} sentieri",
+    hi: "{stars} सितारे · {trails} पगडंडियाँ",
+    ar: "{stars} نجوم · {trails} مسارات",
+  };
+  const russianQuantity = (value, one, few, many) => {
+    const mod100 = value % 100;
+    if (mod100 >= 11 && mod100 <= 14) return many;
+    const mod10 = value % 10;
+    if (mod10 === 1) return one;
+    if (mod10 >= 2 && mod10 <= 4) return few;
+    return many;
+  };
+  const stageScopeLabel = (stars, trails) => {
+    if (locale === "ru") {
+      return `${stars} ${russianQuantity(stars, "звезда", "звезды", "звёзд")} · ${trails} ${russianQuantity(trails, "тропа", "тропы", "троп")}`;
+    }
+    return format(STAGE_SCOPE_TEMPLATES[locale] || STAGE_SCOPE_TEMPLATES.en, {stars, trails});
   };
 
   const TEMPLATES = [
@@ -311,7 +340,7 @@
     if(!stage){button.hidden=true;return;}
     const locked=stage.id>save.unlocked,current=index===stageIndex;
     button.hidden=false;button.className=`stage-card ${locked?"locked":"unlocked"} ${save.cleared[index]?"cleared":""} ${current?"selected centered":""}`;button.dataset.index=index;button.dataset.stageId=stage.id;button.dataset.wpStageCentered=String(current);button.tabIndex=current?0:-1;button.setAttribute("aria-disabled",String(locked));button.setAttribute("aria-keyshortcuts","ArrowLeft ArrowRight Home End");button.setAttribute("aria-posinset",String(index+1));button.setAttribute("aria-setsize",String(stages.length));if(current)button.setAttribute("aria-current","true");else button.removeAttribute("aria-current");
-    button.innerHTML=`<small>${t("stage",{})} ${stage.id} · ${t(stage.ruleKey)}</small><strong>${t(`chapter${stage.chapter}`)}</strong><p>${t(`rule${stage.chapter}`)}<b class="stage-scope">${stage.points.length} ${t("stars")} · ${stage.edges.length} ${t("trails")}</b></p><footer><span>${stageStatus(stage)}</span><span class="card-stars">${"★".repeat(save.stars[index])}${"☆".repeat(3-save.stars[index])}</span></footer>`;
+    button.innerHTML=`<small>${t("stage",{})} ${stage.id} · ${t(stage.ruleKey)}</small><strong>${t(`chapter${stage.chapter}`)}</strong><p>${t(`rule${stage.chapter}`)}<b class="stage-scope">${stageScopeLabel(stage.points.length, stage.edges.length)}</b></p><footer><span>${stageStatus(stage)}</span><span class="card-stars">${"★".repeat(save.stars[index])}${"☆".repeat(3-save.stars[index])}</span></footer>`;
   }
   function createStageCard(){const button=document.createElement("button");button.type="button";button.addEventListener("focus",()=>updateChapterPanel(Number(button.dataset.index)));return button;}
   function buildStageCardPool(){dom.stageRail.replaceChildren();stageWindowStart=desiredStageWindow(stageIndex);stageCardPool=Array.from({length:STAGE_CARD_POOL_SIZE},(_,offset)=>{const card=createStageCard();card.dataset.wpStagePoolId=String(offset);bindStageCard(card,stageWindowStart+offset);dom.stageRail.append(card);return card;});Object.assign(dom.stageRail.dataset,{wpStageVirtualized:"bounded-recycle",wpStagePoolSize:String(STAGE_CARD_POOL_SIZE),wpStageTotal:String(stages.length),wpStageRecycleCount:"0",wpStageWindowStart:String(stageWindowStart),wpStageWindowEnd:String(stageWindowStart+STAGE_CARD_POOL_SIZE-1)});}

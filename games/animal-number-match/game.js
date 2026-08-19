@@ -1,6 +1,6 @@
 (()=>{
   "use strict";
-  const GAME_ID="animal-number-match",GAME_VERSION=12,INTERFACE_VERSION=6;
+  const GAME_ID="animal-number-match",GAME_VERSION=13,INTERFACE_VERSION=6;
   const codes=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
   const $=selector=>document.querySelector(selector),screens=[...document.querySelectorAll(".screen")],levels=window.NUMBER_MATCH_LEVELS.levels;
   const storageKey="wp-animal-number-match-v1";
@@ -15,6 +15,7 @@
   function normalizeInputType(value){return["pointer","touch","keyboard"].includes(value)?value:"unknown"}
   function eventInputType(event){if(event?.pointerType==="touch")return"touch";if(event?.pointerType)return"pointer";if(event?.type?.startsWith("key")||event?.detail===0)return"keyboard";return"pointer"}
   function track(name,data={}){const payload={...data,game:GAME_ID,game_version:GAME_VERSION,interface_version:INTERFACE_VERSION,locale:locale||"en",viewport:viewportBucket(),input_type:normalizeInputType(data.input_type||lastInputType)};if(window.WonderAnalytics&&typeof window.WonderAnalytics.track==="function")window.WonderAnalytics.track(name,payload)}
+  function pairsLeftLabel(count){const n=Number(count);if(locale!=="ar")return t("pairsLeft",{n});if(n===1)return t("pairsLeftOne");if(n===2)return t("pairsLeftTwo");if(n>=3&&n<=10)return t("pairsLeftFew",{n});return t("pairsLeftMany",{n})}
   function pairOrientation(a,b){const ar=Math.floor(a/level.cols),ac=a%level.cols,br=Math.floor(b/level.cols),bc=b%level.cols;return ar===br?"row":ac===bc?"column":"unknown"}
   function show(id){
     if(id!=="stage"&&activeScene==="stage")cancelStageMotion();
@@ -116,7 +117,7 @@
       board.append(button);
     });
     if(restoreFocus&&tileFocusIndex>=0)board.querySelector(`[data-index="${tileFocusIndex}"]`)?.focus();
-    $("#pairsLeft").textContent=t("pairsLeft",{n:values.filter(value=>value!==null).length/2});$("#undo").disabled=!history.length;
+    $("#pairsLeft").textContent=pairsLeftLabel(values.filter(value=>value!==null).length/2);$("#undo").disabled=!history.length;
   }
   function moveTileFocus(key,current){
     const activeIndices=values.map((value,index)=>value===null?-1:index).filter(index=>index>=0);
