@@ -68,6 +68,22 @@ const foregroundSpinTerms={
   ar:{foregroundSpinBlocked:"أعِد نافذة اللعبة إلى الواجهة، ثم اضغط تدوير مرة أخرى."}
 };
 for(const [code,terms] of Object.entries(foregroundSpinTerms))Object.assign(window.RUNE_REELS_LOCALES[code],terms);
+const stageLockedTerms={
+  en:{stageLockedHint:"This Rift is locked. Clear the previous Rift to unlock it."},
+  "zh-Hant":{stageLockedHint:"這個裂隙尚未解鎖。先通過前一個裂隙即可解鎖。"},
+  "zh-Hans":{stageLockedHint:"这个裂隙尚未解锁。先通过前一个裂隙即可解锁。"},
+  ja:{stageLockedHint:"この裂け目はロック中です。前の裂け目をクリアすると解放されます。"},
+  ko:{stageLockedHint:"이 균열은 잠겨 있습니다. 이전 균열을 클리어하면 해금됩니다."},
+  es:{stageLockedHint:"Esta grieta está bloqueada. Supera la grieta anterior para desbloquearla."},
+  "pt-BR":{stageLockedHint:"Esta fenda está bloqueada. Conclua a fenda anterior para desbloqueá-la."},
+  fr:{stageLockedHint:"Cette faille est verrouillée. Terminez la faille précédente pour la débloquer."},
+  de:{stageLockedHint:"Dieser Spalt ist gesperrt. Schließe den vorherigen Spalt ab, um ihn freizuschalten."},
+  it:{stageLockedHint:"Questa frattura è bloccata. Completa la frattura precedente per sbloccarla."},
+  ru:{stageLockedHint:"Этот разлом закрыт. Пройдите предыдущий разлом, чтобы открыть его."},
+  hi:{stageLockedHint:"यह दरार लॉक है। इसे अनलॉक करने के लिए पिछली दरार पूरी करें।"},
+  ar:{stageLockedHint:"هذا الصدع مقفل. أكمل الصدع السابق لفتحه."}
+};
+for(const [code,terms] of Object.entries(stageLockedTerms))Object.assign(window.RUNE_REELS_LOCALES[code],terms);
 const teamPayoffTerms={
   en:{teamPayoff:"Team {count}/5 · Battle DEF {def} · HEAL {healing}"},
   "zh-Hant":{teamPayoff:"隊伍 {count}/5 · 戰鬥防禦 {def} · 治療 {healing}"},
