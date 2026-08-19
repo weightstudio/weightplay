@@ -261,6 +261,9 @@ body.logic-playing .game-page-info-static { display: none !important; }
   .logic-board-area > div:has(.logic-sudoku-board) .logic-sudoku-board .logic-cell { padding: 0; font-size: 16px; line-height: 1; }
   .logic-board-area > div:has(.logic-sudoku-board) .logic-keypad button { min-height: 44px; }
 }
+/* Sliding 15 owns the target-floor repair; preserve other Logic Lab games. */
+body[data-logic-game="sliding-15"] .logic-action-row button { min-width: 44px; min-height: 44px; }
+body[data-logic-game="sliding-15"] .logic-battle-back { min-width: 48px; min-height: 44px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .001ms !important; transition-duration: .001ms !important; }
 }
