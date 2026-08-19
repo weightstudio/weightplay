@@ -4,9 +4,9 @@ window.WONDER_DATA = {
       bg: "assets/battle-bg.webp",
       hero: "assets/weightplay-character-boom-mane-lion-cutout.webp",
       wall: "assets/wall.webp",
-      eraser: "assets/eraser.png",
-      pencil: "assets/weapon-pencil.png",
-      ruler: "assets/weapon-ruler.png"
+      eraser: "assets/eraser-v2.webp",
+      pencil: "assets/weapon-pencil-v2.webp",
+      ruler: "assets/weapon-ruler-v2.webp"
     },
     enemies: [
 "assets/wonder-beast-boar.png",
@@ -121,7 +121,7 @@ window.WONDER_DATA = {
 {
       id: "eraser",
       name: "橡皮擦",
-      icon: "assets/eraser.png",
+      icon: "assets/eraser-v2.webp",
       projectile: "eraser",
       cooldown: 1.35,
       damageScale: 1,
@@ -131,7 +131,7 @@ window.WONDER_DATA = {
 {
       id: "pencil",
       name: "鉛筆",
-      icon: "assets/weapon-pencil.png",
+      icon: "assets/weapon-pencil-v2.webp",
       projectile: "pencil",
       cooldown: 1.05,
       damageScale: 0.78,
@@ -141,7 +141,7 @@ window.WONDER_DATA = {
 {
       id: "ruler",
       name: "尺",
-      icon: "assets/weapon-ruler.png",
+      icon: "assets/weapon-ruler-v2.webp",
       projectile: "ruler",
       cooldown: 1.75,
       damageScale: 1.65,

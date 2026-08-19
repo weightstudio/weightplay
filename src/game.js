@@ -1518,7 +1518,7 @@ function renderRewardItem(item) {
   const level = Math.max(1, Number(item.level) || 1);
   return `
     <div class="reward-item ${getWeaponTierClass(level)}">
-      <img src="${getWeaponIconSrc(weapon)}" alt="" onerror="this.onerror=null;this.src='assets/eraser.png'" />
+      <img src="${getWeaponIconSrc(weapon)}" alt="" onerror="this.onerror=null;this.src='assets/eraser-v2.webp'" />
       <span>${weapon.name}${level > 1 ? ` x${level}` : ""}</span>
     </div>
   `;
@@ -2624,7 +2624,7 @@ function renderEquipmentSlots() {
     .map((slot, index) => {
       const weapon = getWeapon(slot?.id);
       const level = Math.max(1, Number(slot?.level) || 1);
-      const content = weapon ? `<img src="${getWeaponIconSrc(weapon)}" alt="" onerror="this.onerror=null;this.src='assets/eraser.png'" />${level > 1 ? `<span class="equip-level">x${level}</span>` : ""}` : "";
+      const content = weapon ? `<img src="${getWeaponIconSrc(weapon)}" alt="" onerror="this.onerror=null;this.src='assets/eraser-v2.webp'" />${level > 1 ? `<span class="equip-level">x${level}</span>` : ""}` : "";
       const selected = selectedWeaponInfo?.source === "equip" && selectedWeaponInfo.index === index ? "selected" : "";
       return `<button type="button" draggable="${weapon ? "true" : "false"}" class="equip-slot ${weapon ? getWeaponTierClass(level) : "empty"} ${selected}" data-equip-slot="${index}">${content}</button>`;
     })
@@ -2638,7 +2638,7 @@ function renderBackpackItems() {
       const level = Math.max(1, Number(item?.level) || 1);
       if (!weapon) return "";
       const selected = selectedWeaponInfo?.source === "bag" && selectedWeaponInfo.index === index ? "selected" : "";
-      return `<button type="button" class="backpack-item ${getWeaponTierClass(level)} ${selected}" draggable="true" data-backpack-index="${index}" data-backpack-weapon="${weapon.id}"><img src="${getWeaponIconSrc(weapon)}" alt="" onerror="this.onerror=null;this.src='assets/eraser.png'" />${level > 1 ? `<span class="equip-level">x${level}</span>` : ""}</button>`;
+      return `<button type="button" class="backpack-item ${getWeaponTierClass(level)} ${selected}" draggable="true" data-backpack-index="${index}" data-backpack-weapon="${weapon.id}"><img src="${getWeaponIconSrc(weapon)}" alt="" onerror="this.onerror=null;this.src='assets/eraser-v2.webp'" />${level > 1 ? `<span class="equip-level">x${level}</span>` : ""}</button>`;
     })
     .filter(Boolean);
   while (items.length < 20) {
@@ -2667,7 +2667,7 @@ function renderSelectedWeaponInfo() {
   return `
     <div class="weapon-info-panel">
       <div class="weapon-info-head">
-        <img class="weapon-info-icon ${getWeaponTierClass(item.level)}" src="${getWeaponIconSrc(weapon)}" alt="" onerror="this.onerror=null;this.src='assets/eraser.png'" />
+        <img class="weapon-info-icon ${getWeaponTierClass(item.level)}" src="${getWeaponIconSrc(weapon)}" alt="" onerror="this.onerror=null;this.src='assets/eraser-v2.webp'" />
         <div><strong>${t("weapon_" + weapon.id)} ${item.level > 1 ? `x${item.level}` : ""}</strong><span>${t("weapon_upgrade_tip")}</span></div>
       </div>
       <div class="weapon-info-stats">
@@ -2891,7 +2891,7 @@ function getWeapon(id) {
 }
 
 function getWeaponIconSrc(weapon) {
-  return weapon?.icon || "assets/eraser.png";
+  return weapon?.icon || "assets/eraser-v2.webp";
 }
 
 function getWeaponDamage(entry) {

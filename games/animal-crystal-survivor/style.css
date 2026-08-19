@@ -749,6 +749,24 @@ canvas {
   text-align: center;
 }
 
+.hint-text .battle-rule,
+.hint-text .battle-action-hint {
+  display: block;
+  min-width: 0;
+  font-size: 11px;
+  line-height: 1.15;
+}
+
+.hint-text .battle-rule {
+  color: #fef08a;
+  font-weight: 900;
+}
+
+.hint-text .battle-action-hint {
+  color: #e9fbdc;
+  font-weight: 800;
+}
+
 .play-return {
   display: grid;
   place-items: center;

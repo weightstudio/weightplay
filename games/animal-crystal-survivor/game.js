@@ -8,7 +8,7 @@
   document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-crystal-survivor";
-  const GAME_VERSION = "v20";
+  const GAME_VERSION = "v21";
   const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_animal_crystal_survivor_v1";
   const localeKey = "weightPlayLocale";
@@ -359,6 +359,21 @@
     hi: { ...text.hi, hintFirstKey: "प्लेफ़ील्ड के अंदर टैप या ड्रैग करके चमकती सुनहरी चाबी की ओर जाएँ; बड़े टच क्षेत्र के लिए पोर्ट्रेट मोड करें।" },
     ar: { ...text.ar, hintFirstKey: "المس أو اسحب داخل ساحة اللعب نحو المفتاح الذهبي المتوهج؛ حوّل الشاشة للوضع الطولي لتكبير مساحة اللمس." },
   });
+  Object.entries({
+    "zh-Hans": ["收集 {keys} 把金钥匙 · 生存 3:00{boss}", " · 击败首领"],
+    ja: ["鍵を {keys} 個集める · 3:00 生き残る{boss}", " · ボスを倒す"],
+    ko: ["황금 열쇠 {keys}개 수집 · 3:00 생존{boss}", " · 보스 물리치기"],
+    "pt-BR": ["Colete {keys} chaves · sobreviva 3:00{boss}", " · derrote o chefe"],
+    fr: ["Collectez {keys} clés · survivez 3:00{boss}", " · battez le boss"],
+    de: ["Sammle {keys} Schlüssel · überlebe 3:00{boss}", " · besiege den Boss"],
+    it: ["Raccogli {keys} chiavi · sopravvivi 3:00{boss}", " · sconfiggi il boss"],
+    ru: ["Ключи: {keys} · продержитесь 3:00{boss}", " · победите босса"],
+    hi: ["{keys} चाबियाँ इकट्ठा करें · 3:00 तक जीवित रहें{boss}", " · बॉस को हराएँ"],
+    ar: ["اجمع {keys} مفاتيح · ابقَ على قيد الحياة 3:00{boss}", " · اهزم الزعيم"],
+  }).forEach(([code, labels]) => {
+    text[code].objective = labels[0];
+    text[code].bossObjective = labels[1];
+  });
   text.es.resultPlanTitle = "Plan para la siguiente partida";
   text.es.resultPlanStrong = "Ruta: sigue rodeando la arboleda, recoge cada llave y sal antes de que se cierren las zonas de aviso.";
   text.es.resultPlanUpgrade = "Siguiente partida: recoge cristales pronto para conseguir mejoras antes de que aumente la presión.";
@@ -577,6 +592,9 @@
   let playfieldLabelSignature = "";
   let hudValues = Object.create(null);
   let hintValue = "";
+  let briefingRuleSignature = "";
+  let briefingRuleNode = null;
+  let briefingActionNode = null;
   let nextHintUpdate = 0;
   let backingScale = 1;
   let arenaLayerSignature = "";
@@ -1348,6 +1366,7 @@
     window.scrollTo?.({ top: 0, left: 0, behavior: "instant" });
     hudValues = Object.create(null);
     hintValue = "";
+    briefingRuleSignature = "";
     nextHintUpdate = 0;
     renderMetrics.arenaLayerBuilds = 0;
     renderMetrics.hudWrites = 0;
@@ -2140,11 +2159,7 @@
     renderMetrics.hintEvaluations += 1;
     if (state.mode !== "running") {
       const value = t("playHint");
-      if (hintValue !== value) {
-        hintValue = value;
-        nodes.hintText.textContent = value;
-        renderMetrics.hudWrites += 1;
-      }
+      writeBattleBriefing(value);
       return;
     }
 
@@ -2165,9 +2180,27 @@
               : "playHint";
 
     const value = t(nextHint);
+    writeBattleBriefing(value);
+  }
+
+  function writeBattleBriefing(value) {
+    if (!briefingRuleNode || !briefingActionNode) {
+      briefingRuleNode = document.createElement("strong");
+      briefingRuleNode.className = "battle-rule";
+      briefingActionNode = document.createElement("span");
+      briefingActionNode.className = "battle-action-hint";
+      nodes.hintText.replaceChildren(briefingRuleNode, briefingActionNode);
+    }
+    const config = state.stageConfig || stages[0];
+    const ruleSignature = `${locale}|${config.number}`;
+    if (briefingRuleSignature !== ruleSignature) {
+      briefingRuleSignature = ruleSignature;
+      briefingRuleNode.textContent = stageRule(config);
+      renderMetrics.hudWrites += 1;
+    }
     if (hintValue !== value) {
       hintValue = value;
-      nodes.hintText.textContent = value;
+      briefingActionNode.textContent = value;
       renderMetrics.hudWrites += 1;
     }
   }

@@ -253,6 +253,27 @@ body.logic-playing .game-page-info-static { display: none !important; }
   .logic-board-area > div:has(.logic-sliding-board) .logic-live { grid-column: 2; grid-row: 1; }
   .logic-battle-wrap:has(.logic-sliding-board) > .logic-action-row button { min-height: 44px; padding-block: 4px; }
 }
+
+/* Reversi Main keeps its guide in normal document flow, but the compact
+   landscape first frame must still expose the primary Start action. */
+@media (min-width: 661px) and (max-height: 560px) and (orientation: landscape) {
+  body[data-logic-game="reversi"] .logic-main {
+    padding-top: max(4px, env(safe-area-inset-top));
+  }
+  body[data-logic-game="reversi"] .logic-hero {
+    margin-top: 4px;
+    gap: 12px;
+  }
+  body[data-logic-game="reversi"] .logic-poster {
+    max-width: min(100%, calc(100svh - 96px));
+  }
+  body[data-logic-game="reversi"] .logic-copy {
+    gap: 8px;
+  }
+  body[data-logic-game="reversi"] .logic-copy h2 {
+    font-size: clamp(28px, 5vw, 40px);
+  }
+}
 @media (min-width: 700px) and (max-height: 760px) {
   .logic-sudoku-board { width: min(100%, 460px); }
 }

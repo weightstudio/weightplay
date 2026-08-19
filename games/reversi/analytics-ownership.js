@@ -2,7 +2,7 @@
   "use strict";
 
   const GAME_ID = "reversi";
-  const GAME_VERSION = "v4";
+  const GAME_VERSION = "v5";
   const INTERFACE_VERSION = "6";
   const EVENTS = new Set([
     "preview_open",

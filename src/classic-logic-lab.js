@@ -59,6 +59,7 @@
   };
   const hanoiCopy = {
     minimumMoves: L("Moves: {moves} · Minimum: {minimum}", "步數：{moves} · 最少：{minimum}", "步数：{moves} · 最少：{minimum}", "手数：{moves} ・ 最短：{minimum}", "이동: {moves} · 최소: {minimum}", "Movimientos: {moves} · Mínimo: {minimum}", "Movimentos: {moves} · Mínimo: {minimum}", "Coups : {moves} · Minimum : {minimum}", "Züge: {moves} · Minimum: {minimum}", "Mosse: {moves} · Minimo: {minimum}", "Ходы: {moves} · Минимум: {minimum}", "चालें: {moves} · न्यूनतम: {minimum}", "الحركات: {moves} · الحد الأدنى: {minimum}"),
+    pegLabel: L("Peg {peg}", "第 {peg} 根柱", "第 {peg} 根柱", "ペグ {peg}", "페그 {peg}", "Poste {peg}", "Pino {peg}", "Piquet {peg}", "Stab {peg}", "Perno {peg}", "Колышек {peg}", "खूंटी {peg}", "الوتد {peg}"),
   };
   function fillTemplate(template, values) { return Object.entries(values).reduce((value, [key, replacement]) => value.replace(`{${key}}`, String(replacement)), template); }
   function mineCellLabel(row, col, state) { return fillTemplate(text(mineCopy.cell), { row, col, state }); }
@@ -334,6 +335,53 @@
     "four-in-a-row": L("Drop discs into a column and connect four horizontally, vertically, or diagonally.", "把棋子投入直立棋盤，橫、直或斜線連成四子。", "把棋子投入直立棋盘，横、直或斜线连成四子。", "列に石を落とし、横・縦・斜めに4つ並べます。", "열에 말을 떨어뜨려 가로·세로·대각선으로 네 개를 잇세요.", "Suelta fichas y conecta cuatro en línea, columna o diagonal.", "Solte peças e conecte quatro na linha, coluna ou diagonal.", "Faites tomber les pions et alignez-en quatre.", "Lasse Steine fallen und verbinde vier waagerecht, senkrecht oder diagonal.", "Fai cadere le pedine e collegane quattro in fila.", "Опускайте фишки и соедините четыре по линии, столбцу или диагонали.", "गोटी गिराकर क्षैतिज, लंबवत या तिरछे चार जोड़ें।", "أسقط القطع ووصل أربعًا أفقيًا أو عموديًا أو قطريًا."),
     "naval-battle": L("Place your fleet, fire at hidden coordinates, and sink every enemy ship first.", "配置艦隊、攻擊隱藏座標，率先擊沉敵方所有船艦。", "配置舰队、攻击隐藏坐标，率先击沉敌方所有船舰。", "艦隊を配置し、隠れた座標を撃って敵艦を沈めます。", "함대를 배치하고 숨은 좌표를 공격해 상대 함대를 먼저 침몰시키세요.", "Coloca tu flota, dispara a coordenadas ocultas y hunde todos los barcos.", "Posicione sua frota, ataque coordenadas ocultas e afunde todos os navios.", "Placez votre flotte, tirez sur les coordonnées cachées et coulez tous les navires.", "Platziere deine Flotte, feuere auf geheime Koordinaten und versenke alle Schiffe.", "Posiziona la flotta, spara alle coordinate nascoste e affonda tutte le navi.", "Расставьте флот, стреляйте по скрытым координатам и потопите все корабли.", "बेड़ा रखें, छिपे निर्देशांकों पर गोली चलाएँ और सभी जहाज़ डुबाएँ।", "ضع أسطولك وأطلق على الإحداثيات المخفية وأغرق كل سفن العدو."),
   };
+  const metadataDescriptions = {
+    "minefield-logic": L(
+      "Owner preview: Reveal safe cells, read the numbers, and mark every hidden mine.",
+      "擁有者預覽：翻開安全格、讀懂數字，並標記所有隱藏地雷。",
+      "所有者预览：翻开安全格、读懂数字，并标记所有隐藏地雷。",
+      "オーナー向けプレビュー：安全なマスを開き、数字を読み、隠れた地雷すべてに印を付けます。",
+      "소유자 미리보기: 안전한 칸을 열고 숫자를 읽어 숨은 지뢰를 모두 표시하세요.",
+      "Vista previa del propietario: descubre casillas seguras, lee los números y marca todas las minas ocultas.",
+      "Prévia do proprietário: revele casas seguras, leia os números e marque todas as minas ocultas.",
+      "Aperçu propriétaire : révélez les cases sûres, lisez les chiffres et marquez toutes les mines cachées.",
+      "Vorschau für den Eigentümer: Decke sichere Felder auf, lies die Zahlen und markiere alle versteckten Minen.",
+      "Anteprima del proprietario: scopri le caselle sicure, leggi i numeri e segnala tutte le mine nascoste.",
+      "Предпросмотр для владельца: открывайте безопасные клетки, читайте числа и отмечайте все скрытые мины.",
+      "मालिक का पूर्वावलोकन: सुरक्षित खाने खोलें, संख्याएँ पढ़ें और सभी छिपी खानों को चिह्नित करें।",
+      "معاينة للمالك: اكشف الخلايا الآمنة، واقرأ الأرقام، وحدد جميع الألغام المخفية."
+    ),
+    "code-breaker": L(
+      "Owner preview: Guess the hidden four-color code using exact-position and color-only clues.",
+      "擁有者預覽：利用位置正確與顏色正確的提示，推理四格隱藏色碼。",
+      "所有者预览：利用位置正确和颜色正确的提示，推理四格隐藏色码。",
+      "オーナー向けプレビュー：位置一致と色一致のヒントで4色の秘密コードを推理します。",
+      "소유자 미리보기: 위치와 색상 힌트로 네 칸의 비밀 색 코드를 추리하세요.",
+      "Vista previa del propietario: adivina el código oculto de cuatro colores con pistas de posición y color.",
+      "Prévia do proprietário: adivinhe o código oculto de quatro cores usando pistas de posição e cor.",
+      "Aperçu propriétaire : devinez le code caché de quatre couleurs grâce aux indices de position et de couleur.",
+      "Vorschau für den Eigentümer: Errate den geheimen Vierfarben-Code mit Positions- und Farbhilfen.",
+      "Anteprima del proprietario: indovina il codice segreto di quattro colori usando indizi di posizione e colore.",
+      "Предпросмотр для владельца: угадайте секретный код из четырёх цветов по подсказкам позиции и цвета.",
+      "मालिक का पूर्वावलोकन: स्थान और रंग संकेतों से चार रंगों का छिपा कोड खोजें।",
+      "معاينة للمالك: خمّن الرمز السري من أربعة ألوان باستخدام تلميحات الموضع واللون."
+    ),
+    "tower-of-hanoi": L(
+      "Owner preview: Move every disk to the goal peg without putting a larger disk on a smaller one.",
+      "擁有者預覽：把所有圓盤移到目標柱，大盤不能放在小盤上。",
+      "所有者预览：把所有圆盘移到目标柱，大盘不能放在小盘上。",
+      "オーナー向けプレビュー：大きな円盤を小さな円盤に置かず、すべてを目標ペグへ移します。",
+      "소유자 미리보기: 큰 원판을 작은 원판 위에 놓지 않고 모든 원판을 목표 기둥으로 옮기세요.",
+      "Vista previa del propietario: mueve todos los discos al poste objetivo sin poner uno grande sobre uno pequeño.",
+      "Prévia do proprietário: mova todos os discos para o pino objetivo sem colocar um maior sobre um menor.",
+      "Aperçu propriétaire : déplacez tous les disques vers le piquet cible sans poser un grand sur un petit.",
+      "Vorschau für den Eigentümer: Bewege alle Scheiben zum Zielstab, ohne eine größere auf eine kleinere zu legen.",
+      "Anteprima del proprietario: sposta tutti i dischi sul perno obiettivo senza mettere uno grande su uno piccolo.",
+      "Предпросмотр для владельца: перенесите все диски на целевой колышек, не кладя большой на маленький.",
+      "मालिक का पूर्वावलोकन: बड़ी डिस्क को छोटी पर रखे बिना सभी डिस्क लक्ष्य खूंटी पर ले जाएँ।",
+      "معاينة للمالك: انقل كل الأقراص إلى الوتد الهدف دون وضع قرص كبير فوق صغير."
+    ),
+  };
 
   const CONFIG = {
     "minefield-logic": { accent: "#73d5ff", blurb: blurbs["minefield-logic"], type: types["minefield-logic"], build: buildMines },
@@ -363,6 +411,17 @@
   }
   function text(map) { return map?.[locale] ?? map?.en ?? ""; }
   function t(key) { return shared[locale]?.[key] ?? shared.en[key] ?? key; }
+  function updateMetadata(id) {
+    const descriptionMap = metadataDescriptions[id];
+    if (!descriptionMap) return;
+    let description = document.querySelector('meta[name="description"]');
+    if (!description) {
+      description = document.createElement("meta");
+      description.name = "description";
+      document.head.append(description);
+    }
+    description.content = text(descriptionMap);
+  }
   function esc(value) { return String(value).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[ch])); }
   function announce(message, kind = "") { if (!app) return; app.status.textContent = message; app.status.className = `logic-status-line ${kind}`; }
   function beep(kind = "click") {
@@ -388,6 +447,7 @@
     document.body.dataset.logicGame = id;
     const title = text(titles[id]);
     document.title = `${title} | WeightPlay`;
+    updateMetadata(id);
     app = { id, cfg, title, root: document.querySelector("#logicApp") || document.body };
     app.root.innerHTML = `
       <div class="logic-lab">
@@ -536,7 +596,7 @@
     let count = 3, towers = [], selected = -1, moves = 0, history = []; const panel = document.createElement("div"); const toolbar = document.createElement("div"); toolbar.className = "logic-board-toolbar"; const select = selectDifficulty(); const target = document.createElement("span"); target.className = "logic-live logic-hanoi-target"; target.setAttribute("aria-live", "polite"); toolbar.append(select, target); const board = document.createElement("div"); board.className = "logic-hanoi-board"; panel.append(toolbar, board); app.board.replaceChildren(panel);
     function minimumMoves() { return (2 ** count) - 1; }
     function legalDestination(index) { if (selected < 0 || selected === index) return false; const from = towers[selected]; const disk = from?.[from.length - 1]; const to = towers[index]; return Boolean(disk) && (!to.length || to[to.length - 1] > disk); }
-    function render(status = `${t("moves")}: ${moves}`) { target.textContent = fillTemplate(text(hanoiCopy.minimumMoves), { moves, minimum: minimumMoves() }); board.replaceChildren(); towers.forEach((tower, index) => { const peg = document.createElement("button"); peg.type = "button"; peg.className = `logic-tower ${selected === index ? "is-selected" : ""} ${legalDestination(index) ? "is-legal-destination" : ""}`; peg.setAttribute("aria-label", `Peg ${index + 1}`); tower.forEach((disk) => { const diskEl = document.createElement("span"); diskEl.className = "logic-disk"; diskEl.style.width = `${30 + disk * (56 / count)}%`; diskEl.textContent = disk; peg.append(diskEl); }); peg.addEventListener("click", () => clickPeg(index)); board.append(peg); }); announce(status); }
+    function render(status = `${t("moves")}: ${moves}`) { target.textContent = fillTemplate(text(hanoiCopy.minimumMoves), { moves, minimum: minimumMoves() }); board.replaceChildren(); towers.forEach((tower, index) => { const peg = document.createElement("button"); peg.type = "button"; peg.className = `logic-tower ${selected === index ? "is-selected" : ""} ${legalDestination(index) ? "is-legal-destination" : ""}`; peg.setAttribute("aria-label", fillTemplate(text(hanoiCopy.pegLabel), { peg: index + 1 })); tower.forEach((disk) => { const diskEl = document.createElement("span"); diskEl.className = "logic-disk"; diskEl.style.width = `${30 + disk * (56 / count)}%`; diskEl.textContent = disk; peg.append(diskEl); }); peg.addEventListener("click", () => clickPeg(index)); board.append(peg); }); announce(status); }
     function clickPeg(index) { if (selected < 0) { if (towers[index].length) { selected = index; render(t("selectTarget")); } else render(t("selectSource")); return; } if (selected === index) { selected = -1; render(t("selectSource")); return; } const from = towers[selected], to = towers[index]; const disk = from[from.length - 1]; if (disk && (!to.length || to[to.length - 1] > disk)) { history.push({ towers: towers.map((tower) => tower.slice()), moves }); from.pop(); to.push(disk); moves += 1; selected = -1; beep(); render(); if (to.length === count) finish(true, `${t("solved")} ${t("moves")}: ${moves}`); } else { selected = -1; render(t("failed")); } }
     function reset() { count = select.value === "easy" ? 3 : select.value === "medium" ? 4 : 5; towers = [Array.from({ length: count }, (_, i) => count - i), [], []]; selected = -1; moves = 0; history = []; app.result.hidden = true; setChip(t("turn")); render(); }
     function hint() { const index = towers.findIndex((tower) => tower.length); selected = index; render(t("hint")); }

@@ -127,6 +127,54 @@ body[data-game-id="tetris"][data-screen="result"] #resultScreen .arcade-panel {
   min-height: 0;
 }
 
+/* Mahjong's flat six-pair Battle/Result owns the complete active viewport.
+   The shared collection header/footer and the legacy panel minimum must not
+   push the compact landscape tile board below the visible play surface. */
+html:has(body[data-game-id="mahjong-solitaire"][data-screen="battle"]),
+html:has(body[data-game-id="mahjong-solitaire"][data-screen="result"]) {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+body[data-game-id="mahjong-solitaire"][data-screen="battle"],
+body[data-game-id="mahjong-solitaire"][data-screen="result"] {
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] .popular-arcade,
+body[data-game-id="mahjong-solitaire"][data-screen="result"] .popular-arcade {
+  height: 100dvh;
+  min-height: 0;
+  padding: 12px clamp(14px, 3vw, 32px) 16px;
+  gap: 0;
+}
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] .arcade-header,
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] .arcade-footer,
+body[data-game-id="mahjong-solitaire"][data-screen="result"] .arcade-header,
+body[data-game-id="mahjong-solitaire"][data-screen="result"] .arcade-footer {
+  display: none;
+}
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen,
+body[data-game-id="mahjong-solitaire"][data-screen="result"] #resultScreen {
+  min-height: 0;
+  height: 100%;
+}
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] .battle-panel,
+body[data-game-id="mahjong-solitaire"][data-screen="result"] #resultScreen .arcade-panel {
+  height: 100%;
+  min-height: 0;
+}
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] .board-wrap {
+  min-height: 0;
+  overflow: hidden;
+}
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] .board {
+  height: 100%;
+  min-height: 0;
+}
+
 /* Checkers Battle is a complete active-play surface. Keep the document root
    out of the gesture chain, then let the shared V6 panel use the full safe
    viewport so its board, cue, and Select action stay one reachable unit. */
@@ -470,6 +518,47 @@ body[data-game-id="snake"] .game-message[data-tone="good"] { font-weight: 800; }
   }
   html.popular-checkers-active body[data-screen="battle"] #battleScreen #controls .control-row {
     flex-wrap: nowrap;
+  }
+
+  body[data-game-id="mahjong-solitaire"][data-screen="battle"] .popular-arcade,
+  body[data-game-id="mahjong-solitaire"][data-screen="result"] .popular-arcade {
+    padding: 6px;
+  }
+  body[data-game-id="mahjong-solitaire"][data-screen="battle"] .battle-panel {
+    padding: 7px;
+    gap: 6px 12px;
+    align-content: stretch;
+    grid-template-columns: minmax(320px, 1fr) minmax(250px, .85fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+  body[data-game-id="mahjong-solitaire"][data-screen="battle"] .board-wrap {
+    grid-column: 1;
+    grid-row: 1 / 4;
+    padding: 5px;
+  }
+  body[data-game-id="mahjong-solitaire"][data-screen="battle"] .tile-board {
+    width: min(100%, 420px);
+    max-height: 100%;
+  }
+  body[data-game-id="mahjong-solitaire"][data-screen="battle"] .battle-top {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  body[data-game-id="mahjong-solitaire"][data-screen="battle"] .game-message {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: start;
+  }
+  body[data-game-id="mahjong-solitaire"][data-screen="battle"] #controls {
+    grid-column: 2;
+    grid-row: 3;
+  }
+  body[data-game-id="mahjong-solitaire"][data-screen="battle"] #controls .control-row {
+    flex-wrap: nowrap;
+  }
+  body[data-game-id="mahjong-solitaire"][data-screen="result"] #resultScreen .arcade-panel {
+    padding: 16px;
+    gap: 10px;
   }
 }
 /* Tetris desktop Battle/Result owns the complete active viewport. The
