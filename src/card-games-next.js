@@ -150,6 +150,27 @@
     ar: { held: "العانس في يدك—كوّن الأزواج وحاول تمريرها.", hidden: "بطاقة العانس ما زالت مخفية." },
   };
 
+  const OLD_MAID_COPY = {
+    en: { help: "Draw one hidden card from {name}. Pairs disappear automatically.", pair: "A pair disappeared. Your next blind draw is ready.", risk: "The Old Maid stays in your hand. Try to clear it.", none: "No pair disappeared. Watch the next blind draw." },
+    "zh-Hant": { help: "從 {name} 抽一張背面牌。配對會自動消除。", pair: "成功消除一對牌。準備迎接下一次盲抽。", risk: "鬼牌仍在你手上。想辦法把它清掉。", none: "沒有消除配對。留意下一次盲抽。" },
+    "zh-Hans": { help: "从 {name} 抽一张背面牌。配对会自动消除。", pair: "成功消除一对牌。准备迎接下一次盲抽。", risk: "鬼牌仍在你手上。想办法把它清掉。", none: "没有消除配对。留意下一次盲抽。" },
+    ja: { help: "{name} から裏向きのカードを1枚引きます。ペアは自動で消えます。", pair: "ペアが1組消えました。次の裏引きに備えましょう。", risk: "ババが手札に残っています。手放す方法を考えましょう。", none: "ペアは消えませんでした。次の裏引きに注意しましょう。" },
+    ko: { help: "{name}에게서 뒷면 카드 한 장을 뽑습니다. 짝은 자동으로 사라집니다.", pair: "짝 하나가 사라졌습니다. 다음 뒷면 카드 뽑기를 준비하세요.", risk: "버바가 내 패에 남아 있습니다. 넘길 방법을 찾아보세요.", none: "사라진 짝이 없습니다. 다음 뒷면 카드 뽑기를 주의하세요." },
+    es: { help: "Roba una carta oculta de {name}. Las parejas desaparecen automáticamente.", pair: "Una pareja desapareció. Prepárate para el próximo robo a ciegas.", risk: "La Solterona sigue en tu mano. Intenta deshacerte de ella.", none: "No desapareció ninguna pareja. Cuidado con el próximo robo." },
+    "pt-BR": { help: "Compre uma carta virada de {name}. Os pares desaparecem automaticamente.", pair: "Um par desapareceu. Prepare-se para a próxima compra às cegas.", risk: "O Mico continua na sua mão. Tente passá-lo.", none: "Nenhum par desapareceu. Atenção à próxima compra às cegas." },
+    fr: { help: "Piochez une carte cachée chez {name}. Les paires disparaissent automatiquement.", pair: "Une paire a disparu. Préparez-vous pour la prochaine pioche à l’aveugle.", risk: "Le Pouilleux reste dans votre main. Essayez de vous en défaire.", none: "Aucune paire n’a disparu. Attention à la prochaine pioche." },
+    de: { help: "Ziehe eine verdeckte Karte von {name}. Paare verschwinden automatisch.", pair: "Ein Paar ist verschwunden. Bereite dich auf den nächsten Blindzug vor.", risk: "Der Schwarze Peter bleibt auf deiner Hand. Versuche, ihn loszuwerden.", none: "Kein Paar ist verschwunden. Achte auf den nächsten Blindzug." },
+    it: { help: "Pesca una carta coperta da {name}. Le coppie spariscono automaticamente.", pair: "Una coppia è sparita. Preparati alla prossima pesca alla cieca.", risk: "L'Asino è ancora nella tua mano. Prova a passarlo.", none: "Nessuna coppia è sparita. Attenzione alla prossima pesca." },
+    ru: { help: "Возьмите закрытую карту у {name}. Пары исчезают автоматически.", pair: "Пара исчезла. Приготовьтесь к следующему слепому добору.", risk: "Старая дева осталась у вас в руке. Постарайтесь передать её.", none: "Пара не исчезла. Следующий слепой добор всё ещё рискован." },
+    hi: { help: "{name} से एक छिपा हुआ पत्ता लें। जोड़े अपने-आप हटते हैं।", pair: "एक जोड़ा हट गया। अगली छिपी हुई चाल के लिए तैयार रहें।", risk: "ओल्ड मेड आपके हाथ में बनी हुई है। इसे आगे देने का रास्ता खोजें।", none: "कोई जोड़ा नहीं हटा। अगली छिपी हुई चाल पर ध्यान दें।" },
+    ar: { help: "اسحب بطاقة مقلوبة من {name}. تختفي الأزواج تلقائياً.", pair: "اختفى زوج واحد. استعد للسحب الأعمى التالي.", risk: "ما زالت بطاقة العانس في يدك. حاول تمريرها.", none: "لم يختفِ أي زوج. انتبه إلى السحب الأعمى التالي." },
+  };
+
+  const oldMaidText = (key, values = {}) => {
+    const dictionary = OLD_MAID_COPY[currentLocale()] || OLD_MAID_COPY.en;
+    return (dictionary[key] || OLD_MAID_COPY.en[key] || key).replace(/\{(\w+)\}/g, (_, name) => String(values[name] ?? ""));
+  };
+
   const OLD_MAID_RESULT = {
     en: { lost: "You kept the Old Maid. Final holder: {holder}.", cleared: "You cleared the risk. Final holder: {holder}." },
     "zh-Hant": { lost: "你在最後留下鬼牌。最後持有者：{holder}。", cleared: "你在最後成功清掉風險。最後持有者：{holder}。" },
@@ -186,6 +207,28 @@
     const dictionary = GIN_PATH[currentLocale()] || GIN_PATH.en;
     const template = deadwood === 0 ? dictionary.gin : deadwood <= 10 ? dictionary.ready : dictionary.reduce;
     return template.replaceAll("{deadwood}", String(deadwood)).replaceAll("{count}", String(Math.max(0, deadwood - 10)));
+  };
+
+  const GIN_RESULT_COPY = {
+    en: { breakdown: "{reason} · Meld cards {meldCards} · Your deadwood {deadwood} · AI deadwood {aiDeadwood} · Score {playerScore} / {aiScore}", gin: "Gin", knock: "Knock at {deadwood}", stock: "Stock settled" },
+    "zh-Hant": { breakdown: "{reason} · 組牌 {meldCards} 張 · 你的死牌 {deadwood} 點 · AI 死牌 {aiDeadwood} 點 · 分數 {playerScore} / {aiScore}", gin: "Gin", knock: "Knock：{deadwood} 點死牌", stock: "牌庫結算" },
+    "zh-Hans": { breakdown: "{reason} · 组牌 {meldCards} 张 · 你的死牌 {deadwood} 点 · AI 死牌 {aiDeadwood} 点 · 分数 {playerScore} / {aiScore}", gin: "Gin", knock: "Knock：{deadwood} 点死牌", stock: "牌库结算" },
+    ja: { breakdown: "{reason} · メルド {meldCards}枚 · あなたのデッドウッド {deadwood} · AIのデッドウッド {aiDeadwood} · スコア {playerScore} / {aiScore}", gin: "ジン", knock: "ノック可能（デッドウッド {deadwood}）", stock: "山札切れで精算" },
+    ko: { breakdown: "{reason} · 멜드 카드 {meldCards}장 · 내 데드우드 {deadwood} · AI 데드우드 {aiDeadwood} · 점수 {playerScore} / {aiScore}", gin: "진", knock: "노크 ({deadwood} 데드우드)", stock: "덱 소진 정산" },
+    es: { breakdown: "{reason} · Cartas en combinaciones {meldCards} · Tu madera muerta {deadwood} · Madera muerta de la IA {aiDeadwood} · Puntuación {playerScore} / {aiScore}", gin: "Gin", knock: "Cierre con {deadwood} de madera muerta", stock: "Reparto resuelto por mazo agotado" },
+    "pt-BR": { breakdown: "{reason} · Cartas em combinações {meldCards} · Sua madeira morta {deadwood} · Madeira morta da IA {aiDeadwood} · Pontuação {playerScore} / {aiScore}", gin: "Gin", knock: "Batida com {deadwood} de madeira morta", stock: "Mão resolvida com o monte vazio" },
+    fr: { breakdown: "{reason} · Cartes en combinaisons {meldCards} · Votre bois mort {deadwood} · Bois mort de l’IA {aiDeadwood} · Score {playerScore} / {aiScore}", gin: "Gin", knock: "Frappe à {deadwood} de bois mort", stock: "Pioche épuisée : main réglée" },
+    de: { breakdown: "{reason} · Meldkarten {meldCards} · Dein Totholz {deadwood} · KI-Totholz {aiDeadwood} · Punkte {playerScore} / {aiScore}", gin: "Gin", knock: "Klopfen bei {deadwood} Totholz", stock: "Stapel leer: Hand abgerechnet" },
+    it: { breakdown: "{reason} · Carte in combinazioni {meldCards} · Le tue carte morte {deadwood} · Carte morte dell’IA {aiDeadwood} · Punteggio {playerScore} / {aiScore}", gin: "Gin", knock: "Battuta con {deadwood} carte morte", stock: "Tallone esaurito: mano conclusa" },
+    ru: { breakdown: "{reason} · Карт в комбинациях: {meldCards} · Ваш дедвуд: {deadwood} · Дедвуд ИИ: {aiDeadwood} · Счёт: {playerScore} / {aiScore}", gin: "Джин", knock: "Стучок при дедвуде {deadwood}", stock: "Колода закончилась: рука завершена" },
+    hi: { breakdown: "{reason} · मेल्ड कार्ड {meldCards} · आपका डेडवुड {deadwood} · AI डेडवुड {aiDeadwood} · स्कोर {playerScore} / {aiScore}", gin: "जिन", knock: "{deadwood} डेडवुड पर नॉक", stock: "डेक खत्म: हाथ का हिसाब पूरा" },
+    ar: { breakdown: "{reason} · بطاقات في مجموعات {meldCards} · خشبك الميت {deadwood} · خشب الذكاء الاصطناعي الميت {aiDeadwood} · النتيجة {playerScore} / {aiScore}", gin: "جين", knock: "طرق عند {deadwood} من الخشب الميت", stock: "انتهت الرزمة: حُسمت اليد" },
+  };
+
+  const ginResultText = (key, values = {}) => {
+    const dictionary = GIN_RESULT_COPY[currentLocale()] || GIN_RESULT_COPY.en;
+    const apply = (template) => template.replace(/\{(\w+)\}/g, (_, name) => String(values[name] ?? ""));
+    return apply(dictionary.breakdown.replace("{reason}", apply(dictionary[key] || dictionary.stock)));
   };
 
   const CRIB_TRANSITION = {
@@ -336,19 +379,19 @@
     ar: "{card} — لعب قانوني",
   };
   const GO_FISH_COPY = {
-    en: { pending: "Choose a rank to ask {opponent}", ready: "Ask {opponent} for {rank}" },
-    "zh-Hant": { pending: "選擇要向 {opponent} 詢問的點數", ready: "向 {opponent} 詢問 {rank}" },
-    "zh-Hans": { pending: "选择要向 {opponent} 询问的点数", ready: "向 {opponent} 询问 {rank}" },
-    ja: { pending: "{opponent} に尋ねるランクを選択", ready: "{opponent} に {rank} を質問" },
-    ko: { pending: "{opponent}에게 물을 랭크를 선택", ready: "{opponent}에게 {rank}을(를) 질문" },
-    es: { pending: "Elige el rango para preguntar a {opponent}", ready: "Pregunta a {opponent} por {rank}" },
-    "pt-BR": { pending: "Escolha o valor para perguntar a {opponent}", ready: "Pergunte a {opponent} pelo valor {rank}" },
-    fr: { pending: "Choisissez la valeur à demander à {opponent}", ready: "Demandez {rank} à {opponent}" },
-    de: { pending: "Wähle den Rang für {opponent}", ready: "Frage {opponent} nach {rank}" },
-    it: { pending: "Scegli il valore da chiedere a {opponent}", ready: "Chiedi {rank} a {opponent}" },
-    ru: { pending: "Выберите ранг для вопроса к {opponent}", ready: "Спросите у {opponent} про {rank}" },
-    hi: { pending: "तय करें कि {opponent} से कौन-सी रैंक पूछनी है", ready: "{opponent} से {rank} पूछें" },
-    ar: { pending: "اختر الرتبة التي ستسأل عنها {opponent}", ready: "اسأل {opponent} عن {rank}" },
+    en: { pending: "Choose a rank to ask {opponent}", ready: "Ask {opponent} for {rank}", book: "Book complete: {rank} · progress {books}/13" },
+    "zh-Hant": { pending: "選擇要向 {opponent} 詢問的點數", ready: "向 {opponent} 詢問 {rank}", book: "完成 {rank} 組牌 · 進度 {books}/13" },
+    "zh-Hans": { pending: "选择要向 {opponent} 询问的点数", ready: "向 {opponent} 询问 {rank}", book: "完成 {rank} 组牌 · 进度 {books}/13" },
+    ja: { pending: "{opponent} に尋ねるランクを選択", ready: "{opponent} に {rank} を質問", book: "{rank} の組が完成 · 進捗 {books}/13" },
+    ko: { pending: "{opponent}에게 물을 랭크를 선택", ready: "{opponent}에게 {rank}을(를) 질문", book: "{rank} 세트 완성 · 진행 {books}/13" },
+    es: { pending: "Elige el rango para preguntar a {opponent}", ready: "Pregunta a {opponent} por {rank}", book: "Grupo de {rank} completado · progreso {books}/13" },
+    "pt-BR": { pending: "Escolha o valor para perguntar a {opponent}", ready: "Pergunte a {opponent} pelo valor {rank}", book: "Grupo de {rank} completo · progresso {books}/13" },
+    fr: { pending: "Choisissez la valeur à demander à {opponent}", ready: "Demandez {rank} à {opponent}", book: "Carré de {rank} complété · progression {books}/13" },
+    de: { pending: "Wähle den Rang für {opponent}", ready: "Frage {opponent} nach {rank}", book: "Vierling {rank} komplett · Fortschritt {books}/13" },
+    it: { pending: "Scegli il valore da chiedere a {opponent}", ready: "Chiedi {rank} a {opponent}", book: "Combinazione di {rank} completata · progresso {books}/13" },
+    ru: { pending: "Выберите ранг для вопроса к {opponent}", ready: "Спросите у {opponent} про {rank}", book: "Собрана четвёрка {rank} · прогресс {books}/13" },
+    hi: { pending: "तय करें कि {opponent} से कौन-सी रैंक पूछनी है", ready: "{opponent} से {rank} पूछें", book: "{rank} का सेट पूरा · प्रगति {books}/13" },
+    ar: { pending: "اختر الرتبة التي ستسأل عنها {opponent}", ready: "اسأل {opponent} عن {rank}", book: "اكتملت مجموعة {rank} · التقدم {books}/13" },
   };
   const goFishText = (key, values = {}) => {
     const dictionary = GO_FISH_COPY[currentLocale()] || GO_FISH_COPY.en;
@@ -596,7 +639,7 @@
     quickGuide.append(quickGuideLabel);
     if (guideParagraph) quickGuide.append(document.createTextNode(`: ${guideParagraph}`));
     if (!main || !battle || !table || !hand || !actions) return;
-    if (id === "hearts" || id === "crazy-eights") resultText?.setAttribute("data-runtime-localize", "off");
+    if (id === "hearts" || id === "crazy-eights" || id === "gin-rummy") resultText?.setAttribute("data-runtime-localize", "off");
     rootElement.dataset.wpCardGame = id;
     const title = TITLES[id]?.[currentLocale()] || TITLES[id]?.en || id;
     document.querySelectorAll("img.cover").forEach((image) => {
@@ -978,14 +1021,26 @@
       const deadwood = hand.reduce((total, item, index) => total + (used.has(index) ? 0 : value(item)), 0);
       return { deadwood, meldCards: used.size };
     };
-    const finish = (winner, reason) => { s.over = true; s.score[winner] += 1; controller.result(winner === 0, `${reason} — ${t("score")}: ${s.score[0]} / ${s.score[1]}`); };
+    const finish = (winner, reasonKey) => {
+      s.over = true;
+      s.score[winner] += 1;
+      const playerStats = meldStats(s.player);
+      const aiStats = meldStats(s.ai);
+      controller.result(winner === 0, ginResultText(reasonKey, {
+        meldCards: playerStats.meldCards,
+        deadwood: playerStats.deadwood,
+        aiDeadwood: aiStats.deadwood,
+        playerScore: s.score[0],
+        aiScore: s.score[1],
+      }));
+    };
     const drawCard = (fromDiscard) => { const item = fromDiscard ? s.discard.pop() : s.stock.pop(); if (item) { s.player.push(item); s.drawn = true; } };
     const chooseAiDiscard = () => { let bestIndex = 0; let bestDeadwood = -1; s.ai.forEach((_, index) => { const candidate = s.ai.filter((__, itemIndex) => itemIndex !== index); const deadwood = meldStats(candidate).deadwood; if (deadwood > bestDeadwood) { bestDeadwood = deadwood; bestIndex = index; } }); return bestIndex; };
-    const aiTurn = () => { if (s.turn !== 1 || s.over) return; if (s.discard.length && Math.random() > .45) s.ai.push(s.discard.pop()); else if (s.stock.length) s.ai.push(s.stock.pop()); const discardIndex = chooseAiDiscard(); const discarded = s.ai.splice(discardIndex, 1)[0]; if (discarded) s.discard.push(discarded); const stats = meldStats(s.ai); if (stats.deadwood === 0) finish(1, t("gin")); else if (stats.deadwood <= 10) finish(1, `${t("knock")} ${stats.deadwood}`); else if (!s.stock.length) { const playerStats = meldStats(s.player); finish(playerStats.deadwood <= stats.deadwood ? 0 : 1, `${t("score")} ${playerStats.deadwood} / ${stats.deadwood}`); } else { s.turn = 0; s.drawn = false; } };
+    const aiTurn = () => { if (s.turn !== 1 || s.over) return; if (s.discard.length && Math.random() > .45) s.ai.push(s.discard.pop()); else if (s.stock.length) s.ai.push(s.stock.pop()); const discardIndex = chooseAiDiscard(); const discarded = s.ai.splice(discardIndex, 1)[0]; if (discarded) s.discard.push(discarded); const stats = meldStats(s.ai); if (stats.deadwood === 0) finish(1, "gin"); else if (stats.deadwood <= 10) finish(1, "knock"); else if (!s.stock.length) { const playerStats = meldStats(s.player); finish(playerStats.deadwood <= stats.deadwood ? 0 : 1, "stock"); } else { s.turn = 0; s.drawn = false; } };
     return {
       reset() { Object.assign(s, { player: [], ai: [], stock: deck(), discard: [], turn: 0, drawn: false, selected: new Set(), score: [0, 0], over: false }); for (let i = 0; i < 10; i += 1) { s.player.push(s.stock.pop()); s.ai.push(s.stock.pop()); } s.discard.push(s.stock.pop()); },
       card(index) { if (s.turn === 0 && s.drawn && !s.over) { s.selected = s.selected.has(index) ? new Set() : new Set([index]); } },
-      action(action) { if (s.turn !== 0 || s.over) return; if (action === "draw-stock" && !s.drawn) drawCard(false); if (action === "draw-discard" && !s.drawn) drawCard(true); if (action === "discard" && s.drawn && s.selected.size === 1) { const index = [...s.selected][0]; const discarded = s.player.splice(index, 1)[0]; if (discarded) s.discard.push(discarded); s.selected.clear(); const stats = meldStats(s.player); if (stats.deadwood === 0) finish(0, t("gin")); else if (!s.stock.length) { const aiStats = meldStats(s.ai); finish(stats.deadwood <= aiStats.deadwood ? 0 : 1, `${t("score")} ${stats.deadwood} / ${aiStats.deadwood}`); } else { s.turn = 1; s.drawn = false; setTimeout(aiTurn, 320); } } if (action === "knock" && s.drawn) { const stats = meldStats(s.player); if (stats.deadwood <= 10) { const aiStats = meldStats(s.ai); finish(stats.deadwood <= aiStats.deadwood ? 0 : 1, `${t("knock")} ${stats.deadwood} / ${aiStats.deadwood}`); } } },
+      action(action) { if (s.turn !== 0 || s.over) return; if (action === "draw-stock" && !s.drawn) drawCard(false); if (action === "draw-discard" && !s.drawn) drawCard(true); if (action === "discard" && s.drawn && s.selected.size === 1) { const index = [...s.selected][0]; const discarded = s.player.splice(index, 1)[0]; if (discarded) s.discard.push(discarded); s.selected.clear(); const stats = meldStats(s.player); if (stats.deadwood === 0) finish(0, "gin"); else if (!s.stock.length) { const aiStats = meldStats(s.ai); finish(stats.deadwood <= aiStats.deadwood ? 0 : 1, "stock"); } else { s.turn = 1; s.drawn = false; setTimeout(aiTurn, 320); } } if (action === "knock" && s.drawn) { const stats = meldStats(s.player); if (stats.deadwood <= 10) { const aiStats = meldStats(s.ai); finish(stats.deadwood <= aiStats.deadwood ? 0 : 1, stats.deadwood === 0 ? "gin" : "knock"); } } },
       view() { const stats = meldStats(s.player); const pathState = stats.deadwood === 0 ? "is-gin" : stats.deadwood <= 10 ? "is-ready" : ""; return { phase: s.turn === 0 ? (s.drawn ? t("discard") : t("draw")) : t("aiTurn"), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: `Meld cards ${stats.meldCards} · Deadwood ${stats.deadwood}`, score: s.score[0], opponents: opponentMarkup("AI", s.ai.length, `${t("score")}: ${s.score[1]}`), center: `<div class="card-table-label">${t("stock")} · ${s.stock.length} · ${t("discard")}</div><div class="card-gin-path ${pathState}" role="status" aria-live="polite">${ginPathText(stats.deadwood)}</div><div class="table-row"><button class="playing-card is-face-down" data-action="draw-stock" aria-label="${t("stock")}" ${!s.stock.length ? "disabled" : ""}></button>${cardMarkup(s.discard.at(-1), 0)}</div>`, hand: cardsMarkup(s.player, { selected: s.selected }), actions: `<button class="secondary-btn" data-action="draw-stock" ${s.drawn || !s.stock.length ? "disabled" : ""}>${t("draw")} ${t("stock")}</button><button class="secondary-btn" data-action="draw-discard" ${s.drawn ? "disabled" : ""}>${t("draw")} ${t("discard")}</button><button class="primary-btn" data-action="discard" ${!s.drawn || s.selected.size !== 1 ? "disabled" : ""}>${t("discard")}</button><button class="secondary-btn" data-action="knock" ${!s.drawn || stats.deadwood > 10 ? "disabled" : ""}>${t("knock")}</button>` }; }
     };
   }
@@ -1091,20 +1146,20 @@
   }
 
   function makeGoFishFixed(controller) {
-    const s = { players: [[], [], [], []], stock: [], turn: 0, selectedOpponent: 1, selectedRank: null, books: [0, 0, 0, 0], bookRanks: [[], [], [], []], playerCount: 4 };
+    const s = { players: [[], [], [], []], stock: [], turn: 0, selectedOpponent: 1, selectedRank: null, books: [0, 0, 0, 0], bookRanks: [[], [], [], []], bookCue: "", playerCount: 4 };
     const names = ["You", "Otter", "Fox", "Panda"];
-    const removeBooks = (player) => { for (let rank = 1; rank <= 13; rank += 1) { if (s.players[player].filter((item) => item.rank === rank).length === 4) { s.players[player] = s.players[player].filter((item) => item.rank !== rank); s.books[player] += 1; if (!s.bookRanks[player].includes(rank)) s.bookRanks[player].push(rank); } } };
+    const removeBooks = (player) => { const completedRanks = []; for (let rank = 1; rank <= 13; rank += 1) { if (s.players[player].filter((item) => item.rank === rank).length === 4) { s.players[player] = s.players[player].filter((item) => item.rank !== rank); s.books[player] += 1; if (!s.bookRanks[player].includes(rank)) { s.bookRanks[player].push(rank); completedRanks.push(rank); } } } if (player === 0 && completedRanks.length) s.bookCue = completedRanks.map(rankText).join(" · "); };
     const refillEmptyHand = (player) => { const handSize = s.playerCount === 2 ? 7 : 5; if (!s.players[player].length) while (s.stock.length && s.players[player].length < handSize) s.players[player].push(s.stock.pop()); };
     const finish = () => { for (let player = 0; player < s.playerCount; player += 1) removeBooks(player); const winner = s.books.slice(0, s.playerCount).indexOf(Math.max(...s.books.slice(0, s.playerCount))); controller.result(winner === 0, `${t("booksMade")}: ${s.books.slice(0, s.playerCount).join(" / ")}`); };
-    const deal = () => { s.players = [[], [], [], []]; s.stock = deck(); s.turn = 0; s.selectedOpponent = s.playerCount === 2 ? 1 : Math.min(s.selectedOpponent, s.playerCount - 1); s.selectedRank = null; s.books = [0, 0, 0, 0]; s.bookRanks = [[], [], [], []]; const handSize = s.playerCount === 2 ? 7 : 5; for (let i = 0; i < handSize; i += 1) for (let player = 0; player < s.playerCount; player += 1) s.players[player].push(s.stock.pop()); for (let player = 0; player < s.playerCount; player += 1) { removeBooks(player); refillEmptyHand(player); } };
+    const deal = () => { s.players = [[], [], [], []]; s.stock = deck(); s.turn = 0; s.selectedOpponent = s.playerCount === 2 ? 1 : Math.min(s.selectedOpponent, s.playerCount - 1); s.selectedRank = null; s.books = [0, 0, 0, 0]; s.bookRanks = [[], [], [], []]; s.bookCue = ""; const handSize = s.playerCount === 2 ? 7 : 5; for (let i = 0; i < handSize; i += 1) for (let player = 0; player < s.playerCount; player += 1) s.players[player].push(s.stock.pop()); for (let player = 0; player < s.playerCount; player += 1) { removeBooks(player); refillEmptyHand(player); } s.bookCue = ""; };
     const next = () => { s.turn = (s.turn + 1) % s.playerCount; refillEmptyHand(s.turn); if (s.turn !== 0) setTimeout(aiTurn, 300); };
-    const ask = (target, rank) => { const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[target] = s.players[target].filter((item) => item.rank !== rank); s.players[0].push(...matching); removeBooks(0); refillEmptyHand(0); s.selectedRank = null; } else { if (s.stock.length) s.players[0].push(s.stock.pop()); s.selectedRank = null; next(); } if (!s.stock.length) { for (let player = 0; player < s.playerCount; player += 1) removeBooks(player); if (s.players.slice(0, s.playerCount).every((cards) => !cards.length)) finish(); } };
+    const ask = (target, rank) => { s.bookCue = ""; const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[target] = s.players[target].filter((item) => item.rank !== rank); s.players[0].push(...matching); removeBooks(0); refillEmptyHand(0); s.selectedRank = null; } else { if (s.stock.length) s.players[0].push(s.stock.pop()); s.selectedRank = null; next(); } if (!s.stock.length) { for (let player = 0; player < s.playerCount; player += 1) removeBooks(player); if (s.players.slice(0, s.playerCount).every((cards) => !cards.length)) finish(); } };
     const aiTurn = () => { if (!controller.isBattleActive() || s.turn === 0) return; refillEmptyHand(s.turn); const ranks = [...new Set(s.players[s.turn].map((item) => item.rank))]; if (!ranks.length) { if (!s.stock.length && s.players.slice(0, s.playerCount).every((cards) => !cards.length)) finish(); else next(); return; } const targets = Array.from({ length: s.playerCount }, (_, index) => index).filter((index) => index !== s.turn); const target = targets[Math.floor(Math.random() * targets.length)]; const rank = ranks[Math.floor(Math.random() * ranks.length)]; const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[s.turn].push(...matching); s.players[target] = s.players[target].filter((item) => item.rank !== rank); removeBooks(s.turn); refillEmptyHand(s.turn); } else if (s.stock.length) s.players[s.turn].push(s.stock.pop()); removeBooks(s.turn); if (!s.stock.length && s.players.slice(0, s.playerCount).every((cards) => !cards.length)) finish(); else next(); };
     return {
       reset() { deal(); },
       card(index) { if (s.turn === 0 && s.players[0][index]) s.selectedRank = s.players[0][index].rank; },
       action(action, valueArg) { if (action === "players") { const count = Number(valueArg); if (count >= 2 && count <= 4) { s.playerCount = count; deal(); } return; } if (s.turn !== 0) return; if (action === "opponent") s.selectedOpponent = Math.min(Number(valueArg), s.playerCount - 1); if (action === "rank") { const rank = Number(valueArg); if (s.players[0].some((item) => item.rank === rank)) s.selectedRank = rank; } if (action === "ask" && s.selectedRank && s.players[0].some((item) => item.rank === s.selectedRank)) ask(s.selectedOpponent, s.selectedRank); },
-      view() { const rankCounts = s.players[0].reduce((counts, item) => counts.set(item.rank, (counts.get(item.rank) || 0) + 1), new Map()); if (s.selectedRank && !rankCounts.has(s.selectedRank)) s.selectedRank = null; const target = [...rankCounts.entries()].sort((a, b) => b[1] - a[1] || a[0] - b[0])[0] || [null, 0]; const heldRanks = new Set(rankCounts.keys()); const rankControls = RANKS.map((rank, index) => { const value = index + 1; const held = heldRanks.has(value); return `<button class="secondary-btn ${s.selectedRank === value ? "is-selected" : ""}" data-action="rank" data-value="${value}" aria-pressed="${s.selectedRank === value}" ${held ? "" : "disabled"}>${rank}</button>`; }).join(""); const playerControls = [2, 3, 4].map((count) => `<button class="secondary-btn ${s.playerCount === count ? "is-selected" : ""}" data-action="players" data-value="${count}" aria-label="${count} players">${count}</button>`).join(""); const completed = s.bookRanks[0].length ? s.bookRanks[0].map(rankText).join(" · ") : "—"; const targetText = target[0] ? `${rankText(target[0])} ${target[1]}/4` : "—"; const requestSummary = goFishText(s.selectedRank ? "ready" : "pending", { rank: s.selectedRank ? rankText(s.selectedRank) : "", opponent: names[s.selectedOpponent] }); return { phase: `${t("ask")} ${s.playerCount}P`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: `${t("ask")}: ${names[s.selectedOpponent]} — ${t("chooseRank")}`, score: s.books[0], opponents: names.slice(1, s.playerCount).map((name, index) => `<button class="opponent-card" data-action="opponent" data-value="${index + 1}"><strong>${name}</strong><span>${s.players[index + 1].length} ${t("cards")} — ${s.books[index + 1]} ${t("books")}</span></button>`).join(""), center: `<div class="card-table-label">${t("stock")}: ${s.stock.length}</div><div class="table-row"><button class="playing-card is-face-down" data-action="draw" aria-label="${t("stock")}"></button><div class="card-book-progress" aria-live="polite"><strong>${t("books")}: ${s.books[0]}/13</strong><span>${completed}</span><span>${t("target")}: ${targetText}</span></div></div><p class="card-choice-summary" data-go-fish-request-summary role="status" aria-live="polite">${requestSummary}</p><div class="card-choice-panel">${rankControls}</div>`, hand: cardsMarkup(s.players[0]), actions: `<div class="card-choice-panel">${playerControls}</div><button class="primary-btn" data-action="ask" ${!s.selectedRank || s.selectedOpponent >= s.playerCount || !heldRanks.has(s.selectedRank) ? "disabled" : ""}>${t("ask")}</button>` }; }
+      view() { const rankCounts = s.players[0].reduce((counts, item) => counts.set(item.rank, (counts.get(item.rank) || 0) + 1), new Map()); if (s.selectedRank && !rankCounts.has(s.selectedRank)) s.selectedRank = null; const target = [...rankCounts.entries()].sort((a, b) => b[1] - a[1] || a[0] - b[0])[0] || [null, 0]; const heldRanks = new Set(rankCounts.keys()); const rankControls = RANKS.map((rank, index) => { const value = index + 1; const held = heldRanks.has(value); return `<button class="secondary-btn ${s.selectedRank === value ? "is-selected" : ""}" data-action="rank" data-value="${value}" aria-pressed="${s.selectedRank === value}" ${held ? "" : "disabled"}>${rank}</button>`; }).join(""); const playerControls = [2, 3, 4].map((count) => `<button class="secondary-btn ${s.playerCount === count ? "is-selected" : ""}" data-action="players" data-value="${count}" aria-label="${count} players">${count}</button>`).join(""); const completed = s.bookRanks[0].length ? s.bookRanks[0].map(rankText).join(" · ") : "—"; const targetText = target[0] ? `${rankText(target[0])} ${target[1]}/4` : "—"; const requestSummary = goFishText(s.selectedRank ? "ready" : "pending", { rank: s.selectedRank ? rankText(s.selectedRank) : "", opponent: names[s.selectedOpponent] }); const bookCue = s.bookCue ? `<p class="card-choice-summary card-go-fish-book-cue" data-go-fish-book-cue data-runtime-localize="off" role="status" aria-live="polite">${goFishText("book", { rank: s.bookCue, books: s.books[0] })}</p>` : ""; return { phase: `${t("ask")} ${s.playerCount}P`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: `${t("ask")}: ${names[s.selectedOpponent]} — ${t("chooseRank")}`, score: s.books[0], opponents: names.slice(1, s.playerCount).map((name, index) => `<button class="opponent-card" data-action="opponent" data-value="${index + 1}"><strong>${name}</strong><span>${s.players[index + 1].length} ${t("cards")} — ${s.books[index + 1]} ${t("books")}</span></button>`).join(""), center: `<div class="card-table-label">${t("stock")}: ${s.stock.length}</div><div class="table-row"><button class="playing-card is-face-down" data-action="draw" aria-label="${t("stock")}"></button><div class="card-book-progress" aria-live="polite"><strong>${t("books")}: ${s.books[0]}/13</strong><span>${completed}</span><span>${t("target")}: ${targetText}</span></div></div>${bookCue}<p class="card-choice-summary" data-go-fish-request-summary role="status" aria-live="polite">${requestSummary}</p><div class="card-choice-panel">${rankControls}</div>`, hand: cardsMarkup(s.players[0]), actions: `<div class="card-choice-panel">${playerControls}</div><button class="primary-btn" data-action="ask" ${!s.selectedRank || s.selectedOpponent >= s.playerCount || !heldRanks.has(s.selectedRank) ? "disabled" : ""}>${t("ask")}</button>` }; }
     };
   }
 
@@ -1163,19 +1218,19 @@
   }
 
   function makeOldMaidFixed(controller) {
-    const s = { players: [[], [], [], []], turn: 0, books: [0, 0, 0, 0], over: false };
+    const s = { players: [[], [], [], []], turn: 0, books: [0, 0, 0, 0], over: false, drawCue: "" };
     const names = ["You", "Fox", "Panda", "Otter"];
     const pair = (player) => { const byRank = new Map(); s.players[player].forEach((item) => { const list = byRank.get(item.rank) || []; list.push(item); byRank.set(item.rank, list); }); byRank.forEach((items) => { const normal = items.filter((item) => !item.oldMaid); for (let pairIndex = 0; pairIndex + 1 < normal.length; pairIndex += 2) { [normal[pairIndex], normal[pairIndex + 1]].forEach((item) => { const index = s.players[player].indexOf(item); if (index >= 0) s.players[player].splice(index, 1); }); s.books[player] += 1; } }); };
     const finishIfDone = () => { const active = s.players.filter((cards) => cards.length); if (active.length <= 1) { const loser = s.players.findIndex((cards) => cards.length); const copy = OLD_MAID_RESULT[currentLocale()] || OLD_MAID_RESULT.en; const lesson = (copy[loser === 0 ? "lost" : "cleared"] || copy.cleared).replace("{holder}", names[loser]); const holderLine = loser === 0 ? t("oldMaid") : `${names[loser]} ${t("oldMaid")}`; s.over = true; controller.result(loser !== 0, `${holderLine} · ${lesson}`); } };
     const targetFor = (player) => { for (let offset = 1; offset < s.players.length; offset += 1) { const target = (player + offset) % s.players.length; if (s.players[target].length) return target; } return -1; };
     const next = () => { s.turn = (s.turn + 1) % 4; while (!s.players[s.turn].length && s.players.some((cards) => cards.length)) s.turn = (s.turn + 1) % 4; if (s.turn !== 0) setTimeout(aiTurn, 320); };
-    const drawFrom = (player, index) => { const target = targetFor(player); if (target < 0) { finishIfDone(); return; } const source = s.players[target]; const item = source.splice(Math.min(index, source.length - 1), 1)[0]; s.players[player].push(item); pair(player); finishIfDone(); if (!s.over) next(); };
+    const drawFrom = (player, index) => { const target = targetFor(player); if (target < 0) { finishIfDone(); return; } if (player === 0) s.drawCue = ""; const source = s.players[target]; const pairsBefore = s.books[player]; const item = source.splice(Math.min(index, source.length - 1), 1)[0]; s.players[player].push(item); pair(player); if (player === 0) { const cueKey = s.books[player] > pairsBefore ? "pair" : s.players[player].some((card) => card.oldMaid) ? "risk" : "none"; s.drawCue = oldMaidText(cueKey); } finishIfDone(); if (!s.over) next(); };
     const aiTurn = () => { if (s.turn !== 0 && !s.over) { const target = targetFor(s.turn); if (target < 0) finishIfDone(); else drawFrom(s.turn, Math.floor(Math.random() * s.players[target].length)); } };
     return {
-      reset() { const cards = deck(); const removed = cards.findIndex((item) => item.suit === "spades" && item.rank === 12); cards.splice(removed, 1); const odd = cards.find((item) => item.rank === 12); if (odd) odd.oldMaid = true; Object.assign(s, { players: [[], [], [], []], turn: 0, books: [0, 0, 0, 0], over: false }); cards.forEach((item, index) => s.players[index % 4].push(item)); s.players.forEach((_, index) => pair(index)); },
+      reset() { const cards = deck(); const removed = cards.findIndex((item) => item.suit === "spades" && item.rank === 12); cards.splice(removed, 1); const odd = cards.find((item) => item.rank === 12); if (odd) odd.oldMaid = true; Object.assign(s, { players: [[], [], [], []], turn: 0, books: [0, 0, 0, 0], over: false, drawCue: "" }); cards.forEach((item, index) => s.players[index % 4].push(item)); s.players.forEach((_, index) => pair(index)); },
       card(index) { if (s.turn === 0 && !s.over) drawFrom(0, index); },
       action() {},
-      view() { const targetIndex = targetFor(0); const target = targetIndex < 0 ? [] : s.players[targetIndex]; const turnTarget = targetFor(s.turn); const playerHasOldMaid = s.players[0].some((item) => item.oldMaid); const riskCopy = (OLD_MAID_RISK[currentLocale()] || OLD_MAID_RISK.en)[playerHasOldMaid ? "held" : "hidden"]; return { phase: t("oldMaid"), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: `Draw one hidden card from ${names[turnTarget < 0 ? 0 : turnTarget]}. Pairs disappear automatically.`, score: s.books[0], opponents: names.slice(1).map((name, index) => opponentMarkup(name, s.players[index + 1].length, `${s.books[index + 1]} ${t("pairs")}`)).join(""), center: `<div class="card-table-label">${t("oldMaid")}</div><div class="card-old-maid-risk ${playerHasOldMaid ? "is-held" : ""}" role="status">${riskCopy}</div><div class="table-row">${target.map((_, index) => cardMarkup({ faceDown: true }, index)).join("")}</div>`, hand: cardsMarkup(s.players[0]), actions: "" }; }
+      view() { const targetIndex = targetFor(0); const target = targetIndex < 0 ? [] : s.players[targetIndex]; const turnTarget = targetFor(s.turn); const playerHasOldMaid = s.players[0].some((item) => item.oldMaid); const riskCopy = (OLD_MAID_RISK[currentLocale()] || OLD_MAID_RISK.en)[playerHasOldMaid ? "held" : "hidden"]; const drawCue = s.drawCue ? `<p class="card-choice-summary card-old-maid-draw-cue" data-old-maid-draw-cue data-runtime-localize="off" role="status" aria-live="polite">${s.drawCue}</p>` : ""; return { phase: t("oldMaid"), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: oldMaidText("help", { name: names[turnTarget < 0 ? 0 : turnTarget] }), score: s.books[0], opponents: names.slice(1).map((name, index) => opponentMarkup(name, s.players[index + 1].length, `${s.books[index + 1]} ${t("pairs")}`)).join(""), center: `<div class="card-table-label">${t("oldMaid")}</div><div class="card-old-maid-risk ${playerHasOldMaid ? "is-held" : ""}" role="status">${riskCopy}</div>${drawCue}<div class="table-row">${target.map((_, index) => cardMarkup({ faceDown: true }, index)).join("")}</div>`, hand: cardsMarkup(s.players[0]), actions: "" }; }
     };
   }
 
