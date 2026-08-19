@@ -155,7 +155,7 @@
   draw=drawResponsive;
   // v8 Growth instrumentation: expose only aggregate, privacy-safe funnel
   // fields; gameplay state, controls, pacing, and authored waves stay intact.
-  const ANALYTICS_GAME_VERSION="36",ANALYTICS_INTERFACE_VERSION="7";
+  const ANALYTICS_GAME_VERSION="40",ANALYTICS_INTERFACE_VERSION="7";
   let sessionHadBattle=false,inputType="unknown";
   function viewportBucket(){const width=window.innerWidth,height=window.innerHeight;if(width<=430&&height>=700)return"phone-portrait";if(width<=700&&height>=700)return"tablet-portrait";if(width>=700&&height<=500)return"short-landscape";return"desktop"}
   function track(eventName,details={}){window.WonderAnalytics?.track?.(eventName,{game_id:"alien-defender",game_version:`v${ANALYTICS_GAME_VERSION}`,interface_version:ANALYTICS_INTERFACE_VERSION,locale,viewport_bucket:viewportBucket(),input_type:details.input_type||inputType,wave:details.wave??wave,result_reason:details.result_reason||"not_applicable"})}
@@ -626,6 +626,78 @@
       if(!enemy.alive&&previousAlive.has(enemy))spawnImpactBurst(enemy.x,enemy.y,enemy.waveType==="captain"?"#ffd47c":"#b99cff");
     }
   };
+  // v37 player-value repair: make formation progress legible without adding a
+  // seventh HUD field or changing the authored enemy count and pacing.
+  const v37Draw=draw;
+  draw=function drawWithFormationIntegrity(dt){
+    v37Draw(dt);
+    if(screen!=="battle"||!world?.enemies?.length)return;
+    const cssW=Math.max(1,canvas.clientWidth),cssH=Math.max(1,canvas.clientHeight),dpr=Math.min(2,window.devicePixelRatio||1),scale=Math.min(cssW/920,cssH/720)||1,logicalW=cssW/scale,logicalH=cssH/scale,mapX=x=>x/920*logicalW,mapY=y=>y/720*logicalH;
+    const total=world.enemies.length,active=world.enemies.filter(enemy=>enemy.alive).length,segmentGap=4,barW=Math.min(280,Math.max(168,logicalW*.3)),barH=6,startX=(logicalW-barW)/2,y=101,segmentW=Math.max(3,(barW-(total-1)*segmentGap)/total);
+    ctx.save();
+    ctx.setTransform(dpr*scale,0,0,dpr*scale,0,0);
+    ctx.fillStyle="#080b20cc";
+    ctx.fillRect(startX-7,mapY(y)-5,barW+14,barH+10);
+    for(let i=0;i<total;i++){
+      ctx.fillStyle=i<active?(active/total<.4?"#ffd47c":"#74e6ee"):"#ffffff18";
+      ctx.fillRect(startX+i*(segmentW+segmentGap),mapY(y),segmentW,barH);
+    }
+    ctx.restore();
+  };
+  // v38 accessibility repair: respect the platform's reduced-motion preference
+  // for transient feedback while preserving hit confirmation and Fire timing.
+  const v38ReducedMotion=()=>window.matchMedia?.("(prefers-reduced-motion: reduce)").matches===true;
+  const v38SpawnImpactBurst=spawnImpactBurst;
+  spawnImpactBurst=function spawnReducedMotionImpactBurst(x,y,color){
+    if(!v38ReducedMotion())return v38SpawnImpactBurst(x,y,color);
+    world.particles??=[];
+    world.particles.push({x,y,vx:0,vy:0,life:.16,max:.16,size:5,color});
+  };
+  const v38Shoot=shoot;
+  shoot=function shootWithReducedMotionFeedback(){
+    const before=world?.bullets?.length||0;
+    v38Shoot();
+    if(world?.bullets?.length>before&&v38ReducedMotion())world.muzzleFlash=.06;
+  };
+  const v38Update=update;
+  update=function updateWithReducedMotionFeedback(dt){
+    if(v38ReducedMotion()&&world?.particles)for(const particle of world.particles){particle.vx=0;particle.vy=0}
+    v38Update(dt);
+    if(screen!=="battle"||!world)return;
+    if(v38ReducedMotion()){
+      world.muzzleFlash=Math.min(world.muzzleFlash||0,.06);
+      for(const particle of world.particles||[]){particle.vx=0;particle.vy=0;particle.life=Math.min(particle.life,.16)}
+    }
+  };
+  // v39 aiming repair: show alignment with the nearest active target without
+  // steering shots, changing hit bounds, or turning the cue into auto-aim.
+  const v39Draw=draw;
+  draw=function drawWithShotAlignment(dt){
+    v39Draw(dt);
+    if(screen!=="battle"||!world?.enemies?.length)return;
+    const active=world.enemies.filter(enemy=>enemy.alive),target=active.reduce((best,enemy)=>!best||Math.abs(enemy.x-world.player.x)<Math.abs(best.x-world.player.x)?enemy:best,null),distance=target?Math.abs(target.x-world.player.x):Infinity,alignment=Math.max(0,1-distance/150);
+    if(!target||alignment<=0)return;
+    const cssW=Math.max(1,canvas.clientWidth),cssH=Math.max(1,canvas.clientHeight),dpr=Math.min(2,window.devicePixelRatio||1),scale=Math.min(cssW/920,cssH/720)||1,logicalW=cssW/scale,logicalH=cssH/scale,mapX=x=>x/920*logicalW,mapY=y=>y/720*logicalH,x=mapX(target.x),y=mapY(target.y),size=34;
+    ctx.save();
+    ctx.setTransform(dpr*scale,0,0,dpr*scale,0,0);
+    ctx.strokeStyle=`rgba(255,212,124,${.2+alignment*.5})`;
+    ctx.lineWidth=2;
+    const corner=8,left=x-size,top=y-size,right=x+size,bottom=y+size;
+    ctx.beginPath();
+    ctx.moveTo(left+corner,top);ctx.lineTo(left,top);ctx.lineTo(left,top+corner);
+    ctx.moveTo(right-corner,top);ctx.lineTo(right,top);ctx.lineTo(right,top+corner);
+    ctx.moveTo(left,bottom-corner);ctx.lineTo(left,bottom);ctx.lineTo(left+corner,bottom);
+    ctx.moveTo(right-corner,bottom);ctx.lineTo(right,bottom);ctx.lineTo(right,bottom-corner);
+    ctx.stroke();
+    ctx.restore();
+  };
+  // v40 input repair: release held controls when a pointer is lifted or
+  // cancelled outside the original button, preventing a stuck move or Fire
+  // state after a touch interruption without changing legal input actions.
+  const v40ReleaseInput=()=>{keys.left=false;keys.right=false;keys.fire=false};
+  document.addEventListener("pointerup",v40ReleaseInput,{capture:true});
+  document.addEventListener("pointercancel",v40ReleaseInput,{capture:true});
+  window.addEventListener("pagehide",v40ReleaseInput,{capture:true});
   window.addEventListener("blur",()=>{keys.left=false;keys.right=false;keys.fire=false});
   document.addEventListener("visibilitychange",()=>{if(document.hidden){keys.left=false;keys.right=false;keys.fire=false}});
 })();

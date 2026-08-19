@@ -689,6 +689,55 @@
     report_skill_partial: "ルートはまだ開いています。警告の周期を見極め、反撃のタイミングまでダッシュか二段ジャンプを温存しましょう。",
   };
 
+  // The shared Main shell keeps its summary within a bounded preview length.
+  // Keep this player-owned control promise concise in every locale so the
+  // runtime localizer never leaves a mixed-language or mid-sentence fragment.
+  Object.assign(text, {
+    en: {
+      ...text.en,
+      menuHint: "Move, double-jump, slash, and dash through 30 stages.",
+    },
+    "zh-Hant": {
+      ...text["zh-Hant"],
+      menuHint: "A/D 移動、W/空白鍵二段跳、J 攻擊、K 衝刺，挑戰 30 關。",
+    },
+    "zh-Hans": {
+      menuHint: "A/D 移动、W/空格二段跳、J 攻击、K 冲刺，挑战 30 关。",
+    },
+    ja: {
+      ...text.ja,
+      menuHint: "A/Dで移動、W/スペースで二段ジャンプ、Jで攻撃、Kでダッシュ。30ステージ。",
+    },
+    ko: {
+      menuHint: "A/D 이동 · W/스페이스 2단 점프 · J 공격 · K 대시 · 30단계",
+    },
+    es: {
+      ...text.es,
+      menuHint: "Muévete, salta dos veces, ataca y corre por 30 niveles.",
+    },
+    "pt-BR": {
+      menuHint: "Mova-se, dê um salto duplo, ataque e avance por 30 fases.",
+    },
+    fr: {
+      menuHint: "Déplacez-vous, double-sautez, attaquez et foncez dans 30 niveaux.",
+    },
+    de: {
+      menuHint: "Bewege dich, springe doppelt, greife an und sprinte durch 30 Stufen.",
+    },
+    it: {
+      menuHint: "Muoviti, fai un doppio salto, attacca e scatta in 30 livelli.",
+    },
+    ru: {
+      menuHint: "Двигайтесь, делайте двойной прыжок, атакуйте и проходите 30 этапов.",
+    },
+    hi: {
+      menuHint: "चलें, डबल जंप करें, हमला करें और 30 चरणों में डैश करें।",
+    },
+    ar: {
+      menuHint: "تحرّك واقفز مرتين وهاجم واندفع عبر 30 مرحلة.",
+    },
+  });
+
   const stageCopyEs = [
     ["Puerta de Sombra Lunar", "Ritmo de patrulla y una zona de pinchos"],
     ["Cornisa Dividida", "Doble salto entre cornisas separadas"],
