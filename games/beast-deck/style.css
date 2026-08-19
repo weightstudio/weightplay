@@ -1372,6 +1372,18 @@ body {
   color: var(--text-secondary);
 }
 
+.draft-card-wrap .draft-next-battle {
+  margin: 0;
+  padding: 9px 11px;
+  border: 1px solid rgba(56, 189, 248, 0.34);
+  border-radius: 10px;
+  background: rgba(14, 165, 233, 0.1);
+  color: #bae6fd;
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.4;
+}
+
 .draft-card-wrap > small {
   display: block;
   padding: 8px 10px;

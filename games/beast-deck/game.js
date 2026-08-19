@@ -182,6 +182,7 @@
     shieldDisplay: $("shieldDisplay"),
     shieldText: $("shieldText"),
     playerStatusRow: $("playerStatusRow"),
+    draftNextBattle: $("draftNextBattle"),
     draftCards: $("draftCards"),
     resultTitle: $("resultTitle"),
     resultScore: $("resultScore"),
@@ -1367,6 +1368,27 @@
     ar: { stages: "المراحل", next: "التالي", replay: "إعادة اللعب" },
   };
 
+  const draftNextBattleText = {
+    en: "Next battle: {enemy} · Opening intent: {intent}",
+    "zh-Hant": "下一場：{enemy} · 開場意圖：{intent}",
+    "zh-Hans": "下一场：{enemy} · 开场意图：{intent}",
+    es: "Próxima batalla: {enemy} · Intención inicial: {intent}",
+    ja: "次のバトル：{enemy} · 最初の行動：{intent}",
+    ko: "다음 전투: {enemy} · 첫 의도: {intent}",
+    "pt-BR": "Próxima batalha: {enemy} · Intenção inicial: {intent}",
+    fr: "Prochain combat : {enemy} · Intention initiale : {intent}",
+    de: "Nächster Kampf: {enemy} · Eröffnungsabsicht: {intent}",
+    it: "Prossima battaglia: {enemy} · Intento iniziale: {intent}",
+    ru: "Следующий бой: {enemy} · Первый замысел: {intent}",
+    hi: "अगला युद्ध: {enemy} · शुरुआती इरादा: {intent}",
+    ar: "المعركة التالية: {enemy} · النية الافتتاحية: {intent}",
+  };
+
+  function formatDraftNextBattle(enemy, intent) {
+    const template = draftNextBattleText[getLocale()] || draftNextBattleText.en;
+    return template.replaceAll("{enemy}", enemy).replaceAll("{intent}", intent);
+  }
+
   function leaveCoveredLayers() {
     return [
       nodes.gamePanel.querySelector(".hud-row"),
@@ -1457,10 +1479,10 @@
     };
   }
 
-  function currentEnemy() {
+  function enemyForBattle(battle = state.battle) {
     const mission = getMission(state.mission);
-    const enemy = scaledEnemy(mission.enemies[state.battle - 1], state.mission);
-    if (state.battle !== 3 || mission.boss) return enemy;
+    const enemy = scaledEnemy(mission.enemies[battle - 1], state.mission);
+    if (battle !== 3 || mission.boss) return enemy;
     enemy.isElite = true;
     enemy.name = `Elite ${enemy.name}`;
     enemy.nameZh = `菁英${enemy.nameZh}`;
@@ -1472,6 +1494,10 @@
     if (mission.arc === 5) enemy.armor = (enemy.armor || 0) + 2;
     if (mission.arc === 6) enemy.ward = 3;
     return enemy;
+  }
+
+  function currentEnemy() {
+    return enemyForBattle(state.battle);
   }
 
   function enemyName(enemy) {
@@ -1527,6 +1553,7 @@
       nodes.enemyName.textContent = enemyName(state.enemy);
       displayIntent(state.enemy.intents[state.enemyIntentIndex]);
     }
+    if (!nodes.draftPanel.classList.contains("hidden")) updateDraftNextBattlePreview();
     if (leaveDecisionOpen) updateLeaveDecisionCopy();
   }
 
@@ -2258,6 +2285,12 @@
     return localizeChinese(labels[type] || String(type || ""), locale);
   }
 
+  function intentLabel(intent) {
+    if (["buff", "fog", "cleanse"].includes(intent.type)) return t(`intent_${intent.type}`);
+    if (intent.type === "seal") return t("intent_seal", { type: cardTypeLabel(intent.seal) });
+    return t(`intent_${intent.type}`, { amount: intent.val });
+  }
+
   function displayIntent(intent) {
     const views = {
       attack: { icon: "ATK", key: "intent_attack", color: "#fca5a5", bg: "rgba(239, 68, 68, 0.12)", border: "rgba(239, 68, 68, 0.25)" },
@@ -2278,9 +2311,7 @@
     const shownIntent = state.intentHidden && intent.type !== "fog" ? { type: "fog", val: 0 } : intent;
     const view = views[shownIntent.type] || views.attack;
     nodes.intentIcon.textContent = view.icon;
-    if (["buff", "fog", "cleanse"].includes(shownIntent.type)) nodes.intentText.textContent = t(view.key);
-    else if (shownIntent.type === "seal") nodes.intentText.textContent = t(view.key, { type: cardTypeLabel(shownIntent.seal) });
-    else nodes.intentText.textContent = t(view.key, { amount: shownIntent.val });
+    nodes.intentText.textContent = intentLabel(shownIntent);
     nodes.enemyIntent.style.color = view.color;
     nodes.enemyIntent.style.background = view.bg;
     nodes.enemyIntent.style.borderColor = view.border;
@@ -2771,6 +2802,7 @@
 
   function showDraftScreen() {
     nodes.draftCards.innerHTML = "";
+    updateDraftNextBattlePreview();
     let draftLocked = false;
     const draftPool = ["sky-hawk", "cheetah-sprint", "viper-venom", "owl-wisdom", "iron-tortoise"];
     shuffle(draftPool);
@@ -2800,6 +2832,14 @@
       nodes.draftCards.appendChild(cardEl);
     });
     setDraftModalActive(true);
+  }
+
+  function updateDraftNextBattlePreview() {
+    const nextEnemy = enemyForBattle(state.battle + 1);
+    nodes.draftNextBattle.textContent = formatDraftNextBattle(
+      enemyName(nextEnemy),
+      intentLabel(nextEnemy.intents[0]),
+    );
   }
 
   function cardMarkup(card, cost = card.cost) {

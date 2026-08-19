@@ -59,7 +59,7 @@
   "genre": [
     "Hervorgehoben",
     "Tierspiele",
-    "Sports",
+    "Arcade",
     "Familie"
   ],
   "audience": {
@@ -75,16 +75,13 @@
     <div class="loading-card"><img src="../../assets/weightplay-logo.png" alt="" /><strong data-i18n="loading">Lighting the forest stadium…</strong><div class="loading-track"><i id="loadingBar"></i></div></div>
   </div>
 
-  <div id="mainGroup" class="main-group" hidden>
+  <div id="mainGroup" class="main-group">
     <main id="mainScreen" class="main-screen" data-screen="main">
       <header class="shared-header main-header">
-        <a class="home-link" data-wp-return="main" href="/" data-i18n-aria="backWeightPlay" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
-        <strong class="header-title" data-runtime-localize="off" data-runtime-localize="off">Animal Penalty Cup</strong>
-        <button id="mainSettingsBtn" class="settings-button" type="button" aria-expanded="false" aria-controls="mainSettings" data-i18n-aria="settings" aria-label="Settings">⚙</button>
-        <section id="mainSettings" class="settings-popover" role="dialog" data-i18n-aria="settings" aria-label="Settings" hidden>
+        <a class="home-link wp-shell-return" data-wp-return="main" data-wp-return-normalized="true" href="/" data-i18n-aria="backWeightPlay" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+        <strong class="header-title" data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Animal Penalty Cup</strong>
+        <section id="mainSettings" hidden>
           <label class="settings-row"><span data-i18n="language">Language</span><select id="localeSelect" data-i18n-aria="language" aria-label="Language"></select></label>
-          <div class="settings-row"><span data-i18n="sound">Sound</span><button id="mainSoundBtn" type="button" aria-pressed="true">Sound on</button></div>
-          <button id="mainSettingsClose" class="settings-close" type="button" data-i18n="close">Close</button>
         </section>
       </header>
       <section class="main-hero">
@@ -104,7 +101,7 @@
     
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay-Leitfaden für Originalspiele</span><h2>Tierischer Elfmeterpokal</h2><p>Schieße, halte und lies faire Signale in sechs Kapiteln gegen 30 Tier-Teams.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Spielweise</span><strong>Elfmeterschießen</strong></div><div class="game-info-fact"><span>Genre</span><strong>Hervorgehoben · Tierspiele · Sports · Familie</strong></div></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Spielweise</span><strong>Elfmeterschießen</strong></div><div class="game-info-fact"><span>Genre</span><strong>Hervorgehoben · Tierspiele · Arcade · Familie</strong></div></div>
     </div>
     <div class="game-info-sections">
       
@@ -123,13 +120,8 @@
   <section id="stageScreen" class="stage-screen" data-screen="stage" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="assets/animal-penalty-cup-cover-v1.webp" style="--wp-stage-art:url('assets/animal-penalty-cup-cover-v1.webp')">
       <header class="shared-header stage-header">
-        <button id="stageBackBtn" class="back-button" data-wp-return="stage" type="button" data-i18n-aria="backMain" aria-label="Back to Main">←</button>
-        <strong class="header-title" data-runtime-localize="off" data-runtime-localize="off">Animal Penalty Cup</strong>
-        <button id="stageSettingsBtn" class="settings-button" type="button" aria-expanded="false" aria-controls="stageSettings" data-i18n-aria="settings" aria-label="Settings">⚙</button>
-        <section id="stageSettings" class="settings-popover" role="dialog" data-i18n-aria="settings" aria-label="Settings" hidden>
-          <div class="settings-row"><span data-i18n="sound">Sound</span><button id="stageSoundBtn" type="button" aria-pressed="true">Sound on</button></div>
-          <button id="stageSettingsClose" class="settings-close" type="button" data-i18n="close">Close</button>
-        </section>
+        <button id="stageBackBtn" class="back-button stage-fixed-back" data-wp-return="stage" data-wp-return-normalized="true" type="button" data-i18n-aria="backMain" aria-label="Back to Main">←</button>
+        <strong class="header-title" data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Animal Penalty Cup</strong>
       </header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-total="30" data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Match selection"></div>
@@ -140,7 +132,7 @@
   <section id="battleScreen" class="battle-screen" data-screen="battle" hidden>
     <div id="battleCanvas" class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <header class="battle-header">
-        <button id="battleBackBtn" class="back-button" data-wp-return="battle" type="button" data-i18n-aria="backStages" aria-label="Back to Stages">←</button>
+        <button id="battleBackBtn" class="back-button" data-wp-return="battle" data-wp-return-normalized="true" type="button" data-i18n-aria="backStages" aria-label="Back to Stages" onclick="window.__animalPenaltyCupNavigateBattle?.()">←</button>
         <div class="battle-heading"><small id="battleRound"></small><strong id="battleOpponent"></strong></div>
         <div class="score-box"><span><small data-i18n="you">You</small><b id="playerScore">0</b></span><i>–</i><span><small data-i18n="rival">Rival</small><b id="rivalScore">0</b></span></div>
         <button id="pauseBtn" class="pause-button" type="button" data-i18n-aria="pause" aria-label="Pause">Ⅱ</button>
@@ -177,8 +169,8 @@
   <script src="../../src/analytics.js"></script>
   <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
-  <script src="locales.js?v=20260819-penalty-v1"></script>
-  <script src="game.js?v=20260819-penalty-v1"></script>
+  <script src="locales.js?v=20260819-penalty-v1-final2"></script>
+  <script src="game.js?v=20260819-penalty-v1-final13"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js?v=20260819-penalty-v1" data-wp-battle-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>

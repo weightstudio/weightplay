@@ -41,6 +41,7 @@ body[data-wp-card-game="hearts"] .card-game-player-header small { min-width: 0; 
 .playing-card.is-red { color: var(--card-red); }
 .playing-card.is-face-down { color: transparent; background: repeating-linear-gradient(135deg, #2d638d 0 5px, #1b4569 5px 10px); border-color: #b8d6e7; }
 .playing-card.is-face-down::after { content: "✦"; color: rgba(255,255,255,.72); font-size: 22px; }
+.card-empty-slot { width: 52px; height: 72px; box-sizing: border-box; border: 2px dashed rgba(255,255,255,.28); border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; padding: 6px; color: #b9d8d3; font-size: 11px; line-height: 1.15; text-align: center; }
 body[data-wp-card-game="casino"] .playing-card.is-capture-candidate { border-color: #63e6be; box-shadow: 0 0 0 3px rgba(99,230,190,.34), 0 5px 10px rgba(0,0,0,.22); }
 body[data-wp-card-game="casino"] .card-build.is-capture-candidate { border-color: #63e6be; box-shadow: 0 0 0 3px rgba(99,230,190,.24); }
 .card-action-row { display: flex; justify-content: center; align-items: center; gap: 8px; flex-wrap: wrap; }
@@ -112,6 +113,7 @@ body[data-wp-card-game] > .result-overlay .result-actions button { min-height: 4
   .card-table-ui { padding: 8px; gap: 7px; }
   .card-game-board { gap: 7px; }
   .playing-card { width: 43px; height: 61px; font-size: 14px; }
+  .card-empty-slot { width: 43px; height: 61px; font-size: 10px; }
   .card-hand { gap: 5px; }
   .card-stat { min-width: 62px; padding-inline: 7px; }
   .card-game-status { min-width: 74px; font-size: 11px; }

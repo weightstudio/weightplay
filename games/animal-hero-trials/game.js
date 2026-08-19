@@ -520,6 +520,16 @@
     return interpolate(boss ? "bossRoom" : "room", { room });
   }
 
+  function updateBattleBriefing() {
+    if (!run) return;
+    const definition = run.definition;
+    const region = regions[definition.region];
+    const trialLabel = localizedValue("Trial", "試煉", "Prueba");
+    const title = localizedValue(definition.titleEn, definition.titleZh, definition.titleEs);
+    const rule = localizedPair(region.rule);
+    $("#battleBriefing").textContent = `${trialLabel} ${definition.stage} · ${title} · ${rule}`;
+  }
+
   function interpolate(key, values) {
     return t(key).replace(/\{(\w+)\}/g, (_, name) => values[name] ?? "");
   }
@@ -844,6 +854,7 @@
   function spawn() {
     const definition=run.definition;
     const encounter=definition.encounters[run.room-1];
+    updateBattleBriefing();
     if (run.room === 3 && definition.checkpoint) {
       const boss=definition.boss;
       const hp = 190 + definition.region * 44;

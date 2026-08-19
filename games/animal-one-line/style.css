@@ -8,6 +8,15 @@
 .battle-leave-overlay{position:absolute;inset:0;z-index:20;display:grid;place-items:center;padding:18px;background:rgba(0,20,24,.82)}.battle-leave-card{width:min(480px,100%);display:grid;gap:16px;padding:22px;border:2px solid #6ff4d9;border-radius:24px;background:linear-gradient(145deg,#0b5552,#052e36);box-shadow:0 20px 60px #001a1acc}.battle-leave-card h2,.battle-leave-card p{margin:0;text-align:center}.battle-leave-card>div{display:grid;grid-template-columns:1fr 1fr;gap:10px}.battle-leave-card button{min-height:52px;border:1px solid #6bf3da;border-radius:14px;background:#0f5153;color:#fff;font-weight:900}.battle-leave-card button:first-child{color:#2d2500;background:linear-gradient(#ffe888,#ffc638);border-color:#ffe169}.battle-leave-card button:focus-visible{outline:3px solid #fff;outline-offset:3px}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 
+/* Battle keeps the selected chapter lesson visible instead of repeating the
+   generic ready cue above and below the board. */
+.objective-row {
+  padding: 6px 12px;
+  overflow: hidden;
+  font-size: clamp(11px, 2.3vw, 14px);
+  line-height: 1.2;
+}
+
 /* Interface v4 keeps Result ownership predictable across every viewport. */
 .result-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
 .result-actions .primary-action{grid-column:auto}

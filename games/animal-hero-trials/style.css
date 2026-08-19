@@ -6,6 +6,7 @@
 }
 
 .battle-overlay{position:absolute;top:7px;left:50%;z-index:1;width:min(calc(100% - 20px),340px);transform:translateX(-50%);display:grid;gap:3px;pointer-events:none;text-align:center}.canvas-wrap p{position:static;transform:none;margin:0;padding:5px 10px;border-radius:8px;background:#071712bb;white-space:normal;font-size:12px;font-weight:800}.battle-overlay small{padding:4px 8px;border:1px solid #ffd45f99;border-radius:8px;background:#071712dd;color:#ffe89a;font-size:11px;line-height:1.25;font-weight:800}
+.battle-overlay .battle-briefing{border:0;background:#071712aa;color:#d8f7e6;font-size:10px}
 
 body:not([data-screen="main"]) #mainView,
 body:not([data-screen="stage"]) #stageView,

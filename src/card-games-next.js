@@ -205,11 +205,11 @@
 
   const GIN_PATH = {
     en: { reduce: "Reduce deadwood by {count} to unlock Knock · Gin at 0", ready: "Knock ready at {deadwood} deadwood · Gin at 0", gin: "Gin ready · 0 deadwood" },
-    "zh-Hant": { reduce: "死牌再減少 {count} 點即可 Knock · 0 點達成 Gin", ready: "死牌 {deadwood} 點，可 Knock · 0 點達成 Gin", gin: "Gin 已就緒 · 死牌 0 點" },
-    "zh-Hans": { reduce: "死牌再减少 {count} 点即可 Knock · 0 点达成 Gin", ready: "死牌 {deadwood} 点，可 Knock · 0 点达成 Gin", gin: "Gin 已就绪 · 死牌 0 点" },
+    "zh-Hant": { reduce: "死牌再減少 {count} 點即可敲牌 · 0 點達成金牌", ready: "死牌 {deadwood} 點，可敲牌 · 0 點達成金牌", gin: "金牌已就緒 · 死牌 0 點" },
+    "zh-Hans": { reduce: "死牌再减少 {count} 点即可敲牌 · 0 点达成金牌", ready: "死牌 {deadwood} 点，可敲牌 · 0 点达成金牌", gin: "金牌已就绪 · 死牌 0 点" },
     ja: { reduce: "デッドウッドをあと {count} 点減らすとノック · 0 点でジン", ready: "デッドウッド {deadwood} 点、ノック可能 · 0 点でジン", gin: "ジン可能 · デッドウッド 0 点" },
     ko: { reduce: "데드우드를 {count}점 더 줄이면 노크 · 0점이면 진", ready: "데드우드 {deadwood}점, 노크 가능 · 0점이면 진", gin: "진 가능 · 데드우드 0점" },
-    es: { reduce: "Reduce la madera muerta en {count} para cerrar · Gin con 0", ready: "Puedes cerrar con {deadwood} de madera muerta · Gin con 0", gin: "Gin listo · 0 de madera muerta" },
+    es: { reduce: "Reduce la madera muerta en {count} para golpear · Gin con 0", ready: "Puedes golpear con {deadwood} de madera muerta · Gin con 0", gin: "Gin listo · 0 de madera muerta" },
     "pt-BR": { reduce: "Reduza a madeira morta em {count} para bater · Gin com 0", ready: "Pode bater com {deadwood} de madeira morta · Gin com 0", gin: "Gin pronto · 0 de madeira morta" },
     fr: { reduce: "Réduisez le bois mort de {count} pour frapper · Gin à 0", ready: "Frappe possible avec {deadwood} de bois mort · Gin à 0", gin: "Gin prêt · 0 bois mort" },
     de: { reduce: "Totholz um {count} senken zum Klopfen · Gin bei 0", ready: "Klopfen bereit bei {deadwood} Totholz · Gin bei 0", gin: "Gin bereit · 0 Totholz" },
@@ -225,13 +225,36 @@
     return template.replaceAll("{deadwood}", String(deadwood)).replaceAll("{count}", String(Math.max(0, deadwood - 10)));
   };
 
+  const GIN_BATTLE_COPY = {
+    en: { yourHand: "Your hand", meldCards: "Meld cards", deadwood: "Deadwood", draw: "Draw", stock: "Stock", discard: "Discard", discardAction: "Discard", knock: "Knock", gin: "Gin", emptyDiscard: "No discard card" },
+    "zh-Hant": { yourHand: "你的手牌", meldCards: "組牌張數", deadwood: "死牌", draw: "抽牌", stock: "牌庫", discard: "棄牌", discardAction: "棄牌", knock: "敲牌", gin: "金牌", emptyDiscard: "目前沒有棄牌" },
+    "zh-Hans": { yourHand: "你的手牌", meldCards: "组牌张数", deadwood: "死牌", draw: "抽牌", stock: "牌库", discard: "弃牌", discardAction: "弃牌", knock: "敲牌", gin: "金牌", emptyDiscard: "目前没有弃牌" },
+    ja: { yourHand: "あなたの手札", meldCards: "メルドの枚数", deadwood: "デッドウッド", draw: "引く", stock: "山札", discard: "捨て札", discardAction: "捨てる", knock: "ノック", gin: "ジン", emptyDiscard: "捨て札はありません" },
+    ko: { yourHand: "내 손패", meldCards: "멜드 카드", deadwood: "데드우드", draw: "뽑기", stock: "덱", discard: "버림", discardAction: "버리기", knock: "노크", gin: "진", emptyDiscard: "버린 카드가 없습니다" },
+    es: { yourHand: "Tu mano", meldCards: "Cartas en combinaciones", deadwood: "Madera muerta", draw: "Robar", stock: "Mazo", discard: "Descarte", discardAction: "Descartar", knock: "Golpear", gin: "Gin", emptyDiscard: "No hay carta de descarte" },
+    "pt-BR": { yourHand: "Sua mão", meldCards: "Cartas em combinações", deadwood: "Madeira morta", draw: "Comprar", stock: "Monte", discard: "Descarte", discardAction: "Descartar", knock: "Bater", gin: "Gin", emptyDiscard: "Não há carta no descarte" },
+    fr: { yourHand: "Votre main", meldCards: "Cartes en combinaisons", deadwood: "Bois mort", draw: "Piocher", stock: "Pioche", discard: "Défausse", discardAction: "Défausser", knock: "Frapper", gin: "Gin", emptyDiscard: "Aucune carte défaussée" },
+    de: { yourHand: "Deine Hand", meldCards: "Meldkarten", deadwood: "Totholz", draw: "Ziehen", stock: "Stapel", discard: "Ablage", discardAction: "Abwerfen", knock: "Klopfen", gin: "Gin", emptyDiscard: "Keine Ablagekarte" },
+    it: { yourHand: "La tua mano", meldCards: "Carte in combinazioni", deadwood: "Carte morte", draw: "Pesca", stock: "Mazzo", discard: "Scarti", discardAction: "Scarta", knock: "Battere", gin: "Gin", emptyDiscard: "Nessuna carta negli scarti" },
+    ru: { yourHand: "Ваша рука", meldCards: "Карт в комбинациях", deadwood: "Дедвуд", draw: "Взять", stock: "Колода", discard: "Сброс", discardAction: "Сбросить", knock: "Стучать", gin: "Джин", emptyDiscard: "В сбросе нет карты" },
+    hi: { yourHand: "आपके पत्ते", meldCards: "मेल्ड कार्ड", deadwood: "डेडवुड", draw: "पत्ता लें", stock: "गड्डी", discard: "फेंके पत्ते", discardAction: "पत्ता छोड़ें", knock: "नॉक", gin: "जिन", emptyDiscard: "फेंका हुआ पत्ता नहीं है" },
+    ar: { yourHand: "يدك", meldCards: "بطاقات المجموعات", deadwood: "الخشب الميت", draw: "اسحب", stock: "الرزمة", discard: "الرمي", discardAction: "ارمِ", knock: "الطرق", gin: "جين", emptyDiscard: "لا توجد بطاقة مرمية" },
+  };
+
+  const ginBattleText = (key, values = {}) => {
+    const dictionary = GIN_BATTLE_COPY[currentLocale()] || GIN_BATTLE_COPY.en;
+    let value = dictionary[key] || GIN_BATTLE_COPY.en[key] || key;
+    Object.entries(values).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); });
+    return value;
+  };
+
   const GIN_PLAN_COPY = {
     en: { set: "Plan: protect a same-rank pair while trimming unrelated deadwood.", run: "Plan: protect a suited sequence while trimming unrelated deadwood.", both: "Plan: protect a pair or suited sequence while trimming unrelated deadwood.", trim: "Plan: lower deadwood while looking for a set or suited sequence.", ready: "Plan: Knock is ready; protect your strongest meld shape when discarding.", gin: "Plan: Gin is ready; keep your complete meld shape when discarding." },
-    "zh-Hant": { set: "規劃：保留同點數對子，同時減少無關死牌。", run: "規劃：保留同花色順子，同時減少無關死牌。", both: "規劃：保留對子或同花色順子，同時減少無關死牌。", trim: "規劃：降低死牌，並尋找可組成刻子或順子的方向。", ready: "規劃：Knock 已就緒；棄牌時保留最強的組牌形狀。", gin: "規劃：Gin 已就緒；棄牌時維持完整組牌。" },
-    "zh-Hans": { set: "规划：保留同点数对子，同时减少无关死牌。", run: "规划：保留同花色顺子，同时减少无关死牌。", both: "规划：保留对子或同花色顺子，同时减少无关死牌。", trim: "规划：降低死牌，并寻找可组成刻子或顺子的方向。", ready: "规划：Knock 已就绪；弃牌时保留最强的组合形状。", gin: "规划：Gin 已就绪；弃牌时维持完整组合。" },
+    "zh-Hant": { set: "規劃：保留同點數對子，同時減少無關死牌。", run: "規劃：保留同花色順子，同時減少無關死牌。", both: "規劃：保留對子或同花色順子，同時減少無關死牌。", trim: "規劃：降低死牌，並尋找可組成刻子或順子的方向。", ready: "規劃：敲牌已就緒；棄牌時保留最強的組牌形狀。", gin: "規劃：金牌已就緒；棄牌時維持完整組牌。" },
+    "zh-Hans": { set: "规划：保留同点数对子，同时减少无关死牌。", run: "规划：保留同花色顺子，同时减少无关死牌。", both: "规划：保留对子或同花色顺子，同时减少无关死牌。", trim: "规划：降低死牌，并寻找可组成刻子或顺子的方向。", ready: "规划：敲牌已就绪；弃牌时保留最强的组合形状。", gin: "规划：金牌已就绪；弃牌时维持完整组合。" },
     ja: { set: "方針：同じランクのペアを守り、関係ないデッドウッドを減らします。", run: "方針：同じスートの連続を守り、関係ないデッドウッドを減らします。", both: "方針：ペアか同じスートの連続を守り、関係ないデッドウッドを減らします。", trim: "方針：デッドウッドを減らし、セットか同じスートの連続を目指します。", ready: "方針：ノック可能。捨て札では最も強いメルドの形を守りましょう。", gin: "方針：ジン可能。捨て札では完成したメルドを保ちましょう。" },
     ko: { set: "계획: 같은 숫자 한 쌍을 지키면서 관계없는 데드우드를 줄이세요.", run: "계획: 같은 무늬 연속을 지키면서 관계없는 데드우드를 줄이세요.", both: "계획: 한 쌍이나 같은 무늬 연속을 지키면서 데드우드를 줄이세요.", trim: "계획: 데드우드를 줄이며 세트나 같은 무늬 연속을 찾으세요.", ready: "계획: 노크 가능. 버릴 때 가장 강한 멜드 형태를 지키세요.", gin: "계획: 진 가능. 버릴 때 완성된 멜드를 지키세요." },
-    es: { set: "Plan: protege una pareja del mismo rango y reduce la madera muerta que sobra.", run: "Plan: protege una secuencia del mismo palo y reduce la madera muerta que sobra.", both: "Plan: protege una pareja o secuencia del mismo palo mientras reduces la madera muerta.", trim: "Plan: reduce la madera muerta mientras buscas un trío o una secuencia del mismo palo.", ready: "Plan: puedes cerrar; al descartar, protege tu mejor combinación.", gin: "Plan: Gin listo; al descartar, conserva tus combinaciones completas." },
+    es: { set: "Plan: protege una pareja del mismo rango y reduce la madera muerta que sobra.", run: "Plan: protege una secuencia del mismo palo y reduce la madera muerta que sobra.", both: "Plan: protege una pareja o secuencia del mismo palo mientras reduces la madera muerta.", trim: "Plan: reduce la madera muerta mientras buscas un trío o una secuencia del mismo palo.", ready: "Plan: puedes golpear; al descartar, protege tu mejor combinación.", gin: "Plan: Gin listo; al descartar, conserva tus combinaciones completas." },
     "pt-BR": { set: "Plano: proteja um par do mesmo valor e reduza a madeira morta restante.", run: "Plano: proteja uma sequência do mesmo naipe e reduza a madeira morta restante.", both: "Plano: proteja um par ou uma sequência do mesmo naipe enquanto reduz a madeira morta.", trim: "Plano: reduza a madeira morta enquanto busca uma trinca ou sequência.", ready: "Plano: pode bater; ao descartar, preserve sua melhor combinação.", gin: "Plano: Gin disponível; ao descartar, mantenha sua combinação completa." },
     fr: { set: "Plan : protégez une paire de même valeur et réduisez le bois mort inutile.", run: "Plan : protégez une suite de même couleur et réduisez le bois mort inutile.", both: "Plan : protégez une paire ou une suite de même couleur en réduisant le bois mort.", trim: "Plan : réduisez le bois mort en cherchant un brelan ou une suite.", ready: "Plan : frappe possible ; gardez votre meilleure combinaison en défaussant.", gin: "Plan : Gin possible ; gardez votre combinaison complète en défaussant." },
     de: { set: "Plan: Schütze ein gleichrangiges Paar und senke unnötiges Totholz.", run: "Plan: Schütze eine gleichfarbige Folge und senke unnötiges Totholz.", both: "Plan: Schütze ein Paar oder eine gleichfarbige Folge und senke Totholz.", trim: "Plan: Senke Totholz und suche eine Gruppe oder gleichfarbige Folge.", ready: "Plan: Klopfen möglich; bewahre beim Abwerfen deine stärkste Meldung.", gin: "Plan: Gin möglich; bewahre beim Abwerfen deine vollständigen Meldungen." },
@@ -260,11 +283,11 @@
   };
   const GIN_RESULT_COPY = {
     en: { breakdown: "{reason} · Meld cards {meldCards} · Your deadwood {deadwood} · AI deadwood {aiDeadwood} · Score {playerScore} / {aiScore}", gin: "Gin", knock: "Knock at {deadwood}", stock: "Stock settled" },
-    "zh-Hant": { breakdown: "{reason} · 組牌 {meldCards} 張 · 你的死牌 {deadwood} 點 · AI 死牌 {aiDeadwood} 點 · 分數 {playerScore} / {aiScore}", gin: "Gin", knock: "Knock：{deadwood} 點死牌", stock: "牌庫結算" },
-    "zh-Hans": { breakdown: "{reason} · 组牌 {meldCards} 张 · 你的死牌 {deadwood} 点 · AI 死牌 {aiDeadwood} 点 · 分数 {playerScore} / {aiScore}", gin: "Gin", knock: "Knock：{deadwood} 点死牌", stock: "牌库结算" },
+    "zh-Hant": { breakdown: "{reason} · 組牌 {meldCards} 張 · 你的死牌 {deadwood} 點 · AI 死牌 {aiDeadwood} 點 · 分數 {playerScore} / {aiScore}", gin: "金牌", knock: "敲牌：{deadwood} 點死牌", stock: "牌庫結算" },
+    "zh-Hans": { breakdown: "{reason} · 组牌 {meldCards} 张 · 你的死牌 {deadwood} 点 · AI 死牌 {aiDeadwood} 点 · 分数 {playerScore} / {aiScore}", gin: "金牌", knock: "敲牌：{deadwood} 点死牌", stock: "牌库结算" },
     ja: { breakdown: "{reason} · メルド {meldCards}枚 · あなたのデッドウッド {deadwood} · AIのデッドウッド {aiDeadwood} · スコア {playerScore} / {aiScore}", gin: "ジン", knock: "ノック可能（デッドウッド {deadwood}）", stock: "山札切れで精算" },
     ko: { breakdown: "{reason} · 멜드 카드 {meldCards}장 · 내 데드우드 {deadwood} · AI 데드우드 {aiDeadwood} · 점수 {playerScore} / {aiScore}", gin: "진", knock: "노크 ({deadwood} 데드우드)", stock: "덱 소진 정산" },
-    es: { breakdown: "{reason} · Cartas en combinaciones {meldCards} · Tu madera muerta {deadwood} · Madera muerta de la IA {aiDeadwood} · Puntuación {playerScore} / {aiScore}", gin: "Gin", knock: "Cierre con {deadwood} de madera muerta", stock: "Reparto resuelto por mazo agotado" },
+    es: { breakdown: "{reason} · Cartas en combinaciones {meldCards} · Tu madera muerta {deadwood} · Madera muerta de la IA {aiDeadwood} · Puntuación {playerScore} / {aiScore}", gin: "Gin", knock: "Golpe con {deadwood} de madera muerta", stock: "Reparto resuelto por mazo agotado" },
     "pt-BR": { breakdown: "{reason} · Cartas em combinações {meldCards} · Sua madeira morta {deadwood} · Madeira morta da IA {aiDeadwood} · Pontuação {playerScore} / {aiScore}", gin: "Gin", knock: "Batida com {deadwood} de madeira morta", stock: "Mão resolvida com o monte vazio" },
     fr: { breakdown: "{reason} · Cartes en combinaisons {meldCards} · Votre bois mort {deadwood} · Bois mort de l’IA {aiDeadwood} · Score {playerScore} / {aiScore}", gin: "Gin", knock: "Frappe à {deadwood} de bois mort", stock: "Pioche épuisée : main réglée" },
     de: { breakdown: "{reason} · Meldkarten {meldCards} · Dein Totholz {deadwood} · KI-Totholz {aiDeadwood} · Punkte {playerScore} / {aiScore}", gin: "Gin", knock: "Klopfen bei {deadwood} Totholz", stock: "Stapel leer: Hand abgerechnet" },
@@ -708,6 +731,14 @@
     if (guideParagraph) quickGuide.append(document.createTextNode(`: ${guideParagraph}`));
     if (!main || !battle || !table || !hand || !actions) return;
     if (id === "hearts" || id === "crazy-eights" || id === "gin-rummy") resultText?.setAttribute("data-runtime-localize", "off");
+    if (id === "gin-rummy") {
+      statusText?.setAttribute("data-runtime-localize", "off");
+      const playerHandLabel = document.querySelector(".card-game-player-header strong");
+      if (playerHandLabel) {
+        playerHandLabel.textContent = ginBattleText("yourHand");
+        playerHandLabel.setAttribute("data-runtime-localize", "off");
+      }
+    }
     if (id === "war") statusText?.setAttribute("data-runtime-localize", "off");
     if (id === "old-maid") statusText?.setAttribute("data-runtime-localize", "off");
     rootElement.dataset.wpCardGame = id;
@@ -1108,11 +1139,24 @@
     const drawCard = (fromDiscard) => { const item = fromDiscard ? s.discard.pop() : s.stock.pop(); if (item) { s.player.push(item); s.drawn = true; } };
     const chooseAiDiscard = () => { let bestIndex = 0; let bestDeadwood = -1; s.ai.forEach((_, index) => { const candidate = s.ai.filter((__, itemIndex) => itemIndex !== index); const deadwood = meldStats(candidate).deadwood; if (deadwood > bestDeadwood) { bestDeadwood = deadwood; bestIndex = index; } }); return bestIndex; };
     const aiTurn = () => { if (s.turn !== 1 || s.over) return; if (s.discard.length && Math.random() > .45) s.ai.push(s.discard.pop()); else if (s.stock.length) s.ai.push(s.stock.pop()); const discardIndex = chooseAiDiscard(); const discarded = s.ai.splice(discardIndex, 1)[0]; if (discarded) s.discard.push(discarded); const stats = meldStats(s.ai); if (stats.deadwood === 0) finish(1, "gin"); else if (stats.deadwood <= 10) finish(1, "knock"); else if (!s.stock.length) { const playerStats = meldStats(s.player); finish(playerStats.deadwood <= stats.deadwood ? 0 : 1, "stock"); } else { s.turn = 0; s.drawn = false; } };
+    const discardMarkup = () => s.discard.at(-1)
+      ? cardMarkup(s.discard.at(-1), 0, { runtimeLocalizeOff: true })
+      : `<span class="card-empty-slot" data-runtime-localize="off" role="status">${ginBattleText("emptyDiscard")}</span>`;
     return {
       reset() { Object.assign(s, { player: [], ai: [], stock: deck(), discard: [], turn: 0, drawn: false, selected: new Set(), score: [0, 0], over: false }); for (let i = 0; i < 10; i += 1) { s.player.push(s.stock.pop()); s.ai.push(s.stock.pop()); } s.discard.push(s.stock.pop()); },
       card(index) { if (s.turn === 0 && s.drawn && !s.over) { s.selected = s.selected.has(index) ? new Set() : new Set([index]); } },
       action(action) { if (s.turn !== 0 || s.over) return; if (action === "draw-stock" && !s.drawn) drawCard(false); if (action === "draw-discard" && !s.drawn) drawCard(true); if (action === "discard" && s.drawn && s.selected.size === 1) { const index = [...s.selected][0]; const discarded = s.player.splice(index, 1)[0]; if (discarded) s.discard.push(discarded); s.selected.clear(); const stats = meldStats(s.player); if (stats.deadwood === 0) finish(0, "gin"); else if (!s.stock.length) { const aiStats = meldStats(s.ai); finish(stats.deadwood <= aiStats.deadwood ? 0 : 1, "stock"); } else { s.turn = 1; s.drawn = false; setTimeout(aiTurn, 320); } } if (action === "knock" && s.drawn) { const stats = meldStats(s.player); if (stats.deadwood <= 10) { const aiStats = meldStats(s.ai); finish(stats.deadwood <= aiStats.deadwood ? 0 : 1, stats.deadwood === 0 ? "gin" : "knock"); } } },
-      view() { const stats = meldStats(s.player); const pathState = stats.deadwood === 0 ? "is-gin" : stats.deadwood <= 10 ? "is-ready" : ""; const plan = s.drawn ? "<div class=\"card-gin-plan\" data-gin-plan data-runtime-localize=\"off\" role=\"status\" aria-live=\"polite\">" + ginPlanText(s.player, stats.deadwood) + "</div>" : ""; return { phase: s.turn === 0 ? (s.drawn ? t("discard") : t("draw")) : t("aiTurn"), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: "Meld cards " + stats.meldCards + " · Deadwood " + stats.deadwood, score: s.score[0], opponents: opponentMarkup("AI", s.ai.length, t("score") + ": " + s.score[1]), center: "<div class=\"card-table-label\">" + t("stock") + " · " + s.stock.length + " · " + t("discard") + "</div><div class=\"card-gin-path " + pathState + "\" role=\"status\" aria-live=\"polite\">" + ginPathText(stats.deadwood) + "</div>" + plan + "<div class=\"table-row\"><button class=\"playing-card is-face-down\" data-action=\"draw-stock\" aria-label=\"" + t("stock") + "\"" + (!s.stock.length ? " disabled" : "") + "></button>" + cardMarkup(s.discard.at(-1), 0) + "</div>", hand: cardsMarkup(s.player, { selected: s.selected }), actions: "<button class=\"secondary-btn\" data-action=\"draw-stock\"" + (s.drawn || !s.stock.length ? " disabled" : "") + ">" + t("draw") + " " + t("stock") + "</button><button class=\"secondary-btn\" data-action=\"draw-discard\"" + (s.drawn ? " disabled" : "") + ">" + t("draw") + " " + t("discard") + "</button><button class=\"primary-btn\" data-action=\"discard\"" + (!s.drawn || s.selected.size !== 1 ? " disabled" : "") + ">" + t("discard") + "</button><button class=\"secondary-btn\" data-action=\"knock\"" + (!s.drawn || stats.deadwood > 10 ? " disabled" : "") + ">" + t("knock") + "</button>" }; }
+      view() {
+        const stats = meldStats(s.player);
+        const pathState = stats.deadwood === 0 ? "is-gin" : stats.deadwood <= 10 ? "is-ready" : "";
+        const plan = s.drawn ? `<div class="card-gin-plan" data-gin-plan data-runtime-localize="off" role="status" aria-live="polite">${ginPlanText(s.player, stats.deadwood)}</div>` : "";
+        const phase = s.turn === 0 ? (s.drawn ? ginBattleText("discard") : ginBattleText("draw")) : t("aiTurn");
+        const help = `${ginBattleText("meldCards")}: ${stats.meldCards} · ${ginBattleText("deadwood")}: ${stats.deadwood}`;
+        const tableLabel = `${ginBattleText("stock")} · ${s.stock.length} · ${ginBattleText("discard")}`;
+        const stockButton = `<button class="playing-card is-face-down" data-action="draw-stock" data-runtime-localize="off" aria-label="${ginBattleText("stock")}"${!s.stock.length ? " disabled" : ""}></button>`;
+        const actions = `<button class="secondary-btn" data-action="draw-stock" data-runtime-localize="off"${s.drawn || !s.stock.length ? " disabled" : ""}>${ginBattleText("draw")} ${ginBattleText("stock")}</button><button class="secondary-btn" data-action="draw-discard" data-runtime-localize="off"${s.drawn ? " disabled" : ""}>${ginBattleText("draw")} ${ginBattleText("discard")}</button><button class="primary-btn" data-action="discard" data-runtime-localize="off"${!s.drawn || s.selected.size !== 1 ? " disabled" : ""}>${ginBattleText("discardAction")}</button><button class="secondary-btn" data-action="knock" data-runtime-localize="off"${!s.drawn || stats.deadwood > 10 ? " disabled" : ""}>${ginBattleText("knock")}</button>`;
+        return { phase, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help, score: s.score[0], opponents: opponentMarkup("AI", s.ai.length, t("score") + ": " + s.score[1]), center: `<div class="card-table-label" data-runtime-localize="off">${tableLabel}</div><div class="card-gin-path ${pathState}" data-runtime-localize="off" role="status" aria-live="polite">${ginPathText(stats.deadwood)}</div>${plan}<div class="table-row">${stockButton}${discardMarkup()}</div>`, hand: cardsMarkup(s.player, { selected: s.selected }), actions };
+      }
     };
   }
 
