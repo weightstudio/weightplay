@@ -178,6 +178,7 @@
     if(gameId==="animal-habitat-builder")$("score-label").textContent=`${g.moves}/${g.limit} · ${g.counts.join("·")}`;
   }
   function draw(){
+    if(state.screen!=="battle")return;
     ctx.clearRect(0,0,960,540);fitImage(background);ctx.fillStyle="#06152255";ctx.fillRect(0,0,960,540);
     ({"animal-hoop-league":drawHoop,"animal-habitat-atlas":drawAtlasGame,"animal-moonlight-workshop":drawWorkshop,"animal-chameleon-blend":drawBlend,"animal-habitat-builder":drawBuilder})[gameId]();
   }
