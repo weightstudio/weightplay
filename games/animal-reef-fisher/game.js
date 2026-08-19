@@ -6,7 +6,7 @@
   document.querySelector(".battle-shell")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-reef-fisher";
-  const GAME_VERSION = 18;
+  const GAME_VERSION = 19;
   const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_animal_reef_fisher_v1";
   const localeKey = "weightPlayLocale";
@@ -742,7 +742,10 @@
 
   function stageT(key) {
     const activeLocale = activeI18nLocale() || document.documentElement.lang || locale;
-    return stageLocaleOverrides[activeLocale]?.[key] || t(key);
+    const owned = stageLocaleOverrides[activeLocale]?.[key] || text[activeLocale]?.[key];
+    if (owned) return owned;
+    const source = text.en[key] || key;
+    return window.WeightPlayGameRuntimeLocalizer?.translate?.(source) || source;
   }
 
   function missionRuleLabel(zone) {
@@ -758,6 +761,20 @@
 
   function missionName(zone) {
     return localizedValue(zone.name);
+  }
+
+  function renderBattleMissionBriefing(zone = run?.zone) {
+    if (!zone) return;
+    const missionLabel = t("mission", { stage:zone.stage });
+    const name = missionName(zone);
+    const rule = missionRuleLabel(zone);
+    const box = nodes.zoneText.parentElement;
+    const label = nodes.zoneText.previousElementSibling;
+    box.classList.add("mission-briefing");
+    label.textContent = rule;
+    nodes.zoneText.textContent = `${zone.stage} · ${name}`;
+    box.setAttribute("aria-label", `${missionLabel} · ${name} · ${rule}`);
+    canvas.setAttribute("aria-label", `${t("playAreaAria")} ${missionLabel} · ${name} · ${rule}`);
   }
 
   const levelTerms = {
@@ -902,6 +919,7 @@
     renderMenu();
     updateTensionGuide();
     updateCatchHud();
+    renderBattleMissionBriefing();
     if (run?.lineBreakRecoveryVisible) nodes.hintText.textContent = lineBreakRecoveryText();
   }
 
@@ -1407,8 +1425,7 @@
     save.sonarReady = false;
     save.selectedZone = selectedZone;
     saveProgress();
-    nodes.zoneText.textContent = t("mission", { stage:zone.stage });
-    nodes.zoneText.setAttribute("title", missionName(zone));
+    renderBattleMissionBriefing(zone);
     nodes.goalText.textContent = `${run.catches}/${zone.goal}`;
     nodes.hintText.textContent = t("castHint");
     nodes.catchToast.classList.add("is-hidden");

@@ -135,5 +135,17 @@
   Object.assign(it,{nextRule:"Torre successiva {n}: {name} · Nuova regola: {rule}"});
   Object.assign(ru,{nextRule:"Следующая башня {n}: {name} · Новое правило: {rule}"});
   Object.assign(ar,{nextRule:"البرج التالي {n}: {name} · قاعدة جديدة: {rule}"});
+  Object.assign(en,{landingScan:"Next landing",scanGap:"Open path",scanSafe:"Safe stone",scanDanger:"Cursed sector",scanFragile:"Fragile glass"});
+  Object.assign(zhHant,{landingScan:"下一落點",scanGap:"缺口通道",scanSafe:"安全石面",scanDanger:"詛咒區域",scanFragile:"易碎玻璃"});
+  Object.assign(zhHans,{landingScan:"下一落点",scanGap:"缺口通道",scanSafe:"安全石面",scanDanger:"诅咒区域",scanFragile:"易碎玻璃"});
+  Object.assign(ja,{landingScan:"次の着地点",scanGap:"開いた隙間",scanSafe:"安全な石",scanDanger:"呪いの区画",scanFragile:"壊れやすいガラス"});
+  Object.assign(ko,{landingScan:"다음 착지",scanGap:"열린 틈",scanSafe:"안전한 돌",scanDanger:"저주 구역",scanFragile:"깨지는 유리"});
+  Object.assign(es,{landingScan:"Próximo aterrizaje",scanGap:"Hueco abierto",scanSafe:"Piedra segura",scanDanger:"Sector maldito",scanFragile:"Vidrio frágil"});
+  Object.assign(pt,{landingScan:"Próximo pouso",scanGap:"Abertura livre",scanSafe:"Pedra segura",scanDanger:"Setor amaldiçoado",scanFragile:"Vidro frágil"});
+  Object.assign(fr,{landingScan:"Prochain contact",scanGap:"Ouverture libre",scanSafe:"Pierre sûre",scanDanger:"Secteur maudit",scanFragile:"Verre fragile"});
+  Object.assign(de,{landingScan:"Nächste Landung",scanGap:"Freie Lücke",scanSafe:"Sicherer Stein",scanDanger:"Fluchsektor",scanFragile:"Brüchiges Glas"});
+  Object.assign(it,{landingScan:"Prossimo atterraggio",scanGap:"Varco aperto",scanSafe:"Pietra sicura",scanDanger:"Settore maledetto",scanFragile:"Vetro fragile"});
+  Object.assign(ru,{landingScan:"Следующая посадка",scanGap:"Открытый проём",scanSafe:"Безопасный камень",scanDanger:"Проклятый сектор",scanFragile:"Хрупкое стекло"});
+  Object.assign(ar,{landingScan:"موضع الهبوط التالي",scanGap:"فتحة مفتوحة",scanSafe:"حجر آمن",scanDanger:"قطاع ملعون",scanFragile:"زجاج هش"});
   window.SKYDROP_LOCALES={en,"zh-Hant":zhHant,"zh-Hans":zhHans,ja,ko,es,"pt-BR":pt,fr,de,it,ru,ar};
 })();

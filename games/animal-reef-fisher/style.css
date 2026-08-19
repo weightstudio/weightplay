@@ -2262,6 +2262,54 @@ body.reef-fisher-playing .battle-shell > #resultPanel.is-hidden {
   display: none;
 }
 
+/* Keep the active authored mission and sea rule visible while fishing. */
+body.reef-fisher-playing .hud-row {
+  grid-template-columns: 18% minmax(0, 1.7fr) minmax(0, .65fr) minmax(0, .65fr);
+}
+
+body.reef-fisher-playing .hud-row .mission-briefing {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  align-content: center;
+  gap: 2px;
+}
+
+body.reef-fisher-playing .hud-row .mission-briefing > span {
+  display: -webkit-box;
+  max-height: 24px;
+  overflow: hidden;
+  font-size: 10px;
+  line-height: 12px;
+  white-space: normal;
+  text-transform: none;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+body.reef-fisher-playing .hud-row .mission-briefing > strong {
+  overflow: hidden;
+  font-size: 10px;
+  line-height: 13px;
+  letter-spacing: -0.2px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@media (max-height: 560px) {
+  body.reef-fisher-playing .battle-shell > .hud-row {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 1fr);
+  }
+
+  body.reef-fisher-playing .hud-row .mission-briefing > strong {
+    display: block;
+    max-height: 26px;
+    overflow-wrap: anywhere;
+    white-space: normal;
+    text-overflow: clip;
+  }
+}
+
 body.reef-fisher-playing .battle-shell > .leave-panel {
   position: absolute;
   inset: 0;

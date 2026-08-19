@@ -38,6 +38,18 @@
   let pendingStockDraw = null;
   let stockCueTimer = null;
 
+  const updateCardInteractionSemantics = () => {
+    const tableau = view.nodes?.tableauArea;
+    if (!tableau) return;
+    tableau.querySelectorAll(".classic-card").forEach((card) => {
+      const covered = card.classList.contains("covered");
+      card.disabled = covered;
+      card.tabIndex = covered ? -1 : 0;
+      if (covered) card.setAttribute("aria-disabled", "true");
+      else card.removeAttribute("aria-disabled");
+    });
+  };
+
   const updateResultSummary = () => {
     if (!view.game?.won && !view.game?.lost) return;
     const resultText = view.nodes?.resultText;
@@ -82,6 +94,7 @@
   const render = view.render.bind(view);
   view.render = (...args) => {
     render(...args);
+    updateCardInteractionSemantics();
     updateResultSummary();
     const pending = pendingStockDraw;
     if (pending && view.game.stock.length < pending.stockBefore) {

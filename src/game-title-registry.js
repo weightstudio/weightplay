@@ -1183,6 +1183,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "पशु प्रिज्म तोड़ने वाले",
     "ar": "قواطع المنشور الحيواني"
   },
+  "animal-penalty-cup": {
+    "__localizedExact": true,
+    "en": "Animal Penalty Cup",
+    "zh-Hant": "動物十二碼盃",
+    "zh-Hans": "动物点球杯",
+    "ja": "アニマルPKカップ",
+    "ko": "애니멀 승부차기 컵",
+    "es": "Copa de Penaltis Animal",
+    "pt-BR": "Copa Animal de Pênaltis",
+    "fr": "Coupe des Tirs au But Animaux",
+    "de": "Tierischer Elfmeterpokal",
+    "it": "Coppa dei Rigori Animali",
+    "ru": "Кубок звериных пенальти",
+    "hi": "पशु पेनल्टी कप",
+    "ar": "كأس ركلات جزاء الحيوانات"
+  },
   "animal-reef-fisher": {
     "__localizedExact": true,
     "en": "Animal Reef Fisher",
@@ -1438,6 +1454,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Логика минного поля",
     "hi": "माइनफील्ड लॉजिक",
     "ar": "منطق حقل الألغام"
+  },
+  "cat-color-sudoku": {
+    "__localizedExact": true,
+    "en": "Cat Color Sudoku",
+    "zh-Hant": "貓咪彩域數獨",
+    "zh-Hans": "猫咪彩域数独",
+    "ja": "ねこカラー数独",
+    "ko": "고양이 컬러 스도쿠",
+    "es": "Sudoku felino de colores",
+    "pt-BR": "Sudoku Felino de Cores",
+    "fr": "Sudoku félin des couleurs",
+    "de": "Katzen-Farbsudoku",
+    "it": "Sudoku felino a colori",
+    "ru": "Кошачье цветное судоку",
+    "hi": "बिल्ली रंग सुडोकू",
+    "ar": "سودوكو القطط الملونة"
   },
   "sudoku": {
     "__localizedExact": true,

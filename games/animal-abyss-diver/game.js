@@ -1,4 +1,5 @@
 (() => {
+  const GAME_VERSION = 10;
   document.body.dataset.wpCombinedSound = "true";
   const $ = (id) => document.getElementById(id);
   const playSound = (name) => window.WonderSound?.play?.(name);
@@ -490,7 +491,7 @@
   function commitResultDecision(action){if(resultDecisionCommitted||$("result").classList.contains("hidden"))return;resultDecisionCommitted=true;action();}
   function resultAnalyticsPayload(){
     const config=routeConfig();
-    return{gameId:"animal-abyss-diver",stage:state.route,mode:"mission",result:state.resultOutcome,won:state.resultOutcome==="clear",salvage:state.salvage,target:config.target,zones:config.zones,oxygen:state.oxygen,coins_earned:state.resultEarned};
+    return{gameId:"animal-abyss-diver",game_version:GAME_VERSION,stage:state.route,mode:"mission",result:state.resultOutcome,won:state.resultOutcome==="clear",salvage:state.salvage,target:config.target,zones:config.zones,oxygen:state.oxygen,coins_earned:state.resultEarned};
   }
   function resultBackgroundNodes(){return [...document.querySelectorAll(".battle-canvas > :not(#result)")];}
   let activeScene="main",sceneGeneration=0;
@@ -592,6 +593,9 @@
       button.setAttribute("aria-label",`${t(direction)} - ${detail}`);
       button.disabled=!!blocked;
       const gate=$(`${direction}Gate`),image=gate.querySelector("img"),revealed=state.sonar||state.resolvingDirection===direction;
+      let clues=gate.querySelector(".lane-clues");
+      if(!clues){clues=document.createElement("span");clues.className="lane-clues";clues.setAttribute("aria-hidden","true");gate.insertBefore(clues,image);}
+      clues.innerHTML=`<b>${t(outcome.signal)}</b><span>${t(outcome.clues[0])}</span><span>${t(outcome.clues[1])}</span>`;
       gate.setAttribute("role","button");gate.tabIndex=blocked?-1:0;gate.setAttribute("aria-disabled",blocked?"true":"false");gate.onclick=()=>{if(!blocked)move(direction);};
       gate.querySelector("strong").innerHTML=`${direction==="left"?"←":"→"}<em>${t(direction==="left"?"shortLeft":"shortRight")}</em>`;
       gate.querySelector("small").innerHTML=state.sonar?`<span class="exact-result">${outcome.salvage?`${icon("salvage")}<b>+${outcome.salvage}</b>`:""}${icon("oxygen")}<b>${outcome.oxygen>0?"+":""}${outcome.oxygen}</b></span>`:estimateMarkup(outcome);
@@ -770,7 +774,7 @@
     state.beaconUsed=true;
     state.oxygen=Math.max(state.oxygen,restored);
     setFeedback(`${icon("beacon")}<b>✓</b>${icon("oxygen")}<b>${restored}</b>`,`${t("beaconUsed")}: ${t("beaconHelp")}`);
-    window.WonderAnalytics?.track?.("diamond_spend",{sink:"abyss_emergency_beacon",amount:3});
+    window.WonderAnalytics?.track?.("diamond_spend",{sink:"abyss_emergency_beacon",amount:3,game_version:GAME_VERSION});
     renderBattle();
     focusCurrentDiveDecision();
   }

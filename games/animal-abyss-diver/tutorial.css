@@ -157,6 +157,27 @@
   filter: saturate(0.7) brightness(1.1);
 }
 
+.lane-clues {
+  width: 100%;
+  min-height: 72px;
+  display: grid;
+  align-content: center;
+  gap: 3px;
+  padding: 5px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #031e2dcc;
+  color: #e8fbff;
+  font-size: clamp(0.56rem, 2.25vw, 0.7rem);
+  line-height: 1.12;
+  text-align: center;
+}
+
+.lane-clues b { color: #ffe590; font-size: 0.66rem; }
+.lane-clues span { display: block; }
+.lane-gate:not(.is-revealed) img { display: none; }
+.lane-gate.is-revealed .lane-clues { display: none; }
+
 .lane-gate strong,
 .lane-gate small {
   max-width: 100%;
@@ -431,6 +452,7 @@
 .lane-gate{grid-template-rows:auto minmax(0,1fr) auto;cursor:pointer}
 .lane-gate strong{grid-row:1}
 .lane-gate img{grid-row:2;width:92%;min-height:72px}
+.lane-clues{grid-row:2}
 .lane-gate small{grid-row:3}
 .lane-gate[aria-disabled="true"]{pointer-events:none}
 .dive-field.is-fish-combat .lane-gate-left{opacity:0;transform:translateX(-140%) scale(.8)}
@@ -465,6 +487,7 @@
   .battle-canvas { grid-template-rows: 44px 36px minmax(0, 1fr) 48px !important; }
   .controls { grid-template-rows: 48px !important; gap: 2px !important; padding: 0 10px !important; }
   .controls button { height: 48px !important; min-height: 48px !important; }
+  .lane-gate img { height: 60px; min-height: 60px; }
   .fish-encounter { inset: 4% 5% auto !important; grid-template-rows: auto 64px auto auto auto !important; gap: 4px 8px !important; padding: 8px !important; }
   .combat-diver img { height: 64px; }
   .fish-sprite { width: 132px; height: 54px; }

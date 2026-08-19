@@ -44,7 +44,8 @@ body.modal-open .battle-header button{visibility:hidden;pointer-events:none}
 .stage-summary{position:absolute;inset:0 0 auto;z-index:2;height:58px;display:flex;align-items:center;justify-content:space-between;padding:8px 24px;color:#a7dce7;pointer-events:none}
 .stage-grid{position:absolute;top:clamp(8px,calc(38% - 95px),calc(100% - 198px));right:0;left:0;height:190px;display:flex;gap:22px;align-items:center;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:0 calc(50% - 132px);touch-action:pan-x}
 .stage-grid::-webkit-scrollbar{display:none}
-.stage-card{flex:0 0 264px;width:264px;height:190px;scroll-snap-align:center;border:2px solid rgba(104,191,214,.28);border-radius:20px;background:linear-gradient(145deg,rgba(14,46,61,.97),rgba(7,23,34,.98));color:var(--ink);display:grid;grid-template-rows:auto 1fr auto;align-items:center;padding:18px;box-shadow:0 18px 35px rgba(0,0,0,.26)}
+.stage-card{flex:0 0 264px;width:264px;height:190px;scroll-snap-align:center;border:2px solid rgba(104,191,214,.28);border-radius:20px;background:linear-gradient(145deg,rgba(14,46,61,.97),rgba(7,23,34,.98));color:var(--ink);display:grid;grid-template-rows:auto auto 1fr auto;align-items:center;padding:14px 18px;box-shadow:0 18px 35px rgba(0,0,0,.26)}
+.stage-card .stage-chapter{color:#ffd978;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .stage-card strong{font-size:1.2rem}
 .stage-card .stage-size{font-size:2rem;font-weight:950;color:#7cecff}
 .stage-card .stage-detail{font-size:.75rem;color:#9ab7c2}

@@ -6,6 +6,7 @@
   const localeLang={en:"en","zh-Hant":"zh-Hant","zh-Hans":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const localeByRoute={en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const palette=["#22dfff","#ff4fcf","#ffbf45","#946cff","#68e56c","#ff786d","#4589ff","#ff6298","#f7d85a"];
+  const GAME_VERSION="v14";
   const STAGE_CARD_POOL_SIZE=9;
   const saveKey="wp-animal-prism-garden-v1";
   const {levels}=window.PRISM_GARDEN_LEVELS;
@@ -24,6 +25,7 @@
     let value=window.PRISM_GARDEN_LOCALES[locale]?.[key]??window.PRISM_GARDEN_LOCALES.en[key]??key;
     return String(value).replace(/\{(\w+)\}/g,(_,name)=>vars[name]??"");
   }
+  function chapterCopy(key,chapter){const catalog=window.PRISM_GARDEN_LOCALES[locale]||window.PRISM_GARDEN_LOCALES.en,values=catalog[key]||window.PRISM_GARDEN_LOCALES.en[key]||[];return values[Math.max(0,Math.min(5,chapter-1))]||""}
   function setCovered(covered,owner){
     $$("#battle > *").forEach(node=>{if(node!==owner)node.inert=covered});
     document.body.classList.toggle("modal-open",covered);
@@ -89,7 +91,7 @@
   function createStageCard(poolIndex){
     const button=document.createElement("button");
     button.type="button";button.className="stage-card";button.dataset.wpStagePoolNode=String(poolIndex+1);
-    button.innerHTML='<strong></strong><span class="stage-size"></span><span class="stage-detail"></span>';
+    button.innerHTML='<small class="stage-chapter"></small><strong></strong><span class="stage-size"></span><span class="stage-detail"></span>';
     return button;
   }
   function bindStageCard(button,index){
@@ -98,10 +100,12 @@
     button.className=`stage-card${locked?" locked":""}`;
     button.setAttribute("aria-posinset",String(index+1));button.setAttribute("aria-setsize",String(levels.length));
     button.setAttribute("aria-disabled",String(locked));button.setAttribute("aria-keyshortcuts","ArrowLeft ArrowRight Home End");
-    button.setAttribute("aria-label",`${t("garden",{n:index+1})}, ${item.size}×${item.size}, ${locked?t("locked"):t("ready")}`);
+    const chapterName=chapterCopy("chapterNames",item.chapter),pairs=t("pairs",{n:item.count}),gateCount=t("gates",{n:Object.keys(item.gates).length});
+    button.setAttribute("aria-label",`${t("garden",{n:index+1})}, ${t("chapter",{n:item.chapter})}: ${chapterName}, ${item.size}×${item.size}, ${pairs}, ${gateCount}, ${locked?t("locked"):t("ready")}`);
+    button.querySelector(".stage-chapter").textContent=`${t("chapter",{n:item.chapter})} · ${chapterName}`;
     button.querySelector("strong").textContent=t("garden",{n:index+1});
     button.querySelector(".stage-size").textContent=`${item.size}×${item.size}`;
-    button.querySelector(".stage-detail").textContent=`${item.count} · ${t("gates",{n:Object.keys(item.gates).length})}${locked?` · ${t("locked")}`:""}`;
+    button.querySelector(".stage-detail").textContent=`${pairs} · ${gateCount}${locked?` · ${t("locked")}`:""}`;
   }
   function syncStageCards(){
     stageCardPool.forEach(button=>{
@@ -161,10 +165,12 @@
   function startLevel(index){
     selected=index;level=levels[index];paths={};history=[];activeColor=null;pointerId=null;moves=0;resultClaimed=false;
     $("#stageName").textContent=t("garden",{n:index+1});
-    $("#chapter").textContent=t("chapter",{n:level.chapter});
-    $("#status").textContent=t("ready");
+    $("#chapter").textContent=`${t("chapter",{n:level.chapter})} · ${chapterCopy("chapterNames",level.chapter)}`;
+    const mission=chapterCopy("chapterMissions",level.chapter);
+    $("#objective").textContent=mission;
+    $("#status").textContent=`${mission} ${t("ready")}`;
     show("battle");renderBoard();tone(520,.05);
-    window.WonderAnalytics?.track?.("game_start",{game_id:"animal-prism-garden",stage:index+1});
+    window.WonderAnalytics?.track?.("game_start",{game_id:"animal-prism-garden",game_version:GAME_VERSION,stage:index+1});
   }
   function seedColorAt(index){
     for(let color=0;color<level.count;color++)if(level.ends[color].includes(index))return color;
@@ -247,7 +253,7 @@
     $("#resultBody").textContent=t("resultBody",{n:selected+1,moves});
     $("#next").disabled=selected>=29;
     setTimeout(()=>{openModal($("#result"),$("#next").disabled?$("#retry"):$("#next"));successTone()},280);
-    window.WonderAnalytics?.track?.("game_complete",{game_id:"animal-prism-garden",stage:selected+1,moves});
+    window.WonderAnalytics?.track?.("game_complete",{game_id:"animal-prism-garden",game_version:GAME_VERSION,stage:selected+1,moves});
   }
   function hint(){
     if(!level)return;
@@ -303,6 +309,6 @@
   document.addEventListener("DOMContentLoaded",()=>syncBattleHelp(document.body.dataset.screen),{once:true});
   window.addEventListener("load",()=>{
     $("#loadingPanel")?.classList.add("hidden");
-    window.WonderAnalytics?.track?.("game_view",{game_id:"animal-prism-garden",release_state:"public"});
+  window.WonderAnalytics?.track?.("game_view",{game_id:"animal-prism-garden",game_version:GAME_VERSION,release_state:"public"});
   },{once:true});
 })();

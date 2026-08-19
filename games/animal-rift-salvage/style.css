@@ -25,3 +25,9 @@ body.wp-stage-select-active #stageSummary{display:none}
   .main-copy{align-self:start}
   .main-copy button{min-height:52px}
 }
+
+/* Game v9: keep the promised Moon Chain time reward visible without changing
+   the Battle Canvas tracks or the shared Interface V6 scale. */
+.chain-badge{min-width:118px}
+.chain-badge strong{line-height:1}
+.chain-hint{display:block;max-width:120px;margin-top:2px;color:#c8f8ff;font-size:10px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
