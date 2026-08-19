@@ -45,6 +45,12 @@
   }
   function setStatus(text) { $("battle-status").textContent = text; }
   function updateProgress() { $("main-progress").textContent = `${common(8)}: ${state.best} / ${cfg.stages}`; }
+  function syncCanvasFit() {
+    const host=canvas.parentElement;if(!host||state.screen!=="battle")return;
+    const widthLimit=host.clientWidth,heightLimit=host.clientHeight;if(!widthLimit||!heightLimit)return;
+    const ratio=16/9;let width=widthLimit,height=width/ratio;if(height>heightLimit){height=heightLimit;width=height*ratio;}
+    canvas.style.setProperty("width",`${Math.floor(width*100)/100}px`,"important");canvas.style.setProperty("height",`${Math.floor(height*100)/100}px`,"important");
+  }
   function show(name) {
     cancelAnimationFrame(state.raf); state.screen = name; document.body.dataset.screen = name === "result" ? "battle" : name;
     const result = $("result-screen");
@@ -53,7 +59,7 @@
       node.hidden = !on; node.classList.toggle("active", on);
     });
     result.hidden = name !== "result";
-    if (name === "battle") { state.last = performance.now(); state.raf = requestAnimationFrame(frame); }
+    if (name === "battle") { state.last = performance.now(); requestAnimationFrame(syncCanvasFit); state.raf = requestAnimationFrame(frame); }
     window.dispatchEvent(new CustomEvent(name === "battle" ? "weightplay:battle-open" : "weightplay:shell-sync"));
   }
   function stageCards() {
@@ -153,7 +159,7 @@
     if(gameId!=="animal-habitat-builder"||state.screen!=="battle")return;
     const rect=canvas.getBoundingClientRect(),x=(event.clientX-rect.left)*960/rect.width,y=(event.clientY-rect.top)*540/rect.height;
     const col=Math.floor((x-250)/92),row=Math.floor((y-90)/92);if(col<0||col>4||row<0||row>3)return;
-    const g=state.game,index=row*5+col;if(g.grid[index]>=0)g.counts[g.grid[index]]--;g.grid[index]=g.selected;g.counts[g.selected]++;g.moves++;
+    const g=state.game,index=row*5+col;if(g.grid[index]>=0)g.counts[g.grid[index]]--;g.grid[index]=g.selected;g.counts[g.selected]++;g.moves++;updateHud();
     if(g.need.every((need,i)=>g.counts[i]>=need))finish(true,`${g.moves} placements · ✦ harmony`);else if(g.moves>=g.limit)finish(false,`${g.moves} / ${g.limit}`);else{updateHud();draw();}
   }
   function update(dt) {
@@ -190,6 +196,8 @@
   function frame(now){if(state.screen!=="battle")return;const dt=Math.min(2,(now-state.last)/16.67);state.last=now;update(dt);if(state.screen==="battle"){updateHud();draw();state.raf=requestAnimationFrame(frame);}}
   canvas.addEventListener("pointerup",placeBuilder);
   window.addEventListener("keydown",(event)=>{const map={ArrowUp:"move-up",ArrowDown:"move-down",ArrowLeft:"move-left",ArrowRight:"move-right"};if(gameId==="animal-moonlight-workshop"&&map[event.key]){event.preventDefault();act(map[event.key]);}});
+  window.addEventListener("resize",()=>requestAnimationFrame(syncCanvasFit),{passive:true});
+  new ResizeObserver(()=>requestAnimationFrame(syncCanvasFit)).observe(canvas.parentElement);
   $("start-game").addEventListener("click",()=>{stageCards();show("stage");});
   $("stage-back").addEventListener("click",()=>show("main"));
   $("battle-back").addEventListener("click",()=>{if(window.confirm(common(4)+"?")){stageCards();show("stage");}});

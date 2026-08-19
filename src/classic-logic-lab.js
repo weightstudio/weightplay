@@ -2,6 +2,9 @@
   "use strict";
 
   const LOCALES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const ROUTE_LOCALES = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
+  const LOCALE_SELECTION_PATH_KEY = "classicLogicLocaleSelectionPath";
+  const LOCALE_SELECTION_VALUE_KEY = "classicLogicLocaleSelectionValue";
   const localeLabels = { en: "English", "zh-Hant": "繁體中文", "zh-Hans": "简体中文", ja: "日本語", ko: "한국어", es: "Español", "pt-BR": "Português", fr: "Français", de: "Deutsch", it: "Italiano", ru: "Русский", hi: "हिन्दी", ar: "العربية" };
   const shared = {
     en: { settings: "Settings", sound: "Sound", on: "On", off: "Off", language: "Language", preview: "Owner Preview · Not public", start: "Start Game", back: "Back to WeightPlay", menu: "Menu", replay: "Replay", reset: "New Puzzle", hint: "Hint", undo: "Undo", moves: "Moves", time: "Time", goal: "Goal", how: "How to play", ready: "Choose a level and start.", solved: "Puzzle solved!", failed: "Try again and read the board.", win: "You cleared it!", lose: "Round over", close: "Close", easy: "Easy", medium: "Medium", hard: "Hard", submit: "Submit", clear: "Clear", rotate: "Rotate", place: "Place", readyFleet: "Ready Fleet", choose: "Choose", player: "You", opponent: "Opponent", selectSource: "Select a source", selectTarget: "Select a destination", noMoves: "No legal moves remain.", turn: "Your turn", thinking: "Thinking…", score: "Score", level: "Level", flagMode: "Flag mode", revealMode: "Reveal mode", codePick: "Pick a color", correct: "Correct", near: "Near", hit: "Hit", miss: "Miss", sunk: "Sunk", placeShip: "Place your ship", attack: "Choose a target", noRepeat: "Choose an open water cell." },
@@ -401,8 +404,19 @@
   let activeGame = null;
   let app = null;
 
-  function currentLocale() {
+  function routeLocale() {
+    const segment = window.location.pathname.split("/").filter(Boolean)[0] || "";
+    return ROUTE_LOCALES[segment] || (LOCALES.includes(document.documentElement.lang) ? document.documentElement.lang : "");
+  }
+  function currentLocale(id) {
     const saved = localStorageSafe("weightPlayLocale") || localStorageSafe("weightplayLocale") || "en";
+    if (id === "four-in-a-row") {
+      const selectedPath = localStorageSafe(LOCALE_SELECTION_PATH_KEY);
+      const selectedValue = localStorageSafe(LOCALE_SELECTION_VALUE_KEY);
+      if (selectedPath === window.location.pathname && LOCALES.includes(selectedValue)) return selectedValue;
+      const routed = routeLocale();
+      if (LOCALES.includes(routed)) return routed;
+    }
     return LOCALES.includes(saved) ? saved : "en";
   }
   function localStorageSafe(key, value) {
@@ -439,7 +453,7 @@
 
   function mount(id) {
     if (!CONFIG[id]) return;
-    locale = currentLocale();
+    locale = currentLocale(id);
     document.documentElement.lang = locale;
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     const cfg = CONFIG[id];
@@ -462,7 +476,14 @@
     const picker = app.root.querySelector("#localePicker"); for (const key of LOCALES) { const option = document.createElement("option"); option.value = key; option.textContent = localeLabels[key]; option.selected = key === locale; picker.append(option); }
     const settings = app.root.querySelector("#settingsPanel"); const settingsButton = app.root.querySelector("#settingsButton"); settingsButton.addEventListener("click", () => { settings.hidden = !settings.hidden; settingsButton.setAttribute("aria-expanded", String(!settings.hidden)); });
     app.root.querySelector("#soundButton").addEventListener("click", () => { soundOn = !soundOn; updateSoundButton(); beep(); });
-    picker.addEventListener("change", () => { localStorageSafe("weightPlayLocale", picker.value); window.location.reload(); });
+    picker.addEventListener("change", () => {
+      localStorageSafe("weightPlayLocale", picker.value);
+      if (id === "four-in-a-row") {
+        localStorageSafe(LOCALE_SELECTION_PATH_KEY, window.location.pathname);
+        localStorageSafe(LOCALE_SELECTION_VALUE_KEY, picker.value);
+      }
+      window.location.reload();
+    });
     function updateSoundButton() { app.root.querySelector("#soundButton").textContent = `${t("sound")}: ${soundOn ? t("on") : t("off")}`; app.root.querySelector("#soundButton").setAttribute("aria-pressed", String(soundOn)); }
     updateSoundButton();
     app.root.querySelector("#startButton").addEventListener("click", () => startGame());

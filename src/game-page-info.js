@@ -10939,6 +10939,159 @@
     arcadeGuideLocales[code] ||= {};
     arcadeGuideLocales[code].snake = entry;
   }
+  // Road Crosser v18 guide repair: every required locale owns the complete
+  // public Guide instead of inheriting the English story, systems, strategy,
+  // parent note, FAQ, and fact values from games["road-crosser"].
+  const roadCrosserGuideLocales = {
+    "zh-Hant": {
+      title: "星軌過路", gameplay: "時機穿越街機", genre: ["經典", "街機", "動作"], difficulty: "容易上手，逐步挑戰", time: "每局約 1–4 分鐘", skills: ["時機", "專注", "適應"],
+      intro: "星軌過路是 WeightPlay 原創的時機街機遊戲。帶領星行者穿過車流、移動河流與三段逐步收緊的路線。",
+      story: ["星行者提著小型訊號燈穿越夜間路線。車輛以可讀的節奏移動，河流木頭順著各自的水流前進，每一次安全踏步都揭示下一個時機決定。"],
+      systems: ["星行者每次輸入移動一條車道。車輛是危險物，木頭會承載星行者；沒有支撐時會落水，岩石則會阻擋後續路線。完成一次穿越會進入下一個設計好的關卡。"],
+      how: ["桌面使用方向鍵或 WASD；手機使用滑動與方向按鈕。", "一次觀察一條車道，只在下一格安全時移動。", "在河流中踏上移動木頭，順著水流調整位置。", "通過三段路線抵達星門；撞車、落水或被沖出場外會結束本局。"],
+      strategyTips: ["先觀察一個完整車流循環，再決定是否長距離穿越。", "用短步伐在車道之間停住，重新讀取下一個空檔。", "站上木頭時順著水流規劃，不要用連續點按硬拗方向。", "後段路線更適合耐心等待，走得快不一定更安全。"],
+      progression: ["第 1 段教你掌握道路與河流節奏；第 2 段加入更密集的車流與岩石；第 3 段把更快的水流、更多車輛與更窄的安全空檔疊在一起。"],
+      designNote: "星軌過路借鑑經典街機的時機穿越概念，但使用 WeightPlay 自有的星行者、夜間路線色彩、障礙配置、文字、操作與幾何。",
+      parent: "這款公開遊戲沒有帳號、購買、聊天、排行榜或廣告流程；分數與最佳紀錄只保存在目前瀏覽器。",
+      faq: [["什麼情況會結束？", "撞到車、掉進河裡，或被水流帶出遊戲區都會結束本局。"], ["河流會隨機移動嗎？", "不會。木頭遵循可看見且可重複判讀的速度節奏。"], ["支援哪些操作？", "方向鍵、WASD、觸控滑動，以及畫面上的手機方向按鈕。"], ["進度會保存嗎？", "只有本機最佳分數會保存在目前瀏覽器。"]]
+    },
+    "zh-Hans": {
+      title: "星轨过路", gameplay: "时机穿越街机", genre: ["经典", "街机", "动作"], difficulty: "容易上手，逐步挑战", time: "每局约 1–4 分钟", skills: ["时机", "专注", "适应"],
+      intro: "星轨过路是 WeightPlay 原创的时机街机游戏。带领星行者穿过车流、移动河流与三段逐步收紧的路线。",
+      story: ["星行者提着小型信号灯穿越夜间路线。车辆以可读的节奏移动，河流木头顺着各自的水流前进，每一次安全踏步都会揭示下一次时机判断。"],
+      systems: ["星行者每次输入移动一条车道。车辆是危险物，木头会承载星行者；没有支撑时会落水，岩石则会阻挡后续路线。完成一次穿越会进入下一段设计好的关卡。"],
+      how: ["桌面使用方向键或 WASD；手机使用滑动与方向按钮。", "一次观察一条车道，只在下一格安全时移动。", "在河流中踏上移动木头，顺着水流调整位置。", "通过三段路线抵达星门；撞车、落水或被冲出场外会结束本局。"],
+      strategyTips: ["先观察一个完整车流循环，再决定是否长距离穿越。", "用短步伐在车道之间停住，重新读取下一个空档。", "站上木头时顺着水流规划，不要用连续点击硬拗方向。", "后段路线更适合耐心等待，走得快不一定更安全。"],
+      progression: ["第 1 段教你掌握道路与河流节奏；第 2 段加入更密集的车流与岩石；第 3 段把更快的水流、更多车辆与更窄的安全空档叠在一起。"],
+      designNote: "星轨过路借鉴经典街机的时机穿越概念，但使用 WeightPlay 自有的星行者、夜间路线色彩、障碍配置、文字、操作与几何。",
+      parent: "这款公开游戏没有账号、购买、聊天、排行榜或广告流程；分数和最佳记录只保存在当前浏览器。",
+      faq: [["什么情况会结束？", "撞到车、掉进河里，或被水流带出游戏区都会结束本局。"], ["河流会随机移动吗？", "不会。木头遵循可看见且可重复判读的速度节奏。"], ["支持哪些操作？", "方向键、WASD、触控滑动，以及画面上的手机方向按钮。"], ["进度会保存吗？", "只有本机最佳分数会保存在当前浏览器。"]]
+    },
+    ja: {
+      title: "スター・クロッサー", gameplay: "タイミング横断アーケード", genre: ["クラシック", "アーケード", "アクション"], difficulty: "やさしく、徐々に挑戦的", time: "1プレイ約1～4分", skills: ["タイミング", "集中", "適応"],
+      intro: "スター・クロッサーはWeightPlayオリジナルのタイミングアーケードです。車道、動く川、少しずつ安全幅が狭くなる3つの横断を読みます。",
+      story: ["スターランナーは小さな信号灯を持って夜のルートを進みます。車は読めるリズムで動き、川の丸太はそれぞれの流れに従います。一歩進むたびに次のタイミング判断が見えてきます。"],
+      systems: ["ランナーは入力1回で1車線分進みます。車は危険物、丸太は足場となり、支えがないと水に落ち、岩は後半のルートを塞ぎます。横断を終えると次のステージへ進みます。"],
+      how: ["デスクトップは矢印キーまたはWASD、モバイルはスワイプと方向ボタンです。", "車線を1つずつ観察し、次のマスが安全なときだけ進みます。", "川では動く丸太に乗り、流れに合わせて位置を調整します。", "3つのステージを渡ってスターゲートへ着きます。衝突、水没、画面外への流出で終了します。"],
+      strategyTips: ["長く渡る前に車の動きを1周期ぶん観察します。", "短い歩幅で車線の間に止まり、次の隙間を読み直します。", "丸太の上では流れに合わせて計画し、連打で逆らわないようにします。", "後半は待つことが有利です。速さが安全とは限りません。"],
+      progression: ["ステージ1で道路と川のリズムを学び、ステージ2で密な車と岩が加わり、ステージ3で速い流れ、多い車、狭い安全幅が重なります。"],
+      designNote: "スター・クロッサーはクラシックアーケードのタイミング横断から着想を得つつ、スターランナー、夜の配色、障害物、文章、操作、画面構成はWeightPlay独自です。",
+      parent: "この公開ゲームにアカウント、購入、チャット、ランキング、広告はありません。スコアとベストはこのブラウザに保存されます。",
+      faq: [["何が起きると終了しますか？", "車との衝突、川への落下、または流れで画面外へ運ばれると終了します。"], ["川はランダムに動きますか？", "いいえ。丸太は見て判断できる、繰り返し可能な速度パターンで動きます。"], ["どの操作に対応していますか？", "矢印キー、WASD、タッチスワイプ、画面の方向ボタンです。"], ["進行は保存されますか？", "このブラウザのローカルなベストスコアだけが保存されます。"]]
+    },
+    ko: {
+      title: "스타 크로서", gameplay: "타이밍 횡단 아케이드", genre: ["클래식", "아케이드", "액션"], difficulty: "쉽게 시작해 점점 도전적으로", time: "한 판 약 1~4분", skills: ["타이밍", "집중", "적응"],
+      intro: "스타 크로서는 WeightPlay 오리지널 타이밍 아케이드입니다. 차량 차선과 움직이는 강, 점점 안전 구간이 좁아지는 세 번의 횡단을 읽으세요.",
+      story: ["스타 러너는 작은 신호등을 들고 밤의 길을 건넙니다. 차량은 읽을 수 있는 리듬으로 움직이고 통나무는 각자의 물살을 따릅니다. 안전한 한 걸음마다 다음 타이밍 판단이 드러납니다."],
+      systems: ["러너는 입력 한 번에 한 차선만 이동합니다. 차량은 위험 요소이고 통나무는 발판이 됩니다. 발판이 없으면 물에 빠지고 바위는 뒤쪽 경로를 막습니다. 횡단을 끝내면 다음 스테이지로 진행합니다."],
+      how: ["데스크톱은 방향키나 WASD, 모바일은 스와이프와 방향 버튼을 사용합니다.", "차선을 하나씩 살피고 다음 칸이 안전할 때만 이동합니다.", "강에서는 움직이는 통나무에 올라 물살에 맞춰 위치를 조절합니다.", "세 스테이지를 건너 별 게이트에 도착하세요. 충돌, 물에 빠짐, 화면 밖으로 밀려나면 종료됩니다."],
+      strategyTips: ["긴 횡단을 시작하기 전에 차량의 한 주기를 먼저 관찰하세요.", "짧게 움직여 차선 사이에서 멈추고 다음 빈틈을 다시 읽으세요.", "통나무 위에서는 물살을 따라 계획하고 연속 입력으로 거스르지 마세요.", "후반부는 기다림이 유리합니다. 빠르다고 항상 안전한 것은 아닙니다."],
+      progression: ["스테이지 1은 도로와 강의 리듬을 가르칩니다. 스테이지 2는 더 빽빽한 차량과 바위를 추가하고, 스테이지 3은 빠른 물살과 더 많은 차량, 좁은 안전 구간을 결합합니다."],
+      designNote: "스타 크로서는 클래식 아케이드의 타이밍 횡단에서 영감을 얻었지만 스타 러너, 밤의 색감, 장애물, 문구, 조작, 화면 구조는 WeightPlay 고유의 것입니다.",
+      parent: "이 공개 게임에는 계정, 구매, 채팅, 순위표, 광고 흐름이 없습니다. 점수와 최고 기록은 현재 브라우저에만 저장됩니다.",
+      faq: [["무엇이 게임을 끝내나요?", "차량 충돌, 강에 빠짐, 물살에 밀려 플레이 영역 밖으로 나감이 게임을 끝냅니다."], ["강은 무작위로 움직이나요?", "아니요. 통나무는 보이는 반복 속도 패턴을 따릅니다."], ["어떤 조작을 지원하나요?", "방향키, WASD, 터치 스와이프, 화면 방향 버튼을 지원합니다."], ["진행 상황이 저장되나요?", "현재 브라우저의 로컬 최고 점수만 저장됩니다."]]
+    },
+    es: {
+      title: "Cruce Estelar", gameplay: "Arcade de cruces con ritmo", genre: ["Clásico", "Arcade", "Acción"], difficulty: "Fácil al principio, cada vez más exigente", time: "1–4 minutos por partida", skills: ["Ritmo", "Concentración", "Adaptación"],
+      intro: "Cruce Estelar es un arcade de ritmo original de WeightPlay. Lee el tráfico, el río móvil y tres cruces con ventanas seguras cada vez más estrechas.",
+      story: ["La Estrella Corredora lleva una pequeña luz de señal por una ruta nocturna. Los coches avanzan con pulsos legibles y los troncos siguen sus propias corrientes; cada paso seguro revela la siguiente decisión de ritmo."],
+      systems: ["El corredor avanza un carril por cada entrada. Los coches son peligros, los troncos sostienen al corredor, el agua elimina a quien no tenga apoyo y las rocas bloquean rutas posteriores. Completar un cruce lleva a la siguiente fase diseñada."],
+      how: ["Usa flechas o WASD en ordenador; en móvil, desliza o toca el panel de dirección.", "Observa un carril cada vez y avanza solo cuando el siguiente espacio sea seguro.", "En el río, sube a un tronco móvil y mantente centrado mientras te lleva la corriente.", "Cruza las tres fases y llega a la Puerta Estelar; un choque, el agua o salir del campo termina la partida."],
+      strategyTips: ["Observa un ciclo completo de vehículos antes de comprometerte con un cruce largo.", "Da pasos cortos para detenerte entre carriles y volver a leer el hueco.", "Sobre los troncos, planifica con la corriente en vez de luchar contra ella con toques repetidos.", "Las fases finales premian la paciencia: ir más rápido no siempre es más seguro."],
+      progression: ["La fase 1 enseña el ritmo de carretera y río. La fase 2 añade tráfico más denso y rocas. La fase 3 combina agua más rápida, más vehículos y ventanas seguras más estrechas."],
+      designNote: "Cruce Estelar parte de la idea general de cruzar con ritmo de los arcades clásicos, pero usa la Corredora Estelar, la paleta nocturna, los peligros, los textos, los controles y la geometría propios de WeightPlay.",
+      parent: "Este juego público no tiene cuenta, compras, chat, clasificación ni publicidad. La puntuación y la mejor marca se guardan solo en este navegador.",
+      faq: [["¿Qué termina una partida?", "Un choque con un vehículo, caer al río o salir del campo arrastrado por la corriente termina la partida."], ["¿El río se mueve al azar?", "No. Los troncos siguen patrones de velocidad visibles y repetibles."], ["¿Qué controles funcionan?", "Flechas, WASD, deslizamiento táctil y el panel de dirección visible en móvil."], ["¿Se guarda el progreso?", "Solo se guarda la mejor puntuación local en este navegador."]]
+    },
+    "pt-BR": {
+      title: "Travessia Estelar", gameplay: "Arcade de travessia e ritmo", genre: ["Clássico", "Arcade", "Ação"], difficulty: "Fácil no começo, cada vez mais desafiador", time: "1–4 minutos por partida", skills: ["Ritmo", "Concentração", "Adaptação"],
+      intro: "Travessia Estelar é um arcade de ritmo original do WeightPlay. Leia o trânsito, o rio em movimento e três travessias com janelas seguras cada vez menores.",
+      story: ["A Corredora Estelar leva uma pequena luz de sinal por uma rota noturna. Os carros avançam em pulsos legíveis e os troncos seguem suas próprias correntes; cada passo seguro revela a próxima decisão de ritmo."],
+      systems: ["A corredora avança uma faixa por entrada. Carros são perigos, troncos sustentam a corredora, a água remove quem fica sem apoio e pedras bloqueiam rotas posteriores. Completar uma travessia leva à próxima fase criada para o jogo."],
+      how: ["Use setas ou WASD no computador; no celular, deslize ou toque no painel de direção.", "Observe uma faixa por vez e avance apenas quando o próximo espaço estiver seguro.", "No rio, suba em um tronco móvel e fique centrado enquanto a corrente leva você.", "Atravesse as três fases e chegue ao Portão Estelar; colisão, água ou saída da área encerra a partida."],
+      strategyTips: ["Observe um ciclo completo dos veículos antes de assumir uma travessia longa.", "Use passos curtos para parar entre as faixas e reler a abertura.", "Nos troncos, planeje com a corrente em vez de lutar contra ela com toques repetidos.", "As fases finais recompensam a paciência: mais rápido nem sempre é mais seguro."],
+      progression: ["A fase 1 ensina o ritmo da estrada e do rio. A fase 2 adiciona trânsito mais denso e pedras. A fase 3 combina água mais rápida, mais veículos e janelas seguras menores."],
+      designNote: "Travessia Estelar parte da ideia ampla de travessia com ritmo dos arcades clássicos, mas usa a Corredora Estelar, a paleta noturna, os perigos, os textos, os controles e a geometria próprios do WeightPlay.",
+      parent: "Este jogo público não tem conta, compras, chat, classificação nem fluxo de anúncios. A pontuação e o melhor resultado ficam salvos apenas neste navegador.",
+      faq: [["O que encerra uma partida?", "Colidir com um veículo, cair no rio ou sair da área levado pela corrente encerra a partida."], ["O rio se move aleatoriamente?", "Não. Os troncos seguem padrões de velocidade visíveis e repetíveis."], ["Quais controles funcionam?", "Setas, WASD, deslize por toque e o painel de direção visível no celular."], ["O progresso é salvo?", "Somente a melhor pontuação local é salva neste navegador."]]
+    },
+    fr: {
+      title: "Passage Stellaire", gameplay: "Arcade de traversée rythmée", genre: ["Classique", "Arcade", "Action"], difficulty: "Facile au départ, de plus en plus exigeant", time: "1 à 4 minutes par partie", skills: ["Timing", "Concentration", "Adaptation"],
+      intro: "Passage Stellaire est un arcade de timing original de WeightPlay. Lis le trafic, la rivière mobile et trois traversées dont les fenêtres sûres se resserrent.",
+      story: ["La Coureuse Stellaire transporte une petite balise lumineuse sur une route nocturne. Les voitures avancent selon des pulsations lisibles et les troncs suivent leurs courants ; chaque pas sûr révèle la prochaine décision de timing."],
+      systems: ["La coureuse avance d'une voie par entrée. Les voitures sont dangereuses, les troncs portent la coureuse, l'eau élimine toute coureuse sans appui et les rochers bloquent les routes suivantes. Une traversée terminée ouvre l'étape conçue suivante."],
+      how: ["Utilise les flèches ou WASD sur ordinateur ; sur mobile, glisse ou touche le pavé directionnel.", "Observe une voie à la fois et avance seulement lorsque la case suivante est sûre.", "Dans la rivière, monte sur un tronc mobile et reste centrée pendant que le courant t'emporte.", "Traverse les trois étapes et atteins la Porte Stellaire ; collision, eau ou sortie de la zone terminent la partie."],
+      strategyTips: ["Observe un cycle complet des véhicules avant de tenter une longue traversée.", "Fais de petits pas pour t'arrêter entre les voies et relire l'ouverture.", "Sur les troncs, planifie avec le courant au lieu de le combattre par des pressions répétées.", "Les étapes finales récompensent la patience : aller plus vite n'est pas toujours plus sûr."],
+      progression: ["L'étape 1 enseigne le rythme de la route et de la rivière. L'étape 2 ajoute un trafic plus dense et des rochers. L'étape 3 combine une eau plus rapide, davantage de véhicules et des fenêtres sûres plus étroites."],
+      designNote: "Passage Stellaire reprend l'idée générale des traversées rythmées de l'arcade classique, tout en utilisant la Coureuse Stellaire, la palette nocturne, les dangers, les textes, les commandes et la géométrie propres à WeightPlay.",
+      parent: "Ce jeu public ne propose ni compte, ni achat, ni chat, ni classement, ni publicité. Le score et le meilleur résultat restent dans ce navigateur.",
+      faq: [["Qu'est-ce qui termine une partie ?", "Une collision avec un véhicule, une chute dans la rivière ou une sortie de la zone emportée par le courant termine la partie."], ["La rivière bouge-t-elle au hasard ?", "Non. Les troncs suivent des rythmes de vitesse visibles et répétables."], ["Quelles commandes fonctionnent ?", "Les flèches, WASD, le glissement tactile et le pavé directionnel visible sur mobile."], ["La progression est-elle sauvegardée ?", "Seul le meilleur score local est sauvegardé dans ce navigateur."]]
+    },
+    de: {
+      title: "Sternenquerung", gameplay: "Timing-Querungs-Arcade", genre: ["Klassisch", "Arcade", "Action"], difficulty: "Leicht begonnen, zunehmend anspruchsvoll", time: "1–4 Minuten pro Lauf", skills: ["Timing", "Konzentration", "Anpassung"],
+      intro: "Sternenquerung ist eine originale Timing-Arcade von WeightPlay. Lies Verkehr, bewegten Fluss und drei Querungen mit immer engeren sicheren Fenstern.",
+      story: ["Der Sternenläufer trägt eine kleine Signallampe durch eine nächtliche Route. Autos bewegen sich in lesbaren Pulsen, Flussstämme folgen ihrer eigenen Strömung, und jeder sichere Schritt zeigt die nächste Timing-Entscheidung."],
+      systems: ["Der Läufer bewegt sich pro Eingabe um eine Spur. Autos sind Gefahren, Stämme tragen den Läufer, Wasser entfernt einen Läufer ohne Halt und Felsen sperren spätere Routen. Eine fertige Querung öffnet die nächste gestaltete Stufe."],
+      how: ["Nutze Pfeile oder WASD am Computer; mobil wischst du oder tippst das Richtungspad.", "Beobachte eine Spur nach der anderen und gehe nur, wenn das nächste Feld sicher ist.", "Springe im Fluss auf einen bewegten Stamm und bleibe mittig, während die Strömung dich trägt.", "Schaffe alle drei Stufen und erreiche das Sternentor; Kollision, Wasser oder das Verlassen des Feldes beendet den Lauf."],
+      strategyTips: ["Beobachte einen vollständigen Fahrzeugzyklus, bevor du eine lange Querung beginnst.", "Nutze kurze Schritte, um zwischen Spuren anzuhalten und die Lücke neu zu lesen.", "Plane auf Stämmen mit der Strömung, statt sie durch wiederholte Eingaben zu bekämpfen.", "Spätere Stufen belohnen Geduld: Schneller ist nicht immer sicherer."],
+      progression: ["Stufe 1 lehrt den Rhythmus von Straße und Fluss. Stufe 2 ergänzt dichteres Verkehrsaufkommen und Felsen. Stufe 3 verbindet schnelleres Wasser, mehr Fahrzeuge und engere sichere Fenster."],
+      designNote: "Sternenquerung greift die breite Idee klassischer Timing-Arcades auf, nutzt aber WeightPlays eigene Sternenläufer-Figur, Nachtfarben, Gefahren, Texte, Steuerung und Geometrie.",
+      parent: "Dieses öffentliche Spiel hat kein Konto, keine Käufe, keinen Chat, keine Rangliste und keine Werbung. Punktzahl und Bestwert bleiben in diesem Browser.",
+      faq: [["Was beendet einen Lauf?", "Eine Fahrzeugkollision, ein Sturz in den Fluss oder das Hinaustragen aus dem Spielfeld beendet den Lauf."], ["Bewegt sich der Fluss zufällig?", "Nein. Die Stämme folgen sichtbaren und wiederholbaren Geschwindigkeitsmustern."], ["Welche Steuerung funktioniert?", "Pfeiltasten, WASD, Touch-Wischen und das sichtbare Richtungspad auf Mobilgeräten."], ["Wird der Fortschritt gespeichert?", "Nur der lokale Bestwert wird in diesem Browser gespeichert."]]
+    },
+    it: {
+      title: "Attraversamento Stellare", gameplay: "Arcade di attraversamento a tempo", genre: ["Classico", "Arcade", "Azione"], difficulty: "Facile all'inizio, sempre più impegnativo", time: "1–4 minuti per partita", skills: ["Tempismo", "Concentrazione", "Adattamento"],
+      intro: "Attraversamento Stellare è un'arcade di tempismo originale WeightPlay. Leggi traffico, fiume in movimento e tre attraversamenti con finestre sicure sempre più strette.",
+      story: ["La Stella Corridore porta una piccola luce di segnalazione lungo una rotta notturna. Le auto avanzano con ritmi leggibili e i tronchi seguono le proprie correnti; ogni passo sicuro rivela la decisione di tempismo successiva."],
+      systems: ["La corridore avanza di una corsia per ogni input. Le auto sono pericoli, i tronchi sostengono la corridore, l'acqua elimina chi resta senza appoggio e le rocce bloccano le rotte successive. Un attraversamento completato apre il livello successivo."],
+      how: ["Usa frecce o WASD sul computer; su mobile scorri o tocca il pad direzionale.", "Osserva una corsia alla volta e muoviti solo quando la casella successiva è sicura.", "Nel fiume salta su un tronco mobile e resta al centro mentre la corrente ti porta.", "Supera i tre livelli e raggiungi il Portale Stellare; collisione, acqua o uscita dal campo terminano la partita."],
+      strategyTips: ["Osserva un ciclo completo delle auto prima di impegnarti in un attraversamento lungo.", "Fai passi brevi per fermarti tra le corsie e rileggere il varco.", "Sui tronchi pianifica seguendo la corrente invece di contrastarla con tocchi ripetuti.", "I livelli finali premiano la pazienza: andare più veloce non è sempre più sicuro."],
+      progression: ["Il livello 1 insegna il ritmo di strada e fiume. Il livello 2 aggiunge traffico più fitto e rocce. Il livello 3 combina acqua più veloce, più veicoli e finestre sicure più strette."],
+      designNote: "Attraversamento Stellare prende l'idea generale degli attraversamenti a tempo degli arcade classici, ma usa il Corridore Stellare, la palette notturna, i pericoli, i testi, i comandi e la geometria propri di WeightPlay.",
+      parent: "Questo gioco pubblico non ha account, acquisti, chat, classifica né pubblicità. Punteggio e record restano in questo browser.",
+      faq: [["Cosa termina una partita?", "Una collisione con un veicolo, una caduta nel fiume o l'uscita dal campo trascinati dalla corrente terminano la partita."], ["Il fiume si muove a caso?", "No. I tronchi seguono schemi di velocità visibili e ripetibili."], ["Quali comandi funzionano?", "Frecce, WASD, scorrimento tattile e pad direzionale visibile su mobile."], ["I progressi vengono salvati?", "Solo il miglior punteggio locale viene salvato in questo browser."]]
+    },
+    ru: {
+      title: "Звёздный переход", gameplay: "Аркада на точность перехода", genre: ["Классика", "Аркада", "Экшен"], difficulty: "Легко начать, сложность растёт", time: "1–4 минуты за забег", skills: ["Точность момента", "Внимание", "Адаптация"],
+      intro: "«Звёздный переход» — оригинальная аркада WeightPlay на точность момента. Читайте машины, движущуюся реку и три перехода с постепенно сужающимися безопасными окнами.",
+      story: ["Звёздный бегун несёт маленький сигнальный огонь по ночному маршруту. Машины движутся по понятному ритму, брёвна следуют своим течениям, а каждый безопасный шаг открывает следующее решение по времени."],
+      systems: ["За один ввод бегун перемещается на одну полосу. Машины опасны, брёвна поддерживают бегуна, вода убирает его без опоры, а камни перекрывают последующие маршруты. Завершённый переход открывает следующий этап."],
+      how: ["На компьютере используйте стрелки или WASD; на телефоне делайте свайп или нажимайте направление.", "Читайте по одной полосе и двигайтесь только тогда, когда следующая клетка безопасна.", "На реке запрыгивайте на движущееся бревно и удерживайте центр, пока течение несёт вас.", "Пройдите три этапа и доберитесь до Звёздных ворот; столкновение, падение в воду или вынос за поле завершают забег."],
+      strategyTips: ["Перед длинным переходом понаблюдайте полный цикл движения машин.", "Делайте короткие шаги, останавливаясь между полосами для повторного чтения просвета.", "На брёвнах планируйте по течению, а не пытайтесь спорить с ним частыми нажатиями.", "Поздние этапы награждают терпение: быстрее не всегда безопаснее."],
+      progression: ["Этап 1 знакомит с ритмом дороги и реки. Этап 2 добавляет плотный трафик и камни. Этап 3 сочетает быструю воду, больше машин и более узкие безопасные окна."],
+      designNote: "«Звёздный переход» использует общую идею переходов на точность момента из классических аркад, но собственные Звёздного бегуна, ночную палитру, опасности, тексты, управление и геометрию WeightPlay.",
+      parent: "В этой публичной игре нет аккаунта, покупок, чата, таблицы лидеров или рекламы. Счёт и лучший результат хранятся только в этом браузере.",
+      faq: [["Что завершает забег?", "Столкновение с машиной, падение в реку или вынос течением за игровое поле завершают забег."], ["Река движется случайно?", "Нет. Брёвна следуют видимым и повторяемым скоростным схемам."], ["Какие способы управления работают?", "Стрелки, WASD, сенсорный свайп и видимая панель направлений на телефоне."], ["Сохраняется ли прогресс?", "В этом браузере сохраняется только локальный лучший результат."]]
+    },
+    hi: {
+      title: "सितारा पारपथ", gameplay: "समय-सटीक पारपथ आर्केड", genre: ["क्लासिक", "आर्केड", "एक्शन"], difficulty: "आसान शुरुआत, बढ़ती चुनौती", time: "हर रन 1–4 मिनट", skills: ["समय-बोध", "ध्यान", "अनुकूलन"],
+      intro: "सितारा पारपथ WeightPlay का मौलिक समय-आधारित आर्केड है। यातायात, चलती नदी और धीरे-धीरे संकरी होती सुरक्षित खिड़कियों वाले तीन पारपथ पढ़ें।",
+      story: ["स्टार रनर रात के मार्ग पर छोटी संकेत-रोशनी लेकर चलता है। गाड़ियाँ पढ़े जा सकने वाले स्पंदन में चलती हैं और नदी के लट्ठे अपनी धारा का अनुसरण करते हैं; हर सुरक्षित कदम अगला समय-निर्णय दिखाता है।"],
+      systems: ["हर इनपुट पर रनर एक लेन आगे बढ़ता है। गाड़ियाँ खतरा हैं, लट्ठे सहारा देते हैं, बिना सहारे का रनर पानी में गिरता है और चट्टानें आगे के रास्ते रोकती हैं। पारपथ पूरा करने पर अगला बनाया हुआ चरण खुलता है।"],
+      how: ["कंप्यूटर पर तीर या WASD इस्तेमाल करें; मोबाइल पर स्वाइप या दिशा बटन दबाएँ।", "एक बार में एक लेन देखें और अगली जगह सुरक्षित होने पर ही चलें।", "नदी में चलते लट्ठे पर चढ़ें और धारा के साथ बीच में बने रहें।", "तीनों चरण पार करके सितारा द्वार तक पहुँचें; टक्कर, पानी या मैदान से बाहर बहना रन समाप्त करता है।"],
+      strategyTips: ["लंबा पारपथ शुरू करने से पहले वाहनों का एक पूरा चक्र देखें।", "छोटे कदमों से लेनों के बीच रुककर खाली जगह फिर से पढ़ें।", "लट्ठों पर धारा के अनुसार योजना बनाएँ, बार-बार दबाकर धारा से लड़ें नहीं।", "बाद के चरण धैर्य को इनाम देते हैं; तेज़ होना हमेशा सुरक्षित नहीं होता।"],
+      progression: ["चरण 1 सड़क और नदी की लय सिखाता है। चरण 2 घना यातायात और चट्टानें जोड़ता है। चरण 3 तेज़ पानी, अधिक वाहन और संकरी सुरक्षित खिड़कियों को मिलाता है।"],
+      designNote: "सितारा पारपथ क्लासिक आर्केड के समय-सटीक पारपथ विचार से प्रेरित है, लेकिन स्टार रनर, रात का रंग-संसार, बाधाएँ, पाठ, नियंत्रण और ज्यामिति WeightPlay की अपनी हैं।",
+      parent: "इस सार्वजनिक गेम में खाता, खरीद, चैट, लीडरबोर्ड या विज्ञापन नहीं हैं। स्कोर और सर्वश्रेष्ठ परिणाम केवल इसी ब्राउज़र में रहते हैं।",
+      faq: [["रन कब समाप्त होता है?", "वाहन से टकराने, नदी में गिरने या धारा से खेल-क्षेत्र के बाहर बहने पर रन समाप्त होता है।"], ["क्या नदी यादृच्छिक चलती है?", "नहीं। लट्ठे दिखने वाले और दोहराए जा सकने वाले गति-पैटर्न का पालन करते हैं।"], ["कौन से नियंत्रण काम करते हैं?", "तीर, WASD, टच स्वाइप और मोबाइल का दिखाई देने वाला दिशा पैनल।"], ["क्या प्रगति सहेजी जाती है?", "इस ब्राउज़र में केवल स्थानीय सर्वश्रेष्ठ स्कोर सहेजा जाता है।"]]
+    },
+    ar: {
+      title: "عبور النجمة", gameplay: "لعبة عبور بإيقاع وتوقيت", genre: ["كلاسيكية", "أركيد", "حركة"], difficulty: "سهلة البداية وتزداد تحدياً", time: "من دقيقة إلى 4 دقائق للجولة", skills: ["التوقيت", "التركيز", "التكيف"],
+      intro: "عبور النجمة لعبة توقيت أصلية من WeightPlay. اقرأ السيارات والنهر المتحرك وثلاث مراحل تضيق نوافذ الأمان فيها تدريجياً.",
+      story: ["يحمل عدّاء النجمة مصباح إشارة صغيراً عبر طريق ليلي. تتحرك السيارات بنبضات يمكن قراءتها، وتتبع جذوع النهر تياراتها الخاصة، وتكشف كل خطوة آمنة قرار التوقيت التالي."],
+      systems: ["يتحرك العدّاء مساراً واحداً مع كل إدخال. السيارات أخطار، والجذوع تحمل العدّاء، ويسقط في الماء عند غياب الدعم، بينما تسد الصخور المسارات اللاحقة. يؤدي إكمال العبور إلى المرحلة المصممة التالية."],
+      how: ["استخدم الأسهم أو WASD على الكمبيوتر؛ وعلى الهاتف اسحب أو اضغط لوحة الاتجاهات.", "راقب مساراً واحداً في كل مرة وتحرك فقط عندما تكون الخانة التالية آمنة.", "في النهر اصعد على جذع متحرك وحافظ على الوسط بينما يحملك التيار.", "اعبر المراحل الثلاث واصل إلى بوابة النجمة؛ ينهي الاصطدام أو الماء أو الخروج من الملعب الجولة."],
+      strategyTips: ["راقب دورة كاملة للسيارات قبل الالتزام بعبور طويل.", "استخدم خطوات قصيرة للتوقف بين المسارات وإعادة قراءة الفتحة.", "على الجذوع خطط مع التيار بدلاً من مقاومته بالنقر المتكرر.", "تكافئ المراحل الأخيرة الصبر؛ فالسرعة ليست دائماً أكثر أماناً."],
+      progression: ["تعلمك المرحلة الأولى إيقاع الطريق والنهر. تضيف الثانية سيارات أكثر كثافة وصخوراً. وتجمع الثالثة بين ماء أسرع ومركبات أكثر ونوافذ أمان أضيق."],
+      designNote: "يستفيد عبور النجمة من فكرة العبور بالتوقيت في ألعاب الأركيد الكلاسيكية، لكنه يستخدم عدّاء النجمة ولوحة الليل والأخطار والنصوص وعناصر التحكم والهندسة الخاصة بـ WeightPlay.",
+      parent: "لا تتضمن هذه اللعبة العامة حساباً أو شراءً أو دردشة أو لوحة متصدرين أو إعلانات. تبقى النقاط وأفضل نتيجة في هذا المتصفح فقط.",
+      faq: [["ما الذي ينهي الجولة؟", "ينهي الجولة الاصطدام بمركبة أو السقوط في النهر أو جرف التيار للعدّاء خارج الملعب."], ["هل يتحرك النهر عشوائياً؟", "لا. تتبع الجذوع أنماط سرعة ظاهرة وقابلة للتكرار."], ["ما عناصر التحكم المتاحة؟", "الأسهم وWASD والسحب باللمس ولوحة الاتجاهات الظاهرة على الهاتف."], ["هل يُحفظ التقدم؟", "يُحفظ أفضل سجل محلي فقط في هذا المتصفح."]]
+    }
+  };
+  for (const [code, guide] of Object.entries(roadCrosserGuideLocales)) {
+    arcadeGuideLocales[code] ||= {};
+    arcadeGuideLocales[code]["road-crosser"] = { ...arcadeGuideLocales[code]["road-crosser"], ...guide };
+  }
   for (const [code, entries] of Object.entries(arcadeGuideLocales)) {
     localizedGames[code] ||= {};
     for (const [id, entry] of Object.entries(entries)) localizedGames[code][id] = { ...games[id], ...entry, difficulty: entry.difficulty || games[id].difficulty, time: entry.time || games[id].time, genre: entry.genre || games[id].genre, skills: entry.skills || games[id].skills, faq: entry.faq || games[id].faq };
