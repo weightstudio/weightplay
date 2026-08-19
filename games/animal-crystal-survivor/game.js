@@ -8,7 +8,7 @@
   document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-crystal-survivor";
-  const GAME_VERSION = "v21";
+  const GAME_VERSION = "v22";
   const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_animal_crystal_survivor_v1";
   const localeKey = "weightPlayLocale";
@@ -99,6 +99,10 @@
     patrolRankFill: $("patrolRankFill"),
     resultRankText: $("resultRankText"),
   };
+
+  nodes.hintText?.setAttribute("role", "status");
+  nodes.hintText?.setAttribute("aria-live", "polite");
+  nodes.hintText?.setAttribute("aria-atomic", "true");
 
   const text = {
     en: {

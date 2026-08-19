@@ -198,7 +198,7 @@
         <div class="canvas-wrap play-area">
           <canvas id="gameCanvas" width="1024" height="1760" tabindex="-1" aria-label="Animal Crystal Survivor playfield" data-aria-ui="playfield"></canvas>
         </div>
-        <p id="hintText" class="hint-text" data-ui="playHint">Goal: collect golden keys before 3:00. Grab crystals to level up, then choose upgrades when the cards appear.</p>
+        <p id="hintText" class="hint-text" role="status" aria-live="polite" aria-atomic="true" data-ui="playHint">Goal: collect golden keys before 3:00. Grab crystals to level up, then choose upgrades when the cards appear.</p>
         </div>
         <div id="resultHost" class="result-host">
           <section id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText resultRankText resultProgressText resultPlanText resultNextStageText">
@@ -275,7 +275,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="game.js?v=20260819-crystal-v21-battle-rule-2"></script>
+    <script src="game.js?v=20260820-crystal-hint-status-v22"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260808-play-lock1" data-wp-battle-standard></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
