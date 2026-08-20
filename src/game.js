@@ -1519,7 +1519,7 @@ function renderRewardItem(item) {
   return `
     <div class="reward-item ${getWeaponTierClass(level)}">
       <img src="${getWeaponIconSrc(weapon)}" alt="" onerror="this.onerror=null;this.src='assets/eraser-v2.webp'" />
-      <span>${weapon.name}${level > 1 ? ` x${level}` : ""}</span>
+      <span>${t("weapon_" + item.id)}${level > 1 ? ` x${level}` : ""}</span>
     </div>
   `;
 }
