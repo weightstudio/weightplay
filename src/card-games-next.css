@@ -41,6 +41,15 @@ body[data-wp-card-game="hearts"] .card-game-player-header small { min-width: 0; 
 .playing-card.is-red { color: var(--card-red); }
 .playing-card.is-face-down { color: transparent; background: repeating-linear-gradient(135deg, #2d638d 0 5px, #1b4569 5px 10px); border-color: #b8d6e7; }
 .playing-card.is-face-down::after { content: "✦"; color: rgba(255,255,255,.72); font-size: 22px; }
+@media (prefers-reduced-motion: reduce) {
+  body[data-wp-card-game="go-fish"] .playing-card,
+  body[data-wp-card-game="go-fish"] .playing-card:hover,
+  body[data-wp-card-game="go-fish"] .playing-card:focus-visible,
+  body[data-wp-card-game="go-fish"] .playing-card.is-selected {
+    transform: none;
+    transition: none;
+  }
+}
 .card-empty-slot { width: 52px; height: 72px; box-sizing: border-box; border: 2px dashed rgba(255,255,255,.28); border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; padding: 6px; color: #b9d8d3; font-size: 11px; line-height: 1.15; text-align: center; }
 body[data-wp-card-game="casino"] .playing-card.is-capture-candidate { border-color: #63e6be; box-shadow: 0 0 0 3px rgba(99,230,190,.34), 0 5px 10px rgba(0,0,0,.22); }
 body[data-wp-card-game="casino"] .card-build.is-capture-candidate { border-color: #63e6be; box-shadow: 0 0 0 3px rgba(99,230,190,.24); }
