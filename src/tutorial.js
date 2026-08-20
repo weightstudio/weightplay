@@ -421,7 +421,8 @@
   }
 
   function locale() {
-    const value = window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || document.documentElement.lang || readStorage("weightPlayLocale") || readStorage("weightplayLocale") || "en";
+    const selectedLocale = document.querySelector("#localeSelect")?.value;
+    const value = classicLocales.includes(selectedLocale) ? selectedLocale : window.WonderI18n?.actualLocale?.() || window.WonderI18n?.locale?.() || document.documentElement.lang || readStorage("weightPlayLocale") || readStorage("weightplayLocale") || "en";
     return ["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"].includes(value) ? value : "en";
   }
 
@@ -546,6 +547,7 @@
     document.body.append(button);
     applyCommonLabels();
     window.addEventListener("wonder:locale-change", applyCommonLabels);
+    document.querySelector("#localeSelect")?.addEventListener("change", applyCommonLabels);
     const autoShowEnabled = document.body.dataset.tutorialAutoShow !== "false";
     if (autoShowEnabled && !hasSeen(gameId) && !isAutomationRun()) {
       if (battleTutorialGames.has(gameId)) {

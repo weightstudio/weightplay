@@ -26,7 +26,7 @@
     <style>.battle{background-image:linear-gradient(180deg,rgba(7,25,35,.28),rgba(7,25,35,.72)),url("assets/animal-canopy-cut-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-shell-controls-standard.css" data-wp-shell-standard />
-    <script defer src="game.js?v=20260819-canopy-v7-target-preview"></script>
+    <script defer src="game.js?v=20260820-canopy-v8-target-key"></script>
   </head>
   <body data-wp-five-game="animal-canopy-cut" data-wp-game-id="animal-canopy-cut" data-runtime-localize="off" data-screen="main">
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Canopy Cut</strong><span>Preparing the canopy…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
@@ -46,6 +46,10 @@
       <section id="battle-screen" class="screen battle battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden>
         <header class="battle-header"><button class="back" data-back="stage" data-wp-return="battle" aria-label="Back to Stages">←</button><strong id="wave-label">Wave 1 / 5</strong><span id="score-label">0</span></header>
         <p id="battle-status" class="battle-status">Swipe safe fruit.</p>
+        <div id="battle-key" class="battle-key" role="group" aria-label="Target key">
+          <span class="battle-key-item"><span class="key-swatch key-swatch-safe" aria-hidden="true">✦</span><span id="safe-key">Safe fruit</span></span>
+          <span class="battle-key-item"><span class="key-swatch key-swatch-hazard" aria-hidden="true">●</span><span id="hazard-key">Dark seed pod</span></span>
+        </div>
         <canvas id="arena" width="960" height="560" aria-label="Canopy Cut play area"></canvas>
         <div class="touch-hint">Drag across targets. A dark seed pod ends the chain.</div>
         <section id="result-screen" class="screen result" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="result-title" hidden>
@@ -117,7 +121,7 @@
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="../../src/game-shell-controls-standard.js?v=20260815-five-games-shell1"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard></script>
-    <script src="/src/analytics.js?v=20260819-canopy-v7-target-preview"></script>
-    <script src="/games/animal-canopy-cut/analytics-ownership.js?v=20260819-canopy-v7-target-preview"></script>
+    <script src="/src/analytics.js?v=20260820-canopy-v8-target-key"></script>
+    <script src="/games/animal-canopy-cut/analytics-ownership.js?v=20260820-canopy-v8-target-key"></script>
   </body>
 </html>
