@@ -800,6 +800,32 @@ body.is-rune-playing .pause-toggle {
   line-height: 1.35;
 }
 
+.enemy-trait-guide {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 5px 7px;
+  border-left: 2px solid var(--gold);
+  border-radius: 6px;
+  background: rgba(248, 214, 106, 0.08);
+  color: #f8e8a2;
+  font-size: 0.72rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.enemy-trait-guide b {
+  color: var(--gold);
+  font-size: 0.68rem;
+  font-weight: 900;
+}
+
+.enemy-trait-guide span {
+  min-width: 0;
+  color: #e8f5e8 !important;
+  overflow-wrap: anywhere;
+}
+
 .selected-card span,
 .selected-card small {
   color: var(--muted);
@@ -2626,4 +2652,29 @@ body.wp-shell-battle-active.is-rune-playing .rune-app:not([data-wp-logical-battl
   width: 100vw !important;
   height: calc(100dvh - 56px) !important;
   min-height: 1px !important;
+}
+
+/* The enemy-trait summary is game-owned Battle guidance. Keep it inside the
+   existing selected-hero track so it can scroll without changing Canvas or
+   action-row geometry at any required viewport. */
+html body.wp-logical-battle-active.is-rune-playing .selected-card {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  scrollbar-width: thin;
+}
+
+html body.wp-logical-battle-active.is-rune-playing .enemy-trait-guide {
+  gap: 1px;
+  padding: 3px 5px;
+  font-size: 12px !important;
+  line-height: 14px !important;
+}
+
+html body.wp-logical-battle-active.is-rune-playing .enemy-trait-guide b {
+  font-size: 10px !important;
+  line-height: 12px !important;
+}
+
+html body.wp-logical-battle-active.is-rune-playing .enemy-trait-guide span {
+  line-height: 14px !important;
 }

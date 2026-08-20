@@ -1061,6 +1061,26 @@
     text[code].nextThreatPreview = value;
   });
 
+  const battleTraitGuideCopy = {
+    en: "Enemy traits:",
+    "zh-Hant": "敵人特性：",
+    "zh-Hans": "敌人特性：",
+    ja: "敵の特性：",
+    ko: "적 특성:",
+    es: "Rasgos enemigos:",
+    "pt-BR": "Características dos inimigos:",
+    fr: "Traits ennemis :",
+    de: "Gegnereigenschaften:",
+    it: "Tratti nemici:",
+    ru: "Особенности врагов:",
+    hi: "दुश्मन की विशेषताएँ:",
+    ar: "سمات الأعداء:",
+  };
+  Object.entries(battleTraitGuideCopy).forEach(([code, value]) => {
+    text[code] ||= {};
+    text[code].battleTraitGuide = value;
+  });
+
   const heroDefs = [
     { id: "lion", name: "lion", role: "lionRole", img: "weightplay-boom-mane-lion.png", hp: 7, atk: 3, skillName: "skillLion", skillDesc: "skillLionDesc", skill: "animal-rune-tactics-skill-lion-strike.webp" },
     { id: "owl", name: "owl", role: "owlRole", img: "animal-rune-tactics-hero-owl.png", hp: 5, atk: 2, range: 2, skillName: "skillOwl", skillDesc: "skillOwlDesc", skill: "animal-rune-tactics-skill-owl-rune-bolt.webp" },
@@ -2581,11 +2601,20 @@
     const chainHint = chainTarget
       ? t("runeChainHint", { enemy: t(chainTarget.name), bonus: chainBonus })
       : t("runeChainReady");
+    const enemyTraitKeys = [...new Set(livingEnemies().map((enemy) => enemy.trait).filter(Boolean))];
+    const enemyTraitGuideText = enemyTraitKeys
+      .map((traitKey) => `${t(traitKey)}: ${t(`${traitKey}Desc`)}`)
+      .join(" · ");
     nodes.selectedCard.innerHTML = `
       <strong>${t(hero.name)} ${t("heroLevel", { level: hero.level })} · ${status}</strong>
       <span>${t("chooseTarget", { hero: t(hero.name), hp: hero.hp, maxHp: hero.maxHp, energy: hero.energy })}</span>
+      <div class="enemy-trait-guide" role="note"><b></b><span></span></div>
       <small>${t("moveThenActHint")}</small>`;
     nodes.selectedCard.querySelector("strong").textContent = `${t(hero.name)} ${t("heroLevel", { level: hero.level })} / ${status}`;
+    const traitGuideNode = nodes.selectedCard.querySelector(".enemy-trait-guide");
+    traitGuideNode.hidden = !enemyTraitGuideText;
+    traitGuideNode.querySelector("b").textContent = t("battleTraitGuide");
+    traitGuideNode.querySelector("span").textContent = enemyTraitGuideText;
     const skillHelp = nodes.selectedCard.querySelector("small");
     skillHelp.className = "skill-help";
     skillHelp.innerHTML = `<b>${t(hero.skillName)}</b><span>${t(hero.skillDesc)}</span><i>${chainHint}</i>`;
