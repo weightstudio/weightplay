@@ -2,7 +2,7 @@
   "use strict";
 
   const GAME_ID = "animal-frost-maze";
-  const GAME_VERSION = "v3";
+  const GAME_VERSION = "v4";
   const INTERFACE_VERSION = "6";
   const EVENTS = new Set([
     "preview_open",

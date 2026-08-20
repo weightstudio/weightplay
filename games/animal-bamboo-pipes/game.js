@@ -47,6 +47,18 @@
     const raw = tile.shape === "x" || tile.target ? [0,1,2,3] : tile.shape === "s" ? [0,2] : tile.shape === "e" ? [0,1] : tile.shape === "t" ? [0,1,3] : tile.shape === "source" ? [2] : [0];
     return raw.map(port => (port + tile.rot) % 4);
   }
+  function pipeShapeKey(tile) {
+    if (tile.target) return "pipeShapeBasin";
+    return ({ source: "pipeShapeSource", s: "pipeShapeStraight", e: "pipeShapeElbow", t: "pipeShapeTee", x: "pipeShapeCross" })[tile.shape] || "pipeShapeStraight";
+  }
+  function pipeAccessibleLabel(tile, index, isWet) {
+    const name = tile.target ? text("basinLabel") : text("pipeLabel", { n: index + 1 });
+    const shape = text(pipeShapeKey(tile));
+    const flow = text(isWet ? "pipeFlowing" : "pipeDry");
+    return tile.target
+      ? text("pipeTargetState", { name, shape, flow })
+      : text("pipeState", { name, shape, orientation: text("pipeOrientation", { n: tile.rot + 1 }), flow });
+  }
   function targetIndex(level) {
     return level.target;
   }
@@ -245,7 +257,7 @@
       pipe.dataset.shape = tile.shape;
       pipe.style.setProperty("--pipe-rotation", `${tile.rot * 90}deg`);
       pipe.dataset.rotation = String(tile.rot);
-      pipe.setAttribute("aria-label", tile.target ? `${text("objective")} — ${text("pipeLabel", { n: index + 1 })}` : text("pipeLabel", { n: index + 1 }));
+      pipe.setAttribute("aria-label", pipeAccessibleLabel(tile, index, wet.has(index)));
       pipe.disabled = tile.target || run.completed;
       pipe.tabIndex = !pipe.disabled && index === boardFocusIndex ? 0 : -1;
       const flow = flowSvg(tile, index, wet.has(index));
