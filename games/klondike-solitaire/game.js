@@ -1711,6 +1711,12 @@ const KL_I18N = {
     return physicalHeight > 0 ? physicalHeight / Math.max(scale, 0.01) : getCardVisualWidth() * 1.42;
   }
 
+  function getTableauSelectionGutter() {
+    const canvas = ui.battleScreen?.querySelector(".battle-canvas");
+    const configured = Number.parseFloat(canvas ? window.getComputedStyle(canvas).getPropertyValue("--tableau-selection-gutter") : "");
+    return Number.isFinite(configured) ? Math.max(0, configured) : TABLEAU_SELECTION_GUTTER;
+  }
+
   function setTableauPileHeight(pileNode, cardCount, stackStep) {
     if (!cardCount) {
       pileNode.style.height = "";
@@ -1725,7 +1731,7 @@ const KL_I18N = {
     const stackOffset = Number.isFinite(lastCardTop)
       ? lastCardTop
       : Math.max(0, cardCount - 1) * stackStep;
-    const height = cardHeight + stackOffset + TABLEAU_SELECTION_GUTTER;
+    const height = cardHeight + stackOffset + getTableauSelectionGutter();
     pileNode.style.height = `${height}px`;
     pileNode.style.minHeight = `${height}px`;
   }

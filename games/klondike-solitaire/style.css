@@ -19,6 +19,7 @@
   --kl-suit-size: clamp(1rem, 2vw, 1.2rem);
   --kl-card-step-mobile: 14px;
   --kl-card-step-mobile-mid: 12px;
+  --tableau-selection-gutter: 8px;
 }
 
 body[data-game-id="klondike-solitaire"],
@@ -973,6 +974,7 @@ button.control-mini {
     --card-height: calc(var(--card-width) * 1.42);
     --card-step: clamp(5px, 0.85vw, 8px);
     --tableau-gap: 0.45rem;
+    --tableau-selection-gutter: 2px;
     padding: 0.5rem 0.6rem 0.35rem;
     gap: 0.3rem;
   }
@@ -983,6 +985,7 @@ button.control-mini {
 
   .board-shell {
     border-radius: 12px;
+    flex: 0 0 auto;
   }
 
   .foundation-row,

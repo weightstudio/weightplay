@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "klondike-solitaire";
-  const GAME_VERSION = "v37";
+  const GAME_VERSION = "v38";
   const INTERFACE_VERSION = "6";
   const EVENT_NAME = "wp-klondike-analytics";
   const LOCALES = new Set(["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"]);
