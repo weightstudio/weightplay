@@ -99,6 +99,21 @@
       open: "سعة النقل: {built} إلى عمود مشغول · {empty} إلى عمود فارغ ({cells} خلايا / {columns} أعمدة حرة).",
     },
   };
+  const FREECELL_OPEN_COLUMN_CUE = {
+    en: "Open Column {source} by moving its full stack to Column {destination}; the extra space multiplies capacity.",
+    "zh-Hant": "將第 {source} 欄的整疊牌移到第 {destination} 欄，打開空欄就能倍增容量。",
+    "zh-Hans": "将第 {source} 列的整叠牌移到第 {destination} 列，打开空列就能增加容量。",
+    ja: "第{source}列の一連の山を第{destination}列へ移すと、空き列ができて容量が増えます。",
+    ko: "전체 묶음을 {source}번 열에서 {destination}번 열로 옮기면 빈 열이 생겨 이동 용량이 늘어납니다.",
+    es: "Mueve toda la columna {source} a la columna {destination} para abrir un espacio y multiplicar la capacidad.",
+    "pt-BR": "Mova toda a coluna {source} para a coluna {destination} para abrir um espaço e multiplicar a capacidade.",
+    fr: "Déplacez toute la colonne {source} vers la colonne {destination} pour libérer un espace et multiplier la capacité.",
+    de: "Verschiebe die ganze Spalte {source} auf Spalte {destination}, um Platz zu öffnen und die Kapazität zu vervielfachen.",
+    it: "Sposta l'intera colonna {source} sulla colonna {destination} per aprire uno spazio e moltiplicare la capacità.",
+    ru: "Переместите весь столбец {source} в столбец {destination}, чтобы открыть место и увеличить вместимость.",
+    hi: "पूरे कॉलम {source} को कॉलम {destination} पर ले जाएँ, ताकि जगह खुले और चाल क्षमता बढ़े।",
+    ar: "انقل العمود {source} كاملًا إلى العمود {destination} لفتح مساحة وزيادة سعة النقل.",
+  };
   const view = window.WPClassicSolitaire?.mount({ variant: "freecell", id: "freecell-solitaire", sequenceCue: SEQUENCE_CUE });
   const hintCueState = { active: false, moves: 0, timer: 0 };
   const ANALYTICS_EVENT = "wp-freecell-analytics";
@@ -154,28 +169,58 @@
       empty: Math.max(1, cells + 1) * (2 ** Math.max(0, columns - 1)),
     };
   };
-  const capacityText = (capacity) => {
+  const openColumnMove = () => {
+    const game = view?.game;
+    if (!game || game.tableau.some((pile) => pile.length === 0)) return null;
+    return game.legalMoves().find((move) => move.kind === "tableau"
+      && move.source?.zone === "tableau"
+      && move.destination?.zone === "tableau"
+      && Number(move.source.row) === 0
+      && move.source.pile !== move.destination.pile) || null;
+  };
+  const capacityText = (capacity, openMove = null) => {
     const copy = FREECELL_CAPACITY_COPY[view?.locale] || FREECELL_CAPACITY_COPY.en;
-    const template = capacity.columns > 0 ? copy.open : copy.closed;
-    return Object.entries({ capacity: capacity.built, ...capacity })
+    const openColumnCopy = FREECELL_OPEN_COLUMN_CUE[view?.locale] || FREECELL_OPEN_COLUMN_CUE.en;
+    const template = openMove && capacity.columns === 0
+      ? openColumnCopy
+      : capacity.columns > 0 ? copy.open : copy.closed;
+    const values = { capacity: capacity.built, ...capacity };
+    if (openMove) {
+      values.source = Number(openMove.source.pile) + 1;
+      values.destination = Number(openMove.destination.pile) + 1;
+    }
+    return Object.entries(values)
       .reduce((output, [key, value]) => output.replaceAll(`{${key}}`, String(value)), template);
   };
   const renderCapacityStatus = (force = false) => {
     const status = view?.nodes?.boardStatus;
     const capacity = capacitySnapshot();
     if (!status || !capacity || !view.active || view.game.won || view.game.lost || hintCueState.active) return;
-    const copy = capacityText(capacity);
+    const openMove = capacity.columns === 0 ? openColumnMove() : null;
+    const copy = capacityText(capacity, openMove);
     const stateName = status.dataset.state || "";
     if (stateName && stateName !== "freecell-capacity") return;
     if (status.textContent.trim() && stateName !== "freecell-capacity") return;
     if (!force && status.textContent.trim() && status.textContent !== copy) return;
-    if (status.dataset.state === "freecell-capacity" && status.textContent === copy) return;
+    const openSource = openMove ? String(Number(openMove.source.pile) + 1) : "";
+    const openDestination = openMove ? String(Number(openMove.destination.pile) + 1) : "";
+    if (status.dataset.state === "freecell-capacity"
+      && status.textContent === copy
+      && status.dataset.openColumnSource === openSource
+      && status.dataset.openColumnDestination === openDestination) return;
     status.dataset.state = "freecell-capacity";
     status.dataset.freecellCapacity = "true";
     status.dataset.capacityBuilt = String(capacity.built);
     status.dataset.capacityEmpty = String(capacity.empty);
     status.dataset.openCells = String(capacity.cells);
     status.dataset.emptyColumns = String(capacity.columns);
+    if (openMove) {
+      status.dataset.openColumnSource = openSource;
+      status.dataset.openColumnDestination = openDestination;
+    } else {
+      delete status.dataset.openColumnSource;
+      delete status.dataset.openColumnDestination;
+    }
     status.textContent = copy;
   };
   const analyticsDetails = (state, extra = {}) => ({
