@@ -469,6 +469,21 @@
     hi: "{card} — मान्य चाल",
     ar: "{card} — لعب قانوني",
   };
+  const SPEED_COACH_COPY = {
+    en: "Play immediately: one rank above or below either center card.",
+    "zh-Hant": "立即出牌：比任一中央牌高一點或低一點即可。",
+    "zh-Hans": "立即出牌：比任一中央牌高一点或低一点即可。",
+    ja: "すぐに、どちらかの中央カードより1ランク上か下のカードを出します。",
+    ko: "바로 플레이하세요. 어느 중앙 카드보다 한 단계 높거나 낮은 카드면 됩니다.",
+    es: "Juega de inmediato: una carta un rango por encima o por debajo de cualquiera de las cartas centrales.",
+    "pt-BR": "Jogue imediatamente: uma carta um valor acima ou abaixo de qualquer carta central.",
+    fr: "Jouez immédiatement : une carte d’un rang au-dessus ou au-dessous de l’une des cartes centrales.",
+    de: "Spiele sofort: eine Karte, die einen Rang über oder unter einer der mittleren Karten liegt.",
+    it: "Gioca subito: una carta di un valore sopra o sotto una delle carte centrali.",
+    ru: "Играйте сразу: карта на один ранг выше или ниже любой центральной карты.",
+    hi: "तुरंत खेलें: किसी भी केंद्रीय कार्ड से एक रैंक ऊपर या नीचे वाला कार्ड।",
+    ar: "العب فورًا: بطاقة أعلى أو أدنى بدرجة من أي بطاقة مركزية.",
+  };
   const GO_FISH_COPY = {
     en: { pending: "Choose a rank to ask {opponent}", ready: "Ask {opponent} for {rank}", book: "Book complete: {rank} · progress {books}/13" },
     "zh-Hant": { pending: "選擇要向 {opponent} 詢問的點數", ready: "向 {opponent} 詢問 {rank}", book: "完成 {rank} 組牌 · 進度 {books}/13" },
@@ -646,6 +661,7 @@
   const sameCard = (a, b) => a && b && a.suit === b.suit && a.rank === b.rank;
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const speedLegalLabel = (item) => (SPEED_LEGAL_COPY[currentLocale()] || SPEED_LEGAL_COPY.en).replace("{card}", cardText(item));
+  const speedCoachText = () => SPEED_COACH_COPY[currentLocale()] || SPEED_COACH_COPY.en;
 
   function cardMarkup(item, index, options = {}) {
     const hidden = options.hidden || item?.faceDown;
@@ -1014,7 +1030,7 @@
     const refill = () => { while (s.hand.length < 5 && s.stock.length) s.hand.push(s.stock.pop()); while (s.aiHand.length < 5 && s.aiStock.length) s.aiHand.push(s.aiStock.pop()); };
     const check = () => { if ((!s.hand.length && !s.stock.length) || (!s.aiHand.length && !s.aiStock.length)) { s.over = true; controller.result(!s.hand.length && !s.stock.length, `${t("cards")}: ${s.hand.length + s.stock.length} / ${s.aiHand.length + s.aiStock.length}`); clearTimeout(s.timer); } };
     const aiLoop = () => { if (s.over) return; const candidates = s.aiHand.flatMap((item, index) => s.centers.map((centerCard, centerIndex) => canPlay(item, centerCard) ? { item, index, centerIndex } : [])); if (candidates.length) { const pick = candidates[Math.floor(Math.random() * candidates.length)]; s.aiHand.splice(pick.index, 1); s.centers[pick.centerIndex] = pick.item; refill(); } else if (s.aiStock.length) { s.centers[0] = s.stock.length ? s.stock.pop() : s.centers[0]; s.centers[1] = s.aiStock.pop(); } check(); s.timer = setTimeout(aiLoop, 420); };
-    return { reset() { const cards = deck(); Object.assign(s, { hand: cards.splice(0, 20), stock: cards.splice(0, 6), aiHand: cards.splice(0, 20), aiStock: cards, centers: [deck()[0], deck()[1]], turn: true, over: false }); refill(); clearTimeout(s.timer); s.timer = setTimeout(aiLoop, 420); }, card(index) { if (s.over) return; const item = s.hand[index]; const centerIndex = s.centers.findIndex((centerCard) => canPlay(item, centerCard)); if (centerIndex < 0) return; s.hand.splice(index, 1); s.centers[centerIndex] = item; refill(); check(); }, action() {}, view() { return { phase: "Speed", status: t("yourTurn"), help: "Play immediately: one rank above or below either center card.", score: s.hand.length + s.stock.length, opponents: opponentMarkup("AI", s.aiHand.length + s.aiStock.length), center: `<div class="card-speed-lane"><div class="card-speed-pile">${cardMarkup(s.centers[0], 0)}</div><div class="card-speed-pile">${cardMarkup(s.centers[1], 0)}</div></div>`, hand: cardsMarkup(s.hand), actions: `<span class="card-help">${s.stock.length} ${t("stock")} · ${s.aiStock.length} ${t("cards")} ${t("waiting")}</span>` }; } };
+    return { reset() { const cards = deck(); Object.assign(s, { hand: cards.splice(0, 20), stock: cards.splice(0, 6), aiHand: cards.splice(0, 20), aiStock: cards, centers: [deck()[0], deck()[1]], turn: true, over: false }); refill(); clearTimeout(s.timer); s.timer = setTimeout(aiLoop, 420); }, card(index) { if (s.over) return; const item = s.hand[index]; const centerIndex = s.centers.findIndex((centerCard) => canPlay(item, centerCard)); if (centerIndex < 0) return; s.hand.splice(index, 1); s.centers[centerIndex] = item; refill(); check(); }, action() {}, view() { return { phase: "Speed", status: t("yourTurn"), help: speedCoachText(), score: s.hand.length + s.stock.length, opponents: opponentMarkup("AI", s.aiHand.length + s.aiStock.length), center: `<div class="card-speed-lane"><div class="card-speed-pile">${cardMarkup(s.centers[0], 0)}</div><div class="card-speed-pile">${cardMarkup(s.centers[1], 0)}</div></div>`, hand: cardsMarkup(s.hand), actions: `<span class="card-help">${s.stock.length} ${t("stock")} · ${s.aiStock.length} ${t("cards")} ${t("waiting")}</span>` }; } };
   }
 
   function makeOldMaid(controller) {
@@ -1328,7 +1344,7 @@
       reset() { const cards = deck(); Object.assign(s, { hand: cards.splice(0, 5), stock: cards.splice(0, 20), aiHand: cards.splice(0, 5), aiStock: cards.splice(0, 20), centers: cards.splice(0, 2), waste: [], over: false, lastPlayerAt: Date.now() }); clearTimeout(s.timer); s.timer = setTimeout(aiLoop, 850); },
       card(index) { if (s.over) return; const item = s.hand[index]; const centerIndex = s.centers.findIndex((centerCard) => canPlay(item, centerCard)); if (centerIndex < 0) return; s.hand.splice(index, 1); replaceCenter(centerIndex, item); s.lastPlayerAt = Date.now(); refill(s.hand, s.stock); finishIfDone(); },
       action() {},
-      view() { const handMarkup = s.hand.map((item, index) => { const legal = s.centers.some((centerCard) => canPlay(item, centerCard)); return cardMarkup(item, index, { className: legal ? "card-speed-legal" : "", ariaLabel: legal ? speedLegalLabel(item) : undefined, runtimeLocalizeOff: legal }); }).join(""); return { phase: "Speed", status: t("yourTurn"), help: "Play immediately: one rank above or below either center card.", score: s.hand.length + s.stock.length, opponents: opponentMarkup("AI", s.aiHand.length + s.aiStock.length), center: `<div class="card-speed-lane"><div class="card-speed-pile">${cardMarkup(s.centers[0], 0)}</div><div class="card-speed-pile">${cardMarkup(s.centers[1], 0)}</div></div>`, hand: handMarkup, actions: `<span class="card-help">${s.stock.length} ${t("stock")} · ${s.aiStock.length} ${t("cards")} ${t("waiting")}</span>` }; }
+      view() { const handMarkup = s.hand.map((item, index) => { const legal = s.centers.some((centerCard) => canPlay(item, centerCard)); return cardMarkup(item, index, { className: legal ? "card-speed-legal" : "", ariaLabel: legal ? speedLegalLabel(item) : undefined, runtimeLocalizeOff: legal }); }).join(""); return { phase: "Speed", status: t("yourTurn"), help: speedCoachText(), score: s.hand.length + s.stock.length, opponents: opponentMarkup("AI", s.aiHand.length + s.aiStock.length), center: `<div class="card-speed-lane"><div class="card-speed-pile">${cardMarkup(s.centers[0], 0)}</div><div class="card-speed-pile">${cardMarkup(s.centers[1], 0)}</div></div>`, hand: handMarkup, actions: `<span class="card-help">${s.stock.length} ${t("stock")} · ${s.aiStock.length} ${t("cards")} ${t("waiting")}</span>` }; }
     };
   }
 

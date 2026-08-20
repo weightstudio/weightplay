@@ -59,7 +59,7 @@
 }
     </script>
   </head>
-<body><main id="popularArcade" class="popular-arcade"><header class="arcade-header"><div><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle">Cobra</h1><p id="gameTagline" class="tagline"></p></div><label class="locale-picker"><span id="languageLabel">Language</span><select id="localeSelect"></select></label></header><section id="mainScreen" class="screen"><div class="arcade-panel main-panel"><div class="main-copy"><p id="objective" class="objective"></p><p id="mainInstruction" class="tagline">Use the direction controls to guide the snake to every food cell.</p><button id="startBtn" class="primary">Start Game</button></div><div class="preview-art" aria-hidden="true">◉</div></div></section><section id="battleScreen" class="screen" hidden><div class="arcade-panel battle-panel"><div class="battle-top"><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary"></button><button id="restartBtn" class="secondary"></button></div></div><div class="board-wrap"><div id="board" class="board"></div></div><p id="gameMessage" class="game-message" aria-live="polite"></p><div id="controls"></div></div></section><section id="resultScreen" class="screen" hidden><div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div></section><footer class="arcade-footer" id="footerText"></footer></main>
+<body><main id="popularArcade" class="popular-arcade"><header class="arcade-header"><div><div id="eyebrow" class="eyebrow">Coleção de jogos populares</div><h1 id="gameTitle">Cobra</h1><p id="gameTagline" class="tagline">Um arcade de teste com dez clássicos e dez formas diferentes de jogar.</p></div><label class="locale-picker"><span id="languageLabel">Idioma</span><select id="localeSelect"></select></label></header><section id="mainScreen" class="screen"><div class="arcade-panel main-panel"><div class="main-copy"><p id="objective" class="objective"><strong>Objetivo:</strong> Guie a cobra até a comida e continue avançando.</p><p id="mainInstruction" class="tagline">Toque no tabuleiro ou escolha uma direção para começar; depois vá à comida, atravesse as bordas e evite sua cauda e as casas de obstáculo.</p><button id="startBtn" class="primary">Começar</button></div><div class="preview-art" aria-hidden="true">◉</div></div></section><section id="battleScreen" class="screen" hidden><div class="arcade-panel battle-panel"><div class="battle-top"><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary">Dica</button><button id="restartBtn" class="secondary">Reiniciar</button></div></div><div class="board-wrap"><div id="board" class="board"></div></div><p id="gameMessage" class="game-message" aria-live="polite"></p><div id="controls"></div></div></section><section id="resultScreen" class="screen" hidden><div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="retryBtn" class="primary">Jogar novamente</button><button id="homeBtn" class="secondary">Voltar ao início</button></div></div></section><footer class="arcade-footer" id="footerText">Cobra · Coleção de jogos populares</footer></main>
     <!-- adsense-static-guide:start -->
     <section class="game-page-info game-page-info-static" aria-label="Cobra informações do jogo">
     
@@ -94,7 +94,7 @@
         const poster = document.createElement("img");
         poster.className = "main-poster";
         poster.src = "../../assets/snake-cover.webp";
-        poster.alt = "Snake";
+        poster.alt = "Cobra";
         preview.replaceChildren(poster);
       }
       const header = document.querySelector(".arcade-header");
@@ -103,7 +103,7 @@
         back.className = "main-return";
         back.href = "/";
         back.dataset.wpReturn = "main";
-        back.setAttribute("aria-label", "Back to WeightPlay");
+        back.setAttribute("aria-label", "Voltar ao WeightPlay");
         back.innerHTML = '<span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="">';
         header.prepend(back);
       }
@@ -113,7 +113,7 @@
         back.type = "button";
         back.className = "secondary snake-battle-return";
         back.dataset.wpReturn = "battle";
-        back.setAttribute("aria-label", "Back to main");
+        back.setAttribute("aria-label", "Voltar ao início");
         back.textContent = "←";
         battle.prepend(back);
       }
