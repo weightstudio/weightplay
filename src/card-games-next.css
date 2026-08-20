@@ -53,6 +53,8 @@ body[data-wp-card-game="hearts"] .card-game-player-header small { min-width: 0; 
 .card-empty-slot { width: 52px; height: 72px; box-sizing: border-box; border: 2px dashed rgba(255,255,255,.28); border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; padding: 6px; color: #b9d8d3; font-size: 11px; line-height: 1.15; text-align: center; }
 body[data-wp-card-game="casino"] .playing-card.is-capture-candidate { border-color: #63e6be; box-shadow: 0 0 0 3px rgba(99,230,190,.34), 0 5px 10px rgba(0,0,0,.22); }
 body[data-wp-card-game="casino"] .card-build.is-capture-candidate { border-color: #63e6be; box-shadow: 0 0 0 3px rgba(99,230,190,.24); }
+body[data-wp-card-game="casino"] .card-casino-build-preview { border-color: rgba(245,200,76,.78); color: #ffefa7; background: rgba(95,62,15,.42); }
+body[data-wp-card-game="casino"] .card-game-player-header small { min-width: 0; flex: 1 1 auto; line-height: 1.2; overflow-wrap: anywhere; text-align: right; }
 .card-action-row { display: flex; justify-content: center; align-items: center; gap: 8px; flex-wrap: wrap; }
 .card-action-row button { min-height: 44px; }
 /* War's logical Battle Canvas scales below 1 on desktop. Keep its only
