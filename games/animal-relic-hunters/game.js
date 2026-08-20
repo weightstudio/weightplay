@@ -12,7 +12,7 @@
   const ROOMS_PER_EXPEDITION = 3;
   const EXPEDITIONS_PER_REGION = 5;
   const GAME_ID = "animal-relic-hunters";
-  const GAME_VERSION = 14;
+  const GAME_VERSION = 15;
   const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_relic_hunters_v1";
   const profileKey = "weightplay:animal-relic-hunters:profile:v1";
@@ -710,6 +710,72 @@
     nextExpedition: "\u4e0b\u4e00\u4efb\u52d9",
   });
 
+  Object.assign(text.en, {
+    combatHit: "Relic weapon hit · {damage} damage",
+    combatWard: "Ward struck · one charge removed",
+    combatHurt: "Enemy impact · keep moving",
+  });
+  Object.assign(text["zh-Hant"], {
+    combatHit: "遺跡武器命中・造成 {damage} 點傷害",
+    combatWard: "護盾命中・消耗 1 層",
+    combatHurt: "受到敵方衝擊・持續移動",
+  });
+  Object.assign(text.es, {
+    combatHit: "Impacto del arma reliquia · {damage} de daño",
+    combatWard: "Impacto en la barrera · se elimina 1 carga",
+    combatHurt: "Impacto enemigo · sigue moviéndote",
+  });
+  Object.assign(text["zh-Hans"], {
+    combatHit: "遗迹武器命中 · 造成 {damage} 点伤害",
+    combatWard: "护盾命中 · 消耗 1 层",
+    combatHurt: "受到敌方冲击 · 继续移动",
+  });
+  Object.assign(text.ja, {
+    combatHit: "遺物武器ヒット・{damage}ダメージ",
+    combatWard: "結界に命中・残り1層",
+    combatHurt: "敵の攻撃を受けた・動き続けよう",
+  });
+  Object.assign(text.ko, {
+    combatHit: "유물 무기 적중 · 피해 {damage}",
+    combatWard: "보호막 적중 · 1회 차감",
+    combatHurt: "적의 충격 · 계속 움직이세요",
+  });
+  Object.assign(text["pt-BR"], {
+    combatHit: "Arma de relíquia atingiu · {damage} de dano",
+    combatWard: "Barreira atingida · 1 carga removida",
+    combatHurt: "Impacto inimigo · continue se movendo",
+  });
+  Object.assign(text.fr, {
+    combatHit: "Impact de l’arme relique · {damage} dégâts",
+    combatWard: "Impact sur la barrière · 1 charge retirée",
+    combatHurt: "Impact ennemi · continuez à bouger",
+  });
+  Object.assign(text.de, {
+    combatHit: "Reliktwaffe trifft · {damage} Schaden",
+    combatWard: "Wardschild getroffen · 1 Ladung entfernt",
+    combatHurt: "Feindtreffer · weiter bewegen",
+  });
+  Object.assign(text.it, {
+    combatHit: "Colpo dell’arma reliquia · {damage} danni",
+    combatWard: "Colpo alla barriera · rimossa 1 carica",
+    combatHurt: "Impatto nemico · continua a muoverti",
+  });
+  Object.assign(text.ru, {
+    combatHit: "Попадание оружия-реликвии · урон: {damage}",
+    combatWard: "Удар по барьеру · снят 1 заряд",
+    combatHurt: "Удар врага · продолжайте двигаться",
+  });
+  Object.assign(text.hi, {
+    combatHit: "अवशेष हथियार का प्रहार · {damage} क्षति",
+    combatWard: "वार्ड पर प्रहार · 1 चार्ज घटा",
+    combatHurt: "शत्रु का प्रहार · चलते रहें",
+  });
+  Object.assign(text.ar, {
+    combatHit: "إصابة بسلاح الأثر · ضرر {damage}",
+    combatWard: "إصابة الحاجز · أزيلت شحنة واحدة",
+    combatHurt: "ضربة من العدو · واصل الحركة",
+  });
+
   // Textures and Sprites
   const assets = {
     bg: new Image(),
@@ -948,6 +1014,7 @@
     silencedUntil: 0,
     bossWarningUntil: 0,
     lastHitSoundAt: 0,
+    playerHitUntil: 0,
     roomGraceUntil: 0,
   };
 
@@ -963,6 +1030,9 @@
   let resultNextExpedition = 0;
   let resultMapIsPrimary = false;
   let lastTrackedObjectiveKey = "";
+  let combatFeedbackText = "";
+  let combatFeedbackUntil = 0;
+  let lastCombatFeedbackAt = 0;
   let eliteSpawnTimer = 0;
   let eliteSpawnDueAt = 0;
   let eliteSpawnCallback = null;
@@ -1017,11 +1087,12 @@
     if (!backgroundSuspendedAt || document.hidden || !windowFocused) return;
     const elapsed = Math.max(0, performance.now() - backgroundSuspendedAt);
     backgroundSuspendedAt = 0;
-    ["roomGraceUntil", "slowUntil", "silencedUntil", "bossWarningUntil", "lastHitSoundAt"].forEach((key) => {
+    ["roomGraceUntil", "slowUntil", "silencedUntil", "bossWarningUntil", "lastHitSoundAt", "playerHitUntil"].forEach((key) => {
       if (state[key] > 0) state[key] += elapsed;
     });
     state.enemies.forEach((enemy) => {
       if (enemy.lastHitAt > 0) enemy.lastHitAt += elapsed;
+      if (enemy.hitFlashUntil > 0) enemy.hitFlashUntil += elapsed;
     });
     if (eliteSpawnCallback && !eliteSpawnTimer) armEliteSpawn(eliteSpawnCallback, eliteSpawnRemaining);
     if (backgroundBattleSuspended && state.gameActive) {
@@ -1212,6 +1283,30 @@
       ? window.WeightPlayGameRuntimeLocalizer?.translate?.(source)
       : "";
     return translated || localized || source;
+  }
+
+  function showCombatFeedback(key, params = {}, duration = 1250) {
+    const now = performance.now();
+    if (now - lastCombatFeedbackAt < 320) return;
+    lastCombatFeedbackAt = now;
+    combatFeedbackText = t(key, params);
+    combatFeedbackUntil = now + duration;
+    if (nodes.roomObjective) {
+      nodes.roomObjective.hidden = false;
+      nodes.roomObjective.textContent = combatFeedbackText;
+    }
+  }
+
+  function markEnemyImpact(enemy, { damage = 0, blocked = false, visualKey = "default" } = {}) {
+    if (!enemy) return;
+    enemy.hitFlashUntil = performance.now() + 260;
+    enemy.hitVisualKey = visualKey;
+    showCombatFeedback(blocked ? "combatWard" : "combatHit", blocked ? {} : { damage: Math.max(1, Math.round(Number(damage) || 0)) });
+  }
+
+  function markPlayerImpact() {
+    state.playerHitUntil = performance.now() + 280;
+    showCombatFeedback("combatHurt");
   }
 
   const ariaText = {
@@ -2273,6 +2368,10 @@
     state.particleSystems = [];
     state.slowUntil = 0;
     state.silencedUntil = 0;
+    state.playerHitUntil = 0;
+    combatFeedbackText = "";
+    combatFeedbackUntil = 0;
+    lastCombatFeedbackAt = 0;
 
     // Wave spawning trigger
     spawnRoomEntities();
@@ -2461,6 +2560,8 @@
       phaseFlags: new Set(),
       tint: options.tint || "",
       label: options.label || "",
+      hitFlashUntil: 0,
+      hitVisualKey: "default",
     };
   }
 
@@ -2490,6 +2591,9 @@
     state.orbs = [];
     state.pickups = [];
     state.roomGraceUntil = performance.now() + ROOM_ENTRY_GRACE_MS;
+    state.playerHitUntil = 0;
+    combatFeedbackText = "";
+    combatFeedbackUntil = 0;
 
     const room = state.room;
     const expedition = state.expedition;
@@ -2535,6 +2639,13 @@
 
   function updateRoomObjective() {
     if (!nodes.roomObjective) return;
+    if (combatFeedbackText && combatFeedbackUntil > performance.now()) {
+      nodes.roomObjective.hidden = false;
+      nodes.roomObjective.textContent = combatFeedbackText;
+      return;
+    }
+    combatFeedbackText = "";
+    combatFeedbackUntil = 0;
     const activeTypes = new Set(state.pickups.map((pickup) => pickup.type));
     const key = activeTypes.has("key")
       ? "roomObjectiveKey"
@@ -2981,6 +3092,9 @@
     // Heal player slightly between rooms
     const stats = getStats();
     state.playerHp = Math.min(stats.maxHp, state.playerHp + 10);
+    state.playerHitUntil = 0;
+    combatFeedbackText = "";
+    combatFeedbackUntil = 0;
 
     spawnRoomEntities();
     lastTrackedObjectiveKey = "";
@@ -3109,6 +3223,7 @@
       const dy = state.playerY - shot.y;
       if (Math.hypot(dx, dy) < shot.size + 15) {
         state.playerHp = Math.max(0, state.playerHp - shot.damage);
+        markPlayerImpact();
         if (shot.kind === "silence") state.silencedUntil = performance.now() + 1500;
         if (shot.kind === "pulse") state.slowUntil = performance.now() + 1200;
         state.enemyShots.splice(index, 1);
@@ -3204,6 +3319,7 @@
       if (!roomInGrace && dist < enemy.size + 15) {
         const contactDamage = enemy.isBoss ? 0.24 : enemy.behavior === "rusher" ? 0.2 : 0.15;
         state.playerHp = Math.max(0, state.playerHp - contactDamage);
+        markPlayerImpact();
         if (["slower", "mire"].includes(enemy.behavior)) state.slowUntil = performance.now() + 800;
         const now = performance.now();
         if (now - state.lastHitSoundAt > 520) {
@@ -3227,12 +3343,14 @@
           if (enemy.shieldHits > 0) {
             enemy.shieldHits -= 1;
             state.bullets.splice(bIndex, 1);
+            markEnemyImpact(enemy, { blocked: true, visualKey: bullet.visualKey });
             createDamageSparks(bullet.x, bullet.y, 0);
             return;
           }
           enemy.hp -= bullet.dmg;
           enemy.lastHitAt = performance.now();
           state.bullets.splice(bIndex, 1);
+          markEnemyImpact(enemy, { damage: bullet.dmg, visualKey: bullet.visualKey });
 
           // Spark particle system
           createDamageSparks(bullet.x, bullet.y, Math.max(1, Math.round(bullet.dmg)));
@@ -3347,6 +3465,7 @@
     });
 
     // Draw frame canvas
+    if (combatFeedbackText && combatFeedbackUntil <= performance.now()) updateRoomObjective();
     drawCanvasFrame();
 
     state.gameLoopId = requestAnimationFrame(updateGameEngine);
@@ -3598,6 +3717,24 @@
         ctx.fillRect(-enemy.size, -enemy.size, enemy.size * 2, enemy.size * 2);
       }
 
+      const hitRemaining = Math.max(0, (enemy.hitFlashUntil || 0) - performance.now());
+      if (hitRemaining > 0) {
+        const progress = hitRemaining / 260;
+        const visual = getBulletVisualProfile(enemy.hitVisualKey);
+        ctx.globalAlpha = 0.22 * progress;
+        ctx.fillStyle = "#ffffff";
+        ctx.beginPath();
+        ctx.arc(0, 0, enemy.size * 0.92, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 0.95 * progress;
+        ctx.strokeStyle = visual.core;
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.arc(0, 0, enemy.size + 11 + (1 - progress) * 7, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+
       if (enemy.shieldHits > 0) {
         ctx.strokeStyle = "#7dd3fc";
         ctx.lineWidth = 4;
@@ -3621,6 +3758,17 @@
     // 6. Draw Hero Lion Explorer
     ctx.save();
     ctx.translate(state.playerX, state.playerY);
+    const playerHitRemaining = Math.max(0, (state.playerHitUntil || 0) - performance.now());
+    if (playerHitRemaining > 0) {
+      const progress = playerHitRemaining / 280;
+      ctx.globalAlpha = 0.9 * progress;
+      ctx.strokeStyle = "#fb7185";
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(0, 0, 29 + (1 - progress) * 8, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
     if (assets.hero.complete) {
       ctx.drawImage(assets.hero, -22, -22, 44, 44);
     } else {
@@ -3664,16 +3812,18 @@
         color: `hsl(${180 + Math.random() * 40}, 100%, 75%)`,
       });
     }
-    particleSparksList.push({
-      x,
-      y: y - 5,
-      vx: 0,
-      vy: -0.72,
-      life: 26,
-      maxLife: 26,
-      type: "damage-label",
-      damage,
-    });
+    if (damage > 0) {
+      particleSparksList.push({
+        x,
+        y: y - 5,
+        vx: 0,
+        vy: -0.72,
+        life: 26,
+        maxLife: 26,
+        type: "damage-label",
+        damage,
+      });
+    }
   }
 
   function updateDamageSparks(ctx) {
@@ -4296,6 +4446,37 @@
           drawCanvasFrame();
           return state.enemyShots.map(({ kind, x, y, size }) => ({ kind, x, y, size }));
         },
+        previewCombatFeedbackForTest(kind = "enemy") {
+          const previousEnemies = state.enemies;
+          const previousPlayerHitUntil = state.playerHitUntil;
+          const previousFeedback = { text: combatFeedbackText, until: combatFeedbackUntil, lastAt: lastCombatFeedbackAt };
+          combatFeedbackText = "";
+          combatFeedbackUntil = 0;
+          lastCombatFeedbackAt = 0;
+          if (kind === "enemy") {
+            const target = createThreat("chaser", state.playerX + 80, state.playerY, { size: 24 });
+            state.enemies = [target];
+            markEnemyImpact(target, { damage: 12, visualKey: "sword-rare" });
+          } else {
+            markPlayerImpact();
+          }
+          drawCanvasFrame();
+          const result = {
+            kind,
+            feedbackText: nodes.roomObjective?.textContent || "",
+            feedbackVisible: nodes.roomObjective?.hidden !== true,
+            enemyFlashRemaining: Math.max(0, (state.enemies[0]?.hitFlashUntil || 0) - performance.now()),
+            playerHitRemaining: Math.max(0, (state.playerHitUntil || 0) - performance.now()),
+          };
+          state.enemies = previousEnemies;
+          state.playerHitUntil = previousPlayerHitUntil;
+          combatFeedbackText = previousFeedback.text;
+          combatFeedbackUntil = previousFeedback.until;
+          lastCombatFeedbackAt = previousFeedback.lastAt;
+          updateRoomObjective();
+          drawCanvasFrame();
+          return result;
+        },
         refreshShopForTest() {
           updateDiamondShopUI();
           return this.snapshot();
@@ -4341,6 +4522,12 @@
             player: { x: state.playerX, y: state.playerY, hp: state.playerHp, maxHp: state.playerMaxHp, active: state.gameActive },
             moveTarget: moveTarget ? { ...moveTarget } : null,
             roomGraceRemaining: Math.max(0, state.roomGraceUntil - (backgroundSuspendedAt || performance.now())),
+            combatFeedback: {
+              text: nodes.roomObjective?.textContent || "",
+              active: Boolean(combatFeedbackText && combatFeedbackUntil > performance.now()),
+            },
+            enemyHitFlashCount: state.enemies.filter((enemy) => (enemy.hitFlashUntil || 0) > performance.now()).length,
+            playerHitRemaining: Math.max(0, (state.playerHitUntil || 0) - performance.now()),
             paused: manualPauseActive,
           };
         },

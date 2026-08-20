@@ -455,6 +455,44 @@ body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyram
     grid-column: 1 / -1;
     grid-row: 3;
   }
+
+  /* Pyramid has seven open rows, so a compact landscape screen needs the
+     same side-rail composition as TriPeaks. Keep Stock/Waste and actions in
+     stable rails while the full pyramid owns the remaining vertical track;
+     the rows overlap only vertically, leaving every card face reachable. */
+  body[data-wp-game-id="pyramid-solitaire"] #classicBoard {
+    grid-template-columns: 128px minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+  body[data-wp-game-id="pyramid-solitaire"] #classicBoard .board-middle {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    align-self: start;
+  }
+  body[data-wp-game-id="pyramid-solitaire"] #classicBoard .board-status {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  body[data-wp-game-id="pyramid-solitaire"] #classicBoard .tableau-area.variant-pyramid {
+    --classic-card-width: clamp(27px, 6.8vh, 36px);
+    --classic-card-height: calc(var(--classic-card-width) * 1.42);
+    grid-column: 2;
+    grid-row: 2;
+    justify-content: flex-start;
+    overflow: visible;
+    padding: 1px 0 0;
+  }
+  body[data-wp-game-id="pyramid-solitaire"] #classicBoard .tableau-area.variant-pyramid > .pyramid-row {
+    flex-basis: calc(var(--classic-card-height) * .4);
+    height: calc(var(--classic-card-height) * .4);
+  }
+  body[data-wp-game-id="pyramid-solitaire"] #classicBoard .stock-pile {
+    --pyramid-stock-card-width: clamp(27px, 6.8vh, 36px);
+  }
+  body[data-wp-game-id="pyramid-solitaire"] #classicBoard .battle-actions {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
 }
 
 body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyramid-row {
