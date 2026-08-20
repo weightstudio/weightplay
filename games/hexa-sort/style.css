@@ -479,6 +479,10 @@
   color: #ffcf6b;
   font-weight: 800;
 }
+.feedback.endless-pressure {
+  color: #ffd96b;
+  font-weight: 800;
+}
 @media (max-width: 680px) {
   .hex-board {
     width: min(100cqw, 100cqh, 430px);

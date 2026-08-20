@@ -5,7 +5,7 @@
   const palette = ["#ef6b62", "#4da8e8", "#f0bb4d", "#9a7ae9"];
   const routeCodes = ["A", "B", "C", "D"];
   const GAME_ID = "animal-bus-jam";
-  const GAME_VERSION = 12;
+  const GAME_VERSION = 13;
   const INTERFACE_VERSION = 6;
   const busArt = ["coral", "sky", "sun", "violet"].map((color) => `/assets/animal-bus-jam-bus-${color}.webp`);
   const passengerArt = ["coral", "sky", "sun", "violet"].map((color) => `/assets/animal-bus-jam-passenger-${color}.webp`);
@@ -56,6 +56,9 @@
   let pageCached = false;
   let resultActionClaimed = false;
   let inputType = "pointer";
+  let feedbackKey = "status";
+  let feedbackTone = "neutral";
+  let feedbackVars = {};
   const STAGE_POOL_SIZE = 9;
   let stageWindowStart = 0;
   let stageCardPool = [];
@@ -124,6 +127,23 @@
     return String(value).replace(/\{(\w+)\}/g, (_, name) => vars[name] ?? "");
   }
 
+  function renderFeedback() {
+    const status = $("status");
+    status.dataset.feedback = feedbackTone;
+    status.textContent = t(feedbackKey, feedbackVars);
+  }
+
+  function announceFeedback(key, tone, vars = {}) {
+    feedbackKey = key;
+    feedbackTone = tone;
+    feedbackVars = { ...vars };
+    renderFeedback();
+    const status = $("status");
+    status.classList.remove("feedback-pop");
+    void status.offsetWidth;
+    status.classList.add("feedback-pop");
+  }
+
   function save() {
     write(progressKey, JSON.stringify(progress));
   }
@@ -163,6 +183,7 @@
     $("locale").value = locale;
     renderStage();
     if (screen === "battle" && state) render();
+    renderFeedback();
     if ($("result").open) $("resultBody").textContent = t("resultBody", { n: levelIndex + 1, moves });
     if ($("leaveBattle").open) $("leaveBattleBody").textContent = t("leaveBody", { n: levelIndex + 1 });
   }
@@ -620,7 +641,10 @@
     $("leaveBattle").close();
     show("battle");
     render();
-    $("status").textContent = t("status");
+    feedbackKey = "status";
+    feedbackTone = "neutral";
+    feedbackVars = {};
+    renderFeedback();
     trackFunnel("stop_start", { source: "stage_card" });
   }
 
@@ -629,8 +653,9 @@
     const color = state.queues[queueIndex]?.[0];
     const activeColor = level.buses[state.busIndex]?.color;
     if (color === undefined || activeColor === undefined) return;
+    const previousWaiting = state.waiting.length;
     if (color !== activeColor && state.waiting.length >= level.baySize) {
-      $("status").textContent = t("holdingFull");
+      announceFeedback("holdingFull", "blocked");
       root.querySelector(".holding-panel")?.classList.remove("jam");
       requestAnimationFrame(() => root.querySelector(".holding-panel")?.classList.add("jam"));
       return;
@@ -660,7 +685,17 @@
     }
     render();
     if (restoreKeyboardFocus) focusNextPassenger(queueIndex);
-    $("status").textContent = color === activeColor ? t("boarded") : t("held");
+    const clearedWaiting = previousWaiting > state.waiting.length;
+    const departed = state.busIndex > previousBusIndex;
+    if (departed) {
+      announceFeedback(clearedWaiting ? "feedbackDepartureClear" : "feedbackDeparture", "departure", { count: state.busIndex - previousBusIndex });
+    } else if (clearedWaiting) {
+      announceFeedback("feedbackClear", "clear", { count: previousWaiting - state.waiting.length });
+    } else if (color === activeColor) {
+      announceFeedback("feedbackDirect", "direct", { color: t("colors")[color] });
+    } else {
+      announceFeedback("feedbackHold", "hold", { color: t("colors")[color] });
+    }
 
     if (engine.isComplete(level, state)) {
       if (departingBusIndexes.length === 0) finishLevel();
@@ -702,7 +737,7 @@
     departingBusIndexes = [];
     restore(saved);
     render();
-    $("status").textContent = t("undone");
+    announceFeedback("undone", "undo");
     trackFunnel("undo", { move_count: moves });
   }
 
@@ -717,7 +752,7 @@
     if (queueIndex < 0) queueIndex = state.queues.findIndex((queue) => queue.length);
     const button = root.querySelector(`.passenger.front[data-queue="${queueIndex}"]`);
     if (button) {
-      $("status").textContent = t("hintMove", {
+      announceFeedback("hintMove", "hint", {
         queue: queueIndex + 1,
         color: t("colors")[Number(button.dataset.color)],
       });

@@ -168,6 +168,102 @@
   Object.entries(copy).forEach(([code, values]) => {
     if (window.BUS_JAM_LOCALES[code]) Object.assign(window.BUS_JAM_LOCALES[code], values);
   });
+  const dispatchFeedback = {
+    en: {
+      feedbackDirect: "{color} passenger boarded directly.",
+      feedbackHold: "{color} passenger moved to the holding lane.",
+      feedbackClear: "Holding lane clear: {count} passenger joined the active bus.",
+      feedbackDeparture: "{count} bus departed.",
+      feedbackDepartureClear: "{count} bus departed; the holding lane cleared.",
+    },
+    "zh-Hant": {
+      feedbackDirect: "{color}乘客直接上車。",
+      feedbackHold: "{color}乘客進入候車通道。",
+      feedbackClear: "候車通道清空：{count} 位乘客補入當前公車。",
+      feedbackDeparture: "{count} 台公車發車。",
+      feedbackDepartureClear: "{count} 台公車發車，候車通道已清空。",
+    },
+    "zh-Hans": {
+      feedbackDirect: "{color}乘客直接上车。",
+      feedbackHold: "{color}乘客进入候车通道。",
+      feedbackClear: "候车通道清空：{count} 位乘客补入当前公交车。",
+      feedbackDeparture: "{count} 辆公交车发车。",
+      feedbackDepartureClear: "{count} 辆公交车发车，候车通道已清空。",
+    },
+    ja: {
+      feedbackDirect: "{color}の乗客がそのまま乗車しました。",
+      feedbackHold: "{color}の乗客を待機レーンへ送りました。",
+      feedbackClear: "待機レーンが解消：{count}人が現在のバスへ。",
+      feedbackDeparture: "{count}台のバスが出発しました。",
+      feedbackDepartureClear: "{count}台のバスが出発し、待機レーンも解消しました。",
+    },
+    ko: {
+      feedbackDirect: "{color} 승객이 바로 탑승했습니다.",
+      feedbackHold: "{color} 승객이 대기 통로로 이동했습니다.",
+      feedbackClear: "대기 통로 해소: 승객 {count}명이 현재 버스에 탑승했습니다.",
+      feedbackDeparture: "버스 {count}대가 출발했습니다.",
+      feedbackDepartureClear: "버스 {count}대가 출발하고 대기 통로가 해소되었습니다.",
+    },
+    es: {
+      feedbackDirect: "El pasajero {color} subió directamente.",
+      feedbackHold: "El pasajero {color} pasó al carril de espera.",
+      feedbackClear: "Carril despejado: {count} pasajero subió al bus activo.",
+      feedbackDeparture: "Salió {count} autobús.",
+      feedbackDepartureClear: "Salió {count} autobús y el carril quedó despejado.",
+    },
+    "pt-BR": {
+      feedbackDirect: "O passageiro {color} embarcou diretamente.",
+      feedbackHold: "O passageiro {color} foi para a faixa de espera.",
+      feedbackClear: "Faixa livre: {count} passageiro entrou no ônibus ativo.",
+      feedbackDeparture: "{count} ônibus partiu.",
+      feedbackDepartureClear: "{count} ônibus partiu e a faixa de espera ficou livre.",
+    },
+    fr: {
+      feedbackDirect: "Le passager {color} est monté directement.",
+      feedbackHold: "Le passager {color} passe dans la voie d’attente.",
+      feedbackClear: "Voie libérée : {count} passager rejoint le bus actif.",
+      feedbackDeparture: "{count} bus est parti.",
+      feedbackDepartureClear: "{count} bus est parti et la voie est libérée.",
+    },
+    de: {
+      feedbackDirect: "Der {color}-Fahrgast ist direkt eingestiegen.",
+      feedbackHold: "Der {color}-Fahrgast wartet in der Wartezone.",
+      feedbackClear: "Wartezone frei: {count} Fahrgast steigt in den aktiven Bus.",
+      feedbackDeparture: "{count} Bus ist abgefahren.",
+      feedbackDepartureClear: "{count} Bus ist abgefahren, die Wartezone ist frei.",
+    },
+    it: {
+      feedbackDirect: "Il passeggero {color} è salito direttamente.",
+      feedbackHold: "Il passeggero {color} è passato nella corsia d’attesa.",
+      feedbackClear: "Corsia libera: {count} passeggero sale sull’autobus attivo.",
+      feedbackDeparture: "È partito {count} autobus.",
+      feedbackDepartureClear: "È partito {count} autobus e la corsia è libera.",
+    },
+    ru: {
+      feedbackDirect: "Пассажир «{color}» сел прямо в автобус.",
+      feedbackHold: "Пассажир «{color}» отправлен в зону ожидания.",
+      feedbackClear: "Зона ожидания свободна: {count} пассажир сел в активный автобус.",
+      feedbackDeparture: "Отправился автобус: {count}.",
+      feedbackDepartureClear: "Отправился автобус: {count}; зона ожидания свободна.",
+    },
+    hi: {
+      feedbackDirect: "{color} यात्री सीधे बस में बैठ गया।",
+      feedbackHold: "{color} यात्री प्रतीक्षा लेन में चला गया।",
+      feedbackClear: "प्रतीक्षा लेन साफ़: {count} यात्री सक्रिय बस में बैठा।",
+      feedbackDeparture: "{count} बस रवाना हुई।",
+      feedbackDepartureClear: "{count} बस रवाना हुई और प्रतीक्षा लेन साफ़ हो गई।",
+    },
+    ar: {
+      feedbackDirect: "صعد الراكب {color} مباشرةً.",
+      feedbackHold: "انتقل الراكب {color} إلى مسار الانتظار.",
+      feedbackClear: "انفتح مسار الانتظار: انتقل {count} راكب إلى الحافلة النشطة.",
+      feedbackDeparture: "غادرت {count} حافلة.",
+      feedbackDepartureClear: "غادرت {count} حافلة وانفتح مسار الانتظار.",
+    },
+  };
+  Object.entries(dispatchFeedback).forEach(([code, values]) => {
+    if (window.BUS_JAM_LOCALES[code]) Object.assign(window.BUS_JAM_LOCALES[code], values);
+  });
   const resultActions = {
     en: { menu: "Menu", next: "Next stage", retry: "Play again" },
     "zh-Hant": { menu: "選單", next: "下一關", retry: "再玩一次" },

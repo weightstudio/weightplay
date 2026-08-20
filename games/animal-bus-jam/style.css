@@ -467,11 +467,17 @@ body:not([data-screen="main"]) > .game-page-info { display: none !important; }
   font-weight: 850;
 }
 .tools button:disabled { opacity: .35; cursor: default; }
-.status { margin: 0; text-align: center; color: #c9d6de; font-size: .78rem; font-weight: 800; }
+.status { margin: 0; min-height: 1.25em; padding: 4px 10px; border: 1px solid transparent; border-radius: 999px; background: rgba(8, 22, 34, .46); text-align: center; color: #c9d6de; font-size: .78rem; font-weight: 800; transition: color .16s ease, border-color .16s ease, background-color .16s ease; }
+.status[data-feedback="direct"] { color: #bff6d4; border-color: rgba(83, 210, 139, .55); background: rgba(39, 139, 91, .22); }
+.status[data-feedback="hold"] { color: #ffe2a5; border-color: rgba(241, 187, 77, .62); background: rgba(157, 101, 25, .24); }
+.status[data-feedback="clear"], .status[data-feedback="departure"] { color: #bfe7ff; border-color: rgba(77, 168, 232, .62); background: rgba(40, 111, 158, .25); }
+.status[data-feedback="blocked"] { color: #ffc5c0; border-color: rgba(239, 107, 98, .66); background: rgba(154, 48, 43, .25); }
+.status.feedback-pop { animation: feedbackPop .32s ease; }
 .hint { animation: hintPulse .7s ease; }
 .jam { animation: jamShake .35s ease; }
 @keyframes hintPulse { 50% { filter: brightness(1.8); transform: translateY(-4px); } }
 @keyframes jamShake { 25%, 75% { transform: translateX(6px); } 50% { transform: translateX(-6px); } }
+@keyframes feedbackPop { 50% { filter: brightness(1.35); transform: translateY(-2px); } }
 @keyframes busDepartLeft {
   0% {
     flex-basis: var(--departing-bus-width);
@@ -668,4 +674,5 @@ dialog button:disabled { opacity: .42; cursor: not-allowed; }
 
 @media (prefers-reduced-motion: reduce) {
   .bus.departing { animation-duration: 80ms; animation-delay: 0ms; }
+  .status.feedback-pop { animation: none; }
 }
