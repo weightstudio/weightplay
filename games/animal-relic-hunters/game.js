@@ -12,7 +12,7 @@
   const ROOMS_PER_EXPEDITION = 3;
   const EXPEDITIONS_PER_REGION = 5;
   const GAME_ID = "animal-relic-hunters";
-  const GAME_VERSION = 12;
+  const GAME_VERSION = 13;
   const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_relic_hunters_v1";
   const profileKey = "weightplay:animal-relic-hunters:profile:v1";
@@ -2328,7 +2328,11 @@
   // Each named expedition owns three authored rooms. The visible mission rule
   // now changes threat order and entry geometry instead of only changing count.
   const encounterProfiles = {
-    chase: encounter(["north", "sides", "corners"], ["chaser chaser chaser", "chaser chaser chaser rusher", "chaser chaser rusher chaser splitter"], { grace:[3500,2800,2400], eliteDelay:[12000,11500,11000], hpMultiplier:.62, speedMultiplier:.72, eliteHp:[1.8,2.1,2.4], eliteSpeed:.78 }),
+    // Expedition 1 Room 3 is the first guardian/key decision, not a hidden
+    // damage check. Keep the same authored threats and reduced stats, but
+    // give the player a longer protected setup to read the room and let
+    // auto-fire thin the opening pressure before contact begins.
+    chase: encounter(["north", "sides", "corners"], ["chaser chaser chaser", "chaser chaser chaser rusher", "chaser chaser rusher chaser splitter"], { grace:[3500,2800,4200], eliteDelay:[12000,11500,11000], hpMultiplier:.62, speedMultiplier:.72, eliteHp:[1.8,2.1,2.4], eliteSpeed:.78 }),
     rush: encounter(["sides", "pincer", "columns"], ["chaser rusher chaser rusher", "rusher chaser rusher chaser rusher", "rusher rusher chaser splitter rusher chaser"], { grace:[2800,2400,2100], eliteDelay:[10500,10000,9500], hpMultiplier:.76, speedMultiplier:.84, eliteHp:[2.2,2.5,2.8], eliteSpeed:.86 }),
     swarm: encounter(["corners", "surround", "north"], ["chaser chaser splitter chaser", "chaser splitter chaser splitter chaser", "splitter chaser chaser splitter rusher chaser"], { hpMultiplier:.84, speedMultiplier:.9, eliteDelay:[9500,9000,8500] }),
     split: encounter(["columns", "corners", "surround"], ["splitter chaser splitter chaser chaser", "splitter splitter chaser rusher splitter chaser", "splitter rusher splitter chaser splitter rusher chaser"], { hpMultiplier:.9, eliteDelay:[9000,8500,8000] }),
