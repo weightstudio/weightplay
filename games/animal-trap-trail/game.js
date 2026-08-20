@@ -1,6 +1,7 @@
 /* Internal prototype only. Geometry is temporary until the art gate. */
 (() => {
   const $ = (id) => document.getElementById(id);
+  const GAME_VERSION = 5;
   const loadingPanel = $("loadingPanel");
   if (loadingPanel) { const hideLoading = () => { loadingPanel.hidden = true; loadingPanel.classList.add("hidden"); }; if (document.readyState === "complete") hideLoading(); else window.addEventListener("load", hideLoading, { once: true }); }
   const canvas = $("arena");
@@ -26,6 +27,21 @@
     hi: { stageTitle: "जाल अध्याय", stageSections: "चरण", backMain: "मुख्य पर लौटें", backStages: "चरणों पर लौटें", chapter: "अध्याय {n}", room: "कमरा {n}", deaths: "मृत्यु {n}", battleStatus: "तीर कुंजियों से चलें · SPACE से कूदें · E से छोटा संकेत दिखाएँ।", touchControls: "टच नियंत्रण", jump: "कूदें", pulse: "पल्स", touchHint: "लालटेन खोजें। जाल केवल वर्तमान कमरे को रीसेट करते हैं।", canvasAria: "चांदनी जाल पथ का खेल क्षेत्र", chapters: "अध्याय", nextRoom: "अगला कमरा", nextChapter: "अगला अध्याय", replayChapter: "अध्याय फिर खेलें", retryRoom: "कमरा फिर आज़माएँ", trailClear: "पथ पूरा", chapterClear: "अध्याय पूरा", roomClear: "कमरा पूरा", resultCopy: "अध्याय {chapter}, कमरा {room} पूरा · मृत्यु {deaths}", gapDeath: "दरार खुल गई — रास्ता रीसेट हो गया।", hazardDeath: "छिपा जाल सक्रिय हुआ — संकेत पढ़कर फिर कोशिश करें।", pulseFeedback: "मून पल्स: अगले जाल का संकेत दिखाया गया है।", readPath: "रास्ता पढ़ें", moveLeft: "बाएँ चलें", moveRight: "दाएँ चलें", backToWeight: "WeightPlay पर लौटें", loading: "चांदनी रास्ता तैयार हो रहा है…", progress: "सर्वश्रेष्ठ कमरा: {bestRoom} · मृत्यु: {deaths}", descriptions: ["संकेत पहचानें", "देरी देखें", "उलटाव पढ़ें", "मिश्रित नियमों का अंत"] },
     ar: { stageTitle: "فصول الفخاخ", stageSections: "المراحل", backMain: "العودة إلى البداية", backStages: "العودة إلى المراحل", chapter: "الفصل {n}", room: "الغرفة {n}", deaths: "الوفيات {n}", battleStatus: "تحرك بالأسهم · اقفز بمفتاح المسافة · يعرض E تلميحاً قصيراً.", touchControls: "عناصر تحكم باللمس", jump: "قفز", pulse: "نبضة", touchHint: "اعثر على المصباح. تعيد الفخاخ ضبط الغرفة الحالية فقط.", canvasAria: "منطقة لعب درب فخاخ ضوء القمر", chapters: "الفصول", nextRoom: "الغرفة التالية", nextChapter: "الفصل التالي", replayChapter: "إعادة الفصل", retryRoom: "إعادة محاولة الغرفة", trailClear: "اكتمل الدرب", chapterClear: "اكتمل الفصل", roomClear: "اكتملت الغرفة", resultCopy: "اكتمل الفصل {chapter}، الغرفة {room} · الوفيات {deaths}", gapDeath: "انفتح شق — تمت إعادة ضبط الطريق.", hazardDeath: "انطلق فخ مخفي — اقرأ التلميح وحاول مجدداً.", pulseFeedback: "نبضة القمر: تم إبراز تلميح الفخ التالي.", readPath: "اقرأ الطريق", moveLeft: "تحرك يساراً", moveRight: "تحرك يميناً", backToWeight: "العودة إلى WeightPlay", loading: "جارٍ تجهيز درب ضوء القمر…", progress: "أفضل غرفة: {bestRoom} · الوفيات: {deaths}", descriptions: ["تعلّم الإشارات", "راقب التأخير", "اقرأ الانعكاس", "نهاية القواعد المختلطة"] },
   };
+  const landingCueCopy = {
+    en: "Moon pulse: land in the lit window after the gap, then jump the spike.",
+    "zh-Hant": "月光脈衝：在裂縫後的發光區落地，再跳過尖刺。",
+    "zh-Hans": "月光脉冲：在裂缝后的发光区落地，再跳过尖刺。",
+    ja: "ムーンパルス：裂け目の先の光る範囲に着地してから、トゲを跳び越えよう。",
+    ko: "달빛 펄스: 틈 뒤의 빛나는 구간에 착지한 뒤 가시를 뛰어넘으세요.",
+    es: "Pulso lunar: aterriza en la zona iluminada tras el hueco y luego salta las púas.",
+    "pt-BR": "Pulso lunar: pouse na faixa iluminada após a abertura e depois pule os espinhos.",
+    fr: "Impulsion lunaire : atterrissez dans la zone éclairée après le trou, puis sautez les piques.",
+    de: "Mondimpuls: Lande im Lichtfenster hinter der Lücke und springe dann über die Spitzen.",
+    it: "Impulso lunare: atterra nella zona illuminata oltre il varco, poi salta gli spuntoni.",
+    ru: "Лунный импульс: приземлитесь в светлом окне за провалом, затем перепрыгните шипы.",
+    hi: "मून पल्स: दरार के बाद चमकते हिस्से में उतरें, फिर काँटों पर कूदें।",
+    ar: "نبضة القمر: اهبط في النافذة المضيئة بعد الشق، ثم اقفز فوق الأشواك.",
+  };
   function format(value, values) { return value.replace(/\{(\w+)\}/g, (_, key) => values[key] ?? ""); }
   function currentLocale() {
     const candidate = window.WeightPlayFiveGameLocale?.locale || document.documentElement.lang || "en";
@@ -41,7 +57,8 @@
     const c = copy();
     setText("room-label", `${chapterLabel(state.chapter)} · ${roomLabel(state.room)} / 3`);
     setText("death-label", deathLabel(state.deaths));
-    setText("battle-status", state.statusKey === "gap" ? c.gapDeath : state.statusKey === "hazard" ? c.hazardDeath : state.statusKey === "pulse" ? c.pulseFeedback : c.battleStatus);
+    const pulseText = state.chapter === 1 && state.room === 1 ? landingCueCopy[currentLocale()] : c.pulseFeedback;
+    setText("battle-status", state.statusKey === "gap" ? c.gapDeath : state.statusKey === "hazard" ? c.hazardDeath : state.statusKey === "pulse" ? pulseText : c.battleStatus);
   }
   function renderResult() {
     const c = copy();
@@ -144,7 +161,15 @@
     const spikeShift = t.moving ? Math.sin(performance.now() / 230) * 26 : 0; ctx.fillStyle="#e26b75"; for(let x=t.spike+spikeShift;x<t.spike+42+spikeShift;x+=14){ctx.beginPath();ctx.moveTo(x,418);ctx.lineTo(x+7,392);ctx.lineTo(x+14,418);ctx.fill();} if(propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,540,80,400,560,t.spike-18+spikeShift,370,74,84);
     ctx.fillStyle="#72597d";ctx.fillRect(t.fake,406,38,12); if (t.ceiling) { ctx.fillStyle="#d67b8f"; ctx.fillRect(610,180,150,16); }
     ctx.fillStyle="#ffd36b";ctx.fillRect(875,345,12,73);ctx.beginPath();ctx.arc(881,336,25,0,Math.PI*2);ctx.fill();ctx.fillStyle="#fff1a1";ctx.beginPath();ctx.arc(881,336,9,0,Math.PI*2);ctx.fill(); if(propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,20,20,500,650,830,300,105,136);
-    if (state.pulse > 0) { ctx.strokeStyle="#fff1a1"; ctx.lineWidth=6; ctx.strokeRect(t.gap-10,394,94,42); ctx.strokeRect(t.spike-28,382,92,44); if(propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,1360,60,430,600,t.gap-22,350,124,124); }
+    if (state.pulse > 0) {
+      ctx.strokeStyle="#fff1a1"; ctx.lineWidth=6; ctx.strokeRect(t.gap-10,394,94,42); ctx.strokeRect(t.spike-28,382,92,44);
+      if (propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,1360,60,430,600,t.gap-22,350,124,124);
+      if (state.chapter === 1 && state.room === 1) {
+        const landingStart = t.gap + 78;
+        const landingWidth = Math.max(48, Math.min(96, t.spike - 34 - landingStart));
+        ctx.save(); ctx.fillStyle="#a4ead533"; ctx.fillRect(landingStart,394,landingWidth,42); ctx.strokeStyle="#a4ead5"; ctx.lineWidth=3; ctx.setLineDash([10,7]); ctx.strokeRect(landingStart,394,landingWidth,42); ctx.setLineDash([]); ctx.restore();
+      }
+    }
     const p=state.player;
     if (heroArt.complete && heroArt.naturalWidth) {
       ctx.save(); ctx.translate(p.x, p.y - 42); ctx.rotate(Math.max(-0.12, Math.min(0.12, p.vy * 0.012)));
