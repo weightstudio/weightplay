@@ -14,7 +14,7 @@
   const TUTORIAL_KEY = "weightplay_tutorial_seen_animal_2048_v1";
   const LOCALE_SEGMENTS = {en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",es:"es",ja:"ja",ko:"ko","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const SEGMENTS = {en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",es:"es",ja:"ja",ko:"ko","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
-  const GAME_ID="animal-2048",GAME_VERSION="v12",INTERFACE_VERSION="6";
+  const GAME_ID="animal-2048",GAME_VERSION="v13",INTERFACE_VERSION="6";
   const firstSegment = location.pathname.split("/").filter(Boolean)[0] || "en";
   const readStorage=(key)=>{try{return localStorage.getItem(key);}catch{return null;}};
   const writeStorage=(key,value)=>{try{localStorage.setItem(key,value);return true;}catch{return false;}};
@@ -80,6 +80,7 @@
   let stageIndex=0,stageMode="campaign",board=Array(16).fill(0),score=0,moves=0,merges=0,rngState=1,undoState=null,resultState="",startTime=0,hintUsed=false,restarts=0,swipeStart=null,resultTimer=0,resultRevealSuspended=false,resultDecisionCommitted=false,motionTimer=0,motionLock=false,pendingMerged=[];
   const moveAnnouncement=document.createElement("div");moveAnnouncement.id="moveAnnouncement";moveAnnouncement.className="sr-only";moveAnnouncement.setAttribute("aria-live","polite");moveAnnouncement.setAttribute("aria-atomic","true");document.querySelector(".board-zone")?.append(moveAnnouncement);
   const dom={loading:$("#loadingPanel"),loadingFill:$("#loadingFill"),mainGroup:$("#mainGroup"),main:$("#mainScreen"),guide:$(".game-page-info"),stage:$("#stageScreen"),battle:$("#battleScreen"),locale:$("#localeSelect"),mainProgress:$("#mainProgress"),start:$("#startBtn"),stageBack:$("#stageBackBtn"),campaignTab:$("#campaignTab"),challengeTab:$("#challengeTab"),rail:$("#stageRail"),stageSummary:$("#stageSummary"),chapterKicker:$("#chapterKicker"),chapterTitle:$("#chapterTitle"),chapterRule:$("#chapterRule"),battleBack:$("#battleBackBtn"),stageLabel:$("#stageLabel"),goalValue:$("#goalValue"),movesValue:$("#movesValue"),scoreValue:$("#scoreValue"),objective:$("#objectiveRow"),board:$("#gameBoard"),feedback:$("#moveFeedback"),announcement:moveAnnouncement,undo:$("#undoBtn"),restart:$("#restartBtn"),hint:$("#hintBtn"),result:$("#resultPanel"),resultTitle:$("#resultTitle"),resultStars:$("#resultStars"),resultText:$("#resultText"),bestText:$("#bestText"),retry:$("#retryBtn"),resultStages:$("#resultStagesBtn"),next:$("#nextBtn"),leave:$("#leavePanel"),leaveText:$("#leaveText"),leaveContinue:$("#leaveContinueBtn"),leaveStages:$("#leaveStagesBtn"),tutorial:$("#tutorialPanel"),tutorialClose:$("#tutorialCloseBtn"),tutorialStart:$("#tutorialStartBtn")};
+  dom.result?.setAttribute("data-runtime-localize","off");
   function syncVisibleStageAccessibility(){dom.rail?.querySelectorAll(":scope > [data-wp-stage-pool-node]").forEach(card=>{card.removeAttribute("aria-hidden");card.inert=false;});}
   const stageAccessibilityObserver=dom.rail?new MutationObserver(syncVisibleStageAccessibility):null;
   stageAccessibilityObserver?.observe(dom.rail,{childList:true,subtree:false});
@@ -124,7 +125,52 @@
   function canMove(){const level=activeLevel();return["up","down","left","right"].some(direction=>moveBoard(board,direction,level.blocked).changed);}
   function mergeCue(result){if(!result.mergeCount)return"";if(result.mergeCount===1){const value=result.board[result.mergedIndices[0]];return t("mergeSingle",{outcome:`${animalFor(value)} (${value})`,score:result.gained});}return t("mergeMany",{count:result.mergeCount,score:result.gained});}
   function performMove(direction){if(motionLock||resultState||!dom.leave.hidden)return false;const level=activeLevel(),result=moveBoard(board,direction,level.blocked);if(!result.changed){dom.feedback.textContent=t("invalid");window.WonderSound?.play?.("wrong");return false;}undoState=cloneState();board=result.board;score+=result.gained;moves++;merges+=result.mergeCount;spawnTile();const cue=mergeCue(result);dom.feedback.textContent=cue;announceBoard(direction,cue);animateBoardMove(result.motions,result.mergedIndices);window.WonderSound?.play?.(result.mergeCount?"coin":"move");if(achieved())finish(true);else if(level.type!=="endless"&&moves>=level.limit)finish(false,"moves");else if(!canMove())finish(false,"board");return true;}
-  function finish(win,reason=""){cancelResultReveal();resultDecisionCommitted=false;const level=activeLevel(),endless=level.type==="endless",highest=Math.max(...board);resultState=endless?"endless":win?"win":"lose";if(endless){const previous=Number(save.endlessBest||0),isBest=score>previous;save.endlessBest=Math.max(previous,score);save.endlessTile=Math.max(Number(save.endlessTile||0),highest);save.endlessMoves=Math.max(Number(save.endlessMoves||0),moves);save.endlessRuns=Number(save.endlessRuns||0)+1;persist();dom.resultTitle.textContent=t("endlessResultTitle");dom.resultStars.textContent="∞";dom.resultText.textContent=t("endlessResultText",{moves,score,animal:animalFor(highest),value:highest});dom.bestText.textContent=isBest?t("endlessNewBest",{score:save.endlessBest}):t("endlessBest",{score:save.endlessBest,animal:animalFor(save.endlessTile||highest),value:save.endlessTile||highest});track("game_complete",{stage:"infinite",mode:"endless",score,moves,highest,result:"endless"});}else if(win){const left=level.limit-moves,stars=hintUsed?2:left>=Math.ceil(level.limit*.45)&&restarts===0?3:2,previous=Number(save.best?.[stageIndex]||0),isBest=score>previous;save.cleared[stageIndex]=true;save.stars[stageIndex]=Math.max(save.stars?.[stageIndex]||0,stars);save.best[stageIndex]=Math.max(previous,score);save.unlocked=Math.max(save.unlocked||1,Math.min(30,stageIndex+2));persist();dom.resultTitle.textContent=t("winTitle");dom.resultStars.textContent="★".repeat(stars)+"☆".repeat(3-stars);dom.resultText.textContent=t("winText",{stage:stageIndex+1,moves,score});dom.bestText.textContent=isBest?t("newBest"):t("best",{score:save.best[stageIndex]});track("game_complete",{stage:stageIndex+1,score,moves,stars,result:"win"});}else{dom.resultTitle.textContent=t("loseTitle");dom.resultStars.textContent="";dom.resultText.textContent=t(reason==="moves"?"loseMoves":"loseBoard");dom.bestText.textContent=t("best",{score:save.best?.[stageIndex]||0});track("game_fail",{stage:stageIndex+1,reason,score,moves,result:"lose"});}const nextAvailable=!endless&&win&&stageIndex<29;dom.next.hidden=false;dom.next.disabled=!nextAvailable;[dom.retry,dom.resultStages,dom.next].forEach(button=>button.classList.remove("primary-action"));const primary=nextAvailable?dom.next:win&&!endless?dom.resultStages:dom.retry;primary.classList.add("primary-action");resultTimer=setTimeout(()=>{resultTimer=0;if(document.body.dataset.screen!=="battle"||!resultState)return;setBattleCovered(true);dom.result.hidden=false;primary.focus({preventScroll:true});},260);}
+  function bestScoreFeedback(current,previous){const currentScore=Math.max(0,Number(current)||0),previousScore=Math.max(0,Number(previous)||0);if(previousScore<=0)return t("bestFirst",{score:currentScore});if(currentScore>previousScore)return t("bestAbove",{score:currentScore,delta:currentScore-previousScore,previous:previousScore});if(currentScore<previousScore)return t("bestBelow",{previous:previousScore,delta:previousScore-currentScore});return t("bestTie",{score:currentScore});}
+  function finish(win,reason=""){
+    cancelResultReveal();
+    resultDecisionCommitted=false;
+    const level=activeLevel(),endless=level.type==="endless",highest=Math.max(...board),runSummary=t("runSummary",{animal:animalFor(highest),value:highest,score,moves});
+    resultState=endless?"endless":win?"win":"lose";
+    if(endless){
+      const previous=Number(save.endlessBest||0);
+      save.endlessBest=Math.max(previous,score);
+      save.endlessTile=Math.max(Number(save.endlessTile||0),highest);
+      save.endlessMoves=Math.max(Number(save.endlessMoves||0),moves);
+      save.endlessRuns=Number(save.endlessRuns||0)+1;
+      persist();
+      dom.resultTitle.textContent=t("endlessResultTitle");
+      dom.resultStars.textContent="∞";
+      dom.resultText.textContent=t("endlessResultText",{moves,score,animal:animalFor(highest),value:highest});
+      dom.bestText.textContent=`${bestScoreFeedback(score,previous)} ${t("endlessRecord",{score:save.endlessBest,animal:animalFor(save.endlessTile||highest),value:save.endlessTile||highest})}`;
+      track("game_complete",{stage:"infinite",mode:"endless",score,moves,highest,result:"endless"});
+    }else if(win){
+      const left=level.limit-moves,stars=hintUsed?2:left>=Math.ceil(level.limit*.45)&&restarts===0?3:2,previous=Number(save.best?.[stageIndex]||0);
+      save.cleared[stageIndex]=true;
+      save.stars[stageIndex]=Math.max(save.stars?.[stageIndex]||0,stars);
+      save.best[stageIndex]=Math.max(previous,score);
+      save.unlocked=Math.max(save.unlocked||1,Math.min(30,stageIndex+2));
+      persist();
+      dom.resultTitle.textContent=t("winTitle");
+      dom.resultStars.textContent="★".repeat(stars)+"☆".repeat(3-stars);
+      dom.resultText.textContent=`${t("winText",{stage:stageIndex+1,moves,score})} ${runSummary}`;
+      dom.bestText.textContent=bestScoreFeedback(score,previous);
+      track("game_complete",{stage:stageIndex+1,score,moves,stars,result:"win"});
+    }else{
+      const previous=Number(save.best?.[stageIndex]||0);
+      dom.resultTitle.textContent=t("loseTitle");
+      dom.resultStars.textContent="";
+      dom.resultText.textContent=`${t(reason==="moves"?"loseMoves":"loseBoard")} ${runSummary}`;
+      dom.bestText.textContent=bestScoreFeedback(score,previous);
+      track("game_fail",{stage:stageIndex+1,reason,score,moves,result:"lose"});
+    }
+    const nextAvailable=!endless&&win&&stageIndex<29;
+    dom.next.hidden=false;
+    dom.next.disabled=!nextAvailable;
+    [dom.retry,dom.resultStages,dom.next].forEach(button=>button.classList.remove("primary-action"));
+    const primary=nextAvailable?dom.next:win&&!endless?dom.resultStages:dom.retry;
+    primary.classList.add("primary-action");
+    resultTimer=setTimeout(()=>{resultTimer=0;if(document.body.dataset.screen!=="battle"||!resultState)return;setBattleCovered(true);dom.result.hidden=false;primary.focus({preventScroll:true});},260);
+  }
   function undo(){if(battleDecisionBlocked())return;if(motionLock)settleMotion();if(!undoState){dom.feedback.textContent=t("undoEmpty");return;}const restore=undoState;undoState=null;restoreState(restore);dom.feedback.textContent=t("undoReady");announceBoard();}
   function restart(){if(battleDecisionBlocked())return;const restartCount=restarts+1,startIndex=stageIndex;startStage(startIndex);restarts=restartCount;track("game_restart",{stage:startIndex===INFINITE_INDEX?"infinite":startIndex+1,mode:startIndex===INFINITE_INDEX?"endless":"mission",source:"battle"});}
   function bestDirection(){const level=activeLevel(),directions=["up","left","right","down"],ranked=directions.map(direction=>{const result=moveBoard(board,direction,level.blocked);if(!result.changed)return{direction,score:-Infinity};const empty=result.board.filter((v,i)=>!v&&!level.blocked.has(i)).length,corner=Math.max(result.board[0],result.board[3],result.board[12],result.board[15]);return{direction,score:result.gained*4+empty*18+Math.log2(corner||2)*5};}).sort((a,b)=>b.score-a.score);return ranked[0]?.score>-Infinity?ranked[0].direction:null;}

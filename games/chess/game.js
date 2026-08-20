@@ -39,14 +39,35 @@ window.WPPopularArcade?.mount("chess");
   let state = null;
 
   const resetState = () => {
-    state = { pieces: [...INITIAL_PIECES], step: 0, score: 0, moves: 0, selected: -1, done: false, success: false };
+    state = { pieces: [...INITIAL_PIECES], step: 0, score: 0, moves: 0, selected: -1, done: false, success: false, messageKey: "chessAgencyChoosePiece", tone: "" };
   };
-  const setMessage = (message, tone = "", messageKey = "") => {
+  const applyMessage = (message, tone = "", messageKey = "") => {
     const els = getEls();
     if (!els.message) return;
     els.message.textContent = message;
     els.message.dataset.tone = tone;
     els.message.dataset.messageKey = messageKey;
+  };
+  const setMessage = (message, tone = "", messageKey = "") => {
+    if (state) {
+      state.tone = tone;
+      state.messageKey = messageKey;
+    }
+    applyMessage(message, tone, messageKey);
+  };
+  const localizeMessage = () => {
+    const localeCopy = copy();
+    const key = state?.messageKey || "chessAgencyChoosePiece";
+    const messages = {
+      chessAgencyChoosePiece: localeCopy.choosePiece,
+      chessAgencyChooseTarget: localeCopy.chooseTarget,
+      chessAgencyWrongPiece: localeCopy.wrongPiece,
+      chessAgencyWrongTarget: localeCopy.wrongTarget,
+      chessAgencyTargetFirst: localeCopy.targetFirst,
+      chessAgencyHint: localeCopy.hintCopy,
+      chessAgencyLegalMove: `${localeCopy.legalMove} ${localeCopy.step} ${state.step + 1}/3.`,
+    };
+    applyMessage(messages[key] || localeCopy.choosePiece, state?.tone || "", key);
   };
   const showScreen = (screen) => {
     const els = getEls();
@@ -85,7 +106,7 @@ window.WPPopularArcade?.mount("chess");
     if (state.done) return renderResult();
     showScreen("battle");
     renderBoard();
-    if (state.moves === 0 && state.step === 0 && state.selected < 0) setMessage(copy().choosePiece, "", "chessAgencyChoosePiece");
+    localizeMessage();
   };
   const renderResult = () => {
     const els = getEls();
@@ -148,7 +169,11 @@ window.WPPopularArcade?.mount("chess");
     setMessage(copy().choosePiece, "", "chessAgencyChoosePiece");
     renderBattle();
   };
-  const scheduleShellSync = () => window.setTimeout(() => {
+  const scheduleShellSync = (fresh = false) => window.setTimeout(() => {
+    if (fresh) {
+      resetState();
+      setMessage(copy().choosePiece, "", "chessAgencyChoosePiece");
+    }
     if (document.body.dataset.screen === "battle") renderBattle();
     else if (document.body.dataset.screen === "result" && state?.done) renderResult();
   }, 0);
@@ -177,8 +202,24 @@ window.WPPopularArcade?.mount("chess");
       resetAndRender();
       return;
     }
-    if (node.id === "startBtn" || node.id === "retryBtn") scheduleShellSync();
-    if (node.id === "homeBtn") window.setTimeout(() => { resetState(); }, 0);
+    if (node.id === "startBtn" && document.body.dataset.screen === "main") {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      resetAndRender();
+      return;
+    }
+    if (node.id === "retryBtn" && document.body.dataset.screen === "result") {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      resetAndRender();
+      return;
+    }
+    if (node.id === "homeBtn" && document.body.dataset.screen === "result") {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      resetState();
+      showScreen("main");
+    }
   }, { capture: true });
   document.addEventListener("change", (event) => {
     if (event.target?.id === "localeSelect") scheduleShellSync();

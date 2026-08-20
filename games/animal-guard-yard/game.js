@@ -1,6 +1,6 @@
 ﻿(() => {
   const GAME_ID = "animal-guard-yard";
-  const GAME_VERSION = "v22";
+  const GAME_VERSION = "v23";
   const INTERFACE_VERSION = 6;
   const localeKey = "weightplayLocale";
   const unlockKey = "weightplay_animal_guard_unlocked";
@@ -336,6 +336,60 @@
     ru: "Следом под угрозой линия {lane} — защитите её до прихода зверя.",
     hi: "अगली दबाव वाली लेन {lane} है—जानवर आने से पहले उसे बचाएँ।",
     ar: "الممر {lane} هو التالي تحت الضغط — احمه قبل وصول الوحش.",
+  };
+  const cellTargetCopy = {
+    en: {
+      empty: "Grass tile, lane {lane}, position {position}, empty.",
+      occupied: "Grass tile, lane {lane}, position {position}, occupied.",
+    },
+    "zh-Hant": {
+      empty: "草地格，第 {lane} 路線、第 {position} 格，空白。",
+      occupied: "草地格，第 {lane} 路線、第 {position} 格，已佔用。",
+    },
+    "zh-Hans": {
+      empty: "草地格，第 {lane} 路线、第 {position} 格，空白。",
+      occupied: "草地格，第 {lane} 路线、第 {position} 格，已占用。",
+    },
+    ja: {
+      empty: "草地マス、{lane}レーンの{position}番、空き。",
+      occupied: "草地マス、{lane}レーンの{position}番、配置済み。",
+    },
+    ko: {
+      empty: "잔디 칸, {lane}번 라인 {position}번째, 비어 있음.",
+      occupied: "잔디 칸, {lane}번 라인 {position}번째, 배치됨.",
+    },
+    es: {
+      empty: "Casilla de césped, carril {lane}, posición {position}, vacía.",
+      occupied: "Casilla de césped, carril {lane}, posición {position}, ocupada.",
+    },
+    "pt-BR": {
+      empty: "Espaço de grama, faixa {lane}, posição {position}, vazio.",
+      occupied: "Espaço de grama, faixa {lane}, posição {position}, ocupado.",
+    },
+    fr: {
+      empty: "Case d’herbe, voie {lane}, position {position}, vide.",
+      occupied: "Case d’herbe, voie {lane}, position {position}, occupée.",
+    },
+    de: {
+      empty: "Grasfeld, Bahn {lane}, Position {position}, frei.",
+      occupied: "Grasfeld, Bahn {lane}, Position {position}, belegt.",
+    },
+    it: {
+      empty: "Casella d’erba, corsia {lane}, posizione {position}, libera.",
+      occupied: "Casella d’erba, corsia {lane}, posizione {position}, occupata.",
+    },
+    ru: {
+      empty: "Клетка с травой, линия {lane}, позиция {position}, свободна.",
+      occupied: "Клетка с травой, линия {lane}, позиция {position}, занята.",
+    },
+    hi: {
+      empty: "घास का खाना, लेन {lane}, पोज़िशन {position}, खाली।",
+      occupied: "घास का खाना, लेन {lane}, पोज़िशन {position}, भरी हुई।",
+    },
+    ar: {
+      empty: "مربع عشب، الممر {lane}، الموضع {position}، فارغ.",
+      occupied: "مربع عشب، الممر {lane}، الموضع {position}، مشغول.",
+    },
   };
   const defeatRecapCopy = {
     en: "Last breach: Lane {lane} — {threat} (beast {encounter}/{total}); {sun} sun remained after {guards} guards. On Retry, cover this lane earlier and collect sun drops.",
@@ -1046,6 +1100,18 @@
     const value = lanePressureCopy[locale] || lanePressureCopy.en;
     const message = value.replaceAll("{lane}", String(lane));
     return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(message) || message : message;
+  }
+
+  function updateCellSemantics(cell) {
+    if (!cell?.button) return;
+    const copy = cellTargetCopy[locale] || cellTargetCopy.en;
+    const template = cell.unit ? copy.occupied : copy.empty;
+    const label = template
+      .replaceAll("{lane}", String(cell.row + 1))
+      .replaceAll("{position}", String(cell.col + 1));
+    cell.button.dataset.cellState = cell.unit ? "occupied" : "empty";
+    cell.button.setAttribute("aria-label", label);
+    cell.button.setAttribute("aria-describedby", "hintText");
   }
 
   function defeatRecapMessage(snapshot) {
@@ -2104,7 +2170,9 @@
         cell.style.height = `${100 / stage.rows}%`;
         cell.addEventListener("click", () => placeUnit(row, col));
         nodes.yardBoard.appendChild(cell);
-        cells.push({ row, col, button: cell, unit: null });
+        const cellState = { row, col, button: cell, unit: null };
+        cells.push(cellState);
+        updateCellSemantics(cellState);
       }
     }
   }
@@ -2202,6 +2270,7 @@
     nodes.yardBoard.appendChild(guard.el);
     nodes.yardBoard.appendChild(guard.hpEl);
     cell.unit = guard;
+    updateCellSemantics(cell);
     entities.push(guard);
     guardPlacements += 1;
     track("guard_placed", { placement_number: guardPlacements });
@@ -2647,7 +2716,10 @@
         entity.reachEl?.remove();
         if (entity.kind === "guard") {
           const cell = cells.find((item) => item.unit === entity);
-          if (cell) cell.unit = null;
+          if (cell) {
+            cell.unit = null;
+            updateCellSemantics(cell);
+          }
         }
       }
     });
