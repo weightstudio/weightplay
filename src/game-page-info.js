@@ -10634,7 +10634,8 @@
       "animal-twin-switchyard": { title: "ساحة مفاتيح التوأم", intro: "وجّه قضاعة وماعزًا جبليًا عبر مسارين منفصلين، وبدّل بوابات الإشارة، واجمع كل شظايا التتابع معًا." },
       "zhao-yun-a-dou": { title: "تشاو يون وآ دو: دفاع الحبر", intro: "جنّد جنود الرموز، وضعهم في ثلاثة مسارات، وادمج الوحدات المتطابقة، وأبعد العدو المتقدم عن آ دو." },
       "animal-skyport-dispatch": { title: "إرسال سكايبورت الحيوان", intro: "أدر مسارات المناطيد الحيوانية في خمسة مناوبات، وارسم اقترابًا آمنًا إلى الرصيف المناسب، ووزّع موارد الخدمة قبل الازدحام." },
-      "animal-rift-salvage": { title: "إنقاذ الحيوان المتصدع", intro: "وجّه جامعًا قمريًا صغيرًا داخل صدع دائري، واجمع الخردة المناسبة، وابنِ سلسلة نقاط، وأكمل حصة الإنقاذ قبل انتهاء الوقت." }
+      "animal-rift-salvage": { title: "إنقاذ الحيوان المتصدع", intro: "وجّه جامعًا قمريًا صغيرًا داخل صدع دائري، واجمع الخردة المناسبة، وابنِ سلسلة نقاط، وأكمل حصة الإنقاذ قبل انتهاء الوقت." },
+      "animal-hero-trials": { title: "محاكمات بطل الحيوان", intro: "حملة حركة من 30 تجربة يقودها أربعة أبطال متكررون من WeightPlay؛ لكل بطل حركة ومدى ومتانة ومهارة نشطة مختلفة. أكمل ثلاث غرف غابية، واختر نعمة بعد كل غرفة، واهزم سيد الظلال، ثم أنفق علامات التجربة على الإتقان الدائم." }
     }
   };
   for (const [localeCode, relatedCards] of Object.entries(runeRelatedCardLocaleCopy)) {
@@ -10662,7 +10663,8 @@
     },
     "ko": {
       "maze-chase": { title: "미로 추격", intro: "고정 미로에서 오를 이끌어 별 조각을 모으고 네 가지 위습 추격 패턴을 읽으며 비콘으로 위험한 통로를 짧은 반격 기회로 바꾸세요." },
-      "animal-spectrum-pulse": { title: "동물 스펙트럼 펄스", intro: "가장 가까운 스캔 표식이 필요한 색과 문양에 맞을 때만 펄스를 보내 판코의 스펙트럼 정령을 위로 이끕니다." }
+      "animal-spectrum-pulse": { title: "동물 스펙트럼 펄스", intro: "가장 가까운 스캔 표식이 필요한 색과 문양에 맞을 때만 펄스를 보내 판코의 스펙트럼 정령을 위로 이끕니다." },
+      "animal-hero-trials": { title: "동물 영웅 재판", intro: "서로 다른 체력, 속도, 공격 범위와 액티브 스킬을 가진 네 명의 WeightPlay 영웅이 등장하는 30회 액션 캠페인입니다. 각 시험에서 세 방을 통과하고 축복을 선택한 뒤 그림자 군주를 물리쳐 영구 숙련도를 높이세요." }
     },
     "es": {
       "maze-chase": { title: "Persecución en el laberinto", intro: "Guía a Orla por un laberinto fijo para reunir motas de estrella, leer cuatro patrones de persecución de los Wisps y convertir un corredor peligroso en una breve oportunidad de contraataque con los Faros." },
@@ -10683,14 +10685,16 @@
       "maze-chase": { title: "Labyrinthjagd", intro: "Führe Orla durch ein festes Labyrinth, sammle Sternpartikel, lies vier Verfolgungsmuster der Wisps und verwandle mit Leuchtfeuern einen gefährlichen Korridor in eine kurze Gegenangriffschance." },
       "animal-unblock": { title: "Entsperren Sie den Trail", intro: "Schiebe waagerechte und senkrechte Blöcke auf ihrer Achse, bis der rote Entdecker einen freien Weg zum Ausgang hat." },
       "animal-bamboo-pipes": { title: "Pankos Bambuswasserstraße", intro: "Drehe ein vollständiges Bambusnetz, damit Wasser ohne Lücken, falsche Abzweige oder versetzte Rohrmitten von der Quelle zum Blütenbecken fließt." },
-      "animal-number-match": { title: "Pankos Zahlenhain", intro: "Entferne Paare mit der Summe zehn, wenn sie sich berühren oder durch freie Felder sehen können, und öffne neue Sichtlinien." }
+      "animal-number-match": { title: "Pankos Zahlenhain", intro: "Entferne Paare mit der Summe zehn, wenn sie sich berühren oder durch freie Felder sehen können, und öffne neue Sichtlinien." },
+      "animal-hero-trials": { title: "Tierheldenversuche", intro: "Eine Action-Kampagne mit 30 Prüfungen und vier WeightPlay-Helden, die sich bei Gesundheit, Geschwindigkeit, Reichweite und aktiven Fähigkeiten unterscheiden. Schließe drei Waldräume ab, wähle nach jedem Raum eine Segnung und besiege den Schattenfürsten für dauerhafte Meisterschaft." }
     },
     "it": {
       "maze-chase": { title: "Inseguimento nel labirinto", intro: "Guida Orla in un labirinto fisso per raccogliere le particelle stellari, leggere quattro schemi di inseguimento dei Wisp e trasformare un corridoio pericoloso in una breve occasione di contrattacco con i Fari." },
       "animal-sunbeam-garden": { title: "Giardino del raggio di sole", intro: "Ruota gli specchi su una griglia da sei per sei finché ogni raggio visibile segue un percorso valido dalla fonte al loto addormentato." }
     },
     "ru": {
-      "maze-chase": { title: "Лабиринтная погоня", intro: "Проведите Орлу по фиксированному лабиринту, соберите звёздные частицы, изучите четыре схемы преследования виспов и превратите опасный коридор в короткую возможность для контратаки с помощью маяков." }
+      "maze-chase": { title: "Лабиринтная погоня", intro: "Проведите Орлу по фиксированному лабиринту, соберите звёздные частицы, изучите четыре схемы преследования виспов и превратите опасный коридор в короткую возможность для контратаки с помощью маяков." },
+      "animal-hero-trials": { title: "Испытания героев-животных", intro: "Экшен-кампания из 30 испытаний с четырьмя героями WeightPlay, у каждого свои здоровье, скорость, дальность атаки и активные навыки. Пройдите три лесные комнаты, выбирайте благословение после каждой и победите Владыку теней, чтобы развивать постоянное мастерство." }
     },
     "hi": {
       "maze-chase": { title: "भूलभुलैया पीछा", intro: "एक स्थिर भूलभुलैया में ओर्ला को ले जाकर तारों के कण जुटाएँ, विस्प के चार पीछा पैटर्न पढ़ें और बीकन से खतरनाक गलियारे को थोड़े समय के पलटवार के अवसर में बदलें।" },

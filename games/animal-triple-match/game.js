@@ -127,7 +127,7 @@
 
   const els = Object.fromEntries([...document.querySelectorAll("[id]")].map(el => [el.id, el]));
   const SAVE_KEY = "weightplay_animal_triple_match_v1";
-  const GAME_VERSION = 10;
+  const GAME_VERSION = 11;
   const INTERFACE_VERSION = 6;
   const CHAPTERS = ["openShelf","vineGallery","crystalRoom","mysteryLoft","shiftingHall","grandFinale"];
   const ITEM_NAMES = ["Acorn Lantern","Moon Cup","Shell Compass","Berry Brooch","Cloud Jar","Prism Flower","Star Telescope","Leaf Locket","Coral Music Box","Bee Bell","Mushroom Lamp","Crystal Feather"];
@@ -148,12 +148,29 @@
     hi: { piece: "ख़ज़ाना {n}: {name}", covered: "ख़ज़ाना {n}: {name}, ढका हुआ", tray: "ट्रे की जगह {slot}: {name}, ख़ज़ाना {n}", mystery: "रहस्यमय ख़ज़ाना" },
     ar: { piece: "الكنز {n}: {name}", covered: "الكنز {n}: {name}، مغطى", tray: "الخانة {slot} في الصينية: {name}، الكنز {n}", mystery: "كنز غامض" },
   };
+  const STAR_OUTLOOK_LABELS = {
+    en: "Star outlook",
+    "zh-Hant": "星等預估",
+    "zh-Hans": "星级预估",
+    ja: "星の見込み",
+    ko: "예상 별점",
+    es: "Previsión de estrellas",
+    "pt-BR": "Previsão de estrelas",
+    fr: "Prévision d’étoiles",
+    de: "Sternprognose",
+    it: "Stelle previste",
+    ru: "Прогноз звёзд",
+    hi: "सितारों का अनुमान",
+    ar: "النجوم المتوقعة",
+  };
   const RUNTIME_LOCALE_SEGMENTS = { "zh-Hant":"zh-tw", "zh-Hans":"zh-cn", ja:"ja", ko:"ko", es:"es", "pt-BR":"pt-br", fr:"fr", de:"de", it:"it", ru:"ru", hi:"hi", ar:"ar" };
   const SHARED_SRC_BASE = new URL("../../src/", document.currentScript?.src || location.href);
   const runtimeCatalogLoads = new Map();
   let locale = "en", screen = "main", stageIndex = 0, run = null, audio = null, centeredTimer = 0, resultDecisionCommitted = false;
   let pendingMatch = null, windowFocused = document.hasFocus();
   let save = loadSave();
+
+  function starOutlookLabel() { return STAR_OUTLOOK_LABELS[locale] || STAR_OUTLOOK_LABELS.en; }
 
   function isForeground() { return document.visibilityState === "visible" && windowFocused; }
   function hasOpenBattleModal() { return [els.tutorialModal, els.leaveModal, els.resultModal].some(modal => !modal.hidden); }
@@ -831,7 +848,10 @@
     els.stageName.textContent = t(CHAPTERS[run.config.chapter]);
     els.leftValue.textContent = remaining.length;
     const riskStars = run.tray.length <= 3 ? 3 : run.tray.length <= 5 ? 2 : 1;
-    els.starValue.textContent = "★".repeat(riskStars);
+    const starText = "★".repeat(riskStars);
+    els.starLabel.textContent = starOutlookLabel();
+    els.starValue.textContent = starText;
+    els.starValue.setAttribute("aria-label", `${starOutlookLabel()}: ${starText}`);
     els.soundBtn.textContent = save.sound ? "♪" : "×";
     els.soundBtn.setAttribute("aria-label", t(save.sound ? "soundOn" : "soundOff"));
     const remainingIds = new Set(remaining.map(piece => String(piece.id)));

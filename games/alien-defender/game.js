@@ -297,7 +297,7 @@
   draw=drawResponsive;
   // v8 Growth instrumentation: expose only aggregate, privacy-safe funnel
   // fields; gameplay state, controls, pacing, and authored waves stay intact.
-  const ANALYTICS_GAME_VERSION="46",ANALYTICS_INTERFACE_VERSION="7";
+  const ANALYTICS_GAME_VERSION="47",ANALYTICS_INTERFACE_VERSION="7";
   let sessionHadBattle=false,inputType="unknown";
   function viewportBucket(){const width=window.innerWidth,height=window.innerHeight;if(width<=430&&height>=700)return"phone-portrait";if(width<=700&&height>=700)return"tablet-portrait";if(width>=700&&height<=500)return"short-landscape";return"desktop"}
   function track(eventName,details={}){window.WonderAnalytics?.track?.(eventName,{game_id:"alien-defender",game_version:`v${ANALYTICS_GAME_VERSION}`,interface_version:ANALYTICS_INTERFACE_VERSION,locale,viewport_bucket:viewportBucket(),input_type:details.input_type||inputType,wave:details.wave??wave,result_reason:details.result_reason||"not_applicable"})}
@@ -943,6 +943,18 @@
     for(let index=0;index<TOTAL_STAGES;index++){const number=index+1,config=stageConfig(number),available=index<unlockedStage,card=document.createElement("button");card.type="button";card.className="stage-card";card.dataset.stageIndex=String(index);card.disabled=!available;card.setAttribute("aria-disabled",String(!available));card.setAttribute("aria-posinset",String(number));card.setAttribute("aria-setsize",String(TOTAL_STAGES));card.setAttribute("aria-label",`${t("stage")} ${number} · ${t(config.ruleKey)} · ${available?t("stageUnlocked"):t("stageLocked")}`);card.setAttribute("aria-current",index===selectedStage?"true":"false");card.classList.toggle("locked",!available);const numberNode=document.createElement("span");numberNode.className="stage-card-number";numberNode.textContent=String(number).padStart(2,"0");const name=document.createElement("strong");name.className="stage-card-name";name.textContent=`${t("stage")} ${number}`;const power=document.createElement("span");power.className="stage-card-power";power.textContent=t("stagePower").replace(/\{shots\}/g,String(firepowerLevel));const rule=document.createElement("span");rule.className="stage-card-rule";rule.textContent=t(config.ruleKey);const status=document.createElement("span");status.className="stage-card-status";status.textContent=available?t("stageUnlocked"):t("stageLocked");card.append(numberNode,name,power,rule,status);card.addEventListener("click",event=>{if(!available)return;event.stopPropagation();selectedStage=index;start(index)});rail.append(card)}
   }
   renderStageCards=renderStageCardsV44;
+  function exposeStagePoolCards(){
+    const rail=$("stageRail");
+    if(!rail)return;
+    rail.querySelectorAll("[data-wp-stage-pool-node]").forEach((card)=>{
+      // The shared virtualizer demotes source cards into an aria-hidden store.
+      // Recycled cards are visible controls and must not inherit that state.
+      card.removeAttribute("aria-hidden");
+    });
+  }
+  const stagePoolA11yObserver=new MutationObserver(exposeStagePoolCards);
+  stagePoolA11yObserver.observe($("stageRail"),{subtree:true,childList:true,attributes:true,attributeFilter:["aria-hidden"]});
+  exposeStagePoolCards();
   let upgradeReturnFocus=null;
   function closeUpgradePanel(){const panel=$("upgradePanel"),shell=document.querySelector(".stage-shell");if(panel)panel.hidden=true;if(shell){shell.inert=false;shell.removeAttribute("aria-hidden")}document.body.classList.remove("wp-upgrades-open");if(upgradeReturnFocus?.isConnected)upgradeReturnFocus.focus({preventScroll:true});upgradeReturnFocus=null}
   function renderUpgrades(){
