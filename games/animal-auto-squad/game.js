@@ -1734,14 +1734,18 @@
   }
 
   function buildFirstWavePreview() {
-    const wave = summarizeEnemyWave(state.stage, 1);
+    const waveNumber = Math.max(1, Math.min(WAVES_PER_STAGE, Number(state.round) || 1));
+    const wave = summarizeEnemyWave(state.stage, waveNumber);
     const enemyUnits = wave.enemyIds.map((id) => ENEMY_METADATA.find((enemy) => enemy.id === id) || BOSS_METADATA.find((boss) => boss.id === id)).filter(Boolean);
     const frontCount = state.squad.slice(0, 3).filter(Boolean).length;
     const backCount = state.squad.slice(3).filter(Boolean).length;
     const pressure = enemyUnits.map((enemy) => `${localizedField(enemy, "name")} \u00b7 ${localizedField(enemy, "role")}`).join(", ");
+    const titleKey = waveNumber === 1 ? "title" : "currentTitle";
+    const previewKey = waveNumber === 1 ? "preview" : "currentPreview";
     return {
-      title: firstWavePreviewCopy("title"),
-      body: firstWavePreviewCopy("preview", {
+      title: firstWavePreviewCopy(titleKey, { wave: waveNumber }),
+      body: firstWavePreviewCopy(previewKey, {
+        wave: waveNumber,
         pressure,
         front: frontCount,
         back: backCount,
@@ -1802,6 +1806,8 @@
     en: {
       title: "First-wave plan",
       preview: "Wave 1 pressure: {pressure}. Formation: front {front}/3, back {back}/3. Counterplay: {counter}",
+      currentTitle: "Wave {wave} plan",
+      currentPreview: "Wave {wave} pressure: {pressure}. Formation: front {front}/3, back {back}/3. Counterplay: {counter}",
       frontMissing: "Deploy a front-row animal before Start Battle.",
       backMissing: "Deploy a back-row animal before Start Battle.",
       protectFront: "Keep a durable or shielded animal in front.",
@@ -1811,6 +1817,8 @@
     "zh-Hant": {
       title: "\u7b2c\u4e00\u6ce2\u8a08\u756b",
       preview: "\u7b2c 1 \u6ce2\u58d3\u529b\uff1a{pressure}\u3002\u7576\u524d\u9663\u5bb9\uff1a\u524d\u6392 {front}/3\u3001\u5f8c\u6392 {back}/3\u3002\u53cd\u5236\uff1a{counter}",
+      currentTitle: "\u7b2c {wave} \u6ce2\u8a08\u756b",
+      currentPreview: "\u7b2c {wave} \u6ce2\u58d3\u529b\uff1a{pressure}\u3002\u7576\u524d\u9663\u5bb9\uff1a\u524d\u6392 {front}/3\u3001\u5f8c\u6392 {back}/3\u3002\u53cd\u5236\uff1a{counter}",
       frontMissing: "\u958b\u6230\u524d\u8acb\u5728\u524d\u6392\u653e\u7f6e\u89d2\u8272\u3002",
       backMissing: "\u958b\u6230\u524d\u8acb\u5728\u5f8c\u6392\u653e\u7f6e\u89d2\u8272\u3002",
       protectFront: "\u524d\u6392\u4fdd\u7559\u8010\u6253\u6216\u6709\u8b77\u76fe\u7684\u89d2\u8272\u3002",
@@ -1820,6 +1828,8 @@
     "zh-Hans": {
       title: "\u7b2c\u4e00\u6ce2\u8ba1\u5212",
       preview: "\u7b2c 1 \u6ce2\u538b\u529b\uff1a{pressure}\u3002\u5f53\u524d\u9635\u5bb9\uff1a\u524d\u6392 {front}/3\u3001\u540e\u6392 {back}/3\u3002\u53cd\u5236\uff1a{counter}",
+      currentTitle: "\u7b2c {wave} \u6ce2\u8ba1\u5212",
+      currentPreview: "\u7b2c {wave} \u6ce2\u538b\u529b\uff1a{pressure}\u3002\u5f53\u524d\u9635\u5bb9\uff1a\u524d\u6392 {front}/3\u3001\u540e\u6392 {back}/3\u3002\u53cd\u5236\uff1a{counter}",
       frontMissing: "\u5f00\u6218\u524d\u8bf7\u5728\u524d\u6392\u653e\u7f6e\u89d2\u8272\u3002",
       backMissing: "\u5f00\u6218\u524d\u8bf7\u5728\u540e\u6392\u653e\u7f6e\u89d2\u8272\u3002",
       protectFront: "\u524d\u6392\u4fdd\u7559\u8010\u6253\u6216\u6709\u62a4\u76fe\u7684\u89d2\u8272\u3002",
@@ -1829,6 +1839,8 @@
     ja: {
       title: "\u7b2c1\u30a6\u30a7\u30fc\u30d6\u8a08\u753b",
       preview: "\u7b2c1\u30a6\u30a7\u30fc\u30d6\u306e\u5727\u529b\uff1a{pressure}\u3002\u73fe\u5728\u306e\u7de8\u6210\uff1a\u524d\u5217 {front}/3\u3001\u5f8c\u5217 {back}/3\u3002\u5bfe\u7b56\uff1a{counter}",
+      currentTitle: "\u7b2c{wave}\u30a6\u30a7\u30fc\u30d6\u8a08\u753b",
+      currentPreview: "\u7b2c{wave}\u30a6\u30a7\u30fc\u30d6\u306e\u5727\u529b\uff1a{pressure}\u3002\u73fe\u5728\u306e\u7de8\u6210\uff1a\u524d\u5217 {front}/3\u3001\u5f8c\u5217 {back}/3\u3002\u5bfe\u7b56\uff1a{counter}",
       frontMissing: "\u30d0\u30c8\u30eb\u958b\u59cb\u524d\u306b\u524d\u5217\u3078\u52d5\u7269\u3092\u914d\u7f6e\u3057\u307e\u3057\u3087\u3046\u3002",
       backMissing: "\u30d0\u30c8\u30eb\u958b\u59cb\u524d\u306b\u5f8c\u5217\u3078\u52d5\u7269\u3092\u914d\u7f6e\u3057\u307e\u3057\u3087\u3046\u3002",
       protectFront: "\u524d\u5217\u306b\u9811\u4e08\u306a\u52d5\u7269\u304b\u30b7\u30fc\u30eb\u30c9\u6301\u3061\u3092\u7f6e\u304d\u307e\u3057\u3087\u3046\u3002",
@@ -1838,6 +1850,8 @@
     ko: {
       title: "1\ucc28 \uc6e8\uc774\ube0c \uacc4\ud68d",
       preview: "1\ucc28 \uc6e8\uc774\ube0c \uc555\ubc15\uff1a{pressure}. \ud604\uc7ac \ud3b8\uc131\uff1a\uc804\uc5f4 {front}/3, \ud6c4\uc5f4 {back}/3. \ub300\ucc98\uff1a{counter}",
+      currentTitle: "{wave}\ucc28 \uc6e8\uc774\ube0c \uacc4\ud68d",
+      currentPreview: "{wave}\ucc28 \uc6e8\uc774\ube0c \uc555\ubc15\uff1a{pressure}. \ud604\uc7ac \ud3b8\uc131\uff1a\uc804\uc5f4 {front}/3, \ud6c4\uc5f4 {back}/3. \ub300\ucc98\uff1a{counter}",
       frontMissing: "\uc804\ud22c \uc2dc\uc791 \uc804\uc5d0 \uc804\uc5f4\uc5d0 \ub3d9\ubb3c\uc744 \ubc30\uce58\ud558\uc138\uc694.",
       backMissing: "\uc804\ud22c \uc2dc\uc791 \uc804\uc5d0 \ud6c4\uc5f4\uc5d0 \ub3d9\ubb3c\uc744 \ubc30\uce58\ud558\uc138\uc694.",
       protectFront: "\uc804\uc5f4\uc5d0 \ud2bc\ud2bc\ud558\uac70\ub098 \uc2e0\ub4dc\uac00 \uc788\ub294 \ub3d9\ubb3c\uc744 \ub450\uc138\uc694.",
@@ -1847,6 +1861,8 @@
     es: {
       title: "Plan de la primera oleada",
       preview: "Presi\u00f3n de la oleada 1: {pressure}. Formaci\u00f3n: frente {front}/3, retaguardia {back}/3. Respuesta: {counter}",
+      currentTitle: "Plan de la oleada {wave}",
+      currentPreview: "Presi\u00f3n de la oleada {wave}: {pressure}. Formaci\u00f3n: frente {front}/3, retaguardia {back}/3. Respuesta: {counter}",
       frontMissing: "Coloca un animal en la primera fila antes de empezar la batalla.",
       backMissing: "Coloca un animal en la retaguardia antes de empezar la batalla.",
       protectFront: "Mant\u00e9n delante un animal resistente o con escudo.",
@@ -1856,6 +1872,8 @@
     "pt-BR": {
       title: "Plano da primeira onda",
       preview: "Press\u00e3o da onda 1: {pressure}. Forma\u00e7\u00e3o: frente {front}/3, retaguarda {back}/3. Resposta: {counter}",
+      currentTitle: "Plano da onda {wave}",
+      currentPreview: "Press\u00e3o da onda {wave}: {pressure}. Forma\u00e7\u00e3o: frente {front}/3, retaguarda {back}/3. Resposta: {counter}",
       frontMissing: "Coloque um animal na linha de frente antes de iniciar a batalha.",
       backMissing: "Coloque um animal na retaguarda antes de iniciar a batalha.",
       protectFront: "Mantenha na frente um animal resistente ou com escudo.",
@@ -1865,6 +1883,8 @@
     fr: {
       title: "Plan de la premi\u00e8re vague",
       preview: "Pression de la vague 1 : {pressure}. Formation : avant {front}/3, arri\u00e8re {back}/3. Riposte : {counter}",
+      currentTitle: "Plan de la vague {wave}",
+      currentPreview: "Pression de la vague {wave} : {pressure}. Formation : avant {front}/3, arri\u00e8re {back}/3. Riposte : {counter}",
       frontMissing: "Placez un animal sur la ligne avant avant de lancer le combat.",
       backMissing: "Placez un animal sur la ligne arri\u00e8re avant de lancer le combat.",
       protectFront: "Gardez devant un animal robuste ou prot\u00e9g\u00e9.",
@@ -1874,6 +1894,8 @@
     de: {
       title: "Plan f\u00fcr die erste Welle",
       preview: "Druck der Welle 1: {pressure}. Formation: vorne {front}/3, hinten {back}/3. Gegenma\u00dfnahme: {counter}",
+      currentTitle: "Plan f\u00fcr Welle {wave}",
+      currentPreview: "Druck der Welle {wave}: {pressure}. Formation: vorne {front}/3, hinten {back}/3. Gegenma\u00dfnahme: {counter}",
       frontMissing: "Setze vor dem Gefecht ein Tier in die vordere Reihe.",
       backMissing: "Setze vor dem Gefecht ein Tier in die hintere Reihe.",
       protectFront: "Halte vorne ein robustes oder gesch\u00fctztes Tier bereit.",
@@ -1883,6 +1905,8 @@
     it: {
       title: "Piano per la prima ondata",
       preview: "Pressione dell'ondata 1: {pressure}. Formazione: fronte {front}/3, retroguardia {back}/3. Contromossa: {counter}",
+      currentTitle: "Piano per l'ondata {wave}",
+      currentPreview: "Pressione dell'ondata {wave}: {pressure}. Formazione: fronte {front}/3, retroguardia {back}/3. Contromossa: {counter}",
       frontMissing: "Metti un animale in prima fila prima di iniziare la battaglia.",
       backMissing: "Metti un animale in retroguardia prima di iniziare la battaglia.",
       protectFront: "Tieni davanti un animale resistente o protetto.",
@@ -1892,6 +1916,8 @@
     ru: {
       title: "\u041f\u043b\u0430\u043d \u043f\u0435\u0440\u0432\u043e\u0439 \u0432\u043e\u043b\u043d\u044b",
       preview: "\u0414\u0430\u0432\u043b\u0435\u043d\u0438\u0435 \u0432\u043e\u043b\u043d\u044b 1: {pressure}. \u0421\u0442\u0440\u043e\u0439: \u0444\u0440\u043e\u043d\u0442 {front}/3, \u0442\u044b\u043b {back}/3. \u041a\u043e\u043d\u0442\u0440\u043c\u0435\u0440\u0430: {counter}",
+      currentTitle: "\u041f\u043b\u0430\u043d \u0432\u043e\u043b\u043d\u044b {wave}",
+      currentPreview: "\u0414\u0430\u0432\u043b\u0435\u043d\u0438\u0435 \u0432\u043e\u043b\u043d\u044b {wave}: {pressure}. \u0421\u0442\u0440\u043e\u0439: \u0444\u0440\u043e\u043d\u0442 {front}/3, \u0442\u044b\u043b {back}/3. \u041a\u043e\u043d\u0442\u0440\u043c\u0435\u0440\u0430: {counter}",
       frontMissing: "\u0414\u043e \u0431\u043e\u044f \u043f\u043e\u0441\u0442\u0430\u0432\u044c\u0442\u0435 \u0436\u0438\u0432\u043e\u0442\u043d\u043e\u0435 \u0432 \u043f\u0435\u0440\u0435\u0434\u043d\u0438\u0439 \u0440\u044f\u0434.",
       backMissing: "\u0414\u043e \u0431\u043e\u044f \u043f\u043e\u0441\u0442\u0430\u0432\u044c\u0442\u0435 \u0436\u0438\u0432\u043e\u0442\u043d\u043e\u0435 \u0432 \u0437\u0430\u0434\u043d\u0438\u0439 \u0440\u044f\u0434.",
       protectFront: "\u041e\u0441\u0442\u0430\u0432\u044c\u0442\u0435 \u0432\u043f\u0435\u0440\u0435\u0434\u0438 \u043a\u0440\u0435\u043f\u043a\u043e\u0435 \u0438\u043b\u0438 \u0437\u0430\u0449\u0438\u0449\u0451\u043d\u043d\u043e\u0435 \u0436\u0438\u0432\u043e\u0442\u043d\u043e\u0435.",
@@ -1901,6 +1927,8 @@
     hi: {
       title: "\u092a\u0939\u0932\u0940 \u0932\u0939\u0930 \u0915\u0940 \u092f\u094b\u091c\u0928\u093e",
       preview: "\u0932\u0939\u0930 1 \u0915\u093e \u0926\u092c\u093e\u0935: {pressure}\u0964 \u0930\u0942\u092a\u0930\u0947\u0916\u093e: \u0906\u0917\u0947 {front}/3, \u092a\u0940\u091b\u0947 {back}/3\u0964 \u0909\u092a\u093e\u092f: {counter}",
+      currentTitle: "\u0932\u0939\u0930 {wave} \u0915\u0940 \u092f\u094b\u091c\u0928\u093e",
+      currentPreview: "\u0932\u0939\u0930 {wave} \u0915\u093e \u0926\u092c\u093e\u0935: {pressure}\u0964 \u0930\u0942\u092a\u0930\u0947\u0916\u093e: \u0906\u0917\u0947 {front}/3, \u092a\u0940\u091b\u0947 {back}/3\u0964 \u0909\u092a\u093e\u092f: {counter}",
       frontMissing: "\u092c\u093e\u0924\u094d\u0924\u0940 \u0936\u0941\u0930\u0942 \u0915\u0930\u0928\u0947 \u0938\u0947 \u092a\u0939\u0932\u0947 \u0906\u0917\u0947 \u0915\u0940 \u092a\u0902\u0915\u094d\u0924\u093f \u092e\u0947\u0902 \u090f\u0915 \u091c\u093e\u0928\u0935\u0930 \u0930\u0916\u0947\u0902\u0964",
       backMissing: "\u092c\u093e\u0924\u094d\u0924\u0940 \u0936\u0941\u0930\u0942 \u0915\u0930\u0928\u0947 \u0938\u0947 \u092a\u0939\u0932\u0947 \u092a\u0940\u091b\u0947 \u0915\u0940 \u092a\u0902\u0915\u094d\u0924\u093f \u092e\u0947\u0902 \u090f\u0915 \u091c\u093e\u0928\u0935\u0930 \u0930\u0916\u0947\u0902\u0964",
       protectFront: "\u0906\u0917\u0947 \u092e\u0947\u0902 \u092e\u091c\u092c\u0942\u0924 \u092f\u093e \u0936\u0940\u0932\u094d\u0921 \u0935\u093e\u0932\u093e \u091c\u093e\u0928\u0935\u0930 \u0930\u0916\u0947\u0902\u0964",
@@ -1910,6 +1938,8 @@
     ar: {
       title: "\u062e\u0637\u0629 \u0627\u0644\u0645\u0648\u062c\u0629 \u0627\u0644\u0623\u0648\u0644\u0649",
       preview: "\u0636\u063a\u0637 \u0627\u0644\u0645\u0648\u062c\u0629 1: {pressure}. \u0627\u0644\u062a\u0634\u0643\u064a\u0644: \u0627\u0644\u0623\u0645\u0627\u0645 {front}/3\u060c \u0627\u0644\u062e\u0644\u0641 {back}/3. \u0627\u0644\u0645\u0648\u0627\u062c\u0647\u0629: {counter}",
+      currentTitle: "\u062e\u0637\u0629 \u0627\u0644\u0645\u0648\u062c\u0629 {wave}",
+      currentPreview: "\u0636\u063a\u0637 \u0627\u0644\u0645\u0648\u062c\u0629 {wave}: {pressure}. \u0627\u0644\u062a\u0634\u0643\u064a\u0644: \u0627\u0644\u0623\u0645\u0627\u0645 {front}/3\u060c \u0627\u0644\u062e\u0644\u0641 {back}/3. \u0627\u0644\u0645\u0648\u0627\u062c\u0647\u0629: {counter}",
       frontMissing: "\u0636\u0639 \u062d\u064a\u0648\u0627\u0646\u064b\u0627 \u0641\u064a \u0627\u0644\u0635\u0641 \u0627\u0644\u0623\u0645\u0627\u0645\u064a \u0642\u0628\u0644 \u0628\u062f\u0621 \u0627\u0644\u0645\u0639\u0631\u0643\u0629.",
       backMissing: "\u0636\u0639 \u062d\u064a\u0648\u0627\u0646\u064b\u0627 \u0641\u064a \u0627\u0644\u0635\u0641 \u0627\u0644\u062e\u0644\u0641\u064a \u0642\u0628\u0644 \u0628\u062f\u0621 \u0627\u0644\u0645\u0639\u0631\u0643\u0629.",
       protectFront: "\u0623\u0628\u0642\u0650 \u062d\u064a\u0648\u0627\u0646\u064b\u0627 \u0642\u0648\u064a\u064b\u0627 \u0623\u0648 \u0645\u062d\u0645\u064a\u064b\u0627 \u0641\u064a \u0627\u0644\u0623\u0645\u0627\u0645.",
@@ -4939,7 +4969,7 @@
     const damage = enemyAttackDamage(unit);
     damageTarget(target, damage, point.x, point.y);
     if (unit.ability === "drain") unit.hp = Math.min(unit.maxHp, unit.hp + Math.max(1, Math.ceil(damage * .5)));
-    const targetLabel = unit.targetMode === "back"
+    const targetLabel = Math.floor(unitFormationSlot(target) / 3) === 1
       ? localizedPhrase("strikes the back row", "\u653b\u64ca\u5f8c\u6392", "ataca la fila trasera")
       : localizedPhrase("strikes the front row", "\u653b\u64ca\u524d\u6392", "ataca la fila delantera");
     return enemyAttackText(unit, `${combatUnitName(unit)} ${targetLabel}`);
