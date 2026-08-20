@@ -33,8 +33,24 @@
     ar:[["تصفيات المرج","جولات ضفة النهر","إقصائيات الوادي","نصف نهائي ضوء القمر","نهائيات الشفق","سلسلة التاج"],["تعلّم المناطق الست بإشارة طويلة وواضحة.","تتحرك نافذة القوة الذهبية بسرعة أكبر.","يبدأ الحارس بقراءة الزوايا المتكررة.","قد تظهر خدعة خافتة قبل الإشارة الحقيقية الساطعة.","تقصر مهلة التصدي، لكن كل إشارة حقيقية تبقى عادلة.","اجمع بين القوة والتنويع وقراءة الخدع والتصدي السريع."]]
   };
   const teamNames={en:"Animal Team {n}","zh-Hant":"動物隊 {n}","zh-Hans":"动物队 {n}",ja:"アニマルチーム {n}",ko:"동물 팀 {n}",es:"Equipo Animal {n}","pt-BR":"Equipe Animal {n}",fr:"Équipe Animale {n}",de:"Tierteam {n}",it:"Squadra Animale {n}",ru:"Команда зверей {n}",hi:"पशु टीम {n}",ar:"فريق الحيوانات {n}"};
+  const defendTarget={
+    en:"Bright save cue: {zone}. Choose this zone now.",
+    "zh-Hant":"明亮的撲救提示：{zone}。現在選擇這個區域。",
+    "zh-Hans":"明亮的扑救提示：{zone}。现在选择这个区域。",
+    ja:"明るいセーブ合図：{zone}。今この区画を選びます。",
+    ko:"밝은 선방 신호: {zone}. 지금 이 구역을 선택하세요.",
+    es:"Señal brillante de parada: {zone}. Elige esta zona ahora.",
+    "pt-BR":"Sinal brilhante de defesa: {zone}. Escolha esta zona agora.",
+    fr:"Signal lumineux de parade : {zone}. Choisissez cette zone maintenant.",
+    de:"Helles Parade-Signal: {zone}. Wähle jetzt diese Zone.",
+    it:"Segnale luminoso di parata: {zone}. Scegli ora questa zona.",
+    ru:"Яркий сигнал для сейва: {zone}. Выберите эту зону сейчас.",
+    hi:"चमकीला बचाव संकेत: {zone}। अभी यही क्षेत्र चुनें।",
+    ar:"إشارة التصدي الساطعة: {zone}. اختر هذه المنطقة الآن."
+  };
   const all={en,"zh-Hant":zhHant,"zh-Hans":zhHans,ja,ko,es,"pt-BR":pt,fr,de,it,ru,hi,ar};
   for(const [code,copy] of Object.entries(campaign)){all[code].chapterNames=copy[0];all[code].chapterRules=copy[1]}
   for(const [code,name] of Object.entries(teamNames))all[code].teamName=name;
+  for(const [code,copy] of Object.entries(defendTarget))all[code].defendTarget=copy;
   root.ANIMAL_PENALTY_LOCALES=all;
 })(window);
