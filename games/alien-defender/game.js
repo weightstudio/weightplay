@@ -223,6 +223,22 @@
     ar:{stageBrowse:"اسحب أفقياً لتصفح المراحل الثلاثين."}
   };
   Object.entries(V47_STAGE_NAV_COPY).forEach(([key,patch])=>Object.assign(COPY[key],patch));
+  const V47_RETURN_COPY_PATCH={
+    en:{backToStages:"Back to stages"},
+    "zh-Hant":{backToStages:"回到關卡"},
+    "zh-Hans":{backToStages:"返回关卡"},
+    ja:{backToStages:"ステージ一覧へ戻る"},
+    ko:{backToStages:"스테이지로 돌아가기"},
+    es:{backToStages:"Volver a fases"},
+    "pt-BR":{backToStages:"Voltar às fases"},
+    fr:{backToStages:"Retour aux niveaux"},
+    de:{backToStages:"Zurück zu den Stufen"},
+    it:{backToStages:"Torna ai livelli"},
+    ru:{backToStages:"К этапам"},
+    hi:{backToStages:"स्टेज पर लौटें"},
+    ar:{backToStages:"العودة إلى المراحل"}
+  };
+  Object.entries(V47_RETURN_COPY_PATCH).forEach(([key,patch])=>Object.assign(COPY[key],patch));
   const V42_RESULT_COPY_PATCH={
     en:{stageResultWin:"Stage {stage} cleared.",stageResultFail:"Stage {stage} needs another run."},"zh-Hant":{stageResultWin:"第 {stage} 關已清除。",stageResultFail:"第 {stage} 關需要再挑戰一次。"},"zh-Hans":{stageResultWin:"第 {stage} 关已清除。",stageResultFail:"第 {stage} 关需要再挑战一次。"},ja:{stageResultWin:"ステージ{stage}をクリアしました。",stageResultFail:"ステージ{stage}をもう一度挑戦しましょう。"},ko:{stageResultWin:"스테이지 {stage} 클리어.",stageResultFail:"스테이지 {stage}를 다시 도전하세요."},es:{stageResultWin:"Fase {stage} superada.",stageResultFail:"La fase {stage} necesita otro intento."},"pt-BR":{stageResultWin:"Fase {stage} concluída.",stageResultFail:"A fase {stage} precisa de outra tentativa."},fr:{stageResultWin:"Niveau {stage} terminé.",stageResultFail:"Le niveau {stage} demande un nouvel essai."},de:{stageResultWin:"Stufe {stage} geschafft.",stageResultFail:"Stufe {stage} braucht einen weiteren Versuch."},it:{stageResultWin:"Livello {stage} completato.",stageResultFail:"Il livello {stage} richiede un altro tentativo."},ru:{stageResultWin:"Этап {stage} пройден.",stageResultFail:"Этап {stage} нужно пройти ещё раз."},hi:{stageResultWin:"स्टेज {stage} पूरा।",stageResultFail:"स्टेज {stage} फिर से खेलें।"},ar:{stageResultWin:"اكتملت المرحلة {stage}.",stageResultFail:"تحتاج المرحلة {stage} إلى محاولة أخرى."}
   };

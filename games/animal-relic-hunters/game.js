@@ -12,7 +12,7 @@
   const ROOMS_PER_EXPEDITION = 3;
   const EXPEDITIONS_PER_REGION = 5;
   const GAME_ID = "animal-relic-hunters";
-  const GAME_VERSION = 11;
+  const GAME_VERSION = 12;
   const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_relic_hunters_v1";
   const profileKey = "weightplay:animal-relic-hunters:profile:v1";
@@ -122,7 +122,7 @@
     en: {
       title: "Animal Relic Hunters",
       menuTitle: "Explore the Ancient Ruins.",
-      menuHint: "Tap or drag in the arena to guide the explorer while relic weapons fire automatically. Defeat shadow beasts, collect Relic Orbs, and recover keys from each room.",
+      menuHint: "Guide the explorer by tapping or dragging; relic weapons fire automatically. Defeat shadow beasts, collect Relic Orbs, and recover room keys.",
       prototypeGoalsTitle: "Expedition Goal",
       prototypeGoalsText: "Clear three rooms in each of 30 expeditions, learn each ruin's hazard, and defeat six regional Guardians while growing through permanent training and gear.",
       diamondShopTitle: "Permanent Upgrade",
@@ -246,7 +246,7 @@
     "zh-Hant": {
       title: "動物遺跡獵人",
       menuTitle: "探索古代遺跡。",
-      menuHint: "點擊或拖曳戰鬥場景來引導探險者，遺跡武器會自動攻擊。擊敗影獸、收集遺跡能量球，並找回每個房間的金鑰。",
+      menuHint: "點擊或拖曳引導探險者；遺跡武器自動攻擊。擊敗影獸、收集遺跡能量球、找回房間金鑰。",
       prototypeGoalsTitle: "遠征目標",
       prototypeGoalsText: "完成 30 個遠征的三房戰鬥，辨識不同遺跡威脅，並擊敗六位區域守護者；永久訓練與裝備會陪你繼續前進。",
       diamondShopTitle: "永久升級",
@@ -357,7 +357,7 @@
   Object.assign(text["zh-Hant"], {
     title: "動物遺跡獵人",
     menuTitle: "探索古代動物遺跡",
-    menuHint: "點擊或拖曳戰鬥場景來引導探險者，遺跡武器會自動攻擊。擊敗影獸、收集遺跡能量球，並找回每個房間的金鑰。",
+    menuHint: "點擊或拖曳引導探險者；遺跡武器自動攻擊。擊敗影獸、收集遺跡能量球、找回房間金鑰。",
     prototypeGoalsTitle: "遠征目標",
     prototypeGoalsText: "完成 30 個遠征的三房戰鬥，辨識不同遺跡威脅，並擊敗六位區域守護者；永久訓練與裝備會陪你繼續前進。",
     diamondShopTitle: "永久升級",
@@ -470,7 +470,7 @@
   text.es = {
     title: "Cazadores Animales de Reliquias",
     menuTitle: "Explora las Ruinas Antiguas.",
-    menuHint: "Toca o arrastra en la arena para guiar al explorador mientras las armas reliquia disparan solas. Derrota bestias sombrías, recoge Orbes Reliquia y recupera las llaves de cada sala.",
+    menuHint: "Guía al explorador tocando o arrastrando; las armas reliquia disparan solas. Derrota bestias sombrías, recoge Orbes Reliquia y recupera las llaves.",
     prototypeGoalsTitle: "Objetivo de la expedición",
     prototypeGoalsText: "Supera tres salas en cada una de las 30 expediciones, aprende los peligros de cada ruina y derrota a seis Guardianes regionales mientras mejoras entrenamiento y equipo permanentes.",
     diamondShopTitle: "Mejora permanente",
@@ -612,6 +612,39 @@
     resultAllCleared: "Completadas las 30 expediciones y los seis Guardianes de las Ruinas",
     nextExpedition: "Siguiente misión"
   };
+
+  Object.assign(text, {
+    "zh-Hans": {
+      menuHint: "点击或拖曳引导探险者；遗迹武器自动攻击。击败影兽、收集遗迹能量球、找回房间金钥。"
+    },
+    ja: {
+      menuHint: "タップやドラッグで探検家を導き、自動攻撃で影の獣を倒し、オーブと部屋の鍵を集めよう。"
+    },
+    ko: {
+      menuHint: "탭·드래그로 탐험가를 이끌고 자동 발사로 그림자 야수를 물리쳐 오브와 열쇠를 모으세요."
+    },
+    "pt-BR": {
+      menuHint: "Guie o explorador tocando ou arrastando; armas de relíquia disparam sozinhas. Derrote feras sombrias, colete Orbes de Relíquia e recupere chaves."
+    },
+    fr: {
+      menuHint: "Guidez l’explorateur en touchant ou glissant; les armes tirent seules. Vainquez bêtes d’ombre, collectez Orbes de Relique et récupérez les clés."
+    },
+    de: {
+      menuHint: "Führe die Entdeckerin per Tippen oder Ziehen; Reliktwaffen feuern automatisch. Besiege Schattenbestien, sammle Orbs und hole die Schlüssel zurück."
+    },
+    it: {
+      menuHint: "Guida l’esploratore toccando o trascinando; le armi reliquia sparano automaticamente. Sconfiggi bestie d’ombra, raccogli Sfere e recupera le chiavi."
+    },
+    ru: {
+      menuHint: "Ведите исследователя касанием или свайпом; оружие стреляет автоматически. Побеждайте теневых зверей, собирайте сферы и возвращайте ключи."
+    },
+    hi: {
+      menuHint: "एरीना में टैप या ड्रैग से खोजकर्ता को चलाएँ; अवशेष हथियार अपने-आप हमला करते हैं। छाया-दैत्यों को हराएँ, ऑर्ब और कमरे की चाबियाँ पाएँ।"
+    },
+    ar: {
+      menuHint: "المس أو اسحب في الساحة لتوجيه المستكشف بينما تطلق أسلحة الآثار تلقائيًا. اهزم وحوش الظلال، واجمع كرات الآثار، واستعد مفاتيح كل غرفة."
+    }
+  });
 
   Object.assign(text.en, {
     startGame: "Start Game",
