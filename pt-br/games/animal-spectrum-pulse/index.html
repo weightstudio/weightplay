@@ -88,7 +88,7 @@
   <section id="stageScreen" class="active-screen" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-spectrum-pulse/cover.webp" style="--wp-stage-art:url('../../assets/animal-spectrum-pulse/cover.webp')">
       <header class="stage-header"><button id="stageBack" type="button" aria-label="Voltar" data-t-aria="back" data-wp-return="stage">←</button><div><strong data-t="chooseTower">Escolha uma torre</strong><span id="stageSummary"></span></div><img src="../../assets/animal-spectrum-pulse/panko.webp" alt=""></header>
-      <nav class="stage-tabs"><button id="towersTab" class="active" type="button" data-t="towers">Torres</button><button id="studioTab" type="button" data-t="studio">Estúdio de ressonância</button></nav>
+      <nav class="stage-tabs"><button id="towersTab" class="active" type="button" aria-pressed="true" data-t="towers">Torres</button><button id="studioTab" type="button" aria-pressed="false" data-t="studio">Estúdio de ressonância</button></nav>
       <section id="towerPanel" class="tab-panel tower-panel"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Seletor de torres" data-t-aria="stageRailLabel"></div><p id="stageHint" data-t="stageHint">Arraste e escolha uma torre desbloqueada.</p></section>
       <section id="studioPanel" class="tab-panel studio-panel" hidden>
         <div class="studio-intro"><img src="../../assets/animal-spectrum-pulse/panko.webp" alt=""><div><h2 data-t="studioTitle">Estúdio de ressonância</h2><p data-t="studioIntro">Use Notas Estelares em ajustes permanentes.</p><strong id="noteCount"></strong></div></div>
@@ -151,7 +151,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="locales.js?v=20260816-result-goal-v10"></script>
   <script src="../../src/wallet.js"></script>
-  <script src="game.js?v=20260819-stage-pool-a11y-v12"></script>
+  <script src="game.js?v=20260820-stage-tab-state-v13-65528f99"></script>
   <script src="../../src/game-page-info.js?v=20260816-spectrum-guide-v10"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>

@@ -1532,6 +1532,53 @@
       || "";
   }
 
+  // Stage recommendations are game-owned decision copy. Keep the boss role
+  // term inside that copy instead of allowing the shared page localizer to
+  // reinterpret the English word as Traditional Chinese "老闆".
+  const stageIntelBossTerms = {
+    en: "Boss",
+    "zh-Hant": "首領",
+    "zh-Hans": "首领",
+    ja: "ボス",
+    ko: "보스",
+    es: "jefe",
+    "pt-BR": "chefe",
+    fr: "boss",
+    de: "boss",
+    it: "boss",
+    ru: "босс",
+    hi: "बॉस",
+    ar: "الزعيم",
+  };
+
+  const stageBossLabels = {
+    en: "Boss",
+    "zh-Hant": "首領",
+    "zh-Hans": "首领",
+    ja: "ボス",
+    ko: "보스",
+    es: "Jefe",
+    "pt-BR": "Chefe",
+    fr: "boss",
+    de: "boss",
+    it: "boss",
+    ru: "Босс",
+    hi: "बॉस",
+    ar: "الزعيم",
+  };
+
+  function localizedStageIntel(values) {
+    const value = localizedValue(values);
+    const term = stageIntelBossTerms[state.locale] || stageIntelBossTerms.en;
+    return value
+      .replace(/\bBoss\b/giu, term)
+      .replaceAll("老闆", term);
+  }
+
+  function localizedStageBossLabel() {
+    return stageBossLabels[state.locale] || stageBossLabels.en;
+  }
+
   function track(event, payload = {}) {
     window.WonderAnalytics?.track?.(event, { game_id: GAME_ID, internal: !isPublicRelease, ...payload });
   }
@@ -1955,7 +2002,7 @@
     else button.removeAttribute("aria-current");
     if (recommended) button.dataset.wpStageRecommended = "true";
     else delete button.dataset.wpStageRecommended;
-    button.innerHTML = `<strong>${stage.id}. ${localizedValue(stage.name)}</strong><span class="stage-status">${status}</span><span class="stage-intel"><span class="stage-threat"><b>${t("threatIntel")}:</b> ${localizedValue(stage.intel.threat)}</span><span class="stage-plan"><b>${t("recommendedPlan")}:</b> ${localizedValue(stage.intel.plan)}</span></span><span class="stage-meta">${stage.waves} ${t("wave")} · ${stage.boss ? t("boss") : t("guardianRoute")}</span><span class="stage-reward"><b>${t("rewardIntel")}:</b> ${rewardText}</span>`;
+    button.innerHTML = `<strong>${stage.id}. ${localizedValue(stage.name)}</strong><span class="stage-status">${status}</span><span class="stage-intel"><span class="stage-threat"><b>${t("threatIntel")}:</b> ${localizedStageIntel(stage.intel.threat)}</span><span class="stage-plan"><b>${t("recommendedPlan")}:</b> ${localizedStageIntel(stage.intel.plan)}</span></span><span class="stage-meta">${stage.waves} ${t("wave")} · ${stage.boss ? localizedStageBossLabel() : t("guardianRoute")}</span><span class="stage-reward"><b>${t("rewardIntel")}:</b> ${rewardText}</span>`;
   }
 
   function buildStageCardPool() {

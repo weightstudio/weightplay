@@ -331,7 +331,7 @@
     button.setAttribute("aria-posinset", String(index + 1));
     button.setAttribute("aria-setsize", String(stages.length));
     button.setAttribute("aria-disabled", locked ? "true" : "false");
-    button.setAttribute("aria-label", `${locked ? `${t("lockedBadge")}, ` : ""}${t(chapters[stage.chapter])}, ${stage.n}, ${rule}`);
+    button.setAttribute("aria-label", `${locked ? `${t("lockedBadge")}. ${t("stageLocked")} ` : ""}${t(chapters[stage.chapter])}, ${stage.n}, ${rule}`);
     button.classList.toggle("locked", locked);
     button.querySelector("small").textContent = locked ? t("lockedBadge") : t(chapters[stage.chapter]);
     button.querySelector("strong").textContent = String(stage.n);
