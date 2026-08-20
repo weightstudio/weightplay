@@ -218,6 +218,13 @@ img{-webkit-user-drag:none}
     clip-path:inset(0);
   }
 }
+
+/* V8: keep persistent Battle actions above the shared 44px touch floor after
+   the logical Canvas is scaled for desktop and compact landscape. */
+.v3-battle{grid-template-rows:56px minmax(0,1fr) 218px}
+.v3-battle .battle-head{height:56px;grid-template-columns:66px minmax(0,1fr) 66px}
+.v3-battle #battleBack{box-sizing:border-box;width:56px!important;min-width:56px!important;height:56px!important;min-height:56px!important;max-height:56px!important;justify-self:center}
+.v3-battle .speed-btn{box-sizing:border-box;width:66px;min-width:66px;height:56px;min-height:56px}
 .v3-battle .correction-recap{max-width:650px;margin:2px auto 0;min-height:18px;overflow:hidden;text-align:center;text-overflow:ellipsis;white-space:nowrap;color:#bff6ff;font-size:.62rem;font-weight:850;line-height:18px}.v3-battle .correction-recap[hidden]{display:none}
 @media(max-width:560px){.v3-battle .correction-recap{font-size:.54rem}}
 @media(max-height:520px) and (orientation:landscape){.v3-battle .correction-recap{margin:0;min-height:16px;font-size:.5rem;line-height:16px}}

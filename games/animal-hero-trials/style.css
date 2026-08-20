@@ -5,6 +5,13 @@
   opacity: 1;
 }
 
+/* v10: keep persistent Battle controls above the shared 44px touch floor
+   after the logical Canvas is scaled for desktop and short landscape. */
+.battle-head{height:56px;grid-template-columns:56px 1fr 66px}
+.icon-btn{width:56px;height:56px}
+.skill-btn{width:66px;height:56px;min-width:66px;min-height:56px}
+body.wp-logical-battle-active #battleView .wp-shell-return[data-wp-return="battle"]{width:56px!important;min-width:56px!important;height:56px!important;min-height:56px!important;max-height:56px!important}
+
 .battle-overlay{position:absolute;top:7px;left:50%;z-index:1;width:min(calc(100% - 20px),340px);transform:translateX(-50%);display:grid;gap:3px;pointer-events:none;text-align:center}.canvas-wrap p{position:static;transform:none;margin:0;padding:5px 10px;border-radius:8px;background:#071712bb;white-space:normal;font-size:12px;font-weight:800}.battle-overlay small{padding:4px 8px;border:1px solid #ffd45f99;border-radius:8px;background:#071712dd;color:#ffe89a;font-size:11px;line-height:1.25;font-weight:800}
 .battle-overlay .battle-briefing{border:0;background:#071712aa;color:#d8f7e6;font-size:10px}
 
