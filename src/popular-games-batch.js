@@ -428,19 +428,19 @@
   const SNAKE_GRID_SIZE = 10;
   const SNAKE_TICK_MS = 360;
   const SNAKE_COPY = {
-    en: { run: (n) => `Run ${n}`, goal: (n) => `Milestone: ${n} food`, nextGoal: (n) => `Next milestone: ${n} food`, collected: (n) => `Food collected: ${n}`, milestone: (n) => `Milestone ${n} reached — +20 bonus. Keep going!` },
-    "zh-Hant": { run: (n) => `第 ${n} 局`, goal: (n) => `里程碑：${n} 個食物`, nextGoal: (n) => `下一個里程碑：${n} 個食物`, collected: (n) => `已收集食物：${n}`, milestone: (n) => `達成 ${n} 個食物里程碑，獲得 20 分獎勵，繼續前進！` },
-    "zh-Hans": { run: (n) => `第 ${n} 局`, goal: (n) => `里程碑：${n} 个食物`, nextGoal: (n) => `下一个里程碑：${n} 个食物`, collected: (n) => `已收集食物：${n}`, milestone: (n) => `达成 ${n} 个食物里程碑，获得 20 分奖励，继续前进！` },
-    ja: { run: (n) => `ラン ${n}`, goal: (n) => `目標：食べ物 ${n} 個`, nextGoal: (n) => `次の目標：食べ物 ${n} 個`, collected: (n) => `食べ物：${n} 個`, milestone: (n) => `食べ物 ${n} 個を達成。ボーナス20点！続けましょう。` },
-    ko: { run: (n) => `${n}번째 런`, goal: (n) => `목표: 먹이 ${n}개`, nextGoal: (n) => `다음 목표: 먹이 ${n}개`, collected: (n) => `먹이 수집: ${n}`, milestone: (n) => `먹이 ${n}개 목표 달성! 보너스 20점, 계속하세요.` },
-    es: { run: (n) => `Partida ${n}`, goal: (n) => `Meta: ${n} alimentos`, nextGoal: (n) => `Siguiente meta: ${n} alimentos`, collected: (n) => `Alimentos: ${n}`, milestone: (n) => `Meta de ${n} alimentos alcanzada. ¡+20 de bonus!` },
-    "pt-BR": { run: (n) => `Partida ${n}`, goal: (n) => `Meta: ${n} alimentos`, nextGoal: (n) => `Próxima meta: ${n} alimentos`, collected: (n) => `Alimentos: ${n}`, milestone: (n) => `Meta de ${n} alimentos alcançada. Bônus de 20! Continue!` },
-    fr: { run: (n) => `Partie ${n}`, goal: (n) => `Objectif : ${n} nourritures`, nextGoal: (n) => `Prochain objectif : ${n} nourritures`, collected: (n) => `Nourritures : ${n}`, milestone: (n) => `Objectif de ${n} nourritures atteint. Bonus de 20 ! Continuez !` },
-    de: { run: (n) => `Lauf ${n}`, goal: (n) => `Ziel: ${n} Futter`, nextGoal: (n) => `Nächstes Ziel: ${n} Futter`, collected: (n) => `Futter gesammelt: ${n}`, milestone: (n) => `Ziel von ${n} Futter erreicht. +20 Bonus! Weiter!` },
-    it: { run: (n) => `Partita ${n}`, goal: (n) => `Traguardo: ${n} cibi`, nextGoal: (n) => `Prossimo traguardo: ${n} cibi`, collected: (n) => `Cibi raccolti: ${n}`, milestone: (n) => `Traguardo di ${n} cibi raggiunto. Bonus di 20! Continua!` },
-    ru: { run: (n) => `Забег ${n}`, goal: (n) => `Цель: ${n} ед. еды`, nextGoal: (n) => `Следующая цель: ${n} ед. еды`, collected: (n) => `Еда собрана: ${n}`, milestone: (n) => `Цель ${n} достигнута. Бонус 20! Продолжайте!` },
-    hi: { run: (n) => `रन ${n}`, goal: (n) => `लक्ष्य: ${n} भोजन`, nextGoal: (n) => `अगला लक्ष्य: ${n} भोजन`, collected: (n) => `भोजन एकत्र: ${n}`, milestone: (n) => `${n} भोजन का लक्ष्य पूरा। 20 बोनस! जारी रखें!` },
-    ar: { run: (n) => `الجولة ${n}`, goal: (n) => `الهدف: ${n} طعام`, nextGoal: (n) => `الهدف التالي: ${n} طعام`, collected: (n) => `الطعام المجموع: ${n}`, milestone: (n) => `اكتمل هدف ${n} من الطعام. مكافأة 20! استمر!` },
+    en: { run: (n) => `Run ${n}`, goal: (n) => `Milestone: ${n} food`, nextGoal: (n) => `Next milestone: ${n} food`, collected: (n) => `Food collected: ${n}`, milestone: (n) => `Mastery milestone: ${n} food reached — +20 bonus. Next: ${n + 2} food. Keep going!` },
+    "zh-Hant": { run: (n) => `第 ${n} 局`, goal: (n) => `里程碑：${n} 個食物`, nextGoal: (n) => `下一個里程碑：${n} 個食物`, collected: (n) => `已收集食物：${n}`, milestone: (n) => `掌握里程碑：已達成 ${n} 個食物，獲得 20 分獎勵。下一個目標：${n + 2} 個，繼續前進！` },
+    "zh-Hans": { run: (n) => `第 ${n} 局`, goal: (n) => `里程碑：${n} 个食物`, nextGoal: (n) => `下一个里程碑：${n} 个食物`, collected: (n) => `已收集食物：${n}`, milestone: (n) => `掌握里程碑：已达成 ${n} 个食物，获得 20 分奖励。下一个目标：${n + 2} 个，继续前进！` },
+    ja: { run: (n) => `ラン ${n}`, goal: (n) => `目標：食べ物 ${n} 個`, nextGoal: (n) => `次の目標：食べ物 ${n} 個`, collected: (n) => `食べ物：${n} 個`, milestone: (n) => `マスタリー目標達成：食べ物${n}個、ボーナス20点！次は${n + 2}個です。続けましょう。` },
+    ko: { run: (n) => `${n}번째 런`, goal: (n) => `목표: 먹이 ${n}개`, nextGoal: (n) => `다음 목표: 먹이 ${n}개`, collected: (n) => `먹이 수집: ${n}`, milestone: (n) => `숙련 마일스톤 달성: 먹이 ${n}개, 보너스 20점! 다음 목표는 ${n + 2}개입니다. 계속하세요.` },
+    es: { run: (n) => `Partida ${n}`, goal: (n) => `Meta: ${n} alimentos`, nextGoal: (n) => `Siguiente meta: ${n} alimentos`, collected: (n) => `Alimentos: ${n}`, milestone: (n) => `Hito de dominio: ${n} alimentos alcanzados. ¡+20 de bonus! Siguiente: ${n + 2}.` },
+    "pt-BR": { run: (n) => `Partida ${n}`, goal: (n) => `Meta: ${n} alimentos`, nextGoal: (n) => `Próxima meta: ${n} alimentos`, collected: (n) => `Alimentos: ${n}`, milestone: (n) => `Marco de domínio: ${n} alimentos alcançados. Bônus de 20! Próxima meta: ${n + 2}. Continue!` },
+    fr: { run: (n) => `Partie ${n}`, goal: (n) => `Objectif : ${n} nourritures`, nextGoal: (n) => `Prochain objectif : ${n} nourritures`, collected: (n) => `Nourritures : ${n}`, milestone: (n) => `Palier de maîtrise : ${n} nourritures atteintes. Bonus de 20 ! Prochain objectif : ${n + 2}. Continuez !` },
+    de: { run: (n) => `Lauf ${n}`, goal: (n) => `Ziel: ${n} Futter`, nextGoal: (n) => `Nächstes Ziel: ${n} Futter`, collected: (n) => `Futter gesammelt: ${n}`, milestone: (n) => `Meilenstein geschafft: ${n} Futter. +20 Bonus! Nächstes Ziel: ${n + 2}. Weiter!` },
+    it: { run: (n) => `Partita ${n}`, goal: (n) => `Traguardo: ${n} cibi`, nextGoal: (n) => `Prossimo traguardo: ${n} cibi`, collected: (n) => `Cibi raccolti: ${n}`, milestone: (n) => `Traguardo di maestria: ${n} cibi raggiunti. Bonus di 20! Prossimo: ${n + 2}. Continua!` },
+    ru: { run: (n) => `Забег ${n}`, goal: (n) => `Цель: ${n} ед. еды`, nextGoal: (n) => `Следующая цель: ${n} ед. еды`, collected: (n) => `Еда собрана: ${n}`, milestone: (n) => `Мастерство подтверждено: ${n} ед. еды. Бонус 20! Следующая цель: ${n + 2}. Продолжайте!` },
+    hi: { run: (n) => `रन ${n}`, goal: (n) => `लक्ष्य: ${n} भोजन`, nextGoal: (n) => `अगला लक्ष्य: ${n} भोजन`, collected: (n) => `भोजन एकत्र: ${n}`, milestone: (n) => `${n} भोजन का महारत लक्ष्य पूरा। 20 बोनस! अगला लक्ष्य: ${n + 2}। जारी रखें!` },
+    ar: { run: (n) => `الجولة ${n}`, goal: (n) => `الهدف: ${n} طعام`, nextGoal: (n) => `الهدف التالي: ${n} طعام`, collected: (n) => `الطعام المجموع: ${n}`, milestone: (n) => `إنجاز إتقان: اكتمل جمع ${n} من الطعام. مكافأة 20! الهدف التالي: ${n + 2}. استمر!` },
   };
   const SNAKE_MODE_COPY = {
     en: { open: "Open grid", gates: "Gate grid", orbit: "Orbit grid" }, "zh-Hant": { open: "開放棋盤", gates: "星門棋盤", orbit: "軌道棋盤" }, "zh-Hans": { open: "开放棋盘", gates: "星门棋盘", orbit: "轨道棋盘" }, ja: { open: "オープングリッド", gates: "ゲートグリッド", orbit: "軌道グリッド" }, ko: { open: "열린 격자", gates: "게이트 격자", orbit: "궤도 격자" }, es: { open: "Cuadrícula abierta", gates: "Cuadrícula de portales", orbit: "Cuadrícula orbital" }, "pt-BR": { open: "Grade aberta", gates: "Grade de portais", orbit: "Grade orbital" }, fr: { open: "Grille ouverte", gates: "Grille à portails", orbit: "Grille orbitale" }, de: { open: "Offenes Raster", gates: "Tor-Raster", orbit: "Orbit-Raster" }, it: { open: "Griglia aperta", gates: "Griglia di varchi", orbit: "Griglia orbitale" }, ru: { open: "Открытая сетка", gates: "Сетка с вратами", orbit: "Орбитальная сетка" }, hi: { open: "खुली ग्रिड", gates: "गेट ग्रिड", orbit: "कक्षा ग्रिड" }, ar: { open: "شبكة مفتوحة", gates: "شبكة البوابات", orbit: "شبكة المدار" },
@@ -606,7 +606,7 @@
   const makeState = (type) => {
     const state = { type, score: 0, moves: 0, done: false, success: false, message: "", tone: "", messageKey: "", mismatchTile: "" };
     if (type === "tetris") Object.assign(state, { pieces: 0, lines: 0, active: 3, blocks: [] });
-    if (type === "snake") Object.assign(state, { started: false, food: 0, foodCell: 45, direction: "up", trail: snakeTrailForDirection("up"), runNumber: 1, goalFood: 3, modeKey: "open", obstacles: [], milestoneReached: false, foodFlashCell: -1, foodCueCell: -1 });
+    if (type === "snake") Object.assign(state, { started: false, food: 0, foodCell: 45, direction: "up", trail: snakeTrailForDirection("up"), runNumber: 1, goalFood: 3, modeKey: "open", obstacles: [], milestoneReached: false, milestoneCueActive: false, foodFlashCell: -1, foodCueCell: -1 });
     if (type === "tic") Object.assign(state, { cells: Array(9).fill(""), playerMoves: 0, aiMoves: 0, winningCells: [], rivalCell: -1, outcome: "" });
     if (type === "chess") Object.assign(state, { step: 0 });
     if (type === "checkers") Object.assign(state, { step: 0 });
@@ -767,7 +767,8 @@
     const stopTicReplyTimer = () => { if (ticReplyTimer) { window.clearTimeout(ticReplyTimer); ticReplyTimer = null; } };
     let snakeFlashTimer = null;
     let snakeRouteCueTimer = null;
-    const stopSnakeTimer = () => { if (snakeTimer) { window.clearTimeout(snakeTimer); snakeTimer = null; } if (snakeFlashTimer) { window.clearTimeout(snakeFlashTimer); snakeFlashTimer = null; } if (snakeRouteCueTimer) { window.clearTimeout(snakeRouteCueTimer); snakeRouteCueTimer = null; } };
+    let snakeMilestoneTimer = null;
+    const stopSnakeTimer = () => { if (snakeTimer) { window.clearTimeout(snakeTimer); snakeTimer = null; } if (snakeFlashTimer) { window.clearTimeout(snakeFlashTimer); snakeFlashTimer = null; } if (snakeRouteCueTimer) { window.clearTimeout(snakeRouteCueTimer); snakeRouteCueTimer = null; } if (snakeMilestoneTimer) { window.clearTimeout(snakeMilestoneTimer); snakeMilestoneTimer = null; } };
     const nextSnakeRunNumber = () => {
       const runKey = `${key(gameId)}_runs`;
       let runNumber = 0;
@@ -799,7 +800,19 @@
         state.foodFlashCell = next;
         if (!state.milestoneReached && state.food >= state.goalFood) {
           state.milestoneReached = true;
+          state.milestoneCueActive = true;
           announce(snakeCopy(locale, "milestone", state.food), "good", "snakeMilestone");
+          if (snakeMilestoneTimer) window.clearTimeout(snakeMilestoneTimer);
+          snakeMilestoneTimer = window.setTimeout(() => {
+            snakeMilestoneTimer = null;
+            state.milestoneCueActive = false;
+            if (state.messageKey === "snakeMilestone") {
+              state.message = snakeInstruction(locale);
+              state.messageKey = "snakeRunning";
+              state.tone = "";
+            }
+            if (!state.done) render();
+          }, 1800);
         } else {
           announce(snakeCopy(locale, "collected", state.food), "good", "snakeFood");
         }
@@ -852,9 +865,11 @@
         state.foodCueCell = -1;
         if (snakeRouteCueTimer) { window.clearTimeout(snakeRouteCueTimer); snakeRouteCueTimer = null; }
         state.direction = name;
-        state.message = "";
-        state.messageKey = "";
-        state.tone = "";
+        if (state.messageKey !== "snakeMilestone") {
+          state.message = "";
+          state.messageKey = "";
+          state.tone = "";
+        }
         render();
         return;
       }
@@ -951,7 +966,7 @@
     const shell = () => { document.documentElement.lang = locale; document.documentElement.dir = locale === "ar" ? "rtl" : "ltr"; document.title = `${title(locale, gameId)} | WeightPlay`; if (game.type === "checkers") document.querySelector('meta[name="description"]')?.setAttribute("content", checkersMetaDescription(locale)); if (game.type === "breakout") document.querySelector('meta[name="description"]')?.setAttribute("content", breakoutMetaDescription(locale)); els.eyebrow.textContent = copy(locale, "eyebrow"); els.title.textContent = title(locale, gameId); els.tagline.textContent = copy(locale, "tagline"); els.objective.innerHTML = `<strong>${copy(locale, "objective")}:</strong> ${copy(locale, game.objective)}`; els.instruction.textContent = game.type === "snake" ? snakeInstruction(locale) : copy(locale, "ready"); document.querySelector("#languageLabel").textContent = copy(locale, "language"); document.querySelector("#footerText").textContent = `${title(locale, gameId)} · ${copy(locale, "eyebrow")}`; if (game.type === "snake") { const shellCopy = SNAKE_SHELL_COPY[locale] || SNAKE_SHELL_COPY.en; document.querySelector('[data-wp-return="battle"]')?.setAttribute("aria-label", shellCopy.battleBack); document.querySelector('[data-wp-return="main"]')?.setAttribute("aria-label", shellCopy.mainBack); } };
     const button = (label, name, extra = "") => `<button type="button" class="control ${extra}" data-action="${name}">${label}</button>`;
     const renderBoard = () => {
-      if (game.type === "snake") { const foodCell = state.foodCell; const routeCueCell = state.foodCueCell; const routeCueLabel = (SNAKE_ROUTE_CUE[locale] || SNAKE_ROUTE_CUE.en).cell; const cells = Array.from({ length: SNAKE_GRID_SIZE * SNAKE_GRID_SIZE }, (_, i) => `<span class="grid-cell ${state.trail.includes(i) ? "filled" : ""} ${i === state.trail[0] ? "snake-head" : ""} ${i === foodCell ? "food" : ""} ${i === routeCueCell ? "food-route-cue" : ""} ${state.obstacles.includes(i) ? "obstacle" : ""} ${i === state.foodFlashCell ? "food-hit" : ""}" data-cell="${i}"${state.obstacles.includes(i) ? ` aria-label="${snakeModeLabel(locale, state.modeKey)}"` : ""}${i === routeCueCell ? ` aria-label="${routeCueLabel}" data-food-route-cue="true"` : ""}></span>`).join(""); els.board.innerHTML = `<div class="grid-board snake-grid ${state.milestoneReached ? "milestone-pulse" : ""}" role="grid" aria-label="${copy(locale, game.objective)}" data-grid-size="${SNAKE_GRID_SIZE}" data-tick-ms="${snakeTickMs()}" data-head-cell="${state.trail[0]}" data-food-cell="${foodCell}" data-food-route-cue-cell="${routeCueCell}" data-food-count="${state.food}" data-score="${state.score}" data-run="${state.runNumber}" data-mode="${state.modeKey}" data-mode-label="${snakeModeLabel(locale, state.modeKey)}" data-obstacles="${state.obstacles.join(",")}" data-goal-food="${state.goalFood}" data-milestone-reached="${state.milestoneReached}" data-direction="${state.direction}" data-moves="${state.moves}" data-trail="${state.trail.join(",")}">${cells}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "up"), "up")}</div><div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "down"), "down")}${button(copy(locale, "right"), "right")}</div>`; return; }
+      if (game.type === "snake") { const foodCell = state.foodCell; const routeCueCell = state.foodCueCell; const routeCueLabel = (SNAKE_ROUTE_CUE[locale] || SNAKE_ROUTE_CUE.en).cell; const cells = Array.from({ length: SNAKE_GRID_SIZE * SNAKE_GRID_SIZE }, (_, i) => `<span class="grid-cell ${state.trail.includes(i) ? "filled" : ""} ${i === state.trail[0] ? "snake-head" : ""} ${i === foodCell ? "food" : ""} ${i === routeCueCell ? "food-route-cue" : ""} ${state.obstacles.includes(i) ? "obstacle" : ""} ${i === state.foodFlashCell ? "food-hit" : ""}" data-cell="${i}"${state.obstacles.includes(i) ? ` aria-label="${snakeModeLabel(locale, state.modeKey)}"` : ""}${i === routeCueCell ? ` aria-label="${routeCueLabel}" data-food-route-cue="true"` : ""}></span>`).join(""); els.board.innerHTML = `<div class="grid-board snake-grid ${state.milestoneReached ? "milestone-pulse" : ""} ${state.milestoneCueActive ? "milestone-cue" : ""}" role="grid" aria-label="${copy(locale, game.objective)}" data-grid-size="${SNAKE_GRID_SIZE}" data-tick-ms="${snakeTickMs()}" data-head-cell="${state.trail[0]}" data-food-cell="${foodCell}" data-food-route-cue-cell="${routeCueCell}" data-food-count="${state.food}" data-score="${state.score}" data-run="${state.runNumber}" data-mode="${state.modeKey}" data-mode-label="${snakeModeLabel(locale, state.modeKey)}" data-obstacles="${state.obstacles.join(",")}" data-goal-food="${state.goalFood}" data-milestone-reached="${state.milestoneReached}" data-milestone-cue="${state.milestoneCueActive}" data-direction="${state.direction}" data-moves="${state.moves}" data-trail="${state.trail.join(",")}">${cells}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "up"), "up")}</div><div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "down"), "down")}${button(copy(locale, "right"), "right")}</div>`; return; }
       if (game.type === "tetris") { const cells = Array.from({ length: 64 }, (_, i) => { const block = state.blocks.some((b) => b.x + b.y * 8 === i); const active = i === state.active; return `<span class="grid-cell ${block ? "filled" : ""} ${active ? "active" : ""}"></span>`; }).join(""); els.board.innerHTML = `<div class="grid-board tetris-grid">${cells}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "rotate"), "rotate")}${button(copy(locale, "right"), "right")}${button(copy(locale, "drop"), "drop", "primary")}</div>`;
       } else if (game.type === "tic") { els.board.innerHTML = `<div class="tic-board" data-winning-count="${state.winningCells?.length || 0}" data-outcome="${state.outcome}">${state.cells.map((cell, i) => { const winning = state.winningCells?.includes(i); const rivalReply = state.rivalCell === i; return `<button class="tic-cell${winning ? " winning" : ""}${rivalReply ? " rival-reply" : ""}" data-action="cell" data-value="${i}"${winning ? " data-winning-cell=\"true\"" : ""}${rivalReply ? " data-rival-reply=\"true\"" : ""} aria-label="${ticCellLabel(locale, i, cell, winning)}"${cell || state.done ? " disabled" : ""}>${cell}</button>`; }).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "hint"), "hint")}</div>`;
       } else if (game.type === "chess") { const pieces = ["♜", "♟", "", "♚", "", "♙", "", "", "", "", "♙", "", "", "", "", "♔"]; els.board.innerHTML = `<div class="chess-board" role="group" aria-label="${copy(locale, "chess")}">${pieces.map((piece, i) => { const target = i === 6 + state.step; return `<button class="chess-cell ${target ? "target" : ""}" data-action="move" data-cell="${i}"${target ? " data-target=\"true\"" : ""} aria-label="${chessCellLabel(locale, i, piece, target)}">${piece}</button>`; }).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(`${copy(locale, "select")} ${state.step + 1}`, "move", "primary")}</div>`;
