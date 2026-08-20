@@ -1,0 +1,11 @@
+/* Compact-landscape Battle readability: preserve the 16:9 playfield while giving it a deliberate two-column composition. */
+@media (max-height:560px) and (orientation:landscape){
+  .battle-screen{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;grid-template-rows:64px 26px minmax(0,1fr)!important;gap:4px!important;align-content:stretch}
+  .battle-screen>.battle-header{grid-column:1 / -1;grid-row:1}
+  .battle-screen>#battle-status{grid-column:1 / -1;grid-row:2;margin:0 8px;align-self:center}
+  .battle-screen>#arena{grid-column:1;grid-row:3;width:auto!important;height:100%!important;max-width:100%!important;max-height:100%!important;aspect-ratio:16 / 9!important;align-self:center;justify-self:center}
+  .battle-screen>.touch-controls{grid-column:2;grid-row:3;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:center;gap:8px;padding:0 8px 36px}
+  .battle-screen>.touch-controls button{min-width:0;width:100%;min-height:44px;padding:8px 10px}
+  .battle-screen>.touch-controls .jump{min-width:0}
+  .battle-screen>.touch-hint{grid-column:2;grid-row:3;align-self:end;padding:4px 8px;font-size:.72rem;line-height:1.1}
+}

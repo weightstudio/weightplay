@@ -23,7 +23,7 @@
   }
   const defaultSave={unlocked:1,stars:{},best:{},shards:0,upgrades:{grip:0,aegis:0,spark:0},tutorial:false,aura:false};
   let lang=detectLocale(),save=loadSave(),stageIndex=Math.max(0,Math.min(29,save.unlocked-1)),run=null,raf=0,lastFrame=0,screen="main",sceneGeneration=0,activeTab="towers",resizeObserver=null,lifecycleSuspended=document.hidden,windowFocused=document.hasFocus(),modalOpener=null,resultActionClaimed=false,forgeDecisionReadyAt={};
-  const GAME_VERSION="v12";
+  const GAME_VERSION="v13";
   const STAGE_CARD_POOL_SIZE=9;
   let stageCardPool=[],stageWindowStart=0,stageBrowseLogical=stageIndex,stageSettleFrame=0;
   const images={};
@@ -102,6 +102,8 @@
   function normAngle(angle){angle%=TAU;return angle<0?angle+TAU:angle}
   function angleDistance(a,b){return Math.abs(Math.atan2(Math.sin(a-b),Math.cos(a-b)))}
   function buildStage(index){const chapter=Math.floor(index/5),within=index%5,ringCount=8+chapter*2+within,wind=within===1?-.075-chapter*.008:within===2?.085+chapter*.008:within===4?(chapter%2?-.12:.12):0,pulse=within>=2,twin=within>=3;const rand=seeded(9127+index*733);const rings=[];for(let i=0;i<ringCount;i++){const gapWidth=Math.max(.54,1.18-chapter*.075-within*.025);const gap=rand()*TAU;let hazard=normAngle(gap+Math.PI*(.72+rand()*.56));const hazardWidth=Math.min(1.5,.58+chapter*.1+within*.035),hazard2=twin&&i%3===within%3?normAngle(hazard+Math.PI*(.7+rand()*.35)):null;const tempo=within===3?(i%2?.76:1.28):within===4?(i%3===0?1.38:.9):1;rings.push({gap,gapWidth,hazard,hazardWidth,hazard2,hazard2Width:hazard2===null?0:Math.max(.34,hazardWidth*.58),pulse:pulse&&i%2===within%2,tempo,offset:(rand()-.5)*.25,drift:chapter>=2&&i%3!==0?(rand()>.5?1:-1)*(.09+chapter*.018+within*.008):0,fragile:chapter>=1&&i%3===1,reverse:chapter>=3&&i%4===2,crystal:chapter>=4&&i%5===2,cracked:false,broken:false})}return{index,chapter,within,ringCount,rings,wind,pulse,twin,tempo:within>=3,target:Math.round(ringCount*(1.45-chapter*.035)+5),name:t("chapters")[chapter],rule:t("rules")[chapter]}}
+  const buildStageBase=buildStage;
+  buildStage=function(index){const stage=buildStageBase(index);if(index===0){stage.learningRamp=true;stage.rings.forEach((ring,i)=>{if(i<3){ring.gapWidth=Math.min(1.64,ring.gapWidth+.28);ring.hazardWidth=Math.max(.38,ring.hazardWidth-.12)}})}return stage};
   const stages=Array.from({length:30},(_,i)=>buildStage(i));
   function refreshStageLocale(){for(let i=0;i<stages.length;i++){stages[i].name=t("chapters")[stages[i].chapter];stages[i].rule=t("rules")[stages[i].chapter]}}
 

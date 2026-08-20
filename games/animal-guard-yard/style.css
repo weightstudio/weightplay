@@ -1946,6 +1946,13 @@ body.guard-yard-stage .stage-grid { padding-inline: calc((100% - 264px) / 2); to
     0 0 14px rgba(137, 255, 138, 0.42);
 }
 
+.board-pop.defense-pop {
+  color: #b8f6ff;
+  text-shadow:
+    0 2px 0 rgba(23, 62, 78, 0.42),
+    0 0 14px rgba(137, 238, 255, 0.54);
+}
+
 .board-pop.roar-pop {
   color: #ffdf7e;
   text-shadow:

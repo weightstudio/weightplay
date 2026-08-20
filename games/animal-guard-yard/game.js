@@ -1,6 +1,6 @@
 ﻿(() => {
   const GAME_ID = "animal-guard-yard";
-  const GAME_VERSION = "v23";
+  const GAME_VERSION = "v24";
   const INTERFACE_VERSION = 6;
   const localeKey = "weightplayLocale";
   const unlockKey = "weightplay_animal_guard_unlocked";
@@ -336,6 +336,51 @@
     ru: "Следом под угрозой линия {lane} — защитите её до прихода зверя.",
     hi: "अगली दबाव वाली लेन {lane} है—जानवर आने से पहले उसे बचाएँ।",
     ar: "الممر {lane} هو التالي تحت الضغط — احمه قبل وصول الوحش.",
+  };
+  const laneForecastCopy = {
+    en: "Next: Lane {lane} — {threat}. Lead with {unit} ({role}) before it arrives.",
+    "zh-Hant": "下一波：第 {lane} 路線 — {threat}。先用 {unit}（{role}）迎戰。",
+    "zh-Hans": "下一波：第 {lane} 路线 — {threat}。先用 {unit}（{role}）迎战。",
+    ja: "次は{lane}レーンに{threat}。到着前に{unit}（{role}）を先に置きましょう。",
+    ko: "다음은 {lane}번 라인의 {threat}입니다. 도착 전에 {unit}({role})를 먼저 배치하세요.",
+    es: "Siguiente: {threat} en el carril {lane}. Coloca primero {unit} ({role}) antes de que llegue.",
+    "pt-BR": "Próximo: {threat} na faixa {lane}. Coloque {unit} ({role}) antes que chegue.",
+    fr: "Prochaine menace : {threat} sur la voie {lane}. Placez d’abord {unit} ({role}) avant son arrivée.",
+    de: "Als Nächstes: {threat} auf Bahn {lane}. Setze zuerst {unit} ({role}), bevor es kommt.",
+    it: "Prossimo: {threat} sulla corsia {lane}. Piazza prima {unit} ({role}) che arrivi.",
+    ru: "Следом — {threat} на линии {lane}. Сначала разместите {unit} ({role}), пока он не пришёл.",
+    hi: "अगला खतरा: लेन {lane} में {threat}। उसके आने से पहले {unit} ({role}) रखें।",
+    ar: "التالي: {threat} في الممر {lane}. ضع {unit} ({role}) قبل وصوله.",
+  };
+  const defenseHitCopy = {
+    en: "{unit} ({role}) answered pressure in Lane {lane}.",
+    "zh-Hant": "{unit}（{role}）已回應第 {lane} 路線的壓力。",
+    "zh-Hans": "{unit}（{role}）已回应第 {lane} 路线的压力。",
+    ja: "{unit}（{role}）が{lane}レーンの圧力に応えました。",
+    ko: "{unit}({role})가 {lane}번 라인의 압박에 대응했습니다.",
+    es: "{unit} ({role}) respondió a la presión del carril {lane}.",
+    "pt-BR": "{unit} ({role}) respondeu à pressão da faixa {lane}.",
+    fr: "{unit} ({role}) a répondu à la pression de la voie {lane}.",
+    de: "{unit} ({role}) beantwortet den Druck auf Bahn {lane}.",
+    it: "{unit} ({role}) ha risposto alla pressione sulla corsia {lane}.",
+    ru: "{unit} ({role}) отвечает на давление на линии {lane}.",
+    hi: "{unit} ({role}) ने लेन {lane} के दबाव का जवाब दिया।",
+    ar: "استجاب {unit} ({role}) للضغط في الممر {lane}.",
+  };
+  const defenseHoldCopy = {
+    en: "{unit} ({role}) is holding Lane {lane}.",
+    "zh-Hant": "{unit}（{role}）正在守住第 {lane} 路線。",
+    "zh-Hans": "{unit}（{role}）正在守住第 {lane} 路线。",
+    ja: "{unit}（{role}）が{lane}レーンを守っています。",
+    ko: "{unit}({role})가 {lane}번 라인을 지키고 있습니다.",
+    es: "{unit} ({role}) mantiene el carril {lane}.",
+    "pt-BR": "{unit} ({role}) está segurando a faixa {lane}.",
+    fr: "{unit} ({role}) tient la voie {lane}.",
+    de: "{unit} ({role}) hält Bahn {lane}.",
+    it: "{unit} ({role}) sta tenendo la corsia {lane}.",
+    ru: "{unit} ({role}) удерживает линию {lane}.",
+    hi: "{unit} ({role}) लेन {lane} को थामे हुए है।",
+    ar: "يحافظ {unit} ({role}) على الممر {lane}.",
   };
   const cellTargetCopy = {
     en: {
@@ -1100,6 +1145,49 @@
     const value = lanePressureCopy[locale] || lanePressureCopy.en;
     const message = value.replaceAll("{lane}", String(lane));
     return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(message) || message : message;
+  }
+
+  function forecastUnitId(type) {
+    const preferred = type === "fast" || type === "bossBoar" || type === "bossRhino"
+      ? "dog"
+      : type === "burrow" || type === "bossBadger" || type === "bossEagle"
+        ? "owl"
+        : "cat";
+    return units.some((unit) => unit.id === preferred && isOwned(unit.id))
+      ? preferred
+      : units.find((unit) => isOwned(unit.id))?.id || units[0]?.id || "cat";
+  }
+
+  function laneForecastMessage(plan = nextSpawnPlan) {
+    const row = clamp(Number(plan?.row) + 1 || 1, 1, stages[currentStage]?.rows || 5);
+    const threat = stageThreatLabel(plan?.data?.type || "normal");
+    const unit = units.find((item) => item.id === forecastUnitId(plan?.data?.type)) || units[0];
+    const copy = laneForecastCopy[locale] || laneForecastCopy.en;
+    const message = copy
+      .replaceAll("{lane}", String(row))
+      .replaceAll("{threat}", threat)
+      .replaceAll("{unit}", unit ? t(unit.nameKey) : t("unitCat"))
+      .replaceAll("{role}", unit ? t(unit.roleKey) : t("roleRanged"));
+    return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(message) || message : message;
+  }
+
+  function defenseMomentMessage(kind, unitId, row) {
+    const unit = units.find((item) => item.id === unitId) || units[0];
+    const templates = kind === "hold" ? defenseHoldCopy : defenseHitCopy;
+    const copy = templates[locale] || templates.en;
+    const message = copy
+      .replaceAll("{lane}", String(clamp(Number(row) + 1 || 1, 1, stages[currentStage]?.rows || 5)))
+      .replaceAll("{unit}", unit ? t(unit.nameKey) : t("unitCat"))
+      .replaceAll("{role}", unit ? t(unit.roleKey) : t("roleRanged"));
+    return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(message) || message : message;
+  }
+
+  function updateLanePressureAlert(showForecast = true) {
+    if (!nodes.lanePressureAlert || !nextSpawnPlan) return;
+    nodes.lanePressureAlert.textContent = showForecast ? laneForecastMessage() : lanePressureMessage();
+    const pressureRow = Number(nextSpawnPlan.row) || 0;
+    nodes.lanePressureAlert.classList.toggle("is-low-lane", pressureRow < stages[currentStage].rows / 2);
+    nodes.lanePressureAlert.classList.remove("hidden");
   }
 
   function updateCellSemantics(cell) {
@@ -2047,8 +2135,9 @@
     nodes.resultPanel.classList.add("hidden");
     nodes.pausePanel.classList.add("hidden");
     updateGuardYardViewport();
-    nodes.hintText.textContent = t("select");
     buildBoard(stage);
+    nodes.hintText.textContent = t("select");
+    updateLanePressureAlert(true);
     renderUnits();
     updateHud();
     track("stage_start", { outcome: "started" });
@@ -2276,12 +2365,7 @@
     track("guard_placed", { placement_number: guardPlacements });
     if (guardPlacements === 1) {
       track("first_guard_placed");
-      if (nodes.lanePressureAlert) {
-        nodes.lanePressureAlert.textContent = lanePressureMessage();
-        const pressureRow = Number(nextSpawnPlan?.row) || 0;
-        nodes.lanePressureAlert.classList.toggle("is-low-lane", pressureRow < stages[currentStage].rows / 2);
-        nodes.lanePressureAlert.classList.remove("hidden");
-      }
+      updateLanePressureAlert(false);
     }
     updateEntityElement(guard);
     pulseClass(guard.el, "is-placed", 420);
@@ -2453,12 +2537,21 @@
     guard.el.classList.toggle("facing-right", guard.facing === "right");
   }
 
-  function applyDamage(target, damage, impactType, impactY) {
+  function applyDamage(target, damage, impactType, impactY, attacker = null) {
     if (target.shellClosed) damage = Math.max(1, Math.round(damage * 0.22));
     target.hp -= damage;
     pulseClass(target.el, "is-hit");
     spawnImpact(target.x, impactY, impactType);
     showBoardText(`-${damage}`, target.x, Math.max(0.06, impactY - 0.08));
+    if (attacker && !attacker.defensePayoffShown) {
+      attacker.defensePayoffShown = true;
+      showBoardText(
+        defenseMomentMessage("hit", attacker.id, target.row),
+        clamp(target.x, 0.12, 0.88),
+        Math.max(0.1, impactY - 0.17),
+        "defense-pop"
+      );
+    }
     if (target.hp <= 0 && !target.rewarded) {
       target.rewarded = true;
       const coinGain = target.isBoss ? 30 : target.type === "shield" ? 8 : target.type === "fast" ? 5 : 6;
@@ -2476,7 +2569,7 @@
     faceTarget(guard, target);
     pulseClass(guard.el, "is-shooting");
     const y = laneProjectileY(target.row);
-    applyDamage(target, guard.data.damage, guard.id, y);
+    applyDamage(target, guard.data.damage, guard.id, y, guard);
     if (guard.id === "dog") applySlow(target, 0.55, 950);
   }
 
@@ -2512,6 +2605,7 @@
       direction,
       damage,
       unitId: guard.id,
+      attacker: guard,
       target,
       remainingHits: isPiercing ? 2 : 1,
       hitTargets: new Set(),
@@ -2546,7 +2640,7 @@
         && item.x <= maxX
       ));
       if (hit) {
-        applyDamage(hit, shot.damage, shot.unitId, shot.y);
+        applyDamage(hit, shot.damage, shot.unitId, shot.y, shot.attacker);
         if (shot.unitId === "owl") applySlow(hit, 0.72, 1250);
         shot.hitTargets.add(hit);
         shot.remainingHits -= 1;
@@ -2584,6 +2678,15 @@
       if (blocking) {
         zombie.biteCooldown -= dt;
         if (zombie.biteCooldown <= 0) {
+          if (!blocking.defenseHoldShown) {
+            blocking.defenseHoldShown = true;
+            showBoardText(
+              defenseMomentMessage("hold", blocking.id, blocking.row),
+              cellCenterX(blocking.col),
+              Math.max(0.1, laneProjectileY(blocking.row) - 0.17),
+              "defense-pop"
+            );
+          }
           blocking.hp -= zombie.damage;
           zombie.biteCooldown = 940;
           pulseClass(zombie.el, "is-biting");
@@ -2850,6 +2953,7 @@
     nodes.spawnWarning.style.setProperty("--spawn-left", `${Math.round(remaining * 100)}%`);
     nodes.spawnWarning.classList.toggle("is-hot", remaining < 0.28);
     syncIncomingLane(nextSpawnPlan.row, remaining);
+    if (guardPlacements === 0) updateLanePressureAlert(true);
     const src = spriteAssets[nextSpawnPlan.data.type] || spriteAssets.normal;
     const seconds = Math.max(1, Math.ceil(nextSpawnAt / 1000));
     nodes.spawnWarning.innerHTML = `<img src="${src}" alt="" draggable="false" /><b>${seconds}</b>`;
@@ -2875,6 +2979,7 @@
       cell.button.classList.remove("incoming-lane", "incoming-lane-hot");
       cell.button.style.removeProperty("--incoming-opacity");
     });
+    nodes.lanePressureAlert?.classList.add("hidden");
   }
 
   function finish(won) {
