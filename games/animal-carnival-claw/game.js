@@ -358,7 +358,8 @@ function resolveGrip(){
   }
   renderHud();
 }
-function lockWindow(){const base=clamp(.23+save.upgrades.stability*.025-run.held.weight*.015,.16,.28),onboarding=run?.index===0&&!save.medals[0]&&run?.drops===2;return clamp(base+(onboarding?.035:0),.16,.32)}
+function firstGripLesson(){return Boolean(run?.index===0&&!save.medals[0]&&run?.drops===2)}
+function lockWindow(){const base=clamp(.23+save.upgrades.stability*.025-run.held.weight*.015,.16,.28),onboarding=firstGripLesson();return clamp(base+(onboarding?.035:0),.16,.32)}
 function attemptLock(){
   if(!run||run.phase!=="secure"||!run.held)return;
   const distance=Math.abs(run.lockValue-.5),windowSize=lockWindow();
@@ -406,10 +407,10 @@ function commitResult(action){if(settledDecision||$("resultPanel").hidden)return
 function updateTimingCoach(locked=false,failed=false){
   const hint=$("phaseHint"),action=$("steerAction");if(!hint||!action)return;
   $("timingMeter").style.setProperty("--timing-position",`${clamp(run.lockValue)*100}%`);
-  const state=locked?"correct":failed?"wrong":"prompt";
+  const firstLesson=!locked&&!failed&&firstGripLesson(),state=locked?"correct":failed?"wrong":"prompt";
   hint.dataset.steer=state;action.dataset.steer=state;action.hidden=false;
   action.textContent=t(locked?"holdingAction":failed?"falling":"holdAction");
-  hint.textContent=t(locked?"holdingGood":failed?"lockMiss":"holdNeeded");
+  hint.textContent=t(locked?"holdingGood":failed?"lockMiss":firstLesson?"firstGripHint":"holdNeeded");
 }
 
 function activeModal(){return["tutorialPanel","leavePanel","pausePanel","resultPanel"].some(id=>!$(id).hidden)}

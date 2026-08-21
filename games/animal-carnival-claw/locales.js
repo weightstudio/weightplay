@@ -854,5 +854,26 @@ const localeOwnership={
 for(const [locale,values] of Object.entries(localeOwnership))Object.assign(compact[locale],values);
 window.CARNIVAL_CLAW_LOCALE_OWNERSHIP=localeOwnership;
 // END GENERATED CARNIVAL GUIDE OWNERSHIP
+const firstGripHints={
+  en:"First grip lesson: watch the pointer enter green, then press Lock Grip.",
+  "zh-Hant":"第一次穩住：看指針進入綠色區，再按下「夾緊」。",
+  "zh-Hans":"第一次稳住：看指针进入绿色区，再按下“夹紧”。",
+  ja:"初めてのグリップ：針が緑に入ったら、グリップ固定を押そう。",
+  ko:"첫 그립 안내: 바늘이 초록색에 들어오면 그립 잠금을 누르세요.",
+  es:"Primera fijación: mira el indicador y pulsa Fijar agarre al entrar en verde.",
+  "pt-BR":"Primeira pegada: observe o ponteiro e aperte Travar pegada ao entrar no verde.",
+  fr:"Premier verrouillage : regarde le curseur et appuie sur Verrouiller dans le vert.",
+  de:"Erster Griff: Beobachte den Zeiger und drücke Griff sichern im grünen Bereich.",
+  it:"Prima presa: guarda l'indicatore e premi Blocca presa quando entra nel verde.",
+  ru:"Первая фиксация: следите за указателем и нажмите, когда он войдёт в зелёную зону.",
+  hi:"पहली पकड़: सूचक को देखें और हरे क्षेत्र में आने पर पकड़ लॉक करें दबाएँ।",
+  ar:"التثبيت الأول: راقب المؤشر واضغط تثبيت القبضة عندما يدخل المنطقة الخضراء."
+};
+for(const [locale,value] of Object.entries(firstGripHints)){
+  if(locale==="en")en.firstGripHint=value;
+  else if(locale==="zh-Hant")zht.firstGripHint=value;
+  else if(locale==="zh-Hans")zhs.firstGripHint=value;
+  else compact[locale].firstGripHint=value;
+}
 window.CARNIVAL_CLAW_LOCALES={en,"zh-Hant":zht,"zh-Hans":zhs,...compact};
 })();
