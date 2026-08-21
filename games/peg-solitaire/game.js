@@ -18,10 +18,27 @@
     hi: "एक तय बोर्ड तैयार है—पहेली शुरू करें।",
     ar: "لوحة ثابتة جاهزة — ابدأ اللغز.",
   };
+  const mainGuideCopy = {
+    en: "Play the one fixed board. Use Hint for one safe next idea, Undo to reverse a choice, or New Puzzle to reset the board.",
+    "zh-Hant": "遊玩這個固定棋盤。用提示取得一個安全的下一步，用復原撤回選擇，或用新謎題重設棋盤。",
+    "zh-Hans": "游玩这个固定棋盘。用提示获取一个安全的下一步，用撤销撤回选择，或用新谜题重置棋盘。",
+    ja: "固定盤面を遊びましょう。ヒントで安全な次の一手を確認し、元に戻すで選択を戻し、新しいパズルで盤面をリセットできます。",
+    ko: "고정된 보드를 플레이하세요. 힌트로 안전한 다음 수를 확인하고, 실행 취소로 선택을 되돌리거나 새 퍼즐로 보드를 초기화할 수 있어요.",
+    es: "Juega en el único tablero fijo. Usa Pista para ver una siguiente jugada segura, Deshacer para revertir una elección o Nuevo puzle para reiniciar el tablero.",
+    "pt-BR": "Jogue no único tabuleiro fixo. Use Dica para ver uma próxima jogada segura, Desfazer para reverter uma escolha ou Novo quebra-cabeça para reiniciar o tabuleiro.",
+    fr: "Jouez sur l’unique plateau fixe. Utilisez Indice pour voir une prochaine action sûre, Annuler pour revenir sur un choix ou Nouveau puzzle pour réinitialiser le plateau.",
+    de: "Spiele auf dem einzigen festen Brett. Nutze Tipp für eine sichere nächste Idee, Rückgängig zum Zurücknehmen einer Wahl oder Neues Rätsel zum Zurücksetzen des Bretts.",
+    it: "Gioca sull’unica tavola fissa. Usa Suggerimento per una prossima mossa sicura, Annulla per ripristinare una scelta o Nuovo puzzle per azzerare la tavola.",
+    ru: "Играйте на единственном фиксированном поле. Используйте подсказку для безопасного следующего хода, отмену для возврата выбора или новую головоломку для сброса поля.",
+    hi: "एकमात्र तय बोर्ड खेलें। सुरक्षित अगली चाल के लिए संकेत, चुनाव पलटने के लिए वापस लें, या बोर्ड रीसेट करने के लिए नई पहेली इस्तेमाल करें।",
+    ar: "العب على اللوحة الثابتة الوحيدة. استخدم التلميح لمعرفة فكرة آمنة تالية، أو التراجع لعكس اختيار، أو لغز جديد لإعادة ضبط اللوحة.",
+  };
   if (app) {
     const locale = document.documentElement.lang || "en";
     const mainReady = app.root.querySelector(".logic-guide h3");
     if (mainReady) mainReady.textContent = mainReadyCopy[locale] || mainReadyCopy.en;
+    const mainGuide = app.root.querySelector(".logic-guide h3 + p");
+    if (mainGuide) mainGuide.textContent = mainGuideCopy[locale] || mainGuideCopy.en;
   }
 
   const lessonCopy = {
