@@ -46,9 +46,9 @@
   <div id="mainGroup" class="main-group">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
-        <a class="lobby-return" data-wp-return="main" href="/" aria-label="العودة إلى WeightPlay" data-t-aria="lobbyReturn"><span>←</span><img src="../../assets/weightplay-logo.png" alt="شعار WeightPlay"></a>
+        <a class="lobby-return" data-wp-return="main" href="/" aria-label="Return to WeightPlay" data-t-aria="lobbyReturn"><span>←</span><img src="../../assets/weightplay-logo.png" alt="شعار WeightPlay"></a>
         <strong data-t="titleShort">نبض الطيف</strong>
-        <label class="locale-control"><span class="sr-only" data-t="language">اللغة</span><select id="localeSelect" aria-label="اللغة" data-t-aria="language"></select></label>
+        <label class="locale-control"><span class="sr-only" data-t="language">Language</span><select id="localeSelect" aria-label="Language" data-t-aria="language"></select></label>
       </header>
       <section class="main-hero">
         <img class="poster" src="../../assets/animal-spectrum-pulse/cover.webp" alt="يقوم بانكو بتوجيه روح الطيف عبر بوابات الشفق" data-t-alt="posterAlt">
@@ -58,7 +58,7 @@
           <p data-t="mainSummary">روح طيف Pulse Panko للأعلى من خلال بوابات الشعار الدوارة.</p>
           <p data-t="mainGoal">قم بمطابقة الموجة والشمس والماس والمخلب عند نقطة المسح لاستعادة جميع الأبراج الثلاثين.</p>
           <span id="mainProgress"></span>
-          <button id="start" class="primary" type="button" data-t="startGame">ابدأ اللعبة</button>
+          <button id="start" class="primary" type="button" data-t="startGame">Start Game</button>
         </div>
       </section>
     </main>
@@ -76,7 +76,7 @@
         <h3 id="guideRelatedTitle"></h3>
         <p id="guideRelatedIntro"></p>
         <nav id="guideRelatedLinks" class="guide-related-links"></nav>
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>كم عدد المراحل المضمنة؟</dt><dd>هناك 30 مرحلة مؤلفة عبر ستة فصول للقواعد. تظل المرحلة 30 قابلة للإعادة بعد الانتهاء.</dd></div><div><dt>هل يتم حفظ التقدم؟</dt><dd>نعم، فقط في هذا المتصفح.</dd></div></dl></div></section>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>كم عدد المراحل المضمنة؟</dt><dd>هناك 30 مرحلة مؤلفة عبر ستة فصول للقواعد. تظل المرحلة 30 قابلة للإعادة بعد الانتهاء.</dd></div><div><dt>هل يتم حفظ التقدم؟</dt><dd>نعم، فقط في هذا المتصفح.</dd></div></dl></div></section>
       <section class="guide-faq" aria-labelledby="guideFaqTitle">
         <h3 id="guideFaqTitle"></h3>
         <details><summary id="guideFaqOneQuestion"></summary><p id="guideFaqOneAnswer"></p></details>
@@ -87,9 +87,9 @@
 
   <section id="stageScreen" class="active-screen" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-spectrum-pulse/cover.webp" style="--wp-stage-art:url('../../assets/animal-spectrum-pulse/cover.webp')">
-      <header class="stage-header"><button id="stageBack" type="button" aria-label="العودة" data-t-aria="back" data-wp-return="stage">←</button><div><strong data-t="chooseTower">اختر برج النبض</strong><span id="stageSummary"></span></div><img src="../../assets/animal-spectrum-pulse/panko.webp" alt=""></header>
+      <header class="stage-header"><button id="stageBack" type="button" aria-label="Back" data-t-aria="back" data-wp-return="stage">←</button><div><strong data-t="chooseTower">اختر برج النبض</strong><span id="stageSummary"></span></div><img src="../../assets/animal-spectrum-pulse/panko.webp" alt=""></header>
       <nav class="stage-tabs"><button id="towersTab" class="active" type="button" aria-pressed="true" data-t="towers">أبراج</button><button id="studioTab" type="button" aria-pressed="false" data-t="studio">استوديو الرنين</button></nav>
-      <section id="towerPanel" class="tab-panel tower-panel"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="محدد برج النبض" data-t-aria="stageRailLabel"></div><p id="stageHint" data-t="stageHint">اسحب السكة واختر برجًا مفتوحًا.</p></section>
+      <section id="towerPanel" class="tab-panel tower-panel"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="محدد برج النبض" data-t-aria="stageRailLabel"></div><p id="stageHint" data-t="stageHint">Drag the rail and choose an unlocked tower.</p></section>
       <section id="studioPanel" class="tab-panel studio-panel" hidden>
         <div class="studio-intro"><img src="../../assets/animal-spectrum-pulse/panko.webp" alt=""><div><h2 data-t="studioTitle">استوديو الرنين</h2><p data-t="studioIntro">أنفق Star Notes على ضبط النبض الدائم.</p><strong id="noteCount"></strong></div></div>
         <p id="studioHint" class="studio-hint" data-t="studioReady" aria-live="polite">اختر ضبطًا. تظل التكاليف ورصيدك مرئيين.</p>
@@ -102,16 +102,16 @@
   <section id="battleScreen" class="active-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
-        <header class="battle-header"><button id="battleBack" type="button" aria-label="العودة" data-t-aria="back" data-wp-return="battle">←</button><div class="tower-block"><small id="towerLabel"></small><strong id="timerValue">0:00</strong></div><div class="battle-status"><span><b data-t="gate">بوابة</b><strong id="gateValue">0/0</strong></span><span><b data-t="resonance">الرنين</b><strong id="resonanceValue">×1</strong></span><span><b data-t="guard">حارس</b><strong id="guardValue">0</strong></span></div><button id="battleHelp" type="button" aria-label="كيف تلعب" data-t-aria="help">?</button></header>
+        <header class="battle-header"><button id="battleBack" type="button" aria-label="Back" data-t-aria="back" data-wp-return="battle">←</button><div class="tower-block"><small id="towerLabel"></small><strong id="timerValue">0:00</strong></div><div class="battle-status"><span><b data-t="gate">بوابة</b><strong id="gateValue">0/0</strong></span><span><b data-t="resonance">الرنين</b><strong id="resonanceValue">×1</strong></span><span><b data-t="guard">Guard</b><strong id="guardValue">0</strong></span></div><button id="battleHelp" type="button" aria-label="How to play" data-t-aria="help">?</button></header>
         <div class="identity-row"><span data-t="currentIdentity">الحالي</span><img id="identityIcon" src="../../assets/animal-spectrum-pulse/node-cyan.webp" alt=""><strong id="identityName"></strong><span id="nextIdentity"></span></div>
-        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="720" height="1200" tabindex="0" aria-label="برج نبض الطيف" data-t-aria="arenaLabel"></canvas><div class="scan-legend" hidden><span data-t="scanMarker">مسح</span><i></i></div><div id="timingCue" class="timing-cue" aria-hidden="true"></div><div class="control-cue" data-t="controlCue">انقر في أي مكان · مسافة / أدخل / ↑</div></div>
+        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="720" height="1200" tabindex="0" aria-label="برج نبض الطيف" data-t-aria="arenaLabel"></canvas><div class="scan-legend" hidden><span data-t="scanMarker">SCAN</span><i></i></div><div id="timingCue" class="timing-cue" aria-hidden="true"></div><div class="control-cue" data-t="controlCue">انقر في أي مكان · مسافة / أدخل / ↑</div></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>
-        <button id="pulseButton" class="pulse-button" type="button" data-t="pulse">نبض</button>
+        <button id="pulseButton" class="pulse-button" type="button" data-t="pulse">PULSE</button>
       </div>
 
-      <section id="helpModal" class="modal-layer tutorial-panel" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle" data-t="helpTitle">ضغطة واحدة، نبضة واحدة</h2><ol><li data-t="help1">نبض لأعلى ثم حرر قبل الضغط مرة أخرى.</li><li data-t="help2">علامة عبور عندما تلمس علامة المسح اللون والشعار الخاص بك.</li><li data-t="help3">تصبح البوابة التي تم تجاوزها نقطة تفتيش آمنة. الوصول إلى التاج قبل انتهاء الوقت.</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">متابعة</button></div></div></section>
-      <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">هل يستمر هذا النبض؟</h2><p data-t="leaveText">استمر في استئناف الروح الدقيقة وزوايا البوابة والمؤقت والرنين. العودة إلى الأبراج تنهي هذا السباق.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">متابعة</button><button id="leaveStage" type="button" data-t="returnTowers">العودة إلى الأبراج</button></div></div></section>
-      <section id="resultModal" class="modal-layer result-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/animal-spectrum-pulse/panko.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">الوقت</b><strong id="resultTime"></strong></span><span><b data-t="bestResonance">أفضل الرنين</b><strong id="resultChain"></strong></span><span><b data-t="medal">ميدالية</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="resultTowers" type="button" data-t="towers">أبراج</button><button id="next" class="primary" type="button" data-t="nextTower">البرج التالي</button><button id="retry" type="button" data-t="retry">أعد المحاولة</button></div></div></section>
+      <section id="helpModal" class="modal-layer tutorial-panel" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><h2 id="helpTitle" data-t="helpTitle">ضغطة واحدة، نبضة واحدة</h2><ol><li data-t="help1">نبض لأعلى ثم حرر قبل الضغط مرة أخرى.</li><li data-t="help2">علامة عبور عندما تلمس علامة المسح اللون والشعار الخاص بك.</li><li data-t="help3">تصبح البوابة التي تم تجاوزها نقطة تفتيش آمنة. الوصول إلى التاج قبل انتهاء الوقت.</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">Continue</button></div></div></section>
+      <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">هل يستمر هذا النبض؟</h2><p data-t="leaveText">استمر في استئناف الروح الدقيقة وزوايا البوابة والمؤقت والرنين. العودة إلى الأبراج تنهي هذا السباق.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">Continue</button><button id="leaveStage" type="button" data-t="returnTowers">العودة إلى الأبراج</button></div></div></section>
+      <section id="resultModal" class="modal-layer result-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/animal-spectrum-pulse/panko.webp" alt=""><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="time">Time</b><strong id="resultTime"></strong></span><span><b data-t="bestResonance">أفضل الرنين</b><strong id="resultChain"></strong></span><span><b data-t="medal">ميدالية</b><strong id="resultMedal"></strong></span></div><div class="modal-actions"><button id="resultTowers" type="button" data-t="towers">أبراج</button><button id="next" class="primary" type="button" data-t="nextTower">Next Tower</button><button id="retry" type="button" data-t="retry">Retry</button></div></div></section>
     </div>
     <div class="ad-reserve" aria-hidden="true"></div>
   </section>
@@ -135,7 +135,7 @@
   "operatingSystem": "Any modern web browser",
   "applicationCategory": "Game",
   "genre": [
-    "لغز",
+    "Puzzle",
     "الإستراتيجية",
     "حيوان",
     "Browser Game"
@@ -147,7 +147,7 @@
 }
     </script>
 
-  <script src="../../src/site-config.js"></script><script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/ar.js?v=20260818-prism-fr-runtime-v11"></script>
+  <script src="../../src/site-config.js"></script><script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/ar.js?v=20260821-skyport-runtime-v8"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="locales.js?v=20260816-result-goal-v10"></script>
   <script src="../../src/wallet.js"></script>

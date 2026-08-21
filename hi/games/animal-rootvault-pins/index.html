@@ -76,18 +76,18 @@
   <div id="mainGroup" class="main-group wp-standard-main-screen" data-screen="main">
     <main class="main-screen">
       <header class="main-header">
-        <a class="lobby-return" href="/" aria-label="WeightPlay पर लौटें" data-t-aria="lobbyReturn" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt="पशु रूटवॉल्ट पिन game artwork"></a>
+        <a class="lobby-return" href="/" aria-label="Return to WeightPlay" data-t-aria="lobbyReturn" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt="पशु रूटवॉल्ट पिन game artwork"></a>
         <strong data-t="titleShort">रूटवॉल्ट पिन</strong>
-        <label class="locale-control"><span class="sr-only" data-t="language">भाषा</span><select id="localeSelect" aria-label="भाषा" data-t-aria="language"></select></label>
+        <label class="locale-control"><span class="sr-only" data-t="language">Language</span><select id="localeSelect" aria-label="Language" data-t-aria="language"></select></label>
       </header>
       <section class="main-hero">
         <img class="poster" src="../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" data-t-alt="मॉस शैल तारो एक सुनहरा रूटवॉल्ट पिन खींच रहा है" alt="Moss Shell Taro pulling a golden Rootvault pin">
         <div class="main-copy">
-          <h1 data-t="title">पशु रूटवॉल्ट पिन</h1>
+          <h1 data-t="title">Animal Rootvault Pins</h1>
           <p data-t="mainSummary">कक्षों को पढ़ें, फिर एक पूरी सुनहरी पिन खींचें।</p>
           <p data-t="mainGoal">खतरनाक सामग्रियों को मिलाए बिना टैरो और स्टार कोर को अभयारण्य तक ले जाएं।</p>
           <span id="mainProgress"></span>
-          <button id="start" class="primary" type="button" data-t="startGame">गेम प्रारंभ करें</button>
+          <button id="start" class="primary" type="button" data-t="startGame">Start Game</button>
         </div>
       </section>
     </main>
@@ -101,12 +101,12 @@
         <article><h3 data-t="guideStrategyTitle">खींचने से पहले निरीक्षण करें</h3><p data-t="guideStrategy">एक गलत मार्ग स्टार कोर को फँसा सकता है या टैरो को बेनकाब कर सकता है। पुनरारंभ करने से सटीक कक्ष पुनर्स्थापित हो जाता है.</p></article>
         <article><h3 data-t="guideAccessTitle">एक समय में एक क्रिया</h3><p data-t="guideAccess">एक पिन टैप करें और खींचें, या एक पिन फ़ोकस करें और एंटर या स्पेस दबाएँ। आयोजित इनपुट कभी भी दोहराया नहीं जाता.</p></article>
       </div>
-    <div class="game-info-section"><h3>अक्सर पूछे जाने वाले प्रश्न</h3><dl><div><dt>कितने चरण शामिल हैं?</dt><dd>छह नियम अध्यायों में 30 लिखित चरण हैं। चरण 30 पूरा होने के बाद पुनः चलाने योग्य रहता है।</dd></div><div><dt>क्या प्रगति सहेजी गई है?</dt><dd>हाँ, केवल इस ब्राउज़र में.</dd></div></dl></div></section>
+    <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>कितने चरण शामिल हैं?</dt><dd>छह नियम अध्यायों में 30 लिखित चरण हैं। चरण 30 पूरा होने के बाद पुनः चलाने योग्य रहता है।</dd></div><div><dt>क्या प्रगति सहेजी गई है?</dt><dd>हाँ, केवल इस ब्राउज़र में.</dd></div></dl></div></section>
   </div>
 
   <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" style="--wp-stage-art:url('../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp')">
-      <header class="stage-header"><button id="stageBack" type="button" aria-label="वापस" data-t-aria="back" data-wp-return="stage">←</button><div><strong data-t="chooseChamber">एक रूटवॉल्ट चैम्बर चुनें</strong><span id="stageSummary"></span></div><span class="taro-chip" aria-hidden="true"></span></header>
+      <header class="stage-header"><button id="stageBack" type="button" aria-label="Back" data-t-aria="back" data-wp-return="stage">←</button><div><strong data-t="chooseChamber">एक रूटवॉल्ट चैम्बर चुनें</strong><span id="stageSummary"></span></div><span class="taro-chip" aria-hidden="true"></span></header>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" data-t-aria="stageRailLabel" aria-label="रूटवॉल्ट चैम्बर चयनकर्ता"></div>
       <nav class="stage-tabs"><button id="briefTab" class="active" type="button" data-t="chamberBrief">चैम्बर</button><button id="workshopTab" type="button" data-t="workshop">जड़ कार्यशाला</button></nav>
       <section id="briefPanel" class="stage-panel"><div class="selected-brief"><span id="selectedNumber"></span><div><strong id="selectedName"></strong><p id="selectedRule"></p></div><button id="enterStage" class="primary" type="button" data-t="enterChamber">चैम्बर में प्रवेश करें</button></div><p class="stage-hint" data-t="stageHint">रेल खींचें. एक चमकता हुआ फ्रेम केन्द्रित कक्ष को चिह्नित करता है।</p></section>
@@ -117,23 +117,23 @@
   <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
-        <header class="battle-header"><button id="battleBack" type="button" aria-label="वापस" data-t-aria="back" data-wp-return="battle">←</button><div><small id="battleChapter"></small><strong id="battleStage"></strong></div><span><small data-t="pulls">खींचता है</small><strong id="pullCount">0</strong></span><button id="battleHelp" type="button" data-t-aria="help" aria-label="कैसे खेलें">?</button></header>
+        <header class="battle-header"><button id="battleBack" type="button" aria-label="Back" data-t-aria="back" data-wp-return="battle">←</button><div><small id="battleChapter"></small><strong id="battleStage"></strong></div><span><small data-t="pulls">Pulls</small><strong id="pullCount">0</strong></span><button id="battleHelp" type="button" data-t-aria="help" aria-label="How to play">?</button></header>
         <div class="objective-row"><strong data-t="battleObjective">तारो + स्टार कोर को अभयारण्य में लाएँ</strong><span id="ruleCue"></span></div>
         <div id="chamberBoard" class="chamber-board" tabindex="0" data-t-aria="boardLabel" aria-label="रूटवॉल्ट चैम्बर पहेली"></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>
-        <div class="battle-actions"><button id="restart" type="button" data-t="restart">पुनः प्रारंभ करें</button><button id="pullPin" class="primary" type="button" data-t="pullPin">पिन खींचो</button></div>
+        <div class="battle-actions"><button id="restart" type="button" data-t="restart">Restart</button><button id="pullPin" class="primary" type="button" data-t="pullPin">पिन खींचो</button></div>
       </div>
 
-      <section id="helpModal" class="modal-layer tutorial-panel" role="dialog" aria-modal="true" hidden><div class="dialog-card"><h2 data-t="helpTitle">खींचने से पहले चैम्बर को पढ़ें</h2><ol><li data-t="help1">एक पिन प्रत्येक वस्तु को उसके स्रोत कक्ष से उसके गंतव्य कक्ष तक ले जाता है।</li><li data-t="help2">मूनवाटर + एम्बरलाइट हानिरहित भाप बन जाता है। वार्ड + टैरो एक शैडो विस्प को ब्लॉक करता है।</li><li data-t="help3">रूण कुंजी मिलान वाले चिह्नित पिन खोलती है। तारो और स्टार कोर को अभयारण्य में लाओ।</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">जारी रखें</button></div></div></section>
-      <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" hidden><div class="dialog-card"><h2 data-t="leaveTitle">इस कक्ष को खुला रखें?</h2><p data-t="leaveText">सटीक कमरे, पिन, सामग्री और पुल गिनती का बायोडाटा जारी रखें। लौटकर यह प्रयास समाप्त हो जाता है।</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">जारी रखें</button><button id="leaveStage" type="button" data-t="returnChambers">कक्षों में लौटें</button></div></div></section>
-      <section id="resultModal" class="modal-layer result-layer" role="dialog" aria-modal="true" hidden><div class="result-card"><span id="resultArt" class="result-art" aria-hidden="true"></span><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="pulls">खींचता है</b><strong id="resultPulls"></strong></span><span><b data-t="best">सर्वोत्तम</b><strong id="resultBest"></strong></span><span><b data-t="reward">इनाम</b><strong id="resultReward"></strong></span></div><div class="modal-actions"><button id="resultStages" type="button" data-t="chambers">चैम्बर्स</button><button id="next" class="primary" type="button" data-t="nextChamber">अगला कक्ष</button><button id="retry" type="button" data-t="retry">पुनः प्रयास करें</button></div></div></section>
+      <section id="helpModal" class="modal-layer tutorial-panel" role="dialog" aria-modal="true" hidden><div class="dialog-card"><h2 data-t="helpTitle">खींचने से पहले चैम्बर को पढ़ें</h2><ol><li data-t="help1">एक पिन प्रत्येक वस्तु को उसके स्रोत कक्ष से उसके गंतव्य कक्ष तक ले जाता है।</li><li data-t="help2">मूनवाटर + एम्बरलाइट हानिरहित भाप बन जाता है। वार्ड + टैरो एक शैडो विस्प को ब्लॉक करता है।</li><li data-t="help3">रूण कुंजी मिलान वाले चिह्नित पिन खोलती है। तारो और स्टार कोर को अभयारण्य में लाओ।</li></ol><div class="modal-actions one"><button id="helpClose" class="primary" type="button" data-t="continue">Continue</button></div></div></section>
+      <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" hidden><div class="dialog-card"><h2 data-t="leaveTitle">इस कक्ष को खुला रखें?</h2><p data-t="leaveText">सटीक कमरे, पिन, सामग्री और पुल गिनती का बायोडाटा जारी रखें। लौटकर यह प्रयास समाप्त हो जाता है।</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">Continue</button><button id="leaveStage" type="button" data-t="returnChambers">कक्षों में लौटें</button></div></div></section>
+      <section id="resultModal" class="modal-layer result-layer" role="dialog" aria-modal="true" hidden><div class="result-card"><span id="resultArt" class="result-art" aria-hidden="true"></span><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="pulls">Pulls</b><strong id="resultPulls"></strong></span><span><b data-t="best">Best</b><strong id="resultBest"></strong></span><span><b data-t="reward">इनाम</b><strong id="resultReward"></strong></span></div><div class="modal-actions"><button id="resultStages" type="button" data-t="chambers">चैम्बर्स</button><button id="next" class="primary" type="button" data-t="nextChamber">अगला कक्ष</button><button id="retry" type="button" data-t="retry">Retry</button></div></div></section>
     </div>
     <div class="ad-reserve" aria-hidden="true"></div>
   </section>
 
   <script src="../../src/site-config.js"></script>
   <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
-  <script src="/src/runtime-locales/hi.js?v=20260818-prism-fr-runtime-v11"></script>
+  <script src="/src/runtime-locales/hi.js?v=20260821-skyport-runtime-v8"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>

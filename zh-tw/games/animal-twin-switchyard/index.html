@@ -47,7 +47,7 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "拼圖",
+    "Puzzle",
     "平台",
     "動物"
   ],
@@ -65,12 +65,12 @@
       <section id="stageScreen" class="screen stage-screen" data-screen="stage" hidden><header class="section-head"><button class="icon-btn" id="stageBack" data-wp-return="main" type="button" aria-label="Back to Main">←</button><div><p class="eyebrow" id="stageEyebrow"></p><h2 id="stageTitle"></h2></div><button class="secondary compact" id="stageSoundBtn" type="button" aria-pressed="true"></button></header><p class="stage-help" id="stageHelp"></p><div class="stage-grid" id="stageGrid"></div></section>
       <section id="battleScreen" class="screen battle-screen" data-screen="battle" hidden><header class="section-head battle-head"><button class="icon-btn" id="battleBack" data-wp-return="stage" type="button" aria-label="Back to Stages">←</button><div><p class="eyebrow" id="battleEyebrow"></p><h2 id="battleTitle"></h2></div><div class="hud"><span id="scoreLabel"></span><span id="shardLabel"></span></div></header><p class="battle-status" id="battleStatus" aria-live="polite"></p><div class="canvas-wrap"><canvas id="gameCanvas" width="960" height="540" aria-label="Twin Switchyard play area"></canvas></div><div class="touch-controls"><button class="control" id="leftBtn" type="button">◀</button><button class="control jump" id="jumpBtn" type="button"></button><button class="control" id="rightBtn" type="button">▶</button></div><p class="control-hint" id="controlHint"></p><button class="restart" id="restartBtn" type="button"></button></section>
       <section id="resultScreen" class="screen result-screen" data-screen="result" hidden><div class="result-card"><p class="eyebrow" id="resultEyebrow"></p><h2 id="resultTitle"></h2><p class="result-copy" id="resultCopy"></p><div class="stats"><span id="resultScore"></span><span id="resultMoves"></span><span id="resultBest"></span></div><div class="result-actions"><button id="nextBtn" class="primary" type="button"></button><button id="retryBtn" class="secondary" type="button"></button><button id="resultStagesBtn" class="secondary" type="button"></button></div></div></section>
-    </main><script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/zh-tw.js?v=20260818-prism-fr-runtime-v11"></script>
+    </main><script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/zh-tw.js?v=20260821-skyport-runtime-v8"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="locales.js"></script><script src="game.js?v=20260817-twin-canvas-v6"></script><section class="game-page-info game-page-info-static" aria-label="Twin Switchyard 遊戲資訊">
     
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>Twin Switchyard</h2><p>Twin Switchyard 是一款原創的同步平台拼圖。引導水獺和山羊穿過分道，翻轉訊號門，並將每個中繼碎片收集在一起。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>同步平台謎題</strong></div><div class="game-info-fact"><span>類型</span><strong>拼圖 · 平台 · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>容易挑戰</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>每階段3-8分鐘</strong></div></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>同步平台謎題</strong></div><div class="game-info-fact"><span>類型</span><strong>Puzzle · 平台 · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>每階段3-8分鐘</strong></div></div>
     </div>
     <div class="game-info-sections">
       <div class="game-info-section"><h3>世界與任務</h3><p>兩個路線守護者共享一條信號線：水獺負責低車道，而山羊則負責高車道。每個開關站都要求兩名旅客在同一時刻移動，不留下任何一人。</p></div>
@@ -81,7 +81,7 @@
       <div class="game-info-section"><h3>關卡與難度成長</h3><p>六個創作階段以一個清晰的分裂和一個寬容的跳躍開始。後期階段增加了交替的大門、移動的危險、交錯的碎片、更窄的著陸窗口以及需要兩個旅行者一起到達出口的組合。</p></div>
       <div class="game-info-section"><h3>開發設計理念</h3><p>Twin Switchyard 在手機、風景和桌面上保持一個邏輯遊戲空間。它的共享移動、特定車道的危險、觸摸按鈕、滑鼠啟動和鍵盤控制解析為相同的狀態，而主、舞台、戰鬥和結果仍然是單獨的螢幕，可以直接返回。 完整介面使用置中的單一邏輯版面，最大寬度為 920 像素。手機、橫向與桌面畫面會一起縮放相同的控制項、點擊區、圖像與遊戲座標，而不會拉伸個別元素。因此觸控、滑鼠與鍵盤都會操作同一個合法狀態。Main 海報與開始遊戲操作和 Stage 管理分開；Stage 選擇、Battle、對話框與 Result 各自保留有界內容與返回路徑。</p></div>
       <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>這款通用瀏覽器遊戲沒有帳戶、購買、聊天、排行榜或廣告流程。階段清除、最佳移動計數、語言、聲音和首選項保留在目前瀏覽器設定檔中，並可能在清除網站資料時重設。 你可以不建立帳號直接遊玩。進度會儲存在目前瀏覽器設定檔的本機儲存空間，而不是線上帳號或跨裝置資料庫。清除網站資料、使用私密瀏覽、改用其他瀏覽器或換到另一台裝置，都可能建立獨立存檔或移除現有存檔。只要瀏覽器允許儲存，語言、音效與減少動態偏好就會沿用 WeightPlay 共用控制。任何指南結果都不是醫療、學校或專業評量。</p></div>
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>兩位旅行者可以獨立移動嗎？</dt><dd>不會。每個輸入都會將兩人移動在一起，因此難題在於共享時間和車道規劃。</dd></div><div><dt>門能改變什麼？</dt><dd>可見門規則改變了當時哪條車道是開放的或安全的；在進行跳躍之前閱讀它。</dd></div><div><dt>是什麼原因導致階段失敗？</dt><dd>旅行者碰到標記的危險區，或離開可玩路線，就會重置目前嘗試。</dd></div><div><dt>進度可以保存嗎？</dt><dd>已通過的關卡與本機最佳步數會保存在此瀏覽器。</dd></div><div><dt>支援哪些操作方式與螢幕尺寸？</dt><dd>在遊戲支援的情況下，觸控、滑鼠與鍵盤會使用相同規則。介面會在手機、橫向與桌面所需的畫面尺寸中，以同一套邏輯版面縮放。</dd></div><div><dt>進度會自動轉移到其他裝置嗎？</dt><dd>不會。本遊戲目前只將進度儲存在瀏覽器本機，因此其他瀏覽器設定檔或裝置會有各自獨立的本機進度，除非未來加入帳號系統。</dd></div></dl></div>
+      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>兩位旅行者可以獨立移動嗎？</dt><dd>不會。每個輸入都會將兩人移動在一起，因此難題在於共享時間和車道規劃。</dd></div><div><dt>門能改變什麼？</dt><dd>可見門規則改變了當時哪條車道是開放的或安全的；在進行跳躍之前閱讀它。</dd></div><div><dt>是什麼原因導致階段失敗？</dt><dd>旅行者碰到標記的危險區，或離開可玩路線，就會重置目前嘗試。</dd></div><div><dt>Does progress save?</dt><dd>已通過的關卡與本機最佳步數會保存在此瀏覽器。</dd></div><div><dt>支援哪些操作方式與螢幕尺寸？</dt><dd>在遊戲支援的情況下，觸控、滑鼠與鍵盤會使用相同規則。介面會在手機、橫向與桌面所需的畫面尺寸中，以同一套邏輯版面縮放。</dd></div><div><dt>進度會自動轉移到其他裝置嗎？</dt><dd>不會。本遊戲目前只將進度儲存在瀏覽器本機，因此其他瀏覽器設定檔或裝置會有各自獨立的本機進度，除非未來加入帳號系統。</dd></div></dl></div>
 
     </div>
   </section><script src="../../src/game-page-info.js?v=20260817-wide-envelope-cache-v2"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>

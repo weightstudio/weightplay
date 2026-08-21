@@ -1816,7 +1816,7 @@ window.WONDER_LOBBY = {
         en: "Route animal airships to the right docks, manage storms and crew, and keep Cloudline Skyport moving.",
         "zh-Hant": "\u8abf\u5ea6\u52d5\u7269\u98db\u8239\u9032\u5165\u6b63\u78ba\u78bc\u982d\uff0c\u8655\u7406\u66b4\u98a8\u3001\u7d44\u54e1\u8207\u58c5\u585e\u3002"
       },
-      meta: { en: ["Route Planning", "Five Shifts", "Skyport Growth"], "zh-Hant": ["\u822a\u7dda\u898f\u5283", "\u4e94\u500b\u73ed\u6b21", "\u5929\u7a7a\u6e2f\u6210\u9577"] },
+      meta: { en: ["Route Planning", "30 Shifts", "Skyport Growth"], "zh-Hant": ["\u822a\u7dda\u898f\u5283", "30 \u500b\u73ed\u6b21", "\u5929\u7a7a\u6e2f\u6210\u9577"] },
       previewVideo: "assets/previews/animal-skyport-dispatch-battle.webm",
       art: { kind: "image", background: "assets/animal-skyport-dispatch-cover.webp", hideHero: true },
     },

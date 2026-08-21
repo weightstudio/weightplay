@@ -27,6 +27,26 @@
     it: ['Disattiva audio', 'Attiva audio'],
     ru: ['Выключить звук', 'Включить звук'],
   };
+  const startLabels = {
+    en: 'Start Dispatch', 'zh-Hant': '\u958b\u59cb\u8abf\u5ea6', 'zh-Hans': '\u5f00\u59cb\u8c03\u5ea6', ja: '\u30c7\u30a3\u30b9\u30d1\u30c3\u30c1\u958b\u59cb',
+    ko: '\ubc30\ucc28 \uc2dc\uc791', es: 'Iniciar despacho', 'pt-BR': 'Iniciar despacho', fr: 'Lancer la r\u00e9partition', de: 'Dispatch starten',
+    it: 'Avvia dispacciamento', ru: '\u041d\u0430\u0447\u0430\u0442\u044c \u0434\u0438\u0441\u043f\u0435\u0442\u0447\u0435\u0440\u0438\u0437\u0430\u0446\u0438\u044e', hi: '\u0921\u093f\u0938\u0948\u092a\u091a \u0936\u0941\u0930\u0942 \u0915\u0930\u0947\u0902', ar: '\u0627\u0628\u062f\u0623 \u0627\u0644\u0625\u0631\u0633\u0627\u0644',
+  };
+  const resultLabelsByLocale = {
+    en: { reputation:'Reputation', coins:'Sky coins', blueprintStamps:'Blueprint stamps', medals:'Medals', safe:'Safe routing', errors:'Errors', protected:'Contract bonus protected', retry:'Retry is free', total:'Total', shiftUnlocked:'Shift {n} unlocked', allShiftsComplete:'All shifts complete' },
+    'zh-Hant': { reputation:'\u8072\u671b', coins:'\u5929\u7a7a\u5e63', blueprintStamps:'\u85cd\u5716\u5370\u7ae0', medals:'\u52f3\u7ae0', safe:'\u5b89\u5168\u8abf\u5ea6', errors:'\u932f\u8aa4', protected:'\u5408\u7d04\u734e\u52f5\u5df2\u4fdd\u7559', retry:'\u514d\u8cbb\u91cd\u8a66', total:'\u7e3d\u8a08', shiftUnlocked:'\u5df2\u89e3\u9396\u7b2c {n} \u73ed', allShiftsComplete:'\u5168\u90e8\u73ed\u6b21\u5b8c\u6210' },
+    'zh-Hans': { reputation:'声望', coins:'天空币', blueprintStamps:'蓝图印章', medals:'勋章', safe:'安全调度', errors:'错误', protected:'合约奖励已保留', retry:'免费重试', total:'总计', shiftUnlocked:'已解锁第 {n} 班', allShiftsComplete:'全部班次完成' },
+    ja: { reputation:'評判', coins:'スカイコイン', blueprintStamps:'設計図スタンプ', medals:'メダル', safe:'安全な運航', errors:'ミス', protected:'契約ボーナスを保護', retry:'リトライ無料', total:'合計', shiftUnlocked:'シフト {n} を解放', allShiftsComplete:'全シフト完了' },
+    ko: { reputation:'평판', coins:'스카이 코인', blueprintStamps:'청사진 스탬프', medals:'메달', safe:'안전 운항', errors:'오류', protected:'계약 보너스 보호', retry:'무료 재시도', total:'합계', shiftUnlocked:'근무 {n} 잠금 해제', allShiftsComplete:'모든 근무 완료' },
+    es: { reputation:'Reputación', coins:'Monedas celestes', blueprintStamps:'Sellos de plano', medals:'Medallas', safe:'Ruta segura', errors:'Errores', protected:'Bono de contrato protegido', retry:'Reintento gratis', total:'Total', shiftUnlocked:'Turno {n} desbloqueado', allShiftsComplete:'Todos los turnos completados' },
+    'pt-BR': { reputation:'Reputação', coins:'Moedas celestes', blueprintStamps:'Selos de projeto', medals:'Medalhas', safe:'Rota segura', errors:'Erros', protected:'Bônus do contrato protegido', retry:'Repetir é grátis', total:'Total', shiftUnlocked:'Turno {n} desbloqueado', allShiftsComplete:'Todos os turnos concluídos' },
+    fr: { reputation:'Réputation', coins:'Pièces célestes', blueprintStamps:'Timbres de plan', medals:'Médailles', safe:'Route sûre', errors:'Erreurs', protected:'Bonus du contrat protégé', retry:'Rejouer est gratuit', total:'Total', shiftUnlocked:'Shift {n} débloqué', allShiftsComplete:'Tous les shifts terminés' },
+    de: { reputation:'Ruf', coins:'Himmelsmünzen', blueprintStamps:'Bauplanmarken', medals:'Medaillen', safe:'Sichere Route', errors:'Fehler', protected:'Vertragsbonus geschützt', retry:'Kostenlos erneut spielen', total:'Gesamt', shiftUnlocked:'Schicht {n} freigeschaltet', allShiftsComplete:'Alle Schichten abgeschlossen' },
+    it: { reputation:'Reputazione', coins:'Monete celesti', blueprintStamps:'Timbri del progetto', medals:'Medaglie', safe:'Rotta sicura', errors:'Errori', protected:'Bonus contratto protetto', retry:'Riprova gratis', total:'Totale', shiftUnlocked:'Turno {n} sbloccato', allShiftsComplete:'Tutti i turni completati' },
+    ru: { reputation:'Репутация', coins:'Небесные монеты', blueprintStamps:'Чертёжные марки', medals:'Медали', safe:'Безопасный маршрут', errors:'Ошибки', protected:'Бонус контракта сохранён', retry:'Повтор бесплатен', total:'Всего', shiftUnlocked:'Смена {n} открыта', allShiftsComplete:'Все смены завершены' },
+    hi: { reputation:'प्रतिष्ठा', coins:'स्काई कॉइन', blueprintStamps:'ब्लूप्रिंट स्टैम्प', medals:'पदक', safe:'सुरक्षित मार्ग', errors:'त्रुटियाँ', protected:'अनुबंध बोनस सुरक्षित', retry:'मुफ्त पुनः प्रयास', total:'कुल', shiftUnlocked:'शिफ्ट {n} अनलॉक', allShiftsComplete:'सभी शिफ्ट पूरी' },
+    ar: { reputation:'السمعة', coins:'عملات السماء', blueprintStamps:'طوابع المخطط', medals:'الأوسمة', safe:'توجيه آمن', errors:'الأخطاء', protected:'تمت حماية مكافأة العقد', retry:'إعادة المحاولة مجانية', total:'المجموع', shiftUnlocked:'تم فتح المناوبة {n}', allShiftsComplete:'اكتملت كل المناوبات' },
+  };
   const playSound = (cue) => window.WonderSound?.play?.(cue);
   function syncSoundToggle() {
     const toggle = $('soundToggle');
@@ -42,8 +62,8 @@
     toggle.setAttribute('aria-pressed', String(muted));
   }
   const strings = {
-    en: { title:'Animal Skyport Dispatch', language:'Language', headline:'Keep Cloudline Skyport moving.', intro:'Draw safe routes, match airships to docks, and protect the shift from congestion.', start:'Start Game', chooseShift:'Choose a shift', best:'Best shift: {n}', shift:'Shift {n}/30', objective:'Serve {done}/{goal} flights', errors:'Errors {done}/3', stageReady:'Ready', stageLocked:'Locked', stageReplay:'Replay', service:'Use repair service', dragHint:'Drag the airship, or press Enter and use arrow keys, to choose its dock.', menu:'Main Menu', next:'Next Shift', retry:'Retry Shift', win:'Shift complete!', lose:'Skyport congested!', winCopy:'Clear routing earns a new skyport record.', loseCopy:'Three unsafe arrivals closed the shift. Retry is free.', repair:'Repair parts {n}' },
-    'zh-Hant': { title:'\u52d5\u7269\u5929\u7a7a\u6e2f\u8abf\u5ea6\u968a', language:'\u8a9e\u8a00', headline:'\u8b93\u96f2\u7dda\u5929\u7a7a\u6e2f\u6301\u7e8c\u904b\u4f5c\u3002', intro:'\u7e6a\u51fa\u5b89\u5168\u822a\u7dda\uff0c\u914d\u5c0d\u98db\u8239\u8207\u78bc\u982d\uff0c\u4fdd\u8b77\u73ed\u6b21\u4e0d\u88ab\u58c5\u585e\u3002', start:'\u958b\u59cb\u904a\u6232', chooseShift:'\u9078\u64c7\u73ed\u6b21', best:'\u6700\u4f73\u73ed\u6b21\uff1a{n}', shift:'\u73ed\u6b21 {n}/30', objective:'\u5b8c\u6210 {done}/{goal} \u67b6\u98db\u8239', errors:'\u5931\u8aa4 {done}/3', stageReady:'\u53ef\u958b\u59cb', stageLocked:'\u672a\u89e3\u9396', stageReplay:'\u53ef\u91cd\u73a9', service:'\u4f7f\u7528\u7dad\u4fee\u670d\u52d9', dragHint:'\u62d6\u66f3\u98db\u8239\uff0c\u6216\u6309 Enter \u5f8c\u7528\u65b9\u5411\u9375\u9078\u64c7\u78bc\u982d\u3002', menu:'\u56de\u4e3b\u9078\u55ae', next:'\u4e0b\u4e00\u73ed', retry:'\u91cd\u8a66\u73ed\u6b21', win:'\u73ed\u6b21\u5b8c\u6210\uff01', lose:'\u5929\u7a7a\u6e2f\u58c5\u585e\uff01', winCopy:'\u6e05\u6670\u8abf\u5ea6\u70ba\u5929\u7a7a\u6e2f\u5beb\u4e0b\u65b0\u7d00\u9304\u3002', loseCopy:'\u4e09\u6b21\u4e0d\u5b89\u5168\u9032\u5834\u95dc\u9589\u4e86\u73ed\u6b21\uff0c\u91cd\u8a66\u514d\u8cbb\u3002', repair:'\u7dad\u4fee\u96f6\u4ef6 {n}' }
+    en: { title:'Animal Skyport Dispatch', language:'Language', headline:'Keep Cloudline Skyport moving.', intro:'Draw safe routes, match airships to docks, and protect the shift from congestion.', start:'Start Dispatch', chooseShift:'Choose a shift', best:'Best shift: {n}', shift:'Shift {n}/30', objective:'Serve {done}/{goal} flights', errors:'Errors {done}/3', stageReady:'Ready', stageLocked:'Locked', stageReplay:'Replay', service:'Use repair service', dragHint:'Drag the airship, or press Enter and use arrow keys, to choose its dock.', menu:'Main Menu', next:'Next Shift', retry:'Retry Shift', win:'Shift complete!', lose:'Skyport congested!', winCopy:'Clear routing earns a new skyport record.', loseCopy:'Three unsafe arrivals closed the shift. Retry is free.', repair:'Repair parts {n}', nextShiftPreview:'Next Shift {shift}: serve {goal} flights · {rule}' },
+    'zh-Hant': { title:'\u52d5\u7269\u5929\u7a7a\u6e2f\u8abf\u5ea6\u968a', language:'\u8a9e\u8a00', headline:'\u8b93\u96f2\u7dda\u5929\u7a7a\u6e2f\u6301\u7e8c\u904b\u4f5c\u3002', intro:'\u7e6a\u51fa\u5b89\u5168\u822a\u7dda\uff0c\u914d\u5c0d\u98db\u8239\u8207\u78bc\u982d\uff0c\u4fdd\u8b77\u73ed\u6b21\u4e0d\u88ab\u58c5\u585e\u3002', start:'\u958b\u59cb\u8abf\u5ea6', chooseShift:'\u9078\u64c7\u73ed\u6b21', best:'\u6700\u4f73\u73ed\u6b21\uff1a{n}', shift:'\u73ed\u6b21 {n}/30', objective:'\u5b8c\u6210 {done}/{goal} \u67b6\u98db\u8239', errors:'\u5931\u8aa4 {done}/3', stageReady:'\u53ef\u958b\u59cb', stageLocked:'\u672a\u89e3\u9396', stageReplay:'\u53ef\u91cd\u73a9', service:'\u4f7f\u7528\u7dad\u4fee\u670d\u52d9', dragHint:'\u62d6\u66f3\u98db\u8239\uff0c\u6216\u6309 Enter \u5f8c\u7528\u65b9\u5411\u9375\u9078\u64c7\u78bc\u982d\u3002', menu:'\u56de\u4e3b\u9078\u55ae', next:'\u4e0b\u4e00\u73ed', retry:'\u91cd\u8a66\u73ed\u6b21', win:'\u73ed\u6b21\u5b8c\u6210\uff01', lose:'\u5929\u7a7a\u6e2f\u58c5\u585e\uff01', winCopy:'\u6e05\u6670\u8abf\u5ea6\u70ba\u5929\u7a7a\u6e2f\u5beb\u4e0b\u65b0\u7d00\u9304\u3002', loseCopy:'\u4e09\u6b21\u4e0d\u5b89\u5168\u9032\u5834\u95dc\u9589\u4e86\u73ed\u6b21\uff0c\u91cd\u8a66\u514d\u8cbb\u3002', repair:'\u7dad\u4fee\u96f6\u4ef6 {n}', nextShiftPreview:'\u4e0b\u4e00\u73ed {shift}\uff1a\u5b8c\u6210 {goal} \u67b6\u98db\u8239 \u00b7 {rule}' }
   };
   Object.assign(strings.en, {
     leaveTitle: 'Leave this shift?',
@@ -51,7 +71,7 @@
     keepPlaying: 'Keep Playing',
     leaveShift: 'Leave Shift',
     guideTitle: 'How to dispatch',
-    guideBody: 'Choose a shift, read each flight request, then guide the airship to the highlighted matching dock before congestion builds.',
+    guideBody: 'Choose a shift, connect the numbered nodes in order, avoid red blocked airways when they appear, and guide each airship to its matching dock.',
     backToLobby: 'Back to lobby',
     back: 'Back',
     coverAlt: 'Skyport dispatch animals',
@@ -83,6 +103,7 @@
     routeRule: 'Connect every numbered node in order.',
     routeRuleBlocked: 'Connect every numbered node in order · avoid every red line',
     nodeProgress: 'Nodes {done}/{goal}',
+    nextShiftPreview: 'Next Shift {shift}: serve {goal} flights · {rule}',
   });
   Object.assign(strings['zh-Hant'], {
     leaveTitle: '\u96e2\u958b\u9019\u500b\u73ed\u6b21？',
@@ -90,7 +111,7 @@
     keepPlaying: '\u7e7c\u7e8c\u8abf\u5ea6',
     leaveShift: '\u96e2\u958b\u73ed\u6b21',
     guideTitle: '\u5982\u4f55\u8abf\u5ea6',
-    guideBody: '\u9078\u64c7\u73ed\u6b21\u3001\u8b80\u61c2\u6bcf\u67b6\u98db\u8239\u7684\u9700\u6c42\uff0c\u518d\u65bc\u58c5\u585e\u524d\u5c07\u98db\u8239\u5f15\u5c0e\u81f3\u9ad8\u4eae\u7684\u5c0d\u61c9\u78bc\u982d\u3002',
+    guideBody: '\u9078\u64c7\u73ed\u6b21\u3001\u4f9d\u5e8f\u9023\u63a5\u7de8\u865f\u7bc0\u9ede\uff1b\u51fa\u73fe\u7d05\u8272\u5c01\u9396\u822a\u7dda\u6642\u907f\u958b\uff0c\u518d\u5c07\u6bcf\u8266\u98db\u8239\u5f15\u5c0e\u5230\u76f8\u7b26\u78bc\u982d\u3002',
     backToLobby: '\u56de\u5230\u5927\u5ef3',
     back: '\u8fd4\u56de',
     coverAlt: '\u5929\u7a7a\u6e2f\u8abf\u5ea6\u52d5\u7269',
@@ -122,6 +143,7 @@
     routeRule: '\u4f9d\u5e8f\u9023\u63a5\u6bcf\u500b\u7de8\u865f\u7bc0\u9ede\u3002',
     routeRuleBlocked: '\u4f9d\u5e8f\u9023\u63a5\u6bcf\u500b\u7de8\u865f\u7bc0\u9ede \u00b7 \u907f\u958b\u6240\u6709\u7d05\u7dda',
     nodeProgress: '\u7bc0\u9ede {done}/{goal}',
+    nextShiftPreview: '\u4e0b\u4e00\u73ed {shift}\uff1a\u5b8c\u6210 {goal} \u67b6\u98db\u8239 \u00b7 {rule}',
   });
   const flights = [['cargo','cargo'], ['passenger','passenger'], ['repair','repair'], ['festival','passenger'], ['heavy','cargo']];
   const flightLabels = {
@@ -247,7 +269,7 @@
     });
   };
   function localize() {
-    const activeLocale = window.WonderI18n?.actualLocale?.() || readStorage('weightPlayLocale') || 'en';
+    const activeLocale = window.WonderI18n?.actualLocale?.() || readStorage('weightPlayLocale') || document.documentElement.lang || 'en';
     document.documentElement.lang = activeLocale;
     document.title = `${t('title')} | WeightPlay`;
     document.querySelectorAll('[data-i18n]').forEach((node) => { node.textContent = t(node.dataset.i18n); });
@@ -255,6 +277,7 @@
     $('localeSelect').options[1].textContent = '\u7e41\u9ad4\u4e2d\u6587';
     document.querySelector('.home-link').setAttribute('aria-label', t('backToLobby'));
     document.querySelector('.cover').alt = t('coverAlt');
+    $('startBtn').textContent = startLabels[activeLocale] || startLabels.en;
     $('stageBack').setAttribute('aria-label', t('back'));
     $('battleBack').setAttribute('aria-label', t('back'));
     $('stageRail').setAttribute('aria-label', t('shiftSelection'));
@@ -627,17 +650,23 @@
     if (win) playSound('win');
     $('resultTitle').textContent = win ? t('win') : t('lose');
     $('resultCopy').textContent = win ? t('winCopy') : (state.lastError || t('loseCopy'));
-    const resultLabels = locale === 'zh-Hant'
-      ? { reputation: '\u8072\u671b', coins: '\u5929\u7a7a\u5e63', medals: '\u52f3\u7ae0', safe: '\u5b89\u5168\u8abf\u5ea6', errors: '\u932f\u8aa4', protected: '\u5408\u7d04\u734e\u52f5\u5df2\u4fdd\u7559', retry: '\u514d\u8cbb\u91cd\u8a66' }
-      : { reputation: 'Reputation', coins: 'Sky coins', medals: 'Medals', safe: 'Safe routing', errors: 'Errors', protected: 'Contract bonus protected', retry: 'Retry is free' };
+    const activeLocale = window.WonderI18n?.actualLocale?.() || readStorage('weightPlayLocale') || document.documentElement.lang || 'en';
+    const resultLabels = resultLabelsByLocale[activeLocale] || resultLabelsByLocale.en;
+    const totalLabel = (value) => `${resultLabels.total} ${value}`;
     const coinReward = shiftConfig[state.shift].coin + (state.contract && state.errors === 0 ? 20 : 0);
-    const unlockEvidence = state.shift < TOTAL_SHIFTS ? t('shiftUnlocked', {n:state.shift + 1}) : t('allShiftsComplete');
+    const unlockEvidence = state.shift < TOTAL_SHIFTS ? resultLabels.shiftUnlocked.replace('{n}', state.shift + 1) : resultLabels.allShiftsComplete;
     $('resultRewards').innerHTML = win
-      ? `<span>${resultLabels.reputation} +${state.done * 5} \u00b7 ${t('total', {n:save.reputation})}</span><span>${resultLabels.coins} +${coinReward} \u00b7 ${t('total', {n:save.coins})}</span><span>${t('blueprintStamps')} +${shiftConfig[state.shift].stamps} \u00b7 ${t('total', {n:save.stamps})}</span><span>${resultLabels.medals} ${save.medals[state.shift] || 1}/3</span><span>${unlockEvidence}</span>`
-      : `<span>${resultLabels.safe} ${state.done}/${state.goal}</span><span>${resultLabels.errors} ${state.errors}/3</span><span>${insuredRun ? `${resultLabels.protected} +20 · ${t('total', {n:save.coins})}` : resultLabels.retry}</span>`;
+      ? `<span>${resultLabels.reputation} +${state.done * 5} · ${totalLabel(save.reputation)}</span><span>${resultLabels.coins} +${coinReward} · ${totalLabel(save.coins)}</span><span>${resultLabels.blueprintStamps} +${shiftConfig[state.shift].stamps} · ${totalLabel(save.stamps)}</span><span>${resultLabels.medals} ${save.medals[state.shift] || 1}/3</span><span>${unlockEvidence}</span>`
+      : `<span>${resultLabels.safe} ${state.done}/${state.goal}</span><span>${resultLabels.errors} ${state.errors}/3</span><span>${insuredRun ? `${resultLabels.protected} +20 · ${totalLabel(save.coins)}` : resultLabels.retry}</span>`;
     const terminalWin = win && state.shift >= TOTAL_SHIFTS;
     resultActionClaimed = false;
     const nextAvailable = win && !terminalWin;
+    const nextPreview = $('nextShiftPreview');
+    if (nextPreview) {
+      nextPreview.textContent = nextAvailable
+        ? t('nextShiftPreview', {shift: state.shift + 1, goal: shiftConfig[state.shift + 1].goal, rule: t(shiftConfig[state.shift + 1].barriers ? 'routeRuleBlocked' : 'routeRule')})
+        : '';
+    }
     $('menuBtn').textContent = t('shifts');
     $('nextBtn').textContent = t('next');
     $('retryBtn').textContent = t('retry');

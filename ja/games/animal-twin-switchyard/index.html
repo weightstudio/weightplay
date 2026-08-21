@@ -47,7 +47,7 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "パズル",
+    "Puzzle",
     "プラットフォーム",
     "動物"
   ],
@@ -66,12 +66,12 @@
       <section id="battleScreen" class="screen battle-screen" data-screen="battle" hidden><header class="section-head battle-head"><button class="icon-btn" id="battleBack" data-wp-return="stage" type="button" aria-label="Back to Stages">←</button><div><p class="eyebrow" id="battleEyebrow"></p><h2 id="battleTitle"></h2></div><div class="hud"><span id="scoreLabel"></span><span id="shardLabel"></span></div></header><p class="battle-status" id="battleStatus" aria-live="polite"></p><div class="canvas-wrap"><canvas id="gameCanvas" width="960" height="540" aria-label="Twin Switchyard play area"></canvas></div><div class="touch-controls"><button class="control" id="leftBtn" type="button">◀</button><button class="control jump" id="jumpBtn" type="button"></button><button class="control" id="rightBtn" type="button">▶</button></div><p class="control-hint" id="controlHint"></p><button class="restart" id="restartBtn" type="button"></button></section>
       <section id="resultScreen" class="screen result-screen" data-screen="result" hidden><div class="result-card"><p class="eyebrow" id="resultEyebrow"></p><h2 id="resultTitle"></h2><p class="result-copy" id="resultCopy"></p><div class="stats"><span id="resultScore"></span><span id="resultMoves"></span><span id="resultBest"></span></div><div class="result-actions"><button id="nextBtn" class="primary" type="button"></button><button id="retryBtn" class="secondary" type="button"></button><button id="resultStagesBtn" class="secondary" type="button"></button></div></div></section>
     </main><script src="../../src/site-config.js"></script><script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/ja.js?v=20260818-prism-fr-runtime-v11"></script>
+  <script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/ja.js?v=20260821-skyport-runtime-v8"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="locales.js"></script><script src="game.js?v=20260817-twin-canvas-v6"></script><section class="game-page-info game-page-info-static" aria-label="Twin Switchyard のゲーム情報">
     
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>Twin Switchyard</h2><p>Twin Switchyard は、オリジナルの同期プラットフォーム パズルです。カワウソとシロイワヤギをスプリットレーンに誘導し、信号ゲートを切り替え、すべてのリレーの破片を集めます。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>同期プラットフォーム パズル</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>パズル · プラットフォーム · 動物</strong></div><div class="game-info-fact"><span>難易度</span><strong>挑戦しやすい</strong></div><div class="game-info-fact"><span>目安時間</span><strong>1ステージあたり3～8分</strong></div></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>同期プラットフォーム パズル</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>Puzzle · プラットフォーム · 動物</strong></div><div class="game-info-fact"><span>難易度</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>目安時間</span><strong>1ステージあたり3～8分</strong></div></div>
     </div>
     <div class="game-info-sections">
       <div class="game-info-section"><h3>世界とミッション</h3><p>2 人のルートキーパーが 1 つの信号線を共有します。カワウソが低い車線を担当し、シロイワヤギが高い車線を担当します。各操車場では、両方の旅行者に、どちらかを取り残さずに同じ瞬間を通過するように求められます。</p></div>
@@ -82,7 +82,7 @@
       <div class="game-info-section"><h3>進行と難易度</h3><p>作成された 6 つのステージは、1 つの明確なスプリットと寛容なジャンプから始まります。後のステージでは、交互のゲート、移動ハザード、千鳥状シャード、狭い着陸ウィンドウ、および両方の旅行者が一緒に出口に到着する必要がある組み合わせが追加されます。</p></div>
       <div class="game-info-section"><h3>デザインノート</h3><p>Twin Switchyard は、電話、ランドスケープ、デスクトップにわたって 1 つの論理的なプレイ スペースを維持します。共有の動き、レーン固有のハザード、タッチ ボタン、マウスのアクティブ化、キーボード コントロールは同じ状態に解決されますが、メイン、ステージ、バトル、結果は直接戻る個別の画面のままです。 完全なインターフェースは、最大幅 920 ピクセルの中央揃えされた一つの論理レイアウトを使用します。スマートフォン、横画面、デスクトップでは、個々の要素を引き伸ばすのではなく、同じ操作部、当たり判定、アート、ゲーム座標をまとめて拡大縮小します。そのためタッチ、マウス、キーボードは同じ合法な状態を操作します。Main のポスターとゲーム開始操作は Stage 管理から分離され、Stage 選択、Battle、ダイアログ、Result はそれぞれの範囲内の内容と戻り道を保ちます。</p></div>
       <div class="game-info-section game-info-parent"><h3>保護者の方へ</h3><p>この一般的なブラウザ ゲームには、アカウント、購入、チャット、リーダーボード、広告フローはありません。ステージクリア、ベストムーブカウント、言語、サウンド、設定は現在のブラウザプロファイルに残り、サイトデータがクリアされるとリセットされる場合があります。 アカウントを作成せずに遊べます。進行状況はオンラインアカウントや端末間データベースではなく、現在のブラウザプロファイルのローカルストレージに保存されます。サイトデータの消去、プライベートブラウジング、ブラウザの変更、別の端末への移行によって、別のセーブが作られたり既存のセーブが削除されたりすることがあります。ブラウザが保存を許可している場合、言語、サウンド、動きを減らす設定は WeightPlay 共通コントロールに従います。ガイドの結果はいかなる医療、学校、専門的な評価でもありません。</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>2人の旅人は別々に動けますか？</dt><dd>いいえ、各入力がペアを一緒に動かすので、パズルは共有のタイミングとレーン計画に関するものです。</dd></div><div><dt>ゲートによって何が変わるのでしょうか？</dt><dd>目に見えるゲートルールにより、その時点でどのレーンが空いているか、安全であるかが変わります。ジャンプする前に読んでください。</dd></div><div><dt>ステージが失敗する原因は何ですか?</dt><dd>旅人が印の付いた危険地帯に触れるか、進行可能なルートを外れると、現在の挑戦がリセットされます。</dd></div><div><dt>進行状況は保存されますか?</dt><dd>クリアしたステージとローカルの最短手数はこのブラウザに保存されます。</dd></div><div><dt>どの操作方法と画面サイズに対応していますか？</dt><dd>ゲームが対応している範囲で、タッチ、マウス、キーボードは同じルールで操作できます。インターフェースはスマートフォン、横画面、デスクトップの必要な画面サイズで、同じ論理レイアウトとして拡大縮小します。</dd></div><div><dt>進行状況は別の端末に自動で移行しますか？</dt><dd>いいえ。このゲームの進行状況は現在のところブラウザのローカルストレージにのみ保存されるため、別のブラウザプロファイルや端末では、それぞれ別の進行状況になります。将来アカウントシステムが追加されない限り、共有されません。</dd></div></dl></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>2人の旅人は別々に動けますか？</dt><dd>いいえ、各入力がペアを一緒に動かすので、パズルは共有のタイミングとレーン計画に関するものです。</dd></div><div><dt>ゲートによって何が変わるのでしょうか？</dt><dd>目に見えるゲートルールにより、その時点でどのレーンが空いているか、安全であるかが変わります。ジャンプする前に読んでください。</dd></div><div><dt>ステージが失敗する原因は何ですか?</dt><dd>旅人が印の付いた危険地帯に触れるか、進行可能なルートを外れると、現在の挑戦がリセットされます。</dd></div><div><dt>Does progress save?</dt><dd>クリアしたステージとローカルの最短手数はこのブラウザに保存されます。</dd></div><div><dt>どの操作方法と画面サイズに対応していますか？</dt><dd>ゲームが対応している範囲で、タッチ、マウス、キーボードは同じルールで操作できます。インターフェースはスマートフォン、横画面、デスクトップの必要な画面サイズで、同じ論理レイアウトとして拡大縮小します。</dd></div><div><dt>進行状況は別の端末に自動で移行しますか？</dt><dd>いいえ。このゲームの進行状況は現在のところブラウザのローカルストレージにのみ保存されるため、別のブラウザプロファイルや端末では、それぞれ別の進行状況になります。将来アカウントシステムが追加されない限り、共有されません。</dd></div></dl></div>
 
     </div>
   </section><script src="../../src/game-page-info.js?v=20260817-wide-envelope-cache-v2"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>

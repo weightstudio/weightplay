@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="../../src/play-viewport.css" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-    <link rel="stylesheet" href="style.css?v=20260821-short-landscape-main-v7" />
+    <link rel="stylesheet" href="style.css?v=20260821-next-shift-preview-v8" />
     <link rel="stylesheet" href="main-flow.css" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
 </head>
@@ -45,8 +45,8 @@
         <img class="cover" src="../../assets/animal-skyport-dispatch-cover.webp" alt="Skyport dispatch animals" />
         <h2 data-i18n="headline">Keep Cloudline Skyport moving.</h2>
         <p data-i18n="intro">Draw safe routes, match airships to docks, and protect the shift from congestion.</p>
-        <button id="startBtn" class="primary" data-i18n="start">Start Game</button>
-        <section class="guide game-page-info"><h2 data-i18n="guideTitle">How to dispatch</h2><p data-i18n="guideBody">Choose a shift, read each flight request, then guide the airship to the highlighted matching dock before congestion builds.</p></section>
+        <button id="startBtn" class="primary" data-i18n="start" data-runtime-localize="off">Start Dispatch</button>
+        <section class="guide game-page-info"><h2 data-i18n="guideTitle">How to dispatch</h2><p data-i18n="guideBody">Choose a shift, connect the numbered nodes in order, avoid red blocked airways when they appear, and guide each airship to its matching dock.</p></section>
       </section>
       <section id="stageScreen" class="stage-screen hidden">
         <button id="stageBack" class="return" data-wp-return="stage" aria-label="Back">&larr;</button>
@@ -73,7 +73,7 @@
           </div>
           <div class="flight-row"><span id="flightHint" data-i18n="dragHint">Draw one continuous route through the numbered nodes to the matching dock.</span></div>
           </div>
-          <section id="result" class="result hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" tabindex="-1"><h2 id="resultTitle"></h2><p id="resultCopy"></p><div id="resultRewards" class="result-rewards" aria-live="polite"></div><div class="result-actions"><button id="menuBtn" class="secondary" type="button">Shifts</button><button id="nextBtn" class="secondary" type="button">Next Shift</button><button id="retryBtn" class="secondary" type="button">Retry Shift</button></div></section>
+          <section id="result" class="result hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" tabindex="-1"><h2 id="resultTitle"></h2><p id="resultCopy"></p><div id="resultRewards" class="result-rewards" aria-live="polite"></div><p id="nextShiftPreview" class="result-next-preview" aria-live="polite"></p><div class="result-actions"><button id="menuBtn" class="secondary" type="button">Shifts</button><button id="nextBtn" class="secondary" type="button">Next Shift</button><button id="retryBtn" class="secondary" type="button">Retry Shift</button></div></section>
           <section id="leaveConfirm" class="leave-confirm hidden" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveCopy"><h2 id="leaveTitle"></h2><p id="leaveCopy"></p><button id="leaveCancel" class="primary" type="button"></button><button id="leaveConfirmBtn" class="secondary" type="button"></button></section>
         </section>
         <div class="ad-reserve" aria-hidden="true"></div>
@@ -82,10 +82,10 @@
     <script src="../../src/site-config.js"></script><script src="../../src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="../../src/wallet.js"></script>
     <script src="../../src/sound.js?v=20260720-locale11"></script>
-    <script src="game.js?v=20260820-route-guidance-v6"></script>
+    <script src="game.js?v=20260821-next-shift-preview-v8-4"></script>
     <script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script>
     <script src="../../src/battle-canvas-standard.js?v=20260813-skyport-landscape-v5" data-wp-battle-standard></script>
-    <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+    <script src="../../src/game-page-info.js?v=20260821-skyport-guide-v8"></script>
     <script>window.addEventListener('load',()=>document.querySelector('#loadingPanel')?.classList.add('hidden'),{once:true});</script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>

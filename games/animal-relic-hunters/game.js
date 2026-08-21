@@ -12,7 +12,7 @@
   const ROOMS_PER_EXPEDITION = 3;
   const EXPEDITIONS_PER_REGION = 5;
   const GAME_ID = "animal-relic-hunters";
-  const GAME_VERSION = 16;
+  const GAME_VERSION = 17;
   const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_relic_hunters_v1";
   const profileKey = "weightplay:animal-relic-hunters:profile:v1";
@@ -3500,9 +3500,10 @@
     }
 
     // 2. Draw Chests, Keys, Portals
+    const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches === true;
     state.pickups.forEach((pickup) => {
         if (pickup.type === "key") {
-          const pulse = 1 + Math.sin(performance.now() / 220) * 0.08;
+          const pulse = reducedMotion ? 1 : 1 + Math.sin(performance.now() / 220) * 0.08;
           ctx.save();
           ctx.translate(pickup.x, pickup.y);
           ctx.scale(pulse, pulse);

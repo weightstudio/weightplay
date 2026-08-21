@@ -22,7 +22,7 @@
   "inLanguage": "zh-Hant",
   "isAccessibleForFree": true,
   "alternateName": "Animal Skyport Dispatch",
-  "description": "《動物天空港調度隊》是以雲際天空港為舞台的五班次航線管理策略遊戲。閱讀每艘動物飛船的需求，畫出通往相容碼頭的安全進場路線，分配有限服務資源，並在壅塞或漏接飛船達到失敗門檻前完成班次。",
+  "description": "《動物天空港調度隊》是以雲際天空港為舞台的 30 班次航線管理策略遊戲。閱讀每艘動物飛船的需求，依序通過編號節點畫出通往相容碼頭的安全路線，完成六個調度章節。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -62,16 +62,16 @@
     <link rel="stylesheet" href="style.css?v=20260821-short-landscape-main-v7" />
     <link rel="stylesheet" href="main-flow.css" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
-  <meta name="description" content="《動物天空港調度隊》是以雲際天空港為舞台的五班次航線管理策略遊戲。閱讀每艘動物飛船的需求，畫出通往相容碼頭的安全進場路線，分配有限服務資源，並在壅塞或漏接飛船達到失敗門檻前完成班次。" />
+  <meta name="description" content="《動物天空港調度隊》是以雲際天空港為舞台的 30 班次航線管理策略遊戲。閱讀每艘動物飛船的需求，依序通過編號節點畫出通往相容碼頭的安全路線，完成六個調度章節。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="動物天空港調度隊 | WeightPlay" />
-    <meta property="og:description" content="《動物天空港調度隊》是以雲際天空港為舞台的五班次航線管理策略遊戲。閱讀每艘動物飛船的需求，畫出通往相容碼頭的安全進場路線，分配有限服務資源，並在壅塞或漏接飛船達到失敗門檻前完成班次。" />
+    <meta property="og:description" content="《動物天空港調度隊》是以雲際天空港為舞台的 30 班次航線管理策略遊戲。閱讀每艘動物飛船的需求，依序通過編號節點畫出通往相容碼頭的安全路線，完成六個調度章節。" />
     <meta property="og:url" content="https://weightplay.com/zh-tw/games/animal-skyport-dispatch/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-skyport-dispatch-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="動物天空港調度隊 | WeightPlay" />
-    <meta name="twitter:description" content="《動物天空港調度隊》是以雲際天空港為舞台的五班次航線管理策略遊戲。閱讀每艘動物飛船的需求，畫出通往相容碼頭的安全進場路線，分配有限服務資源，並在壅塞或漏接飛船達到失敗門檻前完成班次。" />
+    <meta name="twitter:description" content="《動物天空港調度隊》是以雲際天空港為舞台的 30 班次航線管理策略遊戲。閱讀每艘動物飛船的需求，依序通過編號節點畫出通往相容碼頭的安全路線，完成六個調度章節。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-skyport-dispatch-cover.webp" />
   </head>
   <body data-no-mobile-immersive="true" data-sound-toggle="off">
@@ -87,11 +87,11 @@
         <img class="cover" src="../../assets/animal-skyport-dispatch-cover.webp" alt="《動物天空港調度隊》遊戲圖片" />
         <h2 data-i18n="headline">Keep Cloudline Skyport moving.</h2>
         <p data-i18n="intro">Draw safe routes, match airships to docks, and protect the shift from congestion.</p>
-        <button id="startBtn" class="primary" data-i18n="start">Start Game</button>
+        <button id="startBtn" class="primary" data-i18n="start" data-runtime-localize="off">Start Dispatch</button>
         <section class="game-page-info game-page-info-static" aria-label="動物天空港調度隊 遊戲資訊">
     
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>動物天空港調度隊</h2><p>《動物天空港調度隊》是以雲際天空港為舞台的五班次航線管理策略遊戲。閱讀每艘動物飛船的需求，畫出通往相容碼頭的安全進場路線，分配有限服務資源，並在壅塞或漏接飛船達到失敗門檻前完成班次。</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>動物天空港調度隊</h2><p>《動物天空港調度隊》是以雲際天空港為舞台的 30 班次航線管理策略遊戲。閱讀每艘動物飛船的需求，依序通過編號節點畫出通往相容碼頭的安全路線，完成六個調度章節。</p></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>飛船航線調度</strong></div><div class="game-info-fact"><span>類型</span><strong>策略 · 管理 · 模擬 · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>中等至具挑戰性</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>每班約 4 至 7 分鐘</strong></div><div class="game-info-fact"><span>練習能力</span><strong>規劃 · 優先順序 · 空間推理 · 資源管理</strong></div></div>
     </div>
     <div class="game-info-sections">
@@ -103,10 +103,10 @@
 <p>組員、燃料與維修零件在每班都有限。服務完成會歸還組員，短而安全的路線可節省燃料，零件應保留給受損飛船。漏接三艘或壅塞全滿會失敗，並可免費重試。</p></div>
       <div class="game-info-section"><h3>玩法說明</h3><ol><li>選擇一艘進場飛船，閱讀目標碼頭、耐心、貨客需求與損傷狀態。</li><li>從等待標記拖向相容空碼頭，同時避開使用中的航線、暴風與關閉的維修通道。</li><li>在碼頭上放開以確認路線，靠港後選擇畫面要求的服務動作。</li><li>完成班次目標並守住三艘漏接上限，結算後可前往下一班或返回班次選擇。</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>替緊急進場保留一座碼頭與一條可用航道。</li><li>耐心偏低時優先使用專用碼頭，但若航線衝突代價更高，可改用較慢但安全的碼頭。</li><li>維修零件要保留給沒有零件就無法安全離場的飛船。</li><li>預覽線穿過暴風或占用航線時，在放開前重新畫線；畫面路線就是實際判定。</li></ul></div>
-      <div class="game-info-section"><h3>關卡與難度成長</h3><p>班次 1 教兩座碼頭、畫線與四艘寬鬆進場；班次 2 開放第三碼頭及貨客優先；班次 3 加入移動暴風與氣象信標；班次 4 加入受損飛船、維修零件與關閉通道；班次 5 綜合十艘飛船、重疊時窗與可選慶典合約。</p></div>
+      <div class="game-info-section"><h3>關卡與難度成長</h3><p>班次 1 至 2 教導依序連接編號節點與配對碼頭；班次 3 首次加入封鎖航線，後續章節逐步增加節點與封鎖組合，完成 30 班次、六章的調度戰役。</p></div>
       <div class="game-info-section"><h3>開發設計理念</h3><p>這是主動調度而不是放置自動運作；每艘飛船都需要玩家決定航線與服務。Main、Stage、Battle、Result 遵循共用響應式 Canvas，Battle 在 920px 上限內填滿安全寬度，General 的 56px 預留區獨立於 Canvas。觸控與滑鼠共用同一組路線取樣，因此畫線會對準手指或指標。</p></div>
-      <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>不需要帳號。班次解鎖、勳章、聲望、升級、圖鑑、教學與設定只保存在目前瀏覽器。可選鑽石操作都要先確認，而且完成五個班次不需要使用鑽石。</p></div>
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>共有幾個班次？</dt><dd>共有五個人工設計班次，分別加入進場、碼頭、天候、維修與慶典規則。</dd></div><div><dt>怎麼畫航線？</dt><dd>從已選飛船的等待標記拖到相容空碼頭，並在碼頭上放開。</dd></div><div><dt>航線為什麼變成琥珀色？</dt><dd>它穿越使用中的交通，兩艘飛船同時通過時會提高壅塞。</dd></div><div><dt>什麼情況會失敗？</dt><dd>壅塞全滿或有三艘飛船未服務離場時，班次就會結束。</dd></div><div><dt>重試免費嗎？</dt><dd>是，失敗後會優先提供免費重試。</dd></div><div><dt>哪些資料會保存？</dt><dd>班次、勳章、聲望、升級、圖鑑、教學與設定會留在目前瀏覽器。</dd></div><div><dt>一定要用鑽石嗎？</dt><dd>不用；合約重抽與保險都要確認，也不是通關必要條件。</dd></div><div><dt>班次 5 之後呢？</dt><dd>結算會返回班次選擇，不會出現不存在的班次 6。</dd></div></dl></div>
+      <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>不需要帳號。六個調度章節的 30 班次解鎖、勳章、聲望、升級、圖鑑、教學與設定只保存在目前瀏覽器。可選鑽石操作都要先確認，而且完成全部 30 班次不需要使用鑽石。</p></div>
+      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>共有幾個班次？</dt><dd>共有六章、30 個人工設計班次；前期教導航線規則，後期加入封鎖航線與更多編號節點。</dd></div><div><dt>怎麼畫航線？</dt><dd>從已選飛船的等待標記依序通過編號節點，拖到相容空碼頭並在碼頭上放開。</dd></div><div><dt>航線為什麼變成琥珀色？</dt><dd>它穿越使用中的交通，兩艘飛船同時通過時會提高壅塞。</dd></div><div><dt>什麼情況會失敗？</dt><dd>壅塞全滿或有三艘飛船未服務離場時，班次就會結束。</dd></div><div><dt>重試免費嗎？</dt><dd>是，失敗後會優先提供免費重試。</dd></div><div><dt>哪些資料會保存？</dt><dd>班次、勳章、聲望、升級、圖鑑、教學與設定會留在目前瀏覽器。</dd></div><div><dt>一定要用鑽石嗎？</dt><dd>不用；合約重抽與保險都要確認，也不是通關必要條件。</dd></div><div><dt>30 班次之後呢？</dt><dd>完成 30 班次後，結算會返回班次選擇，不會出現不存在的第 31 班。</dd></div></dl></div>
 
     </div>
   </section>
@@ -136,20 +136,20 @@
           </div>
           <div class="flight-row"><span id="flightHint" data-i18n="dragHint">Draw one continuous route through the numbered nodes to the matching dock.</span></div>
           </div>
-          <section id="result" class="result hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" tabindex="-1"><h2 id="resultTitle"></h2><p id="resultCopy"></p><div id="resultRewards" class="result-rewards" aria-live="polite"></div><div class="result-actions"><button id="menuBtn" class="secondary" type="button">Shifts</button><button id="nextBtn" class="secondary" type="button">Next Shift</button><button id="retryBtn" class="secondary" type="button">Retry Shift</button></div></section>
+          <section id="result" class="result hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" tabindex="-1"><h2 id="resultTitle"></h2><p id="resultCopy"></p><div id="resultRewards" class="result-rewards" aria-live="polite"></div><p id="nextShiftPreview" class="result-next-preview" aria-live="polite"></p><div class="result-actions"><button id="menuBtn" class="secondary" type="button">Shifts</button><button id="nextBtn" class="secondary" type="button">Next Shift</button><button id="retryBtn" class="secondary" type="button">Retry Shift</button></div></section>
           <section id="leaveConfirm" class="leave-confirm hidden" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveCopy"><h2 id="leaveTitle"></h2><p id="leaveCopy"></p><button id="leaveCancel" class="primary" type="button"></button><button id="leaveConfirmBtn" class="secondary" type="button"></button></section>
         </section>
         <div class="ad-reserve" aria-hidden="true"></div>
       </section>
     </main>
-    <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/zh-tw.js?v=20260818-prism-fr-runtime-v11"></script>
+    <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/zh-tw.js?v=20260821-skyport-runtime-v8"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="../../src/wallet.js"></script>
     <script src="../../src/sound.js?v=20260720-locale11"></script>
-    <script src="game.js?v=20260820-route-guidance-v6"></script>
+    <script src="game.js?v=20260821-next-shift-preview-v8-4"></script>
     <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
     <script src="../../src/battle-canvas-standard.js?v=20260813-skyport-landscape-v5" data-wp-battle-standard></script>
-    <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+    <script src="../../src/game-page-info.js?v=20260821-skyport-guide-v8"></script>
     <script>window.addEventListener('load',()=>document.querySelector('#loadingPanel')?.classList.add('hidden'),{once:true});</script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
