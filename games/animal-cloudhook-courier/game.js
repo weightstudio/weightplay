@@ -169,7 +169,8 @@ const GAME_VERSION = "v10";
     });
     return best;
   };
-  const updateTetherLabel = () => { $("#tetherBtn").textContent = state?.attached ? text("release") : text("hold"); $("#tetherBtn").setAttribute("aria-pressed", String(Boolean(state?.attached))); $("#tetherState").textContent = state?.attached ? (state.swingReady ? text("swinging") : text("attached")) : text(state?.messageKey || "ready"); $("#tetherState").dataset.attached = String(Boolean(state?.attached)); };
+  const refreshStaticA11y = () => { [[".brand-back","backLobby"],[".wonder-main-cover","cover"],[".locale select","language"],[".touch-controls","ariaControls"]].forEach(([selector,key]) => { const node = $(selector); const value = text(key); if (node && node.getAttribute("aria-label") !== value) node.setAttribute("aria-label", value); }); };
+  const updateTetherLabel = () => { $("#tetherBtn").textContent = state?.attached ? text("release") : text("hold"); $("#tetherBtn").setAttribute("aria-pressed", String(Boolean(state?.attached))); $("#tetherState").textContent = state?.attached ? (state.swingReady ? text("swinging") : text("attached")) : text(state?.messageKey || "ready"); $("#tetherState").dataset.attached = String(Boolean(state?.attached)); refreshStaticA11y(); };
   const announce = (key) => { if (!state) return; state.messageKey = key; $("#battleStatus").textContent = text(key); };
   const attach = () => {
     if (!state || state.done || hidden || state.attached) return;

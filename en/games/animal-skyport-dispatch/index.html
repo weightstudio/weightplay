@@ -113,16 +113,16 @@
       </section>
       <section id="stageScreen" class="stage-screen hidden">
         <button id="stageBack" class="return" data-wp-return="stage" aria-label="Back">&larr;</button>
-        <div class="stage-copy"><strong data-i18n="chooseShift">Choose a shift</strong><span id="bestText"></span></div>
-        <div class="contract-row"><label class="contract-choice"><input id="contractToggle" type="checkbox" /><span id="contractText">Priority contract: finish with no errors for bonus sky coins.</span></label><button id="insuranceBtn" class="secondary insurance-btn" type="button">Insure 5 diamonds</button></div>
-        <div id="stageRail" class="stage-rail" aria-label="Shift selection"></div>
+        <div class="stage-copy" data-runtime-localize="off"><strong data-i18n="chooseShift">Choose a shift</strong><span id="bestText"></span></div>
+        <div class="contract-row" data-runtime-localize="off"><label class="contract-choice"><input id="contractToggle" type="checkbox" /><span id="contractText">Priority contract: finish with no errors for bonus sky coins.</span></label><button id="insuranceBtn" class="secondary insurance-btn" type="button">Insure 5 diamonds</button></div>
+        <div id="stageRail" data-runtime-localize="off" class="stage-rail" aria-label="Shift selection"></div>
       </section>
       <section id="battleShell" class="battle-shell hidden">
         <section class="battle-canvas">
           <div id="battleLive" class="battle-live">
           <header class="battle-hud"><button id="battleBack" class="return" data-wp-return="battle" aria-label="Back">&larr;</button><strong id="shiftText"></strong><span id="scoreText"></span></header>
-          <div class="objective"><span id="objectiveText"></span><span id="resourceText" role="status" aria-live="polite"></span><strong id="flightTask" aria-live="polite"><span class="task-destination"></span><span class="task-steps"></span></strong></div>
-          <div id="routeField" class="route-field">
+          <div class="objective" data-runtime-localize="off"><span id="objectiveText"></span><span id="resourceText" role="status" aria-live="polite"></span><strong id="flightTask" aria-live="polite"><span class="task-destination"></span><span class="task-steps"></span></strong></div>
+          <div id="routeField" data-runtime-localize="off" class="route-field">
             <img class="skyport-bg" src="../../assets/animal-skyport-dispatch-skyport-bg.webp" alt="" />
             <img id="weatherZone" class="weather-zone hidden" alt="" />
             <div id="flight" class="flight" role="button" tabindex="0" aria-describedby="flightTask feedback flightHint"></div>
@@ -134,10 +134,10 @@
             <div id="routeLine" class="route-line"></div>
             <div id="feedback" class="feedback" aria-live="polite"></div>
           </div>
-          <div class="flight-row"><span id="flightHint" data-i18n="dragHint">Draw one continuous route through the numbered nodes to the matching dock.</span></div>
+          <div class="flight-row" data-runtime-localize="off"><span id="flightHint" data-i18n="dragHint">Draw one continuous route through the numbered nodes to the matching dock.</span></div>
           </div>
-          <section id="result" class="result hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" tabindex="-1"><h2 id="resultTitle"></h2><p id="resultCopy"></p><div id="resultRewards" class="result-rewards" aria-live="polite"></div><p id="nextShiftPreview" class="result-next-preview" aria-live="polite"></p><div class="result-actions"><button id="menuBtn" class="secondary" type="button">Shifts</button><button id="nextBtn" class="secondary" type="button">Next Shift</button><button id="retryBtn" class="secondary" type="button">Retry Shift</button></div></section>
-          <section id="leaveConfirm" class="leave-confirm hidden" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveCopy"><h2 id="leaveTitle"></h2><p id="leaveCopy"></p><button id="leaveCancel" class="primary" type="button"></button><button id="leaveConfirmBtn" class="secondary" type="button"></button></section>
+          <section id="result" data-runtime-localize="off" class="result hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" tabindex="-1"><h2 id="resultTitle"></h2><p id="resultCopy"></p><div id="resultRewards" class="result-rewards" aria-live="polite"></div><p id="nextShiftPreview" class="result-next-preview" aria-live="polite"></p><div class="result-actions"><button id="menuBtn" class="secondary" type="button">Shifts</button><button id="nextBtn" class="secondary" type="button">Next Shift</button><button id="retryBtn" class="secondary" type="button">Retry Shift</button></div></section>
+          <section id="leaveConfirm" data-runtime-localize="off" class="leave-confirm hidden" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveCopy"><h2 id="leaveTitle"></h2><p id="leaveCopy"></p><button id="leaveCancel" class="primary" type="button"></button><button id="leaveConfirmBtn" class="secondary" type="button"></button></section>
         </section>
         <div class="ad-reserve" aria-hidden="true"></div>
       </section>
@@ -145,7 +145,7 @@
     <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="../../src/wallet.js"></script>
     <script src="../../src/sound.js?v=20260720-locale11"></script>
-    <script src="game.js?v=20260821-next-shift-preview-v8-4"></script>
+    <script src="game.js?v=20260822-skyport-a11y-v11"></script>
     <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
     <script src="../../src/battle-canvas-standard.js?v=20260813-skyport-landscape-v5" data-wp-battle-standard></script>
     <script src="../../src/game-page-info.js?v=20260821-skyport-guide-v8"></script>

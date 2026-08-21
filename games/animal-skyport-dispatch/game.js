@@ -55,7 +55,7 @@
     const muted = Boolean(window.WonderSound?.isMuted?.());
     const actions = soundActionLabels[activeLocale] || soundActionLabels.en;
     const sourceAction = muted ? 'Turn sound on' : 'Mute sound';
-    const action = window.WeightPlayGameRuntimeLocalizer ? sourceAction : actions[muted ? 1 : 0];
+    const action = actions[muted ? 1 : 0];
     toggle.textContent = muted ? '🔇' : '🔊';
     toggle.title = action;
     toggle.setAttribute('aria-label', action);
@@ -166,6 +166,32 @@
     passenger: '\u65c5\u5ba2\u78bc\u982d B',
     repair: '\u7dad\u4fee\u78bc\u982d C'
   });
+  Object.assign(flightLabels, {
+    'zh-Hans': {cargo:'货运飞船', passenger:'客运飞船', repair:'维修飞船', festival:'节庆飞船', heavy:'重型货运飞船'},
+    ja: {cargo:'貨物飛行船', passenger:'旅客飛行船', repair:'修理飛行船', festival:'祭典飛行船', heavy:'大型貨物飛行船'},
+    ko: {cargo:'화물 비행선', passenger:'여객 비행선', repair:'수리 비행선', festival:'축제 비행선', heavy:'대형 화물 비행선'},
+    es: {cargo:'Dirigible de carga', passenger:'Dirigible de pasajeros', repair:'Dirigible de reparación', festival:'Dirigible del festival', heavy:'Dirigible de carga pesada'},
+    'pt-BR': {cargo:'Aeronave de carga', passenger:'Aeronave de passageiros', repair:'Aeronave de reparo', festival:'Aeronave do festival', heavy:'Aeronave de carga pesada'},
+    fr: {cargo:'Dirigeable cargo', passenger:'Dirigeable passagers', repair:'Dirigeable de réparation', festival:'Dirigeable du festival', heavy:'Dirigeable cargo lourd'},
+    de: {cargo:'Frachtluftschiff', passenger:'Passagierluftschiff', repair:'Reparaturluftschiff', festival:'Festluftschiff', heavy:'Schwerlastluftschiff'},
+    it: {cargo:'Aeronave cargo', passenger:'Aeronave passeggeri', repair:'Aeronave di riparazione', festival:'Aeronave del festival', heavy:'Aeronave cargo pesante'},
+    ru: {cargo:'Грузовой дирижабль', passenger:'Пассажирский дирижабль', repair:'Ремонтный дирижабль', festival:'Праздничный дирижабль', heavy:'Тяжёлый грузовой дирижабль'},
+    hi: {cargo:'कार्गो एयरशिप', passenger:'यात्री एयरशिप', repair:'मरम्मत एयरशिप', festival:'उत्सव एयरशिप', heavy:'भारी कार्गो एयरशिप'},
+    ar: {cargo:'منطاد شحن', passenger:'منطاد ركاب', repair:'منطاد إصلاح', festival:'منطاد احتفال', heavy:'منطاد شحن ثقيل'},
+  });
+  Object.assign(dockLabels, {
+    'zh-Hans': {cargo:'货运码头 A', passenger:'客运码头 B', repair:'维修码头 C'},
+    ja: {cargo:'貨物ドック A', passenger:'旅客ドック B', repair:'修理ドック C'},
+    ko: {cargo:'화물 도크 A', passenger:'여객 도크 B', repair:'수리 도크 C'},
+    es: {cargo:'Muelle de carga A', passenger:'Muelle de pasajeros B', repair:'Muelle de reparación C'},
+    'pt-BR': {cargo:'Doca de carga A', passenger:'Doca de passageiros B', repair:'Doca de reparo C'},
+    fr: {cargo:'Quai cargo A', passenger:'Quai passagers B', repair:'Quai de réparation C'},
+    de: {cargo:'Frachtdock A', passenger:'Passagierdock B', repair:'Reparaturdock C'},
+    it: {cargo:'Molo cargo A', passenger:'Molo passeggeri B', repair:'Molo riparazioni C'},
+    ru: {cargo:'Грузовой док A', passenger:'Пассажирский док B', repair:'Ремонтный док C'},
+    hi: {cargo:'कार्गो डॉक A', passenger:'यात्री डॉक B', repair:'मरम्मत डॉक C'},
+    ar: {cargo:'رصيف الشحن A', passenger:'رصيف الركاب B', repair:'رصيف الإصلاح C'},
+  });
   const TOTAL_SHIFTS = 30;
   const STAGE_CARD_POOL_SIZE = 9;
   const shiftConfig = [null,...Array.from({length:TOTAL_SHIFTS},(_,index)=>{const shift=index+1,chapter=Math.floor(index/5),within=index%5;return{goal:4+chapter+(within%3),coin:24+index*6,stamps:1+Math.floor(chapter/2),chapter,layout:within,barriers:shift<=2?0:Math.min(7,1+Math.floor((shift-3)/4)),beacons:Math.min(10,1+Math.floor(index/3))}})];
@@ -217,7 +243,132 @@
   let stageBrowseLogical = Math.max(0, centeredShift - 1);
   let stageSettleFrame = 0;
   let cancelStagePointer = () => {};
-  const t = (key, values = {}) => Object.entries(values).reduce((value, [name, replacement]) => value.replace(`{${name}}`, replacement), strings[locale][key]);
+  const skyportDynamicText = {
+    en: {
+      shift:'Shift {n}/30', objective:'Serve {done}/{goal} flights', errors:'Errors {done}/3', nodeProgress:'Nodes {done}/{goal}',
+      dragHint:'Drag the airship, or press Enter and use arrow keys, to choose its dock.', routeRule:'Connect every numbered node in order.', routeRuleBlocked:'Connect every numbered node in order · avoid every red line',
+      targetDestination:'Target: {flight} → {dock}', dockBadge:'GO: {dock}', dockMatched:'Dock matched.', flightSelected:'Flight selected. Choose a dock.', wrongDock:'Wrong dock: follow the target shown above.',
+      routeCancelled:'Route cancelled. No error added.', routeStorm:'The route touched a red blocked airway.', routeSelf:'The route crossed its own line.', routeBeacon:'Connect every numbered node in order.',
+      backToLobby:'Back to lobby', back:'Back', shiftSelection:'Shift selection', language:'Language',
+    },
+    'zh-Hant': {
+      shift:'班次 {n}/30', objective:'完成 {done}/{goal} 架飛船', errors:'錯誤 {done}/3', nodeProgress:'節點 {done}/{goal}',
+      dragHint:'拖曳飛船，或按 Enter 後用方向鍵選擇碼頭。', routeRule:'依序連接每個編號節點。', routeRuleBlocked:'依序連接每個編號節點 · 避開所有紅線',
+      targetDestination:'目標：{flight} → {dock}', dockBadge:'前往 {dock}', dockMatched:'碼頭配對成功。', flightSelected:'已選擇飛船，請選擇碼頭。', wrongDock:'碼頭不對：請前往上方指定的碼頭。',
+      routeCancelled:'航線已取消，不計入錯誤。', routeStorm:'航線碰到紅色禁行航線。', routeSelf:'航線不能與自己的線交叉。', routeBeacon:'必須按順序連接所有編號節點。',
+      backToLobby:'回到大廳', back:'返回', shiftSelection:'班次選擇', language:'語言',
+    },
+    'zh-Hans': {
+      shift:'班次 {n}/30', objective:'完成 {done}/{goal} 架飞船', errors:'错误 {done}/3', nodeProgress:'节点 {done}/{goal}',
+      dragHint:'拖动飞艇，或按 Enter 后使用方向键选择码头。', routeRule:'按顺序连接每个编号节点。', routeRuleBlocked:'按顺序连接每个编号节点 · 避开所有红线',
+      targetDestination:'目标：{flight} → {dock}', dockBadge:'前往 {dock}', dockMatched:'码头匹配成功。', flightSelected:'已选择飞艇，请选择码头。', wrongDock:'码头不对：请前往上方指定的码头。',
+      routeCancelled:'航线已取消，不计入错误。', routeStorm:'航线碰到了红色禁行航线。', routeSelf:'航线不能与自己的线交叉。', routeBeacon:'必须按顺序连接所有编号节点。',
+      backToLobby:'返回大厅', back:'返回', shiftSelection:'班次选择', language:'语言',
+    },
+    ja: {
+      shift:'シフト {n}/30', objective:'{done}/{goal}便を運航', errors:'エラー {done}/3', nodeProgress:'ノード {done}/{goal}',
+      dragHint:'飛行船をドラッグするか、Enterを押して矢印キーでドックを選択。', routeRule:'番号付きノードを順番にすべて接続。', routeRuleBlocked:'番号付きノードを順番にすべて接続 · 赤い線をすべて避ける',
+      targetDestination:'目標：{flight} → {dock}', dockBadge:'移動先 {dock}', dockMatched:'ドックに正しく到着しました。', flightSelected:'飛行船を選択しました。ドックを選んでください。', wrongDock:'ドックが違います。上の目標ドックへ向かってください。',
+      routeCancelled:'ルートをキャンセルしました。エラーは増えません。', routeStorm:'ルートが赤い通行禁止空路に触れました。', routeSelf:'ルートが自分自身と交差しました。', routeBeacon:'番号付きノードを順番に接続してください。',
+      backToLobby:'ロビーに戻る', back:'戻る', shiftSelection:'シフト選択', language:'言語',
+    },
+    ko: {
+      shift:'교대 {n}/30', objective:'비행선 {done}/{goal}대 처리', errors:'오류 {done}/3', nodeProgress:'노드 {done}/{goal}',
+      dragHint:'비행선을 드래그하거나 Enter를 누른 뒤 화살표 키로 도크를 선택하세요.', routeRule:'번호가 있는 모든 노드를 순서대로 연결하세요.', routeRuleBlocked:'번호가 있는 모든 노드를 순서대로 연결하세요 · 모든 빨간 선을 피하세요',
+      targetDestination:'목표: {flight} → {dock}', dockBadge:'이동: {dock}', dockMatched:'도크가 일치했습니다.', flightSelected:'비행선을 선택했습니다. 도크를 선택하세요.', wrongDock:'도크가 올바르지 않습니다. 위에 표시된 목표로 가세요.',
+      routeCancelled:'경로를 취소했습니다. 오류가 추가되지 않았습니다.', routeStorm:'경로가 빨간 통행 금지 항로에 닿았습니다.', routeSelf:'경로가 자기 선과 교차했습니다.', routeBeacon:'모든 번호 노드를 순서대로 연결하세요.',
+      backToLobby:'로비로 돌아가기', back:'뒤로', shiftSelection:'교대 선택', language:'언어',
+    },
+    es: {
+      shift:'Turno {n}/30', objective:'Sirve {done}/{goal} vuelos', errors:'Errores {done}/3', nodeProgress:'Nodos {done}/{goal}',
+      dragHint:'Arrastra la aeronave o pulsa Enter y usa las flechas para elegir el muelle.', routeRule:'Conecta todos los nodos numerados en orden.', routeRuleBlocked:'Conecta todos los nodos numerados en orden · evita todas las líneas rojas',
+      targetDestination:'Objetivo: {flight} → {dock}', dockBadge:'IR a {dock}', dockMatched:'Muelle correcto.', flightSelected:'Aeronave seleccionada. Elige un muelle.', wrongDock:'Muelle incorrecto: sigue el objetivo mostrado arriba.',
+      routeCancelled:'Ruta cancelada. No se añade ningún error.', routeStorm:'La ruta tocó una vía aérea roja bloqueada.', routeSelf:'La ruta se cruzó consigo misma.', routeBeacon:'Conecta todos los nodos numerados en orden.',
+      backToLobby:'Volver al vestíbulo', back:'Atrás', shiftSelection:'Selección de turno', language:'Idioma',
+    },
+    'pt-BR': {
+      shift:'Turno {n}/30', objective:'Atenda {done}/{goal} voos', errors:'Erros {done}/3', nodeProgress:'Nós {done}/{goal}',
+      dragHint:'Arraste a aeronave ou pressione Enter e use as setas para escolher a doca.', routeRule:'Conecte todos os nós numerados em ordem.', routeRuleBlocked:'Conecte todos os nós numerados em ordem · evite todas as linhas vermelhas',
+      targetDestination:'Alvo: {flight} → {dock}', dockBadge:'IR para {dock}', dockMatched:'Doca correta.', flightSelected:'Aeronave selecionada. Escolha uma doca.', wrongDock:'Doca errada: siga o alvo mostrado acima.',
+      routeCancelled:'Rota cancelada. Nenhum erro foi adicionado.', routeStorm:'A rota tocou uma via aérea vermelha bloqueada.', routeSelf:'A rota cruzou a si mesma.', routeBeacon:'Conecte todos os nós numerados em ordem.',
+      backToLobby:'Voltar ao lobby', back:'Voltar', shiftSelection:'Seleção de turno', language:'Idioma',
+    },
+    fr: {
+      shift:'Shift {n}/30', objective:'Servir {done}/{goal} vols', errors:'Erreurs {done}/3', nodeProgress:'Nœuds {done}/{goal}',
+      dragHint:'Faites glisser le dirigeable, ou appuyez sur Entrée puis utilisez les flèches pour choisir le quai.', routeRule:'Reliez tous les nœuds numérotés dans l’ordre.', routeRuleBlocked:'Reliez tous les nœuds numérotés dans l’ordre · évitez toutes les lignes rouges',
+      targetDestination:'Cible : {flight} → {dock}', dockBadge:'ALLER à {dock}', dockMatched:'Quai correct.', flightSelected:'Dirigeable sélectionné. Choisissez un quai.', wrongDock:'Mauvais quai : suivez la cible affichée ci-dessus.',
+      routeCancelled:'Route annulée. Aucune erreur ajoutée.', routeStorm:'La route a touché une voie aérienne rouge bloquée.', routeSelf:'La route a croisé sa propre ligne.', routeBeacon:'Reliez tous les nœuds numérotés dans l’ordre.',
+      backToLobby:'Retour au lobby', back:'Retour', shiftSelection:'Sélection du shift', language:'Langue',
+    },
+    de: {
+      shift:'Schicht {n}/30', objective:'Flüge: {done}/{goal}', errors:'Fehler {done}/3', nodeProgress:'Knoten {done}/{goal}',
+      dragHint:'Ziehe das Luftschiff oder drücke Enter und wähle das Dock mit den Pfeiltasten.', routeRule:'Verbinde alle nummerierten Knoten der Reihe nach.', routeRuleBlocked:'Verbinde alle nummerierten Knoten der Reihe nach · meide alle roten Linien',
+      targetDestination:'Ziel: {flight} → {dock}', dockBadge:'ZU {dock}', dockMatched:'Richtiges Dock.', flightSelected:'Luftschiff ausgewählt. Wähle ein Dock.', wrongDock:'Falsches Dock: Folge dem oben angezeigten Ziel.',
+      routeCancelled:'Route abgebrochen. Kein Fehler hinzugefügt.', routeStorm:'Die Route berührte eine rote gesperrte Luftstraße.', routeSelf:'Die Route kreuzte sich selbst.', routeBeacon:'Verbinde alle nummerierten Knoten der Reihe nach.',
+      backToLobby:'Zur Lobby', back:'Zurück', shiftSelection:'Schichtauswahl', language:'Sprache',
+    },
+    it: {
+      shift:'Turno {n}/30', objective:'Servi {done}/{goal} voli', errors:'Errori {done}/3', nodeProgress:'Nodi {done}/{goal}',
+      dragHint:'Trascina l’aeronave oppure premi Invio e usa le frecce per scegliere il molo.', routeRule:'Collega tutti i nodi numerati in ordine.', routeRuleBlocked:'Collega tutti i nodi numerati in ordine · evita tutte le linee rosse',
+      targetDestination:'Obiettivo: {flight} → {dock}', dockBadge:'VAI a {dock}', dockMatched:'Molo corretto.', flightSelected:'Aeronave selezionata. Scegli un molo.', wrongDock:'Molo errato: segui l’obiettivo mostrato sopra.',
+      routeCancelled:'Rotta annullata. Nessun errore aggiunto.', routeStorm:'La rotta ha toccato una via aerea rossa bloccata.', routeSelf:'La rotta ha attraversato se stessa.', routeBeacon:'Collega tutti i nodi numerati in ordine.',
+      backToLobby:'Torna alla lobby', back:'Indietro', shiftSelection:'Selezione del turno', language:'Lingua',
+    },
+    ru: {
+      shift:'Смена {n}/30', objective:'Обслужено рейсов: {done}/{goal}', errors:'Ошибки {done}/3', nodeProgress:'Узлы {done}/{goal}',
+      dragHint:'Перетащите дирижабль или нажмите Enter и выберите док стрелками.', routeRule:'Соедините все пронумерованные узлы по порядку.', routeRuleBlocked:'Соедините все пронумерованные узлы по порядку · избегайте всех красных линий',
+      targetDestination:'Цель: {flight} → {dock}', dockBadge:'К {dock}', dockMatched:'Док выбран верно.', flightSelected:'Дирижабль выбран. Выберите док.', wrongDock:'Неверный док: следуйте цели выше.',
+      routeCancelled:'Маршрут отменён. Ошибок нет.', routeStorm:'Маршрут коснулся красного запрещённого воздушного пути.', routeSelf:'Маршрут пересёк сам себя.', routeBeacon:'Соедините все пронумерованные узлы по порядку.',
+      backToLobby:'Вернуться в лобби', back:'Назад', shiftSelection:'Выбор смены', language:'Язык',
+    },
+    hi: {
+      shift:'शिफ्ट {n}/30', objective:'{done}/{goal} उड़ानें पूरी करें', errors:'त्रुटियाँ {done}/3', nodeProgress:'नोड {done}/{goal}',
+      dragHint:'एयरशिप खींचें, या Enter दबाकर तीर कुंजियों से डॉक चुनें।', routeRule:'सभी क्रमांकित नोड को क्रम से जोड़ें।', routeRuleBlocked:'सभी क्रमांकित नोड को क्रम से जोड़ें · सभी लाल रेखाओं से बचें',
+      targetDestination:'लक्ष्य: {flight} → {dock}', dockBadge:'यहाँ जाएँ: {dock}', dockMatched:'सही डॉक।', flightSelected:'एयरशिप चुना गया। डॉक चुनें।', wrongDock:'गलत डॉक: ऊपर दिखाए गए लक्ष्य का पालन करें।',
+      routeCancelled:'मार्ग रद्द। कोई त्रुटि नहीं जोड़ी गई।', routeStorm:'मार्ग लाल प्रतिबंधित वायुमार्ग से टकराया।', routeSelf:'मार्ग खुद को पार कर गया।', routeBeacon:'सभी क्रमांकित नोड को क्रम से जोड़ें।',
+      backToLobby:'लॉबी पर लौटें', back:'वापस', shiftSelection:'शिफ्ट चयन', language:'भाषा',
+    },
+    ar: {
+      shift:'المناوبة {n}/30', objective:'خدمة {done}/{goal} رحلات', errors:'الأخطاء {done}/3', nodeProgress:'العقد {done}/{goal}',
+      dragHint:'اسحب المنطاد، أو اضغط Enter ثم استخدم الأسهم لاختيار الرصيف.', routeRule:'صِل كل العقد المرقمة بالترتيب.', routeRuleBlocked:'صِل كل العقد المرقمة بالترتيب · تجنب كل الخطوط الحمراء',
+      targetDestination:'الهدف: {flight} ← {dock}', dockBadge:'اذهب إلى {dock}', dockMatched:'الرصيف مطابق.', flightSelected:'تم اختيار المنطاد. اختر رصيفًا.', wrongDock:'الرصيف غير صحيح: اتبع الهدف الظاهر أعلاه.',
+      routeCancelled:'أُلغي المسار. لم تتم إضافة خطأ.', routeStorm:'لامس المسار ممرًا جويًا أحمر محظورًا.', routeSelf:'تقاطع المسار مع نفسه.', routeBeacon:'صِل كل العقد المرقمة بالترتيب.',
+      backToLobby:'العودة إلى الردهة', back:'رجوع', shiftSelection:'اختيار المناوبة', language:'اللغة',
+    },
+  };
+  const skyportUiText = {
+    'zh-Hant': {title:'動物天空港調度隊', headline:'讓雲線天空港持續運作。', intro:'繪出安全航線，配對飛船與碼頭，保護班次不被壅塞。', start:'開始調度', chooseShift:'選擇班次', best:'最佳班次：{n}', stageReady:'可開始', stageLocked:'未解鎖', stageReplay:'可重玩', menu:'回主選單', shifts:'班次選擇', next:'下一班', retry:'重試班次', win:'班次完成！', lose:'天空港壅塞！', winCopy:'清晰調度為天空港寫下新紀錄。', loseCopy:'三次不安全進場關閉了班次，重試免費。', nextShiftPreview:'下一班 {shift}：完成 {goal} 架飛船 · {rule}', guideTitle:'如何調度', guideBody:'選擇班次、依序連接編號節點；出現紅色封鎖航線時避開，再將每艘飛船引導到相符碼頭。'},
+    'zh-Hans': {title:'动物天空港调度队', headline:'让云线天空港持续运作。', intro:'绘出安全航线，匹配飞艇与码头，保护班次不被拥堵。', start:'开始调度', chooseShift:'选择班次', best:'最佳班次：{n}', stageReady:'可开始', stageLocked:'未解锁', stageReplay:'可重玩', menu:'返回主菜单', shifts:'班次选择', next:'下一班', retry:'重试班次', win:'班次完成！', lose:'天空港拥堵！', winCopy:'清晰调度为天空港写下新纪录。', loseCopy:'三次不安全进场结束了班次，重试免费。', nextShiftPreview:'下一班 {shift}：完成 {goal} 架飞艇 · {rule}', guideTitle:'如何调度', guideBody:'选择班次，按顺序连接编号节点；出现红色封锁航线时避开，再将每艘飞艇引导到匹配码头。'},
+    ja: {title:'動物スカイポート・ディスパッチ', headline:'クラウドライン空港を動かし続けよう。', intro:'安全なルートを描き、飛行船をドックへ振り分け、混雑からシフトを守ります。', start:'ディスパッチ開始', chooseShift:'シフトを選択', best:'ベストシフト：{n}', stageReady:'開始可能', stageLocked:'ロック中', stageReplay:'リプレイ', menu:'メインメニュー', shifts:'シフト選択', next:'次のシフト', retry:'シフトをリトライ', win:'シフト完了！', lose:'スカイポート混雑！', winCopy:'正確な運航で新記録を更新しました。', loseCopy:'3回の危険な到着でシフト終了。リトライは無料です。', nextShiftPreview:'次のシフト {shift}：{goal}便を運航 · {rule}', guideTitle:'ディスパッチ方法', guideBody:'シフトを選び、番号付きノードを順番に接続。赤い通行禁止空路がある場合は避け、各飛行船を対応するドックへ導きます。'},
+    ko: {title:'동물 스카이포트 디스패치', headline:'클라우드라인 스카이포트를 계속 움직이세요.', intro:'안전한 경로를 그리고 비행선을 도크에 배정해 혼잡으로부터 교대를 지키세요.', start:'배차 시작', chooseShift:'교대 선택', best:'최고 교대: {n}', stageReady:'시작 가능', stageLocked:'잠김', stageReplay:'다시 플레이', menu:'메인 메뉴', shifts:'교대 선택', next:'다음 교대', retry:'교대 재시도', win:'교대 완료!', lose:'스카이포트 혼잡!', winCopy:'정확한 운항으로 새 기록을 세웠습니다.', loseCopy:'위험한 도착 세 번으로 교대가 종료되었습니다. 재시도는 무료입니다.', nextShiftPreview:'다음 교대 {shift}: 비행선 {goal}대 처리 · {rule}', guideTitle:'배차 방법', guideBody:'교대를 선택하고 번호 노드를 순서대로 연결하세요. 빨간 통행 금지 항로가 나타나면 피하고 각 비행선을 맞는 도크로 안내하세요.'},
+    es: {title:'Despacho de animales Skyport', headline:'Mantén Skyport Cloudline en movimiento.', intro:'Dibuja rutas seguras, empareja aeronaves con muelles y protege el turno de la congestión.', start:'Iniciar despacho', chooseShift:'Elegir turno', best:'Mejor turno: {n}', stageReady:'Listo', stageLocked:'Bloqueado', stageReplay:'Repetir', menu:'Menú principal', shifts:'Turnos', next:'Siguiente turno', retry:'Reintentar turno', win:'¡Turno completado!', lose:'¡Skyport congestionado!', winCopy:'Una ruta clara establece un nuevo récord del Skyport.', loseCopy:'Tres llegadas inseguras cerraron el turno. Reintentar es gratis.', nextShiftPreview:'Siguiente turno {shift}: sirve {goal} vuelos · {rule}', guideTitle:'Cómo despachar', guideBody:'Elige un turno, conecta los nodos numerados en orden, evita las vías aéreas rojas bloqueadas y guía cada aeronave a su muelle.'},
+    'pt-BR': {title:'Despacho de animais Skyport', headline:'Mantenha o Skyport Cloudline em movimento.', intro:'Desenhe rotas seguras, combine aeronaves com docas e proteja o turno do congestionamento.', start:'Iniciar despacho', chooseShift:'Escolher turno', best:'Melhor turno: {n}', stageReady:'Pronto', stageLocked:'Bloqueado', stageReplay:'Jogar novamente', menu:'Menu principal', shifts:'Turnos', next:'Próximo turno', retry:'Repetir turno', win:'Turno concluído!', lose:'Skyport congestionado!', winCopy:'Uma rota clara cria um novo recorde no Skyport.', loseCopy:'Três chegadas inseguras encerraram o turno. Repetir é grátis.', nextShiftPreview:'Próximo turno {shift}: atenda {goal} voos · {rule}', guideTitle:'Como despachar', guideBody:'Escolha um turno, conecte os nós numerados em ordem, evite as vias aéreas vermelhas e guie cada aeronave até sua doca.'},
+    fr: {title:'Dispatch animal Skyport', headline:'Gardez le Skyport Cloudline en mouvement.', intro:'Tracez des routes sûres, associez les dirigeables aux quais et protégez le shift contre la congestion.', start:'Lancer la répartition', chooseShift:'Choisir un shift', best:'Meilleur shift : {n}', stageReady:'Prêt', stageLocked:'Verrouillé', stageReplay:'Rejouer', menu:'Menu principal', shifts:'Shifts', next:'Shift suivant', retry:'Rejouer le shift', win:'Shift terminé !', lose:'Skyport congestionné !', winCopy:'Une route claire établit un nouveau record du Skyport.', loseCopy:'Trois arrivées dangereuses ont fermé le shift. Rejouer est gratuit.', nextShiftPreview:'Shift suivant {shift} : servir {goal} vols · {rule}', guideTitle:'Comment répartir', guideBody:'Choisissez un shift, reliez les nœuds numérotés dans l’ordre, évitez les voies rouges bloquées et guidez chaque dirigeable vers son quai.'},
+    de: {title:'Tierischer Skyport-Dispatch', headline:'Halte den Cloudline-Skyport in Bewegung.', intro:'Zeichne sichere Routen, ordne Luftschiffe Docks zu und schütze die Schicht vor Staus.', start:'Dispatch starten', chooseShift:'Schicht wählen', best:'Beste Schicht: {n}', stageReady:'Bereit', stageLocked:'Gesperrt', stageReplay:'Erneut spielen', menu:'Hauptmenü', shifts:'Schichten', next:'Nächste Schicht', retry:'Schicht wiederholen', win:'Schicht abgeschlossen!', lose:'Skyport überlastet!', winCopy:'Eine klare Route bringt einen neuen Skyport-Rekord.', loseCopy:'Drei unsichere Ankünfte beendeten die Schicht. Wiederholen ist kostenlos.', nextShiftPreview:'Nächste Schicht {shift}: {goal} Flüge bedienen · {rule}', guideTitle:'So dispatchst du', guideBody:'Wähle eine Schicht, verbinde nummerierte Knoten der Reihe nach, meide rote gesperrte Luftstraßen und führe jedes Luftschiff zum passenden Dock.'},
+    it: {title:'Dispatch del porto celeste animale', headline:'Mantieni in movimento il porto celeste Cloudline.', intro:'Disegna rotte sicure, abbina le aeronavi ai moli e proteggi il turno dalla congestione.', start:'Avvia dispacciamento', chooseShift:'Scegli turno', best:'Turno migliore: {n}', stageReady:'Pronto', stageLocked:'Bloccato', stageReplay:'Rigioca', menu:'Menu principale', shifts:'Turni', next:'Turno successivo', retry:'Ripeti turno', win:'Turno completato!', lose:'Porto celeste congestionato!', winCopy:'Una rotta chiara stabilisce un nuovo record.', loseCopy:'Tre arrivi non sicuri hanno chiuso il turno. Riprova gratis.', nextShiftPreview:'Turno successivo {shift}: servi {goal} voli · {rule}', guideTitle:'Come effettuare il dispatch', guideBody:'Scegli un turno, collega i nodi numerati in ordine, evita le vie aeree rosse bloccate e guida ogni aeronave al molo corretto.'},
+    ru: {title:'Диспетчерская Skyport для животных', headline:'Поддерживайте движение аэропорта Cloudline.', intro:'Рисуйте безопасные маршруты, направляйте дирижабли к докам и защищайте смену от заторов.', start:'Начать диспетчеризацию', chooseShift:'Выбрать смену', best:'Лучшая смена: {n}', stageReady:'Готово', stageLocked:'Закрыто', stageReplay:'Повторить', menu:'Главное меню', shifts:'Смены', next:'Следующая смена', retry:'Повторить смену', win:'Смена завершена!', lose:'Аэропорт Skyport перегружен!', winCopy:'Чёткий маршрут установил новый рекорд.', loseCopy:'Три небезопасных прибытия завершили смену. Повтор бесплатен.', nextShiftPreview:'Следующая смена {shift}: обслужить рейсов — {goal} · {rule}', guideTitle:'Как диспетчеризировать', guideBody:'Выберите смену, соединяйте пронумерованные узлы по порядку, избегайте красных запрещённых путей и ведите каждый дирижабль к нужному доку.'},
+    hi: {title:'पशु स्काईपोर्ट डिस्पैच', headline:'क्लाउडलाइन स्काईपोर्ट को गतिशील रखें।', intro:'सुरक्षित मार्ग बनाएँ, एयरशिप को डॉक से मिलाएँ और शिफ्ट को भीड़ से बचाएँ।', start:'डिस्पैच शुरू करें', chooseShift:'शिफ्ट चुनें', best:'सर्वश्रेष्ठ शिफ्ट: {n}', stageReady:'तैयार', stageLocked:'लॉक', stageReplay:'फिर खेलें', menu:'मुख्य मेनू', shifts:'शिफ्ट', next:'अगली शिफ्ट', retry:'शिफ्ट फिर से खेलें', win:'शिफ्ट पूरी!', lose:'स्काईपोर्ट में भीड़!', winCopy:'साफ़ मार्ग ने स्काईपोर्ट का नया रिकॉर्ड बनाया।', loseCopy:'तीन असुरक्षित आगमन से शिफ्ट बंद हो गई। फिर से खेलना मुफ़्त है।', nextShiftPreview:'अगली शिफ्ट {shift}: {goal} उड़ानें पूरी करें · {rule}', guideTitle:'डिस्पैच कैसे करें', guideBody:'शिफ्ट चुनें, क्रमांकित नोड को क्रम से जोड़ें, लाल प्रतिबंधित वायुमार्ग से बचें और हर एयरशिप को सही डॉक तक पहुँचाएँ।'},
+    ar: {title:'إرسال سكايبورت الحيوان', headline:'حافظ على حركة ميناء كلاودلاين الجوي.', intro:'ارسم مسارات آمنة، وطابق المناطيد مع الأرصفة، واحمِ المناوبة من الازدحام.', start:'ابدأ الإرسال', chooseShift:'اختر المناوبة', best:'أفضل مناوبة: {n}', stageReady:'جاهزة', stageLocked:'مغلقة', stageReplay:'إعادة اللعب', menu:'القائمة الرئيسية', shifts:'المناوبات', next:'المناوبة التالية', retry:'إعادة المناوبة', win:'اكتملت المناوبة!', lose:'ازدحم سكايبورت!', winCopy:'سجّل التوجيه الواضح رقمًا قياسيًا جديدًا للميناء.', loseCopy:'أنهت ثلاث وصولات غير آمنة المناوبة. إعادة المحاولة مجانية.', nextShiftPreview:'المناوبة التالية {shift}: خدمة {goal} رحلات · {rule}', guideTitle:'كيفية الإرسال', guideBody:'اختر مناوبة، وصِل العقد المرقمة بالترتيب، وتجنب الممرات الجوية الحمراء المحظورة، ووجّه كل منطاد إلى رصيفه المطابق.'},
+  };
+  const skyportStageText = {
+    'zh-Hant': {medals:'勳章 {n}/3', contractDescription:'優先合約：無錯誤完成可獲得 20 天空幣。', insurance:'保險 5 鑽石', insuranceSelect:'請先勾選優先合約，再購買保險。', insuranceLabel:'保護本次合約的 20 天空幣獎勵。花費 5 顆鑽石。'},
+    'zh-Hans': {medals:'勋章 {n}/3', contractDescription:'优先合约：无错误完成可获得 20 天空币。', insurance:'保险 5 钻石', insuranceSelect:'请先勾选优先合约，再购买保险。', insuranceLabel:'保护本次合约的 20 天空币奖励。花费 5 颗钻石。'},
+    ja: {medals:'メダル {n}/3', contractDescription:'優先契約：ミスなしで完了するとスカイコイン20枚。', insurance:'保険 5ダイヤ', insuranceSelect:'保険を購入する前に優先契約を選択してください。', insuranceLabel:'失敗時に契約のスカイコイン20枚ボーナスを守ります。ダイヤ5個。'},
+    ko: {medals:'메달 {n}/3', contractDescription:'우선 계약: 오류 없이 완료하면 스카이 코인 20개를 받습니다.', insurance:'보험 5 다이아', insuranceSelect:'보험을 구매하기 전에 우선 계약을 선택하세요.', insuranceLabel:'실패 시 계약 보너스 스카이 코인 20개를 보호합니다. 다이아 5개가 필요합니다.'},
+    es: {medals:'Medallas {n}/3', contractDescription:'Contrato prioritario: termina sin errores para obtener 20 monedas celestes.', insurance:'Asegurar 5 diamantes', insuranceSelect:'Selecciona el contrato prioritario antes de comprar el seguro.', insuranceLabel:'Protege las 20 monedas del contrato si fallas. Cuesta 5 diamantes.'},
+    'pt-BR': {medals:'Medalhas {n}/3', contractDescription:'Contrato prioritário: termine sem erros para ganhar 20 moedas celestes.', insurance:'Segurar 5 diamantes', insuranceSelect:'Selecione o contrato prioritário antes de comprar o seguro.', insuranceLabel:'Protege o bônus de 20 moedas do contrato em caso de falha. Custa 5 diamantes.'},
+    fr: {medals:'Médailles {n}/3', contractDescription:'Contrat prioritaire : terminez sans erreur pour gagner 20 pièces célestes.', insurance:'Assurer 5 diamants', insuranceSelect:'Sélectionnez le contrat prioritaire avant d’acheter l’assurance.', insuranceLabel:'Protège le bonus de 20 pièces du contrat en cas d’échec. Coûte 5 diamants.'},
+    de: {medals:'Medaillen {n}/3', contractDescription:'Prioritätsvertrag: Schließe die Schicht ohne Fehler für 20 Himmelsmünzen ab.', insurance:'5 Diamanten versichern', insuranceSelect:'Wähle den Prioritätsvertrag, bevor du die Versicherung kaufst.', insuranceLabel:'Schützt den Vertragsbonus von 20 Himmelsmünzen bei einem Fehlschlag. Kostet 5 Diamanten.'},
+    it: {medals:'Medaglie {n}/3', contractDescription:'Contratto prioritario: completa senza errori per ottenere 20 monete celesti.', insurance:'Assicura 5 diamanti', insuranceSelect:'Seleziona il contratto prioritario prima di acquistare l’assicurazione.', insuranceLabel:'Protegge il bonus di 20 monete del contratto in caso di fallimento. Costa 5 diamanti.'},
+    ru: {medals:'Медали {n}/3', contractDescription:'Приоритетный контракт: завершите без ошибок и получите 20 небесных монет.', insurance:'Страховка за 5 алмазов', insuranceSelect:'Выберите приоритетный контракт перед покупкой страховки.', insuranceLabel:'Защищает бонус контракта в 20 небесных монет при провале. Стоит 5 алмазов.'},
+    hi: {medals:'पदक {n}/3', contractDescription:'प्राथमिकता अनुबंध: बिना त्रुटि पूरा करें और 20 स्काई कॉइन पाएँ।', insurance:'5 डायमंड का बीमा', insuranceSelect:'बीमा खरीदने से पहले प्राथमिकता अनुबंध चुनें।', insuranceLabel:'असफलता पर 20 स्काई कॉइन के अनुबंध बोनस को बचाता है। कीमत 5 डायमंड।'},
+    ar: {medals:'الأوسمة {n}/3', contractDescription:'العقد ذو الأولوية: أكمل دون أخطاء لتحصل على 20 عملة سماء إضافية.', insurance:'تأمين 5 ماسات', insuranceSelect:'اختر العقد ذا الأولوية قبل شراء التأمين.', insuranceLabel:'يحمي مكافأة العقد البالغة 20 عملة سماء عند الفشل. التكلفة 5 ماسات.'},
+  };
+  const activeLocale = () => window.WonderI18n?.actualLocale?.() || readStorage('weightPlayLocale') || document.documentElement.lang || 'en';
+  const t = (key, values = {}) => {
+    const template = skyportDynamicText[activeLocale()]?.[key] ?? skyportUiText[activeLocale()]?.[key] ?? skyportStageText[activeLocale()]?.[key] ?? strings[locale]?.[key] ?? strings.en?.[key] ?? key;
+    return Object.entries(values).reduce((value, [name, replacement]) => String(value).replace(`{${name}}`, replacement), template);
+  };
   function normalizeResultActions() {
     const panel = $('result');
     if (!panel) return;
@@ -522,14 +673,14 @@
 
   function renderFlightTask() {
     if (!state.kind) return;
-    const labels = locale === 'zh-Hant'
-      ? {flights:flightLabels['zh-Hant'],docks:dockLabels['zh-Hant']}
-      : {flights:flightLabels.en,docks:dockLabels.en};
+    const active = activeLocale();
+    const labels = {
+      flights:flightLabels[active] || flightLabels.en,
+      docks:dockLabels[active] || dockLabels.en,
+    };
     const flightName = labels.flights[state.kind];
     const dockName = labels.docks[state.dock];
-    document.querySelector('.task-destination').textContent = locale === 'zh-Hant'
-      ? `目標：${flightName} → ${dockName}`
-      : `Target: ${flightName} -> ${dockName}`;
+    document.querySelector('.task-destination').textContent = t('targetDestination', {flight:flightName, dock:dockName});
     const routeInstruction = t(state.barriers?.length ? 'routeRuleBlocked' : 'routeRule');
     document.querySelector('.task-steps').textContent = routeInstruction;
     $('flight').setAttribute('aria-label', flightName);
@@ -544,9 +695,7 @@
       dock.setAttribute('aria-label', state.selected ? keyboardLabel : label);
       dock.classList.toggle('is-target', isTarget);
       dock.classList.remove('is-alternate');
-      dock.querySelector('.dock-target-badge').textContent = isTarget
-        ? (locale === 'zh-Hant' ? `前往 ${dockName.at(-1)}` : `GO: ${dockName.at(-1)}`)
-        : '';
+      dock.querySelector('.dock-target-badge').textContent = isTarget ? t('dockBadge', {dock:dockName.at(-1)}) : '';
     });
     requestAnimationFrame(renderGuidanceLine);
   }
@@ -757,7 +906,7 @@
     if (primary && !state.routeViolation) {
       state.done += 1;
       state.matched += 1;
-      $('feedback').textContent = locale === 'zh-Hant' ? '\u78bc\u982d\u914d\u5c0d\u6210\u529f\u3002' : 'Dock matched.';
+      $('feedback').textContent = t('dockMatched');
       if (state.done >= state.goal) {
         renderHud();
         const config = shiftConfig[state.shift];
@@ -778,7 +927,7 @@
     } else {
       playSound('wrong');
       state.errors += 1;
-      state.lastError = state.routeViolation==='barrier'?t('routeStorm'):state.routeViolation==='self'?t('routeSelf'):state.routeViolation==='beacon'?t('routeBeacon'):(locale === 'zh-Hant' ? '碼頭不對：請前往上方指定的碼頭。' : 'Wrong dock: follow the target shown above.');
+      state.lastError = state.routeViolation==='barrier'?t('routeStorm'):state.routeViolation==='self'?t('routeSelf'):state.routeViolation==='beacon'?t('routeBeacon'):t('wrongDock');
       state.routeViolation='';
       $('feedback').textContent = state.lastError;
       if (state.errors >= 3) { if (insuranceActive && state.contract) { save.coins = (save.coins || 0) + 20; persist(); } result(false); }
@@ -973,7 +1122,7 @@
     if (suppressClick) { suppressClick = false; event.stopImmediatePropagation(); return; }
     if (battleDecisionOpen()) return;
     state.selected = true;
-    $('feedback').textContent = locale === 'zh-Hant' ? '\u5df2\u9078\u64c7\u98db\u8239\uff0c\u8acb\u9ede\u9078\u78bc\u982d\u3002' : 'Flight selected. Choose a dock.';
+    $('feedback').textContent = t('flightSelected');
   }, true);
   $('flight').addEventListener('keydown', (event) => {
     if (battleDecisionOpen()) return;
