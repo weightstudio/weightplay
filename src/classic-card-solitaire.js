@@ -794,9 +794,11 @@
       return text(YUKON_COACH_COPY[this.locale] || YUKON_COACH_COPY.en, { source, destination });
     }
     yukonSelectionText() {
-      return this.config.variant === "yukon" && this.game.selected && this.validTargets().size
-        ? this.t("yukonDestinationHint")
-        : "";
+      if (this.config.variant !== "yukon" || !this.game.selected || !this.validTargets().size) return "";
+      const card = this.game.sourceCard(this.game.selected);
+      const template = (COMMON[this.locale] || COMMON.en).ariaCard || COMMON.en.ariaCard;
+      const label = card ? text(template, { rank: rankName(card.rank), suit: card.suit }) : this.t("selected");
+      return `${this.t("selected")}: ${label}. ${this.t("yukonDestinationHint")}`;
     }
     pyramidCoachText() { return this.pyramidCoachMoves?.length >= 2 ? this.t("pyramidCoach") : ""; }
     pyramidCoachClass(index) {

@@ -191,7 +191,20 @@ body[data-wp-card-game] > .result-overlay .result-actions button { min-height: 4
     height: 66px;
   }
   body[data-wp-card-game="go-fish"] #cardGameCenter > .card-choice-panel {
-    display: none;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 4px;
+    width: 100%;
+    max-height: 124px;
+    overflow-y: auto;
+    padding: 2px;
+    box-sizing: border-box;
+  }
+  body[data-wp-card-game="go-fish"] #cardGameCenter > .card-choice-panel button {
+    min-width: 0;
+    min-height: 36px;
+    padding: 4px 2px;
+    font-size: 12px;
   }
   body[data-wp-card-game="old-maid"] .card-game-board {
     grid-template-columns: 96px 254px minmax(450px, 1fr);

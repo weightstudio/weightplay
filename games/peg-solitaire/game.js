@@ -110,6 +110,21 @@
     hi: "यह उतरने का खाना सही छलांग नहीं बनाता। गोटी चुनी रहने दें और एक गोटी के ऊपर से दो खाने दूर खाली खाना चुनें।",
     ar: "حفرة الهبوط هذه لا تسمح بقفزة قانونية. أبقِ الحجر محددًا واختر حفرة فارغة على بُعد خانتين فوق حجر واحد.",
   };
+  const legalTargetLabelCopy = {
+    en: "legal landing option",
+    "zh-Hant": "合法落點",
+    "zh-Hans": "合法落点",
+    ja: "合法な着地点",
+    ko: "합법적인 착지 칸",
+    es: "destino legal",
+    "pt-BR": "destino válido",
+    fr: "case d’arrivée légale",
+    de: "gültiges Zielfeld",
+    it: "destinazione valida",
+    ru: "подходящее поле",
+    hi: "सही उतरने की जगह",
+    ar: "خيار هبوط قانوني",
+  };
   const hintRouteCopy = {
     en: (source, target) => `Hint: Peg ${source} → Empty hole ${target}.`,
     "zh-Hant": (source, target) => `提示：棋子 ${source} → 空洞 ${target}。`,
@@ -128,6 +143,7 @@
   const locale = document.documentElement.lang || "en";
   const copy = lessonCopy[locale] || lessonCopy.en;
   const invalidTargetMessage = invalidTargetCopy[locale] || invalidTargetCopy.en;
+  const legalTargetLabel = legalTargetLabelCopy[locale] || legalTargetLabelCopy.en;
   const hintRouteMessage = hintRouteCopy[locale] || hintRouteCopy.en;
   const status = document.querySelector("#logicStatus");
   const clearInvalidTargetCue = () => {
@@ -140,6 +156,39 @@
     status.textContent = invalidTargetMessage;
     status.dataset.pegInvalidTarget = "true";
     status.classList.add("is-peg-invalid");
+  };
+  const clearLegalTargetCues = () => {
+    document.querySelectorAll(".logic-peg-board .logic-cell.is-legal-target").forEach((cell) => {
+      cell.classList.remove("is-legal-target");
+      cell.removeAttribute("data-peg-legal-target");
+      const baseLabel = cell.dataset.pegBaseAriaLabel;
+      if (baseLabel) cell.setAttribute("aria-label", baseLabel);
+      delete cell.dataset.pegBaseAriaLabel;
+    });
+  };
+  const showLegalTargetCues = () => {
+    clearLegalTargetCues();
+    const board = document.querySelector(".logic-peg-board");
+    const source = board?.querySelector(".logic-cell.peg.is-selected");
+    if (!board || !source) return;
+    const cells = [...board.querySelectorAll(".logic-cell")];
+    const sourceIndex = cells.indexOf(source);
+    if (sourceIndex < 0) return;
+    const row = Math.floor(sourceIndex / 7);
+    const column = sourceIndex % 7;
+    const getCell = (nextRow, nextColumn) => {
+      if (nextRow < 0 || nextRow >= 7 || nextColumn < 0 || nextColumn >= 7) return null;
+      return cells[nextRow * 7 + nextColumn] || null;
+    };
+    for (const [rowStep, columnStep] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) {
+      const middle = getCell(row + rowStep, column + columnStep);
+      const target = getCell(row + rowStep * 2, column + columnStep * 2);
+      if (!middle?.classList.contains("peg") || !target?.classList.contains("empty")) continue;
+      target.classList.add("is-legal-target");
+      target.dataset.pegLegalTarget = "true";
+      target.dataset.pegBaseAriaLabel = target.getAttribute("aria-label") || "";
+      target.setAttribute("aria-label", `${target.dataset.pegBaseAriaLabel} — ${legalTargetLabel}`);
+    }
   };
   const clearHintRouteCue = () => {
     if (!status) return;
@@ -160,7 +209,10 @@
       requestAnimationFrame(showHintRouteCue);
       return;
     }
-    if (event.target?.closest?.(".logic-peg-board .logic-cell, #logicUndo, #logicReset, #battleBack, #resultReplay, #resultMenu, #resultClose")) clearHintRouteCue();
+    if (event.target?.closest?.(".logic-peg-board .logic-cell, #logicUndo, #logicReset, #battleBack, #resultReplay, #resultMenu, #resultClose")) {
+      clearHintRouteCue();
+      requestAnimationFrame(showLegalTargetCues);
+    }
   }, true);
   document.addEventListener("click", (event) => {
     const target = event.target?.closest?.(".logic-peg-board .logic-cell");
@@ -169,16 +221,23 @@
     const wasEmptyTarget = target.classList.contains("empty");
     const beforePegs = document.querySelectorAll(".logic-peg-board .logic-cell.peg").length;
     clearInvalidTargetCue();
-    if (!hadSelectedSource || !wasEmptyTarget) return;
+    if (!hadSelectedSource || !wasEmptyTarget) {
+      requestAnimationFrame(showLegalTargetCues);
+      return;
+    }
     requestAnimationFrame(() => {
       const afterPegs = document.querySelectorAll(".logic-peg-board .logic-cell.peg").length;
       const sourceStillSelected = Boolean(document.querySelector(".logic-peg-board .logic-cell.is-selected"));
       const resultVisible = document.querySelector("#logicResult:not([hidden])");
+      showLegalTargetCues();
       if (!resultVisible && sourceStillSelected && afterPegs === beforePegs) showInvalidTargetCue();
     });
   }, true);
   document.addEventListener("click", (event) => {
-    if (event.target?.closest?.("#logicHint, #logicUndo, #logicReset, #battleBack, #resultReplay, #resultMenu, #resultClose")) clearInvalidTargetCue();
+    if (event.target?.closest?.("#logicHint, #logicUndo, #logicReset, #battleBack, #resultReplay, #resultMenu, #resultClose")) {
+      clearInvalidTargetCue();
+      clearLegalTargetCues();
+    }
   }, true);
   const result = document.querySelector("#logicResult");
   const resultText = document.querySelector("#logicResultText");

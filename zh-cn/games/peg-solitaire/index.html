@@ -65,6 +65,8 @@
       }
     }
     body[data-logic-game="peg-solitaire"] .logic-status-line.is-peg-invalid { color: var(--logic-warn); }
+    body[data-logic-game="peg-solitaire"] .logic-peg-board .is-legal-target { border-color: var(--logic-good); outline: 3px solid rgba(110, 235, 168, .7); outline-offset: 2px; box-shadow: inset 0 0 0 4px rgba(110, 235, 168, .2), 0 0 16px rgba(110, 235, 168, .35); }
+    body[data-logic-game="peg-solitaire"] .logic-peg-board .is-legal-target::after { content: ""; width: 28%; height: 28%; border-radius: 50%; background: var(--logic-good); box-shadow: 0 0 10px rgba(110, 235, 168, .75); }
     </style>  <meta name="description" content="让棋子跳过相邻棋子到空洞，最后只留下 1 颗。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -106,7 +108,7 @@
   }
 }
     </script>
-  </head><body><div id="logicApp"></div><script src="/src/site-config.js?v=20260821-peg-route-locale-v9"></script><script src="/src/analytics.js?v=20260821-peg-route-locale-v9"></script><script src="../../src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/classic-logic-lab.js"></script><script src="game.js?v=20260821-peg-route-locale-v9"></script><script src="analytics-ownership.js?v=20260821-peg-route-locale-v9"></script><script src="/src/runtime-locales/zh-cn.js?v=20260821-skyport-runtime-v8"></script>
+  </head><body><div id="logicApp"></div><script src="/src/site-config.js?v=20260822-peg-candidate-target-v10"></script><script src="/src/analytics.js?v=20260822-peg-candidate-target-v10"></script><script src="../../src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/classic-logic-lab.js"></script><script src="game.js?v=20260822-peg-candidate-target-v10"></script><script src="analytics-ownership.js?v=20260822-peg-candidate-target-v10"></script><script src="/src/runtime-locales/zh-cn.js?v=20260821-skyport-runtime-v8"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 <section class="game-page-info game-page-info-static" aria-label="孔明棋 游戏资讯">
     

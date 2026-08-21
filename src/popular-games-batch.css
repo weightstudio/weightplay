@@ -352,6 +352,9 @@ body[data-game-id="snake"] .game-message[data-message-key="snakeMilestone"] { co
 .stats { justify-content: center; }
 .stat { padding: 9px 13px; border-radius: 12px; background: rgba(255,255,255,.06); color: var(--arcade-muted); }
 .stat strong { color: var(--arcade-text); margin-left: 4px; }
+body[data-game-id="tetris"] .tetris-result-stat { display: grid; gap: 3px; min-width: 82px; text-align: center; }
+body[data-game-id="tetris"] .tetris-result-stat .stat-label { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; }
+body[data-game-id="tetris"] .tetris-result-stat strong { margin-left: 0; font-size: 1.15rem; }
 
 @media (max-width: 650px) {
   .arcade-header { flex-direction: column; }
