@@ -244,6 +244,77 @@
     Object.assign(dictionaries[code], skillPreviewCopy[code]);
   });
 
+  const replayGoalCopy = {
+    en: {
+      resultReplayGoalThree: "Replay target: clear under {seconds}s while keeping all three stars.",
+      resultReplayGoalStandard: "Replay target: earn 3 stars by protecting A Dou and finishing faster.",
+      resultReplayGoalLoss: "Replay target: cover all three lanes before the enemy reaches A Dou.",
+    },
+    "zh-Hant": {
+      resultReplayGoalThree: "重玩目標：守住三顆星，並在 {seconds} 秒內完成。",
+      resultReplayGoalStandard: "重玩目標：保護阿斗並更快完成，爭取 3 顆星。",
+      resultReplayGoalLoss: "重玩目標：在敵人抵達阿斗前守住三條戰線。",
+    },
+    "zh-Hans": {
+      resultReplayGoalThree: "重玩目标：守住三颗星，并在 {seconds} 秒内完成。",
+      resultReplayGoalStandard: "重玩目标：保护阿斗并更快完成，争取 3 颗星。",
+      resultReplayGoalLoss: "重玩目标：在敌人抵达阿斗前守住三条战线。",
+    },
+    ja: {
+      resultReplayGoalThree: "リプレイ目標：3つの星を守り、{seconds}秒未満でクリア。",
+      resultReplayGoalStandard: "リプレイ目標：阿斗を守り、より速く3つの星を獲得。",
+      resultReplayGoalLoss: "リプレイ目標：敵が阿斗に届く前に3レーンを守る。",
+    },
+    ko: {
+      resultReplayGoalThree: "다시 하기 목표: 별 3개를 지키며 {seconds}초 안에 클리어하세요.",
+      resultReplayGoalStandard: "다시 하기 목표: 아두를 지키며 더 빠르게 별 3개를 얻으세요.",
+      resultReplayGoalLoss: "다시 하기 목표: 적이 아두에게 닿기 전에 세 전선을 지키세요.",
+    },
+    es: {
+      resultReplayGoalThree: "Objetivo de repetición: conserva las 3 estrellas y termina en menos de {seconds}s.",
+      resultReplayGoalStandard: "Objetivo de repetición: protege a A Dou y termina más rápido para lograr 3 estrellas.",
+      resultReplayGoalLoss: "Objetivo de repetición: cubre las tres líneas antes de que el enemigo llegue a A Dou.",
+    },
+    "pt-BR": {
+      resultReplayGoalThree: "Meta da revanche: mantenha as 3 estrelas e termine em menos de {seconds}s.",
+      resultReplayGoalStandard: "Meta da revanche: proteja A Dou e termine mais rápido para obter 3 estrelas.",
+      resultReplayGoalLoss: "Meta da revanche: cubra as três linhas antes que o inimigo alcance A Dou.",
+    },
+    fr: {
+      resultReplayGoalThree: "Objectif de revanche : gardez les 3 étoiles et terminez en moins de {seconds}s.",
+      resultReplayGoalStandard: "Objectif de revanche : protégez A Dou et terminez plus vite pour obtenir 3 étoiles.",
+      resultReplayGoalLoss: "Objectif de revanche : couvrez les trois lignes avant que l'ennemi n'atteigne A Dou.",
+    },
+    de: {
+      resultReplayGoalThree: "Replay-Ziel: Behalte alle 3 Sterne und schließe die Mission unter {seconds}s ab.",
+      resultReplayGoalStandard: "Replay-Ziel: Schütze A Dou und werde schneller, um 3 Sterne zu verdienen.",
+      resultReplayGoalLoss: "Replay-Ziel: Decke alle drei Linien ab, bevor der Feind A Dou erreicht.",
+    },
+    it: {
+      resultReplayGoalThree: "Obiettivo replay: conserva le 3 stelle e termina in meno di {seconds}s.",
+      resultReplayGoalStandard: "Obiettivo replay: proteggi A Dou e finisci più velocemente per ottenere 3 stelle.",
+      resultReplayGoalLoss: "Obiettivo replay: copri tutte e tre le linee prima che il nemico raggiunga A Dou.",
+    },
+    ru: {
+      resultReplayGoalThree: "Цель повтора: сохраните 3 звезды и завершите бой быстрее {seconds} с.",
+      resultReplayGoalStandard: "Цель повтора: защитите А-Доу и пройдите бой быстрее ради 3 звезд.",
+      resultReplayGoalLoss: "Цель повтора: прикройте все три линии до того, как враг достигнет А-Доу.",
+    },
+    hi: {
+      resultReplayGoalThree: "दोहराने का लक्ष्य: तीनों सितारे बचाएँ और {seconds} सेकंड से कम में जीतें।",
+      resultReplayGoalStandard: "दोहराने का लक्ष्य: आ-दो की रक्षा करते हुए तेज़ी से 3 सितारे पाएँ।",
+      resultReplayGoalLoss: "दोहराने का लक्ष्य: दुश्मन के आ-दो तक पहुँचने से पहले तीनों पंक्तियाँ बचाएँ।",
+    },
+    ar: {
+      resultReplayGoalThree: "هدف الإعادة: حافظ على النجوم الثلاثة وأنهِ المهمة في أقل من {seconds} ثانية.",
+      resultReplayGoalStandard: "هدف الإعادة: احمِ آ دو وأنهِ المهمة أسرع لتحصل على 3 نجوم.",
+      resultReplayGoalLoss: "هدف الإعادة: احمِ المسارات الثلاثة قبل وصول العدو إلى آ دو.",
+    },
+  };
+  Object.keys(replayGoalCopy).forEach(function (code) {
+    Object.assign(dictionaries[code], replayGoalCopy[code]);
+  });
+
   const publicMainCopy = {
     "zh-Hans": { kicker: "短局合成防守战", summary: "征召汉字小兵、合成相同部队，守住三条战线，让赵云保护阿斗。" },
     ja: { kicker: "短時間の合成防衛キャンペーン", summary: "漢字の兵を招集し、同じ部隊を合成して三つのレーンを守り、趙雲とともに阿斗を守ろう。" },

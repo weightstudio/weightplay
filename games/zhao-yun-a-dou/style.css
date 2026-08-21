@@ -946,6 +946,14 @@ button.primary:focus-visible {
   text-align: center;
 }
 
+.result-replay-goal {
+  margin: 10px auto 0;
+  max-width: 360px;
+  color: #f1d18c !important;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
 .result-stats {
   display: grid;
   grid-template-columns: 1fr 1fr;

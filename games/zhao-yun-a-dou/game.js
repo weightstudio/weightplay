@@ -57,6 +57,7 @@
     resultEyebrow: document.getElementById("resultEyebrow"),
     resultTitle: document.getElementById("resultTitle"),
     resultBody: document.getElementById("resultBody"),
+    resultReplayGoal: document.getElementById("resultReplayGoal"),
     resultStars: document.getElementById("resultStars"),
     resultTime: document.getElementById("resultTime"),
     resultStages: document.getElementById("resultStages"),
@@ -600,6 +601,10 @@
     el.resultEyebrow.textContent = result === "win" ? t("win") : t("lose");
     el.resultTitle.textContent = result === "win" ? t("win") : t("lose");
     el.resultBody.textContent = result === "win" ? t("winBody") : t("loseBody");
+    const replayGoalKey = result === "win"
+      ? (stars >= 3 ? "resultReplayGoalThree" : "resultReplayGoalStandard")
+      : "resultReplayGoalLoss";
+    el.resultReplayGoal.textContent = t(replayGoalKey, { seconds: seconds });
     el.resultStars.textContent = stars + " / 3";
     el.resultTime.textContent = seconds + "s";
     el.next.disabled = result !== "win" || stageIndex >= data.levels.length - 1 || stageIndex + 1 >= progress.unlocked;

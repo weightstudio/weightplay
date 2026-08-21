@@ -84,6 +84,8 @@ body.logic-playing .game-page-info-static { display: none !important; }
 .logic-battle-wrap { width: min(920px, 100%); margin: 0 auto; min-height: calc(100svh - 112px); display: grid; grid-template-rows: auto auto minmax(0, 1fr) auto; gap: 9px; }
 .logic-tutorial { padding: 10px 14px; border: 1px solid var(--logic-line); border-radius: 14px; color: var(--logic-muted); font-size: 13px; line-height: 1.35; background: rgba(12, 34, 65, .8); }
 .logic-status-line { min-height: 24px; color: var(--logic-good); text-align: center; font-size: 14px; font-weight: 700; }
+.logic-status-line.is-error { color: var(--logic-danger); }
+.logic-status-line.is-good { color: var(--logic-good); }
 .logic-board-panel { min-height: 0; display: grid; place-items: center; padding: clamp(7px, 2vw, 18px); border: 1px solid var(--logic-line); border-radius: 22px; background: linear-gradient(160deg, rgba(17, 50, 92, .94), rgba(8, 23, 46, .96)); box-shadow: var(--logic-shadow); overflow: auto; }
 .logic-board-area { width: min(100%, 700px); min-width: 0; display: grid; gap: 12px; place-items: center; }
 .logic-board-toolbar, .logic-action-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; }

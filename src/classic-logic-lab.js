@@ -49,6 +49,128 @@
     filled: L("filled {value}, editable", "已填 {value}，可修改", "已填 {value}，可修改", "入力済み {value}、変更可能", "입력됨 {value}, 수정 가능", "rellena {value}, editable", "preenchida com {value}, editável", "remplie {value}, modifiable", "ausgefüllt {value}, bearbeitbar", "compilata {value}, modificabile", "введено {value}, можно изменить", "भरा हुआ {value}, बदला जा सकता है", "مملوءة بـ {value}، قابلة للتعديل"),
     hinted: L("Hinted cell; {state}", "提示格；{state}", "提示格；{state}", "ヒントのマス；{state}", "힌트 칸; {state}", "casilla sugerida; {state}", "casa indicada; {state}", "case suggérée ; {state}", "Hinweisfeld; {state}", "casella suggerita; {state}", "клетка подсказки; {state}", "संकेत वाला खाना; {state}", "خانة التلميح؛ {state}"),
   };
+  const sudokuFeedback = {
+    ready: L(
+      "Choose a cell, then enter a number. Hint marks one safe next step.",
+      "選擇格子後輸入數字。提示會標出一個安全的下一步。",
+      "选择格子后输入数字。提示会标出一个安全的下一步。",
+      "マスを選び、数字を入力します。ヒントは安全な次の一手を示します。",
+      "칸을 고른 뒤 숫자를 입력하세요. 힌트는 안전한 다음 수를 표시합니다.",
+      "Elige una casilla e introduce un número. La pista marca un siguiente paso seguro.",
+      "Escolha uma casa e insira um número. A dica marca um próximo passo seguro.",
+      "Choisissez une case et saisissez un chiffre. L’indice marque une prochaine étape sûre.",
+      "Wähle ein Feld und gib eine Zahl ein. Der Tipp markiert einen sicheren nächsten Schritt.",
+      "Scegli una casella e inserisci un numero. Il suggerimento indica un prossimo passo sicuro.",
+      "Выберите клетку и введите число. Подсказка отметит безопасный следующий шаг.",
+      "खाना चुनकर संख्या भरें। संकेत अगला सुरक्षित कदम दिखाता है।",
+      "اختر خانة ثم أدخل رقمًا. يحدد التلميح خطوة آمنة تالية."
+    ),
+    correct: L(
+      "Correct placement. {remaining} cells remain.",
+      "填入正確。剩下 {remaining} 格。",
+      "填入正确。还剩 {remaining} 格。",
+      "正しい入力です。残り {remaining} マスです。",
+      "올바른 입력입니다. {remaining}칸이 남았습니다.",
+      "Colocación correcta. Quedan {remaining} casillas.",
+      "Preenchimento correto. Restam {remaining} casas.",
+      "Placement correct. Il reste {remaining} cases.",
+      "Richtige Eingabe. {remaining} Felder bleiben.",
+      "Inserimento corretto. Restano {remaining} caselle.",
+      "Верное заполнение. Осталось клеток: {remaining}.",
+      "सही भराव। {remaining} खाने बाकी हैं।",
+      "إدخال صحيح. تبقت {remaining} خانات."
+    ),
+    cleared: L(
+      "Cell cleared. {remaining} cells remain.",
+      "已清除格子。剩下 {remaining} 格。",
+      "已清除格子。还剩 {remaining} 格。",
+      "マスを消去しました。残り {remaining} マスです。",
+      "칸을 지웠습니다. {remaining}칸이 남았습니다.",
+      "Casilla borrada. Quedan {remaining} casillas.",
+      "Casa limpa. Restam {remaining} casas.",
+      "Case effacée. Il reste {remaining} cases.",
+      "Feld gelöscht. {remaining} Felder bleiben.",
+      "Casella cancellata. Restano {remaining} caselle.",
+      "Клетка очищена. Осталось клеток: {remaining}.",
+      "खाना साफ़ किया। {remaining} खाने बाकी हैं।",
+      "تم مسح الخانة. تبقت {remaining} خانات."
+    ),
+    invalid: L(
+      "That number conflicts with the row, column, or box. Try another.",
+      "這個數字與列、欄或宮衝突，請換一個。",
+      "这个数字与行、列或宫冲突，请换一个。",
+      "その数字は行・列・ブロックと重なります。別の数字を試してください。",
+      "그 숫자는 행, 열 또는 박스와 충돌합니다. 다른 숫자를 시도하세요.",
+      "Ese número entra en conflicto con la fila, columna o bloque. Prueba otro.",
+      "Esse número entra em conflito com a linha, coluna ou bloco. Tente outro.",
+      "Ce chiffre entre en conflit avec la ligne, la colonne ou le bloc. Essayez-en un autre.",
+      "Diese Zahl steht im Konflikt mit Zeile, Spalte oder Block. Versuche eine andere.",
+      "Quel numero entra in conflitto con riga, colonna o blocco. Provane un altro.",
+      "Это число конфликтует со строкой, столбцом или блоком. Попробуйте другое.",
+      "यह संख्या पंक्ति, स्तंभ या बॉक्स से टकराती है। दूसरी संख्या आज़माएँ।",
+      "هذا الرقم يتعارض مع الصف أو العمود أو المربع. جرّب رقمًا آخر."
+    ),
+    hint: L(
+      "Hint marks a safe next cell. You still choose the number.",
+      "提示會標出安全的下一格，數字仍由你選擇。",
+      "提示会标出安全的下一格，数字仍由你选择。",
+      "ヒントは安全な次のマスを示します。数字は自分で選びます。",
+      "힌트는 안전한 다음 칸을 표시합니다. 숫자는 직접 고르세요.",
+      "La pista marca una casilla segura. Tú eliges el número.",
+      "A dica marca uma próxima casa segura. Você escolhe o número.",
+      "L’indice marque une prochaine case sûre. Vous choisissez le chiffre.",
+      "Der Tipp markiert ein sicheres nächstes Feld. Die Zahl wählst du selbst.",
+      "Il suggerimento indica una prossima casella sicura. Scegli tu il numero.",
+      "Подсказка отмечает безопасную следующую клетку. Число выбираете вы.",
+      "संकेत अगला सुरक्षित खाना दिखाता है। संख्या आप चुनें।",
+      "يحدد التلميح خانة آمنة تالية. أنت تختار الرقم."
+    ),
+    undo: L(
+      "Undo restored the previous cell. {remaining} cells remain.",
+      "還原了上一格。剩下 {remaining} 格。",
+      "撤销了上一格。还剩 {remaining} 格。",
+      "前のマスを元に戻しました。残り {remaining} マスです。",
+      "이전 칸을 되돌렸습니다. {remaining}칸이 남았습니다.",
+      "Deshacer restauró la casilla anterior. Quedan {remaining} casillas.",
+      "Desfazer restaurou a casa anterior. Restam {remaining} casas.",
+      "Annulation effectuée. Il reste {remaining} cases.",
+      "Rückgängig hat das vorherige Feld wiederhergestellt. {remaining} Felder bleiben.",
+      "Annullamento eseguito. Restano {remaining} caselle.",
+      "Отмена восстановила предыдущую клетку. Осталось клеток: {remaining}.",
+      "पहले वाली खाना वापस आई। {remaining} खाने बाकी हैं।",
+      "استعاد التراجع الخانة السابقة. تبقت {remaining} خانات."
+    ),
+    goal: L(
+      "Next step: replay {level} in {target} moves or try {next}.",
+      "下一步：用 {target} 步重玩{level}，或挑戰{next}。",
+      "下一步：用 {target} 步重玩{level}，或挑战{next}。",
+      "次の一手：{level}を{target}手で再挑戦するか、{next}に進みましょう。",
+      "다음 목표: {target}번으로 {level}을 다시 풀거나 {next}에 도전하세요.",
+      "Siguiente paso: repite {level} en {target} movimientos o prueba {next}.",
+      "Próximo passo: refaça {level} em {target} movimentos ou tente {next}.",
+      "Étape suivante : rejouez {level} en {target} coups ou essayez {next}.",
+      "Nächster Schritt: Spiele {level} in {target} Zügen erneut oder versuche {next}.",
+      "Prossimo passo: rigioca {level} in {target} mosse o prova {next}.",
+      "Следующий шаг: пройдите {level} за {target} ходов или попробуйте {next}.",
+      "अगला लक्ष्य: {level} को {target} चालों में फिर हल करें या {next} आज़माएँ।",
+      "الخطوة التالية: أعد حل {level} خلال {target} حركات أو جرّب {next}."
+    ),
+    hardGoal: L(
+      "Next step: replay {level} in {target} moves or fewer.",
+      "下一步：用 {target} 步或更少重玩{level}。",
+      "下一步：用 {target} 步或更少重玩{level}。",
+      "次の一手：{level}を{target}手以下で再挑戦しましょう。",
+      "다음 목표: {level}을 {target}번 이하로 다시 풀어 보세요.",
+      "Siguiente paso: repite {level} en {target} movimientos o menos.",
+      "Próximo passo: refaça {level} em {target} movimentos ou menos.",
+      "Étape suivante : rejouez {level} en {target} coups ou moins.",
+      "Nächster Schritt: Spiele {level} in höchstens {target} Zügen erneut.",
+      "Prossimo passo: rigioca {level} in {target} mosse o meno.",
+      "Следующий шаг: пройдите {level} за {target} ходов или меньше.",
+      "अगला लक्ष्य: {level} को {target} चालों या कम में फिर हल करें।",
+      "الخطوة التالية: أعد حل {level} خلال {target} حركات أو أقل."
+    ),
+  };
   const navalCopy = {
     cell: L("Row {row}, Column {col}: {state}", "第 {row} 行，第 {col} 列：{state}", "第 {row} 行，第 {col} 列：{state}", "{row}行 {col}列：{state}", "{row}행 {col}열: {state}", "Fila {row}, columna {col}: {state}", "Linha {row}, coluna {col}: {state}", "Ligne {row}, colonne {col} : {state}", "Zeile {row}, Spalte {col}: {state}", "Riga {row}, colonna {col}: {state}", "Строка {row}, столбец {col}: {state}", "पंक्ति {row}, स्तंभ {col}: {state}", "الصف {row}، العمود {col}: {state}"),
     emptyPlacement: L("empty placement cell", "空白配置格", "空白放置格", "配置できる空きマス", "배치 가능한 빈 칸", "casilla vacía para colocar", "casa vazia para posicionar", "case vide à placer", "leeres Feld zum Platzieren", "casella vuota da posizionare", "свободная клетка для постановки", "रखने के लिए खाली खाना", "خانة فارغة للوضع"),
@@ -581,11 +703,14 @@
   function buildSudoku() {
     const solution = [5,3,4,6,7,8,9,1,2,6,7,2,1,9,5,3,4,8,1,9,8,3,4,2,5,6,7,8,5,9,7,6,1,4,2,3,4,2,6,8,5,3,7,9,1,7,1,3,9,2,4,8,5,6,9,6,1,5,3,7,2,8,4,2,8,7,4,1,9,6,3,5,3,4,5,2,8,6,1,7,9,1,9,6,3,7,2,4,8,5,7,2,8,5,4,1,3,9,6];
     const masks = { easy: [0,4,9,16,23,30,37,42,50,57,64,71,78], medium: [0,1,4,7,9,11,16,18,23,26,28,30,35,37,40,42,47,50,52,57,59,62,64,66,71,73,76,78], hard: [0,1,2,4,7,9,11,13,16,18,20,23,26,28,30,33,35,37,40,42,45,47,50,52,54,57,59,62,64,66,69,71,73,76,78,80] }; let difficulty = "easy", values = [], given = new Set(), selected = -1, hintIndex = -1, history = []; const panel = document.createElement("div"); const toolbar = document.createElement("div"); toolbar.className = "logic-board-toolbar"; const select = selectDifficulty(); toolbar.append(select); panel.append(toolbar); const board = document.createElement("div"); board.className = "logic-sudoku-board"; panel.append(board); const keypad = document.createElement("div"); keypad.className = "logic-keypad"; panel.append(keypad); app.board.replaceChildren(panel);
+    function feedback(key, replacements = {}) { return fillTemplate(text(sudokuFeedback[key]), replacements); }
+    function remainingCells() { return values.reduce((count, value, index) => count + (!given.has(index) && !value ? 1 : 0), 0); }
+    function resultGoal() { const target = Math.max(1, history.length - 1); return difficulty === "hard" ? feedback("hardGoal", { level: t(difficulty), target }) : feedback("goal", { level: t(difficulty), target, next: t(difficulty === "easy" ? "medium" : "hard") }); }
     function render() { board.replaceChildren(); for (let i = 0; i < 81; i += 1) { const value = values[i] || ""; const state = given.has(i) ? fillTemplate(text(sudokuCopy.given), { value }) : value ? fillTemplate(text(sudokuCopy.filled), { value }) : text(sudokuCopy.empty); const labelState = i === hintIndex ? fillTemplate(text(sudokuCopy.hinted), { state }) : state; const label = fillTemplate(text(sudokuCopy.cell), { row: Math.floor(i / 9) + 1, col: (i % 9) + 1, state: labelState }); const b = cell(value, `${given.has(i) ? "given" : ""} ${i === selected ? "is-selected" : ""} ${i === hintIndex ? "is-hint" : ""}`, label, () => { if (!given.has(i)) { selected = i; render(); } }); board.append(b); } keypad.replaceChildren(); for (let n = 1; n <= 9; n += 1) { const b = makeButton(String(n), "logic-mini"); b.addEventListener("click", () => enter(n)); keypad.append(b); } const clear = makeButton(t("clear"), "logic-mini"); clear.addEventListener("click", () => enter(0)); keypad.append(clear); }
-    function enter(value) { if (selected < 0 || given.has(selected)) return; const previous = values[selected]; if (previous === (value || 0)) { announce(t("turn")); return; } values[selected] = 0; if (value && !sudokuCanPlace(values, selected, value)) { values[selected] = previous; hintIndex = -1; render(); announce(t("failed")); beep("wrong"); return; } history.push({ index: selected, value: previous }); values[selected] = value || 0; hintIndex = -1; render(); if (sudokuComplete(values)) finish(true, t("solved")); else announce(t("turn")); }
-    function reset() { difficulty = select.value; const baseSolution = solution.slice(0, 81); values = baseSolution.map((v, i) => masks[difficulty].includes(i) ? 0 : v); given = new Set(baseSolution.map((_, i) => i).filter((i) => !masks[difficulty].includes(i))); selected = -1; hintIndex = -1; history = []; app.result.hidden = true; setChip(t("turn")); render(); announce(t("ready")); }
-    function hint() { hintIndex = values.findIndex((v, i) => !given.has(i) && v !== solution[i]); if (hintIndex >= 0) { selected = hintIndex; render(); announce(t("hint")); } }
-    function undo() { const previous = history.pop(); if (!previous) { announce(t("ready")); return; } values[previous.index] = previous.value; selected = previous.index; hintIndex = -1; app.result.hidden = true; setChip(t("turn")); render(); announce(`${t("undo")} · ${t("turn")}`); }
+    function enter(value) { if (selected < 0 || given.has(selected)) return; const previous = values[selected]; if (previous === (value || 0)) { announce(feedback("ready")); return; } values[selected] = 0; if (value && !sudokuCanPlace(values, selected, value)) { values[selected] = previous; hintIndex = -1; render(); announce(feedback("invalid"), "is-error"); beep("wrong"); return; } history.push({ index: selected, value: previous }); values[selected] = value || 0; hintIndex = -1; render(); const remaining = remainingCells(); if (sudokuComplete(values)) finish(true, `${t("solved")} · ${resultGoal()}`); else { announce(feedback(value ? "correct" : "cleared", { remaining }), "is-good"); beep(value ? "success" : "click"); } }
+    function reset() { difficulty = select.value; const baseSolution = solution.slice(0, 81); values = baseSolution.map((v, i) => masks[difficulty].includes(i) ? 0 : v); given = new Set(baseSolution.map((_, i) => i).filter((i) => !masks[difficulty].includes(i))); selected = -1; hintIndex = -1; history = []; app.result.hidden = true; setChip(t("turn")); render(); announce(feedback("ready")); }
+    function hint() { hintIndex = values.findIndex((v, i) => !given.has(i) && v !== solution[i]); if (hintIndex >= 0) { selected = hintIndex; render(); announce(feedback("hint"), "is-good"); } }
+    function undo() { const previous = history.pop(); if (!previous) { announce(feedback("ready")); return; } values[previous.index] = previous.value; selected = previous.index; hintIndex = -1; app.result.hidden = true; setChip(t("turn")); render(); announce(feedback("undo", { remaining: remainingCells() }), "is-good"); }
     select.addEventListener("change", reset); return { reset, hint, undo };
   }
 

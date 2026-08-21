@@ -47,6 +47,45 @@
     ar: "أفضل سلسلة: ×{chain} · القمم المُنظّفة: {peaks}/3 · النقاط: {score} · الحركات: {moves} · التوزيع: {seed}. إعادة البدء تكرر هذا التوزيع؛ اللعبة الجديدة تعطي توزيعاً آخر.",
   });
 
+  const TRIPEAKS_PERSONAL_TARGET_COPY = Object.freeze({
+    en: "Personal chain target: reach ×{target} on the next deal.",
+    "zh-Hant": "個人連鎖目標：下一局達到 ×{target}。",
+    "zh-Hans": "个人连锁目标：下一局达到 ×{target}。",
+    ja: "個人チェイン目標：次のディールで×{target}を目指しましょう。",
+    ko: "개인 콤보 목표: 다음 딜에서 ×{target}을 달성하세요.",
+    es: "Objetivo personal de cadena: alcanza ×{target} en el próximo reparto.",
+    "pt-BR": "Meta pessoal de sequência: alcance ×{target} na próxima distribuição.",
+    fr: "Objectif de chaîne personnel : atteignez ×{target} à la prochaine donne.",
+    de: "Persönliches Kettenziel: Erreiche ×{target} beim nächsten Deal.",
+    it: "Obiettivo personale di catena: raggiungi ×{target} nella prossima distribuzione.",
+    ru: "Личная цель цепочки: достигните ×{target} в следующей сдаче.",
+    hi: "व्यक्तिगत क्रम लक्ष्य: अगली डील में ×{target} तक पहुँचें।",
+    ar: "هدف السلسلة الشخصي: حقق ×{target} في التوزيع التالي.",
+  });
+
+  const HINT_RATIONALE_COPY = Object.freeze({
+    en: { peak: "Hint: this card clears a peak.", chain: "Hint: this card keeps the chain going.", reserve: "Hint: keep this chain before drawing; {count} Stock cards remain." },
+    "zh-Hant": { peak: "提示：這張牌可以清除一座峰頂。", chain: "提示：這張牌可以延續連鎖。", reserve: "提示：翻牌前先保留這條連鎖；牌庫還剩 {count} 張。" },
+    "zh-Hans": { peak: "提示：这张牌可以清除一座峰顶。", chain: "提示：这张牌可以延续连锁。", reserve: "提示：翻牌前先保留这条连锁；牌库还剩 {count} 张。" },
+    ja: { peak: "ヒント：このカードでピークを1つ消せます。", chain: "ヒント：このカードでチェインを続けられます。", reserve: "ヒント：引く前にこのチェインを守りましょう。山札は残り{count}枚です。" },
+    ko: { peak: "힌트: 이 카드로 피크 하나를 지울 수 있습니다.", chain: "힌트: 이 카드로 콤보를 이어갈 수 있습니다.", reserve: "힌트: 뽑기 전에 이 콤보를 지키세요. 덱이 {count}장 남았습니다." },
+    es: { peak: "Pista: esta carta despeja una cima.", chain: "Pista: esta carta mantiene la cadena.", reserve: "Pista: conserva esta cadena antes de robar; quedan {count} cartas." },
+    "pt-BR": { peak: "Dica: esta carta limpa um pico.", chain: "Dica: esta carta mantém a sequência.", reserve: "Dica: preserve esta sequência antes de comprar; restam {count} cartas." },
+    fr: { peak: "Indice : cette carte dégage un pic.", chain: "Indice : cette carte prolonge la chaîne.", reserve: "Indice : préservez cette chaîne avant de piocher ; il reste {count} cartes." },
+    de: { peak: "Tipp: Diese Karte räumt einen Gipfel.", chain: "Tipp: Diese Karte hält die Kette am Laufen.", reserve: "Tipp: Bewahre diese Kette vor dem Ziehen; noch {count} Karten im Stapel." },
+    it: { peak: "Suggerimento: questa carta libera una cima.", chain: "Suggerimento: questa carta mantiene la catena.", reserve: "Suggerimento: conserva questa catena prima di pescare; restano {count} carte." },
+    ru: { peak: "Подсказка: эта карта очищает вершину.", chain: "Подсказка: эта карта продолжает цепочку.", reserve: "Подсказка: сохраните цепочку перед добором; в колоде осталось карт: {count}." },
+    hi: { peak: "संकेत: यह पत्ता एक चोटी साफ़ करता है।", chain: "संकेत: यह पत्ता क्रम जारी रखता है।", reserve: "संकेत: लेने से पहले यह क्रम बचाएँ; डेक में {count} पत्ते बचे हैं।" },
+    ar: { peak: "تلميح: هذه البطاقة تزيل قمة.", chain: "تلميح: هذه البطاقة تُبقي السلسلة مستمرة.", reserve: "تلميح: حافظ على هذه السلسلة قبل السحب؛ تبقى {count} بطاقات في الرزمة." },
+  });
+
+  const hintRationale = (view, move) => {
+    const copy = HINT_RATIONALE_COPY[view.locale] || HINT_RATIONALE_COPY.en;
+    const entry = move?.source?.zone === "peak" ? view.game.cards[move.source.index] : null;
+    const key = entry?.row === 0 ? "peak" : view.game.stock.length > 0 && view.game.stock.length <= 6 ? "reserve" : "chain";
+    return copy[key].replace("{count}", String(view.game.stock.length));
+  };
+
   const ensurePeakProgress = () => {
     const header = document.querySelector("#battleScreen .battle-header");
     if (!header) return null;
@@ -109,17 +148,27 @@
     const view = window.WPClassicSolitaire?.mount({ variant: "tripeaks", id: "tripeaks-solitaire" });
     if (!view) return;
     const showResult = view.showResult?.bind(view);
+    const updatePersonalTarget = () => {
+      const current = Math.max(0, Number(view.game?.bestCombo) || 0);
+      let personalBest = 0;
+      try { personalBest = Math.max(0, Number(window.localStorage.getItem("weightplay-tripeaks-personal-chain-best")) || 0); } catch (_) {}
+      personalBest = Math.max(personalBest, current);
+      try { window.localStorage.setItem("weightplay-tripeaks-personal-chain-best", String(personalBest)); } catch (_) {}
+      const copy = TRIPEAKS_PERSONAL_TARGET_COPY[view.locale] || TRIPEAKS_PERSONAL_TARGET_COPY.en;
+      return copy.replace("{target}", String(Math.max(1, personalBest + 1)));
+    };
     const updateResultRecap = () => {
       if (!view.nodes?.resultText || (!view.game.won && !view.game.lost)) return;
       const copy = TRIPEAKS_RESULT_RECAP_COPY[view.locale] || TRIPEAKS_RESULT_RECAP_COPY.en;
       const peaks = view.game.cards.filter((entry) => entry.row === 0 && entry.removed).length;
-      view.nodes.resultText.textContent = copy.replace(/\{(chain|peaks|score|moves|seed)\}/gu, (_match, key) => ({
+      const recap = copy.replace(/\{(chain|peaks|score|moves|seed)\}/gu, (_match, key) => ({
         chain: view.game.bestCombo,
         peaks,
         score: view.game.bestCombo,
         moves: view.game.moves,
         seed: view.game.seed,
       }[key]));
+      view.nodes.resultText.textContent = `${recap} ${updatePersonalTarget()}`;
     };
     if (showResult) view.showResult = () => { showResult(); updateResultRecap(); };
     let reserveRestoreTimer = null;
@@ -132,6 +181,19 @@
       view.showTriPeaksCue = (...args) => {
         const result = showTriPeaksCue(...args);
         scheduleReserveRestore();
+        return result;
+      };
+    }
+    const hint = view.hint?.bind(view);
+    if (hint) {
+      view.hint = (...args) => {
+        const result = hint(...args);
+        const move = view.hintMove;
+        if (move && view.nodes?.boardStatus && !view.game.won && !view.game.lost) {
+          view.nodes.boardStatus.setAttribute("data-runtime-localize", "off");
+          view.nodes.boardStatus.dataset.state = "tripeaks-hint-rationale";
+          view.nodes.boardStatus.textContent = hintRationale(view, move);
+        }
         return result;
       };
     }
