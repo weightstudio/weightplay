@@ -12,7 +12,7 @@
   const ROOMS_PER_EXPEDITION = 3;
   const EXPEDITIONS_PER_REGION = 5;
   const GAME_ID = "animal-relic-hunters";
-  const GAME_VERSION = 18;
+  const GAME_VERSION = 19;
   const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_relic_hunters_v1";
   const profileKey = "weightplay:animal-relic-hunters:profile:v1";
@@ -867,6 +867,149 @@
     combatHurt: "ضربة من العدو · واصل الحركة",
   });
 
+  // Arabic owns the complete runtime surface so Stage, Battle, Loot, Result,
+  // training, gear and accessible decisions never fall back to English.
+  Object.assign(text.ar, {
+    diamondShopTitle: "ترقية دائمة",
+    goldLabel: "ذهب",
+    trainingTitle: "تدريب دائم",
+    trainingPoints: "نقاط",
+    trainingNote: "مستوى الشخصية دائم. أنفق نقاط المستوى هنا لتبدأ كل رحلة بقوة أكبر.",
+    growthReadyTitle: "النمو الدائم التالي",
+    growthReadyTraining: "أنفق {points} من نقاط التدريب قبل الرحلة التالية.",
+    growthReadyGear: "طوّر {gear} مقابل {gold} من الذهب.",
+    growthReadyBoth: "درّب أولًا، ثم طوّر {gear} مقابل {gold} من الذهب.",
+    growthReadyNone: "قاتل لتحصل على الذهب والخبرة، ثم عدّ للتدريب أو تطوير المعدات.",
+    train_damage: "تدريب الهجوم",
+    train_damage_desc: "+2 ضرر لكل مستوى.",
+    train_hp: "تدريب الحيوية",
+    train_hp_desc: "+5 إلى الحد الأقصى للصحة لكل مستوى.",
+    train_speed: "تدريب الرشاقة",
+    train_speed_desc: "+0.2 إلى سرعة الحركة لكل مستوى.",
+    train_magnet: "حسّ الآثار",
+    train_magnet_desc: "+15 بكسل إلى مدى الالتقاط لكل مستوى.",
+    trainAction: "تدريب",
+    trainMax: "الحد الأقصى",
+    upgradeGearAction: "تطوير",
+    upgradeNeedGold: "تحتاج إلى {gold} من الذهب",
+    gearLevelLabel: "المستوى {level}",
+    goldEarned: "ذهب",
+    amuletName: "تميمة الضباب",
+    amuletEffect: "ابدأ كل رحلة بزيادة 10 في الحد الأقصى للصحة (40 بدلًا من 30).",
+    amuletOwned: "مملوكة: تبدأ كل رحلة بـ40 من الصحة القصوى.",
+    startRun: "ابدأ الرحلة",
+    menu: "القائمة",
+    hudHp: "صحة اللاعب",
+    roomLabel: "الغرفة",
+    keysLabel: "المفاتيح",
+    roomObjectiveStart: "اعثر على المفتاح الذهبي لفتح صندوق الآثار في هذه الغرفة.",
+    roomObjectiveKey: "اعثر على المفتاح الذهبي، ثم افتح صندوق الآثار.",
+    roomObjectiveChest: "استخدم المفتاح على الصندوق، ثم ادخل البوابة الفيروزية.",
+    roomObjectivePortal: "حصلت على الأثر. ادخل البوابة الفيروزية إلى الغرفة التالية.",
+    chooseCard: "اختر ترقية أثر",
+    chooseCardDesc: "اختر أثرًا قديمًا لتعزيز مستكشفك.",
+    draftShortcutHint: "لوحة المفاتيح: اضغط 1 أو 2 أو 3 للاختيار، واضغط R لإعادة السحب.",
+    rerollRelics: "إعادة سحب خيارات الآثار",
+    rerollRelicsConfirm: "تأكيد إعادة السحب",
+    rerollRelicsLabel: "استبدل خيارات الآثار الثلاثة. التكلفة 3 ألماسات. رصيدك الحالي {balance}.",
+    rerollRelicsConfirmLabel: "أكد إعادة سحب الآثار. أنفق 3 ألماسات. الرصيد من {before} إلى {after}. ستُستبدل الخيارات الثلاثة.",
+    rerollRelicsDecision: "استبدل خيارات الآثار الثلاثة. اضغط مرة أخرى للتأكيد: {before} ← {after} ألماسات.",
+    rerollRelicsUsed: "استُخدمت إعادة السحب لهذا المستوى.",
+    rerollRelicsNeedDiamonds: "لا تملك ألماسات كافية لإعادة السحب.",
+    lootFound: "فُتح صندوق الأثر!",
+    equipLoot: "تجهيز المعدات",
+    backpackTitle: "الحقيبة",
+    backpackEmpty: "افتح صناديق الآثار لجمع المعدات الدائمة.",
+    equipGearAction: "تجهيز",
+    equippedTag: "مجهّز",
+    tryAgain: "حاول مرة أخرى",
+    backToMenu: "العودة إلى القائمة",
+    backToStage: "العودة إلى المهمات",
+    sidebarInventory: "المعدات المجهّزة",
+    sidebarStats: "إحصاءات الشخصية",
+    slotWeapon: "السلاح",
+    slotArmor: "الدرع",
+    slotBoots: "الأحذية",
+    noneLabel: "لا شيء",
+    statDamage: "الضرر:",
+    statMaxHp: "الحد الأقصى للصحة",
+    statAttackRate: "معدل الهجوم:",
+    statSpeed: "السرعة:",
+    statMagnetRange: "مدى المغناطيس:",
+    hudStage: "الغرف المكتملة",
+    runComplete: "نجحت الرحلة!",
+    runFailed: "هُزم المستكشف",
+    resultSummaryLevel: "المستوى المحفوظ",
+    resultSummaryRooms: "الغرف",
+    resultSummaryKeys: "مفاتيح الرحلة",
+    resultSummaryGold: "الذهب المكتسب",
+    resultSummaryGear: "المعدات المجهّزة",
+    resultSummaryNoGear: "لم تُجهّز معدات بعد",
+    resultSummaryNext: "النمو التالي",
+    resultDisclaimer: "للترفيه وتتبع التقدم محليًا فقط.",
+    skillReportTitle: "تقرير تحليل القدرات",
+    skillLogic: "المنطق",
+    skillFocus: "التركيز",
+    skillProblem: "حل المشكلات",
+    relic_magnet: "مغناطيس الأثر",
+    relic_magnet_desc: "زد مدى جذب العناصر 40 بكسل.",
+    relic_speed: "اندفاعة الفانوس",
+    relic_speed_desc: "قلّل الفاصل بين طلقات السلاح 20٪.",
+    relic_shield: "قلب الدرع",
+    relic_shield_desc: "زد الحد الأقصى للصحة 5 واستعد 5 صحة.",
+    relic_damage: "ناب الكريستال",
+    relic_damage_desc: "زد ضرر الرصاصة 20٪.",
+    relic_heal: "نَفَس البئر القمري",
+    relic_heal_desc: "استعد 12 من الصحة فورًا.",
+    gear_sword_rare: "سيف الكريستال",
+    gear_sword_rare_desc: "+30٪ ضرر الرصاص",
+    gear_dagger_epic: "خنجر الأثر",
+    gear_dagger_epic_desc: "-30٪ من فاصل الإطلاق",
+    gear_armor_rare: "درع الصدر الخرِب",
+    gear_armor_rare_desc: "+10 إلى الحد الأقصى للصحة",
+    gear_armor_epic: "بريد الأثر الذهبي",
+    gear_armor_epic_desc: "+20 إلى الحد الأقصى للصحة",
+    gear_boots_rare: "حذاء المستكشف",
+    gear_boots_rare_desc: "+20٪ سرعة الحركة",
+    gear_boots_epic: "صنادل هرمس",
+    gear_boots_epic_desc: "+40٪ سرعة الحركة",
+    rarity_rare: "معدات نادرة",
+    rarity_epic: "معدات أسطورية",
+    report_win: "اكتملت الرحلة! قرأت نمط خطر الأثر، وحميت طريق معداتك، وهزمت حارسه الأخير.",
+    report_partial: "وصلت إلى الغرفة {room}. عدّل اختيارات آثارك ومعداتك قبل تحدي هذا الحارس مجددًا.",
+    report_no_wins: "واصل الاستكشاف! ركّز على جمع المفاتيح والحفاظ على صحتك.",
+    bossWarning: "حارس الأثر يقترب!",
+    startGame: "ابدأ اللعبة",
+    campaignProgress: "الرحلات المكتملة: {count} / 30",
+    chooseExpedition: "اختر الرحلة",
+    expeditionGoal: "3 غرف · المستوى الموصى به {level}",
+    expeditionLocked: "أكمل الرحلة {region} أولًا",
+    lootNewGear: "أُضيفت معدات جديدة إلى الحقيبة.",
+    lootDuplicateGear: "حُوّلت المعدات المكررة إلى {gold}+ من الذهب.",
+    gearCurrentEffect: "الآن: {effect}",
+    gearNextEffect: "التالي: {effect}",
+    gearMaxLevel: "أعلى مستوى",
+    gearCompareActive: "نشط في هذه الخانة.",
+    gearCompareEmpty: "الخانة فارغة: جهّزها لتفعيل هذا التأثير.",
+    gearCompareReplace: "يستبدل {gear}: {effect}",
+    equipLootChoice: "جهّز {gear}",
+    keepLootChoice: "احتفظ بالمعدات الحالية",
+    continueLootChoice: "متابعة",
+    lootAlreadyEquipped: "مجهّز بالفعل",
+    lootDecisionLabel: "اختر تجهيز {gear} أو الاحتفاظ بالتشكيلة الحالية.",
+    amuletConfirmTitle: "تأكيد تميمة الضباب",
+    amuletConfirmEffect: "دائمة: تبدأ كل رحلة بـ40 صحة بدلًا من 30. أكد {before} ← {after} ألماسات.",
+    amuletConfirmStatus: "+10 إلى الحد الأقصى للصحة دائمًا. الرصيد {before} ← {after} ألماسات.",
+    amuletNeedDiamonds: "تحتاج إلى 15 ألماسة. الرصيد الحالي {balance}/15.",
+    amuletBuyLabel: "اشترِ تميمة الضباب دائمًا. تبدأ كل رحلة بـ40 صحة بدلًا من 30. التكلفة 15 ألماسة. الرصيد الحالي {balance}.",
+    amuletConfirmLabel: "أكد شراء تميمة الضباب الدائمة. أنفق 15 ألماسة. الرصيد من {before} إلى {after}. تبدأ كل رحلة بـ40 صحة.",
+    resultSummaryProgress: "تقدم المهمة",
+    resultUnlocked: "فُتحت رحلة جديدة: {region}",
+    resultReady: "الرحلة الجاهزة: {region}",
+    resultAllCleared: "اكتملت الرحلات الثلاثون وحراس الآثار الستة",
+    nextExpedition: "المهمة التالية",
+  });
+
   // Textures and Sprites
   const assets = {
     bg: new Image(),
@@ -1047,6 +1190,14 @@
     "Archivo Lunar", "Observatorio de Tinta", "Estanterías Lunares", "Índice Astral", "Custodio del Archivo",
     "Camino a la Corona", "Calzada de Obsidiana", "Horno de Reliquias", "Corte de los Seis Sellos", "Monarca de la Corona Reliquia"
   ];
+  const expeditionNamesAr = [
+    "بوابة الطحالب", "كمين طريق الجذور", "دائرة الأشواك", "خزانة الآثار الخضراء", "حارس الطحالب",
+    "رواق الصدى", "درجات الهمس", "القاعة الرنانة", "حجرة الجرس", "حارس الصدى",
+    "قبو الكريستال", "ممر المنشور", "منجم الشظايا", "متاهة الأوجه", "عملاق المنشور",
+    "المزار الغارق", "الصحن المغمور", "موكب المستنقع", "الأرشيف الغارق", "هيدرا المستنقع الحلزونية",
+    "أرشيف القمر", "مرصد الحبر", "رفوف القمر", "الفهرس النجمي", "حارس الأرشيف",
+    "طريق التاج", "جسر السبج", "فرن الآثار", "بلاط الأختام الستة", "ملك تاج الأثر"
+  ];
 
   const expeditionDefs = expeditionBlueprints.map(([en, zh, rule], index) => ({
     id: index + 1,
@@ -1056,6 +1207,7 @@
     en,
     zh,
     es: expeditionNamesEs[index],
+    ar: expeditionNamesAr[index],
     rule,
   }));
 
@@ -1459,6 +1611,12 @@
       message: "El reloj de la sala y todo movimiento est\u00e1n detenidos.",
       resume: "Reanudar",
     },
+    ar: {
+      action: "إيقاف مؤقت",
+      title: "الرحلة متوقفة مؤقتًا",
+      message: "توقّف مؤقت الغرفة وكل الحركة.",
+      resume: "متابعة",
+    },
   };
 
   const leaveText = {
@@ -1479,6 +1637,12 @@
       message: ({ expedition, room, hp, maxHp, keys, gold }) => `Expedición ${expedition}, sala ${room}: ${hp}/${maxHp} puntos de vida, ${keys} llaves y ${gold} de oro de la partida. Salir pierde esta partida, su progreso de sala, llaves y mejoras de reliquia. El nivel permanente, entrenamiento, mochila, equipo y oro guardado permanecen.`,
       resume: "Continuar la exploración",
       leave: "Salir de la expedición",
+    },
+    ar: {
+      title: "هل تريد مغادرة هذه الرحلة؟",
+      message: ({ expedition, room, hp, maxHp, keys, gold }) => `الرحلة ${expedition}، الغرفة ${room}: الصحة ${hp}/${maxHp}، المفاتيح ${keys}، ذهب الرحلة ${gold}. المغادرة تفقد هذه الرحلة وتقدم الغرفة والمفاتيح وترقيات الآثار. يبقى المستوى الدائم والتدريب والحقيبة والمعدات والذهب المحفوظ آمنًا.`,
+      resume: "متابعة الاستكشاف",
+      leave: "مغادرة الرحلة",
     },
   };
 
@@ -1642,6 +1806,10 @@
   metaText.es = {
     description: "Supera 30 expediciones de tres salas, domina diez comportamientos especiales, reúne equipo y derrota a seis Guardianes que cambian de fase.",
     ogDescription: "Explora seis regiones y 30 misiones, crea equipo reliquia, responde a amenazas especiales y derrota a seis Guardianes distintos."
+  };
+  metaText.ar = {
+    description: "أكمل 30 رحلة من ثلاث غرف، وأتقن سلوكيات عشرة أعداء مميزين، واجمع المعدات، واهزم ستة حراس للآثار يتغيرون عبر المراحل.",
+    ogDescription: "استكشف ست مناطق آثار عبر 30 مهمة، وابنِ معداتك، وتصدَّ للتهديدات الخاصة، واهزم ستة حراس مختلفين."
   };
 
   function focusGamePanel() {
@@ -1870,11 +2038,11 @@
   function desiredExpeditionWindow(index) { return Math.max(0, Math.min(expeditionWindowLimit(), index - Math.floor(EXPEDITION_CARD_POOL_SIZE / 2))); }
   function expeditionCardCopy(expedition) {
     const currentLocale = getLocale();
-    const name = currentLocale === "zh-Hant" ? expedition.zh : currentLocale === "es" ? expedition.es : expedition.en;
+    const name = currentLocale === "zh-Hant" ? expedition.zh : currentLocale === "es" ? expedition.es : currentLocale === "ar" ? expedition.ar : expedition.en;
     const checkpoint = expedition.checkpoint
-      ? (currentLocale === "zh-Hant" ? "守護者" : currentLocale === "es" ? "Guardián" : "Guardian")
-      : (currentLocale === "zh-Hant" ? `區域 ${expedition.region}` : currentLocale === "es" ? `Región ${expedition.region}` : `Region ${expedition.region}`);
-    const label = currentLocale === "zh-Hant" ? `遠征 ${expedition.id}` : currentLocale === "es" ? `Expedición ${expedition.id}` : `Expedition ${expedition.id}`;
+      ? (currentLocale === "zh-Hant" ? "守護者" : currentLocale === "es" ? "Guardián" : currentLocale === "ar" ? "حارس" : "Guardian")
+      : (currentLocale === "zh-Hant" ? `區域 ${expedition.region}` : currentLocale === "es" ? `Región ${expedition.region}` : currentLocale === "ar" ? `المنطقة ${expedition.region}` : `Region ${expedition.region}`);
+    const label = currentLocale === "zh-Hant" ? `遠征 ${expedition.id}` : currentLocale === "es" ? `Expedición ${expedition.id}` : currentLocale === "ar" ? `الرحلة ${expedition.id}` : `Expedition ${expedition.id}`;
     return { name, checkpoint, label };
   }
   function bindExpeditionCard(card, index) {
@@ -2584,6 +2752,18 @@
   guardianNames.mire.es = "Hidra Espiral del Pantano";
   guardianNames.moon.es = "Custodio del Archivo";
   guardianNames.crown.es = "Monarca de la Corona Reliquia";
+  guardianNames.moss.ar = "حارس الطحالب";
+  guardianNames.echo.ar = "حارس الصدى";
+  guardianNames.crystal.ar = "عملاق المنشور";
+  guardianNames.mire.ar = "هيدرا المستنقع الحلزونية";
+  guardianNames.moon.ar = "حارس الأرشيف";
+  guardianNames.crown.ar = "ملك تاج الأثر";
+
+  function localizedGuardianName(behavior, locale = getLocale()) {
+    const names = guardianNames[behavior] || {};
+    const key = locale === "zh-Hant" ? "zh" : locale;
+    return names[key] || names.en || "Guardian";
+  }
 
   function guardianSpriteForBehavior(behavior) {
     return {
@@ -2679,8 +2859,8 @@
       speedMultiplier: checkpoint ? 0.82 : (options.speedMultiplier || 1),
       size: checkpoint ? 92 : 38,
       label: checkpoint
-        ? guardianNames[behavior][getLocale() === "zh-Hant" ? "zh" : getLocale() === "es" ? "es" : "en"]
-        : (getLocale() === "zh-Hant" ? "菁英" : getLocale() === "es" ? "ÉLITE" : "ELITE"),
+        ? localizedGuardianName(behavior)
+        : (getLocale() === "zh-Hant" ? "菁英" : getLocale() === "es" ? "ÉLITE" : getLocale() === "ar" ? "نخبة" : "ELITE"),
     });
     guardian.type = checkpoint ? "boss" : (region >= 3 ? "boar" : "jaguar");
     guardian.shieldHits = behavior === "crystal" || behavior === "crown" ? (checkpoint ? 6 : 3) : guardian.shieldHits;
@@ -3091,7 +3271,8 @@
 
   function expeditionName(id) {
     const expedition = expeditionDefs[Math.max(1, Math.min(EXPEDITION_COUNT, Number(id) || 1)) - 1];
-    return getLocale() === "zh-Hant" ? expedition.zh : getLocale() === "es" ? expedition.es : expedition.en;
+    const locale = getLocale();
+    return locale === "zh-Hant" ? expedition.zh : locale === "es" ? expedition.es : locale === "ar" ? expedition.ar : expedition.en;
   }
 
   const resultLevelLabels = {

@@ -50,7 +50,7 @@
   const setScreen = (screen) => { ["main","stage","battle","result"].forEach((name) => { $(`#${name}Screen`).hidden = name !== screen; }); document.body.dataset.screen = screen; syncLandscapeControls(); };
   const beep = (frequency=440,duration=.06) => { if (!soundEnabled) return; try { const AudioContext=window.AudioContext||window.webkitAudioContext; if(!AudioContext)return; const audio=window.__twinAudio||(window.__twinAudio=new AudioContext()); if(audio.state==="suspended")audio.resume(); const o=audio.createOscillator();const g=audio.createGain();o.frequency.value=frequency;o.type="triangle";g.gain.setValueAtTime(.035,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);o.connect(g).connect(audio.destination);o.start();o.stop(audio.currentTime+duration);}catch{} };
   const makeBody = (lane) => ({ lane, x:92, y:stages[current].floors[lane]-30, vx:0, vy:0, w:28, h:30, ground:false, color:lane===0?"#c98169":"#e3e0d5" });
-  const reset = () => { state={time:0,moves:0,score:0,done:false,success:false,shards:new Set(),switches:new Set(),jumpQueued:false,messageKey:"ready",bodies:[makeBody(0),makeBody(1)]}; axis=0; };
+  const reset = () => { state={time:0,moves:0,score:0,done:false,success:false,shards:new Set(),switches:new Set(),jumpQueued:false,routeHintShown:false,messageKey:"ready",bodies:[makeBody(0),makeBody(1)]}; axis=0; };
   const rect = (body) => ({x:body.x-body.w/2,y:body.y-body.h,w:body.w,h:body.h});
   const overlaps = (a,b) => a.x < b.x+b.w && a.x+a.w > b.x && a.y < b.y+b.h && a.y+a.h > b.y;
   const bodyNear = (body, point) => Math.hypot(body.x-point.x, (body.y-body.h/2)-point.y)<38;
@@ -70,7 +70,7 @@
   };
   const update = (dt) => {
     if(!state||state.done||hidden)return; state.time+=dt; physicsBody(state.bodies[0],dt); physicsBody(state.bodies[1],dt);
-    const data=stageData(); data.shards.forEach((shard,index)=>{if(!state.shards.has(index)&&state.bodies.some((body)=>body.lane===shard.lane&&bodyNear(body,shard))){state.shards.add(index);state.score+=100;state.moves+=1;state.messageKey="shardCollect";announce("shardCollect");beep(730);}});
+    const data=stageData(); data.shards.forEach((shard,index)=>{if(!state.shards.has(index)&&state.bodies.some((body)=>body.lane===shard.lane&&bodyNear(body,shard))){state.shards.add(index);state.score+=100;state.moves+=1;state.messageKey="shardCollect";announce("shardCollect");beep(730);if(current===0&&state.shards.size===2&&!state.routeHintShown){state.routeHintShown=true;announce("routeHint");}}});
     data.switches.forEach((sw,index)=>{if(!state.switches.has(index)&&state.bodies.some((body)=>body.lane===sw.lane&&bodyNear(body,sw))){state.switches.add(index);state.moves+=1;announce("switchOpen");beep(560);}});
     if(state.failed){finish(false);return;}
     const exitsReady=allShards()&&gatesOpen(); const atExit=data.gates.every((gate,index)=>state.bodies[index].x>gate.x&&Math.abs((state.bodies[index].y-state.bodies[index].h/2)-gate.y)<70); if(exitsReady&&atExit){state.score+=Math.max(0,500-Math.floor(state.time*8));finish(true);return;}

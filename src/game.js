@@ -41,10 +41,17 @@ function locale() {
   return window.WonderI18n?.locale() || "en";
 }
 
+function runtimeTranslate(value) {
+  return window.WeightPlayGameRuntimeLocalizer?.translate?.(value) || value;
+}
+
 function t(key, params = {}) {
-  const table = dictionary[locale()] || dictionary.en;
+  const activeLocale = locale();
+  const table = dictionary[activeLocale] || dictionary.en;
   const fallback = dictionary.en;
-  let val = table[key] || fallback[key] || key;
+  const owned = table[key];
+  let val = owned || fallback[key] || key;
+  if (!owned && activeLocale !== "en") val = runtimeTranslate(val);
   return Object.entries(params).reduce((str, [name, v]) => {
     return str.replaceAll(`{${name}}`, String(v));
   }, val);
@@ -548,6 +555,96 @@ dictionary.es = {
   weapon_modal_empty:"Elige un arma para ver daño, recarga y detalles de fusión.",weapon_upgrade_tip:"Fusiona objetos iguales de la mochila para mejorar.",weapon_stats_dmg:"Daño {val}",weapon_stats_cd:"Recarga {val} s",weapon_stats_spd:"Velocidad {val}",weapon_stats_size:"Tamaño {val}",weapon_max_tier:"Nivel máximo alcanzado",weapon_next_tier_preview:"x{lvl} -> x{next}: Daño {dmg} / Recarga {cd}s / Tamaño {size}",upgrade_preview:"{current} -> {next}",upgrade_none:"Sin mejorar",defeat_title:"Muro destruido",defeat_desc:"Nivel {lvl}  Monedas: {coins}",victory_title:"¡Victoria!",victory_challenge_success:"¡Desafío completado!",victory_stage_clear:"¡Nivel completado!",loading_progress:"Cargando {pct}%",load_fail:"Error al cargar recursos",load_fail_desc:"No se pudo cargar. Actualiza la página.",locked:"Nivel bloqueado.",
   enemy_boar:"Jabalí",enemy_hyena:"Hiena embaucadora",enemy_rhino:"Rinoceronte acorazado",enemy_buffalo:"Búfalo cargador",enemy_hawk:"Halcón celeste",enemy_bear:"Oso negro",enemy_tiger:"Tigre veloz",enemy_crocodile:"Rey cocodrilo",boss_spawned:"¡Apareció el jefe {name}!",boss_label:"Jefe {name} -{pct}%{shield}",boss_shield:"Escudo {count}",weapon_eraser:"Goma",weapon_pencil:"Lápiz",weapon_ruler:"Regla",
   upgrade_damage_name:"Goma afilada",upgrade_damage_desc:"Daño de arma +1",upgrade_cooldown_name:"Manos rápidas",upgrade_cooldown_desc:"Recarga de arma -15%",upgrade_double_name:"Lanzamiento doble",upgrade_double_desc:"Lanza 1 arma adicional",upgrade_sideShot_name:"Disparo lateral",upgrade_sideShot_desc:"Lanza 2 armas adicionales en diagonal",upgrade_burst_name:"Ráfaga de lanzamientos",upgrade_burst_desc:"Cada lanzamiento dispara una oleada adicional",upgrade_size_name:"Material gigante",upgrade_size_desc:"Tamaño de arma +20%",upgrade_wallHp_name:"Reparar muro",upgrade_wallHp_desc:"Restaura 12 de vida del muro",upgrade_coinMultiplier_name:"Bono de paga",upgrade_coinMultiplier_desc:"Monedas ganadas +35%",upgrade_pierce_name:"Lanzamiento penetrante",upgrade_pierce_desc:"Las armas atraviesan 1 enemigo más",upgrade_explode_name:"Material explosivo",upgrade_explode_desc:"Los golpes dañan a enemigos cercanos",upgrade_lifeSteal_name:"Espíritu guardián",upgrade_lifeSteal_desc:"Las derrotas restauran 3 de vida del muro",upgrade_slow_name:"Rugido de león",upgrade_slow_desc:"Los golpes pueden ralentizar brevemente",roar_label:"¡RUGIDO!",crit_label:"CRÍTICO"
+};
+
+dictionary.ar = {
+  game_title: "الدفاع عن الأسد الخيالي",
+  browser_title: "الدفاع عن الأسد الخيالي - WeightPlay",
+  menu_title: "القائمة الرئيسية",
+  hud_stage: "المرحلة",
+  hud_wave: "الموجة",
+  hud_coins: "العملات المعدنية",
+  tab_character: "البطل",
+  tab_equipment: "الأسلحة",
+  tab_battle: "المراحل",
+  tab_wall: "الجدار",
+  tab_settings: "الإعدادات",
+  menu_character: "إحصائيات البطل",
+  menu_equipment: "ترقية الأسلحة",
+  menu_battle: "حدد المرحلة",
+  menu_wall: "ترقية الجدار",
+  menu_settings: "الإعدادات",
+  equip_backpack: "حقيبة الظهر",
+  settings_progress: "التقدم",
+  settings_unlocked_stages: "مفتوح حتى المرحلة {count}",
+  settings_pause_question: "استئناف المعركة أم تركها؟",
+  language: "اللغة",
+  language_desc: "اختر لغة العرض",
+  back_lobby: "العودة إلى الردهة",
+  upgrade_panel_title: "حدد ترقية",
+  upgrade_wave_complete: "اكتملت الموجة {wave}",
+  settlement_title: "ملخص المعركة",
+  settlement_new_clear: "اكتمل تحدي الإخلاء الأول!",
+  settlement_reclear: "اكتملت إعادة المرحلة!",
+  settlement_unlocked: "تم فتح المرحلة {id}!",
+  settlement_no_drops: "لم يسقط أي سلاح هذه المرة",
+  settlement_diamond_reward: "مكافأة إتمام الزعيم أول مرة",
+  settlement_diamond_hint: "أكمل كل مرحلة زعيم مرة واحدة لتحصل على ماسات إضافية.",
+  skill_report_title: "أداء المعركة",
+  skill_focus: "دفاع الجدار",
+  skill_reaction: "السيطرة على الوحوش",
+  skill_problem_solving: "خطة الترقية",
+  skill_wall_value: "الجدار {pct}%",
+  skill_beasts_value: "الوحوش {defeated}/{total}",
+  skill_upgrades_value: "الاختيارات {count}",
+  skill_stars_aria: "{count} من أصل 5 نجوم",
+  skill_report_win_message: "دفاع رائع! صمد الجدار وأثمرت خطة الترقية.",
+  skill_report_defeat_message: "سقط الجدار هذه المرة. عدّل البناء أو تغطية الممر وحاول مرة أخرى.",
+  btn_next: "المستوى التالي",
+  btn_confirm: "العودة إلى القائمة",
+  btn_resume: "استئناف",
+  btn_leave: "ترك المعركة",
+  btn_start: "ابدأ",
+  btn_play_again: "العب مرة أخرى",
+  btn_stage_select: "تحديد المرحلة",
+  stage_waves: "{count} موجات",
+  stage_reward: "~{coins} عملات معدنية",
+  stage_boss: "زعيم",
+  beast_guide_title: "دليل الوحش البري",
+  beast_guide_hint: "تعرّف على كل وحش قبل اختيار المرحلة.",
+  beast_stat_hp: "الصحة",
+  beast_stat_speed: "السرعة",
+  beast_stat_damage: "الضرر",
+  weapon_modal_empty: "اختر سلاحًا لعرض الضرر وفترة التهدئة وتفاصيل الدمج.",
+  weapon_upgrade_tip: "ادمج عناصر الحقيبة المتطابقة للترقية.",
+  weapon_stats_dmg: "الضرر {val}",
+  weapon_stats_cd: "فترة التهدئة {val}ث",
+  weapon_stats_spd: "السرعة {val}",
+  weapon_stats_size: "الحجم {val}",
+  weapon_max_tier: "تم بلوغ أعلى مستوى",
+  upgrade_preview: "{current} ← {next}",
+  upgrade_none: "لم تتم الترقية",
+  defeat_title: "تم تدمير الجدار",
+  victory_title: "النصر!",
+  victory_challenge_success: "اكتمل التحدي!",
+  victory_stage_clear: "اكتملت المرحلة!",
+  loading_progress: "جارٍ التحميل {pct}%",
+  load_fail: "فشل تحميل الأصول",
+  load_fail_desc: "فشل التحميل. يرجى تحديث الصفحة.",
+  enemy_boar: "الخنزير البري",
+  enemy_hyena: "الضبع المحتال",
+  enemy_rhino: "وحيد القرن المدرع",
+  enemy_buffalo: "الجاموس المهاجم",
+  enemy_hawk: "الصقر السماوي",
+  enemy_bear: "الدب الأسود",
+  enemy_tiger: "النمر السريع",
+  enemy_crocodile: "ملك التماسيح",
+  weapon_eraser: "ممحاة",
+  weapon_pencil: "قلم رصاص",
+  weapon_ruler: "مسطرة",
+  roar_label: "زئير!",
+  crit_label: "ضربة حرجة",
+  locked: "المرحلة مغلقة.",
 };
 
 let W = canvas.width;
@@ -1190,7 +1287,9 @@ function spawnBoss(wave) {
     ? wave.bossRuleZh
     : activeLocale === "es"
       ? wave.bossRuleEs
-      : wave.bossRuleEn;
+      : activeLocale === "ar"
+        ? wave.bossRuleAr
+        : wave.bossRuleEn;
   state.bossBanner = { text: t("boss_spawned", { name: t("enemy_" + type.id) }), rule: bossRule || "", life: 2.6 };
   window.WonderSound?.play("boss");
 }
@@ -2147,8 +2246,24 @@ function bindStageCard(button, index) {
   if (!level) return;
   const summary = getLevelSummary(level);
   const activeLocale = locale();
-  const stageTitle = activeLocale === "zh-Hant" ? level.titleZh : activeLocale === "es" ? level.titleEs : level.titleEn;
-  const stageRule = activeLocale === "zh-Hant" ? level.ruleZh : activeLocale === "es" ? level.ruleEs : level.ruleEn;
+  const stageTitle = activeLocale === "zh-Hant"
+    ? level.titleZh
+    : activeLocale === "es"
+      ? level.titleEs
+      : activeLocale === "ar"
+        ? level.titleAr
+        : activeLocale === "en"
+          ? level.titleEn
+          : runtimeTranslate(level.titleEn);
+  const stageRule = activeLocale === "zh-Hant"
+    ? level.ruleZh
+    : activeLocale === "es"
+      ? level.ruleEs
+      : activeLocale === "ar"
+        ? level.ruleAr
+        : activeLocale === "en"
+          ? level.ruleEn
+          : runtimeTranslate(level.ruleEn);
   const locked = level.id > highestUnlocked;
   button.type = "button";
   button.className = locked ? "locked" : level.id < highestUnlocked ? "completed" : level.id === highestUnlocked ? "challenge" : "";
@@ -2276,7 +2391,17 @@ function renderCampaignSummary() {
 
 function campaignText(key, params = {}) {
   const activeLocale = locale();
-  const table = activeLocale === "zh-Hant" ? {
+  const table = activeLocale === "ar" ? {
+    title: "تقدم حملة الأسد",
+    next: "المرحلة التالية: المرحلة {stage}",
+    complete: "اكتملت كل المراحل",
+    cleared: "المكتمل {cleared}/{total}",
+    boss: "الزعيم التالي: المرحلة {stage}",
+    bossDone: "اكتملت كل معارك الزعماء",
+    wallet: "العملات {coins} / الماسات {diamonds}",
+    continue: "متابعة المرحلة {stage}",
+    replay: "إعادة المرحلة الأخيرة",
+  } : activeLocale === "zh-Hant" ? {
     title: "\u7345\u5b50\u6230\u5f79\u9032\u5ea6",
     next: "\u4e0b\u4e00\u95dc\uff1a\u7b2c {stage} \u95dc",
     complete: "\u6240\u6709\u95dc\u5361\u5df2\u5b8c\u6210",

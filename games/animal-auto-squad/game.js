@@ -413,6 +413,65 @@
     roundNum: "ステージ{stage} - ウェーブ{round}/5", teamLevelValue: "Lv.{level}  XP {xp}/{goal}", attackShort: "攻", healthShort: "HP"
   };
 
+  text.ar = {
+    title: "فرقة الحيوانات الآلية", language: "اللغة", backToLobby: "العودة إلى ردهة WeightPlay", back: "رجوع",
+    languageSelection: "اختيار اللغة", stageSelection: "اختيار المرحلة", stageTab: "المراحل", trainingTab: "التدريب",
+    stageSwipe: "↔ مرّر بين المراحل", stageDeploy: "اضغط على مرحلة مفتوحة للانطلاق", activeSquadSlots: "خانات الفرقة النشطة",
+    shopShelfItems: "عناصر حقيبة الحيوانات", emptyFormationSlot: "خانة تشكيل فارغة", emptySlot: "خانة فارغة",
+    activeSquad: "الفرقة النشطة", expeditionBackpack: "حقيبة الرحلة", formationFrontRow: "الصف الأمامي",
+    formationBackRow: "الصف الخلفي", formationLeftPosition: "الموضع الأيسر", formationCenterPosition: "الموضع الأوسط",
+    formationRightPosition: "الموضع الأيمن", slotPosition: "الخانة {index}", deployedTo: "موضوع في",
+    selectedSkillTitle: "الحيوان المحدد", selectCharacterHint: "اضغط على حيوان لرؤية دوره ومهارته.",
+    battleArena: "ساحة فرقة الحيوانات الآلية", menuTitle: "درّب فرقتك من الحيوانات ورتّبها!",
+    menuHint: "درّب حيواناتك وتجاوز 30 مرحلة من خمس موجات عبر ست مناطق، لكل منها زعيم فريد.",
+    bestExpedition: "المراحل المفتوحة", expeditionsCleared: "الرحلات المكتملة", teamLevel: "مستوى الفريق",
+    diamonds: "الألماس", trainingTitle: "تدريب الفرقة", trainingGold: "ذهب التدريب", owned: "مملوك",
+    deployed: "موضوع في التشكيل", locked: "مغلق", premium: "مميز", unlockGold: "فتح مقابل {cost} ذهب",
+    unlockDiamond: "فتح مقابل {cost} ألماسة", upgradeGold: "ترقية مقابل {cost} ذهب", currencyUpgrade: "ترقية",
+    currencyUnlock: "فتح", trainingStatsCurrent: "هجوم {atk} · صحة {hp}", trainingStatsNext: "هجوم {atk} → {nextAtk} · صحة {hp} → {nextHp}",
+    trainingUpgradeLabel: "ترقية {name} إلى المستوى {level}: هجوم {nextAtk}، صحة {nextHp} مقابل {cost} ذهب",
+    maxLevel: "المستوى الأقصى", freeUnit: "حيوان ابتدائي", rosterHint: "تظهر الحيوانات المفتوحة في حقيبة الرحلة، وتُحفظ مستوياتها الدائمة محليًا.",
+    startExpedition: "بدء الرحلة", chooseExpedition: "بدء اللعبة", stageSetup: "مرّر عبر المناطق الست، واختر مرحلة مفتوحة، ثم جهّز تشكيلك.",
+    yourSquadLabel: "الفرقة النشطة (الأعلى: الصف الأمامي | الأسفل: الصف الخلفي)", benchLabel: "مقاعد الاحتياط", shopLabel: "حقيبة الحيوانات",
+    startBattle: "بدء المعركة", round: "الموجة", stage: "المرحلة", chooseStage: "اختر مرحلة", stageReady: "جاهزة",
+    stageCleared: "مكتملة", stageLocked: "أكمل المرحلة السابقة", stageProgress: "المفتوح {unlocked}/{total}",
+    stageWaveCount: "{count} موجات", stageEnemyRange: "الأعداء: من {first} إلى {last}", stageBoss: "زعيم",
+    nextStage: "المرحلة التالية", stageClearText: "اكتملت المرحلة {stage}! فُتحت المرحلة {next}.",
+    allStagesClearText: "اكتملت المراحل الثلاثون وزعماء المناطق الستة! أعد أي مرحلة لتحسين فرقتك.",
+    gold: "الذهب", supplies: "المؤن", hearts: "القلوب", activeRelic: "الأثر", none: "لا شيء",
+    chooseRelic: "اختر أثرًا للرحلة", relicDesc: "اختر أثرًا يمنح فرقتك تعزيزًا طوال الرحلة.",
+    defeatTitle: "فشلت الرحلة!", reviveHint: "وصلت قلوبك إلى صفر. هل تنفق 5 ألماسات للعودة بقلبيْن ومتابعة الرحلة؟",
+    giveUp: "إنهاء الرحلة", retry: "حاول مجددًا", backToMenu: "القائمة الرئيسية", backToStages: "العودة إلى المراحل",
+    quitRun: "مغادرة الرحلة", combatIntro: "استعد للمعركة!", nextWaveCombat: "الموجة {round}/{total}: أعداء جدد قادمون!",
+    bossIncoming: "الزعيم: {boss}", combatSummary: "صحة الفرقة {playerHp}/{playerMax} | صحة العدو {enemyHp}/{enemyMax}",
+    combatFront: "الأمام: {player} ضد {enemy}", foodGuideTitle: "تأثيرات الطعام",
+    guideHint: "اضغط على حيوان مملوك، ثم اضغط على خانة في الفرقة. مرّر الحقيبة عموديًا لرؤية كل الحيوانات.",
+    level: "المستوى ", buy: "شراء", sell: "بيع", upgradeRun: "ترقية الرحلة ({cost} مؤن)",
+    backpackHint: "الحيوانات المملوكة فقط. انقلها إلى الفرقة النشطة، ثم أنفق المؤن على ترقيات مؤقتة للرحلة.",
+    reroll: "إعادة السحب", freeze: "تجميد", unfreeze: "إلغاء التجميد", buySkin: "فتح المظهر الذهبي (15 💎)",
+    skinPurchaseDecision: "افتح المظهر الذهبي وجهّزه دائمًا. اضغط مرة أخرى للتأكيد: {before} ← {after} ألماسة.",
+    skinPurchaseNeed: "فتح المظهر الذهبي وتجهيزه يحتاج إلى 15 ألماسة. الرصيد الحالي {balance}.",
+    equipSkin: "تجهيز المظهر الذهبي", unequipSkin: "تجهيز المظهر العادي", relicReroll: "إعادة سحب الآثار (3 💎)",
+    relicRerollDecision: "أعد سحب خياري الأثر. ستنفق 3 ألماسات. الرصيد من {before} إلى {after}.",
+    relicRerollNeed: "إعادة السحب تحتاج إلى 3 ألماسات. الرصيد الحالي {balance}.", reviveAction: "إحياء (5 💎)",
+    winText: "انتصار! هزمت وحوش الظل.", failText: "هزيمة! سقطت فرقتك.", drawText: "تعادل! سقط الفريقان في الوقت نفسه.",
+    expeditionClear: "اكتملت الرحلة!", expeditionFail: "فشلت الرحلة!", skillReport: "تحسّن الاستنتاج المنطقي والتخطيط والتموضع التكتيكي!",
+    skillsLearned: "المهارات المتدرّبة: المنطق، حل المشكلات، والتخطيط الاستراتيجي.", appleDesc: "التفاحة: +1/+1 إلى الإحصاءات",
+    honeyDesc: "العسل: +2 صحة. عند الشراء: +1 ذهب", melonDesc: "الشمام: يمنح درع الشمام", chocolateDesc: "الشوكولاتة: +2 خبرة",
+    noDiamonds: "الألماسات غير كافية!", noGold: "الذهب غير كافٍ!", noSupplies: "المؤن غير كافية!",
+    needSquad: "ضع حيوانًا واحدًا على الأقل في فرقتك قبل دخول المعركة!",
+    quitConfirm: "المرحلة {stage}، الموجة {round}/5، القلوب {hearts}/4، المؤن {supplies}. المغادرة تفقد التشكيل والأثر والتقدم المؤقت لهذه الرحلة، بينما يبقى التدريب الدائم والمراحل المفتوحة محفوظًا.",
+    quitRunTitle: "مغادرة الرحلة؟", keepPlaying: "متابعة اللعب", confirmQuit: "مغادرة الرحلة", teamBonusTitle: "تعزيز الفريق الدائم",
+    teamBonusValue: "تدخل كل الحيوانات المملوكة الرحلات مع +{atk} هجوم و+{hp} صحة من مستوى الفريق.",
+    teamBonusNext: "المتبقي للمستوى التالي للفريق: {remaining} خبرة.", savedProgress: "التقدم المحفوظ",
+    resultXpEarned: "خبرة الفريق +{earned} · المستوى {level} · الخبرة {xp}/{goal}", resultGoldEarned: "ذهب التدريب +{earned} · الإجمالي {total}",
+    resultStageSaved: "المراحل المفتوحة {unlocked}/{total}", resultGrowthNext: "التعزيز الدائم: هجوم +{atk} / صحة +{hp} · {remaining} خبرة للمستوى التالي",
+    relicMaple: "درع القيقب: تبدأ الوحدة الأمامية بدرع الشمام.", relicOak: "بذرة البلوط: تحصل كل الوحدات على +1 صحة في المعركة.",
+    relicShadow: "مخلب الظل: تحصل كل الوحدات على +1 هجوم في المعركة.", relicClover: "ورقة البرسيم: أول إعادة سحب للمتجر في كل موجة مجانية.",
+    roundNum: "المرحلة {stage} - الموجة {round}/5", teamLevelValue: "المستوى {level}  الخبرة {xp}/{goal}",
+    attackShort: "هجوم", healthShort: "صحة"
+  };
+
   const pageMeta = {
     en: {
       title: "Animal Auto Squad - Play Free Auto-Battler Game",
@@ -438,6 +497,12 @@
     description: "10体の動物ヒーローを育成し、2列のスクワッドを編成して、6体の固有ボスが待つ30ステージを攻略する無料オートバトラーです。",
     ogDescription: "動物スクワッドを配置し、6地域・30ステージの5連戦と固有ボスに挑もう。",
     twitterDescription: "動物ヒーローを育成して2列に編成し、30ステージの戦略オートバトルを攻略しよう。"
+  };
+  pageMeta.ar = {
+    title: "فرقة الحيوانات الآلية - لعبة معارك استراتيجية مجانية",
+    description: "درّب عشرة أبطال من الحيوانات، وابنِ فرقة من صفين، وتجاوز 30 مرحلة مع ستة زعماء فريدين.",
+    ogDescription: "رتّب فرقة من ستة حيوانات عبر 30 مرحلة من خمس موجات وست مناطق وستة زعماء.",
+    twitterDescription: "درّب أبطال الحيوانات ورتّبهم في صفين لهزيمة الزعماء الستة في حملة من 30 مرحلة."
   };
 
   // Sound Synth settings
@@ -764,6 +829,41 @@
     "銀月庭園", "月蝕の大広間", "星の書庫", "月輪の尖塔", "真夜中の宮廷", "崩れた空路", "重力の井戸", "虚無の回廊", "王冠への道", "終夜の戦い"
   ];
   STAGE_DEFINITIONS.forEach((definition, index) => definition.nameJa = stageNamesJa[index]);
+
+  const animalCopyAr = [
+    ["ثعلب المخلب اللامع", "قفزة أمامية", "يستهدف الصف الأمامي ويضرب مرتين: قفزة بمقدار المستوى ثم هجومه العادي."],
+    ["قضاعة الزعنفة الفقاعية", "رعاية المد", "قبل كل اشتباك، تعالج أضعف حليف بمقدار المستوى. وفي دورها تعالج أضعف حليف بنصف الهجوم، بحد أدنى 1."],
+    ["باندا البطن الطبلية", "حارس الإيقاع", "عند بدء المعركة، يحصل جميع الحلفاء على صحة قصوى وحالية بمقدار المستوى. وفي دورها تمنح الجميع درعًا بمقدار المستوى."],
+    ["بومة القبعة القمرية", "سقوط نجمي خلفي", "تستهدف الصف الخلفي بضربة نجمية ثم تضرب عدوًا ثانيًا في الصف نفسه. تعود إلى الصف الأمامي عند الحاجة."],
+    ["سلحفاة الصدفة الطحلبية", "جدار الصدفة", "تبدأ بدرع بمقدار المستوى. وفي دورها تمنح الحلفاء درعًا، وعند سقوطها تحمي الحليف التالي."],
+    ["أرنب القفزة القوسية", "مسعف الميدان", "في دورها تعالج أضعف حليف بنصف الهجوم، بحد أدنى 1، بدلًا من الهجوم."],
+    ["وحيد القرن ذي القرن المسنن", "جدار الدرع", "في دوره يحصل على درع يساوي نصف هجومه، بحد أدنى 1، بدلًا من الهجوم."],
+    ["الأسد ذو اللبدة الصاخبة", "زئير الصف", "يكنس كل عدو في الصف الأمامي بنسبة 70% من الهجوم، ويعود إلى الصف الخلفي عند الحاجة. وعند سقوطه يحصل الحلفاء الباقون على هجوم وصحة بمقدار المستوى."],
+    ["قائد المخلب اللامع", "القيادة", "عند بدء المعركة، يحصل جميع الحلفاء على هجوم بمقدار المستوى. وفي دوره يمنح الجميع هجومًا بمقدار المستوى وصحة +1."],
+    ["حارس وحيد القرن", "الصمود الأخير", "يهاجم بشكل عادي. وعند سقوطه يلحق بالعدو المتقدم ضررًا يساوي 4 × المستوى."]
+  ];
+  ANIMAL_METADATA.forEach((animal, index) => [animal.nameAr, animal.roleAr, animal.descAr] = animalCopyAr[index]);
+  const itemCopyAr = [["تفاحة", "+1/+1 إلى الإحصاءات."], ["عسل", "+2 صحة. عند الشراء: +1 ذهب."], ["شمام", "يمنح درع الشمام."], ["شوكولاتة", "+2 خبرة."]];
+  ITEM_METADATA.forEach((item, index) => [item.nameAr, item.descAr] = itemCopyAr[index]);
+  const relicCopyAr = [["درع القيقب", "تبدأ الوحدة الأمامية بدرع الشمام."], ["بذرة البلوط", "تحصل كل الوحدات على +1 صحة في المعركة."], ["مخلب الظل", "تحصل كل الوحدات على +1 هجوم في المعركة."], ["ورقة البرسيم", "أول إعادة سحب للمتجر في كل موجة مجانية."]];
+  RELIC_METADATA.forEach((relic, index) => [relic.nameAr, relic.descAr] = relicCopyAr[index]);
+  const enemyCopyAr = [
+    ["سنجاب الظل", "كمين خلفي"], ["ذئب الظل", "عضة القطيع"], ["خنزير الظل البري", "الاندفاعة الأولى"], ["غرير الظل", "حارس الجحر"],
+    ["غولم الظل", "كنس حجري"], ["كشاف الثعلب الشوكي", "خنجران متزامنان"], ["الغراب المنشوري", "غوص الشظايا"], ["الخنزير المدرع", "اندفاعة مدرعة"],
+    ["حارس الجذور", "حصن حي"], ["طيف الكريستال", "امتصاص الحياة"], ["عدّاء الشق", "وابل الشق"], ["دبابة السبج", "جدار السبج"],
+    ["النمر الليلي", "صيد صامت"], ["ذئب الرون", "قطيع الرون"], ["غراب الرون", "عاصفة الرون"], ["خفاش الكسوف", "امتصاص القمر"], ["اليغور الظلي", "وابل الغسق"]
+  ];
+  ENEMY_METADATA.forEach((enemy, index) => [enemy.nameAr, enemy.roleAr] = enemyCopyAr[index]);
+  const bossCopyAr = [["ألفا غابة الشوك", "تاج الأشواك"], ["باسيليسك المنشور", "العاصفة المنشورية"], ["ليفاثان الصدفة السحيقة", "القلعة الغارقة"], ["عملاق ناب الصهارة", "ضربة فوهة البركان"], ["بومة قوس الكسوف", "سقوط القمرين"], ["إمبراطور تاج الفراغ", "نهاية الليل"]];
+  BOSS_METADATA.forEach((boss, index) => [boss.nameAr, boss.roleAr] = bossCopyAr[index]);
+  const regionNamesAr = ["غابة الشوك", "كهوف الكريستال", "الآثار الغارقة", "قمة الجمر", "قلعة ضوء القمر", "تاج الفراغ"];
+  REGION_METADATA.forEach((region, index) => region.nameAr = regionNamesAr[index]);
+  const stageNamesAr = [
+    "درب الطحلب", "كمين الثعلب", "وكر الذئب", "بوابة الجذور", "عرش غابة الشوك", "الممر اللامع", "عش المنشور", "جسر الشظايا", "الخزنة الزرقاء", "قلب المنشور",
+    "درج المد", "أرشيف المرجان", "الساحة الغارقة", "بوابة الليفاثان", "التاج الغارق", "درب الرماد", "مسبك الجمر", "جسر الحمم", "حلقة السبج", "ملك الفوهة",
+    "الحديقة الفضية", "قاعة الكسوف", "مكتبة النجوم", "برج القمر", "بلاط منتصف الليل", "الممر السماوي المحطم", "بئر الجاذبية", "المعرض الفارغ", "طريق التاج", "معركة نهاية الليل"
+  ];
+  STAGE_DEFINITIONS.forEach((definition, index) => definition.nameAr = stageNamesAr[index]);
 
   function ensureQuitRunPanel() {
     if ($("quitRunPanel")) return;
@@ -1759,6 +1859,7 @@
     if (locale === "zh-Hant") return record[`${field}Zht`] || record[`${field}En`] || "";
     if (locale === "es") return record[`${field}Es`] || record[`${field}En`] || "";
     if (locale === "ja") return record[`${field}Ja`] || record[`${field}En`] || "";
+    if (locale === "ar") return record[`${field}Ar`] || record[`${field}En`] || "";
     return runtimeTranslate(record[`${field}En`] || "");
   }
 
@@ -1957,11 +2058,23 @@
     return localizer?.locale === actualGameLocale() ? localizer.translate(String(value)) : value;
   }
 
+  const arabicCombatPhrases = {
+    Shield: "درع", "YOUR SQUAD": "فرقتك", Slot: "الخانة", "clashes with": "يشتبك مع",
+    "guards the front": "يحمي الصف الأمامي", "uses Pack Bite": "يستخدم عضة القطيع", "uses First Charge": "يستخدم الاندفاعة الأولى",
+    "unleashes Thornstorm": "يطلق عاصفة الأشواك", "casts Prism Storm": "يطلق العاصفة المنشورية", "raises the Sunken Fortress": "يرفع القلعة الغارقة",
+    "uses Caldera Crash": "يستخدم ضربة فوهة البركان", "casts Twin Moonfall": "يطلق سقوط القمرين", "invokes End of Night": "يستدعي نهاية الليل",
+    "sweeps the front row": "يكنس الصف الأمامي", "heals an ally": "يعالج حليفًا", "strikes twice": "يضرب مرتين",
+    "strikes the back row": "يضرب الصف الخلفي", "strikes the front row": "يضرب الصف الأمامي", "raises a shield": "يرفع درعًا",
+    "casts Starfall": "يطلق سقوطًا نجميًا", "guards the squad": "يحمي الفرقة", "rallies allies": "يشجع الحلفاء",
+    "double-pounces the front row": "ينقض على الصف الأمامي مرتين", "attacks the back row": "يهاجم الصف الخلفي", "attacks the front row": "يهاجم الصف الأمامي"
+  };
+
   function localizedPhrase(en, zht, es) {
     const active = actualGameLocale();
     if (active === "zh-Hant") return zht;
     if (active === "es") return es;
     if (active === "ja") return japanesePhrases[en] || en;
+    if (active === "ar") return arabicCombatPhrases[en] || runtimeTranslate(en);
     return combatPhraseCatalog[active]?.[en] || runtimeTranslate(en);
   }
 
@@ -2387,7 +2500,7 @@
   }
 
   function stageLabel(stage) {
-    return locale === "zh-Hant" ? `\u7b2c ${stage} \u95dc` : locale === "es" ? `Nivel ${stage}` : locale === "ja" ? `ステージ ${stage}` : `Stage ${stage}`;
+    return locale === "zh-Hant" ? `\u7b2c ${stage} \u95dc` : locale === "es" ? `Nivel ${stage}` : locale === "ja" ? `ステージ ${stage}` : locale === "ar" ? `المرحلة ${stage}` : `Stage ${stage}`;
   }
 
   function nextStagePreview(stageValue) {
@@ -3529,8 +3642,8 @@
     if (isAnimal) {
       const statsEl = document.createElement("div");
       statsEl.className = "card-stats";
-      const attackLabel = locale === "zh-Hant" || locale === "ja" ? t("attackShort") : "ATK";
-      const healthLabel = locale === "zh-Hant" || locale === "ja" ? t("healthShort") : "HP";
+      const attackLabel = locale === "zh-Hant" || locale === "ja" || locale === "ar" ? t("attackShort") : "ATK";
+      const healthLabel = locale === "zh-Hant" || locale === "ja" || locale === "ar" ? t("healthShort") : "HP";
       statsEl.innerHTML = `<span class="card-atk">${attackLabel} ${card.currentAtk}</span><span class="card-hp">${healthLabel} ${card.currentHp}</span>`;
       el.appendChild(statsEl);
       el.title = `${localizedField(card, "name")}: ${attackLabel} ${card.currentAtk}, ${healthLabel} ${card.currentHp}. ${localizedField(card, "desc")}`;

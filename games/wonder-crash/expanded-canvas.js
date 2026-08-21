@@ -10,15 +10,16 @@
   const BATTLE_LANDSCAPE_WIDTH = 760;
   const BATTLE_LANDSCAPE_HEIGHT = 360;
   const DESKTOP_CANVAS_MAX_WIDTH = 920;
+  const runtimeTranslate = (value) => window.WeightPlayGameRuntimeLocalizer?.translate?.(value) || value;
 
   function syncCanonicalBrowserTitle() {
     const activeLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || "en";
-    const runtimeTranslate = (value) => window.WeightPlayGameRuntimeLocalizer?.translate?.(value) || value;
     const nativeTaglines = {
       en: "Free Browser Game",
       "zh-Hant": "\u514d\u8cbb\u7db2\u9801\u904a\u6232",
       "zh-Hans": "\u514d\u8d39\u7f51\u9875\u6e38\u620f",
       es: "Juego de navegador gratuito",
+      ar: "لعبة متصفح مجانية",
     };
     const visibleTitle = document.querySelector("#wonderMain [data-i18n='game_title']")?.textContent?.trim();
     const gameTitle = visibleTitle || runtimeTranslate("Fantasy Lion Defense");
@@ -38,9 +39,12 @@
 
   window.addEventListener("wonder:locale-change", queueCanonicalBrowserTitle);
   queueCanonicalBrowserTitle();
-  const lockedStageText = () => ["zh-Hant", "zh-Hans"].includes(document.documentElement.lang)
-    ? "\u95dc\u5361\u5c1a\u672a\u89e3\u9396\u3002"
-    : "Stage locked.";
+  const lockedStageText = () => {
+    const activeLocale = document.documentElement.lang || "en";
+    if (["zh-Hant", "zh-Hans"].includes(activeLocale)) return "\u95dc\u5361\u5c1a\u672a\u89e3\u9396\u3002";
+    if (activeLocale === "ar") return "المرحلة مغلقة.";
+    return runtimeTranslate("Stage locked.");
+  };
 
   function syncLockedStageSemantics() {
     document.querySelectorAll("#levelGrid button[data-level]").forEach((button) => {
@@ -150,18 +154,25 @@
   }
 
   function syncLocalizedAccessibility() {
-    const isTraditionalChinese = ["zh-Hant", "zh-Hans"].includes(document.documentElement.lang);
+    const activeLocale = document.documentElement.lang || "en";
+    const isTraditionalChinese = ["zh-Hant", "zh-Hans"].includes(activeLocale);
     const board = document.querySelector("#game");
     const stageBack = document.querySelector("#wonderStageBack");
     if (board) {
       board.setAttribute("aria-label", isTraditionalChinese
         ? "\u5947\u5e7b\u7345\u5b50\u5b88\u57ce\u904a\u6232\u756b\u9762"
-        : "Fantasy Lion Defense game board");
+        : activeLocale === "ar"
+          ? "لوحة لعبة الدفاع عن الأسد الخيالي"
+          : runtimeTranslate("Fantasy Lion Defense game board"));
       board.setAttribute("aria-description", isTraditionalChinese
         ? "\u4f7f\u7528\u5de6\u53f3\u65b9\u5411\u9375\u79fb\u52d5\u7345\u5b50\uff0c\u6216\u5728\u904a\u6232\u756b\u9762\u4e0a\u62d6\u66f3\u3002"
-        : "Move the lion with Left and Right Arrow keys, or drag across the game board.");
+        : runtimeTranslate("Move the lion with Left and Right Arrow keys, or drag across the game board."));
     }
-    if (stageBack) stageBack.setAttribute("aria-label", isTraditionalChinese ? "\u8fd4\u56de" : "Back");
+    if (stageBack) stageBack.setAttribute("aria-label", isTraditionalChinese
+      ? "\u8fd4\u56de"
+      : activeLocale === "ar"
+        ? "العودة"
+        : runtimeTranslate("Back"));
     const stageStatus = document.querySelector("#wonderStageStatus");
     if (stageStatus?.textContent) stageStatus.textContent = lockedStageText();
     syncLockedStageSemantics();
