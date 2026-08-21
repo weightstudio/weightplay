@@ -484,6 +484,21 @@
     hi: "तुरंत खेलें: किसी भी केंद्रीय कार्ड से एक रैंक ऊपर या नीचे वाला कार्ड।",
     ar: "العب فورًا: بطاقة أعلى أو أدنى بدرجة من أي بطاقة مركزية.",
   };
+  const SPEED_DECISION_COPY = {
+    en: { none: "No legal card is ready; scan both center cards for the next shared refresh.", one: "One legal card is ready; play it, then scan the refill.", many: "{count} legal cards are ready; choose one, then scan the refill." },
+    "zh-Hant": { none: "目前沒有可出的牌；留意兩張中央牌的下一次同步更新。", one: "目前有一張可出的牌；出牌後重新掃描補牌。", many: "目前有 {count} 張可出的牌；選一張後重新掃描補牌。" },
+    "zh-Hans": { none: "目前没有可出的牌；留意两张中央牌的下一次同步更新。", one: "目前有一张可出的牌；出牌后重新扫描补牌。", many: "目前有 {count} 张可出的牌；选一张后重新扫描补牌。" },
+    ja: { none: "今は出せるカードがありません。次の中央カード更新を両方確認しましょう。", one: "出せるカードは1枚です。出したら補充された手札をもう一度確認しましょう。", many: "出せるカードは{count}枚です。1枚選んだら補充された手札を確認しましょう。" },
+    ko: { none: "지금 낼 수 있는 카드가 없습니다. 다음 중앙 카드 갱신을 양쪽에서 확인하세요.", one: "낼 수 있는 카드가 한 장 있습니다. 낸 뒤 보충된 패를 다시 살펴보세요.", many: "낼 수 있는 카드가 {count}장 있습니다. 한 장을 고른 뒤 보충된 패를 살펴보세요." },
+    es: { none: "No hay una carta legal lista; revisa ambas cartas centrales en la próxima renovación.", one: "Hay una carta legal; juégala y vuelve a revisar la reposición.", many: "Hay {count} cartas legales; elige una y revisa la reposición." },
+    "pt-BR": { none: "Nenhuma carta válida está pronta; observe as duas cartas centrais na próxima renovação.", one: "Há uma carta válida; jogue-a e confira a reposição.", many: "Há {count} cartas válidas; escolha uma e confira a reposição." },
+    fr: { none: "Aucune carte jouable pour l'instant ; surveillez les deux cartes centrales au prochain renouvellement.", one: "Une carte est jouable ; jouez-la puis vérifiez la nouvelle main.", many: "{count} cartes sont jouables ; choisissez-en une puis vérifiez la nouvelle main." },
+    de: { none: "Keine spielbare Karte bereit; beobachte beide mittleren Karten bei der nächsten Erneuerung.", one: "Eine Karte ist spielbar; spiele sie und prüfe danach die neue Hand.", many: "{count} Karten sind spielbar; wähle eine und prüfe danach die neue Hand." },
+    it: { none: "Nessuna carta giocabile al momento; controlla entrambe le carte centrali al prossimo aggiornamento.", one: "C'è una carta giocabile; usala e poi controlla la nuova mano.", many: "Ci sono {count} carte giocabili; scegline una e poi controlla la nuova mano." },
+    ru: { none: "Сейчас нет подходящих карт; следите за обновлением обеих центральных карт.", one: "Подходит одна карта; сыграйте её и проверьте пополнение руки.", many: "Подходят {count} карты; выберите одну и проверьте пополнение руки." },
+    hi: { none: "अभी कोई मान्य पत्ता नहीं है; अगले साझा बदलाव के लिए दोनों केंद्रीय पत्तों पर नज़र रखें।", one: "एक मान्य पत्ता तैयार है; उसे चलाकर फिर भरी हुई हाथ की जाँच करें।", many: "{count} मान्य पत्ते तैयार हैं; एक चुनकर फिर भरी हुई हाथ की जाँच करें।" },
+    ar: { none: "لا توجد بطاقة صالحة الآن؛ راقب البطاقتين المركزيتين عند التحديث المشترك التالي.", one: "توجد بطاقة صالحة واحدة؛ العبها ثم راجع البطاقات الجديدة.", many: "توجد {count} بطاقات صالحة؛ اختر واحدة ثم راجع البطاقات الجديدة." },
+  };
   const GO_FISH_COPY = {
     en: { pending: "Choose a rank to ask {opponent}", ready: "Ask {opponent} for {rank}", book: "Book complete: {rank} · progress {books}/13", result: "Books: {books} · Completed ranks: {completed}", target: "Next-deal target: build {rank} to a four-card book ({count}/4 now).", fullTarget: "Next-deal target: beat this full-book run again." },
     "zh-Hant": { pending: "選擇要向 {opponent} 詢問的點數", ready: "向 {opponent} 詢問 {rank}", book: "完成 {rank} 組牌 · 進度 {books}/13", result: "完成組牌：{books} · 已完成點數：{completed}", target: "下一局目標：把 {rank} 湊成四張（目前 {count}/4）。", fullTarget: "下一局目標：再次挑戰完成全部組牌。" },
@@ -661,7 +676,12 @@
   const sameCard = (a, b) => a && b && a.suit === b.suit && a.rank === b.rank;
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const speedLegalLabel = (item) => (SPEED_LEGAL_COPY[currentLocale()] || SPEED_LEGAL_COPY.en).replace("{card}", cardText(item));
-  const speedCoachText = () => SPEED_COACH_COPY[currentLocale()] || SPEED_COACH_COPY.en;
+  const speedDecisionText = (legalCount) => {
+    const dictionary = SPEED_DECISION_COPY[currentLocale()] || SPEED_DECISION_COPY.en;
+    const key = legalCount === 0 ? "none" : legalCount === 1 ? "one" : "many";
+    return (dictionary[key] || SPEED_DECISION_COPY.en[key]).replace("{count}", String(legalCount));
+  };
+  const speedCoachText = (legalCount) => `${SPEED_COACH_COPY[currentLocale()] || SPEED_COACH_COPY.en}${Number.isFinite(legalCount) ? ` ${speedDecisionText(legalCount)}` : ""}`;
 
   function cardMarkup(item, index, options = {}) {
     const hidden = options.hidden || item?.faceDown;
@@ -1034,7 +1054,7 @@
     const refill = () => { while (s.hand.length < 5 && s.stock.length) s.hand.push(s.stock.pop()); while (s.aiHand.length < 5 && s.aiStock.length) s.aiHand.push(s.aiStock.pop()); };
     const check = () => { if ((!s.hand.length && !s.stock.length) || (!s.aiHand.length && !s.aiStock.length)) { s.over = true; controller.result(!s.hand.length && !s.stock.length, `${t("cards")}: ${s.hand.length + s.stock.length} / ${s.aiHand.length + s.aiStock.length}`); clearTimeout(s.timer); } };
     const aiLoop = () => { if (s.over) return; const candidates = s.aiHand.flatMap((item, index) => s.centers.map((centerCard, centerIndex) => canPlay(item, centerCard) ? { item, index, centerIndex } : [])); if (candidates.length) { const pick = candidates[Math.floor(Math.random() * candidates.length)]; s.aiHand.splice(pick.index, 1); s.centers[pick.centerIndex] = pick.item; refill(); } else if (s.aiStock.length) { s.centers[0] = s.stock.length ? s.stock.pop() : s.centers[0]; s.centers[1] = s.aiStock.pop(); } check(); s.timer = setTimeout(aiLoop, 420); };
-    return { reset() { const cards = deck(); Object.assign(s, { hand: cards.splice(0, 20), stock: cards.splice(0, 6), aiHand: cards.splice(0, 20), aiStock: cards, centers: [deck()[0], deck()[1]], turn: true, over: false }); refill(); clearTimeout(s.timer); s.timer = setTimeout(aiLoop, 420); }, card(index) { if (s.over) return; const item = s.hand[index]; const centerIndex = s.centers.findIndex((centerCard) => canPlay(item, centerCard)); if (centerIndex < 0) return; s.hand.splice(index, 1); s.centers[centerIndex] = item; refill(); check(); }, action() {}, view() { return { phase: "Speed", status: t("yourTurn"), help: speedCoachText(), score: s.hand.length + s.stock.length, opponents: opponentMarkup("AI", s.aiHand.length + s.aiStock.length), center: `<div class="card-speed-lane"><div class="card-speed-pile">${cardMarkup(s.centers[0], 0)}</div><div class="card-speed-pile">${cardMarkup(s.centers[1], 0)}</div></div>`, hand: cardsMarkup(s.hand), actions: `<span class="card-help">${s.stock.length} ${t("stock")} · ${s.aiStock.length} ${t("cards")} ${t("waiting")}</span>` }; } };
+    return { reset() { const cards = deck(); Object.assign(s, { hand: cards.splice(0, 20), stock: cards.splice(0, 6), aiHand: cards.splice(0, 20), aiStock: cards, centers: [deck()[0], deck()[1]], turn: true, over: false }); refill(); clearTimeout(s.timer); s.timer = setTimeout(aiLoop, 420); }, card(index) { if (s.over) return; const item = s.hand[index]; const centerIndex = s.centers.findIndex((centerCard) => canPlay(item, centerCard)); if (centerIndex < 0) return; s.hand.splice(index, 1); s.centers[centerIndex] = item; refill(); check(); }, action() {}, view() { const legalCount = s.hand.filter((item) => s.centers.some((centerCard) => canPlay(item, centerCard))).length; return { phase: "Speed", status: t("yourTurn"), help: speedCoachText(legalCount), score: s.hand.length + s.stock.length, opponents: opponentMarkup("AI", s.aiHand.length + s.aiStock.length), center: `<div class="card-speed-lane"><div class="card-speed-pile">${cardMarkup(s.centers[0], 0)}</div><div class="card-speed-pile">${cardMarkup(s.centers[1], 0)}</div></div>`, hand: cardsMarkup(s.hand), actions: `<span class="card-help">${s.stock.length} ${t("stock")} · ${s.aiStock.length} ${t("cards")} ${t("waiting")}</span>` }; } };
   }
 
   function makeOldMaid(controller) {
@@ -1357,7 +1377,7 @@
       reset() { const cards = deck(); Object.assign(s, { hand: cards.splice(0, 5), stock: cards.splice(0, 20), aiHand: cards.splice(0, 5), aiStock: cards.splice(0, 20), centers: cards.splice(0, 2), waste: [], over: false, lastPlayerAt: Date.now() }); clearTimeout(s.timer); s.timer = setTimeout(aiLoop, 850); },
       card(index) { if (s.over) return; const item = s.hand[index]; const centerIndex = s.centers.findIndex((centerCard) => canPlay(item, centerCard)); if (centerIndex < 0) return; s.hand.splice(index, 1); replaceCenter(centerIndex, item); s.lastPlayerAt = Date.now(); refill(s.hand, s.stock); finishIfDone(); },
       action() {},
-      view() { const handMarkup = s.hand.map((item, index) => { const legal = s.centers.some((centerCard) => canPlay(item, centerCard)); return cardMarkup(item, index, { className: legal ? "card-speed-legal" : "", ariaLabel: legal ? speedLegalLabel(item) : undefined, runtimeLocalizeOff: legal }); }).join(""); return { phase: "Speed", status: t("yourTurn"), help: speedCoachText(), score: s.hand.length + s.stock.length, opponents: opponentMarkup("AI", s.aiHand.length + s.aiStock.length), center: `<div class="card-speed-lane"><div class="card-speed-pile">${cardMarkup(s.centers[0], 0)}</div><div class="card-speed-pile">${cardMarkup(s.centers[1], 0)}</div></div>`, hand: handMarkup, actions: `<span class="card-help">${s.stock.length} ${t("stock")} · ${s.aiStock.length} ${t("cards")} ${t("waiting")}</span>` }; }
+      view() { const legalCount = s.hand.filter((item) => s.centers.some((centerCard) => canPlay(item, centerCard))).length; const handMarkup = s.hand.map((item, index) => { const legal = s.centers.some((centerCard) => canPlay(item, centerCard)); return cardMarkup(item, index, { className: legal ? "card-speed-legal" : "", ariaLabel: legal ? speedLegalLabel(item) : undefined, runtimeLocalizeOff: legal }); }).join(""); return { phase: "Speed", status: t("yourTurn"), help: speedCoachText(legalCount), score: s.hand.length + s.stock.length, opponents: opponentMarkup("AI", s.aiHand.length + s.aiStock.length), center: `<div class="card-speed-lane"><div class="card-speed-pile">${cardMarkup(s.centers[0], 0)}</div><div class="card-speed-pile">${cardMarkup(s.centers[1], 0)}</div></div>`, hand: handMarkup, actions: `<span class="card-help">${s.stock.length} ${t("stock")} · ${s.aiStock.length} ${t("cards")} ${t("waiting")}</span>` }; }
     };
   }
 

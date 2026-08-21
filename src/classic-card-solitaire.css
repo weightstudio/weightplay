@@ -110,6 +110,7 @@ body[data-wp-game-id="pyramid-solitaire"] .stock-pile.hint-source { border-style
 .board-status[data-state="peak"] { color: var(--classic-gold); animation: classic-peak-cue 620ms cubic-bezier(.2,.8,.3,1); }
 .board-status[data-state="stock"] { animation: classic-stock-cue 360ms cubic-bezier(.2,.8,.3,1); }
 .board-status[data-state="stock-low"] { color: var(--classic-accent); animation: classic-stock-low-cue 520ms cubic-bezier(.2,.8,.3,1); }
+.board-status[data-state="golf-single"] { color: var(--classic-accent); animation: classic-sequence-cue 360ms cubic-bezier(.2,.8,.3,1); }
 .board-status[data-state="golf-combo"] { color: var(--classic-gold); animation: classic-golf-combo-cue 620ms cubic-bezier(.2,.8,.3,1); }
 .board-status[data-state="coach"] { color: var(--classic-text); animation: classic-coach-cue 520ms cubic-bezier(.2,.8,.3,1); }
 .board-status[data-state="pyramid-coach"] { color: var(--classic-text); animation: classic-coach-cue 520ms cubic-bezier(.2,.8,.3,1); }

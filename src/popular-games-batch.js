@@ -161,6 +161,31 @@
   };
   const tetrisProgressCopy = (locale, lines = 0) => (TETRIS_PROGRESS_COPY[locale] || TETRIS_PROGRESS_COPY.en)(lines, Math.max(0, 4 - lines));
   const tetrisLineClearCopy = (locale, lines = 0) => `${TETRIS_LINE_CLEAR_COPY[locale] || TETRIS_LINE_CLEAR_COPY.en} ${tetrisProgressCopy(locale, lines)}`;
+  const TETRIS_HINT_COPY = {
+    en: (current, target, same) => same ? `Hint: Current block is in column ${current}, one of the lowest stacks. Consider dropping here if it keeps the next line open; rotate only when it helps your plan.` : `Hint: Current block is in column ${current}. Consider moving toward column ${target} before dropping; rotate only when it improves your next line plan.`,
+    "zh-Hant": (current, target, same) => same ? `提示：目前方塊在第 ${current} 欄，是最低堆疊之一。若能保留下一行空間，可考慮在這裡落下；只有能改善計畫時才旋轉。` : `提示：目前方塊在第 ${current} 欄。可考慮先移向第 ${target} 欄再落下；只有能改善下一行計畫時才旋轉。`,
+    "zh-Hans": (current, target, same) => same ? `提示：当前方块在第 ${current} 列，是最低堆叠之一。如果能保留下一行空间，可以考虑在这里落下；只有能改善计划时才旋转。` : `提示：当前方块在第 ${current} 列。可以考虑先移向第 ${target} 列再落下；只有能改善下一行计划时才旋转。`,
+    ja: (current, target, same) => same ? `ヒント：現在のブロックは${current}列目にあり、最も低い積み上がりの一つです。次のラインを空けられるならここに落とし、計画に役立つときだけ回転しましょう。` : `ヒント：現在のブロックは${current}列目です。落とす前に${target}列目へ動かすことを考え、次のラインに役立つときだけ回転しましょう。`,
+    ko: (current, target, same) => same ? `힌트: 현재 블록은 ${current}열에 있고 가장 낮은 더미 중 하나입니다. 다음 줄을 열어 둘 수 있다면 여기에 놓고, 계획에 도움이 될 때만 회전하세요.` : `힌트: 현재 블록은 ${current}열에 있습니다. 떨어뜨리기 전에 ${target}열 쪽으로 옮겨 보세요. 다음 줄 계획에 도움이 될 때만 회전하세요.`,
+    es: (current, target, same) => same ? `Pista: el bloque actual está en la columna ${current}, una de las pilas más bajas. Déjalo aquí si mantiene abierta la próxima línea; gira solo si mejora tu plan.` : `Pista: el bloque actual está en la columna ${current}. Considera moverlo hacia la columna ${target} antes de soltarlo; gira solo si mejora tu próximo plan de línea.`,
+    "pt-BR": (current, target, same) => same ? `Dica: o bloco atual está na coluna ${current}, uma das pilhas mais baixas. Considere soltá-lo aqui se mantiver a próxima linha aberta; gire apenas se ajudar seu plano.` : `Dica: o bloco atual está na coluna ${current}. Considere movê-lo para a coluna ${target} antes de soltá-lo; gire apenas se melhorar seu próximo plano de linha.`,
+    fr: (current, target, same) => same ? `Indice : le bloc actuel est dans la colonne ${current}, l'une des piles les plus basses. Déposez-le ici si cela garde la prochaine ligne ouverte ; ne tournez que si cela aide votre plan.` : `Indice : le bloc actuel est dans la colonne ${current}. Envisagez de le déplacer vers la colonne ${target} avant de le déposer ; ne tournez que si cela aide votre prochaine ligne.`,
+    de: (current, target, same) => same ? `Tipp: Der aktuelle Block liegt in Spalte ${current}, einem der niedrigsten Stapel. Lass ihn hier fallen, wenn die nächste Reihe offen bleibt; drehe nur, wenn es deinem Plan hilft.` : `Tipp: Der aktuelle Block liegt in Spalte ${current}. Bewege ihn vor dem Fallenlassen in Richtung Spalte ${target}; drehe nur, wenn es deinem nächsten Reihenplan hilft.`,
+    it: (current, target, same) => same ? `Suggerimento: il blocco attuale è nella colonna ${current}, una delle pile più basse. Valuta di lasciarlo qui se mantiene aperta la prossima riga; ruota solo se aiuta il tuo piano.` : `Suggerimento: il blocco attuale è nella colonna ${current}. Valuta di spostarlo verso la colonna ${target} prima di lasciarlo cadere; ruota solo se aiuta la prossima riga.`,
+    ru: (current, target, same) => same ? `Подсказка: текущий блок находится в столбце ${current}, одном из самых низких. Оставьте его здесь, если это сохранит следующую линию открытой; поворачивайте только ради плана.` : `Подсказка: текущий блок находится в столбце ${current}. Перед падением попробуйте переместить его к столбцу ${target}; поворачивайте только ради следующей линии.`,
+    hi: (current, target, same) => same ? `संकेत: मौजूदा ब्लॉक कॉलम ${current} में है और सबसे कम ऊँचे ढेरों में से एक है। अगली पंक्ति खुली रहे तो इसे यहीं गिराने पर विचार करें; योजना में मदद हो तभी घुमाएँ।` : `संकेत: मौजूदा ब्लॉक कॉलम ${current} में है। गिराने से पहले इसे कॉलम ${target} की ओर ले जाने पर विचार करें; अगली पंक्ति की योजना सुधरे तभी घुमाएँ।`,
+    ar: (current, target, same) => same ? `تلميح: الكتلة الحالية في العمود ${current}، وهو من أقل الأعمدة ارتفاعاً. فكّر في إسقاطها هنا إذا أبقيت الصف التالي مفتوحاً؛ دوّرها فقط عندما يفيد ذلك خطتك.` : `تلميح: الكتلة الحالية في العمود ${current}. فكّر في تحريكها نحو العمود ${target} قبل إسقاطها؛ دوّرها فقط عندما يحسّن ذلك خطتك للصف التالي.`,
+  };
+  const tetrisHintTargetColumn = (state) => {
+    const heights = Array.from({ length: 8 }, (_, column) => (state.blocks || []).filter((block) => block.x === column).length);
+    const minHeight = Math.min(...heights);
+    return heights.map((height, column) => ({ column, height, distance: Math.abs(column - state.active) })).filter((entry) => entry.height === minHeight).sort((a, b) => a.distance - b.distance || a.column - b.column)[0]?.column ?? state.active;
+  };
+  const tetrisHintCopy = (locale, state) => {
+    const current = Math.max(0, Math.min(7, Number(state.active) || 0));
+    const target = tetrisHintTargetColumn({ ...state, active: current });
+    return (TETRIS_HINT_COPY[locale] || TETRIS_HINT_COPY.en)(current + 1, target + 1, current === target);
+  };
 
   const HANGMAN_HINT_COPY = {
     en: (length) => `Hint: The word has ${length} letters.`,
@@ -745,6 +770,9 @@
       if (game.type === "tetris" && state.messageKey === "tetrisProgress") {
         state.message = tetrisProgressCopy(locale, state.lines);
       }
+      if (game.type === "tetris" && state.messageKey === "tetrisHint") {
+        state.message = tetrisHintCopy(locale, state);
+      }
       if (game.type === "checkers" && state.messageKey === "checkersPromotion") {
         state.message = checkersPromotionCopy(locale, "next");
       }
@@ -963,7 +991,7 @@
       }
       render();
     };
-    const hint = () => { if (game.type === "wordle") announce(wordleHint(locale, state.target[0]), "warn", "wordleHint"); else if (game.type === "hangman") announce(hangmanHint(locale, state.target.length, state.theme), "warn", "hangmanHint"); else if (game.type === "mahjong") announce(`${copy(locale, "hint")}: match identical symbols.`, "warn"); else announce(`${copy(locale, "hint")}: ${copy(locale, game.objective)}`, "warn", game.type === "snake" ? "hintObjective" : ""); render(); };
+    const hint = () => { if (game.type === "wordle") announce(wordleHint(locale, state.target[0]), "warn", "wordleHint"); else if (game.type === "hangman") announce(hangmanHint(locale, state.target.length, state.theme), "warn", "hangmanHint"); else if (game.type === "mahjong") announce(`${copy(locale, "hint")}: match identical symbols.`, "warn"); else if (game.type === "tetris") announce(tetrisHintCopy(locale, state), "warn", "tetrisHint"); else announce(`${copy(locale, "hint")}: ${copy(locale, game.objective)}`, "warn", game.type === "snake" ? "hintObjective" : ""); render(); };
     const shell = () => { document.documentElement.lang = locale; document.documentElement.dir = locale === "ar" ? "rtl" : "ltr"; document.title = `${title(locale, gameId)} | WeightPlay`; if (game.type === "checkers") document.querySelector('meta[name="description"]')?.setAttribute("content", checkersMetaDescription(locale)); if (game.type === "breakout") document.querySelector('meta[name="description"]')?.setAttribute("content", breakoutMetaDescription(locale)); els.eyebrow.textContent = copy(locale, "eyebrow"); els.title.textContent = title(locale, gameId); els.tagline.textContent = copy(locale, "tagline"); els.objective.innerHTML = `<strong>${copy(locale, "objective")}:</strong> ${copy(locale, game.objective)}`; els.instruction.textContent = game.type === "snake" ? snakeInstruction(locale) : copy(locale, "ready"); document.querySelector("#languageLabel").textContent = copy(locale, "language"); document.querySelector("#footerText").textContent = `${title(locale, gameId)} · ${copy(locale, "eyebrow")}`; if (game.type === "snake") { const shellCopy = SNAKE_SHELL_COPY[locale] || SNAKE_SHELL_COPY.en; document.querySelector('[data-wp-return="battle"]')?.setAttribute("aria-label", shellCopy.battleBack); document.querySelector('[data-wp-return="main"]')?.setAttribute("aria-label", shellCopy.mainBack); } };
     const button = (label, name, extra = "") => `<button type="button" class="control ${extra}" data-action="${name}">${label}</button>`;
     const renderBoard = () => {

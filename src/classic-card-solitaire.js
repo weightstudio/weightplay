@@ -139,6 +139,25 @@
     }
   });
 
+  const GOLF_SINGLE_CLEAR_COPY = {
+    en: "Clear! Score +1. Keep the chain going.",
+    "zh-Hant": "清除！分數 +1，繼續連鎖。",
+    "zh-Hans": "清除！分数 +1，继续连锁。",
+    ja: "クリア！スコア+1。連鎖を続けよう。",
+    ko: "클리어! 점수 +1. 콤보를 이어가세요.",
+    es: "¡Limpia! Puntuación +1. Mantén la cadena.",
+    "pt-BR": "Limpo! Pontos +1. Mantenha a sequência.",
+    fr: "Carte retirée ! Score +1. Gardez la chaîne.",
+    de: "Geräumt! Punktestand +1. Halte die Serie.",
+    it: "Pulita! Punteggio +1. Mantieni la serie.",
+    ru: "Карта убрана! Очки +1. Продолжайте серию.",
+    hi: "साफ़! स्कोर +1। चेन जारी रखें।",
+    ar: "تم التنظيف! النقاط +1. واصل السلسلة.",
+  };
+  Object.entries(GOLF_SINGLE_CLEAR_COPY).forEach(([locale, message]) => {
+    if (COMMON[locale]) COMMON[locale].golfSingleClear = message;
+  });
+
   const GOLF_CHAIN_BRIDGE_COPY = {
     en: "Keep the chain or draw Stock when it stops.",
     "zh-Hant": "繼續連鎖，卡住時再抽牌堆。",
@@ -976,7 +995,19 @@
       }, 1400);
     }
     showGolfComboCue() {
-      if (this.config.variant !== "golf" || !this.nodes.boardStatus || this.game.won || this.game.lost || this.game.combo < 2) return;
+      if (this.config.variant !== "golf" || !this.nodes.boardStatus || this.game.won || this.game.lost || this.game.combo <= 0) return;
+      if (this.game.combo === 1) {
+        this.nodes.boardStatus.dataset.state = "golf-single";
+        this.nodes.boardStatus.textContent = this.t("golfSingleClear");
+        clearTimeout(this.statusTimer);
+        this.statusTimer = setTimeout(() => {
+          if (this.nodes.boardStatus && !this.game.won && !this.game.lost) {
+            delete this.nodes.boardStatus.dataset.state;
+            this.nodes.boardStatus.textContent = "";
+          }
+        }, 900);
+        return;
+      }
       const bridge = this.game.combo === 2;
       this.nodes.boardStatus.dataset.state = bridge ? "golf-bridge" : "golf-combo";
       const combo = this.t("golfComboLong", { count: this.game.combo, best: this.game.bestCombo });
