@@ -160,6 +160,7 @@
     ar: (lines, remaining) => `تقدم الجولة: تم مسح ${lines} من 4 صفوف. المتبقي: ${remaining}.`,
   };
   const tetrisProgressCopy = (locale, lines = 0) => (TETRIS_PROGRESS_COPY[locale] || TETRIS_PROGRESS_COPY.en)(lines, Math.max(0, 4 - lines));
+  const tetrisLineClearCopy = (locale, lines = 0) => `${TETRIS_LINE_CLEAR_COPY[locale] || TETRIS_LINE_CLEAR_COPY.en} ${tetrisProgressCopy(locale, lines)}`;
 
   const HANGMAN_HINT_COPY = {
     en: (length) => `Hint: The word has ${length} letters.`,
@@ -739,7 +740,7 @@
         state.message = (MAHJONG_MISMATCH_COPY[locale] || MAHJONG_MISMATCH_COPY.en)(state.mismatchTile);
       }
       if (game.type === "tetris" && state.messageKey === "tetrisLineClear") {
-        state.message = TETRIS_LINE_CLEAR_COPY[locale] || TETRIS_LINE_CLEAR_COPY.en;
+        state.message = tetrisLineClearCopy(locale, state.lines);
       }
       if (game.type === "tetris" && state.messageKey === "tetrisProgress") {
         state.message = tetrisProgressCopy(locale, state.lines);
@@ -883,7 +884,7 @@
           state.pieces += 1;
           state.lines = Math.min(4, Math.floor(state.pieces / 2));
           state.blocks.push({ x: state.active, y: 7 - (state.pieces % 7) });
-          if (state.lines > previousLines && state.lines < 4) announce(TETRIS_LINE_CLEAR_COPY[locale] || TETRIS_LINE_CLEAR_COPY.en, "good", "tetrisLineClear");
+          if (state.lines > previousLines && state.lines < 4) announce(tetrisLineClearCopy(locale, state.lines), "good", "tetrisLineClear");
           else if (state.lines < 4) announce(tetrisProgressCopy(locale, state.lines), "", "tetrisProgress");
           if (state.lines >= 4) finish(true);
         } else {

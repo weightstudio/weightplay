@@ -72,9 +72,25 @@
     hi: "यह उतरने का खाना सही छलांग नहीं बनाता। गोटी चुनी रहने दें और एक गोटी के ऊपर से दो खाने दूर खाली खाना चुनें।",
     ar: "حفرة الهبوط هذه لا تسمح بقفزة قانونية. أبقِ الحجر محددًا واختر حفرة فارغة على بُعد خانتين فوق حجر واحد.",
   };
+  const hintRouteCopy = {
+    en: (source, target) => `Hint: Peg ${source} → Empty hole ${target}.`,
+    "zh-Hant": (source, target) => `提示：棋子 ${source} → 空洞 ${target}。`,
+    "zh-Hans": (source, target) => `提示：棋子 ${source} → 空洞 ${target}。`,
+    ja: (source, target) => `ヒント：ペグ${source} → 空き穴${target}。`,
+    ko: (source, target) => `힌트: 페그 ${source} → 빈 칸 ${target}.`,
+    es: (source, target) => `Pista: ficha ${source} → hueco vacío ${target}.`,
+    "pt-BR": (source, target) => `Dica: pino ${source} → casa vazia ${target}.`,
+    fr: (source, target) => `Indice : pion ${source} → trou vide ${target}.`,
+    de: (source, target) => `Tipp: Stein ${source} → leeres Loch ${target}.`,
+    it: (source, target) => `Suggerimento: piolo ${source} → foro vuoto ${target}.`,
+    ru: (source, target) => `Подсказка: фишка ${source} → пустая лунка ${target}.`,
+    hi: (source, target) => `संकेत: गोटी ${source} → खाली खाना ${target}।`,
+    ar: (source, target) => `تلميح: الحجر ${source} إلى الحفرة الفارغة ${target}.`,
+  };
   const locale = document.documentElement.lang || "en";
   const copy = lessonCopy[locale] || lessonCopy.en;
   const invalidTargetMessage = invalidTargetCopy[locale] || invalidTargetCopy.en;
+  const hintRouteMessage = hintRouteCopy[locale] || hintRouteCopy.en;
   const status = document.querySelector("#logicStatus");
   const clearInvalidTargetCue = () => {
     if (!status) return;
@@ -87,6 +103,27 @@
     status.dataset.pegInvalidTarget = "true";
     status.classList.add("is-peg-invalid");
   };
+  const clearHintRouteCue = () => {
+    if (!status) return;
+    status.removeAttribute("data-peg-hint-route");
+  };
+  const showHintRouteCue = () => {
+    if (!status) return;
+    const cells = [...document.querySelectorAll(".logic-peg-board .logic-cell.is-hint")];
+    const source = cells.find((cell) => cell.classList.contains("peg"));
+    const target = cells.find((cell) => cell.classList.contains("empty"));
+    if (!source || !target) return;
+    const allCells = [...document.querySelectorAll(".logic-peg-board .logic-cell")];
+    status.textContent = hintRouteMessage(allCells.indexOf(source) + 1, allCells.indexOf(target) + 1);
+    status.dataset.pegHintRoute = "true";
+  };
+  document.addEventListener("click", (event) => {
+    if (event.target?.closest?.("#logicHint")) {
+      requestAnimationFrame(showHintRouteCue);
+      return;
+    }
+    if (event.target?.closest?.(".logic-peg-board .logic-cell, #logicUndo, #logicReset, #battleBack, #resultReplay, #resultMenu, #resultClose")) clearHintRouteCue();
+  }, true);
   document.addEventListener("click", (event) => {
     const target = event.target?.closest?.(".logic-peg-board .logic-cell");
     if (!target || target.classList.contains("void")) return;
