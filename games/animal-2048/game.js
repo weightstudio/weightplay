@@ -14,7 +14,7 @@
   const TUTORIAL_KEY = "weightplay_tutorial_seen_animal_2048_v1";
   const LOCALE_SEGMENTS = {en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",es:"es",ja:"ja",ko:"ko","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const SEGMENTS = {en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",es:"es",ja:"ja",ko:"ko","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
-  const GAME_ID="animal-2048",GAME_VERSION="v14",INTERFACE_VERSION="6";
+  const GAME_ID="animal-2048",GAME_VERSION="v15",INTERFACE_VERSION="6";
   const firstSegment = location.pathname.split("/").filter(Boolean)[0] || "en";
   const readStorage=(key)=>{try{return localStorage.getItem(key);}catch{return null;}};
   const writeStorage=(key,value)=>{try{localStorage.setItem(key,value);return true;}catch{return false;}};
@@ -99,7 +99,8 @@
   function chapter(index){return Math.min(5,Math.floor(index/5));}
   function activeLevel(){return stageIndex===INFINITE_INDEX?infiniteLevel:levels[stageIndex];}
   function animalFor(value){const tier=Math.max(1,Math.log2(value));return t(tileNames[Math.min(11,tier)]);}
-  function goalText(level,objective=false,budget=false){if(level.type==="endless")return t(objective?"endlessObjective":"endlessGoal",{best:Number(save.endlessBest||0)});const left=Math.max(0,level.limit-(budget?0:moves));if(level.type==="tile")return t(objective?"objectiveTile":"goalTile",{animal:animalFor(level.target),value:level.target,left});if(level.type==="score")return t(objective?"objectiveScore":"goalScore",{target:level.target,left});return t(objective?"objectiveMerges":"goalMerges",{target:level.target,left});}
+  function endlessObjectiveText(){const best=Number(save.endlessBest||0),highest=Number(save.endlessTile||0);return best||highest?t("endlessTargetRepeat",{best,animal:animalFor(highest||2),value:highest||2}):t("endlessTargetFirst");}
+  function goalText(level,objective=false,budget=false){if(level.type==="endless")return objective?endlessObjectiveText():t("endlessGoal");const left=Math.max(0,level.limit-(budget?0:moves));if(level.type==="tile")return t(objective?"objectiveTile":"goalTile",{animal:animalFor(level.target),value:level.target,left});if(level.type==="score")return t(objective?"objectiveScore":"goalScore",{target:level.target,left});return t(objective?"objectiveMerges":"goalMerges",{target:level.target,left});}
   function applyLocale(){document.documentElement.lang=locale;document.querySelectorAll("[data-i18n]").forEach(node=>node.textContent=t(node.dataset.i18n));document.querySelectorAll("[data-i18n-aria]").forEach(node=>node.setAttribute("aria-label",t(node.dataset.i18nAria)));dom.locale.value=locale;document.title=`${t("fullTitle")} | WeightPlay`;document.querySelector(".main-poster").alt=t("posterAlt");document.querySelector(".game-board").setAttribute("aria-label",t("boardLabel"));dom.board.setAttribute("aria-keyshortcuts","ArrowUp ArrowDown ArrowLeft ArrowRight W A S D U R H");renderMainProgress();if(document.body.dataset.screen==="stage")renderStages();if(document.body.dataset.screen==="battle")renderBattle();}
   function renderMainProgress(){const cleared=Object.keys(save.cleared||{}).length,stars=Object.values(save.stars||{}).reduce((a,b)=>a+Number(b||0),0);dom.mainProgress.textContent=t("progress",{cleared,stars});}
   function showMain(){setScreen("main");renderMainProgress();}

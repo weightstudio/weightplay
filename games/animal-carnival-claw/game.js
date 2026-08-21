@@ -358,7 +358,7 @@ function resolveGrip(){
   }
   renderHud();
 }
-function lockWindow(){return clamp(.23+save.upgrades.stability*.025-run.held.weight*.015,.16,.28)}
+function lockWindow(){const base=clamp(.23+save.upgrades.stability*.025-run.held.weight*.015,.16,.28),onboarding=run?.index===0&&!save.medals[0]&&run?.drops===2;return clamp(base+(onboarding?.035:0),.16,.32)}
 function attemptLock(){
   if(!run||run.phase!=="secure"||!run.held)return;
   const distance=Math.abs(run.lockValue-.5),windowSize=lockWindow();

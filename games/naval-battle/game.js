@@ -1,4 +1,4 @@
-const GAME_VERSION = "v4";
+const GAME_VERSION = "v6";
 
 window.WPClassicLogic?.mount("naval-battle");
 document.body.dataset.gameVersion = GAME_VERSION;
@@ -51,6 +51,22 @@ syncBattleChip();
     ar: { win: "\u0644\u0642\u062f \u0641\u0632\u062a \u00b7 \u0627\u0644\u0637\u0644\u0642\u0627\u062a: {shots} \u00b7 \u0633\u0641\u0646 \u0627\u0644\u0639\u062f\u0648 \u0627\u0644\u0645\u062a\u0628\u0642\u064a\u0629: 0", lose: "\u063a\u064e\u0631\u0650\u0642 \u0627\u0644\u0623\u0633\u0637\u0648\u0644 \u00b7 \u0627\u0644\u0637\u0644\u0642\u0627\u062a: {shots} \u00b7 \u0633\u0641\u0646\u0643 \u0627\u0644\u0645\u062a\u0628\u0642\u064a\u0629: 0" },
   };
 
+  const RESULT_REPLAY_GOAL = {
+    en: "Replay goal: clear the fleet in {target} shots or fewer next round.",
+    "zh-Hant": "\u91cd\u73a9\u76ee\u6a19\uff1a\u4e0b\u4e00\u5c40\u7528 {target} \u767c\u6216\u66f4\u5c11\u64ca\u6c89\u6574\u652f\u8266\u968a\u3002",
+    "zh-Hans": "\u91cd\u73a9\u76ee\u6807\uff1a\u4e0b\u4e00\u5c40\u7528 {target} \u53d1\u6216\u66f4\u5c11\u51fb\u6c89\u6574\u652f\u8230\u961f\u3002",
+    ja: "\u30ea\u30d7\u30ec\u30a4\u76ee\u6a19\uff1a\u6b21\u306f {target} \u767a\u4ee5\u5185\u3067\u8266\u968a\u3092\u5168\u6ec5\u3055\u305b\u308b\u3002",
+    ko: "\ub2e4\uc2dc \ud558\uae30 \ubaa9\ud45c: \ub2e4\uc74c \ub77c\uc6b4\ub4dc\uc5d0 {target}\ubc1c \uc774\ud558\ub85c \ud568\ub300\ub97c \uaca9\ucda8\ud558\uc138\uc694.",
+    es: "Objetivo de repetici\u00f3n: hunde la flota en {target} disparos o menos.",
+    "pt-BR": "Meta da revanche: afunde a frota em at\u00e9 {target} disparos.",
+    fr: "Objectif de revanche : coulez la flotte en {target} tirs ou moins.",
+    de: "Replay-Ziel: Versenke die Flotte in h\u00f6chstens {target} Sch\u00fcssen.",
+    it: "Obiettivo rigioca: affonda la flotta in {target} colpi o meno.",
+    ru: "\u0426\u0435\u043b\u044c \u043f\u043e\u0432\u0442\u043e\u0440\u0430: \u043f\u043e\u0442\u043e\u043f\u0438\u0442\u0435 \u0444\u043b\u043e\u0442 \u0437\u0430 {target} \u0432\u044b\u0441\u0442\u0440\u0435\u043b\u043e\u0432 \u0438\u043b\u0438 \u043c\u0435\u043d\u044c\u0448\u0435.",
+    hi: "\u092a\u0941\u0928\u0903 \u0916\u0947\u0932\u0928\u0947 \u0915\u093e \u0932\u0915\u094d\u0937\u094d\u092f: \u0905\u0917\u0932\u0940 \u092c\u093e\u091c\u093c\u0940 \u092e\u0947\u0902 {target} \u092f\u093e \u0915\u092e \u0936\u0949\u091f \u092e\u0947\u0902 \u092c\u0947\u0921\u093c\u0947 \u0915\u094b \u0921\u0941\u092c\u093e\u090f\u0901\u0964",
+    ar: "\u0647\u062f\u0641 \u0627\u0644\u0625\u0639\u0627\u062f\u0629: \u0623\u063a\u0631\u0642 \u0627\u0644\u0623\u0633\u0637\u0648\u0644 \u0641\u064a \u0627\u0644\u062c\u0648\u0644\u0629 \u0627\u0644\u062a\u0627\u0644\u064a\u0629 \u062e\u0644\u0627\u0644 {target} \u0637\u0644\u0642\u0629 \u0623\u0648 \u0623\u0642\u0644.",
+  };
+
   const locale = () => document.querySelector("#localePicker")?.value || document.documentElement.lang || "en";
 
   const applyResultCopy = () => {
@@ -65,7 +81,9 @@ syncBattleChip();
     const won = (enemyBoard?.querySelectorAll(".logic-cell.hit").length || 0) >= 7;
     const outcome = won ? "win" : "lose";
     const nextTitle = title[outcome];
-    const nextCopy = copy[outcome].replace("{shots}", String(shots));
+    const replayGoal = RESULT_REPLAY_GOAL[currentLocale] || RESULT_REPLAY_GOAL.en;
+    const target = won ? Math.max(1, shots - 1) : shots;
+    const nextCopy = `${copy[outcome].replace("{shots}", String(shots))} · ${replayGoal.replace("{target}", String(target))}`;
     const resultTitle = document.querySelector("#logicResultTitle");
     const resultText = document.querySelector("#logicResultText");
     if (resultTitle && resultTitle.textContent !== nextTitle) resultTitle.textContent = nextTitle;

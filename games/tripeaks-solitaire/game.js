@@ -31,6 +31,22 @@
     ar: { half: "تبقى {count} بطاقة في الرزمة. حافظ على سلسلة مفيدة قبل السحب.", low: "تبقى {count} بطاقات فقط في الرزمة. حافظ على سلسلة مفيدة قبل السحب.", last: "هذه آخر بطاقة في الرزمة. اسحب فقط بعد توقف السلسلة.", empty: "الرزمة فارغة. لا يمكن المتابعة إلا بسلسلة ظاهرة." },
   });
 
+  const TRIPEAKS_RESULT_RECAP_COPY = Object.freeze({
+    en: "Best chain: ×{chain} · Peaks cleared: {peaks}/3 · Score: {score} · Moves: {moves} · Deal: {seed}. Restart repeats this deal; New Game deals another.",
+    "zh-Hant": "最佳連鎖：×{chain} · 峰頂：{peaks}/3 · 分數：{score} · 步數：{moves} · 牌局：{seed}。重新開始會重玩此牌局；新遊戲會發新牌局。",
+    "zh-Hans": "最佳连锁：×{chain} · 峰顶：{peaks}/3 · 分数：{score} · 步数：{moves} · 牌局：{seed}。重新开始会重玩此牌局；新游戏会发新牌局。",
+    ja: "ベストチェイン：×{chain} · クリアしたピーク：{peaks}/3 · スコア：{score} · 手数：{moves} · ディール：{seed}。リスタートは同じディール、新しいゲームは別のディールです。",
+    ko: "최고 콤보: ×{chain} · 클리어한 피크: {peaks}/3 · 점수: {score} · 이동: {moves} · 딜: {seed}. 다시 시작은 같은 딜을 반복하고 새 게임은 다른 딜을 만듭니다.",
+    es: "Mejor cadena: ×{chain} · Cimas despejadas: {peaks}/3 · Puntuación: {score} · Movimientos: {moves} · Reparto: {seed}. Reiniciar repite este reparto; Nueva partida crea otro.",
+    "pt-BR": "Melhor sequência: ×{chain} · Picos limpos: {peaks}/3 · Pontuação: {score} · Movimentos: {moves} · Distribuição: {seed}. Reiniciar repete esta distribuição; Novo jogo cria outra.",
+    fr: "Meilleure chaîne : ×{chain} · Pics dégagés : {peaks}/3 · Score : {score} · Coups : {moves} · Donne : {seed}. Recommencer rejoue cette donne ; Nouvelle partie en crée une autre.",
+    de: "Beste Kette: ×{chain} · Geräumte Gipfel: {peaks}/3 · Punkte: {score} · Züge: {moves} · Deal: {seed}. Neustart spielt diesen Deal erneut; Neues Spiel gibt einen anderen.",
+    it: "Miglior catena: ×{chain} · Cime liberate: {peaks}/3 · Punteggio: {score} · Mosse: {moves} · Distribuzione: {seed}. Ricomincia ripete questa distribuzione; Nuova partita ne crea un’altra.",
+    ru: "Лучшая цепочка: ×{chain} · Очищено вершин: {peaks}/3 · Очки: {score} · Ходы: {moves} · Сдача: {seed}. Повторить — тот же расклад; новая игра — другой.",
+    hi: "सर्वश्रेष्ठ क्रम: ×{chain} · साफ़ चोटियाँ: {peaks}/3 · स्कोर: {score} · चालें: {moves} · डील: {seed}। फिर शुरू करें इसी डील को दोहराता है; नया खेल दूसरी डील देता है।",
+    ar: "أفضل سلسلة: ×{chain} · القمم المُنظّفة: {peaks}/3 · النقاط: {score} · الحركات: {moves} · التوزيع: {seed}. إعادة البدء تكرر هذا التوزيع؛ اللعبة الجديدة تعطي توزيعاً آخر.",
+  });
+
   const ensurePeakProgress = () => {
     const header = document.querySelector("#battleScreen .battle-header");
     if (!header) return null;
@@ -92,6 +108,20 @@
     document.getElementById("battleBackBtn")?.setAttribute("data-wp-return", "battle");
     const view = window.WPClassicSolitaire?.mount({ variant: "tripeaks", id: "tripeaks-solitaire" });
     if (!view) return;
+    const showResult = view.showResult?.bind(view);
+    const updateResultRecap = () => {
+      if (!view.nodes?.resultText || (!view.game.won && !view.game.lost)) return;
+      const copy = TRIPEAKS_RESULT_RECAP_COPY[view.locale] || TRIPEAKS_RESULT_RECAP_COPY.en;
+      const peaks = view.game.cards.filter((entry) => entry.row === 0 && entry.removed).length;
+      view.nodes.resultText.textContent = copy.replace(/\{(chain|peaks|score|moves|seed)\}/gu, (_match, key) => ({
+        chain: view.game.bestCombo,
+        peaks,
+        score: view.game.bestCombo,
+        moves: view.game.moves,
+        seed: view.game.seed,
+      }[key]));
+    };
+    if (showResult) view.showResult = () => { showResult(); updateResultRecap(); };
     let reserveRestoreTimer = null;
     const scheduleReserveRestore = () => {
       clearTimeout(reserveRestoreTimer);
