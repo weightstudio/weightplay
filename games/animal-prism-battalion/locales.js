@@ -55,6 +55,8 @@
   });
   const runtimeFallbackKeys=["laneKicker","lanePosterAlt","laneObjective","laneGuideTitle","laneGuideIntro","laneHow1","laneHow2","laneHow3","laneCampaign","laneTutorialTitle","laneTutorial1","laneTutorial2","laneTutorial3","attackPower","powerStored","shieldReward","bombThreat","pickupPower","shieldBroken","bombDefused","bombDamage","enemyCollision","enemyLeak","laneReady","waveLabel","bossWave"];
   Object.assign(rows,{
+    laneThreatCleared:["Lane {lane} held the line · threat cleared","第 {lane} 路守住防線 · 威脅已清除","第 {lane} 路守住防线 · 威胁已清除","レーン{lane}が防衛 · 脅威を撃破","{lane}번 레인이 방어 성공 · 위협 제거","Carril {lane}: línea defendida · amenaza neutralizada","Faixa {lane} segurou a linha · ameaça eliminada","Voie {lane} : ligne tenue · menace éliminée","Bahn {lane} hält die Linie · Bedrohung beseitigt","Corsia {lane}: linea tenuta · minaccia eliminata","Линия {lane} удержана · угроза устранена"],
+    laneCoreSecured:["Lane {lane} secured a power core · Attack +{count}","第 {lane} 路取得能量核心 · 攻擊力 +{count}","第 {lane} 路取得能量核心 · 攻击力 +{count}","レーン{lane}がパワーコアを確保 · 攻撃力 +{count}","{lane}번 레인이 파워 코어 확보 · 공격력 +{count}","Carril {lane}: núcleo de poder asegurado · ataque +{count}","Faixa {lane}: núcleo de poder garantido · ataque +{count}","Voie {lane} : noyau d'énergie récupéré · attaque +{count}","Bahn {lane} sichert einen Energiekern · Angriff +{count}","Corsia {lane}: nucleo di energia raccolto · attacco +{count}","Линия {lane}: энергокристалл собран · атака +{count}"],
     laneKicker:["THREE-LANE CORE DEFENSE"],lanePosterAlt:["Prism spirits defend three crystal lanes from shadow waves"],laneObjective:["Switch lanes, destroy every wave, protect the core."],
     laneGuideTitle:["Read the wave. Focus fire. Hold the core.","讀懂波次，集中火力，守住核心。","读懂波次，集中火力，守住核心。","ウェーブを読み、集中攻撃でコアを守れ。","웨이브를 읽고 화력을 집중해 코어를 지키세요.","Lee la oleada. Concentra el fuego. Protege el núcleo.","Leia a onda. Concentre o fogo. Proteja o núcleo.","Lisez la vague. Concentrez le feu. Protégez le noyau.","Lies die Welle. Bündele das Feuer. Halte den Kern.","Leggi l'ondata. Concentra il fuoco. Difendi il nucleo.","Читайте волну. Сосредоточьте огонь. Защитите ядро."],
     laneGuideIntro:["Command three automatic prism batteries against dense shadow formations. Switch lanes to stop the closest threat and collect the rare power core before the stronger wave behind it arrives."],
@@ -154,6 +156,8 @@
       "purchased": "अपग्रेड स्थापित किया गया.",
       "gateDrain": "नाली गेट -{count}",
       "gateBoost": "गेट बूस्ट +{count}",
+      "laneThreatCleared": "लेन {lane} ने मोर्चा संभाला · खतरा खत्म",
+      "laneCoreSecured": "लेन {lane} ने पावर कोर सुरक्षित किया · हमला +{count}",
       "overdriveActive": "ओवरड्राइव सक्रिय",
       "missionFailedKicker": "आक्रमण समाप्त हुआ",
       "secondsShort": "{seconds}एस",
@@ -257,6 +261,8 @@
       "gateDrain": "بوابة الصرف -{count}",
       "overdriveUsed": "مضاعفة السرعة المنشورية!",
       "gateBoost": "تعزيز البوابة +{count}",
+      "laneThreatCleared": "المسار {lane} ثبّت الخط · تم إيقاف التهديد",
+      "laneCoreSecured": "المسار {lane} أمّن نواة طاقة · الهجوم +{count}",
       "upgradeRate": "إيقاع النبض",
       "shards": "{count}شظايا",
       "upgradePower": "قوة الروح",

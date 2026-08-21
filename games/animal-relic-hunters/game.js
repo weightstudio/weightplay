@@ -12,7 +12,7 @@
   const ROOMS_PER_EXPEDITION = 3;
   const EXPEDITIONS_PER_REGION = 5;
   const GAME_ID = "animal-relic-hunters";
-  const GAME_VERSION = 15;
+  const GAME_VERSION = 16;
   const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_relic_hunters_v1";
   const profileKey = "weightplay:animal-relic-hunters:profile:v1";
@@ -3502,6 +3502,28 @@
     // 2. Draw Chests, Keys, Portals
     state.pickups.forEach((pickup) => {
         if (pickup.type === "key") {
+          const pulse = 1 + Math.sin(performance.now() / 220) * 0.08;
+          ctx.save();
+          ctx.translate(pickup.x, pickup.y);
+          ctx.scale(pulse, pulse);
+          ctx.shadowColor = "#fde68a";
+          ctx.shadowBlur = 18;
+          ctx.strokeStyle = "#fde68a";
+          ctx.lineWidth = 3;
+          ctx.setLineDash([6, 4]);
+          ctx.beginPath();
+          ctx.arc(0, 0, 27, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.setLineDash([]);
+          ctx.shadowBlur = 0;
+          ctx.fillStyle = "rgba(253, 230, 138, 0.9)";
+          ctx.beginPath();
+          ctx.moveTo(0, -43);
+          ctx.lineTo(9, -31);
+          ctx.lineTo(-9, -31);
+          ctx.closePath();
+          ctx.fill();
+          ctx.restore();
           if (assets.key.complete) {
             ctx.drawImage(assets.key, pickup.x - 16, pickup.y - 16, 32, 32);
           } else {

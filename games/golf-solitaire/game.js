@@ -15,6 +15,21 @@
     hi: "कोई खुला कार्ड फेंकी गई गड्डी पर नहीं जा सकता और डेक खाली है। फिर शुरू करें यही बाज़ी दोहराता है; नया खेल नई व्यवस्था देता है।",
     ar: "لا توجد بطاقة مكشوفة تناسب المهملات، والرزمة فارغة. إعادة البدء تبقي هذه التوزيعة؛ اللعبة الجديدة تقدم ترتيبًا جديدًا.",
   };
+  const GOLF_RESULT_ACTION_COPY = {
+    en: "Restart keeps this same deal; New Game offers a fresh layout.",
+    "zh-Hant": "重新開始會保留同一副牌；新遊戲會提供新的牌局。",
+    "zh-Hans": "重新开始会保留同一副牌；新游戏会提供新的牌局。",
+    ja: "リスタートは同じ配りを保ち、新しいゲームは別のレイアウトを配ります。",
+    ko: "다시 시작은 같은 딜을 유지하고, 새 게임은 새로운 배치를 제공합니다.",
+    es: "Reiniciar conserva esta partida; Nueva partida ofrece una disposición nueva.",
+    "pt-BR": "Reiniciar mantém esta partida; Novo jogo oferece uma nova disposição.",
+    fr: "Recommencer garde cette donne ; une nouvelle partie propose une nouvelle disposition.",
+    de: "Neu starten behält diese Partie; Neues Spiel bietet eine neue Anordnung.",
+    it: "Ricomincia conserva questa partita; Nuova partita offre una nuova disposizione.",
+    ru: "«Начать заново» сохраняет эту раздачу, а «Новая игра» предлагает новую раскладку.",
+    hi: "फिर शुरू करें यही बाज़ी रखता है; नया खेल नई व्यवस्था देता है।",
+    ar: "إعادة البدء تبقي هذه التوزيعة؛ اللعبة الجديدة تقدم ترتيبًا جديدًا.",
+  };
   const mount = () => {
     const mainReturn = document.querySelector(".main-return");
     if (mainReturn && !mainReturn.querySelector("img")) {
@@ -29,10 +44,16 @@
     const showResult = view.showResult.bind(view);
     view.showResult = () => {
       showResult();
-      if (!view.game?.lost || !view.nodes?.resultText) return;
+      if (!view.nodes?.resultText) return;
       const locale = view.locale || document.documentElement.lang || "en";
-      const reason = GOLF_FAILURE_REASON_COPY[locale] || GOLF_FAILURE_REASON_COPY.en;
-      view.nodes.resultText.textContent = `${view.nodes.resultText.textContent} ${reason}`;
+      if (view.game?.lost) {
+        const reason = GOLF_FAILURE_REASON_COPY[locale] || GOLF_FAILURE_REASON_COPY.en;
+        view.nodes.resultText.textContent = `${view.nodes.resultText.textContent} ${reason}`;
+      }
+      if (view.game?.won) {
+        const actions = GOLF_RESULT_ACTION_COPY[locale] || GOLF_RESULT_ACTION_COPY.en;
+        view.nodes.resultText.textContent = `${view.nodes.resultText.textContent} ${actions}`;
+      }
     };
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mount, { once: true });
