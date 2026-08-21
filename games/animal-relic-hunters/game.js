@@ -12,7 +12,7 @@
   const ROOMS_PER_EXPEDITION = 3;
   const EXPEDITIONS_PER_REGION = 5;
   const GAME_ID = "animal-relic-hunters";
-  const GAME_VERSION = 17;
+  const GAME_VERSION = 18;
   const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_relic_hunters_v1";
   const profileKey = "weightplay:animal-relic-hunters:profile:v1";
@@ -710,6 +710,97 @@
     nextExpedition: "\u4e0b\u4e00\u4efb\u52d9",
   });
 
+  Object.assign(text["zh-Hans"], {
+    title: "动物遗迹猎人",
+    menuTitle: "探索古代遗迹。",
+    menuHint: "点击或拖曳引导探险者；遗迹武器自动攻击。击败影兽、收集遗迹能量球、找回每个房间的钥匙。",
+    prototypeGoalsTitle: "远征目标",
+    prototypeGoalsText: "完成 30 次三房间远征，学习每个遗迹的威胁，并击败六位区域守护者，同时通过永久训练和装备不断成长。",
+    startGame: "开始游戏",
+    campaignProgress: "已完成远征：{count} / 30",
+  });
+  Object.assign(text.ja, {
+    title: "どうぶつレリックハンター",
+    menuTitle: "古代遺跡を探検しよう。",
+    menuHint: "タップやドラッグで探検家を導き、自動攻撃で影の獣を倒し、オーブと各部屋の鍵を集めよう。",
+    prototypeGoalsTitle: "遠征の目標",
+    prototypeGoalsText: "30回の三部屋遠征で遺跡ごとの脅威を学び、永久訓練と装備で成長しながら6体の地域ガーディアンを倒そう。",
+    startGame: "ゲーム開始",
+    campaignProgress: "クリアした遠征：{count} / 30",
+  });
+  Object.assign(text.ko, {
+    title: "동물 유물 사냥꾼",
+    menuTitle: "고대 유적을 탐험하세요.",
+    menuHint: "탭하거나 드래그해 탐험가를 이끌고 자동 공격으로 그림자 야수를 물리치며 각 방의 열쇠와 오브를 모으세요.",
+    prototypeGoalsTitle: "원정 목표",
+    prototypeGoalsText: "30번의 세 방 원정에서 유적의 위협을 배우고 영구 훈련과 장비로 성장하며 여섯 지역 수호자를 물리치세요.",
+    startGame: "게임 시작",
+    campaignProgress: "완료한 원정: {count} / 30",
+  });
+  Object.assign(text["pt-BR"], {
+    title: "Caçadores de Relíquias Animais",
+    menuTitle: "Explore as ruínas antigas.",
+    menuHint: "Guie o explorador tocando ou arrastando; armas de relíquia disparam sozinhas. Derrote feras sombrias, colete Orbes de Relíquia e recupere as chaves de cada sala.",
+    prototypeGoalsTitle: "Objetivo da expedição",
+    prototypeGoalsText: "Conclua 30 expedições de três salas, aprenda as ameaças de cada ruína e derrote seis Guardiões regionais enquanto evolui com treino e equipamento permanentes.",
+    startGame: "Começar jogo",
+    campaignProgress: "Expedições concluídas: {count} / 30",
+  });
+  Object.assign(text.fr, {
+    title: "Chasseurs de reliques animaliers",
+    menuTitle: "Explorez les ruines anciennes.",
+    menuHint: "Guidez l’explorateur en touchant ou glissant ; les armes tirent seules. Vainquez les bêtes d’ombre, collectez les Orbes de Relique et récupérez les clés de chaque salle.",
+    prototypeGoalsTitle: "Objectif de l’expédition",
+    prototypeGoalsText: "Terminez 30 expéditions de trois salles, apprenez les menaces de chaque ruine et vainquez six Gardiens régionaux grâce à l’entraînement et à l’équipement permanents.",
+    startGame: "Commencer",
+    campaignProgress: "Expéditions terminées : {count} / 30",
+  });
+  Object.assign(text.de, {
+    title: "Tierische Reliktjäger",
+    menuTitle: "Erkunde die alten Ruinen.",
+    menuHint: "Führe die Entdeckerin per Tippen oder Ziehen; Reliktwaffen feuern automatisch. Besiege Schattenbestien, sammle Orbs und hole die Schlüssel jedes Raums zurück.",
+    prototypeGoalsTitle: "Expeditionsziel",
+    prototypeGoalsText: "Schließe 30 Expeditionen mit je drei Räumen ab, lerne die Gefahren jeder Ruine kennen und besiege sechs regionale Wächter mit dauerhafter Ausbildung und Ausrüstung.",
+    startGame: "Spiel starten",
+    campaignProgress: "Abgeschlossene Expeditionen: {count} / 30",
+  });
+  Object.assign(text.it, {
+    title: "Cacciatori di reliquie animali",
+    menuTitle: "Esplora le rovine antiche.",
+    menuHint: "Guida l’esploratore toccando o trascinando; le armi reliquia sparano automaticamente. Sconfiggi le bestie d’ombra, raccogli le Sfere e recupera le chiavi di ogni stanza.",
+    prototypeGoalsTitle: "Obiettivo della spedizione",
+    prototypeGoalsText: "Completa 30 spedizioni di tre stanze, impara le minacce di ogni rovina e sconfiggi sei Guardiani regionali crescendo con addestramento ed equipaggiamento permanenti.",
+    startGame: "Inizia partita",
+    campaignProgress: "Spedizioni completate: {count} / 30",
+  });
+  Object.assign(text.ru, {
+    title: "Охотники за звериными реликвиями",
+    menuTitle: "Исследуйте древние руины.",
+    menuHint: "Ведите исследователя касанием или свайпом; оружие стреляет автоматически. Побеждайте теневых зверей, собирайте сферы и возвращайте ключи из каждой комнаты.",
+    prototypeGoalsTitle: "Цель экспедиции",
+    prototypeGoalsText: "Пройдите 30 экспедиций по три комнаты, изучите угрозы каждой руины и победите шестерых региональных хранителей с помощью постоянной тренировки и снаряжения.",
+    startGame: "Начать игру",
+    campaignProgress: "Завершено экспедиций: {count} / 30",
+  });
+  Object.assign(text.hi, {
+    title: "पशु अवशेष शिकारी",
+    menuTitle: "प्राचीन खंडहरों का अन्वेषण करें।",
+    menuHint: "टैप या ड्रैग से खोजकर्ता को चलाएँ; अवशेष हथियार अपने-आप हमला करते हैं। छाया-दैत्यों को हराएँ, ऑर्ब इकट्ठे करें और हर कमरे की चाबियाँ वापस पाएँ।",
+    prototypeGoalsTitle: "अभियान का लक्ष्य",
+    prototypeGoalsText: "तीन कमरों वाले 30 अभियानों को पूरा करें, हर खंडहर के खतरे सीखें और स्थायी प्रशिक्षण व उपकरणों के साथ छह क्षेत्रीय संरक्षकों को हराएँ।",
+    startGame: "खेल शुरू करें",
+    campaignProgress: "पूरे किए गए अभियान: {count} / 30",
+  });
+  Object.assign(text.ar, {
+    title: "صيادو الآثار الحيوانية",
+    menuTitle: "استكشف الآثار القديمة.",
+    menuHint: "المس أو اسحب في الساحة لتوجيه المستكشف بينما تطلق أسلحة الآثار تلقائيًا. اهزم وحوش الظلال، واجمع كرات الآثار، واستعد مفاتيح كل غرفة.",
+    prototypeGoalsTitle: "هدف الرحلة",
+    prototypeGoalsText: "أكمل 30 رحلة من ثلاث غرف، وتعلّم أخطار كل أثر، واهزم ستة حراس إقليميين مع تطوير التدريب والمعدات الدائمة.",
+    startGame: "ابدأ اللعبة",
+    campaignProgress: "الرحلات المكتملة: {count} / 30",
+  });
+
   Object.assign(text.en, {
     combatHit: "Relic weapon hit · {damage} damage",
     combatWard: "Ward struck · one charge removed",
@@ -1335,6 +1426,19 @@
       arena: "Arena de batalla. Toca o arrastra para moverte; también puedes usar WASD o las flechas."
     }
   };
+
+  Object.assign(ariaText, {
+    "zh-Hans": { lobby: "返回大厅", language: "语言选择器", stageBack: "返回主页", regions: "遗迹区域", battleBack: "返回准备界面", arena: "战斗场地。点击或拖曳移动，也可使用 WASD 和方向键。" },
+    ja: { lobby: "ロビーに戻る", language: "言語セレクター", stageBack: "メインに戻る", regions: "遺跡の地域", battleBack: "準備画面に戻る", arena: "バトルアリーナ。タップまたはドラッグで移動し、WASDや矢印キーも使えます。" },
+    ko: { lobby: "로비로 돌아가기", language: "언어 선택기", stageBack: "메인으로 돌아가기", regions: "유적 지역", battleBack: "준비 화면으로 돌아가기", arena: "전투 아레나. 탭하거나 드래그해 이동하고 WASD와 방향키도 사용할 수 있습니다." },
+    "pt-BR": { lobby: "Voltar ao lobby", language: "Seletor de idioma", stageBack: "Voltar ao início", regions: "Regiões das ruínas", battleBack: "Voltar à preparação", arena: "Arena de batalha. Toque ou arraste para mover; WASD e as setas também funcionam." },
+    fr: { lobby: "Retourner au lobby", language: "Sélecteur de langue", stageBack: "Retour à l’accueil", regions: "Régions des ruines", battleBack: "Retour à la préparation", arena: "Arène de combat. Touchez ou faites glisser pour bouger ; WASD et les flèches fonctionnent aussi." },
+    de: { lobby: "Zur Lobby zurück", language: "Sprachauswahl", stageBack: "Zur Hauptseite", regions: "Ruinenregionen", battleBack: "Zur Vorbereitung zurück", arena: "Kampfarena. Tippen oder ziehen Sie zum Bewegen; WASD und Pfeiltasten funktionieren ebenfalls." },
+    it: { lobby: "Torna alla lobby", language: "Selettore lingua", stageBack: "Torna alla schermata principale", regions: "Regioni delle rovine", battleBack: "Torna alla preparazione", arena: "Arena di battaglia. Tocca o trascina per muoverti; funzionano anche WASD e le frecce." },
+    ru: { lobby: "Вернуться в лобби", language: "Выбор языка", stageBack: "Вернуться в меню", regions: "Регионы руин", battleBack: "Вернуться к подготовке", arena: "Арена боя. Нажимайте или проводите для движения; также работают WASD и стрелки." },
+    hi: { lobby: "लॉबी पर लौटें", language: "भाषा चयनकर्ता", stageBack: "मुख्य पृष्ठ पर लौटें", regions: "खंडहर क्षेत्र", battleBack: "तैयारी पर लौटें", arena: "युद्ध क्षेत्र। चलने के लिए टैप या ड्रैग करें; WASD और तीर कुंजियाँ भी काम करती हैं।" },
+    ar: { lobby: "العودة إلى الردهة", language: "محدد اللغة", stageBack: "العودة إلى الرئيسية", regions: "مناطق الآثار", battleBack: "العودة إلى التحضير", arena: "ساحة المعركة. المس أو اسحب للتحرك، ويمكنك أيضًا استخدام WASD ومفاتيح الأسهم." },
+  });
 
   const pauseText = {
     en: {

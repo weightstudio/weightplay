@@ -717,7 +717,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Animal Relic Hunters",
     "ru": "Animal Relic Hunters",
     "hi": "Animal Relic Hunters",
-    "ar": "Animal Relic Hunters"
+    "ar": "صيادو الآثار الحيوانية"
   },
   "animal-rune-tactics": {
     "__localizedExact": true,
