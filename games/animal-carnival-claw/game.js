@@ -3,11 +3,15 @@
 const $=id=>document.getElementById(id),$$=selector=>[...document.querySelectorAll(selector)];
 const clamp=(value,min=0,max=1)=>Math.max(min,Math.min(max,value));
 const fmt=(value,data={})=>String(value??"").replace(/\{(\w+)\}/g,(_,key)=>data[key]??"");
+const ANALYTICS_GAME_ID="animal-carnival-claw",ANALYTICS_GAME_VERSION="v31",ANALYTICS_INTERFACE_VERSION="6",ANALYTICS_SCHEMA_VERSION=1;
+const viewportBucket=()=>{const width=Math.max(window.innerWidth||0,window.innerHeight||0),short=Math.min(window.innerWidth||0,window.innerHeight||0);return short<480?"phone":width<900?"tablet":"desktop"};
+const boundedMetric=(value,max)=>{const number=Number(value);return Number.isFinite(number)?Math.max(0,Math.min(max,Math.round(number))):0};
+function track(eventName,details={}){try{window.WonderAnalytics?.track?.(eventName,{game_id:ANALYTICS_GAME_ID,game_version:ANALYTICS_GAME_VERSION,interface_version:ANALYTICS_INTERFACE_VERSION,schema_version:ANALYTICS_SCHEMA_VERSION,locale,viewport_bucket:viewportBucket(),...details})}catch{}}
 const localeNames={"en":"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans","ja":"ja","ko":"ko","es":"es","pt-br":"pt-BR","fr":"fr","de":"de","it":"it","ru":"ru","hi":"hi","ar":"ar"};
 const routeLocale=localeNames[location.pathname.split("/").filter(Boolean)[0]?.toLowerCase()];
 let locale=routeLocale||safeGet("weightPlayLocale")||safeGet("weightplayLocale")||document.documentElement.lang||"en";
 if(!window.CARNIVAL_CLAW_LOCALES[locale])locale="en";
-let copy=window.CARNIVAL_CLAW_LOCALES[locale],screen="main",selected=0,focusReturn=null,raf=0,last=0,settledDecision=false,resolvedWallAnchor=0;
+let copy=window.CARNIVAL_CLAW_LOCALES[locale],screen="main",selected=0,focusReturn=null,raf=0,last=0,settledDecision=false,resolvedWallAnchor=0,stageEntry="main";
 const canvas=$("gameCanvas"),ctx=canvas.getContext("2d",{alpha:false});
 const images={
   background:loadImage("../../assets/animal-carnival-claw-background-v2.webp"),
@@ -263,7 +267,8 @@ function buyUpgrade(id){
   });
 }
 
-function startMission(index){
+function startMission(index,entry="stage_select"){
+  const missionEntry=stageEntry==="battle_return"?"stage_reentry":entry;stageEntry="main";
   selected=index;const level=levels[index];
   run={
     index,level,phase:"aim",elapsed:0,phaseTime:0,drops:3,aimX:500,aimY:360,dropX:null,lockValue:.08,lockDirection:1,lockQuality:0,stability:1,grip:1,swing:0,held:null,fallX:0,fallY:0,fallVelocity:0,fallRotation:0,aimCorrection:null,lastSpatialCorrection:"",
@@ -271,6 +276,7 @@ function startMission(index){
   };
   settledDecision=false;resolvedWallAnchor=0;$("resultPanel").hidden=true;$("leavePanel").hidden=true;$("pausePanel").hidden=true;$("battleLive").hidden=false;$("battleLive").inert=false;
   $("resultStagesBtn").disabled=false;$("retryBtn").disabled=false;$("nextBtn").disabled=true;
+  track("mission_start",{mission:boundedMetric(index+1,30),entry:missionEntry});
   show("battle");resizeCanvas();renderHud();draw();
   if(!save.tutorial){openModal("tutorialPanel",$("tutorialStartBtn"))}
 }
@@ -393,6 +399,7 @@ function finish(won){
     const reward=medal+(newBest?1:0);save.bolts+=reward;persist();
   }
   run.result={won,medal,newBest};settledDecision=false;cancelAnimationFrame(raf);raf=0;
+  track(won?"mission_clear":"mission_fail",{mission:boundedMetric(run.index+1,30),drops_remaining:boundedMetric(run.drops,3),misses:boundedMetric(run.misses,30),medal:boundedMetric(medal,3),new_best:Boolean(newBest)});
   $("battleLive").hidden=true;$("battleLive").inert=true;$("resultPanel").hidden=false;
   $("resultStagesBtn").disabled=false;$("retryBtn").disabled=false;
   $("resultTitle").textContent=t(won?"winTitle":"failTitle");$("resultMedal").textContent=medalText(medal);
@@ -504,9 +511,9 @@ function bind(){
     const next=event.detail?.locale;
     if(window.CARNIVAL_CLAW_LOCALES[next])setLocale(next,false);
   });
-  $("startBtn").addEventListener("click",()=>{show("stage");setStagePanel("stages")});
-  $("stageBackBtn").addEventListener("click",()=>show("main"));
-  $("enterBtn").addEventListener("click",()=>selected<save.unlocked&&startMission(selected));
+  $("startBtn").addEventListener("click",()=>{track("game_start",{entry:"main"});stageEntry="main";show("stage");setStagePanel("stages")});
+  $("stageBackBtn").addEventListener("click",()=>{track("main_return",{from:"stages"});stageEntry="main";show("main")});
+  $("enterBtn").addEventListener("click",()=>selected<save.unlocked&&startMission(selected,"stage_select"));
   $("stagesTab").addEventListener("click",()=>setStagePanel("stages"));
   $("cabinetTab").addEventListener("click",()=>setStagePanel("cabinet"));
   $("workshopTab").addEventListener("click",()=>setStagePanel("workshop"));
@@ -514,15 +521,15 @@ function bind(){
   $("stageRail").addEventListener("wonder:stage-snap",event=>{const index=Number(event.detail?.index);if(Number.isInteger(index)&&levels[index])selectStage(index,false)});
   $("battleBackBtn").addEventListener("click",()=>openModal("leavePanel",$("leaveContinueBtn")));
   $("leaveContinueBtn").addEventListener("click",()=>closeModal("leavePanel"));
-  $("leaveStagesBtn").addEventListener("click",()=>{closeModal("leavePanel",false);show("stage")});
+  $("leaveStagesBtn").addEventListener("click",()=>{track("battle_return",{from:"battle",destination:"stages",mission:boundedMetric((run?.index??0)+1,30)});stageEntry="battle_return";closeModal("leavePanel",false);show("stage")});
   $("pauseBtn").addEventListener("click",()=>openModal("pausePanel",$("resumeBtn")));
   $("resumeBtn").addEventListener("click",()=>closeModal("pausePanel"));
   $("tutorialStartBtn").addEventListener("click",()=>{save.tutorial=true;persist();closeModal("tutorialPanel")});
   $("dropBtn").addEventListener("click",()=>{if(run?.phase==="aim")beginDrop();else if(run?.phase==="secure")attemptLock()});
-  $("restartBtn").addEventListener("click",()=>startMission(run.index));
-  $("resultStagesBtn").addEventListener("click",()=>commitResult(()=>show("stage")));
-  $("nextBtn").addEventListener("click",()=>commitResult(()=>startMission(Math.min(29,run.index+1))));
-  $("retryBtn").addEventListener("click",()=>commitResult(()=>startMission(run.index)));
+  $("restartBtn").addEventListener("click",()=>startMission(run.index,"battle_restart"));
+  $("resultStagesBtn").addEventListener("click",()=>commitResult(()=>{track("result_action",{action:"stages",mission:boundedMetric((run?.index??0)+1,30),outcome:run?.result?.won?"clear":"fail"});track("battle_return",{from:"result",destination:"stages",mission:boundedMetric((run?.index??0)+1,30)});stageEntry="battle_return";show("stage")}));
+  $("nextBtn").addEventListener("click",()=>commitResult(()=>{track("result_action",{action:"next",mission:boundedMetric((run?.index??0)+1,30),outcome:"clear"});startMission(Math.min(29,run.index+1),"next_mission")}));
+  $("retryBtn").addEventListener("click",()=>commitResult(()=>{track("result_action",{action:"replay",mission:boundedMetric((run?.index??0)+1,30),outcome:run?.result?.won?"clear":"fail"});startMission(run.index,"replay")}));
   canvas.addEventListener("pointerdown",event=>{if(pointerId!==null||run?.phase!=="aim")return;pointerId=event.pointerId;canvas.setPointerCapture(event.pointerId);handlePointerAim(event);event.preventDefault()});
   canvas.addEventListener("pointermove",event=>{if(pointerId===event.pointerId)handlePointerAim(event)});
   canvas.addEventListener("pointerup",event=>{if(pointerId!==event.pointerId)return;handlePointerAim(event,run?.phase==="aim");pointerId=null;event.preventDefault()});

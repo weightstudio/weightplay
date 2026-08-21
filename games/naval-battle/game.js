@@ -1,4 +1,4 @@
-const GAME_VERSION = "v6";
+const GAME_VERSION = "v7";
 
 window.WPClassicLogic?.mount("naval-battle");
 document.body.dataset.gameVersion = GAME_VERSION;
@@ -15,6 +15,107 @@ document.querySelector("#logicReset")?.addEventListener("click", syncBattleChip)
 const statusObserver = new MutationObserver(syncBattleChip);
 statusObserver.observe(document.querySelector("#logicStatus") || document.body, { childList: true, characterData: true, subtree: true });
 syncBattleChip();
+
+const NAVAL_HINT_COPY = {
+  en: {
+    adjacent: "Hint: search row {row}, column {col} next to a hit; you choose whether to fire.",
+    search: "Hint: start a checkerboard search at row {row}, column {col}; you choose whether to fire.",
+    cell: "Hint target; still choose whether to fire.",
+  },
+  "zh-Hant": {
+    adjacent: "提示：可從命中格旁的第 {row} 行、第 {col} 列開始搜尋；是否開火由你決定。",
+    search: "提示：可從棋盤交錯搜尋的第 {row} 行、第 {col} 列開始；是否開火由你決定。",
+    cell: "提示目標；是否開火仍由你決定。",
+  },
+  "zh-Hans": {
+    adjacent: "提示：可从命中格旁的第 {row} 行、第 {col} 列开始搜索；是否开火由你决定。",
+    search: "提示：可从棋盘交错搜索的第 {row} 行、第 {col} 列开始；是否开火由你决定。",
+    cell: "提示目标；是否开火仍由你决定。",
+  },
+  ja: {
+    adjacent: "ヒント：命中マスの隣、{row}行{col}列を探索してみましょう。撃つかどうかはあなたが決めます。",
+    search: "ヒント：{row}行{col}列から市松模様に探索を始めましょう。撃つかどうかはあなたが決めます。",
+    cell: "ヒントの目標。撃つかどうかはあなたが決めます。",
+  },
+  ko: {
+    adjacent: "힌트: 명중 칸 옆의 {row}행 {col}열을 탐색해 보세요. 발사 여부는 직접 정합니다.",
+    search: "힌트: {row}행 {col}열부터 체커보드 순서로 탐색해 보세요. 발사 여부는 직접 정합니다.",
+    cell: "힌트 목표입니다. 발사 여부는 직접 정합니다.",
+  },
+  es: {
+    adjacent: "Pista: explora la fila {row}, columna {col}, junto a un impacto; tú decides si disparar.",
+    search: "Pista: empieza una búsqueda en tablero de ajedrez por la fila {row}, columna {col}; tú decides si disparar.",
+    cell: "Objetivo sugerido; tú decides si disparar.",
+  },
+  "pt-BR": {
+    adjacent: "Dica: explore a linha {row}, coluna {col}, ao lado de um acerto; você decide se dispara.",
+    search: "Dica: comece uma busca em padrão de xadrez pela linha {row}, coluna {col}; você decide se dispara.",
+    cell: "Alvo sugerido; você decide se dispara.",
+  },
+  fr: {
+    adjacent: "Indice : explorez la ligne {row}, colonne {col}, près d’un tir réussi ; vous décidez de tirer.",
+    search: "Indice : commencez une recherche en damier à la ligne {row}, colonne {col} ; vous décidez de tirer.",
+    cell: "Cible suggérée ; c’est vous qui décidez de tirer.",
+  },
+  de: {
+    adjacent: "Tipp: Suche in Zeile {row}, Spalte {col} neben einem Treffer weiter; du entscheidest selbst, ob du schießt.",
+    search: "Tipp: Beginne die Schachbrettsuche bei Zeile {row}, Spalte {col}; du entscheidest selbst, ob du schießt.",
+    cell: "Tippziel; du entscheidest selbst, ob du schießt.",
+  },
+  it: {
+    adjacent: "Suggerimento: esplora la riga {row}, colonna {col}, accanto a un colpo a segno; decidi tu se sparare.",
+    search: "Suggerimento: inizia la ricerca a scacchiera dalla riga {row}, colonna {col}; decidi tu se sparare.",
+    cell: "Bersaglio suggerito; decidi tu se sparare.",
+  },
+  ru: {
+    adjacent: "Подсказка: исследуйте строку {row}, столбец {col} рядом с попаданием; стрелять решаете вы.",
+    search: "Подсказка: начните поиск по шахматному узору со строки {row}, столбца {col}; стрелять решаете вы.",
+    cell: "Цель подсказки; стрелять решаете вы.",
+  },
+  hi: {
+    adjacent: "संकेत: हिट के पास पंक्ति {row}, स्तंभ {col} खोजें; फायर करना है या नहीं, यह आप चुनते हैं।",
+    search: "संकेत: पंक्ति {row}, स्तंभ {col} से चेकरबोर्ड खोज शुरू करें; फायर करना है या नहीं, यह आप चुनते हैं।",
+    cell: "संकेत लक्ष्य; फायर करना है या नहीं, यह आप चुनते हैं।",
+  },
+  ar: {
+    adjacent: "تلميح: ابحث في الصف {row}، العمود {col} بجوار إصابة؛ أنت من يقرر إطلاق النار.",
+    search: "تلميح: ابدأ البحث المتناوب من الصف {row}، العمود {col}؛ أنت من يقرر إطلاق النار.",
+    cell: "هدف التلميح؛ أنت من يقرر إطلاق النار.",
+  },
+};
+
+const applyNavalHintCue = () => {
+  const result = document.querySelector("#logicResult");
+  const enemyBoard = document.querySelector(".logic-naval-layout > div:nth-child(2) .logic-naval-board");
+  if (!enemyBoard || result && !result.hidden) return;
+  const cells = [...enemyBoard.querySelectorAll(".logic-cell")];
+  const open = cells.map((cell, index) => ({ cell, index })).filter(({ cell }) => !cell.classList.contains("hit") && !cell.classList.contains("miss"));
+  if (!open.length) return;
+  cells.forEach((cell) => cell.classList.remove("is-hint"));
+  const openIndexes = new Set(open.map(({ index }) => index));
+  const hits = cells.map((cell, index) => cell.classList.contains("hit") ? index : -1).filter((index) => index >= 0);
+  const neighbours = (index) => {
+    const row = Math.floor(index / 6);
+    const col = index % 6;
+    return [[row - 1, col], [row + 1, col], [row, col - 1], [row, col + 1]]
+      .filter(([nextRow, nextCol]) => nextRow >= 0 && nextRow < 6 && nextCol >= 0 && nextCol < 6)
+      .map(([nextRow, nextCol]) => nextRow * 6 + nextCol);
+  };
+  const adjacent = hits.flatMap(neighbours).filter((index, position, values) => openIndexes.has(index) && values.indexOf(index) === position);
+  const candidate = adjacent[0] ?? open.find(({ index }) => (Math.floor(index / 6) + index % 6) % 2 === 0)?.index ?? open[0].index;
+  const target = cells[candidate];
+  if (!target) return;
+  const row = Math.floor(candidate / 6) + 1;
+  const col = candidate % 6 + 1;
+  const copy = NAVAL_HINT_COPY[document.documentElement.lang] || NAVAL_HINT_COPY.en;
+  const message = (hits.length ? copy.adjacent : copy.search).replace("{row}", String(row)).replace("{col}", String(col));
+  target.classList.add("is-hint");
+  target.setAttribute("aria-label", `${target.getAttribute("aria-label") || ""} · ${copy.cell}`);
+  const status = document.querySelector("#logicStatus");
+  if (status) status.textContent = message;
+};
+
+document.querySelector("#logicHint")?.addEventListener("click", () => setTimeout(applyNavalHintCue, 0));
 
 (() => {
   "use strict";

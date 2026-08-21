@@ -86,6 +86,7 @@ body[data-screen="result"] .game-page-info-static { display: none !important; }
 .control { min-width: 72px; min-height: 48px; }
 body[data-game-id="snake"] #controls .control { touch-action: manipulation; }
 .arcade-footer { padding: 12px 16px; color: var(--arcade-muted); font-size: .82rem; text-align: center; }
+.arcade-ad-reserve { display: none; }
 
 /* Tetris Battle and Result own the complete active viewport at every
    canonical size. Keep the inactive collection shell out of the flex stack
@@ -127,9 +128,9 @@ body[data-game-id="tetris"][data-screen="result"] #resultScreen .arcade-panel {
   min-height: 0;
 }
 
-/* Mahjong's flat six-pair Battle/Result owns the complete active viewport.
-   The shared collection header/footer and the legacy panel minimum must not
-   push the compact landscape tile board below the visible play surface. */
+/* Mahjong's flat six-pair Battle/Result owns the active play surface above
+   the shared General reserve. The collection header/footer and legacy panel
+   minimum must not push the compact landscape tile board below that reserve. */
 html:has(body[data-game-id="mahjong-solitaire"][data-screen="battle"]),
 html:has(body[data-game-id="mahjong-solitaire"][data-screen="result"]) {
   overflow: hidden;
@@ -147,7 +148,7 @@ body[data-game-id="mahjong-solitaire"][data-screen="battle"] .popular-arcade,
 body[data-game-id="mahjong-solitaire"][data-screen="result"] .popular-arcade {
   height: 100dvh;
   min-height: 0;
-  padding: 12px clamp(14px, 3vw, 32px) 16px;
+  padding: 12px clamp(14px, 3vw, 32px) 0;
   gap: 0;
 }
 body[data-game-id="mahjong-solitaire"][data-screen="battle"] .arcade-header,
@@ -173,6 +174,15 @@ body[data-game-id="mahjong-solitaire"][data-screen="battle"] .board-wrap {
 body[data-game-id="mahjong-solitaire"][data-screen="battle"] .board {
   height: 100%;
   min-height: 0;
+}
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] .arcade-ad-reserve,
+body[data-game-id="mahjong-solitaire"][data-screen="result"] .arcade-ad-reserve {
+  display: block;
+  flex: 0 0 56px;
+  height: 56px;
+  min-height: 56px;
+  pointer-events: none;
+  background: transparent;
 }
 
 /* Checkers Battle is a complete active-play surface. Keep the document root
@@ -526,7 +536,7 @@ body[data-game-id="snake"] .game-message[data-message-key="snakeMilestone"] { co
 
   body[data-game-id="mahjong-solitaire"][data-screen="battle"] .popular-arcade,
   body[data-game-id="mahjong-solitaire"][data-screen="result"] .popular-arcade {
-    padding: 6px;
+    padding: 6px 6px 0;
   }
   body[data-game-id="mahjong-solitaire"][data-screen="battle"] .battle-panel {
     padding: 7px;
