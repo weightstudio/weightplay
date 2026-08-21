@@ -2,7 +2,7 @@
   "use strict";
 
   const GAME_ID = "mahjong-solitaire";
-  const GAME_VERSION = "v8";
+  const GAME_VERSION = "v9";
   const INTERFACE_VERSION = "6";
   const LOCALE_MAP = {
     en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko",
@@ -25,7 +25,7 @@
   };
   const locale = () => LOCALE_MAP[window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase()] || document.documentElement.lang || "en";
   const bounded = (value, max = 6) => Math.max(0, Math.min(max, Number(value) || 0));
-  const remainingPairs = () => bounded(Math.ceil(document.querySelectorAll(".tile").length / 2));
+  const remainingPairs = () => bounded(Math.ceil(document.querySelectorAll(".tile").length / 2), 12);
   const eventInput = (event) => {
     const candidate = event?.detail === 0 ? "keyboard" : inputType;
     return INPUT_TYPES.has(candidate) ? candidate : "unknown";
@@ -87,6 +87,10 @@
       track("replay", { from: "result", input_type });
       return;
     }
+    if (target.matches("#masteryBtn") && screen === "result") {
+      track("mastery_start", { from: "result", input_type, target_pairs: 12 });
+      return;
+    }
     if (target.matches("#homeBtn") && screen === "result") {
       track("main_return", { from: "result", input_type });
       return;
@@ -101,7 +105,8 @@
       const tileCountAfter = document.querySelectorAll(".tile").length;
       const mismatch = document.querySelector("#gameMessage[data-mahjong-mismatch='true']");
       if (tileCountAfter < tileCountBefore) {
-        track("match", { from: "battle", pair_number: bounded(6 - remainingPairs(), 6), remaining_pairs: remainingPairs(), input_type });
+        const targetPairs = document.querySelector(".tile-board")?.dataset.depth === "mastery" ? 12 : 6;
+        track("match", { from: "battle", pair_number: bounded(targetPairs - remainingPairs(), targetPairs), remaining_pairs: remainingPairs(), input_type });
       } else if (mismatch) {
         track("mismatch", { from: "battle", remaining_pairs: remainingPairs(), input_type });
       }
