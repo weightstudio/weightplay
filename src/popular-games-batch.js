@@ -702,7 +702,7 @@
     document.body.dataset.gameId = gameId;
     if (game.type === "breakout") document.body.dataset.gameVersion = BREAKOUT_GAME_VERSION;
     if (game.type === "tic") document.body.dataset.gameVersion = "v8";
-    if (game.type === "hangman") document.body.dataset.gameVersion = "v6";
+    if (game.type === "hangman") document.body.dataset.gameVersion = "v7";
     if (game.type === "mahjong") document.body.dataset.gameVersion = "v9";
     if (game.type === "wordle") document.body.dataset.gameVersion = "v6";
     const root = document.querySelector("#popularArcade");

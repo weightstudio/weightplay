@@ -2,6 +2,7 @@
 (() => {
   const $ = (id) => document.getElementById(id);
   const canvas = $("arena");
+  const arenaFrame = document.querySelector(".arena-frame");
   const ctx = canvas.getContext("2d");
   const loadingPanel = $("loadingPanel");
   const canisterArt = new Image(); canisterArt.src = "assets/animal-flip-foundry-original-assets-v1.png";
@@ -27,8 +28,20 @@
   const copy = () => localeCopy[currentLocale()] || localeCopy.en;
   const fill = (value, values) => value.replace(/\{(\w+)\}/g, (_, key) => values[key] ?? "");
   const label = (key, values = {}) => fill(copy()[key] || localeCopy.en[key] || key, values);
+  const fitArena = () => {
+    if (!arenaFrame || !canvas) return;
+    const width = Math.max(1, arenaFrame.clientWidth);
+    const height = Math.max(1, arenaFrame.clientHeight);
+    const scale = Math.min(width / 960, height / 560);
+    canvas.style.width = `${Math.max(1, Math.floor(960 * scale))}px`;
+    canvas.style.height = `${Math.max(1, Math.floor(560 * scale))}px`;
+  };
+  const scheduleArenaFit = () => requestAnimationFrame(() => requestAnimationFrame(fitArena));
+  const arenaObserver = arenaFrame && typeof ResizeObserver === "function" ? new ResizeObserver(fitArena) : null;
+  arenaObserver?.observe(arenaFrame);
+  window.addEventListener("resize", scheduleArenaFit, { passive: true });
   if (loadingPanel) { const hideLoading = () => { loadingPanel.hidden = true; loadingPanel.classList.add("hidden"); }; if (document.readyState === "complete") hideLoading(); else window.addEventListener("load", hideLoading, { once: true }); }
-  function show(name) { state.screen = name; document.body.dataset.screen = name === "result" ? "battle" : name; cancelAnimationFrame(state.raf); const result = $("result-screen"); document.querySelectorAll(".screen").forEach((el) => { const isResult = el === result && name === "result"; const keepBattle = name === "result" && el.id === "battle-screen"; const on = isResult || keepBattle || el.dataset.screen === name; el.hidden = !on; el.classList.toggle("active", on); }); if (name === "battle") result?.setAttribute("hidden", ""); if (name === "battle") state.raf = requestAnimationFrame(frame); }
+  function show(name) { state.screen = name; document.body.dataset.screen = name === "result" ? "battle" : name; cancelAnimationFrame(state.raf); const result = $("result-screen"); document.querySelectorAll(".screen").forEach((el) => { const isResult = el === result && name === "result"; const keepBattle = name === "result" && el.id === "battle-screen"; const on = isResult || keepBattle || el.dataset.screen === name; el.hidden = !on; el.classList.toggle("active", on); }); if (name === "battle") result?.setAttribute("hidden", ""); if (name === "battle" || name === "result") scheduleArenaFit(); if (name === "battle") state.raf = requestAnimationFrame(frame); }
   function cards() { const c = copy(); $("stage-list").innerHTML = [1, 2, 3, 4, 5, 6].map((n) => { const summary = n === 1 ? c.wideStarts : n === 6 ? c.precisionFinish : c.newSpacing; return `<button data-chapter="${n}" aria-label="${c.chapter} ${n}">${c.chapter} ${n}<br><small>${c.platforms} · ${summary}</small></button>`; }).join(""); $("stage-list").querySelectorAll("button").forEach((button) => button.addEventListener("click", () => start(Number(button.dataset.chapter), 1))); state.cardsLocale = currentLocale(); }
   function config() { const index = (state.chapter - 1) * 4 + state.platform - 1; return { index, y: 440 - (index % 4) * 35, width: 132 - (index % 3) * 18, min: 55 + (index % 4) * 8, max: 300 - (index % 3) * 18, obstacle: index % 5 === 3 }; }
   function renderResult() { if (state.resultWin === null) return; const c = copy(); const nextAvailable = state.resultWin && state.chapter < 6; $("result-title").textContent = state.resultWin ? (state.chapter === 6 ? c.routeClear : c.chapterClear) : c.failed; $("result-copy").textContent = label("resultCopy", { chapter: state.chapter, platform: state.platform, streak: state.streak, best: state.best }); $("to-stages").textContent = c.stagesAction; $("retry").textContent = c.retry; $("next").textContent = c.nextChapter; $("next").disabled = !nextAvailable; $("next").setAttribute("aria-disabled", String(!nextAvailable)); }

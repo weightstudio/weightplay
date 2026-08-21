@@ -27,6 +27,22 @@ window.WPPopularArcade?.mount("chess");
     ar: { round: "الجولة", score: "النقاط", moves: "النقلات", best: "الأفضل", row: "الصف", column: "العمود", empty: "فارغ", target: "الهدف", source: "اختر هذه القطعة البيضاء", selected: "محددة", piece: "قطعة", choosePiece: "اختر قطعة بيضاء.", chooseTarget: "اختر الآن هدفها الظاهر.", wrongPiece: "هذه القطعة ليست النقلة المحددة. اختر قطعة بيضاء أخرى.", wrongTarget: "هذا الهدف ليس نقلة قانونية للقطعة المحددة.", targetFirst: "اختر قطعة بيضاء قبل اختيار الهدف.", legalMove: "نقلة قانونية. اختر القطعة البيضاء التالية.", success: "اكتملت جولة كش مات!", successCopy: "حسمت ثلاثة قرارات شطرنج ظاهرة الجولة.", replayTarget: "هدف الجولة التالية: أتمم النقلات الثلاث مع بحد أقصى {n} رسائل تصحيح.", hint: "تلميح", hintCopy: "اختر القطعة البيضاء ذات الإطار، ثم الهدف المميز.", restart: "إعادة البدء", retry: "العب مرة أخرى", home: "العودة إلى الرئيسية", board: "لوحة قرارات الشطرنج", step: "الخطوة", pieceNames: { "♜": "رخ أسود", "♟": "بيدق أسود", "♚": "ملك أسود", "♙": "بيدق أبيض", "♔": "ملك أبيض" } },
   };
 
+  const FINISH_BEAT_COPY = {
+    en: "Checkmate landed — three clear choices, one calm finish.",
+    "zh-Hant": "將軍將死——三次清楚選擇，沉著收官。",
+    "zh-Hans": "将杀完成——三次清晰选择，沉着收官。",
+    ja: "詰みが決まりました——3つの明確な選択で、落ち着いて決着。",
+    ko: "체크메이트 완성 — 세 번의 분명한 선택으로 차분하게 마무리했습니다.",
+    es: "¡Jaque mate! Tres decisiones claras y un cierre sereno.",
+    "pt-BR": "Xeque-mate! Três decisões claras e um final sereno.",
+    fr: "Échec et mat ! Trois choix clairs pour une conclusion maîtrisée.",
+    de: "Schachmatt! Drei klare Entscheidungen, ein ruhiger Abschluss.",
+    it: "Scacco matto! Tre scelte chiare per una chiusura netta.",
+    ru: "Мат завершён — три ясных решения и спокойная развязка.",
+    hi: "चेकमेट पूरा — तीन स्पष्ट फैसलों के साथ शांत समापन।",
+    ar: "كش مات — ثلاثة قرارات واضحة وختام هادئ."
+  };
+
   const fallback = LOCALE_COPY.en;
   const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[character]));
   const currentLocale = () => document.documentElement.lang || document.querySelector("#localeSelect")?.value || "en";
@@ -34,7 +50,7 @@ window.WPPopularArcade?.mount("chess");
   const isWhite = (piece) => piece === "♙" || piece === "♔";
   const pieceName = (localeCopy, piece) => piece ? localeCopy.pieceNames[piece] || localeCopy.piece : localeCopy.empty;
   const getEls = () => ({
-    main: document.querySelector("#mainScreen"), battle: document.querySelector("#battleScreen"), result: document.querySelector("#resultScreen"), board: document.querySelector("#board"), controls: document.querySelector("#controls"), message: document.querySelector("#gameMessage"), round: document.querySelector("#roundLabel"), resultTitle: document.querySelector("#resultTitle"), resultCopy: document.querySelector("#resultCopy"), resultStats: document.querySelector("#resultStats"), resultTarget: document.querySelector("#resultTarget"), retry: document.querySelector("#retryBtn"), home: document.querySelector("#homeBtn"), hint: document.querySelector("#hintBtn"), restart: document.querySelector("#restartBtn"),
+    main: document.querySelector("#mainScreen"), battle: document.querySelector("#battleScreen"), result: document.querySelector("#resultScreen"), board: document.querySelector("#board"), controls: document.querySelector("#controls"), message: document.querySelector("#gameMessage"), round: document.querySelector("#roundLabel"), resultTitle: document.querySelector("#resultTitle"), resultCopy: document.querySelector("#resultCopy"), resultBeat: document.querySelector("#resultBeat"), resultStats: document.querySelector("#resultStats"), resultTarget: document.querySelector("#resultTarget"), retry: document.querySelector("#retryBtn"), home: document.querySelector("#homeBtn"), hint: document.querySelector("#hintBtn"), restart: document.querySelector("#restartBtn"),
   });
   let state = null;
 
@@ -116,6 +132,7 @@ window.WPPopularArcade?.mount("chess");
     els.result.dataset.outcome = state.success ? "win" : "loss";
     els.resultTitle.textContent = localeCopy.success;
     els.resultCopy.textContent = localeCopy.successCopy;
+    els.resultBeat.textContent = FINISH_BEAT_COPY[currentLocale()] || FINISH_BEAT_COPY.en;
     els.resultStats.innerHTML = `<span class="stat">${escapeHtml(localeCopy.score)}<strong>${state.score}</strong></span><span class="stat">${escapeHtml(localeCopy.moves)}<strong>${state.moves}</strong></span><span class="stat">${escapeHtml(localeCopy.best)}<strong>${Math.max(best, state.score)}</strong></span>`;
     els.resultTarget.textContent = localeCopy.replayTarget.replace("{n}", String(Math.max(0, state.corrections - 1)));
     els.retry.textContent = localeCopy.retry;
