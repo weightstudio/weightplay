@@ -76,6 +76,23 @@ const compact={
   ar:{localeName:"العربية",title:"مخلب كرنفال الحيوانات",loading:"جارٍ إضاءة كرنفال جرس النجوم…",backLobby:"العودة إلى WeightPlay",language:"اللغة",pitch:"اختر تعويذة واضبط توقيت المخلب المتأرجح ثم ثبّت الرفع خلال ثلاث محاولات.",start:"ابدأ اللعب",howTitle:"طريقة اللعب",rulesTitle:"القواعد والنتائج",progressTitle:"ثلاثون مهمة كرنفال",tipsTitle:"نصائح عملية",saveTitle:"الحفظ والخصوصية",faqTitle:"الأسئلة الشائعة",backMain:"العودة للرئيسية",enter:"ادخل الآلة",cabinet:"الخزانة",workshop:"الورشة",stages:"المهمات",backStages:"العودة للمهمات",drops:"المحاولات",grip:"القبضة",targets:"الأهداف",stability:"الثبات",drop:"أنزل المخلب",restart:"إعادة البدء",pause:"إيقاف مؤقت",tutorialTitle:"صوّب وأنزل وثبّت",tutorialStart:"شغّل الآلة",leaveTitle:"مغادرة هذه الآلة؟",continue:"متابعة",returnStages:"العودة للمهمات",pauseTitle:"الآلة متوقفة",resume:"استئناف",resultKicker:"تقرير الكرنفال",next:"المهمة التالية",retry:"إعادة",mission:"المهمة {n}",locked:"مغلق",ready:"جاهز",objective:"اجمع {count} تعويذات مطلوبة",phaseAim:"صوّب إلى هدف ثم أفلت أو اضغط إنزال.",phaseDrop:"المخلب يهبط…",phaseLift:"اسحب عكس التأرجح لتثبيت الرفع.",phaseReturn:"العودة إلى السكة…",caught:"وصلت التعويذة!",miss:"انزلقت القبضة. اختر زاوية أخرى.",winTitle:"اكتملت الآلة!",failTitle:"ما زالت أهداف في الحاوية",newBest:"أفضل ميدالية جديدة!",collected:"مجموع",unknown:"غير مكتشف",upgrade:"ترقية",max:"الأقصى",needBolts:"تحتاج إلى مسامير نجمية.",upgradeDone:"تم تحسين ضبط الآلة.",chapter1:"ممر الفوانيس",chapter2:"مصدات الفقاعات",chapter3:"رفوف الساعة",chapter4:"مغناطيس القمر",chapter5:"حديقة الزجاج",chapter6:"تاج النجوم"}
 };
 for(const [locale,values] of Object.entries(compact))compact[locale]={...en,...values};
+const landingCueLabels={
+  en:"Align the claw center with the target ring before Drop.",
+  "zh-Hant":"在按下放下前，先讓爪子的中心對準目標圈。",
+  "zh-Hans":"按下放下前，先让爪子中心对准目标圈。",
+  ja:"ドロップする前に、クレーンの中心をターゲットの輪に合わせます。",
+  ko:"놓기 전에 집게 중심을 목표 고리에 맞추세요.",
+  es:"Alinea el centro de la garra con el aro del objetivo antes de soltar.",
+  "pt-BR":"Alinhe o centro da garra ao círculo do alvo antes de soltar.",
+  fr:"Alignez le centre de la pince avec l’anneau de la cible avant de lâcher.",
+  de:"Richte die Greifermitte vor dem Absenken am Zielring aus.",
+  it:"Allinea il centro della pinza all’anello del bersaglio prima di sganciare.",
+  ru:"Перед сбросом совместите центр захвата с кольцом цели.",
+  hi:"छोड़ने से पहले पंजे के केंद्र को लक्ष्य के घेरे पर रखें।",
+  ar:"حاذِ مركز الكلّابة مع حلقة الهدف قبل الإسقاط."
+};
+en.landingCue=landingCueLabels.en;
+for(const [locale,copy] of Object.entries(landingCueLabels))if(locale!=="en")compact[locale]={...compact[locale],landingCue:copy};
 const steerLabels={
   ja:{dragLeftAction:"操作：押したまま左へドラッグ ←",dragRightAction:"操作：押したまま右へドラッグ →"},
   ko:{dragLeftAction:"조작: 누른 채 왼쪽으로 드래그 ←",dragRightAction:"조작: 누른 채 오른쪽으로 드래그 →"},

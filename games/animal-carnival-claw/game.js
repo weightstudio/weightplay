@@ -267,7 +267,7 @@ function startMission(index){
   selected=index;const level=levels[index];
   run={
     index,level,phase:"aim",elapsed:0,phaseTime:0,drops:3,aimX:500,aimY:360,dropX:null,lockValue:.08,lockDirection:1,lockQuality:0,stability:1,grip:1,swing:0,held:null,fallX:0,fallY:0,fallVelocity:0,fallRotation:0,aimCorrection:null,lastSpatialCorrection:"",
-    prizes:level.prizes.map(prize=>({...prize,active:true,delivered:false})),targets:[...level.targets],delivered:[],misses:0,result:null,feedback:"phaseAim",lastCorrection:"phaseAim"
+    prizes:level.prizes.map(prize=>({...prize,active:true,delivered:false})),targets:[...level.targets],delivered:[],misses:0,result:null,feedback:index===0&&!save.medals[0]?["phaseAim","landingCue"]:"phaseAim",lastCorrection:"phaseAim"
   };
   settledDecision=false;resolvedWallAnchor=0;$("resultPanel").hidden=true;$("leavePanel").hidden=true;$("pausePanel").hidden=true;$("battleLive").hidden=false;$("battleLive").inert=false;
   $("resultStagesBtn").disabled=false;$("retryBtn").disabled=false;$("nextBtn").disabled=true;

@@ -597,11 +597,91 @@ const KL_I18N = {
     hi: { "ui.header.moves": "चालें", "ui.header.time": "समय", "ui.battle.controls_label": "नियंत्रण" },
     ar: { "ui.header.moves": "عدد الحركات", "ui.header.time": "الوقت", "ui.battle.controls_label": "عناصر التحكم" },
   };
+  const KL_UI_LABEL_OVERRIDES = {
+    en: {
+      "ui.settings.title": "Settings", "ui.sound.label": "Sound Effects", "ui.language.label": "Language",
+      "ui.feature.target_title": "Target", "ui.feature.target_text": "Build all four foundations from A to K.",
+      "ui.feature.features_title": "Features", "ui.feature.features_text": "Single/multi-card drag, tap-to-select, Draw 1/3, hint, and auto finish.",
+      "ui.feature.performance_title": "Performance", "ui.feature.performance_text": "Transform-only card movement, reduced re-render churn, and continuous animation tuning.",
+    },
+    "zh-Hant": {
+      "ui.settings.title": "設定", "ui.sound.label": "音效", "ui.language.label": "語言",
+      "ui.feature.target_title": "目標", "ui.feature.target_text": "將 A 至 K 全部收齊到四個基座。",
+      "ui.feature.features_title": "特色", "ui.feature.features_text": "單／多張牌拖曳、點擊選牌、抽 1/3 張、提示與自動完成。",
+      "ui.feature.performance_title": "效能", "ui.feature.performance_text": "僅使用 transform 移動卡片，降低重繪負擔，並持續微調動畫效能。",
+    },
+    "zh-Hans": {
+      "ui.settings.title": "设置", "ui.sound.label": "音效", "ui.language.label": "语言",
+      "ui.feature.target_title": "目标", "ui.feature.target_text": "把四个基座都从 A 堆到 K。",
+      "ui.feature.features_title": "特性", "ui.feature.features_text": "单／多张牌拖动、点击选牌、抽牌模式 1/3、提示与自动完成。",
+      "ui.feature.performance_title": "性能", "ui.feature.performance_text": "仅使用 transform 移动卡片，减少重绘压力，并持续优化动画。",
+    },
+    ja: {
+      "ui.settings.title": "設定", "ui.sound.label": "効果音", "ui.language.label": "言語",
+      "ui.feature.target_title": "目標", "ui.feature.target_text": "4つの組札をエースからキングへそろえます。",
+      "ui.feature.features_title": "機能", "ui.feature.features_text": "1枚／複数枚ドラッグ、タップ選択、1／3枚ドロー、ヒント、自動完了。",
+      "ui.feature.performance_title": "パフォーマンス", "ui.feature.performance_text": "トランスフォーム移動中心で再描画を抑え、長時間プレイも滑らかにします。",
+    },
+    ko: {
+      "ui.settings.title": "설정", "ui.sound.label": "효과음", "ui.language.label": "언어",
+      "ui.feature.target_title": "목표", "ui.feature.target_text": "네 곳의 기초 더미를 A부터 K까지 채우세요.",
+      "ui.feature.features_title": "기능", "ui.feature.features_text": "한 장／여러 장 드래그, 탭으로 선택, 1장／3장 뽑기, 힌트와 자동 완료.",
+      "ui.feature.performance_title": "성능", "ui.feature.performance_text": "transform 중심으로 카드를 이동해 다시 그리는 부담을 줄이고 애니메이션을 다듬었습니다.",
+    },
+    es: {
+      "ui.settings.title": "Ajustes", "ui.sound.label": "Efectos de sonido", "ui.language.label": "Idioma",
+      "ui.feature.target_title": "Objetivo", "ui.feature.target_text": "Completa las cuatro bases desde el as hasta el rey.",
+      "ui.feature.features_title": "Funciones", "ui.feature.features_text": "Arrastra una o varias cartas, selección al tocar, Robar 1/3, pista y autocompletar.",
+      "ui.feature.performance_title": "Rendimiento", "ui.feature.performance_text": "Movimiento de cartas con transform, menos repintados y animaciones ajustadas para sesiones largas.",
+    },
+    "pt-BR": {
+      "ui.settings.title": "Configurações", "ui.sound.label": "Efeitos sonoros", "ui.language.label": "Idioma",
+      "ui.feature.target_title": "Objetivo", "ui.feature.target_text": "Complete as quatro fundações do Ás ao Rei.",
+      "ui.feature.features_title": "Recursos", "ui.feature.features_text": "Arraste uma ou várias cartas, selecione com um toque, compre 1/3, use dica e autocompletar.",
+      "ui.feature.performance_title": "Desempenho", "ui.feature.performance_text": "Movimento de cartas com transform, menos repinturas e animações ajustadas para partidas longas.",
+    },
+    fr: {
+      "ui.settings.title": "Paramètres", "ui.sound.label": "Effets sonores", "ui.language.label": "Langue",
+      "ui.feature.target_title": "Objectif", "ui.feature.target_text": "Construisez les quatre fondations de l’As au Roi.",
+      "ui.feature.features_title": "Fonctions", "ui.feature.features_text": "Glisser une ou plusieurs cartes, sélection au toucher, Pioche 1/3, indice et fin automatique.",
+      "ui.feature.performance_title": "Performances", "ui.feature.performance_text": "Déplacement par transform, moins de repeints et animations réglées pour les longues parties.",
+    },
+    de: {
+      "ui.settings.title": "Einstellungen", "ui.sound.label": "Soundeffekte", "ui.language.label": "Sprache",
+      "ui.feature.target_title": "Ziel", "ui.feature.target_text": "Baue alle vier Grundstapel vom Ass bis zum König auf.",
+      "ui.feature.features_title": "Funktionen", "ui.feature.features_text": "Eine oder mehrere Karten ziehen, per Tippen auswählen, 1/3 ziehen, Tipp und Auto-Fertigstellen.",
+      "ui.feature.performance_title": "Leistung", "ui.feature.performance_text": "Kartenbewegung per transform, weniger Neuzeichnungen und abgestimmte Animationen für lange Partien.",
+    },
+    it: {
+      "ui.settings.title": "Impostazioni", "ui.sound.label": "Effetti sonori", "ui.language.label": "Lingua",
+      "ui.feature.target_title": "Obiettivo", "ui.feature.target_text": "Completa le quattro basi dall’Asso al Re.",
+      "ui.feature.features_title": "Funzioni", "ui.feature.features_text": "Trascina una o più carte, seleziona al tocco, Pesca 1/3, suggerimento e completamento automatico.",
+      "ui.feature.performance_title": "Prestazioni", "ui.feature.performance_text": "Movimento con transform, meno ridisegni e animazioni regolate per le partite lunghe.",
+    },
+    ru: {
+      "ui.settings.title": "Настройки", "ui.sound.label": "Звуковые эффекты", "ui.language.label": "Язык",
+      "ui.feature.target_title": "Цель", "ui.feature.target_text": "Соберите все четыре основания от туза до короля.",
+      "ui.feature.features_title": "Возможности", "ui.feature.features_text": "Перетаскивание одной или нескольких карт, выбор нажатием, добор 1/3, подсказка и автозавершение.",
+      "ui.feature.performance_title": "Производительность", "ui.feature.performance_text": "Перемещение карт через transform, меньше перерисовок и настроенная анимация для долгих партий.",
+    },
+    hi: {
+      "ui.settings.title": "सेटिंग्स", "ui.sound.label": "ध्वनि प्रभाव", "ui.language.label": "भाषा",
+      "ui.feature.target_title": "लक्ष्य", "ui.feature.target_text": "चारों फाउंडेशन को A से K तक पूरा करें।",
+      "ui.feature.features_title": "सुविधाएँ", "ui.feature.features_text": "एक या कई कार्ड खींचें, टैप से चुनें, 1/3 कार्ड लें, संकेत और ऑटो-फिनिश।",
+      "ui.feature.performance_title": "प्रदर्शन", "ui.feature.performance_text": "transform आधारित कार्ड गति, कम री-रेंडर और लंबे खेल के लिए बेहतर एनिमेशन।",
+    },
+    ar: {
+      "ui.settings.title": "الإعدادات", "ui.sound.label": "المؤثرات الصوتية", "ui.language.label": "اللغة",
+      "ui.feature.target_title": "الهدف", "ui.feature.target_text": "ابنِ المجموعات الأربع كاملة من الآس إلى الملك.",
+      "ui.feature.features_title": "الميزات", "ui.feature.features_text": "سحب بطاقة واحدة أو عدة بطاقات، الاختيار بالضغط، سحب 1/3، التلميح والإكمال التلقائي.",
+      "ui.feature.performance_title": "الأداء", "ui.feature.performance_text": "تحريك البطاقات باستخدام transform فقط، وتقليل إعادة الرسم، وضبط الرسوم المتحركة باستمرار.",
+    },
+  };
   SUPPORTED_LOCALES.forEach((locale) => {
     const baseLocale = KL_I18N.en;
     const localeOverrides = LOCALE_I18N_OVERRIDES[locale] || {};
     const existingLocale = KL_I18N[locale];
-    KL_I18N[locale] = Object.assign({}, baseLocale, existingLocale, localeOverrides, KL_RUNTIME_HEADER_OVERRIDES[locale] || {});
+    KL_I18N[locale] = Object.assign({}, baseLocale, existingLocale, localeOverrides, KL_RUNTIME_HEADER_OVERRIDES[locale] || {}, KL_UI_LABEL_OVERRIDES[locale] || {});
     if (!KL_I18N[locale]["ui.meta.keywords"]) {
       KL_I18N[locale]["ui.meta.keywords"] = DEFAULT_META_KEYWORDS;
     }
