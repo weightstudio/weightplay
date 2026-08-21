@@ -1,6 +1,7 @@
 (() => {
   "use strict";
 
+  const GAME_VERSION = "v13";
   const COPY = {
     en: { start: "Start Game", back: "Back", resultNewGame: "New Game", resultRestart: "Restart", resultClose: "Close", heading: "How to play", paragraph: "Complete four-of-a-kind books. Choose two, three, or four players in the preview build." },
     "zh-Hant": { start: "開始遊戲", back: "返回", resultNewGame: "新遊戲", resultRestart: "重新開始", resultClose: "關閉", heading: "遊戲玩法", paragraph: "完成四張同點數牌的組牌。預覽版可選擇兩人、三人或四人。" },
@@ -16,8 +17,61 @@
     hi: { start: "खेल शुरू करें", back: "वापस", resultNewGame: "नया खेल", resultRestart: "फिर शुरू करें", resultClose: "बंद करें", heading: "कैसे खेलें", paragraph: "एक ही रैंक के चार पत्तों का सेट पूरा करें। प्रीव्यू में 2, 3 या 4 खिलाड़ी चुनें।" },
     ar: { start: "بدء اللعبة", back: "رجوع", resultNewGame: "لعبة جديدة", resultRestart: "إعادة التشغيل", resultClose: "إغلاق", heading: "طريقة اللعب", paragraph: "أكمل مجموعات من أربع بطاقات من الرتبة نفسها. يمكنك اختيار لاعبين أو ثلاثة أو أربعة في المعاينة." },
   };
+  const RECENT_ASK_COPY = {
+    en: "Recent asks: {items}",
+    "zh-Hant": "最近提問：{items}",
+    "zh-Hans": "最近提问：{items}",
+    ja: "最近の質問：{items}",
+    ko: "최근 질문: {items}",
+    es: "Preguntas recientes: {items}",
+    "pt-BR": "Perguntas recentes: {items}",
+    fr: "Questions récentes : {items}",
+    de: "Letzte Fragen: {items}",
+    it: "Domande recenti: {items}",
+    ru: "Последние вопросы: {items}",
+    hi: "हाल के सवाल: {items}",
+    ar: "أحدث الأسئلة: {items}",
+  };
   const locale = document.documentElement.lang || "en";
   const copy = COPY[locale] || COPY.en;
+  const recentAskCopy = RECENT_ASK_COPY[locale] || RECENT_ASK_COPY.en;
+  const recentAsks = [];
+  let selectedOpponentName = "";
+
+  function resetRecentAsks() {
+    recentAsks.length = 0;
+    selectedOpponentName = "";
+    window.setTimeout(syncRecentAskRecord, 0);
+  }
+
+  function syncRecentAskRecord() {
+    const center = document.querySelector("#cardGameCenter");
+    if (!center) return;
+    if (!selectedOpponentName) {
+      selectedOpponentName = center.closest(".card-game-battle")?.querySelector('[data-action="opponent"] strong')?.textContent?.trim() || "";
+    }
+    const existing = center.querySelector("[data-go-fish-recent-asks]");
+    if (!recentAsks.length) {
+      existing?.remove();
+      return;
+    }
+    const text = recentAskCopy.replace("{items}", recentAsks.map((entry, index) => `${index + 1}. ${entry.rank} → ${entry.opponent}`).join(" · "));
+    const record = existing || document.createElement("p");
+    record.className = "card-choice-summary card-go-fish-recent-asks";
+    record.dataset.goFishRecentAsks = "";
+    record.dataset.runtimeLocalize = "off";
+    record.setAttribute("role", "status");
+    record.setAttribute("aria-live", "polite");
+    if (record.textContent !== text) record.textContent = text;
+    if (!existing) center.append(record);
+  }
+
+  function observeBattleRecord() {
+    const center = document.querySelector("#cardGameCenter");
+    if (!center) return;
+    new MutationObserver(syncRecentAskRecord).observe(center, { childList: true, subtree: true });
+    syncRecentAskRecord();
+  }
 
   function applyLocaleOwnedResultActions() {
     [
@@ -54,7 +108,37 @@
     applyLocaleOwnedResultActions();
   }
 
+  document.body.dataset.gameVersion = GAME_VERSION;
+  document.body.dataset.interfaceVersion = "6";
+  document.addEventListener("click", (event) => {
+    const opponent = event.target?.closest?.('[data-action="opponent"]');
+    if (opponent) {
+      selectedOpponentName = opponent.querySelector("strong")?.textContent?.trim() || selectedOpponentName;
+      return;
+    }
+    const players = event.target?.closest?.('[data-action="players"]');
+    if (players) {
+      resetRecentAsks();
+      return;
+    }
+    const ask = event.target?.closest?.('[data-action="ask"]');
+    if (ask && !ask.disabled) {
+      const rank = document.querySelector('[data-action="rank"].is-selected')?.textContent?.trim();
+      const opponentName = selectedOpponentName || document.querySelector('[data-action="opponent"] strong')?.textContent?.trim();
+      if (rank && opponentName) {
+        recentAsks.unshift({ rank, opponent: opponentName });
+        recentAsks.splice(3);
+        window.setTimeout(syncRecentAskRecord, 0);
+      }
+      return;
+    }
+    if (event.target?.closest?.("#startBtn, #restartBtn, #newGameBtn, #resultNewGame, #resultRestart, #battleRestartBtn, #battleNewBtn")) {
+      resetRecentAsks();
+    }
+  }, true);
+
   window.WPCardGamesNext?.mount({ id: "go-fish" });
+  observeBattleRecord();
   applyLocaleOwnedEntryCopy();
   [40, 120, 300, 600].forEach((delay) => window.setTimeout(applyLocaleOwnedEntryCopy, delay));
 })();

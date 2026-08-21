@@ -45,9 +45,20 @@ function runtimeTranslate(value) {
   return window.WeightPlayGameRuntimeLocalizer?.translate?.(value) || value;
 }
 
+const WONDER_DYNAMIC_COPY = {
+  ja: { hud_stage: "ステージ", hud_wave: "ウェーブ", stage_waves: "{count}ウェーブ", stage_reward: "~{coins}コイン", stage_boss: "ボス", boss_shield: "シールド {count}", victory_stage_clear: "ステージクリア！", btn_leave: "バトルを離れる", btn_play_again: "もう一度遊ぶ" },
+  ko: { hud_stage: "스테이지", hud_wave: "웨이브", stage_waves: "{count} 웨이브", stage_reward: "~{coins} 코인", stage_boss: "보스", boss_shield: "방패 {count}", victory_stage_clear: "스테이지 클리어!", btn_leave: "전투 나가기", btn_play_again: "다시 플레이" },
+  "pt-BR": { hud_stage: "Estágio", hud_wave: "Onda", stage_waves: "{count} ondas", stage_reward: "~{coins} moedas", stage_boss: "Chefe", boss_shield: "Escudo {count}", victory_stage_clear: "Estágio concluído!", btn_leave: "Sair da batalha", btn_play_again: "Jogar novamente" },
+  fr: { hud_stage: "Étape", hud_wave: "Vague", stage_waves: "{count} vagues", stage_reward: "~{coins} pièces", stage_boss: "Boss", boss_shield: "Bouclier {count}", victory_stage_clear: "Étape terminée !", btn_leave: "Quitter la bataille", btn_play_again: "Rejouer" },
+  de: { hud_stage: "Stufe", hud_wave: "Welle", stage_waves: "{count} Wellen", stage_reward: "~{coins} Münzen", stage_boss: "Boss", boss_shield: "Schild {count}", victory_stage_clear: "Stufe geschafft!", btn_leave: "Kampf verlassen", btn_play_again: "Noch einmal spielen" },
+  it: { hud_stage: "Fase", hud_wave: "Ondata", stage_waves: "{count} ondate", stage_reward: "~{coins} monete", stage_boss: "Boss", boss_shield: "Scudo {count}", victory_stage_clear: "Fase completata!", btn_leave: "Lascia battaglia", btn_play_again: "Gioca ancora" },
+  ru: { hud_stage: "Этап", hud_wave: "Волна", stage_waves: "{count} волн", stage_reward: "~{coins} монет", stage_boss: "Босс", boss_shield: "Щит {count}", victory_stage_clear: "Этап пройден!", btn_leave: "Покинуть бой", btn_play_again: "Играть снова" },
+  hi: { hud_stage: "चरण", hud_wave: "लहर", stage_waves: "{count} लहरें", stage_reward: "~{coins} सिक्के", stage_boss: "बॉस", boss_shield: "ढाल {count}", victory_stage_clear: "चरण पूरा!", btn_leave: "लड़ाई छोड़ें", btn_play_again: "फिर खेलें" },
+};
+
 function t(key, params = {}) {
   const activeLocale = locale();
-  const table = dictionary[activeLocale] || dictionary.en;
+  const table = { ...(dictionary[activeLocale] || {}), ...(WONDER_DYNAMIC_COPY[activeLocale] || {}) };
   const fallback = dictionary.en;
   const owned = table[key];
   let val = owned || fallback[key] || key;
@@ -1289,7 +1300,7 @@ function spawnBoss(wave) {
       ? wave.bossRuleEs
       : activeLocale === "ar"
         ? wave.bossRuleAr
-        : wave.bossRuleEn;
+        : wave.bossRuleByLocale?.[activeLocale] || wave.bossRuleEn;
   state.bossBanner = { text: t("boss_spawned", { name: t("enemy_" + type.id) }), rule: bossRule || "", life: 2.6 };
   window.WonderSound?.play("boss");
 }
@@ -2254,7 +2265,7 @@ function bindStageCard(button, index) {
         ? level.titleAr
         : activeLocale === "en"
           ? level.titleEn
-          : runtimeTranslate(level.titleEn);
+          : level.titleByLocale?.[activeLocale] || runtimeTranslate(level.titleEn);
   const stageRule = activeLocale === "zh-Hant"
     ? level.ruleZh
     : activeLocale === "es"
@@ -2263,7 +2274,7 @@ function bindStageCard(button, index) {
         ? level.ruleAr
         : activeLocale === "en"
           ? level.ruleEn
-          : runtimeTranslate(level.ruleEn);
+          : level.ruleByLocale?.[activeLocale] || runtimeTranslate(level.ruleEn);
   const locked = level.id > highestUnlocked;
   button.type = "button";
   button.className = locked ? "locked" : level.id < highestUnlocked ? "completed" : level.id === highestUnlocked ? "challenge" : "";

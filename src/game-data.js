@@ -2776,15 +2776,169 @@ window.WONDER_DATA = {
     ["سقوط نجوم الدب", "يطلق الزعيم النهائي ثلاثة أجرام نجمية فوق التشكيلة الكاملة.", "سقوط ثلاثة أجرام نجمية"],
   ];
 
+  const localeStageCopy = {
+    ja: {
+      titlePrefix: "ステージ",
+      patternTitle: { lanes: "中央レーン", alternating: "交互レーン", edges: "外側レーン", center: "中央重装" },
+      patternRule: {
+        lanes: "中央の3レーンを見て、速い獣の波を止めます。",
+        alternating: "左右の進路を交互に守り、波の切り替えに備えます。",
+        edges: "外側から来る波へ素早く照準を切り替えます。",
+        center: "中央を押す重装獣に貫通と持続火力を合わせます。",
+      },
+      bossRule: {
+        pursuit: "追跡弾を避けながら混成の護衛を倒します。",
+        crossfire: "交差する二連射を読み、群れのレーンを切り替えます。",
+        bulwark: "6回のシールドを壊してからボスに大きなダメージを与えます。",
+        siege: "中央を狙う重い攻城弾と突破獣を止めます。",
+        dive: "突進後の二連射を待ち、開いた隙に攻撃します。",
+        starfall: "3つの星弾の軌道を読み、最後のボスを倒します。",
+      },
+    },
+    ko: {
+      titlePrefix: "스테이지",
+      patternTitle: { lanes: "중앙 라인", alternating: "교대 라인", edges: "외곽 라인", center: "중앙 중장갑" },
+      patternRule: {
+        lanes: "중앙 세 라인을 읽고 빠른 야수의 파도를 막으세요.",
+        alternating: "왼쪽과 오른쪽 진입로를 번갈아 지키며 파도의 전환을 준비하세요.",
+        edges: "바깥쪽에서 들어오는 파도에 맞춰 조준을 빠르게 바꾸세요.",
+        center: "중앙을 압박하는 중장갑 야수에 관통과 지속 피해를 맞추세요.",
+      },
+      bossRule: {
+        pursuit: "추격 탄을 피하면서 혼합 호위대를 처치하세요.",
+        crossfire: "교차하는 두 발 사격을 읽고 무리의 라인을 바꾸세요.",
+        bulwark: "방패 여섯 번을 부순 뒤 보스에게 큰 피해를 주세요.",
+        siege: "중앙을 노리는 무거운 공성 탄과 돌파 야수를 막으세요.",
+        dive: "돌진 뒤의 두 발 사격을 기다렸다가 빈틈을 공격하세요.",
+        starfall: "세 개의 별 탄 궤도를 읽고 마지막 보스를 쓰러뜨리세요.",
+      },
+    },
+    "pt-BR": {
+      titlePrefix: "Estágio",
+      patternTitle: { lanes: "Faixas centrais", alternating: "Faixas alternadas", edges: "Faixas externas", center: "Centro blindado" },
+      patternRule: {
+        lanes: "Leia as três faixas centrais e pare as ondas de feras rápidas.",
+        alternating: "Proteja as entradas esquerda e direita alternadamente e prepare-se para a troca de onda.",
+        edges: "Troque a mira rapidamente para as ondas que chegam pelas faixas externas.",
+        center: "Combine perfuração e dano contínuo contra as feras blindadas que pressionam o centro.",
+      },
+      bossRule: {
+        pursuit: "Derrote a escolta mista enquanto evita os disparos de perseguição.",
+        crossfire: "Leia os dois disparos cruzados e acompanhe a mudança de faixa da manada.",
+        bulwark: "Quebre seis golpes de escudo antes de causar dano total ao chefe.",
+        siege: "Pare o orbe pesado que mira o centro e as feras que rompem o muro.",
+        dive: "Espere a investida e os dois disparos rápidos antes de atacar a abertura.",
+        starfall: "Leia as trajetórias dos três orbes estelares e derrote o chefe final.",
+      },
+    },
+    fr: {
+      titlePrefix: "Étape",
+      patternTitle: { lanes: "Voies centrales", alternating: "Voies alternées", edges: "Voies extérieures", center: "Centre blindé" },
+      patternRule: {
+        lanes: "Lisez les trois voies centrales et arrêtez les vagues de bêtes rapides.",
+        alternating: "Protégez tour à tour les accès gauche et droit et préparez le changement de vague.",
+        edges: "Changez vite de cible pour les vagues qui arrivent par les voies extérieures.",
+        center: "Associez perforation et dégâts continus contre les bêtes blindées qui pressent le centre.",
+      },
+      bossRule: {
+        pursuit: "Éliminez l’escorte mixte en évitant les tirs de poursuite.",
+        crossfire: "Lisez les deux tirs croisés et suivez le changement de voie de la meute.",
+        bulwark: "Brisez six coups de bouclier avant d’infliger tous les dégâts au boss.",
+        siege: "Arrêtez l’orbe de siège lourd qui vise le centre et les bêtes brise-mur.",
+        dive: "Attendez la charge et les deux tirs rapides, puis frappez pendant l’ouverture.",
+        starfall: "Lisez les trajectoires des trois orbes stellaires et battez le boss final.",
+      },
+    },
+    de: {
+      titlePrefix: "Stufe",
+      patternTitle: { lanes: "Mittlere Bahnen", alternating: "Wechselbahnen", edges: "Äußere Bahnen", center: "Gepanzerte Mitte" },
+      patternRule: {
+        lanes: "Lies die drei mittleren Bahnen und stoppe die Wellen schneller Bestien.",
+        alternating: "Schütze den linken und rechten Zugang abwechselnd und bereite den Wellenwechsel vor.",
+        edges: "Wechsle schnell zu den Wellen, die über die äußeren Bahnen kommen.",
+        center: "Kombiniere Durchschlag und Dauerschaden gegen gepanzerte Bestien in der Mitte.",
+      },
+      bossRule: {
+        pursuit: "Besiege die gemischte Eskorte und weiche den Verfolgungsschüssen aus.",
+        crossfire: "Lies die beiden Kreuzfeuerschüsse und folge dem Bahnenwechsel der Herde.",
+        bulwark: "Zerstöre sechs Schildtreffer, bevor du dem Boss vollen Schaden zufügst.",
+        siege: "Stoppe die schwere Belagerungskugel zur Mitte und die Mauerbrecher.",
+        dive: "Warte den Ansturm und die zwei schnellen Schüsse ab, dann greife die Lücke an.",
+        starfall: "Lies die Bahnen der drei Sternkugeln und besiege den letzten Boss.",
+      },
+    },
+    it: {
+      titlePrefix: "Fase",
+      patternTitle: { lanes: "Corsie centrali", alternating: "Corsie alternate", edges: "Corsie esterne", center: "Centro corazzato" },
+      patternRule: {
+        lanes: "Leggi le tre corsie centrali e ferma le ondate di bestie veloci.",
+        alternating: "Difendi in alternanza gli ingressi sinistro e destro e preparati al cambio d’onda.",
+        edges: "Cambia rapidamente mira verso le ondate che arrivano dalle corsie esterne.",
+        center: "Unisci perforazione e danno continuo contro le bestie corazzate che premono al centro.",
+      },
+      bossRule: {
+        pursuit: "Sconfiggi la scorta mista evitando i colpi d’inseguimento.",
+        crossfire: "Leggi i due colpi incrociati e segui il cambio di corsia della mandria.",
+        bulwark: "Rompi sei colpi di scudo prima di infliggere danno pieno al boss.",
+        siege: "Ferma l’orbe d’assedio pesante diretto al centro e le bestie sfonda-muro.",
+        dive: "Attendi la carica e i due colpi rapidi, poi attacca durante l’apertura.",
+        starfall: "Leggi le traiettorie dei tre orbi stellari e sconfiggi il boss finale.",
+      },
+    },
+    ru: {
+      titlePrefix: "Этап",
+      patternTitle: { lanes: "Центральные линии", alternating: "Чередующиеся линии", edges: "Внешние линии", center: "Бронированный центр" },
+      patternRule: {
+        lanes: "Следите за тремя центральными линиями и остановите волну быстрых зверей.",
+        alternating: "Поочерёдно защищайте левый и правый вход и готовьтесь к смене волны.",
+        edges: "Быстро переводите прицел на волны, входящие по внешним линиям.",
+        center: "Сочетайте пробивание и постоянный урон против бронированных зверей в центре.",
+      },
+      bossRule: {
+        pursuit: "Победите смешанную охрану, уклоняясь от преследующих выстрелов.",
+        crossfire: "Читайте два перекрёстных выстрела и следите за сменой линии стаи.",
+        bulwark: "Разбейте шесть ударов щита, прежде чем наносить боссу полный урон.",
+        siege: "Остановите тяжёлый осадный шар, нацеленный в центр, и зверей-проломщиков.",
+        dive: "Дождитесь рывка и двух быстрых выстрелов, затем атакуйте в открывшееся окно.",
+        starfall: "Следите за траекториями трёх звёздных шаров и победите последнего босса.",
+      },
+    },
+    hi: {
+      titlePrefix: "चरण",
+      patternTitle: { lanes: "केंद्रीय लेन", alternating: "बदलती लेन", edges: "बाहरी लेन", center: "बख्तरबंद केंद्र" },
+      patternRule: {
+        lanes: "तीन केंद्रीय लेन पढ़ें और तेज़ जानवरों की लहर रोकें।",
+        alternating: "बाएँ और दाएँ प्रवेश की बारी-बारी से रक्षा करें और लहर बदलने के लिए तैयार रहें।",
+        edges: "बाहरी लेन से आने वाली लहरों पर निशाना जल्दी बदलें।",
+        center: "केंद्र पर दबाव डालने वाले बख्तरबंद जानवरों के विरुद्ध भेदन और लगातार नुकसान मिलाएँ।",
+      },
+      bossRule: {
+        pursuit: "पीछा करने वाली गोलियों से बचते हुए मिश्रित पहरे को हराएँ।",
+        crossfire: "दोनों क्रॉसफायर गोलियाँ पढ़ें और झुंड की लेन बदलने पर नज़र रखें।",
+        bulwark: "बॉस को पूरा नुकसान देने से पहले ढाल के छह प्रहार तोड़ें।",
+        siege: "केंद्र पर निशाना साधने वाले भारी घेराबंदी गोले और दीवार तोड़ने वाले जानवर रोकें।",
+        dive: "दौड़ और दो तेज़ गोलियों का इंतज़ार करें, फिर खुले अवसर पर हमला करें।",
+        starfall: "तीन तारकीय गोलों की दिशा पढ़ें और अंतिम बॉस को हराएँ।",
+      },
+    },
+  };
+
   window.WONDER_DATA.levels.forEach((level, index) => {
     const [titleEn, titleZh, ruleEn, ruleZh, typePool, spawnPattern, bossPattern, bossRuleEn, bossRuleZh] = authoredStages[index];
     const [titleEs, ruleEs, bossRuleEs] = spanishAuthoredStages[index];
     const [titleAr, ruleAr, bossRuleAr] = arabicAuthoredStages[index];
-    Object.assign(level, { titleEn, titleZh, titleEs, titleAr, ruleEn, ruleZh, ruleEs, ruleAr, typePool, spawnPattern });
+    const localizedStage = Object.fromEntries(Object.entries(localeStageCopy).map(([activeLocale, copy]) => [
+      activeLocale,
+      {
+        title: `${copy.titlePrefix} ${level.id} · ${copy.patternTitle[spawnPattern]}`,
+        rule: copy.patternRule[spawnPattern],
+      },
+    ]));
+    Object.assign(level, { titleEn, titleZh, titleEs, titleAr, ruleEn, ruleZh, ruleEs, ruleAr, titleByLocale: Object.fromEntries(Object.entries(localizedStage).map(([key, value]) => [key, value.title])), ruleByLocale: Object.fromEntries(Object.entries(localizedStage).map(([key, value]) => [key, value.rule])), typePool, spawnPattern });
     level.waves.forEach((wave) => {
       wave.typePool = typePool.slice();
       wave.spawnPattern = spawnPattern;
-      if (wave.boss) Object.assign(wave, { bossPattern, bossRuleEn, bossRuleZh, bossRuleEs, bossRuleAr });
+      if (wave.boss) Object.assign(wave, { bossPattern, bossRuleEn, bossRuleZh, bossRuleEs, bossRuleAr, bossRuleByLocale: Object.fromEntries(Object.entries(localeStageCopy).map(([activeLocale, copy]) => [activeLocale, copy.bossRule[bossPattern] || ""])) });
     });
   });
 })();
