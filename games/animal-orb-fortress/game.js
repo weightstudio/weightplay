@@ -525,19 +525,19 @@
   });
 
   const shotFeedbackCopy = {
-    en: { direct: "Direct hit", bank: "Bank hit", blocked: "Blocked" },
-    "zh-Hant": { direct: "直接命中", bank: "反彈命中", blocked: "攻擊無效" },
-    "zh-Hans": { direct: "直接命中", bank: "反弹命中", blocked: "攻击无效" },
-    es: { direct: "Impacto directo", bank: "Impacto de rebote", blocked: "Bloqueado" },
-    fr: { direct: "Impact direct", bank: "Ricochet réussi", blocked: "Bloqué" },
-    de: { direct: "Direkttreffer", bank: "Abpralltreffer", blocked: "Blockiert" },
-    it: { direct: "Colpo diretto", bank: "Colpo di rimbalzo", blocked: "Bloccato" },
-    ja: { direct: "直接ヒット", bank: "反射ヒット", blocked: "無効" },
-    ko: { direct: "직접 명중", bank: "튕김 명중", blocked: "막힘" },
-    "pt-BR": { direct: "Acerto direto", bank: "Acerto com ricochete", blocked: "Bloqueado" },
-    ru: { direct: "Прямое попадание", bank: "Попадание рикошетом", blocked: "Заблокировано" },
-    hi: { direct: "सीधा प्रहार", bank: "टकराकर प्रहार", blocked: "रोका गया" },
-    ar: { direct: "إصابة مباشرة", bank: "إصابة مرتدة", blocked: "تم الصد" },
+    en: { direct: "Direct hit", bank: "Bank hit", bankTarget: "Bank hit ×{bounces} → {target} −{amount}", target: "shadow beast", blocked: "Blocked" },
+    "zh-Hant": { direct: "直接命中", bank: "反彈命中", bankTarget: "反彈命中 ×{bounces} → {target} −{amount}", target: "影獸", blocked: "攻擊無效" },
+    "zh-Hans": { direct: "直接命中", bank: "反弹命中", bankTarget: "反弹命中 ×{bounces} → {target} −{amount}", target: "影兽", blocked: "攻击无效" },
+    es: { direct: "Impacto directo", bank: "Impacto de rebote", bankTarget: "Impacto de rebote ×{bounces} → {target} −{amount}", target: "bestia de sombra", blocked: "Bloqueado" },
+    fr: { direct: "Impact direct", bank: "Ricochet réussi", bankTarget: "Ricochet ×{bounces} → {target} −{amount}", target: "bête d’ombre", blocked: "Bloqué" },
+    de: { direct: "Direkttreffer", bank: "Abpralltreffer", bankTarget: "Abpralltreffer ×{bounces} → {target} −{amount}", target: "Schattenbestie", blocked: "Blockiert" },
+    it: { direct: "Colpo diretto", bank: "Colpo di rimbalzo", bankTarget: "Rimbalzo ×{bounces} → {target} −{amount}", target: "bestia d’ombra", blocked: "Bloccato" },
+    ja: { direct: "直接ヒット", bank: "反射ヒット", bankTarget: "反射ヒット ×{bounces} → {target} −{amount}", target: "影獣", blocked: "無効" },
+    ko: { direct: "직접 명중", bank: "튕김 명중", bankTarget: "튕김 명중 ×{bounces} → {target} −{amount}", target: "그림자 야수", blocked: "막힘" },
+    "pt-BR": { direct: "Acerto direto", bank: "Acerto com ricochete", bankTarget: "Ricochete ×{bounces} → {target} −{amount}", target: "fera sombria", blocked: "Bloqueado" },
+    ru: { direct: "Прямое попадание", bank: "Попадание рикошетом", bankTarget: "Рикошет ×{bounces} → {target} −{amount}", target: "теневой зверь", blocked: "Заблокировано" },
+    hi: { direct: "सीधा प्रहार", bank: "टकराकर प्रहार", bankTarget: "टकराकर प्रहार ×{bounces} → {target} −{amount}", target: "छाया पशु", blocked: "रोका गया" },
+    ar: { direct: "إصابة مباشرة", bank: "إصابة مرتدة", bankTarget: "إصابة مرتدة ×{bounces} ← {target} −{amount}", target: "وحش الظل", blocked: "تم الصد" },
   };
 
   const firstShotMissCopy = {
@@ -559,19 +559,19 @@
     if (shotFeedbackCopy[key]) shotFeedbackCopy[key].miss = value;
   });
   const firstWavePriorityCopy = {
-    en: "Wave 1 priority: protect the core first, then read the bounce angle.",
-    "zh-Hant": "第一波重點：先守住核心，再讀反彈角度。",
-    "zh-Hans": "第一波重点：先守住核心，再读反弹角度。",
-    es: "Prioridad de la oleada 1: protege el núcleo y luego lee el ángulo de rebote.",
-    fr: "Priorité de la vague 1 : protégez le noyau, puis lisez l'angle du ricochet.",
-    de: "Priorität in Welle 1: Schütze zuerst den Kern und lies dann den Abprallwinkel.",
-    it: "Priorità della prima ondata: proteggi il nucleo, poi leggi l'angolo di rimbalzo.",
-    ja: "第1ウェーブの優先事項：まずコアを守り、次に反射角度を読みましょう。",
-    ko: "1웨이브 우선순위: 먼저 코어를 지키고 튕김 각도를 읽으세요.",
-    "pt-BR": "Prioridade da Onda 1: proteja o núcleo primeiro e depois leia o ângulo do ricochete.",
-    ru: "Приоритет первой волны: сначала защитите ядро, затем читайте угол рикошета.",
-    hi: "पहली लहर की प्राथमिकता: पहले कोर को बचाएँ, फिर रिकोशे का कोण पढ़ें।",
-    ar: "أولوية الموجة الأولى: احمِ النواة أولاً، ثم اقرأ زاوية الارتداد.",
+    en: "Wave 1 priority: protect the core first. Immediate target: the nearest shadow beast; then read the bounce angle.",
+    "zh-Hant": "第一波重點：先守住核心。立即目標：最近的影獸；再讀反彈角度。",
+    "zh-Hans": "第一波重点：先守住核心。立即目标：最近的影兽；再读反弹角度。",
+    es: "Prioridad de la oleada 1: protege el núcleo. Objetivo inmediato: la bestia de sombra más cercana; después lee el ángulo de rebote.",
+    fr: "Priorité de la vague 1 : protégez le noyau. Cible immédiate : la bête d’ombre la plus proche ; puis lisez l’angle du ricochet.",
+    de: "Priorität in Welle 1: Schütze zuerst den Kern. Sofortziel: die nächste Schattenbestie; dann den Abprallwinkel lesen.",
+    it: "Priorità della prima ondata: proteggi il nucleo. Obiettivo immediato: la bestia d’ombra più vicina; poi leggi l’angolo di rimbalzo.",
+    ja: "第1ウェーブの優先事項：まずコアを守ります。最初の目標は最も近い影獣。次に反射角度を読みましょう。",
+    ko: "1웨이브 우선순위: 먼저 코어를 지키세요. 즉시 목표는 가장 가까운 그림자 야수입니다. 그다음 튕김 각도를 읽으세요.",
+    "pt-BR": "Prioridade da Onda 1: proteja o núcleo. Alvo imediato: a fera sombria mais próxima; depois leia o ângulo do ricochete.",
+    ru: "Приоритет первой волны: сначала защитите ядро. Ближайшая цель — теневой зверь рядом; затем читайте угол рикошета.",
+    hi: "पहली लहर की प्राथमिकता: पहले कोर को बचाएँ। तुरंत लक्ष्य: सबसे निकट का छाया पशु; फिर रिकोशे का कोण पढ़ें।",
+    ar: "أولوية الموجة الأولى: احمِ النواة أولاً. الهدف المباشر: أقرب وحش ظل؛ ثم اقرأ زاوية الارتداد.",
   };
   function firstWavePriorityText() {
     const actualLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale;
@@ -2212,7 +2212,9 @@
         const copy = shotFeedbackCopy[actualLocale] || shotFeedbackCopy.en;
         const kind = blocked ? "blocked" : orb.bounces > 0 ? "bank" : "direct";
         const amount = damage || shieldDamage;
-        const label = `${copy[kind]}${kind === "bank" ? ` ×${orb.bounces}` : ""}${amount ? ` −${amount}` : ""}`;
+        const label = kind === "bank"
+          ? copy.bankTarget.replace("{bounces}", String(orb.bounces)).replace("{target}", copy.target).replace("{amount}", String(amount))
+          : `${copy[kind]}${amount ? ` −${amount}` : ""}`;
         state.lastShotFeedback = { kind, bounces: orb.bounces, damage, shieldDamage, label };
         const isFirstShot = Boolean(orb.firstShot);
         if (state.firstShotPending && isFirstShot) {
