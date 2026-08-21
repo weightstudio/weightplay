@@ -173,7 +173,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Klondike Solitaire",
     "ru": "Klondike Solitaire",
     "hi": "Klondike Solitaire",
-    "ar": "Klondike Solitaire"
+    "ar": "كلوندايك سوليتير"
   },
   "spider-solitaire": {
     "__localizedExact": true,

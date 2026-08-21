@@ -563,6 +563,7 @@ const KL_I18N = {
       "ui.board.empty_waste": "كومة الهدر",
       "ui.aria.stock": "الرّزمة، {count} أوراق متبقية",
       "ui.aria.waste": "كومة الهدر، {count} أوراق مرئية",
+      "ui.aria.foundation": "{suit}، كومة الأساس",
       "ui.draw_mode.label": "وضع السحب",
       "ui.draw_mode.toggle": "وضع السحب: {label}",
       "ui.draw_mode.option_1": "سحب 1",

@@ -4,7 +4,7 @@
   const COPY = window.WPCloudhookLocales.locales;
   const LOCALE_ORDER = window.WPCloudhookLocales.order;
   const GAME_ID = "animal-cloudhook-courier";
-const GAME_VERSION = "v8";
+const GAME_VERSION = "v9";
   const INTERFACE_VERSION = 6;
   const LEAVE_COPY = {
     en: { title: "Keep this flight?", body: "Continue keeps the current flight. Returning to Stages ends this attempt.", continue: "Continue flight", leave: "Stages" },
@@ -157,7 +157,7 @@ const GAME_VERSION = "v8";
   const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
   const config = () => stageConfigs[currentStage];
   const resetState = () => {
-    state = { x:105, y:410, vx:180, vy:-20, attached:false, anchor:-1, rope:0, time:0, score:0, parcels:0, collected:[], messageKey:"ready", done:false, success:false, flash:0, firstAttach:false, attachedAt:0 };
+    state = { x:105, y:410, vx:180, vy:-20, attached:false, anchor:-1, rope:0, time:0, score:0, parcels:0, collected:[], messageKey:"ready", done:false, success:false, flash:0, firstAttach:false, swingReady:false, attachedAt:0 };
     inputAxis = 0;
   };
   const nearestAnchor = () => {
@@ -169,14 +169,14 @@ const GAME_VERSION = "v8";
     });
     return best;
   };
-  const updateTetherLabel = () => { $("#tetherBtn").textContent = state?.attached ? text("release") : text("hold"); $("#tetherBtn").setAttribute("aria-pressed", String(Boolean(state?.attached))); };
+  const updateTetherLabel = () => { $("#tetherBtn").textContent = state?.attached ? text("release") : text("hold"); $("#tetherBtn").setAttribute("aria-pressed", String(Boolean(state?.attached))); $("#tetherState").textContent = state?.attached ? (state.swingReady ? text("swinging") : text("attached")) : text(state?.messageKey || "ready"); $("#tetherState").dataset.attached = String(Boolean(state?.attached)); };
   const announce = (key) => { if (!state) return; state.messageKey = key; $("#battleStatus").textContent = text(key); };
   const attach = () => {
     if (!state || state.done || hidden || state.attached) return;
     const index = nearestAnchor();
     if (index < 0) { announce("noAnchor"); beep(180); return; }
     const anchor = anchorPosition(config().anchors[index], state.time);
-    state.attached = true; state.anchor = index; state.rope = Math.max(72, Math.min(190, distance(state, anchor))); state.attachedAt = state.time;
+    state.attached = true; state.anchor = index; state.rope = Math.max(72, Math.min(190, distance(state, anchor))); state.attachedAt = state.time; state.swingReady = false;
     if (!state.firstAttach) { state.firstAttach = true; track("attach"); }
     announce("attached"); beep(620, 0.08); updateTetherLabel();
   };
@@ -205,6 +205,7 @@ const GAME_VERSION = "v8";
   const update = (dt) => {
     if (!state || state.done || hidden || !isBattleActive()) return;
     state.time += dt;
+    if (state.attached && !state.swingReady && state.time - state.attachedAt >= 0.45) { state.swingReady = true; announce("swinging"); beep(700, 0.05); }
     const cfg = config();
     const wind = cfg.wind * (state.attached ? 0.45 : 1);
     state.vx += (inputAxis * 170 + wind) * dt;
@@ -248,7 +249,7 @@ const GAME_VERSION = "v8";
     if (state?.flash > 0) { ctx.fillStyle = `rgba(255,235,157,${Math.min(0.35, state.flash)})`; ctx.fillRect(0, 0, W, H); }
   };
   const tick = (now) => { const dt = Math.min(0.032, Math.max(0, (now - lastTime) / 1000 || 0)); lastTime = now; if (!hidden) { if (isBattleActive()) update(dt); draw(); updateHud(); } frame = window.requestAnimationFrame(tick); };
-  const updateHud = () => { if (!state) return; $("#scoreLabel").textContent = `${text("score")}: ${state.score}`; $("#timeLabel").textContent = `${text("time")}: ${formatTime(state.time)}`; $("#controlHint").textContent = text("hint"); canvas.dataset.attached = String(state.attached); canvas.dataset.time = String(state.time); canvas.dataset.x = String(state.x); canvas.dataset.y = String(state.y); updateTetherLabel(); };
+  const updateHud = () => { if (!state) return; $("#scoreLabel").textContent = `${text("score")}: ${state.score}`; $("#timeLabel").textContent = `${text("time")}: ${formatTime(state.time)}`; $("#controlHint").textContent = text("hint"); canvas.dataset.attached = String(state.attached); canvas.dataset.swingReady = String(state.swingReady); canvas.dataset.time = String(state.time); canvas.dataset.x = String(state.x); canvas.dataset.y = String(state.y); updateTetherLabel(); };
   const renderResult = () => { const best = Number(safeGet(bestKey(currentStage), 0)) || 0; $("#resultEyebrow").textContent = `${text("stage")} ${currentStage + 1}`; $("#resultTitle").textContent = text(state.success ? "success" : "failure"); $("#resultCopy").textContent = text(state.success ? (currentStage === stageConfigs.length - 1 ? "final" : "successCopy") : "failureCopy"); $("#resultScore").innerHTML = `<span>${text("scoreStat")}</span><strong>${state.score}</strong>`; $("#resultTime").innerHTML = `<span>${text("timeStat")}</span><strong>${formatTime(state.time)}</strong>`; $("#resultBest").innerHTML = `<span>${text("bestStat")}</span><strong>${best ? formatTime(best) : "—"}</strong>`; $("#nextBtn").textContent = text("next"); $("#nextBtn").disabled = !state.success || currentStage >= stageConfigs.length - 1; $("#retryBtn").textContent = text("retry"); $("#resultStagesBtn").textContent = text("stageMap"); };
   const liveBattleNodes = () => [...battleScreen.children].filter((node) => node !== resultScreen && node !== leaveOverlay);
   const syncBattleOverlayState = () => { liveBattleNodes().forEach((node) => { const inert = resultOpen || leaveOpen; node.inert = inert; if (inert) node.setAttribute("aria-hidden", "true"); else node.removeAttribute("aria-hidden"); }); };

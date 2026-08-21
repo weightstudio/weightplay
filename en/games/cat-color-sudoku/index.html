@@ -119,7 +119,7 @@
 
   <main id="battle" class="screen canvas battle-screen" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
     <header class="scene-header">
-      <button id="battleBack" type="button" data-wp-return="battle" aria-label="Back">←</button>
+      <button id="battleBack" type="button" data-wp-return="battle" data-t-aria="battleBack" aria-label="Back">←</button>
       <div><small id="battleChapter"></small><h2 id="battleStage"></h2></div>
       <span id="objective"></span>
     </header>
@@ -128,8 +128,8 @@
         <div id="board" class="cat-board" role="grid" data-t-aria="boardLabel" aria-label="Cat Color Sudoku board"></div>
         <p id="status" class="status" aria-live="polite"></p>
       </div>
-      <aside class="battle-tools" aria-label="Puzzle tools">
-        <div class="mode-switch" role="group" aria-label="Placement mode"><button id="toolCat" class="active" type="button" aria-pressed="true" data-t="toolCat">Place cat</button><button id="toolMark" type="button" aria-pressed="false" data-t="toolMark">Mark X</button></div>
+      <aside class="battle-tools" data-t-aria="toolsLabel" aria-label="Puzzle tools">
+        <div class="mode-switch" role="group" data-t-aria="placementMode" aria-label="Placement mode"><button id="toolCat" class="active" type="button" aria-pressed="true" data-t="toolCat">Place cat</button><button id="toolMark" type="button" aria-pressed="false" data-t="toolMark">Mark X</button></div>
         <div class="action-row"><button id="undo" type="button" data-t="undo">Undo</button><button id="hint" type="button" data-t="hint">Hint</button><button id="restart" type="button" data-t="restart">Restart</button></div>
         <section class="rule-card"><img src="../../assets/cat-color-sudoku-moonwhisker-v1.png" alt="" aria-hidden="true"><div><strong id="ruleChapter"></strong><p id="ruleText"></p></div></section>
       </aside>
@@ -143,8 +143,8 @@
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
   <script src="../../src/i18n.js"></script>
   <script src="levels.js?v=20260819-cat-color-sudoku-v1"></script>
-  <script src="locales.js?v=20260820-cat-color-sudoku-v2-conflict-a11y"></script>
-  <script src="game.js?v=20260820-cat-color-sudoku-v2-conflict-a11y"></script>
+  <script src="locales.js?v=20260821-cat-color-sudoku-v3-a11y-landmarks"></script>
+  <script src="game.js?v=20260821-cat-color-sudoku-v3-a11y-landmarks"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js?v=20260819-cat-color-sudoku-v1" data-wp-battle-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
