@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "freecell-solitaire";
-  const GAME_VERSION = "v22";
+  const GAME_VERSION = "v23";
   const INTERFACE_VERSION = "6";
   const EVENT_NAME = "wp-freecell-analytics";
   const LOCALES = new Set(["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"]);

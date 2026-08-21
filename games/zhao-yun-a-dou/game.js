@@ -44,6 +44,7 @@
     recruit: document.getElementById("recruit"),
     recruitHint: document.getElementById("recruitHint"),
     skills: document.getElementById("skills"),
+    battleActions: document.querySelector("#battle .battle-actions"),
     hint: document.getElementById("hint"),
     status: document.getElementById("status"),
     pressureCue: document.getElementById("pressureCue"),
@@ -779,6 +780,41 @@
 
   function renderSkills() {
     el.skills.innerHTML = "";
+    const hasGeneral = battle.units.some(function (unit) { return unit && unit.general; });
+    el.skills.classList.toggle("is-preview", !hasGeneral);
+    el.battleActions?.classList.toggle("has-skill-preview", !hasGeneral);
+    if (!hasGeneral) {
+      const preview = document.createElement("div");
+      preview.className = "skill-preview";
+      preview.setAttribute("role", "group");
+      preview.setAttribute("aria-label", t("skillPreviewTitle"));
+      const title = document.createElement("strong");
+      title.className = "skill-preview-title";
+      title.textContent = t("skillPreviewTitle");
+      const body = document.createElement("span");
+      body.className = "skill-preview-body";
+      body.textContent = t("skillPreviewBody");
+      const list = document.createElement("div");
+      list.className = "skill-preview-list";
+      const effects = (dictionaries[locale] || dictionaries.en).skillPreviewEffects || {};
+      unitTypes.forEach(function (type) {
+        const previewUnit = makeUnit(type, 4, true);
+        const item = document.createElement("div");
+        item.className = "skill-preview-item";
+        item.setAttribute("role", "listitem");
+        const effect = effects[type] || (dictionaries.en.skillPreviewEffects && dictionaries.en.skillPreviewEffects[type]) || "";
+        item.setAttribute("aria-label", generalName(previewUnit) + " — " + skillName(previewUnit) + ": " + effect);
+        const skill = document.createElement("b");
+        skill.textContent = skillName(previewUnit);
+        const detail = document.createElement("small");
+        detail.textContent = effect;
+        item.append(skill, detail);
+        list.appendChild(item);
+      });
+      preview.append(title, body, list);
+      el.skills.appendChild(preview);
+      return;
+    }
     battle.units.forEach(function (unit) {
       if (!unit || !unit.general || el.skills.querySelector("[data-skill=\"" + unit.type + "\"]")) return;
       const general = data.generals[unit.type];

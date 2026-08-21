@@ -734,6 +734,83 @@ button.primary:focus-visible {
   gap: 6px;
 }
 
+.skills.is-preview {
+  display: block;
+}
+
+.battle-actions.has-skill-preview .skills {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+
+.battle-actions.has-skill-preview .ghost-action {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.skill-preview {
+  width: 100%;
+  padding: 7px 9px;
+  border: 1px solid rgba(224, 185, 94, .24);
+  border-radius: 10px;
+  background: rgba(194, 146, 65, .08);
+}
+
+.skill-preview-title,
+.skill-preview-body,
+.skill-preview-item {
+  display: block;
+}
+
+.skill-preview-title {
+  color: #f3d08a;
+  font-size: 11px;
+}
+
+.skill-preview-body {
+  margin-top: 2px;
+  color: #bdc9ba;
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  line-height: 1.3;
+}
+
+.skill-preview-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 5px;
+  margin-top: 6px;
+}
+
+.skill-preview-item {
+  min-width: 0;
+  padding: 5px 6px;
+  border: 1px solid rgba(238, 228, 204, .16);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, .045);
+}
+
+.skill-preview-item b,
+.skill-preview-item small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.skill-preview-item b {
+  color: #eee4cc;
+  font-size: 10px;
+}
+
+.skill-preview-item small {
+  margin-top: 2px;
+  color: #bdc9ba;
+  font-family: Arial, sans-serif;
+  font-size: 9px;
+  line-height: 1.25;
+}
+
 .skill-button,
 .ghost-action {
   min-width: 44px;
@@ -1004,6 +1081,20 @@ button.primary:focus-visible {
   .skills {
     grid-column: 1 / -1;
     justify-content: center;
+  }
+
+  .battle-actions.has-skill-preview .skills {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .battle-actions.has-skill-preview .ghost-action {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .skill-preview-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .ghost-action {
@@ -1422,5 +1513,10 @@ body[data-wp-game-id="zhao-yun-a-dou"] .stage-card[data-wp-stage-selected="true"
   .battle-actions .skills {
     grid-column: 1 / -1;
     grid-row: 2;
+  }
+
+  .battle-actions.has-skill-preview .ghost-action {
+    grid-column: 3;
+    grid-row: 1;
   }
 }

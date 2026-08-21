@@ -1,7 +1,28 @@
 (() => {
   "use strict";
 
-  window.WPClassicLogic?.mount("peg-solitaire");
+  const app = window.WPClassicLogic?.mount("peg-solitaire");
+
+  const mainReadyCopy = {
+    en: "One fixed board is ready—start the puzzle.",
+    "zh-Hant": "固定棋盤已準備好——開始這道謎題吧。",
+    "zh-Hans": "固定棋盘已准备好——开始这道谜题吧。",
+    ja: "固定盤面を用意しました。パズルを始めましょう。",
+    ko: "고정된 보드가 준비됐어요. 퍼즐을 시작하세요.",
+    es: "Hay un tablero fijo listo: empieza el rompecabezas.",
+    "pt-BR": "Um tabuleiro fixo está pronto — comece o quebra-cabeça.",
+    fr: "Un plateau fixe vous attend : commencez le puzzle.",
+    de: "Ein festes Brett ist bereit — starte das Rätsel.",
+    it: "Una tavola fissa è pronta: inizia il puzzle.",
+    ru: "Фиксированное поле готово — начните головоломку.",
+    hi: "एक तय बोर्ड तैयार है—पहेली शुरू करें।",
+    ar: "لوحة ثابتة جاهزة — ابدأ اللغز.",
+  };
+  if (app) {
+    const locale = document.documentElement.lang || "en";
+    const mainReady = app.root.querySelector(".logic-guide h3");
+    if (mainReady) mainReady.textContent = mainReadyCopy[locale] || mainReadyCopy.en;
+  }
 
   const lessonCopy = {
     en: {

@@ -173,6 +173,77 @@
     Object.assign(dictionaries[code], payoffCopy[code]);
   });
 
+  const skillPreviewCopy = {
+    en: {
+      skillPreviewTitle: "General skill preview",
+      skillPreviewBody: "Merge matching units to Level 4; the real skill button appears after promotion.",
+      skillPreviewEffects: { blade: "Hits up to 3 enemies.", spear: "Stuns enemies and deals damage.", horse: "Strikes the nearest threat and pushes it back.", bow: "Damages every enemy in the lanes." },
+    },
+    "zh-Hant": {
+      skillPreviewTitle: "武將技能預覽",
+      skillPreviewBody: "把相同部隊合成到等級 4；升格後才會出現真正可操作的技能按鈕。",
+      skillPreviewEffects: { blade: "最多攻擊 3 名敵人。", spear: "使敵人暫停並造成傷害。", horse: "攻擊最前方威脅並將其擊退。", bow: "傷害三路上的所有敵人。" },
+    },
+    "zh-Hans": {
+      skillPreviewTitle: "武将技能预览",
+      skillPreviewBody: "将相同部队合成到 4 级；升格后才会出现真正可操作的技能按钮。",
+      skillPreviewEffects: { blade: "最多攻击 3 名敌人。", spear: "使敌人停顿并造成伤害。", horse: "攻击最前方威胁并将其击退。", bow: "伤害三条战线上的所有敌人。" },
+    },
+    ja: {
+      skillPreviewTitle: "武将技プレビュー",
+      skillPreviewBody: "同じ部隊をレベル4まで合成すると昇格し、実際に使える技ボタンが表示されます。",
+      skillPreviewEffects: { blade: "最大3体の敵を攻撃。", spear: "敵を止めてダメージ。", horse: "最も近い脅威を攻撃し後退させる。", bow: "全レーンの敵にダメージ。" },
+    },
+    ko: {
+      skillPreviewTitle: "장수 기술 미리보기",
+      skillPreviewBody: "같은 부대를 레벨 4까지 합치면 승급하고 실제 기술 버튼이 나타납니다.",
+      skillPreviewEffects: { blade: "최대 3명의 적을 공격합니다.", spear: "적을 멈추고 피해를 줍니다.", horse: "가장 가까운 위협을 공격해 밀어냅니다.", bow: "모든 전선의 적에게 피해를 줍니다." },
+    },
+    es: {
+      skillPreviewTitle: "Vista previa de habilidades",
+      skillPreviewBody: "Fusiona unidades iguales hasta el nivel 4; el botón real aparece tras el ascenso.",
+      skillPreviewEffects: { blade: "Golpea hasta a 3 enemigos.", spear: "Aturde y causa daño.", horse: "Golpea la amenaza más cercana y la aleja.", bow: "Daña a todos los enemigos de las líneas." },
+    },
+    "pt-BR": {
+      skillPreviewTitle: "Prévia das habilidades",
+      skillPreviewBody: "Funda unidades iguais até o nível 4; o botão real aparece após a promoção.",
+      skillPreviewEffects: { blade: "Ataca até 3 inimigos.", spear: "Atordoa inimigos e causa dano.", horse: "Ataca a ameaça mais próxima e a empurra.", bow: "Causa dano a todos os inimigos das linhas." },
+    },
+    fr: {
+      skillPreviewTitle: "Aperçu des compétences",
+      skillPreviewBody: "Fusionnez des unités identiques jusqu'au niveau 4 ; le vrai bouton apparaît après la promotion.",
+      skillPreviewEffects: { blade: "Frappe jusqu'à 3 ennemis.", spear: "Étourdit les ennemis et inflige des dégâts.", horse: "Frappe la menace la plus proche et la repousse.", bow: "Inflige des dégâts à tous les ennemis des lignes." },
+    },
+    de: {
+      skillPreviewTitle: "Vorschau der Generalsfähigkeiten",
+      skillPreviewBody: "Verschmilz gleiche Einheiten bis Stufe 4; der echte Fähigkeitsbutton erscheint nach der Beförderung.",
+      skillPreviewEffects: { blade: "Trifft bis zu 3 Feinde.", spear: "Betäubt Feinde und verursacht Schaden.", horse: "Trifft die nächste Bedrohung und stößt sie zurück.", bow: "Verursacht Schaden bei allen Feinden der Linien." },
+    },
+    it: {
+      skillPreviewTitle: "Anteprima delle abilità",
+      skillPreviewBody: "Unisci unità uguali fino al livello 4; il vero pulsante appare dopo la promozione.",
+      skillPreviewEffects: { blade: "Colpisce fino a 3 nemici.", spear: "Stordisce i nemici e infligge danni.", horse: "Colpisce la minaccia più vicina e la respinge.", bow: "Danneggia tutti i nemici sulle linee." },
+    },
+    ru: {
+      skillPreviewTitle: "Предпросмотр умений генералов",
+      skillPreviewBody: "Объединяйте одинаковые отряды до 4-го уровня; настоящая кнопка умения появится после повышения.",
+      skillPreviewEffects: { blade: "Поражает до 3 врагов.", spear: "Оглушает врагов и наносит урон.", horse: "Бьёт ближайшую угрозу и отталкивает её.", bow: "Наносит урон всем врагам на линиях." },
+    },
+    hi: {
+      skillPreviewTitle: "सेनापति कौशल का पूर्वावलोकन",
+      skillPreviewBody: "समान इकाइयों को स्तर 4 तक मिलाएँ; पदोन्नति के बाद असली कौशल बटन दिखेगा।",
+      skillPreviewEffects: { blade: "अधिकतम 3 दुश्मनों पर वार।", spear: "दुश्मनों को रोककर नुकसान।", horse: "सबसे निकट खतरे पर वार कर पीछे धकेलता है।", bow: "सभी पंक्तियों के दुश्मनों को नुकसान।" },
+    },
+    ar: {
+      skillPreviewTitle: "معاينة مهارات القادة",
+      skillPreviewBody: "ادمج الوحدات المتطابقة حتى المستوى 4؛ يظهر زر المهارة الفعلي بعد الترقية.",
+      skillPreviewEffects: { blade: "تصيب ما يصل إلى 3 أعداء.", spear: "توقف الأعداء وتسبب ضرراً.", horse: "تهاجم أقرب تهديد وتدفعه للخلف.", bow: "تسبب ضرراً لكل أعداء المسارات." },
+    },
+  };
+  Object.keys(skillPreviewCopy).forEach(function (code) {
+    Object.assign(dictionaries[code], skillPreviewCopy[code]);
+  });
+
   const publicMainCopy = {
     "zh-Hans": { kicker: "短局合成防守战", summary: "征召汉字小兵、合成相同部队，守住三条战线，让赵云保护阿斗。" },
     ja: { kicker: "短時間の合成防衛キャンペーン", summary: "漢字の兵を招集し、同じ部隊を合成して三つのレーンを守り、趙雲とともに阿斗を守ろう。" },
