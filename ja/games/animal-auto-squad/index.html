@@ -68,7 +68,7 @@
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260716-kids-stage-swipe3" />
-  <link rel="stylesheet" href="style.css?v=20260821-short-landscape-v18" />
+  <link rel="stylesheet" href="style.css?v=20260821-pace-agency-v21" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
 </head>
   <body data-tutorial-auto-show="false">
@@ -195,6 +195,10 @@
         <div id="combatArea" class="combat-area is-hidden">
           <canvas id="gameCanvas" width="720" height="1280" aria-label="Animal Auto Squad Arena"></canvas>
           <div id="combatStatusText" class="combat-status" data-ui="combatIntro">Prepare for Battle!</div>
+          <div class="combat-pace-control" role="group" aria-label="Combat pace">
+            <button id="combatPaceBtn" class="secondary-btn" type="button" aria-pressed="false">Standard pace</button>
+            <span id="combatPaceHint" class="combat-pace-hint">Optional: speed up settled combat without changing its actions.</span>
+          </div>
         </div>
 
         <div id="hintText" class="hint" data-ui="guideHint">Tap a character, then tap a destination slot to move it.</div>
@@ -290,7 +294,7 @@
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
     <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-  <script src="game.js?v=20260821-required-locale-decisions-v20"></script>
+  <script src="game.js?v=20260821-pace-agency-v21"></script>
     <script>
       (() => {
         const loadGameInfo = () => {

@@ -1789,7 +1789,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Corriere Gancionuvola",
     "ru": "Облачный курьер",
     "hi": "क्लाउडहुक कूरियर",
-    "ar": "كلاودهوك ساعي"
+    "ar": "كلاود هوك للتوصيل"
   },
   "animal-twin-switchyard": {
     "__localizedExact": true,
