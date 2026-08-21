@@ -1,4 +1,4 @@
-const GAME_VERSION = "v5";
+const GAME_VERSION = "v6";
 window.WPPopularArcade?.mount("pong");
 document.body.dataset.gameVersion = GAME_VERSION;
 (() => {
@@ -63,6 +63,21 @@ document.body.dataset.gameVersion = GAME_VERSION;
     hi: (rally, score) => `रैली ${rally} चूक गई — पैडल गेंद के नीचे नहीं था। स्कोर: ${score}। अगले सर्व के लिए मिलाएँ।`,
     ar: (rally, score) => `خسرت التبادل ${rally} — لم يكن المضرب أسفل الكرة. النتيجة: ${score}. حاذِه للإرسال التالي.`,
   };
+  const PONG_REMATCH_GOAL_COPY = {
+    en: ({ won, score, moves }) => won ? (moves > 5 ? `Next round goal: win all five rallies in fewer than ${moves} moves.` : "Next round goal: keep all five rallies aligned with no extra moves.") : (score > 0 ? `Next round goal: beat ${score} points by aligning one more rally.` : "Next round goal: win one rally and start your score."),
+    "zh-Hant": ({ won, score, moves }) => won ? (moves > 5 ? `下一回合目標：五個回合全勝，並把步數降到 ${moves} 步以下。` : "下一回合目標：維持五回合全勝，不增加多餘步數。") : (score > 0 ? `下一回合目標：多贏一回合，超過 ${score} 分。` : "下一回合目標：先贏下一回合，開始累積分數。"),
+    "zh-Hans": ({ won, score, moves }) => won ? (moves > 5 ? `下一回合目标：五个回合全胜，并把步数降到 ${moves} 步以下。` : "下一回合目标：保持五回合全胜，不增加多余步数。") : (score > 0 ? `下一回合目标：多赢一回合，超过 ${score} 分。` : "下一回合目标：先赢下一回合，开始累积分数。"),
+    ja: ({ won, score, moves }) => won ? (moves > 5 ? `次の目標：5ラリー全勝を、${moves}手未満で達成しましょう。` : "次の目標：余分な手を使わず、5ラリー全勝を目指しましょう。") : (score > 0 ? `次の目標：もう1ラリー勝って、${score}点を超えましょう。` : "次の目標：まず1ラリー勝って、スコアを作りましょう。"),
+    ko: ({ won, score, moves }) => won ? (moves > 5 ? `다음 목표: 다섯 랠리 모두 이기고 ${moves}번보다 적게 움직이세요.` : "다음 목표: 불필요한 이동 없이 다섯 랠리 모두 이기세요.") : (score > 0 ? `다음 목표: 랠리 하나를 더 맞혀 ${score}점을 넘으세요.` : "다음 목표: 먼저 랠리 하나를 이겨 점수를 시작하세요."),
+    es: ({ won, score, moves }) => won ? (moves > 5 ? `Objetivo siguiente: gana los cinco rallies con menos de ${moves} movimientos.` : "Objetivo siguiente: gana los cinco rallies sin movimientos extra.") : (score > 0 ? `Objetivo siguiente: supera ${score} puntos ganando un rally más.` : "Objetivo siguiente: gana un rally para empezar tu puntuación."),
+    "pt-BR": ({ won, score, moves }) => won ? (moves > 5 ? `Próximo objetivo: vença os cinco ralis com menos de ${moves} movimentos.` : "Próximo objetivo: vença os cinco ralis sem movimentos extras.") : (score > 0 ? `Próximo objetivo: passe de ${score} pontos vencendo mais um rali.` : "Próximo objetivo: vença um rali para começar sua pontuação."),
+    fr: ({ won, score, moves }) => won ? (moves > 5 ? `Objectif suivant : gagnez les cinq échanges en moins de ${moves} coups.` : "Objectif suivant : gagnez les cinq échanges sans coups superflus.") : (score > 0 ? `Objectif suivant : dépassez ${score} points en gagnant un échange de plus.` : "Objectif suivant : gagnez un échange pour commencer votre score."),
+    de: ({ won, score, moves }) => won ? (moves > 5 ? `Nächstes Ziel: Gewinne alle fünf Ballwechsel mit weniger als ${moves} Zügen.` : "Nächstes Ziel: Gewinne alle fünf Ballwechsel ohne zusätzliche Züge.") : (score > 0 ? `Nächstes Ziel: Überspringe ${score} Punkte mit einem weiteren gewonnenen Ballwechsel.` : "Nächstes Ziel: Gewinne einen Ballwechsel und starte deine Punktejagd."),
+    it: ({ won, score, moves }) => won ? (moves > 5 ? `Obiettivo successivo: vinci tutti e cinque gli scambi con meno di ${moves} mosse.` : "Obiettivo successivo: vinci tutti e cinque gli scambi senza mosse extra.") : (score > 0 ? `Obiettivo successivo: supera ${score} punti vincendo un altro scambio.` : "Obiettivo successivo: vinci uno scambio per iniziare il punteggio."),
+    ru: ({ won, score, moves }) => won ? (moves > 5 ? `Следующая цель: выиграйте все пять розыгрышей менее чем за ${moves} ходов.` : "Следующая цель: выиграйте все пять розыгрышей без лишних ходов.") : (score > 0 ? `Следующая цель: наберите больше ${score} очков, выиграв ещё один розыгрыш.` : "Следующая цель: выиграйте один розыгрыш и начните набор очков."),
+    hi: ({ won, score, moves }) => won ? (moves > 5 ? `अगला लक्ष्य: सभी पाँच रैलियाँ ${moves} से कम चालों में जीतें।` : "अगला लक्ष्य: बिना अतिरिक्त चालों के सभी पाँच रैलियाँ जीतें।") : (score > 0 ? `अगला लक्ष्य: एक और रैली जीतकर ${score} अंक पार करें।` : "अगला लक्ष्य: एक रैली जीतकर अपना स्कोर शुरू करें।"),
+    ar: ({ won, score, moves }) => won ? (moves > 5 ? `الهدف التالي: اربح التبادلات الخمسة كلها بأقل من ${moves} حركة.` : "الهدف التالي: اربح التبادلات الخمسة كلها من دون حركات إضافية.") : (score > 0 ? `الهدف التالي: تجاوز ${score} نقطة بالفوز بتبادل إضافي.` : "الهدف التالي: اربح تبادلاً واحداً وابدأ تسجيل النقاط.")
+  };
   let hintVisible = false;
   const locale = () => document.querySelector("#localeSelect")?.value || document.documentElement.lang || "en";
   const pongBoard = () => document.querySelector(".pong-board");
@@ -96,9 +111,26 @@ document.body.dataset.gameVersion = GAME_VERSION;
       message.dataset.messageKey = "hint";
     }
   };
+  const applyPongRematchGoal = () => {
+    if (document.body.dataset.gameId !== "pong" || document.body.dataset.screen !== "result") return;
+    const stats = [...document.querySelectorAll("#resultStats .stat strong")].map((node) => Number(node.textContent));
+    if (stats.length < 2 || stats.some((value) => !Number.isFinite(value))) return;
+    let goal = document.querySelector("#pongRematchGoal");
+    if (!goal) {
+      goal = document.createElement("p");
+      goal.id = "pongRematchGoal";
+      goal.className = "tagline pong-rematch-goal";
+      goal.setAttribute("role", "note");
+      document.querySelector("#resultCopy")?.after(goal);
+    }
+    const copy = PONG_REMATCH_GOAL_COPY[locale()] || PONG_REMATCH_GOAL_COPY.en;
+    const text = copy({ won: document.querySelector("#resultScreen")?.dataset.outcome === "win", score: stats[0], moves: stats[1] });
+    if (goal.textContent !== text) goal.textContent = text;
+  };
   const syncMessage = () => {
     applyHint();
     applyPongCue();
+    applyPongRematchGoal();
   };
   const observer = new MutationObserver(syncMessage);
   observer.observe(document.body, { childList: true, subtree: true });
