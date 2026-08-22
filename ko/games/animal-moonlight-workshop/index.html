@@ -1,6 +1,8 @@
 <!doctype html><html lang="ko"><head>
-    
-    <base href="/games/animal-moonlight-workshop/" /><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general"><meta name="weightplay-game-id" content="animal-moonlight-workshop"><meta name="weightplay-scene-controls" content="mutable"><title>달빛 공방 탈출 | WeightPlay</title><meta name="description" content="룩스의 길을 계획해 스위치를 켜고 열쇠를 얻어 문을 여세요." /><link rel="canonical" href="https://weightplay.com/ko/games/animal-moonlight-workshop/" />
+
+    <base href="/games/animal-moonlight-workshop/" />
+
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general"><meta name="weightplay-game-id" content="animal-moonlight-workshop"><meta name="weightplay-scene-controls" content="mutable"><title>달빛 공방 탈출 | WeightPlay</title><meta name="description" content="룩스의 길을 계획해 스위치를 켜고 열쇠를 얻어 문을 여세요." /><link rel="canonical" href="https://weightplay.com/ko/games/animal-moonlight-workshop/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-moonlight-workshop/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-moonlight-workshop/" />
     <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-moonlight-workshop/" />
@@ -30,7 +32,6 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "달빛 공방 탈출",
-  "alternateName": "Moonlight Workshop Escape",
   "url": "https://weightplay.com/ko/games/animal-moonlight-workshop/",
   "image": "https://weightplay.com/games/animal-moonlight-workshop/assets/animal-moonlight-workshop-cover.png",
   "description": "룩스의 길을 계획해 스위치를 켜고 열쇠를 얻어 문을 여세요.",
@@ -45,35 +46,37 @@
   "genre": [
     "Puzzle",
     "Escape",
-    "Animal"
+    "Animal",
+    "Browser Game"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  }
+  },
+  "alternateName": "Moonlight Workshop Escape"
 }
     </script>
   </head><body data-wp-five-game="animal-moonlight-workshop" data-wp-market-game="animal-moonlight-workshop" data-wp-game-id="animal-moonlight-workshop" data-runtime-localize="off" data-wp-combined-sound="true" data-screen="main"><section id="loadingPanel" class="loading-panel"><div class="loading-card"><strong data-m5-title>Moonlight Workshop Escape</strong><span>Winding the workshop…</span><div class="loading-track"><i></i></div></div></section><main id="app" data-audience="general">
 <section id="main-screen" class="screen m5-main active" data-screen="main"><header class="m5-header"><a class="m5-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a><h1 class="m5-title" data-m5-title>달빛 공방 탈출</h1><label class="locale-picker"><span>Language</span><select id="localeSelect" aria-label="Language"><option value="en">EN</option><option value="zh-Hant">繁中</option><option value="zh-Hans">简中</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">ES</option><option value="pt-BR">PT</option><option value="fr">FR</option><option value="de">DE</option><option value="it">IT</option><option value="ru">RU</option><option value="hi">हिं</option><option value="ar">عر</option></select></label></header><img class="m5-cover" src="assets/animal-moonlight-workshop-cover.png" alt="" aria-hidden="true"><div class="m5-copy"><p class="m5-lede" data-m5-lede></p><p id="main-progress" class="m5-progress"></p><button id="start-game" class="m5-primary" data-m5-copy="start">Start Game</button><section class="m5-guide"><h2 data-m5-copy="howTo">How to Play</h2><p data-m5-guide></p></section></div></section><section id="stage-screen" class="screen m5-stage" data-screen="stage" data-wp-standard-stage-screen style="background-image:url('assets/animal-moonlight-workshop-background.png')" hidden><header class="m5-stage-header"><button id="stage-back" class="m5-back" data-wp-return="stage">←</button><h2 data-m5-copy="stages">Stages</h2></header><div id="stage-list" class="m5-stage-rail stage-rail" data-wp-stage-rail></div><nav class="m5-stage-tabs"><button aria-current="page" data-m5-copy="stages">Stages</button></nav></section><section id="battle-screen" class="screen m5-battle" data-screen="battle" data-wp-logical-battle-canvas hidden><header class="m5-battle-header"><button id="battle-back" class="m5-back" data-wp-return="battle">←</button><strong id="stage-label"></strong><span id="score-label"></span></header><p id="battle-status" class="m5-status" role="status" aria-live="polite" aria-atomic="true"></p><div class="m5-canvas-wrap"><canvas id="arena" width="960" height="540" aria-label="Moonlight Workshop Escape play area"></canvas><section id="result-screen" class="screen m5-result result" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="result-title" aria-describedby="result-copy" hidden><h2 id="result-title"></h2><p id="result-copy"></p><div class="m5-result-actions"><button id="to-stages" data-m5-copy="stages">Stages</button><button id="next" data-m5-copy="next">Next Stage</button><button id="retry" class="primary" data-m5-copy="retry">Retry</button></div></section></div><div id="battle-controls" class="m5-controls"></div><p class="m5-hint" data-m5-guide></p></section><div class="battle-ad-reserve"></div></main><script src="../../src/site-config.js"></script><script src="../../src/i18n.js"></script><script src="../../src/market-five-games-locale.js?v=20260820-workshop-v3"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script><script src="../../src/battle-canvas-standard.js"></script><script src="game.js?v=20260820-workshop-v3"></script><script src="/src/runtime-locales/ko.js?v=20260821-skyport-runtime-v8"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-<section class="game-page-info game-page-info-static" aria-label="달빛 공방 탈출 게임 정보">
-    
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script><script src="../../src/battle-canvas-standard.js"></script><script src="game.js?v=20260820-workshop-v3"></script><section class="game-page-info game-page-info-static" aria-label="달빛 공방 탈출 게임 정보">
+
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>달빛 공방 탈출</h2><p>룩스의 길을 계획해 스위치를 켜고 열쇠를 얻어 문을 여세요.</p></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>스위치·열쇠 탈출</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Escape · Animal</strong></div></div>
     </div>
     <div class="game-info-sections">
-      
-      
-      
-      
-      
-      
-      
+
+
+
+
+
+
+
       <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>진행 상황이 저장되나요?</dt><dd>예, 이 브라우저에서만 가능합니다.</dd></div></dl></div>
 
     </div>
   </section>
+<script src="/src/runtime-locales/ko.js?v=20260821-skyport-runtime-v8"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body></html>

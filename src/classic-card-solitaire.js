@@ -34,6 +34,22 @@
     ar: { start: "ابدأ اللعبة", restart: "إعادة البدء", newGame: "لعبة جديدة", undo: "تراجع", hint: "تلميح", how: "طريقة اللعب", settings: "الإعدادات", sound: "الصوت", soundOn: "الصوت: تشغيل", soundOff: "الصوت: إيقاف", moves: "الحركات", score: "النقاط", stock: "الرزمة", waste: "المهملات", freeCells: "الخلايا الحرة", foundations: "الأساسات", tableau: "الطاولة", combo: "تتابع", draw: "اقلب بطاقة", win: "اكتملت اللعبة", lose: "لا توجد حركات", winText: "أزلت كل البطاقات!", loseText: "تراجع عن حركة أو ابدأ لعبة جديدة.", close: "إغلاق", back: "رجوع", empty: "فارغ", selected: "محدد", noMoves: "لا توجد حركة قانونية.", wrong: "هذه الحركة غير قانونية.", pairWrong: "اختر بطاقتين متاحتين مجموعهما 13.", stockEmpty: "الرزمة فارغة.", tutorialTitle: "اقرأ الطاولة واختر حركة واضحة.", tutorialGoal: "أزل كل البطاقات بالقواعد الكلاسيكية.", tutorialControl: "اضغط البطاقة ووجهتها أو اسحبها بإصبعك أو الفأرة.", tutorialFinish: "استخدم التلميح عند الحاجة؛ التراجع آمن دائماً.", ariaCard: "{rank} من {suit}", ariaBack: "بطاقة مقلوبة", ariaPile: "{name}، {count} بطاقات" },
   };
 
+  const SUIT_COPY = {
+    en: { spades: "Spades", hearts: "Hearts", clubs: "Clubs", diamonds: "Diamonds" },
+    "zh-Hant": { spades: "黑桃", hearts: "紅心", clubs: "梅花", diamonds: "方塊" },
+    "zh-Hans": { spades: "黑桃", hearts: "红心", clubs: "梅花", diamonds: "方块" },
+    ja: { spades: "スペード", hearts: "ハート", clubs: "クラブ", diamonds: "ダイヤ" },
+    ko: { spades: "스페이드", hearts: "하트", clubs: "클럽", diamonds: "다이아" },
+    es: { spades: "picas", hearts: "corazones", clubs: "tréboles", diamonds: "diamantes" },
+    "pt-BR": { spades: "espadas", hearts: "copas", clubs: "paus", diamonds: "ouros" },
+    fr: { spades: "piques", hearts: "cœurs", clubs: "trèfles", diamonds: "carreaux" },
+    de: { spades: "Pik", hearts: "Herz", clubs: "Kreuz", diamonds: "Karo" },
+    it: { spades: "picche", hearts: "cuori", clubs: "fiori", diamonds: "quadri" },
+    ru: { spades: "пики", hearts: "червы", clubs: "трефы", diamonds: "бубны" },
+    hi: { spades: "हुकुम", hearts: "पान", clubs: "चिड़ी", diamonds: "ईंट" },
+    ar: { spades: "البستوني", hearts: "القلوب", clubs: "السباتي", diamonds: "الديناري" },
+  };
+
   const PAIR_CLEAR_COPY = {
     en: "Pair cleared!",
     "zh-Hant": "牌對已清除！",
@@ -282,10 +298,14 @@
 
   const clone = (value) => JSON.parse(JSON.stringify(value));
   const safeLocale = () => {
-    const value = root.WonderI18n?.actualLocale?.() || root.WonderI18n?.locale?.() || document.documentElement.lang || "en";
+    const routeLocale = document.documentElement.lang;
+    const value = document.body?.dataset.wpGameId === "yukon-solitaire" && LOCALES.includes(routeLocale)
+      ? routeLocale
+      : root.WonderI18n?.actualLocale?.() || root.WonderI18n?.locale?.() || routeLocale || "en";
     return LOCALES.includes(value) ? value : "en";
   };
   const text = (value, params = {}) => String(value || "").replace(/\{(\w+)\}/gu, (_match, key) => params[key] ?? "");
+  const suitName = (suit, locale) => SUIT_COPY[locale]?.[suit] || SUIT_COPY.en[suit] || suit;
   const rankName = (rank) => RANKS[rank - 1] || String(rank);
   const isRed = (card) => card?.suit === "hearts" || card?.suit === "diamonds";
   const cardJSON = (card) => card ? card.toJSON() : null;
@@ -735,7 +755,8 @@
     if (!card) return "";
     const rank = rankName(card.rank);
     const symbol = SYMBOLS[card.suit] || "";
-    const label = card.faceUp ? text((COMMON[safeLocale()] || COMMON.en).ariaCard, { rank, suit: card.suit }) : (COMMON[safeLocale()] || COMMON.en).ariaBack;
+    const locale = safeLocale();
+    const label = card.faceUp ? text((COMMON[locale] || COMMON.en).ariaCard, { rank, suit: suitName(card.suit, locale) }) : (COMMON[locale] || COMMON.en).ariaBack;
     const rowStyle = Number.isInteger(row) ? ` style="--row:${row}"` : "";
     return `<button type="button" class="classic-card ${card.faceUp ? `front ${isRed(card) ? "red" : "black"}` : "back"} ${extra}"${rowStyle} data-card-id="${String(card.id).replaceAll('"', "&quot;")}" data-source='${JSON.stringify(source)}' aria-label="${label.replaceAll('"', "&quot;")}">${card.faceUp ? `<span class="rank top">${rank}</span><span class="suit">${symbol}</span><span class="rank bottom">${rank}</span>` : "<span class=\"back-mark\">✦</span>"}</button>`;
   }
@@ -785,7 +806,7 @@
       const cardLabel = (card, fallbackLabel) => {
         if (!card) return fallbackLabel;
         const template = (COMMON[this.locale] || COMMON.en).ariaCard || COMMON.en.ariaCard;
-        return text(template, { rank: rankName(card.rank), suit: card.suit }) || fallbackLabel;
+        return text(template, { rank: rankName(card.rank), suit: suitName(card.suit, this.locale) }) || fallbackLabel;
       };
       const source = cardLabel(this.game.sourceCard(move.source), fallback(move.source?.zone, move.source?.pile));
       const destination = move.destination?.zone === "tableau"
@@ -797,7 +818,7 @@
       if (this.config.variant !== "yukon" || !this.game.selected || !this.validTargets().size) return "";
       const card = this.game.sourceCard(this.game.selected);
       const template = (COMMON[this.locale] || COMMON.en).ariaCard || COMMON.en.ariaCard;
-      const label = card ? text(template, { rank: rankName(card.rank), suit: card.suit }) : this.t("selected");
+      const label = card ? text(template, { rank: rankName(card.rank), suit: suitName(card.suit, this.locale) }) : this.t("selected");
       return `${this.t("selected")}: ${label}. ${this.t("yukonDestinationHint")}`;
     }
     pyramidCoachText() { return this.pyramidCoachMoves?.length >= 2 ? this.t("pyramidCoach") : ""; }
@@ -855,7 +876,11 @@
       document.documentElement.dir = this.locale === "ar" ? "rtl" : "ltr";
       this.setText("[data-copy=title]", copy.title); this.setText("[data-copy=target]", copy.target); this.setText("[data-copy=type]", this.config.variant === "freecell" || this.config.variant === "yukon" ? this.t("foundations") : this.config.variant === "pyramid" ? "13" : this.t("combo"));
       ["startBtn", "restartBtn", "newGameBtn", "battleNewBtn", "battleRestartBtn", "undoBtn", "hintBtn", "resultNewGame", "resultRestart", "resultClose"].forEach((id) => { const node = this.nodes[id]; if (!node) return; const normalized = id.toLowerCase(); node.textContent = normalized.includes("restart") ? this.t("restart") : normalized.includes("new") ? this.t("newGame") : normalized.includes("undo") ? this.t("undo") : normalized.includes("hint") ? this.t("hint") : normalized === "resultclose" ? this.t("close") : this.t("start"); });
-      this.setText("[data-label=free-cells]", this.t("freeCells")); this.setText("[data-label=foundations]", this.t("foundations")); this.setText("[data-label=stock]", this.t("stock")); this.setText("[data-label=waste]", this.t("waste")); this.setText("[data-label=tableau]", this.t("tableau"));
+      this.setText("[data-label=free-cells]", this.t("freeCells")); this.setText("[data-label=foundations]", this.t("foundations")); this.setText("[data-label=stock]", this.t("stock")); this.setText("[data-label=waste]", this.t("waste")); this.setText("[data-label=tableau]", this.t("tableau")); this.setText("[data-label=moves]", this.t("moves")); this.setText("[data-label=score]", this.t("score")); this.setText("[data-label=combo]", this.t("combo"));
+      if (this.config.variant === "yukon") {
+        const stats = [...document.querySelectorAll(".header-stat small")];
+        [this.t("moves"), this.t("score"), this.t("combo")].forEach((label, index) => { if (stats[index]) stats[index].textContent = label; });
+      }
       this.refreshSound();
     }
     showMain() { this.active = false; this.nodes.battleScreen.hidden = true; this.nodes.mainScreen.hidden = false; document.body.dataset.screen = "main"; this.renderMain(); window.dispatchEvent(new Event("weightplay:shell-sync")); }
@@ -1204,7 +1229,17 @@
         this.hintTimer = setTimeout(() => { this.hintMove = null; this.render(); }, 2400);
         return;
       }
-      if (!move) { this.hintMove = null; this.feedback(this.game.won ? this.t("winText") : this.t("noMoves")); return; }
+      if (!move) {
+        this.hintMove = null;
+        // A Yukon deadlock can be discovered by the player's Hint request
+        // before any later board interaction calls render(). Reconcile the
+        // terminal state here so Hint never leaves a settled no-move board
+        // stranded behind a toast instead of the native Result overlay.
+        if (!this.game.won && !this.game.lost) this.game.checkWin();
+        if (this.game.won || this.game.lost) { this.clearFeedback(); this.render(); return; }
+        this.feedback(this.t("noMoves"));
+        return;
+      }
       this.clearFeedback(); this.hintMove = move; this.render(); clearTimeout(this.hintTimer); this.hintTimer = setTimeout(() => { this.game.selected = null; this.hintMove = null; this.render(); }, 2400);
     }
     clearFeedback() { if (!this.nodes.toast) return; this.nodes.toast.hidden = true; this.nodes.toast.textContent = ""; clearTimeout(this.toastTimer); }

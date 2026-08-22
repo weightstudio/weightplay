@@ -539,9 +539,10 @@
       battle.units[slot] = mergedUnit;
       battle.units[selectedSlot] = null;
       selectedSlot = null;
+      const payoffKind = mergedUnit.general ? "promotion" : "merge-payoff";
       setStatus(mergedUnit.general
         ? t("statusGeneralPayoff")
-        : t("statusMergePayoff", { level: mergedUnit.level }));
+        : t("statusMergePayoff", { level: mergedUnit.level }), payoffKind);
       renderBattle();
       return;
     }
@@ -884,12 +885,24 @@
     updateStaticLocale();
   }
 
-  function setStatus(message) {
+  function setStatus(message, kind) {
     if (!battle) return;
     battle.status = message;
+    if (el.status) {
+      el.status.dataset.statusKind = kind || "";
+      el.status.classList.remove("status-line--payoff", "status-line--promotion");
+      if (kind) {
+        void el.status.offsetWidth;
+        el.status.classList.add(kind === "promotion" ? "status-line--promotion" : "status-line--payoff");
+      }
+    }
     window.clearTimeout(statusTimer);
     statusTimer = window.setTimeout(function () {
-      if (battle && !battle.result) battle.status = "";
+      if (battle && !battle.result) {
+        battle.status = "";
+        el.status?.classList.remove("status-line--payoff", "status-line--promotion");
+        if (el.status) el.status.dataset.statusKind = "";
+      }
     }, 2200);
   }
 

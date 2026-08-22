@@ -20,3 +20,25 @@
     [target.newBestRun, target.bestRun, target.bestStarsOnly, target.bestRunNoRecord] = values;
   });
 })();
+(() => {
+  const copy = {
+    en: ["First turn · Start with SPIN.", "Choose one reel after it stops. Corrections are now available.", "Resolve the three runes when your choice is ready."],
+    "zh-Hant": ["第一回合 · 先按「轉動」。", "停止後選擇一軸，現在可以使用修正。", "選擇完成後，結算三個符文。"],
+    "zh-Hans": ["第一回合 · 先按“转动”。", "停止后选择一轴，现在可以使用修正。", "选择完成后，结算三个符文。"],
+    ja: ["最初のターン · まずスピン。", "停止したらリールを1つ選択。修正が使えます。", "選択が決まったら3つのルーンを解決。"],
+    ko: ["첫 턴 · 먼저 스핀하세요.", "멈춘 뒤 릴 하나를 선택하세요. 보정을 사용할 수 있습니다.", "선택이 끝나면 룬 3개를 해결하세요."],
+    es: ["Primer turno · Empieza con GIRAR.", "Cuando se detenga, elige un rodillo. Ya puedes corregirlo.", "Cuando decidas, resuelve las tres runas."],
+    "pt-BR": ["Primeiro turno · Comece com GIRAR.", "Quando parar, escolha um carretel. As correções estão disponíveis.", "Quando decidir, resolva as três runas."],
+    fr: ["Premier tour · Commencez par TOURNER.", "À l'arrêt, choisissez un rouleau. Les corrections sont disponibles.", "Quand votre choix est prêt, résolvez les trois runes."],
+    de: ["Erster Zug · Beginne mit DREHEN.", "Wähle nach dem Stopp eine Walze. Korrekturen sind jetzt möglich.", "Wenn deine Wahl feststeht, löse die drei Runen auf."],
+    it: ["Primo turno · Inizia con GIRA.", "Dopo l'arresto, scegli un rullo. Ora puoi correggere.", "Quando hai scelto, risolvi le tre rune."],
+    ru: ["Первый ход · Начните с вращения.", "После остановки выберите барабан. Теперь доступны исправления.", "Когда выбор готов, разберите три руны."],
+    hi: ["पहली चाल · घुमाएँ से शुरू करें।", "रुकने के बाद एक रील चुनें। अब सुधार उपलब्ध हैं।", "चुनाव तय होने पर तीनों रून का निपटारा करें।"],
+    ar: ["الدور الأول · ابدأ بالتدوير.", "بعد التوقف اختر بكرة واحدة. أصبحت التصحيحات متاحة.", "بعد اختيارك نفّذ الرموز الثلاثة."]
+  };
+  Object.entries(copy).forEach(([locale, values]) => {
+    const target = window.RUNE_REELS_LOCALES?.[locale];
+    if (!target) return;
+    [target.coachSpin, target.coachChoose, target.coachResolve] = values;
+  });
+})();

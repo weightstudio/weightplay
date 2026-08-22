@@ -807,6 +807,17 @@
   });
   Object.assign(dictionaries.en, { "game.start": "Start Game" });
   Object.assign(dictionaries["zh-Hant"], { "game.start": "\u958b\u59cb\u904a\u6232" });
+  Object.assign(dictionaries["zh-Hans"], { "game.start": "\u5f00\u59cb\u6e38\u620f" });
+  Object.assign(dictionaries.ja, { "game.start": "\u30b2\u30fc\u30e0\u958b\u59cb" });
+  Object.assign(dictionaries.ko, { "game.start": "\uac8c\uc784 \uc2dc\uc791" });
+  Object.assign(dictionaries.es, { "game.start": "Iniciar partida" });
+  Object.assign(dictionaries["pt-BR"], { "game.start": "Iniciar jogo" });
+  Object.assign(dictionaries.fr, { "game.start": "Commencer" });
+  Object.assign(dictionaries.de, { "game.start": "Spiel starten" });
+  Object.assign(dictionaries.it, { "game.start": "Inizia partita" });
+  Object.assign(dictionaries.ru, { "game.start": "\u041d\u0430\u0447\u0430\u0442\u044c \u0438\u0433\u0440\u0443" });
+  Object.assign(dictionaries.hi, { "game.start": "\u0916\u0947\u0932 \u0936\u0941\u0930\u0942 \u0915\u0930\u0947\u0902" });
+  Object.assign(dictionaries.ar, { "game.start": "\u0627\u0628\u062f\u0623 \u0627\u0644\u0644\u0639\u0628\u0629" });
 
   Object.assign(dictionaries.en, { "topic.strategy": "Strategy", "category.Strategy": "Strategy" });
   Object.assign(dictionaries["zh-Hant"], { "topic.strategy": "\u7b56\u7565", "category.Strategy": "\u7b56\u7565" });

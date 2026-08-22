@@ -1,6 +1,8 @@
 <!doctype html><html lang="zh-Hant"><head>
-    
-    <base href="/games/pyramid-solitaire/" /><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" /><meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general" /><meta name="theme-color" content="#0a1f3a" /><title>金字塔接龍 | WeightPlay</title><meta name="description" content="《金字塔接龍》是一款經典紙牌益智遊戲：移除總和為 13 的已露出牌組，清空七列金字塔；只有在目前盤面沒有有用配對時，才使用牌庫。" /><meta property="og:title" content="金字塔接龍 | WeightPlay" /><meta property="og:description" content="《金字塔接龍》是一款經典紙牌益智遊戲：移除總和為 13 的已露出牌組，清空七列金字塔；只有在目前盤面沒有有用配對時，才使用牌庫。" /><meta property="og:image" content="https://weightplay.com/assets/pyramid-solitaire-cover-v2.webp" /><link rel="canonical" href="https://weightplay.com/zh-tw/games/pyramid-solitaire/" />
+
+    <base href="/games/pyramid-solitaire/" />
+
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" /><meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general" /><meta name="theme-color" content="#0a1f3a" /><title>金字塔接龍 | WeightPlay</title><meta name="description" content="《金字塔接龍》是一款經典紙牌益智遊戲：移除總和為 13 的已露出牌組，清空七列金字塔；只有在目前盤面沒有有用配對時，才使用牌庫。" /><meta property="og:title" content="金字塔接龍 | WeightPlay" /><meta property="og:description" content="《金字塔接龍》是一款經典紙牌益智遊戲：移除總和為 13 的已露出牌組，清空七列金字塔；只有在目前盤面沒有有用配對時，才使用牌庫。" /><meta property="og:image" content="https://weightplay.com/assets/pyramid-solitaire-cover-v2.webp" /><link rel="canonical" href="https://weightplay.com/zh-tw/games/pyramid-solitaire/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/pyramid-solitaire/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/pyramid-solitaire/" />
     <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/pyramid-solitaire/" />
@@ -37,12 +39,12 @@
   "applicationCategory": "Game",
   "isAccessibleForFree": true,
   "inLanguage": "zh-Hant",
-  "alternateName": "Pyramid Solitaire",
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  }
+  },
+  "alternateName": "Pyramid Solitaire"
 }
     </script><link rel="stylesheet" href="../../src/loading-screen.css" /><link rel="stylesheet" href="../../src/game-page-info.css" /><link rel="stylesheet" href="../../src/play-viewport.css" /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-shell-controls-standard.css" /><link rel="stylesheet" href="../../src/tutorial.css" /><link rel="stylesheet" href="../../src/classic-card-solitaire.css" />  <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -52,10 +54,10 @@
     <meta name="twitter:description" content="《金字塔接龍》是一款經典紙牌益智遊戲：移除總和為 13 的已露出牌組，清空七列金字塔；只有在目前盤面沒有有用配對時，才使用牌庫。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/pyramid-solitaire-cover-v2.webp" />
   </head><body data-screen="main" data-audience="general" data-wp-game-id="pyramid-solitaire" data-wp-combined-sound="true"><section id="loadingPanel" class="loading-panel"><div class="loading-card"><strong data-copy="title">Pyramid Solitaire</strong><span>Preparing your deck</span><div class="loading-track"><i class="loading-fill"></i></div></div></section><main id="mainScreen" class="main-screen"><header class="main-header"><a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span>←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><strong data-copy="title">Pyramid Solitaire</strong><div class="header-utilities"><button id="audioMenuBtn" class="header-icon-btn" type="button" aria-label="Settings">⚙</button><div id="audioPopover" class="settings-popover is-hidden"><strong class="settings-title">Settings</strong><button id="soundBtn" class="settings-row" type="button">Sound: On</button><label class="settings-row"><span>◉</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></div></header><section class="main-hero"><div class="poster-frame"><img src="../../assets/pyramid-solitaire-cover-v2.webp" class="cover" alt="《金字塔接龍》遊戲圖片" /></div><article class="main-copy"><small class="eyebrow">Classic Card Game</small><h1 data-copy="title">金字塔接龍</h1><p data-copy="target">Remove exposed pairs that add to 13.</p><div class="main-actions"><button id="startBtn" class="primary-btn" type="button">Start Game</button><button id="restartBtn" class="secondary-btn" type="button">Restart</button><button id="newGameBtn" class="secondary-btn" type="button">New Game</button></div></article></section><section class="game-page-info game-page-info-static" aria-label="金字塔接龍 遊戲資訊">
-    
+
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>金字塔接龍</h2><p>《金字塔接龍》是一款經典紙牌益智遊戲：移除總和為 13 的已露出牌組，清空七列金字塔；只有在目前盤面沒有有用配對時，才使用牌庫。</p></div>
-      
+
     </div>
     <div class="game-info-sections">
       <div class="game-info-section"><h3>世界與任務</h3><p>金字塔是小而清楚的邏輯盤面。每移除一組牌，露出的牌就會改變，因此最好的選擇往往是打開兩條後續路線，而不是只取眼前最容易的配對。</p>

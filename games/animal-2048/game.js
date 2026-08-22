@@ -14,7 +14,7 @@
   const TUTORIAL_KEY = "weightplay_tutorial_seen_animal_2048_v1";
   const LOCALE_SEGMENTS = {en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",es:"es",ja:"ja",ko:"ko","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const SEGMENTS = {en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",es:"es",ja:"ja",ko:"ko","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
-  const GAME_ID="animal-2048",GAME_VERSION="v15",INTERFACE_VERSION="6";
+  const GAME_ID="animal-2048",GAME_VERSION="v16",INTERFACE_VERSION="6";
   const firstSegment = location.pathname.split("/").filter(Boolean)[0] || "en";
   const readStorage=(key)=>{try{return localStorage.getItem(key);}catch{return null;}};
   const writeStorage=(key,value)=>{try{localStorage.setItem(key,value);return true;}catch{return false;}};

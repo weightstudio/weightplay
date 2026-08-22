@@ -12,3 +12,5 @@
     white-space:normal;
   }
 }
+
+.battle-status[data-state="cracked"],.battle-status[data-state="built"],.battle-status[data-state="berry"],.battle-status[data-state="berryClear"]{color:var(--gold);font-weight:800}.battle-status.frost-beat{animation:frost-battle-beat 420ms cubic-bezier(.2,.8,.3,1)}@keyframes frost-battle-beat{0%{transform:scale(.98);opacity:.65}45%{transform:scale(1.035);opacity:1}100%{transform:scale(1);opacity:1}}@media(prefers-reduced-motion:reduce){.battle-status.frost-beat{animation:none}}

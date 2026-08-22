@@ -3,9 +3,30 @@ window.WPClassicLogic?.mount("reversi");
 (() => {
   "use strict";
 
-  const GAME_VERSION = "v7";
+  const GAME_VERSION = "v8";
   const LOCALES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const ROUTE_LOCALES = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
+  const CELL_LABELS = {
+    en: "Row {row}, Column {col}", "zh-Hant": "第 {row} 行，第 {col} 列", "zh-Hans": "第 {row} 行，第 {col} 列",
+    ja: "{row}行 {col}列", ko: "{row}행 {col}열", es: "Fila {row}, columna {col}", "pt-BR": "Linha {row}, coluna {col}",
+    fr: "Ligne {row}, colonne {col}", de: "Zeile {row}, Spalte {col}", it: "Riga {row}, colonna {col}",
+    ru: "Строка {row}, столбец {col}", hi: "पंक्ति {row}, स्तंभ {col}", ar: "الصف {row}، العمود {col}"
+  };
+  const GUIDE_COPY = {
+    en: { aria: "Reversi game information", kicker: "WeightPlay Kids Game Guide", title: "Reversi", description: "Place discs to surround the opponent; the player with more discs at the end wins.", gameplayLabel: "Gameplay", gameplay: "Strategy Board Game", genreLabel: "Genre", genre: "Classic · Puzzle · Strategy · Family", faqTitle: "FAQ", faqQuestion: "Is progress saved?", faqAnswer: "Yes, only in this browser." },
+    "zh-Hant": { aria: "黑白棋 遊戲資訊", kicker: "WeightPlay 兒童遊戲指南", title: "黑白棋", description: "放置棋子夾住對手，結束時棋子較多者獲勝。", gameplayLabel: "玩法", gameplay: "策略棋盤遊戲", genreLabel: "類型", genre: "Classic · Puzzle · 策略 · 家庭", faqTitle: "常見問題", faqQuestion: "進度保存了嗎？", faqAnswer: "是的，僅在該瀏覽器中。" },
+    "zh-Hans": { aria: "黑白棋 游戏资讯", kicker: "WeightPlay 儿童游戏指南", title: "黑白棋", description: "放置棋子夹住对手，结束时棋子较多者获胜。", gameplayLabel: "玩法", gameplay: "策略棋盘游戏", genreLabel: "类型", genre: "Classic · Puzzle · 策略 · 家庭", faqTitle: "常见问题", faqQuestion: "进度保存了吗？", faqAnswer: "是的，仅在该浏览器中。" },
+    ja: { aria: "リバーシ のゲーム情報", kicker: "WeightPlay ゲームガイド", title: "リバーシ", description: "相手の石を挟み、最後に石が多い方が勝ちです。", gameplayLabel: "ゲーム内容", gameplay: "戦略ボードゲーム", genreLabel: "ジャンル", genre: "Classic · Puzzle · 戦略 · 家族", faqTitle: "よくある質問", faqQuestion: "進行状況は保存されますか?", faqAnswer: "はい、このブラウザでのみ可能です。" },
+    ko: { aria: "리버시 게임 정보", kicker: "WeightPlay 어린이 게임 가이드", title: "리버시", description: "상대 돌을 둘러싸 뒤집고 마지막에 돌이 많은 쪽이 승리합니다.", gameplayLabel: "Gameplay", gameplay: "전략 보드게임", genreLabel: "Genre", genre: "Classic · Puzzle · 전략 · 가족", faqTitle: "FAQ", faqQuestion: "진행 상황이 저장되나요?", faqAnswer: "예, 이 브라우저에서만 가능합니다." },
+    es: { aria: "Guía de Reversi", kicker: "Guía de juegos Kids de WeightPlay", title: "Reversi", description: "Rodea y voltea fichas rivales; gana quien tenga más al final.", gameplayLabel: "Cómo se juega", gameplay: "Juego de estrategia", genreLabel: "Género", genre: "Classic · Puzzle · Estrategia · familia", faqTitle: "Preguntas frecuentes", faqQuestion: "¿Se guarda el progreso?", faqAnswer: "Sí, sólo en este navegador." },
+    "pt-BR": { aria: "Reversi informações do jogo", kicker: "WeightPlay Guia do jogo infantil", title: "Reversi", description: "Cerque e vire as peças rivais; vence quem tiver mais no fim.", gameplayLabel: "Gameplay", gameplay: "Jogo de estratégia", genreLabel: "Genre", genre: "Classic · Puzzle · Estratégia · Família", faqTitle: "FAQ", faqQuestion: "O progresso é salvo?", faqAnswer: "Sim, apenas neste navegador." },
+    fr: { aria: "Informations sur le jeu Reversi", kicker: "Guide de jeu WeightPlay pour enfants", title: "Reversi", description: "Encadrez les pions adverses ; le plus grand nombre gagne.", gameplayLabel: "Type de jeu", gameplay: "Jeu de stratégie", genreLabel: "Genre", genre: "Classic · Puzzle · Stratégie · Famille", faqTitle: "Questions fréquentes", faqQuestion: "La progression est-elle enregistrée ?", faqAnswer: "Oui, uniquement dans ce navigateur." },
+    de: { aria: "Spielanleitung für Reversi", kicker: "WeightPlay Kids-Spielanleitung", title: "Reversi", description: "Umschließe gegnerische Steine; am Ende gewinnt die größere Zahl.", gameplayLabel: "Spielweise", gameplay: "Strategiespiel", genreLabel: "Genre", genre: "Classic · Puzzle · Strategie · Familie", faqTitle: "Häufige Fragen", faqQuestion: "Wird der Fortschritt gespeichert?", faqAnswer: "Ja, nur in diesem Browser." },
+    it: { aria: "Reversi informazioni sul gioco", kicker: "WeightPlay Guida ai giochi per bambini", title: "Reversi", description: "Circonda e rovescia le pedine rivali; vince chi ne ha di più.", gameplayLabel: "Gameplay", gameplay: "Gioco strategico", genreLabel: "Genre", genre: "Classic · Puzzle · Strategia · Famiglia", faqTitle: "FAQ", faqQuestion: "I progressi vengono salvati?", faqAnswer: "Sì, solo in questo browser." },
+    ru: { aria: "Реверси информация об игре", kicker: "WeightPlay Руководство по игре для детей", title: "Реверси", description: "Окружайте фишки соперника; побеждает тот, у кого их больше.", gameplayLabel: "Gameplay", gameplay: "Стратегическая игра", genreLabel: "Genre", genre: "Classic · Puzzle · Стратегия · Семья", faqTitle: "FAQ", faqQuestion: "Прогресс сохраняется?", faqAnswer: "Да, только в этом браузере." },
+    hi: { aria: "रिवर्सी खेल की जानकारी", kicker: "WeightPlay किड्स गेम गाइड", title: "रिवर्सी", description: "प्रतिद्वंद्वी की गोटियों को घेरें; अंत में अधिक गोटियाँ जीतती हैं।", gameplayLabel: "Gameplay", gameplay: "रणनीति बोर्ड गेम", genreLabel: "Genre", genre: "Classic · Puzzle · रणनीति · परिवार", faqTitle: "FAQ", faqQuestion: "क्या प्रगति सहेजी गई है?", faqAnswer: "हाँ, केवल इस ब्राउज़र में." },
+    ar: { aria: "دليل لعبة ريفيرسي", kicker: "دليل ألعاب WeightPlay للأطفال", title: "ريفيرسي", description: "أحط قطع الخصم واقلبها؛ يفوز من يملك قطعًا أكثر.", gameplayLabel: "طريقة اللعب", gameplay: "لعبة لوحية استراتيجية", genreLabel: "النوع", genre: "Classic · Puzzle · الإستراتيجية · العائلة", faqTitle: "الأسئلة الشائعة", faqQuestion: "هل يتم حفظ التقدم؟", faqAnswer: "نعم، فقط في هذا المتصفح." }
+  };
   const SCENARIOS = [
     {
       key: "corner-watch",
@@ -67,14 +88,73 @@ window.WPClassicLogic?.mount("reversi");
 
   const locale = () => {
     const route = window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
-    const value = window.WonderI18n?.actualLocale?.() || ROUTE_LOCALES[route] || document.documentElement.lang || "en";
+    const documentLocale = document.documentElement.lang;
+    const value = LOCALES.includes(documentLocale)
+      ? documentLocale
+      : window.WonderI18n?.actualLocale?.() || ROUTE_LOCALES[route] || "en";
     return LOCALES.includes(value) ? value : "en";
+  };
+
+  const syncGuide = () => {
+    const guide = document.querySelector(".game-page-info-static");
+    if (!guide) return;
+    const copy = GUIDE_COPY[locale()] || GUIDE_COPY.en;
+    guide.setAttribute("data-runtime-localize", "off");
+    guide.setAttribute("aria-label", copy.aria);
+    const title = guide.querySelector(".game-info-title");
+    const facts = guide.querySelectorAll(".game-info-fact");
+    const faq = guide.querySelector(".game-info-section");
+    if (title) {
+      title.querySelector(".game-info-kicker").textContent = copy.kicker;
+      title.querySelector("h2").textContent = copy.title;
+      title.querySelector("p").textContent = copy.description;
+    }
+    if (facts[0]) {
+      facts[0].querySelector("span").textContent = copy.gameplayLabel;
+      facts[0].querySelector("strong").textContent = copy.gameplay;
+    }
+    if (facts[1]) {
+      facts[1].querySelector("span").textContent = copy.genreLabel;
+      facts[1].querySelector("strong").textContent = copy.genre;
+    }
+    if (faq) {
+      faq.querySelector("h3").textContent = copy.faqTitle;
+      faq.querySelector("dt").textContent = copy.faqQuestion;
+      faq.querySelector("dd").textContent = copy.faqAnswer;
+    }
+    document.querySelector('meta[name="description"]')?.setAttribute("content", copy.description);
+    document.querySelector('meta[property="og:title"]')?.setAttribute("content", `${copy.title} | WeightPlay`);
+    document.querySelector('meta[property="og:description"]')?.setAttribute("content", copy.description);
+    document.querySelector('meta[name="twitter:title"]')?.setAttribute("content", `${copy.title} | WeightPlay`);
+    document.querySelector('meta[name="twitter:description"]')?.setAttribute("content", copy.description);
+    const structured = document.querySelector('script[type="application/ld+json"]');
+    if (structured) {
+      try {
+        const data = JSON.parse(structured.textContent);
+        data.name = copy.title;
+        data.description = copy.description;
+        data.inLanguage = locale();
+        structured.textContent = JSON.stringify(data, null, 2);
+      } catch { /* Keep static metadata if the route contains invalid JSON-LD. */ }
+    }
+  };
+
+  const syncCellLabels = () => {
+    const board = document.querySelector("#logicBoard .logic-reversi-board");
+    if (!board) return;
+    const copy = CELL_LABELS[locale()] || CELL_LABELS.en;
+    board.querySelectorAll("button").forEach((button, index) => {
+      const row = Math.floor(index / 8) + 1;
+      const col = (index % 8) + 1;
+      button.setAttribute("aria-label", copy.replace("{row}", String(row)).replace("{col}", String(col)));
+    });
   };
 
   const syncScenario = () => {
     const battle = document.querySelector("#logicBattle");
     const tutorial = document.querySelector("#logicTutorial");
     if (!battle || !tutorial || battle.hidden) return;
+    syncCellLabels();
     const scenario = SCENARIOS[scenarioIndex % SCENARIOS.length];
     const copy = scenario.copy[locale()] || scenario.copy.en;
     if (tutorial.dataset.reversiScenario === scenario.key && tutorial.textContent === copy) return;
@@ -96,7 +176,9 @@ window.WPClassicLogic?.mount("reversi");
     setTimeout(syncScenario, 0);
   });
   const battle = document.querySelector("#logicBattle");
-  if (battle) new MutationObserver(syncScenario).observe(battle, { attributes: true, attributeFilter: ["hidden"] });
+  if (battle) new MutationObserver(() => { syncScenario(); syncCellLabels(); }).observe(battle, { attributes: true, attributeFilter: ["hidden"], childList: true, subtree: true });
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", syncGuide, { once: true });
+  else syncGuide();
 })();
 
 // Reversi has no turn-history owner in the shared Logic Lab runtime. Remove
