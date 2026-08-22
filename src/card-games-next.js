@@ -86,6 +86,41 @@
     ar: { lesson: "{hearts} قلوب + Q♠ {queen} = {raw} نقطة جزاء. في التمرير التالي، مرّر بطاقة عالية المخاطر إذا حمت يدك.", moon: "تسبّب جمع كل بطاقات الجزاء في تغيير الإجماليات النهائية." },
   };
 
+  // Hearts owns the Arabic shell because the generic route catalog does not
+  // know the card game's guide facts, named opponents, or first-trick cue.
+  // Keep this bounded to the reviewed locale so other card-game routes retain
+  // their existing shared ownership until they receive their own repair.
+  const HEARTS_SHELL_COPY = {
+    ar: {
+      title: "القلوب",
+      summary: "تجنب بطاقات الجزاء، واتبع النوع، وقرر متى تخاطر بجمع كل الجزاء.",
+      guideKicker: "دليل ألعاب WeightPlay الأصلية",
+      guideSummary: "اتبع النوع خلال ثلاث عشرة خدعة، وتجنب القلوب وملكة البستوني، وقرر إن كنت ستخاطر بجمع كل بطاقات الجزاء.",
+      gameplayLabel: "طريقة اللعب",
+      gameplay: "لعبة خدع التهرب الكلاسيكية",
+      genreLabel: "النوع",
+      genre: "بطاقات · عائلية · استراتيجية",
+      difficultyLabel: "الصعوبة",
+      difficulty: "من السهل إلى التحدي",
+      timeLabel: "الوقت التقريبي",
+      time: "5–15 دقيقة",
+      skillsLabel: "المهارات المتدرَّبة",
+      skills: "التخطيط · التركيز · التعرّف على الأنماط",
+      howTo: "كيفية اللعب",
+      howToCopy: "اختر ثلاث بطاقات لتمريرها، ثم العب بطاقة قانونية من يدك. تبدأ أول خدعة ببطاقة 2♣؛ والفائز يقود الخدعة التالية.",
+      preview: "حالة المعاينة",
+      previewCopy: "هذه معاينة المالك غير موجودة في الكتالوج العام الرسمي.",
+      faq: "الأسئلة الشائعة",
+      faqQuestion: "هل يُحفظ التقدم؟",
+      faqAnswer: "نعم، في هذا المتصفح فقط.",
+      opponents: ["أنت", "أوركيد", "مانجو", "نوفا"],
+      lead: "تبدأ أول خدعة ببطاقة 2♣",
+      metaDescription: "تجنب بطاقات الجزاء، واتبع النوع، وقرر متى تخاطر بجمع كل الجزاء في لعبة القلوب ضمن معاينة المالك.",
+    },
+  };
+
+  const heartsShellCopy = () => HEARTS_SHELL_COPY[currentLocale()] || null;
+
   const SPADES_COPY = {
     en: { bid: "Bid the tricks your team expects to take. ♠ is always trump.", play: "Follow suit when possible; a spade wins the trick." },
     "zh-Hant": { bid: "叫出你和隊友預計能贏的墩數。♠ 永遠是王牌。", play: "能跟同花色就跟牌；黑桃可以贏得這一墩。" },
@@ -214,6 +249,71 @@
       ownLocalizedText(document.querySelector("#resultClose"), t("close"));
     } finally {
       spadesShellSyncing = false;
+    }
+  };
+
+  let heartsShellSyncing = false;
+  const syncHeartsShell = () => {
+    if (heartsShellSyncing) return;
+    const copy = heartsShellCopy();
+    if (!copy) return;
+    heartsShellSyncing = true;
+    try {
+      const guideRoot = document.querySelector(".game-page-info");
+      if (guideRoot) {
+        if (guideRoot.getAttribute("aria-label") !== `${copy.title} game information`) guideRoot.setAttribute("aria-label", `${copy.title} game information`);
+        guideRoot.setAttribute("data-runtime-localize", "off");
+      }
+      const pageTitle = `${copy.title} | WeightPlay`;
+      if (document.title !== pageTitle) document.title = pageTitle;
+      const summary = document.querySelector('meta[name="description"]');
+      if (summary && summary.content !== copy.metaDescription) summary.content = copy.metaDescription;
+      document.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]').forEach((node) => { if (node.content !== pageTitle) node.content = pageTitle; });
+      document.querySelectorAll('meta[property="og:description"], meta[name="twitter:description"]').forEach((node) => { if (node.content !== copy.metaDescription) node.content = copy.metaDescription; });
+      const jsonLd = document.querySelector('script[type="application/ld+json"]');
+      if (jsonLd) { try { const data = JSON.parse(jsonLd.textContent); data.name = copy.title; data.description = copy.metaDescription; data.inLanguage = currentLocale(); jsonLd.textContent = JSON.stringify(data); } catch (_error) {} }
+      document.querySelectorAll("[data-card-title]").forEach((node) => ownLocalizedText(node, copy.title));
+      document.querySelectorAll("[data-card-summary]").forEach((node) => ownLocalizedText(node, copy.summary));
+      ownLocalizedText(document.querySelector(".game-info-kicker"), copy.guideKicker);
+      ownLocalizedText(document.querySelector(".game-info-title h2"), copy.title);
+      ownLocalizedText(document.querySelector(".game-info-title p"), copy.guideSummary);
+      const facts = [...document.querySelectorAll(".game-info-fact")];
+      [[copy.gameplayLabel, copy.gameplay], [copy.genreLabel, copy.genre], [copy.difficultyLabel, copy.difficulty], [copy.timeLabel, copy.time], [copy.skillsLabel, copy.skills]].forEach(([label, value], index) => {
+        const fact = facts[index];
+        if (!fact) return;
+        ownLocalizedText(fact.querySelector("span"), label);
+        ownLocalizedText(fact.querySelector("strong"), value);
+      });
+      const sections = [...document.querySelectorAll(".game-info-section")];
+      const guide = sections.find((section) => section.querySelector("ol"));
+      ownLocalizedText(guide?.querySelector("h3"), copy.howTo);
+      ownLocalizedText(guide?.querySelector("li"), copy.howToCopy);
+      const preview = sections.find((section) => section.classList.contains("game-info-parent"));
+      ownLocalizedText(preview?.querySelector("h3"), copy.preview);
+      ownLocalizedText(preview?.querySelector("p"), copy.previewCopy);
+      const faq = sections.find((section) => section.querySelector("dl"));
+      ownLocalizedText(faq?.querySelector("h3"), copy.faq);
+      ownLocalizedText(faq?.querySelector("dt"), copy.faqQuestion);
+      ownLocalizedText(faq?.querySelector("dd"), copy.faqAnswer);
+      ownLocalizedText(document.querySelector("#startBtn"), t("start"));
+      ownLocalizedText(document.querySelector("#restartBtn"), t("restart"));
+      ownLocalizedText(document.querySelector("#newGameBtn"), t("newGame"));
+      ownLocalizedText(document.querySelector("#battleBackBtn"), `← ${t("back")}`);
+      const battleBack = document.querySelector("#battleBackBtn");
+      if (battleBack) battleBack.setAttribute("aria-label", t("back"));
+      ownLocalizedText(document.querySelector(".settings-title"), copy.preview === "حالة المعاينة" ? "الإعدادات" : t("settings"));
+      ownLocalizedText(document.querySelector("#soundBtn"), `${t("sound")}: On`);
+      const settings = document.querySelector("#audioMenuBtn");
+      if (settings) settings.setAttribute("aria-label", t("settings"));
+      const language = document.querySelector("#localeSelect");
+      if (language) language.setAttribute("aria-label", t("language"));
+      ownLocalizedText(document.querySelector(".card-game-player-header strong"), t("hand"));
+      ownLocalizedText(document.querySelector("#resultTitle"), t("roundOver"));
+      ownLocalizedText(document.querySelector("#resultNewGame"), t("newGame"));
+      ownLocalizedText(document.querySelector("#resultRestart"), t("restart"));
+      ownLocalizedText(document.querySelector("#resultClose"), t("close"));
+    } finally {
+      heartsShellSyncing = false;
     }
   };
 
@@ -797,6 +897,10 @@
   }
   function cardsMarkup(cards, options = {}) { return (cards || []).map((item, index) => cardMarkup(item, index, { ...options, selected: options.selected?.has(index) })).join(""); }
   function opponentMarkup(name, count, extra = "") { return `<div class="opponent-card"><strong>${name}</strong><span>${count} ${t("cards")}${extra ? ` · ${extra}` : ""}</span></div>`; }
+  function heartsOpponentMarkup(name, count, extra = "") {
+    const cardLabel = currentLocale() === "ar" ? (count === 1 ? "بطاقة" : "بطاقات") : t("cards");
+    return `<div class="opponent-card"><strong>${name}</strong><span>${count} ${cardLabel}${extra ? ` · ${extra}` : ""}</span></div>`;
+  }
   function spadesOpponentMarkup(name, count, bid) { return `<div class="opponent-card"><strong>${name}</strong><span>${count} ${t("cards")} · <span class="spades-bid-label" data-runtime-localize="off">${t("bid")}: ${bid}</span></span></div>`; }
   function makePegBoard(player, ai) {
     const cells = Array.from({ length: 61 }, (_, index) => `<span class="card-peg ${index === Math.min(player, 60) ? "is-current is-player" : index < player ? "is-player" : ""} ${index === Math.min(ai, 60) ? "is-current is-ai" : index < ai ? "is-ai" : ""}"></span>`).join("");
@@ -918,6 +1022,21 @@
       window.setTimeout(syncSpadesShell, 0);
       window.setTimeout(syncSpadesShell, 400);
     }
+    if (id === "hearts") {
+      syncHeartsShell();
+      window.addEventListener("weightplay:shell-sync", syncHeartsShell);
+      const shellTitle = document.querySelector(".main-header [data-card-title]");
+      if (shellTitle && !shellTitle.dataset.heartsShellObserver) {
+        shellTitle.dataset.heartsShellObserver = "true";
+        new MutationObserver(() => {
+          const copy = heartsShellCopy();
+          if (copy && shellTitle.textContent !== copy.title) ownLocalizedText(shellTitle, copy.title);
+        }).observe(shellTitle, { childList: true, characterData: true, subtree: true });
+      }
+      window.setTimeout(syncHeartsShell, 0);
+      window.setTimeout(syncHeartsShell, 400);
+      window.setTimeout(syncHeartsShell, 1200);
+    }
     if (localeSelect) localeSelect.value = currentLocale();
     const resultCloseButton = document.querySelector("#resultClose");
     if (id === "old-maid" && resultCloseButton) {
@@ -954,6 +1073,9 @@
       center.innerHTML = view.center || "";
       hand.innerHTML = view.hand || "";
       actions.innerHTML = view.actions || "";
+      if (id === "hearts" && heartsShellCopy()) {
+        [opponents, center, hand, actions, status, statusText].forEach((node) => node?.setAttribute("data-runtime-localize", "off"));
+      }
       if (guideParagraph) actions.prepend(quickGuide);
       status.textContent = view.status || "";
       statusText.textContent = view.help || "";
@@ -1048,7 +1170,7 @@
 
   function makeHearts(controller) {
     const s = { hands: [], scores: [0, 0, 0, 0], penaltyHearts: [0, 0, 0, 0], penaltyQueens: [0, 0, 0, 0], turn: 0, lead: 0, trick: [], heartsBroken: false, phase: "pass", selected: new Set(), passReceived: false, winner: null };
-    const aiNames = ["You", "Orchid", "Mango", "Nova"];
+    const aiNames = heartsShellCopy()?.opponents || ["You", "Orchid", "Mango", "Nova"];
     const legal = (handCards, trick) => { const leadSuit = trick[0]?.card.suit; const following = leadSuit ? handCards.filter((item) => item.suit === leadSuit) : []; return following.length ? following : handCards.filter((item) => s.heartsBroken || (item.suit !== "hearts" && !(item.suit === "spades" && item.rank === 12)) || handCards.every((candidate) => candidate.suit === "hearts" || (candidate.suit === "spades" && candidate.rank === 12))); };
     const scoreTrick = () => { const hearts = s.trick.filter((entry) => entry.card.suit === "hearts").length; const queen = s.trick.some((entry) => entry.card.suit === "spades" && entry.card.rank === 12) ? 13 : 0; const points = hearts + queen; const winner = trickWinner(s.trick); s.scores[winner] += points; s.penaltyHearts[winner] += hearts; s.penaltyQueens[winner] += queen; if (hearts) s.heartsBroken = true; s.trick = []; s.turn = winner; s.lead = winner; return { points, winner }; };
     const finish = () => { const moon = s.scores.findIndex((score) => score === 26); if (moon >= 0) { s.scores = s.scores.map((score, index) => index === moon ? score - 26 : score + 26); } const playerWon = s.scores[0] === Math.min(...s.scores); const lesson = heartsResultText(s.penaltyHearts[0], s.penaltyQueens[0], moon >= 0); controller.result(playerWon, `${t("score")}: ${s.scores[0]} · ${t("points")}: ${s.scores.join(" / ")} · ${lesson}`); };
@@ -1058,7 +1180,7 @@
       reset() { Object.assign(s, { hands: [[], [], [], []], scores: [0, 0, 0, 0], penaltyHearts: [0, 0, 0, 0], penaltyQueens: [0, 0, 0, 0], turn: 0, lead: 0, trick: [], heartsBroken: false, phase: "pass", selected: new Set(), passReceived: false }); deck().forEach((item, index) => s.hands[index % 4].push(item)); s.hands.forEach((cards) => cards.sort((a, b) => a.suit.localeCompare(b.suit) || a.rank - b.rank)); },
       card(index) { if (s.phase === "pass" && s.turn === 0) { if (s.selected.has(index)) s.selected.delete(index); else if (s.selected.size < 3) s.selected.add(index); } else if (s.phase === "play" && s.turn === 0) play(0, s.hands[0][index]); },
       action(action) { if (action === "pass" && s.phase === "pass" && s.selected.size === 3) { const selected = [...s.selected].sort((a, b) => b - a).map((index) => s.hands[0].splice(index, 1)[0]); selected.forEach((item) => s.hands[1].push(item)); const aiPass = s.hands[1].slice(0, 3); aiPass.forEach((item) => s.hands[1].splice(s.hands[1].indexOf(item), 1)); s.hands[0].push(...aiPass); s.hands.forEach((cards) => cards.sort((a, b) => a.suit.localeCompare(b.suit) || a.rank - b.rank)); s.phase = "play"; s.turn = s.hands.findIndex((cards) => cards.some((item) => item.suit === "clubs" && item.rank === 2)); if (s.turn !== 0) setTimeout(() => aiTurn(), 220); } },
-      view() { const trickHtml = s.trick.map((entry) => `<div>${aiNames[entry.player]} ${cardMarkup(entry.card, 0)}</div>`).join(""); const action = s.phase === "pass" ? `<button class="primary-btn" data-action="pass" ${s.selected.size !== 3 ? "disabled" : ""}>${t("pass")} 3</button>` : `<p class="card-help">${s.heartsBroken ? "♥ " : ""}${t("yourTurn")}</p>`; return { phase: s.phase === "pass" ? t("pass") : (s.heartsBroken ? "♥" : "♥ · " + t("waiting")), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "pass" ? heartsPassText(s.hands[0], s.selected) : heartsText(), score: s.scores[0], opponents: s.hands.slice(1).map((cards, index) => opponentMarkup(aiNames[index + 1], cards.length, `${t("points")}: ${s.scores[index + 1]}`)).join(""), center: `<div class="card-table-label">${t("table")}</div><div class="table-row">${trickHtml || "<span>2♣ leads the first trick</span>"}</div>`, hand: cardsMarkup(s.hands[0], { selected: s.selected, hidden: false }), actions: action }; },
+      view() { const trickHtml = s.trick.map((entry) => `<div>${aiNames[entry.player]} ${cardMarkup(entry.card, 0)}</div>`).join(""); const action = s.phase === "pass" ? `<button class="primary-btn" data-action="pass" ${s.selected.size !== 3 ? "disabled" : ""}>${t("pass")} 3</button>` : `<p class="card-help">${s.heartsBroken ? "♥ " : ""}${t("yourTurn")}</p>`; const lead = heartsShellCopy()?.lead || "2♣ leads the first trick"; return { phase: s.phase === "pass" ? t("pass") : (s.heartsBroken ? "♥" : "♥ · " + t("waiting")), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "pass" ? heartsPassText(s.hands[0], s.selected) : heartsText(), score: s.scores[0], opponents: s.hands.slice(1).map((cards, index) => heartsOpponentMarkup(aiNames[index + 1], cards.length, `${t("points")}: ${s.scores[index + 1]}`)).join(""), center: `<div class="card-table-label">${t("table")}</div><div class="table-row">${trickHtml || `<span>${lead}</span>`}</div>`, hand: cardsMarkup(s.hands[0], { selected: s.selected, hidden: false }), actions: action }; },
     };
   }
 

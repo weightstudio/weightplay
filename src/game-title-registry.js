@@ -1293,7 +1293,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Hearts",
     "ru": "Hearts",
     "hi": "Hearts",
-    "ar": "Hearts"
+    "ar": "القلوب"
   },
   "spades": {
     "__localizedExact": true,

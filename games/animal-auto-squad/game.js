@@ -506,54 +506,67 @@
 
   const paceCopy = {
     en: {
+      paceGroup: "Combat pace",
       paceStandard: "Standard pace", paceSwift: "Swift pace", paceStandardAria: "Use swift pace", paceSwiftAria: "Return to standard pace",
       paceHint: "Optional: speed up settled combat without changing its actions.", paceSwiftNotice: "Swift pace: scheduled combat actions settle faster.", paceStandardNotice: "Standard pace: watch each scheduled action at the default rhythm."
     },
     "zh-Hant": {
+      paceGroup: "戰鬥節奏",
       paceStandard: "標準節奏", paceSwift: "快速節奏", paceStandardAria: "切換快速戰鬥節奏", paceSwiftAria: "切回標準戰鬥節奏",
       paceHint: "可選：只加快已排定戰鬥的結算，不改變行動。", paceSwiftNotice: "快速節奏：已排定的戰鬥行動會更快結算。", paceStandardNotice: "標準節奏：以預設節奏觀看每個已排定行動。"
     },
     "zh-Hans": {
+      paceGroup: "战斗节奏",
       paceStandard: "标准节奏", paceSwift: "快速节奏", paceStandardAria: "切换快速战斗节奏", paceSwiftAria: "切回标准战斗节奏",
       paceHint: "可选：只加快已排定战斗的结算，不改变行动。", paceSwiftNotice: "快速节奏：已排定的战斗行动会更快结算。", paceStandardNotice: "标准节奏：以默认节奏观看每个已排定行动。"
     },
     ja: {
+      paceGroup: "戦闘ペース",
       paceStandard: "標準ペース", paceSwift: "速いペース", paceStandardAria: "速い戦闘ペースにする", paceSwiftAria: "標準の戦闘ペースに戻す",
       paceHint: "任意：行動内容を変えず、決まった戦闘の解決だけを速めます。", paceSwiftNotice: "速いペース：決まった戦闘行動を早く解決します。", paceStandardNotice: "標準ペース：決まった行動を通常のリズムで見守ります。"
     },
     ko: {
+      paceGroup: "전투 속도",
       paceStandard: "표준 속도", paceSwift: "빠른 속도", paceStandardAria: "빠른 전투 속도 사용", paceSwiftAria: "표준 전투 속도로 돌아가기",
       paceHint: "선택 사항: 행동은 바꾸지 않고 예정된 전투 해결만 빠르게 합니다.", paceSwiftNotice: "빠른 속도: 예정된 전투 행동이 더 빨리 해결됩니다.", paceStandardNotice: "표준 속도: 예정된 행동을 기본 리듬으로 지켜봅니다."
     },
     es: {
+      paceGroup: "Ritmo de combate",
       paceStandard: "Ritmo estándar", paceSwift: "Ritmo rápido", paceStandardAria: "Usar ritmo de combate rápido", paceSwiftAria: "Volver al ritmo de combate estándar",
       paceHint: "Opcional: acelera la resolución del combate sin cambiar sus acciones.", paceSwiftNotice: "Ritmo rápido: las acciones previstas se resuelven antes.", paceStandardNotice: "Ritmo estándar: observa cada acción con el ritmo normal."
     },
     "pt-BR": {
+      paceGroup: "Ritmo de batalha",
       paceStandard: "Ritmo padrão", paceSwift: "Ritmo rápido", paceStandardAria: "Usar ritmo de batalha rápido", paceSwiftAria: "Voltar ao ritmo de batalha padrão",
       paceHint: "Opcional: acelere a resolução do combate sem mudar suas ações.", paceSwiftNotice: "Ritmo rápido: as ações previstas são resolvidas mais depressa.", paceStandardNotice: "Ritmo padrão: observe cada ação no ritmo normal."
     },
     fr: {
+      paceGroup: "Rythme du combat",
       paceStandard: "Rythme standard", paceSwift: "Rythme rapide", paceStandardAria: "Utiliser le rythme de combat rapide", paceSwiftAria: "Revenir au rythme de combat standard",
       paceHint: "Facultatif : accélère la résolution du combat sans changer ses actions.", paceSwiftNotice: "Rythme rapide : les actions prévues se résolvent plus vite.", paceStandardNotice: "Rythme standard : observez chaque action au rythme normal."
     },
     de: {
+      paceGroup: "Kampftempo",
       paceStandard: "Standardtempo", paceSwift: "Schnelles Tempo", paceStandardAria: "Schnelles Kampftempo verwenden", paceSwiftAria: "Zum Standard-Kampftempo zurückkehren",
       paceHint: "Optional: Beschleunigt die Auflösung des Kampfes, ohne Aktionen zu ändern.", paceSwiftNotice: "Schnelles Tempo: geplante Kampfaktionen werden schneller aufgelöst.", paceStandardNotice: "Standardtempo: Beobachte jede geplante Aktion im normalen Rhythmus."
     },
     it: {
+      paceGroup: "Ritmo di combattimento",
       paceStandard: "Ritmo standard", paceSwift: "Ritmo rapido", paceStandardAria: "Usa il ritmo di battaglia rapido", paceSwiftAria: "Torna al ritmo di battaglia standard",
       paceHint: "Opzionale: accelera la risoluzione del combattimento senza cambiare le azioni.", paceSwiftNotice: "Ritmo rapido: le azioni previste si risolvono più velocemente.", paceStandardNotice: "Ritmo standard: osserva ogni azione al ritmo normale."
     },
     ru: {
+      paceGroup: "Темп боя",
       paceStandard: "Обычный темп", paceSwift: "Быстрый темп", paceStandardAria: "Включить быстрый темп боя", paceSwiftAria: "Вернуться к обычному темпу боя",
       paceHint: "Необязательно: ускоряет завершение боя, не меняя его действий.", paceSwiftNotice: "Быстрый темп: запланированные действия боя завершатся быстрее.", paceStandardNotice: "Обычный темп: наблюдайте за действиями в стандартном ритме."
     },
     hi: {
+      paceGroup: "युद्ध गति",
       paceStandard: "सामान्य गति", paceSwift: "तेज़ गति", paceStandardAria: "तेज़ युद्ध गति अपनाएँ", paceSwiftAria: "सामान्य युद्ध गति पर लौटें",
       paceHint: "वैकल्पिक: कार्य बदले बिना तय युद्ध के निपटारे को तेज़ करें।", paceSwiftNotice: "तेज़ गति: तय युद्ध कार्य जल्दी पूरे होंगे।", paceStandardNotice: "सामान्य गति: हर तय कार्य को सामान्य लय में देखें।"
     },
     ar: {
+      paceGroup: "إيقاع المعركة",
       paceStandard: "الإيقاع العادي", paceSwift: "الإيقاع السريع", paceStandardAria: "استخدم إيقاع المعركة السريع", paceSwiftAria: "عد إلى إيقاع المعركة العادي",
       paceHint: "اختياري: أسرِع حسم المعركة المحددة من دون تغيير أفعالها.", paceSwiftNotice: "الإيقاع السريع: تُحسم أفعال المعركة المحددة أسرع.", paceStandardNotice: "الإيقاع العادي: راقب كل فعل محدد بالإيقاع الافتراضي."
     }
@@ -4572,6 +4585,7 @@
   function renderCombatPaceControl() {
     if (!nodes.combatPaceBtn || !nodes.combatPaceHint) return;
     const swift = state.combat.pace === "swift";
+    nodes.combatPaceBtn.closest(".combat-pace-control")?.setAttribute("aria-label", t("paceGroup"));
     nodes.combatPaceBtn.textContent = t(swift ? "paceSwift" : "paceStandard");
     nodes.combatPaceBtn.setAttribute("aria-pressed", String(swift));
     nodes.combatPaceBtn.setAttribute("aria-label", t(swift ? "paceSwiftAria" : "paceStandardAria"));
