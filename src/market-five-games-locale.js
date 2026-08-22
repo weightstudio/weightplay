@@ -56,6 +56,9 @@
         ["Desert", "沙漠", "沙漠", "砂漠", "사막", "Desierto", "Deserto", "Désert", "Wüste", "Deserto", "Пустыня", "रेगिस्तान", "الصحراء"],
         ["Forest", "森林", "森林", "森", "숲", "Bosque", "Floresta", "Forêt", "Wald", "Foresta", "Лес", "जंगल", "الغابة"],
       ],
+      canvas: ["Habitat Atlas play area", "棲地圖鑑遊戲區", "栖地图鉴游戏区", "ハビタット・アトラスのプレイエリア", "서식지 아틀라스 플레이 영역", "Área de juego de Atlas de Hábitats", "Área de jogo do Atlas de Habitats", "Zone de jeu de l’Atlas des Habitats", "Spielfläche des Lebensraum-Atlas", "Area di gioco dell’Atlante degli Habitat", "Игровое поле «Атласа сред обитания»", "हैबिटैट एटलस का खेल क्षेत्र", "منطقة لعب أطلس المواطن"],
+      incorrect: ["Not this habitat — keep comparing the clues.", "不是這個棲地——繼續比對線索。", "不是这个栖地——继续比对线索。", "この生息地ではありません。手がかりを比べ続けましょう。", "이 서식지가 아닙니다. 단서를 계속 비교하세요.", "No es este hábitat; sigue comparando las pistas.", "Não é este habitat; continue comparando as pistas.", "Ce n’est pas cet habitat ; continuez à comparer les indices.", "Dieser Lebensraum ist es nicht – vergleiche die Hinweise weiter.", "Non è questo habitat: continua a confrontare gli indizi.", "Это не та среда — продолжайте сравнивать подсказки.", "यह आवास सही नहीं है — संकेतों की तुलना करते रहें।", "هذا ليس الموطن الصحيح — واصل مقارنة الأدلة."],
+      correct: ["Correct habitat — clues align.", "正確棲地——線索吻合。", "正确栖地——线索吻合。", "正しい生息地です。手がかりが一致しました。", "올바른 서식지입니다. 단서가 일치합니다.", "Hábitat correcto: las pistas coinciden.", "Habitat correto: as pistas coincidem.", "Habitat correct : les indices correspondent.", "Richtiger Lebensraum – die Hinweise passen.", "Habitat corretto: gli indizi coincidono.", "Верная среда — подсказки совпали.", "सही आवास — संकेत मेल खाते हैं।", "الموطن الصحيح — تتطابق الأدلة."],
     },
     "animal-moonlight-workshop": {
       title: ["Moonlight Workshop Escape", "月光工坊逃脫", "月光工坊逃脱", "月明かり工房の脱出", "달빛 공방 탈출", "Escape del Taller Lunar", "Fuga da Oficina Lunar", "Évasion de l’Atelier Lunaire", "Flucht aus der Mondwerkstatt", "Fuga dall’Officina Lunare", "Побег из лунной мастерской", "मूनलाइट वर्कशॉप एस्केप", "الهروب من ورشة ضوء القمر"],
@@ -114,7 +117,7 @@
     if (!localeOrder.includes(next)) return;
     locale = next; localStorage.setItem("weightPlayLocale", locale); localStorage.setItem("weightplayLocale", locale); apply();
   }
-  window.WeightPlayMarketFiveLocale = Object.freeze({ locales: localeOrder, get locale() { return locale; }, setLocale, common: c, game: () => ({ title: at(game.title), lede: at(game.lede), guide: at(game.guide), courts: game.courts?.map(at) || [], hoop: Object.fromEntries(Object.entries(game.hoop || {}).map(([key, value]) => [key, at(value)])), regions: game.regions?.map(at) || [], colors: game.colors?.map(at) || [], patterns: game.patterns?.map(at) || [], tiles: game.tiles?.map(at) || [] }) });
+  window.WeightPlayMarketFiveLocale = Object.freeze({ locales: localeOrder, get locale() { return locale; }, setLocale, common: c, game: () => ({ title: at(game.title), lede: at(game.lede), guide: at(game.guide), canvas: at(game.canvas || game.title), incorrect: at(game.incorrect || game.guide), correct: at(game.correct || game.guide), courts: game.courts?.map(at) || [], hoop: Object.fromEntries(Object.entries(game.hoop || {}).map(([key, value]) => [key, at(value)])), regions: game.regions?.map(at) || [], colors: game.colors?.map(at) || [], patterns: game.patterns?.map(at) || [], tiles: game.tiles?.map(at) || [] }) });
   window.WeightPlayFiveGameLocale = window.WeightPlayMarketFiveLocale;
   window.wpMarketCommon = (index) => c()[index];
   const begin = () => { const select = document.getElementById("localeSelect"); select?.addEventListener("change", (event) => setLocale(event.target.value)); apply(); };

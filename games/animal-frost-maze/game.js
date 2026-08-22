@@ -33,6 +33,12 @@
     hi: { breakButton: "बर्फ तोड़ें", hint: "नीले ब्लॉक तोड़े जा सकते हैं। भटकने वाला आप तक पहुँचे, उससे पहले सभी बेरियाँ इकट्ठी करें।", controls: "तीरों से चलें; SPACE से बर्फ तोड़ें और F से छोटी दीवार बनाएँ।", wallAhead: "आगे बर्फ की दीवार है। उसे तोड़कर आगे बढ़ें।", cracked: "बर्फ टूट गई — रास्ता बदल गया।", noBreak: "उस दिशा में तोड़ने योग्य कुछ नहीं है।", built: "नई बर्फ की दीवार ने भटकने वाले का रास्ता बदल दिया।", noBuild: "उस जगह नई बर्फ की दीवार नहीं बनाई जा सकती।", canvas: "बर्फ तोड़ें" },
     ar: { breakButton: "كسر الجليد", hint: "يمكن كسر الكتل الزرقاء. اجمع كل التوت قبل أن يلحق بك المتجول.", controls: "تحرك بالأسهم؛ تكسر SPACE الجليد ويبني F جداراً قصيراً.", wallAhead: "يوجد جدار جليدي أمامك. اكسره ثم واصل التقدم.", cracked: "تشقق الجليد — تغيّر المسار.", noBreak: "لا يوجد شيء قابل للكسر في ذلك الاتجاه.", built: "غيّر جدار جليدي جديد مسار المتجول.", noBuild: "لا يمكن بناء جدار جليدي جديد في هذا المكان.", canvas: "اكسر الجليد" },
   };
+  const FROST_BUILD_COPY = {
+    en: "BUILD ICE", "zh-tw": "建造冰牆", "zh-cn": "建造冰墙", ja: "氷を作る", ko: "얼음벽 만들기",
+    es: "CONSTRUIR HIELO", "pt-br": "CONSTRUIR GELO", fr: "CONSTRUIRE DE LA GLACE", de: "EIS BAUEN",
+    it: "COSTRUISCI GHIACCIO", ru: "СТРОИТЬ ЛЁД", hi: "बर्फ बनाएँ", ar: "بناء الجليد",
+  };
+  const frostBuildText = () => FROST_BUILD_COPY[frostLocale()] || FROST_BUILD_COPY.en;
   const FROST_STAGE_COPY = {
     en: { heading: "Ice Chapters", tab: "Stages", chapter: "Chapter", chapters: ["first thaw", "split routes", "drifter pressure", "final melt"] },
     "zh-tw": { heading: "冰原章節", tab: "章節", chapter: "第", chapterSuffix: "章", chapters: ["初次解凍", "分岔路線", "漂行者壓力", "最後融冰"] },
@@ -105,6 +111,8 @@
   };
     const applyFrostLocale = () => {
       document.querySelector('[data-action="break"]')?.replaceChildren(document.createTextNode(frostText("breakButton")));
+      document.querySelector('[data-action="build"]')?.replaceChildren(document.createTextNode(frostBuildText()));
+      $("arena")?.setAttribute("aria-label", frostText("canvas"));
       document.querySelector(".touch-hint")?.replaceChildren(document.createTextNode(frostText("hint")));
       const stageCopy = frostStageText();
       const stageHeading = document.querySelector(".stage-header h2");

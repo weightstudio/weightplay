@@ -1677,7 +1677,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Frostline Rescue",
     "ru": "Frostline Rescue",
     "hi": "Frostline Rescue",
-    "ar": "Frostline Rescue"
+    "ar": "إنقاذ خط الصقيع"
   },
   "animal-flip-foundry": {
     "__localizedExact": true,

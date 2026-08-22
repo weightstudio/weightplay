@@ -107,6 +107,11 @@
     ctx.save(); ctx.globalAlpha = alpha; ctx.drawImage(hero, x, y, w, h); ctx.restore();
   }
   function setStatus(text) { $("battle-status").textContent = text; }
+  function setAtlasBrief() {
+    const text = window.WeightPlayMarketFiveLocale.game();
+    setStatus(text.guide);
+    canvas.setAttribute("aria-label", text.canvas);
+  }
   function updateProgress() { $("main-progress").textContent = `${common(8)}: ${state.best} / ${cfg.stages}`; }
   function syncCanvasFit() {
     const host=canvas.parentElement;if(!host||state.screen!=="battle")return;
@@ -137,7 +142,7 @@
   }
   function start(stage) {
     state.stage = stage; state.resultWin = null; $("stage-label").textContent = `${common(9)} ${stage} / ${cfg.stages}${gameId==="animal-hoop-league"?` · ${window.WeightPlayMarketFiveLocale.game().courts[stage-1]}`:""}`;
-    initGame(); if(gameId==="animal-hoop-league")setHoopBrief();else if(gameId==="animal-moonlight-workshop")setWorkshopBrief();else if(gameId==="animal-chameleon-blend")setBlendBrief();else if(gameId==="animal-habitat-builder")setBuilderBrief();else setStatus(window.WeightPlayMarketFiveLocale.game().guide); show("battle");
+    initGame(); if(gameId==="animal-hoop-league")setHoopBrief();else if(gameId==="animal-habitat-atlas")setAtlasBrief();else if(gameId==="animal-moonlight-workshop")setWorkshopBrief();else if(gameId==="animal-chameleon-blend")setBlendBrief();else if(gameId==="animal-habitat-builder")setBuilderBrief();else setStatus(window.WeightPlayMarketFiveLocale.game().guide); show("battle");
   }
   function finish(win, detail) {
     state.resultWin = win;
@@ -205,7 +210,8 @@
     const g=state.game; if(g.feedback>0)return;
     if(action==="clue"){g.clues=Math.min(3,g.clues+1);return;}
     if(!action.startsWith("region-"))return; const pick=Number(action.slice(-1));
-    if(pick===g.target)g.stars+=4-g.clues; g.feedback=1.1; g.lastCorrect=pick===g.target;
+    g.lastCorrect=pick===g.target; if(g.lastCorrect)g.stars+=4-g.clues; g.feedback=1.1;
+    const text=window.WeightPlayMarketFiveLocale.game(); setStatus(g.lastCorrect?text.correct:text.incorrect);
   }
   function workshopAct(action) {
     const g=state.game,profile=workshopProfiles[state.stage-1],delta={"move-up":[0,-1],"move-down":[0,1],"move-left":[-1,0],"move-right":[1,0]}[action]; if(!delta)return;
@@ -336,7 +342,7 @@
   $("to-stages").addEventListener("click",()=>{stageCards();show("stage");});
   $("retry").addEventListener("click",()=>start(state.stage));
   $("next").addEventListener("click",()=>{if(state.resultWin&&state.stage<cfg.stages)start(state.stage+1);});
-  window.addEventListener("weightplay:market-locale-change",()=>{updateProgress();stageCards();if(state.screen==="battle"){if(gameId==="animal-hoop-league"){buildControls();setHoopBrief();}else if(gameId==="animal-moonlight-workshop"){buildControls();setWorkshopBrief();}else if(gameId==="animal-chameleon-blend"){buildControls();setBlendBrief();}else if(gameId==="animal-habitat-builder"){buildControls();setBuilderBrief();}else{if(gameId==="animal-habitat-atlas")buildControls();setStatus(window.WeightPlayMarketFiveLocale.game().guide);}}});
+  window.addEventListener("weightplay:market-locale-change",()=>{updateProgress();stageCards();if(state.screen==="battle"){if(gameId==="animal-hoop-league"){buildControls();setHoopBrief();}else if(gameId==="animal-habitat-atlas"){buildControls();setAtlasBrief();}else if(gameId==="animal-moonlight-workshop"){buildControls();setWorkshopBrief();}else if(gameId==="animal-chameleon-blend"){buildControls();setBlendBrief();}else if(gameId==="animal-habitat-builder"){buildControls();setBuilderBrief();}else setStatus(window.WeightPlayMarketFiveLocale.game().guide);}});
   [background,atlas,hero].forEach(image=>image.addEventListener("load",draw));
   updateProgress();stageCards();show("main");draw();
   const hideLoading=()=>{$("loadingPanel")?.classList.add("hidden");$("loadingPanel")?.setAttribute("hidden","");};
