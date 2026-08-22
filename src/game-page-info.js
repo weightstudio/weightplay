@@ -2688,6 +2688,117 @@
     },
   };
 
+  const ginRummyLocalizedCopy = {
+    en: {
+      title: "Gin Rummy", difficulty: "Easy to Challenging", time: "5-15 minutes",
+      gameplay: "Classic Meld Card Game", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"],
+      intro: "Build sets of the same rank and suited runs while reducing unmatched Deadwood.",
+      how: ["Draw from the stock or discard, then discard one card. Knock with a low Deadwood hand or reach Gin."],
+      noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog.",
+      faq: [["Is progress saved?", "Yes, only in this browser."]],
+    },
+    "zh-Hant": {
+      title: "金拉米", difficulty: "由簡單到具挑戰", time: "5–15 分鐘",
+      gameplay: "經典組牌卡牌遊戲", genre: ["卡牌", "家庭", "策略"], skills: ["規劃", "專注", "模式辨識"],
+      intro: "從同點數牌組成套牌與同花色順子，並降低未組牌的死牌分數。",
+      how: ["從牌庫或棄牌堆抽一張，再棄一張牌。以低死牌敲牌，或完成金牌。"],
+      noteTitle: "預覽狀態", parent: "這是擁有者預覽，尚未列入正式公開目錄。",
+      faq: [["進度會保存嗎？", "會，只保存在這個瀏覽器中。"]],
+    },
+    "zh-Hans": {
+      title: "金拉米", difficulty: "从简单到具挑战", time: "5–15 分钟",
+      gameplay: "经典组合牌类游戏", genre: ["卡牌", "家庭", "策略"], skills: ["规划", "专注", "模式识别"],
+      intro: "组成同点数牌组和同花色顺子，同时减少未组合牌的死牌分数。",
+      how: ["从牌库或弃牌堆抽一张，再弃一张牌。用较低死牌敲牌，或完成金牌。"],
+      noteTitle: "预览状态", parent: "这是拥有者预览，尚未列入正式公开目录。",
+      faq: [["进度会保存吗？", "会，只保存在这个浏览器中。"]],
+    },
+    ja: {
+      title: "ジン・ラミー", difficulty: "簡単から挑戦的", time: "5～15分",
+      gameplay: "クラシックなメルドカードゲーム", genre: ["カード", "ファミリー", "戦略"], skills: ["計画", "集中", "パターン認識"],
+      intro: "同じランクのセットと同じスートの連続を作り、組み合わせられないカードを減らします。",
+      how: ["山札または捨て札から1枚引き、1枚捨てます。残り札を減らしてノックするか、ジンを目指します。"],
+      noteTitle: "プレビュー状態", parent: "この所有者プレビューは正式な公開カタログには含まれていません。",
+      faq: [["進行状況は保存されますか？", "はい。このブラウザ内だけに保存されます。"]],
+    },
+    ko: {
+      title: "진 러미", difficulty: "쉬움부터 도전적", time: "5~15분",
+      gameplay: "클래식 멜드 카드 게임", genre: ["카드", "가족", "전략"], skills: ["계획", "집중", "패턴 인식"],
+      intro: "같은 숫자의 세트와 같은 무늬의 연속을 만들며 조합되지 않은 데드우드를 줄이세요.",
+      how: ["덱이나 버린 카드에서 한 장을 뽑고 한 장을 버리세요. 데드우드를 줄여 노크하거나 진을 완성하세요."],
+      noteTitle: "프리뷰 상태", parent: "이 소유자 프리뷰는 공식 공개 카탈로그에 포함되지 않습니다.",
+      faq: [["진행 상황이 저장되나요?", "네. 이 브라우저에만 저장됩니다."]],
+    },
+    es: {
+      title: "Gin Rummy", difficulty: "De fácil a desafiante", time: "5-15 minutos",
+      gameplay: "Juego clásico de combinaciones de cartas", genre: ["Cartas", "Familiar", "Estrategia"], skills: ["Planificación", "Concentración", "Reconocimiento de patrones"],
+      intro: "Forma grupos del mismo valor y escaleras del mismo palo mientras reduces las cartas sin combinar.",
+      how: ["Roba del mazo o del descarte y luego descarta una carta. Golpea con pocas cartas sin combinar o consigue Gin."],
+      noteTitle: "Estado de la vista previa", parent: "Esta vista previa del propietario aún no está en el catálogo público oficial.",
+      faq: [["¿Se guarda el progreso?", "Sí, solo en este navegador."]],
+    },
+    "pt-BR": {
+      title: "Gin Rummy", difficulty: "De fácil a desafiador", time: "5–15 minutos",
+      gameplay: "Jogo clássico de combinações de cartas", genre: ["Cartas", "Família", "Estratégia"], skills: ["Planejamento", "Foco", "Reconhecimento de padrões"],
+      intro: "Monte conjuntos do mesmo valor e sequências do mesmo naipe enquanto reduz as cartas sem combinação.",
+      how: ["Compre do monte ou do descarte e depois descarte uma carta. Bata com poucas cartas sem combinação ou faça Gin."],
+      noteTitle: "Status da prévia", parent: "Esta prévia do proprietário ainda não faz parte do catálogo público oficial.",
+      faq: [["O progresso é salvo?", "Sim, apenas neste navegador."]],
+    },
+    fr: {
+      title: "Gin rami", difficulty: "De facile à exigeant", time: "5 à 15 minutes",
+      gameplay: "Jeu de cartes classique de combinaisons", genre: ["Cartes", "Famille", "Stratégie"], skills: ["Planification", "Concentration", "Reconnaissance des motifs"],
+      intro: "Formez des groupes de même valeur et des suites de même couleur tout en réduisant les cartes non combinées.",
+      how: ["Piochez dans la pioche ou la défausse, puis défaussez une carte. Frappez avec peu de cartes non combinées ou faites Gin."],
+      noteTitle: "État de l’aperçu", parent: "Cet aperçu propriétaire ne figure pas encore dans le catalogue public officiel.",
+      faq: [["La progression est-elle sauvegardée ?", "Oui, uniquement dans ce navigateur."]],
+    },
+    de: {
+      title: "Gin Rommé", difficulty: "Einfach bis anspruchsvoll", time: "5–15 Minuten",
+      gameplay: "Klassisches Meld-Kartenspiel", genre: ["Karten", "Familie", "Strategie"], skills: ["Planung", "Fokus", "Mustererkennung"],
+      intro: "Bilde Gruppen gleicher Werte und Folgen gleicher Farbe und verringere dabei nicht kombinierte Karten.",
+      how: ["Ziehe vom Stapel oder aus der Ablage und wirf dann eine Karte ab. Klopfe mit wenigen nicht kombinierten Karten oder erreiche Gin."],
+      noteTitle: "Vorschaustatus", parent: "Diese Besitzer-Vorschau gehört noch nicht zum offiziellen öffentlichen Katalog.",
+      faq: [["Wird der Fortschritt gespeichert?", "Ja, nur in diesem Browser."]],
+    },
+    it: {
+      title: "Gin Rummy", difficulty: "Da facile a impegnativo", time: "5–15 minuti",
+      gameplay: "Gioco classico di combinazioni di carte", genre: ["Carte", "Famiglia", "Strategia"], skills: ["Pianificazione", "Concentrazione", "Riconoscimento degli schemi"],
+      intro: "Crea gruppi dello stesso valore e sequenze dello stesso seme riducendo le carte non combinate.",
+      how: ["Pesca dal mazzo o dagli scarti, poi scarta una carta. Batti con poche carte non combinate o realizza Gin."],
+      noteTitle: "Stato anteprima", parent: "Questa anteprima del proprietario non è ancora nel catalogo pubblico ufficiale.",
+      faq: [["I progressi vengono salvati?", "Sì, solo in questo browser."]],
+    },
+    ru: {
+      title: "Джин-рамми", difficulty: "От простого до сложного", time: "5–15 минут",
+      gameplay: "Классическая карточная игра на комбинации", genre: ["Карты", "Семейная", "Стратегия"], skills: ["Планирование", "Внимание", "Распознавание шаблонов"],
+      intro: "Собирайте группы одинакового достоинства и последовательности одной масти, уменьшая число карт вне комбинаций.",
+      how: ["Берите карту из колоды или сброса, затем сбрасывайте одну карту. Стучите с малым числом карт вне комбинаций или соберите джин."],
+      noteTitle: "Статус предпросмотра", parent: "Этот предпросмотр владельца ещё не входит в официальный публичный каталог.",
+      faq: [["Прогресс сохраняется?", "Да, только в этом браузере."]],
+    },
+    hi: {
+      title: "जिन रमी", difficulty: "आसान से चुनौतीपूर्ण", time: "5–15 मिनट",
+      gameplay: "क्लासिक कार्ड संयोजन खेल", genre: ["कार्ड", "परिवार", "रणनीति"], skills: ["योजना", "ध्यान", "पैटर्न पहचान"],
+      intro: "एक ही रैंक के सेट और एक ही सूट के क्रम बनाएँ तथा बिना संयोजन वाले पत्तों को कम करें।",
+      how: ["गड्डी या फेंके हुए पत्तों से एक पत्ता लें, फिर एक पत्ता छोड़ें। कम बचे हुए पत्तों पर नॉक करें या जिन बनाएँ।"],
+      noteTitle: "प्रीव्यू स्थिति", parent: "यह मालिक का प्रीव्यू है और आधिकारिक सार्वजनिक कैटलॉग में शामिल नहीं है।",
+      faq: [["क्या प्रगति सेव होती है?", "हाँ, केवल इसी ब्राउज़र में।"]],
+    },
+    ar: {
+      title: "جِن رامي", difficulty: "من السهل إلى التحدي", time: "5–15 دقيقة",
+      gameplay: "لعبة بطاقات كلاسيكية لتكوين المجموعات", genre: ["بطاقات", "عائلية", "استراتيجية"], skills: ["التخطيط", "التركيز", "التعرّف على الأنماط"],
+      intro: "كوّن مجموعات من الرتب نفسها وتسلسلات من النوع نفسه مع خفض البطاقات غير المجمّعة.",
+      how: ["اسحب من الرزمة أو من الرمي، ثم ارمِ بطاقة واحدة. استخدم الطرق مع عدد قليل من البطاقات غير المجمّعة أو حقق جين."],
+      noteTitle: "حالة المعاينة", parent: "هذه معاينة للمالك وليست ضمن الكتالوج العام الرسمي بعد.",
+      faq: [["هل يُحفظ التقدم؟", "نعم، في هذا المتصفح فقط."]],
+    },
+  };
+  Object.entries(ginRummyLocalizedCopy).forEach(([locale, copy]) => {
+    localizedGames[locale] ||= {};
+    localizedGames[locale]["gin-rummy"] = { ...games["gin-rummy"], ...copy };
+  });
+
   localizedGames["ar"] ||= {};
   localizedGames["ar"]["space-rocks"] = {
     ...games["space-rocks"],
@@ -8524,6 +8635,13 @@
       title,
     };
   }
+
+  // Keep Gin Rummy's complete 13-locale guide after legacy locale tables that
+  // rebuild a locale object later in this file (notably Simplified Chinese).
+  Object.entries(ginRummyLocalizedCopy).forEach(([locale, copy]) => {
+    localizedGames[locale] ||= {};
+    localizedGames[locale]["gin-rummy"] = { ...games["gin-rummy"], ...copy };
+  });
 
   window.WeightPlayGameInfo = {
     render,

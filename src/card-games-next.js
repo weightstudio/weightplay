@@ -424,9 +424,54 @@
     ar: { quickGuide: "طريقة اللعب", quickGuideCopy: "اسحب من الرزمة أو من الرمي، ثم ارمِ بطاقة واحدة. استخدم الطرق مع خشب ميت قليل أو حقق جين.", resultTitle: "اكتملت الجولة", winner: "لقد فزت!", loser: "فاز الذكاء الاصطناعي", newGame: "لعبة جديدة", restart: "إعادة البدء", close: "إغلاق" },
   };
 
+  const GIN_MAIN_COPY = {
+    en: { eyebrow: "Classic Card Game · Owner Preview", summary: "Draw and discard to build sets and runs while keeping Deadwood low." },
+    "zh-Hant": { eyebrow: "經典卡牌遊戲 · 擁有者預覽", summary: "從牌庫或棄牌堆抽牌與棄牌，組成牌組和順子並降低死牌。" },
+    "zh-Hans": { eyebrow: "经典卡牌游戏 · 拥有者预览", summary: "从牌库或弃牌堆抽牌与弃牌，组成牌组和顺子并降低死牌。" },
+    ja: { eyebrow: "クラシックカードゲーム · オーナープレビュー", summary: "山札や捨て札から引いて捨て、セットと連続を作りながら残り札を減らします。" },
+    ko: { eyebrow: "클래식 카드 게임 · 소유자 프리뷰", summary: "덱에서 뽑고 카드를 버리며 세트와 연속을 만들고 데드우드를 줄이세요." },
+    es: { eyebrow: "Juego clásico de cartas · Vista previa del propietario", summary: "Roba y descarta para formar grupos y escaleras mientras reduces las cartas sin combinar." },
+    "pt-BR": { eyebrow: "Jogo clássico de cartas · Prévia do proprietário", summary: "Compre e descarte para formar conjuntos e sequências enquanto reduz as cartas sem combinação." },
+    fr: { eyebrow: "Jeu de cartes classique · Aperçu propriétaire", summary: "Piochez et défaussez pour former des combinaisons et des suites tout en réduisant les cartes isolées." },
+    de: { eyebrow: "Klassisches Kartenspiel · Besitzer-Vorschau", summary: "Ziehe und wirf ab, um Gruppen und Folgen zu bilden und nicht kombinierte Karten zu verringern." },
+    it: { eyebrow: "Gioco classico di carte · Anteprima del proprietario", summary: "Pesca e scarta per creare combinazioni e sequenze riducendo le carte non combinate." },
+    ru: { eyebrow: "Классическая карточная игра · Предпросмотр владельца", summary: "Берите и сбрасывайте карты, собирая комбинации и последовательности и уменьшая число лишних карт." },
+    hi: { eyebrow: "क्लासिक कार्ड गेम · मालिक का प्रीव्यू", summary: "सेट और क्रम बनाने के लिए पत्ते लें और छोड़ें तथा बिना संयोजन वाले पत्तों को कम करें।" },
+    ar: { eyebrow: "لعبة بطاقات كلاسيكية · معاينة المالك", summary: "اسحب وارمِ البطاقات لتكوين مجموعات وتسلسلات مع خفض البطاقات غير المجمّعة." },
+  };
+
   const ginShellText = (key) => {
     const dictionary = GIN_SHELL_COPY[currentLocale()] || GIN_SHELL_COPY.en;
     return dictionary[key] || GIN_SHELL_COPY.en[key] || key;
+  };
+
+  let ginShellSyncing = false;
+  const syncGinShell = () => {
+    if (ginShellSyncing) return;
+    ginShellSyncing = true;
+    try {
+      const copy = GIN_MAIN_COPY[currentLocale()] || GIN_MAIN_COPY.en;
+      const labels = TEXT[currentLocale()] || TEXT.en;
+      ownLocalizedText(document.querySelector(".main-copy .eyebrow"), copy.eyebrow);
+      ownLocalizedText(document.querySelector("#startBtn"), labels.start);
+      ownLocalizedText(document.querySelector("#restartBtn"), labels.restart);
+      ownLocalizedText(document.querySelector("#newGameBtn"), labels.newGame);
+      ownLocalizedText(document.querySelector(".settings-title"), labels.settings);
+      ownLocalizedText(document.querySelector("#soundBtn"), `${labels.sound}: On`);
+      const settings = document.querySelector("#audioMenuBtn");
+      if (settings) settings.setAttribute("aria-label", labels.settings);
+      const language = document.querySelector("#localeSelect");
+      if (language) language.setAttribute("aria-label", labels.language);
+      const battleBack = document.querySelector("#battleBackBtn");
+      if (battleBack) {
+        battleBack.setAttribute("aria-label", labels.back);
+        battleBack.setAttribute("data-runtime-localize", "off");
+      }
+      const mainReturn = document.querySelector(".main-return");
+      if (mainReturn) mainReturn.setAttribute("aria-label", labels.back === "Back" ? "Back to WeightPlay" : labels.back);
+    } finally {
+      ginShellSyncing = false;
+    }
   };
 
   const GIN_BATTLE_COPY = {
@@ -977,6 +1022,7 @@
     if (!main || !battle || !table || !hand || !actions) return;
     if (id === "hearts" || id === "crazy-eights" || id === "gin-rummy") resultText?.setAttribute("data-runtime-localize", "off");
     if (id === "gin-rummy") {
+      syncGinShell();
       statusText?.setAttribute("data-runtime-localize", "off");
       const playerHandLabel = document.querySelector(".card-game-player-header strong");
       if (playerHandLabel) {
@@ -1133,6 +1179,7 @@
   }
 
   function gameSummary(id) {
+    if (id === "gin-rummy") return (GIN_MAIN_COPY[currentLocale()] || GIN_MAIN_COPY.en).summary;
     const summaries = {
       hearts: "Avoid penalty cards, follow suit, and decide whether to risk Shooting the Moon.",
       spades: "Bid your tricks, use spades as trump, and coordinate with an AI teammate.",

@@ -1314,18 +1314,18 @@ window.WEIGHTPLAY_GAME_TITLES = {
   "gin-rummy": {
     "__localizedExact": true,
     "en": "Gin Rummy",
-    "zh-Hant": "金羅美牌",
-    "zh-Hans": "金罗美牌",
-    "ja": "ジンラミー",
+    "zh-Hant": "金拉米",
+    "zh-Hans": "金拉米",
+    "ja": "ジン・ラミー",
     "ko": "진 러미",
-    "es": "Ginebra rummy",
+    "es": "Gin Rummy",
     "pt-BR": "Gin Rummy",
-    "fr": "Gin Rami",
+    "fr": "Gin rami",
     "de": "Gin Rommé",
-    "it": "Gin ramino",
-    "ru": "Джин Рамми",
-    "hi": "जिन रम्मी",
-    "ar": "جين رومي"
+    "it": "Gin Rummy",
+    "ru": "Джин-рамми",
+    "hi": "जिन रमी",
+    "ar": "جِن رامي"
   },
   "crazy-eights": {
     "__localizedExact": true,
