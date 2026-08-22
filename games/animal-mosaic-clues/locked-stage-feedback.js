@@ -1,8 +1,5 @@
 (()=>{
-  [
-    "./locale-ownership.js?v=20260722-fr1",
-    "./navigation-ownership.js?v=20260723-nav1"
-  ].forEach(src=>{
+  ["/games/animal-mosaic-clues/navigation-ownership.js?v=20260723-nav1"].forEach(src=>{
     const script=document.createElement("script");
     script.src=src;
     document.head.append(script);
