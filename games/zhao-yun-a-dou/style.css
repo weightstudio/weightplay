@@ -767,6 +767,24 @@ button.primary:focus-visible {
 .battle-actions.has-skill-preview .skills {
   grid-column: 1 / -1;
   grid-row: 2;
+  min-width: 0;
+}
+
+.battle-actions.has-skill-preview {
+  grid-template-rows: minmax(44px, auto) auto;
+  align-items: start;
+}
+
+.battle-actions.has-skill-preview .action-recruit,
+.battle-actions.has-skill-preview .action-hint,
+.battle-actions.has-skill-preview .ghost-action {
+  grid-row: 1;
+}
+
+.battle-actions.has-skill-preview .action-recruit {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
 }
 
 .battle-actions.has-skill-preview .ghost-action {
@@ -775,6 +793,7 @@ button.primary:focus-visible {
 }
 
 .skill-preview {
+  box-sizing: border-box;
   width: 100%;
   padding: 7px 9px;
   border: 1px solid rgba(224, 185, 94, .24);
@@ -1120,6 +1139,8 @@ button.primary:focus-visible {
   .battle-actions.has-skill-preview .skills {
     grid-column: 1 / -1;
     grid-row: 2;
+    width: 100%;
+    min-width: 0;
   }
 
   .battle-actions.has-skill-preview .ghost-action {

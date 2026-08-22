@@ -134,6 +134,77 @@
     ar: { live: "النوع المقاد: {suit}. البطاقة الفائزة حالياً: {card}.", trump: "النوع المقاد: {suit}. البستوني {card} يفوز باللّمة.", settled: "حُسمت اللّمة: فازت {card}." },
   };
 
+  const SPADES_SHELL_COPY = {
+    en: { title: "Spades", summary: "Bid your tricks, use spades as trump, and coordinate with an AI teammate.", guideKicker: "WeightPlay Original Game Guide", guideSummary: "Two teams bid before a trick-taking hand. Spades are always trump, and bags record overtricks.", gameplayLabel: "Gameplay", gameplay: "Classic Trump Trick-Taking", genreLabel: "Genre", genre: "Card · Family · Strategy", difficultyLabel: "Difficulty", difficulty: "Easy to Challenging", timeLabel: "Estimated Play Time", time: "5-15 minutes", skillsLabel: "Skills Trained", skills: "Planning · Focus · Pattern Recognition", howTo: "How to Play", howToCopy: "Bid the number of tricks your team expects, follow suit when possible, and use spades at the right moment to win the contract.", preview: "Preview status", previewCopy: "This owner preview is not in the formal public catalog.", faq: "FAQ", faqQuestion: "Is progress saved?", faqAnswer: "Yes, only in this browser.", quickGuide: "How to play", quickGuideCopy: "Bid your team's expected tricks, follow suit when possible, and use spades at the right moment.", opponents: ["You", "AI North", "AI East", "AI West"], metaDescription: "Bid tricks with your team, follow suit, and use spades as trump in this owner-preview card game." },
+    "zh-Hant": { title: "黑桃", summary: "叫出團隊預計贏得的墩數，善用黑桃王牌，和 AI 隊友協作。", guideKicker: "WeightPlay 原創遊戲指南", guideSummary: "兩隊先叫牌，再進行吃墩牌局。黑桃永遠是王牌，超墩會記入袋分。", gameplayLabel: "玩法", gameplay: "經典王牌吃墩", genreLabel: "類型", genre: "卡牌 · 家庭 · 策略", difficultyLabel: "難度", difficulty: "由簡單到具挑戰", timeLabel: "預計遊玩時間", time: "5–15 分鐘", skillsLabel: "訓練技能", skills: "規劃 · 專注 · 模式辨識", howTo: "玩法說明", howToCopy: "叫出團隊預計贏得的墩數，能跟花色時就跟牌，並在關鍵時機使用黑桃贏下合約。", preview: "預覽狀態", previewCopy: "這是擁有者預覽，尚未列入正式公開目錄。", faq: "常見問題", faqQuestion: "進度會保存嗎？", faqAnswer: "會，只保存在這個瀏覽器中。", quickGuide: "玩法說明", quickGuideCopy: "叫出團隊預計贏得的墩數，能跟花色時就跟牌，並在關鍵時機使用黑桃。", opponents: ["你", "AI 北位", "AI 東位", "AI 西位"], metaDescription: "和團隊叫牌、跟花色，並在這款擁有者預覽卡牌遊戲中善用黑桃王牌。" },
+    "zh-Hans": { title: "黑桃", summary: "叫出团队预计赢得的墩数，善用黑桃王牌，和 AI 队友协作。", guideKicker: "WeightPlay 原创游戏指南", guideSummary: "两队先叫牌，再进行吃墩牌局。黑桃永远是王牌，超墩会记入袋分。", gameplayLabel: "玩法", gameplay: "经典王牌吃墩", genreLabel: "类型", genre: "卡牌 · 家庭 · 策略", difficultyLabel: "难度", difficulty: "从简单到具挑战", timeLabel: "预计游玩时间", time: "5–15 分钟", skillsLabel: "训练技能", skills: "规划 · 专注 · 模式识别", howTo: "玩法说明", howToCopy: "叫出团队预计赢得的墩数，能跟花色时就跟牌，并在关键时机使用黑桃赢下合约。", preview: "预览状态", previewCopy: "这是拥有者预览，尚未列入正式公开目录。", faq: "常见问题", faqQuestion: "进度会保存吗？", faqAnswer: "会，只保存在这个浏览器中。", quickGuide: "玩法说明", quickGuideCopy: "叫出团队预计赢得的墩数，能跟花色时就跟牌，并在关键时机使用黑桃。", opponents: ["你", "AI 北位", "AI 东位", "AI 西位"], metaDescription: "和团队叫牌、跟花色，并在这款拥有者预览卡牌游戏中善用黑桃王牌。" },
+    ja: { title: "スペード", summary: "チームの獲得予想トリックをビッドし、スペードを切り札にして AI の味方と協力します。", guideKicker: "WeightPlay オリジナルゲームガイド", guideSummary: "2チームがビッドしてからトリックを競います。スペードは常に切り札で、超過トリックはバッグとして記録されます。", gameplayLabel: "遊び方", gameplay: "クラシックな切り札トリック", genreLabel: "ジャンル", genre: "カード · ファミリー · 戦略", difficultyLabel: "難易度", difficulty: "簡単から挑戦的", timeLabel: "プレイ時間の目安", time: "5～15分", skillsLabel: "鍛えられる力", skills: "計画 · 集中 · パターン認識", howTo: "遊び方", howToCopy: "チームの獲得予想トリックをビッドし、可能なら同じスートを出し、要所でスペードを使って契約を達成します。", preview: "プレビュー状態", previewCopy: "この所有者プレビューは正式な公開カタログには含まれていません。", faq: "よくある質問", faqQuestion: "進行状況は保存されますか？", faqAnswer: "はい。このブラウザ内だけに保存されます。", quickGuide: "遊び方", quickGuideCopy: "チームの獲得予想をビッドし、可能なら同じスートを出し、要所でスペードを使います。", opponents: ["あなた", "AI 北", "AI 東", "AI 西"], metaDescription: "チームでビッドし、スートに従い、所有者プレビューのカードゲームでスペードを切り札として使います。" },
+    ko: { title: "스페이드", summary: "팀이 가져갈 트릭을 선언하고 스페이드를 으뜸패로 사용하며 AI 팀원과 협력하세요.", guideKicker: "WeightPlay 오리지널 게임 가이드", guideSummary: "두 팀이 먼저 비드한 뒤 트릭을 겨룹니다. 스페이드는 항상 으뜸패이며 초과 트릭은 백으로 기록됩니다.", gameplayLabel: "게임 방식", gameplay: "클래식 으뜸패 트릭 게임", genreLabel: "장르", genre: "카드 · 가족 · 전략", difficultyLabel: "난이도", difficulty: "쉬움부터 도전적", timeLabel: "예상 플레이 시간", time: "5~15분", skillsLabel: "훈련 능력", skills: "계획 · 집중 · 패턴 인식", howTo: "플레이 방법", howToCopy: "팀이 가져갈 트릭을 비드하고, 가능하면 같은 무늬를 내며, 중요한 순간에 스페이드를 사용해 계약을 이행하세요.", preview: "프리뷰 상태", previewCopy: "이 소유자 프리뷰는 공식 공개 카탈로그에 포함되지 않습니다.", faq: "자주 묻는 질문", faqQuestion: "진행 상황이 저장되나요?", faqAnswer: "네. 이 브라우저에만 저장됩니다.", quickGuide: "플레이 방법", quickGuideCopy: "팀의 예상 트릭을 비드하고, 가능하면 같은 무늬를 내며, 중요한 순간에 스페이드를 사용하세요.", opponents: ["나", "AI 북", "AI 동", "AI 서"], metaDescription: "팀과 비드하고 무늬를 따라 내며, 소유자 프리뷰 카드 게임에서 스페이드를 으뜸패로 사용하세요." },
+    es: { title: "Picas", summary: "Apuesta las bazas de tu equipo, usa las picas como triunfo y coordínate con tu compañera o compañero de IA.", guideKicker: "Guía de juego original de WeightPlay", guideSummary: "Dos equipos apuestan antes de una mano de bazas. Las picas siempre son triunfo y las bazas extra se registran como bolsas.", gameplayLabel: "Jugabilidad", gameplay: "Bazas clásicas con triunfo", genreLabel: "Género", genre: "Cartas · Familiar · Estrategia", difficultyLabel: "Dificultad", difficulty: "De fácil a desafiante", timeLabel: "Tiempo estimado", time: "5-15 minutos", skillsLabel: "Habilidades", skills: "Planificación · Concentración · Reconocimiento de patrones", howTo: "Cómo jugar", howToCopy: "Apuesta las bazas que espera ganar tu equipo, sigue el palo cuando puedas y usa las picas en el momento justo para cumplir el contrato.", preview: "Estado de la vista previa", previewCopy: "Esta vista previa del propietario aún no está en el catálogo público oficial.", faq: "Preguntas frecuentes", faqQuestion: "¿Se guarda el progreso?", faqAnswer: "Sí, solo en este navegador.", quickGuide: "Cómo jugar", quickGuideCopy: "Apuesta las bazas de tu equipo, sigue el palo cuando puedas y usa las picas en el momento justo.", opponents: ["Tú", "IA Norte", "IA Este", "IA Oeste"], metaDescription: "Apuesta con tu equipo, sigue el palo y usa las picas como triunfo en este juego de cartas de vista previa del propietario." },
+    "pt-BR": { title: "Espadas", summary: "Declare as vazas da sua equipe, use espadas como trunfo e coordene-se com seu parceiro de IA.", guideKicker: "Guia de jogo original da WeightPlay", guideSummary: "Duas equipes fazem seus lances antes de uma mão de vazas. Espadas sempre são trunfo, e as vazas extras viram bolsas.", gameplayLabel: "Como jogar", gameplay: "Vazas clássicas com trunfo", genreLabel: "Gênero", genre: "Cartas · Família · Estratégia", difficultyLabel: "Dificuldade", difficulty: "De fácil a desafiador", timeLabel: "Tempo estimado", time: "5–15 minutos", skillsLabel: "Habilidades", skills: "Planejamento · Foco · Reconhecimento de padrões", howTo: "Como jogar", howToCopy: "Declare as vazas que sua equipe espera vencer, siga o naipe quando puder e use espadas no momento certo para cumprir o contrato.", preview: "Status da prévia", previewCopy: "Esta prévia do proprietário ainda não faz parte do catálogo público oficial.", faq: "Perguntas frequentes", faqQuestion: "O progresso é salvo?", faqAnswer: "Sim, apenas neste navegador.", quickGuide: "Como jogar", quickGuideCopy: "Declare as vazas da sua equipe, siga o naipe quando puder e use espadas no momento certo.", opponents: ["Você", "IA Norte", "IA Leste", "IA Oeste"], metaDescription: "Declare com sua equipe, siga o naipe e use espadas como trunfo neste jogo de cartas em prévia do proprietário." },
+    fr: { title: "Pique", summary: "Annoncez les plis de votre équipe, utilisez le pique comme atout et coordonnez-vous avec votre partenaire IA.", guideKicker: "Guide du jeu original WeightPlay", guideSummary: "Deux équipes annoncent avant une manche de plis. Le pique est toujours l'atout et les plis supplémentaires deviennent des sacs.", gameplayLabel: "Jeu", gameplay: "Plis classiques avec atout", genreLabel: "Genre", genre: "Cartes · Famille · Stratégie", difficultyLabel: "Difficulté", difficulty: "De facile à exigeant", timeLabel: "Durée estimée", time: "5 à 15 minutes", skillsLabel: "Compétences", skills: "Planification · Concentration · Reconnaissance des motifs", howTo: "Comment jouer", howToCopy: "Annoncez les plis prévus par votre équipe, fournissez la couleur si possible et jouez pique au bon moment pour réussir le contrat.", preview: "État de l'aperçu", previewCopy: "Cet aperçu propriétaire ne figure pas encore dans le catalogue public officiel.", faq: "FAQ", faqQuestion: "La progression est-elle sauvegardée ?", faqAnswer: "Oui, uniquement dans ce navigateur.", quickGuide: "Comment jouer", quickGuideCopy: "Annoncez les plis de votre équipe, fournissez la couleur si possible et jouez pique au bon moment.", opponents: ["Vous", "IA Nord", "IA Est", "IA Ouest"], metaDescription: "Annoncez avec votre équipe, fournissez la couleur et utilisez le pique comme atout dans ce jeu de cartes en aperçu propriétaire." },
+    de: { title: "Pik", summary: "Biete die Stiche deines Teams, nutze Pik als Trumpf und koordiniere dich mit deinem KI-Partner.", guideKicker: "Originaler WeightPlay-Spielguide", guideSummary: "Zwei Teams reizen vor einer Stichrunde. Pik ist immer Trumpf, und Überstiche werden als Bags gezählt.", gameplayLabel: "Spielweise", gameplay: "Klassisches Stichspiel mit Trumpf", genreLabel: "Genre", genre: "Karten · Familie · Strategie", difficultyLabel: "Schwierigkeit", difficulty: "Einfach bis anspruchsvoll", timeLabel: "Geschätzte Spielzeit", time: "5–15 Minuten", skillsLabel: "Trainierte Fähigkeiten", skills: "Planung · Fokus · Mustererkennung", howTo: "So wird gespielt", howToCopy: "Biete die erwarteten Stiche deines Teams, bediene möglichst die Farbe und setze Pik im richtigen Moment ein, um den Kontrakt zu erfüllen.", preview: "Vorschaustatus", previewCopy: "Diese Besitzer-Vorschau gehört noch nicht zum offiziellen öffentlichen Katalog.", faq: "FAQ", faqQuestion: "Wird der Fortschritt gespeichert?", faqAnswer: "Ja, nur in diesem Browser.", quickGuide: "So wird gespielt", quickGuideCopy: "Biete die Stiche deines Teams, bediene möglichst die Farbe und setze Pik im richtigen Moment ein.", opponents: ["Du", "KI Nord", "KI Ost", "KI West"], metaDescription: "Biete mit deinem Team, bediene die Farbe und nutze Pik als Trumpf in diesem Kartenspiel der Besitzer-Vorschau." },
+    it: { title: "Picche", summary: "Dichiara le prese della tua squadra, usa le picche come briscola e collabora con il compagno IA.", guideKicker: "Guida al gioco originale WeightPlay", guideSummary: "Due squadre dichiarano prima di una mano di prese. Le picche sono sempre briscola e le prese extra diventano sacchi.", gameplayLabel: "Come si gioca", gameplay: "Prese classiche con briscola", genreLabel: "Genere", genre: "Carte · Famiglia · Strategia", difficultyLabel: "Difficoltà", difficulty: "Da facile a impegnativo", timeLabel: "Tempo stimato", time: "5–15 minuti", skillsLabel: "Abilità allenate", skills: "Pianificazione · Concentrazione · Riconoscimento degli schemi", howTo: "Come si gioca", howToCopy: "Dichiara le prese previste dalla tua squadra, segui il seme quando puoi e usa le picche al momento giusto per rispettare il contratto.", preview: "Stato anteprima", previewCopy: "Questa anteprima del proprietario non è ancora nel catalogo pubblico ufficiale.", faq: "Domande frequenti", faqQuestion: "I progressi vengono salvati?", faqAnswer: "Sì, solo in questo browser.", quickGuide: "Come si gioca", quickGuideCopy: "Dichiara le prese della tua squadra, segui il seme quando puoi e usa le picche al momento giusto.", opponents: ["Tu", "IA Nord", "IA Est", "IA Ovest"], metaDescription: "Dichiara con la tua squadra, segui il seme e usa le picche come briscola in questo gioco di carte in anteprima." },
+    ru: { title: "Пики", summary: "Заявляйте взятки своей команды, используйте пики как козырь и координируйте игру с напарником-ИИ.", guideKicker: "Оригинальный игровой гид WeightPlay", guideSummary: "Две команды делают заявки перед розыгрышем взяток. Пики всегда козырь, а лишние взятки записываются как мешки.", gameplayLabel: "Как играть", gameplay: "Классические взятки с козырем", genreLabel: "Жанр", genre: "Карты · Семейная · Стратегия", difficultyLabel: "Сложность", difficulty: "От простой до сложной", timeLabel: "Примерное время", time: "5–15 минут", skillsLabel: "Развиваемые навыки", skills: "Планирование · Внимание · Распознавание шаблонов", howTo: "Как играть", howToCopy: "Заявляйте ожидаемые взятки команды, по возможности ходите в масть и вовремя используйте пики, чтобы выполнить контракт.", preview: "Статус предпросмотра", previewCopy: "Этот предпросмотр владельца ещё не входит в официальный публичный каталог.", faq: "Частые вопросы", faqQuestion: "Прогресс сохраняется?", faqAnswer: "Да, только в этом браузере.", quickGuide: "Как играть", quickGuideCopy: "Заявляйте взятки команды, по возможности ходите в масть и вовремя используйте пики.", opponents: ["Вы", "ИИ Север", "ИИ Восток", "ИИ Запад"], metaDescription: "Делайте заявки с командой, ходите в масть и используйте пики как козырь в этой карточной игре предпросмотра." },
+    hi: { title: "स्पेड्स", summary: "अपनी टीम की बाज़ियों पर बोली लगाएँ, स्पेड्स को तुरुप बनाएँ और AI साथी के साथ तालमेल करें।", guideKicker: "WeightPlay मूल गेम गाइड", guideSummary: "बाज़ियों वाले हाथ से पहले दो टीमें बोली लगाती हैं। स्पेड्स हमेशा तुरुप है और अतिरिक्त बाज़ियाँ बैग के रूप में दर्ज होती हैं।", gameplayLabel: "गेमप्ले", gameplay: "क्लासिक तुरुप बाज़ी खेल", genreLabel: "शैली", genre: "कार्ड · परिवार · रणनीति", difficultyLabel: "कठिनाई", difficulty: "आसान से चुनौतीपूर्ण", timeLabel: "अनुमानित समय", time: "5–15 मिनट", skillsLabel: "अभ्यास कौशल", skills: "योजना · ध्यान · पैटर्न पहचान", howTo: "कैसे खेलें", howToCopy: "अपनी टीम की अपेक्षित बाज़ियों पर बोली लगाएँ, संभव हो तो उसी सूट का पत्ता चलें और अनुबंध जीतने के लिए सही समय पर स्पेड्स खेलें।", preview: "प्रीव्यू स्थिति", previewCopy: "यह मालिक का प्रीव्यू आधिकारिक सार्वजनिक कैटलॉग में शामिल नहीं है।", faq: "अक्सर पूछे जाने वाले प्रश्न", faqQuestion: "क्या प्रगति सहेजी जाती है?", faqAnswer: "हाँ, केवल इसी ब्राउज़र में।", quickGuide: "कैसे खेलें", quickGuideCopy: "अपनी टीम की बाज़ियों पर बोली लगाएँ, संभव हो तो सूट का पालन करें और सही समय पर स्पेड्स खेलें।", opponents: ["आप", "AI उत्तर", "AI पूर्व", "AI पश्चिम"], metaDescription: "अपनी टीम के साथ बोली लगाएँ, सूट का पालन करें और इस मालिक-प्रीव्यू कार्ड गेम में स्पेड्स को तुरुप बनाएँ।" },
+    ar: { title: "البستوني", summary: "راهن على لمّات فريقك، واستخدم البستوني حكماً، وتعاون مع زميلك من الذكاء الاصطناعي.", guideKicker: "دليل ألعاب WeightPlay الأصلية", guideSummary: "يقدّم فريقان العطاءات قبل جولة اللمّات. البستوني حكم دائماً، وتُسجَّل اللمّات الزائدة كأكياس.", gameplayLabel: "طريقة اللعب", gameplay: "لعبة لمّات كلاسيكية بحكم", genreLabel: "النوع", genre: "بطاقات · عائلية · استراتيجية", difficultyLabel: "الصعوبة", difficulty: "من السهل إلى التحدي", timeLabel: "الوقت التقريبي", time: "5–15 دقيقة", skillsLabel: "المهارات المتدرَّبة", skills: "التخطيط · التركيز · التعرّف على الأنماط", howTo: "كيفية اللعب", howToCopy: "راهن على عدد اللمّات التي يتوقع فريقك الفوز بها، واتبع النوع إن أمكن، واستخدم البستوني في اللحظة المناسبة للفوز بالعقد.", preview: "حالة المعاينة", previewCopy: "هذه معاينة المالك غير موجودة في الكتالوج العام الرسمي.", faq: "الأسئلة الشائعة", faqQuestion: "هل يُحفظ التقدم؟", faqAnswer: "نعم، في هذا المتصفح فقط.", quickGuide: "كيفية اللعب", quickGuideCopy: "راهن على لمّات فريقك، واتبع النوع إن أمكن، واستخدم البستوني في اللحظة المناسبة.", opponents: ["أنت", "الذكاء الاصطناعي شمالاً", "الذكاء الاصطناعي شرقاً", "الذكاء الاصطناعي غرباً"], metaDescription: "راهن مع فريقك، واتبع النوع، واستخدم البستوني حكماً في لعبة البطاقات هذه ضمن معاينة المالك." },
+  };
+
+  const spadesShellCopy = () => SPADES_SHELL_COPY[currentLocale()] || SPADES_SHELL_COPY.en;
+  const spadesOpponentNames = () => spadesShellCopy().opponents;
+  const ownLocalizedText = (node, value) => {
+    if (!node) return;
+    const text = String(value ?? "");
+    if (node.textContent !== text) node.textContent = text;
+    if (node.getAttribute("data-runtime-localize") !== "off") node.setAttribute("data-runtime-localize", "off");
+  };
+  const syncSpadesShell = () => {
+    const copy = spadesShellCopy();
+    const guideRoot = document.querySelector(".game-page-info");
+    if (guideRoot) {
+      guideRoot.setAttribute("aria-label", `${copy.title} game information`);
+      guideRoot.setAttribute("data-runtime-localize", "off");
+    }
+    document.title = `${copy.title} | WeightPlay`;
+    const summary = document.querySelector('meta[name="description"]');
+    if (summary) summary.content = copy.metaDescription;
+    document.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]').forEach((node) => { node.content = `${copy.title} | WeightPlay`; });
+    document.querySelectorAll('meta[property="og:description"], meta[name="twitter:description"]').forEach((node) => { node.content = copy.metaDescription; });
+    const jsonLd = document.querySelector('script[type="application/ld+json"]');
+    if (jsonLd) { try { const data = JSON.parse(jsonLd.textContent); data.name = copy.title; data.description = copy.metaDescription; data.inLanguage = currentLocale(); jsonLd.textContent = JSON.stringify(data); } catch (_error) {} }
+    document.querySelectorAll("[data-card-title]").forEach((node) => ownLocalizedText(node, copy.title));
+    document.querySelectorAll("[data-card-summary]").forEach((node) => ownLocalizedText(node, copy.summary));
+    ownLocalizedText(document.querySelector(".game-info-kicker"), copy.guideKicker);
+    ownLocalizedText(document.querySelector(".game-info-title h2"), copy.title);
+    ownLocalizedText(document.querySelector(".game-info-title p"), copy.guideSummary);
+    const facts = [...document.querySelectorAll(".game-info-fact")];
+    [[copy.gameplayLabel, copy.gameplay], [copy.genreLabel, copy.genre], [copy.difficultyLabel, copy.difficulty], [copy.timeLabel, copy.time], [copy.skillsLabel, copy.skills]].forEach(([label, value], index) => { const fact = facts[index]; if (!fact) return; ownLocalizedText(fact.querySelector("span"), label); ownLocalizedText(fact.querySelector("strong"), value); });
+    const sections = [...document.querySelectorAll(".game-info-section")];
+    const guide = sections.find((section) => section.querySelector("ol"));
+    ownLocalizedText(guide?.querySelector("h3"), copy.howTo);
+    ownLocalizedText(guide?.querySelector("li"), copy.howToCopy);
+    const preview = sections.find((section) => section.classList.contains("game-info-parent"));
+    ownLocalizedText(preview?.querySelector("h3"), copy.preview);
+    ownLocalizedText(preview?.querySelector("p"), copy.previewCopy);
+    const faq = sections.find((section) => section.querySelector("dl"));
+    ownLocalizedText(faq?.querySelector("h3"), copy.faq);
+    ownLocalizedText(faq?.querySelector("dt"), copy.faqQuestion);
+    ownLocalizedText(faq?.querySelector("dd"), copy.faqAnswer);
+    ownLocalizedText(document.querySelector("#startBtn"), t("start"));
+    ownLocalizedText(document.querySelector("#restartBtn"), t("restart"));
+    ownLocalizedText(document.querySelector("#newGameBtn"), t("newGame"));
+    ownLocalizedText(document.querySelector("#battleBackBtn"), `← ${t("back")}`);
+    document.querySelector("#battleBackBtn")?.setAttribute("aria-label", t("back"));
+    ownLocalizedText(document.querySelector("#soundBtn"), `${t("sound")}: On`);
+    document.querySelector("#audioMenuBtn")?.setAttribute("aria-label", t("settings"));
+    document.querySelector("#localeSelect")?.setAttribute("aria-label", t("language"));
+    ownLocalizedText(document.querySelector(".card-game-player-header strong"), t("hand"));
+    ownLocalizedText(document.querySelector("#resultTitle"), t("roundOver"));
+    ownLocalizedText(document.querySelector("#resultNewGame"), t("newGame"));
+    ownLocalizedText(document.querySelector("#resultRestart"), t("restart"));
+    ownLocalizedText(document.querySelector("#resultClose"), t("close"));
+  };
+
   const OLD_MAID_RISK = {
     en: { held: "Old Maid in hand — clear pairs and pass it on.", hidden: "The Old Maid is still hidden." },
     "zh-Hant": { held: "鬼牌在你手上——消除配對並設法傳出去。", hidden: "鬼牌仍藏在某位玩家手中。" },
@@ -754,13 +825,14 @@
     const resultText = document.querySelector("#resultText");
     const audioButton = document.querySelector("#soundBtn");
     const localeSelect = document.querySelector("#localeSelect");
-    const guideSource = CARD_GAME_GUIDES[id] || "Follow the on-screen prompt, complete the round, and use Restart to try again.";
-    const guideHeading = root.WeightPlayGameRuntimeLocalizer?.translate?.("How to play") || "How to play";
-    const guideParagraph = root.WeightPlayGameRuntimeLocalizer?.translate?.(guideSource) || guideSource;
+    const guideSource = id === "spades" ? spadesShellCopy().quickGuideCopy : (CARD_GAME_GUIDES[id] || "Follow the on-screen prompt, complete the round, and use Restart to try again.");
+    const guideHeading = id === "spades" ? spadesShellCopy().quickGuide : (root.WeightPlayGameRuntimeLocalizer?.translate?.("How to play") || "How to play");
+    const guideParagraph = id === "spades" ? guideSource : (root.WeightPlayGameRuntimeLocalizer?.translate?.(guideSource) || guideSource);
     const quickGuide = document.createElement("p");
     quickGuide.className = "card-game-quick-guide";
     quickGuide.setAttribute("role", "note");
     quickGuide.dataset.cardQuickGuide = "true";
+    if (id === "spades") quickGuide.setAttribute("data-runtime-localize", "off");
     const quickGuideLabel = document.createElement("strong");
     quickGuideLabel.textContent = guideHeading;
     quickGuide.append(quickGuideLabel);
@@ -789,6 +861,19 @@
     });
     document.querySelectorAll("[data-card-title]").forEach((node) => { node.textContent = title; node.setAttribute("data-runtime-localize", "off"); });
     document.querySelectorAll("[data-card-summary]").forEach((node) => { node.textContent = gameSummary(id); });
+    if (id === "spades") {
+      syncSpadesShell();
+      window.addEventListener("weightplay:shell-sync", syncSpadesShell);
+      const shellTitle = document.querySelector(".main-header [data-card-title]");
+      if (shellTitle && !shellTitle.dataset.spadesShellObserver) {
+        shellTitle.dataset.spadesShellObserver = "true";
+        new MutationObserver(() => {
+          if (shellTitle.textContent !== spadesShellCopy().title) ownLocalizedText(shellTitle, spadesShellCopy().title);
+        }).observe(shellTitle, { childList: true, characterData: true, subtree: true });
+      }
+      window.setTimeout(syncSpadesShell, 0);
+      window.setTimeout(syncSpadesShell, 400);
+    }
     if (localeSelect) localeSelect.value = currentLocale();
     const resultCloseButton = document.querySelector("#resultClose");
     if (id === "old-maid" && resultCloseButton) {
@@ -935,7 +1020,7 @@
 
   function makeSpades(controller) {
     const s = { hands: [[], [], [], []], bids: [null, null, null, null], tricks: [0, 0], turn: 0, trick: [], lastTrick: null, phase: "bid", scores: [0, 0] };
-    const names = ["You", "AI North", "AI East", "AI West"];
+    const names = spadesOpponentNames();
     const legal = (cards) => { const lead = s.trick[0]?.card.suit; const suited = lead ? cards.filter((item) => item.suit === lead) : []; return suited.length ? suited : cards; };
     const finish = () => { const own = s.tricks[0] >= s.bids[0] + s.bids[2]; const enemy = s.tricks[1] >= s.bids[1] + s.bids[3]; s.scores[0] += own ? 10 * (s.bids[0] + s.bids[2]) + Math.max(0, s.tricks[0] - s.bids[0] - s.bids[2]) : -10 * (s.bids[0] + s.bids[2]); s.scores[1] += enemy ? 10 * (s.bids[1] + s.bids[3]) + Math.max(0, s.tricks[1] - s.bids[1] - s.bids[3]) : -10 * (s.bids[1] + s.bids[3]); controller.result(s.scores[0] >= s.scores[1], `${t("score")}: ${s.scores[0]} — ${s.scores[1]}`); };
     const currentWinnerEntry = () => { const winner = trickWinner(s.trick, "spades"); return s.trick.find((entry) => entry.player === winner) || null; };
