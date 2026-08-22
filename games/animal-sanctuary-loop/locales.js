@@ -79,6 +79,8 @@
   codes.forEach((code,index)=>{dictionaries[code]={};Object.entries(rows).forEach(([key,values])=>{dictionaries[code][key]=values[index]||values[0];});});
   const supplemental={
     hi:{
+      hearts:"दिल",time:"समय",arenaLabel:"अभयारण्य क्षेत्र",directionControls:"दिशा नियंत्रण",
+      up:"ऊपर",left:"बाएँ",down:"नीचे",right:"दाएँ",help:"कैसे खेलें",back:"वापस",
       guideIntro:"फिया पुनर्स्थापित भूमि पर सुरक्षित है। बाहर उसकी बिजली की रेखा असुरक्षित रहती है। शिकारी के खुली रेखा तक पहुँचने से पहले दोबारा जुड़ें।",
       saveText:"अनलॉक किए गए मिशन और सर्वश्रेष्ठ सितारे इसी ब्राउज़र में रहते हैं। किसी खाते की आवश्यकता नहीं है।",
       rescued:"बचाए गए",missionComplete:"अभयारण्य पुनर्स्थापित!",missionFailed:"मार्ग खो गया",stageLocked:"पहले पिछला मिशन पूरा करें।",

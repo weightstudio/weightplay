@@ -2,10 +2,11 @@
   "use strict";
   const $ = (id) => document.getElementById(id);
   const GAME_ID = "animal-penalty-cup";
-  const GAME_VERSION = 3;
+  const GAME_VERSION = 4;
   const INTERFACE_VERSION = 6;
   const LOCALES = ["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
   const LOCALE_LABELS = {en:"English","zh-Hant":"繁體中文","zh-Hans":"简体中文",ja:"日本語",ko:"한국어",es:"Español","pt-BR":"Português",fr:"Français",de:"Deutsch",it:"Italiano",ru:"Русский",hi:"हिन्दी",ar:"العربية"};
+  const ROUTE_LOCALE_BY_SEGMENT = {en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const OPPONENTS = [
     "Bramble Badgers","Brook Beavers","Clover Rabbits","Pine Martens","Mossy Bears",
     "Reed Raccoons","River Herons","Pebble Pikas","Willow Deer","Kingfisher Crew",
@@ -40,7 +41,9 @@
   const defaultSave = () => ({unlocked:1,completed:Array(30).fill(false),stars:Array(30).fill(0),bestDiff:Array(30).fill(null),tutorialSeen:false});
   const readSave = () => {try{const raw=JSON.parse(safeStorage.get(SAVE_KEY,"null"));if(!raw)return defaultSave();return{...defaultSave(),...raw,completed:Array.from({length:30},(_,i)=>Boolean(raw.completed?.[i])),stars:Array.from({length:30},(_,i)=>Math.max(0,Math.min(3,Number(raw.stars?.[i])||0))),bestDiff:Array.from({length:30},(_,i)=>Number.isFinite(raw.bestDiff?.[i])?raw.bestDiff[i]:null),unlocked:Math.max(1,Math.min(30,Number(raw.unlocked)||1))}}catch{return defaultSave()}};
   let save = readSave();
-  let lang = normalizeLocale(safeStorage.get(LOCALE_KEY,"en"));
+  const routeSegment = String(location.pathname || "").split("/").filter(Boolean)[0]?.toLowerCase();
+  const routeLocale = ROUTE_LOCALE_BY_SEGMENT[routeSegment];
+  let lang = normalizeLocale(routeLocale || safeStorage.get(LOCALE_KEY,"en"));
   let selectedStage = Math.max(0,save.unlocked-1);
   let match = null;
   let raf = 0;
