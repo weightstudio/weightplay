@@ -1,5 +1,22 @@
 (function () {
   "use strict";
+  const TRIPEAKS_RANKS = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+  const TRIPEAKS_DYNAMIC_COPY = Object.freeze({
+    en: { start: "Start Game", restart: "Restart", newGame: "New Game", moves: "Moves", score: "Score", combo: "Combo", back: "Back", ariaCard: "{rank} of {suit}", suits: { spades: "spades", hearts: "hearts", clubs: "clubs", diamonds: "diamonds" } },
+    "zh-Hant": { start: "開始遊戲", restart: "重新開始", newGame: "新遊戲", moves: "步數", score: "分數", combo: "連鎖", back: "返回", ariaCard: "{suit}{rank}", suits: { spades: "黑桃", hearts: "紅心", clubs: "梅花", diamonds: "方塊" } },
+    "zh-Hans": { start: "开始游戏", restart: "重新开始", newGame: "新游戏", moves: "步数", score: "分数", combo: "连锁", back: "返回", ariaCard: "{suit}{rank}", suits: { spades: "黑桃", hearts: "红心", clubs: "梅花", diamonds: "方块" } },
+    ja: { start: "ゲーム開始", restart: "リスタート", newGame: "新しいゲーム", moves: "手数", score: "スコア", combo: "コンボ", back: "戻る", ariaCard: "{suit}の{rank}", suits: { spades: "スペード", hearts: "ハート", clubs: "クラブ", diamonds: "ダイヤ" } },
+    ko: { start: "게임 시작", restart: "다시 시작", newGame: "새 게임", moves: "이동", score: "점수", combo: "콤보", back: "뒤로", ariaCard: "{suit} {rank}", suits: { spades: "스페이드", hearts: "하트", clubs: "클럽", diamonds: "다이아" } },
+    es: { start: "Iniciar partida", restart: "Reiniciar", newGame: "Nueva partida", moves: "Movimientos", score: "Puntuación", combo: "Combo", back: "Atrás", ariaCard: "{rank} de {suit}", suits: { spades: "picas", hearts: "corazones", clubs: "tréboles", diamonds: "diamantes" } },
+    "pt-BR": { start: "Iniciar jogo", restart: "Reiniciar", newGame: "Novo jogo", moves: "Movimentos", score: "Pontuação", combo: "Combo", back: "Voltar", ariaCard: "{rank} de {suit}", suits: { spades: "espadas", hearts: "copas", clubs: "paus", diamonds: "ouros" } },
+    fr: { start: "Commencer", restart: "Recommencer", newGame: "Nouvelle partie", moves: "Coups", score: "Score", combo: "Combo", back: "Retour", ariaCard: "{rank} de {suit}", suits: { spades: "piques", hearts: "cœurs", clubs: "trèfles", diamonds: "carreaux" } },
+    de: { start: "Spiel starten", restart: "Neu starten", newGame: "Neues Spiel", moves: "Züge", score: "Punkte", combo: "Combo", back: "Zurück", ariaCard: "{rank} von {suit}", suits: { spades: "Pik", hearts: "Herz", clubs: "Kreuz", diamonds: "Karo" } },
+    it: { start: "Inizia partita", restart: "Ricomincia", newGame: "Nuova partita", moves: "Mosse", score: "Punteggio", combo: "Combo", back: "Indietro", ariaCard: "{rank} di {suit}", suits: { spades: "picche", hearts: "cuori", clubs: "fiori", diamonds: "quadri" } },
+    ru: { start: "Начать игру", restart: "Начать заново", newGame: "Новая игра", moves: "Ходы", score: "Очки", combo: "Комбо", back: "Назад", ariaCard: "{rank} масти {suit}", suits: { spades: "пики", hearts: "черви", clubs: "трефы", diamonds: "бубны" } },
+    hi: { start: "खेल शुरू करें", restart: "फिर शुरू करें", newGame: "नया खेल", moves: "चालें", score: "स्कोर", combo: "कॉम्बो", back: "वापस", ariaCard: "{suit} का {rank}", suits: { spades: "हुकुम", hearts: "पान", clubs: "चिड़ी", diamonds: "ईंट" } },
+    ar: { start: "ابدأ اللعبة", restart: "إعادة البدء", newGame: "لعبة جديدة", moves: "الحركات", score: "النقاط", combo: "التتابع", back: "رجوع", ariaCard: "{rank} من {suit}", suits: { spades: "البستوني", hearts: "القلوب", clubs: "النوادي", diamonds: "الماس" } },
+  });
+  const fillTriPeaksCopy = (value, params) => String(value || "").replace(/\{(\w+)\}/gu, (_match, key) => params[key] ?? "");
   const PEAK_PROGRESS_COPY = Object.freeze({
     en: { label: "Peaks", aria: "Peaks cleared: {cleared} of 3" },
     "zh-Hant": { label: "峰頂", aria: "已清除峰頂：{cleared}/3" },
@@ -147,6 +164,29 @@
     document.getElementById("battleBackBtn")?.setAttribute("data-wp-return", "battle");
     const view = window.WPClassicSolitaire?.mount({ variant: "tripeaks", id: "tripeaks-solitaire" });
     if (!view) return;
+    const dynamicCopy = () => TRIPEAKS_DYNAMIC_COPY[view.locale] || TRIPEAKS_DYNAMIC_COPY.en;
+    const markGameOwned = (node) => node?.setAttribute("data-runtime-localize", "off");
+    const updateDynamicCopy = () => {
+      const copy = dynamicCopy();
+      const buttonCopy = { startBtn: copy.start, restartBtn: copy.restart, newGameBtn: copy.newGame, battleNewBtn: copy.newGame, battleRestartBtn: copy.restart, resultNewGame: copy.newGame, resultRestart: copy.restart };
+      Object.entries(buttonCopy).forEach(([id, text]) => { const node = document.getElementById(id); if (!node) return; node.textContent = text; markGameOwned(node); });
+      const headerLabels = [...document.querySelectorAll("#battleScreen .battle-header .header-stat small")];
+      [copy.moves, copy.score, copy.combo].forEach((text, index) => { if (headerLabels[index]) { headerLabels[index].textContent = text; markGameOwned(headerLabels[index]); } });
+      const back = document.getElementById("battleBackBtn");
+      if (back) { back.setAttribute("aria-label", copy.back); markGameOwned(back); }
+      const cards = new Map();
+      (view.game?.cards || []).forEach((entry) => { if (entry.card) cards.set(String(entry.card.id), entry.card); });
+      (view.game?.waste || []).forEach((card) => cards.set(String(card.id), card));
+      document.querySelectorAll("#battleScreen [data-card-id]").forEach((node) => {
+        const card = cards.get(String(node.dataset.cardId));
+        if (!card?.faceUp) return;
+        const rank = TRIPEAKS_RANKS[card.rank - 1] || String(card.rank);
+        const suit = copy.suits[card.suit] || card.suit;
+        node.setAttribute("aria-label", fillTriPeaksCopy(copy.ariaCard, { rank, suit }));
+        markGameOwned(node);
+      });
+    };
+    updateDynamicCopy();
     const showResult = view.showResult?.bind(view);
     const updatePersonalTarget = () => {
       const current = Math.max(0, Number(view.game?.bestCombo) || 0);
@@ -208,6 +248,7 @@
     const render = view.render.bind(view);
     view.render = (...args) => {
       const result = render(...args);
+      updateDynamicCopy();
       updatePeakProgress(view);
       updateStockReserveCue(view);
       return result;
