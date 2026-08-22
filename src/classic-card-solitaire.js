@@ -299,9 +299,9 @@
   const clone = (value) => JSON.parse(JSON.stringify(value));
   const safeLocale = () => {
     const routeLocale = document.documentElement.lang;
-    const value = document.body?.dataset.wpGameId === "yukon-solitaire" && LOCALES.includes(routeLocale)
+    const value = LOCALES.includes(routeLocale)
       ? routeLocale
-      : root.WonderI18n?.actualLocale?.() || root.WonderI18n?.locale?.() || routeLocale || "en";
+      : root.WonderI18n?.actualLocale?.() || root.WonderI18n?.locale?.() || "en";
     return LOCALES.includes(value) ? value : "en";
   };
   const text = (value, params = {}) => String(value || "").replace(/\{(\w+)\}/gu, (_match, key) => params[key] ?? "");
@@ -877,10 +877,9 @@
       this.setText("[data-copy=title]", copy.title); this.setText("[data-copy=target]", copy.target); this.setText("[data-copy=type]", this.config.variant === "freecell" || this.config.variant === "yukon" ? this.t("foundations") : this.config.variant === "pyramid" ? "13" : this.t("combo"));
       ["startBtn", "restartBtn", "newGameBtn", "battleNewBtn", "battleRestartBtn", "undoBtn", "hintBtn", "resultNewGame", "resultRestart", "resultClose"].forEach((id) => { const node = this.nodes[id]; if (!node) return; const normalized = id.toLowerCase(); node.textContent = normalized.includes("restart") ? this.t("restart") : normalized.includes("new") ? this.t("newGame") : normalized.includes("undo") ? this.t("undo") : normalized.includes("hint") ? this.t("hint") : normalized === "resultclose" ? this.t("close") : this.t("start"); });
       this.setText("[data-label=free-cells]", this.t("freeCells")); this.setText("[data-label=foundations]", this.t("foundations")); this.setText("[data-label=stock]", this.t("stock")); this.setText("[data-label=waste]", this.t("waste")); this.setText("[data-label=tableau]", this.t("tableau")); this.setText("[data-label=moves]", this.t("moves")); this.setText("[data-label=score]", this.t("score")); this.setText("[data-label=combo]", this.t("combo"));
-      if (this.config.variant === "yukon") {
-        const stats = [...document.querySelectorAll(".header-stat small")];
-        [this.t("moves"), this.t("score"), this.t("combo")].forEach((label, index) => { if (stats[index]) stats[index].textContent = label; });
-      }
+      const stats = [...document.querySelectorAll(".header-stat small")];
+      [this.t("moves"), this.t("score"), this.t("combo")].forEach((label, index) => { if (stats[index]) stats[index].textContent = label; });
+      this.nodes.battleBackBtn?.setAttribute("aria-label", this.t("back"));
       this.refreshSound();
     }
     showMain() { this.active = false; this.nodes.battleScreen.hidden = true; this.nodes.mainScreen.hidden = false; document.body.dataset.screen = "main"; this.renderMain(); window.dispatchEvent(new Event("weightplay:shell-sync")); }

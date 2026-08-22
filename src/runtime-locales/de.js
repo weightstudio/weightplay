@@ -392,6 +392,7 @@ window.WeightPlayGameRuntimeLocales["de"] = {
   "2-6 minutes per descent": "2-6 Minuten pro Abstieg",
   "2-6 minutes per habitat": "2-6 Minuten pro Lebensraum",
   "2-6 minutes per mission": "2-6 Minuten pro Mission",
+  "2–6 minutes per mission": "2–6 Minuten pro Mission",
   "2-6 minutes per shape": "2-6 Minuten pro Form",
   "2-6 minutes per stage": "2-6 Minuten pro Stufe",
   "2-7 minutes per tower": "2-7 Minuten pro Turm",

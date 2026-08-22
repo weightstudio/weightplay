@@ -309,6 +309,21 @@
   function readStorage(key) { try { return localStorage.getItem(key); } catch { return null; } }
   function writeStorage(key, value) { try { localStorage.setItem(key, value); return true; } catch { return false; } }
   const localeCodes = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const returnLabels = Object.freeze({
+    en: "Back",
+    "zh-Hant": "返回",
+    "zh-Hans": "返回",
+    ja: "戻る",
+    ko: "뒤로",
+    es: "Volver",
+    "pt-BR": "Voltar",
+    fr: "Retour",
+    de: "Zurück",
+    it: "Indietro",
+    ru: "Назад",
+    hi: "वापस",
+    ar: "رجوع",
+  });
   const ownedLocales = new Set(["en", "zh-Hant", "es"]);
   const runtimeSupplemental = {
     hi: { Trial: "परीक्षण" },
@@ -667,6 +682,9 @@
     document.documentElement.lang = locale;
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     document.title = localizedValue("Animal Hero Trials - WeightPlay", "動物英雄試煉 - WeightPlay", "Pruebas de Héroes Animales - WeightPlay");
+    const returnLabel = returnLabels[locale] || returnLabels.en;
+    $("#stageBack").setAttribute("aria-label", returnLabel);
+    $("#battleBack").setAttribute("aria-label", returnLabel);
     $("#game").setAttribute("aria-label", t("arenaLabel"));
     $("#game").setAttribute("aria-keyshortcuts", "ArrowUp ArrowDown ArrowLeft ArrowRight W A S D Space");
     $$('[data-t]').forEach((node) => {

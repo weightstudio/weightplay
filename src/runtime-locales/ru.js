@@ -392,6 +392,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "2-6 minutes per descent": "2-6 минут на спуск",
   "2-6 minutes per habitat": "2-6 минут на среду обитания",
   "2-6 minutes per mission": "2-6 минут на миссию",
+  "2–6 minutes per mission": "2–6 минут на миссию",
   "2-6 minutes per shape": "2-6 минут на форму",
   "2-6 minutes per stage": "2-6 минут на этап",
   "2-7 minutes per tower": "2-7 минут на башню",

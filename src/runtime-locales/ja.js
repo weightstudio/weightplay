@@ -392,6 +392,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "2-6 minutes per descent": "下りごとに 2 ～ 6 分",
   "2-6 minutes per habitat": "生息地ごとに 2 ～ 6 分",
   "2-6 minutes per mission": "ミッションごとに 2 ～ 6 分",
+  "2–6 minutes per mission": "各ミッション 2～6分",
   "2-6 minutes per shape": "1 つの形状につき 2 ～ 6 分",
   "2-6 minutes per stage": "1ステージあたり2～6分",
   "2-7 minutes per tower": "タワーごとに 2 ～ 7 分",

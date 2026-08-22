@@ -392,6 +392,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "2-6 minutes per descent": "每次下降 2-6 分鐘",
   "2-6 minutes per habitat": "每個棲息地 2-6 分鐘",
   "2-6 minutes per mission": "每個任務 2-6 分鐘",
+  "2–6 minutes per mission": "每個任務 2–6 分鐘",
   "2-6 minutes per shape": "每個形狀 2-6 分鐘",
   "2-6 minutes per stage": "每階段 2-6 分鐘",
   "2-7 minutes per tower": "每座塔 2-7 分鐘",

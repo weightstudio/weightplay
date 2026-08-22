@@ -392,6 +392,7 @@ window.WeightPlayGameRuntimeLocales["it"] = {
   "2-6 minutes per descent": "2-6 minuti per discesa",
   "2-6 minutes per habitat": "2-6 minuti per habitat",
   "2-6 minutes per mission": "2-6 minuti per missione",
+  "2–6 minutes per mission": "2–6 minuti per missione",
   "2-6 minutes per shape": "2-6 minuti per forma",
   "2-6 minutes per stage": "2-6 minuti per fase",
   "2-7 minutes per tower": "2-7 minuti per torre",

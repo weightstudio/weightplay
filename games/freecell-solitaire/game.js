@@ -47,66 +47,79 @@
   };
   const FREECELL_CAPACITY_COPY = {
     en: {
+      closedCapacityOne: "Move capacity: {capacity} card · 0 Free Cells open. Open a column to multiply it.",
       closedOne: "Move capacity: {capacity} cards · 1 Free Cell open. Open a column to multiply it.",
       closedMany: "Move capacity: {capacity} cards · {cells} Free Cells open. Open a column to multiply it.",
       open: "Move capacity: {built} to an occupied column · {empty} to an empty column ({cells} cells / {columns} columns open).",
     },
     "zh-Hant": {
+      closedCapacityOne: "搬牌容量：{capacity} 張・可用暫存格 0 個。打通空欄可倍增容量。",
       closedOne: "搬牌容量：{capacity} 張・可用暫存格 1 個。打通空欄可倍增容量。",
       closedMany: "搬牌容量：{capacity} 張・可用暫存格 {cells} 個。打通空欄可倍增容量。",
       open: "搬牌容量：一般目的地 {built} 張・空欄目的地 {empty} 張（暫存格 {cells}／空欄 {columns}）。",
     },
     "zh-Hans": {
+      closedCapacityOne: "移牌容量：{capacity} 张・可用暂存格 0 个。打通空列可倍增容量。",
       closedOne: "移牌容量：{capacity} 张・可用暂存格 1 个。打通空列可倍增容量。",
       closedMany: "移牌容量：{capacity} 张・可用暂存格 {cells} 个。打通空列可倍增容量。",
       open: "移牌容量：一般目标 {built} 张・空列目标 {empty} 张（暂存格 {cells}／空列 {columns}）。",
     },
     ja: {
+      closedCapacityOne: "移動容量：{capacity}枚・空きフリーセル 0個。空列を作ると容量が倍増します。",
       closedOne: "移動容量：{capacity}枚・空きフリーセル 1個。空列を作ると容量が倍増します。",
       closedMany: "移動容量：{capacity}枚・空きフリーセル {cells}個。空列を作ると容量が倍増します。",
       open: "移動容量：通常列へ {built}枚・空列へ {empty}枚（空きセル {cells}／空列 {columns}）。",
     },
     ko: {
+      closedCapacityOne: "이동 용량: {capacity}장 · 빈 프리 셀 0개. 빈 열을 만들면 용량이 늘어납니다.",
       closedOne: "이동 용량: {capacity}장 · 빈 프리 셀 1개. 빈 열을 만들면 용량이 늘어납니다.",
       closedMany: "이동 용량: {capacity}장 · 빈 프리 셀 {cells}개. 빈 열을 만들면 용량이 늘어납니다.",
       open: "이동 용량: 일반 열 {built}장 · 빈 열 {empty}장 (빈 셀 {cells} / 빈 열 {columns}).",
     },
     es: {
+      closedCapacityOne: "Capacidad: {capacity} carta · 0 celdas libres. Abre una columna para multiplicarla.",
       closedOne: "Capacidad: {capacity} cartas · 1 celda libre. Abre una columna para multiplicarla.",
       closedMany: "Capacidad: {capacity} cartas · {cells} celdas libres. Abre una columna para multiplicarla.",
       open: "Capacidad: {built} a una columna ocupada · {empty} a una vacía ({cells} celdas / {columns} columnas libres).",
     },
     "pt-BR": {
+      closedCapacityOne: "Capacidade: {capacity} carta · 0 células livres. Abra uma coluna para multiplicá-la.",
       closedOne: "Capacidade: {capacity} cartas · 1 célula livre. Abra uma coluna para multiplicá-la.",
       closedMany: "Capacidade: {capacity} cartas · {cells} células livres. Abra uma coluna para multiplicá-la.",
       open: "Capacidade: {built} para coluna ocupada · {empty} para vazia ({cells} células / {columns} colunas livres).",
     },
     fr: {
+      closedCapacityOne: "Capacité : {capacity} carte · 0 cellules libres. Libérez une colonne pour la multiplier.",
       closedOne: "Capacité : {capacity} cartes · 1 cellule libre. Libérez une colonne pour la multiplier.",
       closedMany: "Capacité : {capacity} cartes · {cells} cellules libres. Libérez une colonne pour la multiplier.",
       open: "Capacité : {built} vers une colonne occupée · {empty} vers une vide ({cells} cellules / {columns} colonnes libres).",
     },
     de: {
+      closedCapacityOne: "Zugkapazität: {capacity} Karte · 0 freie Felder. Eine leere Spalte vervielfacht sie.",
       closedOne: "Zugkapazität: {capacity} Karten · 1 freies Feld. Eine leere Spalte vervielfacht sie.",
       closedMany: "Zugkapazität: {capacity} Karten · {cells} freie Felder. Eine leere Spalte vervielfacht sie.",
       open: "Zugkapazität: {built} auf belegte · {empty} auf leere Spalte ({cells} Felder / {columns} Spalten frei).",
     },
     it: {
+      closedCapacityOne: "Capacità: {capacity} carta · 0 celle libere. Libera una colonna per moltiplicarla.",
       closedOne: "Capacità: {capacity} carte · 1 cella libera. Libera una colonna per moltiplicarla.",
       closedMany: "Capacità: {capacity} carte · {cells} celle libere. Libera una colonna per moltiplicarla.",
       open: "Capacità: {built} su colonna occupata · {empty} su vuota ({cells} celle / {columns} colonne libere).",
     },
     ru: {
+      closedCapacityOne: "Вместимость хода: {capacity} карта · свободных ячеек: 0. Пустой столбец увеличит её.",
       closedOne: "Вместимость хода: {capacity} карт · свободная ячейка: 1. Пустой столбец увеличит её.",
       closedMany: "Вместимость хода: {capacity} карт · свободных ячеек: {cells}. Пустой столбец увеличит её.",
       open: "Вместимость: {built} в занятый · {empty} в пустой столбец (ячеек {cells} / столбцов {columns}).",
     },
     hi: {
+      closedCapacityOne: "चाल क्षमता: {capacity} कार्ड · 0 खाली सेल। खाली कॉलम इसे बढ़ाता है।",
       closedOne: "चाल क्षमता: {capacity} कार्ड · 1 खाली सेल। खाली कॉलम इसे बढ़ाता है।",
       closedMany: "चाल क्षमता: {capacity} कार्ड · {cells} खाली सेल। खाली कॉलम इसे बढ़ाता है।",
       open: "चाल क्षमता: भरे कॉलम पर {built} · खाली कॉलम पर {empty} ({cells} सेल / {columns} कॉलम खाली)।",
     },
     ar: {
+      closedCapacityOne: "سعة النقل: {capacity} بطاقة · 0 خلايا حرة. افتح عمودًا لمضاعفتها.",
       closedOne: "سعة النقل: {capacity} بطاقات · خلية حرة واحدة. افتح عمودًا لمضاعفتها.",
       closedMany: "سعة النقل: {capacity} بطاقات · {cells} خلايا حرة. افتح عمودًا لمضاعفتها.",
       open: "سعة النقل: {built} إلى عمود مشغول · {empty} إلى عمود فارغ ({cells} خلايا / {columns} أعمدة حرة).",
@@ -196,7 +209,7 @@
     const openColumnCopy = FREECELL_OPEN_COLUMN_CUE[view?.locale] || FREECELL_OPEN_COLUMN_CUE.en;
     const template = openMove && capacity.columns === 0
       ? openColumnCopy
-      : capacity.columns > 0 ? copy.open : (capacity.cells === 1 ? copy.closedOne : copy.closedMany);
+      : capacity.columns > 0 ? copy.open : capacity.built === 1 ? copy.closedCapacityOne : (capacity.cells === 1 ? copy.closedOne : copy.closedMany);
     const values = { capacity: capacity.built, ...capacity };
     if (openMove) {
       values.source = Number(openMove.source.pile) + 1;

@@ -392,6 +392,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "2-6 minutes per descent": "하강당 2~6분",
   "2-6 minutes per habitat": "서식지당 2~6분",
   "2-6 minutes per mission": "임무당 2~6분",
+  "2–6 minutes per mission": "미션당 2–6분",
   "2-6 minutes per shape": "모양당 2~6분",
   "2-6 minutes per stage": "스테이지당 2~6분",
   "2-7 minutes per tower": "타워당 2~7분",

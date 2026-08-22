@@ -392,6 +392,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "2-6 minutes per descent": "2-6 دقائق لكل نزول",
   "2-6 minutes per habitat": "2-6 دقائق لكل موطن",
   "2-6 minutes per mission": "2-6 دقائق لكل مهمة",
+  "2–6 minutes per mission": "2–6 دقائق لكل مهمة",
   "2-6 minutes per shape": "2-6 دقائق لكل شكل",
   "2-6 minutes per stage": "2-6 دقائق لكل مرحلة",
   "2-7 minutes per tower": "2-7 دقائق لكل برج",

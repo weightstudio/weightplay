@@ -392,6 +392,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "2-6 minutes per descent": "प्रति अवतरण 2-6 मिनट",
   "2-6 minutes per habitat": "प्रति आवास 2-6 मिनट",
   "2-6 minutes per mission": "प्रति मिशन 2-6 मिनट",
+  "2–6 minutes per mission": "प्रति मिशन 2–6 मिनट",
   "2-6 minutes per shape": "प्रति आकार 2-6 मिनट",
   "2-6 minutes per stage": "प्रति चरण 2-6 मिनट",
   "2-7 minutes per tower": "प्रति टावर 2-7 मिनट",
