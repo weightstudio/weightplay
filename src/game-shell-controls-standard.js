@@ -326,6 +326,10 @@
 
   function officialGameTitle() {
     const gameId = document.body?.dataset.wpGameId;
+    // Spades owns its localized title through card-games-next.js. Do not let
+    // the shared official-title registry race that owner during shell-sync;
+    // the competing writes can keep the localized route in a mutation loop.
+    if (gameId === "spades" && document.body?.hasAttribute("data-wp-game-owned-guide")) return "";
     return gameId
       ? window.WEIGHTPLAY_GAME_TITLES?.[gameId]?.[localeCode()]
       : "";

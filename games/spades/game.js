@@ -1,1 +1,1 @@
-(function () { "use strict"; document.body?.setAttribute("data-wp-game-owned-guide", "true"); window.WPCardGamesNext?.mount({ id: "spades" }); })();
+(function () { "use strict"; document.body?.setAttribute("data-wp-game-owned-guide", "true"); document.body?.setAttribute("data-runtime-localize", "off"); window.WPCardGamesNext?.mount({ id: "spades" }); })();
