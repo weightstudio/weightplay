@@ -14,7 +14,7 @@
   const TUTORIAL_KEY = "weightplay_tutorial_seen_animal_2048_v1";
   const LOCALE_SEGMENTS = {en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",es:"es",ja:"ja",ko:"ko","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const SEGMENTS = {en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",es:"es",ja:"ja",ko:"ko","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
-  const GAME_ID="animal-2048",GAME_VERSION="v16",INTERFACE_VERSION="6";
+  const GAME_ID="animal-2048",GAME_VERSION="v17",INTERFACE_VERSION="6";
   const firstSegment = location.pathname.split("/").filter(Boolean)[0] || "en";
   const readStorage=(key)=>{try{return localStorage.getItem(key);}catch{return null;}};
   const writeStorage=(key,value)=>{try{localStorage.setItem(key,value);return true;}catch{return false;}};
@@ -80,6 +80,7 @@
   let stageIndex=0,stageMode="campaign",board=Array(16).fill(0),score=0,moves=0,merges=0,rngState=1,undoState=null,resultState="",startTime=0,hintUsed=false,restarts=0,swipeStart=null,resultTimer=0,resultRevealSuspended=false,resultDecisionCommitted=false,motionTimer=0,motionLock=false,pendingMerged=[];
   const moveAnnouncement=document.createElement("div");moveAnnouncement.id="moveAnnouncement";moveAnnouncement.className="sr-only";moveAnnouncement.setAttribute("aria-live","polite");moveAnnouncement.setAttribute("aria-atomic","true");document.querySelector(".board-zone")?.append(moveAnnouncement);
   const dom={loading:$("#loadingPanel"),loadingFill:$("#loadingFill"),mainGroup:$("#mainGroup"),main:$("#mainScreen"),guide:$(".game-page-info"),stage:$("#stageScreen"),battle:$("#battleScreen"),locale:$("#localeSelect"),mainProgress:$("#mainProgress"),start:$("#startBtn"),stageBack:$("#stageBackBtn"),campaignTab:$("#campaignTab"),challengeTab:$("#challengeTab"),rail:$("#stageRail"),stageSummary:$("#stageSummary"),chapterKicker:$("#chapterKicker"),chapterTitle:$("#chapterTitle"),chapterRule:$("#chapterRule"),battleBack:$("#battleBackBtn"),stageLabel:$("#stageLabel"),goalValue:$("#goalValue"),movesValue:$("#movesValue"),scoreValue:$("#scoreValue"),objective:$("#objectiveRow"),board:$("#gameBoard"),feedback:$("#moveFeedback"),announcement:moveAnnouncement,undo:$("#undoBtn"),restart:$("#restartBtn"),hint:$("#hintBtn"),result:$("#resultPanel"),resultTitle:$("#resultTitle"),resultStars:$("#resultStars"),resultText:$("#resultText"),bestText:$("#bestText"),retry:$("#retryBtn"),resultStages:$("#resultStagesBtn"),next:$("#nextBtn"),leave:$("#leavePanel"),leaveText:$("#leaveText"),leaveContinue:$("#leaveContinueBtn"),leaveStages:$("#leaveStagesBtn"),tutorial:$("#tutorialPanel"),tutorialClose:$("#tutorialCloseBtn"),tutorialStart:$("#tutorialStartBtn")};
+  [dom.stage,dom.battle,dom.tutorial].forEach(node=>node?.setAttribute("data-runtime-localize","off"));
   dom.bestText?.setAttribute("data-runtime-localize","off");
   function syncVisibleStageAccessibility(){dom.rail?.querySelectorAll(":scope > [data-wp-stage-pool-node]").forEach(card=>{card.removeAttribute("aria-hidden");card.inert=false;});}
   const stageAccessibilityObserver=dom.rail?new MutationObserver(syncVisibleStageAccessibility):null;

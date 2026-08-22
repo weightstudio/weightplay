@@ -1,7 +1,7 @@
 (function () {
   "use strict";
   const codes=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
-  const GAME_VERSION=3;
+  const GAME_VERSION=4;
   const symbols=["☾","✦","❧","≈","◇","🐾","☁"];
   const colors=["#b9d7f3","#e7b9e8","#b9dfc2","#f4c0b8","#f1dc9d","#b9d8dc","#d2c8ee"];
   const patterns=["radial-gradient(#4d659633 1.5px,transparent 1.5px)","linear-gradient(45deg,#60487d22 25%,transparent 25%,transparent 75%,#60487d22 75%)","repeating-linear-gradient(135deg,#47745122 0 3px,transparent 3px 10px)","repeating-radial-gradient(circle at 0 50%,transparent 0 6px,#46747a20 7px 8px)","linear-gradient(30deg,#8a6e2420 12%,transparent 12%,transparent 50%,#8a6e2420 50%,#8a6e2420 62%,transparent 62%)","radial-gradient(ellipse at center,#73523622 0 26%,transparent 28%)","repeating-linear-gradient(0deg,#51497918 0 2px,transparent 2px 9px)"];
