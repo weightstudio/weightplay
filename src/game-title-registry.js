@@ -541,7 +541,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Animal 2048: Forest Evolution",
     "ru": "Животные 2048: эволюция леса",
     "hi": "Animal 2048: Forest Evolution",
-    "ar": "Animal 2048: Forest Evolution"
+    "ar": "الحيوان 2048: تطور الغابة"
   },
   "garden-tiles": {
     "__localizedExact": true,
@@ -1037,7 +1037,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Animal Abyss Diver",
     "ru": "Animal Abyss Diver",
     "hi": "Animal Abyss Diver",
-    "ar": "Animal Abyss Diver"
+    "ar": "غواص الهاوية الحيوانية"
   },
   "animal-bubble-safari": {
     "__localizedExact": true,
