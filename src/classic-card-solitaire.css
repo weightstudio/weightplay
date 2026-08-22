@@ -141,6 +141,17 @@ body[data-wp-game-id="pyramid-solitaire"] .stock-pile.hint-source { border-style
   min-height: var(--yukon-pile-height, var(--classic-card-height));
 }
 body[data-wp-game-id="yukon-solitaire"] .classic-pile .classic-card { top: calc(var(--row) * var(--classic-pile-step)); }
+.tableau-area.variant-yukon .yukon-hit-proxy {
+  position: absolute;
+  top: calc(var(--row) * var(--classic-pile-step));
+  left: 50%;
+  z-index: 8;
+  width: min(100%, var(--classic-card-width));
+  height: var(--classic-card-height);
+  border-radius: 9px;
+  pointer-events: auto;
+  transform: translateX(-50%);
+}
 .tableau-area.variant-golf .classic-pile { min-height: calc(var(--classic-card-height) + 56px); }
 .classic-pile.empty-pile { display: grid; place-items: center; color: rgba(255,255,255,.42); }
 .classic-pile .classic-card { top: calc(var(--row) * 19px); }

@@ -1212,6 +1212,10 @@
     hideResult() { if (this.nodes.resultOverlay) this.nodes.resultOverlay.hidden = true; }
     showResult() { if (!this.nodes.resultOverlay || (!this.game.won && !this.game.lost)) return; this.nodes.resultOverlay.hidden = false; this.nodes.resultTitle.textContent = this.game.won ? this.t("win") : this.t("lose"); const recap = this.config.variant === "golf" ? ` ${this.t("golfResultRecap", { best: this.game.bestCombo })}` : this.config.variant === "freecell" ? ` ${this.t("freecellResultRecap", { seed: this.game.seed })}` : ""; this.nodes.resultText.textContent = `${this.game.won ? this.t("winText") : this.t("loseText")}${recap}`; }
     render() {
+      // A Yukon deal can settle into a deadlock between the last successful
+      // move and the next visible interaction. Re-evaluate its no-move
+      // terminal state before hiding/showing the native Result overlay.
+      if (this.config.variant === "yukon") this.game.checkWin();
       this.hideResult();
       this.nodes.moveCount.textContent = String(this.game.moves);
       const score = this.config.variant === "pyramid"
@@ -1283,7 +1287,10 @@
             const coachClass = isCoachSource(source) ? " yukon-coach-source" : "";
             return cardMarkup(card, source, `${row === pile.length - 1 ? "available" : "stacked"}${selectedClass}${coachClass}`, row);
           }).join("") : `<span>${this.t("empty")}</span>`;
-          return `<div class="classic-pile ${pile.length ? "" : "empty-pile"}${destinationClass}" data-dest='${JSON.stringify(destination)}' aria-label="${this.t("tableau")} ${pileIndex + 1}">${cards}</div>`;
+          const coachProxy = this.config.variant === "yukon" && coachSource?.zone === "tableau" && coachSource.pile === pileIndex && Number.isInteger(coachSource.row) && pile[coachSource.row]?.faceUp
+            ? `<span class="yukon-hit-proxy" style="--row:${coachSource.row}" data-source='${JSON.stringify(coachSource)}' aria-hidden="true"></span>`
+            : "";
+          return `<div class="classic-pile ${pile.length ? "" : "empty-pile"}${destinationClass}" data-dest='${JSON.stringify(destination)}' aria-label="${this.t("tableau")} ${pileIndex + 1}">${cards}${coachProxy}</div>`;
         }).join("");
         if (this.config.variant === "freecell") {
           const step = Number.parseFloat(getComputedStyle(area).getPropertyValue("--classic-pile-step")) || 19;
