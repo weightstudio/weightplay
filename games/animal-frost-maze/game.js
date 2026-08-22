@@ -33,6 +33,21 @@
     hi: { breakButton: "बर्फ तोड़ें", hint: "नीले ब्लॉक तोड़े जा सकते हैं। भटकने वाला आप तक पहुँचे, उससे पहले सभी बेरियाँ इकट्ठी करें।", controls: "तीरों से चलें; SPACE से बर्फ तोड़ें और F से छोटी दीवार बनाएँ।", wallAhead: "आगे बर्फ की दीवार है। उसे तोड़कर आगे बढ़ें।", cracked: "बर्फ टूट गई — रास्ता बदल गया।", noBreak: "उस दिशा में तोड़ने योग्य कुछ नहीं है।", built: "नई बर्फ की दीवार ने भटकने वाले का रास्ता बदल दिया।", noBuild: "उस जगह नई बर्फ की दीवार नहीं बनाई जा सकती।", canvas: "बर्फ तोड़ें" },
     ar: { breakButton: "كسر الجليد", hint: "يمكن كسر الكتل الزرقاء. اجمع كل التوت قبل أن يلحق بك المتجول.", controls: "تحرك بالأسهم؛ تكسر SPACE الجليد ويبني F جداراً قصيراً.", wallAhead: "يوجد جدار جليدي أمامك. اكسره ثم واصل التقدم.", cracked: "تشقق الجليد — تغيّر المسار.", noBreak: "لا يوجد شيء قابل للكسر في ذلك الاتجاه.", built: "غيّر جدار جليدي جديد مسار المتجول.", noBuild: "لا يمكن بناء جدار جليدي جديد في هذا المكان.", canvas: "اكسر الجليد" },
   };
+  const FROST_STAGE_COPY = {
+    en: { heading: "Ice Chapters", tab: "Stages", chapter: "Chapter", chapters: ["first thaw", "split routes", "drifter pressure", "final melt"] },
+    "zh-tw": { heading: "冰原章節", tab: "章節", chapter: "第", chapterSuffix: "章", chapters: ["初次解凍", "分岔路線", "漂行者壓力", "最後融冰"] },
+    "zh-cn": { heading: "冰原章节", tab: "章节", chapter: "第", chapterSuffix: "章", chapters: ["初次解冻", "分岔路线", "漂行者压力", "最终融冰"] },
+    ja: { heading: "氷原チャプター", tab: "ステージ", chapter: "チャプター", chapters: ["最初の雪解け", "分岐ルート", "漂流者の追跡", "最後の雪解け"] },
+    ko: { heading: "빙설 챕터", tab: "스테이지", chapter: "챕터", chapters: ["첫 해빙", "갈림길", "방랑자의 압박", "마지막 해빙"] },
+    es: { heading: "Capítulos de hielo", tab: "Capítulos", chapter: "Capítulo", chapters: ["primer deshielo", "rutas divididas", "presión del errante", "deshielo final"] },
+    "pt-br": { heading: "Capítulos de gelo", tab: "Capítulos", chapter: "Capítulo", chapters: ["primeiro degelo", "rotas divididas", "pressão do errante", "degelo final"] },
+    fr: { heading: "Chapitres de glace", tab: "Chapitres", chapter: "Chapitre", chapters: ["premier dégel", "routes séparées", "pression du rôdeur", "dégel final"] },
+    de: { heading: "Eiskapitel", tab: "Kapitel", chapter: "Kapitel", chapters: ["erstes Tauwetter", "geteilte Wege", "Druck des Wanderers", "letztes Tauwetter"] },
+    it: { heading: "Capitoli di ghiaccio", tab: "Capitoli", chapter: "Capitolo", chapters: ["primo disgelo", "percorsi divisi", "pressione del vagabondo", "disgelo finale"] },
+    ru: { heading: "Ледяные главы", tab: "Главы", chapter: "Глава", chapters: ["первое таяние", "разветвлённые пути", "натиск странника", "последнее таяние"] },
+    hi: { heading: "बर्फीले अध्याय", tab: "अध्याय", chapter: "अध्याय", chapters: ["पहली बर्फ़ पिघलना", "बँटे हुए रास्ते", "भटकने वाले का दबाव", "अंतिम बर्फ़ पिघलना"] },
+    ar: { heading: "فصول الجليد", tab: "الفصول", chapter: "الفصل", chapters: ["الذوبان الأول", "مسارات متفرعة", "ضغط المتجول", "الذوبان الأخير"] },
+  };
   const frostLocale = () => {
     const segment = String(location.pathname).split("/").filter(Boolean)[0]?.toLowerCase() || "en";
     const language = String(document.documentElement.lang || "").toLowerCase();
@@ -40,6 +55,7 @@
     return FROST_COPY[normalized] ? normalized : (FROST_COPY[segment] ? segment : "en");
   };
   const frostText = (key) => FROST_COPY[frostLocale()][key] || FROST_COPY.en[key] || key;
+  const frostStageText = () => FROST_STAGE_COPY[frostLocale()] || FROST_STAGE_COPY.en;
   let battleStatusKey = "controls";
   const setBattleStatus = (key) => {
     battleStatusKey = key;
@@ -48,10 +64,32 @@
     const applyFrostLocale = () => {
       document.querySelector('[data-action="break"]')?.replaceChildren(document.createTextNode(frostText("breakButton")));
       document.querySelector(".touch-hint")?.replaceChildren(document.createTextNode(frostText("hint")));
+      const stageCopy = frostStageText();
+      const stageHeading = document.querySelector(".stage-header h2");
+      if (stageHeading) stageHeading.textContent = stageCopy.heading;
+      const stageTabs = document.querySelector(".stage-tabs");
+      if (stageTabs) stageTabs.setAttribute("aria-label", stageCopy.tab);
+      const stageTab = document.querySelector(".stage-tabs button");
+      if (stageTab) stageTab.textContent = stageCopy.tab;
+      document.querySelectorAll("#stage-list [data-chapter]").forEach((button) => {
+        const chapter = Number(button.dataset.chapter);
+        if (chapter >= 1 && chapter <= stageCopy.chapters.length) {
+          button.innerHTML = `${stageCopy.chapter} ${chapter}${stageCopy.chapterSuffix || ""}<br><small>${stageCopy.chapters[chapter - 1]}</small>`;
+        }
+      });
       setBattleStatus(battleStatusKey);
     };
-    const frostLocaleObserver = new MutationObserver(applyFrostLocale);
-    frostLocaleObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
+    const frostLocaleObserver = new MutationObserver((records) => {
+      const currentLocale = document.documentElement.lang || "";
+      if (records.some((record) => record.attributeName === "lang" && record.oldValue !== currentLocale)) {
+        applyFrostLocale();
+      }
+    });
+    frostLocaleObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["lang"],
+      attributeOldValue: true,
+    });
     const syncBattleStatusLocale = () => {
     const status = $("battle-status");
     const source = status?.textContent?.trim() || "";
@@ -65,7 +103,7 @@
   frostStatusObserver.observe($("battle-status"), { childList: true, characterData: true, subtree: true });
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", applyFrostLocale, { once: true }); else applyFrostLocale();
   function show(name){state.screen=name;document.body.dataset.screen=name==="result"?"battle":name;cancelAnimationFrame(state.raf);const result=document.querySelector("#result-screen");document.querySelectorAll(".screen").forEach((el)=>{const isResult=el===result&&name==="result";const keepBattle=name==="result"&&el.id==="battle-screen";const on=isResult||keepBattle||el.dataset.screen===name;el.hidden=!on;el.classList.toggle("active",on)});if(name==="battle")result?.setAttribute("hidden","");if(name==="battle")state.raf=requestAnimationFrame(frame);}
-  function stageCards(){$("stage-list").innerHTML=[1,2,3,4].map((n)=>`<button data-chapter="${n}">Chapter ${n}<br><small>${n===1?"first thaw":n===2?"split routes":n===3?"drifter pressure":"final melt"}</small></button>`).join("");$("stage-list").querySelectorAll("button").forEach((b)=>b.addEventListener("click",()=>startRoom(Number(b.dataset.chapter),1)));}
+  function stageCards(){const copy=frostStageText();$("stage-list").innerHTML=[1,2,3,4].map((n)=>`<button data-chapter="${n}">${copy.chapter} ${n}${copy.chapterSuffix || ""}<br><small>${copy.chapters[n-1]}</small></button>`).join("");$("stage-list").querySelectorAll("button").forEach((b)=>b.addEventListener("click",()=>startRoom(Number(b.dataset.chapter),1)));}
   function layoutFor(chapter, room) { const variant=(chapter-1)*4+room-1; const walls=new Set([key(3,1),key(3,2),key(3,3),key(5,3),key(6,3),key(8,2),key(8,3),key(8,4),key(4,5),key(5,5),key(7,5)]); const variants=[[2,2],[4,1],[6,4],[9,5],[2,5],[7,1],[9,2],[5,1]]; const extra=variants[variant%variants.length]; walls.add(key(extra[0],extra[1])); if(chapter>=2)walls.add(key(6,1)); if(chapter>=3)walls.add(key(9,4)); if(chapter===4)walls.add(key(1,2)); const candidates=[[2,1],[5,1],[7,2],[10,4],[2,4],[6,6],[9,6],[10,1],[1,1]]; const fruits=new Set(); candidates.forEach(([x,y],i)=>{if(!walls.has(key(x,y))&&i<5+(variant%3))fruits.add(key(x,y))}); return {walls,fruits,enemy:{x:10-(variant%3),y:1+(variant%2)}}; }
   function buildRoom(){const layout=layoutFor(state.chapter,state.room);state.player={x:1,y:5};state.enemy=layout.enemy;state.facing={x:1,y:0};state.moves=0;state.ticks=0;state.walls=layout.walls;state.fruits=layout.fruits;$(`room-label`).textContent=`Chapter ${state.chapter} · Room ${state.room} / 4`;setBattleStatus("controls");updateLabels();}
   function startRoom(chapter=1,room=1){state.chapter=chapter;state.room=room;buildRoom();show("battle");}

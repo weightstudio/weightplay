@@ -584,6 +584,23 @@
     renderBattle();
   }
 
+  function ensureResultReplayGoal() {
+    const resultDialog = document.getElementById("result") || el.result;
+    if (!resultDialog) return null;
+    if (el.result !== resultDialog) el.result = resultDialog;
+    let target = resultDialog.querySelector("#resultReplayGoal");
+    if (!target) {
+      target = document.createElement("p");
+      target.id = "resultReplayGoal";
+      target.className = "result-replay-goal";
+      const stats = resultDialog.querySelector(".result-stats");
+      if (stats && stats.parentNode === resultDialog) resultDialog.insertBefore(target, stats);
+      else resultDialog.appendChild(target);
+    }
+    el.resultReplayGoal = target;
+    return target;
+  }
+
   function finishBattle(result) {
     if (!battle || battle.result) return;
     battle.result = result;
@@ -604,7 +621,8 @@
     const replayGoalKey = result === "win"
       ? (stars >= 3 ? "resultReplayGoalThree" : "resultReplayGoalStandard")
       : "resultReplayGoalLoss";
-    el.resultReplayGoal.textContent = t(replayGoalKey, { seconds: seconds });
+    const replayGoal = ensureResultReplayGoal();
+    if (replayGoal) replayGoal.textContent = t(replayGoalKey, { seconds: seconds });
     el.resultStars.textContent = stars + " / 3";
     el.resultTime.textContent = seconds + "s";
     el.next.disabled = result !== "win" || stageIndex >= data.levels.length - 1 || stageIndex + 1 >= progress.unlocked;
