@@ -1,4 +1,21 @@
-const GAME_VERSION = "v7";
+const GAME_VERSION = "v8";
+
+const NAVAL_SHIP_LENGTHS = [3, 2, 2];
+const NAVAL_PLACEMENT_COPY = {
+  en: { fleet: "Fleet: 3 · 2 · 2", next: "Next ship: length {length}", placed: "Placed {placed} of 3", remaining: "Remaining: {fleet}", ready: "Fleet ready" },
+  "zh-Hant": { fleet: "艦隊：3 · 2 · 2", next: "下一艘：長度 {length}", placed: "已配置 {placed}/3", remaining: "尚餘：{fleet}", ready: "艦隊就位" },
+  "zh-Hans": { fleet: "舰队：3 · 2 · 2", next: "下一艘：长度 {length}", placed: "已放置 {placed}/3", remaining: "剩余：{fleet}", ready: "舰队就绪" },
+  ja: { fleet: "艦隊：3 · 2 · 2", next: "次の艦：長さ {length}", placed: "配置済み {placed}/3", remaining: "残り：{fleet}", ready: "艦隊の準備完了" },
+  ko: { fleet: "함대: 3 · 2 · 2", next: "다음 함선: 길이 {length}", placed: "배치 완료 {placed}/3", remaining: "남은 함선: {fleet}", ready: "함대 준비 완료" },
+  es: { fleet: "Flota: 3 · 2 · 2", next: "Siguiente barco: longitud {length}", placed: "Colocados: {placed} de 3", remaining: "Restantes: {fleet}", ready: "Flota lista" },
+  "pt-BR": { fleet: "Frota: 3 · 2 · 2", next: "Próximo navio: tamanho {length}", placed: "Posicionados: {placed} de 3", remaining: "Restantes: {fleet}", ready: "Frota pronta" },
+  fr: { fleet: "Flotte : 3 · 2 · 2", next: "Navire suivant : longueur {length}", placed: "Placés : {placed} sur 3", remaining: "Restants : {fleet}", ready: "Flotte prête" },
+  de: { fleet: "Flotte: 3 · 2 · 2", next: "Nächstes Schiff: Länge {length}", placed: "Platziert: {placed} von 3", remaining: "Übrig: {fleet}", ready: "Flotte bereit" },
+  it: { fleet: "Flotta: 3 · 2 · 2", next: "Prossima nave: lunghezza {length}", placed: "Posizionate: {placed} di 3", remaining: "Restanti: {fleet}", ready: "Flotta pronta" },
+  ru: { fleet: "Флот: 3 · 2 · 2", next: "Следующий корабль: длина {length}", placed: "Расставлено: {placed} из 3", remaining: "Осталось: {fleet}", ready: "Флот готов" },
+  hi: { fleet: "बेड़ा: 3 · 2 · 2", next: "अगला जहाज़: लंबाई {length}", placed: "रखे गए: {placed} में से 3", remaining: "बाकी: {fleet}", ready: "बेड़ा तैयार" },
+  ar: { fleet: "الأسطول: 3 · 2 · 2", next: "السفينة التالية: الطول {length}", placed: "تم وضع {placed} من 3", remaining: "المتبقي: {fleet}", ready: "الأسطول جاهز" },
+};
 
 window.WPClassicLogic?.mount("naval-battle");
 document.body.dataset.gameVersion = GAME_VERSION;
@@ -7,14 +24,67 @@ const syncBattleChip = () => {
   const status = document.querySelector("#logicStatus");
   const chip = document.querySelector("#battleChip");
   const result = document.querySelector("#logicResult");
-  if (status && chip && (!result || result.hidden)) chip.textContent = status.textContent;
+  const resultTitle = document.querySelector("#logicResultTitle");
+  if (status && chip && result && !result.hidden && resultTitle?.textContent?.trim()) {
+    const terminalStatus = resultTitle.textContent.trim();
+    if (status.textContent !== terminalStatus) status.textContent = terminalStatus;
+    if (chip.textContent !== terminalStatus) chip.textContent = terminalStatus;
+    return;
+  }
+  if (status && chip && (!result || result.hidden) && chip.textContent !== status.textContent) chip.textContent = status.textContent;
 };
 
-document.querySelector("#resultReplay")?.addEventListener("click", syncBattleChip);
-document.querySelector("#logicReset")?.addEventListener("click", syncBattleChip);
+const syncNavalPlacementProgress = () => {
+  const boardRoot = document.querySelector("#logicBoard");
+  const ownSide = boardRoot?.querySelector(".logic-naval-layout > div:first-child");
+  const enemySide = boardRoot?.querySelector(".logic-naval-layout > div:nth-child(2)");
+  const toolbar = boardRoot?.querySelector(".logic-board-toolbar");
+  const result = document.querySelector("#logicResult");
+  if (!ownSide || !enemySide || !toolbar || !enemySide.hidden || result && !result.hidden) {
+    toolbar?.querySelector("[data-naval-placement-progress]")?.remove();
+    return;
+  }
+  const locale = document.querySelector("#localePicker")?.value || document.documentElement.lang;
+  const copy = NAVAL_PLACEMENT_COPY[locale] || NAVAL_PLACEMENT_COPY.en;
+  const placedCells = ownSide.querySelectorAll(".logic-cell.ship").length;
+  const placed = placedCells >= 7 ? 3 : placedCells >= 5 ? 2 : placedCells >= 3 ? 1 : 0;
+  const remainingFleet = NAVAL_SHIP_LENGTHS.slice(placed).join(" · ");
+  const nextText = placed < NAVAL_SHIP_LENGTHS.length
+    ? [copy.fleet, copy.next.replace("{length}", String(NAVAL_SHIP_LENGTHS[placed])), copy.placed.replace("{placed}", String(placed)), copy.remaining.replace("{fleet}", remainingFleet)].join(" · ")
+    : [copy.fleet, copy.ready, copy.placed.replace("{placed}", String(placed))].join(" · ");
+  const progress = toolbar.querySelector("[data-naval-placement-progress]");
+  if (!progress) {
+    const nextProgress = document.createElement("p");
+    nextProgress.dataset.navalPlacementProgress = "true";
+    nextProgress.className = "logic-live naval-placement-progress";
+    nextProgress.setAttribute("aria-live", "polite");
+    nextProgress.textContent = nextText;
+    toolbar.append(nextProgress);
+  } else if (progress.textContent !== nextText) {
+    progress.textContent = nextText;
+  }
+};
+
+for (const selector of ["#resultReplay", "#resultClose", "#resultMenu", "#logicReset"]) {
+  document.querySelector(selector)?.addEventListener("click", () => setTimeout(() => {
+    syncBattleChip();
+    syncNavalPlacementProgress();
+  }, 0));
+}
 const statusObserver = new MutationObserver(syncBattleChip);
 statusObserver.observe(document.querySelector("#logicStatus") || document.body, { childList: true, characterData: true, subtree: true });
+const boardObserver = new MutationObserver(() => {
+  syncBattleChip();
+  syncNavalPlacementProgress();
+});
+boardObserver.observe(document.querySelector("#logicBoard") || document.body, { attributes: true, childList: true, characterData: true, subtree: true });
+const resultObserver = new MutationObserver(() => {
+  syncBattleChip();
+  syncNavalPlacementProgress();
+});
+if (document.querySelector("#logicResult")) resultObserver.observe(document.querySelector("#logicResult"), { attributes: true, childList: true, characterData: true, subtree: true });
 syncBattleChip();
+syncNavalPlacementProgress();
 
 const NAVAL_HINT_COPY = {
   en: {

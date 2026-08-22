@@ -89,6 +89,7 @@ body.logic-playing .game-page-info-static { display: none !important; }
 .logic-board-panel { min-height: 0; display: grid; place-items: center; padding: clamp(7px, 2vw, 18px); border: 1px solid var(--logic-line); border-radius: 22px; background: linear-gradient(160deg, rgba(17, 50, 92, .94), rgba(8, 23, 46, .96)); box-shadow: var(--logic-shadow); overflow: auto; }
 .logic-board-area { width: min(100%, 700px); min-width: 0; display: grid; gap: 12px; place-items: center; }
 .logic-board-toolbar, .logic-action-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; }
+.logic-board-toolbar .naval-placement-progress { flex-basis: 100%; margin: 0 6px; }
 .logic-action-row { padding: 4px 0 max(8px, env(safe-area-inset-bottom)); }
 .logic-action-row button { min-height: 42px; }
 .logic-select { min-height: 42px; padding: 6px 10px; border: 1px solid var(--logic-line); border-radius: 12px; background: #173b69; color: var(--logic-text); }

@@ -9250,6 +9250,30 @@
     faq: [["共有多少座倉庫？", "六個機關章節共有 30 座手工設計的倉庫。"], ["每一關都能解開嗎？", "可以。每座倉庫都有經過驗證的解法。"], ["拉取有什麼作用？", "拉取會消耗一次磁力次數，讓魯克斯後退，並把相鄰貨箱拉進原本的位置。"], ["進度會儲存嗎？", "會。完成紀錄、解鎖進度與最佳結果會儲存在此瀏覽器。"]]
   };
   localizedGameplayProfiles["zh-Hant"]["animal-cratebound"] = { gameplay: "推拉貨運解謎", genre: ["益智", "策略", "動物"] };
+  const crateboundGuideFacts = {
+    "zh-Hans": { title: "动物方舟搬运队", difficulty: "简单到具挑战性", time: "每座仓库 2–8 分钟", gameplay: "推拉货运解谜", genre: ["益智", "策略", "动物"], skills: ["逻辑", "规划", "问题解决"] },
+    ja: { title: "アニマル・クレートバウンド", difficulty: "簡単から挑戦的", time: "倉庫1つ 2〜8分", gameplay: "押して引く物流パズル", genre: ["パズル", "戦略", "動物"], skills: ["論理", "計画", "問題解決"] },
+    ko: { title: "애니멀 크레이트바운드", difficulty: "쉬움부터 도전적", time: "창고당 2~8분", gameplay: "밀고 당기는 물류 퍼즐", genre: ["퍼즐", "전략", "동물"], skills: ["논리", "계획", "문제 해결"] },
+    "pt-BR": { title: "Arca de Carga Animal", difficulty: "Fácil a desafiador", time: "2–8 minutos por armazém", gameplay: "Quebra-cabeça logístico de empurrar e puxar", genre: ["Quebra-cabeça", "Estratégia", "Animais"], skills: ["Lógica", "Planejamento", "Resolução de problemas"] },
+    fr: { title: "Cargaison Animale", difficulty: "Facile à exigeant", time: "2 à 8 minutes par entrepôt", gameplay: "Puzzle logistique de poussée et traction", genre: ["Puzzle", "Stratégie", "Animaux"], skills: ["Logique", "Planification", "Résolution de problèmes"] },
+    de: { title: "Tierische Fracht", difficulty: "Leicht bis anspruchsvoll", time: "2–8 Minuten pro Lager", gameplay: "Logistik-Puzzle mit Schieben und Ziehen", genre: ["Puzzle", "Strategie", "Tiere"], skills: ["Logik", "Planung", "Problemlösung"] },
+    it: { title: "Carico Animale", difficulty: "Da facile a impegnativo", time: "2–8 minuti per magazzino", gameplay: "Puzzle logistico di spinta e traino", genre: ["Puzzle", "Strategia", "Animali"], skills: ["Logica", "Pianificazione", "Risoluzione dei problemi"] },
+    ru: { title: "Животный груз", difficulty: "От простого к сложному", time: "2–8 минут на склад", gameplay: "Логическая головоломка с толканием и притягиванием", genre: ["Головоломка", "Стратегия", "Животные"], skills: ["Логика", "Планирование", "Решение задач"] },
+    hi: { title: "पशु क्रेटबाउंड", difficulty: "आसान से चुनौतीपूर्ण", time: "हर गोदाम 2–8 मिनट", gameplay: "धक्का-खींच लॉजिस्टिक्स पहेली", genre: ["पहेली", "रणनीति", "पशु"], skills: ["तर्क", "योजना", "समस्या समाधान"] },
+    ar: { title: "مستودع الحيوانات", difficulty: "من السهل إلى التحدي", time: "2–8 دقائق لكل مستودع", gameplay: "لغز الخدمات اللوجستية بالدفع والسحب", genre: ["ألغاز", "استراتيجية", "حيوانات"], skills: ["المنطق", "التخطيط", "حل المشكلات"] },
+  };
+  for (const [localeCode, copy] of Object.entries(crateboundGuideFacts)) {
+    localizedGames[localeCode] ||= {};
+    localizedGames[localeCode]["animal-cratebound"] = {
+      ...(localizedGames[localeCode]["animal-cratebound"] || {}),
+      ...copy,
+    };
+    localizedGameplayProfiles[localeCode] ||= {};
+    localizedGameplayProfiles[localeCode]["animal-cratebound"] = {
+      gameplay: copy.gameplay,
+      genre: copy.genre,
+    };
+  }
   games["animal-mosaic-clues"] = {
     title: "Animal Mosaic Clues", difficulty: "Easy to Challenging", time: "2-10 minutes per mosaic", gameplay: "Nonogram Mosaic Logic", genre: ["Puzzle", "Strategy", "Animal"], skills: ["Logic", "Focus", "Deduction"],
     guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", hideScoreBands: true,
@@ -10354,7 +10378,7 @@
   }
   const spectrumGuideLocalized = {
     "zh-Hant": {
-      title:"動物光譜脈衝", gameplay:"單鍵精準街機", intro:"只有在最近的掃描標記符合所需顏色與紋章時，才發動脈衝，引導 Panko 的光譜精靈向上前進。",
+      title:"動物光譜脈衝", gameplay:"單鍵精準街機", difficulty:"簡單至具挑戰性", time:"每座塔 2–8 分鐘", genre:["益智","策略","動物"], skills:["邏輯","規劃","問題解決"], intro:"只有在最近的掃描標記符合所需顏色與紋章時，才發動脈衝，引導 Panko 的光譜精靈向上前進。",
       systems:["在場地點擊、按脈衝按鈕、Space、Enter 或上方向鍵，每次輸入都只發動一次相同的垂直脈衝；下一次輸入前必須放開。","每道星門同時使用顏色、獨特紋章與紋理，因此成功不只靠顏色。通過的星門會成為安全落點，讓你讀取下一個圖樣。","在中心通過會累積共鳴。回聲守衛可以在最後檢查點回復一次失誤；脈衝控制與預視只提供永久調整，不會改變手工設計的星門解法。","共鳴工坊用獲得的星星音符購買三種升級。可選的星光鼓痕是外觀內容，不提供時機或碰撞優勢。"],
       how:["選擇一座已解鎖的塔。","閱讀目前要求的顏色與紋章。","觀看最近的掃描標記接近精靈的行動線。","在符合窗口內脈衝一次，放開，再準備下一道星門。"],
       strategyTips:["使用短促而有意識的按壓，不要長按。","多個標記顏色相近時，先讀紋章再判斷。","失誤後先等狀態穩定，再發動下一次脈衝。","用預視規劃下一組，不要因此忽略目前的標記。"],
@@ -10363,7 +10387,7 @@
       faq:[["為什麼跳躍失敗？","最近的標記沒有在窗口內同時符合兩項要求。"],["可以長按按鈕嗎？","不行；每次脈衝之間都要放開，輸入才可靠。"],["升級會改變規則嗎？","不會，只會改善預視或回復。"],["不升級也能通過所有塔嗎？","可以，升級只是可選的輔助。"]]
     },
     "zh-Hans": {
-      title:"动物光谱脉冲", gameplay:"单键精准街机", intro:"只有在最近的扫描标记符合所需颜色和徽记时才发出脉冲，引导 Panko 的光谱精灵向上前进。",
+      title:"动物光谱脉冲", gameplay:"单键精准街机", difficulty:"简单至具挑战性", time:"每座塔 2–8 分钟", genre:["益智","策略","动物"], skills:["逻辑","规划","问题解决"], intro:"只有在最近的扫描标记符合所需颜色和徽记时才发出脉冲，引导 Panko 的光谱精灵向上前进。",
       systems:["在场地点击、按脉冲按钮、Space、Enter 或上方向键，每次输入只发出一次相同的垂直脉冲；下一次输入前必须松开。","每道星门同时使用颜色、独特徽记和纹理，因此成功不只靠颜色。通过的星门会成为安全落点，让你读取下一个图样。","从中心通过会累积共鸣。回声守卫可以在最后检查点恢复一次失误；脉冲控制和预视只提供永久调整，不会改变手工设计的星门解法。","共鸣工坊使用获得的星星音符购买三种升级。可选的星光鼓痕只是外观内容，不提供时机或碰撞优势。"],
       how:["选择一座已解锁的塔。","阅读当前要求的颜色和徽记。","观察最近的扫描标记接近精灵的行动线。","在匹配窗口内脉冲一次，松开，然后准备下一道星门。"],
       strategyTips:["使用短促而有意识的按压，不要长按。","多个标记颜色相近时，先读徽记再判断。","失误后先等状态稳定，再发出下一次脉冲。","用预视规划下一组，不要因此忽略当前标记。"],
@@ -10372,7 +10396,7 @@
       faq:[["为什么跳跃失败？","最近的标记没有在窗口内同时符合两项要求。"],["可以长按按钮吗？","不行；每次脉冲之间都要松开，输入才可靠。"],["升级会改变规则吗？","不会，只会改善预视或恢复。"],["不升级也能通过所有塔吗？","可以，升级只是可选的辅助。"]]
     },
     ja: {
-      title:"アニマルスペクトラムパルス", gameplay:"ワンタッチ精密アーケード", intro:"最も近いスキャンマーカーが必要な色と紋章に一致したときだけパルスし、パンコのスペクトルスピリットを上へ導きます。",
+      title:"アニマルスペクトラムパルス", gameplay:"ワンタッチ精密アーケード", difficulty:"やさしく、徐々に挑戦的", time:"1塔 2～8分", genre:["パズル","戦略","動物"], skills:["論理","計画","問題解決"], intro:"最も近いスキャンマーカーが必要な色と紋章に一致したときだけパルスし、パンコのスペクトルスピリットを上へ導きます。",
       systems:["アリーナをタップまたはクリックし、パルスボタン、Space、Enter、上矢印を一度押すと同じ垂直インパルスが一つ発生します。次の入力前に必ず離してください。","各ゲートは色だけでなく固有の紋章と模様も使うため、色だけでは成功しません。通過したゲートは安全な足場になり、次の模様を読めます。","中央を通過するとレゾナンスが増えます。エコーガードは最後のチェックポイントで一度だけミスを回復し、パルスコントロールとフォーサイトは攻略法を変えずに調整を助けます。","レゾナンス・スタジオでは獲得したスターノートで3種類の強化を購入できます。任意のスターライト・ドラム・トレイルは見た目だけで、タイミングや衝突を有利にしません。"],
       how:["解放済みのタワーを選びます。","現在必要な色と紋章を読みます。","最も近いスキャンマーカーがスピリットの動作ラインへ近づくのを見ます。","一致するタイミングで一度パルスし、離してから次のゲートに備えます。"],
       strategyTips:["長押しせず、短く意識した入力を使います。","色が似たマーカーが複数あるときは、先に紋章を読みます。","ミスの後は状態が落ち着くまで待ってから次を入力します。","フォーサイトは次の組み合わせを計画するために使い、現在のマーカーを無視しないでください。"],
@@ -10381,7 +10405,7 @@
       faq:[["ジャンプに失敗したのはなぜですか？","最も近いマーカーが、タイミング窓の中で必要な2つの条件に一致しませんでした。"],["ボタンを長押しできますか？","できません。確実に入力するにはパルスの間に離してください。"],["強化でルールは変わりますか？","変わりません。予測や回復を助けるだけです。"],["強化なしで全タワーをクリアできますか？","はい。強化は任意のサポートです。"]]
     },
     ko: {
-      title:"동물 스펙트럼 펄스", gameplay:"원터치 정밀 아케이드", intro:"가장 가까운 스캔 마커가 필요한 색과 문양에 맞을 때만 펄스를 보내 Panko의 스펙트럼 정령을 위로 이끕니다.",
+      title:"동물 스펙트럼 펄스", gameplay:"원터치 정밀 아케이드", difficulty:"쉽게 시작해 점점 도전적으로", time:"타워당 2~8분", genre:["퍼즐","전략","동물"], skills:["논리","계획","문제 해결"], intro:"가장 가까운 스캔 마커가 필요한 색과 문양에 맞을 때만 펄스를 보내 Panko의 스펙트럼 정령을 위로 이끕니다.",
       systems:["아레나를 누르거나 클릭하고, 펄스 버튼·Space·Enter·위쪽 화살표를 한 번 누르면 같은 수직 충격이 한 번 발생합니다. 다음 입력 전에는 반드시 손을 떼세요.","각 게이트는 색뿐 아니라 고유한 문양과 무늬를 사용하므로 색만으로는 성공할 수 없습니다. 통과한 게이트는 안전한 발판이 되어 다음 패턴을 읽게 해 줍니다.","중앙을 통과하면 공명이 쌓입니다. 에코 가드는 마지막 체크포인트에서 한 번의 실수를 회복하며, 펄스 컨트롤과 포사이트는 해법을 바꾸지 않고 조정을 돕습니다.","공명 스튜디오에서 얻은 스타 노트로 세 가지 업그레이드를 살 수 있습니다. 선택 가능한 스타라이트 드럼 트레일은 장식이며 타이밍이나 충돌 이점을 주지 않습니다."],
       how:["잠금 해제된 타워를 선택하세요.","현재 필요한 색과 문양을 읽으세요.","가장 가까운 스캔 마커가 정령의 행동선으로 다가오는 것을 보세요.","일치하는 구간에 한 번 펄스를 보내고 손을 뗀 뒤 다음 게이트를 준비하세요."],
       strategyTips:["길게 누르지 말고 짧고 의도적인 입력을 사용하세요.","색이 비슷한 마커가 여러 개면 먼저 문양을 읽으세요.","실수한 뒤에는 상태가 안정될 때까지 기다렸다가 다시 입력하세요.","포사이트는 다음 조합을 계획하는 데 쓰고 현재 마커를 무시하지 마세요."],
@@ -10390,7 +10414,7 @@
       faq:[["왜 점프에 실패했나요?","가장 가까운 마커가 타이밍 구간 안에서 필요한 두 조건에 맞지 않았습니다."],["버튼을 길게 눌러도 되나요?","안 됩니다. 안정적인 입력을 위해 펄스 사이에 손을 떼세요."],["업그레이드가 규칙을 바꾸나요?","아니요. 예측이나 회복만 돕습니다."],["업그레이드 없이 모든 타워를 깰 수 있나요?","네. 업그레이드는 선택적인 도움입니다."]]
     },
     es: {
-      title:"Pulso del espectro animal", gameplay:"Arcade de precisión de un toque", intro:"Pulsa solo cuando el marcador de escaneo más cercano coincida con el color y el emblema requeridos para guiar hacia arriba al espíritu espectral de Panko.",
+      title:"Pulso del espectro animal", gameplay:"Arcade de precisión de un toque", difficulty:"Fácil de desafiar", time:"2–8 minutos por torre", genre:["Puzle","Estrategia","Animales"], skills:["Lógica","Planificación","Resolución de problemas"], intro:"Pulsa solo cuando el marcador de escaneo más cercano coincida con el color y el emblema requeridos para guiar hacia arriba al espíritu espectral de Panko.",
       systems:["Toca o haz clic en la arena, pulsa el botón, Espacio, Enter o Flecha arriba una vez para producir un impulso vertical idéntico. Suelta antes de la siguiente entrada.","Cada puerta combina color con un emblema y una textura distintos, así que el color nunca basta. Una puerta superada se vuelve un punto seguro desde el que leer el siguiente patrón.","Los pasos por el centro acumulan Resonancia. Guardia de Eco recupera un error en el último punto de control, mientras Control de Pulso y Previsión ayudan sin cambiar las soluciones diseñadas.","El Estudio de Resonancia usa Notas Estelares para tres mejoras. La Estela de Tambor Estelar opcional es cosmética y no da ventaja de tiempo ni colisión."],
       how:["Elige una torre desbloqueada.","Lee el color y el emblema requeridos.","Observa cómo el marcador de escaneo más cercano se acerca a la línea de acción del espíritu.","Pulsa una vez dentro de la ventana coincidente, suelta y prepárate para la siguiente puerta."],
       strategyTips:["Usa pulsaciones cortas e intencionadas, no mantengas el botón.","Cuando varios marcadores tengan colores parecidos, lee primero el emblema.","Tras fallar, espera a que el estado se estabilice antes de pulsar otra vez.","Usa Previsión para planear el siguiente par, no para ignorar el marcador actual."],
@@ -10399,7 +10423,7 @@
       faq:[["¿Por qué falló el salto?","El marcador más cercano no coincidió con las dos propiedades dentro de la ventana."],["¿Puedo mantener pulsado el botón?","No; suelta entre pulsos para una entrada fiable."],["¿Las mejoras cambian la regla?","No, solo mejoran la previsión o la recuperación."],["¿Se pueden superar todas las torres sin mejoras?","Sí, son una ayuda opcional."]]
     },
     "pt-BR": {
-      title:"Pulso do Espectro Animal", gameplay:"Arcade de precisão com um toque", intro:"Pulse apenas quando o marcador de varredura mais próximo combinar com a cor e o emblema exigidos para guiar o espírito espectral de Panko para cima.",
+      title:"Pulso do Espectro Animal", gameplay:"Arcade de precisão com um toque", difficulty:"Fácil a desafiador", time:"2–8 minutos por torre", genre:["Puzzle","Estratégia","Animais"], skills:["Lógica","Planejamento","Resolução de problemas"], intro:"Pulse apenas quando o marcador de varredura mais próximo combinar com a cor e o emblema exigidos para guiar o espírito espectral de Panko para cima.",
       systems:["Toque ou clique na arena, use o botão, Espaço, Enter ou Seta para cima uma vez para produzir o mesmo impulso vertical. Solte antes da próxima entrada.","Cada portal combina cor com um emblema e uma textura distintos, então a cor nunca basta. Um portal vencido vira um ponto seguro para ler o próximo padrão.","Passagens pelo centro acumulam Ressonância. Guarda Eco recupera um erro no último ponto de controle, enquanto Controle de Pulso e Previsão ajudam sem mudar as soluções criadas.","O Estúdio de Ressonância usa Notas Estelares para três melhorias. A Trilha do Tambor Estelar é cosmética e não dá vantagem de tempo ou colisão."],
       how:["Escolha uma torre desbloqueada.","Leia a cor e o emblema exigidos.","Observe o marcador de varredura mais próximo se aproximar da linha de ação do espírito.","Pulse uma vez na janela correspondente, solte e prepare-se para o próximo portal."],
       strategyTips:["Use toques curtos e deliberados; não mantenha pressionado.","Quando vários marcadores tiverem cores parecidas, leia primeiro o emblema.","Depois de errar, espere o estado estabilizar antes de pulsar novamente.","Use Previsão para planejar o próximo par, não para ignorar o marcador atual."],
@@ -10408,7 +10432,7 @@
       faq:[["Por que o salto falhou?","O marcador mais próximo não combinou com as duas propriedades dentro da janela."],["Posso manter o botão pressionado?","Não; solte entre os pulsos para uma entrada confiável."],["As melhorias mudam a regra?","Não, elas só melhoram a previsão ou a recuperação."],["Dá para vencer todas as torres sem melhorias?","Sim, elas são um apoio opcional."]]
     },
     fr: {
-      title:"Impulsion du spectre animal", gameplay:"Arcade de précision à une touche", intro:"Pulsez seulement quand le marqueur de balayage le plus proche correspond à la couleur et à l’emblème requis pour guider l’esprit spectral de Panko vers le haut.",
+      title:"Impulsion du spectre animal", gameplay:"Arcade de précision à une touche", difficulty:"Facile à exigeant", time:"2–8 minutes par tour", genre:["Puzzle","Stratégie","Animaux"], skills:["Logique","Planification","Résolution de problèmes"], intro:"Pulsez seulement quand le marqueur de balayage le plus proche correspond à la couleur et à l’emblème requis pour guider l’esprit spectral de Panko vers le haut.",
       systems:["Touchez ou cliquez dans l’arène, utilisez le bouton, Espace, Entrée ou la flèche haut une fois pour produire la même impulsion verticale. Relâchez avant l’entrée suivante.","Chaque porte combine couleur, emblème et texture distincts : la couleur seule ne suffit jamais. Une porte franchie devient un point d’appui sûr pour lire le motif suivant.","Les passages centraux accumulent la Résonance. Garde Écho récupère une erreur au dernier point de contrôle, tandis que Contrôle d’Impulsion et Prévoyance aident sans changer les solutions conçues.","Le Studio de Résonance utilise les Notes Stellaires pour trois améliorations. La Traînée de Tambour Stellaire est cosmétique et n’offre aucun avantage de timing ou de collision."],
       how:["Choisissez une tour déverrouillée.","Lisez la couleur et l’emblème requis.","Observez le marqueur de balayage le plus proche approcher la ligne d’action de l’esprit.","Pulsez une fois dans la fenêtre correspondante, relâchez, puis préparez la porte suivante."],
       strategyTips:["Utilisez des pressions courtes et volontaires, sans maintenir le bouton.","Quand plusieurs marqueurs ont une couleur proche, lisez d’abord l’emblème.","Après une erreur, attendez que l’état se stabilise avant de pulser à nouveau.","Utilisez Prévoyance pour planifier la paire suivante, pas pour ignorer le marqueur actuel."],
@@ -10417,7 +10441,7 @@
       faq:[["Pourquoi le saut a-t-il échoué ?","Le marqueur le plus proche ne correspondait pas aux deux propriétés dans la fenêtre."],["Puis-je maintenir le bouton ?","Non, relâchez entre les impulsions pour une entrée fiable."],["Les améliorations changent-elles la règle ?","Non, elles améliorent seulement la prévision ou la récupération."],["Peut-on réussir toutes les tours sans améliorations ?","Oui, elles sont une aide facultative."]]
     },
     de: {
-      title:"Animal-Spektrumpuls", gameplay:"Präzisions-Arcade mit einer Taste", intro:"Pulsiere nur, wenn die nächste Scanmarkierung zur erforderlichen Farbe und zum Emblem passt, um Pankos Spektralgeist nach oben zu führen.",
+      title:"Animal-Spektrumpuls", gameplay:"Präzisions-Arcade mit einer Taste", difficulty:"Leicht bis anspruchsvoll", time:"2–8 Minuten pro Turm", genre:["Puzzle","Strategie","Tiere"], skills:["Logik","Planung","Problemlösung"], intro:"Pulsiere nur, wenn die nächste Scanmarkierung zur erforderlichen Farbe und zum Emblem passt, um Pankos Spektralgeist nach oben zu führen.",
       systems:["Tippe oder klicke in die Arena, nutze den Button, Leertaste, Eingabe oder Pfeil nach oben einmal für denselben vertikalen Impuls. Lass vorher los.","Jedes Tor verbindet Farbe mit eigenem Emblem und Muster; Farbe allein reicht nie. Ein passierter Abschnitt wird zu einem sicheren Standpunkt für das nächste Muster.","Zentrale Durchgänge bauen Resonanz auf. Echo-Wache gleicht einen Fehler am letzten Checkpoint einmal aus; Pulssteuerung und Vorausblick helfen, ohne die entworfenen Lösungen zu ändern.","Das Resonanzstudio nutzt Sternnoten für drei Verbesserungen. Die optionale Sternlicht-Trommelspur ist kosmetisch und gibt keinen Timing- oder Kollisionsvorteil."],
       how:["Wähle einen freigeschalteten Turm.","Lies die benötigte Farbe und das Emblem.","Beobachte, wie sich die nächste Scanmarkierung der Aktionslinie des Geistes nähert.","Pulsieren einmal im passenden Fenster, loslassen und auf das nächste Tor vorbereiten."],
       strategyTips:["Nutze kurze, bewusste Eingaben statt Gedrückthalten.","Wenn mehrere Markierungen eine ähnliche Farbe haben, lies zuerst das Emblem.","Warte nach einem Fehler, bis der Zustand stabil ist, bevor du erneut pulsierst.","Nutze Vorausblick für das nächste Paar, nicht um die aktuelle Markierung zu ignorieren."],
@@ -10426,7 +10450,7 @@
       faq:[["Warum ist der Sprung fehlgeschlagen?","Die nächste Markierung passte im Zeitfenster nicht zu beiden erforderlichen Eigenschaften."],["Kann ich die Taste halten?","Nein, lasse zwischen Impulsen los, damit die Eingabe zuverlässig bleibt."],["Ändern Verbesserungen die Regel?","Nein, sie verbessern nur Vorausblick oder Erholung."],["Sind alle Türme ohne Verbesserungen schaffbar?","Ja, Verbesserungen sind optionale Hilfe."]]
     },
     it: {
-      title:"Impulso dello spettro animale", gameplay:"Arcade di precisione a un tocco", intro:"Impulsa solo quando il marcatore di scansione più vicino corrisponde al colore e all’emblema richiesti, guidando verso l’alto lo spirito spettrale di Panko.",
+      title:"Impulso dello spettro animale", gameplay:"Arcade di precisione a un tocco", difficulty:"Da facile a impegnativo", time:"2–8 minuti per torre", genre:["Puzzle","Strategia","Animali"], skills:["Logica","Pianificazione","Risoluzione dei problemi"], intro:"Impulsa solo quando il marcatore di scansione più vicino corrisponde al colore e all’emblema richiesti, guidando verso l’alto lo spirito spettrale di Panko.",
       systems:["Tocca o fai clic nell’arena, usa il pulsante, Spazio, Invio o Freccia su una volta per lo stesso impulso verticale. Rilascia prima del prossimo input.","Ogni portale combina colore, emblema e trama distinti: il colore da solo non basta. Un portale superato diventa un punto sicuro per leggere il disegno successivo.","I passaggi centrali accumulano Risonanza. Guardia Eco recupera un errore all’ultimo checkpoint, mentre Controllo Impulso e Previsione aiutano senza cambiare le soluzioni progettate.","Lo Studio della Risonanza usa Note Stellari per tre miglioramenti. La Scia del Tamburo Stellare è cosmetica e non offre vantaggi di tempismo o collisione."],
       how:["Scegli una torre sbloccata.","Leggi il colore e l’emblema richiesti.","Guarda il marcatore di scansione più vicino avvicinarsi alla linea d’azione dello spirito.","Impulsa una volta nella finestra corretta, rilascia e prepara il portale successivo."],
       strategyTips:["Usa pressioni brevi e deliberate, senza tenere premuto.","Quando più marcatori hanno colori simili, leggi prima l’emblema.","Dopo un errore, aspetta che lo stato si stabilizzi prima di impulsare di nuovo.","Usa Previsione per pianificare la coppia successiva, non per ignorare il marcatore attuale."],
@@ -10435,7 +10459,7 @@
       faq:[["Perché il salto è fallito?","Il marcatore più vicino non corrispondeva alle due proprietà richieste nella finestra."],["Posso tenere premuto il pulsante?","No, rilascia tra gli impulsi per un input affidabile."],["I miglioramenti cambiano la regola?","No, migliorano solo previsione o recupero."],["Si possono superare tutte le torri senza miglioramenti?","Sì, sono un aiuto facoltativo."]]
     },
     ru: {
-      title:"Животный спектральный импульс", gameplay:"Точная аркада одним нажатием", intro:"Подавайте импульс только тогда, когда ближайшая метка сканирования совпадает с нужным цветом и эмблемой, чтобы вести спектрального духа Панко вверх.",
+      title:"Животный спектральный импульс", gameplay:"Точная аркада одним нажатием", difficulty:"От простого к сложному", time:"2–8 минут на башню", genre:["Головоломка","Стратегия","Животные"], skills:["Логика","Планирование","Решение задач"], intro:"Подавайте импульс только тогда, когда ближайшая метка сканирования совпадает с нужным цветом и эмблемой, чтобы вести спектрального духа Панко вверх.",
       systems:["Нажмите или кликните на арене, используйте кнопку, пробел, Enter или стрелку вверх один раз для одинакового вертикального импульса. Перед следующим вводом отпустите кнопку.","Каждые врата используют цвет, отдельную эмблему и текстуру, поэтому одного цвета недостаточно. Пройденные врата становятся безопасной точкой для чтения следующего узора.","Точные проходы в центре накапливают Резонанс. Эхо-страж один раз возвращает ошибку на последней контрольной точке, а Контроль импульса и Предвидение помогают, не меняя авторские решения.","В Студии резонанса Звёздные ноты улучшают три способности. Необязательный Звёздный барабанный след только украшает игру и не даёт преимущества во времени или столкновениях."],
       how:["Выберите открытую башню.","Прочитайте требуемые цвет и эмблему.","Следите, как ближайшая метка сканирования подходит к линии действия духа.","Сделайте один импульс в подходящее окно, отпустите кнопку и приготовьтесь к следующим вратам."],
       strategyTips:["Используйте короткие осознанные нажатия, не удерживайте кнопку.","Если несколько меток похожи по цвету, сначала прочитайте эмблему.","После ошибки дождитесь стабилизации состояния и только потом вводите следующий импульс.","Используйте Предвидение для планирования следующей пары, а не для игнорирования текущей метки."],
@@ -10444,7 +10468,7 @@
       faq:[["Почему прыжок не удался?","Ближайшая метка не совпала с обоими требуемыми свойствами в пределах окна."],["Можно удерживать кнопку?","Нет, отпускайте её между импульсами для надёжного ввода."],["Улучшения меняют правило?","Нет, они только улучшают предвидение или восстановление."],["Можно пройти все башни без улучшений?","Да, улучшения необязательны."]]
     },
     hi: {
-      title:"एनिमल स्पेक्ट्रम पल्स", gameplay:"वन-टच सटीक आर्केड", intro:"तभी पल्स करें जब सबसे निकट का स्कैन मार्कर आवश्यक रंग और प्रतीक से मिले, ताकि पैंको की स्पेक्ट्रम स्पिरिट ऊपर बढ़े।",
+      title:"एनिमल स्पेक्ट्रम पल्स", gameplay:"वन-टच सटीक आर्केड", difficulty:"आसान से चुनौतीपूर्ण", time:"हर टावर 2–8 मिनट", genre:["पहेली","रणनीति","पशु"], skills:["तर्क","योजना","समस्या समाधान"], intro:"तभी पल्स करें जब सबसे निकट का स्कैन मार्कर आवश्यक रंग और प्रतीक से मिले, ताकि पैंको की स्पेक्ट्रम स्पिरिट ऊपर बढ़े।",
       systems:["एरीना पर टैप या क्लिक करें, पल्स बटन, Space, Enter या ऊपर तीर को एक बार दबाएँ; इससे समान ऊर्ध्वाधर पल्स मिलेगा। अगली इनपुट से पहले छोड़ दें।","हर गेट रंग के साथ अलग प्रतीक और बनावट रखता है, इसलिए केवल रंग काफी नहीं है। पार किया गया गेट सुरक्षित ठहराव बनता है जहाँ अगला पैटर्न पढ़ा जा सकता है।","केंद्र से गुजरने पर रेज़ोनेंस बढ़ता है। Echo Guard आखिरी चेकपॉइंट पर एक गलती संभालता है, जबकि Pulse Control और Foresight तैयार हल बदले बिना मदद करते हैं।","Resonance Studio में Star Notes से तीन अपग्रेड मिलते हैं। वैकल्पिक Starlight Drum Trail केवल सजावटी है और समय या टक्कर में लाभ नहीं देता।"],
       how:["एक अनलॉक टावर चुनें।","आवश्यक रंग और प्रतीक पढ़ें।","सबसे निकट के स्कैन मार्कर को स्पिरिट की एक्शन लाइन की ओर आते देखें।","मिलान वाली विंडो में एक बार पल्स करें, छोड़ें और अगले गेट के लिए तैयार हों।"],
       strategyTips:["लंबा दबाने के बजाय छोटे, सोच-समझकर इनपुट दें।","जब कई मार्कर का रंग मिलता-जुलता हो, पहले प्रतीक पढ़ें।","चूक के बाद स्थिति स्थिर होने तक रुकें, फिर दोबारा पल्स करें।","Foresight का उपयोग अगली जोड़ी की योजना के लिए करें, वर्तमान मार्कर को अनदेखा करने के लिए नहीं।"],
@@ -10453,7 +10477,7 @@
       faq:[["जंप क्यों विफल हुआ?","सबसे निकट का मार्कर विंडो के भीतर दोनों आवश्यक गुणों से नहीं मिला।"],["क्या बटन दबाकर रख सकते हैं?","नहीं, भरोसेमंद इनपुट के लिए पल्स के बीच छोड़ें।"],["क्या अपग्रेड नियम बदलते हैं?","नहीं, वे केवल पूर्वावलोकन या रिकवरी सुधारते हैं।"],["क्या बिना अपग्रेड सभी टावर पार हो सकते हैं?","हाँ, अपग्रेड वैकल्पिक सहायता हैं।"]]
     },
     ar: {
-      title:"نبض الطيف الحيواني", gameplay:"أركيد دقيق بلمسة واحدة", intro:"أرسل النبضة فقط عندما تتطابق علامة المسح الأقرب مع اللون والشعار المطلوبين لتوجيه روح بانكو الطيفية إلى الأعلى.",
+      title:"نبض الطيف الحيواني", gameplay:"أركيد دقيق بلمسة واحدة", difficulty:"من السهل إلى التحدي", time:"2–8 دقائق لكل برج", genre:["ألغاز","استراتيجية","حيوانات"], skills:["المنطق","التخطيط","حل المشكلات"], intro:"أرسل النبضة فقط عندما تتطابق علامة المسح الأقرب مع اللون والشعار المطلوبين لتوجيه روح بانكو الطيفية إلى الأعلى.",
       systems:["المس الساحة أو انقر عليها، أو استخدم الزر أو Space أو Enter أو السهم للأعلى مرة واحدة لإرسال النبضة الرأسية نفسها. ارفع إصبعك قبل الإدخال التالي.","تجمع كل بوابة بين لون وشعار وملمس مميز، لذلك لا يكفي اللون وحده. تصبح البوابة التي عبرتها نقطة آمنة لقراءة النمط التالي.","تزيد المروريات المركزية من الرنين. يعيد حارس الصدى محاولة واحدة عند آخر نقطة تحقق، بينما يساعد تحكم النبض والاستبصار من دون تغيير حلول البوابات المصممة.","يستخدم استوديو الرنين نوتات النجوم لشراء ثلاثة تحسينات. أثر طبلة ضوء النجوم الاختياري تجميلي ولا يمنح أفضلية في التوقيت أو الاصطدام."],
       how:["اختر برجًا مفتوحًا.","اقرأ اللون والشعار المطلوبين.","راقب علامة المسح الأقرب وهي تقترب من خط حركة الروح.","أرسل نبضة واحدة خلال نافذة التطابق، ثم ارفع إصبعك واستعد للبوابة التالية."],
       strategyTips:["استخدم ضغطات قصيرة ومقصودة بدل الضغط المستمر.","عندما تتشابه ألوان عدة علامات، اقرأ الشعار أولًا.","بعد الخطأ انتظر استقرار الحالة قبل إرسال نبضة أخرى.","استخدم الاستبصار للتخطيط للزوج التالي، لا لتجاهل العلامة الحالية."],
@@ -11150,7 +11174,10 @@
     "hi": {
       "maze-chase": { title: "भूलभुलैया पीछा", intro: "एक स्थिर भूलभुलैया में ओर्ला को ले जाकर तारों के कण जुटाएँ, विस्प के चार पीछा पैटर्न पढ़ें और बीकन से खतरनाक गलियारे को थोड़े समय के पलटवार के अवसर में बदलें।" },
       "animal-unblock": { title: "ट्रेल को अनब्लॉक करें", intro: "क्षैतिज और ऊर्ध्वाधर ब्लॉकों को अपनी धुरी पर सरकाएँ, जब तक लाल खोजकर्ता के लिए निकास तक साफ रास्ता न बन जाए।" },
-      "animal-number-match": { title: "पंको का नंबर ग्रोव", intro: "ऐसे जोड़े हटाएँ जिनका योग दस हो और जो छूते हों या खाली खानों के पार एक-दूसरे को देख सकें, ताकि नई दृष्टि रेखाएँ खुलें।" }
+      "animal-number-match": { title: "पंको का नंबर ग्रोव", intro: "ऐसे जोड़े हटाएँ जिनका योग दस हो और जो छूते हों या खाली खानों के पार एक-दूसरे को देख सकें, ताकि नई दृष्टि रेखाएँ खुलें।" },
+      "animal-sanctuary-loop": { title: "पशु अभयारण्य लूप", intro: "तीस अभयारण्य चरणों में सुरक्षित प्रकाश-पथ बनाकर हर जीव को बचाएँ और भ्रष्ट क्षेत्र से प्रकाश को फिर जोड़ें।" },
+      "animal-rune-tactics": { title: "पशु रूण रणनीति", intro: "दस्ते की क्षमताएँ चुनें, हर मोड़ में दिखाई देने वाले शत्रु-नियम पढ़ें और तीस मिशनों में रूण-रक्षक दल को आगे बढ़ाएँ।" },
+      "animal-triple-match": { title: "पशु ट्रिपल मैच", intro: "परतों से खुले वस्तुओं को सात-स्थान ट्रे में ले जाएँ और असंगत वस्तुओं से जगह भरने से पहले तीन समान वस्तुएँ मिलाएँ।" }
     },
     "ar": {
       "maze-chase": { title: "مطاردة المتاهة", intro: "قد أورلا داخل متاهة ثابتة لجمع ذرات النجوم، واقرأ أربعة أنماط لمطاردة الومضات، وحوّل الممر الخطير إلى فرصة قصيرة للهجوم المضاد باستخدام المنارات." },
@@ -11169,7 +11196,10 @@
       "animal-color-link": { title: "حديقة وصل الألوان", intro: "ارسم مسارات متصلة بين الألوان المتطابقة، واملأ اللوحة كاملة من دون تقاطع أو ترك خانة مفتوحة." },
       "spades": { title: "البستوني", intro: "راهن مع فريقك، واتبع النوع، واستخدم البستوني حكماً في لعبة الخدع." },
       "go-fish": { title: "اذهب للصيد", intro: "اطلب الرتب، واجمع المجموعات الرباعية، واقرأ الطاولة." },
-      "crazy-eights": { title: "الثمانيات المجنونة", intro: "العب بطاقة مطابقة للنوع أو الرتبة النشطة، ثم غيّر النوع ببطاقة الثمانية." }
+      "crazy-eights": { title: "الثمانيات المجنونة", intro: "العب بطاقة مطابقة للنوع أو الرتبة النشطة، ثم غيّر النوع ببطاقة الثمانية." },
+      "animal-sanctuary-loop": { title: "حلقة ملاذ الحيوانات", intro: "ارسم مسارات ضوء آمنة عبر ثلاثين ملاذًا، وأنقذ كل روح، وأعد وصل الضوء عبر المناطق الفاسدة." },
+      "animal-rune-tactics": { title: "تكتيكات الرون الحيواني", intro: "اختر مهارات الفرقة، واقرأ قواعد الأعداء الظاهرة في كل دور، وقُد حماة الرون عبر ثلاثين مهمة." },
+      "animal-triple-match": { title: "مطابقة الحيوانات الثلاثية", intro: "انقل الأشياء المكشوفة من الطبقات إلى صينية من سبع خانات، واجمع ثلاثة أشياء متطابقة قبل أن تملأ العناصر غير المتطابقة المساحة." }
     }
   };
   localizedGames["zh-Hant"]["arrow-escape"] = {
