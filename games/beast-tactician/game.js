@@ -1361,6 +1361,7 @@
     won: false,
     revived: false,
     coreCriticalShown: false,
+    firstPlacementCue: null,
     resultReward: null,
     manualSimulation: false,
     soundEnabled: false,
@@ -1417,6 +1418,77 @@
     ru: "Здоровье",
     hi: "स्वास्थ्य",
     ar: "الصحة",
+  };
+
+  // The first placement is a game-owned teaching beat. Keep its three route
+  // states explicit for every required locale so the cue never falls through
+  // the shared runtime dictionary or silently changes meaning.
+  const routePlacementCues = {
+    en: {
+      changed: "Route shaped · Core protected for now · Next: Wave {wave}",
+      held: "Route open · Core protected for now · Next: Wave {wave}",
+      blocked: "Route blocked · Reopen a path before Wave {wave}",
+    },
+    "zh-Hant": {
+      changed: "路線已成形 · 核心暫時安全 · 下一步：第 {wave} 波",
+      held: "路線暢通 · 核心暫時安全 · 下一步：第 {wave} 波",
+      blocked: "路線封鎖 · 請在第 {wave} 波前重新打通",
+    },
+    "zh-Hans": {
+      changed: "路线已成形 · 核心暂时安全 · 下一步：第 {wave} 波",
+      held: "路线畅通 · 核心暂时安全 · 下一步：第 {wave} 波",
+      blocked: "路线封锁 · 请在第 {wave} 波前重新打通",
+    },
+    ja: {
+      changed: "ルートを形作った · コアは今のところ安全 · 次はウェーブ {wave}",
+      held: "ルートは開いている · コアは今のところ安全 · 次はウェーブ {wave}",
+      blocked: "ルートが封鎖中 · ウェーブ {wave} 前に道を開けよう",
+    },
+    ko: {
+      changed: "경로를 만들었습니다 · 코어는 당분간 안전합니다 · 다음은 웨이브 {wave}",
+      held: "경로가 열려 있습니다 · 코어는 당분간 안전합니다 · 다음은 웨이브 {wave}",
+      blocked: "경로가 막혔습니다 · 웨이브 {wave} 전에 길을 여세요",
+    },
+    es: {
+      changed: "Ruta moldeada · Núcleo protegido por ahora · Siguiente: oleada {wave}",
+      held: "Ruta abierta · Núcleo protegido por ahora · Siguiente: oleada {wave}",
+      blocked: "Ruta bloqueada · Abre un camino antes de la oleada {wave}",
+    },
+    "pt-BR": {
+      changed: "Rota moldada · Núcleo protegido por enquanto · Próxima: onda {wave}",
+      held: "Rota aberta · Núcleo protegido por enquanto · Próxima: onda {wave}",
+      blocked: "Rota bloqueada · Abra um caminho antes da onda {wave}",
+    },
+    fr: {
+      changed: "Route façonnée · Noyau protégé pour l'instant · Ensuite : vague {wave}",
+      held: "Route ouverte · Noyau protégé pour l'instant · Ensuite : vague {wave}",
+      blocked: "Route bloquée · Rouvrez un chemin avant la vague {wave}",
+    },
+    de: {
+      changed: "Route geformt · Kern vorerst geschützt · Als Nächstes: Welle {wave}",
+      held: "Route offen · Kern vorerst geschützt · Als Nächstes: Welle {wave}",
+      blocked: "Route blockiert · Öffne vor Welle {wave} wieder einen Weg",
+    },
+    it: {
+      changed: "Percorso modellato · Nucleo protetto per ora · Prossima: ondata {wave}",
+      held: "Percorso aperto · Nucleo protetto per ora · Prossima: ondata {wave}",
+      blocked: "Percorso bloccato · Riapri una via prima dell'ondata {wave}",
+    },
+    ru: {
+      changed: "Маршрут сформирован · Ядро пока защищено · Далее: волна {wave}",
+      held: "Маршрут открыт · Ядро пока защищено · Далее: волна {wave}",
+      blocked: "Маршрут перекрыт · Откройте путь до волны {wave}",
+    },
+    hi: {
+      changed: "रास्ता बना · कोर अभी सुरक्षित है · अगली: लहर {wave}",
+      held: "रास्ता खुला है · कोर अभी सुरक्षित है · अगली: लहर {wave}",
+      blocked: "रास्ता बंद है · लहर {wave} से पहले रास्ता खोलें",
+    },
+    ar: {
+      changed: "تم تشكيل المسار · النواة محمية حاليًا · التالية: الموجة {wave}",
+      held: "المسار مفتوح · النواة محمية حاليًا · التالية: الموجة {wave}",
+      blocked: "المسار مغلق · افتح طريقًا قبل الموجة {wave}",
+    },
   };
 
   const techBulwarkDescriptions = {
@@ -2397,19 +2469,29 @@
     return traits.join(" | ");
   }
 
+  function firstPlacementCueText() {
+    const cue = state.firstPlacementCue;
+    if (!cue || state.currentStage !== 1 || state.wave !== 0 || state.runningWave || state.gameOver) return "";
+    const copy = routePlacementCues[state.locale] || routePlacementCues.en;
+    const key = !cue.routeOpen || !cue.coreProtected ? "blocked" : cue.routeChanged ? "changed" : "held";
+    return (copy[key] || routePlacementCues.en[key]).replaceAll("{wave}", String(cue.nextWave));
+  }
+
   function renderSelectedInfo() {
+    const cue = firstPlacementCueText();
+    const cueMarkup = cue ? `<strong class="route-placement-cue">${cue}</strong>` : "";
     if (state.selectedDefender) {
       const d = state.selectedDefender;
       const unit = unitTypes.find((item) => item.id === d.type);
       const traits = unitTraitText(unit);
-      nodes.selectedInfo.innerHTML = `<strong>${d.name}</strong><span>${t("roleLabel")}: ${unitRoleText(unit)}</span>${traits ? `<span>${t("traitLabel")}: ${traits}</span>` : ""}<span>${battleLevelText(d.level)} | ${t("hp")}: ${Math.ceil(d.hp)}/${d.maxHp}</span><span>${t("damage")}: ${Math.ceil(d.damage)} | ${t("range")}: ${d.range} | ${t("attackSpeed")}: ${formatUnitTempo(unit || d)}</span><span>${t("selectedActionInfo", { upgrade: upgradeCost(d), sell: sellRefund(d) })}</span>`;
+      nodes.selectedInfo.innerHTML = `${cueMarkup}<strong>${d.name}</strong><span>${t("roleLabel")}: ${unitRoleText(unit)}</span>${traits ? `<span>${t("traitLabel")}: ${traits}</span>` : ""}<span>${battleLevelText(d.level)} | ${t("hp")}: ${Math.ceil(d.hp)}/${d.maxHp}</span><span>${t("damage")}: ${Math.ceil(d.damage)} | ${t("range")}: ${d.range} | ${t("attackSpeed")}: ${formatUnitTempo(unit || d)}</span><span>${t("selectedActionInfo", { upgrade: upgradeCost(d), sell: sellRefund(d) })}</span>`;
       updateCommandButtons();
       return;
     }
     const unit = unitTypes.find((item) => item.id === state.selectedBuild);
     const traits = unitTraitText(unit);
     nodes.selectedInfo.innerHTML = unit
-      ? `<strong>${unitName(unit)}</strong><span>${t("roleLabel")}: ${unitRoleText(unit)}</span>${traits ? `<span>${t("traitLabel")}: ${traits}</span>` : ""}<span>${t("cost")}: ${unit.cost} | ${t("hp")}: ${unit.hp}</span><span>${t("damage")}: ${unit.damage} | ${t("range")}: ${unit.range} | ${t("attackSpeed")}: ${formatUnitTempo(unit)}</span>`
+      ? `${cueMarkup}<strong>${unitName(unit)}</strong><span>${t("roleLabel")}: ${unitRoleText(unit)}</span>${traits ? `<span>${t("traitLabel")}: ${traits}</span>` : ""}<span>${t("cost")}: ${unit.cost} | ${t("hp")}: ${unit.hp}</span><span>${t("damage")}: ${unit.damage} | ${t("range")}: ${unit.range} | ${t("attackSpeed")}: ${formatUnitTempo(unit)}</span>`
       : "";
     updateCommandButtons();
   }
@@ -2563,6 +2645,7 @@
     state.won = false;
     state.revived = false;
     state.coreCriticalShown = false;
+    state.firstPlacementCue = null;
     state.selectedBuild = "guard";
     state.keyboardTile = { x: 2, y: 3 };
     state.keyboardMode = false;
@@ -2777,6 +2860,7 @@
       showToast(t("noCoins"));
       return false;
     }
+    const previousPath = findPath(false);
     const tech = state.save.tech;
     const isHero = unit.kind === "hero";
     const maxHp = unit.hp + tech.bulwark * 12 + (isHero ? 20 : 0);
@@ -2816,6 +2900,15 @@
     playSfx("build");
     track("game_build_unit", { stage: state.currentStage, unit: unit.id, kind: unit.kind, cost: unit.cost });
     updateEnemyPaths();
+    const currentPath = findPath(false);
+    if (state.currentStage === 1 && state.wave === 0 && state.defenders.length === 1) {
+      state.firstPlacementCue = {
+        routeChanged: Boolean(previousPath && currentPath && currentPath.length > previousPath.length),
+        routeOpen: Boolean(currentPath),
+        coreProtected: state.coreHp > 0,
+        nextWave: 1,
+      };
+    }
     updateHud();
     return true;
   }
@@ -6469,6 +6562,11 @@
       stars: {},
     };
     startStage(1);
+    state.coins = 999;
+    state.selectedBuild = "guard";
+    buildUnit({ x: 2, y: 3 });
+    const firstPlacementCue = nodes.selectedInfo.querySelector(".route-placement-cue")?.textContent || "";
+    startStage(1);
     const openText = nodes.waveIntelText.textContent;
     state.coins = 999;
     Array.from({ length: grid.rows }, (_, y) => ({ x: 1, y })).forEach((tile) => {
@@ -6479,7 +6577,34 @@
     const blockedText = nodes.waveIntelText.textContent;
     const pathBlocked = findPath(false) === null;
     state.manualSimulation = false;
-    return { openText, blockedText, pathBlocked };
+    return { openText, blockedText, pathBlocked, firstPlacementCue };
+  }
+
+  function runFirstPlacementCueScenario() {
+    state.manualSimulation = true;
+    state.save = {
+      bestStage: 1,
+      diamonds: 12,
+      upgradePoints: 0,
+      tech: { power: 0, bulwark: 0, economy: 0 },
+      cosmetics: { goldenFrame: false },
+      clears: {},
+      stars: {},
+    };
+    startStage(1);
+    state.coins = 999;
+    state.selectedBuild = "guard";
+    buildUnit({ x: 2, y: 3 });
+    const result = {
+      cue: nodes.selectedInfo.querySelector(".route-placement-cue")?.textContent || "",
+      routeChanged: Boolean(state.firstPlacementCue?.routeChanged),
+      routeOpen: Boolean(state.firstPlacementCue?.routeOpen),
+      coreProtected: Boolean(state.firstPlacementCue?.coreProtected),
+      nextWave: state.firstPlacementCue?.nextWave || 0,
+      cueVisible: Boolean(nodes.selectedInfo.querySelector(".route-placement-cue")),
+    };
+    state.manualSimulation = false;
+    return result;
   }
 
   function makeScenarioEnemy(tile, overrides = {}) {
@@ -7050,6 +7175,7 @@
       runWaveClearFeedbackScenario,
       runSelectedBuildInfoScenario,
       runRouteStatusScenario,
+      runFirstPlacementCueScenario,
       runBlockedRouteFallbackScenario,
       runRoutePreviewScenario,
       runTraditionalChineseReadabilityScenario,

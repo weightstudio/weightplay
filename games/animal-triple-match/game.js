@@ -127,7 +127,7 @@
 
   const els = Object.fromEntries([...document.querySelectorAll("[id]")].map(el => [el.id, el]));
   const SAVE_KEY = "weightplay_animal_triple_match_v1";
-  const GAME_VERSION = 11;
+  const GAME_VERSION = 12;
   const INTERFACE_VERSION = 6;
   const CHAPTERS = ["openShelf","vineGallery","crystalRoom","mysteryLoft","shiftingHall","grandFinale"];
   const ITEM_NAMES = ["Acorn Lantern","Moon Cup","Shell Compass","Berry Brooch","Cloud Jar","Prism Flower","Star Telescope","Leaf Locket","Coral Music Box","Bee Bell","Mushroom Lamp","Crystal Feather"];
@@ -163,14 +163,46 @@
     hi: "सितारों का अनुमान",
     ar: "النجوم المتوقعة",
   };
+  const REWARD_BEATS = {
+    en: { firstTrio: "First trio!", shelfClear: "Shelf cleared!" },
+    "zh-Hant": { firstTrio: "第一組三連！", shelfClear: "層架清空！" },
+    "zh-Hans": { firstTrio: "第一组三连！", shelfClear: "层架清空！" },
+    ja: { firstTrio: "最初の3個組！", shelfClear: "棚をクリア！" },
+    ko: { firstTrio: "첫 세트 완성!", shelfClear: "선반 클리어!" },
+    es: { firstTrio: "¡Primer trío!", shelfClear: "¡Estante despejado!" },
+    "pt-BR": { firstTrio: "Primeiro trio!", shelfClear: "Prateleira limpa!" },
+    fr: { firstTrio: "Premier trio !", shelfClear: "Étagère vidée !" },
+    de: { firstTrio: "Erstes Trio!", shelfClear: "Regal geräumt!" },
+    it: { firstTrio: "Primo trio!", shelfClear: "Scaffale svuotato!" },
+    ru: { firstTrio: "Первая тройка!", shelfClear: "Полка очищена!" },
+    hi: { firstTrio: "पहली तिकड़ी!", shelfClear: "शेल्फ़ साफ़!" },
+    ar: { firstTrio: "الثلاثية الأولى!", shelfClear: "أُفرغ الرف!" },
+  };
   const RUNTIME_LOCALE_SEGMENTS = { "zh-Hant":"zh-tw", "zh-Hans":"zh-cn", ja:"ja", ko:"ko", es:"es", "pt-BR":"pt-br", fr:"fr", de:"de", it:"it", ru:"ru", hi:"hi", ar:"ar" };
   const SHARED_SRC_BASE = new URL("../../src/", document.currentScript?.src || location.href);
   const runtimeCatalogLoads = new Map();
   let locale = "en", screen = "main", stageIndex = 0, run = null, audio = null, centeredTimer = 0, resultDecisionCommitted = false;
-  let pendingMatch = null, windowFocused = document.hasFocus();
+  let pendingMatch = null, rewardBeatTimer = 0, windowFocused = document.hasFocus();
   let save = loadSave();
 
   function starOutlookLabel() { return STAR_OUTLOOK_LABELS[locale] || STAR_OUTLOOK_LABELS.en; }
+  function rewardBeatText(key) { return (REWARD_BEATS[locale] || REWARD_BEATS.en)[key] || REWARD_BEATS.en[key]; }
+  function clearRewardBeat() {
+    if (rewardBeatTimer) clearTimeout(rewardBeatTimer);
+    rewardBeatTimer = 0;
+    els.feedback.classList.remove("reward-beat");
+  }
+  function showFirstTrioBeat() {
+    clearRewardBeat();
+    els.feedback.textContent = rewardBeatText("firstTrio");
+    els.feedback.classList.add("reward-beat");
+    rewardBeatTimer = setTimeout(() => {
+      rewardBeatTimer = 0;
+      if (!run || run.ended) return;
+      els.feedback.classList.remove("reward-beat");
+      els.feedback.textContent = t("matched");
+    }, 1400);
+  }
 
   function isForeground() { return document.visibilityState === "visible" && windowFocused; }
   function hasOpenBattleModal() { return [els.tutorialModal, els.leaveModal, els.resultModal].some(modal => !modal.hidden); }
@@ -190,6 +222,7 @@
     if (!pending || run !== pending.runRef) { cancelPendingMatch(); return; }
     pendingMatch = null;
     const groups = pending.groups || [pending.pieceIds];
+    const firstTrio = pending.runRef.matches === 0;
     const matchedIds = new Set(groups.flat());
     pending.runRef.pieces.filter(piece => matchedIds.has(piece.id)).forEach(piece => { piece.active = false; piece.tray = false; });
     pending.runRef.tray = pending.runRef.tray.filter(piece => !matchedIds.has(piece.id));
@@ -197,6 +230,7 @@
     pending.runRef.paused = false;
     track("trio_match", { stage: stageIndex + 1, count: groups.length, matches: pending.runRef.matches, outcome: "settled" });
     els.feedback.textContent = t("matched"); sound("match");
+    if (firstTrio) showFirstTrioBeat();
     if (pending.runRef.config.shiftEvery && pending.runRef.moves % pending.runRef.config.shiftEvery === 0) shiftRemaining();
     checkEnd(); renderRun();
   }
@@ -589,7 +623,11 @@
     document.querySelectorAll("[data-t-alt]").forEach(el => el.alt = t(el.dataset.tAlt));
     document.title = `${t("title")} | WeightPlay`;
     renderMainProgress(); renderStages(); if (run) renderRun();
-    if (run?.ended && !els.resultModal.hidden) renderResultChapterPreview(run.resultWin);
+    if (els.feedback.classList.contains("reward-beat")) els.feedback.textContent = rewardBeatText("firstTrio");
+    if (run?.ended && !els.resultModal.hidden) {
+      els.resultReward.textContent = run.resultWin ? rewardBeatText("shelfClear") : "";
+      renderResultChapterPreview(run.resultWin);
+    }
     syncGameOwnedMainOwners();
   }
   function setLocale(value) {
@@ -770,11 +808,14 @@
   }
   function startBattle(index, skipTutorial = false) {
     cancelPendingMatch();
+    clearRewardBeat();
     stageIndex = Math.max(0, Math.min(29, index));
     const config = stageConfig(stageIndex);
     run = { config, pieces: buildPieces(stageIndex), tray: [], history: [], matches: 0, moves: 0, lastTrayId: null, tools: { undo: 2, magnet: 2, shuffle: 2 }, ended: false, paused: false };
     [els.tutorialModal, els.leaveModal, els.resultModal].forEach(modal => modal.hidden = true);
     els.feedback.textContent = "";
+    els.resultReward.hidden = true;
+    els.resultReward.textContent = "";
     isolateBattle(false); setScreen("battle"); renderRun();
     const battleRun = run;
     requestAnimationFrame(() => requestAnimationFrame(() => {
@@ -951,6 +992,7 @@
   function finish(win) {
     if (run.ended) return;
     cancelPendingMatch();
+    clearRewardBeat();
     run.ended = true; run.paused = true; run.resultWin = win;
     const free = run.config.trayCap - run.tray.length, stars = win ? (free >= 5 ? 3 : free >= 3 ? 2 : 1) : 0;
     if (win) {
@@ -960,6 +1002,8 @@
     }
     els.resultKicker.textContent = t(win ? "winKicker" : "failKicker");
     els.resultTitle.textContent = t(win ? "winTitle" : "failTitle");
+    els.resultReward.textContent = win ? rewardBeatText("shelfClear") : "";
+    els.resultReward.hidden = !win;
     els.resultStars.textContent = win ? "★".repeat(stars) : "◇◇◇";
     els.resultText.textContent = win ? t("winText", { n: stageIndex + 1, stars }) : t("failText");
     els.planText.textContent = t(win ? "planWin" : "planRetry");
@@ -1071,7 +1115,7 @@
   els.stageBack.addEventListener("click", () => setScreen("main"));
   els.battleBack.addEventListener("click", () => { if (!run || run.ended) return setScreen("stage"); run.paused = true; openModal(els.leaveModal, els.leaveContinue); });
   els.leaveContinue.addEventListener("click", () => closeModal(els.leaveModal, els.battleBack));
-  els.leaveStage.addEventListener("click", () => { track("return_stages", { stage: stageIndex + 1, outcome: "leave_battle" }); cancelPendingMatch(); els.leaveModal.hidden = true; isolateBattle(false); run = null; setScreen("stage"); });
+  els.leaveStage.addEventListener("click", () => { track("return_stages", { stage: stageIndex + 1, outcome: "leave_battle" }); clearRewardBeat(); cancelPendingMatch(); els.leaveModal.hidden = true; isolateBattle(false); run = null; setScreen("stage"); });
   els.helpBtn.addEventListener("click", () => { if (!run) return; run.paused = true; openModal(els.tutorialModal, els.tutorialClose); });
   els.tutorialClose.addEventListener("click", () => { save.tutorial = true; persist(); closeModal(els.tutorialModal, els.helpBtn); });
   els.undoBtn.addEventListener("click", undo); els.magnetBtn.addEventListener("click", magnet); els.shuffleBtn.addEventListener("click", shuffleTool);

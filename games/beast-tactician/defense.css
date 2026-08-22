@@ -820,6 +820,14 @@ html[lang="ru"] body.guardian-stage .stage-card .stage-reward {
   line-height: 1.35;
 }
 
+.selected-info .route-placement-cue {
+  display: block;
+  margin-bottom: 4px;
+  color: #d9f99d;
+  font-size: 0.84rem;
+  line-height: 1.25;
+}
+
 .canvas-shell {
   position: relative;
   min-height: 0;

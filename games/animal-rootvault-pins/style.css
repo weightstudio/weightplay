@@ -413,6 +413,10 @@ a:focus-visible {
   gap: 3px;
   text-align: left;
 }
+.upgrade.planned {
+  border-color: #ffd35a;
+  box-shadow: 0 0 0 2px #ffd35a66, 0 8px 20px #0006;
+}
 .upgrade strong {
   color: #fff2a3;
 }

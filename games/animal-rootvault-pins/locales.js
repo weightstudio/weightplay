@@ -52,6 +52,34 @@ const workshopFeedback={
   it:{workshopReady:"Scegli un aiuto di pianificazione. Costo e saldo restano visibili.",needSeeds:"Servono {cost} Marchi Seme. Saldo attuale: {n}.",upgradeComplete:"{name} migliorato al livello {level}/3."},
   ru:{workshopReady:"Выбери подсказку. Стоимость и баланс останутся видимыми.",needSeeds:"Нужно Семенных знаков: {cost}. Сейчас: {n}.",upgradeComplete:"{name}: улучшение {level}/3."},
 };
+const firstPullPayoff={
+  en:{firstPullPayoff:"First pull settled · {reaction} · Next: inspect the remaining routes.",pullSettled:"The pull settled without a material reaction."},
+  "zh-Hant":{firstPullPayoff:"第一次拉針已結算・{reaction}・下一步：觀察剩餘路線。",pullSettled:"拉針已結算，沒有物質反應。"},
+  "zh-Hans":{firstPullPayoff:"第一次拉针已结算・{reaction}・下一步：观察剩余路线。",pullSettled:"拉针已结算，没有物质反应。"},
+  ja:{firstPullPayoff:"最初のピンが確定・{reaction}・次は残りの経路を確認。",pullSettled:"ピンが確定しました。素材反応はありません。"},
+  ko:{firstPullPayoff:"첫 핀이 적용되었습니다 · {reaction} · 다음: 남은 경로를 살펴보세요.",pullSettled:"핀이 적용되었습니다. 재료 반응은 없습니다."},
+  es:{firstPullPayoff:"Primera clavija resuelta · {reaction} · Siguiente: observa las rutas restantes.",pullSettled:"La clavija se resolvió sin reacción de materiales."},
+  "pt-BR":{firstPullPayoff:"Primeiro pino resolvido · {reaction} · Próximo: observe as rotas restantes.",pullSettled:"O pino foi resolvido sem reação de materiais."},
+  fr:{firstPullPayoff:"Premier pignon confirmé · {reaction} · Ensuite : observez les routes restantes.",pullSettled:"Le pignon est confirmé sans réaction de matériaux."},
+  de:{firstPullPayoff:"Erster Stift abgeschlossen · {reaction} · Als Nächstes: Prüfe die übrigen Wege.",pullSettled:"Der Stift ist ohne Materialreaktion abgeschlossen."},
+  it:{firstPullPayoff:"Primo perno risolto · {reaction} · Poi: osserva i percorsi restanti.",pullSettled:"Il perno è risolto senza reazione dei materiali."},
+  ru:{firstPullPayoff:"Первый штифт закреплён · {reaction} · Дальше: изучи оставшиеся маршруты.",pullSettled:"Штифт закреплён без реакции материалов."},
+  hi:{firstPullPayoff:"पहली पिन का निपटारा · {reaction} · अगला: बची हुई राहों को देखें।",pullSettled:"पिन का निपटारा हुआ; कोई सामग्री प्रतिक्रिया नहीं हुई।"},
+  ar:{firstPullPayoff:"اكتمل سحب الدبوس الأول · {reaction} · التالي: افحص المسارات المتبقية.",pullSettled:"اكتمل سحب الدبوس من دون تفاعل للمواد."},
+};
+const workshopPlanFeedback={
+  en:{workshopPlanTarget:"Plan toward {name} · Cost: {cost} Seed Marks. Your balance stays visible."},
+  "zh-Hant":{workshopPlanTarget:"可以規劃 {name}・費用：{cost} 枚種子印記；餘額會持續顯示。"},
+  "zh-Hans":{workshopPlanTarget:"可以规划 {name}・费用：{cost} 枚种子印记；余额会持续显示。"},
+  ja:{workshopPlanTarget:"{name}を目標に計画・費用：種の印 {cost} 個。残高は表示されます。"},
+  ko:{workshopPlanTarget:"{name}을(를) 목표로 계획하세요 · 비용: 씨앗 표식 {cost}개. 잔액은 계속 보입니다."},
+  es:{workshopPlanTarget:"Planifica hacia {name} · Coste: {cost} Marcas Semilla. Tu saldo sigue visible."},
+  "pt-BR":{workshopPlanTarget:"Planeje para {name} · Custo: {cost} Marcas de Semente. Seu saldo continua visível."},
+  fr:{workshopPlanTarget:"Visez {name} · Coût : {cost} Marques-graine. Votre solde reste visible."},
+  de:{workshopPlanTarget:"Plane auf {name} hin · Kosten: {cost} Samenmarken. Dein Guthaben bleibt sichtbar."},
+  it:{workshopPlanTarget:"Pianifica {name} · Costo: {cost} Marchi Seme. Il saldo resta visibile."},
+  ru:{workshopPlanTarget:"Цель: {name} · Стоимость: {cost} Семенных знаков. Баланс остаётся видимым."},
+};
 const publicGuide={
   en:{guideKicker:"WEIGHTPLAY ORIGINAL GAME GUIDE",guideIntro:"Plan each pull, resolve material reactions, and guide Taro and the Star Core through 30 handcrafted Rootvault chambers."},
   "zh-Hant":{guideKicker:"WEIGHTPLAY 原創遊戲指南",guideIntro:"規劃每次拉針、處理材質反應，帶領 Taro 與星核通過 30 個精心設計的根脈房間。"},
@@ -65,6 +93,7 @@ const publicGuide={
   it:{guideKicker:"GUIDA AL GIOCO ORIGINALE WEIGHTPLAY",guideIntro:"Pianifica ogni perno, risolvi le reazioni e guida Taro e il Nucleo attraverso 30 camere create a mano."},
   ru:{guideKicker:"РУКОВОДСТВО К ОРИГИНАЛЬНОЙ ИГРЕ WEIGHTPLAY",guideIntro:"Планируйте каждый штифт, учитывайте реакции и проведите Таро и Звёздное ядро через 30 созданных вручную камер."},
 };
-for(const code of Object.keys(packs))Object.assign(packs[code],publicGuide[code],navigation[code],workshopFeedback[code]);
+for(const code of Object.keys(packs))Object.assign(packs[code],publicGuide[code],navigation[code],workshopFeedback[code],firstPullPayoff[code],workshopPlanFeedback[code]);
 window.ROOTVAULT_PIN_LOCALES=packs;
+window.ROOTVAULT_PIN_DYNAMIC_LOCALES={hi:firstPullPayoff.hi,ar:firstPullPayoff.ar};
 })();
