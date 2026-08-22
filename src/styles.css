@@ -6076,19 +6076,27 @@ body.general-lobby-page {
   }
 
   .general-lobby-page .game-card {
-    display: grid;
+    display: block;
     height: auto;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: auto;
     border-radius: 12px;
     box-shadow: 0 5px 16px rgba(0, 0, 0, 0.34);
   }
 
+  .general-lobby-page .game-card-static-link {
+    display: block;
+    height: auto;
+  }
+
   .general-lobby-page .game-card-art.image-art,
   .general-lobby-page .game-card.coming-soon .game-card-art.image-art {
-    position: absolute;
-    inset: 0;
-    height: 100%;
-    aspect-ratio: auto;
+    /* Keep the poster in normal flow so Safari has real content from which to
+       size each auto-row. An aspect-ratio-only parent whose children are all
+       absolutely positioned can otherwise collapse to a thin line. */
+    position: relative;
+    inset: auto;
+    height: auto;
+    aspect-ratio: 4 / 3;
     border: 0;
     background: #0c121b;
   }
