@@ -234,6 +234,15 @@ img{-webkit-user-drag:none}
   .loader-orb,.enemy-unit.targeted .target-marker,.reel.effect-active,.reel.effect-active .reel-cell img{animation:none!important}
 }
 
+/* The first-turn coach is an additional Battle row, not an overlay. Reserve
+   enough bounded logical height while it and the tactical choices coexist so
+   Safari cannot clip the correction buttons at the Canvas bottom. */
+@media(min-height:521px){
+  .v3-battle.first-turn-coach-active{
+    grid-template-rows:56px minmax(0,1fr) 276px;
+  }
+}
+
 /* V7.2: reduced motion removes continuous ornament, not causal combat feedback. */
 @media(prefers-reduced-motion:reduce){
   .magic-projectile{animation-duration:.5s!important;animation-delay:0ms!important}

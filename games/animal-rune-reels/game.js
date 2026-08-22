@@ -411,7 +411,8 @@
     speedBtn.textContent=`x${speed}`;speedBtn.classList.toggle('speed-2x',speed===2);speedBtn.setAttribute('aria-pressed',String(speed===2));speedBtn.setAttribute('aria-label',`${t('battleSpeed')}: x${speed}`);speedBtn.title=`${t('battleSpeed')}: x${speed}`;
     leaderTacticBtn.textContent=leaderTacticLabel;leaderTacticBtn.setAttribute('aria-label',leaderTacticLabel);leaderTacticBtn.title=leaderTacticLabel;
     $("#tacticsPanel").hidden=!tactical;$(".battle-actions").hidden=tactical;$("#tacticsRuneHelp").textContent=selectedRune?`${t(RUNES[selectedRune].name)} · ${t(RUNES[selectedRune].desc)} · ${t('currentEffect')}: ${runeEffectText(selectedRune,profile.runeLevels[selectedRune])}`:'';$("#rerollReelBtn").disabled=!tactical||battle.correctionUsed;$("#holdReelBtn").disabled=!tactical||battle.correctionUsed;leaderTacticBtn.disabled=!tactical||battle.correctionUsed;$("#acceptRunesBtn").disabled=!tactical||battle.resolving;
-    if(reels)enhancedRenderReels();renderFirstTurnCoach()
+    if(reels)enhancedRenderReels();renderFirstTurnCoach();
+    $(".v3-battle")?.classList.toggle("first-turn-coach-active",tactical&&!$("#firstTurnCoach").hidden)
   }
   function focusTacticalReel(){if(!battle||battle.currentPhase!=='tactics'||!Number.isInteger(battle.selectedReel))return;const index=battle.selectedReel,focus=()=>{if(battle?.currentPhase==='tactics')$(`.reel[data-reel="${index}"]`)?.focus({preventScroll:true})};focus();requestAnimationFrame(focus)}
   function beginTactics(){if(!battle||battle.ended)return;battle.currentPhase='tactics';battle.busy=true;battle.coachReelChosen=false;$("#comboBanner").textContent=t('tacticsTitle');$("#tacticsHint").textContent=t('tacticsHint');enhancedRenderBattle();focusTacticalReel()}

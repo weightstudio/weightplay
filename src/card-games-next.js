@@ -158,51 +158,63 @@
     if (node.textContent !== text) node.textContent = text;
     if (node.getAttribute("data-runtime-localize") !== "off") node.setAttribute("data-runtime-localize", "off");
   };
+  let spadesShellSyncing = false;
   const syncSpadesShell = () => {
+    if (spadesShellSyncing) return;
+    spadesShellSyncing = true;
     const copy = spadesShellCopy();
-    const guideRoot = document.querySelector(".game-page-info");
-    if (guideRoot) {
-      guideRoot.setAttribute("aria-label", `${copy.title} game information`);
-      guideRoot.setAttribute("data-runtime-localize", "off");
+    try {
+      const guideRoot = document.querySelector(".game-page-info");
+      if (guideRoot) {
+        const ariaLabel = `${copy.title} game information`;
+        if (guideRoot.getAttribute("aria-label") !== ariaLabel) guideRoot.setAttribute("aria-label", ariaLabel);
+        if (guideRoot.getAttribute("data-runtime-localize") !== "off") guideRoot.setAttribute("data-runtime-localize", "off");
+      }
+      const pageTitle = `${copy.title} | WeightPlay`;
+      if (document.title !== pageTitle) document.title = pageTitle;
+      const summary = document.querySelector('meta[name="description"]');
+      if (summary && summary.content !== copy.metaDescription) summary.content = copy.metaDescription;
+      document.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]').forEach((node) => { if (node.content !== pageTitle) node.content = pageTitle; });
+      document.querySelectorAll('meta[property="og:description"], meta[name="twitter:description"]').forEach((node) => { if (node.content !== copy.metaDescription) node.content = copy.metaDescription; });
+      const jsonLd = document.querySelector('script[type="application/ld+json"]');
+      if (jsonLd) { try { const data = JSON.parse(jsonLd.textContent); data.name = copy.title; data.description = copy.metaDescription; data.inLanguage = currentLocale(); const nextJsonLd = JSON.stringify(data); if (jsonLd.textContent !== nextJsonLd) jsonLd.textContent = nextJsonLd; } catch (_error) {} }
+      document.querySelectorAll("[data-card-title]").forEach((node) => ownLocalizedText(node, copy.title));
+      document.querySelectorAll("[data-card-summary]").forEach((node) => ownLocalizedText(node, copy.summary));
+      ownLocalizedText(document.querySelector(".game-info-kicker"), copy.guideKicker);
+      ownLocalizedText(document.querySelector(".game-info-title h2"), copy.title);
+      ownLocalizedText(document.querySelector(".game-info-title p"), copy.guideSummary);
+      const facts = [...document.querySelectorAll(".game-info-fact")];
+      [[copy.gameplayLabel, copy.gameplay], [copy.genreLabel, copy.genre], [copy.difficultyLabel, copy.difficulty], [copy.timeLabel, copy.time], [copy.skillsLabel, copy.skills]].forEach(([label, value], index) => { const fact = facts[index]; if (!fact) return; ownLocalizedText(fact.querySelector("span"), label); ownLocalizedText(fact.querySelector("strong"), value); });
+      const sections = [...document.querySelectorAll(".game-info-section")];
+      const guide = sections.find((section) => section.querySelector("ol"));
+      ownLocalizedText(guide?.querySelector("h3"), copy.howTo);
+      ownLocalizedText(guide?.querySelector("li"), copy.howToCopy);
+      const preview = sections.find((section) => section.classList.contains("game-info-parent"));
+      ownLocalizedText(preview?.querySelector("h3"), copy.preview);
+      ownLocalizedText(preview?.querySelector("p"), copy.previewCopy);
+      const faq = sections.find((section) => section.querySelector("dl"));
+      ownLocalizedText(faq?.querySelector("h3"), copy.faq);
+      ownLocalizedText(faq?.querySelector("dt"), copy.faqQuestion);
+      ownLocalizedText(faq?.querySelector("dd"), copy.faqAnswer);
+      ownLocalizedText(document.querySelector("#startBtn"), t("start"));
+      ownLocalizedText(document.querySelector("#restartBtn"), t("restart"));
+      ownLocalizedText(document.querySelector("#newGameBtn"), t("newGame"));
+      ownLocalizedText(document.querySelector("#battleBackBtn"), `← ${t("back")}`);
+      const battleBack = document.querySelector("#battleBackBtn");
+      if (battleBack && battleBack.getAttribute("aria-label") !== t("back")) battleBack.setAttribute("aria-label", t("back"));
+      ownLocalizedText(document.querySelector("#soundBtn"), `${t("sound")}: On`);
+      const settings = document.querySelector("#audioMenuBtn");
+      if (settings && settings.getAttribute("aria-label") !== t("settings")) settings.setAttribute("aria-label", t("settings"));
+      const language = document.querySelector("#localeSelect");
+      if (language && language.getAttribute("aria-label") !== t("language")) language.setAttribute("aria-label", t("language"));
+      ownLocalizedText(document.querySelector(".card-game-player-header strong"), t("hand"));
+      ownLocalizedText(document.querySelector("#resultTitle"), t("roundOver"));
+      ownLocalizedText(document.querySelector("#resultNewGame"), t("newGame"));
+      ownLocalizedText(document.querySelector("#resultRestart"), t("restart"));
+      ownLocalizedText(document.querySelector("#resultClose"), t("close"));
+    } finally {
+      spadesShellSyncing = false;
     }
-    document.title = `${copy.title} | WeightPlay`;
-    const summary = document.querySelector('meta[name="description"]');
-    if (summary) summary.content = copy.metaDescription;
-    document.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]').forEach((node) => { node.content = `${copy.title} | WeightPlay`; });
-    document.querySelectorAll('meta[property="og:description"], meta[name="twitter:description"]').forEach((node) => { node.content = copy.metaDescription; });
-    const jsonLd = document.querySelector('script[type="application/ld+json"]');
-    if (jsonLd) { try { const data = JSON.parse(jsonLd.textContent); data.name = copy.title; data.description = copy.metaDescription; data.inLanguage = currentLocale(); jsonLd.textContent = JSON.stringify(data); } catch (_error) {} }
-    document.querySelectorAll("[data-card-title]").forEach((node) => ownLocalizedText(node, copy.title));
-    document.querySelectorAll("[data-card-summary]").forEach((node) => ownLocalizedText(node, copy.summary));
-    ownLocalizedText(document.querySelector(".game-info-kicker"), copy.guideKicker);
-    ownLocalizedText(document.querySelector(".game-info-title h2"), copy.title);
-    ownLocalizedText(document.querySelector(".game-info-title p"), copy.guideSummary);
-    const facts = [...document.querySelectorAll(".game-info-fact")];
-    [[copy.gameplayLabel, copy.gameplay], [copy.genreLabel, copy.genre], [copy.difficultyLabel, copy.difficulty], [copy.timeLabel, copy.time], [copy.skillsLabel, copy.skills]].forEach(([label, value], index) => { const fact = facts[index]; if (!fact) return; ownLocalizedText(fact.querySelector("span"), label); ownLocalizedText(fact.querySelector("strong"), value); });
-    const sections = [...document.querySelectorAll(".game-info-section")];
-    const guide = sections.find((section) => section.querySelector("ol"));
-    ownLocalizedText(guide?.querySelector("h3"), copy.howTo);
-    ownLocalizedText(guide?.querySelector("li"), copy.howToCopy);
-    const preview = sections.find((section) => section.classList.contains("game-info-parent"));
-    ownLocalizedText(preview?.querySelector("h3"), copy.preview);
-    ownLocalizedText(preview?.querySelector("p"), copy.previewCopy);
-    const faq = sections.find((section) => section.querySelector("dl"));
-    ownLocalizedText(faq?.querySelector("h3"), copy.faq);
-    ownLocalizedText(faq?.querySelector("dt"), copy.faqQuestion);
-    ownLocalizedText(faq?.querySelector("dd"), copy.faqAnswer);
-    ownLocalizedText(document.querySelector("#startBtn"), t("start"));
-    ownLocalizedText(document.querySelector("#restartBtn"), t("restart"));
-    ownLocalizedText(document.querySelector("#newGameBtn"), t("newGame"));
-    ownLocalizedText(document.querySelector("#battleBackBtn"), `← ${t("back")}`);
-    document.querySelector("#battleBackBtn")?.setAttribute("aria-label", t("back"));
-    ownLocalizedText(document.querySelector("#soundBtn"), `${t("sound")}: On`);
-    document.querySelector("#audioMenuBtn")?.setAttribute("aria-label", t("settings"));
-    document.querySelector("#localeSelect")?.setAttribute("aria-label", t("language"));
-    ownLocalizedText(document.querySelector(".card-game-player-header strong"), t("hand"));
-    ownLocalizedText(document.querySelector("#resultTitle"), t("roundOver"));
-    ownLocalizedText(document.querySelector("#resultNewGame"), t("newGame"));
-    ownLocalizedText(document.querySelector("#resultRestart"), t("restart"));
-    ownLocalizedText(document.querySelector("#resultClose"), t("close"));
   };
 
   const OLD_MAID_RISK = {
@@ -294,6 +306,27 @@
     const dictionary = GIN_PATH[currentLocale()] || GIN_PATH.en;
     const template = deadwood === 0 ? dictionary.gin : deadwood <= 10 ? dictionary.ready : dictionary.reduce;
     return template.replaceAll("{deadwood}", String(deadwood)).replaceAll("{count}", String(Math.max(0, deadwood - 10)));
+  };
+
+  const GIN_SHELL_COPY = {
+    en: { quickGuide: "How to play", quickGuideCopy: "Draw from the stock or discard, then discard one card. Knock with a low Deadwood hand or reach Gin.", resultTitle: "Round complete", winner: "You win!", loser: "AI wins", newGame: "New Game", restart: "Restart", close: "Close" },
+    "zh-Hant": { quickGuide: "玩法", quickGuideCopy: "從牌庫或棄牌堆抽一張，再棄一張牌。用低死牌敲牌，或完成金牌。", resultTitle: "本局完成", winner: "你贏了！", loser: "AI 獲勝", newGame: "新遊戲", restart: "重新開始", close: "關閉" },
+    "zh-Hans": { quickGuide: "玩法", quickGuideCopy: "从牌库或弃牌堆抽一张，再弃一张牌。用低死牌敲牌，或完成金牌。", resultTitle: "本局完成", winner: "你赢了！", loser: "AI 获胜", newGame: "新游戏", restart: "重新开始", close: "关闭" },
+    ja: { quickGuide: "遊び方", quickGuideCopy: "山札または捨て札から1枚引き、1枚捨てます。デッドウッドを減らしてノックするか、ジンを目指します。", resultTitle: "ラウンド終了", winner: "あなたの勝ち！", loser: "AIの勝ち", newGame: "新しいゲーム", restart: "再スタート", close: "閉じる" },
+    ko: { quickGuide: "게임 방법", quickGuideCopy: "덱이나 버린 카드에서 한 장을 뽑고 한 장을 버리세요. 데드우드를 줄여 노크하거나 진을 완성하세요.", resultTitle: "라운드 완료", winner: "승리했습니다!", loser: "AI 승리", newGame: "새 게임", restart: "다시 시작", close: "닫기" },
+    es: { quickGuide: "Cómo jugar", quickGuideCopy: "Roba del mazo o del descarte y luego descarta una carta. Golpea con poca madera muerta o consigue Gin.", resultTitle: "Ronda completada", winner: "¡Has ganado!", loser: "Gana la IA", newGame: "Nueva partida", restart: "Reiniciar", close: "Cerrar" },
+    "pt-BR": { quickGuide: "Como jogar", quickGuideCopy: "Compre do monte ou do descarte e depois descarte uma carta. Bata com pouca madeira morta ou faça Gin.", resultTitle: "Rodada concluída", winner: "Você venceu!", loser: "A IA venceu", newGame: "Novo jogo", restart: "Reiniciar", close: "Fechar" },
+    fr: { quickGuide: "Comment jouer", quickGuideCopy: "Piochez dans la pioche ou la défausse, puis défaussez une carte. Frappez avec peu de bois mort ou faites Gin.", resultTitle: "Manche terminée", winner: "Vous gagnez !", loser: "L’IA gagne", newGame: "Nouvelle partie", restart: "Recommencer", close: "Fermer" },
+    de: { quickGuide: "So wird gespielt", quickGuideCopy: "Ziehe vom Stapel oder aus der Ablage und wirf dann eine Karte ab. Klopfe mit wenig Totholz oder erreiche Gin.", resultTitle: "Runde beendet", winner: "Du gewinnst!", loser: "Die KI gewinnt", newGame: "Neues Spiel", restart: "Neu starten", close: "Schließen" },
+    it: { quickGuide: "Come si gioca", quickGuideCopy: "Pesca dal mazzo o dagli scarti, poi scarta una carta. Batti con poche carte morte o realizza Gin.", resultTitle: "Mano conclusa", winner: "Hai vinto!", loser: "Vince l’IA", newGame: "Nuova partita", restart: "Ricomincia", close: "Chiudi" },
+    ru: { quickGuide: "Как играть", quickGuideCopy: "Берите карту из колоды или сброса, затем сбрасывайте одну карту. Стучите с малым дедвудом или соберите джин.", resultTitle: "Раунд завершён", winner: "Вы выиграли!", loser: "Победил ИИ", newGame: "Новая игра", restart: "Начать заново", close: "Закрыть" },
+    hi: { quickGuide: "कैसे खेलें", quickGuideCopy: "गड्डी या फेंके हुए पत्तों से एक पत्ता लें, फिर एक पत्ता छोड़ें। कम डेडवुड पर नॉक करें या जिन बनाएँ।", resultTitle: "राउंड पूरा", winner: "आप जीत गए!", loser: "AI जीत गया", newGame: "नया खेल", restart: "फिर शुरू करें", close: "बंद करें" },
+    ar: { quickGuide: "طريقة اللعب", quickGuideCopy: "اسحب من الرزمة أو من الرمي، ثم ارمِ بطاقة واحدة. استخدم الطرق مع خشب ميت قليل أو حقق جين.", resultTitle: "اكتملت الجولة", winner: "لقد فزت!", loser: "فاز الذكاء الاصطناعي", newGame: "لعبة جديدة", restart: "إعادة البدء", close: "إغلاق" },
+  };
+
+  const ginShellText = (key) => {
+    const dictionary = GIN_SHELL_COPY[currentLocale()] || GIN_SHELL_COPY.en;
+    return dictionary[key] || GIN_SHELL_COPY.en[key] || key;
   };
 
   const GIN_BATTLE_COPY = {
@@ -825,14 +858,14 @@
     const resultText = document.querySelector("#resultText");
     const audioButton = document.querySelector("#soundBtn");
     const localeSelect = document.querySelector("#localeSelect");
-    const guideSource = id === "spades" ? spadesShellCopy().quickGuideCopy : (CARD_GAME_GUIDES[id] || "Follow the on-screen prompt, complete the round, and use Restart to try again.");
-    const guideHeading = id === "spades" ? spadesShellCopy().quickGuide : (root.WeightPlayGameRuntimeLocalizer?.translate?.("How to play") || "How to play");
-    const guideParagraph = id === "spades" ? guideSource : (root.WeightPlayGameRuntimeLocalizer?.translate?.(guideSource) || guideSource);
+    const guideSource = id === "spades" ? spadesShellCopy().quickGuideCopy : id === "gin-rummy" ? ginShellText("quickGuideCopy") : (CARD_GAME_GUIDES[id] || "Follow the on-screen prompt, complete the round, and use Restart to try again.");
+    const guideHeading = id === "spades" ? spadesShellCopy().quickGuide : id === "gin-rummy" ? ginShellText("quickGuide") : (root.WeightPlayGameRuntimeLocalizer?.translate?.("How to play") || "How to play");
+    const guideParagraph = id === "spades" || id === "gin-rummy" ? guideSource : (root.WeightPlayGameRuntimeLocalizer?.translate?.(guideSource) || guideSource);
     const quickGuide = document.createElement("p");
     quickGuide.className = "card-game-quick-guide";
     quickGuide.setAttribute("role", "note");
     quickGuide.dataset.cardQuickGuide = "true";
-    if (id === "spades") quickGuide.setAttribute("data-runtime-localize", "off");
+    if (id === "spades" || id === "gin-rummy") quickGuide.setAttribute("data-runtime-localize", "off");
     const quickGuideLabel = document.createElement("strong");
     quickGuideLabel.textContent = guideHeading;
     quickGuide.append(quickGuideLabel);
@@ -846,6 +879,17 @@
         playerHandLabel.textContent = ginBattleText("yourHand");
         playerHandLabel.setAttribute("data-runtime-localize", "off");
       }
+      const resultLabels = [
+        [resultTitle, "resultTitle"],
+        [document.querySelector("#resultNewGame"), "newGame"],
+        [document.querySelector("#resultRestart"), "restart"],
+        [document.querySelector("#resultClose"), "close"],
+      ];
+      resultLabels.forEach(([node, key]) => {
+        if (!node) return;
+        node.textContent = ginShellText(key);
+        node.setAttribute("data-runtime-localize", "off");
+      });
     }
     if (id === "war") statusText?.setAttribute("data-runtime-localize", "off");
     if (id === "old-maid") statusText?.setAttribute("data-runtime-localize", "off");
@@ -900,7 +944,7 @@
       isBattleActive() { return !battle.hidden && rootElement.dataset.screen === "battle"; },
       openBattle() { resultRecorded = false; main.hidden = true; battle.hidden = false; rootElement.dataset.screen = "battle"; render(); window.dispatchEvent(new Event("weightplay:battle-open")); window.dispatchEvent(new Event("weightplay:battle-sync")); window.dispatchEvent(new Event("weightplay:shell-sync")); },
       openMain() { battle.hidden = true; main.hidden = false; rootElement.dataset.screen = "main"; result.hidden = true; window.scrollTo({ top: 0, left: 0, behavior: "auto" }); window.dispatchEvent(new Event("weightplay:shell-sync")); },
-      result(won, message = "") { if (!resultRecorded) { resultRecorded = true; updateStatsView(writeStats(won)); } resultTitle.textContent = won ? t("winner") : t("loser"); resultText.textContent = message || (won ? t("roundOver") : t("roundOver")); result.hidden = false; sound?.[won ? "win" : "reject"]?.(); },
+      result(won, message = "") { if (!resultRecorded) { resultRecorded = true; updateStatsView(writeStats(won)); } resultTitle.textContent = id === "gin-rummy" ? ginShellText(won ? "winner" : "loser") : (won ? t("winner") : t("loser")); resultText.textContent = message || (id === "gin-rummy" ? ginShellText("resultTitle") : t("roundOver")); result.hidden = false; sound?.[won ? "win" : "reject"]?.(); },
       beep(name = "place") { sound?.[name]?.(); },
     };
     const render = () => {
