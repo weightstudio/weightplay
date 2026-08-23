@@ -269,6 +269,67 @@
     if (COMMON[locale]) COMMON[locale].yukonRevealCue = message;
   });
 
+  const YUKON_RECOVERY_COPY = {
+    en: {
+      recovery: "Long route: {moves} moves, {foundations}/52 in Foundations. Use Undo or choose a route that reveals a card or advances a Foundation; Restart starts a fresh deal.",
+      recap: "Progress: {moves} moves · Foundations {foundations}/52.",
+    },
+    "zh-Hant": {
+      recovery: "路線較長：{moves} 步，收牌區 {foundations}/52。可以還原，或選擇能翻出新牌／推進收牌區的路線；重新開始會開一局新牌。",
+      recap: "進度：{moves} 步 · 收牌區 {foundations}/52。",
+    },
+    "zh-Hans": {
+      recovery: "路线较长：{moves} 步，收牌区 {foundations}/52。可以撤销，或选择能翻出新牌／推进收牌区的路线；重新开始会开启一局新牌。",
+      recap: "进度：{moves} 步 · 收牌区 {foundations}/52。",
+    },
+    ja: {
+      recovery: "長いルートです：{moves}手、組札{foundations}/52。元に戻すか、新しいカードをめくる／組札を進めるルートを選びましょう。リスタートで新しい配りを始められます。",
+      recap: "進捗：{moves}手・組札{foundations}/52。",
+    },
+    ko: {
+      recovery: "긴 경로입니다: {moves}번 이동, 기초 더미 {foundations}/52. 실행 취소를 누르거나 새 카드를 공개하거나 기초 더미를 진행하는 경로를 선택하세요. 다시 시작하면 새 배치를 엽니다.",
+      recap: "진행: {moves}번 이동 · 기초 더미 {foundations}/52.",
+    },
+    es: {
+      recovery: "Ruta larga: {moves} movimientos, {foundations}/52 en las fundaciones. Deshaz un movimiento o busca una ruta que revele una carta o avance una fundación; Reiniciar empieza otra partida.",
+      recap: "Progreso: {moves} movimientos · Fundaciones {foundations}/52.",
+    },
+    "pt-BR": {
+      recovery: "Rota longa: {moves} movimentos, {foundations}/52 nas fundações. Desfaça ou escolha uma rota que revele uma carta ou avance uma fundação; Reiniciar começa uma nova distribuição.",
+      recap: "Progresso: {moves} movimentos · Fundações {foundations}/52.",
+    },
+    fr: {
+      recovery: "Longue route : {moves} coups, {foundations}/52 dans les fondations. Annulez un coup ou cherchez une route qui révèle une carte ou avance une fondation ; Recommencer lance une nouvelle donne.",
+      recap: "Progression : {moves} coups · Fondations {foundations}/52.",
+    },
+    de: {
+      recovery: "Langer Weg: {moves} Züge, {foundations}/52 Karten in den Fundamenten. Mache einen Zug rückgängig oder suche einen Weg, der eine Karte aufdeckt oder ein Fundament voranbringt; Neu starten beginnt ein neues Spiel.",
+      recap: "Fortschritt: {moves} Züge · Fundamente {foundations}/52.",
+    },
+    it: {
+      recovery: "Percorso lungo: {moves} mosse, {foundations}/52 nelle basi. Annulla una mossa o cerca un percorso che scopra una carta o faccia avanzare una base; Ricomincia avvia una nuova distribuzione.",
+      recap: "Progressi: {moves} mosse · Basi {foundations}/52.",
+    },
+    ru: {
+      recovery: "Длинный путь: {moves} ходов, в домиках {foundations}/52. Отмените ход или найдите путь, который откроет карту или продвинет домик; «Начать заново» раздаст новую игру.",
+      recap: "Прогресс: {moves} ходов · Домики {foundations}/52.",
+    },
+    hi: {
+      recovery: "लंबा रास्ता: {moves} चालें, फाउंडेशन में {foundations}/52। पूर्ववत करें या ऐसा रास्ता चुनें जो कार्ड खोले या फाउंडेशन बढ़ाए; फिर शुरू करें से नई डील मिलेगी।",
+      recap: "प्रगति: {moves} चालें · फाउंडेशन {foundations}/52।",
+    },
+    ar: {
+      recovery: "مسار طويل: {moves} حركات، {foundations}/52 في الأساسات. تراجع عن حركة أو ابحث عن مسار يكشف بطاقة أو يتقدم في أساس؛ تبدأ «إعادة البدء» توزيعة جديدة.",
+      recap: "التقدم: {moves} حركات · الأساسات {foundations}/52.",
+    },
+  };
+  Object.entries(YUKON_RECOVERY_COPY).forEach(([locale, copy]) => {
+    if (COMMON[locale]) {
+      COMMON[locale].yukonRecovery = copy.recovery;
+      COMMON[locale].yukonResultRecap = copy.recap;
+    }
+  });
+
   const PYRAMID_COACH_COPY = {
     en: "Two legal pairs are open. Pick the pair that reveals more cards.",
     "zh-Hant": "目前有兩組合法牌對。優先選能翻出更多牌的那一組。",
@@ -777,6 +838,10 @@
       this.pendingRemovedMotions = [];
       this.yukonCoachRetired = false;
       this.yukonCoachMove = null;
+      this.yukonHintArmed = false;
+      this.yukonHintBaseline = null;
+      this.yukonHintStallMoves = 0;
+      this.yukonRecoveryShown = false;
       this.pyramidCoachRetired = false;
       this.pyramidCoachMoves = null;
       this.nodes = {};
@@ -785,6 +850,32 @@
     t(key, params) { const copy = COMMON[this.locale] || COMMON.en; return text(copy[key] || COMMON.en[key] || key, params); }
     variantCopy() { const copy = VARIANTS[this.config.variant] || VARIANTS.freecell; return { title: copy.titles[this.locale] || copy.titles.en, target: copy.target[this.locale] || copy.target.en }; }
     resetYukonCoach() { this.yukonCoachRetired = false; this.yukonCoachMove = null; }
+    resetYukonRecovery() { this.yukonHintArmed = false; this.yukonHintBaseline = null; this.yukonHintStallMoves = 0; this.yukonRecoveryShown = false; }
+    yukonProgressSnapshot() {
+      return {
+        hidden: this.game.tableau.flat().filter((card) => !card.faceUp).length,
+        foundations: this.game.foundations.reduce((sum, pile) => sum + pile.cards.length, 0),
+      };
+    }
+    armYukonHint(move) {
+      if (this.config.variant !== "yukon" || !move) return;
+      this.yukonHintArmed = true;
+      this.yukonHintBaseline = this.yukonProgressSnapshot();
+    }
+    recordYukonHintMove() {
+      if (this.config.variant !== "yukon" || !this.yukonHintArmed || !this.yukonHintBaseline) return false;
+      const current = this.yukonProgressSnapshot();
+      const advanced = current.hidden < this.yukonHintBaseline.hidden || current.foundations > this.yukonHintBaseline.foundations;
+      this.yukonHintArmed = false;
+      this.yukonHintBaseline = null;
+      if (advanced) {
+        this.yukonHintStallMoves = 0;
+        this.yukonRecoveryShown = false;
+        return false;
+      }
+      this.yukonHintStallMoves += 1;
+      return this.yukonHintStallMoves >= 6 && !this.yukonRecoveryShown;
+    }
     retireYukonCoach() { if (this.config.variant === "yukon") { this.yukonCoachRetired = true; this.yukonCoachMove = null; } }
     resetPyramidCoach() { this.pyramidCoachRetired = false; this.pyramidCoachMoves = null; }
     retirePyramidCoach() { if (this.config.variant === "pyramid") { this.pyramidCoachRetired = true; this.pyramidCoachMoves = null; } }
@@ -845,15 +936,15 @@
     }
     bind() {
       this.nodes.startBtn?.addEventListener("click", () => this.showBattle());
-      this.nodes.restartBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetPyramidCoach(); this.game.newGame(this.game.seed); this.showBattle(); });
-      this.nodes.newGameBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetPyramidCoach(); this.game.newGame(Date.now()); this.showBattle(); });
+      this.nodes.restartBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetYukonRecovery(); this.resetPyramidCoach(); this.game.newGame(this.game.seed); this.showBattle(); });
+      this.nodes.newGameBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetYukonRecovery(); this.resetPyramidCoach(); this.game.newGame(Date.now()); this.showBattle(); });
       this.nodes.battleBackBtn?.addEventListener("click", () => this.showMain());
-      this.nodes.battleNewBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetPyramidCoach(); this.game.newGame(Date.now()); this.render(); });
-      this.nodes.battleRestartBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetPyramidCoach(); this.game.newGame(this.game.seed); this.render(); });
-      this.nodes.undoBtn?.addEventListener("click", () => { if (this.game.undo()) { this.feedback(this.t("undo")); this.render(); } else this.feedback(this.t("noMoves")); });
+      this.nodes.battleNewBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetYukonRecovery(); this.resetPyramidCoach(); this.game.newGame(Date.now()); this.render(); });
+      this.nodes.battleRestartBtn?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetYukonRecovery(); this.resetPyramidCoach(); this.game.newGame(this.game.seed); this.render(); });
+      this.nodes.undoBtn?.addEventListener("click", () => { this.resetYukonRecovery(); if (this.game.undo()) { this.feedback(this.t("undo")); this.render(); } else this.feedback(this.t("noMoves")); });
       this.nodes.hintBtn?.addEventListener("click", () => this.hint());
-      this.nodes.resultNewGame?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetPyramidCoach(); this.game.newGame(Date.now()); this.hideResult(); this.render(); });
-      this.nodes.resultRestart?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetPyramidCoach(); this.game.newGame(this.game.seed); this.hideResult(); this.render(); });
+      this.nodes.resultNewGame?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetYukonRecovery(); this.resetPyramidCoach(); this.game.newGame(Date.now()); this.hideResult(); this.render(); });
+      this.nodes.resultRestart?.addEventListener("click", () => { this.clearFeedback(); this.resetYukonCoach(); this.resetYukonRecovery(); this.resetPyramidCoach(); this.game.newGame(this.game.seed); this.hideResult(); this.render(); });
       this.nodes.resultClose?.addEventListener("click", () => this.showMain());
       this.nodes.localeSelect?.addEventListener("change", (event) => { this.locale = event.target.value; try { localStorage.setItem("weightPlayLocale", this.locale); } catch (_error) {} this.refreshCopy(); this.render(); });
       this.nodes.soundBtn?.addEventListener("click", () => { this.audio.setEnabled(!this.audio.enabled); this.refreshSound(); });
@@ -882,7 +973,7 @@
       this.nodes.battleBackBtn?.setAttribute("aria-label", this.t("back"));
       this.refreshSound();
     }
-    showMain() { this.active = false; this.nodes.battleScreen.hidden = true; this.nodes.mainScreen.hidden = false; document.body.dataset.screen = "main"; this.renderMain(); window.dispatchEvent(new Event("weightplay:shell-sync")); }
+    showMain() { this.active = false; this.resetYukonRecovery(); this.nodes.battleScreen.hidden = true; this.nodes.mainScreen.hidden = false; document.body.dataset.screen = "main"; this.renderMain(); window.dispatchEvent(new Event("weightplay:shell-sync")); }
     showBattle() { this.active = true; this.nodes.mainScreen.hidden = true; this.nodes.battleScreen.hidden = false; document.body.dataset.screen = "battle"; this.render(); window.dispatchEvent(new Event("weightplay:battle-open")); window.dispatchEvent(new Event("weightplay:battle-sync")); window.dispatchEvent(new Event("weightplay:shell-sync")); this.nodes.battleBackBtn?.focus({ preventScroll: true }); }
     renderMain() { this.setText("#statistics", ""); }
     captureMoveRects() {
@@ -979,6 +1070,20 @@
           this.nodes.boardStatus.textContent = "";
         }
       }, 1600);
+    }
+    showYukonRecoveryCue() {
+      if (this.config.variant !== "yukon" || !this.nodes.boardStatus || this.game.won || this.game.lost) return;
+      const progress = this.yukonProgressSnapshot();
+      this.yukonRecoveryShown = true;
+      this.nodes.boardStatus.dataset.state = "yukon-recovery";
+      this.nodes.boardStatus.textContent = this.t("yukonRecovery", { moves: this.game.moves, foundations: progress.foundations });
+      clearTimeout(this.statusTimer);
+      this.statusTimer = setTimeout(() => {
+        if (this.nodes.boardStatus && !this.game.won && !this.game.lost) {
+          delete this.nodes.boardStatus.dataset.state;
+          this.nodes.boardStatus.textContent = "";
+        }
+      }, 2600);
     }
     showSequenceCue(size) {
       if (size < 2 || !this.nodes.boardStatus) return;
@@ -1112,7 +1217,7 @@
         this.pendingMoveRects = this.captureMoveRects();
         const sequenceSize = this.sequenceCueSize(this.game.selected, dest);
         const yukonReveal = this.yukonRevealWillOccur(this.game.selected);
-        if (this.game.moveClassic(this.game.selected, dest)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.retireYukonCoach(); this.game.selected = null; this.render(); this.showSequenceCue(sequenceSize); this.showYukonRevealCue(yukonReveal); }
+        if (this.game.moveClassic(this.game.selected, dest)) { const recoveryCue = this.recordYukonHintMove(); this.clearFeedback(); this.hintMove = null; this.audio.place(); this.retireYukonCoach(); this.game.selected = null; this.render(); this.showSequenceCue(sequenceSize); this.showYukonRevealCue(yukonReveal); if (recoveryCue) this.showYukonRecoveryCue(); }
         else { this.pendingMoveRects = null; this.feedback(this.t("wrong")); }
         return;
       }
@@ -1193,7 +1298,7 @@
           this.pendingMoveRects = this.captureMoveRects();
           const sequenceSize = this.sequenceCueSize(source, dest);
           const yukonReveal = this.yukonRevealWillOccur(source);
-          if (this.game.moveClassic(source, dest)) { this.clearFeedback(); this.hintMove = null; this.audio.place(); this.retireYukonCoach(); this.render(); this.showSequenceCue(sequenceSize); this.showYukonRevealCue(yukonReveal); }
+          if (this.game.moveClassic(source, dest)) { const recoveryCue = this.recordYukonHintMove(); this.clearFeedback(); this.hintMove = null; this.audio.place(); this.retireYukonCoach(); this.render(); this.showSequenceCue(sequenceSize); this.showYukonRevealCue(yukonReveal); if (recoveryCue) this.showYukonRecoveryCue(); }
           else { this.pendingMoveRects = null; this.feedback(this.t("wrong")); }
         }
         else if (this.config.variant === "pyramid") {
@@ -1239,12 +1344,12 @@
         this.feedback(this.t("noMoves"));
         return;
       }
-      this.clearFeedback(); this.hintMove = move; this.render(); clearTimeout(this.hintTimer); this.hintTimer = setTimeout(() => { this.game.selected = null; this.hintMove = null; this.render(); }, 2400);
+      this.clearFeedback(); this.armYukonHint(move); this.hintMove = move; this.render(); clearTimeout(this.hintTimer); this.hintTimer = setTimeout(() => { this.game.selected = null; this.hintMove = null; this.render(); }, 2400);
     }
     clearFeedback() { if (!this.nodes.toast) return; this.nodes.toast.hidden = true; this.nodes.toast.textContent = ""; clearTimeout(this.toastTimer); }
     feedback(message) { if (!this.nodes.toast) return; this.nodes.toast.setAttribute("role", "alert"); this.nodes.toast.setAttribute("aria-live", "assertive"); this.nodes.toast.textContent = message; this.nodes.toast.hidden = false; if (this.nodes.boardStatus && !this.game.won && !this.game.lost) this.nodes.boardStatus.textContent = message; clearTimeout(this.toastTimer); clearTimeout(this.statusTimer); this.toastTimer = setTimeout(() => { this.nodes.toast.hidden = true; }, 1800); this.statusTimer = setTimeout(() => { if (this.nodes.boardStatus && !this.game.won && !this.game.lost) this.nodes.boardStatus.textContent = ""; }, 1800); }
     hideResult() { if (this.nodes.resultOverlay) this.nodes.resultOverlay.hidden = true; }
-    showResult() { if (!this.nodes.resultOverlay || (!this.game.won && !this.game.lost)) return; this.nodes.resultOverlay.hidden = false; this.nodes.resultTitle.textContent = this.game.won ? this.t("win") : this.t("lose"); const recap = this.config.variant === "golf" ? ` ${this.t("golfResultRecap", { best: this.game.bestCombo })}` : this.config.variant === "freecell" ? ` ${this.t("freecellResultRecap", { seed: this.game.seed })}` : ""; this.nodes.resultText.textContent = `${this.game.won ? this.t("winText") : this.t("loseText")}${recap}`; }
+    showResult() { if (!this.nodes.resultOverlay || (!this.game.won && !this.game.lost)) return; this.nodes.resultOverlay.hidden = false; this.nodes.resultTitle.textContent = this.game.won ? this.t("win") : this.t("lose"); const progress = this.config.variant === "yukon" ? this.yukonProgressSnapshot() : null; const recap = this.config.variant === "yukon" ? ` ${this.t("yukonResultRecap", { moves: this.game.moves, foundations: progress.foundations })}` : this.config.variant === "golf" ? ` ${this.t("golfResultRecap", { best: this.game.bestCombo })}` : this.config.variant === "freecell" ? ` ${this.t("freecellResultRecap", { seed: this.game.seed })}` : ""; this.nodes.resultText.textContent = `${this.game.won ? this.t("winText") : this.t("loseText")}${recap}`; }
     render() {
       // A Yukon deal can settle into a deadlock between the last successful
       // move and the next visible interaction. Re-evaluate its no-move

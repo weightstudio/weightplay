@@ -106,6 +106,7 @@ body[data-wp-game-id="pyramid-solitaire"] .stock-pile.hint-source { border-style
 .board-status { min-height: 18px; color: var(--classic-gold); font-size: 12px; font-weight: 800; text-align: center; }
 .board-status[data-state="success"] { animation: classic-sequence-cue 420ms cubic-bezier(.2,.8,.3,1); }
 .board-status[data-state="yukon-reveal"] { color: var(--classic-gold); animation: classic-sequence-cue 520ms cubic-bezier(.2,.8,.3,1); }
+.board-status[data-state="yukon-recovery"] { color: var(--classic-accent); animation: classic-coach-cue 620ms cubic-bezier(.2,.8,.3,1); }
 .board-status[data-state="pair"] { animation: classic-pair-cue 520ms cubic-bezier(.2,.8,.3,1); }
 .board-status[data-state="peak"] { color: var(--classic-gold); animation: classic-peak-cue 620ms cubic-bezier(.2,.8,.3,1); }
 .board-status[data-state="stock"] { animation: classic-stock-cue 360ms cubic-bezier(.2,.8,.3,1); }
