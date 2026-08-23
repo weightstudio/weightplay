@@ -621,7 +621,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Animal Crystal Survivor",
     "ru": "Animal Crystal Survivor",
     "hi": "Animal Crystal Survivor",
-    "ar": "Animal Crystal Survivor"
+    "ar": "الناجي من الكريستال الحيواني"
   },
   "animal-quiz": {
     "__localizedExact": true,
@@ -1156,16 +1156,16 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "en": "Animal Mosaic Clues",
     "zh-Hant": "動物馬賽克線索",
     "zh-Hans": "动物马赛克线索",
-    "ja": "動物モザイクの手がかり",
+    "ja": "どうぶつモザイク手掛かり",
     "ko": "동물 모자이크 단서",
-    "es": "Pistas de mosaicos de animales",
-    "pt-BR": "Pistas de mosaico de animais",
-    "fr": "Indices de mosaïque animale",
-    "de": "Tiermosaik-Hinweise",
-    "it": "Indizi di mosaici animali",
-    "ru": "Подсказки к мозаике животных",
-    "hi": "पशु मोज़ेक सुराग",
-    "ar": "Animal Mosaic Clues"
+    "es": "Pistas de mosaicos animales",
+    "pt-BR": "Pistas de Mosaicos Animais",
+    "fr": "Indices de mosaïques animaliers",
+    "de": "Tierische Mosaik-Hinweise",
+    "it": "Indizi dei mosaici animali",
+    "ru": "Подсказки для мозаик с животными",
+    "hi": "जानवर मोज़ेक संकेत",
+    "ar": "ألغاز فسيفساء الحيوانات"
   },
   "animal-prism-breakers": {
     "__localizedExact": true,

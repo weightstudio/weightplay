@@ -358,7 +358,7 @@
        "mainProgress": "تم مسح المراحل {cleared} / 30",
        "menuHint": "الهدف: جمع المفاتيح الذهبية قبل الساعة 3:00. تمنح البلورات خبرة، وتساعد الترقيات الحارس على البقاء على قيد الحياة لفترة أطول.",
        "menuTitle": "البقاء على قيد الحياة في بستان الكريستال.",
-       "soundOff": "عَبَّر عن رأيه بقوَّة ؛ أعلنَ عن وجوده بذكر اسمه",
+       "soundOff": "إيقاف الصوت",
        "equipmentTab": "المعدات والأجهزة.",
        "stageTab": "المراحل",
        "expeditionRecordTitle": "سجل الرحلة الاستكشافية",
@@ -368,14 +368,14 @@
        "patrolRankComplete": "أعلى مرتبة · {current} مفاتيح مدى الحياة",
        "patrolRankUp": "رتب! أنت الآن {rank}.",
        "patrolRankNext": "تقدم الدوريات: {current} / {target} مفاتيح نحو {rank}.",
-       "rankScout": "كريستال سكاوت",
+       "rankScout": "كشاف الكريستال",
        "rankKeeper": "حارس البستان",
-       "rankRanger": "كريستال رينجر",
-       "rankWarden": "مراقب الكريستال",
-       "rankGuardian": "جروف جارديان",
+       "rankRanger": "حارس الكريستال",
+       "rankWarden": "وصي الكريستال",
+       "rankGuardian": "حارس البستان",
        "controlKeys": "مفاتيح WASD /الأسهم",
        "controlMove": "اضغط أو اسحب للتحرك",
-       "controlAttack": "لا شيء إلى!",
+       "controlAttack": "هجوم تلقائي",
        "chooseStage": "اختيار مرحلة",
        "stage": "المرحلة",
        "stageProgress": "{unlocked} / 30 مفتوح",
@@ -387,7 +387,7 @@
        "stageReady": "جاهز",
        "bossCheckpoint": "نقطة تفتيش الرئيس",
        "objective": "جمع {keys} مفاتيح · البقاء على قيد الحياة 3:00{boss}",
-       "bossObjective": "قم بهزيمة زعيمي",
+       "bossObjective": "اهزم الزعيم",
        "nextStage": "المرحلة القادمة",
        "charmName": "سحر الكريستال",
        "charmEffect": "بدء التشغيل الدائم: الحد الأقصى للصحة 7 → 8 · نصف قطر الالتقاط 54 → 68.",
@@ -400,22 +400,22 @@
        "disableSound": "تعطيل الصوت",
        "charmConfirmLabel": "تأكيد تعويذة الكريستال. أنفق 12 ماسة. الرصيد {before} إلى {after}.",
        "enableSound": "فعّل الصوت",
-       "startRun": "ابدأ الركض",
+       "startRun": "ابدأ الجولة",
        "menu": "القائمة",
        "backToLobby": "العودة إلى الردهة",
-       "playfield": "ملعب للناجين من الكريستال الحيواني",
-       "keys": "عدد الغرف",
-       "time": "الزمن",
+       "playfield": "ساحة لعب الناجي من الكريستال الحيواني",
+       "keys": "المفاتيح",
+       "time": "الوقت",
        "playfieldState": "المرحلة {stage}/{stageCount}. الوقت {time}. المفاتيح الذهبية {keys}/{target}. الصحة {hp}/{maxHp}. المستوى {level}. تحرك باستخدام مفاتيح WASD أو مفاتيح الأسهم، أو انقر وانقر واسحب. يهاجم الحارس تلقائيًا أقرب عدو في النطاق. قاعدة المرحلة: {rule}",
        "level": "المستوى",
-       "crystals": "البلورات في البول",
-       "hp": "إتش بي",
+       "crystals": "البلورات",
+       "hp": "الصحة",
        "playHint": "الهدف: جمع المفاتيح الذهبية قبل الساعة 3:00. امسك البلورات لرفع مستواها، ثم اختر الترقيات عند ظهور البطاقات.",
        "hintKeyClose": "المفتاح الذهبي القريب: انتقل من خلاله لرفع درجاتك.",
        "hintCrystal": "البلورات على الأرض: اجمعها لملء شريط خبرة.",
        "hintCombat": "الهجوم التلقائي يعمل: احتفظ بالظلال داخل النطاق الأخضر الناعم.",
        "hintUpgradeSoon": "شبه مستوية: اجمع بلورة أخرى واختر قدرة أقوى.",
-       "loading": "إنزال",
+       "loading": "جارٍ التحميل",
        "tryAgain": "أعد المحاولة",
        "chooseUpgrade": "اختيار ترقية",
        "backToMenu": "العودة إلى القائمة",
@@ -423,7 +423,7 @@
        "backToStages": "العودة إلى المراحل",
        "focus": "التركيز",
        "problemSolving": "حل المشكلات",
-       "timeUp": "إنتهي الوقت!",
+       "timeUp": "انتهى الوقت!",
        "stageClear": "تم إنجاز المستوى",
        "objectiveMissed": "الهدف غير مكتمل",
        "runFailed": "انتهى التشغيل",
@@ -456,9 +456,9 @@
        "upgradePickupRadiusDesc": "اجمع البلورات والمفاتيح القريبة من مكان أبعد.",
        "upgradeValue": "{stat}: {current} → {next}",
        "statDamage": "الأضرار",
-       "statRange": "المتوسط",
+       "statRange": "المدى",
        "statSpeed": "سرعة الحركة",
-       "statHp": "اعلى نقاط محرزة",
+       "statHp": "الحد الأقصى للصحة",
        "statCooldown": "الفاصل الزمني للهجوم",
        "statPickup": "نطاق الاستلام",
        "mainStart": "ابدأ اللعبة"
@@ -1128,6 +1128,7 @@
     playfieldLabelSignature = "";
     nodes.menuBtn.setAttribute("aria-label", t("menu"));
     nodes.resultMenuBtn.setAttribute("aria-label", t("backToStages"));
+    nodes.stageBackBtn?.setAttribute("aria-label", t("backToMenu"));
     nodes.settingsBtn?.setAttribute("aria-label", t("audioSettings"));
     nodes.settingsPopover?.setAttribute("aria-label", t("audioSettings"));
     updatePageMeta();
@@ -1529,7 +1530,13 @@
 
   function renderStageSelector(shouldScroll = true) {
     if (!nodes.stageRail) return;
-    nodes.stageSelectTitle.textContent = locale === "zh-Hant" ? "\u9078\u64c7\u6c34\u6676\u8def\u7dda" : locale === "es" ? "Elige una ruta de cristal" : "Choose a Crystal Route";
+    nodes.stageSelectTitle.textContent = locale === "zh-Hant"
+      ? "\u9078\u64c7\u6c34\u6676\u8def\u7dda"
+      : locale === "es"
+        ? "Elige una ruta de cristal"
+        : locale === "ar"
+          ? "اختر مساراً كريستالياً"
+          : "Choose a Crystal Route";
     nodes.stageProgressText.textContent = t("stageProgress", { unlocked: save.unlockedStage });
     nodes.stageSetupText.textContent = t("stageSetup");
     updateStageCheckpoint();

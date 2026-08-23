@@ -1944,6 +1944,18 @@
     hi: { kicker: "WeightPlay की मौलिक गेम गाइड", suffix: "गेम गाइड" },
     ar: { kicker: "دليل لعبة WeightPlay الأصلية", suffix: "دليل اللعبة" },
   };
+  Object.assign(labels, {
+    "zh-Hans": { kicker: "WeightPlay 原创游戏指南", titleSuffix: "游戏指南", gameplay: "玩法", genre: "类型", recommendedAge: "建议年龄", difficulty: "难度", estimatedTime: "预估游玩时间", skills: "练习能力", worldAndMission: "世界与任务", gameSystems: "游戏系统", progressionAndDifficulty: "关卡与难度成长", developerNote: "开发设计理念", howToPlay: "玩法说明", strategyTips: "策略提示", parentNote: "家长说明", progressGuide: "进度指南", progressNote: "分数仅用于娱乐与本地进度记录，不是智力测验、医疗诊断、心理测验或正式学校评估。", beginner: "入门", good: "良好", excellent: "优秀", faq: "常见问题", relatedGames: "相关游戏", relatedIntro: "因为这款游戏会练习 {skill}，也可以试试这些游戏：", relatedBySkill: "更多 {skill} 游戏", relatedByAge: "更多 {age} 游戏", relatedAnimal: "更多动物游戏", guideLabel: "{title} 游戏信息" },
+    ja: { kicker: "WeightPlay オリジナルゲームガイド", titleSuffix: "ゲームガイド", gameplay: "ゲーム内容", genre: "ジャンル", recommendedAge: "推奨年齢", difficulty: "難易度", estimatedTime: "目安時間", skills: "身につく力", worldAndMission: "世界とミッション", gameSystems: "ゲームの仕組み", progressionAndDifficulty: "進行と難易度", developerNote: "開発者メモ", howToPlay: "遊び方", strategyTips: "攻略のヒント", parentNote: "保護者向け", progressGuide: "進行ガイド", progressNote: "スコアは遊びとローカル進行の記録用で、知能検査や医療診断ではありません。", beginner: "入門", good: "良好", excellent: "最高", faq: "よくある質問", relatedGames: "関連ゲーム", relatedIntro: "このゲームは {skill} を練習するので、次はこちら：", relatedBySkill: "{skill} のゲーム", relatedByAge: "{age} 向けゲーム", relatedAnimal: "動物ゲーム", guideLabel: "{title} ゲーム情報" },
+    ko: { kicker: "WeightPlay 오리지널 게임 가이드", titleSuffix: "게임 가이드", gameplay: "게임플레이", genre: "장르", recommendedAge: "권장 연령", difficulty: "난이도", estimatedTime: "예상 시간", skills: "연습 능력", worldAndMission: "세계와 목표", gameSystems: "게임 시스템", progressionAndDifficulty: "진행과 난이도", developerNote: "개발자 디자인 노트", howToPlay: "게임 방법", strategyTips: "전략 팁", parentNote: "보호자 안내", progressGuide: "진행 안내", progressNote: "점수는 재미와 로컬 진행 기록을 위한 것이며 지능 검사나 의료 진단이 아닙니다.", beginner: "입문", good: "좋음", excellent: "최고", faq: "자주 묻는 질문", relatedGames: "관련 게임", relatedIntro: "이 게임은 {skill}을 연습하므로 다음 게임도 해 보세요:", relatedBySkill: "{skill} 게임", relatedByAge: "{age}용 게임", relatedAnimal: "동물 게임", guideLabel: "{title} 게임 정보" },
+    es: { kicker: "Guía original de WeightPlay", titleSuffix: "Guía del juego", gameplay: "Jugabilidad", genre: "Género", recommendedAge: "Edad recomendada", difficulty: "Dificultad", estimatedTime: "Tiempo estimado", skills: "Habilidades", worldAndMission: "Mundo y misión", gameSystems: "Sistemas del juego", progressionAndDifficulty: "Progreso y dificultad", developerNote: "Nota de diseño", howToPlay: "Cómo jugar", strategyTips: "Consejos", parentNote: "Nota para familias", progressGuide: "Guía de progreso", progressNote: "Las puntuaciones son solo para diversión y progreso local; no son una prueba de inteligencia ni un diagnóstico.", beginner: "Principiante", good: "Bien", excellent: "Excelente", faq: "Preguntas frecuentes", relatedGames: "Juegos relacionados", relatedIntro: "Como este juego practica {skill}, prueba estos:", relatedBySkill: "Más juegos de {skill}", relatedByAge: "Más juegos para {age}", relatedAnimal: "Más juegos de animales", guideLabel: "Información de {title}" },
+    "pt-BR": { kicker: "Guia original do WeightPlay", titleSuffix: "Guia do jogo", gameplay: "Jogabilidade", genre: "Gênero", recommendedAge: "Idade recomendada", difficulty: "Dificuldade", estimatedTime: "Tempo estimado", skills: "Habilidades", worldAndMission: "Mundo e missão", gameSystems: "Sistemas do jogo", progressionAndDifficulty: "Progresso e dificuldade", developerNote: "Nota de design", howToPlay: "Como jogar", strategyTips: "Dicas de estratégia", parentNote: "Nota para famílias", progressGuide: "Guia de progresso", progressNote: "As pontuações servem apenas para diversão e progresso local; não são teste de inteligência nem diagnóstico.", beginner: "Iniciante", good: "Bom", excellent: "Excelente", faq: "Perguntas frequentes", relatedGames: "Jogos relacionados", relatedIntro: "Como este jogo pratica {skill}, experimente estes:", relatedBySkill: "Mais jogos de {skill}", relatedByAge: "Mais jogos para {age}", relatedAnimal: "Mais jogos de animais", guideLabel: "Informações de {title}" },
+    fr: { kicker: "Guide original WeightPlay", titleSuffix: "Guide du jeu", gameplay: "Jeu", genre: "Genre", recommendedAge: "Âge conseillé", difficulty: "Difficulté", estimatedTime: "Temps estimé", skills: "Compétences", worldAndMission: "Monde et mission", gameSystems: "Systèmes du jeu", progressionAndDifficulty: "Progression et difficulté", developerNote: "Note de conception", howToPlay: "Comment jouer", strategyTips: "Conseils", parentNote: "Note aux parents", progressGuide: "Guide de progression", progressNote: "Les scores servent au plaisir et au suivi local, pas à un test d’intelligence ni à un diagnostic.", beginner: "Débutant", good: "Bien", excellent: "Excellent", faq: "Questions fréquentes", relatedGames: "Jeux associés", relatedIntro: "Ce jeu entraîne {skill} : essayez aussi :", relatedBySkill: "Autres jeux de {skill}", relatedByAge: "Jeux pour {age}", relatedAnimal: "Autres jeux d’animaux", guideLabel: "Informations sur {title}" },
+    de: { kicker: "Originaler WeightPlay-Spielguide", titleSuffix: "Spielanleitung", gameplay: "Spielweise", genre: "Genre", recommendedAge: "Empfohlenes Alter", difficulty: "Schwierigkeit", estimatedTime: "Geschätzte Zeit", skills: "Fähigkeiten", worldAndMission: "Welt und Mission", gameSystems: "Spielsysteme", progressionAndDifficulty: "Fortschritt und Schwierigkeit", developerNote: "Designnotiz", howToPlay: "So wird gespielt", strategyTips: "Strategietipps", parentNote: "Hinweis für Eltern", progressGuide: "Fortschrittsguide", progressNote: "Punkte dienen nur dem Spielspaß und lokalen Fortschritt, nicht einem Intelligenztest oder einer Diagnose.", beginner: "Anfänger", good: "Gut", excellent: "Ausgezeichnet", faq: "Häufige Fragen", relatedGames: "Ähnliche Spiele", relatedIntro: "Dieses Spiel trainiert {skill}; probiere auch:", relatedBySkill: "Weitere {skill}-Spiele", relatedByAge: "Weitere Spiele für {age}", relatedAnimal: "Weitere Tierspiele", guideLabel: "Informationen zu {title}" },
+    it: { kicker: "Guida originale WeightPlay", titleSuffix: "Guida al gioco", gameplay: "Gioco", genre: "Genere", recommendedAge: "Età consigliata", difficulty: "Difficoltà", estimatedTime: "Tempo stimato", skills: "Abilità", worldAndMission: "Mondo e missione", gameSystems: "Sistemi di gioco", progressionAndDifficulty: "Progressione e difficoltà", developerNote: "Nota di design", howToPlay: "Come si gioca", strategyTips: "Consigli strategici", parentNote: "Nota per i genitori", progressGuide: "Guida ai progressi", progressNote: "I punteggi servono solo per il divertimento e i progressi locali, non sono test d’intelligenza o diagnosi.", beginner: "Principiante", good: "Buono", excellent: "Eccellente", faq: "Domande frequenti", relatedGames: "Giochi correlati", relatedIntro: "Questo gioco allena {skill}: prova anche:", relatedBySkill: "Altri giochi di {skill}", relatedByAge: "Altri giochi per {age}", relatedAnimal: "Altri giochi di animali", guideLabel: "Informazioni su {title}" },
+    ru: { kicker: "Оригинальное руководство WeightPlay", titleSuffix: "Руководство по игре", gameplay: "Геймплей", genre: "Жанр", recommendedAge: "Рекомендуемый возраст", difficulty: "Сложность", estimatedTime: "Примерное время", skills: "Навыки", worldAndMission: "Мир и цель", gameSystems: "Игровые системы", progressionAndDifficulty: "Прогресс и сложность", developerNote: "Заметка разработчика", howToPlay: "Как играть", strategyTips: "Советы", parentNote: "Для родителей", progressGuide: "Путеводитель по прогрессу", progressNote: "Очки нужны только для игры и локального прогресса, это не тест интеллекта и не диагноз.", beginner: "Начало", good: "Хорошо", excellent: "Отлично", faq: "Частые вопросы", relatedGames: "Похожие игры", relatedIntro: "Эта игра тренирует {skill}; попробуйте также:", relatedBySkill: "Другие игры про {skill}", relatedByAge: "Игры для возраста {age}", relatedAnimal: "Другие игры про животных", guideLabel: "Информация об игре {title}" },
+    hi: { kicker: "WeightPlay की मौलिक गेम गाइड", titleSuffix: "गेम गाइड", gameplay: "गेमप्ले", genre: "शैली", recommendedAge: "अनुशंसित आयु", difficulty: "कठिनाई", estimatedTime: "अनुमानित समय", skills: "अभ्यास कौशल", worldAndMission: "दुनिया और लक्ष्य", gameSystems: "गेम सिस्टम", progressionAndDifficulty: "प्रगति और कठिनाई", developerNote: "डिज़ाइन नोट", howToPlay: "कैसे खेलें", strategyTips: "रणनीति संकेत", parentNote: "अभिभावक सूचना", progressGuide: "प्रगति गाइड", progressNote: "स्कोर केवल मनोरंजन और स्थानीय प्रगति के लिए हैं; ये बुद्धि परीक्षण या निदान नहीं हैं।", beginner: "शुरुआत", good: "अच्छा", excellent: "उत्कृष्ट", faq: "अक्सर पूछे गए प्रश्न", relatedGames: "संबंधित गेम", relatedIntro: "यह गेम {skill} का अभ्यास कराता है, इसलिए ये गेम भी आज़माएँ:", relatedBySkill: "{skill} के और गेम", relatedByAge: "{age} के लिए और गेम", relatedAnimal: "और पशु गेम", guideLabel: "{title} गेम की जानकारी" },
+  });
 
   function guideIdentity(game, audience) {
     if (audience !== "general" || game.useCustomGuideIdentity === true) {
@@ -2851,6 +2863,69 @@
       ["كيف أستخدم الدرع؟", "اضغط الدرع لعبور خطر أو الاقتراب من الحارس. سعته محدودة، وتنهي خمس اصطدامات غير محمية الجولة."],
       ["ما الذي يتغير في الموجة الثالثة؟", "تظهر نواة حارس برتقالية ويزداد الضغط، لذلك تصبح إشارة النواة وتوقيت الدرع مهمين."],
       ["هل تُحفظ التقدمات؟", "تُحفظ أفضل نتيجة وتفضيل الصوت محليًا في هذا المتصفح، ولا يلزم حساب."],
+    ],
+  };
+
+  localizedGames["ar"]["animal-crystal-survivor"] = {
+    ...games["animal-crystal-survivor"],
+    title: "الناجي من الكريستال الحيواني",
+    difficulty: "متوسط",
+    time: "3 دقائق لكل مرحلة",
+    gameplay: "حملة حركة وبقاء من 30 مرحلة",
+    genre: ["حركة", "بقاء", "حملة", "معركة زعيم", "حيوانات"],
+    skills: ["رد الفعل", "التركيز", "حل المشكلات"],
+    guideKicker: "دليل لعبة WeightPlay الأصلية",
+    guideTitleSuffix: "دليل حملة من 30 مرحلة",
+    useCustomGuideIdentity: true,
+    noteTitle: "معلومات اللاعب والحفظ",
+    hideScoreBands: true,
+    showSkills: false,
+    showRelatedSkill: false,
+    intro: "الناجي من الكريستال الحيواني حملة دورية فورية من 30 مرحلة، تعتمد على الحركة والهجمات التلقائية والترقيات المؤقتة والمخاطر الواضحة وستة زعماء حيوانيين أصليين. تدوم كل جولة حتى ثلاث دقائق، ولها قاعدة وهدف مفاتيح وفتح محفوظ.",
+    story: [
+      "تحافظ ستة منارات كريستالية على انفتاح مسارات بستان الكريستال. بعثت نبضة الكسوف المفاتيح الذهبية بعيداً وحولت الحيوانات المألوفة إلى وحوش ظل. يحمل حارس الكريستال المفاتيح، ويهدئ الحيوانات المتأثرة، ويعيد ربط مسار واحد في كل مرة.",
+      "المرحلة 5 و10 و15 و20 و25 و30 هي نقاط حراسة. هزيمة متعقب الجذور وملكة عثة المنشور وملك خنزير الشوك والنمر الجمر وطائر العاصفة روك وعملاق الكسوف تعيد ربط المناطق الست وتنهي الحلقة تحت البستان.",
+    ],
+    systems: [
+      "تحرك باللمس أو المؤشر أو WASD أو الأسهم. يستهدف الحارس تلقائياً أقرب عدو داخل دائرة المدى، بينما يختار اللاعب المسافة ومسار الجمع وتوقيت تفادي الخطر.",
+      "تحقق المفاتيح الذهبية هدف المرحلة وتضيف إلى رتبة الدورية طوال اللعبة. تسقط البلورات من الأعداء المهدئين، وعند كل ترقية تتوقف اللعبة وتعرض ثلاثة اختيارات من الضرر والمدى والسرعة والحد الأقصى للصحة وفاصل الهجوم ونطاق الالتقاط.",
+      "تفرض ثعالب الظل ضغطاً ثابتاً، وتقترب الفهود بسرعة، وتتحمل الخنازير الكريستالية هجمات أكثر. تضيف المراحل المتقدمة دروعاً قابلة للكسر واندفاعات معلنة وأرضاً حارقة وبلورات منجرفة وضربات منعكسة وحلقة كسوف آمنة متحركة.",
+      "تنجح المرحلة عند 3:00 فقط إذا اكتمل هدف المفاتيح المطبوع. وتتطلب مراحل الزعماء تهدئة الحارس أيضاً. يسجل تفويت الهدف إحصاءات محلية، لكنه لا يفتح المسار التالي.",
+    ],
+    how: [
+      "اختر بطاقة مفتوحة من مسار المراحل الأفقي ذي الثلاثين بطاقة واقرأ قاعدتها.",
+      "حرّك الحارس بينما يتولى الهجوم التلقائي أقرب هدف داخل المدى.",
+      "اجمع عدد المفاتيح والبلورات الظاهر قبل انتهاء المؤقت.",
+      "غادر أشكال التحذير المتقطعة قبل أن تتحول إلى جذور أو نار أو برق أو مسارات صلبة.",
+      "في كل مرحلة خامسة، اهزم الزعيم المسمى بالإضافة إلى إكمال هدف المفاتيح.",
+      "استخدم النتيجة لإعادة المحاولة أو المتابعة أو العودة إلى مسار المراحل.",
+    ],
+    strategyTips: [
+      "اجمع الخبرة مبكراً حتى تغيّر الترقية الأولى جزءاً أكبر من الدورية.",
+      "اعتبر دائرة الهجوم الباهتة دليلاً للمسافة، وتحرك قرب حافتها الخارجية.",
+      "اعبر مسار الاندفاع جانبياً بدلاً من الابتعاد مباشرة عن الحيوان المندفع.",
+      "انتظر اختفاء درع ملكة عثة المنشور الظاهر، ثم هاجم خلال الفتحة.",
+      "اتبع حلقة الكسوف الآمنة قبل مطاردة مفتاح خارجها.",
+    ],
+    progression: [
+      "تعرّف المراحل 1–5 على الحركة والهجوم التلقائي والمفاتيح وأول نقطة حراسة.",
+      "تضيف المراحل 6–10 ضغط الفهود والاندفاعات والأهداف المتحركة مع ملك خنزير الشوك.",
+      "تضيف المراحل 11–15 درع ملكة عثة المنشور وتوقيت فتحه قبل مواجهة الحارس.",
+      "تضيف المراحل 16–20 الأرض الحارقة والبلورات المنجرفة ثم النمر الجمر.",
+      "تضيف المراحل 21–25 الضربات المنعكسة وطائر العاصفة روك.",
+      "تجمع المراحل 26–30 القواعد السابقة وحلقة الكسوف الآمنة وعملاق الكسوف.",
+    ],
+    designNote: "تحافظ الحملة على مسار قرار واضح: حركة، جمع، ترقية، ثم مواجهة الزعيم في نقاط الحراسة. تستخدم الواجهة أزراراً أصلية ولمساً وسحباً ولوحة مفاتيح بالقواعد نفسها، وتبقى النتيجة وإعادة المحاولة والعودة إلى المراحل داخل دورة المعركة نفسها.",
+    parent: "تبقى فتحات المراحل والنتائج وأفضل عدد للمفاتيح ورصيد المفاتيح ورتبة الدورية وملكية سحر الكريستال الاختيارية في هذا المتصفح. قد يؤدي مسح بيانات الموقع أو تبديل الجهاز إلى حذفها. شراء سحر الكريستال اختياري ولا تتطلب أي مرحلة امتلاكه. ملاحظات النتيجة للترفيه وتتبع التقدم المحلي وليست اختباراً أو تشخيصاً.",
+    faq: [
+      ["كم عدد المراحل؟", "هناك 30 مرحلة مسماة عبر ست مناطق، مع نقطة زعيم في كل مرحلة خامسة."],
+      ["ما الذي ينهي المرحلة؟", "ابقَ ثلاث دقائق وحقق هدف المفاتيح المطبوع؛ وتتطلب نقطة الحراسة هزيمة زعيمها أيضاً."],
+      ["هل يصوّب اللاعب يدوياً؟", "لا. يهاجم الحارس تلقائياً، ويركز اللاعب على الحركة والجمع واختيار الترقية."],
+      ["لماذا لم تتضرر ملكة عثة المنشور؟", "يحجب درعها الظاهر الهجمات خلال طور واحد، ويعود الضرر بعد اختفائه."],
+      ["هل يُحفظ التقدم؟", "نعم. تُحفظ الفتحات والنتائج وأفضل المفاتيح والرتبة وملكية السحر محلياً."],
+      ["هل سحر الكريستال ضروري؟", "لا. إنه تعزيز اختياري يرفع الصحة القصوى من 7 إلى 8 ونطاق الالتقاط من 54 إلى 68."],
+      ["هل تعمل اللعبة على الهاتف والكمبيوتر؟", "نعم. يستخدم السحب باللمس والحركة بلوحة المفاتيح قواعد الحملة نفسها."],
+      ["هل النتيجة تقيّم مهارة رسمية؟", "لا. إنها تعرض نتيجة الجولة المحلية وخطة المسار التالي للترفيه فقط."],
     ],
   };
 
@@ -12309,12 +12384,88 @@
     ],
   };
   localizedGames["ar"]["animal-mosaic-clues"] = {
+    ...games["animal-mosaic-clues"],
+    title: "ألغاز فسيفساء الحيوانات",
+    difficulty: "من السهل إلى التحدي",
+    time: "2–10 دقائق لكل فسيفساء",
+    gameplay: "منطق فسيفساء نونوغرام",
+    genre: ["ألغاز", "استراتيجية", "حيوانات"],
+    skills: ["المنطق", "التركيز", "الاستنتاج"],
+    guideKicker: "دليل ألعاب WeightPlay الأصلية",
+    guideTitleSuffix: "دليل اللعبة",
+    intro: "اقرأ دليل كل صف وعمود للكشف عن صورة حيوان مخفية.",
+    story: ["يصف كل رقم سلسلة متصلة. اجمع الأدلة المتقاطعة لاستعادة كل فسيفساء حيوان مخفية."],
+    systems: [
+      "لوّن الخانات التي يجب ملؤها، وضع علامة على الخانات التي يجب أن تبقى فارغة، واستخدم الأدلة المتقاطعة لحل كل فسيفساء من دون تخمين.",
+      "يعيد التراجع العلامة السابقة، ويعيد البدء اللغز الأصلي، ويشرح التلميح استنتاجًا مؤكدًا من دون تغيير اللوحة.",
+    ],
+    how: [
+      "اقرأ سلسلة كل صف وعمود من الحافة الخارجية إلى الداخل.",
+      "استخدم التلوين للخانات المؤكدة وعلامة × للخانات الفارغة المؤكدة.",
+      "أكمل كل سلسلة لكشف الحيوان المخفي.",
+    ],
+    strategyTips: [
+      "ابدأ بالصفوف أو الأعمدة التي تكاد سلاسلها تملأ المساحة المتاحة.",
+      "استخدم السلاسل المكتملة لتمييز الخانات المتبقية في الخط نفسه كخانات فارغة.",
+      "قارن الأدلة المتقاطعة قبل تثبيت أي خانة.",
+    ],
+    progression: ["تمتد الفصول الستة من ألغاز 5×5 الموجّهة إلى صور 12×12 الغنية بالاستنتاجات عبر 30 فسيفساء لها حل واحد."],
+    designNote: "لكل لوحة حل واحد بالضبط، وهي مصممة ليتم إكمالها بالاستنتاج لا بالتخمين.",
+    parent: "لا يلزم إنشاء حساب. يبقى التقدم في هذا المتصفح وقد يُعاد ضبطه إذا مُسحت مساحة تخزين الموقع.",
     faq: [
       ["كم عدد الفسيفساء المضمنة؟", "هناك 30 فسيفساء مؤلفة."],
       ["هل أحتاج إلى التخمين؟", "لا. كل فسيفساء لديها حل واحد بالضبط."],
       ["هل يُحفظ التقدم؟", "نعم. تُخزَّن عمليات الإكمال وعمليات الفتح محليًا في هذا المتصفح."],
     ],
   };
+  const mosaicGuideTranslations = {
+    "zh-Hans": {
+      title: "动物马赛克线索", difficulty: "从简单到挑战", time: "每幅马赛克 2–10 分钟", gameplay: "数织马赛克推理", genre: ["益智", "策略", "动物"], skills: ["逻辑", "专注", "推理"], guideKicker: "WeightPlay 原创游戏指南", guideTitleSuffix: "游戏指南",
+      intro: "阅读每一行和每一列的线索，揭开隐藏的动物图像。", story: ["每个数字代表一段连续填色。结合交叉线索，恢复每幅隐藏的动物马赛克。"], systems: ["填入确定的格子，标记确定的空格，并利用交叉线索解开马赛克，无需猜测。", "撤销会恢复上一步，重新开始会恢复原题，提示会解释必然的推理而不会改变棋盘。"], how: ["从外侧向内阅读每行和每列的连续数字。", "用填色标记确定的格子，用 × 标记确定的空格。", "完成所有连续段，揭开隐藏的动物。"], strategyTips: ["先处理几乎填满整行或整列的线索。", "完成连续段后，将同一线上的其余格子标为空。", "确定格子前先对照相交的线索。"], progression: ["六个章节从引导式 5×5 图案发展到需要更多推理的 12×12 动物肖像，共 30 幅唯一可解的马赛克。"], designNote: "每个棋盘只有一个解答，目标是通过推理完成，而不是靠猜测。", parent: "无需账号。进度保存在此浏览器中，清除网站存储后可能会重置。", faq: [["包含多少幅马赛克？", "共有 30 幅手工设计的马赛克。"], ["需要猜测吗？", "不需要。每幅马赛克都只有一个解答。"], ["进度会保存吗？", "会。完成记录和解锁进度保存在此浏览器中。"]]
+    },
+    ja: {
+      title: "どうぶつモザイク手掛かり", difficulty: "かんたんから挑戦的", time: "1枚 2〜10分", gameplay: "ノノグラム推理モザイク", genre: ["パズル", "戦略", "動物"], skills: ["論理", "集中", "推理"], guideKicker: "WeightPlay オリジナルゲームガイド", guideTitleSuffix: "ゲームガイド",
+      intro: "行と列の手掛かりを読み、隠れた動物の絵を完成させます。", story: ["数字は連続する塗りつぶしの長さを示します。交差する手掛かりを合わせて動物モザイクを復元しましょう。"], systems: ["確定したマスを塗り、空白のマスに印を付け、交差する手掛かりから推理します。", "元に戻すは直前の印を戻し、最初からは問題を復元し、ヒントは盤面を変えずに確定できる推理を説明します。"], how: ["外側から内側へ、各行と列の数字を読みます。", "確定したマスは塗り、確定した空白は × で印を付けます。", "すべての連続部分を完成させ、動物を見つけます。"], strategyTips: ["ほぼ埋まる行や列から始めましょう。", "連続部分が完成したら、その線の残りを空白にします。", "マスを決める前に交差する手掛かりを比べます。"], progression: ["6章30枚。案内付き5×5から推理の多い12×12の動物画へ進みます。"], designNote: "各盤面には一つの解だけがあり、当てずっぽうではなく推理で完成できます。", parent: "アカウントは不要です。進行状況はこのブラウザに保存され、サイトデータを消すとリセットされる場合があります。", faq: [["何枚ありますか？", "手作りのモザイクが30枚あります。"], ["推測は必要ですか？", "いいえ。すべて一つの解に決まります。"], ["進行状況は保存されますか？", "はい。クリアと解放状況をこのブラウザに保存します。"]]
+    },
+    ko: {
+      title: "동물 모자이크 단서", difficulty: "쉬움부터 도전까지", time: "모자이크당 2~10분", gameplay: "노노그램 모자이크 추리", genre: ["퍼즐", "전략", "동물"], skills: ["논리", "집중", "추리"], guideKicker: "WeightPlay 오리지널 게임 가이드", guideTitleSuffix: "게임 가이드",
+      intro: "행과 열의 단서를 읽고 숨은 동물 그림을 완성하세요.", story: ["각 숫자는 이어진 칸의 길이를 뜻합니다. 교차하는 단서를 조합해 동물 모자이크를 복원하세요."], systems: ["채울 칸은 칠하고 비워 둘 칸은 표시하며 교차 단서로 추리합니다.", "실행 취소는 이전 표시를 되돌리고, 다시 시작은 원래 퍼즐을 복원하며, 힌트는 보드를 바꾸지 않고 확정 추리를 설명합니다."], how: ["바깥쪽에서 안쪽으로 각 행과 열의 숫자를 읽으세요.", "확실한 칸은 칠하고 확실한 빈칸은 ×로 표시하세요.", "모든 연속 구간을 완성해 숨은 동물을 드러내세요."], strategyTips: ["거의 가득 찰 행이나 열부터 시작하세요.", "연속 구간이 완성되면 같은 줄의 나머지를 빈칸으로 표시하세요.", "칸을 확정하기 전에 교차 단서를 비교하세요."], progression: ["6개 장, 30개 모자이크가 안내형 5×5에서 추리 중심 12×12 동물 그림으로 이어집니다."], designNote: "모든 보드는 해답이 하나뿐이며 추리로 완성하도록 설계되었습니다.", parent: "계정이 필요 없습니다. 진행은 이 브라우저에 저장되며 사이트 저장소를 지우면 초기화될 수 있습니다.", faq: [["몇 개가 있나요?", "직접 만든 모자이크 30개가 있습니다."], ["추측해야 하나요?", "아니요. 모든 모자이크에는 하나의 해답만 있습니다."], ["진행이 저장되나요?", "네. 완료와 해금 기록을 이 브라우저에 저장합니다."]]
+    },
+    es: {
+      title: "Pistas de mosaicos animales", difficulty: "De fácil a desafiante", time: "2–10 minutos por mosaico", gameplay: "Lógica de mosaicos nonogram", genre: ["Puzle", "Estrategia", "Animales"], skills: ["Lógica", "Concentración", "Deducción"], guideKicker: "Guía de juego original de WeightPlay", guideTitleSuffix: "Guía del juego",
+      intro: "Lee las pistas de cada fila y columna para descubrir un retrato animal oculto.", story: ["Cada número indica una serie continua de casillas. Combina las pistas cruzadas para recuperar cada mosaico animal."], systems: ["Rellena las casillas confirmadas, marca las vacías y usa las pistas que se cruzan para resolver sin adivinar.", "Deshacer recupera la marca anterior, Reiniciar restaura el puzle original y Pista explica una deducción segura sin cambiar el tablero."], how: ["Lee los números de cada fila y columna desde el borde hacia dentro.", "Usa Pintar para las casillas confirmadas y × para las vacías confirmadas.", "Completa todas las series para revelar el animal."], strategyTips: ["Empieza por las filas o columnas casi llenas.", "Cuando completes una serie, marca vacías las casillas restantes de esa línea.", "Compara las pistas cruzadas antes de fijar una casilla."], progression: ["Seis capítulos y 30 mosaicos pasan de dibujos guiados 5×5 a retratos 12×12 llenos de deducciones."], designNote: "Cada tablero tiene una única solución y se completa mediante deducción, no por azar.", parent: "No necesitas una cuenta. El progreso se guarda en este navegador y puede reiniciarse al borrar el almacenamiento del sitio.", faq: [["¿Cuántos mosaicos hay?", "Hay 30 mosaicos diseñados a mano."], ["¿Tengo que adivinar?", "No. Cada mosaico tiene una única solución."], ["¿Se guarda el progreso?", "Sí. Las victorias y desbloqueos se guardan en este navegador."]]
+    },
+    "pt-BR": {
+      title: "Pistas de Mosaicos Animais", difficulty: "Do fácil ao desafiador", time: "2–10 minutos por mosaico", gameplay: "Lógica de mosaico nonogram", genre: ["Quebra-cabeça", "Estratégia", "Animais"], skills: ["Lógica", "Concentração", "Dedução"], guideKicker: "Guia de jogo original WeightPlay", guideTitleSuffix: "Guia do jogo",
+      intro: "Leia as pistas de cada linha e coluna para revelar um retrato animal escondido.", story: ["Cada número indica uma sequência contínua de casas. Combine as pistas cruzadas para restaurar cada mosaico animal."], systems: ["Pinte as casas confirmadas, marque as vazias e use as pistas cruzadas para resolver sem chutar.", "Desfazer recupera a marca anterior, Reiniciar restaura o quebra-cabeça original e Dica explica uma dedução certa sem mudar a grade."], how: ["Leia os números de cada linha e coluna da borda para dentro.", "Use Pintar nas casas confirmadas e × nas casas vazias confirmadas.", "Complete todas as sequências para revelar o animal."], strategyTips: ["Comece pelas linhas ou colunas quase preenchidas.", "Ao completar uma sequência, marque como vazias as casas restantes daquela linha.", "Compare as pistas que se cruzam antes de confirmar uma casa."], progression: ["Seis capítulos e 30 mosaicos vão de padrões guiados 5×5 a retratos 12×12 cheios de dedução."], designNote: "Cada tabuleiro tem uma única solução e foi feito para ser concluído por dedução, não por tentativa.", parent: "Nenhuma conta é necessária. O progresso fica salvo neste navegador e pode ser reiniciado ao limpar o armazenamento do site.", faq: [["Quantos mosaicos existem?", "Há 30 mosaicos criados à mão."], ["Preciso chutar?", "Não. Cada mosaico tem uma única solução."], ["O progresso é salvo?", "Sim. Conclusões e desbloqueios ficam salvos neste navegador."]]
+    },
+    fr: {
+      title: "Indices de mosaïques animaliers", difficulty: "De facile à difficile", time: "2 à 10 minutes par mosaïque", gameplay: "Logique de mosaïque nonogramme", genre: ["Puzzle", "Stratégie", "Animaux"], skills: ["Logique", "Concentration", "Déduction"], guideKicker: "Guide du jeu original WeightPlay", guideTitleSuffix: "Guide du jeu",
+      intro: "Lisez les indices de chaque ligne et colonne pour révéler un portrait animal caché.", story: ["Chaque nombre indique une suite continue de cases. Croisez les indices pour restaurer chaque mosaïque animale."], systems: ["Peignez les cases confirmées, marquez les cases vides et croisez les indices sans deviner.", "Annuler restaure la marque précédente, Recommencer restaure le puzzle initial et Indice explique une déduction certaine sans modifier la grille."], how: ["Lisez les nombres de chaque ligne et colonne du bord vers l’intérieur.", "Utilisez Peindre pour les cases confirmées et × pour les cases vides confirmées.", "Terminez toutes les suites pour révéler l’animal."], strategyTips: ["Commencez par les lignes ou colonnes presque remplies.", "Après une suite terminée, marquez vides les cases restantes de cette ligne.", "Comparez les indices croisés avant de confirmer une case."], progression: ["Six chapitres et 30 mosaïques vont de grilles guidées 5×5 à des portraits 12×12 riches en déductions."], designNote: "Chaque grille possède une seule solution et se résout par déduction, jamais au hasard.", parent: "Aucun compte n’est nécessaire. La progression est enregistrée dans ce navigateur et peut être réinitialisée si les données du site sont supprimées.", faq: [["Combien de mosaïques sont incluses ?", "Il y a 30 mosaïques conçues à la main."], ["Faut-il deviner ?", "Non. Chaque mosaïque possède une solution unique."], ["La progression est-elle sauvegardée ?", "Oui. Les réussites et déblocages sont enregistrés dans ce navigateur."]]
+    },
+    de: {
+      title: "Tierische Mosaik-Hinweise", difficulty: "Leicht bis anspruchsvoll", time: "2–10 Minuten pro Mosaik", gameplay: "Nonogramm-Mosaiklogik", genre: ["Rätsel", "Strategie", "Tiere"], skills: ["Logik", "Konzentration", "Deduktion"], guideKicker: "Originaler WeightPlay-Spielleitfaden", guideTitleSuffix: "Spielleitfaden",
+      intro: "Lies die Hinweise jeder Zeile und Spalte, um ein verborgenes Tierbild aufzudecken.", story: ["Jede Zahl beschreibt eine zusammenhängende Reihe von Feldern. Verbinde die Kreuzhinweise und stelle jedes Tiermosaik wieder her."], systems: ["Fülle sichere Felder, markiere sichere Leerfelder und löse durch Kreuzhinweise ohne Raten.", "Rückgängig stellt die letzte Markierung wieder her, Neustart setzt das Originalrätsel zurück und Hinweis erklärt eine sichere Deduktion ohne das Raster zu verändern."], how: ["Lies die Zahlen jeder Zeile und Spalte vom Rand nach innen.", "Färbe sichere Felder und markiere sichere Leerfelder mit ×.", "Vervollständige alle Reihen, um das Tier aufzudecken."], strategyTips: ["Beginne mit fast gefüllten Zeilen oder Spalten.", "Markiere nach einer fertigen Reihe die übrigen Felder dieser Linie als leer.", "Vergleiche Kreuzhinweise, bevor du ein Feld festlegst."], progression: ["Sechs Kapitel und 30 Mosaike führen von geführten 5×5-Mustern zu deduktionsreichen 12×12-Tierbildern."], designNote: "Jedes Raster hat genau eine Lösung und ist für Deduktion statt Raten entworfen.", parent: "Kein Konto ist nötig. Der Fortschritt wird in diesem Browser gespeichert und kann nach dem Löschen der Websitedaten zurückgesetzt sein.", faq: [["Wie viele Mosaike gibt es?", "Es gibt 30 handgefertigte Mosaike."], ["Muss ich raten?", "Nein. Jedes Mosaik hat genau eine Lösung."], ["Wird der Fortschritt gespeichert?", "Ja. Abschlüsse und Freischaltungen werden in diesem Browser gespeichert."]]
+    },
+    it: {
+      title: "Indizi dei mosaici animali", difficulty: "Da facile a impegnativo", time: "2–10 minuti per mosaico", gameplay: "Logica dei mosaici nonogram", genre: ["Puzzle", "Strategia", "Animali"], skills: ["Logica", "Concentrazione", "Deduzione"], guideKicker: "Guida al gioco originale WeightPlay", guideTitleSuffix: "Guida del gioco",
+      intro: "Leggi gli indizi di ogni riga e colonna per scoprire un ritratto animale nascosto.", story: ["Ogni numero indica una sequenza continua di caselle. Incrocia gli indizi per ricostruire ogni mosaico animale."], systems: ["Colora le caselle confermate, segna quelle vuote e usa gli indizi incrociati senza tirare a indovinare.", "Annulla ripristina il segno precedente, Ricomincia riporta il puzzle originale e Suggerimento spiega una deduzione certa senza cambiare la griglia."], how: ["Leggi i numeri di ogni riga e colonna dal bordo verso l’interno.", "Usa Colora per le caselle confermate e × per quelle vuote confermate.", "Completa tutte le sequenze per rivelare l’animale."], strategyTips: ["Inizia dalle righe o colonne quasi piene.", "Dopo una sequenza completata, segna vuote le caselle rimaste su quella linea.", "Confronta gli indizi incrociati prima di fissare una casella."], progression: ["Sei capitoli e 30 mosaici passano da schemi guidati 5×5 a ritratti 12×12 ricchi di deduzioni."], designNote: "Ogni tavola ha una sola soluzione ed è pensata per la deduzione, non per i tentativi casuali.", parent: "Non serve un account. I progressi vengono salvati in questo browser e possono azzerarsi se cancelli i dati del sito.", faq: [["Quanti mosaici ci sono?", "Ci sono 30 mosaici creati a mano."], ["Devo indovinare?", "No. Ogni mosaico ha una sola soluzione."], ["I progressi vengono salvati?", "Sì. Completamenti e sblocchi vengono salvati in questo browser."]]
+    },
+    ru: {
+      title: "Подсказки для мозаик с животными", difficulty: "От простого к сложному", time: "2–10 минут на мозаику", gameplay: "Логика нонограмм-мозаик", genre: ["Головоломки", "Стратегия", "Животные"], skills: ["Логика", "Внимание", "Дедукция"], guideKicker: "Оригинальный игровой справочник WeightPlay", guideTitleSuffix: "Игровой справочник",
+      intro: "Читайте подсказки строк и столбцов, чтобы открыть скрытый портрет животного.", story: ["Каждое число обозначает непрерывный ряд клеток. Сопоставляйте пересекающиеся подсказки и восстанавливайте мозаику."], systems: ["Закрашивайте подтверждённые клетки, отмечайте пустые и решайте по пересечениям без угадывания.", "Отмена возвращает предыдущую отметку, Начать заново восстанавливает исходную задачу, а Подсказка объясняет точный вывод, не меняя поле."], how: ["Читайте числа каждой строки и столбца от края к центру.", "Закрашивайте подтверждённые клетки и отмечайте подтверждённые пустые клетки знаком ×.", "Завершите все ряды, чтобы увидеть животное."], strategyTips: ["Начинайте со строк и столбцов, которые почти заполнены.", "После завершения ряда отметьте остальные клетки этой линии пустыми.", "Перед фиксацией клетки сравните пересекающиеся подсказки."], progression: ["Шесть глав и 30 мозаик идут от направляемых схем 5×5 к насыщенным дедукцией портретам 12×12."], designNote: "У каждого поля ровно одно решение; его нужно найти дедукцией, а не угадыванием.", parent: "Аккаунт не нужен. Прогресс хранится в этом браузере и может сброситься после очистки данных сайта.", faq: [["Сколько здесь мозаик?", "Здесь 30 мозаик ручной разработки."], ["Нужно угадывать?", "Нет. У каждой мозаики только одно решение."], ["Прогресс сохраняется?", "Да. Завершения и открытия сохраняются в этом браузере."]]
+    },
+    hi: {
+      title: "जानवर मोज़ेक संकेत", difficulty: "आसान से चुनौतीपूर्ण", time: "हर मोज़ेक 2–10 मिनट", gameplay: "नॉनोग्राम मोज़ेक तर्क", genre: ["पहेली", "रणनीति", "जानवर"], skills: ["तर्क", "एकाग्रता", "निष्कर्ष"], guideKicker: "WeightPlay मौलिक गेम गाइड", guideTitleSuffix: "गेम गाइड",
+      intro: "छिपे हुए पशु चित्र को खोलने के लिए हर पंक्ति और स्तंभ के संकेत पढ़ें।", story: ["हर संख्या लगातार भरे जाने वाले खानों की लंबाई बताती है। कटते संकेतों को मिलाकर हर पशु मोज़ेक लौटाएँ।"], systems: ["पक्के खानों में रंग भरें, खाली खानों को चिह्नित करें और बिना अनुमान लगाए कटते संकेतों से हल करें।", "पूर्ववत पिछला निशान लौटाता है, फिर शुरू करें मूल पहेली लौटाता है और संकेत बोर्ड बदले बिना निश्चित निष्कर्ष समझाता है।"], how: ["हर पंक्ति और स्तंभ के अंक किनारे से भीतर की ओर पढ़ें।", "पक्के खानों में रंग भरें और पक्के खाली खानों पर × लगाएँ।", "सभी लगातार हिस्से पूरे करके पशु प्रकट करें।"], strategyTips: ["लगभग भरी हुई पंक्तियों या स्तंभों से शुरू करें।", "हिस्सा पूरा होने पर उसी रेखा के बाकी खानों को खाली चिह्नित करें।", "खाना पक्का करने से पहले कटते संकेतों की तुलना करें।"], progression: ["छह अध्यायों में 30 मोज़ेक हैं: मार्गदर्शित 5×5 चित्रों से गहन निष्कर्ष वाले 12×12 पशु चित्रों तक।"], designNote: "हर बोर्ड का केवल एक हल है और उसे अनुमान के बजाय तर्क से पूरा करने के लिए बनाया गया है।", parent: "खाते की जरूरत नहीं। प्रगति इसी ब्राउज़र में सहेजी जाती है और साइट डेटा मिटाने पर रीसेट हो सकती है।", faq: [["कितने मोज़ेक हैं?", "हाथ से बनाए गए 30 मोज़ेक हैं।"], ["क्या अनुमान लगाना होगा?", "नहीं। हर मोज़ेक का केवल एक हल है।"], ["क्या प्रगति सहेजी जाती है?", "हाँ। पूरा होने और अनलॉक होने की जानकारी इसी ब्राउज़र में सहेजी जाती है।"]]
+    },
+  };
+  for (const [locale, copy] of Object.entries(mosaicGuideTranslations)) {
+    localizedGames[locale] ||= {};
+    localizedGameplayProfiles[locale] ||= {};
+    localizedGames[locale]["animal-mosaic-clues"] = { ...games["animal-mosaic-clues"], ...copy };
+    localizedGameplayProfiles[locale]["animal-mosaic-clues"] = { gameplay: copy.gameplay, genre: copy.genre };
+  }
   const reviewedGeneralGuides = window.WeightPlayGeneralReviewedGuides || {};
   for (const [code, localeData] of Object.entries(reviewedGeneralGuides)) {
     if (!localizedGames[code]) localizedGames[code] = {};
