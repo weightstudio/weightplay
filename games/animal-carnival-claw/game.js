@@ -3,7 +3,7 @@
 const $=id=>document.getElementById(id),$$=selector=>[...document.querySelectorAll(selector)];
 const clamp=(value,min=0,max=1)=>Math.max(min,Math.min(max,value));
 const fmt=(value,data={})=>String(value??"").replace(/\{(\w+)\}/g,(_,key)=>data[key]??"");
-const ANALYTICS_GAME_ID="animal-carnival-claw",ANALYTICS_GAME_VERSION="v31",ANALYTICS_INTERFACE_VERSION="6",ANALYTICS_SCHEMA_VERSION=1;
+const ANALYTICS_GAME_ID="animal-carnival-claw",ANALYTICS_GAME_VERSION="v32",ANALYTICS_INTERFACE_VERSION="6",ANALYTICS_SCHEMA_VERSION=1;
 const viewportBucket=()=>{const width=Math.max(window.innerWidth||0,window.innerHeight||0),short=Math.min(window.innerWidth||0,window.innerHeight||0);return short<480?"phone":width<900?"tablet":"desktop"};
 const boundedMetric=(value,max)=>{const number=Number(value);return Number.isFinite(number)?Math.max(0,Math.min(max,Math.round(number))):0};
 function track(eventName,details={}){try{window.WonderAnalytics?.track?.(eventName,{game_id:ANALYTICS_GAME_ID,game_version:ANALYTICS_GAME_VERSION,interface_version:ANALYTICS_INTERFACE_VERSION,schema_version:ANALYTICS_SCHEMA_VERSION,locale,viewport_bucket:viewportBucket(),...details})}catch{}}
@@ -272,7 +272,7 @@ function startMission(index,entry="stage_select"){
   selected=index;const level=levels[index];
   run={
     index,level,phase:"aim",elapsed:0,phaseTime:0,drops:3,aimX:500,aimY:360,dropX:null,lockValue:.08,lockDirection:1,lockQuality:0,stability:1,grip:1,swing:0,held:null,fallX:0,fallY:0,fallVelocity:0,fallRotation:0,aimCorrection:null,lastSpatialCorrection:"",
-    prizes:level.prizes.map(prize=>({...prize,active:true,delivered:false})),targets:[...level.targets],delivered:[],misses:0,result:null,feedback:index===0&&!save.medals[0]?["phaseAim","landingCue"]:"phaseAim",lastCorrection:"phaseAim"
+    prizes:level.prizes.map(prize=>({...prize,active:true,delivered:false})),targets:[...level.targets],delivered:[],misses:0,lockGrace:0,result:null,feedback:index===0&&!save.medals[0]?["phaseAim","landingCue"]:"phaseAim",lastCorrection:"phaseAim"
   };
   settledDecision=false;resolvedWallAnchor=0;$("resultPanel").hidden=true;$("leavePanel").hidden=true;$("pausePanel").hidden=true;$("battleLive").hidden=false;$("battleLive").inert=false;
   $("resultStagesBtn").disabled=false;$("retryBtn").disabled=false;$("nextBtn").disabled=true;
@@ -316,6 +316,8 @@ function update(dt,wallTime=null){
     run.lockValue+=run.lockDirection*speed*dt;
     if(run.lockValue>=1){run.lockValue=2-run.lockValue;run.lockDirection=-1}
     if(run.lockValue<=0){run.lockValue=-run.lockValue;run.lockDirection=1}
+    const distance=Math.abs(run.lockValue-.5),windowSize=lockWindow();
+    run.lockGrace=distance<=windowSize?.16:Math.max(0,run.lockGrace-dt);
     run.grip=clamp(1-run.phaseTime*.16);
     updateTimingCoach();
     if(run.phaseTime>=2.35)beginFall("lockMiss");
@@ -369,7 +371,7 @@ function lockWindow(){const base=clamp(.23+save.upgrades.stability*.025-run.held
 function attemptLock(){
   if(!run||run.phase!=="secure"||!run.held)return;
   const distance=Math.abs(run.lockValue-.5),windowSize=lockWindow();
-  if(distance<=windowSize){
+  if(distance<=windowSize||run.lockGrace>0){
     run.lockQuality=clamp(1-distance/windowSize);run.phase="lift";run.phaseTime=0;resolvedWallAnchor=performance.now();run.grip=.72+run.lockQuality*.28;run.feedback="holdingGood";updateTimingCoach(true);renderHud();
   }else beginFall("lockMiss");
 }

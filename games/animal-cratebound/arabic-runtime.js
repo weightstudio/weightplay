@@ -15,7 +15,8 @@
     const pt=window.WeightPlayGameRuntimeLocales?.["pt-BR"]||{};
     if(!translateValue.reverse){translateValue.reverse=new Map(Object.entries(pt).map(([source,translated])=>[translated,source]))}
     core=translateValue.reverse.get(core)||core;
-    let translated=exact[core];
+    const mixedLocaleExact={"Estágio Map":exact["Stage Map"],"Próximo Stage":exact["Next Stage"]};
+    let translated=exact[core]||mixedLocaleExact[core];
     if(!translated){
       let match=core.match(/^(?:Stage|Estágio)\s+(\d+)$/u);if(match)translated=`المرحلة ${match[1]}`;
       match ||= core.match(/^(\d+)\s+(?:moves|movimentos)$/u);if(match&&/moves|movimentos/u.test(core))translated=`${match[1]} حركات`;
@@ -42,6 +43,8 @@
     if(state?.screen==="stage")document.querySelectorAll(".stage-card").forEach(card=>{const stage=Number(card.dataset.stage),chapter=Math.min(5,Math.floor((stage-1)/5)),save=JSON.parse(localStorage.getItem("animal-crateboundSaveV1")||"{}");setText(card.querySelector("small"),chapters[chapter]);setText(card.querySelector("strong"),`المرحلة ${stage}`);setText(card.querySelector("span"),card.classList.contains("locked")?"مقفلة":save.cleared?.[stage]?"اكتملت · إعادة اللعب":"جاهزة")});
     if(state?.screen==="battle"){const chapter=Math.min(5,Math.floor((state.selected-1)/5));setText(document.getElementById("stageLabel"),`المرحلة ${state.selected}`);setText(document.getElementById("goalValue"),chapters[chapter])}
     if(full)translateTree(document.body);else for(const root of [document.querySelector(".battle-header"),document.getElementById("battleControls"),document.getElementById("feedback"),document.getElementById("resultModal")])if(root)translateTree(root);
+    const resultModal=document.getElementById("resultModal"),resultTitle=document.getElementById("resultTitle");
+    if(resultModal&&!resultModal.hidden&&resultTitle&&/(?:Complete|المرحلة)/u.test(resultTitle.textContent.trim()))setText(resultTitle,exact["Stage Complete"]);
   };
   const activate=()=>{
     if(active){applyOwnedState(true);return}active=true;applyOwnedState(true);
