@@ -2,7 +2,7 @@
   "use strict";
 
   const GAME_ID = "code-breaker";
-  const GAME_VERSION = "v3";
+  const GAME_VERSION = "v6";
   const INTERFACE_VERSION = "6";
   const EVENTS = new Set([
     "preview_open",
@@ -29,7 +29,7 @@
   let wasHidden = false;
 
   const locale = () => {
-    const value = window.WonderI18n?.actualLocale?.() || LOCALE_MAP[window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase()] || document.documentElement.lang || "en";
+    const value = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || LOCALE_MAP[window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase()] || "en";
     return LOCALES.has(value) ? value : "en";
   };
 

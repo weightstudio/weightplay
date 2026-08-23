@@ -5,6 +5,7 @@
   });
 
   const GAME_ID = "animal-auto-squad";
+  const GAME_VERSION = "v22";
   const localeKey = "weightPlayLocale";
   const saveKey = "animal_auto_squad_save";
 
@@ -3401,6 +3402,8 @@
 
     // Result labels
     nodes.resultTitle.textContent = state.hearts > 0 ? t("expeditionClear") : t("expeditionFail");
+    const savedProgressLabel = nodes.resultPanel.querySelector('[data-ui="savedProgress"]');
+    if (savedProgressLabel) savedProgressLabel.textContent = t("savedProgress");
     nodes.retryBtn.textContent = t("retry");
     nodes.nextStageBtn.textContent = t("nextStage");
     nodes.resultMenuBtn.textContent = t("backToStages");
