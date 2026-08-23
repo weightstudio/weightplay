@@ -374,6 +374,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
   "2-8 minutes per garden": "每个花园 2-8 分钟",
   "2-8 minutes per stage": "每阶段2-8分钟",
   "2–10 minutes": "2–10 分钟",
+  "2–6 minutes per mission": "每个任务 2–6 分钟",
   "2–8 minutes per warehouse": "每个仓库 2–8 分钟",
   "20260708-zoo-helper-day-clear-icons1": "20260708-zoo-helper-day-clear-icons1",
   "2042 · FIRST CONTACT": "2042 · 第一次接触",

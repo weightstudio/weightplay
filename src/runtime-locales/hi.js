@@ -374,6 +374,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "2-8 minutes per garden": "प्रति बगीचा 2-8 मिनट",
   "2-8 minutes per stage": "प्रति चरण 2-8 मिनट",
   "2–10 minutes": "2-10 मिनट",
+  "2–6 minutes per mission": "प्रति मिशन 2–6 मिनट",
   "2–8 minutes per warehouse": "प्रति गोदाम 2-8 मिनट",
   "20260708-zoo-helper-day-clear-icons1": "20260708-चिड़ियाघर-सहायक-दिन-स्पष्ट-आइकन1",
   "2042 · FIRST CONTACT": "2042 · पहला संपर्क",

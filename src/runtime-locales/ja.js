@@ -374,6 +374,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "2-8 minutes per garden": "1庭園あたり2～8分",
   "2-8 minutes per stage": "1ステージあたり2～8分",
   "2–10 minutes": "2～10分",
+  "2–6 minutes per mission": "各ミッション 2～6分",
   "2–8 minutes per warehouse": "倉庫あたり 2 ～ 8 分",
   "20260708-zoo-helper-day-clear-icons1": "20260708-動物園ヘルパーデー-クリア-アイコン1",
   "2042 · FIRST CONTACT": "2042 · ファーストコンタクト",

@@ -765,7 +765,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Animal Auto Squad",
     "ru": "Animal Auto Squad",
     "hi": "Animal Auto Squad",
-    "ar": "Animal Auto Squad"
+    "ar": "فرقة الحيوانات الآلية"
   },
   "beast-tactician": {
     "__localizedExact": true,

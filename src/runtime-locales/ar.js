@@ -374,6 +374,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "2-8 minutes per garden": "2-8 دقائق لكل حديقة",
   "2-8 minutes per stage": "2-8 دقائق لكل مرحلة",
   "2–10 minutes": "2-10 دقائق",
+  "2–6 minutes per mission": "2–6 دقائق لكل مهمة",
   "2–8 minutes per warehouse": "2-8 دقائق لكل مستودع",
   "20260708-zoo-helper-day-clear-icons1": "20260708-حديقة الحيوان-مساعد-يوم-مسح-أيقونات1",
   "2042 · FIRST CONTACT": "2042 · الاتصال الأول",

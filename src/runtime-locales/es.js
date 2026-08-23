@@ -374,6 +374,7 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "2-8 minutes per garden": "2-8 minutos por jardín",
   "2-8 minutes per stage": "2-8 minutos por etapa",
   "2–10 minutes": "2 a 10 minutos",
+  "2–6 minutes per mission": "2–6 minutos por misión",
   "2–8 minutes per warehouse": "2 a 8 minutos por almacén",
   "20260708-zoo-helper-day-clear-icons1": "20260708-iconos-claros-del-dia-del-ayudante-del-zoo1",
   "2042 · FIRST CONTACT": "2042 · PRIMER CONTACTO",

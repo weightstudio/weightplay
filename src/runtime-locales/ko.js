@@ -374,6 +374,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "2-8 minutes per garden": "정원당 2~8분",
   "2-8 minutes per stage": "스테이지당 2~8분",
   "2–10 minutes": "2~10분",
+  "2–6 minutes per mission": "미션당 2–6분",
   "2–8 minutes per warehouse": "창고당 2~8분",
   "20260708-zoo-helper-day-clear-icons1": "20260708-동물원-도우미-일-클리어-아이콘1",
   "2042 · FIRST CONTACT": "2042년 · 첫 번째 접촉",

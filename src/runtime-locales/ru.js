@@ -374,6 +374,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "2-8 minutes per garden": "2-8 минут на сад",
   "2-8 minutes per stage": "2-8 минут на этап",
   "2–10 minutes": "2–10 минут",
+  "2–6 minutes per mission": "2–6 минут на миссию",
   "2–8 minutes per warehouse": "2–8 минут на склад",
   "20260708-zoo-helper-day-clear-icons1": "20260708-зоопомощник-день-clear-icons1",
   "2042 · FIRST CONTACT": "2042 · ПЕРВЫЙ КОНТАКТ",
