@@ -62,7 +62,7 @@
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260716-kids-stage-swipe3" />
-  <link rel="stylesheet" href="style.css?v=20260821-pace-agency-v21" />
+  <link rel="stylesheet" href="style.css?v=20260823-result-priority-coverage-v23" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
 </head>
   <body data-tutorial-auto-show="false">
@@ -226,21 +226,24 @@
         </section>
 
         <!-- Final Run Result Screen: bounded Battle substate -->
-        <section id="resultPanel" class="panel result-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-live="polite">
+        <section id="resultPanel" class="panel result-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultDecisionText resultText" aria-live="polite">
           <img class="result-lion" src="../../assets/animal-auto-squad-cover.webp" alt="Result Lion Mascot" />
           <div class="result-copy">
             <h2 id="resultTitle" class="result-heading">Expedition Complete!</h2>
+            <p id="resultDecisionText" class="result-decision" aria-live="polite"></p>
             <p id="resultText" class="result-desc"></p>
-            <div class="result-progress" aria-live="polite">
-              <strong data-ui="savedProgress">Saved Progress</strong>
-              <span id="resultXpText"></span>
-              <span id="resultGoldText"></span>
-              <span id="resultStageText"></span>
-              <em id="resultGrowthText"></em>
+            <div class="result-rewards" aria-label="Rewards and saved progress">
+              <div class="result-progress" aria-live="polite">
+                <strong data-ui="savedProgress">Saved Progress</strong>
+                <span id="resultXpText"></span>
+                <span id="resultGoldText"></span>
+                <span id="resultStageText"></span>
+                <em id="resultGrowthText"></em>
+              </div>
+              <p id="skillReportText" class="skill-report"></p>
             </div>
-            <p id="skillReportText" class="skill-report"></p>
             <div class="result-actions" data-wp-return="battle">
-              <button id="nextStageBtn" class="primary-btn is-hidden" type="button">Next Stage</button>
+              <button id="nextStageBtn" class="primary-btn is-hidden" type="button" data-ui="nextStage">Next Stage</button>
               <button id="retryBtn" class="primary-btn" type="button" data-ui="retry">Try Again</button>
               <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="backToStages">Back to Stages</button>
             </div>

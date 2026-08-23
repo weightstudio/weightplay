@@ -5,7 +5,7 @@
   });
 
   const GAME_ID = "animal-auto-squad";
-  const GAME_VERSION = "v22";
+  const GAME_VERSION = "v23";
   const localeKey = "weightPlayLocale";
   const saveKey = "animal_auto_squad_save";
 
@@ -1150,6 +1150,7 @@
     resultPanel: $("resultPanel"),
     resultTitle: $("resultTitle"),
     resultText: $("resultText"),
+    resultDecisionText: $("resultDecisionText"),
     resultXpText: $("resultXpText"),
     resultGoldText: $("resultGoldText"),
     resultStageText: $("resultStageText"),
@@ -2004,7 +2005,8 @@
         front: frontCount,
         back: backCount,
         counter: firstWavePreviewCounter(enemyUnits, frontCount, backCount)
-      })
+      }),
+      coverage: firstWavePreviewCounter(enemyUnits, frontCount, backCount)
     };
   }
 
@@ -3666,8 +3668,8 @@
     const preview = buildFirstWavePreview();
     const backpackGuidance = t("backpackHint").split(/[.!?。！？]/u)[0];
     nodes.foodGuide.setAttribute("data-runtime-localize", "off");
-    nodes.foodGuide.innerHTML = `<strong>${preview.title}</strong><span>${backpackGuidance} · ${preview.body}</span>`;
-    nodes.foodGuide.setAttribute("aria-label", `${preview.title}: ${t("backpackHint")} ${preview.body}`);
+    nodes.foodGuide.innerHTML = `<strong>${preview.title}</strong><span>${backpackGuidance} · ${preview.body}</span><em class="food-guide-coverage" data-role="threat-coverage">${preview.coverage}</em>`;
+    nodes.foodGuide.setAttribute("aria-label", `${preview.title}: ${t("backpackHint")} ${preview.body} ${preview.coverage}`);
   }
 
   function getItemEffectText(card) {
@@ -5627,6 +5629,11 @@
     nodes.resultPanel.classList.remove("is-hidden");
 
     nodes.resultTitle.textContent = isWin ? t("expeditionClear") : t("expeditionFail");
+    if (nodes.resultDecisionText) {
+      nodes.resultDecisionText.textContent = canAdvance
+        ? `${t("nextStage")} · ${stageLabel(state.stage + 1)}`
+        : isFinalVictory ? t("backToStages") : t("retry");
+    }
     nodes.resultText.textContent = isWin
       ? state.stage < STAGE_COUNT
         ? t("stageClearText", { stage: state.stage, next: state.stage + 1 })

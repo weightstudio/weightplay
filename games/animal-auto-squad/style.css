@@ -310,12 +310,16 @@ body:not(.squad-active) .battle-ad-reserve { display: none; }
 .result-lion { width:100%; height:170px; object-fit:cover; object-position:center 36%; border:2px solid var(--gold); border-radius:14px; }
 .result-copy { display:grid; align-content:start; gap:8px; }
 .result-heading { margin:0; font-size:1.35rem; color:var(--gold); }
+.result-decision { margin:0; padding:10px 12px; border:1px solid rgba(255,214,102,.58); border-radius:10px; color:#fff4c7; background:rgba(91,48,6,.72); font-size:.92rem; font-weight:900; line-height:1.25; }
 .result-desc, .skill-report { margin:0; font-size:.75rem; line-height:1.35; }
+.result-rewards { display:grid; gap:8px; }
 .result-progress { display:grid; gap:3px; padding:8px; border:1px solid rgba(255,214,102,.3); border-radius:10px; background:rgba(0,0,0,.2); font-size:.68rem; }
 .result-progress strong, .result-progress em { color:var(--gold); font-style:normal; }
 .skill-report { padding:8px; border:1px solid var(--line); border-radius:10px; background:rgba(0,0,0,.18); }
 .result-actions { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-top:auto; }
 .result-actions button { min-height:52px; padding:6px; font-size:.7rem; }
+.result-actions button.primary-btn { min-height:60px; }
+.food-guide-coverage { display:block; margin-top:6px; padding:6px 8px; border-inline-start:3px solid var(--mint); color:#e8fff4; font-style:normal; font-weight:800; line-height:1.3; }
 
 body.squad-stage-select .weightplay-version-badge, body.squad-active .weightplay-version-badge { display:none !important; }
 
@@ -615,9 +619,11 @@ body:not(.squad-stage-select):not(.squad-active) .sound-toggle {
   .result-lion { width:300px; height:100%; }
   .result-copy { align-content:center; gap:16px; overflow:auto; }
   .result-heading { font-size:2rem; }
+  .result-decision { padding:14px 16px; font-size:1.75rem; }
   .result-desc, .skill-report { font-size:1.75rem; line-height:1.35; }
   .result-progress { gap:6px; padding:14px; font-size:1.65rem; line-height:1.3; }
   .skill-report { padding:14px; }
   .result-actions { gap:12px; margin-top:12px; }
   .result-actions button { min-height:104px; padding:10px; font-size:1.75rem; line-height:1.2; }
+  .food-guide-coverage { padding:10px 12px; font-size:1.1rem; }
 }

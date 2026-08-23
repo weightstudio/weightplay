@@ -773,15 +773,15 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "zh-Hant": "獸王守衛",
     "zh-Hans": "兽王守卫",
     "ja": "ビースト戦術家",
-    "ko": "비스트 가디언",
+    "ko": "Beast Guardian",
     "es": "Guardián de Bestias",
-    "pt-BR": "Besta Guardiã",
-    "fr": "Gardien des bêtes",
-    "de": "Bestienwächter",
-    "it": "Guardiano della Bestia",
-    "ru": "Зверь-защитник",
-    "hi": "जानवर संरक्षक",
-    "ar": "حارس الوحش"
+    "pt-BR": "Beast Guardian",
+    "fr": "Beast Guardian",
+    "de": "Beast Guardian",
+    "it": "Beast Guardian",
+    "ru": "Beast Guardian",
+    "hi": "Beast Guardian",
+    "ar": "Beast Guardian"
   },
   "shadow-wolf": {
     "__localizedExact": true,
