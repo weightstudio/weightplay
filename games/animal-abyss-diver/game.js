@@ -1,5 +1,5 @@
 (() => {
-  const GAME_VERSION = 13;
+  const GAME_VERSION = 14;
   document.body.dataset.wpCombinedSound = "true";
   const $ = (id) => document.getElementById(id);
   const playSound = (name) => window.WonderSound?.play?.(name);
@@ -562,6 +562,26 @@
     const pack=localePacks[localeKey];
     if(!pack||content.names.length!==ROUTE_COUNT)throw new Error(`Animal Abyss Diver ${localeKey} route names are incomplete.`);
     Object.assign(pack,content.battle,{routeNames:content.names,routeRules:routes.map((route,index)=>format(content.rules[routeMechanicKeys[index]],{n:route.streakEvery||route.fragileCargo||route.oxygenTax||1,zones:route.jammedZones?.join(", ")||route.surfaceZones?.join(", ")||"",sonar:route.sonarCost||3,shield:route.shieldCost||2}))});
+  }
+  const progressionLocaleLabels={
+    en:{coins:"Salvage coins: {n}",rank:"Diver rank: {n}",coinsEarned:"This dive: +{n} salvage coins",coinsSaved:"Saved total: {n} salvage coins",routeUnlocked:"New route unlocked: Route {n} · {name}",routeReady:"Next route ready: Route {n} · {name}",routeComplete:"All 30 dive routes cleared.",routeRetry:"Next target: {target} salvage across {zones} zones"},
+    "zh-Hant":{coins:u("打撈幣：{n}"),rank:u("潛航員等級：{n}"),coinsEarned:u("本次潛航：+{n} 打撈幣"),coinsSaved:u("已保存總額：{n} 打撈幣"),routeUnlocked:u("已解鎖新路線：路線 {n} · {name}"),routeReady:u("下一條路線已準備：路線 {n} · {name}"),routeComplete:u("30 條潛航路線全部完成。"),routeRetry:u("下一個目標：穿越 {zones} 個海域並打撈 {target} 件")},
+    "zh-Hans":{coins:u("打捞币：{n}"),rank:u("潜航员等级：{n}"),coinsEarned:u("本次潜航：+{n} 打捞币"),coinsSaved:u("已保存总额：{n} 打捞币"),routeUnlocked:u("已解锁新路线：路线 {n} · {name}"),routeReady:u("下一条路线已准备：路线 {n} · {name}"),routeComplete:u("30 条潜航路线全部完成。"),routeRetry:u("下一个目标：穿越 {zones} 个海域并打捞 {target} 件")},
+    ja:{coins:"回収コイン：{n}",rank:"ダイバーランク：{n}",coinsEarned:"今回の潜航：回収コイン +{n}",coinsSaved:"保存済み合計：回収コイン {n}",routeUnlocked:"新ルート解放：ルート {n} · {name}",routeReady:"次のルート準備完了：ルート {n} · {name}",routeComplete:"全30潜航ルートをクリアしました。",routeRetry:"次の目標：{zones}ゾーンで回収 {target}"},
+    ko:{coins:"회수 코인: {n}",rank:"다이버 등급: {n}",coinsEarned:"이번 잠수: 회수 코인 +{n}",coinsSaved:"저장된 총합: 회수 코인 {n}",routeUnlocked:"새 경로 해금: 경로 {n} · {name}",routeReady:"다음 경로 준비 완료: 경로 {n} · {name}",routeComplete:"잠수 경로 30개를 모두 클리어했습니다.",routeRetry:"다음 목표: {zones}구역에서 {target} 회수"},
+    es:{coins:"Monedas de salvamento: {n}",rank:"Rango de buceador: {n}",coinsEarned:"Esta inmersión: +{n} monedas de salvamento",coinsSaved:"Total guardado: {n} monedas de salvamento",routeUnlocked:"Nueva ruta desbloqueada: Ruta {n} · {name}",routeReady:"Siguiente ruta lista: Ruta {n} · {name}",routeComplete:"Has completado las 30 rutas de inmersión.",routeRetry:"Siguiente objetivo: {target} de salvamento en {zones} zonas"},
+    "pt-BR":{coins:"Moedas de salvamento: {n}",rank:"Patente do mergulhador: {n}",coinsEarned:"Este mergulho: +{n} moedas de salvamento",coinsSaved:"Total salvo: {n} moedas de salvamento",routeUnlocked:"Nova rota desbloqueada: Rota {n} · {name}",routeReady:"Próxima rota pronta: Rota {n} · {name}",routeComplete:"As 30 rotas de mergulho foram concluídas.",routeRetry:"Próximo alvo: {target} salvamentos em {zones} zonas"},
+    fr:{coins:"Pièces de récupération : {n}",rank:"Rang du plongeur : {n}",coinsEarned:"Cette plongée : +{n} pièces de récupération",coinsSaved:"Total sauvegardé : {n} pièces de récupération",routeUnlocked:"Nouvelle route débloquée : route {n} · {name}",routeReady:"Route suivante prête : route {n} · {name}",routeComplete:"Les 30 routes de plongée sont terminées.",routeRetry:"Objectif suivant : {target} récupérations sur {zones} zones"},
+    de:{coins:"Bergungsmünzen: {n}",rank:"Taucherrang: {n}",coinsEarned:"Dieser Tauchgang: +{n} Bergungsmünzen",coinsSaved:"Gespeicherte Summe: {n} Bergungsmünzen",routeUnlocked:"Neue Route freigeschaltet: Route {n} · {name}",routeReady:"Nächste Route bereit: Route {n} · {name}",routeComplete:"Alle 30 Tauchrouten sind abgeschlossen.",routeRetry:"Nächstes Ziel: {target} Bergung in {zones} Zonen"},
+    it:{coins:"Monete di recupero: {n}",rank:"Grado del sub: {n}",coinsEarned:"Questa immersione: +{n} monete di recupero",coinsSaved:"Totale salvato: {n} monete di recupero",routeUnlocked:"Nuovo percorso sbloccato: percorso {n} · {name}",routeReady:"Prossimo percorso pronto: percorso {n} · {name}",routeComplete:"Tutti i 30 percorsi d'immersione sono completati.",routeRetry:"Prossimo obiettivo: {target} recuperi in {zones} zone"},
+    ru:{coins:"Монеты добычи: {n}",rank:"Ранг дайвера: {n}",coinsEarned:"Это погружение: +{n} монет добычи",coinsSaved:"Сохранённый итог: {n} монет добычи",routeUnlocked:"Открыт новый маршрут: маршрут {n} · {name}",routeReady:"Следующий маршрут готов: маршрут {n} · {name}",routeComplete:"Все 30 маршрутов погружения пройдены.",routeRetry:"Следующая цель: добыть {target} в {zones} зонах"},
+    hi:{coins:"बचाव सिक्के: {n}",rank:"डाइवर रैंक: {n}",coinsEarned:"यह डाइव: +{n} बचाव सिक्के",coinsSaved:"सहेजा गया कुल: {n} बचाव सिक्के",routeUnlocked:"नया रूट अनलॉक: रूट {n} · {name}",routeReady:"अगला रूट तैयार: रूट {n} · {name}",routeComplete:"सभी 30 डाइव रूट पूरे हो गए।",routeRetry:"अगला लक्ष्य: {zones} क्षेत्रों में {target} बचाव"},
+    ar:{coins:"عملات الإنقاذ: {n}",rank:"رتبة الغواص: {n}",coinsEarned:"هذه الغوصة: +{n} من عملات الإنقاذ",coinsSaved:"إجمالي العملات المحفوظة: {n}",routeUnlocked:"تم فتح المسار الجديد: المسار {n} · {name}",routeReady:"المسار التالي جاهز: المسار {n} · {name}",routeComplete:"اكتملت مسارات الغوص الثلاثون.",routeRetry:"الهدف التالي: إنقاذ {target} عبر {zones} مناطق"}
+  };
+  for(const [localeKey,labels] of Object.entries(progressionLocaleLabels)){
+    const pack=localeKey.startsWith("zh-")?zh:localeKey==="en"?en:localePacks[localeKey];
+    if(!pack)throw new Error(`Animal Abyss Diver ${localeKey} progression labels are missing.`);
+    Object.assign(pack,labels);
   }
   const dictionaries={en,"zh-Hant":zh,"zh-Hans":zh,...localePacks};
   const routeText=(route,key)=>{

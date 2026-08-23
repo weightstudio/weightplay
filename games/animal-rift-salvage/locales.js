@@ -52,6 +52,22 @@ chapters:["الساحة القمرية","حي الساعة","أرصفة المد
 currentHelp:"توضح البوصلة الفيروزية الصغيرة اتجاه التيار. اجمع مرساتين لإلغائه.",gunHelp:"يطلق الحراس الحمر مقذوفات قاتلة. واصل الحركة وتجنب المسارات المضيئة.",backLobby:"العودة إلى WeightPlay",back:"رجوع"
 });
 const dictionaries={en,"zh-Hant":zhHant,"zh-Hans":zhHans,ja,ko,es,"pt-BR":pt,fr,de,it,ru,hi,ar};
+const FIRST_CLEAR_COPY={
+  en:{firstZonePayoff:"Clear this zone to unlock Zone 2",firstRouteCoach:"Follow the pulsing teal rings; recover one, then the next.",winFirstText:"Orla restored Zone {n} in {time}s. Zone 2 is unlocked — choose Next Zone to keep the route going."},
+  "zh-Hant":{firstZonePayoff:"完成本區即可解鎖第 2 區",firstRouteCoach:"跟著發光的青色環，一次回收一個。",winFirstText:"奧菈以 {time} 秒修復區域 {n}。第 2 區已解鎖，選擇下一區域繼續路線。"},
+  "zh-Hans":{firstZonePayoff:"完成本区即可解锁第 2 区",firstRouteCoach:"跟着发光的青色环，一次回收一个。",winFirstText:"奥拉以 {time} 秒修复区域 {n}。第 2 区已解锁，选择下一区域继续路线。"},
+  ja:{firstZonePayoff:"この区域をクリアすると第2区域が解放",firstRouteCoach:"脈打つ青緑の輪を追い、一つずつ回収。",winFirstText:"オルラは区域 {n} を {time} 秒で修復。第2区域が解放されました。次の区域で進みましょう。"},
+  ko:{firstZonePayoff:"이 구역을 클리어하면 2구역이 열립니다",firstRouteCoach:"빛나는 청록 고리를 따라 하나씩 회수하세요.",winFirstText:"오를라가 {time}초 만에 {n}구역을 복구했습니다. 2구역이 열렸습니다. 다음 구역으로 계속하세요."},
+  es:{firstZonePayoff:"Completa esta zona para desbloquear la Zona 2",firstRouteCoach:"Sigue los anillos turquesa pulsantes y recupera uno tras otro.",winFirstText:"Orla restauró la Zona {n} en {time}s. La Zona 2 está desbloqueada: elige Siguiente zona para continuar."},
+  "pt-BR":{firstZonePayoff:"Complete esta zona para liberar a Zona 2",firstRouteCoach:"Siga os anéis turquesa pulsantes e recupere um por vez.",winFirstText:"Orla restaurou a Zona {n} em {time}s. A Zona 2 foi liberada; escolha Próxima zona para continuar."},
+  fr:{firstZonePayoff:"Terminez cette zone pour débloquer la Zone 2",firstRouteCoach:"Suivez les anneaux turquoise pulsants et récupérez-les un par un.",winFirstText:"Orla a restauré la Zone {n} en {time}s. La Zone 2 est débloquée : choisissez Zone suivante pour continuer."},
+  de:{firstZonePayoff:"Schließe diese Zone ab, um Zone 2 freizuschalten",firstRouteCoach:"Folge den pulsierenden Türkisringen und berge sie nacheinander.",winFirstText:"Orla hat Zone {n} in {time}s restauriert. Zone 2 ist frei — wähle Nächste Zone, um weiterzuspielen."},
+  it:{firstZonePayoff:"Completa questa zona per sbloccare la Zona 2",firstRouteCoach:"Segui gli anelli turchesi pulsanti e recuperali uno alla volta.",winFirstText:"Orla ha ripristinato la Zona {n} in {time}s. La Zona 2 è sbloccata: scegli Zona successiva per continuare."},
+  ru:{firstZonePayoff:"Пройдите зону, чтобы открыть Зону 2",firstRouteCoach:"Следуйте за пульсирующими бирюзовыми кольцами и собирайте их по одному.",winFirstText:"Орла восстановила Зону {n} за {time} с. Зона 2 открыта — выберите следующую зону, чтобы продолжить маршрут."},
+  hi:{firstZonePayoff:"यह क्षेत्र पूरा करें और क्षेत्र 2 खोलें",firstRouteCoach:"धड़कते फ़िरोज़ी छल्लों का पीछा करें और एक-एक करके बचाएँ।",winFirstText:"ओर्ला ने क्षेत्र {n} को {time} सेकंड में बहाल किया। क्षेत्र 2 खुल गया है — मार्ग जारी रखने के लिए अगला क्षेत्र चुनें।"},
+  ar:{firstZonePayoff:"أكمل هذه المنطقة لفتح المنطقة 2",firstRouteCoach:"اتبع الحلقات الفيروزية النابضة وأنقذها واحدة تلو الأخرى.",winFirstText:"استعادت أورلا المنطقة {n} خلال {time}ث. فُتحت المنطقة 2 — اختر المنطقة التالية لمواصلة المسار."}
+};
+for(const [code,copy] of Object.entries(FIRST_CLEAR_COPY))Object.assign(dictionaries[code],copy);
 const accessibility={
 en:{backLobby:"Return to WeightPlay",back:"Back"},
 "zh-Hant":{backLobby:"返回 WeightPlay",back:"返回"},
