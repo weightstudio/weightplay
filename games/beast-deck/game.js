@@ -340,6 +340,10 @@
       description: "Juega Beast Deck: El Bosque de Niebla, un juego de construcción de mazos con 30 misiones, diez mecánicas regionales y seis jefes por fases.",
       ogDescription: "Crea mazos de poderes animales, interpreta las intenciones enemigas y derrota a seis jefes distintos en 30 misiones.",
     },
+    ar: {
+      description: "العب Beast Deck: غابة الضباب، لعبة بناء مجموعة حيوانات تضم 30 مهمة وعشر آليات إقليمية وستة زعماء متبدلي المراحل.",
+      ogDescription: "ابنِ مجموعات قوى الحيوانات، واقرأ نوايا الأعداء، وتصدَّ لعشر آليات إقليمية واهزم ستة زعماء مختلفين عبر 30 مهمة.",
+    },
   };
 
   const text = {
@@ -1001,6 +1005,213 @@
     resultComplete: "Campaña del bosque completada: {count} misiones desbloqueadas.",
     resultRetry: "Progreso guardado. Repite la misión {mission} cuando quieras."
   };
+  text.ar = {
+    ...text.en,
+    title: "سطح الوحوش: غابة الضباب",
+    language: "اللغة",
+    menuTitle: "ادخل غابة الضباب.",
+    menuHint: "ابنِ مجموعات قوى الحيوانات عبر 30 مهمة، وتصدَّ لعشر آليات إقليمية، واهزم ستة زعماء يغيّرون مراحلهم.",
+    startGame: "بدء اللعبة",
+    progressTitle: "التقدم المحلي",
+    missionSelection: "اختيار المهمة",
+    progressText: "أكمل المهام لتحصل على الخبرة وعملات الوحوش. أنفق العملات على الحزم، وجهّز البطاقات والمعدات، وتقدم إلى أعماق الغابة.",
+    profileLevel: "المستوى",
+    profileXp: "الخبرة",
+    profileBest: "الأفضل",
+    profileCoins: "العملات",
+    profileBonus: "+{hp} إلى أقصى الصحة من المستوى",
+    collectionTitle: "مجموعة البطاقات",
+    collectionHint: "جهّز حتى 6 بطاقات إضافية قبل المهمة.",
+    packTitle: "اسحب حزمة الوحوش",
+    packHint: "أنفق العملات لتحصل على بطاقة أو معدات للجولات القادمة.",
+    packNeed: "تحتاج إلى {cost} من العملات.",
+    deckBuildTitle: "مجموعة المعركة",
+    deckAnalysis: "المهمة التالية: {total} بطاقات — هجوم {attack} / دفاع {defense} / تكتيك {utility}.",
+    collectionOwnedTitle: "البطاقات المملوكة",
+    equipmentTitle: "المعدات",
+    equipCard: "تجهيز",
+    unequipCard: "إزالة",
+    removeCardLabel: "إزالة {card} من مجموعة المعركة، الخانة {slot} من {count}",
+    allCopiesEquipped: "تم تجهيز كل النسخ",
+    deckFull: "مجموعة المعركة ممتلئة",
+    ownedCount: "المملوك {count}",
+    equippedCount: "المجهز {count}/{max}",
+    gearEquipped: "مجهز",
+    gearEquip: "تجهيز",
+    gearNone: "لا توجد معدات بعد",
+    gearRank: "الرتبة {rank}/{maxRank}",
+    gearStatHp: "+{amount} إلى أقصى الصحة",
+    gearStatEnergy: "+{amount} طاقة في كل معركة",
+    gearStatBlock: "ابدأ كل معركة بـ {amount} من الدرع",
+    stageSelectTitle: "اختر مهمة",
+    stageSelectHint: "اسحب المهمات أو مررها، ثم اضغط بطاقة مهمة مفتوحة للبدء.",
+    stageHubTitle: "الاستعداد للمهمة",
+    stageTabMissions: "المهمات",
+    stageTabDeck: "المجموعة",
+    stageTabShop: "الترقيات",
+    lockedMission: "مغلقة",
+    missionLabel: "المهمة {mission}",
+    missionReward: "{xp} خبرة",
+    missionCoins: "{coins} عملة",
+    startMissionCard: "اضغط للبدء",
+    missionSelectedCard: "محددة — اضغط للبدء",
+    selectedMissionTitle: "المهمة المحددة",
+    selectedMissionReady: "{mission} جاهزة. مكافأة الإكمال: {xp} خبرة + {coins} عملة.",
+    missionScout: "الاستطلاع: {enemies}. المعركة الأولى: {first}.",
+    loadoutReady: "التجهيز: {cards}/{max} بطاقات إضافية · المعدات: {gear}.",
+    noGear: "لا شيء",
+    controlCombat: "استراتيجية تناوب الأدوار",
+    controlUpgrades: "اختيار البطاقات",
+    controlDeck: "مستوى دائم",
+    diamondShopTitle: "ترقية دائمة",
+    amuletName: "تميمة الضباب",
+    amuletEffect: "ابدأ كل جولة بزيادة 10 إلى أقصى الصحة.",
+    amuletOwned: "مملوكة: تبدأ كل جولة بزيادة 10 إلى أقصى الصحة.",
+    amuletNeed: "تحتاج إلى {cost} من الألماسات.",
+    amuletNeedExact: "تحتاج إلى {cost} ألماسة · لديك {balance}.",
+    amuletConfirm: "+10 صحة قصوى دائمة · الألماسات {balance} ← {result}. فعّل مرة أخرى للتأكيد.",
+    amuletConfirmLabel: "تأكيد تميمة الضباب. زيادة دائمة قدرها 10 إلى أقصى الصحة. أنفق {cost} ألماسة. الرصيد {balance} إلى {result}.",
+    startRun: "بدء المهمة المحددة",
+    backToLobby: "العودة إلى الردهة",
+    backToMain: "رجوع",
+    backToStage: "العودة إلى المهمات",
+    preparation: "الاستعداد",
+    menu: "القائمة",
+    hudStage: "المعركة",
+    hudMission: "المهمة",
+    hudHp: "صحة اللاعب",
+    hudEnergy: "الطاقة",
+    hudDeck: "المجموعة",
+    hudDiscard: "المهملات",
+    combatBlock: "درع",
+    combatGainBlock: "درع +{amount}",
+    combatApplyPoison: "سم +{amount}",
+    combatArmorReduction: "الدرع {amount}",
+    combatRiposte: "ردّ الهجوم -{amount}",
+    combatPhase: "المرحلة {phase}",
+    shieldLabel: "درع",
+    chooseCard: "اختر بطاقة",
+    chooseCardDesc: "اختر قوة حيوان لهذه المجموعة. ستظهر البطاقة المختارة حتمًا في اليد الافتتاحية التالية.",
+    draftPermanentHint: "تستمر بطاقات الاختيار لهذه المهمة فقط. تحصل على البطاقات الدائمة من حزم الوحوش الذهبية في القائمة.",
+    tryAgain: "حاول مرة أخرى",
+    backToMenu: "العودة إلى القائمة",
+    skillLogic: "الاستراتيجية",
+    skillFocus: "التحكم بالبطاقات",
+    skillProblem: "الدفاع",
+    endTurn: "إنهاء الدور",
+    runComplete: "اكتملت المهمة!",
+    runFailed: "فشلت المهمة",
+    resultScoreLabel: "تقدم المهمة",
+    resultDisclaimer: "محفوظ في سجل المهمة المحلي.",
+    skillReportTitle: "ملخص المعركة",
+    loading: "جارٍ التحميل",
+    card_wolf_pack: "قطيع الذئاب",
+    card_wolf_pack_desc: "يسبب 6 ضرر. إذا لعبت هجومًا آخر هذا الدور، يسبب 12 بدلًا من ذلك.",
+    card_guard_bear: "دب الحراسة",
+    card_guard_bear_desc: "اكسب 6 من الدرع.",
+    card_sky_hawk: "الصقر السماوي",
+    card_sky_hawk_desc: "يسبب 14 ضررًا واسحب بطاقة واحدة.",
+    card_cheetah_sprint: "اندفاعة الفهد",
+    card_cheetah_sprint_desc: "اسحب بطاقتين واكسب نقطة طاقة واحدة.",
+    card_viper_venom: "سم الأفعى",
+    card_viper_venom_desc: "طبّق 3 من السم على العدو.",
+    card_owl_wisdom: "حكمة البومة",
+    card_owl_wisdom_desc: "اسحب بطاقة واحدة.",
+    card_iron_tortoise: "السلحفاة الحديدية",
+    card_iron_tortoise_desc: "اكسب 15 من الدرع.",
+    card_mist_curse: "لعنة الضباب",
+    card_mist_curse_desc: "إزالتها تكلف نقطة طاقة. إذا بقيت عند إنهاء الدور، تتلقى ضررين.",
+    gear_mist_cloak: "عباءة الضباب",
+    gear_mist_cloak_desc: "+6 إلى أقصى الصحة.",
+    gear_hunter_charm: "تميمة الصياد",
+    gear_hunter_charm_desc: "+1 طاقة في كل معركة.",
+    gear_forest_banner: "راية الغابة",
+    gear_forest_banner_desc: "ابدأ بـ 4 من الدرع.",
+    intent_attack: "يستعد للهجوم بقوة {amount}",
+    intent_defend: "يستعد للدفاع بقوة {amount}",
+    intent_poison: "يستعد لتطبيق {amount} من السم",
+    intent_buff: "يستعد لضربة قوية",
+    intent_armor: "يعزز الدرع بمقدار {amount}",
+    intent_riposte: "سيرد على الهجوم بـ {amount} من الضرر",
+    intent_exhaust: "يرهق بطاقة ويزيد كلفتها بـ {amount} من الطاقة",
+    intent_mark: "يضع علامة تسبب {amount} من الضرر",
+    intent_regen: "يستعيد {amount} من الصحة",
+    intent_cleanse: "يزيل السم",
+    intent_weak: "يضعف الهجوم التالي بمقدار {amount}",
+    intent_seal: "يختم بطاقات {type}",
+    intent_curse: "يضيف {amount} من لعنة الضباب",
+    intent_fog: "يخفي النية التالية بضباب التاج",
+    cardPlayable: "قابلة للعب · الكلفة {cost} · الطاقة {energy}",
+    cardNeedEnergy: "تحتاج إلى {need} طاقة إضافية · الكلفة {cost} · الطاقة {energy}",
+    cardWaitTurn: "انتظر دورك · الكلفة {cost}",
+    cardSealed: "بطاقات {type} مختومة هذا الدور",
+    cardActionLabel: "{card}. {effect} {status}",
+    endTurnSafe: "لا ضرر من البطاقات المحتفظ بها",
+    endTurnMarkHazard: "{card} معلّمة: {damage} صحة",
+    endTurnCurseHazard: "{count} من لعنات الضباب: {damage} صحة",
+    endTurnHazardSummary: "{details}. إجمالي ضرر البطاقات المحتفظ بها {damage} صحة",
+    endTurnActionLabel: "إنهاء الدور. {hazard}. حركة العدو التالية: {intent}.",
+    log_start: "بدأت المعركة ضد {enemy}.",
+    log_play_card: "لعبت {card}. الكلفة: {cost}.",
+    log_combo: "سلسلة! تسبب {card} ضررًا مقداره {damage}.",
+    log_poison_damage: "تلقى {enemy} ضرر سم مقداره {damage}.",
+    log_enemy_turn: "دور العدو: {action}.",
+    log_enemy_blocked: "امتص درع {enemy} ضررًا مقداره {blocked}.",
+    log_enemy_damage_after_block: "امتص درع {enemy} {blocked}، ونفذ {damage} من الضرر.",
+    log_player_turn: "دورك. سحبت {count} بطاقات. عادت الطاقة إلى {energy}.",
+    log_player_block: "كسبت {amount} من الدرع. سيمتص ضرر هجوم العدو هذا الدور.",
+    log_enemy_block_fade: "تلاشى الدرع المتبقي لدى {enemy}.",
+    log_draft_added: "انضمت {card} إلى مجموعة المهمة وستظهر في اليد الافتتاحية.",
+    enemyBlockStatus: "درع {amount} يمتص الضرر التالي منك.",
+    enemyArmorStatus: "درع {amount} يقلل كل ضربة مباشرة.",
+    enemyRiposteStatus: "ردّ هجوم {amount} يصد بطاقة الهجوم التالية.",
+    enemyWardStatus: "حاجز ثلاثي: العب {amount} من أنواع البطاقات الإضافية.",
+    enemyRegenStatus: "تجدد {amount} يعالج بعد أفعال العدو.",
+    playerWeakStatus: "ضعف {amount} يقلل هجومك التالي.",
+    playerExhaustStatus: "الإرهاق يزيد كلفة {card} بمقدار 1.",
+    playerMarkStatus: "علامة: العب {card} أو تلقَّ {amount} من الضرر.",
+    playerSealStatus: "مختوم: {type}",
+    log_armor_absorb: "يقلل درع {enemy} الضربة بمقدار {blocked}.",
+    log_riposte: "يرد {enemy} الهجوم بضرر مقداره {damage}.",
+    log_exhaust: "أُرهقت {card} وتكلف طاقة إضافية قدرها 1 هذا الدور.",
+    log_mark: "وُضعت علامة على {card}. العبها قبل إنهاء الدور أو تلقَّ {damage} من الضرر.",
+    log_mark_hit: "تسببت العلامة غير المستخدمة في {damage} من الضرر.",
+    log_regen: "استعاد {enemy} {amount} من الصحة.",
+    log_cleanse: "أزال {enemy} كل السم.",
+    log_weak: "يفقد هجومك التالي {amount} من الضرر.",
+    log_seal: "تبقى بطاقات {type} مختومة حتى حركة العدو التالية.",
+    log_curse: "دخلت {count} من لعنات الضباب إلى المهملات.",
+    log_curse_hold: "تسبب لعنة ضباب غير مزالة {damage} من الضرر.",
+    log_curse_clear: "أزيلت لعنة الضباب من هذه المعركة.",
+    log_ward_progress: "تعرف الحاجز على {type}. تبقى {remaining} من الأنواع.",
+    log_ward_break: "تآزر الهجوم والدفاع والتكتيك معًا. انكسر الحاجز.",
+    log_boss_phase: "دخل {enemy} المرحلة {phase}: {effect}.",
+    phase_armor: "يتكاثف الدرع",
+    phase_riposte: "يصبح رد الهجوم أشد",
+    phase_haste: "تتسارع المطاردة",
+    phase_regen: "يتصاعد التجدد",
+    phase_seal: "يتبدل نوع البطاقة المحظور",
+    phase_ward: "يتشكل الحاجز الثلاثي مجددًا",
+    log_win_battle: "هزمت {enemy}. اختر بطاقة جديدة.",
+    log_win_mission: "هُزمت نخبة المهمة. كسبت {xp} من الخبرة.",
+    log_win_boss: "هُزم زعيم المهمة. كسبت {xp} من الخبرة.",
+    log_coin_gain: "كسبت {coins} من عملات الوحوش.",
+    log_loss: "هزمك {enemy}.",
+    log_reshuffle: "نفدت كومة السحب: أُعيد خلط المهملات.",
+    shieldAbsorbed: "امتص الدرع كل الضرر. المتبقي {shield} من الدرع.",
+    playerDamage: "تلقى اللاعب {damage} من الضرر. المتبقي {hp} صحة.",
+    playerPoison: "تلقى اللاعب {damage} من ضرر السم. المتبقي {hp} صحة.",
+    levelUp: "ارتفع المستوى! وصلت إلى المستوى {level}.",
+    report_win: "أكملت المهمة {mission}. كسبت {xp} من الخبرة وفتحت طريقًا أعمق في الغابة.",
+    report_partial: "أكملت {count} من معارك المهمة {mission}. كسبت {xp} من الخبرة. حاول بخطة مجموعة أقوى.",
+    report_no_wins: "لم تكمل أي معركة بعد. اقرأ نية العدو، وصد الهجمات الكبيرة، وابنِ سلاسل البطاقات.",
+    resultRewards: "مكافآت الجولة: +{xp} خبرة · +{coins} عملة وحوش",
+    resultSaved: "محفوظ: المستوى {level} · {xp}/{nextXp} خبرة · {coins} عملة وحوش",
+    resultUnlocked: "مهمة جديدة مفتوحة: المهمة {mission} — {name}",
+    resultReady: "المهمة التالية جاهزة: المهمة {mission} — {name}",
+    resultComplete: "اكتملت حملة الغابة: فُتحت المهمات كلها وعددها {count}.",
+    resultRetry: "حُفظ التقدم. أعد محاولة المهمة {mission} عندما تكون مستعدًا.",
+  };
   const permanentCardIds = Object.keys(cardDb).filter((cardId) => cardDb[cardId].draftable !== false);
 
   const baseDeck = [
@@ -1062,8 +1273,31 @@
     moonBoss: "Custodio del Archivo Lunar",
     mistCrownBoss: "Monarca de la Corona de Niebla"
   };
+  const enemyNamesAr = {
+    boar: "الخنزير الظلي",
+    viper: "الأفعى الفاسدة",
+    behemoth: "وحش الضباب",
+    rhino: "وحيد القرن الحديدي",
+    tiger: "النمر الكهرماني",
+    bear: "الدب العتيق",
+    thornStag: "الأيل ذو الدرع الشوكي",
+    ironJackal: "ابن آوى جذر الحديد",
+    amberLynx: "وشق الكهرمان",
+    mireToad: "علجوم المستنقع الحلزوني",
+    archiveOwl: "بومة الأرشيف",
+    crownWolf: "ذئب تاج الضباب",
+    stonebackBoss: "وحش الظهر الحجري",
+    ironrootBoss: "حارس جذر الحديد",
+    amberBoss: "سيد الصيد الكهرماني",
+    mirecoilBoss: "هيدرا المستنقع الحلزوني",
+    moonBoss: "حارس الأرشيف القمري",
+    mistCrownBoss: "ملك تاج الضباب",
+  };
   Object.entries(enemyNamesEs).forEach(([id, nameEs]) => {
     if (enemyCatalog[id]) enemyCatalog[id].nameEs = nameEs;
+  });
+  Object.entries(enemyNamesAr).forEach(([id, nameAr]) => {
+    if (enemyCatalog[id]) enemyCatalog[id].nameAr = nameAr;
   });
 
   const missionTemplates = [
@@ -1130,8 +1364,41 @@
     ["Escalera del Monarca", "Todas las mecánicas anteriores regresan juntas."],
     ["Corona de Niebla", "Jefe final: barreras, maldiciones y sellos rotatorios."]
   ];
+  const missionCopyAr = [
+    ["الممر الضبابي", "اقرأ نوايا الهجوم والدفاع البسيطة."],
+    ["مفترق الأشواك", "يغيّر السم الدور الآمن."],
+    ["متراس الطحلب", "يقلل الدرع كل ضربة مباشرة."],
+    ["آثار الحجر", "اكسر الدرع قبل الضربة الثقيلة."],
+    ["جوف ظهر الحجر", "الزعيم: يزداد سمك الدرع في كل مرحلة."],
+    ["بوابة الجذر الحديدي", "تعاقب وضعيات رد الهجوم الهجمات المتهورة."],
+    ["ممر المطرقة", "يرفع الإرهاق كلفة بطاقة واحدة في المرة التالية."],
+    ["مسبك الجذور", "صد رد الهجوم ثم أطلق الضرر المركّز."],
+    ["درجات الحارس", "يتداخل الدرع ورد الهجوم."],
+    ["قلعة الجذر الحديدي", "الزعيم: تصبح ردود الهجوم أقوى في كل مرحلة."],
+    ["درب الكهرمان", "تقفز السرعة فوق أنماط النوايا."],
+    ["علامة الصياد", "العب البطاقة المعلّمة أو تلقَّ الضرر."],
+    ["حافة المخلب الشمسي", "يقلل الضعف هجومك التالي."],
+    ["حلقة المفترس", "تحتاج العلامات والسرعة إلى تخطيط اليد."],
+    ["الصيد الكهرماني الكبير", "الزعيم: تسرّع المراحل المطاردة."],
+    ["ضفة المستنقع الحلزوني", "يكافئ التجدد الضرر الحاسم."],
+    ["برك السم", "يتنافس العلاج والسم."],
+    ["القصب الغارق", "قد يبدد التطهير خطة السم."],
+    ["اليقظة الثلاثية", "يجتمع الضعف والسم والعلاج."],
+    ["حوض المستنقع الحلزوني", "الزعيم: يتجدد بسرعة أكبر في كل مرحلة."],
+    ["الأرشيف القمري", "تعطل الأختام نوعًا واحدًا من البطاقات مؤقتًا."],
+    ["الفهرس الصامت", "خطط أدوارك حول الأختام المتبدلة."],
+    ["رفوف القمر", "تتناوب أختام الدفاع والتكتيك."],
+    ["ختم الحارس", "تخضع أنواع البطاقات الثلاثة للاختبار."],
+    ["قلب الأرشيف", "الزعيم: تغيّر كل مرحلة النوع المحظور."],
+    ["حد الضباب المتوَّج", "تحتل اللعنات السحوبات حتى تزيلها."],
+    ["البلاط المحجوب", "يخفي الضباب الإيقاع الآمن التالي."],
+    ["الحاجز الثلاثي", "استخدم الهجوم والدفاع والتكتيك لكسر الحواجز."],
+    ["درج الملك", "تعود كل الآليات السابقة معًا."],
+    ["تاج الضباب", "الزعيم الأخير: حواجز ولعنات وأختام متبدلة."]
+  ];
   missionTemplates.forEach((mission, index) => {
     [mission.titleEs, mission.subtitleEs] = missionCopyEs[index];
+    [mission.titleAr, mission.subtitleAr] = missionCopyAr[index];
   });
   let profile = normalizeProfile();
   let state = {};
@@ -1449,6 +1716,7 @@
   function nextMissionLabel(missionId) {
     const locale = getLocale();
     if (locale === "es") return `Siguiente misión: ${missionId}`;
+    if (locale === "ar") return `المهمة التالية: ${missionId}`;
     return locale === "en" ? `Next Mission: ${missionId}` : localizeChinese(`下一關：任務 ${missionId}`, locale);
   }
 
@@ -1456,6 +1724,7 @@
     const mission = getMission(id);
     const locale = getLocale();
     if (locale === "es") return mission.titleEs;
+    if (locale === "ar") return mission.titleAr;
     return locale === "en" ? mission.title : localizeChinese(mission.titleZh, locale);
   }
 
@@ -1463,6 +1732,7 @@
     const mission = getMission(id);
     const locale = getLocale();
     if (locale === "es") return mission.subtitleEs;
+    if (locale === "ar") return mission.subtitleAr;
     return locale === "en" ? mission.subtitle : localizeChinese(mission.subtitleZh, locale);
   }
 
@@ -1487,6 +1757,7 @@
     enemy.name = `Elite ${enemy.name}`;
     enemy.nameZh = `菁英${enemy.nameZh}`;
     enemy.nameEs = `Élite ${enemy.nameEs}`;
+    enemy.nameAr = `نخبة ${enemy.nameAr}`;
     if (mission.arc === 1) enemy.armor = (enemy.armor || 0) + 1;
     if (mission.arc === 2) enemy.riposteBonus = 2;
     if (mission.arc === 3) enemy.haste = true;
@@ -1503,6 +1774,7 @@
   function enemyName(enemy) {
     const locale = getLocale();
     if (locale === "es") return enemy.nameEs || enemy.name;
+    if (locale === "ar") return enemy.nameAr || enemy.name;
     return locale === "en" ? enemy.name : localizeChinese(enemy.nameZh, locale);
   }
 
@@ -1545,6 +1817,7 @@
     nodes.localeSelect.querySelector('option[value="en"]').textContent = "English";
     nodes.localeSelect.querySelector('option[value="zh-Hant"]').textContent = "\u7e41\u9ad4\u4e2d\u6587";
     nodes.localeSelect.querySelector('option[value="zh-Hans"]').textContent = "\u7b80\u4f53\u4e2d\u6587";
+    nodes.localeSelect.querySelector('option[value="ar"]')?.replaceChildren(document.createTextNode("العربية"));
     nodes.localeSelect.value = getLocale();
     updateDiamondShopUI();
     renderProgressUI();
@@ -2281,6 +2554,8 @@
       ? { attack: "Attack", defense: "Defense", utility: "Utility", curse: "Curse" }
       : locale === "es"
         ? { attack: "Ataque", defense: "Defensa", utility: "Táctica", curse: "Maldición" }
+        : locale === "ar"
+          ? { attack: "هجوم", defense: "دفاع", utility: "تكتيك", curse: "لعنة" }
         : { attack: "攻擊", defense: "防禦", utility: "功能", curse: "詛咒" };
     return localizeChinese(labels[type] || String(type || ""), locale);
   }
