@@ -1081,6 +1081,26 @@
     text[code].battleTraitGuide = value;
   });
 
+  const attackRangeHintCopy = {
+    en: "Attack unavailable: no enemy is within this hero's range. Move closer or choose Guard or Skill.",
+    "zh-Hant": "攻擊暫不可用：這位英雄的射程內沒有敵人。請靠近，或選擇防守／技能。",
+    "zh-Hans": "攻击暂不可用：这位英雄的射程内没有敌人。请靠近，或选择防守／技能。",
+    ja: "攻撃できません。この英雄の射程内に敵がいません。近づくか、ガードまたはスキルを選んでください。",
+    ko: "공격할 수 없습니다. 이 영웅의 사거리 안에 적이 없습니다. 가까이 이동하거나 방어 또는 스킬을 선택하세요.",
+    es: "Ataque no disponible: no hay enemigos al alcance de este héroe. Acércate o elige Defensa o Habilidad.",
+    "pt-BR": "Ataque indisponível: não há inimigos no alcance deste herói. Aproxime-se ou escolha Defesa ou Habilidade.",
+    fr: "Attaque indisponible : aucun ennemi n’est à portée de ce héros. Avancez ou choisissez Garde ou Compétence.",
+    de: "Angriff nicht verfügbar: Kein Gegner ist in Reichweite dieses Helden. Bewege dich näher heran oder wähle Schutz oder Fähigkeit.",
+    it: "Attacco non disponibile: nessun nemico è alla portata di questo eroe. Avvicinati oppure scegli Difesa o Abilità.",
+    ru: "Атака недоступна: в радиусе этого героя нет врага. Подойдите ближе или выберите защиту либо умение.",
+    hi: "हमला उपलब्ध नहीं: इस नायक की सीमा में कोई दुश्मन नहीं है। पास जाएँ या रक्षा या कौशल चुनें।",
+    ar: "الهجوم غير متاح: لا يوجد عدو ضمن مدى هذا البطل. اقترب أو اختر الحراسة أو المهارة.",
+  };
+  Object.entries(attackRangeHintCopy).forEach(([code, value]) => {
+    text[code] ||= {};
+    text[code].attackRangeHint = value;
+  });
+
   const heroDefs = [
     { id: "lion", name: "lion", role: "lionRole", img: "weightplay-boom-mane-lion.png", hp: 7, atk: 3, skillName: "skillLion", skillDesc: "skillLionDesc", skill: "animal-rune-tactics-skill-lion-strike.webp" },
     { id: "owl", name: "owl", role: "owlRole", img: "animal-rune-tactics-hero-owl.png", hp: 5, atk: 2, range: 2, skillName: "skillOwl", skillDesc: "skillOwlDesc", skill: "animal-rune-tactics-skill-owl-rune-bolt.webp" },
@@ -2601,6 +2621,10 @@
     const chainHint = chainTarget
       ? t("runeChainHint", { enemy: t(chainTarget.name), bonus: chainBonus })
       : t("runeChainReady");
+    const attackUnavailable = state.phase === "player"
+      && !state.acted.has(hero.id)
+      && !movementAnimationActive
+      && !validTargets().length;
     const enemyTraitKeys = [...new Set(livingEnemies().map((enemy) => enemy.trait).filter(Boolean))];
     const enemyTraitGuideText = enemyTraitKeys
       .map((traitKey) => `${t(traitKey)}: ${t(`${traitKey}Desc`)}`)
@@ -2617,7 +2641,7 @@
     traitGuideNode.querySelector("span").textContent = enemyTraitGuideText;
     const skillHelp = nodes.selectedCard.querySelector("small");
     skillHelp.className = "skill-help";
-    skillHelp.innerHTML = `<b>${t(hero.skillName)}</b><span>${t(hero.skillDesc)}</span><i>${chainHint}</i>`;
+    skillHelp.innerHTML = `<b>${t(hero.skillName)}</b><span>${t(hero.skillDesc)}</span><i>${attackUnavailable ? t("attackRangeHint") : chainHint}</i>`;
     nodes.skillBtn.title = t("skillInfo", { skill: t(hero.skillName), desc: t(hero.skillDesc) });
   }
 
@@ -2653,13 +2677,19 @@
     const canAct = hero && !state.acted.has(hero.id) && state.phase === "player" && !movementAnimationActive;
     const targets = hero ? validTargets() : [];
     const attackTarget = targets[0];
+    const attackUnavailable = Boolean(hero && canAct && !targets.length);
     const skillTarget = hero && hero.id !== "turtle" ? attackTarget || livingEnemies().sort((a, b) => distance(hero, a) - distance(hero, b))[0] : null;
     const attackBonus = attackTarget ? chainBonusFor(attackTarget) : 0;
     const skillBonus = skillTarget ? chainBonusFor(skillTarget) : 0;
     nodes.attackBtn.textContent = hero ? t("attackValue", { value: hero.atk + attackBonus }) : t("attack");
     nodes.guardBtn.textContent = hero ? t("guardValue") : t("guard");
     nodes.skillBtn.textContent = hero ? t("skillValue", { value: hero.id === "turtle" ? "+1" : hero.atk + 2 + skillBonus }) : t("skill");
-    nodes.attackBtn.setAttribute("aria-label", attackTarget ? t("actionTarget", { action: t("attack"), value: hero.atk + attackBonus, target: t(attackTarget.name) }) : t("attack"));
+    nodes.attackBtn.setAttribute("aria-label", attackTarget
+      ? t("actionTarget", { action: t("attack"), value: hero.atk + attackBonus, target: t(attackTarget.name) })
+      : attackUnavailable
+        ? `${t("attack")}. ${t("attackRangeHint")}`
+        : t("attack"));
+    nodes.attackBtn.title = attackUnavailable ? t("attackRangeHint") : "";
     nodes.guardBtn.setAttribute("aria-label", hero ? `${t("guardValue")}. ${t("guardHelp")}` : t("guard"));
     if (hero) {
       const skillResult = hero.id === "turtle"

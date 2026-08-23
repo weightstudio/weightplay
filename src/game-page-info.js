@@ -12240,6 +12240,13 @@
       ["ماذا يحدث إذا لم توجد حركة مقترحة؟", "يعرض التلميح عدم وجود حركات متاحة عندما لا يجد حركة قانونية."],
     ],
   };
+  localizedGames["ar"]["animal-mosaic-clues"] = {
+    faq: [
+      ["كم عدد الفسيفساء المضمنة؟", "هناك 30 فسيفساء مؤلفة."],
+      ["هل أحتاج إلى التخمين؟", "لا. كل فسيفساء لديها حل واحد بالضبط."],
+      ["هل يُحفظ التقدم؟", "نعم. تُخزَّن عمليات الإكمال وعمليات الفتح محليًا في هذا المتصفح."],
+    ],
+  };
   const reviewedGeneralGuides = window.WeightPlayGeneralReviewedGuides || {};
   for (const [code, localeData] of Object.entries(reviewedGeneralGuides)) {
     if (!localizedGames[code]) localizedGames[code] = {};

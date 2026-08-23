@@ -1165,7 +1165,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Indizi di mosaici animali",
     "ru": "Подсказки к мозаике животных",
     "hi": "पशु मोज़ेक सुराग",
-    "ar": "القرائن الفسيفسائية الحيوانية"
+    "ar": "Animal Mosaic Clues"
   },
   "animal-prism-breakers": {
     "__localizedExact": true,

@@ -1,5 +1,5 @@
 (() => {
-  const GAME_VERSION = 14;
+  const GAME_VERSION = 15;
   document.body.dataset.wpCombinedSound = "true";
   const $ = (id) => document.getElementById(id);
   const playSound = (name) => window.WonderSound?.play?.(name);
@@ -298,6 +298,7 @@
       shortDodgeLeft:pack.left,shortDodgeRight:pack.right,shortShockwave:pack.shockwave,
       safeLane:pack.safe,riskLane:pack.danger,attackAction:pack.attack,escapeAction:pack.escape,
       dodgeLeft:pack.left,dodgeRight:pack.right,pulse:`${pack.counter} 1⚡`,fishTimer:pack.timer,
+      zoneProgress:pack.zone||pack.generic,
       beaconConfirmStatus:pack.beaconConfirmStatus||`${pack.beacon} · ${pack.oxygen} 30%`,
       beaconConfirmLabel:pack.beaconConfirmLabel||pack.beacon,
       beaconUnavailable:pack.beaconUnavailable||pack.beacon,
