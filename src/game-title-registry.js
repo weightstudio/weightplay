@@ -1215,6 +1215,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "Animal Reef Fisher",
     "ar": "Animal Reef Fisher"
   },
+  "checkers": {
+    "__localizedExact": true,
+    "en": "Checkers",
+    "zh-Hant": "西洋跳棋",
+    "zh-Hans": "西洋跳棋",
+    "ja": "チェッカー",
+    "ko": "체커",
+    "es": "Damas",
+    "pt-BR": "Damas",
+    "fr": "Dames",
+    "de": "Dame",
+    "it": "Dama",
+    "ru": "Шашки",
+    "hi": "चेकर्स",
+    "ar": "الداما"
+  },
   "tic-tac-toe": {
     "__localizedExact": true,
     "en": "Tic-Tac-Toe",

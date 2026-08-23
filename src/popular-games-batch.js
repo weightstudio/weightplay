@@ -70,6 +70,7 @@
     ar: "معاينة للمالك: حطّم 12 لبنة بتسديدات متحكم بها. لم تُنشر اللعبة للعامة بعد.",
   };
   const BREAKOUT_GAME_VERSION = "v6";
+  const TETRIS_GAME_VERSION = "v11";
   const PONG_TARGET_LANES = [2, 4, 1, 5, 0];
   const pongTargetForRally = (rally) => PONG_TARGET_LANES[Math.max(0, Math.min(PONG_TARGET_LANES.length - 1, rally))];
   const pongLanePosition = (lane) => Math.max(17, Math.min(82, Number(lane) * 13 + 17));
@@ -748,6 +749,7 @@
     const game = CATALOG[gameId];
     if (!game) throw new Error(`Unknown popular game: ${gameId}`);
     document.body.dataset.gameId = gameId;
+    if (game.type === "tetris") document.body.dataset.gameVersion = TETRIS_GAME_VERSION;
     if (game.type === "breakout") document.body.dataset.gameVersion = BREAKOUT_GAME_VERSION;
     if (game.type === "tic") document.body.dataset.gameVersion = "v9";
     if (game.type === "hangman") document.body.dataset.gameVersion = "v7";

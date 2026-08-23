@@ -47,7 +47,7 @@ window.WONDER_LOBBY = {
       "arrow-escape", "block-blast", "hexa-sort", "klondike-solitaire", "spider-solitaire",
       "freecell-solitaire", "pyramid-solitaire", "tripeaks-solitaire", "golf-solitaire", "yukon-solitaire",
       "animal-bus-jam", "zhao-yun-a-dou",
-      "road-crosser", "alien-defender", "snake", "tic-tac-toe",
+      "road-crosser", "alien-defender", "snake", "tic-tac-toe", "checkers",
       "animal-unblock",
       "animal-guard-yard",
       "hearts", "spades", "gin-rummy", "crazy-eights", "cribbage", "go-fish", "war", "speed", "old-maid", "casino",
@@ -2149,6 +2149,54 @@ window.WONDER_LOBBY.games.push({
     background: "assets/animal-reef-fisher-cover.webp",
     hideHero: true,
   },
+});
+
+window.WONDER_LOBBY.games.push({
+  id: "checkers",
+  title: {
+    en: "Checkers", "zh-Hant": "西洋跳棋", "zh-Hans": "西洋跳棋", ja: "チェッカー",
+    ko: "체커", es: "Damas", "pt-BR": "Damas", fr: "Dames", de: "Dame",
+    it: "Dama", ru: "Шашки", hi: "चेकर्स", ar: "الداما",
+  },
+  status: "planned",
+  statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
+  type: {
+    en: "Diagonal Board Sprint", "zh-Hant": "斜向棋盤短跑", "zh-Hans": "斜向棋盘短跑", ja: "斜め盤面スプリント",
+    ko: "대각선 보드 스프린트", es: "Sprint de tablero diagonal", "pt-BR": "Sprint de tabuleiro diagonal",
+    fr: "Sprint de plateau en diagonale", de: "Diagonales Brett-Sprint", it: "Sprint da tavolo diagonale",
+    ru: "Диагональный спринт на доске", hi: "तिरछा बोर्ड स्प्रिंट", ar: "سباق لوحة قطرية",
+  },
+  categories: ["Classic", "Puzzle", "Strategy", "Family"],
+  skills: ["Planning", "Reaction", "Threat Reading"],
+  ages: ["9", "family"],
+  ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", ja: "9+", ko: "9+", es: "9+", "pt-BR": "9+", fr: "9+", de: "9+", it: "9+", ru: "9+", hi: "9+", ar: "9+" },
+  href: "games/checkers/",
+  internalTrial: "index.html?preview=1",
+  description: {
+    en: "Play five legal diagonal moves, choose a clear branch, and crown a checker in a short promotion sprint.",
+    "zh-Hant": "完成五步合法斜向移動，選擇清楚的分支，並在短暫升變衝刺中讓棋子升王。",
+    "zh-Hans": "完成五步合法斜向移动，选择清晰的分支，并在短暂升变冲刺中让棋子升王。",
+    ja: "5手の合法な斜め移動を行い、分かりやすい分岐を選んで短い昇格スプリントを完走します。",
+    ko: "다섯 번의 합법적인 대각선 이동을 하고, 분명한 분기를 선택해 짧은 승격 스프린트를 완주하세요.",
+    es: "Haz cinco movimientos diagonales legales, elige una rama clara y corona una ficha en un sprint breve.",
+    "pt-BR": "Faça cinco movimentos diagonais legais, escolha um caminho claro e coroe uma peça em um sprint curto.",
+    fr: "Effectuez cinq mouvements diagonaux légaux, choisissez une branche claire et promouvez un pion dans un sprint court.",
+    de: "Mache fünf legale diagonale Züge, wähle einen klaren Abzweig und kröne eine Dame im kurzen Sprint.",
+    it: "Esegui cinque mosse diagonali legali, scegli un ramo chiaro e promuovi una pedina in uno sprint breve.",
+    ru: "Сделайте пять разрешённых диагональных ходов, выберите понятную ветку и превратите шашку в дамку в коротком спринте.",
+    hi: "पाँच वैध तिरछी चालें चलें, स्पष्ट शाखा चुनें और छोटे प्रमोशन स्प्रिंट में मोहरे को बादशाह बनाएँ।",
+    ar: "نفّذ خمس نقلات قطرية قانونية، واختر فرعًا واضحًا، ورقِّ قطعة في سباق ترقية قصير.",
+  },
+  meta: {
+    en: ["8×8 Board", "Diagonal Choices", "Promotion Payoff"],
+    "zh-Hant": ["8×8 棋盤", "斜向選擇", "升王回饋"], "zh-Hans": ["8×8 棋盘", "斜向选择", "升王反馈"],
+    ja: ["8×8盤", "斜めの選択", "昇格のごほうび"], ko: ["8×8 보드", "대각선 선택", "승격 보상"],
+    es: ["Tablero 8×8", "Elecciones diagonales", "Premio de promoción"], "pt-BR": ["Tabuleiro 8×8", "Escolhas diagonais", "Recompensa da promoção"],
+    fr: ["Plateau 8×8", "Choix diagonaux", "Récompense de promotion"], de: ["8×8-Brett", "Diagonale Wahl", "Damen-Belohnung"],
+    it: ["Tabellone 8×8", "Scelte diagonali", "Premio di promozione"], ru: ["Доска 8×8", "Диагональный выбор", "Награда за превращение"],
+    hi: ["8×8 बोर्ड", "तिरछी पसंद", "प्रमोशन इनाम"], ar: ["لوحة 8×8", "اختيارات قطرية", "مكافأة الترقية"],
+  },
+  art: { kind: "image", background: "assets/checkers-cover.webp", hideHero: true },
 });
 
 window.WONDER_LOBBY.games.push({
