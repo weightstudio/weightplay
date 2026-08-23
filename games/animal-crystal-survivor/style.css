@@ -1959,3 +1959,28 @@ html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .canvas
   max-height: none !important;
   aspect-ratio: auto !important;
 }
+html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hud-row {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  grid-template-columns: 40px repeat(5, minmax(0, 1fr)) !important;
+  grid-template-rows: minmax(0, 1fr) !important;
+}
+html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .xp-row {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+  height: auto !important;
+}
+html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hint-text {
+  grid-column: 1 !important;
+  grid-row: 4 !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+}
+@media (max-height: 560px) {
+  html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .canvas-wrap {
+    width: calc(100% + 12px) !important;
+    margin-inline: -6px !important;
+  }
+}

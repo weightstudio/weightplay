@@ -665,7 +665,7 @@
     }
 
     drawStock(initial = false) {
-      if (!this.stock.length) { if (!initial) this.lost = true; return false; }
+      if (!this.stock.length) { if (!initial) this.checkWin(); return false; }
       if (!initial) this.pushHistory();
       const card = this.stock.pop(); card.faceUp = true; this.waste.push(card); this.combo = 0; if (!initial) { this.moves += 1; this.checkWin(); } return true;
     }
@@ -957,7 +957,7 @@
       this.nodes.board.addEventListener("pointermove", (event) => this.handlePointerMove(event));
       this.nodes.board.addEventListener("pointerup", (event) => this.handlePointerUp(event));
       this.nodes.board.addEventListener("pointercancel", () => this.handlePointerCancel());
-      this.nodes.stockPile?.addEventListener("click", () => { if (["pyramid", "tripeaks", "golf"].includes(this.config.variant)) { if (this.game.drawStock()) { const stockRemaining = this.game.stock.length; if (this.config.variant === "pyramid") { this.hintMove = null; clearTimeout(this.hintTimer); } this.clearFeedback(); this.audio.draw(); this.render(); if (this.config.variant === "golf") this.showGolfStockCue(stockRemaining); } else this.feedback(this.t("stockEmpty")); } });
+      this.nodes.stockPile?.addEventListener("click", () => { if (["pyramid", "tripeaks", "golf"].includes(this.config.variant)) { if (this.game.drawStock()) { const stockRemaining = this.game.stock.length; if (this.config.variant === "pyramid") { this.hintMove = null; clearTimeout(this.hintTimer); } this.clearFeedback(); this.audio.draw(); this.render(); if (this.config.variant === "golf") this.showGolfStockCue(stockRemaining); } else if (this.config.variant === "tripeaks" && this.game.lost) { this.clearFeedback(); this.render(); } else this.feedback(this.t("stockEmpty")); } });
       root.addEventListener("wonder:locale-change", () => { this.locale = safeLocale(); this.refreshCopy(); this.render(); });
     }
     refreshSound() { if (this.nodes.soundBtn) { this.nodes.soundBtn.setAttribute("aria-pressed", String(this.audio.enabled)); this.nodes.soundBtn.textContent = this.audio.enabled ? this.t("soundOn") : this.t("soundOff"); } }
