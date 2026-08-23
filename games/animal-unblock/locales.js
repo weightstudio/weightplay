@@ -9,6 +9,8 @@
     returnLobby: "Return to WeightPlay",
     back: "Back",
     coverAlt: "Panko moving trail blocks through a bamboo grove",
+    heroName: "Panko",
+    blockLabel: "Block {n}",
     boardLabel: "Unblock Trail game board",
     kicker: "PANKO'S SLIDE PUZZLE",
     summary:
@@ -52,6 +54,8 @@
     returnLobby: "返回 WeightPlay",
     back: "返回",
     coverAlt: "熊貓角色在竹林中移動方塊開路",
+    heroName: "Panko",
+    blockLabel: "方塊 {n}",
     boardLabel: "暢通小徑遊戲盤",
     kicker: "PANKO 的滑塊拼圖",
     summary: "滑動每個方塊，帶領紅色探險家穿過出口。",
@@ -80,6 +84,49 @@
     colors: ["薄霧", "岩石", "薄荷", "天空", "陽光"],
   };
 
+  const ar = {
+    label: "العربية",
+    title: "افتح المسار",
+    shortTitle: "افتح المسار",
+    language: "اللغة",
+    returnLobby: "العودة إلى WeightPlay",
+    back: "رجوع",
+    coverAlt: "بانكو يحرك كتل المسار عبر بستان من الخيزران",
+    heroName: "بانكو",
+    blockLabel: "الكتلة {n}",
+    boardLabel: "لوحة لعبة فتح المسار",
+    kicker: "لغز بانكو بالكتل المنزلقة",
+    summary: "حرّك كل كتلة وساعد المستكشف الأحمر على الخروج عبر البوابة.",
+    start: "ابدأ اللعبة",
+    guideTitle: "طريقة اللعب",
+    guideBody:
+      "اسحب كل كتلة على محورها. حرّك المستكشف الأحمر إلى المخرج الأيمن. تضم اللعبة مسارات محددة يمكن إعادة لعبها.",
+    choose: "اختر مسارًا",
+    stageList: "قائمة المسارات",
+    open: "فتح المسار",
+    trail: "المسار {n}",
+    progress: "تم اجتياز {done}/30",
+    locked: "أكمل المسار السابق أولًا.",
+    chapter: "الفصل {n}",
+    moves: "{n} حركات",
+    exit: "المخرج",
+    hint: "تلميح",
+    hintMove: "الكتلة المميزة: حرّكها إلى {direction}.",
+    directionLeft: "اليسار",
+    directionRight: "اليمين",
+    directionUp: "الأعلى",
+    directionDown: "الأسفل",
+    restart: "إعادة البدء",
+    undo: "تراجع",
+    status: "افتح المسار الأيمن، ثم حرّك الكتلة الحمراء إلى المخرج المضيء.",
+    complete: "اكتمل المسار",
+    resultTitle: "نجا بانكو!",
+    resultBody: "اكتمل المسار {n} خلال {moves} حركات.",
+    retry: "العب مرة أخرى",
+    next: "المسار التالي",
+    colors: ["ضباب", "حجر", "نعناع", "سماء", "شمس"],
+  };
+
   const labels = {
     en: "English",
     "zh-Hant": "繁體中文",
@@ -100,6 +147,7 @@
     Object.entries(labels).map(([code, label]) => [code, { ...en, label }]),
   );
   locales["zh-Hant"] = { ...en, ...zhHant };
+  locales.ar = { ...en, ...ar };
   const hintLocalization = {
     "zh-Hant": ["已標示方塊：請向{direction}移動。", "左", "右", "上", "下"],
     "zh-Hans": ["已高亮方块：请向{direction}移动。", "左", "右", "上", "下"],

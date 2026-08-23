@@ -4,7 +4,8 @@
   const $ = (id) => document.getElementById(id);
   const levels = UNBLOCK_LEVELS.levels;
   const dict = UNBLOCK_LOCALES;
-  const GAME_VERSION = "v13";
+  const GAME_VERSION = "v14";
+  document.body.dataset.gameVersion = GAME_VERSION;
   const codes = Object.keys(dict);
   const localeRoutes = {
     en: "en",
@@ -345,7 +346,7 @@
       element.dataset.block = blockIndex;
       element.setAttribute(
         "aria-label",
-        `${block.hero ? "Panko" : blockIndex + 1} ${block.dir ? "↕" : "↔"}`,
+        `${block.hero ? t("heroName") : t("blockLabel", { n: blockIndex + 1 })} ${block.dir ? "↕" : "↔"}`,
       );
       element.setAttribute(
         "aria-keyshortcuts",

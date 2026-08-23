@@ -16,6 +16,21 @@
     hi:{loading:"प्रिज़्म अखाड़ा तैयार हो रहा है…",stage:"चरण {n}",chapters:["धूप वाली खदान","विभाजित स्पेक्ट्रम","चलती दीर्घा","दर्पण तिजोरी","गुरुत्व भट्ठी","ग्रहण प्रिज़्म"],launch:"छोड़ें",lost:"प्रकाश गोला गिर गया। अगला प्रकाश गोला छोड़ें।",split:"विभाजित स्पेक्ट्रम ने एक और प्रकाश गोला बनाया!",fail:"तीनों प्रकाश गोले गिर गए। वापसी का कोण समझकर फिर प्रयास करें।"},
     ar:{loading:"جارٍ شحن ساحة المنشور…",stage:"المرحلة {n}",chapters:["المحجر المشمس","الطيف المنقسم","الرواق المتحرك","قبو المرايا","مسبك الجاذبية","منشور الكسوف"],launch:"إطلاق",lost:"فُقدت كرة الضوء. أطلق كرة الضوء التالية.",split:"أنشأ الطيف المنقسم كرة ضوء أخرى!",fail:"سقطت كرات الضوء الثلاث. راجع زاوية الارتداد وحاول مجددًا."}
   };
+  const statusCopies={
+    en:{ready:"Ready",locked:"Locked",clearedReplay:"Cleared · Replay",lockedNotice:"Complete the previous stage first."},
+    "zh-Hant":{ready:"可玩",locked:"鎖定",clearedReplay:"已完成 · 重玩",lockedNotice:"請先完成前一關。"},
+    "zh-Hans":{ready:"可玩",locked:"锁定",clearedReplay:"已完成 · 重玩",lockedNotice:"请先完成上一关。"},
+    ja:{ready:"プレイ可能",locked:"ロック中",clearedReplay:"クリア済み · リプレイ",lockedNotice:"先に前のステージをクリアしてください。"},
+    ko:{ready:"준비됨",locked:"잠김",clearedReplay:"완료 · 다시 플레이",lockedNotice:"먼저 이전 스테이지를 완료하세요."},
+    es:{ready:"Disponible",locked:"Bloqueada",clearedReplay:"Completada · Repetir",lockedNotice:"Completa antes la fase anterior."},
+    "pt-BR":{ready:"Disponível",locked:"Bloqueada",clearedReplay:"Concluída · Repetir",lockedNotice:"Conclua a fase anterior primeiro."},
+    fr:{ready:"Disponible",locked:"Verrouillé",clearedReplay:"Terminée · Rejouer",lockedNotice:"Terminez d’abord le niveau précédent."},
+    de:{ready:"Bereit",locked:"Gesperrt",clearedReplay:"Abgeschlossen · Wiederholen",lockedNotice:"Schließe zuerst die vorige Stufe ab."},
+    it:{ready:"Pronta",locked:"Bloccata",clearedReplay:"Completata · Rigioca",lockedNotice:"Completa prima la fase precedente."},
+    ru:{ready:"Доступно",locked:"Закрыто",clearedReplay:"Пройдено · Повторить",lockedNotice:"Сначала завершите предыдущий этап."},
+    hi:{ready:"तैयार",locked:"बंद",clearedReplay:"पूरा · फिर खेलें",lockedNotice:"पहले पिछला चरण पूरा करें।"},
+    ar:{ready:"متاحة",locked:"مقفلة",clearedReplay:"مكتملة · إعادة اللعب",lockedNotice:"أكمل المرحلة السابقة أولًا."}
+  };
   const missCopies={
     en:{left:"The orb missed left of the paddle. Move left sooner and meet it near the centre.",right:"The orb missed right of the paddle. Move right sooner and meet it near the centre."},
     "zh-Hant":{left:"光球從球拍左側漏過。下次提早向左移，盡量用球拍中央接球。",right:"光球從球拍右側漏過。下次提早向右移，盡量用球拍中央接球。"},
@@ -79,7 +94,13 @@
     "Six arcade chapters change the rules with split orbs, sweeping bands, permanent mirrors, advancing crystal walls, gravity and fatal void mines.":"تغيّر ستة فصول قواعد اللعب بكرات ضوء منقسمة وصفوف متحركة ومرايا دائمة وجدران بلورية متقدمة وجاذبية وألغام فراغ قاتلة.",
     "Return the light orb and shatter every breakable crystal.":"أعد كرة الضوء وحطم كل بلورة قابلة للكسر.",
     "Drag anywhere across the arena to align the paddle with your finger. Contact near the paddle edge creates a sharper return angle.":"اسحب في أي مكان داخل الساحة لمحاذاة المضرب مع إصبعك. الاصطدام قرب حافة المضرب يصنع زاوية ارتداد أشد.",
-    "The crystal formation has shattered.":"تحطم تشكيل البلورات."
+    "The crystal formation has shattered.":"تحطم تشكيل البلورات.",
+    "Restart":"إعادة البدء",
+    "Try Again":"حاول مجددًا",
+    "Stage Complete":"اكتملت المرحلة",
+    "Next Stage":"المرحلة التالية",
+    "Retry":"إعادة المحاولة",
+    "Stage Map":"خريطة المراحل"
   };
   if(locale==="ar")Object.entries(arabicGuide).forEach(([source,translated])=>exact.set(source,translated));
   const contextual={
@@ -118,5 +139,5 @@
     if(side&&recap.side)return recap.side({...values,direction:recap.direction[side]||recap.direction.right});
     return recap.remaining(values);
   };
-  window.PrismBreakersLocale=Object.freeze({locale,translate,copy,rules:ruleCopies[locale]||null,miss:side=>(missCopies[locale]||missCopies.en)[side],resultRecap});
+  window.PrismBreakersLocale=Object.freeze({locale,translate,copy,status:statusCopies[locale]||statusCopies.en,rules:ruleCopies[locale]||null,miss:side=>(missCopies[locale]||missCopies.en)[side],resultRecap});
 })();
