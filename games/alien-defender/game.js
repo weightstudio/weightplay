@@ -313,7 +313,7 @@
   draw=drawResponsive;
   // v8 Growth instrumentation: expose only aggregate, privacy-safe funnel
   // fields; gameplay state, controls, pacing, and authored waves stay intact.
-  const ANALYTICS_GAME_VERSION="49",ANALYTICS_INTERFACE_VERSION="7";
+  const ANALYTICS_GAME_VERSION="50",ANALYTICS_INTERFACE_VERSION="7";
   let sessionHadBattle=false,inputType="unknown";
   function viewportBucket(){const width=window.innerWidth,height=window.innerHeight;if(width<=430&&height>=700)return"phone-portrait";if(width<=700&&height>=700)return"tablet-portrait";if(width>=700&&height<=500)return"short-landscape";return"desktop"}
   function track(eventName,details={}){window.WonderAnalytics?.track?.(eventName,{game_id:"alien-defender",game_version:`v${ANALYTICS_GAME_VERSION}`,interface_version:ANALYTICS_INTERFACE_VERSION,locale,viewport_bucket:viewportBucket(),input_type:details.input_type||inputType,wave:details.wave??wave,result_reason:details.result_reason||"not_applicable"})}
@@ -950,7 +950,7 @@
     if(world.enemyFire>=config.enemyFireEvery){world.enemyFire=0;const active=world.enemies.filter(e=>e.alive);if(active.length){const volleyCount=config.volley?3:1;for(let shot=0;shot<volleyCount;shot++){const anchor=active[world.fireIndex++%active.length],spread=config.volley?(shot-1)*34:0;world.enemyBullets.push({x:anchor.x+spread,y:anchor.y+20,s:config.bulletSpeed+(config.volley?shot*10:0)})}const anchor=active[(world.fireIndex-1+active.length)%active.length];if(config.crossfire){const opposite=active.find(e=>e.x<460)!==anchor?active.find(e=>e.x<460):active.find(e=>e.x>460);if(opposite)world.enemyBullets.push({x:opposite.x,y:opposite.y+20,s:config.bulletSpeed+18})}if(config.core){const core=active.find(e=>e.isCore);if(core)world.enemyBullets.push({x:core.x,y:core.y+24,s:config.bulletSpeed+10})}if(config.guardian){world.enemyBullets.push({x:p.x,y:anchor.y+30,s:config.bulletSpeed+35})}}}
     if(config.relay&&world.relayTimer>1.1){world.relayTimer=0;const captain=world.enemies.find(e=>e.alive&&e.waveType==="captain");if(captain)world.enemyBullets.push({x:captain.x,y:captain.y+20,s:config.bulletSpeed+20})}
     for(const b of world.bullets){b.previousY=b.y;b.y+=b.s*dt}for(const b of world.enemyBullets)b.y+=b.s*dt;world.bullets=world.bullets.filter(b=>b.y>-20);world.enemyBullets=world.enemyBullets.filter(b=>b.y<760);
-    for(const b of world.bullets){const previousY=b.previousY??b.y,minY=Math.min(previousY,b.y),maxY=Math.max(previousY,b.y),enemy=world.enemies.find(e=>e.alive&&Math.abs(e.x-b.x)<27&&e.y+24>=minY&&e.y-24<=maxY);if(!enemy)continue;b.y=-100;enemy.hp--;enemy.hitFlash=.14;if(enemy.hp<=0){enemy.alive=false;world.combo=Math.min(9,world.combo+1);score+=enemy.isGuardian?100:enemy.isCore?70:enemy.waveType==="captain"?40:10*world.combo;credits+=5;world.creditsEarned+=5;saveEconomy();beep(enemy.isGuardian?1080:enemy.isCore?1020:enemy.waveType==="captain"?940:620,.04);$("battleMessage").textContent=t("hit")}else{beep(460,.035);$("battleMessage").textContent=t("hit")}}
+    for(const b of world.bullets){const previousY=b.previousY??b.y,minY=Math.min(previousY,b.y),maxY=Math.max(previousY,b.y),enemy=world.enemies.find(e=>{if(!e.alive)return false;const previousX=e.previousX??e.x,previousEnemyY=e.previousY??e.y,minX=Math.min(previousX,e.x)-27,maxX=Math.max(previousX,e.x)+27,minEnemyY=Math.min(previousEnemyY,e.y)-24,maxEnemyY=Math.max(previousEnemyY,e.y)+24;return b.x>=minX&&b.x<=maxX&&maxEnemyY>=minY&&minEnemyY<=maxY});if(!enemy)continue;b.y=-100;enemy.hp--;enemy.hitFlash=.14;if(enemy.hp<=0){enemy.alive=false;world.combo=Math.min(9,world.combo+1);score+=enemy.isGuardian?100:enemy.isCore?70:enemy.waveType==="captain"?40:10*world.combo;credits+=5;world.creditsEarned+=5;saveEconomy();beep(enemy.isGuardian?1080:enemy.isCore?1020:enemy.waveType==="captain"?940:620,.04);$("battleMessage").textContent=t("hit")}else{beep(460,.035);$("battleMessage").textContent=t("hit")}}
     for(const b of world.enemyBullets){if(Math.abs(b.x-p.x)>=24||Math.abs(b.y-625)>=28)continue;b.y=800;if(world.shield>0){$("battleMessage").textContent=t("shield");beep(420,.06)}else{world.lives--;world.combo=1;world.flash=.35;beep(180,.13);if(world.lives<=0){finish(false);return}}}
     const active=world.enemies.filter(e=>e.alive),lowest=active.length?Math.max(...active.map(e=>e.y)):-99;if(lowest>570){finish(false);return}if(!active.length){finish(true);return}updateHudV44();
   };
@@ -1006,4 +1006,13 @@
     ctx.restore();
   };
   if(window.__alienDefenderSmoke){window.__alienDefenderSmoke.combatSnapshot=()=>({screen,wave,formationSpeed:world?.formationSpeed,descentRemaining:world?.descentRemaining,enemies:world?.enemies?.filter(enemy=>enemy.alive).map(enemy=>({x:enemy.x,y:enemy.y,hp:enemy.hp,maxHp:enemy.maxHp,type:enemy.waveType})).slice(0,4)});window.__alienDefenderSmoke.inputSnapshot=()=>({keys:{...keys},activePointers:[...controlPointers.entries()],playerX:world?.player?.x??null,bulletCount:world?.bullets?.length??0})}
+  // v50 Director repair: carry each formation member's prior position into
+  // the existing swept projectile check. A target may move horizontally or
+  // descend during the same frame that a visible shot crosses its lane; the
+  // hit bounds stay unchanged while the collision follows that authored move.
+  const v50Update=update;
+  update=function updateWithSweptFormationBounds(dt){
+    if(world?.enemies)for(const enemy of world.enemies){enemy.previousX=enemy.x;enemy.previousY=enemy.y}
+    v50Update(dt);
+  };
 })();

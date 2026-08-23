@@ -1629,7 +1629,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Moonlit Trap Trail",
     "ru": "Moonlit Trap Trail",
     "hi": "Moonlit Trap Trail",
-    "ar": "Moonlit Trap Trail"
+    "ar": "مسار الفخ القمري"
   },
   "animal-canopy-cut": {
     "__localizedExact": true,
@@ -1645,7 +1645,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Canopy Cut",
     "ru": "Canopy Cut",
     "hi": "Canopy Cut",
-    "ar": "Canopy Cut"
+    "ar": "قطع مظلة الحيوانات"
   },
   "animal-bounce-brawl": {
     "__localizedExact": true,
