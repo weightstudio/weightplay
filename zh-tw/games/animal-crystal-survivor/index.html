@@ -55,6 +55,7 @@
     "動作",
     "生存",
     "戰役",
+    "首領戰",
     "動物",
     "Browser Game"
   ],
@@ -125,10 +126,10 @@
       <section id="menuPanel" class="menu-panel">
         <img class="cover" src="../../assets/animal-crystal-survivor-cover.webp" alt="《動物水晶生存戰》遊戲圖片" />
         <div class="menu-copy">
-          <strong data-ui="menuTitle">Survive the Crystal Grove.</strong>
-          <span data-ui="menuHint">Goal: collect golden keys before 3:00. Crystals give XP, and upgrades help the ranger survive longer.</span>
+          <strong data-ui="menuTitle">在水晶林地中生存下去。</strong>
+          <span data-ui="menuHint">目標：在 3:00 之前收集金鑰。水晶會增加經驗，升級可以讓巡守員撐得更久。</span>
           <div id="mainProgress" class="main-progress" aria-live="polite">Stage 1 / 30</div>
-          <button id="startBtn" type="button" data-wp-main-start data-ui="mainStart">Start Game</button>
+          <button id="startBtn" type="button" data-wp-main-start data-ui="mainStart">開始遊戲</button>
         </div>
       </section>
 
@@ -197,9 +198,9 @@
           <div class="xp-track"><i id="xpFill"></i></div>
         </div>
         <div class="canvas-wrap play-area">
-          <canvas id="gameCanvas" width="1024" height="1760" tabindex="-1" aria-label="Animal Crystal Survivor playfield" data-aria-ui="playfield"></canvas>
+          <canvas id="gameCanvas" width="1024" height="1760" tabindex="-1" aria-label="動物水晶生存戰遊戲區" data-aria-ui="playfield"></canvas>
         </div>
-        <p id="hintText" class="hint-text" role="status" aria-live="polite" aria-atomic="true" data-ui="playHint">Goal: collect golden keys before 3:00. Grab crystals to level up, then choose upgrades when the cards appear.</p>
+        <p id="hintText" class="hint-text" role="status" aria-live="polite" aria-atomic="true" data-ui="playHint">目標：在 3:00 之前收集金鑰。撿取水晶升級，卡片出現時選擇升級。</p>
         </div>
         <div id="resultHost" class="result-host">
           <section id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText resultRankText resultProgressText resultPlanText resultNextStageText">
@@ -246,7 +247,7 @@
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>動物水晶生存戰</h2><p>《動物水晶生存戰》是一款以移動、自動攻擊、臨時升級與可讀危險為核心的 30 關實時巡邏戰役。每關最多三分鐘，都有專屬名稱、金鑰目標與區域規則。每第五關會出現一隻擁有獨立角色圖、警示與反制方式的首領，不是把普通敵人放大。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>30 關動作生存戰役</strong></div><div class="game-info-fact"><span>類型</span><strong>動作 · 生存 · 戰役 · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>中等</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>每關 3 分鐘</strong></div></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>30 關動作生存戰役</strong></div><div class="game-info-fact"><span>類型</span><strong>動作 · 生存 · 戰役 · 首領戰 · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>中等</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>每關 3 分鐘</strong></div></div>
     </div>
     <div class="game-info-sections">
       <div class="game-info-section"><h3>世界與任務</h3><p>水晶林地原本依靠六座水晶燈塔維持通道，金鑰則是調律燈塔的工具。日蝕核心從地底送出暗影脈衝後，金鑰散落在各條路線，熟悉的動物也變成影獸。水晶巡守員必須收回金鑰、安撫影獸，並讓每條通道在三分鐘內穩定下來。</p>
@@ -281,7 +282,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="game.js?v=20260824-crystal-arabic-localization-v23"></script>
+    <script src="game.js?v=20260824-crystal-13-locale-runtime-v24"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260808-play-lock1" data-wp-battle-standard></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>

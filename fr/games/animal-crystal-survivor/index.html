@@ -11,15 +11,15 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="robots" content="index,follow" />
-    <meta name="description" content="Animal Crystal Survivor est une campagne de patrouille en temps réel en 30 étapes construite autour du mouvement, des attaques automatiques, des..." />
+    <meta name="description" content="Survivant du cristal animal est une campagne de patrouille en temps réel de 30 niveaux, fondée sur le déplacement, l’attaque automatique, les..." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Animal Crystal Survivor | WeightPlay" />
-    <meta property="og:description" content="Animal Crystal Survivor est une campagne de patrouille en temps réel en 30 étapes construite autour du mouvement, des attaques automatiques, des..." />
+    <meta property="og:title" content="Survivant du cristal animal | WeightPlay" />
+    <meta property="og:description" content="Survivant du cristal animal est une campagne de patrouille en temps réel de 30 niveaux, fondée sur le déplacement, l’attaque automatique, les..." />
     <meta property="og:url" content="https://weightplay.com/fr/games/animal-crystal-survivor/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-crystal-survivor-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <title>Animal Crystal Survivor | WeightPlay</title>
+    <title>Survivant du cristal animal | WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/fr/games/animal-crystal-survivor/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-crystal-survivor/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-crystal-survivor/" />
@@ -46,17 +46,17 @@
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "Animal Crystal Survivor",
+  "name": "Survivant du cristal animal",
   "alternateName": "動物水晶生存戰",
   "url": "https://weightplay.com/fr/games/animal-crystal-survivor/",
   "image": "https://weightplay.com/assets/animal-crystal-survivor-cover.png",
-  "description": "Animal Crystal Survivor est une campagne de patrouille en temps réel en 30 étapes construite autour du mouvement, des attaques automatiques, des...",
+  "description": "Survivant du cristal animal est une campagne de patrouille en temps réel de 30 niveaux, fondée sur le déplacement, l’attaque automatique, les...",
   "genre": [
     "Action",
     "Survie",
-    "Campaign",
-    "Bataille de boss",
-    "Animal",
+    "Campagne",
+    "Boss",
+    "Animaux",
     "Browser Game"
   ],
   "gamePlatform": "Web browser",
@@ -77,8 +77,8 @@
   "applicationCategory": "Game"
 }
     </script>
-    <meta name="twitter:title" content="Animal Crystal Survivor | WeightPlay" />
-    <meta name="twitter:description" content="Animal Crystal Survivor est une campagne de patrouille en temps réel en 30 étapes construite autour du mouvement, des attaques automatiques, des..." />
+    <meta name="twitter:title" content="Survivant du cristal animal | WeightPlay" />
+    <meta name="twitter:description" content="Survivant du cristal animal est une campagne de patrouille en temps réel de 30 niveaux, fondée sur le déplacement, l’attaque automatique, les..." />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-crystal-survivor-cover.webp" />
   </head>
   <body data-tutorial-auto-show="false" data-sound-toggle="off">
@@ -87,7 +87,7 @@
         <a class="icon-btn home-link" data-wp-return="main" href="/" aria-label="Back to lobby" data-aria-ui="backToLobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="brand-title">
           <p>WeightPlay</p>
-          <h1 data-ui="title">Animal Crystal Survivor</h1>
+          <h1 data-ui="title">Survivant du cristal animal</h1>
         </div>
         <div id="settingsControl" class="settings-control">
           <button id="settingsBtn" class="settings-btn" type="button" aria-expanded="false" aria-controls="settingsPopover" aria-label="Settings">
@@ -124,12 +124,12 @@
       </header>
 
       <section id="menuPanel" class="menu-panel">
-        <img class="cover" src="../../assets/animal-crystal-survivor-cover.webp" alt="Illustration du jeu Animal Crystal Survivor" />
+        <img class="cover" src="../../assets/animal-crystal-survivor-cover.webp" alt="Illustration du jeu Survivant du cristal animal" />
         <div class="menu-copy">
-          <strong data-ui="menuTitle">Survive the Crystal Grove.</strong>
-          <span data-ui="menuHint">Goal: collect golden keys before 3:00. Crystals give XP, and upgrades help the ranger survive longer.</span>
+          <strong data-ui="menuTitle">Survivez dans le Bosquet de cristal.</strong>
+          <span data-ui="menuHint">Objectif : collecter les clés dorées avant 3:00. Les cristaux donnent de l’XP et les améliorations aident le ranger à tenir.</span>
           <div id="mainProgress" class="main-progress" aria-live="polite">Stage 1 / 30</div>
-          <button id="startBtn" type="button" data-wp-main-start data-ui="mainStart">Start Game</button>
+          <button id="startBtn" type="button" data-wp-main-start data-ui="mainStart">Commencer</button>
         </div>
       </section>
 
@@ -198,9 +198,9 @@
           <div class="xp-track"><i id="xpFill"></i></div>
         </div>
         <div class="canvas-wrap play-area">
-          <canvas id="gameCanvas" width="1024" height="1760" tabindex="-1" aria-label="Animal Crystal Survivor playfield" data-aria-ui="playfield"></canvas>
+          <canvas id="gameCanvas" width="1024" height="1760" tabindex="-1" aria-label="Terrain de jeu du Survivant du cristal animal" data-aria-ui="playfield"></canvas>
         </div>
-        <p id="hintText" class="hint-text" role="status" aria-live="polite" aria-atomic="true" data-ui="playHint">Goal: collect golden keys before 3:00. Grab crystals to level up, then choose upgrades when the cards appear.</p>
+        <p id="hintText" class="hint-text" role="status" aria-live="polite" aria-atomic="true" data-ui="playHint">Objectif : collecter les clés avant 3:00. Prenez des cristaux pour monter de niveau et choisissez une amélioration.</p>
         </div>
         <div id="resultHost" class="result-host">
           <section id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText resultRankText resultProgressText resultPlanText resultNextStageText">
@@ -243,25 +243,25 @@
       </div>
     </main>
     <!-- adsense-static-guide:start -->
-    <section class="game-page-info game-page-info-static" aria-label="Informations sur le jeu Animal Crystal Survivor">
+    <section class="game-page-info game-page-info-static" aria-label="Informations sur Survivant du cristal animal">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2>Animal Crystal Survivor</h2><p>Animal Crystal Survivor est une campagne de patrouille en temps réel en 30 étapes construite autour du mouvement, des attaques automatiques, des améliorations temporaires, des dangers lisibles et de six boss animaux originaux. Chaque itinéraire dure jusqu&#39;à trois minutes et comporte une règle nommée, une cible clé et un déverrouillage enregistré.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Type de jeu</span><strong>Campagne d&#39;action et de survie en 30 étapes</strong></div><div class="game-info-fact"><span>Genre</span><strong>Action · Survie · Campaign · Bataille de boss · Animal</strong></div><div class="game-info-fact"><span>Difficulté</span><strong>Medium</strong></div><div class="game-info-fact"><span>Durée estimée</span><strong>3 minutes par étape</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2>Survivant du cristal animal</h2><p>Survivant du cristal animal est une campagne de patrouille en temps réel de 30 niveaux, fondée sur le déplacement, l’attaque automatique, les améliorations temporaires et des dangers lisibles. Chaque niveau dure au plus trois minutes et un boss animal unique apparaît tous les cinq niveaux.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jeu</span><strong>Campagne d’action-survie de 30 niveaux</strong></div><div class="game-info-fact"><span>Genre</span><strong>Action · Survie · Campagne · Boss · Animaux</strong></div><div class="game-info-fact"><span>Difficulté</span><strong>Moyenne</strong></div><div class="game-info-fact"><span>Temps estimé</span><strong>3 minutes par niveau</strong></div></div>
     </div>
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>Univers et mission</h3><p>Six balises de cristal maintiennent les chemins du Bosquet de Cristal ouverts. Une impulsion d&#39;éclipse a dispersé leurs touches de réglage dorées et transformé des animaux familiers en bêtes de l&#39;ombre. Le Crystal Ranger porte les clés, calme les animaux affectés et reconnecte un itinéraire à la fois.</p>
-<p>Les étapes 5, 10, 15, 20, 25 et 30 sont des points de contrôle des gardiens. Vaincre Root Stalker, Prism Moth Queen, Briar Boar King, Cinder Panther, Tempest Roc et Eclipse Colossus reconnecte les six régions et met fin à la boucle de rétroaction sous le bosquet.</p></div>
-      <div class="game-info-section"><h3>Fonctionnement du jeu</h3><p>Déplacez-vous avec le toucher, le pointeur, WASD ou les touches fléchées. Le Ranger cible automatiquement l&#39;ennemi le plus proche à l&#39;intérieur du cercle de portée visible, laissant le joueur responsable de l&#39;espacement, des itinéraires de collecte et du timing des dangers.</p>
-<p>Les clés dorées satisfont l&#39;objectif de l&#39;étape actuelle et s&#39;ajoutent au rang de patrouille à vie. Les ennemis calmés laissent tomber des cristaux d&#39;XP temporaires ; chaque niveau met le jeu en pause et offre trois choix parmi les dégâts, la portée, la vitesse, les PV maximum, l&#39;intervalle d&#39;attaque et le rayon de ramassage.</p>
-<p>Les renards fantômes appliquent une pression constante, les panthères se rapprochent rapidement et les sangliers de cristal absorbent plus d&#39;attaques. Les étapes ultérieures ajoutent des boucliers cassables, des charges annoncées, un sol brûlé, des gouttes à la dérive, des frappes en miroir et un anneau de sécurité Eclipse mobile.</p>
-<p>Une étape se termine à 15h00 uniquement lorsque son objectif clé imprimé est terminé. Les étapes de boss nécessitent également que le gardien soit calmé. Manquer un objectif enregistre les statistiques locales mais ne débloque pas l&#39;itinéraire suivant.</p></div>
-      <div class="game-info-section"><h3>Comment jouer</h3><ol><li>Choisissez une carte déverrouillée sur le rail horizontal à 30 étages et lisez sa règle.</li><li>Déplacez le Ranger pendant que l&#39;attaque automatique gère la cible la plus proche à portée.</li><li>Récupérez le nombre affiché de clés et de cristaux XP avant la fin du chronomètre.</li><li>Laissez les formes d&#39;avertissement en pointillés avant qu&#39;elles ne se transforment en racines solides, en flammes, en éclairs ou en voies.</li><li>À chaque cinquième étape, battez le boss nommé et complétez l&#39;objectif clé.</li><li>Utilisez Résultat pour réessayer, continuer ou revenir au rail Stage.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Conseils</h3><ul><li>Collectez de l&#39;XP au début pour que la première mise à niveau modifie davantage la patrouille.</li><li>Traitez l&#39;anneau d&#39;attaque pâle comme un guide d&#39;espacement et restez près de son bord extérieur.</li><li>Déplacez-vous sur un chemin de charge, sans vous éloigner directement de la bête qui charge.</li><li>Attendez le bouclier visible de Prism Moth Queen et attaquez pendant l&#39;ouverture.</li><li>Suivez l&#39;anneau de sécurité Eclipse avant de rechercher une clé à l&#39;extérieur.</li></ul></div>
+      <div class="game-info-section"><h3>Monde et mission</h3><p>Six crystal beacons keep the Crystal Grove&#39;s paths open. An Eclipse pulse has scattered their golden tuning keys and changed familiar animals into shadow beasts. The Crystal Ranger carries the keys, calms affected animals, and reconnects one route at a time.</p>
+<p>Stages 5, 10, 15, 20, 25, and 30 are guardian checkpoints. Defeating Root Stalker, Prism Moth Queen, Briar Boar King, Cinder Panther, Tempest Roc, and Eclipse Colossus reconnects the six regions and ends the feedback loop beneath the grove.</p></div>
+      <div class="game-info-section"><h3>Systèmes du jeu</h3><p>Move with touch, pointer, WASD, or arrow keys. The Ranger automatically targets the nearest enemy inside the visible range circle, leaving the player responsible for spacing, collection routes, and hazard timing.</p>
+<p>Golden keys satisfy the current stage objective and add to lifetime Patrol Rank. Calmed enemies drop temporary XP crystals; each level pauses play and offers three choices from damage, range, speed, max HP, attack interval, and pickup radius.</p>
+<p>Shadow foxes apply steady pressure, panthers close quickly, and crystal boars absorb more attacks. Later stages add breakable shields, announced charges, scorch ground, drifting drops, mirrored strikes, and a moving Eclipse safe ring.</p>
+<p>A stage clears at 3:00 only when its printed key target is complete. Boss stages also require the guardian to be calmed. Missing an objective records local statistics but does not unlock the next route.</p></div>
+      <div class="game-info-section"><h3>Comment jouer</h3><ol><li>Choose an unlocked card from the horizontal 30-stage rail and read its rule.</li><li>Move the Ranger while auto-attack handles the nearest target inside range.</li><li>Collect the displayed number of keys and XP crystals before the timer ends.</li><li>Leave dashed warning shapes before they become solid roots, flame, lightning, or lanes.</li><li>At every fifth stage, defeat the named Boss as well as completing the key target.</li><li>Use Result to retry, continue, or return to the Stage rail.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Conseils</h3><ul><li>Collect early XP so the first upgrade changes more of the patrol.</li><li>Treat the pale attack ring as a spacing guide and stay near its outer edge.</li><li>Move across a charge path, not directly away from the charging beast.</li><li>Wait out Prism Moth Queen&#39;s visible shield and attack during the opening.</li><li>Follow the Eclipse safe ring before chasing a key outside it.</li></ul></div>
 
 
-      <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>Les déverrouillages et effacements de scène, le meilleur nombre de clés, les clés à vie, le rang de patrouille et la propriété facultative de Crystal Charm restent dans ce navigateur. Effacer le stockage du site ou changer de périphérique peut les supprimer. L’achat confirmé de Crystal Charm est facultatif et aucune étape ne l’exige. Les commentaires sur les résultats sont un divertissement et des informations sur les progrès locaux, et non un test ou un diagnostic.</p></div>
-      <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Combien d’étapes sont incluses ?</dt><dd>Il y a 30 étapes nommées réparties dans six régions, avec des points de contrôle Boss toutes les cinq étapes.</dd></div><div><dt>Qu&#39;est-ce qui libère une scène ?</dt><dd>Survivez trois minutes et atteignez l’objectif clé imprimé ; un point de contrôle nécessite également que son Boss soit vaincu.</dd></div><div><dt>Le joueur vise-t-il manuellement ?</dt><dd>Non. Le ranger attaque automatiquement. Le joueur se concentre sur les choix de mouvement, de collecte et de mise à niveau.</dd></div><div><dt>Pourquoi Prism Moth Queen n&#39;a-t-elle subi aucun dégât ?</dt><dd>Son bouclier visible bloque les attaques pendant une phase. Les dégâts reprennent lorsqu&#39;ils disparaissent.</dd></div><div><dt>Is progress saved?</dt><dd>Oui. Les déverrouillages, les effacements, les meilleures clés, le classement à vie et la propriété du charme sont enregistrés localement.</dd></div><div><dt>Le charme de cristal est-il requis ?</dt><dd>Non, il s’agit d’un boost confirmé en option de sept à huit CV et d’un rayon de ramassage de 54 à 68.</dd></div><div><dt>Est-ce que ça marche sur mobile et ordinateur de bureau ?</dt><dd>Oui. Le glissement tactile et le mouvement du clavier utilisent les mêmes règles de campagne.</dd></div><div><dt>Le feedback sur les résultats est-il une évaluation ?</dt><dd>Non. Il rapporte les résultats des courses locales et les tactiques du prochain itinéraire à des fins de divertissement uniquement.</dd></div></dl></div>
+      <div class="game-info-section game-info-parent"><h3>Informations du joueur et sauvegarde</h3><p>Les niveaux, les clés, le rang de patrouille et le talisman de cristal optionnel sont enregistrés dans ce navigateur. Effacer les données du site peut supprimer la progression ; les résultats servent au jeu et au suivi local.</p></div>
+      <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>How many stages are included?</dt><dd>There are 30 named stages across six regions, with Boss checkpoints every fifth stage.</dd></div><div><dt>What clears a stage?</dt><dd>Survive three minutes and meet the printed key target; a checkpoint also requires its Boss to be defeated.</dd></div><div><dt>Does the player aim manually?</dt><dd>No. The ranger attacks automatically. The player focuses on movement, collecting, and upgrade choices.</dd></div><div><dt>Why did Prism Moth Queen take no damage?</dt><dd>Her visible shield blocks attacks during one phase. Damage resumes when it disappears.</dd></div><div><dt>Is progress saved?</dt><dd>Yes. Unlocks, clears, best keys, lifetime rank, and Charm ownership are saved locally.</dd></div><div><dt>Is Crystal Charm required?</dt><dd>No. It is an optional confirmed boost from seven to eight HP and pickup radius 54 to 68.</dd></div><div><dt>Does it work on mobile and desktop?</dt><dd>Yes. Touch dragging and keyboard movement use the same campaign rules.</dd></div><div><dt>Is Result feedback an assessment?</dt><dd>No. It reports local run outcomes and next-route tactics for entertainment only.</dd></div></dl></div>
 
     </div>
   </section>
@@ -277,7 +277,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="game.js?v=20260824-crystal-arabic-localization-v23"></script>
+    <script src="game.js?v=20260824-crystal-13-locale-runtime-v24"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260808-play-lock1" data-wp-battle-standard></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>

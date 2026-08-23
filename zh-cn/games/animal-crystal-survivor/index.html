@@ -11,11 +11,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="robots" content="index,follow" />
-    <meta name="description" content="《动物水晶生存战》是一款以移动、自动攻击、临时升级与可读危险为核心的 30 关实时巡逻战役。每关最多三分钟，都有专属名称、金钥目标与区域规则。每第五关会出现一只拥有独立角色图、警示与反制方式的首领，不是把普通敌人放大。" />
+    <meta name="description" content="《动物水晶生存战》是一款以移动、自动攻击、临时强化和可读危险为核心的 30 关实时巡逻战役。每关最多三分钟，并在每第五关安排一个拥有独特警示与反制方式的动物首领。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="动物水晶生存战 | WeightPlay" />
-    <meta property="og:description" content="《动物水晶生存战》是一款以移动、自动攻击、临时升级与可读危险为核心的 30 关实时巡逻战役。每关最多三分钟，都有专属名称、金钥目标与区域规则。每第五关会出现一只拥有独立角色图、警示与反制方式的首领，不是把普通敌人放大。" />
+    <meta property="og:description" content="《动物水晶生存战》是一款以移动、自动攻击、临时强化和可读危险为核心的 30 关实时巡逻战役。每关最多三分钟，并在每第五关安排一个拥有独特警示与反制方式的动物首领。" />
     <meta property="og:url" content="https://weightplay.com/zh-cn/games/animal-crystal-survivor/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-crystal-survivor-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -50,11 +50,12 @@
   "alternateName": "動物水晶生存戰",
   "url": "https://weightplay.com/zh-cn/games/animal-crystal-survivor/",
   "image": "https://weightplay.com/assets/animal-crystal-survivor-cover.png",
-  "description": "《动物水晶生存战》是一款以移动、自动攻击、临时升级与可读危险为核心的 30 关实时巡逻战役。每关最多三分钟，都有专属名称、金钥目标与区域规则。每第五关会出现一只拥有独立角色图、警示与反制方式的首领，不是把普通敌人放大。",
+  "description": "《动物水晶生存战》是一款以移动、自动攻击、临时强化和可读危险为核心的 30 关实时巡逻战役。每关最多三分钟，并在每第五关安排一个拥有独特警示与反制方式的动物首领。",
   "genre": [
     "动作",
     "生存",
     "战役",
+    "首领战",
     "动物",
     "Browser Game"
   ],
@@ -77,7 +78,7 @@
 }
     </script>
     <meta name="twitter:title" content="动物水晶生存战 | WeightPlay" />
-    <meta name="twitter:description" content="《动物水晶生存战》是一款以移动、自动攻击、临时升级与可读危险为核心的 30 关实时巡逻战役。每关最多三分钟，都有专属名称、金钥目标与区域规则。每第五关会出现一只拥有独立角色图、警示与反制方式的首领，不是把普通敌人放大。" />
+    <meta name="twitter:description" content="《动物水晶生存战》是一款以移动、自动攻击、临时强化和可读危险为核心的 30 关实时巡逻战役。每关最多三分钟，并在每第五关安排一个拥有独特警示与反制方式的动物首领。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-crystal-survivor-cover.webp" />
   </head>
   <body data-tutorial-auto-show="false" data-sound-toggle="off">
@@ -125,10 +126,10 @@
       <section id="menuPanel" class="menu-panel">
         <img class="cover" src="../../assets/animal-crystal-survivor-cover.webp" alt="《动物水晶生存战》游戏图片" />
         <div class="menu-copy">
-          <strong data-ui="menuTitle">Survive the Crystal Grove.</strong>
-          <span data-ui="menuHint">Goal: collect golden keys before 3:00. Crystals give XP, and upgrades help the ranger survive longer.</span>
+          <strong data-ui="menuTitle">在水晶林地中生存。</strong>
+          <span data-ui="menuHint">目标：在 3:00 之前收集金钥。水晶会增加经验，升级能让巡守员撑得更久。</span>
           <div id="mainProgress" class="main-progress" aria-live="polite">Stage 1 / 30</div>
-          <button id="startBtn" type="button" data-wp-main-start data-ui="mainStart">Start Game</button>
+          <button id="startBtn" type="button" data-wp-main-start data-ui="mainStart">开始游戏</button>
         </div>
       </section>
 
@@ -197,9 +198,9 @@
           <div class="xp-track"><i id="xpFill"></i></div>
         </div>
         <div class="canvas-wrap play-area">
-          <canvas id="gameCanvas" width="1024" height="1760" tabindex="-1" aria-label="Animal Crystal Survivor playfield" data-aria-ui="playfield"></canvas>
+          <canvas id="gameCanvas" width="1024" height="1760" tabindex="-1" aria-label="动物水晶生存战游戏区" data-aria-ui="playfield"></canvas>
         </div>
-        <p id="hintText" class="hint-text" role="status" aria-live="polite" aria-atomic="true" data-ui="playHint">Goal: collect golden keys before 3:00. Grab crystals to level up, then choose upgrades when the cards appear.</p>
+        <p id="hintText" class="hint-text" role="status" aria-live="polite" aria-atomic="true" data-ui="playHint">目标：在 3:00 之前收集金钥。拾取水晶升级，卡牌出现时选择强化。</p>
         </div>
         <div id="resultHost" class="result-host">
           <section id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText resultRankText resultProgressText resultPlanText resultNextStageText">
@@ -242,30 +243,25 @@
       </div>
     </main>
     <!-- adsense-static-guide:start -->
-    <section class="game-page-info game-page-info-static" aria-label="动物水晶生存战 游戏资讯">
+    <section class="game-page-info game-page-info-static" aria-label="动物水晶生存战 游戏信息">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>动物水晶生存战</h2><p>《动物水晶生存战》是一款以移动、自动攻击、临时升级与可读危险为核心的 30 关实时巡逻战役。每关最多三分钟，都有专属名称、金钥目标与区域规则。每第五关会出现一只拥有独立角色图、警示与反制方式的首领，不是把普通敌人放大。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>30 关动作生存战役</strong></div><div class="game-info-fact"><span>类型</span><strong>动作 · 生存 · 战役 · 动物</strong></div><div class="game-info-fact"><span>难度</span><strong>中等</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>每关 3 分钟</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>动物水晶生存战</h2><p>《动物水晶生存战》是一款以移动、自动攻击、临时强化和可读危险为核心的 30 关实时巡逻战役。每关最多三分钟，并在每第五关安排一个拥有独特警示与反制方式的动物首领。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>30 关动作生存战役</strong></div><div class="game-info-fact"><span>类型</span><strong>动作 · 生存 · 战役 · 首领战 · 动物</strong></div><div class="game-info-fact"><span>难度</span><strong>中等</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>每关 3 分钟</strong></div></div>
     </div>
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界与任务</h3><p>水晶林地原本依靠六座水晶灯塔维持通道，金钥则是调律灯塔的工具。日蚀核心从地底送出暗影脉冲后，金钥散落在各条路线，熟悉的动物也变成影兽。水晶巡守员必须收回金钥、安抚影兽，并让每条通道在三分钟内稳定下来。</p>
-<p>第 5、10、15、20、25、30 关是六个守卫检查点。依序安抚根系追猎者、棱镜飞蛾女王、荆棘野猪王、烬火黑豹、暴风巨鹏与日蚀巨像，才能重新连结六个区域。完成第 30 关代表六座灯塔重新同步，林地不再把暗影能量送回自己的根系。</p></div>
-      <div class="game-info-section"><h3>游戏系统</h3><p>巡逻流程：先在横向关卡列选择已解锁路线，关卡卡片会列出区域规则、金钥目标与首领标记。点击、拖曳、WASD 或方向键都可移动巡守员。角色会自动攻击淡色范围内最近的敌人，玩家主要负责间距、收集路线与闪避时机。</p>
-<p>金钥与经验：本关金钥数是通关目标，同时会累积到主菜单的巡守阶级。影兽被安抚后会掉落本局经验水晶；升级时游戏会暂停，并从伤害、射程、速度、生命上限、攻击间隔与拾取范围中提供三个选项。</p>
-<p>敌人定位：影狐提供稳定压力，黑豹追得较快，水晶野猪需要更多次攻击。后期规则会让特定敌人带著可打破护盾、先预告再冲锋、在倒下点留下热区，或让掉落水晶被风推移。</p>
-<p>成功与失败：普通关必须在 3:00 结束时仍有生命，并收集卡片显示的金钥数。首领关还必须安抚该区守卫。生命归零或漏掉目标都不会解锁下一关，但本设备记录与先前进度不会被删除。</p></div>
-      <div class="game-info-section"><h3>玩法说明</h3><ol><li>在 30 张横向卡片中选择已解锁关卡，先读取规则。</li><li>用触控、鼠标、WASD 或方向键移动；攻击会自动锁定范围内目标。</li><li>收集本关要求的金钥，并捡取经验水晶选择升级。</li><li>虚线警示变成实心危险前，离开根系、火焰、闪电或走廊。</li><li>每第五关除了金钥目标，还要击败专属首领。</li><li>结果可以重试、继续或回到关卡列。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>先收集附近经验，让第一个升级影响更长的巡逻时间。</li><li>把淡色攻击环当成间距工具，让目标保持在边缘，不要站在影兽旁边。</li><li>面对冲锋要横向穿过它的路径，不要沿直线往后逃。</li><li>棱镜飞蛾女王发亮时护盾会挡住攻击，先存活再等待护盾消失。</li><li>日蚀核心以跟随移动安全环为优先，环外金钥可等下一次脉冲再取。</li></ul></div>
-      <div class="game-info-section"><h3>关卡与难度成长</h3><p>第 1-5 关建立金钥路线、黑豹冲入与野猪夹击。根系追猎者会在玩家位置放下绿色根系圈，留在里面会减速并反复受伤。</p>
-<p>第 6-10 关加入镜像圈、旋转碎片与可打破护盾。棱镜飞蛾女王会在护盾与可受伤阶段间轮替，并使用成对棱光警示。</p>
-<p>第 11-15 关以荆棘走廊、根系斑块与有预告的野猪冲锋改变移动。荆棘野猪王结合长距离冲锋与根系圈。</p>
-<p>第 16-20 关使用橙色燃烧预告、高温边缘与倒下留火。烬火黑豹会跨场闪现，并燃烧每个落点。</p>
-<p>第 21-25 关以蓝色圈预告闪电，强风还会推动掉落物。暴风巨鹏同时使用三个雷区与高速俯冲。</p>
-<p>第 26-30 关要跟随移动光环，并轮流处理根系、火焰与闪电。日蚀巨像把三种警示放在安全环周围，是全部移动与伤害时机的最终检查。</p></div>
-      <div class="game-info-section"><h3>开发设计理念</h3><p>三分钟足以让一局出现数次升级选择，又不会让失败后的重试代价过高。自动锁定是为了移除手机上细小的瞄准控制，但玩家仍要持续决定距离、收集顺序、逃生方向与首领可攻击窗口。六个五关区域会依序导入、组合、再由首领检查新规则。难度虽然提高，但主要变化来自护盾、冲锋时机、警示圈、走廊、飘移资源与安全环，而不是只把敌人生命变大。</p></div>
-      <div class="game-info-section game-info-parent"><h3>玩家与存档说明</h3><p>本设备会保存已解锁关卡、已通关关卡、各关最佳金钥、累积金钥、巡守阶级与可选水晶护符。清除网站保存或更换装置可能会移除进度。水晶护符需二次确认，只会把起始生命从 7 提高到 8，并把拾取范围从 54 提高到 68；它不是任何关卡的必要条件。结果回馈只是娱乐与本设备进度资讯，不是能力测验或诊断。</p></div>
-      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>动物水晶生存战有几关？</dt><dd>共有 30 个命名关卡与六个区域，每第五关都是首领检查点。</dd></div><div><dt>如何才算通关？</dt><dd>生存到三分钟结束并完成卡片的金钥目标；首领关还要击败该区守卫。</dd></div><div><dt>玩家需要手动瞄准吗？</dt><dd>不用。巡守员会自动攻击，玩家主要负责移动、收集与升级选择。</dd></div><div><dt>为什么攻击没有伤害棱镜飞蛾女王？</dt><dd>她发亮时有可见护盾，会挡住攻击。护盾消失后才会扣除生命。</dd></div><div><dt>漏掉金钥目标会怎样？</dt><dd>这局金钥与累积数据仍会记录，但不会解锁下一关，可立即重试。</dd></div><div><dt>进度会保存吗？</dt><dd>会。关卡、金钥、巡守阶级与护符会保存在目前浏览器。</dd></div><div><dt>水晶护符是必要的吗？</dt><dd>不是。它只是需要确认的可选起始属性加成，30 关都可不使用。</dd></div><div><dt>手机与电脑都能玩吗？</dt><dd>可以。手机使用点击或拖曳，电脑还可使用 WASD 与方向键，关卡规则完全相同。</dd></div><div><dt>这是正式能力测验吗？</dt><dd>不是。能力回馈只是本设备游戏回馈，仅供娱乐参考。</dd></div></dl></div>
+      <div class="game-info-section"><h3>世界与任务</h3><p>Six crystal beacons keep the Crystal Grove&#39;s paths open. An Eclipse pulse has scattered their golden tuning keys and changed familiar animals into shadow beasts. The Crystal Ranger carries the keys, calms affected animals, and reconnects one route at a time.</p>
+<p>Stages 5, 10, 15, 20, 25, and 30 are guardian checkpoints. Defeating Root Stalker, Prism Moth Queen, Briar Boar King, Cinder Panther, Tempest Roc, and Eclipse Colossus reconnects the six regions and ends the feedback loop beneath the grove.</p></div>
+      <div class="game-info-section"><h3>游戏系统</h3><p>Move with touch, pointer, WASD, or arrow keys. The Ranger automatically targets the nearest enemy inside the visible range circle, leaving the player responsible for spacing, collection routes, and hazard timing.</p>
+<p>Golden keys satisfy the current stage objective and add to lifetime Patrol Rank. Calmed enemies drop temporary XP crystals; each level pauses play and offers three choices from damage, range, speed, max HP, attack interval, and pickup radius.</p>
+<p>Shadow foxes apply steady pressure, panthers close quickly, and crystal boars absorb more attacks. Later stages add breakable shields, announced charges, scorch ground, drifting drops, mirrored strikes, and a moving Eclipse safe ring.</p>
+<p>A stage clears at 3:00 only when its printed key target is complete. Boss stages also require the guardian to be calmed. Missing an objective records local statistics but does not unlock the next route.</p></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>Choose an unlocked card from the horizontal 30-stage rail and read its rule.</li><li>Move the Ranger while auto-attack handles the nearest target inside range.</li><li>Collect the displayed number of keys and XP crystals before the timer ends.</li><li>Leave dashed warning shapes before they become solid roots, flame, lightning, or lanes.</li><li>At every fifth stage, defeat the named Boss as well as completing the key target.</li><li>Use Result to retry, continue, or return to the Stage rail.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>Collect early XP so the first upgrade changes more of the patrol.</li><li>Treat the pale attack ring as a spacing guide and stay near its outer edge.</li><li>Move across a charge path, not directly away from the charging beast.</li><li>Wait out Prism Moth Queen&#39;s visible shield and attack during the opening.</li><li>Follow the Eclipse safe ring before chasing a key outside it.</li></ul></div>
+
+
+      <div class="game-info-section game-info-parent"><h3>玩家与存档说明</h3><p>关卡、金钥匙、巡守等级和可选水晶护符保存在此浏览器中。清除网站数据或更换设备可能会移除进度；结果反馈仅供娱乐和本设备进度记录。</p></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>How many stages are included?</dt><dd>There are 30 named stages across six regions, with Boss checkpoints every fifth stage.</dd></div><div><dt>What clears a stage?</dt><dd>Survive three minutes and meet the printed key target; a checkpoint also requires its Boss to be defeated.</dd></div><div><dt>Does the player aim manually?</dt><dd>No. The ranger attacks automatically. The player focuses on movement, collecting, and upgrade choices.</dd></div><div><dt>Why did Prism Moth Queen take no damage?</dt><dd>Her visible shield blocks attacks during one phase. Damage resumes when it disappears.</dd></div><div><dt>Is progress saved?</dt><dd>Yes. Unlocks, clears, best keys, lifetime rank, and Charm ownership are saved locally.</dd></div><div><dt>Is Crystal Charm required?</dt><dd>No. It is an optional confirmed boost from seven to eight HP and pickup radius 54 to 68.</dd></div><div><dt>Does it work on mobile and desktop?</dt><dd>Yes. Touch dragging and keyboard movement use the same campaign rules.</dd></div><div><dt>Is Result feedback an assessment?</dt><dd>No. It reports local run outcomes and next-route tactics for entertainment only.</dd></div></dl></div>
 
     </div>
   </section>
@@ -281,7 +277,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="game.js?v=20260824-crystal-arabic-localization-v23"></script>
+    <script src="game.js?v=20260824-crystal-13-locale-runtime-v24"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260808-play-lock1" data-wp-battle-standard></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>

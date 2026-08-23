@@ -11,15 +11,15 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="robots" content="index,follow" />
-    <meta name="description" content="Animal Crystal Survivor é uma campanha de patrulha em tempo real de 30 estágios construída em torno de movimento, ataques automáticos, atualizações..." />
+    <meta name="description" content="Sobrevivente do Cristal Animal é uma campanha de patrulha em tempo real com 30 fases, baseada em movimento, ataques automáticos, melhorias temporárias e..." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Animal Crystal Survivor | WeightPlay" />
-    <meta property="og:description" content="Animal Crystal Survivor é uma campanha de patrulha em tempo real de 30 estágios construída em torno de movimento, ataques automáticos, atualizações..." />
+    <meta property="og:title" content="Sobrevivente do Cristal Animal | WeightPlay" />
+    <meta property="og:description" content="Sobrevivente do Cristal Animal é uma campanha de patrulha em tempo real com 30 fases, baseada em movimento, ataques automáticos, melhorias temporárias e..." />
     <meta property="og:url" content="https://weightplay.com/pt-br/games/animal-crystal-survivor/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-crystal-survivor-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <title>Animal Crystal Survivor | WeightPlay</title>
+    <title>Sobrevivente do Cristal Animal | WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/pt-br/games/animal-crystal-survivor/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-crystal-survivor/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-crystal-survivor/" />
@@ -46,17 +46,17 @@
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "Animal Crystal Survivor",
+  "name": "Sobrevivente do Cristal Animal",
   "alternateName": "動物水晶生存戰",
   "url": "https://weightplay.com/pt-br/games/animal-crystal-survivor/",
   "image": "https://weightplay.com/assets/animal-crystal-survivor-cover.png",
-  "description": "Animal Crystal Survivor é uma campanha de patrulha em tempo real de 30 estágios construída em torno de movimento, ataques automáticos, atualizações...",
+  "description": "Sobrevivente do Cristal Animal é uma campanha de patrulha em tempo real com 30 fases, baseada em movimento, ataques automáticos, melhorias temporárias e...",
   "genre": [
-    "Action",
+    "Ação",
     "Sobrevivência",
-    "Campaign",
-    "Batalha contra chefes",
-    "Animal",
+    "Campanha",
+    "Chefes",
+    "Animais",
     "Browser Game"
   ],
   "gamePlatform": "Web browser",
@@ -77,8 +77,8 @@
   "applicationCategory": "Game"
 }
     </script>
-    <meta name="twitter:title" content="Animal Crystal Survivor | WeightPlay" />
-    <meta name="twitter:description" content="Animal Crystal Survivor é uma campanha de patrulha em tempo real de 30 estágios construída em torno de movimento, ataques automáticos, atualizações..." />
+    <meta name="twitter:title" content="Sobrevivente do Cristal Animal | WeightPlay" />
+    <meta name="twitter:description" content="Sobrevivente do Cristal Animal é uma campanha de patrulha em tempo real com 30 fases, baseada em movimento, ataques automáticos, melhorias temporárias e..." />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-crystal-survivor-cover.webp" />
   </head>
   <body data-tutorial-auto-show="false" data-sound-toggle="off">
@@ -87,7 +87,7 @@
         <a class="icon-btn home-link" data-wp-return="main" href="/" aria-label="Back to lobby" data-aria-ui="backToLobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="brand-title">
           <p>WeightPlay</p>
-          <h1 data-ui="title">Animal Crystal Survivor</h1>
+          <h1 data-ui="title">Sobrevivente do Cristal Animal</h1>
         </div>
         <div id="settingsControl" class="settings-control">
           <button id="settingsBtn" class="settings-btn" type="button" aria-expanded="false" aria-controls="settingsPopover" aria-label="Settings">
@@ -124,12 +124,12 @@
       </header>
 
       <section id="menuPanel" class="menu-panel">
-        <img class="cover" src="../../assets/animal-crystal-survivor-cover.webp" alt="Imagem do jogo Animal Crystal Survivor" />
+        <img class="cover" src="../../assets/animal-crystal-survivor-cover.webp" alt="Imagem do jogo Sobrevivente do Cristal Animal" />
         <div class="menu-copy">
-          <strong data-ui="menuTitle">Survive the Crystal Grove.</strong>
-          <span data-ui="menuHint">Goal: collect golden keys before 3:00. Crystals give XP, and upgrades help the ranger survive longer.</span>
+          <strong data-ui="menuTitle">Sobreviva no Bosque de Cristal.</strong>
+          <span data-ui="menuHint">Objetivo: colete chaves douradas antes de 3:00. Cristais dão experiência e melhorias ajudam o patrulheiro a sobreviver.</span>
           <div id="mainProgress" class="main-progress" aria-live="polite">Stage 1 / 30</div>
-          <button id="startBtn" type="button" data-wp-main-start data-ui="mainStart">Start Game</button>
+          <button id="startBtn" type="button" data-wp-main-start data-ui="mainStart">Começar jogo</button>
         </div>
       </section>
 
@@ -198,9 +198,9 @@
           <div class="xp-track"><i id="xpFill"></i></div>
         </div>
         <div class="canvas-wrap play-area">
-          <canvas id="gameCanvas" width="1024" height="1760" tabindex="-1" aria-label="Animal Crystal Survivor playfield" data-aria-ui="playfield"></canvas>
+          <canvas id="gameCanvas" width="1024" height="1760" tabindex="-1" aria-label="Área de jogo do Sobrevivente do Cristal Animal" data-aria-ui="playfield"></canvas>
         </div>
-        <p id="hintText" class="hint-text" role="status" aria-live="polite" aria-atomic="true" data-ui="playHint">Goal: collect golden keys before 3:00. Grab crystals to level up, then choose upgrades when the cards appear.</p>
+        <p id="hintText" class="hint-text" role="status" aria-live="polite" aria-atomic="true" data-ui="playHint">Objetivo: colete chaves antes de 3:00. Pegue cristais para subir de nível e escolha melhorias quando as cartas aparecerem.</p>
         </div>
         <div id="resultHost" class="result-host">
           <section id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText resultRankText resultProgressText resultPlanText resultNextStageText">
@@ -243,11 +243,11 @@
       </div>
     </main>
     <!-- adsense-static-guide:start -->
-    <section class="game-page-info game-page-info-static" aria-label="Animal Crystal Survivor informações do jogo">
+    <section class="game-page-info game-page-info-static" aria-label="Sobrevivente do Cristal Animal informações do jogo">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guia de jogos originais WeightPlay</span><h2>Animal Crystal Survivor</h2><p>Animal Crystal Survivor é uma campanha de patrulha em tempo real de 30 estágios construída em torno de movimento, ataques automáticos, atualizações temporárias, perigos legíveis e seis chefes animais originais. Cada rota dura até três minutos e tem uma regra nomeada, um alvo principal e um desbloqueio salvo.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Campanha de sobrevivência de ação em 30 etapas</strong></div><div class="game-info-fact"><span>Genre</span><strong>Action · Sobrevivência · Campaign · Batalha contra chefes · Animal</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Medium</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>3 minutos por etapa</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">Guia de jogos originais WeightPlay</span><h2>Sobrevivente do Cristal Animal</h2><p>Sobrevivente do Cristal Animal é uma campanha de patrulha em tempo real com 30 fases, baseada em movimento, ataques automáticos, melhorias temporárias e perigos legíveis. Cada fase dura no máximo três minutos e cada quinta fase traz um chefe animal único.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Campanha de ação e sobrevivência com 30 fases</strong></div><div class="game-info-fact"><span>Genre</span><strong>Ação · Sobrevivência · Campanha · Chefes · Animais</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Média</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>3 minutos por fase</strong></div></div>
     </div>
     <div class="game-info-sections">
       <div class="game-info-section"><h3>World and Mission</h3><p>Seis faróis de cristal mantêm os caminhos do Bosque de Cristal abertos. Um pulso de Eclipse espalhou suas chaves de afinação douradas e transformou animais familiares em feras sombrias. O Crystal Ranger carrega as chaves, acalma os animais afetados e reconecta uma rota de cada vez.</p>
@@ -260,7 +260,7 @@
       <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Colete XP antecipado para que a primeira atualização mude mais a patrulha.</li><li>Trate o anel de ataque claro como um guia de espaçamento e fique próximo à borda externa.</li><li>Mova-se por um caminho de carga, não diretamente para longe da fera em ataque.</li><li>Espere o escudo visível do Prism Moth Queen e ataque durante a abertura.</li><li>Siga o anel seguro do Eclipse antes de perseguir uma chave fora dele.</li></ul></div>
 
 
-      <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>Desbloqueios de palco, limpezas, melhores contagens de chaves, chaves vitalícias, classificação de patrulha e propriedade opcional do Crystal Charm permanecem neste navegador. Limpar o armazenamento do site ou trocar de dispositivo pode removê-los. A compra confirmada do Crystal Charm é opcional e nenhuma etapa a exige. O feedback dos resultados é entretenimento e informações sobre o progresso local, não um teste ou diagnóstico.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Informações do jogador e do salvamento</h3><p>Fases, chaves, patente da patrulha e o Amuleto de cristal opcional ficam salvos neste navegador. Limpar os dados do site pode apagar o progresso; os resultados servem apenas para diversão e registro local.</p></div>
       <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Quantas etapas estão incluídas?</dt><dd>Existem 30 fases nomeadas em seis regiões, com pontos de verificação de Boss a cada cinco fases.</dd></div><div><dt>O que limpa um estágio?</dt><dd>Sobreviva três minutos e atinja o alvo chave impresso; um checkpoint também exige que seu chefe seja derrotado.</dd></div><div><dt>O jogador mira manualmente?</dt><dd>Não. O ranger ataca automaticamente. O jogador se concentra nas escolhas de movimento, coleta e atualização.</dd></div><div><dt>Por que o Prism Moth Queen não sofreu danos?</dt><dd>Seu escudo visível bloqueia ataques durante uma fase. O dano recomeça quando desaparece.</dd></div><div><dt>Is progress saved?</dt><dd>Sim. Desbloqueios, limpezas, melhores chaves, classificação vitalícia e propriedade de charme são salvos localmente.</dd></div><div><dt>O Charme de Cristal é necessário?</dt><dd>É um aumento opcional confirmado de sete para oito HP e raio de pickup de 54 a 68.</dd></div><div><dt>Funciona em dispositivos móveis e desktop?</dt><dd>Sim. O arrasto por toque e o movimento do teclado usam as mesmas regras de campanha.</dd></div><div><dt>O feedback do resultado é uma avaliação?</dt><dd>Não. Ele relata resultados de corrida local e táticas de próxima rota apenas para entretenimento.</dd></div></dl></div>
 
     </div>
@@ -277,7 +277,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="game.js?v=20260824-crystal-arabic-localization-v23"></script>
+    <script src="game.js?v=20260824-crystal-13-locale-runtime-v24"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260808-play-lock1" data-wp-battle-standard></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>

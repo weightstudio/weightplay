@@ -11,15 +11,15 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="robots" content="index,follow" />
-    <meta name="description" content="Animal Crystal Survivor — это 30-этапная патрульная кампания в реальном времени, построенная на движении, автоматических атаках, временных улучшениях,..." />
+    <meta name="description" content="Хрустальный выживший — это кампания патруля в реальном времени на 30 этапов, построенная на движении, автоматической атаке, временных улучшениях и..." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Animal Crystal Survivor | WeightPlay" />
-    <meta property="og:description" content="Animal Crystal Survivor — это 30-этапная патрульная кампания в реальном времени, построенная на движении, автоматических атаках, временных улучшениях,..." />
+    <meta property="og:title" content="Хрустальный выживший: животные | WeightPlay" />
+    <meta property="og:description" content="Хрустальный выживший — это кампания патруля в реальном времени на 30 этапов, построенная на движении, автоматической атаке, временных улучшениях и..." />
     <meta property="og:url" content="https://weightplay.com/ru/games/animal-crystal-survivor/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-crystal-survivor-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <title>Animal Crystal Survivor | WeightPlay</title>
+    <title>Хрустальный выживший: животные | WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/ru/games/animal-crystal-survivor/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-crystal-survivor/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-crystal-survivor/" />
@@ -46,17 +46,17 @@
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "Animal Crystal Survivor",
+  "name": "Хрустальный выживший: животные",
   "alternateName": "動物水晶生存戰",
   "url": "https://weightplay.com/ru/games/animal-crystal-survivor/",
   "image": "https://weightplay.com/assets/animal-crystal-survivor-cover.png",
-  "description": "Animal Crystal Survivor — это 30-этапная патрульная кампания в реальном времени, построенная на движении, автоматических атаках, временных улучшениях,...",
+  "description": "Хрустальный выживший — это кампания патруля в реальном времени на 30 этапов, построенная на движении, автоматической атаке, временных улучшениях и...",
   "genre": [
-    "Action",
+    "Экшен",
     "Выживание",
-    "Campaign",
-    "Битва с Боссом",
-    "Animal",
+    "Кампания",
+    "Боссы",
+    "Животные",
     "Browser Game"
   ],
   "gamePlatform": "Web browser",
@@ -77,8 +77,8 @@
   "applicationCategory": "Game"
 }
     </script>
-    <meta name="twitter:title" content="Animal Crystal Survivor | WeightPlay" />
-    <meta name="twitter:description" content="Animal Crystal Survivor — это 30-этапная патрульная кампания в реальном времени, построенная на движении, автоматических атаках, временных улучшениях,..." />
+    <meta name="twitter:title" content="Хрустальный выживший: животные | WeightPlay" />
+    <meta name="twitter:description" content="Хрустальный выживший — это кампания патруля в реальном времени на 30 этапов, построенная на движении, автоматической атаке, временных улучшениях и..." />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-crystal-survivor-cover.webp" />
   </head>
   <body data-tutorial-auto-show="false" data-sound-toggle="off">
@@ -87,7 +87,7 @@
         <a class="icon-btn home-link" data-wp-return="main" href="/" aria-label="Back to lobby" data-aria-ui="backToLobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="brand-title">
           <p>WeightPlay</p>
-          <h1 data-ui="title">Animal Crystal Survivor</h1>
+          <h1 data-ui="title">Хрустальный выживший: животные</h1>
         </div>
         <div id="settingsControl" class="settings-control">
           <button id="settingsBtn" class="settings-btn" type="button" aria-expanded="false" aria-controls="settingsPopover" aria-label="Settings">
@@ -124,12 +124,12 @@
       </header>
 
       <section id="menuPanel" class="menu-panel">
-        <img class="cover" src="../../assets/animal-crystal-survivor-cover.webp" alt="Изображение игры «Animal Crystal Survivor»" />
+        <img class="cover" src="../../assets/animal-crystal-survivor-cover.webp" alt="Изображение игры «Хрустальный выживший: животные»" />
         <div class="menu-copy">
-          <strong data-ui="menuTitle">Survive the Crystal Grove.</strong>
-          <span data-ui="menuHint">Goal: collect golden keys before 3:00. Crystals give XP, and upgrades help the ranger survive longer.</span>
+          <strong data-ui="menuTitle">Выживите в Хрустальной роще.</strong>
+          <span data-ui="menuHint">Цель: собрать золотые ключи до 3:00. Кристаллы дают опыт, а улучшения помогают рейнджеру выжить.</span>
           <div id="mainProgress" class="main-progress" aria-live="polite">Stage 1 / 30</div>
-          <button id="startBtn" type="button" data-wp-main-start data-ui="mainStart">Start Game</button>
+          <button id="startBtn" type="button" data-wp-main-start data-ui="mainStart">Начать игру</button>
         </div>
       </section>
 
@@ -198,9 +198,9 @@
           <div class="xp-track"><i id="xpFill"></i></div>
         </div>
         <div class="canvas-wrap play-area">
-          <canvas id="gameCanvas" width="1024" height="1760" tabindex="-1" aria-label="Animal Crystal Survivor playfield" data-aria-ui="playfield"></canvas>
+          <canvas id="gameCanvas" width="1024" height="1760" tabindex="-1" aria-label="Игровое поле хрустального выжившего" data-aria-ui="playfield"></canvas>
         </div>
-        <p id="hintText" class="hint-text" role="status" aria-live="polite" aria-atomic="true" data-ui="playHint">Goal: collect golden keys before 3:00. Grab crystals to level up, then choose upgrades when the cards appear.</p>
+        <p id="hintText" class="hint-text" role="status" aria-live="polite" aria-atomic="true" data-ui="playHint">Цель: соберите ключи до 3:00. Подбирайте кристаллы, повышайте уровень и выбирайте улучшение.</p>
         </div>
         <div id="resultHost" class="result-host">
           <section id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText resultRankText resultProgressText resultPlanText resultNextStageText">
@@ -243,11 +243,11 @@
       </div>
     </main>
     <!-- adsense-static-guide:start -->
-    <section class="game-page-info game-page-info-static" aria-label="Animal Crystal Survivor информация об игре">
+    <section class="game-page-info game-page-info-static" aria-label="Хрустальный выживший: животные информация об игре">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2>Animal Crystal Survivor</h2><p>Animal Crystal Survivor — это 30-этапная патрульная кампания в реальном времени, построенная на движении, автоматических атаках, временных улучшениях, читаемых опасностях и шести оригинальных боссах-животных. Каждый маршрут длится до трех минут и имеет именованное правило, ключевую цель и сохраненную разблокировку.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>30-этапная кампания на выживание</strong></div><div class="game-info-fact"><span>Genre</span><strong>Action · Выживание · Campaign · Битва с Боссом · Animal</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Medium</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>3 минуты на этап</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2>Хрустальный выживший: животные</h2><p>Хрустальный выживший — это кампания патруля в реальном времени на 30 этапов, построенная на движении, автоматической атаке, временных улучшениях и понятных опасностях. Каждый этап длится не более трёх минут, а на каждом пятом появляется особый звериный босс.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Кампания действия и выживания на 30 этапов</strong></div><div class="game-info-fact"><span>Genre</span><strong>Экшен · Выживание · Кампания · Боссы · Животные</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Средняя</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>3 минуты на этап</strong></div></div>
     </div>
     <div class="game-info-sections">
       <div class="game-info-section"><h3>World and Mission</h3><p>Шесть хрустальных маяков держат пути Хрустальной рощи открытыми. Импульс Затмения разбросал их золотые ключи настройки и превратил знакомых животных в теневых зверей. Хрустальный рейнджер носит ключи, успокаивает пострадавших животных и восстанавливает один маршрут за раз.</p>
@@ -260,7 +260,7 @@
       <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Собирайте ранний опыт, чтобы первое обновление изменило больше патруля.</li><li>Считайте бледное кольцо атаки ориентиром и оставайтесь рядом с его внешним краем.</li><li>Двигайтесь по пути заряда, а не прямо от атакующего зверя.</li><li>Подождите, пока появится видимый щит Королевы призменных мотыльков, и атакуйте во время открытия.</li><li>Следуйте за безопасным кольцом Eclipse, прежде чем гоняться за ключом за его пределами.</li></ul></div>
 
 
-      <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>Разблокировка и очистка этапов, подсчет лучших ключей, пожизненные ключи, ранг патруля и дополнительное владение Crystal Charm остаются в этом браузере. Очистка хранилища сайта или переключение устройств могут удалить их. Подтвержденная покупка Crystal Charm не является обязательной и не требуется ни на одном этапе. Обратная связь по результатам — это развлечение и информация о местном прогрессе, а не тест или диагноз.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Сведения об игроке и сохранении</h3><p>Этапы, ключи, ранг патруля и необязательный кристальный амулет сохраняются в этом браузере. Очистка данных сайта может удалить прогресс; результаты предназначены только для игры и локальной записи.</p></div>
       <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Сколько этапов включено?</dt><dd>В шести регионах есть 30 именованных этапов, а на каждом пятом этапе есть контрольно-пропускные пункты Босса.</dd></div><div><dt>Что очищает сцену?</dt><dd>Продержитесь три минуты и достигните напечатанной ключевой цели; контрольно-пропускной пункт также требует победы над своим боссом.</dd></div><div><dt>Прицеливается ли игрок вручную?</dt><dd>Нет. Рейнджер атакует автоматически. Игрок сосредотачивается на передвижении, сборе и улучшении.</dd></div><div><dt>Почему Королева Призменной Мотылька не получила урона?</dt><dd>Ее видимый щит блокирует атаки в течение одной фазы. Урон возобновляется, когда он исчезает.</dd></div><div><dt>Is progress saved?</dt><dd>Да. Разблокировка, очистка, лучшие ключи, пожизненный ранг и владение чармами сохраняются локально.</dd></div><div><dt>Требуется ли Crystal Charm?</dt><dd>Нет. Это необязательное подтвержденное увеличение здоровья с семи до восьми и радиус подбора с 54 до 68.</dd></div><div><dt>Работает ли он на мобильных устройствах и компьютерах?</dt><dd>Да. Перетаскивание касанием и движение клавиатуры используют одни и те же правила кампании.</dd></div><div><dt>Является ли обратная связь по результатам оценкой?</dt><dd>Нет. Он сообщает о результатах местных забегов и тактике следующего маршрута только для развлечения.</dd></div></dl></div>
 
     </div>
@@ -277,7 +277,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="game.js?v=20260824-crystal-arabic-localization-v23"></script>
+    <script src="game.js?v=20260824-crystal-13-locale-runtime-v24"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260808-play-lock1" data-wp-battle-standard></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>

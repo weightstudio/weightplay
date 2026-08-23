@@ -3,10 +3,25 @@
   document.body.dataset.wpCombinedSound = "true";
   const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
   const ASSET = "../../assets/", trial = new URLSearchParams(location.search).get("trial") === "1";
-  const GAME_ID = "animal-rune-reels", GAME_VERSION = "v63";
+  const GAME_ID = "animal-rune-reels", GAME_VERSION = "v64";
   const storageKey = "weightplay.animalRuneReels.v4", legacyStorageKey = "weightplay.animalRuneReels.v3", memory = new Map();
   const LOCALES = window.RUNE_REELS_LOCALES, localeKeys = Object.keys(LOCALES);
   const localeRouteSegments={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
+  const RETRY_RECOVERY_COPY={
+    en:"Try Again restarts this Rift at Wave 1 with full health; Rift Map keeps your unlocked progress and returns to Stage.",
+    "zh-Hant":"再試一次會以滿生命從本裂隙第 1 波重新開始；裂隙地圖會保留已解鎖進度並返回關卡。",
+    "zh-Hans":"再试一次会以满生命从本裂隙第 1 波重新开始；裂隙地图会保留已解锁进度并返回关卡。",
+    ja:"再挑戦は体力満タンでこの裂け目の第1ウェーブから再開します。裂け目マップは解放済みの進行を保ったままステージへ戻ります。",
+    ko:"다시 시도하면 체력을 모두 회복하고 이 균열의 1웨이브부터 시작합니다. 균열 지도는 해금 진행을 유지한 채 스테이지로 돌아갑니다.",
+    es:"Reintentar reinicia esta grieta en la oleada 1 con toda la vida; el mapa conserva tu progreso desbloqueado y vuelve a la fase.",
+    "pt-BR":"Tentar de novo reinicia esta fenda na Onda 1 com a vida cheia; o mapa preserva seu progresso desbloqueado e volta ao estágio.",
+    fr:"Réessayer relance cette faille à la vague 1 avec tous les PV ; la carte conserve votre progression débloquée et revient à l'étape.",
+    de:"Erneut versuchen startet diesen Spalt bei Welle 1 mit voller Gesundheit; die Spaltkarte behält deinen freigeschalteten Fortschritt und führt zur Stage zurück.",
+    it:"Riprova riavvia questa frattura dall'Ondata 1 con la salute piena; la mappa conserva i progressi sbloccati e torna alla fase.",
+    ru:"«Ещё раз» начинает этот разлом с 1-й волны и полной выносливостью; карта разломов сохраняет открытый прогресс и возвращает к этапу.",
+    hi:"फिर प्रयास करने पर यह दरार पूरी सेहत के साथ वेव 1 से शुरू होती है; दरार मानचित्र आपकी अनलॉक प्रगति रखकर स्टेज पर लौटाता है।",
+    ar:"يعيد «حاول مجددًا» هذا الصدع من الموجة 1 بصحة كاملة؛ تحفظ خريطة الصدوع تقدمك المفتوح وتعيدك إلى المرحلة."
+  };
   const HEROES = {
     lion:{name:"heroLion",img:"weightplay-character-boom-mane-lion-cutout.webp",stars:1,atk:15,def:4,heal:2,special:"specialLion",specialDesc:"specialLionDesc",mode:"allDamage",power:1.6,leader:"leaderLion",leaderDesc:"leaderLionDesc",leaderEffect:{type:"atk",value:.2}},
     turtle:{name:"heroTurtle",img:"weightplay-character-moss-shell-turtle-cutout.webp",stars:1,atk:8,def:14,heal:3,special:"specialTurtle",specialDesc:"specialTurtleDesc",mode:"reflect",power:2.6},
@@ -156,7 +171,7 @@
     characterReturnFocus=null;
     target?.focus();
   }
-  function openBattleModal(id,focusSelector){if(battle){battle.auto=false;renderBattle(false)}setBattleInert(true);const modal=$(id);modal.hidden=false;sceneTask("battlePage",()=>(focusSelector?modal.querySelector(focusSelector):modal.querySelector('button:not([disabled]):not([hidden])'))?.focus({preventScroll:true}))}
+  function openBattleModal(id,focusSelector){if(battle){battle.auto=false;renderBattle(false)}setBattleInert(true);const modal=$(id);if(id==='#result'){let recovery=$("#retryRecoveryHint");if(!recovery){recovery=document.createElement('p');recovery.id='retryRecoveryHint';recovery.className='result-recap retry-recovery-hint';recovery.setAttribute('role','status');recovery.setAttribute('aria-live','polite');recovery.setAttribute('aria-atomic','true');modal.querySelector('.modal-card')?.insertBefore(recovery,$('#rewardDetails'))}const retryAvailable=!!battle&&battle.hp<=0;if(recovery){recovery.hidden=!retryAvailable;recovery.textContent=retryAvailable?(RETRY_RECOVERY_COPY[locale]||RETRY_RECOVERY_COPY.en):'';recovery.title=recovery.textContent;recovery.setAttribute('aria-label',recovery.textContent)}}modal.hidden=false;sceneTask("battlePage",()=>(focusSelector?modal.querySelector(focusSelector):modal.querySelector('button:not([disabled]):not([hidden])'))?.focus({preventScroll:true}))}
   function closeBattleModal(id,focusSelector="#battleBack"){$(id).hidden=true;setBattleInert(false);$(focusSelector)?.focus({preventScroll:true})}
   function openLeaveConfirmation(){if(!battle||battle.ended||leaveConfirmOpen)return;leaveConfirmOpen=true;suspendBattleLifecycle();openBattleModal('#leaveConfirm')}
   function continueBattle(){if(!leaveConfirmOpen)return;leaveConfirmOpen=false;closeBattleModal('#leaveConfirm');resumeBattleLifecycle()}
