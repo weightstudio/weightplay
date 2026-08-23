@@ -71,10 +71,10 @@
     <meta name="twitter:image" content="https://weightplay.com/assets/beast-tactician-cover.webp" />
   </head>
   <body data-game-id="beast-tactician" data-wp-combined-sound="true">
-    <main class="guardian-app">
+    <main class="guardian-app" data-runtime-localize="off">
       <header class="guardian-topbar">
-        <a class="back-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
-        <button id="stageBackBtn" class="stage-return secondary-btn is-hidden" data-wp-return="stage" type="button" aria-label="Back" hidden>&larr;</button>
+        <a class="back-btn" data-wp-return="main" href="/" aria-label="Back to WeightPlay General games"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <button id="stageBackBtn" class="stage-return secondary-btn is-hidden" data-wp-return="stage" type="button" aria-label="Back to main" hidden>&larr;</button>
         <div class="brand-lockup">
           <h1 id="gameTitle">Beast Guardian</h1>
         </div>
@@ -91,9 +91,18 @@
                 <span id="languageLabel">Language</span>
                 <select id="localeSelect" aria-label="Language">
                   <option value="en">English</option>
-                  <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
-                  <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
-                  <option value="es">Espa&ntilde;ol</option>
+                  <option value="zh-Hant">繁體中文</option>
+                  <option value="zh-Hans">简体中文</option>
+                  <option value="ja">日本語</option>
+                  <option value="ko">한국어</option>
+                  <option value="es">Español</option>
+                  <option value="pt-BR">Português (Brasil)</option>
+                  <option value="fr">Français</option>
+                  <option value="de">Deutsch</option>
+                  <option value="it">Italiano</option>
+                  <option value="ru">Русский</option>
+                  <option value="hi">हिन्दी</option>
+                  <option value="ar">العربية</option>
                 </select>
               </label>
             </div>
@@ -136,7 +145,7 @@
               <div><span id="upgradePointLabel">Upgrade Points</span><strong id="upgradePointText">0</strong></div>
               <div><span id="diamondLabel">Diamonds</span><strong id="diamondText">0</strong></div>
             </div>
-            <div class="equipment-intro"><h2 id="techTitle">Permanent Tech</h2><p id="techHint"></p></div>
+            <div class="equipment-intro"><h2 id="techTitle">Permanent Guardian Tech</h2><p id="techHint">Spend upgrade points earned from victories. Upgrades are local-only and optional.</p></div>
             <div id="techGrid" class="tech-grid"></div>
           </section>
         </div>
@@ -155,7 +164,7 @@
           <div><span id="coinHudLabel">Coins</span><strong id="coinText">0</strong></div>
           <div><span id="waveHudLabel">Wave</span><strong id="waveText">0/0</strong></div>
           <div id="waveIntelPanel" class="wave-intel-panel" aria-live="polite">
-            <span id="waveIntelLabel">Next Wave</span>
+            <span id="waveIntelLabel">Wave Intel</span>
             <strong id="waveIntelText">Scout the route before starting.</strong>
           </div>
           <button id="speedBtn" class="secondary-btn" type="button">1x</button>
@@ -247,7 +256,7 @@
     <script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="../../src/tutorial.js?v=20260701-style1"></script>
-    <script src="game.js?v=20260822-first-placement-route-cue-v10"></script>
+    <script src="game.js?v=20260823-beast-shell-locale-v2"></script>
     <script src="../../src/game-page-info.js?v=20260726-main-stage-kit1"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>

@@ -1,3 +1,71 @@
+const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
+  en: {
+    title: "Beast Guardian", language: "Language", audioSettings: "Settings", soundEffects: "Sound Effects", soundOn: "SFX On", soundOff: "SFX Off",
+    backToLobby: "Back to WeightPlay General games", languageControl: "Language", backToMain: "Back to main", stageSelector: "Stage selector", stagePages: "Stage pages", stagesTab: "Stages", equipmentTab: "Equipment", backToStages: "Back to stages",
+    publicReleaseBadge: "Playable Now", menuTitle: "Hero Tower Defense", bestStage: "Best Stage", upgradePoints: "Upgrade Points", diamonds: "Diamonds", start: "Start Game", tech: "Tech Upgrades", techTitle: "Permanent Guardian Tech", techHint: "Spend upgrade points earned from victories. Upgrades are local-only and optional.", bossPressure: "Boss Pressure", bossHoldRoute: "Hold the route", bossNoSignal: "No boss on field", back: "Back", menu: "Menu", stage: "Stage", core: "Core", coins: "Coins", wave: "Wave", build: "Build", startWave: "Start Wave", nextWave: "Next Wave", waveIntel: "Wave Intel", waveIntelInitial: "Scout the route before starting.", upgrade: "Upgrade", sell: "Sell", canvasLabel: "Beast Guardian tower defense board", keyboardFocus: "Tile {x},{y} - Enter builds/selects, number keys or Q/E change units.",
+  },
+  "zh-Hant": {
+    title: "獸王守衛", language: "語言", audioSettings: "設定", soundEffects: "音效", soundOn: "音效開", soundOff: "音效關",
+    backToLobby: "返回 WeightPlay 一般遊戲大廳", languageControl: "語言", backToMain: "返回主頁", stageSelector: "關卡選擇列", stagePages: "關卡分頁", stagesTab: "關卡", equipmentTab: "裝備", backToStages: "返回關卡選擇",
+    publicReleaseBadge: "立即遊玩", menuTitle: "英雄塔防", bestStage: "最高關卡", upgradePoints: "升級點", diamonds: "鑽石", start: "開始遊戲", tech: "科技升級", techTitle: "守衛永久科技", techHint: "使用勝利獲得的升級點。升級只保存在本機，且完全自願。", bossPressure: "王壓力", bossHoldRoute: "守住路線", bossNoSignal: "場上沒有王", back: "返回", menu: "選單", stage: "關卡", core: "核心", coins: "金幣", wave: "波次", build: "建置", startWave: "開始波次", nextWave: "下一波", waveIntel: "波次情報", waveIntelInitial: "出發前先勘察路線。", upgrade: "升級", sell: "出售", canvasLabel: "獸王守衛塔防棋盤", keyboardFocus: "格子 {x},{y} - Enter 建置/選取，數字鍵或 Q/E 切換單位。",
+  },
+  "zh-Hans": {
+    title: "兽王守卫", language: "语言", audioSettings: "设置", soundEffects: "音效", soundOn: "音效开", soundOff: "音效关",
+    backToLobby: "返回 WeightPlay 一般游戏", languageControl: "语言", backToMain: "返回主页", stageSelector: "阶段选择列", stagePages: "阶段页面", stagesTab: "阶段", equipmentTab: "装备", backToStages: "返回阶段",
+    publicReleaseBadge: "立即游玩", menuTitle: "英雄塔防", bestStage: "最高阶段", upgradePoints: "升级点", diamonds: "钻石", start: "开始游戏", tech: "科技升级", techTitle: "守卫永久科技", techHint: "使用胜利获得的升级点。升级仅保存在本机，并且完全可选。", bossPressure: "首领压力", bossHoldRoute: "守住路线", bossNoSignal: "场上没有首领", back: "返回", menu: "菜单", stage: "阶段", core: "核心", coins: "硬币", wave: "波次", build: "建造", startWave: "启动波次", nextWave: "下一波", waveIntel: "波次情报", waveIntelInitial: "出发前先侦察路线。", upgrade: "升级", sell: "出售", canvasLabel: "兽王守卫塔防棋盘", keyboardFocus: "格子 {x},{y} - Enter 建造/选择，数字键或 Q/E 切换单位。",
+  },
+  ja: {
+    title: "ビースト戦術家", language: "言語", audioSettings: "設定", soundEffects: "効果音", soundOn: "効果音オン", soundOff: "効果音オフ",
+    backToLobby: "WeightPlay ゲーム全般に戻る", languageControl: "言語", backToMain: "メインへ戻る", stageSelector: "ステージ選択", stagePages: "ステージページ", stagesTab: "ステージ", equipmentTab: "装備", backToStages: "ステージに戻る",
+    publicReleaseBadge: "今すぐプレイ可能", menuTitle: "ヒーロータワーディフェンス", bestStage: "最高ステージ", upgradePoints: "アップグレードポイント", diamonds: "ダイヤ", start: "ゲーム開始", tech: "テック強化", techTitle: "ガーディアン恒久テック", techHint: "勝利で獲得したアップグレードポイントを使います。強化はこの端末だけに保存され、任意です。", bossPressure: "ボスの圧力", bossHoldRoute: "ルートを守る", bossNoSignal: "フィールドにボスはいません", back: "戻る", menu: "メニュー", stage: "ステージ", core: "コア", coins: "コイン", wave: "ウェーブ", build: "ビルド", startWave: "ウェーブ開始", nextWave: "次のウェーブ", waveIntel: "ウェーブ情報", waveIntelInitial: "開始前にルートを調べてください。", upgrade: "強化", sell: "売却", canvasLabel: "ビースト戦術家のタワーディフェンス盤面", keyboardFocus: "タイル {x},{y} - Enterで建設/選択、数字キーまたはQ/Eでユニットを変更します。",
+  },
+  ko: {
+    title: "비스트 가디언", language: "언어", audioSettings: "설정", soundEffects: "효과음", soundOn: "효과음 켜짐", soundOff: "효과음 끄기",
+    backToLobby: "WeightPlay 일반 게임으로 돌아가기", languageControl: "언어", backToMain: "메인으로 돌아가기", stageSelector: "스테이지 선택", stagePages: "스테이지 페이지", stagesTab: "스테이지", equipmentTab: "장비", backToStages: "스테이지로 돌아가기",
+    publicReleaseBadge: "지금 플레이 가능", menuTitle: "히어로 타워 디펜스", bestStage: "최고 스테이지", upgradePoints: "업그레이드 포인트", diamonds: "다이아몬드", start: "게임 시작", tech: "기술 업그레이드", techTitle: "영구 가디언 기술", techHint: "승리로 얻은 업그레이드 포인트를 사용합니다. 강화는 이 기기에만 저장되며 선택 사항입니다.", bossPressure: "보스 압박", bossHoldRoute: "경로를 지키세요", bossNoSignal: "필드에 보스가 없습니다", back: "뒤로", menu: "메뉴", stage: "스테이지", core: "코어", coins: "코인", wave: "웨이브", build: "건설", startWave: "웨이브 시작", nextWave: "다음 웨이브", waveIntel: "웨이브 정보", waveIntelInitial: "시작하기 전에 경로를 정찰하십시오.", upgrade: "업그레이드", sell: "판매", canvasLabel: "비스트 가디언 타워 디펜스 보드", keyboardFocus: "타일 {x},{y} - Enter로 건설/선택하고 숫자 키 또는 Q/E로 유닛을 변경합니다.",
+  },
+  es: {
+    title: "Guardián de Bestias", language: "Idioma", audioSettings: "Configuración", soundEffects: "Efectos de sonido", soundOn: "Sonido activado", soundOff: "Sonido desactivado",
+    backToLobby: "Volver a los juegos generales de WeightPlay", languageControl: "Idioma", backToMain: "Volver al inicio", stageSelector: "Selector de niveles", stagePages: "Páginas de nivel", stagesTab: "Niveles", equipmentTab: "Equipo", backToStages: "Volver a niveles",
+    publicReleaseBadge: "Jugar ahora", menuTitle: "Defensa de héroes", bestStage: "Mejor nivel", upgradePoints: "Puntos de mejora", diamonds: "Diamantes", start: "Iniciar juego", tech: "Mejoras técnicas", techTitle: "Técnica permanente de guardianes", techHint: "Gasta los puntos obtenidos en victorias. Las mejoras son opcionales y solo se guardan en este dispositivo.", bossPressure: "Presión del jefe", bossHoldRoute: "Defiende la ruta", bossNoSignal: "No hay jefe en el campo", back: "Volver", menu: "Menú", stage: "Nivel", core: "Núcleo", coins: "Monedas", wave: "Oleada", build: "Construir", startWave: "Iniciar oleada", nextWave: "Siguiente oleada", waveIntel: "Informe de oleada", waveIntelInitial: "Explora la ruta antes de comenzar.", upgrade: "Mejorar", sell: "Vender", canvasLabel: "Tablero de defensa de torres de Guardián de Bestias", keyboardFocus: "Casilla {x},{y}: Enter construye o selecciona; números o Q/E cambian de unidad.",
+  },
+  "pt-BR": {
+    title: "Besta Guardiã", language: "Idioma", audioSettings: "Configurações", soundEffects: "Efeitos sonoros", soundOn: "Som ativado", soundOff: "Som desativado",
+    backToLobby: "Voltar para WeightPlay Jogos gerais", languageControl: "Idioma", backToMain: "Voltar ao início", stageSelector: "Seletor de fases", stagePages: "Páginas de fases", stagesTab: "Fases", equipmentTab: "Equipamento", backToStages: "Voltar às fases",
+    publicReleaseBadge: "Jogar agora", menuTitle: "Defesa de heróis", bestStage: "Melhor fase", upgradePoints: "Pontos de melhoria", diamonds: "Diamantes", start: "Começar jogo", tech: "Melhorias tecnológicas", techTitle: "Tecnologia permanente da guardiã", techHint: "Gaste os pontos obtidos nas vitórias. As melhorias são opcionais e ficam salvas apenas neste dispositivo.", bossPressure: "Pressão do chefe", bossHoldRoute: "Proteja a rota", bossNoSignal: "Nenhum chefe no campo", back: "Voltar", menu: "Menu", stage: "Fase", core: "Núcleo", coins: "Moedas", wave: "Onda", build: "Construir", startWave: "Iniciar onda", nextWave: "Próxima onda", waveIntel: "Informações da onda", waveIntelInitial: "Explore a rota antes de começar.", upgrade: "Melhorar", sell: "Vender", canvasLabel: "Tabuleiro de defesa de torres da Besta Guardiã", keyboardFocus: "Bloco {x},{y} - Enter constrói/seleciona; use números ou Q/E para trocar de unidade.",
+  },
+  fr: {
+    title: "Gardien des bêtes", language: "Langue", audioSettings: "Paramètres", soundEffects: "Effets sonores", soundOn: "Effets sonores activés", soundOff: "Effets sonores désactivés",
+    backToLobby: "Retour à WeightPlay Jeux généraux", languageControl: "Langue", backToMain: "Retour à l’accueil", stageSelector: "Sélecteur de niveaux", stagePages: "Pages des niveaux", stagesTab: "Niveaux", equipmentTab: "Équipement", backToStages: "Retour aux niveaux",
+    publicReleaseBadge: "Jouable maintenant", menuTitle: "Défense de héros", bestStage: "Meilleur niveau", upgradePoints: "Points d’amélioration", diamonds: "Diamants", start: "Commencer", tech: "Améliorations technologiques", techTitle: "Technologie permanente du gardien", techHint: "Dépensez les points gagnés lors des victoires. Les améliorations sont facultatives et restent sur cet appareil.", bossPressure: "Pression du boss", bossHoldRoute: "Défendez la route", bossNoSignal: "Aucun boss sur le terrain", back: "Retour", menu: "Menu", stage: "Niveau", core: "Noyau", coins: "Pièces", wave: "Vague", build: "Construire", startWave: "Démarrer la vague", nextWave: "Vague suivante", waveIntel: "Infos de vague", waveIntelInitial: "Repérez l’itinéraire avant de commencer.", upgrade: "Améliorer", sell: "Vendre", canvasLabel: "Plateau de tower defense du Gardien des bêtes", keyboardFocus: "Case {x},{y} : Enter construit/sélectionne ; les chiffres ou Q/E changent d’unité.",
+  },
+  de: {
+    title: "Bestienwächter", language: "Sprache", audioSettings: "Einstellungen", soundEffects: "Soundeffekte", soundOn: "Soundeffekte an", soundOff: "Soundeffekte aus",
+    backToLobby: "Zurück zu WeightPlay Allgemeine Spiele", languageControl: "Sprache", backToMain: "Zur Startseite", stageSelector: "Stufenauswahl", stagePages: "Stufenseiten", stagesTab: "Stufen", equipmentTab: "Ausrüstung", backToStages: "Zur Stufenauswahl",
+    publicReleaseBadge: "Jetzt spielbar", menuTitle: "Helden-Tower-Defense", bestStage: "Beste Stufe", upgradePoints: "Verbesserungspunkte", diamonds: "Diamanten", start: "Spiel starten", tech: "Tech-Upgrades", techTitle: "Dauerhafte Wächtertechnik", techHint: "Gib die durch Siege verdienten Verbesserungspunkte aus. Upgrades sind optional und werden nur auf diesem Gerät gespeichert.", bossPressure: "Bossdruck", bossHoldRoute: "Halte die Route", bossNoSignal: "Kein Boss auf dem Feld", back: "Zurück", menu: "Menü", stage: "Stufe", core: "Kern", coins: "Münzen", wave: "Welle", build: "Bauen", startWave: "Welle starten", nextWave: "Nächste Welle", waveIntel: "Welleninfo", waveIntelInitial: "Erkunde die Route, bevor du beginnst.", upgrade: "Verbessern", sell: "Verkaufen", canvasLabel: "Tower-Defense-Spielfeld des Bestienwächters", keyboardFocus: "Feld {x},{y} - Enter baut/markiert; Zahlen oder Q/E wechseln die Einheiten.",
+  },
+  it: {
+    title: "Guardiano della Bestia", language: "Lingua", audioSettings: "Impostazioni", soundEffects: "Effetti sonori", soundOn: "Effetti sonori attivi", soundOff: "Effetti sonori disattivati",
+    backToLobby: "Torna a WeightPlay Giochi generali", languageControl: "Lingua", backToMain: "Torna alla pagina principale", stageSelector: "Selettore dei livelli", stagePages: "Pagine dei livelli", stagesTab: "Livelli", equipmentTab: "Equipaggiamento", backToStages: "Torna ai livelli",
+    publicReleaseBadge: "Giocabile ora", menuTitle: "Difesa con eroi", bestStage: "Miglior livello", upgradePoints: "Punti miglioramento", diamonds: "Diamanti", start: "Inizia gioco", tech: "Potenziamenti tecnologici", techTitle: "Tecnologia permanente del guardiano", techHint: "Spendi i punti ottenuti con le vittorie. I potenziamenti sono facoltativi e vengono salvati solo su questo dispositivo.", bossPressure: "Pressione del boss", bossHoldRoute: "Difendi il percorso", bossNoSignal: "Nessun boss sul campo", back: "Indietro", menu: "Menu", stage: "Livello", core: "Nucleo", coins: "Monete", wave: "Ondata", build: "Costruisci", startWave: "Inizia l’ondata", nextWave: "Ondata successiva", waveIntel: "Informazioni sull’ondata", waveIntelInitial: "Esplora il percorso prima di iniziare.", upgrade: "Potenzia", sell: "Vendi", canvasLabel: "Campo tower defense del Guardiano della Bestia", keyboardFocus: "Casella {x},{y} - Enter costruisce/seleziona; usa i numeri o Q/E per cambiare unità.",
+  },
+  ru: {
+    title: "Зверь-защитник", language: "Язык", audioSettings: "Настройки", soundEffects: "Звуковые эффекты", soundOn: "Звуковые эффекты включены", soundOff: "Звуковые эффекты выключены",
+    backToLobby: "Вернуться в общие игры WeightPlay", languageControl: "Язык", backToMain: "Вернуться на главную", stageSelector: "Выбор этапа", stagePages: "Страницы этапов", stagesTab: "Этапы", equipmentTab: "Снаряжение", backToStages: "Вернуться к этапам",
+    publicReleaseBadge: "Можно играть", menuTitle: "Героическая башенная оборона", bestStage: "Лучший этап", upgradePoints: "Очки улучшений", diamonds: "Алмазы", start: "Начать игру", tech: "Улучшения технологий", techTitle: "Постоянные технологии защитника", techHint: "Тратьте очки улучшений, полученные за победы. Улучшения необязательны и сохраняются только на этом устройстве.", bossPressure: "Давление босса", bossHoldRoute: "Удерживайте маршрут", bossNoSignal: "Босса на поле нет", back: "Назад", menu: "Меню", stage: "Этап", core: "Ядро", coins: "Монеты", wave: "Волна", build: "Строительство", startWave: "Начать волну", nextWave: "Следующая волна", waveIntel: "Информация о волне", waveIntelInitial: "Прежде чем начать, разведайте маршрут.", upgrade: "Улучшить", sell: "Продать", canvasLabel: "Поле башенной обороны «Зверя-защитника»", keyboardFocus: "Клетка {x},{y} — Enter строит/выбирает; цифры или Q/E меняют юнитов.",
+  },
+  hi: {
+    title: "जानवर संरक्षक", language: "भाषा", audioSettings: "सेटिंग्स", soundEffects: "ध्वनि प्रभाव", soundOn: "ध्वनि प्रभाव चालू", soundOff: "ध्वनि प्रभाव बंद",
+    backToLobby: "WeightPlay सामान्य खेलों पर वापस जाएँ", languageControl: "भाषा", backToMain: "मुख्य पृष्ठ पर जाएँ", stageSelector: "स्टेज चयन", stagePages: "स्टेज पन्ने", stagesTab: "स्टेज", equipmentTab: "उपकरण", backToStages: "स्टेज पर वापस जाएँ",
+    publicReleaseBadge: "अभी खेलें", menuTitle: "हीरो टावर डिफेंस", bestStage: "सर्वश्रेष्ठ स्टेज", upgradePoints: "अपग्रेड पॉइंट", diamonds: "हीरे", start: "खेल शुरू करें", tech: "टेक अपग्रेड", techTitle: "स्थायी संरक्षक तकनीक", techHint: "जीत से मिले अपग्रेड पॉइंट खर्च करें। अपग्रेड वैकल्पिक हैं और केवल इस डिवाइस पर सहेजे जाते हैं।", bossPressure: "बॉस का दबाव", bossHoldRoute: "मार्ग की रक्षा करें", bossNoSignal: "मैदान में कोई बॉस नहीं है", back: "वापस", menu: "मेनू", stage: "स्टेज", core: "कोर", coins: "सिक्के", wave: "तरंग", build: "निर्माण", startWave: "तरंग प्रारंभ करें", nextWave: "अगली तरंग", waveIntel: "तरंग जानकारी", waveIntelInitial: "शुरू करने से पहले मार्ग का पता लगा लें।", upgrade: "अपग्रेड", sell: "बेचें", canvasLabel: "जानवर संरक्षक टावर डिफेंस बोर्ड", keyboardFocus: "टाइल {x},{y} - Enter से निर्माण/चयन करें; संख्याओं या Q/E से यूनिट बदलें।",
+  },
+  ar: {
+    title: "حارس الوحش", language: "اللغة", audioSettings: "الإعدادات", soundEffects: "المؤثرات الصوتية", soundOn: "المؤثرات الصوتية مفعّلة", soundOff: "المؤثرات الصوتية متوقفة",
+    backToLobby: "العودة إلى WeightPlay الألعاب العامة", languageControl: "اللغة", backToMain: "العودة إلى الرئيسية", stageSelector: "اختيار المرحلة", stagePages: "صفحات المراحل", stagesTab: "المراحل", equipmentTab: "المعدات", backToStages: "العودة إلى المراحل",
+    publicReleaseBadge: "للعب الآن", menuTitle: "بطل برج الدفاع", bestStage: "أفضل مرحلة", upgradePoints: "نقاط الترقية", diamonds: "ألماس", start: "ابدأ اللعبة", tech: "ترقيات التقنية", techTitle: "تقنية الحارس الدائمة", techHint: "أنفق نقاط الترقية المكتسبة من الانتصارات. الترقيات اختيارية وتُحفظ على هذا الجهاز فقط.", bossPressure: "ضغط الزعيم", bossHoldRoute: "احمِ المسار", bossNoSignal: "لا يوجد زعيم في الميدان", back: "رجوع", menu: "القائمة", stage: "المرحلة", core: "النواة", coins: "العملات", wave: "الموجة", build: "بناء", startWave: "ابدأ الموجة", nextWave: "الموجة التالية", waveIntel: "معلومات الموجة", waveIntelInitial: "استكشاف الطريق قبل البدء.", upgrade: "ترقية", sell: "بيع", canvasLabel: "لوحة الدفاع البرجي لحارس الوحش", keyboardFocus: "الخانة {x},{y} - اضغط Enter للبناء أو التحديد، ومفاتيح الأرقام أو Q/E لتغيير الوحدات.",
+  },
+};
+
 (() => {
   const GAME_ID = "beast-tactician";
   const isPublicRelease = !location.pathname.endsWith("/internal-test.html");
@@ -1331,6 +1399,10 @@
     },
   });
 
+  for (const [locale, overrides] of Object.entries(BEAST_GUARDIAN_LOCALE_OVERRIDES)) {
+    text[locale] = { ...(text[locale] || {}), ...overrides };
+  }
+
   const state = {
     locale: "en",
     screen: "loading",
@@ -1961,6 +2033,8 @@
     nodes.coinHudLabel.textContent = t("coins");
     nodes.waveHudLabel.textContent = t("wave");
     nodes.waveIntelLabel.textContent = t("waveIntel");
+    nodes.waveIntelText.textContent = t("waveIntelInitial");
+    nodes.canvas.setAttribute("aria-label", t("canvasLabel"));
     nodes.bossLabel.textContent = t("bossPressure");
     nodes.bossHintText.textContent = t("bossNoSignal");
     nodes.upgradeBtn.textContent = t("upgrade");

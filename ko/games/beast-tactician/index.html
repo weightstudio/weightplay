@@ -72,29 +72,38 @@
     <meta name="twitter:image" content="https://weightplay.com/assets/beast-tactician-cover.webp" />
   </head>
   <body data-game-id="beast-tactician" data-wp-combined-sound="true">
-    <main class="guardian-app">
+    <main class="guardian-app" data-runtime-localize="off">
       <header class="guardian-topbar">
-        <a class="back-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
-        <button id="stageBackBtn" class="stage-return secondary-btn is-hidden" data-wp-return="stage" type="button" aria-label="Back" hidden>&larr;</button>
+        <a class="back-btn" data-wp-return="main" href="/" aria-label="WeightPlay 일반 게임으로 돌아가기"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <button id="stageBackBtn" class="stage-return secondary-btn is-hidden" data-wp-return="stage" type="button" aria-label="메인으로 돌아가기" hidden>&larr;</button>
         <div class="brand-lockup">
           <h1 id="gameTitle">비스트 가디언</h1>
         </div>
         <div class="header-utilities">
           <div class="audio-control settings-control">
-            <button id="audioMenuBtn" class="header-icon-btn settings-menu-btn" type="button" aria-expanded="false" aria-controls="audioPopover" aria-label="Settings">
+            <button id="audioMenuBtn" class="header-icon-btn settings-menu-btn" type="button" aria-expanded="false" aria-controls="audioPopover" aria-label="설정">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.4 13a7.9 7.9 0 0 0 0-2l2-1.5-2-3.5-2.5 1a7.7 7.7 0 0 0-1.7-1L15 3.3h-4L10.6 6a7.7 7.7 0 0 0-1.7 1l-2.5-1-2 3.5 2 1.5a7.9 7.9 0 0 0 0 2l-2 1.5 2 3.5 2.5-1a7.7 7.7 0 0 0 1.7 1l.4 2.7h4l.4-2.7a7.7 7.7 0 0 0 1.7-1l2.5 1 2-3.5-2.2-1.5ZM13 15.5A3.5 3.5 0 1 1 13 8a3.5 3.5 0 0 1 0 7.5Z"/></svg>
             </button>
-            <div id="audioPopover" class="audio-popover settings-popover is-hidden" role="group" aria-label="Settings">
-              <strong id="settingsTitle" class="settings-title">Settings</strong>
-              <button id="soundBtn" class="audio-setting-row" type="button" aria-pressed="false"><span class="audio-row-icon" aria-hidden="true">SFX</span><span id="soundSettingLabel">Sound Effects</span><span id="soundStateText" class="visually-hidden">SFX Off</span><span class="audio-switch" aria-hidden="true"></span></button>
+            <div id="audioPopover" class="audio-popover settings-popover is-hidden" role="group" aria-label="설정">
+              <strong id="settingsTitle" class="settings-title">설정</strong>
+              <button id="soundBtn" class="audio-setting-row" type="button" aria-pressed="false"><span class="audio-row-icon" aria-hidden="true">SFX</span><span id="soundSettingLabel">효과음</span><span id="soundStateText" class="visually-hidden">효과음 끄기</span><span class="audio-switch" aria-hidden="true"></span></button>
               <label class="locale-box settings-locale-row">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.9 6h-3.1a15.7 15.7 0 0 0-1.4-3.4A8.1 8.1 0 0 1 18.9 8ZM12 4c.9 1 1.6 2.4 2 4h-4c.4-1.6 1.1-3 2-4ZM4.3 14a7.8 7.8 0 0 1 0-4h3.4a16.5 16.5 0 0 0 0 4H4.3Zm.8 2h3.1c.3 1.3.8 2.4 1.4 3.4A8.1 8.1 0 0 1 5.1 16Zm3.1-8H5.1a8.1 8.1 0 0 1 4.5-3.4A15.7 15.7 0 0 0 8.2 8ZM12 20c-.9-1-1.6-2.4-2-4h4c-.4 1.6-1.1 3-2 4Zm2.4-.6c.6-1 1.1-2.1 1.4-3.4h3.1a8.1 8.1 0 0 1-4.5 3.4Zm1.8-5.4H9.8a14.5 14.5 0 0 1 0-4h4.4a14.5 14.5 0 0 1 0 4h2Zm-.4 0a16.5 16.5 0 0 0 0-4h3.9a7.8 7.8 0 0 1 0 4h-3.9Z"/></svg>
-                <span id="languageLabel">Language</span>
-                <select id="localeSelect" aria-label="Language">
+                <span id="languageLabel">언어</span>
+                <select id="localeSelect" aria-label="언어">
                   <option value="en">English</option>
-                  <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
-                  <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
-                  <option value="es">Espa&ntilde;ol</option>
+                  <option value="zh-Hant">繁體中文</option>
+                  <option value="zh-Hans">简体中文</option>
+                  <option value="ja">日本語</option>
+                  <option value="ko">한국어</option>
+                  <option value="es">Español</option>
+                  <option value="pt-BR">Português (Brasil)</option>
+                  <option value="fr">Français</option>
+                  <option value="de">Deutsch</option>
+                  <option value="it">Italiano</option>
+                  <option value="ru">Русский</option>
+                  <option value="hi">हिन्दी</option>
+                  <option value="ar">العربية</option>
                 </select>
               </label>
             </div>
@@ -104,7 +113,7 @@
 
       <section id="loadingPanel" class="loading-panel" aria-live="polite">
         <div class="loading-content">
-          <h2>Beast Guardian</h2>
+          <h2>비스트 가디언</h2>
           <div class="loading-bar"><div id="loadingFill" class="loading-fill"></div></div>
           <span id="loadingText" class="loading-percentage">0%</span>
         </div>
@@ -115,12 +124,12 @@
           <img class="cover" src="../../assets/beast-tactician-cover.webp" alt="비스트 가디언 게임 이미지" />
         </div>
         <div class="menu-copy">
-          <p id="releaseBadge" class="release-badge">Playable Now</p>
-          <h2 id="menuTitle">Hero Tower Defense</h2>
+          <p id="releaseBadge" class="release-badge">지금 플레이 가능</p>
+          <h2 id="menuTitle">히어로 타워 디펜스</h2>
           <p id="menuHint" class="menu-hint"></p>
           <p id="mainProgress" class="main-progress"></p>
           <div class="menu-actions">
-            <button id="startBtn" class="primary-btn" type="button">Start Game</button>
+            <button id="startBtn" class="primary-btn" type="button">게임 시작</button>
           </div>
           <p id="holdNotice" class="hold-notice"></p>
         </div>
@@ -129,62 +138,62 @@
       <section id="stagePanel" class="stage-panel is-hidden">
         <div class="stage-workspace">
           <section id="stagePage" class="stage-page" aria-labelledby="stageTabBtn">
-            <div class="stage-progress"><span id="bestStageLabel">Best Stage</span><strong id="bestStageText">1 / 30</strong></div>
-            <div id="stageRail" class="stage-rail" aria-label="Stage selector"></div>
+            <div class="stage-progress"><span id="bestStageLabel">최고 스테이지</span><strong id="bestStageText">1 / 30</strong></div>
+            <div id="stageRail" class="stage-rail" aria-label="스테이지 선택"></div>
           </section>
           <section id="techPanel" class="stage-page equipment-page is-hidden" aria-labelledby="equipmentTabBtn" aria-live="polite">
             <div class="equipment-summary">
-              <div><span id="upgradePointLabel">Upgrade Points</span><strong id="upgradePointText">0</strong></div>
-              <div><span id="diamondLabel">Diamonds</span><strong id="diamondText">0</strong></div>
+              <div><span id="upgradePointLabel">업그레이드 포인트</span><strong id="upgradePointText">0</strong></div>
+              <div><span id="diamondLabel">다이아몬드</span><strong id="diamondText">0</strong></div>
             </div>
-            <div class="equipment-intro"><h2 id="techTitle">Permanent Tech</h2><p id="techHint"></p></div>
+            <div class="equipment-intro"><h2 id="techTitle">영구 가디언 기술</h2><p id="techHint">승리로 얻은 업그레이드 포인트를 사용합니다. 강화는 이 기기에만 저장되며 선택 사항입니다.</p></div>
             <div id="techGrid" class="tech-grid"></div>
           </section>
         </div>
-        <nav id="stageTabs" class="stage-tabs" aria-label="Stage pages">
+        <nav id="stageTabs" class="stage-tabs" aria-label="스테이지 페이지">
           <span class="stage-tab-empty" aria-hidden="true"></span>
-          <button id="stageTabBtn" class="stage-tab is-active" type="button" aria-selected="true">Stages</button>
-          <button id="equipmentTabBtn" class="stage-tab" type="button" aria-selected="false">Equipment</button>
+          <button id="stageTabBtn" class="stage-tab is-active" type="button" aria-selected="true">스테이지</button>
+          <button id="equipmentTabBtn" class="stage-tab" type="button" aria-selected="false">장비</button>
         </nav>
       </section>
 
       <section id="gamePanel" class="game-panel play-area is-hidden" data-play-viewport>
         <div class="hud-row">
-          <button id="menuBtn" class="secondary-btn" data-wp-return="battle" type="button" aria-label="Back to stages">&larr;</button>
-          <div><span id="stageHudLabel">Stage</span><strong id="stageHudText">1</strong></div>
-          <div><span id="coreHudLabel">Core</span><strong id="coreText">100</strong></div>
-          <div><span id="coinHudLabel">Coins</span><strong id="coinText">0</strong></div>
-          <div><span id="waveHudLabel">Wave</span><strong id="waveText">0/0</strong></div>
+          <button id="menuBtn" class="secondary-btn" data-wp-return="battle" type="button" aria-label="스테이지로 돌아가기">&larr;</button>
+          <div><span id="stageHudLabel">스테이지</span><strong id="stageHudText">1</strong></div>
+          <div><span id="coreHudLabel">코어</span><strong id="coreText">100</strong></div>
+          <div><span id="coinHudLabel">코인</span><strong id="coinText">0</strong></div>
+          <div><span id="waveHudLabel">웨이브</span><strong id="waveText">0/0</strong></div>
           <div id="waveIntelPanel" class="wave-intel-panel" aria-live="polite">
-            <span id="waveIntelLabel">Next Wave</span>
-            <strong id="waveIntelText">Scout the route before starting.</strong>
+            <span id="waveIntelLabel">웨이브 정보</span>
+            <strong id="waveIntelText">시작하기 전에 경로를 정찰하십시오.</strong>
           </div>
           <button id="speedBtn" class="secondary-btn" type="button">1x</button>
         </div>
         <div id="bossPanel" class="boss-panel is-hidden" aria-live="polite">
           <div>
-            <span id="bossLabel">Boss Pressure</span>
+            <span id="bossLabel">보스 압박</span>
             <strong id="bossNameText">Forest Behemoth</strong>
           </div>
           <div class="boss-meter" aria-hidden="true"><div id="bossMeterFill"></div></div>
           <span id="bossHpText">100%</span>
-          <span id="bossHintText">Hold the route</span>
+          <span id="bossHintText">경로를 지키세요</span>
         </div>
         <div class="battle-layout">
           <aside class="build-panel">
-            <h3 id="buildTitle">Build</h3>
+            <h3 id="buildTitle">건설</h3>
             <div id="buildCards" class="build-cards"></div>
             <div id="selectedInfo" class="selected-info" role="status" aria-live="polite" aria-atomic="true"></div>
           </aside>
           <div class="canvas-shell">
-            <canvas id="gameCanvas" width="960" height="640" tabindex="0" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space 1 2 3 4 5 6 7 8 9 Q E W U S Escape" aria-label="Beast Guardian tower defense board"></canvas>
+            <canvas id="gameCanvas" width="960" height="640" tabindex="0" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space 1 2 3 4 5 6 7 8 9 Q E W U S Escape" aria-label="비스트 가디언 타워 디펜스 보드"></canvas>
             <div id="toast" class="toast is-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
           </div>
         </div>
         <div class="command-row">
-          <button id="waveBtn" class="primary-btn" type="button">Start Wave</button>
-          <button id="upgradeBtn" class="secondary-btn" type="button">Upgrade</button>
-          <button id="sellBtn" class="secondary-btn" type="button">Sell</button>
+          <button id="waveBtn" class="primary-btn" type="button">웨이브 시작</button>
+          <button id="upgradeBtn" class="secondary-btn" type="button">업그레이드</button>
+          <button id="sellBtn" class="secondary-btn" type="button">판매</button>
         </div>
         <section id="resultPanel" class="modal-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText" aria-live="polite">
           <div class="modal-card result-card">
@@ -249,7 +258,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="../../src/tutorial.js?v=20260701-style1"></script>
-    <script src="game.js?v=20260822-first-placement-route-cue-v10"></script>
+    <script src="game.js?v=20260823-beast-shell-locale-v2"></script>
     <script src="../../src/game-page-info.js?v=20260726-main-stage-kit1"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
