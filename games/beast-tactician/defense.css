@@ -1771,8 +1771,8 @@ body:not(.guardian-playing) .guardian-topbar {
   background: var(--wp-ui-surface);
 }
 
-body:not(.guardian-playing) .back-btn,
-body:not(.guardian-playing) .stage-return {
+body:not(.guardian-playing):not(.guardian-stage) .back-btn,
+body:not(.guardian-playing):not(.guardian-stage) .stage-return {
   grid-column: 1;
   grid-row: 1;
   justify-self: start;
@@ -2483,8 +2483,8 @@ body:not(.guardian-playing):not(.guardian-stage) .guardian-topbar {
   position: relative;
 }
 
-body:not(.guardian-playing) .back-btn,
-body:not(.guardian-playing) .stage-return {
+body:not(.guardian-playing):not(.guardian-stage) .back-btn,
+body:not(.guardian-playing):not(.guardian-stage) .stage-return {
   position: absolute;
   z-index: 2;
   top: 10px;

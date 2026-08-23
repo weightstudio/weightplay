@@ -582,7 +582,13 @@
       view.hidden = key !== name;
       view.classList.toggle("hidden", key !== name);
     });
-    if (name === "stage") updateCenteredStageCard();
+    if (name === "stage") {
+      // Result → Next → Leave must repaint the progress card as well as the
+      // cards from the settled unlock state; otherwise a reused Stage scene
+      // can show the new unlock beside the prior Trial Marks total.
+      localize();
+      updateCenteredStageCard();
+    }
     setChoiceModal(false, false);
     closeQuitDecision(false, false);
     setResultModal(false, false);

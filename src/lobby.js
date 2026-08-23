@@ -1856,8 +1856,26 @@ function hiddenTrialStorageKey(game) {
   return `${game.id}TrialUnlocked`;
 }
 
+const lobbyLocaleSegments = Object.freeze({
+  en: "en",
+  "zh-Hant": "zh-tw",
+  "zh-Hans": "zh-cn",
+  ja: "ja",
+  ko: "ko",
+  es: "es",
+  "pt-BR": "pt-br",
+  fr: "fr",
+  de: "de",
+  it: "it",
+  ru: "ru",
+  hi: "hi",
+  ar: "ar",
+});
+
 function hiddenTrialUrl(game, trialPath) {
-  const gameUrl = new URL(game.href || "", document.baseURI);
+  const currentRoute = window.location.pathname.match(/^\/(en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)(?:\/|$)/u)?.[1];
+  const localeSegment = currentRoute || lobbyLocaleSegments[i18n.locale()] || "en";
+  const gameUrl = new URL(game.href || "", `${window.location.origin}/${localeSegment}/`);
   return new URL(trialPath, gameUrl).href;
 }
 
