@@ -1215,6 +1215,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "Animal Reef Fisher",
     "ar": "Animal Reef Fisher"
   },
+  "tic-tac-toe": {
+    "__localizedExact": true,
+    "en": "Tic-Tac-Toe",
+    "zh-Hant": "井字棋",
+    "zh-Hans": "井字棋",
+    "ja": "三目並べ",
+    "ko": "틱택토",
+    "es": "Tres en raya",
+    "pt-BR": "Jogo da velha",
+    "fr": "Morpion",
+    "de": "Drei gewinnt",
+    "it": "Tris",
+    "ru": "Крестики-нолики",
+    "hi": "टिक-टैक-टो",
+    "ar": "إكس-أو"
+  },
   "animal-cafe-rush": {
     "__localizedExact": true,
     "en": "Animal Cafe Rush",

@@ -47,7 +47,7 @@ window.WONDER_LOBBY = {
       "arrow-escape", "block-blast", "hexa-sort", "klondike-solitaire", "spider-solitaire",
       "freecell-solitaire", "pyramid-solitaire", "tripeaks-solitaire", "golf-solitaire", "yukon-solitaire",
       "animal-bus-jam", "zhao-yun-a-dou",
-      "road-crosser", "alien-defender", "snake",
+      "road-crosser", "alien-defender", "snake", "tic-tac-toe",
       "animal-unblock",
       "animal-guard-yard",
       "hearts", "spades", "gin-rummy", "crazy-eights", "cribbage", "go-fish", "war", "speed", "old-maid", "casino",
@@ -2149,6 +2149,54 @@ window.WONDER_LOBBY.games.push({
     background: "assets/animal-reef-fisher-cover.webp",
     hideHero: true,
   },
+});
+
+window.WONDER_LOBBY.games.push({
+  id: "tic-tac-toe",
+  title: {
+    en: "Tic-Tac-Toe", "zh-Hant": "井字棋", "zh-Hans": "井字棋", ja: "三目並べ",
+    ko: "틱택토", es: "Tres en raya", "pt-BR": "Jogo da velha", fr: "Morpion",
+    de: "Drei gewinnt", it: "Tris", ru: "Крестики-нолики", hi: "टिक-टैक-टो", ar: "إكس-أو",
+  },
+  status: "planned",
+  statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
+  type: {
+    en: "Tactical Board Classic", "zh-Hant": "戰術棋盤經典", "zh-Hans": "战术棋盘经典", ja: "戦術ボードクラシック",
+    ko: "전술 보드 클래식", es: "Clásico de tablero táctico", "pt-BR": "Clássico de tabuleiro tático", fr: "Classique de plateau tactique",
+    de: "Taktischer Brettspielklassiker", it: "Classico da tavolo tattico", ru: "Тактическая классика на доске", hi: "रणनीतिक बोर्ड क्लासिक", ar: "كلاسيكية لوحية تكتيكية",
+  },
+  categories: ["Classic", "Puzzle", "Strategy", "Family"],
+  skills: ["Planning", "Reaction", "Threat Reading"],
+  ages: ["9", "family"],
+  ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", ja: "9+", ko: "9+", es: "9+", "pt-BR": "9+", fr: "9+", de: "9+", it: "9+", ru: "9+", hi: "9+", ar: "9+" },
+  href: "games/tic-tac-toe/",
+  internalTrial: "index.html?preview=1",
+  description: {
+    en: "Place X and read the rival's immediate O reply across nine squares; make three in a row, block the threat, or settle a draw.",
+    "zh-Hant": "在九個格子放下 X，讀懂對手即時回應的 O；連成三格、封鎖威脅，或迎接和局。",
+    "zh-Hans": "在九个格子放下 X，读懂对手即时回应的 O；连成三格、封锁威胁，或迎接和局。",
+    ja: "9マスにXを置き、相手の即時O応答を読みます。3つ並べるか、脅威を止めるか、引き分けを迎えましょう。",
+    ko: "아홉 칸에 X를 놓고 상대의 즉시 O 응답을 읽으세요. 세 칸을 잇거나 위협을 막고 무승부를 맞이합니다.",
+    es: "Coloca X y lee la respuesta inmediata de O en nueve casillas: alinea tres, bloquea la amenaza o llega a un empate.",
+    "pt-BR": "Coloque X e leia a resposta imediata de O em nove casas: alinhe três, bloqueie a ameaça ou chegue ao empate.",
+    fr: "Placez X et lisez la réponse immédiate de O sur neuf cases : alignez trois signes, bloquez la menace ou obtenez une égalité.",
+    de: "Setze X und lies Os sofortige Antwort auf neun Feldern: drei in eine Reihe, die Drohung blockieren oder ein Remis erreichen.",
+    it: "Posiziona X e leggi la risposta immediata di O su nove caselle: allinea tre simboli, blocca la minaccia o chiudi in pareggio.",
+    ru: "Ставьте X и читайте мгновенный ответ O на девяти клетках: соберите три в ряд, заблокируйте угрозу или завершите ничьёй.",
+    hi: "नौ खानों में X रखें और O की तुरंत चाल पढ़ें: तीन को एक पंक्ति में रखें, खतरा रोकें या ड्रॉ तक पहुँचें।",
+    ar: "ضع X واقرأ رد O الفوري عبر تسع خانات: صِل ثلاثة رموز أو أوقف التهديد أو أنهِ الجولة بتعادل.",
+  },
+  meta: {
+    en: ["3x3 Board", "Tactical Rival", "Natural Results"],
+    "zh-Hant": ["3×3 棋盤", "戰術對手", "自然結果"],
+    "zh-Hans": ["3×3 棋盘", "战术对手", "自然结果"],
+    ja: ["3×3盤", "戦術ライバル", "自然な結果"], ko: ["3×3 보드", "전술 라이벌", "자연스러운 결과"],
+    es: ["Tablero 3×3", "Rival táctico", "Resultados naturales"], "pt-BR": ["Tabuleiro 3×3", "Rival tático", "Resultados naturais"],
+    fr: ["Plateau 3×3", "Rival tactique", "Résultats naturels"], de: ["3×3-Brett", "Taktischer Rivale", "Natürliche Ergebnisse"],
+    it: ["Tabellone 3×3", "Rivale tattico", "Risultati naturali"], ru: ["Поле 3×3", "Тактический соперник", "Естественные результаты"],
+    hi: ["3×3 बोर्ड", "रणनीतिक प्रतिद्वंद्वी", "स्वाभाविक परिणाम"], ar: ["لوحة 3×3", "خصم تكتيكي", "نتائج طبيعية"],
+  },
+  art: { kind: "image", background: "assets/tic-tac-toe-cover.webp", hideHero: true },
 });
 
 window.WONDER_LOBBY.games.push({

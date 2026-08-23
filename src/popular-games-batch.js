@@ -119,7 +119,7 @@
     hi: { choice: "दो वैध तिरछे रास्तों में से एक चुनें।", alternate: "वैकल्पिक तिरछा रास्ता", primary: "मुख्य तिरछा रास्ता", variation: "फिर से खेलने का रास्ता: इस दौड़ में अलग तिरछा लक्ष्य खुलेगा।" },
     ar: { choice: "اختر إحدى الوجهتين القطريتين القانونيتين.", alternate: "مسار قطري بديل", primary: "المسار القطري الأساسي", variation: "مسار إعادة اللعب: ستظهر وجهة قطرية مختلفة في هذه الجولة." },
   };
-  const CHECKERS_GAME_VERSION = "v8";
+  const CHECKERS_GAME_VERSION = "v9";
   const WORDLE_LENGTH_ERROR = { en: "Enter 5 letters.", "zh-Hant": "請輸入 5 個字母。", "zh-Hans": "请输入 5 个字母。", ja: "5文字入力してください。", ko: "글자 5개를 입력하세요.", es: "Introduce 5 letras.", "pt-BR": "Digite 5 letras.", fr: "Saisissez 5 lettres.", de: "Gib 5 Buchstaben ein.", it: "Inserisci 5 lettere.", ru: "Введите 5 букв.", hi: "5 अक्षर दर्ज करें।", ar: "أدخل 5 أحرف." };
   const WORDLE_CELL_COPY = {
     en: { board: "Guess board", hit: "Correct position", near: "Present elsewhere", miss: "Not in word", format: (row, column, letter, state) => `Row ${row}, position ${column}: ${letter ? `letter ${letter}, ${state}` : "empty"}` },
@@ -749,7 +749,7 @@
     if (!game) throw new Error(`Unknown popular game: ${gameId}`);
     document.body.dataset.gameId = gameId;
     if (game.type === "breakout") document.body.dataset.gameVersion = BREAKOUT_GAME_VERSION;
-    if (game.type === "tic") document.body.dataset.gameVersion = "v8";
+    if (game.type === "tic") document.body.dataset.gameVersion = "v9";
     if (game.type === "hangman") document.body.dataset.gameVersion = "v7";
     if (game.type === "mahjong") document.body.dataset.gameVersion = "v9";
     if (game.type === "checkers") document.body.dataset.gameVersion = CHECKERS_GAME_VERSION;

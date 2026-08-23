@@ -11622,6 +11622,70 @@
     parent: "This public game has no account, purchase, chat, leaderboard, or advertising flow. Score and Best stay in the current browser.",
     faq: [["What ends a run?", "A wall or the serpent's own trail ends the run."], ["Does the serpent move continuously?", "Yes. It advances on a timed grid and the pace increases during a round."], ["Which controls work?", "Arrow keys, WASD, visible touch controls, and horizontal or vertical swipe."], ["Is progress saved?", "Only the local Best score is saved in this browser."]]
   };
+  games["tic-tac-toe"] = {
+    title: "Tic-Tac-Toe",
+    age: "9+",
+    difficulty: "Easy to Challenging",
+    time: "1-4 minutes per round",
+    gameplay: "Tactical Board Classic",
+    genre: ["Classic", "Puzzle", "Strategy", "Family"],
+    skills: ["Planning", "Reaction", "Threat Reading"],
+    intro: "Tic-Tac-Toe is a compact WeightPlay board classic. Place X across nine squares, read the rival's immediate O reply, and turn a familiar rule into a clear tactical decision.",
+    story: [
+      "The board is small on purpose: every open square changes the next threat, block, or winning route. A quick round gives the player enough information to make a deliberate choice without burying the decision in setup.",
+      "The rival responds immediately with a deterministic priority: take a winning square, block an immediate X line, then prefer the centre, corners, and edges. The rules stay familiar while the response remains readable.",
+    ],
+    systems: [
+      "Choose one of nine empty cells to place X. The rival places O after each legal player move, and occupied cells remain unavailable rather than spending a move.",
+      "A round settles from the actual board: three X or O marks in a row create a win, while a full board without a line creates a draw. The winning line remains identifiable before Result appears.",
+      "Hint highlights one legal empty cell without playing it. Replay starts a fresh round; Restart resets the current board, and Back to main returns to the canonical Main screen.",
+    ],
+    how: [
+      "Start the round and choose any empty square on the 3x3 board.",
+      "After O replies, read the highlighted rival cell and the open threats before choosing X's next square.",
+      "Use Hint when you want one advisory legal choice, then decide whether to take a line or block the rival.",
+      "Make three in a row, block the rival, or fill the board to reach a natural Result; use Replay or Main for the next decision.",
+    ],
+    strategyTips: [
+      "Look for an immediate line before choosing a merely attractive corner.",
+      "If the rival can win next turn, blocking that square is more valuable than building a slower threat.",
+      "The centre opens more lines, while corners create two-direction threats when the board permits them.",
+      "Treat Hint as a second opinion: it never places X or removes the need to read O's reply.",
+    ],
+    progression: [
+      "The opening move teaches the nine-square geometry and immediate rival response.",
+      "Middle moves turn one open square into a choice between making a line, blocking a line, or preserving a fork.",
+      "The final moves settle as a natural win, rival win, or draw, then offer a direct reason to replay.",
+    ],
+    designNote: "Tic-Tac-Toe keeps only the familiar alternating X/O rule and three-in-a-row objective while using WeightPlay's own multilingual shell, tactical rival, result treatment, responsive board, accessibility labels, and visual identity.",
+    parent: "This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Scores and round state stay in the current browser session.",
+    faq: [
+      ["How does the rival choose O?", "It takes an available winning square first, blocks an immediate X win second, then uses centre, corner, and edge priority."],
+      ["Can I play an occupied cell again?", "No. Occupied cells remain disabled and do not spend a move."],
+      ["What counts as a win?", "Three X or O marks in one horizontal, vertical, or diagonal line."],
+      ["What happens on a full board?", "If neither side has a line, the round settles as a draw."],
+      ["Does Hint play for me?", "No. Hint only highlights one legal empty cell; you still choose the move."],
+      ["Is progress saved?", "Round state is local to the current browser session; no account is required."],
+    ],
+  };
+  const ticTacToeLocaleCore = {
+    "zh-Hant": { title: "井字棋", gameplay: "戰術棋盤經典", genre: ["經典", "益智", "策略", "家庭"], skills: ["規劃", "反應", "威脅判讀"], difficulty: "容易上手，逐步挑戰", time: "每回合約 1–4 分鐘", intro: "井字棋是 WeightPlay 的精簡棋盤經典。在九個格子放下 X，讀懂對手即時回應的 O，把熟悉規則變成清楚的戰術選擇。", how: ["開始回合，選擇 3×3 棋盤上的空格。", "O 回應後，讀懂高亮的對手格與目前威脅，再選 X 的下一格。", "需要建議時使用提示，但仍由你決定要連線或封鎖。", "連成三格、封鎖對手，或填滿棋盤後抵達結果；用重玩或主頁開始下一次決策。"], parent: "這款一般向瀏覽器遊戲沒有帳號、購買、聊天、排行榜或廣告流程。分數與回合狀態只保存在目前瀏覽器工作階段。" },
+    "zh-Hans": { title: "井字棋", gameplay: "战术棋盘经典", genre: ["经典", "益智", "策略", "家庭"], skills: ["规划", "反应", "威胁判断"], difficulty: "容易上手，逐步挑战", time: "每回合约 1–4 分钟", intro: "井字棋是 WeightPlay 的精简棋盘经典。在九个格子放下 X，读懂对手即时回应的 O，把熟悉规则变成清楚的战术选择。", how: ["开始回合，选择 3×3 棋盘上的空格。", "O 回应后，读懂高亮的对手格与当前威胁，再选择 X 的下一格。", "需要建议时使用提示，但仍由你决定要连线或封锁。", "连成三格、封锁对手，或填满棋盘后抵达结果；用重玩或主页开始下一次决策。"], parent: "这款普通向浏览器游戏没有账号、购买、聊天、排行榜或广告流程。分数和回合状态只保存在当前浏览器会话。" },
+    ja: { title: "三目並べ", gameplay: "戦術ボードクラシック", genre: ["クラシック", "パズル", "戦略", "ファミリー"], skills: ["計画", "反応", "脅威の読解"], difficulty: "やさしく、徐々に挑戦的", time: "1ラウンド約1～4分", intro: "三目並べはWeightPlayのコンパクトなボードクラシックです。9マスにXを置き、相手の即時O応答を読んで、おなじみのルールを明確な戦術判断に変えます。", how: ["ラウンドを開始し、3×3盤の空いたマスを選びます。", "Oの応答後、相手のマスと脅威を読み、次のXを決めます。", "ヒントは1つの合法手を示しますが、決定はあなたが行います。", "3つ並べる、相手を止める、または盤を埋めて結果へ進み、リプレイかメインへ戻ります。"], parent: "この一般向けブラウザゲームにアカウント、購入、チャット、ランキング、広告はありません。スコアとラウンド状態はこのブラウザのセッションに保存されます。" },
+    ko: { title: "틱택토", gameplay: "전술 보드 클래식", genre: ["클래식", "퍼즐", "전략", "가족"], skills: ["계획", "반응", "위협 읽기"], difficulty: "쉽게 시작해 점점 도전적으로", time: "한 라운드 약 1~4분", intro: "틱택토는 WeightPlay의 간결한 보드 클래식입니다. 아홉 칸에 X를 놓고 상대의 즉시 O 응답을 읽으며 익숙한 규칙을 분명한 전술 선택으로 바꾸세요.", how: ["라운드를 시작하고 3×3 보드의 빈 칸을 선택하세요.", "O가 응답하면 강조된 상대 칸과 위협을 읽고 다음 X 칸을 정하세요.", "힌트는 합법적인 빈 칸 하나만 보여 주며, 결정은 직접 합니다.", "세 칸을 잇거나 상대를 막거나 보드를 채워 결과로 가고 다시 플레이 또는 메인으로 돌아갑니다."], parent: "이 일반 브라우저 게임에는 계정, 구매, 채팅, 순위표, 광고가 없습니다. 점수와 라운드 상태는 현재 브라우저 세션에만 남습니다." },
+    es: { title: "Tres en raya", gameplay: "Clásico de tablero táctico", genre: ["Clásico", "Puzle", "Estrategia", "Familiar"], skills: ["Planificación", "Reacción", "Lectura de amenazas"], difficulty: "Fácil al principio y cada vez más desafiante", time: "1–4 minutos por ronda", intro: "Tres en raya es un clásico de tablero compacto de WeightPlay. Coloca X en nueve casillas, lee la respuesta inmediata de O y convierte una regla conocida en una decisión táctica clara.", how: ["Empieza la ronda y elige una casilla vacía del tablero 3×3.", "Tras la respuesta de O, lee su casilla resaltada y las amenazas antes de elegir la siguiente X.", "La pista muestra una casilla legal, pero la decisión sigue siendo tuya.", "Alinea tres, bloquea al rival o llena el tablero para llegar al Resultado; vuelve a jugar o al inicio."], parent: "Este juego de navegador para público general no tiene cuenta, compras, chat, clasificación ni publicidad. La puntuación y el estado quedan en la sesión del navegador." },
+    "pt-BR": { title: "Jogo da velha", gameplay: "Clássico de tabuleiro tático", genre: ["Clássico", "Quebra-cabeça", "Estratégia", "Família"], skills: ["Planejamento", "Reação", "Leitura de ameaças"], difficulty: "Fácil no início e progressivamente desafiador", time: "1–4 minutos por rodada", intro: "Jogo da velha é um clássico de tabuleiro compacto do WeightPlay. Coloque X em nove casas, leia a resposta imediata de O e transforme uma regra familiar em uma decisão tática clara.", how: ["Comece a rodada e escolha uma casa vazia no tabuleiro 3×3.", "Depois da resposta de O, leia a casa destacada e as ameaças antes de escolher o próximo X.", "A dica mostra uma casa legal, mas a decisão continua sua.", "Alinhe três, bloqueie o rival ou preencha o tabuleiro para chegar ao Resultado; jogue novamente ou volte ao início."], parent: "Este jogo de navegador geral não tem conta, compras, chat, ranking ou publicidade. A pontuação e o estado ficam na sessão atual do navegador." },
+    fr: { title: "Morpion", gameplay: "Classique de plateau tactique", genre: ["Classique", "Puzzle", "Stratégie", "Famille"], skills: ["Planification", "Réaction", "Lecture des menaces"], difficulty: "Facile au début, puis progressivement exigeant", time: "1 à 4 minutes par manche", intro: "Le morpion est un classique de plateau compact signé WeightPlay. Placez X sur neuf cases, lisez la réponse immédiate de O et transformez une règle familière en décision tactique claire.", how: ["Commencez la manche et choisissez une case vide du plateau 3×3.", "Après la réponse de O, lisez sa case et les menaces avant de choisir le prochain X.", "L'indice signale une case légale, mais la décision reste la vôtre.", "Alignez trois signes, bloquez l'adversaire ou remplissez le plateau pour atteindre le résultat, puis rejouez ou revenez au début."], parent: "Ce jeu de navigateur grand public ne propose ni compte, ni achat, ni chat, ni classement, ni publicité. Le score et l'état restent dans la session du navigateur." },
+    de: { title: "Drei gewinnt", gameplay: "Taktischer Brettspielklassiker", genre: ["Klassisch", "Puzzle", "Strategie", "Familie"], skills: ["Planung", "Reaktion", "Bedrohungen lesen"], difficulty: "Leicht zu beginnen und zunehmend anspruchsvoll", time: "1–4 Minuten pro Runde", intro: "Drei gewinnt ist ein kompakter Brettspielklassiker von WeightPlay. Setze X auf neun Felder, lies Os sofortige Antwort und mache aus einer bekannten Regel eine klare taktische Entscheidung.", how: ["Starte die Runde und wähle ein leeres Feld auf dem 3×3-Brett.", "Lies nach Os Antwort das hervorgehobene Feld und die Bedrohungen, bevor du das nächste X wählst.", "Der Tipp zeigt ein legales leeres Feld, aber du entscheidest selbst.", "Verbinde drei, blockiere den Rivalen oder fülle das Brett für ein Ergebnis; spiele erneut oder gehe zurück zum Anfang."], parent: "Dieses allgemeine Browserspiel hat kein Konto, keine Käufe, keinen Chat, keine Rangliste und keine Werbung. Punktestand und Rundenzustand bleiben in der aktuellen Browsersitzung." },
+    it: { title: "Tris", gameplay: "Classico da tavolo tattico", genre: ["Classico", "Puzzle", "Strategia", "Famiglia"], skills: ["Pianificazione", "Reazione", "Lettura delle minacce"], difficulty: "Facile all'inizio, poi sempre più impegnativo", time: "1–4 minuti per round", intro: "Tris è un classico da tavolo compatto di WeightPlay. Posiziona X su nove caselle, leggi la risposta immediata di O e trasforma una regola familiare in una scelta tattica chiara.", how: ["Inizia il round e scegli una casella vuota sul tabellone 3×3.", "Dopo la risposta di O, leggi la casella evidenziata e le minacce prima del prossimo X.", "Il suggerimento mostra una casella legale, ma la scelta resta tua.", "Allinea tre simboli, blocca il rivale o riempi il tabellone per arrivare al risultato; rigioca o torna all'inizio."], parent: "Questo gioco browser per il pubblico generale non ha account, acquisti, chat, classifica o pubblicità. Punteggio e stato restano nella sessione del browser." },
+    ru: { title: "Крестики-нолики", gameplay: "Тактическая классика на доске", genre: ["Классика", "Головоломка", "Стратегия", "Семейная"], skills: ["Планирование", "Реакция", "Чтение угроз"], difficulty: "Легко начать, сложнее освоить", time: "1–4 минуты на раунд", intro: "Крестики-нолики — компактная классика WeightPlay. Ставьте X на девяти клетках, читайте мгновенный ответ O и превращайте знакомое правило в ясное тактическое решение.", how: ["Начните раунд и выберите пустую клетку на поле 3×3.", "После ответа O прочитайте выделенную клетку соперника и угрозы перед следующим X.", "Подсказка показывает допустимую пустую клетку, но решение остаётся за вами.", "Соберите три в ряд, заблокируйте соперника или заполните поле, чтобы получить результат; сыграйте снова или вернитесь в начало."], parent: "В этой браузерной игре для широкой аудитории нет аккаунта, покупок, чата, рейтинга или рекламы. Счёт и состояние раунда хранятся в текущей сессии браузера." },
+    hi: { title: "टिक-टैक-टो", gameplay: "रणनीतिक बोर्ड क्लासिक", genre: ["क्लासिक", "पहेली", "रणनीति", "परिवार"], skills: ["योजना", "प्रतिक्रिया", "खतरा पढ़ना"], difficulty: "शुरुआत में आसान, धीरे-धीरे चुनौतीपूर्ण", time: "हर राउंड 1–4 मिनट", intro: "टिक-टैक-टो WeightPlay का छोटा बोर्ड क्लासिक है। नौ खानों में X रखें, O की तुरंत चाल पढ़ें और परिचित नियम को साफ़ रणनीतिक निर्णय में बदलें।", how: ["राउंड शुरू करें और 3×3 बोर्ड में खाली खाना चुनें।", "O की चाल के बाद उभरे प्रतिद्वंद्वी खाने और खतरों को पढ़कर अगला X चुनें।", "संकेत एक वैध खाली खाना दिखाता है, लेकिन निर्णय आपका रहता है।", "तीन जोड़ें, प्रतिद्वंद्वी को रोकें या बोर्ड भरकर परिणाम तक पहुँचें; फिर दोबारा खेलें या शुरुआत पर लौटें।"], parent: "इस सामान्य ब्राउज़र गेम में खाता, खरीद, चैट, रैंकिंग या विज्ञापन नहीं हैं। स्कोर और राउंड स्थिति वर्तमान ब्राउज़र सत्र में रहती है।" },
+    ar: { title: "إكس-أو", gameplay: "كلاسيكية لوحية تكتيكية", genre: ["كلاسيكية", "ألغاز", "استراتيجية", "عائلية"], skills: ["التخطيط", "رد الفعل", "قراءة التهديدات"], difficulty: "سهلة البداية وتزداد تحدياً", time: "من دقيقة إلى 4 دقائق للجولة", intro: "إكس-أو كلاسيكية لوحية مختصرة من WeightPlay. ضع X في تسع خانات، واقرأ رد O الفوري، وحوّل القاعدة المألوفة إلى قرار تكتيكي واضح.", how: ["ابدأ الجولة واختر خانة فارغة في اللوحة 3×3.", "بعد رد O، اقرأ خانته المميزة والتهديدات قبل اختيار X التالي.", "يعرض التلميح خانة قانونية واحدة، لكن القرار يبقى لك.", "صِل ثلاثة رموز أو أوقف الخصم أو املأ اللوحة للوصول إلى النتيجة؛ أعد اللعب أو عد إلى البداية."], parent: "هذه لعبة متصفح عامة ولا تتضمن حساباً أو شراءً أو دردشة أو ترتيباً أو إعلانات. تبقى النقاط وحالة الجولة في جلسة المتصفح الحالية." },
+  };
+  for (const [localeCode, copy] of Object.entries(ticTacToeLocaleCore)) {
+    localizedGames[localeCode] ||= {};
+    localizedGames[localeCode]["tic-tac-toe"] = { ...games["tic-tac-toe"], ...copy };
+  }
   // v7 guide repair: the runtime Snake no longer has a fixed six-food finish.
   // Keep the public Guide, metadata, and every locale aligned with continuous
   // movement so players are not taught a rule the current build does not use.
@@ -12285,6 +12349,7 @@
     "road-crosser",
     "alien-defender",
     "snake",
+    "tic-tac-toe",
     "animal-twin-switchyard",
     "animal-cloudhook-courier",
   ].forEach(completeGuideStandard);
