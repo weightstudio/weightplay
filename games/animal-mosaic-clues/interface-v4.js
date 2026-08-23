@@ -9,7 +9,7 @@
   if (!result || !actions || !stages || !next || !replay) return;
 
   actions.append(stages, next, replay);
-  replay.textContent = "Replay";
+  replay.textContent = window.BlockTrilogyConfig?.localeCopy?.replay || "Replay";
 
   const setPrimary = (target) => {
     for (const action of [stages, next, replay]) {

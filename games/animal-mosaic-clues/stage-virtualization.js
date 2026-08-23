@@ -1,10 +1,11 @@
 (()=>{
   "use strict";
   const TOTAL=30,POOL=9,clamp=(value,min=1,max=TOTAL)=>Math.max(min,Math.min(max,value));
+  const copy=(key,fallback,values={})=>String(window.BlockTrilogyConfig?.localeCopy?.[key]??fallback).replace(/\{(\w+)\}/gu,(_,name)=>String(values[name]??`{${name}}`));
   let api=null,cards=[],windowStart=1,settleRaf=0;
   const desired=stage=>clamp(stage-Math.floor(POOL/2),1,TOTAL-POOL+1);
-  const status=(stage,save)=>stage>save.unlocked?"Locked":save.cleared[stage]?"Cleared · Replay":"Ready";
-  const announceLocked=card=>{const hint=document.getElementById("stageHint");if(hint)hint.textContent=[...card.querySelectorAll("small,strong,span")].map(node=>node.textContent.trim()).filter(Boolean).join(" · ")};
+  const status=(stage,save)=>stage>save.unlocked?copy("locked","Locked"):save.cleared[stage]?copy("cleared","Cleared · Replay"):copy("ready","Ready");
+  const announceLocked=card=>{const hint=document.getElementById("stageHint");if(hint)hint.textContent=copy("lockedHint",[...card.querySelectorAll("small,strong,span")].map(node=>node.textContent.trim()).filter(Boolean).join(" · "))};
   function createCard(){
     const button=document.createElement("button");
     button.type="button";button.className="stage-card";button.innerHTML="<small></small><strong></strong><span></span>";
@@ -15,7 +16,7 @@
     const locked=stage>api.save.unlocked,centered=stage===api.getCentered();
     button.dataset.stage=String(stage);button.setAttribute("aria-posinset",String(stage));button.setAttribute("aria-setsize",String(TOTAL));button.setAttribute("aria-disabled",String(locked));
     button.classList.toggle("locked",locked);button.classList.toggle("centered",centered);button.setAttribute("aria-current",centered?"true":"false");button.tabIndex=centered?0:-1;
-    button.querySelector("small").textContent=api.chapters[api.chapterFor(stage)];button.querySelector("strong").textContent=`Stage ${stage}`;button.querySelector("span").textContent=status(stage,api.save);
+    button.querySelector("small").textContent=api.chapters[api.chapterFor(stage)];button.querySelector("strong").textContent=copy("stage","Stage {n}",{n:stage});button.querySelector("span").textContent=status(stage,api.save);
   }
   function sync(){cards.forEach(card=>bind(card,Number(card.dataset.stage)))}
   function moveWindow(next){
