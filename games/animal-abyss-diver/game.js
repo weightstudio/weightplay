@@ -1000,7 +1000,21 @@
     setSalvage(number){if(!state.route)return;state.salvage=Math.max(0,Math.trunc(number));renderBattle();},
     snapshot(){return{route:state.route,zone:state.zone,salvage:state.salvage,oxygen:state.oxygen,battery:state.battery,sonar:state.sonar,shieldArmed:state.shieldArmed,safeStreak:state.safeStreak};}
   });
-  const lobbyLabels = { en: "Back to lobby", "zh-Hant": u("\\u8fd4\\u56de\\u5927\\u5ef3"), "zh-Hans": u("\\u8fd4\\u56de\\u5927\\u5385") };
+  const lobbyLabels = {
+    en: "Back to lobby",
+    "zh-Hant": u("\\u8fd4\\u56de\\u5927\\u5ef3"),
+    "zh-Hans": u("\\u8fd4\\u56de\\u5927\\u5385"),
+    ja: "WeightPlayロビーに戻る",
+    ko: "WeightPlay 로비로 돌아가기",
+    es: "Volver al lobby de WeightPlay",
+    "pt-BR": "Voltar ao lobby do WeightPlay",
+    fr: "Retour au lobby WeightPlay",
+    de: "Zur WeightPlay-Lobby zurück",
+    it: "Torna alla lobby di WeightPlay",
+    ru: u("\\u0412\\u0435\\u0440\\u043d\\u0443\\u0442\\u044c\\u0441\\u044f \\u0432 \\u043b\\u043e\\u0431\\u0431\\u0438 WeightPlay"),
+    hi: u("WeightPlay \\u0932\\u0949\\u092c\\u0940 \\u092a\\u0930 \\u0932\\u094c\\u091f\\u0947\\u0902"),
+    ar: u("\\u0627\\u0644\\u0639\\u0648\\u062f\\u0629 \\u0625\\u0644\\u0649 \\u0631\\u062f\\u0647\\u0629 WeightPlay")
+  };
   function syncMetadata() {
     document.title = `${t("title")} - WeightPlay`;
     $("homeLink").ariaLabel = lobbyLabels[locale] || runtimeTranslate(lobbyLabels.en);

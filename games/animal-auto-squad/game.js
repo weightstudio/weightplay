@@ -5,7 +5,7 @@
   });
 
   const GAME_ID = "animal-auto-squad";
-  const GAME_VERSION = "v23";
+  const GAME_VERSION = "v24";
   const localeKey = "weightPlayLocale";
   const saveKey = "animal_auto_squad_save";
 
