@@ -8,7 +8,7 @@
   document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-crystal-survivor";
-  const GAME_VERSION = "v22";
+  const GAME_VERSION = "v23";
   const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_animal_crystal_survivor_v1";
   const localeKey = "weightPlayLocale";
@@ -43,6 +43,7 @@
   const arenaCtx = arenaLayer.getContext("2d", { alpha: false });
   const nodes = {
     localeSelect: $("localeSelect"),
+    titleNode: document.querySelector("[data-ui='title']"),
     topbar: document.querySelector(".topbar"),
     stagePanelHead: document.querySelector(".stage-panel-head"),
     settingsControl: $("settingsControl"),
@@ -345,7 +346,129 @@
     tryAgain:"Reintentar",backToMenu:"Volver al menú",backToStages:"Volver a niveles",reaction:"Reacción",focus:"Atención",problemSolving:"Resolución de problemas",timeUp:"¡Tiempo!",runFailed:"Partida terminada",stageClear:"¡Nivel completado!",objectiveMissed:"Objetivo incompleto",objectiveMissedLine:"Consigue {keys} llaves{boss} antes de que acabe el tiempo.",bossStillActive:" y calma al jefe",resultLine:"Llaves {keys} | Nivel {level} | Tiempo {time} s | Mejor {best}",resultScoreLabel:"Llaves doradas recogidas",improved:"¡Gran progreso! Mejoraste tu récord de llaves.",keepGoing:"Buen intento. La práctica breve ayuda a la reacción y atención.",skillReportTitle:"Informe de habilidades",skillReportStrong:"Partida sólida: seguiste moviéndote, alcanzaste el nivel {level} y recogiste {keys} llaves mientras vigilabas las sombras.",skillReportFocus:"Buena práctica de atención: recoge antes los cristales para obtener mejoras más pronto.",skillReportRecover:"Valiente intento: observa los círculos de peligro y muévete antes de que se acerquen las sombras.",resultDisclaimer:"Solo para diversión y seguimiento local del progreso.",
     upgradeAttack:"Poder de cristal",upgradeAttackDesc:"Los proyectiles calman sombras más rápido.",upgradeRange:"Mayor alcance",upgradeRangeDesc:"El guardabosques apunta a sombras más lejanas.",upgradeSpeed:"Patas veloces",upgradeSpeedDesc:"Muévete más rápido por la arboleda.",upgradeMaxHp:"Corazón guardián",upgradeMaxHpDesc:"Aumenta la vida máxima y cura.",upgradeAttackSpeed:"Semillas rápidas",upgradeAttackSpeedDesc:"Ataca con más frecuencia.",upgradePickupRadius:"Imán de cristal",upgradePickupRadiusDesc:"Recoge cristales y llaves desde más lejos.",upgradeValue:"{stat}: {current} → {next}",statDamage:"Daño",statRange:"Alcance",statSpeed:"Velocidad",statHp:"Vida máxima",statCooldown:"Intervalo de ataque",statPickup:"Radio de recogida"
   };
-  text.en.mainStart = "Start Game";
+   const localeOwnedRuntimeCopy = {
+     ar: {
+       "title": "الناجي من الكريستال الحيواني",
+       "language": "اللغة",
+       "ogDescription": "حملة من 30 مرحلة للبقاء على قيد الحياة مع ست مناطق، ومخاطر قابلة للقراءة، وهجمات تلقائية، وخيارات بناء، وستة رؤساء حيوانات متميزين.",
+       "pageDescription": "الناجي من الكريستال الحيواني هي حملة من 30 مرحلة من بستان الكريستال مع أهداف رئيسية، وستة ترقيات، ومخاطر متغيرة، وستة رؤساء حيوانيين أصليين.",
+       "soundEffects": "مؤثرات صوتية",
+       "audioSettings": "الإعدادات",
+       "soundOn": "تشغيل الصوت",
+       "mainProgress": "تم مسح المراحل {cleared} / 30",
+       "menuHint": "الهدف: جمع المفاتيح الذهبية قبل الساعة 3:00. تمنح البلورات خبرة، وتساعد الترقيات الحارس على البقاء على قيد الحياة لفترة أطول.",
+       "menuTitle": "البقاء على قيد الحياة في بستان الكريستال.",
+       "soundOff": "عَبَّر عن رأيه بقوَّة ؛ أعلنَ عن وجوده بذكر اسمه",
+       "equipmentTab": "المعدات والأجهزة.",
+       "stageTab": "المراحل",
+       "expeditionRecordTitle": "سجل الرحلة الاستكشافية",
+       "expeditionRecordText": "الأفضل {keys} مفاتيح · أعلى مستوى {level} · {runs} تشغيل",
+       "patrolRankTitle": "رتبة الدورية: {rank}",
+       "patrolRankProgress": "{current} / {target} مفاتيح مدى الحياة",
+       "patrolRankComplete": "أعلى مرتبة · {current} مفاتيح مدى الحياة",
+       "patrolRankUp": "رتب! أنت الآن {rank}.",
+       "patrolRankNext": "تقدم الدوريات: {current} / {target} مفاتيح نحو {rank}.",
+       "rankScout": "كريستال سكاوت",
+       "rankKeeper": "حارس البستان",
+       "rankRanger": "كريستال رينجر",
+       "rankWarden": "مراقب الكريستال",
+       "rankGuardian": "جروف جارديان",
+       "controlKeys": "مفاتيح WASD /الأسهم",
+       "controlMove": "اضغط أو اسحب للتحرك",
+       "controlAttack": "لا شيء إلى!",
+       "chooseStage": "اختيار مرحلة",
+       "stage": "المرحلة",
+       "stageProgress": "{unlocked} / 30 مفتوح",
+       "stageSwipe": "تمرير البطاقة",
+       "stageDeploy": "اضغط على منصة مفتوحة للقيام بدوريات",
+       "stageLocked": "مُقفلة",
+       "stageSetup": "اسحب عبر ست مناطق. كل مرحلة خامسة هي نقطة تفتيش للزعيم مع قاعدة مختلفة للبقاء على قيد الحياة.",
+       "stageCleared": "تم",
+       "stageReady": "جاهز",
+       "bossCheckpoint": "نقطة تفتيش الرئيس",
+       "objective": "جمع {keys} مفاتيح · البقاء على قيد الحياة 3:00{boss}",
+       "bossObjective": "قم بهزيمة زعيمي",
+       "nextStage": "المرحلة القادمة",
+       "charmName": "سحر الكريستال",
+       "charmEffect": "بدء التشغيل الدائم: الحد الأقصى للصحة 7 → 8 · نصف قطر الالتقاط 54 → 68.",
+       "diamondShopTitle": "تشغيل زيادة الدخل",
+       "charmOwned": "مملوكة ومحفوظة: الحد الأقصى لنصف قطر بيك أب الصحة 8 68 في كل جولة.",
+       "charmBuy": "فتح لـ {cost}",
+       "charmNeed": "تحتاج {cost} ماسات · الرصيد {balance}.",
+       "charmBought": "تم إلغاء القفل وحفظه · {balance} ماسات متبقية.",
+       "charmConfirm": "تأكيد التعزيز الدائم · ماسات {before} → {after}. انقر مرة أخرى.",
+       "disableSound": "تعطيل الصوت",
+       "charmConfirmLabel": "تأكيد تعويذة الكريستال. أنفق 12 ماسة. الرصيد {before} إلى {after}.",
+       "enableSound": "فعّل الصوت",
+       "startRun": "ابدأ الركض",
+       "menu": "القائمة",
+       "backToLobby": "العودة إلى الردهة",
+       "playfield": "ملعب للناجين من الكريستال الحيواني",
+       "keys": "عدد الغرف",
+       "time": "الزمن",
+       "playfieldState": "المرحلة {stage}/{stageCount}. الوقت {time}. المفاتيح الذهبية {keys}/{target}. الصحة {hp}/{maxHp}. المستوى {level}. تحرك باستخدام مفاتيح WASD أو مفاتيح الأسهم، أو انقر وانقر واسحب. يهاجم الحارس تلقائيًا أقرب عدو في النطاق. قاعدة المرحلة: {rule}",
+       "level": "المستوى",
+       "crystals": "البلورات في البول",
+       "hp": "إتش بي",
+       "playHint": "الهدف: جمع المفاتيح الذهبية قبل الساعة 3:00. امسك البلورات لرفع مستواها، ثم اختر الترقيات عند ظهور البطاقات.",
+       "hintKeyClose": "المفتاح الذهبي القريب: انتقل من خلاله لرفع درجاتك.",
+       "hintCrystal": "البلورات على الأرض: اجمعها لملء شريط خبرة.",
+       "hintCombat": "الهجوم التلقائي يعمل: احتفظ بالظلال داخل النطاق الأخضر الناعم.",
+       "hintUpgradeSoon": "شبه مستوية: اجمع بلورة أخرى واختر قدرة أقوى.",
+       "loading": "إنزال",
+       "tryAgain": "أعد المحاولة",
+       "chooseUpgrade": "اختيار ترقية",
+       "backToMenu": "العودة إلى القائمة",
+       "reaction": "رد الفعل",
+       "backToStages": "العودة إلى المراحل",
+       "focus": "التركيز",
+       "problemSolving": "حل المشكلات",
+       "timeUp": "إنتهي الوقت!",
+       "stageClear": "تم إنجاز المستوى",
+       "objectiveMissed": "الهدف غير مكتمل",
+       "runFailed": "انتهى التشغيل",
+       "objectiveMissedLine": "قم بالوصول إلى {keys} مفاتيح{boss} قبل انتهاء الوقت لمسح هذه المرحلة.",
+       "bossStillActive": "وتهدئة الزعيم",
+       "resultScoreLabel": "المفاتيح الذهبية التي تم جمعها",
+       "resultLine": "المفاتيح {keys} | المستوى {level} | الوقت {time} ثانية | الأفضل {best}",
+       "improved": "تقدم رائع! لقد قمت بتحسين أفضل نتيجة رئيسية لديك.",
+       "keepGoing": "جهد جيد. أعد المحاولة باستخدام مسار بلوري سابق واترك مناطق التحذير قبل إغلاقها.",
+       "skillReportTitle": "تقرير المهارة",
+       "skillReportStrong": "تشغيل قوي: واصلت التحرك، ووصلت إلى المستوى {level}، وانتهيت من الحصول على درجة المفتاح الذهبي {keys} أثناء مشاهدة الظلال.",
+       "skillReportFocus": "ممارسة تركيز جيدة: هدفك التالي هو جمع المزيد من البلورات في وقت مبكر حتى تصل الترقيات في وقت أقرب.",
+       "skillReportRecover": "جهد شجاع للبقاء على قيد الحياة: راقب خواتم الخطر وتحرك مبكرًا عندما تقترب الظلال.",
+       "resultPlanTitle": "خطة التشغيل التالية",
+       "resultDisclaimer": "للمتعة وتتبع التقدم المحلي فقط.",
+       "resultPlanStrong": "ملاحظة الطريق: استمر في الدوران حول البستان، واجمع كل مفتاح ذهبي، وتحرك قبل إغلاق مناطق التحذير.",
+       "resultPlanUpgrade": "التشغيل التالي: اجمع البلورات مبكرًا حتى تصل الترقيات الأولى قبل أن يتراكم ضغط الظل.",
+       "resultPlanRecover": "خطة التعافي: تحرك بمجرد ظهور حلقات الخطر واحتفظ بالظلال القريبة داخل نطاق الهجوم.",
+       "upgradeAttack": "قوة الكريستال",
+       "upgradeAttackDesc": "تعمل المقذوفات على تهدئة الظلال بشكل أسرع.",
+       "upgradeRange": "مدى أبعد.",
+       "upgradeRangeDesc": "يمكن للحارس استهداف ظلال أبعد.",
+       "upgradeSpeed": "مخالب الأسطول",
+       "upgradeSpeedDesc": "تحرك بشكل أسرع عبر البستان.",
+       "upgradeMaxHp": "قلب الحارس",
+       "upgradeMaxHpDesc": "زيادة الحد الأقصى لنقاط الصحة والشفاء.",
+       "upgradeAttackSpeed": "بذور سريعة",
+       "upgradeAttackSpeedDesc": "الهجوم في كثير من الأحيان.",
+       "upgradePickupRadius": "مغناطيس الكريستال",
+       "upgradePickupRadiusDesc": "اجمع البلورات والمفاتيح القريبة من مكان أبعد.",
+       "upgradeValue": "{stat}: {current} → {next}",
+       "statDamage": "الأضرار",
+       "statRange": "المتوسط",
+       "statSpeed": "سرعة الحركة",
+       "statHp": "اعلى نقاط محرزة",
+       "statCooldown": "الفاصل الزمني للهجوم",
+       "statPickup": "نطاق الاستلام",
+       "mainStart": "ابدأ اللعبة"
+     }
+   };
+   Object.entries(localeOwnedRuntimeCopy).forEach(([code, copy]) => {
+     text[code] = { ...(text[code] || {}), ...copy };
+   });
+
+ text.en.mainStart = "Start Game";
   text["zh-Hant"].mainStart = "\u958b\u59cb\u904a\u6232";
   text.es.mainStart = "Comenzar juego";
   Object.assign(text, {
@@ -493,12 +616,12 @@
   ];
 
   const regions = [
-    { en: "Crystal Grove", zh: "\u6c34\u6676\u6797\u5730", color: "rgba(32,103,67,.2)" },
-    { en: "Moon Shards", zh: "\u6708\u5149\u788e\u5883", color: "rgba(86,62,154,.24)" },
-    { en: "Briar Maze", zh: "\u834a\u68d8\u8ff7\u5bae", color: "rgba(126,74,32,.24)" },
-    { en: "Ember Rift", zh: "\u9918\u71fc\u88c2\u8c37", color: "rgba(164,55,24,.25)" },
-    { en: "Storm Crown", zh: "\u98a8\u66b4\u4e4b\u51a0", color: "rgba(27,78,153,.27)" },
-    { en: "Eclipse Heart", zh: "\u65e5\u8755\u6838\u5fc3", color: "rgba(70,27,95,.3)" },
+    { en: "Crystal Grove", zh: "\u6c34\u6676\u6797\u5730", ar: "\u0628\u0633\u062a\u0627\u0646 \u0627\u0644\u0643\u0631\u064a\u0633\u062a\u0627\u0644", color: "rgba(32,103,67,.2)" },
+    { en: "Moon Shards", zh: "\u6708\u5149\u788e\u5883", ar: "\u0634\u0638\u0627\u064a\u0627 \u0627\u0644\u0642\u0645\u0631", color: "rgba(86,62,154,.24)" },
+    { en: "Briar Maze", zh: "\u834a\u68d8\u8ff7\u5bae", ar: "\u0645\u062a\u0627\u0647\u0629 \u0627\u0644\u0634\u0648\u0643", color: "rgba(126,74,32,.24)" },
+    { en: "Ember Rift", zh: "\u9918\u71fc\u88c2\u8c37", ar: "\u0648\u0627\u062f\u064a \u0627\u0644\u062c\u0645\u0631", color: "rgba(164,55,24,.25)" },
+    { en: "Storm Crown", zh: "\u98a8\u66b4\u4e4b\u51a0", ar: "\u062a\u0627\u062c \u0627\u0644\u0639\u0627\u0635\u0641\u0629", color: "rgba(27,78,153,.27)" },
+    { en: "Eclipse Heart", zh: "\u65e5\u8755\u6838\u5fc3", ar: "\u0642\u0644\u0628 \u0627\u0644\u0643\u0633\u0648\u0641", color: "rgba(70,27,95,.3)" },
   ];
 
   const stageRows = [
@@ -580,6 +703,82 @@
     ["Coloso del Eclipse","El guardián final rota los tres avisos alrededor de un anillo seguro móvil."]
   ];
   stages.forEach((stage,index)=>{stage.nameEs=spanishStageRows[index][0];stage.ruleEs=spanishStageRows[index][1];});
+  const localeOwnedStageMetadata = {
+     ar: {
+       names: [
+           "الدورية الأولى",
+           "تيار بلوري",
+           "غسق الفهد",
+           "خاتم الخنزير",
+           "ملاحق الجذر",
+           "فوانيس العث",
+           "درب معكوسة",
+           "شظايا المدار",
+           "حزمة محجبة",
+           "ملكة عثة المنشور",
+           "بقع الجذر",
+           "ممرات شوكية",
+           "اندفاع الشجيرات",
+           "عبور الأنياب",
+           "براير بور كينج",
+           "علامات الاحتراق",
+           "إمبر تريل",
+           "حواف الفرن",
+           "مطاردة الجمر",
+           "فهد الجمر",
+           "علامات البرق",
+           "غيل دريفت",
+           "سلسلة الرعد",
+           "كشافة روك",
+           "عاصفة روك",
+           "حلقة الكسوف",
+           "مانع تسرب دوار",
+           "تقارب الظل",
+           "آخر طريق رئيسي",
+           "عملاق الكسوف"
+         ],
+       rules: [
+           "تعلم الطرق الرئيسية بينما تقترب ثعالب الظل العادية.",
+           "تنجرف البلورات السائبة نحو أقرب ظل.",
+           "تصل الفهود السريعة في مجموعات اندفاع ملحوظة.",
+           "تغلق الخنازير المدرعة الحلبة من الحواف المتقابلة.",
+           "دوائر الجذر تبطئ الحركة ؛ هزيمة الوصي قبل انتهاء الوقت.",
+           "تدفع نبضات المنشور المنعطفات الواسعة حول الحلبة.",
+           "تظهر دائرتان تحذيريتان في مواضع متطابقة.",
+           "تجعل مناطق الشظايا الدوارة المركز غير آمن على فترات.",
+           "يدخل كل عدو ثالث بدرع بلوري مؤقت.",
+           "تقوم الملكة بتبديل الدرع البلوري برشقات موشورية نصف قطرية.",
+           "الجذور البرقية تعاقب على الوقوف دون حراك.",
+           "تترك الممرات الشائكة المتناوبة طريقًا واحدًا للهروب يمكن قراءته.",
+           "تتوقف الخنازير مؤقتًا، وتومض، ثم تشحن بدلاً من المشي بثبات.",
+           "تدخل الشواحن من أربعة جوانب بينما تحدد الجذور المركز.",
+           "يعلن الملك عن شحنات طويلة ويترك بقعًا شائكة خلفه.",
+           "تشتعل دوائر التحذير البرتقالية بعد تأخير واضح.",
+           "يترك الأعداء السريعون أرضًا ساخنة قصيرة العمر عند هزيمتهم.",
+           "تبتعد المنطقة الآمنة عن حافة واحدة متوهجة.",
+           "تومض النمور الرمادية، ثم تظهر مرة أخرى بجانب علامات التحذير.",
+           "يومض النمر عبر البستان ويحرق كل نقطة هبوط.",
+           "تشير الدوائر الزرقاء إلى كل ضربة برق قبل الاصطدام.",
+           "الرياح المتغيرة تدفع القطرات السائبة، وتغير طرق التجميع.",
+           "يضرب البرق علامة اللاعب، ثم علامتين متطابقتين.",
+           "تصل موجات العداء بين حارات البرق المتناوبة.",
+           "يغوص نهر روك عبر حارة محددة ويتصل بثلاث مناطق برق.",
+           "ابق داخل حلقة الضوء البطيئة الحركة عندما ينبض الظلام.",
+           "تدور تحذيرات الجذر والحرق والبرق واحدة تلو الأخرى.",
+           "الأعداء المحميون وموجات الشحن تتطلب أولوية الهدف.",
+           "تتحرك المفاتيح بين الجيوب الآمنة بينما تعود المخاطر مجتمعة.",
+           "يقوم الوصي النهائي بتدوير جميع التحذيرات الثلاثة حول حلقة أمان متحركة."
+         ],
+     },
+   };
+   Object.entries(localeOwnedStageMetadata).forEach(([code, copy]) => {
+     stages.forEach((stage, index) => {
+       stage.nameLocaleOwned ||= {};
+       stage.ruleLocaleOwned ||= {};
+       stage.nameLocaleOwned[code] = copy.names[index];
+       stage.ruleLocaleOwned[code] = copy.rules[index];
+     });
+   });
 
   const patrolRanks = [
     { threshold: 0, name: "rankScout" },
@@ -729,6 +928,13 @@
   function t(key, data = {}) {
     const value = text[locale]?.[key] || text.en[key] || key;
     return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
+  }
+
+  function syncOwnedTitle() {
+    const titleNode = nodes.titleNode || document.querySelector("[data-ui='title']");
+    if (locale !== "ar" || !titleNode) return;
+    titleNode.dataset.runtimeLocalize = "off";
+    titleNode.textContent = t("title");
   }
 
   function renderExpeditionRecord() {
@@ -915,6 +1121,7 @@
     document.querySelectorAll("[data-ui]").forEach((node) => {
       node.textContent = t(node.dataset.ui);
     });
+    syncOwnedTitle();
     document.querySelectorAll("[data-aria-ui]").forEach((node) => {
       node.setAttribute("aria-label", t(node.dataset.ariaUi));
     });
@@ -1153,11 +1360,11 @@
   }
 
   function stageName(config) {
-    return locale === "zh-Hant" ? config.nameZh : locale === "es" ? config.nameEs : config.nameEn;
+    return config.nameLocaleOwned?.[locale] || (locale === "zh-Hant" ? config.nameZh : locale === "es" ? config.nameEs : config.nameEn);
   }
 
   function stageRule(config) {
-    return locale === "zh-Hant" ? config.ruleZh : locale === "es" ? config.ruleEs : config.ruleEn;
+    return config.ruleLocaleOwned?.[locale] || (locale === "zh-Hant" ? config.ruleZh : locale === "es" ? config.ruleEs : config.ruleEn);
   }
 
   function showStageSelection(shouldScroll = true) {
@@ -1209,7 +1416,7 @@
     card.tabIndex = selected ? 0 : -1;
     if (selected) card.setAttribute("aria-current", "true"); else card.removeAttribute("aria-current");
     card.style.setProperty("--stage-overlay", region.color);
-    const regionName = locale === "zh-Hant" ? region.zh : locale === "es" ? region.es : region.en;
+    const regionName = locale === "zh-Hant" ? region.zh : locale === "es" ? region.es : locale === "ar" ? region.ar : region.en;
     const bossText = config.bossImage ? `<small>${t("bossCheckpoint")}</small>` : "";
     const objective = t("objective", { keys: config.targetKeys, boss: config.bossImage ? t("bossObjective") : "" });
     card.innerHTML = `<em>${regionName}</em><strong>${locale === "zh-Hant" ? `\u7b2c ${config.number} \u95dc` : `${t("stage")} ${config.number}`}</strong><span>${stageName(config)}</span><small>${stageRule(config)}</small>${bossText}<small>${objective}</small><small>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</small>`;
@@ -2662,6 +2869,8 @@
   window.addEventListener("weightplay:locale-change", (event) => setLocale(event.detail?.locale || locale));
 
   setLocale(locale);
+  window.setTimeout(syncOwnedTitle, 0);
+  window.setTimeout(syncOwnedTitle, 250);
   installSmokeHooks();
   preload();
 })();
