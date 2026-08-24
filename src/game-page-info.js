@@ -9528,6 +9528,162 @@
     faq: [["Why is there still a gap?", "The two openings must meet at the exact shared center of their tile edges."], ["Does the destination rotate?", "No. Reaching its inlet is enough."], ["Can a decorative branch be ignored?", "Only when the current stage does not require every pipe to carry water."], ["Does progress save?", "Yes, cleared waterways and local best results stay in this browser."]]
   }, "胖達竹水道", "胖达竹水道");
 
+  // Bamboo Pipes owns the complete public guide in every required locale.
+  // Keeping the full object here prevents the generic English guide from
+  // leaking beside localized headings on the first response.
+  const bambooGuideLocaleCopy = {
+    "zh-Hant": {
+      title: "胖達竹水道", gameplay: "旋轉竹管網路益智遊戲", genre: ["益智", "策略", "動物"], skills: ["邏輯", "規劃", "問題解決"], difficulty: "容易上手，逐步挑戰", time: "每關 2–8 分鐘", guideKicker: "WeightPlay 原創遊戲指南", guideTitleSuffix: "遊戲指南",
+      intro: "旋轉完整竹管網路，讓水從雕刻泉眼流向開花水池，不留斷點、錯誤分支或偏移的管線中心。",
+      story: ["胖達正在修復三十條被暴風雨扭亂竹節的花園水道。每個棋盤都是預先設計好的工程問題：泉眼、水池、管線形狀與正確路徑都在開始前確定。", "流動的水不只是裝飾。它會沿著目前接通的網路從泉眼前進，讓錯誤轉向、死路與未接通的區域在你繼續旋轉前清楚可讀。"],
+      systems: ["點按方格讓竹管順時針旋轉。直管、彎管、接點、泉眼與終點都使用相同的中心接點。", "只有兩側開口正對彼此時，管線才算接通。碰到美術邊緣或相鄰邊緣並不代表接上。", "泉眼會立刻沿著所有有效分支出水。當水在該關規則下抵達終點時就會過關；終點本身不需要旋轉。", "復原會還原一次旋轉，重來會還原原始棋盤，提示會指出下一個有用修正但不會自動解題。"],
+      how: ["從水平關卡軌道選擇已解鎖的水道。", "旋轉擁擠的接點前，先從終點回頭追蹤，再從泉眼向前確認路線。", "逐一旋轉必要管線，讓每個使用中的開口都對準鄰格中心。", "確認水抵達清楚標示的開花終點，再從結果畫面前往下一條水道。"],
+      strategyTips: ["先處理邊緣管線；不可能朝外的開口會直接排除方向。", "先用直線建立穩定主幹，再決定接點分支。", "水流停下時，檢查第一個乾燥接點，不要立刻旋轉很遠下游的管線。", "只有當關卡要求整張網路通水時，才需要讓未使用分支朝內。"],
+      progression: ["六個五關章節會從短直線路徑，逐步加入彎管、接點、迴路、誤導分支與密集混合網路。", "後期水道增加結構上的歧義，而不只是藏起管線或要求更快操作。"],
+      designNote: "每格管線都填滿自己的棋盤格，每個接點都共用同一條數學中心線，因此手機與桌面上的美術、點擊區、水流路徑和過關判定描述的是同一套幾何。",
+      parent: "不需要帳號、計時器、購買或公開分數。解鎖進度與最佳旋轉次數保存在此瀏覽器；清除網站資料可能會重置它們。",
+      faq: [["為什麼中間還有斷點？", "兩個開口必須在相鄰方格邊緣的同一個中心點正確相對。"], ["終點需要旋轉嗎？", "不需要，只要水抵達它的入口即可。"], ["裝飾分支可以忽略嗎？", "只有在目前關卡不要求每根管線通水時才可以。"], ["進度會保存嗎？", "會，已修復水道與本機最佳結果會保存在此瀏覽器。"], ["支援哪些控制方式與螢幕尺寸？", "觸控、滑鼠與鍵盤使用同一套規則，版面會在手機、橫向與桌面視窗中一起縮放。"], ["進度會自動同步到其他裝置嗎？", "不會，進度只保存在目前瀏覽器；其他瀏覽器或裝置會有獨立進度。"]]
+    },
+    "zh-Hans": {
+      title: "胖达竹水道", gameplay: "旋转竹管网络益智游戏", genre: ["益智", "策略", "动物"], skills: ["逻辑", "规划", "问题解决"], difficulty: "容易上手，逐步挑战", time: "每关 2–8 分钟", guideKicker: "WeightPlay 原创游戏指南", guideTitleSuffix: "游戏指南",
+      intro: "旋转完整竹管网络，让水从雕刻泉眼流向开花水池，不留断点、错误分支或错位的管线中心。",
+      story: ["胖达正在修复三十条被暴风雨扭乱竹节的花园水道。每个棋盘都是预先设计好的工程问题：泉眼、水池、管线形状与正确路径都在开始前确定。", "流动的水不只是装饰。它会沿着当前接通的网络从泉眼前进，让错误转向、死路与未接通区域在继续旋转前清楚可读。"],
+      systems: ["点击方格让竹管顺时针旋转。直管、弯管、接点、泉眼与终点都使用相同的中心接点。", "只有两侧开口正对彼此时，管线才算接通。碰到美术边缘或相邻边缘并不代表接上。", "泉眼会立即沿所有有效分支出水。水在关卡规则下抵达终点时就会过关；终点本身不需要旋转。", "撤销会还原一次旋转，重来会还原原始棋盘，提示会指出下一步修正但不会自动解题。"],
+      how: ["从水平关卡轨道选择已解锁的水道。", "旋转拥挤接点前，先从终点回头追踪，再从泉眼向前确认路线。", "逐一旋转必要管线，让每个使用中的开口都对准邻格中心。", "确认水抵达清楚标记的开花终点，再从结果画面前往下一条水道。"],
+      strategyTips: ["先处理边缘管线；不可能朝外的开口会直接排除方向。", "先用直线建立稳定主干，再决定接点分支。", "水流停下时，检查第一个干燥接点，不要立刻旋转很远下游的管线。", "只有当关卡要求整张网络通水时，才需要让未使用分支朝内。"],
+      progression: ["六个五关章节会从短直线路径逐步加入弯管、接点、回路、误导分支与密集混合网络。", "后期水道增加结构歧义，而不只是藏起管线或要求更快操作。"],
+      designNote: "每格管线都填满自己的棋盘格，每个接点都共用同一条数学中心线，因此手机与桌面上的美术、点击区、水流路径和过关判定描述的是同一套几何。",
+      parent: "不需要账号、计时器、购买或公开分数。解锁进度与最佳旋转次数保存在此浏览器；清除网站数据可能会重置它们。",
+      faq: [["为什么中间还有断点？", "两个开口必须在相邻方格边缘的同一个中心点正确相对。"], ["终点需要旋转吗？", "不需要，只要水抵达它的入口即可。"], ["装饰分支可以忽略吗？", "只有在当前关卡不要求每根管线通水时才可以。"], ["进度会保存吗？", "会，已修复水道与本机最佳结果会保存在此浏览器。"], ["支持哪些控制方式与屏幕尺寸？", "触控、鼠标与键盘使用同一套规则，版面会在手机、横向与桌面窗口中一起缩放。"], ["进度会自动同步到其他设备吗？", "不会，进度只保存在当前浏览器；其他浏览器或设备会有独立进度。"]]
+    },
+    ja: {
+      title: "パンコの竹水路", gameplay: "回転パイプ・ネットワークパズル", genre: ["パズル", "戦略", "動物"], skills: ["論理", "計画", "問題解決"], difficulty: "始めやすく、徐々に難しく", time: "1ステージ 2～8分", guideKicker: "WeightPlay オリジナルゲームガイド", guideTitleSuffix: "ゲームガイド",
+      intro: "竹のネットワークを回して、彫刻された泉から花の池まで水をつなぎ、断線や偽の分岐、ずれた接続点をなくします。",
+      story: ["パンコは嵐で竹の継ぎ目がねじれた30本の庭の水路を修復しています。泉、池、パイプの形、正しい経路は、遊ぶ前に作り込まれた設計問題です。", "流れる水は飾りではありません。泉から現在つながっているネットワークを進むため、間違った回転、行き止まり、未接続の場所を次の回転前に読み取れます。"],
+      systems: ["タイルをタップすると竹が時計回りに回ります。直管、曲がり管、分岐、泉、目的地は同じ中央の接続点を使います。", "隣り合う開口部が向き合ったときだけ接続になります。絵の端が近いだけではつながりません。", "泉の水は有効な分岐へすぐ流れます。ルールに従って目的地へ届くとクリアし、目的地自体は回しません。", "戻すは1回分の回転を復元し、やり直すは盤面を初期化します。ヒントは解き方を奪わず次の修正候補を示します。"],
+      how: ["横向きのステージレールから解放済みの水路を選びます。", "混雑した分岐を回す前に、目的地から逆向き、泉から順向きに道を確認します。", "必要なパイプを回し、使う開口部を隣の中央へ向けます。", "花の目的地に水が届いたら、リザルトから次の水路へ進みます。"],
+      strategyTips: ["外向きにできない端のパイプから決めると候補を減らせます。", "直線で主幹を作ってから分岐を決めます。", "水が止まったら最初の乾いた接続を調べ、遠い下流を先に回さないでください。", "全パイプ通水が条件のステージだけ、未使用分岐も内向きにします。"],
+      progression: ["6つの5ステージ章で、短い直線から曲がり、分岐、ループ、誘導分岐、密集ネットワークへ進みます。", "後半は速さではなく構造の読み分けが難しくなります。"],
+      designNote: "各タイルは自分のマスを満たし、接続は共通の数学的中心線を使います。スマホとデスクトップで絵、タップ範囲、水路、クリア判定が同じ幾何を示します。",
+      parent: "アカウント、タイマー、購入、公開スコアは必要ありません。解放状況と最少回転数はこのブラウザに保存され、サイトデータを消すとリセットされる場合があります。",
+      faq: [["なぜ隙間が残りますか？", "隣り合うタイルの開口部が同じ境界の中心で正確に向き合う必要があります。"], ["目的地も回しますか？", "いいえ。入口に水が届けば十分です。"], ["飾りの分岐は無視できますか？", "そのステージが全パイプの通水を求めない場合だけ無視できます。"], ["進行は保存されますか？", "はい。クリアした水路とローカルのベスト結果がこのブラウザに保存されます。"], ["対応する操作と画面は？", "タッチ、マウス、キーボードは同じルールで動き、スマホ、横画面、デスクトップで同じレイアウトが拡大縮小されます。"], ["別の端末へ自動同期しますか？", "いいえ。進行は現在のブラウザだけに保存されます。"]]
+    },
+    ko: {
+      title: "판코의 대나무 수로", gameplay: "대나무 파이프 회전 퍼즐", genre: ["퍼즐", "전략", "동물"], skills: ["논리", "계획", "문제 해결"], difficulty: "쉽게 시작해 점점 도전적으로", time: "스테이지당 2~8분", guideKicker: "WeightPlay 오리지널 게임 가이드", guideTitleSuffix: "게임 가이드",
+      intro: "대나무 네트워크를 돌려 조각된 샘에서 꽃 연못까지 물을 연결하고 끊긴 곳, 가짜 가지, 어긋난 중심을 없애세요.",
+      story: ["판코는 폭풍으로 대나무 이음새가 뒤틀린 정원 수로 30개를 복구합니다. 샘, 연못, 파이프 모양과 정답 경로가 플레이 전에 설계된 논리 문제입니다.", "흐르는 물은 장식이 아닙니다. 샘에서 현재 연결된 네트워크를 따라 움직이므로 잘못된 회전, 막힌 길, 끊긴 부분을 다음 회전 전에 읽을 수 있습니다."],
+      systems: ["타일을 누르면 대나무가 시계 방향으로 회전합니다. 직선관, 꺾인 관, 분기, 샘과 목표는 같은 중심 연결점을 사용합니다.", "서로 이웃한 입구가 마주 볼 때만 연결됩니다. 그림의 가장자리가 가까운 것만으로는 연결되지 않습니다.", "샘의 물은 유효한 가지를 즉시 흐릅니다. 규칙에 따라 목표에 도달하면 클리어되며 목표는 회전하지 않습니다.", "되돌리기는 한 번의 회전을 복구하고 다시 시작은 원래 보드를 복원합니다. 힌트는 정답을 대신하지 않고 다음 수정 후보만 보여 줍니다."],
+      how: ["가로 스테이지 레일에서 잠금 해제된 수로를 선택하세요.", "복잡한 분기를 돌리기 전에 목표에서 거꾸로, 샘에서 앞으로 경로를 확인하세요.", "필요한 파이프를 돌려 사용 중인 모든 입구를 이웃 칸의 중심에 맞추세요.", "꽃이 핀 목표에 물이 도착하면 결과 화면에서 다음 수로로 진행하세요."],
+      strategyTips: ["바깥으로 향할 수 없는 가장자리 파이프부터 정하면 선택지가 줄어듭니다.", "직선으로 중심 경로를 만든 뒤 분기를 결정하세요.", "물이 멈추면 첫 번째 마른 연결을 확인하고 먼 하류부터 돌리지 마세요.", "스테이지가 전체 네트워크의 물 흐름을 요구할 때만 사용하지 않는 가지를 안쪽으로 향하게 하세요."],
+      progression: ["6개의 5스테이지 챕터가 짧은 직선에서 꺾임, 분기, 고리, 유도 가지와 복잡한 혼합 네트워크로 이어집니다.", "후반부는 속도보다 구조를 구분하고 계획하는 어려움을 높입니다."],
+      designNote: "각 타일은 자신의 칸을 채우고 모든 연결은 하나의 수학적 중심선을 공유합니다. 휴대폰과 데스크톱에서 그림, 터치 영역, 물길과 클리어 판정이 같은 기하를 설명합니다.",
+      parent: "계정, 타이머, 구매 또는 공개 점수가 필요하지 않습니다. 잠금 해제와 최고 회전 수는 이 브라우저에 저장되며 사이트 데이터를 지우면 초기화될 수 있습니다.",
+      faq: [["왜 틈이 남아 있나요?", "이웃한 타일의 두 입구가 경계의 같은 중심점에서 정확히 마주 봐야 합니다."], ["목표도 돌리나요?", "아니요. 입구까지 물이 도달하면 됩니다."], ["장식 가지는 무시해도 되나요?", "현재 스테이지가 모든 파이프의 물 흐름을 요구하지 않을 때만 가능합니다."], ["진행은 저장되나요?", "네. 복구한 수로와 이 브라우저의 최고 기록이 저장됩니다."], ["어떤 조작과 화면을 지원하나요?", "터치, 마우스, 키보드는 같은 규칙을 사용하며 휴대폰, 가로 화면, 데스크톱에서 같은 레이아웃으로 확대 축소됩니다."], ["다른 기기로 자동 동기화되나요?", "아니요. 진행은 현재 브라우저에만 저장됩니다."]]
+    },
+    es: {
+      title: "Canal de bambú de Panko", gameplay: "Rompecabezas de red de tuberías", genre: ["Puzle", "Estrategia", "Animales"], skills: ["Lógica", "Planificación", "Resolución de problemas"], difficulty: "Fácil de empezar, desafiante de dominar", time: "2–8 minutos por fase", guideKicker: "Guía de juego original de WeightPlay", guideTitleSuffix: "Guía del juego",
+      intro: "Gira una red completa de bambú para llevar el agua desde el manantial tallado hasta la cuenca florida sin cortes, ramales falsos ni centros desalineados.",
+      story: ["Panko restaura treinta canales del jardín cuyos enlaces de bambú torció una tormenta. Cada tablero es un problema de ingeniería diseñado de antemano: manantial, cuenca, formas y ruta correcta ya están definidos.", "El agua visible no es solo decoración. Sigue la red conectada desde el manantial y hace legibles los giros erróneos, los callejones sin salida y las zonas desconectadas antes de comprometer más giros."],
+      systems: ["Toca una pieza para girarla en sentido horario. Tubos rectos, curvas, cruces, manantial y destino usan los mismos centros de conexión.", "Un tubo solo conecta cuando sus dos aberturas vecinas se miran exactamente. Estar cerca del dibujo o del borde no basta.", "El agua sale de inmediato por cada rama válida. La fase termina al llegar al destino según su regla; el destino no necesita girarse.", "Deshacer restaura un giro, Reiniciar devuelve el tablero original y Pista señala una corrección útil sin resolver la red automáticamente."],
+      how: ["Elige un canal desbloqueado en la barra horizontal de fases.", "Antes de girar cruces llenos, sigue el camino desde el destino hacia atrás y desde el manantial hacia delante.", "Gira cada pieza necesaria hasta que sus aberturas coincidan con el centro de la vecina.", "Confirma que el agua llega al destino florido y continúa desde el resultado al siguiente canal."],
+      strategyTips: ["Empieza por los bordes: sus aberturas imposibles hacia fuera eliminan opciones.", "Forma una columna vertebral con tramos rectos antes de decidir las ramas.", "Si el agua se detiene, revisa la primera unión seca, no una pieza muy lejana.", "Solo orienta las ramas sin usar hacia dentro cuando la fase exija mojar toda la red."],
+      progression: ["Seis capítulos de cinco fases pasan de rutas rectas a curvas, cruces, bucles, ramales engañosos y redes densas.", "Las fases posteriores aumentan la ambigüedad estructural, no la velocidad exigida."],
+      designNote: "Cada pieza llena su casilla y cada conexión comparte una misma línea central matemática. Arte, zona táctil, agua y condición de victoria describen la misma geometría en móvil y escritorio.",
+      parent: "No necesitas cuenta, temporizador, compras ni puntuación pública. Los desbloqueos y mejores giros se guardan en este navegador y pueden reiniciarse al borrar los datos del sitio.",
+      faq: [["¿Por qué queda un hueco?", "Las dos aberturas deben enfrentarse exactamente en el centro común del borde entre casillas."], ["¿Hay que girar el destino?", "No. Basta con que el agua llegue a su entrada."], ["¿Puedo ignorar una rama decorativa?", "Solo si la fase actual no exige que todos los tubos lleven agua."], ["¿Se guarda el progreso?", "Sí, los canales restaurados y los mejores resultados locales quedan en este navegador."], ["¿Qué controles y pantallas se admiten?", "Táctil, ratón y teclado usan las mismas reglas; el mismo diseño se escala en móvil, paisaje y escritorio."], ["¿Se sincroniza con otro dispositivo?", "No. El progreso se guarda solo en el navegador actual."]]
+    },
+    "pt-BR": {
+      title: "Canal de Bambu do Panko", gameplay: "Quebra-cabeça de rede de tubos", genre: ["Quebra-cabeça", "Estratégia", "Animais"], skills: ["Lógica", "Planejamento", "Resolução de problemas"], difficulty: "Fácil de começar, desafiador de dominar", time: "2–8 minutos por fase", guideKicker: "Guia de jogo original da WeightPlay", guideTitleSuffix: "Guia do jogo",
+      intro: "Gire uma rede completa de bambu para levar a água da nascente esculpida ao lago florido, sem cortes, ramificações falsas ou centros desalinhados.",
+      story: ["Panko está restaurando trinta canais do jardim cujas juntas de bambu foram torcidas por uma tempestade. Cada tabuleiro é um problema de engenharia criado antes da partida: nascente, lago, formas e rota correta já estão definidos.", "A água visível não é apenas decoração. Ela segue a rede conectada a partir da nascente e revela curvas erradas, becos sem saída e partes desconectadas antes de você gastar mais giros."],
+      systems: ["Toque em uma peça para girá-la no sentido horário. Tubos retos, curvas, junções, nascente e destino usam os mesmos centros de conexão.", "Um tubo só conecta quando as duas aberturas vizinhas ficam frente a frente. Encostar na arte ou na borda não basta.", "A nascente começa a fluir imediatamente por cada ramificação válida. A fase termina quando a água chega ao destino conforme a regra; o destino não precisa girar.", "Desfazer restaura um giro, Reiniciar restaura o tabuleiro original e Dica aponta a próxima correção sem resolver a rede sozinho."],
+      how: ["Escolha um canal desbloqueado na faixa horizontal de fases.", "Antes de girar uma junção cheia, siga o caminho de trás para frente a partir do destino e depois avance desde a nascente.", "Gire cada peça necessária até que toda abertura usada encontre o centro da vizinha.", "Confirme que a água chegou ao destino florido e avance do resultado para o próximo canal."],
+      strategyTips: ["Comece pelas bordas: aberturas impossíveis para fora eliminam opções.", "Monte uma espinha dorsal com trechos retos antes de decidir as ramificações.", "Quando a água parar, examine a primeira junta seca em vez de girar uma peça distante.", "Vire ramificações não usadas para dentro apenas quando a fase exigir água em toda a rede."],
+      progression: ["Seis capítulos de cinco fases passam de rotas retas curtas a curvas, junções, loops, ramificações enganosas e redes densas.", "As fases finais aumentam a ambiguidade estrutural, não a pressão por velocidade."],
+      designNote: "Cada peça preenche sua célula e cada conexão compartilha a mesma linha central matemática. Arte, área de toque, fluxo e vitória descrevem a mesma geometria no celular e no desktop.",
+      parent: "Não é preciso conta, cronômetro, compra ou pontuação pública. Desbloqueios e melhores giros ficam neste navegador e podem ser apagados ao limpar os dados do site.",
+      faq: [["Por que ainda existe uma falha?", "As duas aberturas precisam se encarar exatamente no centro comum da borda entre as células."], ["O destino gira?", "Não. Basta a água chegar à entrada."], ["Posso ignorar uma ramificação decorativa?", "Somente quando a fase não exigir água em todos os tubos."], ["O progresso é salvo?", "Sim. Canais restaurados e melhores resultados locais ficam neste navegador."], ["Quais controles e telas são compatíveis?", "Toque, mouse e teclado usam as mesmas regras; o mesmo layout escala em celular, paisagem e desktop."], ["O progresso sincroniza com outro dispositivo?", "Não. Ele fica salvo apenas no navegador atual."]]
+    },
+    fr: {
+      title: "Canal de bambou de Panko", gameplay: "Puzzle de réseau de tuyaux", genre: ["Puzzle", "Stratégie", "Animaux"], skills: ["Logique", "Planification", "Résolution de problèmes"], difficulty: "Facile à commencer, exigeant à maîtriser", time: "2 à 8 minutes par niveau", guideKicker: "Guide de jeu original WeightPlay", guideTitleSuffix: "Guide du jeu",
+      intro: "Faites pivoter un réseau complet de bambou pour conduire l’eau de la source sculptée au bassin fleuri, sans coupure, fausse branche ni centre décalé.",
+      story: ["Panko restaure trente canaux du jardin dont les joints de bambou ont été tordus par une tempête. Chaque plateau est un problème d’ingénierie conçu à l’avance : source, bassin, formes et route correcte sont déjà établis.", "L’eau visible n’est pas qu’un décor. Elle suit le réseau relié depuis la source et rend lisibles les mauvais tours, les impasses et les zones déconnectées avant de poursuivre."],
+      systems: ["Touchez une tuile pour la faire pivoter dans le sens horaire. Tubes droits, coudes, jonctions, source et destination partagent les mêmes centres de connexion.", "Un tube est relié seulement lorsque ses deux ouvertures voisines se font face. La proximité de l’illustration ne suffit pas.", "La source coule immédiatement dans chaque branche valide. Le niveau se termine quand l’eau atteint la destination selon sa règle ; la destination ne pivote pas.", "Annuler restaure une rotation, Recommencer restaure le plateau initial et Indice montre une correction utile sans résoudre le réseau."],
+      how: ["Choisissez un canal débloqué sur la barre horizontale des niveaux.", "Avant de tourner une jonction chargée, suivez le trajet depuis la destination puis depuis la source.", "Faites pivoter chaque pièce nécessaire pour aligner chaque ouverture utilisée sur le centre de sa voisine.", "Vérifiez que l’eau atteint la destination fleurie, puis passez du résultat au canal suivant."],
+      strategyTips: ["Commencez par les bords : leurs ouvertures impossibles vers l’extérieur réduisent les choix.", "Construisez une colonne vertébrale avec les lignes droites avant de choisir les branches.", "Si l’eau s’arrête, examinez le premier joint sec plutôt qu’une pièce très en aval.", "Orientez les branches inutilisées vers l’intérieur seulement si le niveau exige de remplir tout le réseau."],
+      progression: ["Six chapitres de cinq niveaux passent des petits trajets droits aux coudes, jonctions, boucles, fausses branches et réseaux denses.", "Les derniers canaux augmentent l’ambiguïté structurelle, pas la vitesse demandée."],
+      designNote: "Chaque tuile remplit sa case et chaque connexion partage une même ligne centrale mathématique. Illustration, zone tactile, trajet de l’eau et victoire décrivent la même géométrie sur mobile et bureau.",
+      parent: "Aucun compte, minuteur, achat ou score public n’est nécessaire. Les déblocages et meilleurs nombres de rotations restent dans ce navigateur et peuvent disparaître avec les données du site.",
+      faq: [["Pourquoi reste-t-il un trou ?", "Les deux ouvertures doivent se faire face exactement au centre commun du bord entre les cases."], ["La destination doit-elle pivoter ?", "Non. L’eau doit simplement atteindre son entrée."], ["Puis-je ignorer une branche décorative ?", "Seulement si le niveau n’exige pas que tous les tubes soient alimentés."], ["La progression est-elle enregistrée ?", "Oui, les canaux restaurés et meilleurs résultats locaux restent dans ce navigateur."], ["Quels contrôles et écrans sont pris en charge ?", "Le tactile, la souris et le clavier suivent les mêmes règles ; la même disposition s’adapte au mobile, au paysage et au bureau."], ["La progression se synchronise-t-elle sur un autre appareil ?", "Non. Elle reste uniquement dans le navigateur actuel."]]
+    },
+    de: {
+      title: "Pankos Bambuswasserstraße", gameplay: "Drehbares Rohrnetz-Puzzle", genre: ["Puzzle", "Strategie", "Tiere"], skills: ["Logik", "Planung", "Problemlösung"], difficulty: "Leicht zu beginnen, anspruchsvoll zu meistern", time: "2–8 Minuten pro Abschnitt", guideKicker: "Original-Spielanleitung von WeightPlay", guideTitleSuffix: "Spielanleitung",
+      intro: "Drehe ein vollständiges Bambusnetz, damit Wasser ohne Lücken, falsche Abzweige oder versetzte Rohrmitten von der Quelle zum Blütenbecken fließt.",
+      story: ["Panko repariert dreißig Gartenwasserwege, deren Bambusverbindungen ein Sturm verdreht hat. Jedes Brett ist ein vorher entworfenes Ingenieurproblem: Quelle, Becken, Formen und richtige Route stehen fest.", "Das sichtbare Wasser ist mehr als Dekoration. Es folgt dem verbundenen Netz von der Quelle und macht falsche Drehungen, Sackgassen und getrennte Bereiche vor weiteren Zügen lesbar."],
+      systems: ["Tippe auf ein Feld, um es im Uhrzeigersinn zu drehen. Gerade Rohre, Bögen, Kreuzungen, Quelle und Ziel nutzen dieselben Verbindungszentren.", "Ein Rohr ist nur verbunden, wenn sich beide Nachbaröffnungen genau gegenüberliegen. Die Nähe zur Grafik reicht nicht.", "Die Quelle fließt sofort durch jeden gültigen Zweig. Der Abschnitt endet, sobald das Wasser das Ziel gemäß der Regel erreicht; das Ziel wird nicht gedreht.", "Rückgängig stellt eine Drehung wieder her, Neustart setzt das Brett zurück und Hinweis zeigt eine sinnvolle Korrektur, ohne das Netz zu lösen."],
+      how: ["Wähle eine freigeschaltete Wasserstraße auf der waagerechten Abschnittsleiste.", "Prüfe bei dichten Kreuzungen den Weg rückwärts vom Ziel und vorwärts von der Quelle.", "Drehe jedes benötigte Teil, bis jede verwendete Öffnung auf die Mitte des Nachbarn zeigt.", "Prüfe den Wasserfluss zum Blütenziel und gehe im Ergebnis zum nächsten Abschnitt weiter."],
+      strategyTips: ["Beginne am Rand: unmögliche Öffnungen nach außen schränken die Auswahl ein.", "Baue zuerst mit geraden Stücken ein stabiles Rückgrat, dann entscheide die Zweige.", "Wenn das Wasser stoppt, prüfe die erste trockene Verbindung statt ein fernes Stück zu drehen.", "Unbenutzte Zweige müssen nur dann nach innen zeigen, wenn der Abschnitt das gesamte Netz verlangt."],
+      progression: ["Sechs Kapitel mit je fünf Abschnitten führen von kurzen Geraden über Bögen, Kreuzungen, Schleifen und irreführende Zweige zu dichten Mischnetzen.", "Spätere Wasserstraßen erhöhen die strukturelle Mehrdeutigkeit, nicht den Zeitdruck."],
+      designNote: "Jedes Teil füllt sein Feld und jede Verbindung nutzt dieselbe mathematische Mittellinie. Grafik, Trefferfläche, Wasserweg und Abschlussprüfung beschreiben auf Handy und Desktop dieselbe Geometrie.",
+      parent: "Kein Konto, Timer, Kauf oder öffentlicher Punktestand ist nötig. Freischaltungen und beste Drehzahlen werden in diesem Browser gespeichert und können durch das Löschen von Websitedaten verschwinden.",
+      faq: [["Warum bleibt eine Lücke?", "Die beiden Öffnungen müssen sich genau im gemeinsamen Mittelpunkt der Feldkante gegenüberstehen."], ["Wird das Ziel gedreht?", "Nein. Das Wasser muss nur seinen Eingang erreichen."], ["Darf ich einen dekorativen Zweig ignorieren?", "Nur wenn der aktuelle Abschnitt nicht verlangt, dass jedes Rohr Wasser führt."], ["Wird der Fortschritt gespeichert?", "Ja. Reparierte Wasserstraßen und lokale Bestwerte bleiben in diesem Browser."], ["Welche Steuerung und Bildschirmgrößen werden unterstützt?", "Touch, Maus und Tastatur folgen denselben Regeln; das Layout skaliert gemeinsam auf Handy, Querformat und Desktop."], ["Wird der Fortschritt auf andere Geräte synchronisiert?", "Nein. Er wird nur im aktuellen Browser gespeichert."]]
+    },
+    it: {
+      title: "Canale di bambù di Panko", gameplay: "Puzzle di rete di tubi rotanti", genre: ["Puzzle", "Strategia", "Animali"], skills: ["Logica", "Pianificazione", "Risoluzione dei problemi"], difficulty: "Facile da iniziare, difficile da padroneggiare", time: "2–8 minuti per livello", guideKicker: "Guida al gioco originale WeightPlay", guideTitleSuffix: "Guida del gioco",
+      intro: "Ruota una rete completa di bambù per portare l’acqua dalla sorgente scolpita alla vasca fiorita, senza interruzioni, rami falsi o centri disallineati.",
+      story: ["Panko sta riparando trenta canali del giardino, i cui giunti di bambù sono stati storti da una tempesta. Ogni tavola è un problema d’ingegneria progettato in anticipo: sorgente, vasca, forme e percorso corretto sono già definiti.", "L’acqua visibile non è solo decorazione. Segue la rete connessa dalla sorgente e rende leggibili rotazioni sbagliate, vicoli ciechi e zone scollegate prima di spendere altri giri."],
+      systems: ["Tocca una tessera per ruotarla in senso orario. Tubi dritti, curve, giunzioni, sorgente e destinazione usano gli stessi centri di connessione.", "Un tubo è connesso solo quando le due aperture vicine si fronteggiano. La vicinanza all’illustrazione non basta.", "La sorgente scorre subito in ogni ramo valido. Il livello termina quando l’acqua raggiunge la destinazione secondo la regola; la destinazione non ruota.", "Annulla ripristina una rotazione, Ricomincia ripristina la tavola iniziale e Suggerimento indica una correzione utile senza risolvere la rete."],
+      how: ["Scegli un canale sbloccato sulla barra orizzontale dei livelli.", "Prima di ruotare una giunzione affollata, segui il percorso a ritroso dalla destinazione e in avanti dalla sorgente.", "Ruota ogni pezzo necessario finché ogni apertura usata coincide con il centro della tessera vicina.", "Controlla che l’acqua raggiunga la destinazione fiorita, poi passa dal risultato al canale successivo."],
+      strategyTips: ["Inizia dai bordi: le aperture impossibili verso l’esterno eliminano opzioni.", "Crea prima una spina dorsale con i tratti dritti, poi scegli i rami.", "Se l’acqua si ferma, controlla il primo giunto asciutto invece di ruotare un pezzo lontano.", "Rivolgi verso l’interno i rami inutilizzati solo quando il livello richiede acqua in tutta la rete."],
+      progression: ["Sei capitoli da cinque livelli passano da percorsi dritti a curve, giunzioni, anelli, rami ingannevoli e reti dense.", "I canali avanzati aumentano l’ambiguità strutturale, non la velocità richiesta."],
+      designNote: "Ogni tessera riempie la propria casella e ogni connessione condivide la stessa linea centrale matematica. Grafica, area di tocco, percorso dell’acqua e vittoria descrivono la stessa geometria su mobile e desktop.",
+      parent: "Non servono account, timer, acquisti o punteggi pubblici. Sblocchi e migliori rotazioni restano in questo browser e possono sparire cancellando i dati del sito.",
+      faq: [["Perché rimane uno spazio vuoto?", "Le due aperture devono fronteggiarsi esattamente al centro comune del bordo tra le caselle."], ["La destinazione va ruotata?", "No. Basta che l’acqua raggiunga il suo ingresso."], ["Posso ignorare un ramo decorativo?", "Solo se il livello non richiede che tutti i tubi siano attraversati dall’acqua."], ["I progressi vengono salvati?", "Sì. I canali ripristinati e i migliori risultati locali restano in questo browser."], ["Quali controlli e schermi sono supportati?", "Touch, mouse e tastiera usano le stesse regole; il layout scala insieme su telefono, orizzontale e desktop."], ["Il progresso si sincronizza su un altro dispositivo?", "No. Viene salvato solo nel browser attuale."]]
+    },
+    ru: {
+      title: "Бамбуковый канал Панко", gameplay: "Головоломка с вращением труб", genre: ["Головоломка", "Стратегия", "Животные"], skills: ["Логика", "Планирование", "Решение задач"], difficulty: "Легко начать, сложно освоить", time: "2–8 минут на этап", guideKicker: "Оригинальное руководство WeightPlay", guideTitleSuffix: "Руководство по игре",
+      intro: "Поворачивайте цельную бамбуковую сеть, чтобы провести воду от резного источника к цветочному бассейну без разрывов, ложных ветвей и смещённых центров труб.",
+      story: ["Панко восстанавливает тридцать садовых каналов, чьи бамбуковые стыки перекосила буря. Каждый уровень заранее спроектирован как инженерная задача: источник, бассейн, формы труб и верный маршрут известны до начала игры.", "Видимая вода — не просто украшение. Она идёт по соединённой сети от источника и заранее показывает неверные повороты, тупики и разрывы."],
+      systems: ["Нажмите на плитку, чтобы повернуть её по часовой стрелке. Прямые трубы, углы, развилки, источник и цель используют одинаковые центры соединений.", "Труба считается соединённой только тогда, когда соседние отверстия смотрят друг на друга. Близости рисунка недостаточно.", "Источник сразу подаёт воду по каждой допустимой ветви. Этап завершается, когда вода достигает цели по правилу этапа; цель вращать не нужно.", "Отмена возвращает один поворот, Сначала восстанавливает исходное поле, а Подсказка называет полезную коррекцию, не решая сеть автоматически."],
+      how: ["Выберите открытый канал на горизонтальной панели этапов.", "Перед вращением сложной развилки проследите маршрут от цели назад и от источника вперёд.", "Поверните каждую нужную деталь так, чтобы рабочие отверстия совпали с центром соседней плитки.", "Убедитесь, что вода дошла до цветочной цели, и переходите из результата к следующему каналу."],
+      strategyTips: ["Начинайте с края: невозможные отверстия наружу сокращают варианты.", "Сначала соберите прямыми трубами устойчивый хребет, затем решайте ветви.", "Если вода остановилась, проверьте первый сухой стык, а не дальнюю трубу ниже по маршруту.", "Направляйте неиспользуемые ветви внутрь только если этап требует заполнить всю сеть водой."],
+      progression: ["Шесть глав по пять этапов ведут от коротких прямых маршрутов к углам, развилкам, петлям, ложным ветвям и плотным смешанным сетям.", "Поздние каналы усиливают структурную неоднозначность, а не требуют большей скорости."],
+      designNote: "Каждая плитка заполняет свою клетку, а каждое соединение использует одну математическую центральную линию. Графика, область нажатия, поток воды и проверка победы описывают одну геометрию на телефоне и компьютере.",
+      parent: "Аккаунт, таймер, покупки и публичный счёт не нужны. Открытые каналы и лучшие результаты вращений сохраняются в этом браузере и могут исчезнуть после очистки данных сайта.",
+      faq: [["Почему остаётся разрыв?", "Два отверстия должны точно смотреть друг на друга в общем центре границы соседних клеток."], ["Нужно ли вращать цель?", "Нет. Достаточно довести воду до её входа."], ["Можно ли не учитывать декоративную ветвь?", "Только если текущий этап не требует провести воду по каждой трубе."], ["Сохраняется ли прогресс?", "Да. Восстановленные каналы и локальные лучшие результаты остаются в браузере."], ["Какие способы управления и экраны поддерживаются?", "Сенсор, мышь и клавиатура используют одни правила; макет масштабируется на телефоне, в альбомной ориентации и на компьютере."], ["Синхронизируется ли прогресс с другим устройством?", "Нет. Он хранится только в текущем браузере."]]
+    },
+    hi: {
+      title: "पैंको की बाँस नहर", gameplay: "घूमती पाइप नेटवर्क पहेली", genre: ["पहेली", "रणनीति", "पशु"], skills: ["तर्क", "योजना", "समस्या समाधान"], difficulty: "शुरू करना आसान, धीरे-धीरे चुनौतीपूर्ण", time: "हर चरण 2–8 मिनट", guideKicker: "WeightPlay मूल गेम गाइड", guideTitleSuffix: "गेम गाइड",
+      intro: "बाँस के पूरे नेटवर्क को घुमाकर तराशे हुए झरने से फूलों के तालाब तक पानी पहुँचाएँ, बिना टूटे जोड़, नकली शाखा या खिसके हुए पाइप केंद्र के।",
+      story: ["पैंको उन तीस बगीचा-जलमार्गों को ठीक कर रहा है जिनके बाँस के जोड़ आँधी में मुड़ गए। हर बोर्ड पहले से बनाया गया इंजीनियरिंग सवाल है: झरना, तालाब, पाइप आकार और सही रास्ता पहले से तय हैं।", "दिखता हुआ पानी केवल सजावट नहीं है। वह झरने से जुड़े नेटवर्क में बहता है और अगली घुमाव से पहले गलत दिशा, बंद रास्ता और अलग हिस्से दिखाता है।"],
+      systems: ["किसी खाने को छूकर बाँस को घड़ी की दिशा में घुमाएँ। सीधी नली, मुड़ी नली, जोड़, झरना और लक्ष्य एक ही केंद्रीय जोड़ का उपयोग करते हैं।", "पाइप तभी जुड़ा है जब दोनों पड़ोसी खुले हिस्से आमने-सामने हों। चित्र या किनारे का पास होना पर्याप्त नहीं है।", "झरना हर सही शाखा में तुरंत बहता है। नियम के अनुसार पानी लक्ष्य तक पहुँचते ही चरण पूरा होता है; लक्ष्य को घुमाना नहीं पड़ता।", "वापस एक घुमाव लौटाता है, फिर शुरू करें मूल बोर्ड लाता है, और संकेत बिना हल किए अगला सुधार बताता है।"],
+      how: ["क्षैतिज चरण-पट्टी से खुली हुई नहर चुनें।", "भरे हुए जोड़ घुमाने से पहले लक्ष्य से पीछे और झरने से आगे रास्ता पढ़ें।", "हर जरूरी टुकड़े को घुमाएँ ताकि इस्तेमाल होने वाले खुले हिस्से पड़ोसी के केंद्र से मिलें।", "फूल वाले लक्ष्य तक पानी पहुँचने की पुष्टि करें और परिणाम से अगली नहर पर जाएँ।"],
+      strategyTips: ["किनारे के टुकड़ों से शुरू करें; बाहर की असंभव दिशाएँ विकल्प घटाती हैं।", "जोड़ तय करने से पहले सीधी नलियों से मुख्य रास्ता बनाएँ।", "पानी रुक जाए तो पहला सूखा जोड़ देखें, दूर के नीचे वाले टुकड़े को पहले न घुमाएँ।", "बची शाखाओं को अंदर तभी रखें जब चरण में पूरे नेटवर्क में पानी माँगा गया हो।"],
+      progression: ["छह अध्यायों के पाँच-पाँच चरण छोटे सीधे रास्तों से मुड़ी नलियों, जोड़, लूप, भ्रामक शाखाओं और घने नेटवर्क तक बढ़ते हैं।", "बाद के जलमार्ग गति नहीं, बल्कि संरचना पढ़ने की चुनौती बढ़ाते हैं।"],
+      designNote: "हर टुकड़ा अपनी खाने की जगह भरता है और हर जोड़ एक गणितीय केंद्रीय रेखा साझा करता है। फोन और डेस्कटॉप पर चित्र, स्पर्श क्षेत्र, जलमार्ग और जीत की जाँच एक ही ज्यामिति बताते हैं।",
+      parent: "खाते, टाइमर, खरीद या सार्वजनिक स्कोर की जरूरत नहीं है। खुले जलमार्ग और सबसे कम घुमाव इसी ब्राउज़र में बचते हैं और साइट डेटा हटाने पर मिट सकते हैं।",
+      faq: [["बीच में खाली जगह क्यों है?", "दोनों खुले हिस्से पड़ोसी खानों की साझा सीमा के ठीक केंद्र पर आमने-सामने होने चाहिए।"], ["क्या लक्ष्य को घुमाना है?", "नहीं। पानी का उसके प्रवेश तक पहुँचना पर्याप्त है।"], ["क्या सजावटी शाखा छोड़ सकते हैं?", "केवल तब जब उस चरण में हर पाइप में पानी माँगा न गया हो।"], ["क्या प्रगति सुरक्षित रहती है?", "हाँ, ठीक की गई नहरें और स्थानीय सर्वश्रेष्ठ परिणाम इसी ब्राउज़र में रहते हैं।"], ["कौन से नियंत्रण और स्क्रीन समर्थित हैं?", "स्पर्श, माउस और कीबोर्ड एक ही नियमों पर चलते हैं; लेआउट फोन, लैंडस्केप और डेस्कटॉप पर साथ स्केल होता है।"], ["क्या प्रगति दूसरे उपकरण पर अपने आप जाती है?", "नहीं। यह केवल वर्तमान ब्राउज़र में सुरक्षित रहती है।"]]
+    },
+    ar: {
+      title: "مجرى بانكو الخيزراني", gameplay: "لغز شبكة الأنابيب الدوارة", genre: ["ألغاز", "استراتيجية", "حيوانات"], skills: ["المنطق", "التخطيط", "حل المشكلات"], difficulty: "سهل البداية ويزداد تحديًا", time: "2–8 دقائق لكل مرحلة", guideKicker: "دليل لعبة WeightPlay الأصلية", guideTitleSuffix: "دليل اللعبة",
+      intro: "أدر شبكة الخيزران كاملة لتوصل الماء من النبع المنحوت إلى الحوض المزهر من دون فواصل أو تفرعات زائفة أو مراكز أنابيب منحرفة.",
+      story: ["يصلح بانكو ثلاثين مجرى في الحديقة بعدما لوّت عاصفة مفاصل الخيزران. كل لوحة مسألة هندسية مصممة مسبقًا: النبع والحوض وأشكال الأنابيب والمسار الصحيح محددة قبل اللعب.", "الماء الظاهر ليس زينة فقط. إنه يتبع الشبكة المتصلة من النبع، فيوضح الدوران الخاطئ والطريق المسدود والأجزاء المنفصلة قبل أن تنفق دورات إضافية."],
+      systems: ["المس البلاطة لتدويرها مع عقارب الساعة. تستخدم الأنابيب المستقيمة والزوايا والتفرعات والنبع والهدف مراكز اتصال متطابقة.", "يُعد الأنبوب متصلًا فقط عندما تتواجه الفتحتان المجاورتان بدقة. قرب الرسم أو الحافة لا يكفي.", "يتدفق الماء فورًا عبر كل تفرع صالح من النبع. تنتهي المرحلة عندما يصل الماء إلى الهدف وفق قاعدتها؛ ولا يحتاج الهدف إلى دوران.", "يعيد التراجع دورة واحدة، وتعاد البداية اللوحة الأصلية، ويحدد التلميح تصحيحًا مفيدًا من دون حل الشبكة تلقائيًا."],
+      how: ["اختر مجرى مفتوحًا من شريط المراحل الأفقي.", "قبل تدوير تفرع مزدحم، تتبع الطريق إلى الخلف من الحوض ثم إلى الأمام من النبع.", "أدر كل قطعة مطلوبة حتى تقابل كل فتحة مستخدمة مركز القطعة المجاورة.", "تأكد من وصول الماء إلى الهدف المزهر ثم انتقل من النتيجة إلى المجرى التالي."],
+      strategyTips: ["ابدأ بقطع الحواف؛ فالفتحات المستحيلة إلى الخارج تقلل الخيارات.", "ابنِ مسارًا رئيسيًا من المقاطع المستقيمة قبل تحديد التفرعات.", "إذا توقف الماء، افحص أول مفصل جاف بدل تدوير قطعة بعيدة في اتجاه المصب.", "وجّه التفرعات غير المستخدمة إلى الداخل فقط عندما تتطلب المرحلة مرور الماء في الشبكة كلها."],
+      progression: ["تنتقل ستة فصول من خمس مراحل من المسارات المستقيمة القصيرة إلى الزوايا والتفرعات والحلقات والتفرعات المضللة والشبكات الكثيفة.", "تزيد المجاري اللاحقة الغموض البنيوي، لا ضغط السرعة."],
+      designNote: "تملأ كل قطعة خانتها وتستخدم كل وصلة خطًا مركزيًا رياضيًا واحدًا. لذلك يصف الرسم ومنطقة اللمس ومسار الماء وفحص الإكمال الهندسة نفسها على الهاتف وسطح المكتب.",
+      parent: "لا يلزم حساب أو مؤقت أو شراء أو نتيجة عامة. تُحفظ المجاري المفتوحة وأفضل عدد من الدورات في هذا المتصفح وقد تُحذف عند مسح بيانات الموقع.",
+      faq: [["لماذا تبقى فجوة؟", "يجب أن تتواجه الفتحتان بدقة عند المركز المشترك لحافة الخليتين المتجاورتين."], ["هل يجب تدوير الهدف؟", "لا. يكفي وصول الماء إلى مدخله."], ["هل يمكن تجاهل تفرع زخرفي؟", "فقط إذا لم تتطلب المرحلة مرور الماء في كل أنبوب."], ["هل يُحفظ التقدم؟", "نعم، تبقى المجاري التي أصلحتها وأفضل النتائج المحلية في هذا المتصفح."], ["ما طرق التحكم وأحجام الشاشة المدعومة؟", "تستخدم اللمسة والماوس ولوحة المفاتيح القواعد نفسها، ويتكيف التخطيط مع الهاتف والوضع الأفقي وسطح المكتب."], ["هل ينتقل التقدم تلقائيًا إلى جهاز آخر؟", "لا. يُحفظ التقدم في المتصفح الحالي فقط."]]
+    }
+  };
+  for (const [localeCode, copy] of Object.entries(bambooGuideLocaleCopy)) {
+    localizedGames[localeCode] ||= {};
+    localizedGames[localeCode]["animal-bamboo-pipes"] = { ...games["animal-bamboo-pipes"], ...copy };
+    localizedGameplayProfiles[localeCode] ||= {};
+    localizedGameplayProfiles[localeCode]["animal-bamboo-pipes"] = { gameplay: copy.gameplay, genre: copy.genre };
+  }
+
   registerExpandedGuide("animal-bus-jam", {
     title: "Panko's Bus Jam", gameplay: "Convoy and Holding-Lane Strategy",
     intro: "Read the fixed departure order, expose the right passengers, and keep a limited first-in-first-out holding lane from locking the terminal.",
@@ -11319,6 +11475,72 @@
     designNote: "تتوقف البكرات بترتيب بصري ثابت، وتضيء الصفوف المكتملة قبل حلها، وتبقى أفعال الأبطال منفصلة عن إجمالي دفاع المستدعي وعلاجه. تستخدم الواجهة تخطيطًا منطقيًا واحدًا في المنتصف بعرض أقصى 920 بكسل، وتكبر عناصر التحكم والإحداثيات معًا على الهاتف والوضع الأفقي وسطح المكتب.",
     parent: "لا يلزم حساب. تُحفظ الأبطال والحملة والعملات والمواد ومستويات الرون والمكافآت في هذا المتصفح. قد يؤدي مسح بيانات الموقع أو تغيير المتصفح إلى إنشاء حفظ منفصل.",
     faq: [["ماذا يفعل صف الرونات المتطابقة؟", "يضاعف قدرة الرون بعد توقف البكرات الثلاث."], ["هل يشترك الأبطال في هجوم واحد؟", "لا. يهاجم كل بطل منفردًا، ويُجمع دفاع الفريق وعلاجه للمستدعي."], ["ماذا يحدث إذا غادرت المعركة؟", "تبقى محتويات الحقيبة الدائمة، لكن محاولة المعركة الحالية تضيع."], ["هل مكافآت الفعاليات متاحة دائمًا؟", "لا. تتبع مهام الفعاليات الجدول المعروض في المراحل."], ["ما طرق التحكم وأحجام الشاشة المدعومة؟", "تستخدم اللمسة والماوس ولوحة المفاتيح القواعد نفسها، ويتكيف التخطيط المنطقي مع الهاتف والوضع الأفقي وسطح المكتب."], ["هل ينتقل التقدم تلقائيًا إلى جهاز آخر؟", "لا. يُحفظ حاليًا في المتصفح فقط، لذلك يملك الملف أو الجهاز الآخر تقدمًا منفصلًا."]]
+  };
+  localizedGames["ar"]["animal-rune-tactics"] = {
+    ...games["animal-rune-tactics"],
+    title: "تكتيكات الرون الحيواني",
+    age: "9+",
+    difficulty: "صعب",
+    time: "8–15 دقيقة لكل مهمة",
+    gameplay: "تكتيكات فرقة بنظام الأدوار",
+    genre: ["استراتيجية", "تكتيكات", "مغامرة حيوانية"],
+    skills: ["المنطق", "حل المشكلات", "التركيز", "التخطيط"],
+    guideKicker: "دليل لعبة WeightPlay الأصلية",
+    guideTitleSuffix: "دليل اللعبة",
+    noteTitle: "معلومات اللاعب والحفظ",
+    hideScoreBands: true,
+    hideSkillsFact: true,
+    intro: "تكتيكات الرون الحيواني حملة من 30 مهمة بنظام الأدوار على لوحة رونية من ثلاثة أعمدة وأربعة صفوف. ينفذ حارس الأسد وساحر البومة ودرع السلحفاة إجراءً واحدًا قبل دور العدو: التحرك أو الهجوم أو الحراسة أو إنفاق الطاقة على مهارة مميزة. تقدم ستة فصول، يضم كل منها خمس مهام، طرقًا مسدودة وفخاخًا وتيارات ونارًا ورونات دوارة وأختامًا، إلى جانب أعداء يردون الهجوم أو يدفعون أو يصمتون أو يضعون علامات أو يستنزفون الطاقة أو ينشئون نسخًا. تنتهي المهام 5 و10 و15 و20 و25 و30 بستة زعماء مختلفين ذوي مراحل متعددة. تُحفظ المهام المفتوحة وتدريب الأبطال ومكافآت الرون في هذا المتصفح.",
+    story: [
+      "تصل طرق الرون ستة أقاليم حيوانية بأرشيف التاج. يحمل كل طريق نوعًا من نصوص التثبيت: تثبت مسارات الغابة الجذور الحية، وتربط علامات الحدادة خشب الحديد، وتنظم رموز المد الغرف المغمورة، وتنفّس دوائر الجمر الحرارة، وتحفظ رونات القمر الذاكرة، وتحافظ أختام التاج على تزامن الأنظمة الخمسة. عندما انكسر التاج المركزي، بدأت النصوص تعمل دون حراسها؛ فتحولت الجسور إلى أنقاض، وأغلقت الجذور طريق المسافرين، وحركت التيارات الحجارة المشغولة، وحمت أختام الأرشيف المخلوقات التي أفسدته.",
+      "يقود اللاعب ثلاثة حراس لاستعادة الطرق. يقاتل حارس الأسد من مسافة قريبة، ويهاجم ساحر البومة من خليتين، ويحرس درع السلحفاة المجموعة ويعالجها. يتحكم أيل الحجر ووحيد قرن جذر الحديد وأفعى لولب المستنقع وأسد عرف الجمر وغريفين الكسوف في الفصول المتضررة. امتص هجين تاج الرون أجزاء من كل نظام؛ وهزيمته في المهمة 30 تعيد وصل الأرشيف من دون اختلاق مهمة 31."
+    ],
+    systems: [
+      "تدفق الدور: اختر بطلًا حيًا ثم إجراءً واحدًا. يستخدم التحرك خلية مجاورة قانونية، ويتطلب الهجوم مدى البطل، وتقلل الحراسة الضربة التالية بمقدار واحد، وتستهلك المهارة طاقة واحدة. يضرب الأسد بقوة أكبر، وتصل البومة إلى هدف بعيد، ويحرس السلحفاة كل بطل حي ويعالج نقطة صحة. بعد أن يتصرف كل بطل حي، أو عند إنهاء الدور، ينفذ الأعداء سلوكهم وتعود طاقة واحدة حتى حد ثلاث طاقات.",
+      "قواعد الأعداء تعتمد على الموقع لا على الأرقام فقط. تكتسب الذئاب ناب القطيع عند مجاورة ذئب آخر، ويستهدف الغراب البطل الأقل نسبة صحة، ويستعيد أيل الحجر درع الضربة الأولى. يرد خنزير الشوك ضررًا بعد ضربة قريبة، وينتقل ثعلب الرون خلف أضعف بطل، وتحمي سلحفاة المد أقرب حليف بضربة واحدة، ويدفع مالك الحزين العتيق البطل الذي يضربه، ويشحن كبش الجمر خطًا مستقيمًا ظاهرًا.",
+      "تغيّر الأعداء اللاحقون تخطيط الأفعال. يترك سمندر الجمر بلاطة محترقة مؤقتة، وتسكت عثة القمر مهارة بطل لدور لاعب واحد من دون منع التحرك أو الهجوم أو الحراسة. تضع بومة الأرشيف علامة تجعل الضربة البعيدة التالية أقوى، وينشئ ذئب المرآة نسخة مجاورة بصحة واحدة، ويستنزف غراب الختم طاقة واحدة من دون النزول بها تحت الصفر. وتبقى هذه الصفات فعالة عندما تجمع المهمة 29 تهديدًا من خمسة فصول سابقة.",
+      "تشكل حالات اللوحة جزءًا من كل مهمة. لا يمكن احتلال الأنقاض، ويمنع فخ الجذر حركة البطل التالية، وتحرك المد وحدة واحدة بعد دور العدو. يضر الحريق بالبطل الواقف عليه، بينما تستعيد رونة التبريد ذات الاستخدام الواحد الطاقة وتمسح بلاطات الحريق. تدور رونات المدار بالوحدات حول الحلقة الخارجية. في أقفال الرون الستة، يجب أن يحتل ثلاثة أبطال خلايا ختم مترابطة لإزالة جناح العدو؛ ويخسر الهجوم عبر الجناح نقطة ضرر.",
+      "تبدأ مراحل الزعيم تراكميًا عند 70 و35 بالمئة من الصحة، لذلك لا تتجاوز ضربة كبيرة مرحلة كاملة. يجدد أيل الحجر درعه ويشحن مساره، ويستعد وحيد قرن جذر الحديد ويترك أنقاضًا، وتسحب أفعى لولب المستنقع الأبطال وتتجدد ما لم يضربها بطلان في دور اللاعب، ويضع أسد عرف الجمر النار ويحصل على إجراء إضافي عند إصابته، ويتناوب غريفين الكسوف بين مناعة الطيران والمسح الأرضي، ويجمع هجين تاج الرون المد والحريق والأنقاض والطيران واستدعاء ذئب المرآة.",
+      "للنمو الدائم ثلاث طبقات. تمنح المهمة المنتصرة خبرة ورونات، وترفع الخبرة مستوى الفرقة بمراحل من 100 نقطة، وترقي الرونات الأسد أو البومة أو السلحفاة حتى المستوى 6 فتزيد الصحة والهجوم. تُحفظ مكافأة الرون بعد المهمة: تزيد القوة الهجوم، ويزيد وسام الحارس الصحة القصوى، وتضيف شظية الرون 35 نقطة خبرة، ويضيف التركيز طاقة البداية، ويمكن لرمز الإحياء إعادة بطل ساقط بنصف صحته. إعادة تدوير المكافأة بثلاث ماسات وفتحة التدريب بثماني عشرة ماسة خياران اختياريان، ولا يفتح أي منهما مهمة أو زعيمًا."
+    ],
+    how: [
+      "اسحب شريط بطاقات المهام الثلاثين واختر مهمة مفتوحة؛ كل بطاقة خامسة نقطة زعيم مسماة.",
+      "اقرأ اسم المهمة وقائمة الأعداء والصفات والتضاريس والخطة التكتيكية قبل دخول المعركة.",
+      "اختر الأسد أو البومة أو السلحفاة على اللوحة أو في قائمة إجراءات الفرقة، ثم اختر خلية مجاورة مميزة للتحرك أو عدوًا مميزًا للهجوم أو الحراسة أو المهارة.",
+      "راقب علامات انتهاء الدور ولوحة البطل المحدد. أنهِ الدور مبكرًا فقط عندما يكون الحفاظ على الموقع أكثر أمانًا من استخدام كل إجراء.",
+      "أثناء دور العدو، اقرأ شارات الصفات وسجل المعركة لتفهم الردود والحراسة والدفع والشحن والصمت والعلامات والاستنزاف والنسخ ومراحل الزعيم.",
+      "اهزم كل الأعداء، واختر مكافأة رون دائمة، وراجع الخبرة والرونات المحفوظة وأفضل مهمة وفجوة الترقية التالية.",
+      "استخدم المهمة التالية عند توفرها، أو أعد المحاولة لإعادة اللوحة الحالية، أو عد إلى المهام لتدريب الأبطال وإعادة زيارة أي بطاقة مفتوحة."
+    ],
+    strategyTips: [
+      "اكسر تجاور الذئاب قبل تبادل الضرر؛ قد تزيل حركة بطل واحد ناب القطيع من هجومين معًا.",
+      "لا تستخدم مدى البومة على خنزير الشوك من خلية مجاورة؛ فالضربة من خليتين تتجنب الرد القريب وتحافظ على فائدة الصف الخلفي.",
+      "يمتلك البطل الصامت ثلاثة أفعال مفيدة. تحرك خارج مسار الشحن، أو نفذ هجومًا عاديًا أو حراسة بدل انتظار عودة المهارة.",
+      "ضد أفعى لولب المستنقع، يجب أن يصيبها بطلان مختلفان في دور اللاعب نفسه؛ مهارة بطل واحد القوية لا توقف التجدد.",
+      "يحجب غريفين الطائر ضرر البومة البعيد. استخدم الأسد أثناء الطيران، ثم وزع الأبطال قبل المسح الأرضي في صف واحد.",
+      "اترك خلية مجاورة قانونية عند ظهور ذئب المرآة، ثم أزل النسخة ذات الصحة الواحدة قبل أن تغيّر مسارات الحركة والاستهداف.",
+      "تحسن المكافآت الدائمة هامش الخطأ لكنها لا تحل قواعد اللوحة؛ قد تتفوق فرقة أقل مستوى تستخدم خلايا التبريد والختم والمدار بشكل صحيح على فرقة أقوى في المسار الخطأ."
+    ],
+    progression: [
+      "تعلم المهام 1–5 الحركة وتركيز الهجوم ومجاورة الذئب واستهداف الغراب وممرات الجسر المسدودة. يجدد اختبار أيل الحجر درع الضربة الأولى عند العتبتين ويعاقب الأبطال في صفه.",
+      "تضيف المهام 6–10 الردود القريبة والانتقال خلف الصف وفخ الجذر وتشكيلات الكماشة. يحول وحيد قرن جذر الحديد الخلايا الآمنة إلى أنقاض، فيتغير المسار أثناء القتال.",
+      "تجعل المهام 11–15 الموقع يتحرك بعد القرارات عبر المد ودفع مالك الحزين، وتضيف أفعى لولب المستنقع سحب الأعمدة وفحص تجدد المهاجمين.",
+      "تجمع المهام 16–20 بين الحريق المؤقت والشحن في خط مستقيم ورونات التبريد ذات الاستخدام الواحد. يتناوب أسد عرف الجمر بين نار اللوحة وضغط المجموعة والإجراء الإضافي عند إصابته.",
+      "تقيد المهام 21–25 توقيت المهارة بالصمت والعلامات البعيدة، ثم تدور الحلقة الخارجية. يغير غريفين الكسوف البطل القادر على إضراره وموعد خطورة الصف.",
+      "تضيف المهام 26–30 النسخ واستنزاف الطاقة والأختام المترابطة قبل أن تعيد ساحة التاج مزج خمس قواعد سابقة. يغير هجين تاج الرون التضاريس عند عتبتين ظاهرتين ويستدعي نسخة لاختبار ترتيب الأهداف الأخير."
+    ],
+    designNote: "تبقى اللوحة بعرض ثلاث خلايا وطول أربع خلايا كي يظل كل قرار ظاهرًا على الهاتف من دون تمرير. يأتي العمق من أدوار الإجراء الواحد: التحرك لحل خطر حالي يعني التخلي عن هجوم ذلك البطل، بينما قد تكون الحراسة أقوى من مطاردة الضرر. تقدم الفصول الستة مفردة واحدة في كل مرة ثم تطلب من زعيم الفصل إعادة دمجها. تعمل المؤشرات واللمس وشبكة مفاتيح الأسهم على الخلايا المنطقية نفسها، وتتوقف اللعبة بعد كل قرار لتجعل حالة اللوحة هي اللغز.",
+    parent: "يُحفظ مستوى الفرقة والخبرة والرونات وأفضل مهمة والمهام المفتوحة ومستويات الأبطال وفتحة التدريب ومكافآت الهجوم والصحة والطاقة ورموز الإحياء محليًا في هذا المتصفح. لا يلزم تسجيل الدخول للعب الأساسي، وقد يؤدي مسح بيانات الموقع أو استخدام متصفح آخر إلى حفظ منفصل. الماسات عملة اختيارية لإعادة تدوير مكافأة أو تأكيد فتحة تدريب؛ وتظل المهام الثلاثون وأنظمة التضاريس السبعة والأعداء المميزون والزعماء الستة قابلة للعب من دونها.",
+    faq: [
+      ["هل تكتيكات الرون الحيواني مجانية؟", "نعم. يمكن لعب المهام الثلاثين والأعداء الخاصين وقواعد التضاريس والنمو الدائم والزعماء الستة في المتصفح من دون دفع."],
+      ["كم عدد المهام والزعماء؟", "هناك 30 مهمة مؤلفة، وتنتهي المهام 5 و10 و15 و20 و25 و30 بستة زعماء مختلفين."],
+      ["ما الذي يبقى وما الذي يعاد؟", "تبقى المهام المفتوحة ومستوى الفرقة والخبرة والرونات والتدريب ومكافآت الأبطال محليًا، بينما تعاد لوحة المعركة عند بدء مهمة جديدة."],
+      ["كيف تعمل الحراسة والمد والصمت؟", "تقلل الحراسة ضربة محددة، وينقل المد وحدة، وتوقف حالة الصمت المهارة مؤقتًا؛ ولا تلغي أي منها التحكم بالحركة."],
+      ["هل أفقد الغرض الجديد إذا أبقيت تجهيزاتي الحالية؟", "لا. يضاف الغرض الجديد إلى الحقيبة أولًا، ويحدد القرار فقط ما إذا كنت ستجهزه الآن."],
+      ["ما فائدة الماسات؟", "يمكنها إعادة تدوير مكافأة واحدة أو تأكيد فتحة التدريب؛ ولا تفتح المهام أو الأبطال أو الزعماء."],
+      ["هل يتطلب التقدم حسابًا؟", "لا. يُحفظ التقدم في هذا المتصفح، وقد يؤدي مسح بيانات الموقع أو تغيير الجهاز إلى حفظ منفصل."],
+      ["هل تدعم اللعبة الهاتف وسطح المكتب؟", "نعم. يدعم الهاتف النقر والسحب المستمر، ويدعم سطح المكتب المؤشر ولوحة المفاتيح، مع القواعد نفسها."]
+    ]
   };
   const runeRelatedCardLocaleCopy = {
     "ko": {

@@ -6,15 +6,15 @@
 
     <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><meta name="theme-color" content="#063f3c">
-  <title>पैंको का बांस जलमार्ग | WeightPlay</title>
-  <meta name="description" content="Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers." />
+  <title>पैंको की बाँस नहर | WeightPlay</title>
+  <meta name="description" content="बाँस के पूरे नेटवर्क को घुमाकर तराशे हुए झरने से फूलों के तालाब तक पानी पहुँचाएँ, बिना टूटे जोड़, नकली शाखा या खिसके हुए पाइप केंद्र के।" />
   <meta property="og:site_name" content="WeightPlay" /><meta property="og:type" content="website" />
-  <meta property="og:title" content="पैंको का बांस जलमार्ग | WeightPlay" />
-  <meta property="og:description" content="Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers." />
+  <meta property="og:title" content="पैंको की बाँस नहर | WeightPlay" />
+  <meta property="og:description" content="बाँस के पूरे नेटवर्क को घुमाकर तराशे हुए झरने से फूलों के तालाब तक पानी पहुँचाएँ, बिना टूटे जोड़, नकली शाखा या खिसके हुए पाइप केंद्र के।" />
   <meta property="og:url" content="https://weightplay.com/hi/games/animal-bamboo-pipes/" />
   <meta property="og:image" content="https://weightplay.com/assets/animal-bamboo-pipes-cover.webp" />
-  <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content="पैंको का बांस जलमार्ग | WeightPlay" />
-  <meta name="twitter:description" content="Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers." />
+  <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content="पैंको की बाँस नहर | WeightPlay" />
+  <meta name="twitter:description" content="बाँस के पूरे नेटवर्क को घुमाकर तराशे हुए झरने से फूलों के तालाब तक पानी पहुँचाएँ, बिना टूटे जोड़, नकली शाखा या खिसके हुए पाइप केंद्र के।" />
   <meta name="twitter:image" content="https://weightplay.com/assets/animal-bamboo-pipes-cover.webp" />
   <link rel="canonical" href="https://weightplay.com/hi/games/animal-bamboo-pipes/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-bamboo-pipes/" />
@@ -35,8 +35,8 @@
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "पैंको का बांस जलमार्ग",
-  "description": "Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers.",
+  "name": "पैंको की बाँस नहर",
+  "description": "बाँस के पूरे नेटवर्क को घुमाकर तराशे हुए झरने से फूलों के तालाब तक पानी पहुँचाएँ, बिना टूटे जोड़, नकली शाखा या खिसके हुए पाइप केंद्र के।",
   "url": "https://weightplay.com/hi/games/animal-bamboo-pipes/",
   "image": "https://weightplay.com/assets/animal-bamboo-pipes-cover.webp",
   "applicationCategory": "Game",
@@ -44,9 +44,9 @@
   "inLanguage": "hi",
   "isAccessibleForFree": true,
   "genre": [
-    "Puzzle",
-    "Strategy",
-    "Animal",
+    "पहेली",
+    "रणनीति",
+    "पशु",
     "Browser Game"
   ],
   "publisher": {
@@ -66,7 +66,7 @@
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260726-bamboo-flow1" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260726-bamboo-flow1" data-wp-battle-standard>
-  <link rel="stylesheet" href="style.css?v=20260820-pipe-state-a11y-v12">
+  <link rel="stylesheet" href="style.css?v=20260824-bamboo-guide-responsive-v13">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1"><style>
     .screen[hidden]{display:none!important}
     @media (max-height:500px) and (orientation:landscape){
@@ -75,32 +75,32 @@
       .battle-panel{grid-template-columns:210px;grid-template-rows:24px 210px 34px;gap:4px;align-content:start}
       .battle .board{width:210px;height:210px}
       .battle .tools{height:34px;align-items:center}
-      .battle .tools button{height:32px;min-height:32px;max-height:32px;padding:.2rem .6rem}
+      .battle .tools button{height:32px;min-height:32px;max-height:32px;padding:0 .15rem;font-size:.72rem;line-height:1;white-space:nowrap}
     }
   </style>
 </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="animal-bamboo-pipes" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-bamboo-t="title">Panko's Bamboo Waterway</strong><span data-bamboo-t="summary">Preparing the waterways...</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
-  <div id="mainGroup" class="main-group"><main id="main" class="screen main"><header class="main-header"><a class="return" data-wp-return="main" href="/" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><strong data-bamboo-t="title">Panko's Bamboo Waterway</strong><label class="locale"><span data-bamboo-t="language">Language</span><select id="locale"></select></label></header><section class="hero"><img src="../../assets/animal-bamboo-pipes-cover.webp" alt="पैंको का बांस जलमार्ग game artwork"><div><p class="eyebrow" data-bamboo-t="kicker">PANKO'S PUZZLE GARDEN</p><h1 data-bamboo-t="title">पैंको का बांस जलमार्ग</h1><p data-bamboo-t="summary">Turn the bamboo. Let every drop reach the flowering grove.</p><strong id="mainProgress" class="main-progress"></strong><button id="start" class="primary" type="button" data-bamboo-t="start">Start Game</button></div></section></main><section class="game-page-info game-page-info-static" aria-label="पैंको का बांस जलमार्ग खेल की जानकारी">
+  <div id="mainGroup" class="main-group"><main id="main" class="screen main"><header class="main-header"><a class="return" data-wp-return="main" href="/" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><strong data-bamboo-t="title">Panko's Bamboo Waterway</strong><label class="locale"><span data-bamboo-t="language">Language</span><select id="locale"></select></label></header><section class="hero"><img src="../../assets/animal-bamboo-pipes-cover.webp" alt="पैंको की बाँस नहर game artwork"><div><p class="eyebrow" data-bamboo-t="kicker">PANKO'S PUZZLE GARDEN</p><h1 data-bamboo-t="title">पैंको की बाँस नहर</h1><p data-bamboo-t="summary">Turn the bamboo. Let every drop reach the flowering grove.</p><strong id="mainProgress" class="main-progress"></strong><button id="start" class="primary" type="button" data-bamboo-t="start">Start Game</button></div></section></main><section class="game-page-info game-page-info-static" aria-label="पैंको की बाँस नहर खेल की जानकारी">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>पैंको का बांस जलमार्ग</h2><p>Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Rotating Pipe Network Puzzle</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Strategy · Animal</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>प्रति चरण 2-8 मिनट</strong></div><div class="game-info-fact"><span>Skills Trained</span><strong>Logic · Planning · समस्या समाधान</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>पैंको की बाँस नहर</h2><p>बाँस के पूरे नेटवर्क को घुमाकर तराशे हुए झरने से फूलों के तालाब तक पानी पहुँचाएँ, बिना टूटे जोड़, नकली शाखा या खिसके हुए पाइप केंद्र के।</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>घूमती पाइप नेटवर्क पहेली</strong></div><div class="game-info-fact"><span>Genre</span><strong>पहेली · रणनीति · पशु</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>शुरू करना आसान, धीरे-धीरे चुनौतीपूर्ण</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>हर चरण 2–8 मिनट</strong></div><div class="game-info-fact"><span>Skills Trained</span><strong>तर्क · योजना · समस्या समाधान</strong></div></div>
     </div>
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>World and Mission</h3><p>Panko is restoring thirty garden waterways whose bamboo joints were twisted by a storm. Every board is a closed engineering problem: the spring, basin, pipe shapes, and correct route are authored before play begins.</p>
-<p>The visible water is more than decoration. It follows the currently connected network from the source, making wrong turns, dead ends, and disconnected sections readable before the player commits more rotations.</p></div>
-      <div class="game-info-section"><h3>How the Systems Work</h3><p>Tap a tile to rotate it clockwise. Straight pipes, elbows, junctions, the spring, and the destination all use the same centered connection points.</p>
-<p>A pipe counts as connected only when both neighboring openings face each other. Touching artwork or a nearby edge is not enough.</p>
-<p>The source begins flowing immediately through every valid branch. A stage clears when the route reaches the destination under the stage rule; the destination itself does not need to rotate.</p>
-<p>Undo restores one rotation, Restart restores the authored board, and Hint identifies a useful next correction without silently solving the network.</p></div>
-      <div class="game-info-section"><h3>How to Play</h3><ol><li>Choose an unlocked waterway from the horizontal Stage rail.</li><li>Trace backward from the destination and forward from the spring before rotating crowded junctions.</li><li>Rotate each required piece until every used opening meets the center of its neighbor.</li><li>Confirm that the water reaches the clearly marked flowering destination, then continue from Result to the next waterway.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Fix edge pieces first because their impossible outward openings remove choices.</li><li>Use straight runs to establish a stable spine before deciding junction branches.</li><li>When water stops, inspect the first dry joint rather than rotating pieces far downstream.</li><li>Keep unused branches facing inward only when the stage requires the whole network to carry water.</li></ul></div>
-      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Six five-stage chapters move from short straight routes to elbows, junctions, loops, misleading branches, and dense mixed networks.</p>
-<p>Later waterways increase structural ambiguity instead of merely hiding the pipes or demanding faster input.</p></div>
-      <div class="game-info-section"><h3>Developer Design Note</h3><p>Every tile fills its grid cell and every connection shares one mathematical centerline, so the visual art, hit area, water path, and solved-state test describe the same geometry on phone and desktop. पूरा इंटरफ़ेस अधिकतम 920 पिक्सेल वाले एक केंद्रित तार्किक लेआउट का उपयोग करता है। फ़ोन, लैंडस्केप और डेस्कटॉप दृश्य अलग-अलग हिस्सों को खींचने के बजाय उन्हीं नियंत्रणों, हिट क्षेत्रों, चित्रों और गेम निर्देशांकों को साथ में स्केल करते हैं। इसलिए टच, माउस और कीबोर्ड एक ही वैध स्थिति पर काम करते हैं। Main पोस्टर और गेम शुरू करने की क्रिया Stage प्रबंधन से अलग रहती है, जबकि Stage चयन, Battle, संवाद और Result अपनी सीमित सामग्री और वापसी मार्ग बनाए रखते हैं।</p></div>
-      <div class="game-info-section game-info-parent"><h3>अभिभावक नोट</h3><p>No account, timer, purchase, or public score is required. Unlocks and best rotation counts remain in this browser and may reset if site storage is cleared. आप बिना खाता बनाए खेल सकते हैं। प्रगति ऑनलाइन खाते या उपकरणों के बीच डेटाबेस में नहीं, बल्कि वर्तमान ब्राउज़र प्रोफ़ाइल के स्थानीय संग्रहण में सहेजी जाती है। साइट डेटा मिटाने, निजी ब्राउज़िंग, ब्राउज़र बदलने या किसी अन्य उपकरण पर जाने से अलग सेव बन सकती है या मौजूदा सेव हट सकती है। जब ब्राउज़र संग्रहण की अनुमति देता है, तो भाषा, ध्वनि और गति कम करने की प्राथमिकताएँ WeightPlay के साझा नियंत्रणों का पालन करती हैं। गाइड का कोई भी परिणाम चिकित्सा, स्कूल या पेशेवर मूल्यांकन नहीं है।</p></div>
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Why is there still a gap?</dt><dd>The two openings must meet at the exact shared center of their tile edges.</dd></div><div><dt>Does the destination rotate?</dt><dd>No. Reaching its inlet is enough.</dd></div><div><dt>Can a decorative branch be ignored?</dt><dd>Only when the current stage does not require every pipe to carry water.</dd></div><div><dt>क्या प्रगति सेव होती है?</dt><dd>Yes, cleared waterways and local best results stay in this browser.</dd></div><div><dt>कौन-से नियंत्रण और स्क्रीन आकार समर्थित हैं?</dt><dd>जहाँ गेम उन्हें समर्थित करता है, टच, माउस और कीबोर्ड एक ही नियमों का पालन करते हैं। इंटरफ़ेस फ़ोन, लैंडस्केप और डेस्कटॉप के आवश्यक स्क्रीन आकारों में एक ही तार्किक लेआउट के रूप में अनुकूलित होता है।</dd></div><div><dt>क्या प्रगति अपने-आप दूसरे डिवाइस पर चली जाती है?</dt><dd>नहीं। यह गेम अभी प्रगति को केवल ब्राउज़र के स्थानीय संग्रहण में सहेजता है, इसलिए किसी दूसरे ब्राउज़र प्रोफ़ाइल या डिवाइस पर अलग स्थानीय प्रगति होगी, जब तक भविष्य में खाता प्रणाली नहीं जोड़ी जाती।</dd></div></dl></div>
+      <div class="game-info-section"><h3>World and Mission</h3><p>पैंको उन तीस बगीचा-जलमार्गों को ठीक कर रहा है जिनके बाँस के जोड़ आँधी में मुड़ गए। हर बोर्ड पहले से बनाया गया इंजीनियरिंग सवाल है: झरना, तालाब, पाइप आकार और सही रास्ता पहले से तय हैं।</p>
+<p>दिखता हुआ पानी केवल सजावट नहीं है। वह झरने से जुड़े नेटवर्क में बहता है और अगली घुमाव से पहले गलत दिशा, बंद रास्ता और अलग हिस्से दिखाता है।</p></div>
+      <div class="game-info-section"><h3>How the Systems Work</h3><p>किसी खाने को छूकर बाँस को घड़ी की दिशा में घुमाएँ। सीधी नली, मुड़ी नली, जोड़, झरना और लक्ष्य एक ही केंद्रीय जोड़ का उपयोग करते हैं।</p>
+<p>पाइप तभी जुड़ा है जब दोनों पड़ोसी खुले हिस्से आमने-सामने हों। चित्र या किनारे का पास होना पर्याप्त नहीं है।</p>
+<p>झरना हर सही शाखा में तुरंत बहता है। नियम के अनुसार पानी लक्ष्य तक पहुँचते ही चरण पूरा होता है; लक्ष्य को घुमाना नहीं पड़ता।</p>
+<p>वापस एक घुमाव लौटाता है, फिर शुरू करें मूल बोर्ड लाता है, और संकेत बिना हल किए अगला सुधार बताता है।</p></div>
+      <div class="game-info-section"><h3>How to Play</h3><ol><li>क्षैतिज चरण-पट्टी से खुली हुई नहर चुनें।</li><li>भरे हुए जोड़ घुमाने से पहले लक्ष्य से पीछे और झरने से आगे रास्ता पढ़ें।</li><li>हर जरूरी टुकड़े को घुमाएँ ताकि इस्तेमाल होने वाले खुले हिस्से पड़ोसी के केंद्र से मिलें।</li><li>फूल वाले लक्ष्य तक पानी पहुँचने की पुष्टि करें और परिणाम से अगली नहर पर जाएँ।</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>किनारे के टुकड़ों से शुरू करें; बाहर की असंभव दिशाएँ विकल्प घटाती हैं।</li><li>जोड़ तय करने से पहले सीधी नलियों से मुख्य रास्ता बनाएँ।</li><li>पानी रुक जाए तो पहला सूखा जोड़ देखें, दूर के नीचे वाले टुकड़े को पहले न घुमाएँ।</li><li>बची शाखाओं को अंदर तभी रखें जब चरण में पूरे नेटवर्क में पानी माँगा गया हो।</li></ul></div>
+      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>छह अध्यायों के पाँच-पाँच चरण छोटे सीधे रास्तों से मुड़ी नलियों, जोड़, लूप, भ्रामक शाखाओं और घने नेटवर्क तक बढ़ते हैं।</p>
+<p>बाद के जलमार्ग गति नहीं, बल्कि संरचना पढ़ने की चुनौती बढ़ाते हैं।</p></div>
+      <div class="game-info-section"><h3>Developer Design Note</h3><p>हर टुकड़ा अपनी खाने की जगह भरता है और हर जोड़ एक गणितीय केंद्रीय रेखा साझा करता है। फोन और डेस्कटॉप पर चित्र, स्पर्श क्षेत्र, जलमार्ग और जीत की जाँच एक ही ज्यामिति बताते हैं।</p></div>
+      <div class="game-info-section game-info-parent"><h3>अभिभावक नोट</h3><p>खाते, टाइमर, खरीद या सार्वजनिक स्कोर की जरूरत नहीं है। खुले जलमार्ग और सबसे कम घुमाव इसी ब्राउज़र में बचते हैं और साइट डेटा हटाने पर मिट सकते हैं।</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>बीच में खाली जगह क्यों है?</dt><dd>दोनों खुले हिस्से पड़ोसी खानों की साझा सीमा के ठीक केंद्र पर आमने-सामने होने चाहिए।</dd></div><div><dt>क्या लक्ष्य को घुमाना है?</dt><dd>नहीं। पानी का उसके प्रवेश तक पहुँचना पर्याप्त है।</dd></div><div><dt>क्या सजावटी शाखा छोड़ सकते हैं?</dt><dd>केवल तब जब उस चरण में हर पाइप में पानी माँगा न गया हो।</dd></div><div><dt>क्या प्रगति सुरक्षित रहती है?</dt><dd>हाँ, ठीक की गई नहरें और स्थानीय सर्वश्रेष्ठ परिणाम इसी ब्राउज़र में रहते हैं।</dd></div><div><dt>कौन से नियंत्रण और स्क्रीन समर्थित हैं?</dt><dd>स्पर्श, माउस और कीबोर्ड एक ही नियमों पर चलते हैं; लेआउट फोन, लैंडस्केप और डेस्कटॉप पर साथ स्केल होता है।</dd></div><div><dt>क्या प्रगति दूसरे उपकरण पर अपने आप जाती है?</dt><dd>नहीं। यह केवल वर्तमान ब्राउज़र में सुरक्षित रहती है।</dd></div></dl></div>
 
     </div>
   </section></div>
@@ -114,7 +114,7 @@
   <script src="/src/runtime-locales/hi.js?v=20260821-skyport-runtime-v8"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
-  <script src="levels.js"></script><script src="locales.js?v=20260820-pipe-state-a11y-v12"></script><script src="../../src/tutorial.js?v=20260729-bamboo-public1"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260726-bamboo-flow1" data-wp-battle-standard></script><script src="game.js?v=20260820-pipe-state-a11y-v12"></script><script src="../../src/game-page-info.js?v=20260720-locale11-2"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="levels.js"></script><script src="locales.js?v=20260824-bamboo-guide-responsive-v13"></script><script src="../../src/tutorial.js?v=20260729-bamboo-public1"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260726-bamboo-flow1" data-wp-battle-standard></script><script src="game.js?v=20260824-bamboo-guide-responsive-v13"></script><script src="../../src/game-page-info.js?v=20260824-bamboo-guide-locales-v13"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
   <script>window.addEventListener("load",()=>{document.getElementById("loadingPanel")?.classList.add("hidden");window.WonderAnalytics?.track?.("game_view",{game_id:"animal-bamboo-pipes"});},{once:true});</script>
 </body>

@@ -7,14 +7,14 @@
     <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><meta name="theme-color" content="#063f3c">
   <title>胖達竹水道 | WeightPlay</title>
-  <meta name="description" content="Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers." />
+  <meta name="description" content="旋轉完整竹管網路，讓水從雕刻泉眼流向開花水池，不留斷點、錯誤分支或偏移的管線中心。" />
   <meta property="og:site_name" content="WeightPlay" /><meta property="og:type" content="website" />
   <meta property="og:title" content="胖達竹水道 | WeightPlay" />
-  <meta property="og:description" content="Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers." />
+  <meta property="og:description" content="旋轉完整竹管網路，讓水從雕刻泉眼流向開花水池，不留斷點、錯誤分支或偏移的管線中心。" />
   <meta property="og:url" content="https://weightplay.com/zh-tw/games/animal-bamboo-pipes/" />
   <meta property="og:image" content="https://weightplay.com/assets/animal-bamboo-pipes-cover.webp" />
   <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content="胖達竹水道 | WeightPlay" />
-  <meta name="twitter:description" content="Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers." />
+  <meta name="twitter:description" content="旋轉完整竹管網路，讓水從雕刻泉眼流向開花水池，不留斷點、錯誤分支或偏移的管線中心。" />
   <meta name="twitter:image" content="https://weightplay.com/assets/animal-bamboo-pipes-cover.webp" />
   <link rel="canonical" href="https://weightplay.com/zh-tw/games/animal-bamboo-pipes/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-bamboo-pipes/" />
@@ -36,7 +36,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "胖達竹水道",
-  "description": "Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers.",
+  "description": "旋轉完整竹管網路，讓水從雕刻泉眼流向開花水池，不留斷點、錯誤分支或偏移的管線中心。",
   "url": "https://weightplay.com/zh-tw/games/animal-bamboo-pipes/",
   "image": "https://weightplay.com/assets/animal-bamboo-pipes-cover.webp",
   "applicationCategory": "Game",
@@ -44,9 +44,9 @@
   "inLanguage": "zh-Hant",
   "isAccessibleForFree": true,
   "genre": [
-    "Puzzle",
-    "Strategy",
-    "Animal",
+    "益智",
+    "策略",
+    "動物",
     "Browser Game"
   ],
   "publisher": {
@@ -66,7 +66,7 @@
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260726-bamboo-flow1" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260726-bamboo-flow1" data-wp-battle-standard>
-  <link rel="stylesheet" href="style.css?v=20260820-pipe-state-a11y-v12">
+  <link rel="stylesheet" href="style.css?v=20260824-bamboo-guide-responsive-v13">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1"><style>
     .screen[hidden]{display:none!important}
     @media (max-height:500px) and (orientation:landscape){
@@ -75,7 +75,7 @@
       .battle-panel{grid-template-columns:210px;grid-template-rows:24px 210px 34px;gap:4px;align-content:start}
       .battle .board{width:210px;height:210px}
       .battle .tools{height:34px;align-items:center}
-      .battle .tools button{height:32px;min-height:32px;max-height:32px;padding:.2rem .6rem}
+      .battle .tools button{height:32px;min-height:32px;max-height:32px;padding:0 .15rem;font-size:.72rem;line-height:1;white-space:nowrap}
     }
   </style>
 </head>
@@ -84,23 +84,23 @@
   <div id="mainGroup" class="main-group"><main id="main" class="screen main"><header class="main-header"><a class="return" data-wp-return="main" href="/" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><strong data-bamboo-t="title">Panko's Bamboo Waterway</strong><label class="locale"><span data-bamboo-t="language">Language</span><select id="locale"></select></label></header><section class="hero"><img src="../../assets/animal-bamboo-pipes-cover.webp" alt="《胖達竹水道》遊戲圖片"><div><p class="eyebrow" data-bamboo-t="kicker">PANKO'S PUZZLE GARDEN</p><h1 data-bamboo-t="title">胖達竹水道</h1><p data-bamboo-t="summary">Turn the bamboo. Let every drop reach the flowering grove.</p><strong id="mainProgress" class="main-progress"></strong><button id="start" class="primary" type="button" data-bamboo-t="start">Start Game</button></div></section></main><section class="game-page-info game-page-info-static" aria-label="胖達竹水道 遊戲資訊">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>胖達竹水道</h2><p>Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>Rotating Pipe Network Puzzle</strong></div><div class="game-info-fact"><span>類型</span><strong>Puzzle · Strategy · Animal</strong></div><div class="game-info-fact"><span>難度</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>2-8 minutes per stage</strong></div><div class="game-info-fact"><span>練習能力</span><strong>邏輯 · Planning · 問題解決</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>胖達竹水道</h2><p>旋轉完整竹管網路，讓水從雕刻泉眼流向開花水池，不留斷點、錯誤分支或偏移的管線中心。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>旋轉竹管網路益智遊戲</strong></div><div class="game-info-fact"><span>類型</span><strong>益智 · 策略 · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>容易上手，逐步挑戰</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>每關 2–8 分鐘</strong></div><div class="game-info-fact"><span>練習能力</span><strong>邏輯 · 規劃 · 問題解決</strong></div></div>
     </div>
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界與任務</h3><p>Panko is restoring thirty garden waterways whose bamboo joints were twisted by a storm. Every board is a closed engineering problem: the spring, basin, pipe shapes, and correct route are authored before play begins.</p>
-<p>The visible water is more than decoration. It follows the currently connected network from the source, making wrong turns, dead ends, and disconnected sections readable before the player commits more rotations.</p></div>
-      <div class="game-info-section"><h3>遊戲系統</h3><p>Tap a tile to rotate it clockwise. Straight pipes, elbows, junctions, the spring, and the destination all use the same centered connection points.</p>
-<p>A pipe counts as connected only when both neighboring openings face each other. Touching artwork or a nearby edge is not enough.</p>
-<p>The source begins flowing immediately through every valid branch. A stage clears when the route reaches the destination under the stage rule; the destination itself does not need to rotate.</p>
-<p>Undo restores one rotation, Restart restores the authored board, and Hint identifies a useful next correction without silently solving the network.</p></div>
-      <div class="game-info-section"><h3>玩法說明</h3><ol><li>Choose an unlocked waterway from the horizontal Stage rail.</li><li>Trace backward from the destination and forward from the spring before rotating crowded junctions.</li><li>Rotate each required piece until every used opening meets the center of its neighbor.</li><li>Confirm that the water reaches the clearly marked flowering destination, then continue from Result to the next waterway.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>Fix edge pieces first because their impossible outward openings remove choices.</li><li>Use straight runs to establish a stable spine before deciding junction branches.</li><li>When water stops, inspect the first dry joint rather than rotating pieces far downstream.</li><li>Keep unused branches facing inward only when the stage requires the whole network to carry water.</li></ul></div>
-      <div class="game-info-section"><h3>關卡與難度成長</h3><p>Six five-stage chapters move from short straight routes to elbows, junctions, loops, misleading branches, and dense mixed networks.</p>
-<p>Later waterways increase structural ambiguity instead of merely hiding the pipes or demanding faster input.</p></div>
-      <div class="game-info-section"><h3>開發設計理念</h3><p>Every tile fills its grid cell and every connection shares one mathematical centerline, so the visual art, hit area, water path, and solved-state test describe the same geometry on phone and desktop.</p></div>
-      <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>No account, timer, purchase, or public score is required. Unlocks and best rotation counts remain in this browser and may reset if site storage is cleared.</p></div>
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>Why is there still a gap?</dt><dd>The two openings must meet at the exact shared center of their tile edges.</dd></div><div><dt>Does the destination rotate?</dt><dd>No. Reaching its inlet is enough.</dd></div><div><dt>Can a decorative branch be ignored?</dt><dd>Only when the current stage does not require every pipe to carry water.</dd></div><div><dt>Does progress save?</dt><dd>Yes, cleared waterways and local best results stay in this browser.</dd></div></dl></div>
+      <div class="game-info-section"><h3>世界與任務</h3><p>胖達正在修復三十條被暴風雨扭亂竹節的花園水道。每個棋盤都是預先設計好的工程問題：泉眼、水池、管線形狀與正確路徑都在開始前確定。</p>
+<p>流動的水不只是裝飾。它會沿著目前接通的網路從泉眼前進，讓錯誤轉向、死路與未接通的區域在你繼續旋轉前清楚可讀。</p></div>
+      <div class="game-info-section"><h3>遊戲系統</h3><p>點按方格讓竹管順時針旋轉。直管、彎管、接點、泉眼與終點都使用相同的中心接點。</p>
+<p>只有兩側開口正對彼此時，管線才算接通。碰到美術邊緣或相鄰邊緣並不代表接上。</p>
+<p>泉眼會立刻沿著所有有效分支出水。當水在該關規則下抵達終點時就會過關；終點本身不需要旋轉。</p>
+<p>復原會還原一次旋轉，重來會還原原始棋盤，提示會指出下一個有用修正但不會自動解題。</p></div>
+      <div class="game-info-section"><h3>玩法說明</h3><ol><li>從水平關卡軌道選擇已解鎖的水道。</li><li>旋轉擁擠的接點前，先從終點回頭追蹤，再從泉眼向前確認路線。</li><li>逐一旋轉必要管線，讓每個使用中的開口都對準鄰格中心。</li><li>確認水抵達清楚標示的開花終點，再從結果畫面前往下一條水道。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>先處理邊緣管線；不可能朝外的開口會直接排除方向。</li><li>先用直線建立穩定主幹，再決定接點分支。</li><li>水流停下時，檢查第一個乾燥接點，不要立刻旋轉很遠下游的管線。</li><li>只有當關卡要求整張網路通水時，才需要讓未使用分支朝內。</li></ul></div>
+      <div class="game-info-section"><h3>關卡與難度成長</h3><p>六個五關章節會從短直線路徑，逐步加入彎管、接點、迴路、誤導分支與密集混合網路。</p>
+<p>後期水道增加結構上的歧義，而不只是藏起管線或要求更快操作。</p></div>
+      <div class="game-info-section"><h3>開發設計理念</h3><p>每格管線都填滿自己的棋盤格，每個接點都共用同一條數學中心線，因此手機與桌面上的美術、點擊區、水流路徑和過關判定描述的是同一套幾何。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>不需要帳號、計時器、購買或公開分數。解鎖進度與最佳旋轉次數保存在此瀏覽器；清除網站資料可能會重置它們。</p></div>
+      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>為什麼中間還有斷點？</dt><dd>兩個開口必須在相鄰方格邊緣的同一個中心點正確相對。</dd></div><div><dt>終點需要旋轉嗎？</dt><dd>不需要，只要水抵達它的入口即可。</dd></div><div><dt>裝飾分支可以忽略嗎？</dt><dd>只有在目前關卡不要求每根管線通水時才可以。</dd></div><div><dt>進度會保存嗎？</dt><dd>會，已修復水道與本機最佳結果會保存在此瀏覽器。</dd></div><div><dt>支援哪些控制方式與螢幕尺寸？</dt><dd>觸控、滑鼠與鍵盤使用同一套規則，版面會在手機、橫向與桌面視窗中一起縮放。</dd></div><div><dt>進度會自動同步到其他裝置嗎？</dt><dd>不會，進度只保存在目前瀏覽器；其他瀏覽器或裝置會有獨立進度。</dd></div></dl></div>
 
     </div>
   </section></div>
@@ -114,7 +114,7 @@
   <script src="/src/runtime-locales/zh-tw.js?v=20260821-skyport-runtime-v8"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
-  <script src="levels.js"></script><script src="locales.js?v=20260820-pipe-state-a11y-v12"></script><script src="../../src/tutorial.js?v=20260729-bamboo-public1"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260726-bamboo-flow1" data-wp-battle-standard></script><script src="game.js?v=20260820-pipe-state-a11y-v12"></script><script src="../../src/game-page-info.js?v=20260720-locale11-2"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="levels.js"></script><script src="locales.js?v=20260824-bamboo-guide-responsive-v13"></script><script src="../../src/tutorial.js?v=20260729-bamboo-public1"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260726-bamboo-flow1" data-wp-battle-standard></script><script src="game.js?v=20260824-bamboo-guide-responsive-v13"></script><script src="../../src/game-page-info.js?v=20260824-bamboo-guide-locales-v13"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
   <script>window.addEventListener("load",()=>{document.getElementById("loadingPanel")?.classList.add("hidden");window.WonderAnalytics?.track?.("game_view",{game_id:"animal-bamboo-pipes"});},{once:true});</script>
 </body>

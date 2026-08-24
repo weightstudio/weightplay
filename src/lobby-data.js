@@ -2543,6 +2543,70 @@ for (const game of window.WONDER_LOBBY.games) {
   delete game.internalTrial;
 }
 
+// The classic owner-preview builds have full playable routes and production
+// records, so they must also appear in the preview lobby's planned count.
+// They stay Coming Soon and never enter the public playable catalog here.
+const classicOwnerPreviewLocaleKeys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+const classicOwnerPreviewStatusText = {
+  en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정",
+  es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente",
+  ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا",
+};
+const classicOwnerPreviewLocalized = (values) => {
+  const localized = Object.fromEntries(classicOwnerPreviewLocaleKeys.map((locale, index) => [locale, values[index]]));
+  Object.defineProperty(localized, "__localizedExact", { value: true, enumerable: false });
+  return localized;
+};
+const classicOwnerPreviewType = classicOwnerPreviewLocalized([
+  "Classic Game", "經典遊戲", "经典游戏", "クラシックゲーム", "클래식 게임", "Juego clásico", "Jogo clássico",
+  "Jeu classique", "Klassiker", "Gioco classico", "Классическая игра", "क्लासिक गेम", "لعبة كلاسيكية",
+]);
+const classicOwnerPreviewDescription = classicOwnerPreviewLocalized([
+  "A complete classic game currently finishing its release checks.",
+  "正在完成發佈檢查的完整經典遊戲。",
+  "正在完成发布检查的完整经典游戏。",
+  "公開前チェックを進めている完成済みのクラシックゲームです。",
+  "출시 전 검사를 마무리 중인 완성된 클래식 게임입니다.",
+  "Un juego clásico completo que está terminando sus controles de lanzamiento.",
+  "Um jogo clássico completo que está finalizando as verificações de lançamento.",
+  "Un jeu classique complet qui termine ses vérifications avant sortie.",
+  "Ein vollständiger Klassiker, der gerade die Veröffentlichungsprüfungen abschließt.",
+  "Un gioco classico completo che sta terminando i controlli per la pubblicazione.",
+  "Готовая классическая игра, проходящая финальные проверки перед выпуском.",
+  "एक पूर्ण क्लासिक गेम जिसकी रिलीज़ जाँच पूरी की जा रही है।",
+  "لعبة كلاسيكية مكتملة تُنهي فحوص الإصدار حالياً.",
+]);
+const classicOwnerPreviewGames = [
+  ["breakout", ["Breakout", "打磚塊", "打砖块", "ブロック崩し", "벽돌깨기", "Rompe ladrillos", "Quebra-blocos", "Casse-briques", "Brick Breaker", "Arkanoid", "Арканоид", "ब्रेकआउट", "كسر الطوب"], ["Classic", "Arcade", "Action"], ["Timing", "Aim"]],
+  ["chess", ["Chess", "西洋棋", "国际象棋", "チェス", "체스", "Ajedrez", "Xadrez", "Échecs", "Schach", "Scacchi", "Шахматы", "शतरंज", "الشطرنج"], ["Classic", "Board", "Strategy"], ["Planning", "Tactics"]],
+  ["hangman", ["Hangman", "猜字吊人", "猜词吊人", "ハングマン", "행맨", "Ahorcado", "Forca", "Pendu", "Galgenmännchen", "Impiccato", "Виселица", "हैंगमैन", "الرجل المشنوق"], ["Classic", "Word", "Puzzle"], ["Vocabulary", "Deduction"]],
+  ["mahjong-solitaire", ["Mahjong Solitaire", "麻將接龍", "麻将接龙", "麻雀ソリティア", "마작 솔리테어", "Mahjong solitario", "Paciência Mahjong", "Mahjong solitaire", "Mahjong-Solitär", "Mahjong solitario", "Маджонг-солитер", "माहजोंग सॉलिटेयर", "ماجونغ سوليتير"], ["Classic", "Puzzle", "Strategy"], ["Matching", "Planning"]],
+  ["pong", ["Pong", "乒乓球", "乒乓球", "卓球", "퐁", "Pong", "Pong", "Pong", "Pong", "Pong", "Понг", "पोंग", "بونغ"], ["Classic", "Arcade", "Sports"], ["Timing", "Reaction"]],
+  ["tetris", ["Tetris", "俄羅斯方塊", "俄罗斯方块", "テトリス", "테트리스", "Tetris", "Tetris", "Tetris", "Tetris", "Tetris", "Тетрис", "टेट्रिस", "تتريس"], ["Classic", "Puzzle", "Arcade"], ["Planning", "Reaction"]],
+  ["wordle", ["Wordle", "Wordle 猜字", "Wordle 猜词", "Wordle", "Wordle", "Wordle", "Wordle", "Wordle", "Wordle", "Wordle", "Wordle", "Wordle", "Wordle"], ["Classic", "Word", "Puzzle"], ["Vocabulary", "Deduction"]],
+];
+
+for (const [id, titles, categories, skills] of classicOwnerPreviewGames) {
+  if (!window.WONDER_LOBBY.games.some((game) => game.id === id)) {
+    window.WONDER_LOBBY.games.push({
+      id,
+      title: classicOwnerPreviewLocalized(titles),
+      status: "planned",
+      statusText: { ...classicOwnerPreviewStatusText },
+      type: classicOwnerPreviewType,
+      description: classicOwnerPreviewDescription,
+      categories,
+      skills,
+      ages: ["9", "family"],
+      ageLabel: classicOwnerPreviewLocalized(Array(13).fill("9+")),
+      href: `games/${id}/`,
+      internalTrial: "index.html?trial=1",
+      art: { kind: "image", background: id === "tetris" ? "assets/tetris-cover.webp" : "assets/classic-logic-lab-cover.webp", hideHero: true },
+    });
+  }
+  if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(id)) window.WONDER_LOBBY.audiences.generalGameIds.push(id);
+}
+
 // Next-five Mode 2 candidates remain owner-preview only until the exact Tester,
 // Gameplay Reviewer, Director, guide, preview, and release gates are complete
 // and the owner confirms the complete player flow is usable.

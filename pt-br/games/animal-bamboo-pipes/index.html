@@ -6,15 +6,15 @@
 
     <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><meta name="theme-color" content="#063f3c">
-  <title>Hidrovia de Bambu de Panko | WeightPlay</title>
-  <meta name="description" content="Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers." />
+  <title>Canal de Bambu do Panko | WeightPlay</title>
+  <meta name="description" content="Gire uma rede completa de bambu para levar a água da nascente esculpida ao lago florido, sem cortes, ramificações falsas ou centros desalinhados." />
   <meta property="og:site_name" content="WeightPlay" /><meta property="og:type" content="website" />
-  <meta property="og:title" content="Hidrovia de Bambu de Panko | WeightPlay" />
-  <meta property="og:description" content="Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers." />
+  <meta property="og:title" content="Canal de Bambu do Panko | WeightPlay" />
+  <meta property="og:description" content="Gire uma rede completa de bambu para levar a água da nascente esculpida ao lago florido, sem cortes, ramificações falsas ou centros desalinhados." />
   <meta property="og:url" content="https://weightplay.com/pt-br/games/animal-bamboo-pipes/" />
   <meta property="og:image" content="https://weightplay.com/assets/animal-bamboo-pipes-cover.webp" />
-  <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content="Hidrovia de Bambu de Panko | WeightPlay" />
-  <meta name="twitter:description" content="Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers." />
+  <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content="Canal de Bambu do Panko | WeightPlay" />
+  <meta name="twitter:description" content="Gire uma rede completa de bambu para levar a água da nascente esculpida ao lago florido, sem cortes, ramificações falsas ou centros desalinhados." />
   <meta name="twitter:image" content="https://weightplay.com/assets/animal-bamboo-pipes-cover.webp" />
   <link rel="canonical" href="https://weightplay.com/pt-br/games/animal-bamboo-pipes/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-bamboo-pipes/" />
@@ -35,8 +35,8 @@
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "Hidrovia de Bambu de Panko",
-  "description": "Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers.",
+  "name": "Canal de Bambu do Panko",
+  "description": "Gire uma rede completa de bambu para levar a água da nascente esculpida ao lago florido, sem cortes, ramificações falsas ou centros desalinhados.",
   "url": "https://weightplay.com/pt-br/games/animal-bamboo-pipes/",
   "image": "https://weightplay.com/assets/animal-bamboo-pipes-cover.webp",
   "applicationCategory": "Game",
@@ -44,9 +44,9 @@
   "inLanguage": "pt-BR",
   "isAccessibleForFree": true,
   "genre": [
-    "Puzzle",
-    "Strategy",
-    "Animal",
+    "Quebra-cabeça",
+    "Estratégia",
+    "Animais",
     "Browser Game"
   ],
   "publisher": {
@@ -66,7 +66,7 @@
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260726-bamboo-flow1" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260726-bamboo-flow1" data-wp-battle-standard>
-  <link rel="stylesheet" href="style.css?v=20260820-pipe-state-a11y-v12">
+  <link rel="stylesheet" href="style.css?v=20260824-bamboo-guide-responsive-v13">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1"><style>
     .screen[hidden]{display:none!important}
     @media (max-height:500px) and (orientation:landscape){
@@ -75,32 +75,32 @@
       .battle-panel{grid-template-columns:210px;grid-template-rows:24px 210px 34px;gap:4px;align-content:start}
       .battle .board{width:210px;height:210px}
       .battle .tools{height:34px;align-items:center}
-      .battle .tools button{height:32px;min-height:32px;max-height:32px;padding:.2rem .6rem}
+      .battle .tools button{height:32px;min-height:32px;max-height:32px;padding:0 .15rem;font-size:.72rem;line-height:1;white-space:nowrap}
     }
   </style>
 </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="animal-bamboo-pipes" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-bamboo-t="title">Panko's Bamboo Waterway</strong><span data-bamboo-t="summary">Preparing the waterways...</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
-  <div id="mainGroup" class="main-group"><main id="main" class="screen main"><header class="main-header"><a class="return" data-wp-return="main" href="/" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><strong data-bamboo-t="title">Panko's Bamboo Waterway</strong><label class="locale"><span data-bamboo-t="language">Language</span><select id="locale"></select></label></header><section class="hero"><img src="../../assets/animal-bamboo-pipes-cover.webp" alt="Imagem do jogo Hidrovia de Bambu de Panko"><div><p class="eyebrow" data-bamboo-t="kicker">PANKO'S PUZZLE GARDEN</p><h1 data-bamboo-t="title">Hidrovia de Bambu de Panko</h1><p data-bamboo-t="summary">Turn the bamboo. Let every drop reach the flowering grove.</p><strong id="mainProgress" class="main-progress"></strong><button id="start" class="primary" type="button" data-bamboo-t="start">Start Game</button></div></section></main><section class="game-page-info game-page-info-static" aria-label="Hidrovia de Bambu de Panko informações do jogo">
+  <div id="mainGroup" class="main-group"><main id="main" class="screen main"><header class="main-header"><a class="return" data-wp-return="main" href="/" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><strong data-bamboo-t="title">Panko's Bamboo Waterway</strong><label class="locale"><span data-bamboo-t="language">Language</span><select id="locale"></select></label></header><section class="hero"><img src="../../assets/animal-bamboo-pipes-cover.webp" alt="Imagem do jogo Canal de Bambu do Panko"><div><p class="eyebrow" data-bamboo-t="kicker">PANKO'S PUZZLE GARDEN</p><h1 data-bamboo-t="title">Canal de Bambu do Panko</h1><p data-bamboo-t="summary">Turn the bamboo. Let every drop reach the flowering grove.</p><strong id="mainProgress" class="main-progress"></strong><button id="start" class="primary" type="button" data-bamboo-t="start">Start Game</button></div></section></main><section class="game-page-info game-page-info-static" aria-label="Canal de Bambu do Panko informações do jogo">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guia de jogos originais WeightPlay</span><h2>Hidrovia de Bambu de Panko</h2><p>Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Rotating Pipe Network Puzzle</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Strategy · Animal</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>2-8 minutos por etapa</strong></div><div class="game-info-fact"><span>Skills Trained</span><strong>Logic · Planning · Problem Solving</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">Guia de jogos originais WeightPlay</span><h2>Canal de Bambu do Panko</h2><p>Gire uma rede completa de bambu para levar a água da nascente esculpida ao lago florido, sem cortes, ramificações falsas ou centros desalinhados.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Quebra-cabeça de rede de tubos</strong></div><div class="game-info-fact"><span>Genre</span><strong>Quebra-cabeça · Estratégia · Animais</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Fácil de começar, desafiador de dominar</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>2–8 minutos por fase</strong></div><div class="game-info-fact"><span>Skills Trained</span><strong>Lógica · Planejamento · Resolução de problemas</strong></div></div>
     </div>
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>World and Mission</h3><p>Panko is restoring thirty garden waterways whose bamboo joints were twisted by a storm. Every board is a closed engineering problem: the spring, basin, pipe shapes, and correct route are authored before play begins.</p>
-<p>The visible water is more than decoration. It follows the currently connected network from the source, making wrong turns, dead ends, and disconnected sections readable before the player commits more rotations.</p></div>
-      <div class="game-info-section"><h3>How the Systems Work</h3><p>Tap a tile to rotate it clockwise. Straight pipes, elbows, junctions, the spring, and the destination all use the same centered connection points.</p>
-<p>A pipe counts as connected only when both neighboring openings face each other. Touching artwork or a nearby edge is not enough.</p>
-<p>The source begins flowing immediately through every valid branch. A stage clears when the route reaches the destination under the stage rule; the destination itself does not need to rotate.</p>
-<p>Undo restores one rotation, Restart restores the authored board, and Hint identifies a useful next correction without silently solving the network.</p></div>
-      <div class="game-info-section"><h3>How to Play</h3><ol><li>Choose an unlocked waterway from the horizontal Stage rail.</li><li>Trace backward from the destination and forward from the spring before rotating crowded junctions.</li><li>Rotate each required piece until every used opening meets the center of its neighbor.</li><li>Confirm that the water reaches the clearly marked flowering destination, then continue from Result to the next waterway.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Fix edge pieces first because their impossible outward openings remove choices.</li><li>Use straight runs to establish a stable spine before deciding junction branches.</li><li>When water stops, inspect the first dry joint rather than rotating pieces far downstream.</li><li>Keep unused branches facing inward only when the stage requires the whole network to carry water.</li></ul></div>
-      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Six five-stage chapters move from short straight routes to elbows, junctions, loops, misleading branches, and dense mixed networks.</p>
-<p>Later waterways increase structural ambiguity instead of merely hiding the pipes or demanding faster input.</p></div>
-      <div class="game-info-section"><h3>Developer Design Note</h3><p>Every tile fills its grid cell and every connection shares one mathematical centerline, so the visual art, hit area, water path, and solved-state test describe the same geometry on phone and desktop. A interface completa usa um único layout lógico centralizado com no máximo 920 pixels. As telas de celular, paisagem e desktop redimensionam juntas os mesmos controles, áreas de toque, artes e coordenadas do jogo, em vez de esticar elementos individuais. Assim, toque, mouse e teclado atuam sobre o mesmo estado legal. O pôster da Main e a ação de iniciar o jogo ficam separadas do gerenciamento da Stage, enquanto a seleção da Stage, Battle, diálogos e Result mantêm seu próprio conteúdo delimitado e caminho de retorno.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Nota dos pais</h3><p>No account, timer, purchase, or public score is required. Unlocks and best rotation counts remain in this browser and may reset if site storage is cleared. Você pode jogar sem criar uma conta. O progresso é salvo no armazenamento local do perfil atual do navegador, não em uma conta online nem em um banco de dados entre dispositivos. Limpar os dados do site, usar a navegação privada, trocar de navegador ou mudar para outro dispositivo pode criar um salvamento separado ou remover o existente. Quando o navegador permite o armazenamento, as preferências de idioma, som e redução de movimento seguem os controles compartilhados do WeightPlay. Nenhum resultado do guia é uma avaliação médica, escolar ou profissional.</p></div>
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Why is there still a gap?</dt><dd>The two openings must meet at the exact shared center of their tile edges.</dd></div><div><dt>Does the destination rotate?</dt><dd>No. Reaching its inlet is enough.</dd></div><div><dt>Can a decorative branch be ignored?</dt><dd>Only when the current stage does not require every pipe to carry water.</dd></div><div><dt>O progresso é salvo?</dt><dd>Yes, cleared waterways and local best results stay in this browser.</dd></div><div><dt>Quais controles e tamanhos de tela são compatíveis?</dt><dd>Quando o jogo oferece suporte, toque, mouse e teclado seguem as mesmas regras. A interface se adapta como um único layout lógico nos tamanhos necessários de celular, paisagem e desktop.</dd></div><div><dt>O progresso é transferido automaticamente para outro dispositivo?</dt><dd>Não. Atualmente, este jogo salva o progresso apenas no armazenamento local do navegador, então outro perfil de navegador ou dispositivo terá um progresso local separado, a menos que um sistema de contas seja adicionado no futuro.</dd></div></dl></div>
+      <div class="game-info-section"><h3>World and Mission</h3><p>Panko está restaurando trinta canais do jardim cujas juntas de bambu foram torcidas por uma tempestade. Cada tabuleiro é um problema de engenharia criado antes da partida: nascente, lago, formas e rota correta já estão definidos.</p>
+<p>A água visível não é apenas decoração. Ela segue a rede conectada a partir da nascente e revela curvas erradas, becos sem saída e partes desconectadas antes de você gastar mais giros.</p></div>
+      <div class="game-info-section"><h3>How the Systems Work</h3><p>Toque em uma peça para girá-la no sentido horário. Tubos retos, curvas, junções, nascente e destino usam os mesmos centros de conexão.</p>
+<p>Um tubo só conecta quando as duas aberturas vizinhas ficam frente a frente. Encostar na arte ou na borda não basta.</p>
+<p>A nascente começa a fluir imediatamente por cada ramificação válida. A fase termina quando a água chega ao destino conforme a regra; o destino não precisa girar.</p>
+<p>Desfazer restaura um giro, Reiniciar restaura o tabuleiro original e Dica aponta a próxima correção sem resolver a rede sozinho.</p></div>
+      <div class="game-info-section"><h3>How to Play</h3><ol><li>Escolha um canal desbloqueado na faixa horizontal de fases.</li><li>Antes de girar uma junção cheia, siga o caminho de trás para frente a partir do destino e depois avance desde a nascente.</li><li>Gire cada peça necessária até que toda abertura usada encontre o centro da vizinha.</li><li>Confirme que a água chegou ao destino florido e avance do resultado para o próximo canal.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Comece pelas bordas: aberturas impossíveis para fora eliminam opções.</li><li>Monte uma espinha dorsal com trechos retos antes de decidir as ramificações.</li><li>Quando a água parar, examine a primeira junta seca em vez de girar uma peça distante.</li><li>Vire ramificações não usadas para dentro apenas quando a fase exigir água em toda a rede.</li></ul></div>
+      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Seis capítulos de cinco fases passam de rotas retas curtas a curvas, junções, loops, ramificações enganosas e redes densas.</p>
+<p>As fases finais aumentam a ambiguidade estrutural, não a pressão por velocidade.</p></div>
+      <div class="game-info-section"><h3>Developer Design Note</h3><p>Cada peça preenche sua célula e cada conexão compartilha a mesma linha central matemática. Arte, área de toque, fluxo e vitória descrevem a mesma geometria no celular e no desktop.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota dos pais</h3><p>Não é preciso conta, cronômetro, compra ou pontuação pública. Desbloqueios e melhores giros ficam neste navegador e podem ser apagados ao limpar os dados do site.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Por que ainda existe uma falha?</dt><dd>As duas aberturas precisam se encarar exatamente no centro comum da borda entre as células.</dd></div><div><dt>O destino gira?</dt><dd>Não. Basta a água chegar à entrada.</dd></div><div><dt>Posso ignorar uma ramificação decorativa?</dt><dd>Somente quando a fase não exigir água em todos os tubos.</dd></div><div><dt>O progresso é salvo?</dt><dd>Sim. Canais restaurados e melhores resultados locais ficam neste navegador.</dd></div><div><dt>Quais controles e telas são compatíveis?</dt><dd>Toque, mouse e teclado usam as mesmas regras; o mesmo layout escala em celular, paisagem e desktop.</dd></div><div><dt>O progresso sincroniza com outro dispositivo?</dt><dd>Não. Ele fica salvo apenas no navegador atual.</dd></div></dl></div>
 
     </div>
   </section></div>
@@ -114,7 +114,7 @@
   <script src="/src/runtime-locales/pt-br.js?v=20260821-skyport-runtime-v8"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
-  <script src="levels.js"></script><script src="locales.js?v=20260820-pipe-state-a11y-v12"></script><script src="../../src/tutorial.js?v=20260729-bamboo-public1"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260726-bamboo-flow1" data-wp-battle-standard></script><script src="game.js?v=20260820-pipe-state-a11y-v12"></script><script src="../../src/game-page-info.js?v=20260720-locale11-2"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="levels.js"></script><script src="locales.js?v=20260824-bamboo-guide-responsive-v13"></script><script src="../../src/tutorial.js?v=20260729-bamboo-public1"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260726-bamboo-flow1" data-wp-battle-standard></script><script src="game.js?v=20260824-bamboo-guide-responsive-v13"></script><script src="../../src/game-page-info.js?v=20260824-bamboo-guide-locales-v13"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
   <script>window.addEventListener("load",()=>{document.getElementById("loadingPanel")?.classList.add("hidden");window.WonderAnalytics?.track?.("game_view",{game_id:"animal-bamboo-pipes"});},{once:true});</script>
 </body>

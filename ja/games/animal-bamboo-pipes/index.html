@@ -6,15 +6,15 @@
 
     <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><meta name="theme-color" content="#063f3c">
-  <title>パン子の竹水路 | WeightPlay</title>
-  <meta name="description" content="Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers." />
+  <title>パンコの竹水路 | WeightPlay</title>
+  <meta name="description" content="竹のネットワークを回して、彫刻された泉から花の池まで水をつなぎ、断線や偽の分岐、ずれた接続点をなくします。" />
   <meta property="og:site_name" content="WeightPlay" /><meta property="og:type" content="website" />
-  <meta property="og:title" content="パン子の竹水路 | WeightPlay" />
-  <meta property="og:description" content="Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers." />
+  <meta property="og:title" content="パンコの竹水路 | WeightPlay" />
+  <meta property="og:description" content="竹のネットワークを回して、彫刻された泉から花の池まで水をつなぎ、断線や偽の分岐、ずれた接続点をなくします。" />
   <meta property="og:url" content="https://weightplay.com/ja/games/animal-bamboo-pipes/" />
   <meta property="og:image" content="https://weightplay.com/assets/animal-bamboo-pipes-cover.webp" />
-  <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content="パン子の竹水路 | WeightPlay" />
-  <meta name="twitter:description" content="Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers." />
+  <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content="パンコの竹水路 | WeightPlay" />
+  <meta name="twitter:description" content="竹のネットワークを回して、彫刻された泉から花の池まで水をつなぎ、断線や偽の分岐、ずれた接続点をなくします。" />
   <meta name="twitter:image" content="https://weightplay.com/assets/animal-bamboo-pipes-cover.webp" />
   <link rel="canonical" href="https://weightplay.com/ja/games/animal-bamboo-pipes/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-bamboo-pipes/" />
@@ -35,8 +35,8 @@
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "パン子の竹水路",
-  "description": "Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers.",
+  "name": "パンコの竹水路",
+  "description": "竹のネットワークを回して、彫刻された泉から花の池まで水をつなぎ、断線や偽の分岐、ずれた接続点をなくします。",
   "url": "https://weightplay.com/ja/games/animal-bamboo-pipes/",
   "image": "https://weightplay.com/assets/animal-bamboo-pipes-cover.webp",
   "applicationCategory": "Game",
@@ -44,9 +44,9 @@
   "inLanguage": "ja",
   "isAccessibleForFree": true,
   "genre": [
-    "Puzzle",
-    "Strategy",
-    "Animal",
+    "パズル",
+    "戦略",
+    "動物",
     "Browser Game"
   ],
   "publisher": {
@@ -66,7 +66,7 @@
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260726-bamboo-flow1" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260726-bamboo-flow1" data-wp-battle-standard>
-  <link rel="stylesheet" href="style.css?v=20260820-pipe-state-a11y-v12">
+  <link rel="stylesheet" href="style.css?v=20260824-bamboo-guide-responsive-v13">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1"><style>
     .screen[hidden]{display:none!important}
     @media (max-height:500px) and (orientation:landscape){
@@ -75,32 +75,32 @@
       .battle-panel{grid-template-columns:210px;grid-template-rows:24px 210px 34px;gap:4px;align-content:start}
       .battle .board{width:210px;height:210px}
       .battle .tools{height:34px;align-items:center}
-      .battle .tools button{height:32px;min-height:32px;max-height:32px;padding:.2rem .6rem}
+      .battle .tools button{height:32px;min-height:32px;max-height:32px;padding:0 .15rem;font-size:.72rem;line-height:1;white-space:nowrap}
     }
   </style>
 </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="animal-bamboo-pipes" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-bamboo-t="title">Panko's Bamboo Waterway</strong><span data-bamboo-t="summary">Preparing the waterways...</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
-  <div id="mainGroup" class="main-group"><main id="main" class="screen main"><header class="main-header"><a class="return" data-wp-return="main" href="/" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><strong data-bamboo-t="title">Panko's Bamboo Waterway</strong><label class="locale"><span data-bamboo-t="language">Language</span><select id="locale"></select></label></header><section class="hero"><img src="../../assets/animal-bamboo-pipes-cover.webp" alt="パン子の竹水路のゲーム画像"><div><p class="eyebrow" data-bamboo-t="kicker">PANKO'S PUZZLE GARDEN</p><h1 data-bamboo-t="title">パン子の竹水路</h1><p data-bamboo-t="summary">Turn the bamboo. Let every drop reach the flowering grove.</p><strong id="mainProgress" class="main-progress"></strong><button id="start" class="primary" type="button" data-bamboo-t="start">Start Game</button></div></section></main><section class="game-page-info game-page-info-static" aria-label="パン子の竹水路 ゲーム情報">
+  <div id="mainGroup" class="main-group"><main id="main" class="screen main"><header class="main-header"><a class="return" data-wp-return="main" href="/" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><strong data-bamboo-t="title">Panko's Bamboo Waterway</strong><label class="locale"><span data-bamboo-t="language">Language</span><select id="locale"></select></label></header><section class="hero"><img src="../../assets/animal-bamboo-pipes-cover.webp" alt="パンコの竹水路のゲーム画像"><div><p class="eyebrow" data-bamboo-t="kicker">PANKO'S PUZZLE GARDEN</p><h1 data-bamboo-t="title">パンコの竹水路</h1><p data-bamboo-t="summary">Turn the bamboo. Let every drop reach the flowering grove.</p><strong id="mainProgress" class="main-progress"></strong><button id="start" class="primary" type="button" data-bamboo-t="start">Start Game</button></div></section></main><section class="game-page-info game-page-info-static" aria-label="パンコの竹水路 ゲーム情報">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>パン子の竹水路</h2><p>Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>Rotating Pipe Network Puzzle</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>Puzzle · Strategy · Animal</strong></div><div class="game-info-fact"><span>難易度</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>目安時間</span><strong>1ステージあたり2～8分</strong></div><div class="game-info-fact"><span>身につく力</span><strong>論理力 · 計画力 · 問題解決</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>パンコの竹水路</h2><p>竹のネットワークを回して、彫刻された泉から花の池まで水をつなぎ、断線や偽の分岐、ずれた接続点をなくします。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>回転パイプ・ネットワークパズル</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>パズル · 戦略 · 動物</strong></div><div class="game-info-fact"><span>難易度</span><strong>始めやすく、徐々に難しく</strong></div><div class="game-info-fact"><span>目安時間</span><strong>1ステージ 2～8分</strong></div><div class="game-info-fact"><span>身につく力</span><strong>論理 · 計画 · 問題解決</strong></div></div>
     </div>
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界とミッション</h3><p>Panko is restoring thirty garden waterways whose bamboo joints were twisted by a storm. Every board is a closed engineering problem: the spring, basin, pipe shapes, and correct route are authored before play begins.</p>
-<p>The visible water is more than decoration. It follows the currently connected network from the source, making wrong turns, dead ends, and disconnected sections readable before the player commits more rotations.</p></div>
-      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>Tap a tile to rotate it clockwise. Straight pipes, elbows, junctions, the spring, and the destination all use the same centered connection points.</p>
-<p>A pipe counts as connected only when both neighboring openings face each other. Touching artwork or a nearby edge is not enough.</p>
-<p>The source begins flowing immediately through every valid branch. A stage clears when the route reaches the destination under the stage rule; the destination itself does not need to rotate.</p>
-<p>Undo restores one rotation, Restart restores the authored board, and Hint identifies a useful next correction without silently solving the network.</p></div>
-      <div class="game-info-section"><h3>遊び方</h3><ol><li>Choose an unlocked waterway from the horizontal Stage rail.</li><li>Trace backward from the destination and forward from the spring before rotating crowded junctions.</li><li>Rotate each required piece until every used opening meets the center of its neighbor.</li><li>Confirm that the water reaches the clearly marked flowering destination, then continue from Result to the next waterway.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>Fix edge pieces first because their impossible outward openings remove choices.</li><li>Use straight runs to establish a stable spine before deciding junction branches.</li><li>When water stops, inspect the first dry joint rather than rotating pieces far downstream.</li><li>Keep unused branches facing inward only when the stage requires the whole network to carry water.</li></ul></div>
-      <div class="game-info-section"><h3>進行と難易度</h3><p>Six five-stage chapters move from short straight routes to elbows, junctions, loops, misleading branches, and dense mixed networks.</p>
-<p>Later waterways increase structural ambiguity instead of merely hiding the pipes or demanding faster input.</p></div>
-      <div class="game-info-section"><h3>開発者メモ</h3><p>Every tile fills its grid cell and every connection shares one mathematical centerline, so the visual art, hit area, water path, and solved-state test describe the same geometry on phone and desktop. 完全なインターフェースは、最大幅 920 ピクセルの中央揃えされた一つの論理レイアウトを使用します。スマートフォン、横画面、デスクトップでは、個々の要素を引き伸ばすのではなく、同じ操作部、当たり判定、アート、ゲーム座標をまとめて拡大縮小します。そのためタッチ、マウス、キーボードは同じ合法な状態を操作します。Main のポスターとゲーム開始操作は Stage 管理から分離され、Stage 選択、Battle、ダイアログ、Result はそれぞれの範囲内の内容と戻り道を保ちます。</p></div>
-      <div class="game-info-section game-info-parent"><h3>保護者向け</h3><p>No account, timer, purchase, or public score is required. Unlocks and best rotation counts remain in this browser and may reset if site storage is cleared. アカウントを作成せずに遊べます。進行状況はオンラインアカウントや端末間データベースではなく、現在のブラウザプロファイルのローカルストレージに保存されます。サイトデータの消去、プライベートブラウジング、ブラウザの変更、別の端末への移行によって、別のセーブが作られたり既存のセーブが削除されたりすることがあります。ブラウザが保存を許可している場合、言語、サウンド、動きを減らす設定は WeightPlay 共通コントロールに従います。ガイドの結果はいかなる医療、学校、専門的な評価でもありません。</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>Why is there still a gap?</dt><dd>The two openings must meet at the exact shared center of their tile edges.</dd></div><div><dt>Does the destination rotate?</dt><dd>No. Reaching its inlet is enough.</dd></div><div><dt>Can a decorative branch be ignored?</dt><dd>Only when the current stage does not require every pipe to carry water.</dd></div><div><dt>進行状況は保存されますか？</dt><dd>Yes, cleared waterways and local best results stay in this browser.</dd></div><div><dt>どの操作方法と画面サイズに対応していますか？</dt><dd>ゲームが対応している範囲で、タッチ、マウス、キーボードは同じルールで操作できます。インターフェースはスマートフォン、横画面、デスクトップの必要な画面サイズで、同じ論理レイアウトとして拡大縮小します。</dd></div><div><dt>進行状況は別の端末に自動で移行しますか？</dt><dd>いいえ。このゲームの進行状況は現在のところブラウザのローカルストレージにのみ保存されるため、別のブラウザプロファイルや端末では、それぞれ別の進行状況になります。将来アカウントシステムが追加されない限り、共有されません。</dd></div></dl></div>
+      <div class="game-info-section"><h3>世界とミッション</h3><p>パンコは嵐で竹の継ぎ目がねじれた30本の庭の水路を修復しています。泉、池、パイプの形、正しい経路は、遊ぶ前に作り込まれた設計問題です。</p>
+<p>流れる水は飾りではありません。泉から現在つながっているネットワークを進むため、間違った回転、行き止まり、未接続の場所を次の回転前に読み取れます。</p></div>
+      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>タイルをタップすると竹が時計回りに回ります。直管、曲がり管、分岐、泉、目的地は同じ中央の接続点を使います。</p>
+<p>隣り合う開口部が向き合ったときだけ接続になります。絵の端が近いだけではつながりません。</p>
+<p>泉の水は有効な分岐へすぐ流れます。ルールに従って目的地へ届くとクリアし、目的地自体は回しません。</p>
+<p>戻すは1回分の回転を復元し、やり直すは盤面を初期化します。ヒントは解き方を奪わず次の修正候補を示します。</p></div>
+      <div class="game-info-section"><h3>遊び方</h3><ol><li>横向きのステージレールから解放済みの水路を選びます。</li><li>混雑した分岐を回す前に、目的地から逆向き、泉から順向きに道を確認します。</li><li>必要なパイプを回し、使う開口部を隣の中央へ向けます。</li><li>花の目的地に水が届いたら、リザルトから次の水路へ進みます。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>外向きにできない端のパイプから決めると候補を減らせます。</li><li>直線で主幹を作ってから分岐を決めます。</li><li>水が止まったら最初の乾いた接続を調べ、遠い下流を先に回さないでください。</li><li>全パイプ通水が条件のステージだけ、未使用分岐も内向きにします。</li></ul></div>
+      <div class="game-info-section"><h3>進行と難易度</h3><p>6つの5ステージ章で、短い直線から曲がり、分岐、ループ、誘導分岐、密集ネットワークへ進みます。</p>
+<p>後半は速さではなく構造の読み分けが難しくなります。</p></div>
+      <div class="game-info-section"><h3>開発者メモ</h3><p>各タイルは自分のマスを満たし、接続は共通の数学的中心線を使います。スマホとデスクトップで絵、タップ範囲、水路、クリア判定が同じ幾何を示します。</p></div>
+      <div class="game-info-section game-info-parent"><h3>保護者向け</h3><p>アカウント、タイマー、購入、公開スコアは必要ありません。解放状況と最少回転数はこのブラウザに保存され、サイトデータを消すとリセットされる場合があります。</p></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>なぜ隙間が残りますか？</dt><dd>隣り合うタイルの開口部が同じ境界の中心で正確に向き合う必要があります。</dd></div><div><dt>目的地も回しますか？</dt><dd>いいえ。入口に水が届けば十分です。</dd></div><div><dt>飾りの分岐は無視できますか？</dt><dd>そのステージが全パイプの通水を求めない場合だけ無視できます。</dd></div><div><dt>進行は保存されますか？</dt><dd>はい。クリアした水路とローカルのベスト結果がこのブラウザに保存されます。</dd></div><div><dt>対応する操作と画面は？</dt><dd>タッチ、マウス、キーボードは同じルールで動き、スマホ、横画面、デスクトップで同じレイアウトが拡大縮小されます。</dd></div><div><dt>別の端末へ自動同期しますか？</dt><dd>いいえ。進行は現在のブラウザだけに保存されます。</dd></div></dl></div>
 
     </div>
   </section></div>
@@ -115,9 +115,9 @@
   <script src="/src/runtime-locales/ja.js?v=20260821-skyport-runtime-v8"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
-  <script src="levels.js"></script><script src="locales.js?v=20260820-pipe-state-a11y-v12"></script><script src="../../src/tutorial.js?v=20260729-bamboo-public1"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260726-bamboo-flow1" data-wp-battle-standard></script><script src="game.js?v=20260820-pipe-state-a11y-v12"></script><script src="../../src/game-page-info.js?v=20260720-locale11-2"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="levels.js"></script><script src="locales.js?v=20260824-bamboo-guide-responsive-v13"></script><script src="../../src/tutorial.js?v=20260729-bamboo-public1"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260726-bamboo-flow1" data-wp-battle-standard></script><script src="game.js?v=20260824-bamboo-guide-responsive-v13"></script><script src="../../src/game-page-info.js?v=20260824-bamboo-guide-locales-v13"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
   <script>window.addEventListener("load",()=>{document.getElementById("loadingPanel")?.classList.add("hidden");window.WonderAnalytics?.track?.("game_view",{game_id:"animal-bamboo-pipes"});},{once:true});</script>
-  <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="パン子の竹水路";document.title="パン子の竹水路 | WeightPlay";},{once:true});</script>
+  <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="パンコの竹水路";document.title="パンコの竹水路 | WeightPlay";},{once:true});</script>
 </body>
 </html>

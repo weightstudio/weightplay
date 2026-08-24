@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ru">
+<head>
+
+    <base href="/games/hangman/" />
+
+    <link rel="canonical" href="https://weightplay.com/ru/games/hangman/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/hangman/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/hangman/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/hangman/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/hangman/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/hangman/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/hangman/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/hangman/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/hangman/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/hangman/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/hangman/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/hangman/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/hangman/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/hangman/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/hangman/" />
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general"><title>Виселица | WeightPlay</title><link rel="stylesheet" href="../../src/popular-games-batch.css"><style>
+@media (orientation: landscape) and (max-height: 430px) {
+  body[data-game-id="hangman"][data-screen="battle"],
+  body[data-game-id="hangman"][data-screen="result"] { overflow: hidden; }
+  body[data-game-id="hangman"][data-screen="battle"] .popular-arcade,
+  body[data-game-id="hangman"][data-screen="result"] .popular-arcade {
+    height: 100dvh;
+    min-height: 0;
+    padding: 6px;
+    gap: 0;
+  }
+  body[data-game-id="hangman"][data-screen="battle"] .arcade-header,
+  body[data-game-id="hangman"][data-screen="battle"] .arcade-footer,
+  body[data-game-id="hangman"][data-screen="result"] .arcade-header,
+  body[data-game-id="hangman"][data-screen="result"] .arcade-footer { display: none; }
+  body[data-game-id="hangman"][data-screen="battle"] #battleScreen,
+  body[data-game-id="hangman"][data-screen="result"] #resultScreen {
+    min-height: 0;
+    height: 100%;
+  }
+  body[data-game-id="hangman"][data-screen="battle"] .battle-panel {
+    height: 100%;
+    min-height: 0;
+    padding: 7px;
+    gap: 6px 12px;
+    align-content: stretch;
+    grid-template-columns: minmax(360px, 1.15fr) minmax(250px, .85fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+  body[data-game-id="hangman"][data-screen="battle"] .board-wrap {
+    grid-column: 1;
+    grid-row: 1 / 4;
+    min-height: 0;
+    padding: 5px;
+  }
+  body[data-game-id="hangman"][data-screen="battle"] .board {
+    height: 100%;
+    min-height: 0;
+  }
+  body[data-game-id="hangman"][data-screen="battle"] .battle-top {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  body[data-game-id="hangman"][data-screen="battle"] .game-message {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: start;
+  }
+  body[data-game-id="hangman"][data-screen="battle"] #controls {
+    grid-column: 2;
+    grid-row: 3;
+    min-width: 0;
+  }
+  body[data-game-id="hangman"][data-screen="battle"] #controls .letters {
+    max-width: none;
+    justify-content: flex-start;
+    gap: 4px;
+  }
+  body[data-game-id="hangman"][data-screen="battle"] #controls .letter {
+    flex: 0 0 32px;
+    min-width: 32px;
+    min-height: 40px;
+    padding: 5px;
+  }
+  body[data-game-id="hangman"][data-screen="result"] #resultScreen .arcade-panel {
+    height: 100%;
+    min-height: 0;
+    padding: 16px;
+    gap: 10px;
+  }
+}
+@media (min-width: 921px) and (max-height: 760px) {
+  body[data-game-id="hangman"][data-screen="battle"], body[data-game-id="hangman"][data-screen="result"] { overflow: hidden; }
+  body[data-game-id="hangman"][data-screen="battle"] .popular-arcade, body[data-game-id="hangman"][data-screen="result"] .popular-arcade { height: 100dvh; min-height: 0; padding: 10px 32px 0; gap: 10px; }
+  body[data-game-id="hangman"][data-screen="battle"] .arcade-header, body[data-game-id="hangman"][data-screen="battle"] .arcade-footer, body[data-game-id="hangman"][data-screen="result"] .arcade-header, body[data-game-id="hangman"][data-screen="result"] .arcade-footer { display: none; }
+  body[data-game-id="hangman"][data-screen="battle"] #battleScreen, body[data-game-id="hangman"][data-screen="result"] #resultScreen { min-height: 0; height: 100%; }
+  body[data-game-id="hangman"][data-screen="battle"] .battle-panel { height: 100%; min-height: 0; padding: 8px; gap: 8px 12px; align-content: stretch; grid-template-columns: minmax(260px, .68fr) minmax(440px, 1.32fr); grid-template-rows: auto minmax(0, 1fr) auto; }
+  body[data-game-id="hangman"][data-screen="battle"] .board-wrap { grid-column: 1; grid-row: 1 / 4; min-height: 0; padding: 5px; }
+  body[data-game-id="hangman"][data-screen="battle"] .board { height: 100%; min-height: 0; }
+  body[data-game-id="hangman"][data-screen="battle"] .battle-top { grid-column: 2; grid-row: 1; }
+  body[data-game-id="hangman"][data-screen="battle"] .game-message { grid-column: 2; grid-row: 2; align-self: start; }
+  body[data-game-id="hangman"][data-screen="battle"] #controls { grid-column: 2; grid-row: 3; min-width: 0; }
+  body[data-game-id="hangman"][data-screen="battle"] #controls .letters { max-width: none; justify-content: flex-start; gap: 6px; }
+  body[data-game-id="hangman"][data-screen="battle"] #controls .letter { flex: 0 0 34px; min-width: 34px; min-height: 40px; padding: 5px; }
+  body[data-game-id="hangman"][data-screen="result"] #resultScreen .arcade-panel { height: 100%; min-height: 0; padding: 14px; gap: 8px; }
+}
+@keyframes hangman-result-settle {
+  0% { box-shadow: 0 0 0 0 rgba(124, 92, 255, 0); }
+  45% { box-shadow: 0 0 0 8px rgba(124, 92, 255, .16); }
+  100% { box-shadow: 0 0 0 0 rgba(124, 92, 255, 0); }
+}
+body[data-game-id="hangman"][data-screen="result"] #resultScreen .arcade-panel {
+  animation: hangman-result-settle 560ms ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  body[data-game-id="hangman"][data-screen="result"] #resultScreen .arcade-panel {
+    animation: none;
+  }
+}
+</style>  <meta name="description" content="Готовая классическая игра, проходящая финальные проверки перед выпуском." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Виселица | WeightPlay" />
+    <meta property="og:description" content="Готовая классическая игра, проходящая финальные проверки перед выпуском." />
+    <meta property="og:url" content="https://weightplay.com/ru/games/hangman/" />
+    <meta property="og:image" content="https://weightplay.com/assets/classic-logic-lab-cover.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Виселица | WeightPlay" />
+    <meta name="twitter:description" content="Готовая классическая игра, проходящая финальные проверки перед выпуском." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/classic-logic-lab-cover.webp" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Виселица",
+  "url": "https://weightplay.com/ru/games/hangman/",
+  "image": "https://weightplay.com/assets/classic-logic-lab-cover.webp",
+  "description": "Готовая классическая игра, проходящая финальные проверки перед выпуском.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com"
+  },
+  "inLanguage": "ru",
+  "isAccessibleForFree": true,
+  "operatingSystem": "Any modern web browser",
+  "genre": [
+    "Classic",
+    "Слово",
+    "Puzzle",
+    "Browser Game"
+  ],
+  "audience": {
+    "@type": "PeopleAudience",
+    "audienceType": "General players",
+    "suggestedMinAge": 9
+  },
+  "alternateName": "Hangman"
+}
+    </script>
+  </head>
+<body><main id="popularArcade" class="popular-arcade"><header class="arcade-header"><div><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle">Виселица</h1><p id="gameTagline" class="tagline"></p></div><label class="locale-picker"><span id="languageLabel">Language</span><select id="localeSelect"></select></label></header><section id="mainScreen" class="screen"><div class="arcade-panel main-panel"><div class="main-copy"><p id="objective" class="objective"></p><p>Use visible controls to play a complete short round, then review the Result.</p><button id="startBtn" class="primary">Start game</button></div><div class="preview-art" aria-hidden="true">A</div></div></section><section id="battleScreen" class="screen" hidden><div class="arcade-panel battle-panel"><div class="battle-top"><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary"></button><button id="restartBtn" class="secondary"></button></div></div><div class="board-wrap"><div id="board" class="board"></div></div><p id="gameMessage" class="game-message" aria-live="polite"></p><div id="controls"></div></div></section><section id="resultScreen" class="screen" hidden><div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div></section><footer class="arcade-footer" id="footerText"></footer></main><script src="../../src/popular-games-batch.js?v=20260822-hangman-result-beat-v7"></script><script src="game.js?v=20260822-hangman-result-beat-v7"></script><section class="game-page-info game-page-info-static" aria-label="Виселица информация об игре">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2>Виселица</h2><p>Готовая классическая игра, проходящая финальные проверки перед выпуском.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Классическая игра</strong></div><div class="game-info-fact"><span>Genre</span><strong>Classic · Слово · Puzzle</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+
+
+
+
+
+
+
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
+
+    </div>
+  </section>
+<script src="/src/runtime-locales/ru.js?v=20260821-skyport-runtime-v8"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
+</body>
+</html>

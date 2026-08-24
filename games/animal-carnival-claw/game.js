@@ -3,7 +3,7 @@
 const $=id=>document.getElementById(id),$$=selector=>[...document.querySelectorAll(selector)];
 const clamp=(value,min=0,max=1)=>Math.max(min,Math.min(max,value));
 const fmt=(value,data={})=>String(value??"").replace(/\{(\w+)\}/g,(_,key)=>data[key]??"");
-const ANALYTICS_GAME_ID="animal-carnival-claw",ANALYTICS_GAME_VERSION="v32",ANALYTICS_INTERFACE_VERSION="6",ANALYTICS_SCHEMA_VERSION=1;
+const ANALYTICS_GAME_ID="animal-carnival-claw",ANALYTICS_GAME_VERSION="v33",ANALYTICS_INTERFACE_VERSION="6",ANALYTICS_SCHEMA_VERSION=1;
 const viewportBucket=()=>{const width=Math.max(window.innerWidth||0,window.innerHeight||0),short=Math.min(window.innerWidth||0,window.innerHeight||0);return short<480?"phone":width<900?"tablet":"desktop"};
 const boundedMetric=(value,max)=>{const number=Number(value);return Number.isFinite(number)?Math.max(0,Math.min(max,Math.round(number))):0};
 function track(eventName,details={}){try{window.WonderAnalytics?.track?.(eventName,{game_id:ANALYTICS_GAME_ID,game_version:ANALYTICS_GAME_VERSION,interface_version:ANALYTICS_INTERFACE_VERSION,schema_version:ANALYTICS_SCHEMA_VERSION,locale,viewport_bucket:viewportBucket(),...details})}catch{}}
