@@ -5,7 +5,7 @@
   });
 
   const GAME_ID = "animal-auto-squad";
-  const GAME_VERSION = "v24";
+  const GAME_VERSION = "v28";
   const localeKey = "weightPlayLocale";
   const saveKey = "animal_auto_squad_save";
 
@@ -2696,6 +2696,27 @@
     renderStageSelector(shouldScroll);
   }
 
+  function activateStageCard(card) {
+    const pendingStage = Number(card?.dataset.wpPendingStage);
+    const stage = Number.isInteger(pendingStage) ? pendingStage : Number(card?.dataset.stage);
+    if (card?.dataset) delete card.dataset.wpPendingStage;
+    if (!Number.isInteger(stage) || stage < 1 || stage > STAGE_COUNT) return;
+    save = normalizeSave(save);
+    if (stage > save.unlockedStage) {
+      stageBrowseLogical = stage;
+      syncStageCards();
+      centerStageCard(card);
+      return;
+    }
+
+    // Commit the logical stage before starting the run. Re-rendering the
+    // virtualized rail between native activation and startExpedition() can
+    // recycle the clicked card and let a stale browsed owner win the race.
+    save.selectedStage = stage;
+    saveSave();
+    startExpedition();
+  }
+
   function stageWindowLimit() {
     return Math.max(1, STAGE_COUNT - STAGE_CARD_POOL_SIZE + 1);
   }
@@ -2735,17 +2756,7 @@
     const card = document.createElement("button");
     card.type = "button";
     card.dataset.poolNode = `node-${poolIndex}`;
-    card.addEventListener("click", () => {
-      const stage = Number(card.dataset.stage);
-      if (stage > save.unlockedStage) {
-        stageBrowseLogical = stage;
-        syncStageCards();
-        centerStageCard(card);
-        return;
-      }
-      selectStage(stage, false);
-      startExpedition();
-    });
+    card.addEventListener("click", () => activateStageCard(card));
     return card;
   }
 
@@ -2969,6 +2980,12 @@
     };
     restore();
     rail.addEventListener("pointerdown", (event) => {
+      const activationCard = event.target?.closest?.(".stage-card");
+      if (activationCard && rail.contains(activationCard)) {
+        // Capture the logical card before any native scroll/virtual recycling
+        // can reuse this DOM node for another stage before click is dispatched.
+        activationCard.dataset.wpPendingStage = activationCard.dataset.stage;
+      }
       if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
       cancelAnimationFrame(stageSettleFrame);
       stageSettleFrame = 0;
@@ -2983,6 +3000,13 @@
       rail.style.setProperty("scroll-snap-type", "none", "important");
       rail.dataset.wpDragDown = "1";
       event.stopImmediatePropagation();
+    }, true);
+    rail.addEventListener("keydown", (event) => {
+      if (event.repeat || (event.key !== "Enter" && event.key !== " ")) return;
+      const activationCard = event.target?.closest?.(".stage-card");
+      if (activationCard && rail.contains(activationCard)) {
+        activationCard.dataset.wpPendingStage = activationCard.dataset.stage;
+      }
     }, true);
     document.addEventListener("pointermove", (event) => {
       if (event.pointerId !== pointerId) return;
@@ -3005,6 +3029,9 @@
       pointerId = null;
       rail.dataset.wpDragDown = "0";
       if (!moved) {
+        if (event.type !== "pointerup") {
+          rail.querySelectorAll(".stage-card[data-wp-pending-stage]").forEach((card) => delete card.dataset.wpPendingStage);
+        }
         stageBrowseInputOwner = "";
         restore();
         return;
@@ -3422,6 +3449,7 @@
     setResultOwnership(false);
     state = makeState();
     state.stage = normalizeSave(save).selectedStage;
+    updateHUD();
     state.backpack = createBackpackCards();
     restoreSavedFormation();
     state.activeRun = true;
