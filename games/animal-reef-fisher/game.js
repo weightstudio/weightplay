@@ -6,7 +6,7 @@
   document.querySelector(".battle-shell")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-reef-fisher";
-  const GAME_VERSION = 19;
+  const GAME_VERSION = 21;
   const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_animal_reef_fisher_v1";
   const localeKey = "weightPlayLocale";
@@ -472,6 +472,139 @@
     },
   });
 
+  text.ar = {
+    ...text.en,
+    title: "صياد الشعاب الحيواني",
+    pageTitle: "صياد الشعاب الحيواني - لعبة صيد مجانية | WeightPlay",
+    pageDescription: "أكمل 30 مهمة صيد في الشعاب، وتحكم في مناطق شد الخيط المتغيرة، وسجّل 12 مخلوقًا بحريًا، وطوّر ست معدات، واصطد ستة من حماة الشعاب.",
+    language: "اللغة",
+    backToLobby: "العودة إلى الردهة",
+    back: "رجوع",
+    reefZones: "مناطق الشعاب",
+    gearUpgrades: "ترقيات المعدات",
+    menuTitle: "خطّط لـ30 مهمة في الشعاب واصطد ستة من حماة الشعاب.",
+    menuHint: "تحكم في قواعد شد الخيط المتغيرة، وسجّل 12 نوعًا، واكسب ملاحظات الشعاب، وطوّر ست معدات محليًا.",
+    reefNotes: "ملاحظات الشعاب",
+    album: "الألبوم",
+    diamonds: "الماسات",
+    startGame: "ابدأ اللعبة",
+    soundOn: "الصوت: مفعّل",
+    soundOff: "الصوت: متوقف",
+    enableSound: "تفعيل الصوت",
+    disableSound: "إيقاف الصوت",
+    chooseZone: "اختر مهمة الشعاب",
+    prepareGear: "جهّز المعدات",
+    startExpedition: "ابدأ الرحلة",
+    reefMap: "خريطة الشعاب",
+    nextMission: "المهمة التالية",
+    stages: "المراحل",
+    nextStage: "المرحلة التالية",
+    replay: "إعادة المحاولة",
+    leaveTitle: "هل تريد مغادرة هذه الرحلة؟",
+    leaveCopy: "المهمة {stage}: تم اصطياد {catches}/{goal} وبقيت {time} ثوانٍ. ستُفقد هذه الرحلة ومصيدها وأي طُعم أو سونار مجهّز؛ أما الألبوم والملاحظات والمعدات المحفوظة فستبقى آمنة.",
+    keepFishing: "تابع الصيد",
+    leaveExpedition: "مغادرة الرحلة",
+    zone: "المنطقة",
+    time: "الوقت",
+    goal: "الهدف",
+    retry: "حاول مرة أخرى",
+    castHint: "اضغط باستمرار في البحر للشحن، ثم اترك الزر للإلقاء.",
+    charging: "اترك الزر عندما تصل القوة إلى عمق الماء المطلوب.",
+    hooked: "علقت السمكة. اسحب المقبض الأحمر أو حرّك على سطح البحر يمينًا ويسارًا، وأبقِ المؤشر داخل المنطقة الآمنة الخضراء.",
+    hookedBehavior: "{behavior}: {hint} أبقِ المؤشر في المنطقة الآمنة.",
+    behaviorSteady: "سمكة سباحتها ثابتة",
+    behaviorSteadyHint: "اتبع السحب السلس بحركات صغيرة.",
+    behaviorDart: "سمكة سريعة الاندفاع",
+    behaviorDartHint: "راقب تغيّر الاتجاه السريع ثم عد برفق.",
+    behaviorHeavy: "سمكة ذات سحب قوي",
+    behaviorHeavyHint: "تسحب مدة أطول؛ تحلَّ بالصبر قرب الوسط.",
+    tensionTitle: "شد الخيط",
+    tensionLow: "رخو",
+    tensionSafe: "آمن",
+    tensionHigh: "مشدود",
+    tensionMarker: "اسحب",
+    playAreaAria: "منطقة لعب صياد الشعاب الحيواني. اضغط مفتاح المسافة للشحن واتركه للإلقاء؛ استخدم السهمين الأيسر والأيمن للتحكم في الشد.",
+    tensionLaneAria: "مسار شد الخيط. استخدم السهمين الأيسر والأيمن للضبط.",
+    sonarAria: "استخدم السونار",
+    sonarDecision: "استخدم السونار المجهّز لكشف السمكة التالية وندرتها وسلوك سحبها وتثبيتها.",
+    tensionCoachAim: "اضغط على البحر أو مفتاح المسافة للإلقاء. عند عضّ السمكة، اسحب المقبض الأحمر أو حرّك على البحر أو استخدم السهمين.",
+    tensionCoachReel: "اسحب المقبض الأحمر أو حرّك على البحر أو استخدم السهمين للبقاء داخل المنطقة الآمنة الخضراء.",
+    tensionCoachSafe: "جيد. تحرك برفق وابقَ في المنطقة الآمنة حتى تصل السمكة إلى الشاطئ.",
+    tensionCoachDanger: "ارجع إلى المنطقة الآمنة الآن.",
+    tensionStatusAim: "الخطوة 1: اضغط على البحر للشحن ثم اترك الزر للإلقاء.",
+    tensionStatusCharging: "اترك الزر للإلقاء. تبدأ الخطوة 2 عندما تعضّ السمكة.",
+    tensionStatusHooked: "الخطوة 2: اسحب المقبض الأحمر أو حرّك على البحر لإدخاله إلى المنطقة الآمنة.",
+    tensionStatusSafe: "أنت داخل المنطقة الآمنة. حافظ على الثبات.",
+    tensionStatusDanger: "أعد المقبض الأحمر إلى المنطقة الآمنة قبل انقطاع الخيط.",
+    landingProgress: "تقدم الإنزال {progress}%",
+    landed: "تم إنزال المصيد! واصل قبل انتهاء الوقت.",
+    broke: "انقطع الخيط. بقي مؤشر الشد خارج المنطقة الآمنة مدة طويلة.",
+    escaped: "هربت السمكة. ألقِ من جديد وأبقِ المؤشر قريبًا من الوسط.",
+    sonarReady: "السونار جاهز لهذه الرحلة.",
+    sonarScan: "السونار: {fish} · {rarity} · {behavior}. تم تثبيت الإلقاء التالي.",
+    sonarStatus: "التالي: {fish}",
+    needDiamonds: "تحتاج إلى {cost} من الماسات.",
+    lureReady: "الطُعم النادر جاهز للرحلة التالية.",
+    buyLure: "طُعم نادر {cost} ماسة",
+    buySonar: "نبضة سونار {cost} ماسة",
+    confirmLure: "تأكيد الطُعم · {before}→{after} ماسة",
+    confirmSonar: "تأكيد السونار · {before}→{after} ماسة",
+    lureBuyLabel: "يزيد الطُعم النادر فرصة ظهور علامة نادرة واحدة في الرحلة التالية. التكلفة 3 ماسات. الرصيد {balance}.",
+    sonarBuyLabel: "تكشف نبضة السونار السمكة التالية وتثبتها قبل الإلقاء. التكلفة ماسَتان. الرصيد {balance}.",
+    lureConfirmLabel: "تأكيد الطُعم النادر. أنفق 3 ماسات. الرصيد من {before} إلى {after}.",
+    sonarConfirmLabel: "تأكيد نبضة السونار. أنفق ماسَتين. الرصيد من {before} إلى {after}.",
+    sonar: "سونار",
+    upgrade: "ترقية",
+    max: "الحد الأقصى",
+    gearUpgradeLabel: "ترقية {gear} من المستوى {beforeLevel} إلى {afterLevel}. التكلفة {cost} من ملاحظات الشعاب. الرصيد من {before} إلى {after}.",
+    gearUpgradeNeedLabel: "{gear} في المستوى {beforeLevel}. المستوى {afterLevel} يكلف {cost} من ملاحظات الشعاب. الرصيد {balance}؛ تحتاج إلى {need} إضافية.",
+    gearMaxLabel: "{gear} في المستوى {level}. هذا هو المستوى الأقصى.",
+    locked: "مقفل",
+    complete: "مكتمل",
+    expeditionWin: "اكتملت الرحلة",
+    expeditionFail: "انتهت الرحلة",
+    result: "أنزلت {catches} من الأسماك، واكتشفت {newFish} إدخالات جديدة في الألبوم، وكسبت {notes} من ملاحظات الشعاب.",
+    score: "النتيجة",
+    catchValue: "قيمة المصيد",
+    runScore: "نتيجة الجولة",
+    runCatchValue: "ملاحظات الشعاب",
+    lastCatch: "آخر مصيد",
+    noCatchYet: "لم تصطد بعد",
+    newAlbum: "إدخال جديد في الألبوم",
+    catchSummary: "مصيد هذه الرحلة",
+    catchToast: "اصطدت {fish}",
+    catchToastMeta: "+{points} نقطة · +{notes} ملاحظة{newTag}",
+    catchHudMeta: "{rarity} · +{points} نقطة · +{notes} ملاحظة{newTag}",
+    newTag: " · جديد في الألبوم!",
+    noCatch: "لم تُنزل أي سمكة بعد. جرّب إلقاءً أكثر أمانًا وأبقِ الخيط في المنطقة الآمنة.",
+    rareFish: "نادرة",
+    commonFish: "عادية",
+    nextCastWin: "الإلقاء التالي: حافظ على نمط الشد الثابت نفسه، ثم استخدم إلقاءً أقوى عندما يضيق وقت المهمة.",
+    nextCastFail: "الإلقاء التالي: أعد المؤشر إلى المنطقة الآمنة أبكر. إذا استمر بالخروج، طوّر تحكم البكرة أو متانة الخيط.",
+    nextCastFailSafe: "الإلقاء التالي: بقي الشد آمنًا معظم الوقت. استخدم إلقاءً أقوى أو طوّر قوة الصنارة وجودة الطُعم لزيادة وقت الإنزال.",
+    nextMissionPreview: "تغيّر الشعاب القادم: {mission} · {name}. {special}القاعدة: {rule}. الهدف: {goal} من المصيد.",
+    mission: "المهمة {stage}",
+    bossMission: "مواجهة حامي الشعاب",
+    ruleOpen: "مياه مفتوحة · منطقة آمنة ثابتة",
+    ruleDrift: "انجراف الأعشاب · المنطقة الآمنة تتحرك بسلاسة",
+    ruleSnag: "تشابك المرجان · المنطقة الآمنة تضيق وتتنفس",
+    ruleTide: "مدّ القمر · المنطقة الآمنة تبدّل جانبها",
+    ruleStorm: "هبات العاصفة · اندفاعات على الخيط كل ثلاث ثوانٍ",
+    ruleAbyss: "اختبار الهاوية · انجراف وضغط وهبات",
+    bossHooked: "حامي الشعاب · {fish}: {rule}",
+    bossShieldOpen: "مفتوح: ابقَ في المنطقة الآمنة لإلحاق الضرر بالحامي.",
+    bossShieldClosed: "محمي: ابقَ في المنطقة الآمنة حتى ينفتح.",
+    gearEffectRod: "يزداد تقدم الإنزال ما دامت السمكة داخل المنطقة الآمنة.",
+    gearEffectReel: "يستجيب مؤشر الخيط أسرع لتحكمك في الشد.",
+    gearEffectLine: "توسّع نطاق الأمان وتمنح هامشًا أكبر قبل انقطاع الخيط.",
+    gearEffectBait: "تزيد تقدم الإنزال وملاحظات الشعاب المكتسبة من كل مصيد.",
+    gearEffectBoat: "تضيف 5 ثوانٍ إلى كل رحلة لكل مستوى فوق المستوى الأول.",
+    gearEffectScan: "توسّع مجموعة الأسماك المبكرة بنوع واحد لكل مستوى.",
+    resultBuildCueDanger: "كسبت {notes} من ملاحظات الشعاب. كان نحو {percent}% من وقت التحكم بالخيط خارج المنطقة الآمنة؛ طوّر تحكم البكرة أو متانة الخيط لاحقًا.",
+    resultBuildCueSafe: "كسبت {notes} من ملاحظات الشعاب. بقي الشد آمنًا معظم الوقت؛ طوّر قوة الصنارة أو جودة الطُعم عندما يضيق الوقت.",
+    resultBuildCueNoCatch: "كسبت {notes} من ملاحظات الشعاب. لم تصل أي سمكة إلى مرحلة الإنزال هذه المرة؛ استخدم إلقاءً أقوى ثم فكّر في قوة الصنارة أو جودة الطُعم.",
+  };
+
   const assetPaths = {
     bg: "../../assets/animal-reef-fisher-reef-bg.webp",
     otter: "../../assets/animal-reef-fisher-otter-fisher.webp",
@@ -531,20 +664,39 @@
     ["Guardián Farol de Tormenta","Una ráfaga fuerte golpea la línea cada tres segundos."],
     ["Soberano Corona de Cristal","Se combinan deriva, ventanas de escudo y ráfagas abisales."]
   ];
+  const arabicMissionNames = [
+    "خليج التدريب","قناة ضفة الأصداف","عبور البحيرة","رف الشمس","ساحة شبوط التاج",
+    "مدخل أعشاب الشريط","التيار الأخضر","الحديقة المتشابكة","القوس المنجرف","جوف لوياثان الأعشاب",
+    "ممر إبر المرجان","نافذة الشعاب الزجاجية","متاهة الفروع","ممر المروحة الحمراء","حصن سمكة الكبش",
+    "الخليج المضيء بالقمر","المد الفضي","طريق فوانيس قناديل البحر","بركة الكسوف","حلقة شيطان البحر القمري",
+    "رف خط المطر","عوامة الرعد","خندق الرياح المتقاطعة","مسار الزبد الأبيض","عين فانوس العاصفة",
+    "بوابة الضغط الأزرق","سقوط الكريستال","الطبقة الحرارية الصامتة","منارة الهاوية","عرش التاج الكريستالي",
+  ];
+  const arabicBosses = [
+    ["حامي التاج الشمسي","اتبع ثلاث نبضات سلسة للتاج."],
+    ["لوياثان الأعشاب","تنجرف المنطقة الآمنة بينما يبقى سحبه قويًا."],
+    ["سمكة كبش المرجان","ينفتح درع المرجان وينغلق كل ثانيتين."],
+    ["شيطان البحر الكسوفي","تسبق كل تغير في المد خدعة تعكس السحب."],
+    ["حارس فانوس العاصفة","تضرب هبة قوية الخيط كل ثلاث ثوانٍ."],
+    ["سيد التاج الكريستالي","يجتمع الانجراف وفتحات الدرع وهبات الهاوية."],
+  ];
   regionDefinitions.forEach((region,regionIndex)=>{
     region.names.forEach((name,missionIndex)=>name.push(spanishMissionNames[regionIndex*5+missionIndex]));
     region.boss.name.es=spanishBosses[regionIndex][0];
     region.boss.rule.es=spanishBosses[regionIndex][1];
+    region.names.forEach((name,missionIndex)=>name.push(arabicMissionNames[regionIndex*5+missionIndex]));
+    region.boss.name.ar=arabicBosses[regionIndex][0];
+    region.boss.rule.ar=arabicBosses[regionIndex][1];
   });
 
   const schoolPattern = ["steady", "mixed", "dart", "heavy", "guardian"];
-  const zones = regionDefinitions.flatMap((region, regionIndex) => region.names.map(([en, zh, es], missionIndex) => {
+  const zones = regionDefinitions.flatMap((region, regionIndex) => region.names.map(([en, zh, es, ar], missionIndex) => {
     const stage = regionIndex * 5 + missionIndex + 1;
     return {
       id:`mission-${stage}`,
       stage,
       region:region.id,
-      name:{ en, "zh-Hant":zh, es },
+      name:{ en, "zh-Hant":zh, es, ar },
       img:region.img,
       goal:missionIndex === 0 ? 2 : missionIndex === 4 ? 3 : 3,
       unlock:stage,
@@ -557,12 +709,12 @@
   }));
 
   const gear = [
-    { id: "rod", effectKey: "gearEffectRod", name: { en: "Rod Strength", "zh-Hant": "釣竿強度" }, img: "../../assets/animal-reef-fisher-gear-rod-strength.webp", cost: 18 },
-    { id: "reel", effectKey: "gearEffectReel", name: { en: "Reel Control", "zh-Hant": "捲線控制" }, img: "../../assets/animal-reef-fisher-gear-reel-control.webp", cost: 18 },
-    { id: "line", effectKey: "gearEffectLine", name: { en: "Line Durability", "zh-Hant": "魚線耐久" }, img: "../../assets/animal-reef-fisher-gear-line-durability.webp", cost: 20 },
-    { id: "bait", effectKey: "gearEffectBait", name: { en: "Bait Quality", "zh-Hant": "魚餌品質" }, img: "../../assets/animal-reef-fisher-gear-bait-quality.webp", cost: 16 },
-    { id: "boat", effectKey: "gearEffectBoat", name: { en: "Boat Range", "zh-Hant": "小船航程" }, img: "../../assets/animal-reef-fisher-gear-boat-range.webp", cost: 22 },
-    { id: "scan", effectKey: "gearEffectScan", name: { en: "Reef Scanner", "zh-Hant": "礁區掃描" }, img: "../../assets/animal-reef-fisher-gear-reef-scanner.webp", cost: 20 },
+    { id: "rod", effectKey: "gearEffectRod", name: { en: "Rod Strength", "zh-Hant": "釣竿強度", ar: "قوة الصنارة" }, img: "../../assets/animal-reef-fisher-gear-rod-strength.webp", cost: 18 },
+    { id: "reel", effectKey: "gearEffectReel", name: { en: "Reel Control", "zh-Hant": "捲線控制", ar: "تحكم البكرة" }, img: "../../assets/animal-reef-fisher-gear-reel-control.webp", cost: 18 },
+    { id: "line", effectKey: "gearEffectLine", name: { en: "Line Durability", "zh-Hant": "魚線耐久", ar: "متانة الخيط" }, img: "../../assets/animal-reef-fisher-gear-line-durability.webp", cost: 20 },
+    { id: "bait", effectKey: "gearEffectBait", name: { en: "Bait Quality", "zh-Hant": "魚餌品質", ar: "جودة الطُعم" }, img: "../../assets/animal-reef-fisher-gear-bait-quality.webp", cost: 16 },
+    { id: "boat", effectKey: "gearEffectBoat", name: { en: "Boat Range", "zh-Hant": "小船航程", ar: "مدى القارب" }, img: "../../assets/animal-reef-fisher-gear-boat-range.webp", cost: 22 },
+    { id: "scan", effectKey: "gearEffectScan", name: { en: "Reef Scanner", "zh-Hant": "礁區掃描", ar: "ماسح الشعاب" }, img: "../../assets/animal-reef-fisher-gear-reef-scanner.webp", cost: 20 },
   ];
   ["Fuerza de caña","Control del carrete","Resistencia de línea","Calidad del cebo","Alcance del barco","Escáner de arrecife"].forEach((name,index)=>{gear[index].name.es=name;});
 
@@ -598,6 +750,7 @@
     };
   });
   ["Rayado de laguna","Pez globo burbuja","Pinzón de coral","Raya de cristal","Pargo de algas","Carpa Corona Solar","Medusa lunar","Corredor de aleta azul","Caballito de mar perla","Farol del arrecife","Manta de tormenta","Pez Corona de Cristal"].forEach((name,index)=>{fish[index].name.es=name;});
+  ["سمكة شريط البحيرة","سمكة النفيخة الفقاعية","سمكة شرشور المرجان","سمكة الشعاع الزجاجي","سمكة نقّار الأعشاب","كوي التاج الشمسي","قنديل البحر القمري","عدّاء الزعنفة الزرقاء","فرس البحر اللؤلؤي","فانوس الشعاب","شيطان بحر العاصفة","سمكة التاج الكريستالي"].forEach((name,index)=>{fish[index].name.ar=name;});
 
   const fishFrameCrops = {
     fishA: [
@@ -2017,6 +2170,7 @@
     else if (run.hookFish?.boss && ["coral", "abyss"].includes(run.hookFish.bossProfile)) nodes.tensionCoach.textContent = t(run.bossShieldOpen ? "bossShieldOpen" : "bossShieldClosed");
     else if (run.phase === "reel") nodes.tensionCoach.textContent = range.safe ? t("tensionCoachSafe") : t("tensionCoachDanger");
     else nodes.tensionCoach.textContent = t("tensionCoachReel");
+    if (run?.lineBreakRecoveryVisible) nodes.hintText.textContent = lineBreakRecoveryText();
   }
 
   function update(dt) {

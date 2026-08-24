@@ -3,7 +3,7 @@
   document.body.dataset.wpCombinedSound = "true";
   const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
   const ASSET = "../../assets/", trial = new URLSearchParams(location.search).get("trial") === "1";
-  const GAME_ID = "animal-rune-reels", GAME_VERSION = "v67";
+  const GAME_ID = "animal-rune-reels", GAME_VERSION = "v68";
   const storageKey = "weightplay.animalRuneReels.v4", legacyStorageKey = "weightplay.animalRuneReels.v3", memory = new Map();
   const LOCALES = window.RUNE_REELS_LOCALES, localeKeys = Object.keys(LOCALES);
   const localeRouteSegments={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
@@ -435,7 +435,7 @@
     $("#spinBtn").disabled=battle.busy||battle.ended||!profile.tutorial;autoBtn.disabled=!autoAvailable()||battle.ended;autoBtn.classList.toggle('on',battle.auto);autoBtn.querySelector("small").textContent=autoAvailable()?autoState:t('autoLockedShort');autoBtn.setAttribute("aria-pressed",String(battle.auto));autoBtn.setAttribute("aria-label",autoAvailable()?`${t("auto")}: ${autoState}`:t('autoLocked'));autoBtn.title=autoAvailable()?`${t("auto")}: ${autoState}`:t('autoLocked');
     speedBtn.textContent=`x${speed}`;speedBtn.classList.toggle('speed-2x',speed===2);speedBtn.setAttribute('aria-pressed',String(speed===2));speedBtn.setAttribute('aria-label',`${t('battleSpeed')}: x${speed}`);speedBtn.title=`${t('battleSpeed')}: x${speed}`;
     leaderTacticBtn.textContent=leaderTacticLabel;leaderTacticBtn.setAttribute('aria-label',leaderTacticLabel);leaderTacticBtn.title=leaderTacticLabel;
-    $("#tacticsPanel").hidden=!tactical;$(".battle-actions").hidden=tactical;$("#tacticsRuneHelp").textContent=selectedRune?`${t(RUNES[selectedRune].name)} · ${t(RUNES[selectedRune].desc)} · ${t('currentEffect')}: ${runeEffectText(selectedRune,profile.runeLevels[selectedRune])}`:'';$("#rerollReelBtn").disabled=!tactical||battle.correctionUsed;$("#holdReelBtn").disabled=!tactical||battle.correctionUsed;leaderTacticBtn.disabled=!tactical||battle.correctionUsed;$("#acceptRunesBtn").disabled=!tactical||battle.resolving;
+    $("#tacticsPanel").hidden=!tactical;$(".battle-actions").hidden=tactical;$(".v3-battle")?.classList.toggle("tactics-active",tactical);$("#tacticsRuneHelp").textContent=selectedRune?`${t(RUNES[selectedRune].name)} · ${t(RUNES[selectedRune].desc)} · ${t('currentEffect')}: ${runeEffectText(selectedRune,profile.runeLevels[selectedRune])}`:'';$("#rerollReelBtn").disabled=!tactical||battle.correctionUsed;$("#holdReelBtn").disabled=!tactical||battle.correctionUsed;leaderTacticBtn.disabled=!tactical||battle.correctionUsed;$("#acceptRunesBtn").disabled=!tactical||battle.resolving;
     if(reels)enhancedRenderReels();renderFirstTurnCoach();
     $(".v3-battle")?.classList.toggle("first-turn-coach-active",tactical&&!$("#firstTurnCoach").hidden)
   }
