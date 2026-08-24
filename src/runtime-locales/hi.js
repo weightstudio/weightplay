@@ -9595,6 +9595,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Tocca una carta e la destinazione, oppure trascinala sul desktop.": "एक कार्टा और डेस्टिनेशन प्राप्त करने के लिए, अपने डेस्कटॉप का उपयोग करें।",
   "Tocca una cella libera o trascina il pezzo in uno spazio valido.": "टोका उना सेला लिबेरा ओ ट्रैस्किना इल पेज़ो इन यूनो स्पाज़ियो वेलिडो।",
   "Toda la fruta": "टोडा ला फ्रूटा",
+  "Torna alla home": "मुख्य पृष्ठ",
   "Today": "आज",
   "Today: {stars} stars · Previous best: {previous}": "आज: {stars} सितारे · पिछला सर्वश्रेष्ठ: {previous}",
   "Today's gift has already been claimed.": "आज के उपहार का दावा पहले ही किया जा चुका है।",

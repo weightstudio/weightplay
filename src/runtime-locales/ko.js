@@ -9595,6 +9595,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Tocca una carta e la destinazione, oppure trascinala sul desktop.": "Tocca una carta e la destinazione, oppure trascinala sul 데스크탑.",
   "Tocca una cella libera o trascina il pezzo in uno spazio valido.": "Tocca una cella libera o trascina il pezzo in uno spazio valido.",
   "Toda la fruta": "토다 라 프루타",
+  "Torna alla home": "메인으로",
   "Today": "오늘",
   "Today: {stars} stars · Previous best: {previous}": "오늘: 별 {stars}개 · 이전 최고: {previous}",
   "Today's gift has already been claimed.": "오늘의 선물은 이미 청구되었습니다.",

@@ -9593,6 +9593,7 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Tocca una carta e la destinazione, oppure trascinala sul desktop.": "Tocca una carta e la destinazione, oppure trascinala sul escritorio.",
   "Tocca una cella libera o trascina il pezzo in uno spazio valido.": "Tocca una cella libera o trascina il pezzo in uno spazio valido.",
   "Toda la fruta": "Toda la fruta",
+  "Torna alla home": "Volver al inicio",
   "Today": "hoy",
   "Today: {stars} stars · Previous best: {previous}": "Hoy: {stars} estrellas · Mejor anterior: {previous}",
   "Today's gift has already been claimed.": "El regalo de hoy ya ha sido reclamado.",

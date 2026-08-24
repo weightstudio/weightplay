@@ -585,6 +585,13 @@ button {
   background: #513b12e8;
   box-shadow: 0 0 18px #ffd45c88;
 }
+.feedback[data-cue="route-assist"],
+.feedback[data-cue="route-assist-dock"] {
+  color: #e9ffff;
+  border-color: #5ff4ff;
+  background: #06445fe8;
+  box-shadow: 0 0 20px #35e8ff99;
+}
 @media (prefers-reduced-motion: reduce) {
   .feedback {
     transition: none;

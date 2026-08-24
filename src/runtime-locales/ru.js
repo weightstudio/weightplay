@@ -9595,6 +9595,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "Tocca una carta e la destinazione, oppure trascinala sul desktop.": "Карта и место назначения передвигаются по рабочему столу.",
   "Tocca una cella libera o trascina il pezzo in uno spazio valido.": "Токка уна целла свобода или трасцина иль пеццо в одном пространстве.",
   "Toda la fruta": "Тода ла фрукта",
+  "Torna alla home": "На главную",
   "Today": "Сегодня",
   "Today: {stars} stars · Previous best: {previous}": "Сегодня: {stars} звезд · Предыдущее лучшее: {previous}",
   "Today's gift has already been claimed.": "Сегодняшний подарок уже востребован.",

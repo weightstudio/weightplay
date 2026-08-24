@@ -9595,6 +9595,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Tocca una carta e la destinazione, oppure trascinala sul desktop.": "目的地を決定し、デスクトップ上で最適な情報を収集します。",
   "Tocca una cella libera o trascina il pezzo in uno spazio valido.": "Tocca una cella libera o trascina il pezzo in uno spazio valido。",
   "Toda la fruta": "トダ ラ フルッタ",
+  "Torna alla home": "メインへ",
   "Today": "今日",
   "Today: {stars} stars · Previous best: {previous}": "今日: {stars} 星 · 過去の最高: {previous}",
   "Today's gift has already been claimed.": "今日のギフトはすでに受け取られています。",
