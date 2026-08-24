@@ -12,7 +12,7 @@
   const localeSegment = location.pathname.split("/").filter(Boolean)[0] || "en";
   const routeLocale = ({ en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" })[localeSegment] || "en";
   const GAME_ID = "animal-one-line";
-  const GAME_VERSION = "v18";
+  const GAME_VERSION = "v19";
   const INTERFACE_VERSION = 6;
   function viewportBucket(){const width=Math.max(1,window.innerWidth||document.documentElement.clientWidth||1),height=Math.max(1,window.innerHeight||document.documentElement.clientHeight||1);if(height<=430)return"short-landscape";if(width<=480)return"phone";if(width<=900)return height>width?"tablet-portrait":"tablet-landscape";return height>width?"desktop-portrait":"desktop-landscape";}
   function track(eventName,details={}){try{window.WonderAnalytics?.track?.(eventName,{game_id:GAME_ID,game_version:GAME_VERSION,interface_version:INTERFACE_VERSION,locale:window.WonderI18n?.actualLocale?.()||document.documentElement.lang||routeLocale,viewport_bucket:viewportBucket(),stage:stageIndex+1,...details});}catch{/* Anonymous funnel measurement must never interrupt play. */}}
@@ -107,6 +107,20 @@
   Object.assign(STRINGS["zh-Hans"], { leaveTitle:"离开这个拼图？", leaveText:"决定期间会保留当前路径和尝试次数。", continuePuzzle:"继续拼图", returnStages:"返回关卡" });
   Object.assign(STRINGS.es, { leaveTitle:"¿Salir de este rompecabezas?", leaveText:"La ruta actual y los intentos se conservan mientras decides.", continuePuzzle:"Continuar rompecabezas", returnStages:"Volver a niveles" });
   Object.assign(STRINGS.ja, { leaveTitle:"このパズルを離れますか？", leaveText:"選択中は現在のルートと試行回数が保持されます。", continuePuzzle:"パズルを続ける", returnStages:"ステージへ戻る" });
+  STRINGS.ar = {
+    ...EN,
+    title: "خط واحد", language: "اللغة", languageLabel: "اللغة", mainReturn: "العودة إلى WeightPlay", back: "رجوع", stageRail: "المراحل", boardLabel: "لوحة شبكة الخط الواحد", startCell: "بداية البصمة المضيئة", close: "إغلاق",
+    eyebrow: "ورشة ميمي للشبكات الملونة", pitch: "خطط لمسار متصل واحد واملأ كل خلية مفتوحة من دون زيارة أي خلية مرتين.", start: "بدء اللعبة", chooseStage: "اختيار اللغز", attempts: "المحاولات", seals: "الخلايا",
+    restart: "إعادة البدء", hint: "إظهار تلميح", retry: "إعادة المحاولة", stages: "المراحل", next: "المرحلة التالية", skillReport: "تقرير اللغز",
+    tutorialTitle: "املأ كل خلية بخط واحد.", tutorial1: "ابدأ من البصمة المضيئة، ثم اضغط على الخلايا المتجاورة أو اسحب عبرها.", tutorial2: "يمكنك رفع إصبعك في أي وقت؛ سيبقى مسارك على اللوحة.", tutorial3: "ارجع فوق الخلية السابقة للتراجع. املأ كل الخلايا المفتوحة من دون تكرار مسارك.", tutorialStart: "بدء التحدي",
+    progress: "اكتملت {cleared} / 30 ألغاز", bestStars: "النجوم المجمعة: {stars}", stage: "المرحلة", ready: "ابدأ من البصمة المضيئة ثم املأ كل الخلايا المفتوحة.", drawing: "تابع؛ لا يمكن استخدام كل خلية إلا مرة واحدة.",
+    incomplete: "ما زالت بعض الخلايا فارغة. واصل تخطيط مسارك.", wrongStart: "بداية غير صحيحة. ابدأ من البصمة المضيئة.", nonAdjacent: "هذه الخلية ليست بجوار المسار. اختر خلية مجاورة أو ارجع خلية واحدة.", revisit: "هذه الخلية موجودة بالفعل في المسار. ارجع خلية واحدة للتراجع.", deadEnd: "لا يوجد مسار متبقٍ. ارجع خلية واحدة، أو أعد البدء، أو أظهر تلميحًا.", complete: "اكتملت كل الخلايا!",
+    hintText: "تضيء الخلية التالية في أحد المسارات الممكنة.", summary: "اكتملت {cleared} · النجوم: {stars}", locked: "مقفلة", available: "جاهزة", cleared: "مكتملة", resultTitle: "اكتمل اللغز", durationSeconds: "{seconds}ث",
+    resultText: "ملأتَ الخلايا {cells} كلها خلال {time} عبر {attempts} محاولة.", newBest: "أفضل وقت جديد!", best: "أفضل وقت: {time}", route: "المسار", planning: "التخطيط", control: "التحكم", routeValue: "{cells} خلية", planningValue: "{attempts} محاولة", controlValue: "من دون تكرار",
+    chapter1: "الخطوات الأولى", chapter2: "تخطيط الزوايا", chapter3: "الكتل الحجرية", chapter4: "المسارات الطويلة", chapter5: "الاختيارات الدقيقة", chapter6: "شبكات الخبراء",
+    rule1: "تعلّم الحركة العمودية والأفقية واملأ كل خلية مفتوحة.", rule2: "خطط للزوايا قبل تثبيت مسارك.", rule3: "تقسم الخلايا الحجرية اللوحة إلى اختيارات أصعب.", rule4: "المراحل الأطول تجعل الانعطافات الخاطئة المبكرة أكثر كلفة.", rule5: "تبدو عدة بدايات مفيدة، لكن المسارات المكتملة فقط تفوز.", rule6: "اجمع بين الكتل والمخارج الضيقة والمسارات الطويلة ذات الخط الواحد.",
+    leaveTitle: "مغادرة هذا اللغز؟", leaveText: "سيُحفظ مسارك الحالي وعدد المحاولات أثناء اتخاذ القرار.", continuePuzzle: "متابعة اللغز", returnStages: "العودة إلى المراحل"
+  };
   const S = STRINGS[routeLocale] || EN;
   const gameOwnedLocales = new Set(Object.keys(STRINGS));
   const translateTemplate = (value) => {
