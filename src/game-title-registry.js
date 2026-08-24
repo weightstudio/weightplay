@@ -908,7 +908,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "de": "Tierische Zufluchtsschleife",
     "it": "Anello del Santuario Animale",
     "ru": "Кольцо звериного святилища",
-    "hi": "पशु अभयारण्य लूप",
+    "hi": "पशु अभयारण्य चक्र",
     "ar": "حلقة محمية الحيوانات"
   },
   "animal-prism-battalion": {

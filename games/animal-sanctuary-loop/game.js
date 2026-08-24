@@ -3,7 +3,7 @@
 
   const $ = (id) => document.getElementById(id);
   const GAME_ID = "animal-sanctuary-loop";
-  const GAME_VERSION = "v13";
+  const GAME_VERSION = "v14";
   const localePack = window.AnimalSanctuaryLoopLocales;
   const localeCodes = localePack.codes;
   // The reviewed French action is already localized. Do not let the generic
