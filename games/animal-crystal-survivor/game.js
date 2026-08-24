@@ -8,7 +8,7 @@
   document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-crystal-survivor";
-  const GAME_VERSION = "v23";
+  const GAME_VERSION = "v24";
   const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_animal_crystal_survivor_v1";
   const localeKey = "weightPlayLocale";
@@ -524,19 +524,19 @@
   text["zh-Hant"].mainStart = "\u958b\u59cb\u904a\u6232";
   text.es.mainStart = "Comenzar juego";
   Object.assign(text, {
-    en: { ...text.en, hintFirstKey: "Tap or drag inside the playfield toward the glowing golden key; rotate to portrait for a larger touch field." },
-    "zh-Hant": { ...text["zh-Hant"], hintFirstKey: "點按或拖曳遊戲區，朝發光的金鑰移動；轉為直向可獲得更大的觸控範圍。" },
-    "zh-Hans": { ...text["zh-Hans"], hintFirstKey: "点按或拖曳游戏区，朝发光的金钥匙移动；转为竖向可获得更大的触控范围。" },
-    ja: { ...text.ja, hintFirstKey: "プレイフィールドをタップまたはドラッグして光る金の鍵へ移動。縦向きにするとタッチ範囲が広がります。" },
-    ko: { ...text.ko, hintFirstKey: "플레이 영역을 탭하거나 드래그해 빛나는 황금 열쇠로 이동하세요. 세로 화면이면 터치 영역이 더 넓어집니다." },
-    es: { ...text.es, hintFirstKey: "Toca o arrastra dentro del campo hacia la llave dorada brillante; gira a vertical para tener más espacio táctil." },
-    "pt-BR": { ...text["pt-BR"], hintFirstKey: "Toque ou arraste dentro do campo até a chave dourada brilhante; vire para retrato para ter mais área de toque." },
-    fr: { ...text.fr, hintFirstKey: "Touchez ou faites glisser dans l’aire de jeu vers la clé dorée lumineuse ; passez en portrait pour agrandir la zone tactile." },
-    de: { ...text.de, hintFirstKey: "Tippe oder ziehe im Spielfeld zum leuchtenden Goldschlüssel; im Hochformat ist die Touchfläche größer." },
-    it: { ...text.it, hintFirstKey: "Tocca o trascina nell’area di gioco verso la chiave dorata luminosa; passa al ritratto per una zona touch più ampia." },
-    ru: { ...text.ru, hintFirstKey: "Коснитесь или перетащите внутри игрового поля к сияющему золотому ключу; портретная ориентация расширит зону касания." },
-    hi: { ...text.hi, hintFirstKey: "प्लेफ़ील्ड के अंदर टैप या ड्रैग करके चमकती सुनहरी चाबी की ओर जाएँ; बड़े टच क्षेत्र के लिए पोर्ट्रेट मोड करें।" },
-    ar: { ...text.ar, hintFirstKey: "المس أو اسحب داخل ساحة اللعب نحو المفتاح الذهبي المتوهج؛ حوّل الشاشة للوضع الطولي لتكبير مساحة اللمس." },
+    en: { ...text.en, hintFirstKey: "Tap or drag inside the playfield toward the glowing golden key; rotate to portrait for a larger touch field.", hintNextKey: "The next golden key is marked by the arrow; cross the open lane and leave warning rings before they close." },
+    "zh-Hant": { ...text["zh-Hant"], hintFirstKey: "點按或拖曳遊戲區，朝發光的金鑰移動；轉為直向可獲得更大的觸控範圍。", hintNextKey: "下一把金鑰會由箭頭標出；穿過安全路線，並在警示圈關閉前離開。" },
+    "zh-Hans": { ...text["zh-Hans"], hintFirstKey: "点按或拖曳游戏区，朝发光的金钥匙移动；转为竖向可获得更大的触控范围。", hintNextKey: "箭头会标出下一把金钥匙；穿过安全路线，并在警示圈关闭前离开。" },
+    ja: { ...text.ja, hintFirstKey: "プレイフィールドをタップまたはドラッグして光る金の鍵へ移動。縦向きにするとタッチ範囲が広がります。", hintNextKey: "次の金の鍵は矢印で示されます。安全な道を進み、警告リングが閉じる前に離れましょう。" },
+    ko: { ...text.ko, hintFirstKey: "플레이 영역을 탭하거나 드래그해 빛나는 황금 열쇠로 이동하세요. 세로 화면이면 터치 영역이 더 넓어집니다.", hintNextKey: "화살표가 다음 황금 열쇠를 가리킵니다. 열린 길을 지나고 경고 고리가 닫히기 전에 벗어나세요." },
+    es: { ...text.es, hintFirstKey: "Toca o arrastra dentro del campo hacia la llave dorada brillante; gira a vertical para tener más espacio táctil.", hintNextKey: "La flecha marca la siguiente llave dorada; cruza la ruta abierta y sal de los anillos de peligro antes de que se cierren." },
+    "pt-BR": { ...text["pt-BR"], hintFirstKey: "Toque ou arraste dentro do campo até a chave dourada brilhante; vire para retrato para ter mais área de toque.", hintNextKey: "A seta marca a próxima chave dourada; atravesse a rota aberta e saia dos anéis de alerta antes que fechem." },
+    fr: { ...text.fr, hintFirstKey: "Touchez ou faites glisser dans l’aire de jeu vers la clé dorée lumineuse ; passez en portrait pour agrandir la zone tactile.", hintNextKey: "La flèche indique la prochaine clé dorée ; traversez la voie ouverte et quittez les anneaux d’alerte avant leur fermeture." },
+    de: { ...text.de, hintFirstKey: "Tippe oder ziehe im Spielfeld zum leuchtenden Goldschlüssel; im Hochformat ist die Touchfläche größer.", hintNextKey: "Der Pfeil zeigt den nächsten Goldschlüssel; quere die offene Route und verlasse Warnringe, bevor sie sich schließen." },
+    it: { ...text.it, hintFirstKey: "Tocca o trascina nell’area di gioco verso la chiave dorata luminosa; passa al ritratto per una zona touch più ampia.", hintNextKey: "La freccia indica la prossima chiave dorata; attraversa la rotta aperta e lascia gli anelli d’allerta prima che si chiudano." },
+    ru: { ...text.ru, hintFirstKey: "Коснитесь или перетащите внутри игрового поля к сияющему золотому ключу; портретная ориентация расширит зону касания.", hintNextKey: "Стрелка указывает на следующий золотой ключ; двигайтесь по открытому пути и покиньте кольца опасности до их закрытия." },
+    hi: { ...text.hi, hintFirstKey: "प्लेफ़ील्ड के अंदर टैप या ड्रैग करके चमकती सुनहरी चाबी की ओर जाएँ; बड़े टच क्षेत्र के लिए पोर्ट्रेट मोड करें।", hintNextKey: "तीर अगली सुनहरी चाबी दिखाता है; खुले रास्ते से जाएँ और चेतावनी छल्ले बंद होने से पहले उनसे बाहर निकलें।" },
+    ar: { ...text.ar, hintFirstKey: "المس أو اسحب داخل ساحة اللعب نحو المفتاح الذهبي المتوهج؛ حوّل الشاشة للوضع الطولي لتكبير مساحة اللمس.", hintNextKey: "يشير السهم إلى المفتاح الذهبي التالي؛ اعبر المسار المفتوح وغادر حلقات التحذير قبل أن تنغلق." },
   });
   Object.entries({
     "zh-Hans": ["收集 {keys} 把金钥匙 · 生存 3:00{boss}", " · 击败首领"],
@@ -1122,6 +1122,7 @@
       spawnTimer: 0.95,
       spawnCount: 0,
       key: stageNumber === 1 ? firstKeyPoint(player, randomKey) : randomKey,
+      nextKeyCueUntil: 0,
       enemies: [],
       xpDrops: [],
       shots: [],
@@ -2078,6 +2079,7 @@
     if (Math.hypot(state.key.x - p.x, state.key.y - p.y) < p.pickup + 8) {
       state.keys += 1;
       state.key = randomPoint(120);
+      state.nextKeyCueUntil = state.keys < (state.stageConfig?.targetKeys || 0) ? state.survived + 10 : 0;
       addSpark(p.x, p.y - 52, "#ffe76c");
       addFloater("+1", p.x, p.y - 90, "#ffe76c");
       playSound("success", 0.12);
@@ -2467,6 +2469,8 @@
     const nextHint =
       state.stage === 1 && state.keys === 0 && state.survived < 12
         ? "hintFirstKey"
+        : nextKeyCueVisible()
+          ? "hintNextKey"
         : state.xpNeed - state.xp <= 1 && state.xpDrops.length > 0
         ? "hintUpgradeSoon"
         : keyDistance <= 220
@@ -2507,8 +2511,16 @@
     return state.mode === "running" && state.stage === 1 && state.keys === 0 && state.survived < 12;
   }
 
+  function nextKeyCueVisible() {
+    return state.mode === "running"
+      && state.stage === 1
+      && state.keys > 0
+      && state.keys < (state.stageConfig?.targetKeys || 0)
+      && state.survived < state.nextKeyCueUntil;
+  }
+
   function drawFirstKeyRouteCue(frameNow) {
-    if (!firstKeyCueVisible()) return;
+    if (!firstKeyCueVisible() && !nextKeyCueVisible()) return;
     const dx = state.key.x - state.player.x;
     const dy = state.key.y - state.player.y;
     const distance = Math.hypot(dx, dy);

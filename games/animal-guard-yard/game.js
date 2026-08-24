@@ -1,4 +1,176 @@
-﻿(() => {
+﻿const ANIMAL_GUARD_YARD_SHELL_COPY = {
+  en: {
+    gameTitle: "Animal Guard Yard", language: "Language", back: "Back", backToLobby: "Back to lobby",
+    walletAria: "Animal Guard Yard wallet", beastGuideAria: "Beast guide", stageListAria: "Stage list",
+    animalUpgradesAria: "Animal upgrades", animalShopAria: "Animal shop", menuAria: "Animal Guard Yard menu",
+    gameScreenAria: "Animal Guard Yard fixed game screen", sunEnergyAria: "Sun energy", homeHeartsAria: "Home hearts",
+    animalGuardsAria: "Animal guards", defenseLanesAria: "Animal defense lanes", chooseStage: "Choose Stage",
+    menuHint: "Place animal guards and stop the wild beasts.", stages: "Stages", openPause: "Pause battle",
+    pauseTitle: "Battle paused", pauseHint: "Continue when you are ready, or leave this battle.", resume: "Continue",
+    leaveBattle: "Leave Battle", loading: "Loading", nextStage: "Next Stage", retry: "Try Again",
+    kennelTitle: "Animal Training", kennelHint: "Upgrade guards with coins. Unlock rare animals with diamonds.",
+    shopTitle: "Rare Animal Shop", shopHint: "Spend shared WeightPlay diamonds on special animal guards.",
+    tabStages: "Stages", tabAnimals: "Animals", tabShop: "Shop",
+  },
+  "zh-Hant": {
+    gameTitle: "動物守衛庭院", language: "語言", back: "返回", backToLobby: "返回大廳",
+    walletAria: "動物守衛庭院錢包", beastGuideAria: "野獸圖鑑", stageListAria: "關卡清單",
+    animalUpgradesAria: "動物升級", animalShopAria: "動物商店", menuAria: "動物守衛庭院選單",
+    gameScreenAria: "動物守衛庭院固定遊戲畫面", sunEnergyAria: "陽光能量", homeHeartsAria: "家園愛心",
+    animalGuardsAria: "動物守衛", defenseLanesAria: "動物防衛路線", chooseStage: "選擇關卡",
+    menuHint: "放置動物守衛，擋住野獸進攻。", stages: "關卡", openPause: "暫停戰鬥",
+    pauseTitle: "戰鬥已暫停", pauseHint: "準備好就繼續，也可以離開這場戰鬥。", resume: "繼續",
+    leaveBattle: "離開戰鬥", loading: "載入中", nextStage: "下一關", retry: "再試一次",
+    kennelTitle: "動物訓練", kennelHint: "用金幣升級守衛，用鑽石解鎖稀有動物。",
+    shopTitle: "稀有動物商店", shopHint: "使用 WeightPlay 共用鑽石購買特殊動物守衛。",
+    tabStages: "關卡", tabAnimals: "動物", tabShop: "商店",
+  },
+  "zh-Hans": {
+    gameTitle: "动物守卫庭院", language: "语言", back: "返回", backToLobby: "返回大厅",
+    walletAria: "动物守卫庭院钱包", beastGuideAria: "野兽图鉴", stageListAria: "关卡列表",
+    animalUpgradesAria: "动物升级", animalShopAria: "动物商店", menuAria: "动物守卫庭院菜单",
+    gameScreenAria: "动物守卫庭院固定游戏画面", sunEnergyAria: "阳光能量", homeHeartsAria: "家园爱心",
+    animalGuardsAria: "动物守卫", defenseLanesAria: "动物防守路线", chooseStage: "选择关卡",
+    menuHint: "放置动物守卫，挡住野兽进攻。", stages: "关卡", openPause: "暂停战斗",
+    pauseTitle: "战斗已暂停", pauseHint: "准备好就继续，也可以离开这场战斗。", resume: "继续",
+    leaveBattle: "离开战斗", loading: "加载中", nextStage: "下一关", retry: "再试一次",
+    kennelTitle: "动物训练", kennelHint: "用金币升级守卫，用钻石解锁稀有动物。",
+    shopTitle: "稀有动物商店", shopHint: "使用 WeightPlay 共用钻石购买特殊动物守卫。",
+    tabStages: "关卡", tabAnimals: "动物", tabShop: "商店",
+  },
+  ja: {
+    gameTitle: "どうぶつガードヤード", language: "言語", back: "戻る", backToLobby: "ロビーに戻る",
+    walletAria: "どうぶつガードヤードのウォレット", beastGuideAria: "野獣図鑑", stageListAria: "ステージ一覧",
+    animalUpgradesAria: "どうぶつ強化", animalShopAria: "どうぶつショップ", menuAria: "どうぶつガードヤードのメニュー",
+    gameScreenAria: "どうぶつガードヤードの固定ゲーム画面", sunEnergyAria: "太陽エネルギー", homeHeartsAria: "家のハート",
+    animalGuardsAria: "どうぶつガード", defenseLanesAria: "どうぶつ防衛レーン", chooseStage: "ステージを選ぶ",
+    menuHint: "どうぶつガードを配置して、野獣の進攻を止めよう。", stages: "ステージ", openPause: "バトルを一時停止",
+    pauseTitle: "バトルを一時停止中", pauseHint: "準備ができたら続けるか、このバトルを離れます。", resume: "続ける",
+    leaveBattle: "バトルを離れる", loading: "読み込み中", nextStage: "次のステージ", retry: "もう一度",
+    kennelTitle: "どうぶつ訓練", kennelHint: "コインでガードを強化し、ダイヤでレアどうぶつを解放します。",
+    shopTitle: "レアどうぶつショップ", shopHint: "WeightPlay 共通ダイヤで特別などうぶつガードを購入します。",
+    tabStages: "ステージ", tabAnimals: "どうぶつ", tabShop: "ショップ",
+  },
+  ko: {
+    gameTitle: "Animal Guard Yard", language: "언어", back: "뒤로", backToLobby: "로비로 돌아가기",
+    walletAria: "Animal Guard Yard 지갑", beastGuideAria: "야수 도감", stageListAria: "스테이지 목록",
+    animalUpgradesAria: "동물 강화", animalShopAria: "동물 상점", menuAria: "Animal Guard Yard 메뉴",
+    gameScreenAria: "Animal Guard Yard 고정 게임 화면", sunEnergyAria: "태양 에너지", homeHeartsAria: "집 하트",
+    animalGuardsAria: "동물 수호대", defenseLanesAria: "동물 방어 라인", chooseStage: "스테이지 선택",
+    menuHint: "동물 수호대를 배치해 야수의 공격을 막으세요.", stages: "스테이지", openPause: "전투 일시정지",
+    pauseTitle: "전투 일시정지", pauseHint: "준비되면 계속하거나 이 전투를 나가세요.", resume: "계속",
+    leaveBattle: "전투 나가기", loading: "불러오는 중", nextStage: "다음 스테이지", retry: "다시 시도",
+    kennelTitle: "동물 훈련", kennelHint: "코인으로 수호대를 강화하고 다이아로 희귀 동물을 잠금 해제하세요.",
+    shopTitle: "희귀 동물 상점", shopHint: "WeightPlay 공용 다이아로 특별한 동물 수호대를 구매하세요.",
+    tabStages: "스테이지", tabAnimals: "동물", tabShop: "상점",
+  },
+  es: {
+    gameTitle: "Guardianes del Jardín Animal", language: "Idioma", back: "Volver", backToLobby: "Volver al vestíbulo",
+    walletAria: "Monedero de Guardianes del Jardín Animal", beastGuideAria: "Guía de bestias", stageListAria: "Lista de niveles",
+    animalUpgradesAria: "Mejoras de animales", animalShopAria: "Tienda de animales", menuAria: "Menú de Guardianes del Jardín Animal",
+    gameScreenAria: "Pantalla fija de Guardianes del Jardín Animal", sunEnergyAria: "Energía solar", homeHeartsAria: "Corazones del hogar",
+    animalGuardsAria: "Guardianes animales", defenseLanesAria: "Carriles de defensa animal", chooseStage: "Elegir nivel",
+    menuHint: "Coloca guardianes animales y detén a las bestias salvajes.", stages: "Niveles", openPause: "Pausar batalla",
+    pauseTitle: "Batalla en pausa", pauseHint: "Continúa cuando estés listo o abandona esta batalla.", resume: "Continuar",
+    leaveBattle: "Abandonar batalla", loading: "Cargando", nextStage: "Siguiente nivel", retry: "Intentar de nuevo",
+    kennelTitle: "Entrenamiento animal", kennelHint: "Mejora guardianes con monedas. Desbloquea animales raros con diamantes.",
+    shopTitle: "Tienda de animales raros", shopHint: "Usa los diamantes compartidos de WeightPlay para conseguir guardianes especiales.",
+    tabStages: "Niveles", tabAnimals: "Animales", tabShop: "Tienda",
+  },
+  "pt-BR": {
+    gameTitle: "Animal Guard Yard", language: "Idioma", back: "Voltar", backToLobby: "Voltar ao lobby",
+    walletAria: "Carteira do Animal Guard Yard", beastGuideAria: "Guia das feras", stageListAria: "Lista de fases",
+    animalUpgradesAria: "Melhorias dos animais", animalShopAria: "Loja de animais", menuAria: "Menu do Animal Guard Yard",
+    gameScreenAria: "Tela fixa do Animal Guard Yard", sunEnergyAria: "Energia solar", homeHeartsAria: "Corações da casa",
+    animalGuardsAria: "Guardas animais", defenseLanesAria: "Faixas de defesa animal", chooseStage: "Escolher fase",
+    menuHint: "Coloque guardas animais e pare as feras selvagens.", stages: "Fases", openPause: "Pausar batalha",
+    pauseTitle: "Batalha pausada", pauseHint: "Continue quando estiver pronto ou saia desta batalha.", resume: "Continuar",
+    leaveBattle: "Sair da batalha", loading: "Carregando", nextStage: "Próxima fase", retry: "Tentar novamente",
+    kennelTitle: "Treinamento animal", kennelHint: "Melhore guardas com moedas. Desbloqueie animais raros com diamantes.",
+    shopTitle: "Loja de animais raros", shopHint: "Gaste diamantes compartilhados do WeightPlay em guardas animais especiais.",
+    tabStages: "Fases", tabAnimals: "Animais", tabShop: "Loja",
+  },
+  fr: {
+    gameTitle: "Animal Guard Yard", language: "Langue", back: "Retour", backToLobby: "Retour au lobby",
+    walletAria: "Portefeuille d’Animal Guard Yard", beastGuideAria: "Guide des bêtes", stageListAria: "Liste des niveaux",
+    animalUpgradesAria: "Améliorations des animaux", animalShopAria: "Boutique d’animaux", menuAria: "Menu d’Animal Guard Yard",
+    gameScreenAria: "Écran de jeu fixe d’Animal Guard Yard", sunEnergyAria: "Énergie solaire", homeHeartsAria: "Cœurs de la maison",
+    animalGuardsAria: "Gardiens animaux", defenseLanesAria: "Voies de défense animale", chooseStage: "Choisir un niveau",
+    menuHint: "Placez des gardiens animaux et arrêtez les bêtes sauvages.", stages: "Niveaux", openPause: "Mettre la bataille en pause",
+    pauseTitle: "Bataille en pause", pauseHint: "Continuez quand vous êtes prêt ou quittez cette bataille.", resume: "Continuer",
+    leaveBattle: "Quitter la bataille", loading: "Chargement", nextStage: "Niveau suivant", retry: "Réessayer",
+    kennelTitle: "Entraînement animal", kennelHint: "Améliorez les gardiens avec des pièces. Débloquez des animaux rares avec des diamants.",
+    shopTitle: "Boutique d’animaux rares", shopHint: "Dépensez les diamants partagés de WeightPlay pour des gardiens animaux spéciaux.",
+    tabStages: "Niveaux", tabAnimals: "Animaux", tabShop: "Boutique",
+  },
+  de: {
+    gameTitle: "Animal Guard Yard", language: "Sprache", back: "Zurück", backToLobby: "Zurück zur Lobby",
+    walletAria: "Animal-Guard-Yard-Geldbörse", beastGuideAria: "Biest-Handbuch", stageListAria: "Stufenliste",
+    animalUpgradesAria: "Tierverbesserungen", animalShopAria: "Tierladen", menuAria: "Animal-Guard-Yard-Menü",
+    gameScreenAria: "Festes Spielfeld von Animal Guard Yard", sunEnergyAria: "Sonnenenergie", homeHeartsAria: "Herzen des Hauses",
+    animalGuardsAria: "Tierwächter", defenseLanesAria: "Tierverteidigungsbahnen", chooseStage: "Stufe wählen",
+    menuHint: "Platziere Tierwächter und stoppe die wilden Biester.", stages: "Stufen", openPause: "Kampf pausieren",
+    pauseTitle: "Kampf pausiert", pauseHint: "Spiele weiter, wenn du bereit bist, oder verlasse diesen Kampf.", resume: "Weiter",
+    leaveBattle: "Kampf verlassen", loading: "Wird geladen", nextStage: "Nächste Stufe", retry: "Erneut versuchen",
+    kennelTitle: "Tiertraining", kennelHint: "Verbessere Wächter mit Münzen. Schalte seltene Tiere mit Diamanten frei.",
+    shopTitle: "Laden für seltene Tiere", shopHint: "Gib gemeinsame WeightPlay-Diamanten für besondere Tierwächter aus.",
+    tabStages: "Stufen", tabAnimals: "Tiere", tabShop: "Laden",
+  },
+  it: {
+    gameTitle: "Animal Guard Yard", language: "Lingua", back: "Indietro", backToLobby: "Torna alla lobby",
+    walletAria: "Portafoglio di Animal Guard Yard", beastGuideAria: "Guida alle bestie", stageListAria: "Elenco livelli",
+    animalUpgradesAria: "Potenziamenti animali", animalShopAria: "Negozio animali", menuAria: "Menu di Animal Guard Yard",
+    gameScreenAria: "Schermata di gioco fissa di Animal Guard Yard", sunEnergyAria: "Energia solare", homeHeartsAria: "Cuori della casa",
+    animalGuardsAria: "Guardie animali", defenseLanesAria: "Corsie di difesa animale", chooseStage: "Scegli livello",
+    menuHint: "Posiziona le guardie animali e ferma le bestie selvatiche.", stages: "Livelli", openPause: "Metti in pausa la battaglia",
+    pauseTitle: "Battaglia in pausa", pauseHint: "Continua quando sei pronto o lascia questa battaglia.", resume: "Continua",
+    leaveBattle: "Lascia la battaglia", loading: "Caricamento", nextStage: "Livello successivo", retry: "Riprova",
+    kennelTitle: "Addestramento animali", kennelHint: "Potenzia le guardie con le monete. Sblocca animali rari con i diamanti.",
+    shopTitle: "Negozio degli animali rari", shopHint: "Spendi i diamanti condivisi di WeightPlay per guardie animali speciali.",
+    tabStages: "Livelli", tabAnimals: "Animali", tabShop: "Negozio",
+  },
+  ru: {
+    gameTitle: "Animal Guard Yard", language: "Язык", back: "Назад", backToLobby: "Вернуться в лобби",
+    walletAria: "Кошелёк Animal Guard Yard", beastGuideAria: "Справочник зверей", stageListAria: "Список этапов",
+    animalUpgradesAria: "Улучшения животных", animalShopAria: "Магазин животных", menuAria: "Меню Animal Guard Yard",
+    gameScreenAria: "Фиксированный игровой экран Animal Guard Yard", sunEnergyAria: "Энергия солнца", homeHeartsAria: "Сердца дома",
+    animalGuardsAria: "Защитники-животные", defenseLanesAria: "Линии защиты животных", chooseStage: "Выбрать этап",
+    menuHint: "Разместите защитников-животных и остановите диких зверей.", stages: "Этапы", openPause: "Поставить бой на паузу",
+    pauseTitle: "Бой на паузе", pauseHint: "Продолжите, когда будете готовы, или покиньте этот бой.", resume: "Продолжить",
+    leaveBattle: "Покинуть бой", loading: "Загрузка", nextStage: "Следующий этап", retry: "Повторить",
+    kennelTitle: "Тренировка животных", kennelHint: "Улучшайте защитников за монеты. Открывайте редких животных за алмазы.",
+    shopTitle: "Магазин редких животных", shopHint: "Тратьте общие алмазы WeightPlay на особых защитников-животных.",
+    tabStages: "Этапы", tabAnimals: "Животные", tabShop: "Магазин",
+  },
+  hi: {
+    gameTitle: "Animal Guard Yard", language: "भाषा", back: "वापस", backToLobby: "लॉबी पर लौटें",
+    walletAria: "Animal Guard Yard वॉलेट", beastGuideAria: "जानवरों की गाइड", stageListAria: "चरण सूची",
+    animalUpgradesAria: "पशु उन्नयन", animalShopAria: "पशु दुकान", menuAria: "Animal Guard Yard मेनू",
+    gameScreenAria: "Animal Guard Yard स्थिर गेम स्क्रीन", sunEnergyAria: "सौर ऊर्जा", homeHeartsAria: "घर के दिल",
+    animalGuardsAria: "पशु रक्षक", defenseLanesAria: "पशु रक्षा लेन", chooseStage: "चरण चुनें",
+    menuHint: "पशु रक्षक रखें और जंगली जानवरों को रोकें।", stages: "चरण", openPause: "लड़ाई रोकें",
+    pauseTitle: "लड़ाई रुकी है", pauseHint: "तैयार होने पर जारी रखें या यह लड़ाई छोड़ें।", resume: "जारी रखें",
+    leaveBattle: "लड़ाई छोड़ें", loading: "लोड हो रहा है", nextStage: "अगला चरण", retry: "फिर कोशिश करें",
+    kennelTitle: "पशु प्रशिक्षण", kennelHint: "सिक्कों से रक्षकों को उन्नत करें। हीरों से दुर्लभ पशु खोलें।",
+    shopTitle: "दुर्लभ पशु दुकान", shopHint: "विशेष पशु रक्षकों के लिए साझा WeightPlay हीरे खर्च करें।",
+    tabStages: "चरण", tabAnimals: "पशु", tabShop: "दुकान",
+  },
+  ar: {
+    gameTitle: "Animal Guard Yard", language: "اللغة", back: "رجوع", backToLobby: "العودة إلى الردهة",
+    walletAria: "محفظة Animal Guard Yard", beastGuideAria: "دليل الوحوش", stageListAria: "قائمة المراحل",
+    animalUpgradesAria: "ترقيات الحيوانات", animalShopAria: "متجر الحيوانات", menuAria: "قائمة Animal Guard Yard",
+    gameScreenAria: "شاشة لعبة Animal Guard Yard الثابتة", sunEnergyAria: "طاقة الشمس", homeHeartsAria: "قلوب المنزل",
+    animalGuardsAria: "حراس الحيوانات", defenseLanesAria: "ممرات دفاع الحيوانات", chooseStage: "اختر مرحلة",
+    menuHint: "ضع حراس الحيوانات وأوقف الوحوش البرية.", stages: "المراحل", openPause: "إيقاف المعركة مؤقتًا",
+    pauseTitle: "المعركة متوقفة مؤقتًا", pauseHint: "تابع عندما تكون مستعدًا أو غادر هذه المعركة.", resume: "متابعة",
+    leaveBattle: "مغادرة المعركة", loading: "جارٍ التحميل", nextStage: "المرحلة التالية", retry: "حاول مرة أخرى",
+    kennelTitle: "تدريب الحيوانات", kennelHint: "طوّر الحراس بالعملات، وافتح الحيوانات النادرة بالماس.",
+    shopTitle: "متجر الحيوانات النادرة", shopHint: "أنفق ماس WeightPlay المشترك لشراء حراس حيوانات مميزين.",
+    tabStages: "المراحل", tabAnimals: "الحيوانات", tabShop: "المتجر",
+  },
+};
+
+(() => {
   const GAME_ID = "animal-guard-yard";
   const GAME_VERSION = "v24";
   const INTERFACE_VERSION = 6;
@@ -1104,8 +1276,13 @@
   function t(key, data) {
     const parts = key.split(".");
     const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
-    let value = text[sourceLocale] || text.en;
-    for (const part of parts) value = value?.[part];
+    const lookup = (catalog) => {
+      let value = catalog;
+      for (const part of parts) value = value?.[part];
+      return value;
+    };
+    let value = lookup(ANIMAL_GUARD_YARD_SHELL_COPY[locale] || ANIMAL_GUARD_YARD_SHELL_COPY[sourceLocale]);
+    if (typeof value !== "string") value = lookup(text[sourceLocale] || text.en);
     if (typeof value !== "string") value = key;
     value = Object.entries(data || {}).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, item), value);
     return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(value) || value : value;

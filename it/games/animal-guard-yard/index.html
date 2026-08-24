@@ -85,90 +85,100 @@
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-guard-yard-poster.webp" />
   </head>
   <body data-tutorial-auto-show="false" data-screen="main" data-wp-active-scene="main">
-    <main class="yard-game" data-no-mobile-immersive="true">
+    <main class="yard-game" data-no-mobile-immersive="true" data-wp-text-growth-shell="animal-guard-yard-v1" data-wp-text-growth-shell="animal-guard-yard-v1" data-wp-text-growth-shell="animal-guard-yard-v1" data-runtime-localize="off" data-wp-text-growth-shell="animal-guard-yard-v1">
       <header class="topbar">
-        <a class="home-link" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <a class="home-link" data-wp-return="main" href="/" aria-label="Torna alla lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="title-block">
           <p>WeightPlay</p>
           <h1 data-ui="gameTitle">Animal Guard Yard</h1>
         </div>
         <label class="language-picker">
-          <span data-ui="language">Language</span>
-          <select id="localeSelect" aria-label="Language">
+          <span data-ui="language">Lingua</span>
+          <select id="localeSelect" aria-label="Lingua">
             <option value="en">English</option>
-            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
-            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+            <option value="zh-Hant">繁體中文</option>
+            <option value="zh-Hans">简体中文</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+            <option value="es">Español</option>
+            <option value="pt-BR">Português</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="it">Italiano</option>
+            <option value="ru">Русский</option>
+            <option value="hi">हिन्दी</option>
+            <option value="ar">العربية</option>
           </select>
         </label>
       </header>
 
       <section id="mainPanel" class="main-entry-panel" data-screen="main" data-wp-standard-main-screen>
         <img class="main-cover" src="../../assets/animal-guard-yard-poster.webp" data-fallback-src="../../assets/animal-guard-yard-poster.png" alt="" />
-        <div class="main-entry-copy"><strong data-ui="gameTitle">Animal Guard Yard</strong><span data-ui="menuHint">Place animal guards and stop the wild beasts.</span></div>
-        <button id="startGameBtn" class="main-start-btn" type="button" data-ui="chooseStage">Choose Stage</button>
+        <div class="main-entry-copy"><strong data-ui="gameTitle">Animal Guard Yard</strong><span data-ui="menuHint">Posiziona le guardie animali e ferma le bestie selvatiche.</span></div>
+        <button id="startGameBtn" class="main-start-btn" type="button" data-ui="chooseStage">Scegli livello</button>
       </section>
 
       <section id="menuPanel" class="menu-panel wp-stage-art-shell hidden" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/animal-guard-yard-poster.webp" style="--wp-stage-art: url('../../assets/animal-guard-yard-poster.webp')">
         <div class="menu-shell">
-          <div class="stage-screen-head"><button id="stageBackMainBtn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><strong data-ui="chooseStage">Choose Stage</strong></div>
-          <div class="wallet-row" aria-label="Animal Guard Yard wallet">
+          <div class="stage-screen-head"><button id="stageBackMainBtn" data-wp-return="stage" type="button" aria-label="Indietro">&larr;</button><strong data-ui="chooseStage">Scegli livello</strong></div>
+          <div class="wallet-row" aria-label="Portafoglio di Animal Guard Yard">
             <span class="coin-chip"><img src="../../assets/coin.png" alt="" /><b id="coinText">0</b></span>
             <span class="diamond-chip"><img src="../../assets/weightplay-diamond.svg?v=20260704-blue-diamond1" alt="" /><b id="diamondText">0</b></span>
           </div>
           <section id="stageTabPanel" class="menu-tab-panel" data-tab-panel="stages">
             <div class="menu-copy">
-              <strong data-ui="chooseStage">Choose Stage</strong>
-              <span data-ui="menuHint">Place animal guards and stop the wild beasts.</span>
+              <strong data-ui="chooseStage">Scegli livello</strong>
+              <span data-ui="menuHint">Posiziona le guardie animali e ferma le bestie selvatiche.</span>
             </div>
             <div id="masterySummary" class="mastery-summary" aria-live="polite"></div>
             <p id="stageTrainingCue" class="training-bridge-cue"></p>
-            <div id="beastGuide" class="beast-guide" aria-label="Beast guide"></div>
-            <div id="stageGrid" class="stage-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Stage list"></div>
+            <div id="beastGuide" class="beast-guide" aria-label="Guida alle bestie"></div>
+            <div id="stageGrid" class="stage-grid" data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Elenco livelli"></div>
           </section>
           <section id="animalTabPanel" class="menu-tab-panel hidden" data-tab-panel="animals">
             <div class="kennel-panel">
               <div class="kennel-head">
-                <strong data-ui="kennelTitle">Animal Training</strong>
-                <span data-ui="kennelHint">Upgrade guards with coins. Unlock rare animals with diamonds.</span>
+                <strong data-ui="kennelTitle">Addestramento animali</strong>
+                <span data-ui="kennelHint">Potenzia le guardie con le monete. Sblocca animali rari con i diamanti.</span>
                 <p id="animalTrainingCue" class="training-bridge-cue"></p>
               </div>
-              <div id="kennelGrid" class="kennel-grid" aria-label="Animal upgrades"></div>
+              <div id="kennelGrid" class="kennel-grid" aria-label="Potenziamenti animali"></div>
             </div>
           </section>
           <section id="shopTabPanel" class="menu-tab-panel hidden" data-tab-panel="shop">
             <div class="shop-panel">
               <div class="kennel-head">
-                <strong data-ui="shopTitle">Rare Animal Shop</strong>
-                <span data-ui="shopHint">Spend shared WeightPlay diamonds on special animal guards.</span>
+                <strong data-ui="shopTitle">Negozio degli animali rari</strong>
+                <span data-ui="shopHint">Spendi i diamanti condivisi di WeightPlay per guardie animali speciali.</span>
               </div>
-              <div id="shopGrid" class="shop-grid" aria-label="Animal shop"></div>
+              <div id="shopGrid" class="shop-grid" aria-label="Negozio animali"></div>
             </div>
           </section>
         </div>
-        <nav id="menuTabs" class="menu-tabs" aria-label="Animal Guard Yard menu">
-          <button type="button" data-menu-tab="stages" class="active"><img src="../../assets/menu-battle.png" alt="" /><span data-ui="tabStages">Stages</span></button>
-          <button type="button" data-menu-tab="animals"><img src="../../assets/menu-character.png" alt="" /><span data-ui="tabAnimals">Animals</span></button>
-          <button type="button" data-menu-tab="shop"><img src="../../assets/upgrade-coin.png" alt="" /><span data-ui="tabShop">Shop</span></button>
+        <nav id="menuTabs" class="menu-tabs" aria-label="Menu di Animal Guard Yard">
+          <button type="button" data-menu-tab="stages" class="active"><img src="../../assets/menu-battle.png" alt="" /><span data-ui="tabStages">Livelli</span></button>
+          <button type="button" data-menu-tab="animals"><img src="../../assets/menu-character.png" alt="" /><span data-ui="tabAnimals">Animali</span></button>
+          <button type="button" data-menu-tab="shop"><img src="../../assets/upgrade-coin.png" alt="" /><span data-ui="tabShop">Negozio</span></button>
         </nav>
       </section>
 
       <section id="playPanel" class="fixed-shell-host hidden" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
-        <div class="fixed-game-shell play-area" aria-label="Animal Guard Yard fixed game screen">
+        <div class="fixed-game-shell play-area" aria-label="Schermata di gioco fissa di Animal Guard Yard">
           <div class="play-head">
-            <button id="backToStagesBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to stages" data-ui-aria-label="stages">
+            <button id="backToStagesBtn" class="play-return" data-wp-return="battle" type="button" aria-label="Back to stages" data-ui-aria-label="Livelli">
               <span aria-hidden="true">&larr;</span>
-              <span class="sr-only" data-ui="stages">Stages</span>
+              <span class="sr-only" data-ui="stages">Livelli</span>
             </button>
-            <div class="resource-pill" aria-label="Sun energy"><span class="hud-icon sun-icon" aria-hidden="true"></span><b id="energyText">0</b></div>
-            <button id="pauseBtn" class="play-settings" type="button" aria-label="Pause battle" data-ui-aria-label="openPause"><img src="../../assets/menu-settings.png" alt="" draggable="false" /></button>
+            <div class="resource-pill" aria-label="Energia solare"><span class="hud-icon sun-icon" aria-hidden="true"></span><b id="energyText">0</b></div>
+            <button id="pauseBtn" class="play-settings" type="button" aria-label="Pause battle" data-ui-aria-label="Metti in pausa la battaglia"><img src="../../assets/menu-settings.png" alt="" draggable="false" /></button>
           </div>
           <div class="wave-status">
             <span id="waveText" class="wave-text">Stage 1</span>
-            <span class="base-pill" aria-label="Home hearts"><img class="hud-icon heart-img" src="../../assets/weightplay-heart.svg" alt="" draggable="false" /><b id="baseText">3</b></span>
+            <span class="base-pill" aria-label="Cuori della casa"><img class="hud-icon heart-img" src="../../assets/weightplay-heart.svg" alt="" draggable="false" /><b id="baseText">3</b></span>
           </div>
           <div id="waveTimer" class="wave-timer" aria-hidden="true"><i></i></div>
-          <div id="unitBar" class="unit-bar" aria-label="Animal guards"></div>
-          <div id="yardBoard" class="yard-board" aria-label="Animal defense lanes">
+          <div id="unitBar" class="unit-bar" aria-label="Guardie animali"></div>
+          <div id="yardBoard" class="yard-board" aria-label="Corsie di difesa animale">
             <div id="dangerAlert" class="danger-alert hidden" aria-live="polite">Danger!</div>
           </div>
           <div id="hintText" class="hint-text" aria-live="polite"></div>
@@ -177,17 +187,17 @@
           <div class="result-card">
             <strong id="resultTitle">Victory!</strong>
             <div id="resultText" class="result-report"></div>
-            <button id="resultStagesBtn" type="button" data-ui="stages">Stages</button>
-            <button id="nextStageBtn" type="button" data-ui="nextStage">Next Stage</button>
-            <button id="retryBtn" type="button" data-ui="retry">Try Again</button>
+            <button id="resultStagesBtn" type="button" data-ui="stages">Livelli</button>
+            <button id="nextStageBtn" type="button" data-ui="nextStage">Livello successivo</button>
+            <button id="retryBtn" type="button" data-ui="retry">Riprova</button>
           </div>
         </div>
         <div id="pausePanel" class="pause-panel hidden" role="dialog" aria-modal="true" aria-labelledby="pauseTitle" aria-describedby="pauseHint">
           <div class="pause-card">
-            <strong id="pauseTitle" data-ui="pauseTitle">Battle paused</strong>
-            <span id="pauseHint" data-ui="pauseHint">Continue when you are ready, or leave this battle.</span>
-            <button id="resumeBtn" type="button" data-ui="resume">Continue</button>
-            <button id="leaveBattleBtn" type="button" data-ui="leaveBattle">Leave Battle</button>
+            <strong id="pauseTitle" data-ui="pauseTitle">Battaglia in pausa</strong>
+            <span id="pauseHint" data-ui="pauseHint">Continua quando sei pronto o lascia questa battaglia.</span>
+            <button id="resumeBtn" type="button" data-ui="resume">Continua</button>
+            <button id="leaveBattleBtn" type="button" data-ui="leaveBattle">Lascia la battaglia</button>
           </div>
         </div>
       </section>
@@ -195,7 +205,7 @@
 
       <div id="loadingPanel" class="loading-panel">
         <div class="loading-card">
-          <strong data-ui="loading">Loading</strong>
+          <strong data-ui="loading">Caricamento</strong>
           <span id="loadingText">0%</span>
           <div><i id="loadingFill"></i></div>
         </div>
@@ -255,7 +265,7 @@
     <script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/it.js?v=20260821-skyport-runtime-v8"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
-    <script src="game.js?v=20260821-first-defense-v24"></script>
+    <script src="game.js?v=20260824-13-locale-shell-v1"></script>
     <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
     <script src="../../src/battle-canvas-standard.js?v=20260729-guard-general2" data-wp-battle-standard></script>
     <script>
