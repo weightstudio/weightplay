@@ -738,6 +738,148 @@
     },
   });
 
+  // Arabic owns the complete visible Stage/Battle/Result vocabulary. The
+  // earlier v9 Main repair only supplied menuHint, so the normal Arabic play
+  // route could still fall back to English labels at player decisions.
+  text.ar = {
+    ...text.en,
+    title: "أسطورة الذئب الظل",
+    menuTitle: "مغامرة منصات في الأطلال",
+    menuHint: "تحرّك واقفز مرتين وهاجم واندفع عبر 30 مرحلة.",
+    adventureRecordTitle: "سجل المغامرة",
+    adventureRecordText: "المحاولات: {runs} · المفتوحة: {unlocked}/30 · المكتملة: {best}/30 · انتصارات الزعماء: {wins}",
+    diamondShopTitle: "ترقية دائمة",
+    amuletName: "تميمة الضباب",
+    amuletEffect: "ابدأ كل رحلة بصحة قصوى +10 (40 بدلًا من 30).",
+    amuletOwned: "مملوكة: تبدأ كل رحلة بصحة قصوى 40.",
+    amuletDecision: "فتح دائم. اضغط مجددًا للتأكيد: {before} ← {after} ماسة.",
+    amuletConfirm: "تأكيد · {before}←{after}",
+    amuletLabel: "ترقية تميمة الضباب الدائمة. تكلف 15 ماسة. الرصيد الحالي {balance}.",
+    amuletConfirmLabel: "تأكيد ترقية تميمة الضباب. أنفق 15 ماسة. الرصيد من {before} إلى {after}.",
+    amuletNeed: "تحتاج إلى 15 ماسة. الرصيد الحالي: {balance}.",
+    startRun: "ابدأ اللعبة",
+    languageSelector: "اختيار اللغة",
+    backToLobby: "العودة إلى الردهة",
+    coverAlt: "غلاف أسطورة الذئب الظل",
+    stageSelection: "اختيار المرحلة",
+    backToMain: "العودة إلى الرئيسية",
+    stageRail: "شريط المراحل",
+    backToStages: "العودة إلى المراحل",
+    pauseBattle: "إيقاف المعركة",
+    pauseEyebrow: "توقفت الرحلة",
+    pauseTitle: "المعركة متوقفة",
+    pauseHint: "المعركة متوقفة بالكامل. استأنف عندما تكون جاهزًا.",
+    resumeBattle: "استئناف",
+    moveLeft: "تحرك يسارًا",
+    moveRight: "تحرك يمينًا",
+    jumpAction: "قفز",
+    attackAction: "هجوم",
+    dashAction: "اندفاع",
+    desktopControlsLabel: "التحكم المكتبي: A/D للحركة، W أو المسافة للقفز، J للهجوم، K أو Shift للاندفاع.",
+    controlLegend: "A/D حركة · W/المسافة قفز · J هجوم · K/Shift اندفاع",
+    roomLabel: "المرحلة",
+    keyLabel: "النقاط",
+    arenaLabel: "ساحة أسطورة الذئب الظل",
+    stageEyebrow: "رحلة الذئب",
+    stageTitle: "اختر مرحلة",
+    stageHint: "اسحب الشريط واختر مرحلة مفتوحة. تظهر معارك الزعماء في المراحل 5 و10 و15 و20 و25 و30.",
+    menu: "القائمة",
+    hudHp: "صحة الذئب",
+    chooseCard: "اختر ترقية أثرية",
+    chooseCardDesc: "اختر أثرًا قديمًا لتعزيز الذئب.",
+    attributeChoiceTitle: "ارتقاء: اختر نموك",
+    attributeChoiceDesc: "أنفق النقطتين قبل استئناف المعركة. المتبقي {points}.",
+    attributeStrength: "القوة",
+    attributeAgility: "الرشاقة",
+    attributeConstitution: "التحمل",
+    attributeLuck: "الحظ",
+    attributeDamagePreview: "الضرر {from} ← {to}",
+    attributeSpeedPreview: "السرعة {from} ← {to}",
+    attributeHpPreview: "الصحة القصوى {from} ← {to}",
+    attributeCritPreview: "الضربة الحرجة {from}% ← {to}%",
+    attributeChoiceAria: "أنفق نقطة واحدة على {name}: {effect}",
+    lootFound: "فُتح صندوق الأثر!",
+    equipLoot: "تجهيز العتاد",
+    tryAgain: "حاول مجددًا",
+    nextStage: "المرحلة التالية",
+    replayStage: "إعادة المرحلة",
+    backToMenu: "العودة إلى المراحل",
+    sidebarInventory: "العتاد المجهز",
+    sidebarStats: "إحصاءات الشخصية",
+    slotWeapon: "السلاح",
+    slotArmor: "الدرع",
+    slotBoots: "الأحذية",
+    runComplete: "نجحت الرحلة!",
+    runFailed: "هُزم الذئب",
+    resultDisclaimer: "للمتعة وتتبع التقدم المحلي فقط.",
+    skillReportTitle: "تقرير القدرات",
+    skillLogic: "المنطق",
+    skillFocus: "التركيز",
+    skillProblem: "حل المشكلات",
+    regionsCleared: "تقدم المراحل",
+    relic_fang: "ناب حاد",
+    relic_fang_desc: "يزيد ضرر مخلب الهجوم الأساسي بمقدار +3.",
+    relic_fur: "فراء كثيف",
+    relic_fur_desc: "يزيد الصحة القصوى بمقدار +5 ويستعيد 5 صحة.",
+    relic_boots: "أحذية الريح",
+    relic_boots_desc: "يزيد سرعة القفز بمقدار +0.8.",
+    gear_sword_rare: "ناب بلوري",
+    gear_sword_rare_desc: "+4 ضرر للمخلب",
+    gear_dagger_epic: "مخلب أثري",
+    gear_dagger_epic_desc: "+8 ضرر و+10% ضربة حرجة",
+    gear_armor_rare: "طوق الذئب",
+    gear_armor_rare_desc: "+10 صحة قصوى",
+    gear_armor_epic: "سرج جلدي",
+    gear_armor_epic_desc: "+20 صحة قصوى",
+    gear_boots_rare: "أحذية المستكشف",
+    gear_boots_rare_desc: "+1.0 قوة قفز",
+    gear_boots_epic: "أحذية سريعة",
+    gear_boots_epic_desc: "+1.5 قفز و+20% سرعة",
+    rarity_rare: "عتاد نادر",
+    rarity_epic: "عتاد أسطوري",
+    report_win: "اكتملت المرحلة {stage}. فُتح المسار التالي، وتبقى هذه المرحلة متاحة للإعادة.",
+    report_partial: "لم تكتمل المرحلة {stage}. اقرأ تحذير الخطر، وعدّل اختياراتك، وحاول مرة أخرى.",
+    report_skill_win: "قرأت قاعدة المرحلة، وتحكمت في المسار، وأنهيت المواجهة.",
+    report_skill_partial: "ما زال المسار مفتوحًا: راقب دورة التحذير واحتفظ بالاندفاع أو القفز المزدوج لفرصة التصدي.",
+  };
+
+  const stageCopyAr = [
+    ["بوابة ضوء القمر", "راقب توقيت الدوريات ومنطقة الأشواك"],
+    ["الحافة المنقسمة", "استخدم القفز المزدوج بين الحواف"],
+    ["فوانيس الخفافيش", "تفادَ الطلقات الموجهة في المسار العلوي"],
+    ["عبور الناب", "دورية ونيران خفافيش وحافة متحركة"],
+    ["وكر البازيليسق", "برك سم وذيل زعيم كاسح"],
+    ["فم البلور", "تحرك بعد كل تحذير لسقوط البلور"],
+    ["درجات الصدى", "اعبر بين دفعات البلور"],
+    ["ممر الزجاج", "منصات متحركة تحت سقوط البلور"],
+    ["كمين الشظايا", "هاجم الخنزير المدرع بعد اندفاعه"],
+    ["حارس الحجر", "اكسر حراسته الأمامية بعد ضربة الأرض"],
+    ["حافة الجذور", "تبطئ الأشواك الحركة المتهورة"],
+    ["الكروم المعلقة", "وازن بين التهديد البعيد والأرضي"],
+    ["سباق الجحر", "تعبر اندفاعات الخنازير المسارين"],
+    ["دورية الأشواك", "افتح أرضًا آمنة قبل انتشار الجذور"],
+    ["عملاق الأشواك", "اكشف النواة بعد ضربة الجذور"],
+    ["عتبة الجمر", "تشتعل ممرات النار وتخبو دوريًا"],
+    ["مطاردة الرماد", "تترك ذئاب الجمر آثار نار مؤقتة"],
+    ["مصعد الفرن", "تمر منصات سريعة فوق النار"],
+    ["عش الجناح الرمادي", "رتب تهديدات الغوص والأرض"],
+    ["تنين الجمر", "اصمد أمام المروحة الجوية واضرب عند الهبوط"],
+    ["مدخل الصدع", "تغير هبات دورية الحركة الأفقية"],
+    ["المجثم الزائل", "تتبع الخفافيش بين المجاثم المعلّمة"],
+    ["مطاردة المرآة", "تنقسم ذئاب المرآة إلى أصداء هشة"],
+    ["جسر الكسوف", "اقرأ الهبات والطلقات والحافة المتحركة"],
+    ["أيل الكسوف", "استدرج اندفاع الدرع إلى التضاريس"],
+    ["طريق التاج", "تعود مضادات النخبة في مواجهة مختلطة"],
+    ["اختبار السداسي", "تصل ستة أدوار في أزواج متتابعة"],
+    ["المذبح المحطم", "تحمل أربع دورات تضاريس بتحذيرات واضحة"],
+    ["الختم الأخير", "تحرس ثلاثة مضادات نخبة التاج"],
+    ["تاج العملاق", "يجمع الزعيم البلور والجذور والاندفاع"],
+  ];
+  STAGE_DEFINITIONS.forEach((definition, index) => {
+    definition.nameAr = stageCopyAr[index][0];
+    definition.hintAr = stageCopyAr[index][1];
+  });
+
   const stageCopyEs = [
     ["Puerta de Sombra Lunar", "Ritmo de patrulla y una zona de pinchos"],
     ["Cornisa Dividida", "Doble salto entre cornisas separadas"],
@@ -1093,14 +1235,14 @@
       button.className = `zone-node stage-card${definition.boss ? " boss-zone" : ""}${definition.id === state.selectedStage ? " is-selected" : ""}${cleared ? " is-cleared" : ""}`;
       button.dataset.zone = String(definition.id);
       button.disabled = locked;
-      const title = locale === "zh-Hant" ? definition.nameZht : locale === "es" ? definition.nameEs : definition.nameEn;
-      const hint = locale === "zh-Hant" ? definition.hintZht : locale === "es" ? definition.hintEs : definition.hintEn;
+      const title = locale === "zh-Hant" ? definition.nameZht : locale === "es" ? definition.nameEs : locale === "ar" ? definition.nameAr : definition.nameEn;
+      const hint = locale === "zh-Hant" ? definition.hintZht : locale === "es" ? definition.hintEs : locale === "ar" ? definition.hintAr : definition.hintEn;
       const stateLabel = locked
-        ? locale === "zh-Hant" ? "\u5c1a\u672a\u89e3\u9396" : locale === "es" ? "Bloqueado" : "Locked"
+        ? locale === "zh-Hant" ? "\u5c1a\u672a\u89e3\u9396" : locale === "es" ? "Bloqueado" : locale === "ar" ? "مقفلة" : "Locked"
         : cleared
-          ? locale === "zh-Hant" ? "\u5df2\u901a\u95dc" : locale === "es" ? "Completado" : "Cleared"
-          : locale === "zh-Hant" ? "\u53ef\u6311\u6230" : locale === "es" ? "Disponible" : "Ready";
-      const regionLabel = locale === "zh-Hant" ? `\u5340\u57df ${definition.region}` : locale === "es" ? `Región ${definition.region}` : `Region ${definition.region}`;
+          ? locale === "zh-Hant" ? "\u5df2\u901a\u95dc" : locale === "es" ? "Completado" : locale === "ar" ? "مكتملة" : "Cleared"
+          : locale === "zh-Hant" ? "\u53ef\u6311\u6230" : locale === "es" ? "Disponible" : locale === "ar" ? "جاهزة" : "Ready";
+      const regionLabel = locale === "zh-Hant" ? `\u5340\u57df ${definition.region}` : locale === "es" ? `Región ${definition.region}` : locale === "ar" ? `المنطقة ${definition.region}` : `Region ${definition.region}`;
       button.innerHTML = `<b>${String(definition.id).padStart(2, "0")} · ${regionLabel}</b><span>${title}</span><small>${hint}</small><small>${stateLabel}</small>`;
       button.setAttribute("aria-label", `${definition.id}. ${title}: ${hint}. ${stateLabel}`);
       button.addEventListener("keydown", (event) => {
@@ -1123,14 +1265,14 @@
     const locale = getLocale();
     const locked = definition.id > state.unlockedStage;
     const cleared = state.completedStages.includes(definition.id);
-    const title = locale === "zh-Hant" ? definition.nameZht : locale === "es" ? definition.nameEs : definition.nameEn;
-    const hint = locale === "zh-Hant" ? definition.hintZht : locale === "es" ? definition.hintEs : definition.hintEn;
+    const title = locale === "zh-Hant" ? definition.nameZht : locale === "es" ? definition.nameEs : locale === "ar" ? definition.nameAr : definition.nameEn;
+    const hint = locale === "zh-Hant" ? definition.hintZht : locale === "es" ? definition.hintEs : locale === "ar" ? definition.hintAr : definition.hintEn;
     const stateLabel = locked
-      ? locale === "zh-Hant" ? "\u5c1a\u672a\u89e3\u9396" : locale === "es" ? "Bloqueado" : "Locked"
+      ? locale === "zh-Hant" ? "\u5c1a\u672a\u89e3\u9396" : locale === "es" ? "Bloqueado" : locale === "ar" ? "مقفلة" : "Locked"
       : cleared
-        ? locale === "zh-Hant" ? "\u5df2\u901a\u95dc" : locale === "es" ? "Completado" : "Cleared"
-        : locale === "zh-Hant" ? "\u53ef\u6311\u6230" : locale === "es" ? "Disponible" : "Ready";
-    const regionLabel = locale === "zh-Hant" ? `\u5340\u57df ${definition.region}` : locale === "es" ? `Region ${definition.region}` : `Region ${definition.region}`;
+        ? locale === "zh-Hant" ? "\u5df2\u901a\u95dc" : locale === "es" ? "Completado" : locale === "ar" ? "مكتملة" : "Cleared"
+        : locale === "zh-Hant" ? "\u53ef\u6311\u6230" : locale === "es" ? "Disponible" : locale === "ar" ? "جاهزة" : "Ready";
+    const regionLabel = locale === "zh-Hant" ? `\u5340\u57df ${definition.region}` : locale === "es" ? `Region ${definition.region}` : locale === "ar" ? `المنطقة ${definition.region}` : `Region ${definition.region}`;
     return { locked, cleared, title, hint, stateLabel, regionLabel };
   }
 
