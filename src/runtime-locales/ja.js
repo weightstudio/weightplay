@@ -7614,6 +7614,8 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Rift Depths": "亀裂の深さ",
   "Rift Map": "リフトマップ",
   "Rift Restored!": "リフトが復活しました！",
+  "Rift progress · Wave {wave}/{total} · Tap to reopen the battle recap": "裂け目の進行 · ウェーブ {wave}/{total} · タップで戦闘ヒントを再表示",
+  "Wave {wave}/{total}. The last Resolve is recorded above. Reopen the tactical guide before the next Spin: choose one reel, then Reroll, Hold, Leader, or Resolve. AUTO unlocks after the Rift is cleared. Tap to collapse.": "ウェーブ {wave}/{total}。前の解決結果は上に表示されています。次のスピン前に戦術ヒントを再確認できます。リールを1つ選び、リロール・保持・リーダー・解決から選択します。裂け目をクリアするとAUTOが解放されます。タップで閉じます。",
   "Rifugio": "リフジオ",
   "Rifugio verde": "リフジオ ヴェルデ",
   "Right": "右",

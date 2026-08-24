@@ -7614,6 +7614,8 @@ window.WeightPlayGameRuntimeLocales["de"] = {
   "Rift Depths": "Risstiefen",
   "Rift Map": "Rift-Karte",
   "Rift Restored!": "Riss wiederhergestellt!",
+  "Rift progress · Wave {wave}/{total} · Tap to reopen the battle recap": "Spaltfortschritt · Welle {wave}/{total} · Tippen, um die Kampfübersicht zu öffnen",
+  "Wave {wave}/{total}. The last Resolve is recorded above. Reopen the tactical guide before the next Spin: choose one reel, then Reroll, Hold, Leader, or Resolve. AUTO unlocks after the Rift is cleared. Tap to collapse.": "Welle {wave}/{total}. Das letzte Ergebnis steht oben. Öffne vor dem nächsten Drehen erneut die Taktikhilfe: Wähle eine Walze und dann Erneut, Halten, Anführer oder Auflösen. AUTO wird nach dem Abschluss des Spalts freigeschaltet. Zum Einklappen tippen.",
   "Rifugio": "Schutzhütte",
   "Rifugio verde": "Rifugio Verde",
   "Right": "Richtig",

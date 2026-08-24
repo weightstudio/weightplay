@@ -7616,6 +7616,8 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Rift Depths": "أعماق الصدع",
   "Rift Map": "خريطة الصدع",
   "Rift Restored!": "استعادة الصدع!",
+  "Rift progress · Wave {wave}/{total} · Tap to reopen the battle recap": "تقدم الصدع · الموجة {wave}/{total} · اضغط لإعادة فتح ملخص المعركة",
+  "Wave {wave}/{total}. The last Resolve is recorded above. Reopen the tactical guide before the next Spin: choose one reel, then Reroll, Hold, Leader, or Resolve. AUTO unlocks after the Rift is cleared. Tap to collapse.": "الموجة {wave}/{total}. نتيجة التسوية الأخيرة مسجلة أعلاه. أعد فتح الدليل التكتيكي قبل التدوير التالي: اختر بكرة ثم إعادة التدوير أو التثبيت أو القائد أو التسوية. يُفتح التلقائي بعد إكمال الصدع. اضغط للطي.",
   "Rifugio": "ريفوجيو",
   "Rifugio verde": "ريفوجيو فيردي",
   "Right": "صحيح",

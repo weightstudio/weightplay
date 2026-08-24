@@ -7614,6 +7614,8 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "Rift Depths": "Глубины разломов",
   "Rift Map": "Карта Рифта",
   "Rift Restored!": "Рифт восстановлен!",
+  "Rift progress · Wave {wave}/{total} · Tap to reopen the battle recap": "Прогресс разлома · Волна {wave}/{total} · Нажмите, чтобы открыть сводку боя",
+  "Wave {wave}/{total}. The last Resolve is recorded above. Reopen the tactical guide before the next Spin: choose one reel, then Reroll, Hold, Leader, or Resolve. AUTO unlocks after the Rift is cleared. Tap to collapse.": "Волна {wave}/{total}. Результат последнего хода показан выше. Перед следующим вращением можно снова открыть тактическую подсказку: выберите барабан, затем Переброс, Удержание, Лидер или Решение. AUTO откроется после прохождения разлома. Нажмите, чтобы свернуть.",
   "Rifugio": "Рифуджио",
   "Rifugio verde": "Рифуджо-Верде",
   "Right": "Правильно",

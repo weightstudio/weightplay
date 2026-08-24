@@ -7614,6 +7614,8 @@ window.WeightPlayGameRuntimeLocales["fr"] = {
   "Rift Depths": "Profondeurs des failles",
   "Rift Map": "Carte de la Faille",
   "Rift Restored!": "Faille restaurée !",
+  "Rift progress · Wave {wave}/{total} · Tap to reopen the battle recap": "Progression de la faille · Vague {wave}/{total} · Touchez pour rouvrir le récapitulatif",
+  "Wave {wave}/{total}. The last Resolve is recorded above. Reopen the tactical guide before the next Spin: choose one reel, then Reroll, Hold, Leader, or Resolve. AUTO unlocks after the Rift is cleared. Tap to collapse.": "Vague {wave}/{total}. Le dernier résultat est affiché ci-dessus. Avant le prochain tour, rouvrez le guide tactique : choisissez un rouleau, puis Relancer, Garder, Leader ou Résoudre. AUTO se débloque après la faille. Touchez pour réduire.",
   "Rifugio": "Refuge",
   "Rifugio verde": "Refuge vert",
   "Right": "À droite",

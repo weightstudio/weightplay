@@ -7614,6 +7614,8 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Rift Depths": "दरार की गहराई",
   "Rift Map": "दरार मानचित्र",
   "Rift Restored!": "दरार बहाल!",
+  "Rift progress · Wave {wave}/{total} · Tap to reopen the battle recap": "दरार प्रगति · वेव {wave}/{total} · युद्ध सारांश फिर खोलने के लिए दबाएँ",
+  "Wave {wave}/{total}. The last Resolve is recorded above. Reopen the tactical guide before the next Spin: choose one reel, then Reroll, Hold, Leader, or Resolve. AUTO unlocks after the Rift is cleared. Tap to collapse.": "वेव {wave}/{total}। पिछला रिज़ॉल्व ऊपर दर्ज है। अगली स्पिन से पहले रणनीति सहायता फिर खोलें: एक रील चुनें, फिर रीरोल, होल्ड, लीडर या रिज़ॉल्व चुनें। दरार पूरी होने के बाद AUTO अनलॉक होता है। छोटा करने के लिए दबाएँ।",
   "Rifugio": "रिफ्यूजियो",
   "Rifugio verde": "रिफ्यूजियो वर्डे",
   "Right": "ठीक है",

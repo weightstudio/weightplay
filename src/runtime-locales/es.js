@@ -7612,6 +7612,8 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Rift Depths": "Profundidades de la grieta",
   "Rift Map": "Mapa de grieta",
   "Rift Restored!": "¡Grieta restaurada!",
+  "Rift progress · Wave {wave}/{total} · Tap to reopen the battle recap": "Progreso de la grieta · Oleada {wave}/{total} · Pulsa para reabrir el resumen",
+  "Wave {wave}/{total}. The last Resolve is recorded above. Reopen the tactical guide before the next Spin: choose one reel, then Reroll, Hold, Leader, or Resolve. AUTO unlocks after the Rift is cleared. Tap to collapse.": "Oleada {wave}/{total}. El último resultado aparece arriba. Antes del próximo giro puedes volver a abrir la guía táctica: elige un rodillo y luego Reintenta, Conserva, Líder o Resuelve. AUTO se desbloquea al superar la grieta. Pulsa para cerrar.",
   "Rifugio": "refugio",
   "Rifugio verde": "Refugio verde",
   "Right": "Derecha",

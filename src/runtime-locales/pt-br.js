@@ -7614,6 +7614,8 @@ window.WeightPlayGameRuntimeLocales["pt-BR"] = {
   "Rift Depths": "Profundidades da Fenda",
   "Rift Map": "Mapa de fenda",
   "Rift Restored!": "Fenda restaurada!",
+  "Rift progress · Wave {wave}/{total} · Tap to reopen the battle recap": "Progresso da fenda · Onda {wave}/{total} · Toque para reabrir o resumo",
+  "Wave {wave}/{total}. The last Resolve is recorded above. Reopen the tactical guide before the next Spin: choose one reel, then Reroll, Hold, Leader, or Resolve. AUTO unlocks after the Rift is cleared. Tap to collapse.": "Onda {wave}/{total}. O último resultado está acima. Antes do próximo giro, reveja o guia tático: escolha um carretel e depois use Girar de novo, Segurar, Líder ou Resolver. AUTO é desbloqueado ao concluir a fenda. Toque para recolher.",
   "Rifugio": "Rifugio",
   "Rifugio verde": "Rifugio verde",
   "Right": "Certo",

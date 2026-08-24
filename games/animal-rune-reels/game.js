@@ -3,7 +3,7 @@
   document.body.dataset.wpCombinedSound = "true";
   const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
   const ASSET = "../../assets/", trial = new URLSearchParams(location.search).get("trial") === "1";
-  const GAME_ID = "animal-rune-reels", GAME_VERSION = "v65";
+  const GAME_ID = "animal-rune-reels", GAME_VERSION = "v66";
   const storageKey = "weightplay.animalRuneReels.v4", legacyStorageKey = "weightplay.animalRuneReels.v3", memory = new Map();
   const LOCALES = window.RUNE_REELS_LOCALES, localeKeys = Object.keys(LOCALES);
   const localeRouteSegments={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
@@ -279,7 +279,7 @@
     return boss?bossCycle[(turn+index)%bossCycle.length]:bossCycle[(turn+index+1)%bossCycle.length];
   }
   function buildEnemies(mission=currentMission(),wave=1){const baseDamage=10+Math.ceil(mission.stage*1.2)+Math.floor((wave-1)*1.5),earlyDamageScale=mission.type==='main'?(mission.stage===1?.55:Math.min(1,.6+mission.stage*.08)):1;return waveEnemies(mission,wave).map((type,i)=>{const hp=Math.round((65+mission.stage*13+i*8)*(1+(wave-1)*.12)*type.hp),damage=Math.max(1,Math.round(baseDamage*type.damage*earlyDamageScale)),enemy={id:type.id,img:type.img,hp,maxHp:hp,shield:0,name:`${t('guardian')} ${i+1}`,slot:i,startCd:type.startCd,attackCd:type.attackCd,cd:type.startCd,damage,damageScale:type.damage,hpScale:type.hp,attacking:false};enemy.intent=intentFor(enemy,mission,0,i);return enemy})}
-  function startBattle(entry="stage"){const mission=currentMission(),team=activeTeam();if(mission.locked||!team.length)return;resetBattleLifecycle();const maxHp=Math.round(180*(1+leaderEffect('hp')));battle={mission:{...mission,rewards:{...mission.rewards}},wave:1,totalWaves:mission.waves,hp:maxHp,maxHp,shield:0,coins:0,turn:0,busy:false,ended:false,auto:false,speed:profile.battleSpeed===2?2:1,reels:['blank','blank','blank'],enemies:buildEnemies(mission,1),targetIndex:0,forced:null,currentPhase:null,phaseLog:[],stopLog:[],lastResolution:null,resolutionSummary:null,correctionLog:[],attackDisplay:null,attackBonusActive:false,attackCharge:0,runeAmp:0,reflect:0,defenseBonus:0,defenseDisplay:null,defenseBuff:false,focus:0,selectedReel:1,correctionUsed:false,heldReel:null,corruptedReel:null,resolving:false,coachReelChosen:false};clearResolutionSummary();track("enter_battle",{entry,mission_type:mission.type,mission_id:mission.id});track("game_start",{entry,mission_type:mission.type,mission_id:mission.id});track("battle_start",{entry,mission_type:mission.type,mission_id:mission.id});show('battlePage');setBattleInert(false);renderBattle();if(!profile.tutorial)openBattleModal('#tutorial');else restoreSceneFocus("battlePage","#spinBtn")}
+  function startBattle(entry="stage"){const mission=currentMission(),team=activeTeam();if(mission.locked||!team.length)return;resetBattleLifecycle();const maxHp=Math.round(180*(1+leaderEffect('hp')));battle={mission:{...mission,rewards:{...mission.rewards}},wave:1,totalWaves:mission.waves,hp:maxHp,maxHp,shield:0,coins:0,turn:0,busy:false,ended:false,auto:false,speed:profile.battleSpeed===2?2:1,reels:['blank','blank','blank'],enemies:buildEnemies(mission,1),targetIndex:0,forced:null,currentPhase:null,phaseLog:[],stopLog:[],lastResolution:null,resolutionSummary:null,correctionLog:[],attackDisplay:null,attackBonusActive:false,attackCharge:0,runeAmp:0,reflect:0,defenseBonus:0,defenseDisplay:null,defenseBuff:false,focus:0,selectedReel:1,correctionUsed:false,heldReel:null,corruptedReel:null,resolving:false,coachReelChosen:false,coachRecapOpen:false};clearResolutionSummary();track("enter_battle",{entry,mission_type:mission.type,mission_id:mission.id});track("game_start",{entry,mission_type:mission.type,mission_id:mission.id});track("battle_start",{entry,mission_type:mission.type,mission_id:mission.id});show('battlePage');setBattleInert(false);renderBattle();if(!profile.tutorial)openBattleModal('#tutorial');else restoreSceneFocus("battlePage","#spinBtn")}
   function living(){return battle.enemies.filter(e=>e.hp>0)}
   function currentTargetIndex(){if(battle.enemies[battle.targetIndex]?.hp>0)return battle.targetIndex;const next=battle.enemies.findIndex(e=>e.hp>0);battle.targetIndex=Math.max(0,next);return battle.targetIndex}
   function selectTarget(index){if(!battle||battle.busy||battle.enemies[index]?.hp<=0)return;const previous=battle.targetIndex;battle.targetIndex=index;if(previous!==index)track("target_change",{target_slot:index});renderEnemies(index)}
@@ -398,8 +398,18 @@
     if(!coach)return;
     spinButton?.classList.remove('coach-focus');reels?.classList.remove('coach-focus');resolveButton?.classList.remove('coach-focus');
     const active=battle&&!profile.firstTurnCoachSeen&&!battle.ended&&battle.turn<=1;
-    if(!active||battle.currentPhase==='spinning'||battle.currentPhase==='resolving'||battle.turn>1){coach.hidden=true;return}
+    const recap=!!battle&&!battle.ended&&battle.turn===1&&!!battle.resolutionSummary&&battle.currentPhase!=='spinning'&&battle.currentPhase!=='resolving';
+    if(!active&&!recap){coach.hidden=true;coach.setAttribute('aria-expanded','false');coach.textContent='';return}
     coach.hidden=false;
+    if(recap){
+      const values={wave:battle.wave,total:battle.totalWaves};
+      coach.textContent=battle.coachRecapOpen?tf('coachRecapExpanded',values):tf('coachRecapCollapsed',values);
+      coach.setAttribute('aria-expanded',String(!!battle.coachRecapOpen));
+      coach.setAttribute('aria-label',coach.textContent);
+      coach.classList.remove('coach-focus');
+      return;
+    }
+    coach.removeAttribute('aria-expanded');coach.removeAttribute('aria-label');
     if(battle.currentPhase==='tactics'){
       if(battle.coachReelChosen){coach.textContent=t('coachResolve');resolveButton?.classList.add('coach-focus')}
       else{coach.textContent=t('coachChoose');reels?.classList.add('coach-focus')}
@@ -430,7 +440,7 @@
     $(".v3-battle")?.classList.toggle("first-turn-coach-active",tactical&&!$("#firstTurnCoach").hidden)
   }
   function focusTacticalReel(){if(!battle||battle.currentPhase!=='tactics'||!Number.isInteger(battle.selectedReel))return;const index=battle.selectedReel,focus=()=>{if(battle?.currentPhase==='tactics')$(`.reel[data-reel="${index}"]`)?.focus({preventScroll:true})};focus();requestAnimationFrame(focus)}
-  function beginTactics(){if(!battle||battle.ended)return;battle.currentPhase='tactics';battle.busy=true;battle.coachReelChosen=false;$("#comboBanner").textContent=t('tacticsTitle');$("#tacticsHint").textContent=t('tacticsHint');enhancedRenderBattle();focusTacticalReel()}
+  function beginTactics(){if(!battle||battle.ended)return;battle.currentPhase='tactics';battle.busy=true;battle.coachReelChosen=false;battle.coachRecapOpen=false;$("#comboBanner").textContent=t('tacticsTitle');$("#tacticsHint").textContent=t('tacticsHint');enhancedRenderBattle();focusTacticalReel()}
   async function rerollSelected(){if(!battle||battle.currentPhase!=='tactics'||battle.correctionUsed||battle.resolving)return;const index=battle.selectedReel;if(!Number.isInteger(index))return $("#tacticsHint").textContent=t('selectReel');battle.correctionUsed=true;enhancedRenderBattle(false);const next=randomRune();await animateReel(index,next);battle.reels[index]=next;battle.correctionLog.push({kind:'reroll',reel:index+1});$("#tacticsHint").textContent=tf('rerolled',{reel:index+1});enhancedRenderBattle();focusTacticalReel()}
   function holdSelected(){if(!battle||battle.currentPhase!=='tactics'||battle.correctionUsed||battle.resolving)return;const index=battle.selectedReel;if(!Number.isInteger(index))return $("#tacticsHint").textContent=t('selectReel');battle.correctionUsed=true;battle.heldReel={index,value:battle.reels[index]};battle.correctionLog.push({kind:'holdQueued',reel:index+1});$("#tacticsHint").textContent=t('heldNext');enhancedRenderBattle();focusTacticalReel()}
   function leaderRune(){return({lion:'attack',turtle:'defense',rabbit:'heal',panda:'special',fox:'wild',owl:'heal',otter:'focus',rhino:'defense',astra:'wild',nyra:'attack'})[profile.slots[0]]||'attack'}
@@ -480,6 +490,7 @@
   }
   function bind(){
     bindAnalyticsActions();bindFunnelAnalytics();
+    $("#firstTurnCoach").onclick=()=>{if(!battle?.resolutionSummary||battle.turn!==1||battle.ended)return;battle.coachRecapOpen=!battle.coachRecapOpen;renderBattle(false)};
     $("#acceptRunesBtn").onclick=resolveTacticalTurn;
     $("#rerollReelBtn").onclick=rerollSelected;
     $("#holdReelBtn").onclick=holdSelected;

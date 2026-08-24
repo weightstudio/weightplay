@@ -1,5 +1,5 @@
 (() => {
-  const GAME_VERSION = 15;
+  const GAME_VERSION = 16;
   document.body.dataset.wpCombinedSound = "true";
   const $ = (id) => document.getElementById(id);
   const playSound = (name) => window.WonderSound?.play?.(name);
@@ -866,7 +866,8 @@
     const fish=fishProfile(),blocked=!!state.fishBusy;
     $("fishEncounter").dataset.enemy=fish.name;
     $("fishTitle").innerHTML=`${icon("danger")}<span>${t("fishBattle")}</span>`;$("fishTitle").setAttribute("aria-label",`${t("fishBattle")}: ${fish.name}`);
-    $("fishTell").innerHTML=`<strong>${fish.name}</strong><small>${levelText(state.route+state.zone)}</small>`;
+    const escapeCost=routeConfig().escapeCost??8;
+    $("fishTell").innerHTML=`<strong>${fish.name}</strong><small>${levelText(state.route+state.zone)} · ${t("attackAction")} ${diverAttack()} → ${t("fishStrikes")} · ${t("escapeAction")} -${escapeCost} ${t("shortOxygen")}</small>`;
     $("fishGuardText").innerHTML=`<span>${t("fishHp")}</span><b>${Math.max(0,state.fishHp)}/${state.fishMaxHp}</b>`;
     $("fishGuardBar").style.width=`${Math.max(0,state.fishHp/state.fishMaxHp*100)}%`;
     $("fishTimerText").innerHTML=`<span>${t("diverHp")}</span><b>${Math.max(0,state.playerHp)}/${maxHealth()}</b>`;

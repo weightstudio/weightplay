@@ -7614,6 +7614,8 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Rift Depths": "균열 깊이",
   "Rift Map": "리프트 지도",
   "Rift Restored!": "균열이 복원되었습니다!",
+  "Rift progress · Wave {wave}/{total} · Tap to reopen the battle recap": "균열 진행 · 웨이브 {wave}/{total} · 눌러서 전투 요약 다시 보기",
+  "Wave {wave}/{total}. The last Resolve is recorded above. Reopen the tactical guide before the next Spin: choose one reel, then Reroll, Hold, Leader, or Resolve. AUTO unlocks after the Rift is cleared. Tap to collapse.": "웨이브 {wave}/{total}입니다. 마지막 해결 결과가 위에 기록되어 있습니다. 다음 스핀 전에 전술 안내를 다시 확인하세요. 릴 하나를 고른 뒤 다시 굴리기, 고정, 리더, 해결 중 하나를 선택합니다. 균열을 클리어하면 AUTO가 해금됩니다. 누르면 접습니다.",
   "Rifugio": "리푸지오",
   "Rifugio verde": "리푸지오 베르데",
   "Right": "오른쪽",

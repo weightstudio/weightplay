@@ -7614,6 +7614,8 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "Rift Depths": "裂谷深處",
   "Rift Map": "裂谷地圖",
   "Rift Restored!": "裂痕恢復！",
+  "Rift progress · Wave {wave}/{total} · Tap to reopen the battle recap": "裂隙進度 · 第 {wave}/{total} 波 · 點擊重新查看戰鬥提示",
+  "Wave {wave}/{total}. The last Resolve is recorded above. Reopen the tactical guide before the next Spin: choose one reel, then Reroll, Hold, Leader, or Resolve. AUTO unlocks after the Rift is cleared. Tap to collapse.": "第 {wave}/{total} 波。上方已記錄上一回合的結算。下一次轉動前可重新查看戰術提示：選一軸，再選重骰、保留、領袖或結算。通過裂隙後即可解鎖自動。點擊收合。",
   "Rifugio": "裡富吉奧",
   "Rifugio verde": "綠河",
   "Right": "右",

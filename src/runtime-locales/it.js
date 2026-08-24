@@ -7613,6 +7613,8 @@ window.WeightPlayGameRuntimeLocales["it"] = {
   "Rift Depths": "Profondità della spaccatura",
   "Rift Map": "Mappa della spaccatura",
   "Rift Restored!": "Spaccatura ripristinata!",
+  "Rift progress · Wave {wave}/{total} · Tap to reopen the battle recap": "Progresso della frattura · Ondata {wave}/{total} · Tocca per riaprire il riepilogo",
+  "Wave {wave}/{total}. The last Resolve is recorded above. Reopen the tactical guide before the next Spin: choose one reel, then Reroll, Hold, Leader, or Resolve. AUTO unlocks after the Rift is cleared. Tap to collapse.": "Ondata {wave}/{total}. L'ultimo risultato è riportato sopra. Prima del prossimo giro puoi riaprire la guida tattica: scegli un rullo, poi Rilancia, Mantieni, Leader o Risolvi. AUTO si sblocca dopo aver completato la frattura. Tocca per chiudere.",
   "Rifugio": "Rifugio",
   "Rifugio verde": "Rifugio Verde",
   "Right": "Giusto",
