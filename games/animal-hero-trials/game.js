@@ -1,6 +1,8 @@
 (() => {
   "use strict";
 
+  const GAME_VERSION = "v13";
+
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
   const ASSET_ROOT = "../../assets/";
@@ -549,6 +551,16 @@
     return t(key).replace(/\{(\w+)\}/g, (_, name) => values[name] ?? "");
   }
 
+  function trackTrialEvent(name, details = {}) {
+    window.WonderAnalytics?.track?.(name, {
+      game_id: "animal-hero-trials",
+      game_version: GAME_VERSION,
+      interface_version: "6",
+      locale,
+      ...details,
+    });
+  }
+
   function heroName(heroId) {
     const key = { leo: "Leo", fia: "Fia", orla: "Orla", taro: "Taro" }[heroId];
     return key && heroNames[key] ? localizedPair(heroNames[key]) : heroId.charAt(0).toUpperCase() + heroId.slice(1);
@@ -832,7 +844,7 @@
     writeStorage("aht-mastery", mastery);
   }
 
-  function startTrial(stage) {
+  function startTrial(stage, startReason = "stage_select") {
     backgroundSuspended = false;
     show("battle");
     const hero = heroes[selectedHero] || heroes.leo;
@@ -868,6 +880,13 @@
       lastMoveX: 0,
       lastMoveY: 0,
     };
+    trackTrialEvent("trial_start", {
+      stage: run.stage,
+      hero_id: run.heroId,
+      start_reason: startReason,
+      unlocked_trial: unlocked,
+      mastery_level: mastery,
+    });
     $("#skillBtn img").src = ASSET_ROOT + hero.asset;
     spawn();
     playSound("start");
@@ -1111,6 +1130,13 @@
 
   function chooseBlessing() {
     run.active = false;
+    trackTrialEvent("room_complete", {
+      stage: run.stage,
+      room: run.room,
+      hero_id: run.heroId,
+      hp: Math.max(0, Math.round(run.hp)),
+      max_hp: run.maxHp,
+    });
     playSound("success");
     renderBlessings(false);
     setChoiceModal(true);
@@ -1146,6 +1172,13 @@
         blessingDecisionCommitted = true;
         clearRerollConfirmation();
         playSound("upgrade");
+        trackTrialEvent("blessing_pick", {
+          stage: run.stage,
+          room: run.room,
+          hero_id: run.heroId,
+          blessing_id: option.id,
+          rerolled,
+        });
         run.bless[option.id] += option.amount;
         if (option.id === "heal") run.hp = Math.min(run.maxHp, run.hp + 24 * option.amount);
         setChoiceModal(false, false);
@@ -1273,7 +1306,10 @@
       show("stage");
       focusStage(Math.min(TRIAL_COUNT, unlocked));
     });
-    resultReplay.onclick = () => commitResultDecision(() => startTrial(run.stage));
+    resultReplay.onclick = () => commitResultDecision(() => {
+      trackTrialEvent("trial_replay", { stage: run.stage, hero_id: run.heroId });
+      startTrial(run.stage, "replay");
+    });
     if (won) {
       const gain = run.definition.reward;
       const previousUnlocked = unlocked;
@@ -1288,16 +1324,36 @@
       const masteryCopy = remaining === 0
         ? t("masteryReady")
         : interpolate("masteryNeed", { remaining });
+      trackTrialEvent("trial_success", {
+        stage: run.stage,
+        room: run.room,
+        hero_id: run.heroId,
+        marks_earned: gain,
+        total_marks: marks,
+      });
+      if (unlocked > previousUnlocked) {
+        trackTrialEvent("next_trial_unlock", {
+          stage: run.stage,
+          hero_id: run.heroId,
+          unlocked_trial: unlocked,
+        });
+      }
       $("#resultTitle").textContent = t("win");
       $("#resultCopy").textContent = `${interpolate("earnedMarks", { gain, total: marks })} ${unlockCopy} ${masteryCopy}`;
       $("#resultNext").onclick = () => {
-        if (run.stage < TRIAL_COUNT) commitResultDecision(() => startTrial(run.stage + 1));
+        if (run.stage < TRIAL_COUNT) commitResultDecision(() => startTrial(run.stage + 1, "next_trial"));
       };
     } else {
       $("#resultTitle").textContent = t("fail");
       $("#resultCopy").textContent = locale === "zh-Hant"
         ? `${heroName(run.heroId)}\u9700\u8981\u518d\u8a66\u4e00\u6b21\u3002`
         : interpolate("failCopy", { hero: heroName(run.heroId) });
+      trackTrialEvent("trial_failure", {
+        stage: run.stage,
+        room: run.room,
+        hero_id: run.heroId,
+        marks_total: marks,
+      });
       $("#resultNext").onclick = null;
     }
     setResultModal(true, resultPrimary);
@@ -1742,6 +1798,11 @@
   $("#masteryBtn").onclick = () => {
     const cost = 5 + mastery * 4;
     if (marks >= cost) {
+      trackTrialEvent("mastery_upgrade_open", {
+        mastery_level: mastery,
+        marks_total: marks,
+        cost,
+      });
       marks -= cost;
       mastery += 1;
       save();
