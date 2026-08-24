@@ -14,7 +14,7 @@
   const segmentLocales=Object.fromEntries(Object.entries(localeSegments).map(([k,v])=>[v,k]));
   function initialLocale(){const segment=location.pathname.split("/").filter(Boolean)[0];const routed=segmentLocales[segment];const saved=safeStore.get(LOCALE_STORAGE);return L.codes.includes(routed)?routed:L.codes.includes(saved)?saved:"en"}
   let locale=initialLocale();
-  const GAME_ID="animal-skybridge-rivals",GAME_VERSION=19,INTERFACE_VERSION=6;
+  const GAME_ID="animal-skybridge-rivals",GAME_VERSION=20,INTERFACE_VERSION=6;
   let lastInputType="unknown";
   function viewportBucket(){const viewport=window.visualViewport,width=Math.round(viewport?.width||window.innerWidth||0),height=Math.round(viewport?.height||window.innerHeight||0);if(width>height&&height<=500)return"short-landscape";if(width>=1000)return"desktop";if(width>=600)return"tablet";return"phone"}
   function normalizeInputType(value){return["pointer","touch","keyboard"].includes(value)?value:"unknown"}
@@ -199,7 +199,38 @@
     else if(run.stage.layout==="fortress"){ctx.save();ctx.fillStyle="rgba(255,103,77,.13)";ctx.strokeStyle="rgba(255,218,116,.28)";ctx.lineWidth=Math.max(4,w*.012);ctx.beginPath();ctx.moveTo(.28*w,.88*h);ctx.lineTo(.18*w,.65*h);ctx.lineTo(.30*w,.54*h);ctx.lineTo(.40*w,.68*h);ctx.lineTo(.50*w,.50*h);ctx.lineTo(.60*w,.68*h);ctx.lineTo(.70*w,.54*h);ctx.lineTo(.82*w,.65*h);ctx.lineTo(.72*w,.88*h);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore()}
     else{ctx.save();ctx.strokeStyle="rgba(124,163,255,.17)";ctx.lineWidth=Math.max(18,w*.065);ctx.lineCap="round";ctx.beginPath();ctx.moveTo(.12*w,.86*h);ctx.bezierCurveTo(.88*w,.86*h,.12*w,.58*h,.88*w,.58*h);ctx.stroke();ctx.restore()}
   }
-  function drawGuidance(w,h){if(!run.routeAssistActive)return;const hasCargo=run.player.stack>0;let target;if(hasCargo){const lane=lanes.reduce((best,x,index)=>Math.abs(x-run.player.x)<Math.abs(lanes[best]-run.player.x)?index:best,0);target={x:lanes[lane],y:.505}}else target=nearestPickup(0,run.player.x,run.player.y);if(!target)return;const x=target.x*w,y=target.y*h,pulse=3+Math.sin(run.elapsed*6)*2;ctx.save();ctx.strokeStyle=hasCargo?"#ffe176":"#f5ffff";ctx.lineWidth=3;ctx.shadowBlur=18;ctx.shadowColor=hasCargo?"#ffd85a":"#3df2ff";ctx.beginPath();ctx.arc(x,y,22+pulse,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=.82;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x-8,y-31-pulse);ctx.lineTo(x,y-23-pulse);ctx.lineTo(x+8,y-31-pulse);ctx.stroke();ctx.restore()}
+  function drawGuidance(w,h){
+    if(!run.routeAssistActive)return;
+    const hasCargo=run.player.stack>0;
+    let target;
+    if(hasCargo){const lane=lanes.reduce((best,x,index)=>Math.abs(x-run.player.x)<Math.abs(lanes[best]-run.player.x)?index:best,0);target={x:lanes[lane],y:.505}}
+    else target=nearestPickup(0,run.player.x,run.player.y);
+    if(!target)return;
+    const x=target.x*w,y=target.y*h,pulse=3+Math.sin(run.elapsed*6)*2;
+    ctx.save();
+    ctx.strokeStyle=hasCargo?"#ffe176":"#f5ffff";
+    ctx.lineWidth=3;
+    ctx.shadowBlur=18;
+    ctx.shadowColor=hasCargo?"#ffd85a":"#3df2ff";
+    if(hasCargo){
+      const playerX=run.player.x*w,playerY=run.player.y*h,dx=x-playerX,dy=y-playerY,length=Math.hypot(dx,dy);
+      if(length>64){
+        const unitX=dx/length,unitY=dy/length,startX=playerX+unitX*30,startY=playerY+unitY*30,endX=x-unitX*30,endY=y-unitY*30;
+        ctx.globalAlpha=.7;
+        ctx.setLineDash([10,8]);
+        ctx.beginPath();ctx.moveTo(startX,startY);ctx.lineTo(endX,endY);ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.globalAlpha=.95;
+        ctx.fillStyle="#ffe176";
+        ctx.beginPath();ctx.moveTo(endX,endY);ctx.lineTo(endX-unitX*13-unitY*7,endY-unitY*13+unitX*7);ctx.lineTo(endX-unitX*13+unitY*7,endY-unitY*13-unitX*7);ctx.closePath();ctx.fill();
+      }
+    }
+    ctx.beginPath();ctx.arc(x,y,22+pulse,0,Math.PI*2);ctx.stroke();
+    ctx.globalAlpha=.82;
+    ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(x-8,y-31-pulse);ctx.lineTo(x,y-23-pulse);ctx.lineTo(x+8,y-31-pulse);ctx.stroke();
+    ctx.restore();
+  }
   function drawPowerupIcon(kind,x,y,size=34){
     ctx.save();ctx.translate(x,y);ctx.scale(size/34,size/34);
     ctx.shadowColor="#67f4ff";ctx.shadowBlur=18;

@@ -4,6 +4,8 @@
   const CODES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const LOCALE_ROUTES = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const ROUTE_LOCALES = Object.fromEntries(Object.entries(LOCALE_ROUTES).map(([code, route]) => [route, code]));
+  const GAME_VERSION = "v14";
+  const INTERFACE_VERSION = "6";
   const BASE = window.BAMBOO_LOCALES.en;
   const LEVELS = window.BAMBOO_LEVELS.levels;
   const routeSegment = location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
@@ -27,6 +29,17 @@
     .find(node => !node.closest("[inert]") && node.getClientRects().length);
   const DIRS = [[-1, 0, 0, 2], [0, 1, 1, 3], [1, 0, 2, 0], [0, -1, 3, 1]];
   function localRead(key) { try { return localStorage.getItem(key); } catch { return null; } }
+  function track(name, data = {}) {
+    window.WonderAnalytics?.track?.(name, {
+      game_id: "animal-bamboo-pipes",
+      game_version: GAME_VERSION,
+      interface_version: INTERFACE_VERSION,
+      locale,
+      viewport: `${Math.round(window.innerWidth)}x${Math.round(window.innerHeight)}`,
+      waterway: selected + 1,
+      ...data,
+    });
+  }
   function show(name) {
     if (name !== "battle") cancelCompletionReveal();
     document.body.dataset.screen = name;
@@ -271,16 +284,17 @@
       : text("cue");
     if (focusIndex >= 0 && !board.children[focusIndex]?.disabled) board.children[focusIndex].focus();
   }
-  function startStage() {
+  function startStage(entry = "stage") {
     cancelCompletionReveal();
     setResultOpen(false);
-    run = { tiles: stageData(selected), history: [], moves: 0, completed: false };
+    run = { tiles: stageData(selected), history: [], moves: 0, completed: false, hintUsed: false, undoUsed: false };
     hintedPipeIndex = -1;
     boardFocusIndex = run.tiles.findIndex(tile => !tile.target);
     $("chapter").textContent = text("chapter", { n: Math.floor(selected / 5) + 1 });
     $("stageName").textContent = text("waterway", { n: selected + 1 });
     show("battle"); renderBoard(boardFocusIndex);
-    window.WonderAnalytics?.track?.("game_start", { game_id: "animal-bamboo-pipes", stage: selected + 1 });
+    track("game_start", { stage: selected + 1, entry });
+    track("waterway_started", { entry });
     requestAnimationFrame(() => $("board").children[boardFocusIndex]?.focus({ preventScroll: true }));
   }
   function complete() {
@@ -292,7 +306,8 @@
       ? Math.min(previousBest, run.moves)
       : run.moves;
     save.unlocked = Math.max(save.unlocked, Math.min(30, selected + 2)); persist();
-    window.WonderAnalytics?.track?.("game_complete", { game_id: "animal-bamboo-pipes", stage: selected + 1, turns: run.moves });
+    track("game_complete", { stage: selected + 1, turns: run.moves });
+    track("waterway_restored", { turns: run.moves, hint_used: Boolean(run.hintUsed), undo_used: Boolean(run.undoUsed) });
     updateMainProgress();
     $("resultText").textContent = text("resultText", { moves: run.moves, n: selected + 1 });
     $("resultMastery").textContent = text("replayGoal", { moves: save.best[selected] });
@@ -488,12 +503,14 @@
     [...$("board").children].forEach((child, index) => { child.tabIndex = index === next && !child.disabled ? 0 : -1; });
     $("board").children[next].focus({ preventScroll: true });
   });
-  $("undo").onclick = () => { if(run?.completed)return;const prior = run?.history.pop(); if (prior) { run.tiles.forEach((tile, i) => { tile.rot = prior[i]; }); run.moves--; renderBoard(); } };
-  $("restart").onclick = startStage;
+  $("undo").onclick = () => { if(run?.completed)return;const prior = run?.history.pop(); if (prior) { run.undoUsed = true; track("undo_used", { turns_before: run.moves }); run.tiles.forEach((tile, i) => { tile.rot = prior[i]; }); run.moves--; renderBoard(); } };
+  $("restart").onclick = () => { if (run && !run.completed) track("restart_used", { turns_before: run.moves }); startStage("restart"); };
   $("hint").onclick = () => {
     if (run?.completed) return;
     hintedPipeIndex = run.tiles.findIndex(item => item.required && ports(item).slice().sort().join(",") !== ports({ ...item, rot: item.solved }).slice().sort().join(","));
     if (hintedPipeIndex < 0) return;
+    run.hintUsed = true;
+    track("hint_used", { pipe: hintedPipeIndex + 1, turns: run.moves });
     boardFocusIndex = hintedPipeIndex;
     renderBoard(hintedPipeIndex);
   };
@@ -501,8 +518,8 @@
     const index = Number(event.detail?.index);
     if (Number.isInteger(index) && index >= 0) selectStage(index, false);
   });
-  $("retry").onclick = () => { if (!claimResultAction()) return; setResultOpen(false); startStage(); };
-  $("next").onclick = () => { if (selected >= 29 || !claimResultAction()) return; setResultOpen(false); selected += 1; startStage(); };
-  $("resultStages").onclick = () => { if (!claimResultAction()) return; setResultOpen(false); show("stage"); renderStages(); };
+  $("retry").onclick = () => { if (!claimResultAction()) return; track("result_replay", { from: "result" }); setResultOpen(false); startStage("replay"); };
+  $("next").onclick = () => { if (selected >= 29 || !claimResultAction()) return; track("next_waterway_clicked", { from_waterway: selected + 1, to_waterway: selected + 2 }); setResultOpen(false); selected += 1; startStage("next"); };
+  $("resultStages").onclick = () => { if (!claimResultAction()) return; track("return_to_waterways", { from: "result" }); setResultOpen(false); show("stage"); renderStages(); };
   applyLocale();
 })();
