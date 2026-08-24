@@ -187,6 +187,11 @@
   Object.assign(copy.en, { stages: "Stages", replay: "Replay" });
   Object.assign(copy["zh-Hant"], { stages: "\u8a66\u7149", replay: "\u91cd\u65b0\u6311\u6230" });
   Object.assign(copy.es, { stages: "Pruebas", replay: "Repetir" });
+  copy.ar = {
+    stages: "المراحل",
+    next: "المحاكمة القادمة",
+    replay: "إعادة اللعب",
+  };
 
   const TRIAL_COUNT = 30;
   const trialTitles = [
@@ -1293,6 +1298,9 @@
     $("#resultHome").textContent = t("stages");
     $("#resultNext").textContent = t("next");
     resultReplay.textContent = t("replay");
+    $("#resultHome").setAttribute("aria-label", t("stages"));
+    $("#resultNext").setAttribute("aria-label", t("next"));
+    resultReplay.setAttribute("aria-label", t("replay"));
     const resultPrimary = won && run.stage < TRIAL_COUNT
       ? $("#resultNext")
       : won

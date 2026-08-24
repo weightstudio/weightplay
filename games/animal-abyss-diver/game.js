@@ -1,5 +1,7 @@
 (() => {
-  const GAME_VERSION = 16;
+  const GAME_ID = "animal-abyss-diver";
+  const GAME_VERSION = 17;
+  const INTERFACE_VERSION = "7";
   document.body.dataset.wpCombinedSound = "true";
   const $ = (id) => document.getElementById(id);
   const playSound = (name) => window.WonderSound?.play?.(name);
@@ -610,6 +612,13 @@
   };
   const t=(key,values={})=>simplify(format(dictionaries[locale]?.[key]??key,values));
   const levelText=(value)=>`${levelLabels[locale]||levelLabels.en} ${value}`;
+  const viewportBucket=()=>window.innerWidth<=480?"phone":window.innerWidth<=900?"tablet":"desktop";
+  function track(event,details={}){
+    try{window.WonderAnalytics?.track?.(event,{game_id:GAME_ID,game_version:`v${GAME_VERSION}`,interface_version:INTERFACE_VERSION,locale,viewport_bucket:viewportBucket(),...details});}catch{}
+  }
+  function routeEventPayload(config=routeConfig()){
+    return{route:state.route,route_name:routeText(config,"name"),zone:state.zone,zones:config.zones,salvage:state.salvage,target:config.target,oxygen:Math.max(0,Math.round(state.oxygen)),power:state.battery};
+  }
   const icon = name => `<i class="ui-icon icon-${name}" aria-hidden="true"></i>`;
   const maxHealth = () => 30 + save.stats.hp * 8;
   const diverAttack = () => 6 + save.stats.attack * 2;
@@ -790,7 +799,7 @@
       target?.focus({preventScroll:true});
     });
   }
-  function start(route){cancelDiveAsync();const config=routes[route-1];state={route,zone:1,oxygen:maxOxygen(),playerHp:maxHealth(),salvage:0,sonar:!!config.openingScan,battery:config.startBattery??4,shieldArmed:!!config.openingShield,beaconUsed:false,beaconPending:false,busy:false,fishActive:false,fishResolvedZones:[],safeStreak:0};show("battleShell");resetDiveField();$("fishEncounter").classList.add("hidden");$("fishEncounter").classList.remove("is-hit","is-countering","is-escaping");setUpgradeModal(false,false);renderBattle();setFeedback(`${icon(config.openingScan?"sonar":config.openingShield?"shield":"sonar")}<b>${config.openingScan||config.openingShield?"✓":"?"}</b>`,routeText(config,"rule"));playSound("start");setCoach(!save.tutorialDone);}
+  function start(route,startReason="stage_select"){cancelDiveAsync();const config=routes[route-1];state={route,zone:1,oxygen:maxOxygen(),playerHp:maxHealth(),salvage:0,sonar:!!config.openingScan,battery:config.startBattery??4,shieldArmed:!!config.openingShield,beaconUsed:false,beaconPending:false,busy:false,fishActive:false,fishResolvedZones:[],safeStreak:0};track("route_start",{route,route_name:routeText(config,"name"),zones:config.zones,target:config.target,risk:config.risk,start_reason:startReason,unlocked_route:save.unlocked});show("battleShell");resetDiveField();$("fishEncounter").classList.add("hidden");$("fishEncounter").classList.remove("is-hit","is-countering","is-escaping");setUpgradeModal(false,false);renderBattle();setFeedback(`${icon(config.openingScan?"sonar":config.openingShield?"shield":"sonar")}<b>${config.openingScan||config.openingShield?"✓":"?"}</b>`,routeText(config,"rule"));playSound("start");setCoach(!save.tutorialDone);}
   function finish(mode){
     cancelDiveAsync();
     const config=routeConfig(),clear=mode==="clear",finalClear=clear&&state.route>=routes.length;
@@ -803,7 +812,11 @@
     const unlockedBefore=save.unlocked;
     save.coins+=earned;
     if(clear){save.rank+=1;save.unlocked=Math.max(save.unlocked,Math.min(routes.length,state.route+1));}
-    persist();show("result");playSound(clear?"win":mode==="surface"?"success":"wrong");
+    persist();
+    const resultPayload=routeEventPayload(config);
+    if(mode==="surface")track("surface_result",{...resultPayload,result:mode,coins_earned:earned,unlocked_route:save.unlocked});
+    if(clear)track("route_clear",{...resultPayload,result:mode,coins_earned:earned,unlocked_route:save.unlocked,next_route:finalClear?null:Math.min(routes.length,state.route+1),final_route:finalClear});
+    show("result");playSound(clear?"win":mode==="surface"?"success":"wrong");
     $("resultTitle").textContent=clear?t("clear"):mode==="combat"?t("combatDefeat"):mode==="fail"?t("oxygenLost"):mode==="miss"?t("missed"):t("partial");
     const copyKey=clear?"resultClear":mode==="combat"?"resultCombat":mode==="fail"?"resultFail":mode==="miss"?"resultMiss":"resultSurface";
     $("resultCopy").textContent=t(copyKey,{n:state.salvage,target:config.target,zones:config.zones});
@@ -848,6 +861,8 @@
   function move(direction){
     clearBeaconConfirmation();
     if(state.busy)return;
+    const config=routeConfig(),outcome=encounter(direction);
+    track("lane_choice",{...routeEventPayload(config),lane:direction,outcome:outcome.label,outcome_safe:outcome.safe,oxygen_before:state.oxygen,power_before:state.battery,sonar_used:Boolean(state.sonar),shield_armed:Boolean(state.shieldArmed)});
     state.busy=true;
     const field=$("diveField");field.dataset.lane=direction;field.classList.add("is-swimming");
     setFeedback(`<b class="feedback-arrow">${direction==="left"?"←":"→"}</b>`,t("swimming",{lane:t(direction)}));
@@ -880,6 +895,7 @@
   }
   function startFishEncounter(){
     const fish=fishProfile();state.fishActive=true;state.fishBusy=false;state.fishHp=fish.maxHp;state.fishMaxHp=fish.maxHp;
+    track("fish_start",{...routeEventPayload(routeConfig()),fish_name:fish.name,fish_hp:fish.maxHp,fish_attack:fish.attack});
     $("fishEncounter").classList.remove("hidden");renderFish();renderBattle();setFeedback(`${icon("danger")}<b>!</b>`,`${t("fishBattle")}: ${fish.name}`);
     sceneFrame("battle",() => $("dodgeLeftBtn").focus({preventScroll:true}));
   }
@@ -906,14 +922,21 @@
     if(!open&&focusPrimary)sceneFrame("battle",()=>{if($("upgradePanel").classList.contains("hidden"))$("leftGate").getAttribute("aria-disabled")!=="true"?$("leftGate").focus({preventScroll:true}):$("helpBtn").focus({preventScroll:true});});
   }
   function openUpgrade(){lastUpgrade=null;renderUpgrade();setUpgradeModal(true);}
-  function allocateStat(stat){if(save.statPoints<1)return;const oldMaxHp=maxHealth(),oldMaxOxygen=maxOxygen(),before=statValue(stat);save.statPoints-=1;save.stats[stat]+=1;if(stat==="hp")state.playerHp+=maxHealth()-oldMaxHp;if(stat==="oxygen")state.oxygen=Math.min(maxOxygen(),state.oxygen+maxOxygen()-oldMaxOxygen);lastUpgrade={stat,before,after:statValue(stat)};persist();renderUpgrade();renderBattle();if(save.statPoints===0)$("upgradeDone").focus({preventScroll:true});}
+  function allocateStat(stat){if(save.statPoints<1)return;const oldMaxHp=maxHealth(),oldMaxOxygen=maxOxygen(),before=statValue(stat);save.statPoints-=1;save.stats[stat]+=1;if(stat==="hp")state.playerHp+=maxHealth()-oldMaxHp;if(stat==="oxygen")state.oxygen=Math.min(maxOxygen(),state.oxygen+maxOxygen()-oldMaxOxygen);lastUpgrade={stat,before,after:statValue(stat)};persist();track("upgrade_allocated",{...routeEventPayload(routeConfig()),stat,before,after:statValue(stat),level:save.level,points_remaining:save.statPoints});renderUpgrade();renderBattle();if(save.statPoints===0)$("upgradeDone").focus({preventScroll:true});}
   function winFish(){const fish=fishProfile(),config=routeConfig(),levels=awardFishXp(fish.xp),salvageGain=1+(config.fishBonus??0);state.fishActive=false;state.fishBusy=false;state.fishResolvedZones.push(state.zone);state.salvage+=salvageGain;state.battery=Math.min(4,state.battery+1);$("fishEncounter").classList.add("hidden");setFeedback(`${icon("salvage")}<b>+${salvageGain}</b><b>XP +${fish.xp}</b>`,`${t("fishWon")} ${routeText(config,"rule")} ${t("xpGain",{n:fish.xp})}${levels?` ${t("levelUp",{n:levels})}`:""}`);renderBattle();if(levels)openUpgrade();else sceneFrame("battle",() => $("leftGate").focus({preventScroll:true}));}
   function attackFish(){
-    if(!state.fishActive||state.fishBusy)return;clearBeaconConfirmation();renderBattle();state.fishBusy=true;state.fishHp-=diverAttack();$("fishEncounter").classList.add("is-hit");setFeedback(`${icon("danger")}<b>-${diverAttack()}</b>`,t("attackAction"));renderFish();
+    if(!state.fishActive||state.fishBusy)return;clearBeaconConfirmation();const fish=fishProfile(),damage=diverAttack(),fishHpBefore=state.fishHp,playerHpBefore=state.playerHp;state.fishBusy=true;state.fishHp-=damage;track("fish_attack",{...routeEventPayload(routeConfig()),fish_name:fish.name,damage,fish_hp_before:fishHpBefore,fish_hp_after:Math.max(0,state.fishHp),player_hp_before:playerHpBefore});renderBattle();$("fishEncounter").classList.add("is-hit");setFeedback(`${icon("danger")}<b>-${damage}</b>`,t("attackAction"));renderFish();
     scheduleDive(()=>{$("fishEncounter").classList.remove("is-hit");if(state.fishHp<=0){winFish();return;}const fish=fishProfile();state.playerHp=Math.max(0,state.playerHp-fish.attack);$("fishEncounter").classList.add("is-countering");setFeedback(`<b>-${fish.attack}</b>`,t("fishStrikes"));renderFish();scheduleDive(()=>{$("fishEncounter").classList.remove("is-countering");if(state.playerHp<=0){finish("combat");return;}state.fishBusy=false;renderFish();},700);},650);
   }
   function escapeFish(){
-    if(!state.fishActive||state.fishBusy)return;clearBeaconConfirmation();const cost=routeConfig().escapeCost??8;state.oxygen=Math.max(0,state.oxygen-cost);state.fishActive=false;state.fishResolvedZones.push(state.zone);$("fishEncounter").classList.add("is-escaping");setFeedback(`${icon("oxygen")}<b>-${cost}</b>`,t("fishEscaped",{n:cost}));scheduleDive(()=>{$("fishEncounter").classList.add("hidden");$("fishEncounter").classList.remove("is-escaping");renderBattle();if(state.oxygen<=0)finish("fail");else sceneFrame("battle",() => $("leftGate").focus({preventScroll:true}));},700);
+    if(!state.fishActive||state.fishBusy)return;
+    clearBeaconConfirmation();
+    const config=routeConfig(),cost=config.escapeCost??8,oxygenBefore=state.oxygen;
+    state.oxygen=Math.max(0,state.oxygen-cost);
+    track("fish_escape",{...routeEventPayload(config),oxygen_before:oxygenBefore,oxygen_after:state.oxygen,escape_cost:cost,fish_hp:state.fishHp});
+    state.fishActive=false;state.fishResolvedZones.push(state.zone);$("fishEncounter").classList.add("is-escaping");
+    setFeedback(`${icon("oxygen")}<b>-${cost}</b>`,t("fishEscaped",{n:cost}));
+    scheduleDive(()=>{$("fishEncounter").classList.add("hidden");$("fishEncounter").classList.remove("is-escaping");renderBattle();if(state.oxygen<=0)finish("fail");else sceneFrame("battle", () => $("leftGate").focus({preventScroll:true}));},700);
   }
   function useBeacon(){
     if(state.beaconUsed)return;
@@ -942,8 +965,8 @@
   function renderMainProgress(){$("progress").textContent=`${levelText(save.level)} · ${t("rank",{n:save.rank})} - ${t("coins",{n:save.coins})}`;}
   function localize(){document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";document.title=`${t("title")} - WeightPlay`;$("title").textContent=t("title");$("languageLabel").textContent=t("language");$("localeSelect").value=locale;$("headline").textContent=t("headline");$("intro").textContent=t("intro");$("guideTitle").textContent=t("guideTitle");$("guideCopy").textContent=t("guideCopy");$("startBtn").textContent=t("start");$("stageTitle").textContent=t("stage");$("stageHint").textContent=t("stageHint");$("leftBtn").textContent=t("left");$("rightBtn").textContent=t("right");$("sonarBtn").textContent=t("sonarPowered");$("shieldBtn").textContent=t("shield");$("surfaceBtn").textContent=t("surface");$("coachTitle").textContent=t("coachTitle");$("coachStart").textContent=t("coachStart");renderCoach();$("helpBtn").ariaLabel=t("help");$("stageBack").ariaLabel=t("back");$("battleBack").ariaLabel=t("back");renderMainProgress();renderRoutes();if(state.route){renderBattle();if(state.fishActive)renderFish();if(!$("upgradePanel").classList.contains("hidden"))renderUpgrade();}}
   $("startBtn").onclick=()=>{show("stageScreen");renderRoutes();};$("stageBack").onclick=()=>show("mainScreen");$("battleBack").onclick=()=>{cancelDiveAsync();show("stageScreen");renderRoutes();};$("menuBtn").onclick=leaveDive;$("leftBtn").onclick=()=>move("left");$("rightBtn").onclick=()=>move("right");$("dodgeLeftBtn").onclick=attackFish;$("pulseBtn").onclick=escapeFish;$("helpBtn").onclick=()=>setCoach(true);$("coachStart").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("coachStart").onclick=()=>{save.tutorialDone=true;persist();setCoach(false);setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));};$("sonarBtn").onclick=()=>{if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<2){setFeedback(`${icon("power")}<b>0</b>`,t("sonarNeed"));return;}state.battery-=2;state.sonar=true;setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};$("shieldBtn").onclick=()=>{if(state.shieldArmed)return;if(state.battery<1){setFeedback(`${icon("power")}<b>0</b>`,t("shieldNeed"));return;}state.battery-=1;state.shieldArmed=true;setFeedback(`${icon("shield")}<b>✓</b>`,t("shieldArmed"));renderBattle();focusCurrentDiveDecision();};$("surfaceBtn").onclick=()=>finish("surface");$("beaconBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("beaconBtn").onclick=useBeacon;["upgradeHp","upgradeAttack","upgradeOxygen"].forEach(id=>$(id).addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();}));$("upgradeHp").onclick=()=>allocateStat("hp");$("upgradeAttack").onclick=()=>allocateStat("attack");$("upgradeOxygen").onclick=()=>allocateStat("oxygen");$("upgradeDone").onclick=()=>{setUpgradeModal(false);renderBattle();};$("localeSelect").onchange=(event)=>{locale=event.target.value;writeStorage("weightPlayLocale",locale);localize();};
-  $("sonarBtn").onclick=()=>{const config=routeConfig(),cost=config.sonarCost??2;if(config.jammedZones?.includes(state.zone)){setFeedback(`${icon("sonar")}<b>×</b>`,routeText(config,"rule"));return;}if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<cost){setFeedback(`${icon("power")}<b>${state.battery}</b>`,t("sonarNeed").replace("2",String(cost)));return;}state.battery-=cost;state.sonar=true;setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};
-  $("shieldBtn").onclick=()=>{const config=routeConfig(),cost=config.shieldCost??1;if(state.shieldArmed)return;if(state.battery<cost){setFeedback(`${icon("power")}<b>${state.battery}</b>`,t("shieldNeed").replace("1",String(cost)));return;}state.battery-=cost;state.shieldArmed=true;setFeedback(`${icon("shield")}<b>✓</b>`,t("shieldArmed"));renderBattle();focusCurrentDiveDecision();};
+  $("sonarBtn").onclick=()=>{const config=routeConfig(),cost=config.sonarCost??2;if(config.jammedZones?.includes(state.zone)){setFeedback(`${icon("sonar")}<b>×</b>`,routeText(config,"rule"));return;}if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<cost){setFeedback(`${icon("power")}<b>${state.battery}</b>`,t("sonarNeed").replace("2",String(cost)));return;}state.battery-=cost;state.sonar=true;track("sonar_used",{...routeEventPayload(config),cost,power_after:state.battery});setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};
+  $("shieldBtn").onclick=()=>{const config=routeConfig(),cost=config.shieldCost??1;if(state.shieldArmed)return;if(state.battery<cost){setFeedback(`${icon("power")}<b>${state.battery}</b>`,t("shieldNeed").replace("1",String(cost)));return;}state.battery-=cost;state.shieldArmed=true;track("shield_used",{...routeEventPayload(config),cost,power_after:state.battery});setFeedback(`${icon("shield")}<b>✓</b>`,t("shieldArmed"));renderBattle();focusCurrentDiveDecision();};
   let mainEntryKeyboardKey="";
   const screenDecisionKeyboardKeys=new Set();
   document.addEventListener("keydown",event=>{if(event.repeat&&screenDecisionKeyboardKeys.has(event.key)){event.preventDefault();event.stopImmediatePropagation();}},true);
@@ -955,9 +978,9 @@
   $("quitKeep").onclick=()=>setQuit(false,{resume:true});
   $("quitLeave").onclick=leaveDive;
   ensureResultActions();
-  $("menuBtn").onclick=()=>commitResultDecision(()=>{window.WonderAnalytics?.track?.("game_result_menu",resultAnalyticsPayload());leaveDive();});
-  $("nextBtn").onclick=()=>commitResultDecision(()=>{const payload=resultAnalyticsPayload(),nextRoute=Math.min(routes.length,state.route+1);window.WonderAnalytics?.track?.("game_next_stage",{...payload,next_stage:nextRoute});start(nextRoute);});
-  $("replayBtn").onclick=()=>commitResultDecision(()=>{window.WonderAnalytics?.track?.("game_restart",{...resultAnalyticsPayload(),source:"result"});start(state.route);});
+  $("menuBtn").onclick=()=>commitResultDecision(()=>{window.WonderAnalytics?.track?.("game_result_menu",resultAnalyticsPayload());track("routes_return",{...routeEventPayload(),from_result:state.resultOutcome,return_target:"route_map"});leaveDive();});
+  $("nextBtn").onclick=()=>commitResultDecision(()=>{const payload=resultAnalyticsPayload(),nextRoute=Math.min(routes.length,state.route+1);window.WonderAnalytics?.track?.("game_next_stage",{...payload,next_stage:nextRoute});track("next_route",{...routeEventPayload(),from_route:state.route,next_route:nextRoute,trigger:"result_next"});start(nextRoute,"next_route");});
+  $("replayBtn").onclick=()=>commitResultDecision(()=>{window.WonderAnalytics?.track?.("game_restart",{...resultAnalyticsPayload(),source:"result"});start(state.route,"replay");});
   window.addEventListener("blur",()=>{windowFocused=false;suspendDiveAsync();});
   window.addEventListener("focus",()=>{windowFocused=true;resumeDiveAsync();});
   document.addEventListener("visibilitychange",()=>{if(document.hidden)suspendDiveAsync();else if(windowFocused)resumeDiveAsync();});

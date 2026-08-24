@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "animal-orb-fortress";
-  const GAME_VERSION = "v20";
+  const GAME_VERSION = "v22";
   const saveKey = "weightplay_animal_orb_fortress_v1";
   const localeKey = "weightPlayLocale";
   let W = 960;
@@ -817,6 +817,10 @@
     }
   }
 
+  function trackGrowth(eventName, details = {}) {
+    track(`orb_fortress_${eventName}`, details);
+  }
+
   function trackAimChange(x, y, source) {
     if (state.mode !== "running") return;
     const now = performance.now();
@@ -824,6 +828,7 @@
     lastAimTrackedAt = now;
     const angle = Math.round((Math.atan2(y - state.launcher.y, x - state.launcher.x) * 180) / Math.PI + 90);
     track("angle_change", { angle, source, wave: state.wave, shot_count: state.shotCount });
+    trackGrowth("angle_change", { angle, source, wave: state.wave, shot_count: state.shotCount });
   }
 
   function t(key, data = {}) {
@@ -1517,6 +1522,7 @@
     renderMenu();
     if (restoreFocus) restoreRoomUpgradeFocus(id);
     track("room_upgrade", { room: id, level: save.rooms[id] });
+    trackGrowth("workshop_upgrade", { room: id, level: save.rooms[id] });
   }
 
   function startRaid(tier = selectedTier) {
@@ -1542,6 +1548,7 @@
     lastFrame = performance.now();
     playSound("start", 0.2);
     track("raid_start", { tier: state.raidTier, wave: state.wave });
+    trackGrowth("raid_start", { tier: state.raidTier, wave: state.wave });
     loop(lastFrame);
   }
 
@@ -1870,6 +1877,7 @@
     updateArenaControlLabel(true);
     playSound("shoot", 0.08);
     track("shot_fired", { wave: state.wave, split: state.split, first_shot: firstShot, angle: Math.round((Math.atan2(y - state.launcher.y, x - state.launcher.x) * 180) / Math.PI + 90) });
+    trackGrowth("shot_fired", { wave: state.wave, split: state.split, first_shot: firstShot, angle: Math.round((Math.atan2(y - state.launcher.y, x - state.launcher.x) * 180) / Math.PI + 90) });
     renderHud();
   }
 
@@ -1969,6 +1977,7 @@
       const copy = shotFeedbackCopy[window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale] || shotFeedbackCopy.en;
       nodes.hintText.textContent = copy.miss;
       track("hit_result", { result: "miss", first_shot: true, wave: state.wave, bounces: 0, damage: 0, shield_damage: 0 });
+      trackGrowth("hit_result", { result: "miss", first_shot: true, wave: state.wave, bounces: 0, damage: 0, shield_damage: 0 });
     }
     updateArenaControlLabel();
     resolveEnemyDeaths();
@@ -2223,6 +2232,7 @@
         }
         nodes.hintText.textContent = label;
         track("hit_result", { result: kind, first_shot: isFirstShot, wave: state.wave, bounces: orb.bounces, damage, shield_damage: shieldDamage });
+        trackGrowth("hit_result", { result: kind, first_shot: isFirstShot, wave: state.wave, bounces: orb.bounces, damage, shield_damage: shieldDamage });
         enemy.hitTimer = 0.16;
         orb.hits.set(enemy, state.pierce ? 0.2 : 0.55);
         state.sparks.push({ kind: "shot-feedback", x: enemy.x, y: enemy.y, life: 0.72, maxLife: 0.72, label, banked: orb.bounces > 0 });
@@ -2247,6 +2257,7 @@
     show(nodes.upgradePanel);
     window.requestAnimationFrame(() => nodes.upgradeCards.querySelector(".upgrade-card")?.focus({ preventScroll: true }));
     track("wave_clear", { wave: state.wave });
+    trackGrowth("wave_clear", { wave: state.wave });
   }
 
   function currentUpgradeChoices() {
@@ -2342,6 +2353,7 @@
     window.requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
     playSound("success", 0.2);
     track("blessing_choice", { upgrade: id, wave: state.wave });
+    trackGrowth("blessing_choice", { upgrade: id, wave: state.wave });
     track("upgrade_pick", { upgrade: id, wave: state.wave });
     lastFrame = performance.now();
     loop(lastFrame);
@@ -2425,6 +2437,7 @@
     renderMenu();
     playSound(win ? "success" : "wrong", 0.2);
     track("raid_result", { win, outcome: win ? "win" : "loss", wave: Math.min(3, state.wave), stones, next_tier: hasNextStage ? state.raidTier + 1 : null });
+    trackGrowth("raid_result", { win, outcome: win ? "win" : "loss", wave: Math.min(3, state.wave), stones, next_tier: hasNextStage ? state.raidTier + 1 : null });
   }
 
   function commitResultDecision(action) {
@@ -2778,12 +2791,14 @@
   });
   nodes.retryBtn.addEventListener("click", () => commitResultDecision(() => {
     track("retry", { tier: state.raidTier, wave: state.wave });
+    trackGrowth("retry", { tier: state.raidTier, wave: state.wave });
     startRaid(state.raidTier);
   }));
   nodes.nextStageBtn.addEventListener("click", () => {
     if (!nodes.nextStageBtn.disabled && state.raidTier < MAX_RAID_TIER) {
       commitResultDecision(() => {
         track("next_raid", { from_tier: state.raidTier, to_tier: state.raidTier + 1 });
+        trackGrowth("next_stage", { from_tier: state.raidTier, to_tier: state.raidTier + 1 });
         startRaid(state.raidTier + 1);
       });
     }
