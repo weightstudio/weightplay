@@ -3,7 +3,7 @@ window.WPPopularArcade?.mount("tic-tac-toe");
 (() => {
   "use strict";
 
-  document.body.dataset.gameVersion = "v10";
+  document.body.dataset.gameVersion = "v11";
 
   const labels = {
     en: { lobby: "Back to WeightPlay", battle: "Back to main" },
@@ -106,6 +106,9 @@ window.WPPopularArcade?.mount("tic-tac-toe");
         url('../../assets/tic-tac-toe-cover.webp') center / cover no-repeat;
     }
     html.popular-tic-tac-toe-active #battleScreen .battle-panel {
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
       padding: clamp(12px, 3vw, 24px);
       display: grid;
       grid-template-rows: 52px minmax(0, 1fr) 48px;
@@ -113,6 +116,8 @@ window.WPPopularArcade?.mount("tic-tac-toe");
       align-content: stretch;
     }
     html.popular-tic-tac-toe-active #battleScreen .battle-top {
+      min-width: 0;
+      max-width: 100%;
       display: grid;
       grid-template-columns: 48px minmax(0, 1fr) auto;
       gap: 10px;
@@ -133,12 +138,16 @@ window.WPPopularArcade?.mount("tic-tac-toe");
       white-space: nowrap;
     }
     html.popular-tic-tac-toe-active #battleScreen .board-wrap {
+      min-width: 0;
+      max-width: 100%;
       min-height: 0;
       height: 100%;
       padding: clamp(8px, 2vw, 14px);
       overflow: hidden;
     }
     html.popular-tic-tac-toe-active #battleScreen .board {
+      min-width: 0;
+      max-width: 100%;
       width: 100%;
       height: 100%;
       min-height: 0;
@@ -150,6 +159,7 @@ window.WPPopularArcade?.mount("tic-tac-toe");
       aspect-ratio: 1;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       grid-template-rows: repeat(3, minmax(0, 1fr));
+      max-width: 100%;
     }
     html.popular-tic-tac-toe-active #battleScreen .tic-cell {
       min-width: 0;
@@ -170,6 +180,45 @@ window.WPPopularArcade?.mount("tic-tac-toe");
       padding: clamp(20px, 5vw, 44px);
       align-content: center;
       overflow: hidden;
+    }
+    @media (max-width: 540px) and (orientation: portrait) {
+      html.popular-tic-tac-toe-active #battleScreen .battle-panel {
+        padding: 10px;
+        grid-template-rows: auto minmax(0, 1fr) 48px;
+        gap: 8px;
+      }
+      html.popular-tic-tac-toe-active #battleScreen .battle-top {
+        grid-template-columns: 48px minmax(0, 1fr);
+        grid-template-rows: 48px 48px;
+        gap: 7px 10px;
+      }
+      html.popular-tic-tac-toe-active #battleScreen .round-label {
+        grid-column: 2;
+        grid-row: 1;
+        max-height: 48px;
+        font-size: clamp(.78rem, 3.7vw, .95rem);
+        overflow-wrap: anywhere;
+      }
+      html.popular-tic-tac-toe-active #battleScreen .battle-top .control-row {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        width: 100%;
+        min-width: 0;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+      html.popular-tic-tac-toe-active #battleScreen .battle-top .secondary {
+        width: 100%;
+        min-width: 0;
+        padding-inline: 8px;
+      }
+      html.popular-tic-tac-toe-active #battleScreen .board-wrap {
+        padding: 6px;
+      }
+      html.popular-tic-tac-toe-active #battleScreen .tic-board {
+        width: min(100%, 360px);
+      }
     }
     @media (orientation: landscape) and (max-height: 430px) {
       html.popular-tic-tac-toe-active body[data-game-id='tic-tac-toe'][data-screen='battle'] .popular-arcade,

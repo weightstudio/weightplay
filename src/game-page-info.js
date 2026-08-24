@@ -12020,9 +12020,107 @@
     hi: { title: "टिक-टैक-टो", gameplay: "रणनीतिक बोर्ड क्लासिक", genre: ["क्लासिक", "पहेली", "रणनीति", "परिवार"], skills: ["योजना", "प्रतिक्रिया", "खतरा पढ़ना"], difficulty: "शुरुआत में आसान, धीरे-धीरे चुनौतीपूर्ण", time: "हर राउंड 1–4 मिनट", intro: "टिक-टैक-टो WeightPlay का छोटा बोर्ड क्लासिक है। नौ खानों में X रखें, O की तुरंत चाल पढ़ें और परिचित नियम को साफ़ रणनीतिक निर्णय में बदलें।", how: ["राउंड शुरू करें और 3×3 बोर्ड में खाली खाना चुनें।", "O की चाल के बाद उभरे प्रतिद्वंद्वी खाने और खतरों को पढ़कर अगला X चुनें।", "संकेत एक वैध खाली खाना दिखाता है, लेकिन निर्णय आपका रहता है।", "तीन जोड़ें, प्रतिद्वंद्वी को रोकें या बोर्ड भरकर परिणाम तक पहुँचें; फिर दोबारा खेलें या शुरुआत पर लौटें।"], parent: "इस सामान्य ब्राउज़र गेम में खाता, खरीद, चैट, रैंकिंग या विज्ञापन नहीं हैं। स्कोर और राउंड स्थिति वर्तमान ब्राउज़र सत्र में रहती है।" },
     ar: { title: "إكس-أو", gameplay: "كلاسيكية لوحية تكتيكية", genre: ["كلاسيكية", "ألغاز", "استراتيجية", "عائلية"], skills: ["التخطيط", "رد الفعل", "قراءة التهديدات"], difficulty: "سهلة البداية وتزداد تحدياً", time: "من دقيقة إلى 4 دقائق للجولة", intro: "إكس-أو كلاسيكية لوحية مختصرة من WeightPlay. ضع X في تسع خانات، واقرأ رد O الفوري، وحوّل القاعدة المألوفة إلى قرار تكتيكي واضح.", how: ["ابدأ الجولة واختر خانة فارغة في اللوحة 3×3.", "بعد رد O، اقرأ خانته المميزة والتهديدات قبل اختيار X التالي.", "يعرض التلميح خانة قانونية واحدة، لكن القرار يبقى لك.", "صِل ثلاثة رموز أو أوقف الخصم أو املأ اللوحة للوصول إلى النتيجة؛ أعد اللعب أو عد إلى البداية."], parent: "هذه لعبة متصفح عامة ولا تتضمن حساباً أو شراءً أو دردشة أو ترتيباً أو إعلانات. تبقى النقاط وحالة الجولة في جلسة المتصفح الحالية." },
   };
+  const ticTacToeGuideDetails = {
+    "zh-Hant": {
+      story: ["你執 X、對手執 O。每個空格都可能形成連線、封鎖或雙重威脅，因此每一步都要根據目前棋盤判斷。"],
+      systems: ["點選九宮格中的空格放下 X，對手會立即回應 O；已占用的格子不能再次選擇。", "任何一方橫向、直向或斜向連成三格便獲勝；棋盤填滿且無人連線則為平手。提示只標出一個合法空格，不會替你下棋。"],
+      strategyTips: ["先檢查自己能否立即連成三格，再檢查對手下一步是否會獲勝。", "中心能參與最多連線；角落較容易形成兩條同時威脅的路線。", "提示只是合法選項，不一定是最佳策略，仍要自行判斷攻擊或封鎖。"],
+      progression: ["每回合都是完整的一局：開局建立路線，中段攻防，最後以勝、負或平手結算。"],
+      designNote: "本作保留標準井字棋的輪流落子與三格連線規則，並加入清楚的對手回應、提示、結果與手機操作介面。",
+      faq: [["對手如何選擇 O？", "對手會先完成自己的勝利，再封鎖你下一步的勝利，之後依中心、角落、邊格的順序選擇。"], ["可以再點已占用的格子嗎？", "不可以。已占用格會停用，也不會消耗步數。"], ["怎樣才算獲勝？", "橫向、直向或斜向連成三個相同記號。"], ["棋盤填滿會怎樣？", "若雙方都沒有連成三格，該局判定為平手。"], ["提示會替我下棋嗎？", "不會。提示只標出一個可下的空格，最後仍由你選擇。"], ["進度會保存嗎？", "最佳分數保存在目前瀏覽器；不需要帳號，也不會跨裝置同步。"]],
+    },
+    "zh-Hans": {
+      story: ["你执 X、对手执 O。每个空格都可能形成连线、封锁或双重威胁，因此每一步都要根据当前棋盘判断。"],
+      systems: ["点击九宫格中的空格放下 X，对手会立即回应 O；已占用的格子不能再次选择。", "任何一方横向、纵向或斜向连成三格便获胜；棋盘填满且无人连线则为平局。提示只标出一个合法空格，不会替你下棋。"],
+      strategyTips: ["先检查自己能否立即连成三格，再检查对手下一步是否会获胜。", "中心能参与最多连线；角落较容易形成两条同时威胁的路线。", "提示只是合法选项，不一定是最佳策略，仍要自行判断进攻或封锁。"],
+      progression: ["每回合都是完整的一局：开局建立路线，中段攻防，最后以胜、负或平局结算。"],
+      designNote: "本作保留标准井字棋的轮流落子与三格连线规则，并加入清楚的对手回应、提示、结果与手机操作界面。",
+      faq: [["对手如何选择 O？", "对手会先完成自己的胜利，再封锁你下一步的胜利，之后按中心、角落、边格的顺序选择。"], ["可以再点已占用的格子吗？", "不可以。已占用格会停用，也不会消耗步数。"], ["怎样才算获胜？", "横向、纵向或斜向连成三个相同记号。"], ["棋盘填满会怎样？", "若双方都没有连成三格，该局判定为平局。"], ["提示会替我下棋吗？", "不会。提示只标出一个可下的空格，最后仍由你选择。"], ["进度会保存吗？", "最佳分数保存在当前浏览器；不需要账号，也不会跨设备同步。"]],
+    },
+    ja: {
+      story: ["あなたはX、相手はOです。空きマスは勝ち筋、守り、二重の脅威につながるため、毎手盤面を読みます。"],
+      systems: ["空いているマスを選ぶとXが置かれ、相手がすぐOで応答します。使用済みのマスは選べません。", "縦・横・斜めのいずれかに3つ並べると勝ちです。盤面が埋まり、どちらも並ばなければ引き分けです。ヒントは合法手を1つ示すだけです。"],
+      strategyTips: ["まず自分の即勝ちを探し、次に相手の即勝ちを防ぎます。", "中央は多くの列に関わり、角は二方向の脅威を作りやすい場所です。", "ヒントは合法手であり、必ずしも最善手ではありません。"],
+      progression: ["各ラウンドは、序盤の形作り、中盤の攻防、勝敗または引き分けまでを1局で完結します。"],
+      designNote: "標準的な交互手番と三目並べのルールを保ち、相手の応答、ヒント、結果、モバイル操作を分かりやすくしました。",
+      faq: [["相手はどうOを選びますか？", "相手は自分の勝ち、あなたの勝ちの阻止、中央、角、辺の順で選びます。"], ["使用済みのマスを押せますか？", "いいえ。使用済みのマスは無効で、手数も増えません。"], ["勝利条件は？", "縦・横・斜めに同じ印を3つ並べます。"], ["盤面が埋まると？", "どちらも3つ並んでいなければ引き分けです。"], ["ヒントが自動で打ちますか？", "いいえ。合法な空きマスを示すだけです。"], ["進行は保存されますか？", "ベストスコアは現在のブラウザーに保存され、端末間では同期されません。"]],
+    },
+    ko: {
+      story: ["플레이어는 X, 상대는 O입니다. 빈 칸 하나가 연결, 방어, 이중 위협을 만들 수 있으므로 매번 현재 보드를 읽어야 합니다."],
+      systems: ["빈 칸을 누르면 X가 놓이고 상대가 즉시 O로 응답합니다. 이미 사용한 칸은 다시 선택할 수 없습니다.", "가로·세로·대각선으로 세 칸을 먼저 잇으면 승리합니다. 보드가 가득 차고 연결이 없으면 무승부입니다. 힌트는 합법적인 칸 하나만 표시합니다."],
+      strategyTips: ["먼저 즉시 이길 수 있는지 보고, 다음으로 상대의 즉시 승리를 막으세요.", "가운데는 가장 많은 줄에 연결되고, 모서리는 두 방향 위협을 만들기 좋습니다.", "힌트는 합법적인 선택일 뿐 항상 최선의 수는 아닙니다."],
+      progression: ["한 라운드는 초반 경로 만들기, 중반 공격과 방어, 승리·패배·무승부 결과까지 완결됩니다."],
+      designNote: "표준 틱택토의 번갈아 놓기와 세 칸 연결 규칙을 유지하면서 상대 응답, 힌트, 결과, 모바일 조작을 명확하게 구성했습니다.",
+      faq: [["상대는 O를 어떻게 고르나요?", "자신의 승리, 플레이어 승리 차단, 가운데, 모서리, 가장자리 순서로 고릅니다."], ["사용한 칸을 다시 누를 수 있나요?", "아니요. 사용한 칸은 비활성화되며 이동 수도 늘지 않습니다."], ["승리 조건은 무엇인가요?", "가로·세로·대각선으로 같은 표시 세 개를 잇습니다."], ["보드가 가득 차면 어떻게 되나요?", "어느 쪽도 세 칸을 잇지 못했다면 무승부입니다."], ["힌트가 대신 두나요?", "아니요. 가능한 빈 칸 하나만 표시합니다."], ["진행이 저장되나요?", "최고 점수는 현재 브라우저에만 저장되며 기기 간 동기화되지 않습니다."]],
+    },
+    es: {
+      story: ["Juegas con X y el rival con O. Cada casilla libre puede crear una línea, un bloqueo o una doble amenaza."],
+      systems: ["Elige una casilla vacía para colocar X; el rival responde de inmediato con O. Las casillas ocupadas quedan desactivadas.", "Gana quien alinee tres símbolos en horizontal, vertical o diagonal. Si el tablero se llena sin línea, hay empate. La pista solo señala una jugada legal."],
+      strategyTips: ["Busca primero una victoria inmediata y después bloquea la victoria inmediata del rival.", "El centro participa en más líneas; las esquinas ayudan a crear dos amenazas.", "La pista muestra una opción legal, no siempre la mejor."],
+      progression: ["Cada ronda recorre apertura, ataque y defensa, y termina en victoria, derrota o empate."],
+      designNote: "Conserva las reglas estándar de turnos y tres en raya, con respuesta rival, pista, resultado y controles móviles claros.",
+      faq: [["¿Cómo elige O el rival?", "Primero gana si puede, luego bloquea tu victoria y después prefiere centro, esquinas y bordes."], ["¿Puedo tocar una casilla ocupada?", "No. Queda desactivada y no consume un movimiento."], ["¿Qué cuenta como victoria?", "Tres símbolos iguales en horizontal, vertical o diagonal."], ["¿Qué ocurre si se llena el tablero?", "Si nadie tiene una línea, la ronda termina en empate."], ["¿La pista juega por mí?", "No. Solo señala una casilla legal."], ["¿Se guarda el progreso?", "La mejor puntuación se guarda en este navegador y no se sincroniza entre dispositivos."]],
+    },
+    "pt-BR": {
+      story: ["Você joga com X e o rival com O. Cada casa livre pode criar uma linha, um bloqueio ou uma ameaça dupla."],
+      systems: ["Escolha uma casa vazia para colocar X; o rival responde imediatamente com O. Casas ocupadas ficam desativadas.", "Vence quem alinhar três símbolos na horizontal, vertical ou diagonal. Se o tabuleiro encher sem linha, há empate. A dica apenas indica uma jogada válida."],
+      strategyTips: ["Procure primeiro uma vitória imediata e depois bloqueie a vitória imediata do rival.", "O centro participa de mais linhas; os cantos ajudam a criar duas ameaças.", "A dica mostra uma opção válida, não necessariamente a melhor."],
+      progression: ["Cada rodada passa por abertura, ataque e defesa, terminando em vitória, derrota ou empate."],
+      designNote: "Mantém as regras padrão de turnos e três em linha, com resposta do rival, dica, resultado e controles móveis claros.",
+      faq: [["Como o rival escolhe O?", "Primeiro vence se puder, depois bloqueia sua vitória e então prefere centro, cantos e bordas."], ["Posso tocar numa casa ocupada?", "Não. Ela fica desativada e não consome movimento."], ["O que conta como vitória?", "Três símbolos iguais na horizontal, vertical ou diagonal."], ["O que acontece com o tabuleiro cheio?", "Se ninguém tiver uma linha, a rodada termina empatada."], ["A dica joga por mim?", "Não. Ela só marca uma casa válida."], ["O progresso é salvo?", "A melhor pontuação fica neste navegador e não sincroniza entre dispositivos."]],
+    },
+    fr: {
+      story: ["Vous jouez X et l’adversaire O. Chaque case libre peut créer une ligne, un blocage ou une double menace."],
+      systems: ["Choisissez une case vide pour poser X ; l’adversaire répond aussitôt avec O. Les cases occupées sont désactivées.", "Trois signes alignés horizontalement, verticalement ou en diagonale gagnent. Un plateau plein sans ligne donne un match nul. L’indice montre seulement un coup légal."],
+      strategyTips: ["Cherchez d’abord une victoire immédiate, puis bloquez celle de l’adversaire.", "Le centre appartient à plus de lignes ; les coins facilitent les doubles menaces.", "L’indice propose un coup légal, pas forcément le meilleur."],
+      progression: ["Chaque manche couvre ouverture, attaque et défense, puis se termine par victoire, défaite ou nul."],
+      designNote: "Le jeu conserve l’alternance et l’objectif classique de trois signes, avec réponse adverse, indice, résultat et commandes mobiles lisibles.",
+      faq: [["Comment l’adversaire choisit-il O ?", "Il gagne si possible, bloque votre victoire, puis préfère le centre, les coins et les bords."], ["Puis-je toucher une case occupée ?", "Non. Elle est désactivée et ne dépense aucun coup."], ["Qu’est-ce qu’une victoire ?", "Trois signes identiques en ligne, colonne ou diagonale."], ["Que se passe-t-il si le plateau est plein ?", "Sans ligne gagnante, la manche est nulle."], ["L’indice joue-t-il à ma place ?", "Non. Il indique seulement une case légale."], ["La progression est-elle sauvegardée ?", "Le meilleur score reste dans ce navigateur sans synchronisation entre appareils."]],
+    },
+    de: {
+      story: ["Du spielst X, der Gegner O. Jedes freie Feld kann eine Reihe, eine Blockade oder eine Doppeldrohung erzeugen."],
+      systems: ["Wähle ein leeres Feld für X; der Gegner antwortet sofort mit O. Belegte Felder sind deaktiviert.", "Drei Zeichen waagerecht, senkrecht oder diagonal gewinnen. Ein volles Brett ohne Reihe endet unentschieden. Der Tipp zeigt nur einen legalen Zug."],
+      strategyTips: ["Suche zuerst den direkten Sieg und blockiere danach den direkten Sieg des Gegners.", "Die Mitte gehört zu den meisten Reihen; Ecken eignen sich für Doppeldrohungen.", "Ein Tipp ist legal, aber nicht immer der beste Zug."],
+      progression: ["Jede Runde führt von der Eröffnung über Angriff und Verteidigung zu Sieg, Niederlage oder Remis."],
+      designNote: "Das Spiel behält die klassischen Wechselzüge und Dreierreihe bei und ergänzt klare Gegnerreaktionen, Tipps, Ergebnisse und mobile Bedienung.",
+      faq: [["Wie wählt der Gegner O?", "Er gewinnt zuerst, blockiert danach deinen Sieg und bevorzugt dann Mitte, Ecken und Ränder."], ["Kann ich ein belegtes Feld wählen?", "Nein. Es ist deaktiviert und kostet keinen Zug."], ["Was zählt als Sieg?", "Drei gleiche Zeichen waagerecht, senkrecht oder diagonal."], ["Was passiert bei vollem Brett?", "Ohne Dreierreihe endet die Runde unentschieden."], ["Spielt der Tipp für mich?", "Nein. Er markiert nur ein legales Feld."], ["Wird Fortschritt gespeichert?", "Der Bestwert bleibt in diesem Browser und wird nicht geräteübergreifend synchronisiert."]],
+    },
+    it: {
+      story: ["Tu giochi con X e il rivale con O. Ogni casella libera può creare una linea, un blocco o una doppia minaccia."],
+      systems: ["Scegli una casella vuota per posare X; il rivale risponde subito con O. Le caselle occupate sono disattivate.", "Tre simboli in orizzontale, verticale o diagonale vincono. Se il tabellone si riempie senza linea, è pareggio. Il suggerimento indica solo una mossa valida."],
+      strategyTips: ["Cerca prima una vittoria immediata, poi blocca quella immediata del rivale.", "Il centro appartiene a più linee; gli angoli facilitano le doppie minacce.", "Il suggerimento è una mossa valida, non sempre la migliore."],
+      progression: ["Ogni round passa da apertura, attacco e difesa fino a vittoria, sconfitta o pareggio."],
+      designNote: "Mantiene i turni e l’obiettivo classico del tris, aggiungendo risposta rivale, suggerimento, risultato e comandi mobili chiari.",
+      faq: [["Come sceglie O il rivale?", "Prima vince se può, poi blocca la tua vittoria e quindi preferisce centro, angoli e bordi."], ["Posso toccare una casella occupata?", "No. È disattivata e non consuma una mossa."], ["Cosa vale come vittoria?", "Tre simboli uguali in orizzontale, verticale o diagonale."], ["Cosa succede col tabellone pieno?", "Senza una linea vincente, il round finisce in pareggio."], ["Il suggerimento gioca per me?", "No. Indica solo una casella valida."], ["I progressi vengono salvati?", "Il miglior punteggio resta in questo browser senza sincronizzazione tra dispositivi."]],
+    },
+    ru: {
+      story: ["Вы играете X, соперник — O. Каждая свободная клетка может создать линию, блок или двойную угрозу."],
+      systems: ["Выберите пустую клетку для X; соперник сразу отвечает O. Занятые клетки отключены.", "Три знака по горизонтали, вертикали или диагонали дают победу. Полное поле без линии означает ничью. Подсказка лишь отмечает допустимый ход."],
+      strategyTips: ["Сначала ищите немедленную победу, затем блокируйте немедленную победу соперника.", "Центр входит в больше линий, а углы помогают создать двойную угрозу.", "Подсказка показывает допустимый, но не обязательно лучший ход."],
+      progression: ["Каждый раунд проходит от дебюта через атаку и защиту к победе, поражению или ничьей."],
+      designNote: "Игра сохраняет стандартные очередные ходы и цель собрать три знака, добавляя понятный ответ соперника, подсказку, результат и мобильное управление.",
+      faq: [["Как соперник выбирает O?", "Сначала он выигрывает, затем блокирует вашу победу, после чего выбирает центр, углы и края."], ["Можно нажать занятую клетку?", "Нет. Она отключена и не расходует ход."], ["Что считается победой?", "Три одинаковых знака по горизонтали, вертикали или диагонали."], ["Что будет при полном поле?", "Если линии нет, раунд заканчивается ничьей."], ["Подсказка ходит за меня?", "Нет. Она только отмечает допустимую клетку."], ["Прогресс сохраняется?", "Лучший счёт хранится в этом браузере без синхронизации между устройствами."]],
+    },
+    hi: {
+      story: ["आप X से और प्रतिद्वंद्वी O से खेलता है। हर खाली खाना पंक्ति, रोक या दोहरी धमकी बना सकता है।"],
+      systems: ["X रखने के लिए खाली खाना चुनें; प्रतिद्वंद्वी तुरंत O रखता है। भरे हुए खाने बंद रहते हैं।", "आड़ा, खड़ा या तिरछा तीन निशान जोड़ने वाला जीतता है। बिना पंक्ति के बोर्ड भर जाए तो ड्रॉ होता है। संकेत केवल एक वैध चाल दिखाता है।"],
+      strategyTips: ["पहले अपनी तुरंत जीत देखें, फिर प्रतिद्वंद्वी की तुरंत जीत रोकें।", "मध्य खाना सबसे अधिक पंक्तियों में आता है; कोने दोहरी धमकी बनाने में सहायक हैं।", "संकेत वैध चाल है, हमेशा सर्वोत्तम चाल नहीं।"],
+      progression: ["हर राउंड शुरुआत, हमला और बचाव से होकर जीत, हार या ड्रॉ पर पूरा होता है।"],
+      designNote: "यह मानक बारी-बारी चाल और तीन जोड़ने का नियम रखता है, साथ में स्पष्ट प्रतिद्वंद्वी चाल, संकेत, परिणाम और मोबाइल नियंत्रण देता है।",
+      faq: [["प्रतिद्वंद्वी O कैसे चुनता है?", "पहले अपनी जीत, फिर आपकी जीत को रोकना, फिर मध्य, कोने और किनारे चुनता है।"], ["क्या भरे खाने को दबा सकता हूँ?", "नहीं। वह बंद रहता है और चाल नहीं खर्च होती।"], ["जीत क्या है?", "आड़ा, खड़ा या तिरछा तीन समान निशान।"], ["बोर्ड भरने पर क्या होता है?", "किसी की पंक्ति न हो तो ड्रॉ होता है।"], ["क्या संकेत मेरे लिए चाल चलता है?", "नहीं। वह केवल वैध खाली खाना दिखाता है।"], ["क्या प्रगति सहेजी जाती है?", "सर्वश्रेष्ठ स्कोर इसी ब्राउज़र में रहता है और उपकरणों में सिंक नहीं होता।"]],
+    },
+    ar: {
+      story: ["تلعب بعلامة X ويلعب الخصم بعلامة O. كل خانة فارغة قد تصنع صفاً أو صدّاً أو تهديداً مزدوجاً."],
+      systems: ["اختر خانة فارغة لوضع X؛ يرد الخصم فوراً بعلامة O. تُعطّل الخانات المشغولة.", "يفوز من يصل ثلاثة رموز أفقياً أو عمودياً أو قطرياً. إذا امتلأت اللوحة بلا صف فتنتهي الجولة بالتعادل. يعرض التلميح حركة قانونية واحدة فقط."],
+      strategyTips: ["ابحث أولاً عن فوز فوري، ثم امنع فوز الخصم الفوري.", "يدخل الوسط في أكبر عدد من الصفوف، وتساعد الزوايا على صنع تهديدين.", "التلميح حركة قانونية وليس بالضرورة أفضل حركة."],
+      progression: ["تمر كل جولة بافتتاح وهجوم ودفاع ثم تنتهي بفوز أو خسارة أو تعادل."],
+      designNote: "تحافظ اللعبة على تبادل الأدوار وقاعدة وصل ثلاثة رموز، مع رد واضح من الخصم وتلميح ونتيجة وتحكم مناسب للهاتف.",
+      faq: [["كيف يختار الخصم O؟", "يفوز أولاً إن استطاع، ثم يمنع فوزك، وبعدها يفضّل الوسط والزوايا والحواف."], ["هل يمكن لمس خانة مشغولة؟", "لا. تكون معطلة ولا تستهلك حركة."], ["ما الذي يُعد فوزاً؟", "ثلاثة رموز متطابقة أفقياً أو عمودياً أو قطرياً."], ["ماذا يحدث عند امتلاء اللوحة؟", "إذا لم يوجد صف فائز تنتهي الجولة بالتعادل."], ["هل يلعب التلميح بدلاً مني؟", "لا. يحدد خانة قانونية فقط."], ["هل يُحفظ التقدم؟", "يُحفظ أفضل رصيد في هذا المتصفح ولا يتزامن بين الأجهزة."]],
+    },
+  };
   for (const [localeCode, copy] of Object.entries(ticTacToeLocaleCore)) {
     localizedGames[localeCode] ||= {};
-    localizedGames[localeCode]["tic-tac-toe"] = { ...games["tic-tac-toe"], ...copy };
+    localizedGames[localeCode]["tic-tac-toe"] = { ...games["tic-tac-toe"], ...copy, ...(ticTacToeGuideDetails[localeCode] || {}) };
   }
   // v7 guide repair: the runtime Snake no longer has a fixed six-food finish.
   // Keep the public Guide, metadata, and every locale aligned with continuous

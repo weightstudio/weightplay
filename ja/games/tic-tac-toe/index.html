@@ -201,19 +201,15 @@ html.popular-tic-tac-toe-active #resultScreen .arcade-panel {
       <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>戦術ボードクラシック</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>クラシック · パズル · 戦略 · ファミリー</strong></div><div class="game-info-fact"><span>難易度</span><strong>やさしく、徐々に挑戦的</strong></div><div class="game-info-fact"><span>目安時間</span><strong>1ラウンド約1～4分</strong></div><div class="game-info-fact"><span>身につく力</span><strong>計画 · 反応 · 脅威の読解</strong></div></div>
     </div>
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界とミッション</h3><p>The board is small on purpose: every open square changes the next threat, block, or winning route. A quick round gives the player enough information to make a deliberate choice without burying the decision in setup.</p>
-<p>The rival responds immediately with a deterministic priority: take a winning square, block an immediate X line, then prefer the centre, corners, and edges. The rules stay familiar while the response remains readable.</p></div>
-      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>Choose one of nine empty cells to place X. The rival places O after each legal player move, and occupied cells remain unavailable rather than spending a move.</p>
-<p>A round settles from the actual board: three X or O marks in a row create a win, while a full board without a line creates a draw. The winning line remains identifiable before Result appears.</p>
-<p>Hint highlights one legal empty cell without playing it. Replay starts a fresh round; Restart resets the current board, and Back to main returns to the canonical Main screen.</p></div>
+      <div class="game-info-section"><h3>世界とミッション</h3><p>あなたはX、相手はOです。空きマスは勝ち筋、守り、二重の脅威につながるため、毎手盤面を読みます。</p></div>
+      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>空いているマスを選ぶとXが置かれ、相手がすぐOで応答します。使用済みのマスは選べません。</p>
+<p>縦・横・斜めのいずれかに3つ並べると勝ちです。盤面が埋まり、どちらも並ばなければ引き分けです。ヒントは合法手を1つ示すだけです。</p></div>
       <div class="game-info-section"><h3>遊び方</h3><ol><li>ラウンドを開始し、3×3盤の空いたマスを選びます。</li><li>Oの応答後、相手のマスと脅威を読み、次のXを決めます。</li><li>ヒントは1つの合法手を示しますが、決定はあなたが行います。</li><li>3つ並べる、相手を止める、または盤を埋めて結果へ進み、リプレイかメインへ戻ります。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>Look for an immediate line before choosing a merely attractive corner.</li><li>If the rival can win next turn, blocking that square is more valuable than building a slower threat.</li><li>The centre opens more lines, while corners create two-direction threats when the board permits them.</li><li>Treat Hint as a second opinion: it never places X or removes the need to read O&#39;s reply.</li></ul></div>
-      <div class="game-info-section"><h3>進行と難易度</h3><p>The opening move teaches the nine-square geometry and immediate rival response.</p>
-<p>Middle moves turn one open square into a choice between making a line, blocking a line, or preserving a fork.</p>
-<p>The final moves settle as a natural win, rival win, or draw, then offer a direct reason to replay.</p></div>
-      <div class="game-info-section"><h3>開発者メモ</h3><p>Tic-Tac-Toe keeps only the familiar alternating X/O rule and three-in-a-row objective while using WeightPlay&#39;s own multilingual shell, tactical rival, result treatment, responsive board, accessibility labels, and visual identity.</p></div>
+      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>まず自分の即勝ちを探し、次に相手の即勝ちを防ぎます。</li><li>中央は多くの列に関わり、角は二方向の脅威を作りやすい場所です。</li><li>ヒントは合法手であり、必ずしも最善手ではありません。</li></ul></div>
+      <div class="game-info-section"><h3>進行と難易度</h3><p>各ラウンドは、序盤の形作り、中盤の攻防、勝敗または引き分けまでを1局で完結します。</p></div>
+      <div class="game-info-section"><h3>開発者メモ</h3><p>標準的な交互手番と三目並べのルールを保ち、相手の応答、ヒント、結果、モバイル操作を分かりやすくしました。</p></div>
       <div class="game-info-section game-info-parent"><h3>保護者向け</h3><p>この一般向けブラウザゲームにアカウント、購入、チャット、ランキング、広告はありません。スコアとラウンド状態はこのブラウザのセッションに保存されます。</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>How does the rival choose O?</dt><dd>It takes an available winning square first, blocks an immediate X win second, then uses centre, corner, and edge priority.</dd></div><div><dt>Can I play an occupied cell again?</dt><dd>No. Occupied cells remain disabled and do not spend a move.</dd></div><div><dt>What counts as a win?</dt><dd>Three X or O marks in one horizontal, vertical, or diagonal line.</dd></div><div><dt>What happens on a full board?</dt><dd>If neither side has a line, the round settles as a draw.</dd></div><div><dt>Does Hint play for me?</dt><dd>No. Hint only highlights one legal empty cell; you still choose the move.</dd></div><div><dt>Is progress saved?</dt><dd>Round state is local to the current browser session; no account is required.</dd></div></dl></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>相手はどうOを選びますか？</dt><dd>相手は自分の勝ち、あなたの勝ちの阻止、中央、角、辺の順で選びます。</dd></div><div><dt>使用済みのマスを押せますか？</dt><dd>いいえ。使用済みのマスは無効で、手数も増えません。</dd></div><div><dt>勝利条件は？</dt><dd>縦・横・斜めに同じ印を3つ並べます。</dd></div><div><dt>盤面が埋まると？</dt><dd>どちらも3つ並んでいなければ引き分けです。</dd></div><div><dt>ヒントが自動で打ちますか？</dt><dd>いいえ。合法な空きマスを示すだけです。</dd></div><div><dt>進行は保存されますか？</dt><dd>ベストスコアは現在のブラウザーに保存され、端末間では同期されません。</dd></div></dl></div>
 
     </div>
   </section>

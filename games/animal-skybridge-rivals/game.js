@@ -14,7 +14,7 @@
   const segmentLocales=Object.fromEntries(Object.entries(localeSegments).map(([k,v])=>[v,k]));
   function initialLocale(){const segment=location.pathname.split("/").filter(Boolean)[0];const routed=segmentLocales[segment];const saved=safeStore.get(LOCALE_STORAGE);return L.codes.includes(routed)?routed:L.codes.includes(saved)?saved:"en"}
   let locale=initialLocale();
-  const GAME_ID="animal-skybridge-rivals",GAME_VERSION=20,INTERFACE_VERSION=6;
+  const GAME_ID="animal-skybridge-rivals",GAME_VERSION=21,INTERFACE_VERSION=6;
   let lastInputType="unknown";
   function viewportBucket(){const viewport=window.visualViewport,width=Math.round(viewport?.width||window.innerWidth||0),height=Math.round(viewport?.height||window.innerHeight||0);if(width>height&&height<=500)return"short-landscape";if(width>=1000)return"desktop";if(width>=600)return"tablet";return"phone"}
   function normalizeInputType(value){return["pointer","touch","keyboard"].includes(value)?value:"unknown"}
