@@ -10838,5 +10838,7 @@ window.WeightPlayGameRuntimeLocales["fr"] = {
   "No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.": "Non. Pour le moment, ce jeu enregistre la progression uniquement dans le stockage local du navigateur ; un autre profil de navigateur ou un autre appareil aura donc une progression locale distincte, sauf si un système de comptes est ajouté plus tard.",
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "Une impulsion réussit uniquement lorsque la couleur et l'emblème s'alignent dans la fenêtre de synchronisation visible.",
   "The nearest marker did not match both required properties inside the window.": "Le marqueur le plus proche ne correspondait pas aux deux propriétés requises dans la fenêtre.",
-  "Nouvelle partie": "Nouvelle partie"
+  "Nouvelle partie": "Nouvelle partie",
+  "Does progress save?": "La progression est-elle sauvegardée ?",
+  "Player and Save Information": "Informations sur le joueur et la sauvegarde"
 };

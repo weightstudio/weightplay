@@ -10836,5 +10836,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Can progress move automatically to another device?": "क्या प्रगति अपने-आप दूसरे डिवाइस पर चली जाती है?",
   "No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.": "नहीं। यह गेम अभी प्रगति को केवल ब्राउज़र के स्थानीय संग्रहण में सहेजता है, इसलिए किसी दूसरे ब्राउज़र प्रोफ़ाइल या डिवाइस पर अलग स्थानीय प्रगति होगी, जब तक भविष्य में खाता प्रणाली नहीं जोड़ी जाती।",
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "पल्स तभी सफल होता है जब दिखाई देने वाली समय विंडो में रंग और प्रतीक मेल खाते हैं।",
-  "The nearest marker did not match both required properties inside the window.": "सबसे निकटतम मार्कर विंडो के भीतर दोनों आवश्यक गुणों से मेल नहीं खाता था।"
+  "The nearest marker did not match both required properties inside the window.": "सबसे निकटतम मार्कर विंडो के भीतर दोनों आवश्यक गुणों से मेल नहीं खाता था।",
+  "Does progress save?": "क्या प्रगति सेव होती है?",
+  "Player and Save Information": "खिलाड़ी और सेव जानकारी"
 };

@@ -10836,5 +10836,7 @@ window.WeightPlayGameRuntimeLocales["de"] = {
   "Can progress move automatically to another device?": "Wird der Fortschritt automatisch auf ein anderes Gerät übertragen?",
   "No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.": "Nein. Dieses Spiel speichert den Fortschritt derzeit nur im lokalen Browserspeicher. Ein anderes Browserprofil oder Gerät hat daher einen eigenen lokalen Fortschritt, solange kein Kontosystem hinzugefügt wird.",
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "Ein Impuls gelingt nur, wenn Farbe und Emblem innerhalb des sichtbaren Zeitfensters ausgerichtet sind.",
-  "The nearest marker did not match both required properties inside the window.": "Die nächste Markierung stimmte innerhalb des Fensters nicht mit beiden erforderlichen Eigenschaften überein."
+  "The nearest marker did not match both required properties inside the window.": "Die nächste Markierung stimmte innerhalb des Fensters nicht mit beiden erforderlichen Eigenschaften überein.",
+  "Does progress save?": "Wird der Fortschritt gespeichert?",
+  "Player and Save Information": "Spieler- und Speicherinformationen"
 };

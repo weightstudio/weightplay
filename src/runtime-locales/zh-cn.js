@@ -10836,5 +10836,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
   "Can progress move automatically to another device?": "进度会自动转移到其他设备吗？",
   "No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.": "不会。本游戏目前只将进度保存在浏览器本地，因此其他浏览器配置文件或设备会拥有各自独立的本地进度，除非未来加入账号系统。",
   "A pulse succeeds only when both the color and emblem align inside the visible timing window.": "只有颜色和徽章在可见时机窗口内对齐，脉冲才会成功。",
-  "The nearest marker did not match both required properties inside the window.": "最近的标记在窗口内没有同时符合两个必要属性。"
+  "The nearest marker did not match both required properties inside the window.": "最近的标记在窗口内没有同时符合两个必要属性。",
+  "Does progress save?": "进度会保存吗？",
+  "Player and Save Information": "玩家与存档信息"
 };

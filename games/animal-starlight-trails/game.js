@@ -2,7 +2,7 @@
   "use strict";
 
   const GAME_ID = "animal-starlight-trails";
-  const GAME_VERSION = "v18";
+  const GAME_VERSION = "v19";
   const SAVE_KEY = "weightplay_animal_starlight_trails_v1";
   const LOCALE_KEY = "weightPlayLocale";
   const GRAPH_NODE_KEYBOARD_SHORTCUTS = "ArrowUp ArrowDown ArrowLeft ArrowRight Home End Enter Space";
@@ -305,13 +305,15 @@
       dom.guide = liveGuide;
       dom.guide.hidden = document.body.dataset.screen !== "main";
     }
-    if (locale !== "zh-Hans" || localizingGuide || !dom.guide) return;
+    if (!["zh-Hans", "ar"].includes(locale) || localizingGuide || !dom.guide) return;
     localizingGuide = true;
     const simplify = window.WonderI18n?.simplifyChineseText;
     dom.guide.querySelectorAll(".game-info-kicker, h2, h3, p, li, dt, dd, span, strong").forEach(node => {
       let value = typeof simplify === "function" ? simplify(node.textContent) : node.textContent;
-      if (node.classList.contains("game-info-kicker")) value = "WeightPlay 一般游戏指南";
-      if (value === "Player and Save Information") value = "玩家与存档说明";
+      if (locale === "zh-Hans" && node.classList.contains("game-info-kicker")) value = "WeightPlay 一般游戏指南";
+      if (locale === "zh-Hans" && value === "Player and Save Information") value = "玩家与存档说明";
+      if (locale === "ar" && value === "Player and Save Information") value = "معلومات اللاعب والحفظ";
+      if (locale === "ar" && value === "Does progress save?") value = "هل يُحفظ التقدم؟";
       if (node.textContent !== value) node.textContent = value;
     });
     localizingGuide = false;
