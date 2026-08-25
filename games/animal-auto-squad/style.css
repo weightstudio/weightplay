@@ -393,6 +393,26 @@ body:not(.squad-stage-select):not(.squad-active) .sound-toggle {
 }
 
 @media (max-height: 470px) and (orientation: landscape) {
+  /* The shared Battle return overlay is 48px wide by default. This game
+     enlarges its native return button for short-landscape readability, so
+     keep the overlay containing block equally wide in RTL; otherwise the
+     oversized block aligns its right edge to the 48px box and clips left. */
+  body.squad-active .wp-generated-battle-header {
+    width: 104px !important;
+    min-width: 104px !important;
+    max-width: 104px !important;
+    height: 104px !important;
+    min-height: 104px !important;
+    max-height: 104px !important;
+  }
+  body.squad-active .wp-generated-battle-header > [data-wp-return="battle"] {
+    width: 104px !important;
+    min-width: 104px !important;
+    max-width: 104px !important;
+    height: 104px !important;
+    min-height: 104px !important;
+    max-height: 104px !important;
+  }
   #gamePanel .modal-panel {
     width: min(820px,calc(100% - 80px));
     max-height: calc(100% - 80px);

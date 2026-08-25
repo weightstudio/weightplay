@@ -175,6 +175,14 @@
   display: none !important;
 }
 
+/* In RTL Main headers the Settings control occupies the physical left edge;
+   open its popover inward so every control stays inside the play envelope. */
+:dir(rtl) .wp-main-shell-header > .wp-shell-settings > .wp-shell-settings-popover {
+  right: auto;
+  left: 0;
+  transform-origin: top left;
+}
+
 .wp-shell-settings-title {
   font: 900 16px/1.2 system-ui, sans-serif;
 }
