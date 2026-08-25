@@ -3178,6 +3178,27 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
   };
   resource.games = normalize(resource.games);
   resource.gameplayProfiles = normalize(resource.gameplayProfiles);
+  const repairCrystalSpanish = (value) => {
+    if (typeof value === "string") {
+      return value
+        .replace(/\bLas niveles\b/g, "Las etapas")
+        .replace(/\blas niveles\b/g, "las etapas")
+        .replace(/\bLa nivel\b/g, "La etapa")
+        .replace(/\bla nivel\b/g, "la etapa")
+        .replace(/\bUna nivel\b/g, "Una etapa")
+        .replace(/\buna nivel\b/g, "una etapa")
+        .replace(/¿Cuántas niveles/g, "¿Cuántas etapas")
+        .replace(/\bUna etapa se borra\b/g, "Una etapa se completa")
+        .replace(/\bCada quinta nivel\b/g, "Cada quinta etapa")
+        .replace(/\bcada quinta nivel\b/g, "cada quinta etapa");
+    }
+    if (Array.isArray(value)) return value.map(repairCrystalSpanish);
+    if (value && typeof value === "object") {
+      return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, repairCrystalSpanish(item)]));
+    }
+    return value;
+  };
+  resource.games["animal-crystal-survivor"] = repairCrystalSpanish(resource.games["animal-crystal-survivor"]);
   const titles = {"wonder-crash":"Fantasía: Defensa del León","color-lunchbox":"Lonchera de Colores Animales","bubble-bakery":"Panadería de Burbujas Animales","animal-rope-rescue":"Rescate Animal con Lianas","animal-zoo-idle":"Zoológico Animal Idle","star-memory":"Memoria Estelar Animal","campus-dash":"Safari a Toda Velocidad","snack-blocks":"Bloques de Aperitivos","fruit-merge":"Torre de Fusión Animal","garden-tiles":"Fichas del Jardín Animal","animal-rescue":"Sendero de Rescate Animal","animal-bubble-safari":"Safari de Burbujas Animales","animal-habitat-mahjong":"Mahjong de Hábitats Animales","animal-hidden-safari":"Safari Oculto de Animales","animal-guard-yard":"Guardianes del Jardín Animal","animal-crystal-survivor":"Superviviente del Cristal Animal","animal-quiz":"Cuestionario de Animales","zoo-helper-day":"Día del Ayudante del Zoológico","shape-train":"Tren de Formas Animales","tiny-weather-rescue":"Misión de Ayuda Animal","beast-deck":"Mazo de Bestias: Bosque de Niebla","animal-relic-hunters":"Cazadores de Reliquias Animales","animal-rune-tactics":"Tácticas de Runas Animales","animal-orb-fortress":"Fortaleza del Orbe Animal","animal-auto-squad":"Escuadrón Animal Automático","beast-tactician":"Guardián de Bestias","animal-reef-fisher":"Pescador del Arrecife Animal","animal-cafe-rush":"Fiebre del Café Animal","animal-hero-trials":"Pruebas de Héroes Animales","animal-gearpack-expedition":"Expedición de la Mochila Animal","shadow-wolf":"Lobo Sombrío","animal-moonlight-heist":"Golpe Animal a la Luz de la Luna","animal-color-springs":"Resortes de Colores Animales","animal-coloring-studio":"Estudio para colorear animales","animal-word-trails":"Senderos de palabras de animales"};
   const difficulties = { "Medio": "Media", "fácil": "Fácil", "Fácil a medio": "Fácil a media", "Fácil de desafiar": "Fácil a desafiante", "De gentil a experto": "De suave a experta", "duro": "Difícil", "Medio a duro": "Media a difícil" };
   resource.games["animal-color-springs"] = {

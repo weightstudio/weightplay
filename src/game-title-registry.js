@@ -614,7 +614,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "zh-Hans": "动物水晶生存战",
     "ja": "どうぶつクリスタルサバイバー",
     "ko": "동물 크리스털 서바이버",
-    "es": "Superviviente de Cristal Animal",
+    "es": "Superviviente del Cristal Animal",
     "pt-BR": "Sobrevivente do Cristal Animal",
     "fr": "Survivant du cristal animal",
     "de": "Tierischer Kristall-Überlebenskampf",

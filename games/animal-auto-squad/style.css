@@ -397,7 +397,7 @@ body:not(.squad-stage-select):not(.squad-active) .sound-toggle {
      enlarges its native return button for short-landscape readability, so
      keep the overlay containing block equally wide in RTL; otherwise the
      oversized block aligns its right edge to the 48px box and clips left. */
-  body.squad-active .wp-generated-battle-header {
+  body[data-wp-game-id="animal-auto-squad"].squad-active .wp-generated-battle-header {
     width: 104px !important;
     min-width: 104px !important;
     max-width: 104px !important;
@@ -405,7 +405,7 @@ body:not(.squad-stage-select):not(.squad-active) .sound-toggle {
     min-height: 104px !important;
     max-height: 104px !important;
   }
-  body.squad-active .wp-generated-battle-header > [data-wp-return="battle"] {
+  body[data-wp-game-id="animal-auto-squad"].squad-active .wp-generated-battle-header > [data-wp-return="battle"] {
     width: 104px !important;
     min-width: 104px !important;
     max-width: 104px !important;
