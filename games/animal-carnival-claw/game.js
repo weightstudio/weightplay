@@ -3,7 +3,7 @@
 const $=id=>document.getElementById(id),$$=selector=>[...document.querySelectorAll(selector)];
 const clamp=(value,min=0,max=1)=>Math.max(min,Math.min(max,value));
 const fmt=(value,data={})=>String(value??"").replace(/\{(\w+)\}/g,(_,key)=>data[key]??"");
-const ANALYTICS_GAME_ID="animal-carnival-claw",ANALYTICS_GAME_VERSION="v33",ANALYTICS_INTERFACE_VERSION="6",ANALYTICS_SCHEMA_VERSION=1;
+const ANALYTICS_GAME_ID="animal-carnival-claw",ANALYTICS_GAME_VERSION="v34",ANALYTICS_INTERFACE_VERSION="6",ANALYTICS_SCHEMA_VERSION=1;
 const viewportBucket=()=>{const width=Math.max(window.innerWidth||0,window.innerHeight||0),short=Math.min(window.innerWidth||0,window.innerHeight||0);return short<480?"phone":width<900?"tablet":"desktop"};
 const boundedMetric=(value,max)=>{const number=Number(value);return Number.isFinite(number)?Math.max(0,Math.min(max,Math.round(number))):0};
 function track(eventName,details={}){try{window.WonderAnalytics?.track?.(eventName,{game_id:ANALYTICS_GAME_ID,game_version:ANALYTICS_GAME_VERSION,interface_version:ANALYTICS_INTERFACE_VERSION,schema_version:ANALYTICS_SCHEMA_VERSION,locale,viewport_bucket:viewportBucket(),...details})}catch{}}
@@ -406,7 +406,8 @@ function finish(won){
   $("resultStagesBtn").disabled=false;$("retryBtn").disabled=false;
   $("resultTitle").textContent=t(won?"winTitle":"failTitle");$("resultMedal").textContent=medalText(medal);
   const resultData={drops:run.drops,count:remainingTargets().length};
-  $("resultText").textContent=won?t("winText",resultData):`${t("failText",resultData)} ${t(run.lastCorrection||"phaseAim",resultData)} ${run.lastSpatialCorrection||""}`.trim();
+  const failureCue=run.lastCorrection==="lockMiss"?t("lockMissResult",resultData):`${t(run.lastCorrection||"phaseAim",resultData)} ${run.lastSpatialCorrection||""}`.trim();
+  $("resultText").textContent=won?t("winText",resultData):`${t("failText",resultData)} ${failureCue}`.trim();
   $("bestText").textContent=won?(newBest?t("newBest"):t("best",{medal:medalText(previous)})):"";
   $("nextBtn").disabled=!won||run.index>=29;$("nextBtn").classList.toggle("primary-action",won&&run.index<29);
   requestAnimationFrame(()=>(won&&run.index<29?$("nextBtn"):$("retryBtn")).focus({preventScroll:true}));

@@ -1021,7 +1021,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "One Line",
     "ru": "Одна линия",
     "hi": "एक पंक्ति",
-    "ar": "One Line"
+    "ar": "خط واحد"
   },
   "animal-abyss-diver": {
     "__localizedExact": true,

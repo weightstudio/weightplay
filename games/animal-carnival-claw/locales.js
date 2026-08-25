@@ -898,5 +898,26 @@ for(const [locale,value] of Object.entries(firstGripHints)){
   else if(locale==="zh-Hans")zhs.firstGripHint=value;
   else compact[locale].firstGripHint=value;
 }
+const lockMissResults={
+  en:"The green timing window was missed. On Replay, wait for the pointer to enter green, then press Lock Grip.",
+  "zh-Hant":"這次錯過綠色時機。按「再玩一次」後，等指針進入綠色區，再按下「夾緊」。",
+  "zh-Hans":"这次错过绿色时机。按“再玩一次”后，等指针进入绿色区，再按下“夹紧”。",
+  ja:"緑のタイミングを逃しました。「再プレイ」で、針が緑に入ってからグリップ固定を押そう。",
+  ko:"초록색 타이밍을 놓쳤어요. 다시 플레이에서 바늘이 초록색에 들어오면 그립 잠금을 누르세요.",
+  es:"Fallaste el momento verde. En Repetir, espera a que el indicador entre en verde y pulsa Fijar agarre.",
+  "pt-BR":"Você perdeu o momento verde. Em Jogar de novo, espere o ponteiro entrar no verde e aperte Travar pegada.",
+  fr:"Le timing vert est manqué. Avec Rejouer, attends que le curseur entre dans le vert puis appuie sur Verrouiller.",
+  de:"Das grüne Timing wurde verfehlt. Wähle Replay, warte auf den grünen Bereich und drücke dann Griff sichern.",
+  it:"Hai mancato il momento verde. Con Rigioca, aspetta che l'indicatore entri nel verde e premi Blocca presa.",
+  ru:"Момент в зелёной зоне упущен. Нажмите «Сыграть снова», дождитесь зелёной зоны и зафиксируйте захват.",
+  hi:"हरा समय चूक गया। फिर खेलें चुनें, सूचक के हरे क्षेत्र में आने पर पकड़ लॉक करें दबाएँ।",
+  ar:"فاتك توقيت المنطقة الخضراء. اختر إعادة اللعب، وانتظر دخول المؤشر المنطقة الخضراء ثم اضغط تثبيت القبضة."
+};
+for(const [locale,value] of Object.entries(lockMissResults)){
+  if(locale==="en")en.lockMissResult=value;
+  else if(locale==="zh-Hant")zht.lockMissResult=value;
+  else if(locale==="zh-Hans")zhs.lockMissResult=value;
+  else compact[locale].lockMissResult=value;
+}
 window.CARNIVAL_CLAW_LOCALES={en,"zh-Hant":zht,"zh-Hans":zhs,...compact};
 })();
