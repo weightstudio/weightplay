@@ -1041,6 +1041,14 @@
     text[code].strategyTips = tips;
   });
 
+  // Hindi owns the first Main response in the same game-local dictionary as
+  // Arabic. The static route is localized before hydration, and the runtime
+  // must preserve that copy instead of falling back to the English Main.
+  text.hi = Object.assign({}, text.en, text.hi || {}, {
+    menuTitle: "रून दस्ते की कमान संभालें।",
+    menuHint: "मिशन चुनें, रूनी ग्रिड पर पशु नायकों को चलाएँ और सही स्थिति बनाकर दुश्मनों को हराएँ।",
+  });
+
   const growthThreatCopy = {
     en: "Next threat preview: {enemy} — {detail} Example: if {hero} has the lowest HP, move {hero} out of range before the first enemy turn.",
     "zh-Hant": "下一個威脅：{enemy}——{detail}。例如，若{hero}目前生命最低，先把他移出射程，再結束回合。",
