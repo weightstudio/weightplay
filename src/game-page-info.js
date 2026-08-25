@@ -7751,6 +7751,10 @@
     const translateValue = (value) => {
       if (typeof value === "string") {
         let translated = catalog[value] || value;
+        if (activeLocale === "ar" && id === "animal-moonlight-heist"
+          && value === "The three gadgets support different approaches. Lightning Dash shortens committed movement time, useful when crossing a patrol line. Star Decoy pauses patrol movement for a level-based duration. Smoke Leaf resets Alert and grants a short cover window. Gadget strengths are rolled from Level 1 to Level 3 before a mission. A confirmed three-Diamond reroll changes those strengths, while confirmed five-Diamond insurance preserves optional treasure through one capture. Neither purchase unlocks a mission or replaces free Retry.") {
+          translated = "تدعم الأدوات الثلاثة أساليب مختلفة. يختصر Lightning Dash مدة الحركة الملتزم بها، وهو مفيد عند عبور خط دورية. يوقف Star Decoy حركة الدوريات لمدة تعتمد على المستوى. يعيد Smoke Leaf ضبط التنبيه ويمنح نافذة تغطية قصيرة. تُحدَّد قوة الأدوات عشوائيًا من المستوى 1 إلى المستوى 3 قبل المهمة. يغيّر تبديل مؤكد بثلاثة ألماسات تلك القوة، بينما تحافظ بوليصة تأمين مؤكدة بخمسة ألماسات على الكنز الاختياري بعد عملية قبض واحدة. لا تفتح أي عملية شراء مهمة، ولا تستبدل إعادة المحاولة المجانية.";
+        }
         if (activeLocale === "ar" && id === "animal-orb-fortress") {
           const reviewedSentences = {
             "Against chargers and Tempest Horn Guardian, read the marked line and wait for recovery. Faster Recharge helps only if the shots are released during a useful window.": "في مواجهة المهاجمين وحارس قرن العاصفة، راقب المسار المحدد وانتظر فترة التعافي بعد الاندفاع. لا تفيد إعادة الشحن الأسرع إلا عند إطلاق الكرات في التوقيت المناسب.",
