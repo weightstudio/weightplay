@@ -1049,6 +1049,39 @@
     menuHint: "मिशन चुनें, रूनी ग्रिड पर पशु नायकों को चलाएँ और सही स्थिति बनाकर दुश्मनों को हराएँ।",
   });
 
+  // These six locales own the first Main response in the game runtime too.
+  // Keeping the two visible strings here prevents hydration from replacing
+  // the localized route shell with the shared English fallback.
+  const mainFirstResponseCopy = {
+    ja: {
+      menuTitle: "ルーン部隊を指揮しよう。",
+      menuHint: "ミッションを選び、ルーングリッドで動物ヒーローを動かし、適切な配置で敵を倒しましょう。",
+    },
+    ko: {
+      menuTitle: "룬 부대를 지휘하세요.",
+      menuHint: "임무를 선택하고 룬 격자에서 동물 영웅을 움직여 알맞은 진형으로 적을 물리치세요.",
+    },
+    fr: {
+      menuTitle: "Dirigez l’escouade runique.",
+      menuHint: "Choisissez une mission, déplacez les héros animaux sur la grille runique et battez les ennemis grâce à un bon placement.",
+    },
+    de: {
+      menuTitle: "Führe das Runenrudel.",
+      menuHint: "Wähle eine Mission, bewege die Tierhelden auf dem Runengitter und besiege Gegner mit kluger Positionierung.",
+    },
+    it: {
+      menuTitle: "Comanda la squadra runica.",
+      menuHint: "Scegli una missione, muovi gli eroi animali sulla griglia runica e sconfiggi i nemici con un buon posizionamento.",
+    },
+    ru: {
+      menuTitle: "Командуйте отрядом рун.",
+      menuHint: "Выберите миссию, перемещайте героев-животных по рунической сетке и побеждайте врагов грамотной расстановкой.",
+    },
+  };
+  Object.entries(mainFirstResponseCopy).forEach(([code, copy]) => {
+    text[code] = Object.assign({}, text[code] || {}, copy);
+  });
+
   const growthThreatCopy = {
     en: "Next threat preview: {enemy} — {detail} Example: if {hero} has the lowest HP, move {hero} out of range before the first enemy turn.",
     "zh-Hant": "下一個威脅：{enemy}——{detail}。例如，若{hero}目前生命最低，先把他移出射程，再結束回合。",
