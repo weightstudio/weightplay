@@ -893,7 +893,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Raduno degli animali",
     "ru": "Ралли «Колесо эскизов животных»",
     "hi": "पशु स्केचव्हील रैली",
-    "ar": "رالي رسم الحيوانات"
+    "ar": "رالي رسم العجلات الحيوانية"
   },
   "animal-sanctuary-loop": {
     "__localizedExact": true,

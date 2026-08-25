@@ -23,14 +23,14 @@
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "رالي رسم الحيوانات",
+  "name": "رالي رسم العجلات الحيوانية",
   "url": "https://weightplay.com/ar/games/animal-sketchwheel-rally/",
   "image": "https://weightplay.com/assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp",
   "genre": [
     "أركيد",
-    "Drawing",
-    "Strategy",
-    "Animal",
+    "رسم",
+    "استراتيجية",
+    "حيوانات",
     "لعبة متصفح"
   ],
   "playMode": "SinglePlayer",
@@ -38,7 +38,7 @@
   "operatingSystem": "Any",
   "inLanguage": "ar",
   "isAccessibleForFree": true,
-  "description": "Draw a wheel profile before each terrain section, watch how its measured shape performs, and adapt the next wheel so the animal racer reaches the finish...",
+  "description": "ارسم شكل عجلة قبل كل جزء من التضاريس، راقب أداء الشكل المقاس، ثم تكيف مع التضاريس التالية لتصل العربة الحيوانية إلى النهاية قبل المنافسة.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -58,7 +58,7 @@
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#082a25">
   <link rel="icon" href="../../assets/weightplay-logo.png">
-  <title>رالي رسم الحيوانات | WeightPlay</title>
+  <title>رالي رسم العجلات الحيوانية | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css">
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css">
   <link rel="stylesheet" href="../../src/loading-screen.css">
@@ -67,16 +67,16 @@
   <script defer src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
-  <meta name="description" content="Draw a wheel profile before each terrain section, watch how its measured shape performs, and adapt the next wheel so the animal racer reaches the finish..." />
+  <meta name="description" content="ارسم شكل عجلة قبل كل جزء من التضاريس، راقب أداء الشكل المقاس، ثم تكيف مع التضاريس التالية لتصل العربة الحيوانية إلى النهاية قبل المنافسة." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="رالي رسم الحيوانات | WeightPlay" />
-    <meta property="og:description" content="Draw a wheel profile before each terrain section, watch how its measured shape performs, and adapt the next wheel so the animal racer reaches the finish..." />
+    <meta property="og:title" content="رالي رسم العجلات الحيوانية | WeightPlay" />
+    <meta property="og:description" content="ارسم شكل عجلة قبل كل جزء من التضاريس، راقب أداء الشكل المقاس، ثم تكيف مع التضاريس التالية لتصل العربة الحيوانية إلى النهاية قبل المنافسة." />
     <meta property="og:url" content="https://weightplay.com/ar/games/animal-sketchwheel-rally/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="رالي رسم الحيوانات | WeightPlay" />
-    <meta name="twitter:description" content="Draw a wheel profile before each terrain section, watch how its measured shape performs, and adapt the next wheel so the animal racer reaches the finish..." />
+    <meta name="twitter:title" content="رالي رسم العجلات الحيوانية | WeightPlay" />
+    <meta name="twitter:description" content="ارسم شكل عجلة قبل كل جزء من التضاريس، راقب أداء الشكل المقاس، ثم تكيف مع التضاريس التالية لتصل العربة الحيوانية إلى النهاية قبل المنافسة." />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp" />
   </head>
 <body data-screen="loading" data-wp-game-id="animal-sketchwheel-rally" data-wp-combined-sound="true">
@@ -84,32 +84,32 @@
 
   <div id="mainGroup" class="main-group" hidden>
     <main class="main-screen">
-      <header class="main-header"><a class="lobby-return" href="/" aria-label="Return to WeightPlay" data-t-aria="lobbyReturn" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt="شعار WeightPlay"></a><strong data-t="title">Animal Sketchwheel Rally</strong><label><span data-t="language">Language</span><select id="localeSelect" aria-label="Language" data-t-aria="language"></select></label></header>
+      <header class="main-header"><a class="lobby-return" href="/" aria-label="Return to WeightPlay" data-t-aria="lobbyReturn" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt="شعار WeightPlay"></a><strong data-t="title">Animal Sketchwheel Rally</strong><label><span data-t="language">اللغة</span><select id="localeSelect" aria-label="Language" data-t-aria="language"></select></label></header>
       <section class="main-hero">
-        <img class="poster" src="../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp" data-t-alt="posterAlt" alt="Gear Horn Rux sketches rune wheels for a forest race cart">
-        <div class="main-copy"><small data-t="kicker">DRAW-TO-DRIVE RALLY</small><h1 data-t="title">رالي رسم الحيوانات</h1><p data-t="pitch">Draw Rux a wheel that matches the next terrain. Redraw during the live race before Fia reaches the finish.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">Start Game</button></div>
+        <img class="poster" src="../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp" data-t-alt="posterAlt" alt="جير هورن روكس يرسم عجلات رونية لعربة رالي في الغابة">
+        <div class="main-copy"><small data-t="kicker">رالي الرسم والقيادة</small><h1 data-t="title">رالي رسم العجلات الحيوانية</h1><p data-t="pitch">ارسم عجلة تناسب التضاريس التالية. أعد الرسم أثناء السباق قبل أن تصل فيا إلى خط النهاية.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">ابدأ اللعبة</button></div>
       </section>
     </main>
-    <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة رالي رسم الحيوانات">
+    <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة رالي رسم العجلات الحيوانية">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>رالي رسم الحيوانات</h2><p>Draw a wheel profile before each terrain section, watch how its measured shape performs, and adapt the next wheel so the animal racer reaches the finish before the rival.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>Draw-and-Test Wheel Racing</strong></div><div class="game-info-fact"><span>النوع</span><strong>أركيد · Drawing · Strategy · Animal</strong></div><div class="game-info-fact"><span>الصعوبة</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>2-8 دقائق لكل مرحلة</strong></div><div class="game-info-fact"><span>المهارات المتدرّبة</span><strong>Shape Design · التكيف · Observation</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>رالي رسم العجلات الحيوانية</h2><p>ارسم شكل عجلة قبل كل جزء من التضاريس، راقب أداء الشكل المقاس، ثم تكيف مع التضاريس التالية لتصل العربة الحيوانية إلى النهاية قبل المنافسة.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>سباق رسم العجلات واختبارها</strong></div><div class="game-info-fact"><span>النوع</span><strong>أركيد · رسم · استراتيجية · حيوانات</strong></div><div class="game-info-fact"><span>الصعوبة</span><strong>سهل ثم يتحدى</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>من دقيقتين إلى 8 دقائق لكل سباق</strong></div><div class="game-info-fact"><span>المهارات المتدرّبة</span><strong>تصميم الشكل · التكيف · الملاحظة</strong></div></div>
     </div>
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>العالم والرسالة</h3><p>Thirty rally courses cross flat road, stairs, mud, tunnels, gaps, ice, and wind. The vehicle moves continuously, but its progress depends on whether the current drawn wheel suits the upcoming terrain.</p>
-<p>Each course uses an authored terrain sequence and obstacle position. The objective is not to draw a pretty circle every time; different sections reward different proportions.</p></div>
-      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>Draw the wheel in the visible pad with a pointer or finger. The game measures roundness, height, width, grip, and speed from that shape, then mounts it on the moving vehicle.</p>
-<p>Flat road rewards a round balanced wheel. Stairs favor height, mud and ice need grip, tunnels require a low wide profile, gaps need width and speed, and wind rewards a narrow stable shape.</p>
-<p>A profile that suits the current terrain keeps momentum. A poor match slows, slips, collides, or fails the obstacle while the rival continues.</p>
-<p>Workshop upgrades provide modest speed, tolerance, or control support. They do not turn one universal wheel into the correct answer for every terrain.</p></div>
-      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>Choose an unlocked rally and read the terrain sequence.</li><li>Draw a closed wheel shape for the first section.</li><li>Watch the wheel rotate and compare the vehicle&#39;s response with the terrain cue.</li><li>Redraw for later sections when the required profile changes, and reach the finish before the rival.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>Use a simple deliberate silhouette because tiny decorative bumps reduce the measured profile.</li><li>For stairs, emphasize vertical height; for a tunnel, lower the top while keeping enough width.</li><li>A wide gap wheel can be poor in wind, so redraw instead of forcing one design through both.</li><li>Observe which measured trait failed and adjust only that trait on the next attempt.</li></ul></div>
-      <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>The first courses isolate flat road and stairs. Later chapters add mud, ice, wind, tunnels, gaps, and mixed courses that require several redraws.</p>
-<p>Thirty authored sequences change terrain order, obstacle spacing, course shape, and rival pace.</p></div>
-      <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>The wheel is visibly attached to the vehicle, rotates with travel, meets the ground line, and faces the direction of motion. Draw coordinates and rendered shape share one scale on phone and desktop. تستخدم الواجهة الكاملة تخطيطًا منطقيًا واحدًا في المنتصف بحد أقصى يبلغ 920 بكسلًا. تعمل عروض الهاتف والوضع الأفقي وسطح المكتب على تغيير حجم عناصر التحكم ومناطق النقر والرسومات وإحداثيات اللعبة نفسها معًا بدلًا من تمديد العناصر منفردة. لذلك تعمل اللمسة والماوس ولوحة المفاتيح على الحالة القانونية نفسها. يبقى ملصق Main وإجراء بدء اللعبة منفصلين عن إدارة Stage، بينما يحافظ اختيار Stage وBattle والنوافذ الحوارية وResult على محتواها المحدود ومسار العودة الخاص بها.</p></div>
-      <div class="game-info-section game-info-parent"><h3>ملاحظة للوالدين</h3><p>No account, purchase, or public leaderboard is required. Clears, bolts, upgrades, lens state, and local best times stay in this browser. يمكنك اللعب من دون إنشاء حساب. يُحفظ التقدم في التخزين المحلي لملف المتصفح الحالي، وليس في حساب عبر الإنترنت أو قاعدة بيانات بين الأجهزة. قد يؤدي مسح بيانات الموقع أو استخدام التصفح الخاص أو تغيير المتصفح أو الانتقال إلى جهاز آخر إلى إنشاء حفظ منفصل أو إزالة الحفظ الحالي. عندما يسمح المتصفح بالتخزين، تتبع تفضيلات اللغة والصوت وتقليل الحركة عناصر تحكم WeightPlay المشتركة. لا تمثل أي نتيجة في الدليل تقييمًا طبيًا أو مدرسيًا أو مهنيًا.</p></div>
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>Should every wheel be a circle?</dt><dd>No. Each terrain rewards a different measured profile.</dd></div><div><dt>Can I redraw during a rally?</dt><dd>Yes, the intended play is to adapt before later terrain sections.</dd></div><div><dt>Why did the vehicle slow on stairs?</dt><dd>The current wheel likely lacked enough height or grip.</dd></div><div><dt>Does the rival use my wheel?</dt><dd>No. The rival provides race pressure while your performance comes from the drawn shape.</dd></div><div><dt>ما طرق التحكم وأحجام الشاشة المدعومة؟</dt><dd>عندما تدعمها اللعبة، تعمل اللمس والماوس ولوحة المفاتيح وفق القواعد نفسها. تتكيف الواجهة كتخطيط منطقي واحد مع أحجام الهاتف والوضع الأفقي وسطح المكتب المطلوبة.</dd></div><div><dt>هل ينتقل التقدم تلقائيًا إلى جهاز آخر؟</dt><dd>لا. تحفظ اللعبة التقدم حاليًا في التخزين المحلي للمتصفح فقط، لذلك سيكون لملف متصفح أو جهاز آخر تقدم محلي منفصل، ما لم تتم إضافة نظام حسابات مستقبلًا.</dd></div></dl></div>
+      <div class="game-info-section"><h3>العالم والرسالة</h3><p>تعبر ثلاثون مسيرة طرقًا مفتوحة ودرجًا ووحلًا وأنفاقًا وفجوات وجليدًا ورياحًا. تتحرك العربة باستمرار، لكن تقدمها يعتمد على ملاءمة العجلة المرسومة للتضاريس القادمة.</p>
+<p>يستخدم كل سباق ترتيبًا مؤلفًا للتضاريس والعوائق. الهدف ليس رسم دائرة جميلة كل مرة، بل اختيار النسب المناسبة لكل جزء.</p></div>
+      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>ارسم العجلة في اللوحة الظاهرة باستخدام المؤشر أو الإصبع. يقيس اللعب الاستدارة والارتفاع والعرض والقبضة والسرعة من الشكل، ثم يثبتها على العربة المتحركة.</p>
+<p>يفضل الطريق المفتوح عجلة مستديرة ومتوازنة، وتحتاج الدرجات إلى الارتفاع، والوحل والجليد إلى القبضة، والأنفاق إلى شكل منخفض وعريض، والفجوات إلى العرض والسرعة، والرياح إلى شكل ضيق ثابت.</p>
+<p>يحافظ الشكل المناسب على السرعة. أما الشكل غير المناسب فيبطئ العربة أو يجعلها تنزلق أو تصطدم أو تفشل أمام العائق بينما تواصل المنافسة التقدم.</p>
+<p>تقدم تحسينات الورشة دعمًا محدودًا للسرعة أو التحمل أو التحكم. لا توجد عجلة واحدة تصلح لكل تضاريس.</p></div>
+      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>اختر سباقًا مفتوحًا واقرأ ترتيب التضاريس.</li><li>ارسم عجلة مغلقة الشكل للجزء الأول.</li><li>راقب دوران العجلة وقارن استجابة العربة بإشارة التضاريس.</li><li>أعد الرسم عندما تتغير الحاجة في الأجزاء التالية، وبلغ النهاية قبل المنافسة.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>استخدم شكلًا بسيطًا ومقصودًا؛ فالنتوءات الزخرفية الصغيرة تقلل دقة الشكل المقاس.</li><li>في الدرج ركز على الارتفاع، وفي النفق اخفض القمة مع الحفاظ على عرض كافٍ.</li><li>قد لا تناسب عجلة الفجوة العريضة الرياح، لذا أعد الرسم بدل فرض شكل واحد على الاثنين.</li><li>لاحظ الخاصية التي فشلت في القياس وعدّل تلك الخاصية وحدها في المحاولة التالية.</li></ul></div>
+      <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>تعزل السباقات الأولى الطريق المفتوح والدرج. وتضيف الفصول اللاحقة الوحل والجليد والرياح والأنفاق والفجوات والخلطات التي تتطلب إعادة الرسم.</p>
+<p>تغير المسيرات الثلاثون ترتيب التضاريس ومسافات العوائق وشكل الطريق وسرعة المنافسة.</p></div>
+      <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>تظهر العجلة متصلة بالعربة وتدور مع الحركة وتلامس خط الأرض وتواجه اتجاه السير. تستخدم إحداثيات الرسم والشكل المعروض مقياسًا واحدًا على الهاتف وسطح المكتب.</p></div>
+      <div class="game-info-section game-info-parent"><h3>ملاحظة للوالدين</h3><p>لا يلزم حساب أو شراء أو قائمة متصدرين عامة. تبقى الانتصارات والمسامير والتحسينات والعدسة وأفضل الأوقات المحلية في هذا المتصفح.</p></div>
+      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل يجب أن تكون كل عجلة دائرية؟</dt><dd>لا. كل تضاريس تكافئ شكلًا مقاسًا مختلفًا.</dd></div><div><dt>هل يمكنني إعادة الرسم أثناء السباق؟</dt><dd>نعم، التكيف قبل أجزاء التضاريس اللاحقة هو طريقة اللعب المقصودة.</dd></div><div><dt>لماذا تباطأت العربة على الدرج؟</dt><dd>ربما لم تحتوِ العجلة الحالية على ارتفاع أو قبضة كافيين.</dd></div><div><dt>هل تستخدم المنافسة عجلتي؟</dt><dd>لا. توفر المنافسة ضغط السباق، بينما يأتي أداؤك من الشكل الذي رسمته.</dd></div></dl></div>
 
     </div>
   </section>
@@ -117,10 +117,10 @@
 
   <section id="stageScreen" class="screen-shell" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp" style="--wp-stage-art:url('../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp')">
-      <header class="stage-header"><button id="stageBack" type="button" data-wp-return="stage" aria-label="Back" data-t-aria="back">←</button><div><strong data-t="chooseRace">Choose a forge rally</strong><span id="stageSummary"></span></div><span class="rux-chip" aria-hidden="true"></span></header>
-      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Race selector" data-t-aria="raceSelector"></div>
-      <nav class="stage-tabs"><button id="raceTab" class="active" type="button" data-t="raceBrief">Race</button><button id="forgeTab" type="button" data-t="forge">Rune Forge</button></nav>
-      <section id="racePanel" class="stage-panel"><div class="selected-brief"><span id="selectedNumber"></span><div><strong id="selectedName"></strong><p id="selectedRule"></p></div><button id="enterRace" class="primary" type="button" data-t="enterRace">Enter race</button></div><p class="stage-hint" data-t="stageHint">Drag the rail. The glowing card is the selected race.</p></section>
+      <header class="stage-header"><button id="stageBack" type="button" data-wp-return="stage" aria-label="رجوع" data-t-aria="back">←</button><div><strong data-t="chooseRace">اختر مسيرة صياغة</strong><span id="stageSummary"></span></div><span class="rux-chip" aria-hidden="true"></span></header>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="اختيار السباق" data-t-aria="raceSelector"></div>
+      <nav class="stage-tabs"><button id="raceTab" class="active" type="button" data-t="raceBrief">سباق</button><button id="forgeTab" type="button" data-t="forge">الحدادة الرونية</button></nav>
+      <section id="racePanel" class="stage-panel"><div class="selected-brief"><span id="selectedNumber"></span><div><strong id="selectedName"></strong><p id="selectedRule"></p></div><button id="enterRace" class="primary" type="button" data-t="enterRace">ادخل السباق</button></div><p class="stage-hint" data-t="stageHint">اسحب المسار. البطاقة المتوهجة هي السباق المحدد.</p></section>
       <section id="forgePanel" class="stage-panel forge-panel" hidden><div class="forge-heading"><div><strong data-t="forgeTitle">Rune Forge</strong><p data-t="forgeIntro">Spend Forge Bolts on tools that immediately help every race.</p></div><b id="boltCount"></b></div><div id="upgradeList" class="upgrade-list"></div><button id="lensBuy" class="lens-buy" type="button"></button><p id="forgeFeedback" role="status"></p></section>
     </div>
     <div class="wp-stage-physical-reserve" aria-hidden="true"></div>
@@ -129,28 +129,28 @@
   <section id="battleScreen" class="screen-shell" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
-        <header class="battle-header"><button id="battleBack" type="button" data-wp-return="battle" aria-label="Back" data-t-aria="back">←</button><div><small id="battleChapter"></small><strong id="battleRace"></strong></div><div class="race-hud"><span><b data-t="you">You</b><strong id="playerProgress">0%</strong></span><span><b data-t="rival">Rival</b><strong id="rivalProgress">0%</strong></span><span><b data-t="time">Time</b><strong id="timeValue">0</strong></span></div><button id="battleHelp" class="help-action" type="button" aria-label="How to play" data-t-aria="helpLabel">?</button></header>
+        <header class="battle-header"><button id="battleBack" type="button" data-wp-return="battle" aria-label="رجوع" data-t-aria="back">←</button><div><small id="battleChapter"></small><strong id="battleRace"></strong></div><div class="race-hud"><span><b data-t="you">أنت</b><strong id="playerProgress">0%</strong></span><span><b data-t="rival">المنافسة</b><strong id="rivalProgress">0%</strong></span><span><b data-t="time">الوقت</b><strong id="timeValue">0</strong></span></div><button id="battleHelp" class="help-action" type="button" aria-label="طريقة اللعب" data-t-aria="helpLabel">?</button></header>
         <div class="objective-row"><strong id="objective"></strong><span id="nextTerrain"></span></div>
         <div id="raceScene" class="race-scene"><canvas id="raceCanvas" aria-label="Live side-view rune cart race" data-t-aria="raceCanvasLabel"></canvas><div id="feedback" class="feedback" role="status" aria-live="polite"></div></div>
-        <section class="draw-controls"><div class="draw-copy"><strong data-t="drawWheel">Draw the wheel</strong><span id="profileStats"></span></div><canvas id="wheelPad" width="240" height="116" aria-label="Wheel drawing pad" data-t-aria="wheelPadLabel"></canvas><div class="blueprints" aria-label="Wheel blueprints" data-t-aria="blueprintLabel"><button type="button" data-preset="circle" data-t-aria="circle"><span class="shape circle"></span><b data-t="circle">Round</b></button><button type="button" data-preset="tall" data-t-aria="tall"><span class="shape tall"></span><b data-t="tall">Tall</b></button><button type="button" data-preset="spike" data-t-aria="spike"><span class="shape spike"></span><b data-t="spike">Grip</b></button><button type="button" data-preset="wide" data-t-aria="wide"><span class="shape wide"></span><b data-t="wide">Wide</b></button></div></section>
+        <section class="draw-controls"><div class="draw-copy"><strong data-t="drawWheel">ارسم العجلة</strong><span id="profileStats"></span></div><canvas id="wheelPad" width="240" height="116" aria-label="Wheel drawing pad" data-t-aria="wheelPadLabel"></canvas><div class="blueprints" aria-label="Wheel blueprints" data-t-aria="blueprintLabel"><button type="button" data-preset="circle" data-t-aria="circle"><span class="shape circle"></span><b data-t="circle">دائرية</b></button><button type="button" data-preset="tall" data-t-aria="tall"><span class="shape tall"></span><b data-t="tall">طويلة</b></button><button type="button" data-preset="spike" data-t-aria="spike"><span class="shape spike"></span><b data-t="spike">قبضة</b></button><button type="button" data-preset="wide" data-t-aria="wide"><span class="shape wide"></span><b data-t="wide">عريضة</b></button></div></section>
       </div>
 
-      <section id="tutorialModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card"><h2 id="tutorialTitle" data-t="tutorialTitle">Sketch, release, adapt</h2><ol><li data-t="tutorial1">Draw inside the pad or choose a blueprint.</li><li data-t="tutorial2">The wheel's actual shape changes speed, height, grip, and width.</li><li data-t="tutorial3">Redraw before each obstacle while the rival keeps moving.</li></ol><button id="tutorialDone" class="primary" type="button" data-t="tutorialDone">Start rally</button></div></section>
-      <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">Leave this rally?</h2><p data-t="leaveText">Continue preserves this exact race. Returning to the map ends the attempt.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">Continue</button><button id="leaveStage" type="button" data-t="returnStage">Race Map</button></div></div></section>
-      <section id="resultModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div id="resultCard" class="result-card"><div class="modal-scroll"><span class="result-rux" aria-hidden="true"></span><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="redraws">Redraws</b><strong id="resultRedraws"></strong></span><span><b data-t="lead">Lead</b><strong id="resultLead"></strong></span><span><b data-t="reward">Reward</b><strong id="resultReward"></strong></span></div></div><div class="modal-actions three"><button id="resultStage" type="button" data-t="returnStage">Race Map</button><button id="nextRaceButton" class="primary" type="button" data-t="nextRace">Next Race</button><button id="retry" type="button" data-t="retry">Retry</button></div></div></section>
-      <section id="helpModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><div class="modal-scroll"><h2 id="helpTitle" data-t="helpTitle">Terrain profile guide</h2><div class="terrain-guide" id="terrainGuide"></div></div><button id="helpClose" class="primary" type="button" data-t="continue">Continue</button></div></section>
+      <section id="tutorialModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card"><h2 id="tutorialTitle" data-t="tutorialTitle">ارسم، اترك، تكيف</h2><ol><li data-t="tutorial1">ارسم داخل اللوحة أو اختر مخططًا.</li><li data-t="tutorial2">يغيّر شكل العجلة السرعة والارتفاع والقبضة والعرض.</li><li data-t="tutorial3">أعد الرسم قبل كل عائق بينما تواصل المنافسة التحرك.</li></ol><button id="tutorialDone" class="primary" type="button" data-t="tutorialDone">ابدأ المسيرة</button></div></section>
+      <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">هل تريد مغادرة هذا السباق؟</h2><p data-t="leaveText">المتابعة تحفظ هذا السباق؛ والعودة إلى الخريطة تنهي المحاولة.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">متابعة</button><button id="leaveStage" type="button" data-t="returnStage">خريطة السباق</button></div></div></section>
+      <section id="resultModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div id="resultCard" class="result-card"><div class="modal-scroll"><span class="result-rux" aria-hidden="true"></span><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-stats"><span><b data-t="redraws">إعادات الرسم</b><strong id="resultRedraws"></strong></span><span><b data-t="lead">التقدم</b><strong id="resultLead"></strong></span><span><b data-t="reward">المكافأة</b><strong id="resultReward"></strong></span></div></div><div class="modal-actions three"><button id="resultStage" type="button" data-t="returnStage">Race Map</button><button id="nextRaceButton" class="primary" type="button" data-t="nextRace">السباق التالي</button><button id="retry" type="button" data-t="retry">إعادة المحاولة</button></div></div></section>
+      <section id="helpModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden><div class="dialog-card"><div class="modal-scroll"><h2 id="helpTitle" data-t="helpTitle">دليل التضاريس والعجلات</h2><div class="terrain-guide" id="terrainGuide"></div></div><button id="helpClose" class="primary" type="button" data-t="continue">Continue</button></div></section>
     </div>
     <div class="ad-reserve" aria-hidden="true"></div>
   </section>
 
-  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/ar.js?v=20260825-moonlight-arabic-guide-v22"></script>
+  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/ar.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/wallet.js"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
   <script src="../../src/battle-canvas-standard.js"></script>
-  <script src="locales.js?v=20260721-hands-on1"></script>
-  <script src="game.js?v=20260817-main-title-v11-4"></script>
+  <script src="locales.js?v=20260825-arabic-hindi-v12"></script>
+  <script src="game.js?v=20260825-arabic-hindi-v12"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>

@@ -1358,7 +1358,22 @@ function renderUpcomingGames() {
     card.className = "upcoming-game-card";
     card.type = "button";
     card.dataset.gameId = game.id;
+    card.dataset.age = (game.ages || []).join(" ");
+    card.dataset.topic = (game.categories || []).join("|");
+    card.dataset.skill = (game.skills || []).join("|");
     card.dataset.status = game.status;
+    card.dataset.search = normalizeSearch([
+      title,
+      game.title?.en,
+      type,
+      ageLabel,
+      description,
+      ...(game.categories || []).map(categoryText),
+      ...(game.skills || []).map(skillText),
+    ].filter(Boolean).join(" "));
+    card.dataset.favorite = isFavorite(game.id) ? "true" : "false";
+    card.dataset.recent = isRecent(game.id) ? "true" : "false";
+    card.dataset.recentIndex = String(recentGameIds.indexOf(game.id));
     card.dataset.internalTrial = internalTrialPath(game) ? "true" : "false";
     card.dataset.reviewPass = reviewPass ? "true" : "false";
     card.addEventListener("click", () => showPlannedGame(game));
@@ -1644,6 +1659,7 @@ function resetDiscoveryFilters() {
 
 function applyFilter({ historyMode = "replace" } = {}) {
   let visibleCount = 0;
+  let upcomingVisibleCount = 0;
   const isFiltered =
     activeFilter !== "all" ||
     activeTopic !== "all" ||
@@ -1651,7 +1667,7 @@ function applyFilter({ historyMode = "replace" } = {}) {
     activeLibrary !== "all" ||
     activeAvailability !== "all" ||
     Boolean(activeSearch);
-  document.querySelectorAll("[data-age]").forEach((card) => {
+  document.querySelectorAll("#gameGrid [data-age], #upcomingGames [data-age]").forEach((card) => {
     const ages = card.dataset.age.split(" ");
     const topics = card.dataset.topic ? card.dataset.topic.split("|") : [];
     const skills = card.dataset.skill ? card.dataset.skill.split("|") : [];
@@ -1676,17 +1692,23 @@ function applyFilter({ historyMode = "replace" } = {}) {
     } else {
       card.style.order = "";
     }
-    if (isVisible) visibleCount += 1;
+    if (isVisible) {
+      visibleCount += 1;
+      if (card.closest("#upcomingGames")) upcomingVisibleCount += 1;
+    }
   });
 
   heroGamesSection.classList.toggle("hidden", isFiltered);
   discoverySnapshot?.classList.toggle("hidden", isFiltered);
   continuePlayingSection?.classList.toggle("filtered-out", isFiltered);
   mobilePicksSection?.classList.toggle("hidden", isFiltered);
-  upcomingGamesSection?.classList.toggle(
-    "hidden",
-    !ownerPreviewMode || upcomingPreviewGames().length === 0 || isFiltered,
-  );
+  const hideUpcoming = !ownerPreviewMode
+    || upcomingPreviewGames().length === 0
+    || (isFiltered && upcomingVisibleCount === 0);
+  if (upcomingGamesSection) {
+    upcomingGamesSection.hidden = hideUpcoming;
+    upcomingGamesSection.classList.toggle("hidden", hideUpcoming);
+  }
   characterShowcaseSection?.classList.toggle("hidden", isFiltered);
   recommendationsSection?.classList.toggle("hidden", isFiltered);
   freshUpdatesSection?.classList.toggle("hidden", isFiltered);
