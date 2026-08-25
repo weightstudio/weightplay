@@ -1170,10 +1170,16 @@
     game = GAME_BUILDERS[id]?.(controller) || makeFallback(controller, id);
     game.reset();
     render();
-    const battleRenderTimer = window.setInterval(() => {
+    // War resolves every player action synchronously. Re-rendering its action
+    // row on a timer replaces the visible Flip button while a click is being
+    // dispatched, so keep the polling loop only for games with delayed AI or
+    // other asynchronous state transitions.
+    const battleRenderTimer = id === "war" ? null : window.setInterval(() => {
       if (!battle.hidden) render();
     }, 180);
-    window.addEventListener("beforeunload", () => window.clearInterval(battleRenderTimer), { once: true });
+    window.addEventListener("beforeunload", () => {
+      if (battleRenderTimer !== null) window.clearInterval(battleRenderTimer);
+    }, { once: true });
     let mainControlAttempts = 0;
     const mainControlTimer = window.setInterval(() => { ensureMainControls(); mainControlAttempts += 1; if (document.querySelector("[data-card-main-controls]") || mainControlAttempts > 40) window.clearInterval(mainControlTimer); }, 50);
   }

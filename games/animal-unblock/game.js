@@ -4,7 +4,7 @@
   const $ = (id) => document.getElementById(id);
   const levels = UNBLOCK_LEVELS.levels;
   const dict = UNBLOCK_LOCALES;
-  const GAME_VERSION = "v14";
+  const GAME_VERSION = "v15";
   document.body.dataset.gameVersion = GAME_VERSION;
   const codes = Object.keys(dict);
   const localeRoutes = {

@@ -148,6 +148,68 @@
   );
   locales["zh-Hant"] = { ...en, ...zhHant };
   locales.ar = { ...en, ...ar };
+  const firstResponseLocalization = {
+    "zh-Hant": {
+      summary: "滑動每個方塊，帶領紅色探險家穿過出口。",
+      progress: "已通關 {done}/30",
+    },
+    "zh-Hans": {
+      summary: "滑动每个方块，带领红色探险家穿过出口。",
+      progress: "已通关 {done}/30",
+    },
+    ja: {
+      summary:
+        "横向きと縦向きのブロックをそれぞれの軸に沿って動かし、赤い探検家が出口へ進める道を作りましょう。",
+      progress: "{done}/30 クリア",
+    },
+    ar: {
+      summary: "حرّك كل كتلة وساعد المستكشف الأحمر على الخروج عبر البوابة.",
+      progress: "تم اجتياز {done}/30",
+    },
+    es: {
+      summary:
+        "Desliza los bloques horizontales y verticales a lo largo de sus propios ejes hasta que el explorador rojo tenga un camino despejado hasta la salida.",
+      progress: "{done}/30 completados",
+    },
+    de: {
+      summary:
+        "Schiebe waagerechte und senkrechte Blöcke entlang ihrer eigenen Achse, bis der rote Entdecker einen freien Weg zum Ausgang hat.",
+      progress: "{done}/30 geschafft",
+    },
+    fr: {
+      summary:
+        "Faites glisser les blocs horizontaux et verticaux le long de leur axe jusqu’à ce que l’explorateur rouge ait un passage libre vers la sortie.",
+      progress: "{done}/30 terminés",
+    },
+    hi: {
+      summary:
+        "क्षैतिज और ऊर्ध्वाधर ब्लॉकों को उनकी अपनी दिशा में खिसकाएँ, जब तक लाल खोजकर्ता को निकास तक साफ़ रास्ता न मिल जाए।",
+      progress: "{done}/30 पूरे",
+    },
+    it: {
+      summary:
+        "Sposta i blocchi orizzontali e verticali lungo il loro asse finché l'esploratore rosso non avrà una via libera verso l'uscita.",
+      progress: "{done}/30 completati",
+    },
+    ko: {
+      summary:
+        "가로 및 세로 블록을 각자의 축을 따라 밀어 빨간 탐험가가 출구로 나갈 길을 만드세요.",
+      progress: "{done}/30 클리어",
+    },
+    "pt-BR": {
+      summary:
+        "Deslize os blocos horizontais e verticais ao longo de seus próprios eixos até que o explorador vermelho tenha um caminho livre para a saída.",
+      progress: "{done}/30 concluídas",
+    },
+    ru: {
+      summary:
+        "Передвигайте горизонтальные и вертикальные блоки вдоль их осей, пока красный исследователь не получит свободный путь к выходу.",
+      progress: "Пройдено: {done}/30",
+    },
+  };
+  Object.entries(firstResponseLocalization).forEach(([code, copy]) => {
+    Object.assign(locales[code], copy);
+  });
   const hintLocalization = {
     "zh-Hant": ["已標示方塊：請向{direction}移動。", "左", "右", "上", "下"],
     "zh-Hans": ["已高亮方块：请向{direction}移动。", "左", "右", "上", "下"],
