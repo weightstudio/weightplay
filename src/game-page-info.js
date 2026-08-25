@@ -7799,7 +7799,8 @@
     if (!catalog || activeLocale === "en" || (activeLocale === "es" && localizedGames[activeLocale]?.[id])
       || (activeLocale === "pt-BR" && id === "animal-rune-tactics")
       || (activeLocale === "ru" && id === "animal-one-line")
-      || (["zh-Hant", "zh-Hans"].includes(activeLocale) && id === "block-blast")) return merged;
+      || (["zh-Hant", "zh-Hans"].includes(activeLocale) && id === "block-blast")
+      || (id === "animal-unblock" && activeLocale !== "en" && Boolean(override.intro))) return merged;
     const translateValue = (value) => {
       if (typeof value === "string") {
         let translated = catalog[value] || value;
