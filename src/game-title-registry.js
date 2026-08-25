@@ -1213,7 +1213,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Animal Reef Fisher",
     "ru": "Animal Reef Fisher",
     "hi": "Animal Reef Fisher",
-    "ar": "Animal Reef Fisher"
+    "ar": "صياد الشعاب الحيوانية"
   },
   "checkers": {
     "__localizedExact": true,
