@@ -111,7 +111,18 @@
     newBest:"أفضل وقت جديد!",
     starSummary:"{n} من 3 نجوم"
   };
-  Object.assign(en,{rotateCue:"Rotation registered — line up the glowing gap."});
+  Object.assign(en,{guideFaqTitle:"Frequently Asked Questions",guideRelatedTitle:"Related Games",guideAllGames:"All Games",guideRelatedGame:"Animal Block Grove",rotateCue:"Rotation registered — line up the glowing gap."});
+  Object.assign(zhHant,{guideFaqTitle:"常見問題",guideRelatedTitle:"相關遊戲",guideAllGames:"所有遊戲",guideRelatedGame:"動物方塊森林"});
+  Object.assign(zhHans,{guideFaqTitle:"常见问题",guideRelatedTitle:"相关游戏",guideAllGames:"所有游戏",guideRelatedGame:"动物方块森林"});
+  Object.assign(ja,{guideFaqTitle:"よくある質問",guideRelatedTitle:"関連ゲーム",guideAllGames:"すべてのゲーム",guideRelatedGame:"Animal Block Grove"});
+  Object.assign(ko,{guideFaqTitle:"자주 묻는 질문",guideRelatedTitle:"관련 게임",guideAllGames:"모든 게임",guideRelatedGame:"Animal Block Grove"});
+  Object.assign(es,{guideFaqTitle:"Preguntas frecuentes",guideRelatedTitle:"Juegos relacionados",guideAllGames:"Todos los juegos",guideRelatedGame:"Bosque de Bloques Animales"});
+  Object.assign(pt,{guideFaqTitle:"Perguntas frequentes",guideRelatedTitle:"Jogos relacionados",guideAllGames:"Todos os jogos",guideRelatedGame:"Animal Block Grove"});
+  Object.assign(fr,{guideFaqTitle:"Questions fréquentes",guideRelatedTitle:"Jeux associés",guideAllGames:"Tous les jeux",guideRelatedGame:"Animal Block Grove"});
+  Object.assign(de,{guideFaqTitle:"Häufige Fragen",guideRelatedTitle:"Ähnliche Spiele",guideAllGames:"Alle Spiele",guideRelatedGame:"Animal Block Grove"});
+  Object.assign(it,{guideFaqTitle:"Domande frequenti",guideRelatedTitle:"Giochi correlati",guideAllGames:"Tutti i giochi",guideRelatedGame:"Animal Block Grove"});
+  Object.assign(ru,{guideFaqTitle:"Частые вопросы",guideRelatedTitle:"Похожие игры",guideAllGames:"Все игры",guideRelatedGame:"Animal Block Grove"});
+  Object.assign(ar,{guideFaqTitle:"الأسئلة الشائعة",guideRelatedTitle:"ألعاب ذات صلة",guideAllGames:"كل الألعاب",guideRelatedGame:"بستان الحيوانات المتراصة"});
   Object.assign(zhHant,{rotateCue:"已回應旋轉——把發光缺口對準。"});
   Object.assign(zhHans,{rotateCue:"已响应旋转——把发光缺口对准。"});
   Object.assign(ja,{rotateCue:"回転を確認しました。光る隙間を合わせましょう。"});

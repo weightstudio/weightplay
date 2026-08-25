@@ -6,7 +6,7 @@
   const localeLabels={en:"English","zh-Hant":"繁體中文","zh-Hans":"简体中文",ja:"日本語",ko:"한국어",es:"Español","pt-BR":"Português",fr:"Français",de:"Deutsch",it:"Italiano",ru:"Русский",hi:"हिन्दी",ar:"العربية"};
   const routeLocales={en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const localeRoutes=Object.fromEntries(Object.entries(routeLocales).map(([route,locale])=>[locale,route]));
-  const localeOverrides={hi:{rotateCue:"घुमाव दर्ज हुआ - चमकती जगह को मिलाएँ।",nextRule:"अगला टावर {n}: {name} · नया नियम: {rule}",landingScan:"अगला उतराव",scanGap:"खुला रास्ता",scanSafe:"सुरक्षित पत्थर",scanDanger:"शापित क्षेत्र",scanFragile:"नाज़ुक काँच",scanGapAction:"आगे बढ़ें",scanSafeAction:"उछलें · रीसेट",scanDangerAction:"बचें",scanFragileAction:"दरार, फिर टूटे"}};
+  const localeOverrides={hi:{guideFaqTitle:"अक्सर पूछे जाने वाले प्रश्न",guideRelatedTitle:"संबंधित गेम",guideAllGames:"सभी गेम",guideRelatedGame:"Animal Block Grove",rotateCue:"घुमाव दर्ज हुआ - चमकती जगह को मिलाएँ।",nextRule:"अगला टावर {n}: {name} · नया नियम: {rule}",landingScan:"अगला उतराव",scanGap:"खुला रास्ता",scanSafe:"सुरक्षित पत्थर",scanDanger:"शापित क्षेत्र",scanFragile:"नाज़ुक काँच",scanGapAction:"आगे बढ़ें",scanSafeAction:"उछलें · रीसेट",scanDangerAction:"बचें",scanFragileAction:"दरार, फिर टूटे"}};
   const storageKey="weightplay:animal-skyspire-drop:v1",sessionStore=new Map();
   const $=id=>document.getElementById(id);
   const landingScan=document.createElement("div");landingScan.id="landingScan";landingScan.className="landing-scan";landingScan.setAttribute("aria-live","off");landingScan.innerHTML='<span id="landingScanLabel"></span><strong id="landingScanValue"></strong><em id="landingScanRule"></em>';$('arenaWrap').append(landingScan);
@@ -23,7 +23,7 @@
   }
   const defaultSave={unlocked:1,stars:{},best:{},shards:0,upgrades:{grip:0,aegis:0,spark:0},tutorial:false,aura:false};
   let lang=detectLocale(),save=loadSave(),stageIndex=Math.max(0,Math.min(29,save.unlocked-1)),run=null,raf=0,lastFrame=0,screen="main",sceneGeneration=0,activeTab="towers",resizeObserver=null,lifecycleSuspended=document.hidden,windowFocused=document.hasFocus(),modalOpener=null,resultActionClaimed=false,forgeDecisionReadyAt={};
-  const GAME_VERSION="v13";
+  const GAME_VERSION="v15";
   const STAGE_CARD_POOL_SIZE=9;
   let stageCardPool=[],stageWindowStart=0,stageBrowseLogical=stageIndex,stageSettleFrame=0;
   const images={};
@@ -70,13 +70,13 @@
     const route=localeRoutes[lang]||"en";
     const allGames=guide.querySelector("[data-wp-guide-all-games]");
     const relatedGame=guide.querySelector("[data-wp-guide-related-game]");
-    guide.querySelector("[data-wp-guide-faq-title]").textContent=commonText("Frequently Asked Questions");
-    guide.querySelector("[data-wp-guide-related-title]").textContent=commonText("Related Games");
+    guide.querySelector("[data-wp-guide-faq-title]").textContent=t("guideFaqTitle");
+    guide.querySelector("[data-wp-guide-related-title]").textContent=t("guideRelatedTitle");
     allGames.href=`/${route}/`;
-    allGames.textContent=commonText("All Games");
+    allGames.textContent=t("guideAllGames");
     relatedGame.href=`/${route}/games/animal-block-grove/`;
-    relatedGame.textContent=commonText("Animal Block Grove");
-    guide.querySelector(".guide-related-links").setAttribute("aria-label",commonText("Related Games"));
+    relatedGame.textContent=t("guideRelatedGame");
+    guide.querySelector(".guide-related-links").setAttribute("aria-label",t("guideRelatedTitle"));
   }
   function applyLocale(){
     document.documentElement.lang=lang;
