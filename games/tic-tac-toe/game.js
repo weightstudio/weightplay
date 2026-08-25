@@ -3,7 +3,7 @@ window.WPPopularArcade?.mount("tic-tac-toe");
 (() => {
   "use strict";
 
-  document.body.dataset.gameVersion = "v11";
+  document.body.dataset.gameVersion = "v13";
 
   const labels = {
     en: { lobby: "Back to WeightPlay", battle: "Back to main" },
@@ -53,7 +53,7 @@ window.WPPopularArcade?.mount("tic-tac-toe");
   document.querySelector("#localeSelect")?.addEventListener("change", applyLabels);
 
   const style = document.createElement("style");
-  style.dataset.ticTacToeV10 = "true";
+  style.dataset.ticTacToeV13 = "true";
   style.textContent = `
     .tic-main-return,
     .tic-battle-return {

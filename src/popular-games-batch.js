@@ -121,6 +121,7 @@
     ar: { choice: "اختر إحدى الوجهتين القطريتين القانونيتين.", alternate: "مسار قطري بديل", primary: "المسار القطري الأساسي", variation: "مسار إعادة اللعب: ستظهر وجهة قطرية مختلفة في هذه الجولة." },
   };
   const CHECKERS_GAME_VERSION = "v9";
+  const TIC_TAC_TOE_GAME_VERSION = "v13";
   const WORDLE_LENGTH_ERROR = { en: "Enter 5 letters.", "zh-Hant": "請輸入 5 個字母。", "zh-Hans": "请输入 5 个字母。", ja: "5文字入力してください。", ko: "글자 5개를 입력하세요.", es: "Introduce 5 letras.", "pt-BR": "Digite 5 letras.", fr: "Saisissez 5 lettres.", de: "Gib 5 Buchstaben ein.", it: "Inserisci 5 lettere.", ru: "Введите 5 букв.", hi: "5 अक्षर दर्ज करें।", ar: "أدخل 5 أحرف." };
   const WORDLE_CELL_COPY = {
     en: { board: "Guess board", hit: "Correct position", near: "Present elsewhere", miss: "Not in word", format: (row, column, letter, state) => `Row ${row}, position ${column}: ${letter ? `letter ${letter}, ${state}` : "empty"}` },
@@ -751,7 +752,7 @@
     document.body.dataset.gameId = gameId;
     if (game.type === "tetris") document.body.dataset.gameVersion = TETRIS_GAME_VERSION;
     if (game.type === "breakout") document.body.dataset.gameVersion = BREAKOUT_GAME_VERSION;
-    if (game.type === "tic") document.body.dataset.gameVersion = "v9";
+    if (game.type === "tic") document.body.dataset.gameVersion = TIC_TAC_TOE_GAME_VERSION;
     if (game.type === "hangman") document.body.dataset.gameVersion = "v7";
     if (game.type === "mahjong") document.body.dataset.gameVersion = "v9";
     if (game.type === "checkers") document.body.dataset.gameVersion = CHECKERS_GAME_VERSION;
@@ -841,12 +842,13 @@
     els.locale.value = locale;
     const persistLocale = () => {
       locale = els.locale.value;
-      window.WonderI18n?.setLocale?.(locale, { navigate: false, dispatch: game.type === "snake" });
-      if (game.type === "snake") {
-        document.documentElement.lang = locale;
-        document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
-        window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
-      }
+      window.WonderI18n?.setLocale?.(locale, { navigate: false, dispatch: false });
+      // Popular-game routes own their in-place locale switch. Keep the
+      // document language/direction and the Guide runtime on the same event so
+      // static localized first paint and dynamic selector changes cannot drift.
+      document.documentElement.lang = locale;
+      document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+      window.dispatchEvent(new CustomEvent("wonder:locale-change", { detail: { locale } }));
       try { localStorage.setItem("weightPlayLocale", locale); } catch {}
       if (game.type === "snake") {
         if (state.messageKey === "hintObjective") state.message = `${copy(locale, "hint")}: ${copy(locale, game.objective)}`;
