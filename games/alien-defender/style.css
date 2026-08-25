@@ -108,3 +108,7 @@ body.wp-stage-select-active .stage-screen .stage-shell{height:100%!important}
 /* Each touch owns one control so moving and firing can stay active together. */
 .touch-controls button{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 .touch-controls button.is-held{transform:translateY(1px) scale(.96);border-color:var(--gold);box-shadow:0 0 0 2px #ffd47c33}
+
+/* v51 HUD readability repair: reserve a wider narrow-screen track for the
+   full Firepower label instead of clipping it with the five equal tracks. */
+@media(max-width:480px){.battle-hud>.hud-stats{grid-template-columns:repeat(3,minmax(0,1fr)) minmax(58px,1.2fr) minmax(0,1fr)!important}}
