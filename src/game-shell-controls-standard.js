@@ -411,6 +411,17 @@
       window.WonderSound?.setMuted?.(!Boolean(window.WonderSound?.isMuted?.()));
       syncCombinedSound();
     });
+    combinedSoundToggle.addEventListener("keydown", (event) => {
+      if (event.key !== " " && event.key !== "Enter") return;
+      // Some game-owned document key handlers consume Space before the
+      // browser synthesizes a button click. Keep the shared switch keyboard
+      // equivalent to its pointer activation and prevent a second native
+      // click from toggling it twice.
+      event.preventDefault();
+      event.stopPropagation();
+      window.WonderSound?.setMuted?.(!Boolean(window.WonderSound?.isMuted?.()));
+      syncCombinedSound();
+    });
     window.addEventListener("wonder:audio-volume-change", syncCombinedSound);
 
     button.addEventListener("click", () => setOpen(popover.hidden));
