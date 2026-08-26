@@ -62,7 +62,7 @@
     main: document.getElementById("mainScreen"), battle: document.getElementById("battleScreen"), result: document.getElementById("resultScreen"),
     eyebrow: document.getElementById("eyebrow"), title: document.getElementById("gameTitle"), tagline: document.getElementById("gameTagline"), objective: document.getElementById("objective"), guide: document.getElementById("guideCopy"),
     language: document.getElementById("languageLabel"), locale: document.getElementById("localeSelect"), start: document.getElementById("startBtn"), cover: document.getElementById("coverArt"), footer: document.getElementById("footerText"),
-    round: document.getElementById("roundLabel"), back: document.getElementById("backBtn"), sound: document.getElementById("soundBtn"), restart: document.getElementById("restartBtn"), scoreLabel: document.getElementById("scoreLabel"), score: document.getElementById("scoreValue"), bestLabel: document.getElementById("bestLabel"), best: document.getElementById("bestValue"), levelLabel: document.getElementById("levelLabel"), level: document.getElementById("levelValue"), powerLabel: document.getElementById("powerLabel"), power: document.getElementById("powerValue"), livesHud: document.getElementById("livesHud"), livesLabel: document.getElementById("livesLabel"), lives: document.getElementById("livesValue"),
+    round: document.getElementById("roundLabel"), back: document.getElementById("backBtn"), sound: document.getElementById("soundBtn"), restart: document.getElementById("restartBtn"), scoreLabel: document.getElementById("scoreLabel"), score: document.getElementById("scoreValue"), bestLabel: document.getElementById("bestLabel"), best: document.getElementById("bestValue"), levelLabel: document.getElementById("levelLabel"), level: document.getElementById("levelValue"), powerLabel: document.getElementById("powerLabel"), power: document.getElementById("powerValue"), livesHud: document.getElementById("livesHud"), livesLabel: document.getElementById("livesLabel"), lives: document.getElementById("livesValue"), progressLabel: document.getElementById("progressLabel"), progress: document.getElementById("progressValue"),
     confirm: document.getElementById("backConfirm"), confirmCopy: document.getElementById("backConfirmCopy"), stay: document.getElementById("backStayBtn"), leave: document.getElementById("backLeaveBtn"), canvas: document.getElementById("gameCanvas"), message: document.getElementById("gameMessage"), controls: document.getElementById("touchControls"), controlHint: document.getElementById("controlHint"), resultTitle: document.getElementById("resultTitle"), resultCopy: document.getElementById("resultCopy"), stats: document.getElementById("resultStats"), retry: document.getElementById("retryBtn"), home: document.getElementById("homeBtn")
   };
   const ctx = ui.canvas.getContext("2d");
@@ -116,8 +116,9 @@
     return text;
   };
   const GRACE_COPY = { en: "Recovery window", "zh-Hant": "保護時間", "zh-Hans": "保护时间", ja: "回復猶予", ko: "회복 보호 시간", es: "Ventana de recuperación", "pt-BR": "Janela de recuperação", fr: "Fenêtre de récupération", de: "Schutzzeit", it: "Finestra di recupero", ru: "Окно восстановления", hi: "सुरक्षा समय", ar: "نافذة التعافي" };
+  const PROGRESS_COPY = { en: "To clear", "zh-Hant": "清關進度", "zh-Hans": "清关进度", ja: "クリア進捗", ko: "클리어 진행", es: "Progreso", "pt-BR": "Progresso", fr: "Progression", de: "Fortschritt", it: "Progresso", ru: "Прогресс", hi: "क्लियर प्रगति", ar: "تقدم التطهير" };
   const tr = (key) => (gameId === "space" && locale === "zh-Hant" && SPACE_UI_ZH_HANT[key])
-    || (key === "grace" ? (GRACE_COPY[locale] || GRACE_COPY.en) : (EXTRA_UI[key] && (EXTRA_UI[key][locale] || EXTRA_UI[key].en)) || (UI[locale] && UI[locale][key]) || UI.en[key]);
+    || (key === "grace" ? (GRACE_COPY[locale] || GRACE_COPY.en) : key === "progress" ? (PROGRESS_COPY[locale] || PROGRESS_COPY.en) : (EXTRA_UI[key] && (EXTRA_UI[key][locale] || EXTRA_UI[key].en)) || (UI[locale] && UI[locale][key]) || UI.en[key]);
   const resultText = (key) => gameId === "space" ? (SPACE_RESULT[key]?.[locale] || SPACE_RESULT[key]?.en || "") : tr(key);
   const gt = (key) => (gameId === "space" && locale === "zh-Hant" && SPACE_GAME_TEXT_ZH_HANT[key])
     || (GAME_TEXT[gameId][key] && (GAME_TEXT[gameId][key][locale] || GAME_TEXT[gameId][key].en)) || "";
@@ -192,6 +193,7 @@
     ui.best.textContent = String(state.best);
     ui.level.textContent = String(state.level);
     if (ui.lives) ui.lives.textContent = String(state.maze?.lives ?? 5);
+    if (ui.progressLabel && ui.progress) { const total = state.maze?.pelletTotal || 0; const cleared = total ? total - state.maze.pellets.size : 0; ui.progressLabel.textContent = tr("progress"); ui.progress.textContent = gameId === "maze" && total ? `${cleared}/${total}` : "—"; }
     if (gameId === "maze") ui.power.textContent = state.maze && state.maze.power > 0 ? `${Math.ceil(state.maze.power / 1000)}s` : tr("powerEmpty");
     else ui.power.textContent = state.space ? `${tr("shield")} ${Math.max(0, 5 - state.space.hits)} · ${state.space.rapid > 0 ? tr("rapid") : "—"}` : "—";
     ui.round.textContent = gameId === "maze" ? `${tr("stage")} ${state.level}` : `${tr("wave")} ${state.level}`;
@@ -239,7 +241,7 @@
       [[13, 13], [7, 5], [1, 13], [13, 1]],
     ];
     const homes = homeSets[(state.level - 1) % homeSets.length];
-    state.maze = { player: { x: 1, y: 1, dir: "down", next: "down", grace: 6000 }, pellets, beacons, power: 0, moveClock: 0, enemyClock: -4500, combo: 0, lives: 5, enemies: [
+    state.maze = { player: { x: 1, y: 1, dir: "down", next: "down", grace: 6000 }, pellets, pelletTotal: pellets.size, beacons, power: 0, moveClock: 0, enemyClock: -4500, combo: 0, lives: 5, enemies: [
       { x: homes[0][0], y: homes[0][1], homeX: homes[0][0], homeY: homes[0][1], type: "direct", color: "#ff7d9f" }, { x: homes[1][0], y: homes[1][1], homeX: homes[1][0], homeY: homes[1][1], type: "predict", color: "#68e1ff" }, { x: homes[2][0], y: homes[2][1], homeX: homes[2][0], homeY: homes[2][1], type: "ambush", color: "#c48cff" }, { x: homes[3][0], y: homes[3][1], homeX: homes[3][0], homeY: homes[3][1], type: "wander", color: "#ffd66d" }
     ] };
     state.input = {};
