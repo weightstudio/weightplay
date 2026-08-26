@@ -4308,6 +4308,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Heart Mastery needs {remaining} more Trial Marks.": "하트 마스터리에는 시험 마크가 {remaining} 더 필요합니다.",
   "Heart rune": "하트 룬",
   "Hearts | WeightPlay": "하트 | WeightPlay",
+  "Hearts game artwork": "Hearts 게임 이미지",
   "Hearts Guide": "하트 가이드",
   "Heat, corrosion, and armor demand healing plus burst damage.": "열, 부식, 방어구에는 치유와 폭발적인 피해가 필요합니다.",
   "Heavy armor": "중갑옷",

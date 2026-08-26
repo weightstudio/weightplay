@@ -4308,6 +4308,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Heart Mastery needs {remaining} more Trial Marks.": "हार्ट मास्टरी को {remaining} अधिक ट्रायल मार्क्स की आवश्यकता है।",
   "Heart rune": "हृदय रूण",
   "Hearts | WeightPlay": "दिल | WeightPlay",
+  "Hearts game artwork": "Hearts गेम की कलाकृति",
   "Hearts Guide": "हृदय मार्गदर्शक",
   "Heat, corrosion, and armor demand healing plus burst damage.": "गर्मी, क्षरण और कवच उपचार के साथ-साथ फटने से होने वाली क्षति की भी मांग करते हैं।",
   "Heavy armor": "भारी कवच",

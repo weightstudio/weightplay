@@ -4308,6 +4308,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Heart Mastery needs {remaining} more Trial Marks.": "يحتاج إتقان القلب إلى {remaining} علامات تجريبية إضافية.",
   "Heart rune": "رون القلب",
   "Hearts | WeightPlay": "قلوب | WeightPlay",
+  "Hearts game artwork": "شعار WeightPlay",
   "Hearts Guide": "دليل القلوب",
   "Heat, corrosion, and armor demand healing plus burst damage.": "تتطلب الحرارة والتآكل والدروع الشفاء بالإضافة إلى الضرر الناتج عن الانفجار.",
   "Heavy armor": "درع ثقيل",

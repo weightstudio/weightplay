@@ -4308,6 +4308,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "Heart Mastery needs {remaining} more Trial Marks.": "心靈掌握需要{remaining}更多試煉標記。",
   "Heart rune": "心符",
   "Hearts | WeightPlay": "心 | WeightPlay",
+  "Hearts game artwork": "《Hearts》遊戲圖片",
   "Hearts Guide": "紅心指南",
   "Heat, corrosion, and armor demand healing plus burst damage.": "熱、腐蝕和裝甲需要治療和爆發傷害。",
   "Heavy armor": "重甲",

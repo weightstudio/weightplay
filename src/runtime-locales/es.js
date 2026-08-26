@@ -4306,6 +4306,7 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Heart Mastery needs {remaining} more Trial Marks.": "Heart Mastery necesita {remaining} más marcas de prueba.",
   "Heart rune": "runa del corazon",
   "Hearts | WeightPlay": "Corazones | ⟦MARCA WP⟧",
+  "Hearts game artwork": "Imagen del juego Hearts",
   "Hearts Guide": "Guía de corazones",
   "Heat, corrosion, and armor demand healing plus burst damage.": "El calor, la corrosión y la armadura exigen curación y daño explosivo.",
   "Heavy armor": "armadura pesada",
