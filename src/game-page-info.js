@@ -13091,6 +13091,22 @@
       faq,
     };
   }
+  const animalRuneTacticsTitleTranslations = {
+    ja: "どうぶつルーン戦術",
+    ko: "동물 룬 전술",
+    fr: "Tactiques runiques animales",
+    de: "Tierische Runentaktik",
+    it: "Tattiche delle rune animali",
+    ru: "Тактика животных с рунами",
+    hi: "पशु रूण रणनीति",
+  };
+  for (const [locale, title] of Object.entries(animalRuneTacticsTitleTranslations)) {
+    localizedGames[locale] ||= {};
+    localizedGames[locale]["animal-rune-tactics"] = {
+      ...(localizedGames[locale]["animal-rune-tactics"] || games["animal-rune-tactics"]),
+      title,
+    };
+  }
   const reviewedGeneralGuides = window.WeightPlayGeneralReviewedGuides || {};
   for (const [code, localeData] of Object.entries(reviewedGeneralGuides)) {
     if (!localizedGames[code]) localizedGames[code] = {};
