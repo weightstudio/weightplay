@@ -1,6 +1,6 @@
 window.WPPopularArcade?.mount("chess");
 
-// Chess v6 keeps the shared shell and its accepted Interface V6 geometry, but
+// Chess v9 keeps the shared shell and its accepted Interface V6 geometry, but
 // owns the Chess decision loop locally so the Snake acceptance lane does not
 // need to be touched. The board presents a small, authored agency contract:
 // choose a visible white piece, then choose its visible destination.
@@ -200,7 +200,7 @@ window.WPPopularArcade?.mount("chess");
   }, 0);
 
   resetState();
-  document.body.dataset.gameVersion = "v7";
+  document.body.dataset.gameVersion = "v9";
   document.addEventListener("click", (event) => {
     const node = event.target?.closest?.("[data-action], #startBtn, #retryBtn, #homeBtn, #hintBtn, #restartBtn");
     if (!node) return;

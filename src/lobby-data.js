@@ -2605,7 +2605,7 @@ for (const [id, titles, categories, skills] of classicOwnerPreviewGames) {
       ageLabel: classicOwnerPreviewLocalized(Array(13).fill("9+")),
       href: `games/${id}/`,
       internalTrial: "index.html?trial=1",
-      art: { kind: "image", background: id === "tetris" ? "assets/tetris-cover.webp" : "assets/classic-logic-lab-cover.webp", hideHero: true },
+      art: { kind: "image", background: id === "tetris" ? "assets/tetris-cover.webp" : id === "breakout" ? "assets/breakout-cover-v1.webp" : "assets/classic-logic-lab-cover.webp", hideHero: true },
     });
   }
   if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(id)) window.WONDER_LOBBY.audiences.generalGameIds.push(id);

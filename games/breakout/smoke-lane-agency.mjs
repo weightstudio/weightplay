@@ -69,7 +69,7 @@ try {
     await page.goto(`${origin}/games/breakout/?preview=1`, { waitUntil: "networkidle" });
     await page.locator("#startBtn").click();
     const initial = await state(page);
-    assert(initial.version === "v6" && initial.lane === "3" && initial.laneState === "armed" && initial.target === "2", "Initial lane target or v6 identity failed", { viewport, initial });
+    assert(initial.version === "v7" && initial.lane === "3" && initial.laneState === "armed" && initial.target === "2", "Initial lane target or v7 identity failed", { viewport, initial });
     await fireTwice(page);
     const clearedLane = await state(page);
     assert(clearedLane.bricks === 10 && clearedLane.laneState === "clear" && clearedLane.target === null && clearedLane.shots === 2, "Cleared lane still auto-targeted another column", { viewport, clearedLane });
@@ -91,11 +91,11 @@ try {
     await clearRemainingFromColumnThree(page);
     const clean = await state(page);
     assert(clean.shots === 12 && /12/.test(clean.goal) && /shot/iu.test(clean.goal), "Clean lane route did not preserve the 12-shot Result goal", { viewport, clean });
-    assert(clean.scroll.width <= clean.viewport.width + 1 && clean.scroll.height <= clean.viewport.height + 1 && errors.length === 0, "Breakout v6 escaped viewport or emitted diagnostics", { viewport, clean, errors });
+    assert(clean.scroll.width <= clean.viewport.width + 1 && clean.scroll.height <= clean.viewport.height + 1 && errors.length === 0, "Breakout v7 escaped viewport or emitted diagnostics", { viewport, clean, errors });
     evidence.push({ viewport: `${viewport.width}x${viewport.height}`, missShots: inefficient.shots, cleanShots: clean.shots, localizedMiss: viewport.width === 390 ? Object.keys(missCopy).length : 0 });
     await context.close();
   }
-  console.log(JSON.stringify({ status: "PASS", gameVersion: "v6", evidence }, null, 2));
+  console.log(JSON.stringify({ status: "PASS", gameVersion: "v7", evidence }, null, 2));
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));
