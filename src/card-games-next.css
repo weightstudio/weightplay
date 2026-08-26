@@ -152,17 +152,25 @@ body[data-wp-card-game] > .result-overlay .result-actions button { min-height: 4
     line-height: 1.15;
     overflow-wrap: anywhere;
   }
+  body[data-wp-card-game="hearts"] .card-game-board {
+    grid-template-columns: minmax(135px, .34fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 7px;
+  }
+  body[data-wp-card-game="hearts"] .card-game-player {
+    grid-column: 1 / -1;
+  }
   body[data-wp-card-game="hearts"] .card-hand {
-    flex: 1 1 auto;
+    flex: 0 0 auto;
     min-height: 66px;
     flex-wrap: nowrap;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: flex-start;
-    overflow-x: auto;
+    overflow-x: hidden;
     overflow-y: hidden;
   }
   body[data-wp-card-game="hearts"] .card-hand .playing-card {
-    flex: 0 0 43px;
+    flex: 0 1 43px;
   }
   body[data-wp-card-game="go-fish"] .card-game-board,
   body[data-wp-card-game="speed"] .card-game-board,
