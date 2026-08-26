@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "animal-orb-fortress";
-  const GAME_VERSION = "v22";
+  const GAME_VERSION = "v23";
   const saveKey = "weightplay_animal_orb_fortress_v1";
   const localeKey = "weightPlayLocale";
   let W = 960;
@@ -1227,6 +1227,20 @@
 
   function fitOrbArena() {
     if (!document.body.classList.contains("orb-fortress-playing") || nodes.gamePanel.classList.contains("is-hidden")) return;
+    // The shared Battle scaler owns the full safe physical envelope. Orb
+    // Fortress keeps its HUD and hint as overlays on that envelope, so the
+    // canvas itself must cover the logical panel rather than fitting its
+    // portrait/landscape bitmap into the middle grid track and leaving a gap
+    // above the physical reserve.
+    if (document.body.classList.contains("wp-logical-battle-active")) {
+      const logicalWidth = nodes.gamePanel.clientWidth;
+      const logicalHeight = nodes.gamePanel.clientHeight;
+      if (logicalWidth > 0 && logicalHeight > 0) {
+        canvas.style.setProperty("width", `${logicalWidth}px`, "important");
+        canvas.style.setProperty("height", `${logicalHeight}px`, "important");
+      }
+      return;
+    }
     const panelStyle = getComputedStyle(nodes.gamePanel);
     const rows = panelStyle.gridTemplateRows.split(/\s+/).map(Number.parseFloat).filter(Number.isFinite);
     const panelWidth = nodes.gamePanel.clientWidth - Number.parseFloat(panelStyle.paddingLeft) - Number.parseFloat(panelStyle.paddingRight);

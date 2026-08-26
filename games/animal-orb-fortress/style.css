@@ -1465,3 +1465,73 @@ body.orb-fortress-playing #stagePanel #stageBackBtn {
     font-size: 12px !important;
   }
 }
+
+/* The shared logical Battle scaler gives Orb Fortress one complete safe
+   envelope. Keep the HUD, hint, and generated return control above the arena
+   as overlays so the canvas reaches the physical reserve at every viewport. */
+body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel {
+  display: block !important;
+  padding: 0 !important;
+}
+
+body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battleLive {
+  display: block !important;
+  position: static !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battleLive #gameCanvas {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 1 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  max-height: none !important;
+  aspect-ratio: auto !important;
+  align-self: stretch !important;
+  justify-self: stretch !important;
+  object-fit: fill !important;
+}
+
+body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battleLive .hud-row,
+body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battleLive .hint {
+  position: absolute !important;
+  z-index: 3 !important;
+}
+
+body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battleLive .hud-row {
+  top: 8px !important;
+}
+
+body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battleLive .hint {
+  bottom: 8px !important;
+}
+
+/* Keep the five HUD controls inside the full-width canvas overlay after the
+   panel switches from grid tracks to an absolute arena. */
+body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battleLive .hud-row {
+  left: 59px !important;
+  right: 8px !important;
+  width: auto !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  box-sizing: border-box !important;
+}
+
+body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battleLive .hint {
+  left: 8px !important;
+  right: 8px !important;
+  width: auto !important;
+  box-sizing: border-box !important;
+}
+
+@media (max-height: 560px) and (orientation: landscape) {
+  body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battleLive .hud-row {
+    left: 106px !important;
+    right: 14px !important;
+  }
+}
