@@ -72,7 +72,10 @@
   let locale = routeLocale || localStorage.getItem("weightplay-locale") || "en";
   if (!localeKeys.includes(locale)) locale = "en";
   let audioContext = null;
-  let muted = localStorage.getItem("weightplay-sound") === "off";
+  const sharedSoundMuted = () => typeof window.WonderSound?.isMuted === "function"
+    ? Boolean(window.WonderSound.isMuted())
+    : null;
+  let muted = sharedSoundMuted() ?? (localStorage.getItem("weightplay-sound") === "off");
   let swipeStart = null;
   let canvasSizing = { width: 0, height: 0, dpr: 0 };
 
@@ -163,6 +166,18 @@
     ui.footer.textContent = tr("footer");
     if (ui.result && !ui.result.hidden) renderResult();
     updateHud();
+  }
+
+  function setSoundMuted(nextMuted) {
+    const desired = Boolean(nextMuted);
+    if (typeof window.WonderSound?.setMuted === "function") {
+      window.WonderSound.setMuted(desired);
+      muted = Boolean(window.WonderSound.isMuted?.() ?? desired);
+    } else {
+      muted = desired;
+      localStorage.setItem("weightplay-sound", muted ? "off" : "on");
+    }
+    setLocale(locale);
   }
 
   function populateLocales() {
@@ -341,7 +356,8 @@
   function renderResult() { if (!state.result) return; const won = state.result.won; ui.resultTitle.textContent = won ? resultText("win") : resultText("lose"); ui.resultCopy.textContent = won ? resultText("winCopy") : resultText("loseCopy"); const d = state.result.details || {}; const rows = gameId === "maze" ? [[tr("scoreStat"), state.score], [tr("bestStat"), state.best], [tr("stageStat"), d.stage || state.level], [tr("livesStat"), state.maze?.lives ?? 0]] : [[tr("scoreStat"), state.score], [tr("bestStat"), state.best], [tr("waveStat"), d.wave || state.level], [tr("shotsStat"), d.shots || state.space?.shots || 0], [tr("fragmentsStat"), d.fragments || state.space?.fragments || 0]]; ui.stats.replaceChildren(); rows.forEach(([name, value]) => { const item = document.createElement("div"); item.className = "stat"; item.innerHTML = `<span>${name}</span><strong>${value}</strong>`; ui.stats.append(item); }); }
   function loop(now) { if (!state.running) return; if (state.confirming) { requestAnimationFrame(loop); return; } const dt = Math.min(0.05, Math.max(0, (now - state.lastTime) / 1000)); state.lastTime = now; if (gameId === "maze") updateMaze(dt); else updateSpace(dt); if (state.running) requestAnimationFrame(loop); }
 
-  ui.start.addEventListener("click", startGame); ui.retry.addEventListener("click", startGame); ui.home.addEventListener("click", showMain); ui.restart.addEventListener("click", startGame); ui.back.addEventListener("click", () => { if (!state.running) return showMain(); state.confirming = true; state.input = {}; ui.confirm.hidden = false; ui.stay.focus({ preventScroll: true }); }); ui.stay.addEventListener("click", () => { state.confirming = false; state.lastTime = performance.now(); ui.confirm.hidden = true; ui.canvas.focus(); }); ui.leave.addEventListener("click", showMain); ui.sound.addEventListener("click", () => { muted = !muted; localStorage.setItem("weightplay-sound", muted ? "off" : "on"); setLocale(locale); if (!muted) tone(720, 0.07); });
+  ui.start.addEventListener("click", startGame); ui.retry.addEventListener("click", startGame); ui.home.addEventListener("click", showMain); ui.restart.addEventListener("click", startGame); ui.back.addEventListener("click", () => { if (!state.running) return showMain(); state.confirming = true; state.input = {}; ui.confirm.hidden = false; ui.stay.focus({ preventScroll: true }); }); ui.stay.addEventListener("click", () => { state.confirming = false; state.lastTime = performance.now(); ui.confirm.hidden = true; ui.canvas.focus(); }); ui.leave.addEventListener("click", showMain); ui.sound.addEventListener("click", () => { setSoundMuted(!muted); if (!muted) tone(720, 0.07); });
+  window.addEventListener("wonder:audio-volume-change", () => { const sharedMuted = sharedSoundMuted(); if (sharedMuted === null || sharedMuted === muted) return; muted = sharedMuted; setLocale(locale); });
   window.addEventListener("keydown", (event) => { if (state.confirming) { if (event.key === "Escape") { state.confirming = false; ui.confirm.hidden = true; ui.canvas.focus(); } return; } const key = event.key.toLowerCase(); if (gameId === "maze") { const direction = key === "arrowup" || key === "w" ? "up" : key === "arrowdown" || key === "s" ? "down" : key === "arrowleft" || key === "a" ? "left" : key === "arrowright" || key === "d" ? "right" : null; if (direction) { event.preventDefault(); mazeSetDirection(direction); } } else { const action = key === "arrowleft" || key === "a" ? "left" : key === "arrowright" || key === "d" ? "right" : key === "arrowup" || key === "w" ? "thrust" : key === " " || key === "space" || key === "spacebar" ? "fire" : key === "shift" ? "shield" : null; if (action) { event.preventDefault(); if (action === "shield") spaceShield(); else state.input[action] = true; } } });
   window.addEventListener("keyup", (event) => { if (gameId !== "space") return; const key = event.key.toLowerCase(); const action = key === "arrowleft" || key === "a" ? "left" : key === "arrowright" || key === "d" ? "right" : key === "arrowup" || key === "w" ? "thrust" : key === " " || key === "space" || key === "spacebar" ? "fire" : null; if (action) state.input[action] = false; });
   ui.canvas.addEventListener("pointerdown", (event) => { swipeStart = { x: event.clientX, y: event.clientY }; ui.canvas.setPointerCapture?.(event.pointerId); }); ui.canvas.addEventListener("pointerup", (event) => { if (!swipeStart || gameId !== "maze") return; const dx = event.clientX - swipeStart.x, dy = event.clientY - swipeStart.y; swipeStart = null; if (Math.max(Math.abs(dx), Math.abs(dy)) < 12) return; mazeSetDirection(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "right" : "left") : (dy > 0 ? "down" : "up")); });

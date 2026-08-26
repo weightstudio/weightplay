@@ -9885,9 +9885,29 @@
       faq: [["لماذا تبقى فجوة؟", "يجب أن تتواجه الفتحتان بدقة عند المركز المشترك لحافة الخليتين المتجاورتين."], ["هل يجب تدوير الهدف؟", "لا. يكفي وصول الماء إلى مدخله."], ["هل يمكن تجاهل تفرع زخرفي؟", "فقط إذا لم تتطلب المرحلة مرور الماء في كل أنبوب."], ["هل يُحفظ التقدم؟", "نعم، تبقى المجاري التي أصلحتها وأفضل النتائج المحلية في هذا المتصفح."], ["ما طرق التحكم وأحجام الشاشة المدعومة؟", "تستخدم اللمسة والماوس ولوحة المفاتيح القواعد نفسها، ويتكيف التخطيط مع الهاتف والوضع الأفقي وسطح المكتب."], ["هل ينتقل التقدم تلقائيًا إلى جهاز آخر؟", "لا. يُحفظ التقدم في المتصفح الحالي فقط."]]
     }
   };
+  const bambooHintFaq = {
+    en: ["Are hints limited?", "No. Hint highlights one unresolved required pipe and shows a route cue; you still rotate the pipe yourself."],
+    "zh-Hant": ["提示會自動旋轉嗎？", "不會。提示只會標記一根尚未接通的必要竹管並顯示路線提示，仍由你親自旋轉竹管。"],
+    "zh-Hans": ["提示会自动旋转吗？", "不会。提示只会标记一根尚未接通的必要竹管并显示路线提示，仍由你亲自旋转竹管。"],
+    ja: ["ヒントは自動で回しますか？", "いいえ。ヒントは未接続の必要な竹管を示して道順を伝えるだけで、回転は自分で行います。"],
+    ko: ["힌트가 자동으로 돌려 주나요?", "아니요. 힌트는 연결되지 않은 필요한 대나무 관을 표시하고 경로를 알려 줄 뿐, 관은 직접 돌려야 합니다."],
+    es: ["¿Las pistas giran el tubo automáticamente?", "No. La pista marca un tubo necesario sin resolver y muestra una ruta; tú debes girarlo."],
+    "pt-BR": ["A dica gira o tubo automaticamente?", "Não. A dica marca um tubo necessário não resolvido e mostra uma rota; você precisa girá-lo."],
+    fr: ["L’indice fait-il pivoter le tuyau automatiquement ?", "Non. Il signale un tuyau requis non résolu et montre un trajet ; c’est à vous de le faire pivoter."],
+    de: ["Dreht der Hinweis das Rohr automatisch?", "Nein. Der Hinweis markiert ein ungelöstes benötigtes Rohr und zeigt einen Weg; du drehst es selbst."],
+    it: ["Il suggerimento ruota il tubo automaticamente?", "No. Il suggerimento indica un tubo necessario non risolto e mostra un percorso; devi ruotarlo tu."],
+    ru: ["Подсказка поворачивает трубу автоматически?", "Нет. Она отмечает нужную нерешённую трубу и показывает маршрут, а поворачиваете её вы."],
+    hi: ["क्या संकेत पाइप को अपने-आप घुमाता है?", "नहीं। संकेत एक अनसुलझे ज़रूरी पाइप को चिन्हित करके मार्ग दिखाता है; पाइप आपको खुद घुमाना होगा।"],
+    ar: ["هل يدور التلميح الأنبوب تلقائيًا؟", "لا. يحدد التلميح أنبوبًا مطلوبًا غير محلول ويعرض مسارًا؛ وعليك تدوير الأنبوب بنفسك."],
+  };
+  games["animal-bamboo-pipes"].faq = [bambooHintFaq.en, ...games["animal-bamboo-pipes"].faq];
   for (const [localeCode, copy] of Object.entries(bambooGuideLocaleCopy)) {
     localizedGames[localeCode] ||= {};
-    localizedGames[localeCode]["animal-bamboo-pipes"] = { ...games["animal-bamboo-pipes"], ...copy };
+    localizedGames[localeCode]["animal-bamboo-pipes"] = {
+      ...games["animal-bamboo-pipes"],
+      ...copy,
+      faq: [bambooHintFaq[localeCode] || bambooHintFaq.en, ...copy.faq],
+    };
     localizedGameplayProfiles[localeCode] ||= {};
     localizedGameplayProfiles[localeCode]["animal-bamboo-pipes"] = { gameplay: copy.gameplay, genre: copy.genre };
   }

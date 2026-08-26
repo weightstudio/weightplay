@@ -87,6 +87,10 @@
     try { window.localStorage.setItem(key, value); } catch (_) {}
   }
 
+  function emitMeasurementEvent(name, detail) {
+    try { window.dispatchEvent(new CustomEvent("weightplay:zhao-" + name, { detail: detail || {} })); } catch (_) {}
+  }
+
   function loadProgress() {
     const fallback = { unlocked: 1, stars: Array(30).fill(0), tutorialSeen: false };
     try {
@@ -252,6 +256,10 @@
     formationRenderKey = null;
     showScreen("battle");
     renderBattle();
+    emitMeasurementEvent("battle-start", {
+      stage: stageIndex + 1,
+      entry: options?.entry === "retry" || options?.entry === "next" ? options.entry : "stage",
+    });
     window.WeightPlayBattleCanvas?.sync?.();
     if (!progress.tutorialSeen && !options?.skipTutorial) {
       progress.tutorialSeen = true;
@@ -500,6 +508,7 @@
     battle.units[slot] = makeUnit(type, 1);
     setStatus(t("statusRecruit"));
     renderBattle();
+    emitMeasurementEvent("recruit", { stage: stageIndex + 1 });
   }
 
   function handleSlot(slot) {
@@ -544,6 +553,7 @@
         ? t("statusGeneralPayoff")
         : t("statusMergePayoff", { level: mergedUnit.level }), payoffKind);
       renderBattle();
+      emitMeasurementEvent("merge", { result: mergedUnit.general ? "promotion" : "level_up", stage: stageIndex + 1 });
       return;
     }
     selectedSlot = slot;
@@ -583,6 +593,7 @@
     battle.skillsUsed[type] = 80;
     setStatus(t("statusSkill"));
     renderBattle();
+    emitMeasurementEvent("skill", { skill: type, stage: stageIndex + 1 });
   }
 
   function ensureResultReplayGoal() {
@@ -628,6 +639,15 @@
     el.resultTime.textContent = seconds + "s";
     el.next.disabled = result !== "win" || stageIndex >= data.levels.length - 1 || stageIndex + 1 >= progress.unlocked;
     el.result.showModal();
+    emitMeasurementEvent("result", {
+      stage: stageIndex + 1,
+      outcome: result === "win" ? "win" : "loss",
+      target: replayGoalKey === "resultReplayGoalThree"
+        ? "faster_clear"
+        : replayGoalKey === "resultReplayGoalStandard"
+          ? "faster_three_star"
+          : "cover_all_lanes",
+    });
   }
 
   function renderBattle() {
@@ -883,6 +903,7 @@
     locale = nextLocale;
     safeSet("weightPlayLocale", locale);
     updateStaticLocale();
+    emitMeasurementEvent("locale-change", { locale: locale });
   }
 
   function setStatus(message, kind) {
@@ -970,11 +991,11 @@
   el.continueBattle.addEventListener("click", function () { el.leaveBattle.close(); });
   el.returnToStage.addEventListener("click", showStage);
   el.resultStages.addEventListener("click", showStage);
-  el.retry.addEventListener("click", function () { el.result.close(); startBattle(stageIndex, { skipTutorial: true }); });
+  el.retry.addEventListener("click", function () { el.result.close(); startBattle(stageIndex, { skipTutorial: true, entry: "retry" }); });
   el.next.addEventListener("click", function () {
     if (el.next.disabled) return;
     el.result.close();
-    startBattle(stageIndex + 1, { skipTutorial: true });
+    startBattle(stageIndex + 1, { skipTutorial: true, entry: "next" });
   });
   el.battle.addEventListener("scroll", function () {
     if (el.battle.scrollTop) el.battle.scrollTop = 0;
