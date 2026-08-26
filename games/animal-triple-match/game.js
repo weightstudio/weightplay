@@ -127,12 +127,13 @@
 
   const els = Object.fromEntries([...document.querySelectorAll("[id]")].map(el => [el.id, el]));
   const SAVE_KEY = "weightplay_animal_triple_match_v1";
-  const GAME_VERSION = 12;
+  const GAME_VERSION = 13;
   const INTERFACE_VERSION = 6;
   const CHAPTERS = ["openShelf","vineGallery","crystalRoom","mysteryLoft","shiftingHall","grandFinale"];
   const ITEM_NAMES = ["Acorn Lantern","Moon Cup","Shell Compass","Berry Brooch","Cloud Jar","Prism Flower","Star Telescope","Leaf Locket","Coral Music Box","Bee Bell","Mushroom Lamp","Crystal Feather"];
   const ITEM_NAMES_ZH_HANT = ["橡果提燈","月光杯","貝殼羅盤","莓果胸針","雲朵罐","稜鏡花","星光望遠鏡","葉片墜飾","珊瑚音樂盒","蜜蜂鈴","蘑菇燈","水晶羽毛"];
   const ITEM_NAMES_PT_BR = ["Lanterna de bolota","Taça da Lua","Bússola de concha","Broche de frutas vermelhas","Pote de nuvem","Flor prismática","Telescópio estelar","Medalhão de folha","Caixa de música de coral","Sino de abelha","Luminária de cogumelo","Pena de cristal"];
+  const ITEM_NAMES_AR = ["فانوس البلوط","كأس القمر","بوصلة الصدفة","دبوس التوت","جرة السحاب","زهرة المنشور","تلسكوب النجوم","قلادة الورقة","صندوق موسيقى المرجان","جرس النحلة","مصباح الفطر","ريشة البلور"];
   const PIECE_A11Y_LABELS = {
     en: { piece: "Piece {n}: {name}", covered: "Piece {n}: {name}, covered", tray: "Tray slot {slot}: {name}, piece {n}", mystery: "Mystery treasure" },
     "zh-Hant": { piece: "第 {n} 個寶物：{name}", covered: "第 {n} 個寶物：{name}，目前被遮住", tray: "托盤第 {slot} 格：{name}，第 {n} 個寶物", mystery: "神秘寶物" },
@@ -621,6 +622,8 @@
     document.querySelectorAll("[data-t]").forEach(el => { el.textContent = t(el.dataset.t); });
     document.querySelectorAll("[data-t-aria]").forEach(el => el.setAttribute("aria-label", t(el.dataset.tAria)));
     document.querySelectorAll("[data-t-alt]").forEach(el => el.alt = t(el.dataset.tAlt));
+    const lobbyReturn = document.querySelector(".lobby-return");
+    if (lobbyReturn && locale === "ar") lobbyReturn.setAttribute("aria-label", "العودة إلى WeightPlay");
     document.title = `${t("title")} | WeightPlay`;
     renderMainProgress(); renderStages(); if (run) renderRun();
     if (els.feedback.classList.contains("reward-beat")) els.feedback.textContent = rewardBeatText("firstTrio");
@@ -833,6 +836,7 @@
   function itemName(type) {
     if (locale === "zh-Hant") return ITEM_NAMES_ZH_HANT[type];
     if (locale === "pt-BR") return ITEM_NAMES_PT_BR[type];
+    if (locale === "ar") return ITEM_NAMES_AR[type];
     return runtimeCatalog(locale)?.[ITEM_NAMES[type]] || ITEM_NAMES[type];
   }
   function mysteryItemName() {

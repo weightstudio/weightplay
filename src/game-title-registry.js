@@ -397,7 +397,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Abbinamento triplo animale",
     "ru": "Animal Triple Match",
     "hi": "Animal Triple Match",
-    "ar": "Animal Triple Match"
+    "ar": "مطابقة الحيوانات الثلاثية"
   },
   "wonder-crash": {
     "__localizedExact": true,
