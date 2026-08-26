@@ -3,7 +3,7 @@ window.WPPopularArcade?.mount("tic-tac-toe");
 (() => {
   "use strict";
 
-  document.body.dataset.gameVersion = "v13";
+  document.body.dataset.gameVersion = "v14";
 
   const labels = {
     en: { lobby: "Back to WeightPlay", battle: "Back to main" },

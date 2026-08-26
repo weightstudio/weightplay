@@ -2,7 +2,7 @@
   "use strict";
 
   const GAME_ID = "tic-tac-toe";
-  const GAME_VERSION = "v13";
+  const GAME_VERSION = "v14";
   const INTERFACE_VERSION = "6";
   const LOCALE_MAP = {
     en: "en",
@@ -19,6 +19,7 @@
     hi: "hi",
     ar: "ar",
   };
+  const LOCALES = new Set(Object.values(LOCALE_MAP));
   let inputType = "unknown";
   let resultVisible = false;
 
@@ -33,12 +34,16 @@
 
   const locale = () => {
     const actual = window.WonderI18n?.actualLocale?.();
-    if (actual) return actual;
+    if (LOCALES.has(actual)) return actual;
     const pathLocale = LOCALE_MAP[window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase()];
-    if (pathLocale) return pathLocale;
-    return document.documentElement.lang || "en";
+    return pathLocale || (LOCALES.has(document.documentElement.lang) ? document.documentElement.lang : "en");
   };
 
+  const screen = () => {
+    if (!document.querySelector("#resultScreen")?.hidden) return "result";
+    if (!document.querySelector("#battleScreen")?.hidden) return "battle";
+    return "main";
+  };
   const bounded = (value, max = 99) => Math.max(0, Math.min(max, Number(value) || 0));
   const legalMoveNumber = () => Math.min(5, document.querySelectorAll('.tic-cell:not(:disabled)').length ? Math.ceil((9 - document.querySelectorAll('.tic-cell:not(:disabled)').length + 1) / 2) : 5);
   const eventInput = (event) => event?.detail === 0 ? "keyboard" : inputType;
@@ -68,6 +73,13 @@
 
   document.addEventListener("pointerdown", rememberInput, true);
   document.addEventListener("keydown", rememberInput, true);
+  document.addEventListener("change", (event) => {
+    if (!event.target?.matches?.("#localeSelect")) return;
+    const to_locale = event.target.value;
+    if (!LOCALES.has(to_locale)) return;
+    const from_locale = locale();
+    track("locale_change", { from: screen(), from_locale, to_locale, locale: to_locale, input_type: eventInput(event) });
+  }, true);
   document.addEventListener("click", (event) => {
     const target = event.target?.closest?.("button");
     if (!target || target.disabled || target.hidden) return;

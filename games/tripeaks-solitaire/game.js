@@ -1,5 +1,6 @@
 (function () {
   "use strict";
+  document.body.dataset.gameVersion = "v20";
   const TRIPEAKS_RANKS = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
   const TRIPEAKS_DYNAMIC_COPY = Object.freeze({
     en: { start: "Start Game", restart: "Restart", newGame: "New Game", moves: "Moves", score: "Score", combo: "Combo", back: "Back", ariaCard: "{rank} of {suit}", suits: { spades: "spades", hearts: "hearts", clubs: "clubs", diamonds: "diamonds" } },
@@ -210,7 +211,7 @@
       }[key]));
       view.nodes.resultText.textContent = `${recap} ${updatePersonalTarget()}`;
     };
-    if (showResult) view.showResult = () => { showResult(); updateResultRecap(); };
+    if (showResult) view.showResult = () => { showResult(); if (view.nodes?.resultOverlay) view.nodes.resultOverlay.dataset.outcome = view.game.won ? "success" : "failure"; updateResultRecap(); };
     let reserveRestoreTimer = null;
     const scheduleReserveRestore = () => {
       clearTimeout(reserveRestoreTimer);
