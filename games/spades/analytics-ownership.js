@@ -1,11 +1,11 @@
 (() => {
   "use strict";
 
-  if (window.__weightplayHeartsAnalyticsInstalled) return;
-  window.__weightplayHeartsAnalyticsInstalled = true;
+  if (window.__weightplaySpadesAnalyticsInstalled) return;
+  window.__weightplaySpadesAnalyticsInstalled = true;
 
-  const GAME_ID = "hearts";
-  const GAME_VERSION = "v9";
+  const GAME_ID = "spades";
+  const GAME_VERSION = "v14";
   const INTERFACE_VERSION = "6";
   const LOCALE_MAP = {
     en: "en",
@@ -40,7 +40,7 @@
   const phase = () => {
     if (screen() === "result") return "result";
     if (screen() !== "battle") return "main";
-    return document.querySelector('#cardGameActions [data-action="pass"]') ? "pass" : "trick_play";
+    return document.querySelector('#cardGameActions [data-action="bid"]') ? "bid" : "trick_play";
   };
 
   const track = (event, details = {}) => {
@@ -59,46 +59,56 @@
     }
   };
 
+  const bidBucket = (value) => {
+    const bid = Number(value);
+    if (!Number.isFinite(bid)) return "unknown";
+    if (bid <= 3) return "low";
+    if (bid <= 7) return "mid";
+    return "high";
+  };
+
   document.addEventListener("click", (event) => {
     const target = event.target?.closest?.("button, .main-return, [data-card-index]");
     if (!target || target.disabled || target.hidden) return;
 
     if (target.matches("#startBtn")) {
-      track("hearts_game_start", { from: "main" });
+      track("spades_game_start", { from: "main" });
       return;
     }
-    if (target.matches("#restartBtn, #resultRestart")) {
-      track("hearts_restart", { from: target.id === "resultRestart" ? "result" : "main" });
+    if (target.matches("#restartBtn, #resultRestart, #battleRestartBtn")) {
+      track("spades_restart", { from: target.id === "resultRestart" ? "result" : target.id === "battleRestartBtn" ? "battle" : "main" });
       return;
     }
-    if (target.matches("#newGameBtn, #resultNewGame")) {
-      track("hearts_new_game", { from: target.id === "resultNewGame" ? "result" : "main" });
+    if (target.matches("#newGameBtn, #resultNewGame, #battleNewBtn")) {
+      track("spades_new_game", { from: target.id === "resultNewGame" ? "result" : target.id === "battleNewBtn" ? "battle" : "main" });
       return;
     }
     if (target.matches("#battleBackBtn, .main-return")) {
-      track("hearts_main_return", { from: target.matches(".main-return") ? "main" : "battle" });
+      track("spades_main_return", { from: target.matches(".main-return") ? "main" : "battle" });
       return;
     }
-    if (target.matches('[data-action="pass"]')) {
-      track("hearts_pass", { from: "battle" });
+    if (target.matches('#cardGameActions [data-action="bid"]')) {
+      track("spades_bid", { from: "battle", bid_bucket: bidBucket(target.dataset.value) });
       return;
     }
-    if (target.matches("[data-card-index]")) {
-      track("hearts_card_choice", { from: "battle", choice: phase() === "pass" ? "pass" : "play" });
+    if (target.matches("#cardGameHand [data-card-index]")) {
+      track("spades_card_choice", { from: "battle" });
     }
   }, true);
 
   document.addEventListener("change", (event) => {
     if (!event.target?.matches?.("#localeSelect")) return;
     const selectedLocale = event.target.value;
-    if (LOCALES.has(selectedLocale)) track("hearts_locale_change", { to_locale: selectedLocale, from: screen() });
+    if (LOCALES.has(selectedLocale)) track("spades_locale_change", { to_locale: selectedLocale, from: screen() });
   }, true);
 
   const result = document.querySelector("#resultOverlay");
   let resultVisible = Boolean(result && !result.hidden);
   if (result) new MutationObserver(() => {
     const visible = !result.hidden;
-    if (visible && !resultVisible) track("hearts_result", { from: "battle" });
+    if (visible && !resultVisible) {
+      track("spades_result", { from: "battle" });
+    }
     resultVisible = visible;
   }).observe(result, { attributes: true, attributeFilter: ["hidden"] });
 
@@ -110,7 +120,7 @@
     }
     if (document.visibilityState === "visible" && wasHidden) {
       wasHidden = false;
-      track("hearts_resume_session", { from: "lifecycle" });
+      track("spades_resume_session", { from: "lifecycle" });
     }
   });
 })();

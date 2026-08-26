@@ -1,11 +1,11 @@
 (() => {
   "use strict";
 
-  if (window.__weightplayHeartsAnalyticsInstalled) return;
-  window.__weightplayHeartsAnalyticsInstalled = true;
+  if (window.__weightplayCrazyEightsAnalyticsInstalled) return;
+  window.__weightplayCrazyEightsAnalyticsInstalled = true;
 
-  const GAME_ID = "hearts";
-  const GAME_VERSION = "v9";
+  const GAME_ID = "crazy-eights";
+  const GAME_VERSION = "v8";
   const INTERFACE_VERSION = "6";
   const LOCALE_MAP = {
     en: "en",
@@ -40,7 +40,8 @@
   const phase = () => {
     if (screen() === "result") return "result";
     if (screen() !== "battle") return "main";
-    return document.querySelector('#cardGameActions [data-action="pass"]') ? "pass" : "trick_play";
+    if (document.querySelector('#cardGameActions [data-action="suit"]')) return "suit_choice";
+    return "play";
   };
 
   const track = (event, details = {}) => {
@@ -60,45 +61,49 @@
   };
 
   document.addEventListener("click", (event) => {
-    const target = event.target?.closest?.("button, .main-return, [data-card-index]");
+    const target = event.target?.closest?.("button, .main-return");
     if (!target || target.disabled || target.hidden) return;
 
     if (target.matches("#startBtn")) {
-      track("hearts_game_start", { from: "main" });
+      track("crazy_eights_game_start", { from: "main" });
       return;
     }
     if (target.matches("#restartBtn, #resultRestart")) {
-      track("hearts_restart", { from: target.id === "resultRestart" ? "result" : "main" });
+      track("crazy_eights_restart", { from: target.id === "resultRestart" ? "result" : "main" });
       return;
     }
     if (target.matches("#newGameBtn, #resultNewGame")) {
-      track("hearts_new_game", { from: target.id === "resultNewGame" ? "result" : "main" });
+      track("crazy_eights_new_game", { from: target.id === "resultNewGame" ? "result" : "main" });
       return;
     }
     if (target.matches("#battleBackBtn, .main-return")) {
-      track("hearts_main_return", { from: target.matches(".main-return") ? "main" : "battle" });
+      track("crazy_eights_main_return", { from: target.matches(".main-return") ? "main" : "battle" });
       return;
     }
-    if (target.matches('[data-action="pass"]')) {
-      track("hearts_pass", { from: "battle" });
+    if (target.matches('#cardGameHand [data-card-index]')) {
+      track("crazy_eights_card_choice", { from: "battle", choice: "play" });
       return;
     }
-    if (target.matches("[data-card-index]")) {
-      track("hearts_card_choice", { from: "battle", choice: phase() === "pass" ? "pass" : "play" });
+    if (target.matches('#cardGameActions [data-action="draw"], #cardGameCenter [data-action="draw"]')) {
+      track("crazy_eights_draw", { from: "battle" });
+      return;
+    }
+    if (target.matches('#cardGameActions [data-action="suit"], #cardGameCenter [data-action="suit"]')) {
+      track("crazy_eights_suit_choice", { from: "battle", choice: "manual" });
     }
   }, true);
 
   document.addEventListener("change", (event) => {
     if (!event.target?.matches?.("#localeSelect")) return;
     const selectedLocale = event.target.value;
-    if (LOCALES.has(selectedLocale)) track("hearts_locale_change", { to_locale: selectedLocale, from: screen() });
+    if (LOCALES.has(selectedLocale)) track("crazy_eights_locale_change", { to_locale: selectedLocale, from: screen() });
   }, true);
 
   const result = document.querySelector("#resultOverlay");
   let resultVisible = Boolean(result && !result.hidden);
   if (result) new MutationObserver(() => {
     const visible = !result.hidden;
-    if (visible && !resultVisible) track("hearts_result", { from: "battle" });
+    if (visible && !resultVisible) track("crazy_eights_result", { from: "battle" });
     resultVisible = visible;
   }).observe(result, { attributes: true, attributeFilter: ["hidden"] });
 
@@ -110,7 +115,7 @@
     }
     if (document.visibilityState === "visible" && wasHidden) {
       wasHidden = false;
-      track("hearts_resume_session", { from: "lifecycle" });
+      track("crazy_eights_resume_session", { from: "lifecycle" });
     }
   });
 })();
